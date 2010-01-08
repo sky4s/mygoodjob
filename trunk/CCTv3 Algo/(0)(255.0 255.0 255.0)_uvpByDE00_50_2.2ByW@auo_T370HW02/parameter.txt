@@ -1,0 +1,61 @@
+[ColorProofParameter]
+	Gamma: Custom(2.2) (GammaBy: W)
+	
+	CalibrateBits: Int10Bit
+	icBits: Int12Bit
+	turnCode: 50
+	grayInterval: 8
+	CCTCalibrate: uvpByDE00
+	cctAdaptiveStart: 2
+	Tolerance: 0.0625
+	keepBlackPoint: true
+	runCount: 1
+
+[WhiteParameter]
+	WhitePoint: RGB
+	WhiteCode: (255 255 255)
+	LCDModel: null
+	WhitexyY: null
+
+[AdjustParameter]
+	[Threshold]
+	gsdfLowPassPrimeCheckThreshold: 0.4
+	[Calibrate]
+	luminanceBasedCalibrate[2]: true
+	whiteBasedCalibrate[2]: true
+	greenBasedCalibrate[2]: true
+	luminanceBasedCalibrate2[2]: false
+	smoothGreenCalibrated: false
+	smoothGreenCompromiseCalibrate: false
+	smoothGreenBasedOn: Model
+	AdjustRange: 0~255
+	[Options]
+	quantizationCollapseFix: true (concernCollapseFixable: true)
+	variableGammaSmoothStart: 1
+	variableGammaSmoothEnd: 250
+	cubeCalibrateAtLowLuminance: false (startCode: 30)
+	InterpolateMethod: Linear
+
+[MeasureParameter]
+	[Interpolate]
+	interpolateReplaceMeasure: false (Unit: Int9Bit)
+	[Blank]
+	measureBlankInsert: false (Color: java.awt.Color[r=255,g=255,b=255])
+	[Measure]
+	Ramp LCDTArget: Ramp1021
+	Xtalk LCDTArget: Xtalk769
+	backgroundColor: java.awt.Color[r=0,g=0,b=0]
+	measureWaitTime: 300
+	whiteSequenceMeasure: false (Count: 3)
+	inverseMeasure: true
+	parallelExcute: true
+	bufferMeasure: true
+	[CP Code Loader]
+	useDifferenceMeasure: false (AcceptDifference: 63)
+	downloadWaitTime: 0
+
+[ViewingParameter]
+	distanceInches: 32.0
+	LCDSize: 32.0
+	resolution: null
+
