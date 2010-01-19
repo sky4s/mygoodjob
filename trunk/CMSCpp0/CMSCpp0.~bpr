@@ -4,8 +4,7 @@
   <MACROS>
     <VERSION value="BCB.06.00"/>
     <PROJECT value="D:\WorkSpace\CMSCpp0\build\CMSCpp0.exe"/>
-    <OBJFILES value="build\Unit1.obj build\CA200SRVRLib_TLB.obj build\CA210API.obj 
-      build\Unit2.obj"/>
+    <OBJFILES value="build\Unit1.obj build\CA210API.obj build\CA200SRVRLib_TLB.obj"/>
     <RESFILES value="CMSCpp0.res"/>
     <IDLFILES value=""/>
     <IDLGENFILES value=""/>
@@ -21,7 +20,7 @@
       inetdbbde.bpi inetdbxpress.bpi inetdb.bpi nmfast.bpi webdsnap.bpi 
       bcbie.bpi websnap.bpi soaprtl.bpi dclocx.bpi dbexpress.bpi dbxcds.bpi 
       indy.bpi bcb2kaxserver.bpi bcbindent.bpi ActiveXBean.bpi"/>
-    <PATHCPP value=".;src;imports;src\ca210api;src"/>
+    <PATHCPP value=".;src;src\ca210api;imports\CA200SRVRLib"/>
     <PATHPAS value=".;"/>
     <PATHRC value=".;"/>
     <PATHASM value=".;"/>
@@ -31,14 +30,14 @@
     <USERDEFINES value="_DEBUG"/>
     <SYSDEFINES value="NO_STRICT;_RTLDLL;USEPACKAGES"/>
     <MAINSOURCE value="CMSCpp0.bpf"/>
-    <INCLUDEPATH value="src\ca210api;&quot;D:\Program Files\Borland\CBuilder6\Projects&quot;;imports;&quot;..\CA-210 Operator2\Imports&quot;;src;D:\WorkSpace\CMSCpp0\src;D:\WorkSpace\CMSCpp0;$(BCB)\include;$(BCB)\include\vcl"/>
-    <LIBPATH value="src\ca210api;&quot;D:\Program Files\Borland\CBuilder6\Projects&quot;;imports;&quot;..\CA-210 Operator2\Imports&quot;;src;$(BCB)\Projects\Lib;D:\WorkSpace\CMSCpp0\src;D:\WorkSpace\CMSCpp0;$(BCB)\lib\obj;$(BCB)\lib"/>
+    <INCLUDEPATH value="imports\CA200SRVRLib;imports;src\ca210api;&quot;D:\Program Files\Borland\CBuilder6\Projects&quot;;src;D:\WorkSpace\CMSCpp0;$(BCB)\include;$(BCB)\include\vcl"/>
+    <LIBPATH value="imports\CA200SRVRLib;imports;src\ca210api;&quot;D:\Program Files\Borland\CBuilder6\Projects&quot;;src;$(BCB)\Projects\Lib;D:\WorkSpace\CMSCpp0;$(BCB)\lib\obj;$(BCB)\lib"/>
     <WARNINGS value="-w-par"/>
     <OTHERFILES value=""/>
   </MACROS>
   <OPTIONS>
-    <IDLCFLAGS value="-Isrc\ca210api -I&quot;D:\Program Files\Borland\CBuilder6\Projects&quot; -Iimports 
-      -I&quot;..\CA-210 Operator2\Imports&quot; -Isrc -ID:\WorkSpace\CMSCpp0\src 
+    <IDLCFLAGS value="-Iimports\CA200SRVRLib -Iimports -Isrc\ca210api 
+      -I&quot;D:\Program Files\Borland\CBuilder6\Projects&quot; -Isrc 
       -ID:\WorkSpace\CMSCpp0 -I$(BCB)\include -I$(BCB)\include\vcl -src_suffix 
       cpp -D_DEBUG -boa"/>
     <CFLAG1 value="-Od -H=$(BCB)\lib\vcl60.csm -Hc -Vx -Ve -X- -r- -a8 -b- -k -y -v -vi- -tWC 
@@ -61,9 +60,8 @@
       <FILE FILENAME="CMSCpp0.res" FORMNAME="" UNITNAME="CMSCpp0.res" CONTAINERID="ResTool" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="CMSCpp0.bpf" FORMNAME="" UNITNAME="CMSCpp0" CONTAINERID="BPF" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="src\Unit1.cpp" FORMNAME="" UNITNAME="Unit1" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="imports\CA200SRVRLib_TLB.cpp" FORMNAME="" UNITNAME="CA200SRVRLib_TLB" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="src\ca210api\CA210API.cpp" FORMNAME="" UNITNAME="CA210API" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="src\Unit2.cpp" FORMNAME="" UNITNAME="Unit2.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="imports\CA200SRVRLib\CA200SRVRLib_TLB.cpp" FORMNAME="" UNITNAME="CA200SRVRLib_TLB" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
   </FILELIST>
   <BUILDTOOLS>
   </BUILDTOOLS>
@@ -97,12 +95,24 @@ ProductVersion=1.0.0.0
 Comments=
 
 [HistoryLists\hlIncludePath]
-Count=1
-Item0=D:\WorkSpace\CMSCpp0\src;D:\WorkSpace\CMSCpp0;$(BCB)\include;$(BCB)\include\vcl
+Count=7
+Item0=imports;src\ca210api;D:\Program Files\Borland\CBuilder6\Projects;imports\;src;D:\WorkSpace\CMSCpp0;$(BCB)\include;$(BCB)\include\vcl
+Item1=imports;src\ca210api;D:\Program Files\Borland\CBuilder6\Projects;imports\CA200SRVRLib;src;D:\WorkSpace\CMSCpp0;$(BCB)\include;$(BCB)\include\vcl
+Item2=src\ca210api;D:\Program Files\Borland\CBuilder6\Projects;imports\CA200SRVRLib;src;D:\WorkSpace\CMSCpp0;$(BCB)\include;$(BCB)\include\vcl
+Item3=src\ca210api;D:\Program Files\Borland\CBuilder6\Projects;imports;src;D:\WorkSpace\CMSCpp0;$(BCB)\include;$(BCB)\include\vcl
+Item4=src\ca210api;D:\Program Files\Borland\CBuilder6\Projects;imports;src;D:\WorkSpace\CMSCpp0\src;D:\WorkSpace\CMSCpp0;$(BCB)\include;$(BCB)\include\vcl
+Item5=src\ca210api;D:\Program Files\Borland\CBuilder6\Projects;imports;..\CA-210 Operator2\Imports;src;D:\WorkSpace\CMSCpp0\src;D:\WorkSpace\CMSCpp0;$(BCB)\include;$(BCB)\include\vcl
+Item6=D:\WorkSpace\CMSCpp0\src;D:\WorkSpace\CMSCpp0;$(BCB)\include;$(BCB)\include\vcl
 
 [HistoryLists\hlLibraryPath]
-Count=1
-Item0=$(BCB)\Projects\Lib;D:\WorkSpace\CMSCpp0\src;D:\WorkSpace\CMSCpp0;$(BCB)\lib\obj;$(BCB)\lib
+Count=7
+Item0=imports;src\ca210api;D:\Program Files\Borland\CBuilder6\Projects;imports\;src;$(BCB)\Projects\Lib;D:\WorkSpace\CMSCpp0;$(BCB)\lib\obj;$(BCB)\lib
+Item1=imports;src\ca210api;D:\Program Files\Borland\CBuilder6\Projects;imports\CA200SRVRLib;src;$(BCB)\Projects\Lib;D:\WorkSpace\CMSCpp0;$(BCB)\lib\obj;$(BCB)\lib
+Item2=src\ca210api;D:\Program Files\Borland\CBuilder6\Projects;imports\CA200SRVRLib;src;$(BCB)\Projects\Lib;D:\WorkSpace\CMSCpp0;$(BCB)\lib\obj;$(BCB)\lib
+Item3=src\ca210api;D:\Program Files\Borland\CBuilder6\Projects;imports;src;$(BCB)\Projects\Lib;D:\WorkSpace\CMSCpp0;$(BCB)\lib\obj;$(BCB)\lib
+Item4=src\ca210api;D:\Program Files\Borland\CBuilder6\Projects;imports;src;$(BCB)\Projects\Lib;D:\WorkSpace\CMSCpp0\src;D:\WorkSpace\CMSCpp0;$(BCB)\lib\obj;$(BCB)\lib
+Item5=src\ca210api;D:\Program Files\Borland\CBuilder6\Projects;imports;..\CA-210 Operator2\Imports;src;$(BCB)\Projects\Lib;D:\WorkSpace\CMSCpp0\src;D:\WorkSpace\CMSCpp0;$(BCB)\lib\obj;$(BCB)\lib
+Item6=$(BCB)\Projects\Lib;D:\WorkSpace\CMSCpp0\src;D:\WorkSpace\CMSCpp0;$(BCB)\lib\obj;$(BCB)\lib
 
 [HistoryLists\hlDebugSourcePath]
 Count=1
@@ -113,8 +123,9 @@ Count=1
 Item0=_DEBUG
 
 [HistoryLists\hlIntOutputDir]
-Count=1
+Count=2
 Item0=D:\WorkSpace\CMSCpp0\build
+Item1=D:\WorkSpace\CMSCpp0\build\
 
 [HistoryLists\hlFinalOutputDir]
 Count=2
@@ -122,8 +133,9 @@ Item0=D:\WorkSpace\CMSCpp0\build\
 Item1=D:\WorkSpace\CMSCpp0\build
 
 [HistoryLists\hIBPIOutputDir]
-Count=1
+Count=2
 Item0=D:\WorkSpace\CMSCpp0\build
+Item1=D:\WorkSpace\CMSCpp0\build\
 
 [Debugging]
 DebugSourceDirs=$(BCB)\source\vcl

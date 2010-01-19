@@ -1,16 +1,20 @@
 //---------------------------------------------------------------------------
-
-#include <vcl.h>
 #pragma hdrstop
-
+#include <vcl.h>
+#include <conio.h>
+#include <sstream>
+#include <iostream>
+#include <string>
+using namespace std;
 //---------------------------------------------------------------------------
-
 #pragma argsused
-int main(int argc, char* argv[])
+int main(int argc, char *argv[])
 {
-        //int ia[]={0,1,2};
-        //ia[]={2};
-        return 0;
-}
-//---------------------------------------------------------------------------
+
  
+    getch();
+    return 0;
+}
+
+//---------------------------------------------------------------------------
+
