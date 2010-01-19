@@ -4,7 +4,9 @@
   <MACROS>
     <VERSION value="BCB.06.00"/>
     <PROJECT value="D:\WorkSpace\CMSCpp0\build\CMSCpp0.exe"/>
-    <OBJFILES value="build\Unit1.obj build\CA210API.obj build\CA200SRVRLib_TLB.obj"/>
+    <OBJFILES value="D:\WorkSpace\CMSCpp0\build\Unit1.obj 
+      D:\WorkSpace\CMSCpp0\build\CA210API.obj 
+      D:\WorkSpace\CMSCpp0\build\CA200SRVRLib_TLB.obj"/>
     <RESFILES value="CMSCpp0.res"/>
     <IDLFILES value=""/>
     <IDLGENFILES value=""/>

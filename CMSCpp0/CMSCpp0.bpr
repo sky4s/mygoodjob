@@ -3,7 +3,7 @@
 <PROJECT>
   <MACROS>
     <VERSION value="BCB.06.00"/>
-    <PROJECT value="D:\WorkSpace\CMSCpp0\build\CMSCpp0.exe"/>
+    <PROJECT value="build\CMSCpp0.exe"/>
     <OBJFILES value="build\Unit1.obj build\CA210API.obj build\CA200SRVRLib_TLB.obj"/>
     <RESFILES value="CMSCpp0.res"/>
     <IDLFILES value=""/>
@@ -19,7 +19,7 @@
       dsnapcrba.bpi dsnapcon.bpi bcbsmp.bpi vclie.bpi xmlrtl.bpi inet.bpi 
       inetdbbde.bpi inetdbxpress.bpi inetdb.bpi nmfast.bpi webdsnap.bpi 
       bcbie.bpi websnap.bpi soaprtl.bpi dclocx.bpi dbexpress.bpi dbxcds.bpi 
-      indy.bpi bcb2kaxserver.bpi bcbindent.bpi ActiveXBean.bpi"/>
+      indy.bpi bcb2kaxserver.bpi bcbindent.bpi"/>
     <PATHCPP value=".;src;src\ca210api;imports\CA200SRVRLib"/>
     <PATHPAS value=".;"/>
     <PATHRC value=".;"/>
@@ -42,12 +42,10 @@
       cpp -D_DEBUG -boa"/>
     <CFLAG1 value="-Od -H=$(BCB)\lib\vcl60.csm -Hc -Vx -Ve -X- -r- -a8 -b- -k -y -v -vi- -tWC 
       -tWM -c"/>
-    <PFLAGS value="-N2D:\WorkSpace\CMSCpp0\build -N0D:\WorkSpace\CMSCpp0\build -$YD -$W -$O- 
-      -$A8 -v -JPHNE -M"/>
+    <PFLAGS value="-N2build -N0build -$YD -$W -$O- -$A8 -v -JPHNE -M"/>
     <RFLAGS value=""/>
     <AFLAGS value="/mx /w2 /zd"/>
-    <LFLAGS value="-lD:\WorkSpace\CMSCpp0\build -ID:\WorkSpace\CMSCpp0\build -D&quot;&quot; -ap -Tpe -x 
-      -Gn -v"/>
+    <LFLAGS value="-lbuild -Ibuild -D&quot;&quot; -ap -Tpe -x -Gn -v"/>
     <OTHERFILES value=""/>
   </OPTIONS>
   <LINKER>
@@ -96,8 +94,8 @@ Comments=
 
 [HistoryLists\hlIncludePath]
 Count=9
-Item0=imports;src\ca210api;D:\Program Files\Borland\CBuilder6\Projects;src;D:\WorkSpace\CMSCpp0;$(BCB)\include;$(BCB)\include\vcl
-Item1=imports\CA200SRVRLib;imports;src\ca210api;D:\Program Files\Borland\CBuilder6\Projects;src;D:\WorkSpace\CMSCpp0;$(BCB)\include;$(BCB)\include\vcl
+Item0=imports\CA200SRVRLib;imports;src\ca210api;D:\Program Files\Borland\CBuilder6\Projects;src;D:\WorkSpace\CMSCpp0;$(BCB)\include;$(BCB)\include\vcl
+Item1=imports;src\ca210api;D:\Program Files\Borland\CBuilder6\Projects;src;D:\WorkSpace\CMSCpp0;$(BCB)\include;$(BCB)\include\vcl
 Item2=imports;src\ca210api;D:\Program Files\Borland\CBuilder6\Projects;imports\;src;D:\WorkSpace\CMSCpp0;$(BCB)\include;$(BCB)\include\vcl
 Item3=imports;src\ca210api;D:\Program Files\Borland\CBuilder6\Projects;imports\CA200SRVRLib;src;D:\WorkSpace\CMSCpp0;$(BCB)\include;$(BCB)\include\vcl
 Item4=src\ca210api;D:\Program Files\Borland\CBuilder6\Projects;imports\CA200SRVRLib;src;D:\WorkSpace\CMSCpp0;$(BCB)\include;$(BCB)\include\vcl
@@ -108,8 +106,8 @@ Item8=D:\WorkSpace\CMSCpp0\src;D:\WorkSpace\CMSCpp0;$(BCB)\include;$(BCB)\includ
 
 [HistoryLists\hlLibraryPath]
 Count=9
-Item0=imports;src\ca210api;D:\Program Files\Borland\CBuilder6\Projects;src;$(BCB)\Projects\Lib;D:\WorkSpace\CMSCpp0;$(BCB)\lib\obj;$(BCB)\lib
-Item1=imports\CA200SRVRLib;imports;src\ca210api;D:\Program Files\Borland\CBuilder6\Projects;src;$(BCB)\Projects\Lib;D:\WorkSpace\CMSCpp0;$(BCB)\lib\obj;$(BCB)\lib
+Item0=imports\CA200SRVRLib;imports;src\ca210api;D:\Program Files\Borland\CBuilder6\Projects;src;$(BCB)\Projects\Lib;D:\WorkSpace\CMSCpp0;$(BCB)\lib\obj;$(BCB)\lib
+Item1=imports;src\ca210api;D:\Program Files\Borland\CBuilder6\Projects;src;$(BCB)\Projects\Lib;D:\WorkSpace\CMSCpp0;$(BCB)\lib\obj;$(BCB)\lib
 Item2=imports;src\ca210api;D:\Program Files\Borland\CBuilder6\Projects;imports\;src;$(BCB)\Projects\Lib;D:\WorkSpace\CMSCpp0;$(BCB)\lib\obj;$(BCB)\lib
 Item3=imports;src\ca210api;D:\Program Files\Borland\CBuilder6\Projects;imports\CA200SRVRLib;src;$(BCB)\Projects\Lib;D:\WorkSpace\CMSCpp0;$(BCB)\lib\obj;$(BCB)\lib
 Item4=src\ca210api;D:\Program Files\Borland\CBuilder6\Projects;imports\CA200SRVRLib;src;$(BCB)\Projects\Lib;D:\WorkSpace\CMSCpp0;$(BCB)\lib\obj;$(BCB)\lib
@@ -127,19 +125,24 @@ Count=1
 Item0=_DEBUG
 
 [HistoryLists\hlIntOutputDir]
-Count=2
-Item0=D:\WorkSpace\CMSCpp0\build
-Item1=D:\WorkSpace\CMSCpp0\build\
+Count=4
+Item0=build
+Item1=build\
+Item2=D:\WorkSpace\CMSCpp0\build
+Item3=D:\WorkSpace\CMSCpp0\build\
 
 [HistoryLists\hlFinalOutputDir]
-Count=2
-Item0=D:\WorkSpace\CMSCpp0\build\
-Item1=D:\WorkSpace\CMSCpp0\build
+Count=3
+Item0=build\
+Item1=D:\WorkSpace\CMSCpp0\build\
+Item2=D:\WorkSpace\CMSCpp0\build
 
 [HistoryLists\hIBPIOutputDir]
-Count=2
-Item0=D:\WorkSpace\CMSCpp0\build
-Item1=D:\WorkSpace\CMSCpp0\build\
+Count=4
+Item0=build
+Item1=build\
+Item2=D:\WorkSpace\CMSCpp0\build
+Item3=D:\WorkSpace\CMSCpp0\build\
 
 [Debugging]
 DebugSourceDirs=$(BCB)\source\vcl
