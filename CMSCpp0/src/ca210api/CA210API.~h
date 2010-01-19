@@ -3,6 +3,9 @@
 #define CA210APIH
 //---------------------------------------------------------------------------
 #include "CA200SRVRLib/CA200SRVRLib_TLB.h"
+#include <sstream>
+#include <string>
+using namespace std;
 //---------------------------------------------------------------------------
 
 namespace ca210api {
@@ -56,6 +59,12 @@ namespace ca210api {
 	void setDisplayDigits(DisplayDigits digits);
 	void setCalStandard(CalStandard standard);
 	void setRemoteMode(RemoteMode mode);
+	void setChannelNO(int no);
+	long getChannelNO();
+	long enter();
+	void setChannelID(string id);
+	string getChannelID();
+
     };
 };
 

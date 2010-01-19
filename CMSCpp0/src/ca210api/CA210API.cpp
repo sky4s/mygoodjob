@@ -109,18 +109,46 @@ long CA210API::getChannelNO()
     return memory.get_ChannelNO();
 }
 
-void CA210API::setChannelID(string id)
+void CA210API::setChannelID(wchar_t * id)
 {
-    //wstringstream s;
-    //s << id;
-    //memory.set_ChannelID(s.str().c_str());
+    memory.SetChannelID(id);
 }
 
-string CA210API::getChannelID()
+wchar_t *CA210API::getChannelID()
 {
     wchar_t *channelID = memory.get_ChannelID();
-    stringstream s;
-    s << channelID;
-    return s.str();
+    return channelID;
+}
+
+
+void CA210API::setLvxyCalMode()
+{
+    ca.SetLvxyCalMode();
+}
+
+void CA210API::resetLvxyCalMode()
+{
+    ca.ResetLvxyCalMode();
+}
+
+void CA210API::setLvxyCalData(lClr lclr, float xValue, float yValue,
+			      float YValue)
+{
+    ca.SetLvxyCalData(lclr, xValue, yValue, YValue);
+}
+
+void CA210API::setAnalyzerCalMode(lClr lclr)
+{
+    ca.SetAnalyzerCalData(lclr);
+}
+
+void CA210API::resetAnalyzerCalMode()
+{
+    ca.ResetAnalyzerCalMode();
+}
+
+void CA210API::setAnalyzerCalData(lClr lclr)
+{
+    ca.SetAnalyzerCalData(lclr);
 }
 

@@ -91,3 +91,36 @@ duv(duv)
 
 }
 
+
+void CA210API::setChannelNO(int no)
+{
+    memory.set_ChannelNO(no);
+}
+
+
+long CA210API::enter()
+{
+    return ca.Enter();
+}
+
+long CA210API::getChannelNO()
+{
+
+    return memory.get_ChannelNO();
+}
+
+void CA210API::setChannelID(string id)
+{
+    //wstringstream s;
+    //s << id;
+    //memory.set_ChannelID(s.str().c_str());
+}
+
+string CA210API::getChannelID()
+{
+    wchar_t *channelID = memory.get_ChannelID();
+    stringstream s;
+    s << channelID;
+    return s.str();
+}
+

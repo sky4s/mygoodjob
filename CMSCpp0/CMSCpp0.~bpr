@@ -95,24 +95,28 @@ ProductVersion=1.0.0.0
 Comments=
 
 [HistoryLists\hlIncludePath]
-Count=7
-Item0=imports;src\ca210api;D:\Program Files\Borland\CBuilder6\Projects;imports\;src;D:\WorkSpace\CMSCpp0;$(BCB)\include;$(BCB)\include\vcl
-Item1=imports;src\ca210api;D:\Program Files\Borland\CBuilder6\Projects;imports\CA200SRVRLib;src;D:\WorkSpace\CMSCpp0;$(BCB)\include;$(BCB)\include\vcl
-Item2=src\ca210api;D:\Program Files\Borland\CBuilder6\Projects;imports\CA200SRVRLib;src;D:\WorkSpace\CMSCpp0;$(BCB)\include;$(BCB)\include\vcl
-Item3=src\ca210api;D:\Program Files\Borland\CBuilder6\Projects;imports;src;D:\WorkSpace\CMSCpp0;$(BCB)\include;$(BCB)\include\vcl
-Item4=src\ca210api;D:\Program Files\Borland\CBuilder6\Projects;imports;src;D:\WorkSpace\CMSCpp0\src;D:\WorkSpace\CMSCpp0;$(BCB)\include;$(BCB)\include\vcl
-Item5=src\ca210api;D:\Program Files\Borland\CBuilder6\Projects;imports;..\CA-210 Operator2\Imports;src;D:\WorkSpace\CMSCpp0\src;D:\WorkSpace\CMSCpp0;$(BCB)\include;$(BCB)\include\vcl
-Item6=D:\WorkSpace\CMSCpp0\src;D:\WorkSpace\CMSCpp0;$(BCB)\include;$(BCB)\include\vcl
+Count=9
+Item0=imports;src\ca210api;D:\Program Files\Borland\CBuilder6\Projects;src;D:\WorkSpace\CMSCpp0;$(BCB)\include;$(BCB)\include\vcl
+Item1=imports\CA200SRVRLib;imports;src\ca210api;D:\Program Files\Borland\CBuilder6\Projects;src;D:\WorkSpace\CMSCpp0;$(BCB)\include;$(BCB)\include\vcl
+Item2=imports;src\ca210api;D:\Program Files\Borland\CBuilder6\Projects;imports\;src;D:\WorkSpace\CMSCpp0;$(BCB)\include;$(BCB)\include\vcl
+Item3=imports;src\ca210api;D:\Program Files\Borland\CBuilder6\Projects;imports\CA200SRVRLib;src;D:\WorkSpace\CMSCpp0;$(BCB)\include;$(BCB)\include\vcl
+Item4=src\ca210api;D:\Program Files\Borland\CBuilder6\Projects;imports\CA200SRVRLib;src;D:\WorkSpace\CMSCpp0;$(BCB)\include;$(BCB)\include\vcl
+Item5=src\ca210api;D:\Program Files\Borland\CBuilder6\Projects;imports;src;D:\WorkSpace\CMSCpp0;$(BCB)\include;$(BCB)\include\vcl
+Item6=src\ca210api;D:\Program Files\Borland\CBuilder6\Projects;imports;src;D:\WorkSpace\CMSCpp0\src;D:\WorkSpace\CMSCpp0;$(BCB)\include;$(BCB)\include\vcl
+Item7=src\ca210api;D:\Program Files\Borland\CBuilder6\Projects;imports;..\CA-210 Operator2\Imports;src;D:\WorkSpace\CMSCpp0\src;D:\WorkSpace\CMSCpp0;$(BCB)\include;$(BCB)\include\vcl
+Item8=D:\WorkSpace\CMSCpp0\src;D:\WorkSpace\CMSCpp0;$(BCB)\include;$(BCB)\include\vcl
 
 [HistoryLists\hlLibraryPath]
-Count=7
-Item0=imports;src\ca210api;D:\Program Files\Borland\CBuilder6\Projects;imports\;src;$(BCB)\Projects\Lib;D:\WorkSpace\CMSCpp0;$(BCB)\lib\obj;$(BCB)\lib
-Item1=imports;src\ca210api;D:\Program Files\Borland\CBuilder6\Projects;imports\CA200SRVRLib;src;$(BCB)\Projects\Lib;D:\WorkSpace\CMSCpp0;$(BCB)\lib\obj;$(BCB)\lib
-Item2=src\ca210api;D:\Program Files\Borland\CBuilder6\Projects;imports\CA200SRVRLib;src;$(BCB)\Projects\Lib;D:\WorkSpace\CMSCpp0;$(BCB)\lib\obj;$(BCB)\lib
-Item3=src\ca210api;D:\Program Files\Borland\CBuilder6\Projects;imports;src;$(BCB)\Projects\Lib;D:\WorkSpace\CMSCpp0;$(BCB)\lib\obj;$(BCB)\lib
-Item4=src\ca210api;D:\Program Files\Borland\CBuilder6\Projects;imports;src;$(BCB)\Projects\Lib;D:\WorkSpace\CMSCpp0\src;D:\WorkSpace\CMSCpp0;$(BCB)\lib\obj;$(BCB)\lib
-Item5=src\ca210api;D:\Program Files\Borland\CBuilder6\Projects;imports;..\CA-210 Operator2\Imports;src;$(BCB)\Projects\Lib;D:\WorkSpace\CMSCpp0\src;D:\WorkSpace\CMSCpp0;$(BCB)\lib\obj;$(BCB)\lib
-Item6=$(BCB)\Projects\Lib;D:\WorkSpace\CMSCpp0\src;D:\WorkSpace\CMSCpp0;$(BCB)\lib\obj;$(BCB)\lib
+Count=9
+Item0=imports;src\ca210api;D:\Program Files\Borland\CBuilder6\Projects;src;$(BCB)\Projects\Lib;D:\WorkSpace\CMSCpp0;$(BCB)\lib\obj;$(BCB)\lib
+Item1=imports\CA200SRVRLib;imports;src\ca210api;D:\Program Files\Borland\CBuilder6\Projects;src;$(BCB)\Projects\Lib;D:\WorkSpace\CMSCpp0;$(BCB)\lib\obj;$(BCB)\lib
+Item2=imports;src\ca210api;D:\Program Files\Borland\CBuilder6\Projects;imports\;src;$(BCB)\Projects\Lib;D:\WorkSpace\CMSCpp0;$(BCB)\lib\obj;$(BCB)\lib
+Item3=imports;src\ca210api;D:\Program Files\Borland\CBuilder6\Projects;imports\CA200SRVRLib;src;$(BCB)\Projects\Lib;D:\WorkSpace\CMSCpp0;$(BCB)\lib\obj;$(BCB)\lib
+Item4=src\ca210api;D:\Program Files\Borland\CBuilder6\Projects;imports\CA200SRVRLib;src;$(BCB)\Projects\Lib;D:\WorkSpace\CMSCpp0;$(BCB)\lib\obj;$(BCB)\lib
+Item5=src\ca210api;D:\Program Files\Borland\CBuilder6\Projects;imports;src;$(BCB)\Projects\Lib;D:\WorkSpace\CMSCpp0;$(BCB)\lib\obj;$(BCB)\lib
+Item6=src\ca210api;D:\Program Files\Borland\CBuilder6\Projects;imports;src;$(BCB)\Projects\Lib;D:\WorkSpace\CMSCpp0\src;D:\WorkSpace\CMSCpp0;$(BCB)\lib\obj;$(BCB)\lib
+Item7=src\ca210api;D:\Program Files\Borland\CBuilder6\Projects;imports;..\CA-210 Operator2\Imports;src;$(BCB)\Projects\Lib;D:\WorkSpace\CMSCpp0\src;D:\WorkSpace\CMSCpp0;$(BCB)\lib\obj;$(BCB)\lib
+Item8=$(BCB)\Projects\Lib;D:\WorkSpace\CMSCpp0\src;D:\WorkSpace\CMSCpp0;$(BCB)\lib\obj;$(BCB)\lib
 
 [HistoryLists\hlDebugSourcePath]
 Count=1

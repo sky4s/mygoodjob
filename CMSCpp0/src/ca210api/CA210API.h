@@ -5,6 +5,8 @@
 #include "CA200SRVRLib/CA200SRVRLib_TLB.h"
 #include <sstream>
 #include <string>
+//#include <boost/algorithm/string.hpp>
+//using namespace boost;
 using namespace std;
 //---------------------------------------------------------------------------
 
@@ -37,6 +39,8 @@ namespace ca210api {
     };
     enum RemoteMode { Off = 0, On, Locked
     };
+    enum lClr { Red = 0, Green, Blue, White
+    };
 
     class CA210API {
       private:
@@ -52,6 +56,8 @@ namespace ca210api {
 	void close();
 	float *triggerMeasurement();
 	MeasureResult getMeasureResult();
+
+	// Options
 	void setSyncMode(SyncMode mode);
 	void setAveragingMode(AveragingMode mode);
 	void setBrightnessUnit(BrightnessUnit unit);
@@ -59,11 +65,27 @@ namespace ca210api {
 	void setDisplayDigits(DisplayDigits digits);
 	void setCalStandard(CalStandard standard);
 	void setRemoteMode(RemoteMode mode);
+
+	// Analyzer Mode
+	void setAnalyzerCalMode(lClr lclr);
+	void resetAnalyzerCalMode();
+	void setAnalyzerCalData(lClr lclr);
+
+	void setLvxyCalMode();
+	void resetLvxyCalMode();
+	void setLvxyCalData(lClr lclr, float xValue, float yValue,
+			    float YValue);
+
+	long enter();
+
+	// Channel NO
 	void setChannelNO(int no);
 	long getChannelNO();
-	long enter();
-	void setChannelID(string id);
-	string getChannelID();
+	// channel ID
+	void setChannelID(wchar_t * id);
+	wchar_t *getChannelID();
+
+
 
     };
 };
