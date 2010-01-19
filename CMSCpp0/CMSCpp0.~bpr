@@ -4,7 +4,8 @@
   <MACROS>
     <VERSION value="BCB.06.00"/>
     <PROJECT value="D:\WorkSpace\CMSCpp0\build\CMSCpp0.exe"/>
-    <OBJFILES value="build\Unit1.obj"/>
+    <OBJFILES value="build\Unit1.obj build\CA200SRVRLib_TLB.obj build\CA210API.obj 
+      build\Unit2.obj"/>
     <RESFILES value="CMSCpp0.res"/>
     <IDLFILES value=""/>
     <IDLGENFILES value=""/>
@@ -12,7 +13,7 @@
     <RESDEPEN value="$(RESFILES)"/>
     <LIBFILES value=""/>
     <LIBRARIES value=""/>
-    <SPARELIBS value="rtl.lib"/>
+    <SPARELIBS value="rtl.lib vcl.lib"/>
     <PACKAGES value="vcl.bpi rtl.bpi dbrtl.bpi adortl.bpi vcldb.bpi vclx.bpi ibxpress.bpi 
       dsnap.bpi cds.bpi bdecds.bpi bdertl.bpi qrpt.bpi teeui.bpi teedb.bpi 
       tee.bpi vcldbx.bpi dss.bpi teeqr.bpi visualclx.bpi visualdbclx.bpi 
@@ -20,7 +21,7 @@
       inetdbbde.bpi inetdbxpress.bpi inetdb.bpi nmfast.bpi webdsnap.bpi 
       bcbie.bpi websnap.bpi soaprtl.bpi dclocx.bpi dbexpress.bpi dbxcds.bpi 
       indy.bpi bcb2kaxserver.bpi bcbindent.bpi ActiveXBean.bpi"/>
-    <PATHCPP value=".;src"/>
+    <PATHCPP value=".;src;imports;src\ca210api;src"/>
     <PATHPAS value=".;"/>
     <PATHRC value=".;"/>
     <PATHASM value=".;"/>
@@ -30,21 +31,24 @@
     <USERDEFINES value="_DEBUG"/>
     <SYSDEFINES value="NO_STRICT;_RTLDLL;USEPACKAGES"/>
     <MAINSOURCE value="CMSCpp0.bpf"/>
-    <INCLUDEPATH value="D:\WorkSpace\CMSCpp0\src;D:\WorkSpace\CMSCpp0;$(BCB)\include;$(BCB)\include\vcl"/>
-    <LIBPATH value="$(BCB)\Projects\Lib;D:\WorkSpace\CMSCpp0\src;D:\WorkSpace\CMSCpp0;$(BCB)\lib\obj;$(BCB)\lib"/>
+    <INCLUDEPATH value="src\ca210api;&quot;D:\Program Files\Borland\CBuilder6\Projects&quot;;imports;&quot;..\CA-210 Operator2\Imports&quot;;src;D:\WorkSpace\CMSCpp0\src;D:\WorkSpace\CMSCpp0;$(BCB)\include;$(BCB)\include\vcl"/>
+    <LIBPATH value="src\ca210api;&quot;D:\Program Files\Borland\CBuilder6\Projects&quot;;imports;&quot;..\CA-210 Operator2\Imports&quot;;src;$(BCB)\Projects\Lib;D:\WorkSpace\CMSCpp0\src;D:\WorkSpace\CMSCpp0;$(BCB)\lib\obj;$(BCB)\lib"/>
     <WARNINGS value="-w-par"/>
     <OTHERFILES value=""/>
   </MACROS>
   <OPTIONS>
-    <IDLCFLAGS value="-ID:\WorkSpace\CMSCpp0\src -ID:\WorkSpace\CMSCpp0 -I$(BCB)\include 
-      -I$(BCB)\include\vcl -src_suffix cpp -D_DEBUG -boa"/>
+    <IDLCFLAGS value="-Isrc\ca210api -I&quot;D:\Program Files\Borland\CBuilder6\Projects&quot; -Iimports 
+      -I&quot;..\CA-210 Operator2\Imports&quot; -Isrc -ID:\WorkSpace\CMSCpp0\src 
+      -ID:\WorkSpace\CMSCpp0 -I$(BCB)\include -I$(BCB)\include\vcl -src_suffix 
+      cpp -D_DEBUG -boa"/>
     <CFLAG1 value="-Od -H=$(BCB)\lib\vcl60.csm -Hc -Vx -Ve -X- -r- -a8 -b- -k -y -v -vi- -tWC 
       -tWM -c"/>
     <PFLAGS value="-N2D:\WorkSpace\CMSCpp0\build -N0D:\WorkSpace\CMSCpp0\build -$YD -$W -$O- 
       -$A8 -v -JPHNE -M"/>
     <RFLAGS value=""/>
     <AFLAGS value="/mx /w2 /zd"/>
-    <LFLAGS value="-ID:\WorkSpace\CMSCpp0\build -D&quot;&quot; -ap -Tpe -x -Gn -v"/>
+    <LFLAGS value="-lD:\WorkSpace\CMSCpp0\build -ID:\WorkSpace\CMSCpp0\build -D&quot;&quot; -ap -Tpe -x 
+      -Gn -v"/>
     <OTHERFILES value=""/>
   </OPTIONS>
   <LINKER>
@@ -57,6 +61,9 @@
       <FILE FILENAME="CMSCpp0.res" FORMNAME="" UNITNAME="CMSCpp0.res" CONTAINERID="ResTool" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="CMSCpp0.bpf" FORMNAME="" UNITNAME="CMSCpp0" CONTAINERID="BPF" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="src\Unit1.cpp" FORMNAME="" UNITNAME="Unit1" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="imports\CA200SRVRLib_TLB.cpp" FORMNAME="" UNITNAME="CA200SRVRLib_TLB" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="src\ca210api\CA210API.cpp" FORMNAME="" UNITNAME="CA210API" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="src\Unit2.cpp" FORMNAME="" UNITNAME="Unit2.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
   </FILELIST>
   <BUILDTOOLS>
   </BUILDTOOLS>
@@ -110,6 +117,11 @@ Count=1
 Item0=D:\WorkSpace\CMSCpp0\build
 
 [HistoryLists\hlFinalOutputDir]
+Count=2
+Item0=D:\WorkSpace\CMSCpp0\build\
+Item1=D:\WorkSpace\CMSCpp0\build
+
+[HistoryLists\hIBPIOutputDir]
 Count=1
 Item0=D:\WorkSpace\CMSCpp0\build
 
