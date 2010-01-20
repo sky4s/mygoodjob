@@ -4,9 +4,13 @@
   <MACROS>
     <VERSION value="BCB.06.00"/>
     <PROJECT value="D:\WorkSpace\CMSCpp0\build\CMSCpp0.exe"/>
+<<<<<<< .mine
+    <OBJFILES value="build\Unit1.obj build\CA210API.obj build\CA200SRVRLib_TLB.obj build\core.obj"/>
+=======
     <OBJFILES value="D:\WorkSpace\CMSCpp0\build\Unit1.obj 
       D:\WorkSpace\CMSCpp0\build\CA210API.obj 
       D:\WorkSpace\CMSCpp0\build\CA200SRVRLib_TLB.obj"/>
+>>>>>>> .r29
     <RESFILES value="CMSCpp0.res"/>
     <IDLFILES value=""/>
     <IDLGENFILES value=""/>
@@ -22,7 +26,7 @@
       inetdbbde.bpi inetdbxpress.bpi inetdb.bpi nmfast.bpi webdsnap.bpi 
       bcbie.bpi websnap.bpi soaprtl.bpi dclocx.bpi dbexpress.bpi dbxcds.bpi 
       indy.bpi bcb2kaxserver.bpi bcbindent.bpi ActiveXBean.bpi"/>
-    <PATHCPP value=".;src;src\ca210api;imports\CA200SRVRLib"/>
+    <PATHCPP value=".;src;src\ca210api;imports\CA200SRVRLib;src\cms"/>
     <PATHPAS value=".;"/>
     <PATHRC value=".;"/>
     <PATHASM value=".;"/>
@@ -32,13 +36,13 @@
     <USERDEFINES value="_DEBUG"/>
     <SYSDEFINES value="NO_STRICT;_RTLDLL;USEPACKAGES"/>
     <MAINSOURCE value="CMSCpp0.bpf"/>
-    <INCLUDEPATH value="imports\CA200SRVRLib;imports;src\ca210api;&quot;D:\Program Files\Borland\CBuilder6\Projects&quot;;src;D:\WorkSpace\CMSCpp0;$(BCB)\include;$(BCB)\include\vcl"/>
-    <LIBPATH value="imports\CA200SRVRLib;imports;src\ca210api;&quot;D:\Program Files\Borland\CBuilder6\Projects&quot;;src;$(BCB)\Projects\Lib;D:\WorkSpace\CMSCpp0;$(BCB)\lib\obj;$(BCB)\lib"/>
+    <INCLUDEPATH value="src\cms;imports\CA200SRVRLib;imports;src\ca210api;&quot;D:\Program Files\Borland\CBuilder6\Projects&quot;;src;D:\WorkSpace\CMSCpp0;$(BCB)\include;$(BCB)\include\vcl"/>
+    <LIBPATH value="src\cms;imports\CA200SRVRLib;imports;src\ca210api;&quot;D:\Program Files\Borland\CBuilder6\Projects&quot;;src;$(BCB)\Projects\Lib;D:\WorkSpace\CMSCpp0;$(BCB)\lib\obj;$(BCB)\lib"/>
     <WARNINGS value="-w-par"/>
     <OTHERFILES value=""/>
   </MACROS>
   <OPTIONS>
-    <IDLCFLAGS value="-Iimports\CA200SRVRLib -Iimports -Isrc\ca210api 
+    <IDLCFLAGS value="-Isrc\cms -Iimports\CA200SRVRLib -Iimports -Isrc\ca210api 
       -I&quot;D:\Program Files\Borland\CBuilder6\Projects&quot; -Isrc 
       -ID:\WorkSpace\CMSCpp0 -I$(BCB)\include -I$(BCB)\include\vcl -src_suffix 
       cpp -D_DEBUG -boa"/>
@@ -64,6 +68,7 @@
       <FILE FILENAME="src\Unit1.cpp" FORMNAME="" UNITNAME="Unit1" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="src\ca210api\CA210API.cpp" FORMNAME="" UNITNAME="CA210API" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="imports\CA200SRVRLib\CA200SRVRLib_TLB.cpp" FORMNAME="" UNITNAME="CA200SRVRLib_TLB" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="src\cms\core.cpp" FORMNAME="" UNITNAME="core" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
   </FILELIST>
   <BUILDTOOLS>
   </BUILDTOOLS>
