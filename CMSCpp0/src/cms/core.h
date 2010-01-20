@@ -1,19 +1,15 @@
 #ifndef COREH
 #define COREH
-#include <vcl.h>
+
+//#include <vcl.h>
 #include "static/util.h"
 #include "static/java.h"
 #include "colorspace/independ.h"
 
-//using namespace util;
-//using namespace java;
-//using namespace cms;
-//using cms::colorspace::CIExyY;
-
 namespace cms {
     using namespace util;
     using namespace java;
-    //using namespace cms;
+
     using namespace cms::colorspace;
 
     class SpectraIF {
@@ -33,8 +29,8 @@ namespace cms {
 
     class CorrelatedColorTemperature:public Object {
       public:
-	static CIExyY CCT2BlackbodyxyY(int tempK);
-	static CIExyY CCT2DIlluminantxyY(int tempK);
+	/*static CIExyY CCT2BlackbodyxyY(int tempK);
+	static CIExyY CCT2DIlluminantxyY(int tempK);*/
     };
     class DeltaE:public Object {
     };

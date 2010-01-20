@@ -1,5 +1,6 @@
-#include "java.h"
+#include "lang.h"
 namespace java {
+ namespace lang {
     bool Object::equals(Object & obj) {
 	return false;
     } Class & Object::getClass() {
@@ -44,5 +45,16 @@ namespace java {
     string & Class::getSimpleName() {
 	return *new string("");
     }
+    using namespace std;
+	static double Math::sqrt(double a) {
+	    return sqrt(a);
+	}
+	static double Math::pow(double a, double b) {
+	    return -1;
+	}
+	static double Math::atan2(double y, double x) {
+	    return -1;
+	}    
+    };
 };
 

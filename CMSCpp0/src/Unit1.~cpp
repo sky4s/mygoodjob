@@ -2,12 +2,18 @@
 #pragma hdrstop
 #include <vcl.h>
 #include <conio.h>
+#include "cms/colorspace/independ.h"
+#include <iostream>
 
-//using namespace std;
 //---------------------------------------------------------------------------
 #pragma argsused
 int main(int argc, char *argv[])
 {
+    using cms::colorspace::CIExyY;
+    using namespace std;
+    //using namespace cms;
+    //CIExyY xyY;
+    //cout << xyY.isNull();
     getch();
     return 0;
 }
