@@ -1,10 +1,10 @@
 #ifndef INDEPENDH
 #define INDEPENDH
-//#include "colorspace.h"
+#include "colorspace.h"
 
 namespace cms {
     namespace colorspace {
-	class CIExyY:public ColorSpace {
+	class CIExyY   {
 
 	};
     };

@@ -6,19 +6,31 @@
 namespace java {
     using std::string;
     class Class;
-    class Object :public TObject{
+
+    class Object:public TObject {
       public:
-	bool equals(Object obj);
-	Class getClass();
+	bool equals(Object & obj);
+	Class & getClass();
 	int hashCode();
-	string toString();
+	void notify();
+	void notifyAll();
+	 string & toString();
+	void wait();
+	void wait(long timeout, int nanos);
+	void wait(long timeout);
+	boolean isNull();
       protected:
-	 Object clone();
+	 Object & clone();
 	void finalize();
+	 Object(boolean null);
+	 Object();
+      private:
+	 boolean null;
     };
+
     class Class {
       public:
-	string getSimpleName();
+	string & getSimpleName();
     };
 };
 #endif

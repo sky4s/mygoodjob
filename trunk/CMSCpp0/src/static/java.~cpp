@@ -1,20 +1,40 @@
 #include "java.h"
 namespace java {
-    bool Object::equals(Object obj) {
+    bool Object::equals(Object & obj) {
 	return false;
     }
-    Class Object::getClass() {
-	return Class();
+    Class & Object::getClass() {
+	//Class *c = new Class();
+	return *new Class();
     }
     int Object::hashCode() {
 	return -1;
     }
-    string Object::toString() {
-	return NULL;
+
+    void Object::notify() {
+    }
+    void Object::notifyAll() {
     }
 
-    string Class::getSimpleName() {
-	return "";
+    string & Object::toString() {
+	return *new string();
+    }
+
+    void Object::wait() {
+    }
+    void Object::wait(long timeout, int nanos) {
+    }
+    void Object::wait(long timeout) {
+    }
+    Object & Object::clone() {
+	return *new Object();
+    }
+    void Object::finalize() {
+    }
+
+    string & Class::getSimpleName() {
+	return *new string("");
+        //return "";
     }
 };
 

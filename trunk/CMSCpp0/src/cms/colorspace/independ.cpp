@@ -1,4 +1,2 @@
 #include "independ.h"
 
-
-

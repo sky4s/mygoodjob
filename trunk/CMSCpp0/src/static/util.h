@@ -10,9 +10,8 @@ namespace util {
     };
     using std::string;
     class NameIF {
-
       public:
-	virtual string getName() = 0;
+	virtual string& getName() = 0;
     };
 };
 #endif
