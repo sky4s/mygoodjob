@@ -1,0 +1,242 @@
+<?xml version='1.0' encoding='utf-8' ?>
+<!-- C++Builder XML Project -->
+<PROJECT>
+  <MACROS>
+    <VERSION value="BCB.06.00"/>
+    <PROJECT value="build\jlibcpp.bpl"/>
+    <OBJFILES value="build\jlibcpp.obj build\jbitstream.obj build\jcalendar.obj 
+      build\jcharset.obj build\jcommonlib.obj build\jcompileexception.obj 
+      build\jdate.obj build\jdynamiclink.obj build\jeventobject.obj 
+      build\jexception.obj build\jgc.obj build\jhtmlparser.obj build\jhttp.obj 
+      build\jjson.obj build\jlistener.obj build\jnullpointerexception.obj 
+      build\jobject.obj build\jobservable.obj build\jobserver.obj 
+      build\joptions.obj build\joutofboundsexception.obj build\jpolices.obj 
+      build\jproperties.obj build\jruntimeexception.obj build\jserializable.obj 
+      build\jstringtokenizer.obj build\jstringutils.obj build\jsystem.obj 
+      build\jtypes.obj build\junit.obj build\jxmlparser.obj 
+      build\jbitinputstream.obj build\jbitoutputstream.obj 
+      build\jbufferedreader.obj build\jchannel.obj build\jdatainputstream.obj 
+      build\jdataoutputstream.obj build\jfile.obj build\jfileexception.obj 
+      build\jfileinputstream.obj build\jfileoutputstream.obj 
+      build\jinputstream.obj build\jioexception.obj build\jiolib.obj 
+      build\jmemoryinputstream.obj build\jmemoryoutputstream.obj 
+      build\jobjectinputstream.obj build\jobjectoutputstream.obj 
+      build\joutputstream.obj build\jpipeexception.obj build\jpipestream.obj 
+      build\jprintstream.obj build\jconsolehandler.obj build\jfilehandler.obj 
+      build\jformatter.obj build\jhandler.obj build\jlogger.obj 
+      build\jloggerexception.obj build\jloggerlib.obj build\jloggermanager.obj 
+      build\jlogrecord.obj build\jmemoryhandler.obj build\jsimpleformatter.obj 
+      build\jstreamhandler.obj build\jxmlformatter.obj"/>
+    <RESFILES value="jlibcpp.res"/>
+    <IDLFILES value=""/>
+    <IDLGENFILES value=""/>
+    <DEFFILE value=""/>
+    <RESDEPEN value="$(RESFILES)"/>
+    <LIBFILES value=""/>
+    <LIBRARIES value=""/>
+    <SPARELIBS value="rtl.lib"/>
+    <PACKAGES value="rtl.bpi"/>
+    <PATHCPP value=".;src\jcommon;src\jcommon;src\jcommon;src\jcommon;src\jcommon;src\jcommon;src\jcommon;src\jcommon;src\jcommon;src\jcommon;src\jcommon;src\jcommon;src\jcommon;src\jcommon;src\jcommon;src\jcommon;src\jcommon;src\jcommon;src\jcommon;src\jcommon;src\jcommon;src\jcommon;src\jcommon;src\jcommon;src\jcommon;src\jcommon;src\jcommon;src\jcommon;src\jcommon;src\jcommon;src\jio;src\jio;src\jio;src\jio;src\jio;src\jio;src\jio;src\jio;src\jio;src\jio;src\jio;src\jio;src\jio;src\jio;src\jio;src\jio;src\jio;src\jio;src\jio;src\jio;src\jio;src\jlogger;src\jlogger;src\jlogger;src\jlogger;src\jlogger;src\jlogger;src\jlogger;src\jlogger;src\jlogger;src\jlogger;src\jlogger;src\jlogger;src\jlogger"/>
+    <PATHPAS value=".;"/>
+    <PATHRC value=".;"/>
+    <PATHASM value=".;"/>
+    <DEBUGLIBPATH value="$(BCB)\lib\debug"/>
+    <RELEASELIBPATH value="$(BCB)\lib\release"/>
+    <LINKER value="ilink32"/>
+    <USERDEFINES value="_DEBUG;_BCB"/>
+    <SYSDEFINES value="_RTLDLL;NO_STRICT;USEPACKAGES"/>
+    <MAINSOURCE value="jlibcpp.cpp"/>
+    <INCLUDEPATH value="src\jlogger;src\jio;src\jcommon;..\..;$(BCB)\include;$(BCB)\include\vcl;src\jlogger\include;src\jio\include;src\jcommon\include"/>
+    <LIBPATH value="src\jlogger;src\jio;src\jcommon;..\..;$(BCB)\lib\obj;$(BCB)\lib"/>
+    <WARNINGS value="-w-par"/>
+    <OTHERFILES value=""/>
+  </MACROS>
+  <OPTIONS>
+    <IDLCFLAGS value="-Isrc\jlogger -Isrc\jio -Isrc\jcommon -I..\.. -I$(BCB)\include 
+      -I$(BCB)\include\vcl -Isrc\jlogger\include -Isrc\jio\include 
+      -Isrc\jcommon\include -src_suffix cpp -D_DEBUG -D_BCB -boa"/>
+    <CFLAG1 value="-Od -H=$(BCB)\lib\vcl60.csm -Hc -Vx -Ve -X- -r- -a8 -b- -k -y -v -vi- -c 
+      -tWM"/>
+    <PFLAGS value="-N2build -N0build -$YD -$W -$O- -$A8 -v -JPHNE -M"/>
+    <RFLAGS value=""/>
+    <AFLAGS value="/mx /w2 /zd"/>
+    <LFLAGS value="-lbuild -Ibuild -D&quot;&quot; -aa -Tpp -x -Gn -Gl -Gi -v"/>
+    <OTHERFILES value=""/>
+  </OPTIONS>
+  <LINKER>
+    <ALLOBJ value="c0pkg32.obj $(PACKAGES) Memmgr.Lib sysinit.obj $(OBJFILES)"/>
+    <ALLRES value="$(RESFILES)"/>
+    <ALLLIB value="$(LIBFILES) $(LIBRARIES) import32.lib cp32mti.lib"/>
+    <OTHERFILES value=""/>
+  </LINKER>
+  <FILELIST>
+      <FILE FILENAME="jlibcpp.res" FORMNAME="" UNITNAME="jlibcpp.res" CONTAINERID="ResTool" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="jlibcpp.cpp" FORMNAME="" UNITNAME="jlibcpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="src\jlogger\rtl.bpi" FORMNAME="" UNITNAME="rtl" CONTAINERID="BPITool" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="src\jcommon\jbitstream.cpp" FORMNAME="" UNITNAME="jbitstream" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="src\jcommon\jcalendar.cpp" FORMNAME="" UNITNAME="jcalendar" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="src\jcommon\jcharset.cpp" FORMNAME="" UNITNAME="jcharset" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="src\jcommon\jcommonlib.cpp" FORMNAME="" UNITNAME="jcommonlib" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="src\jcommon\jcompileexception.cpp" FORMNAME="" UNITNAME="jcompileexception" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="src\jcommon\jdate.cpp" FORMNAME="" UNITNAME="jdate" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="src\jcommon\jdynamiclink.cpp" FORMNAME="" UNITNAME="jdynamiclink" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="src\jcommon\jeventobject.cpp" FORMNAME="" UNITNAME="jeventobject" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="src\jcommon\jexception.cpp" FORMNAME="" UNITNAME="jexception" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="src\jcommon\jgc.cpp" FORMNAME="" UNITNAME="jgc" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="src\jcommon\jhtmlparser.cpp" FORMNAME="" UNITNAME="jhtmlparser" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="src\jcommon\jhttp.cpp" FORMNAME="" UNITNAME="jhttp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="src\jcommon\jjson.cpp" FORMNAME="" UNITNAME="jjson" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="src\jcommon\jlistener.cpp" FORMNAME="" UNITNAME="jlistener" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="src\jcommon\jnullpointerexception.cpp" FORMNAME="" UNITNAME="jnullpointerexception" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="src\jcommon\jobject.cpp" FORMNAME="" UNITNAME="jobject" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="src\jcommon\jobservable.cpp" FORMNAME="" UNITNAME="jobservable" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="src\jcommon\jobserver.cpp" FORMNAME="" UNITNAME="jobserver" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="src\jcommon\joptions.cpp" FORMNAME="" UNITNAME="joptions" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="src\jcommon\joutofboundsexception.cpp" FORMNAME="" UNITNAME="joutofboundsexception" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="src\jcommon\jpolices.cpp" FORMNAME="" UNITNAME="jpolices" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="src\jcommon\jproperties.cpp" FORMNAME="" UNITNAME="jproperties" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="src\jcommon\jruntimeexception.cpp" FORMNAME="" UNITNAME="jruntimeexception" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="src\jcommon\jserializable.cpp" FORMNAME="" UNITNAME="jserializable" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="src\jcommon\jstringtokenizer.cpp" FORMNAME="" UNITNAME="jstringtokenizer" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="src\jcommon\jstringutils.cpp" FORMNAME="" UNITNAME="jstringutils" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="src\jcommon\jsystem.cpp" FORMNAME="" UNITNAME="jsystem" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="src\jcommon\jtypes.cpp" FORMNAME="" UNITNAME="jtypes" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="src\jcommon\junit.cpp" FORMNAME="" UNITNAME="junit" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="src\jcommon\jxmlparser.cpp" FORMNAME="" UNITNAME="jxmlparser" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="src\jio\jbitinputstream.cpp" FORMNAME="" UNITNAME="jbitinputstream" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="src\jio\jbitoutputstream.cpp" FORMNAME="" UNITNAME="jbitoutputstream" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="src\jio\jbufferedreader.cpp" FORMNAME="" UNITNAME="jbufferedreader" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="src\jio\jchannel.cpp" FORMNAME="" UNITNAME="jchannel" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="src\jio\jdatainputstream.cpp" FORMNAME="" UNITNAME="jdatainputstream" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="src\jio\jdataoutputstream.cpp" FORMNAME="" UNITNAME="jdataoutputstream" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="src\jio\jfile.cpp" FORMNAME="" UNITNAME="jfile" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="src\jio\jfileexception.cpp" FORMNAME="" UNITNAME="jfileexception" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="src\jio\jfileinputstream.cpp" FORMNAME="" UNITNAME="jfileinputstream" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="src\jio\jfileoutputstream.cpp" FORMNAME="" UNITNAME="jfileoutputstream" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="src\jio\jinputstream.cpp" FORMNAME="" UNITNAME="jinputstream" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="src\jio\jioexception.cpp" FORMNAME="" UNITNAME="jioexception" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="src\jio\jiolib.cpp" FORMNAME="" UNITNAME="jiolib" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="src\jio\jmemoryinputstream.cpp" FORMNAME="" UNITNAME="jmemoryinputstream" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="src\jio\jmemoryoutputstream.cpp" FORMNAME="" UNITNAME="jmemoryoutputstream" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="src\jio\jobjectinputstream.cpp" FORMNAME="" UNITNAME="jobjectinputstream" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="src\jio\jobjectoutputstream.cpp" FORMNAME="" UNITNAME="jobjectoutputstream" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="src\jio\joutputstream.cpp" FORMNAME="" UNITNAME="joutputstream" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="src\jio\jpipeexception.cpp" FORMNAME="" UNITNAME="jpipeexception" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="src\jio\jpipestream.cpp" FORMNAME="" UNITNAME="jpipestream" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="src\jio\jprintstream.cpp" FORMNAME="" UNITNAME="jprintstream" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="src\jlogger\jconsolehandler.cpp" FORMNAME="" UNITNAME="jconsolehandler" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="src\jlogger\jfilehandler.cpp" FORMNAME="" UNITNAME="jfilehandler" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="src\jlogger\jformatter.cpp" FORMNAME="" UNITNAME="jformatter" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="src\jlogger\jhandler.cpp" FORMNAME="" UNITNAME="jhandler" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="src\jlogger\jlogger.cpp" FORMNAME="" UNITNAME="jlogger" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="src\jlogger\jloggerexception.cpp" FORMNAME="" UNITNAME="jloggerexception" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="src\jlogger\jloggerlib.cpp" FORMNAME="" UNITNAME="jloggerlib" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="src\jlogger\jloggermanager.cpp" FORMNAME="" UNITNAME="jloggermanager" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="src\jlogger\jlogrecord.cpp" FORMNAME="" UNITNAME="jlogrecord" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="src\jlogger\jmemoryhandler.cpp" FORMNAME="" UNITNAME="jmemoryhandler" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="src\jlogger\jsimpleformatter.cpp" FORMNAME="" UNITNAME="jsimpleformatter" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="src\jlogger\jstreamhandler.cpp" FORMNAME="" UNITNAME="jstreamhandler" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="src\jlogger\jxmlformatter.cpp" FORMNAME="" UNITNAME="jxmlformatter" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+  </FILELIST>
+  <BUILDTOOLS>
+  </BUILDTOOLS>
+
+  <IDEOPTIONS>
+[Version Info]
+IncludeVerInfo=1
+AutoIncBuild=0
+MajorVer=1
+MinorVer=0
+Release=0
+Build=0
+Debug=0
+PreRelease=0
+Special=0
+Private=0
+DLL=0
+Locale=1028
+CodePage=950
+
+[Version Info Keys]
+CompanyName=
+FileDescription=
+FileVersion=1.0.0.0
+InternalName=
+LegalCopyright=
+LegalTrademarks=
+OriginalFilename=
+ProductName=
+ProductVersion=1.0.0.0
+Comments=
+
+[Excluded Packages]
+d:\program files\borland\cbuilder6\Projects\Bpl\ActiveXBean.bpl=ActiveXBean
+
+[HistoryLists\hlIncludePath]
+Count=2
+Item0=src\jlogger;src\jio;src\jcommon;..\..;$(BCB)\include;$(BCB)\include\vcl;src\jlogger\include;src\jio\include;src\jcommon\include
+Item1=src\jlogger;src\jio;src\jcommon;..\..;$(BCB)\include;$(BCB)\include\vcl
+
+[HistoryLists\hlLibraryPath]
+Count=1
+Item0=src\jlogger;src\jio;src\jcommon;..\..;$(BCB)\lib\obj;$(BCB)\lib
+
+[HistoryLists\hlDebugSourcePath]
+Count=1
+Item0=$(BCB)\source\vcl
+
+[HistoryLists\hlConditionals]
+Count=2
+Item0=_DEBUG;_BCB
+Item1=_DEBUG
+
+[HistoryLists\hlIntOutputDir]
+Count=2
+Item0=build
+Item1=build\
+
+[HistoryLists\hlFinalOutputDir]
+Count=1
+Item0=build\
+
+[HistoryLists\hIBPIOutputDir]
+Count=2
+Item0=build
+Item1=build\
+
+[Debugging]
+DebugSourceDirs=$(BCB)\source\vcl
+
+[Parameters]
+RunParams=
+Launcher=
+UseLauncher=0
+DebugCWD=
+HostApplication=
+RemoteHost=
+RemotePath=
+RemoteLauncher=
+RemoteCWD=
+RemoteDebug=0
+
+[Compiler]
+ShowInfoMsgs=0
+LinkDebugVcl=0
+LinkCGLIB=0
+
+[CORBA]
+AddServerUnit=1
+AddClientUnit=1
+PrecompiledHeaders=1
+
+[Language]
+ActiveLang=
+ProjectLang=
+RootDir=
+
+[Linker]
+LibPrefix=
+LibSuffix=
+LibVersion=
+  </IDEOPTIONS>
+</PROJECT>

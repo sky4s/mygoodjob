@@ -3,8 +3,10 @@
 
 //#include <vcl.h>
 #include "static/util.h"
-#include "static/java.h"
+#include "static/java/lang.h"
 #include "colorspace/independ.h"
+#include "colorspace/ciexyz.h"
+
 
 namespace cms {
     using namespace util;
@@ -29,8 +31,8 @@ namespace cms {
 
     class CorrelatedColorTemperature:public Object {
       public:
-	/*static CIExyY CCT2BlackbodyxyY(int tempK);
-	static CIExyY CCT2DIlluminantxyY(int tempK);*/
+	static CIExyY CCT2BlackbodyxyY(int tempK);
+	static CIExyY CCT2DIlluminantxyY(int tempK);
     };
     class DeltaE:public Object {
     };

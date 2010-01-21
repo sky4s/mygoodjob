@@ -5,7 +5,8 @@
     <VERSION value="BCB.06.00"/>
     <PROJECT value="build\CMSCpp0.exe"/>
     <OBJFILES value="build\Unit1.obj build\CA210API.obj build\util.obj build\core.obj 
-      build\colorspace.obj build\independ.obj build\lang.obj"/>
+      build\colorspace.obj build\independ.obj build\lang.obj build\exception.obj 
+      build\ciexyz.obj"/>
     <RESFILES value="CMSCpp0.res"/>
     <IDLFILES value=""/>
     <IDLGENFILES value=""/>
@@ -21,7 +22,7 @@
       inetdbbde.bpi inetdbxpress.bpi inetdb.bpi nmfast.bpi webdsnap.bpi 
       bcbie.bpi websnap.bpi soaprtl.bpi dclocx.bpi dbexpress.bpi dbxcds.bpi 
       indy.bpi bcb2kaxserver.bpi bcbindent.bpi"/>
-    <PATHCPP value=".;src;src\ca210api;src\static;src\cms;src\cms\colorspace;src\cms\colorspace;src\static\java"/>
+    <PATHCPP value=".;src;src\ca210api;src\static;src\cms;src\cms\colorspace;src\cms\colorspace;src\static\java;src\static\java;src\cms\colorspace"/>
     <PATHPAS value=".;"/>
     <PATHRC value=".;"/>
     <PATHASM value=".;"/>
@@ -64,6 +65,8 @@
       <FILE FILENAME="src\cms\colorspace\colorspace.cpp" FORMNAME="" UNITNAME="colorspace" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="src\cms\colorspace\independ.cpp" FORMNAME="" UNITNAME="independ" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="src\static\java\lang.cpp" FORMNAME="" UNITNAME="lang" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="src\static\java\exception.cpp" FORMNAME="" UNITNAME="exception" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="src\cms\colorspace\ciexyz.cpp" FORMNAME="" UNITNAME="ciexyz" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
   </FILELIST>
   <BUILDTOOLS>
   </BUILDTOOLS>

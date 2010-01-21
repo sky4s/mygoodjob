@@ -11,7 +11,8 @@
 #pragma argsused
 int main(int argc, char *argv[])
 {
-    using cms::colorspace::CIExyY;
+    //using cms::colorspace::CIExyY;
+    //cms::colorspace::DeviceIndependentSpace s;
     using namespace std;
     using java::lang::Math;
     //using namespace cms;
