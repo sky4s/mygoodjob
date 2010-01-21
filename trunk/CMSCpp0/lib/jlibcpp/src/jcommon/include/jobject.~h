@@ -82,6 +82,7 @@ class Object{
 		 * 
 		 */
 		std::string GetClassName();
+                std::string getClassName();
 
 		/**
 		 * \brief

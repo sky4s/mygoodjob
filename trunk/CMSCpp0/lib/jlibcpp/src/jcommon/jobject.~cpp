@@ -25,7 +25,7 @@
 
 #include <time.h>
 
-namespace       jcommon {
+namespace jcommon {
 
     Object::Object() {
 	AddParent("jcommon::Object");
@@ -33,11 +33,11 @@ namespace       jcommon {
 	_namespace = "null";
 	_classname = "null";
     }
-    Object::       ~Object() {
+    Object::~Object() {
     }
 
-    void            Object::AddParent(std::string parent) {
-	bool            b = false;
+    void Object::AddParent(std::string parent) {
+	bool b = false;
 
 	for (std::vector < std::string >::iterator i = _parents.begin();
 	     i != _parents.end(); i++) {
@@ -59,8 +59,12 @@ namespace       jcommon {
 	return _classname;
     }
 
-    void            Object::SetClassName(std::string name) {
-	unsigned long   r = name.rfind("::");
+    std::string Object::getClassName() {
+	return _classname;
+    }
+
+    void Object::SetClassName(std::string name) {
+	unsigned long r = name.rfind("::");
 
 	if (r != std::string::npos) {
 	    _namespace = name.substr(0, r);
@@ -73,7 +77,7 @@ namespace       jcommon {
 	AddParent(name);
     }
 
-    bool            Object::InstanceOf(std::string parent) {
+    bool Object::InstanceOf(std::string parent) {
 	for (std::vector < std::string >::iterator i = _parents.begin();
 	     i != _parents.end(); i++) {
 	    if ((*i) == parent) {
@@ -84,7 +88,7 @@ namespace       jcommon {
 	return false;
     }
 
-    bool            Object::Equals(Object * o) {
+    bool Object::Equals(Object * o) {
 	if ((void *) o == NULL) {
 	    return false;
 	}
@@ -92,15 +96,15 @@ namespace       jcommon {
 	return Hash() == o->Hash();
     }
 
-    void            Object::Copy(Object * o) {
+    void Object::Copy(Object * o) {
 	(*this) = (*o);
     }
 
-    int             Object::Compare(Object * o) {
+    int Object::Compare(Object * o) {
 	return 0;
     }
 
-    Object         *Object::Clone() {
+    Object *Object::Clone() {
 	return this;
     }
 

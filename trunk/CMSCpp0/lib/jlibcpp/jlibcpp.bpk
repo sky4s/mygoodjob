@@ -4,31 +4,29 @@
   <MACROS>
     <VERSION value="BCB.06.00"/>
     <PROJECT value="build\jlibcpp.bpl"/>
-    <OBJFILES value="build\\jlibcpp.obj build\\jbitstream.obj build\\jcalendar.obj 
-      build\\jcharset.obj build\\jcommonlib.obj build\\jcompileexception.obj 
-      build\\jdate.obj build\\jdynamiclink.obj build\\jeventobject.obj 
-      build\\jexception.obj build\\jgc.obj build\\jhtmlparser.obj 
-      build\\jhttp.obj build\\jjson.obj build\\jlistener.obj 
-      build\\jnullpointerexception.obj build\\jobject.obj build\\jobservable.obj 
-      build\\jobserver.obj build\\joptions.obj build\\joutofboundsexception.obj 
-      build\\jpolices.obj build\\jproperties.obj build\\jruntimeexception.obj 
-      build\\jserializable.obj build\\jstringtokenizer.obj 
-      build\\jstringutils.obj build\\jsystem.obj build\\jtypes.obj 
-      build\\junit.obj build\\jurl.obj build\\jxmlparser.obj 
-      build\\jbitinputstream.obj build\\jbitoutputstream.obj 
-      build\\jbufferedreader.obj build\\jchannel.obj build\\jdatainputstream.obj 
-      build\\jdataoutputstream.obj build\\jfile.obj build\\jfileexception.obj 
-      build\\jfileinputstream.obj build\\jfileoutputstream.obj 
-      build\\jinputstream.obj build\\jioexception.obj build\\jiolib.obj 
-      build\\jmemoryinputstream.obj build\\jmemoryoutputstream.obj 
-      build\\jobjectinputstream.obj build\\jobjectoutputstream.obj 
-      build\\joutputstream.obj build\\jpipeexception.obj build\\jpipestream.obj 
-      build\\jprintstream.obj build\\jconsolehandler.obj build\\jfilehandler.obj 
-      build\\jformatter.obj build\\jhandler.obj build\\jlogger.obj 
-      build\\jloggerexception.obj build\\jloggerlib.obj 
-      build\\jloggermanager.obj build\\jlogrecord.obj build\\jmemoryhandler.obj 
-      build\\jsimpleformatter.obj build\\jstreamhandler.obj 
-      build\\jxmlformatter.obj"/>
+    <OBJFILES value="build\jlibcpp.obj build\jbitstream.obj build\jcalendar.obj 
+      build\jcharset.obj build\jcommonlib.obj build\jcompileexception.obj 
+      build\jdate.obj build\jdynamiclink.obj build\jeventobject.obj 
+      build\jexception.obj build\jgc.obj build\jhtmlparser.obj build\jhttp.obj 
+      build\jjson.obj build\jlistener.obj build\jnullpointerexception.obj 
+      build\jobject.obj build\jobservable.obj build\jobserver.obj 
+      build\joptions.obj build\joutofboundsexception.obj build\jpolices.obj 
+      build\jproperties.obj build\jruntimeexception.obj build\jserializable.obj 
+      build\jstringtokenizer.obj build\jstringutils.obj build\jsystem.obj 
+      build\jtypes.obj build\junit.obj build\jxmlparser.obj 
+      build\jbitinputstream.obj build\jbitoutputstream.obj 
+      build\jbufferedreader.obj build\jchannel.obj build\jdatainputstream.obj 
+      build\jdataoutputstream.obj build\jfile.obj build\jfileexception.obj 
+      build\jfileinputstream.obj build\jfileoutputstream.obj 
+      build\jinputstream.obj build\jioexception.obj build\jiolib.obj 
+      build\jmemoryinputstream.obj build\jmemoryoutputstream.obj 
+      build\jobjectinputstream.obj build\jobjectoutputstream.obj 
+      build\joutputstream.obj build\jpipeexception.obj build\jpipestream.obj 
+      build\jprintstream.obj build\jconsolehandler.obj build\jfilehandler.obj 
+      build\jformatter.obj build\jhandler.obj build\jlogger.obj 
+      build\jloggerexception.obj build\jloggerlib.obj build\jloggermanager.obj 
+      build\jlogrecord.obj build\jmemoryhandler.obj build\jsimpleformatter.obj 
+      build\jstreamhandler.obj build\jxmlformatter.obj"/>
     <RESFILES value="jlibcpp.res"/>
     <IDLFILES value=""/>
     <IDLGENFILES value=""/>
@@ -38,7 +36,7 @@
     <LIBRARIES value=""/>
     <SPARELIBS value="rtl.lib"/>
     <PACKAGES value="rtl.bpi"/>
-    <PATHCPP value=".;src\jcommon;src\jcommon;src\jcommon;src\jcommon;src\jcommon;src\jcommon;src\jcommon;src\jcommon;src\jcommon;src\jcommon;src\jcommon;src\jcommon;src\jcommon;src\jcommon;src\jcommon;src\jcommon;src\jcommon;src\jcommon;src\jcommon;src\jcommon;src\jcommon;src\jcommon;src\jcommon;src\jcommon;src\jcommon;src\jcommon;src\jcommon;src\jcommon;src\jcommon;src\jcommon;src\jcommon;src\jio;src\jio;src\jio;src\jio;src\jio;src\jio;src\jio;src\jio;src\jio;src\jio;src\jio;src\jio;src\jio;src\jio;src\jio;src\jio;src\jio;src\jio;src\jio;src\jio;src\jio;src\jlogger;src\jlogger;src\jlogger;src\jlogger;src\jlogger;src\jlogger;src\jlogger;src\jlogger;src\jlogger;src\jlogger;src\jlogger;src\jlogger;src\jlogger"/>
+    <PATHCPP value=".;src\jcommon;src\jcommon;src\jcommon;src\jcommon;src\jcommon;src\jcommon;src\jcommon;src\jcommon;src\jcommon;src\jcommon;src\jcommon;src\jcommon;src\jcommon;src\jcommon;src\jcommon;src\jcommon;src\jcommon;src\jcommon;src\jcommon;src\jcommon;src\jcommon;src\jcommon;src\jcommon;src\jcommon;src\jcommon;src\jcommon;src\jcommon;src\jcommon;src\jcommon;src\jcommon;src\jio;src\jio;src\jio;src\jio;src\jio;src\jio;src\jio;src\jio;src\jio;src\jio;src\jio;src\jio;src\jio;src\jio;src\jio;src\jio;src\jio;src\jio;src\jio;src\jio;src\jio;src\jlogger;src\jlogger;src\jlogger;src\jlogger;src\jlogger;src\jlogger;src\jlogger;src\jlogger;src\jlogger;src\jlogger;src\jlogger;src\jlogger;src\jlogger"/>
     <PATHPAS value=".;"/>
     <PATHRC value=".;"/>
     <PATHASM value=".;"/>
@@ -104,7 +102,6 @@
       <FILE FILENAME="src\jcommon\jsystem.cpp" FORMNAME="" UNITNAME="jsystem" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="src\jcommon\jtypes.cpp" FORMNAME="" UNITNAME="jtypes" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="src\jcommon\junit.cpp" FORMNAME="" UNITNAME="junit" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="src\jcommon\jurl.cpp" FORMNAME="" UNITNAME="jurl" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="src\jcommon\jxmlparser.cpp" FORMNAME="" UNITNAME="jxmlparser" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="src\jio\jbitinputstream.cpp" FORMNAME="" UNITNAME="jbitinputstream" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="src\jio\jbitoutputstream.cpp" FORMNAME="" UNITNAME="jbitoutputstream" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
@@ -172,6 +169,9 @@ ProductName=
 ProductVersion=1.0.0.0
 Comments=
 
+[Excluded Packages]
+d:\program files\borland\cbuilder6\Projects\Bpl\ActiveXBean.bpl=ActiveXBean
+
 [HistoryLists\hlIncludePath]
 Count=2
 Item0=src\jlogger;src\jio;src\jcommon;..\..;$(BCB)\include;$(BCB)\include\vcl;src\jlogger\include;src\jio\include;src\jcommon\include
@@ -191,16 +191,18 @@ Item0=_DEBUG;_BCB
 Item1=_DEBUG
 
 [HistoryLists\hlIntOutputDir]
-Count=1
-Item0=build\
+Count=2
+Item0=build
+Item1=build\
 
 [HistoryLists\hlFinalOutputDir]
 Count=1
 Item0=build\
 
 [HistoryLists\hIBPIOutputDir]
-Count=1
-Item0=build\
+Count=2
+Item0=build
+Item1=build\
 
 [Debugging]
 DebugSourceDirs=$(BCB)\source\vcl
