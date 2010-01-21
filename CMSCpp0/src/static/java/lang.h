@@ -10,7 +10,7 @@ namespace java {
 	using std::string;
 	class Class;
 
-	class Object /*:private jcommon::Object */  {
+	class Object {
 	  public:
 	    boolean equals(Object & obj);
 	    Class & getClass();
@@ -43,6 +43,8 @@ namespace java {
 	    static double pow(double a, double b);
 	    static double atan2(double y, double x);
 	    static const double PI;
+	    static double cos(double x);
+	    static double sin(double x);
 	};
     };
 };

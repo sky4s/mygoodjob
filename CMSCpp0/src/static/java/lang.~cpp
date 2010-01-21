@@ -65,6 +65,12 @@ namespace java {
 	double Math::atan2(double y, double x) {
 	    return std::atan2(y, x);
 	}
+	double Math::cos(double x) {
+	    return std::cos(x);
+	}
+	double Math::sin(double x) {
+	    return std::sin(x);
+	}
     };
 };
 

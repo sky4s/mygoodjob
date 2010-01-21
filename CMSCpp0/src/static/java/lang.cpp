@@ -7,9 +7,11 @@ namespace java {
 	boolean Object::equals(Object & obj) {
 	    //return this->Equals(&obj);
 	    return false;
-	} Class & Object::getClass() {
+	}
+	Class & Object::getClass() {
 	    return *new Class();
-	} int Object::hashCode() {
+	}
+	int Object::hashCode() {
 	    //return this->Hash();
 	    return -1;
 	}
@@ -62,6 +64,12 @@ namespace java {
 	}
 	double Math::atan2(double y, double x) {
 	    return std::atan2(y, x);
+	}
+	double Math::cos(double x) {
+	    return std::cos(x);
+	}
+	double Math::sin(double x) {
+	    return std::sin(x);
 	}
     };
 };
