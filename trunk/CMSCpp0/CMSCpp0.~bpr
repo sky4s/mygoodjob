@@ -31,21 +31,21 @@
     <USERDEFINES value="_DEBUG"/>
     <SYSDEFINES value="NO_STRICT;_RTLDLL;USEPACKAGES"/>
     <MAINSOURCE value="CMSCpp0.bpf"/>
-    <INCLUDEPATH value="src\static\java;src;src\cms\colorspace;src\cms;src\static;src\ca210api;lib;imports;imports\CA200SRVRLib;$(BCB)\Projects;$(BCB)\include;$(BCB)\include\vcl"/>
-    <LIBPATH value="src\static\java;src;src\cms\colorspace;src\static;src\cms;src\ca210api;imports\CA200SRVRLib;imports;lib;$(BCB)\Projects;$(BCB)\Projects\Lib;$(BCB)\lib\obj;$(BCB)\lib"/>
+    <INCLUDEPATH value="src\static\java;src;src\cms\colorspace;src\cms;src\static;src\ca210api;imports;imports\CA200SRVRLib;$(BCB)\Projects;$(BCB)\include;$(BCB)\include\vcl"/>
+    <LIBPATH value="src\static\java;src;src\cms\colorspace;src\static;src\cms;src\ca210api;imports\CA200SRVRLib;imports;$(BCB)\Projects;$(BCB)\Projects\Lib;$(BCB)\lib\obj;$(BCB)\lib"/>
     <WARNINGS value="-w-par"/>
     <OTHERFILES value=""/>
   </MACROS>
   <OPTIONS>
     <IDLCFLAGS value="-Isrc\static\java -Isrc -Isrc\cms\colorspace -Isrc\cms -Isrc\static 
-      -Isrc\ca210api -Ilib -Iimports -Iimports\CA200SRVRLib -I$(BCB)\Projects 
+      -Isrc\ca210api -Iimports -Iimports\CA200SRVRLib -I$(BCB)\Projects 
       -I$(BCB)\include -I$(BCB)\include\vcl -src_suffix cpp -D_DEBUG -boa"/>
     <CFLAG1 value="-Od -H=$(BCB)\lib\vcl60.csm -Hc -Vx -Ve -X- -r- -a8 -b- -k -y -v -vi- -tWC 
       -tWM -c"/>
     <PFLAGS value="-N2build -N0build -$YD -$W -$O- -$A8 -v -JPHNE -M"/>
     <RFLAGS value=""/>
     <AFLAGS value="/mx /w2 /zd"/>
-    <LFLAGS value="-lbuild -Ibuild -D&quot;&quot; -ap -Tpe -x -Gn -v"/>
+    <LFLAGS value="-llib -Ibuild -D&quot;&quot; -ap -Tpe -x -Gn -v"/>
     <OTHERFILES value=""/>
   </OPTIONS>
   <LINKER>
@@ -96,38 +96,46 @@ ProductName=
 ProductVersion=1.0.0.0
 Comments=
 
+[Excluded Packages]
+d:\program files\borland\cbuilder6\Projects\Bpl\ActiveXBean.bpl=ActiveXBean
+
 [HistoryLists\hlIncludePath]
-Count=14
-Item0=src;src\cms\colorspace;src\cms;src\static;src\ca210api;lib;imports;imports\CA200SRVRLib;$(BCB)\Projects;$(BCB)\include;$(BCB)\include\vcl
-Item1=src\cms\colorspace;src\static;src\cms;imports\CA200SRVRLib;src\ca210api;imports;D:\Program Files\Borland\CBuilder6\Projects;src;D:\WorkSpace\CMSCpp0;$(BCB)\include;$(BCB)\include\vcl
-Item2=src\static;src\cms;imports\CA200SRVRLib;src\ca210api;imports;D:\Program Files\Borland\CBuilder6\Projects;src;D:\WorkSpace\CMSCpp0;$(BCB)\include;$(BCB)\include\vcl
-Item3=imports;D:\Program Files\Borland\CBuilder6\Projects;src;D:\WorkSpace\CMSCpp0;$(BCB)\include;$(BCB)\include\vcl
-Item4=src\cms\colorspace;src\static;src\cms;imports\CA200SRVRLib;imports;src\ca210api;D:\Program Files\Borland\CBuilder6\Projects;src;D:\WorkSpace\CMSCpp0;$(BCB)\include;$(BCB)\include\vcl
-Item5=imports\CA200SRVRLib;imports;src\ca210api;D:\Program Files\Borland\CBuilder6\Projects;src;D:\WorkSpace\CMSCpp0;$(BCB)\include;$(BCB)\include\vcl
-Item6=imports;src\ca210api;D:\Program Files\Borland\CBuilder6\Projects;src;D:\WorkSpace\CMSCpp0;$(BCB)\include;$(BCB)\include\vcl
-Item7=imports;src\ca210api;D:\Program Files\Borland\CBuilder6\Projects;imports\;src;D:\WorkSpace\CMSCpp0;$(BCB)\include;$(BCB)\include\vcl
-Item8=imports;src\ca210api;D:\Program Files\Borland\CBuilder6\Projects;imports\CA200SRVRLib;src;D:\WorkSpace\CMSCpp0;$(BCB)\include;$(BCB)\include\vcl
-Item9=src\ca210api;D:\Program Files\Borland\CBuilder6\Projects;imports\CA200SRVRLib;src;D:\WorkSpace\CMSCpp0;$(BCB)\include;$(BCB)\include\vcl
-Item10=src\ca210api;D:\Program Files\Borland\CBuilder6\Projects;imports;src;D:\WorkSpace\CMSCpp0;$(BCB)\include;$(BCB)\include\vcl
-Item11=src\ca210api;D:\Program Files\Borland\CBuilder6\Projects;imports;src;D:\WorkSpace\CMSCpp0\src;D:\WorkSpace\CMSCpp0;$(BCB)\include;$(BCB)\include\vcl
-Item12=src\ca210api;D:\Program Files\Borland\CBuilder6\Projects;imports;..\CA-210 Operator2\Imports;src;D:\WorkSpace\CMSCpp0\src;D:\WorkSpace\CMSCpp0;$(BCB)\include;$(BCB)\include\vcl
-Item13=D:\WorkSpace\CMSCpp0\src;D:\WorkSpace\CMSCpp0;$(BCB)\include;$(BCB)\include\vcl
+Count=17
+Item0=src\static\java;src;src\cms\colorspace;src\cms;src\static;src\ca210api;imports;imports\CA200SRVRLib;$(BCB)\Projects;$(BCB)\include;$(BCB)\include\vcl
+Item1=src\static\java;src;src\cms\colorspace;src\cms;src\static;src\ca210api;imports;imports\CA200SRVRLib;$(BCB)\Projects;$(BCB)\include;$(BCB)\include\vcl;lib\jlibcpp\src\jcommon\include
+Item2=src\static\java;src;src\cms\colorspace;src\cms;src\static;src\ca210api;lib;imports;imports\CA200SRVRLib;$(BCB)\Projects;$(BCB)\include;$(BCB)\include\vcl
+Item3=src;src\cms\colorspace;src\cms;src\static;src\ca210api;lib;imports;imports\CA200SRVRLib;$(BCB)\Projects;$(BCB)\include;$(BCB)\include\vcl
+Item4=src\cms\colorspace;src\static;src\cms;imports\CA200SRVRLib;src\ca210api;imports;D:\Program Files\Borland\CBuilder6\Projects;src;D:\WorkSpace\CMSCpp0;$(BCB)\include;$(BCB)\include\vcl
+Item5=src\static;src\cms;imports\CA200SRVRLib;src\ca210api;imports;D:\Program Files\Borland\CBuilder6\Projects;src;D:\WorkSpace\CMSCpp0;$(BCB)\include;$(BCB)\include\vcl
+Item6=imports;D:\Program Files\Borland\CBuilder6\Projects;src;D:\WorkSpace\CMSCpp0;$(BCB)\include;$(BCB)\include\vcl
+Item7=src\cms\colorspace;src\static;src\cms;imports\CA200SRVRLib;imports;src\ca210api;D:\Program Files\Borland\CBuilder6\Projects;src;D:\WorkSpace\CMSCpp0;$(BCB)\include;$(BCB)\include\vcl
+Item8=imports\CA200SRVRLib;imports;src\ca210api;D:\Program Files\Borland\CBuilder6\Projects;src;D:\WorkSpace\CMSCpp0;$(BCB)\include;$(BCB)\include\vcl
+Item9=imports;src\ca210api;D:\Program Files\Borland\CBuilder6\Projects;src;D:\WorkSpace\CMSCpp0;$(BCB)\include;$(BCB)\include\vcl
+Item10=imports;src\ca210api;D:\Program Files\Borland\CBuilder6\Projects;imports\;src;D:\WorkSpace\CMSCpp0;$(BCB)\include;$(BCB)\include\vcl
+Item11=imports;src\ca210api;D:\Program Files\Borland\CBuilder6\Projects;imports\CA200SRVRLib;src;D:\WorkSpace\CMSCpp0;$(BCB)\include;$(BCB)\include\vcl
+Item12=src\ca210api;D:\Program Files\Borland\CBuilder6\Projects;imports\CA200SRVRLib;src;D:\WorkSpace\CMSCpp0;$(BCB)\include;$(BCB)\include\vcl
+Item13=src\ca210api;D:\Program Files\Borland\CBuilder6\Projects;imports;src;D:\WorkSpace\CMSCpp0;$(BCB)\include;$(BCB)\include\vcl
+Item14=src\ca210api;D:\Program Files\Borland\CBuilder6\Projects;imports;src;D:\WorkSpace\CMSCpp0\src;D:\WorkSpace\CMSCpp0;$(BCB)\include;$(BCB)\include\vcl
+Item15=src\ca210api;D:\Program Files\Borland\CBuilder6\Projects;imports;..\CA-210 Operator2\Imports;src;D:\WorkSpace\CMSCpp0\src;D:\WorkSpace\CMSCpp0;$(BCB)\include;$(BCB)\include\vcl
+Item16=D:\WorkSpace\CMSCpp0\src;D:\WorkSpace\CMSCpp0;$(BCB)\include;$(BCB)\include\vcl
 
 [HistoryLists\hlLibraryPath]
-Count=13
-Item0=src;src\cms\colorspace;src\static;src\cms;src\ca210api;imports\CA200SRVRLib;imports;lib;$(BCB)\Projects;$(BCB)\Projects\Lib;$(BCB)\lib\obj;$(BCB)\lib
-Item1=src\cms\colorspace;src\static;src\cms;imports\CA200SRVRLib;src\ca210api;imports;D:\Program Files\Borland\CBuilder6\Projects;src;$(BCB)\Projects\Lib;D:\WorkSpace\CMSCpp0;$(BCB)\lib\obj;$(BCB)\lib
-Item2=imports;D:\Program Files\Borland\CBuilder6\Projects;src;$(BCB)\Projects\Lib;D:\WorkSpace\CMSCpp0;$(BCB)\lib\obj;$(BCB)\lib
-Item3=src\cms\colorspace;src\static;src\cms;imports\CA200SRVRLib;imports;src\ca210api;D:\Program Files\Borland\CBuilder6\Projects;src;$(BCB)\Projects\Lib;D:\WorkSpace\CMSCpp0;$(BCB)\lib\obj;$(BCB)\lib
-Item4=imports\CA200SRVRLib;imports;src\ca210api;D:\Program Files\Borland\CBuilder6\Projects;src;$(BCB)\Projects\Lib;D:\WorkSpace\CMSCpp0;$(BCB)\lib\obj;$(BCB)\lib
-Item5=imports;src\ca210api;D:\Program Files\Borland\CBuilder6\Projects;src;$(BCB)\Projects\Lib;D:\WorkSpace\CMSCpp0;$(BCB)\lib\obj;$(BCB)\lib
-Item6=imports;src\ca210api;D:\Program Files\Borland\CBuilder6\Projects;imports\;src;$(BCB)\Projects\Lib;D:\WorkSpace\CMSCpp0;$(BCB)\lib\obj;$(BCB)\lib
-Item7=imports;src\ca210api;D:\Program Files\Borland\CBuilder6\Projects;imports\CA200SRVRLib;src;$(BCB)\Projects\Lib;D:\WorkSpace\CMSCpp0;$(BCB)\lib\obj;$(BCB)\lib
-Item8=src\ca210api;D:\Program Files\Borland\CBuilder6\Projects;imports\CA200SRVRLib;src;$(BCB)\Projects\Lib;D:\WorkSpace\CMSCpp0;$(BCB)\lib\obj;$(BCB)\lib
-Item9=src\ca210api;D:\Program Files\Borland\CBuilder6\Projects;imports;src;$(BCB)\Projects\Lib;D:\WorkSpace\CMSCpp0;$(BCB)\lib\obj;$(BCB)\lib
-Item10=src\ca210api;D:\Program Files\Borland\CBuilder6\Projects;imports;src;$(BCB)\Projects\Lib;D:\WorkSpace\CMSCpp0\src;D:\WorkSpace\CMSCpp0;$(BCB)\lib\obj;$(BCB)\lib
-Item11=src\ca210api;D:\Program Files\Borland\CBuilder6\Projects;imports;..\CA-210 Operator2\Imports;src;$(BCB)\Projects\Lib;D:\WorkSpace\CMSCpp0\src;D:\WorkSpace\CMSCpp0;$(BCB)\lib\obj;$(BCB)\lib
-Item12=$(BCB)\Projects\Lib;D:\WorkSpace\CMSCpp0\src;D:\WorkSpace\CMSCpp0;$(BCB)\lib\obj;$(BCB)\lib
+Count=15
+Item0=src\static\java;src;src\cms\colorspace;src\static;src\cms;src\ca210api;imports\CA200SRVRLib;imports;$(BCB)\Projects;$(BCB)\Projects\Lib;$(BCB)\lib\obj;$(BCB)\lib
+Item1=src\static\java;src;src\cms\colorspace;src\static;src\cms;src\ca210api;imports\CA200SRVRLib;imports;lib;$(BCB)\Projects;$(BCB)\Projects\Lib;$(BCB)\lib\obj;$(BCB)\lib
+Item2=src;src\cms\colorspace;src\static;src\cms;src\ca210api;imports\CA200SRVRLib;imports;lib;$(BCB)\Projects;$(BCB)\Projects\Lib;$(BCB)\lib\obj;$(BCB)\lib
+Item3=src\cms\colorspace;src\static;src\cms;imports\CA200SRVRLib;src\ca210api;imports;D:\Program Files\Borland\CBuilder6\Projects;src;$(BCB)\Projects\Lib;D:\WorkSpace\CMSCpp0;$(BCB)\lib\obj;$(BCB)\lib
+Item4=imports;D:\Program Files\Borland\CBuilder6\Projects;src;$(BCB)\Projects\Lib;D:\WorkSpace\CMSCpp0;$(BCB)\lib\obj;$(BCB)\lib
+Item5=src\cms\colorspace;src\static;src\cms;imports\CA200SRVRLib;imports;src\ca210api;D:\Program Files\Borland\CBuilder6\Projects;src;$(BCB)\Projects\Lib;D:\WorkSpace\CMSCpp0;$(BCB)\lib\obj;$(BCB)\lib
+Item6=imports\CA200SRVRLib;imports;src\ca210api;D:\Program Files\Borland\CBuilder6\Projects;src;$(BCB)\Projects\Lib;D:\WorkSpace\CMSCpp0;$(BCB)\lib\obj;$(BCB)\lib
+Item7=imports;src\ca210api;D:\Program Files\Borland\CBuilder6\Projects;src;$(BCB)\Projects\Lib;D:\WorkSpace\CMSCpp0;$(BCB)\lib\obj;$(BCB)\lib
+Item8=imports;src\ca210api;D:\Program Files\Borland\CBuilder6\Projects;imports\;src;$(BCB)\Projects\Lib;D:\WorkSpace\CMSCpp0;$(BCB)\lib\obj;$(BCB)\lib
+Item9=imports;src\ca210api;D:\Program Files\Borland\CBuilder6\Projects;imports\CA200SRVRLib;src;$(BCB)\Projects\Lib;D:\WorkSpace\CMSCpp0;$(BCB)\lib\obj;$(BCB)\lib
+Item10=src\ca210api;D:\Program Files\Borland\CBuilder6\Projects;imports\CA200SRVRLib;src;$(BCB)\Projects\Lib;D:\WorkSpace\CMSCpp0;$(BCB)\lib\obj;$(BCB)\lib
+Item11=src\ca210api;D:\Program Files\Borland\CBuilder6\Projects;imports;src;$(BCB)\Projects\Lib;D:\WorkSpace\CMSCpp0;$(BCB)\lib\obj;$(BCB)\lib
+Item12=src\ca210api;D:\Program Files\Borland\CBuilder6\Projects;imports;src;$(BCB)\Projects\Lib;D:\WorkSpace\CMSCpp0\src;D:\WorkSpace\CMSCpp0;$(BCB)\lib\obj;$(BCB)\lib
+Item13=src\ca210api;D:\Program Files\Borland\CBuilder6\Projects;imports;..\CA-210 Operator2\Imports;src;$(BCB)\Projects\Lib;D:\WorkSpace\CMSCpp0\src;D:\WorkSpace\CMSCpp0;$(BCB)\lib\obj;$(BCB)\lib
+Item14=$(BCB)\Projects\Lib;D:\WorkSpace\CMSCpp0\src;D:\WorkSpace\CMSCpp0;$(BCB)\lib\obj;$(BCB)\lib
 
 [HistoryLists\hlDebugSourcePath]
 Count=1
@@ -151,11 +159,12 @@ Item1=D:\WorkSpace\CMSCpp0\build\
 Item2=D:\WorkSpace\CMSCpp0\build
 
 [HistoryLists\hIBPIOutputDir]
-Count=4
-Item0=build
-Item1=build\
-Item2=D:\WorkSpace\CMSCpp0\build
-Item3=D:\WorkSpace\CMSCpp0\build\
+Count=5
+Item0=lib
+Item1=build
+Item2=build\
+Item3=D:\WorkSpace\CMSCpp0\build
+Item4=D:\WorkSpace\CMSCpp0\build\
 
 [Debugging]
 DebugSourceDirs=$(BCB)\source\vcl

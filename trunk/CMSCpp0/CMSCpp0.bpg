@@ -9,20 +9,12 @@ MAKE = $(ROOT)\bin\make.exe -$(MAKEFLAGS) -f$**
 DCC = $(ROOT)\bin\dcc32.exe $**
 BRCC = $(ROOT)\bin\brcc32.exe $**
 #------------------------------------------------------------------------------
-PROJECTS = CMSCpp0.exe jlibcpp.lib jlibcpp.bpl
+PROJECTS = CMSCpp0.exe
 #------------------------------------------------------------------------------
 default: $(PROJECTS)
 #------------------------------------------------------------------------------
 
 CMSCpp0.exe: CMSCpp0.bpr
-  $(ROOT)\bin\bpr2mak $**
-  $(ROOT)\bin\make -$(MAKEFLAGS) -f$*.mak
-
-jlibcpp.lib: lib\jlibcpp\jlibcpp.bpr
-  $(ROOT)\bin\bpr2mak -t$(ROOT)\bin\deflib.bmk $**
-  $(ROOT)\bin\make -$(MAKEFLAGS) -f$*.mak
-
-jlibcpp.bpl: lib\jlibcpp\jlibcpp.bpk
   $(ROOT)\bin\bpr2mak $**
   $(ROOT)\bin\make -$(MAKEFLAGS) -f$*.mak
 

@@ -1,19 +1,21 @@
 #include "lang.h"
 #include <cmath>
+//#include <jobject.h>
 
 namespace java {
     namespace lang {
-	bool Object::equals(Object & obj) {
+	boolean Object::equals(Object & obj) {
+	    //return this->Equals(&obj);
 	    return false;
 	} Class & Object::getClass() {
-	    //Class *c = new Class();
 	    return *new Class();
-	}
-	int Object::hashCode() {
+	} int Object::hashCode() {
+	    //return this->Hash();
 	    return -1;
 	}
 
 	void Object::notify() {
+
 	}
 	void Object::notifyAll() {
 	}
@@ -28,7 +30,7 @@ namespace java {
 	}
 	void Object::wait(long timeout) {
 	}
-	boolean Object::isNull() {
+	bool Object::isNull() {
 	    return null;
 	}
 
@@ -38,10 +40,14 @@ namespace java {
 	}
 
 	void Object::finalize() {
+	    //this->~Object();
 	}
 
-      Object::Object(boolean null = false):null(null) {
+      Object::Object(bool null = false):null(null) {
 
+	}
+
+      Object::Object():null(false) {
 	}
 
 	string & Class::getSimpleName() {

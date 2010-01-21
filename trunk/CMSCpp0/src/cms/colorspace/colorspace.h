@@ -1,14 +1,17 @@
 #ifndef COLORSPACEH
 #define COLORSPACEH
-#include "../../static/java.h"
+#include "../../static/java/lang.h"
 #include "../../static/util.h"
-//#include <boost/array.hpp>
+#include <boost/scoped_array.hpp>
+#include <boost/shared_array.hpp>
+
 
 namespace cms {
     namespace colorspace {
 	using namespace util;
-	using namespace java;
+	using namespace java::lang;
 	using std::string;
+        using namespace boost;
 
 	class ColorSpace:public Object, NameIF {
 	  private:
@@ -20,9 +23,9 @@ namespace cms {
 	     ColorSpace();
 	  public:
 
-	    static double *cartesian2polarCoordinatesValues(double
+	    static shared_array<double> cartesian2polarCoordinatesValues(double
 							    *cartesianValues);
-	    static double *cartesian2polarCoordinatesValues(double x,
+	    static shared_array<double> cartesian2polarCoordinatesValues(double x,
 							    double y);
 
 	    boolean equalsValues(ColorSpace & colorSpace);
