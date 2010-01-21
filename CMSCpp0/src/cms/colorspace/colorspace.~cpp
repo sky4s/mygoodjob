@@ -1,5 +1,5 @@
 #include "colorspace.h"
-#include "java/Math.h"
+#include "java/lang.h"
 
 namespace cms {
     namespace colorspace {

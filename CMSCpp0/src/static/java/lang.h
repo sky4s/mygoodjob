@@ -1,16 +1,18 @@
 #ifndef LANGH
 #define LANGH
+
 #include <string>
 #include <vcl.h>
+//#include "jobject.h"
 
 namespace java {
     namespace lang {
 	using std::string;
 	class Class;
 
-	class Object:public TObject {
+	class Object /*:private jcommon::Object */  {
 	  public:
-	    bool equals(Object & obj);
+	    boolean equals(Object & obj);
 	    Class & getClass();
 	    int hashCode();
 	    void notify();
@@ -19,14 +21,15 @@ namespace java {
 	    void wait();
 	    void wait(long timeout, int nanos);
 	    void wait(long timeout);
-	    boolean isNull();
+	    bool isNull();
+	     Object(bool null);
+	     Object();
 	  protected:
 	     Object & clone();
 	    void finalize();
-	     Object(boolean null);
-	     Object();
+
 	  private:
-	     boolean null;
+	     bool null;
 	};
 
 	class Class {
@@ -39,7 +42,7 @@ namespace java {
 	    static double sqrt(double a);
 	    static double pow(double a, double b);
 	    static double atan2(double y, double x);
-	    static double PI;
+	    static const double PI;
 	};
     };
 };
