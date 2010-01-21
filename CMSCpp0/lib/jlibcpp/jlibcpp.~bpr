@@ -26,7 +26,7 @@
       build\jformatter.obj build\jhandler.obj build\jlogger.obj 
       build\jloggerexception.obj build\jloggerlib.obj build\jloggermanager.obj 
       build\jlogrecord.obj build\jmemoryhandler.obj build\jsimpleformatter.obj 
-      build\jsockethandler.obj build\jstreamhandler.obj build\jxmlformatter.obj"/>
+      build\jstreamhandler.obj build\jxmlformatter.obj"/>
     <RESFILES value=""/>
     <IDLFILES value=""/>
     <IDLGENFILES value=""/>
@@ -35,7 +35,7 @@
     <LIBFILES value=""/>
     <LIBRARIES value=""/>
     <PACKAGES value=""/>
-    <PATHCPP value=".;src\jcommon;src\jcommon;src\jcommon;src\jcommon;src\jcommon;src\jcommon;src\jcommon;src\jcommon;src\jcommon;src\jcommon;src\jcommon;src\jcommon;src\jcommon;src\jcommon;src\jcommon;src\jcommon;src\jcommon;src\jcommon;src\jcommon;src\jcommon;src\jcommon;src\jcommon;src\jcommon;src\jcommon;src\jcommon;src\jcommon;src\jcommon;src\jcommon;src\jcommon;src\jcommon;src\jio;src\jio;src\jio;src\jio;src\jio;src\jio;src\jio;src\jio;src\jio;src\jio;src\jio;src\jio;src\jio;src\jio;src\jio;src\jio;src\jio;src\jio;src\jio;src\jio;src\jio;src\jlogger;src\jlogger;src\jlogger;src\jlogger;src\jlogger;src\jlogger;src\jlogger;src\jlogger;src\jlogger;src\jlogger;src\jlogger;src\jlogger;src\jlogger;src\jlogger"/>
+    <PATHCPP value=".;src\jcommon;src\jcommon;src\jcommon;src\jcommon;src\jcommon;src\jcommon;src\jcommon;src\jcommon;src\jcommon;src\jcommon;src\jcommon;src\jcommon;src\jcommon;src\jcommon;src\jcommon;src\jcommon;src\jcommon;src\jcommon;src\jcommon;src\jcommon;src\jcommon;src\jcommon;src\jcommon;src\jcommon;src\jcommon;src\jcommon;src\jcommon;src\jcommon;src\jcommon;src\jcommon;src\jio;src\jio;src\jio;src\jio;src\jio;src\jio;src\jio;src\jio;src\jio;src\jio;src\jio;src\jio;src\jio;src\jio;src\jio;src\jio;src\jio;src\jio;src\jio;src\jio;src\jio;src\jlogger;src\jlogger;src\jlogger;src\jlogger;src\jlogger;src\jlogger;src\jlogger;src\jlogger;src\jlogger;src\jlogger;src\jlogger;src\jlogger;src\jlogger"/>
     <PATHPAS value=".;"/>
     <PATHRC value=".;"/>
     <PATHASM value=".;"/>
@@ -180,7 +180,6 @@
       <FILE FILENAME="src\jlogger\jlogrecord.cpp" FORMNAME="" UNITNAME="jlogrecord.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="src\jlogger\jmemoryhandler.cpp" FORMNAME="" UNITNAME="jmemoryhandler.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="src\jlogger\jsimpleformatter.cpp" FORMNAME="" UNITNAME="jsimpleformatter.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="src\jlogger\jsockethandler.cpp" FORMNAME="" UNITNAME="jsockethandler.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="src\jlogger\jstreamhandler.cpp" FORMNAME="" UNITNAME="jstreamhandler.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="src\jlogger\jxmlformatter.cpp" FORMNAME="" UNITNAME="jxmlformatter.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="src\jlogger\include\jconsolehandler.h" FORMNAME="" UNITNAME="jconsolehandler.h" CONTAINERID="" DESIGNCLASS="" LOCALCOMMAND=""/>
@@ -194,16 +193,16 @@
       <FILE FILENAME="src\jlogger\include\jlogrecord.h" FORMNAME="" UNITNAME="jlogrecord.h" CONTAINERID="" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="src\jlogger\include\jmemoryhandler.h" FORMNAME="" UNITNAME="jmemoryhandler.h" CONTAINERID="" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="src\jlogger\include\jsimpleformatter.h" FORMNAME="" UNITNAME="jsimpleformatter.h" CONTAINERID="" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="src\jlogger\include\jsockethandler.h" FORMNAME="" UNITNAME="jsockethandler.h" CONTAINERID="" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="src\jlogger\include\jstreamhandler.h" FORMNAME="" UNITNAME="jstreamhandler.h" CONTAINERID="" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="src\jlogger\include\jxmlformatter.h" FORMNAME="" UNITNAME="jxmlformatter.h" CONTAINERID="" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="jlibcpp.bpk" FORMNAME="" UNITNAME="jlibcpp.bpk" CONTAINERID="" DESIGNCLASS="" LOCALCOMMAND=""/>
   </FILELIST>
   <BUILDTOOLS>
   </BUILDTOOLS>
 
   <IDEOPTIONS>
 [Version Info]
-IncludeVerInfo=0
+IncludeVerInfo=1
 AutoIncBuild=0
 MajorVer=1
 MinorVer=0
@@ -230,12 +229,13 @@ ProductVersion=1.0.0.0
 Comments=
 
 [HistoryLists\hlIncludePath]
-Count=5
-Item0=src\jlogger;$(BCB)\include;$(BCB)\include\vcl;src\jcommon;src\jcommon\include;src\jio;src\jio\include;src\jlogger\;src\jlogger\include
-Item1=src\jlogger;$(BCB)\include;$(BCB)\include\vcl;src\jcommon;src\jcommon\include;src\jio;src\jio\include
-Item2=$(BCB)\include;$(BCB)\include\vcl;src\jcommon;src\jcommon\include;src\jio;src\jio\include
-Item3=$(BCB)\include;$(BCB)\include\vcl;src\jcommon;src\jcommon\include
-Item4=$(BCB)\include;$(BCB)\include\vcl
+Count=6
+Item0=src\jlogger;$(BCB)\include;$(BCB)\include\vcl;src\jcommon;src\jcommon\include;src\jio;src\jio\include;src\jlogger\include
+Item1=src\jlogger;$(BCB)\include;$(BCB)\include\vcl;src\jcommon;src\jcommon\include;src\jio;src\jio\include;src\jlogger\;src\jlogger\include
+Item2=src\jlogger;$(BCB)\include;$(BCB)\include\vcl;src\jcommon;src\jcommon\include;src\jio;src\jio\include
+Item3=$(BCB)\include;$(BCB)\include\vcl;src\jcommon;src\jcommon\include;src\jio;src\jio\include
+Item4=$(BCB)\include;$(BCB)\include\vcl;src\jcommon;src\jcommon\include
+Item5=$(BCB)\include;$(BCB)\include\vcl
 
 [HistoryLists\hlLibraryPath]
 Count=3

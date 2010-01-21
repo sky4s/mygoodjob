@@ -195,13 +195,14 @@
       <FILE FILENAME="src\jlogger\include\jsimpleformatter.h" FORMNAME="" UNITNAME="jsimpleformatter.h" CONTAINERID="" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="src\jlogger\include\jstreamhandler.h" FORMNAME="" UNITNAME="jstreamhandler.h" CONTAINERID="" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="src\jlogger\include\jxmlformatter.h" FORMNAME="" UNITNAME="jxmlformatter.h" CONTAINERID="" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="jlibcpp.bpk" FORMNAME="" UNITNAME="jlibcpp.bpk" CONTAINERID="" DESIGNCLASS="" LOCALCOMMAND=""/>
   </FILELIST>
   <BUILDTOOLS>
   </BUILDTOOLS>
 
   <IDEOPTIONS>
 [Version Info]
-IncludeVerInfo=0
+IncludeVerInfo=1
 AutoIncBuild=0
 MajorVer=1
 MinorVer=0
@@ -228,12 +229,13 @@ ProductVersion=1.0.0.0
 Comments=
 
 [HistoryLists\hlIncludePath]
-Count=5
-Item0=src\jlogger;$(BCB)\include;$(BCB)\include\vcl;src\jcommon;src\jcommon\include;src\jio;src\jio\include;src\jlogger\;src\jlogger\include
-Item1=src\jlogger;$(BCB)\include;$(BCB)\include\vcl;src\jcommon;src\jcommon\include;src\jio;src\jio\include
-Item2=$(BCB)\include;$(BCB)\include\vcl;src\jcommon;src\jcommon\include;src\jio;src\jio\include
-Item3=$(BCB)\include;$(BCB)\include\vcl;src\jcommon;src\jcommon\include
-Item4=$(BCB)\include;$(BCB)\include\vcl
+Count=6
+Item0=src\jlogger;$(BCB)\include;$(BCB)\include\vcl;src\jcommon;src\jcommon\include;src\jio;src\jio\include;src\jlogger\include
+Item1=src\jlogger;$(BCB)\include;$(BCB)\include\vcl;src\jcommon;src\jcommon\include;src\jio;src\jio\include;src\jlogger\;src\jlogger\include
+Item2=src\jlogger;$(BCB)\include;$(BCB)\include\vcl;src\jcommon;src\jcommon\include;src\jio;src\jio\include
+Item3=$(BCB)\include;$(BCB)\include\vcl;src\jcommon;src\jcommon\include;src\jio;src\jio\include
+Item4=$(BCB)\include;$(BCB)\include\vcl;src\jcommon;src\jcommon\include
+Item5=$(BCB)\include;$(BCB)\include\vcl
 
 [HistoryLists\hlLibraryPath]
 Count=3
