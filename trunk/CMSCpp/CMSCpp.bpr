@@ -20,7 +20,7 @@
       dsnapcrba.bpi dsnapcon.bpi bcbsmp.bpi vclie.bpi xmlrtl.bpi inet.bpi 
       inetdbbde.bpi inetdbxpress.bpi inetdb.bpi nmfast.bpi webdsnap.bpi 
       bcbie.bpi websnap.bpi soaprtl.bpi dclocx.bpi dbexpress.bpi dbxcds.bpi 
-      indy.bpi bcb2kaxserver.bpi bcbindent.bpi ActiveXBean.bpi"/>
+      indy.bpi bcb2kaxserver.bpi bcbindent.bpi"/>
     <PATHCPP value=".;src;src\static\java;src\static\java;src\static;src\ca210api;src\cms;src\cms\colorspace;src\cms\colorspace"/>
     <PATHPAS value=".;"/>
     <PATHRC value=".;"/>
@@ -97,25 +97,27 @@ ProductVersion=1.0.0.0
 Comments=
 
 [HistoryLists\hlIncludePath]
-Count=8
-Item0=src\static;src;$(BCB)\include;$(BCB)\include\vcl;imports;lib
-Item1=src\cms\colorspace;src\cms;src\ca210api;src\static;src\static\java;src;$(BCB)\include;$(BCB)\include\vcl;imports;lib
-Item2=src\cms;src\ca210api;src\static;src\static\java;src;$(BCB)\include;$(BCB)\include\vcl;imports;lib
-Item3=src;$(BCB)\include;$(BCB)\include\vcl;imports;lib
-Item4=src\cms;src\ca210api;src\static;src\static\java;src;$(BCB)\include;$(BCB)\include\vcl;imports
-Item5=src\ca210api;src\static;src\static\java;src;$(BCB)\include;$(BCB)\include\vcl;imports
-Item6=src\static;src\static\java;src;D:\WorkSpace\CMSCpp\src;$(BCB)\include;$(BCB)\include\vcl;imports
-Item7=src\static;src\static\java;src;D:\WorkSpace\CMSCpp\src;$(BCB)\include;$(BCB)\include\vcl
+Count=9
+Item0=src\cms\colorspace;src\cms;src\ca210api;src\static\java;src\static;src;$(BCB)\include;$(BCB)\include\vcl;imports;lib
+Item1=src\static;src;$(BCB)\include;$(BCB)\include\vcl;imports;lib
+Item2=src\cms\colorspace;src\cms;src\ca210api;src\static;src\static\java;src;$(BCB)\include;$(BCB)\include\vcl;imports;lib
+Item3=src\cms;src\ca210api;src\static;src\static\java;src;$(BCB)\include;$(BCB)\include\vcl;imports;lib
+Item4=src;$(BCB)\include;$(BCB)\include\vcl;imports;lib
+Item5=src\cms;src\ca210api;src\static;src\static\java;src;$(BCB)\include;$(BCB)\include\vcl;imports
+Item6=src\ca210api;src\static;src\static\java;src;$(BCB)\include;$(BCB)\include\vcl;imports
+Item7=src\static;src\static\java;src;D:\WorkSpace\CMSCpp\src;$(BCB)\include;$(BCB)\include\vcl;imports
+Item8=src\static;src\static\java;src;D:\WorkSpace\CMSCpp\src;$(BCB)\include;$(BCB)\include\vcl
 
 [HistoryLists\hlLibraryPath]
-Count=7
-Item0=src\static;$(BCB)\Projects\Lib;src;$(BCB)\lib\obj;$(BCB)\lib
-Item1=src\cms\colorspace;src\cms;src\ca210api;src\static;src\static\java;$(BCB)\Projects\Lib;src;$(BCB)\lib\obj;$(BCB)\lib
-Item2=src\cms;src\ca210api;src\static;src\static\java;$(BCB)\Projects\Lib;src;$(BCB)\lib\obj;$(BCB)\lib
-Item3=$(BCB)\Projects\Lib;src;$(BCB)\lib\obj;$(BCB)\lib
-Item4=src\cms;src\ca210api;src\static;$(BCB)\Projects\Lib;src\static\java;src;$(BCB)\lib\obj;$(BCB)\lib
-Item5=src\ca210api;src\static;$(BCB)\Projects\Lib;src\static\java;src;$(BCB)\lib\obj;$(BCB)\lib
-Item6=src\static;$(BCB)\Projects\Lib;src\static\java;src;D:\WorkSpace\CMSCpp\src;$(BCB)\lib\obj;$(BCB)\lib
+Count=8
+Item0=src\cms\colorspace;src\cms;src\ca210api;src\static\java;src\static;$(BCB)\Projects\Lib;src;$(BCB)\lib\obj;$(BCB)\lib
+Item1=src\static;$(BCB)\Projects\Lib;src;$(BCB)\lib\obj;$(BCB)\lib
+Item2=src\cms\colorspace;src\cms;src\ca210api;src\static;src\static\java;$(BCB)\Projects\Lib;src;$(BCB)\lib\obj;$(BCB)\lib
+Item3=src\cms;src\ca210api;src\static;src\static\java;$(BCB)\Projects\Lib;src;$(BCB)\lib\obj;$(BCB)\lib
+Item4=$(BCB)\Projects\Lib;src;$(BCB)\lib\obj;$(BCB)\lib
+Item5=src\cms;src\ca210api;src\static;$(BCB)\Projects\Lib;src\static\java;src;$(BCB)\lib\obj;$(BCB)\lib
+Item6=src\ca210api;src\static;$(BCB)\Projects\Lib;src\static\java;src;$(BCB)\lib\obj;$(BCB)\lib
+Item7=src\static;$(BCB)\Projects\Lib;src\static\java;src;D:\WorkSpace\CMSCpp\src;$(BCB)\lib\obj;$(BCB)\lib
 
 [HistoryLists\hlDebugSourcePath]
 Count=1
