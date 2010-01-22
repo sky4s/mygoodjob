@@ -31,15 +31,15 @@
     <USERDEFINES value="_DEBUG"/>
     <SYSDEFINES value="NO_STRICT;_RTLDLL;USEPACKAGES"/>
     <MAINSOURCE value="CMSCpp.bpf"/>
-    <INCLUDEPATH value="src\cms\colorspace;src\cms;src\ca210api;src\static;src\static\java;src;$(BCB)\include;$(BCB)\include\vcl;imports;lib"/>
-    <LIBPATH value="src\cms\colorspace;src\cms;src\ca210api;src\static;src\static\java;$(BCB)\Projects\Lib;src;$(BCB)\lib\obj;$(BCB)\lib"/>
+    <INCLUDEPATH value="src\cms\colorspace;src\cms;src\ca210api;src\static\java;src\static;src;$(BCB)\include;$(BCB)\include\vcl;imports;lib"/>
+    <LIBPATH value="src\cms\colorspace;src\cms;src\ca210api;src\static\java;src\static;$(BCB)\Projects\Lib;src;$(BCB)\lib\obj;$(BCB)\lib"/>
     <WARNINGS value="-w-par"/>
     <OTHERFILES value=""/>
   </MACROS>
   <OPTIONS>
-    <IDLCFLAGS value="-Isrc\cms\colorspace -Isrc\cms -Isrc\ca210api -Isrc\static 
-      -Isrc\static\java -Isrc -I$(BCB)\include -I$(BCB)\include\vcl -Iimports 
-      -Ilib -src_suffix cpp -D_DEBUG -boa"/>
+    <IDLCFLAGS value="-Isrc\cms\colorspace -Isrc\cms -Isrc\ca210api -Isrc\static\java 
+      -Isrc\static -Isrc -I$(BCB)\include -I$(BCB)\include\vcl -Iimports -Ilib 
+      -src_suffix cpp -D_DEBUG -boa"/>
     <CFLAG1 value="-Od -H=lib\cmscpp.csm -Vx -Ve -X- -r- -a8 -b- -k -y -v -vi- -tWC -tWM -c"/>
     <PFLAGS value="-N2build -N0build -$YD -$W -$O- -$A8 -v -JPHNE -M"/>
     <RFLAGS value=""/>
@@ -96,25 +96,28 @@ ProductName=
 ProductVersion=1.0.0.0
 Comments=
 
-[Excluded Packages]
-build\jlibcpp.bpl=jlibcpp
-
 [HistoryLists\hlIncludePath]
-Count=6
-Item0=src\cms;src\ca210api;src\static;src\static\java;src;$(BCB)\include;$(BCB)\include\vcl;imports;lib
-Item1=src;$(BCB)\include;$(BCB)\include\vcl;imports;lib
-Item2=src\cms;src\ca210api;src\static;src\static\java;src;$(BCB)\include;$(BCB)\include\vcl;imports
-Item3=src\ca210api;src\static;src\static\java;src;$(BCB)\include;$(BCB)\include\vcl;imports
-Item4=src\static;src\static\java;src;D:\WorkSpace\CMSCpp\src;$(BCB)\include;$(BCB)\include\vcl;imports
-Item5=src\static;src\static\java;src;D:\WorkSpace\CMSCpp\src;$(BCB)\include;$(BCB)\include\vcl
+Count=9
+Item0=src\static;src;$(BCB)\include;$(BCB)\include\vcl;imports;lib
+Item1=src\cms\colorspace;src\cms;src\ca210api;src\static\java;src\static;src;$(BCB)\include;$(BCB)\include\vcl;imports;lib
+Item2=src\cms\colorspace;src\cms;src\ca210api;src\static;src\static\java;src;$(BCB)\include;$(BCB)\include\vcl;imports;lib
+Item3=src\cms;src\ca210api;src\static;src\static\java;src;$(BCB)\include;$(BCB)\include\vcl;imports;lib
+Item4=src;$(BCB)\include;$(BCB)\include\vcl;imports;lib
+Item5=src\cms;src\ca210api;src\static;src\static\java;src;$(BCB)\include;$(BCB)\include\vcl;imports
+Item6=src\ca210api;src\static;src\static\java;src;$(BCB)\include;$(BCB)\include\vcl;imports
+Item7=src\static;src\static\java;src;D:\WorkSpace\CMSCpp\src;$(BCB)\include;$(BCB)\include\vcl;imports
+Item8=src\static;src\static\java;src;D:\WorkSpace\CMSCpp\src;$(BCB)\include;$(BCB)\include\vcl
 
 [HistoryLists\hlLibraryPath]
-Count=5
-Item0=src\cms;src\ca210api;src\static;src\static\java;$(BCB)\Projects\Lib;src;$(BCB)\lib\obj;$(BCB)\lib
-Item1=$(BCB)\Projects\Lib;src;$(BCB)\lib\obj;$(BCB)\lib
-Item2=src\cms;src\ca210api;src\static;$(BCB)\Projects\Lib;src\static\java;src;$(BCB)\lib\obj;$(BCB)\lib
-Item3=src\ca210api;src\static;$(BCB)\Projects\Lib;src\static\java;src;$(BCB)\lib\obj;$(BCB)\lib
-Item4=src\static;$(BCB)\Projects\Lib;src\static\java;src;D:\WorkSpace\CMSCpp\src;$(BCB)\lib\obj;$(BCB)\lib
+Count=8
+Item0=src\static;$(BCB)\Projects\Lib;src;$(BCB)\lib\obj;$(BCB)\lib
+Item1=src\cms\colorspace;src\cms;src\ca210api;src\static\java;src\static;$(BCB)\Projects\Lib;src;$(BCB)\lib\obj;$(BCB)\lib
+Item2=src\cms\colorspace;src\cms;src\ca210api;src\static;src\static\java;$(BCB)\Projects\Lib;src;$(BCB)\lib\obj;$(BCB)\lib
+Item3=src\cms;src\ca210api;src\static;src\static\java;$(BCB)\Projects\Lib;src;$(BCB)\lib\obj;$(BCB)\lib
+Item4=$(BCB)\Projects\Lib;src;$(BCB)\lib\obj;$(BCB)\lib
+Item5=src\cms;src\ca210api;src\static;$(BCB)\Projects\Lib;src\static\java;src;$(BCB)\lib\obj;$(BCB)\lib
+Item6=src\ca210api;src\static;$(BCB)\Projects\Lib;src\static\java;src;$(BCB)\lib\obj;$(BCB)\lib
+Item7=src\static;$(BCB)\Projects\Lib;src\static\java;src;D:\WorkSpace\CMSCpp\src;$(BCB)\lib\obj;$(BCB)\lib
 
 [HistoryLists\hlDebugSourcePath]
 Count=1
