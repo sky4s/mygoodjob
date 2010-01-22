@@ -159,10 +159,16 @@ namespace cms {
 		   return xyY.getuvValues(); */
 	    };
 
-	    virtual shared_array < double >getValues(shared_array <
-						     double >values,
-						     NormalizeY normalizeY)
-	    {
+	    shared_array < double >getValues(shared_array < double >values) {
+		return ColorSpace::getValues(values);
+	    };
+	    shared_array < double >getValues() {
+		return ColorSpace::getValues();
+	    }
+
+	    shared_array < double >getValues(shared_array <
+					     double >values,
+					     NormalizeY normalizeY) {
 		if (_normalizeY == Not) {
 		    throw
 			IllegalStateException
@@ -174,12 +180,12 @@ namespace cms {
 		}
 		switch (_normalizeY) {
 		case Normal100:
-		    DoubleArray.copy(DoubleArray.times(values, 1. / 100),
-				     values);
+		    /*DoubleArray.copy(DoubleArray.times(values, 1. / 100),
+		       values); */
 		    break;
 		case Normal1:
-		    DoubleArray.copy(DoubleArray.times(values, 100),
-				     values);
+		    /*DoubleArray.copy(DoubleArray.times(values, 100),
+		       values); */
 		    break;
 		}
 		return values;

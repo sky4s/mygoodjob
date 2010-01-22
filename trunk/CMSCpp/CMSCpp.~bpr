@@ -5,7 +5,7 @@
     <VERSION value="BCB.06.00"/>
     <PROJECT value="build\CMSCpp.exe"/>
     <OBJFILES value="build\Unit1.obj build\exception.obj build\lang.obj build\util.obj 
-      build\CA210API.obj build\core.obj build\colorspace.obj"/>
+      build\CA210API.obj build\core.obj build\colorspace.obj build\independ.obj"/>
     <RESFILES value="CMSCpp.res"/>
     <IDLFILES value=""/>
     <IDLGENFILES value=""/>
@@ -21,7 +21,7 @@
       inetdbbde.bpi inetdbxpress.bpi inetdb.bpi nmfast.bpi webdsnap.bpi 
       bcbie.bpi websnap.bpi soaprtl.bpi dclocx.bpi dbexpress.bpi dbxcds.bpi 
       indy.bpi bcb2kaxserver.bpi bcbindent.bpi ActiveXBean.bpi"/>
-    <PATHCPP value=".;src;src\static\java;src\static\java;src\static;src\ca210api;src\cms;src\cms\colorspace"/>
+    <PATHCPP value=".;src;src\static\java;src\static\java;src\static;src\ca210api;src\cms;src\cms\colorspace;src\cms\colorspace"/>
     <PATHPAS value=".;"/>
     <PATHRC value=".;"/>
     <PATHASM value=".;"/>
@@ -63,6 +63,7 @@
       <FILE FILENAME="src\ca210api\CA210API.cpp" FORMNAME="" UNITNAME="CA210API" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="src\cms\core.cpp" FORMNAME="" UNITNAME="core" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="src\cms\colorspace\colorspace.cpp" FORMNAME="" UNITNAME="colorspace" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="src\cms\colorspace\independ.cpp" FORMNAME="" UNITNAME="independ" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
   </FILELIST>
   <BUILDTOOLS>
   </BUILDTOOLS>

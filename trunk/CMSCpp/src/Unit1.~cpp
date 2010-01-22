@@ -2,13 +2,17 @@
 
 #include <vcl.h>
 #pragma hdrstop
+#include <cms/colorspace/independ.h>
 
 //---------------------------------------------------------------------------
 
 #pragma argsused
-int main(int argc, char* argv[])
+int main(int argc, char *argv[])
 {
-        return 0;
+    using cms::colorspace;
+    CIEXYZ xyz;
+    return 0;
 }
+
 //---------------------------------------------------------------------------
- 
+
