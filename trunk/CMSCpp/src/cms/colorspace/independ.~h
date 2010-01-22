@@ -159,6 +159,13 @@ namespace cms {
 		   return xyY.getuvValues(); */
 	    };
 
+	    shared_array < double >getValues(shared_array < double >values) {
+		return ColorSpace::getValues(values);
+	    };
+	    shared_array < double >getValues() {
+		return ColorSpace::getValues();
+	    }
+
 	    shared_array < double >getValues(shared_array <
 					     double >values,
 					     NormalizeY normalizeY) {
