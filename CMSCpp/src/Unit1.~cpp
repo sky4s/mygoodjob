@@ -3,14 +3,27 @@
 #include <vcl.h>
 #pragma hdrstop
 #include <cms/colorspace/independ.h>
+#include <cms/colorspace/colorspace.h>
+#include <java/lang.h>
+#include <iostreamg>
+#include <conio.h>
+#include <boost/shared_ptr.hpp>
+#include <vector>
+
 
 //---------------------------------------------------------------------------
+
+//typedef std::vector < double >vector_double;
 
 #pragma argsused
 int main(int argc, char *argv[])
 {
-    using cms::colorspace;
-    CIEXYZ xyz;
+    using namespace cms::colorspace;
+    using namespace java::lang;
+    using namespace std;
+    //CIEXYZ XYZ;
+
+    getch();
     return 0;
 }
 

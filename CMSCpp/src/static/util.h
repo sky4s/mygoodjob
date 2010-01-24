@@ -1,7 +1,7 @@
 #ifndef UTILH
 #define UTILH
 #include <string>
-
+#include <boost/shared_ptr.hpp>
 
 namespace util {
 
@@ -9,9 +9,10 @@ namespace util {
 
     };
     using std::string;
+    using namespace boost;
     class NameIF {
       public:
-	virtual string& getName() = 0;
+	virtual shared_ptr < string > getName() = 0;
     };
 };
 #endif
