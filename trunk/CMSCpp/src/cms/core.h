@@ -9,6 +9,7 @@
 //#include <colorspace/colorspace.h>
 #include <string>
 #include <boost/shared_array.hpp>
+#include <vector>
 
 namespace cms {
     using namespace util;
@@ -95,6 +96,8 @@ namespace cms {
       public:
 	virtual shared_array < double >getValues() = 0;
 	virtual void setValues(shared_array < double >values) = 0;
+	virtual shared_array < double >getValues(shared_array <
+						 double >values) = 0;
     };
 };
 #endif
