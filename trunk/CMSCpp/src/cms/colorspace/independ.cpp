@@ -13,7 +13,7 @@ namespace cms {
 	double DeviceIndependentSpace::kappa = INTENT_KAPPA;
 
 	const double NormalizeYOperator::NormalFactor = 1;
-	//CIEXYZ::normalizeY = Not;
+
     };
 };
 
