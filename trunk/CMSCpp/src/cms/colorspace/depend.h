@@ -14,12 +14,9 @@ namespace cms {
 
 	enum CSType {
 	    AdobeRGB, CIERGB, sRGB, sRGB_gamma22, sRGB_gamma18,
-	    ProPhotoRGB,
-	    WideGamutRGB, BetaRGB, BruceRGB, ECIRGB, LStarRGB,
-	    AppleRGB, BestRGB,
-	    skyRGB, NTSCRGB, EktaSpacePS5RGB, Unknow, AdobeRGBD50,
-	    AdobeRGB1998,
-	    SMPTE_C
+	    ProPhotoRGB, WideGamutRGB, BetaRGB, BruceRGB, ECIRGB, LStarRGB,
+	    AppleRGB, BestRGB, skyRGB, NTSCRGB, EktaSpacePS5RGB, Unknow,
+	    AdobeRGBD50, AdobeRGB1998, SMPTE_C
 	};
 	class RGBBase;
 	class RGBColorSpace {
