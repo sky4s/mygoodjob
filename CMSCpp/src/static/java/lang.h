@@ -8,7 +8,8 @@
 #include <typeinfo>
 #include <iostream>
 
-//#define  shared_vector_double shared_ptr < vector < double > >
+#define  shared_vector_double shared_ptr < vector < double > >
+#define  shared_vector_string shared_ptr < vector < string > >
 
 /*
  java->C++轉換原則
@@ -24,6 +25,7 @@
 
  *物件完全採用smart_ptr
  參考會有無法有null的狀況, 因此全採用smart_ptr, 作到類似gc的效果.
+ smart_ptr的產生方法為 shared_array < double >p(NULL);
 
  *原生型別陣列採用smart_ptr(shared_array)
  純粹採用vector的話, 雖然可以達到類似java array的特性, 但是作為local vector不能當作ref or ptr被傳出去,

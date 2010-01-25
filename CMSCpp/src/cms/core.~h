@@ -8,7 +8,7 @@
 //#include <colorspace/ciexyz.h>
 //#include <colorspace/colorspace.h>
 #include <string>
-//#include <boost/shared_array.hpp>
+#include <boost/shared_array.hpp>
 #include <vector>
 
 namespace cms {
@@ -20,7 +20,7 @@ namespace cms {
 
     class SpectraIF {
       public:
-	virtual shared_ptr < vector < double > >getData() = 0;
+	virtual shared_array < double >getData() = 0;
 	virtual int getEnd() = 0;
 	virtual int getInterval() = 0;
 	virtual int getStart() = 0;
@@ -94,12 +94,10 @@ namespace cms {
 
     class ValuePropertyIF {
       public:
-	virtual shared_ptr < vector < double > >getValues() = 0;
-	virtual void setValues(shared_ptr < vector < double > >values) = 0;
-	virtual shared_ptr < vector < double > >getValues(shared_ptr <
-							 vector <
-							 double > >values) =
-	    0;
+	virtual shared_array < double >getValues() = 0;
+	virtual void setValues(shared_array < double >values) = 0;
+	virtual shared_array < double >getValues(shared_array <
+						 double >values) = 0;
     };
 };
 #endif
