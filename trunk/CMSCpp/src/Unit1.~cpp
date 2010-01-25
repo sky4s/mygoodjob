@@ -3,7 +3,9 @@
 #include <vcl.h>
 #pragma hdrstop
 #include <cms/colorspace/independ.h>
+#include <cms/colorspace/depend.h>
 #include <cms/colorspace/colorspace.h>
+#include <cms/measure/_MeasureWindow.h>
 #include <java/lang.h>
 #include <iostreamg>
 #include <conio.h>
@@ -13,17 +15,12 @@
 
 //---------------------------------------------------------------------------
 
-//typedef std::vector < double >vector_double;
-
 #pragma argsused
 int main(int argc, char *argv[])
 {
-    using namespace cms::colorspace;
-    using namespace java::lang;
-    using namespace std;
-    //CIEXYZ XYZ;
-
-    getch();
+    MeasureWindow = new TMeasureWindow(NULL);
+    MeasureWindow->Visible = true;
+    //getch();
     return 0;
 }
 

@@ -44,7 +44,8 @@ namespace cms {
 		    polarValues[2] = 0;
 		} else {
 		    polarValues[2] = Math::atan2(t2, t1);
-		} polarValues[2] *= (180.0 / Math::PI);
+		}
+		polarValues[2] *= (180.0 / Math::PI);
 		while (polarValues[2] >= 360.0) {	// Not necessary, but included as a check.
 		    polarValues[2] -= 360.0;
 		}
@@ -78,7 +79,7 @@ namespace cms {
 
 	    boolean equalsValues(ColorSpace & colorSpace) {
 	    }
-	    virtual vector < string > getBandNames() = 0;
+	    virtual shared_vector_string getBandNames() = 0;
 	    shared_ptr < string > getName() {
 		return this->getClass().getSimpleName();
 	    };
@@ -125,8 +126,11 @@ namespace cms {
 		_setValues(values);
 	    };
 	    void setValues(double value1, double value2, double value3) {
-		double values[3] = { value1, value2, value3 };
-		setValues(shared_array < double >(values));
+		shared_array < double >values(new double[3]);
+		values[0] = value1;
+		values[1] = value2;
+		values[2] = value3;
+		setValues(values);
 	    };
 
 	    void setValuesLock(boolean lock) {

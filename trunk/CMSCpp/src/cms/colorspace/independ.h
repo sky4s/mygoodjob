@@ -8,7 +8,6 @@
 namespace cms {
     namespace colorspace {
 
-
 	enum CIEStandard {
 	    //CIE´£¨Ñªº­È
 	    ActualStandard,
@@ -18,8 +17,15 @@ namespace cms {
 	enum Degree {
 	    Two = 2, Ten = 10
 	};
+
+	enum NormalizeY {
+	    Normal100 = 100, Normal1 = 1, Not = -1
+	};
+
 	class CIEXYZ;
 	class DeviceIndependentSpace:public ColorSpace {
+
+
 	  protected:
 	    Degree _degree;
 	    static double epsilon;
@@ -28,22 +34,18 @@ namespace cms {
 	     DeviceIndependentSpace():_degree(Two) {
 
 	    };
-	     DeviceIndependentSpace(shared_array < double >values) {
-		setValues(values);
-	    };
-	     DeviceIndependentSpace(double value1, double value2,
-				    double value3) {
-		double values[] = {
-		    value1, value2, value3
-		};
-		 setValues(shared_array < double >(values));
-	    };
+	    /*DeviceIndependentSpace(shared_array < double >values) {
+	       setValues(values);
+	       };
+	       DeviceIndependentSpace(double value1, double value2,
+	       double value3) {
+	       setValues(value1, value2, value3);
+	       }; */
 
 	    int getNumberBands() {
 		return 3;
-	    }
-	  public:
-	    Degree getDegree() {
+	  } public:
+	     Degree getDegree() {
 		return _degree;
 	    };
 	    void setDegree(Degree degree) {
@@ -67,9 +69,7 @@ namespace cms {
 	};
 
 
-	enum NormalizeY {
-	    Normal100 = 100, Normal1 = 1, Not = -1
-	};
+
 
 	class NormalizeYOperator {
 	  protected:
@@ -97,12 +97,12 @@ namespace cms {
 
 	  public:
 	    double X, Y, Z;
-	     vector < string > getBandNames() {
-		vector < string > names(3);
-		names[0] = "X";
-		names[1] = "Y";
-		names[2] = "Z";
-		return names;
+	    shared_vector_string getBandNames() {
+		shared_vector_string names(new vector < string > (3));
+		 (*names)[0] = "X";
+		 (*names)[1] = "Y";
+		 (*names)[2] = "Z";
+		 return names;
 	    };
 
 	    double getCCT() {
@@ -149,6 +149,23 @@ namespace cms {
 		}
 		return values;
 	    };
+
+	    virtual shared_array < double >_getValues(shared_array <
+						      double >values) {
+		//shared_array < double >values(new double[3]);
+		values[0] = X;
+		values[1] = Y;
+		values[2] = Z;
+		return values;
+	    };
+	    virtual void _setValues(shared_array < double >values) {
+		X = values[0];
+		Y = values[1];
+		Z = values[2];
+	    };
+
+
+	    //using ColorSpace::getValues;
 	    shared_array < double >getValues() {
 		return ColorSpace::getValues();
 	    };
@@ -156,19 +173,6 @@ namespace cms {
 		return ColorSpace::getValues(values);
 	    };
 
-	    shared_array < double >_getValues(shared_array <
-					      double >values) {
-		//shared_array < double >values(new double[3]);
-		values[0] = X;
-		values[1] = Y;
-		values[2] = Z;
-		return values;
-	    };
-	    void _setValues(shared_array < double >values) {
-		X = values[0];
-		Y = values[1];
-		Z = values[2];
-	    };
 
 	    CIEXYZ toXYZ() {
 		return *this;
@@ -321,33 +325,31 @@ namespace cms {
 	    CIEXYZ() {
 	    };
 	    CIEXYZ(shared_array < double >XYZValues,
-		   NormalizeY
-		   normalizeY):DeviceIndependentSpace(XYZValues),
-		_normalizeY(normalizeY) {
+		   NormalizeY normalizeY):_normalizeY(normalizeY) {
+		setValues(XYZValues);
 	    };
-	    CIEXYZ(shared_array <
-		   double >XYZValues):DeviceIndependentSpace(XYZValues) {
+	    CIEXYZ(shared_array < double >XYZValues) {
+		setValues(XYZValues);
 	    };
 	    CIEXYZ(double X, double Y, double Z,
-		   NormalizeY normalizeY):DeviceIndependentSpace(X, Y, Z),
-		_normalizeY(normalizeY) {
+		   NormalizeY normalizeY):_normalizeY(normalizeY) {
+		setValues(X, Y, Z);
 	    };
-	    CIEXYZ(double X, double Y, double Z):DeviceIndependentSpace(X,
-									Y,
-									Z)
-	    {
+	    CIEXYZ(double X, double Y, double Z) {
+		setValues(X, Y, Z);
 	    };
 	};
 
 	class CIExyY:public DeviceIndependentSpace, NormalizeYOperator {
 	  protected:
 	    NormalizeY _normalizeY;
+	    static CIExyY D65xyY;
 	  public:
 	    double x, y, Y;
 	     CIExyY() {
 	    };
 
-	  CIExyY(CIEXYZ XYZ):_normalizeY(XYZ._normalizeY) {
+	  CIExyY(CIEXYZ & XYZ):_normalizeY(XYZ._normalizeY) {
 		shared_array < double >xyValues = XYZ.getxyValues();
 		setValues(xyValues[0], xyValues[1], XYZ.Y);
 	    };
@@ -359,15 +361,14 @@ namespace cms {
 		setValues(xyValues);
 	    };
 	    CIExyY(double x, double y, double Y,
-		   NormalizeY normalizeY):DeviceIndependentSpace(x, y, Y),
-		_normalizeY(normalizeY) {
+		   NormalizeY normalizeY):_normalizeY(normalizeY) {
+		setValues(x, y, Y);
 	    };
-	    CIExyY(double x, double y, double Y):DeviceIndependentSpace(x,
-									y,
-									Y)
-	    {
+	    CIExyY(double x, double y, double Y) {
+		setValues(x, y, Y);
 	    };
-	    CIExyY(double x, double y):DeviceIndependentSpace(x, y, 1) {
+	    CIExyY(double x, double y) {
+		setValues(x, y, y);
 	    };
 
 	    static shared_ptr < CIExyY > fromCCT2Blackbody(int CCT) {
@@ -390,6 +391,17 @@ namespace cms {
 		//return toXYZ(this);
 	    };
 
+	    static shared_ptr < CIEXYZ > toXYZ(const CIExyY & xyY) {
+		shared_ptr < CIEXYZ > XYZ(new CIEXYZ());
+
+		XYZ->X = (xyY.x / xyY.y) * xyY.Y;
+		XYZ->Y = xyY.Y;
+		XYZ->Z = ((1 - xyY.x - xyY.y) / xyY.y) * xyY.Y;
+		XYZ->_normalizeY = xyY._normalizeY;
+		XYZ->_degree = xyY._degree;
+		return XYZ;
+	    };
+
 	    shared_array < double >_getValues(shared_array <
 					      double >values) {
 		values[0] = x;
@@ -402,11 +414,11 @@ namespace cms {
 		y = values[1];
 		Y = values[2];
 	    };
-	    vector < string > getBandNames() {
-		vector < string > names(3);
-		names[0] = "x";
-		names[1] = "y";
-		names[2] = "Y";
+	    shared_vector_string getBandNames() {
+		shared_vector_string names(new vector < string > (3));
+		(*names)[0] = "x";
+		(*names)[1] = "y";
+		(*names)[2] = "Y";
 		return names;
 	    };
 	    void normalize(NormalizeY normalizeY) {
@@ -441,15 +453,101 @@ namespace cms {
 		}
 		return values;
 	    };
+	    //using ColorSpace::getValues;
 	    shared_array < double >getValues() {
 		return ColorSpace::getValues();
 	    };
 	    shared_array < double >getValues(shared_array < double >values) {
 		return ColorSpace::getValues(values);
 	    };
+	    double getCCT() {
+		return toXYZ().getCCT();
+	    };
 
+	    shared_array < double >getDeltauv(CIExyY & xyY) {
+		shared_array < double >uvp1 = getuvValues();
+		shared_array < double >uvp2 = xyY.getuvValues();
+		//double[] duvp = DoubleArray.minus(uvp1, uvp2);
+		//return duvp;
+	    };
+
+	    shared_array < double >getDeltauvPrime(CIExyY & xyY) {
+		shared_array < double >uvp1 = getuvPrimeValues();
+		shared_array < double >uvp2 = xyY.getuvPrimeValues();
+		//double[] duvp = DoubleArray.minus(uvp1, uvp2);
+		//return duvp;
+	    };
+	    shared_array < double >getDeltaxy(CIExyY & xyY) {
+		shared_array < double >deltaxy(new double[2]);
+		deltaxy[0] = x - xyY.x;
+		deltaxy[1] = y - xyY.y;
+		return deltaxy;
+	    };
+
+	    shared_array < double >getuvPrimeValues() {
+		double denominator = (-2 * x + 12 * y + 3);
+		shared_array < double >uvp(new double[2]);
+		uvp[0] = 4 * x / denominator;
+		uvp[1] = 9 * y / denominator;
+		return uvp;
+	    };
+
+	    shared_array < double >getuvPrimeYValues() {
+		shared_array < double >uvp = getuvPrimeValues();
+		shared_array < double >uvpY(new double[3]);
+		uvpY[0] = uvp[0];
+		uvpY[1] = uvp[1];
+		uvpY[2] = Y;
+		return uvpY;
+	    };
+	    shared_array < double >getuvValues() {
+		double denominator = (-2 * x + 12 * y + 3);
+		shared_array < double >uv(new double[2]);
+		uv[0] = 4 * x / denominator;
+		uv[1] = 6 * y / denominator;
+		return uv;
+	    };
+
+	    shared_array < double >getWhitenessIndex() {
+		shared_array < double >dxy = D65xyY.getDeltaxy(*this);
+		double W = Y + 800 * dxy[0] + 1700 * dxy[1];
+		double Tw = 1000 * dxy[0] - 650 * dxy[1];
+
+		shared_array < double >index(new double[2]);
+		index[0] = W;
+		index[1] = Tw;
+		return index;
+	    };
+	    shared_array < double >getxyValues() {
+		shared_array < double >xy(new double[2]);
+		xy[0] = x;
+		xy[1] = y;
+		return xy;
+	    };
+	    boolean isLegal() {
+		return Y >= 0 && (x + y) <= 1;
+	    };
+
+	    void rationalize() {
+		/*x = Double.isNaN(x) ? 0 : x;
+		   y = Double.isNaN(y) ? 0 : y; */
+	    };
+	    void setuvPrimeValues(shared_array < double >uvPrimeValues) {
+		double u = uvPrimeValues[0];
+		double v = uvPrimeValues[1];
+		double denominator = 9 * u / 2 - 12 * v + 9;
+
+		x = (27 * u / 4) / denominator;
+		y = 3 * v / denominator;
+	    };
+	    void setuvPrimeYValues(shared_array < double >uvPrimeYValues) {
+		shared_array < double >uv(new double[2]);
+		uv[0] = uvPrimeYValues[0];
+		uv[1] = uvPrimeYValues[1];
+		setuvPrimeValues(uv);
+		Y = uvPrimeYValues[2];
+	    }
 	};
-
     };
 };
 #endif
