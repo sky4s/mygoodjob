@@ -20,7 +20,7 @@ int main(int argc, char *argv[])
 {
     MeasureWindow = new TMeasureWindow(NULL);
     MeasureWindow->Visible = true;
-    //getch();
+    getch();
     return 0;
 }
 

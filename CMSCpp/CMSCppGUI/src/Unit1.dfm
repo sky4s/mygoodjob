@@ -1,10 +1,9 @@
-object MeasureWindow: TMeasureWindow
-  Left = 252
-  Top = 299
-  BorderStyle = bsNone
-  Caption = 'MeasureWindow'
-  ClientHeight = 607
-  ClientWidth = 862
+object Form1: TForm1
+  Left = 192
+  Top = 137
+  Width = 1305
+  Height = 750
+  Caption = 'Form1'
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -12,8 +11,6 @@ object MeasureWindow: TMeasureWindow
   Font.Name = 'MS Sans Serif'
   Font.Style = []
   OldCreateOrder = False
-  WindowState = wsMaximized
-  OnKeyPress = FormKeyPress
   PixelsPerInch = 120
   TextHeight = 16
 end

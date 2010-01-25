@@ -6,12 +6,12 @@
     <PROJECT value="build\CMSCpp.exe"/>
     <OBJFILES value="build\Unit1.obj build\exception.obj build\lang.obj build\util.obj 
       build\CA210API.obj build\core.obj build\colorspace.obj build\independ.obj 
-      build\depend.obj build\_MeasureWindow.obj"/>
+      build\depend.obj build\TMeasureWindow.obj"/>
     <RESFILES value="CMSCpp.res"/>
     <IDLFILES value=""/>
     <IDLGENFILES value=""/>
     <DEFFILE value=""/>
-    <RESDEPEN value="$(RESFILES) src\cms\measure\_MeasureWindow.dfm"/>
+    <RESDEPEN value="$(RESFILES) src\cms\measure\TMeasureWindow.dfm"/>
     <LIBFILES value=""/>
     <LIBRARIES value=""/>
     <SPARELIBS value="rtl.lib vcl.lib"/>
@@ -67,7 +67,7 @@
       <FILE FILENAME="src\cms\colorspace\colorspace.cpp" FORMNAME="" UNITNAME="colorspace" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="src\cms\colorspace\independ.cpp" FORMNAME="" UNITNAME="independ" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="src\cms\colorspace\depend.cpp" FORMNAME="" UNITNAME="depend" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="src\cms\measure\_MeasureWindow.cpp" FORMNAME="MeasureWindow" UNITNAME="_MeasureWindow" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="src\cms\measure\TMeasureWindow.cpp" FORMNAME="MeasureWindow" UNITNAME="TMeasureWindow" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
   </FILELIST>
   <BUILDTOOLS>
   </BUILDTOOLS>
