@@ -12,6 +12,8 @@ object MeasureWindow: TMeasureWindow
   Font.Name = 'MS Sans Serif'
   Font.Style = []
   OldCreateOrder = False
+  WindowState = wsMaximized
+  OnKeyPress = FormKeyPress
   PixelsPerInch = 120
   TextHeight = 16
 end

@@ -9,8 +9,18 @@
 #pragma resource "*.dfm"
 TMeasureWindow *MeasureWindow;
 //---------------------------------------------------------------------------
-__fastcall TMeasureWindow::TMeasureWindow(TComponent* Owner)
-        : TForm(Owner)
+__fastcall TMeasureWindow::TMeasureWindow(TComponent * Owner)
+:TForm(Owner)
 {
 }
+
 //---------------------------------------------------------------------------
+void __fastcall TMeasureWindow::FormKeyPress(TObject * Sender, char &Key)
+{
+    if (Key == 27) {
+	this->Close();
+    }
+}
+
+//---------------------------------------------------------------------------
+
