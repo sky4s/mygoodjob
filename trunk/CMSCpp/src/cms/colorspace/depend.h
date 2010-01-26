@@ -1,14 +1,13 @@
 #ifndef DEPENDH
 #define DEPENDH
 #include <vcl.h>
-#include "colorspace.h"
+//#include "colorspace.h"
 #include <cms/core.h>
 #include <cstdarg>
 
 namespace cms {
+
     namespace colorspace {
-
-
 	class DeviceDependentSpace:public ColorSpace {
 	};
 
@@ -19,6 +18,7 @@ namespace cms {
 	    AdobeRGBD50, AdobeRGB1998, SMPTE_C
 	};
 	class RGBBase;
+	using cms::Illuminant;
 	class RGBColorSpace {
 	    friend class RGBBase;
 	  private:

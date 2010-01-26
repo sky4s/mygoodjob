@@ -6,6 +6,7 @@
 #include <string>
 #include <cms/colorspace/depend.h>
 #include <cms/core.h>
+#include <cms/patch.h>
 
 namespace cms {
     namespace measure {
