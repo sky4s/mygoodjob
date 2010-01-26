@@ -3,7 +3,9 @@
 #include "colorspace.h"
 #include <cms/core.h>
 //#include "ciexyz.h"
+#include <java/lang.h>
 #include <boost/shared_ptr.hpp>
+#include <boost/shared_array.hpp>
 
 namespace cms {
     namespace colorspace {
@@ -125,7 +127,7 @@ namespace cms {
 	    shared_array < double >getuvValues() {
 		/*CIExyY xyY = CIExyY.fromXYZ(this);
 		   return xyY.getuvValues(); */
-	    }
+	    };
 	    shared_array < double >getValues(shared_array < double >values,
 					     NormalizeY normalizeY) {
 		if (_normalizeY == Not) {
@@ -150,8 +152,8 @@ namespace cms {
 		return values;
 	    };
 
-	    virtual shared_array < double >_getValues(shared_array <
-						      double >values) {
+	    shared_array < double >_getValues(shared_array <
+					      double >values) {
 		//shared_array < double >values(new double[3]);
 		values[0] = X;
 		values[1] = Y;
