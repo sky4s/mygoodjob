@@ -4,8 +4,11 @@
 #include <util.h>
 #include <java/lang.h>
 #include <colorspace/independ.h>
+#include <colorspace/depend.h>
+#include <colorspace/colorspace.h>
 #include <string>
 #include <boost/shared_array.hpp>
+#include <boost/shared_ptr.hpp>
 #include <vector>
 
 namespace cms {
@@ -89,10 +92,28 @@ namespace cms {
 	int getStart() {
 	};
     };
-    class Patch:public Object, NameIF {
-    };
+
     class Spectra:public Object, SpectraIF, NameIF {
     };
+
+    class Patch:public Object, NameIF {
+      /*protected:
+	shared_ptr < string > name;
+	//CIELab _Lab = null;
+	shared_ptr < CIEXYZ > XYZ;
+	shared_ptr < CIEXYZ > normalizedXYZ;
+	shared_ptr < cms::colorspace::RGBColor > rgb;
+	//shared_ptr < RGBColor > originalRGB = null;
+	shared_ptr < Spectra > spectra;
+	shared_ptr < Spectra > reflectSpectra;
+      public:
+	Patch(shared_ptr < string > name, shared_ptr < CIEXYZ > XYZ,
+	      shared_ptr < CIEXYZ > normalizedXYZ,
+	      shared_ptr < RGBColor > rgb):name(name), XYZ(XYZ),
+	    normalizedXYZ(normalizedXYZ), rgb(rgb) {
+	};*/
+    };
+
     class Target:public Object {
     };
 

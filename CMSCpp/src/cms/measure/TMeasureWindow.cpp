@@ -31,6 +31,12 @@ void TMeasureWindow::setRGB(int r, int g, int b)
     this->Color = (TColor) color;
 }
 
+void TMeasureWindow::setRGB(cms::colorspace::RGBColor & rgb)
+{
+    /*int color = (b << 16) + (g << 8) + r;
+       this->Color = (TColor) color; */
+}
+
 void __fastcall TMeasureWindow::FormCreate(TObject * Sender)
 {
     //this->setRGB(255, 0, 0);

@@ -1,10 +1,10 @@
 object MeasureWindow: TMeasureWindow
-  Left = 252
-  Top = 299
+  Left = 198
+  Top = 387
   BorderStyle = bsNone
   Caption = 'MeasureWindow'
-  ClientHeight = 607
-  ClientWidth = 862
+  ClientHeight = 606
+  ClientWidth = 860
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
