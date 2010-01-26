@@ -1,9 +1,9 @@
 #ifndef COREH
 #define COREH
 
-#include <static/util.h>
-#include <static/java/exception.h>
-#include <static/java/lang.h>
+#include <util.h>
+#include <java/exception.h>
+#include <java/lang.h>
 //#include <colorspace/independ.h>
 //#include <colorspace/ciexyz.h>
 //#include <colorspace/colorspace.h>
@@ -84,6 +84,16 @@ namespace cms {
     class DeltaE:public Object {
     };
     class Illuminant:public Object, SpectraIF {
+      public:
+	shared_array < double >getData() {
+
+	};
+	int getEnd() {
+	};
+	int getInterval() {
+	};
+	int getStart() {
+	};
     };
     class Patch:public Object, NameIF {
     };

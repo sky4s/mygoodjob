@@ -14,8 +14,8 @@ namespace cms {
 	using namespace util;
 	using namespace boost;
 	using namespace std;
-	class ColorSpace:public Object, public NameIF,
-	    public virtual ValuePropertyIF {
+        
+	class ColorSpace:public Object, NameIF, virtual ValuePropertyIF {
 
 	  private:
 	    boolean setValuesLocked;
