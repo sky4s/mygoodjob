@@ -28,7 +28,7 @@ void __fastcall TMeasureWindow::FormKeyPress(TObject * Sender, char &Key)
 void TMeasureWindow::setRGB(int r, int g, int b)
 {
     int color = (b << 16) + (g << 8) + r;
-    this->Color = color;
+    this->Color = (TColor) color;
 }
 
 void __fastcall TMeasureWindow::FormCreate(TObject * Sender)

@@ -7,6 +7,7 @@
 #include <boost/shared_ptr.hpp>
 #include <typeinfo>
 #include <iostream>
+//#include "exception.h"
 
 #define  shared_vector_double shared_ptr < vector < double > >
 #define  shared_vector_string shared_ptr < vector < string > >
@@ -42,11 +43,8 @@
 
 namespace java {
     namespace lang {
-
-
-
 	using namespace boost;
-	using std::string;
+	//using std::string;
 	using namespace std;
 	class Object;
 
@@ -70,8 +68,6 @@ namespace java {
 	};
 
 	class Object {
-
-
 	  private:
 	    bool null;
 	    Class c;
@@ -130,6 +126,45 @@ namespace java {
 		return std::sin(x);
 	    };
 	};
+
+	class Exception:public Object {
+	  public:
+	    Exception() {
+	    };
+	    Exception(string message) {
+		this->message = message;
+	    };
+	    string & toString() {
+		return message;
+	    };
+	  private:
+	    string message;
+	};
+	class RuntimeException:public Exception {
+	  public:
+	    RuntimeException();
+	    RuntimeException(string message):Exception(message) {
+
+	    };
+	};
+	class IllegalStateException:public RuntimeException {
+	  public:
+	    IllegalStateException();
+	    IllegalStateException(string message):RuntimeException(message) {
+
+	    };
+	};
+
+	class IllegalArgumentException:public RuntimeException {
+	  public:
+	    IllegalArgumentException();
+	    IllegalArgumentException(string
+				     message):RuntimeException(message) {
+
+	    };
+	};
+
+
     };
 };
 #endif

@@ -1,8 +1,8 @@
 #ifndef COLORSPACEH
 #define COLORSPACEH
 #include <java/lang.h>
-#include <util.h>
-#include <cms/core.h>
+//#include <util.h>
+//#include <cms/core.h>
 #include <boost/shared_ptr.hpp>
 #include <boost/shared_array.hpp>
 #include <vector>
@@ -11,11 +11,11 @@
 namespace cms {
     namespace colorspace {
 	using namespace java::lang;
-	using namespace util;
+	//using namespace util;
 	using namespace boost;
 	using namespace std;
-        
-	class ColorSpace:public Object, NameIF, virtual ValuePropertyIF {
+
+	class ColorSpace : public Object/*, NameIF, virtual ValuePropertyIF  */  {
 
 	  private:
 	    boolean setValuesLocked;

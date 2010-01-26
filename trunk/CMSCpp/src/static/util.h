@@ -4,11 +4,8 @@
 #include <boost/shared_ptr.hpp>
 
 namespace util {
-
-    class Utils {
-
-    };
-    using std::string;
+ 
+    using namespace std;
     using namespace boost;
     class NameIF {
       public:
