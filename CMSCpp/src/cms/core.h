@@ -4,7 +4,6 @@
 #include <util.h>
 #include <java/lang.h>
 #include <colorspace/independ.h>
-//#include <colorspace/colorspace.h>
 #include <string>
 #include <boost/shared_array.hpp>
 #include <vector>
@@ -78,17 +77,17 @@ namespace cms {
     };
     class DeltaE:public Object {
     };
-    class Illuminant:public Object /*, SpectraIF */  {
-	/*public:
-	   shared_array < double >getData() {
+    class Illuminant:public Object, SpectraIF {
+      public:
+	shared_array < double >getData() {
 
-	   };
-	   int getEnd() {
-	   };
-	   int getInterval() {
-	   };
-	   int getStart() {
-	   }; */
+	};
+	int getEnd() {
+	};
+	int getInterval() {
+	};
+	int getStart() {
+	};
     };
     class Patch:public Object, NameIF {
     };
