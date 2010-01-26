@@ -2,7 +2,6 @@
 #define COREH
 
 #include <util.h>
-#include <java/exception.h>
 #include <java/lang.h>
 #include <colorspace/independ.h>
 //#include <colorspace/colorspace.h>
@@ -13,9 +12,8 @@
 namespace cms {
     using namespace util;
     using namespace java::lang;
-
-    //using namespace cms::colorspace;
     using namespace boost;
+    using namespace cms::colorspace;
 
     class SpectraIF {
       public:
@@ -35,8 +33,7 @@ namespace cms {
 
     class CorrelatedColorTemperature:public Object {
       public:
-
-	/*static CIExyY CCT2DIlluminantxyY(int tempK) {
+	static shared_ptr < CIExyY > CCT2DIlluminantxyY(int tempK) {
 	    //using namespace std;
 	    double x = 0.0, y;
 	    double T, T2, T3;
@@ -74,25 +71,24 @@ namespace cms {
 
 	    // Fill WhitePoint struct
 	    //CIExyY xyY(x, y, 1.0);
-	    shared_ptr < CIExyY > xyY =
-		shared_ptr < CIExyY > (new CIExyY(x, y, 1.0));
+	    shared_ptr < CIExyY > xyY(new CIExyY(x, y, 1.0));
 
 	    return xyY;
-	};*/
+	};
     };
     class DeltaE:public Object {
     };
-    class Illuminant:public Object, SpectraIF {
-      public:
-	shared_array < double >getData() {
+    class Illuminant:public Object /*, SpectraIF */  {
+	/*public:
+	   shared_array < double >getData() {
 
-	};
-	int getEnd() {
-	};
-	int getInterval() {
-	};
-	int getStart() {
-	};
+	   };
+	   int getEnd() {
+	   };
+	   int getInterval() {
+	   };
+	   int getStart() {
+	   }; */
     };
     class Patch:public Object, NameIF {
     };

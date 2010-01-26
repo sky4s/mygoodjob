@@ -1,8 +1,8 @@
 #ifndef INDEPENDH
 #define INDEPENDH
+
 #include "colorspace.h"
-#include <cms/core.h>
-//#include "ciexyz.h"
+//#include <cms/core.h>
 #include <java/lang.h>
 #include <boost/shared_ptr.hpp>
 #include <boost/shared_array.hpp>
@@ -46,7 +46,8 @@ namespace cms {
 
 	    int getNumberBands() {
 		return 3;
-	  } public:
+	    };
+	  public:
 	     Degree getDegree() {
 		return _degree;
 	    };
@@ -175,8 +176,7 @@ namespace cms {
 		return ColorSpace::getValues(values);
 	    };
 
-
-	    CIEXYZ toXYZ() {
+	    virtual CIEXYZ toXYZ() {
 		return *this;
 	    };
 
