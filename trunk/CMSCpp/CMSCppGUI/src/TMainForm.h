@@ -1,27 +1,36 @@
 //---------------------------------------------------------------------------
 
-#ifndef TMeasureWindowH
-#define TMeasureWindowH
+#ifndef TMainFormH
+#define TMainFormH
 //---------------------------------------------------------------------------
 #include <Classes.hpp>
 #include <Controls.hpp>
 #include <StdCtrls.hpp>
 #include <Forms.hpp>
 #include <Menus.hpp>
-#include <cms/colorspace/depend.h>
+#include <ca210api/CA210API.h>
 //---------------------------------------------------------------------------
-class TMeasureWindow:public TForm {
+class TMainForm:public TForm {
     __published:		// IDE-managed Components
-    void __fastcall FormKeyPress(TObject * Sender, char &Key);
-    void __fastcall FormCreate(TObject * Sender);
+    TMainMenu * MainMenu1;
+    TMenuItem *MatrixCalibration1;
+    TMenuItem *TargetWhite1;
+    TMenuItem *CCTLUT1;
+    TMenuItem *GammaAdj1;
+    TMenuItem *Measurement1;
+    TMenuItem *config1;
+    TMenuItem *About1;
+    TMenuItem *Exit1;
+    void __fastcall About1Click(TObject * Sender);
+    void __fastcall Exit1Click(TObject * Sender);
+    void __fastcall TargetWhite1Click(TObject * Sender);
   private:			// User declarations
+     ca210api::CA210API ca210();
   public:			// User declarations
-     __fastcall TMeasureWindow(TComponent * Owner);
-    void setRGB(int r, int g, int b);
-    void setRGB(cms::colorspace::RGBColor & rgb);
+     __fastcall TMainForm(TComponent * Owner);
 };
 //---------------------------------------------------------------------------
-extern PACKAGE TMeasureWindow *MeasureWindow;
+extern PACKAGE TMainForm *MainForm;
 //---------------------------------------------------------------------------
 #endif
 

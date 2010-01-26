@@ -10,6 +10,8 @@
 #include <conio.h>
 #include <boost/shared_ptr.hpp>
 #include <vector>
+#include <string>
+#include <cwchar>
 
 
 //---------------------------------------------------------------------------
@@ -17,6 +19,8 @@
 #pragma argsused
 int main(int argc, char *argv[])
 {
+    //Object o;
+    java::lang::RuntimeException a;
     getch();
     return 0;
 }

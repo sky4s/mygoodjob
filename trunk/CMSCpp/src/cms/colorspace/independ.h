@@ -381,8 +381,6 @@ namespace cms {
 	    };
 	    static shared_ptr < CIExyY > fromXYZ(const CIEXYZ & XYZ) {
 		shared_array < double >xyValues = XYZ.getxyValues();
-		//CIExyY xyY = new CIExyY(xyValues[0], xyValues[1], XYZ.Y,
-		//                    XYZ.normalizeY);
 		shared_ptr < CIExyY >
 		    xyY(new CIExyY(xyValues[0], xyValues[1], XYZ.Y,
 				   XYZ._normalizeY));

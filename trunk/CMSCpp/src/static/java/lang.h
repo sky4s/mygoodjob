@@ -142,24 +142,28 @@ namespace java {
 	};
 	class RuntimeException:public Exception {
 	  public:
-	    RuntimeException();
-	    RuntimeException(string message):Exception(message) {
+	    RuntimeException() {
+	    };
+	  RuntimeException(string message):Exception(message) {
 
 	    };
 	};
 	class IllegalStateException:public RuntimeException {
 	  public:
-	    IllegalStateException();
-	    IllegalStateException(string message):RuntimeException(message) {
+	    IllegalStateException() {
+	    };
+	  IllegalStateException(string message):RuntimeException(message)
+	    {
 
 	    };
 	};
 
 	class IllegalArgumentException:public RuntimeException {
 	  public:
-	    IllegalArgumentException();
-	    IllegalArgumentException(string
-				     message):RuntimeException(message) {
+	    IllegalArgumentException() {
+	    };
+	  IllegalArgumentException(string message):RuntimeException(message)
+	    {
 
 	    };
 	};
