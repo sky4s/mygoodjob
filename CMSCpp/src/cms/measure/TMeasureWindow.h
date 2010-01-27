@@ -8,8 +8,13 @@
 #include <StdCtrls.hpp>
 #include <Forms.hpp>
 #include <Menus.hpp>
-#include <cms/colorspace/depend.h>
 //---------------------------------------------------------------------------
+namespace cms {
+    namespace colorspace {
+	class RGBColor;
+    };
+};
+
 class TMeasureWindow:public TForm {
     __published:		// IDE-managed Components
     void __fastcall FormKeyPress(TObject * Sender, char &Key);

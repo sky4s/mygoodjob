@@ -1,8 +1,6 @@
 #ifndef COLORSPACEH
 #define COLORSPACEH
 #include <java/lang.h>
-//#include <util.h>
-//#include <cms/core.h>
 #include <boost/shared_ptr.hpp>
 #include <boost/shared_array.hpp>
 #include <vector>
@@ -11,14 +9,13 @@
 namespace cms {
     namespace colorspace {
 	using namespace java::lang;
-	//using namespace util;
 	using namespace boost;
 	using namespace std;
 
-	class ColorSpace : public Object/*, NameIF, virtual ValuePropertyIF  */  {
+	class ColorSpace:public Object /*, NameIF, virtual ValuePropertyIF  */  {
 
 	  private:
-	    boolean setValuesLocked;
+	    bool setValuesLocked;
 	  protected:
 	    virtual int getNumberBands() = 0;
 	    virtual shared_array < double >_getValues(shared_array <
@@ -44,8 +41,7 @@ namespace cms {
 		    polarValues[2] = 0;
 		} else {
 		    polarValues[2] = Math::atan2(t2, t1);
-		}
-		polarValues[2] *= (180.0 / Math::PI);
+		} polarValues[2] *= (180.0 / Math::PI);
 		while (polarValues[2] >= 360.0) {	// Not necessary, but included as a check.
 		    polarValues[2] -= 360.0;
 		}
@@ -77,7 +73,7 @@ namespace cms {
 		return polarValues;
 	    };
 
-	    boolean equalsValues(ColorSpace & colorSpace) {
+	    bool equalsValues(ColorSpace & colorSpace) {
 	    }
 	    virtual shared_vector_string getBandNames() = 0;
 	    shared_ptr < string > getName() {
@@ -133,7 +129,7 @@ namespace cms {
 		setValues(values);
 	    };
 
-	    void setValuesLock(boolean lock) {
+	    void setValuesLock(bool lock) {
 		setValuesLocked = lock;
 	    };
 

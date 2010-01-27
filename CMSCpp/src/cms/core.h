@@ -4,7 +4,6 @@
 #include <util.h>
 #include <java/lang.h>
 #include <colorspace/independ.h>
-//#include <colorspace/depend.h>
 #include <colorspace/colorspace.h>
 #include <string>
 #include <boost/shared_array.hpp>

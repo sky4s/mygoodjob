@@ -220,11 +220,11 @@ namespace cms {
 		return 100 * (1.2985 * X - 1.1335 * Z) / Y;
 	    };
 
-	    boolean isBlack() {
+	    bool isBlack() {
 		return X == 0 && Y == 0 && Z == 0;
 	    };
 
-	    boolean isLegal() {
+	    bool isLegal() {
 		if (Y == 0 && (X > 0 || Z > 0)) {
 		    //如果Y=0,就應該為黑色,其他頻道不應該有值
 		    return false;
@@ -237,7 +237,7 @@ namespace cms {
 
 		return true;
 	    };
-	    boolean isLegal(CIEXYZ white) {
+	    bool isLegal(CIEXYZ white) {
 		return isLegal() && X <= white.X && Y <= white.Y &&
 		    Z <= white.Z;
 	    };
@@ -524,7 +524,7 @@ namespace cms {
 		xy[1] = y;
 		return xy;
 	    };
-	    boolean isLegal() {
+	    bool isLegal() {
 		return Y >= 0 && (x + y) <= 1;
 	    };
 

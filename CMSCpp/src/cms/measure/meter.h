@@ -168,10 +168,10 @@ namespace cms {
 		};
 
 		shared_ptr < string > getLastCalibration() {
-		    return shared_ptr < string > (NULL);
+		    return null_string;
 		};
 		shared_ptr < string > getCalibrationCount() {
-		    return shared_ptr < string > (NULL);
+		    return null_string;
 		};
 		void setScreenType(ScreenType screenType) {
 		};
