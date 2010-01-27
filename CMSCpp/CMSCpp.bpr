@@ -7,7 +7,8 @@
     <OBJFILES value="build\Unit1.obj build\lang.obj build\util.obj build\CA210API.obj 
       build\core.obj build\colorspace.obj build\independ.obj build\depend.obj 
       build\TMeasureWindow.obj build\logo.obj build\MeterMeasurement.obj 
-      build\patch.obj build\meter.obj build\ciexyz.obj build\rgb.obj"/>
+      build\patch.obj build\meter.obj build\ciexyz.obj build\rgb.obj 
+      build\CA200SRVRLib_TLB.obj build\CA200SRVRLib_OCX.obj"/>
     <RESFILES value="CMSCpp.res"/>
     <IDLFILES value=""/>
     <IDLGENFILES value=""/>
@@ -23,7 +24,7 @@
       inetdbbde.bpi inetdbxpress.bpi inetdb.bpi nmfast.bpi webdsnap.bpi 
       bcbie.bpi websnap.bpi soaprtl.bpi dclocx.bpi dbexpress.bpi dbxcds.bpi 
       indy.bpi bcb2kaxserver.bpi bcbindent.bpi"/>
-    <PATHCPP value=".;src;src\static\java;src\static;src\ca210api;src\cms;src\cms\colorspace;src\cms\colorspace;src\cms\colorspace;src\cms\measure;src\cms\colorformat;src\cms\measure;src\cms;src\cms\measure;src\cms\colorspace;src\cms\colorspace"/>
+    <PATHCPP value=".;src;src\static\java;src\static;src\ca210api;src\cms;src\cms\colorspace;src\cms\colorspace;src\cms\colorspace;src\cms\measure;src\cms\colorformat;src\cms\measure;src\cms;src\cms\measure;src\cms\colorspace;src\cms\colorspace;imports\CA200SRVRLib;imports\CA200SRVRLib"/>
     <PATHPAS value=".;"/>
     <PATHRC value=".;"/>
     <PATHASM value=".;"/>
@@ -33,17 +34,18 @@
     <USERDEFINES value="_DEBUG"/>
     <SYSDEFINES value="NO_STRICT;_RTLDLL;USEPACKAGES"/>
     <MAINSOURCE value="CMSCpp.bpf"/>
-    <INCLUDEPATH value="&quot;F:\Program Files\Borland\CBuilder6\Projects&quot;;src\cms\colorformat;src\cms\measure;&quot;D:\Program Files\Borland\CBuilder6\Projects&quot;;src\cms\colorspace;src\cms;src\ca210api;src\static\java;src\static;src;$(BCB)\include;$(BCB)\include\vcl;imports;lib"/>
-    <LIBPATH value="&quot;F:\Program Files\Borland\CBuilder6\Projects&quot;;src\cms\colorformat;src\cms\measure;&quot;D:\Program Files\Borland\CBuilder6\Projects&quot;;src\cms\colorspace;src\cms;src\ca210api;src\static\java;src\static;$(BCB)\Projects\Lib;src;$(BCB)\lib\obj;$(BCB)\lib"/>
+    <INCLUDEPATH value="imports\CA200SRVRLib;&quot;F:\Program Files\Borland\CBuilder6\Projects&quot;;src\cms\colorformat;src\cms\measure;&quot;D:\Program Files\Borland\CBuilder6\Projects&quot;;src\cms\colorspace;src\cms;src\ca210api;src\static\java;src\static;src;$(BCB)\include;$(BCB)\include\vcl;imports;lib"/>
+    <LIBPATH value="imports\CA200SRVRLib;&quot;F:\Program Files\Borland\CBuilder6\Projects&quot;;src\cms\colorformat;src\cms\measure;&quot;D:\Program Files\Borland\CBuilder6\Projects&quot;;src\cms\colorspace;src\cms;src\ca210api;src\static\java;src\static;$(BCB)\Projects\Lib;src;$(BCB)\lib\obj;$(BCB)\lib"/>
     <WARNINGS value="-w-par"/>
     <OTHERFILES value=""/>
   </MACROS>
   <OPTIONS>
-    <IDLCFLAGS value="-I&quot;F:\Program Files\Borland\CBuilder6\Projects&quot; -Isrc\cms\colorformat 
-      -Isrc\cms\measure -I&quot;D:\Program Files\Borland\CBuilder6\Projects&quot; 
-      -Isrc\cms\colorspace -Isrc\cms -Isrc\ca210api -Isrc\static\java 
-      -Isrc\static -Isrc -I$(BCB)\include -I$(BCB)\include\vcl -Iimports -Ilib 
-      -src_suffix cpp -D_DEBUG -boa"/>
+    <IDLCFLAGS value="-Iimports\CA200SRVRLib -I&quot;F:\Program Files\Borland\CBuilder6\Projects&quot; 
+      -Isrc\cms\colorformat -Isrc\cms\measure 
+      -I&quot;D:\Program Files\Borland\CBuilder6\Projects&quot; -Isrc\cms\colorspace 
+      -Isrc\cms -Isrc\ca210api -Isrc\static\java -Isrc\static -Isrc 
+      -I$(BCB)\include -I$(BCB)\include\vcl -Iimports -Ilib -src_suffix cpp 
+      -D_DEBUG -boa"/>
     <CFLAG1 value="-O2 -H=lib\cmscpp.csm -Hc -Vx -Ve -X- -r- -a8 -6 -b- -k -y -v -vi- -tWC 
       -tWM -c"/>
     <PFLAGS value="-N2build -N0build -$YD -$W -$O- -$A8 -v -JPHNE -M"/>
@@ -76,6 +78,8 @@
       <FILE FILENAME="src\cms\measure\meter.cpp" FORMNAME="" UNITNAME="meter" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="src\cms\colorspace\ciexyz.cpp" FORMNAME="" UNITNAME="ciexyz" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="src\cms\colorspace\rgb.cpp" FORMNAME="" UNITNAME="rgb" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="imports\CA200SRVRLib\CA200SRVRLib_TLB.cpp" FORMNAME="" UNITNAME="CA200SRVRLib_TLB.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="imports\CA200SRVRLib\CA200SRVRLib_OCX.cpp" FORMNAME="" UNITNAME="CA200SRVRLib_OCX.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
   </FILELIST>
   <BUILDTOOLS>
   </BUILDTOOLS>
