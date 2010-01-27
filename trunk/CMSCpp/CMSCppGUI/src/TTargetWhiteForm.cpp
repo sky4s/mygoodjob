@@ -3,10 +3,20 @@
 #include <vcl.h>
 #pragma hdrstop
 
+//C系統文件
+
+//C++系統文件
+
+//其他庫頭文件
+
+//本項目內頭文件
 #include "TTargetWhiteForm.h"
+#include <cms/colorspace/ciexyz.h>
 #include <cms/core.h>
+
+/*#include <cms/core.h>
 #include <boost/shared_ptr.hpp>
-#include <boost/shared_array.hpp>
+#include <boost/shared_array.hpp>*/
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
 #pragma resource "*.dfm"
