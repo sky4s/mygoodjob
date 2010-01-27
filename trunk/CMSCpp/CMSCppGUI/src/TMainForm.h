@@ -11,7 +11,7 @@
 
 //#include <string>
 //#include <boost/shared_ptr.hpp>
-//#include <cms/measure/meter.h>
+#include <cms/measure/meter.h>
 //---------------------------------------------------------------------------
 /*namespace cms {
     namespace measure {
@@ -39,6 +39,8 @@ class TMainForm:public TForm {
     void __fastcall FormCreate(TObject * Sender);
   private:			// User declarations
     //boost::shared_ptr < cms::measure::meter::CA210 > meter;
+     boost::shared_ptr < cms::measure::meter::Meter > meter;
+    //CA210 meter;
   public:			// User declarations
      __fastcall TMainForm(TComponent * Owner);
 };
