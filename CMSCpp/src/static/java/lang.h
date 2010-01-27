@@ -10,16 +10,6 @@
 #include <boost/shared_ptr.hpp>
 //本項目內頭文件
 
-#define vector_double_ptr boost::shared_ptr < std::vector < double > >
-#define vector_string_ptr boost::shared_ptr < std::vector < std::string > >
-#define double_array boost::shared_array<double>
-
-#define string_ptr boost::shared_ptr < std::string >
-#define nil_string_ptr string_ptr ((std::string*)NULL)
- 
-
-
-
 //==============================================================================
 // include template
 //==============================================================================
@@ -30,6 +20,17 @@
 //其他庫頭文件
 
 //本項目內頭文件
+//==============================================================================
+
+//==============================================================================
+//簡化boost::smart_ptr使用上的巨集
+//==============================================================================
+#define vector_double_ptr boost::shared_ptr < std::vector < double > >
+#define vector_string_ptr boost::shared_ptr < std::vector < std::string > >
+#define double_array boost::shared_array<double>
+
+#define string_ptr boost::shared_ptr < std::string >
+#define nil_string_ptr string_ptr ((std::string*)NULL)
 //==============================================================================
 
 /*
@@ -70,11 +71,11 @@ namespace java {
 	  private:
 	    friend class Object;
 	    const std::type_info & info;
-	    Object & object;
-	    Class(Object & object);
+	     Object & object;
+	     Class(Object & object);
 	  public:
-	    boost::shared_ptr < std::string > getSimpleName();
-	    boost::shared_ptr < std::string > getName();
+	     boost::shared_ptr < std::string > getSimpleName();
+	     boost::shared_ptr < std::string > getName();
 	};
 
 	class Object {
@@ -82,16 +83,16 @@ namespace java {
 	    bool null;
 	    Class c;
 	  public:
-	    bool equals(boost::shared_ptr < Object > obj);
-	    Class & getClass();
+	     bool equals(boost::shared_ptr < Object > obj);
+	     Class & getClass();
 	    int hashCode();
-	    boost::shared_ptr < std::string > toString();
+	     boost::shared_ptr < std::string > toString();
 	    bool isNull();
-	    Object(bool null);
-	    Object();
+	     Object(bool null);
+	     Object();
 
 	  protected:
-	    boost::shared_ptr < Object > clone();
+	     boost::shared_ptr < Object > clone();
 	    void finalize();
 	};
 
