@@ -6,8 +6,8 @@
     <PROJECT value="build\CMSCpp.exe"/>
     <OBJFILES value="build\Unit1.obj build\lang.obj build\util.obj build\CA210API.obj 
       build\core.obj build\colorspace.obj build\independ.obj build\depend.obj 
-      build\TMeasureWindow.obj build\meter.obj build\logo.obj 
-      build\MeterMeasurement.obj build\patch.obj"/>
+      build\TMeasureWindow.obj build\logo.obj build\MeterMeasurement.obj 
+      build\patch.obj build\meter.obj build\ciexyz.obj build\rgb.obj"/>
     <RESFILES value="CMSCpp.res"/>
     <IDLFILES value=""/>
     <IDLGENFILES value=""/>
@@ -23,7 +23,7 @@
       inetdbbde.bpi inetdbxpress.bpi inetdb.bpi nmfast.bpi webdsnap.bpi 
       bcbie.bpi websnap.bpi soaprtl.bpi dclocx.bpi dbexpress.bpi dbxcds.bpi 
       indy.bpi bcb2kaxserver.bpi bcbindent.bpi"/>
-    <PATHCPP value=".;src;src\static\java;src\static;src\ca210api;src\cms;src\cms\colorspace;src\cms\colorspace;src\cms\colorspace;src\cms\measure;src\cms\measure;src\cms\colorformat;src\cms\measure;src\cms"/>
+    <PATHCPP value=".;src;src\static\java;src\static;src\ca210api;src\cms;src\cms\colorspace;src\cms\colorspace;src\cms\colorspace;src\cms\measure;src\cms\colorformat;src\cms\measure;src\cms;src\cms\measure;src\cms\colorspace;src\cms\colorspace"/>
     <PATHPAS value=".;"/>
     <PATHRC value=".;"/>
     <PATHASM value=".;"/>
@@ -70,10 +70,12 @@
       <FILE FILENAME="src\cms\colorspace\independ.cpp" FORMNAME="" UNITNAME="independ" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="src\cms\colorspace\depend.cpp" FORMNAME="" UNITNAME="depend" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="src\cms\measure\TMeasureWindow.cpp" FORMNAME="MeasureWindow" UNITNAME="TMeasureWindow" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="src\cms\measure\meter.cpp" FORMNAME="" UNITNAME="meter" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="src\cms\colorformat\logo.cpp" FORMNAME="" UNITNAME="logo" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="src\cms\measure\MeterMeasurement.cpp" FORMNAME="" UNITNAME="MeterMeasurement" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="src\cms\patch.cpp" FORMNAME="" UNITNAME="patch" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="src\cms\measure\meter.cpp" FORMNAME="" UNITNAME="meter" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="src\cms\colorspace\ciexyz.cpp" FORMNAME="" UNITNAME="ciexyz" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="src\cms\colorspace\rgb.cpp" FORMNAME="" UNITNAME="rgb" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
   </FILELIST>
   <BUILDTOOLS>
   </BUILDTOOLS>

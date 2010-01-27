@@ -1,8 +1,24 @@
 #include "depend.h"
+
 #include <limits>
 
 namespace cms {
     namespace colorspace {
+	using namespace boost;
+	using namespace std;
+	using namespace java::lang;
+
+	//======================================================================
+	// DeviceDependentSpace
+	//======================================================================
+	int DeviceDependentSpace::getNumberBands() {
+	    return 3;
+	};
+	//======================================================================
+
+	//======================================================================
+	// Channel
+	//======================================================================
 	const Channel Channel::R = Channel(1, clRed, "R");
 	const Channel Channel::G = Channel(2, clGreen, "G");
 	const Channel Channel::B = Channel(3, clBlue, "B");
@@ -25,6 +41,144 @@ namespace cms {
 	    *getChannelVector(3, Y, M, C);
 
 
+	 Channel::Channel(int index, TColor color,
+			  string fullname):_index(index), _color(color),
+	    _fullname(fullname) {
+
+	};
+
+	bool Channel::isPrimaryColorChannel(const Channel & channel) {
+	    return channel == R || channel == G || channel == B;
+	};
+	bool Channel::isSecondaryColorChannel(const Channel & channel) {
+	    return channel == C || channel == M || channel == Y;
+	};
+	vector < Channel > *Channel::getChannelVector(int count,...) {
+	    vector < Channel > *result = new vector < Channel > (count);
+
+	    va_list num_list;
+	    va_start(num_list, count);
+
+	    for (int i = 0; i < count; i++) {
+		Channel c = va_arg(num_list, Channel);
+		result->push_back(c);
+	    }
+
+	    va_end(num_list);
+	    return result;
+	};
+
+
+	Channel::Channel() {
+	};
+
+
+	int Channel::getArrayIndex() {
+	    return _index - 1;
+	};
+
+	const Channel & Channel::getChannel(boolean R, boolean G,
+					    boolean B) {
+	    int index = 0;
+	    index += R ? 1 : 0;
+	    index += G ? 2 : 0;
+	    index += B ? 3 : 0;
+	    return getChannel(index);
+	};
+
+	const Channel & Channel::getChannel(int chIndex) {
+	    switch (chIndex) {
+	    case 1:
+		return R;
+	    case 2:
+		return G;
+	    case 3:
+		return B;
+	    case 4:
+		return Y;
+	    case 5:
+		return M;
+	    case 6:
+		return C;
+	    case 7:
+		return W;
+		/*default:
+		   return NULL; */
+	    }
+	};
+	const Channel & Channel::getChannelByArrayIndex(int
+							arrayIndex) {
+	    return getChannel(arrayIndex + 1);
+	};
+	boolean Channel::isPrimaryColorChannel() {
+	    return isPrimaryColorChannel(*this);
+	};
+
+	boolean Channel::isSecondaryColorChannel() {
+	    return isSecondaryColorChannel(*this);
+	};
+	//======================================================================
+
+	//======================================================================
+	// RGBColorSpace
+	//======================================================================
+	RGBColorSpace::RGBColorSpace() {
+	};
+	//======================================================================
+
+	//======================================================================
+	// RGBBase
+	//======================================================================
+	shared_array <
+	    double >RGBBase::linearToRGBValues(shared_array <
+					       double >linearRGBValues,
+					       RGBColorSpace rgbColorSpace)
+	{
+	    //double[] rgbValues = linearRGBValues.clone();
+	    shared_array < double >rgbValues;
+	    boolean negative = false;
+
+	    if (rgbColorSpace == RGBColorSpace::sRGB) {
+		for (int x = 0; x < 3; x++) {
+		    negative = rgbValues[x] < 0;
+		    if (negative) {
+			rgbValues[x] = -rgbValues[x];
+		    }
+
+		    if (rgbValues[x] <= 0.0031308) {
+			rgbValues[x] *= 12.92;
+		    } else {
+			rgbValues[x] =
+			    1.055 * Math::pow(rgbValues[x],
+					      1. / 2.4) - 0.055;
+		    }
+		    if (negative) {
+			rgbValues[x] = -rgbValues[x];
+		    }
+		}
+	    } else {
+		for (int x = 0; x < 3; x++) {
+		    negative = rgbValues[x] < 0;
+		    if (negative) {
+			rgbValues[x] = -rgbValues[x];
+		    }
+
+		    rgbValues[x] =
+			Math::pow(rgbValues[x], 1. / rgbColorSpace._gamma);
+
+		    if (negative) {
+			rgbValues[x] = -rgbValues[x];
+		    }
+		}
+	    };
+
+	    return rgbValues;
+	};
+	//======================================================================
+
+	//======================================================================
+	// MaxValue
+	//======================================================================
 	const MaxValue MaxValue::Double1(1.);	//正規化
 	const MaxValue MaxValue::Double100(100.);	//正規化
 	const MaxValue MaxValue::Int5Bit(31., true, false);	//5bit
@@ -48,8 +202,14 @@ namespace cms {
 	const MaxValue MaxValue::DoubleUnlimited(std::numeric_limits <
 						 double >::max()
 	    );			//無限制
+	//======================================================================
 
 
+	//======================================================================
+	// RGBColorSpace
+	//======================================================================
+	const RGBColorSpace RGBColorSpace::unknowRGB = RGBColorSpace();
+	//======================================================================
     };
 };
 

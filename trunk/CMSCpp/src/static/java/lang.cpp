@@ -10,11 +10,12 @@
 
 namespace java {
     namespace lang {
-
+	using namespace std;
+	using namespace boost;
 	//======================================================================
 	// Class
 	//======================================================================
-	Class::Class(Object & object):object(object), info(typeid(object)) {
+	 Class::Class(Object & object):object(object), info(typeid(object)) {
 
 	};
 	 shared_ptr < string > Class::getSimpleName() {

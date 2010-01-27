@@ -7,7 +7,7 @@
     <OBJFILES value="build\CMSCppGUI.obj build\Unit1.obj build\TMeasureWindow.obj 
       build\lang.obj build\TTargetWhiteForm.obj build\core.obj build\independ.obj 
       build\colorspace.obj build\TMainForm.obj build\TAboutBox.obj 
-      build\CA210API.obj"/>
+      build\CA210API.obj build\meter.obj"/>
     <RESFILES value="CMSCppGUI.res"/>
     <IDLFILES value=""/>
     <IDLGENFILES value=""/>
@@ -24,7 +24,7 @@
       inetdbbde.bpi inetdbxpress.bpi inetdb.bpi nmfast.bpi webdsnap.bpi 
       bcbie.bpi websnap.bpi soaprtl.bpi dclocx.bpi dbexpress.bpi dbxcds.bpi 
       indy.bpi bcb2kaxserver.bpi bcbindent.bpi"/>
-    <PATHCPP value=".;src;..\src\cms\measure;..\src\static\java;src;..\src\cms;..\src\cms\colorspace;..\src\cms\colorspace;src;src;..\src\ca210api"/>
+    <PATHCPP value=".;src;..\src\cms\measure;..\src\static\java;src;..\src\cms;..\src\cms\colorspace;..\src\cms\colorspace;src;src;..\src\ca210api;..\src\cms\measure"/>
     <PATHPAS value=".;"/>
     <PATHRC value=".;"/>
     <PATHASM value=".;"/>
@@ -73,6 +73,7 @@
       <FILE FILENAME="src\TMainForm.cpp" FORMNAME="MainForm" UNITNAME="TMainForm" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="src\TAboutBox.cpp" FORMNAME="AboutBox" UNITNAME="TAboutBox" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="..\src\ca210api\CA210API.cpp" FORMNAME="" UNITNAME="CA210API" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="..\src\cms\measure\meter.cpp" FORMNAME="" UNITNAME="meter" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
   </FILELIST>
   <BUILDTOOLS>
   </BUILDTOOLS>
