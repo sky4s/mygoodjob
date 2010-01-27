@@ -1,7 +1,6 @@
 #ifndef DEPENDH
 #define DEPENDH
 #include <vcl.h>
-//#include "colorspace.h"
 #include <cms/core.h>
 #include <cstdarg>
 

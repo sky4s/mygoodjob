@@ -59,8 +59,8 @@ namespace cms {
 	    };
 
 	    shared_ptr < Patch > measure(RGBColor & rgb,
-					 string & patchName) {
-		//return measure0(rgb, patchName, null, null);
+					 shared_ptr < string > patchName) {
+		return measure0(rgb, patchName, null_string, null_string);
 	    };
 
 	    void setBlankTimes(int blankTimes) {

@@ -4,10 +4,10 @@
   <MACROS>
     <VERSION value="BCB.06.00"/>
     <PROJECT value="build\CMSCppGUI.exe"/>
-    <OBJFILES value="build\\CMSCppGUI.obj build\\Unit1.obj build\\TMeasureWindow.obj 
-      build\\lang.obj build\\TTargetWhiteForm.obj build\\core.obj 
-      build\\independ.obj build\\colorspace.obj build\\TMainForm.obj 
-      build\\TAboutBox.obj build\\CA210API.obj"/>
+    <OBJFILES value="build\CMSCppGUI.obj build\Unit1.obj build\TMeasureWindow.obj 
+      build\lang.obj build\TTargetWhiteForm.obj build\core.obj build\independ.obj 
+      build\colorspace.obj build\TMainForm.obj build\TAboutBox.obj 
+      build\CA210API.obj"/>
     <RESFILES value="CMSCppGUI.res"/>
     <IDLFILES value=""/>
     <IDLGENFILES value=""/>
