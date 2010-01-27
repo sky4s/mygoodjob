@@ -4,23 +4,24 @@
 //C系統文件
 
 //C++系統文件
-#include <string>
+
 //其他庫頭文件
-#include <boost/shared_ptr.hpp>
-#include <boost/shared_array.hpp>
+
 //本項目內頭文件
+#include <java/lang.h>
 
 namespace util {
-    using namespace std;
-    using namespace boost;
+    //using namespace std;
+    //using namespace boost;
     class Util {
       public:
-	static shared_ptr < string > toString(wchar_t * wc);
-	static shared_array < wchar_t > towchar_t(string & str);
+	static boost::shared_ptr < std::string > toString(wchar_t * wc);
+	static boost::shared_array < wchar_t >
+	    towchar_t(std::string & str);
     };
     class NameIF {
       public:
-	virtual shared_ptr < string > getName() = 0;
+	virtual boost::shared_ptr < std::string > getName() = 0;
     };
 
 };

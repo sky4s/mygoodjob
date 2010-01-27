@@ -22,28 +22,29 @@ namespace cms {
 
 namespace cms {
 
-    using std::string;
-    using namespace boost;
-    using java::lang::Object;
-    using util::NameIF;
-    using cms::colorspace::RGBColor;
-    using cms::colorspace::CIEXYZ;
+    /*using std::string;
+       using namespace boost;
+       using java::lang::Object;
+       using util::NameIF;
+       using cms::colorspace::RGBColor;
+       using cms::colorspace::CIEXYZ; */
 
-    class Patch:public Object, NameIF {
+    class Patch:public java::lang::Object, util::NameIF {
 
       protected:
-	shared_ptr < string > name;
+	boost::shared_ptr < std::string > name;
 	//CIELab _Lab = null;
-	shared_ptr < CIEXYZ > XYZ;
-	shared_ptr < CIEXYZ > normalizedXYZ;
-	shared_ptr < RGBColor > rgb;
+	boost::shared_ptr < cms::colorspace::CIEXYZ > XYZ;
+	boost::shared_ptr < cms::colorspace::CIEXYZ > normalizedXYZ;
+	boost::shared_ptr < cms::colorspace::RGBColor > rgb;
 	//shared_ptr < RGBColor > originalRGB = null;
-	shared_ptr < Spectra > spectra;
-	shared_ptr < Spectra > reflectSpectra;
+	boost::shared_ptr < Spectra > spectra;
+	boost::shared_ptr < Spectra > reflectSpectra;
       public:
-	Patch(shared_ptr < string > name, shared_ptr < CIEXYZ > XYZ,
-	      shared_ptr < CIEXYZ > normalizedXYZ,
-	      shared_ptr < RGBColor > rgb);
+	/*Patch(boost::shared_ptr < std::string > name,
+	      boost::shared_ptr < cms::colorspace::CIEXYZ > XYZ,
+	      boost::shared_ptr < cms::colorspace::CIEXYZ > normalizedXYZ,
+	      boost::shared_ptr < cms::colorspace::RGBColor > rgb);*/
     };
 
 };

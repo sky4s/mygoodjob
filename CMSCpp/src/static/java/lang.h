@@ -6,14 +6,31 @@
 //C++系統文件
 #include <string>
 //其他庫頭文件
+#include <boost/shared_array.hpp>
 #include <boost/shared_ptr.hpp>
 //本項目內頭文件
 
+#define vector_double_ptr boost::shared_ptr < std::vector < double > >
+#define vector_string_ptr boost::shared_ptr < std::vector < std::string > >
+#define double_array boost::shared_array<double>
+
+#define string_ptr boost::shared_ptr < std::string >
+#define nil_string_ptr string_ptr ((std::string*)NULL)
+ 
 
 
-#define shared_vector_double  shared_ptr < vector < double > >
-#define shared_vector_string  shared_ptr < vector < string > >
-#define null_string shared_ptr < string > (NULL)
+
+//==============================================================================
+// include template
+//==============================================================================
+//C系統文件
+
+//C++系統文件
+
+//其他庫頭文件
+
+//本項目內頭文件
+//==============================================================================
 
 /*
  java->C++轉換原則
@@ -37,8 +54,7 @@
 
  所以一般是建議採用shared_ptr<vector<>>, 但是這種作法會讓indent(程式碼格式化器) 出錯!
  因為現在用的indent是c專屬的, 他看不懂template的<< >>...會當作shift運算子.
- 幾經測試之下, 本來決定用define的方式以  shared_vector_double 代替 shared_ptr < vector < double > >,
- 就可以避掉indent的問題!
+ 幾經測試之下, 本來決定用define就可以避掉indent的問題!
 
  但是畢竟是指標...要一直不斷的用(*)[]去取值 (不能用->[] 這種怪語法..), 太麻煩了,
   所以回頭用shared_array
@@ -48,19 +64,17 @@
 
 namespace java {
     namespace lang {
-	using namespace boost;
-	using namespace std;
 	class Object;
 
 	class Class {
 	  private:
 	    friend class Object;
-	    const type_info & info;
-	     Object & object;
-	     Class(Object & object);
+	    const std::type_info & info;
+	    Object & object;
+	    Class(Object & object);
 	  public:
-	     shared_ptr < string > getSimpleName();
-	     shared_ptr < string > getName();
+	    boost::shared_ptr < std::string > getSimpleName();
+	    boost::shared_ptr < std::string > getName();
 	};
 
 	class Object {
@@ -68,16 +82,16 @@ namespace java {
 	    bool null;
 	    Class c;
 	  public:
-	     bool equals(shared_ptr < Object > obj);
-	     Class & getClass();
+	    bool equals(boost::shared_ptr < Object > obj);
+	    Class & getClass();
 	    int hashCode();
-	     shared_ptr < string > toString();
+	    boost::shared_ptr < std::string > toString();
 	    bool isNull();
-	     Object(bool null);
-	     Object();
+	    Object(bool null);
+	    Object();
 
 	  protected:
-	     shared_ptr < Object > clone();
+	    boost::shared_ptr < Object > clone();
 	    void finalize();
 	};
 
@@ -95,26 +109,26 @@ namespace java {
 	class Exception:public Object {
 	  public:
 	    Exception();
-	    Exception(string message);
-	    string & toString();
+	    Exception(std::string message);
+	    std::string & toString();
 	  private:
-	    string message;
+	    std::string message;
 	};
 	class RuntimeException:public Exception {
 	  public:
 	    RuntimeException();
-	    RuntimeException(string message);
+	    RuntimeException(std::string message);
 	};
 	class IllegalStateException:public RuntimeException {
 	  public:
 	    IllegalStateException();
-	    IllegalStateException(string message);
+	    IllegalStateException(std::string message);
 	};
 
 	class IllegalArgumentException:public RuntimeException {
 	  public:
 	    IllegalArgumentException();
-	    IllegalArgumentException(string message);
+	    IllegalArgumentException(std::string message);
 	};
     };
 };

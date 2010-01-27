@@ -8,8 +8,20 @@
 #include <StdCtrls.hpp>
 #include <Forms.hpp>
 #include <Menus.hpp>
-#include <ca210api/CA210API.h>
+
+//#include <string>
+//#include <boost/shared_ptr.hpp>
+//#include <cms/measure/meter.h>
 //---------------------------------------------------------------------------
+/*namespace cms {
+    namespace measure {
+	namespace meter {
+	    //class Meter;
+	    class CA210;
+	};
+    };
+};*/
+
 class TMainForm:public TForm {
     __published:		// IDE-managed Components
     TMainMenu * MainMenu1;
@@ -24,8 +36,9 @@ class TMainForm:public TForm {
     void __fastcall About1Click(TObject * Sender);
     void __fastcall Exit1Click(TObject * Sender);
     void __fastcall TargetWhite1Click(TObject * Sender);
+    void __fastcall FormCreate(TObject * Sender);
   private:			// User declarations
-     ca210api::CA210API ca210();
+    //boost::shared_ptr < cms::measure::meter::CA210 > meter;
   public:			// User declarations
      __fastcall TMainForm(TComponent * Owner);
 };

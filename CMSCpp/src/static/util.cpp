@@ -5,7 +5,9 @@ namespace util {
     //==========================================================================
     // Util
     //==========================================================================
-    shared_ptr < string > Util::toString(wchar_t * wc) {
+    using namespace std;
+    using namespace boost;
+     shared_ptr < string > Util::toString(wchar_t * wc) {
 	size_t size = wcslen(wc);
 	char *c = new char[size];
 	for (size_t x = 0; x != size; x++) {

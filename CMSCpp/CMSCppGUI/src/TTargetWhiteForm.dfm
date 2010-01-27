@@ -1,5 +1,5 @@
 object TargetWhiteForm: TTargetWhiteForm
-  Left = -39
+  Left = 12
   Top = 137
   Width = 908
   Height = 578

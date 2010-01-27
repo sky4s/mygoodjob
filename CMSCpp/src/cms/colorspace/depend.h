@@ -1,13 +1,21 @@
 #ifndef DEPENDH
 #define DEPENDH
-#include <vcl.h>
-#include <cms/core.h>
+
+//C系統文件
 #include <cstdarg>
+//C++系統文件
+#include <string>
+#include <vector>
+//其他庫頭文件
+#include <vcl.h>
+//本項目內頭文件
+#include <cms/core.h>
+#include "colorspace.h"
 
 namespace cms {
-
     namespace colorspace {
 	class DeviceDependentSpace:public ColorSpace {
+	    int getNumberBands();
 	};
 
 	enum CSType {
@@ -17,14 +25,14 @@ namespace cms {
 	    AdobeRGBD50, AdobeRGB1998, SMPTE_C
 	};
 	class RGBBase;
-	using cms::Illuminant;
+	//using cms::Illuminant;
 	class RGBColorSpace {
 	    friend class RGBBase;
 	  private:
 
 	    const double _gamma;
 	    const CSType _type;
-	    const Illuminant referenceWhite;
+	    const cms::Illuminant referenceWhite;
 	    /*RGBColorSpace(CSType csType, Illuminant referenceWhite,
 	       double[][]toXYZMatrix,
 	       double gamma):_type(csType), _gamma(gamma),
@@ -36,8 +44,7 @@ namespace cms {
 	  public:
 	    static const RGBColorSpace unknowRGB;
 	    static const RGBColorSpace sRGB;
-	     RGBColorSpace() {
-	    };
+	     RGBColorSpace();
 	    inline bool operator==(const RGBColorSpace & that) const {
 		return _type == that._type;
 	    };
@@ -46,52 +53,10 @@ namespace cms {
 
 	class RGBBase:public DeviceDependentSpace {
 	  public:
-	    static shared_array <
-		double >linearToRGBValues(shared_array <
+	    static boost::shared_array <
+		double >linearToRGBValues(boost::shared_array <
 					  double >linearRGBValues,
-					  RGBColorSpace rgbColorSpace) {
-
-		//double[] rgbValues = linearRGBValues.clone();
-		shared_array < double >rgbValues;
-		boolean negative = false;
-
-		if (rgbColorSpace == RGBColorSpace::sRGB) {
-		    for (int x = 0; x < 3; x++) {
-			negative = rgbValues[x] < 0;
-			if (negative) {
-			    rgbValues[x] = -rgbValues[x];
-			}
-
-			if (rgbValues[x] <= 0.0031308) {
-			    rgbValues[x] *= 12.92;
-			} else {
-			    rgbValues[x] =
-				1.055 * Math::pow(rgbValues[x],
-						  1. / 2.4) - 0.055;
-			}
-			if (negative) {
-			    rgbValues[x] = -rgbValues[x];
-			}
-		    }
-		} else {
-		    for (int x = 0; x < 3; x++) {
-			negative = rgbValues[x] < 0;
-			if (negative) {
-			    rgbValues[x] = -rgbValues[x];
-			}
-
-			rgbValues[x] =
-			    Math::pow(rgbValues[x],
-				      1. / rgbColorSpace._gamma);
-
-			if (negative) {
-			    rgbValues[x] = -rgbValues[x];
-			}
-		    }
-		};
-
-		return rgbValues;
-	    };
+					  RGBColorSpace rgbColorSpace);
 	};
 
 
@@ -117,98 +82,40 @@ namespace cms {
 	  private:
 	    int _index;
 	    TColor _color;
-	    string _fullname;
+	     std::string _fullname;
 
-	     Channel(int index, TColor color,
-		     string fullname):_index(index), _color(color),
-		_fullname(fullname) {
+	     Channel(int index, TColor color, std::string fullname);
 
-	    };
-
-
-	    static boolean isPrimaryColorChannel(const Channel & channel) {
-		return channel == R || channel == G || channel == B;
-	    };
-	    static boolean isSecondaryColorChannel(const Channel & channel) {
-		return channel == C || channel == M || channel == Y;
-	    };
-	    static vector < Channel > *getChannelVector(int count, ...) {
-		vector < Channel > *result =
-		    new vector < Channel > (count);
-
-		va_list num_list;
-		va_start(num_list, count);
-
-		for (int i = 0; i < count; i++) {
-		    Channel c = va_arg(num_list, Channel);
-		    result->push_back(c);
-		}
-
-		va_end(num_list);
-		return result;
-	    };
+	    static bool isPrimaryColorChannel(const Channel & channel);
+	    static bool isSecondaryColorChannel(const Channel & channel);
+	    static std::vector < Channel > *getChannelVector(int count,
+							     ...);
 
 	  public:
-	    inline bool operator==(const Channel & that) const {
+	     inline bool operator==(const Channel & that) const {
 		return _index == that._index;
 	    };
 	    inline bool operator!=(const Channel & that) const {
 		return !(_index == that._index);
 	    };
-	    Channel() {
-	    };
+	     Channel();
 
 
-	    int getArrayIndex() {
-		return _index - 1;
-	    };
-
+	    int getArrayIndex();
 	    static const Channel & getChannel(boolean R, boolean G,
-					      boolean B) {
-		int index = 0;
-		index += R ? 1 : 0;
-		index += G ? 2 : 0;
-		index += B ? 3 : 0;
-		return getChannel(index);
-	    };
+					      boolean B);
 
-	    static const Channel & getChannel(int chIndex) {
-		switch (chIndex) {
-		case 1:
-		    return R;
-		case 2:
-		    return G;
-		case 3:
-		    return B;
-		case 4:
-		    return Y;
-		case 5:
-		    return M;
-		case 6:
-		    return C;
-		case 7:
-		    return W;
-		    /*default:
-		       return NULL; */
-		}
-	    };
+	    static const Channel & getChannel(int chIndex);
 	    static const Channel & getChannelByArrayIndex(int
-							  arrayIndex) {
-		return getChannel(arrayIndex + 1);
-	    };
-	    boolean isPrimaryColorChannel() {
-		return isPrimaryColorChannel(*this);
-	    };
-
-	    boolean isSecondaryColorChannel() {
-		return isSecondaryColorChannel(*this);
-	    };
-	    static const vector < Channel > &RGBYMCChannel;
-	    static const vector < Channel > &RGBYMCWChannel;
-	    static const vector < Channel > &RGBChannel;
-	    static const vector < Channel > &RGBWChannel;
-	    static const vector < Channel > &WRGBChannel;
-	    static const vector < Channel > &YMCChannel;
+							  arrayIndex);
+	    boolean isPrimaryColorChannel();
+	    boolean isSecondaryColorChannel();
+	    static const std::vector < Channel > &RGBYMCChannel;
+	    static const std::vector < Channel > &RGBYMCWChannel;
+	    static const std::vector < Channel > &RGBChannel;
+	    static const std::vector < Channel > &RGBWChannel;
+	    static const std::vector < Channel > &WRGBChannel;
+	    static const std::vector < Channel > &YMCChannel;
 	};
 
 
@@ -221,8 +128,8 @@ namespace cms {
 	     MaxValue(double max):max(max), integer(false),
 		divisible(false) {
 	    };
-	    MaxValue(double max, bool integer,
-		     bool divisible):max(max), integer(integer),
+	     MaxValue(double max, bool integer,
+		      bool divisible):max(max), integer(integer),
 		divisible(divisible) {
 	    };
 	  public:
@@ -258,46 +165,7 @@ namespace cms {
 	};
 
 
-	class RGBColor:public RGBBase {
-	  public:
-	    double R, G, B;
 
-	     RGBColor():_rgbColorSpace(RGBColorSpace::unknowRGB),
-		_maxValue(MaxValue::Double1) {
-	    };
-	    RGBColor(RGBColorSpace & rgbColorSpace,
-		     shared_array < double >rgb,
-		     MaxValue &
-		     maxValue):_rgbColorSpace(rgbColorSpace),
-		_maxValue(maxValue) {
-
-		if (rgb != NULL) {
-		    setValues(rgb);
-		}
-	    };
-	    RGBColor(int r, int g,
-		     int b):_rgbColorSpace(RGBColorSpace::unknowRGB),
-		_maxValue(MaxValue::Int8Bit) {
-		setValues(r, g, b);
-	    };
-	  RGBColor(RGBColorSpace rgbColorSpace, CIEXYZ XYZ):_rgbColorSpace(rgbColorSpace),
-		_maxValue(MaxValue::
-			  Double1) {
-		//this(colorSpace, fromXYZValues(XYZ.getValues(), colorSpace),
-		//MaxValue.Double1);
-	    }
-
-	    /*static shared_array<double> fromXYZValues(shared_array<double> XYZValues,
-	       RGBBColorSpace rgbColorSpace) {
-	       double[] linearRGBValues = XYZ2LinearRGBValues(XYZValues, colorSpace);
-	       double[] rgbValues = linearToRGBValues(linearRGBValues, colorSpace);
-
-	       return rgbValues;
-	       } */
-	  protected:
-	    MaxValue _maxValue;
-	    RGBColorSpace _rgbColorSpace;
-	};
     };
 };
 #endif

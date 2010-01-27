@@ -1,6 +1,6 @@
 object MainForm: TMainForm
-  Left = 244
-  Top = 240
+  Left = 153
+  Top = 243
   Width = 870
   Height = 640
   Caption = 'CCT Adjustment V3.10'
@@ -12,6 +12,7 @@ object MainForm: TMainForm
   Font.Style = []
   Menu = MainMenu1
   OldCreateOrder = False
+  OnCreate = FormCreate
   PixelsPerInch = 120
   TextHeight = 16
   object MainMenu1: TMainMenu
