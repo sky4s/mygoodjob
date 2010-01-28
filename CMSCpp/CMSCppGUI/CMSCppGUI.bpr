@@ -35,18 +35,17 @@
     <USERDEFINES value="_DEBUG"/>
     <SYSDEFINES value="_RTLDLL;NO_STRICT;USEPACKAGES"/>
     <MAINSOURCE value="CMSCppGUI.cpp"/>
-    <INCLUDEPATH value="..\src\ca210api;..\src\cms\colorspace;..\src\cms;..\src\static\java;..\src\cms\measure;&quot;D:\Program Files\Borland\CBuilder6\Projects&quot;;..\src\static;src;&quot;F:\Program Files\Borland\CBuilder6\Projects&quot;;$(BCB)\include;$(BCB)\include\vcl;..\lib;..\src;..\imports;..\imports\CA200SRVRLib"/>
-    <LIBPATH value="..\src\ca210api;..\src\cms\colorspace;..\src\cms;..\src\static\java;..\src\cms\measure;&quot;D:\Program Files\Borland\CBuilder6\Projects&quot;;..\src\static;..\src;src;&quot;F:\Program Files\Borland\CBuilder6\Projects&quot;;$(BCB)\Projects\Lib;$(BCB)\lib\obj;$(BCB)\lib;..\lib;..\imports\CA200SRVRLib"/>
+    <INCLUDEPATH value="..\imports\CA200SRVRLib;..\src\ca210api;..\src\cms\colorspace;..\src\cms;..\src\static\java;..\src\cms\measure;&quot;D:\Program Files\Borland\CBuilder6\Projects&quot;;..\src\static;src;&quot;F:\Program Files\Borland\CBuilder6\Projects&quot;;..\lib;$(BCB)\include;$(BCB)\include\vcl;..\src;..\imports"/>
+    <LIBPATH value="..\imports\CA200SRVRLib;..\src\ca210api;..\src\cms\colorspace;..\src\cms;..\src\static\java;..\src\cms\measure;&quot;D:\Program Files\Borland\CBuilder6\Projects&quot;;..\src\static;..\src;src;&quot;F:\Program Files\Borland\CBuilder6\Projects&quot;;..\lib;$(BCB)\lib\obj;$(BCB)\lib"/>
     <WARNINGS value="-w-par"/>
     <OTHERFILES value=""/>
   </MACROS>
   <OPTIONS>
-    <IDLCFLAGS value="-I..\src\ca210api -I..\src\cms\colorspace -I..\src\cms 
-      -I..\src\static\java -I..\src\cms\measure 
+    <IDLCFLAGS value="-I..\imports\CA200SRVRLib -I..\src\ca210api -I..\src\cms\colorspace 
+      -I..\src\cms -I..\src\static\java -I..\src\cms\measure 
       -I&quot;D:\Program Files\Borland\CBuilder6\Projects&quot; -I..\src\static -Isrc 
-      -I&quot;F:\Program Files\Borland\CBuilder6\Projects&quot; -I$(BCB)\include 
-      -I$(BCB)\include\vcl -I..\lib -I..\src -I..\imports 
-      -I..\imports\CA200SRVRLib -src_suffix cpp -D_DEBUG -boa"/>
+      -I&quot;F:\Program Files\Borland\CBuilder6\Projects&quot; -I..\lib -I$(BCB)\include 
+      -I$(BCB)\include\vcl -I..\src -I..\imports -src_suffix cpp -D_DEBUG -boa"/>
     <CFLAG1 value="-Od -H=$(BCB)\lib\vcl60.csm -Hc -Vx -Ve -X- -r- -a8 -b- -k -y -v -vi- -c 
       -tW -tWM"/>
     <PFLAGS value="-N2build -N0build -$YD -$W -$O- -$A8 -v -JPHNE -M"/>
@@ -111,36 +110,40 @@ ProductVersion=1.0.0.0
 Comments=
 
 [HistoryLists\hlIncludePath]
-Count=16
-Item0=..\src\ca210api;..\src\cms\colorspace;..\src\cms;..\src\static\java;..\src\cms\measure;D:\Program Files\Borland\CBuilder6\Projects;..\src\static;src;F:\Program Files\Borland\CBuilder6\Projects;$(BCB)\include;$(BCB)\include\vcl;..\lib;..\src;..\imports;..\imports\CA200SRVRLib
-Item1=..\src\ca210api;..\src\cms\colorspace;..\src\cms;..\src\static\java;..\src\cms\measure;D:\Program Files\Borland\CBuilder6\Projects;..\src\static;src;F:\Program Files\Borland\CBuilder6\Projects;$(BCB)\include;$(BCB)\include\vcl;..\lib;..\src;..\imports;..\imports\CA200SRVRLib;D:\WorkSpace\CMSCpp\imports\CA200SRVRLib
-Item2=..\src\ca210api;..\src\cms\colorspace;..\src\cms;..\src\static\java;..\src\cms\measure;D:\Program Files\Borland\CBuilder6\Projects;..\src\static;src;F:\Program Files\Borland\CBuilder6\Projects;$(BCB)\include;$(BCB)\include\vcl;..\lib;..\src;..\imports
-Item3=..\src\ca210api;..\src\cms\colorspace;..\src\cms;..\src\static\java;..\src\cms\measure;D:\Program Files\Borland\CBuilder6\Projects;..\src\static;src;F:\Program Files\Borland\CBuilder6\Projects;$(BCB)\include;$(BCB)\include\vcl;..\lib;..\src;..\import
-Item4=..\src\ca210api;..\src\cms\colorspace;..\src\cms;..\src\static\java;..\src\cms\measure;D:\Program Files\Borland\CBuilder6\Projects;..\src\static;src;F:\Program Files\Borland\CBuilder6\Projects;$(BCB)\include;$(BCB)\include\vcl;..\lib;..\src
-Item5=..\src\cms\colorspace;..\src\cms;..\src\static\java;..\src\cms\measure;D:\Program Files\Borland\CBuilder6\Projects;..\src\static;src;F:\Program Files\Borland\CBuilder6\Projects;$(BCB)\include;$(BCB)\include\vcl;..\lib;..\src
-Item6=D:\Program Files\Borland\CBuilder6\Projects;..\src\static;src;F:\Program Files\Borland\CBuilder6\Projects;$(BCB)\include;$(BCB)\include\vcl;..\lib;..\src
-Item7=D:\Program Files\Borland\CBuilder6\Projects;..\src\cms;..\src\static\java;..\src\cms\measure;..\src\static;src;F:\Program Files\Borland\CBuilder6\Projects;$(BCB)\include;$(BCB)\include\vcl;..\lib;..\src;..\src\cms\colorspace
-Item8=..\src\cms;..\src\static\java;..\src\cms\measure;..\src\static;src;F:\Program Files\Borland\CBuilder6\Projects;$(BCB)\include;$(BCB)\include\vcl;..\lib;..\src;..\src\cms\colorspace
-Item9=..\src\cms;..\src\static\java;..\src\cms\measure;..\src\static;src;F:\Program Files\Borland\CBuilder6\Projects;$(BCB)\include;$(BCB)\include\vcl;..\lib;..\src
-Item10=..\src\static;src;F:\Program Files\Borland\CBuilder6\Projects;$(BCB)\include;$(BCB)\include\vcl;..\lib;..\src
-Item11=..\src\cms;..\src\static;..\src\static\java;..\src\cms\measure;src;F:\Program Files\Borland\CBuilder6\Projects;$(BCB)\include;$(BCB)\include\vcl;..\lib
-Item12=..\src\static\java;..\src\cms\measure;src;F:\Program Files\Borland\CBuilder6\Projects;$(BCB)\include;$(BCB)\include\vcl;..\lib\
-Item13=..\src\static\java;..\src\cms\measure;src;F:\Program Files\Borland\CBuilder6\Projects;$(BCB)\include;$(BCB)\include\vcl;..\lib\boost
-Item14=..\src\static\java;..\src\cms\measure;src;F:\Program Files\Borland\CBuilder6\Projects;$(BCB)\include;$(BCB)\include\vcl
-Item15=..\src\cms\measure;src;F:\Program Files\Borland\CBuilder6\Projects;$(BCB)\include;$(BCB)\include\vcl
+Count=18
+Item0=..\imports\CA200SRVRLib;..\src\ca210api;..\src\cms\colorspace;..\src\cms;..\src\static\java;..\src\cms\measure;D:\Program Files\Borland\CBuilder6\Projects;..\src\static;src;F:\Program Files\Borland\CBuilder6\Projects;..\lib;$(BCB)\include;$(BCB)\include\vcl;..\src;..\imports
+Item1=..\imports\CA200SRVRLib;..\src\ca210api;..\src\cms\colorspace;..\src\cms;..\src\static\java;..\src\cms\measure;D:\Program Files\Borland\CBuilder6\Projects;..\src\static;src;F:\Program Files\Borland\CBuilder6\Projects;$(BCB)\include;$(BCB)\include\vcl;..\lib;..\src;..\imports
+Item2=..\src\ca210api;..\src\cms\colorspace;..\src\cms;..\src\static\java;..\src\cms\measure;D:\Program Files\Borland\CBuilder6\Projects;..\src\static;src;F:\Program Files\Borland\CBuilder6\Projects;$(BCB)\include;$(BCB)\include\vcl;..\lib;..\src;..\imports;..\imports\CA200SRVRLib
+Item3=..\src\ca210api;..\src\cms\colorspace;..\src\cms;..\src\static\java;..\src\cms\measure;D:\Program Files\Borland\CBuilder6\Projects;..\src\static;src;F:\Program Files\Borland\CBuilder6\Projects;$(BCB)\include;$(BCB)\include\vcl;..\lib;..\src;..\imports;..\imports\CA200SRVRLib;D:\WorkSpace\CMSCpp\imports\CA200SRVRLib
+Item4=..\src\ca210api;..\src\cms\colorspace;..\src\cms;..\src\static\java;..\src\cms\measure;D:\Program Files\Borland\CBuilder6\Projects;..\src\static;src;F:\Program Files\Borland\CBuilder6\Projects;$(BCB)\include;$(BCB)\include\vcl;..\lib;..\src;..\imports
+Item5=..\src\ca210api;..\src\cms\colorspace;..\src\cms;..\src\static\java;..\src\cms\measure;D:\Program Files\Borland\CBuilder6\Projects;..\src\static;src;F:\Program Files\Borland\CBuilder6\Projects;$(BCB)\include;$(BCB)\include\vcl;..\lib;..\src;..\import
+Item6=..\src\ca210api;..\src\cms\colorspace;..\src\cms;..\src\static\java;..\src\cms\measure;D:\Program Files\Borland\CBuilder6\Projects;..\src\static;src;F:\Program Files\Borland\CBuilder6\Projects;$(BCB)\include;$(BCB)\include\vcl;..\lib;..\src
+Item7=..\src\cms\colorspace;..\src\cms;..\src\static\java;..\src\cms\measure;D:\Program Files\Borland\CBuilder6\Projects;..\src\static;src;F:\Program Files\Borland\CBuilder6\Projects;$(BCB)\include;$(BCB)\include\vcl;..\lib;..\src
+Item8=D:\Program Files\Borland\CBuilder6\Projects;..\src\static;src;F:\Program Files\Borland\CBuilder6\Projects;$(BCB)\include;$(BCB)\include\vcl;..\lib;..\src
+Item9=D:\Program Files\Borland\CBuilder6\Projects;..\src\cms;..\src\static\java;..\src\cms\measure;..\src\static;src;F:\Program Files\Borland\CBuilder6\Projects;$(BCB)\include;$(BCB)\include\vcl;..\lib;..\src;..\src\cms\colorspace
+Item10=..\src\cms;..\src\static\java;..\src\cms\measure;..\src\static;src;F:\Program Files\Borland\CBuilder6\Projects;$(BCB)\include;$(BCB)\include\vcl;..\lib;..\src;..\src\cms\colorspace
+Item11=..\src\cms;..\src\static\java;..\src\cms\measure;..\src\static;src;F:\Program Files\Borland\CBuilder6\Projects;$(BCB)\include;$(BCB)\include\vcl;..\lib;..\src
+Item12=..\src\static;src;F:\Program Files\Borland\CBuilder6\Projects;$(BCB)\include;$(BCB)\include\vcl;..\lib;..\src
+Item13=..\src\cms;..\src\static;..\src\static\java;..\src\cms\measure;src;F:\Program Files\Borland\CBuilder6\Projects;$(BCB)\include;$(BCB)\include\vcl;..\lib
+Item14=..\src\static\java;..\src\cms\measure;src;F:\Program Files\Borland\CBuilder6\Projects;$(BCB)\include;$(BCB)\include\vcl;..\lib\
+Item15=..\src\static\java;..\src\cms\measure;src;F:\Program Files\Borland\CBuilder6\Projects;$(BCB)\include;$(BCB)\include\vcl;..\lib\boost
+Item16=..\src\static\java;..\src\cms\measure;src;F:\Program Files\Borland\CBuilder6\Projects;$(BCB)\include;$(BCB)\include\vcl
+Item17=..\src\cms\measure;src;F:\Program Files\Borland\CBuilder6\Projects;$(BCB)\include;$(BCB)\include\vcl
 
 [HistoryLists\hlLibraryPath]
-Count=10
-Item0=..\src\ca210api;..\src\cms\colorspace;..\src\cms;..\src\static\java;..\src\cms\measure;D:\Program Files\Borland\CBuilder6\Projects;..\src\static;..\src;src;F:\Program Files\Borland\CBuilder6\Projects;$(BCB)\Projects\Lib;$(BCB)\lib\obj;$(BCB)\lib;..\lib;..\imports\CA200SRVRLib
-Item1=..\src\ca210api;..\src\cms\colorspace;..\src\cms;..\src\static\java;..\src\cms\measure;D:\Program Files\Borland\CBuilder6\Projects;..\src\static;..\src;src;F:\Program Files\Borland\CBuilder6\Projects;$(BCB)\Projects\Lib;$(BCB)\lib\obj;$(BCB)\lib;..\lib
-Item2=..\src\cms\colorspace;..\src\cms;..\src\static\java;..\src\cms\measure;D:\Program Files\Borland\CBuilder6\Projects;..\src\static;..\src;src;F:\Program Files\Borland\CBuilder6\Projects;$(BCB)\Projects\Lib;$(BCB)\lib\obj;$(BCB)\lib;..\lib
-Item3=..\src\cms\colorspace;..\src\cms;..\src\static\java;..\src\cms\measure;D:\Program Files\Borland\CBuilder6\Projects;..\src\static;..\src;src;F:\Program Files\Borland\CBuilder6\Projects;$(BCB)\Projects\Lib;$(BCB)\lib\obj;$(BCB)\lib
-Item4=D:\Program Files\Borland\CBuilder6\Projects;..\src\static;..\src;src;F:\Program Files\Borland\CBuilder6\Projects;$(BCB)\Projects\Lib;$(BCB)\lib\obj;$(BCB)\lib
-Item5=D:\Program Files\Borland\CBuilder6\Projects;..\src\cms\colorspace;..\src\cms;..\src\static;..\src\static\java;..\src\cms\measure;src;F:\Program Files\Borland\CBuilder6\Projects;$(BCB)\Projects\Lib;$(BCB)\lib\obj;$(BCB)\lib;..\src
-Item6=D:\Program Files\Borland\CBuilder6\Projects;..\src\cms\colorspace;..\src\cms;..\src\static;..\src\static\java;..\src\cms\measure;src;F:\Program Files\Borland\CBuilder6\Projects;$(BCB)\Projects\Lib;$(BCB)\lib\obj;$(BCB)\lib
-Item7=..\src\cms;..\src\static;..\src\static\java;..\src\cms\measure;src;F:\Program Files\Borland\CBuilder6\Projects;$(BCB)\Projects\Lib;$(BCB)\lib\obj;$(BCB)\lib
-Item8=..\src\static\java;..\src\cms\measure;src;F:\Program Files\Borland\CBuilder6\Projects;$(BCB)\Projects\Lib;$(BCB)\lib\obj;$(BCB)\lib
-Item9=..\src\cms\measure;src;F:\Program Files\Borland\CBuilder6\Projects;$(BCB)\Projects\Lib;$(BCB)\lib\obj;$(BCB)\lib
+Count=12
+Item0=..\imports\CA200SRVRLib;..\src\ca210api;..\src\cms\colorspace;..\src\cms;..\src\static\java;..\src\cms\measure;D:\Program Files\Borland\CBuilder6\Projects;..\src\static;..\src;src;F:\Program Files\Borland\CBuilder6\Projects;..\lib;$(BCB)\lib\obj;$(BCB)\lib
+Item1=..\imports\CA200SRVRLib;..\src\ca210api;..\src\cms\colorspace;..\src\cms;..\src\static\java;..\src\cms\measure;D:\Program Files\Borland\CBuilder6\Projects;..\src\static;..\src;src;F:\Program Files\Borland\CBuilder6\Projects;$(BCB)\Projects\Lib;$(BCB)\lib\obj;$(BCB)\lib;..\lib
+Item2=..\src\ca210api;..\src\cms\colorspace;..\src\cms;..\src\static\java;..\src\cms\measure;D:\Program Files\Borland\CBuilder6\Projects;..\src\static;..\src;src;F:\Program Files\Borland\CBuilder6\Projects;$(BCB)\Projects\Lib;$(BCB)\lib\obj;$(BCB)\lib;..\lib;..\imports\CA200SRVRLib
+Item3=..\src\ca210api;..\src\cms\colorspace;..\src\cms;..\src\static\java;..\src\cms\measure;D:\Program Files\Borland\CBuilder6\Projects;..\src\static;..\src;src;F:\Program Files\Borland\CBuilder6\Projects;$(BCB)\Projects\Lib;$(BCB)\lib\obj;$(BCB)\lib;..\lib
+Item4=..\src\cms\colorspace;..\src\cms;..\src\static\java;..\src\cms\measure;D:\Program Files\Borland\CBuilder6\Projects;..\src\static;..\src;src;F:\Program Files\Borland\CBuilder6\Projects;$(BCB)\Projects\Lib;$(BCB)\lib\obj;$(BCB)\lib;..\lib
+Item5=..\src\cms\colorspace;..\src\cms;..\src\static\java;..\src\cms\measure;D:\Program Files\Borland\CBuilder6\Projects;..\src\static;..\src;src;F:\Program Files\Borland\CBuilder6\Projects;$(BCB)\Projects\Lib;$(BCB)\lib\obj;$(BCB)\lib
+Item6=D:\Program Files\Borland\CBuilder6\Projects;..\src\static;..\src;src;F:\Program Files\Borland\CBuilder6\Projects;$(BCB)\Projects\Lib;$(BCB)\lib\obj;$(BCB)\lib
+Item7=D:\Program Files\Borland\CBuilder6\Projects;..\src\cms\colorspace;..\src\cms;..\src\static;..\src\static\java;..\src\cms\measure;src;F:\Program Files\Borland\CBuilder6\Projects;$(BCB)\Projects\Lib;$(BCB)\lib\obj;$(BCB)\lib;..\src
+Item8=D:\Program Files\Borland\CBuilder6\Projects;..\src\cms\colorspace;..\src\cms;..\src\static;..\src\static\java;..\src\cms\measure;src;F:\Program Files\Borland\CBuilder6\Projects;$(BCB)\Projects\Lib;$(BCB)\lib\obj;$(BCB)\lib
+Item9=..\src\cms;..\src\static;..\src\static\java;..\src\cms\measure;src;F:\Program Files\Borland\CBuilder6\Projects;$(BCB)\Projects\Lib;$(BCB)\lib\obj;$(BCB)\lib
+Item10=..\src\static\java;..\src\cms\measure;src;F:\Program Files\Borland\CBuilder6\Projects;$(BCB)\Projects\Lib;$(BCB)\lib\obj;$(BCB)\lib
+Item11=..\src\cms\measure;src;F:\Program Files\Borland\CBuilder6\Projects;$(BCB)\Projects\Lib;$(BCB)\lib\obj;$(BCB)\lib
 
 [HistoryLists\hlDebugSourcePath]
 Count=1

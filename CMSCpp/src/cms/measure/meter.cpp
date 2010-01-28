@@ -65,7 +65,8 @@ namespace cms {
 
 	    shared_ptr < string > CA210::getCalibrationDescription() {
 		return shared_ptr < string >
-		    (new string
+		    (new
+		     string
 		     ("Set the pointing ring to the 0-CAL position."));
 	    };
 
@@ -109,6 +110,9 @@ namespace cms {
 		_CA210API.close();
 	    };
 	    ca210api::CA210API CA210::_CA210API;
+	    ca210api::CA210API CA210::getCA210API() {
+		return _CA210API;
+	    };
 	    //==================================================================
 	};
     };

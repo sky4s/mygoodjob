@@ -23,6 +23,8 @@ namespace ca210api {
 	 MeasureResult();
 	 MeasureResult(float x, float y, float Lv, float X, float Y,
 		       float Z, long cct, float duv);
+	float_array getxyYValues();
+	float_array getXYZValues();
     };
 
     enum SyncMode { NTSC = 0, PAL, EXT, UNIV
@@ -58,7 +60,7 @@ namespace ca210api {
 
 	void close();
 	 boost::shared_array < float >triggerMeasurement();
-	 boost::shared_ptr < MeasureResult > getMeasureResult();
+	 boost::shared_ptr < MeasureResult > triggerMeasureResult();
 
 	// Options
 	void setSyncMode(SyncMode mode);
@@ -79,6 +81,9 @@ namespace ca210api {
 	void resetLvxyCalMode();
 	void setLvxyCalData(lClr lclr, float xValue, float yValue,
 			    float YValue);
+
+	void setLvxyCalData(lClr lclr,
+			    boost::shared_array < float >xyYValue);
 
 	long enter();
 

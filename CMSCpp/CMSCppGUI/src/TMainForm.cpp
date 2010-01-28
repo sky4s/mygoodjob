@@ -15,8 +15,7 @@
 #pragma resource "*.dfm"
 TMainForm *MainForm;
 //---------------------------------------------------------------------------
-__fastcall TMainForm::TMainForm(TComponent * Owner)
-:TForm(Owner)
+__fastcall TMainForm::TMainForm(TComponent * Owner):TForm(Owner)
 {
 }
 
@@ -24,30 +23,30 @@ __fastcall TMainForm::TMainForm(TComponent * Owner)
 
 void __fastcall TMainForm::About1Click(TObject * Sender)
 {
-    AboutBox->ShowModal();
+  AboutBox->ShowModal();
 }
 
 //---------------------------------------------------------------------------
 
 void __fastcall TMainForm::Exit1Click(TObject * Sender)
 {
-    this->Close();
+  this->Close();
 }
 
 //---------------------------------------------------------------------------
 
 void __fastcall TMainForm::TargetWhite1Click(TObject * Sender)
 {
-    TargetWhiteForm->ShowModal();
+  TargetWhiteForm->ShowModal();
 }
 
 //---------------------------------------------------------------------------
 
 void __fastcall TMainForm::FormCreate(TObject * Sender)
 {
-    using namespace cms::measure::meter;
-    using namespace boost;
-    meter = shared_ptr < Meter > (new CA210());
+  /*using namespace cms::measure::meter;
+     using namespace boost;
+     meter = shared_ptr < Meter > (new CA210()); */
 }
 
 //---------------------------------------------------------------------------

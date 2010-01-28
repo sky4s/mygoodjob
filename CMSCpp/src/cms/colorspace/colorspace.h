@@ -26,10 +26,10 @@ namespace cms {
 		0;
 	     ColorSpace();
 	  public:
-	    static boost::shared_array < double >
+	    static double_array
 		cartesian2polarCoordinatesValues(boost::shared_array <
 						 double >cartesianValues);
-	    static boost::shared_array < double >
+	    static double_array
 		cartesian2polarCoordinatesValues(double x, double y);
 
 	    bool equalsValues(ColorSpace & colorSpace);

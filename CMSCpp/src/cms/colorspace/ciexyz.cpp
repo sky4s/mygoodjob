@@ -188,7 +188,7 @@ namespace cms {
 
 	void CIEXYZ::normalize(NormalizeY normalizeY) {
 	    shared_array < double >values =
-		getValues(shared_array < double >(new double[3]),
+		getValues(double_array(new double[3]),
 			  normalizeY);
 	    setValues(values);
 	    _normalizeY = normalizeY;
