@@ -15,7 +15,9 @@
 
 namespace cms {
     namespace colorspace {
-	class CIExyY;
+	namespace independ {
+	    class CIExyY;
+	};
     };
 };
 namespace cms {
@@ -37,8 +39,10 @@ namespace cms {
 
     class CorrelatedColorTemperature:public java::lang::Object {
       public:
-	static boost::shared_ptr < cms::colorspace::CIExyY >
-	    CCT2DIlluminantxyY(int tempK);
+	static bptr < Indep::CIExyY > CCT2DIlluminantxyY(int tempK);
+
+
+	static double xy2CCTByMcCamyFloat(bptr < Indep::CIExyY > xyY);
     };
     class DeltaE:public java::lang::Object {
     };
@@ -64,7 +68,7 @@ namespace cms {
 
     class ValuePropertyIF {
       public:
-	virtual boost::shared_array < double >getValues() = 0;
+	virtual double_array getValues() = 0;
 	virtual void setValues(boost::shared_array < double >values) = 0;
 	virtual boost::shared_array <
 	    double >getValues(boost::shared_array < double >values) = 0;

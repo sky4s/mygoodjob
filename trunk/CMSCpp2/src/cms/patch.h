@@ -15,8 +15,12 @@ namespace cms {
 
     class Spectra;
     namespace colorspace {
-	class RGBColor;
-	class CIEXYZ;
+	namespace depend {
+	    class RGBColor;
+	};
+	namespace independ {
+	    class CIEXYZ;
+	};
     };
 };
 
@@ -32,23 +36,23 @@ namespace cms {
     class Patch:public java::lang::Object, util::NameIF {
 
       protected:
-	boost::shared_ptr < std::string > name;
+	bptr < std::string > name;
 	//CIELab _Lab = null;
-	boost::shared_ptr < cms::colorspace::CIEXYZ > XYZ;
-	boost::shared_ptr < cms::colorspace::CIEXYZ > normalizedXYZ;
-	boost::shared_ptr < cms::colorspace::RGBColor > rgb;
+	bptr < Indep::CIEXYZ > XYZ;
+	bptr < Indep::CIEXYZ > normalizedXYZ;
+	bptr < Dep::RGBColor > rgb;
 	//shared_ptr < RGBColor > originalRGB = null;
-	boost::shared_ptr < Spectra > spectra;
-	boost::shared_ptr < Spectra > reflectSpectra;
+	bptr < Spectra > spectra;
+	bptr < Spectra > reflectSpectra;
       public:
-	Patch(boost::shared_ptr < std::string > name,
-	      boost::shared_ptr < cms::colorspace::CIEXYZ > XYZ,
-	      boost::shared_ptr < cms::colorspace::CIEXYZ > normalizedXYZ,
-	      boost::shared_ptr < cms::colorspace::RGBColor > rgb);
-	boost::shared_ptr < std::string > getName();
-	boost::shared_ptr < cms::colorspace::CIEXYZ > getXYZ();
-	boost::shared_ptr < cms::colorspace::CIEXYZ > getNormalizedXYZ();
-	boost::shared_ptr < cms::colorspace::RGBColor > getRGB();
+	Patch(bptr < std::string > name,
+	      bptr < Indep::CIEXYZ > XYZ,
+	      bptr < Indep::CIEXYZ > normalizedXYZ,
+	      bptr < Dep::RGBColor > rgb);
+	bptr < std::string > getName();
+	bptr < Indep::CIEXYZ > getXYZ();
+	bptr < Indep::CIEXYZ > getNormalizedXYZ();
+	bptr < Dep::RGBColor > getRGB();
     };
 
 };

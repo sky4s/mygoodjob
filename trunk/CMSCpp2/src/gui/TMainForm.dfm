@@ -1,20 +1,20 @@
 object MainForm: TMainForm
-  Left = 153
-  Top = 243
+  Left = 246
+  Top = 211
   Width = 870
   Height = 640
-  Caption = 'CCT Adjustment V3.10'
+  Caption = 'CCT Adjustment v3'
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
-  Font.Height = -10
+  Font.Height = -13
   Font.Name = 'MS Sans Serif'
   Font.Style = []
   Menu = MainMenu1
   OldCreateOrder = False
   OnCreate = FormCreate
-  PixelsPerInch = 96
-  TextHeight = 13
+  PixelsPerInch = 120
+  TextHeight = 16
   object MainMenu1: TMainMenu
     object MatrixCalibration1: TMenuItem
       Caption = 'Matrix Calibration'

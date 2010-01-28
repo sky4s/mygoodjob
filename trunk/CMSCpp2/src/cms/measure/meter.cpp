@@ -2,7 +2,7 @@
 
 //#include <java/lang.h>
 //#include <cms/colorformat/logo.h>
-#include <string>
+//#include <string>
 
 namespace cms {
     namespace measure {
@@ -57,7 +57,7 @@ namespace cms {
 	    };
 
 	    void CA210::calibrate() {
-		_CA210API.calibrate();
+		_CA210API->calibrate();
 		//calibrateTime = new Date();
 		measureCount = 0;
 	    };
@@ -74,20 +74,20 @@ namespace cms {
 		//using namespace ca210api;
 		switch (patchIntensity) {
 		case Bleak:
-		    _CA210API.setAveragingMode(ca210api::Fast);
+		    _CA210API->setAveragingMode(ca210api::Fast);
 		    break;
 		case Bright:
-		    _CA210API.setAveragingMode(ca210api::Slow);
+		    _CA210API->setAveragingMode(ca210api::Slow);
 		    break;
 		case Auto:
-		    _CA210API.setAveragingMode(ca210api::Auto);
+		    _CA210API->setAveragingMode(ca210api::Auto);
 		    break;
 		}
 	    };
 	    shared_array < double >CA210::triggerMeasurementInXYZ() {
 		measureCount++;
 		shared_array < float >values =
-		    _CA210API.triggerMeasurement();
+		    _CA210API->triggerMeasurement();
 		shared_array < double >result(new double[3]);
 		result[0] = values[0];
 		result[1] = values[1];
@@ -107,11 +107,21 @@ namespace cms {
 		return Instr::CA210;
 	    };
 	    void CA210::close() {
-		_CA210API.close();
+		_CA210API->close();
 	    };
-	    ca210api::CA210API CA210::_CA210API;
-	    ca210api::CA210API CA210::getCA210API() {
+	    //ca210api::CA210API CA210::_CA210API;
+	    bptr < ca210api::CA210API > CA210::getCA210API() {
 		return _CA210API;
+	    };
+	    bptr < ca210api::CA210API > CA210::_CA210API;
+	    void CA210::initCA210API() {
+		_CA210API =
+		    bptr < ca210api::CA210API > (new ca210api::CA210API());
+	    };
+	    CA210::CA210() {
+		if (NULL == _CA210API) {
+		    initCA210API();
+		}
 	    };
 	    //==================================================================
 	};

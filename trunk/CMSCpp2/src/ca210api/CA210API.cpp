@@ -21,6 +21,13 @@ namespace ca210api {
 				 float duv):x(x), y(y), Lv(Lv), X(X), Y(Y),
 	Z(Z), cct(cct), duv(duv) {
     };
+    MeasureResult::MeasureResult(float x, float y, float Lv, float X,
+				 float Y, float Z, long cct,
+				 float duv, float R, float G,
+				 float B):x(x), y(y), Lv(Lv), X(X), Y(Y),
+	Z(Z), cct(cct), duv(duv), R(R), G(G), B(B) {
+    };
+
     float_array MeasureResult::getxyYValues() {
 	float_array result(new float[3]);
 	result[0] = x;
@@ -52,15 +59,15 @@ namespace ca210api {
     void CA210API::close() {
 
     };
-    shared_array < float >CA210API::triggerMeasurement() {
-	shared_ptr < MeasureResult > result = this->triggerMeasureResult();
-	shared_array < float >measureValues(new float[3]);
-	measureValues[0] = result->X;
-	measureValues[1] = result->Y;
-	measureValues[2] = result->Z;
+    float_array CA210API::triggerMeasurement() {
+	this->triggerMeasureResult();
+	float_array measureValues(new float[3]);
+	measureValues[0] = measureResult->X;
+	measureValues[1] = measureResult->Y;
+	measureValues[2] = measureResult->Z;
 	return measureValues;
     };
-    shared_ptr < MeasureResult > CA210API::triggerMeasureResult() {
+    bptr < MeasureResult > CA210API::triggerMeasureResult() {
 	ca.Measure(0);
 	float x = probe.get_sx();
 	float y = probe.get_sy();
@@ -70,9 +77,16 @@ namespace ca210api {
 	float Z = probe.get_Z();
 	long cct = probe.get_T();
 	float duv = probe.get_duv();
-	shared_ptr < MeasureResult >
-	    result(new MeasureResult(x, y, Lv, X, Y, Z, cct, duv));
-	return result;
+	float R = probe.get_R();
+	float G = probe.get_G();
+	float B = probe.get_B();
+	measureResult = bptr < MeasureResult >
+	    (new MeasureResult(x, y, Lv, X, Y, Z, cct, duv, R, G, B));
+	return measureResult;
+    };
+
+    bptr < MeasureResult > CA210API::getMeasureResult() {
+	return measureResult;
     };
 
     // Options

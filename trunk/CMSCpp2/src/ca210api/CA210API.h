@@ -20,9 +20,13 @@ namespace ca210api {
 	float X, Y, Z;
 	long cct;
 	float duv;
+	float R, G, B;
 	 MeasureResult();
 	 MeasureResult(float x, float y, float Lv, float X, float Y,
 		       float Z, long cct, float duv);
+	 MeasureResult(float x, float y, float Lv, float X, float Y,
+		       float Z, long cct, float duv, float R, float G,
+		       float B);
 	float_array getxyYValues();
 	float_array getXYZValues();
     };
@@ -53,14 +57,16 @@ namespace ca210api {
 	ICaDisp ca;
 	IProbeDisp probe;
 	IMemoryDisp memory;
-
+	 bptr < MeasureResult > measureResult;
       public:
+
+	 bptr < MeasureResult > getMeasureResult();
 	 CA210API();
 	void calibrate();
 
 	void close();
-	 boost::shared_array < float >triggerMeasurement();
-	 boost::shared_ptr < MeasureResult > triggerMeasureResult();
+	float_array triggerMeasurement();
+	 bptr < MeasureResult > triggerMeasureResult();
 
 	// Options
 	void setSyncMode(SyncMode mode);

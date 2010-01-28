@@ -23,16 +23,30 @@
 //==============================================================================
 
 //==============================================================================
+//簡化java.lang使用上的巨集
+//==============================================================================
+#define jObject java::lang::Object
+//==============================================================================
+
+//==============================================================================
 //簡化boost::smart_ptr使用上的巨集
 //==============================================================================
-#define vector_double_ptr boost::shared_ptr < std::vector < double > >
-#define vector_string_ptr boost::shared_ptr < std::vector < std::string > >
-#define double_array boost::shared_array<double>
-#define float_array boost::shared_array<float>
+#define bptr boost::shared_ptr
+#define barray boost::shared_array
 
-#define string_ptr boost::shared_ptr < std::string >
+#define vector_double_ptr bptr < std::vector < double > >
+#define vector_string_ptr bptr < std::vector < std::string > >
+#define double_array barray <double>
+#define float_array barray <float>
+#define float_array barray <float>
+
+#define string_ptr bptr < std::string >
 #define nil_string_ptr string_ptr ((std::string*)NULL)
 //==============================================================================
+
+#define Dep cms::colorspace::depend
+#define Indep cms::colorspace::independ
+
 
 /*
  java->C++轉換原則
@@ -105,6 +119,7 @@ namespace java {
 	    static const double PI;
 	    static double cos(double x);
 	    static double sin(double x);
+	    static double sqr(double v);
 	};
 
 

@@ -8,11 +8,14 @@
 #include <StdCtrls.hpp>
 #include <Forms.hpp>
 #include <Menus.hpp>
-#include <boost/shared_ptr.hpp>
+
+#include <java/lang.h>
 //---------------------------------------------------------------------------
 namespace cms {
     namespace colorspace {
-	class RGBColor;
+	namespace depend {
+	    class RGBColor;
+	};
     };
 };
 
@@ -23,7 +26,7 @@ class TMeasureWindow:public TForm {
   public:			// User declarations
      __fastcall TMeasureWindow(TComponent * Owner);
     void setRGB(int r, int g, int b);
-    void setRGB(boost::shared_ptr < cms::colorspace::RGBColor > rgb);
+    void setRGB(bptr < Dep::RGBColor > rgb);
 };
 //---------------------------------------------------------------------------
 extern PACKAGE TMeasureWindow *MeasureWindow;

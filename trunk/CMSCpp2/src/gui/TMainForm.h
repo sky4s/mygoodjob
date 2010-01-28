@@ -29,11 +29,10 @@ class TMainForm:public TForm {
     void __fastcall TargetWhite1Click(TObject * Sender);
     void __fastcall FormCreate(TObject * Sender);
   private:			// User declarations
+     bool linkCA210;
   public:			// User declarations
      __fastcall TMainForm(TComponent * Owner);
-    //boost::shared_ptr < cms::measure::meter::CA210 > meter;
-    //boost::shared_ptr < cms::measure::meter::Meter > meter;
-    boost:: shared_ptr < cms::measure::meter::Meter > meter;
+     bptr < cms::measure::meter::Meter > meter;
 };
 //---------------------------------------------------------------------------
 extern PACKAGE TMainForm *MainForm;

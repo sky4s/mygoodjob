@@ -41,8 +41,7 @@ void TMeasureWindow::setRGB(int r, int g, int b)
     this->Update();
 }
 
-void TMeasureWindow::setRGB(boost::shared_ptr < cms::colorspace::RGBColor >
-			    rgb)
+void TMeasureWindow::setRGB(bptr < Dep::RGBColor > rgb)
 {
     int r = static_cast < int >(rgb->R);
     int g = static_cast < int >(rgb->G);

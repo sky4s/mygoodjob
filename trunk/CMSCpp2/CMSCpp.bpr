@@ -6,14 +6,14 @@
     <PROJECT value="build\CMSCpp.exe"/>
     <OBJFILES value="build\Unit1.obj build\lang.obj build\util.obj build\CA210API.obj 
       build\core.obj build\colorspace.obj build\independ.obj build\depend.obj 
-      build\TMeasureWindow.obj build\logo.obj build\MeterMeasurement.obj 
-      build\patch.obj build\meter.obj build\ciexyz.obj build\rgb.obj 
-      build\CA200SRVRLib_TLB.obj build\CA200SRVRLib_OCX.obj"/>
+      build\logo.obj build\MeterMeasurement.obj build\patch.obj build\meter.obj 
+      build\ciexyz.obj build\rgb.obj build\CA200SRVRLib_TLB.obj 
+      build\CA200SRVRLib_OCX.obj build\analyzer.obj"/>
     <RESFILES value="CMSCpp.res"/>
     <IDLFILES value=""/>
     <IDLGENFILES value=""/>
     <DEFFILE value=""/>
-    <RESDEPEN value="$(RESFILES) src\cms\measure\TMeasureWindow.dfm"/>
+    <RESDEPEN value="$(RESFILES)"/>
     <LIBFILES value=""/>
     <LIBRARIES value=""/>
     <SPARELIBS value="rtl.lib vcl.lib"/>
@@ -24,7 +24,7 @@
       inetdbbde.bpi inetdbxpress.bpi inetdb.bpi nmfast.bpi webdsnap.bpi 
       bcbie.bpi websnap.bpi soaprtl.bpi dclocx.bpi dbexpress.bpi dbxcds.bpi 
       indy.bpi bcb2kaxserver.bpi bcbindent.bpi"/>
-    <PATHCPP value=".;src;src\static\java;src\static;src\ca210api;src\cms;src\cms\colorspace;src\cms\colorspace;src\cms\colorspace;src\cms\measure;src\cms\colorformat;src\cms\measure;src\cms;src\cms\measure;src\cms\colorspace;src\cms\colorspace;imports\CA200SRVRLib;imports\CA200SRVRLib"/>
+    <PATHCPP value=".;src;src\static\java;src\static;src\ca210api;src\cms;src\cms\colorspace;src\cms\colorspace;src\cms\colorspace;src\cms\colorformat;src\cms\measure;src\cms;src\cms\measure;src\cms\colorspace;src\cms\colorspace;imports\CA200SRVRLib;imports\CA200SRVRLib;src\cms\measure"/>
     <PATHPAS value=".;"/>
     <PATHRC value=".;"/>
     <PATHASM value=".;"/>
@@ -46,8 +46,8 @@
       -I&quot;F:\Program Files\Borland\CBuilder6\Projects&quot; 
       -I&quot;D:\Program Files\Borland\CBuilder6\Projects&quot; -I$(BCB)\include 
       -I$(BCB)\include\vcl -src_suffix cpp -D_DEBUG -boa"/>
-    <CFLAG1 value="-O2 -H=lib\cmscpp.csm -Hc -Vx -Ve -X- -r- -a8 -6 -b- -k -y -v -vi- -tWC 
-      -tWM -c"/>
+    <CFLAG1 value="-O2 -H=$(BCB)\lib\vcl60.csm -Hc -Vx -Ve -X- -r- -a8 -6 -b- -k -y -v -vi- 
+      -tWC -tWM -c"/>
     <PFLAGS value="-N2build -N0build -$YD -$W -$O- -$A8 -v -JPHNE -M"/>
     <RFLAGS value=""/>
     <AFLAGS value="/mx /w2 /zd"/>
@@ -71,7 +71,6 @@
       <FILE FILENAME="src\cms\colorspace\colorspace.cpp" FORMNAME="" UNITNAME="colorspace" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="src\cms\colorspace\independ.cpp" FORMNAME="" UNITNAME="independ" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="src\cms\colorspace\depend.cpp" FORMNAME="" UNITNAME="depend" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="src\cms\measure\TMeasureWindow.cpp" FORMNAME="MeasureWindow" UNITNAME="TMeasureWindow" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="src\cms\colorformat\logo.cpp" FORMNAME="" UNITNAME="logo" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="src\cms\measure\MeterMeasurement.cpp" FORMNAME="" UNITNAME="MeterMeasurement" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="src\cms\patch.cpp" FORMNAME="" UNITNAME="patch" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
@@ -80,6 +79,7 @@
       <FILE FILENAME="src\cms\colorspace\rgb.cpp" FORMNAME="" UNITNAME="rgb" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="imports\CA200SRVRLib\CA200SRVRLib_TLB.cpp" FORMNAME="" UNITNAME="CA200SRVRLib_TLB.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="imports\CA200SRVRLib\CA200SRVRLib_OCX.cpp" FORMNAME="" UNITNAME="CA200SRVRLib_OCX.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="src\cms\measure\analyzer.cpp" FORMNAME="" UNITNAME="analyzer" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
   </FILELIST>
   <BUILDTOOLS>
   </BUILDTOOLS>
@@ -131,20 +131,21 @@ Item13=src\static;src\static\java;src;D:\WorkSpace\CMSCpp\src;$(BCB)\include;$(B
 Item14=src\static;src\static\java;src;D:\WorkSpace\CMSCpp\src;$(BCB)\include;$(BCB)\include\vcl
 
 [HistoryLists\hlLibraryPath]
-Count=13
-Item0=src;src\static;imports;F:\Program Files\Borland\CBuilder6\Projects;D:\Program Files\Borland\CBuilder6\Projects;$(BCB)\Projects\Lib;$(BCB)\lib\obj;$(BCB)\lib
-Item1=imports\CA200SRVRLib;F:\Program Files\Borland\CBuilder6\Projects;src\cms\colorformat;src\cms\measure;D:\Program Files\Borland\CBuilder6\Projects;src\cms\colorspace;src\cms;src\ca210api;src\static\java;src\static;$(BCB)\Projects\Lib;src;$(BCB)\lib\obj;$(BCB)\lib
-Item2=src\cms\colorformat;src\cms\measure;D:\Program Files\Borland\CBuilder6\Projects;src\cms\colorspace;src\cms;src\ca210api;src\static\java;src\static;$(BCB)\Projects\Lib;src;$(BCB)\lib\obj;$(BCB)\lib
-Item3=src\cms\measure;D:\Program Files\Borland\CBuilder6\Projects;src\cms\colorspace;src\cms;src\ca210api;src\static\java;src\static;$(BCB)\Projects\Lib;src;$(BCB)\lib\obj;$(BCB)\lib
-Item4=D:\Program Files\Borland\CBuilder6\Projects;src\cms\colorspace;src\cms;src\ca210api;src\static\java;src\static;$(BCB)\Projects\Lib;src;$(BCB)\lib\obj;$(BCB)\lib
-Item5=src\cms\colorspace;src\cms;src\ca210api;src\static\java;src\static;$(BCB)\Projects\Lib;src;$(BCB)\lib\obj;$(BCB)\lib
-Item6=src\static;$(BCB)\Projects\Lib;src;$(BCB)\lib\obj;$(BCB)\lib
-Item7=src\cms\colorspace;src\cms;src\ca210api;src\static;src\static\java;$(BCB)\Projects\Lib;src;$(BCB)\lib\obj;$(BCB)\lib
-Item8=src\cms;src\ca210api;src\static;src\static\java;$(BCB)\Projects\Lib;src;$(BCB)\lib\obj;$(BCB)\lib
-Item9=$(BCB)\Projects\Lib;src;$(BCB)\lib\obj;$(BCB)\lib
-Item10=src\cms;src\ca210api;src\static;$(BCB)\Projects\Lib;src\static\java;src;$(BCB)\lib\obj;$(BCB)\lib
-Item11=src\ca210api;src\static;$(BCB)\Projects\Lib;src\static\java;src;$(BCB)\lib\obj;$(BCB)\lib
-Item12=src\static;$(BCB)\Projects\Lib;src\static\java;src;D:\WorkSpace\CMSCpp\src;$(BCB)\lib\obj;$(BCB)\lib
+Count=14
+Item0=imports\CA200SRVRLib;src\cms\colorformat;src\cms\measure;src\cms\colorspace;src\cms;src\ca210api;src\static\java;src;src\static;imports;F:\Program Files\Borland\CBuilder6\Projects;D:\Program Files\Borland\CBuilder6\Projects;$(BCB)\Projects\Lib;$(BCB)\lib\obj;$(BCB)\lib
+Item1=src;src\static;imports;F:\Program Files\Borland\CBuilder6\Projects;D:\Program Files\Borland\CBuilder6\Projects;$(BCB)\Projects\Lib;$(BCB)\lib\obj;$(BCB)\lib
+Item2=imports\CA200SRVRLib;F:\Program Files\Borland\CBuilder6\Projects;src\cms\colorformat;src\cms\measure;D:\Program Files\Borland\CBuilder6\Projects;src\cms\colorspace;src\cms;src\ca210api;src\static\java;src\static;$(BCB)\Projects\Lib;src;$(BCB)\lib\obj;$(BCB)\lib
+Item3=src\cms\colorformat;src\cms\measure;D:\Program Files\Borland\CBuilder6\Projects;src\cms\colorspace;src\cms;src\ca210api;src\static\java;src\static;$(BCB)\Projects\Lib;src;$(BCB)\lib\obj;$(BCB)\lib
+Item4=src\cms\measure;D:\Program Files\Borland\CBuilder6\Projects;src\cms\colorspace;src\cms;src\ca210api;src\static\java;src\static;$(BCB)\Projects\Lib;src;$(BCB)\lib\obj;$(BCB)\lib
+Item5=D:\Program Files\Borland\CBuilder6\Projects;src\cms\colorspace;src\cms;src\ca210api;src\static\java;src\static;$(BCB)\Projects\Lib;src;$(BCB)\lib\obj;$(BCB)\lib
+Item6=src\cms\colorspace;src\cms;src\ca210api;src\static\java;src\static;$(BCB)\Projects\Lib;src;$(BCB)\lib\obj;$(BCB)\lib
+Item7=src\static;$(BCB)\Projects\Lib;src;$(BCB)\lib\obj;$(BCB)\lib
+Item8=src\cms\colorspace;src\cms;src\ca210api;src\static;src\static\java;$(BCB)\Projects\Lib;src;$(BCB)\lib\obj;$(BCB)\lib
+Item9=src\cms;src\ca210api;src\static;src\static\java;$(BCB)\Projects\Lib;src;$(BCB)\lib\obj;$(BCB)\lib
+Item10=$(BCB)\Projects\Lib;src;$(BCB)\lib\obj;$(BCB)\lib
+Item11=src\cms;src\ca210api;src\static;$(BCB)\Projects\Lib;src\static\java;src;$(BCB)\lib\obj;$(BCB)\lib
+Item12=src\ca210api;src\static;$(BCB)\Projects\Lib;src\static\java;src;$(BCB)\lib\obj;$(BCB)\lib
+Item13=src\static;$(BCB)\Projects\Lib;src\static\java;src;D:\WorkSpace\CMSCpp\src;$(BCB)\lib\obj;$(BCB)\lib
 
 [HistoryLists\hlDebugSourcePath]
 Count=1

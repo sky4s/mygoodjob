@@ -9,7 +9,7 @@
 
 //本項目內頭文件
 #include <java/lang.h>
-#include "TMeasureWindow.h"
+#include <gui/TMeasureWindow.h>
 
 namespace cms {
     class Patch;
@@ -63,7 +63,7 @@ namespace cms {
 	    void setMeasureWindowsVisible(bool visible);
 
 	     boost::shared_ptr < cms::Patch >
-		measure(boost::shared_ptr < cms::colorspace::RGBColor >
+		measure(boost::shared_ptr < Dep::RGBColor >
 			rgb, boost::shared_ptr < std::string > patchName);
 
 	     boost::shared_ptr < cms::Patch >
@@ -78,7 +78,7 @@ namespace cms {
 	    void meterClose();
 
 	     boost::shared_ptr < cms::Patch >
-		measure0(boost::shared_ptr < cms::colorspace::RGBColor >
+		measure0(boost::shared_ptr < Dep::RGBColor >
 			 measureRGB,
 			 boost::shared_ptr < std::string > patchName,
 			 boost::shared_ptr < std::string > titleNote,
