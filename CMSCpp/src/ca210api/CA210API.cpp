@@ -127,6 +127,12 @@ namespace ca210api {
 	ca.SetLvxyCalData(lclr, xyYValue[0], xyYValue[1], xyYValue[2]);
     };
 
+    void CA210API::setLvxyCalData(lClr lclr,
+				  shared_array < double >xyYValue) {
+	ca.SetLvxyCalData(lclr, (float) xyYValue[0], (float) xyYValue[1],
+			  (float) xyYValue[2]);
+    };
+
     long CA210API::enter() {
 	return ca.Enter();
     };
