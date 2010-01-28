@@ -15,7 +15,9 @@
 #include "TMeasureWindow.h"
 #include <cms/colorspace/ciexyz.h>
 #include <cms/core.h>
+#include <cms/patch.h>
 #include <cms/measure/meter.h>
+#include <cms/measure/MeterMeasurement.h>
 
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
@@ -132,36 +134,43 @@ void __fastcall TTargetWhiteForm::Edit_CTChange(TObject * Sender)
 void __fastcall TTargetWhiteForm::Button2Click(TObject * Sender)
 {
     using namespace cms::measure::meter;
+    using namespace cms::measure;
+    using namespace cms;
     using namespace ca210api;
     using namespace boost;
 
-    CA210 & meter = MainForm->meter;
+    CA210 & meter = *(dynamic_cast < CA210 * >(MainForm->meter.get()));
     CA210API & ca210api = meter.getCA210API();
     ca210api.setRemoteMode(On);
-    //ca210api.setDisplayMode(Analyzer_nodisplay);
     ca210api.setChannelNO(Edit_SourceCH->Text.ToInt());
-    MeasureWindow->Visible = true;
+    MeterMeasurement mm(MainForm->meter, true);
+    mm.setWaitTimes(5000);
 
-    MeasureWindow->setRGB(255, 255, 255);
-    Sleep(5000);
-    //shared_array < float >wXYZValues = ca210api.triggerMeasurement();
-    shared_ptr < MeasureResult > wResult = ca210api.triggerMeasureResult();
+    int r = this->Edit_R->Text.ToInt();
+    int g = this->Edit_G->Text.ToInt();
+    int b = this->Edit_B->Text.ToInt();
 
-    MeasureWindow->setRGB(255, 0, 0);
-    Sleep(5000);
-    //shared_array < float >rXYZValues = ca210api.triggerMeasurement();
-    shared_ptr < MeasureResult > rResult = ca210api.triggerMeasureResult();
 
-    MeasureWindow->setRGB(0, 255, 0);
-    Sleep(5000);
-    //shared_array < float >gXYZValues = ca210api.triggerMeasurement();
-    shared_ptr < MeasureResult > gResult = ca210api.triggerMeasureResult();
+    shared_ptr < Patch > wPatch = mm.measure(r, g, b, "W");
+    shared_ptr < Patch > rPatch = mm.measure(r, 0, 0, "R");
+    shared_ptr < Patch > gPatch = mm.measure(0, g, 0, "G");
+    shared_ptr < Patch > bPatch = mm.measure(0, 0, b, "B");
 
-    MeasureWindow->setRGB(0, 0, 255);
-    Sleep(5000);
-    //shared_array < float >bXYZValues = ca210api.triggerMeasurement();
-    shared_ptr < MeasureResult > bResult = ca210api.triggerMeasureResult();
+    /*MeasureWindow->setRGB(r, g, b);
+       Sleep(5000);
+       shared_ptr < MeasureResult > wResult = ca210api.triggerMeasureResult();
 
+       MeasureWindow->setRGB(r, 0, 0);
+       Sleep(5000);
+       shared_ptr < MeasureResult > rResult = ca210api.triggerMeasureResult();
+
+       MeasureWindow->setRGB(0, g, 0);
+       Sleep(5000);
+       shared_ptr < MeasureResult > gResult = ca210api.triggerMeasureResult();
+
+       MeasureWindow->setRGB(0, 0, b);
+       Sleep(5000);
+       shared_ptr < MeasureResult > bResult = ca210api.triggerMeasureResult(); */
 
     ca210api.setChannelNO(Edit_TargetCH->Text.ToInt());
     ca210api.setLvxyCalMode();
@@ -173,7 +182,7 @@ void __fastcall TTargetWhiteForm::Button2Click(TObject * Sender)
     ca210api.enter();
     ca210api.setRemoteMode(Off);
     MeasureWindow->Visible = false;
-    this->Visible = false;
+    this->Close();
 }
 
 //---------------------------------------------------------------------------
