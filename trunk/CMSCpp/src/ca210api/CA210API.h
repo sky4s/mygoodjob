@@ -84,6 +84,8 @@ namespace ca210api {
 
 	void setLvxyCalData(lClr lclr,
 			    boost::shared_array < float >xyYValue);
+	void setLvxyCalData(lClr lclr,
+			    boost::shared_array < double >xyYValue);
 
 	long enter();
 

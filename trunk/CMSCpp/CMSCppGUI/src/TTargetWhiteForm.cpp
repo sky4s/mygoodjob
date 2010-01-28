@@ -136,6 +136,7 @@ void __fastcall TTargetWhiteForm::Button2Click(TObject * Sender)
     using namespace cms::measure::meter;
     using namespace cms::measure;
     using namespace cms;
+    using namespace cms::colorspace;
     using namespace ca210api;
     using namespace boost;
 
@@ -171,7 +172,7 @@ void __fastcall TTargetWhiteForm::Button2Click(TObject * Sender)
        MeasureWindow->setRGB(0, 0, b);
        Sleep(5000);
        shared_ptr < MeasureResult > bResult = ca210api.triggerMeasureResult(); */
-
+    //wPatch->getXYZ()->
     ca210api.setChannelNO(Edit_TargetCH->Text.ToInt());
     ca210api.setLvxyCalMode();
     ca210api.setLvxyCalData(White, wResult->getxyYValues());

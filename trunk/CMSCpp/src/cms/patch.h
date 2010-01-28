@@ -46,6 +46,9 @@ namespace cms {
 	      boost::shared_ptr < cms::colorspace::CIEXYZ > normalizedXYZ,
 	      boost::shared_ptr < cms::colorspace::RGBColor > rgb);
 	boost::shared_ptr < std::string > getName();
+	boost::shared_ptr < cms::colorspace::CIEXYZ > getXYZ();
+	boost::shared_ptr < cms::colorspace::CIEXYZ > getNormalizedXYZ();
+	boost::shared_ptr < cms::colorspace::RGBColor > getRGB();
     };
 
 };

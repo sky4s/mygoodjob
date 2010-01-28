@@ -13,5 +13,15 @@ namespace cms {
     shared_ptr < string > Patch::getName() {
 	return name;
     };
+
+    shared_ptr < cms::colorspace::CIEXYZ > Patch::getXYZ() {
+	return XYZ;
+    };
+    shared_ptr < cms::colorspace::CIEXYZ > Patch::getNormalizedXYZ() {
+	return normalizedXYZ;
+    };
+    shared_ptr < cms::colorspace::RGBColor > Patch::getRGB() {
+	return rgb;
+    };
 };
 
