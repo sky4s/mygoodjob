@@ -14,7 +14,7 @@ int main(int argc, char *argv[])
     //Object o;
 //    java::lang::RuntimeException a;
     using namespace cms::colorspace;
-    RGBColor c;
+    //RGBColor c;
     getch();
     return 0;
 }

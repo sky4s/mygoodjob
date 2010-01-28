@@ -88,7 +88,7 @@ void TTargetWhiteForm::setColorimetricValues(double x, double y, double up,
 void __fastcall TTargetWhiteForm::Edit_CTChange(TObject * Sender)
 {
     using cms::CorrelatedColorTemperature;
-    using cms::colorspace::CIExyY;
+    using Indep::CIExyY;
     using java::lang::IllegalArgumentException;
     using namespace boost;
 
@@ -101,9 +101,9 @@ void __fastcall TTargetWhiteForm::Edit_CTChange(TObject * Sender)
     int ct = ctText.ToInt();
 
     try {
-	shared_ptr < CIExyY > xyY =
+	bptr < CIExyY > xyY =
 	    CorrelatedColorTemperature::CCT2DIlluminantxyY(ct);
-	shared_array < double >uvpValues = xyY->getuvPrimeValues();
+	double_array uvpValues = xyY->getuvPrimeValues();
 	setColorimetricValues(xyY->x, xyY->y, uvpValues[0], uvpValues[1]);
     }
     catch(IllegalArgumentException ex) {
@@ -141,7 +141,7 @@ void __fastcall TTargetWhiteForm::Button2Click(TObject * Sender)
     using namespace boost;
 
     CA210 & meter = *(dynamic_cast < CA210 * >(MainForm->meter.get()));
-    CA210API & ca210api = meter.getCA210API();
+    CA210API & ca210api = *meter.getCA210API();
     ca210api.setRemoteMode(On);
     ca210api.setChannelNO(Edit_SourceCH->Text.ToInt());
     MeterMeasurement mm(MainForm->meter, true);
@@ -175,10 +175,10 @@ void __fastcall TTargetWhiteForm::Button2Click(TObject * Sender)
     //wPatch->getXYZ()->
     ca210api.setChannelNO(Edit_TargetCH->Text.ToInt());
     ca210api.setLvxyCalMode();
-    ca210api.setLvxyCalData(White, wResult->getxyYValues());
-    ca210api.setLvxyCalData(Red, rResult->getxyYValues());
-    ca210api.setLvxyCalData(Green, gResult->getxyYValues());
-    ca210api.setLvxyCalData(Blue, bResult->getxyYValues());
+    /*ca210api.setLvxyCalData(White, wResult->getxyYValues());
+       ca210api.setLvxyCalData(Red, rResult->getxyYValues());
+       ca210api.setLvxyCalData(Green, gResult->getxyYValues());
+       ca210api.setLvxyCalData(Blue, bResult->getxyYValues()); */
 
     ca210api.enter();
     ca210api.setRemoteMode(Off);
@@ -187,4 +187,5 @@ void __fastcall TTargetWhiteForm::Button2Click(TObject * Sender)
 }
 
 //---------------------------------------------------------------------------
+
 

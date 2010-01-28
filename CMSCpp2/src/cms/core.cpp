@@ -11,12 +11,12 @@
 
 namespace cms {
     using namespace boost;
-    using namespace cms::colorspace;
+    using namespace Indep;
     using namespace java::lang;
     //==========================================================================
     // CorrelatedColorTemperature
     //==========================================================================
-     shared_ptr < CIExyY >
+     bptr < CIExyY >
 	CorrelatedColorTemperature::CCT2DIlluminantxyY(int tempK) {
 	//using namespace std;
 	double x = 0.0, y;
@@ -55,10 +55,18 @@ namespace cms {
 
 	// Fill WhitePoint struct
 	//CIExyY xyY(x, y, 1.0);
-	shared_ptr < CIExyY > xyY(new CIExyY(x, y, 1.0));
+	bptr < CIExyY > xyY(new CIExyY(x, y, 1.0));
 
 	return xyY;
     };
+
+    double CorrelatedColorTemperature::xy2CCTByMcCamyFloat(bptr < CIExyY >
+							   xyY) {
+	double n = (xyY->x - 0.332) / (xyY->y - 0.1858);
+	double sqr = Math::sqr(n);
+	double cct = -449 * sqr * n + 3525 * sqr - 6823.3 * n + 5520.33;
+	return cct;
+    }
     //==========================================================================
 };
 

@@ -10,7 +10,8 @@ namespace cms {
     namespace measure {
 	using namespace boost;
 	using namespace cms;
-	using namespace cms::colorspace;
+	//using namespace cms::colorspace;
+	using namespace Dep;
 	using namespace cms::measure::meter;
 	using namespace std;
 	 MeterMeasurement::MeterMeasurement(shared_ptr <
@@ -43,15 +44,15 @@ namespace cms {
 	    }
 	};
 
-	shared_ptr < Patch >
+	bptr < Patch >
 	    MeterMeasurement::measure(shared_ptr < RGBColor > rgb,
 				      shared_ptr < string > patchName) {
 	    return measure0(rgb, patchName, nil_string_ptr,
 			    nil_string_ptr);
 	};
 
-	shared_ptr < Patch > MeterMeasurement::measure(int r, int g, int b,
-						       string patchName) {
+	bptr < Patch > MeterMeasurement::measure(int r, int g, int b,
+						 string patchName) {
 	    shared_ptr < RGBColor > rgb(new RGBColor(r, g, b));
 	    return measure(rgb, string_ptr(&patchName));
 	};
@@ -140,8 +141,7 @@ namespace cms {
 	       if (timeNote != null) {
 	       measureWindow.setNorthLabel2(timeNote);
 	       } */
-	    shared_ptr < cms::colorspace::CIEXYZ >
-		XYZ(new cms::colorspace::CIEXYZ(result));
+	    shared_ptr < Indep::CIEXYZ > XYZ(new Indep::CIEXYZ(result));
 	    shared_ptr < Patch >
 		patch(new Patch(patchName, XYZ, XYZ, measureRGB));
 	    return patch;

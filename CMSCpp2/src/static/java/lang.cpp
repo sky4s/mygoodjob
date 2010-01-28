@@ -44,7 +44,7 @@ namespace java {
 	};
 
 	shared_ptr < string > Object::toString() {
-	    return shared_ptr < string > (new string());
+	    return getClass().getName();
 	};
 	bool Object::isNull() {
 	    return null;
@@ -81,6 +81,9 @@ namespace java {
 	double Math::sin(double x) {
 	    return std::sin(x);
 	};
+	double Math::sqr(double v) {
+	    return v * v;
+	}
 	//======================================================================
 
 	//======================================================================

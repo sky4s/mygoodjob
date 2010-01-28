@@ -74,19 +74,21 @@ namespace cms {
 
 	    class CA210:public Meter {
 	      protected:
-		static ca210api::CA210API _CA210API;
+		static bptr < ca210api::CA210API > _CA210API;
 		//Date calibrateTime;
+		static void initCA210API();
 		int measureCount;
 	      public:
-		static ca210api::CA210API getCA210API();
+		 CA210();
+		 bptr < ca210api::CA210API > getCA210API();
 		bool isConnected();
 		void calibrate();
 		 boost::shared_ptr < std::string >
 		    getCalibrationDescription();
 		void setPatchIntensity(PatchIntensity patchIntensity);
-		 boost::shared_array < double >triggerMeasurementInXYZ();
-		 boost::shared_ptr < std::string > getLastCalibration();
-		 boost::shared_ptr < std::string > getCalibrationCount();
+		 barray < double >triggerMeasurementInXYZ();
+		 bptr < std::string > getLastCalibration();
+		 bptr < std::string > getCalibrationCount();
 		void setScreenType(ScreenType screenType);
 		Instr getType();
 		void close();

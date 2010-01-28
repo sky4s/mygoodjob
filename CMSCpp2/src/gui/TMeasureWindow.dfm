@@ -3,17 +3,17 @@ object MeasureWindow: TMeasureWindow
   Top = 387
   BorderStyle = bsNone
   Caption = 'MeasureWindow'
-  ClientHeight = 492
-  ClientWidth = 699
+  ClientHeight = 606
+  ClientWidth = 860
   Color = clBlack
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
-  Font.Height = -10
+  Font.Height = -13
   Font.Name = 'MS Sans Serif'
   Font.Style = []
   OldCreateOrder = False
   WindowState = wsMaximized
   OnKeyPress = FormKeyPress
-  PixelsPerInch = 96
-  TextHeight = 13
+  PixelsPerInch = 120
+  TextHeight = 16
 end
