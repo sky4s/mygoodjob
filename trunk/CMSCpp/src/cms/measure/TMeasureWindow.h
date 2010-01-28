@@ -8,6 +8,7 @@
 #include <StdCtrls.hpp>
 #include <Forms.hpp>
 #include <Menus.hpp>
+#include <boost/shared_ptr.hpp>
 //---------------------------------------------------------------------------
 namespace cms {
     namespace colorspace {
@@ -18,12 +19,11 @@ namespace cms {
 class TMeasureWindow:public TForm {
     __published:		// IDE-managed Components
     void __fastcall FormKeyPress(TObject * Sender, char &Key);
-    void __fastcall FormCreate(TObject * Sender);
   private:			// User declarations
   public:			// User declarations
      __fastcall TMeasureWindow(TComponent * Owner);
     void setRGB(int r, int g, int b);
-    void setRGB(cms::colorspace::RGBColor & rgb);
+    void setRGB(boost::shared_ptr < cms::colorspace::RGBColor > rgb);
 };
 //---------------------------------------------------------------------------
 extern PACKAGE TMeasureWindow *MeasureWindow;

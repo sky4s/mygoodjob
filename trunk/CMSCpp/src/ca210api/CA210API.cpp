@@ -70,7 +70,6 @@ namespace ca210api {
 	float Z = probe.get_Z();
 	long cct = probe.get_T();
 	float duv = probe.get_duv();
-	//MeasureResult result(x, y, Lv, X, Y, Z, cct, duv);
 	shared_ptr < MeasureResult >
 	    result(new MeasureResult(x, y, Lv, X, Y, Z, cct, duv));
 	return result;

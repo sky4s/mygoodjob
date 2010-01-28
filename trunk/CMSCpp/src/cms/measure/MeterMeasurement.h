@@ -23,6 +23,19 @@ namespace cms {
 
 namespace cms {
     namespace measure {
+	class MeterMeasurement;
+	class MeasureUtils {
+	  public:
+	    static void meterCalibrate(MeterMeasurement &
+				       meterMeasurement);
+
+	    static void meterCalibrate(	/*Component parentComponent, */
+					  boost::shared_ptr <
+					  cms::measure::
+					  meter::Meter > meter,
+					  TMeasureWindow * measureWindow);
+	};
+
 
 	class MeterMeasurement {
 	    friend class MeasureUtils;
@@ -50,26 +63,23 @@ namespace cms {
 	    void setMeasureWindowsVisible(bool visible);
 
 	     boost::shared_ptr < cms::Patch >
-		measure(cms::colorspace::RGBColor & rgb,
-			boost::shared_ptr < std::string > patchName);
+		measure(boost::shared_ptr < cms::colorspace::RGBColor >
+			rgb, boost::shared_ptr < std::string > patchName);
+
+	     boost::shared_ptr < cms::Patch >
+		measure(int r, int g, int b, std::string patchName);
+
 	    void setBlankTimes(int blankTimes);
 	    void setWaitTimes(int waitTimes);
 	    void setFakeMeasure(bool fake);
 	    bool isFakeMeasure();
 
-	    static void meterCalibrate(MeterMeasurement &
-				       meterMeasurement);
-
-	    static void meterCalibrate(	/*Component parentComponent, */
-					  boost::shared_ptr <
-					  cms::measure::
-					  meter::Meter > meter,
-					  TMeasureWindow * measureWindow);
 	  protected:
 	    void meterClose();
 
 	     boost::shared_ptr < cms::Patch >
-		measure0(cms::colorspace::RGBColor & measureRGB,
+		measure0(boost::shared_ptr < cms::colorspace::RGBColor >
+			 measureRGB,
 			 boost::shared_ptr < std::string > patchName,
 			 boost::shared_ptr < std::string > titleNote,
 			 boost::shared_ptr < std::string > timeNote);
@@ -77,6 +87,8 @@ namespace cms {
 
 
 	};
+
+
     };
 };
 #endif

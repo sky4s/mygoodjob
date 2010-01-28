@@ -41,10 +41,11 @@ namespace cms {
 	boost::shared_ptr < Spectra > spectra;
 	boost::shared_ptr < Spectra > reflectSpectra;
       public:
-	/*Patch(boost::shared_ptr < std::string > name,
+	Patch(boost::shared_ptr < std::string > name,
 	      boost::shared_ptr < cms::colorspace::CIEXYZ > XYZ,
 	      boost::shared_ptr < cms::colorspace::CIEXYZ > normalizedXYZ,
-	      boost::shared_ptr < cms::colorspace::RGBColor > rgb);*/
+	      boost::shared_ptr < cms::colorspace::RGBColor > rgb);
+	boost::shared_ptr < std::string > getName();
     };
 
 };

@@ -4,6 +4,7 @@
 #include <cms/measure/meter.h>
 #include <cms/patch.h>
 #include <cms/colorspace/ciexyz.h>
+#include <cms/colorspace/rgb.h>
 
 namespace cms {
     namespace measure {
@@ -26,7 +27,7 @@ namespace cms {
 	};
 
 	void MeterMeasurement::calibrate() {
-	    meterCalibrate(*this);
+	    MeasureUtils::meterCalibrate(*this);
 	};
 
 	void MeterMeasurement::close() {
@@ -43,11 +44,16 @@ namespace cms {
 	};
 
 	shared_ptr < Patch >
-	    MeterMeasurement::measure(RGBColor & rgb,
-				      boost::shared_ptr < string >
-				      patchName) {
-	    /*return measure0(rgb, patchName, nil_string_ptr,
-			    nil_string_ptr);*/
+	    MeterMeasurement::measure(shared_ptr < RGBColor > rgb,
+				      shared_ptr < string > patchName) {
+	    return measure0(rgb, patchName, nil_string_ptr,
+			    nil_string_ptr);
+	};
+
+	shared_ptr < Patch > MeterMeasurement::measure(int r, int g, int b,
+						       string patchName) {
+	    shared_ptr < RGBColor > rgb(new RGBColor(r, g, b));
+	    return measure(rgb, string_ptr(&patchName));
 	};
 
 	void MeterMeasurement::setBlankTimes(int blankTimes) {
@@ -63,64 +69,12 @@ namespace cms {
 	    return fakeMeasure;
 	};
 
-	void MeterMeasurement::
-	    meterCalibrate(MeterMeasurement & meterMeasurement) {
-	    shared_ptr < Meter > meter = meterMeasurement.meter;
-	    TMeasureWindow *measureWindow = meterMeasurement.measureWindow;
-	    meterCalibrate( /*measureWindow, */ meter, measureWindow);
-	};
-
-	void MeterMeasurement::meterCalibrate(	/*Component parentComponent, */
-						 shared_ptr < Meter >
-						 meter,
-						 TMeasureWindow *
-						 measureWindow) {
-	    if (!meter->isConnected()) {
-		throw java::lang::
-		    IllegalStateException("!meter.isConnected()");
-	    } else {
-		if (measureWindow != NULL) {
-		    //show出黑幕, 避免影響校正
-		    //measureWindow.setColor(Color.black);
-		    measureWindow->setRGB(0, 0, 0);
-		    measureWindow->Visible = true;
-		}
-		//string s = meter->getCalibrationDescription();
-
-
-		/*ShowMessage(AnsiString
-		   ((*meter.getCalibrationDescription()).
-		   c_str())); */
-
-		/*JOptionPane.showMessageDialog(parentComponent,
-		   meter.
-		   getCalibrationDescription
-		   (), "Calibration",
-		   JOptionPane.
-		   INFORMATION_MESSAGE); */
-		meter->calibrate();
-
-		if (measureWindow != NULL) {
-		    //關閉黑幕
-		    //measureWindow.setVisible(false);
-		    measureWindow->Visible = false;
-		}
-		ShowMessage(AnsiString("End of calibration"));
-		/*JOptionPane.showMessageDialog(parentComponent,
-		   "End of calibration",
-		   "End of calibration",
-		   JOptionPane.
-		   INFORMATION_MESSAGE); */
-	    };
-	};
-
-
 	void MeterMeasurement::meterClose() {
 	    meter->close();
 	};
 
 	shared_ptr < Patch >
-	    MeterMeasurement::measure0(RGBColor & measureRGB,
+	    MeterMeasurement::measure0(shared_ptr < RGBColor > measureRGB,
 				       shared_ptr < string > patchName,
 				       shared_ptr < string > titleNote,
 				       shared_ptr < string > timeNote) {
@@ -188,7 +142,53 @@ namespace cms {
 	       } */
 	    shared_ptr < cms::colorspace::CIEXYZ >
 		XYZ(new cms::colorspace::CIEXYZ(result));
-	    //return shared_ptr < Patch > ((Patch *) NULL);
+	    shared_ptr < Patch >
+		patch(new Patch(patchName, XYZ, XYZ, measureRGB));
+	    return patch;
+	};
+	void MeasureUtils::
+	    meterCalibrate(MeterMeasurement & meterMeasurement) {
+	    shared_ptr < Meter > meter = meterMeasurement.meter;
+	    TMeasureWindow *measureWindow = meterMeasurement.measureWindow;
+	    meterCalibrate( /*measureWindow, */ meter,
+			   measureWindow);
+	};
+	void MeasureUtils::meterCalibrate(	/*Component parentComponent, */
+					     shared_ptr
+					     <
+					     Meter
+					     >
+					     meter,
+					     TMeasureWindow
+					     * measureWindow) {
+	    if (!meter->isConnected()) {
+		throw java::lang::
+		    IllegalStateException("!meter.isConnected()");
+	    } else {
+		if (measureWindow != NULL) {
+		    //show出黑幕, 避免影響校正
+		    //measureWindow.setColor(Color.black);
+		    measureWindow->setRGB(0, 0, 0);
+		    measureWindow->Visible = true;
+		}
+		//string s = meter->getCalibrationDescription();
+		AnsiString(meter->getCalibrationDescription()->c_str());
+		/*ShowMessage(AnsiString
+		   ((*meter.getCalibrationDescription()).
+		   c_str())); */
+		meter->calibrate();
+		if (measureWindow != NULL) {
+		    //關閉黑幕
+		    //measureWindow.setVisible(false);
+		    measureWindow->Visible = false;
+		}
+		ShowMessage(AnsiString("End of calibration"));
+		/*JOptionPane.showMessageDialog(parentComponent,
+		   "End of calibration",
+		   "End of calibration",
+		   JOptionPane.
+		   INFORMATION_MESSAGE); */
+	    };
 	};
     };
 };
