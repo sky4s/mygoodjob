@@ -30,9 +30,9 @@ class TTargetWhiteForm:public TForm {
     TLabel *Label7;
     TLabel *Label8;
     TLabel *Label9;
-    TEdit *Edit6;
-    TEdit *Edit7;
-    TEdit *Edit8;
+    TEdit *Edit_SourceCH;
+    TEdit *Edit_TargetCH;
+    TEdit *Edit_TargetID;
     TGroupBox *GroupBox4;
     TLabel *Label10;
     TEdit *Edit_targetx;
@@ -57,6 +57,7 @@ class TTargetWhiteForm:public TForm {
     void __fastcall ScrollBar_GChange(TObject * Sender);
     void __fastcall ScrollBar_BChange(TObject * Sender);
     void __fastcall Edit_CTChange(TObject * Sender);
+    void __fastcall Button2Click(TObject * Sender);
 
   private:			// User declarations
     void scrollBar_Change();

@@ -28,6 +28,7 @@
 #define vector_double_ptr boost::shared_ptr < std::vector < double > >
 #define vector_string_ptr boost::shared_ptr < std::vector < std::string > >
 #define double_array boost::shared_array<double>
+#define float_array boost::shared_array<float>
 
 #define string_ptr boost::shared_ptr < std::string >
 #define nil_string_ptr string_ptr ((std::string*)NULL)

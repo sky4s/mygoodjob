@@ -78,7 +78,8 @@ namespace cms {
 		//Date calibrateTime;
 		int measureCount;
 	      public:
-		 bool isConnected();
+		static ca210api::CA210API getCA210API();
+		bool isConnected();
 		void calibrate();
 		 boost::shared_ptr < std::string >
 		    getCalibrationDescription();

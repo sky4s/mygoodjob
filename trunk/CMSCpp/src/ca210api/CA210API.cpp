@@ -12,6 +12,8 @@
 namespace ca210api {
     using namespace boost;
     using namespace std;
+
+    //==========================================================================
      MeasureResult::MeasureResult() {
     };
     MeasureResult::MeasureResult(float x, float y, float Lv, float X,
@@ -19,6 +21,22 @@ namespace ca210api {
 				 float duv):x(x), y(y), Lv(Lv), X(X), Y(Y),
 	Z(Z), cct(cct), duv(duv) {
     };
+    float_array MeasureResult::getxyYValues() {
+	float_array result(new float[3]);
+	result[0] = x;
+	result[1] = y;
+	result[2] = Y;
+	return result;
+    };
+    float_array MeasureResult::getXYZValues() {
+	float_array result(new float[3]);
+	result[0] = X;
+	result[1] = Y;
+	result[2] = Z;
+	return result;
+    };
+    //==========================================================================
+
 
     CA210API::CA210API() {
 	ca200.BindDefault();
@@ -35,14 +53,14 @@ namespace ca210api {
 
     };
     shared_array < float >CA210API::triggerMeasurement() {
-	shared_ptr < MeasureResult > result = this->getMeasureResult();
+	shared_ptr < MeasureResult > result = this->triggerMeasureResult();
 	shared_array < float >measureValues(new float[3]);
 	measureValues[0] = result->X;
 	measureValues[1] = result->Y;
 	measureValues[2] = result->Z;
 	return measureValues;
     };
-    shared_ptr < MeasureResult > CA210API::getMeasureResult() {
+    shared_ptr < MeasureResult > CA210API::triggerMeasureResult() {
 	ca.Measure(0);
 	float x = probe.get_sx();
 	float y = probe.get_sy();
@@ -103,6 +121,11 @@ namespace ca210api {
     void CA210API::setLvxyCalData(lClr lclr, float xValue, float yValue,
 				  float YValue) {
 	ca.SetLvxyCalData(lclr, xValue, yValue, YValue);
+    };
+
+    void CA210API::setLvxyCalData(lClr lclr,
+				  shared_array < float >xyYValue) {
+	ca.SetLvxyCalData(lclr, xyYValue[0], xyYValue[1], xyYValue[2]);
     };
 
     long CA210API::enter() {

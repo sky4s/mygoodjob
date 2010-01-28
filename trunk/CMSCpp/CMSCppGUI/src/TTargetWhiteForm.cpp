@@ -11,19 +11,19 @@
 
 //本項目內頭文件
 #include "TTargetWhiteForm.h"
+#include "TMainForm.h"
+#include "TMeasureWindow.h"
 #include <cms/colorspace/ciexyz.h>
 #include <cms/core.h>
+#include <cms/measure/meter.h>
 
-/*#include <cms/core.h>
-#include <boost/shared_ptr.hpp>
-#include <boost/shared_array.hpp>*/
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
 #pragma resource "*.dfm"
 TTargetWhiteForm *TargetWhiteForm;
 //---------------------------------------------------------------------------
-__fastcall TTargetWhiteForm::TTargetWhiteForm(TComponent * Owner)
-:TForm(Owner)
+__fastcall TTargetWhiteForm::TTargetWhiteForm(TComponent *
+					      Owner):TForm(Owner)
 {
 }
 
@@ -103,7 +103,8 @@ void __fastcall TTargetWhiteForm::Edit_CTChange(TObject * Sender)
 	    CorrelatedColorTemperature::CCT2DIlluminantxyY(ct);
 	shared_array < double >uvpValues = xyY->getuvPrimeValues();
 	setColorimetricValues(xyY->x, xyY->y, uvpValues[0], uvpValues[1]);
-    } catch(IllegalArgumentException ex) {
+    }
+    catch(IllegalArgumentException ex) {
 	setColorimetricValues(-1, -1, -1, -1);
     }
 }
@@ -127,4 +128,53 @@ void __fastcall TTargetWhiteForm::Edit_CTChange(TObject * Sender)
  5. enter
 
 */
+
+void __fastcall TTargetWhiteForm::Button2Click(TObject * Sender)
+{
+    using namespace cms::measure::meter;
+    using namespace ca210api;
+    using namespace boost;
+
+    CA210 & meter = MainForm->meter;
+    CA210API & ca210api = meter.getCA210API();
+    ca210api.setRemoteMode(On);
+    //ca210api.setDisplayMode(Analyzer_nodisplay);
+    ca210api.setChannelNO(Edit_SourceCH->Text.ToInt());
+    MeasureWindow->Visible = true;
+
+    MeasureWindow->setRGB(255, 255, 255);
+    Sleep(5000);
+    //shared_array < float >wXYZValues = ca210api.triggerMeasurement();
+    shared_ptr < MeasureResult > wResult = ca210api.triggerMeasureResult();
+
+    MeasureWindow->setRGB(255, 0, 0);
+    Sleep(5000);
+    //shared_array < float >rXYZValues = ca210api.triggerMeasurement();
+    shared_ptr < MeasureResult > rResult = ca210api.triggerMeasureResult();
+
+    MeasureWindow->setRGB(0, 255, 0);
+    Sleep(5000);
+    //shared_array < float >gXYZValues = ca210api.triggerMeasurement();
+    shared_ptr < MeasureResult > gResult = ca210api.triggerMeasureResult();
+
+    MeasureWindow->setRGB(0, 0, 255);
+    Sleep(5000);
+    //shared_array < float >bXYZValues = ca210api.triggerMeasurement();
+    shared_ptr < MeasureResult > bResult = ca210api.triggerMeasureResult();
+
+
+    ca210api.setChannelNO(Edit_TargetCH->Text.ToInt());
+    ca210api.setLvxyCalMode();
+    ca210api.setLvxyCalData(White, wResult->getxyYValues());
+    ca210api.setLvxyCalData(Red, rResult->getxyYValues());
+    ca210api.setLvxyCalData(Green, gResult->getxyYValues());
+    ca210api.setLvxyCalData(Blue, bResult->getxyYValues());
+
+    ca210api.enter();
+    ca210api.setRemoteMode(Off);
+    MeasureWindow->Visible = false;
+    this->Visible = false;
+}
+
+//---------------------------------------------------------------------------
 

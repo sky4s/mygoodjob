@@ -8,7 +8,7 @@ namespace cms {
 	 ColorSpace::ColorSpace():setValuesLocked(false) {
 	};
 
-	 shared_array < double >
+	 double_array
 	    ColorSpace::cartesian2polarCoordinatesValues(shared_array <
 							 double
 							 >cartesianValues) {
@@ -36,7 +36,7 @@ namespace cms {
 	    }
 	    return polarValues;
 	};
-	shared_array < double >
+	double_array
 	    ColorSpace::cartesian2polarCoordinatesValues(double x,
 							 double y) {
 	    shared_array < double >polarValues(new double[2]);
