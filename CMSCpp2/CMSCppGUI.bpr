@@ -1,0 +1,177 @@
+<?xml version='1.0' encoding='utf-8' ?>
+<!-- C++Builder XML Project -->
+<PROJECT>
+  <MACROS>
+    <VERSION value="BCB.06.00"/>
+    <PROJECT value="build\CMSCppGUI.exe"/>
+    <OBJFILES value="build\CMSCppGUI.obj build\Unit1.obj build\TAboutBox.obj 
+      build\TMainForm.obj build\TTargetWhiteForm.obj build\CA210API.obj 
+      build\core.obj build\patch.obj build\logo.obj build\ciexyz.obj 
+      build\colorspace.obj build\depend.obj build\independ.obj build\rgb.obj 
+      build\meter.obj build\MeterMeasurement.obj build\TMeasureWindow.obj 
+      build\util.obj build\lang.obj"/>
+    <RESFILES value="CMSCppGUI.res"/>
+    <IDLFILES value=""/>
+    <IDLGENFILES value=""/>
+    <DEFFILE value=""/>
+    <RESDEPEN value="$(RESFILES) src\gui\Unit1.dfm src\gui\TAboutBox.dfm src\gui\TMainForm.dfm 
+      src\gui\TTargetWhiteForm.dfm src\cms\measure\TMeasureWindow.dfm"/>
+    <LIBFILES value=""/>
+    <LIBRARIES value=""/>
+    <SPARELIBS value="rtl.lib vcl.lib"/>
+    <PACKAGES value="rtl.bpi vcl.bpi dbrtl.bpi adortl.bpi vcldb.bpi vclx.bpi bdertl.bpi 
+      vcldbx.bpi ibxpress.bpi dsnap.bpi cds.bpi bdecds.bpi qrpt.bpi teeui.bpi 
+      teedb.bpi tee.bpi dss.bpi teeqr.bpi visualclx.bpi visualdbclx.bpi 
+      dsnapcrba.bpi dsnapcon.bpi bcbsmp.bpi vclie.bpi xmlrtl.bpi inet.bpi 
+      inetdbbde.bpi inetdbxpress.bpi inetdb.bpi nmfast.bpi webdsnap.bpi 
+      bcbie.bpi websnap.bpi soaprtl.bpi dclocx.bpi dbexpress.bpi dbxcds.bpi 
+      indy.bpi bcb2kaxserver.bpi bcbindent.bpi"/>
+    <PATHCPP value=".;src\gui;src\gui;src\gui;src\gui;src\ca210api;src\cms;src\cms;src\cms\colorformat;src\cms\colorspace;src\cms\colorspace;src\cms\colorspace;src\cms\colorspace;src\cms\colorspace;src\cms\measure;src\cms\measure;src\cms\measure;src\static;src\static\java"/>
+    <PATHPAS value=".;"/>
+    <PATHRC value=".;"/>
+    <PATHASM value=".;"/>
+    <DEBUGLIBPATH value="$(BCB)\lib\debug"/>
+    <RELEASELIBPATH value="$(BCB)\lib\release"/>
+    <LINKER value="ilink32"/>
+    <USERDEFINES value="_DEBUG"/>
+    <SYSDEFINES value="_RTLDLL;NO_STRICT;USEPACKAGES"/>
+    <MAINSOURCE value="CMSCppGUI.cpp"/>
+    <INCLUDEPATH value="src\static\java;src\static;src\cms\measure;src\cms\colorspace;src\cms\colorformat;src\cms;src\ca210api;src\gui;&quot;D:\Program Files\Borland\CBuilder6\Projects&quot;;$(BCB)\include;$(BCB)\include\vcl"/>
+    <LIBPATH value="src\static\java;src\static;src\cms\measure;src\cms\colorspace;src\cms\colorformat;src\cms;src\ca210api;src\gui;&quot;D:\Program Files\Borland\CBuilder6\Projects&quot;;$(BCB)\Projects\Lib;$(BCB)\lib\obj;$(BCB)\lib"/>
+    <WARNINGS value="-w-par"/>
+    <OTHERFILES value=""/>
+  </MACROS>
+  <OPTIONS>
+    <IDLCFLAGS value="-Isrc\static\java -Isrc\static -Isrc\cms\measure -Isrc\cms\colorspace 
+      -Isrc\cms\colorformat -Isrc\cms -Isrc\ca210api -Isrc\gui 
+      -I&quot;D:\Program Files\Borland\CBuilder6\Projects&quot; -I$(BCB)\include 
+      -I$(BCB)\include\vcl -src_suffix cpp -D_DEBUG -boa"/>
+    <CFLAG1 value="-O2 -H=$(BCB)\lib\vcl60.csm -Hc -Vx -Ve -X- -r- -a8 -6 -b- -k -y -v -vi- 
+      -c -tW -tWM"/>
+    <PFLAGS value="-N2build -N0build -$YD -$W -$O- -$A8 -v -JPHNE -M"/>
+    <RFLAGS value=""/>
+    <AFLAGS value="/mx /w2 /zd"/>
+    <LFLAGS value="-llib -Ibuild -D&quot;&quot; -aa -Tpe -x -Gn -v"/>
+    <OTHERFILES value=""/>
+  </OPTIONS>
+  <LINKER>
+    <ALLOBJ value="c0w32.obj $(PACKAGES) Memmgr.Lib sysinit.obj $(OBJFILES)"/>
+    <ALLRES value="$(RESFILES)"/>
+    <ALLLIB value="$(LIBFILES) $(LIBRARIES) import32.lib cp32mti.lib"/>
+    <OTHERFILES value=""/>
+  </LINKER>
+  <FILELIST>
+      <FILE FILENAME="CMSCppGUI.res" FORMNAME="" UNITNAME="CMSCppGUI.res" CONTAINERID="ResTool" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="CMSCppGUI.cpp" FORMNAME="" UNITNAME="CMSCppGUI" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="src\gui\Unit1.cpp" FORMNAME="Form1" UNITNAME="Unit1" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="src\gui\TAboutBox.cpp" FORMNAME="AboutBox" UNITNAME="TAboutBox" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="src\gui\TMainForm.cpp" FORMNAME="MainForm" UNITNAME="TMainForm" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="src\gui\TTargetWhiteForm.cpp" FORMNAME="TargetWhiteForm" UNITNAME="TTargetWhiteForm" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="src\ca210api\CA210API.cpp" FORMNAME="" UNITNAME="CA210API" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="src\cms\core.cpp" FORMNAME="" UNITNAME="core.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="src\cms\patch.cpp" FORMNAME="" UNITNAME="patch.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="src\cms\colorformat\logo.cpp" FORMNAME="" UNITNAME="logo" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="src\cms\colorspace\ciexyz.cpp" FORMNAME="" UNITNAME="ciexyz.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="src\cms\colorspace\colorspace.cpp" FORMNAME="" UNITNAME="colorspace.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="src\cms\colorspace\depend.cpp" FORMNAME="" UNITNAME="depend.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="src\cms\colorspace\independ.cpp" FORMNAME="" UNITNAME="independ.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="src\cms\colorspace\rgb.cpp" FORMNAME="" UNITNAME="rgb.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="src\cms\measure\meter.cpp" FORMNAME="" UNITNAME="meter.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="src\cms\measure\MeterMeasurement.cpp" FORMNAME="" UNITNAME="MeterMeasurement.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="src\cms\measure\TMeasureWindow.cpp" FORMNAME="MeasureWindow" UNITNAME="TMeasureWindow" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="src\static\util.cpp" FORMNAME="" UNITNAME="util" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="src\static\java\lang.cpp" FORMNAME="" UNITNAME="lang" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+  </FILELIST>
+  <BUILDTOOLS>
+  </BUILDTOOLS>
+
+  <IDEOPTIONS>
+[Version Info]
+IncludeVerInfo=0
+AutoIncBuild=0
+MajorVer=1
+MinorVer=0
+Release=0
+Build=0
+Debug=0
+PreRelease=0
+Special=0
+Private=0
+DLL=0
+Locale=1028
+CodePage=950
+
+[Version Info Keys]
+CompanyName=
+FileDescription=
+FileVersion=1.0.0.0
+InternalName=
+LegalCopyright=
+LegalTrademarks=
+OriginalFilename=
+ProductName=
+ProductVersion=1.0.0.0
+Comments=
+
+[HistoryLists\hlIncludePath]
+Count=2
+Item0=src\static\java;src\static;src\cms\measure;src\cms\colorspace;src\cms\colorformat;src\cms;src\ca210api;src\gui;D:\Program Files\Borland\CBuilder6\Projects;D:\WorkSpace\新資料夾\CMSCpp\src\gui;$(BCB)\include;$(BCB)\include\vcl
+Item1=$(BCB)\include;$(BCB)\include\vcl
+
+[HistoryLists\hlLibraryPath]
+Count=2
+Item0=src\static\java;src\static;src\cms\measure;src\cms\colorspace;src\cms\colorformat;src\cms;src\ca210api;src\gui;D:\Program Files\Borland\CBuilder6\Projects;D:\WorkSpace\新資料夾\CMSCpp\src\gui;$(BCB)\Projects\Lib;$(BCB)\lib\obj;$(BCB)\lib
+Item1=$(BCB)\lib\obj;$(BCB)\lib
+
+[HistoryLists\hlDebugSourcePath]
+Count=1
+Item0=$(BCB)\source\vcl
+
+[HistoryLists\hlConditionals]
+Count=1
+Item0=_DEBUG
+
+[HistoryLists\hlIntOutputDir]
+Count=1
+Item0=build
+
+[HistoryLists\hlFinalOutputDir]
+Count=2
+Item0=build\
+Item1=build
+
+[HistoryLists\hIBPIOutputDir]
+Count=1
+Item0=lib
+
+[Debugging]
+DebugSourceDirs=$(BCB)\source\vcl
+
+[Parameters]
+RunParams=
+Launcher=
+UseLauncher=0
+DebugCWD=
+HostApplication=
+RemoteHost=
+RemotePath=
+RemoteLauncher=
+RemoteCWD=
+RemoteDebug=0
+
+[Compiler]
+ShowInfoMsgs=0
+LinkDebugVcl=0
+LinkCGLIB=0
+
+[CORBA]
+AddServerUnit=1
+AddClientUnit=1
+PrecompiledHeaders=1
+
+[Language]
+ActiveLang=
+ProjectLang=
+RootDir=
+  </IDEOPTIONS>
+</PROJECT>
