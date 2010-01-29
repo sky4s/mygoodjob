@@ -1,7 +1,7 @@
 object Form1: TForm1
-  Left = 471
-  Top = 410
-  Width = 1292
+  Left = 433
+  Top = 374
+  Width = 1305
   Height = 750
   Caption = 'Form1'
   Color = clBtnFace
