@@ -3,15 +3,15 @@
 #include <vcl.h>
 #pragma hdrstop
 
-#include <conio.h>
+#include "Unit1.h"
 //---------------------------------------------------------------------------
-
-#pragma argsused
-int main(int argc, char *argv[])
+#pragma package(smart_init)
+#pragma resource "*.dfm"
+TForm1 *Form1;
+//---------------------------------------------------------------------------
+__fastcall TForm1::TForm1(TComponent* Owner)
+        : TForm(Owner)
 {
-    getch();
-    return 0;
 }
-
 //---------------------------------------------------------------------------
-
+ 
