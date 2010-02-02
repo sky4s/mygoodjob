@@ -64,8 +64,6 @@ namespace cms {
 					      RGBColorSpace rgbColorSpace);
 	    };
 
-
-
 	    enum Round {
 		//©|¥¼°õ¦æ
 		NotYet,
@@ -75,30 +73,30 @@ namespace cms {
 		RoundDown
 	    };
 
-	    class Channel {
+	    class Channel:public jObject {
 	      public:
-		static const Channel R;
-		static const Channel G;
-		static const Channel B;
-		static const Channel Y;
-		static const Channel M;
-		static const Channel C;
-		static const Channel W;
+		static const Channel & R;
+		static const Channel & G;
+		static const Channel & B;
+		static const Channel & Y;
+		static const Channel & M;
+		static const Channel & C;
+		static const Channel & W;
 	      private:
 		int _index;
-		TColor _color;
-		 std::string _fullname;
+		TColor color;
+		 std::string fullname;
 
 		 Channel(int index, TColor color, std::string fullname);
 
 		static bool isPrimaryColorChannel(const Channel & channel);
 		static bool isSecondaryColorChannel(const Channel &
 						    channel);
-		static std::vector < Channel > *getChannelVector(int count,
-								 ...);
+
 
 	      public:
-		 inline bool operator==(const Channel & that) const {
+		static channel_vector_ptr getChannelVector(int count, ...);
+		inline bool operator==(const Channel & that) const {
 		    return _index == that._index;
 		};
 		inline bool operator!=(const Channel & that) const {
@@ -106,22 +104,23 @@ namespace cms {
 		};
 		 Channel();
 
-
+		const string_ptr toString();
 		int getArrayIndex();
-		static const Channel & getChannel(boolean R, boolean G,
-						  boolean B);
+		bool isPrimaryColorChannel();
+		bool isSecondaryColorChannel();
 
-		static const Channel & getChannel(int chIndex);
-		static const Channel & getChannelByArrayIndex(int
-							      arrayIndex);
-		boolean isPrimaryColorChannel();
-		boolean isSecondaryColorChannel();
-		static const std::vector < Channel > &RGBYMCChannel;
-		static const std::vector < Channel > &RGBYMCWChannel;
-		static const std::vector < Channel > &RGBChannel;
-		static const std::vector < Channel > &RGBWChannel;
-		static const std::vector < Channel > &WRGBChannel;
-		static const std::vector < Channel > &YMCChannel;
+		static const Channel getChannel(boolean R, boolean G,
+						boolean B);
+		static const Channel getChannel(int chIndex);
+		static const Channel getChannelByArrayIndex(int
+							    arrayIndex);
+
+		static const channel_vector_ptr RGBYMCChannel;
+		static const channel_vector_ptr RGBYMCWChannel;
+		static const channel_vector_ptr RGBChannel;
+		static const channel_vector_ptr RGBWChannel;
+		static const channel_vector_ptr WRGBChannel;
+		static const channel_vector_ptr YMCChannel;
 	    };
 
 

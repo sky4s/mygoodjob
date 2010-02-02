@@ -9,8 +9,8 @@ namespace cms {
 	    //======================================================================
 	    // CIEXYZ
 	    //======================================================================
-	    vector_string_ptr CIEXYZ::getBandNames() {
-		vector_string_ptr names(new vector < string > (3));
+	    string_vector_ptr CIEXYZ::getBandNames() {
+		string_vector_ptr names(new string_vector(3));
 		 (*names)[0] = "X";
 		 (*names)[1] = "Y";
 		 (*names)[2] = "Z";
@@ -325,8 +325,8 @@ namespace cms {
 		y = values[1];
 		Y = values[2];
 	    };
-	    vector_string_ptr CIExyY::getBandNames() {
-		vector_string_ptr names(new vector < string > (3));
+	    string_vector_ptr CIExyY::getBandNames() {
+		string_vector_ptr names(new string_vector(3));
 		(*names)[0] = "x";
 		(*names)[1] = "y";
 		(*names)[2] = "Y";

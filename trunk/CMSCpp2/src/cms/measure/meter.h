@@ -1,22 +1,10 @@
 #ifndef METERH
 #define METERH
 
-//#include <java/lang.h>
+#include <java/lang.h>
 //#include <string>
 #include <ca210api/CA210API.h>
 
-namespace cms {
-    namespace colorformat {
-	namespace logo {
-	    class LogoFile;
-	};
-    };
-};
-namespace java {
-    namespace lang {
-	class Object;
-    };
-};
 
 namespace cms {
     namespace measure {

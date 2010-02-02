@@ -8,7 +8,8 @@
       build\logo.obj build\ciexyz.obj build\colorspace.obj build\depend.obj 
       build\independ.obj build\rgb.obj build\analyzer.obj build\meter.obj 
       build\MeterMeasurement.obj build\util.obj build\lang.obj 
-      build\CA200SRVRLib_OCX.obj build\CA200SRVRLib_TLB.obj"/>
+      build\CA200SRVRLib_OCX.obj build\CA200SRVRLib_TLB.obj 
+      build\doubleArray.obj build\whiteFinder.obj build\rgbArray.obj"/>
     <RESFILES value="CMSCpp.res"/>
     <IDLFILES value=""/>
     <IDLGENFILES value=""/>
@@ -16,7 +17,7 @@
     <RESDEPEN value="$(RESFILES)"/>
     <LIBFILES value=""/>
     <LIBRARIES value=""/>
-    <SPARELIBS value="rtl.lib"/>
+    <SPARELIBS value="rtl.lib vcl.lib"/>
     <PACKAGES value="rtl.bpi vcl.bpi dbrtl.bpi adortl.bpi vcldb.bpi vclx.bpi bdertl.bpi 
       vcldbx.bpi ibxpress.bpi dsnap.bpi cds.bpi bdecds.bpi qrpt.bpi teeui.bpi 
       teedb.bpi tee.bpi dss.bpi teeqr.bpi visualclx.bpi visualdbclx.bpi 
@@ -24,7 +25,7 @@
       inetdbbde.bpi inetdbxpress.bpi inetdb.bpi nmfast.bpi webdsnap.bpi 
       bcbie.bpi websnap.bpi soaprtl.bpi dclocx.bpi dbexpress.bpi dbxcds.bpi 
       indy.bpi bcb2kaxserver.bpi bcbindent.bpi"/>
-    <PATHCPP value=".;src;src\ca210api;src\cms;src\cms;src\cms\colorformat;src\cms\colorspace;src\cms\colorspace;src\cms\colorspace;src\cms\colorspace;src\cms\colorspace;src\cms\measure;src\cms\measure;src\cms\measure;src\static;src\static\java;imports\CA200SRVRLib;imports\CA200SRVRLib"/>
+    <PATHCPP value=".;src;src\ca210api;src\cms;src\cms;src\cms\colorformat;src\cms\colorspace;src\cms\colorspace;src\cms\colorspace;src\cms\colorspace;src\cms\colorspace;src\cms\measure;src\cms\measure;src\cms\measure;src\static;src\static\java;imports\CA200SRVRLib;imports\CA200SRVRLib;src\static\math;src\cms\lcd\calibrate;src\cms\util"/>
     <PATHPAS value=".;"/>
     <PATHRC value=".;"/>
     <PATHASM value=".;"/>
@@ -34,13 +35,15 @@
     <USERDEFINES value="_DEBUG"/>
     <SYSDEFINES value="NO_STRICT;_RTLDLL;USEPACKAGES"/>
     <MAINSOURCE value="CMSCpp.bpf"/>
-    <INCLUDEPATH value="imports\CA200SRVRLib;src\static\java;src\static;src\cms\measure;src\cms\colorspace;src\cms\colorformat;src\cms;src\ca210api;src;$(BCB)\include;$(BCB)\include\vcl;imports"/>
-    <LIBPATH value="imports\CA200SRVRLib;$(BCB)\Projects\Lib;src\static\java;src\static;src\cms\measure;src\cms\colorspace;src\cms\colorformat;src\cms;src\ca210api;src;$(BCB)\lib\obj;$(BCB)\lib"/>
+    <INCLUDEPATH value="src\cms\util;src\cms\lcd\calibrate;src\static\math;src\static\math\array;&quot;D:\Program Files\Borland\CBuilder6\Projects&quot;;imports\CA200SRVRLib;src\static\java;src\static;src\cms\measure;src\cms\colorspace;src\cms\colorformat;src\cms;src\ca210api;src;$(BCB)\include;$(BCB)\include\vcl;imports"/>
+    <LIBPATH value="src\cms\util;src\cms\lcd\calibrate;src\static\math;src\static\math\array;&quot;D:\Program Files\Borland\CBuilder6\Projects&quot;;imports\CA200SRVRLib;$(BCB)\Projects\Lib;src\static\java;src\static;src\cms\measure;src\cms\colorspace;src\cms\colorformat;src\cms;src\ca210api;src;$(BCB)\lib\obj;$(BCB)\lib"/>
     <WARNINGS value="-w-par"/>
     <OTHERFILES value=""/>
   </MACROS>
   <OPTIONS>
-    <IDLCFLAGS value="-Iimports\CA200SRVRLib -Isrc\static\java -Isrc\static -Isrc\cms\measure 
+    <IDLCFLAGS value="-Isrc\cms\util -Isrc\cms\lcd\calibrate -Isrc\static\math 
+      -Isrc\static\math\array -I&quot;D:\Program Files\Borland\CBuilder6\Projects&quot; 
+      -Iimports\CA200SRVRLib -Isrc\static\java -Isrc\static -Isrc\cms\measure 
       -Isrc\cms\colorspace -Isrc\cms\colorformat -Isrc\cms -Isrc\ca210api -Isrc 
       -I$(BCB)\include -I$(BCB)\include\vcl -Iimports -src_suffix cpp -D_DEBUG 
       -boa"/>
@@ -48,7 +51,7 @@
       -tWM -c"/>
     <PFLAGS value="-N2build -N0build -$YD -$W -$O- -$A8 -v -JPHNE -M"/>
     <RFLAGS value=""/>
-    <AFLAGS value="/mx /w2 /zd"/>
+    <AFLAGS value="/mx /w2 /zi"/>
     <LFLAGS value="-llib -Ibuild -D&quot;&quot; -ap -Tpe -x -Gn -v"/>
     <OTHERFILES value=""/>
   </OPTIONS>
@@ -78,6 +81,9 @@
       <FILE FILENAME="src\static\java\lang.cpp" FORMNAME="" UNITNAME="lang" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="imports\CA200SRVRLib\CA200SRVRLib_OCX.cpp" FORMNAME="" UNITNAME="CA200SRVRLib_OCX.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="imports\CA200SRVRLib\CA200SRVRLib_TLB.cpp" FORMNAME="" UNITNAME="CA200SRVRLib_TLB.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="src\static\math\doubleArray.cpp" FORMNAME="" UNITNAME="doubleArray" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="src\cms\lcd\calibrate\whiteFinder.cpp" FORMNAME="" UNITNAME="whiteFinder" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="src\cms\util\rgbArray.cpp" FORMNAME="" UNITNAME="rgbArray" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
   </FILELIST>
   <BUILDTOOLS>
   </BUILDTOOLS>
@@ -111,10 +117,11 @@ ProductVersion=1.0.0.0
 Comments=
 
 [HistoryLists\hlIncludePath]
-Count=3
-Item0=src\static\java;src\static;src\cms\measure;src\cms\colorspace;src\cms\colorformat;src\cms;src\ca210api;src;$(BCB)\include;$(BCB)\include\vcl;imports
-Item1=src\static\java;src\static;src\cms\measure;src\cms\colorspace;src\cms\colorformat;src\cms;src\ca210api;src;$(BCB)\include;$(BCB)\include\vcl;imports\CA200SRVRLib
-Item2=src\static\java;src\static;src\cms\measure;src\cms\colorspace;src\cms\colorformat;src\cms;src\ca210api;src;$(BCB)\include;$(BCB)\include\vcl
+Count=4
+Item0=imports\CA200SRVRLib;src\static\java;src\static;src\cms\measure;src\cms\colorspace;src\cms\colorformat;src\cms;src\ca210api;src;$(BCB)\include;$(BCB)\include\vcl;imports
+Item1=src\static\java;src\static;src\cms\measure;src\cms\colorspace;src\cms\colorformat;src\cms;src\ca210api;src;$(BCB)\include;$(BCB)\include\vcl;imports
+Item2=src\static\java;src\static;src\cms\measure;src\cms\colorspace;src\cms\colorformat;src\cms;src\ca210api;src;$(BCB)\include;$(BCB)\include\vcl;imports\CA200SRVRLib
+Item3=src\static\java;src\static;src\cms\measure;src\cms\colorspace;src\cms\colorformat;src\cms;src\ca210api;src;$(BCB)\include;$(BCB)\include\vcl
 
 [HistoryLists\hlLibraryPath]
 Count=2

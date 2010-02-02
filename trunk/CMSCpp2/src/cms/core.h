@@ -11,15 +11,6 @@
 #include <java/lang.h>
 #include <util.h>
 
-
-
-namespace cms {
-    namespace colorspace {
-	namespace independ {
-	    class CIExyY;
-	};
-    };
-};
 namespace cms {
     class SpectraIF {
       public:
@@ -39,10 +30,10 @@ namespace cms {
 
     class CorrelatedColorTemperature:public java::lang::Object {
       public:
-	static bptr < Indep::CIExyY > CCT2DIlluminantxyY(int tempK);
+	static xyY_ptr CCT2DIlluminantxyY(int tempK);
 
 
-	static double xy2CCTByMcCamyFloat(bptr < Indep::CIExyY > xyY);
+	static double xy2CCTByMcCamyFloat(xyY_ptr xyY);
     };
     class DeltaE:public java::lang::Object {
     };

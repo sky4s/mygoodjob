@@ -19,7 +19,8 @@ namespace cms {
 		double_array _getValues(double_array values);
 		void _setValues(double_array values);
 		//int getNumberBands();
-		vector_string_ptr getBandNames();
+		string_vector_ptr getBandNames();
+
 	      protected:
 		 MaxValue _maxValue;
 		RGBColorSpace _rgbColorSpace;

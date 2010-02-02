@@ -12,16 +12,6 @@
 #include <gui/TMeasureWindow.h>
 
 namespace cms {
-    class Patch;
-    namespace measure {
-
-	namespace meter {
-	    class Meter;
-	};
-    };
-};
-
-namespace cms {
     namespace measure {
 	class MeterMeasurement;
 	class MeasureUtils {

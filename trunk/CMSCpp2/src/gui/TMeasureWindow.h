@@ -11,13 +11,6 @@
 
 #include <java/lang.h>
 //---------------------------------------------------------------------------
-namespace cms {
-    namespace colorspace {
-	namespace depend {
-	    class RGBColor;
-	};
-    };
-};
 
 class TMeasureWindow:public TForm {
     __published:		// IDE-managed Components
