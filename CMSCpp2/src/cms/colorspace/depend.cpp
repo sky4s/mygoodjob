@@ -20,31 +20,34 @@ namespace cms {
 	    //======================================================================
 	    // Channel
 	    //======================================================================
-	    const Channel Channel::R = Channel(1, clRed, "R");
-	    const Channel Channel::G = Channel(2, clGreen, "G");
-	    const Channel Channel::B = Channel(3, clBlue, "B");
-	    const Channel Channel::Y = Channel(4, clYellow, "Y");
-	    const Channel Channel::M = Channel(5, (TColor) 0xff00ff, "M");
-	    const Channel Channel::C = Channel(6, (TColor) 0xffff00, "C");
-	    const Channel Channel::W = Channel(7, clWhite, "W");
+	    const Channel & Channel::R = Channel::Channel(1, clRed, "R");
+	    const Channel & Channel::G = Channel::Channel(2, clGreen, "G");
+	    const Channel & Channel::B = Channel::Channel(3, clBlue, "B");
+	    const Channel & Channel::Y =
+		Channel::Channel(4, clYellow, "Y");
+	    const Channel & Channel::M =
+		Channel::Channel(5, (TColor) 0xff00ff, "M");
+	    const Channel & Channel::C =
+		Channel::Channel(6, (TColor) 0xffff00, "C");
+	    const Channel & Channel::W = Channel::Channel(7, clWhite, "W");
 
-	    const vector < Channel > &Channel::RGBYMCChannel =
-		*getChannelVector(6, R, G, B, Y, M, C);
-	    const vector < Channel > &Channel::RGBYMCWChannel =
-		*getChannelVector(7, R, G, B, Y, M, C, W);
-	    const vector < Channel > &Channel::RGBChannel =
-		*getChannelVector(3, R, G, B);
-	    const vector < Channel > &Channel::RGBWChannel =
-		*getChannelVector(4, R, G, B, W);
-	    const vector < Channel > &Channel::WRGBChannel =
-		*getChannelVector(4, W, R, G, B);
-	    const vector < Channel > &Channel::YMCChannel =
-		*getChannelVector(3, Y, M, C);
+	    const channel_vector_ptr Channel::RGBYMCChannel =
+		getChannelVector(6, R, G, B, Y, M, C);
+	    const channel_vector_ptr Channel::RGBYMCWChannel =
+		getChannelVector(7, R, G, B, Y, M, C, W);
+	    const channel_vector_ptr Channel::RGBChannel =
+		getChannelVector(3, R, G, B);
+	    const channel_vector_ptr Channel::RGBWChannel =
+		getChannelVector(4, R, G, B, W);
+	    const channel_vector_ptr Channel::WRGBChannel =
+		getChannelVector(4, W, R, G, B);
+	    const channel_vector_ptr Channel::YMCChannel =
+		getChannelVector(3, Y, M, C);
 
 
 	     Channel::Channel(int index, TColor color,
 			      string fullname):_index(index),
-		_color(color), _fullname(fullname) {
+		color(color), fullname(fullname) {
 
 	    };
 
@@ -54,15 +57,13 @@ namespace cms {
 	    bool Channel::isSecondaryColorChannel(const Channel & channel) {
 		return channel == C || channel == M || channel == Y;
 	    };
-	    vector < Channel > *Channel::getChannelVector(int count,...) {
-		vector < Channel > *result =
-		    new vector < Channel > (count);
-
+	    channel_vector_ptr Channel::getChannelVector(int count, ...) {
+		channel_vector_ptr result(new channel_vector());
 		va_list num_list;
 		va_start(num_list, count);
 
 		for (int i = 0; i < count; i++) {
-		    Channel c = va_arg(num_list, Channel);
+		    Channel & c = va_arg(num_list, Channel);
 		    result->push_back(c);
 		}
 
@@ -74,13 +75,17 @@ namespace cms {
 	    Channel::Channel() {
 	    };
 
+	    const string_ptr Channel::toString() {
+		string_ptr str(new string(fullname));
+		return str;
+	    };
 
 	    int Channel::getArrayIndex() {
 		return _index - 1;
 	    };
 
-	    const Channel & Channel::getChannel(boolean R, boolean G,
-						boolean B) {
+	    const Channel Channel::getChannel(boolean R, boolean G,
+					      boolean B) {
 		int index = 0;
 		index += R ? 1 : 0;
 		index += G ? 2 : 0;
@@ -88,7 +93,7 @@ namespace cms {
 		return getChannel(index);
 	    };
 
-	    const Channel & Channel::getChannel(int chIndex) {
+	    const Channel Channel::getChannel(int chIndex) {
 		switch (chIndex) {
 		case 1:
 		    return R;
@@ -108,15 +113,15 @@ namespace cms {
 		       return NULL; */
 		}
 	    };
-	    const Channel & Channel::getChannelByArrayIndex(int
-							    arrayIndex) {
+	    const Channel Channel::getChannelByArrayIndex(int
+							  arrayIndex) {
 		return getChannel(arrayIndex + 1);
 	    };
-	    boolean Channel::isPrimaryColorChannel() {
+	    bool Channel::isPrimaryColorChannel() {
 		return isPrimaryColorChannel(*this);
 	    };
 
-	    boolean Channel::isSecondaryColorChannel() {
+	    bool Channel::isSecondaryColorChannel() {
 		return isSecondaryColorChannel(*this);
 	    };
 	    //======================================================================

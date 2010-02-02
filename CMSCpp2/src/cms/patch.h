@@ -13,19 +13,6 @@
 
 namespace cms {
 
-    class Spectra;
-    namespace colorspace {
-	namespace depend {
-	    class RGBColor;
-	};
-	namespace independ {
-	    class CIEXYZ;
-	};
-    };
-};
-
-namespace cms {
-
     /*using std::string;
        using namespace boost;
        using java::lang::Object;
@@ -38,21 +25,21 @@ namespace cms {
       protected:
 	bptr < std::string > name;
 	//CIELab _Lab = null;
-	bptr < Indep::CIEXYZ > XYZ;
-	bptr < Indep::CIEXYZ > normalizedXYZ;
-	bptr < Dep::RGBColor > rgb;
+	XYZ_ptr XYZ;
+	XYZ_ptr normalizedXYZ;
+	RGB_ptr rgb;
 	//shared_ptr < RGBColor > originalRGB = null;
 	bptr < Spectra > spectra;
 	bptr < Spectra > reflectSpectra;
       public:
 	Patch(bptr < std::string > name,
-	      bptr < Indep::CIEXYZ > XYZ,
-	      bptr < Indep::CIEXYZ > normalizedXYZ,
-	      bptr < Dep::RGBColor > rgb);
+	      XYZ_ptr XYZ,
+	      XYZ_ptr normalizedXYZ,
+	      RGB_ptr rgb);
 	bptr < std::string > getName();
-	bptr < Indep::CIEXYZ > getXYZ();
-	bptr < Indep::CIEXYZ > getNormalizedXYZ();
-	bptr < Dep::RGBColor > getRGB();
+	XYZ_ptr getXYZ();
+	XYZ_ptr getNormalizedXYZ();
+	RGB_ptr getRGB();
     };
 
 };

@@ -18,18 +18,19 @@ namespace java {
 	 Class::Class(Object & object):object(object), info(typeid(object)) {
 
 	};
-	 shared_ptr < string > Class::getSimpleName() {
-	    return shared_ptr < string > (new string(info.name()));
+	string_ptr Class::getSimpleName() {
+	    return string_ptr(new string(info.name()));
 	};
 
-	shared_ptr < string > Class::getName() {
-	    return shared_ptr < string > (new string(info.name()));
+	string_ptr Class::getName() {
+	    return string_ptr(new string(info.name()));
 	};
 	//======================================================================
 
 	//======================================================================
 	// Object
 	//======================================================================
+	int Object::globalID = 0;
 	bool Object::equals(shared_ptr < Object > obj) {
 	    //return this->Equals(&obj);
 	    return false;
@@ -43,20 +44,28 @@ namespace java {
 	    return -1;
 	};
 
-	shared_ptr < string > Object::toString() {
+	string_ptr Object::toString() {
 	    return getClass().getName();
 	};
 	bool Object::isNull() {
 	    return null;
 	};
-      Object::Object(bool null):null(null), c(*this) {
+      Object::Object(bool null):null(null), c(*this),
+	    objectID(globalID++) {
 
 	};
-      Object::Object():null(false), c(*this) {
+      Object::Object():null(false), c(*this), objectID(globalID++) {
 
 	};
-	shared_ptr < Object > Object::clone() {
-	    return shared_ptr < Object > (new Object());
+      /*Object::Object(Object & o):null(false), c(*this),
+	    objectID(globalID++) {
+
+	};*/
+	const int Object::getObjectID() {
+	    return objectID;
+	};
+	object_ptr Object::clone() {
+	    return object_ptr(new Object(this));
 	};
 	void Object::finalize() {
 	};

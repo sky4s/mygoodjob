@@ -8,6 +8,7 @@
 //其他庫頭文件
 #include <boost/shared_array.hpp>
 #include <boost/shared_ptr.hpp>
+#include <boost/foreach.hpp>
 //本項目內頭文件
 
 //==============================================================================
@@ -34,18 +35,72 @@
 #define bptr boost::shared_ptr
 #define barray boost::shared_array
 
-#define vector_double_ptr bptr < std::vector < double > >
-#define vector_string_ptr bptr < std::vector < std::string > >
+#define double_vector std::vector < double >
+#define string_vector std::vector < std::string >
+
+
+#define double_vector_ptr bptr < double_vector >
+#define nil_double_vector_ptr double_vector_ptr ((double_vector*)NULL)
+#define nil_double_vector nil_double_vector_ptr
+#define string_vector_ptr bptr < string_vector >
+
+
 #define double_array barray <double>
+#define nil_double_array double_array ((double*)NULL)
 #define float_array barray <float>
-#define float_array barray <float>
+#define nil_float_array float_array ((float*)NULL)
 
 #define string_ptr bptr < std::string >
 #define nil_string_ptr string_ptr ((std::string*)NULL)
+#define object_ptr bptr < jObject >
+
+#define foreach BOOST_FOREACH
 //==============================================================================
 
+//==============================================================================
+//簡化cms使用上的巨集
+//===============================================================================
 #define Dep cms::colorspace::depend
 #define Indep cms::colorspace::independ
+#define RGB_ptr bptr < Dep::RGBColor >
+#define xyY_ptr bptr < Indep::CIExyY >
+#define XYZ_ptr bptr < Indep::CIEXYZ >
+
+#define RGB_vector std::vector < Dep::RGBColor >
+#define RGB_vector_ptr bptr < RGB_vector >
+
+#define channel_vector std::vector < Dep::Channel >
+#define channel_vector_ptr bptr < channel_vector >
+//==============================================================================
+
+namespace cms {
+    class Patch;
+    class Spectra;
+    namespace colorformat {
+	namespace logo {
+	    class LogoFile;
+	};
+    };
+    namespace colorspace {
+	namespace depend {
+	    class RGBColor;
+	    class Channel;
+	};
+	namespace independ {
+	    class CIExyY;
+	    class CIEXYZ;
+	};
+    };
+    namespace measure {
+	class MeterMeasurement;
+	namespace meter {
+	    class Meter;
+	    class CA210;
+	};
+    };
+};
+
+//==============================================================================
 
 
 /*
@@ -84,30 +139,35 @@ namespace java {
 
 	class Class {
 	  private:
+
 	    friend class Object;
 	    const std::type_info & info;
 	     Object & object;
 	     Class(Object & object);
 	  public:
-	     boost::shared_ptr < std::string > getSimpleName();
-	     boost::shared_ptr < std::string > getName();
+	     string_ptr getSimpleName();
+	    string_ptr getName();
 	};
 
 	class Object {
 	  private:
+	    static int globalID;
+	    const int objectID;
 	    bool null;
 	    Class c;
 	  public:
-	     bool equals(boost::shared_ptr < Object > obj);
+	     bool equals(object_ptr obj);
 	     Class & getClass();
 	    int hashCode();
-	     boost::shared_ptr < std::string > toString();
+	    string_ptr toString();
 	    bool isNull();
 	     Object(bool null);
 	     Object();
+	     //Object(Object & o);
+	    const int getObjectID();
 
 	  protected:
-	     boost::shared_ptr < Object > clone();
+	     object_ptr clone();
 	    void finalize();
 	};
 

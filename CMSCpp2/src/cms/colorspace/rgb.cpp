@@ -31,7 +31,7 @@ namespace cms {
 
 	    RGBColor::RGBColor(double r, double g,
 			       double b):_rgbColorSpace(RGBColorSpace::
-						     unknowRGB),
+							unknowRGB),
 		_maxValue(MaxValue::Double255) {
 		setValues(r, g, b);
 	    };
@@ -59,8 +59,8 @@ namespace cms {
 		B = values[2];
 	    };
 
-	    vector_string_ptr RGBColor::getBandNames() {
-		vector_string_ptr vec(new vector < string > (3));
+	    string_vector_ptr RGBColor::getBandNames() {
+		string_vector_ptr vec(new string_vector(3));
 
 		(*vec)[0] = "R";
 		(*vec)[1] = "G";
@@ -78,3 +78,4 @@ namespace cms {
 	};
     };
 };
+

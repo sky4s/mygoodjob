@@ -50,7 +50,7 @@ namespace cms {
 
 	    void setValues(double_array values);
 	    void setValues(double value1, double value2, double value3);
-	    virtual vector_string_ptr getBandNames() = 0;
+	    virtual string_vector_ptr getBandNames() = 0;
 	    void setValuesLock(bool lock);
 
 	};

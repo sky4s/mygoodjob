@@ -13,24 +13,6 @@
 namespace ca210api {
     class CA210API;
 };
-namespace cms {
-    namespace colorspace {
-	namespace depend {
-	    class Channel;
-	    class RGBColor;
-	};
-	namespace independ {
-	    class CIEXYZ;
-	};
-
-    };
-    namespace measure {
-	namespace meter {
-	    class Meter;
-	    class CA210;
-	};
-    };
-};
 
 namespace cms {
 
@@ -39,13 +21,13 @@ namespace cms {
 	class MeterMeasurement;
 	class ComponentAnalyzerIF {
 	  public:
-	    bptr < Dep::RGBColor >
-		getComponent(bptr < Dep::RGBColor > rgb);
+	    RGB_ptr
+		getComponent(RGB_ptr rgb);
 	    void setupComponent(Dep::Channel & ch,
-				bptr < Indep::CIEXYZ > XYZ);
+				XYZ_ptr XYZ);
 
 	    void setupComponent(Dep::Channel & ch,
-				bptr < Dep::RGBColor > rgb);
+				RGB_ptr rgb);
 	};
 
 	class CA210ComponentAnayzer:public jObject, ComponentAnalyzerIF {
@@ -57,10 +39,10 @@ namespace cms {
 	    CA210ComponentAnayzer(bptr < cms::measure::meter::CA210 >
 				  ca210);
 
-	    bptr < Dep::RGBColor >
-		getComponent(bptr < Dep::RGBColor > rgb);
+	    RGB_ptr
+		getComponent(RGB_ptr rgb);
 	    void setupComponent(Dep::Channel & ch,
-				bptr < Dep::RGBColor > rgb);
+				RGB_ptr rgb);
 
 	};
     };

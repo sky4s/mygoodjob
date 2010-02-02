@@ -21,7 +21,7 @@ namespace cms {
 
 	      public:
 		double X, Y, Z;
-		vector_string_ptr getBandNames();
+		string_vector_ptr getBandNames();
 		double getCCT();
 
 		NormalizeY getNormalizeY();
@@ -107,7 +107,7 @@ namespace cms {
 
 		double_array _getValues(double_array values);
 		void _setValues(double_array values);
-		vector_string_ptr getBandNames();
+		string_vector_ptr getBandNames();
 		void normalize(NormalizeY normalizeY);
 		void normalizeY();
 
