@@ -44,15 +44,15 @@ namespace cms {
 
 		class NearestAlgorithm:public Algorithm {
 		  private:
-		    cms::measure::cp::MeasureInterface & mi;
+		    bptr < cms::measure::cp::MeasureInterface > mi;
+
 		  protected:
 		    XYZ_ptr white;
 
 		    virtual double_array getDelta(XYZ_ptr center,
 						  XYZ_ptr XYZ) = 0;
-		     bptr < cms::measure::
-			MeasureResult > getMeasureResult(RGB_vector_ptr
-							 aroundRGB);
+		     bptr < cms::measure::MeasureResult >
+			getMeasureResult(RGB_vector_ptr aroundRGB);
 		    virtual double getIndex(XYZ_ptr center,
 					    XYZ_ptr around) = 0;
 		  public:
@@ -62,8 +62,8 @@ namespace cms {
 						       int lastCount);
 		    double_array getDelta(XYZ_ptr XYZ, RGB_ptr rgb);
 		     NearestAlgorithm(XYZ_ptr white,
-				      cms::measure::cp::
-				      MeasureInterface & mi);
+				      bptr < cms::measure::cp::
+				      MeasureInterface > mi);
 		     bptr < AlgoResult > getNearestRGB(XYZ_ptr center,
 						       RGB_vector_ptr
 						       aroundRGB);

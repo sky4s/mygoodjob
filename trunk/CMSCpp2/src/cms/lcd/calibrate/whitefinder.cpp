@@ -8,9 +8,11 @@
 //其他庫頭文件
 
 //本項目內頭文件
-//#include <cms/colorspace/rgb.h>
 #include <cms/lcd/calibrate/aroundalgo.h>
+#include <cms/lcd/calibrate/nearalgo.h>
 #include <cms/colorspace/rgb.h>
+#include <cms/colorspace/ciexyz.h>
+#include <cms/measure/MeterMeasurement.h>
 
 namespace cms {
     namespace lcd {
@@ -18,9 +20,15 @@ namespace cms {
 	    using namespace cms::measure;
 	    using namespace cms::lcd::calibrate::algo;
 	    using namespace Dep;
-	     WhitePointFinder::
-		WhitePointFinder(MeterMeasurement & mm):mm(mm),
-		aroundAlgo(ChromaticAroundAlgorithm()) {
+	     WhitePointFinder::WhitePointFinder(bptr <
+						cms::measure::
+						MeterMeasurement >
+						mm):mm(mm),
+		aroundAlgo(ChromaticAroundAlgorithm())
+	    , nearAlgo(CIEuv1960NearestAlgorithm
+		       (XYZ_ptr((Indep::CIEXYZ *) NULL),
+			mm->getMeasureInterface()
+		       )) {
 	    };
 
 	    RGB_ptr WhitePointFinder::findRGBAround(xyY_ptr xyY) {

@@ -108,6 +108,7 @@ namespace cms {
 	namespace calibrate {
 	    namespace algo {
 		class ChromaticAroundAlgorithm;
+                class CIEuv1960NearestAlgorithm;
 	    };
 	};
     };
