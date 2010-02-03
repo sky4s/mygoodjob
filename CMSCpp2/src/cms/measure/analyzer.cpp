@@ -29,7 +29,7 @@ namespace cms {
 	 bptr < RGBColor >
 	    CA210ComponentAnayzer::getComponent(bptr < RGBColor > rgb) {
 	    bptr < Patch > patch = mm->measure(rgb, rgb->toString());
-	    bptr < MeasureResult > measureResult =
+	    bptr < CAMeasureResult > measureResult =
 		ca210api->getMeasureResult();
 	    bptr < RGBColor >
 		component(new

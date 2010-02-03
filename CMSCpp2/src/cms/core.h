@@ -14,13 +14,13 @@
 namespace cms {
     class SpectraIF {
       public:
-	virtual boost::shared_array < double >getData() = 0;
+	virtual double_array getData() = 0;
 	virtual int getEnd() = 0;
 	virtual int getInterval() = 0;
 	virtual int getStart() = 0;
     };
 
-    class ColorMatchingFunction:public java::lang::Object, SpectraIF {
+    class ColorMatchingFunction:public jObject, SpectraIF {
 
     };
 
@@ -28,18 +28,18 @@ namespace cms {
 	McCamyInt, McCamyFloat, Exp, ExpCCTOver50k, Robertson
     };
 
-    class CorrelatedColorTemperature:public java::lang::Object {
+    class CorrelatedColorTemperature:public jObject {
       public:
 	static xyY_ptr CCT2DIlluminantxyY(int tempK);
 
 
 	static double xy2CCTByMcCamyFloat(xyY_ptr xyY);
     };
-    class DeltaE:public java::lang::Object {
+    class DeltaE:public jObject {
     };
-    class Illuminant:public java::lang::Object, SpectraIF {
+    class Illuminant:public jObject, SpectraIF {
       public:
-	boost::shared_array < double >getData() {
+	double_array getData() {
 
 	};
 	int getEnd() {
@@ -50,19 +50,18 @@ namespace cms {
 	};
     };
 
-    class Spectra:public java::lang::Object, SpectraIF, util::NameIF {
+    class Spectra:public jObject, SpectraIF, util::NameIF {
     };
 
 
-    class Target:public java::lang::Object {
+    class Target:public jObject {
     };
 
     class ValuePropertyIF {
       public:
 	virtual double_array getValues() = 0;
-	virtual void setValues(boost::shared_array < double >values) = 0;
-	virtual boost::shared_array <
-	    double >getValues(boost::shared_array < double >values) = 0;
+	virtual void setValues(double_array values) = 0;
+	virtual double_array getValues(double_array values) = 0;
     };
 };
 #endif

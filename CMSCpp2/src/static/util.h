@@ -15,13 +15,13 @@ namespace util {
     //using namespace boost;
     class Util {
       public:
-	static boost::shared_ptr < std::string > toString(wchar_t * wc);
+	static string_ptr toString(wchar_t * wc);
 	static boost::shared_array < wchar_t >
 	    towchar_t(std::string & str);
     };
     class NameIF {
       public:
-	virtual boost::shared_ptr < std::string > getName() = 0;
+	virtual string_ptr getName() = 0;
     };
 
 };

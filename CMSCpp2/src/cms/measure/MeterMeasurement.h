@@ -4,6 +4,7 @@
 //C系統文件
 
 //C++系統文件
+#include <vector>
 
 //其他庫頭文件
 
@@ -25,7 +26,6 @@ namespace cms {
 					  meter::Meter > meter,
 					  TMeasureWindow * measureWindow);
 	};
-
 
 	class MeterMeasurement {
 	    friend class MeasureUtils;
@@ -52,32 +52,41 @@ namespace cms {
 
 	    void setMeasureWindowsVisible(bool visible);
 
-	     boost::shared_ptr < cms::Patch >
-		measure(boost::shared_ptr < Dep::RGBColor >
-			rgb, boost::shared_ptr < std::string > patchName);
+	    Patch_ptr measure(RGB_ptr rgb, const string_ptr patchName);
 
-	     boost::shared_ptr < cms::Patch >
-		measure(int r, int g, int b, std::string patchName);
+	    Patch_ptr measure(int r, int g, int b,
+			      const string_ptr patchName);
+	    Patch_ptr measure(int r, int g, int b, std::string patchName);
 
 	    void setBlankTimes(int blankTimes);
 	    void setWaitTimes(int waitTimes);
 	    void setFakeMeasure(bool fake);
 	    bool isFakeMeasure();
 
+	     bptr < cms::measure::cp::MeasureInterface >
+		getMeasureInterface();
+
+
 	  protected:
 	    void meterClose();
 
-	     boost::shared_ptr < cms::Patch >
-		measure0(boost::shared_ptr < Dep::RGBColor >
+	     bptr < cms::Patch >
+		measure0(RGB_ptr
 			 measureRGB,
-			 boost::shared_ptr < std::string > patchName,
-			 boost::shared_ptr < std::string > titleNote,
-			 boost::shared_ptr < std::string > timeNote);
+			 const string_ptr patchName,
+			 const string_ptr titleNote, string_ptr timeNote);
 
 
 
 	};
-
+	using namespace std;
+	class MeasureResult {
+	  public:
+	    Patch_vector_ptr result;
+	    int practicalMeasureCount;
+	     MeasureResult(Patch_vector_ptr result,
+			   int practicalMeasureCount);
+	};
 
     };
 };

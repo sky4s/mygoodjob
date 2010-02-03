@@ -12,15 +12,7 @@
 #include <util.h>
 
 namespace cms {
-
-    /*using std::string;
-       using namespace boost;
-       using java::lang::Object;
-       using util::NameIF;
-       using cms::colorspace::RGBColor;
-       using cms::colorspace::CIEXYZ; */
-
-    class Patch:public java::lang::Object, util::NameIF {
+    class Patch:public jObject, util::NameIF {
 
       protected:
 	bptr < std::string > name;

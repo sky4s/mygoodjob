@@ -9,16 +9,23 @@
 
 //本項目內頭文件
 //#include <cms/colorspace/rgb.h>
+#include <cms/lcd/calibrate/aroundalgo.h>
+#include <cms/colorspace/rgb.h>
 
 namespace cms {
     namespace lcd {
 	namespace calibrate {
 	    using namespace cms::measure;
+	    using namespace cms::lcd::calibrate::algo;
+	    using namespace Dep;
 	     WhitePointFinder::
-		WhitePointFinder(MeterMeasurement & mm):mm(mm) {
+		WhitePointFinder(MeterMeasurement & mm):mm(mm),
+		aroundAlgo(ChromaticAroundAlgorithm()) {
 	    };
 
-	    RGB_ptr WhitePointFinder::findRB(xyY_ptr xyY) {
+	    RGB_ptr WhitePointFinder::findRGBAround(xyY_ptr xyY) {
+		RGB_vector_ptr aroundRGB =
+		    aroundAlgo.getAroundRGB(RGBColor::White, 1);
 
 	    };
 	    RGB_ptr WhitePointFinder::findMatchRGB(xyY_ptr xyY,
@@ -35,10 +42,10 @@ namespace cms {
 	       由於缺乏model可以預測適當的白點,
 	       1. 因此先基於G以R&B尋找正確白點
 	       2. 然後再調整White使RGB其中一點為255.
-	       再以此修正後的值, 修正其餘非255的兩點, 使色度達到最接近值.
+	       3. 再以此修正後的值, 修正其餘非255的兩點, 使色度達到最接近值.
 	     */
 	    RGB_ptr WhitePointFinder::findRGB(xyY_ptr xyY) {
-		RGB_ptr initRGB = findRB(xyY);
+		RGB_ptr initRGB = findRGBAround(xyY);
 		RGB_ptr fixRGB = fixRGB2TouchMax(initRGB);
 		RGB_ptr finalRGB = findMatchRGB(xyY, fixRGB);
 		return finalRGB;

@@ -46,8 +46,8 @@ namespace cms {
 
 
 	     Channel::Channel(int index, TColor color,
-			      string fullname):_index(index),
-		color(color), fullname(fullname) {
+			      string fullname):index(index), color(color),
+		fullname(fullname) {
 
 	    };
 
@@ -65,9 +65,7 @@ namespace cms {
 		for (int i = 0; i < count; i++) {
 		    Channel & c = va_arg(num_list, Channel);
 		    result->push_back(c);
-		}
-
-		va_end(num_list);
+		} va_end(num_list);
 		return result;
 	    };
 
@@ -75,17 +73,17 @@ namespace cms {
 	    Channel::Channel() {
 	    };
 
-	    const string_ptr Channel::toString() {
+	    const string_ptr Channel::toString() const {
 		string_ptr str(new string(fullname));
-		return str;
+		 return str;
 	    };
 
 	    int Channel::getArrayIndex() {
-		return _index - 1;
+		return index - 1;
 	    };
 
-	    const Channel Channel::getChannel(boolean R, boolean G,
-					      boolean B) {
+	    const Channel & Channel::getChannel(boolean R, boolean G,
+						boolean B) {
 		int index = 0;
 		index += R ? 1 : 0;
 		index += G ? 2 : 0;
@@ -93,7 +91,7 @@ namespace cms {
 		return getChannel(index);
 	    };
 
-	    const Channel Channel::getChannel(int chIndex) {
+	    const Channel & Channel::getChannel(int chIndex) {
 		switch (chIndex) {
 		case 1:
 		    return R;
@@ -113,15 +111,14 @@ namespace cms {
 		       return NULL; */
 		}
 	    };
-	    const Channel Channel::getChannelByArrayIndex(int
-							  arrayIndex) {
+	    const Channel & Channel::getChannelByArrayIndex(int arrayIndex) {
 		return getChannel(arrayIndex + 1);
 	    };
-	    bool Channel::isPrimaryColorChannel() {
+	    bool Channel::isPrimaryColorChannel() const {
 		return isPrimaryColorChannel(*this);
 	    };
 
-	    bool Channel::isSecondaryColorChannel() {
+	    bool Channel::isSecondaryColorChannel() const {
 		return isSecondaryColorChannel(*this);
 	    };
 	    //======================================================================
@@ -136,13 +133,10 @@ namespace cms {
 	    //======================================================================
 	    // RGBBase
 	    //======================================================================
-	    shared_array <
-		double >RGBBase::linearToRGBValues(shared_array <
-						   double >linearRGBValues,
-						   RGBColorSpace
-						   rgbColorSpace) {
-		//double[] rgbValues = linearRGBValues.clone();
-		shared_array < double >rgbValues;
+	    double_array RGBBase::
+		linearToRGBValues(double_array linearRGBValues,
+				  RGBColorSpace rgbColorSpace) {
+		double_array rgbValues;
 		boolean negative = false;
 
 		if (rgbColorSpace == RGBColorSpace::sRGB) {
@@ -187,29 +181,36 @@ namespace cms {
 	    //======================================================================
 	    // MaxValue
 	    //======================================================================
-	    const MaxValue MaxValue::Double1(1.);	//正規化
-	    const MaxValue MaxValue::Double100(100.);	//正規化
-	    const MaxValue MaxValue::Int5Bit(31., true, false);	//5bit
-	    const MaxValue MaxValue::Int6Bit(63., true, false);	//6bit
-	    const MaxValue MaxValue::Int7Bit(127., true, false);	//7bit
-	    const MaxValue MaxValue::Int8Bit(255., true, true);	//一般常用的RGB code
-	    const MaxValue MaxValue::Double255(255.);	//各種bit數的RGB code通用
-	    const MaxValue MaxValue::Int9Bit(510., true, true);	//9bit
-	    const MaxValue MaxValue::Double1020(1020, false, true);	//10bit
-	    const MaxValue MaxValue::Int10Bit(1020, true, true);	//10bit
-	    const MaxValue MaxValue::Int11Bit(2040, true, true);	//11bit
-	    const MaxValue MaxValue::Double4080(4080, false, true);	//12bit
-	    const MaxValue MaxValue::Int12Bit(4080, true, true);	//12bit
-	    const MaxValue MaxValue::Int13Bit(8160, true, true);	//13bit
-	    const MaxValue MaxValue::Int14Bit(16320, true, true);	//14bit
-	    const MaxValue MaxValue::Int15Bit(32640, true, true);	//15bit
-	    const MaxValue MaxValue::Int16Bit(65280, true, true);	//16bit
-	    const MaxValue MaxValue::Int20Bit(1044480, true, true);	//20bit
-	    const MaxValue MaxValue::Int24Bit(16711680, true, true);	//24bit
-	    const MaxValue MaxValue::Int31Bit(2139095040, true, true);	//31bit
-	    const MaxValue MaxValue::DoubleUnlimited(std::numeric_limits <
-						     double >::max()
-		);		//無限制
+	    const MaxValue & MaxValue::Double1 = MaxValue(1.);	//正規化
+	    const MaxValue & MaxValue::Double100 = MaxValue(100.);	//正規化
+	    const MaxValue & MaxValue::Int5Bit = MaxValue(31., true, false);	//5bit
+	    const MaxValue & MaxValue::Int6Bit = MaxValue(63., true, false);	//6bit
+	    const MaxValue & MaxValue::Int7Bit = MaxValue(127., true, false);	//7bit
+	    const MaxValue & MaxValue::Int8Bit = MaxValue(255., true, true);	//一般常用的RGB code
+	    const MaxValue & MaxValue::Double255 = MaxValue(255.);	//各種bit數的RGB code通用
+	    const MaxValue & MaxValue::Int9Bit = MaxValue(510., true, true);	//9bit
+	    const MaxValue & MaxValue::Double1020 = MaxValue(1020, false, true);	//10bit
+	    const MaxValue & MaxValue::Int10Bit = MaxValue(1020, true, true);	//10bit
+	    const MaxValue & MaxValue::Int11Bit = MaxValue(2040, true, true);	//11bit
+	    const MaxValue & MaxValue::Double4080 = MaxValue(4080, false, true);	//12bit
+	    const MaxValue & MaxValue::Int12Bit = MaxValue(4080, true, true);	//12bit
+	    const MaxValue & MaxValue::Int13Bit = MaxValue(8160, true, true);	//13bit
+	    const MaxValue & MaxValue::Int14Bit = MaxValue(16320, true, true);	//14bit
+	    const MaxValue & MaxValue::Int15Bit = MaxValue(32640, true, true);	//15bit
+	    const MaxValue & MaxValue::Int16Bit = MaxValue(65280, true, true);	//16bit
+	    const MaxValue & MaxValue::Int20Bit = MaxValue(1044480, true, true);	//20bit
+	    const MaxValue & MaxValue::Int24Bit = MaxValue(16711680, true, true);	//24bit
+	    const MaxValue & MaxValue::Int31Bit = MaxValue(2139095040, true, true);	//31bit
+	    const MaxValue & MaxValue::DoubleUnlimited = MaxValue(std::numeric_limits < double >::max());	//無限制
+
+	    MaxValue MaxValue::getIntegerMaxValueByLevel(int level) {
+	    };
+	    MaxValue MaxValue::getIntegerMaxValueByMax(int max) {
+	    };
+	    double MaxValue::getStepIn255() {
+		return 255. / max;
+	    };
+
 	    //======================================================================
 
 

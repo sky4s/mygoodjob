@@ -3,6 +3,7 @@
 //C系統文件
 #include <cmath>
 //C++系統文件
+#include <limits>
 
 //其他庫頭文件
 
@@ -18,11 +19,11 @@ namespace java {
 	 Class::Class(Object & object):object(object), info(typeid(object)) {
 
 	};
-	string_ptr Class::getSimpleName() {
+	const string_ptr Class::getSimpleName() {
 	    return string_ptr(new string(info.name()));
 	};
 
-	string_ptr Class::getName() {
+	const string_ptr Class::getName() {
 	    return string_ptr(new string(info.name()));
 	};
 	//======================================================================
@@ -31,7 +32,7 @@ namespace java {
 	// Object
 	//======================================================================
 	int Object::globalID = 0;
-	bool Object::equals(shared_ptr < Object > obj) {
+	const bool Object::equals(shared_ptr < Object > obj) {
 	    //return this->Equals(&obj);
 	    return false;
 	};
@@ -39,33 +40,35 @@ namespace java {
 	Class & Object::getClass() {
 	    return c;
 	};
-	int Object::hashCode() {
+	const int Object::hashCode() {
 	    //return this->Hash();
 	    return -1;
 	};
 
-	string_ptr Object::toString() {
+	const string_ptr Object::toString() {
 	    return getClass().getName();
 	};
-	bool Object::isNull() {
-	    return null;
+	const bool Object::isNull() {
+	    return _null;
 	};
-      Object::Object(bool null):null(null), c(*this),
+      Object::Object(bool _null):_null(_null), c(*this),
 	    objectID(globalID++) {
 
 	};
-      Object::Object():null(false), c(*this), objectID(globalID++) {
-
-	};
-      /*Object::Object(Object & o):null(false), c(*this),
+      Object::Object():_null(false), c(*this),
 	    objectID(globalID++) {
 
-	};*/
+	};
+	/*Object::Object(Object & o):null(false), c(*this),
+	   objectID(globalID++) {
+
+	   }; */
 	const int Object::getObjectID() {
 	    return objectID;
 	};
-	object_ptr Object::clone() {
-	    return object_ptr(new Object(this));
+	Object_ptr Object::clone() {
+	    throw UnsupportedOperationException();
+	    //return object_ptr(new Object(this));
 	};
 	void Object::finalize() {
 	};
@@ -93,6 +96,39 @@ namespace java {
 	double Math::sqr(double v) {
 	    return v * v;
 	}
+	double Math::round(double v) {
+	    return std::ceil(v);
+	}
+	int Math::minIndex(double_array values, int n) {
+	    double minValue = std::numeric_limits < double >::max();
+	    int minIndex = -1;
+	    for (int x = 0; x < n; x++) {
+		double v = values[x];
+		if (v < minValue) {
+		    minValue = v;
+		    minIndex = x;
+		};
+	    };
+	    return minIndex;
+	};
+	int Math::maxIndex(double_array values, int n) {
+	    double maxValue = std::numeric_limits < double >::min();
+	    int maxIndex = -1;
+	    for (int x = 0; x < n; x++) {
+		double v = values[x];
+		if (v > maxValue) {
+		    maxValue = v;
+		    maxIndex = x;
+		};
+	    };
+	    return maxIndex;
+	};
+	double Math::min(double a, double b) {
+	    return std::min(a, b);
+	};
+	double Math::max(double a, double b) {
+	    return std::max(a, b);
+	};
 	//======================================================================
 
 	//======================================================================

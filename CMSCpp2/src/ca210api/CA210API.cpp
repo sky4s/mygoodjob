@@ -14,28 +14,28 @@ namespace ca210api {
     using namespace std;
 
     //==========================================================================
-     MeasureResult::MeasureResult() {
+     CAMeasureResult::CAMeasureResult() {
     };
-    MeasureResult::MeasureResult(float x, float y, float Lv, float X,
-				 float Y, float Z, long cct,
-				 float duv):x(x), y(y), Lv(Lv), X(X), Y(Y),
-	Z(Z), cct(cct), duv(duv) {
+    CAMeasureResult::CAMeasureResult(float x, float y, float Lv, float X,
+				     float Y, float Z, long cct,
+				     float duv):x(x), y(y), Lv(Lv), X(X),
+	Y(Y), Z(Z), cct(cct), duv(duv) {
     };
-    MeasureResult::MeasureResult(float x, float y, float Lv, float X,
-				 float Y, float Z, long cct,
-				 float duv, float R, float G,
-				 float B):x(x), y(y), Lv(Lv), X(X), Y(Y),
-	Z(Z), cct(cct), duv(duv), R(R), G(G), B(B) {
+    CAMeasureResult::CAMeasureResult(float x, float y, float Lv, float X,
+				     float Y, float Z, long cct,
+				     float duv, float R, float G,
+				     float B):x(x), y(y), Lv(Lv), X(X),
+	Y(Y), Z(Z), cct(cct), duv(duv), R(R), G(G), B(B) {
     };
 
-    float_array MeasureResult::getxyYValues() {
+    float_array CAMeasureResult::getxyYValues() {
 	float_array result(new float[3]);
 	result[0] = x;
 	result[1] = y;
 	result[2] = Y;
 	return result;
     };
-    float_array MeasureResult::getXYZValues() {
+    float_array CAMeasureResult::getXYZValues() {
 	float_array result(new float[3]);
 	result[0] = X;
 	result[1] = Y;
@@ -67,7 +67,7 @@ namespace ca210api {
 	measureValues[2] = measureResult->Z;
 	return measureValues;
     };
-    bptr < MeasureResult > CA210API::triggerMeasureResult() {
+    bptr < CAMeasureResult > CA210API::triggerMeasureResult() {
 	ca.Measure(0);
 	float x = probe.get_sx();
 	float y = probe.get_sy();
@@ -80,12 +80,12 @@ namespace ca210api {
 	float R = probe.get_R();
 	float G = probe.get_G();
 	float B = probe.get_B();
-	measureResult = bptr < MeasureResult >
-	    (new MeasureResult(x, y, Lv, X, Y, Z, cct, duv, R, G, B));
+	measureResult = bptr < CAMeasureResult >
+	    (new CAMeasureResult(x, y, Lv, X, Y, Z, cct, duv, R, G, B));
 	return measureResult;
     };
 
-    bptr < MeasureResult > CA210API::getMeasureResult() {
+    bptr < CAMeasureResult > CA210API::getMeasureResult() {
 	return measureResult;
     };
 
@@ -137,12 +137,11 @@ namespace ca210api {
     };
 
     void CA210API::setLvxyCalData(lClr lclr,
-				  shared_array < float >xyYValue) {
+				  float_array xyYValue) {
 	ca.SetLvxyCalData(lclr, xyYValue[0], xyYValue[1], xyYValue[2]);
     };
 
-    void CA210API::setLvxyCalData(lClr lclr,
-				  shared_array < double >xyYValue) {
+    void CA210API::setLvxyCalData(lClr lclr, double_array xyYValue) {
 	ca.SetLvxyCalData(lclr, (float) xyYValue[0], (float) xyYValue[1],
 			  (float) xyYValue[2]);
     };

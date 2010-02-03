@@ -27,6 +27,7 @@
 //簡化java.lang使用上的巨集
 //==============================================================================
 #define jObject java::lang::Object
+#define null NULL
 //==============================================================================
 
 //==============================================================================
@@ -36,12 +37,11 @@
 #define barray boost::shared_array
 
 #define double_vector std::vector < double >
-#define string_vector std::vector < std::string >
-
-
 #define double_vector_ptr bptr < double_vector >
 #define nil_double_vector_ptr double_vector_ptr ((double_vector*)NULL)
 #define nil_double_vector nil_double_vector_ptr
+
+#define string_vector std::vector < std::string >
 #define string_vector_ptr bptr < string_vector >
 
 
@@ -52,7 +52,7 @@
 
 #define string_ptr bptr < std::string >
 #define nil_string_ptr string_ptr ((std::string*)NULL)
-#define object_ptr bptr < jObject >
+#define Object_ptr bptr < jObject >
 
 #define foreach BOOST_FOREACH
 //==============================================================================
@@ -62,15 +62,28 @@
 //===============================================================================
 #define Dep cms::colorspace::depend
 #define Indep cms::colorspace::independ
-#define RGB_ptr bptr < Dep::RGBColor >
-#define xyY_ptr bptr < Indep::CIExyY >
-#define XYZ_ptr bptr < Indep::CIEXYZ >
 
-#define RGB_vector std::vector < Dep::RGBColor >
+#define RGB_ptr bptr < Dep::RGBColor >
+#define RGB_array barray < RGB_ptr >
+#define RGB_list std::list < RGB_ptr >
+#define RGB_list_ptr bptr < RGB_list >
+#define RGB_vector std::vector < RGB_ptr >
 #define RGB_vector_ptr bptr < RGB_vector >
 
-#define channel_vector std::vector < Dep::Channel >
+#define xyY_ptr bptr < Indep::CIExyY >
+#define XYZ_ptr bptr < Indep::CIEXYZ >
+//#define XYZ_vector std::vector < Dep::RGBColor >
+
+
+
+#define channel_vector std::vector <   Dep::Channel  >
 #define channel_vector_ptr bptr < channel_vector >
+
+#define Patch_ptr bptr < cms::Patch >
+#define Patch_list std::list < Patch_ptr >
+#define Patch_list_ptr bptr < Patch_list >
+#define Patch_vector std::vector < Patch_ptr >
+#define Patch_vector_ptr bptr < Patch_vector >
 //==============================================================================
 
 namespace cms {
@@ -91,8 +104,19 @@ namespace cms {
 	    class CIEXYZ;
 	};
     };
+    namespace lcd {
+	namespace calibrate {
+	    namespace algo {
+		class ChromaticAroundAlgorithm;
+	    };
+	};
+    };
     namespace measure {
 	class MeterMeasurement;
+	class MeasureResult;
+	namespace cp {
+	    class MeasureInterface;
+	};
 	namespace meter {
 	    class Meter;
 	    class CA210;
@@ -119,16 +143,22 @@ namespace cms {
  參考會有無法有NULL的狀況, 因此全採用smart_ptr, 作到類似gc的效果.
  NULL的smart_ptr產生方法為 shared_array < double >p(NULL);
 
- *原生型別陣列採用smart_ptr(shared_array)
+ *原生型別陣列採用 長度固定: shared_ptr(shared_array)
+                   長度不定: shared_ptr< vector<> >
  純粹採用vector的話, 雖然可以達到類似java array的特性, 但是作為local vector不能
  當作ref or ptr被傳出去, 否則可能會指向一個未知的空間.
 
- 所以一般是建議採用shared_ptr<vector<>>, 但是這種作法會讓indent(程式碼格式化器) 出錯!
+ 所以一般是建議採用shared_ptr< vector<> >, 但是這種作法會讓indent(程式碼格式化器) 出錯!
  因為現在用的indent是c專屬的, 他看不懂template的<< >>...會當作shift運算子.
  幾經測試之下, 本來決定用define就可以避掉indent的問題!
 
  但是畢竟是指標...要一直不斷的用(*)[]去取值 (不能用->[] 這種怪語法..), 太麻煩了,
-  所以回頭用shared_array
+ 所以回頭用shared_array.
+
+ 糟糕的是, shared_array沒辦法知道自己的長度!
+ 因此java中的double[]盡量以shared_ptr< vector<> >替代.
+ 而List<>也已vector<>替代, 因為java中用的List<>是以ArrayList實作,
+ 其特性其實比較接近STL的vector.
 
 */
 
@@ -145,29 +175,29 @@ namespace java {
 	     Object & object;
 	     Class(Object & object);
 	  public:
-	     string_ptr getSimpleName();
-	    string_ptr getName();
+	    const string_ptr getSimpleName();
+	    const string_ptr getName();
 	};
 
 	class Object {
 	  private:
 	    static int globalID;
 	    const int objectID;
-	    bool null;
+	    bool _null;
 	    Class c;
 	  public:
-	     bool equals(object_ptr obj);
+	    const bool equals(Object_ptr obj);
 	     Class & getClass();
-	    int hashCode();
-	    string_ptr toString();
-	    bool isNull();
-	     Object(bool null);
+	    const int hashCode();
+	    const string_ptr toString();
+	    const bool isNull();
+	     Object(bool _null);
 	     Object();
-	     //Object(Object & o);
+	    //Object(Object & o);
 	    const int getObjectID();
 
 	  protected:
-	     object_ptr clone();
+	     Object_ptr clone();
 	    void finalize();
 	};
 
@@ -180,6 +210,11 @@ namespace java {
 	    static double cos(double x);
 	    static double sin(double x);
 	    static double sqr(double v);
+	    static double round(double v);
+	    static int maxIndex(double_array values, int n);
+	    static int minIndex(double_array values, int n);
+	    static double min(double a, double b);
+	    static double max(double a, double b);
 	};
 
 
@@ -207,7 +242,13 @@ namespace java {
 	    IllegalArgumentException();
 	    IllegalArgumentException(std::string message);
 	};
+	class UnsupportedOperationException:public RuntimeException {
+	  public:
+	    UnsupportedOperationException();
+	    UnsupportedOperationException(std::string message);
+	};
     };
 };
+
 #endif
 

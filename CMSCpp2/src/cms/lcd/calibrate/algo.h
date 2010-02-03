@@ -3,7 +3,7 @@
 //C系統文件
 
 //C++系統文件
-#include <list>;
+//#include <list>;
 #include <vector>;
 
 //其他庫頭文件
@@ -30,108 +30,49 @@ namespace cms {
 
 		class AroundAlgorithm:public Algorithm {
 		  public:
-		    virtual barray < Dep::RGBColor > getAroundRGB(bptr <
-								  Dep::
-								  RGBColor
-								  >
-								  centerRGB,
-								  double
-								  step) =
-			0;
+		    virtual RGB_vector_ptr getAroundRGB(RGB_ptr centerRGB, double
+							step) = 0;
 
-		    virtual barray < Dep::RGBColor > getAroundRGB(bptr <
-								  Dep::
-								  RGBColor
-								  >
-								  centerRGB,
-								  double_array
-								  delta,
-								  double
-								  step) =
-			0;
+		    virtual RGB_vector_ptr
+			getAroundRGB(RGB_ptr centerRGB, double_array delta,
+				     double step) = 0;
+		};
+
+		class AlgoResult:public jObject {
 
 		};
 
-		class StepAroundAlgorithm:public AroundAlgorithm {
+		class NearestAlgorithm:public Algorithm {
 		  private:
-		    std::list < Dep::RGBColor >
-			rgbAdjust(channel_vector_ptr channels,
-				  Dep::Channel & maxChannel,
-				  bptr < Dep::RGBColor > centerRGB, double
-				  adjustStep, double_array delta);
-
-		     std::list < Dep::RGBColor > whiteAdjust(Dep::
-							     Channel &
-							     maxChannel,
-							     bptr <
-							     Dep::
-							     RGBColor >
-							     centerRGB,
-							     double
-							     adjustStep);
+		    cms::measure::cp::MeasureInterface & mi;
 		  protected:
-		     bool checkAdjustable(bptr <
-					  Dep::RGBColor > rgb, double step,
-					  Dep::
-					  Channel & maxChannel,
-					  Dep::
-					  Channel & adjustChannel,
-					  double_array delta);
-		     std::list < Dep::RGBColor >
-			getChromaticExpandAround(bptr < Dep::RGBColor >
-						 centerRGB,
-						 double_array delta, double
-						 step);
-		    bool whiteCheckAdjustable(bptr <
-					      Dep::
-					      RGBColor
-					      > rgb, double step,
-					      Dep::Channel & maxChannel);
+		    XYZ_ptr white;
+
+		    virtual double_array getDelta(XYZ_ptr center,
+						  XYZ_ptr XYZ) = 0;
+		     bptr < cms::measure::
+			MeasureResult > getMeasureResult(RGB_vector_ptr
+							 aroundRGB);
+		    virtual double getIndex(XYZ_ptr center,
+					    XYZ_ptr around) = 0;
 		  public:
-		     barray < Dep::RGBColor > getAroundRGB(bptr <
-							   Dep::RGBColor >
-							   centerRGB,
-							   double_array
-							   delta,
-							   double step,
-							   bool
-							   involveWhite);
-		     barray < Dep::RGBColor > getAroundRGB(bptr <
-							   Dep::RGBColor >
-							   centerRGB,
-							   double_array
-							   delta,
-							   double step);
-		     barray < Dep::RGBColor > getAroundRGB(bptr <
-							   Dep::RGBColor >
-							   centerRGB,
-							   double step,
-							   bool
-							   involeWhite);
-		     barray < Dep::RGBColor > getAroundRGB(bptr <
-							   Dep::RGBColor >
-							   centerRGB,
-							   double step);
-		    void setChromaticExpandMode(bool chromaticExpandMode);
+		     bptr < AlgoResult > getNearestRGB(XYZ_ptr center,
+						       RGB_vector_ptr
+						       rgbVec,
+						       int lastCount);
+		    double_array getDelta(XYZ_ptr XYZ, RGB_ptr rgb);
+		     NearestAlgorithm(XYZ_ptr white,
+				      cms::measure::cp::
+				      MeasureInterface & mi);
+		     bptr < AlgoResult > getNearestRGB(XYZ_ptr center,
+						       RGB_vector_ptr
+						       aroundRGB);
 		};
 
-		class ChromaticAroundAlgorithm:public StepAroundAlgorithm {
-		  protected:
-		    bool checkAdjustable(bptr <
-					 Dep::RGBColor > rgb, double step,
-					 Dep::Channel & maxChannel,
-					 Dep::Channel & adjustChannel,
-					 double_array delta);
-		     barray < Dep::RGBColor > getAroundRGB(bptr <
-							   Dep::RGBColor >
-							   centerRGB,
-							   double_array
-							   delta,
-							   double step);
-		     barray < Dep::RGBColor > getAroundRGB(bptr <
-							   Dep::RGBColor >
-							   centerRGB,
-							   double step);
+		class MeasuredUtils {
+		  public:
+		    static double_array getDeltauvPrime(XYZ_ptr center,
+							XYZ_ptr XYZ);
 		};
 	    };
 	};

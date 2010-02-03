@@ -8,6 +8,11 @@
 
 //本項目內頭文件
 #include <cms/colorspace/rgb.h>
+#include <cms/colorspace/ciexyz.h>
+#include <cms/measure/cp.h>
+#include <cms/measure/MeterMeasurement.h>
+#include <cms/patch.h>
+
 
 namespace cms {
     namespace lcd {
@@ -15,6 +20,11 @@ namespace cms {
 	    namespace algo {
 		using namespace std;
 		using namespace Dep;
+		using namespace Indep;
+		using namespace cms::measure::cp;
+		using namespace cms::measure;
+		using namespace cms;
+		using namespace java::lang;
 
 		//==============================================================
 		// Algorithm
@@ -30,38 +40,76 @@ namespace cms {
 		    this->mode = mode;
 		};
 		//==============================================================
+		// AlgoResult
+		//==============================================================
+		//
+		//==============================================================
 
 		//==============================================================
-		// StepAroundAlgorithm
+
 		//==============================================================
-		 list < RGBColor >
-		    StepAroundAlgorithm::
-		    rgbAdjust(channel_vector_ptr channels,
-			      Channel & maxChannel,
-			      bptr < RGBColor > centerRGB, double
-			      adjustStep, double_array delta) {
+		// NearestAlgorithm
+		//==============================================================
+		 NearestAlgorithm::NearestAlgorithm(XYZ_ptr white,
+						    MeasureInterface &
+						    mi):white(white),
+		    mi(mi) {
+		};
+		double_array NearestAlgorithm::getDelta(XYZ_ptr XYZ,
+							RGB_ptr rgb) {
+		    Patch_ptr p = mi.measure(rgb, false, false);
+		    return getDelta(XYZ, p->getXYZ());
+		}
 
-		    list < RGBColor > rgbList;
-		    foreach(Dep::Channel ch, *channels) {
-			if (checkAdjustable
-			    (centerRGB, adjustStep, maxChannel, ch,
-			     delta)) {
-			    /*RGB rgb = (RGB) centerRGB.clone();
-			       rgb.changeMaxValue(RGB.MaxValue.Double255);
-			       rgb.addValue(ch, adjustStep);
-			       rgbList.add(rgb); */
-			}
-		    };
-		    return rgbList;
+		bptr < AlgoResult >
+		    NearestAlgorithm::getNearestRGB(XYZ_ptr center,
+						    RGB_vector_ptr
+						    aroundRGB) {
+		    bptr < MeasureResult > measureResult =
+			getMeasureResult(aroundRGB);
+		    Patch_vector_ptr patchVec = measureResult->result;
+		    int size = patchVec->size();
+		    //double[] dist = new double[size];
+		    double_vector_ptr dist(new double_vector());
 
+		    /*CIEXYZ[]aroundXYZ = new CIEXYZ[size];
+
+
+		       for (int x = 0; x < size; x++) {
+		       Patch patch = patchList.get(x);
+		       CIEXYZ XYZ = patch.getXYZ();
+		       aroundXYZ[x] = XYZ;
+		       dist[x] = getIndex(center, XYZ);
+		       }
+		       int index = Maths.minIndex(dist);
+		       RGB rgb = patchList.get(index).getRGB();
+		       AlgoResult result =
+		       new AlgoResult(rgb, dist, aroundRGB, aroundXYZ,
+		       index,
+		       measureResult.
+		       practicalMeasureCount);
+		       return result; */
 		};
 
-		list < RGBColor > StepAroundAlgorithm::
-		    whiteAdjust(Channel & maxChannel, bptr < RGBColor >
-				centerRGB, double adjustStep) {
+		bptr < AlgoResult >
+		    NearestAlgorithm::getNearestRGB(XYZ_ptr center,
+						    RGB_vector_ptr rgbVec,
+						    int lastCount) {
+		    throw UnsupportedOperationException();
 		};
 		//==============================================================
 
+		//==============================================================
+		// MeasuredUtils
+		//==============================================================
+		double_array MeasuredUtils::getDeltauvPrime(XYZ_ptr center,
+							    XYZ_ptr XYZ) {
+		    xyY_ptr centerxyY(new CIExyY(center));
+		    xyY_ptr xyY(new CIExyY(XYZ));
+		    return xyY->getDeltauvPrime(centerxyY);
+		};
+
+		//==============================================================
 	    };
 	};
     };
