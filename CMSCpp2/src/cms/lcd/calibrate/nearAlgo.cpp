@@ -18,7 +18,7 @@ namespace cms {
 		using namespace java::lang;
 		 CIEuv1960NearestAlgorithm::
 		    CIEuv1960NearestAlgorithm(XYZ_ptr white,
-					      MeasureInterface &
+					      bptr < MeasureInterface >
 					      mi):NearestAlgorithm(white,
 								   mi) {
 		};

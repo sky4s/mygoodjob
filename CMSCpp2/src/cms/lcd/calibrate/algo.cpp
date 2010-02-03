@@ -51,13 +51,14 @@ namespace cms {
 		// NearestAlgorithm
 		//==============================================================
 		 NearestAlgorithm::NearestAlgorithm(XYZ_ptr white,
-						    MeasureInterface &
+						    bptr <
+						    MeasureInterface >
 						    mi):white(white),
 		    mi(mi) {
 		};
 		double_array NearestAlgorithm::getDelta(XYZ_ptr XYZ,
 							RGB_ptr rgb) {
-		    Patch_ptr p = mi.measure(rgb, false, false);
+		    Patch_ptr p = mi->measure(rgb, false, false);
 		    return getDelta(XYZ, p->getXYZ());
 		}
 

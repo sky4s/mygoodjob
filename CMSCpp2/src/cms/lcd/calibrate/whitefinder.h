@@ -15,14 +15,17 @@ namespace cms {
 	namespace calibrate {
 	    class WhitePointFinder {
 	      private:
-		cms::measure::MeterMeasurement & mm;
+		bptr < cms::measure::MeterMeasurement > mm;
 		RGB_ptr findRGBAround(xyY_ptr xyY);
 		RGB_ptr findMatchRGB(xyY_ptr xyY, RGB_ptr initRGB);
 		RGB_ptr fixRGB2TouchMax(RGB_ptr rgb);
 		 cms::lcd::calibrate::algo::
 		    ChromaticAroundAlgorithm & aroundAlgo;
+		 cms::lcd::calibrate::algo::
+		    CIEuv1960NearestAlgorithm & nearAlgo;
 	      public:
-		 WhitePointFinder(cms::measure::MeterMeasurement & mm);
+		 WhitePointFinder(bptr < cms::measure::MeterMeasurement >
+				  mm);
 		RGB_ptr findRGB(xyY_ptr xyY);
 	    };
 	};
