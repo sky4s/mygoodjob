@@ -13,40 +13,32 @@
 namespace cms {
     namespace colorspace {
 
-	class ColorSpace:public java::lang::Object /*, NameIF, virtual ValuePropertyIF  */  {
+	class ColorSpace:public jObject /*, NameIF, virtual ValuePropertyIF  */  {
 
 	  private:
 	    bool setValuesLocked;
 	  protected:
 	    virtual int getNumberBands() = 0;
-	    virtual boost::shared_array <
-		double >_getValues(boost::shared_array < double >values) =
-		0;
-	    virtual void _setValues(boost::shared_array < double >values) =
-		0;
+	    virtual double_array _getValues(double_array values) = 0;
+	    virtual void _setValues(double_array values) = 0;
 	     ColorSpace();
 	  public:
 	    static double_array
-		cartesian2polarCoordinatesValues(boost::shared_array <
-						 double >cartesianValues);
-	    static double_array
-		cartesian2polarCoordinatesValues(double x, double y);
+		cartesian2polarCoordinatesValues(double_array
+						 cartesianValues);
+	    static double_array cartesian2polarCoordinatesValues(double x,
+								 double y);
 
 	    bool equalsValues(ColorSpace & colorSpace);
 
-	     boost::shared_ptr < std::string > getName();
-	     boost::shared_array < double >getValues();
-	     boost::shared_array < double >getValues(boost::shared_array <
-						     double >values);
-	    static boost::shared_array <
-		double >polar2cartesianCoordinatesValues(boost::
-							 shared_array <
-							 double
-							 >polarValues);
-	    static boost::shared_array <
-		double >polar2cartesianCoordinatesValues(double
-							 distance, double
-							 angle);
+	    string_ptr getName();
+	    double_array getValues();
+	    double_array getValues(double_array values);
+	    static double_array
+		polar2cartesianCoordinatesValues(double_array polarValues);
+	    static double_array polar2cartesianCoordinatesValues(double
+								 distance, double
+								 angle);
 
 	    void setValues(double_array values);
 	    void setValues(double value1, double value2, double value3);

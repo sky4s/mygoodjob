@@ -48,7 +48,7 @@ namespace cms {
 		   }; */
 	      public:
 		static const RGBColorSpace unknowRGB;
-		static const RGBColorSpace sRGB;
+		static const RGBColorSpace & sRGB;
 		 RGBColorSpace();
 		inline bool operator==(const RGBColorSpace & that) const {
 		    return _type == that._type;
@@ -58,9 +58,7 @@ namespace cms {
 
 	    class RGBBase:public DeviceDependentSpace {
 	      public:
-		static boost::shared_array <
-		    double >linearToRGBValues(boost::shared_array <
-					      double >linearRGBValues,
+		static double_array linearToRGBValues(double_array linearRGBValues,
 					      RGBColorSpace rgbColorSpace);
 	    };
 
@@ -73,8 +71,13 @@ namespace cms {
 		RoundDown
 	    };
 
+	    /*enum ChannelType {
+	       R, G, B, Y, M, C, W
+	       }; */
+
 	    class Channel:public jObject {
 	      public:
+
 		static const Channel & R;
 		static const Channel & G;
 		static const Channel & B;
@@ -83,37 +86,35 @@ namespace cms {
 		static const Channel & C;
 		static const Channel & W;
 	      private:
-		int _index;
-		TColor color;
-		 std::string fullname;
 
+		 std::string fullname;
 		 Channel(int index, TColor color, std::string fullname);
 
 		static bool isPrimaryColorChannel(const Channel & channel);
 		static bool isSecondaryColorChannel(const Channel &
 						    channel);
-
-
 	      public:
+		const int index;
+		const TColor color;
 		static channel_vector_ptr getChannelVector(int count, ...);
 		inline bool operator==(const Channel & that) const {
-		    return _index == that._index;
+		    return index == that.index;
 		};
 		inline bool operator!=(const Channel & that) const {
-		    return !(_index == that._index);
+		    return !(index == that.index);
 		};
 		 Channel();
 
-		const string_ptr toString();
+		const string_ptr toString() const;
 		int getArrayIndex();
-		bool isPrimaryColorChannel();
-		bool isSecondaryColorChannel();
+		bool isPrimaryColorChannel() const;
+		bool isSecondaryColorChannel() const;
 
-		static const Channel getChannel(boolean R, boolean G,
-						boolean B);
-		static const Channel getChannel(int chIndex);
-		static const Channel getChannelByArrayIndex(int
-							    arrayIndex);
+		static const Channel & getChannel(boolean R, boolean G,
+						  boolean B);
+		static const Channel & getChannel(int chIndex);
+		static const Channel & getChannelByArrayIndex(int
+							      arrayIndex);
 
 		static const channel_vector_ptr RGBYMCChannel;
 		static const channel_vector_ptr RGBYMCWChannel;
@@ -121,6 +122,7 @@ namespace cms {
 		static const channel_vector_ptr RGBWChannel;
 		static const channel_vector_ptr WRGBChannel;
 		static const channel_vector_ptr YMCChannel;
+
 	    };
 
 
@@ -130,47 +132,53 @@ namespace cms {
 		const bool integer;
 		const bool divisible;
 	      private:
-		 MaxValue(double max):max(max), integer(false),
-		    divisible(false) {
-		};
+
 		 MaxValue(double max, bool integer,
 			  bool divisible):max(max), integer(integer),
 		    divisible(divisible) {
 		};
 	      public:
-		static const MaxValue Double1;
-		static const MaxValue Double100;
-		static const MaxValue Int5Bit;
-		static const MaxValue Int6Bit;
-		static const MaxValue Int7Bit;
-		static const MaxValue Int8Bit;
-		static const MaxValue Double255;
-		static const MaxValue Int9Bit;
-		static const MaxValue Double1020;
-		static const MaxValue Int10Bit;
-		static const MaxValue Int11Bit;
-		static const MaxValue Double4080;
-		static const MaxValue Int12Bit;
-		static const MaxValue Int13Bit;
-		static const MaxValue Int14Bit;
-		static const MaxValue Int15Bit;
-		static const MaxValue Int16Bit;
-		static const MaxValue Int20Bit;
-		static const MaxValue Int24Bit;
-		static const MaxValue Int31Bit;
-		static const MaxValue DoubleUnlimited;
+		 MaxValue(double max):max(max), integer(false),
+		    divisible(false) {
+		};
+		static const MaxValue & Double1;
+		static const MaxValue & Double100;
+		static const MaxValue & Int5Bit;
+		static const MaxValue & Int6Bit;
+		static const MaxValue & Int7Bit;
+		static const MaxValue & Int8Bit;
+		static const MaxValue & Double255;
+		static const MaxValue & Int9Bit;
+		static const MaxValue & Double1020;
+		static const MaxValue & Int10Bit;
+		static const MaxValue & Int11Bit;
+		static const MaxValue & Double4080;
+		static const MaxValue & Int12Bit;
+		static const MaxValue & Int13Bit;
+		static const MaxValue & Int14Bit;
+		static const MaxValue & Int15Bit;
+		static const MaxValue & Int16Bit;
+		static const MaxValue & Int20Bit;
+		static const MaxValue & Int24Bit;
+		static const MaxValue & Int31Bit;
+		static const MaxValue & DoubleUnlimited;
 
-		static MaxValue getIntegerMaxValueByLevel(int level) {
+		static MaxValue getIntegerMaxValueByLevel(int level);
+		static MaxValue getIntegerMaxValueByMax(int max);
+		double getStepIn255();
+
+		inline bool operator==(const MaxValue & that) const {
+		    return max == that.max
+			&& integer == that.integer
+			&& divisible == that.divisible;
 		};
-		static MaxValue getIntegerMaxValueByMax(int max) {
+		inline bool operator!=(const MaxValue & that) const {
+		    return !(*this == that);
 		};
-		double getStepIn255() {
-		    return 255. / max;
-		};
+		//MaxValue & operator=(const MaxValue & that);
+
 	    };
 	};
-
-
     };
 };
 

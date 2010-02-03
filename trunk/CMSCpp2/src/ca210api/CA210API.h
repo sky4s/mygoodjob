@@ -13,7 +13,7 @@
 //---------------------------------------------------------------------------
 
 namespace ca210api {
-    class MeasureResult:public java::lang::Object {
+    class CAMeasureResult:public jObject {
       public:
 
 	float x, y, Lv;
@@ -21,12 +21,12 @@ namespace ca210api {
 	long cct;
 	float duv;
 	float R, G, B;
-	 MeasureResult();
-	 MeasureResult(float x, float y, float Lv, float X, float Y,
-		       float Z, long cct, float duv);
-	 MeasureResult(float x, float y, float Lv, float X, float Y,
-		       float Z, long cct, float duv, float R, float G,
-		       float B);
+	 CAMeasureResult();
+	 CAMeasureResult(float x, float y, float Lv, float X, float Y,
+			 float Z, long cct, float duv);
+	 CAMeasureResult(float x, float y, float Lv, float X, float Y,
+			 float Z, long cct, float duv, float R, float G,
+			 float B);
 	float_array getxyYValues();
 	float_array getXYZValues();
     };
@@ -51,22 +51,22 @@ namespace ca210api {
     };
 
 
-    class CA210API:public java::lang::Object {
+    class CA210API:public jObject {
       private:
 	ICa200Disp ca200;
 	ICaDisp ca;
 	IProbeDisp probe;
 	IMemoryDisp memory;
-	 bptr < MeasureResult > measureResult;
+	 bptr < CAMeasureResult > measureResult;
       public:
 
-	 bptr < MeasureResult > getMeasureResult();
+	 bptr < CAMeasureResult > getMeasureResult();
 	 CA210API();
 	void calibrate();
 
 	void close();
 	float_array triggerMeasurement();
-	 bptr < MeasureResult > triggerMeasureResult();
+	 bptr < CAMeasureResult > triggerMeasureResult();
 
 	// Options
 	void setSyncMode(SyncMode mode);
@@ -88,10 +88,8 @@ namespace ca210api {
 	void setLvxyCalData(lClr lclr, float xValue, float yValue,
 			    float YValue);
 
-	void setLvxyCalData(lClr lclr,
-			    boost::shared_array < float >xyYValue);
-	void setLvxyCalData(lClr lclr,
-			    boost::shared_array < double >xyYValue);
+	void setLvxyCalData(lClr lclr, float_array xyYValue);
+	void setLvxyCalData(lClr lclr, double_array xyYValue);
 
 	long enter();
 

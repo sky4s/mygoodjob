@@ -14,23 +14,19 @@
 //---------------------------------------------------------------------------
 
 
-void f(double_vector_ptr a)
-{
-
-};
-
 #pragma argsused
 int main(int argc, char *argv[])
 {
     using namespace Dep;
     using namespace std;
-    RGBColor r(1, 2, 3);
-    cout << r.R << endl;
-    cout << r.getObjectID() << endl;
 
-    RGBColor a(r);
-    cout << a.R << endl;
-    cout << a.getObjectID() << endl;
+    foreach(const Channel & c, *Channel::RGBChannel) {
+	cout << *(c.toString()) << endl;
+    };
+    RGB_ptr r(new RGBColor);
+    Object_ptr o(new RGBColor);
+
+
     getch();
     return 0;
 }

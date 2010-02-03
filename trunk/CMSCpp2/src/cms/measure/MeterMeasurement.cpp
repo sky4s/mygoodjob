@@ -2,20 +2,23 @@
 
 #include <vcl.h>
 #include <cms/measure/meter.h>
+#include <cms/measure/cp.h>
 #include <cms/patch.h>
 #include <cms/colorspace/ciexyz.h>
 #include <cms/colorspace/rgb.h>
+#include <cms/core.h>
 
 namespace cms {
     namespace measure {
 	using namespace boost;
 	using namespace cms;
-	//using namespace cms::colorspace;
 	using namespace Dep;
 	using namespace cms::measure::meter;
+	using namespace cms::measure::cp;
 	using namespace std;
-	 MeterMeasurement::MeterMeasurement(shared_ptr <
-					    cms::measure::meter::Meter >
+	using namespace java::lang;
+
+	 MeterMeasurement::MeterMeasurement(shared_ptr < Meter >
 					    meter,
 					    bool calibration):meter(meter),
 	    waitTimes(1 /*meter->getSuggestedWaitTimes() */ ),
@@ -44,17 +47,24 @@ namespace cms {
 	    }
 	};
 
-	bptr < Patch >
-	    MeterMeasurement::measure(shared_ptr < RGBColor > rgb,
-				      shared_ptr < string > patchName) {
+	Patch_ptr
+	    MeterMeasurement::measure(RGB_ptr rgb,
+				      const string_ptr patchName) {
 	    return measure0(rgb, patchName, nil_string_ptr,
 			    nil_string_ptr);
 	};
 
-	bptr < Patch > MeterMeasurement::measure(int r, int g, int b,
-						 string patchName) {
-	    shared_ptr < RGBColor > rgb(new RGBColor(r, g, b));
-	    return measure(rgb, string_ptr(&patchName));
+	Patch_ptr MeterMeasurement::measure(int r, int g, int b,
+					    const string_ptr patchName) {
+	    RGB_ptr rgb(new RGBColor(r, g, b));
+	    return measure(rgb, patchName);
+	};
+
+	Patch_ptr MeterMeasurement::measure(int r, int g, int b,
+					    string patchName) {
+	    string_ptr str(new string(patchName));
+	    RGB_ptr rgb(new RGBColor(r, g, b));
+	    return measure(rgb, str);
 	};
 
 	void MeterMeasurement::setBlankTimes(int blankTimes) {
@@ -70,19 +80,52 @@ namespace cms {
 	    return fakeMeasure;
 	};
 
+	bptr < MeasureInterface > MeterMeasurement::getMeasureInterface() {
+	    //MeterMeasurement *mm = this;
+	    class MI:public MeasureInterface {
+	      public:
+		bptr < MeasureResult >
+		    measureResult(RGB_vector_ptr rgbVec, bool forceTrigger,
+				  bool trigger) {
+		    int size = rgbVec->size();
+
+		};
+
+		Patch_ptr measure(RGB_ptr rgb, bool forceTrigger,
+				  bool trigger) {
+		    this->measure(rgb);
+		};
+		Patch_ptr measure(RGB_ptr rgb) {
+		    return mm->measure(rgb, rgb->toString());
+		};
+		void reset() {
+		};
+
+	      private:
+		friend class MeterMeasurement;
+		MeterMeasurement *mm;
+	      MI(MeterMeasurement * mm):mm(mm) {
+		};
+	    };
+	    return bptr < MeasureInterface > (dynamic_cast <
+					      MeasureInterface *
+					      >(new MI(this)));
+	    //return result;
+	};
+
 	void MeterMeasurement::meterClose() {
 	    meter->close();
 	};
 
-	shared_ptr < Patch >
-	    MeterMeasurement::measure0(shared_ptr < RGBColor > measureRGB,
-				       shared_ptr < string > patchName,
-				       shared_ptr < string > titleNote,
-				       shared_ptr < string > timeNote) {
+	Patch_ptr
+	    MeterMeasurement::measure0(RGB_ptr measureRGB,
+				       string_ptr patchName,
+				       string_ptr titleNote,
+				       string_ptr timeNote) {
 	    setMeasureWindowsVisible(true);
 	    //量測的顏色, 量測的顏色可能與導具的顏色不同, 所以特別獨立出此變數
 	    //final RGB measureRGB = processInverseRGB(rgb);
-	    //shared_ptr < string > name =
+	    //string_ptr name =
 	    //  (patchName == NULL) ? measureRGB.toString() : patchName;
 
 	    if (!titleTouched) {
@@ -124,7 +167,7 @@ namespace cms {
 		//如果視窗被關閉, 就結束量測
 		//return shared_ptr < Patch > ((Patch *) NULL);
 	    }
-	    shared_array < double >result =
+	    double_array result =
 		meter->triggerMeasurementInXYZ();
 
 	    /*String measureString = getMeasureString(result);
@@ -141,9 +184,8 @@ namespace cms {
 	       if (timeNote != null) {
 	       measureWindow.setNorthLabel2(timeNote);
 	       } */
-	    shared_ptr < Indep::CIEXYZ > XYZ(new Indep::CIEXYZ(result));
-	    shared_ptr < Patch >
-		patch(new Patch(patchName, XYZ, XYZ, measureRGB));
+	    XYZ_ptr XYZ(new Indep::CIEXYZ(result));
+	    Patch_ptr patch(new Patch(patchName, XYZ, XYZ, measureRGB));
 	    return patch;
 	};
 	void MeasureUtils::
@@ -154,16 +196,11 @@ namespace cms {
 			   measureWindow);
 	};
 	void MeasureUtils::meterCalibrate(	/*Component parentComponent, */
-					     shared_ptr
-					     <
-					     Meter
-					     >
-					     meter,
-					     TMeasureWindow
-					     * measureWindow) {
+					     shared_ptr < Meter > meter,
+					     TMeasureWindow *
+					     measureWindow) {
 	    if (!meter->isConnected()) {
-		throw java::lang::
-		    IllegalStateException("!meter.isConnected()");
+		throw IllegalStateException("!meter.isConnected()");
 	    } else {
 		if (measureWindow != NULL) {
 		    //show出黑幕, 避免影響校正
@@ -177,7 +214,7 @@ namespace cms {
 		   ((*meter.getCalibrationDescription()).
 		   c_str())); */
 		meter->calibrate();
-		if (measureWindow != NULL) {
+		if (measureWindow != null) {
 		    //關閉黑幕
 		    //measureWindow.setVisible(false);
 		    measureWindow->Visible = false;
@@ -189,6 +226,12 @@ namespace cms {
 		   JOptionPane.
 		   INFORMATION_MESSAGE); */
 	    };
+	};
+
+	MeasureResult::MeasureResult(Patch_vector_ptr result,
+				     int practicalMeasureCount):result
+	    (result), practicalMeasureCount(practicalMeasureCount) {
+
 	};
     };
 };

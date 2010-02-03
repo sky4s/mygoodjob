@@ -50,22 +50,22 @@ namespace cms {
 		bool isBlack();
 
 		bool isLegal();
-		bool isLegal(CIEXYZ white);
+		bool isLegal(XYZ_ptr white);
 		static bptr < CIEXYZ >
-		    minus(const CIEXYZ & XYZ1, const CIEXYZ & XYZ2);
+		    minus(const XYZ_ptr XYZ1, const XYZ_ptr XYZ2);
 
-		static bptr < CIEXYZ >
-		    plus(const CIEXYZ & XYZ1, const CIEXYZ & XYZ2);
+		static XYZ_ptr
+		    plus(const XYZ_ptr XYZ1, const XYZ_ptr XYZ2);
 
-		void normalize(bptr < CIEXYZ > normal);
+		void normalize(XYZ_ptr normal);
 
 		void normalizeY();
 
 		void normalize(NormalizeY normalizeY);
 		void rationalize();
-		void rationalize(bptr < CIEXYZ > white);
+		void rationalize(XYZ_ptr white);
 
-		void scaleY(bptr < CIEXYZ > scale);
+		void scaleY(XYZ_ptr scale);
 		void scaleY(double scaleY);
 		void times(double factor);
 
@@ -89,7 +89,7 @@ namespace cms {
 		double x, y, Y;
 		 CIExyY();
 
-		 CIExyY(CIEXYZ & XYZ);
+		 CIExyY(const XYZ_ptr XYZ);
 		 CIExyY(double_array xyValues, NormalizeY normalizeY);
 		 CIExyY(double_array xyValues);
 		 CIExyY(double x, double y, double Y,
@@ -99,7 +99,7 @@ namespace cms {
 
 		static bptr < CIExyY > fromCCT2Blackbody(int CCT);
 		static bptr < CIExyY > fromCCT2DIlluminant(int CCT);
-		static bptr < CIExyY > fromXYZ(const CIEXYZ & XYZ);
+		static bptr < CIExyY > fromXYZ(const XYZ_ptr XYZ);
 
 		 bptr < CIEXYZ > toXYZ();
 
@@ -111,17 +111,16 @@ namespace cms {
 		void normalize(NormalizeY normalizeY);
 		void normalizeY();
 
-		 boost::shared_array <
-		    double >getValues(double_array values,
-				      NormalizeY normalizeY);
+		double_array getValues(double_array values,
+				       NormalizeY normalizeY);
 		double_array getValues();
 		double_array getValues(double_array values);
 		double getCCT();
 
-		double_array getDeltauv(CIExyY & xyY);
+		double_array getDeltauv(const xyY_ptr xyY);
 
-		double_array getDeltauvPrime(CIExyY & xyY);
-		double_array getDeltaxy(CIExyY & xyY);
+		double_array getDeltauvPrime(const xyY_ptr xyY);
+		double_array getDeltaxy(const xyY_ptr xyY);
 
 		double_array getuvPrimeValues();
 

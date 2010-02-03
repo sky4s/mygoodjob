@@ -1,11 +1,21 @@
 #include "ciexyz.h"
 
+//C系統文件
+
+//C++系統文件
+
+//其他庫頭文件
+
+//本項目內頭文件
+#include <math/doublearray.h>
+
 namespace cms {
     namespace colorspace {
 	namespace independ {
 	    using namespace std;
 	    using namespace boost;
 	    using namespace java::lang;
+	    using namespace math;
 	    //======================================================================
 	    // CIEXYZ
 	    //======================================================================
@@ -62,15 +72,14 @@ namespace cms {
 		return values;
 	    };
 
-	    shared_array < double >CIEXYZ::_getValues(shared_array <
-						      double >values) {
-		//shared_array < double >values(new double[3]);
+	    double_array CIEXYZ::_getValues( double_array values) {
+		// double_array values(new double[3]);
 		values[0] = X;
 		values[1] = Y;
 		values[2] = Z;
 		return values;
 	    };
-	    void CIEXYZ::_setValues(shared_array < double >values) {
+	    void CIEXYZ::_setValues(double_array values) {
 		X = values[0];
 		Y = values[1];
 		Z = values[2];
@@ -78,11 +87,10 @@ namespace cms {
 
 
 	    //using ColorSpace::getValues;
-	    shared_array < double >CIEXYZ::getValues() {
+	    double_array CIEXYZ::getValues() {
 		return ColorSpace::getValues();
 	    };
-	    shared_array < double >CIEXYZ::getValues(shared_array <
-						     double >values) {
+	    double_array CIEXYZ::getValues( double_array values) {
 		return ColorSpace::getValues(values);
 	    };
 
@@ -90,16 +98,16 @@ namespace cms {
 		//return *this;
 	    };
 
-	    shared_array < double >CIEXYZ::getWhitenessIndex() {
+	    double_array CIEXYZ::getWhitenessIndex() {
 		//return new CIExyY(this).getWhitenessIndex();
 	    };
 
-	    shared_array < double >CIEXYZ::getxyValues() const {
+	    double_array CIEXYZ::getxyValues() const {
 		if (Y == 0) {
 		    //return new double[] {
 		    //0, 0};
 		    //double *result  = new double[2];
-		    shared_array < double >values(new double[2]);
+		    double_array values(new double[2]);
 		     values[0] = 0;
 		     values[1] = 0;
 		     return values;
@@ -107,19 +115,19 @@ namespace cms {
 		    double sum = (X + Y + Z);
 		    double x = X / sum;
 		    double y = Y / sum;
-		    shared_array < double >values(new double[2]);
+		    double_array values(new double[2]);
 		    values[0] = x;
 		    values[1] = y;
 		    return values;
 		}
 	    };
 
-	    shared_array < double >CIEXYZ::getxyzValues() {
+	    double_array CIEXYZ::getxyzValues() {
 		double sum = (X + Y + Z);
 		double x = X / sum;
 		double y = Y / sum;
 		double z = 1 - x - y;
-		shared_array < double >values(new double[3]);
+		double_array values(new double[3]);
 		values[0] = x;
 		values[1] = y;
 		values[2] = z;
@@ -147,30 +155,28 @@ namespace cms {
 
 		return true;
 	    };
-	    bool CIEXYZ::isLegal(CIEXYZ white) {
-		return isLegal() && X <= white.X && Y <= white.Y &&
-		    Z <= white.Z;
+	    bool CIEXYZ::isLegal(XYZ_ptr white) {
+		return isLegal() && X <= white->X && Y <= white->Y &&
+		    Z <= white->Z;
 	    };
-	    shared_ptr < CIEXYZ > CIEXYZ::minus(const CIEXYZ & XYZ1,
-						const CIEXYZ & XYZ2) {
+	    XYZ_ptr CIEXYZ::minus(const XYZ_ptr XYZ1, const XYZ_ptr XYZ2) {
 
-		shared_ptr < CIEXYZ > result(new CIEXYZ());
-		result->X = XYZ1.X - XYZ2.X;
-		result->Y = XYZ1.Y - XYZ2.Y;
-		result->Z = XYZ1.Z - XYZ2.Z;
+		XYZ_ptr result(new CIEXYZ());
+		result->X = XYZ1->X - XYZ2->X;
+		result->Y = XYZ1->Y - XYZ2->Y;
+		result->Z = XYZ1->Z - XYZ2->Z;
 		return result;
 	    };
 
-	    shared_ptr < CIEXYZ > CIEXYZ::plus(const CIEXYZ & XYZ1,
-					       const CIEXYZ & XYZ2) {
-		shared_ptr < CIEXYZ > result(new CIEXYZ());
-		result->X = XYZ1.X + XYZ2.X;
-		result->Y = XYZ1.Y + XYZ2.Y;
-		result->Z = XYZ1.Z + XYZ2.Z;
+	    XYZ_ptr CIEXYZ::plus(const XYZ_ptr XYZ1, const XYZ_ptr XYZ2) {
+		XYZ_ptr result(new CIEXYZ());
+		result->X = XYZ1->X + XYZ2->X;
+		result->Y = XYZ1->Y + XYZ2->Y;
+		result->Z = XYZ1->Z + XYZ2->Z;
 		return result;
 	    };
 
-	    void CIEXYZ::normalize(shared_ptr < CIEXYZ > normal) {
+	    void CIEXYZ::normalize(XYZ_ptr normal) {
 		double factor = (NormalFactor / normal->Y);
 		X *= factor;
 		Y *= factor;
@@ -187,7 +193,7 @@ namespace cms {
 	    };
 
 	    void CIEXYZ::normalize(NormalizeY normalizeY) {
-		shared_array < double >values =
+		double_array values =
 		    getValues(double_array(new double[3]),
 			      normalizeY);
 		setValues(values);
@@ -213,7 +219,7 @@ namespace cms {
 		    Z = 0;
 		}
 	    };
-	    void CIEXYZ::rationalize(shared_ptr < CIEXYZ > white) {
+	    void CIEXYZ::rationalize(XYZ_ptr white) {
 		rationalize();
 
 		X = (X > white->X) ? white->X : X;
@@ -221,7 +227,7 @@ namespace cms {
 		Z = (Z > white->Z) ? white->Z : Z;
 	    };
 
-	    void CIEXYZ::scaleY(shared_ptr < CIEXYZ > scale) {
+	    void CIEXYZ::scaleY(XYZ_ptr scale) {
 		scaleY(scale->Y);
 	    };
 	    void CIEXYZ::scaleY(double scaleY) {
@@ -236,11 +242,11 @@ namespace cms {
 
 	    CIEXYZ::CIEXYZ() {
 	    };
-	    CIEXYZ::CIEXYZ(shared_array < double >XYZValues,
-			   NormalizeY normalizeY):_normalizeY(normalizeY) {
+	  CIEXYZ::CIEXYZ(double_array XYZValues, NormalizeY normalizeY):_normalizeY(normalizeY)
+	    {
 		setValues(XYZValues);
 	    };
-	    CIEXYZ::CIEXYZ(shared_array < double >XYZValues) {
+	    CIEXYZ::CIEXYZ(double_array XYZValues) {
 		setValues(XYZValues);
 	    };
 	    CIEXYZ::CIEXYZ(double X, double Y, double Z,
@@ -260,17 +266,16 @@ namespace cms {
 	    CIExyY::CIExyY() {
 	    };
 
-	  CIExyY::CIExyY(CIEXYZ & XYZ):_normalizeY(XYZ.
-			_normalizeY)
+	  CIExyY::CIExyY(XYZ_ptr XYZ):_normalizeY(XYZ->_normalizeY)
 	    {
-		shared_array < double >xyValues = XYZ.getxyValues();
-		setValues(xyValues[0], xyValues[1], XYZ.Y);
+		double_array xyValues = XYZ->getxyValues();
+		setValues(xyValues[0], xyValues[1], XYZ->Y);
 	    };
-	    CIExyY::CIExyY(shared_array < double >xyValues,
-			   NormalizeY normalizeY):_normalizeY(normalizeY) {
+	  CIExyY::CIExyY(double_array xyValues, NormalizeY normalizeY):_normalizeY(normalizeY)
+	    {
 		setValues(xyValues);
 	    };
-	    CIExyY::CIExyY(shared_array < double >xyValues) {
+	    CIExyY::CIExyY(double_array xyValues) {
 		setValues(xyValues);
 	    };
 	    CIExyY::CIExyY(double x, double y, double Y,
@@ -284,25 +289,25 @@ namespace cms {
 		setValues(x, y, 1);
 	    };
 
-	    shared_ptr < CIExyY > CIExyY::fromCCT2Blackbody(int CCT) {
+	    xyY_ptr CIExyY::fromCCT2Blackbody(int CCT) {
 		//return CorrelatedColorTemperature.CCT2BlackbodyxyY(CCT);
 	    };
-	    shared_ptr < CIExyY > CIExyY::fromCCT2DIlluminant(int CCT) {
+	    xyY_ptr CIExyY::fromCCT2DIlluminant(int CCT) {
 		//return CorrelatedColorTemperature.CCT2DIlluminantxyY(CCT);
 	    };
-	    shared_ptr < CIExyY > CIExyY::fromXYZ(const CIEXYZ & XYZ) {
-		shared_array < double >xyValues = XYZ.getxyValues();
-		shared_ptr < CIExyY >
-		    xyY(new CIExyY(xyValues[0], xyValues[1], XYZ.Y,
-				   XYZ._normalizeY));
+	    xyY_ptr CIExyY::fromXYZ(const XYZ_ptr XYZ) {
+		double_array xyValues = XYZ->getxyValues();
+		xyY_ptr
+		    xyY(new CIExyY(xyValues[0], xyValues[1], XYZ->Y,
+				   XYZ->_normalizeY));
 		return xyY;
 	    }
 
-	    shared_ptr < CIEXYZ > CIExyY::toXYZ() {
+	    XYZ_ptr CIExyY::toXYZ() {
 		//return toXYZ(this);
 	    };
 
-	    shared_ptr < CIEXYZ > CIExyY::toXYZ(const CIExyY & xyY) {
+	    XYZ_ptr CIExyY::toXYZ(const CIExyY & xyY) {
 		shared_ptr < CIEXYZ > XYZ(new CIEXYZ());
 
 		XYZ->X = (xyY.x / xyY.y) * xyY.Y;
@@ -313,14 +318,13 @@ namespace cms {
 		return XYZ;
 	    };
 
-	    shared_array < double >CIExyY::_getValues(shared_array <
-						      double >values) {
+	    double_array CIExyY::_getValues(double_array values) {
 		values[0] = x;
 		values[1] = y;
 		values[2] = Y;
 		return values;
 	    };
-	    void CIExyY::_setValues(shared_array < double >values) {
+	    void CIExyY::_setValues(double_array values) {
 		x = values[0];
 		y = values[1];
 		Y = values[2];
@@ -341,10 +345,8 @@ namespace cms {
 		_normalizeY = Normal1;
 	    };
 
-	    shared_array < double >CIExyY::getValues(shared_array <
-						     double >values,
-						     NormalizeY normalizeY)
-	    {
+	    double_array CIExyY::getValues(double_array values,
+					   NormalizeY normalizeY) {
 		if (_normalizeY == Not) {
 		    throw
 			IllegalStateException
@@ -367,73 +369,70 @@ namespace cms {
 		return values;
 	    };
 	    //using ColorSpace::getValues;
-	    shared_array < double >CIExyY::getValues() {
+	    double_array CIExyY::getValues() {
 		return ColorSpace::getValues();
 	    };
-	    shared_array < double >CIExyY::getValues(shared_array <
-						     double >values) {
+	    double_array CIExyY::getValues( double_array values) {
 		return ColorSpace::getValues(values);
 	    };
 	    double CIExyY::getCCT() {
 		return toXYZ()->getCCT();
 	    };
 
-	    shared_array < double >CIExyY::getDeltauv(CIExyY & xyY) {
-		shared_array < double >uvp1 = getuvValues();
-		shared_array < double >uvp2 = xyY.getuvValues();
-		//double[] duvp = DoubleArray.minus(uvp1, uvp2);
-		//return duvp;
+	    double_array CIExyY::getDeltauv(const xyY_ptr xyY) {
+		double_array uvp1 = getuvValues();
+		double_array uvp2 = xyY->getuvValues();
+		return DoubleArray::minus(uvp1, uvp2, 2);
 	    };
 
-	    shared_array < double >CIExyY::getDeltauvPrime(CIExyY & xyY) {
-		shared_array < double >uvp1 = getuvPrimeValues();
-		shared_array < double >uvp2 = xyY.getuvPrimeValues();
-		//double[] duvp = DoubleArray.minus(uvp1, uvp2);
-		//return duvp;
+	    double_array CIExyY::getDeltauvPrime(const xyY_ptr xyY) {
+		double_array uvp1 = getuvPrimeValues();
+		double_array uvp2 = xyY->getuvPrimeValues();
+		return DoubleArray::minus(uvp1, uvp2, 2);
 	    };
-	    shared_array < double >CIExyY::getDeltaxy(CIExyY & xyY) {
-		shared_array < double >deltaxy(new double[2]);
-		deltaxy[0] = x - xyY.x;
-		deltaxy[1] = y - xyY.y;
+	    double_array CIExyY::getDeltaxy(const xyY_ptr xyY) {
+		double_array deltaxy(new double[2]);
+		deltaxy[0] = x - xyY->x;
+		deltaxy[1] = y - xyY->y;
 		return deltaxy;
 	    };
 
-	    shared_array < double >CIExyY::getuvPrimeValues() {
+	    double_array CIExyY::getuvPrimeValues() {
 		double denominator = (-2 * x + 12 * y + 3);
-		shared_array < double >uvp(new double[2]);
+		double_array uvp(new double[2]);
 		uvp[0] = 4 * x / denominator;
 		uvp[1] = 9 * y / denominator;
 		return uvp;
 	    };
 
-	    shared_array < double >CIExyY::getuvPrimeYValues() {
-		shared_array < double >uvp = getuvPrimeValues();
-		shared_array < double >uvpY(new double[3]);
+	    double_array CIExyY::getuvPrimeYValues() {
+		double_array uvp = getuvPrimeValues();
+		double_array uvpY(new double[3]);
 		uvpY[0] = uvp[0];
 		uvpY[1] = uvp[1];
 		uvpY[2] = Y;
 		return uvpY;
 	    };
-	    shared_array < double >CIExyY::getuvValues() {
+	    double_array CIExyY::getuvValues() {
 		double denominator = (-2 * x + 12 * y + 3);
-		shared_array < double >uv(new double[2]);
+		double_array uv(new double[2]);
 		uv[0] = 4 * x / denominator;
 		uv[1] = 6 * y / denominator;
 		return uv;
 	    };
 
-	    shared_array < double >CIExyY::getWhitenessIndex() {
-		shared_array < double >dxy = D65xyY.getDeltaxy(*this);
+	    double_array CIExyY::getWhitenessIndex() {
+		double_array dxy = D65xyY.getDeltaxy(xyY_ptr(this));
 		double W = Y + 800 * dxy[0] + 1700 * dxy[1];
 		double Tw = 1000 * dxy[0] - 650 * dxy[1];
 
-		shared_array < double >index(new double[2]);
+		double_array index(new double[2]);
 		index[0] = W;
 		index[1] = Tw;
 		return index;
 	    };
-	    shared_array < double >CIExyY::getxyValues() {
-		shared_array < double >xy(new double[2]);
+	    double_array CIExyY::getxyValues() {
+		double_array xy(new double[2]);
 		xy[0] = x;
 		xy[1] = y;
 		return xy;
@@ -446,8 +445,7 @@ namespace cms {
 		/*x = Double.isNaN(x) ? 0 : x;
 		   y = Double.isNaN(y) ? 0 : y; */
 	    };
-	    void CIExyY::setuvPrimeValues(shared_array <
-					  double >uvPrimeValues) {
+	    void CIExyY::setuvPrimeValues(double_array uvPrimeValues) {
 		double u = uvPrimeValues[0];
 		double v = uvPrimeValues[1];
 		double denominator = 9 * u / 2 - 12 * v + 9;
@@ -455,9 +453,8 @@ namespace cms {
 		x = (27 * u / 4) / denominator;
 		y = 3 * v / denominator;
 	    };
-	    void CIExyY::setuvPrimeYValues(shared_array <
-					   double >uvPrimeYValues) {
-		shared_array < double >uv(new double[2]);
+	    void CIExyY::setuvPrimeYValues(double_array uvPrimeYValues) {
+		double_array uv(new double[2]);
 		uv[0] = uvPrimeYValues[0];
 		uv[1] = uvPrimeYValues[1];
 		setuvPrimeValues(uv);

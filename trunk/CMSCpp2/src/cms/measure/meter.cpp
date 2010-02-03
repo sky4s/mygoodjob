@@ -84,11 +84,10 @@ namespace cms {
 		    break;
 		}
 	    };
-	    shared_array < double >CA210::triggerMeasurementInXYZ() {
+	    double_array CA210::triggerMeasurementInXYZ() {
 		measureCount++;
-		shared_array < float >values =
-		    _CA210API->triggerMeasurement();
-		shared_array < double >result(new double[3]);
+		float_array values = _CA210API->triggerMeasurement();
+		double_array result(new double[3]);
 		result[0] = values[0];
 		result[1] = values[1];
 		result[2] = values[2];
@@ -119,7 +118,7 @@ namespace cms {
 		    bptr < ca210api::CA210API > (new ca210api::CA210API());
 	    };
 	    CA210::CA210() {
-		if (NULL == _CA210API) {
+		if (null == _CA210API) {
 		    initCA210API();
 		}
 	    };

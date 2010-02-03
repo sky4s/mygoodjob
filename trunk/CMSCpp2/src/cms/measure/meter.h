@@ -35,7 +35,7 @@ namespace cms {
 		LCD, CRT
 	    };
 
-	    class Meter:public java::lang::Object {
+	    class Meter:public jObject {
 	      public:
 		int getSuggestedWaitTimes();
 		void setLogoFileHeader(cms::colorformat::logo::
@@ -44,16 +44,12 @@ namespace cms {
 		virtual void close() = 0;
 		virtual bool isConnected() = 0;
 		virtual void calibrate() = 0;
-		virtual boost::shared_ptr < std::string >
-		    getCalibrationDescription() = 0;
+		virtual string_ptr getCalibrationDescription() = 0;
 		virtual void setPatchIntensity(PatchIntensity
 					       patchIntensity) = 0;
-		virtual boost::shared_array <
-		    double >triggerMeasurementInXYZ() = 0;
-		virtual boost::shared_ptr < std::string >
-		    getLastCalibration() = 0;
-		virtual boost::shared_ptr < std::string >
-		    getCalibrationCount() = 0;
+		virtual double_array triggerMeasurementInXYZ() = 0;
+		virtual string_ptr getLastCalibration() = 0;
+		virtual string_ptr getCalibrationCount() = 0;
 		virtual void setScreenType(ScreenType screenType) = 0;
 		virtual Instr getType() = 0;
 
@@ -71,12 +67,11 @@ namespace cms {
 		 bptr < ca210api::CA210API > getCA210API();
 		bool isConnected();
 		void calibrate();
-		 boost::shared_ptr < std::string >
-		    getCalibrationDescription();
+		string_ptr getCalibrationDescription();
 		void setPatchIntensity(PatchIntensity patchIntensity);
-		 barray < double >triggerMeasurementInXYZ();
-		 bptr < std::string > getLastCalibration();
-		 bptr < std::string > getCalibrationCount();
+		double_array triggerMeasurementInXYZ();
+		string_ptr getLastCalibration();
+		string_ptr getCalibrationCount();
 		void setScreenType(ScreenType screenType);
 		Instr getType();
 		void close();
