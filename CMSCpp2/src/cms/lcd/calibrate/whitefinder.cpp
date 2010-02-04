@@ -34,7 +34,9 @@ namespace cms {
 	    RGB_ptr WhitePointFinder::findRGBAround(xyY_ptr xyY) {
 		RGB_vector_ptr aroundRGB =
 		    aroundAlgo.getAroundRGB(RGBColor::White, 1);
-
+		XYZ_ptr center = xyY->toXYZ();
+		 bptr < AlgoResult > algoResult =
+		    nearAlgo.getNearestRGB(center, aroundRGB);
 	    };
 	    RGB_ptr WhitePointFinder::findMatchRGB(xyY_ptr xyY,
 						   RGB_ptr initRGB) {
