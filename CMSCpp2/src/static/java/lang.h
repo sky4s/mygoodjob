@@ -71,9 +71,12 @@
 #define RGB_vector_ptr bptr < RGB_vector >
 
 #define xyY_ptr bptr < Indep::CIExyY >
-#define XYZ_ptr bptr < Indep::CIEXYZ >
-//#define XYZ_vector std::vector < Dep::RGBColor >
+#define xyY_vector std::vector < xyY_ptr >
+#define xyY_vector_ptr bptr < xyY_vector >
 
+#define XYZ_ptr bptr < Indep::CIEXYZ >
+#define XYZ_vector std::vector < XYZ_ptr >
+#define XYZ_vector_ptr bptr < XYZ_vector >
 
 
 #define channel_vector std::vector <   Dep::Channel  >
