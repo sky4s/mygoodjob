@@ -42,7 +42,16 @@ namespace cms {
 		//==============================================================
 		// AlgoResult
 		//==============================================================
-		//
+		 AlgoResult::AlgoResult(RGB_ptr nearestRGB,
+					double_array indexes,
+					RGB_vector_ptr aroundRGB,
+					XYZ_vector_ptr aroundXYZ,
+					int
+					indexInArray):nearestRGB
+		    (nearestRGB), indexes(indexes), aroundRGB(aroundRGB),
+		    aroundXYZ(aroundXYZ), indexInArray(indexInArray) {
+
+		};
 		//==============================================================
 
 		//==============================================================
@@ -50,11 +59,9 @@ namespace cms {
 		//==============================================================
 		// NearestAlgorithm
 		//==============================================================
-		 NearestAlgorithm::NearestAlgorithm(XYZ_ptr white,
-						    bptr <
-						    MeasureInterface >
-						    mi):white(white),
-		    mi(mi) {
+	      NearestAlgorithm::NearestAlgorithm(XYZ_ptr white, bptr < MeasureInterface > mi):white(white),
+		    mi(mi)
+		{
 		};
 		double_array NearestAlgorithm::getDelta(XYZ_ptr XYZ,
 							RGB_ptr rgb) {
@@ -92,12 +99,6 @@ namespace cms {
 		       return result; */
 		};
 
-		bptr < AlgoResult >
-		    NearestAlgorithm::getNearestRGB(XYZ_ptr center,
-						    RGB_vector_ptr rgbVec,
-						    int lastCount) {
-		    throw UnsupportedOperationException();
-		};
 		//==============================================================
 
 		//==============================================================
