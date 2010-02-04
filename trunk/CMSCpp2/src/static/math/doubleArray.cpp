@@ -1,10 +1,21 @@
 #include "doublearray.h"
 
+//C系統文件
+
+//C++系統文件
+
+//其他庫頭文件
+#include <boost/lexical_cast.hpp>
+
+//本項目內頭文件
+
 namespace math {
+    using namespace boost;
     string_ptr DoubleArray::toString(double_array m, int n) {
 	using namespace std;
 	string_ptr str(new string());
 	for (int x = 0; x != n; x++) {
+	    *str += lexical_cast < string > (m[x]);
 	    //str->insert(m[x]);
 	};
 	return str;
