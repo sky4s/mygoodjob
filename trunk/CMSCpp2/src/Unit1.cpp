@@ -13,7 +13,41 @@
 #include <cstdarg>
 #include <boost/array.hpp>
 //---------------------------------------------------------------------------
+using namespace std;
+vector < int >getIntVec()
+{
+    vector < int >vec;
+    vec.push_back(3);
+    vec.push_back(4);
+    cout << &vec << endl;
+    foreach(int &i, vec) {
+	cout << &i << endl;
+    }
 
+    return vec;
+}
+
+vector < jObject > getObjectVec()
+{
+    vector < jObject > vec;
+    jObject a, b;
+    vec.push_back(a);
+    vec.push_back(b);
+    foreach(jObject & i, vec) {
+	cout << &i << endl;
+    }
+    return vec;
+}
+boost::array < int, 2 > getArray()
+{
+    boost::array < int, 2 > a;
+    cout << &a << endl;
+    foreach(int &i, a) {
+	cout << &i << endl;
+    }
+    return a;
+
+};
 
 #pragma argsused
 int main(int argc, char *argv[])
@@ -23,34 +57,24 @@ int main(int argc, char *argv[])
     bptr < RGBColor > b(new RGBColor);
     typedef int int10[10];
     int10 dd;
-    //typedef boost::shared_array < int >barray;
-    //typedef boost::shared_ptr < int >TestPtr;
+    boost::shared_array < int >sa(new int[3]);
 
+    /*vector < int >v = getIntVec();
+       cout << &v << endl;
+       foreach(int &i, v) {
+       cout << &i << endl;
+       } */
 
+    /*vector < jObject > v2 = getObjectVec();
+       foreach(jObject & i, v2) {
+       cout << &i << endl;
+       } */
 
-    foreach(const Channel & c, *Channel::RGBChannel) {
-	cout << *(c.toString()) << endl;
-    };
-
-    typedef boost::array < int, 4 > Array4;
-    Array4 s = { 1, 2, 3, 4 };
-    for (Array4::iterator p = s.begin(); p != s.end(); ++p) {
-	cout << *p << endl;
+    boost::array < int, 2 > a = getArray();
+    cout << &a << endl;
+    foreach(int &i, a) {
+	cout << &i << endl;
     }
-    foreach(int i, s) {
-	cout << i << endl;
-    }
-    int a[] = { 1, 2, 3, 4 };
-    for (int x = 0; x < 4; x++) {
-	cout << a[x] << endl;
-    }
-
-    foreach(int i, a) {
-	cout << i << endl;
-    }
-
-
-
     getch();
     return 0;
 }

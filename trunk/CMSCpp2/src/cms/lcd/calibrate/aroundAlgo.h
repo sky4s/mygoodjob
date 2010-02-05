@@ -42,6 +42,7 @@ namespace cms {
 		    bool whiteCheckAdjustable(RGB_ptr rgb, double step,
 					      Dep::Channel & maxChannel);
 		    static bool ChromaticSkipByDelta;
+		    double maxCode;
 		  public:
 		     RGB_vector_ptr
 			getAroundRGB(RGB_ptr centerRGB, double_array delta,
@@ -54,7 +55,7 @@ namespace cms {
 						bool involeWhite);
 		    RGB_vector_ptr getAroundRGB(RGB_ptr centerRGB,
 						double step);
-		    //void setChromaticExpandMode(bool chromaticExpandMode);
+		     StepAroundAlgorithm();
 		};
 
 		class ChromaticAroundAlgorithm:public StepAroundAlgorithm {

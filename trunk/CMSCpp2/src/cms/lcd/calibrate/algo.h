@@ -41,11 +41,12 @@ namespace cms {
 		class AlgoResult:public jObject {
 		  public:
 		    RGB_ptr nearestRGB;
-		    double_array indexes;
+		    double_vector_ptr indexes;
 		    XYZ_vector_ptr aroundXYZ;
 		    int indexInArray;
 		    RGB_vector_ptr aroundRGB;
-		     AlgoResult(RGB_ptr nearestRGB, double_array indexes,
+		     AlgoResult(RGB_ptr nearestRGB,
+				double_vector_ptr indexes,
 				RGB_vector_ptr aroundRGB,
 				XYZ_vector_ptr aroundXYZ,
 				int indexInArray);

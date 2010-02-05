@@ -5,6 +5,8 @@
 
 //C++系統文件
 #include <string>
+#include <vector>
+
 //其他庫頭文件
 #include <boost/shared_array.hpp>
 #include <boost/shared_ptr.hpp>
@@ -111,7 +113,7 @@ namespace cms {
 	namespace calibrate {
 	    namespace algo {
 		class ChromaticAroundAlgorithm;
-                class CIEuv1960NearestAlgorithm;
+		class CIEuv1960NearestAlgorithm;
 	    };
 	};
     };
@@ -219,6 +221,9 @@ namespace java {
 	    static int minIndex(double_array values, int n);
 	    static double min(double a, double b);
 	    static double max(double a, double b);
+
+	    static int maxIndex(double_vector_ptr values);
+	    static int minIndex(double_vector_ptr values);
 	};
 
 

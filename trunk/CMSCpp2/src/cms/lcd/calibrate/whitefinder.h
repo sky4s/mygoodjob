@@ -16,6 +16,7 @@ namespace cms {
 	    class WhitePointFinder {
 	      private:
 		bptr < cms::measure::MeterMeasurement > mm;
+		//bptr < cms::measure::cp::MeasureInterface > mi;
 		RGB_ptr findRGBAround(xyY_ptr xyY);
 		RGB_ptr findMatchRGB(xyY_ptr xyY, RGB_ptr initRGB);
 		RGB_ptr fixRGB2TouchMax(RGB_ptr rgb);

@@ -121,8 +121,20 @@ namespace cms {
 	    bool Channel::isSecondaryColorChannel() const {
 		return isSecondaryColorChannel(*this);
 	    };
+	    channel_vector_ptr Channel::getBesidePrimaryChannel(const
+								Channel &
+								primaryColorChannel)
+	    {
+		switch (primaryColorChannel.index) {
+		case 1:
+		    return getChannelVector(2, G, B);
+		case 2:
+		    return getChannelVector(2, R, B);
+		case 3:
+		    return getChannelVector(2, R, G);
+		}
+	    };
 	    //======================================================================
-
 	    //======================================================================
 	    // RGBColorSpace
 	    //======================================================================

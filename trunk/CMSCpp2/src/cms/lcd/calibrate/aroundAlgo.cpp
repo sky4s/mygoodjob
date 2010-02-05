@@ -67,6 +67,9 @@ namespace cms {
 
 		};
 		bool StepAroundAlgorithm::ChromaticSkipByDelta = true;
+	      StepAroundAlgorithm::StepAroundAlgorithm():maxCode(255)
+		{
+		};
 		//==============================================================
 
 		//==============================================================
@@ -118,7 +121,7 @@ namespace cms {
 		    //調整後的點要 1.>=0 2.<=maxcode
 		    double afterValue =
 			rgb->getValue(adjustChannel) + step;
-		    return /*afterValue <= maxCode && */ afterValue >= 0;
+		    return afterValue <= maxCode && afterValue >= 0;
 
 		};
 		RGB_vector_ptr ChromaticAroundAlgorithm::

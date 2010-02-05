@@ -58,8 +58,10 @@ namespace cms {
 
 	    class RGBBase:public DeviceDependentSpace {
 	      public:
-		static double_array linearToRGBValues(double_array linearRGBValues,
-					      RGBColorSpace rgbColorSpace);
+		static double_array linearToRGBValues(double_array
+						      linearRGBValues,
+						      RGBColorSpace
+						      rgbColorSpace);
 	    };
 
 	    enum Round {
@@ -93,10 +95,11 @@ namespace cms {
 		static bool isPrimaryColorChannel(const Channel & channel);
 		static bool isSecondaryColorChannel(const Channel &
 						    channel);
+		static channel_vector_ptr getChannelVector(int count, ...);
 	      public:
 		const int index;
 		const TColor color;
-		static channel_vector_ptr getChannelVector(int count, ...);
+
 		inline bool operator==(const Channel & that) const {
 		    return index == that.index;
 		};
@@ -109,6 +112,9 @@ namespace cms {
 		int getArrayIndex();
 		bool isPrimaryColorChannel() const;
 		bool isSecondaryColorChannel() const;
+		static channel_vector_ptr getBesidePrimaryChannel(const
+								  Channel &
+								  primaryColorChannel);
 
 		static const Channel & getChannel(boolean R, boolean G,
 						  boolean B);
