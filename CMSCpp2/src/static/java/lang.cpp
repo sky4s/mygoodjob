@@ -129,6 +129,32 @@ namespace java {
 	double Math::max(double a, double b) {
 	    return std::max(a, b);
 	};
+	int Math::maxIndex(double_vector_ptr values) {
+	    double maxValue = std::numeric_limits < double >::min();
+	    int maxIndex = -1;
+	    int size = values->size();
+	    for (int x = 0; x < size; x++) {
+		double v = (*values)[x];
+		if (v > maxValue) {
+		    maxValue = v;
+		    maxIndex = x;
+		};
+	    };
+	    return maxIndex;
+	};
+	int Math::minIndex(double_vector_ptr values) {
+	    double minValue = std::numeric_limits < double >::max();
+	    int minIndex = -1;
+	    int size = values->size();
+	    for (int x = 0; x < size; x++) {
+		double v = (*values)[x];
+		if (v < minValue) {
+		    minValue = v;
+		    minIndex = x;
+		};
+	    };
+	    return minIndex;
+	};
 	//======================================================================
 
 	//======================================================================

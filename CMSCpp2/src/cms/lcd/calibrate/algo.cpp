@@ -43,10 +43,9 @@ namespace cms {
 		// AlgoResult
 		//==============================================================
 		 AlgoResult::AlgoResult(RGB_ptr nearestRGB,
-					double_array indexes,
+					double_vector_ptr indexes,
 					RGB_vector_ptr aroundRGB,
-					XYZ_vector_ptr aroundXYZ,
-					int
+					XYZ_vector_ptr aroundXYZ, int
 					indexInArray):nearestRGB
 		    (nearestRGB), indexes(indexes), aroundRGB(aroundRGB),
 		    aroundXYZ(aroundXYZ), indexInArray(indexInArray) {
@@ -77,26 +76,25 @@ namespace cms {
 			getMeasureResult(aroundRGB);
 		    Patch_vector_ptr patchVec = measureResult->result;
 		    int size = patchVec->size();
-		    //double[] dist = new double[size];
 		    double_vector_ptr dist(new double_vector());
 
-		    /*CIEXYZ[]aroundXYZ = new CIEXYZ[size];
+		    XYZ_vector_ptr aroundXYZ(new XYZ_vector());
 
 
-		       for (int x = 0; x < size; x++) {
-		       Patch patch = patchList.get(x);
-		       CIEXYZ XYZ = patch.getXYZ();
-		       aroundXYZ[x] = XYZ;
-		       dist[x] = getIndex(center, XYZ);
-		       }
-		       int index = Maths.minIndex(dist);
-		       RGB rgb = patchList.get(index).getRGB();
-		       AlgoResult result =
-		       new AlgoResult(rgb, dist, aroundRGB, aroundXYZ,
-		       index,
-		       measureResult.
-		       practicalMeasureCount);
-		       return result; */
+		    for (int x = 0; x < size; x++) {
+			Patch_ptr patch = (*patchVec)[x];
+			XYZ_ptr XYZ = patch->getXYZ();
+			aroundXYZ->push_back(XYZ);
+			dist->push_back(getIndex(center, XYZ));
+
+		    }
+		    int index = Math::minIndex(dist);
+		    RGB_ptr rgb = (*patchVec)[index]->getRGB();
+		    bptr < AlgoResult >
+			result(new AlgoResult(rgb, dist,
+					      aroundRGB,
+					      aroundXYZ, index));
+		    return result;
 		};
 
 		//==============================================================

@@ -12,38 +12,60 @@
 #include <cms/lcd/calibrate/nearalgo.h>
 #include <cms/colorspace/rgb.h>
 #include <cms/colorspace/ciexyz.h>
+#include <cms/patch.h>
 #include <cms/measure/MeterMeasurement.h>
 
 namespace cms {
     namespace lcd {
 	namespace calibrate {
+	    using namespace cms;
 	    using namespace cms::measure;
 	    using namespace cms::lcd::calibrate::algo;
 	    using namespace Dep;
+	    using namespace Indep;
 	     WhitePointFinder::WhitePointFinder(bptr <
-						cms::measure::
 						MeterMeasurement >
 						mm):mm(mm),
 		aroundAlgo(ChromaticAroundAlgorithm())
 	    , nearAlgo(CIEuv1960NearestAlgorithm
-		       (XYZ_ptr((Indep::CIEXYZ *) NULL),
-			mm->getMeasureInterface()
+		       (XYZ_ptr((CIEXYZ *) NULL), mm->getMeasureInterface()
 		       )) {
 	    };
 
 	    RGB_ptr WhitePointFinder::findRGBAround(xyY_ptr xyY) {
-		RGB_vector_ptr aroundRGB =
-		    aroundAlgo.getAroundRGB(RGBColor::White, 1);
-		XYZ_ptr center = xyY->toXYZ();
-		 bptr < AlgoResult > algoResult =
-		    nearAlgo.getNearestRGB(center, aroundRGB);
+		RGB_ptr nearestRGB = RGBColor::White;
+		bool findNearest = false;
+
+		do {
+		    RGB_vector_ptr aroundRGB =
+			aroundAlgo.getAroundRGB(RGBColor::White, 1);
+		    XYZ_ptr center = xyY->toXYZ();
+		     bptr < AlgoResult > algoResult =
+			nearAlgo.getNearestRGB(center, aroundRGB);
+		    XYZ_vector_ptr aroundXYZ = algoResult->aroundXYZ;
+		    RGB_ptr nearestRGB = algoResult->nearestRGB;
+		     findNearest =
+			MeasuredUtils::isFirstNearestXYZInuvPrime(center,
+								  aroundXYZ);
+		} while (!findNearest);
+		 return nearestRGB;
 	    };
 	    RGB_ptr WhitePointFinder::findMatchRGB(xyY_ptr xyY,
 						   RGB_ptr initRGB) {
-
+		const Channel & maxChannel = initRGB->getMaxChannel();
+		channel_vector_ptr matchChannels =
+		    Channel::getBesidePrimaryChannel(maxChannel);
+		Patch_ptr patch =
+		    mm->measure(initRGB, initRGB->toString());
+		double_array delta =
+		    nearAlgo.getDelta(xyY->toXYZ(), patch->getXYZ());
 	    };
 	    RGB_ptr WhitePointFinder::fixRGB2TouchMax(RGB_ptr rgb) {
-
+		const Channel & maxChannel = rgb->getMaxChannel();
+		double maxChannelValue = rgb->getValue(maxChannel);
+		double diff = 255 - maxChannelValue;
+		rgb->addValue(diff);
+		return rgb;
 	    };
 
 	    /*
