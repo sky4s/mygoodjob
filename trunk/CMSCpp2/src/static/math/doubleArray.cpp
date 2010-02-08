@@ -11,6 +11,7 @@
 
 namespace math {
     using namespace boost;
+    using namespace java::lang;
     string_ptr DoubleArray::toString(double_array m, int n) {
 	using namespace std;
 	string_ptr str(new string());
@@ -45,5 +46,12 @@ namespace math {
 	}
 	return array;
     }
+
+    double_vector_ptr DoubleArray::getRangeCopy(double_vector_ptr M,
+						int j1, int j2) {
+	double_vector_ptr copy(new double_vector);
+	System::vectorcopy(M, j1, copy, 0, j2 - j1 + 1);
+	return copy;
+    };
 };
 

@@ -189,7 +189,22 @@ namespace java {
 	{
 
 	};
+
+	IndexOutOfBoundsException::IndexOutOfBoundsException() {
+	};
+      IndexOutOfBoundsException::IndexOutOfBoundsException(string message):RuntimeException(message)
+	{
+
+	};
 	//======================================================================
+
+	void System::vectorcopy(double_vector_ptr src, int srcPos,
+				double_vector_ptr dest, int destPos,
+				int length) {
+	    dest->insert(dest->begin() + destPos, src->begin() + srcPos,
+			 src->begin() + srcPos + length);
+
+	};
     };
 };
 
