@@ -43,6 +43,9 @@
 #define nil_double_vector_ptr double_vector_ptr ((double_vector*)NULL)
 #define nil_double_vector nil_double_vector_ptr
 
+#define int_vector std::vector < double >
+#define int_vector_ptr bptr < int_vector >
+
 #define string_vector std::vector < std::string >
 #define string_vector_ptr bptr < string_vector >
 
@@ -256,8 +259,21 @@ namespace java {
 	    UnsupportedOperationException();
 	    UnsupportedOperationException(std::string message);
 	};
+	class IndexOutOfBoundsException:public RuntimeException {
+	  public:
+	    IndexOutOfBoundsException();
+	    IndexOutOfBoundsException(std::string message);
+	};
+
+	class System {
+	  public:
+	    static void vectorcopy(double_vector_ptr src, int srcPos,
+				   double_vector_ptr dest, int destPos,
+				   int length);
+	};
     };
 };
+
 
 #endif
 

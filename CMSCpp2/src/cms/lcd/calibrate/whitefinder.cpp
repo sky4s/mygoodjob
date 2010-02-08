@@ -50,6 +50,12 @@ namespace cms {
 		} while (!findNearest);
 		 return nearestRGB;
 	    };
+
+            /*
+              1. 找到最大值頻道
+              2. 計算目前xyY與目標值之delta
+              3.
+            */
 	    RGB_ptr WhitePointFinder::findMatchRGB(xyY_ptr xyY,
 						   RGB_ptr initRGB) {
 		const Channel & maxChannel = initRGB->getMaxChannel();
