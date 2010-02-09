@@ -4,13 +4,15 @@
 //C系統文件
 #include <cstdarg>
 //C++系統文件
-#include <string>
-#include <vector>
+
 //其他庫頭文件
 #include <vcl.h>
 //本項目內頭文件
+#include <java/lang.h>
 #include <cms/core.h>
 #include "colorspace.h"
+
+//enum TColor;
 
 namespace cms {
     namespace colorspace {
@@ -73,9 +75,9 @@ namespace cms {
 		RoundDown
 	    };
 
-	    /*enum ChannelType {
-	       R, G, B, Y, M, C, W
-	       }; */
+	     Enumeration(ChannelIndex)
+	     R = 1, G = 2, B = 3, Y = 4, M = 5, C = 6, W =
+		7, EnumerationEnd();
 
 	    class Channel:public jObject {
 	      public:
@@ -90,23 +92,27 @@ namespace cms {
 	      private:
 
 		 std::string fullname;
-		 Channel(int index, TColor color, std::string fullname);
+		 Channel(int index, const TColor & color,
+			 std::string fullname);
+		 Channel(int index, const TColor & color,
+			 std::string fullname, ChannelIndex chindex);
 
 		static bool isPrimaryColorChannel(const Channel & channel);
 		static bool isSecondaryColorChannel(const Channel &
 						    channel);
 		static channel_vector_ptr getChannelVector(int count, ...);
 	      public:
-		const int index;
-		const TColor color;
+		 ChannelIndex chindex;
+		//const int index;
+		const TColor & color;
 
 		inline bool operator==(const Channel & that) const {
-		    return index == that.index;
+		    return chindex == that.chindex;
 		};
 		inline bool operator!=(const Channel & that) const {
-		    return !(index == that.index);
+		    return !(chindex == that.chindex);
 		};
-		 Channel();
+		//Channel();
 
 		const string_ptr toString() const;
 		int getArrayIndex();

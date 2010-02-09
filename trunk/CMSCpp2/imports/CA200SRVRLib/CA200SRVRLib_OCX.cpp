@@ -31,7 +31,7 @@
 // ************************************************************************ //
 
 #include <vcl.h>
-#pragma hdrstop
+//#pragma hdrstop
 
 #include <olectrls.hpp>
 #include <oleserver.hpp>
