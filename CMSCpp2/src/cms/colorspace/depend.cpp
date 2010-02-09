@@ -20,16 +20,22 @@ namespace cms {
 	    //======================================================================
 	    // Channel
 	    //======================================================================
-	    const Channel & Channel::R = Channel::Channel(1, clRed, "R");
-	    const Channel & Channel::G = Channel::Channel(2, clGreen, "G");
-	    const Channel & Channel::B = Channel::Channel(3, clBlue, "B");
+	    const Channel & Channel::R =
+		Channel::Channel(1, clRed, "R", ChannelIndex::R);
+	    const Channel & Channel::G =
+		Channel::Channel(2, clGreen, "G", ChannelIndex::G);
+	    const Channel & Channel::B =
+		Channel::Channel(3, clBlue, "B", ChannelIndex::B);
 	    const Channel & Channel::Y =
-		Channel::Channel(4, clYellow, "Y");
+		Channel::Channel(4, clYellow, "Y", ChannelIndex::Y);
 	    const Channel & Channel::M =
-		Channel::Channel(5, (TColor) 0xff00ff, "M");
+		Channel::Channel(5, (TColor) 0xff00ff, "M",
+				 ChannelIndex::M);
 	    const Channel & Channel::C =
-		Channel::Channel(6, (TColor) 0xffff00, "C");
-	    const Channel & Channel::W = Channel::Channel(7, clWhite, "W");
+		Channel::Channel(6, (TColor) 0xffff00, "C",
+				 ChannelIndex::C);
+	    const Channel & Channel::W =
+		Channel::Channel(7, clWhite, "W", ChannelIndex::W);
 
 	    const channel_vector_ptr Channel::RGBYMCChannel =
 		getChannelVector(6, R, G, B, Y, M, C);
@@ -45,9 +51,13 @@ namespace cms {
 		getChannelVector(3, Y, M, C);
 
 
-	     Channel::Channel(int index, TColor color,
-			      string fullname):index(index), color(color),
-		fullname(fullname) {
+	     Channel::Channel(int index, const TColor & color,
+			      string fullname): /*index(index), */
+		color(color), fullname(fullname) {
+
+	    };
+	     Channel::Channel(int index, const TColor & color, string fullname, ChannelIndex chenum):	/*index(index), */
+	     color(color), fullname(fullname), chindex(chindex) {
 
 	    };
 
@@ -70,8 +80,8 @@ namespace cms {
 	    };
 
 
-	    Channel::Channel() {
-	    };
+	    /*Channel::Channel() {
+	       }; */
 
 	    const string_ptr Channel::toString() const {
 		string_ptr str(new string(fullname));
@@ -79,7 +89,7 @@ namespace cms {
 	    };
 
 	    int Channel::getArrayIndex() {
-		return index - 1;
+		return chindex - 1;
 	    };
 
 	    const Channel & Channel::getChannel(boolean R, boolean G,
@@ -93,19 +103,19 @@ namespace cms {
 
 	    const Channel & Channel::getChannel(int chIndex) {
 		switch (chIndex) {
-		case 1:
+		case ChannelIndex::R:
 		    return R;
-		case 2:
+		case ChannelIndex::G:
 		    return G;
-		case 3:
+		case ChannelIndex::B:
 		    return B;
-		case 4:
+		case ChannelIndex::Y:
 		    return Y;
-		case 5:
+		case ChannelIndex::M:
 		    return M;
-		case 6:
+		case ChannelIndex::C:
 		    return C;
-		case 7:
+		case ChannelIndex::W:
 		    return W;
 		    /*default:
 		       return NULL; */
@@ -125,12 +135,12 @@ namespace cms {
 								Channel &
 								primaryColorChannel)
 	    {
-		switch (primaryColorChannel.index) {
-		case 1:
+		switch (primaryColorChannel.chindex) {
+		case ChannelIndex::R:
 		    return getChannelVector(2, G, B);
-		case 2:
+		case ChannelIndex::G:
 		    return getChannelVector(2, R, B);
-		case 3:
+		case ChannelIndex::B:
 		    return getChannelVector(2, R, G);
 		}
 	    };

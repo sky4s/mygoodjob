@@ -222,20 +222,20 @@ namespace cms {
 
 	    double RGBColor::getValue(const Channel & channel) {
 
-		switch (channel.index) {
-		case 1:
+		switch (channel.chindex) {
+		case ChannelIndex::R:
 		    return R;
-		case 2:
+		case ChannelIndex::G:
 		    return G;
-		case 3:
+		case ChannelIndex::B:
 		    return B;
-		case 4:
+		case ChannelIndex::Y:
 		    return Math::min(R, G);
-		case 5:
+		case ChannelIndex::M:
 		    return Math::min(R, B);
-		case 6:
+		case ChannelIndex::C:
 		    return Math::min(G, B);
-		case 7:
+		case ChannelIndex::W:
 		    Channel minCh = getMinChannel();
 		    return getValue(minCh);
 		}
@@ -243,26 +243,26 @@ namespace cms {
 
 	    void RGBColor::setValue(const Channel & channel, double value) {
 
-		switch (channel.index) {
-		case 1:
+		switch (channel.chindex) {
+		case ChannelIndex::R:
 		    R = value;
 		    break;
-		case 2:
+		case ChannelIndex::G:
 		    G = value;
 		    break;
-		case 3:
+		case ChannelIndex::B:
 		    B = value;
 		    break;
-		case 4:
+		case ChannelIndex::Y:
 		    R = G = value;
 		    break;
-		case 5:
+		case ChannelIndex::M:
 		    R = B = value;
 		    break;
-		case 6:
+		case ChannelIndex::C:
 		    B = G = value;
 		    break;
-		case 7:
+		case ChannelIndex::W:
 		    R = G = B = value;
 		    break;
 		}

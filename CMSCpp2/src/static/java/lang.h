@@ -6,6 +6,7 @@
 //C++系統文件
 #include <string>
 #include <vector>
+//#pragma hdrstop
 
 //其他庫頭文件
 #include <boost/shared_array.hpp>
@@ -274,6 +275,29 @@ namespace java {
     };
 };
 
+
+#define Enumeration(E) \
+struct E \
+{ \
+public: \
+     E(int value = 0) : _value((__Enum)value) { \
+     } \
+     E& operator=(int value) { \
+         this->_value = (__Enum)value; \
+         return *this; \
+     } \
+     operator int() const { \
+         return this->_value; \
+     } \
+\
+     enum __Enum {
+
+#define EnumerationEnd() \
+     }; \
+\
+private: \
+     __Enum _value; \
+};
 
 #endif
 
