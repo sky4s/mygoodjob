@@ -108,6 +108,11 @@ namespace math {
 	return result;
     };
 
+    double1D_ptr DoubleArray::getDouble1D(double1D_ptr array1d, int n) {
+	double1D_ptr result(new double1D(1, (*array1d)[0]));
+	return result;
+    };
+
     void DoubleArray::vectorcopy(double_vector_ptr src, int srcPos,
 				 double_vector_ptr dest, int destPos,
 				 int length) {
