@@ -39,11 +39,10 @@ namespace cms {
 	    bool titleTouched;
 	    bool fakeMeasure;
 	  protected:
-	     boost::shared_ptr < cms::measure::meter::Meter > meter;
+	     bptr < cms::measure::meter::Meter > meter;
 	    TMeasureWindow *measureWindow;
 	  public:
-	     MeterMeasurement(boost::shared_ptr <
-			      cms::measure::meter::Meter > meter,
+	     MeterMeasurement(bptr < cms::measure::meter::Meter > meter,
 			      bool calibration);
 
 	    void calibrate();
@@ -70,11 +69,11 @@ namespace cms {
 	  protected:
 	    void meterClose();
 
-	     bptr < cms::Patch >
-		measure0(RGB_ptr
-			 measureRGB,
-			 const string_ptr patchName,
-			 const string_ptr titleNote, string_ptr timeNote);
+	    Patch_ptr measure0(RGB_ptr
+			       measureRGB,
+			       const string_ptr patchName,
+			       const string_ptr titleNote,
+			       string_ptr timeNote);
 
 
 

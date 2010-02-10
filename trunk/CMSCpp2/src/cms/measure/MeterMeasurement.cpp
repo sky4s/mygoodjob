@@ -81,7 +81,6 @@ namespace cms {
 	};
 
 	bptr < MeasureInterface > MeterMeasurement::getMeasureInterface() {
-	    //MeterMeasurement *mm = this;
 	    class MI:public MeasureInterface {
 	      public:
 		bptr < MeasureResult >
@@ -110,7 +109,6 @@ namespace cms {
 	    return bptr < MeasureInterface > (dynamic_cast <
 					      MeasureInterface *
 					      >(new MI(this)));
-	    //return result;
 	};
 
 	void MeterMeasurement::meterClose() {
@@ -167,8 +165,7 @@ namespace cms {
 		//如果視窗被關閉, 就結束量測
 		//return shared_ptr < Patch > ((Patch *) NULL);
 	    }
-	    double_array result =
-		meter->triggerMeasurementInXYZ();
+	    double_array result = meter->triggerMeasurementInXYZ();
 
 	    /*String measureString = getMeasureString(result);
 	       measureWindow.setNorthLabel3(measureString +

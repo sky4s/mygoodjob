@@ -15,8 +15,10 @@
 #include <algorithm>
 #include <iterator>
 #include <iterator>
-#include <cms/math/Interpolation.h>
-#include <cms/math/Searcher.h>
+#include <math/Interpolation.h>
+#include <math/Searcher.h>
+//#include <boost/multi_array.hpp>
+#include <jama/jama_svd.h>
 //---------------------------------------------------------------------------
 using namespace std;
 
@@ -29,15 +31,7 @@ void modifed(float_array a)
 #pragma argsused
 int main(int argc, char *argv[])
 {
-
-    float_array a(new float[3]);
-    for (int x = 0; x != 3; x++) {
-	cout << a[x] << endl;
-    };
-    modifed(a);
-    for (int x = 0; x != 3; x++) {
-	cout << a[x] << endl;
-    };
+    double a[4][4];
     getch();
 }
 
