@@ -29,11 +29,13 @@ namespace math {
 
 	static double1D_ptr getDouble1DCopy(double2D_ptr array2d, int n);
 	static double1D_ptr getDouble1D(double2D_ptr array2d, int n);
+	static double1D_ptr getDouble1D(double1D_ptr array1d, int n);
 	static void vectorcopy(double_vector_ptr src, int srcPos,
 			       double_vector_ptr dest, int destPos,
 			       int length);
 	static void arraycopy(double1D_ptr src, int srcPos,
 			      double1D_ptr dest, int destPos, int length);
+
     };
 };
 #endif

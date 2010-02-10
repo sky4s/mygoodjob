@@ -77,7 +77,7 @@ namespace cms {
 
 	     Enumeration(ChannelIndex)
 	     R = 1, G = 2, B = 3, Y = 4, M = 5, C = 6, W =
-		7, EnumerationEnd();
+		7, EnumerationEnd()
 
 	    class Channel:public jObject {
 	      public:
