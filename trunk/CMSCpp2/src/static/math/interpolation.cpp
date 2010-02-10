@@ -121,7 +121,7 @@
 						 int startIndex,
 						 int width) {
 	    double_vector_ptr part(new double_vector);
-	    System::vectorcopy(array, startIndex, part, 0, width);
+	    DoubleArray::vectorcopy(array, startIndex, part, 0, width);
 
 	    return part;
 	};
@@ -172,8 +172,8 @@
 	    double_vector_ptr xn(new double_vector);
 	    double_vector_ptr yn(new double_vector);
 
-	    System::vectorcopy(keys, interpoStart, xn, 0, 4);
-	    System::vectorcopy(values, interpoStart, yn, 0, 4);
+	    DoubleArray::vectorcopy(keys, interpoStart, xn, 0, 4);
+	    DoubleArray::vectorcopy(values, interpoStart, yn, 0, 4);
 	    double result = NaN;
 
 	    switch (type) {

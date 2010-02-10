@@ -1,5 +1,14 @@
 #include "colorspace.h"
 
+//C系統文件
+
+//C++系統文件
+
+//其他庫頭文件
+
+//本項目內頭文件
+#include <math/doublearray.h>
+
 namespace cms {
     namespace colorspace {
 	using namespace boost;
@@ -39,7 +48,7 @@ namespace cms {
 	double_array
 	    ColorSpace::cartesian2polarCoordinatesValues(double x,
 							 double y) {
-	     double_array polarValues(new double[2]);
+	    double_array polarValues(new double[2]);
 
 	    double t1 = x;
 	    double t2 = y;
@@ -66,7 +75,7 @@ namespace cms {
 	    return this->getClass().getSimpleName();
 	};
 	double_array ColorSpace::getValues() {
-	     double_array values(new double[3]);
+	    double_array values(new double[3]);
 	    return getValues(values);
 	};
 	double_array ColorSpace::getValues(double_array values) {
@@ -107,7 +116,7 @@ namespace cms {
 	};
 	void ColorSpace::setValues(double value1, double value2,
 				   double value3) {
-	     double_array values(new double[3]);
+	    double_array values(new double[3]);
 	    values[0] = value1;
 	    values[1] = value2;
 	    values[2] = value3;
@@ -116,6 +125,11 @@ namespace cms {
 
 	void ColorSpace::setValuesLock(bool lock) {
 	    setValuesLocked = lock;
+	};
+
+	const string_ptr ColorSpace::toString() {
+	    double_array values = this->getValues();
+	    return math::DoubleArray::toString(values, getNumberBands());
 	};
     };
 };

@@ -65,7 +65,7 @@
 
 //==============================================================================
 //簡化cms使用上的巨集
-//===============================================================================
+//==============================================================================
 #define Dep cms::colorspace::depend
 #define Indep cms::colorspace::independ
 
@@ -94,6 +94,22 @@
 #define Patch_vector std::vector < Patch_ptr >
 #define Patch_vector_ptr bptr < Patch_vector >
 //==============================================================================
+
+//==============================================================================
+//簡化tnt使用上的巨集
+//==============================================================================
+#define double1D TNT::Array1D< double >
+#define double1D_ptr bptr< double1D >
+#define double2D TNT::Array2D< double >
+#define double2D_ptr bptr< double2D >
+#define double3D TNT::Array3D< double >
+#define double3D_ptr bptr< double3D >
+
+#define float1D TNT::Array1D< float >
+#define float2D TNT::Array2D< float >
+#define float3D TNT::Array3D< float >
+//==============================================================================
+
 
 namespace cms {
     class Patch;
@@ -266,12 +282,6 @@ namespace java {
 	    IndexOutOfBoundsException(std::string message);
 	};
 
-	class System {
-	  public:
-	    static void vectorcopy(double_vector_ptr src, int srcPos,
-				   double_vector_ptr dest, int destPos,
-				   int length);
-	};
     };
 };
 

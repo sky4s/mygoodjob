@@ -44,7 +44,7 @@ namespace cms {
 	    void setValues(double value1, double value2, double value3);
 	    virtual string_vector_ptr getBandNames() = 0;
 	    void setValuesLock(bool lock);
-
+	    const string_ptr toString();
 	};
     };
 };

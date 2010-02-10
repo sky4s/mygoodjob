@@ -19,19 +19,26 @@
 #include <math/Searcher.h>
 //#include <boost/multi_array.hpp>
 #include <jama/jama_svd.h>
+#include <math/doublearray.h>
+#include <cmath>
 //---------------------------------------------------------------------------
 using namespace std;
+using namespace TNT;
+using namespace math;
 
-void modifed(float_array a)
-{
-    a[0] = 1;
-    a[1] = 2;
-};
 
 #pragma argsused
 int main(int argc, char *argv[])
 {
-    double a[4][4];
+
+    double a[] = { 1, 2, 3, 4, 5, 6 };
+    double2D_ptr b(new double2D(2, 3, a));
+    //double1D_ptr c = DoubleArray::getDouble1D(b, 1);
+    double1D_ptr c = DoubleArray::getDouble1DCopy(b, 1);    
+    cout << *b << endl;
+    (*c)[0] = 0;
+    cout << *b << endl;
+
     getch();
 }
 
