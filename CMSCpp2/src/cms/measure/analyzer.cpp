@@ -11,6 +11,8 @@
 #include <cms/measure/meter.h>
 #include <cms/measure/MeterMeasurement.h>
 #include <cms/colorspace/rgb.h>
+#include <cms/colorspace/ciexyz.h>
+#include <cms/colorspace/depend.h>
 #include <cms/patch.h>
 
 namespace cms {
@@ -18,6 +20,7 @@ namespace cms {
 
 	using namespace cms::measure::meter;
 	using namespace Dep;
+	using namespace Indep;
 	using namespace ca210api;
 
 	 CA210ComponentAnayzer::
@@ -26,48 +29,103 @@ namespace cms {
 					       (new
 						MeterMeasurement(ca210,
 								 false))) {
+	    mm->setWaitTimes(5000);
+	    ca210api->resetLvxyCalMode();
+	    ca210api->setAnalyzerCalMode();
 	};
 
-	 bptr < RGBColor >
-	    CA210ComponentAnayzer::getComponent(bptr < RGBColor > rgb) {
-	    bptr < Patch > patch = mm->measure(rgb, rgb->toString());
-	    bptr < CAMeasureResult > measureResult =
+	RGB_ptr CA210ComponentAnayzer::getComponent(RGB_ptr rgb) {
+	    Patch_ptr patch = mm->measure(rgb, rgb->toString());
+	     bptr < CAMeasureResult > measureResult =
 		ca210api->getMeasureResult();
-	    bptr < RGBColor >
+	     RGB_ptr
 		component(new
 			  RGBColor(measureResult->R, measureResult->G,
 				   measureResult->B));
+	     return component;
 
 	};
 
 	void CA210ComponentAnayzer::setupComponent(Channel & ch,
-						   bptr < RGBColor > rgb) {
+						   RGB_ptr rgb) {
+	    Patch_ptr p = mm->measure(rgb, rgb->toString());
+
+	    lClr lclr;
 	    switch (ch.chindex) {
-	    //case Dep::ChannelEnum::R:
+	    case ChannelIndex::R:
+		lclr = Red;
+		break;
+	    case ChannelIndex::G:
+		lclr = Green;
+		break;
+	    case ChannelIndex::B:
+		lclr = Blue;
+		break;
+	    case ChannelIndex::W:
+		lclr = White;
+		break;
 	    };
+	    ca210api->setAnalyzerCalData(lclr);
+	};
+
+	void CA210ComponentAnayzer::enter() {
+	    ca210api->enter();
 	};
 
       StocktonComponentAnayzer::StocktonComponentAnayzer(bptr < CA210 > ca210):CA210ComponentAnayzer(ca210)
 	{
-	};
-
-	bptr < RGBColor >
-	    StocktonComponentAnayzer::getComponent(bptr < RGBColor > rgb) {
-	    bptr < Patch > patch = mm->measure(rgb, rgb->toString());
-	    bptr < CAMeasureResult > measureResult =
-		ca210api->getMeasureResult();
-	    bptr < RGBColor >
-		component(new
-			  RGBColor(measureResult->R, measureResult->G,
-				   measureResult->B));
-
+	    mm->setWaitTimes(5000);
+	    ca210api->setLvxyCalMode();
 	};
 
 	void StocktonComponentAnayzer::setupComponent(Channel & ch,
-						      bptr < RGBColor >
-						      rgb) {
+						      RGB_ptr rgb) {
+	    Patch_ptr p = mm->measure(rgb, rgb->toString());
+	    switch (ch.chindex) {
+	    case ChannelIndex::R:
+		rp = p;
+		break;
+	    case ChannelIndex::G:
+		gp = p;
+		break;
+	    case ChannelIndex::B:
+		bp = p;
+		break;
+	    case ChannelIndex::W:
+		wp = p;
+		break;
+	    };
 	};
 
+	void StocktonComponentAnayzer::enter() {
+	    //==================================================================
+	    Patch_ptr p = rp;
+	    mm->measure(p->getRGB(), p->getRGB()->toString());
+	    ca210api->setLvxyCalData(Red,
+				     (new CIExyY(p->getXYZ()))->
+				     getxyValues());
+	    //==================================================================
+	    p = gp;
+	    mm->measure(p->getRGB(), p->getRGB()->toString());
+	    ca210api->setLvxyCalData(Green,
+				     (new CIExyY(p->getXYZ()))->
+				     getxyValues());
+	    //==================================================================
+	    p = bp;
+	    mm->measure(p->getRGB(), p->getRGB()->toString());
+	    ca210api->setLvxyCalData(Blue,
+				     (new CIExyY(p->getXYZ()))->
+				     getxyValues());
+	    //==================================================================
+	    p = wp;
+	    mm->measure(p->getRGB(), p->getRGB()->toString());
+	    ca210api->setLvxyCalData(White,
+				     (new CIExyY(p->getXYZ()))->
+				     getxyValues());
+	    //==================================================================
+
+	    ca210api->enter();
+	};
     };
 };
 

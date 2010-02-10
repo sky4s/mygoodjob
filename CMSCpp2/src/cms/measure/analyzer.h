@@ -24,6 +24,7 @@ namespace cms {
 	    virtual RGB_ptr getComponent(RGB_ptr rgb) = 0;
 	    virtual void setupComponent(Dep::Channel & ch,
 					RGB_ptr rgb) = 0;
+	    virtual void enter() = 0;
 	};
 
 	class CA210ComponentAnayzer:public jObject, ComponentAnalyzerIF {
@@ -37,17 +38,17 @@ namespace cms {
 
 	    RGB_ptr getComponent(RGB_ptr rgb);
 	    void setupComponent(Dep::Channel & ch, RGB_ptr rgb);
-
+	    void enter();
 	};
 
 	class StocktonComponentAnayzer:public CA210ComponentAnayzer {
+	  private:
+	    Patch_ptr rp, gp, bp, wp;
 	  public:
 	    StocktonComponentAnayzer(bptr < cms::measure::meter::CA210 >
 				     ca210);
-
-	    RGB_ptr getComponent(RGB_ptr rgb);
 	    void setupComponent(Dep::Channel & ch, RGB_ptr rgb);
-
+	    void enter();
 	};
     };
 };
