@@ -21,6 +21,7 @@ namespace cms {
 	    //======================================================================
 	     RGBColor::RGBColor():rgbColorSpace(&RGBColorSpace::unknowRGB),
 		maxValue(&MaxValue::Double1) {
+		setValues(0, 0, 0);
 	    };
 	     RGBColor::RGBColor(RGBColorSpace & rgbColorSpace,
 				double_array rgb,
@@ -54,7 +55,7 @@ namespace cms {
 	    };
 
 
-	     double_array RGBColor::_getValues(double_array values) {
+	    double_array RGBColor::_getValues(double_array values) {
 		values[0] = R;
 		values[1] = G;
 		values[2] = B;
@@ -62,7 +63,7 @@ namespace cms {
 
 	    };
 
-	    void RGBColor::_setValues( double_array values) {
+	    void RGBColor::_setValues(double_array values) {
 		R = values[0];
 		G = values[1];
 		B = values[2];
