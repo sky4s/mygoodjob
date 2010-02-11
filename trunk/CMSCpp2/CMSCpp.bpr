@@ -95,6 +95,7 @@
       <FILE FILENAME="src\static\math\interpolation.cpp" FORMNAME="" UNITNAME="interpolation.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="src\static\math\regression.cpp" FORMNAME="" UNITNAME="regression.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="src\static\math\svd.cpp" FORMNAME="" UNITNAME="svd" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="lib\jama\jama_svd.h" FORMNAME="" UNITNAME="jama_svd.h" CONTAINERID="" DESIGNCLASS="" LOCALCOMMAND=""/>
   </FILELIST>
   <BUILDTOOLS>
   </BUILDTOOLS>

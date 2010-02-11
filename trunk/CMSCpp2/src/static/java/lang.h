@@ -98,11 +98,24 @@
 //==============================================================================
 //簡化tnt使用上的巨集
 //==============================================================================
+#define longdouble1D TNT::Array1D< long double >
+#define longdouble2D TNT::Array2D< long double >
+#define longdouble2D_ptr bptr< longdouble2D >
+
+//#define _USE_LONG_DOUBLE_
+
+#ifdef  _USE_LONG_DOUBLE_
+#define double1D TNT::Array1D< long double >
+#define double2D TNT::Array2D< long double >
+#define double3D TNT::Array3D< long double >
+#else
 #define double1D TNT::Array1D< double >
-#define double1D_ptr bptr< double1D >
 #define double2D TNT::Array2D< double >
-#define double2D_ptr bptr< double2D >
 #define double3D TNT::Array3D< double >
+#endif
+
+#define double1D_ptr bptr< double1D >
+#define double2D_ptr bptr< double2D >
 #define double3D_ptr bptr< double3D >
 
 #define float1D TNT::Array1D< float >
