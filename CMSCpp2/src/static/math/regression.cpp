@@ -166,10 +166,6 @@ namespace math {
     };
     void Regression::regress() {
 	SVDLib svdLib(inputCoefs);
-	/*cout << *inputCoefs << endl;
-	   cout << *svdLib.getU() << endl;
-	   cout << *svdLib.getSingularValues() << endl;
-	   cout << *svdLib.getV() << endl; */
 
 	int items = output->dim1();
 	int outSize = output->dim2();
@@ -183,8 +179,9 @@ namespace math {
 	    double1D_ptr singleCoefs =
 		svdLib.getCoefficients(singleOutput);
 	    DoubleArray::setDouble1D(coefs, singleCoefs, x);
-	    cout << *singleCoefs << endl;
+
 	}
+	cout << *coefs << endl;
     };
     void Regression::setCoefs(double2D_ptr coefs) {
 	this->coefs = coefs;
