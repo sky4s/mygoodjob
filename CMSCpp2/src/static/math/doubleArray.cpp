@@ -13,8 +13,8 @@
 namespace math {
     using namespace boost;
     using namespace java::lang;
+    using namespace std;
     string_ptr DoubleArray::toString(double_array m, int n) {
-	using namespace std;
 	string_ptr str(new string("["));
 	for (int x = 0; x != n - 1; x++) {
 	    double v = m[x];
@@ -23,6 +23,59 @@ namespace math {
 	};
 	(*str) += lexical_cast < string > (m[n - 1]);
 	(*str) += "]";
+	return str;
+    };
+
+    string_ptr DoubleArray::toString(double1D_ptr m) {
+	string_ptr str(new string());
+
+	for (int i = 0; i < m->dim1() - 1; i++) {
+	    (*str) += lexical_cast < string > ((*m)[i]) + " ";
+	}
+	(*str) += lexical_cast < string > ((*m)[m->dim1() - 1]) + "\n";
+
+	return str;
+    };
+
+    string_ptr DoubleArray::toString(double2D_ptr m) {
+
+	string_ptr str(new string());
+
+	for (int i = 0; i < m->dim1(); i++) {
+	    for (int j = 0; j < m->dim2() - 1; j++) {
+		(*str) += lexical_cast < string > ((*m)[i][j]) + " ";
+	    }
+	    (*str) += lexical_cast < string > ((*m)[i][m->dim2() - 1]);
+	    if (i < m->dim1() - 1) {
+		(*str) += "\n";
+	    }
+	}
+	return str;
+    };
+
+    string_ptr DoubleArray::toString(const longdouble2D & m) {
+	string_ptr str(new string());
+
+	for (int i = 0; i < m.dim1(); i++) {
+	    for (int j = 0; j < m.dim2() - 1; j++) {
+		(*str) += lexical_cast < string > (m[i][j]) + " ";
+	    }
+	    (*str) += lexical_cast < string > (m[i][m.dim2() - 1]);
+	    if (i < m.dim1() - 1) {
+		(*str) += "\n";
+	    }
+	}
+	return str;
+    };
+
+    string_ptr DoubleArray::toString(const longdouble1D & m) {
+	string_ptr str(new string());
+
+	for (int i = 0; i < m.dim1() - 1; i++) {
+	    (*str) += lexical_cast < string > (m[i]) + " ";
+	}
+	(*str) += lexical_cast < string > (m[m.dim1() - 1]) + "\n";
+
 	return str;
     };
 
@@ -126,7 +179,6 @@ namespace math {
 				int length) {
 	for (int x = 0; x != length; x++) {
 	    (*dest)[x + destPos] = (*src)[x + srcPos];
-	}
-    };
+    }};
 };
 

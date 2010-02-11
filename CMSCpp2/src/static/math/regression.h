@@ -18,8 +18,10 @@ namespace math {
       protected:
 	double1D_ptr sv;
 	double2D_ptr v, u;
+	static longdouble2D toLongDouobleArray(double2D_ptr array);
+	static double2D_ptr toDoubleArray(const longdouble2D & array);
+	static double1D_ptr toDoubleArray(const longdouble1D & array);
       public:
-	 SVDLib();
 	 SVDLib(double2D_ptr array);
 	double1D_ptr getCoefficients(double1D_ptr output);
 	static double1D_ptr getPredict(double2D_ptr input,
@@ -55,6 +57,7 @@ namespace math {
 	 class COEF {
 	  protected:
 	    COEF(int item, bool withConstant);
+	    virtual void dummy();
 	  public:
 	    const int item;
 	    const bool withConstant;

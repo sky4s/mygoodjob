@@ -18,9 +18,37 @@ namespace math {
     //======================================================================
     // SVDLib
     //======================================================================
-     SVDLib::SVDLib():sv(new double1D()), v(new double2D()),
-	u(new double2D()) {
+    longdouble2D SVDLib::toLongDouobleArray(double2D_ptr array) {
+	int m = array->dim1();
+	int n = array->dim2();
+	longdouble2D result(m, n);
+	for (int x = 0; x < m; x++) {
+	    for (int y = 0; y < n; y++) {
+		result[x][y] = (*array)[x][y];
+	    };
+	};
+	return result;
     };
+    double2D_ptr SVDLib::toDoubleArray(const longdouble2D & array) {
+	int m = array.dim1();
+	int n = array.dim2();
+	double2D_ptr result(new double2D(m, n));
+	for (int x = 0; x < m; x++) {
+	    for (int y = 0; y < n; y++) {
+		(*result)[x][y] = array[x][y];
+	    };
+	};
+	return result;
+    };
+    double1D_ptr SVDLib::toDoubleArray(const longdouble1D & array) {
+	int size = array.dim();
+	double1D_ptr result(new double1D(size));
+	for (int x = 0; x < size; x++) {
+	    (*result)[x] = array[x];
+	};
+	return result;
+    };
+
   SVDLib::SVDLib(double2D_ptr array):sv(new double1D()), v(new double2D()),
 	u(new double2D()) {
 	svd(array);
@@ -49,12 +77,27 @@ namespace math {
 	return v;
     };
     void SVDLib::svd(double2D_ptr input) {
-	SVD < double >svd(*input);
+#ifdef  _USE_LONG_DOUBLE_
+	SVD < long double >svd(*input);
 	svd.getU(*u);
 	svd.getSingularValues(*sv);
 	svd.getV(*v);
+#else
+	SVD < long double >svd(toLongDouobleArray(input));
+	longdouble2D _u;
+	longdouble1D _sv;
+	longdouble2D _v;
+	svd.getU(_u);
+	svd.getSingularValues(_sv);
+	svd.getV(_v);
+	u = toDoubleArray(_u);
+	sv = toDoubleArray(_sv);
+	v = toDoubleArray(_v);
+#endif
 
     };
+
+
     double1D_ptr SVDLib::svbksb(const double2D_ptr u,
 				const double1D_ptr sv,
 				const double2D_ptr v,
@@ -69,7 +112,7 @@ namespace math {
 	    if ((*sv)[i] != 0) {
 		for (int j = 0; j < m; j++) {
 		    s += (*u)[j][i] * (*output)[j];
-		}
+		};
 		s /= (*sv)[i];
 	    }
 	    tmp[i] = s;
@@ -81,7 +124,6 @@ namespace math {
 	    }
 	    (*coef)[i] = s;
 	}
-
 	return coef;
 
 
@@ -123,12 +165,14 @@ namespace math {
     double Regression::getrSquare() {
     };
     void Regression::regress() {
-	SVDLib svdLib;
-	svdLib.svd(inputCoefs);
+	SVDLib svdLib(inputCoefs);
+	/*cout << *inputCoefs << endl;
+	   cout << *svdLib.getU() << endl;
+	   cout << *svdLib.getSingularValues() << endl;
+	   cout << *svdLib.getV() << endl; */
 
 	int items = output->dim1();
 	int outSize = output->dim2();
-	//coefs = new double[outSize][];
 	coefs.reset(new double2D(outSize, items));
 
 	for (int x = 0; x < outSize; x++) {
@@ -139,6 +183,7 @@ namespace math {
 	    double1D_ptr singleCoefs =
 		svdLib.getCoefficients(singleOutput);
 	    DoubleArray::setDouble1D(coefs, singleCoefs, x);
+	    cout << *singleCoefs << endl;
 	}
     };
     void Regression::setCoefs(double2D_ptr coefs) {
@@ -154,16 +199,14 @@ namespace math {
 			       const Polynomial::COEF & polynomialCoef) {
 	int size = input->dim1();
 	double1D_ptr in = DoubleArray::getDouble1D(input, 0);
-	double1D_ptr firstcoef = Polynomial::getCoef(in,
-						     polynomialCoef);
+	double1D_ptr firstcoef = Polynomial::getCoef(in, polynomialCoef);
 	int width = firstcoef->dim();
 	double2D_ptr polynomialInput(new double2D(size, width));
 	for (int x = 0; x < size; x++) {
 	    double1D_ptr in = DoubleArray::getDouble1D(input, x);
 	    double1D_ptr coef = Polynomial::getCoef(in, polynomialCoef);
 	    DoubleArray::setDouble1D(polynomialInput, coef, x);
-	}
-
+	};
 	return polynomialInput;
     };
     double2D_ptr PolynomialRegression::
@@ -245,10 +288,11 @@ namespace math {
     double1D_ptr Polynomial::getCoef(double x, double y, double z,
 				     const COEF_3 & coefs) {
 
-	double1D_ptr coef3((double1D *) NULL);
+	double1D_ptr coef3;
 	switch (coefs.coef3_) {
 	case COEF3_::BY_3:
 	case COEF3_::BY_3C:
+	    //coef3.reset(new double1D(*Coef3X::getCoef3By3(x, y, z)));
 	    coef3 = Coef3X::getCoef3By3(x, y, z);
 	    break;
 	case COEF3_::BY_6:
@@ -268,7 +312,13 @@ namespace math {
 	    coef3 = Coef3X::getCoef3By10(x, y, z);
 	    break;
 	};
+	if (coefs.withConstant) {
+	    return addCoef3WithConstant(coef3);
+	} else {
+	    return coef3;
+	}
     };
+
     double1D_ptr Polynomial::getCoefWithConstant(double x, int coefs) {
 	double1D_ptr coef(new double1D(coefs));
 	(*coef)[0] = 1.0;
@@ -292,22 +342,16 @@ namespace math {
 	    return getCoef(variables,
 			   static_cast < const COEF_3 & >(coefs));
 	}
-	/*if (coefs instanceof COEF_1) {
-	   if (variables.length == 1) {
-	   return getCoef(variables[0], (COEF_1) coefs);
-	   } else {
-	   return getCoef(variables, (COEF_1) coefs);
-	   }
-	   } else if (coefs instanceof COEF_3) {
-	   return getCoef(variables, (COEF_3) coefs);
-	   }
-	   return null; */
+	throw java::lang::IllegalArgumentException();
     };
     Polynomial::COEF::COEF(int item,
 			   bool withConstant):item(withConstant ? item +
 						   1 : item),
 	withConstant(withConstant) {
 
+    };
+
+    void Polynomial::COEF::dummy() {
     };
 
 
@@ -317,18 +361,12 @@ namespace math {
 
 
     };
-    const Polynomial::COEF_1 & Polynomial::COEF_1::
-	BY_1 = COEF_1(1, false);
-    const Polynomial::COEF_1 & Polynomial::COEF_1::
-	BY_1C = COEF_1(1, true);
-    const Polynomial::COEF_1 & Polynomial::COEF_1::
-	BY_2 = COEF_1(2, false);
-    const Polynomial::COEF_1 & Polynomial::COEF_1::
-	BY_2C = COEF_1(2, true);
-    const Polynomial::COEF_1 & Polynomial::COEF_1::
-	BY_3 = COEF_1(3, false);
-    const Polynomial::COEF_1 & Polynomial::COEF_1::
-	BY_3C = COEF_1(3, true);
+    const Polynomial::COEF_1 & Polynomial::COEF_1::BY_1 = COEF_1(1, false);
+    const Polynomial::COEF_1 & Polynomial::COEF_1::BY_1C = COEF_1(1, true);
+    const Polynomial::COEF_1 & Polynomial::COEF_1::BY_2 = COEF_1(2, false);
+    const Polynomial::COEF_1 & Polynomial::COEF_1::BY_2C = COEF_1(2, true);
+    const Polynomial::COEF_1 & Polynomial::COEF_1::BY_3 = COEF_1(3, false);
+    const Polynomial::COEF_1 & Polynomial::COEF_1::BY_3C = COEF_1(3, true);
     Polynomial::COEF_3::COEF_3(int item,
 			       bool withConstant,
 			       COEF3_
