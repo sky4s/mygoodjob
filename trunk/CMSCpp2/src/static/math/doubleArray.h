@@ -40,6 +40,9 @@ namespace math {
 	static void arraycopy(double1D_ptr src, int srcPos,
 			      double1D_ptr dest, int destPos, int length);
 
+	static double2D_ptr diagonal(double1D_ptr m);
+	static double2D_ptr times(double2D_ptr a, double2D_ptr b);
+
     };
 };
 #endif

@@ -179,6 +179,52 @@ namespace math {
 				int length) {
 	for (int x = 0; x != length; x++) {
 	    (*dest)[x + destPos] = (*src)[x + srcPos];
-    }};
+	};
+    };
+
+    double2D_ptr DoubleArray::diagonal(double1D_ptr m) {
+	int size = m->dim();
+	double2D_ptr I(new double2D(size, size));
+	for (int i = 0; i < size; i++) {
+	    (*I)[i][i] = (*m)[i];
+	}
+	return I;
+    };
+
+    double2D_ptr DoubleArray::times(double2D_ptr a, double2D_ptr b) {
+	int m = a->dim1();
+	int n = a->dim2();
+	int bn = b->dim2();
+
+	/*double2D_ptr X(new double2D(m, bn));
+	   for (int i = 0; i < m; i++) {
+	   for (int j = 0; j < bn; j++) {
+	   double tmp = 0;
+	   for (int k = 0; k < n; k++) {
+	   tmp += (*a)[i][k] * (*b)[k][j];
+	   }
+	   (*X)[i][j] = tmp;
+	   }
+	   }
+	   return X; */
+
+
+
+	double2D_ptr X(new double2D(m, bn));
+	double1D Bcolj(n);
+	for (int j = 0; j < bn; j++) {
+	    for (int k = 0; k < n; k++) {
+		Bcolj[k] = (*b)[k][j];
+	    }
+	    for (int i = 0; i < m; i++) {
+		long double s = 0;
+		for (int k = 0; k < n; k++) {
+		    s += (*a)[i][k] * Bcolj[k];
+		}
+		(*X)[i][j] = s;
+	    }
+	}
+	return X;
+    };
 };
 

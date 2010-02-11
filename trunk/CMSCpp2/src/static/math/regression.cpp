@@ -124,9 +124,8 @@ namespace math {
 	    }
 	    (*coef)[i] = s;
 	}
+	//cout<<*coef<<endl;
 	return coef;
-
-
     };
     //======================================================================
 
@@ -145,19 +144,27 @@ namespace math {
 	return coefs;
     };
     double2D_ptr Regression::getPredict() {
-	return getPredict(inputCoefs, coefs);
+	return getPredict0(inputCoefs, coefs);
     };
-    double2D_ptr Regression::getPredict(double2D_ptr input,
-					double2D_ptr coefs) {
+    double2D_ptr Regression::getPredict(double2D_ptr input) {
+	return getPredict0(input, coefs);
+    };
+    double2D_ptr Regression::getPredict0(double2D_ptr input,
+					 double2D_ptr coefs) {
 	int m = coefs->dim1();
 	int n = input->dim1();
 	double2D_ptr predict(new double2D(m, n));
+	//cout << *input << endl;
+	//cout << *coefs << endl;
 
 	for (int x = 0; x < m; x++) {
 	    double1D_ptr coef = DoubleArray::getDouble1D(coefs, x);
+	    //cout << *coef << endl;
 	    double1D_ptr v = SVDLib::getPredict(input, coef);
+	    //cout << *v << endl;
 	    DoubleArray::setDouble1D(predict, v, x);
 	}
+	//cout << *predict << endl;
 	return DoubleArray::transpose(predict);
     };
     double Regression::getRMSD() {
@@ -169,7 +176,7 @@ namespace math {
 
 	int items = output->dim1();
 	int outSize = output->dim2();
-	coefs.reset(new double2D(outSize, items));
+	coefs.reset(new double2D(outSize, inputCoefs->dim2()));
 
 	for (int x = 0; x < outSize; x++) {
 	    double1D_ptr singleOutput(new double1D(items));
@@ -181,7 +188,6 @@ namespace math {
 	    DoubleArray::setDouble1D(coefs, singleCoefs, x);
 
 	}
-	cout << *coefs << endl;
     };
     void Regression::setCoefs(double2D_ptr coefs) {
 	this->coefs = coefs;
@@ -225,19 +231,31 @@ namespace math {
     };
     double2D_ptr PolynomialRegression::
 	processRegressionOutput(double1D_ptr output) {
-	//int size = output->dim();
-	//double[][] regressionOutput = new double[size][];
 	double2D_ptr regressionOutput = DoubleArray::transpose(output);
-	/*for (int x = 0; x < size; x++) {
-	   regressionOutput[x] = new double[] {
-	   output[x]};
-	   } */
 	return regressionOutput;
     };
-
-  PolynomialRegression::PolynomialRegression(double2D_ptr input, double2D_ptr output, const Polynomial::COEF_3 & polynomialCoef):Regression(processPolynomialInput(input, polynomialCoef), output),
-	polynomialCoef(polynomialCoef)
+    double2D_ptr PolynomialRegression::getPredict0(double2D_ptr input,
+						   double2D_ptr coefs,
+						   const Polynomial::
+						   COEF_3 & polynomialCoef)
     {
+	return Regression::
+	    getPredict0(processPolynomialInput(input, polynomialCoef),
+			coefs);
+    };
+
+    double2D_ptr PolynomialRegression::getPredict() {
+	return getPredict(inputCoefs);
+    };
+    double2D_ptr PolynomialRegression::getPredict(double2D_ptr input) {
+	return Regression::
+	    getPredict0(processPolynomialInput(input, polynomialCoef),
+			coefs);
+    };
+
+  PolynomialRegression::PolynomialRegression(double2D_ptr input, double2D_ptr output, const Polynomial::COEF_3 & polynomialCoef):Regression
+	(processPolynomialInput(input, polynomialCoef), output),
+	polynomialCoef(polynomialCoef) {
     };
     PolynomialRegression::PolynomialRegression(double2D_ptr input,
 					       double2D_ptr output,
@@ -351,10 +369,15 @@ namespace math {
     void Polynomial::COEF::dummy() {
     };
 
+    string_ptr Polynomial::COEF::toString() {
+	string_ptr str(new string(typeid(*this).name()));
+	return str;
+    };
 
-    Polynomial::COEF_1::COEF_1(int item,
-			       bool
-			       withConstant):COEF(item, withConstant) {
+
+  Polynomial::COEF_1::COEF_1(int item, bool withConstant):COEF(item,
+	 withConstant)
+    {
 
 
     };

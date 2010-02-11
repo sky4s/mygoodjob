@@ -61,7 +61,7 @@ namespace math {
 	  public:
 	    const int item;
 	    const bool withConstant;
-
+	    string_ptr toString();
 	};
 
 	class COEF_1:public COEF {
@@ -115,13 +115,15 @@ namespace math {
 	double2D_ptr inputCoefs;
 	double2D_ptr output;
 	double2D_ptr coefs;
+	static double2D_ptr getPredict0(double2D_ptr input,
+					double2D_ptr coefs);
       public:
 	 Regression(double2D_ptr input, double2D_ptr output);
 	 Regression(double1D_ptr input, double1D_ptr output);
 	double2D_ptr getCoefs();
-	double2D_ptr getPredict();
-	static double2D_ptr getPredict(double2D_ptr input,
-				       double2D_ptr coefs);
+	virtual double2D_ptr getPredict();
+	virtual double2D_ptr getPredict(double2D_ptr input);
+
 	double getRMSD();
 	double getrSquare();
 	void regress();
@@ -130,7 +132,7 @@ namespace math {
 
     class PolynomialRegression:public Regression {
       protected:
-	Polynomial::COEF polynomialCoef;
+	const Polynomial::COEF & polynomialCoef;
 	static double2D_ptr processPolynomialInput(double2D_ptr input,
 						   const Polynomial::
 						   COEF & polynomialCoef);
@@ -139,7 +141,14 @@ namespace math {
 						   COEF_1 &
 						   polynomialCoef);
 	static double2D_ptr processRegressionOutput(double1D_ptr output);
+	static double2D_ptr getPredict0(double2D_ptr input,
+					double2D_ptr coefs,
+					const Polynomial::
+					COEF_3 & polynomialCoef);
       public:
+	 double2D_ptr getPredict();
+	double2D_ptr getPredict(double2D_ptr input);
+
 	 PolynomialRegression(double2D_ptr input, double2D_ptr output,
 			      const Polynomial::COEF_3 & polynomialCoef);
 	 PolynomialRegression(double2D_ptr input, double2D_ptr output,
