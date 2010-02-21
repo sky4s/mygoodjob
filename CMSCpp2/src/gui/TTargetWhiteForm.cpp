@@ -189,3 +189,4 @@ void __fastcall TTargetWhiteForm::Button2Click(TObject * Sender)
 //---------------------------------------------------------------------------
 
 
+
