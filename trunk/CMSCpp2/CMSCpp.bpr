@@ -12,7 +12,7 @@
       build\doubleArray.obj build\whitefinder.obj build\rgbArray.obj 
       build\algo.obj build\aroundAlgo.obj build\nearAlgo.obj build\cp.obj 
       build\searcher.obj build\interpolation.obj build\regression.obj 
-      build\svd.obj"/>
+      build\svd.obj build\excelfile.obj"/>
     <RESFILES value="CMSCpp.res"/>
     <IDLFILES value=""/>
     <IDLGENFILES value=""/>
@@ -28,7 +28,7 @@
       inetdbbde.bpi inetdbxpress.bpi inetdb.bpi nmfast.bpi webdsnap.bpi 
       bcbie.bpi websnap.bpi soaprtl.bpi dclocx.bpi dbexpress.bpi dbxcds.bpi 
       indy.bpi bcb2kaxserver.bpi bcbindent.bpi"/>
-    <PATHCPP value=".;src;src\ca210api;src\cms;src\cms;src\cms\colorformat;src\cms\colorspace;src\cms\colorspace;src\cms\colorspace;src\cms\colorspace;src\cms\colorspace;src\cms\measure;src\cms\measure;src\cms\measure;src\static;src\static\java;imports\CA200SRVRLib;imports\CA200SRVRLib;src\static\math;src\cms\lcd\calibrate;src\cms\util;src\cms\lcd\calibrate;src\cms\lcd\calibrate;src\cms\lcd\calibrate;src\cms\measure;src\static\math;src\static\math;src\static\math;src\static\math"/>
+    <PATHCPP value=".;src;src\ca210api;src\cms;src\cms;src\cms\colorformat;src\cms\colorspace;src\cms\colorspace;src\cms\colorspace;src\cms\colorspace;src\cms\colorspace;src\cms\measure;src\cms\measure;src\cms\measure;src\static;src\static\java;imports\CA200SRVRLib;imports\CA200SRVRLib;src\static\math;src\cms\lcd\calibrate;src\cms\util;src\cms\lcd\calibrate;src\cms\lcd\calibrate;src\cms\lcd\calibrate;src\cms\measure;src\static\math;src\static\math;src\static\math;src\static\math;src\cms\colorformat"/>
     <PATHPAS value=".;"/>
     <PATHRC value=".;"/>
     <PATHASM value=".;"/>
@@ -96,6 +96,7 @@
       <FILE FILENAME="src\static\math\regression.cpp" FORMNAME="" UNITNAME="regression.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="src\static\math\svd.cpp" FORMNAME="" UNITNAME="svd" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="lib\jama\jama_svd.h" FORMNAME="" UNITNAME="jama_svd.h" CONTAINERID="" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="src\cms\colorformat\excelfile.cpp" FORMNAME="" UNITNAME="excelfile" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
   </FILELIST>
   <BUILDTOOLS>
   </BUILDTOOLS>

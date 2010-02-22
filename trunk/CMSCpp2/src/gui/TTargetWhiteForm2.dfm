@@ -1,6 +1,6 @@
 object TargetWhiteForm2: TTargetWhiteForm2
-  Left = 183
-  Top = 103
+  Left = 383
+  Top = 240
   Width = 922
   Height = 531
   Caption = 'TargetWhiteForm'
@@ -18,8 +18,8 @@ object TargetWhiteForm2: TTargetWhiteForm2
     Top = 8
     Width = 905
     Height = 489
-    ActivePage = TabSheet1
-    TabIndex = 0
+    ActivePage = TabSheet2
+    TabIndex = 1
     TabOrder = 0
     object TabSheet1: TTabSheet
       Caption = 'Target White'
@@ -36,9 +36,7 @@ object TargetWhiteForm2: TTargetWhiteForm2
           Width = 168
           Height = 25
           Caption = 'Adjust to Target x,y'
-          Checked = True
           TabOrder = 1
-          TabStop = True
         end
         object RadioButton2: TRadioButton
           Left = 8
@@ -158,7 +156,9 @@ object TargetWhiteForm2: TTargetWhiteForm2
           Width = 145
           Height = 25
           Caption = 'Adjust to Max RGB'
+          Checked = True
           TabOrder = 4
+          TabStop = True
           OnClick = RadioButton3Click
         end
         object GroupBox1: TGroupBox
@@ -348,6 +348,7 @@ object TargetWhiteForm2: TTargetWhiteForm2
           Width = 104
           Height = 24
           TabOrder = 2
+          Text = ' '
         end
       end
     end

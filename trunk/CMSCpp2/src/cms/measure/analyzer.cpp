@@ -73,6 +73,13 @@ namespace cms {
 	    ca210api->enter();
 	};
 
+	void CA210ComponentAnalyzer::setChannel(int no, string_ptr id) {
+	    ca210api->setChannelNO(no);
+	    ca210api->setChannelID(*id);
+	};
+
+	//======================================================================
+
       StocktonComponentAnayzer::StocktonComponentAnayzer(bptr < CA210 > ca210):CA210ComponentAnalyzer(ca210)
 	{
 	    mm->setWaitTimes(5000);
