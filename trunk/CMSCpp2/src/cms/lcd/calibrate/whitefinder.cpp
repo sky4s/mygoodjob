@@ -10,6 +10,7 @@
 //本項目內頭文件
 #include <cms/lcd/calibrate/aroundalgo.h>
 #include <cms/lcd/calibrate/nearalgo.h>
+#include <cms/lcd/calibrate/algo.h>
 #include <cms/colorspace/rgb.h>
 #include <cms/colorspace/ciexyz.h>
 #include <cms/patch.h>
@@ -32,18 +33,19 @@ namespace cms {
 		       )) {
 	    };
 
-	    RGB_ptr WhitePointFinder::findRGBAround(xyY_ptr xyY) {
-		RGB_ptr nearestRGB = RGBColor::White;
+	    RGB_ptr WhitePointFinder::findMatchRGB0(xyY_ptr xyY,
+						    RGB_ptr initRGB) {
+		RGB_ptr nearestRGB = initRGB;
 		bool findNearest = false;
 
 		do {
 		    RGB_vector_ptr aroundRGB =
-			aroundAlgo.getAroundRGB(RGBColor::White, 1);
+			aroundAlgo.getAroundRGB(nearestRGB, 1);
 		    XYZ_ptr center = xyY->toXYZ();
 		     bptr < AlgoResult > algoResult =
 			nearAlgo.getNearestRGB(center, aroundRGB);
 		    XYZ_vector_ptr aroundXYZ = algoResult->aroundXYZ;
-		    RGB_ptr nearestRGB = algoResult->nearestRGB;
+		     nearestRGB = algoResult->nearestRGB;
 		     findNearest =
 			MeasuredUtils::isFirstNearestXYZInuvPrime(center,
 								  aroundXYZ);
@@ -51,22 +53,27 @@ namespace cms {
 		 return nearestRGB;
 	    };
 
-            /*
-              1. 找到最大值頻道
-              2. 計算目前xyY與目標值之delta
-              3.
-            */
+	    RGB_ptr WhitePointFinder::findRGBAround(xyY_ptr xyY) {
+		aroundAlgo.setMode(Normal);
+		RGB_ptr result = findMatchRGB0(xyY, RGBColor::White);
+		return result;
+	    };
+
+	    /*
+	       以此修正後的值, 修正其餘非255的兩點, 使色度達到最接近值.
+	       1. 找到最大值頻道
+	       2. 計算目前xyY與目標值之delta
+	       3.
+	     */
 	    RGB_ptr WhitePointFinder::findMatchRGB(xyY_ptr xyY,
 						   RGB_ptr initRGB) {
-		const Channel & maxChannel = initRGB->getMaxChannel();
-		channel_vector_ptr matchChannels =
-		    Channel::getBesidePrimaryChannel(maxChannel);
-		Patch_ptr patch =
-		    mm->measure(initRGB, initRGB->toString());
-		double_array delta =
-		    nearAlgo.getDelta(xyY->toXYZ(), patch->getXYZ());
+		aroundAlgo.setMode(White);
+		RGB_ptr result = findMatchRGB0(xyY, initRGB);
+		return result;
 	    };
+
 	    RGB_ptr WhitePointFinder::fixRGB2TouchMax(RGB_ptr rgb) {
+		//然後再調整White使RGB其中一點為255.
 		const Channel & maxChannel = rgb->getMaxChannel();
 		double maxChannelValue = rgb->getValue(maxChannel);
 		double diff = 255 - maxChannelValue;

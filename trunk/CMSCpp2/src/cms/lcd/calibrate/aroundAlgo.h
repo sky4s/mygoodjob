@@ -44,17 +44,19 @@ namespace cms {
 		    static bool ChromaticSkipByDelta;
 		    double maxCode;
 		  public:
-		     RGB_vector_ptr
-			getAroundRGB(RGB_ptr centerRGB, double_array delta,
-				     double step, bool involveWhite);
-		    RGB_vector_ptr getAroundRGB(RGB_ptr centerRGB,
-						double_array delta,
-						double step);
-		    RGB_vector_ptr getAroundRGB(RGB_ptr centerRGB,
-						double step,
-						bool involeWhite);
-		    RGB_vector_ptr getAroundRGB(RGB_ptr centerRGB,
-						double step);
+		    /*virtual RGB_vector_ptr
+		       getAroundRGB(RGB_ptr centerRGB, double_array delta,
+		       double step, bool involveWhite);
+
+		       virtual RGB_vector_ptr getAroundRGB(RGB_ptr centerRGB,
+		       double step,
+		       bool involeWhite); */
+		     virtual RGB_vector_ptr getAroundRGB(RGB_ptr centerRGB,
+							 double_array
+							 delta,
+							 double step) = 0;
+		    virtual RGB_vector_ptr getAroundRGB(RGB_ptr centerRGB,
+							double step) = 0;
 		     StepAroundAlgorithm();
 		};
 

@@ -17,6 +17,7 @@
 #include <cms/colorspace/ciexyz.h>
 #include <cms/colorspace/rgb.h>
 #include <cms/lcd/calibrate/whitefinder.h>
+#include <cms/measure/analyzer.h>
 
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
@@ -173,7 +174,12 @@ void __fastcall TTargetWhiteForm2::Button2Click(TObject * Sender)
 {
     using namespace boost;
     using namespace Dep;
+    using namespace Indep;
     using namespace cms::lcd::calibrate;
+    using namespace cms::measure::meter;
+    using namespace cms::measure;
+    //using namespace ca210api;
+
     bool useRGB = this->RadioButton1->Checked
 	|| this->RadioButton2->Checked;
     bool usexy = this->RadioButton3->Checked;
@@ -186,11 +192,31 @@ void __fastcall TTargetWhiteForm2::Button2Click(TObject * Sender)
 	int b = this->Edit_B->Text.ToInt();
 	rgb.reset(new RGBColor(r, g, b));
     } else if (true == usexy) {
+	double targetx = this->Edit_targetx->Text.ToDouble();
+	double targety = this->Edit_targety->Text.ToDouble();
+	xyY_ptr xyY(new CIExyY(targetx, targety, 1));
 	//已知xy, 求rgb
 	WhitePointFinder finder(MainForm->mm);
-
+	rgb = finder.findRGB(xyY);
     }
     //設定到ca-210去
+    //CA210 & meter = *(dynamic_cast < CA210 * >(MainForm->meter.get()));
+    bptr < CA210 >
+	ca210((dynamic_cast < CA210 * >(MainForm->meter.get())));
+
+    RGB_ptr r(new RGBColor());
+    RGB_ptr g(new RGBColor());
+    RGB_ptr b(new RGBColor());
+    r->R = rgb->R;
+    g->G = rgb->G;
+    b->B = rgb->B;
+
+    CA210ComponentAnalyzer analyzer(ca210);
+    analyzer.setupComponent(Channel::R, r);
+    analyzer.setupComponent(Channel::G, g);
+    analyzer.setupComponent(Channel::B, b);
+    analyzer.setupComponent(Channel::W, rgb);
+    analyzer.enter();
 
 }
 

@@ -12,7 +12,7 @@
       build\analyzer.obj build\CA200SRVRLib_OCX.obj build\CA200SRVRLib_TLB.obj 
       build\TMeasureWindow.obj build\TTargetWhiteForm2.obj build\algo.obj 
       build\cp.obj build\TAnalyzerFrame.obj build\aroundAlgo.obj 
-      build\nearAlgo.obj build\whitefinder.obj"/>
+      build\nearAlgo.obj build\whitefinder.obj build\doubleArray.obj"/>
     <RESFILES value="CMSCppGUI.res"/>
     <IDLFILES value=""/>
     <IDLGENFILES value=""/>
@@ -30,7 +30,7 @@
       inetdbbde.bpi inetdbxpress.bpi inetdb.bpi nmfast.bpi webdsnap.bpi 
       bcbie.bpi websnap.bpi soaprtl.bpi dclocx.bpi dbexpress.bpi dbxcds.bpi 
       indy.bpi bcb2kaxserver.bpi bcbindent.bpi"/>
-    <PATHCPP value=".;src\gui;src\gui;src\gui;src\ca210api;src\cms;src\cms;src\cms\colorformat;src\cms\colorspace;src\cms\colorspace;src\cms\colorspace;src\cms\colorspace;src\cms\colorspace;src\cms\measure;src\cms\measure;src\static;src\static\java;src\cms\measure;imports\CA200SRVRLib;imports\CA200SRVRLib;src\gui;src\gui;src\cms\lcd\calibrate;src\cms\measure;src\gui;src\cms\lcd\calibrate;src\cms\lcd\calibrate;src\cms\lcd\calibrate"/>
+    <PATHCPP value=".;src\gui;src\gui;src\gui;src\ca210api;src\cms;src\cms;src\cms\colorformat;src\cms\colorspace;src\cms\colorspace;src\cms\colorspace;src\cms\colorspace;src\cms\colorspace;src\cms\measure;src\cms\measure;src\static;src\static\java;src\cms\measure;imports\CA200SRVRLib;imports\CA200SRVRLib;src\gui;src\gui;src\cms\lcd\calibrate;src\cms\measure;src\gui;src\cms\lcd\calibrate;src\cms\lcd\calibrate;src\cms\lcd\calibrate;src\static\math"/>
     <PATHPAS value=".;"/>
     <PATHRC value=".;"/>
     <PATHASM value=".;"/>
@@ -40,16 +40,17 @@
     <USERDEFINES value="_DEBUG"/>
     <SYSDEFINES value="_RTLDLL;NO_STRICT;USEPACKAGES"/>
     <MAINSOURCE value="CMSCppGUI.cpp"/>
-    <INCLUDEPATH value="src;src\gui\test;src\cms\lcd\calibrate;imports\CA200SRVRLib;src\static\java;src\cms\measure;src\cms\colorspace;src\cms\colorformat;src\cms;src\ca210api;src\gui;src\static;imports;&quot;D:\Program Files\Borland\CBuilder6\Projects&quot;;$(BCB)\include;$(BCB)\include\vcl;lib"/>
-    <LIBPATH value="src;src\gui\test;src\cms\lcd\calibrate;imports\CA200SRVRLib;src\static\java;src\cms\measure;src\cms\colorspace;src\cms\colorformat;src\cms;src\ca210api;src\gui;src\static;&quot;D:\Program Files\Borland\CBuilder6\Projects&quot;;$(BCB)\Projects\Lib;$(BCB)\lib\obj;$(BCB)\lib;lib"/>
+    <INCLUDEPATH value="src\static\math;src;src\gui\test;src\cms\lcd\calibrate;imports\CA200SRVRLib;src\static\java;src\cms\measure;src\cms\colorspace;src\cms\colorformat;src\cms;src\ca210api;src\gui;src\static;imports;&quot;D:\Program Files\Borland\CBuilder6\Projects&quot;;$(BCB)\include;$(BCB)\include\vcl;lib"/>
+    <LIBPATH value="src\static\math;src;src\gui\test;src\cms\lcd\calibrate;imports\CA200SRVRLib;src\static\java;src\cms\measure;src\cms\colorspace;src\cms\colorformat;src\cms;src\ca210api;src\gui;src\static;&quot;D:\Program Files\Borland\CBuilder6\Projects&quot;;$(BCB)\Projects\Lib;$(BCB)\lib\obj;$(BCB)\lib;lib"/>
     <WARNINGS value="-w-par"/>
     <OTHERFILES value=""/>
   </MACROS>
   <OPTIONS>
-    <IDLCFLAGS value="-Isrc -Isrc\gui\test -Isrc\cms\lcd\calibrate -Iimports\CA200SRVRLib 
-      -Isrc\static\java -Isrc\cms\measure -Isrc\cms\colorspace 
-      -Isrc\cms\colorformat -Isrc\cms -Isrc\ca210api -Isrc\gui -Isrc\static 
-      -Iimports -I&quot;D:\Program Files\Borland\CBuilder6\Projects&quot; -I$(BCB)\include 
+    <IDLCFLAGS value="-Isrc\static\math -Isrc -Isrc\gui\test -Isrc\cms\lcd\calibrate 
+      -Iimports\CA200SRVRLib -Isrc\static\java -Isrc\cms\measure 
+      -Isrc\cms\colorspace -Isrc\cms\colorformat -Isrc\cms -Isrc\ca210api 
+      -Isrc\gui -Isrc\static -Iimports 
+      -I&quot;D:\Program Files\Borland\CBuilder6\Projects&quot; -I$(BCB)\include 
       -I$(BCB)\include\vcl -Ilib -src_suffix cpp -D_DEBUG -boa"/>
     <CFLAG1 value="-Od -H=$(BCB)\lib\vcl60.csm -Hc -Vx -Ve -X- -r- -a8 -6 -b- -k -y -v -vi- 
       -c -tW -tWM"/>
@@ -96,7 +97,7 @@
       <FILE FILENAME="src\cms\lcd\calibrate\nearAlgo.cpp" FORMNAME="" UNITNAME="nearAlgo" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="src\cms\lcd\calibrate\whitefinder.cpp" FORMNAME="" UNITNAME="whitefinder" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="src\gui\UIConfig.h" FORMNAME="" UNITNAME="UIConfig.h" CONTAINERID="" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="src\static\math\doublearray.h" FORMNAME="" UNITNAME="doublearray.h" CONTAINERID="" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="src\static\math\doubleArray.cpp" FORMNAME="" UNITNAME="doubleArray" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
   </FILELIST>
   <BUILDTOOLS>
   </BUILDTOOLS>

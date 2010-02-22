@@ -23,8 +23,8 @@ namespace cms {
 	using namespace Indep;
 	using namespace ca210api;
 
-	 CA210ComponentAnayzer::
-	    CA210ComponentAnayzer(bptr < CA210 > ca210):ca210(ca210),
+	 CA210ComponentAnalyzer::
+	    CA210ComponentAnalyzer(bptr < CA210 > ca210):ca210(ca210),
 	    ca210api(ca210->getCA210API()), mm(bptr < MeterMeasurement >
 					       (new
 						MeterMeasurement(ca210,
@@ -34,7 +34,7 @@ namespace cms {
 	    ca210api->setAnalyzerCalMode();
 	};
 
-	RGB_ptr CA210ComponentAnayzer::getComponent(RGB_ptr rgb) {
+	RGB_ptr CA210ComponentAnalyzer::getComponent(RGB_ptr rgb) {
 	    Patch_ptr patch = mm->measure(rgb, rgb->toString());
 	     bptr < CAMeasureResult > measureResult =
 		ca210api->getMeasureResult();
@@ -46,8 +46,9 @@ namespace cms {
 
 	};
 
-	void CA210ComponentAnayzer::setupComponent(Channel & ch,
-						   RGB_ptr rgb) {
+	void CA210ComponentAnalyzer::setupComponent(const Dep::
+						    Channel & ch,
+						    RGB_ptr rgb) {
 	    Patch_ptr p = mm->measure(rgb, rgb->toString());
 
 	    lClr lclr;
@@ -68,17 +69,18 @@ namespace cms {
 	    ca210api->setAnalyzerCalData(lclr);
 	};
 
-	void CA210ComponentAnayzer::enter() {
+	void CA210ComponentAnalyzer::enter() {
 	    ca210api->enter();
 	};
 
-      StocktonComponentAnayzer::StocktonComponentAnayzer(bptr < CA210 > ca210):CA210ComponentAnayzer(ca210)
+      StocktonComponentAnayzer::StocktonComponentAnayzer(bptr < CA210 > ca210):CA210ComponentAnalyzer(ca210)
 	{
 	    mm->setWaitTimes(5000);
 	    ca210api->setLvxyCalMode();
 	};
 
-	void StocktonComponentAnayzer::setupComponent(Channel & ch,
+	void StocktonComponentAnayzer::setupComponent(const Dep::
+						      Channel & ch,
 						      RGB_ptr rgb) {
 	    Patch_ptr p = mm->measure(rgb, rgb->toString());
 	    switch (ch.chindex) {

@@ -64,6 +64,7 @@ namespace cms {
 
 	     bptr < cms::measure::cp::MeasureInterface >
 		getMeasureInterface();
+	     bptr < cms::measure::meter::Meter > getMeter();
 
 
 	  protected:
