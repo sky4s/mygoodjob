@@ -1,21 +1,21 @@
 [Closed Files]
-File_0=SourceModule,'D:\Program Files\Borland\CBuilder6\include\stl\_num_put.h',0,1,79,1,91,0,0
-File_1=SourceModule,'lib\tnt\tnt_math_utils.h',0,1,14,25,22,0,0
-File_2=SourceModule,'D:\Program Files\Borland\CBuilder6\include\stl\_ostream.c',0,1,184,1,202,0,0
-File_3=SourceModule,'D:\Program Files\Borland\CBuilder6\include\stl\_ostream.h',0,1,100,1,112,0,0
-File_4=SourceModule,'D:\WorkSpace\CMSCpp2\lib\tnt\tnt_array1d_utils.h',0,1,27,1,46,0,0
-File_5=SourceModule,'D:\WorkSpace\CMSCpp2\src\cms\core.cpp',0,1,1,34,8,0,0
-File_6=SourceModule,'D:\WorkSpace\CMSCpp2\src\static\math\interpolation.cpp',0,1,161,23,176,0,0
-File_7=SourceModule,'D:\Program Files\Borland\CBuilder6\include\boost\shared_ptr.hpp',0,1,295,1,307,0,0
-File_8=SourceModule,'D:\WorkSpace\CMSCpp2\src\cms\colorspace\rgb.cpp',0,1,1,1,1,0,0
-File_9=SourceModule,'D:\WorkSpace\CMSCpp2\src\cms\colorspace\depend.cpp',0,1,190,63,206,0,0
+File_0=SourceModule,'D:\WorkSpace\CMSCpp2\lib\tnt\tnt_i_refvec.h',0,1,38,1,56,0,0
+File_1=SourceModule,'D:\Program Files\Borland\CBuilder6\include\stl\_num_put.h',0,1,79,1,91,0,0
+File_2=SourceModule,'lib\tnt\tnt_math_utils.h',0,1,14,25,22,0,0
+File_3=SourceModule,'D:\Program Files\Borland\CBuilder6\include\stl\_ostream.c',0,1,184,1,202,0,0
+File_4=SourceModule,'D:\Program Files\Borland\CBuilder6\include\stl\_ostream.h',0,1,100,1,112,0,0
+File_5=SourceModule,'D:\WorkSpace\CMSCpp2\lib\tnt\tnt_array1d_utils.h',0,1,27,1,46,0,0
+File_6=SourceModule,'D:\WorkSpace\CMSCpp2\src\cms\core.cpp',0,1,1,34,8,0,0
+File_7=SourceModule,'D:\WorkSpace\CMSCpp2\src\static\math\interpolation.cpp',0,1,161,23,176,0,0
+File_8=SourceModule,'D:\Program Files\Borland\CBuilder6\include\boost\shared_ptr.hpp',0,1,295,1,307,0,0
+File_9=SourceModule,'D:\WorkSpace\CMSCpp2\src\cms\colorspace\rgb.cpp',0,1,1,1,1,0,0
 
 [Modules]
 Module0=D:\WorkSpace\CMSCpp2\src\static\math\regression.cpp
-Module1=lib\jama\jama_svd.h
+Module1=D:\WorkSpace\CMSCpp2\src\static\math\doublearray.cpp
 Module2=D:\WorkSpace\CMSCpp2\src\Unit1.cpp
-Module3=D:\WorkSpace\CMSCpp2\lib\jama\jama_svd.h
-Module4=D:\WorkSpace\CMSCpp2\src\static\math\doublearray.cpp
+Module3=lib\jama\jama_svd.h
+Module4=D:\WorkSpace\CMSCpp2\lib\jama\jama_svd.h
 Module5=D:\WorkSpace\CMSCpp2\src\static\java\lang.cpp
 Count=6
 EditWindowCount=1
@@ -25,7 +25,7 @@ ModuleType=SourceModule
 FormState=0
 FormOnTop=0
 
-[lib\jama\jama_svd.h]
+[D:\WorkSpace\CMSCpp2\src\static\math\doublearray.cpp]
 ModuleType=SourceModule
 FormState=0
 FormOnTop=0
@@ -35,12 +35,12 @@ ModuleType=SourceModule
 FormState=0
 FormOnTop=0
 
-[D:\WorkSpace\CMSCpp2\lib\jama\jama_svd.h]
+[lib\jama\jama_svd.h]
 ModuleType=SourceModule
 FormState=0
 FormOnTop=0
 
-[D:\WorkSpace\CMSCpp2\src\static\math\doublearray.cpp]
+[D:\WorkSpace\CMSCpp2\lib\jama\jama_svd.h]
 ModuleType=SourceModule
 FormState=0
 FormOnTop=0
@@ -79,14 +79,14 @@ Visible=1
 State=2
 Left=122
 Top=210
-Width=1197
+Width=1158
 Height=642
 MaxLeft=-4
-MaxTop=129
+MaxTop=131
 MaxWidth=1288
-MaxHeight=831
+MaxHeight=829
 ClientWidth=1280
-ClientHeight=798
+ClientHeight=796
 LeftPanelSize=381
 LeftPanelClients=CodeExplorer@EditWindow0
 LeftPanelData=000004000000000000000000000000000000000000000000000100000000000000000C000000436F64654578706C6F726572FFFFFFFF
@@ -118,9 +118,9 @@ LeftCol=1
 
 [View3]
 Module=D:\WorkSpace\CMSCpp2\src\static\math\regression.cpp
-CursorX=1
-CursorY=186
-TopLine=165
+CursorX=34
+CursorY=176
+TopLine=162
 LeftCol=1
 
 [View4]
@@ -144,7 +144,7 @@ Watch0='s',16,0,18,1,0,'Watches'
 [Breakpoints]
 Count=2
 Breakpoint0='lib\boost\smart_ptr\shared_ptr.hpp',188,'',0,1,'',1,0,0,'',1,'','',''
-Breakpoint1='D:\WorkSpace\CMSCpp2\src\static\math\regression.cpp',186,'',0,1,'',1,0,0,'',1,'','',''
+Breakpoint1='D:\WorkSpace\CMSCpp2\src\static\math\regression.cpp',184,'',0,1,'',1,0,0,'',1,'','',''
 
 [AddressBreakpoints]
 Count=0
@@ -337,11 +337,11 @@ State=0
 Left=0
 Top=12
 Width=381
-Height=570
+Height=568
 MaxLeft=-1
 MaxTop=-1
 ClientWidth=381
-ClientHeight=570
+ClientHeight=568
 TBDockHeight=388
 LRDockWidth=381
 Dockable=1
