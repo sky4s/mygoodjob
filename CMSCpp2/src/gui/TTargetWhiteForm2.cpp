@@ -175,10 +175,10 @@ void __fastcall TTargetWhiteForm2::Button2Click(TObject * Sender)
     using namespace boost;
     using namespace Dep;
     using namespace Indep;
+    using namespace std;
     using namespace cms::lcd::calibrate;
     using namespace cms::measure::meter;
     using namespace cms::measure;
-    //using namespace ca210api;
 
     bool useRGB = this->RadioButton1->Checked
 	|| this->RadioButton2->Checked;
@@ -199,10 +199,7 @@ void __fastcall TTargetWhiteForm2::Button2Click(TObject * Sender)
 	WhitePointFinder finder(MainForm->mm);
 	rgb = finder.findRGB(xyY);
     }
-    //設定到ca-210去
-    //CA210 & meter = *(dynamic_cast < CA210 * >(MainForm->meter.get()));
-    bptr < CA210 >
-	ca210((dynamic_cast < CA210 * >(MainForm->meter.get())));
+
 
     RGB_ptr r(new RGBColor());
     RGB_ptr g(new RGBColor());
@@ -211,7 +208,12 @@ void __fastcall TTargetWhiteForm2::Button2Click(TObject * Sender)
     g->G = rgb->G;
     b->B = rgb->B;
 
+    //設定到ca-210去
+    bptr < CA210 > ca210 = MainForm->getCA210();
     CA210ComponentAnalyzer analyzer(ca210);
+    int no = this->Edit_TargetCH->Text.ToInt();
+    string_ptr id(new string(this->Edit_TargetID->Text.c_str()));
+    analyzer.setChannel(no, id);
     analyzer.setupComponent(Channel::R, r);
     analyzer.setupComponent(Channel::G, g);
     analyzer.setupComponent(Channel::B, b);

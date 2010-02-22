@@ -67,4 +67,18 @@ void __fastcall TMainForm::FormCreate(TObject * Sender)
 
 
 //---------------------------------------------------------------------------
+bptr < cms::measure::meter::CA210 > TMainForm::getCA210()
+{
+    if (null == ca210) {
+	ca210.reset(dynamic_cast <
+		    cms::measure::meter::CA210 * >(meter.get()));
+    }
+    return ca210;
+    /*bptr < CA210 >
+       ca210((dynamic_cast < CA210 * >(meter.get())));
+       return ca210; */
+};
+
+//---------------------------------------------------------------------------
+
 

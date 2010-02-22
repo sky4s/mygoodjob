@@ -39,6 +39,7 @@ namespace cms {
 	    RGB_ptr getComponent(RGB_ptr rgb);
 	    void setupComponent(const Dep::Channel & ch, RGB_ptr rgb);
 	    void enter();
+	    void setChannel(int no, string_ptr id);
 	};
 
 	class StocktonComponentAnayzer:public CA210ComponentAnalyzer {
