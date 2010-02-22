@@ -12,15 +12,20 @@ File_9=SourceModule,'D:\WorkSpace\CMSCpp2\src\cms\colorspace\rgb.cpp',0,1,1,1,1,
 
 [Modules]
 Module0=D:\WorkSpace\CMSCpp2\src\static\math\regression.cpp
-Module1=D:\WorkSpace\CMSCpp2\src\static\math\doublearray.cpp
-Module2=D:\WorkSpace\CMSCpp2\src\Unit1.cpp
-Module3=lib\jama\jama_svd.h
-Module4=D:\WorkSpace\CMSCpp2\lib\jama\jama_svd.h
-Module5=D:\WorkSpace\CMSCpp2\src\static\java\lang.cpp
+Module1=D:\WorkSpace\CMSCpp2\src\static\java\lang.cpp
+Module2=D:\WorkSpace\CMSCpp2\src\static\math\doublearray.cpp
+Module3=D:\WorkSpace\CMSCpp2\src\Unit1.cpp
+Module4=lib\jama\jama_svd.h
+Module5=D:\WorkSpace\CMSCpp2\lib\jama\jama_svd.h
 Count=6
 EditWindowCount=1
 
 [D:\WorkSpace\CMSCpp2\src\static\math\regression.cpp]
+ModuleType=SourceModule
+FormState=0
+FormOnTop=0
+
+[D:\WorkSpace\CMSCpp2\src\static\java\lang.cpp]
 ModuleType=SourceModule
 FormState=0
 FormOnTop=0
@@ -41,11 +46,6 @@ FormState=0
 FormOnTop=0
 
 [D:\WorkSpace\CMSCpp2\lib\jama\jama_svd.h]
-ModuleType=SourceModule
-FormState=0
-FormOnTop=0
-
-[D:\WorkSpace\CMSCpp2\src\static\java\lang.cpp]
 ModuleType=SourceModule
 FormState=0
 FormOnTop=0
@@ -88,8 +88,6 @@ MaxHeight=829
 ClientWidth=1280
 ClientHeight=796
 LeftPanelSize=381
-LeftPanelClients=CodeExplorer@EditWindow0
-LeftPanelData=000004000000000000000000000000000000000000000000000100000000000000000C000000436F64654578706C6F726572FFFFFFFF
 RightPanelSize=0
 BottomPanelSize=213
 BottomPanelClients=MessageView@EditWindow0
@@ -118,8 +116,8 @@ LeftCol=1
 
 [View3]
 Module=D:\WorkSpace\CMSCpp2\src\static\math\regression.cpp
-CursorX=34
-CursorY=176
+CursorX=24
+CursorY=175
 TopLine=162
 LeftCol=1
 
@@ -332,18 +330,18 @@ Col2Width=148
 
 [CodeExplorer@EditWindow0]
 Create=1
-Visible=1
+Visible=0
 State=0
-Left=0
-Top=12
-Width=381
-Height=568
+Left=384
+Top=112
+Width=170
+Height=388
 MaxLeft=-1
 MaxTop=-1
-ClientWidth=381
-ClientHeight=568
+ClientWidth=162
+ClientHeight=358
 TBDockHeight=388
-LRDockWidth=381
+LRDockWidth=170
 Dockable=1
 ClassViewDisplayMode=0
 

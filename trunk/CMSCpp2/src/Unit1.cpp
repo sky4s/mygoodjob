@@ -24,13 +24,35 @@
 #include <cmath>
 #include <iostream>
 #include <sstream>
-#include <jama/jama_svd.h>
+//#include <jama/jama_svd.h>
+#include <math/interpolation.h>
+//#include <boost/assign/std/vector.hpp>
+//#include <boost/assign/std/list.hpp>
+#include <iostream>
+#include <algorithm>
+#include <vector>
+#include <string>
+
 //---------------------------------------------------------------------------
 
 
+int lut()
+{
+    using namespace math;
+    using namespace std;
+    double a[] = { 1, 2, 3, 4, 5, 6 };
+    double b[] = { 2, 4, 5, 6, 8, 10 };
 
-#pragma argsused
-int main(int argc, char *argv[])
+    double_vector_ptr key(new double_vector(a, a + 6));
+    double_vector_ptr val(new double_vector(b, b + 6));
+    Interpolation1DLUT lut(key, val);
+    //cout << lut.getValue(3) << endl;
+    cout << lut.getValue(3.5) << endl;
+    //cout << lut.getValue(4) << endl;
+}
+
+
+int regress()
 {
     using namespace std;
     using namespace TNT;
@@ -73,8 +95,16 @@ int main(int argc, char *argv[])
 	cout << *d << endl;
 	cout << *regression.getCoefs() << endl;
     }
-    getch();
+
 }
 
 //---------------------------------------------------------------------------
+
+#pragma argsused
+int main(int argc, char *argv[])
+{
+    //regress();
+    //lut();
+    getch();
+}
 

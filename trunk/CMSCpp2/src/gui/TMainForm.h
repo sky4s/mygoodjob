@@ -16,7 +16,6 @@
 class TMainForm:public TForm {
     __published:		// IDE-managed Components
     TMainMenu * MainMenu1;
-    TMenuItem *MatrixCalibration1;
     TMenuItem *TargetWhite1;
     TMenuItem *CCTLUT1;
     TMenuItem *GammaAdj1;
@@ -33,6 +32,7 @@ class TMainForm:public TForm {
   public:			// User declarations
      __fastcall TMainForm(TComponent * Owner);
      bptr < cms::measure::meter::Meter > meter;
+     bptr < cms::measure::MeterMeasurement > mm;
 };
 //---------------------------------------------------------------------------
 extern PACKAGE TMainForm *MainForm;

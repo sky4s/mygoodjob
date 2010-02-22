@@ -26,6 +26,19 @@ namespace math {
 	return str;
     };
 
+    string_ptr DoubleArray::toString(double_vector_ptr m) {
+	string_ptr str(new string("["));
+	int n = m->size();
+	for (int x = 0; x != n - 1; x++) {
+	    double v = (*m)[x];
+	    (*str) += lexical_cast < string > (v);
+	    (*str) += ", ";
+	};
+	(*str) += lexical_cast < string > ((*m)[n - 1]);
+	(*str) += "]";
+	return str;
+    };
+
     string_ptr DoubleArray::toString(double1D_ptr m) {
 	string_ptr str(new string());
 
