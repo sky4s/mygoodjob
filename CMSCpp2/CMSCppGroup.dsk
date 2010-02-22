@@ -1,26 +1,39 @@
 [Closed Files]
-File_0=SourceModule,'D:\WorkSpace\CMSCpp2\lib\tnt\tnt_i_refvec.h',0,1,38,1,56,0,0
-File_1=SourceModule,'D:\Program Files\Borland\CBuilder6\include\stl\_num_put.h',0,1,79,1,91,0,0
-File_2=SourceModule,'lib\tnt\tnt_math_utils.h',0,1,14,25,22,0,0
-File_3=SourceModule,'D:\Program Files\Borland\CBuilder6\include\stl\_ostream.c',0,1,184,1,202,0,0
-File_4=SourceModule,'D:\Program Files\Borland\CBuilder6\include\stl\_ostream.h',0,1,100,1,112,0,0
-File_5=SourceModule,'D:\WorkSpace\CMSCpp2\lib\tnt\tnt_array1d_utils.h',0,1,27,1,46,0,0
-File_6=SourceModule,'D:\WorkSpace\CMSCpp2\src\cms\core.cpp',0,1,1,34,8,0,0
-File_7=SourceModule,'D:\WorkSpace\CMSCpp2\src\static\math\interpolation.cpp',0,1,161,23,176,0,0
-File_8=SourceModule,'D:\Program Files\Borland\CBuilder6\include\boost\shared_ptr.hpp',0,1,295,1,307,0,0
-File_9=SourceModule,'D:\WorkSpace\CMSCpp2\src\cms\colorspace\rgb.cpp',0,1,1,1,1,0,0
+File_0=SourceModule,'D:\Program Files\Borland\CBuilder6\include\vcl\dstring.h',0,1,153,1,161,0,0
+File_1=SourceModule,'D:\WorkSpace\CMSCpp2\src\cms\colorspace\rgb.cpp',0,1,183,1,1,0,0
+File_2=SourceModule,'D:\WorkSpace\CMSCpp2\src\cms\measure\meter.cpp',0,1,1,1,1,0,0
+File_3=SourceModule,'D:\Program Files\Borland\CBuilder6\include\boost\assign\list_inserter.hpp',0,1,149,61,168,0,0
+File_4=SourceModule,'D:\WorkSpace\CMSCpp2\src\gui\UIConfig.h',0,1,1,1,1,0,0
+File_5=SourceModule,'D:\WorkSpace\CMSCpp2\src\cms\colorspace\colorspace.cpp',0,1,115,39,15,0,0
+File_6=SourceModule,'D:\WorkSpace\CMSCpp2\src\static\math\doublearray.h',0,1,4,22,15,0,0
+File_7=SourceModule,'D:\WorkSpace\CMSCpp2\src\cms\lcd\calibrate\nearAlgo.cpp',0,1,17,1,1,0,0
+File_8=SourceModule,'D:\WorkSpace\CMSCpp2\src\cms\measure\cp.cpp',0,1,1,1,1,0,0
 
 [Modules]
-Module0=D:\WorkSpace\CMSCpp2\src\static\math\regression.cpp
-Module1=D:\WorkSpace\CMSCpp2\src\static\java\lang.cpp
-Module2=D:\WorkSpace\CMSCpp2\src\static\math\doublearray.cpp
-Module3=D:\WorkSpace\CMSCpp2\src\Unit1.cpp
-Module4=lib\jama\jama_svd.h
-Module5=D:\WorkSpace\CMSCpp2\lib\jama\jama_svd.h
-Count=6
+Module0=D:\WorkSpace\CMSCpp2\src\cms\colorformat\excelfile.h
+Module1=D:\WorkSpace\CMSCpp2\src\cms\colorformat\excelfile.cpp
+Module2=D:\WorkSpace\CMSCpp2\src\cms\colorformat\logo.cpp
+Module3=D:\WorkSpace\CMSCpp2\src\static\java\lang.cpp
+Module4=D:\WorkSpace\CMSCpp2\src\gui\TMainForm.cpp
+Module5=D:\WorkSpace\CMSCpp2\src\gui\TTargetWhiteForm2.cpp
+Module6=D:\WorkSpace\CMSCpp2\src\cms\measure\analyzer.cpp
+Module7=D:\WorkSpace\CMSCpp2\src\gui\TTargetWhiteForm.cpp
+Module8=D:\WorkSpace\CMSCpp2\src\cms\measure\MeterMeasurement.cpp
+Module9=D:\WorkSpace\CMSCpp2\src\cms\lcd\calibrate\whitefinder.cpp
+Count=10
 EditWindowCount=1
 
-[D:\WorkSpace\CMSCpp2\src\static\math\regression.cpp]
+[D:\WorkSpace\CMSCpp2\src\cms\colorformat\excelfile.h]
+ModuleType=SourceModule
+FormState=0
+FormOnTop=0
+
+[D:\WorkSpace\CMSCpp2\src\cms\colorformat\excelfile.cpp]
+ModuleType=SourceModule
+FormState=0
+FormOnTop=0
+
+[D:\WorkSpace\CMSCpp2\src\cms\colorformat\logo.cpp]
 ModuleType=SourceModule
 FormState=0
 FormOnTop=0
@@ -30,22 +43,32 @@ ModuleType=SourceModule
 FormState=0
 FormOnTop=0
 
-[D:\WorkSpace\CMSCpp2\src\static\math\doublearray.cpp]
+[D:\WorkSpace\CMSCpp2\src\gui\TMainForm.cpp]
+ModuleType=SourceModule
+FormState=1
+FormOnTop=0
+
+[D:\WorkSpace\CMSCpp2\src\gui\TTargetWhiteForm2.cpp]
+ModuleType=SourceModule
+FormState=1
+FormOnTop=1
+
+[D:\WorkSpace\CMSCpp2\src\cms\measure\analyzer.cpp]
 ModuleType=SourceModule
 FormState=0
 FormOnTop=0
 
-[D:\WorkSpace\CMSCpp2\src\Unit1.cpp]
+[D:\WorkSpace\CMSCpp2\src\gui\TTargetWhiteForm.cpp]
 ModuleType=SourceModule
 FormState=0
 FormOnTop=0
 
-[lib\jama\jama_svd.h]
+[D:\WorkSpace\CMSCpp2\src\cms\measure\MeterMeasurement.cpp]
 ModuleType=SourceModule
 FormState=0
 FormOnTop=0
 
-[D:\WorkSpace\CMSCpp2\lib\jama\jama_svd.h]
+[D:\WorkSpace\CMSCpp2\src\cms\lcd\calibrate\whitefinder.cpp]
 ModuleType=SourceModule
 FormState=0
 FormOnTop=0
@@ -63,86 +86,123 @@ FormState=0
 FormOnTop=0
 
 [EditWindow0]
-ViewCount=6
-CurrentView=3
+ViewCount=10
+CurrentView=6
 View0=0
 View1=1
 View2=2
 View3=3
 View4=4
 View5=5
+View6=6
+View7=7
+View8=8
+View9=9
 CodeExplorer=CodeExplorer@EditWindow0
 MessageView=MessageView@EditWindow0
 ClassHierarchy=ClassHierarchy@EditWindow0
 Create=1
 Visible=1
 State=2
-Left=122
-Top=210
+Left=79
+Top=329
 Width=1158
 Height=642
 MaxLeft=-4
-MaxTop=131
+MaxTop=121
 MaxWidth=1288
-MaxHeight=829
+MaxHeight=839
 ClientWidth=1280
-ClientHeight=796
-LeftPanelSize=381
+ClientHeight=806
+LeftPanelSize=411
+LeftPanelClients=CodeExplorer@EditWindow0
+LeftPanelData=000004000000000000000000000000000000000000000000000100000000000000000C000000436F64654578706C6F726572FFFFFFFF
 RightPanelSize=0
-BottomPanelSize=213
+BottomPanelSize=199
 BottomPanelClients=MessageView@EditWindow0
-BottomPanelData=0000040000000000000500000000000002D500000000000000010000000000000000000000000100000000000500000B0000004D65737361676556696577FFFFFFFF
+BottomPanelData=0000040000000000000500000000000002C700000000000000010000000000000000000000000100000000000500000B0000004D65737361676556696577FFFFFFFF
 
 [View0]
-Module=D:\WorkSpace\CMSCpp2\lib\jama\jama_svd.h
-CursorX=33
-CursorY=54
-TopLine=46
+Module=D:\WorkSpace\CMSCpp2\src\cms\lcd\calibrate\whitefinder.cpp
+CursorX=40
+CursorY=86
+TopLine=80
 LeftCol=1
 
 [View1]
-Module=lib\jama\jama_svd.h
-CursorX=36
-CursorY=75
-TopLine=58
+Module=D:\WorkSpace\CMSCpp2\src\gui\TTargetWhiteForm2.cpp
+CursorX=40
+CursorY=213
+TopLine=209
 LeftCol=1
 
 [View2]
-Module=D:\WorkSpace\CMSCpp2\src\Unit1.cpp
-CursorX=1
-CursorY=42
-TopLine=27
-LeftCol=1
+Module=D:\WorkSpace\CMSCpp2\src\cms\measure\analyzer.cpp
+CursorX=37
+CursorY=78
+TopLine=67
+LeftCol=6
 
 [View3]
-Module=D:\WorkSpace\CMSCpp2\src\static\math\regression.cpp
-CursorX=24
-CursorY=182
-TopLine=162
+Module=D:\WorkSpace\CMSCpp2\src\cms\measure\MeterMeasurement.cpp
+CursorX=28
+CursorY=131
+TopLine=122
 LeftCol=1
 
 [View4]
-Module=D:\WorkSpace\CMSCpp2\src\static\math\doublearray.cpp
-CursorX=48
-CursorY=77
-TopLine=56
+Module=D:\WorkSpace\CMSCpp2\src\gui\TTargetWhiteForm.cpp
+CursorX=21
+CursorY=186
+TopLine=163
 LeftCol=1
 
 [View5]
+Module=D:\WorkSpace\CMSCpp2\src\gui\TMainForm.cpp
+CursorX=1
+CursorY=84
+TopLine=1
+LeftCol=1
+
+[View6]
+Module=D:\WorkSpace\CMSCpp2\src\cms\colorformat\excelfile.h
+CursorX=11
+CursorY=7
+TopLine=1
+LeftCol=1
+
+[View7]
+Module=D:\WorkSpace\CMSCpp2\src\cms\colorformat\excelfile.cpp
+CursorX=16
+CursorY=2
+TopLine=1
+LeftCol=1
+
+[View8]
+Module=D:\WorkSpace\CMSCpp2\src\cms\colorformat\logo.cpp
+CursorX=17
+CursorY=8
+TopLine=1
+LeftCol=1
+
+[View9]
 Module=D:\WorkSpace\CMSCpp2\src\static\java\lang.cpp
 CursorX=1
 CursorY=1
-TopLine=22
+TopLine=1
 LeftCol=1
 
 [Watches]
-Count=1
-Watch0='s',16,0,18,1,0,'Watches'
+Count=2
+Watch0='r',256,0,18,1,0,'Watches'
 
 [Breakpoints]
-Count=2
+Count=5
 Breakpoint0='lib\boost\smart_ptr\shared_ptr.hpp',188,'',0,1,'',1,0,0,'',1,'','',''
 Breakpoint1='D:\WorkSpace\CMSCpp2\src\static\math\regression.cpp',184,'',0,1,'',1,0,0,'',1,'','',''
+Breakpoint2='D:\WorkSpace\CMSCpp2\src\static\math\interpolation.cpp',207,'',0,1,'',1,0,0,'',1,'','',''
+Breakpoint3='D:\WorkSpace\CMSCpp2\src\static\math\interpolation.cpp',178,'',0,1,'',1,0,0,'',1,'','',''
+Breakpoint4='D:\WorkSpace\CMSCpp2\src\static\math\interpolation.cpp',150,'',0,1,'',1,0,0,'',1,'','',''
 
 [AddressBreakpoints]
 Count=0
@@ -150,14 +210,16 @@ Count=0
 [Main Window]
 Create=1
 Visible=1
-State=0
+State=2
 Left=0
 Top=6
 Width=1276
 Height=129
 MaxLeft=-1
 MaxTop=-1
-ClientWidth=1268
+MaxWidth=1288
+MaxHeight=129
+ClientWidth=1280
 ClientHeight=96
 
 [Components]
@@ -177,8 +239,8 @@ ClientHeight=236
 Create=1
 Visible=1
 State=0
-Left=462
-Top=295
+Left=433
+Top=160
 Width=674
 Height=403
 MaxLeft=-1
@@ -186,7 +248,7 @@ MaxTop=-1
 ClientWidth=666
 ClientHeight=373
 TBDockHeight=373
-LRDockWidth=182
+LRDockWidth=311
 Dockable=1
 
 [CPUWindow]
@@ -206,12 +268,36 @@ DisassemblyPane=240
 RegisterPane=297
 FlagPane=82
 
+[ToDo List]
+Create=1
+Visible=0
+State=0
+Left=405
+Top=387
+Width=470
+Height=250
+MaxLeft=-1
+MaxTop=-1
+ClientWidth=462
+ClientHeight=220
+TBDockHeight=250
+LRDockWidth=470
+Dockable=1
+Column0Width=200
+Column1Width=30
+Column2Width=100
+Column3Width=70
+Column4Width=70
+SortOrder=4
+ShowHints=1
+ShowChecked=1
+
 [WatchWindow]
 Create=1
 Visible=1
 State=0
-Left=429
-Top=437
+Left=285
+Top=634
 Width=769
 Height=319
 MaxLeft=-1
@@ -220,6 +306,22 @@ ClientWidth=761
 ClientHeight=289
 TBDockHeight=319
 LRDockWidth=769
+Dockable=1
+
+[CallStackWindow]
+Create=1
+Visible=0
+State=0
+Left=493
+Top=431
+Width=294
+Height=161
+MaxLeft=-1
+MaxTop=-1
+ClientWidth=286
+ClientHeight=131
+TBDockHeight=161
+LRDockWidth=294
 Dockable=1
 
 [AlignmentPalette]
@@ -240,19 +342,19 @@ Create=1
 Visible=1
 State=0
 Left=0
-Top=354
+Top=530
 Width=311
-Height=424
+Height=248
 MaxLeft=-1
 MaxTop=-1
 ClientWidth=311
-ClientHeight=424
+ClientHeight=248
 TBDockHeight=493
 LRDockWidth=311
 Dockable=1
-SplitPos=85
+SplitPos=95
 ArrangeBy=Name
-SelectedItem=
+SelectedItem=Caption
 ExpandedItems=
 HiddenCategories=
 
@@ -284,11 +386,11 @@ State=0
 Left=0
 Top=12
 Width=311
-Height=326
+Height=502
 MaxLeft=-1
 MaxTop=-1
 ClientWidth=311
-ClientHeight=326
+ClientHeight=502
 TBDockHeight=330
 LRDockWidth=311
 Dockable=1
@@ -330,18 +432,18 @@ Col2Width=148
 
 [CodeExplorer@EditWindow0]
 Create=1
-Visible=0
+Visible=1
 State=0
-Left=384
-Top=112
-Width=170
-Height=388
+Left=0
+Top=12
+Width=411
+Height=592
 MaxLeft=-1
 MaxTop=-1
-ClientWidth=162
-ClientHeight=358
+ClientWidth=411
+ClientHeight=592
 TBDockHeight=388
-LRDockWidth=170
+LRDockWidth=411
 Dockable=1
 ClassViewDisplayMode=0
 
@@ -352,12 +454,12 @@ State=0
 Left=12
 Top=0
 Width=1268
-Height=213
+Height=199
 MaxLeft=-1
 MaxTop=-1
 ClientWidth=1268
-ClientHeight=213
-TBDockHeight=213
+ClientHeight=199
+TBDockHeight=199
 LRDockWidth=443
 Dockable=1
 
@@ -369,8 +471,8 @@ DockSiteType=0
 Create=1
 Visible=1
 State=0
-Left=43
-Top=136
+Left=37
+Top=141
 Width=319
 Height=808
 MaxLeft=-1
@@ -381,7 +483,7 @@ TBDockHeight=798
 LRDockWidth=320
 Dockable=1
 DockClients=ObjectTree,PropertyInspector
-DockSiteData=00000400000000000A030000000000000137010000000000000100000000560100000E0000004F626A656374547265655669657701000000000A0300001100000050726F7065727479496E73706563746F72FFFFFFFF
+DockSiteData=00000400000000000A030000000000000137010000000000000100000000060200000E0000004F626A656374547265655669657701000000000A0300001100000050726F7065727479496E73706563746F72FFFFFFFF
 
 [ActiveProject]
 ActiveProject=1
