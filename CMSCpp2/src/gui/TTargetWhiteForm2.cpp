@@ -8,11 +8,15 @@
 //C++系統文件
 
 //其他庫頭文件
+#include <boost/lexical_cast.hpp>
 
 //本項目內頭文件
 #include "TTargetWhiteForm2.h"
+#include "TMainForm.h"
 #include <cms/core.h>
 #include <cms/colorspace/ciexyz.h>
+#include <cms/colorspace/rgb.h>
+#include <cms/lcd/calibrate/whitefinder.h>
 
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
@@ -162,4 +166,33 @@ int TTargetWhiteForm2::calculateCCT(double x, double y)
     return cct;
 }
 
+
+
+
+void __fastcall TTargetWhiteForm2::Button2Click(TObject * Sender)
+{
+    using namespace boost;
+    using namespace Dep;
+    using namespace cms::lcd::calibrate;
+    bool useRGB = this->RadioButton1->Checked
+	|| this->RadioButton2->Checked;
+    bool usexy = this->RadioButton3->Checked;
+    RGB_ptr rgb;
+
+    if (true == useRGB) {
+	//已知rgb
+	int r = this->Edit_R->Text.ToInt();
+	int g = this->Edit_G->Text.ToInt();
+	int b = this->Edit_B->Text.ToInt();
+	rgb.reset(new RGBColor(r, g, b));
+    } else if (true == usexy) {
+	//已知xy, 求rgb
+	WhitePointFinder finder(MainForm->mm);
+
+    }
+    //設定到ca-210去
+
+}
+
+//---------------------------------------------------------------------------
 

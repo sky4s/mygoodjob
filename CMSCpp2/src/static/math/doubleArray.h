@@ -17,6 +17,7 @@ namespace math {
 	static double_array plus(double_array v1, double v, int n);
 	static double_array minus(double_array v1, double_array v2, int n);
 	static string_ptr toString(double_array m, int n);
+	static string_ptr toString(double_vector_ptr m);
 	static string_ptr toString(double1D_ptr m);
 	static string_ptr toString(double2D_ptr m);
 	static string_ptr toString(const longdouble2D & m);

@@ -1,6 +1,6 @@
 object MainForm: TMainForm
-  Left = 246
-  Top = 211
+  Left = 350
+  Top = 230
   Width = 870
   Height = 640
   Caption = 'CCT Adjustment v3'
@@ -16,9 +16,6 @@ object MainForm: TMainForm
   PixelsPerInch = 120
   TextHeight = 16
   object MainMenu1: TMainMenu
-    object MatrixCalibration1: TMenuItem
-      Caption = 'Matrix Calibration'
-    end
     object TargetWhite1: TMenuItem
       Caption = 'Target White'
       OnClick = TargetWhite1Click
