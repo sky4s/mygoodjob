@@ -78,9 +78,6 @@ namespace cms {
 	    };
 
 
-
-
-
 	    class CIExyY:public DeviceIndependentSpace, NormalizeYOperator {
 	      protected:
 		NormalizeY _normalizeY;

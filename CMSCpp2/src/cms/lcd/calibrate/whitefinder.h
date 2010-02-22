@@ -16,14 +16,16 @@ namespace cms {
 	    class WhitePointFinder {
 	      private:
 		bptr < cms::measure::MeterMeasurement > mm;
-		//bptr < cms::measure::cp::MeasureInterface > mi;
+		RGB_ptr findMatchRGB0(xyY_ptr xyY, RGB_ptr initRGB);
 		RGB_ptr findRGBAround(xyY_ptr xyY);
 		RGB_ptr findMatchRGB(xyY_ptr xyY, RGB_ptr initRGB);
 		RGB_ptr fixRGB2TouchMax(RGB_ptr rgb);
+
 		 cms::lcd::calibrate::algo::
 		    ChromaticAroundAlgorithm & aroundAlgo;
 		 cms::lcd::calibrate::algo::
 		    CIEuv1960NearestAlgorithm & nearAlgo;
+
 	      public:
 		 WhitePointFinder(bptr < cms::measure::MeterMeasurement >
 				  mm);

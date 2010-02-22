@@ -86,7 +86,7 @@ namespace cms {
 			    //只要動到最大頻道就是不行!
 			    return false;
 			}
-		    } else {
+		    } else if (isGreenMode()) {
 			//如果不是在白點模式
 			//只要動到G就是不行!
 			if (adjustChannel == Channel::G) {

@@ -72,7 +72,7 @@ namespace cms {
 		return values;
 	    };
 
-	    double_array CIEXYZ::_getValues( double_array values) {
+	    double_array CIEXYZ::_getValues(double_array values) {
 		// double_array values(new double[3]);
 		values[0] = X;
 		values[1] = Y;
@@ -90,7 +90,7 @@ namespace cms {
 	    double_array CIEXYZ::getValues() {
 		return ColorSpace::getValues();
 	    };
-	    double_array CIEXYZ::getValues( double_array values) {
+	    double_array CIEXYZ::getValues(double_array values) {
 		return ColorSpace::getValues(values);
 	    };
 
@@ -372,7 +372,7 @@ namespace cms {
 	    double_array CIExyY::getValues() {
 		return ColorSpace::getValues();
 	    };
-	    double_array CIExyY::getValues( double_array values) {
+	    double_array CIExyY::getValues(double_array values) {
 		return ColorSpace::getValues(values);
 	    };
 	    double CIExyY::getCCT() {

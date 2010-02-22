@@ -111,6 +111,10 @@ namespace cms {
 					      >(new MI(this)));
 	};
 
+	bptr < cms::measure::meter::Meter > MeterMeasurement::getMeter() {
+	    return meter;
+	};
+
 	void MeterMeasurement::meterClose() {
 	    meter->close();
 	};

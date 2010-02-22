@@ -39,14 +39,17 @@ namespace cms {
 		void Algorithm::setMode(Mode mode) {
 		    this->mode = mode;
 		};
+		 Algorithm::Algorithm():mode(Normal) {
+
+		};
 		//==============================================================
 		// AlgoResult
 		//==============================================================
-		 AlgoResult::AlgoResult(RGB_ptr nearestRGB,
-					double_vector_ptr indexes,
-					RGB_vector_ptr aroundRGB,
-					XYZ_vector_ptr aroundXYZ, int
-					indexInArray):nearestRGB
+		AlgoResult::AlgoResult(RGB_ptr nearestRGB,
+				       double_vector_ptr indexes,
+				       RGB_vector_ptr aroundRGB,
+				       XYZ_vector_ptr aroundXYZ, int
+				       indexInArray):nearestRGB
 		    (nearestRGB), indexes(indexes), aroundRGB(aroundRGB),
 		    aroundXYZ(aroundXYZ), indexInArray(indexInArray) {
 
@@ -67,6 +70,18 @@ namespace cms {
 		    Patch_ptr p = mi->measure(rgb, false, false);
 		    return getDelta(XYZ, p->getXYZ());
 		}
+
+		bptr < cms::measure::MeasureResult >
+		    NearestAlgorithm::
+		    getMeasureResult(RGB_vector_ptr aroundRGB) {
+		    bptr < cms::measure::MeasureResult > measureResult =
+			mi->measureResult(aroundRGB, false, false);
+		    /*MeasureResult measureResult =
+		       mi.measureResult(aroundRGB,
+		       this.isForceTrigger(),
+		       AutoCPOptions.get("CPM_MeasureRequestThanTrigger")); */
+		    return measureResult;
+		};
 
 		bptr < AlgoResult >
 		    NearestAlgorithm::getNearestRGB(XYZ_ptr center,
@@ -108,7 +123,23 @@ namespace cms {
 		    xyY_ptr xyY(new CIExyY(XYZ));
 		    return xyY->getDeltauvPrime(centerxyY);
 		};
-
+		bool MeasuredUtils::isFirstNearestXYZInuvPrime(XYZ_ptr
+							       targetXYZ,
+							       XYZ_vector_ptr
+							       aroundXYZ) {
+		    int size = aroundXYZ->size();
+		    double_vector_ptr dists(new double_vector());
+		    //double[] dists = new double[size];
+		    for (int x = 0; x < size; x++) {
+			double_array delta =
+			    getDeltauvPrime(targetXYZ, (*aroundXYZ)[x]);
+			double dist =
+			    Math::sqrt(Math::sqr(delta[0]) +
+				       Math::sqr(delta[1]));
+			dists->push_back(dist);
+		    }
+		    return Math::minIndex(dists) == 0;
+		};
 		//==============================================================
 	    };
 	};

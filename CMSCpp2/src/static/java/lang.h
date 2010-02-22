@@ -250,11 +250,12 @@ namespace java {
 	    static double sin(double x);
 	    static double sqr(double v);
 	    static double round(double v);
-	    static int maxIndex(double_array values, int n);
-	    static int minIndex(double_array values, int n);
+
 	    static double min(double a, double b);
 	    static double max(double a, double b);
 
+	    static int maxIndex(double_array values, int n);
+	    static int minIndex(double_array values, int n);
 	    static int maxIndex(double_vector_ptr values);
 	    static int minIndex(double_vector_ptr values);
 	};

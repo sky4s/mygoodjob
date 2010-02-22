@@ -24,6 +24,7 @@ namespace cms {
 		  protected:
 		    bool isWhiteMode();
 		    bool isGreenMode();
+		     Algorithm();
 		  public:
 		    void setMode(Mode mode);
 		};
@@ -82,7 +83,8 @@ namespace cms {
 							XYZ_ptr XYZ);
 		    static bool isFirstNearestXYZInuvPrime(XYZ_ptr
 							   targetXYZ,
-							   XYZ_vector_ptr);
+							   XYZ_vector_ptr
+							   aroundXYZ);
 		};
 	    };
 	};
