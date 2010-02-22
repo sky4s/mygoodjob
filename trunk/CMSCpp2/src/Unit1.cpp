@@ -32,9 +32,16 @@
 #include <algorithm>
 #include <vector>
 #include <string>
+#include <cms/colorformat/excelfiletester.h>
 
 //---------------------------------------------------------------------------
 
+void excel()
+{
+    using namespace cms::colorformat;
+    string_ptr filename(new string("a.xls"));
+    ExcelFileTester a(filename);
+}
 
 int lut()
 {
@@ -105,6 +112,7 @@ int main(int argc, char *argv[])
 {
     //regress();
     //lut();
+    excel();
     getch();
 }
 
