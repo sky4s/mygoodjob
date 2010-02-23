@@ -9,6 +9,7 @@ USEFORM("src\gui\TTargetWhiteForm.cpp", TargetWhiteForm);
 USEFORM("src\gui\TMeasureWindow.cpp", MeasureWindow);
 USEFORM("src\gui\TTargetWhiteForm2.cpp", TargetWhiteForm2);
 USEFORM("src\gui\TAnalyzerFrame.cpp", AnalyzerFrame); /* TFrame: File Type */
+USEFORM("src\gui\TCCTLUTForm.cpp", CCTLUTForm);
 //---------------------------------------------------------------------------
 WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 {
@@ -20,6 +21,7 @@ WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
                  Application->CreateForm(__classid(TAboutBox), &AboutBox);
                  Application->CreateForm(__classid(TTargetWhiteForm), &TargetWhiteForm);
                  Application->CreateForm(__classid(TMeasureWindow), &MeasureWindow);
+                 Application->CreateForm(__classid(TCCTLUTForm), &CCTLUTForm);
                  Application->Run();
         }
         catch (Exception &exception)

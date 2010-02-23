@@ -1,6 +1,6 @@
 #include "MeterMeasurement.h"
 
-#include <vcl.h>
+//#include <vcl.h>
 #include <cms/measure/meter.h>
 #include <cms/measure/cp.h>
 #include <cms/patch.h>

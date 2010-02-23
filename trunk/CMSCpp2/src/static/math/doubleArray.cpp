@@ -6,7 +6,10 @@
 
 //其他庫頭文件
 #include <boost/lexical_cast.hpp>
-
+#include <tnt/tnt_array2d_utils.h>
+#include <jama/jama_lu.h>
+#include <jama/jama_qr.h>
+#include <jama/jama_svd.h>
 
 //本項目內頭文件
 
@@ -14,6 +17,7 @@ namespace math {
     using namespace boost;
     using namespace java::lang;
     using namespace std;
+    using namespace JAMA;
     string_ptr DoubleArray::toString(double_array m, int n) {
 	string_ptr str(new string("["));
 	for (int x = 0; x != n - 1; x++) {
@@ -238,6 +242,61 @@ namespace math {
 	    }
 	}
 	return X;
+    };
+
+    double2D_ptr DoubleArray::identity(int n) {
+	double2D_ptr m(new double2D(n, n));
+	for (int x = 0; x < n; x++) {
+	    (*m)[x][x] = 1;
+	}
+	return m;
+    };
+    double2D_ptr DoubleArray::identity(int m, int n) {
+	double2D_ptr result(new double2D(m, n));
+	int size = Math::min(m, n);
+	for (int x = 0; x < size; x++) {
+	    (*result)[x][x] = 1;
+	}
+	return result;
+    };
+    double2D_ptr DoubleArray::solve(double2D_ptr a, double2D_ptr b) {
+
+	int m = a->dim1();
+	int n = a->dim2();
+	double2D_ptr result;
+	if (m == n) {
+	    LU < double >lu(*a);
+	    /*cout<<*a<<endl;
+	       cout<<*b<<endl;
+	       cout << lu.solve(*b) << endl; */
+	    result.reset(new double2D(lu.solve(*b)));
+	} else {
+	    QR < double >qr(*a);
+	    result.reset(new double2D(qr.solve(*b)));
+	}
+	return result;
+    };
+
+    double2D_ptr DoubleArray::inverse(double2D_ptr matrix) {
+	int m = matrix->dim1();
+	int n = matrix->dim2();
+	return solve(matrix, identity(m, n));
+    };
+
+    double2D_ptr DoubleArray::pseudoInverse(double2D_ptr m) {
+    	/* TODO : pseudoInverse */
+	double1D sv;
+	double2D v, u;
+
+	SVD < double >svd(*m);
+	svd.getU(u);
+	svd.getSingularValues(sv);
+	svd.getV(v);
+    };
+    const double DoubleArray::e = Math::pow(2, -53);
+    double DoubleArray::getTolerance(int m, int n, double1D sv) {
+	/* TODO : getTolerance */
+
     };
 };
 

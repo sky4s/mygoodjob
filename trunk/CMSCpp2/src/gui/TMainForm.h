@@ -27,6 +27,7 @@ class TMainForm:public TForm {
     void __fastcall Exit1Click(TObject * Sender);
     void __fastcall TargetWhite1Click(TObject * Sender);
     void __fastcall FormCreate(TObject * Sender);
+    void __fastcall CCTLUT1Click(TObject * Sender);
   private:			// User declarations
      bool linkCA210;
      bptr < cms::measure::meter::CA210 > ca210;

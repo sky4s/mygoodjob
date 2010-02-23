@@ -14,6 +14,8 @@
 #include "TTargetWhiteForm.h"
 #include "TTargetWhiteForm2.h"
 #include "TAboutBox.h"
+#include "TCCTLUTForm.h"
+
 #include <cms/measure/meter.h>
 #include <cms/measure/metermeasurement.h>
 #include <UIConfig.h>
@@ -81,4 +83,12 @@ bptr < cms::measure::meter::CA210 > TMainForm::getCA210()
 
 //---------------------------------------------------------------------------
 
+
+
+void __fastcall TMainForm::CCTLUT1Click(TObject * Sender)
+{
+    CCTLUTForm->ShowModal();
+}
+
+//---------------------------------------------------------------------------
 
