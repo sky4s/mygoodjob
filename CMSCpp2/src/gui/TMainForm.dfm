@@ -1,6 +1,6 @@
 object MainForm: TMainForm
-  Left = 350
-  Top = 230
+  Left = 220
+  Top = 177
   Width = 870
   Height = 640
   Caption = 'CCT Adjustment v3'
@@ -22,6 +22,7 @@ object MainForm: TMainForm
     end
     object CCTLUT1: TMenuItem
       Caption = 'CCT(LUT)'
+      OnClick = CCTLUT1Click
     end
     object GammaAdj1: TMenuItem
       Caption = 'GammaAdj'

@@ -13,6 +13,9 @@
 
 namespace math {
     class DoubleArray {
+      private:
+	static const double e;
+	static double getTolerance(int m, int n, double1D sv);
       public:
 	static double_array plus(double_array v1, double v, int n);
 	static double_array minus(double_array v1, double_array v2, int n);
@@ -43,6 +46,12 @@ namespace math {
 
 	static double2D_ptr diagonal(double1D_ptr m);
 	static double2D_ptr times(double2D_ptr a, double2D_ptr b);
+	static double2D_ptr identity(int n);
+	static double2D_ptr identity(int m, int n);
+	static double2D_ptr solve(double2D_ptr a, double2D_ptr b);
+	static double2D_ptr inverse(double2D_ptr m);
+	static double2D_ptr pseudoInverse(double2D_ptr m);
+
 
     };
 };

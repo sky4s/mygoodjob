@@ -1,74 +1,38 @@
 [Closed Files]
-File_0=SourceModule,'D:\Program Files\Borland\CBuilder6\include\vcl\dstring.h',0,1,153,1,161,0,0
-File_1=SourceModule,'D:\WorkSpace\CMSCpp2\src\cms\colorspace\rgb.cpp',0,1,183,1,1,0,0
-File_2=SourceModule,'D:\WorkSpace\CMSCpp2\src\cms\measure\meter.cpp',0,1,1,1,1,0,0
-File_3=SourceModule,'D:\Program Files\Borland\CBuilder6\include\boost\assign\list_inserter.hpp',0,1,149,61,168,0,0
-File_4=SourceModule,'D:\WorkSpace\CMSCpp2\src\gui\UIConfig.h',0,1,1,1,1,0,0
-File_5=SourceModule,'D:\WorkSpace\CMSCpp2\src\cms\colorspace\colorspace.cpp',0,1,115,39,15,0,0
-File_6=SourceModule,'D:\WorkSpace\CMSCpp2\src\static\math\doublearray.h',0,1,4,22,15,0,0
-File_7=SourceModule,'D:\WorkSpace\CMSCpp2\src\cms\lcd\calibrate\nearAlgo.cpp',0,1,17,1,1,0,0
-File_8=SourceModule,'D:\WorkSpace\CMSCpp2\src\cms\measure\cp.cpp',0,1,1,1,1,0,0
+File_0=SourceModule,'D:\Program Files\Borland\CBuilder6\include\vcl\ADODB.hpp',0,1,217,38,230,0,0
+File_1=SourceModule,'D:\WorkSpace\CMSCpp2\src\cms\measure\MeterMeasurement.cpp',0,1,1,3,3,0,0
+File_2=SourceModule,'D:\WorkSpace\CMSCpp2\src\cms\colorspace\depend.cpp',0,1,1,1,1,0,0
+File_3=SourceModule,'D:\WorkSpace\CMSCpp2\src\static\math\doubleArray.cpp',0,1,274,42,287,0,0
+File_4=SourceModule,'D:\Program Files\Borland\CBuilder6\include\boost\detail\shared_count.hpp',0,1,192,1,205,0,0
+File_5=SourceModule,'d:\program files\borland\cbuilder6\include\vcl\StdCtrls.hpp',0,1,1338,30,1341,0,0
+File_6=SourceModule,'d:\program files\borland\cbuilder6\include\rpcndr.h',0,1,147,1,157,0,0
+File_7=SourceModule,'D:\WorkSpace\CMSCpp2\src\cms\lcd\calibrate\aroundAlgo.cpp',0,1,1,25,151,0,0
+File_8=SourceModule,'D:\Program Files\Borland\CBuilder6\include\boost\range\iterator.hpp',0,1,27,34,37,0,0
 
 [Modules]
-Module0=D:\WorkSpace\CMSCpp2\src\cms\colorformat\excelfile.h
-Module1=D:\WorkSpace\CMSCpp2\src\cms\colorformat\excelfile.cpp
-Module2=D:\WorkSpace\CMSCpp2\src\cms\colorformat\logo.cpp
+Module0=D:\WorkSpace\CMSCpp2\src\cms\colorformat\excelfile.cpp
+Module1=D:\WorkSpace\CMSCpp2\src\cms\colorformat\excelfiletester.cpp
+Module2=D:\WorkSpace\CMSCpp2\src\Unit1.cpp
 Module3=D:\WorkSpace\CMSCpp2\src\static\java\lang.cpp
-Module4=D:\WorkSpace\CMSCpp2\src\gui\TMainForm.cpp
-Module5=D:\WorkSpace\CMSCpp2\src\gui\TTargetWhiteForm2.cpp
-Module6=D:\WorkSpace\CMSCpp2\src\cms\measure\analyzer.cpp
-Module7=D:\WorkSpace\CMSCpp2\src\gui\TTargetWhiteForm.cpp
-Module8=D:\WorkSpace\CMSCpp2\src\cms\measure\MeterMeasurement.cpp
-Module9=D:\WorkSpace\CMSCpp2\src\cms\lcd\calibrate\whitefinder.cpp
-Count=10
+Count=4
 EditWindowCount=1
-
-[D:\WorkSpace\CMSCpp2\src\cms\colorformat\excelfile.h]
-ModuleType=SourceModule
-FormState=0
-FormOnTop=0
 
 [D:\WorkSpace\CMSCpp2\src\cms\colorformat\excelfile.cpp]
 ModuleType=SourceModule
 FormState=0
 FormOnTop=0
 
-[D:\WorkSpace\CMSCpp2\src\cms\colorformat\logo.cpp]
+[D:\WorkSpace\CMSCpp2\src\cms\colorformat\excelfiletester.cpp]
+ModuleType=SourceModule
+FormState=0
+FormOnTop=0
+
+[D:\WorkSpace\CMSCpp2\src\Unit1.cpp]
 ModuleType=SourceModule
 FormState=0
 FormOnTop=0
 
 [D:\WorkSpace\CMSCpp2\src\static\java\lang.cpp]
-ModuleType=SourceModule
-FormState=0
-FormOnTop=0
-
-[D:\WorkSpace\CMSCpp2\src\gui\TMainForm.cpp]
-ModuleType=SourceModule
-FormState=1
-FormOnTop=0
-
-[D:\WorkSpace\CMSCpp2\src\gui\TTargetWhiteForm2.cpp]
-ModuleType=SourceModule
-FormState=1
-FormOnTop=1
-
-[D:\WorkSpace\CMSCpp2\src\cms\measure\analyzer.cpp]
-ModuleType=SourceModule
-FormState=0
-FormOnTop=0
-
-[D:\WorkSpace\CMSCpp2\src\gui\TTargetWhiteForm.cpp]
-ModuleType=SourceModule
-FormState=0
-FormOnTop=0
-
-[D:\WorkSpace\CMSCpp2\src\cms\measure\MeterMeasurement.cpp]
-ModuleType=SourceModule
-FormState=0
-FormOnTop=0
-
-[D:\WorkSpace\CMSCpp2\src\cms\lcd\calibrate\whitefinder.cpp]
 ModuleType=SourceModule
 FormState=0
 FormOnTop=0
@@ -86,106 +50,56 @@ FormState=0
 FormOnTop=0
 
 [EditWindow0]
-ViewCount=10
-CurrentView=6
+ViewCount=4
+CurrentView=1
 View0=0
 View1=1
 View2=2
 View3=3
-View4=4
-View5=5
-View6=6
-View7=7
-View8=8
-View9=9
 CodeExplorer=CodeExplorer@EditWindow0
 MessageView=MessageView@EditWindow0
 ClassHierarchy=ClassHierarchy@EditWindow0
 Create=1
 Visible=1
-State=2
-Left=79
-Top=329
-Width=1158
-Height=642
-MaxLeft=-4
-MaxTop=121
-MaxWidth=1288
-MaxHeight=839
-ClientWidth=1280
-ClientHeight=806
-LeftPanelSize=411
+State=0
+Left=83
+Top=135
+Width=1195
+Height=805
+MaxLeft=-1
+MaxTop=-1
+ClientWidth=1187
+ClientHeight=772
+LeftPanelSize=170
 LeftPanelClients=CodeExplorer@EditWindow0
 LeftPanelData=000004000000000000000000000000000000000000000000000100000000000000000C000000436F64654578706C6F726572FFFFFFFF
 RightPanelSize=0
-BottomPanelSize=199
+BottomPanelSize=162
 BottomPanelClients=MessageView@EditWindow0
-BottomPanelData=0000040000000000000500000000000002C700000000000000010000000000000000000000000100000000000500000B0000004D65737361676556696577FFFFFFFF
+BottomPanelData=0000040000000000A30400000000000002A200000000000000010000000000000000000000000100000000A30400000B0000004D65737361676556696577FFFFFFFF
 
 [View0]
-Module=D:\WorkSpace\CMSCpp2\src\cms\lcd\calibrate\whitefinder.cpp
-CursorX=40
-CursorY=86
-TopLine=80
+Module=D:\WorkSpace\CMSCpp2\src\cms\colorformat\excelfiletester.cpp
+CursorX=57
+CursorY=36
+TopLine=13
 LeftCol=1
 
 [View1]
-Module=D:\WorkSpace\CMSCpp2\src\gui\TTargetWhiteForm2.cpp
-CursorX=40
-CursorY=213
-TopLine=209
+Module=D:\WorkSpace\CMSCpp2\src\cms\colorformat\excelfile.cpp
+CursorX=28
+CursorY=81
+TopLine=67
 LeftCol=1
 
 [View2]
-Module=D:\WorkSpace\CMSCpp2\src\cms\measure\analyzer.cpp
-CursorX=37
-CursorY=78
-TopLine=67
-LeftCol=6
+Module=D:\WorkSpace\CMSCpp2\src\Unit1.cpp
+CursorX=26
+CursorY=45
+TopLine=31
+LeftCol=1
 
 [View3]
-Module=D:\WorkSpace\CMSCpp2\src\cms\measure\MeterMeasurement.cpp
-CursorX=28
-CursorY=131
-TopLine=122
-LeftCol=1
-
-[View4]
-Module=D:\WorkSpace\CMSCpp2\src\gui\TTargetWhiteForm.cpp
-CursorX=21
-CursorY=186
-TopLine=163
-LeftCol=1
-
-[View5]
-Module=D:\WorkSpace\CMSCpp2\src\gui\TMainForm.cpp
-CursorX=1
-CursorY=84
-TopLine=1
-LeftCol=1
-
-[View6]
-Module=D:\WorkSpace\CMSCpp2\src\cms\colorformat\excelfile.h
-CursorX=11
-CursorY=7
-TopLine=1
-LeftCol=1
-
-[View7]
-Module=D:\WorkSpace\CMSCpp2\src\cms\colorformat\excelfile.cpp
-CursorX=16
-CursorY=2
-TopLine=1
-LeftCol=1
-
-[View8]
-Module=D:\WorkSpace\CMSCpp2\src\cms\colorformat\logo.cpp
-CursorX=17
-CursorY=8
-TopLine=1
-LeftCol=1
-
-[View9]
 Module=D:\WorkSpace\CMSCpp2\src\static\java\lang.cpp
 CursorX=1
 CursorY=1
@@ -193,7 +107,7 @@ TopLine=1
 LeftCol=1
 
 [Watches]
-Count=2
+Count=1
 Watch0='r',256,0,18,1,0,'Watches'
 
 [Breakpoints]
@@ -210,16 +124,14 @@ Count=0
 [Main Window]
 Create=1
 Visible=1
-State=2
+State=0
 Left=0
-Top=6
-Width=1276
+Top=5
+Width=1280
 Height=129
 MaxLeft=-1
 MaxTop=-1
-MaxWidth=1288
-MaxHeight=129
-ClientWidth=1280
+ClientWidth=1272
 ClientHeight=96
 
 [Components]
@@ -270,16 +182,16 @@ FlagPane=82
 
 [ToDo List]
 Create=1
-Visible=0
+Visible=1
 State=0
-Left=405
-Top=387
-Width=470
-Height=250
+Left=238
+Top=305
+Width=799
+Height=255
 MaxLeft=-1
 MaxTop=-1
-ClientWidth=462
-ClientHeight=220
+ClientWidth=791
+ClientHeight=225
 TBDockHeight=250
 LRDockWidth=470
 Dockable=1
@@ -310,16 +222,16 @@ Dockable=1
 
 [CallStackWindow]
 Create=1
-Visible=0
+Visible=1
 State=0
 Left=493
 Top=431
-Width=294
-Height=161
+Width=578
+Height=235
 MaxLeft=-1
 MaxTop=-1
-ClientWidth=286
-ClientHeight=131
+ClientWidth=570
+ClientHeight=205
 TBDockHeight=161
 LRDockWidth=294
 Dockable=1
@@ -354,7 +266,7 @@ LRDockWidth=311
 Dockable=1
 SplitPos=95
 ArrangeBy=Name
-SelectedItem=Caption
+SelectedItem=
 ExpandedItems=
 HiddenCategories=
 
@@ -436,14 +348,14 @@ Visible=1
 State=0
 Left=0
 Top=12
-Width=411
-Height=592
+Width=170
+Height=595
 MaxLeft=-1
 MaxTop=-1
-ClientWidth=411
-ClientHeight=592
+ClientWidth=170
+ClientHeight=595
 TBDockHeight=388
-LRDockWidth=411
+LRDockWidth=170
 Dockable=1
 ClassViewDisplayMode=0
 
@@ -453,13 +365,13 @@ Visible=1
 State=0
 Left=12
 Top=0
-Width=1268
-Height=199
+Width=1175
+Height=162
 MaxLeft=-1
 MaxTop=-1
-ClientWidth=1268
-ClientHeight=199
-TBDockHeight=199
+ClientWidth=1175
+ClientHeight=162
+TBDockHeight=162
 LRDockWidth=443
 Dockable=1
 

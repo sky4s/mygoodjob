@@ -1,6 +1,6 @@
 object TargetWhiteForm2: TTargetWhiteForm2
-  Left = 383
-  Top = 240
+  Left = 679
+  Top = 218
   Width = 922
   Height = 531
   Caption = 'TargetWhiteForm'
@@ -18,8 +18,8 @@ object TargetWhiteForm2: TTargetWhiteForm2
     Top = 8
     Width = 905
     Height = 489
-    ActivePage = TabSheet2
-    TabIndex = 1
+    ActivePage = TabSheet1
+    TabIndex = 0
     TabOrder = 0
     object TabSheet1: TTabSheet
       Caption = 'Target White'

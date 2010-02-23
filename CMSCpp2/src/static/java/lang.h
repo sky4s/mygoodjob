@@ -11,6 +11,7 @@
 //其他庫頭文件
 #include <boost/shared_array.hpp>
 #include <boost/shared_ptr.hpp>
+#include <boost/scoped_ptr.hpp>
 #include <boost/foreach.hpp>
 //本項目內頭文件
 
@@ -38,6 +39,7 @@
 //==============================================================================
 #define bptr boost::shared_ptr
 #define barray boost::shared_array
+#define bptr_ boost::scoped_ptr
 
 #define double_vector std::vector < double >
 #define double_vector_ptr bptr < double_vector >
