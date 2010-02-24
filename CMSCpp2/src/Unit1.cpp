@@ -197,8 +197,17 @@ void stringtest()
 void rgbVectorOp()
 {
     using namespace cms::util;
+    using namespace cms::lcd::calibrate;
     RGB_vector_ptr linearVector = RGBVector::getLinearRGBVector(256);
-    cout << *RGBVector::toString(linearVector);
+    bptr < MinusOp > minus1(new MinusOp(1));
+    bptr < MinusOp > minus3(new MinusOp(1));
+    bptr < LinearOp > linear(new LinearOp());
+    minus1->setSource(linearVector);
+    minus1->addOp(minus3);
+    minus1->addOp(linear);
+    RGB_vector_ptr result = minus1->createInstance();
+    //cout << *RGBVector::toString(linearVector);
+    cout << *RGBVector::toString(result);
 };
 
 #pragma argsused
