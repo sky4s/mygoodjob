@@ -27,8 +27,11 @@
 #include <cms/colorspace/rgb.h>
 #include <cms/colorformat/excelfiletester.h>
 #include <cms/colorformat/excelfile.h>
+//#include <policybased.h>
+#include <locale>
 
 //---------------------------------------------------------------------------
+ 
 
 void excel()
 {
@@ -197,7 +200,7 @@ int main(int argc, char *argv[])
 
 
     /*string s;
-    cout << ("" == s) << endl;*/
+       cout << ("" == s) << endl; */
 
     //regress();
     //lut();

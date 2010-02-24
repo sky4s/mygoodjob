@@ -25,14 +25,14 @@ object CCTLUTForm: TCCTLUTForm
       Left = 8
       Top = 24
       Width = 63
-      Height = 25
+      Height = 16
       Caption = 'Start Level'
     end
     object Label2: TLabel
       Left = 8
       Top = 56
       Width = 60
-      Height = 25
+      Height = 16
       Caption = 'End Level'
     end
     object Label3: TLabel
@@ -46,7 +46,7 @@ object CCTLUTForm: TCCTLUTForm
       Left = 80
       Top = 24
       Width = 105
-      Height = 25
+      Height = 24
       TabOrder = 0
       Text = '255'
     end
@@ -70,7 +70,7 @@ object CCTLUTForm: TCCTLUTForm
       Left = 80
       Top = 56
       Width = 105
-      Height = 25
+      Height = 24
       TabOrder = 2
       Text = '0'
     end
@@ -144,7 +144,7 @@ object CCTLUTForm: TCCTLUTForm
       Left = 32
       Top = 88
       Width = 37
-      Height = 25
+      Height = 16
       Caption = 'Under'
     end
     object RadioButton3: TRadioButton
@@ -167,7 +167,7 @@ object CCTLUTForm: TCCTLUTForm
       Left = 80
       Top = 88
       Width = 105
-      Height = 25
+      Height = 24
       TabOrder = 2
       Text = '50'
     end
@@ -191,7 +191,7 @@ object CCTLUTForm: TCCTLUTForm
       Left = 128
       Top = 24
       Width = 57
-      Height = 25
+      Height = 24
       TabOrder = 1
       Text = '1.05'
     end
@@ -292,7 +292,7 @@ object CCTLUTForm: TCCTLUTForm
   object GroupBox7: TGroupBox
     Left = 16
     Top = 288
-    Width = 617
+    Width = 553
     Height = 89
     Caption = 'Output File'
     TabOrder = 5
@@ -300,34 +300,34 @@ object CCTLUTForm: TCCTLUTForm
       Left = 8
       Top = 24
       Width = 92
-      Height = 25
+      Height = 16
       Caption = 'Filename Prefix'
     end
     object Label6: TLabel
       Left = 8
       Top = 56
       Width = 95
-      Height = 25
+      Height = 16
       Caption = 'Output Directory'
     end
     object Edit5: TEdit
       Left = 112
       Top = 24
       Width = 201
-      Height = 25
+      Height = 24
       TabOrder = 0
       Text = 'Calib00_Table'
     end
     object Edit6: TEdit
       Left = 112
       Top = 56
-      Width = 433
-      Height = 25
+      Width = 369
+      Height = 24
       TabOrder = 1
       Text = 'D:\Gamma Table\'
     end
     object Button2: TButton
-      Left = 552
+      Left = 488
       Top = 56
       Width = 57
       Height = 25
@@ -335,6 +335,14 @@ object CCTLUTForm: TCCTLUTForm
       TabOrder = 2
       OnClick = Button2Click
     end
+  end
+  object Button3: TButton
+    Left = 576
+    Top = 344
+    Width = 57
+    Height = 25
+    Caption = 'Run'
+    TabOrder = 6
   end
   object OpenDialog1: TOpenDialog
     Options = [ofEnableSizing]

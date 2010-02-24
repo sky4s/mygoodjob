@@ -1,96 +1,37 @@
 [Closed Files]
-File_0=SourceModule,'D:\WorkSpace\CMSCpp2\src\cms\measure\MeterMeasurement.cpp',0,1,1,3,3,0,0
-File_1=SourceModule,'D:\WorkSpace\CMSCpp2\src\cms\colorspace\depend.cpp',0,1,1,1,1,0,0
-File_2=SourceModule,'d:\program files\borland\cbuilder6\include\vcl\StdCtrls.hpp',0,1,1338,30,1341,0,0
-File_3=SourceModule,'d:\program files\borland\cbuilder6\include\rpcndr.h',0,1,147,1,157,0,0
-File_4=SourceModule,'D:\WorkSpace\CMSCpp2\src\cms\lcd\calibrate\aroundAlgo.cpp',0,1,1,25,151,0,0
+File_0=SourceModule,'D:\WorkSpace\CMSCpp2\src\PolicyBased.h',0,1,1,10,10,0,0
+File_1=SourceModule,'D:\WorkSpace\CMSCpp2\src\static\math\doubleArray.cpp',0,1,13,4,17,0,0
+File_2=SourceModule,'src\cms\core.cpp',0,1,1,1,1,0,0
+File_3=SourceModule,'D:\Program Files\Borland\CBuilder6\include\boost\range\iterator.hpp',0,1,23,37,37,0,0
+File_4=SourceModule,'D:\WorkSpace\CMSCpp2\src\cms\colorspace\colorspace.cpp',0,1,1,97,113,0,0
+File_5=SourceModule,'D:\WorkSpace\CMSCpp2\src\cms\colorspace\ciexyz.cpp',0,1,1,1,17,0,0
+File_6=SourceModule,'D:\Program Files\Borland\CBuilder6\include\boost\detail\shared_count.hpp',0,1,193,1,205,0,0
+File_7=SourceModule,'D:\Program Files\Borland\CBuilder6\include\vcl\ADODB.hpp',0,1,904,104,915,0,0
+File_8=SourceModule,'D:\Program Files\Borland\CBuilder6\include\vcl\DB.hpp',0,1,805,27,823,0,0
+File_9=SourceModule,'D:\WorkSpace\CMSCpp2\src\gui\TTargetWhiteForm.cpp',0,1,1,1,1,0,0
 
 [Modules]
-Module0=D:\WorkSpace\CMSCpp2\src\gui\TCCTLUTForm.cpp
-Module1=d:\program files\borland\cbuilder6\include\vcl\FileCtrl.hpp
-Module2=D:\WorkSpace\CMSCpp2\src\gui\TTargetWhiteForm2.cpp
-Module3=D:\WorkSpace\CMSCpp2\src\gui\TTargetWhiteForm.cpp
+Module0=D:\WorkSpace\CMSCpp2\src\Unit1.cpp
+Module1=D:\WorkSpace\CMSCpp2\src\cms\util\rgbArray.cpp
+Module2=D:\WorkSpace\CMSCpp2\src\gui\TCCTLUTForm.cpp
+Module3=D:\WorkSpace\CMSCpp2\src\static\java\lang.cpp
 Module4=D:\WorkSpace\CMSCpp2\src\gui\TMainForm.cpp
-Module5=D:\WorkSpace\CMSCpp2\src\gui\TAboutBox.cpp
-Module6=D:\WorkSpace\CMSCpp2\src\gui\TAnalyzerFrame.cpp
-Module7=D:\WorkSpace\CMSCpp2\src\cms\colorformat\excelfile.cpp
-Module8=D:\Program Files\Borland\CBuilder6\include\vcl\DB.hpp
-Module9=D:\Program Files\Borland\CBuilder6\include\vcl\ADODB.hpp
-Module10=D:\WorkSpace\CMSCpp2\src\Unit1.cpp
-Module11=D:\Program Files\Borland\CBuilder6\include\boost\detail\shared_count.hpp
-Module12=D:\WorkSpace\CMSCpp2\src\cms\colorformat\excelfiletester.cpp
-Module13=D:\WorkSpace\CMSCpp2\src\static\java\lang.cpp
-Module14=D:\WorkSpace\CMSCpp2\src\static\math\doubleArray.cpp
-Module15=src\cms\core.cpp
-Module16=D:\Program Files\Borland\CBuilder6\include\boost\range\iterator.hpp
-Module17=D:\WorkSpace\CMSCpp2\src\cms\colorspace\ciexyz.cpp
-Module18=D:\WorkSpace\CMSCpp2\src\cms\colorspace\colorspace.cpp
-Count=19
+Count=5
 EditWindowCount=1
-
-[D:\WorkSpace\CMSCpp2\src\gui\TCCTLUTForm.cpp]
-ModuleType=SourceModule
-FormState=1
-FormOnTop=0
-
-[d:\program files\borland\cbuilder6\include\vcl\FileCtrl.hpp]
-ModuleType=SourceModule
-FormState=0
-FormOnTop=0
-
-[D:\WorkSpace\CMSCpp2\src\gui\TTargetWhiteForm2.cpp]
-ModuleType=SourceModule
-FormState=1
-FormOnTop=1
-
-[D:\WorkSpace\CMSCpp2\src\gui\TTargetWhiteForm.cpp]
-ModuleType=SourceModule
-FormState=0
-FormOnTop=0
-
-[D:\WorkSpace\CMSCpp2\src\gui\TMainForm.cpp]
-ModuleType=SourceModule
-FormState=0
-FormOnTop=1
-
-[D:\WorkSpace\CMSCpp2\src\gui\TAboutBox.cpp]
-ModuleType=SourceModule
-FormState=0
-FormOnTop=0
-
-[D:\WorkSpace\CMSCpp2\src\gui\TAnalyzerFrame.cpp]
-ModuleType=SourceModule
-FormState=0
-FormOnTop=0
-
-[D:\WorkSpace\CMSCpp2\src\cms\colorformat\excelfile.cpp]
-ModuleType=SourceModule
-FormState=0
-FormOnTop=0
-
-[D:\Program Files\Borland\CBuilder6\include\vcl\DB.hpp]
-ModuleType=SourceModule
-FormState=0
-FormOnTop=0
-
-[D:\Program Files\Borland\CBuilder6\include\vcl\ADODB.hpp]
-ModuleType=SourceModule
-FormState=0
-FormOnTop=0
 
 [D:\WorkSpace\CMSCpp2\src\Unit1.cpp]
 ModuleType=SourceModule
 FormState=0
 FormOnTop=0
 
-[D:\Program Files\Borland\CBuilder6\include\boost\detail\shared_count.hpp]
+[D:\WorkSpace\CMSCpp2\src\cms\util\rgbArray.cpp]
 ModuleType=SourceModule
 FormState=0
 FormOnTop=0
 
-[D:\WorkSpace\CMSCpp2\src\cms\colorformat\excelfiletester.cpp]
+[D:\WorkSpace\CMSCpp2\src\gui\TCCTLUTForm.cpp]
 ModuleType=SourceModule
-FormState=0
+FormState=1
 FormOnTop=0
 
 [D:\WorkSpace\CMSCpp2\src\static\java\lang.cpp]
@@ -98,27 +39,7 @@ ModuleType=SourceModule
 FormState=0
 FormOnTop=0
 
-[D:\WorkSpace\CMSCpp2\src\static\math\doubleArray.cpp]
-ModuleType=SourceModule
-FormState=0
-FormOnTop=0
-
-[src\cms\core.cpp]
-ModuleType=SourceModule
-FormState=0
-FormOnTop=0
-
-[D:\Program Files\Borland\CBuilder6\include\boost\range\iterator.hpp]
-ModuleType=SourceModule
-FormState=0
-FormOnTop=0
-
-[D:\WorkSpace\CMSCpp2\src\cms\colorspace\ciexyz.cpp]
-ModuleType=SourceModule
-FormState=0
-FormOnTop=0
-
-[D:\WorkSpace\CMSCpp2\src\cms\colorspace\colorspace.cpp]
+[D:\WorkSpace\CMSCpp2\src\gui\TMainForm.cpp]
 ModuleType=SourceModule
 FormState=0
 FormOnTop=0
@@ -136,35 +57,21 @@ FormState=0
 FormOnTop=0
 
 [EditWindow0]
-ViewCount=19
-CurrentView=6
+ViewCount=5
+CurrentView=4
 View0=0
 View1=1
 View2=2
 View3=3
 View4=4
-View5=5
-View6=6
-View7=7
-View8=8
-View9=9
-View10=10
-View11=11
-View12=12
-View13=13
-View14=14
-View15=15
-View16=16
-View17=17
-View18=18
 CodeExplorer=CodeExplorer@EditWindow0
 MessageView=MessageView@EditWindow0
 ClassHierarchy=ClassHierarchy@EditWindow0
 Create=1
 Visible=1
 State=0
-Left=42
-Top=162
+Left=245
+Top=151
 Width=1195
 Height=761
 MaxLeft=-4
@@ -175,141 +82,43 @@ LeftPanelSize=170
 LeftPanelClients=CodeExplorer@EditWindow0
 LeftPanelData=000004000000000000000000000000000000000000000000000100000000000000000C000000436F64654578706C6F726572FFFFFFFF
 RightPanelSize=0
-BottomPanelSize=0
+BottomPanelSize=147
 BottomPanelClients=MessageView@EditWindow0
-BottomPanelData=00000400010000000B0000004D65737361676556696577A304000000000000029300000000000000010000000000000000000000000100000000A30400000B0000004D65737361676556696577FFFFFFFF
+BottomPanelData=0000040000000000A304000000000000029300000000000000010000000000000000000000000100000000A3040000000000000100000000A30400000B0000004D65737361676556696577FFFFFFFF
 
 [View0]
-Module=D:\WorkSpace\CMSCpp2\src\cms\colorformat\excelfiletester.cpp
-CursorX=57
-CursorY=36
-TopLine=13
+Module=D:\WorkSpace\CMSCpp2\src\static\java\lang.cpp
+CursorX=53
+CursorY=179
+TopLine=8
 LeftCol=1
 
 [View1]
-Module=D:\WorkSpace\CMSCpp2\src\cms\colorformat\excelfile.cpp
-CursorX=22
-CursorY=191
-TopLine=182
+Module=D:\WorkSpace\CMSCpp2\src\gui\TMainForm.cpp
+CursorX=1
+CursorY=1
+TopLine=1
 LeftCol=1
 
 [View2]
-Module=D:\WorkSpace\CMSCpp2\src\gui\TAboutBox.cpp
-CursorX=43
-CursorY=10
+Module=D:\WorkSpace\CMSCpp2\src\gui\TCCTLUTForm.cpp
+CursorX=1
+CursorY=1
 TopLine=1
 LeftCol=1
 
 [View3]
-Module=D:\WorkSpace\CMSCpp2\src\gui\TAnalyzerFrame.cpp
+Module=D:\WorkSpace\CMSCpp2\src\cms\util\rgbArray.cpp
 CursorX=1
 CursorY=1
 TopLine=1
 LeftCol=1
 
 [View4]
-Module=D:\WorkSpace\CMSCpp2\src\gui\TMainForm.cpp
-CursorX=21
-CursorY=94
-TopLine=74
-LeftCol=1
-
-[View5]
-Module=D:\WorkSpace\CMSCpp2\src\gui\TTargetWhiteForm2.cpp
-CursorX=36
-CursorY=170
-TopLine=200
-LeftCol=1
-
-[View6]
-Module=D:\WorkSpace\CMSCpp2\src\gui\TCCTLUTForm.cpp
-CursorX=43
-CursorY=87
-TopLine=79
-LeftCol=1
-
-[View7]
-Module=d:\program files\borland\cbuilder6\include\vcl\FileCtrl.hpp
-CursorX=93
-CursorY=431
-TopLine=419
-LeftCol=32
-
-[View8]
-Module=D:\WorkSpace\CMSCpp2\src\gui\TTargetWhiteForm.cpp
-CursorX=1
-CursorY=1
-TopLine=1
-LeftCol=1
-
-[View9]
-Module=D:\Program Files\Borland\CBuilder6\include\vcl\DB.hpp
-CursorX=27
-CursorY=823
-TopLine=805
-LeftCol=1
-
-[View10]
-Module=D:\Program Files\Borland\CBuilder6\include\vcl\ADODB.hpp
-CursorX=104
-CursorY=915
-TopLine=904
-LeftCol=1
-
-[View11]
-Module=D:\Program Files\Borland\CBuilder6\include\boost\detail\shared_count.hpp
-CursorX=1
-CursorY=205
-TopLine=193
-LeftCol=1
-
-[View12]
-Module=D:\WorkSpace\CMSCpp2\src\cms\colorspace\ciexyz.cpp
-CursorX=1
-CursorY=17
-TopLine=1
-LeftCol=1
-
-[View13]
-Module=D:\WorkSpace\CMSCpp2\src\cms\colorspace\colorspace.cpp
-CursorX=97
-CursorY=113
-TopLine=1
-LeftCol=1
-
-[View14]
-Module=D:\Program Files\Borland\CBuilder6\include\boost\range\iterator.hpp
-CursorX=37
-CursorY=37
-TopLine=23
-LeftCol=1
-
-[View15]
-Module=src\cms\core.cpp
-CursorX=1
-CursorY=1
-TopLine=1
-LeftCol=1
-
-[View16]
-Module=D:\WorkSpace\CMSCpp2\src\static\math\doubleArray.cpp
-CursorX=4
-CursorY=17
-TopLine=13
-LeftCol=1
-
-[View17]
 Module=D:\WorkSpace\CMSCpp2\src\Unit1.cpp
-CursorX=27
-CursorY=61
-TopLine=53
-LeftCol=1
-
-[View18]
-Module=D:\WorkSpace\CMSCpp2\src\static\java\lang.cpp
-CursorX=53
-CursorY=179
-TopLine=8
+CursorX=2
+CursorY=34
+TopLine=28
 LeftCol=1
 
 [Watches]
@@ -331,13 +140,13 @@ Count=0
 Create=1
 Visible=1
 State=0
-Left=-18
-Top=-2
-Width=1280
+Left=0
+Top=0
+Width=1262
 Height=129
 MaxLeft=-1
 MaxTop=-1
-ClientWidth=1272
+ClientWidth=1254
 ClientHeight=96
 
 [Components]
@@ -472,7 +281,7 @@ LRDockWidth=311
 Dockable=1
 SplitPos=159
 ArrangeBy=Name
-SelectedItem=Filter
+SelectedItem=Caption
 ExpandedItems=Font,Options,OptionsEx
 HiddenCategories=
 
@@ -555,11 +364,11 @@ State=0
 Left=0
 Top=12
 Width=170
-Height=716
+Height=566
 MaxLeft=-1
 MaxTop=-1
 ClientWidth=170
-ClientHeight=716
+ClientHeight=566
 TBDockHeight=388
 LRDockWidth=170
 Dockable=1
@@ -567,7 +376,7 @@ ClassViewDisplayMode=0
 
 [MessageView@EditWindow0]
 Create=1
-Visible=0
+Visible=1
 State=0
 Left=12
 Top=0
@@ -589,8 +398,8 @@ DockSiteType=0
 Create=1
 Visible=1
 State=0
-Left=158
-Top=139
+Left=36
+Top=129
 Width=319
 Height=808
 MaxLeft=-1
@@ -604,5 +413,5 @@ DockClients=ObjectTree,PropertyInspector
 DockSiteData=00000400000000000A030000000000000137010000000000000100000000060200000E0000004F626A656374547265655669657701000000000A0300001100000050726F7065727479496E73706563746F72FFFFFFFF
 
 [ActiveProject]
-ActiveProject=2
+ActiveProject=1
 
