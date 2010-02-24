@@ -49,6 +49,7 @@ class TCCTLUTForm:public TForm {
     TEdit *Edit6;
     TButton *Button2;
     TOpenDialog *OpenDialog1;
+        TButton *Button3;
     void __fastcall RadioGroup_inClick(TObject * Sender);
     void __fastcall RadioGroup_outClick(TObject * Sender);
     void __fastcall RadioGroup_lutClick(TObject * Sender);

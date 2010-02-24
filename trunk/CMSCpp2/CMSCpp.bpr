@@ -108,6 +108,7 @@
       <FILE FILENAME="lib\jama\jama_svd.h" FORMNAME="" UNITNAME="jama_svd.h" CONTAINERID="" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="src\cms\colorformat\excelfiletester.cpp" FORMNAME="" UNITNAME="excelfiletester" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="src\cms\colorformat\excelfile.cpp" FORMNAME="" UNITNAME="excelfile" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="src\PolicyBased.h" FORMNAME="" UNITNAME="PolicyBased.h" CONTAINERID="" DESIGNCLASS="" LOCALCOMMAND=""/>
   </FILELIST>
   <BUILDTOOLS>
   </BUILDTOOLS>

@@ -29,14 +29,23 @@ class TMainForm:public TForm {
     void __fastcall FormCreate(TObject * Sender);
     void __fastcall CCTLUT1Click(TObject * Sender);
   private:			// User declarations
+    //==========================================================================
+    // meter
+    //==========================================================================
      bool linkCA210;
      bptr < cms::measure::meter::CA210 > ca210;
      bptr < cms::measure::meter::Meter > meter;
+    //==========================================================================
   public:			// User declarations
-     __fastcall TMainForm(TComponent * Owner);
-
+    //==========================================================================
+    // meter
+    //==========================================================================
      bptr < cms::measure::MeterMeasurement > mm;
      bptr < cms::measure::meter::CA210 > getCA210();
+    //==========================================================================
+    __fastcall TMainForm(TComponent * Owner);
+
+
 };
 //---------------------------------------------------------------------------
 extern PACKAGE TMainForm *MainForm;
