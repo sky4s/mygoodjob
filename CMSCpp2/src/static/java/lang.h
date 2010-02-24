@@ -234,7 +234,6 @@ namespace java {
 	    const bool isNull();
 	     Object(bool _null);
 	     Object();
-	    //Object(Object & o);
 	    const int getObjectID();
 
 	  protected:

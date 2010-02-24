@@ -47,7 +47,6 @@ void TCCTLUTForm::checkAvailable()
 
     this->Edit_available->Text = available ? "available" : "unavailable";
     this->Edit_available->Font->Color = available ? clLime : clRed;
-    //this->Edit_available->Refresh();
 }
 
 //---------------------------------------------------------------------------
@@ -69,15 +68,6 @@ void __fastcall TCCTLUTForm::FormCreate(TObject * Sender)
 //---------------------------------------------------------------------------
 
 
-void __fastcall TCCTLUTForm::CheckBox_availableClick(TObject * Sender)
-{
-    //bool checked = this->CheckBox_available->Checked;
-    //this->CheckBox_available->Checked=false;
-    /*bool checked = this->CheckBox_available->Checked;
-       this->CheckBox_available->Checked = !checked; */
-}
-
-//---------------------------------------------------------------------------
 
 
 void __fastcall TCCTLUTForm::Button2Click(TObject * Sender)
