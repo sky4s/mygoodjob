@@ -29,9 +29,11 @@
 #include <cms/colorformat/excelfile.h>
 //#include <policybased.h>
 #include <locale>
+#include <cms/lcd/calibrate/rgbvectorop.h>
+#include <cms/util/rgbarray.h>
 
 //---------------------------------------------------------------------------
- 
+
 
 void excel()
 {
@@ -192,6 +194,13 @@ void stringtest()
 
 //---------------------------------------------------------------------------
 
+void rgbVectorOp()
+{
+    using namespace cms::util;
+    RGB_vector_ptr linearVector = RGBVector::getLinearRGBVector(256);
+    cout << *RGBVector::toString(linearVector);
+};
+
 #pragma argsused
 int main(int argc, char *argv[])
 {
@@ -204,8 +213,9 @@ int main(int argc, char *argv[])
 
     //regress();
     //lut();
-    excel();
+    //excel();
     //inverse();
+    rgbVectorOp();
     getch();
 }
 

@@ -9,22 +9,18 @@
 //本項目內頭文件
 #include <java/lang.h>
 
+
 namespace cms {
     namespace util {
 	class RGBArray {
 
 	};
 	class RGBVector {
-	  protected:
-	    RGB_vector_ptr rgbVector;
 	  public:
-	    RGBVector(RGB_vector_ptr rgbVector);
+	    static string_ptr toString(RGB_vector_ptr rgbVector);
+	    static RGB_vector_ptr getLinearRGBVector(int n);
 	};
-	class RGBVectorOp:public RGBVector {
-	  public:
-	    virtual RGBVectorOp createInstance();
-	    void addSource(RGBVectorOp source);
-	};
+
     };
 }
 #endif

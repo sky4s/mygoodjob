@@ -54,7 +54,6 @@ class TCCTLUTForm:public TForm {
     void __fastcall RadioGroup_outClick(TObject * Sender);
     void __fastcall RadioGroup_lutClick(TObject * Sender);
     void __fastcall FormCreate(TObject * Sender);
-    void __fastcall CheckBox_availableClick(TObject * Sender);
     void __fastcall Button2Click(TObject * Sender);
   private:			// User declarations
      bool checkAvailable(int in, int lut, int out);

@@ -50,7 +50,7 @@ namespace cms {
 	};
     };
 
-    class Spectra:public jObject, SpectraIF, util::NameIF {
+    class Spectra:public jObject, SpectraIF /*, util::NameIF */  {
     };
 
 
