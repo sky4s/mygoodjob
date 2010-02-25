@@ -41,6 +41,25 @@ namespace cms {
 	      public:
 		 MinusOp(double minusValue);
 	    };
+
+	    class P1P2:public RGBVectorOp {
+	      private:
+		double p1, p2;
+	      protected:
+		 RGB_vector_ptr getRendering(RGB_vector_ptr source);
+	      public:
+		 P1P2(double p1, double p2);
+	    };
+
+	    class RBInterpolation:public RGBVectorOp {
+	      private:
+		double under;
+	      protected:
+		 RGB_vector_ptr getRendering(RGB_vector_ptr source);
+	      public:
+		 RBInterpolation(double under);
+	    };
+
 	};
     };
 }
