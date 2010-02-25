@@ -133,6 +133,7 @@ namespace cms {
 	namespace logo {
 	    class LogoFile;
 	};
+	class ExcelFileDB;
     };
     namespace colorspace {
 	namespace depend {

@@ -13,7 +13,7 @@
       build\algo.obj build\aroundAlgo.obj build\nearAlgo.obj build\cp.obj 
       build\searcher.obj build\interpolation.obj build\regression.obj 
       build\svd.obj build\excelfiletester.obj build\excelfile.obj 
-      build\rgbvectorop.obj"/>
+      build\rgbvectorop.obj build\lcdcalibrator.obj"/>
     <RESFILES value="CMSCpp.res"/>
     <IDLFILES value=""/>
     <IDLGENFILES value=""/>
@@ -29,7 +29,7 @@
       inetdbbde.bpi inetdbxpress.bpi inetdb.bpi nmfast.bpi webdsnap.bpi 
       bcbie.bpi websnap.bpi soaprtl.bpi dclocx.bpi dbexpress.bpi dbxcds.bpi 
       indy.bpi bcb2kaxserver.bpi bcbindent.bpi"/>
-    <PATHCPP value=".;src;src\ca210api;src\cms;src\cms;src\cms\colorformat;src\cms\colorspace;src\cms\colorspace;src\cms\colorspace;src\cms\colorspace;src\cms\colorspace;src\cms\measure;src\cms\measure;src\cms\measure;src\static;src\static\java;imports\CA200SRVRLib;imports\CA200SRVRLib;src\static\math;src\cms\lcd\calibrate;src\cms\util;src\cms\lcd\calibrate;src\cms\lcd\calibrate;src\cms\lcd\calibrate;src\cms\measure;src\static\math;src\static\math;src\static\math;src\static\math;src\cms\colorformat;src\cms\colorformat;src\cms\lcd\calibrate"/>
+    <PATHCPP value=".;src;src\ca210api;src\cms;src\cms;src\cms\colorformat;src\cms\colorspace;src\cms\colorspace;src\cms\colorspace;src\cms\colorspace;src\cms\colorspace;src\cms\measure;src\cms\measure;src\cms\measure;src\static;src\static\java;imports\CA200SRVRLib;imports\CA200SRVRLib;src\static\math;src\cms\lcd\calibrate;src\cms\util;src\cms\lcd\calibrate;src\cms\lcd\calibrate;src\cms\lcd\calibrate;src\cms\measure;src\static\math;src\static\math;src\static\math;src\static\math;src\cms\colorformat;src\cms\colorformat;src\cms\lcd\calibrate;src\cms\lcd\calibrate"/>
     <PATHPAS value=".;"/>
     <PATHRC value=".;"/>
     <PATHASM value=".;"/>
@@ -111,6 +111,7 @@
       <FILE FILENAME="src\cms\colorformat\excelfile.cpp" FORMNAME="" UNITNAME="excelfile" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="src\PolicyBased.h" FORMNAME="" UNITNAME="PolicyBased.h" CONTAINERID="" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="src\cms\lcd\calibrate\rgbvectorop.cpp" FORMNAME="" UNITNAME="rgbvectorop" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="src\cms\lcd\calibrate\lcdcalibrator.cpp" FORMNAME="" UNITNAME="lcdcalibrator" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
   </FILELIST>
   <BUILDTOOLS>
   </BUILDTOOLS>

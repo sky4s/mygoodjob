@@ -210,6 +210,24 @@ void rgbVectorOp()
     cout << *RGBVector::toString(result);
 };
 
+void sizeCompare()
+{
+    double *darray = new double[10];
+    double_array dvalues(darray);
+    double_vector dvector(4 );
+    using namespace std;
+    cout << sizeof(dvalues) << endl;
+    cout << sizeof(darray) << endl;
+    cout << sizeof(*darray) << endl;
+    //cout << sizeof(*dvalues) << endl;
+
+    cout << sizeof(dvector) << endl;
+    cout << dvector.capacity() << endl;
+    cout << dvector.size() << endl;
+
+
+}
+
 #pragma argsused
 int main(int argc, char *argv[])
 {
@@ -224,7 +242,8 @@ int main(int argc, char *argv[])
     //lut();
     //excel();
     //inverse();
-    rgbVectorOp();
+    //rgbVectorOp();
+    sizeCompare();
     getch();
 }
 
