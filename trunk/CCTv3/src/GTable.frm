@@ -607,1204 +607,6 @@ End Enum
 
 
 Private Sub btn_debug_Click()
-    Go_ahead = True
-    MainForm.WindowState = 1
-    '''''''''' Parameter
-    If ((GLS > 0) And ((GSL = 255) Or (GSL = 1023))) Then
-        
-        StartG = Val(GSL) + 1
-    Else
-        StartG = Val(GSL)
-    End If
-    
-    EndG = Val(GEL)
-    STP = 2 ^ Val(GLS)
-    ''''''''' Open Index File
-    
-    If ((chk_ga256.Value = 1) And (op_in_10.Value = True)) Then
-        max_c = 256
-    ElseIf (op_in_6.Value = True And op_out_6.Value = True) Then
-        max_c = 252
-    Else
-        max_c = 255
-    End If
-    
-    '''''' Record Original Data    Measurement
-    
-    
-    ''''''''''''''''Test Remove recipe by stockton 12/14
-    If ((chk_ga256.Value = 1) And (op_in_10.Value = True)) Then
-        GLT = 257
-    ElseIf (op_in_6.Value = True And op_out_6.Value = True) Then
-        GLT = 253
-    Else
-        GLT = 256
-    End If
-    
-    Dim Lx(1024) As Double
-    Dim Ly(1024) As Double
-    Dim YYN(1024) As Double
-    Dim RN(1024) As Double
-    Dim GN(1024) As Double
-    Dim BN(1024) As Double
-    Dim YYR(1024) As Single
-    
-    Dim Lgain(1024) As Single
-    
-    Dim YYP(1024) As Single
-    Dim RP(1024) As Single
-    Dim GP(1024) As Single
-    Dim BP(1024) As Single
-    
-    Dim index(1024) As Single
-    
-    Dim RL(1024) As Single
-    Dim GL(1024) As Single
-    Dim BL(1024) As Single
-    Dim GrayL(1024) As Single
-    Dim GL_tmp(1024) As Single
-    Dim fm As String
-    
-    cmdDiag.CancelError = True
-    cmdDiag.filename = "*.xls"
-    cmdDiag.Filter = "Row Data (*.xls)|*.xls"
-    cmdDiag.FilterIndex = 2
-    cmdDiag.Action = 1
-    If Err.Number = cdlCancel Then
-        Exit Sub
-    Else
-        fm = cmdDiag.filename
-        'fm = Mid$(fm, 1, InStr(1, fm, ".")) + "xls"
-    End If
-    
-    fname = Dir$(fm, vbNormal Or vbReadOnly)
-    If fname = "" Then
-        MsgBox "No File", vbOKOnly
-        Exit Sub
-    Else
-    End If
-    
-    
-    Dim sheet As SpreadSheet
-    Set sheet = Utils.openSheet(fm)
-    
-    row1 = 1
-    sheet.setSheetIndex 2
-    For GLX = StartG To EndG Step -STP
-        x = GLX
-        If ((chk_ga256.Value = 1) And (op_out_10.Value = True)) Then
-            If x > 1023 Then x = 1023
-        Else
-            If x > 255 Then x = 255
-        End If
-        GrayL(row1 - 1) = x
-        
-        row1 = row1 + 1
-        
-        
-        Lx(row1 - 2) = sheet.cell(row1, 2) 'L(0)=L255
-        Ly(row1 - 2) = sheet.cell(row1, 3)
-        YYN(row1 - 2) = sheet.cell(row1, 4)
-        RN(row1 - 2) = sheet.cell(row1, 5)
-        GN(row1 - 2) = sheet.cell(row1, 6)
-        BN(row1 - 2) = sheet.cell(row1, 7)
-        
-    Next GLX
-    
-    '''''''''''''''Data Normalize Remove Recipe by Stockton 12/14
-    Dim n As Integer
-    n = row1 - 1
-    Ymin = YYN(n - 1)
-    ''''' Correct_Error_MeasureData
-    If 0 Then ''''''''test  off
-        For i = 0 To n - 2
-            YTmax = 0
-            RTmax = 0
-            GTmax = 0
-            BTmax = 0
-            If i + 2 <= n - 1 Then
-                For j = i + 2 To n - 1
-                    If YTmax < YYN(j) Then YTmax = YYN(j)
-                    If RTmax < RN(j) Then RTmax = RN(j)
-                    If GTmax < GN(j) Then GTmax = GN(j)
-                    If BTmax < BN(j) Then BTmax = BN(j)
-                Next j
-                '''''''''''''YY
-                If YYN(i) < YYN(i + 1) Or YYN(i) < YTmax Then
-                    If YYN(i) < YYN(i + 1) And YYN(i + 1) > YTmax Then
-                        YYN(i + 1) = (YYN(i) + YYN(i + 2)) / 2
-                    Else
-                        YYN(i) = YTmax
-                    End If
-                    If YYN(i) > YYN(i + 1) And YYN(i) < YTmax Then YYN(i) = YTmax
-                End If
-                ''''''''''''' R
-                If RN(i) < RN(i + 1) Or RN(i) < RTmax Then
-                    If RN(i) < RN(i + 1) And RN(i + 1) > RTmax Then
-                        RN(i + 1) = (RN(i) + RN(i + 2)) / 2
-                    Else
-                        RN(i) = RTmax
-                    End If
-                    If RN(i) > RN(i + 1) And RN(i) < RTmax Then RN(i) = RTmax
-                End If
-                '''''''''''' G
-                If GN(i) < GN(i + 1) Or GN(i) < GTmax Then
-                    If GN(i) < GN(i + 1) And GN(i + 1) > GTmax Then
-                        GN(i + 1) = (GN(i) + GN(i + 2)) / 2
-                    Else
-                        GN(i) = GTmax
-                    End If
-                    If GN(i) > GN(i + 1) And GN(i) < GTmax Then GN(i) = GTmax
-                End If
-                '''''''''''' B
-                If BN(i) < BN(i + 1) Or BN(i) < BTmax Then
-                    If BN(i) < BN(i + 1) And BN(i + 1) > BTmax Then
-                        BN(i + 1) = (BN(i) + BN(i + 2)) / 2
-                    Else
-                        BN(i) = BTmax
-                    End If
-                    If BN(i) > BN(i + 1) And BN(i) < BTmax Then BN(i) = BTmax
-                End If
-            Else
-                ''''''' YY
-                If YYN(i) < YYN(i + 1) Then
-                    Ytemporal = YYN(i)
-                    YYN(i) = YYN(i + 1)
-                    YYN(i + 1) = Ytemporal
-                End If
-                ''''''' RR
-                If RN(i) < RN(i + 1) Then
-                    Rtemporal = RN(i)
-                    RN(i) = RN(i + 1)
-                    RN(i + 1) = Rtemporal
-                End If
-                ''''''' GG
-                If GN(i) < GN(i + 1) Then
-                    Gtemporal = GN(i)
-                    GN(i) = GN(i + 1)
-                    GN(i + 1) = Gtemporal
-                End If
-                ''''''' BB
-                If BN(i) < BN(i + 1) Then
-                    Btemporal = BN(i)
-                    BN(i) = BN(i + 1)
-                    BN(i + 1) = Btemporal
-                End If
-            End If
-        Next i
-        
-    End If
-    '''''''''''''''Regress Y remove recipe by Stockton 12/14
-    ''''''''' Regression Y
-    Dim RegressData As String
-    RegressData = Empty
-    K = 4 ' For 3 independent variable Y= R G B
-    '''''''' YYN
-    RegressData = YYN(0)
-    For i = 1 To n - 1
-        RegressData = RegressData & "," & YYN(i)
-    Next i
-    '''''''' RN
-    For i = 0 To n - 1
-        RegressData = RegressData & "," & RN(i)
-    Next i
-    '''''''' GN
-    For i = 0 To n - 1
-        RegressData = RegressData & "," & GN(i)
-    Next i
-    '''''''' BN
-    For i = 0 To n - 1
-        RegressData = RegressData & "," & BN(i)
-    Next i
-    
-    Call MultipleRegress(RegressData, n)
-    
-    
-    '''''''''''''' Precdit Y Remove Recipe by Stockton 12/14
-    '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-    ''''''''' Predict Y
-    Dim rr As String, Gr As String, Br As String, YR As String
-    rr = Empty
-    YR = Empty
-    rr = 1
-    YR = Beta(1, 1) + Beta(2, 1) * 1 + Beta(3, 1) * 1 + Beta(4, 1) * 1
-    
-    For SRC = 2 To GLT
-        If SRC <= Round(RN(0), 0) And SRC <= Round(GN(0), 0) And SRC <= Round(BN(0), 0) Then
-            YYR(SRC) = Beta(1, 1) + Beta(2, 1) * SRC + Beta(3, 1) * SRC + Beta(4, 1) * SRC
-            rr = rr & "," & SRC
-            YR = YR & "," & YYR(SRC)
-            
-        Else
-            Exit For
-        End If
-    Next SRC
-    '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-    
-    '''''''''''''' Regress RGB Remove Recipe by Stockton 12/14
-    Dim RRP As String, GRP As String, BRP As String
-    RRP = Empty
-    'GRP = Empty
-    'BRP = Empty
-    
-    RRP = rr & "," & YR
-    Call SimpleRegress(RRP)
-    RBeta1 = Beta1
-    RBeta2 = Beta2
-    RRsq = Rsqs
-    
-    
-    '''''''''''''' Lookup Table
-    Unload Background
-    
-    
-    '''''''''''''' Predict RGB Remove Recipe by Stockton 12/14 TEST OK
-    If flag_LoadG = False Then
-        If ((chk_ga256.Value = 1) And (op_in_10.Value = True)) Then
-            For i = 0 To 256
-                DesiredGamma(i) = ((256 - i) / 256) ^ Val(Text_Ga.Text)
-                'DesiredGamma(i) = ((1023 - i * 4) / 1023) ^ Val(Text_Ga.Text)
-            Next i
-        ElseIf (op_out_6.Value = True And op_in_6.Value = True) Then
-            
-            For i = 0 To 252
-                DesiredGamma(i) = ((252 - i) / 252) ^ Val(Text_Ga.Text)
-            Next i
-        Else
-            
-            For i = 0 To 255 '''''Normal Case
-                'Lgain(i) = ((255 - i) / 255) ^ Val(Text_Ga.Text)
-                DesiredGamma(i) = ((255 - i) / 255) ^ Val(Text_Ga.Text)
-                'RSDC = RSDC + 1
-            Next i
-        End If
-    End If
-    
-    'For i = 0 To 255
-    '    Lgain(i) = ((255 - i) / 255) ^ Val(Text_Ga.Text)
-    'RSDC = RSDC + 1
-    'Next i
-    
-    ''''''''''here
-    For i = 0 To max_c
-        YYP(i) = (YYR(SRC - 1) - YYN(n - 1)) * DesiredGamma(i) + YYN(n - 1)
-        'YYP(i) = (YYR(SRC - 1) - YYN(n - 1)) * Lgain(i) + YYN(n - 1)
-        'YYP(i) = (YYR(SRC - 1) - YYN(n - 1)) * (i / 255) ^ 2.4 + YYN(n - 1)
-        RP(i) = RBeta1 + RBeta2 * YYP(i)
-        GP(i) = RBeta1 + RBeta2 * YYP(i)
-        BP(i) = RBeta1 + RBeta2 * YYP(i)
-    Next i
-    
-    For i = 0 To max_c
-        
-        temp_diff = 255 - Val(Text4.Text) ''''' B Intensity Gain
-        temp_bbb = BP(i)
-        
-        If chk_BGain.Value = 1 Then
-            If i >= (temp_diff) Then
-                
-                BP(i) = BP(i) * Val(Text3.Text) '''' Gain
-                
-            Else
-                
-                BP(i) = BP(temp_diff) * Val(Text3.Text) + (100 - BP(temp_diff) * Val(Text3.Text)) / (255 - Val(Text4.Text)) * (temp_diff - i)
-                'BP(i) = BP(i) * Val(Text3.Text)
-            End If
-        End If
-        
-        BKR = 1000
-        BKG = 1000
-        BKB = 1000
-        
-        
-        
-        ''''''''''''''''10 bit Gamma  by Stockton
-        If GLS = 0 Then
-            jj = 4
-        ElseIf GLS = 1 Then
-            jj = 3
-        ElseIf GLS = 2 Then
-            jj = 2
-        Else
-            jj = 1
-        End If
-        
-        ''''''R
-        'If ((Option1.Value = True) Or (Option4.Value = True)) Then
-        If ((op_in_10.Value = True) Or (op_in_8.Value = True) Or (op_in_6.Value = True)) Then
-            For j = 0 To n - 1
-                errorR = (RP(i) - RN(j))
-                If errorR > 0 Then Exit For
-            Next j
-            
-            
-        Else
-            
-            ''indexRR
-            For j = jj To n - 1
-                errorR = (RP(i) - RN(j))
-                If errorR > 0 Then Exit For
-            Next j
-        End If
-        If j - 1 < 0 Then
-            indexRR = GrayL(0)
-        Else
-            indexRR = GrayL(j) + (RP(i) - RN(j)) / (RN(j - 1) - RN(j)) * (GrayL(j - 1) - GrayL(j))
-        End If
-        
-        
-        If (op_10bit2.Value = True) Then
-            'If ((Option1.Value = True) Or (Option4.Value = True)) Then
-            If ((op_in_10.Value = True) Or (op_in_8.Value = True)) Then
-                RL(i) = Round(indexRR * 4, 0)
-            Else
-                RL(i) = Round(indexRR * 2, 0) * 2
-            End If
-        Else
-            'If ((Option1.Value = True) Or (Option4.Value = True)) Then
-            If (op_out_10.Value = True) Then
-                If MainForm.op_pc.Value = True Then
-                    RL(i) = Round(indexRR * 16, 0) '''''''10+2
-                Else
-                    RL(i) = Round(indexRR * 4, 0)
-                End If
-            ElseIf (op_out_8.Value = True) Then
-                If MainForm.op_pc.Value = True Then
-                    RL(i) = Round(indexRR * 8, 0) * 2
-                Else
-                    RL(i) = Round(indexRR * 2, 0) * 2
-                End If
-            Else
-                RL(i) = Round(indexRR * 8, 0) * 2
-            End If
-        End If
-        'If Option2.Value = True Then RL(i) = Round(indexRR * 2, 0) * 2
-        
-        'If Option3.Value = True Then RL(i) = Round(indexRR / 255 * 1008, 0)
-        
-        ''''''G
-        'If ((Option1.Value = True) Or (Option4.Value = True)) Then
-        If ((op_in_10.Value = True) Or (op_in_8.Value = True) Or (op_in_6.Value = True)) Then
-            For j = 0 To n - 1
-                errorG = (GP(i) - GN(j))
-                If errorG > 0 Then Exit For
-            Next j
-        Else
-            For j = jj To n - 1
-                errorG = (GP(i) - GN(j))
-                If errorG > 0 Then Exit For
-            Next j
-        End If
-        If j - 1 < 0 Then
-            indexGG = GrayL(0)
-        Else
-            
-            indexGG = GrayL(j) + (GP(i) - GN(j)) / (GN(j - 1) - GN(j)) * (GrayL(j - 1) - GrayL(j))
-        End If
-        
-        
-        If (op_10bit2.Value = True) Then
-            'If ((Option1.Value = True) Or (Option4.Value = True)) Then
-            If ((op_in_10.Value = True) Or (op_in_8.Value = True)) Then
-                GL(i) = Round(indexGG * 4, 0)
-            Else
-                GL(i) = Round(indexGG * 2, 0) * 2
-            End If
-        Else
-            'If ((Option1.Value = True) Or (Option4.Value = True)) Then
-            If (op_out_10.Value = True) Then
-                If MainForm.op_pc.Value = True Then
-                    GL(i) = Round(indexGG * 16, 0)
-                Else
-                    GL(i) = Round(indexGG * 4, 0)
-                End If
-            ElseIf (op_out_8.Value = True) Then
-                If MainForm.op_pc.Value = True Then
-                    GL(i) = Round(indexGG * 8, 0) * 2
-                Else
-                    GL(i) = Round(indexGG * 2, 0) * 2
-                End If
-            Else
-                GL(i) = Round(indexGG * 8, 0) * 2
-            End If
-        End If
-        'If Option2.Value = True Then GL(i) = Round(indexGG * 2, 0) * 2
-        
-        'If Option3.Value = True Then GL(i) = Round(indexGG / 255 * 1008, 0)
-        
-        
-        If ((op_in_10.Value = True) Or (op_in_8.Value = True) Or (op_in_6.Value = True)) Then
-            
-            
-            If True Then
-                ''''''''''B sorting from minimum to abord B hook reverse
-                For j = n - 1 To 0 Step -1
-                    errorB = (BP(i) - BN(j))
-                    If errorB < 0 Then Exit For
-                Next j
-                
-            Else
-                
-                For j = 0 To n - 1
-                    errorB = (BP(i) - BN(j))
-                    If errorB > 0 Then Exit For
-                Next j
-            End If
-        Else
-            For j = jj To n - 1
-                errorB = (BP(i) - BN(j))
-                If errorB > 0 Then Exit For
-            Next j
-        End If
-        
-        If j - 1 < 0 Then
-            indexBB = GrayL(0)
-        Else
-            '    indexBB = GrayL(j) + (BP(i) - BN(j)) / (BN(j - 1) - BN(j)) * (GrayL(j - 1) - GrayL(j))   '''''''上到下
-            indexBB = GrayL(j) - (BN(j) - BP(i)) / (BN(j) - BN(j + 1)) * (GrayL(j) - GrayL(j + 1)) '''''''下到上
-            
-        End If
-        
-        If (op_10bit2.Value = True) Then
-            'If ((Option1.Value = True) Or (Option4.Value = True)) Then
-            If ((op_in_10.Value = True) Or (op_in_8.Value = True)) Then
-                BL(i) = Round(indexBB * 4, 0)
-            Else
-                BL(i) = Round(indexBB * 2, 0) * 2
-            End If
-        Else
-            'If ((Option1.Value = True) Or (Option4.Value = True)) Then
-            If (op_out_10.Value = True) Then
-                If MainForm.op_pc.Value = True Then
-                    BL(i) = Round(indexBB * 16, 0)
-                Else
-                    BL(i) = Round(indexBB * 4, 0)
-                End If
-            ElseIf (op_out_8.Value = True) Then
-                If MainForm.op_pc.Value = True Then
-                    BL(i) = Round(indexBB * 8, 0) * 2
-                Else
-                    BL(i) = Round(indexBB * 2, 0) * 2
-                End If
-            Else
-                BL(i) = Round(indexBB * 8, 0) * 2
-            End If
-        End If
-        
-        'If Option2.Value = True Then BL(i) = Round(indexBB * 2, 0) * 2
-        
-        'If Option3.Value = True Then BL(i) = Round(indexBB / 255 * 1008, 0)
-        
-    Next i
-    
-    
-    RL(max_c) = 0
-    GL(max_c) = 0
-    BL(max_c) = 0
-    ''''Low Gray Level fix Add by Stockton 10/19/2005
-    Dim P1 As Integer
-    Dim P2 As Integer
-    Dim RL2(1024) As Double
-    Dim GL2(1024) As Double
-    Dim BL2(1024) As Double
-    Dim RP2(1024) As Double
-    Dim GP2(1024) As Double
-    Dim BP2(1024) As Double
-    Dim RN2(1024) As Double
-    Dim GN2(1024) As Double
-    Dim BN2(1024) As Double
-    For i = 0 To max_c
-        RL2(i) = RL(max_c - i)
-        GL2(i) = GL(max_c - i)
-        BL2(i) = BL(max_c - i)
-        RP2(i) = RP(max_c - i)
-        GP2(i) = GP(max_c - i)
-        BP2(i) = BP(max_c - i)
-        
-    Next i
-    sheet.cell(1, 8) = "RP"
-    sheet.cell(1, 9) = "GP"
-    sheet.cell(1, 10) = "BP"
-    For i = 0 To max_c
-        
-        sheet.cell(i + 2, 8) = RP(i)
-        sheet.cell(i + 2, 9) = GP(i)
-        sheet.cell(i + 2, 10) = BP(i)
-    Next i
-    
-    
-    
-    If op_p1p2.Value = True Then
-        
-        P1 = Val(TEXT_P1.Text)
-        P2 = Val(TEXT_P2.Text)
-        
-        
-        '''''P1P2
-        
-        
-        If P2 > 0 Then ''''P2<=0  BYPASS
-            temp_g = GL2(P1)
-            i = 0
-            Do
-                diff_r = RL2(i) - temp_g
-                If diff_r > 0 Then
-                    index_r = i
-                    Exit Do
-                End If
-                i = i + 1
-            Loop
-            i = 0
-            Do
-                diff_b = BL2(i) - temp_g
-                If diff_b > 0 Then
-                    index_b = i
-                    Exit Do
-                End If
-                i = i + 1
-            Loop
-            
-            RP2(P1) = RP2(index_r) + (RP2(index_r + 1) - RP2(index_r)) * (temp_g - RL2(index_r)) / (RL2(index_r + 1) - RL2(index_r))
-            BP2(P1) = BP2(index_b) + (BP2(index_b + 1) - BP2(index_b)) * (temp_g - BL2(index_b)) / (BL2(index_b + 1) - BL2(index_b))
-            
-            
-            '''''''''P1-P2 成Gamma變化  讓他急遽變化一點
-            For i = P1 + 1 To P2 - 1
-                Gratio = (GP2(i) - GP2(P1)) / (GP2(P2) - GP2(P1))
-                RP2(i) = RP2(P1) + (RP2(P2) - RP2(P1)) * Gratio
-                
-                BP2(i) = BP2(P1) + (BP2(P2) - BP2(P1)) * Gratio
-                
-            Next i
-            
-            For i = 0 To max_c
-                RL(i) = RL2(max_c - i)
-                GL(i) = GL2(max_c - i)
-                BL(i) = BL2(max_c - i)
-                RP(i) = RP2(i)
-                GP(i) = GP2(i)
-                BP(i) = BP2(i)
-                
-            Next i
-            sheet.setSheetIndex 2
-            sheet.cell(1, 11) = "RP_Intensity_Fix"
-            sheet.cell(1, 12) = "GP_Intensity_Fix"
-            sheet.cell(1, 13) = "BP_Intensity_Fix"
-            For i = 0 To max_c
-                
-                sheet.cell(i + 2, 11) = RP(i)
-                sheet.cell(i + 2, 12) = GP(i)
-                sheet.cell(i + 2, 13) = BP(i)
-            Next i
-            For i = 0 To max_c
-                
-                For j = 0 To n - 1
-                    errorR = (RP(i) - RN(j))
-                    If errorR > 0 Then Exit For
-                Next j
-                
-                If j - 1 < 0 Then
-                    indexRR = GrayL(0)
-                Else
-                    indexRR = GrayL(j) + (RP(i) - RN(j)) / (RN(j - 1) - RN(j)) * (GrayL(j - 1) - GrayL(j))
-                End If
-                
-                If (op_10bit2.Value = True) Then
-                    'If ((Option1.Value = True) Or (Option4.Value = True)) Then
-                    If ((op_in_10.Value = True) Or (op_in_8.Value = True)) Then
-                        RL(i) = Round(indexRR * 4, 0)
-                    Else
-                        RL(i) = Round(indexRR * 2, 0) * 2
-                    End If
-                Else
-                    'If ((Option1.Value = True) Or (Option4.Value = True)) Then
-                    If (op_out_10.Value = True) Then
-                        If MainForm.op_pc.Value = True Then
-                            RL(i) = Round(indexRR * 16, 0)
-                        Else
-                            RL(i) = Round(indexRR * 4, 0)
-                        End If
-                    ElseIf (op_out_8.Value = True) Then
-                        If MainForm.op_pc.Value = True Then
-                            RL(i) = Round(indexRR * 8, 0) * 2
-                        Else
-                            RL(i) = Round(indexRR * 2, 0) * 2
-                        End If
-                    Else
-                        RL(i) = Round(indexRR * 8, 0) * 2
-                    End If
-                End If
-                'If Option2.Value = True Then RL(i) = Round(indexRR * 2, 0) * 2
-                
-                'If Option3.Value = True Then RL(i) = Round(indexRR / 255 * 1008, 0)
-                
-                ''''''G
-                For j = 0 To n - 1
-                    errorG = (GP(i) - GN(j))
-                    If errorG > 0 Then Exit For
-                Next j
-                
-                If j - 1 < 0 Then
-                    indexGG = GrayL(0)
-                Else
-                    indexGG = GrayL(j) + (GP(i) - GN(j)) / (GN(j - 1) - GN(j)) * (GrayL(j - 1) - GrayL(j))
-                End If
-                
-                If (op_10bit2.Value = True) Then
-                    
-                    If ((op_in_10.Value = True) Or (op_in_8.Value = True)) Then
-                        GL(i) = Round(indexGG * 4, 0)
-                    Else
-                        GL(i) = Round(indexGG * 2, 0) * 2
-                    End If
-                Else
-                    
-                    If (op_out_10.Value = True) Then
-                        If MainForm.op_pc.Value = True Then
-                            GL(i) = Round(indexGG * 16, 0)
-                        Else
-                            GL(i) = Round(indexGG * 4, 0)
-                        End If
-                    ElseIf (op_out_8.Value = True) Then
-                        If MainForm.op_pc.Value = True Then
-                            GL(i) = Round(indexGG * 8, 0) * 2
-                        Else
-                            GL(i) = Round(indexGG * 2, 0) * 2
-                        End If
-                    Else
-                        GL(i) = Round(indexGG * 8, 0) * 2
-                    End If
-                End If
-                
-                
-                
-                ''''''''''''''''''BBBBBBBBBBBBBBBBBBBBBBBB
-                
-                If ((op_in_10.Value = True) Or (op_in_8.Value = True) Or (op_in_6.Value = True)) Then
-                    
-                    
-                    If True Then
-                        ''''''''''B sorting from minimum to abord B hook reverse
-                        For j = n - 1 To 0 Step -1
-                            errorB = (BP(i) - BN(j))
-                            If errorB < 0 Then Exit For
-                        Next j
-                        
-                    Else
-                        
-                        For j = 0 To n - 1
-                            errorB = (BP(i) - BN(j))
-                            If errorB > 0 Then Exit For
-                        Next j
-                    End If
-                Else
-                    For j = jj To n - 1
-                        errorB = (BP(i) - BN(j))
-                        If errorB > 0 Then Exit For
-                    Next j
-                End If
-                
-                
-                If j - 1 < 0 Then
-                    indexBB = GrayL(0)
-                Else
-                    '    indexBB = GrayL(j) + (BP(i) - BN(j)) / (BN(j - 1) - BN(j)) * (GrayL(j - 1) - GrayL(j))   '''''''上到下
-                    indexBB = GrayL(j) - (BN(j) - BP(i)) / (BN(j) - BN(j + 1)) * (GrayL(j) - GrayL(j + 1)) '''''''下到上
-                    
-                End If
-                
-                If (op_10bit2.Value = True) Then
-                    'If ((Option1.Value = True) Or (Option4.Value = True)) Then
-                    If ((op_in_10.Value = True) Or (op_in_8.Value = True)) Then
-                        BL(i) = Round(indexBB * 4, 0)
-                    Else
-                        BL(i) = Round(indexBB * 2, 0) * 2
-                    End If
-                Else
-                    'If ((Option1.Value = True) Or (Option4.Value = True)) Then
-                    If (op_out_10.Value = True) Then
-                        If MainForm.op_pc.Value = True Then
-                            BL(i) = Round(indexBB * 16, 0)
-                        Else
-                            BL(i) = Round(indexBB * 4, 0)
-                        End If
-                    ElseIf (op_out_8.Value = True) Then
-                        
-                        If MainForm.op_pc.Value = True Then
-                            BL(i) = Round(indexBB * 8, 0) * 2
-                        Else
-                            BL(i) = Round(indexBB * 2, 0) * 2
-                        End If
-                    Else
-                        BL(i) = Round(indexBB * 8, 0) * 2
-                    End If
-                End If
-                
-                
-                
-            Next i
-            
-            '''''Linear
-            For i = 0 To P1
-                
-                
-                If ((op_in_10.Value = True) Or (op_in_8.Value = True)) Then
-                    
-                    LowG = Round(i * temp_g / P1, 0)
-                Else
-                    LowG = Round(Round(i * temp_g / P1, 0) / 2, 0) * 2
-                End If
-                RL(i) = LowG
-                GL(i) = LowG
-                BL(i) = LowG
-                
-            Next i
-            
-            
-            
-        End If
-        ''''Smoonth
-        If op_in_6.Value = True Then
-            
-            RL(P1) = Round(Round((RL(P1 - 1) + RL(P1 + 1)) / 2, 0) / 2, 0) * 2
-            GL(P1) = Round(Round((GL(P1 - 1) + GL(P1 + 1)) / 2, 0) / 2, 0) * 2
-            BL(P1) = Round(Round((BL(P1 - 1) + BL(P1 + 1)) / 2, 0) / 2, 0) * 2
-            
-        Else
-            
-            RL(P1) = Round((RL(P1 - 1) + RL(P1 + 1)) / 2, 0)
-            GL(P1) = Round((GL(P1 - 1) + GL(P1 + 1)) / 2, 0)
-            BL(P1) = Round((BL(P1 - 1) + BL(P1 + 1)) / 2, 0)
-        End If
-        
-        
-        
-        
-        
-        '''' for 6+3 Low Gray Fix by Stockton 2007/01/29
-        
-        
-        If P2 > 0 Then
-            ''''''Turn OFF  2009/12/16
-            If 0 Then
-                If ((op_in_8.Value = True) And (op_out_6.Value = True)) Then
-                    
-                    For i = P2 To 2 Step -1
-                        temp = GL(i)
-                        GL_tmp(i - 1) = temp - 4
-                        diff = GL_tmp(i - 1) - GL(i - 1)
-                        RL(i - 1) = RL(i - 1) + diff
-                        BL(i - 1) = BL(i - 1) + diff
-                        GL(i - 1) = GL_tmp(i - 1)
-                        
-                    Next i
-                    'If (1) Then
-                    For i = 4 To 1 Step -1
-                        GL(i) = GL(i + 1) - Round(Round(GL(5) / 5, 0) / 2, 0) * 2
-                        RL(i) = GL(i)
-                        BL(i) = GL(i)
-                    Next i
-                    GL(5) = (GL(6) + GL(4)) / 2
-                    BL(5) = GL(5)
-                    RL(5) = GL(5)
-                    'End If
-                    
-                    
-                    RL(P2) = Round(((RL(P2 + 1) + RL(P2 - 1)) / 2) / 2, 0) * 2
-                    
-                    BL(P2) = Round(((BL(P2 + 1) + BL(P2 - 1)) / 2) / 2, 0) * 2
-                    
-                    
-                    For i = 1 To 255
-                        If GL(i) > 1008 Then GL(i) = 1008
-                        If RL(i) > 1008 Then RL(i) = 1008
-                        If BL(i) > 1008 Then BL(i) = 1008
-                    Next i
-                    For i = 1 To 254
-                        If ((GL(i) - GL(i - 1)) <= 0) Then GL(i) = Round(((GL(i - 1) + GL(i + 1)) / 2) / 2, 0) * 2
-                        If ((RL(i) - RL(i - 1)) <= 0) Then RL(i) = Round(((RL(i - 1) + RL(i + 1)) / 2) / 2, 0) * 2
-                        If ((BL(i) - BL(i - 1)) <= 0) Then BL(i) = Round(((BL(i - 1) + BL(i + 1)) / 2) / 2, 0) * 2
-                        If RL(i) < 0 Then RL(i) = 0
-                        If GL(i) < 0 Then GL(i) = 0
-                        If BL(i) < 0 Then BL(i) = 0
-                    Next i
-                    
-                    
-                End If
-            End If
-            
-            Dim up_limit(5) As Integer
-            
-            Dim down_limit(1) As Integer
-            
-            down_limit(0) = 4
-            down_limit(1) = 12
-            
-            up_limit(0) = 994
-            up_limit(1) = 996
-            up_limit(2) = 998
-            up_limit(3) = 1002
-            up_limit(4) = 1004
-            up_limit(5) = 1006
-            
-            ''''avoid FRC Noise
-            If chk_frc2.Value = 1 Then
-                
-                
-                '''''''''''''''''''''High Level
-                
-                If ((RL(255) - up_limit(0)) >= 0) Then
-                    
-                    RL(255) = 1008
-                    RL(254) = 1000
-                    RL(253) = 992
-                    
-                    For K = 252 To 0 Step -1
-                        If ((RL(K) - RL(K + 1)) >= 0) Then
-                            RL(K) = RL(K + 1) - 2
-                        Else
-                            Exit For
-                        End If
-                        
-                    Next K
-                End If
-                
-                If ((GL(255) - up_limit(0)) >= 0) Then
-                    
-                    GL(255) = 1008
-                    GL(254) = 1000
-                    GL(253) = 992
-                    
-                    For K = 252 To 0 Step -1
-                        If ((GL(K) - GL(K + 1)) >= 0) Then
-                            GL(K) = GL(K + 1) - 2
-                        Else
-                            Exit For
-                        End If
-                        
-                    Next K
-                End If
-                
-                If ((BL(255) - up_limit(0)) >= 0) Then
-                    
-                    BL(255) = 1008
-                    BL(254) = 1000
-                    BL(253) = 992
-                    
-                    For K = 252 To 0 Step -1
-                        If ((BL(K) - BL(K + 1)) >= 0) Then
-                            BL(K) = BL(K + 1) - 2
-                        Else
-                            Exit For
-                        End If
-                        
-                    Next K
-                End If
-                
-                ''''''''''''''''''Low Level
-                For L = 1 To 30
-                    
-                    
-                    If RL(L) = 12 Then
-                        RL(L) = 10
-                        If RL(L - 1) = RL(L) Then RL(L - 1) = RL(L - 1) - 2
-                        If RL(L - 1) < 0 Then RL(L - 1) = 0
-                    End If
-                    
-                    If GL(L) = 12 Then
-                        GL(L) = 10
-                        If GL(L - 1) = GL(L) Then GL(L - 1) = GL(L - 1) - 2
-                        If GL(L - 1) < 0 Then GL(L - 1) = 0
-                    End If
-                    
-                    If BL(L) = 12 Then
-                        BL(L) = 10
-                        If BL(L - 1) = BL(L) Then BL(L - 1) = BL(L - 1) - 2
-                        If BL(L - 1) < 0 Then BL(L - 1) = 0
-                    End If
-                    
-                    
-                    If RL(L) = 4 Then
-                        RL(L) = 2
-                        If RL(L - 1) = RL(L) Then RL(L - 1) = RL(L - 1) - 2
-                        If RL(L - 1) < 0 Then RL(L - 1) = 0
-                    End If
-                    
-                    
-                    If GL(L) = 4 Then
-                        GL(L) = 2
-                        If GL(L - 1) = GL(L) Then GL(L - 1) = GL(L - 1) - 2
-                        If GL(L - 1) < 0 Then GL(L - 1) = 0
-                    End If
-                    
-                    If BL(L) = 4 Then
-                        BL(L) = 2
-                        If BL(L - 1) = BL(L) Then BL(L - 1) = BL(L - 1) - 2
-                        If BL(L - 1) < 0 Then BL(L - 1) = 0
-                    End If
-                    
-                    'If RL(L) = 12 Then RL(L) = 10
-                Next L
-                
-            End If
-        End If
-        
-        If chk_BMax.Value = 1 Then ''''''''''''''''    BMax
-            
-            If op_10bit2.Value = True Then
-                If op_out_6.Value = True Then
-                    tmp_max = 1008
-                Else
-                    tmp_max = 1020
-                End If
-            Else
-                If op_out_8.Value = True Then
-                    tmp_max = 4080
-                Else
-                    tmp_max = 4092
-                End If
-                
-                
-            End If
-            
-            If BL(max_c) < tmp_max Then
-                
-                If op_10bit2.Value = True Then
-                    
-                    If op_out_6.Value = True Then
-                        BL(max_c) = 1008
-                    Else
-                        BL(max_c) = 1020
-                    End If
-                    
-                Else
-                    If op_out_8.Value = True Then
-                        BL(max_c) = 4080
-                    Else
-                        BL(max_c) = 4092
-                    End If
-                    
-                End If
-                
-                For i = 255 To 0 Step -1
-                    
-                    If i > 252 Then
-                        diff = 10
-                    ElseIf i > 232 Then
-                        diff = 8
-                    Else
-                        diff = 6
-                    End If
-                    
-                    If op_12bit2.Value = True Then
-                        
-                        diff = diff * 4
-                        
-                    End If
-                    
-                    temp_b = BL(i)
-                    
-                    If (BL(i) - BL(i - 1)) > 0 Then
-                        BL(i - 1) = BL(i) - diff
-                    Else
-                        BL(i) = Round((BL(i + 1) + BL(i - 1)) / 2, 0)
-                        Exit For
-                        
-                    End If
-                Next i
-            End If
-        End If
-        
-        If chk_gbypass.Value = 1 Then
-            If op_in_8.Value = True Then
-                If op_out_6.Value = True Then
-                    For i = 0 To 244
-                        GL(i) = i * 4
-                    Next i
-                    For i = 245 To 250
-                        GL(i) = GL(i - 1) + 2
-                        
-                    Next i
-                    For i = 251 To 255
-                        GL(i) = GL(i - 1) + 4
-                        
-                    Next i
-                End If
-            End If
-            
-            If op_in_6.Value = True Then
-                If op_out_6.Value = True Then
-                    For i = 0 To 252
-                        GL(i) = i * 4
-                    Next i
-                    
-                    For i = 252 To 255
-                        GL(i) = 1008
-                        
-                    Next i
-                End If
-            End If
-            
-            
-        End If
-        If P2 > 0 Then
-            For i = 0 To max_c
-                sheet.cell(i + 2, 1) = i
-                sheet.cell(i + 2, 2) = RL(i)
-                sheet.cell(i + 2, 3) = GL(i)
-                sheet.cell(i + 2, 4) = BL(i)
-            Next i
-            
-        Else
-            For i = 0 To max_c
-                sheet.cell(i + 2, 1) = i
-                sheet.cell(i + 2, 2) = RL(max_c - i)
-                sheet.cell(i + 2, 3) = GL(max_c - i)
-                sheet.cell(i + 2, 4) = BL(max_c - i)
-            Next i
-        End If
-    Else '''''''''P1P2 End
-        
-        ''RB Interpolation
-        
-        P3 = Val(txt_RB_Interp.Text)
-        If op_in_6.Value = True Then
-            ccc = 252
-        Else
-            ccc = 255
-        End If
-        
-        temp_index = ccc - P3
-        R_interval = RL(temp_index) / P3
-        G_interval = GL(temp_index) / P3
-        B_interval = BL(temp_index) / P3
-        
-        For i = 0 To P3
-            
-            RL(ccc - i) = Round(i * R_interval, 0)
-            GL(ccc - i) = Round(i * G_interval, 0)
-            BL(ccc - i) = Round(i * B_interval, 0)
-            
-        Next i
-        
-        
-        If chk_BMax.Value = 1 Then '''''''''''''''''Bmax
-            
-            If op_10bit2.Value = True Then
-                If op_out_6.Value = True Then
-                    tmp_max = 1008
-                Else
-                    tmp_max = 1020
-                End If
-            Else
-                If op_out_8.Value = True Then
-                    tmp_max = 4080
-                Else
-                    tmp_max = 4092
-                End If
-                
-                
-            End If
-            
-            If BL(0) < tmp_max Then
-                
-                If op_10bit2.Value = True Then
-                    
-                    If op_out_6.Value = True Then
-                        BL(0) = 1008
-                    Else
-                        BL(0) = 1020
-                    End If
-                    
-                Else
-                    If op_out_8.Value = True Then
-                        BL(0) = 4080
-                    Else
-                        BL(0) = 4092
-                    End If
-                    
-                End If
-                
-                For i = 0 To 255
-                    
-                    
-                    If i < 4 Then
-                        diff = 10
-                    ElseIf i < 12 Then
-                        diff = 8
-                    Else
-                        diff = 6
-                    End If
-                    
-                    If op_12bit2.Value = True Then
-                        
-                        diff = diff * 4
-                        
-                    End If
-                    temp_b = BL(i)
-                    
-                    If (BL(i) - BL(i + 1)) > 0 Then
-                        BL(i + 1) = BL(i) - diff
-                    Else
-                        BL(i) = Round((BL(i + 1) + BL(i - 1)) / 2, 0)
-                        Exit For
-                        
-                    End If
-                Next i
-            End If
-        End If
-        
-        For i = 0 To max_c
-            sheet.cell(i + 2, 1) = i
-            sheet.cell(i + 2, 2) = RL(max_c - i)
-            sheet.cell(i + 2, 3) = GL(max_c - i)
-            sheet.cell(i + 2, 4) = BL(max_c - i)
-        Next i
-        
-        
-    End If
-    
-    If (op_in_6.Value = True) Then
-        For i = 0 To 2
-            sheet.cell(255 + i, 2) = sheet.cell(254, 2)
-            sheet.cell(255 + i, 3) = sheet.cell(254, 3)
-            sheet.cell(255 + i, 4) = sheet.cell(254, 4)
-        Next i
-    End If
-    
-    '''''''Copy Gamma256 for 8in 8out gamma256
-    If ((op_in_8.Value = True) And (op_out_8.Value = True) And (chk_ga256.Value = 1)) Then
-        sheet.cell(258, 1) = 256
-        sheet.cell(258, 2) = RL(255)
-        sheet.cell(258, 3) = GL(255)
-        sheet.cell(258, 4) = BL(255)
-        
-    End If
-    If ((op_in_10.Value = True) And (op_out_10.Value = True) And (chk_ga256.Value = 1)) Then
-        If sheet.cell(258, 2) > 4092 Then sheet.cell(258, 2) = 4092
-        If sheet.cell(258, 3) > 4092 Then sheet.cell(258, 3) = 4092
-        If sheet.cell(258, 4) > 4092 Then sheet.cell(258, 4) = 4092
-    End If
-    
-    sheet.setSheetIndex 1
-    sheet.setSheetName "Gamma Table"
-    
-    Utils.changeColorAnd sheet
-    
-    sheet.setSheetIndex 2
-    sheet.setSheetName "Raw Data"
-    
-    '''''''''''''' Save Data
-    sheet.setSheetFilename SAL & SAFN
-    sheet.store
-    sheet.closing
-    
-    'ETime = Time  '''''''''' Timer
-    'MsgBox "Start Time - End Time : " & STime & " - " & ETime
-    'EndG:
-    
-    
-    GTable.Show
 End Sub
 
 Private Sub btn_loadG_Click()
@@ -2037,7 +839,7 @@ Private Sub Command2_Click() '''''''AUTORUN
     Ymin = YYN(n - 1)
     ' =========================================================================
     ' Correct_Error_MeasureData
-    ' 做了怎樣的修正?
+    ' 做了怎樣的修正? 反正是0不用看了
     ' =========================================================================
     If 0 Then
         For i = 0 To n - 2
@@ -2119,7 +921,7 @@ Private Sub Command2_Click() '''''''AUTORUN
     ' =========================================================================
     
     ' =========================================================================
-    ' regress
+    ' regress 回歸免看
     ' =========================================================================
     '''''''''''''''Regress Y remove recipe by Stockton 12/14
     ''''''''' Regression Y
@@ -2192,6 +994,9 @@ Private Sub Command2_Click() '''''''AUTORUN
     '''''''''''''' Lookup Table
     Unload Background
     
+    ' =========================================================================
+    ' 產生目標亮度
+    ' =========================================================================
     
     '''''''''''''' Predict RGB Remove Recipe by Stockton 12/14 TEST OK
     If flag_LoadG = False Then
@@ -2221,9 +1026,13 @@ Private Sub Command2_Click() '''''''AUTORUN
     '    Lgain(i) = ((255 - i) / 255) ^ Val(Text_Ga.Text)
     'RSDC = RSDC + 1
     'Next i
+    ' =========================================================================
     
     ''''''''''here
     
+    ' =========================================================================
+    ' 從目標亮度算出RGB亮度
+    ' =========================================================================
     For i = 0 To max_c
         ' 計算出目標亮度值
         YYP(i) = (YYR(SRC - 1) - YYN(n - 1)) * DesiredGamma(i) + YYN(n - 1)
@@ -2234,7 +1043,10 @@ Private Sub Command2_Click() '''''''AUTORUN
         GP(i) = RBeta1 + RBeta2 * YYP(i)
         BP(i) = RBeta1 + RBeta2 * YYP(i)
     Next i
+    ' =========================================================================
     
+    '==========================================================================
+    ' 從亮度產生出code
     '==========================================================================
     For i = 0 To max_c
         
@@ -2242,6 +1054,10 @@ Private Sub Command2_Click() '''''''AUTORUN
         temp_diff = 255 - Val(Text4.Text) ''''' B Intensity Gain
         ' 計算出來的第i個BP值
         temp_bbb = BP(i)
+        
+        ' =========================================================================
+        ' B Gain的處理, 是處理B目標亮度
+        ' =========================================================================
         
         If chk_BGain.Value = 1 Then
             ' 如果gain為1 (就是開啟gain!?)
@@ -2255,6 +1071,7 @@ Private Sub Command2_Click() '''''''AUTORUN
                 'BP(i) = BP(i) * Val(Text3.Text)
             End If
         End If
+        ' =========================================================================
         
         BKR = 1000
         BKG = 1000
@@ -2262,6 +1079,9 @@ Private Sub Command2_Click() '''''''AUTORUN
         
         
         
+        ' =========================================================================
+        ' jj似乎擔當了甚麼起點的作用
+        ' =========================================================================
         ''''''''''''''''10 bit Gamma  by Stockton
         ' gray level step
         If GLS = 0 Then
@@ -2273,9 +1093,10 @@ Private Sub Command2_Click() '''''''AUTORUN
         Else
             jj = 1
         End If
+        ' =========================================================================
         
         '==========================================================================
-        ' R
+        ' R (RN是量測到的R亮度)
         '==========================================================================
         ''''''R
         'If ((Option1.Value = True) Or (Option4.Value = True)) Then
@@ -2296,6 +1117,7 @@ Private Sub Command2_Click() '''''''AUTORUN
         If j - 1 < 0 Then
             indexRR = GrayL(0)
         Else
+            ' 線性內插, j 似乎由上面的迴圈找出來的, i是當下處理的code
             indexRR = GrayL(j) + (RP(i) - RN(j)) / (RN(j - 1) - RN(j)) * (GrayL(j - 1) - GrayL(j))
         End If
         
@@ -2447,6 +1269,7 @@ Private Sub Command2_Click() '''''''AUTORUN
         'If Option3.Value = True Then BL(i) = Round(indexBB / 255 * 1008, 0)
         
     Next i
+    '==========================================================================
     
     
     RL(max_c) = 0
@@ -2464,6 +1287,9 @@ Private Sub Command2_Click() '''''''AUTORUN
     Dim RN2(1024) As Double
     Dim GN2(1024) As Double
     Dim BN2(1024) As Double
+    '==========================================================================
+    ' RL GL BL是產生的DG code, RP GP BP 是目標亮度 (免看)
+    '==========================================================================
     For i = 0 To max_c
         RL2(i) = RL(max_c - i)
         GL2(i) = GL(max_c - i)
@@ -2483,7 +1309,9 @@ Private Sub Command2_Click() '''''''AUTORUN
         sheet.cell(i + 2, 10) = BP(i)
     Next i
     
-    
+    '==========================================================================
+    ' P1P2
+    '==========================================================================
     ' P1P2 start
     If op_p1p2.Value = True Then
         
@@ -2495,6 +1323,10 @@ Private Sub Command2_Click() '''''''AUTORUN
         
         
         If P2 > 0 Then ''''P2<=0  BYPASS
+        
+            '==================================================================
+            ' 處理了R&B
+            '==================================================================
             temp_g = GL2(P1)
             i = 0
             Do
@@ -2517,11 +1349,15 @@ Private Sub Command2_Click() '''''''AUTORUN
             
             RP2(P1) = RP2(index_r) + (RP2(index_r + 1) - RP2(index_r)) * (temp_g - RL2(index_r)) / (RL2(index_r + 1) - RL2(index_r))
             BP2(P1) = BP2(index_b) + (BP2(index_b + 1) - BP2(index_b)) * (temp_g - BL2(index_b)) / (BL2(index_b + 1) - BL2(index_b))
+            '==================================================================
             
             
             
             
             
+            '==================================================================
+            ' P1-P2 Gamma變化
+            '==================================================================
             '''''''''P1-P2 成Gamma變化  讓他急遽變化一點
             For i = P1 + 1 To P2 - 1
                 Gratio = (GP2(i) - GP2(P1)) / (GP2(P2) - GP2(P1))
@@ -2530,11 +1366,11 @@ Private Sub Command2_Click() '''''''AUTORUN
                 BP2(i) = BP2(P1) + (BP2(P2) - BP2(P1)) * Gratio
                 
             Next i
+            '==================================================================
             
-            
-            
-            
-            
+            '==================================================================
+            ' 複製而以? 免看
+            '==================================================================
             For i = 0 To max_c
                 RL(i) = RL2(max_c - i)
                 GL(i) = GL2(max_c - i)
@@ -2544,6 +1380,11 @@ Private Sub Command2_Click() '''''''AUTORUN
                 BP(i) = BP2(i)
                 
             Next i
+            '==================================================================
+            
+            '==================================================================
+            ' 把RP GP BP填到excel(免看)
+            '==================================================================
             sheet.cell(1, 11) = "RP_Intensity_Fix"
             sheet.cell(1, 12) = "GP_Intensity_Fix"
             sheet.cell(1, 13) = "BP_Intensity_Fix"
@@ -2553,19 +1394,28 @@ Private Sub Command2_Click() '''''''AUTORUN
                 sheet.cell(i + 2, 12) = GP(i)
                 sheet.cell(i + 2, 13) = BP(i)
             Next i
+            '==================================================================
+            
+            '頭到尾都作了處理
             For i = 0 To max_c
                 
+                '==================================================================
+                ' R
+                '==================================================================
+                '找j
                 For j = 0 To n - 1
                     errorR = (RP(i) - RN(j))
                     If errorR > 0 Then Exit For
                 Next j
                 
+                '找indexRR
                 If j - 1 < 0 Then
                     indexRR = GrayL(0)
                 Else
                     indexRR = GrayL(j) + (RP(i) - RN(j)) / (RN(j - 1) - RN(j)) * (GrayL(j - 1) - GrayL(j))
                 End If
                 
+                'RL由indexRR產出
                 If (op_10bit2.Value = True) Then
                     'If ((Option1.Value = True) Or (Option4.Value = True)) Then
                     If ((op_in_10.Value = True) Or (op_in_8.Value = True)) Then
@@ -2594,7 +1444,11 @@ Private Sub Command2_Click() '''''''AUTORUN
                 'If Option2.Value = True Then RL(i) = Round(indexRR * 2, 0) * 2
                 
                 'If Option3.Value = True Then RL(i) = Round(indexRR / 255 * 1008, 0)
+                '==================================================================
                 
+                '==================================================================
+                ' G (R&G完全相同)
+                '==================================================================
                 ''''''G
                 For j = 0 To n - 1
                     errorG = (GP(i) - GN(j))
@@ -2632,33 +1486,40 @@ Private Sub Command2_Click() '''''''AUTORUN
                         GL(i) = Round(indexGG * 8, 0) * 2
                     End If
                 End If
+                '==================================================================
                 
                 'If Option2.Value = True Then GL(i) = Round(indexGG * 2, 0) * 2
                 
                 'If Option3.Value = True Then GL(i) = Round(indexGG / 255 * 1008, 0)
+                
+                '==================================================================
+                ' B
+                '==================================================================
                 If ((op_in_10.Value = True) Or (op_in_8.Value = True) Or (op_in_6.Value = True)) Then
-                    
-                    
+                    ' 除了6 8 10還有其他選項嗎? 所以此block一定會被執行到
                     If True Then
+                        '為了修正hook, 方向相反了!?
                         ''''''''''B sorting from minimum to abord B hook reverse
                         For j = n - 1 To 0 Step -1
                             errorB = (BP(i) - BN(j))
                             If errorB < 0 Then Exit For
                         Next j
                         
-                    Else
+                    Else '不會執行到此
                         
                         For j = 0 To n - 1
                             errorB = (BP(i) - BN(j))
                             If errorB > 0 Then Exit For
                         Next j
                     End If
-                Else
+                Else '不會執行到此
                     For j = jj To n - 1
                         errorB = (BP(i) - BN(j))
                         If errorB > 0 Then Exit For
                     Next j
                 End If
+                
+                ' 此處以下B與R&G相同
                 If j - 1 < 0 Then
                     indexBB = GrayL(0)
                 Else
@@ -2693,6 +1554,7 @@ Private Sub Command2_Click() '''''''AUTORUN
                         BL(i) = Round(indexBB * 8, 0) * 2
                     End If
                 End If
+                '==================================================================
                 
                 'If Option2.Value = True Then BL(i) = Round(indexBB * 2, 0) * 2
                 
@@ -2700,6 +1562,10 @@ Private Sub Command2_Click() '''''''AUTORUN
                 
             Next i
             
+            
+            '==================================================================
+            ' 0-P1 線性
+            '==================================================================
             '''''Linear
             For i = 0 To P1
                 
@@ -2719,6 +1585,10 @@ Private Sub Command2_Click() '''''''AUTORUN
             
             
         End If
+        
+        '==================================================================
+        ' smooth
+        '==================================================================
         ''''Smoonth
         If op_in_6.Value = True Then
             
@@ -2732,13 +1602,15 @@ Private Sub Command2_Click() '''''''AUTORUN
             GL(P1) = Round((GL(P1 - 1) + GL(P1 + 1)) / 2, 0)
             BL(P1) = Round((BL(P1 - 1) + BL(P1 + 1)) / 2, 0)
         End If
+        '==================================================================
         
         
         
         '''' for 6+3 Low Gray Fix by Stockton 2007/01/29
         If P2 > 0 Then
             
-            If 0 Then
+            '==========================================================================
+            If 0 Then '免看
                 If ((op_in_8.Value = True) And (op_out_6.Value = True)) Then
                     
                     For i = P2 To 2 Step -1
@@ -2784,6 +1656,7 @@ Private Sub Command2_Click() '''''''AUTORUN
                     
                 End If
             End If
+            '==========================================================================
             
             Dim up_limit(5) As Integer
             
@@ -2799,9 +1672,15 @@ Private Sub Command2_Click() '''''''AUTORUN
             up_limit(4) = 1004
             up_limit(5) = 1006
             
+            '==========================================================================
+            ' avoid FRC noise
+            '==========================================================================
             ''''avoid FRC Noise
             If chk_frc2.Value = 1 Then
                 
+                '==========================================================================
+                ' High code
+                '==========================================================================
                 
                 '''''''''''''''''''''High Level
                 
@@ -2852,6 +1731,11 @@ Private Sub Command2_Click() '''''''AUTORUN
                         
                     Next K
                 End If
+                '==========================================================================
+                
+                '==========================================================================
+                ' Low Code
+                '==========================================================================
                 
                 ''''''''''''''''''Low Level
                 For L = 1 To 30
@@ -2897,13 +1781,19 @@ Private Sub Command2_Click() '''''''AUTORUN
                     
                     'If RL(L) = 12 Then RL(L) = 10
                 Next L
+                '==========================================================================
             End If
+            '==========================================================================
+            
         End If
         
         
         
         
         
+        '==========================================================================
+        ' BMax
+        '==========================================================================
         If chk_BMax.Value = 1 Then ''''''''''''''''    BMax
             
             If op_10bit2.Value = True Then
@@ -2951,7 +1841,11 @@ Private Sub Command2_Click() '''''''AUTORUN
             Next i
             
         End If
+        '==========================================================================
         
+        '==========================================================================
+        ' G ByPass
+        '==========================================================================
         If chk_gbypass.Value = 1 Then
             If op_in_8.Value = True Then
                 If op_out_6.Value = True Then
@@ -2984,8 +1878,12 @@ Private Sub Command2_Click() '''''''AUTORUN
             
             
         End If
+        '==========================================================================
         
         
+        '======================================================================
+        ' 寫到excel
+        '======================================================================
         sheet.setSheetIndex 1
         If P2 > 0 Then
             For i = 0 To max_c
@@ -3004,7 +1902,13 @@ Private Sub Command2_Click() '''''''AUTORUN
                 sheet.cell(i + 2, 4) = BL(max_c - i)
             Next i
         End If
+        '======================================================================
+        
+    '==========================================================================
     Else '''''''''P1P2 End
+    '==========================================================================
+    ' RB Interp
+    '==========================================================================
         
         ''RB Interpolation
         
@@ -3029,7 +1933,9 @@ Private Sub Command2_Click() '''''''AUTORUN
         Next i
         
         
-        
+        '======================================================================
+        ' B Max
+        '======================================================================
         If chk_BMax.Value = 1 Then '''''''''''''''''Bmax
             If op_10bit2.Value = True Then
                 If op_out_6.Value = True Then
@@ -3094,9 +2000,12 @@ Private Sub Command2_Click() '''''''AUTORUN
                 Next i
             End If
         End If
+        '======================================================================
         
         
-        
+        '==========================================================================
+        ' 寫入到excel...
+        '==========================================================================
         sheet.setSheetIndex 1
         For i = 0 To max_c
             sheet.cell(i + 2, 1) = i
@@ -3104,9 +2013,13 @@ Private Sub Command2_Click() '''''''AUTORUN
             sheet.cell(i + 2, 3) = GL(max_c - i)
             sheet.cell(i + 2, 4) = BL(max_c - i)
         Next i
+        '==========================================================================
         
         
     End If 'Low Level Correct end
+    '==========================================================================
+    
+    
     If (op_in_6.Value = True) Then
         sheet.setSheetIndex 1
         For i = 0 To 2
