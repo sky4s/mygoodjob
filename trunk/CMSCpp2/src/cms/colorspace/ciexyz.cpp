@@ -356,6 +356,7 @@ namespace cms {
 		if (_normalizeY == normalizeY) {
 		    return values;
 		}
+                /* TODO : getValues */
 		switch (_normalizeY) {
 		case Normal100:
 		    //DoubleArray.copy(DoubleArray.times(values, 1. / 100),
