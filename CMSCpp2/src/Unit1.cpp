@@ -212,18 +212,23 @@ void rgbVectorOp()
 
 void sizeCompare()
 {
-    double *darray = new double[10];
-    double_array dvalues(darray);
-    double_vector dvector(4 );
+    double darray[4];
+    double *dpointer = new double[4];
+    double_array dvalues(dpointer);
+    double_vector dvector(4);
     using namespace std;
-    cout << sizeof(dvalues) << endl;
-    cout << sizeof(darray) << endl;
-    cout << sizeof(*darray) << endl;
-    //cout << sizeof(*dvalues) << endl;
 
-    cout << sizeof(dvector) << endl;
-    cout << dvector.capacity() << endl;
-    cout << dvector.size() << endl;
+    cout << "array: " << sizeof(darray) << endl;
+    cout << "double: " << sizeof(double) << endl;
+    cout << "double*: " << sizeof(dpointer) << endl;
+
+    cout << "bptr: " << sizeof(dvalues) << endl;
+    //cout << "*bptr: " << sizeof(*dvalues) << endl;
+
+    cout << "vector: " << sizeof(dvector) << endl;
+    cout << "vec capacity:" << dvector.capacity() << endl;
+
+    //cout << dvector.size() << endl;
 
 
 }
