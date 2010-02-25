@@ -179,7 +179,8 @@ namespace cms {
  乾脆直接在子類別把被hide的func呼叫回來.
 
  *禁止使用指標及參考
- 避免忘記delete的問題, 以smart_ptr替代指標
+ 避免忘記delete的問題, 以smart_ptr替代指標.
+ 例外的是, string當作常數的狀況下, 可以const string &使用.
 
  *物件完全採用smart_ptr
  參考會有無法有NULL的狀況, 因此全採用smart_ptr, 作到類似gc的效果.
@@ -201,6 +202,19 @@ namespace cms {
  因此java中的double[]盡量以shared_ptr< vector<> >替代.
  而List<>也已vector<>替代, 因為java中用的List<>是以ArrayList實作,
  其特性其實比較接近STL的vector.
+
+ *是否還要使用陣列?(嚴格來說是指向複數元素的指標)
+ 採用share_array後可以不用管理陣列的釋放(其實不是陣列, 嚴格來說是指標).
+ 但是share_array缺乏長度資訊, 需要自己維護長度, share_array佔掉8byte.
+ 採用vector+bptr後, 不用管理資源且知道長度, 但是vector本身佔掉24byte.
+ double指標佔掉4byte最少, 但是功能最貧乏.
+ 
+ 要是元素少但是會有大量實體產生, 選用share_array.
+ 要是實體不多, 則選用vector+bptr.
+ 若不知道實體多寡, 選用保險的vector+bptr.
+
+ 何時選用share_array: 長度不變動, 長度已知, 會有大量實體, 元素少
+ 何時選用vector+bptr: 長度會變動, 長度未知, 不會有大量實體
 
 */
 
