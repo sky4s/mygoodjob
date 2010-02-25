@@ -233,6 +233,20 @@ void sizeCompare()
 
 }
 
+class A {
+};
+class B:public A {
+};
+
+void classTest()
+{
+    A *a = new B();
+    A *aa = new A();
+    bptr < A > ba(a);
+    bptr < A > ba2(new A());
+    //bptr < B > ba3(new A());
+};
+
 #pragma argsused
 int main(int argc, char *argv[])
 {
@@ -249,6 +263,7 @@ int main(int argc, char *argv[])
     //inverse();
     //rgbVectorOp();
     sizeCompare();
+    classTest();
     getch();
 }
 

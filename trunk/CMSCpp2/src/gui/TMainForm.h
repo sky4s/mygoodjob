@@ -10,7 +10,8 @@
 #include <Menus.hpp>
 
 #include <java/lang.h>
-#include <cms/measure/meter.h>
+//#include <cms/measure/meter.h>
+//#include <cms/measure/analyzer.h>
 //---------------------------------------------------------------------------
 
 class TMainForm:public TForm {
@@ -42,6 +43,7 @@ class TMainForm:public TForm {
     //==========================================================================
      bptr < cms::measure::MeterMeasurement > mm;
      bptr < cms::measure::meter::CA210 > getCA210();
+     bptr < cms::measure::ComponentAnalyzerIF > analyzer;
     //==========================================================================
     __fastcall TMainForm(TComponent * Owner);
 
