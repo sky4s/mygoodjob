@@ -1,6 +1,6 @@
 object CCTLUTForm: TCCTLUTForm
-  Left = 147
-  Top = 492
+  Left = 348
+  Top = 182
   Width = 656
   Height = 425
   Caption = 'CCT LUT'
@@ -11,7 +11,6 @@ object CCTLUTForm: TCCTLUTForm
   Font.Name = 'MS Sans Serif'
   Font.Style = []
   OldCreateOrder = False
-  OnCreate = FormCreate
   PixelsPerInch = 120
   TextHeight = 16
   object GroupBox1: TGroupBox
@@ -42,7 +41,7 @@ object CCTLUTForm: TCCTLUTForm
       Height = 16
       Caption = 'Level Step'
     end
-    object Edit1: TEdit
+    object Edit_StartLevel: TEdit
       Left = 80
       Top = 24
       Width = 105
@@ -50,7 +49,7 @@ object CCTLUTForm: TCCTLUTForm
       TabOrder = 0
       Text = '255'
     end
-    object ComboBox1: TComboBox
+    object ComboBox_LevelStep: TComboBox
       Left = 80
       Top = 88
       Width = 105
@@ -82,7 +81,7 @@ object CCTLUTForm: TCCTLUTForm
     Height = 129
     Caption = 'Gamma'
     TabOrder = 1
-    object RadioButton2: TRadioButton
+    object RadioButton_GammaCurve: TRadioButton
       Left = 8
       Top = 56
       Width = 113
@@ -90,7 +89,7 @@ object CCTLUTForm: TCCTLUTForm
       Caption = 'Gamma Curve'
       TabOrder = 0
     end
-    object Button1: TButton
+    object Button_LoadGammaCurve: TButton
       Left = 120
       Top = 56
       Width = 65
@@ -98,7 +97,7 @@ object CCTLUTForm: TCCTLUTForm
       Caption = 'Load'
       TabOrder = 1
     end
-    object CheckBox1: TCheckBox
+    object CheckBox_GByPass: TCheckBox
       Left = 8
       Top = 88
       Width = 97
@@ -106,13 +105,15 @@ object CCTLUTForm: TCCTLUTForm
       Caption = 'G ByPass'
       TabOrder = 2
     end
-    object RadioButton1: TRadioButton
+    object RadioButton_Gamma: TRadioButton
       Left = 8
       Top = 24
       Width = 113
       Height = 25
       Caption = 'Gamma'
+      Checked = True
       TabOrder = 3
+      TabStop = True
     end
     object ComboBox2: TComboBox
       Left = 80
@@ -137,49 +138,84 @@ object CCTLUTForm: TCCTLUTForm
     Left = 216
     Top = 16
     Width = 193
-    Height = 129
+    Height = 153
     Caption = 'Low Level Correction'
     TabOrder = 2
     object Label4: TLabel
       Left = 32
-      Top = 88
-      Width = 37
-      Height = 16
+      Top = 104
+      Width = 41
+      Height = 25
       Caption = 'Under'
     end
-    object RadioButton3: TRadioButton
+    object Label7: TLabel
+      Left = 32
+      Top = 48
+      Width = 25
+      Height = 25
+      Caption = 'P1'
+    end
+    object Label8: TLabel
+      Left = 120
+      Top = 48
+      Width = 25
+      Height = 25
+      Caption = 'P2'
+    end
+    object RadioButton_P1P2: TRadioButton
       Left = 8
       Top = 24
       Width = 113
       Height = 17
       Caption = 'P1 P2'
+      Checked = True
       TabOrder = 0
+      TabStop = True
+      OnClick = RadioButton_P1P2Click
     end
-    object RadioButton4: TRadioButton
+    object RadioButton_RBInterp: TRadioButton
       Left = 8
-      Top = 56
+      Top = 80
       Width = 129
       Height = 17
       Caption = 'RB Interpolation'
       TabOrder = 1
+      OnClick = RadioButton_RBInterpClick
     end
-    object Edit3: TEdit
+    object Edit_RBInterpUnder: TEdit
       Left = 80
-      Top = 88
+      Top = 104
       Width = 105
       Height = 24
+      Enabled = False
       TabOrder = 2
+      Text = '50'
+    end
+    object Edit_P1: TEdit
+      Left = 56
+      Top = 48
+      Width = 41
+      Height = 25
+      TabOrder = 3
+      Text = '20'
+    end
+    object Edit_P2: TEdit
+      Left = 144
+      Top = 48
+      Width = 41
+      Height = 25
+      TabOrder = 4
       Text = '50'
     end
   end
   object GroupBox4: TGroupBox
     Left = 216
-    Top = 152
+    Top = 176
     Width = 193
-    Height = 129
+    Height = 105
     Caption = 'Blue Correction'
     TabOrder = 3
-    object CheckBox2: TCheckBox
+    object CheckBox_BGain: TCheckBox
       Left = 8
       Top = 24
       Width = 121
@@ -195,7 +231,7 @@ object CCTLUTForm: TCCTLUTForm
       TabOrder = 1
       Text = '1.05'
     end
-    object CheckBox3: TCheckBox
+    object CheckBox_BMax: TCheckBox
       Left = 8
       Top = 56
       Width = 97
@@ -217,76 +253,120 @@ object CCTLUTForm: TCCTLUTForm
       Width = 201
       Height = 169
       Caption = 'Bit Depth'
-      TabOrder = 5
-      object Edit_available: TEdit
-        Left = 56
-        Top = 144
-        Width = 89
-        Height = 17
-        AutoSize = False
-        Font.Charset = DEFAULT_CHARSET
-        Font.Color = clLime
-        Font.Height = -13
-        Font.Name = 'MS Sans Serif'
-        Font.Style = []
-        ParentFont = False
+      TabOrder = 2
+      object GroupBox8: TGroupBox
+        Left = 8
+        Top = 24
+        Width = 57
+        Height = 137
+        Caption = 'IN'
         TabOrder = 0
-        Text = 'available'
+        object RadioButton_In6: TRadioButton
+          Left = 8
+          Top = 24
+          Width = 40
+          Height = 17
+          Caption = '6'
+          TabOrder = 0
+          OnClick = RadioButton_In6Click
+        end
+        object RadioButton_In8: TRadioButton
+          Left = 8
+          Top = 64
+          Width = 40
+          Height = 17
+          Caption = '8'
+          Checked = True
+          TabOrder = 1
+          TabStop = True
+          OnClick = RadioButton_In8Click
+        end
+        object RadioButton_In10: TRadioButton
+          Left = 8
+          Top = 104
+          Width = 40
+          Height = 17
+          Caption = '10'
+          TabOrder = 2
+          OnClick = RadioButton_In10Click
+        end
+      end
+      object GroupBox9: TGroupBox
+        Left = 72
+        Top = 24
+        Width = 57
+        Height = 137
+        Caption = 'LUT'
+        TabOrder = 1
+        object RadioButton_Lut10: TRadioButton
+          Left = 8
+          Top = 24
+          Width = 40
+          Height = 17
+          Caption = '10'
+          Checked = True
+          TabOrder = 0
+          TabStop = True
+        end
+        object RadioButton_Lut12: TRadioButton
+          Left = 8
+          Top = 64
+          Width = 40
+          Height = 17
+          Caption = '12'
+          TabOrder = 1
+        end
+      end
+      object GroupBox10: TGroupBox
+        Left = 136
+        Top = 24
+        Width = 57
+        Height = 137
+        Caption = 'OUT'
+        TabOrder = 2
+        object RadioButton_Out6: TRadioButton
+          Left = 8
+          Top = 24
+          Width = 40
+          Height = 17
+          Caption = '6'
+          TabOrder = 0
+        end
+        object RadioButton_Out8: TRadioButton
+          Left = 8
+          Top = 64
+          Width = 40
+          Height = 17
+          Caption = '8'
+          Checked = True
+          TabOrder = 1
+          TabStop = True
+        end
+        object RadioButton_Out10: TRadioButton
+          Left = 8
+          Top = 104
+          Width = 40
+          Height = 17
+          Caption = '10'
+          TabOrder = 2
+        end
       end
     end
-    object RadioGroup_in: TRadioGroup
-      Left = 16
-      Top = 40
-      Width = 57
-      Height = 121
-      Caption = 'IN'
-      Items.Strings = (
-        '6'
-        '8'
-        '10')
-      TabOrder = 0
-      OnClick = RadioGroup_inClick
-    end
-    object RadioGroup_lut: TRadioGroup
-      Left = 80
-      Top = 40
-      Width = 57
-      Height = 121
-      Caption = 'LUT'
-      Items.Strings = (
-        '10'
-        '12')
-      TabOrder = 1
-      OnClick = RadioGroup_lutClick
-    end
-    object RadioGroup_out: TRadioGroup
-      Left = 144
-      Top = 40
-      Width = 57
-      Height = 121
-      Caption = 'OUT'
-      Items.Strings = (
-        '6'
-        '8'
-        '10')
-      TabOrder = 2
-      OnClick = RadioGroup_outClick
-    end
-    object CheckBox5: TCheckBox
+    object CheckBox_Gamma256: TCheckBox
       Left = 8
       Top = 200
       Width = 97
       Height = 25
       Caption = 'Gamma 256'
-      TabOrder = 3
+      TabOrder = 0
     end
-    object CheckBox6: TCheckBox
+    object CheckBox_AvoidNoise: TCheckBox
       Left = 8
       Top = 232
       Width = 137
       Height = 25
       Caption = 'Avoid FRC Noise'
-      TabOrder = 4
+      TabOrder = 1
     end
   end
   object GroupBox7: TGroupBox
@@ -310,7 +390,7 @@ object CCTLUTForm: TCCTLUTForm
       Height = 16
       Caption = 'Output Directory'
     end
-    object Edit5: TEdit
+    object Edit_Prefix: TEdit
       Left = 112
       Top = 24
       Width = 201
@@ -318,7 +398,7 @@ object CCTLUTForm: TCCTLUTForm
       TabOrder = 0
       Text = 'Calib00_Table'
     end
-    object Edit6: TEdit
+    object Edit_Directory: TEdit
       Left = 112
       Top = 56
       Width = 369
@@ -326,17 +406,17 @@ object CCTLUTForm: TCCTLUTForm
       TabOrder = 1
       Text = 'D:\Gamma Table\'
     end
-    object Button2: TButton
+    object Button_BrowseDir: TButton
       Left = 488
       Top = 56
       Width = 57
       Height = 25
       Caption = 'Browse'
       TabOrder = 2
-      OnClick = Button2Click
+      OnClick = Button_BrowseDirClick
     end
   end
-  object Button3: TButton
+  object Button_Run: TButton
     Left = 576
     Top = 344
     Width = 57

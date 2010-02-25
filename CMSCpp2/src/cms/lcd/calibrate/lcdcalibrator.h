@@ -56,6 +56,7 @@ namespace cms {
 	    class LCDCalibrator {
 	      private:
 		bool p1p2;
+		double p1, p2;
 		BitDepth in, lut, out;
 		double_array gammaCurve;
 		double rbInterpUnder;
@@ -66,7 +67,7 @@ namespace cms {
 		bool avoidFRCNoise;
 	      public:
 		//LCDCalibrator();
-		void setP1P2();
+		void setP1P2(double p1, double p2);
 		void setRBInterpolation(int under);
 		void setGamma(double gamma);
 		void setGammaCurve(double_array gammaCurve);

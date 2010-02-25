@@ -18,59 +18,9 @@ __fastcall TCCTLUTForm::TCCTLUTForm(TComponent * Owner)
 
 //---------------------------------------------------------------------------
 
-void __fastcall TCCTLUTForm::RadioGroup_inClick(TObject * Sender)
-{
-    checkAvailable();
-}
-
-//---------------------------------------------------------------------------
-
-void __fastcall TCCTLUTForm::RadioGroup_outClick(TObject * Sender)
-{
-    checkAvailable();
-}
-bool TCCTLUTForm::checkAvailable(int in, int lut, int out)
-{
-    bool case66 = in == 0 && lut == 0 && out == 0;
-    bool case86 = in == 1 && lut == 0 && out == 0;
-    bool case88 = in == 1 && out == 1;
-    bool case108 = in == 2 && lut == 1 && out == 1;
-    bool case1010 = in == 2 && lut == 1 && out == 2;
-    return case66 || case86 || case88 || case108 || case1010;
-}
-
-void TCCTLUTForm::checkAvailable()
-{
-    bool available = checkAvailable(this->RadioGroup_in->ItemIndex,
-				    this->RadioGroup_lut->ItemIndex,
-				    this->RadioGroup_out->ItemIndex);
-
-    this->Edit_available->Text = available ? "available" : "unavailable";
-    this->Edit_available->Font->Color = available ? clLime : clRed;
-}
-
-//---------------------------------------------------------------------------
-
-void __fastcall TCCTLUTForm::RadioGroup_lutClick(TObject * Sender)
-{
-    checkAvailable();
-}
-
-//---------------------------------------------------------------------------
-
-void __fastcall TCCTLUTForm::FormCreate(TObject * Sender)
-{
-    this->RadioGroup_in->ItemIndex = 1;
-    this->RadioGroup_lut->ItemIndex = 1;
-    this->RadioGroup_out->ItemIndex = 1;
-}
-
-//---------------------------------------------------------------------------
 
 
-
-
-void __fastcall TCCTLUTForm::Button2Click(TObject * Sender)
+void __fastcall TCCTLUTForm::Button_BrowseDirClick(TObject * Sender)
 {
     //this->OpenDialog1->Execute();
     AnsiString Dir = "C:\\Program Files\\";
@@ -78,4 +28,83 @@ void __fastcall TCCTLUTForm::Button2Click(TObject * Sender)
 }
 
 //---------------------------------------------------------------------------
+
+void TCCTLUTForm::resetBitDepth()
+{
+    //this->RadioButton_In8->Checked = true;
+    this->CheckBox_Gamma256->Checked = false;
+    setBitDepthEnable(true, true, true, true, false);
+};
+
+void TCCTLUTForm::setBitDepthEnable(bool lut10, bool lut12, bool out6,
+				    bool out8, bool out10)
+{
+    this->RadioButton_Lut10->Enabled = lut10;
+    this->RadioButton_Lut12->Enabled = lut12;
+    this->RadioButton_Out6->Enabled = out6;
+    this->RadioButton_Out8->Enabled = out8;
+    this->RadioButton_Out10->Enabled = out10;
+};
+
+void __fastcall TCCTLUTForm::RadioButton_In6Click(TObject * Sender)
+{
+    resetBitDepth();
+    this->RadioButton_Lut10->Checked = true;
+    this->RadioButton_Out6->Checked = true;
+    setBitDepthEnable(true, false, true, false, false);
+    this->Edit_StartLevel->Text = "252";
+    this->ComboBox_LevelStep->Text = "4";
+    this->CheckBox_AvoidNoise->Enabled = true;
+}
+
+//---------------------------------------------------------------------------
+
+void __fastcall TCCTLUTForm::RadioButton_In8Click(TObject * Sender)
+{
+    resetBitDepth();
+    this->RadioButton_Out8->Checked = true;
+    setBitDepthEnable(true, true, true, true, false);
+    this->Edit_StartLevel->Text = "255";
+    this->ComboBox_LevelStep->Text = "1";
+    this->CheckBox_AvoidNoise->Enabled = true;
+}
+
+//---------------------------------------------------------------------------
+
+void __fastcall TCCTLUTForm::RadioButton_In10Click(TObject * Sender)
+{
+    this->CheckBox_Gamma256->Checked = true;
+    this->RadioButton_Lut12->Checked = true;
+    this->RadioButton_Out8->Checked = true;
+    setBitDepthEnable(false, true, false, true, true);
+    this->Edit_StartLevel->Text = "255";
+    this->ComboBox_LevelStep->Text = "1";
+    this->CheckBox_AvoidNoise->Checked = false;
+    this->CheckBox_AvoidNoise->Enabled = false;
+    this->CheckBox_Gamma256->Enabled = true;
+}
+
+//---------------------------------------------------------------------------
+
+
+
+void __fastcall TCCTLUTForm::RadioButton_RBInterpClick(TObject * Sender)
+{
+    this->Edit_RBInterpUnder->Enabled = true;
+    this->Edit_P1->Enabled = false;
+    this->Edit_P2->Enabled = false;
+}
+
+//---------------------------------------------------------------------------
+
+void __fastcall TCCTLUTForm::RadioButton_P1P2Click(TObject * Sender)
+{
+    this->Edit_RBInterpUnder->Enabled = false;
+    this->Edit_P1->Enabled = true;
+    this->Edit_P2->Enabled = true;
+}
+
+//---------------------------------------------------------------------------
+
+
 
