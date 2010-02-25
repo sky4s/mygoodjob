@@ -11,13 +11,30 @@ File_8=SourceModule,'D:\Program Files\Borland\CBuilder6\include\vcl\DB.hpp',0,1,
 File_9=SourceModule,'D:\WorkSpace\CMSCpp2\src\gui\TTargetWhiteForm.cpp',0,1,1,1,1,0,0
 
 [Modules]
-Module0=D:\WorkSpace\CMSCpp2\src\Unit1.cpp
-Module1=D:\WorkSpace\CMSCpp2\src\cms\util\rgbArray.cpp
-Module2=D:\WorkSpace\CMSCpp2\src\gui\TCCTLUTForm.cpp
-Module3=D:\WorkSpace\CMSCpp2\src\static\java\lang.cpp
-Module4=D:\WorkSpace\CMSCpp2\src\gui\TMainForm.cpp
-Count=5
+Module0=D:\WorkSpace\CMSCpp2\src\cms\lcd\calibrate\lcdcalibrator.cpp
+Module1=D:\WorkSpace\CMSCpp2\src\gui\TCCTLUTForm.cpp
+Module2=D:\WorkSpace\CMSCpp2\src\static\math\regression.cpp
+Module3=D:\WorkSpace\CMSCpp2\src\Unit1.cpp
+Module4=D:\WorkSpace\CMSCpp2\src\cms\util\rgbArray.cpp
+Module5=D:\WorkSpace\CMSCpp2\src\gui\TMainForm.cpp
+Module6=D:\WorkSpace\CMSCpp2\src\static\java\lang.cpp
+Count=7
 EditWindowCount=1
+
+[D:\WorkSpace\CMSCpp2\src\cms\lcd\calibrate\lcdcalibrator.cpp]
+ModuleType=SourceModule
+FormState=0
+FormOnTop=0
+
+[D:\WorkSpace\CMSCpp2\src\gui\TCCTLUTForm.cpp]
+ModuleType=SourceModule
+FormState=1
+FormOnTop=0
+
+[D:\WorkSpace\CMSCpp2\src\static\math\regression.cpp]
+ModuleType=SourceModule
+FormState=0
+FormOnTop=0
 
 [D:\WorkSpace\CMSCpp2\src\Unit1.cpp]
 ModuleType=SourceModule
@@ -29,17 +46,12 @@ ModuleType=SourceModule
 FormState=0
 FormOnTop=0
 
-[D:\WorkSpace\CMSCpp2\src\gui\TCCTLUTForm.cpp]
-ModuleType=SourceModule
-FormState=1
-FormOnTop=0
-
-[D:\WorkSpace\CMSCpp2\src\static\java\lang.cpp]
+[D:\WorkSpace\CMSCpp2\src\gui\TMainForm.cpp]
 ModuleType=SourceModule
 FormState=0
 FormOnTop=0
 
-[D:\WorkSpace\CMSCpp2\src\gui\TMainForm.cpp]
+[D:\WorkSpace\CMSCpp2\src\static\java\lang.cpp]
 ModuleType=SourceModule
 FormState=0
 FormOnTop=0
@@ -57,34 +69,36 @@ FormState=0
 FormOnTop=0
 
 [EditWindow0]
-ViewCount=5
-CurrentView=4
+ViewCount=7
+CurrentView=3
 View0=0
 View1=1
 View2=2
 View3=3
 View4=4
+View5=5
+View6=6
 CodeExplorer=CodeExplorer@EditWindow0
 MessageView=MessageView@EditWindow0
 ClassHierarchy=ClassHierarchy@EditWindow0
 Create=1
 Visible=1
 State=0
-Left=245
-Top=151
+Left=89
+Top=164
 Width=1195
-Height=761
+Height=758
 MaxLeft=-4
 MaxTop=130
 ClientWidth=1187
-ClientHeight=728
+ClientHeight=725
 LeftPanelSize=170
 LeftPanelClients=CodeExplorer@EditWindow0
 LeftPanelData=000004000000000000000000000000000000000000000000000100000000000000000C000000436F64654578706C6F726572FFFFFFFF
 RightPanelSize=0
 BottomPanelSize=147
 BottomPanelClients=MessageView@EditWindow0
-BottomPanelData=0000040000000000A304000000000000029300000000000000010000000000000000000000000100000000A3040000000000000100000000A30400000B0000004D65737361676556696577FFFFFFFF
+BottomPanelData=0000040000000000A304000000000000029300000000000000010000000000000000000000000100000000A3040000000000000100000000A3040000000000000100000000A30400000B0000004D65737361676556696577FFFFFFFF
 
 [View0]
 Module=D:\WorkSpace\CMSCpp2\src\static\java\lang.cpp
@@ -103,18 +117,32 @@ LeftCol=1
 [View2]
 Module=D:\WorkSpace\CMSCpp2\src\gui\TCCTLUTForm.cpp
 CursorX=1
-CursorY=1
-TopLine=1
+CursorY=110
+TopLine=97
 LeftCol=1
 
 [View3]
+Module=D:\WorkSpace\CMSCpp2\src\cms\lcd\calibrate\lcdcalibrator.cpp
+CursorX=25
+CursorY=8
+TopLine=1
+LeftCol=1
+
+[View4]
+Module=D:\WorkSpace\CMSCpp2\src\static\math\regression.cpp
+CursorX=23
+CursorY=182
+TopLine=181
+LeftCol=1
+
+[View5]
 Module=D:\WorkSpace\CMSCpp2\src\cms\util\rgbArray.cpp
 CursorX=1
 CursorY=1
 TopLine=1
 LeftCol=1
 
-[View4]
+[View6]
 Module=D:\WorkSpace\CMSCpp2\src\Unit1.cpp
 CursorX=2
 CursorY=34
@@ -126,12 +154,11 @@ Count=1
 Watch0='r',256,0,18,1,0,'Watches'
 
 [Breakpoints]
-Count=5
+Count=4
 Breakpoint0='lib\boost\smart_ptr\shared_ptr.hpp',188,'',0,1,'',1,0,0,'',1,'','',''
-Breakpoint1='D:\WorkSpace\CMSCpp2\src\static\math\regression.cpp',184,'',0,1,'',1,0,0,'',1,'','',''
-Breakpoint2='D:\WorkSpace\CMSCpp2\src\static\math\interpolation.cpp',207,'',0,1,'',1,0,0,'',1,'','',''
-Breakpoint3='D:\WorkSpace\CMSCpp2\src\static\math\interpolation.cpp',178,'',0,1,'',1,0,0,'',1,'','',''
-Breakpoint4='D:\WorkSpace\CMSCpp2\src\static\math\interpolation.cpp',150,'',0,1,'',1,0,0,'',1,'','',''
+Breakpoint1='D:\WorkSpace\CMSCpp2\src\static\math\interpolation.cpp',207,'',0,1,'',1,0,0,'',1,'','',''
+Breakpoint2='D:\WorkSpace\CMSCpp2\src\static\math\interpolation.cpp',178,'',0,1,'',1,0,0,'',1,'','',''
+Breakpoint3='D:\WorkSpace\CMSCpp2\src\static\math\interpolation.cpp',150,'',0,1,'',1,0,0,'',1,'','',''
 
 [AddressBreakpoints]
 Count=0
@@ -281,7 +308,7 @@ LRDockWidth=311
 Dockable=1
 SplitPos=159
 ArrangeBy=Name
-SelectedItem=Caption
+SelectedItem=Name
 ExpandedItems=Font,Options,OptionsEx
 HiddenCategories=
 
@@ -364,11 +391,11 @@ State=0
 Left=0
 Top=12
 Width=170
-Height=566
+Height=563
 MaxLeft=-1
 MaxTop=-1
 ClientWidth=170
-ClientHeight=566
+ClientHeight=563
 TBDockHeight=388
 LRDockWidth=170
 Dockable=1

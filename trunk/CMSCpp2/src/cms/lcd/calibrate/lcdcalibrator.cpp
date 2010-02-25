@@ -37,16 +37,6 @@ namespace cms {
 		(analyzer) {
 
 	    };
-	    /*RGB_vector_ptr ComponentFetcher::fetch(int start, int end,
-	       int step) {
-	       RGB_vector_ptr result(new RGB_vector());
-	       for (int x = start; x >= end; x -= end) {
-	       RGB_ptr rgb(new RGBColor(x, x, x));
-	       RGB_ptr component = analyzer->getComponent(rgb);
-	       result->push_back(component);
-	       };
-	       return result;
-	       }; */
 
 	    Composition_vector_ptr ComponentFetcher::
 		fetchComposition(int start, int end, int step) {
@@ -63,50 +53,9 @@ namespace cms {
 		return result;
 	    };
 
-	    /*class ComponentFetcher {
-	       public:
-	       RGB_vector_ptr fetch(int start, int end, int step);
-	       };
-
-	       class DGCodeProducer {
-	       protected:
-	       void init();
-	       public:
-	       DGCodeProducer(RGB_Vector_ptr rgbComponent);
-	       RGB_vector_ptr produce(double_array gammaCurve);
-	       RGB_vector_ptr produce(double gamma);
-
-	       };
-
-	       enum BitDepth {
-	       Bit6, Bit8, Bit10, Bit12;
-	       };
-	       class LCDCalibrator {
-	       private:
-	       bool p1p2;
-	       BitDepth in, lut, out;
-	       double_array gammaCurve;
-	       double rbInterpUnder;
-	       bool gByPass;
-	       double bIntensityGain;
-	       bool bMax;
-	       bool gamma256;
-	       bool avoidFRCNoise;
-	       public:
-
-	       void setP1P2();
-	       void setRBInterpolation(int under);
-	       void setGamma(double gamma);
-	       void setGammaCurve(double_array gammaCurve);
-	       void setGByPass(bool byPass);
-	       void setBIntensityGain(double gain);
-	       void setBMax(bool bMax);
-	       void setGamma256(bool gamma256);
-	       void setAvoidFRCNoise(bool avoid);
-	       void setBitDepth(const BitDepth & in, const BitDepth & lut,
-	       const BitDepth & out);
-	       }; */
-	    void LCDCalibrator::setP1P2() {
+	    void LCDCalibrator::setP1P2(double p1, double p2) {
+		this->p1 = p1;
+		this->p2 = p2;
 		this->p1p2 = true;
 	    };
 	    void LCDCalibrator::setRBInterpolation(int under) {
