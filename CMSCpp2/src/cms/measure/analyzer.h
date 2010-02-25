@@ -19,7 +19,7 @@ namespace cms {
     namespace measure {
 
 	class MeterMeasurement;
-	class ComponentAnalyzerIF {
+	class ComponentAnalyzerIF:public jObject {
 	  public:
 	    virtual RGB_ptr getComponent(RGB_ptr rgb) = 0;
 	    virtual void setupComponent(const Dep::Channel & ch,
@@ -27,7 +27,7 @@ namespace cms {
 	    virtual void enter() = 0;
 	};
 
-	class CA210ComponentAnalyzer:public jObject, ComponentAnalyzerIF {
+	class CA210ComponentAnalyzer:public ComponentAnalyzerIF {
 	  protected:
 	    bptr < MeterMeasurement > mm;
 	    bptr < cms::measure::meter::CA210 > ca210;

@@ -87,7 +87,7 @@
 #define XYZ_vector_ptr bptr < XYZ_vector >
 
 
-#define channel_vector std::vector <   Dep::Channel  >
+#define channel_vector std::vector < Dep::Channel >
 #define channel_vector_ptr bptr < channel_vector >
 
 #define Patch_ptr bptr < cms::Patch >
@@ -156,6 +156,7 @@ namespace cms {
     namespace measure {
 	class MeterMeasurement;
 	class MeasureResult;
+	class ComponentAnalyzerIF;
 	namespace cp {
 	    class MeasureInterface;
 	};
@@ -216,6 +217,14 @@ namespace cms {
  何時選用share_array: 長度不變動, 長度已知, 會有大量實體, 元素少
  何時選用vector+bptr: 長度會變動, 長度未知, 不會有大量實體
 
+ *enum 與 Enumeration
+ enum是c++內建, 功能很弱, 基本上只是一個常數代換而已.
+ 但如果不需複雜的功能, 其實enum夠了.
+ 要是enum需要跨class使用的時候, 建議採用擴充型的Enumeration.
+ 定義方法為: Enumeration(enum_name)
+              item1=value, item2=value, ...
+             EnumerationEnd();
+ 可以 Enumeration::item1使用, 較好辨識.
 */
 
 

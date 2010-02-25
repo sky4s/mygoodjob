@@ -1,6 +1,6 @@
 object CCTLUTForm: TCCTLUTForm
-  Left = 599
-  Top = 189
+  Left = 147
+  Top = 492
   Width = 656
   Height = 425
   Caption = 'CCT LUT'
@@ -158,7 +158,7 @@ object CCTLUTForm: TCCTLUTForm
     object RadioButton4: TRadioButton
       Left = 8
       Top = 56
-      Width = 113
+      Width = 129
       Height = 17
       Caption = 'RB Interpolation'
       TabOrder = 1

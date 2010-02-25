@@ -208,17 +208,25 @@ void __fastcall TTargetWhiteForm2::Button2Click(TObject * Sender)
     g->G = rgb->G;
     b->B = rgb->B;
 
-    //設定到ca-210去
+    //==========================================================================
+    // 設定到ca-210去
+    //==========================================================================
+    //利用ca210做成分分析器, 並且設定回MainForm
     bptr < CA210 > ca210 = MainForm->getCA210();
-    CA210ComponentAnalyzer analyzer(ca210);
+    CA210ComponentAnalyzer *ca210Analyzer =
+	new CA210ComponentAnalyzer(ca210);
+    bptr < ComponentAnalyzerIF > analyzer(ca210Analyzer);
+    MainForm->analyzer = analyzer;
+
     int no = this->Edit_TargetCH->Text.ToInt();
     string_ptr id(new string(this->Edit_TargetID->Text.c_str()));
-    analyzer.setChannel(no, id);
-    analyzer.setupComponent(Channel::R, r);
-    analyzer.setupComponent(Channel::G, g);
-    analyzer.setupComponent(Channel::B, b);
-    analyzer.setupComponent(Channel::W, rgb);
-    analyzer.enter();
+    ca210Analyzer->setChannel(no, id);
+    analyzer->setupComponent(Channel::R, r);
+    analyzer->setupComponent(Channel::G, g);
+    analyzer->setupComponent(Channel::B, b);
+    analyzer->setupComponent(Channel::W, rgb);
+    analyzer->enter();
+    //==========================================================================
 
 }
 
