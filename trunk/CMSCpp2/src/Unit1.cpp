@@ -30,6 +30,7 @@
 //#include <policybased.h>
 #include <locale>
 #include <cms/lcd/calibrate/rgbvectorop.h>
+#include <cms/lcd/calibrate/lcdcalibrator.h>
 #include <cms/util/rgbarray.h>
 
 //---------------------------------------------------------------------------
@@ -235,16 +236,14 @@ void sizeCompare()
 
 class A {
 };
-class B:public A {
-};
 
-void classTest()
+void gammaCurve()
 {
-    A *a = new B();
-    A *aa = new A();
-    bptr < A > ba(a);
-    bptr < A > ba2(new A());
-    //bptr < B > ba3(new A());
+    using namespace cms::lcd::calibrate;
+    using namespace math;
+    int n = 256;
+    double_array curve = LCDCalibrator::getGammaCurve(2.2, n);
+    cout << *DoubleArray::toString(curve, n);
 };
 
 #pragma argsused
@@ -262,8 +261,8 @@ int main(int argc, char *argv[])
     //excel();
     //inverse();
     //rgbVectorOp();
-    sizeCompare();
-    classTest();
+    //sizeCompare();
+    gammaCurve();
     getch();
 }
 

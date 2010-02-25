@@ -147,6 +147,7 @@ namespace cms {
     };
     namespace lcd {
 	namespace calibrate {
+	    class LCDCalibrator;
 	    namespace algo {
 		class ChromaticAroundAlgorithm;
 		class CIEuv1960NearestAlgorithm;

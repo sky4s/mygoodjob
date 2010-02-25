@@ -14,24 +14,29 @@
 namespace cms {
     namespace lcd {
 	namespace calibrate {
-	    Composition::Composition(RGB_ptr rgb,
-				     RGB_ptr component):rgb(rgb),
+	    using namespace cms::measure;
+	    //==================================================================
+	    // Composition
+	    //==================================================================
+	     Composition::Composition(RGB_ptr rgb,
+				      RGB_ptr component):rgb(rgb),
 		component(component) {
 
 	    };
+	    //==================================================================
 
-	     ComponentFetcher::ComponentFetcher(bptr <
-						cms::measure::
-						MeterMeasurement > mm,
+	    //==================================================================
+	    // ComponentFetcher
+	    //==================================================================
+	     ComponentFetcher::ComponentFetcher(bptr < MeterMeasurement >
+						mm,
 						bptr <
-						cms::measure::
 						ComponentAnalyzerIF >
 						analyzer):mm(mm),
 		analyzer(analyzer) {
 
 	    };
 	     ComponentFetcher::ComponentFetcher(bptr <
-						cms::measure::
 						ComponentAnalyzerIF >
 						analyzer):analyzer
 		(analyzer) {
@@ -52,7 +57,30 @@ namespace cms {
 		};
 		return result;
 	    };
+	    //==================================================================
 
+	    //==================================================================
+	    // LCDCalibrator
+	    //==================================================================
+	    double_array LCDCalibrator::getGammaCurve(double gamma, int n) {
+		double_array result(new double[n]);
+		for (int x = 0; x < n; x++) {
+		    double normal = static_cast < double >(x) / (n - 1);
+		    double v = java::lang::Math::pow(normal, gamma);
+		    result[x] = v;
+		}
+		return result;
+	    };
+	    double_vector_ptr LCDCalibrator::
+		getGammaCurveVector(double gamma, int n) {
+		double_vector_ptr result(new double_vector(n));
+		for (int x = 0; x < n; x++) {
+		    double normal = static_cast < double >(x) / (n - 1);
+		    double v = java::lang::Math::pow(normal, gamma);
+		    (*result)[x] = v;
+		}
+		return result;
+	    };
 	    void LCDCalibrator::setP1P2(double p1, double p2) {
 		this->p1 = p1;
 		this->p2 = p2;
@@ -62,9 +90,14 @@ namespace cms {
 		this->p1p2 = false;
 		this->rbInterpUnder = under;
 	    };
-	    void LCDCalibrator::setGamma(double gamma) {
+	    void LCDCalibrator::setGamma(double gamma, int n) {
+		setGammaCurve(getGammaCurveVector(gamma, n));
 	    };
-	    void LCDCalibrator::setGammaCurve(double_array gammaCurve) {
+	    void LCDCalibrator::setGammaCurve(double_array gammaCurve,
+					      int n) {
+		//this->gammaCurve = gammaCurve;
+	    };
+	    void LCDCalibrator::setGammaCurve(double_vector_ptr gammaCurve) {
 		this->gammaCurve = gammaCurve;
 	    };
 	    void LCDCalibrator::setGByPass(bool byPass) {
@@ -89,8 +122,10 @@ namespace cms {
 		this->lut = lut;
 		this->out = out;
 	    };
-
+	    //==================================================================
 	};
     };
 };
+
+;
 

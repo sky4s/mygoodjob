@@ -58,19 +58,26 @@ namespace cms {
 		bool p1p2;
 		double p1, p2;
 		BitDepth in, lut, out;
-		double_array gammaCurve;
+		//double_array gammaCurve;
 		double rbInterpUnder;
 		bool gByPass;
 		double bIntensityGain;
 		bool bMax;
 		bool gamma256;
 		bool avoidFRCNoise;
+		int n;
+		double_vector_ptr gammaCurve;
+
 	      public:
+		static double_array getGammaCurve(double gamma, int n);
+		static double_vector_ptr getGammaCurveVector(double gamma,
+							     int n);
 		//LCDCalibrator();
 		void setP1P2(double p1, double p2);
 		void setRBInterpolation(int under);
-		void setGamma(double gamma);
-		void setGammaCurve(double_array gammaCurve);
+		void setGamma(double gamma, int n);
+		void setGammaCurve(double_array gammaCurve, int n);
+		void setGammaCurve(double_vector_ptr gammaCurve);
 		void setGByPass(bool byPass);
 		void setBIntensityGain(double gain);
 		void setBMax(bool bMax);
