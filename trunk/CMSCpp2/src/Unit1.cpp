@@ -39,20 +39,20 @@
 void excel()
 {
     using namespace cms::colorformat;
-    string_ptr filename(new string("a.xls"));
+    //string_ptr filename(new string("a.xls"));
 
     string_vector_ptr fieldsNames(new string_vector());
     fieldsNames->push_back("a");
     fieldsNames->push_back("b");
 
-    ExcelFileDB db(filename, Create);
+    ExcelFileDB db("a.xls", Create);
 
-    string_ptr tbname(new string("tb"));
+    //string_ptr tbname(new string("tb"));
 
     bool newfile = true;
 
     if (newfile) {
-	db.createTable(tbname, fieldsNames);
+	db.createTable("tb", fieldsNames);
     } else {
 	/*db.setTableName(tbname);
 	   string_vector_ptr names = db.getFieldNames(tbname);
@@ -241,32 +241,18 @@ void gammaCurve()
     cout << *DoubleArray::toString(curve, n);
 };
 
-void header()
-{
-    using namespace cms::colorformat;
-    string_vector_ptr names =
-	DGCodeFile::getFieldNames(DGCodeFile::GammaHeader, 4);
-    foreach(string s, *names) {
-	cout << s << endl;
-    }
-    string_vector_ptr names2 =
-	DGCodeFile::getFieldNames(DGCodeFile::RawHeader, 13);
-    foreach(string s, *names2) {
-	cout << s << endl;
-    }
-};
+
 void dgcodefile()
 {
     using namespace cms::colorformat;
-    string_ptr filename(new string("test.xls"));
-    DGCodeFile dgcode(filename, 257);
-    //ExcelFileDB db(filename, Create);
-    /*string_ptr tbname(new string("tb"));
-    string_vector_ptr fieldsNames(new string_vector());
-    fieldsNames->push_back("a");
-    fieldsNames->push_back("b");
-    db.createTable(tbname, fieldsNames);*/
+    //string_ptr filename(new string("test.xls"));
+    DGCodeFile dgcode("test.xls", 257);
+    dgcode.setProperty("a", "b");
+    dgcode.setProperty("b", "bbb");
+
 };
+
+
 
 #pragma argsused
 int main(int argc, char *argv[])

@@ -44,13 +44,13 @@ namespace cms {
 	    return mode == Create || mode == Update;
 	};
 
-      ExcelFileDB::ExcelFileDB(string_ptr fileName, const Mode mode):fileName(fileName),
+      ExcelFileDB::ExcelFileDB(const string & fileName, const Mode mode):fileName(fileName),
 	    mode(mode), tableChanged(true)
 	{
 
 	    WideString connectstr;
 	    connectstr = "Provider=Microsoft.Jet.OLEDB.4.0;Data Source=";
-	    connectstr += fileName->c_str();
+	    connectstr += fileName.c_str();
 	    connectstr +=
 		";Mode=ReadWrite;Extended Properties=Excel 8.0;Persist Security Info=False";
 
@@ -67,62 +67,120 @@ namespace cms {
 	ExcelFileDB::~ExcelFileDB() {
 	    close();
 	};
-	void ExcelFileDB::createTable(string_ptr tableName,
+	/*void ExcelFileDB::createTable(string_ptr tableName,
+	   string_vector_ptr fieldNames) {
+	   if (!isAlterable()) {
+	   throw IllegalStateException("!isAlterable()");
+	   }
+
+	   this->setTableName(tableName);
+
+	   string sql = "CREATE TABLE [";
+	   sql += tableName->c_str();
+	   sql += "] (";
+
+	   foreach(string s, *fieldNames) {
+	   sql += "[";
+	   sql += s.c_str();
+	   //sql += "] TEXT(100),";
+	   sql += "] REAL,";
+
+	   }
+	   sql.erase(sql.size() - 1, 1);
+	   sql += ")";
+	   cout << sql << endl;
+	   execute(sql);
+	   }; */
+	void ExcelFileDB::createTable(const std::string & tableName,
 				      string_vector_ptr fieldNames) {
+	    int size = fieldNames->size();
+	    string_vector_ptr fieldTypes(new string_vector(size));
+	    foreach(string & s, *fieldTypes) {
+		s = "Real";
+	    };
+	    createTable(tableName, fieldNames, fieldTypes);
+	};
+
+	void ExcelFileDB::createTable(const std::string & tableName,
+				      string_vector_ptr fieldNames,
+				      string_vector_ptr fieldTypes) {
 	    if (!isAlterable()) {
 		throw IllegalStateException("!isAlterable()");
 	    }
+	    if (fieldNames->size() != fieldTypes->size()) {
+		throw
+		    IllegalArgumentException
+		    ("fieldNames->size() != fieldTypes->size()");
+	    }
 
 	    this->setTableName(tableName);
+	    //cout<<this->tableName<<" "<<tableName<<endl;
+	    string sql = "CREATE TABLE [" + tableName + "] (";
 
-	    string sql = "CREATE TABLE \"";
-	    sql += tableName->c_str();
-	    sql += "\" (";
+	    int size = fieldNames->size();
+	    for (int x = 0; x != size; x++) {
+		string & name = (*fieldNames)[x];
+		string & type = (*fieldTypes)[x];
+		sql += "[" + name + "] " + type + ",";
+	    };
 
-	    foreach(string s, *fieldNames) {
-		sql += "[";
-		sql += s.c_str();
-		sql += "] TEXT(100),";
-	    }
 	    sql.erase(sql.size() - 1, 1);
 	    sql += ")";
-	    cout << sql << endl;
+	    //cout << sql << endl;
 	    execute(sql);
 	};
-	void ExcelFileDB::createTable(const std::string & tableName,
-				      string_vector_ptr fieldNames) {
-	    string_ptr tableName_ptr(new string(tableName));
-	    createTable(tableName_ptr, fieldNames);
-	};
-	void ExcelFileDB::setTableName(string_ptr tableName) {
+	/*void ExcelFileDB::setTableName(string_ptr tableName) {
+	   this->tableName = tableName;
+	   tableChanged = true;
+	   }; */
+	void ExcelFileDB::setTableName(const std::string & tableName) {
 	    this->tableName = tableName;
-	    tableChanged = true;
-	};
-	void ExcelFileDB::setTableName(const std::string & tablename) {
-	    string_ptr str(new string(tablename));
-	    setTableName(str);
 	}
 
 	void ExcelFileDB::insert(string_vector_ptr fieldNames,
 				 string_vector_ptr values) {
+	    /*if (!isAlterable()) {
+	       throw IllegalStateException("!isAlterable()");
+	       }
+
+	       string sql = "INSERT INTO [" + tableName + "] (";
+
+	       foreach(string s, *fieldNames) {
+	       sql += "[" + s + "],";
+	       };
+	       sql.erase(sql.size() - 1, 1);
+	       sql += ") VALUES (";
+	       foreach(string s, *values) {
+	       //sql += "\"" + s + "\",";
+	       sql += s + ",";
+	       };
+	       sql.erase(sql.size() - 1, 1);
+	       sql += ")";
+	       cout << sql << endl;
+	       execute(sql); */
+	    insert(fieldNames, values, false);
+	};
+
+	void ExcelFileDB::insert(string_vector_ptr fieldNames,
+				 string_vector_ptr values, bool text) {
 	    if (!isAlterable()) {
 		throw IllegalStateException("!isAlterable()");
 	    }
 
-	    string sql = "INSERT INTO [" + *tableName + "$] (";
-	    cout << sql << endl;
+	    string sql = "INSERT INTO [" + tableName + "] (";
 
 	    foreach(string s, *fieldNames) {
-		sql += s + ",";
+		sql += "[" + s + "],";
 	    };
 	    sql.erase(sql.size() - 1, 1);
 	    sql += ") VALUES (";
 	    foreach(string s, *values) {
-		sql += "\"" + s + "\",";
+		//sql += "\"" + s + "\",";
+		sql += text ? ("\"" + s + "\",") : (s + ",");
 	    };
 	    sql.erase(sql.size() - 1, 1);
 	    sql += ")";
-
+	    cout << sql << endl;
 	    execute(sql);
 	};
 	void ExcelFileDB::execute(const std::string & sql) {
@@ -138,7 +196,7 @@ namespace cms {
 		throw IllegalStateException("!isAlterable()");
 	    }
 
-	    string sql = "UPDATE [" + *tableName + "$] SET";
+	    string sql = "UPDATE [" + tableName + "$] SET";
 	    int size = fieldNames->size();
 	    for (int x = 0; x < size; x++) {
 		string key = (*fieldNames)[x];
@@ -201,7 +259,7 @@ namespace cms {
 	    bptr_ < TADODataSet >
 		dataSet(new TADODataSet((TComponent *) null));
 	    dataSet->Connection = connection.get();
-	    string select = "SELECT * FROM " + *tableName;;
+	    string select = "SELECT * FROM " + tableName;;
 	    dataSet->CommandText = *toWideString(select);
 	    dataSet->Open();
 	    cout << dataSet->FieldCount << endl;
@@ -217,7 +275,7 @@ namespace cms {
 		connection->Close();
 		//connection.reset((TADOConnection *) null);
 		CoUninitialize();
-		//cout<<"close"<<endl;
+		cout << "close" << endl;
 	    }
 	};
 
@@ -236,6 +294,12 @@ namespace cms {
 	    "RP", "GP", "BP", "RP_Intensity_Fix", "GP_Intensity_Fix",
 	    "BP_Intensity_Fix"
 	};
+	const std::string DGCodeFile::PropertiesHeader[2] =
+	    { "Key", "Value" };
+	const string & DGCodeFile::GammaTable = "Gamma Table";
+	const string & DGCodeFile::RawData = "Raw Data";
+	const string & DGCodeFile::Properties = "Properties";
+
 	string_vector_ptr DGCodeFile::getFieldNames(const string *
 						    fieldNames, int n) {
 	    string_vector_ptr result(new string_vector(n));
@@ -248,27 +312,18 @@ namespace cms {
 	void DGCodeFile::initDefaultData(string_vector_ptr fieldNames,
 					 const string & tableName,
 					 bool reverse) {
-	    int fields = fieldNames->size();
-	    db.createTable(tableName, fieldNames);
+	    db->createTable(tableName, fieldNames);
 	    int start = !reverse ? 0 : n - 1;
-	    int end = !reverse ? n - 1 : -1;
+	    int end = !reverse ? n : -1;
 	    int step = !reverse ? 1 : -1;
 
 	    for (int x = start; x != end; x += step) {
-		string_vector_ptr values(new string_vector(fields));
-		(*values)[0] = lexical_cast < string > (x);
+		string_vector_ptr value(new string_vector(1));
+		(*value)[0] = lexical_cast < string > (x);
+		string_vector_ptr fieldName(new string_vector(1));
+		(*fieldName)[0] = (*fieldNames)[0];
 
-		/*for (int x = 1; x < fields; x++) {
-		   (*values)[x] = "";
-		   }; */
-
-		/*foreach(string s, *fieldNames) {
-		   cout << "\"" << s << "\"" << endl;
-		   }
-		   foreach(string s, *values) {
-		   cout << "\"" << s << "\"" << endl;
-		   } */
-		//db.insert(fieldNames, values);
+		db->insert(fieldName, value);
 	    };
 	};
 
@@ -276,23 +331,39 @@ namespace cms {
 	    if (Create == mode) {
 		string_vector_ptr fieldNames =
 		    getFieldNames(GammaHeader, 4);
-		initDefaultData(fieldNames, "Gamma Table", false);
-		/*fieldNames = getFieldNames(RawHeader, 13);
-		   initDefaultData(fieldNames, "Raw Data", true); */
+		initDefaultData(fieldNames, GammaTable, false);
+		fieldNames = getFieldNames(RawHeader, 13);
+		initDefaultData(fieldNames, RawData, true);
+
+		fieldNames = getFieldNames(PropertiesHeader, 2);
+		string_vector_ptr fieldType(new string_vector(2));
+		(*fieldType)[0] = "Text";
+		(*fieldType)[1] = "Text";
+		db->createTable(Properties, fieldNames, fieldType);
 	    };
 	};
 	DGCodeFile::
-	    DGCodeFile(string_ptr filename,
-		       int n):db(ExcelFileDB(filename, Create)), n(n),
+	    DGCodeFile(const string & filename,
+		       int n):db(new ExcelFileDB(filename, Create)), n(n),
 	    mode(Create) {
 	    init();
 	};
 	DGCodeFile::
-	    DGCodeFile(string_ptr filename, int n,
-		       const Mode mode):db(ExcelFileDB(filename, mode)),
-	    n(n), mode(mode) {
+	    DGCodeFile(const string & filename, int n,
+		       const Mode mode):db(new ExcelFileDB(filename,
+							   mode)), n(n),
+	    mode(mode) {
 	    init();
-
+	};
+	void DGCodeFile::setProperty(const string & key,
+				     const string & value) {
+	    db->setTableName(Properties);
+	    string_vector_ptr fieldNames =
+		getFieldNames(PropertiesHeader, 2);
+	    string_vector_ptr values(new string_vector(2));
+	    (*values)[0] = key;
+	    (*values)[1] = value;
+	    db->insert(fieldNames, values, tru7e);
 	};
 	//======================================================================
     };

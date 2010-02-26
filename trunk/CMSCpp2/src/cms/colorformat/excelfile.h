@@ -24,8 +24,8 @@ namespace cms {
 	    //TADOConnection * ADOConnection1;
 	    bptr < TADOConnection > connection;
 	    const Mode mode;
-	    string_ptr fileName;
-	    string_ptr tableName;
+	     std::string fileName;
+	     std::string tableName;
 	     bptr < WideString > toWideString(const std::string & sql);
 	    string_vector_ptr fieldNames;
 	     std::string keyField;
@@ -40,16 +40,24 @@ namespace cms {
 			 string_vector_ptr fieldNames,
 			 string_vector_ptr values, bool textValues);
 	  public:
-	     ExcelFileDB(string_ptr fileName, const Mode mode);
+	    //ExcelFileDB(string_ptr fileName, const Mode mode);
+	     ExcelFileDB(const std::string & fileName, const Mode mode);
 	    ~ExcelFileDB();
-	    void createTable(string_ptr tableName,
-			     string_vector_ptr fieldNames);
+	    /*void createTable(string_ptr tableName,
+	       string_vector_ptr fieldNames); */
 	    void createTable(const std::string & tableName,
 			     string_vector_ptr fieldNames);
-	    void setTableName(string_ptr tablename);
-	    void setTableName(const std::string & tablename);
+	    void createTable(const std::string & tableName,
+			     string_vector_ptr fieldNames,
+			     string_vector_ptr fieldTypes);
+
+	    //void setTableName(string_ptr tablename);
+	    void setTableName(const std::string & tableName);
 	    void insert(string_vector_ptr fieldNames,
 			string_vector_ptr values);
+	    void insert(string_vector_ptr fieldNames,
+			string_vector_ptr values, bool text);
+
 
 
 	    void update(const std::string & keyField,
@@ -77,20 +85,27 @@ namespace cms {
 
 	class DGCodeFile {
 	  private:
-	    ExcelFileDB db;
+	    bptr < ExcelFileDB > db;
 	    const Mode mode;
 	    void init();
 	    void initDefaultData(string_vector_ptr fieldNames,
 				 const std::string & tableName,
 				 bool reverse);
 	    const int n;
-	  public:
 	    static string_vector_ptr getFieldNames(const std::string *
 						   fieldNames, int n);
+	  public:
 	    static const std::string GammaHeader[4];
 	    static const std::string RawHeader[13];
-	     DGCodeFile(string_ptr filename, int n);
-	     DGCodeFile(string_ptr filename, int n, const Mode mode);
+	    static const std::string PropertiesHeader[2];
+	    static const std::string & GammaTable;
+	    static const std::string & RawData;
+	    static const std::string & Properties;
+	     DGCodeFile(const std::string & filename, int n);
+	     DGCodeFile(const std::string & filename, int n,
+			const Mode mode);
+	    void setProperty(const std::string & key,
+			     const std::string & value);
 	};
     };
 };
