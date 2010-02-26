@@ -12,7 +12,7 @@
 namespace cms {
     namespace lcd {
 	namespace calibrate {
-
+	    //==================================================================
 	    RGB_vector_ptr RGBVectorOp::
 		createInstance(RGB_vector_ptr source) {
 		RGB_vector_ptr rendering = getRendering(source);
@@ -35,6 +35,9 @@ namespace cms {
 	    void RGBVectorOp::addOp(bptr < RGBVectorOp > op) {
 		opvector.push_back(op);
 	    };
+	    //==================================================================
+
+	    //==================================================================
 	    using namespace Dep;
 	    RGB_vector_ptr LinearOp::getRendering(RGB_vector_ptr source) {
 
@@ -49,7 +52,9 @@ namespace cms {
 		};
 		return result;
 	    };
+	    //==================================================================
 
+	    //==================================================================
 	    RGB_vector_ptr MinusOp::getRendering(RGB_vector_ptr source) {
 		RGB_vector_ptr result(new RGB_vector());
 		foreach(RGB_ptr rgb, *source) {
@@ -69,6 +74,19 @@ namespace cms {
 	    //==================================================================
 	    RGB_vector_ptr P1P2::getRendering(RGB_vector_ptr source) {
 
+	    };
+	    P1P2::P1P2(double p1, double p2) {
+	    };
+	    //==================================================================
+
+	    //==================================================================
+	    // RBInterpolation
+	    //==================================================================
+	    RGB_vector_ptr RBInterpolation::
+		getRendering(RGB_vector_ptr source) {
+
+	    };
+	    RBInterpolation::RBInterpolation(double under) {
 	    };
 	    //==================================================================
 	};

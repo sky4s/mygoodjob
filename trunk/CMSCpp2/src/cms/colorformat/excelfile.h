@@ -23,7 +23,7 @@ namespace cms {
 	  private:
 	    //TADOConnection * ADOConnection1;
 	    bptr < TADOConnection > connection;
-	    Mode mode;
+	    const Mode mode;
 	    string_ptr fileName;
 	    string_ptr tableName;
 	     bptr < WideString > toWideString(const std::string & sql);
@@ -40,9 +40,11 @@ namespace cms {
 			 string_vector_ptr fieldNames,
 			 string_vector_ptr values, bool textValues);
 	  public:
-	     ExcelFileDB(string_ptr fileName, Mode mode);
+	     ExcelFileDB(string_ptr fileName, const Mode mode);
 	    ~ExcelFileDB();
 	    void createTable(string_ptr tableName,
+			     string_vector_ptr fieldNames);
+	    void createTable(const std::string & tableName,
 			     string_vector_ptr fieldNames);
 	    void setTableName(string_ptr tablename);
 	    void setTableName(const std::string & tablename);
@@ -67,8 +69,28 @@ namespace cms {
 				     const int &keyValue);
 	    string_vector_ptr select(const int &keyValue);
 
-	    void close();
+
 	    void setKeyField(const std::string & keyField);
+	  private:
+	    void close();
+	};
+
+	class DGCodeFile {
+	  private:
+	    ExcelFileDB db;
+	    const Mode mode;
+	    void init();
+	    void initDefaultData(string_vector_ptr fieldNames,
+				 const std::string & tableName,
+				 bool reverse);
+	    const int n;
+	  public:
+	    static string_vector_ptr getFieldNames(const std::string *
+						   fieldNames, int n);
+	    static const std::string GammaHeader[4];
+	    static const std::string RawHeader[13];
+	     DGCodeFile(string_ptr filename, int n);
+	     DGCodeFile(string_ptr filename, int n, const Mode mode);
 	};
     };
 };

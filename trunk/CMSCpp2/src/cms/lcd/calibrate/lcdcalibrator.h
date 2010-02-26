@@ -20,9 +20,10 @@ namespace cms {
 	    class Composition:public jObject {
 	      public:
 		Composition(RGB_ptr rgb, RGB_ptr component);
+		Composition(RGB_ptr rgb, RGB_ptr component, XYZ_ptr XYZ);
 		RGB_ptr rgb;
 		RGB_ptr component;
-
+		XYZ_ptr XYZ;
 	    };
 	    class ComponentFetcher {
 	      private:
@@ -40,13 +41,23 @@ namespace cms {
 							int end, int step);
 	    };
 
+	    /*
+	       DGCodeProducer擔任產出DG Code的重責大任
+	       1. 首先接手ComponentFetcher產出的rgb,對應的componet,亮度
+	       2. 藉由regression找出componet與亮度的關係
+	       1/2由init產出
+
+	       3. 由目標gamma curve經步驟二找到對應的component
+	       4. 由compomenet對應出DG Code, DG Code產出
+	       3/4由produce產出
+
+	     */
 	    class DGCodeProducer {
 	      protected:
 		void init();
 	      public:
-		 DGCodeProducer(RGB_vector_ptr rgbComponent);
-		RGB_vector_ptr produce(double_array gammaCurve);
-		//RGB_vector_ptr produce(double gamma);
+		 DGCodeProducer(Composition_vector_ptr compositionVector);
+		RGB_vector_ptr produce(double_vector_ptr gammaCurve);
 
 	    };
 
