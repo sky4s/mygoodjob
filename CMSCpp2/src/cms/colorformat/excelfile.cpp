@@ -16,6 +16,9 @@ namespace cms {
 	using namespace boost;
 	using namespace java::lang;
 
+	//======================================================================
+	// ExcelFileDB
+	//======================================================================
 	 bptr < WideString >
 	    ExcelFileDB::toWideString(const std::string & sql) {
 	    bptr < WideString > wstring(new WideString(sql.c_str()));
@@ -41,7 +44,7 @@ namespace cms {
 	    return mode == Create || mode == Update;
 	};
 
-      ExcelFileDB::ExcelFileDB(string_ptr fileName, Mode mode):fileName(fileName),
+      ExcelFileDB::ExcelFileDB(string_ptr fileName, const Mode mode):fileName(fileName),
 	    mode(mode), tableChanged(true)
 	{
 
@@ -72,9 +75,9 @@ namespace cms {
 
 	    this->setTableName(tableName);
 
-	    string sql = "CREATE TABLE ";
+	    string sql = "CREATE TABLE \"";
 	    sql += tableName->c_str();
-	    sql += " (";
+	    sql += "\" (";
 
 	    foreach(string s, *fieldNames) {
 		sql += "[";
@@ -83,8 +86,13 @@ namespace cms {
 	    }
 	    sql.erase(sql.size() - 1, 1);
 	    sql += ")";
-	    //cout << sql << endl;
+	    cout << sql << endl;
 	    execute(sql);
+	};
+	void ExcelFileDB::createTable(const std::string & tableName,
+				      string_vector_ptr fieldNames) {
+	    string_ptr tableName_ptr(new string(tableName));
+	    createTable(tableName_ptr, fieldNames);
 	};
 	void ExcelFileDB::setTableName(string_ptr tableName) {
 	    this->tableName = tableName;
@@ -102,6 +110,8 @@ namespace cms {
 	    }
 
 	    string sql = "INSERT INTO [" + *tableName + "$] (";
+	    cout << sql << endl;
+
 	    foreach(string s, *fieldNames) {
 		sql += s + ",";
 	    };
@@ -112,7 +122,7 @@ namespace cms {
 	    };
 	    sql.erase(sql.size() - 1, 1);
 	    sql += ")";
-	    //cout << sql << endl;
+
 	    execute(sql);
 	};
 	void ExcelFileDB::execute(const std::string & sql) {
@@ -198,8 +208,6 @@ namespace cms {
 	    //cout << dataSet.Fields[0]->Value << endl;
 	    Variant v = dataSet->Fields->Fields[0]->Value;
 
-
-
 	    string_vector_ptr result(new string_vector());
 	    return result;
 	};
@@ -207,14 +215,86 @@ namespace cms {
 	void ExcelFileDB::close() {
 	    if (null != connection && true == connection->Connected) {
 		connection->Close();
-		connection.reset((TADOConnection *) null);
+		//connection.reset((TADOConnection *) null);
 		CoUninitialize();
+		//cout<<"close"<<endl;
 	    }
 	};
 
 	void ExcelFileDB::setKeyField(const std::string & keyField) {
 	    this->keyField = keyField;
 	}
+	//======================================================================
+
+	//======================================================================
+	// DGCodeFile
+	//======================================================================
+	const std::string DGCodeFile::GammaHeader[4] =
+	    { "Gray Level", "Gamma R", "Gamma G", "Gamma B" };
+	const std::string DGCodeFile::RawHeader[13] =
+	    { "Gray Level", "W_x", "W_y", "W_Y (nit)", "W_R", "W_G", "W_B",
+	    "RP", "GP", "BP", "RP_Intensity_Fix", "GP_Intensity_Fix",
+	    "BP_Intensity_Fix"
+	};
+	string_vector_ptr DGCodeFile::getFieldNames(const string *
+						    fieldNames, int n) {
+	    string_vector_ptr result(new string_vector(n));
+	    for (int x = 0; x < n; x++) {
+		(*result)[x] = fieldNames[x];
+	    }
+	    return result;
+	};
+
+	void DGCodeFile::initDefaultData(string_vector_ptr fieldNames,
+					 const string & tableName,
+					 bool reverse) {
+	    int fields = fieldNames->size();
+	    db.createTable(tableName, fieldNames);
+	    int start = !reverse ? 0 : n - 1;
+	    int end = !reverse ? n - 1 : -1;
+	    int step = !reverse ? 1 : -1;
+
+	    for (int x = start; x != end; x += step) {
+		string_vector_ptr values(new string_vector(fields));
+		(*values)[0] = lexical_cast < string > (x);
+
+		/*for (int x = 1; x < fields; x++) {
+		   (*values)[x] = "";
+		   }; */
+
+		/*foreach(string s, *fieldNames) {
+		   cout << "\"" << s << "\"" << endl;
+		   }
+		   foreach(string s, *values) {
+		   cout << "\"" << s << "\"" << endl;
+		   } */
+		//db.insert(fieldNames, values);
+	    };
+	};
+
+	void DGCodeFile::init() {
+	    if (Create == mode) {
+		string_vector_ptr fieldNames =
+		    getFieldNames(GammaHeader, 4);
+		initDefaultData(fieldNames, "Gamma Table", false);
+		/*fieldNames = getFieldNames(RawHeader, 13);
+		   initDefaultData(fieldNames, "Raw Data", true); */
+	    };
+	};
+	DGCodeFile::
+	    DGCodeFile(string_ptr filename,
+		       int n):db(ExcelFileDB(filename, Create)), n(n),
+	    mode(Create) {
+	    init();
+	};
+	DGCodeFile::
+	    DGCodeFile(string_ptr filename, int n,
+		       const Mode mode):db(ExcelFileDB(filename, mode)),
+	    n(n), mode(mode) {
+	    init();
+
+	};
+	//======================================================================
     };
 };
 

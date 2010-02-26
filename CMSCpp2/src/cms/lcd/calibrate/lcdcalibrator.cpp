@@ -14,6 +14,7 @@
 namespace cms {
     namespace lcd {
 	namespace calibrate {
+
 	    using namespace cms::measure;
 	    //==================================================================
 	    // Composition
@@ -23,7 +24,14 @@ namespace cms {
 		component(component) {
 
 	    };
+	     Composition::Composition(RGB_ptr rgb,
+				      RGB_ptr component,
+				      XYZ_ptr XYZ):rgb(rgb),
+		component(component), XYZ(XYZ) {
+
+	    };
 	    //==================================================================
+
 
 	    //==================================================================
 	    // ComponentFetcher
@@ -36,10 +44,9 @@ namespace cms {
 		analyzer(analyzer) {
 
 	    };
-	     ComponentFetcher::ComponentFetcher(bptr <
-						ComponentAnalyzerIF >
-						analyzer):analyzer
-		(analyzer) {
+	  ComponentFetcher::ComponentFetcher(bptr < ComponentAnalyzerIF > analyzer):analyzer
+		(analyzer)
+	    {
 
 	    };
 
@@ -58,6 +65,23 @@ namespace cms {
 		return result;
 	    };
 	    //==================================================================
+
+	    //==================================================================
+	    // DGCodeProducer
+	    //==================================================================
+	    void DGCodeProducer::init() {
+	    };
+
+	    DGCodeProducer::
+		DGCodeProducer(Composition_vector_ptr compositionVector) {
+		init();
+	    };
+	    RGB_vector_ptr DGCodeProducer::
+		produce(double_vector_ptr gammaCurve) {
+	    };
+
+	    //==================================================================
+
 
 	    //==================================================================
 	    // LCDCalibrator
@@ -81,6 +105,7 @@ namespace cms {
 		}
 		return result;
 	    };
+
 	    void LCDCalibrator::setP1P2(double p1, double p2) {
 		this->p1 = p1;
 		this->p2 = p2;
@@ -95,6 +120,7 @@ namespace cms {
 	    };
 	    void LCDCalibrator::setGammaCurve(double_array gammaCurve,
 					      int n) {
+		/* TODO : setGammaCurve */
 		//this->gammaCurve = gammaCurve;
 	    };
 	    void LCDCalibrator::setGammaCurve(double_vector_ptr gammaCurve) {
@@ -126,6 +152,4 @@ namespace cms {
 	};
     };
 };
-
-;
 

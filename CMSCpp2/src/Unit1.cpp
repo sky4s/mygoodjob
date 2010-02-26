@@ -41,36 +41,31 @@ void excel()
     using namespace cms::colorformat;
     string_ptr filename(new string("a.xls"));
 
-    string_vector_ptr columnNames(new string_vector());
-    columnNames->push_back("a");
-    columnNames->push_back("b");
+    string_vector_ptr fieldsNames(new string_vector());
+    fieldsNames->push_back("a");
+    fieldsNames->push_back("b");
+
     ExcelFileDB db(filename, Create);
 
     string_ptr tbname(new string("tb"));
-    db.setTableName(tbname);
-    //db.createTable(tbname, columnNames);
-    string_vector_ptr names = db.getFieldNames(tbname);
-    /*foreach(string s, *names) {
-       cout << s << endl;
-       } */
-    //db.insert(columnNames,columnNames);
-    string_vector_ptr updateField(new string_vector());
-    string_vector_ptr updateValue(new string_vector());
-    updateField->push_back("b");
-    updateValue->push_back("3");
-    /*db.update("a",1,updateField, updateValue);
-       db.update("a",2,"b", "bb");
-       db.update("a",3,"b", 9999); */
-    db.setKeyField("a");
-    db.setTableName("tb");
 
-    string_vector_ptr updateValue2(new string_vector());
-    updateValue->push_back("99");
-    updateValue->push_back("999");
-    //db.update(6,updateValue);
-    db.select("", 1);
+    bool newfile = true;
 
-    db.close();
+    if (newfile) {
+	db.createTable(tbname, fieldsNames);
+    } else {
+	/*db.setTableName(tbname);
+	   string_vector_ptr names = db.getFieldNames(tbname);
+
+	   db.setKeyField("a");
+	   db.setTableName("tb");
+	   string_vector_ptr updateValue2(new string_vector());
+	   updateValue->push_back("99");
+	   updateValue->push_back("999"); */
+    };
+
+
+    //db.close();
 }
 
 int lut()
@@ -246,6 +241,33 @@ void gammaCurve()
     cout << *DoubleArray::toString(curve, n);
 };
 
+void header()
+{
+    using namespace cms::colorformat;
+    string_vector_ptr names =
+	DGCodeFile::getFieldNames(DGCodeFile::GammaHeader, 4);
+    foreach(string s, *names) {
+	cout << s << endl;
+    }
+    string_vector_ptr names2 =
+	DGCodeFile::getFieldNames(DGCodeFile::RawHeader, 13);
+    foreach(string s, *names2) {
+	cout << s << endl;
+    }
+};
+void dgcodefile()
+{
+    using namespace cms::colorformat;
+    string_ptr filename(new string("test.xls"));
+    DGCodeFile dgcode(filename, 257);
+    //ExcelFileDB db(filename, Create);
+    /*string_ptr tbname(new string("tb"));
+    string_vector_ptr fieldsNames(new string_vector());
+    fieldsNames->push_back("a");
+    fieldsNames->push_back("b");
+    db.createTable(tbname, fieldsNames);*/
+};
+
 #pragma argsused
 int main(int argc, char *argv[])
 {
@@ -262,7 +284,9 @@ int main(int argc, char *argv[])
     //inverse();
     //rgbVectorOp();
     //sizeCompare();
-    gammaCurve();
+    //gammaCurve();
+    //header();
+    dgcodefile();
     getch();
 }
 

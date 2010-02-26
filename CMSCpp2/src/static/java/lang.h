@@ -41,6 +41,10 @@
 #define barray boost::shared_array
 #define bptr_ boost::scoped_ptr
 
+#define string_ptr bptr < std::string >
+#define nil_string_ptr string_ptr ((std::string*)NULL)
+#define Object_ptr bptr < jObject >
+
 #define double_vector std::vector < double >
 #define double_vector_ptr bptr < double_vector >
 #define nil_double_vector_ptr double_vector_ptr ((double_vector*)NULL)
@@ -51,6 +55,8 @@
 
 #define string_vector std::vector < std::string >
 #define string_vector_ptr bptr < string_vector >
+#define stringp_vector std::vector < string_ptr >
+#define stringp_vector_ptr bptr < string_ptr_vector >
 
 
 #define double_array barray <double>
@@ -58,9 +64,7 @@
 #define float_array barray <float>
 #define nil_float_array float_array ((float*)NULL)
 
-#define string_ptr bptr < std::string >
-#define nil_string_ptr string_ptr ((std::string*)NULL)
-#define Object_ptr bptr < jObject >
+
 
 #define foreach BOOST_FOREACH
 //==============================================================================

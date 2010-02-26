@@ -29,12 +29,15 @@ namespace cms {
 		void addOp(bptr < RGBVectorOp > op);
 	    };
 
-	    class LinearOp:public RGBVectorOp {
+	    class DGCodeOp:public RGBVectorOp {
+	    };
+
+	    class LinearOp:public DGCodeOp {
 	      protected:
 		RGB_vector_ptr getRendering(RGB_vector_ptr source);
 
 	    };
-	    class MinusOp:public RGBVectorOp {
+	    class MinusOp:public DGCodeOp {
 	      private:double minusValue;
 	      protected:
 		 RGB_vector_ptr getRendering(RGB_vector_ptr source);
