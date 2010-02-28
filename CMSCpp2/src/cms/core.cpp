@@ -68,5 +68,9 @@ namespace cms {
 	return cct;
     }
     //==========================================================================
+
+
+    const Illuminant & Illuminant::D50 = Illuminant();
+    const Illuminant & Illuminant::D65 = Illuminant();
 };
 

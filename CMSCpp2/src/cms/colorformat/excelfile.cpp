@@ -363,7 +363,7 @@ namespace cms {
 	    string_vector_ptr values(new string_vector(2));
 	    (*values)[0] = key;
 	    (*values)[1] = value;
-	    db->insert(fieldNames, values, tru7e);
+	    db->insert(fieldNames, values, true);
 	};
 	//======================================================================
     };
