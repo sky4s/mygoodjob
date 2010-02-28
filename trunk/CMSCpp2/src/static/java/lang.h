@@ -143,6 +143,7 @@ namespace cms {
 	namespace depend {
 	    class RGBColor;
 	    class Channel;
+	    class RGBColorSpace;
 	};
 	namespace independ {
 	    class CIExyY;

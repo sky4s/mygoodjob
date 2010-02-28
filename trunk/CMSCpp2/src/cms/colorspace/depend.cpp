@@ -147,8 +147,14 @@ namespace cms {
 	    //======================================================================
 	    // RGBColorSpace
 	    //======================================================================
-	    RGBColorSpace::RGBColorSpace() {
+	  RGBColorSpace::RGBColorSpace(const CSType & cstype, const cms::Illuminant & referenceWhite, const double _gamma):_type(cstype), referenceWhite(referenceWhite),
+		_gamma(_gamma)
+	    {
 	    };
+	    const RGBColorSpace & RGBColorSpace::unknowRGB =
+		RGBColorSpace(CSType::Unknow, Illuminant::D50, 2.2);
+	    const RGBColorSpace & RGBColorSpace::sRGB =
+		RGBColorSpace(CSType::sRGB, Illuminant::D65, 2.2);
 	    //======================================================================
 
 	    //======================================================================
@@ -232,13 +238,6 @@ namespace cms {
 		return 255. / max;
 	    };
 
-	    //======================================================================
-
-
-	    //======================================================================
-	    // RGBColorSpace
-	    //======================================================================
-	    const RGBColorSpace RGBColorSpace::unknowRGB = RGBColorSpace();
 	    //======================================================================
 	};
     };

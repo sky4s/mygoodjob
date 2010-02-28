@@ -51,6 +51,18 @@ namespace cms {
 	    void setupComponent(const Dep::Channel & ch, RGB_ptr rgb);
 	    void enter();
 	};
+
+	class MaxMatrixComponentAnalyzer:public ComponentAnalyzerIF {
+	  private:
+	    const Dep::RGBColorSpace & rgbColorSpace;
+	  public:
+	     MaxMatrixComponentAnalyzer(const Dep::RGBColorSpace &
+					rgbColorSpace);
+
+	    RGB_ptr getComponent(RGB_ptr rgb) = 0;
+	    void setupComponent(const Dep::Channel & ch, RGB_ptr rgb) = 0;
+	    void enter();
+	};
     };
 };
 #endif

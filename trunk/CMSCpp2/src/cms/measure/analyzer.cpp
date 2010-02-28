@@ -135,6 +135,21 @@ namespace cms {
 
 	    ca210api->enter();
 	};
+
+	MaxMatrixComponentAnalyzer::
+	    MaxMatrixComponentAnalyzer(const Dep::RGBColorSpace &
+				       rgbColorSpace):rgbColorSpace
+	    (rgbColorSpace) {
+	};
+
+	RGB_ptr MaxMatrixComponentAnalyzer::getComponent(RGB_ptr rgb) {
+	};
+	void MaxMatrixComponentAnalyzer::setupComponent(const Dep::
+							Channel & ch,
+							RGB_ptr rgb) {
+	};
+	void MaxMatrixComponentAnalyzer::enter() {
+	};
     };
 };
 

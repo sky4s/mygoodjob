@@ -23,23 +23,22 @@ namespace cms {
 		int getNumberBands();
 	    };
 
-	    enum CSType {
-		AdobeRGB, CIERGB, sRGB, sRGB_gamma22, sRGB_gamma18,
+	     Enumeration(CSType)
+	     AdobeRGB, CIERGB, sRGB, sRGB_gamma22, sRGB_gamma18,
 		ProPhotoRGB, WideGamutRGB, BetaRGB, BruceRGB, ECIRGB,
-		LStarRGB,
-		AppleRGB, BestRGB, skyRGB, NTSCRGB, EktaSpacePS5RGB,
-		Unknow,
-		AdobeRGBD50, AdobeRGB1998, SMPTE_C
-	    };
+		LStarRGB, AppleRGB, BestRGB, skyRGB, NTSCRGB,
+		EktaSpacePS5RGB, Unknow, AdobeRGBD50, AdobeRGB1998,
+		SMPTE_C ,EnumerationEnd();
 	    class RGBBase;
 	    //using cms::Illuminant;
+
 	    class RGBColorSpace {
 		friend class RGBBase;
 	      private:
 
 		const double _gamma;
-		const CSType _type;
-		const cms::Illuminant referenceWhite;
+		const CSType & _type;
+		const cms::Illuminant & referenceWhite;
 		/*RGBColorSpace(CSType csType, Illuminant referenceWhite,
 		   double[][]toXYZMatrix,
 		   double gamma):_type(csType), _gamma(gamma),
@@ -49,9 +48,12 @@ namespace cms {
 		   //null ? DoubleArray.inverse(toXYZMatrix) : null;
 		   }; */
 	      public:
-		static const RGBColorSpace unknowRGB;
+		static const RGBColorSpace & unknowRGB;
 		static const RGBColorSpace & sRGB;
-		 RGBColorSpace();
+		 RGBColorSpace::RGBColorSpace(const CSType & cstype,
+					      const cms::
+					      Illuminant & referenceWhite,
+					      const double _gamma);
 		inline bool operator==(const RGBColorSpace & that) const {
 		    return _type == that._type;
 		};

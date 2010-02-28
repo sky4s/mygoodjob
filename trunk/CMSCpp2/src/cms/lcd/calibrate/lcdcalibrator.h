@@ -69,7 +69,6 @@ namespace cms {
 		bool p1p2;
 		double p1, p2;
 		BitDepth in, lut, out;
-		//double_array gammaCurve;
 		double rbInterpUnder;
 		bool gByPass;
 		double bIntensityGain;
