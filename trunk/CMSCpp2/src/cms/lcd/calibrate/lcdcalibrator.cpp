@@ -58,9 +58,11 @@ namespace cms {
 		for (int x = start; x >= end; x -= end) {
 		    RGB_ptr rgb(new RGBColor(x, x, x));
 		    RGB_ptr component = analyzer->getComponent(rgb);
+		    XYZ_ptr XYZ = analyzer->getCIEXYZ();
 		    Composition_ptr composition(new
 						Composition(rgb,
-							    component));
+							    component,
+							    XYZ));
 		    result->push_back(composition);
 		};
 		return result;
