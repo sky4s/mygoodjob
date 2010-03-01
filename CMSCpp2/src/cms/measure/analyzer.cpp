@@ -36,6 +36,8 @@ namespace cms {
 
 	RGB_ptr CA210ComponentAnalyzer::getComponent(RGB_ptr rgb) {
 	    Patch_ptr patch = mm->measure(rgb, rgb->toString());
+	     XYZ = patch->getXYZ();
+
 	     bptr < CAMeasureResult > measureResult =
 		ca210api->getMeasureResult();
 	     RGB_ptr
@@ -44,6 +46,9 @@ namespace cms {
 				   measureResult->B));
 	     return component;
 
+	};
+	XYZ_ptr CA210ComponentAnalyzer::getCIEXYZ() {
+	    return XYZ;
 	};
 
 	void CA210ComponentAnalyzer::setupComponent(const Dep::
