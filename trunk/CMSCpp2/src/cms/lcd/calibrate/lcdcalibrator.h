@@ -30,10 +30,10 @@ namespace cms {
 		bptr < cms::measure::ComponentAnalyzerIF > analyzer;
 		bptr < cms::measure::MeterMeasurement > mm;
 	      public:
-		ComponentFetcher(bptr < cms::measure::MeterMeasurement >
-				 mm,
-				 bptr < cms::measure::ComponentAnalyzerIF >
-				 analyzer);
+		/*ComponentFetcher(bptr < cms::measure::MeterMeasurement >
+		   mm,
+		   bptr < cms::measure::ComponentAnalyzerIF >
+		   analyzer); */
 		ComponentFetcher(bptr < cms::measure::ComponentAnalyzerIF >
 				 analyzer);
 		//RGB_vector_ptr fetch(int start, int end, int step);
@@ -95,6 +95,8 @@ namespace cms {
 		void setAvoidFRCNoise(bool avoid);
 		void setBitDepth(const BitDepth & in, const BitDepth & lut,
 				 const BitDepth & out);
+
+		RGB_vector_ptr getDGCode(int start, int end, int step);
 	    };
 
 

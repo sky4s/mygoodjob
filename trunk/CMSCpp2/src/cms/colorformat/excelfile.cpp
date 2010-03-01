@@ -25,6 +25,18 @@ namespace cms {
 	    return wstring;
 	};
 
+	string ExcelFileDB::getTableName() {
+	    if (tableName.size() == 0) {
+		throw IllegalStateException("Set tableName first!");
+	    };
+	    return tableName;
+	};
+	string ExcelFileDB::getKeyField() {
+	    if (keyField.size() == 0) {
+		throw IllegalStateException("Set keyField first!");
+	    };
+	    return keyField;
+	};
 	string_vector_ptr ExcelFileDB::getFieldNames(string_ptr tableName) {
 	    if (null == fieldNames || true == tableChanged) {
 		bptr_ < TStringList > stringList(new TStringList());
@@ -34,7 +46,7 @@ namespace cms {
 		for (int x = 0; x != stringList->Count; x++) {
 		    AnsiString as = (*stringList)[x];
 		    string s(as.c_str());
-		     fieldNames->push_back(s);
+		    fieldNames->push_back(s);
 		};
 	    }
 	    //return result;
@@ -67,30 +79,7 @@ namespace cms {
 	ExcelFileDB::~ExcelFileDB() {
 	    close();
 	};
-	/*void ExcelFileDB::createTable(string_ptr tableName,
-	   string_vector_ptr fieldNames) {
-	   if (!isAlterable()) {
-	   throw IllegalStateException("!isAlterable()");
-	   }
 
-	   this->setTableName(tableName);
-
-	   string sql = "CREATE TABLE [";
-	   sql += tableName->c_str();
-	   sql += "] (";
-
-	   foreach(string s, *fieldNames) {
-	   sql += "[";
-	   sql += s.c_str();
-	   //sql += "] TEXT(100),";
-	   sql += "] REAL,";
-
-	   }
-	   sql.erase(sql.size() - 1, 1);
-	   sql += ")";
-	   cout << sql << endl;
-	   execute(sql);
-	   }; */
 	void ExcelFileDB::createTable(const std::string & tableName,
 				      string_vector_ptr fieldNames) {
 	    int size = fieldNames->size();
@@ -114,7 +103,6 @@ namespace cms {
 	    }
 
 	    this->setTableName(tableName);
-	    //cout<<this->tableName<<" "<<tableName<<endl;
 	    string sql = "CREATE TABLE [" + tableName + "] (";
 
 	    int size = fieldNames->size();
@@ -126,38 +114,16 @@ namespace cms {
 
 	    sql.erase(sql.size() - 1, 1);
 	    sql += ")";
-	    //cout << sql << endl;
 	    execute(sql);
 	};
-	/*void ExcelFileDB::setTableName(string_ptr tableName) {
-	   this->tableName = tableName;
-	   tableChanged = true;
-	   }; */
+
 	void ExcelFileDB::setTableName(const std::string & tableName) {
 	    this->tableName = tableName;
 	}
 
 	void ExcelFileDB::insert(string_vector_ptr fieldNames,
 				 string_vector_ptr values) {
-	    /*if (!isAlterable()) {
-	       throw IllegalStateException("!isAlterable()");
-	       }
 
-	       string sql = "INSERT INTO [" + tableName + "] (";
-
-	       foreach(string s, *fieldNames) {
-	       sql += "[" + s + "],";
-	       };
-	       sql.erase(sql.size() - 1, 1);
-	       sql += ") VALUES (";
-	       foreach(string s, *values) {
-	       //sql += "\"" + s + "\",";
-	       sql += s + ",";
-	       };
-	       sql.erase(sql.size() - 1, 1);
-	       sql += ")";
-	       cout << sql << endl;
-	       execute(sql); */
 	    insert(fieldNames, values, false);
 	};
 
@@ -167,7 +133,7 @@ namespace cms {
 		throw IllegalStateException("!isAlterable()");
 	    }
 
-	    string sql = "INSERT INTO [" + tableName + "] (";
+	    string sql = "INSERT INTO [" + getTableName() + "] (";
 
 	    foreach(string s, *fieldNames) {
 		sql += "[" + s + "],";
@@ -188,7 +154,7 @@ namespace cms {
 				TExecuteOptions());
 	};
 	void ExcelFileDB::update0(const std::string & keyField,
-				  const int &keyValue,
+				  const int keyValue,
 				  string_vector_ptr fieldNames,
 				  string_vector_ptr values,
 				  bool textValues) {
@@ -196,7 +162,7 @@ namespace cms {
 		throw IllegalStateException("!isAlterable()");
 	    }
 
-	    string sql = "UPDATE [" + tableName + "$] SET";
+	    string sql = "UPDATE [" + getTableName() + "$] SET";
 	    int size = fieldNames->size();
 	    for (int x = 0; x < size; x++) {
 		string key = (*fieldNames)[x];
@@ -204,7 +170,8 @@ namespace cms {
 		sql +=
 		    textValues ? " " + key + " = \"" + val + "\"," :
 		    " " + key + " = " + val + ",";
-	    } sql.erase(sql.size() - 1, 1);
+	    }
+	    sql.erase(sql.size() - 1, 1);
 	    sql +=
 		" WHERE " + keyField + " = " + lexical_cast < string >
 		(keyValue);
@@ -213,14 +180,14 @@ namespace cms {
 
 	};
 	void ExcelFileDB::update(const std::string & keyField,
-				 const int &keyValue,
+				 const int keyValue,
 				 string_vector_ptr fieldNames,
 				 string_vector_ptr values) {
 	    update0(keyField, keyValue, fieldNames, values, true);
 	};
 
 	void ExcelFileDB::update(const std::string & keyField,
-				 const int &keyValue,
+				 const int keyValue,
 				 const std::string & fieldName,
 				 const std::string & value) {
 	    string_vector_ptr fieldNames(new string_vector());
@@ -232,9 +199,9 @@ namespace cms {
 
 	};
 	void ExcelFileDB::update(const std::string & keyField,
-				 const int &keyValue,
+				 const int keyValue,
 				 const std::string & fieldName,
-				 const int &value) {
+				 const int value) {
 	    string_vector_ptr fieldNames(new string_vector());
 	    fieldNames->push_back(fieldName);
 	    string_vector_ptr values(new string_vector());
@@ -243,32 +210,72 @@ namespace cms {
 	    update0(keyField, keyValue, fieldNames, values, false);
 	};
 
-	/*void ExcelFileDB::update(const int &keyValue,
-	   string_vector_ptr values) {
+	string_vector_ptr ExcelFileDB::select0(const std::
+					       string & keyField,
+					       const std::
+					       string & keyValue,
+					       bool textValues) {
+	    string select =
+		"SELECT * FROM " + getTableName() + " Where " + keyField +
+		" = ";
+	    select += textValues ? "\"" + keyValue + "\"" : keyValue;
+	    bptr < TADODataSet > dataSet = selectDataSet(select);
+	    return getResult(dataSet);
+	};
 
-	   if ("" == keyField || null == tableName) {
-	   throw IllegalStateException
-	   ("\"\" == keyField || null == tableName");
-	   }
-	   string_vector_ptr fieldNames = getFieldNames(tableName);
-	   update(keyField, keyValue, fieldNames, fieldNames);
-	   }; */
-
-	string_vector_ptr ExcelFileDB::select(const std::string & keyField,
-					      const int &keyValue) {
-	    bptr_ < TADODataSet >
+	bptr < TADODataSet >
+	    ExcelFileDB::selectDataSet(const std::string & sql) {
+	    bptr < TADODataSet >
 		dataSet(new TADODataSet((TComponent *) null));
 	    dataSet->Connection = connection.get();
-	    string select = "SELECT * FROM " + tableName;;
-	    dataSet->CommandText = *toWideString(select);
+	    dataSet->CommandText = *toWideString(sql);
 	    dataSet->Open();
-	    cout << dataSet->FieldCount << endl;
-	    //cout << dataSet.Fields[0]->Value << endl;
-	    Variant v = dataSet->Fields->Fields[0]->Value;
+	    dataSet->First();
+	    return dataSet;
+	};
 
+	string_vector_ptr ExcelFileDB::getResult(bptr < TADODataSet >
+						 dataSet) {
 	    string_vector_ptr result(new string_vector());
+	    int fields = dataSet->FieldCount;
+
+	    for (int x = 0; x != fields; x++) {
+		AnsiString astr = dataSet->Fields->Fields[x]->AsString;
+		string str(astr.c_str());
+		result->push_back(str);
+	    }
 	    return result;
 	};
+
+	string_vector_ptr ExcelFileDB::select(const std::string & keyField,
+					      const int keyValue) {
+	    return select0(keyField, lexical_cast < string > (keyValue),
+			   false);
+	};
+
+	string_vector_ptr ExcelFileDB::select(const int keyValue) {
+	    return select0(getKeyField(),
+			   lexical_cast < string > (keyValue), false);
+	};
+	string_vector_ptr ExcelFileDB::select(const std::string & keyField,
+					      const std::
+					      string & keyValue) {
+	    return select0(keyField, keyValue, true);
+	};
+	string_vector_ptr ExcelFileDB::select(const std::string & keyValue) {
+	    return select0(getKeyField(), keyValue, true);
+	};
+
+	bptr < DBQuery > ExcelFileDB::selectAll() {
+	    string select = "SELECT * FROM " + getTableName();
+	    bptr < TADODataSet > dataSet = selectDataSet(select);
+	    bptr < DBQuery > query(new DBQuery(dataSet));
+	    return query;
+	};
+
+	/*string_vector_ptr ExcelFileDB::nextResult() {
+	   string_vector_ptr result = getResult(selectAllDataSet);
+	   }; */
 
 	void ExcelFileDB::close() {
 	    if (null != connection && true == connection->Connected) {
@@ -279,9 +286,67 @@ namespace cms {
 	    }
 	};
 
+	string_vector_ptr ExcelFileDB::makeStringVector(int count, ...) {
+	    string_vector_ptr result(new string_vector());
+	    //channel_vector_ptr result(new channel_vector());
+	    va_list num_list;
+	    va_start(num_list, count);
+
+	    for (int i = 0; i < count; i++) {
+		const char *c = va_arg(num_list, const char *);
+		string str(c);
+		result->push_back(str);
+	    } va_end(num_list);
+	    return result;
+	};
+
 	void ExcelFileDB::setKeyField(const std::string & keyField) {
 	    this->keyField = keyField;
 	}
+	//======================================================================
+
+	//======================================================================
+	//
+	//======================================================================
+      DBQuery::DBQuery(bptr < TADODataSet > dataSet):dataSet(dataSet)
+	{
+	};
+
+	string_vector_ptr DBQuery::nextResult() {
+	    if (!hasNext()) {
+		throw IllegalStateException("!hasNext()");
+	    }
+	    string_vector_ptr result = ExcelFileDB::getResult(dataSet);
+	    dataSet->Next();
+	    return result;
+	};
+	bool DBQuery::hasNext() {
+	    return !dataSet->Eof;
+	};
+
+	const string_ptr DBQuery::get(int row, int column) {
+	    dataSet->First();
+	    for (int x = 0; x < row; x++) {
+		dataSet->Next();
+	    };
+	    string_vector_ptr result = nextResult();
+	    string_ptr str(new string((*result)[column]));
+	    //dataSet->UpdateRecord();
+	    return str;
+	};
+	void DBQuery::set(int row, int column, const std::string & value) {
+	    dataSet->First();
+	    for (int x = 0; x < row; x++) {
+		dataSet->Next();
+	    };
+	    AnsiString astr(value.c_str());
+	    dataSet->Fields->Fields[column]->Text = astr;
+	};
+
+	void DBQuery::refresh() {
+	    dataSet->Refresh();
+	};
+
 	//======================================================================
 
 	//======================================================================

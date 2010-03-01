@@ -240,7 +240,7 @@ namespace java {
 
 	class Class {
 	  private:
-
+              
 	    friend class Object;
 	    const std::type_info & info;
 	     Object & object;
