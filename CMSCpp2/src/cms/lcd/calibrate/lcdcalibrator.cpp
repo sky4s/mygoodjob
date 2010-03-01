@@ -36,17 +36,18 @@ namespace cms {
 	    //==================================================================
 	    // ComponentFetcher
 	    //==================================================================
-	     ComponentFetcher::ComponentFetcher(bptr < MeterMeasurement >
-						mm,
-						bptr <
-						ComponentAnalyzerIF >
-						analyzer):mm(mm),
-		analyzer(analyzer) {
+	    /*ComponentFetcher::ComponentFetcher(bptr < MeterMeasurement >
+	       mm,
+	       bptr <
+	       ComponentAnalyzerIF >
+	       analyzer):mm(mm),
+	       analyzer(analyzer) {
 
-	    };
-	  ComponentFetcher::ComponentFetcher(bptr < ComponentAnalyzerIF > analyzer):analyzer
-		(analyzer)
-	    {
+	       }; */
+	     ComponentFetcher::ComponentFetcher(bptr <
+						ComponentAnalyzerIF >
+						analyzer):analyzer
+		(analyzer) {
 
 	    };
 
@@ -147,6 +148,14 @@ namespace cms {
 		this->in = in;
 		this->lut = lut;
 		this->out = out;
+	    };
+	    RGB_vector_ptr LCDCalibrator::getDGCode(int start, int end,
+						    int step) {
+		if (bIntensityGain != 1.0) {
+		    //重新產生目標gamma curve
+
+		};
+
 	    };
 	    //==================================================================
 	};

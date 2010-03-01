@@ -78,10 +78,6 @@ namespace cms {
 		return result;
 	    };
 
-
-	    /*Channel::Channel() {
-	       }; */
-
 	    const string_ptr Channel::toString() const {
 		string_ptr str(new string(fullname));
 		 return str;

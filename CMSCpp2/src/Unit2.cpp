@@ -41,25 +41,44 @@
 void excel()
 {
     using namespace cms::colorformat;
+    using namespace std;
     //string_ptr filename(new string("a.xls"));
 
-    string_vector_ptr fieldsNames(new string_vector());
-    fieldsNames->push_back("a");
-    fieldsNames->push_back("b");
+    /*string_vector_ptr fieldsNames(new string_vector());
+       fieldsNames->push_back("a");
+       fieldsNames->push_back("b"); */
+    string_vector_ptr fieldsNames =
+	ExcelFileDB::makeStringVector(2, "a", "b");
 
     ExcelFileDB db("a.xls", Create);
 
     //string_ptr tbname(new string("tb"));
 
-    bool newfile = true;
+    bool newfile = false;
 
     if (newfile) {
 	db.createTable("tb", fieldsNames);
-	string_vector_ptr values(new string_vector());
-	values->push_back("11");
-	values->push_back("22");
-	db.insert(fieldsNames, values);
+
+	db.insert(fieldsNames,
+		  ExcelFileDB::makeStringVector(2, "11", "22"));
+	db.insert(fieldsNames,
+		  ExcelFileDB::makeStringVector(2, "33", "44"));
+	db.insert(fieldsNames,
+		  ExcelFileDB::makeStringVector(2, "55", "66"));
     } else {
+	db.setTableName("tb");
+	//db.select("a", 11);
+	bptr < DBQuery > query = db.selectAll();
+	while (query->hasNext()) {
+	    foreach(string & s, *query->nextResult()) {
+		cout << s << " ";
+	    }
+	    cout << endl;
+	};
+
+	cout << *query->get(1, 1) << endl;
+	//query->set(1, 1, "333");
+
     };
 
 

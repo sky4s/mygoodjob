@@ -9,16 +9,16 @@ File_6=SourceModule,'D:\WorkSpace\CMSCpp2\src\static\math\interpolation.cpp',0,1
 
 [Modules]
 Module0=D:\WorkSpace\CMSCpp2\src\cms\colorformat\excelfile.cpp
-Module1=D:\Program Files\Borland\CBuilder6\include\boost\detail\shared_count.hpp
+Module1=D:\WorkSpace\CMSCpp2\src\static\math\doubleArray.cpp
 Module2=D:\Program Files\Borland\CBuilder6\include\boost\detail\sp_counted_base_w32.hpp
-Module3=D:\WorkSpace\CMSCpp2\src\Unit1.cpp
-Module4=src\cms\core.cpp
-Module5=D:\WorkSpace\CMSCpp2\src\ca210api\CA210API.cpp
-Module6=D:\WorkSpace\CMSCpp2\src\static\math\doubleArray.cpp
-Module7=D:\WorkSpace\CMSCpp2\src\cms\colorspace\ciexyz.cpp
-Module8=D:\WorkSpace\CMSCpp2\src\cms\lcd\calibrate\lcdcalibrator.cpp
-Module9=D:\WorkSpace\CMSCpp2\src\cms\colorspace\rgb.cpp
-Module10=D:\WorkSpace\CMSCpp2\src\cms\colorspace\colorspace.cpp
+Module3=D:\Program Files\Borland\CBuilder6\include\boost\detail\shared_count.hpp
+Module4=D:\WorkSpace\CMSCpp2\src\ca210api\CA210API.cpp
+Module5=D:\WorkSpace\CMSCpp2\src\cms\lcd\calibrate\lcdcalibrator.cpp
+Module6=D:\WorkSpace\CMSCpp2\src\cms\colorspace\rgb.cpp
+Module7=D:\WorkSpace\CMSCpp2\src\cms\colorspace\colorspace.cpp
+Module8=D:\WorkSpace\CMSCpp2\src\cms\colorspace\ciexyz.cpp
+Module9=src\cms\core.cpp
+Module10=D:\WorkSpace\CMSCpp2\src\Unit1.cpp
 Module11=D:\WorkSpace\CMSCpp2\src\cms\util\rgbArray.cpp
 Module12=D:\WorkSpace\CMSCpp2\src\static\java\lang.cpp
 Count=13
@@ -29,7 +29,7 @@ ModuleType=SourceModule
 FormState=0
 FormOnTop=0
 
-[D:\Program Files\Borland\CBuilder6\include\boost\detail\shared_count.hpp]
+[D:\WorkSpace\CMSCpp2\src\static\math\doubleArray.cpp]
 ModuleType=SourceModule
 FormState=0
 FormOnTop=0
@@ -39,27 +39,12 @@ ModuleType=SourceModule
 FormState=0
 FormOnTop=0
 
-[D:\WorkSpace\CMSCpp2\src\Unit1.cpp]
-ModuleType=SourceModule
-FormState=0
-FormOnTop=0
-
-[src\cms\core.cpp]
+[D:\Program Files\Borland\CBuilder6\include\boost\detail\shared_count.hpp]
 ModuleType=SourceModule
 FormState=0
 FormOnTop=0
 
 [D:\WorkSpace\CMSCpp2\src\ca210api\CA210API.cpp]
-ModuleType=SourceModule
-FormState=0
-FormOnTop=0
-
-[D:\WorkSpace\CMSCpp2\src\static\math\doubleArray.cpp]
-ModuleType=SourceModule
-FormState=0
-FormOnTop=0
-
-[D:\WorkSpace\CMSCpp2\src\cms\colorspace\ciexyz.cpp]
 ModuleType=SourceModule
 FormState=0
 FormOnTop=0
@@ -75,6 +60,21 @@ FormState=0
 FormOnTop=0
 
 [D:\WorkSpace\CMSCpp2\src\cms\colorspace\colorspace.cpp]
+ModuleType=SourceModule
+FormState=0
+FormOnTop=0
+
+[D:\WorkSpace\CMSCpp2\src\cms\colorspace\ciexyz.cpp]
+ModuleType=SourceModule
+FormState=0
+FormOnTop=0
+
+[src\cms\core.cpp]
+ModuleType=SourceModule
+FormState=0
+FormOnTop=0
+
+[D:\WorkSpace\CMSCpp2\src\Unit1.cpp]
 ModuleType=SourceModule
 FormState=0
 FormOnTop=0
@@ -139,7 +139,7 @@ LeftPanelData=000004000000000000000000000000000000000000000000000100000000000000
 RightPanelSize=0
 BottomPanelSize=0
 BottomPanelClients=MessageView@EditWindow0
-BottomPanelData=00000400010000000B0000004D65737361676556696577000500000000000002D400000000000000010000000000000000000000000100000000A3040000000000000100000000A304000000000000010000000000050000000000000100000000000500000B0000004D65737361676556696577FFFFFFFF
+BottomPanelData=00000400010000000B0000004D65737361676556696577000500000000000002D400000000000000010000000000000000000000000100000000A3040000000000000100000000A3040000000000000100000000000500000000000001000000000005000000000000FFFFFFFF
 
 [View0]
 Module=D:\WorkSpace\CMSCpp2\src\static\java\lang.cpp
@@ -206,8 +206,8 @@ LeftCol=1
 
 [View9]
 Module=D:\WorkSpace\CMSCpp2\src\cms\colorformat\excelfile.cpp
-CursorX=36
-CursorY=135
+CursorX=28
+CursorY=130
 TopLine=112
 LeftCol=1
 
