@@ -226,7 +226,7 @@ namespace cms {
  *enum 與 Enumeration
  enum是c++內建, 功能很弱, 基本上只是一個常數代換而已.
  但如果不需複雜的功能, 其實enum夠了.
- 要是enum需要跨class使用的時候, 建議採用擴充型的Enumeration.
+ 要是enum需要跨class使用的時候, 建議採用擴充型的Enumeration().
  定義方法為: Enumeration(enum_name)
               item1=value, item2=value, ...
              EnumerationEnd();
@@ -291,7 +291,11 @@ namespace java {
 	    static int minIndex(double_vector_ptr values);
 	};
 
-
+        /*
+          *例外體系
+           完全仿製java例外體系, Exception為最上層類別, 其底下有RuntimeException.
+           而RuntimeException下又有最常用的幾種例外.
+        */
 	class Exception:public Object {
 	  public:
 	    Exception();

@@ -63,6 +63,7 @@ namespace cms {
 					rgbColorSpace);
 
 	    RGB_ptr getComponent(RGB_ptr rgb) = 0;
+            XYZ_ptr getCIEXYZ();
 	    void setupComponent(const Dep::Channel & ch, RGB_ptr rgb) = 0;
 	    void enter();
 	};
