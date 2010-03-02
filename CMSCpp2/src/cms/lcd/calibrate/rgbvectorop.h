@@ -8,12 +8,13 @@
 
 //本項目內頭文件
 #include <java/lang.h>
+#include "rgbop.h"
 
 namespace cms {
     namespace lcd {
 	namespace calibrate {
 
-	    class RGBVectorOp {
+	    /*class RGBVectorOp {
 	      private:
 		RGB_vector_ptr source;
 		std::vector < bptr < RGBVectorOp > >opvector;
@@ -28,10 +29,15 @@ namespace cms {
 		RGB_vector_ptr createInstance();
 		void setSource(RGB_vector_ptr source);
 		void addOp(bptr < RGBVectorOp > op);
+	    };*/
+
+	    //class DGCodeOp:public RGBVectorOp {
+	    //};
+	    class DGCodeOp:public RGBOp < RGB_vector > {
 	    };
 
-	    class DGCodeOp:public RGBVectorOp {
-	    };
+	    //class DGCodeOp_:public RGBOp < RGB_vector > {
+	    //};
 
 	    class LinearOp:public DGCodeOp {
 	      protected:
@@ -46,14 +52,14 @@ namespace cms {
 		 MinusOp(double minusValue);
 	    };
 
-	    class P1P2Op:public DGCodeOp {
+	    /*class P1P2Op:public DGCodeOp {
 	      private:
 		double p1, p2;
 	      protected:
 		 RGB_vector_ptr getRendering(RGB_vector_ptr source);
 	      public:
 		 P1P2Op(double p1, double p2);
-	    };
+	    };*/
 
 	    class RBInterpolationOp:public DGCodeOp {
 	      private:

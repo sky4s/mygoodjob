@@ -8,6 +8,7 @@
 
 //本項目內頭文件
 #include <java/lang.h>
+#include "rgbop.h"
 
 #define RGBGamma_ptr  bptr < RGBGamma >
 
@@ -21,20 +22,21 @@ namespace cms {
 			 double_vector_ptr b);
 	    };
 
-	    class RGBGammaOp {
-	      private:
-		RGBGamma_ptr source;
-		std::vector < bptr < RGBGammaOp > >opvector;
-	      protected:
-		RGBGamma_ptr createInstance(RGBGamma_ptr source);
-		virtual RGBGamma_ptr getRendering(RGBGamma_ptr source)
-		= 0;
-	      public:
-		 RGBGammaOp();
-		 RGBGammaOp(RGBGamma_ptr source);
-		RGBGamma_ptr createInstance();
-		void addOp(bptr < RGBGammaOp > op);
+	    class RGBGammaOp:public RGBOp < RGBGamma > {
+	    };
 
+	    class BIntensityGainOp:public RGBGammaOp {
+	      protected:
+		RGBGamma_ptr getRendering(RGBGamma_ptr source);
+	    };
+	    class P1P2Op:public RGBGammaOp {
+
+	      private:
+		double p1, p2;
+	      protected:
+		 RGBGamma_ptr getRendering(RGBGamma_ptr source);
+	      public:
+		 P1P2Op(double p1, double p2);
 	    };
 	};
     };
