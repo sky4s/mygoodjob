@@ -389,7 +389,7 @@ int main(int argc, char *argv[])
     //mathTry();
     //doubleArrayTry();
     rgbop();
-    templateTry();
+    //templateTry();
     getch();
 }
 

@@ -8,39 +8,40 @@
 
 //本項目內頭文件
 #include <java/lang.h>
+#define RGBOp_Type RGBOp < Type >
 
 namespace cms {
     namespace lcd {
 	namespace calibrate {
 	    template < class Type > class RGBOp {
 	      private:
-		Type source;
-		//std::vector < bptr < RGBOp > >opvector;
+		bptr < Type > source;
+		std::vector < bptr < RGBOp_Type > >opvector;
 	      protected:
-		Type createInstance(Type source) {
-		    Type rendering = getRendering(source);
-		     foreach(bptr < RGBOp > op, opvector) {
+		bptr < Type > createInstance(bptr < Type > source) {
+		    bptr < Type >  rendering = getRendering(source);
+		     foreach(bptr < RGBOp_Type > op, opvector) {
 			rendering = op->createInstance(rendering);
 		    };
 		     return rendering;
 		};
-		virtual Type getRendering(Type source)
+		virtual bptr < Type > getRendering(bptr < Type > source)
 		= 0;
 
 	      public:
 		 RGBOp() {
 		};
-	      RGBOp(Type source):source(source) {
+	      RGBOp(bptr < Type > source):source(source) {
 		};
-		Type createInstance() {
+		bptr < Type > createInstance() {
 		    return createInstance(source);
 		};
-		void setSource(Type source) {
+		void setSource(bptr < Type > source) {
 		    this->source = source;
 		};
-		/*void addOp(bptr < RGBOp > op) {
-		   opvector.push_back(op);
-		   }; */
+		void addOp(bptr < RGBOp_Type > op) {
+		    opvector.push_back(op);
+		};
 	    };
 
 	    /*template <> class RGBGammaOp_ < RGBGamma > {

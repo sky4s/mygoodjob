@@ -12,7 +12,8 @@
       build\rgbvectorop.obj build\whitefinder.obj build\analyzer.obj 
       build\cp.obj build\meter.obj build\MeterMeasurement.obj build\rgbArray.obj 
       build\util.obj build\lang.obj build\doublearray.obj 
-      build\interpolation.obj build\regression.obj build\searcher.obj build\svd.obj"/>
+      build\interpolation.obj build\regression.obj build\searcher.obj 
+      build\svd.obj build\rgbgamma.obj"/>
     <RESFILES value="CMSCpp2.res"/>
     <IDLFILES value=""/>
     <IDLGENFILES value=""/>
@@ -28,7 +29,7 @@
       inetdbbde.bpi inetdbxpress.bpi inetdb.bpi nmfast.bpi webdsnap.bpi 
       bcbie.bpi websnap.bpi soaprtl.bpi dclocx.bpi dbexpress.bpi dbxcds.bpi 
       indy.bpi bcb2kaxserver.bpi bcbindent.bpi"/>
-    <PATHCPP value=".;src;src;src\ca210api;src\cms;src\cms;src\cms\colorformat;src\cms\colorformat;src\cms\colorformat;src\cms\colorspace;src\cms\colorspace;src\cms\colorspace;src\cms\colorspace;src\cms\colorspace;src\cms\lcd\calibrate;src\cms\lcd\calibrate;src\cms\lcd\calibrate;src\cms\lcd\calibrate;src\cms\lcd\calibrate;src\cms\lcd\calibrate;src\cms\measure;src\cms\measure;src\cms\measure;src\cms\measure;src\cms\util;src\static;src\static\java;src\static\math;src\static\math;src\static\math;src\static\math;src\static\math"/>
+    <PATHCPP value=".;src;src;src\ca210api;src\cms;src\cms;src\cms\colorformat;src\cms\colorformat;src\cms\colorformat;src\cms\colorspace;src\cms\colorspace;src\cms\colorspace;src\cms\colorspace;src\cms\colorspace;src\cms\lcd\calibrate;src\cms\lcd\calibrate;src\cms\lcd\calibrate;src\cms\lcd\calibrate;src\cms\lcd\calibrate;src\cms\lcd\calibrate;src\cms\measure;src\cms\measure;src\cms\measure;src\cms\measure;src\cms\util;src\static;src\static\java;src\static\math;src\static\math;src\static\math;src\static\math;src\static\math;src\cms\lcd\calibrate"/>
     <PATHPAS value=".;"/>
     <PATHRC value=".;"/>
     <PATHASM value=".;"/>
@@ -38,16 +39,17 @@
     <USERDEFINES value="_DEBUG"/>
     <SYSDEFINES value="NO_STRICT;_RTLDLL;USEPACKAGES"/>
     <MAINSOURCE value="CMSCpp2.bpf"/>
-    <INCLUDEPATH value="src\static\math;src\static\java;src\static;src\cms\util;src\cms\measure;src\cms\lcd\calibrate;src\cms\colorspace;src\cms\colorformat;src\cms;src\ca210api;src;$(BCB)\include;$(BCB)\include\vcl;imports;lib"/>
-    <LIBPATH value="$(BCB)\Projects\Lib;src\static\math;src\static\java;src\static;src\cms\util;src\cms\measure;src\cms\lcd\calibrate;src\cms\colorspace;src\cms\colorformat;src\cms;src\ca210api;src;$(BCB)\lib\obj;$(BCB)\lib;imports;lib"/>
+    <INCLUDEPATH value="&quot;F:\Program Files\Borland\CBuilder6\Projects&quot;;src\static\math;src\static\java;src\static;src\cms\util;src\cms\measure;src\cms\lcd\calibrate;src\cms\colorspace;src\cms\colorformat;src\cms;src\ca210api;src;$(BCB)\include;$(BCB)\include\vcl;imports;lib"/>
+    <LIBPATH value="&quot;F:\Program Files\Borland\CBuilder6\Projects&quot;;$(BCB)\Projects\Lib;src\static\math;src\static\java;src\static;src\cms\util;src\cms\measure;src\cms\lcd\calibrate;src\cms\colorspace;src\cms\colorformat;src\cms;src\ca210api;src;$(BCB)\lib\obj;$(BCB)\lib;imports;lib"/>
     <WARNINGS value="-w-par"/>
     <OTHERFILES value=""/>
   </MACROS>
   <OPTIONS>
-    <IDLCFLAGS value="-Isrc\static\math -Isrc\static\java -Isrc\static -Isrc\cms\util 
-      -Isrc\cms\measure -Isrc\cms\lcd\calibrate -Isrc\cms\colorspace 
-      -Isrc\cms\colorformat -Isrc\cms -Isrc\ca210api -Isrc -I$(BCB)\include 
-      -I$(BCB)\include\vcl -Iimports -Ilib -src_suffix cpp -D_DEBUG -boa"/>
+    <IDLCFLAGS value="-I&quot;F:\Program Files\Borland\CBuilder6\Projects&quot; -Isrc\static\math 
+      -Isrc\static\java -Isrc\static -Isrc\cms\util -Isrc\cms\measure 
+      -Isrc\cms\lcd\calibrate -Isrc\cms\colorspace -Isrc\cms\colorformat 
+      -Isrc\cms -Isrc\ca210api -Isrc -I$(BCB)\include -I$(BCB)\include\vcl 
+      -Iimports -Ilib -src_suffix cpp -D_DEBUG -boa"/>
     <CFLAG1 value="-Od -H=$(BCB)\lib\vcl60.csm -Hc -Vx -Ve -X- -r- -a8 -b- -k -y -v -vi- -tWC 
       -tWM -c"/>
     <PFLAGS value="-N2build -N0build -$YD -$W -$O- -$A8 -v -JPHNE -M"/>
@@ -97,6 +99,7 @@
       <FILE FILENAME="src\static\math\searcher.cpp" FORMNAME="" UNITNAME="searcher.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="src\static\math\svd.cpp" FORMNAME="" UNITNAME="svd.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="src\cms\lcd\calibrate\rgbop.h" FORMNAME="" UNITNAME="rgbop.h" CONTAINERID="" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="src\cms\lcd\calibrate\rgbgamma.cpp" FORMNAME="" UNITNAME="rgbgamma" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
   </FILELIST>
   <BUILDTOOLS>
   </BUILDTOOLS>
