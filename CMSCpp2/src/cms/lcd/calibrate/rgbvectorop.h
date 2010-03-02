@@ -21,6 +21,7 @@ namespace cms {
 		RGB_vector_ptr createInstance(RGB_vector_ptr source);
 		virtual RGB_vector_ptr getRendering(RGB_vector_ptr source)
 		= 0;
+
 	      public:
 		 RGBVectorOp();
 		 RGBVectorOp(RGB_vector_ptr source);
@@ -45,24 +46,37 @@ namespace cms {
 		 MinusOp(double minusValue);
 	    };
 
-	    class P1P2:public RGBVectorOp {
+	    class P1P2Op:public DGCodeOp {
 	      private:
 		double p1, p2;
 	      protected:
 		 RGB_vector_ptr getRendering(RGB_vector_ptr source);
 	      public:
-		 P1P2(double p1, double p2);
+		 P1P2Op(double p1, double p2);
 	    };
 
-	    class RBInterpolation:public RGBVectorOp {
+	    class RBInterpolationOp:public DGCodeOp {
 	      private:
 		double under;
 	      protected:
 		 RGB_vector_ptr getRendering(RGB_vector_ptr source);
 	      public:
-		 RBInterpolation(double under);
+		 RBInterpolationOp(double under);
 	    };
 
+	    class BMaxOp:public DGCodeOp {
+	      protected:
+		RGB_vector_ptr getRendering(RGB_vector_ptr source);
+	      public:
+		BMaxOp();
+	    };
+
+	    class GByPassOp:public DGCodeOp {
+	      protected:
+		RGB_vector_ptr getRendering(RGB_vector_ptr source);
+	      public:
+		GByPassOp();
+	    };
 	};
     };
 }

@@ -23,9 +23,9 @@ namespace cms {
 		maxValue(&MaxValue::Double1) {
 		setValues(0, 0, 0);
 	    };
-	     RGBColor::RGBColor(RGBColorSpace & rgbColorSpace,
+	     RGBColor::RGBColor(const RGBColorSpace & rgbColorSpace,
 				double_array rgb,
-				MaxValue &
+				const MaxValue &
 				maxValue):rgbColorSpace(&rgbColorSpace),
 		maxValue(&maxValue) {
 
@@ -47,9 +47,10 @@ namespace cms {
 		setValues(r, g, b);
 	    };
 
-	  RGBColor::RGBColor(RGBColorSpace rgbColorSpace, CIEXYZ XYZ):rgbColorSpace(&rgbColorSpace),
-		maxValue(&MaxValue::
-			 Double1) {
+	    RGBColor::RGBColor(const RGBColorSpace & rgbColorSpace,
+			       XYZ_ptr XYZ):rgbColorSpace(&rgbColorSpace),
+		maxValue(&MaxValue::Double1) {
+		/* TODO : RGBColor */
 		//this(colorSpace, fromXYZValues(XYZ.getValues(), colorSpace),
 		//MaxValue.Double1);
 	    };
@@ -96,8 +97,10 @@ namespace cms {
 		}
 
 		double_array values = this->getValues();
+		//cout << *math::DoubleArray::toString(values, 3) << endl;
 		changeMaxValue(values, *this->maxValue, type,
 			       integerRoundDown);
+		//cout << *math::DoubleArray::toString(values, 3) << endl;
 
 		this->maxValue = &type;
 		this->setValues(values);
@@ -172,9 +175,11 @@ namespace cms {
 		if (type.integer == true) {
 		    for (int x = 0; x < size; x++) {
 			normal100[x] /= (100. / type.max);
+			//cout<<        normal100[x]<<endl;
 			normal100[x] =
 			    integerRoundDown ? (int) normal100[x] : Math::
 			    round(normal100[x]);
+			//cout<<        normal100[x]<<endl;
 		    }
 		} else {
 		    for (int x = 0; x < size; x++) {
@@ -286,6 +291,18 @@ namespace cms {
 
 	    const RGB_ptr RGBColor::White(new RGBColor(255, 255, 255));
 	    const RGB_ptr RGBColor::Black(new RGBColor(0, 0, 0));
+
+	    void RGBColor::quantization(const MaxValue & maxValue) {
+		quantization(maxValue, false);
+	    };
+	    void RGBColor::quantization(const MaxValue & maxValue,
+					bool integerRoundDown) {
+		const MaxValue & origin = *this->maxValue;
+		changeMaxValue(maxValue, integerRoundDown);
+		//cout << *toString() << endl;
+		changeMaxValue(origin, integerRoundDown);
+		//cout << * toString() << endl;
+	    };
 	};
     };
 };

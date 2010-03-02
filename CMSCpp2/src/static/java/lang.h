@@ -39,6 +39,7 @@
 //==============================================================================
 #define bptr boost::shared_ptr
 #define barray boost::shared_array
+//scope內用smart_ptr
 #define bptr_ boost::scoped_ptr
 
 #define string_ptr bptr < std::string >
@@ -64,8 +65,7 @@
 #define float_array barray <float>
 #define nil_float_array float_array ((float*)NULL)
 
-
-
+//boost提供的foreach, 若要對vector<int> ivec做foreach, 語法為: foreach(const int & i, ivec) { ... }
 #define foreach BOOST_FOREACH
 //==============================================================================
 
@@ -128,7 +128,9 @@
 #define float2D TNT::Array2D< float >
 #define float3D TNT::Array3D< float >
 //==============================================================================
-
+namespace math {
+    class Interpolation1DLUT;
+};
 
 namespace cms {
     class Patch;
@@ -153,6 +155,7 @@ namespace cms {
     namespace lcd {
 	namespace calibrate {
 	    class LCDCalibrator;
+	    class RGBGamma;
 	    namespace algo {
 		class ChromaticAroundAlgorithm;
 		class CIEuv1960NearestAlgorithm;
@@ -240,7 +243,7 @@ namespace java {
 
 	class Class {
 	  private:
-              
+
 	    friend class Object;
 	    const std::type_info & info;
 	     Object & object;
@@ -291,11 +294,11 @@ namespace java {
 	    static int minIndex(double_vector_ptr values);
 	};
 
-        /*
-          *例外體系
-           完全仿製java例外體系, Exception為最上層類別, 其底下有RuntimeException.
-           而RuntimeException下又有最常用的幾種例外.
-        */
+	/*
+	 *例外體系
+	 完全仿製java例外體系, Exception為最上層類別, 其底下有RuntimeException.
+	 而RuntimeException下又有最常用的幾種例外.
+	 */
 	class Exception:public Object {
 	  public:
 	    Exception();

@@ -96,6 +96,7 @@
       <FILE FILENAME="src\static\math\regression.cpp" FORMNAME="" UNITNAME="regression.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="src\static\math\searcher.cpp" FORMNAME="" UNITNAME="searcher.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="src\static\math\svd.cpp" FORMNAME="" UNITNAME="svd.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="src\cms\lcd\calibrate\rgbop.h" FORMNAME="" UNITNAME="rgbop.h" CONTAINERID="" DESIGNCLASS="" LOCALCOMMAND=""/>
   </FILELIST>
   <BUILDTOOLS>
   </BUILDTOOLS>

@@ -273,10 +273,6 @@ namespace cms {
 	    return query;
 	};
 
-	/*string_vector_ptr ExcelFileDB::nextResult() {
-	   string_vector_ptr result = getResult(selectAllDataSet);
-	   }; */
-
 	void ExcelFileDB::close() {
 	    if (null != connection && true == connection->Connected) {
 		connection->Close();
@@ -286,9 +282,8 @@ namespace cms {
 	    }
 	};
 
-	string_vector_ptr ExcelFileDB::makeStringVector(int count, ...) {
+	string_vector_ptr ExcelFileDB::make(int count, ...) {
 	    string_vector_ptr result(new string_vector());
-	    //channel_vector_ptr result(new channel_vector());
 	    va_list num_list;
 	    va_start(num_list, count);
 
@@ -335,6 +330,7 @@ namespace cms {
 	    return str;
 	};
 	void DBQuery::set(int row, int column, const std::string & value) {
+	    throw UnsupportedOperationException();
 	    dataSet->First();
 	    for (int x = 0; x < row; x++) {
 		dataSet->Next();
@@ -344,6 +340,7 @@ namespace cms {
 	};
 
 	void DBQuery::refresh() {
+	    throw UnsupportedOperationException();
 	    dataSet->Refresh();
 	};
 
@@ -420,7 +417,7 @@ namespace cms {
 	    mode(mode) {
 	    init();
 	};
-	void DGCodeFile::setProperty(const string & key,
+	void DGCodeFile::addProperty(const string & key,
 				     const string & value) {
 	    db->setTableName(Properties);
 	    string_vector_ptr fieldNames =

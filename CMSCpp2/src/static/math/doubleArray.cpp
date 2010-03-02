@@ -1,7 +1,7 @@
 #include "doublearray.h"
 
 //C系統文件
-
+#include <cstdarg>
 //C++系統文件
 
 //其他庫頭文件
@@ -284,7 +284,7 @@ namespace math {
     };
 
     double2D_ptr DoubleArray::pseudoInverse(double2D_ptr m) {
-    	/* TODO : pseudoInverse */
+	/* TODO : pseudoInverse */
 	double1D sv;
 	double2D v, u;
 
@@ -297,6 +297,26 @@ namespace math {
     double DoubleArray::getTolerance(int m, int n, double1D sv) {
 	/* TODO : getTolerance */
 
+    };
+
+    double_array DoubleArray::toDoubleArray(double array[], int n) {
+	double_array result(new double[n]);
+	for (int x = 0; x != n; x++) {
+	    result[x] = array[x];
+	}
+	return result;
+    };
+
+    double_array DoubleArray::toDoubleArray(int n, ...) {
+	double_array result(new double[n]);
+	va_list num_list;
+	va_start(num_list, n);
+
+	for (int i = 0; i < n; i++) {
+	    const double d = va_arg(num_list, const double);
+	    result[i] = d;
+	} va_end(num_list);
+	return result;
     };
 };
 

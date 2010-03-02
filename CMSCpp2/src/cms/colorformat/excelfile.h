@@ -91,10 +91,7 @@ namespace cms {
 	    string_vector_ptr select(const std::string & keyValue);
 
 	     bptr < DBQuery > selectAll();
-	    /*string_vector_ptr nextResult();
-	       bool hasNext(); */
-
-	    static string_vector_ptr makeStringVector(int count, ...);
+	    static string_vector_ptr make(int count, ...);
 
 	    void setKeyField(const std::string & keyField);
 	  private:
@@ -134,7 +131,7 @@ namespace cms {
 	     DGCodeFile(const std::string & filename, int n);
 	     DGCodeFile(const std::string & filename, int n,
 			const Mode mode);
-	    void setProperty(const std::string & key,
+	    void addProperty(const std::string & key,
 			     const std::string & value);
 	};
     };

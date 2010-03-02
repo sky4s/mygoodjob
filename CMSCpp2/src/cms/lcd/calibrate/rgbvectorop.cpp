@@ -72,23 +72,58 @@ namespace cms {
 	    //==================================================================
 	    // P1P2
 	    //==================================================================
-	    RGB_vector_ptr P1P2::getRendering(RGB_vector_ptr source) {
+	    RGB_vector_ptr P1P2Op::getRendering(RGB_vector_ptr source) {
+		int size = source->size();
+		RGB_vector_ptr result(new RGB_vector(size));
 
+
+
+		return result;
 	    };
-	    P1P2::P1P2(double p1, double p2) {
+	  P1P2Op::P1P2Op(double p1, double p2):p1(p1), p2(p2) {
 	    };
 	    //==================================================================
 
 	    //==================================================================
 	    // RBInterpolation
 	    //==================================================================
-	    RGB_vector_ptr RBInterpolation::
+	    RGB_vector_ptr RBInterpolationOp::
 		getRendering(RGB_vector_ptr source) {
+		int size = source->size();
 
+		double rInterval = (*source)[under]->R / under;
+		double gInterval = (*source)[under]->G / under;
+		double bInterval = (*source)[under]->B / under;
+		RGB_vector_ptr result(new RGB_vector(size));
+
+		for (int x = 0; x != under; x++) {
+		    //°µRB interpolation
+		    RGB_ptr rgb(new RGBColor(*(*source)[x]));
+		    rgb->R = rInterval * x;
+		    rgb->G = gInterval * x;
+		    rgb->B = bInterval * x;
+		    (*result)[x] = rgb;
+		}
+		for (int x = under; x != size; x++) {
+		    //¶Ècopy
+		    RGB_ptr rgb(new RGBColor(*(*source)[x]));
+		    (*result)[x] = rgb;
+		}
+		return result;
 	    };
-	    RBInterpolation::RBInterpolation(double under) {
+	  RBInterpolationOp::RBInterpolationOp(double under):under(under)
+	    {
 	    };
 	    //==================================================================
+
+	    RGB_vector_ptr BMaxOp::getRendering(RGB_vector_ptr source) {
+	    };
+	    BMaxOp::BMaxOp() {
+	    };
+	    RGB_vector_ptr GByPassOp::getRendering(RGB_vector_ptr source) {
+	    };
+	    GByPassOp::GByPassOp() {
+	    };
 	};
     };
 };
