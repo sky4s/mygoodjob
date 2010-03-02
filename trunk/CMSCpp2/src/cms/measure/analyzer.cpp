@@ -147,6 +147,7 @@ namespace cms {
 	};
 
 	RGB_ptr MaxMatrixComponentAnalyzer::getComponent(RGB_ptr rgb) {
+	    //component: 0~100%
 	};
 	void MaxMatrixComponentAnalyzer::setupComponent(const Dep::
 							Channel & ch,

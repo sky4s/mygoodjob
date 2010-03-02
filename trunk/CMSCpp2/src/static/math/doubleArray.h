@@ -51,7 +51,8 @@ namespace math {
 	static double2D_ptr solve(double2D_ptr a, double2D_ptr b);
 	static double2D_ptr inverse(double2D_ptr m);
 	static double2D_ptr pseudoInverse(double2D_ptr m);
-
+	static double_array toDoubleArray(double array[], int n);
+	static double_array toDoubleArray(int n, ...);
 
     };
 };

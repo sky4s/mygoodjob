@@ -12,11 +12,12 @@ namespace cms {
 		double R, G, B;
 
 		 RGBColor();
-		 RGBColor(RGBColorSpace & rgbColorSpace,
-			  double_array rgb, MaxValue & maxValue);
+		 RGBColor(const RGBColorSpace & rgbColorSpace,
+			  double_array rgb, const MaxValue & maxValue);
 		 RGBColor(int r, int g, int b);
 		 RGBColor(double r, double g, double b);
-		 RGBColor(RGBColorSpace rgbColorSpace, CIEXYZ XYZ);
+		 RGBColor(const RGBColorSpace & rgbColorSpace,
+			  XYZ_ptr XYZ);
 		double_array _getValues(double_array values);
 		void _setValues(double_array values);
 		string_vector_ptr getBandNames();
@@ -33,6 +34,9 @@ namespace cms {
 		Object_ptr clone();
 		static const RGB_ptr White;
 		static const RGB_ptr Black;
+		void quantization(const MaxValue & maxValue);
+		void quantization(const MaxValue & maxValue,
+				  bool integerRoundDown);
 	      protected:
 		const MaxValue *maxValue;
 		const RGBColorSpace *rgbColorSpace;

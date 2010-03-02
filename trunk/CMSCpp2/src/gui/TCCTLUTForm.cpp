@@ -5,6 +5,9 @@
 
 #include "TCCTLUTForm.h"
 #include <FileCtrl.hpp>
+#include "TMainForm.h"
+
+#include <cms/lcd/calibrate/lcdcalibrator.h>
 
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
@@ -107,4 +110,72 @@ void __fastcall TCCTLUTForm::RadioButton_P1P2Click(TObject * Sender)
 //---------------------------------------------------------------------------
 
 
+
+void __fastcall TCCTLUTForm::Button_RunClick(TObject * Sender)
+{
+    cms::lcd::calibrate::LCDCalibrator calibrator(MainForm->analyzer);
+
+    //==========================================================================
+    // P1P2和RBInterp的選擇
+    //==========================================================================
+    if (this->RadioButton_P1P2->Checked) {
+	//選了P1P2
+	int p1 = this->Edit_P1->Text.ToInt();
+	int p2 = this->Edit_P2->Text.ToInt();
+	calibrator.setP1P2(p1, p2);
+    } else {
+	//選了RBInterp
+	int rbunder = this->Edit_RBInterpUnder->Text.ToInt();
+	calibrator.setRBInterpolation(rbunder);
+    }
+    //==========================================================================
+
+    //==========================================================================
+    // in/lut/out的處理
+    //==========================================================================
+    int in =
+	RadioButton_In6->Checked ? 6 : 0 +
+	RadioButton_In8->Checked ? 8 : 0 +
+	RadioButton_In10->Checked ? 10 : 0;
+    int lut =
+	RadioButton_Lut10->Checked ? 10 : 0 +
+	RadioButton_Lut12->Checked ? 12 : 0;
+    int out =
+	RadioButton_Out6->Checked ? 6 : 0 +
+	RadioButton_Out8->Checked ? 8 : 0 +
+	RadioButton_Out10->Checked ? 10 : 0;
+    calibrator.setBitDepth(in, lut, out);
+    //==========================================================================
+
+    //==========================================================================
+    // gamma的處理
+    //==========================================================================
+    if (this->RadioButton_Gamma->Checked) {
+	double gamma = this->ComboBox_Gamma->Text.ToDouble();
+	calibrator.setGamma(gamma, 256);
+    } else {
+
+    }
+    calibrator.setGByPass(this->CheckBox_GByPass->Checked);
+    //==========================================================================
+
+    //==========================================================================
+    // blue correction
+    //==========================================================================
+    if (this->CheckBox_BGain->Checked) {
+	double gain = this->Edit_BGain->Text.ToDouble();
+	calibrator.setBIntensityGain(gain);
+    }
+    calibrator.setBMax(this->CheckBox_BMax->Checked);
+    //==========================================================================
+    calibrator.setGamma256(this->CheckBox_Gamma256->Checked);
+    calibrator.setAvoidFRCNoise(this->CheckBox_AvoidNoise->Checked);
+
+    int start = this->Edit_StartLevel->Text.ToInt();
+    int end = this->Edit_EndLevel->Text.ToInt();
+    int step = this->ComboBox_LevelStep->Text.ToInt();
+    RGB_vector_ptr dgcode = calibrator.getDGCode(start, end, step);
+}
+
+//---------------------------------------------------------------------------
 

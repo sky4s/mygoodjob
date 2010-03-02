@@ -29,15 +29,10 @@ namespace cms {
 	    class ComponentFetcher {
 	      private:
 		bptr < cms::measure::ComponentAnalyzerIF > analyzer;
-		bptr < cms::measure::MeterMeasurement > mm;
+		//bptr < cms::measure::MeterMeasurement > mm;
 	      public:
-		/*ComponentFetcher(bptr < cms::measure::MeterMeasurement >
-		   mm,
-		   bptr < cms::measure::ComponentAnalyzerIF >
-		   analyzer); */
 		ComponentFetcher(bptr < cms::measure::ComponentAnalyzerIF >
 				 analyzer);
-		//RGB_vector_ptr fetch(int start, int end, int step);
 		Composition_vector_ptr fetchComposition(int start,
 							int end, int step);
 	    };
@@ -55,21 +50,29 @@ namespace cms {
 	     */
 	    using namespace math;
 	    class DGCodeProducer {
-
 	      private:
-		bptr < Regression > regression;
+		bptr < PolynomialRegression > regression;
 		Composition_vector_ptr compositionVector;
+		double2D_ptr coefs;
+		double c, d;
+		double minLuminance, maxLuminance;
+		 bptr < math::Interpolation1DLUT > rLut;
+		 bptr < math::Interpolation1DLUT > gLut;
+		 bptr < math::Interpolation1DLUT > bLut;
 	      protected:
 		void init();
+		double getComponent(double luminance);
+		double_vector_ptr getLuminanceGammaCurve(double_vector_ptr
+							 normalGammaCurve);
 	      public:
 		 DGCodeProducer(Composition_vector_ptr compositionVector);
-		RGB_vector_ptr produce(double_vector_ptr gammaCurve);
-
+		RGB_vector_ptr produce(double_vector_ptr normalGammaCurve);
 	    };
 
 	    enum BitDepth {
 		Bit6 = 6, Bit8 = 8, Bit10 = 10, Bit12 = 12
 	    };
+
 	    class LCDCalibrator {
 	      private:
 		bool p1p2;
@@ -81,14 +84,17 @@ namespace cms {
 		bool bMax;
 		bool gamma256;
 		bool avoidFRCNoise;
-		int n;
+		//int n;
 		double_vector_ptr gammaCurve;
+		 bptr < DGCodeProducer > producer;
+		 bptr < ComponentFetcher > fetcher;
+		 bptr < cms::measure::ComponentAnalyzerIF > analyzer;
 
 	      public:
 		static double_array getGammaCurve(double gamma, int n);
 		static double_vector_ptr getGammaCurveVector(double gamma,
 							     int n);
-		//LCDCalibrator();
+
 		void setP1P2(double p1, double p2);
 		void setRBInterpolation(int under);
 		void setGamma(double gamma, int n);
@@ -103,6 +109,8 @@ namespace cms {
 				 const BitDepth & out);
 
 		RGB_vector_ptr getDGCode(int start, int end, int step);
+		 LCDCalibrator(bptr < cms::measure::ComponentAnalyzerIF >
+			       analyzer);
 	    };
 
 

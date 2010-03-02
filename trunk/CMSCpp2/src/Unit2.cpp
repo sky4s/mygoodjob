@@ -27,6 +27,7 @@
 #include <math/interpolation.h>
 #include <java/lang.h>
 #include <cms/colorspace/rgb.h>
+#include <cms/colorspace/ciexyz.h>
 #include <cms/colorformat/excelfiletester.h>
 #include <cms/colorformat/excelfile.h>
 //#include <policybased.h>
@@ -34,6 +35,9 @@
 #include <cms/lcd/calibrate/rgbvectorop.h>
 #include <cms/lcd/calibrate/lcdcalibrator.h>
 #include <cms/util/rgbarray.h>
+#include <cms/lcd/calibrate/lcdcalibrator.h>
+#include <cms/lcd/calibrate/rgbop.h>
+#include <cms/lcd/calibrate/rgbgamma.h>
 
 //---------------------------------------------------------------------------
 
@@ -47,8 +51,7 @@ void excel()
     /*string_vector_ptr fieldsNames(new string_vector());
        fieldsNames->push_back("a");
        fieldsNames->push_back("b"); */
-    string_vector_ptr fieldsNames =
-	ExcelFileDB::makeStringVector(2, "a", "b");
+    string_vector_ptr fieldsNames = ExcelFileDB::make(2, "a", "b");
 
     ExcelFileDB db("a.xls", Create);
 
@@ -59,12 +62,9 @@ void excel()
     if (newfile) {
 	db.createTable("tb", fieldsNames);
 
-	db.insert(fieldsNames,
-		  ExcelFileDB::makeStringVector(2, "11", "22"));
-	db.insert(fieldsNames,
-		  ExcelFileDB::makeStringVector(2, "33", "44"));
-	db.insert(fieldsNames,
-		  ExcelFileDB::makeStringVector(2, "55", "66"));
+	db.insert(fieldsNames, ExcelFileDB::make(2, "11", "22"));
+	db.insert(fieldsNames, ExcelFileDB::make(2, "33", "44"));
+	db.insert(fieldsNames, ExcelFileDB::make(2, "55", "66"));
     } else {
 	db.setTableName("tb");
 	//db.select("a", 11);
@@ -143,7 +143,10 @@ int regress()
 void inverse()
 {
     using namespace math;
-    double d[] = { 1, 6, 2, 1, 7, 3, 7, 9, 4 };
+    double d[] = { 0.5767309, 0.1855540, 0.1881852,
+	0.2973769, 0.6273491, 0.0752741,
+	0.0270343, 0.0706872, 0.9911085
+    };
     double2D_ptr m(new double2D(3, 3, d));
     double2D_ptr inv = DoubleArray::inverse(m);
     cout << *DoubleArray::toString(m) << endl;
@@ -262,7 +265,104 @@ void dgcodefile()
 
 };
 
+void dgcode()
+{
+    using namespace cms::lcd::calibrate;
+    using namespace Dep;
+    //using namespace Indep;
+    int n = 256;
+    Composition_vector_ptr vector(new Composition_vector(n));
+    for (int x = 0; x != n; x++) {
+	RGB_ptr rgb(new RGBColor(x, x, x));
+	RGB_ptr component(new RGBColor(x * .3, x * .6, x * .1));
+	XYZ_ptr XYZ(new Indep::CIEXYZ(0, x, 0));
+	Composition_ptr composition(new Composition(rgb, component, XYZ));
+	(*vector)[x] = composition;
+    };
+    DGCodeProducer producer(vector);
+};
 
+void rgbTry()
+{
+    using namespace Dep;
+    using namespace math;
+
+    RGBColor rgb(RGBColorSpace::unknowRGB,
+		 DoubleArray::toDoubleArray(3, 0.25, 0.5, 0.75),
+		 MaxValue::Double255);
+    cout << *rgb.toString() << endl;
+    rgb.quantization(MaxValue::Int8Bit);
+    //rgb.changeMaxValue(MaxValue::Int10Bit);
+    cout << *rgb.toString() << endl;
+};
+
+void doubleArrayTry()
+{
+    using namespace math;
+    double_array a = DoubleArray::toDoubleArray(3, 1.1, 2.1, 3.1);
+    cout << *DoubleArray::toString(a, 3) << endl;
+    double bb[] = { 4, 5, 6 };
+    double_array b = DoubleArray::toDoubleArray(bb, 3);
+    cout << *DoubleArray::toString(b, 3) << endl;
+};
+
+void mathTry()
+{
+    using namespace java::lang;
+    cout << std::ceil(0.25) << endl;
+    cout << std::ceil(0.5) << endl;
+    cout << std::ceil(0.9) << endl;
+    //cout << std::round(1.0) << endl;
+    cout << Math::round(0.5) << endl;
+    cout << Math::round(0.4) << endl;
+};
+
+void rgbop()
+{
+    using namespace cms::lcd::calibrate;
+    //RGBOp < RGBGamma_ptr > rgbgammaop;
+};
+
+class AA {
+};
+class BB {
+};
+template < class T > class TA {
+  public:
+    virtual double get() {
+    };
+
+};
+
+template <> double TA < AA >::get()
+{
+    return 1;
+};
+
+template <> double TA < BB >::get()
+{
+    return 2;
+};
+
+class TB:public TA < double > {
+  public:
+    double get() {
+	return 100;
+    };
+};
+
+void templateTry()
+{
+    using namespace std;
+    TA < AA > aa;
+    TA < BB > bb;
+    //TA < double >cc;
+    TB dd;
+    cout << aa.get() << endl;
+    cout << bb.get() << endl;
+    //cout << cc.get() << endl;
+    cout << dd.get() << endl;
+};
 
 #pragma argsused
 int main(int argc, char *argv[])
@@ -276,13 +376,20 @@ int main(int argc, char *argv[])
 
     //regress();
     //lut();
-    excel();
+    //excel();
     //inverse();
     //rgbVectorOp();
     //sizeCompare();
     //gammaCurve();
     //header();
     //dgcodefile();
+    //dgcode();
+    //inverse();
+    //rgbTry();
+    //mathTry();
+    //doubleArrayTry();
+    rgbop();
+    templateTry();
     getch();
 }
 

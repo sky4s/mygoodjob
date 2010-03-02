@@ -1,6 +1,6 @@
 object CCTLUTForm: TCCTLUTForm
-  Left = 348
-  Top = 182
+  Left = 585
+  Top = 458
   Width = 656
   Height = 425
   Caption = 'CCT LUT'
@@ -65,7 +65,7 @@ object CCTLUTForm: TCCTLUTForm
         '16'
         '32')
     end
-    object Edit2: TEdit
+    object Edit_EndLevel: TEdit
       Left = 80
       Top = 56
       Width = 105
@@ -115,7 +115,7 @@ object CCTLUTForm: TCCTLUTForm
       TabOrder = 3
       TabStop = True
     end
-    object ComboBox2: TComboBox
+    object ComboBox_Gamma: TComboBox
       Left = 80
       Top = 24
       Width = 105
@@ -144,22 +144,22 @@ object CCTLUTForm: TCCTLUTForm
     object Label4: TLabel
       Left = 32
       Top = 104
-      Width = 41
-      Height = 25
+      Width = 37
+      Height = 16
       Caption = 'Under'
     end
     object Label7: TLabel
       Left = 32
       Top = 48
-      Width = 25
-      Height = 25
+      Width = 16
+      Height = 16
       Caption = 'P1'
     end
     object Label8: TLabel
       Left = 120
       Top = 48
-      Width = 25
-      Height = 25
+      Width = 16
+      Height = 16
       Caption = 'P2'
     end
     object RadioButton_P1P2: TRadioButton
@@ -195,7 +195,7 @@ object CCTLUTForm: TCCTLUTForm
       Left = 56
       Top = 48
       Width = 41
-      Height = 25
+      Height = 24
       TabOrder = 3
       Text = '20'
     end
@@ -203,7 +203,7 @@ object CCTLUTForm: TCCTLUTForm
       Left = 144
       Top = 48
       Width = 41
-      Height = 25
+      Height = 24
       TabOrder = 4
       Text = '50'
     end
@@ -223,7 +223,7 @@ object CCTLUTForm: TCCTLUTForm
       Caption = 'B Intensity Gain'
       TabOrder = 0
     end
-    object Edit4: TEdit
+    object Edit_BGain: TEdit
       Left = 128
       Top = 24
       Width = 57
@@ -423,6 +423,7 @@ object CCTLUTForm: TCCTLUTForm
     Height = 25
     Caption = 'Run'
     TabOrder = 6
+    OnClick = Button_RunClick
   end
   object OpenDialog1: TOpenDialog
     Options = [ofEnableSizing]

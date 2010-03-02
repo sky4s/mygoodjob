@@ -28,7 +28,7 @@ namespace cms {
 		ProPhotoRGB, WideGamutRGB, BetaRGB, BruceRGB, ECIRGB,
 		LStarRGB, AppleRGB, BestRGB, skyRGB, NTSCRGB,
 		EktaSpacePS5RGB, Unknow, AdobeRGBD50, AdobeRGB1998,
-		SMPTE_C ,EnumerationEnd();
+		SMPTE_C, EnumerationEnd();
 	    class RGBBase;
 	    //using cms::Illuminant;
 

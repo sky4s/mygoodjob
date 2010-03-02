@@ -18,13 +18,13 @@ class TCCTLUTForm:public TForm {
     TLabel *Label2;
     TLabel *Label3;
     TComboBox *ComboBox_LevelStep;
-    TEdit *Edit2;
+    TEdit *Edit_EndLevel;
     TGroupBox *GroupBox2;
     TRadioButton *RadioButton_GammaCurve;
     TButton *Button_LoadGammaCurve;
     TCheckBox *CheckBox_GByPass;
     TRadioButton *RadioButton_Gamma;
-    TComboBox *ComboBox2;
+    TComboBox *ComboBox_Gamma;
     TGroupBox *GroupBox3;
     TRadioButton *RadioButton_P1P2;
     TRadioButton *RadioButton_RBInterp;
@@ -32,7 +32,7 @@ class TCCTLUTForm:public TForm {
     TEdit *Edit_RBInterpUnder;
     TGroupBox *GroupBox4;
     TCheckBox *CheckBox_BGain;
-    TEdit *Edit4;
+    TEdit *Edit_BGain;
     TCheckBox *CheckBox_BMax;
     TGroupBox *GroupBox5;
     TCheckBox *CheckBox_Gamma256;
@@ -67,6 +67,7 @@ class TCCTLUTForm:public TForm {
     void __fastcall RadioButton_In10Click(TObject * Sender);
     void __fastcall RadioButton_RBInterpClick(TObject * Sender);
     void __fastcall RadioButton_P1P2Click(TObject * Sender);
+    void __fastcall Button_RunClick(TObject * Sender);
   private:			// User declarations
     void resetBitDepth();
     void setBitDepthEnable(bool lut10, bool lut12, bool out6, bool out8,
