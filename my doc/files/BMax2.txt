@@ -1,0 +1,60 @@
+        '==========================================================================
+        ' BMax for P1P2
+        '==========================================================================
+        If chk_BMax.Value = 1 Then ''''''''''''''''    BMax       
+            If op_10bit2.Value = True Then
+                If op_out_6.Value = True Then
+                    BL(255) = 1008
+                Else
+                    BL(255) = 1020
+                End If
+            Else
+                If op_out_8.Value = True Then
+                    BL(255) = 4080
+                Else
+                    BL(255) = 4092
+                End If
+            End If
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+		            For i = 255 To 0 Step -1 '由大到小
+		                
+		                If i > 252 Then
+		                    diff = 10
+		                ElseIf i > 232 Then
+		                    diff = 8
+		                Else
+		                    diff = 6
+		                End If
+		                
+		                If op_12bit2.Value = True Then                    
+		                    diff = diff * 4                    
+		                End If
+		                
+		                temp_b = BL(i)
+		                
+		                If (BL(i) - BL(i - 1)) > 0 Then
+		                    BL(i - 1) = BL(i) - diff
+		                Else
+		                    BL(i) = Round((BL(i + 1) + BL(i - 1)) / 2, 0)
+		                    Exit For                    
+		                End If
+		            Next i
+            
+        End If
+        '==========================================================================
