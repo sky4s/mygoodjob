@@ -9,6 +9,7 @@
 
 //本項目內頭文件
 #include <java/lang.h>
+#include <math/regression.h>
 
 #define Composition_ptr  bptr < Composition >
 #define Composition_vector std::vector < Composition_ptr >
@@ -52,7 +53,12 @@ namespace cms {
 	       3/4由produce產出
 
 	     */
+	    using namespace math;
 	    class DGCodeProducer {
+
+	      private:
+		bptr < Regression > regression;
+		Composition_vector_ptr compositionVector;
 	      protected:
 		void init();
 	      public:

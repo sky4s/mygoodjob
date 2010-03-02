@@ -72,11 +72,24 @@ namespace cms {
 	    //==================================================================
 	    // DGCodeProducer
 	    //==================================================================
+	    /*
+	       DGCodeProducer擔任產出DG Code的重責大任
+	       1. 首先接手ComponentFetcher產出的rgb,對應的componet,亮度
+	       2. 藉由regression找出componet與亮度的關係
+	       1/2由init產出
+
+	       3. 由目標gamma curve經步驟二找到對應的component
+	       4. 由compomenet對應出DG Code, DG Code產出
+	       3/4由produce產出
+
+	     */
 	    void DGCodeProducer::init() {
+		double2D_ptr input;
+		double2D_ptr output;
 	    };
 
-	    DGCodeProducer::
-		DGCodeProducer(Composition_vector_ptr compositionVector) {
+	  DGCodeProducer::DGCodeProducer(Composition_vector_ptr compositionVector):compositionVector(compositionVector)
+	    {
 		init();
 	    };
 	    RGB_vector_ptr DGCodeProducer::
