@@ -1,5 +1,5 @@
 VERSION 5.00
-Object = "{F9043C88-F6F2-101A-A3C9-08002B2F49FB}#1.2#0"; "comdlg32.ocx"
+Object = "{F9043C88-F6F2-101A-A3C9-08002B2F49FB}#1.2#0"; "COMDLG32.OCX"
 Begin VB.Form GTable 
    BorderStyle     =   1  'Fixed Single
    Caption         =   "CCT (LUT)"
@@ -606,9 +606,6 @@ Public Enum enuDataGroup
 End Enum
 
 
-Private Sub btn_debug_Click()
-End Sub
-
 Private Sub btn_loadG_Click()
     Dim fm As String, fnum As Integer, fname As String
     'Dim iCheck As Integer
@@ -1004,19 +1001,19 @@ Private Sub Command2_Click() '''''''AUTORUN
         ' 根據in/out決定的maximum值來產生gamma
         If ((chk_ga256.Value = 1) And (op_in_10.Value = True)) Then
             For i = 0 To 256
-                DesiredGamma(i) = ((256 - i) / 256) ^ Val(Text_Ga.Text)
+                DesiredGamma(i) = ((256 - i) / 256) ^ Val(Text_ga.Text)
                 'DesiredGamma(i) = ((1023 - i * 4) / 1023) ^ Val(Text_Ga.Text)
             Next i
         ElseIf (op_out_6.Value = True And op_in_6.Value = True) Then
             
             For i = 0 To 252
-                DesiredGamma(i) = ((252 - i) / 252) ^ Val(Text_Ga.Text)
+                DesiredGamma(i) = ((252 - i) / 252) ^ Val(Text_ga.Text)
             Next i
         Else
             
             For i = 0 To 255 '''''Normal Case
                 'Lgain(i) = ((255 - i) / 255) ^ Val(Text_Ga.Text)
-                DesiredGamma(i) = ((255 - i) / 255) ^ Val(Text_Ga.Text)
+                DesiredGamma(i) = ((255 - i) / 255) ^ Val(Text_ga.Text)
                 'RSDC = RSDC + 1
             Next i
         End If
@@ -1073,9 +1070,9 @@ Private Sub Command2_Click() '''''''AUTORUN
         End If
         ' =========================================================================
         
-        BKR = 1000
-        BKG = 1000
-        BKB = 1000
+        'BKR = 1000
+        'BKG = 1000
+        'BKB = 1000
         
         
         
@@ -1084,14 +1081,14 @@ Private Sub Command2_Click() '''''''AUTORUN
         ' =========================================================================
         ''''''''''''''''10 bit Gamma  by Stockton
         ' gray level step
-        If GLS = 0 Then
+        If GLS = 0 Then '1
             jj = 4
-        ElseIf GLS = 1 Then
+        ElseIf GLS = 1 Then '2
             jj = 3
-        ElseIf GLS = 2 Then
+        ElseIf GLS = 2 Then '4
             jj = 2
         Else
-            jj = 1
+            jj = 1 '??
         End If
         ' =========================================================================
         
@@ -1290,7 +1287,12 @@ Private Sub Command2_Click() '''''''AUTORUN
     '==========================================================================
     ' RL GL BL是產生的DG code, RP GP BP 是目標亮度 (免看)
     '==========================================================================
+    '目標亮度 YYP
+    '目標RGB亮度 RP/GP/BP
+    '量測亮度(component) RN/GN/BN
+    'DGCode RL/GL/BL
     For i = 0 To max_c
+        '反轉處理了, why?
         RL2(i) = RL(max_c - i)
         GL2(i) = GL(max_c - i)
         BL2(i) = BL(max_c - i)
@@ -1327,6 +1329,10 @@ Private Sub Command2_Click() '''''''AUTORUN
             '==================================================================
             ' 處理了R&B
             '==================================================================
+    '目標亮度 YYP
+    '目標RGB亮度 RP/GP/BP
+    '量測亮度(component) RN/GN/BN
+    'DGCode RL/GL/BL
             temp_g = GL2(P1)
             i = 0
             Do
@@ -1347,6 +1353,7 @@ Private Sub Command2_Click() '''''''AUTORUN
                 i = i + 1
             Loop
             
+            'P1點的處理
             RP2(P1) = RP2(index_r) + (RP2(index_r + 1) - RP2(index_r)) * (temp_g - RL2(index_r)) / (RL2(index_r + 1) - RL2(index_r))
             BP2(P1) = BP2(index_b) + (BP2(index_b + 1) - BP2(index_b)) * (temp_g - BL2(index_b)) / (BL2(index_b + 1) - BL2(index_b))
             '==================================================================
@@ -1385,6 +1392,7 @@ Private Sub Command2_Click() '''''''AUTORUN
             '==================================================================
             ' 把RP GP BP填到excel(免看)
             '==================================================================
+            ' 因為P1P2修了RPGPBP, 所以目標亮度跟著改變了
             sheet.cell(1, 11) = "RP_Intensity_Fix"
             sheet.cell(1, 12) = "GP_Intensity_Fix"
             sheet.cell(1, 13) = "BP_Intensity_Fix"
@@ -1882,7 +1890,7 @@ Private Sub Command2_Click() '''''''AUTORUN
         
         
         '======================================================================
-        ' 寫到excel
+        ' 寫到excel 免看
         '======================================================================
         sheet.setSheetIndex 1
         If P2 > 0 Then
@@ -1911,7 +1919,7 @@ Private Sub Command2_Click() '''''''AUTORUN
     '==========================================================================
         
         ''RB Interpolation
-        
+        'P3指的是RB的under, 預設為50
         P3 = Val(txt_RB_Interp.Text)
         If op_in_6.Value = True Then
             ccc = 252
@@ -1919,17 +1927,19 @@ Private Sub Command2_Click() '''''''AUTORUN
             ccc = 255
         End If
         
+        'temp_index為255-50=205 (預設狀況)
         temp_index = ccc - P3
+        'RL/GL/BL為code, interval為205下的dgcode/50
         R_interval = RL(temp_index) / P3
         G_interval = GL(temp_index) / P3
         B_interval = BL(temp_index) / P3
         
+        '處理0~under區間?
         For i = 0 To P3
-            
+            '全部round為整數(可能是因為值域為0~1020)
             RL(255 - i) = Round(i * R_interval, 0)
             GL(255 - i) = Round(i * G_interval, 0)
             BL(255 - i) = Round(i * B_interval, 0)
-            
         Next i
         
         
@@ -2004,11 +2014,12 @@ Private Sub Command2_Click() '''''''AUTORUN
         
         
         '==========================================================================
-        ' 寫入到excel...
+        ' 寫入到excel...免看
         '==========================================================================
         sheet.setSheetIndex 1
         For i = 0 To max_c
             sheet.cell(i + 2, 1) = i
+            '反過來寫?255 254 253...0
             sheet.cell(i + 2, 2) = RL(max_c - i)
             sheet.cell(i + 2, 3) = GL(max_c - i)
             sheet.cell(i + 2, 4) = BL(max_c - i)
@@ -2030,6 +2041,9 @@ Private Sub Command2_Click() '''''''AUTORUN
     End If
     
     
+    '==========================================================================
+    ' gamma256的處理
+    '==========================================================================
     '''''''Copy Gamma256 for 8in 8out gamma256
     If ((op_in_8.Value = True) And (op_out_8.Value = True) And (chk_ga256.Value = 1)) Then
         sheet.setSheetIndex 1
@@ -2046,6 +2060,8 @@ Private Sub Command2_Click() '''''''AUTORUN
         If sheet.cell(258, 3) > 4092 Then sheet.cell(258, 3) = 4092
         If sheet.cell(258, 4) > 4092 Then sheet.cell(258, 4) = 4092
     End If
+    '==========================================================================
+    
     sheet.setSheetIndex 1
     sheet.setSheetName "Gamma Table"
     
