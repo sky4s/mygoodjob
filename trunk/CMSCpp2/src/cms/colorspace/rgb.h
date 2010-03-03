@@ -31,7 +31,7 @@ namespace cms {
 		void setValue(const Channel & channel, double value);
 		const Channel & getMinChannel();
 		const Channel & getMaxChannel();
-		Object_ptr clone();
+		RGB_ptr clone();
 		static const RGB_ptr White;
 		static const RGB_ptr Black;
 		void quantization(const MaxValue & maxValue);

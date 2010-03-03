@@ -51,10 +51,10 @@ namespace cms {
 		getChannelVector(3, Y, M, C);
 
 
-	     Channel::Channel(int index, const TColor & color, string fullname):	/*index(index), */
-	     color(color), fullname(fullname) {
+	    /*Channel::Channel(int index, const TColor & color, string fullname):
+	       color(color), fullname(fullname) {
 
-	    };
+	       }; */
 	     Channel::Channel(int index, const TColor & color, string fullname, ChannelIndex chenum):	/*index(index), */
 	     color(color), fullname(fullname), chindex(chindex) {
 

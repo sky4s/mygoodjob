@@ -64,6 +64,7 @@ namespace cms {
 		int measureCount;
 	      public:
 		 CA210();
+		~CA210();
 		 bptr < ca210api::CA210API > getCA210API();
 		bool isConnected();
 		void calibrate();

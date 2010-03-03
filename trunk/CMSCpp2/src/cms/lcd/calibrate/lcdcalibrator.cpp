@@ -221,7 +221,8 @@ namespace cms {
 	    //==================================================================
 	    // LCDCalibrator
 	    //==================================================================
-	    RGBGamma_ptr getRGBGamma(double_vector_ptr gammaCurve) {
+	    RGBGamma_ptr LCDCalibrator::
+		getRGBGamma(double_vector_ptr gammaCurve) {
 		double_vector_ptr r(new double_vector(*gammaCurve));
 		double_vector_ptr g(new double_vector(*gammaCurve));
 		double_vector_ptr b(new double_vector(*gammaCurve));
@@ -306,9 +307,9 @@ namespace cms {
 		//從目標gamma curve產生dg code, 此處是傳入normal gammaCurve
 		RGB_vector_ptr dgcode = producer->produce(rgbgamma);
 
-
 		//bptr_ < RGBGammaOp > gammaop(new RGBGammaOp());
 		RGBGammaOp gammaop;
+		gammaop.setSource(rgbgamma);
 
 		if (bIntensityGain != 1.0) {
 		    //重新產生目標gamma curve
@@ -318,12 +319,13 @@ namespace cms {
 		};
 
 		if (p1p2) {
+		    //p1p2第一階段, 對gamma做調整
 		    bptr < P1P2GammaOp >
 			p1p2(new P1P2GammaOp(p1, p2, dgcode));
 		    gammaop.addOp(p1p2);
 		};
+		//產生修正後的gamma2(若沒有p1p2,則為原封不動)
 		RGBGamma_ptr rgbgamma2 = gammaop.createInstance();
-
 
 		//產生producer
 		producer.reset(new DGCodeProducer(compositionVector));
@@ -334,34 +336,42 @@ namespace cms {
 		dgop.setSource(dgcode2);
 
 		if (p1p2) {
+		    //p1p2第二階段, 對dg code調整
 		    bptr < DGCodeOp > op(new P1P2DGOp(p1, p2));
 		    dgop.addOp(op);
 		} else {
+		    //若不是p1p2就是RBInterp(至少目前是如此)
 		    bptr < DGCodeOp >
 			op(new RBInterpolationOp(rbInterpUnder));
 		    dgop.addOp(op);
 		}
 
 		if (bMax) {
+		    //bmax的調整
 		    bptr < DGCodeOp > bmax(new BMaxOp());
 		    dgop.addOp(bmax);
 		}
 		if (gByPass) {
-		    bptr < DGCodeOp > gbypass(new GByPassOp());
+		    //g bypass的調整
+		    bptr < DGCodeOp > gbypass(new GByPassOp(in, out));
 		    dgop.addOp(gbypass);
 		}
 		if (avoidFRCNoise) {
-
+		    //frc noise的調整
+		    bptr < DGCodeOp > avoidNoise(new AvoidFRCNoiseOp());
+		    dgop.addOp(avoidNoise);
 		}
 		if (gamma256) {
 
 		}
+
 		RGB_vector_ptr result = dgop.createInstance();
 		return result;
 	    };
 	  LCDCalibrator::LCDCalibrator(bptr < ComponentAnalyzerIF > analyzer):analyzer(analyzer)
 	    {
 		fetcher.reset(new ComponentFetcher(analyzer));
+                //analyzer->enter();
 	    };
 	    //==================================================================
 	};

@@ -68,6 +68,11 @@ namespace cms {
 						      rgbColorSpace);
 	    };
 
+	     Enumeration(ChannelIndex)
+	     R = 1, G = 2, B = 3, Y = 4, M = 5, C = 6,
+		W = 7,
+             EnumerationEnd();
+
 	    enum Round {
 		//©|¥¼°õ¦æ
 		NotYet,
@@ -77,9 +82,11 @@ namespace cms {
 		RoundDown
 	    };
 
-	     Enumeration(ChannelIndex)
-	     R = 1, G = 2, B = 3, Y = 4, M = 5, C = 6, W =
-		7, EnumerationEnd()
+
+
+	    /*Enumeration(ChannelIndex)
+	       R, G, B, Y, M, C, W, EnumerationEnd(); */
+
 
 	    class Channel:public jObject {
 	      public:
@@ -104,7 +111,7 @@ namespace cms {
 						    channel);
 		static channel_vector_ptr getChannelVector(int count, ...);
 	      public:
-		 ChannelIndex chindex;
+		const ChannelIndex & chindex;
 		//const int index;
 		const TColor & color;
 

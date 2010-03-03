@@ -30,7 +30,7 @@ namespace cms {
 			if (checkAdjustable
 			    (centerRGB, adjustStep, maxChannel, ch,
 			     delta)) {
-			    RGB_ptr rgb(new RGBColor(*centerRGB));
+			    RGB_ptr rgb = centerRGB->clone();
 			     rgb->changeMaxValue(MaxValue::Double255);
 			     rgb->addValue(ch, adjustStep);
 			     rgbVec->push_back(rgb);
@@ -46,7 +46,7 @@ namespace cms {
 		    RGB_vector_ptr rgbVec(new RGB_vector());;
 		    if (whiteCheckAdjustable
 			(centerRGB, adjustStep, maxChannel)) {
-			RGB_ptr rgb(new RGBColor(*centerRGB));
+			RGB_ptr rgb = centerRGB->clone();
 			 rgb->changeMaxValue(MaxValue::Double255);
 			 rgb->addValue(adjustStep);
 			 rgbVec->push_back(rgb);
@@ -153,7 +153,7 @@ namespace cms {
 			    if (checkAdjustable
 				(centerRGB, adjustStep, maxChannel, ch,
 				 delta)) {
-				RGB_ptr rgb(new RGBColor(*centerRGB));
+				RGB_ptr rgb = centerRGB->clone();
 				rgb->changeMaxValue(MaxValue::Double255);
 				rgb->addValue(ch, adjustStep);
 				rgbVec->push_back(rgb);
@@ -162,11 +162,7 @@ namespace cms {
 			//´«¥¿­t
 			adjustStep = -adjustStep;
 		    };
-
-		    //}
 		    //========================================================================
-
-		    //return RGBArray.toRGBArray(rgbList);
 		    return rgbVec;
 		};
 		RGB_vector_ptr ChromaticAroundAlgorithm::

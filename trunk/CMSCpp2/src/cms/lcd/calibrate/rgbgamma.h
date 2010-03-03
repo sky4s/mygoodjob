@@ -23,15 +23,19 @@ namespace cms {
 	    };
 
 	    class RGBGammaOp:public RGBOp < RGBGamma > {
+	      public:
+
 	    };
 
 	    class BIntensityGainOp:public RGBGammaOp {
 	      private:
 		double gain;
+		int start;
 	      protected:
 		 RGBGamma_ptr getRendering(RGBGamma_ptr source);
 	      public:
 		 BIntensityGainOp(double gain);
+		 BIntensityGainOp(double gain, int start);
 	    };
 	    class P1P2GammaOp:public RGBGammaOp {
 	      private:

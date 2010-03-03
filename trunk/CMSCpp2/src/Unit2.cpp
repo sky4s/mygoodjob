@@ -26,18 +26,21 @@
 #include <math/regression.h>
 #include <math/interpolation.h>
 #include <java/lang.h>
-#include <cms/colorspace/rgb.h>
-#include <cms/colorspace/ciexyz.h>
-#include <cms/colorformat/excelfiletester.h>
-#include <cms/colorformat/excelfile.h>
+
 //#include <policybased.h>
 #include <locale>
+
+#include <cms/colorspace/rgb.h>
+#include <cms/colorspace/ciexyz.h>
+#include <cms/colorformat/excelfile.h>
+
 #include <cms/lcd/calibrate/rgbvectorop.h>
-#include <cms/lcd/calibrate/lcdcalibrator.h>
-#include <cms/util/rgbarray.h>
 #include <cms/lcd/calibrate/lcdcalibrator.h>
 #include <cms/lcd/calibrate/rgbop.h>
 #include <cms/lcd/calibrate/rgbgamma.h>
+#include <cms/util/rgbarray.h>
+#include <cms/measure/analyzer.h>
+#include <cms/measure/meter.h>
 
 //---------------------------------------------------------------------------
 
@@ -364,6 +367,70 @@ void templateTry()
     cout << dd.get() << endl;
 };
 
+void forTry()
+{
+    for (int x = 0; x < 100; x++) {
+	cout << x << endl;
+	if (x == 50) {
+	    break;
+	}
+    }
+};
+
+namespace a {
+    namespace b {
+	double x = 1;
+	double y = b::x;
+    };
+};
+namespace b {
+    double x = 2;
+};
+
+void namespaceTry()
+{
+    cout << a::b::x << endl;
+    cout << a::b::y << endl;
+    cout << b::x << endl;
+};
+
+
+
+void pointerEample()
+{
+    vector < int >*a = new vector < int >(3);
+    (*a)[0] = 3;
+};
+
+void lcdcalibratorTry()
+{
+    using namespace cms::measure::meter;
+    using namespace cms::measure;
+    using namespace cms::lcd::calibrate;
+    bptr < CA210 > ca210(new CA210());
+    bptr < CA210ComponentAnalyzer >
+	analyzer(new CA210ComponentAnalyzer(ca210));
+    LCDCalibrator cal(analyzer);
+    cal.setGamma(2.2, 256);
+    cal.getDGCode(255, 0, 1);
+};
+
+void channelTry()
+{
+    using namespace Dep;
+
+    cout << ChannelIndex::R << endl;
+    cout << ChannelIndex::G << endl;
+    cout << ChannelIndex::B << endl;
+    RGB_ptr rgb(new RGBColor(1, 2, 3));
+    foreach(const Channel & ch, *(Channel::RGBChannel)) {
+	cout << *ch.toString() << " " << ch.chindex << endl;
+	cout << rgb->getValue(ch) << endl;
+    }
+
+
+};
+
 #pragma argsused
 int main(int argc, char *argv[])
 {
@@ -388,8 +455,12 @@ int main(int argc, char *argv[])
     //rgbTry();
     //mathTry();
     //doubleArrayTry();
-    rgbop();
+    //rgbop();
     //templateTry();
+    //forTry();
+    //namespaceTry();
+    //lcdcalibratorTry();
+    channelTry();
     getch();
 }
 
