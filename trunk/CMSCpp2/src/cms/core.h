@@ -51,6 +51,7 @@ namespace cms {
 
 	static const Illuminant & D50;
 	static const Illuminant & D65;
+	static const Illuminant & C;
     };
 
     class Spectra:public jObject, SpectraIF /*, util::NameIF */  {

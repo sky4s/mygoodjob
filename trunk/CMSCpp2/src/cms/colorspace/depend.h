@@ -11,8 +11,7 @@
 #include <java/lang.h>
 #include <cms/core.h>
 #include "colorspace.h"
-
-//enum TColor;
+#include <tnt/tnt_array2d.h>
 
 namespace cms {
     namespace colorspace {
@@ -22,6 +21,7 @@ namespace cms {
 	    class DeviceDependentSpace:public ColorSpace {
 		int getNumberBands();
 	    };
+
 
 	     Enumeration(CSType)
 	     AdobeRGB, CIERGB, sRGB, sRGB_gamma22, sRGB_gamma18,
@@ -39,21 +39,30 @@ namespace cms {
 		const double _gamma;
 		const CSType & _type;
 		const cms::Illuminant & referenceWhite;
-		/*RGBColorSpace(CSType csType, Illuminant referenceWhite,
-		   double[][]toXYZMatrix,
-		   double gamma):_type(csType), _gamma(gamma),
-		   referenceWhite(referenceWhite) {
-		   this.toXYZMatrix = toXYZMatrix;
-		   //this.toRGBMatrix = toXYZMatrix !=;
-		   //null ? DoubleArray.inverse(toXYZMatrix) : null;
-		   }; */
+		double2D_ptr _toXYZMatrix;
+		double2D_ptr _toRGBMatrix;
+
+		 RGBColorSpace::RGBColorSpace(const CSType & type,
+					      const cms::
+					      Illuminant & referenceWhite,
+					      const double gamma);
+		 RGBColorSpace::RGBColorSpace(const CSType & type,
+					      const cms::
+					      Illuminant & referenceWhite,
+					      double toXYZMatrix[9],
+					      const double gamma);
+		 RGBColorSpace::RGBColorSpace(const CSType & type,
+					      const double gamma, const
+					      cms::
+					      Illuminant & referenceWhite,
+					      ...);
 	      public:
 		static const RGBColorSpace & unknowRGB;
 		static const RGBColorSpace & sRGB;
-		 RGBColorSpace::RGBColorSpace(const CSType & cstype,
-					      const cms::
-					      Illuminant & referenceWhite,
-					      const double _gamma);
+		static const RGBColorSpace & sRGB_gamma22;
+		static const RGBColorSpace & NTSCRGB;
+
+
 		inline bool operator==(const RGBColorSpace & that) const {
 		    return _type == that._type;
 		};
@@ -68,11 +77,6 @@ namespace cms {
 						      rgbColorSpace);
 	    };
 
-	     Enumeration(ChannelIndex)
-	     R = 1, G = 2, B = 3, Y = 4, M = 5, C = 6,
-		W = 7,
-             EnumerationEnd();
-
 	    enum Round {
 		//©|¥¼°õ¦æ
 		NotYet,
@@ -82,11 +86,32 @@ namespace cms {
 		RoundDown
 	    };
 
-
-
 	    /*Enumeration(ChannelIndex)
 	       R, G, B, Y, M, C, W, EnumerationEnd(); */
+	     Enumeration(ChannelIndex)
+	     R = 1, G = 2, B = 3, Y = 4, M = 5, C = 6, W =
+		7, EnumerationEnd();
 
+	    /*struct ChannelIndex {
+	       enum __Enum {
+	       _R = 1, _G = 2, _B = 3, _Y = 4, _M = 5, _C = 6, _W = 7
+	       };
+	       __Enum _value;   // ªTÁ|­È
+
+	       ChannelIndex(int value = 0):_value((__Enum) value) {
+	       };
+	       ChannelIndex & operator=(int value) {
+	       this->_value = (__Enum) value;
+	       return *this;
+	       };
+	       operator  int () const {
+	       return this->_value;
+	       };
+	       }; */
+
+	    /*enum ChannelIndex {
+	       R_ = 1, G_ = 2, B_ = 3, Y_ = 4, M_ = 5, C_ = 6, W_ = 7
+	       }; */
 
 	    class Channel:public jObject {
 	      public:
@@ -104,14 +129,14 @@ namespace cms {
 		 Channel(int index, const TColor & color,
 			 std::string fullname);
 		 Channel(int index, const TColor & color,
-			 std::string fullname, ChannelIndex chindex);
+			 std::string fullname, const ChannelIndex chindex);
 
 		static bool isPrimaryColorChannel(const Channel & channel);
 		static bool isSecondaryColorChannel(const Channel &
 						    channel);
 		static channel_vector_ptr getChannelVector(int count, ...);
 	      public:
-		const ChannelIndex & chindex;
+		const ChannelIndex chindex;
 		//const int index;
 		const TColor & color;
 
