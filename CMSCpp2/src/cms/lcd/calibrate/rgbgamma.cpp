@@ -8,26 +8,27 @@
 
 //本項目內頭文件
 
+
 namespace cms {
     namespace lcd {
 	namespace calibrate {
 	    //==================================================================
-	    // BIntensityGainOp
+	    // RGBGamma
 	    //==================================================================
-	    RGBGamma_ptr BIntensityGainOp::
-		getRendering(RGBGamma_ptr source) {
+	    RGBGamma::RGBGamma(double_vector_ptr r, double_vector_ptr g,
+			       double_vector_ptr b):r(r), g(g), b(b) {
 	    };
 	    //==================================================================
-	    //==================================================================
-	    // P1P2
-	    //==================================================================
-	    RGBGamma_ptr P1P2Op::getRendering(RGBGamma_ptr source) {
-		//int size = source->size();
-		/*RGBGamma_ptr result(new RGB_vector(size));
 
-		   return result; */
-	    };
-	     P1P2Op::P1P2Op(double p1, double p2):p1(p1), p2(p2) {
+	    //==================================================================
+	    // RGBGammaOp
+	    //==================================================================
+	    RGBGamma_ptr RGBGammaOp::createInstance(RGBGamma_ptr source) {
+		RGBGamma_ptr rendering = getRendering(source);
+		 foreach(bptr < RGBGammaOp > op, opvector) {
+		    rendering = op->createInstance(rendering);
+		};
+		 return rendering;
 	    };
 	    //==================================================================
 	};
