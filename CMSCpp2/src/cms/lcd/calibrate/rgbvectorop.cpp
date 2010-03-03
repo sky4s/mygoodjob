@@ -8,19 +8,19 @@
 
 //本項目內頭文件
 #include <cms/colorspace/rgb.h>
+#include <cms/util/rgbarray.h>
 
 namespace cms {
     namespace lcd {
 	namespace calibrate {
 	    //==================================================================
 	    using namespace Dep;
+	    using namespace cms::util;
 	    RGB_vector_ptr LinearOp::getRendering(RGB_vector_ptr source) {
 
 		int size = source->size();
 		RGB_vector_ptr result(new RGB_vector());
 		for (int x = 0; x < size; x++) {
-		    /*RGB_ptr rgb = (*source)[x];
-		       rgb->R = rgb->G = rgb->B = x; */
 		    RGB_ptr rgb2(new RGBColor());
 		     rgb2->R = rgb2->G = rgb2->B = x;
 		     result->push_back(rgb2);
@@ -47,20 +47,14 @@ namespace cms {
 	    //==================================================================
 	    // P1P2DGOp
 	    //==================================================================
-	    //bool P1P2DGOp::smooth = true;
 	    RGB_vector_ptr P1P2DGOp::getRendering(RGB_vector_ptr source) {
-		int size = source->size();
-		RGB_vector_ptr result(new RGB_vector(size));
-		RGB_ptr rgbp1 = (*source)[p1];
+		RGB_vector_ptr result = RGBVector::deepClone(source);
+		RGB_ptr rgbp1 = (*result)[p1];
 
 		for (int x = 0; x != p1; x++) {
 		    double v = x * rgbp1->G / p1;
-		    RGB_ptr rgb = (*source)[x];
+		    RGB_ptr rgb = (*result)[x];
 		    rgb->setValues(v, v, v);
-		}
-
-		for (int x = p1; x != size; x++) {
-		    (*result)[x] = (*source)[x];
 		}
 
 		if (true == smooth) {
@@ -88,25 +82,21 @@ namespace cms {
 	    //==================================================================
 	    RGB_vector_ptr RBInterpolationOp::
 		getRendering(RGB_vector_ptr source) {
-		int size = source->size();
+		//int size = source->size();
 
 		double rInterval = (*source)[under]->R / under;
 		double gInterval = (*source)[under]->G / under;
 		double bInterval = (*source)[under]->B / under;
-		RGB_vector_ptr result(new RGB_vector(size));
+		RGB_vector_ptr result = RGBVector::deepClone(source);
+
 
 		for (int x = 0; x != under; x++) {
 		    //做RB interpolation
-		    RGB_ptr rgb(new RGBColor(*(*source)[x]));
+		    RGB_ptr rgb = (*result)[x];
+
 		    rgb->R = rInterval * x;
 		    rgb->G = gInterval * x;
 		    rgb->B = bInterval * x;
-		    (*result)[x] = rgb;
-		}
-		for (int x = under; x != size; x++) {
-		    //僅copy
-		    RGB_ptr rgb(new RGBColor(*(*source)[x]));
-		    (*result)[x] = rgb;
 		}
 		return result;
 	    };
@@ -115,14 +105,92 @@ namespace cms {
 	    };
 	    //==================================================================
 
+	    //==================================================================
 	    RGB_vector_ptr BMaxOp::getRendering(RGB_vector_ptr source) {
+		RGB_vector_ptr result = RGBVector::deepClone(source);
+		int size = result->size();
+
+		for (int x = size - 1; x != 1; x--) {
+		    RGB_ptr rgb = (*result)[x];
+		    RGB_ptr nextrgb = (*result)[x - 1];
+		    double diff = x > 252 ? 10 : (x > 232 ? 8 : 6);
+
+		    if (rgb->B > nextrgb->B) {
+			nextrgb->B = rgb->B - diff;
+		    } else {
+			rgb->B =
+			    ((*result)[x + 1]->B +
+			     (*result)[x - 1]->B) / 2;
+			break;
+		    }
+
+
+		}
+
+		return result;
 	    };
-	    BMaxOp::BMaxOp() {
-	    };
+	    //==================================================================
 	    RGB_vector_ptr GByPassOp::getRendering(RGB_vector_ptr source) {
+		RGB_vector_ptr result = RGBVector::deepClone(source);
+		if (in == Bit8 && out == Bit6) {
+		    for (int x = 0; x != 245; x++) {
+			(*result)[x]->G = x;
+		    };
+		    for (int x = 245; x != 251; x++) {
+			(*result)[x]->G = (*result)[x - 1]->G + 0.5;
+		    };
+		    for (int x = 251; x != 256; x++) {
+			(*result)[x]->G = (*result)[x - 1]->G + 1;
+		    };
+		} else if (in == Bit6 && out == Bit6) {
+		    for (int x = 0; x != 252; x++) {
+			(*result)[x]->G = x;
+		    };
+		    for (int x = 252; x != 256; x++) {
+			(*result)[x]->G = 252;
+		    };
+		}
+		return result;
 	    };
-	    GByPassOp::GByPassOp() {
+
+	  GByPassOp::GByPassOp(const BitDepth & in, const BitDepth & out):in(in),
+		out(out)
+	    {
+
 	    };
+	    //==================================================================
+	    RGB_vector_ptr AvoidFRCNoiseOp::
+		getRendering(RGB_vector_ptr source) {
+		int size = source->size();
+		RGB_vector_ptr result = RGBVector::clone(source);
+
+		RGB_ptr rgb255 = (*result)[255];
+
+		foreach(const Channel & ch, *Channel::RGBChannel) {
+		    if (rgb255->getValue(ch) >= 248.5) {
+			(*source)[255]->setValue(ch, 252);
+			(*source)[254]->setValue(ch, 250);
+			(*source)[253]->setValue(ch, 248);
+
+			for (int x = 252; x != -1; x--) {
+			    RGB_ptr thisRGB = (*source)[x];
+			    RGB_ptr nextRGB = (*source)[x + 1];
+			    if (thisRGB->getValue(ch) >=
+				nextRGB->getValue(ch)) {
+				thisRGB->setValue(ch, nextRGB->
+						  getValue(ch) - 2);
+			    } else {
+				break;
+			    }
+			}
+		    }
+		}
+
+		for (int x = 1; x != 31; x++) {
+		    RGB_ptr rgb = (*source)[x];
+		}
+	    };
+	    //==================================================================
 	};
     };
 };

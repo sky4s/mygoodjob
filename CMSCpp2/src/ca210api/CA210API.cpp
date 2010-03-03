@@ -57,7 +57,7 @@ namespace ca210api {
     };
 
     void CA210API::close() {
-
+	ca.set_RemoteMode(Off);
     };
     float_array CA210API::triggerMeasurement() {
 	this->triggerMeasureResult();
@@ -136,8 +136,7 @@ namespace ca210api {
 	ca.SetLvxyCalData(lclr, xValue, yValue, YValue);
     };
 
-    void CA210API::setLvxyCalData(lClr lclr,
-				  float_array xyYValue) {
+    void CA210API::setLvxyCalData(lClr lclr, float_array xyYValue) {
 	ca.SetLvxyCalData(lclr, xyYValue[0], xyYValue[1], xyYValue[2]);
     };
 

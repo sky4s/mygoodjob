@@ -31,7 +31,18 @@ namespace cms {
 	    };
 	    return result;
 	};
-
+	RGB_vector_ptr RGBVector::clone(RGB_vector_ptr vector) {
+	    RGB_vector_ptr result(new RGB_vector(*vector));
+            return result;
+	};
+	RGB_vector_ptr RGBVector::deepClone(RGB_vector_ptr vector) {
+	    int size = vector->size();
+	    RGB_vector_ptr result(new RGB_vector(size));
+	    for (int x = 0; x != size; x++) {
+		(*result)[x] = (*vector)[x]->clone();
+	    }
+	    return result;
+	};
     };
 }
 

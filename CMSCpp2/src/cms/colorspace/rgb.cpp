@@ -285,8 +285,8 @@ namespace cms {
 		int maxIndex = Math::maxIndex(rgbValues, RGBNumberBands);
 		return Channel::getChannelByArrayIndex(maxIndex);
 	    };
-	    Object_ptr RGBColor::clone() {
-		return Object_ptr(new RGBColor(*this));
+	    RGB_ptr RGBColor::clone() {
+		return RGB_ptr(new RGBColor(*this));
 	    };
 
 	    const RGB_ptr RGBColor::White(new RGBColor(255, 255, 255));

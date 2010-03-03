@@ -12,9 +12,7 @@
 
 namespace cms {
     namespace util {
-	class RGBArray {
 
-	};
 	class RGBVector {
 	  public:
 	    static string_ptr toString(RGB_vector_ptr rgbVector);
@@ -27,6 +25,8 @@ namespace cms {
 				       string_ptr tableName,
 				       string_vector_ptr header,
 				       RGB_vector_ptr rgbVector);
+	    static RGB_vector_ptr clone(RGB_vector_ptr vector);
+	    static RGB_vector_ptr deepClone(RGB_vector_ptr vector);
 	};
 
     };

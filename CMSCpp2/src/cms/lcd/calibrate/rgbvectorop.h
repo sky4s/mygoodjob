@@ -9,6 +9,7 @@
 //本項目內頭文件
 #include <java/lang.h>
 #include "rgbop.h"
+#include "lcdcalibrator.h"
 
 namespace cms {
     namespace lcd {
@@ -62,15 +63,20 @@ namespace cms {
 	    class BMaxOp:public DGCodeOp {
 	      protected:
 		RGB_vector_ptr getRendering(RGB_vector_ptr source);
-	      public:
-		BMaxOp();
 	    };
 
 	    class GByPassOp:public DGCodeOp {
+	      private:
+		const BitDepth & in, &out;
+	      protected:
+		 RGB_vector_ptr getRendering(RGB_vector_ptr source);
+	      public:
+		 GByPassOp(const BitDepth & in, const BitDepth & out);
+	    };
+
+	    class AvoidFRCNoiseOp:public DGCodeOp {
 	      protected:
 		RGB_vector_ptr getRendering(RGB_vector_ptr source);
-	      public:
-		GByPassOp();
 	    };
 	};
     };
