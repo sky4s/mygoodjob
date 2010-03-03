@@ -10,6 +10,7 @@
 //本項目內頭文件
 #include <java/lang.h>
 #include <math/regression.h>
+#include "rgbgamma.h"
 
 #define Composition_ptr  bptr < Composition >
 #define Composition_vector std::vector < Composition_ptr >
@@ -67,6 +68,7 @@ namespace cms {
 	      public:
 		 DGCodeProducer(Composition_vector_ptr compositionVector);
 		RGB_vector_ptr produce(double_vector_ptr normalGammaCurve);
+		RGB_vector_ptr produce(RGBGamma_ptr normalRGBGammaCurve);
 	    };
 
 	    enum BitDepth {
@@ -89,7 +91,7 @@ namespace cms {
 		 bptr < DGCodeProducer > producer;
 		 bptr < ComponentFetcher > fetcher;
 		 bptr < cms::measure::ComponentAnalyzerIF > analyzer;
-
+		RGBGamma_ptr getRGBGamma(double_vector_ptr gammaCurve);
 	      public:
 		static double_array getGammaCurve(double gamma, int n);
 		static double_vector_ptr getGammaCurveVector(double gamma,
