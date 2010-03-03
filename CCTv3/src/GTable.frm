@@ -606,6 +606,10 @@ Public Enum enuDataGroup
 End Enum
 
 
+Private Sub btn_debug_Click()
+
+End Sub
+
 Private Sub btn_loadG_Click()
     Dim fm As String, fnum As Integer, fname As String
     'Dim iCheck As Integer
@@ -1032,6 +1036,7 @@ Private Sub Command2_Click() '''''''AUTORUN
     ' =========================================================================
     For i = 0 To max_c
         ' 計算出目標亮度值
+        ' DesiredGamma是反的, YYP自然也是反的
         YYP(i) = (YYR(SRC - 1) - YYN(n - 1)) * DesiredGamma(i) + YYN(n - 1)
         'YYP(i) = (YYR(SRC - 1) - YYN(n - 1)) * Lgain(i) + YYN(n - 1)
         'YYP(i) = (YYR(SRC - 1) - YYN(n - 1)) * (i / 255) ^ 2.4 + YYN(n - 1)
@@ -1059,11 +1064,14 @@ Private Sub Command2_Click() '''''''AUTORUN
         If chk_BGain.Value = 1 Then
             ' 如果gain為1 (就是開啟gain!?)
             If i >= (temp_diff) Then
-                
+                '19以上 其實就是236以下 (0~236)
                 BP(i) = BP(i) * Val(Text3.Text) '''' Gain
-                
             Else
+                '19以下 其實就是236以上 (236~255)
                 ' 19thBP*gain+(100-19thBP*gain)/(255-236)*(19-i)
+                ' 起始亮度 + (殘餘亮度)/(code區間*殘餘code)
+                ' 起始亮度 + (殘餘亮度)/(code區間*19)
+                ' 起始亮度 + (殘餘亮度)/(code區間*18) ??
                 BP(i) = BP(temp_diff) * Val(Text3.Text) + (100 - BP(temp_diff) * Val(Text3.Text)) / (255 - Val(Text4.Text)) * (temp_diff - i)
                 'BP(i) = BP(i) * Val(Text3.Text)
             End If
@@ -1333,11 +1341,11 @@ Private Sub Command2_Click() '''''''AUTORUN
     '目標RGB亮度 RP/GP/BP
     '量測亮度(component) RN/GN/BN
     'DGCode RL/GL/BL
-            temp_g = GL2(P1)
+            temp_g = GL2(P1) '原本P1下的G的DG Code
             i = 0
             Do
                 diff_r = RL2(i) - temp_g
-                If diff_r > 0 Then
+                If diff_r > 0 Then '找到r比temp_g大的index值
                     index_r = i
                     Exit Do
                 End If
@@ -1346,7 +1354,7 @@ Private Sub Command2_Click() '''''''AUTORUN
             i = 0
             Do
                 diff_b = BL2(i) - temp_g
-                If diff_b > 0 Then
+                If diff_b > 0 Then '找到b比temp_g大的index值
                     index_b = i
                     Exit Do
                 End If
@@ -1366,6 +1374,10 @@ Private Sub Command2_Click() '''''''AUTORUN
             ' P1-P2 Gamma變化
             '==================================================================
             '''''''''P1-P2 成Gamma變化  讓他急遽變化一點
+    '目標亮度 YYP
+    '目標RGB亮度 RP/GP/BP
+    '量測亮度(component) RN/GN/BN
+    'DGCode RL/GL/BL
             For i = P1 + 1 To P2 - 1
                 Gratio = (GP2(i) - GP2(P1)) / (GP2(P2) - GP2(P1))
                 RP2(i) = RP2(P1) + (RP2(P2) - RP2(P1)) * Gratio
@@ -1404,6 +1416,9 @@ Private Sub Command2_Click() '''''''AUTORUN
             Next i
             '==================================================================
             
+            '==================================================================
+            ' 亮度轉DG Code(重複,免看)
+            '==================================================================
             '頭到尾都作了處理
             For i = 0 To max_c
                 
@@ -1569,12 +1584,17 @@ Private Sub Command2_Click() '''''''AUTORUN
                 'If Option3.Value = True Then BL(i) = Round(indexBB / 255 * 1008, 0)
                 
             Next i
+            '==================================================================
             
             
             '==================================================================
             ' 0-P1 線性
             '==================================================================
             '''''Linear
+    '目標亮度 YYP
+    '目標RGB亮度 RP/GP/BP
+    '量測亮度(component) RN/GN/BN
+    'DGCode RL/GL/BL
             For i = 0 To P1
                 
                 'If ((Option1.Value = True) Or (Option4.Value = True)) Then
@@ -1691,15 +1711,19 @@ Private Sub Command2_Click() '''''''AUTORUN
                 '==========================================================================
                 
                 '''''''''''''''''''''High Level
+                'up_limit(0) = 994
                 
                 If ((RL(255) - up_limit(0)) >= 0) Then
+                    '若r[255]>=994
                     
+                    '強制設定255~253
                     RL(255) = 1008
                     RL(254) = 1000
                     RL(253) = 992
                     
                     For K = 252 To 0 Step -1
                         If ((RL(K) - RL(K + 1)) >= 0) Then
+                            '若r[k] >= r[k+1] 反轉?
                             RL(K) = RL(K + 1) - 2
                         Else
                             Exit For
@@ -1750,8 +1774,11 @@ Private Sub Command2_Click() '''''''AUTORUN
                     
                     
                     If RL(L) = 12 Then
+                        '12修成10, why?
                         RL(L) = 10
+                        '若r(L-1) == r(L)則r(L-1)-=2
                         If RL(L - 1) = RL(L) Then RL(L - 1) = RL(L - 1) - 2
+                        '若<0則設為0
                         If RL(L - 1) < 0 Then RL(L - 1) = 0
                     End If
                     
@@ -1769,6 +1796,7 @@ Private Sub Command2_Click() '''''''AUTORUN
                     
                     
                     If RL(L) = 4 Then
+                        '4修成2
                         RL(L) = 2
                         If RL(L - 1) = RL(L) Then RL(L - 1) = RL(L - 1) - 2
                         If RL(L - 1) < 0 Then RL(L - 1) = 0
@@ -1821,8 +1849,11 @@ Private Sub Command2_Click() '''''''AUTORUN
                 
             End If
             
-            For i = 255 To 0 Step -1
-                
+            For i = 255 To 0 Step -1 '由大到小
+    '目標亮度 YYP
+    '目標RGB亮度 RP/GP/BP
+    '量測亮度(component) RN/GN/BN
+    'DGCode RL/GL/BL
                 If i > 252 Then
                     diff = 10
                 ElseIf i > 232 Then
@@ -1839,9 +1870,10 @@ Private Sub Command2_Click() '''''''AUTORUN
                 
                 temp_b = BL(i)
                 
-                If (BL(i) - BL(i - 1)) > 0 Then
+                If (BL(i) - BL(i - 1)) > 0 Then '若沒有反轉
                     BL(i - 1) = BL(i) - diff
                 Else
+                    '若反轉? 是這樣嗎?
                     BL(i) = Round((BL(i + 1) + BL(i - 1)) / 2, 0)
                     Exit For
                     
@@ -1917,7 +1949,10 @@ Private Sub Command2_Click() '''''''AUTORUN
     '==========================================================================
     ' RB Interp
     '==========================================================================
-        
+    '目標亮度 YYP
+    '目標RGB亮度 RP/GP/BP
+    '量測亮度(component) RN/GN/BN
+    'DGCode RL/GL/BL
         ''RB Interpolation
         'P3指的是RB的under, 預設為50
         P3 = Val(txt_RB_Interp.Text)
