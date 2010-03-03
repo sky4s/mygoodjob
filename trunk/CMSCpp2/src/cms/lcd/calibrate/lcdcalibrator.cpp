@@ -14,6 +14,7 @@
 #include <math/doublearray.h>
 #include <math/interpolation.h>
 #include "rgbvectorop.h"
+#include "rgbgamma.h"
 
 namespace cms {
     namespace lcd {
@@ -182,6 +183,37 @@ namespace cms {
 		}
 		return dgcode;
 	    };
+
+	    RGB_vector_ptr DGCodeProducer::
+		produce(RGBGamma_ptr normalRGBGammaCurve) {
+		double_vector_ptr rluminanceGammaCurve =
+		    getLuminanceGammaCurve(normalRGBGammaCurve->r);
+		double_vector_ptr gluminanceGammaCurve =
+		    getLuminanceGammaCurve(normalRGBGammaCurve->g);
+		double_vector_ptr bluminanceGammaCurve =
+		    getLuminanceGammaCurve(normalRGBGammaCurve->b);
+
+		int size = rluminanceGammaCurve->size();
+		RGB_vector_ptr dgcode(new RGB_vector(size));
+		double luminance[3], component[3];
+
+		for (int x = 0; x != size; x++) {
+		    luminance[0] = (*rluminanceGammaCurve)[x];
+		    luminance[1] = (*gluminanceGammaCurve)[x];
+		    luminance[2] = (*bluminanceGammaCurve)[x];
+
+		    component[0] = getComponent(luminance[0]);
+		    component[1] = getComponent(luminance[1]);
+		    component[2] = getComponent(luminance[2]);
+
+		    double r = rLut->getKey(component[0]);
+		    double g = gLut->getKey(component[1]);
+		    double b = bLut->getKey(component[2]);
+		    RGB_ptr rgb(new RGBColor(r, g, b));
+		    (*dgcode)[x] = rgb;
+		}
+		return dgcode;
+	    };
 	    //==================================================================
 
 
@@ -189,6 +221,13 @@ namespace cms {
 	    //==================================================================
 	    // LCDCalibrator
 	    //==================================================================
+	    RGBGamma_ptr getRGBGamma(double_vector_ptr gammaCurve) {
+		double_vector_ptr r(new double_vector(*gammaCurve));
+		double_vector_ptr g(new double_vector(*gammaCurve));
+		double_vector_ptr b(new double_vector(*gammaCurve));
+		RGBGamma_ptr rgbGamma(new RGBGamma(r, g, b));
+		return rgbGamma;
+	    };
 	    double_array LCDCalibrator::getGammaCurve(double gamma, int n) {
 		double_array result(new double[n]);
 		for (int x = 0; x < n; x++) {
@@ -257,38 +296,59 @@ namespace cms {
 		getDGCode(int start, int end, int step) {
 		if (null == gammaCurve) {
 		    throw new IllegalStateException("null == gammaCurve");
-		}
-
-		if (bIntensityGain != 1.0) {
-		    //重新產生目標gamma curve
-
-		};
-
-		if (p1p2) {
-		    //op.reset(new P1P2Op(p1, p2));
-		};
-
-		//量測start->end得到的coponent/Y
+		}		//量測start->end得到的coponent/Y
+		RGBGamma_ptr rgbgamma = getRGBGamma(gammaCurve);
 		Composition_vector_ptr compositionVector =
 		    fetcher->fetchComposition(start, end, step);
+
 		//產生producer
 		producer.reset(new DGCodeProducer(compositionVector));
 		//從目標gamma curve產生dg code, 此處是傳入normal gammaCurve
-		RGB_vector_ptr dgcode = producer->produce(gammaCurve);
+		RGB_vector_ptr dgcode = producer->produce(rgbgamma);
 
-		bptr_ < DGCodeOp > op;
-		if (!p1p2) {
-		    op.reset(new RBInterpolationOp(rbInterpUnder));
+
+		//bptr_ < RGBGammaOp > gammaop(new RGBGammaOp());
+		RGBGammaOp gammaop;
+
+		if (bIntensityGain != 1.0) {
+		    //重新產生目標gamma curve
+		    bptr < BIntensityGainOp >
+			bgain(new BIntensityGainOp(bIntensityGain));
+		    gammaop.addOp(bgain);
+		};
+
+		if (p1p2) {
+		    bptr < P1P2GammaOp >
+			p1p2(new P1P2GammaOp(p1, p2, dgcode));
+		    gammaop.addOp(p1p2);
+		};
+		RGBGamma_ptr rgbgamma2 = gammaop.createInstance();
+
+
+		//產生producer
+		producer.reset(new DGCodeProducer(compositionVector));
+		//從目標gamma curve產生dg code, 此處是傳入normal gammaCurve
+		RGB_vector_ptr dgcode2 = producer->produce(rgbgamma2);
+
+		DGCodeOp dgop;
+		dgop.setSource(dgcode2);
+
+		if (p1p2) {
+		    bptr < DGCodeOp > op(new P1P2DGOp(p1, p2));
+		    dgop.addOp(op);
+		} else {
+		    bptr < DGCodeOp >
+			op(new RBInterpolationOp(rbInterpUnder));
+		    dgop.addOp(op);
 		}
-		op->setSource(dgcode);
 
 		if (bMax) {
 		    bptr < DGCodeOp > bmax(new BMaxOp());
-		    op->addOp(bmax);
+		    dgop.addOp(bmax);
 		}
 		if (gByPass) {
 		    bptr < DGCodeOp > gbypass(new GByPassOp());
-		    op->addOp(gbypass);
+		    dgop.addOp(gbypass);
 		}
 		if (avoidFRCNoise) {
 
@@ -296,7 +356,7 @@ namespace cms {
 		if (gamma256) {
 
 		}
-		RGB_vector_ptr result = op->createInstance();
+		RGB_vector_ptr result = dgop.createInstance();
 		return result;
 	    };
 	  LCDCalibrator::LCDCalibrator(bptr < ComponentAnalyzerIF > analyzer):analyzer(analyzer)

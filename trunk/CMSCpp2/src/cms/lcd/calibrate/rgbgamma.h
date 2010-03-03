@@ -26,17 +26,25 @@ namespace cms {
 	    };
 
 	    class BIntensityGainOp:public RGBGammaOp {
-	      protected:
-		RGBGamma_ptr getRendering(RGBGamma_ptr source);
-	    };
-	    class P1P2Op:public RGBGammaOp {
-
 	      private:
-		double p1, p2;
+		double gain;
 	      protected:
 		 RGBGamma_ptr getRendering(RGBGamma_ptr source);
 	      public:
-		 P1P2Op(double p1, double p2);
+		 BIntensityGainOp(double gain);
+	    };
+	    class P1P2GammaOp:public RGBGammaOp {
+	      private:
+		double p1, p2;
+		RGB_vector_ptr dgcode;
+	      protected:
+		 RGBGamma_ptr getRendering(RGBGamma_ptr source);
+		RGBGamma_ptr processP1(RGBGamma_ptr source);
+		RGBGamma_ptr processP1P2(RGBGamma_ptr source);
+	      public:
+		 P1P2GammaOp(double p1, double p2, RGB_vector_ptr dgcode);
+		 P1P2GammaOp(RGBGamma_ptr source, double p1, double p2,
+			     RGB_vector_ptr dgcode);
 	    };
 	};
     };

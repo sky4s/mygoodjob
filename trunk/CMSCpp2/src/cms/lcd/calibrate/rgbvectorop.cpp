@@ -13,31 +13,6 @@ namespace cms {
     namespace lcd {
 	namespace calibrate {
 	    //==================================================================
-	    /*RGB_vector_ptr RGBVectorOp::
-		createInstance(RGB_vector_ptr source) {
-		RGB_vector_ptr rendering = getRendering(source);
-		 foreach(bptr < RGBVectorOp > op, opvector) {
-		    rendering = op->createInstance(rendering);
-		};
-		 return rendering;
-	    };
-	     RGBVectorOp::RGBVectorOp() {
-	    };
-	  RGBVectorOp::RGBVectorOp(RGB_vector_ptr source):source(source)
-	    {
-	    };
-	    RGB_vector_ptr RGBVectorOp::createInstance() {
-		return createInstance(source);
-	    };
-	    void RGBVectorOp::setSource(RGB_vector_ptr source) {
-		this->source = source;
-	    };
-	    void RGBVectorOp::addOp(bptr < RGBVectorOp > op) {
-		opvector.push_back(op);
-	    };*/
-	    //==================================================================
-
-	    //==================================================================
 	    using namespace Dep;
 	    RGB_vector_ptr LinearOp::getRendering(RGB_vector_ptr source) {
 
@@ -47,22 +22,22 @@ namespace cms {
 		    /*RGB_ptr rgb = (*source)[x];
 		       rgb->R = rgb->G = rgb->B = x; */
 		    RGB_ptr rgb2(new RGBColor());
-		    rgb2->R = rgb2->G = rgb2->B = x;
-		    result->push_back(rgb2);
+		     rgb2->R = rgb2->G = rgb2->B = x;
+		     result->push_back(rgb2);
 		};
-		return result;
+		 return result;
 	    };
 	    //==================================================================
 
 	    //==================================================================
 	    RGB_vector_ptr MinusOp::getRendering(RGB_vector_ptr source) {
 		RGB_vector_ptr result(new RGB_vector());
-		foreach(RGB_ptr rgb, *source) {
+		 foreach(RGB_ptr rgb, *source) {
 		    RGB_ptr rgb2(new RGBColor());
-		    rgb2->R = rgb->R - minusValue;
-		    rgb2->G = rgb->G - minusValue;
-		    rgb2->B = rgb->B - minusValue;
-		    result->push_back(rgb2);
+		     rgb2->R = rgb->R - minusValue;
+		     rgb2->G = rgb->G - minusValue;
+		     rgb2->B = rgb->B - minusValue;
+		     result->push_back(rgb2);
 		};
 		return result;
 	    };
@@ -70,18 +45,42 @@ namespace cms {
 	    {
 	    };
 	    //==================================================================
-	    // P1P2
+	    // P1P2DGOp
 	    //==================================================================
-	    /*RGB_vector_ptr P1P2Op::getRendering(RGB_vector_ptr source) {
+	    //bool P1P2DGOp::smooth = true;
+	    RGB_vector_ptr P1P2DGOp::getRendering(RGB_vector_ptr source) {
 		int size = source->size();
 		RGB_vector_ptr result(new RGB_vector(size));
+		RGB_ptr rgbp1 = (*source)[p1];
 
+		for (int x = 0; x != p1; x++) {
+		    double v = x * rgbp1->G / p1;
+		    RGB_ptr rgb = (*source)[x];
+		    rgb->setValues(v, v, v);
+		}
 
+		for (int x = p1; x != size; x++) {
+		    (*result)[x] = (*source)[x];
+		}
+
+		if (true == smooth) {
+		    RGB_ptr rgbp0 = (*result)[p1 - 1];
+		    RGB_ptr rgbp1 = (*result)[p1];
+		    RGB_ptr rgbp2 = (*result)[p1 + 1];
+		    rgbp1->R = (rgbp0->R + rgbp2->R) / 2;
+		    rgbp1->G = (rgbp0->G + rgbp2->G) / 2;
+		    rgbp1->B = (rgbp0->B + rgbp2->B) / 2;
+		};
 
 		return result;
 	    };
-	  P1P2Op::P1P2Op(double p1, double p2):p1(p1), p2(p2) {
-	    };*/
+	  P1P2DGOp::P1P2DGOp(double p1, double p2):p1(p1),
+		p2(p2), smooth(true)
+	    {
+	    };
+	    P1P2DGOp::P1P2DGOp(double p1, double p2, bool smooth):p1(p1),
+		p2(p2), smooth(smooth) {
+	    };
 	    //==================================================================
 
 	    //==================================================================

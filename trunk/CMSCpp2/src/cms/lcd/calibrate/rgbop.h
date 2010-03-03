@@ -15,21 +15,22 @@ namespace cms {
 	namespace calibrate {
 	    template < class Type > class RGBOp {
 	      private:
-		bptr < Type > source;
 		std::vector < bptr < RGBOp_Type > >opvector;
 	      protected:
+		bptr < Type > source;
 		bptr < Type > createInstance(bptr < Type > source) {
-		    bptr < Type >  rendering = getRendering(source);
-		     foreach(bptr < RGBOp_Type > op, opvector) {
+		    bptr < Type > rendering = getRendering(source);
+		    foreach(bptr < RGBOp_Type > op, opvector) {
 			rendering = op->createInstance(rendering);
 		    };
 		     return rendering;
 		};
-		virtual bptr < Type > getRendering(bptr < Type > source)
-		= 0;
+		virtual bptr < Type > getRendering(bptr < Type > source) {
+		    return source;
+		};
 
 	      public:
-		 RGBOp() {
+		RGBOp() {
 		};
 	      RGBOp(bptr < Type > source):source(source) {
 		};
@@ -43,14 +44,6 @@ namespace cms {
 		    opvector.push_back(op);
 		};
 	    };
-
-	    /*template <> class RGBGammaOp_ < RGBGamma > {
-
-	       }; */
-
-	    /*template <> class TestOp:public RGBOp < RGBGamma_ptr > {
-	       }; */
-
 
 	};
     };
