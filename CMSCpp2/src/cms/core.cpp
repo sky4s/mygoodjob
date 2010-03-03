@@ -72,5 +72,6 @@ namespace cms {
 
     const Illuminant & Illuminant::D50 = Illuminant();
     const Illuminant & Illuminant::D65 = Illuminant();
+    const Illuminant & Illuminant::C = Illuminant();
 };
 

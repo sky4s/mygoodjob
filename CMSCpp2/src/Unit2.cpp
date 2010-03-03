@@ -420,12 +420,16 @@ void channelTry()
     using namespace Dep;
 
     cout << ChannelIndex::R << endl;
-    cout << ChannelIndex::G << endl;
-    cout << ChannelIndex::B << endl;
-    RGB_ptr rgb(new RGBColor(1, 2, 3));
+    //cout << R_ << endl;
+    cout << Channel::R.chindex << endl;
+    cout << Channel::G.chindex << endl;
+    //cout << ChannelIndex::_G << endl;
+    //cout << ChannelIndex::_B << endl;
+    RGB_ptr rgb(new RGBColor(1, 3, 5));
     foreach(const Channel & ch, *(Channel::RGBChannel)) {
 	cout << *ch.toString() << " " << ch.chindex << endl;
 	cout << rgb->getValue(ch) << endl;
+	//cout << ch << endl;
     }
 
 

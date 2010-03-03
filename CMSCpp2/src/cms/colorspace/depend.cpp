@@ -1,6 +1,13 @@
 #include "depend.h"
-
+//C系統文件
+#include <cstdarg>
+//C++系統文件
 #include <limits>
+#include <iostream>
+//其他庫頭文件
+
+//本項目內頭文件
+#include <math/doublearray.h>
 
 namespace cms {
     namespace colorspace {
@@ -8,6 +15,7 @@ namespace cms {
 	    using namespace boost;
 	    using namespace std;
 	    using namespace java::lang;
+	    using namespace math;
 
 	    //======================================================================
 	    // DeviceDependentSpace
@@ -55,9 +63,9 @@ namespace cms {
 	       color(color), fullname(fullname) {
 
 	       }; */
-	     Channel::Channel(int index, const TColor & color, string fullname, ChannelIndex chenum):	/*index(index), */
+	     Channel::Channel(int index, const TColor & color, string fullname, const ChannelIndex chindex):	/*index(index), */
 	     color(color), fullname(fullname), chindex(chindex) {
-
+		//std::cout << fullname << " " << chindex << std::endl;
 	    };
 
 	    bool Channel::isPrimaryColorChannel(const Channel & channel) {
@@ -143,14 +151,57 @@ namespace cms {
 	    //======================================================================
 	    // RGBColorSpace
 	    //======================================================================
-	  RGBColorSpace::RGBColorSpace(const CSType & cstype, const cms::Illuminant & referenceWhite, const double _gamma):_type(cstype), referenceWhite(referenceWhite),
-		_gamma(_gamma)
+	  RGBColorSpace::RGBColorSpace(const CSType & type, const cms::Illuminant & referenceWhite, const double gamma):_type(type), referenceWhite(referenceWhite),
+		_gamma(gamma)
 	    {
+	    };
+	    RGBColorSpace::RGBColorSpace(const CSType & type,
+					 const cms::
+					 Illuminant & referenceWhite,
+					 double toXYZMatrix[9],
+					 const double gamma):_type(type),
+		referenceWhite(referenceWhite), _gamma(gamma) {
+
+		_toXYZMatrix.reset(new double2D(3, 3, toXYZMatrix));
+		_toRGBMatrix = DoubleArray::inverse(_toXYZMatrix);
+	    };
+	    RGBColorSpace::RGBColorSpace(const CSType & type,
+					 const double gamma,
+					 const cms::
+					 Illuminant & referenceWhite,
+					 ...):_type(type),
+		referenceWhite(referenceWhite), _gamma(gamma) {
+		//double_array result(new double[n]);
+		//_toXYZMatrix.reset(new double2D(3, 3));
+		const int n = 9;
+		double array[n];
+		va_list num_list;
+		va_start(num_list, n);
+
+		for (int i = 0; i < n; i++) {
+		    const double d = va_arg(num_list, const double);
+		    array[i] = d;
+		} va_end(num_list);
+		_toXYZMatrix.reset(new double2D(3, 3, array));
+		_toRGBMatrix = DoubleArray::inverse(_toXYZMatrix);
 	    };
 	    const RGBColorSpace & RGBColorSpace::unknowRGB =
 		RGBColorSpace(CSType::Unknow, Illuminant::D50, 2.2);
 	    const RGBColorSpace & RGBColorSpace::sRGB =
-		RGBColorSpace(CSType::sRGB, Illuminant::D65, 2.2);
+		RGBColorSpace(CSType::sRGB, 2.2, Illuminant::D65,
+			      0.412424, 0.212656, 0.0193324,
+			      0.357579, 0.715158, 0.119193,
+			      0.180464, 0.0721856, 0.950444);
+	    const RGBColorSpace & RGBColorSpace::sRGB_gamma22 =
+		RGBColorSpace(CSType::sRGB_gamma22, 2.2, Illuminant::D65,
+			      0.412424, 0.212656, 0.0193324,
+			      0.357579, 0.715158, 0.119193,
+			      0.180464, 0.0721856, 0.950444);
+	    const RGBColorSpace & RGBColorSpace::NTSCRGB =
+		RGBColorSpace(CSType::NTSCRGB, 2.2, Illuminant::C,
+			      0.606734, 0.298839, 0.000000,
+			      0.173564, 0.586811, 0.0661196,
+			      0.200112, 0.114350, 1.11491);
 	    //======================================================================
 
 	    //======================================================================
