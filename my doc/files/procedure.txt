@@ -1,0 +1,18 @@
+Gamma->DG Code
+{
+P1P2Gamma (P1-P2)
+Gamma->DG Code
+P1P2DG (0-P1)
+smooth DG
+FRC DG
+BMax DG
+
+|
+
+RB DG(0-P3)
+BMax DG
+}
+
+
+
+P1P2:重新調整Gamma,重新調整DG Code
