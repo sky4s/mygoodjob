@@ -13,32 +13,30 @@ USEFORM("src\gui\TCCTLUTForm.cpp", CCTLUTForm);
 //---------------------------------------------------------------------------
 WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 {
-        try
-        {
-                 Application->Initialize();
-                 Application->CreateForm(__classid(TMainForm), &MainForm);
-                 Application->CreateForm(__classid(TTargetWhiteForm2), &TargetWhiteForm2);
-                 Application->CreateForm(__classid(TAboutBox), &AboutBox);
+    try {
+	Application->Initialize();
+	Application->CreateForm(__classid(TMainForm), &MainForm);
                  Application->CreateForm(__classid(TTargetWhiteForm), &TargetWhiteForm);
                  Application->CreateForm(__classid(TMeasureWindow), &MeasureWindow);
+                 Application->CreateForm(__classid(TAboutBox), &AboutBox);
+                 Application->CreateForm(__classid(TTargetWhiteForm2), &TargetWhiteForm2);
                  Application->CreateForm(__classid(TCCTLUTForm), &CCTLUTForm);
+                 Application->CreateForm(__classid(TAnalyzerFrame), &AnalyzerFrame);
                  Application->Run();
-        }
-        catch (Exception &exception)
-        {
-                 Application->ShowException(&exception);
-        }
-        catch (...)
-        {
-                 try
-                 {
-                         throw Exception("");
-                 }
-                 catch (Exception &exception)
-                 {
-                         Application->ShowException(&exception);
-                 }
-        }
-        return 0;
+    }
+    catch(Exception & exception) {
+	Application->ShowException(&exception);
+    }
+    catch(...) {
+	try {
+	    throw Exception("");
+	}
+	catch(Exception & exception) {
+	    Application->ShowException(&exception);
+	}
+    }
+    return 0;
 }
+
 //---------------------------------------------------------------------------
+

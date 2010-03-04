@@ -68,6 +68,7 @@ class TCCTLUTForm:public TForm {
     void __fastcall RadioButton_RBInterpClick(TObject * Sender);
     void __fastcall RadioButton_P1P2Click(TObject * Sender);
     void __fastcall Button_RunClick(TObject * Sender);
+    void __fastcall FormKeyPress(TObject * Sender, char &Key);
   private:			// User declarations
     void resetBitDepth();
     void setBitDepthEnable(bool lut10, bool lut12, bool out6, bool out8,

@@ -9,6 +9,9 @@
 #include <vcl.h>
 #include <boost/lexical_cast.hpp>
 //本項目內頭文件
+#include <cms/lcd/calibrate/lcdcalibrator.h>
+#include <cms/colorspace/ciexyz.h>
+#include <cms/colorspace/rgb.h>
 
 namespace cms {
     namespace colorformat {
@@ -146,10 +149,11 @@ namespace cms {
 	    };
 	    sql.erase(sql.size() - 1, 1);
 	    sql += ")";
-	    cout << sql << endl;
+	    //cout << sql << endl;
 	    execute(sql);
 	};
 	void ExcelFileDB::execute(const std::string & sql) {
+	    //std::cout << sql << std::endl;
 	    connection->Execute(*toWideString(sql), TCommandType(),
 				TExecuteOptions());
 	};
@@ -161,19 +165,21 @@ namespace cms {
 	    if (!isAlterable()) {
 		throw IllegalStateException("!isAlterable()");
 	    }
-
 	    string sql = "UPDATE [" + getTableName() + "$] SET";
+	    //string sql = "UPDATE [Raw_Data$] SET";
 	    int size = fieldNames->size();
 	    for (int x = 0; x < size; x++) {
 		string key = (*fieldNames)[x];
 		string val = (*values)[x];
-		sql +=
-		    textValues ? " " + key + " = \"" + val + "\"," :
-		    " " + key + " = " + val + ",";
+		//sql += textValues ? " \"" + key + "\" = \"" + val + "\"," :
+		//    " " + key + " = " + val + ",";
+		sql += " [" + key + "] = ";
+		sql += textValues ? ("\"" + val + "\",") : (val + ",");
+		//sql += textValues ? "[" + key + "] = \"" + val + "\"," : " [" + key + "] = " + val + ",";
 	    }
 	    sql.erase(sql.size() - 1, 1);
 	    sql +=
-		" WHERE " + keyField + " = " + lexical_cast < string >
+		" WHERE [" + keyField + "] = " + lexical_cast < string >
 		(keyValue);
 	    //cout << sql << endl;
 	    execute(sql);
@@ -278,7 +284,7 @@ namespace cms {
 		connection->Close();
 		//connection.reset((TADOConnection *) null);
 		CoUninitialize();
-		cout << "close" << endl;
+		//cout << "close" << endl;
 	    }
 	};
 
@@ -358,8 +364,10 @@ namespace cms {
 	};
 	const std::string DGCodeFile::PropertiesHeader[2] =
 	    { "Key", "Value" };
-	const string & DGCodeFile::GammaTable = "Gamma Table";
-	const string & DGCodeFile::RawData = "Raw Data";
+	//const string & DGCodeFile::GammaTable = "Gamma Table";
+	//const string & DGCodeFile::RawData = "Raw Data";
+	const string & DGCodeFile::GammaTable = "Gamma_Table";
+	const string & DGCodeFile::RawData = "Raw_Data";
 	const string & DGCodeFile::Properties = "Properties";
 
 	string_vector_ptr DGCodeFile::getFieldNames(const string *
@@ -426,6 +434,48 @@ namespace cms {
 	    (*values)[0] = key;
 	    (*values)[1] = value;
 	    db->insert(fieldNames, values, true);
+	};
+
+	void DGCodeFile::
+	    setRawData(Composition_vector_ptr compositionVector) {
+	    using namespace lcd::calibrate;
+	    using namespace Indep;
+	    using namespace Dep;
+	    db->setTableName(RawData);
+
+	    int size = compositionVector->size();
+	    for (int x = size - 1; x != -1; x--) {
+		Composition_ptr c = (*compositionVector)[x];
+		string_vector_ptr fieldNames =
+		    getFieldNames(RawHeader, 13);
+		string_vector_ptr values(new string_vector(13));
+
+		/*(*values)[0] = lexical_cast < string > (x);
+
+
+		   (*values)[1] = lexical_cast < string > (xyY->x);
+		   (*values)[2] = lexical_cast < string > (xyY->y);
+		   (*values)[3] = lexical_cast < string > (xyY->Y);
+
+
+
+		   (*values)[4] = lexical_cast < string > (component->R);
+		   (*values)[5] = lexical_cast < string > (component->G);
+		   (*values)[6] = lexical_cast < string > (component->B);
+
+		   (*values)[7] = "";
+		   (*values)[8] = "";
+		   (*values)[9] = "";
+		   (*values)[10] = "";
+		   (*values)[11] = "";
+		   (*values)[12] = "";
+
+		   db->update(RawHeader[0], x, fieldNames, values); */
+		xyY_ptr xyY(new CIExyY(c->XYZ));
+		RGB_ptr component = c->component;
+		db->update(RawHeader[0], x, RawHeader[1],
+			   lexical_cast < string > (xyY->x));
+	    }
 	};
 	//======================================================================
     };

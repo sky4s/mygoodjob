@@ -52,6 +52,9 @@ namespace ca210api {
 	probe = ca.get_SingleProbe();
 	memory = ca.get_Memory();
     };
+    CA210API::~CA210API() {
+	close();
+    }
     void CA210API::calibrate() {
 	ca.CalZero();
     };
@@ -162,9 +165,10 @@ namespace ca210api {
 	memory.SetChannelID(id);
     };
 
-    void CA210API::setChannelID(string & id) {
-	memory.SetChannelID(util::Util::towchar_t(id).get());
-	//memory.SetChannelID(id);
+    void CA210API::setChannelID(const string & id) {
+	wchar_t *wid = util::Util::towchar_t(id).get();
+	//memory.SetChannelID(wid);
+	//memory.set_ChannelID(wid);
     };
     wchar_t *CA210API::getChannelID() {
 	wchar_t *channelID = memory.get_ChannelID();

@@ -99,6 +99,10 @@
 #define Patch_list_ptr bptr < Patch_list >
 #define Patch_vector std::vector < Patch_ptr >
 #define Patch_vector_ptr bptr < Patch_vector >
+
+#define Composition_ptr  bptr < cms::lcd::calibrate::Composition >
+#define Composition_vector std::vector < Composition_ptr >
+#define Composition_vector_ptr bptr < Composition_vector >
 //==============================================================================
 
 //==============================================================================
@@ -156,6 +160,7 @@ namespace cms {
 	namespace calibrate {
 	    class LCDCalibrator;
 	    class RGBGamma;
+	    class Composition;
 	    namespace algo {
 		class ChromaticAroundAlgorithm;
 		class CIEuv1960NearestAlgorithm;

@@ -24,6 +24,17 @@ class TMainForm:public TForm {
     TMenuItem *config1;
     TMenuItem *About1;
     TMenuItem *Exit1;
+    TGroupBox *Resolution;
+    TLabel *Width;
+    TLabel *Height;
+    TGroupBox *GroupBox1;
+    TEdit *Edit_Interval;
+    TLabel *Label1;
+    TGroupBox *GroupBox2;
+    TRadioButton *RadioButton_PC;
+    TRadioButton *RadioButton_TCON;
+    TEdit *Edit_Width;
+    TEdit *Edit_Height;
     void __fastcall About1Click(TObject * Sender);
     void __fastcall Exit1Click(TObject * Sender);
     void __fastcall TargetWhite1Click(TObject * Sender);
@@ -36,14 +47,15 @@ class TMainForm:public TForm {
      bool linkCA210;
      bptr < cms::measure::meter::CA210 > ca210;
      bptr < cms::measure::meter::Meter > meter;
+     bptr < cms::measure::meter::CA210 > getCA210();
     //==========================================================================
   public:			// User declarations
     //==========================================================================
     // meter
     //==========================================================================
      bptr < cms::measure::MeterMeasurement > mm;
-     bptr < cms::measure::meter::CA210 > getCA210();
      bptr < cms::measure::ComponentAnalyzerIF > analyzer;
+    int getInterval();
     //==========================================================================
     __fastcall TMainForm(TComponent * Owner);
 

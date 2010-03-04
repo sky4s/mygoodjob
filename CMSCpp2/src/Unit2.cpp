@@ -41,6 +41,7 @@
 #include <cms/util/rgbarray.h>
 #include <cms/measure/analyzer.h>
 #include <cms/measure/meter.h>
+#include <cms/measure/MeterMeasurement.h>
 
 //---------------------------------------------------------------------------
 
@@ -70,6 +71,7 @@ void excel()
 	db.insert(fieldsNames, ExcelFileDB::make(2, "55", "66"));
     } else {
 	db.setTableName("tb");
+        db.update("a",11,"b",99);
 	//db.select("a", 11);
 	bptr < DBQuery > query = db.selectAll();
 	while (query->hasNext()) {
@@ -404,15 +406,22 @@ void pointerEample()
 
 void lcdcalibratorTry()
 {
+
+    Application->Initialize();
+    Application->CreateForm(__classid(TMeasureWindow), &MeasureWindow);
+
     using namespace cms::measure::meter;
     using namespace cms::measure;
     using namespace cms::lcd::calibrate;
     bptr < CA210 > ca210(new CA210());
+    //bptr < CA210 > ca2102(new CA210());
     bptr < CA210ComponentAnalyzer >
 	analyzer(new CA210ComponentAnalyzer(ca210));
-    LCDCalibrator cal(analyzer);
-    cal.setGamma(2.2, 256);
-    cal.getDGCode(255, 0, 1);
+    bptr < MeterMeasurement > mm(new MeterMeasurement(ca210, false));
+    mm->measure(0, 0, 128, "test");
+    //LCDCalibrator cal(analyzer);
+    //cal.setGamma(2.2, 256);
+    //cal.getDGCode(255, 0, 1);
 };
 
 void channelTry()
@@ -447,7 +456,7 @@ int main(int argc, char *argv[])
 
     //regress();
     //lut();
-    //excel();
+    excel();
     //inverse();
     //rgbVectorOp();
     //sizeCompare();
@@ -464,7 +473,10 @@ int main(int argc, char *argv[])
     //forTry();
     //namespaceTry();
     //lcdcalibratorTry();
-    channelTry();
+    //channelTry();
+
+    //using namespace cms::colorformat;
+    //DGCodeFile dg("test.xls",256);
     getch();
 }
 

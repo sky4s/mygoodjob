@@ -18,6 +18,7 @@
 
 #include <cms/measure/meter.h>
 #include <cms/measure/metermeasurement.h>
+#include <cms/measure/analyzer.h>
 #include <UIConfig.h>
 
 //---------------------------------------------------------------------------
@@ -48,8 +49,8 @@ void __fastcall TMainForm::Exit1Click(TObject * Sender)
 
 void __fastcall TMainForm::TargetWhite1Click(TObject * Sender)
 {
-    //TargetWhiteForm->ShowModal();
     TargetWhiteForm2->ShowModal();
+    //TargetWhiteForm2->Show();
 }
 
 //---------------------------------------------------------------------------
@@ -62,6 +63,8 @@ void __fastcall TMainForm::FormCreate(TObject * Sender)
 	meter = bptr < Meter > (new CA210());
 	mm = bptr < MeterMeasurement >
 	    (new MeterMeasurement(meter, false));
+
+	analyzer.reset(new CA210ComponentAnalyzer(getCA210(), mm));
     } else {
 
     }
@@ -76,14 +79,15 @@ bptr < cms::measure::meter::CA210 > TMainForm::getCA210()
 		    cms::measure::meter::CA210 * >(meter.get()));
     }
     return ca210;
-    /*bptr < CA210 >
-       ca210((dynamic_cast < CA210 * >(meter.get())));
-       return ca210; */
 };
 
 //---------------------------------------------------------------------------
+int TMainForm::getInterval()
+{
+    return Edit_Interval->Text.ToInt();
+};
 
-
+//---------------------------------------------------------------------------
 
 void __fastcall TMainForm::CCTLUT1Click(TObject * Sender)
 {

@@ -11,6 +11,7 @@ object CCTLUTForm: TCCTLUTForm
   Font.Name = 'MS Sans Serif'
   Font.Style = []
   OldCreateOrder = False
+  OnKeyPress = FormKeyPress
   PixelsPerInch = 120
   TextHeight = 16
   object GroupBox1: TGroupBox

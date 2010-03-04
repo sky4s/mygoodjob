@@ -1,6 +1,6 @@
 object TargetWhiteForm: TTargetWhiteForm
-  Left = 246
-  Top = 225
+  Left = 358
+  Top = 264
   Width = 908
   Height = 578
   Caption = 'Target White'
@@ -275,7 +275,6 @@ object TargetWhiteForm: TTargetWhiteForm
       Height = 25
       Caption = 'Run'
       TabOrder = 5
-      OnClick = Button2Click
     end
   end
   object Panel1: TPanel

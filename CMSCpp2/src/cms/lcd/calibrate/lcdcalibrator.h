@@ -12,10 +12,6 @@
 #include <math/regression.h>
 #include "rgbgamma.h"
 
-#define Composition_ptr  bptr < Composition >
-#define Composition_vector std::vector < Composition_ptr >
-#define Composition_vector_ptr bptr < Composition_vector >
-
 namespace cms {
     namespace lcd {
 	namespace calibrate {
@@ -31,11 +27,17 @@ namespace cms {
 	      private:
 		bptr < cms::measure::ComponentAnalyzerIF > analyzer;
 		//bptr < cms::measure::MeterMeasurement > mm;
+		bool stop;
 	      public:
-		ComponentFetcher(bptr < cms::measure::ComponentAnalyzerIF >
-				 analyzer);
-		Composition_vector_ptr fetchComposition(int start,
-							int end, int step);
+		 ComponentFetcher(bptr <
+				  cms::measure::ComponentAnalyzerIF >
+				  analyzer);
+		Composition_vector_ptr fetchComposition(int start, int end,
+							int step);
+		void setStop(bool stop);
+		static void storeToExcel(const std::string & filename,
+					 Composition_vector_ptr
+					 compositionVector);
 	    };
 
 	    /*

@@ -16,8 +16,8 @@ class TTargetWhiteForm2:public TForm {
     TTabSheet *TabSheet1;
     TTabSheet *TabSheet2;
     TGroupBox *GroupBox2;
-    TRadioButton *RadioButton1;
-    TRadioButton *RadioButton2;
+    TRadioButton *RadioButton_Targetxy;
+    TRadioButton *RadioButton_RGBRatio;
     TButton *Button2;
     TGroupBox *GroupBox4;
     TLabel *Label10;
@@ -31,7 +31,7 @@ class TTargetWhiteForm2:public TForm {
     TEdit *Edit_CT;
     TEdit *Edit_up;
     TEdit *Edit_vp;
-    TRadioButton *RadioButton3;
+    TRadioButton *RadioButton_MaxRGB;
     TGroupBox *GroupBox1;
     TEdit *Edit_R;
     TEdit *Edit_G;
@@ -54,7 +54,7 @@ class TTargetWhiteForm2:public TForm {
     TEdit *Edit_SourceCH;
     TEdit *Edit_TargetCH;
     TEdit *Edit_TargetID;
-    void __fastcall RadioButton3Click(TObject * Sender);
+    void __fastcall RadioButton_MaxRGBClick(TObject * Sender);
     void __fastcall ScrollBar_RChange(TObject * Sender);
     void __fastcall ScrollBar_GChange(TObject * Sender);
     void __fastcall ScrollBar_BChange(TObject * Sender);

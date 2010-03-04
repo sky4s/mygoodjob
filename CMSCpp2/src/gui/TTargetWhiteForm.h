@@ -57,7 +57,6 @@ class TTargetWhiteForm:public TForm {
     void __fastcall ScrollBar_GChange(TObject * Sender);
     void __fastcall ScrollBar_BChange(TObject * Sender);
     void __fastcall Edit_CTChange(TObject * Sender);
-    void __fastcall Button2Click(TObject * Sender);
 
   private:			// User declarations
     void scrollBar_Change();

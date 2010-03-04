@@ -8,6 +8,7 @@
 #include "TMainForm.h"
 
 #include <cms/lcd/calibrate/lcdcalibrator.h>
+#include <cms/measure/MeterMeasurement.h>
 
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
@@ -174,7 +175,20 @@ void __fastcall TCCTLUTForm::Button_RunClick(TObject * Sender)
     int start = this->Edit_StartLevel->Text.ToInt();
     int end = this->Edit_EndLevel->Text.ToInt();
     int step = this->ComboBox_LevelStep->Text.ToInt();
+
+    int waitTimes = MainForm->getInterval();
+    MainForm->mm->setWaitTimes(waitTimes);
+
     RGB_vector_ptr dgcode = calibrator.getDGCode(start, end, step);
+}
+
+//---------------------------------------------------------------------------
+
+void __fastcall TCCTLUTForm::FormKeyPress(TObject * Sender, char &Key)
+{
+    if (Key == 27) {
+	int x = 1;
+    }
 }
 
 //---------------------------------------------------------------------------

@@ -1,6 +1,6 @@
 object MeasureWindow: TMeasureWindow
-  Left = 198
-  Top = 387
+  Left = 360
+  Top = 190
   BorderStyle = bsNone
   Caption = 'MeasureWindow'
   ClientHeight = 606
@@ -11,6 +11,7 @@ object MeasureWindow: TMeasureWindow
   Font.Height = -13
   Font.Name = 'MS Sans Serif'
   Font.Style = []
+  FormStyle = fsStayOnTop
   OldCreateOrder = False
   WindowState = wsMaximized
   OnKeyPress = FormKeyPress

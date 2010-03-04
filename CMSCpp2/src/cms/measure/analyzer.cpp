@@ -34,16 +34,26 @@ namespace cms {
 	    ca210api->setAnalyzerCalMode();
 	};
 
+	 CA210ComponentAnalyzer::
+	    CA210ComponentAnalyzer(bptr < CA210 > ca210,
+				   bptr < MeterMeasurement >
+				   mm):ca210(ca210),
+	    ca210api(ca210->getCA210API()), mm(mm) {
+	    mm->setWaitTimes(5000);
+	    ca210api->resetLvxyCalMode();
+	    ca210api->setAnalyzerCalMode();
+	};
+
 	RGB_ptr CA210ComponentAnalyzer::getComponent(RGB_ptr rgb) {
 	    Patch_ptr patch = mm->measure(rgb, rgb->toString());
-	     XYZ = patch->getXYZ();
-	     bptr < CAMeasureResult > measureResult =
+	    XYZ = patch->getXYZ();
+	    bptr < CAMeasureResult > measureResult =
 		ca210api->getMeasureResult();
-	     RGB_ptr
+	    RGB_ptr
 		component(new
 			  RGBColor(measureResult->R, measureResult->G,
 				   measureResult->B));
-	     return component;
+	    return component;
 
 	};
 	XYZ_ptr CA210ComponentAnalyzer::getCIEXYZ() {
@@ -75,6 +85,7 @@ namespace cms {
 
 	void CA210ComponentAnalyzer::enter() {
 	    ca210api->enter();
+	    mm->setMeasureWindowsVisible(false);
 	};
 
 	void CA210ComponentAnalyzer::setChannel(int no, string_ptr id) {

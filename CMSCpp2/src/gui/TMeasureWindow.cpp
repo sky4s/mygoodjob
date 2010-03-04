@@ -21,13 +21,15 @@ TMeasureWindow *MeasureWindow;
 __fastcall TMeasureWindow::TMeasureWindow(TComponent * Owner)
 :TForm(Owner)
 {
+    DoubleBuffered = true;
 }
 
 //---------------------------------------------------------------------------
 void __fastcall TMeasureWindow::FormKeyPress(TObject * Sender, char &Key)
 {
     if (Key == 27) {
-	this->Close();
+	//this->Visible = false;
+        this->Close();
     }
 }
 

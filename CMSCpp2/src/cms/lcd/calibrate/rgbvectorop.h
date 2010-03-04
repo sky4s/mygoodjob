@@ -31,14 +31,6 @@ namespace cms {
 		 MinusOp(double minusValue);
 	    };
 
-	    /*class P1P2Op:public DGCodeOp {
-	       private:
-	       double p1, p2;
-	       protected:
-	       RGB_vector_ptr getRendering(RGB_vector_ptr source);
-	       public:
-	       P1P2Op(double p1, double p2);
-	       }; */
 	    class P1P2DGOp:public DGCodeOp {
 	      private:
 		double p1, p2;
