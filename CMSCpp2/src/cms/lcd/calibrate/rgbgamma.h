@@ -10,8 +10,6 @@
 #include <java/lang.h>
 #include "rgbop.h"
 
-#define RGBGamma_ptr  bptr < RGBGamma >
-
 namespace cms {
     namespace lcd {
 	namespace calibrate {

@@ -71,7 +71,7 @@ void excel()
 	db.insert(fieldsNames, ExcelFileDB::make(2, "55", "66"));
     } else {
 	db.setTableName("tb");
-        db.update("a",11,"b",99);
+	db.update("a", 11, "b", 99);
 	//db.select("a", 11);
 	bptr < DBQuery > query = db.selectAll();
 	while (query->hasNext()) {
@@ -83,7 +83,8 @@ void excel()
 
 	cout << *query->get(1, 1) << endl;
 	//query->set(1, 1, "333");
-
+	//string_vector_ptr fieldsNames = ExcelFileDB::make(2, "99", "9");
+	db.update("a", 44, fieldsNames, db.make(2, "55", "55"));
     };
 
 

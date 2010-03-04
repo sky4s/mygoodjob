@@ -137,6 +137,17 @@ namespace cms {
 	    //void setGammaTable();
 
 	    void setRawData(Composition_vector_ptr compositionVector);
+	    void setRawData(Composition_vector_ptr compositionVector,
+			    RGBGamma_ptr rgbgamma);
+	    /*
+	       量測的資料不見得是0~255全量, 但是產生的gamma一定是全部
+	       該如何整合兩者?兩種作法
+	       1. 內插量測值, 使資料為0~255
+	       2. 取有量測到的gamma, 但是缺乏的gamma..就缺乏吧...
+	       反正產生DG Code的時候還是可以生出來.
+
+	       選擇方案二, 所以不用刻意去縮減rgbgamma, 由setRawData自己去篩
+	     */
 	};
     };
 };

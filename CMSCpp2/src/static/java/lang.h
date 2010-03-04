@@ -103,6 +103,8 @@
 #define Composition_ptr  bptr < cms::lcd::calibrate::Composition >
 #define Composition_vector std::vector < Composition_ptr >
 #define Composition_vector_ptr bptr < Composition_vector >
+
+#define RGBGamma_ptr  bptr < RGBGamma >
 //==============================================================================
 
 //==============================================================================
