@@ -450,7 +450,7 @@ namespace cms {
 		    getFieldNames(RawHeader, 13);
 		string_vector_ptr values(new string_vector(13));
 
-		/*(*values)[0] = lexical_cast < string > (x);
+		(*values)[0] = lexical_cast < string > (x);
 
 
 		   (*values)[1] = lexical_cast < string > (xyY->x);
@@ -470,11 +470,11 @@ namespace cms {
 		   (*values)[11] = "";
 		   (*values)[12] = "";
 
-		   db->update(RawHeader[0], x, fieldNames, values); */
-		xyY_ptr xyY(new CIExyY(c->XYZ));
+		   db->update(RawHeader[0], x, fieldNames, values);
+		/*xyY_ptr xyY(new CIExyY(c->XYZ));
 		RGB_ptr component = c->component;
 		db->update(RawHeader[0], x, RawHeader[1],
-			   lexical_cast < string > (xyY->x));
+			   lexical_cast < string > (xyY->x));*/
 	    }
 	};
 	//======================================================================
