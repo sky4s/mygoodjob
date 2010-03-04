@@ -452,30 +452,35 @@ namespace cms {
 
 		(*values)[0] = lexical_cast < string > (x);
 
+		xyY_ptr xyY(new CIExyY(c->XYZ));
+		(*values)[1] = lexical_cast < string > (xyY->x);
+		(*values)[2] = lexical_cast < string > (xyY->y);
+		(*values)[3] = lexical_cast < string > (xyY->Y);
 
-		   (*values)[1] = lexical_cast < string > (xyY->x);
-		   (*values)[2] = lexical_cast < string > (xyY->y);
-		   (*values)[3] = lexical_cast < string > (xyY->Y);
-
-
-
-		   (*values)[4] = lexical_cast < string > (component->R);
-		   (*values)[5] = lexical_cast < string > (component->G);
-		   (*values)[6] = lexical_cast < string > (component->B);
-
-		   (*values)[7] = "";
-		   (*values)[8] = "";
-		   (*values)[9] = "";
-		   (*values)[10] = "";
-		   (*values)[11] = "";
-		   (*values)[12] = "";
-
-		   db->update(RawHeader[0], x, fieldNames, values);
-		/*xyY_ptr xyY(new CIExyY(c->XYZ));
 		RGB_ptr component = c->component;
-		db->update(RawHeader[0], x, RawHeader[1],
-			   lexical_cast < string > (xyY->x));*/
+		(*values)[4] = lexical_cast < string > (component->R);
+		(*values)[5] = lexical_cast < string > (component->G);
+		(*values)[6] = lexical_cast < string > (component->B);
+
+		//gamma 0~100
+		(*values)[7] = "";
+		(*values)[8] = "";
+		(*values)[9] = "";
+		(*values)[10] = "";
+		(*values)[11] = "";
+		(*values)[12] = "";
+
+		db->update(RawHeader[0], x, fieldNames, values);
+		/*xyY_ptr xyY(new CIExyY(c->XYZ));
+		   RGB_ptr component = c->component;
+		   db->update(RawHeader[0], x, RawHeader[1],
+		   lexical_cast < string > (xyY->x)); */
 	    }
+	};
+
+	void setRawData(Composition_vector_ptr compositionVector,
+			RGBGamma_ptr rgbgamma) {
+
 	};
 	//======================================================================
     };
