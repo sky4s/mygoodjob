@@ -110,6 +110,7 @@ namespace cms {
 	    void set(int row, int column, const std::string & value);
 	    void refresh();
 	};
+	//using namespace lcd::calibrate::Composition;
 	class DGCodeFile {
 	  private:
 	    bptr < ExcelFileDB > db;
@@ -133,6 +134,9 @@ namespace cms {
 			const Mode mode);
 	    void addProperty(const std::string & key,
 			     const std::string & value);
+	    //void setGammaTable();
+
+	    void setRawData(Composition_vector_ptr compositionVector);
 	};
     };
 };

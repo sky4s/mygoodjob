@@ -62,6 +62,7 @@ namespace ca210api {
 
 	 bptr < CAMeasureResult > getMeasureResult();
 	 CA210API();
+	~CA210API();
 	void calibrate();
 
 	void close();
@@ -100,7 +101,7 @@ namespace ca210api {
 	// channel ID
 	void setChannelID(wchar_t * id);
 
-	void setChannelID(std::string & id);
+	void setChannelID(const std::string & id);
 	wchar_t *getChannelID();
 
     };

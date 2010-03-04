@@ -30,7 +30,8 @@ __fastcall TTargetWhiteForm2::TTargetWhiteForm2(TComponent * Owner)
 }
 
 //---------------------------------------------------------------------------
-void __fastcall TTargetWhiteForm2::RadioButton3Click(TObject * Sender)
+void __fastcall TTargetWhiteForm2::RadioButton_MaxRGBClick(TObject *
+							   Sender)
 {
     this->Edit_R->SetTextBuf("255");
     this->Edit_G->SetTextBuf("255");
@@ -180,26 +181,23 @@ void __fastcall TTargetWhiteForm2::Button2Click(TObject * Sender)
     using namespace cms::measure::meter;
     using namespace cms::measure;
 
-    bool useRGB = this->RadioButton1->Checked
-	|| this->RadioButton2->Checked;
-    bool usexy = this->RadioButton3->Checked;
+    bool usexy = this->RadioButton_Targetxy->Checked;
     RGB_ptr rgb;
 
-    if (true == useRGB) {
-	//已知rgb
-	int r = this->Edit_R->Text.ToInt();
-	int g = this->Edit_G->Text.ToInt();
-	int b = this->Edit_B->Text.ToInt();
-	rgb.reset(new RGBColor(r, g, b));
-    } else if (true == usexy) {
+    if (true == usexy) {
 	double targetx = this->Edit_targetx->Text.ToDouble();
 	double targety = this->Edit_targety->Text.ToDouble();
 	xyY_ptr xyY(new CIExyY(targetx, targety, 1));
 	//已知xy, 求rgb
 	WhitePointFinder finder(MainForm->mm);
 	rgb = finder.findRGB(xyY);
+    } else {
+	//已知rgb
+	int r = this->Edit_R->Text.ToInt();
+	int g = this->Edit_G->Text.ToInt();
+	int b = this->Edit_B->Text.ToInt();
+	rgb.reset(new RGBColor(r, g, b));
     }
-
 
     RGB_ptr r(new RGBColor());
     RGB_ptr g(new RGBColor());
@@ -212,11 +210,9 @@ void __fastcall TTargetWhiteForm2::Button2Click(TObject * Sender)
     // 設定到ca-210去
     //==========================================================================
     //利用ca210做成分分析器, 並且設定回MainForm
-    bptr < CA210 > ca210 = MainForm->getCA210();
+    bptr < ComponentAnalyzerIF > analyzer = MainForm->analyzer;
     CA210ComponentAnalyzer *ca210Analyzer =
-	new CA210ComponentAnalyzer(ca210);
-    bptr < ComponentAnalyzerIF > analyzer(ca210Analyzer);
-    MainForm->analyzer = analyzer;
+	dynamic_cast < CA210ComponentAnalyzer * >(analyzer.get());
 
     int no = this->Edit_TargetCH->Text.ToInt();
     string_ptr id(new string(this->Edit_TargetID->Text.c_str()));
@@ -227,7 +223,7 @@ void __fastcall TTargetWhiteForm2::Button2Click(TObject * Sender)
     analyzer->setupComponent(Channel::W, rgb);
     analyzer->enter();
     //==========================================================================
-
+    this->Close();
 }
 
 //---------------------------------------------------------------------------

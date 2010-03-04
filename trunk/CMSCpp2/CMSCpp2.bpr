@@ -138,22 +138,24 @@ ProductVersion=1.0.0.0
 Comments=
 
 [HistoryLists\hlIncludePath]
-Count=6
-Item0=src\static\math;src\static\java;src\static;src\cms\util;src\cms\measure;src\cms\lcd\calibrate;src\cms\colorspace;src\cms\colorformat;src\cms;src\ca210api;src;$(BCB)\include;$(BCB)\include\vcl;imports;lib
-Item1=src\static\math;src\static\java;src\static;src\cms\util;src\cms\measure;src\cms\lcd\calibrate;src\cms\colorspace;src\cms\colorformat;src\cms;src\ca210api;src;$(BCB)\include;$(BCB)\include\vcl;imports
-Item2=src\static\math;src\static\java;src\static;src\cms\util;src\cms\measure;src\cms\lcd\calibrate;src\cms\colorspace;src\cms\colorformat;src\cms;src\ca210api;src;$(BCB)\include;$(BCB)\include\vcl;imports\
-Item3=src\static\math;src\static\java;src\static;src\cms\util;src\cms\measure;src\cms\lcd\calibrate;src\cms\colorspace;src\cms\colorformat;src\cms;src\ca210api;src;$(BCB)\include;$(BCB)\include\vcl;imports\CA200SRVRLib
-Item4=src\static\math;src\static\java;src\static;src\cms\util;src\cms\measure;src\cms\lcd\calibrate;src\cms\colorspace;src\cms\colorformat;src\cms;src\ca210api;src;D:\WorkSpace\CMSCpp2\src;$(BCB)\include;$(BCB)\include\vcl;imports\CA200SRVRLib
-Item5=src\static\math;src\static\java;src\static;src\cms\util;src\cms\measure;src\cms\lcd\calibrate;src\cms\colorspace;src\cms\colorformat;src\cms;src\ca210api;src;D:\WorkSpace\CMSCpp2\src;$(BCB)\include;$(BCB)\include\vcl
+Count=7
+Item0=imports\CA200SRVRLib;src\gui;F:\Program Files\Borland\CBuilder6\Projects;src\static\math;src\static\java;src\static;src\cms\util;src\cms\measure;src\cms\lcd\calibrate;src\cms\colorspace;src\cms\colorformat;src\cms;src\ca210api;src;$(BCB)\include;$(BCB)\include\vcl;imports;lib
+Item1=src\static\math;src\static\java;src\static;src\cms\util;src\cms\measure;src\cms\lcd\calibrate;src\cms\colorspace;src\cms\colorformat;src\cms;src\ca210api;src;$(BCB)\include;$(BCB)\include\vcl;imports;lib
+Item2=src\static\math;src\static\java;src\static;src\cms\util;src\cms\measure;src\cms\lcd\calibrate;src\cms\colorspace;src\cms\colorformat;src\cms;src\ca210api;src;$(BCB)\include;$(BCB)\include\vcl;imports
+Item3=src\static\math;src\static\java;src\static;src\cms\util;src\cms\measure;src\cms\lcd\calibrate;src\cms\colorspace;src\cms\colorformat;src\cms;src\ca210api;src;$(BCB)\include;$(BCB)\include\vcl;imports\
+Item4=src\static\math;src\static\java;src\static;src\cms\util;src\cms\measure;src\cms\lcd\calibrate;src\cms\colorspace;src\cms\colorformat;src\cms;src\ca210api;src;$(BCB)\include;$(BCB)\include\vcl;imports\CA200SRVRLib
+Item5=src\static\math;src\static\java;src\static;src\cms\util;src\cms\measure;src\cms\lcd\calibrate;src\cms\colorspace;src\cms\colorformat;src\cms;src\ca210api;src;D:\WorkSpace\CMSCpp2\src;$(BCB)\include;$(BCB)\include\vcl;imports\CA200SRVRLib
+Item6=src\static\math;src\static\java;src\static;src\cms\util;src\cms\measure;src\cms\lcd\calibrate;src\cms\colorspace;src\cms\colorformat;src\cms;src\ca210api;src;D:\WorkSpace\CMSCpp2\src;$(BCB)\include;$(BCB)\include\vcl
 
 [HistoryLists\hlLibraryPath]
-Count=6
-Item0=$(BCB)\Projects\Lib;src\static\math;src\static\java;src\static;src\cms\util;src\cms\measure;src\cms\lcd\calibrate;src\cms\colorspace;src\cms\colorformat;src\cms;src\ca210api;src;$(BCB)\lib\obj;$(BCB)\lib;imports;lib
-Item1=$(BCB)\Projects\Lib;src\static\math;src\static\java;src\static;src\cms\util;src\cms\measure;src\cms\lcd\calibrate;src\cms\colorspace;src\cms\colorformat;src\cms;src\ca210api;src;$(BCB)\lib\obj;$(BCB)\lib;imports
-Item2=$(BCB)\Projects\Lib;src\static\math;src\static\java;src\static;src\cms\util;src\cms\measure;src\cms\lcd\calibrate;src\cms\colorspace;src\cms\colorformat;src\cms;src\ca210api;src;$(BCB)\lib\obj;$(BCB)\lib;imports\
-Item3=$(BCB)\Projects\Lib;src\static\math;src\static\java;src\static;src\cms\util;src\cms\measure;src\cms\lcd\calibrate;src\cms\colorspace;src\cms\colorformat;src\cms;src\ca210api;src;$(BCB)\lib\obj;$(BCB)\lib;imports\CA200SRVRLib
-Item4=$(BCB)\Projects\Lib;src\static\math;src\static\java;src\static;src\cms\util;src\cms\measure;src\cms\lcd\calibrate;src\cms\colorspace;src\cms\colorformat;src\cms;src\ca210api;src;D:\WorkSpace\CMSCpp2\src;$(BCB)\lib\obj;$(BCB)\lib;imports\CA200SRVRLib
-Item5=$(BCB)\Projects\Lib;src\static\math;src\static\java;src\static;src\cms\util;src\cms\measure;src\cms\lcd\calibrate;src\cms\colorspace;src\cms\colorformat;src\cms;src\ca210api;src;D:\WorkSpace\CMSCpp2\src;$(BCB)\lib\obj;$(BCB)\lib
+Count=7
+Item0=imports\CA200SRVRLib;src\gui;F:\Program Files\Borland\CBuilder6\Projects;$(BCB)\Projects\Lib;src\static\math;src\static\java;src\static;src\cms\util;src\cms\measure;src\cms\lcd\calibrate;src\cms\colorspace;src\cms\colorformat;src\cms;src\ca210api;src;$(BCB)\lib\obj;$(BCB)\lib;imports;lib
+Item1=$(BCB)\Projects\Lib;src\static\math;src\static\java;src\static;src\cms\util;src\cms\measure;src\cms\lcd\calibrate;src\cms\colorspace;src\cms\colorformat;src\cms;src\ca210api;src;$(BCB)\lib\obj;$(BCB)\lib;imports;lib
+Item2=$(BCB)\Projects\Lib;src\static\math;src\static\java;src\static;src\cms\util;src\cms\measure;src\cms\lcd\calibrate;src\cms\colorspace;src\cms\colorformat;src\cms;src\ca210api;src;$(BCB)\lib\obj;$(BCB)\lib;imports
+Item3=$(BCB)\Projects\Lib;src\static\math;src\static\java;src\static;src\cms\util;src\cms\measure;src\cms\lcd\calibrate;src\cms\colorspace;src\cms\colorformat;src\cms;src\ca210api;src;$(BCB)\lib\obj;$(BCB)\lib;imports\
+Item4=$(BCB)\Projects\Lib;src\static\math;src\static\java;src\static;src\cms\util;src\cms\measure;src\cms\lcd\calibrate;src\cms\colorspace;src\cms\colorformat;src\cms;src\ca210api;src;$(BCB)\lib\obj;$(BCB)\lib;imports\CA200SRVRLib
+Item5=$(BCB)\Projects\Lib;src\static\math;src\static\java;src\static;src\cms\util;src\cms\measure;src\cms\lcd\calibrate;src\cms\colorspace;src\cms\colorformat;src\cms;src\ca210api;src;D:\WorkSpace\CMSCpp2\src;$(BCB)\lib\obj;$(BCB)\lib;imports\CA200SRVRLib
+Item6=$(BCB)\Projects\Lib;src\static\math;src\static\java;src\static;src\cms\util;src\cms\measure;src\cms\lcd\calibrate;src\cms\colorspace;src\cms\colorformat;src\cms;src\ca210api;src;D:\WorkSpace\CMSCpp2\src;$(BCB)\lib\obj;$(BCB)\lib
 
 [HistoryLists\hlDebugSourcePath]
 Count=1
@@ -168,8 +170,9 @@ Count=1
 Item0=build
 
 [HistoryLists\hlFinalOutputDir]
-Count=1
-Item0=build
+Count=2
+Item0=build\
+Item1=build
 
 [HistoryLists\hIBPIOutputDir]
 Count=1

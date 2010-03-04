@@ -42,7 +42,8 @@ namespace cms {
 	} else {
 	    //string msg = "invalid temp: " + tempK +
 	    //    ", tempK must in 4000~25000K";
-	    throw IllegalArgumentException();
+	    //throw IllegalArgumentException();
+	    return bptr < CIExyY > (new CIExyY(0, 0, 1.0));
 	}
 
 	// Obtain y(x)

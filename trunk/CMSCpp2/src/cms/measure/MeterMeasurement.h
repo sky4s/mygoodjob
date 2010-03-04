@@ -55,7 +55,8 @@ namespace cms {
 
 	    Patch_ptr measure(int r, int g, int b,
 			      const string_ptr patchName);
-	    Patch_ptr measure(int r, int g, int b, std::string patchName);
+	    Patch_ptr measure(int r, int g, int b,
+			      const std::string & patchName);
 
 	    void setBlankTimes(int blankTimes);
 	    void setWaitTimes(int waitTimes);

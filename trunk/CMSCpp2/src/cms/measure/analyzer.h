@@ -30,13 +30,16 @@ namespace cms {
 
 	class CA210ComponentAnalyzer:public ComponentAnalyzerIF {
 	  protected:
-	    bptr < MeterMeasurement > mm;
 	    bptr < cms::measure::meter::CA210 > ca210;
 	    bptr < ca210api::CA210API > ca210api;
 	    XYZ_ptr XYZ;
+	     bptr < MeterMeasurement > mm;
 	  public:
+
 	     CA210ComponentAnalyzer(bptr < cms::measure::meter::CA210 >
 				    ca210);
+	     CA210ComponentAnalyzer(bptr < cms::measure::meter::CA210 >
+				    ca210, bptr < MeterMeasurement > mm);
 
 	    RGB_ptr getComponent(RGB_ptr rgb);
 	    XYZ_ptr getCIEXYZ();

@@ -11,6 +11,7 @@
 #include <cms/measure/analyzer.h>
 #include <cms/colorspace/rgb.h>
 #include <cms/colorspace/ciexyz.h>
+#include <cms/colorformat/excelfile.h>
 #include <math/doublearray.h>
 #include <math/interpolation.h>
 #include "rgbvectorop.h"
@@ -71,8 +72,22 @@ namespace cms {
 							    component,
 							    XYZ));
 		    result->push_back(composition);
+		    if (true == stop) {
+			break;
+		    }
 		};
 		return result;
+	    };
+	    void ComponentFetcher::setStop(bool stop) {
+		this->stop = stop;
+	    };
+	    void ComponentFetcher::storeToExcel(const string & filename,
+						Composition_vector_ptr
+						compositionVector) {
+		using namespace cms::colorformat;
+		int n = compositionVector->size();
+		DGCodeFile dgcode(filename, n);
+		dgcode.setRawData(compositionVector);
 	    };
 	    //==================================================================
 
@@ -216,8 +231,6 @@ namespace cms {
 	    };
 	    //==================================================================
 
-
-
 	    //==================================================================
 	    // LCDCalibrator
 	    //==================================================================
@@ -293,30 +306,34 @@ namespace cms {
 		this->lut = lut;
 		this->out = out;
 	    };
+
 	    RGB_vector_ptr LCDCalibrator::
 		getDGCode(int start, int end, int step) {
 		if (null == gammaCurve) {
 		    throw new IllegalStateException("null == gammaCurve");
 		}		//量測start->end得到的coponent/Y
-		RGBGamma_ptr rgbgamma = getRGBGamma(gammaCurve);
 		Composition_vector_ptr compositionVector =
 		    fetcher->fetchComposition(start, end, step);
+		ComponentFetcher::storeToExcel("rgb.xls",
+					       compositionVector);
+
 
 		//產生producer
 		producer.reset(new DGCodeProducer(compositionVector));
-		//從目標gamma curve產生dg code, 此處是傳入normal gammaCurve
-		RGB_vector_ptr dgcode = producer->produce(rgbgamma);
-
-		//bptr_ < RGBGammaOp > gammaop(new RGBGammaOp());
+		RGBGamma_ptr rgbgamma = getRGBGamma(gammaCurve);
 		RGBGammaOp gammaop;
 		gammaop.setSource(rgbgamma);
 
+		/* TODO : 要確認 */
 		if (bIntensityGain != 1.0) {
 		    //重新產生目標gamma curve
 		    bptr < BIntensityGainOp >
 			bgain(new BIntensityGainOp(bIntensityGain));
 		    gammaop.addOp(bgain);
 		};
+
+		//從目標gamma curve產生dg code, 此處是傳入normal gammaCurve
+		RGB_vector_ptr dgcode = producer->produce(rgbgamma);
 
 		if (p1p2) {
 		    //p1p2第一階段, 對gamma做調整
@@ -337,7 +354,7 @@ namespace cms {
 
 		if (p1p2) {
 		    //p1p2第二階段, 對dg code調整
-		    bptr < DGCodeOp > op(new P1P2DGOp(p1, p2));
+		    bptr < DGCodeOp > op(new P1P2DGOp(p1, p2, in == Bit6));
 		    dgop.addOp(op);
 		} else {
 		    //若不是p1p2就是RBInterp(至少目前是如此)
@@ -371,7 +388,7 @@ namespace cms {
 	  LCDCalibrator::LCDCalibrator(bptr < ComponentAnalyzerIF > analyzer):analyzer(analyzer)
 	    {
 		fetcher.reset(new ComponentFetcher(analyzer));
-                //analyzer->enter();
+		//analyzer->enter();
 	    };
 	    //==================================================================
 	};

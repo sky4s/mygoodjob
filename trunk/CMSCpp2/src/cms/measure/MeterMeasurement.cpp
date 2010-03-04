@@ -21,8 +21,8 @@ namespace cms {
 	 MeterMeasurement::MeterMeasurement(shared_ptr < Meter >
 					    meter,
 					    bool calibration):meter(meter),
-	    waitTimes(1 /*meter->getSuggestedWaitTimes() */ ),
-	 measureWindowClosing(false), titleTouched(false),
+	    waitTimes(meter->getSuggestedWaitTimes()),
+	    measureWindowClosing(false), titleTouched(false),
 	    fakeMeasure(false) {
 	    measureWindow = MeasureWindow;
 	    if (true == calibration) {
@@ -42,7 +42,11 @@ namespace cms {
 
 	void MeterMeasurement::setMeasureWindowsVisible(bool visible) {
 	    if (!fakeMeasure) {
+		if (null == measureWindow) {
+		    measureWindow = MeasureWindow;
+		}
 		measureWindow->Visible = visible;
+		//measureWindow->ShowModal();
 		measureWindowClosing = !visible;
 	    }
 	};
@@ -61,7 +65,7 @@ namespace cms {
 	};
 
 	Patch_ptr MeterMeasurement::measure(int r, int g, int b,
-					    string patchName) {
+					    const string & patchName) {
 	    string_ptr str(new string(patchName));
 	    RGB_ptr rgb(new RGBColor(r, g, b));
 	    return measure(rgb, str);
@@ -149,8 +153,8 @@ namespace cms {
 	    /*Color c =
 	       this.isCPCodeLoading()? this.cpBackground : background;
 	       measureWindow.setBackground(c); */
-	    //measureWindow.setColor(measureRGB.getColor());
 	    measureWindow->setRGB(measureRGB);
+	    //measureWindow->SetFocus();
 
 	    //==========================================================================
 	    // 變換完視窗顏色的短暫停留
@@ -167,7 +171,7 @@ namespace cms {
 
 	    if (true == measureWindowClosing) {
 		//如果視窗被關閉, 就結束量測
-		//return shared_ptr < Patch > ((Patch *) NULL);
+		return Patch_ptr((Patch *) NULL);
 	    }
 	    double_array result = meter->triggerMeasurementInXYZ();
 
