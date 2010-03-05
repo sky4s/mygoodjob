@@ -9,6 +9,7 @@
 #include <Forms.hpp>
 #include <ExtCtrls.hpp>
 #include <ComCtrls.hpp>
+#include <Menus.hpp>
 //---------------------------------------------------------------------------
 class TTargetWhiteForm2:public TForm {
     __published:		// IDE-managed Components
@@ -54,6 +55,7 @@ class TTargetWhiteForm2:public TForm {
     TEdit *Edit_SourceCH;
     TEdit *Edit_TargetCH;
     TEdit *Edit_TargetID;
+        TMainMenu *MainMenu1;
     void __fastcall RadioButton_MaxRGBClick(TObject * Sender);
     void __fastcall ScrollBar_RChange(TObject * Sender);
     void __fastcall ScrollBar_GChange(TObject * Sender);

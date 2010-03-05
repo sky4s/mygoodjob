@@ -63,15 +63,22 @@ namespace ca210api {
 	ca.set_RemoteMode(Off);
     };
     float_array CA210API::triggerMeasurement() {
-	this->triggerMeasureResult();
+	ca.set_DisplayMode(Lvxy);
+	ca.Measure(0);
 	float_array measureValues(new float[3]);
-	measureValues[0] = measureResult->X;
-	measureValues[1] = measureResult->Y;
-	measureValues[2] = measureResult->Z;
+
+	measureValues[0] = probe.get_X();
+	measureValues[1] = probe.get_Y();
+	measureValues[2] = probe.get_Z();
 	return measureValues;
     };
     bptr < CAMeasureResult > CA210API::triggerMeasureResult() {
+	//=====================================================================
+	// XYZ
+	//=====================================================================
+	ca.set_DisplayMode(Lvxy);
 	ca.Measure(0);
+
 	float x = probe.get_sx();
 	float y = probe.get_sy();
 	float Lv = probe.get_Lv();
@@ -80,12 +87,32 @@ namespace ca210api {
 	float Z = probe.get_Z();
 	long cct = probe.get_T();
 	float duv = probe.get_duv();
+	//=====================================================================
+
+	//=====================================================================
+	// Analyze
+	//=====================================================================
+	ca.set_DisplayMode(Analyzer_nodisplay);
+	ca.Measure(0);
 	float R = probe.get_R();
 	float G = probe.get_G();
 	float B = probe.get_B();
+	//=====================================================================
+
 	measureResult = bptr < CAMeasureResult >
 	    (new CAMeasureResult(x, y, Lv, X, Y, Z, cct, duv, R, G, B));
 	return measureResult;
+    };
+
+    float_array CA210API::triggerComponentAnalyze() {
+	ca.set_DisplayMode(Analyzer_nodisplay);
+	ca.Measure(0);
+
+	float_array measureValues(new float[3]);
+	measureValues[0] = probe.get_R();
+	measureValues[1] = probe.get_G();
+	measureValues[2] = probe.get_B();
+	return measureValues;
     };
 
     bptr < CAMeasureResult > CA210API::getMeasureResult() {
@@ -165,14 +192,30 @@ namespace ca210api {
 	memory.SetChannelID(id);
     };
 
-    void CA210API::setChannelID(const string & id) {
-	wchar_t *wid = util::Util::towchar_t(id).get();
-	//memory.SetChannelID(wid);
-	//memory.set_ChannelID(wid);
+    /*void CA210API::setChannelID(const string & id) {
+       wchar_t *wid = util::Util::towchar_t2(id);
+       memory.SetChannelID(wid);
+       delete[]wid;
+       }; */
+    void CA210API::setChannelID(const WideString & id) {
+	memory.SetChannelID(id);
     };
+
     wchar_t *CA210API::getChannelID() {
 	wchar_t *channelID = memory.get_ChannelID();
 	return channelID;
+    };
+    /*void CA210API::copyToFile(const std::string & filename) {
+
+       };
+       void CA210API::copyFromFile(const std::string & filename) {
+
+       }; */
+    void CA210API::copyToFile(const WideString & filename) {
+	memory.CopyToFile(probe.Number, filename);
+    };
+    void CA210API::copyFromFile(const WideString & filename) {
+	memory.CopyFromFile(probe.Number, filename);
     };
 };
 

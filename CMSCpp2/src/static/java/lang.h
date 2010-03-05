@@ -46,19 +46,18 @@
 #define nil_string_ptr string_ptr ((std::string*)NULL)
 #define Object_ptr bptr < jObject >
 
+#define int_vector std::vector < int >
+#define int_vector_ptr bptr < int_vector >
+
 #define double_vector std::vector < double >
 #define double_vector_ptr bptr < double_vector >
 #define nil_double_vector_ptr double_vector_ptr ((double_vector*)NULL)
 #define nil_double_vector nil_double_vector_ptr
 
-#define int_vector std::vector < double >
-#define int_vector_ptr bptr < int_vector >
-
 #define string_vector std::vector < std::string >
 #define string_vector_ptr bptr < string_vector >
 #define stringp_vector std::vector < string_ptr >
 #define stringp_vector_ptr bptr < string_ptr_vector >
-
 
 #define double_array barray <double>
 #define nil_double_array double_array ((double*)NULL)
@@ -104,7 +103,7 @@
 #define Composition_vector std::vector < Composition_ptr >
 #define Composition_vector_ptr bptr < Composition_vector >
 
-#define RGBGamma_ptr  bptr < RGBGamma >
+#define RGBGamma_ptr  bptr < cms::lcd::calibrate::RGBGamma >
 //==============================================================================
 
 //==============================================================================

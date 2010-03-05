@@ -26,6 +26,7 @@
 
 #pragma option push -b -w-inl
 
+#include <vcl.h>
 #include <utilcls.h>
 #if !defined(__UTILCLS_H_VERSION) || (__UTILCLS_H_VERSION < 0x0600)
 //

@@ -76,6 +76,10 @@ namespace cms {
 			string_vector_ptr values);
 	    void update(const std::string & keyField,
 			const int keyValue,
+			string_vector_ptr fieldNames,
+			string_vector_ptr values, bool textValues);
+	    void update(const std::string & keyField,
+			const int keyValue,
 			const std::string & fieldName,
 			const std::string & value);
 
@@ -119,9 +123,14 @@ namespace cms {
 	    void initDefaultData(string_vector_ptr fieldNames,
 				 const std::string & tableName,
 				 bool reverse);
+	    void initDefaultData(string_vector_ptr fieldNames,
+				 const std::string & tableName,
+				 int_vector_ptr nvector, bool reverse);
 	    const int n;
+	    const int_vector_ptr nvector;
 	    static string_vector_ptr getFieldNames(const std::string *
 						   fieldNames, int n);
+	    const std::string & filename;
 	  public:
 	    static const std::string GammaHeader[4];
 	    static const std::string RawHeader[13];
@@ -129,9 +138,16 @@ namespace cms {
 	    static const std::string & GammaTable;
 	    static const std::string & RawData;
 	    static const std::string & Properties;
+	    static string_vector_ptr GammaFieldNames;
+	    static string_vector_ptr RawFieldNames;
+	    static string_vector_ptr PropertiesFieldNames;
 	     DGCodeFile(const std::string & filename, int n);
+	     DGCodeFile(const std::string & filename,
+			int_vector_ptr nvector);
 	     DGCodeFile(const std::string & filename, int n,
 			const Mode mode);
+	     DGCodeFile(const std::string & filename,
+			int_vector_ptr nvector, const Mode mode);
 	    void addProperty(const std::string & key,
 			     const std::string & value);
 	    //void setGammaTable();
@@ -148,6 +164,12 @@ namespace cms {
 
 	       選擇方案二, 所以不用刻意去縮減rgbgamma, 由setRawData自己去篩
 	     */
+	    static void deleteExist(const std::string & filename);
+	  private:
+	     string_vector_ptr makeValues(int n, Composition_ptr c);
+	    string_vector_ptr makeValues(int n, Composition_ptr c,
+					 RGB_ptr rgbGamma,
+					 RGB_ptr rgbGammaFix);
 	};
     };
 };

@@ -18,6 +18,7 @@ namespace util {
 	static string_ptr toString(wchar_t * wc);
 	static boost::shared_array < wchar_t >
 	    towchar_t(std::string & str);
+	static wchar_t *towchar_t2(std::string & str);
     };
     class NameIF {
       public:

@@ -6,6 +6,7 @@
 //C++系統文件
 
 //其他庫頭文件
+#include <vcl.h>
 
 //本項目內頭文件
 #include <java/lang.h>
@@ -34,6 +35,7 @@ namespace cms {
 	    bptr < ca210api::CA210API > ca210api;
 	    XYZ_ptr XYZ;
 	     bptr < MeterMeasurement > mm;
+	    static const WideString & CalibrationDataFilename;
 	  public:
 
 	     CA210ComponentAnalyzer(bptr < cms::measure::meter::CA210 >

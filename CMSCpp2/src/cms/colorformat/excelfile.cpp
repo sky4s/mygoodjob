@@ -10,6 +10,7 @@
 #include <boost/lexical_cast.hpp>
 //本項目內頭文件
 #include <cms/lcd/calibrate/lcdcalibrator.h>
+#include <cms/lcd/calibrate/rgbgamma.h>
 #include <cms/colorspace/ciexyz.h>
 #include <cms/colorspace/rgb.h>
 
@@ -18,6 +19,9 @@ namespace cms {
 	using namespace std;
 	using namespace boost;
 	using namespace java::lang;
+	using namespace lcd::calibrate;
+	using namespace Indep;
+	using namespace Dep;
 
 	//======================================================================
 	// ExcelFileDB
@@ -74,10 +78,6 @@ namespace cms {
 	    connection->ConnectionString = connectstr;
 	    connection->Provider = "Microsoft.Jet.OLEDB.4.0";
 	    connection->Open();
-	    /*ADOConnection1 = new TADOConnection(null);
-	       ADOConnection1->ConnectionString = connectstr;
-	       ADOConnection1->Provider = "Microsoft.Jet.OLEDB.4.0";
-	       ADOConnection1->Open(); */
 	};
 	ExcelFileDB::~ExcelFileDB() {
 	    close();
@@ -190,6 +190,13 @@ namespace cms {
 				 string_vector_ptr fieldNames,
 				 string_vector_ptr values) {
 	    update0(keyField, keyValue, fieldNames, values, true);
+	};
+	void ExcelFileDB::update(const std::string & keyField,
+				 const int keyValue,
+				 string_vector_ptr fieldNames,
+				 string_vector_ptr values,
+				 bool textValues) {
+	    update0(keyField, keyValue, fieldNames, values, textValues);
 	};
 
 	void ExcelFileDB::update(const std::string & keyField,
@@ -388,100 +395,196 @@ namespace cms {
 	    int step = !reverse ? 1 : -1;
 
 	    for (int x = start; x != end; x += step) {
-		string_vector_ptr value(new string_vector(1));
-		(*value)[0] = lexical_cast < string > (x);
-		string_vector_ptr fieldName(new string_vector(1));
-		(*fieldName)[0] = (*fieldNames)[0];
+		string_vector_ptr value =
+		    ExcelFileDB::make(1, lexical_cast < string > (x));
+		string_vector_ptr fieldName =
+		    ExcelFileDB::make(1, (*fieldNames)[0]);
 
 		db->insert(fieldName, value);
 	    };
 	};
 
-	void DGCodeFile::init() {
-	    if (Create == mode) {
-		string_vector_ptr fieldNames =
-		    getFieldNames(GammaHeader, 4);
-		initDefaultData(fieldNames, GammaTable, false);
-		fieldNames = getFieldNames(RawHeader, 13);
-		initDefaultData(fieldNames, RawData, true);
+	void DGCodeFile::initDefaultData(string_vector_ptr fieldNames,
+					 const std::string & tableName,
+					 int_vector_ptr nvector,
+					 bool reverse) {
+	    db->createTable(tableName, fieldNames);
+	    int size = nvector->size();
 
-		fieldNames = getFieldNames(PropertiesHeader, 2);
+	    int start = !reverse ? 0 : size - 1;
+	    int end = !reverse ? size : -1;
+	    int step = !reverse ? 1 : -1;
+
+
+	    for (int x = start; x != end; x += step) {
+		int n = (*nvector)[x];
+		string_vector_ptr value
+		    = ExcelFileDB::make(1, lexical_cast < string > (n));
+		string_vector_ptr fieldName =
+		    ExcelFileDB::make(1, (*fieldNames)
+				      [0]);
+		db->insert(fieldName, value);
+	    }
+	};
+	void
+	 DGCodeFile::init() {
+	    if (null == GammaFieldNames) {
+		GammaFieldNames = getFieldNames(GammaHeader, 4);
+	    }
+	    if (null == RawFieldNames) {
+		RawFieldNames = getFieldNames(RawHeader, 13);
+	    }
+	    if (null == PropertiesFieldNames) {
+		PropertiesFieldNames = getFieldNames(PropertiesHeader, 2);
+	    }
+	    if (Create == mode) {
+		if (FileExists(filename.c_str())) {
+		    throw IllegalStateException("File " + filename +
+						" exists.");
+		}
+
+		db.reset(new ExcelFileDB(filename, Create));
+
+		if (n != -1) {
+		    initDefaultData(GammaFieldNames, GammaTable, false);
+		    initDefaultData(RawFieldNames, RawData, true);
+		} else {
+		    initDefaultData(GammaFieldNames, GammaTable, nvector,
+				    false);
+		    initDefaultData(RawFieldNames, RawData, nvector, true);
+		};
+
 		string_vector_ptr fieldType(new string_vector(2));
-		(*fieldType)[0] = "Text";
-		(*fieldType)[1] = "Text";
-		db->createTable(Properties, fieldNames, fieldType);
+		(*fieldType)[0]
+		    = "Text";
+		(*fieldType)[1]
+		    = "Text";
+		db->createTable
+		    (Properties, PropertiesFieldNames, fieldType);
 	    };
 	};
-	DGCodeFile::
-	    DGCodeFile(const string & filename,
-		       int n):db(new ExcelFileDB(filename, Create)), n(n),
-	    mode(Create) {
+	DGCodeFile::DGCodeFile(const string & filename, int
+			       n):filename(filename), n(n), mode(Create) {
 	    init();
 	};
 	DGCodeFile::
-	    DGCodeFile(const string & filename, int n,
-		       const Mode mode):db(new ExcelFileDB(filename,
-							   mode)), n(n),
-	    mode(mode) {
+	    DGCodeFile
+	    (const std::
+	     string &
+	     filename,
+	     int_vector_ptr
+	     nvector):filename
+	    (filename), nvector(nvector), n(-1), mode(Create) {
+
+	};
+	DGCodeFile::
+	    DGCodeFile
+	    (const string &
+	     filename,
+	     int n, const Mode mode):filename(filename), n(n), mode(mode) {
 	    init();
 	};
-	void DGCodeFile::addProperty(const string & key,
-				     const string & value) {
+	DGCodeFile::
+	    DGCodeFile
+	    (const string &
+	     filename,
+	     int_vector_ptr
+	     nvector,
+	     const Mode
+	     mode):filename
+	    (filename), nvector(nvector), n(-1), mode(mode) {
+	    init();
+	};
+	void
+	 DGCodeFile::addProperty(const string & key, const string & value) {
 	    db->setTableName(Properties);
-	    string_vector_ptr fieldNames =
-		getFieldNames(PropertiesHeader, 2);
 	    string_vector_ptr values(new string_vector(2));
 	    (*values)[0] = key;
 	    (*values)[1] = value;
-	    db->insert(fieldNames, values, true);
+	    db->insert(PropertiesFieldNames, values, true);
 	};
-
-	void DGCodeFile::
-	    setRawData(Composition_vector_ptr compositionVector) {
-	    using namespace lcd::calibrate;
-	    using namespace Indep;
-	    using namespace Dep;
+	void
+	 DGCodeFile::setRawData(Composition_vector_ptr compositionVector) {
 	    db->setTableName(RawData);
-
 	    int size = compositionVector->size();
-	    for (int x = size - 1; x != -1; x--) {
+	    string_vector_ptr values(new string_vector(13));
+
+	    //for (int x = size - 1; x != -1; x--) {
+	    for (int x = 0; x != size; x++) {
 		Composition_ptr c = (*compositionVector)[x];
-		string_vector_ptr fieldNames =
-		    getFieldNames(RawHeader, 13);
-		string_vector_ptr values(new string_vector(13));
+		int w = static_cast < int >(c->rgb->getValue(Channel::W));
 
-		(*values)[0] = lexical_cast < string > (x);
-
+		(*values)[0] = lexical_cast < string > (w);
 		xyY_ptr xyY(new CIExyY(c->XYZ));
 		(*values)[1] = lexical_cast < string > (xyY->x);
 		(*values)[2] = lexical_cast < string > (xyY->y);
 		(*values)[3] = lexical_cast < string > (xyY->Y);
-
 		RGB_ptr component = c->component;
 		(*values)[4] = lexical_cast < string > (component->R);
 		(*values)[5] = lexical_cast < string > (component->G);
 		(*values)[6] = lexical_cast < string > (component->B);
-
 		//gamma 0~100
-		(*values)[7] = "";
-		(*values)[8] = "";
-		(*values)[9] = "";
-		(*values)[10] = "";
-		(*values)[11] = "";
-		(*values)[12] = "";
-
-		db->update(RawHeader[0], x, fieldNames, values);
-		/*xyY_ptr xyY(new CIExyY(c->XYZ));
-		   RGB_ptr component = c->component;
-		   db->update(RawHeader[0], x, RawHeader[1],
-		   lexical_cast < string > (xyY->x)); */
+		(*values)[7] = "0";
+		(*values)[8] = "0";
+		(*values)[9] = "0";
+		(*values)[10] = "0";
+		(*values)[11] = "0";
+		(*values)[12] = "0";
+		db->update(RawHeader[0], w, RawFieldNames, values, false);
 	    }
 	};
-
-	void setRawData(Composition_vector_ptr compositionVector,
-			RGBGamma_ptr rgbgamma) {
+	void
+	 DGCodeFile::
+	    setRawData
+	    (Composition_vector_ptr
+	     compositionVector, RGBGamma_ptr rgbgamma) {
 
 	};
+	void
+	 DGCodeFile::deleteExist(const std::string & filename) {
+	    const char
+	    *cstr = filename.c_str();
+	    if (FileExists(cstr)) {
+		DeleteFile(cstr);
+	    }
+	};
+	string_vector_ptr DGCodeFile::makeValues(int
+						 n, Composition_ptr c) {
+	    return
+		makeValues(n, c, RGB_ptr((RGBColor *) null),
+			   RGB_ptr((RGBColor *) null));
+	};
+	string_vector_ptr DGCodeFile::makeValues(int n, Composition_ptr c,
+						 RGB_ptr rgbGamma,
+						 RGB_ptr rgbGammaFix) {
+	    //tring_vector_ptr fieldNames = getFieldNames(RawHeader, 13);
+	    string_vector_ptr values(new string_vector(13));
+	    (*values)[0] = lexical_cast < string > (n);
+	    xyY_ptr xyY(new CIExyY(c->XYZ));
+	    (*values)[1] = lexical_cast < string > (xyY->x);
+	    (*values)[2] = lexical_cast < string > (xyY->y);
+	    (*values)[3] = lexical_cast < string > (xyY->Y);
+	    RGB_ptr component = c->component;
+	    (*values)[4] = lexical_cast < string > (component->R);
+	    (*values)[5] = lexical_cast < string > (component->G);
+	    (*values)[6] = lexical_cast < string > (component->B);
+	    //gamma 0~100
+	    if (null != rgbGamma) {
+		(*values)[7] = lexical_cast < string > (rgbGamma->R);
+		(*values)[8] = lexical_cast < string > (rgbGamma->G);
+		(*values)[9] = lexical_cast < string > (rgbGamma->B);
+	    }
+
+	    if (null != rgbGammaFix) {
+		(*values)[10] = lexical_cast < string > (rgbGammaFix->R);
+		(*values)[11] = lexical_cast < string > (rgbGammaFix->G);
+		(*values)[12] = lexical_cast < string > (rgbGammaFix->B);
+	    }
+	    return values;
+	};
+	string_vector_ptr DGCodeFile::GammaFieldNames;
+	string_vector_ptr DGCodeFile::RawFieldNames;
+	string_vector_ptr DGCodeFile::PropertiesFieldNames;
 	//======================================================================
     };
 };
