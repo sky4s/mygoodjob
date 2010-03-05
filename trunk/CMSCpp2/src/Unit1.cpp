@@ -248,7 +248,7 @@ void dgcodefile()
 #pragma argsused
 int main(int argc, char *argv[])
 {
-    //wstringtest();
+    wstringtest();
     //stringtest();
 
 
@@ -257,7 +257,7 @@ int main(int argc, char *argv[])
 
     //regress();
     //lut();
-    excel();
+    //excel();
     //inverse();
     //rgbVectorOp();
     //sizeCompare();

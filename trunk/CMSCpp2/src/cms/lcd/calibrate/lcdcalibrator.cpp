@@ -86,6 +86,7 @@ namespace cms {
 						compositionVector) {
 		using namespace cms::colorformat;
 		int n = compositionVector->size();
+		DGCodeFile::deleteExist(filename);
 		DGCodeFile dgcode(filename, n);
 		dgcode.setRawData(compositionVector);
 	    };
@@ -321,6 +322,7 @@ namespace cms {
 		//產生producer
 		producer.reset(new DGCodeProducer(compositionVector));
 		RGBGamma_ptr rgbgamma = getRGBGamma(gammaCurve);
+
 		RGBGammaOp gammaop;
 		gammaop.setSource(rgbgamma);
 
@@ -330,7 +332,9 @@ namespace cms {
 		    bptr < BIntensityGainOp >
 			bgain(new BIntensityGainOp(bIntensityGain));
 		    gammaop.addOp(bgain);
+		    rgbgamma = gammaop.createInstance();
 		};
+
 
 		//從目標gamma curve產生dg code, 此處是傳入normal gammaCurve
 		RGB_vector_ptr dgcode = producer->produce(rgbgamma);
@@ -349,6 +353,9 @@ namespace cms {
 		//從目標gamma curve產生dg code, 此處是傳入normal gammaCurve
 		RGB_vector_ptr dgcode2 = producer->produce(rgbgamma2);
 
+		//==============================================================
+		// DG Code Op block
+		//==============================================================
 		DGCodeOp dgop;
 		dgop.setSource(dgcode2);
 
@@ -381,6 +388,7 @@ namespace cms {
 		if (gamma256) {
 
 		}
+		//==============================================================
 
 		RGB_vector_ptr result = dgop.createInstance();
 		return result;

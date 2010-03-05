@@ -16,6 +16,8 @@
 #include <algorithm>
 #include <iterator>
 
+#include <vcl.h>
+
 #include <boost/foreach.hpp>
 #include <boost/array.hpp>
 
@@ -43,6 +45,8 @@
 #include <cms/measure/meter.h>
 #include <cms/measure/MeterMeasurement.h>
 
+#include <ca210api/CA210API.h>
+
 //---------------------------------------------------------------------------
 
 
@@ -57,11 +61,13 @@ void excel()
        fieldsNames->push_back("b"); */
     string_vector_ptr fieldsNames = ExcelFileDB::make(2, "a", "b");
 
-    ExcelFileDB db("a.xls", Create);
+    const string & filename = "a.xls";
+    //DGCodeFile::deleteExist( filename);
+    ExcelFileDB db(filename, Create);
 
     //string_ptr tbname(new string("tb"));
 
-    bool newfile = false;
+    bool newfile = true;
 
     if (newfile) {
 	db.createTable("tb", fieldsNames);
@@ -164,6 +170,8 @@ void inverse()
 
 void wstringtest()
 {
+    string a = "12345";
+    cout << a.size() << endl;
     char *test = "我是測試字串";
     wchar_t *wchar = new wchar_t[260];
     size_t ret = mbstowcs(wchar, test, 13);
@@ -171,6 +179,8 @@ void wstringtest()
 	cout << "success" << endl;
 	//wcout << wchar << endl;
 	//wcout << L"我我我我" << endl;
+	cout << wchar << endl;
+	wcout << wchar << endl;
 	wcout << L"some english string";
 
     } else {
@@ -264,10 +274,23 @@ void gammaCurve()
 void dgcodefile()
 {
     using namespace cms::colorformat;
+    using namespace cms::lcd::calibrate;
+    using namespace Dep;
+    using namespace Indep;
+    const string & filename = "test.xls";
     //string_ptr filename(new string("test.xls"));
-    DGCodeFile dgcode("test.xls", 257);
+    DGCodeFile::deleteExist(filename);
+    DGCodeFile dgcode(filename, 256);
     //dgcode.setProperty("a", "b");
     //dgcode.setProperty("b", "bbb");
+    //dgcode.setRawData()
+    Composition_vector_ptr compositionVec(new Composition_vector());
+    RGB_ptr rgb(new RGBColor(1, 2, 3));
+    XYZ_ptr XYZ(new Indep::CIEXYZ(4, 5, 6));
+    Composition_ptr c(new Composition(rgb, rgb, XYZ));
+    compositionVec->push_back(c);
+    compositionVec->push_back(c);
+    dgcode.setRawData(compositionVec);
 
 };
 
@@ -445,6 +468,18 @@ void channelTry()
 
 };
 
+void ca210()
+{
+    ca210api::CA210API ca210;
+    /*ca210.setChannelNO(0);
+       ca210.resetLvxyCalMode();
+       ca210.resetAnalyzerCalMode();
+       ca210.setChannelNO(1);
+       ca210.resetLvxyCalMode();
+       ca210.resetAnalyzerCalMode(); */
+    ca210.triggerMeasurement();
+};
+
 #pragma argsused
 int main(int argc, char *argv[])
 {
@@ -457,7 +492,7 @@ int main(int argc, char *argv[])
 
     //regress();
     //lut();
-    excel();
+    //excel();
     //inverse();
     //rgbVectorOp();
     //sizeCompare();
@@ -475,9 +510,11 @@ int main(int argc, char *argv[])
     //namespaceTry();
     //lcdcalibratorTry();
     //channelTry();
+    ca210();
 
     //using namespace cms::colorformat;
     //DGCodeFile dg("test.xls",256);
+
     getch();
 }
 

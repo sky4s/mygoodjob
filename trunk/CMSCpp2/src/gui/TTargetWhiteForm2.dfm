@@ -1,6 +1,6 @@
 object TargetWhiteForm2: TTargetWhiteForm2
-  Left = 300
-  Top = 237
+  Left = 370
+  Top = 233
   Width = 922
   Height = 531
   Caption = 'TargetWhiteForm'
@@ -10,6 +10,7 @@ object TargetWhiteForm2: TTargetWhiteForm2
   Font.Height = -13
   Font.Name = 'MS Sans Serif'
   Font.Style = []
+  Menu = MainMenu1
   OldCreateOrder = False
   PixelsPerInch = 120
   TextHeight = 16
@@ -331,6 +332,7 @@ object TargetWhiteForm2: TTargetWhiteForm2
           Top = 16
           Width = 48
           Height = 24
+          Enabled = False
           TabOrder = 0
           Text = '0'
         end
@@ -352,5 +354,9 @@ object TargetWhiteForm2: TTargetWhiteForm2
         end
       end
     end
+  end
+  object MainMenu1: TMainMenu
+    Left = 64
+    Top = 16
   end
 end

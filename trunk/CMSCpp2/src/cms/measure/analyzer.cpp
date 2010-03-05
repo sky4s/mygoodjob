@@ -23,15 +23,16 @@ namespace cms {
 	using namespace Indep;
 	using namespace ca210api;
 
-	 CA210ComponentAnalyzer::
-	    CA210ComponentAnalyzer(bptr < CA210 > ca210):ca210(ca210),
-	    ca210api(ca210->getCA210API()), mm(bptr < MeterMeasurement >
-					       (new
-						MeterMeasurement(ca210,
-								 false))) {
+	const WideString & CA210ComponentAnalyzer::
+	    CalibrationDataFilename = "ca210.dat";
+	 CA210ComponentAnalyzer::CA210ComponentAnalyzer(bptr < CA210 >
+							ca210):ca210
+	    (ca210), ca210api(ca210->getCA210API()),
+	    mm(bptr < MeterMeasurement >
+	       (new MeterMeasurement(ca210, false))) {
 	    mm->setWaitTimes(5000);
-	    ca210api->resetLvxyCalMode();
-	    ca210api->setAnalyzerCalMode();
+	    ca210api->setChannelNO(0);
+	    ca210api->copyToFile(CalibrationDataFilename);
 	};
 
 	 CA210ComponentAnalyzer::
@@ -40,19 +41,19 @@ namespace cms {
 				   mm):ca210(ca210),
 	    ca210api(ca210->getCA210API()), mm(mm) {
 	    mm->setWaitTimes(5000);
-	    ca210api->resetLvxyCalMode();
-	    ca210api->setAnalyzerCalMode();
+	    ca210api->setChannelNO(0);
+	    ca210api->copyToFile(CalibrationDataFilename);
 	};
 
 	RGB_ptr CA210ComponentAnalyzer::getComponent(RGB_ptr rgb) {
 	    Patch_ptr patch = mm->measure(rgb, rgb->toString());
 	    XYZ = patch->getXYZ();
-	    bptr < CAMeasureResult > measureResult =
-		ca210api->getMeasureResult();
-	    RGB_ptr
-		component(new
-			  RGBColor(measureResult->R, measureResult->G,
-				   measureResult->B));
+	    float_array rgbComponent = ca210api->triggerComponentAnalyze();
+
+	    float r = rgbComponent[0];
+	    float g = rgbComponent[1];
+	    float b = rgbComponent[2];
+	    RGB_ptr component(new RGBColor(r, g, b));
 	    return component;
 
 	};
@@ -90,7 +91,11 @@ namespace cms {
 
 	void CA210ComponentAnalyzer::setChannel(int no, string_ptr id) {
 	    ca210api->setChannelNO(no);
-	    ca210api->setChannelID(*id);
+	    ca210api->setChannelID(WideString(id->c_str()));
+
+	    ca210api->resetLvxyCalMode();
+	    ca210api->copyFromFile(CalibrationDataFilename);
+	    ca210api->setAnalyzerCalMode();
 	};
 
 	//======================================================================

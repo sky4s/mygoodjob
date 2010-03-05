@@ -8,6 +8,7 @@
 
 //其他庫頭文件
 #include <CA200SRVRLib/CA200SRVRLib_TLB.h>
+//#include <vcl.h>
 //本項目內頭文件
 #include <java/lang.h>
 //---------------------------------------------------------------------------
@@ -22,6 +23,7 @@ namespace ca210api {
 	float duv;
 	float R, G, B;
 	 CAMeasureResult();
+	 CAMeasureResult(float R, float G, float B);
 	 CAMeasureResult(float x, float y, float Lv, float X, float Y,
 			 float Z, long cct, float duv);
 	 CAMeasureResult(float x, float y, float Lv, float X, float Y,
@@ -67,6 +69,7 @@ namespace ca210api {
 
 	void close();
 	float_array triggerMeasurement();
+	float_array triggerComponentAnalyze();
 	 bptr < CAMeasureResult > triggerMeasureResult();
 
 	// Options
@@ -100,10 +103,14 @@ namespace ca210api {
 	long getChannelNO();
 	// channel ID
 	void setChannelID(wchar_t * id);
+	void setChannelID(const WideString & id);
+	//void setChannelID(const std::string & id);
 
-	void setChannelID(const std::string & id);
 	wchar_t *getChannelID();
-
+	//void copyToFile(const std::string & filename);
+	//void copyFromFile(const std::string & filename);
+	void copyToFile(const WideString & filename);
+	void copyFromFile(const WideString & filename);
     };
 };
 #endif
