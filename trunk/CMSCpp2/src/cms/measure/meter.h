@@ -77,6 +77,21 @@ namespace cms {
 		void close();
 	    };
 
+	    class DGCodeFileMeter:public jObject {
+	      public:
+		DGCodeFileMeter();
+		void close();
+		bool isConnected();
+		void calibrate();
+		string_ptr getCalibrationDescription();
+		void setPatchIntensity(PatchIntensity patchIntensity);
+		double_array triggerMeasurementInXYZ();
+		string_ptr getLastCalibration();
+		string_ptr getCalibrationCount();
+		void setScreenType(ScreenType screenType);
+		Instr getType();
+	    };
+
 	};
     };
 };

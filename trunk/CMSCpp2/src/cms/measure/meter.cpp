@@ -95,10 +95,10 @@ namespace cms {
 	    };
 
 	    shared_ptr < std::string > CA210::getLastCalibration() {
-		//return nil_string_ptr;
+		return nil_string_ptr;
 	    };
 	    shared_ptr < std::string > CA210::getCalibrationCount() {
-		//return nil_string_ptr;
+		return nil_string_ptr;
 	    };
 	    void CA210::setScreenType(ScreenType screenType) {
 	    };
@@ -121,6 +121,39 @@ namespace cms {
 		if (null == _CA210API) {
 		    initCA210API();
 		}
+	    };
+	    //==================================================================
+
+	    DGCodeFileMeter::DGCodeFileMeter() {
+	    };
+	    void DGCodeFileMeter::close() {
+	    };
+	    bool DGCodeFileMeter::isConnected() {
+		return true;
+	    };
+	    void DGCodeFileMeter::calibrate() {
+	    };
+	    string_ptr DGCodeFileMeter::getCalibrationDescription() {
+		return shared_ptr < string >
+		    (new
+		     string
+		     ("Set the pointing ring to the 0-CAL position."));
+	    };
+	    void DGCodeFileMeter::
+		setPatchIntensity(PatchIntensity patchIntensity) {
+	    };
+	    double_array DGCodeFileMeter::triggerMeasurementInXYZ() {
+	    };
+	    string_ptr DGCodeFileMeter::getLastCalibration() {
+		return nil_string_ptr;
+	    };
+	    string_ptr DGCodeFileMeter::getCalibrationCount() {
+		return nil_string_ptr;
+	    };
+	    void DGCodeFileMeter::setScreenType(ScreenType screenType) {
+	    };
+	    Instr DGCodeFileMeter::getType() {
+		return Instr::CA210;
 	    };
 	    //==================================================================
 	};
