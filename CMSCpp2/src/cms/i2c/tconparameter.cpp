@@ -10,7 +10,11 @@
 
 namespace cms {
     namespace i2c {
+	using namespace cms::colorformat;
+	 TConParameter::
+	    TConParameter(const ExcelFileDB & excel):excel(excel) {
 
+	};
     };
 };
- 
+

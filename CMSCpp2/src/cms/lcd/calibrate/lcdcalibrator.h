@@ -19,9 +19,12 @@ namespace cms {
 	      public:
 		Composition(RGB_ptr rgb, RGB_ptr component);
 		Composition(RGB_ptr rgb, RGB_ptr component, XYZ_ptr XYZ);
+		Composition(RGB_ptr rgb, RGB_ptr component, XYZ_ptr XYZ,
+			    RGB_ptr gamma);
 		RGB_ptr rgb;
 		RGB_ptr component;
 		XYZ_ptr XYZ;
+		RGB_ptr gamma;
 	    };
 	    class ComponentFetcher {
 	      private:
@@ -88,8 +91,12 @@ namespace cms {
 		bool bMax;
 		bool gamma256;
 		bool avoidFRCNoise;
+		bool rgbgamma;
 		//int n;
 		double_vector_ptr gammaCurve;
+		double_vector_ptr rgammaCurve;
+		double_vector_ptr ggammaCurve;
+		double_vector_ptr bgammaCurve;
 		 bptr < DGCodeProducer > producer;
 		 bptr < ComponentFetcher > fetcher;
 		 bptr < cms::measure::ComponentAnalyzerIF > analyzer;
@@ -102,8 +109,13 @@ namespace cms {
 		void setP1P2(double p1, double p2);
 		void setRBInterpolation(int under);
 		void setGamma(double gamma, int n);
-		void setGammaCurve(double_array gammaCurve, int n);
+		void setGamma(double rgamma, double ggamma, double bgamma,
+			      int n);
+		//void setGammaCurve(double_array gammaCurve, int n);
 		void setGammaCurve(double_vector_ptr gammaCurve);
+		void setGammaCurve(double_vector_ptr rgammaCurve,
+				   double_vector_ptr ggammaCurve,
+				   double_vector_ptr bgammaCurve);
 		void setGByPass(bool byPass);
 		void setBIntensityGain(double gain);
 		void setBMax(bool bMax);
@@ -112,9 +124,12 @@ namespace cms {
 		void setBitDepth(const BitDepth & in, const BitDepth & lut,
 				 const BitDepth & out);
 
-		RGB_vector_ptr getDGCode(int start, int end, int step);
 		 LCDCalibrator(bptr < cms::measure::ComponentAnalyzerIF >
 			       analyzer);
+
+		RGB_vector_ptr getDGCode(int start, int end, int step);
+		RGB_vector_ptr getDGCode(int step);
+
 	    };
 
 

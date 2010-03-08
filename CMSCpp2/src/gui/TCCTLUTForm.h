@@ -61,6 +61,7 @@ class TCCTLUTForm:public TForm {
     TEdit *Edit_P1;
     TLabel *Label8;
     TEdit *Edit_P2;
+    TButton *Button_Debug;
     void __fastcall Button_BrowseDirClick(TObject * Sender);
     void __fastcall RadioButton_In6Click(TObject * Sender);
     void __fastcall RadioButton_In8Click(TObject * Sender);
@@ -69,6 +70,7 @@ class TCCTLUTForm:public TForm {
     void __fastcall RadioButton_P1P2Click(TObject * Sender);
     void __fastcall Button_RunClick(TObject * Sender);
     void __fastcall FormKeyPress(TObject * Sender, char &Key);
+    void __fastcall FormCreate(TObject * Sender);
   private:			// User declarations
     void resetBitDepth();
     void setBitDepthEnable(bool lut10, bool lut12, bool out6, bool out8,

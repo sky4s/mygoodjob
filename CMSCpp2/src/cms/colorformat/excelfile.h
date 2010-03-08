@@ -111,8 +111,8 @@ namespace cms {
 	    string_vector_ptr nextResult();
 	    bool hasNext();
 	    const string_ptr get(int row, int column);
-	    void set(int row, int column, const std::string & value);
-	    void refresh();
+	    /*void set(int row, int column, const std::string & value);
+	       void refresh(); */
 	};
 	//using namespace lcd::calibrate::Composition;
 	class DGCodeFile {
@@ -155,6 +155,8 @@ namespace cms {
 	    void setRawData(Composition_vector_ptr compositionVector);
 	    void setRawData(Composition_vector_ptr compositionVector,
 			    RGBGamma_ptr rgbgamma);
+	    Composition_vector_ptr getCompositionVector();
+
 	    /*
 	       量測的資料不見得是0~255全量, 但是產生的gamma一定是全部
 	       該如何整合兩者?兩種作法

@@ -27,8 +27,9 @@
 TMainForm *MainForm;
 //---------------------------------------------------------------------------
 __fastcall TMainForm::TMainForm(TComponent * Owner):TForm(Owner),
-linkCA210(LINK_CA210)
+linkCA210(!FileExists(DEBUG_FILE))
 {
+    //bool debug = FileExists(DEBUG_FILE);
 }
 
 //---------------------------------------------------------------------------

@@ -10,12 +10,12 @@
       build\independ.obj build\rgb.obj build\ciexyz.obj build\algo.obj 
       build\aroundAlgo.obj build\lcdcalibrator.obj build\nearAlgo.obj 
       build\rgbvectorop.obj build\whitefinder.obj build\analyzer.obj 
-      build\cp.obj build\meter.obj build\MeterMeasurement.obj build\rgbArray.obj 
-      build\util.obj build\lang.obj build\doubleArray.obj 
-      build\interpolation.obj build\regression.obj build\searcher.obj 
-      build\svd.obj build\rgbgamma.obj build\TMeasureWindow.obj 
-      build\CA200SRVRLib_OCX.obj build\CA200SRVRLib_TLB.obj 
-      build\tconparameter.obj"/>
+      build\cp.obj build\meter.obj build\rgbArray.obj build\util.obj 
+      build\lang.obj build\doubleArray.obj build\interpolation.obj 
+      build\regression.obj build\searcher.obj build\svd.obj build\rgbgamma.obj 
+      build\TMeasureWindow.obj build\CA200SRVRLib_OCX.obj 
+      build\CA200SRVRLib_TLB.obj build\tconparameter.obj 
+      build\metermeasurement.obj build\tconcontrol.obj build\i2ccontrol.obj"/>
     <RESFILES value="CMSCpp2.res"/>
     <IDLFILES value=""/>
     <IDLGENFILES value=""/>
@@ -31,7 +31,7 @@
       inetdbbde.bpi inetdbxpress.bpi inetdb.bpi nmfast.bpi webdsnap.bpi 
       bcbie.bpi websnap.bpi soaprtl.bpi dclocx.bpi dbexpress.bpi dbxcds.bpi 
       indy.bpi bcb2kaxserver.bpi bcbindent.bpi"/>
-    <PATHCPP value=".;src;src;src\ca210api;src\cms;src\cms;src\cms\colorformat;src\cms\colorformat;src\cms\colorformat;src\cms\colorspace;src\cms\colorspace;src\cms\colorspace;src\cms\colorspace;src\cms\colorspace;src\cms\lcd\calibrate;src\cms\lcd\calibrate;src\cms\lcd\calibrate;src\cms\lcd\calibrate;src\cms\lcd\calibrate;src\cms\lcd\calibrate;src\cms\measure;src\cms\measure;src\cms\measure;src\cms\measure;src\cms\util;src\static;src\static\java;src\static\math;src\static\math;src\static\math;src\static\math;src\static\math;src\cms\lcd\calibrate;src\gui;imports\CA200SRVRLib;imports\CA200SRVRLib;src\cms\i2c"/>
+    <PATHCPP value=".;src;src;src\ca210api;src\cms;src\cms;src\cms\colorformat;src\cms\colorformat;src\cms\colorformat;src\cms\colorspace;src\cms\colorspace;src\cms\colorspace;src\cms\colorspace;src\cms\colorspace;src\cms\lcd\calibrate;src\cms\lcd\calibrate;src\cms\lcd\calibrate;src\cms\lcd\calibrate;src\cms\lcd\calibrate;src\cms\lcd\calibrate;src\cms\measure;src\cms\measure;src\cms\measure;src\cms\util;src\static;src\static\java;src\static\math;src\static\math;src\static\math;src\static\math;src\static\math;src\cms\lcd\calibrate;src\gui;imports\CA200SRVRLib;imports\CA200SRVRLib;src\cms\i2c;src\cms\measure;src\cms\i2c;src\cms\i2c"/>
     <PATHPAS value=".;"/>
     <PATHRC value=".;"/>
     <PATHASM value=".;"/>
@@ -93,7 +93,6 @@
       <FILE FILENAME="src\cms\measure\analyzer.cpp" FORMNAME="" UNITNAME="analyzer.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="src\cms\measure\cp.cpp" FORMNAME="" UNITNAME="cp.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="src\cms\measure\meter.cpp" FORMNAME="" UNITNAME="meter.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="src\cms\measure\MeterMeasurement.cpp" FORMNAME="" UNITNAME="MeterMeasurement.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="src\cms\util\rgbArray.cpp" FORMNAME="" UNITNAME="rgbArray" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="src\static\util.cpp" FORMNAME="" UNITNAME="util" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="src\static\java\lang.cpp" FORMNAME="" UNITNAME="lang" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
@@ -108,6 +107,9 @@
       <FILE FILENAME="imports\CA200SRVRLib\CA200SRVRLib_OCX.cpp" FORMNAME="" UNITNAME="CA200SRVRLib_OCX" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="imports\CA200SRVRLib\CA200SRVRLib_TLB.cpp" FORMNAME="" UNITNAME="CA200SRVRLib_TLB" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="src\cms\i2c\tconparameter.cpp" FORMNAME="" UNITNAME="tconparameter" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="src\cms\measure\metermeasurement.cpp" FORMNAME="" UNITNAME="metermeasurement" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="src\cms\i2c\tconcontrol.cpp" FORMNAME="" UNITNAME="tconcontrol" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="src\cms\i2c\i2ccontrol.cpp" FORMNAME="" UNITNAME="i2ccontrol" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
   </FILELIST>
   <BUILDTOOLS>
   </BUILDTOOLS>

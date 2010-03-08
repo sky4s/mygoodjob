@@ -11,6 +11,7 @@ object CCTLUTForm: TCCTLUTForm
   Font.Name = 'MS Sans Serif'
   Font.Style = []
   OldCreateOrder = False
+  OnCreate = FormCreate
   OnKeyPress = FormKeyPress
   PixelsPerInch = 120
   TextHeight = 16
@@ -425,6 +426,15 @@ object CCTLUTForm: TCCTLUTForm
     Caption = 'Run'
     TabOrder = 6
     OnClick = Button_RunClick
+  end
+  object Button_Debug: TButton
+    Left = 576
+    Top = 312
+    Width = 57
+    Height = 25
+    Caption = 'Debug'
+    TabOrder = 7
+    Visible = False
   end
   object OpenDialog1: TOpenDialog
     Options = [ofEnableSizing]

@@ -1,8 +1,14 @@
 #ifndef METERH
 #define METERH
 
+//C系統文件
+
+//C++系統文件
+
+//其他庫頭文件
+
+//本項目內頭文件
 #include <java/lang.h>
-//#include <string>
 #include <ca210api/CA210API.h>
 
 
@@ -78,8 +84,13 @@ namespace cms {
 	    };
 
 	    class DGCodeFileMeter:public jObject {
+	      private:
+		bptr < cms::colorformat::DGCodeFile > dgcode;
+		Composition_vector_ptr vector;
+		int index;
 	      public:
-		DGCodeFileMeter();
+		 DGCodeFileMeter(bptr < cms::colorformat::DGCodeFile >
+				 dgcode);
 		void close();
 		bool isConnected();
 		void calibrate();
