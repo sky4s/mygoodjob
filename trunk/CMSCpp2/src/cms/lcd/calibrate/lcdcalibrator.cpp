@@ -38,6 +38,12 @@ namespace cms {
 		component(component), XYZ(XYZ) {
 
 	    };
+	     Composition::Composition(RGB_ptr rgb,
+				      RGB_ptr component,
+				      XYZ_ptr XYZ, RGB_ptr gamma):rgb(rgb),
+		component(component), XYZ(XYZ), gamma(gamma) {
+
+	    };
 	    //==================================================================
 
 
@@ -52,10 +58,9 @@ namespace cms {
 	       analyzer(analyzer) {
 
 	       }; */
-	     ComponentFetcher::ComponentFetcher(bptr <
-						ComponentAnalyzerIF >
-						analyzer):analyzer
-		(analyzer) {
+	  ComponentFetcher::ComponentFetcher(bptr < ComponentAnalyzerIF > analyzer):analyzer
+		(analyzer)
+	    {
 
 	    };
 
@@ -275,14 +280,23 @@ namespace cms {
 					 gamma, int n) {
 		setGammaCurve(getGammaCurveVector(gamma, n));
 	    };
-	    void LCDCalibrator::
-		setGammaCurve(double_array gammaCurve, int n) {
-		/* TODO : setGammaCurve */
-		//this->gammaCurve = gammaCurve;
+	    void LCDCalibrator::setGamma(double rgamma, double ggamma,
+					 double bgamma, int n) {
+		setGammaCurve(getGammaCurveVector(rgamma, n),
+			      getGammaCurveVector(ggamma, n),
+			      getGammaCurveVector(bgamma, n));
 	    };
 	    void LCDCalibrator::
 		setGammaCurve(double_vector_ptr gammaCurve) {
 		this->gammaCurve = gammaCurve;
+	    };
+	    void LCDCalibrator::
+		setGammaCurve(double_vector_ptr rgammaCurve,
+			      double_vector_ptr ggammaCurve,
+			      double_vector_ptr bgammaCurve) {
+		this->rgammaCurve = rgammaCurve;
+		this->ggammaCurve = ggammaCurve;
+		this->bgammaCurve = bgammaCurve;
 	    };
 	    void LCDCalibrator::setGByPass(bool byPass) {
 		this->gByPass = byPass;
@@ -306,6 +320,12 @@ namespace cms {
 		this->in = in;
 		this->lut = lut;
 		this->out = out;
+	    };
+
+	  LCDCalibrator::LCDCalibrator(bptr < ComponentAnalyzerIF > analyzer):analyzer(analyzer), rgbgamma(false)
+	    {
+		fetcher.reset(new ComponentFetcher(analyzer));
+		//analyzer->enter();
 	    };
 
 	    RGB_vector_ptr LCDCalibrator::
@@ -393,11 +413,7 @@ namespace cms {
 		RGB_vector_ptr result = dgop.createInstance();
 		return result;
 	    };
-	  LCDCalibrator::LCDCalibrator(bptr < ComponentAnalyzerIF > analyzer):analyzer(analyzer)
-	    {
-		fetcher.reset(new ComponentFetcher(analyzer));
-		//analyzer->enter();
-	    };
+
 	    //==================================================================
 	};
     };

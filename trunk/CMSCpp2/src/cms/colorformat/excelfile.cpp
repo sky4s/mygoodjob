@@ -342,20 +342,20 @@ namespace cms {
 	    //dataSet->UpdateRecord();
 	    return str;
 	};
-	void DBQuery::set(int row, int column, const std::string & value) {
-	    throw UnsupportedOperationException();
-	    dataSet->First();
-	    for (int x = 0; x < row; x++) {
-		dataSet->Next();
-	    };
-	    AnsiString astr(value.c_str());
-	    dataSet->Fields->Fields[column]->Text = astr;
-	};
+	/*void DBQuery::set(int row, int column, const std::string & value) {
+	   throw UnsupportedOperationException();
+	   dataSet->First();
+	   for (int x = 0; x < row; x++) {
+	   dataSet->Next();
+	   };
+	   AnsiString astr(value.c_str());
+	   dataSet->Fields->Fields[column]->Text = astr;
+	   };
 
-	void DBQuery::refresh() {
-	    throw UnsupportedOperationException();
-	    dataSet->Refresh();
-	};
+	   void DBQuery::refresh() {
+	   throw UnsupportedOperationException();
+	   dataSet->Refresh();
+	   }; */
 
 	//======================================================================
 
@@ -467,32 +467,22 @@ namespace cms {
 			       n):filename(filename), n(n), mode(Create) {
 	    init();
 	};
-	DGCodeFile::
-	    DGCodeFile
-	    (const std::
-	     string &
-	     filename,
-	     int_vector_ptr
-	     nvector):filename
-	    (filename), nvector(nvector), n(-1), mode(Create) {
+	DGCodeFile::DGCodeFile(const std::string & filename,
+			       int_vector_ptr nvector):filename(filename),
+	    nvector(nvector), n(-1), mode(Create) {
 
 	};
 	DGCodeFile::
-	    DGCodeFile
-	    (const string &
-	     filename,
-	     int n, const Mode mode):filename(filename), n(n), mode(mode) {
+	    DGCodeFile(const string & filename, int n,
+		       const Mode mode):filename(filename), n(n),
+	    mode(mode) {
 	    init();
 	};
 	DGCodeFile::
 	    DGCodeFile
-	    (const string &
-	     filename,
-	     int_vector_ptr
-	     nvector,
-	     const Mode
-	     mode):filename
-	    (filename), nvector(nvector), n(-1), mode(mode) {
+	    (const string & filename, int_vector_ptr nvector,
+	     const Mode mode):filename(filename), nvector(nvector), n(-1),
+	    mode(mode) {
 	    init();
 	};
 	void
@@ -533,6 +523,8 @@ namespace cms {
 		db->update(RawHeader[0], w, RawFieldNames, values, false);
 	    }
 	};
+
+
 	void
 	 DGCodeFile::
 	    setRawData
@@ -540,6 +532,37 @@ namespace cms {
 	     compositionVector, RGBGamma_ptr rgbgamma) {
 
 	};
+
+	Composition_vector_ptr DGCodeFile::getCompositionVector() {
+	    Composition_vector_ptr vector(new Composition_vector());
+	    bptr < DBQuery > query = db->selectAll();
+	    while (query->hasNext()) {
+		string_vector_ptr result = query->nextResult();
+		int gray = lexical_cast < int >((*result)[0]);
+		double x = lexical_cast < double >((*result)[1]);
+		double y = lexical_cast < double >((*result)[2]);
+		double Y = lexical_cast < double >((*result)[3]);
+		double R = lexical_cast < double >((*result)[4]);
+		double G = lexical_cast < double >((*result)[5]);
+		double B = lexical_cast < double >((*result)[6]);
+		double r = lexical_cast < double >((*result)[7]);
+		double g = lexical_cast < double >((*result)[8]);
+		double b = lexical_cast < double >((*result)[9]);
+
+		RGB_ptr rgb(new RGBColor(gray, gray, gray));
+		RGB_ptr component(new RGBColor(R, G, B));
+		xyY_ptr xyY(new CIExyY(x, y, Y));
+		XYZ_ptr XYZ(xyY->toXYZ());
+		RGB_ptr gamma(new RGBColor(r, g, b));
+
+		bptr < Composition >
+		    composition(new
+				Composition(rgb, component, XYZ, gamma));
+		vector->push_back(composition);
+	    };
+	    return vector;
+	};
+
 	void
 	 DGCodeFile::deleteExist(const std::string & filename) {
 	    const char

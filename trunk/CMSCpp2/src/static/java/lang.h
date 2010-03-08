@@ -145,6 +145,7 @@ namespace cms {
 	    class LogoFile;
 	};
 	class ExcelFileDB;
+	class DGCodeFile;
     };
     namespace colorspace {
 	namespace depend {

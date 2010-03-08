@@ -14,8 +14,10 @@ namespace cms {
     namespace i2c {
 	class TConParameter {
 	  private:
-	    const ExcelFileDB & excel;
+	    const cms::colorformat::ExcelFileDB & excel;
 	    string_ptr tcon;
+	  public:
+	     TConParameter(const cms::colorformat::ExcelFileDB & excel);
 	};
     };
 };

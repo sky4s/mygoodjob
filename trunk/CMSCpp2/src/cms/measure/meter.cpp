@@ -1,14 +1,24 @@
 #include "meter.h"
 
-//#include <java/lang.h>
-//#include <cms/colorformat/logo.h>
-//#include <string>
+//C系統文件
+
+//C++系統文件
+
+//其他庫頭文件
+
+//本項目內頭文件
+#include <cms/colorformat/excelfile.h>
+#include <cms/colorspace/ciexyz.h>
+#include <cms/lcd/calibrate/lcdcalibrator.h>
 
 namespace cms {
     namespace measure {
 	namespace meter {
 	    using namespace std;
 	    using namespace boost;
+	    using namespace cms::colorformat;
+	    using namespace cms::lcd::calibrate;
+	    using namespace Indep;
 	    //==================================================================
 	    // Instr
 	    //==================================================================
@@ -124,7 +134,10 @@ namespace cms {
 	    };
 	    //==================================================================
 
-	    DGCodeFileMeter::DGCodeFileMeter() {
+	  DGCodeFileMeter::DGCodeFileMeter(bptr < DGCodeFile > dgcode):dgcode(dgcode), vector(dgcode->getCompositionVector()),
+		index(0)
+	    {
+
 	    };
 	    void DGCodeFileMeter::close() {
 	    };
@@ -143,6 +156,9 @@ namespace cms {
 		setPatchIntensity(PatchIntensity patchIntensity) {
 	    };
 	    double_array DGCodeFileMeter::triggerMeasurementInXYZ() {
+		Composition_ptr c = (*vector)[index++];
+		XYZ_ptr XYZ = c->XYZ;
+		return XYZ->getValues();
 	    };
 	    string_ptr DGCodeFileMeter::getLastCalibration() {
 		return nil_string_ptr;

@@ -187,10 +187,19 @@ void __fastcall TCCTLUTForm::Button_RunClick(TObject * Sender)
 void __fastcall TCCTLUTForm::FormKeyPress(TObject * Sender, char &Key)
 {
     if (Key == 27) {
-	int x = 1;
+	//int x = 1;
     }
 }
 
 //---------------------------------------------------------------------------
 
+
+
+
+void __fastcall TCCTLUTForm::FormCreate(TObject * Sender)
+{
+    this->Button_Debug->Visible = !MainForm->linkCA210;
+}
+
+//---------------------------------------------------------------------------
 

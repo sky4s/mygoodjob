@@ -1,6 +1,12 @@
 #include "MeterMeasurement.h"
 
-//#include <vcl.h>
+//C系統文件
+
+//C++系統文件
+
+//其他庫頭文件
+
+//本項目內頭文件
 #include <cms/measure/meter.h>
 #include <cms/measure/cp.h>
 #include <cms/patch.h>

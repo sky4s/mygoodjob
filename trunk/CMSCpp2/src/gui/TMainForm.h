@@ -44,7 +44,6 @@ class TMainForm:public TForm {
     //==========================================================================
     // meter
     //==========================================================================
-     bool linkCA210;
      bptr < cms::measure::meter::CA210 > ca210;
      bptr < cms::measure::meter::Meter > meter;
      bptr < cms::measure::meter::CA210 > getCA210();
@@ -53,6 +52,7 @@ class TMainForm:public TForm {
     //==========================================================================
     // meter
     //==========================================================================
+     bool linkCA210;
      bptr < cms::measure::MeterMeasurement > mm;
      bptr < cms::measure::ComponentAnalyzerIF > analyzer;
     int getInterval();
