@@ -11,10 +11,11 @@
       build\aroundAlgo.obj build\lcdcalibrator.obj build\nearAlgo.obj 
       build\rgbvectorop.obj build\whitefinder.obj build\analyzer.obj 
       build\cp.obj build\meter.obj build\MeterMeasurement.obj build\rgbArray.obj 
-      build\util.obj build\lang.obj build\doublearray.obj 
+      build\util.obj build\lang.obj build\doubleArray.obj 
       build\interpolation.obj build\regression.obj build\searcher.obj 
       build\svd.obj build\rgbgamma.obj build\TMeasureWindow.obj 
-      build\CA200SRVRLib_OCX.obj build\CA200SRVRLib_TLB.obj"/>
+      build\CA200SRVRLib_OCX.obj build\CA200SRVRLib_TLB.obj 
+      build\tconparameter.obj"/>
     <RESFILES value="CMSCpp2.res"/>
     <IDLFILES value=""/>
     <IDLGENFILES value=""/>
@@ -30,7 +31,7 @@
       inetdbbde.bpi inetdbxpress.bpi inetdb.bpi nmfast.bpi webdsnap.bpi 
       bcbie.bpi websnap.bpi soaprtl.bpi dclocx.bpi dbexpress.bpi dbxcds.bpi 
       indy.bpi bcb2kaxserver.bpi bcbindent.bpi"/>
-    <PATHCPP value=".;src;src;src\ca210api;src\cms;src\cms;src\cms\colorformat;src\cms\colorformat;src\cms\colorformat;src\cms\colorspace;src\cms\colorspace;src\cms\colorspace;src\cms\colorspace;src\cms\colorspace;src\cms\lcd\calibrate;src\cms\lcd\calibrate;src\cms\lcd\calibrate;src\cms\lcd\calibrate;src\cms\lcd\calibrate;src\cms\lcd\calibrate;src\cms\measure;src\cms\measure;src\cms\measure;src\cms\measure;src\cms\util;src\static;src\static\java;src\static\math;src\static\math;src\static\math;src\static\math;src\static\math;src\cms\lcd\calibrate;src\gui;imports\CA200SRVRLib;imports\CA200SRVRLib"/>
+    <PATHCPP value=".;src;src;src\ca210api;src\cms;src\cms;src\cms\colorformat;src\cms\colorformat;src\cms\colorformat;src\cms\colorspace;src\cms\colorspace;src\cms\colorspace;src\cms\colorspace;src\cms\colorspace;src\cms\lcd\calibrate;src\cms\lcd\calibrate;src\cms\lcd\calibrate;src\cms\lcd\calibrate;src\cms\lcd\calibrate;src\cms\lcd\calibrate;src\cms\measure;src\cms\measure;src\cms\measure;src\cms\measure;src\cms\util;src\static;src\static\java;src\static\math;src\static\math;src\static\math;src\static\math;src\static\math;src\cms\lcd\calibrate;src\gui;imports\CA200SRVRLib;imports\CA200SRVRLib;src\cms\i2c"/>
     <PATHPAS value=".;"/>
     <PATHRC value=".;"/>
     <PATHASM value=".;"/>
@@ -40,13 +41,14 @@
     <USERDEFINES value="_DEBUG"/>
     <SYSDEFINES value="NO_STRICT;_RTLDLL;USEPACKAGES"/>
     <MAINSOURCE value="CMSCpp2.bpf"/>
-    <INCLUDEPATH value="imports\CA200SRVRLib;src\gui;&quot;F:\Program Files\Borland\CBuilder6\Projects&quot;;src\static\math;src\static\java;src\static;src\cms\util;src\cms\measure;src\cms\lcd\calibrate;src\cms\colorspace;src\cms\colorformat;src\cms;src\ca210api;src;$(BCB)\include;$(BCB)\include\vcl;imports;lib"/>
-    <LIBPATH value="imports\CA200SRVRLib;src\gui;&quot;F:\Program Files\Borland\CBuilder6\Projects&quot;;$(BCB)\Projects\Lib;src\static\math;src\static\java;src\static;src\cms\util;src\cms\measure;src\cms\lcd\calibrate;src\cms\colorspace;src\cms\colorformat;src\cms;src\ca210api;src;$(BCB)\lib\obj;$(BCB)\lib;imports;lib"/>
+    <INCLUDEPATH value="src\cms\i2c;&quot;D:\Program Files\Borland\CBuilder6\Projects&quot;;imports\CA200SRVRLib;src\gui;&quot;F:\Program Files\Borland\CBuilder6\Projects&quot;;src\static\math;src\static\java;src\static;src\cms\util;src\cms\measure;src\cms\lcd\calibrate;src\cms\colorspace;src\cms\colorformat;src\cms;src\ca210api;src;$(BCB)\include;$(BCB)\include\vcl;imports;lib"/>
+    <LIBPATH value="src\cms\i2c;&quot;D:\Program Files\Borland\CBuilder6\Projects&quot;;imports\CA200SRVRLib;src\gui;&quot;F:\Program Files\Borland\CBuilder6\Projects&quot;;$(BCB)\Projects\Lib;src\static\math;src\static\java;src\static;src\cms\util;src\cms\measure;src\cms\lcd\calibrate;src\cms\colorspace;src\cms\colorformat;src\cms;src\ca210api;src;$(BCB)\lib\obj;$(BCB)\lib;imports;lib"/>
     <WARNINGS value="-w-par"/>
     <OTHERFILES value=""/>
   </MACROS>
   <OPTIONS>
-    <IDLCFLAGS value="-Iimports\CA200SRVRLib -Isrc\gui 
+    <IDLCFLAGS value="-Isrc\cms\i2c -I&quot;D:\Program Files\Borland\CBuilder6\Projects&quot; 
+      -Iimports\CA200SRVRLib -Isrc\gui 
       -I&quot;F:\Program Files\Borland\CBuilder6\Projects&quot; -Isrc\static\math 
       -Isrc\static\java -Isrc\static -Isrc\cms\util -Isrc\cms\measure 
       -Isrc\cms\lcd\calibrate -Isrc\cms\colorspace -Isrc\cms\colorformat 
@@ -95,7 +97,7 @@
       <FILE FILENAME="src\cms\util\rgbArray.cpp" FORMNAME="" UNITNAME="rgbArray" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="src\static\util.cpp" FORMNAME="" UNITNAME="util" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="src\static\java\lang.cpp" FORMNAME="" UNITNAME="lang" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="src\static\math\doublearray.cpp" FORMNAME="" UNITNAME="doublearray.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="src\static\math\doubleArray.cpp" FORMNAME="" UNITNAME="doublearray.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="src\static\math\interpolation.cpp" FORMNAME="" UNITNAME="interpolation.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="src\static\math\regression.cpp" FORMNAME="" UNITNAME="regression.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="src\static\math\searcher.cpp" FORMNAME="" UNITNAME="searcher.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
@@ -105,6 +107,7 @@
       <FILE FILENAME="src\gui\TMeasureWindow.cpp" FORMNAME="MeasureWindow" UNITNAME="TMeasureWindow" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="imports\CA200SRVRLib\CA200SRVRLib_OCX.cpp" FORMNAME="" UNITNAME="CA200SRVRLib_OCX" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="imports\CA200SRVRLib\CA200SRVRLib_TLB.cpp" FORMNAME="" UNITNAME="CA200SRVRLib_TLB" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="src\cms\i2c\tconparameter.cpp" FORMNAME="" UNITNAME="tconparameter" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
   </FILELIST>
   <BUILDTOOLS>
   </BUILDTOOLS>
