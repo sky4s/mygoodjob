@@ -155,7 +155,7 @@ namespace cms {
 		setPatchIntensity(PatchIntensity patchIntensity) {
 	    };
 	    double_array DGCodeFileMeter::triggerMeasurementInXYZ() {
-		Composition_ptr c = (*vector)[index++];
+		c = (*vector)[index++];
 		XYZ_ptr XYZ = c->XYZ;
 		return XYZ->getValues();
 	    };
@@ -169,6 +169,9 @@ namespace cms {
 	    };
 	    Instr DGCodeFileMeter::getType() {
 		return Instr::CA210;
+	    };
+	    Composition_ptr DGCodeFileMeter::getComposition() {
+		return c;
 	    };
 	    //==================================================================
 	};

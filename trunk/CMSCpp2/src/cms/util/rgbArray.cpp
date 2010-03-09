@@ -5,9 +5,10 @@
 //C++系統文件
 
 //其他庫頭文件
-
+#include <boost/lexical_cast.hpp>
 //本項目內頭文件
 #include <cms/colorspace/rgb.h>
+#include <cms/colorformat/excelfile.h>
 
 namespace cms {
     namespace util {
@@ -31,9 +32,35 @@ namespace cms {
 	    };
 	    return result;
 	};
+	void RGBVector::storeToExcel(const string & filename,
+				     RGB_vector_ptr rgbVector) {
+	    using namespace cms::colorformat;
+	    using namespace boost;
+
+	    ExcelFileDB::deleteExist(filename);
+	    bptr_ < ExcelFileDB > excel(new ExcelFileDB(filename, Create));
+
+	    string_vector_ptr fieldNames =
+		ExcelFileDB::makec(4, "Gray Level", "R", "G",
+				   "B");
+	    excel->createTable("Sheet1", fieldNames);
+	    int size = rgbVector->size();
+	    for (int x = 0; x != size; x++) {
+		RGB_ptr rgb = (*rgbVector)[x];
+		string r = lexical_cast < string > (rgb->R);
+		string g = lexical_cast < string > (rgb->G);
+		string b = lexical_cast < string > (rgb->B);
+		string_vector_ptr values =
+		    ExcelFileDB::makes(4, lexical_cast < string > (x), r,
+				       g,
+				       b);
+		excel->insert(fieldNames, values);
+	    }
+
+	};
 	RGB_vector_ptr RGBVector::clone(RGB_vector_ptr vector) {
 	    RGB_vector_ptr result(new RGB_vector(*vector));
-            return result;
+	    return result;
 	};
 	RGB_vector_ptr RGBVector::deepClone(RGB_vector_ptr vector) {
 	    int size = vector->size();

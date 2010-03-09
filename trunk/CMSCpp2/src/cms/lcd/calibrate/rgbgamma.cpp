@@ -5,9 +5,10 @@
 //C++系統文件
 
 //其他庫頭文件
-
+#include <boost/lexical_cast.hpp>
 //本項目內頭文件
 #include <cms/colorspace/rgb.h>
+#include <cms/colorformat/excelfile.h>
 
 
 namespace cms {
@@ -19,6 +20,33 @@ namespace cms {
 	    RGBGamma::RGBGamma(double_vector_ptr r, double_vector_ptr g,
 			       double_vector_ptr b):r(r), g(g), b(b) {
 	    };
+	    void RGBGamma::storeToExcel(const std::string & filename,
+					RGBGamma_ptr rgbgamma) {
+		using namespace cms::colorformat;
+		using namespace boost;
+		using namespace std;
+
+		 ExcelFileDB::deleteExist(filename);
+		 bptr_ < ExcelFileDB >
+		    excel(new ExcelFileDB(filename, Create));
+
+		string_vector_ptr fieldNames =
+		    ExcelFileDB::makec(4, "Gray Level", "R gamma",
+				       "G gamma",
+				       "B gamma");
+		 excel->createTable("Sheet1", fieldNames);
+		int size = rgbgamma->r->size();
+
+		for (int x = 0; x != size; x++) {
+		    (*rgbgamma->r)[x];
+		    string r = lexical_cast < string > ((*rgbgamma->r)[x]);
+		    string g = lexical_cast < string > ((*rgbgamma->g)[x]);
+		    string b = lexical_cast < string > ((*rgbgamma->b)[x]);
+		    string_vector_ptr values =
+			ExcelFileDB::makes(4, lexical_cast < string > (x),
+					   r, g, b);
+		     excel->insert(fieldNames, values);
+	    }};
 	    //==================================================================
 
 	    //==================================================================

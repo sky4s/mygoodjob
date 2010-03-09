@@ -295,7 +295,7 @@ namespace cms {
 	    }
 	};
 
-	string_vector_ptr ExcelFileDB::make(int count, ...) {
+	string_vector_ptr ExcelFileDB::makec(int count, ...) {
 	    string_vector_ptr result(new string_vector());
 	    va_list num_list;
 	    va_start(num_list, count);
@@ -306,6 +306,28 @@ namespace cms {
 		result->push_back(str);
 	    } va_end(num_list);
 	    return result;
+	};
+
+	string_vector_ptr ExcelFileDB::makes(int count, ...) {
+	    string_vector_ptr result(new string_vector());
+	    va_list num_list;
+	    va_start(num_list, count);
+
+	    for (int i = 0; i < count; i++) {
+		const string str = va_arg(num_list, const string);
+		//string str(c);
+		result->push_back(str);
+	    } va_end(num_list);
+	    return result;
+	};
+
+	void
+	 ExcelFileDB::deleteExist(const std::string & filename) {
+	    const char
+	    *cstr = filename.c_str();
+	    if (FileExists(cstr)) {
+		DeleteFile(cstr);
+	    }
 	};
 
 	void ExcelFileDB::setKeyField(const std::string & keyField) {
@@ -396,9 +418,9 @@ namespace cms {
 
 	    for (int x = start; x != end; x += step) {
 		string_vector_ptr value =
-		    ExcelFileDB::make(1, lexical_cast < string > (x));
+		    ExcelFileDB::makes(1, lexical_cast < string > (x));
 		string_vector_ptr fieldName =
-		    ExcelFileDB::make(1, (*fieldNames)[0]);
+		    ExcelFileDB::makes(1, (*fieldNames)[0]);
 
 		db->insert(fieldName, value);
 	    };
@@ -419,10 +441,9 @@ namespace cms {
 	    for (int x = start; x != end; x += step) {
 		int n = (*nvector)[x];
 		string_vector_ptr value
-		    = ExcelFileDB::make(1, lexical_cast < string > (n));
+		    = ExcelFileDB::makes(1, lexical_cast < string > (n));
 		string_vector_ptr fieldName =
-		    ExcelFileDB::make(1, (*fieldNames)
-				      [0]);
+		    ExcelFileDB::makes(1, (*fieldNames)[0]);
 		db->insert(fieldName, value);
 	    }
 	};
@@ -461,7 +482,9 @@ namespace cms {
 		    = "Text";
 		db->createTable
 		    (Properties, PropertiesFieldNames, fieldType);
-	    };
+	    } else {
+		db.reset(new ExcelFileDB(filename, mode));
+	    }
 	};
 	DGCodeFile::DGCodeFile(const string & filename, int
 			       n):filename(filename), n(n), mode(Create) {
@@ -470,19 +493,25 @@ namespace cms {
 	DGCodeFile::DGCodeFile(const std::string & filename,
 			       int_vector_ptr nvector):filename(filename),
 	    nvector(nvector), n(-1), mode(Create) {
-
-	};
-	DGCodeFile::
-	    DGCodeFile(const string & filename, int n,
-		       const Mode mode):filename(filename), n(n),
-	    mode(mode) {
 	    init();
 	};
-	DGCodeFile::
-	    DGCodeFile
-	    (const string & filename, int_vector_ptr nvector,
-	     const Mode mode):filename(filename), nvector(nvector), n(-1),
-	    mode(mode) {
+	/*DGCodeFile::
+	   DGCodeFile(const string & filename, int n,
+	   const Mode mode):filename(filename), n(n),
+	   mode(mode) {
+	   init();
+	   };
+	   DGCodeFile::
+	   DGCodeFile
+	   (const string & filename, int_vector_ptr nvector,
+	   const Mode mode):filename(filename), nvector(nvector), n(-1),
+	   mode(mode) {
+	   init();
+	   }; */
+
+	DGCodeFile::DGCodeFile(const std::
+			       string & filename):filename(filename),
+	    n(-1), mode(ReadOnly) {
 	    init();
 	};
 	void
@@ -493,13 +522,16 @@ namespace cms {
 	    (*values)[1] = value;
 	    db->insert(PropertiesFieldNames, values, true);
 	};
+	void DGCodeFile::addProperty(const std::string & key,
+				     const double value) {
+	    addProperty(key, lexical_cast < string > (value));
+	};
 	void
 	 DGCodeFile::setRawData(Composition_vector_ptr compositionVector) {
 	    db->setTableName(RawData);
 	    int size = compositionVector->size();
 	    string_vector_ptr values(new string_vector(13));
 
-	    //for (int x = size - 1; x != -1; x--) {
 	    for (int x = 0; x != size; x++) {
 		Composition_ptr c = (*compositionVector)[x];
 		int w = static_cast < int >(c->rgb->getValue(Channel::W));
@@ -530,11 +562,99 @@ namespace cms {
 	    setRawData
 	    (Composition_vector_ptr
 	     compositionVector, RGBGamma_ptr rgbgamma) {
+	    //==================================================================
+	    // 檢查來源資料
+	    //==================================================================
+	    if (compositionVector->size() != rgbgamma->r->size()) {
+		throw
+		    IllegalArgumentException
+		    ("compositionVector->size() != rgbgamma->r->size()");
+	    };
+	    //==================================================================
 
+	    //==================================================================
+	    // 初始資料設定
+	    //==================================================================
+	    db->setTableName(RawData);
+	    int size = compositionVector->size();
+	    string_vector_ptr values(new string_vector(13));
+	    //==================================================================
+
+	    //==================================================================
+	    // 迴圈處理
+	    //==================================================================
+	    for (int x = 0; x != size; x++) {
+		int n = size - 1 - x;
+		Composition_ptr c = (*compositionVector)[x];
+		int w = static_cast < int >(c->rgb->getValue(Channel::W));
+
+		(*values)[0] = lexical_cast < string > (w);
+		xyY_ptr xyY(new CIExyY(c->XYZ));
+		(*values)[1] = lexical_cast < string > (xyY->x);
+		(*values)[2] = lexical_cast < string > (xyY->y);
+		(*values)[3] = lexical_cast < string > (xyY->Y);
+		RGB_ptr component = c->component;
+		(*values)[4] = lexical_cast < string > (component->R);
+		(*values)[5] = lexical_cast < string > (component->G);
+		(*values)[6] = lexical_cast < string > (component->B);
+		//gamma 0~100
+		(*values)[7] = lexical_cast < string > ((*rgbgamma->r)[n]);
+		(*values)[8] = lexical_cast < string > ((*rgbgamma->g)[n]);
+		(*values)[9] = lexical_cast < string > ((*rgbgamma->b)[n]);
+		(*values)[10] =
+		    lexical_cast < string > ((*rgbgamma->r)[n]);
+		(*values)[11] =
+		    lexical_cast < string > ((*rgbgamma->g)[n]);
+		(*values)[12] =
+		    lexical_cast < string > ((*rgbgamma->b)[n]);
+		db->update(RawHeader[0], w, RawFieldNames, values, false);
+	    }
+	    //==================================================================
+	};
+
+	void DGCodeFile::setGammaTable(RGB_vector_ptr dgcode) {
+	    //==================================================================
+	    // 檢查來源資料
+	    //==================================================================
+	    /*if (compositionVector->size() != rgbgamma->r->size()) {
+	       throw
+	       IllegalArgumentException
+	       ("compositionVector->size() != rgbgamma->r->size()");
+	       }; */
+	    //==================================================================
+
+	    //==================================================================
+	    // 初始資料設定
+	    //==================================================================
+	    db->setTableName(GammaTable);
+	    int size = dgcode->size();
+	    string_vector_ptr values(new string_vector(4));
+	    //==================================================================
+
+	    //==================================================================
+	    // 迴圈處理
+	    //==================================================================
+	    for (int x = 0; x != size; x++) {
+		//int n = size - 1 - x;
+		//Composition_ptr c = (*compositionVector)[x];
+
+		RGB_ptr rgb = (*dgcode)[x];
+		//int w = static_cast < int >(rgb->getValue(Channel::W));
+
+		(*values)[0] = lexical_cast < string > (x);
+		(*values)[1] = lexical_cast < string > (rgb->R);
+		(*values)[2] = lexical_cast < string > (rgb->G);
+		(*values)[3] = lexical_cast < string > (rgb->B);
+
+		db->update(GammaHeader[0], x, GammaFieldNames, values,
+			   false);
+	    }
+	    //==================================================================
 	};
 
 	Composition_vector_ptr DGCodeFile::getCompositionVector() {
 	    Composition_vector_ptr vector(new Composition_vector());
+	    db->setTableName(RawData);
 	    bptr < DBQuery > query = db->selectAll();
 	    while (query->hasNext()) {
 		string_vector_ptr result = query->nextResult();
@@ -563,16 +683,8 @@ namespace cms {
 	    return vector;
 	};
 
-	void
-	 DGCodeFile::deleteExist(const std::string & filename) {
-	    const char
-	    *cstr = filename.c_str();
-	    if (FileExists(cstr)) {
-		DeleteFile(cstr);
-	    }
-	};
-	string_vector_ptr DGCodeFile::makeValues(int
-						 n, Composition_ptr c) {
+
+	string_vector_ptr DGCodeFile::makeValues(int n, Composition_ptr c) {
 	    return
 		makeValues(n, c, RGB_ptr((RGBColor *) null),
 			   RGB_ptr((RGBColor *) null));
@@ -580,7 +692,6 @@ namespace cms {
 	string_vector_ptr DGCodeFile::makeValues(int n, Composition_ptr c,
 						 RGB_ptr rgbGamma,
 						 RGB_ptr rgbGammaFix) {
-	    //tring_vector_ptr fieldNames = getFieldNames(RawHeader, 13);
 	    string_vector_ptr values(new string_vector(13));
 	    (*values)[0] = lexical_cast < string > (n);
 	    xyY_ptr xyY(new CIExyY(c->XYZ));
@@ -608,6 +719,59 @@ namespace cms {
 	string_vector_ptr DGCodeFile::GammaFieldNames;
 	string_vector_ptr DGCodeFile::RawFieldNames;
 	string_vector_ptr DGCodeFile::PropertiesFieldNames;
+
+	void DGCodeFile::setProperty(const DGCodeProperty & property) {
+	    property.store(*this);
+
+	};
+	//======================================================================
+
+	//======================================================================
+	// DGCodeProperty
+	//======================================================================
+	const string DGCodeProperty::Start = "start";
+	const string DGCodeProperty::End = "end";
+	const string DGCodeProperty::Step = "step";
+	const string DGCodeProperty::P1P2 = "p1p2";
+	const string DGCodeProperty::P1 = "p1";
+	const string DGCodeProperty::P2 = "p2";
+	const string DGCodeProperty::RB = "rb interpolation";
+	const string DGCodeProperty::RBUnder = "rb under";
+	const string DGCodeProperty::In = "in";
+	const string DGCodeProperty::LUT = "lut";
+	const string DGCodeProperty::Out = "out";
+	const string DGCodeProperty::Gamma = "gamma";
+	const string DGCodeProperty::RGamma = "r gamma";
+	const string DGCodeProperty::GGamma = "g gamma";
+	const string DGCodeProperty::BGamma = "b gamma";
+	const string DGCodeProperty::GammaCurve = "gamma curve";
+	const string DGCodeProperty::GByPass = "g bypass";
+	const string DGCodeProperty::BGain = "b gain";
+	const string DGCodeProperty::BMax = "b max";
+	const string DGCodeProperty::Gamma256 = "gamma 256";
+	const string DGCodeProperty::FRC_NR = "avoid FRC noise";
+
+	void DGCodeProperty::store(DGCodeFile & dgcode) {
+	    dgcode.addProperty(Start, c.start);
+	    dgcode.addProperty(End, c.end);
+	    dgcode.addProperty(Step, c.step);
+	    dgcode.addProperty(P1P2, c.p1p2);
+	    dgcode.addProperty(P1, c.p1);
+	    dgcode.addProperty(P2, c.p2);
+	    dgcode.addProperty(RB, !c.p1p2);
+	    dgcode.addProperty(RBUnder, c.rbInterpUnder);
+	    dgcode.addProperty(In, c.in);
+	    dgcode.addProperty(LUT, c.lut);
+	    dgcode.addProperty(Out, c.out);
+	    dgcode.addProperty(Gamma, c.gamma);
+	    dgcode.addProperty(GByPass, c.gByPass);
+	    dgcode.addProperty(BGain, c.bIntensityGain);
+	    dgcode.addProperty(BMax, c.bMax);
+	    dgcode.addProperty(Gamma256, c.gamma256);
+	    dgcode.addProperty(FRC_NR, c.avoidFRCNoise);
+	};
+	DGCodeProperty::DGCodeProperty(const LCDCalibrator & c):c(c) {
+	};
 	//======================================================================
     };
 };

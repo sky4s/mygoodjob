@@ -56,6 +56,7 @@ class TMainForm:public TForm {
      bptr < cms::measure::MeterMeasurement > mm;
      bptr < cms::measure::ComponentAnalyzerIF > analyzer;
     int getInterval();
+    void setDummyMeterFilename(const std::string & filename);
     //==========================================================================
     __fastcall TMainForm(TComponent * Owner);
 

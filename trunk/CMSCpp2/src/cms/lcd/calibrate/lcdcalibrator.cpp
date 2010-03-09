@@ -12,6 +12,9 @@
 #include <cms/colorspace/rgb.h>
 #include <cms/colorspace/ciexyz.h>
 #include <cms/colorformat/excelfile.h>
+#ifdef _DEBUG
+#include <cms/util/rgbarray.h>
+#endif
 #include <math/doublearray.h>
 #include <math/interpolation.h>
 #include "rgbvectorop.h"
@@ -24,6 +27,7 @@ namespace cms {
 	    using namespace cms::measure;
 	    using namespace Dep;
 	    using namespace java::lang;
+	    using namespace cms::colorformat;
 	    //==================================================================
 	    // Composition
 	    //==================================================================
@@ -50,14 +54,6 @@ namespace cms {
 	    //==================================================================
 	    // ComponentFetcher
 	    //==================================================================
-	    /*ComponentFetcher::ComponentFetcher(bptr < MeterMeasurement >
-	       mm,
-	       bptr <
-	       ComponentAnalyzerIF >
-	       analyzer):mm(mm),
-	       analyzer(analyzer) {
-
-	       }; */
 	  ComponentFetcher::ComponentFetcher(bptr < ComponentAnalyzerIF > analyzer):analyzer
 		(analyzer)
 	    {
@@ -89,9 +85,9 @@ namespace cms {
 	    void ComponentFetcher::storeToExcel(const string & filename,
 						Composition_vector_ptr
 						compositionVector) {
-		using namespace cms::colorformat;
+
 		int n = compositionVector->size();
-		DGCodeFile::deleteExist(filename);
+		ExcelFileDB::deleteExist(filename);
 		DGCodeFile dgcode(filename, n);
 		dgcode.setRawData(compositionVector);
 	    };
@@ -118,10 +114,10 @@ namespace cms {
 		int size = compositionVector->size();
 		double2D_ptr input(new double2D(size, 3));
 		double2D_ptr output(new double2D(size, 1));
-		double_vector_ptr key(new double_vector(size));
-		double_vector_ptr rValue(new double_vector(size));
-		double_vector_ptr gValue(new double_vector(size));
-		double_vector_ptr bValue(new double_vector(size));
+		double_vector_ptr keys(new double_vector(size));
+		double_vector_ptr rValues(new double_vector(size));
+		double_vector_ptr gValues(new double_vector(size));
+		double_vector_ptr bValues(new double_vector(size));
 
 		for (int x = 0; x != size; x++) {
 		    Composition_ptr composition = (*compositionVector)[x];
@@ -133,10 +129,10 @@ namespace cms {
 		    (*input)[x][2] = component->B;
 		    (*output)[x][0] = Y;
 
-		    (*key)[x] = composition->rgb->getValue(Channel::W);
-		    (*rValue)[x] = component->R;
-		    (*gValue)[x] = component->G;
-		    (*bValue)[x] = component->B;
+		    (*keys)[x] = composition->rgb->getValue(Channel::W);
+		    (*rValues)[x] = component->R;
+		    (*gValues)[x] = component->G;
+		    (*bValues)[x] = component->B;
 		}
 		//==============================================================
 
@@ -153,15 +149,19 @@ namespace cms {
 				       (*coefs)[0][3]);
 		//==============================================================
 
-		minLuminance = (*output)[0][0];
-		maxLuminance = (*output)[size - 1][0];
+		maxLuminance = (*output)[0][0];
+		minLuminance = (*output)[size - 1][0];
 
 		//==============================================================
 		// 產生RGB LUT
 		//==============================================================
-		rLut.reset(new Interpolation1DLUT(key, rValue));
-		gLut.reset(new Interpolation1DLUT(key, gValue));
-		bLut.reset(new Interpolation1DLUT(key, bValue));
+		keys = getReverse(keys);
+		rValues = getReverse(rValues);
+		gValues = getReverse(gValues);
+		bValues = getReverse(bValues);
+		rLut.reset(new Interpolation1DLUT(keys, rValues));
+		gLut.reset(new Interpolation1DLUT(keys, gValues));
+		bLut.reset(new Interpolation1DLUT(keys, bValues));
 		//==============================================================
 	    };
 	    double DGCodeProducer::getComponent(double luminance) {
@@ -180,6 +180,15 @@ namespace cms {
 		    (*luminanceGammaCurve)[x] = lumi;
 		}
 		return luminanceGammaCurve;
+	    };
+	    double_vector_ptr DGCodeProducer::
+		getReverse(double_vector_ptr vec) {
+		int size = vec->size();
+		double_vector_ptr result(new double_vector(size));
+		for (int x = 0; x != size; x++) {
+		    (*result)[x] = (*vec)[size - 1 - x];
+		}
+		return result;
 	    };
 	  DGCodeProducer::DGCodeProducer(Composition_vector_ptr compositionVector):compositionVector
 		(compositionVector)
@@ -227,9 +236,16 @@ namespace cms {
 		    component[1] = getComponent(luminance[1]);
 		    component[2] = getComponent(luminance[2]);
 
-		    double r = rLut->getKey(component[0]);
-		    double g = gLut->getKey(component[1]);
-		    double b = bLut->getKey(component[2]);
+		    double r =
+			(rLut->isValueInRange(component[0])) ? rLut->
+			getKey(component[0]) : 0;
+		    double g =
+			(gLut->isValueInRange(component[1])) ? gLut->
+			getKey(component[1]) : 0;
+		    double b =
+			(bLut->isValueInRange(component[2])) ? bLut->
+			getKey(component[2]) : 0;
+
 		    RGB_ptr rgb(new RGBColor(r, g, b));
 		    (*dgcode)[x] = rgb;
 		}
@@ -240,6 +256,12 @@ namespace cms {
 	    //==================================================================
 	    // LCDCalibrator
 	    //==================================================================
+	    void LCDCalibrator::set(int start, int end, int step) {
+		this->start = start;
+		this->end = end;
+		this->step = step;
+	    };
+
 	    RGBGamma_ptr LCDCalibrator::
 		getRGBGamma(double_vector_ptr gammaCurve) {
 		double_vector_ptr r(new double_vector(*gammaCurve));
@@ -278,10 +300,14 @@ namespace cms {
 	    };
 	    void LCDCalibrator::setGamma(double
 					 gamma, int n) {
+		this->gamma = gamma;
 		setGammaCurve(getGammaCurveVector(gamma, n));
 	    };
 	    void LCDCalibrator::setGamma(double rgamma, double ggamma,
 					 double bgamma, int n) {
+		this->rgamma = rgamma;
+		this->ggamma = ggamma;
+		this->bgamma = bgamma;
 		setGammaCurve(getGammaCurveVector(rgamma, n),
 			      getGammaCurveVector(ggamma, n),
 			      getGammaCurveVector(bgamma, n));
@@ -322,27 +348,38 @@ namespace cms {
 		this->out = out;
 	    };
 
-	  LCDCalibrator::LCDCalibrator(bptr < ComponentAnalyzerIF > analyzer):analyzer(analyzer), rgbgamma(false)
+	  LCDCalibrator::LCDCalibrator(bptr < ComponentAnalyzerIF > analyzer):analyzer(analyzer)
 	    {
+		rgbgamma = false;
+		bIntensityGain = 1;
+		rbInterpUnder = 0;
+		gamma = rgamma = ggamma = bgamma = -1;
 		fetcher.reset(new ComponentFetcher(analyzer));
-		//analyzer->enter();
 	    };
 
+	    /*
+	       CCT + Gamma
+	     */
 	    RGB_vector_ptr LCDCalibrator::
 		getDGCode(int start, int end, int step) {
+		set(start, end, step);
 		if (null == gammaCurve) {
 		    throw new IllegalStateException("null == gammaCurve");
-		}		//量測start->end得到的coponent/Y
-		Composition_vector_ptr compositionVector =
+		}
+		//量測start->end得到的coponent/Y
+		compositionVector =
 		    fetcher->fetchComposition(start, end, step);
-		ComponentFetcher::storeToExcel("rgb.xls",
+#ifdef _DEBUG
+		ComponentFetcher::storeToExcel("0_fetch.xls",
 					       compositionVector);
-
-
+#endif
 		//產生producer
 		producer.reset(new DGCodeProducer(compositionVector));
 		RGBGamma_ptr rgbgamma = getRGBGamma(gammaCurve);
-
+#ifdef _DEBUG
+		cms::lcd::calibrate::RGBGamma::
+		    storeToExcel("1_rgbgamma1.xls", rgbgamma);
+#endif
 		RGBGammaOp gammaop;
 		gammaop.setSource(rgbgamma);
 
@@ -354,11 +391,17 @@ namespace cms {
 		    gammaop.addOp(bgain);
 		    rgbgamma = gammaop.createInstance();
 		};
-
+#ifdef _DEBUG
+		cms::lcd::calibrate::RGBGamma::
+		    storeToExcel("2_rgbgamma2.xls", rgbgamma);
+#endif
 
 		//從目標gamma curve產生dg code, 此處是傳入normal gammaCurve
 		RGB_vector_ptr dgcode = producer->produce(rgbgamma);
-
+#ifdef _DEBUG
+		cms::util::RGBVector::storeToExcel("3_dgcode1.xls",
+						   dgcode);
+#endif
 		if (p1p2) {
 		    //p1p2第一階段, 對gamma做調整
 		    bptr < P1P2GammaOp >
@@ -366,18 +409,65 @@ namespace cms {
 		    gammaop.addOp(p1p2);
 		};
 		//產生修正後的gamma2(若沒有p1p2,則為原封不動)
-		RGBGamma_ptr rgbgamma2 = gammaop.createInstance();
-
+		rgbgamma2 = gammaop.createInstance();
+#ifdef _DEBUG
+		cms::lcd::calibrate::RGBGamma::
+		    storeToExcel("4_rgbgamma2.xls", rgbgamma2);
+#endif
 		//產生producer
 		producer.reset(new DGCodeProducer(compositionVector));
 		//從目標gamma curve產生dg code, 此處是傳入normal gammaCurve
 		RGB_vector_ptr dgcode2 = producer->produce(rgbgamma2);
+#ifdef _DEBUG
+		cms::util::RGBVector::storeToExcel("5_dgcode2.xls",
+						   dgcode2);
+#endif
 
 		//==============================================================
 		// DG Code Op block
 		//==============================================================
+		RGB_vector_ptr result = getDGCodeOpResult(dgcode2);
+		//==============================================================
+#ifdef _DEBUG
+		cms::util::RGBVector::storeToExcel("6_dgcode.xls", result);
+#endif
+		this->dgcode = result;
+		return result;
+	    };
+
+	    /*
+	       Gamma Only
+	     */
+	    RGB_vector_ptr LCDCalibrator::getDGCode(int step) {
+		set(255, 0, step);
+	    };
+
+	    void LCDCalibrator::storeDGCode(const std::string & filename,
+					    RGB_vector_ptr dgcode) {
+
+		int n = true == gamma256 ? 257 : 256;
+		//砍掉已存在的
+		ExcelFileDB::deleteExist(filename);
+		//產生新檔
+		DGCodeFile file(filename, n);
+		//產生property物件
+		DGCodeProperty property(*this);
+		//寫入property
+		file.setProperty(property);
+		//寫入dgcode
+		file.setGammaTable(dgcode);
+		//寫入raw data
+		file.setRawData(compositionVector, rgbgamma2);
+
+	    };
+
+	    RGB_vector_ptr LCDCalibrator::
+		getDGCodeOpResult(RGB_vector_ptr dgcode) {
+		//==============================================================
+		// DG Code Op block
+		//==============================================================
 		DGCodeOp dgop;
-		dgop.setSource(dgcode2);
+		dgop.setSource(dgcode);
 
 		if (p1p2) {
 		    //p1p2第二階段, 對dg code調整
@@ -408,13 +498,13 @@ namespace cms {
 		if (gamma256) {
 
 		}
-		//==============================================================
-
 		RGB_vector_ptr result = dgop.createInstance();
 		return result;
+		//==============================================================
 	    };
 
 	    //==================================================================
+
 	};
     };
 };

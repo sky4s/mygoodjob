@@ -16,7 +16,7 @@
 TCCTLUTForm *CCTLUTForm;
 //---------------------------------------------------------------------------
 __fastcall TCCTLUTForm::TCCTLUTForm(TComponent * Owner)
-:TForm(Owner)
+:TForm(Owner), serialid(0)
 {
 }
 
@@ -27,8 +27,10 @@ __fastcall TCCTLUTForm::TCCTLUTForm(TComponent * Owner)
 void __fastcall TCCTLUTForm::Button_BrowseDirClick(TObject * Sender)
 {
     //this->OpenDialog1->Execute();
-    AnsiString Dir = "C:\\Program Files\\";
+    AnsiString Dir = this->Edit_Directory->Text;
+    //AnsiString Dir = "C:\\Program Files\\";
     SelectDirectory("選擇目錄", "", Dir);
+    this->Edit_Directory->Text = Dir;
 }
 
 //---------------------------------------------------------------------------
@@ -114,6 +116,7 @@ void __fastcall TCCTLUTForm::RadioButton_P1P2Click(TObject * Sender)
 
 void __fastcall TCCTLUTForm::Button_RunClick(TObject * Sender)
 {
+    using namespace std;
     cms::lcd::calibrate::LCDCalibrator calibrator(MainForm->analyzer);
 
     //==========================================================================
@@ -180,6 +183,16 @@ void __fastcall TCCTLUTForm::Button_RunClick(TObject * Sender)
     MainForm->mm->setWaitTimes(waitTimes);
 
     RGB_vector_ptr dgcode = calibrator.getDGCode(start, end, step);
+    /* TODO: 存起來 */
+
+
+    AnsiString astr =
+	this->Edit_Directory->Text + "\\" + this->Edit_Prefix->Text +
+	AnsiString(serialid) + ".xls";
+    string filename = astr.c_str();
+
+    calibrator.storeDGCode(filename, dgcode);
+
 }
 
 //---------------------------------------------------------------------------
@@ -199,6 +212,20 @@ void __fastcall TCCTLUTForm::FormKeyPress(TObject * Sender, char &Key)
 void __fastcall TCCTLUTForm::FormCreate(TObject * Sender)
 {
     this->Button_Debug->Visible = !MainForm->linkCA210;
+}
+
+//---------------------------------------------------------------------------
+
+
+
+void __fastcall TCCTLUTForm::Button_DebugClick(TObject * Sender)
+{
+    using namespace std;
+    if (OpenDialog1->Execute()) {
+	const AnsiString & filename = OpenDialog1->FileName;
+	MainForm->setDummyMeterFilename(string(filename.c_str()));
+    };
+
 }
 
 //---------------------------------------------------------------------------

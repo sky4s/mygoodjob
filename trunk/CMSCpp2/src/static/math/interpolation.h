@@ -47,6 +47,7 @@ namespace math {
 	bool _hasCorrectedInRange;
 	double_vector_ptr valueArray;
 	double_vector_ptr keyArray;
+	int size;
       protected:
 	static double interpolationValue(double key,
 					 double_vector_ptr keys,

@@ -70,6 +70,7 @@ namespace cms {
 		double getComponent(double luminance);
 		double_vector_ptr getLuminanceGammaCurve(double_vector_ptr
 							 normalGammaCurve);
+		double_vector_ptr getReverse(double_vector_ptr vec);
 	      public:
 		 DGCodeProducer(Composition_vector_ptr compositionVector);
 		RGB_vector_ptr produce(double_vector_ptr normalGammaCurve);
@@ -81,8 +82,10 @@ namespace cms {
 	    };
 
 	    class LCDCalibrator {
+		friend class cms::colorformat::DGCodeProperty;
 	      private:
-		bool p1p2;
+
+		 bool p1p2;
 		double p1, p2;
 		BitDepth in, lut, out;
 		double rbInterpUnder;
@@ -92,7 +95,7 @@ namespace cms {
 		bool gamma256;
 		bool avoidFRCNoise;
 		bool rgbgamma;
-		//int n;
+		double gamma, rgamma, ggamma, bgamma;
 		double_vector_ptr gammaCurve;
 		double_vector_ptr rgammaCurve;
 		double_vector_ptr ggammaCurve;
@@ -101,6 +104,14 @@ namespace cms {
 		 bptr < ComponentFetcher > fetcher;
 		 bptr < cms::measure::ComponentAnalyzerIF > analyzer;
 		RGBGamma_ptr getRGBGamma(double_vector_ptr gammaCurve);
+		 std::string dgcodeFilename;
+
+		RGB_vector_ptr dgcode;
+		Composition_vector_ptr compositionVector;
+		RGBGamma_ptr rgbgamma2;
+
+		int start, end, step;
+		void set(int start, int end, int step);
 	      public:
 		static double_array getGammaCurve(double gamma, int n);
 		static double_vector_ptr getGammaCurveVector(double gamma,
@@ -129,7 +140,10 @@ namespace cms {
 
 		RGB_vector_ptr getDGCode(int start, int end, int step);
 		RGB_vector_ptr getDGCode(int step);
-
+		void storeDGCode(const std::string & filename,
+				 RGB_vector_ptr dgcode);
+	      private:
+		 RGB_vector_ptr getDGCodeOpResult(RGB_vector_ptr dgcode);
 	    };
 
 

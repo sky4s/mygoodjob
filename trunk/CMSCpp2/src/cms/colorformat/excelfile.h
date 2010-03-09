@@ -95,9 +95,13 @@ namespace cms {
 	    string_vector_ptr select(const std::string & keyValue);
 
 	     bptr < DBQuery > selectAll();
-	    static string_vector_ptr make(int count, ...);
+	    static string_vector_ptr makec(int count, ...);
+	    static string_vector_ptr makes(int count, ...);
+	    static void deleteExist(const std::string & filename);
+	    //static string_vector_ptr makes(int count, ...);
 
 	    void setKeyField(const std::string & keyField);
+
 	  private:
 	    void close();
 
@@ -111,10 +115,8 @@ namespace cms {
 	    string_vector_ptr nextResult();
 	    bool hasNext();
 	    const string_ptr get(int row, int column);
-	    /*void set(int row, int column, const std::string & value);
-	       void refresh(); */
 	};
-	//using namespace lcd::calibrate::Composition;
+	class DGCodeProperty;
 	class DGCodeFile {
 	  private:
 	    bptr < ExcelFileDB > db;
@@ -144,17 +146,16 @@ namespace cms {
 	     DGCodeFile(const std::string & filename, int n);
 	     DGCodeFile(const std::string & filename,
 			int_vector_ptr nvector);
-	     DGCodeFile(const std::string & filename, int n,
-			const Mode mode);
-	     DGCodeFile(const std::string & filename,
-			int_vector_ptr nvector, const Mode mode);
+	     DGCodeFile(const std::string & filename);
 	    void addProperty(const std::string & key,
 			     const std::string & value);
-	    //void setGammaTable();
+	    void addProperty(const std::string & key, const double value);
+	    void setProperty(const DGCodeProperty & property);
 
 	    void setRawData(Composition_vector_ptr compositionVector);
 	    void setRawData(Composition_vector_ptr compositionVector,
 			    RGBGamma_ptr rgbgamma);
+	    void setGammaTable(RGB_vector_ptr dgcode);
 	    Composition_vector_ptr getCompositionVector();
 
 	    /*
@@ -166,12 +167,42 @@ namespace cms {
 
 	       選擇方案二, 所以不用刻意去縮減rgbgamma, 由setRawData自己去篩
 	     */
-	    static void deleteExist(const std::string & filename);
+
 	  private:
 	     string_vector_ptr makeValues(int n, Composition_ptr c);
 	    string_vector_ptr makeValues(int n, Composition_ptr c,
 					 RGB_ptr rgbGamma,
 					 RGB_ptr rgbGammaFix);
+	};
+
+	class DGCodeProperty {
+	    friend class DGCodeFile;
+	  private:
+	    static const std::string Start;
+	    static const std::string End;
+	    static const std::string Step;
+	    static const std::string P1P2;
+	    static const std::string P1;
+	    static const std::string P2;
+	    static const std::string RB;
+	    static const std::string RBUnder;
+	    static const std::string In;
+	    static const std::string LUT;
+	    static const std::string Out;
+	    static const std::string Gamma;
+	    static const std::string RGamma;
+	    static const std::string GGamma;
+	    static const std::string BGamma;
+	    static const std::string GammaCurve;
+	    static const std::string GByPass;
+	    static const std::string BGain;
+	    static const std::string BMax;
+	    static const std::string Gamma256;
+	    static const std::string FRC_NR;
+	    const cms::lcd::calibrate::LCDCalibrator & c;
+	    void store(DGCodeFile & dgcode);
+	  public:
+	     DGCodeProperty(const cms::lcd::calibrate::LCDCalibrator & c);
 	};
     };
 };

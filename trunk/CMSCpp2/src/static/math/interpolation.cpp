@@ -200,11 +200,12 @@ namespace math {
 					   double_vector_ptr value) {
 	this->keyArray = key;
 	this->valueArray = value;
+	size = keyArray->size();
 	/*double k0 = (*keyArray)[0];
-	double k1 = (*keyArray)[1];
-	double v0 = (*valueArray)[0];
-	double v1 = (*valueArray)[1];
-	double a = 1;*/
+	   double k1 = (*keyArray)[1];
+	   double v0 = (*valueArray)[0];
+	   double v1 = (*valueArray)[1];
+	   double a = 1; */
 
     };
     double Interpolation1DLUT::correctKeyInRange(double key) {
@@ -238,8 +239,11 @@ namespace math {
 	return interpolationValue(key, keyArray, valueArray, Linear);
     };
     bool Interpolation1DLUT::isKeyInRange(double key) {
+	return key >= (*keyArray)[0] && key <= (*keyArray)[size - 1];
     };
     bool Interpolation1DLUT::isValueInRange(double value) {
+	return value >= (*valueArray)[0]
+	    && value <= (*valueArray)[size - 1];
     };
     bool Interpolation1DLUT::hasCorrectedInRange() {
 	return _hasCorrectedInRange;

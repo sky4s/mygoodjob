@@ -304,7 +304,7 @@ namespace cms {
 	    }
 
 	    XYZ_ptr CIExyY::toXYZ() {
-		//return toXYZ(this);
+		return toXYZ(*this);
 	    };
 
 	    XYZ_ptr CIExyY::toXYZ(const CIExyY & xyY) {
@@ -356,7 +356,7 @@ namespace cms {
 		if (_normalizeY == normalizeY) {
 		    return values;
 		}
-                /* TODO : getValues */
+		/* TODO : getValues */
 		switch (_normalizeY) {
 		case Normal100:
 		    //DoubleArray.copy(DoubleArray.times(values, 1. / 100),

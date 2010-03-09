@@ -71,10 +71,12 @@ class TCCTLUTForm:public TForm {
     void __fastcall Button_RunClick(TObject * Sender);
     void __fastcall FormKeyPress(TObject * Sender, char &Key);
     void __fastcall FormCreate(TObject * Sender);
+    void __fastcall Button_DebugClick(TObject * Sender);
   private:			// User declarations
     void resetBitDepth();
     void setBitDepthEnable(bool lut10, bool lut12, bool out6, bool out8,
 			   bool out10);
+    int serialid;
 
   public:			// User declarations
      __fastcall TCCTLUTForm(TComponent * Owner);
