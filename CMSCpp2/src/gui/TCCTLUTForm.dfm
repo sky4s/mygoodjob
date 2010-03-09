@@ -435,8 +435,10 @@ object CCTLUTForm: TCCTLUTForm
     Caption = 'Debug'
     TabOrder = 7
     Visible = False
+    OnClick = Button_DebugClick
   end
   object OpenDialog1: TOpenDialog
+    Filter = 'DGCode Files(*.xls)|*.xls'
     Options = [ofEnableSizing]
   end
 end

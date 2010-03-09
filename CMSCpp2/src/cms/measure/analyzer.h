@@ -36,12 +36,22 @@ namespace cms {
 	    XYZ_ptr XYZ;
 	     bptr < MeterMeasurement > mm;
 	    static const WideString & CalibrationDataFilename;
+	    bool dummyMode;
+	    void init();
 	  public:
 
-	     CA210ComponentAnalyzer(bptr < cms::measure::meter::CA210 >
-				    ca210);
+	    /*CA210ComponentAnalyzer(bptr < cms::measure::meter::CA210 >
+	       ca210); */
+	    /*
+	       採用CA210為analyze結果的來源
+	     */
 	     CA210ComponentAnalyzer(bptr < cms::measure::meter::CA210 >
 				    ca210, bptr < MeterMeasurement > mm);
+	    /*
+	       由於缺乏CA210, 因此是以MeterMeasurement中的Meter作為analyze來源,
+	       實際上是假設Meter為DGCodeFileMeter, 也就是說讀取檔案中的component作為analyze結果
+	     */
+	     CA210ComponentAnalyzer(bptr < MeterMeasurement > mm);
 
 	    RGB_ptr getComponent(RGB_ptr rgb);
 	    XYZ_ptr getCIEXYZ();
@@ -55,7 +65,7 @@ namespace cms {
 	    Patch_ptr rp, gp, bp, wp;
 	  public:
 	    StocktonComponentAnayzer(bptr < cms::measure::meter::CA210 >
-				     ca210);
+				     ca210, bptr < MeterMeasurement > mm);
 	    void setupComponent(const Dep::Channel & ch, RGB_ptr rgb);
 	    void enter();
 	};

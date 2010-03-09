@@ -59,7 +59,7 @@ void excel()
     /*string_vector_ptr fieldsNames(new string_vector());
        fieldsNames->push_back("a");
        fieldsNames->push_back("b"); */
-    string_vector_ptr fieldsNames = ExcelFileDB::make(2, "a", "b");
+    string_vector_ptr fieldsNames = ExcelFileDB::makec(2, "a", "b");
 
     const string & filename = "a.xls";
     //DGCodeFile::deleteExist( filename);
@@ -72,9 +72,9 @@ void excel()
     if (newfile) {
 	db.createTable("tb", fieldsNames);
 
-	db.insert(fieldsNames, ExcelFileDB::make(2, "11", "22"));
-	db.insert(fieldsNames, ExcelFileDB::make(2, "33", "44"));
-	db.insert(fieldsNames, ExcelFileDB::make(2, "55", "66"));
+	db.insert(fieldsNames, ExcelFileDB::makec(2, "11", "22"));
+	db.insert(fieldsNames, ExcelFileDB::makec(2, "33", "44"));
+	db.insert(fieldsNames, ExcelFileDB::makec(2, "55", "66"));
     } else {
 	db.setTableName("tb");
 	db.update("a", 11, "b", 99);
@@ -90,7 +90,7 @@ void excel()
 	cout << *query->get(1, 1) << endl;
 	//query->set(1, 1, "333");
 	//string_vector_ptr fieldsNames = ExcelFileDB::make(2, "99", "9");
-	db.update("a", 44, fieldsNames, db.make(2, "55", "55"));
+	db.update("a", 44, fieldsNames, db.makec(2, "55", "55"));
     };
 
 
@@ -279,7 +279,7 @@ void dgcodefile()
     using namespace Indep;
     const string & filename = "test.xls";
     //string_ptr filename(new string("test.xls"));
-    DGCodeFile::deleteExist(filename);
+    ExcelFileDB::deleteExist(filename);
     DGCodeFile dgcode(filename, 256);
     //dgcode.setProperty("a", "b");
     //dgcode.setProperty("b", "bbb");
@@ -430,7 +430,6 @@ void pointerEample()
 
 void lcdcalibratorTry()
 {
-
     Application->Initialize();
     Application->CreateForm(__classid(TMeasureWindow), &MeasureWindow);
 
@@ -439,13 +438,13 @@ void lcdcalibratorTry()
     using namespace cms::lcd::calibrate;
     bptr < CA210 > ca210(new CA210());
     //bptr < CA210 > ca2102(new CA210());
-    bptr < CA210ComponentAnalyzer >
-	analyzer(new CA210ComponentAnalyzer(ca210));
     bptr < MeterMeasurement > mm(new MeterMeasurement(ca210, false));
+    bptr < CA210ComponentAnalyzer >
+	analyzer(new CA210ComponentAnalyzer(ca210, mm));
+
     mm->measure(0, 0, 128, "test");
-    //LCDCalibrator cal(analyzer);
-    //cal.setGamma(2.2, 256);
-    //cal.getDGCode(255, 0, 1);
+
+
 };
 
 void channelTry()

@@ -159,13 +159,14 @@ namespace cms {
 	    /*Color c =
 	       this.isCPCodeLoading()? this.cpBackground : background;
 	       measureWindow.setBackground(c); */
-	    measureWindow->setRGB(measureRGB);
+
 	    //measureWindow->SetFocus();
 
 	    //==========================================================================
 	    // 變換完視窗顏色的短暫停留
 	    //==========================================================================
 	    if (!fakeMeasure) {
+		measureWindow->setRGB(measureRGB);
 		Sleep(waitTimes);
 	    }
 	    //==========================================================================

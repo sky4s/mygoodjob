@@ -11,13 +11,6 @@
 namespace math {
 
     int Searcher::sequentialSearch(double_vector_ptr a, double key) {
-
-	/*for (int x = 0; x != a->size(); x++) {
-	   if ((*a)[x] == key) {
-	   return x;
-	   }
-	   }
-	   return -1; */
 	double prev = NaN;
 	for (int x = 0; x != a->size(); x++) {
 	    double v = (*a)[x];
@@ -32,12 +25,6 @@ namespace math {
 
     };
     int Searcher::sequentialSearch(int_vector_ptr a, int key) {
-	/*for (int x = 0; x != a->size(); x++) {
-	   if ((*a)[x] == key) {
-	   return x;
-	   }
-	   }
-	   return -1; */
 	int prev = NaN;
 	for (int x = 0; x != a->size(); x++) {
 	    int v = (*a)[x];

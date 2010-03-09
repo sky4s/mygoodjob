@@ -18,6 +18,8 @@ namespace cms {
 		double_vector_ptr r, g, b;
 		RGBGamma(double_vector_ptr r, double_vector_ptr g,
 			 double_vector_ptr b);
+		static void storeToExcel(const std::string & filename,
+					 RGBGamma_ptr rgbgamma);
 	    };
 
 	    class RGBGammaOp:public RGBOp < RGBGamma > {

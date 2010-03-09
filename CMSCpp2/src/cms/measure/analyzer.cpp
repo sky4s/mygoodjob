@@ -14,41 +14,67 @@
 #include <cms/colorspace/ciexyz.h>
 #include <cms/colorspace/depend.h>
 #include <cms/patch.h>
+#include <cms/lcd/calibrate/lcdcalibrator.h>
 
 namespace cms {
     namespace measure {
 
 	using namespace cms::measure::meter;
+	using namespace cms::lcd::calibrate;
 	using namespace Dep;
 	using namespace Indep;
 	using namespace ca210api;
 
 	const WideString & CA210ComponentAnalyzer::
 	    CalibrationDataFilename = "ca210.dat";
-	 CA210ComponentAnalyzer::CA210ComponentAnalyzer(bptr < CA210 >
-							ca210):ca210
-	    (ca210), ca210api(ca210->getCA210API()),
-	    mm(bptr < MeterMeasurement >
-	       (new MeterMeasurement(ca210, false))) {
+
+	void CA210ComponentAnalyzer::init() {
 	    mm->setWaitTimes(5000);
 	    ca210api->setChannelNO(0);
 	    ca210api->copyToFile(CalibrationDataFilename);
 	};
 
-	 CA210ComponentAnalyzer::
-	    CA210ComponentAnalyzer(bptr < CA210 > ca210,
-				   bptr < MeterMeasurement >
-				   mm):ca210(ca210),
-	    ca210api(ca210->getCA210API()), mm(mm) {
-	    mm->setWaitTimes(5000);
-	    ca210api->setChannelNO(0);
-	    ca210api->copyToFile(CalibrationDataFilename);
+	/*CA210ComponentAnalyzer::
+	   CA210ComponentAnalyzer(bptr < CA210 > ca210):ca210(ca210),
+	   ca210api(ca210->getCA210API()),
+	   mm(bptr < MeterMeasurement >
+	   (new MeterMeasurement(ca210, false))), dummyMode(false) {
+	   init();
+	   }; */
+
+	 CA210ComponentAnalyzer::CA210ComponentAnalyzer(bptr < CA210 >
+							ca210,
+							bptr <
+							MeterMeasurement >
+							mm):ca210(ca210),
+	    ca210api(ca210->getCA210API()), mm(mm), dummyMode(false) {
+	    init();
+	};
+
+      CA210ComponentAnalyzer::CA210ComponentAnalyzer(bptr < MeterMeasurement > mm):mm(mm),
+	    dummyMode(true)
+	{
 	};
 
 	RGB_ptr CA210ComponentAnalyzer::getComponent(RGB_ptr rgb) {
 	    Patch_ptr patch = mm->measure(rgb, rgb->toString());
 	    XYZ = patch->getXYZ();
-	    float_array rgbComponent = ca210api->triggerComponentAnalyze();
+	    float_array rgbComponent;
+	    if (true == dummyMode) {
+		//若為dummy mode, 代表從meter直接撈資料
+		//而meter是假的, 其實是從檔案撈資料
+		DGCodeFileMeter *dgc =
+		    dynamic_cast <
+		    DGCodeFileMeter * >(mm->getMeter().get());
+		Composition_ptr c = dgc->getComposition();
+		RGB_ptr component = c->component;
+		rgbComponent.reset(new float[3]);
+		rgbComponent[0] = component->R;
+		rgbComponent[1] = component->G;
+		rgbComponent[2] = component->B;
+	    } else {
+		rgbComponent = ca210api->triggerComponentAnalyze();
+	    }
 
 	    float r = rgbComponent[0];
 	    float g = rgbComponent[1];
@@ -81,26 +107,32 @@ namespace cms {
 		lclr = White;
 		break;
 	    };
-	    ca210api->setAnalyzerCalData(lclr);
+	    if (false == dummyMode) {
+		ca210api->setAnalyzerCalData(lclr);
+	    }
 	};
 
 	void CA210ComponentAnalyzer::enter() {
-	    ca210api->enter();
-	    mm->setMeasureWindowsVisible(false);
+	    if (false == dummyMode) {
+		ca210api->enter();
+		mm->setMeasureWindowsVisible(false);
+	    }
 	};
 
 	void CA210ComponentAnalyzer::setChannel(int no, string_ptr id) {
-	    ca210api->setChannelNO(no);
-	    ca210api->setChannelID(WideString(id->c_str()));
+	    if (false == dummyMode) {
+		ca210api->setChannelNO(no);
+		ca210api->setChannelID(WideString(id->c_str()));
 
-	    ca210api->resetLvxyCalMode();
-	    ca210api->copyFromFile(CalibrationDataFilename);
-	    ca210api->setAnalyzerCalMode();
+		ca210api->resetLvxyCalMode();
+		ca210api->copyFromFile(CalibrationDataFilename);
+		ca210api->setAnalyzerCalMode();
+	    }
 	};
 
 	//======================================================================
 
-      StocktonComponentAnayzer::StocktonComponentAnayzer(bptr < CA210 > ca210):CA210ComponentAnalyzer(ca210)
+      StocktonComponentAnayzer::StocktonComponentAnayzer(bptr < CA210 > ca210, bptr < MeterMeasurement > mm):CA210ComponentAnalyzer(ca210, mm)
 	{
 	    mm->setWaitTimes(5000);
 	    ca210api->setLvxyCalMode();

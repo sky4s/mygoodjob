@@ -19,6 +19,7 @@
 #include <cms/measure/meter.h>
 #include <cms/measure/metermeasurement.h>
 #include <cms/measure/analyzer.h>
+#include <cms/colorformat/excelfile.h>
 #include <UIConfig.h>
 
 //---------------------------------------------------------------------------
@@ -60,6 +61,7 @@ void __fastcall TMainForm::FormCreate(TObject * Sender)
 {
     using namespace cms::measure::meter;
     using namespace cms::measure;
+    using namespace cms::colorformat;
     if (true == linkCA210) {
 	meter = bptr < Meter > (new CA210());
 	mm = bptr < MeterMeasurement >
@@ -67,9 +69,21 @@ void __fastcall TMainForm::FormCreate(TObject * Sender)
 
 	analyzer.reset(new CA210ComponentAnalyzer(getCA210(), mm));
     } else {
-
+	setDummyMeterFilename(METER_FILE);
     }
 }
+
+void TMainForm::setDummyMeterFilename(const std::string & filename)
+{
+    using namespace cms::measure::meter;
+    using namespace cms::measure;
+    using namespace cms::colorformat;
+    bptr < DGCodeFile > dgcode(new DGCodeFile(filename));
+    meter = bptr < Meter > (new DGCodeFileMeter(dgcode));
+    mm = bptr < MeterMeasurement > (new MeterMeasurement(meter, false));
+    mm->setFakeMeasure(true);
+    analyzer.reset(new CA210ComponentAnalyzer(mm));
+};
 
 
 //---------------------------------------------------------------------------

@@ -83,11 +83,12 @@ namespace cms {
 		void close();
 	    };
 
-	    class DGCodeFileMeter:public jObject {
+	    class DGCodeFileMeter:public Meter {
 	      private:
 		bptr < cms::colorformat::DGCodeFile > dgcode;
 		Composition_vector_ptr vector;
 		int index;
+		Composition_ptr c;
 	      public:
 		 DGCodeFileMeter(bptr < cms::colorformat::DGCodeFile >
 				 dgcode);
@@ -101,6 +102,7 @@ namespace cms {
 		string_ptr getCalibrationCount();
 		void setScreenType(ScreenType screenType);
 		Instr getType();
+		Composition_ptr getComposition();
 	    };
 
 	};
