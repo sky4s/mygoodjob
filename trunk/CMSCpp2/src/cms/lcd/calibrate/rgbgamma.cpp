@@ -92,6 +92,7 @@ namespace cms {
 		//處理P1點
 		int indexR = -1, indexB = -1;
 		int size = dgcode->size();
+		//原本p1點的dg code
 		RGB_ptr rgbp1 = (*dgcode)[p1];
 		for (int x = 0;
 		     x != size && (indexR == -1 || indexB == -1); x++) {
@@ -108,11 +109,16 @@ namespace cms {
 		double_vector & b = (*source->b);
 		double rdiff = r[indexR + 1] - r[indexR];
 		double bdiff = b[indexB + 1] - b[indexB];
-		r[p1] = r[indexR] + rdiff * (rgbp1->G - (*dgcode)
-					     [indexR]->R) / rdiff;
+		r[p1] =
+		    r[indexR] + (r[indexR + 1] - r[indexR]) *
+		    (rgbp1->G - (*dgcode)[indexR]->R) /
+		    ((*dgcode)[indexR + 1]->R - (*dgcode)[indexR]->R);
 		b[p1] =
-		    b[indexR] + bdiff * (rgbp1->G -
-					 (*dgcode)[indexB]->B) / bdiff;
+		    b[indexB] + (b[indexB + 1] - b[indexB]) *
+		    (rgbp1->G - (*dgcode)[indexB]->B) /
+		    ((*dgcode)[indexB + 1]->B - (*dgcode)[indexB]->B);
+		//r[p1] = r[indexR];
+		//b[p1] = b[indexB];
 		return source;
 	    };
 	    RGBGamma_ptr P1P2GammaOp::processP1P2(RGBGamma_ptr source) {
@@ -130,7 +136,7 @@ namespace cms {
 	    };
 	    RGBGamma_ptr P1P2GammaOp::getRendering(RGBGamma_ptr source) {
 		source = processP1(source);
-		//source = processP1P2(source);
+		source = processP1P2(source);
 		return source;
 	    };
 	  P1P2GammaOp::P1P2GammaOp(double p1, double p2, RGB_vector_ptr dgcode):p1(p1), p2(p2),
