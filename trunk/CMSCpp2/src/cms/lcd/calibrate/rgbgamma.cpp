@@ -89,6 +89,7 @@ namespace cms {
 	    // P1P2Op
 	    //==================================================================
 	    RGBGamma_ptr P1P2GammaOp::processP1(RGBGamma_ptr source) {
+		//³B²zP1ÂI
 		int indexR = -1, indexB = -1;
 		int size = dgcode->size();
 		RGB_ptr rgbp1 = (*dgcode)[p1];
@@ -102,11 +103,9 @@ namespace cms {
 			indexB = x;
 		    };
 		}
-		//' P1 Â I ª º³B ² z
-		//RP2(P1) = RP2(index_r) + (RP2(index_r + 1) - RP2(index_r)) * (temp_g - RL2(index_r)) / (RL2(index_r + 1) - RL2(index_r))
-		//BP2(P1) = BP2(index_b) + (BP2(index_b + 1) - BP2(index_b)) * (temp_g - BL2(index_b)) / (BL2(index_b + 1) - BL2(index_b))
-		double_vector r = (*source->r);
-		double_vector b = (*source->b);
+
+		double_vector & r = (*source->r);
+		double_vector & b = (*source->b);
 		double rdiff = r[indexR + 1] - r[indexR];
 		double bdiff = b[indexB + 1] - b[indexB];
 		r[p1] = r[indexR] + rdiff * (rgbp1->G - (*dgcode)
@@ -117,9 +116,9 @@ namespace cms {
 		return source;
 	    };
 	    RGBGamma_ptr P1P2GammaOp::processP1P2(RGBGamma_ptr source) {
-		double_vector r = (*source->r);
-		double_vector g = (*source->g);
-		double_vector b = (*source->b);
+		double_vector & r = (*source->r);
+		double_vector & g = (*source->g);
+		double_vector & b = (*source->b);
 		for (int x = p1 + 1; x != p2 - 1; x++) {
 		    //x¦bp1p2¤§¶¡©Ò¦ûªº¤ñ¨Ò
 		    double ratio = (g[x] - g[p1]) / (g[p2] - g[p1]);
@@ -131,7 +130,7 @@ namespace cms {
 	    };
 	    RGBGamma_ptr P1P2GammaOp::getRendering(RGBGamma_ptr source) {
 		source = processP1(source);
-		source = processP1P2(source);
+		//source = processP1P2(source);
 		return source;
 	    };
 	  P1P2GammaOp::P1P2GammaOp(double p1, double p2, RGB_vector_ptr dgcode):p1(p1), p2(p2),
