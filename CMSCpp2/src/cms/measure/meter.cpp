@@ -145,12 +145,11 @@ namespace cms {
 		return true;
 	    };
 	    void DGCodeFileMeter::calibrate() {
+		index = 0;
 	    };
 	    string_ptr DGCodeFileMeter::getCalibrationDescription() {
 		return shared_ptr < string >
-		    (new
-		     string
-		     ("Set the pointing ring to the 0-CAL position."));
+		    (new string("Calibration needless."));
 	    };
 	    void DGCodeFileMeter::
 		setPatchIntensity(PatchIntensity patchIntensity) {
