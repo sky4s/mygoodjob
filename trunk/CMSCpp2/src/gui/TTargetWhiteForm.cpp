@@ -1,6 +1,7 @@
 //---------------------------------------------------------------------------
 
-#include <vcl.h>
+
+#include <includeall.h>
 #pragma hdrstop
 
 //C系統文件
@@ -13,11 +14,6 @@
 #include "TTargetWhiteForm.h"
 #include "TMainForm.h"
 #include "TMeasureWindow.h"
-#include <cms/colorspace/ciexyz.h>
-#include <cms/core.h>
-#include <cms/patch.h>
-#include <cms/measure/meter.h>
-#include <cms/measure/MeterMeasurement.h>
 
 //---------------------------------------------------------------------------
 #pragma package(smart_init)

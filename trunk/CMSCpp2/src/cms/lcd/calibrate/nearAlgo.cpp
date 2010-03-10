@@ -1,3 +1,5 @@
+#include <includeall.h>
+#pragma hdrstop
 #include "nearAlgo.h"
 
 //C系統文件
@@ -7,8 +9,6 @@
 //其他庫頭文件
 
 //本項目內頭文件
-#include <cms/colorspace/rgb.h>
-#include <cms/measure/cp.h>
 
 namespace cms {
     namespace lcd {

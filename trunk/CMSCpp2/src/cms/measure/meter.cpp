@@ -1,3 +1,5 @@
+#include <includeall.h>
+#pragma hdrstop
 #include "meter.h"
 
 //C系統文件
@@ -7,10 +9,6 @@
 //其他庫頭文件
 
 //本項目內頭文件
-#include <cms/colorformat/excelfile.h>
-#include <cms/colorformat/dgcodefile.h>
-#include <cms/colorspace/ciexyz.h>
-#include <cms/lcd/calibrate/lcdcalibrator.h>
 
 namespace cms {
     namespace measure {
@@ -138,8 +136,6 @@ namespace cms {
 	  DGCodeFileMeter::DGCodeFileMeter(bptr < DGCodeFile > dgcode):dgcode(dgcode), vector(dgcode->getCompositionVector()),
 		index(0)
 	    {
-
-
 	    };
 	    void DGCodeFileMeter::close() {
 	    };
@@ -157,7 +153,8 @@ namespace cms {
 		setPatchIntensity(PatchIntensity patchIntensity) {
 	    };
 	    double_array DGCodeFileMeter::triggerMeasurementInXYZ() {
-		c = (*vector)[index++];
+		c = (*vector)[index];
+		index++;
 		XYZ_ptr XYZ = c->XYZ;
 		return XYZ->getValues();
 	    };
@@ -174,6 +171,9 @@ namespace cms {
 	    };
 	    Composition_ptr DGCodeFileMeter::getComposition() {
 		return c;
+	    };
+	    void DGCodeFileMeter::setIndex(int index) {
+		this->index = 0;
 	    };
 	    //==================================================================
 	};

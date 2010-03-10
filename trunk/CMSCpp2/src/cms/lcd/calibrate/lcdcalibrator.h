@@ -112,17 +112,17 @@ namespace cms {
 
 		int start, end, step;
 		void set(int start, int end, int step);
+		int getn();
+		int getEffectiven();
 	      public:
-		static double_array getGammaCurve(double gamma, int n);
-		static double_vector_ptr getGammaCurveVector(double gamma,
-							     int n);
+		//static double_array getGammaCurve(double gamma, int n);
+		static double_vector_ptr getGammaCurveVector
+		    (double gamma, int n, int effectiven);
 
 		void setP1P2(double p1, double p2);
 		void setRBInterpolation(int under);
-		void setGamma(double gamma, int n);
-		void setGamma(double rgamma, double ggamma, double bgamma,
-			      int n);
-		//void setGammaCurve(double_array gammaCurve, int n);
+		void setGamma(double gamma);
+		void setGamma(double rgamma, double ggamma, double bgamma);
 		void setGammaCurve(double_vector_ptr gammaCurve);
 		void setGammaCurve(double_vector_ptr rgammaCurve,
 				   double_vector_ptr ggammaCurve,

@@ -1,3 +1,5 @@
+#include <includeall.h>
+#pragma hdrstop
 #include "rgbvectorop.h"
 
 //C系統文件
@@ -7,7 +9,6 @@
 //其他庫頭文件
 
 //本項目內頭文件
-#include <cms/colorspace/rgb.h>
 #include <cms/util/rgbarray.h>
 
 namespace cms {
@@ -106,9 +107,19 @@ namespace cms {
 	    //==================================================================
 
 	    //==================================================================
+	    BMaxOp::BMaxOp(const BitDepth & out):out(out) {
+
+	    };
 	    RGB_vector_ptr BMaxOp::getRendering(RGB_vector_ptr source) {
 		RGB_vector_ptr result = RGBVector::deepClone(source);
 		int size = result->size();
+		RGB_ptr bmax = (*result)[size - 1];
+		if (out == 6) {
+		    bmax->B = 252;
+		} else if (out == 8) {
+		    bmax->B = 255;
+		}
+
 
 		for (int x = size - 1; x != 1; x--) {
 		    RGB_ptr rgb = (*result)[x];

@@ -1,6 +1,5 @@
 //---------------------------------------------------------------------------
-
-#include <vcl.h>
+#include <includeall.h>
 #pragma hdrstop
 
 //C系統文件
@@ -8,16 +7,10 @@
 //C++系統文件
 
 //其他庫頭文件
-#include <boost/lexical_cast.hpp>
 
 //本項目內頭文件
 #include "TTargetWhiteForm2.h"
 #include "TMainForm.h"
-#include <cms/core.h>
-#include <cms/colorspace/ciexyz.h>
-#include <cms/colorspace/rgb.h>
-#include <cms/lcd/calibrate/whitefinder.h>
-#include <cms/measure/analyzer.h>
 
 //---------------------------------------------------------------------------
 #pragma package(smart_init)

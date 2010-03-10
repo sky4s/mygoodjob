@@ -27,6 +27,11 @@ namespace cms {
 	     */
 	    static RGB_vector_ptr clone(RGB_vector_ptr vector);
 	    static RGB_vector_ptr deepClone(RGB_vector_ptr vector);
+	    //static RGB_vector_ptr
+	    static void changeMaxValue(RGB_vector_ptr vector,
+				       const Dep::MaxValue & type);
+	    static void quantization(RGB_vector_ptr vector,
+				     const Dep::MaxValue & maxValue);
 	};
 
     };

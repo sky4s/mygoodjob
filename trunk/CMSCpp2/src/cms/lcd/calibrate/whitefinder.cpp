@@ -1,3 +1,5 @@
+#include <includeall.h>
+#pragma hdrstop
 #include "whitefinder.h"
 
 //C系統文件
@@ -8,13 +10,6 @@
 //其他庫頭文件
 
 //本項目內頭文件
-#include <cms/lcd/calibrate/aroundalgo.h>
-#include <cms/lcd/calibrate/nearalgo.h>
-#include <cms/lcd/calibrate/algo.h>
-#include <cms/colorspace/rgb.h>
-#include <cms/colorspace/ciexyz.h>
-#include <cms/patch.h>
-#include <cms/measure/MeterMeasurement.h>
 
 namespace cms {
     namespace lcd {

@@ -1,3 +1,5 @@
+#include <includeall.h>
+#pragma hdrstop
 #include "lcdcalibrator.h"
 
 //C系統文件
@@ -7,12 +9,7 @@
 //其他庫頭文件
 
 //本項目內頭文件
-#include <cms/measure/MeterMeasurement.h>
-#include <cms/measure/analyzer.h>
-#include <cms/colorspace/rgb.h>
-#include <cms/colorspace/ciexyz.h>
-#include <cms/colorformat/excelfile.h>
-#include <cms/colorformat/dgcodefile.h>
+
 #ifdef _DEBUG
 #include <cms/util/rgbarray.h>
 #endif
@@ -32,6 +29,7 @@ namespace cms {
 	    using namespace Dep;
 	    using namespace java::lang;
 	    using namespace cms::colorformat;
+	    using namespace cms::util;
 	    //==================================================================
 	    // Composition
 	    //==================================================================
@@ -266,6 +264,14 @@ namespace cms {
 		this->step = step;
 	    };
 
+	    int LCDCalibrator::getn() {
+		return (out == 12) ? 257 : 256;
+	    };
+
+	    int LCDCalibrator::getEffectiven() {
+		return (in == 6 && out == 6) ? 253 : (in == 8) ? 256 : 257;
+	    };
+
 	    RGBGamma_ptr LCDCalibrator::
 		getRGBGamma(double_vector_ptr gammaCurve) {
 		double_vector_ptr r(new double_vector(*gammaCurve));
@@ -274,22 +280,27 @@ namespace cms {
 		RGBGamma_ptr rgbGamma(new RGBGamma(r, g, b));
 		return rgbGamma;
 	    };
-	    double_array LCDCalibrator::getGammaCurve(double gamma, int n) {
-		double_array result(new double[n]);
-		for (int x = 0; x < n; x++) {
-		    double normal = static_cast < double >(x) / (n - 1);
-		    double v = java::lang::Math::pow(normal, gamma);
-		    result[x] = v;
-		}
-		return result;
-	    };
+	    /*double_array LCDCalibrator::getGammaCurve(double gamma, int n) {
+	       double_array result(new double[n]);
+	       for (int x = 0; x < n; x++) {
+	       double normal = static_cast < double >(x) / (n - 1);
+	       double v = java::lang::Math::pow(normal, gamma);
+	       result[x] = v;
+	       }
+	       return result;
+	       }; */
 	    double_vector_ptr
-		LCDCalibrator::getGammaCurveVector(double gamma, int n) {
+		LCDCalibrator::getGammaCurveVector(double gamma, int n,
+						   int effectiven) {
 		double_vector_ptr result(new double_vector(n));
-		for (int x = 0; x < n; x++) {
-		    double normal = static_cast < double >(x) / (n - 1);
+		for (int x = 0; x < effectiven; x++) {
+		    double normal =
+			static_cast < double >(x) / (effectiven - 1);
 		    double v = java::lang::Math::pow(normal, gamma);
 		    (*result)[x] = v;
+		}
+		for (int x = effectiven; x < n; x++) {
+		    (*result)[x] = 1;
 		}
 		return result;
 	    };
@@ -302,19 +313,21 @@ namespace cms {
 		this->p1p2 = false;
 		this->rbInterpUnder = under;
 	    };
-	    void LCDCalibrator::setGamma(double
-					 gamma, int n) {
+	    void LCDCalibrator::setGamma(double gamma) {
 		this->gamma = gamma;
-		setGammaCurve(getGammaCurveVector(gamma, n));
+		setGammaCurve(getGammaCurveVector
+			      (gamma, getn(), getEffectiven()));
 	    };
 	    void LCDCalibrator::setGamma(double rgamma, double ggamma,
-					 double bgamma, int n) {
+					 double bgamma) {
 		this->rgamma = rgamma;
 		this->ggamma = ggamma;
 		this->bgamma = bgamma;
-		setGammaCurve(getGammaCurveVector(rgamma, n),
-			      getGammaCurveVector(ggamma, n),
-			      getGammaCurveVector(bgamma, n));
+		int n = getn();
+		int effectiven = getEffectiven();
+		setGammaCurve(getGammaCurveVector(rgamma, n, effectiven),
+			      getGammaCurveVector(ggamma, n, effectiven),
+			      getGammaCurveVector(bgamma, n, effectiven));
 	    };
 	    void LCDCalibrator::
 		setGammaCurve(double_vector_ptr gammaCurve) {
@@ -359,6 +372,7 @@ namespace cms {
 		rbInterpUnder = 0;
 		gamma = rgamma = ggamma = bgamma = -1;
 		fetcher.reset(new ComponentFetcher(analyzer));
+		in = lut = out = 0;
 	    };
 
 	    /*
@@ -409,8 +423,8 @@ namespace cms {
 		//從目標gamma curve產生dg code, 此處是傳入normal gammaCurve
 		RGB_vector_ptr dgcode = producer->produce(rgbgamma);
 #ifdef _DEBUG
-		cms::util::RGBVector::
-		    storeToExcel(debug_dir + _("3_dgcode1.xls"), dgcode);
+		RGBVector::storeToExcel(debug_dir + _("3_dgcode1.xls"),
+					dgcode);
 #endif
 		if (p1p2) {
 		    //p1p2第一階段, 對gamma做調整
@@ -430,8 +444,8 @@ namespace cms {
 		//從目標gamma curve產生dg code, 此處是傳入normal gammaCurve
 		RGB_vector_ptr dgcode2 = producer->produce(rgbgamma2);
 #ifdef _DEBUG
-		cms::util::RGBVector::
-		    storeToExcel(debug_dir + _("5_dgcode2.xls"), dgcode2);
+		RGBVector::storeToExcel(debug_dir + _("5_dgcode2.xls"),
+					dgcode2);
 #endif
 
 		//==============================================================
@@ -440,11 +454,19 @@ namespace cms {
 		RGB_vector_ptr result = getDGCodeOpResult(dgcode2);
 		//==============================================================
 #ifdef _DEBUG
-		cms::util::RGBVector::
-		    storeToExcel(debug_dir + _("6_dgcode.xls"), result);
+		RGBVector::storeToExcel(debug_dir + _("6_dgcode.xls"),
+					result);
 #endif
-		this->dgcode = result;
 
+
+		const MaxValue & maxValue = (lut == 10) ?
+		    MaxValue::Int10Bit : MaxValue::Int12Bit;
+		//RGB_ptr a = (*dgcode)[dgcode->size() - 1];
+		RGBVector::quantization(result, maxValue);
+		//RGB_ptr b = (*dgcode)[dgcode->size() - 1];
+		RGBVector::changeMaxValue(result, maxValue);
+		//RGB_ptr c = (*dgcode)[dgcode->size() - 1];
+		this->dgcode = result;
 
 		return result;
 	    };
@@ -496,7 +518,7 @@ namespace cms {
 
 		if (bMax) {
 		    //bmax的調整
-		    bptr < DGCodeOp > bmax(new BMaxOp());
+		    bptr < DGCodeOp > bmax(new BMaxOp(out));
 		    dgop.addOp(bmax);
 		}
 		if (gByPass) {

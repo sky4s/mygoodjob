@@ -7,7 +7,6 @@
 
 //其他庫頭文件
 #include <math.hpp>
-#include <boost/lexical_cast.hpp>
 
 //本項目內頭文件
 #include "searcher.h"

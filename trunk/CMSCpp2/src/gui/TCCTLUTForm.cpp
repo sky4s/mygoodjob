@@ -1,14 +1,10 @@
 //---------------------------------------------------------------------------
-
-#include <vcl.h>
+#include <includeall.h>
 #pragma hdrstop
 
 #include "TCCTLUTForm.h"
 #include <FileCtrl.hpp>
 #include "TMainForm.h"
-
-#include <cms/lcd/calibrate/lcdcalibrator.h>
-#include <cms/measure/MeterMeasurement.h>
 
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
@@ -156,7 +152,7 @@ void __fastcall TCCTLUTForm::Button_RunClick(TObject * Sender)
     //==========================================================================
     if (this->RadioButton_Gamma->Checked) {
 	double gamma = this->ComboBox_Gamma->Text.ToDouble();
-	calibrator.setGamma(gamma, 256);
+	calibrator.setGamma(gamma);
     } else {
 
     }
@@ -183,16 +179,18 @@ void __fastcall TCCTLUTForm::Button_RunClick(TObject * Sender)
     MainForm->mm->setWaitTimes(waitTimes);
 
     RGB_vector_ptr dgcode = calibrator.getDGCode(start, end, step);
+
     /* TODO: ¦s°_¨Ó */
-
-
-    AnsiString astr =
-	this->Edit_Directory->Text + "\\" + this->Edit_Prefix->Text +
-	AnsiString(serialid) + ".xls";
+    AnsiString dir = this->Edit_Directory->Text;
+    if (!DirectoryExists(dir)) {
+	CreateDir(dir);
+    }
+    AnsiString sid = FormatFloat("00", serialid);
+    AnsiString astr = dir + "\\" + this->Edit_Prefix->Text + sid + ".xls";
     string filename = astr.c_str();
 
     calibrator.storeDGCode(filename, dgcode);
-
+    ShowMessage("Ok!");
 }
 
 //---------------------------------------------------------------------------

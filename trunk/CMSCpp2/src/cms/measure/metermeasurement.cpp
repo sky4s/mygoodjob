@@ -1,3 +1,5 @@
+#include <includeall.h>
+#pragma hdrstop
 #include "MeterMeasurement.h"
 
 //C系統文件
@@ -7,12 +9,6 @@
 //其他庫頭文件
 
 //本項目內頭文件
-#include <cms/measure/meter.h>
-#include <cms/measure/cp.h>
-#include <cms/patch.h>
-#include <cms/colorspace/ciexyz.h>
-#include <cms/colorspace/rgb.h>
-#include <cms/core.h>
 
 namespace cms {
     namespace measure {
@@ -168,6 +164,15 @@ namespace cms {
 	    if (!fakeMeasure) {
 		measureWindow->setRGB(measureRGB);
 		Sleep(waitTimes);
+	    } else {
+		if (null == dgc) {
+		    dgc =
+			bptr < DGCodeFileMeter >
+			(dynamic_cast < DGCodeFileMeter * >(meter.get()));
+		}
+
+		int v = measureRGB->getValue(Channel::W);
+		//dgc->setIndex(v);
 	    }
 	    //==========================================================================
 

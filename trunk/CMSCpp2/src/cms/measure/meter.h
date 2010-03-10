@@ -86,7 +86,7 @@ namespace cms {
 	    class DGCodeFileMeter:public Meter {
 	      private:
 		bptr < cms::colorformat::DGCodeFile > dgcode;
-		Composition_vector_ptr vector;
+		const Composition_vector_ptr vector;
 		int index;
 		Composition_ptr c;
 	      public:
@@ -103,6 +103,7 @@ namespace cms {
 		void setScreenType(ScreenType screenType);
 		Instr getType();
 		Composition_ptr getComposition();
+		void setIndex(int index);
 	    };
 
 	};
