@@ -15,7 +15,8 @@
       build\regression.obj build\searcher.obj build\svd.obj build\rgbgamma.obj 
       build\TMeasureWindow.obj build\CA200SRVRLib_OCX.obj 
       build\CA200SRVRLib_TLB.obj build\tconparameter.obj 
-      build\metermeasurement.obj build\tconcontrol.obj build\i2ccontrol.obj"/>
+      build\metermeasurement.obj build\tconcontrol.obj build\i2ccontrol.obj 
+      build\dgcodefile.obj"/>
     <RESFILES value="CMSCpp2.res"/>
     <IDLFILES value=""/>
     <IDLGENFILES value=""/>
@@ -31,7 +32,7 @@
       inetdbbde.bpi inetdbxpress.bpi inetdb.bpi nmfast.bpi webdsnap.bpi 
       bcbie.bpi websnap.bpi soaprtl.bpi dclocx.bpi dbexpress.bpi dbxcds.bpi 
       indy.bpi bcb2kaxserver.bpi bcbindent.bpi"/>
-    <PATHCPP value=".;src;src;src\ca210api;src\cms;src\cms;src\cms\colorformat;src\cms\colorformat;src\cms\colorformat;src\cms\colorspace;src\cms\colorspace;src\cms\colorspace;src\cms\colorspace;src\cms\colorspace;src\cms\lcd\calibrate;src\cms\lcd\calibrate;src\cms\lcd\calibrate;src\cms\lcd\calibrate;src\cms\lcd\calibrate;src\cms\lcd\calibrate;src\cms\measure;src\cms\measure;src\cms\measure;src\cms\util;src\static;src\static\java;src\static\math;src\static\math;src\static\math;src\static\math;src\static\math;src\cms\lcd\calibrate;src\gui;imports\CA200SRVRLib;imports\CA200SRVRLib;src\cms\i2c;src\cms\measure;src\cms\i2c;src\cms\i2c"/>
+    <PATHCPP value=".;src;src;src\ca210api;src\cms;src\cms;src\cms\colorformat;src\cms\colorformat;src\cms\colorformat;src\cms\colorspace;src\cms\colorspace;src\cms\colorspace;src\cms\colorspace;src\cms\colorspace;src\cms\lcd\calibrate;src\cms\lcd\calibrate;src\cms\lcd\calibrate;src\cms\lcd\calibrate;src\cms\lcd\calibrate;src\cms\lcd\calibrate;src\cms\measure;src\cms\measure;src\cms\measure;src\cms\util;src\static;src\static\java;src\static\math;src\static\math;src\static\math;src\static\math;src\static\math;src\cms\lcd\calibrate;src\gui;imports\CA200SRVRLib;imports\CA200SRVRLib;src\cms\i2c;src\cms\measure;src\cms\i2c;src\cms\i2c;src\cms\colorformat"/>
     <PATHPAS value=".;"/>
     <PATHRC value=".;"/>
     <PATHASM value=".;"/>
@@ -110,6 +111,7 @@
       <FILE FILENAME="src\cms\measure\metermeasurement.cpp" FORMNAME="" UNITNAME="metermeasurement" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="src\cms\i2c\tconcontrol.cpp" FORMNAME="" UNITNAME="tconcontrol" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="src\cms\i2c\i2ccontrol.cpp" FORMNAME="" UNITNAME="i2ccontrol" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="src\cms\colorformat\dgcodefile.cpp" FORMNAME="" UNITNAME="dgcodefile" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
   </FILELIST>
   <BUILDTOOLS>
   </BUILDTOOLS>

@@ -29,6 +29,7 @@
 #include <cms/colorspace/rgb.h>
 #include <cms/colorformat/excelfiletester.h>
 #include <cms/colorformat/excelfile.h>
+#include <cms/colorformat/dgcodefile.h>
 //#include <policybased.h>
 #include <locale>
 #include <cms/lcd/calibrate/rgbvectorop.h>

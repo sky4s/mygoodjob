@@ -144,6 +144,7 @@ namespace cms {
 				 RGB_vector_ptr dgcode);
 	      private:
 		 RGB_vector_ptr getDGCodeOpResult(RGB_vector_ptr dgcode);
+		RGB_vector_ptr bitDepthProcess(RGB_vector_ptr dgcode);
 	    };
 
 
