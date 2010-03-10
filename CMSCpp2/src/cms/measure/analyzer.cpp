@@ -1,3 +1,5 @@
+#include <includeall.h>
+#pragma hdrstop
 #include "analyzer.h"
 
 //C系統文件
@@ -8,13 +10,6 @@
 
 //本項目內頭文件
 #include <ca210api/CA210API.h>
-#include <cms/measure/meter.h>
-#include <cms/measure/MeterMeasurement.h>
-#include <cms/colorspace/rgb.h>
-#include <cms/colorspace/ciexyz.h>
-#include <cms/colorspace/depend.h>
-#include <cms/patch.h>
-#include <cms/lcd/calibrate/lcdcalibrator.h>
 
 namespace cms {
     namespace measure {
@@ -63,9 +58,10 @@ namespace cms {
 	    if (true == dummyMode) {
 		//若為dummy mode, 代表從meter直接撈資料
 		//而meter是假的, 其實是從檔案撈資料
-		DGCodeFileMeter *dgc =
-		    dynamic_cast <
-		    DGCodeFileMeter * >(mm->getMeter().get());
+		if (null == dgc) {
+		    dgc = dynamic_cast
+			< DGCodeFileMeter * >(mm->getMeter().get());
+		}
 		Composition_ptr c = dgc->getComposition();
 		RGB_ptr component = c->component;
 		rgbComponent.reset(new float[3]);

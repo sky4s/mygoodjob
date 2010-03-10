@@ -1,5 +1,6 @@
+#include <includeall.h>
+#pragma hdrstop
 #include "algo.h"
-
 //C系統文件
 
 //C++系統文件
@@ -7,11 +8,6 @@
 //其他庫頭文件
 
 //本項目內頭文件
-#include <cms/colorspace/rgb.h>
-#include <cms/colorspace/ciexyz.h>
-#include <cms/measure/cp.h>
-#include <cms/measure/MeterMeasurement.h>
-#include <cms/patch.h>
 
 
 namespace cms {

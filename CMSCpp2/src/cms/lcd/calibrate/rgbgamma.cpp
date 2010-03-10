@@ -1,3 +1,5 @@
+#include <includeall.h>
+#pragma hdrstop
 #include "rgbgamma.h"
 
 //C╰参ゅン
@@ -5,10 +7,8 @@
 //C++╰参ゅン
 
 //ㄤ畐繷ゅン
-#include <boost/lexical_cast.hpp>
+
 //セ兜ヘず繷ゅン
-#include <cms/colorspace/rgb.h>
-#include <cms/colorformat/excelfile.h>
 
 
 namespace cms {
@@ -57,19 +57,23 @@ namespace cms {
 		double_vector_ptr b(new double_vector(*source->b));
 		int size = b->size();
 
+		/* TODO : getRendering ぃ来,┮礚猭龟 */
 		for (int x = 0; x != start; x++) {
 		    //0~start
 		    (*b)[x] = (*b)[x] * gain;
 		};
-		/* TODO : getRendering ぃ来,┮礚猭龟 */
+		double bstart_1 = (*b)[start - 1];
+		int remainder = size - 1 - start;
 		for (int x = start; x != size; x++) {
 		    //start-size
 		    //' 19thBP*gain+(100-19thBP*gain)/(255-236)*(19-i)
 		    //19 0~19
 		    //BP(i) = BP(temp_diff) * Val(Text3.Text) + (100 - BP(temp_diff) * Val(Text3.Text)) / (255 - Val(Text4.Text)) * (temp_diff - i)
-		    (*b)[x] =
-			(*b)[start] * gain + (100 - (*b)[start] * gain) /
-			(255 - start) * x;
+		    /*(*b)[x] =
+		       bstart_1 + (1 - bstart_1) / (255 - start) * x; */
+		    int n = x - start;
+		    (*b)[x] = bstart_1 + (1 - bstart_1)
+			* (static_cast < double >(n) / remainder);
 
 		};
 

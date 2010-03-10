@@ -38,6 +38,7 @@ namespace cms {
 	    static const WideString & CalibrationDataFilename;
 	    bool dummyMode;
 	    void init();
+	     cms::measure::meter::DGCodeFileMeter * dgc;
 	  public:
 
 	    /*CA210ComponentAnalyzer(bptr < cms::measure::meter::CA210 >

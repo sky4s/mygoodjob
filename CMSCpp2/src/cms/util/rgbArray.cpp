@@ -1,3 +1,5 @@
+#include <includeall.h>
+#pragma hdrstop
 #include "rgbArray.h"
 
 //C系統文件
@@ -5,15 +7,16 @@
 //C++系統文件
 
 //其他庫頭文件
-#include <boost/lexical_cast.hpp>
+
 //本項目內頭文件
-#include <cms/colorspace/rgb.h>
-#include <cms/colorformat/excelfile.h>
 
 namespace cms {
     namespace util {
 	using namespace std;
 	using Dep::RGBColor;
+	using Dep::MaxValue;
+	using namespace cms::colorformat;
+	using namespace boost;
 	string_ptr RGBVector::toString(RGB_vector_ptr rgbVector) {
 
 	    string_ptr result(new string());
@@ -34,8 +37,7 @@ namespace cms {
 	};
 	void RGBVector::storeToExcel(const string & filename,
 				     RGB_vector_ptr rgbVector) {
-	    using namespace cms::colorformat;
-	    using namespace boost;
+
 
 	    ExcelFileDB::deleteExist(filename);
 	    bptr_ < ExcelFileDB > excel(new ExcelFileDB(filename, Create));
@@ -69,6 +71,18 @@ namespace cms {
 		(*result)[x] = (*vector)[x]->clone();
 	    }
 	    return result;
+	};
+	void RGBVector::changeMaxValue(RGB_vector_ptr vector,
+				       const MaxValue & type) {
+	    foreach(RGB_ptr rgb, *vector) {
+		rgb->changeMaxValue(type);
+	    }
+	};
+	void RGBVector::quantization(RGB_vector_ptr vector,
+				     const MaxValue & maxValue) {
+	    foreach(RGB_ptr rgb, *vector) {
+		rgb->quantization(maxValue);
+	    }
 	};
     };
 }

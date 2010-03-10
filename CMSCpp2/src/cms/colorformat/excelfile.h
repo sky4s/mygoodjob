@@ -39,7 +39,7 @@ namespace cms {
 	     string_vector_ptr getFieldNames(string_ptr tableName);
 	  protected:
 	     bool isAlterable();
-	    void execute(const std::string & sql);
+
 	    void update0(const std::string & keyField,
 			 const int keyValue,
 			 string_vector_ptr fieldNames,
@@ -50,6 +50,8 @@ namespace cms {
 	     bptr < TADODataSet > selectDataSet(const std::string & sql);
 	    static string_vector_ptr getResult(bptr < TADODataSet >
 					       dataSet);
+	  public:
+	    void execute(const std::string & sql);
 	  public:
 	     ExcelFileDB(const std::string & fileName, const Mode mode);
 	    ~ExcelFileDB();

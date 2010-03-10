@@ -1,5 +1,6 @@
+#include <includeall.h>
+#pragma hdrstop
 #include "core.h"
-
 //C系統文件
 
 //C++系統文件
@@ -7,7 +8,6 @@
 //其他庫頭文件
 
 //本項目內頭文件
-#include <cms/colorspace/ciexyz.h>
 
 namespace cms {
     using namespace boost;

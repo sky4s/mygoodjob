@@ -1,6 +1,7 @@
 //---------------------------------------------------------------------------
 
-#include <vcl.h>
+
+#include <includeall.h>
 #pragma hdrstop
 
 //C系統文件
@@ -11,7 +12,6 @@
 
 //本項目內頭文件
 #include "TMeasureWindow.h"
-#include <cms/colorspace/rgb.h>
 
 //---------------------------------------------------------------------------
 #pragma package(smart_init)

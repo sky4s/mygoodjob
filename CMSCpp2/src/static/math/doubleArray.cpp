@@ -5,7 +5,6 @@
 //C++系統文件
 
 //其他庫頭文件
-#include <boost/lexical_cast.hpp>
 #include <tnt/tnt_array2d_utils.h>
 #include <jama/jama_lu.h>
 #include <jama/jama_qr.h>

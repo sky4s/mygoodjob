@@ -1,6 +1,5 @@
 //---------------------------------------------------------------------------
-
-#include <vcl.h>
+#include <includeall.h>
 #pragma hdrstop
 
 #include <conio.h>
@@ -16,36 +15,11 @@
 #include <algorithm>
 #include <iterator>
 
-#include <vcl.h>
-
-#include <boost/foreach.hpp>
 #include <boost/array.hpp>
-
 #include <jama/jama_svd.h>
 
-#include <math/Searcher.h>
-#include <math/doublearray.h>
-#include <math/regression.h>
-#include <math/interpolation.h>
-#include <java/lang.h>
-
-//#include <policybased.h>
 #include <locale>
-
-#include <cms/colorspace/rgb.h>
-#include <cms/colorspace/ciexyz.h>
-#include <cms/colorformat/excelfile.h>
-#include <cms/colorformat/dgcodefile.h>
-
-#include <cms/lcd/calibrate/rgbvectorop.h>
-#include <cms/lcd/calibrate/lcdcalibrator.h>
-#include <cms/lcd/calibrate/rgbop.h>
-#include <cms/lcd/calibrate/rgbgamma.h>
 #include <cms/util/rgbarray.h>
-#include <cms/measure/analyzer.h>
-#include <cms/measure/meter.h>
-#include <cms/measure/MeterMeasurement.h>
-
 #include <ca210api/CA210API.h>
 
 //---------------------------------------------------------------------------
@@ -96,6 +70,53 @@ void excel()
 
 
     //db.close();
+}
+
+void excel2()
+{
+    using namespace cms::colorformat;
+    using namespace std;
+    string_vector_ptr fieldsNames = ExcelFileDB::makec(2, "a", "b");
+
+    const string & filename = "a.xls";
+    ExcelFileDB::deleteExist(filename);
+    //DGCodeFile::deleteExist( filename);
+    ExcelFileDB db(filename, Create);
+
+    db.createTable("tb", fieldsNames);
+    bool update = false;
+
+    if (update) {
+	//¨â­¿®É¶¡
+	for (int x = 0; x < 1000; x++) {
+	    db.insert(fieldsNames,
+		      ExcelFileDB::makes(2, _toString(x),
+					 _toString((x + 1))));
+	}
+
+	for (int x = 0; x < 1000; x++) {
+	    string_vector_ptr values = ExcelFileDB::makes(2, _toString(x),
+							  _toString((x +
+								     1)));
+	    db.update("a", x, fieldsNames, values);
+	}
+
+
+    } else {
+	for (int x = 0; x < 1000; x++) {
+	    /*db.insert(fieldsNames,
+	       ExcelFileDB::makes(2, _toString(x),
+	       _toString((x + 1)))); */
+	    //string a = "INSERT INTO [tb] ([a],[b]) VALUES (";
+	    //string sql = a + _toString(x)+", "+_toString(x+1)+") ";
+	    db.execute(" INSERT INTO[tb] ([a],[b]) VALUES(0, 1) ");
+	    //db.execute(sql);
+	    /*
+	       ¤£ºÞ¦³¥Î¨ì¦r¦ê³B²zÁÙ¬O¨S¦³³£¤@¼ËºC, ©Ò¥H¥Î¤£µÛ¤@¤f®ð±Nªì¨Ï¤Æ©Mupdate
+	       °µ¦b¤@°_¤F, ¦]¬°ÁÙ¬O¤@¼ËºC
+	     */
+	}
+    }
 }
 
 int lut()
@@ -171,21 +192,21 @@ void inverse()
 
 void wstringtest()
 {
-    string a = "12345";
+    string a = " 12345 ";
     cout << a.size() << endl;
-    char *test = "§Ú¬O´ú¸Õ¦r¦ê";
+    char *test = "";
     wchar_t *wchar = new wchar_t[260];
     size_t ret = mbstowcs(wchar, test, 13);
     if (ret != NULL) {
-	cout << "success" << endl;
+	cout << " success " << endl;
 	//wcout << wchar << endl;
-	//wcout << L"§Ú§Ú§Ú§Ú" << endl;
+	//wcout << L" § Ú§Ú§Ú§Ú" << endl;
 	cout << wchar << endl;
 	wcout << wchar << endl;
-	wcout << L"some english string";
+	wcout << L" some english string ";
 
     } else {
-	cout << "Error" << endl;
+	cout << " Error " << endl;
     }
     delete[]wchar;
 
@@ -193,24 +214,24 @@ void wstringtest()
 
 void stringfunc(string a)
 {
-    cout << &a << ": " << a << endl;
+    cout << &a << ":" << a << endl;
 }
 
 void stringfuncref(string & a)
 {
-    cout << &a << ": " << a << endl;
+    cout << &a << ":" << a << endl;
 }
 
 void stringfuncpointer(string * a)
 {
-    cout << a << ": " << *a << endl;
+    cout << a << ":" << *a << endl;
 }
 
 
 
 void stringtest()
 {
-    string a = "abc";
+    string a = " abc ";
     cout << &a << endl;
     stringfunc(a);
     stringfuncref(a);
@@ -244,15 +265,15 @@ void sizeCompare()
     double_vector dvector(4);
     using namespace std;
 
-    cout << "array: " << sizeof(darray) << endl;
-    cout << "double: " << sizeof(double) << endl;
-    cout << "double*: " << sizeof(dpointer) << endl;
+    cout << " array:" << sizeof(darray) << endl;
+    cout << " double:" << sizeof(double) << endl;
+    cout << " double *:" << sizeof(dpointer) << endl;
 
-    cout << "bptr: " << sizeof(dvalues) << endl;
-    //cout << "*bptr: " << sizeof(*dvalues) << endl;
+    cout << " bptr:" << sizeof(dvalues) << endl;
+    //cout << " * bptr:" << sizeof(*dvalues) << endl;
 
-    cout << "vector: " << sizeof(dvector) << endl;
-    cout << "vec capacity:" << dvector.capacity() << endl;
+    cout << " vector:" << sizeof(dvector) << endl;
+    cout << " vec capacity:" << dvector.capacity() << endl;
 
     //cout << dvector.size() << endl;
 
@@ -267,8 +288,8 @@ void gammaCurve()
     using namespace cms::lcd::calibrate;
     using namespace math;
     int n = 256;
-    double_array curve = LCDCalibrator::getGammaCurve(2.2, n);
-    cout << *DoubleArray::toString(curve, n);
+    /*double_array curve = LCDCalibrator::getGammaCurve(2.2, n);
+    cout << *DoubleArray::toString(curve, n);*/
 };
 
 
@@ -278,12 +299,12 @@ void dgcodefile()
     using namespace cms::lcd::calibrate;
     using namespace Dep;
     using namespace Indep;
-    const string & filename = "test.xls";
-    //string_ptr filename(new string("test.xls"));
+    const string & filename = " test.xls ";
+    //string_ptr filename(new string(" test.xls "));
     ExcelFileDB::deleteExist(filename);
     DGCodeFile dgcode(filename, 256);
-    //dgcode.setProperty("a", "b");
-    //dgcode.setProperty("b", "bbb");
+    //dgcode.setProperty(" a ", " b ");
+    //dgcode.setProperty(" b ", " bbb ");
     //dgcode.setRawData()
     Composition_vector_ptr compositionVec(new Composition_vector());
     RGB_ptr rgb(new RGBColor(1, 2, 3));
@@ -321,8 +342,8 @@ void rgbTry()
 		 DoubleArray::toDoubleArray(3, 0.25, 0.5, 0.75),
 		 MaxValue::Double255);
     cout << *rgb.toString() << endl;
-    rgb.quantization(MaxValue::Int8Bit);
-    //rgb.changeMaxValue(MaxValue::Int10Bit);
+    //rgb.quantization(MaxValue::Int8Bit);
+    rgb.changeMaxValue(MaxValue::Int10Bit);
     cout << *rgb.toString() << endl;
 };
 
@@ -443,7 +464,7 @@ void lcdcalibratorTry()
     bptr < CA210ComponentAnalyzer >
 	analyzer(new CA210ComponentAnalyzer(ca210, mm));
 
-    mm->measure(0, 0, 128, "test");
+    mm->measure(0, 0, 128, " test ");
 
 
 };
@@ -483,10 +504,15 @@ void ca210()
 
 void strTry()
 {
-    string a = "1";
-    string b = "2";
+    using namespace std;
+    string a = " 1 ";
+    string b = " 2 ";
     string c = a + b;
     cout << c << endl;
+    string str = " 12345 ";
+    str.replace(3, 1, " 90 ");
+    cout << str << endl;
+
 };
 
 #pragma argsused
@@ -497,11 +523,12 @@ int main(int argc, char *argv[])
 
 
     /*string s;
-       cout << ("" == s) << endl; */
+       cout << (" " == s) << endl; */
 
     //regress();
     //lut();
     //excel();
+    //excel2();
     //inverse();
     //rgbVectorOp();
     //sizeCompare();
@@ -510,7 +537,7 @@ int main(int argc, char *argv[])
     //dgcodefile();
     //dgcode();
     //inverse();
-    //rgbTry();
+    rgbTry();
     //mathTry();
     //doubleArrayTry();
     //rgbop();
@@ -521,10 +548,10 @@ int main(int argc, char *argv[])
     //channelTry();
     //ca210();
 
-    strTry();
+    //strTry();
 
     //using namespace cms::colorformat;
-    //DGCodeFile dg("test.xls",256);
+    //DGCodeFile dg(" test.xls ",256);
 
     getch();
 }

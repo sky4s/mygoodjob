@@ -20,7 +20,7 @@ namespace cms {
 	    const Mode mode;
 	    void init();
 	    void initDefaultData(string_vector_ptr fieldNames,
-				 const std::string & tableName,
+				 const std::string & tableName, int n,
 				 bool reverse);
 	    void initDefaultData(string_vector_ptr fieldNames,
 				 const std::string & tableName,
@@ -30,6 +30,7 @@ namespace cms {
 	    static string_vector_ptr getFieldNames(const std::string *
 						   fieldNames, int n);
 	    const std::string & filename;
+	    bool lazyMode;
 	  public:
 	    static const std::string GammaHeader[4];
 	    static const std::string RawHeader[13];
@@ -97,7 +98,7 @@ namespace cms {
 	    static const std::string Gamma256;
 	    static const std::string FRC_NR;
 	    const cms::lcd::calibrate::LCDCalibrator & c;
-	    void store(DGCodeFile & dgcode);
+	    void store(DGCodeFile & dgcode) const;
 	  public:
 	     DGCodeProperty(const cms::lcd::calibrate::LCDCalibrator & c);
 	};

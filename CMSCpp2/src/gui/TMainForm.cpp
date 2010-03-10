@@ -1,6 +1,7 @@
 //---------------------------------------------------------------------------
 
-#include <vcl.h>
+
+#include <includeall.h>
 #pragma hdrstop
 
 //C系統文件
@@ -16,11 +17,6 @@
 #include "TAboutBox.h"
 #include "TCCTLUTForm.h"
 
-#include <cms/measure/meter.h>
-#include <cms/measure/metermeasurement.h>
-#include <cms/measure/analyzer.h>
-#include <cms/colorformat/excelfile.h>
-#include <cms/colorformat/dgcodefile.h>
 #include <UIConfig.h>
 
 //---------------------------------------------------------------------------

@@ -53,8 +53,12 @@ namespace cms {
 	    };
 
 	    class BMaxOp:public DGCodeOp {
+	      private:
+		const BitDepth & out;
+	      public:
+		 BMaxOp(const BitDepth & out);
 	      protected:
-		RGB_vector_ptr getRendering(RGB_vector_ptr source);
+		 RGB_vector_ptr getRendering(RGB_vector_ptr source);
 	    };
 
 	    class GByPassOp:public DGCodeOp {

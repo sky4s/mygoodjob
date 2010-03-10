@@ -7,11 +7,11 @@
 
 
 //其他庫頭文件
-
-//本項目內頭文件
-#include <java/lang.h>
 #include <tnt/tnt_array1d.h>
 #include <tnt/tnt_array2d.h>
+//本項目內頭文件
+#include <java/lang.h>
+
 
 namespace math {
     class SVDLib {

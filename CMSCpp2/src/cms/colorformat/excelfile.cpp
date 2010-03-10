@@ -1,3 +1,5 @@
+#include <includeall.h>
+#pragma hdrstop
 #include "excelfile.h"
 
 //C系統文件
@@ -6,8 +8,7 @@
 #include <iostream>
 
 //其他庫頭文件
-#include <vcl.h>
-#include <boost/lexical_cast.hpp>
+
 //本項目內頭文件
 
 namespace cms {
@@ -108,11 +109,11 @@ namespace cms {
 	    for (int x = 0; x != size; x++) {
 		string & name = (*fieldNames)[x];
 		string & type = (*fieldTypes)[x];
-		sql += "[" + name + "] " + type + ",";
+		sql +=
+		    "[" + name + "] " + type +
+		    ((x == size - 1) ? ")" : ",");
 	    };
 
-	    sql.erase(sql.size() - 1, 1);
-	    sql += ")";
 	    execute(sql);
 	};
 
@@ -137,18 +138,16 @@ namespace cms {
 	    foreach(string s, *fieldNames) {
 		sql += "[" + s + "],";
 	    };
-	    sql.erase(sql.size() - 1, 1);
-	    sql += ") VALUES (";
+	    sql.replace(sql.size() - 1, 1, ") VALUES (");
 	    foreach(string s, *values) {
 		sql += text ? ("\"" + s + "\",") : (s + ",");
 	    };
-	    sql.erase(sql.size() - 1, 1);
-	    sql += ")";
+	    sql.replace(sql.size() - 1, 1, ")");
 	    execute(sql);
 	};
 	void ExcelFileDB::execute(const std::string & sql) {
-	    /*connection->Execute(*toWideString(sql), TCommandType(),
-				TExecuteOptions());*/
+	    connection->Execute(*toWideString(sql), TCommandType(),
+				TExecuteOptions());
 	};
 	void ExcelFileDB::update0(const std::string & keyField,
 				  const int keyValue,
@@ -159,15 +158,15 @@ namespace cms {
 		throw IllegalStateException("!isAlterable()");
 	    }
 	    string sql = "UPDATE [" + getTableName() + "$] SET";
-	    //string sql = "UPDATE [Raw_Data$] SET";
 	    int size = fieldNames->size();
 	    for (int x = 0; x < size; x++) {
 		string key = (*fieldNames)[x];
 		string val = (*values)[x];
 		sql += " [" + key + "] = ";
-		sql += textValues ? ("\"" + val + "\",") : (val + ",");
+		sql += textValues ? ("\"" + val + "\"") : val;
+		sql += (x == size - 1) ? "" : ",";
 	    }
-	    sql.erase(sql.size() - 1, 1);
+
 	    sql +=
 		" WHERE [" + keyField + "] = " + lexical_cast < string >
 		(keyValue);

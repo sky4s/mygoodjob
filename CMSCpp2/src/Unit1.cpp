@@ -1,6 +1,5 @@
 //---------------------------------------------------------------------------
-
-#include <vcl.h>
+#include <includeall.h>
 #pragma hdrstop
 
 #include <conio.h>
@@ -16,24 +15,11 @@
 #include <algorithm>
 #include <iterator>
 
-#include <boost/foreach.hpp>
 #include <boost/array.hpp>
 
 #include <jama/jama_svd.h>
 
-#include <math/Searcher.h>
-#include <math/doublearray.h>
-#include <math/regression.h>
-#include <math/interpolation.h>
-#include <java/lang.h>
-#include <cms/colorspace/rgb.h>
-#include <cms/colorformat/excelfiletester.h>
-#include <cms/colorformat/excelfile.h>
-#include <cms/colorformat/dgcodefile.h>
-//#include <policybased.h>
 #include <locale>
-#include <cms/lcd/calibrate/rgbvectorop.h>
-#include <cms/lcd/calibrate/lcdcalibrator.h>
 #include <cms/util/rgbarray.h>
 
 //---------------------------------------------------------------------------
@@ -229,8 +215,8 @@ void gammaCurve()
     using namespace cms::lcd::calibrate;
     using namespace math;
     int n = 256;
-    double_array curve = LCDCalibrator::getGammaCurve(2.2, n);
-    cout << *DoubleArray::toString(curve, n);
+    /*double_array curve = LCDCalibrator::getGammaCurve(2.2, n);
+    cout << *DoubleArray::toString(curve, n);*/
 };
 
 

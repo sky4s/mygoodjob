@@ -13,7 +13,9 @@
 #include <boost/shared_ptr.hpp>
 #include <boost/scoped_ptr.hpp>
 #include <boost/foreach.hpp>
+#include <boost/lexical_cast.hpp>
 //本項目內頭文件
+
 
 //==============================================================================
 // include template
@@ -58,6 +60,8 @@
 #define string_vector_ptr bptr < string_vector >
 #define stringp_vector std::vector < string_ptr >
 #define stringp_vector_ptr bptr < string_ptr_vector >
+#define string_doublevector std::vector < string_vector_ptr >
+#define string_doublevector_ptr bptr < std::vector >
 
 #define double_array barray <double>
 #define nil_double_array double_array ((double*)NULL)
@@ -133,6 +137,14 @@
 #define float2D TNT::Array2D< float >
 #define float3D TNT::Array3D< float >
 //==============================================================================
+
+//==============================================================================
+// 簡化lexical使用上的巨集
+//==============================================================================
+#define _toString boost::lexical_cast < std::string >
+//==============================================================================
+
+
 namespace math {
     class Interpolation1DLUT;
 };
@@ -174,12 +186,14 @@ namespace cms {
 	class MeterMeasurement;
 	class MeasureResult;
 	class ComponentAnalyzerIF;
+
 	namespace cp {
 	    class MeasureInterface;
 	};
 	namespace meter {
 	    class Meter;
 	    class CA210;
+	    class DGCodeFileMeter;
 	};
     };
 };
