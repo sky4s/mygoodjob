@@ -20,6 +20,7 @@
 #include <cms/measure/metermeasurement.h>
 #include <cms/measure/analyzer.h>
 #include <cms/colorformat/excelfile.h>
+#include <cms/colorformat/dgcodefile.h>
 #include <UIConfig.h>
 
 //---------------------------------------------------------------------------

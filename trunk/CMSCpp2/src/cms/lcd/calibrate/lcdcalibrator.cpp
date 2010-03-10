@@ -12,6 +12,7 @@
 #include <cms/colorspace/rgb.h>
 #include <cms/colorspace/ciexyz.h>
 #include <cms/colorformat/excelfile.h>
+#include <cms/colorformat/dgcodefile.h>
 #ifdef _DEBUG
 #include <cms/util/rgbarray.h>
 #endif
@@ -19,6 +20,9 @@
 #include <math/interpolation.h>
 #include "rgbvectorop.h"
 #include "rgbgamma.h"
+#include <gui/UIConfig.h>
+#define _ std::string
+#define debug_dir _(DEBUG_DIR)
 
 namespace cms {
     namespace lcd {
@@ -370,15 +374,20 @@ namespace cms {
 		compositionVector =
 		    fetcher->fetchComposition(start, end, step);
 #ifdef _DEBUG
-		ComponentFetcher::storeToExcel("0_fetch.xls",
-					       compositionVector);
+		if (!DirectoryExists(DEBUG_DIR)) {
+		    CreateDir(DEBUG_DIR);
+		}
+		ComponentFetcher::
+		    storeToExcel(debug_dir + _("0_fetch.xls"),
+				 compositionVector);
 #endif
 		//產生producer
 		producer.reset(new DGCodeProducer(compositionVector));
 		RGBGamma_ptr rgbgamma = getRGBGamma(gammaCurve);
 #ifdef _DEBUG
 		cms::lcd::calibrate::RGBGamma::
-		    storeToExcel("1_rgbgamma1.xls", rgbgamma);
+		    storeToExcel(debug_dir + _("1_rgbgamma1.xls"),
+				 rgbgamma);
 #endif
 		RGBGammaOp gammaop;
 		gammaop.setSource(rgbgamma);
@@ -393,14 +402,15 @@ namespace cms {
 		};
 #ifdef _DEBUG
 		cms::lcd::calibrate::RGBGamma::
-		    storeToExcel("2_rgbgamma2.xls", rgbgamma);
+		    storeToExcel(debug_dir + _("2_rgbgamma2.xls"),
+				 rgbgamma);
 #endif
 
 		//從目標gamma curve產生dg code, 此處是傳入normal gammaCurve
 		RGB_vector_ptr dgcode = producer->produce(rgbgamma);
 #ifdef _DEBUG
-		cms::util::RGBVector::storeToExcel("3_dgcode1.xls",
-						   dgcode);
+		cms::util::RGBVector::
+		    storeToExcel(debug_dir + _("3_dgcode1.xls"), dgcode);
 #endif
 		if (p1p2) {
 		    //p1p2第一階段, 對gamma做調整
@@ -412,15 +422,16 @@ namespace cms {
 		rgbgamma2 = gammaop.createInstance();
 #ifdef _DEBUG
 		cms::lcd::calibrate::RGBGamma::
-		    storeToExcel("4_rgbgamma2.xls", rgbgamma2);
+		    storeToExcel(debug_dir + _("4_rgbgamma2.xls"),
+				 rgbgamma2);
 #endif
 		//產生producer
 		producer.reset(new DGCodeProducer(compositionVector));
 		//從目標gamma curve產生dg code, 此處是傳入normal gammaCurve
 		RGB_vector_ptr dgcode2 = producer->produce(rgbgamma2);
 #ifdef _DEBUG
-		cms::util::RGBVector::storeToExcel("5_dgcode2.xls",
-						   dgcode2);
+		cms::util::RGBVector::
+		    storeToExcel(debug_dir + _("5_dgcode2.xls"), dgcode2);
 #endif
 
 		//==============================================================
@@ -429,9 +440,12 @@ namespace cms {
 		RGB_vector_ptr result = getDGCodeOpResult(dgcode2);
 		//==============================================================
 #ifdef _DEBUG
-		cms::util::RGBVector::storeToExcel("6_dgcode.xls", result);
+		cms::util::RGBVector::
+		    storeToExcel(debug_dir + _("6_dgcode.xls"), result);
 #endif
 		this->dgcode = result;
+
+
 		return result;
 	    };
 
@@ -501,6 +515,11 @@ namespace cms {
 		RGB_vector_ptr result = dgop.createInstance();
 		return result;
 		//==============================================================
+	    };
+
+	    RGB_vector_ptr LCDCalibrator::
+		bitDepthProcess(RGB_vector_ptr dgcode) {
+
 	    };
 
 	    //==================================================================

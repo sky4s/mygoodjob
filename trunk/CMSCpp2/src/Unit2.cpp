@@ -35,6 +35,7 @@
 #include <cms/colorspace/rgb.h>
 #include <cms/colorspace/ciexyz.h>
 #include <cms/colorformat/excelfile.h>
+#include <cms/colorformat/dgcodefile.h>
 
 #include <cms/lcd/calibrate/rgbvectorop.h>
 #include <cms/lcd/calibrate/lcdcalibrator.h>
@@ -479,6 +480,15 @@ void ca210()
     ca210.triggerMeasurement();
 };
 
+
+void strTry()
+{
+    string a = "1";
+    string b = "2";
+    string c = a + b;
+    cout << c << endl;
+};
+
 #pragma argsused
 int main(int argc, char *argv[])
 {
@@ -511,6 +521,7 @@ int main(int argc, char *argv[])
     //channelTry();
     //ca210();
 
+    strTry();
 
     //using namespace cms::colorformat;
     //DGCodeFile dg("test.xls",256);

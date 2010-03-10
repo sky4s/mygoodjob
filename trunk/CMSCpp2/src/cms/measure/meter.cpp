@@ -8,6 +8,7 @@
 
 //本項目內頭文件
 #include <cms/colorformat/excelfile.h>
+#include <cms/colorformat/dgcodefile.h>
 #include <cms/colorspace/ciexyz.h>
 #include <cms/lcd/calibrate/lcdcalibrator.h>
 
@@ -137,6 +138,7 @@ namespace cms {
 	  DGCodeFileMeter::DGCodeFileMeter(bptr < DGCodeFile > dgcode):dgcode(dgcode), vector(dgcode->getCompositionVector()),
 		index(0)
 	    {
+
 
 	    };
 	    void DGCodeFileMeter::close() {
