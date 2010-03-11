@@ -75,12 +75,21 @@ void __fastcall TCCTLUTForm::RadioButton_In8Click(TObject * Sender)
 
 void __fastcall TCCTLUTForm::RadioButton_In10Click(TObject * Sender)
 {
+    bool tconInput = MainForm->RadioButton_TCON->Checked;
+
     this->CheckBox_Gamma256->Checked = true;
     this->RadioButton_Lut12->Checked = true;
     this->RadioButton_Out8->Checked = true;
     setBitDepthEnable(false, true, false, true, true);
-    this->Edit_StartLevel->Text = "255";
-    this->ComboBox_LevelStep->Text = "1";
+
+    if (false == tconInput) {
+	this->Edit_StartLevel->Text = "255";
+	this->ComboBox_LevelStep->Text = "1";
+    } else {
+	this->Edit_StartLevel->Text = "1023";
+	this->ComboBox_LevelStep->Text = "4";
+    }
+
     this->CheckBox_AvoidNoise->Checked = false;
     this->CheckBox_AvoidNoise->Enabled = false;
     this->CheckBox_Gamma256->Enabled = true;
