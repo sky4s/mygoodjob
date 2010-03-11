@@ -10,6 +10,8 @@
 //本項目內頭文件
 #include <java/lang.h>
 
+#define USE_QUERY
+
 namespace cms {
     namespace colorformat {
 	enum Mode {
@@ -24,6 +26,7 @@ namespace cms {
 
 	    friend class DBQuery;
 	    bptr < TADOConnection > connection;
+	    bptr < TADOQuery > query;
 	    const Mode mode;
 	     std::string fileName;
 	     std::string tableName;
@@ -33,6 +36,7 @@ namespace cms {
 	    bool tableChanged;
 	     std::string getTableName();
 	     std::string getKeyField();
+	    AnsiString sql;
 	    //bptr < TADODataSet > selectAllDataSet;
 
 	  public:
@@ -100,9 +104,11 @@ namespace cms {
 	    //static string_vector_ptr makes(int count, ...);
 
 	    void setKeyField(const std::string & keyField);
-
+	    void setCacheMode(bool caching);
+	    void excuteCache();
 	  private:
 	    void close();
+	    bool caching;
 
 	};
 	class DBQuery {
