@@ -1,6 +1,6 @@
 object CCTLUTForm: TCCTLUTForm
-  Left = 585
-  Top = 458
+  Left = 210
+  Top = 438
   Width = 656
   Height = 425
   Caption = 'CCT LUT'
