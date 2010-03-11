@@ -61,8 +61,8 @@ namespace cms {
 	};
 
       ExcelFileDB::ExcelFileDB(const string & fileName, const Mode mode):fileName(fileName),
-	    mode(mode), tableChanged(true)
-	{
+	    mode(mode), tableChanged(true),
+	    caching(false) {
 
 	    WideString connectstr;
 	    connectstr = "Provider=Microsoft.Jet.OLEDB.4.0;Data Source=";
@@ -75,6 +75,10 @@ namespace cms {
 	    connection->ConnectionString = connectstr;
 	    connection->Provider = "Microsoft.Jet.OLEDB.4.0";
 	    connection->Open();
+
+#ifdef USE_QUERY
+	    query = bptr < TADOQuery > (new TADOQuery(null));
+#endif
 	};
 	ExcelFileDB::~ExcelFileDB() {
 	    close();
@@ -318,7 +322,25 @@ namespace cms {
 
 	void ExcelFileDB::setKeyField(const std::string & keyField) {
 	    this->keyField = keyField;
-	}
+	};
+	void ExcelFileDB::setCacheMode(bool caching) {
+	    this->caching = caching;
+	};
+	void ExcelFileDB::excuteCache() {
+	    /*
+	       String   strSQL;  
+	       strSQL   =   "";  
+	       for   (   int   i   =   0;   i   <   1500;   ++i   )  
+	       {  
+	       strSQL   =   strSQL   +   "insert   into   test   valuse   ("   +   IntToStr(i)   +   ")";  
+	       }  
+	       ADOQuery1->Close();  
+	       ADOQuery1->SQL->Clear();  
+	       ADOQuery1->SQL->Add(strSQL);  
+	       ADOQuery1->Execute();  
+	       ADOQuery1->Close();
+	     */
+	};
 	//======================================================================
 
 	//======================================================================
