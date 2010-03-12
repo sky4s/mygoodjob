@@ -38,7 +38,7 @@ namespace cms {
 	    static const WideString & CalibrationDataFilename;
 	    bool dummyMode;
 	    void init();
-	     cms::measure::meter::DGCodeFileMeter * dgc;
+	     cms::measure::meter::DGLutFileMeter * dgc;
 	  public:
 
 	    /*CA210ComponentAnalyzer(bptr < cms::measure::meter::CA210 >
@@ -50,7 +50,7 @@ namespace cms {
 				    ca210, bptr < MeterMeasurement > mm);
 	    /*
 	       由於缺乏CA210, 因此是以MeterMeasurement中的Meter作為analyze來源,
-	       實際上是假設Meter為DGCodeFileMeter, 也就是說讀取檔案中的component作為analyze結果
+	       實際上是假設Meter為DGLutFileMeter, 也就是說讀取檔案中的component作為analyze結果
 	     */
 	     CA210ComponentAnalyzer(bptr < MeterMeasurement > mm);
 

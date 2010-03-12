@@ -167,8 +167,8 @@ namespace cms {
 	    } else {
 		if (null == dgc) {
 		    dgc =
-			bptr < DGCodeFileMeter >
-			(dynamic_cast < DGCodeFileMeter * >(meter.get()));
+			bptr < DGLutFileMeter >
+			(dynamic_cast < DGLutFileMeter * >(meter.get()));
 		}
 
 		int v = measureRGB->getValue(Channel::W);

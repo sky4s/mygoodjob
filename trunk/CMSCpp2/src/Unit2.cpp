@@ -37,7 +37,7 @@ void excel()
     string_vector_ptr fieldsNames = ExcelFileDB::makec(2, "a", "b");
 
     const string & filename = "a.xls";
-    //DGCodeFile::deleteExist( filename);
+    //DGLutFile::deleteExist( filename);
     ExcelFileDB db(filename, Create);
 
     //string_ptr tbname(new string("tb"));
@@ -80,7 +80,7 @@ void excel2()
 
     const string & filename = "a.xls";
     ExcelFileDB::deleteExist(filename);
-    //DGCodeFile::deleteExist( filename);
+    //DGLutFile::deleteExist( filename);
     ExcelFileDB db(filename, Create);
 
     db.createTable("tb", fieldsNames);
@@ -299,10 +299,10 @@ void dgcodefile()
     using namespace cms::lcd::calibrate;
     using namespace Dep;
     using namespace Indep;
-    const string & filename = " test.xls ";
+    const string & filename = "test.xls";
     //string_ptr filename(new string(" test.xls "));
     ExcelFileDB::deleteExist(filename);
-    DGCodeFile dgcode(filename, 256);
+    DGLutFile dgcode(filename, 256);
     //dgcode.setProperty(" a ", " b ");
     //dgcode.setProperty(" b ", " bbb ");
     //dgcode.setRawData()
@@ -312,7 +312,7 @@ void dgcodefile()
     Composition_ptr c(new Composition(rgb, rgb, XYZ));
     compositionVec->push_back(c);
     compositionVec->push_back(c);
-    dgcode.setRawData(compositionVec);
+    //dgcode.setRawData(compositionVec);
 
 };
 
@@ -330,7 +330,7 @@ void dgcode()
 	Composition_ptr composition(new Composition(rgb, component, XYZ));
 	(*vector)[x] = composition;
     };
-    DGCodeProducer producer(vector);
+    DGLutGenerator generator(vector);
 };
 
 void rgbTry()
@@ -534,10 +534,10 @@ int main(int argc, char *argv[])
     //sizeCompare();
     //gammaCurve();
     //header();
-    //dgcodefile();
+    dgcodefile();
     //dgcode();
     //inverse();
-    rgbTry();
+    //rgbTry();
     //mathTry();
     //doubleArrayTry();
     //rgbop();
@@ -551,8 +551,8 @@ int main(int argc, char *argv[])
     //strTry();
 
     //using namespace cms::colorformat;
-    //DGCodeFile dg(" test.xls ",256);
+    //DGLutFile dg(" test.xls ",256);
 
-    getch();
+    //getch();
 }
 

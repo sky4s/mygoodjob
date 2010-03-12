@@ -60,7 +60,7 @@ namespace cms {
 		//而meter是假的, 其實是從檔案撈資料
 		if (null == dgc) {
 		    dgc = dynamic_cast
-			< DGCodeFileMeter * >(mm->getMeter().get());
+			< DGLutFileMeter * >(mm->getMeter().get());
 		}
 		Composition_ptr c = dgc->getComposition();
 		RGB_ptr component = c->component;

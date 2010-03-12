@@ -122,6 +122,7 @@ void __fastcall TCCTLUTForm::RadioButton_P1P2Click(TObject * Sender)
 void __fastcall TCCTLUTForm::Button_RunClick(TObject * Sender)
 {
     using namespace std;
+    using namespace cms::lcd::calibrate;
     cms::lcd::calibrate::LCDCalibrator calibrator(MainForm->analyzer);
 
     //==========================================================================
@@ -153,7 +154,10 @@ void __fastcall TCCTLUTForm::Button_RunClick(TObject * Sender)
 	RadioButton_Out6->Checked ? 6 : 0 +
 	RadioButton_Out8->Checked ? 8 : 0 +
 	RadioButton_Out10->Checked ? 10 : 0;
-    calibrator.setBitDepth(in, lut, out);
+    BitDepth inbit = LCDCalibrator::getBitDepth(in);
+    BitDepth lutbit = LCDCalibrator::getBitDepth(lut);
+    BitDepth outbit = LCDCalibrator::getBitDepth(out);
+    calibrator.setBitDepth(inbit, lutbit, outbit);
     //==========================================================================
 
     //==========================================================================
@@ -187,7 +191,7 @@ void __fastcall TCCTLUTForm::Button_RunClick(TObject * Sender)
     int waitTimes = MainForm->getInterval();
     MainForm->mm->setWaitTimes(waitTimes);
 
-    RGB_vector_ptr dgcode = calibrator.getDGCode(start, end, step);
+    RGB_vector_ptr dglut = calibrator.getDGLut(start, end, step);
 
     /* TODO: ¦s°_¨Ó */
     AnsiString dir = this->Edit_Directory->Text;
@@ -198,7 +202,7 @@ void __fastcall TCCTLUTForm::Button_RunClick(TObject * Sender)
     AnsiString astr = dir + "\\" + this->Edit_Prefix->Text + sid + ".xls";
     string filename = astr.c_str();
 
-    calibrator.storeDGCode(filename, dgcode);
+    calibrator.storeDGLut(filename, dglut);
     ShowMessage("Ok!");
 }
 

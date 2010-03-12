@@ -136,18 +136,28 @@ namespace cms {
 	    if (!isAlterable()) {
 		throw IllegalStateException("!isAlterable()");
 	    }
+	    string sql;
+	    if (caching && cachesql.size() != 0) {
+		sql = "(";
+	    } else {
+		sql = "INSERT INTO [" + getTableName() + "] (";
 
-	    string sql = "INSERT INTO [" + getTableName() + "] (";
+		foreach(string s, *fieldNames) {
+		    sql += "[" + s + "],";
+		};
+		sql.replace(sql.size() - 1, 1, ") VALUES (");
+	    }
 
-	    foreach(string s, *fieldNames) {
-		sql += "[" + s + "],";
-	    };
-	    sql.replace(sql.size() - 1, 1, ") VALUES (");
 	    foreach(string s, *values) {
 		sql += text ? ("\"" + s + "\",") : (s + ",");
 	    };
 	    sql.replace(sql.size() - 1, 1, ")");
-	    execute(sql);
+
+	    if (caching) {
+		cachesql += sql + ",";
+	    } else {
+		execute(sql);
+	    };
 	};
 	void ExcelFileDB::execute(const std::string & sql) {
 	    connection->Execute(*toWideString(sql), TCommandType(),
@@ -161,6 +171,7 @@ namespace cms {
 	    if (!isAlterable()) {
 		throw IllegalStateException("!isAlterable()");
 	    }
+
 	    string sql = "UPDATE [" + getTableName() + "$] SET";
 	    int size = fieldNames->size();
 	    for (int x = 0; x < size; x++) {
@@ -174,8 +185,8 @@ namespace cms {
 	    sql +=
 		" WHERE [" + keyField + "] = " + lexical_cast < string >
 		(keyValue);
-	    execute(sql);
 
+	    execute(sql);
 	};
 	void ExcelFileDB::update(const std::string & keyField,
 				 const int keyValue,
@@ -327,6 +338,13 @@ namespace cms {
 	    this->caching = caching;
 	};
 	void ExcelFileDB::excuteCache() {
+	    int size = cachesql.size();
+	    if (size != 0) {
+		cachesql.erase(size - 1, size);
+		//cachesql += ";";
+		execute(cachesql);
+		cachesql.clear();
+	    }
 	    /*
 	       String   strSQL;  
 	       strSQL   =   "";  

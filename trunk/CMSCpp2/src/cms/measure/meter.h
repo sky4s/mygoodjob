@@ -83,15 +83,15 @@ namespace cms {
 		void close();
 	    };
 
-	    class DGCodeFileMeter:public Meter {
+	    class DGLutFileMeter:public Meter {
 	      private:
-		bptr < cms::colorformat::DGCodeFile > dgcode;
+		bptr < cms::colorformat::DGLutFile > dglut;
 		const Composition_vector_ptr vector;
 		int index;
 		Composition_ptr c;
 	      public:
-		 DGCodeFileMeter(bptr < cms::colorformat::DGCodeFile >
-				 dgcode);
+		 DGLutFileMeter(bptr < cms::colorformat::DGLutFile >
+				 dglut);
 		void close();
 		bool isConnected();
 		void calibrate();

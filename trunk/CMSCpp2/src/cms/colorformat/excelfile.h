@@ -36,7 +36,7 @@ namespace cms {
 	    bool tableChanged;
 	     std::string getTableName();
 	     std::string getKeyField();
-	    AnsiString sql;
+	     std::string cachesql;
 	    //bptr < TADODataSet > selectAllDataSet;
 
 	  public:

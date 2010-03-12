@@ -38,7 +38,7 @@ namespace cms {
 	    bool measureWindowClosing;
 	    bool titleTouched;
 	    bool fakeMeasure;
-	     bptr < cms::measure::meter::DGCodeFileMeter > dgc;
+	     bptr < cms::measure::meter::DGLutFileMeter > dgc;
 	  protected:
 	     bptr < cms::measure::meter::Meter > meter;
 	    TMeasureWindow *measureWindow;

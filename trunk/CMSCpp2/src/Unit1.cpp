@@ -224,7 +224,7 @@ void dgcodefile()
 {
     using namespace cms::colorformat;
     //string_ptr filename(new string("test.xls"));
-    DGCodeFile dgcode("test.xls", 257);
+    DGLutFile dgcode("test.xls", 257);
     //dgcode.setProperty("a", "b");
     //dgcode.setProperty("b", "bbb");
 
