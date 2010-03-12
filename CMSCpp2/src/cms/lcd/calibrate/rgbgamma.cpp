@@ -50,6 +50,19 @@ namespace cms {
 	    //==================================================================
 
 	    //==================================================================
+	    // RGBGammaOp
+	    //==================================================================
+	    RGBGamma_ptr RGBGammaOp::
+		getRGBGamma(double_vector_ptr gammaCurve) {
+		double_vector_ptr r(new double_vector(*gammaCurve));
+		double_vector_ptr g(new double_vector(*gammaCurve));
+		double_vector_ptr b(new double_vector(*gammaCurve));
+		RGBGamma_ptr rgbGamma(new RGBGamma(r, g, b));
+		return rgbGamma;
+	    };
+	    //==================================================================
+
+	    //==================================================================
 	    // BIntensityGainOp
 	    //==================================================================
 	    RGBGamma_ptr BIntensityGainOp::
@@ -95,12 +108,12 @@ namespace cms {
 	    RGBGamma_ptr P1P2GammaOp::processP1(RGBGamma_ptr source) {
 		//處理P1點
 		int indexR = -1, indexB = -1;
-		int size = dgcode->size();
+		int size = dglut->size();
 		//原本p1點的dg code
-		RGB_ptr rgbp1 = (*dgcode)[p1];
+		RGB_ptr rgbp1 = (*dglut)[p1];
 		for (int x = 0;
 		     x != size && (indexR == -1 || indexB == -1); x++) {
-		    RGB_ptr rgb = (*dgcode)[x];
+		    RGB_ptr rgb = (*dglut)[x];
 		    if (rgb->R > rgbp1->G && indexR == -1) {
 			indexR = x;
 		    };
@@ -111,16 +124,16 @@ namespace cms {
 
 		double_vector & r = (*source->r);
 		double_vector & b = (*source->b);
-		double rdiff = r[indexR + 1] - r[indexR];
-		double bdiff = b[indexB + 1] - b[indexB];
+		//double rdiff = r[indexR + 1] - r[indexR];
+		//double bdiff = b[indexB + 1] - b[indexB];
 		r[p1] =
 		    r[indexR] + (r[indexR + 1] - r[indexR]) *
-		    (rgbp1->G - (*dgcode)[indexR]->R) /
-		    ((*dgcode)[indexR + 1]->R - (*dgcode)[indexR]->R);
+		    (rgbp1->G - (*dglut)[indexR]->R) /
+		    ((*dglut)[indexR + 1]->R - (*dglut)[indexR]->R);
 		b[p1] =
 		    b[indexB] + (b[indexB + 1] - b[indexB]) *
-		    (rgbp1->G - (*dgcode)[indexB]->B) /
-		    ((*dgcode)[indexB + 1]->B - (*dgcode)[indexB]->B);
+		    (rgbp1->G - (*dglut)[indexB]->B) /
+		    ((*dglut)[indexB + 1]->B - (*dglut)[indexB]->B);
 		//r[p1] = r[indexR];
 		//b[p1] = b[indexB];
 		return source;
@@ -143,15 +156,15 @@ namespace cms {
 		source = processP1P2(source);
 		return source;
 	    };
-	  P1P2GammaOp::P1P2GammaOp(double p1, double p2, RGB_vector_ptr dgcode):p1(p1), p2(p2),
-		dgcode(dgcode)
+	  P1P2GammaOp::P1P2GammaOp(double p1, double p2, RGB_vector_ptr dglut):p1(p1), p2(p2),
+		dglut(dglut)
 	    {
 	    };
 	    P1P2GammaOp::
 		P1P2GammaOp(RGBGamma_ptr source, double p1,
 			    double p2,
-			    RGB_vector_ptr dgcode):p1(p1),
-		p2(p2), dgcode(dgcode) {
+			    RGB_vector_ptr dglut):p1(p1),
+		p2(p2), dglut(dglut) {
 		this->source = source;
 	    };
 	    //==================================================================

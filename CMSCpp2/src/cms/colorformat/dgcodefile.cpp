@@ -3,14 +3,17 @@
 #include "dgcodefile.h"
 //C系統文件
 
-//C++系統文件
+//C++系統文件                  
 #include <iostream>
 
 //其他庫頭文件
 
 //本項目內頭文件
 
-#define LAZY_EXCEL true
+//不做初使化(其實沒有初始化的必要了)
+#define LAZY_EXCEL false
+//將多筆sql合併成一句執行(excel似乎不能這樣玩)
+#define CACHE_SQL
 
 namespace cms {
     namespace colorformat {
@@ -22,34 +25,32 @@ namespace cms {
 	using namespace Dep;
 
 	//======================================================================
-	// DGCodeFile
+	// DGLutFile
 	//======================================================================
-	const std::string DGCodeFile::GammaHeader[4] =
+	const std::string DGLutFile::GammaHeader[4] =
 	    { "Gray Level", "Gamma R", "Gamma G", "Gamma B" };
-	const std::string DGCodeFile::RawHeader[13] =
+	const std::string DGLutFile::RawHeader[13] =
 	    { "Gray Level", "W_x", "W_y", "W_Y (nit)", "W_R", "W_G", "W_B",
 	    "RP", "GP", "BP", "RP_Intensity_Fix", "GP_Intensity_Fix",
 	    "BP_Intensity_Fix"
 	};
-	const std::string DGCodeFile::PropertiesHeader[2] =
+	const std::string DGLutFile::PropertiesHeader[2] =
 	    { "Key", "Value" };
-	//const string & DGCodeFile::GammaTable = "Gamma Table";
-	//const string & DGCodeFile::RawData = "Raw Data";
-	const string & DGCodeFile::GammaTable = "Gamma_Table";
-	const string & DGCodeFile::RawData = "Raw_Data";
-	const string & DGCodeFile::Properties = "Properties";
+	const string & DGLutFile::GammaTable = "Gamma_Table";
+	const string & DGLutFile::RawData = "Raw_Data";
+	const string & DGLutFile::Properties = "Properties";
 
-	string_vector_ptr DGCodeFile::getFieldNames(const string *
-						    fieldNames, int n) {
+	string_vector_ptr DGLutFile::getFieldNames(const string *
+						   fieldNames, int n) {
 	    string_vector_ptr result(new string_vector(n));
 	    for (int x = 0; x < n; x++) {
 		(*result)[x] = fieldNames[x];
 	    } return result;
 	};
 
-	void DGCodeFile::initDefaultData(string_vector_ptr fieldNames,
-					 const string & tableName, int n,
-					 bool reverse) {
+	void DGLutFile::initDefaultData(string_vector_ptr fieldNames,
+					const string & tableName, int n,
+					bool reverse) {
 	    db->createTable(tableName, fieldNames);
 	    if (!lazyMode) {
 		int start = !reverse ? 0 : n - 1;
@@ -64,13 +65,17 @@ namespace cms {
 
 		    db->insert(fieldName, value);
 		}
+#ifdef CACHE_SQL
+		db->excuteCache();
+#endif
+
 	    }
 	};
 
-	void DGCodeFile::initDefaultData(string_vector_ptr fieldNames,
-					 const std::string & tableName,
-					 int_vector_ptr nvector,
-					 bool reverse) {
+	void DGLutFile::initDefaultData(string_vector_ptr fieldNames,
+					const std::string & tableName,
+					int_vector_ptr nvector,
+					bool reverse) {
 	    db->createTable(tableName, fieldNames);
 	    if (!lazyMode) {
 		int size = nvector->size();
@@ -89,10 +94,13 @@ namespace cms {
 			ExcelFileDB::makes(1, (*fieldNames)[0]);
 		    db->insert(fieldName, value);
 		}
+#ifdef CACHE_SQL
+		db->excuteCache();
+#endif
 	    }
 	};
 	void
-	 DGCodeFile::init() {
+	 DGLutFile::init() {
 	    if (null == GammaFieldNames) {
 		GammaFieldNames = getFieldNames(GammaHeader, 4);
 	    }
@@ -109,7 +117,9 @@ namespace cms {
 		}
 
 		db.reset(new ExcelFileDB(filename, Create));
-
+#ifdef CACHE_SQL
+		db->setCacheMode(true);
+#endif
 		//若為lazy mode 等到set時期再init field name
 		if (n != -1) {
 		    initDefaultData(GammaFieldNames, GammaTable, n, false);
@@ -132,44 +142,48 @@ namespace cms {
 		db.reset(new ExcelFileDB(filename, mode));
 	    }
 	};
-	DGCodeFile::DGCodeFile(const string & filename, int
-			       n):filename(filename), n(n), mode(Create),
+	DGLutFile::DGLutFile(const string & filename, int
+			     n):filename(filename), n(n), mode(Create),
 	    lazyMode(LAZY_EXCEL) {
 	    init();
 	};
 
-	DGCodeFile::DGCodeFile(const std::string & filename,
-			       int_vector_ptr nvector):filename(filename),
+	DGLutFile::DGLutFile(const std::string & filename,
+			     int_vector_ptr nvector):filename(filename),
 	    nvector(nvector), n(-1), mode(Create), lazyMode(LAZY_EXCEL) {
 	    init();
 	};
 
-	DGCodeFile::
-	    DGCodeFile(const std::string & filename):filename(filename),
+	DGLutFile::
+	    DGLutFile(const std::string & filename):filename(filename),
 	    n(-1), mode(ReadOnly), lazyMode(LAZY_EXCEL) {
 	    init();
 	};
 	void
-	 DGCodeFile::addProperty(const
-				 string & key, const
-				 string & value) {
+	 DGLutFile::addProperty(const
+				string & key, const
+				string & value) {
 	    db->setTableName(Properties);
 	    string_vector_ptr values(new string_vector(2));
 	    (*values)
 		[0] = key;
 	    (*values)
 		[1] = value;
+	    db->setCacheMode(false);
 	    db->insert(PropertiesFieldNames, values, true);
+#ifdef CACHE_SQL
+	    db->setCacheMode(true);
+#endif
 	};
 	void
-	 DGCodeFile::addProperty(const
-				 std::string & key, const
-				 double
-				 value) {
+	 DGLutFile::addProperty(const
+				std::string & key, const
+				double
+				value) {
 	    addProperty(key, lexical_cast < string > (value));
 	};
 	void
-	 DGCodeFile::setRawData(Composition_vector_ptr compositionVector) {
+	 DGLutFile::setRawData(Composition_vector_ptr compositionVector) {
 	    db->setTableName(RawData);
 	    int
 	     size = compositionVector->size();
@@ -215,12 +229,15 @@ namespace cms {
 		    db->insert(RawFieldNames, values, false);
 		}
 	    }
+#ifdef CACHE_SQL
+	    db->excuteCache();
+#endif
 	};
 	void
-	 DGCodeFile::
+	 DGLutFile::
 	    setRawData
-	    (Composition_vector_ptr
-	     compositionVector, RGBGamma_ptr rgbgamma) {
+	    (Composition_vector_ptr compositionVector,
+	     RGBGamma_ptr rgbgamma) {
 	    int a = compositionVector->size();
 	    int b = rgbgamma->r->size();
 	    //==================================================================
@@ -280,10 +297,13 @@ namespace cms {
 		    db->insert(RawFieldNames, values, false);
 		}
 	    }
+#ifdef CACHE_SQL
+	    db->excuteCache();
+#endif
 	    //==================================================================
 	};
 	void
-	 DGCodeFile::setGammaTable(RGB_vector_ptr dgcode) {
+	 DGLutFile::setGammaTable(RGB_vector_ptr dglut) {
 	    //==================================================================
 	    // 檢查來源資料
 	    //==================================================================
@@ -299,7 +319,7 @@ namespace cms {
 	    //==================================================================
 	    db->setTableName(GammaTable);
 	    int
-	     size = dgcode->size();
+	     size = dglut->size();
 	    string_vector_ptr values(new string_vector(4));
 	    //==================================================================
 	    //==================================================================
@@ -309,8 +329,7 @@ namespace cms {
 		//int n = size - 1 - x;
 		//Composition_ptr c = (*compositionVector)[x];
 
-		RGB_ptr rgb = (*dgcode)
-		    [x];
+		RGB_ptr rgb = (*dglut)[x];
 		//int w = static_cast < int >(rgb->getValue(Channel::W));
 		(*values)[0] = lexical_cast < string > (x);
 		(*values)
@@ -326,9 +345,12 @@ namespace cms {
 		    db->insert(GammaFieldNames, values, false);
 		}
 	    }
+#ifdef CACHE_SQL
+	    db->excuteCache();
+#endif
 	    //==================================================================
 	};
-	Composition_vector_ptr DGCodeFile::getCompositionVector() {
+	Composition_vector_ptr DGLutFile::getCompositionVector() {
 	    Composition_vector_ptr vector(new Composition_vector());
 	    db->setTableName(RawData);
 	    bptr < DBQuery > query = db->selectAll();
@@ -368,14 +390,14 @@ namespace cms {
 	    };
 	    return vector;
 	};
-	string_vector_ptr DGCodeFile::makeValues(int n, Composition_ptr c) {
+	string_vector_ptr DGLutFile::makeValues(int n, Composition_ptr c) {
 	    return
 		makeValues(n, c,
 			   RGB_ptr((RGBColor *) null),
 			   RGB_ptr((RGBColor *) null));
 	};
 	string_vector_ptr
-	    DGCodeFile::
+	    DGLutFile::
 	    makeValues(int n,
 		       Composition_ptr
 		       c, RGB_ptr rgbGamma, RGB_ptr rgbGammaFix) {
@@ -414,62 +436,62 @@ namespace cms {
 	    }
 	    return values;
 	};
-	string_vector_ptr DGCodeFile::GammaFieldNames;
-	string_vector_ptr DGCodeFile::RawFieldNames;
-	string_vector_ptr DGCodeFile::PropertiesFieldNames;
+	string_vector_ptr DGLutFile::GammaFieldNames;
+	string_vector_ptr DGLutFile::RawFieldNames;
+	string_vector_ptr DGLutFile::PropertiesFieldNames;
 	void
-	 DGCodeFile::setProperty(const
-				 DGCodeProperty & property) {
+	 DGLutFile::setProperty(const
+				DGLutProperty & property) {
 	    property.store(*this);
 	};
 	//======================================================================
 	//======================================================================
-	// DGCodeProperty
+	// DGLutProperty
 	//======================================================================
 	const
-	string DGCodeProperty::Start = "start";
+	string DGLutProperty::Start = "start";
 	const
-	string DGCodeProperty::End = "end";
+	string DGLutProperty::End = "end";
 	const
-	string DGCodeProperty::Step = "step";
+	string DGLutProperty::Step = "step";
 	const
-	string DGCodeProperty::P1P2 = "p1p2";
+	string DGLutProperty::P1P2 = "p1p2";
 	const
-	string DGCodeProperty::P1 = "p1";
+	string DGLutProperty::P1 = "p1";
 	const
-	string DGCodeProperty::P2 = "p2";
+	string DGLutProperty::P2 = "p2";
 	const
-	string DGCodeProperty::RB = "rb interpolation";
+	string DGLutProperty::RB = "rb interpolation";
 	const
-	string DGCodeProperty::RBUnder = "rb under";
+	string DGLutProperty::RBUnder = "rb under";
 	const
-	string DGCodeProperty::In = "in";
+	string DGLutProperty::In = "in";
 	const
-	string DGCodeProperty::LUT = "lut";
+	string DGLutProperty::LUT = "lut";
 	const
-	string DGCodeProperty::Out = "out";
+	string DGLutProperty::Out = "out";
 	const
-	string DGCodeProperty::Gamma = "gamma";
+	string DGLutProperty::Gamma = "gamma";
 	const
-	string DGCodeProperty::RGamma = "r gamma";
+	string DGLutProperty::RGamma = "r gamma";
 	const
-	string DGCodeProperty::GGamma = "g gamma";
+	string DGLutProperty::GGamma = "g gamma";
 	const
-	string DGCodeProperty::BGamma = "b gamma";
+	string DGLutProperty::BGamma = "b gamma";
 	const
-	string DGCodeProperty::GammaCurve = "gamma curve";
+	string DGLutProperty::GammaCurve = "gamma curve";
 	const
-	string DGCodeProperty::GByPass = "g bypass";
+	string DGLutProperty::GByPass = "g bypass";
 	const
-	string DGCodeProperty::BGain = "b gain";
+	string DGLutProperty::BGain = "b gain";
 	const
-	string DGCodeProperty::BMax = "b max";
+	string DGLutProperty::BMax = "b max";
 	const
-	string DGCodeProperty::Gamma256 = "gamma 256";
+	string DGLutProperty::Gamma256 = "gamma 256";
 	const
-	string DGCodeProperty::FRC_NR = "avoid FRC noise";
+	string DGLutProperty::FRC_NR = "avoid FRC noise";
 	void
-	 DGCodeProperty::store(DGCodeFile & dgcode) const {
+	 DGLutProperty::store(DGLutFile & dgcode) const {
 	    dgcode.addProperty(Start, c.start);
 	    dgcode.addProperty(End, c.end);
 	    dgcode.addProperty(Step, c.step);
@@ -488,8 +510,8 @@ namespace cms {
 	    dgcode.addProperty(Gamma256, c.gamma256);
 	    dgcode.addProperty(FRC_NR, c.avoidFRCNoise);
 	};
-	DGCodeProperty::DGCodeProperty(const
-				       LCDCalibrator & c):c(c) {
+	DGLutProperty::DGLutProperty(const
+				     LCDCalibrator & c):c(c) {
 	};
 	//======================================================================
     };

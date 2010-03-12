@@ -15,15 +15,15 @@ namespace cms {
     namespace lcd {
 	namespace calibrate {
 
-	    class DGCodeOp:public RGBOp < RGB_vector > {
+	    class DGLutOp:public RGBOp < RGB_vector > {
 	    };
 
-	    class LinearOp:public DGCodeOp {
+	    class LinearOp:public DGLutOp {
 	      protected:
 		RGB_vector_ptr getRendering(RGB_vector_ptr source);
 
 	    };
-	    class MinusOp:public DGCodeOp {
+	    class MinusOp:public DGLutOp {
 	      private:double minusValue;
 	      protected:
 		 RGB_vector_ptr getRendering(RGB_vector_ptr source);
@@ -31,7 +31,7 @@ namespace cms {
 		 MinusOp(double minusValue);
 	    };
 
-	    class P1P2DGOp:public DGCodeOp {
+	    class P1P2DGOp:public DGLutOp {
 	      private:
 		double p1, p2;
 		bool smooth;
@@ -43,7 +43,7 @@ namespace cms {
 
 	    };
 
-	    class RBInterpolationOp:public DGCodeOp {
+	    class RBInterpolationOp:public DGLutOp {
 	      private:
 		double under;
 	      protected:
@@ -52,7 +52,7 @@ namespace cms {
 		 RBInterpolationOp(double under);
 	    };
 
-	    class BMaxOp:public DGCodeOp {
+	    class BMaxOp:public DGLutOp {
 	      private:
 		const BitDepth & out;
 	      public:
@@ -61,7 +61,7 @@ namespace cms {
 		 RGB_vector_ptr getRendering(RGB_vector_ptr source);
 	    };
 
-	    class GByPassOp:public DGCodeOp {
+	    class GByPassOp:public DGLutOp {
 	      private:
 		const BitDepth & in, &out;
 	      protected:
@@ -70,7 +70,7 @@ namespace cms {
 		 GByPassOp(const BitDepth & in, const BitDepth & out);
 	    };
 
-	    class AvoidFRCNoiseOp:public DGCodeOp {
+	    class AvoidFRCNoiseOp:public DGLutOp {
 	      protected:
 		RGB_vector_ptr getRendering(RGB_vector_ptr source);
 	    };

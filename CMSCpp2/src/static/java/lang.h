@@ -157,8 +157,8 @@ namespace cms {
 	    class LogoFile;
 	};
 	class ExcelFileDB;
-	class DGCodeFile;
-	class DGCodeProperty;
+	class DGLutFile;
+	class DGLutProperty;
     };
     namespace colorspace {
 	namespace depend {
@@ -193,7 +193,7 @@ namespace cms {
 	namespace meter {
 	    class Meter;
 	    class CA210;
-	    class DGCodeFileMeter;
+	    class DGLutFileMeter;
 	};
     };
 };

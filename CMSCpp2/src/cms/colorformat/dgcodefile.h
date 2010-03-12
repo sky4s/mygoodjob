@@ -13,8 +13,8 @@
 
 namespace cms {
     namespace colorformat {
-	class DGCodeProperty;
-	class DGCodeFile {
+	class DGLutProperty;
+	class DGLutFile {
 	  private:
 	    bptr < ExcelFileDB > db;
 	    const Mode mode;
@@ -41,19 +41,19 @@ namespace cms {
 	    static string_vector_ptr GammaFieldNames;
 	    static string_vector_ptr RawFieldNames;
 	    static string_vector_ptr PropertiesFieldNames;
-	     DGCodeFile(const std::string & filename, int n);
-	     DGCodeFile(const std::string & filename,
-			int_vector_ptr nvector);
-	     DGCodeFile(const std::string & filename);
+	     DGLutFile(const std::string & filename, int n);
+	     DGLutFile(const std::string & filename,
+		       int_vector_ptr nvector);
+	     DGLutFile(const std::string & filename);
 	    void addProperty(const std::string & key,
 			     const std::string & value);
 	    void addProperty(const std::string & key, const double value);
-	    void setProperty(const DGCodeProperty & property);
+	    void setProperty(const DGLutProperty & property);
 
 	    void setRawData(Composition_vector_ptr compositionVector);
 	    void setRawData(Composition_vector_ptr compositionVector,
 			    RGBGamma_ptr rgbgamma);
-	    void setGammaTable(RGB_vector_ptr dgcode);
+	    void setGammaTable(RGB_vector_ptr dglut);
 	    Composition_vector_ptr getCompositionVector();
 
 	    /*
@@ -73,8 +73,8 @@ namespace cms {
 					 RGB_ptr rgbGammaFix);
 	};
 
-	class DGCodeProperty {
-	    friend class DGCodeFile;
+	class DGLutProperty {
+	    friend class DGLutFile;
 	  private:
 	    static const std::string Start;
 	    static const std::string End;
@@ -98,9 +98,9 @@ namespace cms {
 	    static const std::string Gamma256;
 	    static const std::string FRC_NR;
 	    const cms::lcd::calibrate::LCDCalibrator & c;
-	    void store(DGCodeFile & dgcode) const;
+	    void store(DGLutFile & dglut) const;
 	  public:
-	     DGCodeProperty(const cms::lcd::calibrate::LCDCalibrator & c);
+	     DGLutProperty(const cms::lcd::calibrate::LCDCalibrator & c);
 	};
     };
 };

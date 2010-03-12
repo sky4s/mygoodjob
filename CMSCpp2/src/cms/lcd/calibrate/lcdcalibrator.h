@@ -44,7 +44,7 @@ namespace cms {
 	    };
 
 	    /*
-	       DGCodeProducer擔任產出DG Code的重責大任
+	       DGLutGenerator擔任產出DG Code的重責大任
 	       1. 首先接手ComponentFetcher產出的rgb,對應的componet,亮度
 	       2. 藉由regression找出componet與亮度的關係
 	       1/2由init產出
@@ -55,7 +55,7 @@ namespace cms {
 
 	     */
 	    using namespace math;
-	    class DGCodeProducer {
+	    class DGLutGenerator {
 	      private:
 		bptr < PolynomialRegression > regression;
 		Composition_vector_ptr compositionVector;
@@ -72,17 +72,17 @@ namespace cms {
 							 normalGammaCurve);
 		double_vector_ptr getReverse(double_vector_ptr vec);
 	      public:
-		 DGCodeProducer(Composition_vector_ptr compositionVector);
+		 DGLutGenerator(Composition_vector_ptr compositionVector);
 		RGB_vector_ptr produce(double_vector_ptr normalGammaCurve);
 		RGB_vector_ptr produce(RGBGamma_ptr normalRGBGammaCurve);
 	    };
 
 	    enum BitDepth {
-		Bit6 = 6, Bit8 = 8, Bit10 = 10, Bit12 = 12
+		Unknow = 0, Bit6 = 6, Bit8 = 8, Bit10 = 10, Bit12 = 12
 	    };
 
 	    class LCDCalibrator {
-		friend class cms::colorformat::DGCodeProperty;
+		friend class cms::colorformat::DGLutProperty;
 	      private:
 
 		 bool p1p2;
@@ -100,15 +100,15 @@ namespace cms {
 		double_vector_ptr rgammaCurve;
 		double_vector_ptr ggammaCurve;
 		double_vector_ptr bgammaCurve;
-		 bptr < DGCodeProducer > producer;
+		 bptr < DGLutGenerator > generator;
 		 bptr < ComponentFetcher > fetcher;
 		 bptr < cms::measure::ComponentAnalyzerIF > analyzer;
-		RGBGamma_ptr getRGBGamma(double_vector_ptr gammaCurve);
-		 std::string dgcodeFilename;
+		//RGBGamma_ptr getRGBGamma(double_vector_ptr gammaCurve);
+		//std::string dglut;
 
-		RGB_vector_ptr dgcode;
+		RGB_vector_ptr dglut;
 		Composition_vector_ptr compositionVector;
-		RGBGamma_ptr rgbgamma2;
+		RGBGamma_ptr finalRGBGamma;
 
 		int start, end, step;
 		void set(int start, int end, int step);
@@ -138,13 +138,13 @@ namespace cms {
 		 LCDCalibrator(bptr < cms::measure::ComponentAnalyzerIF >
 			       analyzer);
 
-		RGB_vector_ptr getDGCode(int start, int end, int step);
-		RGB_vector_ptr getDGCode(int step);
-		void storeDGCode(const std::string & filename,
-				 RGB_vector_ptr dgcode);
+		RGB_vector_ptr getDGLut(int start, int end, int step);
+		RGB_vector_ptr getDGLut(int step);
+		void storeDGLut(const std::string & filename,
+				RGB_vector_ptr dglut);
+		static BitDepth getBitDepth(int bit);
 	      private:
-		 RGB_vector_ptr getDGCodeOpResult(RGB_vector_ptr dgcode);
-		RGB_vector_ptr bitDepthProcess(RGB_vector_ptr dgcode);
+		 RGB_vector_ptr getDGLutOpResult(RGB_vector_ptr dglut);
 	    };
 
 

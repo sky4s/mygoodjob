@@ -24,7 +24,8 @@ namespace cms {
 
 	    class RGBGammaOp:public RGBOp < RGBGamma > {
 	      public:
-
+		static RGBGamma_ptr getRGBGamma(double_vector_ptr
+						gammaCurve);
 	    };
 
 	    class BIntensityGainOp:public RGBGammaOp {
@@ -40,15 +41,15 @@ namespace cms {
 	    class P1P2GammaOp:public RGBGammaOp {
 	      private:
 		double p1, p2;
-		RGB_vector_ptr dgcode;
+		RGB_vector_ptr dglut;
 	      protected:
 		 RGBGamma_ptr getRendering(RGBGamma_ptr source);
 		RGBGamma_ptr processP1(RGBGamma_ptr source);
 		RGBGamma_ptr processP1P2(RGBGamma_ptr source);
 	      public:
-		 P1P2GammaOp(double p1, double p2, RGB_vector_ptr dgcode);
+		 P1P2GammaOp(double p1, double p2, RGB_vector_ptr dglut);
 		 P1P2GammaOp(RGBGamma_ptr source, double p1, double p2,
-			     RGB_vector_ptr dgcode);
+			     RGB_vector_ptr dglut);
 	    };
 	};
     };

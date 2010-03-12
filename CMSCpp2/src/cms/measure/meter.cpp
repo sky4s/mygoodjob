@@ -133,46 +133,46 @@ namespace cms {
 	    };
 	    //==================================================================
 
-	  DGCodeFileMeter::DGCodeFileMeter(bptr < DGCodeFile > dgcode):dgcode(dgcode), vector(dgcode->getCompositionVector()),
+	  DGLutFileMeter::DGLutFileMeter(bptr < DGLutFile > dglut):dglut(dglut), vector(dglut->getCompositionVector()),
 		index(0)
 	    {
 	    };
-	    void DGCodeFileMeter::close() {
+	    void DGLutFileMeter::close() {
 	    };
-	    bool DGCodeFileMeter::isConnected() {
+	    bool DGLutFileMeter::isConnected() {
 		return true;
 	    };
-	    void DGCodeFileMeter::calibrate() {
+	    void DGLutFileMeter::calibrate() {
 		index = 0;
 	    };
-	    string_ptr DGCodeFileMeter::getCalibrationDescription() {
+	    string_ptr DGLutFileMeter::getCalibrationDescription() {
 		return shared_ptr < string >
 		    (new string("Calibration needless."));
 	    };
-	    void DGCodeFileMeter::
+	    void DGLutFileMeter::
 		setPatchIntensity(PatchIntensity patchIntensity) {
 	    };
-	    double_array DGCodeFileMeter::triggerMeasurementInXYZ() {
+	    double_array DGLutFileMeter::triggerMeasurementInXYZ() {
 		c = (*vector)[index];
 		index++;
 		XYZ_ptr XYZ = c->XYZ;
 		return XYZ->getValues();
 	    };
-	    string_ptr DGCodeFileMeter::getLastCalibration() {
+	    string_ptr DGLutFileMeter::getLastCalibration() {
 		return nil_string_ptr;
 	    };
-	    string_ptr DGCodeFileMeter::getCalibrationCount() {
+	    string_ptr DGLutFileMeter::getCalibrationCount() {
 		return nil_string_ptr;
 	    };
-	    void DGCodeFileMeter::setScreenType(ScreenType screenType) {
+	    void DGLutFileMeter::setScreenType(ScreenType screenType) {
 	    };
-	    Instr DGCodeFileMeter::getType() {
+	    Instr DGLutFileMeter::getType() {
 		return Instr::CA210;
 	    };
-	    Composition_ptr DGCodeFileMeter::getComposition() {
+	    Composition_ptr DGLutFileMeter::getComposition() {
 		return c;
 	    };
-	    void DGCodeFileMeter::setIndex(int index) {
+	    void DGLutFileMeter::setIndex(int index) {
 		this->index = 0;
 	    };
 	    //==================================================================
