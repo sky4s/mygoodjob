@@ -606,10 +606,6 @@ Public Enum enuDataGroup
 End Enum
 
 
-Private Sub btn_debug_Click()
-
-End Sub
-
 Private Sub btn_loadG_Click()
     Dim fm As String, fnum As Integer, fname As String
     'Dim iCheck As Integer
@@ -1005,19 +1001,19 @@ Private Sub Command2_Click() '''''''AUTORUN
         ' 根據in/out決定的maximum值來產生gamma
         If ((chk_ga256.Value = 1) And (op_in_10.Value = True)) Then
             For i = 0 To 256
-                DesiredGamma(i) = ((256 - i) / 256) ^ Val(Text_ga.Text)
+                DesiredGamma(i) = ((256 - i) / 256) ^ Val(Text_Ga.Text)
                 'DesiredGamma(i) = ((1023 - i * 4) / 1023) ^ Val(Text_Ga.Text)
             Next i
         ElseIf (op_out_6.Value = True And op_in_6.Value = True) Then
             
             For i = 0 To 252
-                DesiredGamma(i) = ((252 - i) / 252) ^ Val(Text_ga.Text)
+                DesiredGamma(i) = ((252 - i) / 252) ^ Val(Text_Ga.Text)
             Next i
         Else
             
             For i = 0 To 255 '''''Normal Case
                 'Lgain(i) = ((255 - i) / 255) ^ Val(Text_Ga.Text)
-                DesiredGamma(i) = ((255 - i) / 255) ^ Val(Text_ga.Text)
+                DesiredGamma(i) = ((255 - i) / 255) ^ Val(Text_Ga.Text)
                 'RSDC = RSDC + 1
             Next i
         End If
