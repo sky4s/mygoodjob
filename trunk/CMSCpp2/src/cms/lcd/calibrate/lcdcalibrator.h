@@ -20,7 +20,7 @@ namespace cms {
 		Component(RGB_ptr rgb, RGB_ptr intensity);
 		Component(RGB_ptr rgb, RGB_ptr intensity, XYZ_ptr XYZ);
 		Component(RGB_ptr rgb, RGB_ptr intensity, XYZ_ptr XYZ,
-			    RGB_ptr gamma);
+			  RGB_ptr gamma);
 		RGB_ptr rgb;
 		RGB_ptr intensity;
 		XYZ_ptr XYZ;
@@ -36,7 +36,7 @@ namespace cms {
 				  cms::measure::IntensityAnalyzerIF >
 				  analyzer);
 		Component_vector_ptr fetchComponent(int start, int end,
-							int step);
+						    int step);
 		void setStop(bool stop);
 		static void storeToExcel(const std::string & filename,
 					 Component_vector_ptr
@@ -75,6 +75,12 @@ namespace cms {
 		 DGLutGenerator(Component_vector_ptr componentVector);
 		RGB_vector_ptr produce(double_vector_ptr normalGammaCurve);
 		RGB_vector_ptr produce(RGBGamma_ptr normalRGBGammaCurve);
+		RGBGamma_ptr getRGBGamma(double_vector_ptr
+					 normalGammaCurve);
+	    };
+
+	    class IntensityGenerator {
+
 	    };
 
 	    enum BitDepth {

@@ -70,7 +70,7 @@ namespace cms {
 		 GByPassOp(const BitDepth & in, const BitDepth & out);
 	    };
 
-	    class AvoidFRCNoiseOp:public DGLutOp {
+	    class FrcNROp:public DGLutOp {
 	      protected:
 		RGB_vector_ptr getRendering(RGB_vector_ptr source);
 	    };

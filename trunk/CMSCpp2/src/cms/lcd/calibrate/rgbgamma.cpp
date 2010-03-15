@@ -18,7 +18,13 @@ namespace cms {
 	    // RGBGamma
 	    //==================================================================
 	    RGBGamma::RGBGamma(double_vector_ptr r, double_vector_ptr g,
-			       double_vector_ptr b):r(r), g(g), b(b) {
+			       double_vector_ptr b):r(r), g(g), b(b),
+		max(1), type(calibrate::Gamma) {
+	    };
+	     RGBGamma::RGBGamma(double_vector_ptr r, double_vector_ptr g,
+				double_vector_ptr b, const double max,
+				const Type type):r(r), g(g), b(b),
+		max(max), type(type) {
 	    };
 	    void RGBGamma::storeToExcel(const std::string & filename,
 					RGBGamma_ptr rgbgamma) {

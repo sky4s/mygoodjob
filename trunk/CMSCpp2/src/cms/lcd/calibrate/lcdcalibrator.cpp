@@ -23,15 +23,24 @@
 #define _ std::string
 #define debug_dir _(DEBUG_DIR)
 
-#define STORE_COMPOSITION( filename , result ) \
+#define MAKE_DEBUG_DIR() \
+if (!DirectoryExists(DEBUG_DIR)) { \
+    CreateDir(DEBUG_DIR); \
+}
+#define STORE_COMPONENT( filename , result ) \
+MAKE_DEBUG_DIR(); \
 ComponentFetcher::storeToExcel(debug_dir + _(filename), result);
+
 #define STORE_RGBGAMMA( filename , result ) \
+MAKE_DEBUG_DIR(); \
 cms::lcd::calibrate::RGBGamma::storeToExcel(debug_dir + _(filename), result);
+
 #define STORE_RGBVECTOR( filename , result ) \
+MAKE_DEBUG_DIR(); \
 RGBVector::storeToExcel(debug_dir + _(filename), result);
 
 #else
-#define STORE_COMPOSITION( filename , result )
+#define STORE_COMPONENT( filename , result )
 #define STORE_RGBGAMMA( filename , result )
 #define STORE_RGBVECTOR( filename , result )
 #endif
@@ -49,19 +58,19 @@ namespace cms {
 	    // Component
 	    //==================================================================
 	     Component::Component(RGB_ptr rgb,
-				      RGB_ptr intensity):rgb(rgb),
+				  RGB_ptr intensity):rgb(rgb),
 		intensity(intensity) {
 
 	    };
 	     Component::Component(RGB_ptr rgb,
-				      RGB_ptr intensity,
-				      XYZ_ptr XYZ):rgb(rgb),
+				  RGB_ptr intensity,
+				  XYZ_ptr XYZ):rgb(rgb),
 		intensity(intensity), XYZ(XYZ) {
 
 	    };
 	     Component::Component(RGB_ptr rgb,
-				      RGB_ptr intensity,
-				      XYZ_ptr XYZ, RGB_ptr gamma):rgb(rgb),
+				  RGB_ptr intensity,
+				  XYZ_ptr XYZ, RGB_ptr gamma):rgb(rgb),
 		intensity(intensity), XYZ(XYZ), gamma(gamma) {
 
 	    };
@@ -86,9 +95,8 @@ namespace cms {
 		    RGB_ptr intensity = analyzer->getIntensity(rgb);
 		    XYZ_ptr XYZ = analyzer->getCIEXYZ();
 		    Component_ptr component(new
-						Component(rgb,
-							    intensity,
-							    XYZ));
+					    Component(rgb,
+						      intensity, XYZ));
 		    result->push_back(component);
 		    if (true == stop) {
 			break;
@@ -268,6 +276,9 @@ namespace cms {
 		}
 		return dglut;
 	    };
+
+	    RGBGamma_ptr DGLutGenerator::getRGBGamma(double_vector_ptr normalGammaCurve) {
+	    };
 	    //==================================================================
 
 	    //==================================================================
@@ -382,17 +393,11 @@ namespace cms {
 		if (null == gammaCurve) {
 		    throw new IllegalStateException("null == gammaCurve");
 		}
-#ifdef _DEBUG
-		if (!DirectoryExists(DEBUG_DIR)) {
-		    CreateDir(DEBUG_DIR);
-		}
-#endif
-
 		//量測start->end得到的coponent/Y
 		componentVector =
 		    fetcher->fetchComponent(start, end, step);
 
-		STORE_COMPOSITION("0_fetch.xls", componentVector);
+		STORE_COMPONENT("0_fetch.xls", componentVector);
 
 		//產生generator
 		generator.reset(new DGLutGenerator(componentVector));
@@ -539,7 +544,7 @@ namespace cms {
 		}
 		if (avoidFRCNoise) {
 		    //frc noise的調整
-		    bptr < DGLutOp > avoidNoise(new AvoidFRCNoiseOp());
+		    bptr < DGLutOp > avoidNoise(new FrcNROp());
 		    dgop.addOp(avoidNoise);
 		}
 		if (gamma256) {
