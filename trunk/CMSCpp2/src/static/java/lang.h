@@ -103,9 +103,9 @@
 #define Patch_vector std::vector < Patch_ptr >
 #define Patch_vector_ptr bptr < Patch_vector >
 
-#define Composition_ptr  bptr < cms::lcd::calibrate::Composition >
-#define Composition_vector std::vector < Composition_ptr >
-#define Composition_vector_ptr bptr < Composition_vector >
+#define Component_ptr  bptr < cms::lcd::calibrate::Component >
+#define Component_vector std::vector < Component_ptr >
+#define Component_vector_ptr bptr < Component_vector >
 
 #define RGBGamma_ptr  bptr < cms::lcd::calibrate::RGBGamma >
 //==============================================================================
@@ -175,7 +175,7 @@ namespace cms {
 	namespace calibrate {
 	    class LCDCalibrator;
 	    class RGBGamma;
-	    class Composition;
+	    class Component;
 	    namespace algo {
 		class ChromaticAroundAlgorithm;
 		class CIEuv1960NearestAlgorithm;
@@ -185,7 +185,7 @@ namespace cms {
     namespace measure {
 	class MeterMeasurement;
 	class MeasureResult;
-	class ComponentAnalyzerIF;
+	class IntensityAnalyzerIF;
 
 	namespace cp {
 	    class MeasureInterface;

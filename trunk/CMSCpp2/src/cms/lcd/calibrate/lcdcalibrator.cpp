@@ -46,23 +46,23 @@ namespace cms {
 	    using namespace cms::colorformat;
 	    using namespace cms::util;
 	    //==================================================================
-	    // Composition
+	    // Component
 	    //==================================================================
-	     Composition::Composition(RGB_ptr rgb,
-				      RGB_ptr component):rgb(rgb),
-		component(component) {
+	     Component::Component(RGB_ptr rgb,
+				      RGB_ptr intensity):rgb(rgb),
+		intensity(intensity) {
 
 	    };
-	     Composition::Composition(RGB_ptr rgb,
-				      RGB_ptr component,
+	     Component::Component(RGB_ptr rgb,
+				      RGB_ptr intensity,
 				      XYZ_ptr XYZ):rgb(rgb),
-		component(component), XYZ(XYZ) {
+		intensity(intensity), XYZ(XYZ) {
 
 	    };
-	     Composition::Composition(RGB_ptr rgb,
-				      RGB_ptr component,
+	     Component::Component(RGB_ptr rgb,
+				      RGB_ptr intensity,
 				      XYZ_ptr XYZ, RGB_ptr gamma):rgb(rgb),
-		component(component), XYZ(XYZ), gamma(gamma) {
+		intensity(intensity), XYZ(XYZ), gamma(gamma) {
 
 	    };
 	    //==================================================================
@@ -71,25 +71,25 @@ namespace cms {
 	    //==================================================================
 	    // ComponentFetcher
 	    //==================================================================
-	  ComponentFetcher::ComponentFetcher(bptr < ComponentAnalyzerIF > analyzer):analyzer
+	  ComponentFetcher::ComponentFetcher(bptr < IntensityAnalyzerIF > analyzer):analyzer
 		(analyzer)
 	    {
 
 	    };
 
-	    Composition_vector_ptr ComponentFetcher::
-		fetchComposition(int start, int end, int step) {
+	    Component_vector_ptr ComponentFetcher::
+		fetchComponent(int start, int end, int step) {
 
-		Composition_vector_ptr result(new Composition_vector());
+		Component_vector_ptr result(new Component_vector());
 		for (int x = start; x >= end; x -= step) {
 		    RGB_ptr rgb(new RGBColor(x, x, x));
-		    RGB_ptr component = analyzer->getComponent(rgb);
+		    RGB_ptr intensity = analyzer->getIntensity(rgb);
 		    XYZ_ptr XYZ = analyzer->getCIEXYZ();
-		    Composition_ptr composition(new
-						Composition(rgb,
-							    component,
+		    Component_ptr component(new
+						Component(rgb,
+							    intensity,
 							    XYZ));
-		    result->push_back(composition);
+		    result->push_back(component);
 		    if (true == stop) {
 			break;
 		    }
@@ -100,13 +100,13 @@ namespace cms {
 		this->stop = stop;
 	    };
 	    void ComponentFetcher::storeToExcel(const string & filename,
-						Composition_vector_ptr
-						compositionVector) {
+						Component_vector_ptr
+						componentVector) {
 
-		int n = compositionVector->size();
+		int n = componentVector->size();
 		ExcelFileDB::deleteExist(filename);
 		DGLutFile dglut(filename, n);
-		dglut.setRawData(compositionVector);
+		dglut.setRawData(componentVector);
 	    };
 	    //==================================================================
 
@@ -128,7 +128,7 @@ namespace cms {
 		//==============================================================
 		// 建立回歸資料
 		//==============================================================
-		int size = compositionVector->size();
+		int size = componentVector->size();
 		double2D_ptr input(new double2D(size, 3));
 		double2D_ptr output(new double2D(size, 1));
 		double_vector_ptr keys(new double_vector(size));
@@ -137,19 +137,19 @@ namespace cms {
 		double_vector_ptr bValues(new double_vector(size));
 
 		for (int x = 0; x != size; x++) {
-		    Composition_ptr composition = (*compositionVector)[x];
-		    double Y = composition->XYZ->Y;
-		    RGB_ptr component = composition->component;
+		    Component_ptr component = (*componentVector)[x];
+		    double Y = component->XYZ->Y;
+		    RGB_ptr intensity = component->intensity;
 
-		    (*input)[x][0] = component->R;
-		    (*input)[x][1] = component->G;
-		    (*input)[x][2] = component->B;
+		    (*input)[x][0] = intensity->R;
+		    (*input)[x][1] = intensity->G;
+		    (*input)[x][2] = intensity->B;
 		    (*output)[x][0] = Y;
 
-		    (*keys)[x] = composition->rgb->getValue(Channel::W);
-		    (*rValues)[x] = component->R;
-		    (*gValues)[x] = component->G;
-		    (*bValues)[x] = component->B;
+		    (*keys)[x] = component->rgb->getValue(Channel::W);
+		    (*rValues)[x] = intensity->R;
+		    (*gValues)[x] = intensity->G;
+		    (*bValues)[x] = intensity->B;
 		}
 		//==============================================================
 
@@ -181,7 +181,7 @@ namespace cms {
 		bLut.reset(new Interpolation1DLUT(keys, bValues));
 		//==============================================================
 	    };
-	    double DGLutGenerator::getComponent(double luminance) {
+	    double DGLutGenerator::getIntensity(double luminance) {
 		return c * luminance + d;
 	    };
 	    double_vector_ptr DGLutGenerator::
@@ -207,8 +207,8 @@ namespace cms {
 		}
 		return result;
 	    };
-	  DGLutGenerator::DGLutGenerator(Composition_vector_ptr compositionVector):compositionVector
-		(compositionVector)
+	  DGLutGenerator::DGLutGenerator(Component_vector_ptr componentVector):componentVector
+		(componentVector)
 	    {
 		init();
 	    };
@@ -221,10 +221,10 @@ namespace cms {
 
 		for (int x = 0; x != size; x++) {
 		    double lumi = (*luminanceGammaCurve)[x];
-		    double component = getComponent(lumi);
-		    double r = rLut->getKey(component);
-		    double g = gLut->getKey(component);
-		    double b = bLut->getKey(component);
+		    double intensity = getIntensity(lumi);
+		    double r = rLut->getKey(intensity);
+		    double g = gLut->getKey(intensity);
+		    double b = bLut->getKey(intensity);
 		    RGB_ptr rgb(new RGBColor(r, g, b));
 		    (*dglut)[x] = rgb;
 		}
@@ -242,26 +242,26 @@ namespace cms {
 
 		int size = rluminanceGammaCurve->size();
 		RGB_vector_ptr dglut(new RGB_vector(size));
-		double luminance[3], component[3];
+		double luminance[3], intensity[3];
 
 		for (int x = 0; x != size; x++) {
 		    luminance[0] = (*rluminanceGammaCurve)[x];
 		    luminance[1] = (*gluminanceGammaCurve)[x];
 		    luminance[2] = (*bluminanceGammaCurve)[x];
 
-		    component[0] = getComponent(luminance[0]);
-		    component[1] = getComponent(luminance[1]);
-		    component[2] = getComponent(luminance[2]);
+		    intensity[0] = getIntensity(luminance[0]);
+		    intensity[1] = getIntensity(luminance[1]);
+		    intensity[2] = getIntensity(luminance[2]);
 
 		    double r =
-			(rLut->isValueInRange(component[0])) ? rLut->
-			getKey(component[0]) : 0;
+			(rLut->isValueInRange(intensity[0])) ? rLut->
+			getKey(intensity[0]) : 0;
 		    double g =
-			(gLut->isValueInRange(component[1])) ? gLut->
-			getKey(component[1]) : 0;
+			(gLut->isValueInRange(intensity[1])) ? gLut->
+			getKey(intensity[1]) : 0;
 		    double b =
-			(bLut->isValueInRange(component[2])) ? bLut->
-			getKey(component[2]) : 0;
+			(bLut->isValueInRange(intensity[2])) ? bLut->
+			getKey(intensity[2]) : 0;
 
 		    RGB_ptr rgb(new RGBColor(r, g, b));
 		    (*dglut)[x] = rgb;
@@ -287,23 +287,6 @@ namespace cms {
 		return (in == 6 && out == 6) ? 253 : (in == 8) ? 256 : 257;
 	    };
 
-	    /*RGBGamma_ptr LCDCalibrator::
-	       getRGBGamma(double_vector_ptr gammaCurve) {
-	       double_vector_ptr r(new double_vector(*gammaCurve));
-	       double_vector_ptr g(new double_vector(*gammaCurve));
-	       double_vector_ptr b(new double_vector(*gammaCurve));
-	       RGBGamma_ptr rgbGamma(new RGBGamma(r, g, b));
-	       return rgbGamma;
-	       }; */
-	    /*double_array LCDCalibrator::getGammaCurve(double gamma, int n) {
-	       double_array result(new double[n]);
-	       for (int x = 0; x < n; x++) {
-	       double normal = static_cast < double >(x) / (n - 1);
-	       double v = java::lang::Math::pow(normal, gamma);
-	       result[x] = v;
-	       }
-	       return result;
-	       }; */
 	    double_vector_ptr
 		LCDCalibrator::getGammaCurveVector(double gamma, int n,
 						   int effectiven) {
@@ -380,7 +363,7 @@ namespace cms {
 		this->out = out;
 	    };
 
-	  LCDCalibrator::LCDCalibrator(bptr < ComponentAnalyzerIF > analyzer):analyzer(analyzer)
+	  LCDCalibrator::LCDCalibrator(bptr < IntensityAnalyzerIF > analyzer):analyzer(analyzer)
 	    {
 		rgbgamma = false;
 		bIntensityGain = 1;
@@ -406,13 +389,13 @@ namespace cms {
 #endif
 
 		//量測start->end得到的coponent/Y
-		compositionVector =
-		    fetcher->fetchComposition(start, end, step);
+		componentVector =
+		    fetcher->fetchComponent(start, end, step);
 
-		STORE_COMPOSITION("0_fetch.xls", compositionVector);
+		STORE_COMPOSITION("0_fetch.xls", componentVector);
 
 		//產生generator
-		generator.reset(new DGLutGenerator(compositionVector));
+		generator.reset(new DGLutGenerator(componentVector));
 		//RGBGamma_ptr rgbgamma = getRGBGamma(gammaCurve);
 		RGBGamma_ptr rgbgamma =
 		    RGBGammaOp::getRGBGamma(gammaCurve);
@@ -507,7 +490,7 @@ namespace cms {
 		//寫入dgcode
 		file.setGammaTable(dglut);
 		//寫入raw data
-		file.setRawData(compositionVector, finalRGBGamma);
+		file.setRawData(componentVector, finalRGBGamma);
 
 	    };
 

@@ -15,32 +15,32 @@
 namespace cms {
     namespace lcd {
 	namespace calibrate {
-	    class Composition:public jObject {
+	    class Component:public jObject {
 	      public:
-		Composition(RGB_ptr rgb, RGB_ptr component);
-		Composition(RGB_ptr rgb, RGB_ptr component, XYZ_ptr XYZ);
-		Composition(RGB_ptr rgb, RGB_ptr component, XYZ_ptr XYZ,
+		Component(RGB_ptr rgb, RGB_ptr intensity);
+		Component(RGB_ptr rgb, RGB_ptr intensity, XYZ_ptr XYZ);
+		Component(RGB_ptr rgb, RGB_ptr intensity, XYZ_ptr XYZ,
 			    RGB_ptr gamma);
 		RGB_ptr rgb;
-		RGB_ptr component;
+		RGB_ptr intensity;
 		XYZ_ptr XYZ;
 		RGB_ptr gamma;
 	    };
 	    class ComponentFetcher {
 	      private:
-		bptr < cms::measure::ComponentAnalyzerIF > analyzer;
+		bptr < cms::measure::IntensityAnalyzerIF > analyzer;
 		//bptr < cms::measure::MeterMeasurement > mm;
 		bool stop;
 	      public:
 		 ComponentFetcher(bptr <
-				  cms::measure::ComponentAnalyzerIF >
+				  cms::measure::IntensityAnalyzerIF >
 				  analyzer);
-		Composition_vector_ptr fetchComposition(int start, int end,
+		Component_vector_ptr fetchComponent(int start, int end,
 							int step);
 		void setStop(bool stop);
 		static void storeToExcel(const std::string & filename,
-					 Composition_vector_ptr
-					 compositionVector);
+					 Component_vector_ptr
+					 componentVector);
 	    };
 
 	    /*
@@ -58,7 +58,7 @@ namespace cms {
 	    class DGLutGenerator {
 	      private:
 		bptr < PolynomialRegression > regression;
-		Composition_vector_ptr compositionVector;
+		Component_vector_ptr componentVector;
 		double2D_ptr coefs;
 		double c, d;
 		double minLuminance, maxLuminance;
@@ -67,12 +67,12 @@ namespace cms {
 		 bptr < math::Interpolation1DLUT > bLut;
 	      protected:
 		void init();
-		double getComponent(double luminance);
+		double getIntensity(double luminance);
 		double_vector_ptr getLuminanceGammaCurve(double_vector_ptr
 							 normalGammaCurve);
 		double_vector_ptr getReverse(double_vector_ptr vec);
 	      public:
-		 DGLutGenerator(Composition_vector_ptr compositionVector);
+		 DGLutGenerator(Component_vector_ptr componentVector);
 		RGB_vector_ptr produce(double_vector_ptr normalGammaCurve);
 		RGB_vector_ptr produce(RGBGamma_ptr normalRGBGammaCurve);
 	    };
@@ -102,12 +102,12 @@ namespace cms {
 		double_vector_ptr bgammaCurve;
 		 bptr < DGLutGenerator > generator;
 		 bptr < ComponentFetcher > fetcher;
-		 bptr < cms::measure::ComponentAnalyzerIF > analyzer;
+		 bptr < cms::measure::IntensityAnalyzerIF > analyzer;
 		//RGBGamma_ptr getRGBGamma(double_vector_ptr gammaCurve);
 		//std::string dglut;
 
 		RGB_vector_ptr dglut;
-		Composition_vector_ptr compositionVector;
+		Component_vector_ptr componentVector;
 		RGBGamma_ptr finalRGBGamma;
 
 		int start, end, step;
@@ -135,7 +135,7 @@ namespace cms {
 		void setBitDepth(const BitDepth & in, const BitDepth & lut,
 				 const BitDepth & out);
 
-		 LCDCalibrator(bptr < cms::measure::ComponentAnalyzerIF >
+		 LCDCalibrator(bptr < cms::measure::IntensityAnalyzerIF >
 			       analyzer);
 
 		RGB_vector_ptr getDGLut(int start, int end, int step);

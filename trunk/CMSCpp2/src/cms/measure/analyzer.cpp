@@ -20,24 +20,16 @@ namespace cms {
 	using namespace Indep;
 	using namespace ca210api;
 
-	const WideString & CA210ComponentAnalyzer::
+	const WideString & CA210IntensityAnalyzer::
 	    CalibrationDataFilename = "ca210.dat";
 
-	void CA210ComponentAnalyzer::init() {
+	void CA210IntensityAnalyzer::init() {
 	    mm->setWaitTimes(5000);
 	    ca210api->setChannelNO(0);
 	    ca210api->copyToFile(CalibrationDataFilename);
 	};
 
-	/*CA210ComponentAnalyzer::
-	   CA210ComponentAnalyzer(bptr < CA210 > ca210):ca210(ca210),
-	   ca210api(ca210->getCA210API()),
-	   mm(bptr < MeterMeasurement >
-	   (new MeterMeasurement(ca210, false))), dummyMode(false) {
-	   init();
-	   }; */
-
-	 CA210ComponentAnalyzer::CA210ComponentAnalyzer(bptr < CA210 >
+	 CA210IntensityAnalyzer::CA210IntensityAnalyzer(bptr < CA210 >
 							ca210,
 							bptr <
 							MeterMeasurement >
@@ -46,12 +38,12 @@ namespace cms {
 	    init();
 	};
 
-      CA210ComponentAnalyzer::CA210ComponentAnalyzer(bptr < MeterMeasurement > mm):mm(mm),
+      CA210IntensityAnalyzer::CA210IntensityAnalyzer(bptr < MeterMeasurement > mm):mm(mm),
 	    dummyMode(true)
 	{
 	};
 
-	RGB_ptr CA210ComponentAnalyzer::getComponent(RGB_ptr rgb) {
+	RGB_ptr CA210IntensityAnalyzer::getIntensity(RGB_ptr rgb) {
 	    Patch_ptr patch = mm->measure(rgb, rgb->toString());
 	    XYZ = patch->getXYZ();
 	    float_array rgbComponent;
@@ -62,12 +54,12 @@ namespace cms {
 		    dgc = dynamic_cast
 			< DGLutFileMeter * >(mm->getMeter().get());
 		}
-		Composition_ptr c = dgc->getComposition();
-		RGB_ptr component = c->component;
+		Component_ptr c = dgc->getComponent();
+		RGB_ptr intensity = c->intensity;
 		rgbComponent.reset(new float[3]);
-		rgbComponent[0] = component->R;
-		rgbComponent[1] = component->G;
-		rgbComponent[2] = component->B;
+		rgbComponent[0] = intensity->R;
+		rgbComponent[1] = intensity->G;
+		rgbComponent[2] = intensity->B;
 	    } else {
 		rgbComponent = ca210api->triggerComponentAnalyze();
 	    }
@@ -75,15 +67,15 @@ namespace cms {
 	    float r = rgbComponent[0];
 	    float g = rgbComponent[1];
 	    float b = rgbComponent[2];
-	    RGB_ptr component(new RGBColor(r, g, b));
-	    return component;
+	    RGB_ptr intensity(new RGBColor(r, g, b));
+	    return intensity;
 
 	};
-	XYZ_ptr CA210ComponentAnalyzer::getCIEXYZ() {
+	XYZ_ptr CA210IntensityAnalyzer::getCIEXYZ() {
 	    return XYZ;
 	};
 
-	void CA210ComponentAnalyzer::setupComponent(const Dep::
+	void CA210IntensityAnalyzer::setupComponent(const Dep::
 						    Channel & ch,
 						    RGB_ptr rgb) {
 	    Patch_ptr p = mm->measure(rgb, rgb->toString());
@@ -108,14 +100,14 @@ namespace cms {
 	    }
 	};
 
-	void CA210ComponentAnalyzer::enter() {
+	void CA210IntensityAnalyzer::enter() {
 	    if (false == dummyMode) {
 		ca210api->enter();
 		mm->setMeasureWindowsVisible(false);
 	    }
 	};
 
-	void CA210ComponentAnalyzer::setChannel(int no, string_ptr id) {
+	void CA210IntensityAnalyzer::setChannel(int no, string_ptr id) {
 	    if (false == dummyMode) {
 		ca210api->setChannelNO(no);
 		ca210api->setChannelID(WideString(id->c_str()));
@@ -128,7 +120,7 @@ namespace cms {
 
 	//======================================================================
 
-      StocktonComponentAnayzer::StocktonComponentAnayzer(bptr < CA210 > ca210, bptr < MeterMeasurement > mm):CA210ComponentAnalyzer(ca210, mm)
+      StocktonComponentAnayzer::StocktonComponentAnayzer(bptr < CA210 > ca210, bptr < MeterMeasurement > mm):CA210IntensityAnalyzer(ca210, mm)
 	{
 	    mm->setWaitTimes(5000);
 	    ca210api->setLvxyCalMode();
@@ -190,7 +182,7 @@ namespace cms {
 	    (rgbColorSpace) {
 	};
 
-	RGB_ptr MaxMatrixComponentAnalyzer::getComponent(RGB_ptr rgb) {
+	RGB_ptr MaxMatrixComponentAnalyzer::getIntensity(RGB_ptr rgb) {
 	    //component: 0~100%
 	};
 	void MaxMatrixComponentAnalyzer::setupComponent(const Dep::
