@@ -170,7 +170,7 @@ namespace cms {
 
 	    };
 	    //==================================================================
-	    RGB_vector_ptr AvoidFRCNoiseOp::
+	    RGB_vector_ptr FrcNROp::
 		getRendering(RGB_vector_ptr source) {
 		int size = source->size();
 		RGB_vector_ptr result = RGBVector::clone(source);

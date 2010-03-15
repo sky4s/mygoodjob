@@ -13,11 +13,19 @@
 namespace cms {
     namespace lcd {
 	namespace calibrate {
+	    enum Type {
+		Intensity, Gamma
+	    };
 	    class RGBGamma {
 	      public:
+		const Type type;
+		const double max;
 		double_vector_ptr r, g, b;
-		RGBGamma(double_vector_ptr r, double_vector_ptr g,
-			 double_vector_ptr b);
+		 RGBGamma(double_vector_ptr r, double_vector_ptr g,
+			  double_vector_ptr b);
+		 RGBGamma(double_vector_ptr r, double_vector_ptr g,
+			  double_vector_ptr b, const double max,
+			  const Type type);
 		static void storeToExcel(const std::string & filename,
 					 RGBGamma_ptr rgbgamma);
 	    };
