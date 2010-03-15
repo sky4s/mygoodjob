@@ -133,7 +133,7 @@ namespace cms {
 	    };
 	    //==================================================================
 
-	  DGLutFileMeter::DGLutFileMeter(bptr < DGLutFile > dglut):dglut(dglut), vector(dglut->getCompositionVector()),
+	  DGLutFileMeter::DGLutFileMeter(bptr < DGLutFile > dglut):dglut(dglut), vector(dglut->getComponentVector()),
 		index(0)
 	    {
 	    };
@@ -169,7 +169,7 @@ namespace cms {
 	    Instr DGLutFileMeter::getType() {
 		return Instr::CA210;
 	    };
-	    Composition_ptr DGLutFileMeter::getComposition() {
+	    Component_ptr DGLutFileMeter::getComponent() {
 		return c;
 	    };
 	    void DGLutFileMeter::setIndex(int index) {

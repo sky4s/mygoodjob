@@ -64,7 +64,7 @@ void __fastcall TMainForm::FormCreate(TObject * Sender)
 	mm = bptr < MeterMeasurement >
 	    (new MeterMeasurement(meter, false));
 
-	analyzer.reset(new CA210ComponentAnalyzer(getCA210(), mm));
+	analyzer.reset(new CA210IntensityAnalyzer(getCA210(), mm));
     } else {
 	setDummyMeterFilename(METER_FILE);
     }
@@ -79,7 +79,7 @@ void TMainForm::setDummyMeterFilename(const std::string & filename)
     meter = bptr < Meter > (new DGLutFileMeter(dgcode));
     mm = bptr < MeterMeasurement > (new MeterMeasurement(meter, false));
     mm->setFakeMeasure(true);
-    analyzer.reset(new CA210ComponentAnalyzer(mm));
+    analyzer.reset(new CA210IntensityAnalyzer(mm));
 };
 
 

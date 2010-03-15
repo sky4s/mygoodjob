@@ -193,7 +193,6 @@ void __fastcall TCCTLUTForm::Button_RunClick(TObject * Sender)
 
     RGB_vector_ptr dglut = calibrator.getDGLut(start, end, step);
 
-    /* TODO: ¦s°_¨Ó */
     AnsiString dir = this->Edit_Directory->Text;
     if (!DirectoryExists(dir)) {
 	CreateDir(dir);

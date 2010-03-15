@@ -20,16 +20,16 @@ namespace cms {
     namespace measure {
 
 	class MeterMeasurement;
-	class ComponentAnalyzerIF:public jObject {
+	class IntensityAnalyzerIF:public jObject {
 	  public:
-	    virtual RGB_ptr getComponent(RGB_ptr rgb) = 0;
+	    virtual RGB_ptr getIntensity(RGB_ptr rgb) = 0;
 	    virtual XYZ_ptr getCIEXYZ() = 0;
 	    virtual void setupComponent(const Dep::Channel & ch,
 					RGB_ptr rgb) = 0;
 	    virtual void enter() = 0;
 	};
 
-	class CA210ComponentAnalyzer:public ComponentAnalyzerIF {
+	class CA210IntensityAnalyzer:public IntensityAnalyzerIF {
 	  protected:
 	    bptr < cms::measure::meter::CA210 > ca210;
 	    bptr < ca210api::CA210API > ca210api;
@@ -46,22 +46,22 @@ namespace cms {
 	    /*
 	       採用CA210為analyze結果的來源
 	     */
-	     CA210ComponentAnalyzer(bptr < cms::measure::meter::CA210 >
+	     CA210IntensityAnalyzer(bptr < cms::measure::meter::CA210 >
 				    ca210, bptr < MeterMeasurement > mm);
 	    /*
 	       由於缺乏CA210, 因此是以MeterMeasurement中的Meter作為analyze來源,
 	       實際上是假設Meter為DGLutFileMeter, 也就是說讀取檔案中的component作為analyze結果
 	     */
-	     CA210ComponentAnalyzer(bptr < MeterMeasurement > mm);
+	     CA210IntensityAnalyzer(bptr < MeterMeasurement > mm);
 
-	    RGB_ptr getComponent(RGB_ptr rgb);
+	    RGB_ptr getIntensity(RGB_ptr rgb);
 	    XYZ_ptr getCIEXYZ();
 	    void setupComponent(const Dep::Channel & ch, RGB_ptr rgb);
 	    void enter();
 	    void setChannel(int no, string_ptr id);
 	};
 
-	class StocktonComponentAnayzer:public CA210ComponentAnalyzer {
+	class StocktonComponentAnayzer:public CA210IntensityAnalyzer {
 	  private:
 	    Patch_ptr rp, gp, bp, wp;
 	  public:
@@ -71,14 +71,14 @@ namespace cms {
 	    void enter();
 	};
 
-	class MaxMatrixComponentAnalyzer:public ComponentAnalyzerIF {
+	class MaxMatrixComponentAnalyzer:public IntensityAnalyzerIF {
 	  private:
 	    const Dep::RGBColorSpace & rgbColorSpace;
 	  public:
 	     MaxMatrixComponentAnalyzer(const Dep::RGBColorSpace &
 					rgbColorSpace);
 
-	    RGB_ptr getComponent(RGB_ptr rgb) = 0;
+	    RGB_ptr getIntensity(RGB_ptr rgb) = 0;
 	    XYZ_ptr getCIEXYZ();
 	    void setupComponent(const Dep::Channel & ch, RGB_ptr rgb) = 0;
 	    void enter();

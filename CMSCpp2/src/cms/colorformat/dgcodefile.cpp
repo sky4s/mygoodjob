@@ -183,13 +183,13 @@ namespace cms {
 	    addProperty(key, lexical_cast < string > (value));
 	};
 	void
-	 DGLutFile::setRawData(Composition_vector_ptr compositionVector) {
+	 DGLutFile::setRawData(Component_vector_ptr componentVector) {
 	    db->setTableName(RawData);
 	    int
-	     size = compositionVector->size();
+	     size = componentVector->size();
 	    string_vector_ptr values(new string_vector(13));
 	    for (int x = 0; x != size; x++) {
-		Composition_ptr c = (*compositionVector)
+		Component_ptr c = (*componentVector)
 		    [x];
 		int w = static_cast < int
 		    >(c->rgb->getValue(Channel::W));
@@ -202,13 +202,13 @@ namespace cms {
 		    [2] = lexical_cast < string > (xyY->y);
 		(*values)
 		    [3] = lexical_cast < string > (xyY->Y);
-		RGB_ptr component = c->component;
+		RGB_ptr intensity = c->intensity;
 		(*values)
-		    [4] = lexical_cast < string > (component->R);
+		    [4] = lexical_cast < string > (intensity->R);
 		(*values)
-		    [5] = lexical_cast < string > (component->G);
+		    [5] = lexical_cast < string > (intensity->G);
 		(*values)
-		    [6] = lexical_cast < string > (component->B);
+		    [6] = lexical_cast < string > (intensity->B);
 		//gamma 0~100
 		(*values)[7] = "0";
 		(*values)
@@ -236,17 +236,16 @@ namespace cms {
 	void
 	 DGLutFile::
 	    setRawData
-	    (Composition_vector_ptr compositionVector,
-	     RGBGamma_ptr rgbgamma) {
-	    int a = compositionVector->size();
+	    (Component_vector_ptr componentVector, RGBGamma_ptr rgbgamma) {
+	    int a = componentVector->size();
 	    int b = rgbgamma->r->size();
 	    //==================================================================
 	    // 檢查來源資料
 	    //==================================================================
-	    if (compositionVector->size() != rgbgamma->r->size()) {
+	    if (componentVector->size() != rgbgamma->r->size()) {
 		throw
 		    IllegalArgumentException
-		    ("compositionVector->size() != rgbgamma->r->size()");
+		    ("componentVector->size() != rgbgamma->r->size()");
 	    };
 	    //==================================================================
 	    //==================================================================
@@ -254,7 +253,7 @@ namespace cms {
 	    //==================================================================
 	    db->setTableName(RawData);
 	    int
-	     size = compositionVector->size();
+	     size = componentVector->size();
 	    string_vector_ptr values(new string_vector(13));
 	    //==================================================================
 	    //==================================================================
@@ -262,7 +261,7 @@ namespace cms {
 	    //==================================================================
 	    for (int x = 0; x != size; x++) {
 		int n = size - 1 - x;
-		Composition_ptr c = (*compositionVector)
+		Component_ptr c = (*componentVector)
 		    [x];
 		int w = static_cast < int
 		    >(c->rgb->getValue(Channel::W));
@@ -275,13 +274,13 @@ namespace cms {
 		    [2] = lexical_cast < string > (xyY->y);
 		(*values)
 		    [3] = lexical_cast < string > (xyY->Y);
-		RGB_ptr component = c->component;
+		RGB_ptr intensity = c->intensity;
 		(*values)
-		    [4] = lexical_cast < string > (component->R);
+		    [4] = lexical_cast < string > (intensity->R);
 		(*values)
-		    [5] = lexical_cast < string > (component->G);
+		    [5] = lexical_cast < string > (intensity->G);
 		(*values)
-		    [6] = lexical_cast < string > (component->B);
+		    [6] = lexical_cast < string > (intensity->B);
 		//gamma 0~100
 		(*values)[7] = _toString((*rgbgamma->r)[n] * 100);
 		(*values)[8] = _toString((*rgbgamma->g)[n] * 100);
@@ -350,8 +349,8 @@ namespace cms {
 #endif
 	    //==================================================================
 	};
-	Composition_vector_ptr DGLutFile::getCompositionVector() {
-	    Composition_vector_ptr vector(new Composition_vector());
+	Component_vector_ptr DGLutFile::getComponentVector() {
+	    Component_vector_ptr vector(new Component_vector());
 	    db->setTableName(RawData);
 	    bptr < DBQuery > query = db->selectAll();
 	    while (query->hasNext()) {
@@ -378,19 +377,17 @@ namespace cms {
 		double b = lexical_cast < double
 		    >((*result)[9]);
 		RGB_ptr rgb(new RGBColor(gray, gray, gray));
-		RGB_ptr component(new RGBColor(R, G, B));
+		RGB_ptr intensity(new RGBColor(R, G, B));
 		xyY_ptr xyY(new CIExyY(x, y, Y));
 		XYZ_ptr XYZ(xyY->toXYZ());
 		RGB_ptr gamma(new RGBColor(r, g, b));
-		bptr <
-		    Composition >
-		    composition(new
-				Composition(rgb, component, XYZ, gamma));
-		vector->push_back(composition);
+		bptr < Component >
+		    component(new Component(rgb, intensity, XYZ, gamma));
+		vector->push_back(component);
 	    };
 	    return vector;
 	};
-	string_vector_ptr DGLutFile::makeValues(int n, Composition_ptr c) {
+	string_vector_ptr DGLutFile::makeValues(int n, Component_ptr c) {
 	    return
 		makeValues(n, c,
 			   RGB_ptr((RGBColor *) null),
@@ -399,7 +396,7 @@ namespace cms {
 	string_vector_ptr
 	    DGLutFile::
 	    makeValues(int n,
-		       Composition_ptr
+		       Component_ptr
 		       c, RGB_ptr rgbGamma, RGB_ptr rgbGammaFix) {
 	    string_vector_ptr values(new string_vector(13));
 	    (*values)
@@ -411,13 +408,13 @@ namespace cms {
 		[2] = lexical_cast < string > (xyY->y);
 	    (*values)
 		[3] = lexical_cast < string > (xyY->Y);
-	    RGB_ptr component = c->component;
+	    RGB_ptr intensity = c->intensity;
 	    (*values)
-		[4] = lexical_cast < string > (component->R);
+		[4] = lexical_cast < string > (intensity->R);
 	    (*values)
-		[5] = lexical_cast < string > (component->G);
+		[5] = lexical_cast < string > (intensity->G);
 	    (*values)
-		[6] = lexical_cast < string > (component->B);
+		[6] = lexical_cast < string > (intensity->B);
 	    //gamma 0~100
 	    if (null != rgbGamma) {
 		(*values)[7] = lexical_cast < string > (rgbGamma->R);

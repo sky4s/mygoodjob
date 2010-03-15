@@ -203,9 +203,9 @@ void __fastcall TTargetWhiteForm2::Button2Click(TObject * Sender)
     // 設定到ca-210去
     //==========================================================================
     //利用ca210做成分分析器, 並且設定回MainForm
-    bptr < ComponentAnalyzerIF > analyzer = MainForm->analyzer;
-    CA210ComponentAnalyzer *ca210Analyzer =
-	dynamic_cast < CA210ComponentAnalyzer * >(analyzer.get());
+    bptr < IntensityAnalyzerIF > analyzer = MainForm->analyzer;
+    CA210IntensityAnalyzer *ca210Analyzer =
+	dynamic_cast < CA210IntensityAnalyzer * >(analyzer.get());
 
     int no = this->Edit_TargetCH->Text.ToInt();
     string_ptr id(new string(this->Edit_TargetID->Text.c_str()));

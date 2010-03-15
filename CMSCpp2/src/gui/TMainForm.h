@@ -56,7 +56,7 @@ class TMainForm:public TForm {
     //==========================================================================
      bool linkCA210;
      bptr < cms::measure::MeterMeasurement > mm;
-     bptr < cms::measure::ComponentAnalyzerIF > analyzer;
+     bptr < cms::measure::IntensityAnalyzerIF > analyzer;
     int getInterval();
     void setDummyMeterFilename(const std::string & filename);
     //==========================================================================

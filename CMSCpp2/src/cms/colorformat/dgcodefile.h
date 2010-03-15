@@ -50,11 +50,11 @@ namespace cms {
 	    void addProperty(const std::string & key, const double value);
 	    void setProperty(const DGLutProperty & property);
 
-	    void setRawData(Composition_vector_ptr compositionVector);
-	    void setRawData(Composition_vector_ptr compositionVector,
+	    void setRawData(Component_vector_ptr componentVector);
+	    void setRawData(Component_vector_ptr componentVector,
 			    RGBGamma_ptr rgbgamma);
 	    void setGammaTable(RGB_vector_ptr dglut);
-	    Composition_vector_ptr getCompositionVector();
+	    Component_vector_ptr getComponentVector();
 
 	    /*
 	       量測的資料不見得是0~255全量, 但是產生的gamma一定是全部
@@ -67,8 +67,8 @@ namespace cms {
 	     */
 
 	  private:
-	     string_vector_ptr makeValues(int n, Composition_ptr c);
-	    string_vector_ptr makeValues(int n, Composition_ptr c,
+	     string_vector_ptr makeValues(int n, Component_ptr c);
+	    string_vector_ptr makeValues(int n, Component_ptr c,
 					 RGB_ptr rgbGamma,
 					 RGB_ptr rgbGammaFix);
 	};

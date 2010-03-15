@@ -86,9 +86,9 @@ namespace cms {
 	    class DGLutFileMeter:public Meter {
 	      private:
 		bptr < cms::colorformat::DGLutFile > dglut;
-		const Composition_vector_ptr vector;
+		const Component_vector_ptr vector;
 		int index;
-		Composition_ptr c;
+		Component_ptr c;
 	      public:
 		 DGLutFileMeter(bptr < cms::colorformat::DGLutFile >
 				 dglut);
@@ -102,7 +102,7 @@ namespace cms {
 		string_ptr getCalibrationCount();
 		void setScreenType(ScreenType screenType);
 		Instr getType();
-		Composition_ptr getComposition();
+		Component_ptr getComponent();
 		void setIndex(int index);
 	    };
 
