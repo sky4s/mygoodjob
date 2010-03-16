@@ -38,7 +38,8 @@ namespace cms {
 	    static const WideString & CalibrationDataFilename;
 	    bool dummyMode;
 	    void init();
-	     cms::measure::meter::DGLutFileMeter * dgc;
+	    cms::measure::meter::DGLutFileMeter * dgc;
+            //bptr < cms::measure::meter::DGLutFileMeter > dgc;
 	  public:
 
 	    /*CA210ComponentAnalyzer(bptr < cms::measure::meter::CA210 >

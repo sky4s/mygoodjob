@@ -43,6 +43,11 @@ namespace cms {
 					 componentVector);
 	    };
 
+
+	    enum BitDepth {
+		Unknow = 0, Bit6 = 6, Bit8 = 8, Bit10 = 10, Bit12 = 12
+	    };
+
 	    /*
 	       DGLutGenerator擔任產出DG Code的重責大任
 	       1. 首先接手ComponentFetcher產出的rgb,對應的componet,亮度
@@ -57,10 +62,11 @@ namespace cms {
 	    using namespace math;
 	    class DGLutGenerator {
 	      private:
+		BitDepth in, out;
 		bptr < PolynomialRegression > regression;
 		Component_vector_ptr componentVector;
-		double2D_ptr coefs;
-		double c, d;
+		//double2D_ptr coefs;
+		double a0, a1, a2, a3, c, d;
 		double minLuminance, maxLuminance;
 		 bptr < math::Interpolation1DLUT > rLut;
 		 bptr < math::Interpolation1DLUT > gLut;
@@ -68,12 +74,16 @@ namespace cms {
 	      protected:
 		void init();
 		double getIntensity(double luminance);
+		double getLuminance(double rIntensity, double gIntensity,
+				    double bIntensity);
 		double_vector_ptr getLuminanceGammaCurve(double_vector_ptr
 							 normalGammaCurve);
 		double_vector_ptr getReverse(double_vector_ptr vec);
+		double getMaximumIntensity();
 	      public:
-		 DGLutGenerator(Component_vector_ptr componentVector);
-		RGB_vector_ptr produce(double_vector_ptr normalGammaCurve);
+		 DGLutGenerator(Component_vector_ptr componentVector,
+				const BitDepth & in, const BitDepth & out);
+		//RGB_vector_ptr produce(double_vector_ptr normalGammaCurve);
 		RGB_vector_ptr produce(RGBGamma_ptr normalRGBGammaCurve);
 		RGBGamma_ptr getRGBGamma(double_vector_ptr
 					 normalGammaCurve);
@@ -83,15 +93,17 @@ namespace cms {
 
 	    };
 
-	    enum BitDepth {
-		Unknow = 0, Bit6 = 6, Bit8 = 8, Bit10 = 10, Bit12 = 12
+
+	    enum Correct {
+		P1P2, RBInterpolation, None
 	    };
 
 	    class LCDCalibrator {
 		friend class cms::colorformat::DGLutProperty;
 	      private:
 
-		 bool p1p2;
+		//bool p1p2;
+		 Correct correct;
 		double p1, p2;
 		BitDepth in, lut, out;
 		double rbInterpUnder;
@@ -127,6 +139,7 @@ namespace cms {
 
 		void setP1P2(double p1, double p2);
 		void setRBInterpolation(int under);
+		void setNoneDimCorrect();
 		void setGamma(double gamma);
 		void setGamma(double rgamma, double ggamma, double bgamma);
 		void setGammaCurve(double_vector_ptr gammaCurve);

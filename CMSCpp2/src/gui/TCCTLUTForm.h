@@ -62,6 +62,7 @@ class TCCTLUTForm:public TForm {
     TLabel *Label8;
     TEdit *Edit_P2;
     TButton *Button_Debug;
+    TRadioButton *RadioButton_None;
     void __fastcall Button_BrowseDirClick(TObject * Sender);
     void __fastcall RadioButton_In6Click(TObject * Sender);
     void __fastcall RadioButton_In8Click(TObject * Sender);

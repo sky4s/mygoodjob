@@ -58,14 +58,14 @@ namespace cms {
 	    //==================================================================
 	    // RGBGammaOp
 	    //==================================================================
-	    RGBGamma_ptr RGBGammaOp::
+	    /*RGBGamma_ptr RGBGammaOp::
 		getRGBGamma(double_vector_ptr gammaCurve) {
 		double_vector_ptr r(new double_vector(*gammaCurve));
 		double_vector_ptr g(new double_vector(*gammaCurve));
 		double_vector_ptr b(new double_vector(*gammaCurve));
 		RGBGamma_ptr rgbGamma(new RGBGamma(r, g, b));
 		return rgbGamma;
-	    };
+	    };*/
 	    //==================================================================
 
 	    //==================================================================

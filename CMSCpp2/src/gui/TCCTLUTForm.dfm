@@ -209,6 +209,14 @@ object CCTLUTForm: TCCTLUTForm
       TabOrder = 4
       Text = '50'
     end
+    object RadioButton_None: TRadioButton
+      Left = 8
+      Top = 128
+      Width = 113
+      Height = 17
+      Caption = 'None'
+      TabOrder = 5
+    end
   end
   object GroupBox4: TGroupBox
     Left = 216

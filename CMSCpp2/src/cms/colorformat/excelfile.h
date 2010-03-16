@@ -20,8 +20,6 @@ namespace cms {
 
 	class DBQuery;
 	class ExcelFileDB {
-
-
 	  private:
 
 	    friend class DBQuery;
@@ -118,6 +116,7 @@ namespace cms {
 	    DBQuery(bptr < TADODataSet > dataSet);
 	  public:
 	    string_vector_ptr nextResult();
+	    static double_vector_ptr toDoubleVector(string_vector_ptr result);
 	    bool hasNext();
 	    const string_ptr get(int row, int column);
 	};

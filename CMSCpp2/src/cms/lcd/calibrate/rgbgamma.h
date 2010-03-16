@@ -31,9 +31,7 @@ namespace cms {
 	    };
 
 	    class RGBGammaOp:public RGBOp < RGBGamma > {
-	      public:
-		static RGBGamma_ptr getRGBGamma(double_vector_ptr
-						gammaCurve);
+
 	    };
 
 	    class BIntensityGainOp:public RGBGammaOp {

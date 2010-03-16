@@ -306,6 +306,7 @@ namespace java {
 	    static double sin(double x);
 	    static double sqr(double v);
 	    static double round(double v);
+	    static double floor(double v);
 
 	    static double min(double a, double b);
 	    static double max(double a, double b);

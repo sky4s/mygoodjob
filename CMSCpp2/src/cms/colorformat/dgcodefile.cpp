@@ -13,7 +13,7 @@
 //不做初使化(其實沒有初始化的必要了)
 #define LAZY_EXCEL false
 //將多筆sql合併成一句執行(excel似乎不能這樣玩)
-#define CACHE_SQL
+//#define CACHE_SQL
 
 namespace cms {
     namespace colorformat {
@@ -282,12 +282,15 @@ namespace cms {
 		(*values)
 		    [6] = lexical_cast < string > (intensity->B);
 		//gamma 0~100
-		(*values)[7] = _toString((*rgbgamma->r)[n] * 100);
-		(*values)[8] = _toString((*rgbgamma->g)[n] * 100);
-		(*values)[9] = _toString((*rgbgamma->b)[n] * 100);
-		(*values)[10] = (*values)[7];
+		(*values)[7] = _toString((*rgbgamma->r)[n]);
+		(*values)[8] = _toString((*rgbgamma->g)[n]);
+		(*values)[9] = _toString((*rgbgamma->b)[n]);
+		/*(*values)[10] = (*values)[7];
 		(*values)[11] = (*values)[8];
-		(*values)[12] = (*values)[9];
+		(*values)[12] = (*values)[9];*/
+		(*values)[10] = "0";
+		(*values)[11] = "0";
+		(*values)[12] = "0";
 
 		if (!lazyMode) {
 		    db->update(RawHeader[0], w, RawFieldNames, values,
@@ -356,26 +359,16 @@ namespace cms {
 	    while (query->hasNext()) {
 		string_vector_ptr result = query->nextResult();
 		int
-		 gray = lexical_cast < int
-		    >((*result)[0]);
-		double x = lexical_cast < double
-		    >((*result)[1]);
-		double y = lexical_cast < double
-		    >((*result)[2]);
-		double Y = lexical_cast < double
-		    >((*result)[3]);
-		double R = lexical_cast < double
-		    >((*result)[4]);
-		double G = lexical_cast < double
-		    >((*result)[5]);
-		double B = lexical_cast < double
-		    >((*result)[6]);
-		double r = lexical_cast < double
-		    >((*result)[7]);
-		double g = lexical_cast < double
-		    >((*result)[8]);
-		double b = lexical_cast < double
-		    >((*result)[9]);
+		 gray = lexical_cast < int >((*result)[0]);
+		double x = lexical_cast < double >((*result)[1]);
+		double y = lexical_cast < double >((*result)[2]);
+		double Y = lexical_cast < double >((*result)[3]);
+		double R = lexical_cast < double >((*result)[4]);
+		double G = lexical_cast < double >((*result)[5]);
+		double B = lexical_cast < double >((*result)[6]);
+		double r = lexical_cast < double >((*result)[7]);
+		double g = lexical_cast < double >((*result)[8]);
+		double b = lexical_cast < double >((*result)[9]);
 		RGB_ptr rgb(new RGBColor(gray, gray, gray));
 		RGB_ptr intensity(new RGBColor(R, G, B));
 		xyY_ptr xyY(new CIExyY(x, y, Y));
@@ -393,11 +386,9 @@ namespace cms {
 			   RGB_ptr((RGBColor *) null),
 			   RGB_ptr((RGBColor *) null));
 	};
-	string_vector_ptr
-	    DGLutFile::
-	    makeValues(int n,
-		       Component_ptr
-		       c, RGB_ptr rgbGamma, RGB_ptr rgbGammaFix) {
+	string_vector_ptr DGLutFile::
+	    makeValues(int n, Component_ptr c, RGB_ptr rgbGamma,
+		       RGB_ptr rgbGammaFix) {
 	    string_vector_ptr values(new string_vector(13));
 	    (*values)
 		[0] = lexical_cast < string > (n);
@@ -418,18 +409,14 @@ namespace cms {
 	    //gamma 0~100
 	    if (null != rgbGamma) {
 		(*values)[7] = lexical_cast < string > (rgbGamma->R);
-		(*values)
-		    [8] = lexical_cast < string > (rgbGamma->G);
-		(*values)
-		    [9] = lexical_cast < string > (rgbGamma->B);
+		(*values)[8] = lexical_cast < string > (rgbGamma->G);
+		(*values)[9] = lexical_cast < string > (rgbGamma->B);
 	    }
 
 	    if (null != rgbGammaFix) {
 		(*values)[10] = lexical_cast < string > (rgbGammaFix->R);
-		(*values)
-		    [11] = lexical_cast < string > (rgbGammaFix->G);
-		(*values)
-		    [12] = lexical_cast < string > (rgbGammaFix->B);
+		(*values)[11] = lexical_cast < string > (rgbGammaFix->G);
+		(*values)[12] = lexical_cast < string > (rgbGammaFix->B);
 	    }
 	    return values;
 	};
@@ -487,15 +474,18 @@ namespace cms {
 	string DGLutProperty::Gamma256 = "gamma 256";
 	const
 	string DGLutProperty::FRC_NR = "avoid FRC noise";
+	const
+	string DGLutProperty::DimCorrect = "low level correct";
 	void
 	 DGLutProperty::store(DGLutFile & dgcode) const {
 	    dgcode.addProperty(Start, c.start);
 	    dgcode.addProperty(End, c.end);
 	    dgcode.addProperty(Step, c.step);
-	    dgcode.addProperty(P1P2, c.p1p2);
+	    //dgcode.addProperty(P1P2, c.correct);
+            dgcode.addProperty(DimCorrect, c.correct);
 	    dgcode.addProperty(P1, c.p1);
 	    dgcode.addProperty(P2, c.p2);
-	    dgcode.addProperty(RB, !c.p1p2);
+	    //dgcode.addProperty(RB, !c.p1p2);
 	    dgcode.addProperty(RBUnder, c.rbInterpUnder);
 	    dgcode.addProperty(In, c.in);
 	    dgcode.addProperty(LUT, c.lut);

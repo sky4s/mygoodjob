@@ -52,7 +52,9 @@ namespace cms {
 		//而meter是假的, 其實是從檔案撈資料
 		if (null == dgc) {
 		    dgc = dynamic_cast
-			< DGLutFileMeter * >(mm->getMeter().get());
+		       < DGLutFileMeter * >(mm->getMeter().get());
+		    /*dgc.reset(dynamic_cast
+			      < DGLutFileMeter * >(mm->getMeter().get()));*/
 		}
 		Component_ptr c = dgc->getComponent();
 		RGB_ptr intensity = c->intensity;

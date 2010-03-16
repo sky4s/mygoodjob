@@ -189,7 +189,12 @@ namespace math {
 		yn = DoubleArray::getRangeCopy(yn, 1, 2);
 	    }
 
-	    result = Interpolation::interpolate(xn, yn, key, Linear);
+	    if ((*xn)[0] == (*xn)[1]) {
+                //遇到同值的狀況, 只好例外處理, 否則無法內插
+		result = ((*yn)[0] + (*yn)[1]) / 2;
+	    } else {
+		result = Interpolation::interpolate(xn, yn, key, Linear);
+	    }
 	    break;
 	}
 	return result;
