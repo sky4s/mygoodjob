@@ -140,7 +140,7 @@ namespace cms {
 	    if (caching && cachesql.size() != 0) {
 		sql = "(";
 	    } else {
-		sql = "INSERT INTO [" + getTableName() + "] (";
+		sql = "INSERT INTO [" + getTableName() + "$] (";
 
 		foreach(string s, *fieldNames) {
 		    sql += "[" + s + "],";
@@ -232,8 +232,8 @@ namespace cms {
 					       string & keyValue,
 					       bool textValues) {
 	    string select =
-		"SELECT * FROM " + getTableName() + " Where " + keyField +
-		" = ";
+		"SELECT * FROM [" + getTableName() + "$] Where " +
+		keyField + " = ";
 	    select += textValues ? "\"" + keyValue + "\"" : keyValue;
 	    bptr < TADODataSet > dataSet = selectDataSet(select);
 	    return getResult(dataSet);
@@ -283,7 +283,8 @@ namespace cms {
 	};
 
 	bptr < DBQuery > ExcelFileDB::selectAll() {
-	    string select = "SELECT * FROM " + getTableName();
+	    //string select = "SELECT * FROM " + getTableName();
+	    string select = "SELECT * FROM [" + getTableName() + "$]";
 	    bptr < TADODataSet > dataSet = selectDataSet(select);
 	    bptr < DBQuery > query(new DBQuery(dataSet));
 	    return query;
@@ -375,6 +376,15 @@ namespace cms {
 	    string_vector_ptr result = ExcelFileDB::getResult(dataSet);
 	    dataSet->Next();
 	    return result;
+	};
+	double_vector_ptr DBQuery::toDoubleVector(string_vector_ptr result) {
+	    int size = result->size();
+	    double_vector_ptr doublevec(new double_vector(size));
+	    for (int x = 0; x != size; x++) {
+		(*doublevec)[x] = lexical_cast < double >((*result)[x]);
+	    }
+
+	    return doublevec;
 	};
 	bool DBQuery::hasNext() {
 	    return !dataSet->Eof;

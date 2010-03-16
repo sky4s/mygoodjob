@@ -133,11 +133,15 @@ void __fastcall TCCTLUTForm::Button_RunClick(TObject * Sender)
 	int p1 = this->Edit_P1->Text.ToInt();
 	int p2 = this->Edit_P2->Text.ToInt();
 	calibrator.setP1P2(p1, p2);
-    } else {
+    } else if( this->RadioButton_RBInterp->Checked) {
 	//¿ï¤FRBInterp
 	int rbunder = this->Edit_RBInterpUnder->Text.ToInt();
 	calibrator.setRBInterpolation(rbunder);
     }
+    else {
+        calibrator.setNoneDimCorrect();
+    }
+
     //==========================================================================
 
     //==========================================================================
@@ -221,7 +225,9 @@ void __fastcall TCCTLUTForm::FormKeyPress(TObject * Sender, char &Key)
 
 void __fastcall TCCTLUTForm::FormCreate(TObject * Sender)
 {
-    this->Button_Debug->Visible = !MainForm->linkCA210;
+    bool debug = !MainForm->linkCA210;
+    this->Button_Debug->Visible = debug;
+    this->RadioButton_None->Visible = debug;
 }
 
 //---------------------------------------------------------------------------
@@ -234,6 +240,7 @@ void __fastcall TCCTLUTForm::Button_DebugClick(TObject * Sender)
     if (OpenDialog1->Execute()) {
 	const AnsiString & filename = OpenDialog1->FileName;
 	MainForm->setDummyMeterFilename(string(filename.c_str()));
+	ShowMessage("Dummy meter setting Ok!");
     };
 
 }

@@ -97,11 +97,13 @@ namespace java {
 	    return v * v;
 	}
 	double Math::round(double v) {
-	    //double result = std::floor(v);
 	    if (v >= 0.0f) {
 		return std::floor(v + 0.5f);
 	    }
 	    return std::ceil(v - 0.5f);
+	}
+	double Math::floor(double v) {
+	    return std::floor(v);
 	}
 	int Math::minIndex(double_array values, int n) {
 	    double minValue = std::numeric_limits < double >::max();

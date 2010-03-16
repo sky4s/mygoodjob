@@ -97,6 +97,7 @@ namespace cms {
 	    static const std::string BMax;
 	    static const std::string Gamma256;
 	    static const std::string FRC_NR;
+	    static const std::string DimCorrect;
 	    const cms::lcd::calibrate::LCDCalibrator & c;
 	    void store(DGLutFile & dglut) const;
 	  public:

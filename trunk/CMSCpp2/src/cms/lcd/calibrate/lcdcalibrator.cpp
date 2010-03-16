@@ -94,9 +94,8 @@ namespace cms {
 		    RGB_ptr rgb(new RGBColor(x, x, x));
 		    RGB_ptr intensity = analyzer->getIntensity(rgb);
 		    XYZ_ptr XYZ = analyzer->getCIEXYZ();
-		    Component_ptr component(new
-					    Component(rgb,
-						      intensity, XYZ));
+		    Component_ptr component(new Component(rgb, intensity,
+							  XYZ));
 		    result->push_back(component);
 		    if (true == stop) {
 			break;
@@ -168,13 +167,19 @@ namespace cms {
 							  Polynomial::
 							  COEF_3::BY_3C));
 		regression->regress();
-		coefs = regression->getCoefs();
-		c = 1 / ((*coefs)[0][1] + (*coefs)[0][2] + (*coefs)[0][3]);
-		d = -(*coefs)[0][0] / ((*coefs)[0][1] + (*coefs)[0][2] +
-				       (*coefs)[0][3]);
+		const double *coefs = (*regression->getCoefs())[0];
+		a1 = coefs[1];
+		a2 = coefs[2];
+		a3 = coefs[3];
+		a0 = coefs[0];
+		c = 1 / (a1 + a2 + a3);
+		d = -a0 / (a1 + a2 + a3);
 		//==============================================================
+		double maxintensity =
+		    Math::floor(getMaximumIntensity()) + 1;
 
-		maxLuminance = (*output)[0][0];
+		maxLuminance =
+		    getLuminance(maxintensity, maxintensity, maxintensity);
 		minLuminance = (*output)[size - 1][0];
 
 		//==============================================================
@@ -192,6 +197,12 @@ namespace cms {
 	    double DGLutGenerator::getIntensity(double luminance) {
 		return c * luminance + d;
 	    };
+	    double DGLutGenerator::getLuminance(double rIntensity,
+						double gIntensity,
+						double bIntensity) {
+		return a0 + rIntensity * a1 + gIntensity * a2 +
+		    bIntensity * a3;
+	    };
 	    double_vector_ptr DGLutGenerator::
 		getLuminanceGammaCurve(double_vector_ptr normalGammaCurve)
 	    {
@@ -200,9 +211,9 @@ namespace cms {
 						      double_vector(size));
 		double differ = maxLuminance - minLuminance;
 		for (int x = 0; x != size; x++) {
-		    double lumi =
+		    double luminance =
 			differ * (*normalGammaCurve)[x] + minLuminance;
-		    (*luminanceGammaCurve)[x] = lumi;
+		    (*luminanceGammaCurve)[x] = luminance;
 		}
 		return luminanceGammaCurve;
 	    };
@@ -215,70 +226,76 @@ namespace cms {
 		}
 		return result;
 	    };
-	  DGLutGenerator::DGLutGenerator(Component_vector_ptr componentVector):componentVector
-		(componentVector)
+	    double DGLutGenerator::getMaximumIntensity() {
+		int maxindex = (out == Bit6) ? 3 : 0;
+		Component_ptr maxcomponent = (*componentVector)[maxindex];
+		RGB_ptr maxintensity = maxcomponent->intensity;
+		const Channel & minchannel = maxintensity->getMinChannel();
+		double maxvalue = maxintensity->getValue(minchannel);
+		return maxvalue;
+	    };
+	  DGLutGenerator::DGLutGenerator(Component_vector_ptr componentVector, const BitDepth & in, const BitDepth & out):componentVector
+		(componentVector), in(in), out(out)
 	    {
 		init();
 	    };
+
 	    RGB_vector_ptr DGLutGenerator::
-		produce(double_vector_ptr normalGammaCurve) {
+		produce(RGBGamma_ptr rgbIntensityCurve) {
+		double_vector_ptr rIntensityCurve = rgbIntensityCurve->r;
+		double_vector_ptr gIntensityCurve = rgbIntensityCurve->g;
+		double_vector_ptr bIntensityCurve = rgbIntensityCurve->b;
+
+		int size = rIntensityCurve->size();
+		RGB_vector_ptr dglut(new RGB_vector(size));
+		double intensity[3];
+		//將code 0強制設定為0
+		(*dglut)[0] = RGB_ptr(new RGBColor(0, 0, 0));
+
+		for (int x = 1; x != size; x++) {
+		    intensity[0] = (*rIntensityCurve)[x];
+		    intensity[1] = (*gIntensityCurve)[x];
+		    intensity[2] = (*bIntensityCurve)[x];
+
+		    intensity[0] = rLut->correctValueInRange(intensity[0]);
+		    intensity[1] = gLut->correctValueInRange(intensity[1]);
+		    intensity[2] = bLut->correctValueInRange(intensity[2]);
+
+		    double r = rLut->getKey(intensity[0]);
+		    double g = gLut->getKey(intensity[1]);
+		    double b = bLut->getKey(intensity[2]);
+
+		    RGB_ptr rgb(new RGBColor(r, g, b));
+		    (*dglut)[x] = rgb;
+		}
+		return dglut;
+	    };
+
+	    RGBGamma_ptr DGLutGenerator::
+		getRGBGamma(double_vector_ptr normalGammaCurve) {
 		double_vector_ptr luminanceGammaCurve =
 		    getLuminanceGammaCurve(normalGammaCurve);
 		int size = luminanceGammaCurve->size();
-		RGB_vector_ptr dglut(new RGB_vector(size));
+		double_vector_ptr rIntenisty(new double_vector(size));
+		double_vector_ptr gIntenisty(new double_vector(size));
+		double_vector_ptr bIntenisty(new double_vector(size));
 
 		for (int x = 0; x != size; x++) {
-		    double lumi = (*luminanceGammaCurve)[x];
-		    double intensity = getIntensity(lumi);
-		    double r = rLut->getKey(intensity);
-		    double g = gLut->getKey(intensity);
-		    double b = bLut->getKey(intensity);
-		    RGB_ptr rgb(new RGBColor(r, g, b));
-		    (*dglut)[x] = rgb;
+		    double luminance = (*luminanceGammaCurve)[x];
+		    double intensity = getIntensity(luminance);
+		    (*rIntenisty)[x] = intensity;
+		    (*gIntenisty)[x] = intensity;
+		    (*bIntenisty)[x] = intensity;
 		}
-		return dglut;
+
+		RGBGamma_ptr rgbgamma(new
+				      RGBGamma(rIntenisty, gIntenisty,
+					       bIntenisty, 100,
+					       Intensity));
+
+		return rgbgamma;
 	    };
 
-	    RGB_vector_ptr DGLutGenerator::
-		produce(RGBGamma_ptr normalRGBGammaCurve) {
-		double_vector_ptr rluminanceGammaCurve =
-		    getLuminanceGammaCurve(normalRGBGammaCurve->r);
-		double_vector_ptr gluminanceGammaCurve =
-		    getLuminanceGammaCurve(normalRGBGammaCurve->g);
-		double_vector_ptr bluminanceGammaCurve =
-		    getLuminanceGammaCurve(normalRGBGammaCurve->b);
-
-		int size = rluminanceGammaCurve->size();
-		RGB_vector_ptr dglut(new RGB_vector(size));
-		double luminance[3], intensity[3];
-
-		for (int x = 0; x != size; x++) {
-		    luminance[0] = (*rluminanceGammaCurve)[x];
-		    luminance[1] = (*gluminanceGammaCurve)[x];
-		    luminance[2] = (*bluminanceGammaCurve)[x];
-
-		    intensity[0] = getIntensity(luminance[0]);
-		    intensity[1] = getIntensity(luminance[1]);
-		    intensity[2] = getIntensity(luminance[2]);
-
-		    double r =
-			(rLut->isValueInRange(intensity[0])) ? rLut->
-			getKey(intensity[0]) : 0;
-		    double g =
-			(gLut->isValueInRange(intensity[1])) ? gLut->
-			getKey(intensity[1]) : 0;
-		    double b =
-			(bLut->isValueInRange(intensity[2])) ? bLut->
-			getKey(intensity[2]) : 0;
-
-		    RGB_ptr rgb(new RGBColor(r, g, b));
-		    (*dglut)[x] = rgb;
-		}
-		return dglut;
-	    };
-
-	    RGBGamma_ptr DGLutGenerator::getRGBGamma(double_vector_ptr normalGammaCurve) {
-	    };
 	    //==================================================================
 
 	    //==================================================================
@@ -316,11 +333,16 @@ namespace cms {
 	    void LCDCalibrator::setP1P2(double p1, double p2) {
 		this->p1 = p1;
 		this->p2 = p2;
-		this->p1p2 = true;
+		//this->p1p2 = true;
+		this->correct = P1P2;
 	    };
 	    void LCDCalibrator::setRBInterpolation(int under) {
-		this->p1p2 = false;
+		//this->p1p2 = false;
+		this->correct = RBInterpolation;
 		this->rbInterpUnder = under;
+	    };
+	    void LCDCalibrator::setNoneDimCorrect() {
+		this->correct = None;
 	    };
 	    void LCDCalibrator::setGamma(double gamma) {
 		this->gamma = gamma;
@@ -379,6 +401,7 @@ namespace cms {
 		rgbgamma = false;
 		bIntensityGain = 1;
 		rbInterpUnder = 0;
+		p1 = p2 = 0;
 		gamma = rgamma = ggamma = bgamma = -1;
 		fetcher.reset(new ComponentFetcher(analyzer));
 		in = lut = out = Unknow;
@@ -400,10 +423,10 @@ namespace cms {
 		STORE_COMPONENT("0_fetch.xls", componentVector);
 
 		//產生generator
-		generator.reset(new DGLutGenerator(componentVector));
-		//RGBGamma_ptr rgbgamma = getRGBGamma(gammaCurve);
-		RGBGamma_ptr rgbgamma =
-		    RGBGammaOp::getRGBGamma(gammaCurve);
+		generator.
+		    reset(new DGLutGenerator(componentVector, in, out));
+		//generator->setBitDepth(in, lut, out);
+		RGBGamma_ptr rgbgamma = generator->getRGBGamma(gammaCurve);
 		STORE_RGBGAMMA("1_rgbgamma1.xls", rgbgamma);
 
 		RGBGammaOp gammaop;
@@ -423,7 +446,7 @@ namespace cms {
 		RGB_vector_ptr dglut = generator->produce(rgbgamma);
 		STORE_RGBVECTOR("3_dgcode1.xls", dglut);
 
-		if (p1p2) {
+		if (correct == P1P2) {
 		    //==========================================================
 		    //p1p2第一階段, 對gamma做調整
 		    //==========================================================
@@ -465,6 +488,7 @@ namespace cms {
 		RGBVector::quantization(dglut, maxValue);
 		RGB_vector_ptr result = getDGLutOpResult(dglut);
 		//==============================================================
+
 		STORE_RGBVECTOR("6_dgcode.xls", result);
 		//調整max value
 		RGBVector::changeMaxValue(result, maxValue);
@@ -520,13 +544,8 @@ namespace cms {
 		DGLutOp dgop;
 		dgop.setSource(dglut);
 
-		/*if (p1p2) {
-		   //p1p2第二階段, 對dg code調整
-		   bptr < DGLutOp > op(new P1P2DGOp(p1, p2, in == Bit6));
-		   dgop.addOp(op);
-		   } else { */
-		if (!p1p2) {
-		    //若不是p1p2就是RBInterp(至少目前是如此)
+
+		if (correct == RBInterpolation) {
 		    bptr < DGLutOp >
 			op(new RBInterpolationOp(rbInterpUnder));
 		    dgop.addOp(op);

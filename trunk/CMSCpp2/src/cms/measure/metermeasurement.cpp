@@ -122,7 +122,7 @@ namespace cms {
 	};
 
 	void MeterMeasurement::meterClose() {
-	    meter->close();
+	    //meter->close();
 	};
 
 	Patch_ptr
@@ -165,13 +165,11 @@ namespace cms {
 		measureWindow->setRGB(measureRGB);
 		Sleep(waitTimes);
 	    } else {
-		if (null == dgc) {
-		    dgc =
-			bptr < DGLutFileMeter >
-			(dynamic_cast < DGLutFileMeter * >(meter.get()));
+		/*if (null == dgc) {
+                dgc.reset(dynamic_cast < DGLutFileMeter * >(meter.get()));
 		}
 
-		int v = measureRGB->getValue(Channel::W);
+		int v = measureRGB->getValue(Channel::W);*/
 		//dgc->setIndex(v);
 	    }
 	    //==========================================================================

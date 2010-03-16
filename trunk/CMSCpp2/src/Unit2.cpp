@@ -289,7 +289,7 @@ void gammaCurve()
     using namespace math;
     int n = 256;
     /*double_array curve = LCDCalibrator::getGammaCurve(2.2, n);
-    cout << *DoubleArray::toString(curve, n);*/
+       cout << *DoubleArray::toString(curve, n); */
 };
 
 
@@ -306,10 +306,10 @@ void dgcodefile()
     //dgcode.setProperty(" a ", " b ");
     //dgcode.setProperty(" b ", " bbb ");
     //dgcode.setRawData()
-    Composition_vector_ptr compositionVec(new Composition_vector());
+    Component_vector_ptr compositionVec(new Component_vector());
     RGB_ptr rgb(new RGBColor(1, 2, 3));
     XYZ_ptr XYZ(new Indep::CIEXYZ(4, 5, 6));
-    Composition_ptr c(new Composition(rgb, rgb, XYZ));
+    Component_ptr c(new Component(rgb, rgb, XYZ));
     compositionVec->push_back(c);
     compositionVec->push_back(c);
     //dgcode.setRawData(compositionVec);
@@ -322,12 +322,12 @@ void dgcode()
     using namespace Dep;
     //using namespace Indep;
     int n = 256;
-    Composition_vector_ptr vector(new Composition_vector(n));
+    Component_vector_ptr vector(new Component_vector(n));
     for (int x = 0; x != n; x++) {
 	RGB_ptr rgb(new RGBColor(x, x, x));
 	RGB_ptr component(new RGBColor(x * .3, x * .6, x * .1));
 	XYZ_ptr XYZ(new Indep::CIEXYZ(0, x, 0));
-	Composition_ptr composition(new Composition(rgb, component, XYZ));
+	Component_ptr composition(new Component(rgb, component, XYZ));
 	(*vector)[x] = composition;
     };
     DGLutGenerator generator(vector);
@@ -461,8 +461,8 @@ void lcdcalibratorTry()
     bptr < CA210 > ca210(new CA210());
     //bptr < CA210 > ca2102(new CA210());
     bptr < MeterMeasurement > mm(new MeterMeasurement(ca210, false));
-    bptr < CA210ComponentAnalyzer >
-	analyzer(new CA210ComponentAnalyzer(ca210, mm));
+    bptr < CA210IntensityAnalyzer >
+	analyzer(new CA210IntensityAnalyzer(ca210, mm));
 
     mm->measure(0, 0, 128, " test ");
 
@@ -515,6 +515,26 @@ void strTry()
 
 };
 
+void measureFileTry()
+{
+    using namespace cms::colorformat;
+    using namespace std;
+
+    const string & filename = "ramp.xls";
+    ExcelFileDB db(filename, ReadOnly);
+    db.setTableName("Sheet1");
+    bptr < DBQuery > query = db.selectAll();
+    while (query->hasNext()) {
+	string_vector_ptr result = query->nextResult();
+	double_vector_ptr doubleresult = query->toDoubleVector(result);
+	foreach(const double d, *doubleresult) {
+	    cout << d << " ";
+	}
+	cout << endl;
+    };
+
+};
+
 #pragma argsused
 int main(int argc, char *argv[])
 {
@@ -534,7 +554,7 @@ int main(int argc, char *argv[])
     //sizeCompare();
     //gammaCurve();
     //header();
-    dgcodefile();
+    //dgcodefile();
     //dgcode();
     //inverse();
     //rgbTry();
@@ -549,10 +569,11 @@ int main(int argc, char *argv[])
     //ca210();
 
     //strTry();
+    measureFileTry();
 
     //using namespace cms::colorformat;
     //DGLutFile dg(" test.xls ",256);
 
-    //getch();
+    getch();
 }
 
