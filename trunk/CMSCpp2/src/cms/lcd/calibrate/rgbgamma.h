@@ -16,7 +16,7 @@ namespace cms {
 	    enum Type {
 		Intensity, Gamma
 	    };
-	    class RGBGamma {
+	    class RGBGamma:public jObject {
 	      public:
 		const Type type;
 		const double max;
@@ -28,6 +28,8 @@ namespace cms {
 			  const Type type);
 		static void storeToExcel(const std::string & filename,
 					 RGBGamma_ptr rgbgamma);
+		RGBGamma_ptr clone();
+
 	    };
 
 	    class RGBGammaOp:public RGBOp < RGBGamma > {

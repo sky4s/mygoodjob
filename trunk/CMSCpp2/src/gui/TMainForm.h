@@ -59,6 +59,7 @@ class TMainForm:public TForm {
      bptr < cms::measure::IntensityAnalyzerIF > analyzer;
     int getInterval();
     void setDummyMeterFilename(const std::string & filename);
+    void resetDummyMeter();
     //==========================================================================
     __fastcall TMainForm(TComponent * Owner);
 

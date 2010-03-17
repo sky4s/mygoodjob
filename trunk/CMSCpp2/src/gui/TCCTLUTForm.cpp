@@ -122,27 +122,8 @@ void __fastcall TCCTLUTForm::RadioButton_P1P2Click(TObject * Sender)
 void __fastcall TCCTLUTForm::Button_RunClick(TObject * Sender)
 {
     using namespace std;
+    using namespace Dep;
     using namespace cms::lcd::calibrate;
-    cms::lcd::calibrate::LCDCalibrator calibrator(MainForm->analyzer);
-
-    //==========================================================================
-    // P1P2和RBInterp的選擇
-    //==========================================================================
-    if (this->RadioButton_P1P2->Checked) {
-	//選了P1P2
-	int p1 = this->Edit_P1->Text.ToInt();
-	int p2 = this->Edit_P2->Text.ToInt();
-	calibrator.setP1P2(p1, p2);
-    } else if( this->RadioButton_RBInterp->Checked) {
-	//選了RBInterp
-	int rbunder = this->Edit_RBInterpUnder->Text.ToInt();
-	calibrator.setRBInterpolation(rbunder);
-    }
-    else {
-        calibrator.setNoneDimCorrect();
-    }
-
-    //==========================================================================
 
     //==========================================================================
     // in/lut/out的處理
@@ -158,10 +139,31 @@ void __fastcall TCCTLUTForm::Button_RunClick(TObject * Sender)
 	RadioButton_Out6->Checked ? 6 : 0 +
 	RadioButton_Out8->Checked ? 8 : 0 +
 	RadioButton_Out10->Checked ? 10 : 0;
-    BitDepth inbit = LCDCalibrator::getBitDepth(in);
-    BitDepth lutbit = LCDCalibrator::getBitDepth(lut);
-    BitDepth outbit = LCDCalibrator::getBitDepth(out);
-    calibrator.setBitDepth(inbit, lutbit, outbit);
+    const MaxValue & inbit = MaxValue::getByBit(in);
+    const MaxValue & lutbit = MaxValue::getByBit(lut);
+    const MaxValue & outbit = MaxValue::getByBit(out);
+    //calibrator.setBitDepth(inbit, lutbit, outbit);
+    //==========================================================================
+
+    cms::lcd::calibrate::LCDCalibrator calibrator(MainForm->analyzer,
+						  inbit, lutbit, outbit);
+
+    //==========================================================================
+    // P1P2和RBInterp的選擇
+    //==========================================================================
+    if (this->RadioButton_P1P2->Checked) {
+	//選了P1P2
+	int p1 = this->Edit_P1->Text.ToInt();
+	int p2 = this->Edit_P2->Text.ToInt();
+	calibrator.setP1P2(p1, p2);
+    } else if (this->RadioButton_RBInterp->Checked) {
+	//選了RBInterp
+	int rbunder = this->Edit_RBInterpUnder->Text.ToInt();
+	calibrator.setRBInterpolation(rbunder);
+    } else {
+	calibrator.setNoneDimCorrect();
+    }
+
     //==========================================================================
 
     //==========================================================================
@@ -227,6 +229,7 @@ void __fastcall TCCTLUTForm::FormCreate(TObject * Sender)
 {
     bool debug = !MainForm->linkCA210;
     this->Button_Debug->Visible = debug;
+    this->Button_Reset->Visible = debug;
     this->RadioButton_None->Visible = debug;
 }
 
@@ -243,6 +246,14 @@ void __fastcall TCCTLUTForm::Button_DebugClick(TObject * Sender)
 	ShowMessage("Dummy meter setting Ok!");
     };
 
+}
+
+//---------------------------------------------------------------------------
+
+
+void __fastcall TCCTLUTForm::Button_ResetClick(TObject * Sender)
+{
+    MainForm->resetDummyMeter();
 }
 
 //---------------------------------------------------------------------------

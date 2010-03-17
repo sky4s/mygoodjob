@@ -97,16 +97,11 @@ namespace cms {
 		}
 
 		double_array values = this->getValues();
-		//cout << *math::DoubleArray::toString(values, 3) << endl;
 		changeMaxValue(values, *this->maxValue, type,
 			       integerRoundDown);
-		//cout << *math::DoubleArray::toString(values, 3) << endl;
 
 		this->maxValue = &type;
 		this->setValues(values);
-		//values = null;
-		/*round =
-		   integerRoundDown ? Round.RoundDown : Round.RoundOff; */
 	    };
 
 	    void RGBColor::changeMaxValue(const MaxValue & type) {
@@ -117,7 +112,7 @@ namespace cms {
 					  const MaxValue & srcType,
 					  const MaxValue & destType,
 					  bool integerRoundDown) {
-		if (srcType.integer == true) {
+		if (srcType.integer == true || destType.integer == true) {
 		    changeIntegerMaxValue(values, srcType, destType,
 					  integerRoundDown);
 		} else {
@@ -157,7 +152,7 @@ namespace cms {
 		    integerValues[x] *= rate;
 		    integerValues[x] = destType.integer ?
 			(roundDown ? (int) integerValues[x] : Math::
-			 round(integerValues[x])) : integerValues[x];
+			 roundTo(integerValues[x])) : integerValues[x];
 		    //小於8bit的轉換, 會有超過max的狀況, 所以要作clip
 		    integerValues[x] =
 			(integerValues[x] >
@@ -175,11 +170,9 @@ namespace cms {
 		if (type.integer == true) {
 		    for (int x = 0; x < size; x++) {
 			normal100[x] /= (100. / type.max);
-			//cout<<        normal100[x]<<endl;
 			normal100[x] =
 			    integerRoundDown ? (int) normal100[x] : Math::
-			    round(normal100[x]);
-			//cout<<        normal100[x]<<endl;
+			    roundTo(normal100[x]);
 		    }
 		} else {
 		    for (int x = 0; x < size; x++) {
@@ -209,20 +202,13 @@ namespace cms {
 		    double nowvalue = this->getValue(channel);
 		    this->setValue(channel, nowvalue + addvalue);
 		}
-
-		/*else {
-		   Channel[]channels =
-		   channel.getPrimaryColorChannel(channel);
-		   for (Channel ch:channels) {
-		   addValue(ch, addvalue);
-		   }
-		   } */
 	    };
 
 	    void RGBColor::addValue(double addvalue) {
 		double_array nowvalues = this->getValues();
 		double_array newvalues =
-		    DoubleArray::plus(nowvalues, addvalue, RGBNumberBands);
+		    DoubleArray::plus(nowvalues, addvalue,
+				      getNumberBands());
 		this->setValues(newvalues);
 	    }
 
@@ -276,13 +262,13 @@ namespace cms {
 
 	    const Channel & RGBColor::getMinChannel() {
 		double_array rgbValues = getValues();
-		int minIndex = Math::minIndex(rgbValues, RGBNumberBands);
+		int minIndex = Math::minIndex(rgbValues, getNumberBands());
 		return Channel::getChannelByArrayIndex(minIndex);
 	    };
 
 	    const Channel & RGBColor::getMaxChannel() {
 		double_array rgbValues = getValues();
-		int maxIndex = Math::maxIndex(rgbValues, RGBNumberBands);
+		int maxIndex = Math::maxIndex(rgbValues, getNumberBands());
 		return Channel::getChannelByArrayIndex(maxIndex);
 	    };
 	    RGB_ptr RGBColor::clone() {
@@ -298,10 +284,13 @@ namespace cms {
 	    void RGBColor::quantization(const MaxValue & maxValue,
 					bool integerRoundDown) {
 		const MaxValue & origin = *this->maxValue;
+		//先轉到目標domain
 		changeMaxValue(maxValue, integerRoundDown);
-		//cout << *toString() << endl;
+		//再轉回原本的domain
 		changeMaxValue(origin, integerRoundDown);
-		//cout << * toString() << endl;
+	    };
+	    int RGBColor::getNumberBands() {
+		return RGBNumberBands;
 	    };
 	};
     };

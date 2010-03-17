@@ -54,27 +54,27 @@ namespace cms {
 
 		for (int x = 0; x != p1; x++) {
 		    double v = x * rgbp1->G / p1;
+		    double d = java::lang::Math::roundTo(v * 4);
 		    RGB_ptr rgb = (*result)[x];
 		    rgb->setValues(v, v, v);
+		    rgb->quantization(maxValue);
+                    double d2=rgb->getValue(Channel::G);
 		}
 
-		if (true == smooth) {
-		    RGB_ptr rgbp0 = (*result)[p1 - 1];
-		    RGB_ptr rgbp1 = (*result)[p1];
-		    RGB_ptr rgbp2 = (*result)[p1 + 1];
-		    rgbp1->R = (rgbp0->R + rgbp2->R) / 2;
-		    rgbp1->G = (rgbp0->G + rgbp2->G) / 2;
-		    rgbp1->B = (rgbp0->B + rgbp2->B) / 2;
-		};
+		//if (true == smooth) {
+		RGB_ptr rgbp0 = (*result)[p1 - 1];
+		//RGB_ptr rgbp1 = (*result)[p1];
+		RGB_ptr rgbp2 = (*result)[p1 + 1];
+		rgbp1->R = (rgbp0->R + rgbp2->R) / 2;
+		rgbp1->G = (rgbp0->G + rgbp2->G) / 2;
+		rgbp1->B = (rgbp0->B + rgbp2->B) / 2;
+		rgbp1->quantization(maxValue);
+		//};
 
 		return result;
 	    };
-	  P1P2DGOp::P1P2DGOp(double p1, double p2):p1(p1),
-		p2(p2), smooth(true)
+	  P1P2DGOp::P1P2DGOp(double p1, double p2, const MaxValue & maxValue):p1(p1), p2(p2), maxValue(maxValue)
 	    {
-	    };
-	    P1P2DGOp::P1P2DGOp(double p1, double p2, bool smooth):p1(p1),
-		p2(p2), smooth(smooth) {
 	    };
 	    //==================================================================
 
@@ -107,16 +107,16 @@ namespace cms {
 	    //==================================================================
 
 	    //==================================================================
-	    BMaxOp::BMaxOp(const BitDepth & out):out(out) {
+	    BMaxOp::BMaxOp(const Dep::MaxValue & out):out(out) {
 
 	    };
 	    RGB_vector_ptr BMaxOp::getRendering(RGB_vector_ptr source) {
 		RGB_vector_ptr result = RGBVector::deepClone(source);
 		int size = result->size();
 		RGB_ptr bmax = (*result)[size - 1];
-		if (out == 6) {
+		if (out == MaxValue::Int6Bit) {
 		    bmax->B = 252;
-		} else if (out == 8) {
+		} else if (out == MaxValue::Int8Bit) {
 		    bmax->B = 255;
 		}
 
@@ -143,7 +143,7 @@ namespace cms {
 	    //==================================================================
 	    RGB_vector_ptr GByPassOp::getRendering(RGB_vector_ptr source) {
 		RGB_vector_ptr result = RGBVector::deepClone(source);
-		if (in == Bit8 && out == Bit6) {
+		if (in == MaxValue::Int8Bit && out == MaxValue::Int6Bit) {
 		    for (int x = 0; x != 245; x++) {
 			(*result)[x]->G = x;
 		    };
@@ -153,7 +153,8 @@ namespace cms {
 		    for (int x = 251; x != 256; x++) {
 			(*result)[x]->G = (*result)[x - 1]->G + 1;
 		    };
-		} else if (in == Bit6 && out == Bit6) {
+		} else if (in == MaxValue::Int6Bit
+			   && out == MaxValue::Int6Bit) {
 		    for (int x = 0; x != 252; x++) {
 			(*result)[x]->G = x;
 		    };
@@ -164,14 +165,13 @@ namespace cms {
 		return result;
 	    };
 
-	  GByPassOp::GByPassOp(const BitDepth & in, const BitDepth & out):in(in),
+	  GByPassOp::GByPassOp(const Dep::MaxValue & in, const Dep::MaxValue & out):in(in),
 		out(out)
 	    {
 
 	    };
 	    //==================================================================
-	    RGB_vector_ptr FrcNROp::
-		getRendering(RGB_vector_ptr source) {
+	    RGB_vector_ptr FrcNROp::getRendering(RGB_vector_ptr source) {
 		int size = source->size();
 		RGB_vector_ptr result = RGBVector::clone(source);
 

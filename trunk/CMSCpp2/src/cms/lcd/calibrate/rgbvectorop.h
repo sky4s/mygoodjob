@@ -34,13 +34,12 @@ namespace cms {
 	    class P1P2DGOp:public DGLutOp {
 	      private:
 		double p1, p2;
-		bool smooth;
+		const Dep::MaxValue & maxValue;
 	      protected:
 		 RGB_vector_ptr getRendering(RGB_vector_ptr source);
 	      public:
-		 P1P2DGOp(double p1, double p2);
-		 P1P2DGOp(double p1, double p2, bool smooth);
-
+		 P1P2DGOp(double p1, double p2,
+			  const Dep::MaxValue & maxValue);
 	    };
 
 	    class RBInterpolationOp:public DGLutOp {
@@ -54,20 +53,21 @@ namespace cms {
 
 	    class BMaxOp:public DGLutOp {
 	      private:
-		const BitDepth & out;
+		const Dep::MaxValue & out;
 	      public:
-		 BMaxOp(const BitDepth & out);
+		 BMaxOp(const Dep::MaxValue & out);
 	      protected:
 		 RGB_vector_ptr getRendering(RGB_vector_ptr source);
 	    };
 
 	    class GByPassOp:public DGLutOp {
 	      private:
-		const BitDepth & in, &out;
+		const Dep::MaxValue & in, &out;
 	      protected:
 		 RGB_vector_ptr getRendering(RGB_vector_ptr source);
 	      public:
-		 GByPassOp(const BitDepth & in, const BitDepth & out);
+		 GByPassOp(const Dep::MaxValue & in,
+			   const Dep::MaxValue & out);
 	    };
 
 	    class FrcNROp:public DGLutOp {

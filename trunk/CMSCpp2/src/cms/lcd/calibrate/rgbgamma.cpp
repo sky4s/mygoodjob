@@ -53,19 +53,29 @@ namespace cms {
 					   r, g, b);
 		     excel->insert(fieldNames, values);
 	    }};
+
+	    RGBGamma_ptr RGBGamma::clone() {
+		double_vector_ptr rclone(new double_vector(*r));
+		double_vector_ptr gclone(new double_vector(*g));
+		double_vector_ptr bclone(new double_vector(*b));
+		RGBGamma_ptr result(new
+				    RGBGamma(rclone, gclone, bclone,
+					     max, type));
+		return result;
+	    };
 	    //==================================================================
 
 	    //==================================================================
 	    // RGBGammaOp
 	    //==================================================================
 	    /*RGBGamma_ptr RGBGammaOp::
-		getRGBGamma(double_vector_ptr gammaCurve) {
-		double_vector_ptr r(new double_vector(*gammaCurve));
-		double_vector_ptr g(new double_vector(*gammaCurve));
-		double_vector_ptr b(new double_vector(*gammaCurve));
-		RGBGamma_ptr rgbGamma(new RGBGamma(r, g, b));
-		return rgbGamma;
-	    };*/
+	       getRGBGamma(double_vector_ptr gammaCurve) {
+	       double_vector_ptr r(new double_vector(*gammaCurve));
+	       double_vector_ptr g(new double_vector(*gammaCurve));
+	       double_vector_ptr b(new double_vector(*gammaCurve));
+	       RGBGamma_ptr rgbGamma(new RGBGamma(r, g, b));
+	       return rgbGamma;
+	       }; */
 	    //==================================================================
 
 	    //==================================================================
@@ -130,8 +140,7 @@ namespace cms {
 
 		double_vector & r = (*source->r);
 		double_vector & b = (*source->b);
-		//double rdiff = r[indexR + 1] - r[indexR];
-		//double bdiff = b[indexB + 1] - b[indexB];
+                double ar=r[p1],ab=b[p1];
 		r[p1] =
 		    r[indexR] + (r[indexR + 1] - r[indexR]) *
 		    (rgbp1->G - (*dglut)[indexR]->R) /
@@ -140,8 +149,8 @@ namespace cms {
 		    b[indexB] + (b[indexB + 1] - b[indexB]) *
 		    (rgbp1->G - (*dglut)[indexB]->B) /
 		    ((*dglut)[indexB + 1]->B - (*dglut)[indexB]->B);
-		//r[p1] = r[indexR];
-		//b[p1] = b[indexB];
+
+                double ar1=r[p1],ab1=b[p1];
 		return source;
 	    };
 	    RGBGamma_ptr P1P2GammaOp::processP1P2(RGBGamma_ptr source) {

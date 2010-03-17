@@ -70,18 +70,27 @@ void __fastcall TMainForm::FormCreate(TObject * Sender)
     }
 }
 
+//---------------------------------------------------------------------------
+
 void TMainForm::setDummyMeterFilename(const std::string & filename)
 {
     using namespace cms::measure::meter;
     using namespace cms::measure;
     using namespace cms::colorformat;
     bptr < DGLutFile > dgcode(new DGLutFile(filename));
-    //bpter = bptr < Meter > (new DGLutFileMeter(dgcode));
     meter.reset(new DGLutFileMeter(dgcode));
-    //mm = bptr < MeterMeasurement > (new MeterMeasurement(meter, false));
     mm.reset(new MeterMeasurement(meter, false));
     mm->setFakeMeasure(true);
     analyzer.reset(new CA210IntensityAnalyzer(mm));
+};
+
+//---------------------------------------------------------------------------
+
+void TMainForm::resetDummyMeter()
+{
+    using namespace cms::measure::meter;
+    DGLutFileMeter *dgc = dynamic_cast < DGLutFileMeter * >(meter.get());
+    dgc->reset();
 };
 
 

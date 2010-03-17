@@ -59,6 +59,7 @@ namespace cms {
 		static double_array normalizeTo100(double_array values,
 						   const MaxValue &
 						   maxValue);
+		int getNumberBands();
 	    };
 	};
     };
