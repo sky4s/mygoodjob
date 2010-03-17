@@ -50,9 +50,12 @@ namespace cms {
 	    void addProperty(const std::string & key, const double value);
 	    void setProperty(const DGLutProperty & property);
 
-	    void setRawData(Component_vector_ptr componentVector);
+	    /*void setRawData(Component_vector_ptr componentVector);
+	       void setRawData(Component_vector_ptr componentVector,
+	       RGBGamma_ptr rgbgamma); */
 	    void setRawData(Component_vector_ptr componentVector,
-			    RGBGamma_ptr rgbgamma);
+			    RGBGamma_ptr initialRGBGamma,
+			    RGBGamma_ptr finalRGBGamma);
 	    void setGammaTable(RGB_vector_ptr dglut);
 	    Component_vector_ptr getComponentVector();
 
@@ -98,6 +101,8 @@ namespace cms {
 	    static const std::string Gamma256;
 	    static const std::string FRC_NR;
 	    static const std::string DimCorrect;
+	    static const std::string On;
+	    static const std::string Off;
 	    const cms::lcd::calibrate::LCDCalibrator & c;
 	    void store(DGLutFile & dglut) const;
 	  public:

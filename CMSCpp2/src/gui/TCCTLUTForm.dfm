@@ -445,6 +445,16 @@ object CCTLUTForm: TCCTLUTForm
     Visible = False
     OnClick = Button_DebugClick
   end
+  object Button_Reset: TButton
+    Left = 616
+    Top = 296
+    Width = 17
+    Height = 17
+    Caption = 'R'
+    TabOrder = 8
+    Visible = False
+    OnClick = Button_ResetClick
+  end
   object OpenDialog1: TOpenDialog
     Filter = 'DGCode Files(*.xls)|*.xls'
     Options = [ofEnableSizing]

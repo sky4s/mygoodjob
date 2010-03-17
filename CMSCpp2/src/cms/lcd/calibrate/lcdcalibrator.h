@@ -44,9 +44,9 @@ namespace cms {
 	    };
 
 
-	    enum BitDepth {
-		Unknow = 0, Bit6 = 6, Bit8 = 8, Bit10 = 10, Bit12 = 12
-	    };
+	    /*enum BitDepth {
+	       Unknow = 0, Bit6 = 6, Bit8 = 8, Bit10 = 10, Bit12 = 12
+	       }; */
 
 	    /*
 	       DGLutGenerator擔任產出DG Code的重責大任
@@ -62,8 +62,8 @@ namespace cms {
 	    using namespace math;
 	    class DGLutGenerator {
 	      private:
-		BitDepth in, out;
-		bptr < PolynomialRegression > regression;
+		const Dep::MaxValue & in, &out;
+		 bptr < PolynomialRegression > regression;
 		Component_vector_ptr componentVector;
 		//double2D_ptr coefs;
 		double a0, a1, a2, a3, c, d;
@@ -82,7 +82,8 @@ namespace cms {
 		double getMaximumIntensity();
 	      public:
 		 DGLutGenerator(Component_vector_ptr componentVector,
-				const BitDepth & in, const BitDepth & out);
+				const Dep::MaxValue & in,
+				const Dep::MaxValue & out);
 		//RGB_vector_ptr produce(double_vector_ptr normalGammaCurve);
 		RGB_vector_ptr produce(RGBGamma_ptr normalRGBGammaCurve);
 		RGBGamma_ptr getRGBGamma(double_vector_ptr
@@ -95,7 +96,7 @@ namespace cms {
 
 
 	    enum Correct {
-		P1P2, RBInterpolation, None
+		P1P2 = 1, RBInterpolation = 2, None = 3
 	    };
 
 	    class LCDCalibrator {
@@ -105,7 +106,7 @@ namespace cms {
 		//bool p1p2;
 		 Correct correct;
 		double p1, p2;
-		BitDepth in, lut, out;
+		const Dep::MaxValue & in, &lut, &out;
 		double rbInterpUnder;
 		bool gByPass;
 		double bIntensityGain;
@@ -127,6 +128,7 @@ namespace cms {
 		RGB_vector_ptr dglut;
 		Component_vector_ptr componentVector;
 		RGBGamma_ptr finalRGBGamma;
+		RGBGamma_ptr initialRGBGamma;
 
 		int start, end, step;
 		void set(int start, int end, int step);
@@ -151,17 +153,22 @@ namespace cms {
 		void setBMax(bool bMax);
 		void setGamma256(bool gamma256);
 		void setAvoidFRCNoise(bool avoid);
-		void setBitDepth(const BitDepth & in, const BitDepth & lut,
-				 const BitDepth & out);
+		/*void setBitDepth(const Dep::MaxValue & in,
+		   const Dep::MaxValue & lut,
+		   const Dep::MaxValue & out); */
 
+		/*LCDCalibrator(bptr < cms::measure::IntensityAnalyzerIF >
+		   analyzer); */
 		 LCDCalibrator(bptr < cms::measure::IntensityAnalyzerIF >
-			       analyzer);
+			       analyzer, const Dep::MaxValue & in,
+			       const Dep::MaxValue & lut,
+			       const Dep::MaxValue & out);
 
 		RGB_vector_ptr getDGLut(int start, int end, int step);
 		RGB_vector_ptr getDGLut(int step);
 		void storeDGLut(const std::string & filename,
 				RGB_vector_ptr dglut);
-		static BitDepth getBitDepth(int bit);
+		//static BitDepth getBitDepth(int bit);
 	      private:
 		 RGB_vector_ptr getDGLutOpResult(RGB_vector_ptr dglut);
 	    };

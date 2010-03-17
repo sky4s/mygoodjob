@@ -22,6 +22,8 @@
 #include <cms/util/rgbarray.h>
 #include <ca210api/CA210API.h>
 
+#include <math.hpp>
+
 //---------------------------------------------------------------------------
 
 
@@ -330,7 +332,7 @@ void dgcode()
 	Component_ptr composition(new Component(rgb, component, XYZ));
 	(*vector)[x] = composition;
     };
-    DGLutGenerator generator(vector);
+    //DGLutGenerator generator(vector);
 };
 
 void rgbTry()
@@ -359,13 +361,13 @@ void doubleArrayTry()
 
 void mathTry()
 {
-    using namespace java::lang;
-    cout << std::ceil(0.25) << endl;
-    cout << std::ceil(0.5) << endl;
-    cout << std::ceil(0.9) << endl;
-    //cout << std::round(1.0) << endl;
-    cout << Math::round(0.5) << endl;
-    cout << Math::round(0.4) << endl;
+    /*using namespace java::lang;
+       c*out << std::ceil(0.25) << endl;
+       cout << std::ceil(0.5) << endl;
+       cout << std::ceil(0.9) << endl;
+       //cout << std::round(1.0) << endl;
+       cout << Math::round(0.5) << endl;
+       cout << Math::round(0.4) << endl; */
 };
 
 void rgbop()
@@ -535,6 +537,17 @@ void measureFileTry()
 
 };
 
+void maxValueTry()
+{
+    /*using namespace Dep;
+       using namespace std;
+       const MaxValue & m = MaxValue::getByBit(5);
+       const MaxValue & n = MaxValue::getByBit(8);
+       cout << *m.toString() << endl;
+       cout << *n.toString() << endl; */
+
+};
+
 #pragma argsused
 int main(int argc, char *argv[])
 {
@@ -569,11 +582,13 @@ int main(int argc, char *argv[])
     //ca210();
 
     //strTry();
-    measureFileTry();
+    //measureFileTry();
+    //maxValueTry();
 
     //using namespace cms::colorformat;
     //DGLutFile dg(" test.xls ",256);
-
+    cout << RoundTo(94.5, 0) << endl;
+    cout << java::lang::Math::roundTo(94.5) << endl;
     getch();
 }
 

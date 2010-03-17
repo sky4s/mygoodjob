@@ -13,12 +13,15 @@
 #include <tnt/tnt_array2d.h>
 #include <java/lang.h>
 
+#define MaxValue_vector std::vector < MaxValue >
+
 namespace cms {
     namespace colorspace {
 
 	namespace depend {
 
 	    class DeviceDependentSpace:public ColorSpace {
+	      protected:
 		int getNumberBands();
 	    };
 
@@ -29,7 +32,7 @@ namespace cms {
 		LStarRGB, AppleRGB, BestRGB, skyRGB, NTSCRGB,
 		EktaSpacePS5RGB, Unknow, AdobeRGBD50, AdobeRGB1998,
 		SMPTE_C, EnumerationEnd();
-                
+
 	    class RGBBase;
 	    //using cms::Illuminant;
 
@@ -173,21 +176,25 @@ namespace cms {
 	    };
 
 
-	    class MaxValue {
+	    class MaxValue:public jObject {
 	      public:
 		const double max;
 		const bool integer;
 		const bool divisible;
+		const int bit;
 	      private:
 
 		 MaxValue(double max, bool integer,
-			  bool divisible):max(max), integer(integer),
-		    divisible(divisible) {
+			  bool divisible, int bit):max(max),
+		    integer(integer), divisible(divisible), bit(bit) {
 		};
-	      public:
 		 MaxValue(double max):max(max), integer(false),
-		    divisible(false) {
+		    divisible(false), bit(-1) {
 		};
+		static bptr < MaxValue_vector > make(int count, ...);
+		static const bptr < MaxValue_vector > MaxValueVector;
+	      public:
+
 		static const MaxValue & Double1;
 		static const MaxValue & Double100;
 		static const MaxValue & Int5Bit;
@@ -210,6 +217,7 @@ namespace cms {
 		static const MaxValue & Int31Bit;
 		static const MaxValue & DoubleUnlimited;
 
+
 		static MaxValue getIntegerMaxValueByLevel(int level);
 		static MaxValue getIntegerMaxValueByMax(int max);
 		double getStepIn255();
@@ -223,7 +231,9 @@ namespace cms {
 		    return !(*this == that);
 		};
 		//MaxValue & operator=(const MaxValue & that);
-
+		//static MaxValue getMaxValue(BitDepth bitDepth);
+		static const MaxValue & getByBit(int bit);
+		const string_ptr toString();
 	    };
 	};
     };

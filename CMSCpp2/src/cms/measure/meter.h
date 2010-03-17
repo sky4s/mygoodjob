@@ -91,7 +91,7 @@ namespace cms {
 		Component_ptr c;
 	      public:
 		 DGLutFileMeter(bptr < cms::colorformat::DGLutFile >
-				 dglut);
+				dglut);
 		void close();
 		bool isConnected();
 		void calibrate();
@@ -104,6 +104,7 @@ namespace cms {
 		Instr getType();
 		Component_ptr getComponent();
 		void setIndex(int index);
+		void reset();
 	    };
 
 	};

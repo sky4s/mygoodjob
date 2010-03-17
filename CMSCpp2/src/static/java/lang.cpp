@@ -6,6 +6,7 @@
 #include <limits>
 
 //其他庫頭文件
+#include <math.hpp>
 
 //本項目內頭文件
 
@@ -105,6 +106,10 @@ namespace java {
 	double Math::floor(double v) {
 	    return std::floor(v);
 	}
+	double Math::roundTo(double v) {
+	    return RoundTo(v, 0);
+	    //return round(v);
+	};
 	int Math::minIndex(double_array values, int n) {
 	    double minValue = std::numeric_limits < double >::max();
 	    int minIndex = -1;

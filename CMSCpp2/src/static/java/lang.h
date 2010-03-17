@@ -108,6 +108,7 @@
 #define Component_vector_ptr bptr < Component_vector >
 
 #define RGBGamma_ptr  bptr < cms::lcd::calibrate::RGBGamma >
+#define nil_RGBGamma RGBGamma_ptr( (RGBGamma*) null)
 //==============================================================================
 
 //==============================================================================
@@ -165,6 +166,7 @@ namespace cms {
 	    class RGBColor;
 	    class Channel;
 	    class RGBColorSpace;
+	    class MaxValue;
 	};
 	namespace independ {
 	    class CIExyY;
@@ -307,6 +309,7 @@ namespace java {
 	    static double sqr(double v);
 	    static double round(double v);
 	    static double floor(double v);
+	    static double roundTo(double v);
 
 	    static double min(double a, double b);
 	    static double max(double a, double b);

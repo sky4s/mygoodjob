@@ -198,10 +198,10 @@ namespace cms {
 			      0.357579, 0.715158, 0.119193,
 			      0.180464, 0.0721856, 0.950444);
 	    /*const RGBColorSpace & RGBColorSpace::NTSCRGB =
-		RGBColorSpace(CSType::NTSCRGB, 2.2, Illuminant::C,
-			      0.606734, 0.298839, 0.000000,
-			      0.173564, 0.586811, 0.0661196,
-			      0.200112, 0.114350, 1.11491);*/
+	       RGBColorSpace(CSType::NTSCRGB, 2.2, Illuminant::C,
+	       0.606734, 0.298839, 0.000000,
+	       0.173564, 0.586811, 0.0661196,
+	       0.200112, 0.114350, 1.11491); */
 	    //======================================================================
 
 	    //======================================================================
@@ -255,27 +255,46 @@ namespace cms {
 	    //======================================================================
 	    // MaxValue
 	    //======================================================================
+
+	    bptr < MaxValue_vector > MaxValue::make(int count,...) {
+		bptr < MaxValue_vector > result(new MaxValue_vector());
+		va_list num_list;
+		va_start(num_list, count);
+
+		for (int i = 0; i < count; i++) {
+		    const MaxValue & m = va_arg(num_list, const MaxValue);
+		    result->push_back(m);
+		} va_end(num_list);
+		return result;
+	    };
+
 	    const MaxValue & MaxValue::Double1 = MaxValue(1.);	//正規化
 	    const MaxValue & MaxValue::Double100 = MaxValue(100.);	//正規化
-	    const MaxValue & MaxValue::Int5Bit = MaxValue(31., true, false);	//5bit
-	    const MaxValue & MaxValue::Int6Bit = MaxValue(63., true, false);	//6bit
-	    const MaxValue & MaxValue::Int7Bit = MaxValue(127., true, false);	//7bit
-	    const MaxValue & MaxValue::Int8Bit = MaxValue(255., true, true);	//一般常用的RGB code
+	    const MaxValue & MaxValue::Int5Bit = MaxValue(31., true, false, 5);	//5bit
+	    const MaxValue & MaxValue::Int6Bit = MaxValue(63., true, false, 6);	//6bit
+	    const MaxValue & MaxValue::Int7Bit = MaxValue(127., true, false, 7);	//7bit
+	    const MaxValue & MaxValue::Int8Bit = MaxValue(255., true, true, 8);	//一般常用的RGB code
 	    const MaxValue & MaxValue::Double255 = MaxValue(255.);	//各種bit數的RGB code通用
-	    const MaxValue & MaxValue::Int9Bit = MaxValue(510., true, true);	//9bit
-	    const MaxValue & MaxValue::Double1020 = MaxValue(1020, false, true);	//10bit
-	    const MaxValue & MaxValue::Int10Bit = MaxValue(1020, true, true);	//10bit
-	    const MaxValue & MaxValue::Int11Bit = MaxValue(2040, true, true);	//11bit
-	    const MaxValue & MaxValue::Double4080 = MaxValue(4080, false, true);	//12bit
-	    const MaxValue & MaxValue::Int12Bit = MaxValue(4080, true, true);	//12bit
-	    const MaxValue & MaxValue::Int13Bit = MaxValue(8160, true, true);	//13bit
-	    const MaxValue & MaxValue::Int14Bit = MaxValue(16320, true, true);	//14bit
-	    const MaxValue & MaxValue::Int15Bit = MaxValue(32640, true, true);	//15bit
-	    const MaxValue & MaxValue::Int16Bit = MaxValue(65280, true, true);	//16bit
-	    const MaxValue & MaxValue::Int20Bit = MaxValue(1044480, true, true);	//20bit
-	    const MaxValue & MaxValue::Int24Bit = MaxValue(16711680, true, true);	//24bit
-	    const MaxValue & MaxValue::Int31Bit = MaxValue(2139095040, true, true);	//31bit
+	    const MaxValue & MaxValue::Int9Bit = MaxValue(510., true, true, 9);	//9bit
+	    const MaxValue & MaxValue::Double1020 = MaxValue(1020, false, true, -1);	//10bit
+	    const MaxValue & MaxValue::Int10Bit = MaxValue(1020, true, true, 10);	//10bit
+	    const MaxValue & MaxValue::Int11Bit = MaxValue(2040, true, true, 11);	//11bit
+	    const MaxValue & MaxValue::Double4080 = MaxValue(4080, false, true, -1);	//12bit
+	    const MaxValue & MaxValue::Int12Bit = MaxValue(4080, true, true, 12);	//12bit
+	    const MaxValue & MaxValue::Int13Bit = MaxValue(8160, true, true, 13);	//13bit
+	    const MaxValue & MaxValue::Int14Bit = MaxValue(16320, true, true, 14);	//14bit
+	    const MaxValue & MaxValue::Int15Bit = MaxValue(32640, true, true, 15);	//15bit
+	    const MaxValue & MaxValue::Int16Bit = MaxValue(65280, true, true, 16);	//16bit
+	    const MaxValue & MaxValue::Int20Bit = MaxValue(1044480, true, true, 20);	//20bit
+	    const MaxValue & MaxValue::Int24Bit = MaxValue(16711680, true, true, 24);	//24bit
+	    const MaxValue & MaxValue::Int31Bit = MaxValue(2139095040, true, true, 31);	//31bit
 	    const MaxValue & MaxValue::DoubleUnlimited = MaxValue(std::numeric_limits < double >::max());	//無限制
+
+	    const bptr < MaxValue_vector > MaxValue::MaxValueVector =
+		MaxValue::make(14, Int5Bit, Int6Bit, Int7Bit, Int8Bit,
+			       Int9Bit, Int10Bit, Int11Bit, Int12Bit,
+			       Int13Bit, Int14Bit, Int15Bit, Int16Bit,
+			       Int20Bit, Int24Bit);
 
 	    MaxValue MaxValue::getIntegerMaxValueByLevel(int level) {
 	    };
@@ -284,7 +303,34 @@ namespace cms {
 	    double MaxValue::getStepIn255() {
 		return 255. / max;
 	    };
-
+	    /*MaxValue MaxValue::getMaxValue(BitDepth bitDepth) {
+	       switch (bitDepth) {
+	       case Unknow:
+	       return DoubleUnlimited;
+	       case Bit6:
+	       return Int6Bit;
+	       case Bit8:
+	       return Int8Bit;
+	       case Bit10:
+	       return Int10Bit;
+	       case Bit12:
+	       return Int12Bit;
+	       }
+	       }; */
+	    const MaxValue & MaxValue::getByBit(int bit) {
+		foreach(const MaxValue & m, *MaxValueVector) {
+		    if (m.bit == bit) {
+			return m;
+		    }
+		}
+		throw IllegalStateException("");
+	    };
+	    const string_ptr MaxValue::toString() {
+		return
+		    string_ptr(new
+			       string
+			       (lexical_cast < string > (bit) + "bit"));
+	    };
 	    //======================================================================
 	};
     };

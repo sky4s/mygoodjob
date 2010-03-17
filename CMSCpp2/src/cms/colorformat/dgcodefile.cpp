@@ -182,70 +182,35 @@ namespace cms {
 				value) {
 	    addProperty(key, lexical_cast < string > (value));
 	};
-	void
-	 DGLutFile::setRawData(Component_vector_ptr componentVector) {
-	    db->setTableName(RawData);
-	    int
-	     size = componentVector->size();
-	    string_vector_ptr values(new string_vector(13));
-	    for (int x = 0; x != size; x++) {
-		Component_ptr c = (*componentVector)
-		    [x];
-		int w = static_cast < int
-		    >(c->rgb->getValue(Channel::W));
-		(*values)
-		    [0] = lexical_cast < string > (w);
-		xyY_ptr xyY(new CIExyY(c->XYZ));
-		(*values)
-		    [1] = lexical_cast < string > (xyY->x);
-		(*values)
-		    [2] = lexical_cast < string > (xyY->y);
-		(*values)
-		    [3] = lexical_cast < string > (xyY->Y);
-		RGB_ptr intensity = c->intensity;
-		(*values)
-		    [4] = lexical_cast < string > (intensity->R);
-		(*values)
-		    [5] = lexical_cast < string > (intensity->G);
-		(*values)
-		    [6] = lexical_cast < string > (intensity->B);
-		//gamma 0~100
-		(*values)[7] = "0";
-		(*values)
-		    [8] = "0";
-		(*values)
-		    [9] = "0";
-		(*values)
-		    [10] = "0";
-		(*values)
-		    [11] = "0";
-		(*values)
-		    [12] = "0";
+	/*void
+	   DGLutFile::setRawData(Component_vector_ptr componentVector) {
+	   setRawData(componentVector, nil_RGBGamma, nil_RGBGamma);
+	   };
 
-		if (!lazyMode) {
-		    db->update(RawHeader[0], w, RawFieldNames, values,
-			       false);
-		} else {
-		    db->insert(RawFieldNames, values, false);
-		}
-	    }
-#ifdef CACHE_SQL
-	    db->excuteCache();
-#endif
-	};
-	void
-	 DGLutFile::
-	    setRawData
-	    (Component_vector_ptr componentVector, RGBGamma_ptr rgbgamma) {
-	    int a = componentVector->size();
-	    int b = rgbgamma->r->size();
+	   void
+	   DGLutFile::
+	   setRawData
+	   (Component_vector_ptr componentVector, RGBGamma_ptr rgbgamma) {
+	   setRawData(componentVector, rgbgamma, nil_RGBGamma);
+	   }; */
+
+	void DGLutFile::setRawData(Component_vector_ptr componentVector,
+				   RGBGamma_ptr initialRGBGamma,
+				   RGBGamma_ptr finalRGBGamma) {
 	    //==================================================================
 	    // 檢查來源資料
 	    //==================================================================
-	    if (componentVector->size() != rgbgamma->r->size()) {
+	    if (null != initialRGBGamma
+		&& componentVector->size() != initialRGBGamma->r->size()) {
 		throw
 		    IllegalArgumentException
-		    ("componentVector->size() != rgbgamma->r->size()");
+		    ("componentVector->size() != initialRGBGamma->r->size()");
+	    };
+	    if (null != finalRGBGamma
+		&& componentVector->size() != finalRGBGamma->r->size()) {
+		throw
+		    IllegalArgumentException
+		    ("componentVector->size() != finalRGBGamma->r->size()");
 	    };
 	    //==================================================================
 	    //==================================================================
@@ -281,16 +246,27 @@ namespace cms {
 		    [5] = lexical_cast < string > (intensity->G);
 		(*values)
 		    [6] = lexical_cast < string > (intensity->B);
+
 		//gamma 0~100
-		(*values)[7] = _toString((*rgbgamma->r)[n]);
-		(*values)[8] = _toString((*rgbgamma->g)[n]);
-		(*values)[9] = _toString((*rgbgamma->b)[n]);
-		/*(*values)[10] = (*values)[7];
-		(*values)[11] = (*values)[8];
-		(*values)[12] = (*values)[9];*/
-		(*values)[10] = "0";
-		(*values)[11] = "0";
-		(*values)[12] = "0";
+		if (null != initialRGBGamma) {
+		    (*values)[7] = _toString((*initialRGBGamma->r)[n]);
+		    (*values)[8] = _toString((*initialRGBGamma->g)[n]);
+		    (*values)[9] = _toString((*initialRGBGamma->b)[n]);
+		} else {
+		    (*values)[7] = "0";
+		    (*values)[8] = "0";
+		    (*values)[9] = "0";
+		}
+
+		if (null != finalRGBGamma) {
+		    (*values)[10] = _toString((*finalRGBGamma->r)[n]);
+		    (*values)[11] = _toString((*finalRGBGamma->g)[n]);
+		    (*values)[12] = _toString((*finalRGBGamma->b)[n]);
+		} else {
+		    (*values)[10] = "0";
+		    (*values)[11] = "0";
+		    (*values)[12] = "0";
+		}
 
 		if (!lazyMode) {
 		    db->update(RawHeader[0], w, RawFieldNames, values,
@@ -304,6 +280,7 @@ namespace cms {
 #endif
 	    //==================================================================
 	};
+
 	void
 	 DGLutFile::setGammaTable(RGB_vector_ptr dglut) {
 	    //==================================================================
@@ -476,26 +453,29 @@ namespace cms {
 	string DGLutProperty::FRC_NR = "avoid FRC noise";
 	const
 	string DGLutProperty::DimCorrect = "low level correct";
+	const string DGLutProperty::On = "On";
+	const string DGLutProperty::Off = "Off";
 	void
 	 DGLutProperty::store(DGLutFile & dgcode) const {
 	    dgcode.addProperty(Start, c.start);
 	    dgcode.addProperty(End, c.end);
 	    dgcode.addProperty(Step, c.step);
-	    //dgcode.addProperty(P1P2, c.correct);
-            dgcode.addProperty(DimCorrect, c.correct);
+	    dgcode.addProperty(DimCorrect,
+			       (c.correct == 1) ? "P1P2" :
+			       (c.correct == 2) ?
+			       "RBInterpolation" : "None");
 	    dgcode.addProperty(P1, c.p1);
 	    dgcode.addProperty(P2, c.p2);
-	    //dgcode.addProperty(RB, !c.p1p2);
 	    dgcode.addProperty(RBUnder, c.rbInterpUnder);
-	    dgcode.addProperty(In, c.in);
-	    dgcode.addProperty(LUT, c.lut);
-	    dgcode.addProperty(Out, c.out);
+	    dgcode.addProperty(In, *c.in.toString());
+	    dgcode.addProperty(LUT, *c.lut.toString());
+	    dgcode.addProperty(Out, *c.out.toString());
 	    dgcode.addProperty(Gamma, c.gamma);
-	    dgcode.addProperty(GByPass, c.gByPass);
+	    dgcode.addProperty(GByPass, c.gByPass ? On : Off);
 	    dgcode.addProperty(BGain, c.bIntensityGain);
-	    dgcode.addProperty(BMax, c.bMax);
-	    dgcode.addProperty(Gamma256, c.gamma256);
-	    dgcode.addProperty(FRC_NR, c.avoidFRCNoise);
+	    dgcode.addProperty(BMax, c.bMax ? On : Off);
+	    dgcode.addProperty(Gamma256, c.gamma256 ? On : Off);
+	    dgcode.addProperty(FRC_NR, c.avoidFRCNoise ? On : Off);
 	};
 	DGLutProperty::DGLutProperty(const
 				     LCDCalibrator & c):c(c) {
