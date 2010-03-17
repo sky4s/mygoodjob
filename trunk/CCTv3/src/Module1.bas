@@ -58,6 +58,7 @@ Private Sub setKeyState()
 End Sub
 
 Public Sub Main()
+    Debug_enable = True
     On Error GoTo E
     sheetType = OpType.Excel
     UseCA210 = FileSystem.Dir(DebugFile) = ""

@@ -606,6 +606,10 @@ Public Enum enuDataGroup
 End Enum
 
 
+Private Sub btn_debug_Click()
+
+End Sub
+
 Private Sub btn_loadG_Click()
     Dim fm As String, fnum As Integer, fname As String
     'Dim iCheck As Integer
@@ -958,9 +962,12 @@ Private Sub Command2_Click() '''''''AUTORUN
     YR = Empty
     rr = 1
     ' Beta是MultipleRegress的結果
+    ' beta 分別是 a0 a1 a2 a3
+    ' 此處的YR應該是回歸所得的初始值
     YR = Beta(1, 1) + Beta(2, 1) * 1 + Beta(3, 1) * 1 + Beta(4, 1) * 1
     
-    ' 用意是?
+    ' YYR主要是用來做回歸的, 至於擺放的範圍, 約略是0~ RN/GN/BN的最小值, 大多是100
+    ' 限制住使用的範圍之後, 再重新做一次回歸計算更精準的c和d, 之後使用的c/d皆是如此得來
     For SRC = 2 To GLT
         If SRC <= Round(RN(0), 0) And SRC <= Round(GN(0), 0) And SRC <= Round(BN(0), 0) Then
             ' 倘若SRC同時 <= RN/GN/BN (四捨五入後)
@@ -972,6 +979,12 @@ Private Sub Command2_Click() '''''''AUTORUN
             Exit For
         End If
     Next SRC
+    ' SRC的找法很簡單:
+    ' 1. 首先找到RN GN BN的各自最大值
+    ' 2. 三個最大值找到最小值
+    ' 3. 最小值當中找到index
+    ' 4. 用該index預測luminance, 該luminance就是底下會用到的最大亮度了
+    
     '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
     
     '''''''''''''' Regress RGB Remove Recipe by Stockton 12/14
