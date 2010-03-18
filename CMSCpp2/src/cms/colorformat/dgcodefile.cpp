@@ -182,17 +182,6 @@ namespace cms {
 				value) {
 	    addProperty(key, lexical_cast < string > (value));
 	};
-	/*void
-	   DGLutFile::setRawData(Component_vector_ptr componentVector) {
-	   setRawData(componentVector, nil_RGBGamma, nil_RGBGamma);
-	   };
-
-	   void
-	   DGLutFile::
-	   setRawData
-	   (Component_vector_ptr componentVector, RGBGamma_ptr rgbgamma) {
-	   setRawData(componentVector, rgbgamma, nil_RGBGamma);
-	   }; */
 
 	void DGLutFile::setRawData(Component_vector_ptr componentVector,
 				   RGBGamma_ptr initialRGBGamma,

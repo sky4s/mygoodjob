@@ -10,7 +10,7 @@
 //本項目內頭文件
 #include <java/lang.h>
 
-#define USE_QUERY
+//#define USE_QUERY
 
 namespace cms {
     namespace colorformat {
