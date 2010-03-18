@@ -34,12 +34,13 @@ namespace cms {
 							bptr <
 							MeterMeasurement >
 							mm):ca210(ca210),
-	    ca210api(ca210->getCA210API()), mm(mm), dummyMode(false) {
+	    ca210api(ca210->getCA210API()), mm(mm), dummyMode(false),
+	    dgc(null) {
 	    init();
 	};
 
       CA210IntensityAnalyzer::CA210IntensityAnalyzer(bptr < MeterMeasurement > mm):mm(mm),
-	    dummyMode(true)
+	    dummyMode(true), dgc(null)
 	{
 	};
 
@@ -50,12 +51,12 @@ namespace cms {
 	    if (true == dummyMode) {
 		//若為dummy mode, 代表從meter直接撈資料
 		//而meter是假的, 其實是從檔案撈資料
-		//if (null == dgc) {
+		if (null == dgc) {
 		    dgc = dynamic_cast
-		       < DGLutFileMeter * >(mm->getMeter().get());
+			< DGLutFileMeter * >(mm->getMeter().get());
 		    /*dgc.reset(dynamic_cast
-			      < DGLutFileMeter * >(mm->getMeter().get()));*/
-		//}
+		       < DGLutFileMeter * >(mm->getMeter().get())); */
+		}
 		Component_ptr c = dgc->getComponent();
 		RGB_ptr intensity = c->intensity;
 		rgbComponent.reset(new float[3]);

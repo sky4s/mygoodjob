@@ -1,8 +1,8 @@
 object MainForm: TMainForm
   Left = 208
   Top = 148
-  Width = 609
-  Height = 280
+  Width = 666
+  Height = 284
   Caption = 'CCT Adjustment v3'
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
@@ -26,14 +26,14 @@ object MainForm: TMainForm
       Left = 8
       Top = 24
       Width = 34
-      Height = 25
+      Height = 16
       Caption = 'Width'
     end
     object Height: TLabel
       Left = 8
       Top = 56
       Width = 39
-      Height = 25
+      Height = 16
       Caption = 'Height'
     end
     object Edit_Width: TEdit
@@ -64,7 +64,7 @@ object MainForm: TMainForm
       Left = 120
       Top = 24
       Width = 33
-      Height = 25
+      Height = 16
       Caption = 'msec'
     end
     object Edit_Interval: TEdit
