@@ -75,6 +75,8 @@ class TCCTLUTForm:public TForm {
     void __fastcall FormCreate(TObject * Sender);
     void __fastcall Button_DebugClick(TObject * Sender);
     void __fastcall Button_ResetClick(TObject * Sender);
+    void __fastcall RadioButton_Out6Click(TObject * Sender);
+    void __fastcall RadioButton_Out8Click(TObject * Sender);
   private:			// User declarations
     void resetBitDepth();
     void setBitDepthEnable(bool lut10, bool lut12, bool out6, bool out8,

@@ -1,3 +1,5 @@
+#include <includeall.h>
+#pragma hdrstop
 #include "doublearray.h"
 
 //C系統文件
@@ -17,6 +19,7 @@ namespace math {
     using namespace java::lang;
     using namespace std;
     using namespace JAMA;
+    using namespace cms::colorformat;
     string_ptr DoubleArray::toString(double_array m, int n) {
 	string_ptr str(new string("["));
 	for (int x = 0; x != n - 1; x++) {
@@ -316,6 +319,21 @@ namespace math {
 	    result[i] = d;
 	} va_end(num_list);
 	return result;
+    };
+
+    void DoubleArray::storeToExcel(const string & filename,
+				   double_vector_ptr doubleVector) {
+	ExcelFileDB::deleteExist(filename);
+	bptr_ < ExcelFileDB > excel(new ExcelFileDB(filename, Create));
+	string_vector_ptr fieldNames = ExcelFileDB::makec(1, "value");
+	excel->createTable("Sheet1", fieldNames);
+	int size = doubleVector->size();
+        
+	for (int x = 0; x != size; x++) {
+	    string v = lexical_cast < string > ((*doubleVector)[x]);
+	    string_vector_ptr values = ExcelFileDB::makes(1, v);
+	    excel->insert(fieldNames, values);
+	}
     };
 };
 

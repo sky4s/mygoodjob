@@ -39,10 +39,15 @@ cms::lcd::calibrate::RGBGamma::storeToExcel(debug_dir + _(filename), result);
 MAKE_DEBUG_DIR(); \
 RGBVector::storeToExcel(debug_dir + _(filename), result);
 
+#define STORE_DOUBLE_ARRAY( filename , result ) \
+MAKE_DEBUG_DIR(); \
+DoubleArray::storeToExcel(debug_dir + _(filename), result);
+
 #else
 #define STORE_COMPONENT( filename , result )
 #define STORE_RGBGAMMA( filename , result )
 #define STORE_RGBVECTOR( filename , result )
+#define STORE_DOUBLE_ARRAY( filename , result )
 #endif
 
 namespace cms {
@@ -204,6 +209,9 @@ namespace cms {
 		return a0 + rIntensity * a1 + gIntensity * a2 +
 		    bIntensity * a3;
 	    };
+	    /*
+	       將正規化的gamma curve, 轉換為絕對的亮度curve
+	     */
 	    double_vector_ptr DGLutGenerator::
 		getLuminanceGammaCurve(double_vector_ptr normalGammaCurve)
 	    {
@@ -212,9 +220,8 @@ namespace cms {
 						      double_vector(size));
 		double differ = maxLuminance - minLuminance;
 		for (int x = 0; x != size; x++) {
-		    double luminance =
+		    (*luminanceGammaCurve)[x] =
 			differ * (*normalGammaCurve)[x] + minLuminance;
-		    (*luminanceGammaCurve)[x] = luminance;
 		}
 		return luminanceGammaCurve;
 	    };
@@ -228,7 +235,8 @@ namespace cms {
 		return result;
 	    };
 	    double DGLutGenerator::getMaximumIntensity() {
-		int maxindex = (out == Dep::MaxValue::Int6Bit) ? 3 : 0;
+		//int maxindex = (out == Dep::MaxValue::Int6Bit) ? 3 : 0;
+                int maxindex = 0;
 		Component_ptr maxcomponent = (*componentVector)[maxindex];
 		RGB_ptr maxintensity = maxcomponent->intensity;
 		const Channel & minchannel = maxintensity->getMinChannel();
@@ -432,8 +440,8 @@ namespace cms {
 		//產生generator
 		generator.
 		    reset(new DGLutGenerator(componentVector, in, out));
-		//generator->setBitDepth(in, lut, out);
 		RGBGamma_ptr rgbgamma = generator->getRGBGamma(gammaCurve);
+                STORE_DOUBLE_ARRAY("0_gammacurve.xls",gammaCurve);
 		STORE_RGBGAMMA("1_rgbgamma_org.xls", rgbgamma);
 
 		/* TODO : 要確認 */
@@ -455,9 +463,6 @@ namespace cms {
 		//==============================================================
 		//第一次量化處理
 		//==============================================================
-		/*const MaxValue & maxValue = (lut == 10) ?
-		   MaxValue::Int10Bit : MaxValue::Int12Bit; */
-		//const MaxValue & maxValue = MaxValue::getMaxValue(lut);
 		//量化
 		RGBVector::quantization(dglut, lut);
 		//==============================================================
@@ -480,6 +485,7 @@ namespace cms {
 		    //generator.reset(new DGLutGenerator(compositionVector));
 		    //從目標gamma curve產生dg code, 此處是傳入normal gammaCurve
 		    dglut = generator->produce(rgbgamma);
+		    //量化
 		    RGBVector::quantization(dglut, lut);
 		    STORE_RGBVECTOR("5_dgcode_p1p2g.xls", dglut);
 		    //==========================================================
@@ -493,6 +499,7 @@ namespace cms {
 		    bptr < DGLutOp > op(new P1P2DGOp(p1, p2, lut));
 		    dgop.addOp(op);
 		    dglut = dgop.createInstance();
+		    //量化
 		    RGBVector::quantization(dglut, lut);
 		    STORE_RGBVECTOR("6_dgcode_p1p2dg.xls", dglut);
 		    //==========================================================
