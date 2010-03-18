@@ -341,6 +341,7 @@ object CCTLUTForm: TCCTLUTForm
           Height = 17
           Caption = '6'
           TabOrder = 0
+          OnClick = RadioButton_Out6Click
         end
         object RadioButton_Out8: TRadioButton
           Left = 8
@@ -351,6 +352,7 @@ object CCTLUTForm: TCCTLUTForm
           Checked = True
           TabOrder = 1
           TabStop = True
+          OnClick = RadioButton_Out8Click
         end
         object RadioButton_Out10: TRadioButton
           Left = 8
@@ -358,6 +360,7 @@ object CCTLUTForm: TCCTLUTForm
           Width = 40
           Height = 17
           Caption = '10'
+          Enabled = False
           TabOrder = 2
         end
       end

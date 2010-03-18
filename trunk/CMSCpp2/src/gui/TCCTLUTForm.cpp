@@ -258,3 +258,17 @@ void __fastcall TCCTLUTForm::Button_ResetClick(TObject * Sender)
 
 //---------------------------------------------------------------------------
 
+void __fastcall TCCTLUTForm::RadioButton_Out6Click(TObject * Sender)
+{
+    this->Edit_StartLevel->Text = "252";
+}
+
+//---------------------------------------------------------------------------
+
+void __fastcall TCCTLUTForm::RadioButton_Out8Click(TObject * Sender)
+{
+    this->Edit_StartLevel->Text = "255";
+}
+
+//---------------------------------------------------------------------------
+
