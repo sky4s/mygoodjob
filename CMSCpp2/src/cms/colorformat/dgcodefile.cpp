@@ -419,6 +419,8 @@ namespace cms {
 	const
 	string DGLutProperty::LUT = "lut";
 	const
+	string DGLutProperty::FRC = "FRC";
+	const
 	string DGLutProperty::Out = "out";
 	const
 	string DGLutProperty::Gamma = "gamma";
@@ -456,14 +458,22 @@ namespace cms {
 	    dgcode.addProperty(P1, c.p1);
 	    dgcode.addProperty(P2, c.p2);
 	    dgcode.addProperty(RBUnder, c.rbInterpUnder);
-	    dgcode.addProperty(In, *c.in.toString());
-	    dgcode.addProperty(LUT, *c.lut.toString());
-	    dgcode.addProperty(Out, *c.out.toString());
+	    bptr < BitDepthProcessor > bitDepth = c.bitDepth;
+	    dgcode.addProperty(In,
+			       *bitDepth->getInputMaxValue().toString());
+	    dgcode.addProperty(LUT,
+			       *bitDepth->getLutMaxValue().toString());
+	    dgcode.addProperty(Out,
+			       *bitDepth->getOutputMaxValue().toString());
+	    dgcode.addProperty(FRC,
+			       *bitDepth->getFRCMaxValue().toString());
+
 	    dgcode.addProperty(Gamma, c.gamma);
 	    dgcode.addProperty(GByPass, c.gByPass ? On : Off);
 	    dgcode.addProperty(BGain, c.bIntensityGain);
 	    dgcode.addProperty(BMax, c.bMax ? On : Off);
-	    dgcode.addProperty(Gamma256, c.gamma256 ? On : Off);
+
+	    dgcode.addProperty(Gamma256, bitDepth->isGamma256()? On : Off);
 	    dgcode.addProperty(FRC_NR, c.avoidFRCNoise ? On : Off);
 	};
 	DGLutProperty::DGLutProperty(const

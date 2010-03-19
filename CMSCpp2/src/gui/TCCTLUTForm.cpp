@@ -139,14 +139,17 @@ void __fastcall TCCTLUTForm::Button_RunClick(TObject * Sender)
 	RadioButton_Out6->Checked ? 6 : 0 +
 	RadioButton_Out8->Checked ? 8 : 0 +
 	RadioButton_Out10->Checked ? 10 : 0;
-    const MaxValue & inbit = MaxValue::getByBit(in);
-    const MaxValue & lutbit = MaxValue::getByBit(lut);
-    const MaxValue & outbit = MaxValue::getByBit(out);
-    //calibrator.setBitDepth(inbit, lutbit, outbit);
+    bool gamma256 = this->CheckBox_Gamma256->Checked;
+    bitDepth =
+	bptr < BitDepthProcessor >
+	(new BitDepthProcessor(in, lut, out, gamma256, false));
+    /*const MaxValue & inbit = MaxValue::getByBit(in);
+       const MaxValue & lutbit = MaxValue::getByBit(lut);
+       const MaxValue & outbit = MaxValue::getByBit(out); */
     //==========================================================================
 
     cms::lcd::calibrate::LCDCalibrator calibrator(MainForm->analyzer,
-						  inbit, lutbit, outbit);
+						  bitDepth);
 
     //==========================================================================
     // P1P2©MRBInterpªº¿ï¾Ü
@@ -187,7 +190,7 @@ void __fastcall TCCTLUTForm::Button_RunClick(TObject * Sender)
     }
     calibrator.setBMax(this->CheckBox_BMax->Checked);
     //==========================================================================
-    calibrator.setGamma256(this->CheckBox_Gamma256->Checked);
+    //calibrator.setGamma256(this->CheckBox_Gamma256->Checked);
     calibrator.setAvoidFRCNoise(this->CheckBox_AvoidNoise->Checked);
 
     int start = this->Edit_StartLevel->Text.ToInt();
@@ -268,6 +271,13 @@ void __fastcall TCCTLUTForm::RadioButton_Out6Click(TObject * Sender)
 void __fastcall TCCTLUTForm::RadioButton_Out8Click(TObject * Sender)
 {
     this->Edit_StartLevel->Text = "255";
+}
+
+//---------------------------------------------------------------------------
+
+void __fastcall TCCTLUTForm::Button_LoadGammaCurveClick(TObject * Sender)
+{
+    this->CheckBox_GByPass->Visible = true;
 }
 
 //---------------------------------------------------------------------------

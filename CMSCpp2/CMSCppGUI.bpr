@@ -35,7 +35,7 @@
       inetdbbde.bpi inetdbxpress.bpi inetdb.bpi nmfast.bpi webdsnap.bpi 
       bcbie.bpi websnap.bpi soaprtl.bpi dclocx.bpi dbexpress.bpi dbxcds.bpi 
       indy.bpi bcb2kaxserver.bpi bcbindent.bpi"/>
-    <PATHCPP value=".;src\gui;src\ca210api;src\cms;src\cms\colorformat;src\cms\colorspace;src\cms\measure;src\static;src\static\java;imports\CA200SRVRLib;src\cms\lcd\calibrate;src\static\math;src\cms\util"/>
+    <PATHCPP value=".;src\gui;src\gui;src\gui;src\ca210api;src\cms;src\cms;src\cms\colorformat;src\cms\colorspace;src\cms\colorspace;src\cms\colorspace;src\cms\colorspace;src\cms\colorspace;src\cms\measure;src\cms\measure;src\static;src\static\java;src\cms\measure;imports\CA200SRVRLib;imports\CA200SRVRLib;src\gui;src\gui;src\cms\lcd\calibrate;src\cms\measure;src\gui;src\cms\lcd\calibrate;src\cms\lcd\calibrate;src\cms\lcd\calibrate;src\static\math;src\gui;src\cms\lcd\calibrate;src\static\math;src\static\math;src\static\math;src\cms\colorformat;src\cms\lcd\calibrate;src\cms\lcd\calibrate;src\cms\util;src\cms\colorformat"/>
     <PATHPAS value=".;"/>
     <PATHRC value=".;"/>
     <PATHASM value=".;"/>

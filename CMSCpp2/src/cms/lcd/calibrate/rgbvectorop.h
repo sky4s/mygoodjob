@@ -53,21 +53,23 @@ namespace cms {
 
 	    class BMaxOp:public DGLutOp {
 	      private:
-		const Dep::MaxValue & out;
+		//const Dep::MaxValue & out;
+		bptr < BitDepthProcessor > bitDepth;
 	      public:
-		 BMaxOp(const Dep::MaxValue & out);
+		//BMaxOp(const Dep::MaxValue & out);
+		BMaxOp(bptr < BitDepthProcessor > bitDepth);
 	      protected:
-		 RGB_vector_ptr getRendering(RGB_vector_ptr source);
+		RGB_vector_ptr getRendering(RGB_vector_ptr source);
 	    };
 
 	    class GByPassOp:public DGLutOp {
 	      private:
-		const Dep::MaxValue & in, &out;
+		//const Dep::MaxValue & in, &out;
+		bptr < BitDepthProcessor > bitDepth;
 	      protected:
-		 RGB_vector_ptr getRendering(RGB_vector_ptr source);
+		RGB_vector_ptr getRendering(RGB_vector_ptr source);
 	      public:
-		 GByPassOp(const Dep::MaxValue & in,
-			   const Dep::MaxValue & out);
+		GByPassOp(bptr < BitDepthProcessor > bitDepth);
 	    };
 
 	    class FrcNROp:public DGLutOp {

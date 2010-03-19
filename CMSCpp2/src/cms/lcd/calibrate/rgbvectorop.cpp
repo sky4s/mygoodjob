@@ -58,7 +58,7 @@ namespace cms {
 		    RGB_ptr rgb = (*result)[x];
 		    rgb->setValues(v, v, v);
 		    rgb->quantization(maxValue);
-                    double d2=rgb->getValue(Channel::G);
+		    double d2 = rgb->getValue(Channel::G);
 		}
 
 		//if (true == smooth) {
@@ -107,19 +107,18 @@ namespace cms {
 	    //==================================================================
 
 	    //==================================================================
-	    BMaxOp::BMaxOp(const Dep::MaxValue & out):out(out) {
+	    /*BMaxOp::BMaxOp(const Dep::MaxValue & out):out(out) {
+
+	       }; */
+	  BMaxOp::BMaxOp(bptr < BitDepthProcessor > bitDepth):bitDepth(bitDepth)
+	    {
 
 	    };
 	    RGB_vector_ptr BMaxOp::getRendering(RGB_vector_ptr source) {
 		RGB_vector_ptr result = RGBVector::deepClone(source);
 		int size = result->size();
 		RGB_ptr bmax = (*result)[size - 1];
-		if (out == MaxValue::Int6Bit) {
-		    bmax->B = 252;
-		} else if (out == MaxValue::Int8Bit) {
-		    bmax->B = 255;
-		}
-
+		bmax->B = bitDepth->getMaxDigitalCount();
 
 		for (int x = size - 1; x != 1; x--) {
 		    RGB_ptr rgb = (*result)[x];
@@ -143,7 +142,9 @@ namespace cms {
 	    //==================================================================
 	    RGB_vector_ptr GByPassOp::getRendering(RGB_vector_ptr source) {
 		RGB_vector_ptr result = RGBVector::deepClone(source);
-		if (in == MaxValue::Int8Bit && out == MaxValue::Int6Bit) {
+		//8/6 0~244,245~250,251~255
+		//6/6 0~251,252~255
+		if (bitDepth->is8in6Out()) {
 		    for (int x = 0; x != 245; x++) {
 			(*result)[x]->G = x;
 		    };
@@ -153,8 +154,7 @@ namespace cms {
 		    for (int x = 251; x != 256; x++) {
 			(*result)[x]->G = (*result)[x - 1]->G + 1;
 		    };
-		} else if (in == MaxValue::Int6Bit
-			   && out == MaxValue::Int6Bit) {
+		} else if (bitDepth->is6in6Out()) {
 		    for (int x = 0; x != 252; x++) {
 			(*result)[x]->G = x;
 		    };
@@ -165,8 +165,7 @@ namespace cms {
 		return result;
 	    };
 
-	  GByPassOp::GByPassOp(const Dep::MaxValue & in, const Dep::MaxValue & out):in(in),
-		out(out)
+	  GByPassOp::GByPassOp(bptr < BitDepthProcessor > bitDepth):bitDepth(bitDepth)
 	    {
 
 	    };

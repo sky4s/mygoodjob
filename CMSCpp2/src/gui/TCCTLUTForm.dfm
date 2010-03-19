@@ -98,6 +98,7 @@ object CCTLUTForm: TCCTLUTForm
       Height = 25
       Caption = 'Load'
       TabOrder = 1
+      OnClick = Button_LoadGammaCurveClick
     end
     object CheckBox_GByPass: TCheckBox
       Left = 8
@@ -106,6 +107,7 @@ object CCTLUTForm: TCCTLUTForm
       Height = 25
       Caption = 'G ByPass'
       TabOrder = 2
+      Visible = False
     end
     object RadioButton_Gamma: TRadioButton
       Left = 8

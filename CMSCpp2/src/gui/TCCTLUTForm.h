@@ -9,6 +9,7 @@
 #include <Forms.hpp>
 #include <ExtCtrls.hpp>
 #include <Dialogs.hpp>
+#include <cms/lcd/calibrate/lcdcalibrator.h>
 //---------------------------------------------------------------------------
 class TCCTLUTForm:public TForm {
     __published:		// IDE-managed Components
@@ -77,11 +78,14 @@ class TCCTLUTForm:public TForm {
     void __fastcall Button_ResetClick(TObject * Sender);
     void __fastcall RadioButton_Out6Click(TObject * Sender);
     void __fastcall RadioButton_Out8Click(TObject * Sender);
+    void __fastcall Button_LoadGammaCurveClick(TObject * Sender);
   private:			// User declarations
     void resetBitDepth();
     void setBitDepthEnable(bool lut10, bool lut12, bool out6, bool out8,
 			   bool out10);
     int serialid;
+    //const MaxValue & inbit, &lutbit & outbit;
+     bptr < cms::lcd::calibrate::BitDepthProcessor > bitDepth;
 
   public:			// User declarations
      __fastcall TCCTLUTForm(TComponent * Owner);
