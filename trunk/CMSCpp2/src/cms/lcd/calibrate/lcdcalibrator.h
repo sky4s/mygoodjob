@@ -62,8 +62,8 @@ namespace cms {
 	    using namespace math;
 	    class DGLutGenerator {
 	      private:
-		const Dep::MaxValue & in, &out;
-		 bptr < PolynomialRegression > regression;
+		//const Dep::MaxValue & in, &out;
+		bptr < PolynomialRegression > regression;
 		Component_vector_ptr componentVector;
 		//double2D_ptr coefs;
 		double a0, a1, a2, a3, c, d;
@@ -71,6 +71,7 @@ namespace cms {
 		 bptr < math::Interpolation1DLUT > rLut;
 		 bptr < math::Interpolation1DLUT > gLut;
 		 bptr < math::Interpolation1DLUT > bLut;
+		 bptr < BitDepthProcessor > bitDepth;
 	      protected:
 		void init();
 		double getIntensity(double luminance);
@@ -82,8 +83,7 @@ namespace cms {
 		double getMaximumIntensity();
 	      public:
 		 DGLutGenerator(Component_vector_ptr componentVector,
-				const Dep::MaxValue & in,
-				const Dep::MaxValue & out);
+				bptr < BitDepthProcessor > bitDepth);
 		//RGB_vector_ptr produce(double_vector_ptr normalGammaCurve);
 		RGB_vector_ptr produce(RGBGamma_ptr normalRGBGammaCurve);
 		RGBGamma_ptr getRGBGamma(double_vector_ptr
@@ -99,19 +99,53 @@ namespace cms {
 		P1P2 = 1, RBInterpolation = 2, None = 3
 	    };
 
+	    class BitDepthProcessor {
+
+		enum BitDepth {
+		    b10_10, b10_8, b8_8, b8_6, b6_6
+		};
+	      private:
+		const Dep::MaxValue & in, &lut, &out;
+		const BitDepth bitDepth;
+		static BitDepth getBitDepth(const Dep::MaxValue & in,
+					    const Dep::MaxValue & out);
+		const bool gamma256;
+		const bool tconInput;
+	      public:
+
+		 BitDepthProcessor(int inBit, int lutBit, int outBit);
+		 BitDepthProcessor(int inBit, int lutBit, int outBit,
+				   bool gamma256, bool tconinput);
+
+		int getMeasureStart();
+		int getMeasureEnd();
+		int getMeasureStep();
+		int getMeasureFirstStep();
+		double getMaxDigitalCount();
+		int getMaxDigitalCountIndex();
+		int getMaxEffectiveDigitalCountIndex();
+		int getFRCBitDepth();
+		const Dep::MaxValue & getFRCMaxValue();
+		bool is8in6Out();
+		bool is6in6Out();
+		const Dep::MaxValue & getInputMaxValue();
+		const Dep::MaxValue & getLutMaxValue();
+		const Dep::MaxValue & getOutputMaxValue();
+		bool isGamma256();
+	    };
+
 	    class LCDCalibrator {
 		friend class cms::colorformat::DGLutProperty;
 	      private:
 
-		//bool p1p2;
 		 Correct correct;
 		double p1, p2;
-		const Dep::MaxValue & in, &lut, &out;
+		//const Dep::MaxValue & in, &lut, &out;
 		double rbInterpUnder;
 		bool gByPass;
 		double bIntensityGain;
 		bool bMax;
-		bool gamma256;
+		//bool gamma256;
 		bool avoidFRCNoise;
 		bool rgbgamma;
 		double gamma, rgamma, ggamma, bgamma;
@@ -122,8 +156,6 @@ namespace cms {
 		 bptr < DGLutGenerator > generator;
 		 bptr < ComponentFetcher > fetcher;
 		 bptr < cms::measure::IntensityAnalyzerIF > analyzer;
-		//RGBGamma_ptr getRGBGamma(double_vector_ptr gammaCurve);
-		//std::string dglut;
 
 		RGB_vector_ptr dglut;
 		Component_vector_ptr componentVector;
@@ -132,10 +164,10 @@ namespace cms {
 
 		int start, end, step;
 		void set(int start, int end, int step);
-		int getn();
-		int getEffectiven();
+		/*int getn();
+		   int getEffectiven(); */
+		 bptr < BitDepthProcessor > bitDepth;
 	      public:
-		//static double_array getGammaCurve(double gamma, int n);
 		static double_vector_ptr getGammaCurveVector
 		    (double gamma, int n, int effectiven);
 
@@ -151,24 +183,21 @@ namespace cms {
 		void setGByPass(bool byPass);
 		void setBIntensityGain(double gain);
 		void setBMax(bool bMax);
-		void setGamma256(bool gamma256);
+		//void setGamma256(bool gamma256);
 		void setAvoidFRCNoise(bool avoid);
-		/*void setBitDepth(const Dep::MaxValue & in,
-		   const Dep::MaxValue & lut,
-		   const Dep::MaxValue & out); */
 
 		/*LCDCalibrator(bptr < cms::measure::IntensityAnalyzerIF >
-		   analyzer); */
+		   analyzer, const Dep::MaxValue & in,
+		   const Dep::MaxValue & lut,
+		   const Dep::MaxValue & out); */
 		 LCDCalibrator(bptr < cms::measure::IntensityAnalyzerIF >
-			       analyzer, const Dep::MaxValue & in,
-			       const Dep::MaxValue & lut,
-			       const Dep::MaxValue & out);
+			       analyzer,
+			       bptr < BitDepthProcessor > bitDepth);
 
 		RGB_vector_ptr getDGLut(int start, int end, int step);
 		RGB_vector_ptr getDGLut(int step);
 		void storeDGLut(const std::string & filename,
 				RGB_vector_ptr dglut);
-		//static BitDepth getBitDepth(int bit);
 	      private:
 		 RGB_vector_ptr getDGLutOpResult(RGB_vector_ptr dglut);
 	    };

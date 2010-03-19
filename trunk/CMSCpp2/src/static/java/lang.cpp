@@ -20,11 +20,11 @@ namespace java {
 	 Class::Class(Object & object):object(object), info(typeid(object)) {
 
 	};
-	const string_ptr Class::getSimpleName() {
+	const string_ptr Class::getSimpleName() const {
 	    return string_ptr(new string(info.name()));
 	};
 
-	const string_ptr Class::getName() {
+	const string_ptr Class::getName() const {
 	    return string_ptr(new string(info.name()));
 	};
 	//======================================================================
@@ -38,7 +38,7 @@ namespace java {
 	    return false;
 	};
 
-	Class & Object::getClass() {
+	const Class & Object::getClass() {
 	    return c;
 	};
 	const int Object::hashCode() {
@@ -46,7 +46,7 @@ namespace java {
 	    return -1;
 	};
 
-	const string_ptr Object::toString() {
+	const string_ptr Object::toString() const {
 	    return getClass().getName();
 	};
 	const bool Object::isNull() {

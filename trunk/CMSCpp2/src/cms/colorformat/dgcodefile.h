@@ -89,6 +89,7 @@ namespace cms {
 	    static const std::string RBUnder;
 	    static const std::string In;
 	    static const std::string LUT;
+	    static const std::string FRC;
 	    static const std::string Out;
 	    static const std::string Gamma;
 	    static const std::string RGamma;

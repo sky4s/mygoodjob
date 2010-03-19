@@ -175,6 +175,7 @@ namespace cms {
     };
     namespace lcd {
 	namespace calibrate {
+	    class BitDepthProcessor;
 	    class LCDCalibrator;
 	    class RGBGamma;
 	    class Component;
@@ -273,8 +274,8 @@ namespace java {
 	     Object & object;
 	     Class(Object & object);
 	  public:
-	    const string_ptr getSimpleName();
-	    const string_ptr getName();
+	    const string_ptr getSimpleName() const;
+	    const string_ptr getName() const;
 	};
 
 	class Object {
@@ -282,12 +283,12 @@ namespace java {
 	    static int globalID;
 	    const int objectID;
 	    bool _null;
-	    Class c;
+	    const Class c;
 	  public:
 	    const bool equals(Object_ptr obj);
-	     Class & getClass();
+	    const Class & getClass();
 	    const int hashCode();
-	    const string_ptr toString();
+	    const string_ptr toString() const;
 	    const bool isNull();
 	     Object(bool _null);
 	     Object();
