@@ -165,10 +165,8 @@ namespace cms {
 				string & value) {
 	    db->setTableName(Properties);
 	    string_vector_ptr values(new string_vector(2));
-	    (*values)
-		[0] = key;
-	    (*values)
-		[1] = value;
+	    (*values)[0] = key;
+	    (*values)[1] = value;
 	    db->setCacheMode(false);
 	    db->insert(PropertiesFieldNames, values, true);
 #ifdef CACHE_SQL
@@ -176,10 +174,8 @@ namespace cms {
 #endif
 	};
 	void
-	 DGLutFile::addProperty(const
-				std::string & key, const
-				double
-				value) {
+	 DGLutFile::addProperty(const std::string & key,
+				const double value) {
 	    addProperty(key, lexical_cast < string > (value));
 	};
 
@@ -189,14 +185,17 @@ namespace cms {
 	    //==================================================================
 	    // 檢查來源資料
 	    //==================================================================
+	    int componentSize = componentVector->size();
 	    if (null != initialRGBGamma
-		&& componentVector->size() != initialRGBGamma->r->size()) {
+		&& componentSize != initialRGBGamma->r->size()) {
+		int r = initialRGBGamma->r->size();
 		throw
 		    IllegalArgumentException
 		    ("componentVector->size() != initialRGBGamma->r->size()");
 	    };
 	    if (null != finalRGBGamma
-		&& componentVector->size() != finalRGBGamma->r->size()) {
+		&& componentSize != finalRGBGamma->r->size()) {
+		int r = finalRGBGamma->r->size();
 		throw
 		    IllegalArgumentException
 		    ("componentVector->size() != finalRGBGamma->r->size()");

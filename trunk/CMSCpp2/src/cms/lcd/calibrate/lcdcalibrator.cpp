@@ -406,7 +406,7 @@ namespace cms {
 		case b8_6:
 		    return 1;
 		case b6_6:
-		    return 4;
+		    return 3;
 		}
 	    };
 	    /*
@@ -435,6 +435,10 @@ namespace cms {
 		    return gamma256 ? 256 : 255;
 		}
 	    };
+
+	    int BitDepthProcessor::getLevel() {
+		return getMaxDigitalCountIndex() + 1;
+	    };
 	    int BitDepthProcessor::getMaxEffectiveDigitalCountIndex() {
 		switch (bitDepth) {
 		case b10_10:
@@ -446,6 +450,10 @@ namespace cms {
 		case b6_6:
 		    return 252;
 		}
+	    };
+
+	    int BitDepthProcessor::getEffectiveLevel() {
+		return getMaxEffectiveDigitalCountIndex() + 1;
 	    };
 
 	    int BitDepthProcessor::getFRCBitDepth() {
@@ -529,20 +537,17 @@ namespace cms {
 	    };
 	    void LCDCalibrator::setGamma(double gamma) {
 		this->gamma = gamma;
-
-		setGammaCurve(getGammaCurveVector
-			      (gamma, bitDepth->getMaxDigitalCountIndex(),
-			       bitDepth->
-			       getMaxEffectiveDigitalCountIndex()));
+		int n = bitDepth->getLevel();
+		int effectiven = bitDepth->getEffectiveLevel();
+		setGammaCurve(getGammaCurveVector(gamma, n, effectiven));
 	    };
 	    void LCDCalibrator::setGamma(double rgamma, double ggamma,
 					 double bgamma) {
 		this->rgamma = rgamma;
 		this->ggamma = ggamma;
 		this->bgamma = bgamma;
-		int n = bitDepth->getMaxDigitalCountIndex();
-		int effectiven =
-		    bitDepth->getMaxEffectiveDigitalCountIndex();
+		int n = bitDepth->getLevel();
+		int effectiven = bitDepth->getEffectiveLevel();
 		setGammaCurve(getGammaCurveVector(rgamma, n, effectiven),
 			      getGammaCurveVector(ggamma, n, effectiven),
 			      getGammaCurveVector(bgamma, n, effectiven));
@@ -592,8 +597,9 @@ namespace cms {
 		if (null == gammaCurve) {
 		    throw new IllegalStateException("null == gammaCurve");
 		}
-		//量測start->end得到的coponent/Y componentVector =
-		fetcher->fetchComponent(start, end, step);
+		//量測start->end得到的coponent/Y
+		componentVector =
+		    fetcher->fetchComponent(start, end, step);
 		STORE_COMPONENT("0_fetch.xls", componentVector);
 
 		//產生generator
@@ -692,10 +698,12 @@ namespace cms {
 	    void LCDCalibrator::storeDGLut(const std::
 					   string & filename,
 					   RGB_vector_ptr dglut) {
-		int n = bitDepth->getMaxDigitalCountIndex();
+		int n = bitDepth->getLevel();
 		//int n = true == gamma256 ? 257 : 256;
 		//砍掉已存在的
 		ExcelFileDB::deleteExist(filename);
+		/*if (FileExists(filename)) {
+		}*/
 		//產生新檔
 		DGLutFile file(filename, n);
 		//產生property物件
