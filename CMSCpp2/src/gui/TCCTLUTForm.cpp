@@ -140,9 +140,7 @@ void __fastcall TCCTLUTForm::Button_RunClick(TObject * Sender)
 	RadioButton_Out8->Checked ? 8 : 0 +
 	RadioButton_Out10->Checked ? 10 : 0;
     bool gamma256 = this->CheckBox_Gamma256->Checked;
-    bitDepth =
-	bptr < BitDepthProcessor >
-	(new BitDepthProcessor(in, lut, out, gamma256, false));
+    bitDepth.reset(new BitDepthProcessor(in, lut, out, gamma256, false));
     /*const MaxValue & inbit = MaxValue::getByBit(in);
        const MaxValue & lutbit = MaxValue::getByBit(lut);
        const MaxValue & outbit = MaxValue::getByBit(out); */
@@ -199,19 +197,27 @@ void __fastcall TCCTLUTForm::Button_RunClick(TObject * Sender)
 
     int waitTimes = MainForm->getInterval();
     MainForm->mm->setWaitTimes(waitTimes);
+    try {
+	RGB_vector_ptr dglut = calibrator.getDGLut(start, end, step);
 
-    RGB_vector_ptr dglut = calibrator.getDGLut(start, end, step);
+	AnsiString dir = this->Edit_Directory->Text;
+	if (!DirectoryExists(dir)) {
+	    CreateDir(dir);
+	}
+	AnsiString sid = FormatFloat("00", serialid);
+	AnsiString astr =
+	    dir + "\\" + this->Edit_Prefix->Text + sid + ".xls";
+	string filename = astr.c_str();
 
-    AnsiString dir = this->Edit_Directory->Text;
-    if (!DirectoryExists(dir)) {
-	CreateDir(dir);
+	calibrator.storeDGLut(filename, dglut);
+	ShowMessage("Ok!");
     }
-    AnsiString sid = FormatFloat("00", serialid);
-    AnsiString astr = dir + "\\" + this->Edit_Prefix->Text + sid + ".xls";
-    string filename = astr.c_str();
+    catch(java::lang::IllegalStateException ex) {
+	ShowMessage(ex.toString().c_str());
+	/*CreateMessageDialog(ex.toString().c_str(), mtError,
+			    mbOKCancel)->Show();*/
+    }
 
-    calibrator.storeDGLut(filename, dglut);
-    ShowMessage("Ok!");
 }
 
 //---------------------------------------------------------------------------
