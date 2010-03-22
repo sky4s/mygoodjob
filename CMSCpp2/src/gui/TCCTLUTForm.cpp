@@ -208,12 +208,17 @@ void __fastcall TCCTLUTForm::Button_RunClick(TObject * Sender)
     int waitTimes = MainForm->getInterval();
     MainForm->mm->setWaitTimes(waitTimes);
     try {
-	RGB_vector_ptr dglut = calibrator.getDGLut(start, end, step);
-
 	AnsiString dir = this->Edit_Directory->Text;
 	if (!DirectoryExists(dir)) {
-	    CreateDir(dir);
+	    bool result = CreateDir(dir);
+	    if (!result) {
+		ShowMessage("Create " + dir + " is failed.");
+		return;
+	    }
 	}
+
+	RGB_vector_ptr dglut = calibrator.getDGLut(start, end, step);
+
 	AnsiString sid = FormatFloat("00", serialid);
 	AnsiString astr =
 	    dir + "\\" + this->Edit_Prefix->Text + sid + ".xls";
