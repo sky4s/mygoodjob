@@ -10,6 +10,7 @@
 
 //本項目內頭文件
 #include <cms/util/rgbarray.h>
+#include <debug.h>
 
 namespace cms {
     namespace lcd {
@@ -120,6 +121,14 @@ namespace cms {
 		RGB_ptr bmax = (*result)[size - 1];
 		bmax->B = bitDepth->getMaxDigitalCount();
 
+                STORE_RGBVECTOR("1.xls",result);
+		for (int x = bitDepth->getLevel() - 1;
+		     x >= (bitDepth->getEffectiveLevel() - 1); x--) {
+		    RGB_ptr rgb = (*result)[x];
+		    rgb->B = bitDepth->getMaxDigitalCount();
+		    int y = x;
+		}
+                STORE_RGBVECTOR("2.xls",result);
 
 		for (int x = size - 1; x != 1; x--) {
 		    RGB_ptr rgb = (*result)[x];
@@ -138,13 +147,14 @@ namespace cms {
 			break;
 		    }
 		}
+                STORE_RGBVECTOR("3.xls",result);
 
 		for (int x = bitDepth->getLevel() - 1;
 		     x >= (bitDepth->getEffectiveLevel() - 1); x--) {
 		    RGB_ptr rgb = (*result)[x];
 		    rgb->B = bitDepth->getMaxDigitalCount();
-		    int y = x;
-		}                
+		}
+                STORE_RGBVECTOR("4.xls",result);
 
 		return result;
 	    };

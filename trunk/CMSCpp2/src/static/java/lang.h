@@ -145,7 +145,6 @@
 #define _toString boost::lexical_cast < std::string >
 //==============================================================================
 
-
 namespace math {
     class Interpolation1DLUT;
 };
