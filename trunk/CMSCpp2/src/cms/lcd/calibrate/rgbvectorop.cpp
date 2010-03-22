@@ -120,22 +120,31 @@ namespace cms {
 		RGB_ptr bmax = (*result)[size - 1];
 		bmax->B = bitDepth->getMaxDigitalCount();
 
+
 		for (int x = size - 1; x != 1; x--) {
 		    RGB_ptr rgb = (*result)[x];
 		    RGB_ptr nextrgb = (*result)[x - 1];
-		    double diff = x > 252 ? 10 : (x > 232 ? 8 : 6);
+		    double diff =
+			x > 252 ? 10 / 4. : (x > 232 ? 8 / 4. : 6 / 4.);
+		    double thisB = rgb->B;
+		    double nextB = nextrgb->B;
 
-		    if (rgb->B > nextrgb->B) {
-			nextrgb->B = rgb->B - diff;
+
+		    if (thisB > nextB) {
+			nextrgb->B = thisB - diff;
 		    } else {
-			rgb->B =
-			    ((*result)[x + 1]->B +
-			     (*result)[x - 1]->B) / 2;
+			double preB = (*result)[x + 1]->B;
+			rgb->B = (preB + nextB) / 2.;
 			break;
 		    }
-
-
 		}
+
+		for (int x = bitDepth->getLevel() - 1;
+		     x >= (bitDepth->getEffectiveLevel() - 1); x--) {
+		    RGB_ptr rgb = (*result)[x];
+		    rgb->B = bitDepth->getMaxDigitalCount();
+		    int y = x;
+		}                
 
 		return result;
 	    };
@@ -185,20 +194,45 @@ namespace cms {
 			for (int x = 252; x != -1; x--) {
 			    RGB_ptr thisRGB = (*source)[x];
 			    RGB_ptr nextRGB = (*source)[x + 1];
-			    if (thisRGB->getValue(ch) >=
-				nextRGB->getValue(ch)) {
-				thisRGB->setValue(ch, nextRGB->
-						  getValue(ch) - 2);
+			    double thisv = thisRGB->getValue(ch);
+			    double nextv = nextRGB->getValue(ch);
+			    if (thisv >= nextv) {
+				thisRGB->setValue(ch, nextv - 2);
 			    } else {
 				break;
 			    }
 			}
 		    }
 		}
+		foreach(const Channel & ch, *Channel::RGBChannel) {
+		    for (int x = 1; x != 31; x++) {
+			RGB_ptr rgb = (*source)[x];
+			double v = rgb->getValue(ch);
+			if (v == 3 || v == 1) {
+			    double setvalue = (v == 3) ? 2.5 : 0.5;
+			    rgb->setValue(ch, setvalue);
+			    RGB_ptr prergb = (*source)[x - 1];
+			    double prev = prergb->getValue(ch);
+			    if (prev == rgb->getValue(ch)) {
+				prergb->setValue(ch, prev - 2);
+			    }
+			    if (prergb->getValue(ch) < 0) {
+				prergb->setValue(ch, 0);
+			    }
+			}
 
-		for (int x = 1; x != 31; x++) {
-		    RGB_ptr rgb = (*source)[x];
+		    }
 		}
+		return result;
+	    };
+	    //==================================================================
+
+	    //==================================================================
+	    RGB_vector_ptr KeepMaxLuminanceOp::
+		getRendering(RGB_vector_ptr source) {
+		int size = source->size();
+		RGB_vector_ptr result = RGBVector::clone(source);
+		return result;
 	    };
 	    //==================================================================
 	};

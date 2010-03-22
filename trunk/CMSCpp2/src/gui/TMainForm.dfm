@@ -1,6 +1,6 @@
 object MainForm: TMainForm
-  Left = 208
-  Top = 148
+  Left = 203
+  Top = 111
   Width = 666
   Height = 284
   Caption = 'CCT Adjustment v3'
@@ -92,6 +92,7 @@ object MainForm: TMainForm
       Checked = True
       TabOrder = 0
       TabStop = True
+      OnClick = RadioButton_PCClick
     end
     object RadioButton_TCON: TRadioButton
       Left = 8
@@ -100,6 +101,7 @@ object MainForm: TMainForm
       Height = 25
       Caption = 'T-CON'
       TabOrder = 1
+      OnClick = RadioButton_TCONClick
     end
   end
   object MainMenu1: TMainMenu
@@ -113,6 +115,7 @@ object MainForm: TMainForm
     end
     object GammaAdj1: TMenuItem
       Caption = 'GammaAdj'
+      OnClick = GammaAdj1Click
     end
     object Measurement1: TMenuItem
       Caption = 'Measurement'

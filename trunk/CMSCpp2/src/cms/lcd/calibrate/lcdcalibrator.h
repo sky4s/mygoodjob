@@ -105,17 +105,15 @@ namespace cms {
 		    b10_10, b10_8, b8_8, b8_6, b6_6
 		};
 	      private:
-		const Dep::MaxValue & in, &lut, &out;
-		const BitDepth bitDepth;
+		const Dep::MaxValue * in, *lut, *out;
+		BitDepth bitDepth;
 		static BitDepth getBitDepth(const Dep::MaxValue & in,
 					    const Dep::MaxValue & out);
-		const bool gamma256;
-		const bool tconInput;
+		bool gamma256;
+		bool tconInput;
 		int getMaxDigitalCountIndex();
 		int getMaxEffectiveDigitalCountIndex();
 	      public:
-
-		 BitDepthProcessor(int inBit, int lutBit, int outBit);
 		 BitDepthProcessor(int inBit, int lutBit, int outBit,
 				   bool gamma256, bool tconinput);
 
@@ -123,6 +121,7 @@ namespace cms {
 		int getMeasureEnd();
 		int getMeasureStep();
 		int getMeasureFirstStep();
+		int getMeasureLevel();
 		double getMaxDigitalCount();
 
 		int getLevel();
@@ -136,6 +135,14 @@ namespace cms {
 		const Dep::MaxValue & getLutMaxValue();
 		const Dep::MaxValue & getOutputMaxValue();
 		bool isGamma256();
+		bool isTCONInput();
+
+		void setGamma256(bool gamam256);
+		void setTCONInput(bool tconInput);
+		void setInBit(int inBit);
+		void setLUTBit(int lutBit);
+		void setOutBit(int outBit);
+
 	    };
 
 	    class LCDCalibrator {
@@ -149,6 +156,7 @@ namespace cms {
 		bool gByPass;
 		double bIntensityGain;
 		bool bMax;
+		bool keepMaxLuminance;
 		//bool gamma256;
 		bool avoidFRCNoise;
 		bool rgbgamma;
@@ -168,8 +176,6 @@ namespace cms {
 
 		int start, end, step;
 		void set(int start, int end, int step);
-		/*int getn();
-		   int getEffectiven(); */
 		 bptr < BitDepthProcessor > bitDepth;
 	      public:
 		static double_vector_ptr getGammaCurveVector
@@ -187,13 +193,9 @@ namespace cms {
 		void setGByPass(bool byPass);
 		void setBIntensityGain(double gain);
 		void setBMax(bool bMax);
-		//void setGamma256(bool gamma256);
 		void setAvoidFRCNoise(bool avoid);
+		void setKeepMaxLuminance(bool keepMaxLuminance);
 
-		/*LCDCalibrator(bptr < cms::measure::IntensityAnalyzerIF >
-		   analyzer, const Dep::MaxValue & in,
-		   const Dep::MaxValue & lut,
-		   const Dep::MaxValue & out); */
 		 LCDCalibrator(bptr < cms::measure::IntensityAnalyzerIF >
 			       analyzer,
 			       bptr < BitDepthProcessor > bitDepth);

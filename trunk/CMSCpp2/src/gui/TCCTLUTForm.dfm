@@ -1,8 +1,8 @@
 object CCTLUTForm: TCCTLUTForm
-  Left = 210
-  Top = 438
+  Left = 203
+  Top = 401
   Width = 656
-  Height = 425
+  Height = 426
   Caption = 'CCT LUT'
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
@@ -12,7 +12,7 @@ object CCTLUTForm: TCCTLUTForm
   Font.Style = []
   OldCreateOrder = False
   OnCreate = FormCreate
-  OnKeyPress = FormKeyPress
+  OnShow = FormShow
   PixelsPerInch = 120
   TextHeight = 16
   object GroupBox1: TGroupBox
@@ -364,16 +364,18 @@ object CCTLUTForm: TCCTLUTForm
           Caption = '10'
           Enabled = False
           TabOrder = 2
+          OnClick = RadioButton_Out10Click
         end
       end
     end
     object CheckBox_Gamma256: TCheckBox
-      Left = 8
-      Top = 200
+      Left = 112
+      Top = 184
       Width = 97
       Height = 25
       Caption = 'Gamma 256'
       TabOrder = 0
+      OnClick = CheckBox_Gamma256Click
     end
     object CheckBox_AvoidNoise: TCheckBox
       Left = 8
@@ -382,6 +384,14 @@ object CCTLUTForm: TCCTLUTForm
       Height = 25
       Caption = 'Avoid FRC Noise'
       TabOrder = 1
+    end
+    object CheckBox_KeepMax: TCheckBox
+      Left = 8
+      Top = 200
+      Width = 153
+      Height = 25
+      Caption = 'Keep Max Luminance'
+      TabOrder = 3
     end
   end
   object GroupBox7: TGroupBox

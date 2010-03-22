@@ -76,6 +76,11 @@ namespace cms {
 	      protected:
 		RGB_vector_ptr getRendering(RGB_vector_ptr source);
 	    };
+
+	    class KeepMaxLuminanceOp:public DGLutOp {
+	      protected:
+		RGB_vector_ptr getRendering(RGB_vector_ptr source);
+	    };
 	};
     };
 }

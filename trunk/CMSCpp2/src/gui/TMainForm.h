@@ -42,6 +42,9 @@ class TMainForm:public TForm {
     void __fastcall TargetWhite1Click(TObject * Sender);
     void __fastcall FormCreate(TObject * Sender);
     void __fastcall CCTLUT1Click(TObject * Sender);
+    void __fastcall GammaAdj1Click(TObject * Sender);
+    void __fastcall RadioButton_TCONClick(TObject * Sender);
+    void __fastcall RadioButton_PCClick(TObject * Sender);
   private:			// User declarations
     //==========================================================================
     // meter

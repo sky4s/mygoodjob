@@ -11,11 +11,15 @@
 #include <java/lang.h>
 
 namespace util {
-    //using namespace std;
-    //using namespace boost;
+    using namespace std;
+    using namespace boost;
     class Util {
       public:
 	static string_ptr toString(wchar_t * wc);
+	static template < typename T >
+	    const string Util::toString(const T t) {
+	    return lexical_cast < string > (t);
+	};
 	static boost::shared_array < wchar_t >
 	    towchar_t(std::string & str);
 	static wchar_t *towchar_t2(std::string & str);
