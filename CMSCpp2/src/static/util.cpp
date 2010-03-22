@@ -16,6 +16,7 @@ namespace util {
 	shared_ptr < string > result(new string(c));
 	return result;
     };
+
     shared_array < wchar_t > Util::towchar_t(string & str) {
 	unsigned int size = str.size();
 

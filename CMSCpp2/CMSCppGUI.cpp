@@ -15,9 +15,10 @@ WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 {
     try {
 	Application->Initialize();
-	Application->CreateForm(__classid(TMainForm), &MainForm);
-                 Application->CreateForm(__classid(TTargetWhiteForm), &TargetWhiteForm);
+	Application->Title = "CCT Adjustment v3";
+                 Application->CreateForm(__classid(TMainForm), &MainForm);
                  Application->CreateForm(__classid(TMeasureWindow), &MeasureWindow);
+                 Application->CreateForm(__classid(TTargetWhiteForm), &TargetWhiteForm);
                  Application->CreateForm(__classid(TAboutBox), &AboutBox);
                  Application->CreateForm(__classid(TTargetWhiteForm2), &TargetWhiteForm2);
                  Application->CreateForm(__classid(TCCTLUTForm), &CCTLUTForm);

@@ -11,7 +11,7 @@
 //本項目內頭文件
 
 //不做初使化(其實沒有初始化的必要了)
-#define LAZY_EXCEL false
+#define LAZY_EXCEL true
 //將多筆sql合併成一句執行(excel似乎不能這樣玩)
 //#define CACHE_SQL
 
@@ -186,40 +186,46 @@ namespace cms {
 	    // 檢查來源資料
 	    //==================================================================
 	    int componentSize = componentVector->size();
-	    if (null != initialRGBGamma
-		&& componentSize != initialRGBGamma->r->size()) {
-		int r = initialRGBGamma->r->size();
-		throw
-		    IllegalArgumentException
-		    ("componentVector->size() != initialRGBGamma->r->size()");
+	    if (null != initialRGBGamma && null != finalRGBGamma
+		&& initialRGBGamma->r->size() !=
+		finalRGBGamma->r->size()) {
+		IllegalArgumentException
+		    ("initialRGBGamma->size() != finalRGBGamma->size()");
 	    };
-	    if (null != finalRGBGamma
-		&& componentSize != finalRGBGamma->r->size()) {
-		int r = finalRGBGamma->r->size();
-		throw
-		    IllegalArgumentException
-		    ("componentVector->size() != finalRGBGamma->r->size()");
-	    };
+	    /*if (null != initialRGBGamma
+	       && componentSize != initialRGBGamma->r->size()) {
+	       int r = initialRGBGamma->r->size();
+	       throw
+	       IllegalArgumentException
+	       ("componentVector->size() != initialRGBGamma->r->size()");
+	       };
+	       if (null != finalRGBGamma
+	       && componentSize != finalRGBGamma->r->size()) {
+	       int r = finalRGBGamma->r->size();
+	       throw
+	       IllegalArgumentException
+	       ("componentVector->size() != finalRGBGamma->r->size()");
+	       }; */
 	    //==================================================================
 	    //==================================================================
 	    // 初始資料設定
 	    //==================================================================
+	    int part1Size = componentVector->size();
+	    int part2Size =
+		null !=
+		initialRGBGamma ? initialRGBGamma->r->size() : part1Size;
 	    db->setTableName(RawData);
-	    int
-	     size = componentVector->size();
+	    int size = componentVector->size();
 	    string_vector_ptr values(new string_vector(13));
 	    //==================================================================
 	    //==================================================================
 	    // 迴圈處理
 	    //==================================================================
-	    for (int x = 0; x != size; x++) {
-		int n = size - 1 - x;
-		Component_ptr c = (*componentVector)
-		    [x];
-		int w = static_cast < int
-		    >(c->rgb->getValue(Channel::W));
-		(*values)
-		    [0] = lexical_cast < string > (w);
+	    for (int x = 0; x != part1Size; x++) {
+		int n = part2Size - 1 - x;
+		Component_ptr c = (*componentVector)[x];
+		int w = static_cast < int >(c->rgb->getValue(Channel::W));
+		(*values)[0] = lexical_cast < string > (w);
 		xyY_ptr xyY(new CIExyY(c->XYZ));
 		(*values)
 		    [1] = lexical_cast < string > (xyY->x);
@@ -258,6 +264,45 @@ namespace cms {
 
 		if (!lazyMode) {
 		    db->update(RawHeader[0], w, RawFieldNames, values,
+			       false);
+		} else {
+		    db->insert(RawFieldNames, values, false);
+		}
+	    }
+
+	    for (int x = part1Size; x != part2Size; x++) {
+		int n = part2Size - 1 - x;
+		(*values)[0] = "0";
+		(*values)[1] = "0";
+		(*values)[2] = "0";
+		(*values)[3] = "0";
+		(*values)[4] = "0";
+		(*values)[5] = "0";
+		(*values)[6] = "0";
+
+		//gamma 0~100
+		if (null != initialRGBGamma) {
+		    (*values)[7] = _toString((*initialRGBGamma->r)[n]);
+		    (*values)[8] = _toString((*initialRGBGamma->g)[n]);
+		    (*values)[9] = _toString((*initialRGBGamma->b)[n]);
+		} else {
+		    (*values)[7] = "0";
+		    (*values)[8] = "0";
+		    (*values)[9] = "0";
+		}
+
+		if (null != finalRGBGamma) {
+		    (*values)[10] = _toString((*finalRGBGamma->r)[n]);
+		    (*values)[11] = _toString((*finalRGBGamma->g)[n]);
+		    (*values)[12] = _toString((*finalRGBGamma->b)[n]);
+		} else {
+		    (*values)[10] = "0";
+		    (*values)[11] = "0";
+		    (*values)[12] = "0";
+		}
+
+		if (!lazyMode) {
+		    db->update(RawHeader[0], 0, RawFieldNames, values,
 			       false);
 		} else {
 		    db->insert(RawFieldNames, values, false);
@@ -452,8 +497,8 @@ namespace cms {
 	    dgcode.addProperty(Step, c.step);
 	    dgcode.addProperty(DimCorrect,
 			       (c.correct == 1) ? "P1P2" :
-			       (c.correct == 2) ?
-			       "RBInterpolation" : "None");
+			       (c.correct ==
+				2) ? "RBInterpolation" : "None");
 	    dgcode.addProperty(P1, c.p1);
 	    dgcode.addProperty(P2, c.p2);
 	    dgcode.addProperty(RBUnder, c.rbInterpUnder);

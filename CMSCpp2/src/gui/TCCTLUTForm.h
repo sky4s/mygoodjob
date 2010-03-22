@@ -65,6 +65,7 @@ class TCCTLUTForm:public TForm {
     TButton *Button_Debug;
     TRadioButton *RadioButton_None;
     TButton *Button_Reset;
+    TCheckBox *CheckBox_KeepMax;
     void __fastcall Button_BrowseDirClick(TObject * Sender);
     void __fastcall RadioButton_In6Click(TObject * Sender);
     void __fastcall RadioButton_In8Click(TObject * Sender);
@@ -72,23 +73,28 @@ class TCCTLUTForm:public TForm {
     void __fastcall RadioButton_RBInterpClick(TObject * Sender);
     void __fastcall RadioButton_P1P2Click(TObject * Sender);
     void __fastcall Button_RunClick(TObject * Sender);
-    void __fastcall FormKeyPress(TObject * Sender, char &Key);
     void __fastcall FormCreate(TObject * Sender);
     void __fastcall Button_DebugClick(TObject * Sender);
     void __fastcall Button_ResetClick(TObject * Sender);
     void __fastcall RadioButton_Out6Click(TObject * Sender);
     void __fastcall RadioButton_Out8Click(TObject * Sender);
     void __fastcall Button_LoadGammaCurveClick(TObject * Sender);
+    void __fastcall CheckBox_Gamma256Click(TObject * Sender);
+    void __fastcall RadioButton_Out10Click(TObject * Sender);
+    void __fastcall FormShow(TObject * Sender);
   private:			// User declarations
-    void resetBitDepth();
     void setBitDepthEnable(bool lut10, bool lut12, bool out6, bool out8,
 			   bool out10);
+    void setBitDepthChecked(int lutSelect, int outSelect);
+    void setMeasureInfo();
     int serialid;
-    //const MaxValue & inbit, &lutbit & outbit;
      bptr < cms::lcd::calibrate::BitDepthProcessor > bitDepth;
+    int in, lut, out;
+
 
   public:			// User declarations
      __fastcall TCCTLUTForm(TComponent * Owner);
+    void setTCONInput(bool tconInput);
 };
 //---------------------------------------------------------------------------
 extern PACKAGE TCCTLUTForm *CCTLUTForm;

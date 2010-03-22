@@ -119,3 +119,26 @@ void __fastcall TMainForm::CCTLUT1Click(TObject * Sender)
 
 //---------------------------------------------------------------------------
 
+void __fastcall TMainForm::GammaAdj1Click(TObject * Sender)
+{
+    //MeasureWindow->ShowModal();
+    //MeasureWindow->Visible = true;
+}
+
+//---------------------------------------------------------------------------
+
+
+void __fastcall TMainForm::RadioButton_TCONClick(TObject * Sender)
+{
+    CCTLUTForm->setTCONInput(true);
+}
+
+//---------------------------------------------------------------------------
+
+void __fastcall TMainForm::RadioButton_PCClick(TObject * Sender)
+{
+    CCTLUTForm->setTCONInput(false);
+}
+
+//---------------------------------------------------------------------------
+

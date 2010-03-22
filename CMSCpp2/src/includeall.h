@@ -6,6 +6,7 @@
 #include <cms/colorspace/include.h>
 #include <cms/colorformat/include.h>
 #include <java/lang.h>
+#include <util.h>
 #include <vcl.h>
 
  

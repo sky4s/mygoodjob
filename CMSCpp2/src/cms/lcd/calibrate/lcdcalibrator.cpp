@@ -182,7 +182,7 @@ namespace cms {
 		d = -a0 / (a1 + a2 + a3);
 		//==============================================================
 		double maxintensity =
-		    Math::floor(getMaximumIntensity()) + 1;
+		    Math::floor(getMaximumIntensity());
 
 		maxLuminance =
 		    getLuminance(maxintensity, maxintensity, maxintensity);
@@ -330,26 +330,13 @@ namespace cms {
 		}
 	    };
 
-
-	  BitDepthProcessor::BitDepthProcessor(int inBit, int lutBit, int outBit):in(MaxValue::
-	       getByBit(inBit)), lut(MaxValue::getByBit(lutBit)),
-      out(MaxValue::getByBit(outBit)), bitDepth(getBitDepth(in, out)),
-      gamma256(false), tconInput(false) {
-
-	    };
-
-	    BitDepthProcessor::BitDepthProcessor(int inBit, int lutBit,
-						 int outBit, bool
-						 gamma256,
-						 bool
-						 tconInput):in(MaxValue::
-							       getByBit
-							       (inBit)),
-		lut(MaxValue::getByBit(lutBit)),
-		out(MaxValue::getByBit(outBit)),
-		bitDepth(getBitDepth(in, out)), gamma256(gamma256),
-		tconInput(tconInput) {
-
+	  BitDepthProcessor::BitDepthProcessor(int inBit, int lutBit, int outBit, bool gamma256, bool tconInput):gamma256(gamma256),
+		tconInput(tconInput)
+	    {
+		in = &MaxValue::getByBit(inBit);
+		lut = &MaxValue::getByBit(lutBit);
+		out = &MaxValue::getByBit(outBit);
+		bitDepth = getBitDepth(*in, *out);
 	    };
 
 	    /*
@@ -408,6 +395,11 @@ namespace cms {
 		case b6_6:
 		    return 3;
 		}
+	    };
+	    int BitDepthProcessor::getMeasureLevel() {
+		int level =
+		    (getMeasureStart() -
+		     getMeasureFirstStep()) / getMeasureStep() + 2;
 	    };
 	    /*
 	       DG Lut最大值(in 8Bit)
@@ -484,16 +476,36 @@ namespace cms {
 	    };
 
 	    const Dep::MaxValue & BitDepthProcessor::getInputMaxValue() {
-		return in;
+		return *in;
 	    };
 	    const Dep::MaxValue & BitDepthProcessor::getLutMaxValue() {
-		return lut;
+		return *lut;
 	    };
 	    const Dep::MaxValue & BitDepthProcessor::getOutputMaxValue() {
-		return out;
+		return *out;
 	    };
 	    bool BitDepthProcessor::isGamma256() {
 		return gamma256;
+	    };
+	    bool BitDepthProcessor::isTCONInput() {
+		return tconInput;
+	    };
+	    void BitDepthProcessor::setGamma256(bool gamma256) {
+		this->gamma256 = gamma256;
+	    };
+	    void BitDepthProcessor::setTCONInput(bool tconInput) {
+		this->tconInput = tconInput;
+	    };
+	    void BitDepthProcessor::setInBit(int inBit) {
+		in = &MaxValue::getByBit(inBit);
+		bitDepth = getBitDepth(*in, *out);
+	    };
+	    void BitDepthProcessor::setLUTBit(int lutBit) {
+		lut = &MaxValue::getByBit(lutBit);
+	    };
+	    void BitDepthProcessor::setOutBit(int outBit) {
+		out = &MaxValue::getByBit(outBit);
+		bitDepth = getBitDepth(*in, *out);
 	    };
 	    //==================================================================
 
@@ -515,8 +527,7 @@ namespace cms {
 			static_cast < double >(x) / (effectiven - 1);
 		    double v = java::lang::Math::pow(normal, gamma);
 		    (*result)[x] = v;
-		}
-		for (int x = effectiven; x < n; x++) {
+		} for (int x = effectiven; x < n; x++) {
 		    (*result)[x] = 1;
 		}
 		return result;
@@ -539,6 +550,7 @@ namespace cms {
 		this->gamma = gamma;
 		int n = bitDepth->getLevel();
 		int effectiven = bitDepth->getEffectiveLevel();
+		int measureLevel = bitDepth->getMeasureLevel();
 		setGammaCurve(getGammaCurveVector(gamma, n, effectiven));
 	    };
 	    void LCDCalibrator::setGamma(double rgamma, double ggamma,
@@ -548,8 +560,10 @@ namespace cms {
 		this->bgamma = bgamma;
 		int n = bitDepth->getLevel();
 		int effectiven = bitDepth->getEffectiveLevel();
-		setGammaCurve(getGammaCurveVector(rgamma, n, effectiven),
-			      getGammaCurveVector(ggamma, n, effectiven),
+		setGammaCurve(getGammaCurveVector
+			      (rgamma, n, effectiven),
+			      getGammaCurveVector(ggamma, n,
+						  effectiven),
 			      getGammaCurveVector(bgamma, n, effectiven));
 	    };
 	    void LCDCalibrator::
@@ -576,6 +590,9 @@ namespace cms {
 	    void LCDCalibrator::setAvoidFRCNoise(bool avoid) {
 		this->avoidFRCNoise = avoid;
 	    };
+	    void LCDCalibrator::setKeepMaxLuminance(bool keepMaxLuminance) {
+		this->keepMaxLuminance = keepMaxLuminance;
+	    };
 
 	  LCDCalibrator::LCDCalibrator(bptr < cms::measure::IntensityAnalyzerIF > analyzer, bptr < BitDepthProcessor > bitDepth):analyzer(analyzer),
 		bitDepth(bitDepth)
@@ -597,7 +614,7 @@ namespace cms {
 		if (null == gammaCurve) {
 		    throw new IllegalStateException("null == gammaCurve");
 		}
-		//量測start->end得到的coponent/Y
+		//量測start->end得到的coponent/Y 
 		componentVector =
 		    fetcher->fetchComponent(start, end, step);
 		STORE_COMPONENT("0_fetch.xls", componentVector);
@@ -682,7 +699,8 @@ namespace cms {
 
 		STORE_RGBVECTOR("7_dgcode_final.xls", result);
 		//調整max value
-		RGBVector::changeMaxValue(result, frcBit);
+		RGBVector::changeMaxValue(result,
+					  bitDepth->getLutMaxValue());
 
 		this->dglut = result;
 		return result;
@@ -703,7 +721,7 @@ namespace cms {
 		//砍掉已存在的
 		ExcelFileDB::deleteExist(filename);
 		/*if (FileExists(filename)) {
-		}*/
+		   } */
 		//產生新檔
 		DGLutFile file(filename, n);
 		//產生property物件
@@ -748,9 +766,15 @@ namespace cms {
 		    bptr < DGLutOp > avoidNoise(new FrcNROp());
 		    dgop.addOp(avoidNoise);
 		}
+
 		/*if (gamma256) {
 
 		   } */
+		if (keepMaxLuminance) {
+		    //keep最大亮度
+		    bptr < DGLutOp > KeepMax(new KeepMaxLuminanceOp());
+		    dgop.addOp(KeepMax);
+		}
 		RGB_vector_ptr result = dgop.createInstance();
 		return result;
 		//==============================================================
