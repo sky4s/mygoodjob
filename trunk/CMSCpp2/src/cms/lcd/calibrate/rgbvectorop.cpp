@@ -118,19 +118,14 @@ namespace cms {
 	    RGB_vector_ptr BMaxOp::getRendering(RGB_vector_ptr source) {
 		RGB_vector_ptr result = RGBVector::deepClone(source);
 		int size = result->size();
-		RGB_ptr bmax = (*result)[size - 1];
-		bmax->B = bitDepth->getMaxDigitalCount();
-
-                STORE_RGBVECTOR("1.xls",result);
 		for (int x = bitDepth->getLevel() - 1;
 		     x >= (bitDepth->getEffectiveLevel() - 1); x--) {
 		    RGB_ptr rgb = (*result)[x];
 		    rgb->B = bitDepth->getMaxDigitalCount();
 		    int y = x;
 		}
-                STORE_RGBVECTOR("2.xls",result);
 
-		for (int x = size - 1; x != 1; x--) {
+		for (int x = size - 2; x != 1; x--) {
 		    RGB_ptr rgb = (*result)[x];
 		    RGB_ptr nextrgb = (*result)[x - 1];
 		    double diff =
@@ -147,14 +142,12 @@ namespace cms {
 			break;
 		    }
 		}
-                STORE_RGBVECTOR("3.xls",result);
 
-		for (int x = bitDepth->getLevel() - 1;
+		/*for (int x = bitDepth->getLevel() - 1;
 		     x >= (bitDepth->getEffectiveLevel() - 1); x--) {
 		    RGB_ptr rgb = (*result)[x];
 		    rgb->B = bitDepth->getMaxDigitalCount();
-		}
-                STORE_RGBVECTOR("4.xls",result);
+		}*/
 
 		return result;
 	    };
