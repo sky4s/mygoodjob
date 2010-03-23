@@ -331,3 +331,17 @@ void __fastcall TCCTLUTForm::FormShow(TObject * Sender)
 
 //---------------------------------------------------------------------------
 
+void __fastcall TCCTLUTForm::RadioButton_Lut12Click(TObject * Sender)
+{
+    bitDepth->setLUTBit(12);
+}
+
+//---------------------------------------------------------------------------
+
+void __fastcall TCCTLUTForm::RadioButton_Lut10Click(TObject * Sender)
+{
+    bitDepth->setLUTBit(10);
+}
+
+//---------------------------------------------------------------------------
+

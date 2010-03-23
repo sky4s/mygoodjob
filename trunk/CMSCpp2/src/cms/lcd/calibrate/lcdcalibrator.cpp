@@ -147,8 +147,7 @@ namespace cms {
 		c = 1 / (a1 + a2 + a3);
 		d = -a0 / (a1 + a2 + a3);
 		//==============================================================
-		double maxintensity =
-		    Math::floor(getMaximumIntensity());
+		double maxintensity = Math::roundTo(getMaximumIntensity());
 
 		maxLuminance =
 		    getLuminance(maxintensity, maxintensity, maxintensity);
@@ -250,6 +249,8 @@ namespace cms {
 		getRGBGamma(double_vector_ptr normalGammaCurve) {
 		double_vector_ptr luminanceGammaCurve =
 		    getLuminanceGammaCurve(normalGammaCurve);
+		STORE_DOUBLE_VECTOR("0_lumicurve.xls",
+				    luminanceGammaCurve);
 		int size = luminanceGammaCurve->size();
 		double_vector_ptr rIntenisty(new double_vector(size));
 		double_vector_ptr gIntenisty(new double_vector(size));
@@ -273,207 +274,7 @@ namespace cms {
 
 	    //==================================================================
 
-	    //==================================================================
-	    // BitDepthProcessor
-	    //==================================================================
-	    BitDepthProcessor::BitDepth BitDepthProcessor::
-		getBitDepth(const Dep::MaxValue & in,
-			    const Dep::MaxValue & out) {
-		if (in == MaxValue::Int10Bit && out == MaxValue::Int10Bit) {
-		    return b10_10;
-		} else if (in == MaxValue::Int10Bit
-			   && out == MaxValue::Int8Bit) {
-		    return b10_8;
-		} else if (in == MaxValue::Int8Bit
-			   && out == MaxValue::Int8Bit) {
-		    return b8_8;
-		} else if (in == MaxValue::Int8Bit
-			   && out == MaxValue::Int6Bit) {
-		    return b8_6;
-		} else if (in == MaxValue::Int6Bit
-			   && out == MaxValue::Int6Bit) {
-		    return b6_6;
-		}
-	    };
 
-	  BitDepthProcessor::BitDepthProcessor(int inBit, int lutBit, int outBit, bool gamma256, bool tconInput):gamma256(gamma256),
-		tconInput(tconInput)
-	    {
-		in = &MaxValue::getByBit(inBit);
-		lut = &MaxValue::getByBit(lutBit);
-		out = &MaxValue::getByBit(outBit);
-		bitDepth = getBitDepth(*in, *out);
-	    };
-
-	    /*
-	       量測起點
-	     */
-	    int BitDepthProcessor::getMeasureStart() {
-		switch (bitDepth) {
-		case b10_10:
-		    return tconInput ? 1023 : 255;
-		case b10_8:
-		case b8_8:
-		    return tconInput ? 1020 : 255;
-		case b8_6:
-		case b6_6:
-		    return 252;
-		}
-	    };
-	    /*
-	       量測終點
-	     */
-	    int BitDepthProcessor::getMeasureEnd() {
-		switch (bitDepth) {
-		case b10_10:
-		case b10_8:
-		case b8_8:
-		case b8_6:
-		case b6_6:
-		    return 0;
-		}
-	    };
-	    /*
-	       量測step
-	     */
-	    int BitDepthProcessor::getMeasureStep() {
-		switch (bitDepth) {
-		case b10_10:
-		case b10_8:
-		case b8_8:
-		    return tconInput ? 4 : 1;
-		case b8_6:
-		    return 1;
-		case b6_6:
-		    return 4;
-		}
-	    };
-
-	    int BitDepthProcessor::getMeasureFirstStep() {
-		switch (bitDepth) {
-		case b10_10:
-		    return tconInput ? 3 : 1;
-		case b10_8:
-		case b8_8:
-		    return tconInput ? 4 : 1;
-		case b8_6:
-		    return 1;
-		case b6_6:
-		    return 3;
-		}
-	    };
-	    int BitDepthProcessor::getMeasureLevel() {
-		int level =
-		    (getMeasureStart() -
-		     getMeasureFirstStep()) / getMeasureStep() + 2;
-	    };
-	    /*
-	       DG Lut最大值(in 8Bit)
-	     */
-	    double BitDepthProcessor::getMaxDigitalCount() {
-		switch (bitDepth) {
-		case b10_10:
-		    return 255.75;
-		case b10_8:
-		case b8_8:
-		    return 255;
-		case b8_6:
-		case b6_6:
-		    return 252;
-		}
-	    };
-	    int BitDepthProcessor::getMaxDigitalCountIndex() {
-		switch (bitDepth) {
-		case b10_10:
-		case b10_8:
-		    return 256;
-		case b8_8:
-		case b8_6:
-		case b6_6:
-		    return gamma256 ? 256 : 255;
-		}
-	    };
-
-	    int BitDepthProcessor::getLevel() {
-		return getMaxDigitalCountIndex() + 1;
-	    };
-	    int BitDepthProcessor::getMaxEffectiveDigitalCountIndex() {
-		switch (bitDepth) {
-		case b10_10:
-		case b10_8:
-		    return 256;
-		case b8_8:
-		case b8_6:
-		    return 255;
-		case b6_6:
-		    return 252;
-		}
-	    };
-
-	    int BitDepthProcessor::getEffectiveLevel() {
-		return getMaxEffectiveDigitalCountIndex() + 1;
-	    };
-
-	    int BitDepthProcessor::getFRCBitDepth() {
-		switch (bitDepth) {
-		case b10_10:
-		    return 12;
-		case b10_8:
-		    return 11;
-		case b8_8:
-		    return 10;
-		case b8_6:
-		    return 9;
-		case b6_6:
-		    return 9;
-		}
-	    };
-
-	    const MaxValue & BitDepthProcessor::getFRCMaxValue() {
-		return MaxValue::getByBit(getFRCBitDepth());
-
-	    };
-
-	    bool BitDepthProcessor::is8in6Out() {
-		return bitDepth == b8_6;
-	    };
-	    bool BitDepthProcessor::is6in6Out() {
-		return bitDepth == b6_6;
-	    };
-
-	    const Dep::MaxValue & BitDepthProcessor::getInputMaxValue() {
-		return *in;
-	    };
-	    const Dep::MaxValue & BitDepthProcessor::getLutMaxValue() {
-		return *lut;
-	    };
-	    const Dep::MaxValue & BitDepthProcessor::getOutputMaxValue() {
-		return *out;
-	    };
-	    bool BitDepthProcessor::isGamma256() {
-		return gamma256;
-	    };
-	    bool BitDepthProcessor::isTCONInput() {
-		return tconInput;
-	    };
-	    void BitDepthProcessor::setGamma256(bool gamma256) {
-		this->gamma256 = gamma256;
-	    };
-	    void BitDepthProcessor::setTCONInput(bool tconInput) {
-		this->tconInput = tconInput;
-	    };
-	    void BitDepthProcessor::setInBit(int inBit) {
-		in = &MaxValue::getByBit(inBit);
-		bitDepth = getBitDepth(*in, *out);
-	    };
-	    void BitDepthProcessor::setLUTBit(int lutBit) {
-		lut = &MaxValue::getByBit(lutBit);
-	    };
-	    void BitDepthProcessor::setOutBit(int outBit) {
-		out = &MaxValue::getByBit(outBit);
-		bitDepth = getBitDepth(*in, *out);
-	    };
-	    //==================================================================
 
 	    //==================================================================
 	    // LCDCalibrator
@@ -583,20 +384,21 @@ namespace cms {
 		//量測start->end得到的coponent/Y 
 		componentVector =
 		    fetcher->fetchComponent(start, end, step);
-		STORE_COMPONENT("0_fetch.xls", componentVector);
+		STORE_COMPONENT("o_fetch.xls", componentVector);
 
 		//產生generator
 		generator.
 		    reset(new DGLutGenerator(componentVector, bitDepth));
 		RGBGamma_ptr rgbgamma = generator->getRGBGamma(gammaCurve);
-		STORE_DOUBLE_ARRAY("0_gammacurve.xls", gammaCurve);
+		STORE_DOUBLE_VECTOR("0_gammacurve.xls", gammaCurve);
 		STORE_RGBGAMMA("1_rgbgamma_org.xls", rgbgamma);
 
 		/* TODO : 要確認 */
 		if (bIntensityGain != 1.0) {
 		    //重新產生目標gamma curve
 		    bptr < BIntensityGainOp >
-			bgain(new BIntensityGainOp(bIntensityGain));
+			bgain(new BIntensityGainOp(bIntensityGain, 236,
+						   bitDepth));
 		    RGBGammaOp gammaop;
 		    gammaop.setSource(rgbgamma);
 		    gammaop.addOp(bgain);
@@ -612,9 +414,11 @@ namespace cms {
 		//第一次量化處理
 		//==============================================================
 		//量化
-		//bitDepth->getFRCDepthBit()
-		MaxValue frcBit = bitDepth->getFRCMaxValue();
-		RGBVector::quantization(dglut, frcBit);
+		MaxValue quantizationBit =
+		    (bitDepth->is6in6Out()
+		     || bitDepth->is10in8Out())? bitDepth->
+		    getFRCMaxValue() : bitDepth->getLutMaxValue();
+		RGBVector::quantization(dglut, quantizationBit);
 		//==============================================================
 
 		if (correct == P1P2) {
@@ -634,7 +438,7 @@ namespace cms {
 		    //從目標gamma curve產生dg code, 此處是傳入normal gammaCurve
 		    dglut = generator->produce(rgbgamma);
 		    //量化
-		    RGBVector::quantization(dglut, frcBit);
+		    RGBVector::quantization(dglut, quantizationBit);
 		    STORE_RGBVECTOR("5_dgcode_p1p2g.xls", dglut);
 		    //==========================================================
 
@@ -644,11 +448,12 @@ namespace cms {
 		    //==========================================================
 		    DGLutOp dgop;
 		    dgop.setSource(dglut);
-		    bptr < DGLutOp > op(new P1P2DGOp(p1, p2, frcBit));
+		    bptr < DGLutOp >
+			op(new P1P2DGOp(p1, p2, quantizationBit));
 		    dgop.addOp(op);
 		    dglut = dgop.createInstance();
 		    //量化
-		    RGBVector::quantization(dglut, frcBit);
+		    RGBVector::quantization(dglut, quantizationBit);
 		    STORE_RGBVECTOR("6_dgcode_p1p2dg.xls", dglut);
 		    //==========================================================
 		};
@@ -659,7 +464,6 @@ namespace cms {
 		// DG Code Op block
 		//==============================================================
 		//量化
-		//RGBVector::quantization(dglut, maxValue);
 		RGB_vector_ptr result = getDGLutOpResult(dglut);
 		//==============================================================
 
@@ -729,7 +533,7 @@ namespace cms {
 		}
 		if (avoidFRCNoise) {
 		    //frc noise的調整
-		    bptr < DGLutOp > avoidNoise(new FrcNROp());
+		    bptr < DGLutOp > avoidNoise(new FrcNROp(bitDepth));
 		    dgop.addOp(avoidNoise);
 		}
 

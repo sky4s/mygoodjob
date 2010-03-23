@@ -43,11 +43,6 @@ namespace cms {
 					 componentVector);
 	    };
 
-
-	    /*enum BitDepth {
-	       Unknow = 0, Bit6 = 6, Bit8 = 8, Bit10 = 10, Bit12 = 12
-	       }; */
-
 	    /*
 	       DGLutGenerator擔任產出DG Code的重責大任
 	       1. 首先接手ComponentFetcher產出的rgb,對應的componet,亮度
@@ -97,52 +92,6 @@ namespace cms {
 
 	    enum Correct {
 		P1P2 = 1, RBInterpolation = 2, None = 3
-	    };
-
-	    class BitDepthProcessor {
-
-		enum BitDepth {
-		    b10_10, b10_8, b8_8, b8_6, b6_6
-		};
-	      private:
-		const Dep::MaxValue * in, *lut, *out;
-		BitDepth bitDepth;
-		static BitDepth getBitDepth(const Dep::MaxValue & in,
-					    const Dep::MaxValue & out);
-		bool gamma256;
-		bool tconInput;
-		int getMaxDigitalCountIndex();
-		int getMaxEffectiveDigitalCountIndex();
-	      public:
-		 BitDepthProcessor(int inBit, int lutBit, int outBit,
-				   bool gamma256, bool tconinput);
-
-		int getMeasureStart();
-		int getMeasureEnd();
-		int getMeasureStep();
-		int getMeasureFirstStep();
-		int getMeasureLevel();
-		double getMaxDigitalCount();
-
-		int getLevel();
-
-		int getEffectiveLevel();
-		int getFRCBitDepth();
-		const Dep::MaxValue & getFRCMaxValue();
-		bool is8in6Out();
-		bool is6in6Out();
-		const Dep::MaxValue & getInputMaxValue();
-		const Dep::MaxValue & getLutMaxValue();
-		const Dep::MaxValue & getOutputMaxValue();
-		bool isGamma256();
-		bool isTCONInput();
-
-		void setGamma256(bool gamam256);
-		void setTCONInput(bool tconInput);
-		void setInBit(int inBit);
-		void setLUTBit(int lutBit);
-		void setOutBit(int outBit);
-
 	    };
 
 	    class LCDCalibrator {

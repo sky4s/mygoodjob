@@ -40,11 +40,12 @@ namespace cms {
 	      private:
 		double gain;
 		int start;
+		 bptr < BitDepthProcessor > bitDepth;
 	      protected:
 		 RGBGamma_ptr getRendering(RGBGamma_ptr source);
 	      public:
-		 BIntensityGainOp(double gain);
-		 BIntensityGainOp(double gain, int start);
+		 BIntensityGainOp(double gain, int start,
+				  bptr < BitDepthProcessor > bitDepth);
 	    };
 	    class P1P2GammaOp:public RGBGammaOp {
 	      private:

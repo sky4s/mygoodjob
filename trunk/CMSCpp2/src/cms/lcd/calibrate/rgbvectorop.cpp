@@ -118,14 +118,19 @@ namespace cms {
 	    RGB_vector_ptr BMaxOp::getRendering(RGB_vector_ptr source) {
 		RGB_vector_ptr result = RGBVector::deepClone(source);
 		int size = result->size();
-		for (int x = bitDepth->getLevel() - 1;
-		     x >= (bitDepth->getEffectiveLevel() - 1); x--) {
+		//把未用到的區域全部處理成最大值
+		int n = bitDepth->getLevel() - 1;
+		int effectiven = (bitDepth->getEffectiveLevel() - 1);
+		//STORE_RGBVECTOR("0.xls", result);
+                
+		for (int x = n; x >= effectiven; x--) {
 		    RGB_ptr rgb = (*result)[x];
 		    rgb->B = bitDepth->getMaxDigitalCount();
 		    int y = x;
 		}
+		//STORE_RGBVECTOR("1.xls", result);
 
-		for (int x = size - 2; x != 1; x--) {
+		for (int x = effectiven; x != -1; x--) {
 		    RGB_ptr rgb = (*result)[x];
 		    RGB_ptr nextrgb = (*result)[x - 1];
 		    double diff =
@@ -142,12 +147,7 @@ namespace cms {
 			break;
 		    }
 		}
-
-		/*for (int x = bitDepth->getLevel() - 1;
-		     x >= (bitDepth->getEffectiveLevel() - 1); x--) {
-		    RGB_ptr rgb = (*result)[x];
-		    rgb->B = bitDepth->getMaxDigitalCount();
-		}*/
+		//STORE_RGBVECTOR("2.xls", result);
 
 		return result;
 	    };
@@ -187,37 +187,41 @@ namespace cms {
 		RGB_vector_ptr result = RGBVector::clone(source);
 
 		RGB_ptr rgb255 = (*result)[255];
+		STORE_RGBVECTOR("1.xls", result);
+		if (!bitDepth->is6in6Out()) {
+		    foreach(const Channel & ch, *Channel::RGBChannel) {
+			if (rgb255->getValue(ch) >= 248.5) {
+			    (*result)[255]->setValue(ch, 252);
+			    (*result)[254]->setValue(ch, 250);
+			    (*result)[253]->setValue(ch, 248);
 
-		foreach(const Channel & ch, *Channel::RGBChannel) {
-		    if (rgb255->getValue(ch) >= 248.5) {
-			(*source)[255]->setValue(ch, 252);
-			(*source)[254]->setValue(ch, 250);
-			(*source)[253]->setValue(ch, 248);
-
-			for (int x = 252; x != -1; x--) {
-			    RGB_ptr thisRGB = (*source)[x];
-			    RGB_ptr nextRGB = (*source)[x + 1];
-			    double thisv = thisRGB->getValue(ch);
-			    double nextv = nextRGB->getValue(ch);
-			    if (thisv >= nextv) {
-				thisRGB->setValue(ch, nextv - 2);
-			    } else {
-				break;
+			    for (int x = 252; x != -1; x--) {
+				RGB_ptr thisRGB = (*result)[x];
+				RGB_ptr nextRGB = (*result)[x + 1];
+				double thisv = thisRGB->getValue(ch);
+				double nextv = nextRGB->getValue(ch);
+				if (thisv >= nextv) {
+				    thisRGB->setValue(ch, nextv - 2 / 4.);
+				} else {
+				    break;
+				}
 			    }
 			}
 		    }
+		    STORE_RGBVECTOR("2.xls", result);
 		}
 		foreach(const Channel & ch, *Channel::RGBChannel) {
 		    for (int x = 1; x != 31; x++) {
-			RGB_ptr rgb = (*source)[x];
+			RGB_ptr rgb = (*result)[x];
 			double v = rgb->getValue(ch);
-			if (v == 3 || v == 1) {
-			    double setvalue = (v == 3) ? 2.5 : 0.5;
+			if (v == 12 / 4. || v == 4 / 4.) {
+			    double setvalue =
+				(v == 12 / 4.) ? 10 / 4. : 2 / 4.;
 			    rgb->setValue(ch, setvalue);
-			    RGB_ptr prergb = (*source)[x - 1];
+			    RGB_ptr prergb = (*result)[x - 1];
 			    double prev = prergb->getValue(ch);
 			    if (prev == rgb->getValue(ch)) {
-				prergb->setValue(ch, prev - 2);
+				prergb->setValue(ch, prev - 2 / 4.);
 			    }
 			    if (prergb->getValue(ch) < 0) {
 				prergb->setValue(ch, 0);
@@ -226,13 +230,18 @@ namespace cms {
 
 		    }
 		}
+		STORE_RGBVECTOR("3.xls", result);
 		return result;
+	    };
+	  FrcNROp::FrcNROp(bptr < BitDepthProcessor > bitDepth):bitDepth(bitDepth)
+	    {
 	    };
 	    //==================================================================
 
 	    //==================================================================
 	    RGB_vector_ptr KeepMaxLuminanceOp::
 		getRendering(RGB_vector_ptr source) {
+		/* TODO : KeepMaxLuminanceOp */
 		int size = source->size();
 		RGB_vector_ptr result = RGBVector::clone(source);
 		return result;
