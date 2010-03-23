@@ -16,7 +16,9 @@
       build\TCCTLUTForm.obj build\lcdcalibrator.obj build\interpolation.obj 
       build\regression.obj build\searcher.obj build\excelfile.obj 
       build\rgbvectorop.obj build\rgbgamma.obj build\rgbArray.obj 
-      build\dgcodefile.obj"/>
+      build\dgcodefile.obj build\bitdepthprocessor.obj 
+      build\HWINTERFACELib_OCX.obj build\HWINTERFACELib_TLB.obj 
+      build\ReadWriteFunc.obj"/>
     <RESFILES value="CMSCppGUI.res"/>
     <IDLFILES value=""/>
     <IDLGENFILES value=""/>
@@ -35,7 +37,7 @@
       inetdbbde.bpi inetdbxpress.bpi inetdb.bpi nmfast.bpi webdsnap.bpi 
       bcbie.bpi websnap.bpi soaprtl.bpi dclocx.bpi dbexpress.bpi dbxcds.bpi 
       indy.bpi bcb2kaxserver.bpi bcbindent.bpi"/>
-    <PATHCPP value=".;src\gui;src\ca210api;src\cms;src\cms\colorformat;src\cms\colorspace;src\cms\measure;src\static;src\static\java;imports\CA200SRVRLib;src\cms\lcd\calibrate;src\static\math;src\cms\util"/>
+    <PATHCPP value=".;src\gui;src\gui;src\gui;src\ca210api;src\cms;src\cms;src\cms\colorformat;src\cms\colorspace;src\cms\colorspace;src\cms\colorspace;src\cms\colorspace;src\cms\colorspace;src\cms\measure;src\cms\measure;src\static;src\static\java;src\cms\measure;imports\CA200SRVRLib;imports\CA200SRVRLib;src\gui;src\gui;src\cms\lcd\calibrate;src\cms\measure;src\gui;src\cms\lcd\calibrate;src\cms\lcd\calibrate;src\cms\lcd\calibrate;src\static\math;src\gui;src\cms\lcd\calibrate;src\static\math;src\static\math;src\static\math;src\cms\colorformat;src\cms\lcd\calibrate;src\cms\lcd\calibrate;src\cms\util;src\cms\colorformat;src\cms\lcd\calibrate;imports\LPT_lib;imports\LPT_lib;src\cms\i2c\core"/>
     <PATHPAS value=".;"/>
     <PATHRC value=".;"/>
     <PATHASM value=".;"/>
@@ -45,18 +47,18 @@
     <USERDEFINES value="_DEBUG"/>
     <SYSDEFINES value="_RTLDLL;NO_STRICT;USEPACKAGES"/>
     <MAINSOURCE value="CMSCppGUI.cpp"/>
-    <INCLUDEPATH value="src\cms\util;src\static\math;src;src\gui\test;src\cms\lcd\calibrate;imports\CA200SRVRLib;src\static\java;src\cms\measure;src\cms\colorspace;src\cms\colorformat;src\cms;src\ca210api;src\gui;src\static;imports;&quot;D:\Program Files\Borland\CBuilder6\Projects&quot;;$(BCB)\include;$(BCB)\include\vcl;lib"/>
-    <LIBPATH value="src\cms\util;src\static\math;src;src\gui\test;src\cms\lcd\calibrate;imports\CA200SRVRLib;src\static\java;src\cms\measure;src\cms\colorspace;src\cms\colorformat;src\cms;src\ca210api;src\gui;src\static;&quot;D:\Program Files\Borland\CBuilder6\Projects&quot;;$(BCB)\Projects\Lib;$(BCB)\lib\obj;$(BCB)\lib;lib"/>
+    <INCLUDEPATH value="src\cms\i2c\core;src\cms\util;src\static\math;src;src\gui\test;src\cms\lcd\calibrate;imports\CA200SRVRLib;imports\LPT_lib;src\static\java;src\cms\measure;src\cms\colorspace;src\cms\colorformat;src\cms;src\ca210api;src\gui;src\static;imports;$(BCB)\include;$(BCB)\include\vcl;lib"/>
+    <LIBPATH value="src\cms\i2c\core;imports\LPT_lib;src\cms\util;src\static\math;src;src\gui\test;src\cms\lcd\calibrate;imports\CA200SRVRLib;src\static\java;src\cms\measure;src\cms\colorspace;src\cms\colorformat;src\cms;src\ca210api;src\gui;src\static;&quot;D:\Program Files\Borland\CBuilder6\Projects&quot;;$(BCB)\Projects\Lib;$(BCB)\lib\obj;$(BCB)\lib;lib"/>
     <WARNINGS value="-w-par"/>
     <OTHERFILES value=""/>
   </MACROS>
   <OPTIONS>
-    <IDLCFLAGS value="-Isrc\cms\util -Isrc\static\math -Isrc -Isrc\gui\test 
-      -Isrc\cms\lcd\calibrate -Iimports\CA200SRVRLib -Isrc\static\java 
-      -Isrc\cms\measure -Isrc\cms\colorspace -Isrc\cms\colorformat -Isrc\cms 
-      -Isrc\ca210api -Isrc\gui -Isrc\static -Iimports 
-      -I&quot;D:\Program Files\Borland\CBuilder6\Projects&quot; -I$(BCB)\include 
-      -I$(BCB)\include\vcl -Ilib -src_suffix cpp -D_DEBUG -boa"/>
+    <IDLCFLAGS value="-Isrc\cms\i2c\core -Isrc\cms\util -Isrc\static\math -Isrc -Isrc\gui\test 
+      -Isrc\cms\lcd\calibrate -Iimports\CA200SRVRLib -Iimports\LPT_lib 
+      -Isrc\static\java -Isrc\cms\measure -Isrc\cms\colorspace 
+      -Isrc\cms\colorformat -Isrc\cms -Isrc\ca210api -Isrc\gui -Isrc\static 
+      -Iimports -I$(BCB)\include -I$(BCB)\include\vcl -Ilib -src_suffix cpp 
+      -D_DEBUG -boa"/>
     <CFLAG1 value="-Od -H=$(BCB)\lib\vcl60.csm -Hc -Vx -Ve -X- -r- -a8 -6 -b- -k -y -v -vi- 
       -c -tW -tWM"/>
     <PFLAGS value="-N2build -N0build -$YD -$W -$O- -$A8 -v -JPHNE -M"/>
@@ -113,6 +115,12 @@
       <FILE FILENAME="src\cms\lcd\calibrate\rgbop.h" FORMNAME="" UNITNAME="rgbop.h" CONTAINERID="" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="src\cms\util\rgbArray.cpp" FORMNAME="" UNITNAME="rgbArray" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="src\cms\colorformat\dgcodefile.cpp" FORMNAME="" UNITNAME="dgcodefile" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="src\cms\lcd\calibrate\bitdepthprocessor.cpp" FORMNAME="" UNITNAME="bitdepthprocessor" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="src\debug.h" FORMNAME="" UNITNAME="debug.h" CONTAINERID="" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="imports\LPT_lib\HWINTERFACELib_OCX.cpp" FORMNAME="" UNITNAME="HWINTERFACELib_OCX" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="imports\LPT_lib\HWINTERFACELib_TLB.cpp" FORMNAME="" UNITNAME="HWINTERFACELib_TLB" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="src\cms\i2c\core\ReadWriteFunc.cpp" FORMNAME="" UNITNAME="ReadWriteFunc" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="src\cms\i2c\core\PrintPortI2C.h" FORMNAME="" UNITNAME="PrintPortI2C.h" CONTAINERID="" DESIGNCLASS="" LOCALCOMMAND=""/>
   </FILELIST>
   <BUILDTOOLS>
   </BUILDTOOLS>
@@ -146,25 +154,26 @@ ProductVersion=1.0.0.0
 Comments=
 
 [HistoryLists\hlIncludePath]
-Count=18
-Item0=src\cms\util;src\static\math;src;src\gui\test;src\cms\lcd\calibrate;imports\CA200SRVRLib;src\static\java;src\cms\measure;src\cms\colorspace;src\cms\colorformat;src\cms;src\ca210api;src\gui;src\static;imports;D:\Program Files\Borland\CBuilder6\Projects;$(BCB)\include;$(BCB)\include\vcl;lib
-Item1=src;src\gui\test;src\cms\lcd\calibrate;imports\CA200SRVRLib;src\static\java;src\cms\measure;src\cms\colorspace;src\cms\colorformat;src\cms;src\ca210api;src\gui;src\static;imports;D:\Program Files\Borland\CBuilder6\Projects;$(BCB)\include;$(BCB)\include\vcl;lib
-Item2=src;src\gui\test;src\cms\lcd\calibrate;imports\CA200SRVRLib;src\static\java;src\cms\measure;src\cms\colorspace;src\cms\colorformat;src\cms;src\ca210api;src\gui;src\static;imports;D:\Program Files\Borland\CBuilder6\Projects;$(BCB)\include;$(BCB)\include\vcl
-Item3=src\;src\gui\test;src\cms\lcd\calibrate;imports\CA200SRVRLib;src\static\java;src\cms\measure;src\cms\colorspace;src\cms\colorformat;src\cms;src\ca210api;src\gui;src\static;imports;D:\Program Files\Borland\CBuilder6\Projects;$(BCB)\include;$(BCB)\include\vcl
-Item4=src\gui\test;src\cms\lcd\calibrate;imports\CA200SRVRLib;src\static\java;src\cms\measure;src\cms\colorspace;src\cms\colorformat;src\cms;src\ca210api;src\gui;src;src\static;imports;D:\Program Files\Borland\CBuilder6\Projects;$(BCB)\include;$(BCB)\include\vcl
-Item5=imports\CA200SRVRLib;src\static\java;src\cms\measure;src\cms\colorspace;src\cms\colorformat;src\cms;src\ca210api;src\gui;src;src\static;imports;D:\Program Files\Borland\CBuilder6\Projects;$(BCB)\include;$(BCB)\include\vcl
-Item6=src;src\static;imports;D:\Program Files\Borland\CBuilder6\Projects;$(BCB)\include;$(BCB)\include\vcl
-Item7=src;src\gui;imports\CA200SRVRLib;src\static\java;src\static;src\cms\measure;src\cms\colorspace;src\cms\colorformat;src\cms;src\ca210api;D:\Program Files\Borland\CBuilder6\Projects;$(BCB)\include;$(BCB)\include\vcl;imports
-Item8=src\gui;src;imports\CA200SRVRLib;src\static\java;src\static;src\cms\measure;src\cms\colorspace;src\cms\colorformat;src\cms;src\ca210api;D:\Program Files\Borland\CBuilder6\Projects;$(BCB)\include;$(BCB)\include\vcl;imports
-Item9=src;imports\CA200SRVRLib;src\static\java;src\static;src\cms\measure;src\cms\colorspace;src\cms\colorformat;src\cms;src\ca210api;D:\Program Files\Borland\CBuilder6\Projects;$(BCB)\include;$(BCB)\include\vcl;imports
-Item10=src;imports\CA200SRVRLib;src\static\java;src\static;src\cms\measure;src\cms\colorspace;src\cms\colorformat;src\cms;src\ca210api;src\gui;D:\Program Files\Borland\CBuilder6\Projects;$(BCB)\include;$(BCB)\include\vcl;imports
-Item11=imports\CA200SRVRLib;src;src\static\java;src\static;src\cms\measure;src\cms\colorspace;src\cms\colorformat;src\cms;src\ca210api;src\gui;D:\Program Files\Borland\CBuilder6\Projects;$(BCB)\include;$(BCB)\include\vcl;imports
-Item12=imports\CA200SRVRLib;src;src\static\java;src\static;src\cms\measure;src\cms\colorspace;src\cms\colorformat;src\cms;src\ca210api;src\gui;D:\Program Files\Borland\CBuilder6\Projects;$(BCB)\include;$(BCB)\include\vcl;imports\
-Item13=imports\CA200SRVRLib;src;src\static\java;src\static;src\cms\measure;src\cms\colorspace;src\cms\colorformat;src\cms;src\ca210api;src\gui;D:\Program Files\Borland\CBuilder6\Projects;$(BCB)\include;$(BCB)\include\vcl
-Item14=src;src\static\java;src\static;src\cms\measure;src\cms\colorspace;src\cms\colorformat;src\cms;src\ca210api;src\gui;D:\Program Files\Borland\CBuilder6\Projects;$(BCB)\include;$(BCB)\include\vcl
-Item15=src\static\java;src\static;src\cms\measure;src\cms\colorspace;src\cms\colorformat;src\cms;src\ca210api;src\gui;D:\Program Files\Borland\CBuilder6\Projects;$(BCB)\include;$(BCB)\include\vcl
-Item16=src\static\java;src\static;src\cms\measure;src\cms\colorspace;src\cms\colorformat;src\cms;src\ca210api;src\gui;D:\Program Files\Borland\CBuilder6\Projects;D:\WorkSpace\新資料夾\CMSCpp\src\gui;$(BCB)\include;$(BCB)\include\vcl
-Item17=$(BCB)\include;$(BCB)\include\vcl
+Count=19
+Item0=src\cms\util;src\static\math;src;src\gui\test;src\cms\lcd\calibrate;imports\CA200SRVRLib;imports\LPT_lib;src\static\java;src\cms\measure;src\cms\colorspace;src\cms\colorformat;src\cms;src\ca210api;src\gui;src\static;imports;$(BCB)\include;$(BCB)\include\vcl;lib
+Item1=src\cms\util;src\static\math;src;src\gui\test;src\cms\lcd\calibrate;imports\CA200SRVRLib;src\static\java;src\cms\measure;src\cms\colorspace;src\cms\colorformat;src\cms;src\ca210api;src\gui;src\static;imports;D:\Program Files\Borland\CBuilder6\Projects;$(BCB)\include;$(BCB)\include\vcl;lib
+Item2=src;src\gui\test;src\cms\lcd\calibrate;imports\CA200SRVRLib;src\static\java;src\cms\measure;src\cms\colorspace;src\cms\colorformat;src\cms;src\ca210api;src\gui;src\static;imports;D:\Program Files\Borland\CBuilder6\Projects;$(BCB)\include;$(BCB)\include\vcl;lib
+Item3=src;src\gui\test;src\cms\lcd\calibrate;imports\CA200SRVRLib;src\static\java;src\cms\measure;src\cms\colorspace;src\cms\colorformat;src\cms;src\ca210api;src\gui;src\static;imports;D:\Program Files\Borland\CBuilder6\Projects;$(BCB)\include;$(BCB)\include\vcl
+Item4=src\;src\gui\test;src\cms\lcd\calibrate;imports\CA200SRVRLib;src\static\java;src\cms\measure;src\cms\colorspace;src\cms\colorformat;src\cms;src\ca210api;src\gui;src\static;imports;D:\Program Files\Borland\CBuilder6\Projects;$(BCB)\include;$(BCB)\include\vcl
+Item5=src\gui\test;src\cms\lcd\calibrate;imports\CA200SRVRLib;src\static\java;src\cms\measure;src\cms\colorspace;src\cms\colorformat;src\cms;src\ca210api;src\gui;src;src\static;imports;D:\Program Files\Borland\CBuilder6\Projects;$(BCB)\include;$(BCB)\include\vcl
+Item6=imports\CA200SRVRLib;src\static\java;src\cms\measure;src\cms\colorspace;src\cms\colorformat;src\cms;src\ca210api;src\gui;src;src\static;imports;D:\Program Files\Borland\CBuilder6\Projects;$(BCB)\include;$(BCB)\include\vcl
+Item7=src;src\static;imports;D:\Program Files\Borland\CBuilder6\Projects;$(BCB)\include;$(BCB)\include\vcl
+Item8=src;src\gui;imports\CA200SRVRLib;src\static\java;src\static;src\cms\measure;src\cms\colorspace;src\cms\colorformat;src\cms;src\ca210api;D:\Program Files\Borland\CBuilder6\Projects;$(BCB)\include;$(BCB)\include\vcl;imports
+Item9=src\gui;src;imports\CA200SRVRLib;src\static\java;src\static;src\cms\measure;src\cms\colorspace;src\cms\colorformat;src\cms;src\ca210api;D:\Program Files\Borland\CBuilder6\Projects;$(BCB)\include;$(BCB)\include\vcl;imports
+Item10=src;imports\CA200SRVRLib;src\static\java;src\static;src\cms\measure;src\cms\colorspace;src\cms\colorformat;src\cms;src\ca210api;D:\Program Files\Borland\CBuilder6\Projects;$(BCB)\include;$(BCB)\include\vcl;imports
+Item11=src;imports\CA200SRVRLib;src\static\java;src\static;src\cms\measure;src\cms\colorspace;src\cms\colorformat;src\cms;src\ca210api;src\gui;D:\Program Files\Borland\CBuilder6\Projects;$(BCB)\include;$(BCB)\include\vcl;imports
+Item12=imports\CA200SRVRLib;src;src\static\java;src\static;src\cms\measure;src\cms\colorspace;src\cms\colorformat;src\cms;src\ca210api;src\gui;D:\Program Files\Borland\CBuilder6\Projects;$(BCB)\include;$(BCB)\include\vcl;imports
+Item13=imports\CA200SRVRLib;src;src\static\java;src\static;src\cms\measure;src\cms\colorspace;src\cms\colorformat;src\cms;src\ca210api;src\gui;D:\Program Files\Borland\CBuilder6\Projects;$(BCB)\include;$(BCB)\include\vcl;imports\
+Item14=imports\CA200SRVRLib;src;src\static\java;src\static;src\cms\measure;src\cms\colorspace;src\cms\colorformat;src\cms;src\ca210api;src\gui;D:\Program Files\Borland\CBuilder6\Projects;$(BCB)\include;$(BCB)\include\vcl
+Item15=src;src\static\java;src\static;src\cms\measure;src\cms\colorspace;src\cms\colorformat;src\cms;src\ca210api;src\gui;D:\Program Files\Borland\CBuilder6\Projects;$(BCB)\include;$(BCB)\include\vcl
+Item16=src\static\java;src\static;src\cms\measure;src\cms\colorspace;src\cms\colorformat;src\cms;src\ca210api;src\gui;D:\Program Files\Borland\CBuilder6\Projects;$(BCB)\include;$(BCB)\include\vcl
+Item17=src\static\java;src\static;src\cms\measure;src\cms\colorspace;src\cms\colorformat;src\cms;src\ca210api;src\gui;D:\Program Files\Borland\CBuilder6\Projects;D:\WorkSpace\新資料夾\CMSCpp\src\gui;$(BCB)\include;$(BCB)\include\vcl
+Item18=$(BCB)\include;$(BCB)\include\vcl
 
 [HistoryLists\hlLibraryPath]
 Count=14

@@ -319,6 +319,7 @@ object CCTLUTForm: TCCTLUTForm
           Checked = True
           TabOrder = 0
           TabStop = True
+          OnClick = RadioButton_Lut10Click
         end
         object RadioButton_Lut12: TRadioButton
           Left = 8
@@ -327,6 +328,7 @@ object CCTLUTForm: TCCTLUTForm
           Height = 17
           Caption = '12'
           TabOrder = 1
+          OnClick = RadioButton_Lut12Click
         end
       end
       object GroupBox10: TGroupBox

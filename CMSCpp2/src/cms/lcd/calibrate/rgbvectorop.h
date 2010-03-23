@@ -73,13 +73,20 @@ namespace cms {
 	    };
 
 	    class FrcNROp:public DGLutOp {
+	      private:
+		bptr < BitDepthProcessor > bitDepth;
 	      protected:
 		RGB_vector_ptr getRendering(RGB_vector_ptr source);
+	      public:
+		FrcNROp(bptr < BitDepthProcessor > bitDepth);
 	    };
 
 	    class KeepMaxLuminanceOp:public DGLutOp {
+
 	      protected:
 		RGB_vector_ptr getRendering(RGB_vector_ptr source);
+
+
 	    };
 	};
     };

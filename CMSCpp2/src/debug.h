@@ -29,7 +29,7 @@ cms::lcd::calibrate::RGBGamma::storeToExcel(debug_dir + _(filename), result);
 MAKE_DEBUG_DIR(); \
 RGBVector::storeToExcel(debug_dir + _(filename), result);
 
-#define STORE_DOUBLE_ARRAY( filename , result ) \
+#define STORE_DOUBLE_VECTOR( filename , result ) \
 MAKE_DEBUG_DIR(); \
 DoubleArray::storeToExcel(debug_dir + _(filename), result);
 
@@ -37,7 +37,7 @@ DoubleArray::storeToExcel(debug_dir + _(filename), result);
 #define STORE_COMPONENT( filename , result )
 #define STORE_RGBGAMMA( filename , result )
 #define STORE_RGBVECTOR( filename , result )
-#define STORE_DOUBLE_ARRAY( filename , result )
+#define STORE_DOUBLE_VECTOR( filename , result )
 #endif
 //==============================================================================
 

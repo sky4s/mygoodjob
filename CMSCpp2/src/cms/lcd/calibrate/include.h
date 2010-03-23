@@ -7,4 +7,5 @@
 #include "rgbop.h";
 #include "rgbvectorop.h";
 #include "whitefinder.h";
+#include "bitdepthprocessor.h";
  

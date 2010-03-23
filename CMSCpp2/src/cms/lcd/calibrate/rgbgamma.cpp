@@ -66,56 +66,58 @@ namespace cms {
 	    //==================================================================
 
 	    //==================================================================
-	    // RGBGammaOp
-	    //==================================================================
-	    /*RGBGamma_ptr RGBGammaOp::
-	       getRGBGamma(double_vector_ptr gammaCurve) {
-	       double_vector_ptr r(new double_vector(*gammaCurve));
-	       double_vector_ptr g(new double_vector(*gammaCurve));
-	       double_vector_ptr b(new double_vector(*gammaCurve));
-	       RGBGamma_ptr rgbGamma(new RGBGamma(r, g, b));
-	       return rgbGamma;
-	       }; */
-	    //==================================================================
-
-	    //==================================================================
 	    // BIntensityGainOp
 	    //==================================================================
 	    RGBGamma_ptr BIntensityGainOp::
 		getRendering(RGBGamma_ptr source) {
 		double_vector_ptr b(new double_vector(*source->b));
-		int size = b->size();
+		//int size = b->size();
+		int effectiveLevel = bitDepth->getEffectiveLevel();
 
-		/* TODO : getRendering 看不懂,所以無法實作 */
-		for (int x = 0; x != start; x++) {
+		int realstart = effectiveLevel - (255 - start);
+
+		for (int x = 0; x != realstart; x++) {
 		    //0~start
-		    (*b)[x] = (*b)[x] * gain;
+		    double value = (*b)[x] * gain;
+		    (*b)[x] = value;
 		};
-		double bstart_1 = (*b)[start - 1];
-		int remainder = size - 1 - start;
-		for (int x = start; x != size; x++) {
+
+
+		double bstart = (*b)[realstart - 1];
+		double bstartRemainder = 100 - bstart;
+		int remainder = 255 - start;
+
+
+		for (int x = realstart; x != effectiveLevel; x++) {
+
 		    //start-size
 		    //' 19thBP*gain+(100-19thBP*gain)/(255-236)*(19-i)
-		    //19以下 0~19
+		    //19以下 0~19 , 對我們這邊是其實是236以上
+		    //temp_diff = 255 - Val(Text4.Text)=255=236=19
 		    //BP(i) = BP(temp_diff) * Val(Text3.Text) + (100 - BP(temp_diff) * Val(Text3.Text)) / (255 - Val(Text4.Text)) * (temp_diff - i)
-		    /*(*b)[x] =
-		       bstart_1 + (1 - bstart_1) / (255 - start) * x; */
-		    int n = x - start;
-		    (*b)[x] = bstart_1 + (1 - bstart_1)
-			* (static_cast < double >(n) / remainder);
-
+		    //BP(i) = BP(19) * gain + (100 - BP(19) * gain) / (255 - 236) * (19 - i)
+		    //bstart_1 = b19*gain =
+		    /*int n = x - start;
+		       (*b)[x] = bstart_1 + (1 - bstart_1)
+		       * (static_cast < double >(n) / remainder); */
+		    /*double c = bstartRemainder / remainder;
+		       double ss = (effectiveLevel - x); */
+		    (*b)[x] = bstart +
+			bstartRemainder / remainder * (x - realstart + 1);
 		};
+
+		for (int x = effectiveLevel; x != bitDepth->getLevel();
+		     x++) {
+		    (*b)[x] = (*b)[effectiveLevel - 1];
+		}
+
 
 		RGBGamma_ptr result(new RGBGamma(source->r, source->g, b));
 		return result;
 	    };
-	  BIntensityGainOp::BIntensityGainOp(double gain):gain(gain),
-		start(236)
+	  BIntensityGainOp::BIntensityGainOp(double gain, int start, bptr < BitDepthProcessor > bitDepth):gain(gain), start(start),
+		bitDepth(bitDepth)
 	    {
-	    };
-	    BIntensityGainOp::
-		BIntensityGainOp(double gain,
-				 int start):gain(gain), start(236) {
 	    };
 	    //==================================================================
 	    //==================================================================
@@ -140,7 +142,7 @@ namespace cms {
 
 		double_vector & r = (*source->r);
 		double_vector & b = (*source->b);
-                //double ar=r[p1],ab=b[p1];
+		//double ar=r[p1],ab=b[p1];
 		r[p1] =
 		    r[indexR] + (r[indexR + 1] - r[indexR]) *
 		    (rgbp1->G - (*dglut)[indexR]->R) /
@@ -150,7 +152,7 @@ namespace cms {
 		    (rgbp1->G - (*dglut)[indexB]->B) /
 		    ((*dglut)[indexB + 1]->B - (*dglut)[indexB]->B);
 
-                //double ar1=r[p1],ab1=b[p1];
+		//double ar1=r[p1],ab1=b[p1];
 		return source;
 	    };
 	    RGBGamma_ptr P1P2GammaOp::processP1P2(RGBGamma_ptr source) {
