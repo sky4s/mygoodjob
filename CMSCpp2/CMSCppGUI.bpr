@@ -18,7 +18,7 @@
       build\rgbvectorop.obj build\rgbgamma.obj build\rgbArray.obj 
       build\dgcodefile.obj build\bitdepthprocessor.obj 
       build\HWINTERFACELib_OCX.obj build\HWINTERFACELib_TLB.obj 
-      build\ReadWriteFunc.obj"/>
+      build\ReadWriteFunc.obj build\USBHIDIOC.obj build\i2ccontrol.obj"/>
     <RESFILES value="CMSCppGUI.res"/>
     <IDLFILES value=""/>
     <IDLGENFILES value=""/>
@@ -37,7 +37,7 @@
       inetdbbde.bpi inetdbxpress.bpi inetdb.bpi nmfast.bpi webdsnap.bpi 
       bcbie.bpi websnap.bpi soaprtl.bpi dclocx.bpi dbexpress.bpi dbxcds.bpi 
       indy.bpi bcb2kaxserver.bpi bcbindent.bpi"/>
-    <PATHCPP value=".;src\gui;src\gui;src\gui;src\ca210api;src\cms;src\cms;src\cms\colorformat;src\cms\colorspace;src\cms\colorspace;src\cms\colorspace;src\cms\colorspace;src\cms\colorspace;src\cms\measure;src\cms\measure;src\static;src\static\java;src\cms\measure;imports\CA200SRVRLib;imports\CA200SRVRLib;src\gui;src\gui;src\cms\lcd\calibrate;src\cms\measure;src\gui;src\cms\lcd\calibrate;src\cms\lcd\calibrate;src\cms\lcd\calibrate;src\static\math;src\gui;src\cms\lcd\calibrate;src\static\math;src\static\math;src\static\math;src\cms\colorformat;src\cms\lcd\calibrate;src\cms\lcd\calibrate;src\cms\util;src\cms\colorformat;src\cms\lcd\calibrate;imports\LPT_lib;imports\LPT_lib;src\cms\i2c\core"/>
+    <PATHCPP value=".;src\gui;src\gui;src\gui;src\ca210api;src\cms;src\cms;src\cms\colorformat;src\cms\colorspace;src\cms\colorspace;src\cms\colorspace;src\cms\colorspace;src\cms\colorspace;src\cms\measure;src\cms\measure;src\static;src\static\java;src\cms\measure;imports\CA200SRVRLib;imports\CA200SRVRLib;src\gui;src\gui;src\cms\lcd\calibrate;src\cms\measure;src\gui;src\cms\lcd\calibrate;src\cms\lcd\calibrate;src\cms\lcd\calibrate;src\static\math;src\gui;src\cms\lcd\calibrate;src\static\math;src\static\math;src\static\math;src\cms\colorformat;src\cms\lcd\calibrate;src\cms\lcd\calibrate;src\cms\util;src\cms\colorformat;src\cms\lcd\calibrate;imports\LPT_lib;imports\LPT_lib;src\cms\i2c\core;lib\USB_i2c_lib;src\cms\i2c"/>
     <PATHPAS value=".;"/>
     <PATHRC value=".;"/>
     <PATHASM value=".;"/>
@@ -47,18 +47,18 @@
     <USERDEFINES value="_DEBUG"/>
     <SYSDEFINES value="_RTLDLL;NO_STRICT;USEPACKAGES"/>
     <MAINSOURCE value="CMSCppGUI.cpp"/>
-    <INCLUDEPATH value="src\cms\i2c\core;src\cms\util;src\static\math;src;src\gui\test;src\cms\lcd\calibrate;imports\CA200SRVRLib;imports\LPT_lib;src\static\java;src\cms\measure;src\cms\colorspace;src\cms\colorformat;src\cms;src\ca210api;src\gui;src\static;imports;$(BCB)\include;$(BCB)\include\vcl;lib"/>
-    <LIBPATH value="src\cms\i2c\core;imports\LPT_lib;src\cms\util;src\static\math;src;src\gui\test;src\cms\lcd\calibrate;imports\CA200SRVRLib;src\static\java;src\cms\measure;src\cms\colorspace;src\cms\colorformat;src\cms;src\ca210api;src\gui;src\static;&quot;D:\Program Files\Borland\CBuilder6\Projects&quot;;$(BCB)\Projects\Lib;$(BCB)\lib\obj;$(BCB)\lib;lib"/>
+    <INCLUDEPATH value="src\cms\i2c;lib\USB_i2c_lib;src\cms\i2c\core;src\cms\util;src\static\math;src;src\gui\test;src\cms\lcd\calibrate;imports\CA200SRVRLib;imports\LPT_lib;src\static\java;src\cms\measure;src\cms\colorspace;src\cms\colorformat;src\cms;src\ca210api;src\gui;src\static;imports;$(BCB)\include;$(BCB)\include\vcl;lib"/>
+    <LIBPATH value="src\cms\i2c;lib\USB_i2c_lib;src\cms\i2c\core;imports\LPT_lib;src\cms\util;src\static\math;src;src\gui\test;src\cms\lcd\calibrate;imports\CA200SRVRLib;src\static\java;src\cms\measure;src\cms\colorspace;src\cms\colorformat;src\cms;src\ca210api;src\gui;src\static;&quot;D:\Program Files\Borland\CBuilder6\Projects&quot;;$(BCB)\Projects\Lib;$(BCB)\lib\obj;$(BCB)\lib;lib"/>
     <WARNINGS value="-w-par"/>
     <OTHERFILES value=""/>
   </MACROS>
   <OPTIONS>
-    <IDLCFLAGS value="-Isrc\cms\i2c\core -Isrc\cms\util -Isrc\static\math -Isrc -Isrc\gui\test 
-      -Isrc\cms\lcd\calibrate -Iimports\CA200SRVRLib -Iimports\LPT_lib 
-      -Isrc\static\java -Isrc\cms\measure -Isrc\cms\colorspace 
-      -Isrc\cms\colorformat -Isrc\cms -Isrc\ca210api -Isrc\gui -Isrc\static 
-      -Iimports -I$(BCB)\include -I$(BCB)\include\vcl -Ilib -src_suffix cpp 
-      -D_DEBUG -boa"/>
+    <IDLCFLAGS value="-Isrc\cms\i2c -Ilib\USB_i2c_lib -Isrc\cms\i2c\core -Isrc\cms\util 
+      -Isrc\static\math -Isrc -Isrc\gui\test -Isrc\cms\lcd\calibrate 
+      -Iimports\CA200SRVRLib -Iimports\LPT_lib -Isrc\static\java 
+      -Isrc\cms\measure -Isrc\cms\colorspace -Isrc\cms\colorformat -Isrc\cms 
+      -Isrc\ca210api -Isrc\gui -Isrc\static -Iimports -I$(BCB)\include 
+      -I$(BCB)\include\vcl -Ilib -src_suffix cpp -D_DEBUG -boa"/>
     <CFLAG1 value="-Od -H=$(BCB)\lib\vcl60.csm -Hc -Vx -Ve -X- -r- -a8 -6 -b- -k -y -v -vi- 
       -c -tW -tWM"/>
     <PFLAGS value="-N2build -N0build -$YD -$W -$O- -$A8 -v -JPHNE -M"/>
@@ -121,6 +121,8 @@
       <FILE FILENAME="imports\LPT_lib\HWINTERFACELib_TLB.cpp" FORMNAME="" UNITNAME="HWINTERFACELib_TLB" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="src\cms\i2c\core\ReadWriteFunc.cpp" FORMNAME="" UNITNAME="ReadWriteFunc" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="src\cms\i2c\core\PrintPortI2C.h" FORMNAME="" UNITNAME="PrintPortI2C.h" CONTAINERID="" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="lib\USB_i2c_lib\USBHIDIOC.CPP" FORMNAME="" UNITNAME="USBHIDIOC" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="src\cms\i2c\i2ccontrol.cpp" FORMNAME="" UNITNAME="i2ccontrol" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
   </FILELIST>
   <BUILDTOOLS>
   </BUILDTOOLS>

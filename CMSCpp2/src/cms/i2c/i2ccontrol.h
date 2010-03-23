@@ -12,7 +12,9 @@
 namespace cms {
     namespace i2c {
 	class i2cControl {
-
+	  public:
+	    void connect();
+	    void disconnect();
 	};
 
 	class i2cLPTControl:public i2cControl {
