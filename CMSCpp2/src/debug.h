@@ -5,6 +5,9 @@
 #define METER_FILE "debug.xls"
 #define DEBUG_DIR  "debug/"
 
+//==============================================================================
+// debug¥Î¥¨¶°
+//==============================================================================
 #ifdef _DEBUG
 #include <cms/util/rgbarray.h>
 #define _ std::string
@@ -36,5 +39,7 @@ DoubleArray::storeToExcel(debug_dir + _(filename), result);
 #define STORE_RGBVECTOR( filename , result )
 #define STORE_DOUBLE_ARRAY( filename , result )
 #endif
+//==============================================================================
 
 #endif
+ 
