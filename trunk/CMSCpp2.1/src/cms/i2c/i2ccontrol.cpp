@@ -1,3 +1,5 @@
+#include <includeall.h>
+#pragma hdrstop
 #include "i2ccontrol.h"
 
 //C系統文件
@@ -7,6 +9,7 @@
 //其他庫頭文件
 
 //本項目內頭文件
+
 
 namespace cms {
     namespace i2c {
@@ -47,6 +50,7 @@ namespace cms {
 	//======================================================================
 	// i2cControl
 	//======================================================================
+	RW_Func i2cControl::i2cio;
 	i2cControl::i2cControl(const unsigned char
 			       deviceAddress):deviceAddress(deviceAddress) {
 
