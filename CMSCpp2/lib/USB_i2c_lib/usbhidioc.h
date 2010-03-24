@@ -1,23 +1,27 @@
+#ifndef USBHIDIOCH
+#define USBHIDIOCH
+
 // usbhidiocDlg.h : header file
 //
 
 /////////////////////////////////////////////////////////////////////////////
 // CUsbhidiocDlg dialog
 
-class CUsbhidioc //: public CDialog
+class CUsbhidioc		//: public CDialog
 {
-public:
-    bool ReadReportEx (char *);
+  public:
+    bool ReadReportEx(char *);
     bool WriteReport(char *, unsigned int);
-    void CloseReport ();
+    void CloseReport();
     ~CUsbhidioc(void);
-    
+
 
 
     bool FindTheHID();
-protected:
+  protected:
     void GetDeviceCapabilities();
     void PrepareForOverlappedTransfer();
 };
 
+#endif
 
