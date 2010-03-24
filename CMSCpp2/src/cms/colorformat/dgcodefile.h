@@ -3,6 +3,7 @@
 //C系統文件
 
 //C++系統文件
+#include <map>
 
 //其他庫頭文件
 #include <ADODB.hpp>
@@ -13,22 +14,37 @@
 
 namespace cms {
     namespace colorformat {
+
+	class ExcelAccessBase {
+	  private:
+	    bptr < ExcelFileDB > db;
+	    const Mode mode;
+	     map < const std::string, string_vector_ptr) fieldNameMap;
+	    void setSheet(bool create, const std::string & sheetname,
+			  string_vector_ptr fieldNames);
+	  public:
+	     ExcelAccessBase(const std::string & filename);
+	    void createSheet(const std::string & sheetname,
+			     string_vector_ptr fieldNames);
+	    void setSheet(const std::string & sheetname,
+			  string_vector_ptr fieldNames);
+
+	};
+
 	class DGLutProperty;
 	class DGLutFile {
 	  private:
 	    bptr < ExcelFileDB > db;
 	    const Mode mode;
 	    void init();
-	    void initDefaultData(string_vector_ptr fieldNames,
-				 const std::string & tableName, int n,
-				 bool reverse);
-	    void initDefaultData(string_vector_ptr fieldNames,
-				 const std::string & tableName,
-				 int_vector_ptr nvector, bool reverse);
-	    const int n;
-	    const int_vector_ptr nvector;
-	    static string_vector_ptr getFieldNames(const std::string *
-						   fieldNames, int n);
+	    /*void initDefaultData(string_vector_ptr fieldNames,
+	       const std::string & tableName, int n,
+	       bool reverse);
+	       void initDefaultData(string_vector_ptr fieldNames,
+	       const std::string & tableName,
+	       int_vector_ptr nvector, bool reverse); */
+	    //const int n;
+	    //const int_vector_ptr nvector;
 	    const std::string & filename;
 	    bool lazyMode;
 	  public:
@@ -41,18 +57,16 @@ namespace cms {
 	    static string_vector_ptr GammaFieldNames;
 	    static string_vector_ptr RawFieldNames;
 	    static string_vector_ptr PropertiesFieldNames;
-	     DGLutFile(const std::string & filename, int n);
-	     DGLutFile(const std::string & filename,
-		       int_vector_ptr nvector);
+	    /*DGLutFile(const std::string & filename, int n);
+	       DGLutFile(const std::string & filename,
+	       int_vector_ptr nvector); */
 	     DGLutFile(const std::string & filename);
+	     DGLutFile(const std::string & filename, Mode mode);
 	    void addProperty(const std::string & key,
 			     const std::string & value);
 	    void addProperty(const std::string & key, const double value);
 	    void setProperty(const DGLutProperty & property);
 
-	    /*void setRawData(Component_vector_ptr componentVector);
-	       void setRawData(Component_vector_ptr componentVector,
-	       RGBGamma_ptr rgbgamma); */
 	    void setRawData(Component_vector_ptr componentVector,
 			    RGBGamma_ptr initialRGBGamma,
 			    RGBGamma_ptr finalRGBGamma);

@@ -156,14 +156,12 @@ namespace math {
 	    interpoStart = index - 2;
 	    tail = true;
 	} else if (index == -1) {
-	    throw IndexOutOfBoundsException("key[" + lexical_cast <
-					    string >
-					    (key) + "] out of keys[" +
-					    lexical_cast < string >
-					    ((*keys)[0]) + "~" +
-					    lexical_cast < string >
-					    ((*keys)[keys->size() - 1])
-					    + "]");
+	    throw IndexOutOfBoundsException("key[" + _toString(key) +
+					    "] out of keys[" +
+					    _toString((*keys)[0]) + "~" +
+					    _toString((*keys)
+						      [keys->size() - 1]) +
+					    "]");
 	} else {
 	    interpoStart = index - 1;
 	}

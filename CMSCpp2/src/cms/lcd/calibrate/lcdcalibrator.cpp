@@ -82,8 +82,8 @@ namespace cms {
 						componentVector) {
 
 		int n = componentVector->size();
-		ExcelFileDB::deleteExist(filename);
-		DGLutFile dglut(filename, n);
+		Util::deleteExist(filename);
+		DGLutFile dglut(filename, Create);
 		dglut.setRawData(componentVector, nil_RGBGamma,
 				 nil_RGBGamma);
 	    };
@@ -414,9 +414,9 @@ namespace cms {
 		//第一次量化處理
 		//==============================================================
 		//量化
-		MaxValue quantizationBit =
-		    (bitDepth->is6in6Out()
-		     || bitDepth->is10in8Out())? bitDepth->
+		MaxValue quantizationBit = (bitDepth->is6in6Out()
+					    || bitDepth->
+					    is10in8Out())? bitDepth->
 		    getFRCMaxValue() : bitDepth->getLutMaxValue();
 		RGBVector::quantization(dglut, quantizationBit);
 		//==============================================================
@@ -453,7 +453,6 @@ namespace cms {
 		    dgop.addOp(op);
 		    dglut = dgop.createInstance();
 		    //量化
-		    RGBVector::quantization(dglut, quantizationBit);
 		    STORE_RGBVECTOR("6_dgcode_p1p2dg.xls", dglut);
 		    //==========================================================
 		};
@@ -489,11 +488,9 @@ namespace cms {
 		int n = bitDepth->getLevel();
 		//int n = true == gamma256 ? 257 : 256;
 		//砍掉已存在的
-		ExcelFileDB::deleteExist(filename);
-		/*if (FileExists(filename)) {
-		   } */
+		Util::deleteExist(filename);
 		//產生新檔
-		DGLutFile file(filename, n);
+		DGLutFile file(filename, Create);
 		//產生property物件
 		DGLutProperty property(*this);
 		//寫入property

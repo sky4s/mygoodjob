@@ -6,7 +6,7 @@
 //C++系統文件
 #include <string>
 #include <vector>
-//#pragma hdrstop
+#include <exception>
 
 //其他庫頭文件
 #include <boost/shared_array.hpp>
@@ -143,6 +143,8 @@
 // 簡化lexical使用上的巨集
 //==============================================================================
 #define _toString boost::lexical_cast < std::string >
+#define _toInt boost::lexical_cast < int >
+#define _toDouble boost::lexical_cast < double >
 //==============================================================================
 
 namespace math {
@@ -197,6 +199,14 @@ namespace cms {
 	    class CA210;
 	    class DGLutFileMeter;
 	};
+    };
+    namespace util {
+	class Util;
+	class RGBVector;
+    };
+    namespace i2c {
+        class ByteBuffer;
+        class i2cControl;
     };
 };
 
@@ -325,7 +335,7 @@ namespace java {
 	 完全仿製java例外體系, Exception為最上層類別, 其底下有RuntimeException.
 	 而RuntimeException下又有最常用的幾種例外.
 	 */
-	class Exception:public Object {
+	class Exception:public Object, std::exception {
 	  public:
 	    Exception();
 	    Exception(std::string message);
@@ -333,7 +343,7 @@ namespace java {
 	  private:
 	    std::string message;
 	};
-	class RuntimeException:public Exception {
+	class RuntimeException:public Exception /*, std::runtime_error */  {
 	  public:
 	    RuntimeException();
 	    RuntimeException(std::string message);
@@ -344,7 +354,8 @@ namespace java {
 	    IllegalStateException(std::string message);
 	};
 
-	class IllegalArgumentException:public RuntimeException {
+	class IllegalArgumentException:public RuntimeException	/*,
+								   std::invalid_argument */  {
 	  public:
 	    IllegalArgumentException();
 	    IllegalArgumentException(std::string message);
@@ -354,7 +365,8 @@ namespace java {
 	    UnsupportedOperationException();
 	    UnsupportedOperationException(std::string message);
 	};
-	class IndexOutOfBoundsException:public RuntimeException {
+	class IndexOutOfBoundsException:public RuntimeException	/*,
+								   std::range_error */  {
 	  public:
 	    IndexOutOfBoundsException();
 	    IndexOutOfBoundsException(std::string message);

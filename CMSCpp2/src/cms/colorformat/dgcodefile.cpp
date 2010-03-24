@@ -23,6 +23,16 @@ namespace cms {
 	using namespace cms::lcd::calibrate;
 	using namespace Indep;
 	using namespace Dep;
+	using namespace cms::util;
+
+	//======================================================================
+	// ExcelAccessBase
+	//======================================================================
+	void ExcelAccessBase::setSheet(bool create,
+				       const std::string & sheetname,
+				       string_vector_ptr fieldNames) {
+	};
+	//======================================================================
 
 	//======================================================================
 	// DGLutFile
@@ -40,75 +50,71 @@ namespace cms {
 	const string & DGLutFile::RawData = "Raw_Data";
 	const string & DGLutFile::Properties = "Properties";
 
-	string_vector_ptr DGLutFile::getFieldNames(const string *
-						   fieldNames, int n) {
-	    string_vector_ptr result(new string_vector(n));
-	    for (int x = 0; x < n; x++) {
-		(*result)[x] = fieldNames[x];
-	    } return result;
-	};
+	/*void DGLutFile::initDefaultData(string_vector_ptr fieldNames,
+	   const string & tableName, int n,
+	   bool reverse) {
+	   db->createTable(tableName, fieldNames);
+	   if (!lazyMode) {
+	   int start = !reverse ? 0 : n - 1;
+	   int end = !reverse ? n : -1;
+	   int step = !reverse ? 1 : -1;
 
-	void DGLutFile::initDefaultData(string_vector_ptr fieldNames,
-					const string & tableName, int n,
-					bool reverse) {
-	    db->createTable(tableName, fieldNames);
-	    if (!lazyMode) {
-		int start = !reverse ? 0 : n - 1;
-		int end = !reverse ? n : -1;
-		int step = !reverse ? 1 : -1;
+	   for (int x = start; x != end; x += step) {
+	   string xstring = lexical_cast < string > (x);
+	   string_vector_ptr value =
+	   StringVector::fromString(1, xstring);
+	   string_vector_ptr fieldName =
+	   StringVector::fromString(1,
+	   (*fieldNames)[0]);
 
-		for (int x = start; x != end; x += step) {
-		    string_vector_ptr value =
-			ExcelFileDB::makes(1, lexical_cast < string > (x));
-		    string_vector_ptr fieldName =
-			ExcelFileDB::makes(1, (*fieldNames)[0]);
+	   db->insert(fieldName, value);
+	   }
+	   #ifdef CACHE_SQL
+	   db->excuteCache();
+	   #endif
 
-		    db->insert(fieldName, value);
-		}
-#ifdef CACHE_SQL
-		db->excuteCache();
-#endif
+	   }
+	   };
 
-	    }
-	};
+	   void DGLutFile::initDefaultData(string_vector_ptr fieldNames,
+	   const std::string & tableName,
+	   int_vector_ptr nvector,
+	   bool reverse) {
+	   db->createTable(tableName, fieldNames);
+	   if (!lazyMode) {
+	   int size = nvector->size();
 
-	void DGLutFile::initDefaultData(string_vector_ptr fieldNames,
-					const std::string & tableName,
-					int_vector_ptr nvector,
-					bool reverse) {
-	    db->createTable(tableName, fieldNames);
-	    if (!lazyMode) {
-		int size = nvector->size();
-
-		int start = !reverse ? 0 : size - 1;
-		int end = !reverse ? size : -1;
-		int step = !reverse ? 1 : -1;
+	   int start = !reverse ? 0 : size - 1;
+	   int end = !reverse ? size : -1;
+	   int step = !reverse ? 1 : -1;
 
 
-		for (int x = start; x != end; x += step) {
-		    int n = (*nvector)[x];
-		    string_vector_ptr value
-			=
-			ExcelFileDB::makes(1, lexical_cast < string > (n));
-		    string_vector_ptr fieldName =
-			ExcelFileDB::makes(1, (*fieldNames)[0]);
-		    db->insert(fieldName, value);
-		}
-#ifdef CACHE_SQL
-		db->excuteCache();
-#endif
-	    }
-	};
+	   for (int x = start; x != end; x += step) {
+	   int n = (*nvector)[x];
+	   string xstring = lexical_cast < string > (n);
+	   string_vector_ptr value =
+	   StringVector::fromString(1, xstring);
+	   string_vector_ptr fieldName =
+	   StringVector::fromString(1,
+	   (*fieldNames)[0]);
+	   db->insert(fieldName, value);
+	   }
+	   #ifdef CACHE_SQL
+	   db->excuteCache();
+	   #endif
+	   }
+	   }; */
 	void
 	 DGLutFile::init() {
 	    if (null == GammaFieldNames) {
-		GammaFieldNames = getFieldNames(GammaHeader, 4);
+		GammaFieldNames = StringVector::fromString(4, GammaHeader);
 	    }
 	    if (null == RawFieldNames) {
-		RawFieldNames = getFieldNames(RawHeader, 13);
+		RawFieldNames = StringVector::fromString(13, RawHeader);
 	    }
 	    if (null == PropertiesFieldNames) {
-		PropertiesFieldNames = getFieldNames(PropertiesHeader, 2);
+		PropertiesFieldNames =
+		    StringVector::fromString(2, PropertiesHeader);
 	    }
 	    if (Create == mode) {
 		if (FileExists(filename.c_str())) {
@@ -120,15 +126,17 @@ namespace cms {
 #ifdef CACHE_SQL
 		db->setCacheMode(true);
 #endif
-		//若為lazy mode 等到set時期再init field name
-		if (n != -1) {
-		    initDefaultData(GammaFieldNames, GammaTable, n, false);
-		    initDefaultData(RawFieldNames, RawData, n, true);
-		} else {
-		    initDefaultData(GammaFieldNames, GammaTable,
-				    nvector, false);
-		    initDefaultData(RawFieldNames, RawData, nvector, true);
-		};
+
+		db->createTable(GammaTable, GammaFieldNames);
+		db->createTable(RawData, RawFieldNames);
+		/*if (n != -1) {
+		   initDefaultData(GammaFieldNames, GammaTable, n, false);
+		   initDefaultData(RawFieldNames, RawData, n, true);
+		   } else {
+		   initDefaultData(GammaFieldNames, GammaTable,
+		   nvector, false);
+		   initDefaultData(RawFieldNames, RawData, nvector, true);
+		   }; */
 		//==============================================================
 		// property不用管lazy mode
 		//==============================================================
@@ -142,21 +150,27 @@ namespace cms {
 		db.reset(new ExcelFileDB(filename, mode));
 	    }
 	};
-	DGLutFile::DGLutFile(const string & filename, int
-			     n):filename(filename), n(n), mode(Create),
-	    lazyMode(LAZY_EXCEL) {
-	    init();
-	};
+	/*DGLutFile::DGLutFile(const string & filename, int
+	   n):filename(filename), n(n), mode(Create),
+	   lazyMode(LAZY_EXCEL) {
+	   init();
+	   };
 
-	DGLutFile::DGLutFile(const std::string & filename,
-			     int_vector_ptr nvector):filename(filename),
-	    nvector(nvector), n(-1), mode(Create), lazyMode(LAZY_EXCEL) {
-	    init();
-	};
+	   DGLutFile::DGLutFile(const std::string & filename,
+	   int_vector_ptr nvector):filename(filename),
+	   nvector(nvector), n(-1), mode(Create), lazyMode(LAZY_EXCEL) {
+	   init();
+	   }; */
 
 	DGLutFile::
 	    DGLutFile(const std::string & filename):filename(filename),
-	    n(-1), mode(ReadOnly), lazyMode(LAZY_EXCEL) {
+	    mode(ReadOnly), lazyMode(LAZY_EXCEL) {
+	    init();
+	};
+	DGLutFile::
+	    DGLutFile(const std::string & filename,
+		      Mode mode):filename(filename), mode(mode),
+	    lazyMode(LAZY_EXCEL) {
 	    init();
 	};
 	void
@@ -176,7 +190,7 @@ namespace cms {
 	void
 	 DGLutFile::addProperty(const std::string & key,
 				const double value) {
-	    addProperty(key, lexical_cast < string > (value));
+	    addProperty(key, _toString(value));
 	};
 
 	void DGLutFile::setRawData(Component_vector_ptr componentVector,
@@ -225,21 +239,21 @@ namespace cms {
 		int n = part2Size - 1 - x;
 		Component_ptr c = (*componentVector)[x];
 		int w = static_cast < int >(c->rgb->getValue(Channel::W));
-		(*values)[0] = lexical_cast < string > (w);
+		(*values)[0] = _toString(w);
 		xyY_ptr xyY(new CIExyY(c->XYZ));
 		(*values)
-		    [1] = lexical_cast < string > (xyY->x);
+		    [1] = _toString(xyY->x);
 		(*values)
-		    [2] = lexical_cast < string > (xyY->y);
+		    [2] = _toString(xyY->y);
 		(*values)
-		    [3] = lexical_cast < string > (xyY->Y);
+		    [3] = _toString(xyY->Y);
 		RGB_ptr intensity = c->intensity;
 		(*values)
-		    [4] = lexical_cast < string > (intensity->R);
+		    [4] = _toString(intensity->R);
 		(*values)
-		    [5] = lexical_cast < string > (intensity->G);
+		    [5] = _toString(intensity->G);
 		(*values)
-		    [6] = lexical_cast < string > (intensity->B);
+		    [6] = _toString(intensity->B);
 
 		//gamma 0~100
 		if (null != initialRGBGamma) {
@@ -343,13 +357,13 @@ namespace cms {
 
 		RGB_ptr rgb = (*dglut)[x];
 		//int w = static_cast < int >(rgb->getValue(Channel::W));
-		(*values)[0] = lexical_cast < string > (x);
+		(*values)[0] = _toString(x);
 		(*values)
-		    [1] = lexical_cast < string > (rgb->R);
+		    [1] = _toString(rgb->R);
 		(*values)
-		    [2] = lexical_cast < string > (rgb->G);
+		    [2] = _toString(rgb->G);
 		(*values)
-		    [3] = lexical_cast < string > (rgb->B);
+		    [3] = _toString(rgb->B);
 		if (!lazyMode) {
 		    db->update(GammaHeader
 			       [0], x, GammaFieldNames, values, false);
@@ -369,16 +383,16 @@ namespace cms {
 	    while (query->hasNext()) {
 		string_vector_ptr result = query->nextResult();
 		int
-		 gray = lexical_cast < int >((*result)[0]);
-		double x = lexical_cast < double >((*result)[1]);
-		double y = lexical_cast < double >((*result)[2]);
-		double Y = lexical_cast < double >((*result)[3]);
-		double R = lexical_cast < double >((*result)[4]);
-		double G = lexical_cast < double >((*result)[5]);
-		double B = lexical_cast < double >((*result)[6]);
-		double r = lexical_cast < double >((*result)[7]);
-		double g = lexical_cast < double >((*result)[8]);
-		double b = lexical_cast < double >((*result)[9]);
+		 gray = _toInt((*result)[0]);
+		double x = _toDouble((*result)[1]);
+		double y = _toDouble((*result)[2]);
+		double Y = _toDouble((*result)[3]);
+		double R = _toDouble((*result)[4]);
+		double G = _toDouble((*result)[5]);
+		double B = _toDouble((*result)[6]);
+		double r = _toDouble((*result)[7]);
+		double g = _toDouble((*result)[8]);
+		double b = _toDouble((*result)[9]);
 		RGB_ptr rgb(new RGBColor(gray, gray, gray));
 		RGB_ptr intensity(new RGBColor(R, G, B));
 		xyY_ptr xyY(new CIExyY(x, y, Y));
@@ -401,32 +415,32 @@ namespace cms {
 		       RGB_ptr rgbGammaFix) {
 	    string_vector_ptr values(new string_vector(13));
 	    (*values)
-		[0] = lexical_cast < string > (n);
+		[0] = _toString(n);
 	    xyY_ptr xyY(new CIExyY(c->XYZ));
 	    (*values)
-		[1] = lexical_cast < string > (xyY->x);
+		[1] = _toString(xyY->x);
 	    (*values)
-		[2] = lexical_cast < string > (xyY->y);
+		[2] = _toString(xyY->y);
 	    (*values)
-		[3] = lexical_cast < string > (xyY->Y);
+		[3] = _toString(xyY->Y);
 	    RGB_ptr intensity = c->intensity;
 	    (*values)
-		[4] = lexical_cast < string > (intensity->R);
+		[4] = _toString(intensity->R);
 	    (*values)
-		[5] = lexical_cast < string > (intensity->G);
+		[5] = _toString(intensity->G);
 	    (*values)
-		[6] = lexical_cast < string > (intensity->B);
+		[6] = _toString(intensity->B);
 	    //gamma 0~100
 	    if (null != rgbGamma) {
-		(*values)[7] = lexical_cast < string > (rgbGamma->R);
-		(*values)[8] = lexical_cast < string > (rgbGamma->G);
-		(*values)[9] = lexical_cast < string > (rgbGamma->B);
+		(*values)[7] = _toString(rgbGamma->R);
+		(*values)[8] = _toString(rgbGamma->G);
+		(*values)[9] = _toString(rgbGamma->B);
 	    }
 
 	    if (null != rgbGammaFix) {
-		(*values)[10] = lexical_cast < string > (rgbGammaFix->R);
-		(*values)[11] = lexical_cast < string > (rgbGammaFix->G);
-		(*values)[12] = lexical_cast < string > (rgbGammaFix->B);
+		(*values)[10] = _toString(rgbGammaFix->R);
+		(*values)[11] = _toString(rgbGammaFix->G);
+		(*values)[12] = _toString(rgbGammaFix->B);
 	    }
 	    return values;
 	};

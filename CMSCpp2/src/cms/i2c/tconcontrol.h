@@ -12,7 +12,7 @@
 
 namespace cms {
     namespace i2c {
-	class TConControl {
+	class TCONControl {
 
 	};
     };

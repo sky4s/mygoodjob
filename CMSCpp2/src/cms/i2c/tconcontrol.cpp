@@ -10,9 +10,7 @@
 
 namespace cms {
     namespace i2c {
-	class i2cControl {
-
-	};
+ 
     };
 };
 

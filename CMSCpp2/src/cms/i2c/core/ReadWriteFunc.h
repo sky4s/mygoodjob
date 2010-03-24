@@ -1,4 +1,7 @@
 //---------------------------------------------------------------------------
+#ifndef ReadWriteFuncH
+#define ReadWriteFuncH
+//---------------------------------------------------------------------------
 #include "PrintPortI2C.h"
 #include <HWINTERFACELib_TLB.h>
 #include <HWINTERFACELib_OCX.h>
@@ -7,10 +10,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <String.h>
-#ifndef ReadWriteFuncH
-#define ReadWriteFuncH
-//---------------------------------------------------------------------------
-#endif
+
 
 class RW_Func {
   public:
@@ -46,3 +46,4 @@ extern bool DeviceDetected;	// Check if System is active
 extern unsigned int VendorID;	// Uses Microchip's Vendor ID.
 extern unsigned int ProductID;	// UIB Board
 
+#endif

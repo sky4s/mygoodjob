@@ -20,23 +20,25 @@
 
 #include <locale>
 #include <cms/util/rgbarray.h>
+#include <cms/util/util.h>
 #include <ca210api/CA210API.h>
 
 #include <math.hpp>
+#include <boost/numeric/conversion/cast.hpp>
+#include <boost/lexical_cast.hpp>
 
 //---------------------------------------------------------------------------
-
-
 void excel()
 {
     using namespace cms::colorformat;
     using namespace std;
+    using namespace cms::util;
     //string_ptr filename(new string("a.xls"));
 
     /*string_vector_ptr fieldsNames(new string_vector());
        fieldsNames->push_back("a");
        fieldsNames->push_back("b"); */
-    string_vector_ptr fieldsNames = ExcelFileDB::makec(2, "a", "b");
+    string_vector_ptr fieldsNames = StringVector::fromCString(2, "a", "b");
 
     const string & filename = "a.xls";
     //DGLutFile::deleteExist( filename);
@@ -49,9 +51,9 @@ void excel()
     if (newfile) {
 	db.createTable("tb", fieldsNames);
 
-	db.insert(fieldsNames, ExcelFileDB::makec(2, "11", "22"));
-	db.insert(fieldsNames, ExcelFileDB::makec(2, "33", "44"));
-	db.insert(fieldsNames, ExcelFileDB::makec(2, "55", "66"));
+	db.insert(fieldsNames, StringVector::fromCString(2, "11", "22"));
+	db.insert(fieldsNames, StringVector::fromCString(2, "33", "44"));
+	db.insert(fieldsNames, StringVector::fromCString(2, "55", "66"));
     } else {
 	db.setTableName("tb");
 	db.update("a", 11, "b", 99);
@@ -67,7 +69,8 @@ void excel()
 	cout << *query->get(1, 1) << endl;
 	//query->set(1, 1, "333");
 	//string_vector_ptr fieldsNames = ExcelFileDB::make(2, "99", "9");
-	db.update("a", 44, fieldsNames, db.makec(2, "55", "55"));
+	db.update("a", 44, fieldsNames,
+		  StringVector::fromCString(2, "55", "55"));
     };
 
 
@@ -78,10 +81,11 @@ void excel2()
 {
     using namespace cms::colorformat;
     using namespace std;
-    string_vector_ptr fieldsNames = ExcelFileDB::makec(2, "a", "b");
+    using namespace cms::util;
+    string_vector_ptr fieldsNames = StringVector::fromCString(2, "a", "b");
 
     const string & filename = "a.xls";
-    ExcelFileDB::deleteExist(filename);
+    Util::deleteExist(filename);
     //DGLutFile::deleteExist( filename);
     ExcelFileDB db(filename, Create);
 
@@ -92,14 +96,14 @@ void excel2()
 	//¨â­¿®É¶¡
 	for (int x = 0; x < 1000; x++) {
 	    db.insert(fieldsNames,
-		      ExcelFileDB::makes(2, _toString(x),
-					 _toString((x + 1))));
+		      StringVector::fromString(2, _toString(x),
+					       _toString((x + 1))));
 	}
 
 	for (int x = 0; x < 1000; x++) {
-	    string_vector_ptr values = ExcelFileDB::makes(2, _toString(x),
-							  _toString((x +
-								     1)));
+	    string_vector_ptr values =
+		StringVector::fromString(2, _toString(x),
+					 _toString((x + 1)));
 	    db.update("a", x, fieldsNames, values);
 	}
 
@@ -301,10 +305,11 @@ void dgcodefile()
     using namespace cms::lcd::calibrate;
     using namespace Dep;
     using namespace Indep;
+    using namespace cms::util;
     const string & filename = "test.xls";
     //string_ptr filename(new string(" test.xls "));
-    ExcelFileDB::deleteExist(filename);
-    DGLutFile dgcode(filename, 256);
+    Util::deleteExist(filename);
+    DGLutFile dgcode(filename, Create);
     //dgcode.setProperty(" a ", " b ");
     //dgcode.setProperty(" b ", " bbb ");
     //dgcode.setRawData()
@@ -548,6 +553,42 @@ void maxValueTry()
 
 };
 
+void byteOpTry()
+{
+    using namespace std;
+    int i = 259;
+    int i1 = i & 255;
+    int i2 = i >> 8 & 255;
+    cout << i1 << " " << i2 << endl;
+};
+
+void castTry()
+{
+    using boost::numeric_cast;
+
+    using boost::numeric::bad_numeric_cast;
+    using boost::numeric::positive_overflow;
+    using boost::numeric::negative_overflow;
+
+    using namespace std;
+    float ff = -42.1234;
+
+    int ii = numeric_cast < int >(ff);
+    cout << ii << endl;
+
+    //try {
+    float f = -42.1234;
+
+    // This will cause a boost::numeric::negative_overflow exception to be thrown
+    //unsigned int i = numeric_cast < unsigned int >(f);
+    /*}
+       catch(bad_numeric_cast & e) {
+       std::cout << e.what();
+       } */
+ 
+
+};
+
 #pragma argsused
 int main(int argc, char *argv[])
 {
@@ -587,8 +628,10 @@ int main(int argc, char *argv[])
 
     //using namespace cms::colorformat;
     //DGLutFile dg(" test.xls ",256);
-    cout << RoundTo(94.5, 0) << endl;
-    cout << java::lang::Math::roundTo(94.5) << endl;
+    //cout << RoundTo(94.5, 0) << endl;
+    //cout << java::lang::Math::roundTo(94.5) << endl;
+    //byteOpTry();
+    castTry();
     getch();
 }
 

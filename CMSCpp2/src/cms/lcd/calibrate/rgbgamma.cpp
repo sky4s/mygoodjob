@@ -9,16 +9,17 @@
 //其他庫頭文件
 
 //本項目內頭文件
-
+#include <cms/util/util.h>
 
 namespace cms {
     namespace lcd {
 	namespace calibrate {
+	    using namespace cms::util;
 	    //==================================================================
 	    // RGBGamma
 	    //==================================================================
-	    RGBGamma::RGBGamma(double_vector_ptr r, double_vector_ptr g,
-			       double_vector_ptr b):r(r), g(g), b(b),
+	     RGBGamma::RGBGamma(double_vector_ptr r, double_vector_ptr g,
+				double_vector_ptr b):r(r), g(g), b(b),
 		max(1), type(calibrate::Gamma) {
 	    };
 	     RGBGamma::RGBGamma(double_vector_ptr r, double_vector_ptr g,
@@ -32,25 +33,25 @@ namespace cms {
 		using namespace boost;
 		using namespace std;
 
-		 ExcelFileDB::deleteExist(filename);
+		 Util::deleteExist(filename);
 		 bptr_ < ExcelFileDB >
 		    excel(new ExcelFileDB(filename, Create));
 
 		string_vector_ptr fieldNames =
-		    ExcelFileDB::makec(4, "Gray Level", "R gamma",
-				       "G gamma",
-				       "B gamma");
+		    StringVector::fromCString(4, "Gray Level", "R gamma",
+					      "G gamma",
+					      "B gamma");
 		 excel->createTable("Sheet1", fieldNames);
 		int size = rgbgamma->r->size();
 
 		for (int x = 0; x != size; x++) {
 		    (*rgbgamma->r)[x];
-		    string r = lexical_cast < string > ((*rgbgamma->r)[x]);
-		    string g = lexical_cast < string > ((*rgbgamma->g)[x]);
-		    string b = lexical_cast < string > ((*rgbgamma->b)[x]);
+		    string r = _toString((*rgbgamma->r)[x]);
+		    string g = _toString((*rgbgamma->g)[x]);
+		    string b = _toString((*rgbgamma->b)[x]);
+		    string xstring = _toString(x);
 		    string_vector_ptr values =
-			ExcelFileDB::makes(4, lexical_cast < string > (x),
-					   r, g, b);
+			StringVector::fromString(4, xstring, r, g, b);
 		     excel->insert(fieldNames, values);
 	    }};
 

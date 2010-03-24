@@ -59,7 +59,7 @@ namespace cms {
 		    RGB_ptr rgb = (*result)[x];
 		    rgb->setValues(v, v, v);
 		    rgb->quantization(maxValue);
-		    double d2 = rgb->getValue(Channel::G);
+		    //double d2 = rgb->getValue(Channel::G);
 		}
 
 		//if (true == smooth) {
@@ -84,7 +84,6 @@ namespace cms {
 	    //==================================================================
 	    RGB_vector_ptr RBInterpolationOp::
 		getRendering(RGB_vector_ptr source) {
-		//int size = source->size();
 
 		double rInterval = (*source)[under]->R / under;
 		double gInterval = (*source)[under]->G / under;

@@ -1,13 +1,13 @@
 //---------------------------------------------------------------------------
 
 
-#pragma hdrstop
+//#pragma hdrstop
 
 #include "ReadWriteFunc.h"
 
 //---------------------------------------------------------------------------
 
-#pragma package(smart_init)
+//#pragma package(smart_init)
 
 RW_Func::RW_Func()
 {

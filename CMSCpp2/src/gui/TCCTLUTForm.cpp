@@ -67,7 +67,7 @@ void TCCTLUTForm::setBitDepthChecked(int lutSelect, int outSelect)
 
 void TCCTLUTForm::setMeasureInfo()
 {
-    using namespace util;
+    using namespace cms::util;
     int start = bitDepth->getMeasureStart();
     int step = bitDepth->getMeasureStep();
     this->Edit_StartLevel->Text = Util::toString(start).c_str();
@@ -95,7 +95,7 @@ void __fastcall TCCTLUTForm::RadioButton_In6Click(TObject * Sender)
 
 void __fastcall TCCTLUTForm::RadioButton_In8Click(TObject * Sender)
 {
-    using namespace util;
+    using namespace cms::util;
     bitDepth->setInBit(in = 8);
     // 設定lut/out bit depth checked
     setBitDepthChecked(0, 1);
@@ -113,7 +113,7 @@ void __fastcall TCCTLUTForm::RadioButton_In8Click(TObject * Sender)
 
 void __fastcall TCCTLUTForm::RadioButton_In10Click(TObject * Sender)
 {
-    using namespace util;
+    using namespace cms::util;
     bitDepth->setInBit(in = 10);
     // 設定lut/out bit depth checked
     setBitDepthChecked(1, 1);

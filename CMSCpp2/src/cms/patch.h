@@ -8,11 +8,11 @@
 //其他庫頭文件
 
 //本項目內頭文件
-#include <util.h>
+#include <cms/util/util.h>
 #include <java/lang.h>
 
 namespace cms {
-    class Patch:public jObject, util::NameIF {
+    class Patch:public jObject, cms::util::NameIF {
 
       protected:
 	bptr < std::string > name;
