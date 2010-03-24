@@ -13,6 +13,7 @@
 #include <jama/jama_svd.h>
 
 //本項目內頭文件
+#include <cms/util/util.h>
 
 namespace math {
     using namespace boost;
@@ -20,14 +21,15 @@ namespace math {
     using namespace std;
     using namespace JAMA;
     using namespace cms::colorformat;
+    using namespace cms::util;
     string_ptr DoubleArray::toString(double_array m, int n) {
 	string_ptr str(new string("["));
 	for (int x = 0; x != n - 1; x++) {
 	    double v = m[x];
-	     (*str) += lexical_cast < string > (v);
+	     (*str) += _toString (v);
 	     (*str) += ", ";
 	};
-	(*str) += lexical_cast < string > (m[n - 1]);
+	(*str) += _toString (m[n - 1]);
 	(*str) += "]";
 	return str;
     };
@@ -37,10 +39,10 @@ namespace math {
 	int n = m->size();
 	for (int x = 0; x != n - 1; x++) {
 	    double v = (*m)[x];
-	    (*str) += lexical_cast < string > (v);
+	    (*str) += _toString (v);
 	    (*str) += ", ";
 	};
-	(*str) += lexical_cast < string > ((*m)[n - 1]);
+	(*str) += _toString ((*m)[n - 1]);
 	(*str) += "]";
 	return str;
     };
@@ -49,9 +51,9 @@ namespace math {
 	string_ptr str(new string());
 
 	for (int i = 0; i < m->dim1() - 1; i++) {
-	    (*str) += lexical_cast < string > ((*m)[i]) + " ";
+	    (*str) += _toString ((*m)[i]) + " ";
 	}
-	(*str) += lexical_cast < string > ((*m)[m->dim1() - 1]) + "\n";
+	(*str) += _toString ((*m)[m->dim1() - 1]) + "\n";
 
 	return str;
     };
@@ -62,9 +64,9 @@ namespace math {
 
 	for (int i = 0; i < m->dim1(); i++) {
 	    for (int j = 0; j < m->dim2() - 1; j++) {
-		(*str) += lexical_cast < string > ((*m)[i][j]) + " ";
+		(*str) += _toString ((*m)[i][j]) + " ";
 	    }
-	    (*str) += lexical_cast < string > ((*m)[i][m->dim2() - 1]);
+	    (*str) += _toString ((*m)[i][m->dim2() - 1]);
 	    if (i < m->dim1() - 1) {
 		(*str) += "\n";
 	    }
@@ -77,9 +79,9 @@ namespace math {
 
 	for (int i = 0; i < m.dim1(); i++) {
 	    for (int j = 0; j < m.dim2() - 1; j++) {
-		(*str) += lexical_cast < string > (m[i][j]) + " ";
+		(*str) += _toString (m[i][j]) + " ";
 	    }
-	    (*str) += lexical_cast < string > (m[i][m.dim2() - 1]);
+	    (*str) += _toString (m[i][m.dim2() - 1]);
 	    if (i < m.dim1() - 1) {
 		(*str) += "\n";
 	    }
@@ -91,9 +93,9 @@ namespace math {
 	string_ptr str(new string());
 
 	for (int i = 0; i < m.dim1() - 1; i++) {
-	    (*str) += lexical_cast < string > (m[i]) + " ";
+	    (*str) += _toString (m[i]) + " ";
 	}
-	(*str) += lexical_cast < string > (m[m.dim1() - 1]) + "\n";
+	(*str) += _toString(m[m.dim1() - 1]) + "\n";
 
 	return str;
     };
@@ -323,15 +325,16 @@ namespace math {
 
     void DoubleArray::storeToExcel(const string & filename,
 				   double_vector_ptr doubleVector) {
-	ExcelFileDB::deleteExist(filename);
+	Util::deleteExist(filename);
 	bptr_ < ExcelFileDB > excel(new ExcelFileDB(filename, Create));
-	string_vector_ptr fieldNames = ExcelFileDB::makec(1, "value");
+	string_vector_ptr fieldNames =
+	    StringVector::fromCString(1, "value");
 	excel->createTable("Sheet1", fieldNames);
 	int size = doubleVector->size();
-        
+
 	for (int x = 0; x != size; x++) {
-	    string v = lexical_cast < string > ((*doubleVector)[x]);
-	    string_vector_ptr values = ExcelFileDB::makes(1, v);
+	    string v = _toString ((*doubleVector)[x]);
+	    string_vector_ptr values = StringVector::fromString(1, v);
 	    excel->insert(fieldNames, values);
 	}
     };

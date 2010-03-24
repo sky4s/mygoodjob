@@ -9,6 +9,7 @@
 //其他庫頭文件
 
 //本項目內頭文件
+#include "util.h"
 
 namespace cms {
     namespace util {
@@ -39,23 +40,21 @@ namespace cms {
 				     RGB_vector_ptr rgbVector) {
 
 
-	    ExcelFileDB::deleteExist(filename);
+	    Util::deleteExist(filename);
 	    bptr_ < ExcelFileDB > excel(new ExcelFileDB(filename, Create));
 
 	    string_vector_ptr fieldNames =
-		ExcelFileDB::makec(4, "Gray Level", "R", "G",
-				   "B");
+		StringVector::fromCString(4, "Gray Level", "R", "G", "B");
 	    excel->createTable("Sheet1", fieldNames);
 	    int size = rgbVector->size();
 	    for (int x = 0; x != size; x++) {
 		RGB_ptr rgb = (*rgbVector)[x];
-		string r = lexical_cast < string > (rgb->R);
-		string g = lexical_cast < string > (rgb->G);
-		string b = lexical_cast < string > (rgb->B);
+		string r = _toString(rgb->R);
+		string g = _toString(rgb->G);
+		string b = _toString(rgb->B);
+		string xstring = _toString(x);
 		string_vector_ptr values =
-		    ExcelFileDB::makes(4, lexical_cast < string > (x), r,
-				       g,
-				       b);
+		    StringVector::fromString(4, xstring, r, g, b);
 		excel->insert(fieldNames, values);
 	    }
 

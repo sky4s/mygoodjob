@@ -326,10 +326,7 @@ namespace cms {
 		throw IllegalStateException("");
 	    };
 	    const string_ptr MaxValue::toString() {
-		return
-		    string_ptr(new
-			       string
-			       (lexical_cast < string > (bit) + "bit"));
+		return string_ptr(new string(_toString(bit) + "bit"));
 	    };
 	    //======================================================================
 	};

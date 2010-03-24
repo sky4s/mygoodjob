@@ -28,14 +28,12 @@ namespace cms {
 	    const Mode mode;
 	     std::string fileName;
 	     std::string tableName;
-	     bptr < WideString > toWideString(const std::string & sql);
 	    string_vector_ptr fieldNames;
 	     std::string keyField;
 	    bool tableChanged;
 	     std::string getTableName();
 	     std::string getKeyField();
 	     std::string cachesql;
-	    //bptr < TADODataSet > selectAllDataSet;
 
 	  public:
 	     string_vector_ptr getFieldNames(string_ptr tableName);
@@ -96,10 +94,7 @@ namespace cms {
 	    string_vector_ptr select(const std::string & keyValue);
 
 	     bptr < DBQuery > selectAll();
-	    static string_vector_ptr makec(int count, ...);
-	    static string_vector_ptr makes(int count, ...);
-	    static void deleteExist(const std::string & filename);
-	    //static string_vector_ptr makes(int count, ...);
+
 
 	    void setKeyField(const std::string & keyField);
 	    void setCacheMode(bool caching);
@@ -116,7 +111,8 @@ namespace cms {
 	    DBQuery(bptr < TADODataSet > dataSet);
 	  public:
 	    string_vector_ptr nextResult();
-	    static double_vector_ptr toDoubleVector(string_vector_ptr result);
+	    static double_vector_ptr toDoubleVector(string_vector_ptr
+						    result);
 	    bool hasNext();
 	    const string_ptr get(int row, int column);
 	};

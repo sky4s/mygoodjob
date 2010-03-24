@@ -216,7 +216,7 @@ void gammaCurve()
     using namespace math;
     int n = 256;
     /*double_array curve = LCDCalibrator::getGammaCurve(2.2, n);
-    cout << *DoubleArray::toString(curve, n);*/
+       cout << *DoubleArray::toString(curve, n); */
 };
 
 
@@ -224,18 +224,22 @@ void dgcodefile()
 {
     using namespace cms::colorformat;
     //string_ptr filename(new string("test.xls"));
-    DGLutFile dgcode("test.xls", 257);
+    //DGLutFile dgcode("test.xls", 257);
     //dgcode.setProperty("a", "b");
     //dgcode.setProperty("b", "bbb");
 
 };
 
+void byteopTry()
+{
+
+};
 
 
 #pragma argsused
 int main(int argc, char *argv[])
 {
-    wstringtest();
+    //wstringtest();
     //stringtest();
 
 
@@ -251,6 +255,7 @@ int main(int argc, char *argv[])
     //gammaCurve();
     //header();
     //dgcodefile();
+    byteopTry();
     getch();
 }
 

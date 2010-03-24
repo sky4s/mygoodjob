@@ -19,21 +19,16 @@ namespace cms {
 	using namespace lcd::calibrate;
 	using namespace Indep;
 	using namespace Dep;
+	using namespace cms::util;
 
 	//======================================================================
 	// ExcelFileDB
 	//======================================================================
-	 bptr < WideString >
-	    ExcelFileDB::toWideString(const std::string & sql) {
-	    bptr < WideString > wstring(new WideString(sql.c_str()));
-	    return wstring;
-	};
-
 	string ExcelFileDB::getTableName() {
 	    if (tableName.size() == 0) {
 		throw IllegalStateException("Set tableName first!");
 	    };
-	    return tableName;
+	     return tableName;
 	};
 	string ExcelFileDB::getKeyField() {
 	    if (keyField.size() == 0) {
@@ -160,7 +155,7 @@ namespace cms {
 	    };
 	};
 	void ExcelFileDB::execute(const std::string & sql) {
-	    connection->Execute(*toWideString(sql), TCommandType(),
+	    connection->Execute(*Util::toWideString(sql), TCommandType(),
 				TExecuteOptions());
 	};
 	void ExcelFileDB::update0(const std::string & keyField,
@@ -182,9 +177,7 @@ namespace cms {
 		sql += (x == size - 1) ? "" : ",";
 	    }
 
-	    sql +=
-		" WHERE [" + keyField + "] = " + lexical_cast < string >
-		(keyValue);
+	    sql += " WHERE [" + keyField + "] = " + _toString(keyValue);
 
 	    execute(sql);
 	};
@@ -221,7 +214,7 @@ namespace cms {
 	    string_vector_ptr fieldNames(new string_vector());
 	    fieldNames->push_back(fieldName);
 	    string_vector_ptr values(new string_vector());
-	    values->push_back(lexical_cast < string > (value));
+	    values->push_back(_toString (value));
 
 	    update0(keyField, keyValue, fieldNames, values, false);
 	};
@@ -244,7 +237,7 @@ namespace cms {
 	    bptr < TADODataSet >
 		dataSet(new TADODataSet((TComponent *) null));
 	    dataSet->Connection = connection.get();
-	    dataSet->CommandText = *toWideString(sql);
+	    dataSet->CommandText = *Util::toWideString(sql);
 	    dataSet->Open();
 	    dataSet->First();
 	    return dataSet;
@@ -265,13 +258,13 @@ namespace cms {
 
 	string_vector_ptr ExcelFileDB::select(const std::string & keyField,
 					      const int keyValue) {
-	    return select0(keyField, lexical_cast < string > (keyValue),
+	    return select0(keyField, _toString(keyValue),
 			   false);
 	};
 
 	string_vector_ptr ExcelFileDB::select(const int keyValue) {
 	    return select0(getKeyField(),
-			   lexical_cast < string > (keyValue), false);
+			   _toString (keyValue), false);
 	};
 	string_vector_ptr ExcelFileDB::select(const std::string & keyField,
 					      const std::
@@ -297,40 +290,6 @@ namespace cms {
 	    }
 	};
 
-	string_vector_ptr ExcelFileDB::makec(int count, ...) {
-	    string_vector_ptr result(new string_vector());
-	    va_list num_list;
-	    va_start(num_list, count);
-
-	    for (int i = 0; i < count; i++) {
-		const char *c = va_arg(num_list, const char *);
-		string str(c);
-		result->push_back(str);
-	    } va_end(num_list);
-	    return result;
-	};
-
-	string_vector_ptr ExcelFileDB::makes(int count, ...) {
-	    string_vector_ptr result(new string_vector());
-	    va_list num_list;
-	    va_start(num_list, count);
-
-	    for (int i = 0; i < count; i++) {
-		const string str = va_arg(num_list, const string);
-		//string str(c);
-		result->push_back(str);
-	    } va_end(num_list);
-	    return result;
-	};
-
-	void
-	 ExcelFileDB::deleteExist(const std::string & filename) {
-	    const char
-	    *cstr = filename.c_str();
-	    if (FileExists(cstr)) {
-		DeleteFile(cstr);
-	    }
-	};
 
 	void ExcelFileDB::setKeyField(const std::string & keyField) {
 	    this->keyField = keyField;
@@ -381,7 +340,7 @@ namespace cms {
 	    int size = result->size();
 	    double_vector_ptr doublevec(new double_vector(size));
 	    for (int x = 0; x != size; x++) {
-		(*doublevec)[x] = lexical_cast < double >((*result)[x]);
+		(*doublevec)[x] = _toDouble((*result)[x]);
 	    }
 
 	    return doublevec;
