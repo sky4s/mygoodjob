@@ -38,7 +38,7 @@ namespace java {
 	    return false;
 	};
 
-	const Class & Object::getClass() {
+	const Class & Object::getClass() const {
 	    return c;
 	};
 	const int Object::hashCode() {

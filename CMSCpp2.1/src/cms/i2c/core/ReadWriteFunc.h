@@ -3,8 +3,8 @@
 #define ReadWriteFuncH
 //---------------------------------------------------------------------------
 #include "PrintPortI2C.h"
-#include <HWINTERFACELib_TLB.h>
-#include <HWINTERFACELib_OCX.h>
+#include <LPT_lib/HWINTERFACELib_TLB.h>
+#include <LPT_lib/HWINTERFACELib_OCX.h>
 #include <USB_i2c_lib/USBHIDIOC.H>
 #include <USB_i2c_lib/USB_I2C.h>
 #include <stdio.h>

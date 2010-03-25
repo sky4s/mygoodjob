@@ -1,6 +1,6 @@
 #ifndef COREH
 #define COREH
- 
+
 //C系統文件
 
 //C++系統文件
