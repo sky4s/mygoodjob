@@ -295,7 +295,7 @@ namespace java {
 	    const Class c;
 	  public:
 	    const bool equals(Object_ptr obj);
-	    const Class & getClass();
+	    const Class & getClass() const;
 	    const int hashCode();
 	    const string_ptr toString() const;
 	    const bool isNull();

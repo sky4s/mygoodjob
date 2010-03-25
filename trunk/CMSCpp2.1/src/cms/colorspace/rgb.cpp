@@ -231,6 +231,7 @@ namespace cms {
 		    Channel minCh = getMinChannel();
 		    return getValue(minCh);
 		}
+                throw IllegalArgumentException("");
 	    };
 
 	    void RGBColor::setValue(const Channel & channel, double value) {

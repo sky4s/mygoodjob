@@ -125,7 +125,7 @@ void excel2()
     }
 }
 
-int lut()
+void lut()
 {
     using namespace math;
     using namespace std;
@@ -141,7 +141,7 @@ int lut()
 }
 
 
-int regress()
+void regress()
 {
     using namespace std;
     using namespace TNT;
@@ -293,7 +293,7 @@ void gammaCurve()
 {
     using namespace cms::lcd::calibrate;
     using namespace math;
-    int n = 256;
+    //int n = 256;
     /*double_array curve = LCDCalibrator::getGammaCurve(2.2, n);
        cout << *DoubleArray::toString(curve, n); */
 };
@@ -577,7 +577,7 @@ void castTry()
     cout << ii << endl;
 
     //try {
-    float f = -42.1234;
+    //float f = -42.1234;
 
     // This will cause a boost::numeric::negative_overflow exception to be thrown
     //unsigned int i = numeric_cast < unsigned int >(f);

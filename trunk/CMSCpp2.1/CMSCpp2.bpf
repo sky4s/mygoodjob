@@ -1,0 +1,5 @@
+USEFORM("src\gui\TMeasureWindow.cpp", MeasureWindow);
+//---------------------------------------------------------------------------
+This file is used by the project manager only and should be treated like the project file
+
+main 
