@@ -15,14 +15,16 @@ namespace cms {
 
 	class ByteBuffer {
 	  private:
-	    int size;
+	    const unsigned int size;
 	  public:
 	    unsigned char *buffer;
-	     ByteBuffer(int size);
+	     ByteBuffer(const unsigned int size);
 	    ~ByteBuffer();
 	    inline const int getSize() const {
 		return size;
 	    };
+	    unsigned char &operator[] (const size_t index);
+	    const unsigned char &operator[] (const size_t index) const;
 	};
 
 
@@ -59,18 +61,25 @@ namespace cms {
 	    const unsigned char deviceAddress;
 	  protected:
 	    static RW_Func i2cio;
+	    unsigned char dataAddressByteArray[2];
+	    int dataAddressLength;
+	    void initDataAddress(int dataAddress);
 	    virtual void write0(unsigned char dev_addr,
 				unsigned char *data_addr,
 				int data_addr_cnt,
 				unsigned char *data_write, int data_len) =
 		0;
+	    virtual void read0(unsigned char dev_addr,
+			       unsigned char *data_addr, int data_addr_cnt,
+			       unsigned char *data_read, int data_cnt) = 0;
+
+
 	  public:
 	     i2cControl(const unsigned char deviceAddress);
 	    virtual bool connect() = 0;
 	    virtual void disconnect() = 0;
 	    void write(int dataAddress, bptr < ByteBuffer > data);
-	    /*unsigned char readByte();
-	       bptr < ByteBuffer > readByteBuffer(); */
+	     bptr < ByteBuffer > read(int dataAddress, int dataLength);
 	    static bptr < i2cControl >
 		getLPTInstance(const unsigned char deviceAddress);
 	    static bptr < i2cControl >
@@ -82,10 +91,13 @@ namespace cms {
 
 	class i2cLPTControl:public i2cControl {
 	  protected:
-	    void write0(unsigned char dev_addr,
-			unsigned char *data_addr,
-			int data_addr_cnt,
-			unsigned char *data_write, int data_len);
+	    virtual void write0(unsigned char dev_addr,
+				unsigned char *data_addr,
+				int data_addr_cnt,
+				unsigned char *data_write, int data_len);
+	    virtual void read0(unsigned char dev_addr,
+			       unsigned char *data_addr, int data_addr_cnt,
+			       unsigned char *data_read, int data_cnt);
 	  public:
 	     bool connect();
 	    void disconnect();
@@ -97,15 +109,19 @@ namespace cms {
 	    USBPower power;
 	    USBSpeed speed;
 	  protected:
-	    void write0(unsigned char dev_addr,
-			unsigned char *data_addr,
-			int data_addr_cnt,
-			unsigned char *data_write, int data_len);
+	     virtual void write0(unsigned char dev_addr,
+				 unsigned char *data_addr,
+				 int data_addr_cnt,
+				 unsigned char *data_write, int data_len);
+	    virtual void read0(unsigned char dev_addr,
+			       unsigned char *data_addr, int data_addr_cnt,
+			       unsigned char *data_read, int data_cnt);
 	  public:
 	     i2cUSBControl(const unsigned char deviceAddress,
 			   USBPower power, USBSpeed speed);
 	    bool connect();
 	    void disconnect();
+	    ~i2cUSBControl();
 	};
     };
 };

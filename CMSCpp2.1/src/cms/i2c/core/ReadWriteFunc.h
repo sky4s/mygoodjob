@@ -2,15 +2,7 @@
 #ifndef ReadWriteFuncH
 #define ReadWriteFuncH
 //---------------------------------------------------------------------------
-#include "PrintPortI2C.h"
-#include <LPT_lib/HWINTERFACELib_TLB.h>
-#include <LPT_lib/HWINTERFACELib_OCX.h>
 #include <USB_i2c_lib/USBHIDIOC.H>
-#include <USB_i2c_lib/USB_I2C.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <String.h>
-
 
 class RW_Func {
   public:

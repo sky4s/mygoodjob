@@ -1,8 +1,8 @@
 object I2CTestForm: TI2CTestForm
   Left = 218
   Top = 164
-  Width = 289
-  Height = 374
+  Width = 256
+  Height = 369
   Caption = 'I2CTestForm'
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET

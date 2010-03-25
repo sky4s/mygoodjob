@@ -1,9 +1,16 @@
-//---------------------------------------------------------------------------
-
-
-//#pragma hdrstop
-
 #include "ReadWriteFunc.h"
+
+//C系統文件    
+
+//C++系統文件
+
+//其他庫頭文件
+#include <LPT_lib/HWINTERFACELib_TLB.h>
+#include <LPT_lib/HWINTERFACELib_OCX.h>
+#include <USB_i2c_lib/USB_I2C.h>
+
+//本項目內頭文件
+#include "PrintPortI2C.h"
 
 //---------------------------------------------------------------------------
 
