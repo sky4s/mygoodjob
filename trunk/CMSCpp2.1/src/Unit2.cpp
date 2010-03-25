@@ -596,6 +596,18 @@ void bufferTry()
     ByteBuffer buffer(3);
 };
 
+void rgbGammaTry()
+{
+    using namespace cms::lcd::calibrate;
+    using namespace std;
+    RGBGamma_ptr rgbgamma =
+	RGBGamma::loadFromDesiredGamma("DesiredGamma.xls");
+    double_vector_ptr r = rgbgamma->r;
+    foreach(const double v, *r) {
+	cout << v << endl;
+    };
+};
+
 #pragma argsused
 int main(int argc, char *argv[])
 {
@@ -639,7 +651,8 @@ int main(int argc, char *argv[])
     //cout << java::lang::Math::roundTo(94.5) << endl;
     //byteOpTry();
     //castTry();
-    bufferTry();
+    rgbGammaTry();
+    //bufferTry();
     getch();
 }
 

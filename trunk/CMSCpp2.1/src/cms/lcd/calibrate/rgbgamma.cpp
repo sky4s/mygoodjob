@@ -15,6 +15,9 @@ namespace cms {
     namespace lcd {
 	namespace calibrate {
 	    using namespace cms::util;
+	    using namespace cms::colorformat;
+	    using namespace boost;
+	    using namespace std;
 	    //==================================================================
 	    // RGBGamma
 	    //==================================================================
@@ -23,25 +26,32 @@ namespace cms {
 		max(1), type(calibrate::Gamma) {
 	    };
 	     RGBGamma::RGBGamma(double_vector_ptr r, double_vector_ptr g,
+				double_vector_ptr b,
+				double_vector_ptr w):r(r), g(g), b(b),
+		w(w), max(1), type(calibrate::Gamma) {
+	    };
+	     RGBGamma::RGBGamma(double_vector_ptr r, double_vector_ptr g,
 				double_vector_ptr b, const double max,
 				const Type type):r(r), g(g), b(b),
 		max(max), type(type) {
 	    };
+	    RGBGamma::RGBGamma(double_vector_ptr r, double_vector_ptr g,
+			       double_vector_ptr b, double_vector_ptr w,
+			       const double max, const Type type):r(r),
+		g(g), b(b), w(w), max(max), type(type) {
+	    };
 	    void RGBGamma::storeToExcel(const std::string & filename,
 					RGBGamma_ptr rgbgamma) {
-		using namespace cms::colorformat;
-		using namespace boost;
-		using namespace std;
 
-		 Util::deleteExist(filename);
-		 bptr_ < ExcelFileDB >
+
+		Util::deleteExist(filename);
+		bptr_ < ExcelFileDB >
 		    excel(new ExcelFileDB(filename, Create));
 
 		string_vector_ptr fieldNames =
 		    StringVector::fromCString(4, "Gray Level", "R gamma",
-					      "G gamma",
-					      "B gamma");
-		 excel->createTable("Sheet1", fieldNames);
+					      "G gamma", "B gamma");
+		excel->createTable("Sheet1", fieldNames);
 		int size = rgbgamma->r->size();
 
 		for (int x = 0; x != size; x++) {
@@ -52,17 +62,61 @@ namespace cms {
 		    string xstring = _toString(x);
 		    string_vector_ptr values =
 			StringVector::fromString(4, xstring, r, g, b);
-		     excel->insert(fieldNames, values);
-	    }};
+		    excel->insert(fieldNames, values);
+		};
+	    };
+
+	    void RGBGamma::storeToDesiredGamma(const std::
+					       string & filename,
+					       RGBGamma_ptr rgbgamma) {
+		/* TODO : storeToDesiredGamma */
+	    };
+
+	    RGBGamma_ptr RGBGamma::loadFromDesiredGamma(const std::
+							string &
+							filename) {
+		bptr_ < ExcelFileDB >
+		    excel(new ExcelFileDB(filename, ReadOnly));
+		double_vector_ptr r(new double_vector()),
+		    g(new double_vector()), b(new double_vector()),
+		    w(new double_vector());
+		excel->setTableName("Sheet1");
+		bptr < DBQuery > query = excel->selectAll();
+		while (query->hasNext()) {
+		    string_vector_ptr result = query->nextResult();
+		    w->push_back(_toDouble((*result)[1]));
+		    r->push_back(_toDouble((*result)[2]));
+		    g->push_back(_toDouble((*result)[3]));
+		    b->push_back(_toDouble((*result)[4]));
+
+		};
+		//==============================================================
+                // 反轉處理
+		//==============================================================
+		w.reset(new double_vector(w->rbegin(), w->rend()));
+		r.reset(new double_vector(r->rbegin(), r->rend()));
+		g.reset(new double_vector(g->rbegin(), g->rend()));
+		b.reset(new double_vector(b->rbegin(), b->rend()));
+		//==============================================================
+		RGBGamma_ptr rgbgamma(new RGBGamma(r, g, b, w));
+		return rgbgamma;
+	    };
 
 	    RGBGamma_ptr RGBGamma::clone() {
 		double_vector_ptr rclone(new double_vector(*r));
 		double_vector_ptr gclone(new double_vector(*g));
 		double_vector_ptr bclone(new double_vector(*b));
-		RGBGamma_ptr result(new
-				    RGBGamma(rclone, gclone, bclone,
-					     max, type));
-		return result;
+		if (null != w) {
+		    double_vector_ptr wclone(new double_vector(*w));
+		    return RGBGamma_ptr(new
+					RGBGamma(rclone, gclone, bclone,
+						 wclone, max, type));
+		} else {
+		    return RGBGamma_ptr(new
+					RGBGamma(rclone, gclone, bclone,
+						 max, type));
+		};
+
 	    };
 	    //==================================================================
 
