@@ -16,7 +16,7 @@
 #include <iterator>
 
 #include <boost/array.hpp>
-#include <jama/jama_svd.h>
+//#include <jama/jama_svd.h>
 
 #include <locale>
 #include <cms/util/rgbarray.h>
@@ -26,6 +26,7 @@
 #include <math.hpp>
 #include <boost/numeric/conversion/cast.hpp>
 #include <boost/lexical_cast.hpp>
+
 
 //---------------------------------------------------------------------------
 void excel()
@@ -141,7 +142,7 @@ void lut()
 }
 
 
-void regress()
+/*void regress()
 {
     using namespace std;
     using namespace TNT;
@@ -178,7 +179,7 @@ void regress()
 	cout << *regression.getCoefs() << endl;
     }
 
-}
+}*/
 
 void inverse()
 {
@@ -585,8 +586,14 @@ void castTry()
        catch(bad_numeric_cast & e) {
        std::cout << e.what();
        } */
- 
 
+
+};
+
+void bufferTry()
+{
+    using namespace cms::i2c;
+    ByteBuffer buffer(3);
 };
 
 #pragma argsused
@@ -631,7 +638,8 @@ int main(int argc, char *argv[])
     //cout << RoundTo(94.5, 0) << endl;
     //cout << java::lang::Math::roundTo(94.5) << endl;
     //byteOpTry();
-    castTry();
+    //castTry();
+    bufferTry();
     getch();
 }
 

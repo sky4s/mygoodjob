@@ -19,7 +19,7 @@ __fastcall TI2CTestForm::TI2CTestForm(TComponent * Owner)
 //---------------------------------------------------------------------------
 void __fastcall TI2CTestForm::Button1Click(TObject * Sender)
 {
-/*    using namespace cms::i2c;
+    using namespace cms::i2c;
     bptr < i2cControl > i2c1st;
     bptr < i2cControl > i2c2nd;
     unsigned char first, second;
@@ -34,16 +34,22 @@ void __fastcall TI2CTestForm::Button1Click(TObject * Sender)
     }
 
     if (this->RadioButton_USB->Checked) {
-       i2c1st = i2cControl::getUSBInstance(first, _3_3V, _400KHz);
-       if (dual) {
-       i2c2nd = i2cControl::getUSBInstance(second, _3_3V, _400KHz);
-       };
-       } else {
-       i2c1st = i2cControl::getLPTInstance(first);
-       if (dual) {
-       i2c2nd = i2cControl::getLPTInstance(second);
-       };
-       }; */
+	i2c1st = i2cControl::getUSBInstance(first, _3_3V, _400KHz);
+	if (dual) {
+	    i2c2nd = i2cControl::getUSBInstance(second, _3_3V, _400KHz);
+	};
+    } else {
+	i2c1st = i2cControl::getLPTInstance(first);
+	if (dual) {
+	    i2c2nd = i2cControl::getLPTInstance(second);
+	};
+    };
+    bool connect = i2c1st->connect();
+    i2c2nd->connect();
+    if( connect) {
+    
+    }
+    //i2c1st->read()
     //i2cControl::
 }
 

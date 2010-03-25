@@ -418,6 +418,7 @@ namespace cms {
 					    || bitDepth->
 					    is10in8Out())? bitDepth->
 		    getFRCMaxValue() : bitDepth->getLutMaxValue();
+		//MaxValue quantizationBit = bitDepth->getLutMaxValue();
 		RGBVector::quantization(dglut, quantizationBit);
 		//==============================================================
 

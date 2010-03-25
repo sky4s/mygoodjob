@@ -11,14 +11,13 @@
       build\aroundAlgo.obj build\lcdcalibrator.obj build\nearAlgo.obj 
       build\rgbvectorop.obj build\whitefinder.obj build\analyzer.obj 
       build\cp.obj build\meter.obj build\rgbArray.obj build\rgbgamma.obj 
-      build\TMeasureWindow.obj build\CA200SRVRLib_OCX.obj 
-      build\CA200SRVRLib_TLB.obj build\tconparameter.obj 
+      build\TMeasureWindow.obj build\tconparameter.obj 
       build\metermeasurement.obj build\tconcontrol.obj build\i2ccontrol.obj 
       build\dgcodefile.obj build\measurefile.obj build\util.obj 
-      build\HWINTERFACELib_OCX.obj build\HWINTERFACELib_TLB.obj 
       build\ReadWriteFunc.obj build\lang.obj build\doubleArray.obj 
       build\interpolation.obj build\regression.obj build\searcher.obj 
-      build\svd.obj"/>
+      build\svd.obj build\CA200SRVRLib_OCX.obj build\CA200SRVRLib_TLB.obj 
+      build\HWINTERFACELib_TLB.obj build\HWINTERFACELib_OCX.obj"/>
     <RESFILES value="CMSCpp2.res"/>
     <IDLFILES value=""/>
     <IDLGENFILES value=""/>
@@ -34,7 +33,7 @@
       inetdbbde.bpi inetdbxpress.bpi inetdb.bpi nmfast.bpi webdsnap.bpi 
       bcbie.bpi websnap.bpi soaprtl.bpi dclocx.bpi dbexpress.bpi dbxcds.bpi 
       indy.bpi bcb2kaxserver.bpi bcbindent.bpi"/>
-    <PATHCPP value=".;src;src;src\ca210api;src\cms;src\cms;src\cms\colorformat;src\cms\colorformat;src\cms\colorformat;src\cms\colorspace;src\cms\colorspace;src\cms\colorspace;src\cms\colorspace;src\cms\colorspace;src\cms\lcd\calibrate;src\cms\lcd\calibrate;src\cms\lcd\calibrate;src\cms\lcd\calibrate;src\cms\lcd\calibrate;src\cms\lcd\calibrate;src\cms\measure;src\cms\measure;src\cms\measure;src\cms\util;src\cms\lcd\calibrate;src\gui;imports\CA200SRVRLib;imports\CA200SRVRLib;src\cms\i2c;src\cms\measure;src\cms\i2c;src\cms\i2c;src\cms\colorformat;src\cms\colorformat;src\cms\util;imports\LPT_lib;imports\LPT_lib;src\cms\i2c\core;src\java;src\math;src\math;src\math;src\math;src\math"/>
+    <PATHCPP value=".;src;src;src\ca210api;src\cms;src\cms;src\cms\colorformat;src\cms\colorformat;src\cms\colorformat;src\cms\colorspace;src\cms\colorspace;src\cms\colorspace;src\cms\colorspace;src\cms\colorspace;src\cms\lcd\calibrate;src\cms\lcd\calibrate;src\cms\lcd\calibrate;src\cms\lcd\calibrate;src\cms\lcd\calibrate;src\cms\lcd\calibrate;src\cms\measure;src\cms\measure;src\cms\measure;src\cms\util;src\cms\lcd\calibrate;src\gui;src\cms\i2c;src\cms\measure;src\cms\i2c;src\cms\i2c;src\cms\colorformat;src\cms\colorformat;src\cms\util;src\cms\i2c\core;src\java;src\math;src\math;src\math;src\math;src\math;lib\CA200SRVRLib;lib\CA200SRVRLib;lib\LPT_lib;lib\LPT_lib"/>
     <PATHPAS value=".;"/>
     <PATHRC value=".;"/>
     <PATHASM value=".;"/>
@@ -44,17 +43,18 @@
     <USERDEFINES value="_DEBUG"/>
     <SYSDEFINES value="NO_STRICT;_RTLDLL;USEPACKAGES"/>
     <MAINSOURCE value="CMSCpp2.bpf"/>
-    <INCLUDEPATH value="src\math;src\java;imports\LPT_lib;imports\CA200SRVRLib;src\static\math;src\static\java;src\cms\i2c\core;src\cms\i2c;src\gui;src\cms\util;src\cms\measure;src\cms\lcd\calibrate;src\cms\colorspace;src\cms\colorformat;src\cms;src\ca210api;src;$(BCB)\include;$(BCB)\include\vcl;lib"/>
-    <LIBPATH value="src\math;src\java;imports\LPT_lib;imports\CA200SRVRLib;src\static\math;src\static\java;src\cms\i2c\core;src\cms\i2c;src\gui;$(BCB)\Projects\Lib;src\cms\util;src\cms\measure;src\cms\lcd\calibrate;src\cms\colorspace;src\cms\colorformat;src\cms;src\ca210api;src;$(BCB)\lib\obj;$(BCB)\lib;lib"/>
+    <INCLUDEPATH value="lib\LPT_lib;lib\CA200SRVRLib;imports\LPT_lib;imports\CA200SRVRLib;src\math;src\java;src\static\math;src\static\java;src\cms\i2c\core;src\cms\i2c;src\gui;src\cms\util;src\cms\measure;src\cms\lcd\calibrate;src\cms\colorspace;src\cms\colorformat;src\cms;src\ca210api;src;$(BCB)\include;$(BCB)\include\vcl;lib"/>
+    <LIBPATH value="lib\LPT_lib;lib\CA200SRVRLib;imports\LPT_lib;imports\CA200SRVRLib;src\math;src\java;src\static\math;src\static\java;src\cms\i2c\core;src\cms\i2c;src\gui;$(BCB)\Projects\Lib;src\cms\util;src\cms\measure;src\cms\lcd\calibrate;src\cms\colorspace;src\cms\colorformat;src\cms;src\ca210api;src;$(BCB)\lib\obj;$(BCB)\lib;lib"/>
     <WARNINGS value="-w-par"/>
     <OTHERFILES value=""/>
   </MACROS>
   <OPTIONS>
-    <IDLCFLAGS value="-Isrc\math -Isrc\java -Iimports\LPT_lib -Iimports\CA200SRVRLib 
-      -Isrc\static\math -Isrc\static\java -Isrc\cms\i2c\core -Isrc\cms\i2c 
-      -Isrc\gui -Isrc\cms\util -Isrc\cms\measure -Isrc\cms\lcd\calibrate 
-      -Isrc\cms\colorspace -Isrc\cms\colorformat -Isrc\cms -Isrc\ca210api -Isrc 
-      -I$(BCB)\include -I$(BCB)\include\vcl -Ilib -src_suffix cpp -D_DEBUG -boa"/>
+    <IDLCFLAGS value="-Ilib\LPT_lib -Ilib\CA200SRVRLib -Iimports\LPT_lib -Iimports\CA200SRVRLib 
+      -Isrc\math -Isrc\java -Isrc\static\math -Isrc\static\java 
+      -Isrc\cms\i2c\core -Isrc\cms\i2c -Isrc\gui -Isrc\cms\util 
+      -Isrc\cms\measure -Isrc\cms\lcd\calibrate -Isrc\cms\colorspace 
+      -Isrc\cms\colorformat -Isrc\cms -Isrc\ca210api -Isrc -I$(BCB)\include 
+      -I$(BCB)\include\vcl -Ilib -src_suffix cpp -D_DEBUG -boa"/>
     <CFLAG1 value="-Od -H=$(BCB)\lib\vcl60.csm -Hc -Vx -Ve -X- -r- -a8 -b- -k -y -v -vi- -tWC 
       -tWM -c"/>
     <PFLAGS value="-N2build -N0build -$YD -$W -$O- -$A8 -v -JPHNE -M"/>
@@ -98,8 +98,6 @@
       <FILE FILENAME="src\cms\lcd\calibrate\rgbop.h" FORMNAME="" UNITNAME="rgbop.h" CONTAINERID="" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="src\cms\lcd\calibrate\rgbgamma.cpp" FORMNAME="" UNITNAME="rgbgamma" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="src\gui\TMeasureWindow.cpp" FORMNAME="MeasureWindow" UNITNAME="TMeasureWindow" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="imports\CA200SRVRLib\CA200SRVRLib_OCX.cpp" FORMNAME="" UNITNAME="CA200SRVRLib_OCX" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="imports\CA200SRVRLib\CA200SRVRLib_TLB.cpp" FORMNAME="" UNITNAME="CA200SRVRLib_TLB" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="src\cms\i2c\tconparameter.cpp" FORMNAME="" UNITNAME="tconparameter" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="src\cms\measure\metermeasurement.cpp" FORMNAME="" UNITNAME="metermeasurement" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="src\cms\i2c\tconcontrol.cpp" FORMNAME="" UNITNAME="tconcontrol" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
@@ -107,8 +105,6 @@
       <FILE FILENAME="src\cms\colorformat\dgcodefile.cpp" FORMNAME="" UNITNAME="dgcodefile" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="src\cms\colorformat\measurefile.cpp" FORMNAME="" UNITNAME="measurefile" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="src\cms\util\util.cpp" FORMNAME="" UNITNAME="util" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="imports\LPT_lib\HWINTERFACELib_OCX.cpp" FORMNAME="" UNITNAME="HWINTERFACELib_OCX.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="imports\LPT_lib\HWINTERFACELib_TLB.cpp" FORMNAME="" UNITNAME="HWINTERFACELib_TLB.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="src\cms\i2c\core\ReadWriteFunc.cpp" FORMNAME="" UNITNAME="ReadWriteFunc" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="src\java\lang.cpp" FORMNAME="" UNITNAME="lang" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="src\math\doubleArray.cpp" FORMNAME="" UNITNAME="doubleArray.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
@@ -116,6 +112,10 @@
       <FILE FILENAME="src\math\regression.cpp" FORMNAME="" UNITNAME="regression.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="src\math\searcher.cpp" FORMNAME="" UNITNAME="searcher.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="src\math\svd.cpp" FORMNAME="" UNITNAME="svd.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="lib\CA200SRVRLib\CA200SRVRLib_OCX.cpp" FORMNAME="" UNITNAME="CA200SRVRLib_OCX.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="lib\CA200SRVRLib\CA200SRVRLib_TLB.cpp" FORMNAME="" UNITNAME="CA200SRVRLib_TLB.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="lib\LPT_lib\HWINTERFACELib_TLB.cpp" FORMNAME="" UNITNAME="HWINTERFACELib_TLB.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="lib\LPT_lib\HWINTERFACELib_OCX.cpp" FORMNAME="" UNITNAME="HWINTERFACELib_OCX.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
   </FILELIST>
   <BUILDTOOLS>
   </BUILDTOOLS>
@@ -149,31 +149,35 @@ ProductVersion=1.0.0.0
 Comments=
 
 [HistoryLists\hlIncludePath]
-Count=11
-Item0=imports\LPT_lib;imports\CA200SRVRLib;src\static\math;src\static\java;src\cms\i2c\core;src\cms\i2c;src\gui;src\cms\util;src\cms\measure;src\cms\lcd\calibrate;src\cms\colorspace;src\cms\colorformat;src\cms;src\ca210api;src;$(BCB)\include;$(BCB)\include\vcl;lib
-Item1=src\cms\i2c\core;src\cms\i2c;src\gui;src\cms\util;src\cms\measure;src\cms\lcd\calibrate;src\cms\colorspace;src\cms\colorformat;src\cms;src\ca210api;src;$(BCB)\include;$(BCB)\include\vcl;lib
-Item2=src\cms\i2c\core;imports\LPT_lib;src\cms\i2c;D:\Program Files\Borland\CBuilder6\Projects;imports\CA200SRVRLib;src\gui;F:\Program Files\Borland\CBuilder6\Projects;src\static\math;src\static\java;src\static;src\cms\util;src\cms\measure;src\cms\lcd\calibrate;src\cms\colorspace;src\cms\colorformat;src\cms;src\ca210api;src;$(BCB)\include;$(BCB)\include\vcl;imports;lib
-Item3=src\cms\i2c;D:\Program Files\Borland\CBuilder6\Projects;imports\CA200SRVRLib;src\gui;F:\Program Files\Borland\CBuilder6\Projects;src\static\math;src\static\java;src\static;src\cms\util;src\cms\measure;src\cms\lcd\calibrate;src\cms\colorspace;src\cms\colorformat;src\cms;src\ca210api;src;$(BCB)\include;$(BCB)\include\vcl;imports;lib
-Item4=imports\CA200SRVRLib;src\gui;F:\Program Files\Borland\CBuilder6\Projects;src\static\math;src\static\java;src\static;src\cms\util;src\cms\measure;src\cms\lcd\calibrate;src\cms\colorspace;src\cms\colorformat;src\cms;src\ca210api;src;$(BCB)\include;$(BCB)\include\vcl;imports;lib
-Item5=src\static\math;src\static\java;src\static;src\cms\util;src\cms\measure;src\cms\lcd\calibrate;src\cms\colorspace;src\cms\colorformat;src\cms;src\ca210api;src;$(BCB)\include;$(BCB)\include\vcl;imports;lib
-Item6=src\static\math;src\static\java;src\static;src\cms\util;src\cms\measure;src\cms\lcd\calibrate;src\cms\colorspace;src\cms\colorformat;src\cms;src\ca210api;src;$(BCB)\include;$(BCB)\include\vcl;imports
-Item7=src\static\math;src\static\java;src\static;src\cms\util;src\cms\measure;src\cms\lcd\calibrate;src\cms\colorspace;src\cms\colorformat;src\cms;src\ca210api;src;$(BCB)\include;$(BCB)\include\vcl;imports\
-Item8=src\static\math;src\static\java;src\static;src\cms\util;src\cms\measure;src\cms\lcd\calibrate;src\cms\colorspace;src\cms\colorformat;src\cms;src\ca210api;src;$(BCB)\include;$(BCB)\include\vcl;imports\CA200SRVRLib
-Item9=src\static\math;src\static\java;src\static;src\cms\util;src\cms\measure;src\cms\lcd\calibrate;src\cms\colorspace;src\cms\colorformat;src\cms;src\ca210api;src;D:\WorkSpace\CMSCpp2\src;$(BCB)\include;$(BCB)\include\vcl;imports\CA200SRVRLib
-Item10=src\static\math;src\static\java;src\static;src\cms\util;src\cms\measure;src\cms\lcd\calibrate;src\cms\colorspace;src\cms\colorformat;src\cms;src\ca210api;src;D:\WorkSpace\CMSCpp2\src;$(BCB)\include;$(BCB)\include\vcl
+Count=13
+Item0=src\math;src\java;src\static\math;src\static\java;src\cms\i2c\core;src\cms\i2c;src\gui;src\cms\util;src\cms\measure;src\cms\lcd\calibrate;src\cms\colorspace;src\cms\colorformat;src\cms;src\ca210api;src;$(BCB)\include;$(BCB)\include\vcl;lib
+Item1=src\math;src\java;imports\LPT_lib;imports\CA200SRVRLib;src\static\math;src\static\java;src\cms\i2c\core;src\cms\i2c;src\gui;src\cms\util;src\cms\measure;src\cms\lcd\calibrate;src\cms\colorspace;src\cms\colorformat;src\cms;src\ca210api;src;$(BCB)\include;$(BCB)\include\vcl;lib
+Item2=imports\LPT_lib;imports\CA200SRVRLib;src\static\math;src\static\java;src\cms\i2c\core;src\cms\i2c;src\gui;src\cms\util;src\cms\measure;src\cms\lcd\calibrate;src\cms\colorspace;src\cms\colorformat;src\cms;src\ca210api;src;$(BCB)\include;$(BCB)\include\vcl;lib
+Item3=src\cms\i2c\core;src\cms\i2c;src\gui;src\cms\util;src\cms\measure;src\cms\lcd\calibrate;src\cms\colorspace;src\cms\colorformat;src\cms;src\ca210api;src;$(BCB)\include;$(BCB)\include\vcl;lib
+Item4=src\cms\i2c\core;imports\LPT_lib;src\cms\i2c;D:\Program Files\Borland\CBuilder6\Projects;imports\CA200SRVRLib;src\gui;F:\Program Files\Borland\CBuilder6\Projects;src\static\math;src\static\java;src\static;src\cms\util;src\cms\measure;src\cms\lcd\calibrate;src\cms\colorspace;src\cms\colorformat;src\cms;src\ca210api;src;$(BCB)\include;$(BCB)\include\vcl;imports;lib
+Item5=src\cms\i2c;D:\Program Files\Borland\CBuilder6\Projects;imports\CA200SRVRLib;src\gui;F:\Program Files\Borland\CBuilder6\Projects;src\static\math;src\static\java;src\static;src\cms\util;src\cms\measure;src\cms\lcd\calibrate;src\cms\colorspace;src\cms\colorformat;src\cms;src\ca210api;src;$(BCB)\include;$(BCB)\include\vcl;imports;lib
+Item6=imports\CA200SRVRLib;src\gui;F:\Program Files\Borland\CBuilder6\Projects;src\static\math;src\static\java;src\static;src\cms\util;src\cms\measure;src\cms\lcd\calibrate;src\cms\colorspace;src\cms\colorformat;src\cms;src\ca210api;src;$(BCB)\include;$(BCB)\include\vcl;imports;lib
+Item7=src\static\math;src\static\java;src\static;src\cms\util;src\cms\measure;src\cms\lcd\calibrate;src\cms\colorspace;src\cms\colorformat;src\cms;src\ca210api;src;$(BCB)\include;$(BCB)\include\vcl;imports;lib
+Item8=src\static\math;src\static\java;src\static;src\cms\util;src\cms\measure;src\cms\lcd\calibrate;src\cms\colorspace;src\cms\colorformat;src\cms;src\ca210api;src;$(BCB)\include;$(BCB)\include\vcl;imports
+Item9=src\static\math;src\static\java;src\static;src\cms\util;src\cms\measure;src\cms\lcd\calibrate;src\cms\colorspace;src\cms\colorformat;src\cms;src\ca210api;src;$(BCB)\include;$(BCB)\include\vcl;imports\
+Item10=src\static\math;src\static\java;src\static;src\cms\util;src\cms\measure;src\cms\lcd\calibrate;src\cms\colorspace;src\cms\colorformat;src\cms;src\ca210api;src;$(BCB)\include;$(BCB)\include\vcl;imports\CA200SRVRLib
+Item11=src\static\math;src\static\java;src\static;src\cms\util;src\cms\measure;src\cms\lcd\calibrate;src\cms\colorspace;src\cms\colorformat;src\cms;src\ca210api;src;D:\WorkSpace\CMSCpp2\src;$(BCB)\include;$(BCB)\include\vcl;imports\CA200SRVRLib
+Item12=src\static\math;src\static\java;src\static;src\cms\util;src\cms\measure;src\cms\lcd\calibrate;src\cms\colorspace;src\cms\colorformat;src\cms;src\ca210api;src;D:\WorkSpace\CMSCpp2\src;$(BCB)\include;$(BCB)\include\vcl
 
 [HistoryLists\hlLibraryPath]
-Count=10
-Item0=src\cms\i2c\core;src\cms\i2c;src\gui;$(BCB)\Projects\Lib;src\cms\util;src\cms\measure;src\cms\lcd\calibrate;src\cms\colorspace;src\cms\colorformat;src\cms;src\ca210api;src;$(BCB)\lib\obj;$(BCB)\lib;lib
-Item1=src\cms\i2c\core;imports\LPT_lib;src\cms\i2c;D:\Program Files\Borland\CBuilder6\Projects;imports\CA200SRVRLib;src\gui;F:\Program Files\Borland\CBuilder6\Projects;$(BCB)\Projects\Lib;src\static\math;src\static\java;src\static;src\cms\util;src\cms\measure;src\cms\lcd\calibrate;src\cms\colorspace;src\cms\colorformat;src\cms;src\ca210api;src;$(BCB)\lib\obj;$(BCB)\lib;imports;lib
-Item2=src\cms\i2c;D:\Program Files\Borland\CBuilder6\Projects;imports\CA200SRVRLib;src\gui;F:\Program Files\Borland\CBuilder6\Projects;$(BCB)\Projects\Lib;src\static\math;src\static\java;src\static;src\cms\util;src\cms\measure;src\cms\lcd\calibrate;src\cms\colorspace;src\cms\colorformat;src\cms;src\ca210api;src;$(BCB)\lib\obj;$(BCB)\lib;imports;lib
-Item3=imports\CA200SRVRLib;src\gui;F:\Program Files\Borland\CBuilder6\Projects;$(BCB)\Projects\Lib;src\static\math;src\static\java;src\static;src\cms\util;src\cms\measure;src\cms\lcd\calibrate;src\cms\colorspace;src\cms\colorformat;src\cms;src\ca210api;src;$(BCB)\lib\obj;$(BCB)\lib;imports;lib
-Item4=$(BCB)\Projects\Lib;src\static\math;src\static\java;src\static;src\cms\util;src\cms\measure;src\cms\lcd\calibrate;src\cms\colorspace;src\cms\colorformat;src\cms;src\ca210api;src;$(BCB)\lib\obj;$(BCB)\lib;imports;lib
-Item5=$(BCB)\Projects\Lib;src\static\math;src\static\java;src\static;src\cms\util;src\cms\measure;src\cms\lcd\calibrate;src\cms\colorspace;src\cms\colorformat;src\cms;src\ca210api;src;$(BCB)\lib\obj;$(BCB)\lib;imports
-Item6=$(BCB)\Projects\Lib;src\static\math;src\static\java;src\static;src\cms\util;src\cms\measure;src\cms\lcd\calibrate;src\cms\colorspace;src\cms\colorformat;src\cms;src\ca210api;src;$(BCB)\lib\obj;$(BCB)\lib;imports\
-Item7=$(BCB)\Projects\Lib;src\static\math;src\static\java;src\static;src\cms\util;src\cms\measure;src\cms\lcd\calibrate;src\cms\colorspace;src\cms\colorformat;src\cms;src\ca210api;src;$(BCB)\lib\obj;$(BCB)\lib;imports\CA200SRVRLib
-Item8=$(BCB)\Projects\Lib;src\static\math;src\static\java;src\static;src\cms\util;src\cms\measure;src\cms\lcd\calibrate;src\cms\colorspace;src\cms\colorformat;src\cms;src\ca210api;src;D:\WorkSpace\CMSCpp2\src;$(BCB)\lib\obj;$(BCB)\lib;imports\CA200SRVRLib
-Item9=$(BCB)\Projects\Lib;src\static\math;src\static\java;src\static;src\cms\util;src\cms\measure;src\cms\lcd\calibrate;src\cms\colorspace;src\cms\colorformat;src\cms;src\ca210api;src;D:\WorkSpace\CMSCpp2\src;$(BCB)\lib\obj;$(BCB)\lib
+Count=12
+Item0=src\math;src\java;src\static\math;src\static\java;src\cms\i2c\core;src\cms\i2c;src\gui;$(BCB)\Projects\Lib;src\cms\util;src\cms\measure;src\cms\lcd\calibrate;src\cms\colorspace;src\cms\colorformat;src\cms;src\ca210api;src;$(BCB)\lib\obj;$(BCB)\lib;lib
+Item1=src\math;src\java;imports\LPT_lib;imports\CA200SRVRLib;src\static\math;src\static\java;src\cms\i2c\core;src\cms\i2c;src\gui;$(BCB)\Projects\Lib;src\cms\util;src\cms\measure;src\cms\lcd\calibrate;src\cms\colorspace;src\cms\colorformat;src\cms;src\ca210api;src;$(BCB)\lib\obj;$(BCB)\lib;lib
+Item2=src\cms\i2c\core;src\cms\i2c;src\gui;$(BCB)\Projects\Lib;src\cms\util;src\cms\measure;src\cms\lcd\calibrate;src\cms\colorspace;src\cms\colorformat;src\cms;src\ca210api;src;$(BCB)\lib\obj;$(BCB)\lib;lib
+Item3=src\cms\i2c\core;imports\LPT_lib;src\cms\i2c;D:\Program Files\Borland\CBuilder6\Projects;imports\CA200SRVRLib;src\gui;F:\Program Files\Borland\CBuilder6\Projects;$(BCB)\Projects\Lib;src\static\math;src\static\java;src\static;src\cms\util;src\cms\measure;src\cms\lcd\calibrate;src\cms\colorspace;src\cms\colorformat;src\cms;src\ca210api;src;$(BCB)\lib\obj;$(BCB)\lib;imports;lib
+Item4=src\cms\i2c;D:\Program Files\Borland\CBuilder6\Projects;imports\CA200SRVRLib;src\gui;F:\Program Files\Borland\CBuilder6\Projects;$(BCB)\Projects\Lib;src\static\math;src\static\java;src\static;src\cms\util;src\cms\measure;src\cms\lcd\calibrate;src\cms\colorspace;src\cms\colorformat;src\cms;src\ca210api;src;$(BCB)\lib\obj;$(BCB)\lib;imports;lib
+Item5=imports\CA200SRVRLib;src\gui;F:\Program Files\Borland\CBuilder6\Projects;$(BCB)\Projects\Lib;src\static\math;src\static\java;src\static;src\cms\util;src\cms\measure;src\cms\lcd\calibrate;src\cms\colorspace;src\cms\colorformat;src\cms;src\ca210api;src;$(BCB)\lib\obj;$(BCB)\lib;imports;lib
+Item6=$(BCB)\Projects\Lib;src\static\math;src\static\java;src\static;src\cms\util;src\cms\measure;src\cms\lcd\calibrate;src\cms\colorspace;src\cms\colorformat;src\cms;src\ca210api;src;$(BCB)\lib\obj;$(BCB)\lib;imports;lib
+Item7=$(BCB)\Projects\Lib;src\static\math;src\static\java;src\static;src\cms\util;src\cms\measure;src\cms\lcd\calibrate;src\cms\colorspace;src\cms\colorformat;src\cms;src\ca210api;src;$(BCB)\lib\obj;$(BCB)\lib;imports
+Item8=$(BCB)\Projects\Lib;src\static\math;src\static\java;src\static;src\cms\util;src\cms\measure;src\cms\lcd\calibrate;src\cms\colorspace;src\cms\colorformat;src\cms;src\ca210api;src;$(BCB)\lib\obj;$(BCB)\lib;imports\
+Item9=$(BCB)\Projects\Lib;src\static\math;src\static\java;src\static;src\cms\util;src\cms\measure;src\cms\lcd\calibrate;src\cms\colorspace;src\cms\colorformat;src\cms;src\ca210api;src;$(BCB)\lib\obj;$(BCB)\lib;imports\CA200SRVRLib
+Item10=$(BCB)\Projects\Lib;src\static\math;src\static\java;src\static;src\cms\util;src\cms\measure;src\cms\lcd\calibrate;src\cms\colorspace;src\cms\colorformat;src\cms;src\ca210api;src;D:\WorkSpace\CMSCpp2\src;$(BCB)\lib\obj;$(BCB)\lib;imports\CA200SRVRLib
+Item11=$(BCB)\Projects\Lib;src\static\math;src\static\java;src\static;src\cms\util;src\cms\measure;src\cms\lcd\calibrate;src\cms\colorspace;src\cms\colorformat;src\cms;src\ca210api;src;D:\WorkSpace\CMSCpp2\src;$(BCB)\lib\obj;$(BCB)\lib
 
 [HistoryLists\hlDebugSourcePath]
 Count=1
