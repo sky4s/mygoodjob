@@ -10,11 +10,29 @@
 
 namespace cms {
     namespace i2c {
-	using namespace cms::colorformat;
-	 TConParameter::
-	    TConParameter(const ExcelFileDB & excel):excel(excel) {
+	TConParameter::TConParameter(int gammaTestAddress,
+				     unsigned char gammaTestBit,
+				     int testRGBAddress,
+				     bool
+				     independentRGB):gammaTestAddress
+	    (gammaTestAddress), gammaTestBit(gammaTestBit),
+	    testRGBAddress(testRGBAddress),
+	    independentRGB(independentRGB) {
 
 	};
+	int TConParameter::getGammaTestAddress() {
+	    return gammaTestAddress;
+	};
+	int TConParameter::getTestRGBAddress() {
+	    return testRGBAddress;
+	};
+	bool TConParameter::isIndependentRGB() {
+	    return independentRGB;
+	};
+	unsigned char TConParameter::getGammaTestBit() {
+	    return gammaTestBit;
+	};
+
     };
 };
 

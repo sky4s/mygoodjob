@@ -14,10 +14,18 @@ namespace cms {
     namespace i2c {
 	class TConParameter {
 	  private:
-	    const cms::colorformat::ExcelFileDB & excel;
-	    string_ptr tcon;
+	    const int gammaTestAddress;
+	    const int testRGBAddress;
+	    const bool independentRGB;
+	    const unsigned char gammaTestBit;
 	  public:
-	     TConParameter(const cms::colorformat::ExcelFileDB & excel);
+	     TConParameter(int gammaTestAddress,
+			   unsigned char gammaTestBit, int testRGBAddress,
+			   bool independentRGB);
+	    int getGammaTestAddress();
+	    int getTestRGBAddress();
+	    bool isIndependentRGB();
+	    unsigned char getGammaTestBit();
 	};
     };
 };

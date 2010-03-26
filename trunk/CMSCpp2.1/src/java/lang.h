@@ -107,7 +107,7 @@
 #define Component_vector std::vector < Component_ptr >
 #define Component_vector_ptr bptr < Component_vector >
 
-#define RGBGamma_ptr  bptr < cms::lcd::calibrate::RGBGamma >
+#define RGBGamma_ptr  bptr < cms::util::RGBGamma >
 #define nil_RGBGamma RGBGamma_ptr( (RGBGamma*) null)
 //==============================================================================
 
@@ -178,7 +178,6 @@ namespace cms {
 	namespace calibrate {
 	    class BitDepthProcessor;
 	    class LCDCalibrator;
-	    class RGBGamma;
 	    class Component;
 	    namespace algo {
 		class ChromaticAroundAlgorithm;
@@ -203,10 +202,13 @@ namespace cms {
     namespace util {
 	class Util;
 	class RGBVector;
+	class RGBGamma;
     };
     namespace i2c {
-        class ByteBuffer;
-        class i2cControl;
+	class ByteBuffer;
+	class i2cControl;
+	class TConParameter;
+	class TCONControl;
     };
 };
 

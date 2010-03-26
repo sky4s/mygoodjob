@@ -89,6 +89,13 @@ namespace cms {
 	    write0(deviceAddress, dataAddressByteArray,
 		   dataAddressLength - 1, data->buffer, dataLength);
 	};
+	void i2cControl::writeByte(int dataAddress, unsigned char data) {
+	    initDataAddress(dataAddress);
+	    bptr < ByteBuffer > byteBuffer(new ByteBuffer(1));
+	    (*byteBuffer)[0] = data;
+	    write0(deviceAddress, dataAddressByteArray,
+		   dataAddressLength - 1, byteBuffer->buffer, 1);
+	};
 	bptr < ByteBuffer > i2cControl::read(int dataAddress,
 					     int dataLength) {
 	    bptr < ByteBuffer > data(new ByteBuffer(dataLength));
@@ -96,6 +103,10 @@ namespace cms {
 	    read0(deviceAddress, dataAddressByteArray,
 		  dataAddressLength - 1, data->buffer, dataLength);
 	    return data;
+	};
+	unsigned char i2cControl::readByte(int dataAddress) {
+	 bptr < ByteBuffer > buffer= read(dataAddress, 1);
+         return (*buffer)[0];
 	};
 
 	bptr < i2cControl >

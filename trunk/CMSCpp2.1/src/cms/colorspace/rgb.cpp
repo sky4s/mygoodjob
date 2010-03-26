@@ -231,7 +231,23 @@ namespace cms {
 		    Channel minCh = getMinChannel();
 		    return getValue(minCh);
 		}
-                throw IllegalArgumentException("");
+		throw IllegalArgumentException("");
+	    };
+
+	    double_array RGBColor::getValues(double_array values,
+					     const MaxValue & type) {
+		getValues(values);
+		if (type != *maxValue) {
+		    changeMaxValue(values, *maxValue, type, false);
+		}
+		return values;
+	    };
+
+	    double_array RGBColor::getValues() {
+		return ColorSpace::getValues();
+	    };
+	    double_array RGBColor::getValues(double_array values) {
+		return ColorSpace::getValues(values);
 	    };
 
 	    void RGBColor::setValue(const Channel & channel, double value) {

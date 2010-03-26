@@ -19,21 +19,42 @@ namespace cms {
 	    static RGB_vector_ptr getLinearRGBVector(int n);
 	    static void storeToExcel(const std::string & filename,
 				     RGB_vector_ptr rgbVector);
-	    /*static void storeToExcelDB(bptr <
-	       cms::colorformat::ExcelFileDB > db,
-	       string_ptr tableName,
-	       string_vector_ptr header,
-	       RGB_vector_ptr rgbVector);
-	     */
 	    static RGB_vector_ptr clone(RGB_vector_ptr vector);
 	    static RGB_vector_ptr deepClone(RGB_vector_ptr vector);
-	    //static RGB_vector_ptr
 	    static void changeMaxValue(RGB_vector_ptr vector,
 				       const Dep::MaxValue & type);
 	    static void quantization(RGB_vector_ptr vector,
 				     const Dep::MaxValue & maxValue);
 	};
 
+	enum Type {
+	    Intensity, Gamma
+	};
+	class RGBGamma:public jObject {
+	  public:
+	    const Type type;
+	    const double max;
+	    double_vector_ptr r, g, b, w;
+	     RGBGamma(double_vector_ptr r, double_vector_ptr g,
+		      double_vector_ptr b);
+	     RGBGamma(double_vector_ptr r, double_vector_ptr g,
+		      double_vector_ptr b, double_vector_ptr w);
+	     RGBGamma(double_vector_ptr r, double_vector_ptr g,
+		      double_vector_ptr b, const double max,
+		      const Type type);
+	     RGBGamma(double_vector_ptr r, double_vector_ptr g,
+		      double_vector_ptr b, double_vector_ptr w,
+		      const double max, const Type type);
+	    static void storeToExcel(const std::string & filename,
+				     RGBGamma_ptr rgbgamma);
+	    static void storeToDesiredGamma(const std::
+					    string & filename,
+					    RGBGamma_ptr rgbgamma);
+	    static RGBGamma_ptr loadFromDesiredGamma(const std::
+						     string & filename);
+	    RGBGamma_ptr clone();
+
+	};
     };
 }
 #endif

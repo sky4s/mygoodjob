@@ -46,9 +46,7 @@ void __fastcall TI2CTestForm::Button1Click(TObject * Sender)
     };
     bool connect = i2c1st->connect();
     i2c2nd->connect();
-    if( connect) {
-    
-    }
+    this->CheckBox_Connecting->Checked = connect;
     //i2c1st->read()
     //i2cControl::
 }
@@ -58,8 +56,30 @@ void __fastcall TI2CTestForm::Button1Click(TObject * Sender)
 void __fastcall TI2CTestForm::FormCreate(TObject * Sender)
 {
     //RW_Func rw;
-    cms::i2c::i2cControl::getLPTInstance(0);
+    i2c = cms::i2c::i2cControl::getLPTInstance(0);
 }
 
 //---------------------------------------------------------------------------
+
+void __fastcall TI2CTestForm::Edit1Change(TObject * Sender)
+{
+/* TODO : */
+}
+
+//---------------------------------------------------------------------------
+
+void __fastcall TI2CTestForm::Edit2Change(TObject * Sender)
+{
+    Edit1Change(Sender);
+}
+
+//---------------------------------------------------------------------------
+
+void __fastcall TI2CTestForm::Edit3Change(TObject * Sender)
+{
+    Edit1Change(Sender);
+}
+
+//---------------------------------------------------------------------------
+
 

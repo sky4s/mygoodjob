@@ -13,7 +13,6 @@
 #include <jama/jama_svd.h>
 
 //本項目內頭文件
-#include <cms/util/util.h>
 
 namespace math {
     using namespace boost;

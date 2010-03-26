@@ -9,40 +9,12 @@
 //本項目內頭文件
 #include <java/lang.h>
 #include "rgbop.h"
+#include <cms/util/rgbarray.h>
 
 namespace cms {
     namespace lcd {
 	namespace calibrate {
-	    enum Type {
-		Intensity, Gamma
-	    };
-	    class RGBGamma:public jObject {
-	      public:
-		const Type type;
-		const double max;
-		double_vector_ptr r, g, b, w;
-		 RGBGamma(double_vector_ptr r, double_vector_ptr g,
-			  double_vector_ptr b);
-		 RGBGamma(double_vector_ptr r, double_vector_ptr g,
-			  double_vector_ptr b, double_vector_ptr w);
-		 RGBGamma(double_vector_ptr r, double_vector_ptr g,
-			  double_vector_ptr b, const double max,
-			  const Type type);
-		 RGBGamma(double_vector_ptr r, double_vector_ptr g,
-			  double_vector_ptr b, double_vector_ptr w,
-			  const double max, const Type type);
-		static void storeToExcel(const std::string & filename,
-					 RGBGamma_ptr rgbgamma);
-		static void storeToDesiredGamma(const std::
-						string & filename,
-						RGBGamma_ptr rgbgamma);
-		static RGBGamma_ptr loadFromDesiredGamma(const std::
-							 string &
-							 filename);
-		RGBGamma_ptr clone();
-
-	    };
-
+	    using namespace cms::util;
 	    class RGBGammaOp:public RGBOp < RGBGamma > {
 
 	    };

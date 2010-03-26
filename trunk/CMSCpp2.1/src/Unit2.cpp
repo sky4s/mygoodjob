@@ -19,8 +19,6 @@
 //#include <jama/jama_svd.h>
 
 #include <locale>
-#include <cms/util/rgbarray.h>
-#include <cms/util/util.h>
 #include <ca210api/CA210API.h>
 
 #include <math.hpp>

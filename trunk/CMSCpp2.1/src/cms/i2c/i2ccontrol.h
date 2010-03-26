@@ -79,7 +79,9 @@ namespace cms {
 	    virtual bool connect() = 0;
 	    virtual void disconnect() = 0;
 	    void write(int dataAddress, bptr < ByteBuffer > data);
+	    void writeByte(int dataAddress, unsigned char data);
 	     bptr < ByteBuffer > read(int dataAddress, int dataLength);
+	    unsigned char readByte(int dataAddress);
 	    static bptr < i2cControl >
 		getLPTInstance(const unsigned char deviceAddress);
 	    static bptr < i2cControl >
