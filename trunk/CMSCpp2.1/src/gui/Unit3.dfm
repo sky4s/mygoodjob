@@ -1,9 +1,9 @@
-object I2CTestForm: TI2CTestForm
-  Left = 20
-  Top = 127
-  Width = 259
-  Height = 458
-  Caption = 'I2CTestForm'
+object Form3: TForm3
+  Left = 194
+  Top = 125
+  Width = 257
+  Height = 460
+  Caption = 'Form3'
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -11,7 +11,6 @@ object I2CTestForm: TI2CTestForm
   Font.Name = 'MS Sans Serif'
   Font.Style = []
   OldCreateOrder = False
-  OnCreate = FormCreate
   PixelsPerInch = 120
   TextHeight = 16
   object Button1: TButton

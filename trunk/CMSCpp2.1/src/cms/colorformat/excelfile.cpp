@@ -277,7 +277,7 @@ namespace cms {
 
 	bptr < DBQuery > ExcelFileDB::selectAll() {
 	    string select = "SELECT * FROM [" + getTableName() + "$]";
-	    bptr < TADODataSet > dataSet = selectDataSet(select);
+ 	    bptr < TADODataSet > dataSet = selectDataSet(select);
 	    bptr < DBQuery > query(new DBQuery(dataSet));
 	    return query;
 	};
