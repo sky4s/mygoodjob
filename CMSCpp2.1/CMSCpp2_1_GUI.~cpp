@@ -18,10 +18,10 @@ WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
         {
                  Application->Initialize();
                  Application->Title = "CCTv3 Adjustment";
+                 Application->CreateForm(__classid(TMainForm), &MainForm);
                  Application->CreateForm(__classid(TI2CTestForm), &I2CTestForm);
                  Application->CreateForm(__classid(TForm1), &Form1);
                  Application->CreateForm(__classid(TMeasureWindow), &MeasureWindow);
-                 Application->CreateForm(__classid(TMainForm), &MainForm);
                  Application->CreateForm(__classid(TCCTLUTForm), &CCTLUTForm);
                  Application->CreateForm(__classid(TAboutBox), &AboutBox);
                  Application->CreateForm(__classid(TTargetWhiteForm2), &TargetWhiteForm2);

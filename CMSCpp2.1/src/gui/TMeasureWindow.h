@@ -3,12 +3,17 @@
 #ifndef TMeasureWindowH
 #define TMeasureWindowH
 //---------------------------------------------------------------------------
+//C系統文件
+
+//C++系統文件
+
+//其他庫頭文件
 #include <Classes.hpp>
 #include <Controls.hpp>
 #include <StdCtrls.hpp>
 #include <Forms.hpp>
 #include <Menus.hpp>
-
+//本項目內頭文件
 #include <java/lang.h>
 //---------------------------------------------------------------------------
 

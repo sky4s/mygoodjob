@@ -3,6 +3,12 @@
 #ifndef TTargetWhiteForm2H
 #define TTargetWhiteForm2H
 //---------------------------------------------------------------------------
+
+//C系統文件
+
+//C++系統文件
+
+//其他庫頭文件
 #include <Classes.hpp>
 #include <Controls.hpp>
 #include <StdCtrls.hpp>
@@ -10,6 +16,8 @@
 #include <ExtCtrls.hpp>
 #include <ComCtrls.hpp>
 #include <Menus.hpp>
+//本項目內頭文件
+
 //---------------------------------------------------------------------------
 class TTargetWhiteForm2:public TForm {
     __published:		// IDE-managed Components

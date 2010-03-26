@@ -18,6 +18,8 @@ namespace cms {
 	      protected:
 		friend class CIExyY;
 		NormalizeY _normalizeY;
+		double_array _getValues(double_array values);
+		void _setValues(double_array values);
 
 	      public:
 		double X, Y, Z;
@@ -31,8 +33,6 @@ namespace cms {
 		double_array getValues(double_array values,
 				       NormalizeY normalizeY);
 
-		double_array _getValues(double_array values);
-		void _setValues(double_array values);
 
 
 		double_array getValues();

@@ -1,8 +1,8 @@
 object I2CTestForm: TI2CTestForm
-  Left = 218
-  Top = 164
-  Width = 256
-  Height = 369
+  Left = 225
+  Top = 176
+  Width = 367
+  Height = 468
   Caption = 'I2CTestForm'
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
@@ -86,7 +86,9 @@ object I2CTestForm: TI2CTestForm
       Width = 113
       Height = 17
       Caption = 'USB'
+      Checked = True
       TabOrder = 0
+      TabStop = True
     end
     object RadioButton_LPT: TRadioButton
       Left = 8
@@ -97,12 +99,55 @@ object I2CTestForm: TI2CTestForm
       TabOrder = 1
     end
   end
-  object CheckBox2: TCheckBox
+  object CheckBox_Connecting: TCheckBox
     Left = 96
     Top = 192
     Width = 105
     Height = 25
     Caption = 'Connecting'
     TabOrder = 3
+  end
+  object GroupBox3: TGroupBox
+    Left = 8
+    Top = 232
+    Width = 233
+    Height = 153
+    Caption = 'Gamma Test'
+    TabOrder = 4
+    object CheckBox1: TCheckBox
+      Left = 8
+      Top = 24
+      Width = 105
+      Height = 25
+      Caption = 'Enable'
+      TabOrder = 0
+    end
+    object Edit1: TEdit
+      Left = 8
+      Top = 56
+      Width = 113
+      Height = 25
+      TabOrder = 1
+      Text = '0'
+      OnChange = Edit1Change
+    end
+    object Edit2: TEdit
+      Left = 8
+      Top = 88
+      Width = 113
+      Height = 25
+      TabOrder = 2
+      Text = '0'
+      OnChange = Edit2Change
+    end
+    object Edit3: TEdit
+      Left = 8
+      Top = 120
+      Width = 113
+      Height = 25
+      TabOrder = 3
+      Text = '0'
+      OnChange = Edit3Change
+    end
   end
 end

@@ -3,14 +3,17 @@
 #ifndef TTargetWhiteFormH
 #define TTargetWhiteFormH
 //---------------------------------------------------------------------------
+//C系統文件
 
+//C++系統文件
 
+//其他庫頭文件
 #include <Classes.hpp>
 #include <Controls.hpp>
 #include <StdCtrls.hpp>
 #include <Forms.hpp>
 #include <ExtCtrls.hpp>
-
+//本項目內頭文件
 #include <java/lang.h>
 //---------------------------------------------------------------------------
 class TTargetWhiteForm:public TForm {
