@@ -1,0 +1,57 @@
+Error 00045. 0x350010 (Thread 0x0E08):
+Resource type mismatch: a(n) object was expected.
+delete(0x01374994) 
+
+Call Tree:
+   0x0040EE90(=Project1.exe:0x01:00DE90) C:\Program Files\Borland\CBuilder6\Projects\20090804_auo12401_toolkit_1addrfile\Engineering.cpp#445
+   0x00428CFF(=Project1.exe:0x01:027CFF) C:\Program Files\Borland\CBuilder6\Projects\20090804_auo12401_toolkit_1addrfile\CM1.cpp#990
+   0x004D1587(=Project1.exe:0x01:0D0587) StdCtrls.pas#4750
+   0x004D1432(=Project1.exe:0x01:0D0432) StdCtrls.pas#4715
+   0x004D1482(=Project1.exe:0x01:0D0482) StdCtrls.pas#4721
+   0x004D1737(=Project1.exe:0x01:0D0737) StdCtrls.pas#4797
+
+The object array (0x01374994) [size: 6 bytes] was created with new[]
+Call Tree:
+   0x00404D2F(=Project1.exe:0x01:003D2F) C:\Program Files\Borland\CBuilder6\Projects\20090804_auo12401_toolkit_1addrfile\Engineering.h#245
+   0x0040EE26(=Project1.exe:0x01:00DE26) C:\Program Files\Borland\CBuilder6\Projects\20090804_auo12401_toolkit_1addrfile\Engineering.cpp#441
+   0x00428CFF(=Project1.exe:0x01:027CFF) C:\Program Files\Borland\CBuilder6\Projects\20090804_auo12401_toolkit_1addrfile\CM1.cpp#990
+   0x004D1587(=Project1.exe:0x01:0D0587) StdCtrls.pas#4750
+   0x004D1432(=Project1.exe:0x01:0D0432) StdCtrls.pas#4715
+   0x004D1482(=Project1.exe:0x01:0D0482) StdCtrls.pas#4721
+
+------------------------------------------
+Error 00046. 0x350010 (r) (Thread 0x0E08):
+Resource type mismatch: a(n) object was expected.
+delete(0x01382480) 
+
+Call Tree:
+   0x0040EE90(=Project1.exe:0x01:00DE90) C:\Program Files\Borland\CBuilder6\Projects\20090804_auo12401_toolkit_1addrfile\Engineering.cpp#445
+   0x00428CFF(=Project1.exe:0x01:027CFF) C:\Program Files\Borland\CBuilder6\Projects\20090804_auo12401_toolkit_1addrfile\CM1.cpp#990
+   0x004D1587(=Project1.exe:0x01:0D0587) StdCtrls.pas#4750
+   0x004D1432(=Project1.exe:0x01:0D0432) StdCtrls.pas#4715
+   0x004D1482(=Project1.exe:0x01:0D0482) StdCtrls.pas#4721
+   0x004D1737(=Project1.exe:0x01:0D0737) StdCtrls.pas#4797
+
+The object array (0x01382480) [size: 6 bytes] was created with new[]
+Call Tree:
+   0x00404D2F(=Project1.exe:0x01:003D2F) C:\Program Files\Borland\CBuilder6\Projects\20090804_auo12401_toolkit_1addrfile\Engineering.h#245
+   0x0040EE26(=Project1.exe:0x01:00DE26) C:\Program Files\Borland\CBuilder6\Projects\20090804_auo12401_toolkit_1addrfile\Engineering.cpp#441
+   0x00428CFF(=Project1.exe:0x01:027CFF) C:\Program Files\Borland\CBuilder6\Projects\20090804_auo12401_toolkit_1addrfile\CM1.cpp#990
+   0x004D1587(=Project1.exe:0x01:0D0587) StdCtrls.pas#4750
+   0x004D1432(=Project1.exe:0x01:0D0432) StdCtrls.pas#4715
+   0x004D1482(=Project1.exe:0x01:0D0482) StdCtrls.pas#4721
+
+------------------------------------------
+Error 00048. 0x300010 (Thread 0x0E08):
+Resource leak: The memory block (0x1356124) was never freed
+
+The memory block (0x01356124) [size: 14 bytes] was allocated with SysGetMem
+Call Tree:
+   0x004BA8CB(=Project1.exe:0x01:0B98CB) system.pas#2450
+   0x00461D09(=Project1.exe:0x01:060D09) 12401\TCON\TCON_12401.h#106
+   0x00476007(=Project1.exe:0x01:075007) C:\Program Files\Borland\CBuilder6\Projects\20090804_auo12401_toolkit_1addrfile\12401\ImageProcess\ImgProc_12401.cpp#18
+   0x0041EC5F(=Project1.exe:0x01:01DC5F) C:\Program Files\Borland\CBuilder6\Projects\20090804_auo12401_toolkit_1addrfile\CM1.cpp#98
+   0x004FDD5B(=Project1.exe:0x01:0FCD5B) Forms.pas#2595
+   0x004FD9D7(=Project1.exe:0x01:0FC9D7) Forms.pas#2523
+
+------------------------------------------
