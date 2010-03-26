@@ -1,9 +1,8 @@
 //---------------------------------------------------------------------------
 
-#ifndef TI2CTestFormH
-#define TI2CTestFormH
+#ifndef Unit3H
+#define Unit3H
 //---------------------------------------------------------------------------
-
 //C系統文件
 
 //C++系統文件
@@ -16,7 +15,7 @@
 //本項目內頭文件
 #include <java/lang.h>
 //---------------------------------------------------------------------------
-class TI2CTestForm:public TForm {
+class TForm3:public TForm {
     __published:		// IDE-managed Components
     TButton * Button1;
     TGroupBox *GroupBox1;
@@ -30,30 +29,34 @@ class TI2CTestForm:public TForm {
     TRadioButton *RadioButton_LPT;
     TCheckBox *CheckBox_Connecting;
     TGroupBox *GroupBox3;
+    TLabel *Label1;
+    TLabel *Label2;
+    TLabel *Label3;
     TCheckBox *CheckBox1;
     TEdit *Edit_R;
     TEdit *Edit_G;
     TEdit *Edit_B;
+    TGroupBox *GroupBox4;
     TEdit *Edit_GammaTestAddress;
     TEdit *Edit_GammaTestBit;
     TEdit *Edit_TestRGBAdress;
     TCheckBox *CheckBox_IndepRGB;
-    void __fastcall Button1Click(TObject * Sender);
-    void __fastcall FormCreate(TObject * Sender);
-    void __fastcall Edit_RChange(TObject * Sender);
-    void __fastcall Edit_GChange(TObject * Sender);
-    void __fastcall Edit_BChange(TObject * Sender);
-    void __fastcall CheckBox_ConnectingClick(TObject * Sender);
-    void __fastcall CheckBox1Click(TObject * Sender);
+        void __fastcall Button1Click(TObject *Sender);
+        void __fastcall CheckBox_ConnectingClick(TObject *Sender);
+        void __fastcall CheckBox1Click(TObject *Sender);
+        void __fastcall Edit_RChange(TObject *Sender);
+        void __fastcall Edit_GChange(TObject *Sender);
+        void __fastcall Edit_BChange(TObject *Sender);
   private:			// User declarations
      bptr < cms::i2c::i2cControl > i2c;
      bptr < cms::i2c::TCONParameter > parameter;
      bptr < cms::i2c::TCONControl > control;
   public:			// User declarations
-     __fastcall TI2CTestForm(TComponent * Owner);
+     __fastcall TForm3(TComponent * Owner);
+
 };
 //---------------------------------------------------------------------------
-extern PACKAGE TI2CTestForm *I2CTestForm;
+extern PACKAGE TForm3 *Form3;
 //---------------------------------------------------------------------------
 #endif
 

@@ -49,11 +49,11 @@ namespace cms {
 	};
 
 	enum USBPower {
-	    External = 1, _5V = 2, _3_3V = 3
+	    External = 0, _5V = 1, _3_3V = 2
 	};
 
 	enum USBSpeed {
-	    _50KHz = 1, _100KHz = 2, _400KHz = 3
+	    _50KHz = 0, _100KHz = 1, _400KHz = 2
 	};
 
 	class i2cControl {
