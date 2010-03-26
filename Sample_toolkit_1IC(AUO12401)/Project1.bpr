@@ -1,0 +1,199 @@
+<?xml version='1.0' encoding='utf-8' ?>
+<!-- C++Builder XML Project -->
+<PROJECT>
+  <MACROS>
+    <VERSION value="BCB.06.00"/>
+    <PROJECT value="Project1.exe"/>
+    <OBJFILES value="Project1.obj Unit1.obj ReadWriteFunc.obj LPT_lib\HWINTERFACELib_TLB.obj 
+      LPT_lib\HWINTERFACELib_OCX.obj USB_i2c_lib\USBHIDIOC.obj Vender1.obj 
+      CM1.obj ContrastEnhance1.obj DCR1.obj Function1.obj HueSatVal.obj 
+      Sharpness1.obj TCON1.obj 12401\DCR\DCR_12401.obj 
+      12401\Function\Func_12401.obj 12401\TCON\TCON_12401.obj 
+      12401\Vender\Vend_12401.obj 12401\ImageProcess\ImgProc_12401.obj 
+      Engineering.obj"/>
+    <RESFILES value="Project1.res"/>
+    <IDLFILES value=""/>
+    <IDLGENFILES value=""/>
+    <DEFFILE value=""/>
+    <RESDEPEN value="$(RESFILES) Unit1.dfm Vender1.dfm CM1.dfm ContrastEnhance1.dfm DCR1.dfm 
+      Function1.dfm HueSatVal.dfm Sharpness1.dfm TCON1.dfm Engineering.dfm"/>
+    <LIBFILES value="USB_i2c_lib\hid.lib"/>
+    <LIBRARIES value="tee.lib vclx.lib bcbsmp.lib rtl.lib vcl.lib"/>
+    <SPARELIBS value="vcl.lib rtl.lib bcbsmp.lib vclx.lib tee.lib"/>
+    <PACKAGES value="vcl.bpi rtl.bpi dbrtl.bpi adortl.bpi vcldb.bpi vclx.bpi bdertl.bpi 
+      ibxpress.bpi dsnap.bpi cds.bpi bdecds.bpi qrpt.bpi teeui.bpi teedb.bpi 
+      tee.bpi vcldbx.bpi dss.bpi teeqr.bpi visualclx.bpi visualdbclx.bpi 
+      dsnapcrba.bpi dsnapcon.bpi bcbsmp.bpi vclie.bpi xmlrtl.bpi inet.bpi 
+      inetdbbde.bpi inetdbxpress.bpi inetdb.bpi nmfast.bpi webdsnap.bpi 
+      bcbie.bpi websnap.bpi soaprtl.bpi dclocx.bpi dbexpress.bpi dbxcds.bpi 
+      indy.bpi bcb2kaxserver.bpi"/>
+    <PATHCPP value=".;LPT_lib;USB_i2c_lib;12401\DCR;12401\Function;12401\TCON;12401\Vender;12401\ImageProcess"/>
+    <PATHPAS value=".;"/>
+    <PATHRC value=".;"/>
+    <PATHASM value=".;"/>
+    <DEBUGLIBPATH value="$(BCB)\lib\debug"/>
+    <RELEASELIBPATH value="$(BCB)\lib\release"/>
+    <LINKER value="ilink32"/>
+    <USERDEFINES value="_DEBUG"/>
+    <SYSDEFINES value="NO_STRICT"/>
+    <MAINSOURCE value="Project1.cpp"/>
+    <INCLUDEPATH value="12303\ImageProcess;12303\DCR;12303\Vender;12303\Function;12303\TCON;12401\ImageProcess;12401\Vender;12401\DCR;12401\TCON;12401\Function;1240x\Function;1110x\Function;1240x\TCON;1110x\TCON;TCON1_addr2;TCON1_addr1;Main_addr1;TCON_addr2;TCON_addr1;&quot;C:\Documents and Settings\LynneLin\桌面\FPGA版toolkit\090331_Toolkit\sample\TCON_addr&quot;;..;USB_i2c_lib;LPT_lib;..\090331_Toolkit;..\I2C_Test;$(BCB)\include;$(BCB)\include\vcl"/>
+    <LIBPATH value="12303\ImageProcess;12303\DCR;12303\Vender;12303\Function;12303\TCON;12401\ImageProcess;12401\Vender;12401\DCR;12401\TCON;12401\Function;1240x\Function;1110x\Function;1240x\TCON;1110x\TCON;TCON1_addr2;TCON1_addr1;Main_addr1;TCON_addr2;TCON_addr1;&quot;C:\Documents and Settings\LynneLin\桌面\FPGA版toolkit\090331_Toolkit\sample\TCON_addr&quot;;..;USB_i2c_lib;LPT_lib;..\090331_Toolkit;..\I2C_Test;$(BCB)\lib\obj;$(BCB)\lib"/>
+    <WARNINGS value="-w-par"/>
+    <OTHERFILES value=""/>
+  </MACROS>
+  <OPTIONS>
+    <IDLCFLAGS value="-I12303\ImageProcess -I12303\DCR -I12303\Vender -I12303\Function 
+      -I12303\TCON -I12401\ImageProcess -I12401\Vender -I12401\DCR -I12401\TCON 
+      -I12401\Function -I1240x\Function -I1110x\Function -I1240x\TCON 
+      -I1110x\TCON -ITCON1_addr2 -ITCON1_addr1 -IMain_addr1 -ITCON_addr2 
+      -ITCON_addr1 
+      -I&quot;C:\Documents and Settings\LynneLin\桌面\FPGA版toolkit\090331_Toolkit\sample\TCON_addr&quot; 
+      -I.. -IUSB_i2c_lib -ILPT_lib -I..\090331_Toolkit -I..\I2C_Test 
+      -I$(BCB)\include -I$(BCB)\include\vcl -src_suffix cpp -D_DEBUG -boa"/>
+    <CFLAG1 value="-Od -H=$(BCB)\lib\vcl60.csm -Q -Vx -Ve -xf -xp -X- -r- -a1 -b- -d -k -y -v 
+      -vi- -c -tW -tWM"/>
+    <PFLAGS value="-$Y+ -$W -$O- -$C- -$A8 -v -JPHNE -M"/>
+    <RFLAGS value=""/>
+    <AFLAGS value="/mx /w2 /zi"/>
+    <LFLAGS value="-D&quot;&quot; -aa -Tpe -x -v"/>
+    <OTHERFILES value=""/>
+  </OPTIONS>
+  <LINKER>
+    <ALLOBJ value="c0w32.obj sysinit.obj $(OBJFILES)"/>
+    <ALLRES value="$(RESFILES)"/>
+    <ALLLIB value="$(LIBFILES) $(LIBRARIES) import32.lib cp32mt.lib"/>
+    <OTHERFILES value=""/>
+  </LINKER>
+  <FILELIST>
+      <FILE FILENAME="Project1.res" FORMNAME="" UNITNAME="Project1.res" CONTAINERID="ResTool" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Project1.cpp" FORMNAME="" UNITNAME="Project1" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Unit1.cpp" FORMNAME="MainForm" UNITNAME="Unit1" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="ReadWriteFunc.cpp" FORMNAME="" UNITNAME="ReadWriteFunc" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="LPT_lib\HWINTERFACELib_TLB.cpp" FORMNAME="" UNITNAME="HWINTERFACELib_TLB.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="LPT_lib\HWINTERFACELib_OCX.cpp" FORMNAME="" UNITNAME="HWINTERFACELib_OCX.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="USB_i2c_lib\hid.lib" FORMNAME="" UNITNAME="hid.lib" CONTAINERID="LibTool" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="USB_i2c_lib\hidpi.h" FORMNAME="" UNITNAME="hidpi.h" CONTAINERID="" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="USB_i2c_lib\hidsdi.h" FORMNAME="" UNITNAME="hidsdi.h" CONTAINERID="" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="USB_i2c_lib\hidusage.h" FORMNAME="" UNITNAME="hidusage.h" CONTAINERID="" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="USB_i2c_lib\Usb_i2c.h" FORMNAME="" UNITNAME="Usb_i2c.h" CONTAINERID="" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="USB_i2c_lib\USBHIDIOC.CPP" FORMNAME="" UNITNAME="USBHIDIOC.CPP" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="USB_i2c_lib\usbhidioc.h" FORMNAME="" UNITNAME="usbhidioc.h" CONTAINERID="" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="PrintPortI2C.h" FORMNAME="" UNITNAME="PrintPortI2C.h" CONTAINERID="" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="auo_12401_address.h" FORMNAME="" UNITNAME="auo_12401_address.h" CONTAINERID="" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Vender1.cpp" FORMNAME="VenderForm1" UNITNAME="Vender1" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="CM1.cpp" FORMNAME="CMForm1" UNITNAME="CM1" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="ContrastEnhance1.cpp" FORMNAME="ContrastEnhanceForm1" UNITNAME="ContrastEnhance1" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="DCR1.cpp" FORMNAME="DCRForm1" UNITNAME="DCR1" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Function1.cpp" FORMNAME="FunctionForm1" UNITNAME="Function1" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="HueSatVal.cpp" FORMNAME="HSVForm1" UNITNAME="HueSatVal" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Sharpness1.cpp" FORMNAME="SharpnessForm1" UNITNAME="Sharpness1" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="TCON1.cpp" FORMNAME="TCONForm1" UNITNAME="TCON1" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="12401\DCR\DCR_12401.cpp" FORMNAME="" UNITNAME="DCR_12401" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="12401\Function\Func_12401.cpp" FORMNAME="" UNITNAME="Func_12401" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="12401\TCON\TCON_12401.cpp" FORMNAME="" UNITNAME="TCON_12401" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="12401\Vender\Vend_12401.cpp" FORMNAME="" UNITNAME="Vend_12401" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="gui_class.h" FORMNAME="" UNITNAME="gui_class.h" CONTAINERID="" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="12401\ImageProcess\ImgProc_12401.cpp" FORMNAME="" UNITNAME="ImgProc_12401" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Engineering.cpp" FORMNAME="EngineerForm" UNITNAME="Engineering" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+  </FILELIST>
+  <BUILDTOOLS>
+  </BUILDTOOLS>
+
+  <IDEOPTIONS>
+[Version Info]
+IncludeVerInfo=0
+AutoIncBuild=0
+MajorVer=1
+MinorVer=0
+Release=0
+Build=0
+Debug=0
+PreRelease=0
+Special=0
+Private=0
+DLL=0
+Locale=1028
+CodePage=950
+
+[Version Info Keys]
+CompanyName=
+FileDescription=
+FileVersion=1.0.0.0
+InternalName=
+LegalCopyright=
+LegalTrademarks=
+OriginalFilename=
+ProductName=
+ProductVersion=1.0.0.0
+Comments=
+
+[HistoryLists\hlIncludePath]
+Count=12
+Item0=12303\ImageProcess;12303\DCR;12303\Vender;12303\Function;12303\TCON;12401\ImageProcess;12401\Vender;12401\DCR;12401\TCON;12401\Function;1240x\Function;1110x\Function;1240x\TCON;1110x\TCON;TCON1_addr2;TCON1_addr1;Main_addr1;TCON_addr2;TCON_addr1;C:\Documents and Settings\LynneLin\桌面\FPGA版toolkit\090331_Toolkit\sample\TCON_addr;..;USB_i2c_lib;LPT_lib;..\090331_Toolkit;..\I2C_Test;$(BCB)\include;$(BCB)\include\vcl
+Item1=12303\Function;12303\TCON;12401\ImageProcess;12401\Vender;12401\DCR;12401\TCON;12401\Function;1240x\Function;1110x\Function;1240x\TCON;1110x\TCON;TCON1_addr2;TCON1_addr1;Main_addr1;TCON_addr2;TCON_addr1;C:\Documents and Settings\LynneLin\桌面\FPGA版toolkit\090331_Toolkit\sample\TCON_addr;..;USB_i2c_lib;LPT_lib;..\090331_Toolkit;..\I2C_Test;$(BCB)\include;$(BCB)\include\vcl
+Item2=12401\ImageProcess;12401\Vender;12401\DCR;12401\TCON;12401\Function;1240x\Function;1110x\Function;1240x\TCON;1110x\TCON;TCON1_addr2;TCON1_addr1;Main_addr1;TCON_addr2;TCON_addr1;C:\Documents and Settings\LynneLin\桌面\FPGA版toolkit\090331_Toolkit\sample\TCON_addr;..;USB_i2c_lib;LPT_lib;..\090331_Toolkit;..\I2C_Test;$(BCB)\include;$(BCB)\include\vcl
+Item3=12401\Vender;12401\DCR;12401\TCON;12401\Function;1240x\Function;1110x\Function;1240x\TCON;1110x\TCON;TCON1_addr2;TCON1_addr1;Main_addr1;TCON_addr2;TCON_addr1;C:\Documents and Settings\LynneLin\桌面\FPGA版toolkit\090331_Toolkit\sample\TCON_addr;..;USB_i2c_lib;LPT_lib;..\090331_Toolkit;..\I2C_Test;$(BCB)\include;$(BCB)\include\vcl
+Item4=12401\DCR;12401\TCON;12401\Function;1240x\Function;1110x\Function;1240x\TCON;1110x\TCON;TCON1_addr2;TCON1_addr1;Main_addr1;TCON_addr2;TCON_addr1;C:\Documents and Settings\LynneLin\桌面\FPGA版toolkit\090331_Toolkit\sample\TCON_addr;..;USB_i2c_lib;LPT_lib;..\090331_Toolkit;..\I2C_Test;$(BCB)\include;$(BCB)\include\vcl
+Item5=1240x\Function;1110x\Function;1240x\TCON;1110x\TCON;TCON1_addr2;TCON1_addr1;Main_addr1;TCON_addr2;TCON_addr1;C:\Documents and Settings\LynneLin\桌面\FPGA版toolkit\090331_Toolkit\sample\TCON_addr;..;USB_i2c_lib;LPT_lib;..\090331_Toolkit;..\I2C_Test;$(BCB)\include;$(BCB)\include\vcl
+Item6=1110x\Function;1240x\TCON;1110x\TCON;TCON1_addr2;TCON1_addr1;Main_addr1;TCON_addr2;TCON_addr1;C:\Documents and Settings\LynneLin\桌面\FPGA版toolkit\090331_Toolkit\sample\TCON_addr;..;USB_i2c_lib;LPT_lib;..\090331_Toolkit;..\I2C_Test;$(BCB)\include;$(BCB)\include\vcl
+Item7=TCON1_addr2;TCON1_addr1;Main_addr1;TCON_addr2;TCON_addr1;C:\Documents and Settings\LynneLin\桌面\FPGA版toolkit\090331_Toolkit\sample\TCON_addr;..;USB_i2c_lib;LPT_lib;..\090331_Toolkit;..\I2C_Test;$(BCB)\include;$(BCB)\include\vcl
+Item8=TCON_addr2;TCON_addr1;C:\Documents and Settings\LynneLin\桌面\FPGA版toolkit\090331_Toolkit\sample\TCON_addr;..;USB_i2c_lib;LPT_lib;..\090331_Toolkit;..\I2C_Test;$(BCB)\include;$(BCB)\include\vcl
+Item9=..;USB_i2c_lib;LPT_lib;..\090331_Toolkit;..\I2C_Test;$(BCB)\include;$(BCB)\include\vcl
+Item10=..\;USB_i2c_lib;LPT_lib;..\090331_Toolkit;..\I2C_Test;$(BCB)\include;$(BCB)\include\vcl
+Item11=USB_i2c_lib;LPT_lib;..\090331_Toolkit;..\I2C_Test;$(BCB)\include;$(BCB)\include\vcl
+
+[HistoryLists\hlLibraryPath]
+Count=12
+Item0=12303\ImageProcess;12303\DCR;12303\Vender;12303\Function;12303\TCON;12401\ImageProcess;12401\Vender;12401\DCR;12401\TCON;12401\Function;1240x\Function;1110x\Function;1240x\TCON;1110x\TCON;TCON1_addr2;TCON1_addr1;Main_addr1;TCON_addr2;TCON_addr1;C:\Documents and Settings\LynneLin\桌面\FPGA版toolkit\090331_Toolkit\sample\TCON_addr;..;USB_i2c_lib;LPT_lib;..\090331_Toolkit;..\I2C_Test;$(BCB)\lib\obj;$(BCB)\lib
+Item1=12303\Function;12303\TCON;12401\ImageProcess;12401\Vender;12401\DCR;12401\TCON;12401\Function;1240x\Function;1110x\Function;1240x\TCON;1110x\TCON;TCON1_addr2;TCON1_addr1;Main_addr1;TCON_addr2;TCON_addr1;C:\Documents and Settings\LynneLin\桌面\FPGA版toolkit\090331_Toolkit\sample\TCON_addr;..;USB_i2c_lib;LPT_lib;..\090331_Toolkit;..\I2C_Test;$(BCB)\lib\obj;$(BCB)\lib
+Item2=12401\ImageProcess;12401\Vender;12401\DCR;12401\TCON;12401\Function;1240x\Function;1110x\Function;1240x\TCON;1110x\TCON;TCON1_addr2;TCON1_addr1;Main_addr1;TCON_addr2;TCON_addr1;C:\Documents and Settings\LynneLin\桌面\FPGA版toolkit\090331_Toolkit\sample\TCON_addr;..;USB_i2c_lib;LPT_lib;..\090331_Toolkit;..\I2C_Test;$(BCB)\lib\obj;$(BCB)\lib
+Item3=12401\Vender;12401\DCR;12401\TCON;12401\Function;1240x\Function;1110x\Function;1240x\TCON;1110x\TCON;TCON1_addr2;TCON1_addr1;Main_addr1;TCON_addr2;TCON_addr1;C:\Documents and Settings\LynneLin\桌面\FPGA版toolkit\090331_Toolkit\sample\TCON_addr;..;USB_i2c_lib;LPT_lib;..\090331_Toolkit;..\I2C_Test;$(BCB)\lib\obj;$(BCB)\lib
+Item4=12401\DCR;12401\TCON;12401\Function;1240x\Function;1110x\Function;1240x\TCON;1110x\TCON;TCON1_addr2;TCON1_addr1;Main_addr1;TCON_addr2;TCON_addr1;C:\Documents and Settings\LynneLin\桌面\FPGA版toolkit\090331_Toolkit\sample\TCON_addr;..;USB_i2c_lib;LPT_lib;..\090331_Toolkit;..\I2C_Test;$(BCB)\lib\obj;$(BCB)\lib
+Item5=1240x\Function;1110x\Function;1240x\TCON;1110x\TCON;TCON1_addr2;TCON1_addr1;Main_addr1;TCON_addr2;TCON_addr1;C:\Documents and Settings\LynneLin\桌面\FPGA版toolkit\090331_Toolkit\sample\TCON_addr;..;USB_i2c_lib;LPT_lib;..\090331_Toolkit;..\I2C_Test;$(BCB)\lib\obj;$(BCB)\lib
+Item6=1110x\Function;1240x\TCON;1110x\TCON;TCON1_addr2;TCON1_addr1;Main_addr1;TCON_addr2;TCON_addr1;C:\Documents and Settings\LynneLin\桌面\FPGA版toolkit\090331_Toolkit\sample\TCON_addr;..;USB_i2c_lib;LPT_lib;..\090331_Toolkit;..\I2C_Test;$(BCB)\lib\obj;$(BCB)\lib
+Item7=TCON1_addr2;TCON1_addr1;Main_addr1;TCON_addr2;TCON_addr1;C:\Documents and Settings\LynneLin\桌面\FPGA版toolkit\090331_Toolkit\sample\TCON_addr;..;USB_i2c_lib;LPT_lib;..\090331_Toolkit;..\I2C_Test;$(BCB)\lib\obj;$(BCB)\lib
+Item8=TCON_addr2;TCON_addr1;C:\Documents and Settings\LynneLin\桌面\FPGA版toolkit\090331_Toolkit\sample\TCON_addr;..;USB_i2c_lib;LPT_lib;..\090331_Toolkit;..\I2C_Test;$(BCB)\lib\obj;$(BCB)\lib
+Item9=..;USB_i2c_lib;LPT_lib;..\090331_Toolkit;..\I2C_Test;$(BCB)\lib\obj;$(BCB)\lib
+Item10=..\;USB_i2c_lib;LPT_lib;..\090331_Toolkit;..\I2C_Test;$(BCB)\lib\obj;$(BCB)\lib
+Item11=USB_i2c_lib;LPT_lib;..\090331_Toolkit;..\I2C_Test;$(BCB)\lib\obj;$(BCB)\lib
+
+[HistoryLists\hlDebugSourcePath]
+Count=1
+Item0=$(BCB)\source\vcl
+
+[HistoryLists\hlConditionals]
+Count=1
+Item0=_DEBUG
+
+[Debugging]
+DebugSourceDirs=$(BCB)\source\vcl
+
+[Parameters]
+RunParams=
+Launcher=
+UseLauncher=0
+DebugCWD=
+HostApplication=
+RemoteHost=
+RemotePath=
+RemoteLauncher=
+RemoteCWD=
+RemoteDebug=0
+
+[Compiler]
+ShowInfoMsgs=1
+LinkDebugVcl=1
+LinkCGLIB=0
+
+[CORBA]
+AddServerUnit=1
+AddClientUnit=1
+PrecompiledHeaders=1
+
+[Language]
+ActiveLang=
+ProjectLang=
+RootDir=
+  </IDEOPTIONS>
+</PROJECT>
