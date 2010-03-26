@@ -12,14 +12,14 @@
 
 namespace cms {
     namespace i2c {
-	class TConParameter {
+	class TCONParameter {
 	  private:
 	    const int gammaTestAddress;
 	    const int testRGBAddress;
 	    const bool independentRGB;
 	    const unsigned char gammaTestBit;
 	  public:
-	     TConParameter(int gammaTestAddress,
+	     TCONParameter(int gammaTestAddress,
 			   unsigned char gammaTestBit, int testRGBAddress,
 			   bool independentRGB);
 	    int getGammaTestAddress();

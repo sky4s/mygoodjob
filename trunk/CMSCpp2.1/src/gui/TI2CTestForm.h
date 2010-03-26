@@ -31,16 +31,28 @@ class TI2CTestForm:public TForm {
     TCheckBox *CheckBox_Connecting;
     TGroupBox *GroupBox3;
     TCheckBox *CheckBox1;
-    TEdit *Edit1;
-    TEdit *Edit2;
-    TEdit *Edit3;
+    TEdit *Edit_R;
+    TEdit *Edit_G;
+    TEdit *Edit_B;
+    TLabel *Label1;
+    TLabel *Label2;
+    TLabel *Label3;
+    TGroupBox *GroupBox4;
+    TEdit *Edit_GammaTestAddress;
+    TEdit *Edit_GammaTestBit;
+    TEdit *Edit_TestRGBAdress;
+    TCheckBox *CheckBox_IndepRGB;
     void __fastcall Button1Click(TObject * Sender);
     void __fastcall FormCreate(TObject * Sender);
-    void __fastcall Edit1Change(TObject * Sender);
-    void __fastcall Edit2Change(TObject * Sender);
-    void __fastcall Edit3Change(TObject * Sender);
+    void __fastcall Edit_RChange(TObject * Sender);
+    void __fastcall Edit_GChange(TObject * Sender);
+    void __fastcall Edit_BChange(TObject * Sender);
+    void __fastcall CheckBox1Click(TObject * Sender);
+    void __fastcall CheckBox_ConnectingClick(TObject * Sender);
   private:			// User declarations
      bptr < cms::i2c::i2cControl > i2c;
+     bptr < cms::i2c::TCONParameter > parameter;
+     bptr < cms::i2c::TCONControl > control;
   public:			// User declarations
      __fastcall TI2CTestForm(TComponent * Owner);
 };

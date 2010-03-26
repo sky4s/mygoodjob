@@ -14,10 +14,10 @@ namespace cms {
     namespace i2c {
 	class TCONControl {
 	  private:
-	    bptr < TConParameter > parameter;
+	    bptr < TCONParameter > parameter;
 	    bptr < i2cControl > control;
 	  public:
-	    TCONControl(bptr < TConParameter > parameter,
+	    TCONControl(bptr < TCONParameter > parameter,
 			bptr < i2cControl > control);
 	    void setTestRGB(RGB_ptr rgb);
 	    void setGammaTest(bool enable);

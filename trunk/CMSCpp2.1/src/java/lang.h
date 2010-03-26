@@ -207,7 +207,7 @@ namespace cms {
     namespace i2c {
 	class ByteBuffer;
 	class i2cControl;
-	class TConParameter;
+	class TCONParameter;
 	class TCONControl;
     };
 };
