@@ -66,6 +66,7 @@ WaitForSingleObject, which returns when either the data has arrived or the speci
 */
 
 #include <vcl.h>
+#pragma hdrstop
 
 #include "USBHIDIOC.h"
 

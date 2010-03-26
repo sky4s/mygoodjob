@@ -1,8 +1,8 @@
 object I2CTestForm: TI2CTestForm
   Left = 225
   Top = 176
-  Width = 367
-  Height = 468
+  Width = 259
+  Height = 458
   Caption = 'I2CTestForm'
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
@@ -105,15 +105,38 @@ object I2CTestForm: TI2CTestForm
     Width = 105
     Height = 25
     Caption = 'Connecting'
+    Enabled = False
     TabOrder = 3
+    OnClick = CheckBox_ConnectingClick
   end
   object GroupBox3: TGroupBox
     Left = 8
     Top = 232
     Width = 233
-    Height = 153
+    Height = 185
     Caption = 'Gamma Test'
     TabOrder = 4
+    object Label1: TLabel
+      Left = 8
+      Top = 56
+      Width = 25
+      Height = 25
+      Caption = 'R'
+    end
+    object Label2: TLabel
+      Left = 8
+      Top = 88
+      Width = 25
+      Height = 25
+      Caption = 'G'
+    end
+    object Label3: TLabel
+      Left = 8
+      Top = 120
+      Width = 25
+      Height = 25
+      Caption = 'B'
+    end
     object CheckBox1: TCheckBox
       Left = 8
       Top = 24
@@ -121,33 +144,76 @@ object I2CTestForm: TI2CTestForm
       Height = 25
       Caption = 'Enable'
       TabOrder = 0
+      OnClick = CheckBox1Click
     end
-    object Edit1: TEdit
-      Left = 8
+    object Edit_R: TEdit
+      Left = 24
       Top = 56
-      Width = 113
+      Width = 73
       Height = 25
       TabOrder = 1
       Text = '0'
-      OnChange = Edit1Change
+      OnChange = Edit_RChange
     end
-    object Edit2: TEdit
-      Left = 8
+    object Edit_G: TEdit
+      Left = 24
       Top = 88
-      Width = 113
+      Width = 73
       Height = 25
       TabOrder = 2
       Text = '0'
-      OnChange = Edit2Change
+      OnChange = Edit_GChange
     end
-    object Edit3: TEdit
-      Left = 8
+    object Edit_B: TEdit
+      Left = 24
       Top = 120
-      Width = 113
+      Width = 73
       Height = 25
       TabOrder = 3
       Text = '0'
-      OnChange = Edit3Change
+      OnChange = Edit_BChange
+    end
+    object GroupBox4: TGroupBox
+      Left = 120
+      Top = 24
+      Width = 89
+      Height = 121
+      Caption = 'Address'
+      TabOrder = 4
+      object Edit_GammaTestAddress: TEdit
+        Left = 8
+        Top = 24
+        Width = 73
+        Height = 25
+        TabOrder = 0
+        Text = '4A1'
+      end
+      object Edit_GammaTestBit: TEdit
+        Left = 8
+        Top = 56
+        Width = 73
+        Height = 25
+        TabOrder = 1
+        Text = '1'
+      end
+      object Edit_TestRGBAdress: TEdit
+        Left = 8
+        Top = 88
+        Width = 73
+        Height = 25
+        TabOrder = 2
+        Text = '4A7'
+      end
+    end
+    object CheckBox_IndepRGB: TCheckBox
+      Left = 8
+      Top = 152
+      Width = 89
+      Height = 25
+      Caption = 'Indep RGB'
+      Checked = True
+      State = cbChecked
+      TabOrder = 5
     end
   end
 end
