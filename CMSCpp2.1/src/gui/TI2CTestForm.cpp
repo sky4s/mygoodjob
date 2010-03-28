@@ -31,16 +31,21 @@ void __fastcall TI2CTestForm::Button1Click(TObject * Sender)
 	second = StrToInt("0x" + this->Edit_Slave->Text);
 	dual = true;
     }
+    int dataAddressLength = this->CheckBox_2ByteAddress->Checked ? 2 : 1;
 
     if (this->RadioButton_USB->Checked) {
-	i2c1st = i2cControl::getUSBInstance(first, _3_3V, _400KHz);
+	i2c1st =
+	    i2cControl::getUSBInstance(first, dataAddressLength, _3_3V,
+				       _400KHz);
 	if (dual) {
-	    i2c2nd = i2cControl::getUSBInstance(second, _3_3V, _400KHz);
+	    i2c2nd =
+		i2cControl::getUSBInstance(second, dataAddressLength,
+					   _3_3V, _400KHz);
 	};
     } else {
-	i2c1st = i2cControl::getLPTInstance(first);
+	i2c1st = i2cControl::getLPTInstance(first, dataAddressLength);
 	if (dual) {
-	    i2c2nd = i2cControl::getLPTInstance(second);
+	    i2c2nd = i2cControl::getLPTInstance(second, dataAddressLength);
 	};
     };
     bool connect = i2c1st->connect();

@@ -590,7 +590,7 @@ void castTry()
 
 void bufferTry()
 {
-    using namespace cms::i2c;
+    using namespace cms::util;
     ByteBuffer buffer(3);
 };
 

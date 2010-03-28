@@ -14,36 +14,18 @@
 namespace cms {
     namespace i2c {
 	using namespace java::lang;
-	//======================================================================
-	// ByteBuffer
-	//======================================================================
-	 ByteBuffer::ByteBuffer(const unsigned int size):size(size) {
-	    buffer = new unsigned char[size];
-	};
-	 ByteBuffer::~ByteBuffer() {
-	    delete[]buffer;
-	};
-	unsigned char &ByteBuffer::operator[] (const size_t index) {
-	    if (index >= size) {
-		throw IndexOutOfBoundsException();
-	    }
-	    return buffer[index];
-	};
-	const unsigned char &ByteBuffer::operator[] (const size_t index) const {
-	    if (index >= size) {
-		throw IndexOutOfBoundsException();
-	    }
-	    return buffer[index];
-	};
-	//======================================================================
+	using namespace cms::util;
 
 	//======================================================================
 	// DeviceAddressSendFailException
 	//======================================================================
-	DeviceAddressSendFailException::DeviceAddressSendFailException() {
+	 DeviceAddressSendFailException::DeviceAddressSendFailException() {
 	};
-      DeviceAddressSendFailException::DeviceAddressSendFailException(std::string message):RuntimeException(message)
-	{
+	 DeviceAddressSendFailException::
+	    DeviceAddressSendFailException(std::
+					   string
+					   message):RuntimeException
+	    (message) {
 	};
 	//======================================================================
 	DataAddressSendFailException::DataAddressSendFailException() {
@@ -63,12 +45,24 @@ namespace cms {
 	// i2cControl
 	//======================================================================
 	RW_Func i2cControl::i2cio;
-      i2cControl::i2cControl(const unsigned char deviceAddress):deviceAddress(deviceAddress)
-	{
-
+	i2cControl::i2cControl(const unsigned char
+			       deviceAddress, const int
+			       dataAddressLength):deviceAddress
+	    (deviceAddress), dataAddressLength(dataAddressLength) {
+	    if (dataAddressLength != 1 || dataAddressLength != 2) {
+		throw
+		    IllegalArgumentException
+		    ("dataAddressLength != 1 || dataAddressLength != 2");
+	    }
 	};
-	void i2cControl::initDataAddress(int dataAddress) {
-	    dataAddressLength = dataAddress > 255 ? 2 : 1;
+	/*void i2cControl::initDataAddress(int dataAddress) {
+	   dataAddressLength = dataAddress > 255 ? 2 : 1;
+	   dataAddressByteArray[0] = dataAddress & 255;
+	   if (dataAddressLength == 2) {
+	   dataAddressByteArray[1] = dataAddress >> 8 & 255;
+	   }
+	   }; */
+	void i2cControl::setDataAddressByteArray(int dataAddress) {
 	    dataAddressByteArray[0] = dataAddress & 255;
 	    if (dataAddressLength == 2) {
 		dataAddressByteArray[1] = dataAddress >> 8 & 255;
@@ -84,13 +78,13 @@ namespace cms {
 	   int data_len);
 	 */
 	void i2cControl::write(int dataAddress, bptr < ByteBuffer > data) {
-	    initDataAddress(dataAddress);
+	    setDataAddressByteArray(dataAddress);
 	    int dataLength = data->getSize();
 	    write0(deviceAddress, dataAddressByteArray,
 		   dataAddressLength - 1, data->buffer, dataLength);
 	};
 	void i2cControl::writeByte(int dataAddress, unsigned char data) {
-	    initDataAddress(dataAddress);
+	    setDataAddressByteArray(dataAddress);
 	    bptr < ByteBuffer > byteBuffer(new ByteBuffer(1));
 	    (*byteBuffer)[0] = data;
 	    write0(deviceAddress, dataAddressByteArray,
@@ -99,25 +93,30 @@ namespace cms {
 	bptr < ByteBuffer > i2cControl::read(int dataAddress,
 					     int dataLength) {
 	    bptr < ByteBuffer > data(new ByteBuffer(dataLength));
-	    initDataAddress(dataAddress);
+	    setDataAddressByteArray(dataAddress);
 	    read0(deviceAddress, dataAddressByteArray,
 		  dataAddressLength - 1, data->buffer, dataLength);
 	    return data;
 	};
 	unsigned char i2cControl::readByte(int dataAddress) {
-	 bptr < ByteBuffer > buffer= read(dataAddress, 1);
-         return (*buffer)[0];
+	    bptr < ByteBuffer > buffer = read(dataAddress, 1);
+	    return (*buffer)[0];
 	};
 
 	bptr < i2cControl >
-	    i2cControl::getLPTInstance(const unsigned char deviceAddress) {
-	    return bptr < i2cControl > (new i2cLPTControl(deviceAddress));
+	    i2cControl::getLPTInstance(const unsigned char deviceAddress,
+				       const int dataAddressLength) {
+	    return bptr < i2cControl >
+		(new i2cLPTControl(deviceAddress, dataAddressLength));
 	};
 	bptr < i2cControl >
 	    i2cControl::getUSBInstance(const unsigned char deviceAddress,
+				       const int dataAddressLength,
 				       USBPower power, USBSpeed speed) {
 	    return bptr < i2cControl >
-		(new i2cUSBControl(deviceAddress, power, speed));
+		(new
+		 i2cUSBControl(deviceAddress, dataAddressLength, power,
+			       speed));
 	};
 	//======================================================================
 
@@ -166,8 +165,9 @@ namespace cms {
 	void i2cLPTControl::disconnect() {
 	};
 	i2cLPTControl::i2cLPTControl(const unsigned char
-				     deviceAddress):i2cControl
-	    (deviceAddress) {
+				     deviceAddress,
+				     int dataAddressLength):i2cControl
+	    (deviceAddress, dataAddressLength) {
 	    int result = i2cio.LPT_connect();
 	    using namespace java::lang;
 	    switch (result) {
@@ -202,9 +202,11 @@ namespace cms {
 			   data_cnt);
 	};
 	i2cUSBControl::i2cUSBControl(const unsigned char deviceAddress,
+				     int dataAddressLength,
 				     USBPower power,
 				     USBSpeed
-				     speed):i2cControl(deviceAddress),
+				     speed):i2cControl(deviceAddress,
+						       dataAddressLength),
 	    power(power), speed(speed) {
 
 	};

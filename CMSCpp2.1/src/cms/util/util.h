@@ -44,6 +44,19 @@ namespace cms {
 	  public:
 	    virtual string_ptr getName() = 0;
 	};
+	class ByteBuffer {
+	  private:
+	    const unsigned int size;
+	  public:
+	    unsigned char *buffer;
+	     ByteBuffer(const unsigned int size);
+	    ~ByteBuffer();
+	    inline const int getSize() const {
+		return size;
+	    };
+	    unsigned char &operator[] (const size_t index);
+	    const unsigned char &operator[] (const size_t index) const;
+	};
 
     };
 };

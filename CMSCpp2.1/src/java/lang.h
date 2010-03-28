@@ -203,9 +203,9 @@ namespace cms {
 	class Util;
 	class RGBVector;
 	class RGBGamma;
+        class ByteBuffer;
     };
     namespace i2c {
-	class ByteBuffer;
 	class i2cControl;
 	class TCONParameter;
 	class TCONControl;

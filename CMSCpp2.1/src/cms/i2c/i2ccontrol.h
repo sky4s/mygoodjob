@@ -13,19 +13,7 @@
 namespace cms {
     namespace i2c {
 
-	class ByteBuffer {
-	  private:
-	    const unsigned int size;
-	  public:
-	    unsigned char *buffer;
-	     ByteBuffer(const unsigned int size);
-	    ~ByteBuffer();
-	    inline const int getSize() const {
-		return size;
-	    };
-	    unsigned char &operator[] (const size_t index);
-	    const unsigned char &operator[] (const size_t index) const;
-	};
+
 
 
 	class DeviceAddressSendFailException:public java::lang::
@@ -59,11 +47,13 @@ namespace cms {
 	class i2cControl {
 	  private:
 	    const unsigned char deviceAddress;
+	    const int dataAddressLength;
 	  protected:
 	    static RW_Func i2cio;
 	    unsigned char dataAddressByteArray[2];
-	    int dataAddressLength;
-	    void initDataAddress(int dataAddress);
+	    //const int dataAddressLength;
+	    //void initDataAddress(int dataAddress);
+	    void setDataAddressByteArray(int dataAddress);
 	    virtual void write0(unsigned char dev_addr,
 				unsigned char *data_addr,
 				int data_addr_cnt,
@@ -75,18 +65,23 @@ namespace cms {
 
 
 	  public:
-	     i2cControl(const unsigned char deviceAddress);
+	     i2cControl(const unsigned char deviceAddress,
+			int dataAddressLength);
 	    virtual bool connect() = 0;
 	    virtual void disconnect() = 0;
-	    void write(int dataAddress, bptr < ByteBuffer > data);
+	    void write(int dataAddress,
+		       bptr < cms::util::ByteBuffer > data);
 	    void writeByte(int dataAddress, unsigned char data);
-	     bptr < ByteBuffer > read(int dataAddress, int dataLength);
+	     bptr < cms::util::ByteBuffer > read(int dataAddress,
+						 int dataLength);
 	    unsigned char readByte(int dataAddress);
 	    static bptr < i2cControl >
-		getLPTInstance(const unsigned char deviceAddress);
+		getLPTInstance(const unsigned char deviceAddress,
+			       const int dataAddressLength);
 	    static bptr < i2cControl >
 		getUSBInstance(const unsigned char deviceAddress,
-			       USBPower power, USBSpeed speed);
+			       const int dataAddressLength, USBPower power,
+			       USBSpeed speed);
 	};
 
 
@@ -103,7 +98,8 @@ namespace cms {
 	  public:
 	     bool connect();
 	    void disconnect();
-	     i2cLPTControl(const unsigned char deviceAddress);
+	     i2cLPTControl(const unsigned char deviceAddress,
+			   int dataAddressLength);
 	};
 
 	class i2cUSBControl:public i2cControl {
@@ -120,7 +116,8 @@ namespace cms {
 			       unsigned char *data_read, int data_cnt);
 	  public:
 	     i2cUSBControl(const unsigned char deviceAddress,
-			   USBPower power, USBSpeed speed);
+			   int dataAddressLength, USBPower power,
+			   USBSpeed speed);
 	    bool connect();
 	    void disconnect();
 	    ~i2cUSBControl();

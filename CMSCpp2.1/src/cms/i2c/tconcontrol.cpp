@@ -12,10 +12,11 @@
 
 namespace cms {
     namespace i2c {
-	TCONControl::TCONControl(bptr < TCONParameter >
-				 parameter,
-				 bptr < i2cControl >
-				 control):parameter(parameter),
+	using namespace cms::util;
+	 TCONControl::TCONControl(bptr < TCONParameter >
+				  parameter,
+				  bptr < i2cControl >
+				  control):parameter(parameter),
 	    control(control), dualTCON(false) {
 
 	};
