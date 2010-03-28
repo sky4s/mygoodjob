@@ -16,17 +16,24 @@ namespace cms {
 				 parameter,
 				 bptr < i2cControl >
 				 control):parameter(parameter),
-	    control(control) {
+	    control(control), dualTCON(false) {
+
+	};
+	 TCONControl::TCONControl(bptr < TCONParameter > parameter,
+				  bptr < i2cControl > control1,
+				  bptr < i2cControl >
+				  control2):parameter(parameter),
+	    control(control1), control2(control2), dualTCON(true) {
 
 	};
 	void TCONControl::setTestRGB(RGB_ptr rgb) {
 	    int address = parameter->getTestRGBAddress();
 	    double_array rgbValues(new double[3]);
-	     rgb->getValues(rgbValues, Dep::MaxValue::Int12Bit);
+	    rgb->getValues(rgbValues, Dep::MaxValue::Int12Bit);
 	    int r = _toInt(rgbValues[0]);
 	    int g = _toInt(rgbValues[1]);
 	    int b = _toInt(rgbValues[2]);
-	     bptr < ByteBuffer > data;
+	    bptr < ByteBuffer > data;
 
 	    if (parameter->isIndependentRGB()) {
 		//如果test RGB各自獨立
@@ -50,12 +57,18 @@ namespace cms {
 		(*data)[4] = g >> 8 & 15;
 	    }
 	    control->write(address, data);
+	    if (true == dualTCON) {
+		control2->write(address, data);
+	    }
 	};
 	void TCONControl::setGammaTest(bool enable) {
 	    int address = parameter->getGammaTestAddress();
 	    unsigned char bit = parameter->getGammaTestBit();
 	    unsigned char data = enable << (bit - 1);
 	    control->writeByte(address, data);
+	    if (true == dualTCON) {
+		control2->writeByte(address, data);
+	    }
 	};
     };
 };

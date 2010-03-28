@@ -11,7 +11,6 @@ USEFORM("src\gui\TAnalyzerFrame.cpp", AnalyzerFrame); /* TFrame: File Type */
 USEFORM("src\gui\TAboutBox.cpp", AboutBox);
 USEFORM("src\gui\TTargetWhiteForm2.cpp", TargetWhiteForm2);
 USEFORM("src\gui\TI2CTestForm.cpp", I2CTestForm);
-USEFORM("src\gui\Unit3.cpp", Form3);
 //---------------------------------------------------------------------------
 WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 {
@@ -19,7 +18,7 @@ WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
         {
                  Application->Initialize();
                  Application->Title = "CCTv3 Adjustment";
-                 Application->CreateForm(__classid(TForm3), &Form3);
+                 Application->CreateForm(__classid(TI2CTestForm), &I2CTestForm);
                  Application->Run();
         }
         catch (Exception &exception)
