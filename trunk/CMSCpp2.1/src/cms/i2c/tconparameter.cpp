@@ -13,8 +13,7 @@ namespace cms {
 	TCONParameter::TCONParameter(int gammaTestAddress,
 				     unsigned char gammaTestBit,
 				     int testRGBAddress,
-				     bool
-				     independentRGB):gammaTestAddress
+				     bool independentRGB):gammaTestAddress
 	    (gammaTestAddress), gammaTestBit(gammaTestBit),
 	    testRGBAddress(testRGBAddress),
 	    independentRGB(independentRGB) {
@@ -32,7 +31,6 @@ namespace cms {
 	unsigned char TCONParameter::getGammaTestBit() {
 	    return gammaTestBit;
 	};
-
     };
 };
 

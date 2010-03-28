@@ -1,6 +1,6 @@
 object I2CTestForm: TI2CTestForm
-  Left = 194
-  Top = 125
+  Left = 230
+  Top = 245
   Width = 435
   Height = 354
   Caption = 'I2C Tester'
@@ -193,22 +193,22 @@ object I2CTestForm: TI2CTestForm
     object Label4: TLabel
       Left = 8
       Top = 24
-      Width = 57
-      Height = 25
+      Width = 43
+      Height = 16
       Caption = 'Device'
     end
     object Label5: TLabel
       Left = 8
       Top = 56
-      Width = 41
-      Height = 25
+      Width = 15
+      Height = 16
       Caption = 'Bit'
     end
     object Label6: TLabel
       Left = 8
       Top = 88
-      Width = 41
-      Height = 25
+      Width = 29
+      Height = 16
       Caption = 'Data'
     end
     object Edit_GammaTestAddress: TEdit
@@ -235,6 +235,14 @@ object I2CTestForm: TI2CTestForm
       TabOrder = 2
       Text = '4A7'
     end
+    object CheckBox_2ByteAddress: TCheckBox
+      Left = 8
+      Top = 120
+      Width = 121
+      Height = 25
+      Caption = '2ByteAddress'
+      TabOrder = 3
+    end
   end
   object GroupBox5: TGroupBox
     Left = 272
@@ -247,7 +255,7 @@ object I2CTestForm: TI2CTestForm
       Left = 64
       Top = 24
       Width = 73
-      Height = 25
+      Height = 24
       TabOrder = 0
     end
     object Edit2: TEdit

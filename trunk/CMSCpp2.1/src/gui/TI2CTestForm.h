@@ -49,6 +49,7 @@ class TI2CTestForm:public TForm {
     TEdit *Edit2;
     TButton *Button2;
     TButton *Button3;
+    TCheckBox *CheckBox_2ByteAddress;
     void __fastcall Button1Click(TObject * Sender);
     void __fastcall CheckBox_ConnectingClick(TObject * Sender);
     void __fastcall CheckBox1Click(TObject * Sender);

@@ -18,6 +18,7 @@ namespace cms {
 	//==========================================================================
 	using namespace std;
 	using namespace boost;
+	using namespace java::lang;
 	 shared_ptr < string > Util::toString(wchar_t * wc) {
 	    size_t size = wcslen(wc);
 	    char *c = new char[size];
@@ -97,6 +98,30 @@ namespace cms {
 		(*result)[x] = strings[x];
 	    } return result;
 	};
+	//======================================================================
+
+	//======================================================================
+	// ByteBuffer
+	//======================================================================
+      ByteBuffer::ByteBuffer(const unsigned int size):size(size) {
+	    buffer = new unsigned char[size];
+	};
+	ByteBuffer::~ByteBuffer() {
+	    delete[]buffer;
+	};
+	unsigned char &ByteBuffer::operator[] (const size_t index) {
+	    if (index >= size) {
+		throw IndexOutOfBoundsException();
+	    }
+	    return buffer[index];
+	};
+	const unsigned char &ByteBuffer::operator[] (const size_t index) const {
+	    if (index >= size) {
+		throw IndexOutOfBoundsException();
+	    }
+	    return buffer[index];
+	};
+	//======================================================================
     };
 };
 
