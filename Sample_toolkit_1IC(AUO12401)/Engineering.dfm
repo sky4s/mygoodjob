@@ -1,6 +1,6 @@
 object EngineerForm: TEngineerForm
-  Left = 297
-  Top = 135
+  Left = 570
+  Top = 173
   Width = 935
   Height = 661
   Caption = 'Engineering'
@@ -10537,7 +10537,7 @@ object EngineerForm: TEngineerForm
           Left = 208
           Top = 49
           Width = 91
-          Height = 21
+          Height = 24
           TabStop = False
           Color = clBtnFace
           EditLabel.Width = 98
@@ -10563,7 +10563,7 @@ object EngineerForm: TEngineerForm
           Left = 11
           Top = 49
           Width = 91
-          Height = 21
+          Height = 24
           EditLabel.Width = 86
           EditLabel.Height = 16
           EditLabel.Caption = 'Address (Hex)'
@@ -10588,7 +10588,7 @@ object EngineerForm: TEngineerForm
           Left = 110
           Top = 49
           Width = 91
-          Height = 21
+          Height = 24
           CharCase = ecUpperCase
           EditLabel.Width = 64
           EditLabel.Height = 16
@@ -10707,7 +10707,7 @@ object EngineerForm: TEngineerForm
           Left = 10
           Top = 39
           Width = 90
-          Height = 21
+          Height = 24
           EditLabel.Width = 83
           EditLabel.Height = 16
           EditLabel.Caption = 'Address(Hex)'
@@ -10732,7 +10732,7 @@ object EngineerForm: TEngineerForm
           Left = 108
           Top = 39
           Width = 90
-          Height = 21
+          Height = 24
           EditLabel.Width = 73
           EditLabel.Height = 16
           EditLabel.Caption = 'Lenght(Dec)'
