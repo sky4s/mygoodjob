@@ -3,7 +3,6 @@
 #ifndef TI2CTestFormH
 #define TI2CTestFormH
 //---------------------------------------------------------------------------
-
 //C系統文件
 
 //C++系統文件
@@ -30,27 +29,39 @@ class TI2CTestForm:public TForm {
     TRadioButton *RadioButton_LPT;
     TCheckBox *CheckBox_Connecting;
     TGroupBox *GroupBox3;
+    TLabel *Label1;
+    TLabel *Label2;
+    TLabel *Label3;
     TCheckBox *CheckBox1;
     TEdit *Edit_R;
     TEdit *Edit_G;
     TEdit *Edit_B;
+    TCheckBox *CheckBox_IndepRGB;
+    TGroupBox *GroupBox4;
     TEdit *Edit_GammaTestAddress;
     TEdit *Edit_GammaTestBit;
     TEdit *Edit_TestRGBAdress;
-    TCheckBox *CheckBox_IndepRGB;
+    TLabel *Label4;
+    TLabel *Label5;
+    TLabel *Label6;
+    TGroupBox *GroupBox5;
+    TEdit *Edit1;
+    TEdit *Edit2;
+    TButton *Button2;
+    TButton *Button3;
     void __fastcall Button1Click(TObject * Sender);
-    void __fastcall FormCreate(TObject * Sender);
+    void __fastcall CheckBox_ConnectingClick(TObject * Sender);
+    void __fastcall CheckBox1Click(TObject * Sender);
     void __fastcall Edit_RChange(TObject * Sender);
     void __fastcall Edit_GChange(TObject * Sender);
     void __fastcall Edit_BChange(TObject * Sender);
-    void __fastcall CheckBox_ConnectingClick(TObject * Sender);
-    void __fastcall CheckBox1Click(TObject * Sender);
   private:			// User declarations
-     bptr < cms::i2c::i2cControl > i2c;
+    //bptr < cms::i2c::i2cControl > i2c;
      bptr < cms::i2c::TCONParameter > parameter;
      bptr < cms::i2c::TCONControl > control;
   public:			// User declarations
      __fastcall TI2CTestForm(TComponent * Owner);
+
 };
 //---------------------------------------------------------------------------
 extern PACKAGE TI2CTestForm *I2CTestForm;

@@ -19,14 +19,14 @@
       build\metermeasurement.obj build\analyzer.obj build\cp.obj build\meter.obj 
       build\Unit2.obj build\TMeasureWindow.obj build\TMainForm.obj 
       build\TCCTLUTForm.obj build\TAnalyzerFrame.obj build\TAboutBox.obj 
-      build\TTargetWhiteForm2.obj build\TI2CTestForm.obj build\Unit3.obj"/>
+      build\TTargetWhiteForm2.obj build\TI2CTestForm.obj"/>
     <RESFILES value="CMSCpp2_1_GUI.res"/>
     <IDLFILES value=""/>
     <IDLGENFILES value=""/>
     <DEFFILE value=""/>
     <RESDEPEN value="$(RESFILES) src\Unit1.dfm src\gui\TMeasureWindow.dfm src\gui\TMainForm.dfm 
       src\gui\TCCTLUTForm.dfm src\gui\TAnalyzerFrame.dfm src\gui\TAboutBox.dfm 
-      src\gui\TTargetWhiteForm2.dfm src\gui\TI2CTestForm.dfm src\gui\Unit3.dfm"/>
+      src\gui\TTargetWhiteForm2.dfm src\gui\TI2CTestForm.dfm"/>
     <LIBFILES value="lib\hid.lib"/>
     <LIBRARIES value="adortl.lib dbrtl.lib vclx.lib vcl.lib rtl.lib"/>
     <SPARELIBS value="rtl.lib vcl.lib vclx.lib dbrtl.lib adortl.lib"/>
@@ -37,7 +37,7 @@
       inetdbbde.bpi inetdbxpress.bpi inetdb.bpi nmfast.bpi webdsnap.bpi 
       bcbie.bpi websnap.bpi soaprtl.bpi dclocx.bpi dbexpress.bpi dbxcds.bpi 
       indy.bpi bcb2kaxserver.bpi bcbindent.bpi"/>
-    <PATHCPP value=".;src;lib\LPT_lib;lib\LPT_lib;lib\USB_i2c_lib;src\cms\i2c\core;src\cms\i2c;src\cms\i2c;src\cms\i2c;src\java;lib\CA200SRVRLib;lib\CA200SRVRLib;src\ca210api;src\cms\util;src\cms\util;src\cms\colorspace;src\cms\colorspace;src\cms\colorspace;src\cms\colorspace;src\cms\colorspace;src\cms;src\cms;src\cms\colorformat;src\cms\colorformat;src\cms\colorformat;src\cms\colorformat;src\cms\colorformat;src\math;src\math;src\math;src\math;src\math;src\cms\lcd\calibrate;src\cms\lcd\calibrate;src\cms\lcd\calibrate;src\cms\lcd\calibrate;src\cms\lcd\calibrate;src\cms\lcd\calibrate;src\cms\lcd\calibrate;src\cms\lcd\calibrate;src\cms\measure;src\cms\measure;src\cms\measure;src\cms\measure;src;src\gui;src\gui;src\gui;src\gui;src\gui;src\gui;src\gui;src\gui"/>
+    <PATHCPP value=".;src;lib\LPT_lib;lib\USB_i2c_lib;src\cms\i2c\core;src\cms\i2c;src\java;lib\CA200SRVRLib;src\ca210api;src\cms\util;src\cms\colorspace;src\cms;src\cms\colorformat;src\math;src\cms\lcd\calibrate;src\cms\measure;src\gui"/>
     <PATHPAS value=".;"/>
     <PATHRC value=".;"/>
     <PATHASM value=".;"/>
@@ -127,9 +127,8 @@
       <FILE FILENAME="src\gui\TAnalyzerFrame.cpp" FORMNAME="AnalyzerFrame" UNITNAME="TAnalyzerFrame" CONTAINERID="CCompiler" DESIGNCLASS="TFrame" LOCALCOMMAND=""/>
       <FILE FILENAME="src\gui\TAboutBox.cpp" FORMNAME="AboutBox" UNITNAME="TAboutBox" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="src\gui\TTargetWhiteForm2.cpp" FORMNAME="TargetWhiteForm2" UNITNAME="TTargetWhiteForm2" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="src\gui\TI2CTestForm.cpp" FORMNAME="I2CTestForm" UNITNAME="TI2CTestForm" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="lib\hid.lib" FORMNAME="" UNITNAME="hid.lib" CONTAINERID="LibTool" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="src\gui\Unit3.cpp" FORMNAME="Form3" UNITNAME="Unit3" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="src\gui\TI2CTestForm.cpp" FORMNAME="I2CTestForm" UNITNAME="TI2CTestForm" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
   </FILELIST>
   <BUILDTOOLS>
   </BUILDTOOLS>

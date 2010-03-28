@@ -15,6 +15,7 @@ __fastcall TI2CTestForm::TI2CTestForm(TComponent * Owner)
 }
 
 //---------------------------------------------------------------------------
+
 void __fastcall TI2CTestForm::Button1Click(TObject * Sender)
 {
     using namespace cms::i2c;
@@ -46,7 +47,7 @@ void __fastcall TI2CTestForm::Button1Click(TObject * Sender)
     if (dual) {
 	i2c2nd->connect();
     }
-    if (connect) {
+    if (false == connect) {
 	this->CheckBox_Connecting->Checked = connect;
 	this->CheckBox_Connecting->Enabled = true;
 	this->Edit_GammaTestAddress->Enabled = false;
@@ -60,23 +61,41 @@ void __fastcall TI2CTestForm::Button1Click(TObject * Sender)
 	int gammaTestBit = StrToInt(this->Edit_GammaTestBit->Text);
 	int testRGBAddress =
 	    StrToInt("0x" + this->Edit_TestRGBAdress->Text);
+	bool indepRGB = this->CheckBox_IndepRGB->Checked;
 	parameter.reset(new
 			TCONParameter(gammaTestAddress, gammaTestBit,
-				      testRGBAddress, true));
-	control.reset(new TCONControl(parameter, i2c));
+				      testRGBAddress, indepRGB));
+	if (!dual) {
+	    control.reset(new TCONControl(parameter, i2c1st));
+	} else {
+	    control.reset(new TCONControl(parameter, i2c1st, i2c2nd));
+	}
+
     }
 }
 
 //---------------------------------------------------------------------------
-
-void __fastcall TI2CTestForm::FormCreate(TObject * Sender)
+void __fastcall TI2CTestForm::CheckBox_ConnectingClick(TObject * Sender)
 {
-    //RW_Func rw;
-    //i2c = cms::i2c::i2cControl::getLPTInstance(0);
+    if (false == this->CheckBox_Connecting->Checked) {
+	this->Edit_GammaTestAddress->Enabled = true;
+	this->Edit_GammaTestBit->Enabled = true;
+	this->Edit_TestRGBAdress->Enabled = true;
+	this->CheckBox_IndepRGB->Enabled = true;
+	this->CheckBox_Connecting->Enabled = false;
+    }
 }
 
 //---------------------------------------------------------------------------
+void __fastcall TI2CTestForm::CheckBox1Click(TObject * Sender)
+{
+    //if (true == this->CheckBox_Connecting->Checked) {
+    bool enable = this->CheckBox1->Checked;
+    control->setGammaTest(enable);
+    //}        
+}
 
+//---------------------------------------------------------------------------
 void __fastcall TI2CTestForm::Edit_RChange(TObject * Sender)
 {
     using namespace Dep;
@@ -97,44 +116,16 @@ void __fastcall TI2CTestForm::Edit_RChange(TObject * Sender)
 }
 
 //---------------------------------------------------------------------------
-
 void __fastcall TI2CTestForm::Edit_GChange(TObject * Sender)
 {
     Edit_RChange(Sender);
 }
 
 //---------------------------------------------------------------------------
-
 void __fastcall TI2CTestForm::Edit_BChange(TObject * Sender)
 {
     Edit_RChange(Sender);
 }
 
 //---------------------------------------------------------------------------
-
-
-void __fastcall TI2CTestForm::CheckBox1Click(TObject * Sender)
-{
-    //if (true == this->CheckBox_Connecting->Checked) {
-    bool enable = this->CheckBox1->Checked;
-    control->setGammaTest(enable);
-    //}
-}
-
-//---------------------------------------------------------------------------
-
-void __fastcall TI2CTestForm::CheckBox_ConnectingClick(TObject * Sender)
-{
-    if (false == this->CheckBox_Connecting->Checked) {
-	this->Edit_GammaTestAddress->Enabled = true;
-	this->Edit_GammaTestBit->Enabled = true;
-	this->Edit_TestRGBAdress->Enabled = true;
-	this->CheckBox_IndepRGB->Enabled = true;
-	this->CheckBox_Connecting->Enabled = false;
-    }
-}
-
-//---------------------------------------------------------------------------
-
-
 
