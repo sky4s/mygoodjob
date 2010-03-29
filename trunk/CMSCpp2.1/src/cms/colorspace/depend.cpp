@@ -278,6 +278,7 @@ namespace cms {
 	    const MaxValue & MaxValue::Int9Bit = MaxValue(510., true, true, 9);	//9bit
 	    const MaxValue & MaxValue::Double1020 = MaxValue(1020, false, true, -1);	//10bit
 	    const MaxValue & MaxValue::Int10Bit = MaxValue(1020, true, true, 10);	//10bit
+	    const MaxValue & MaxValue::RealInt10Bit = MaxValue(1023, true, true, 10);	//real 10bit
 	    const MaxValue & MaxValue::Int11Bit = MaxValue(2040, true, true, 11);	//11bit
 	    const MaxValue & MaxValue::Double4080 = MaxValue(4080, false, true, -1);	//12bit
 	    const MaxValue & MaxValue::Int12Bit = MaxValue(4080, true, true, 12);	//12bit
@@ -291,10 +292,10 @@ namespace cms {
 	    const MaxValue & MaxValue::DoubleUnlimited = MaxValue(std::numeric_limits < double >::max());	//µL­­¨î
 
 	    const bptr < MaxValue_vector > MaxValue::MaxValueVector =
-		MaxValue::make(14, Int5Bit, Int6Bit, Int7Bit, Int8Bit,
-			       Int9Bit, Int10Bit, Int11Bit, Int12Bit,
-			       Int13Bit, Int14Bit, Int15Bit, Int16Bit,
-			       Int20Bit, Int24Bit);
+		MaxValue::make(15, Int5Bit, Int6Bit, Int7Bit, Int8Bit,
+			       Int9Bit, Int10Bit, RealInt10Bit, Int11Bit,
+			       Int12Bit, Int13Bit, Int14Bit, Int15Bit,
+			       Int16Bit, Int20Bit, Int24Bit);
 
 	    MaxValue MaxValue::getIntegerMaxValueByLevel(int level) {
 	    };

@@ -18,6 +18,7 @@ namespace cms {
 	    bptr < i2cControl > control;
 	    bptr < i2cControl > control2;
 	    const bool dualTCON;
+
 	  public:
 	     TCONControl(bptr < TCONParameter > parameter,
 			 bptr < i2cControl > control);
@@ -26,7 +27,8 @@ namespace cms {
 			 bptr < i2cControl > control2);
 	    void setTestRGB(RGB_ptr rgb);
 	    void setGammaTest(bool enable);
-
+	    unsigned char readByte(int dataAddress);
+	    void writeByte(int dataAddress, unsigned char data);
 	};
     };
 };

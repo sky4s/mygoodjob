@@ -31,13 +31,18 @@ namespace cms {
 		bptr < cms::measure::IntensityAnalyzerIF > analyzer;
 		//bptr < cms::measure::MeterMeasurement > mm;
 		bool stop;
+		bool tconInput;
+		bool real10Bit;
 	      public:
 		 ComponentFetcher(bptr <
 				  cms::measure::IntensityAnalyzerIF >
 				  analyzer);
 		Component_vector_ptr fetchComponent(int start, int end,
+						    int firstStep,
 						    int step);
 		void setStop(bool stop);
+		void setTCONInput(bool tconInput);
+		void setReal10Bit(bool real10bit);
 		static void storeToExcel(const std::string & filename,
 					 Component_vector_ptr
 					 componentVector);
@@ -123,8 +128,8 @@ namespace cms {
 		RGBGamma_ptr finalRGBGamma;
 		RGBGamma_ptr initialRGBGamma;
 
-		int start, end, step;
-		void set(int start, int end, int step);
+		int start, end, firstStep, step;
+		void set(int start, int end, int firstStep, int step);
 		 bptr < BitDepthProcessor > bitDepth;
 	      public:
 		static double_vector_ptr getGammaCurveVector
@@ -149,8 +154,10 @@ namespace cms {
 			       analyzer,
 			       bptr < BitDepthProcessor > bitDepth);
 
-		RGB_vector_ptr getDGLut(int start, int end, int step);
-		RGB_vector_ptr getDGLut(int step);
+		//RGB_vector_ptr getDGLut(int start, int end, int step);
+		RGB_vector_ptr getDGLut(int start, int end, int firstStep,
+					int step);
+		RGB_vector_ptr getDGLut(int firstStep, int step);
 		void storeDGLut(const std::string & filename,
 				RGB_vector_ptr dglut);
 	      private:
