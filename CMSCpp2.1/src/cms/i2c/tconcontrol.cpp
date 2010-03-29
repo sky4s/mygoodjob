@@ -28,7 +28,6 @@ namespace cms {
 
 	};
 	void TCONControl::setTestRGB(RGB_ptr rgb) {
-	    int address = parameter->getTestRGBAddress();
 	    double_array rgbValues(new double[3]);
 	    rgb->getValues(rgbValues, Dep::MaxValue::Int12Bit);
 	    int r = _toInt(rgbValues[0]);
@@ -57,6 +56,7 @@ namespace cms {
 		(*data)[3] = b & 255;
 		(*data)[4] = g >> 8 & 15;
 	    }
+	    int address = parameter->getTestRGBAddress();
 	    control->write(address, data);
 	    if (true == dualTCON) {
 		control2->write(address, data);
@@ -69,6 +69,16 @@ namespace cms {
 	    control->writeByte(address, data);
 	    if (true == dualTCON) {
 		control2->writeByte(address, data);
+	    }
+	};
+
+	unsigned char TCONControl::readByte(int dataAddress) {
+	    return control->readByte(dataAddress);
+	};
+	void TCONControl::writeByte(int dataAddress, unsigned char data) {
+	    control->writeByte(dataAddress, data);
+	    if (true == dualTCON) {
+		control2->writeByte(dataAddress, data);
 	    }
 	};
     };

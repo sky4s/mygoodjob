@@ -1,182 +1,182 @@
 object I2CTestForm: TI2CTestForm
-  Left = 230
-  Top = 245
+  Left = 132
+  Top = 330
   Width = 435
   Height = 354
   Caption = 'I2C Tester'
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
-  Font.Height = -13
+  Font.Height = -10
   Font.Name = 'MS Sans Serif'
   Font.Style = []
   OldCreateOrder = False
-  PixelsPerInch = 120
-  TextHeight = 16
+  PixelsPerInch = 96
+  TextHeight = 13
   object Button1: TButton
-    Left = 8
-    Top = 96
-    Width = 81
-    Height = 25
+    Left = 7
+    Top = 78
+    Width = 65
+    Height = 20
     Caption = 'Connect'
     TabOrder = 0
     OnClick = Button1Click
   end
   object GroupBox1: TGroupBox
-    Left = 88
-    Top = 8
-    Width = 329
-    Height = 81
+    Left = 72
+    Top = 7
+    Width = 267
+    Height = 65
     Caption = 'T-CON'
     TabOrder = 1
     object RadioButton_Single: TRadioButton
-      Left = 8
-      Top = 24
-      Width = 113
-      Height = 17
+      Left = 7
+      Top = 20
+      Width = 91
+      Height = 13
       Caption = 'Single T-CON'
       Checked = True
       TabOrder = 0
       TabStop = True
     end
     object Edit_Single: TEdit
-      Left = 120
-      Top = 16
-      Width = 49
-      Height = 24
+      Left = 98
+      Top = 13
+      Width = 39
+      Height = 21
       TabOrder = 1
       Text = '7C'
     end
     object RadioButton_Dual: TRadioButton
-      Left = 8
-      Top = 48
-      Width = 113
-      Height = 17
+      Left = 7
+      Top = 39
+      Width = 91
+      Height = 14
       Caption = 'Dual  T-CON'
       TabOrder = 2
     end
     object Edit_Master: TEdit
-      Left = 120
-      Top = 49
-      Width = 49
-      Height = 24
+      Left = 98
+      Top = 40
+      Width = 39
+      Height = 21
       TabOrder = 3
       Text = '7C'
     end
     object Edit_Slave: TEdit
-      Left = 176
-      Top = 49
-      Width = 49
-      Height = 24
+      Left = 143
+      Top = 40
+      Width = 40
+      Height = 21
       TabOrder = 4
       Text = '7E'
     end
   end
   object GroupBox2: TGroupBox
-    Left = 8
-    Top = 8
-    Width = 73
-    Height = 81
+    Left = 7
+    Top = 7
+    Width = 59
+    Height = 65
     Caption = 'Card'
     TabOrder = 2
     object RadioButton_USB: TRadioButton
-      Left = 8
-      Top = 24
-      Width = 57
-      Height = 25
+      Left = 7
+      Top = 20
+      Width = 46
+      Height = 20
       Caption = 'USB'
       Checked = True
       TabOrder = 0
       TabStop = True
     end
     object RadioButton_LPT: TRadioButton
-      Left = 8
-      Top = 48
-      Width = 57
-      Height = 25
+      Left = 7
+      Top = 39
+      Width = 46
+      Height = 20
       Caption = 'LPT'
       TabOrder = 1
     end
   end
   object CheckBox_Connecting: TCheckBox
-    Left = 96
-    Top = 96
-    Width = 105
-    Height = 25
+    Left = 78
+    Top = 78
+    Width = 85
+    Height = 20
     Caption = 'Connecting'
     Enabled = False
     TabOrder = 3
     OnClick = CheckBox_ConnectingClick
   end
   object GroupBox3: TGroupBox
-    Left = 8
-    Top = 128
-    Width = 113
-    Height = 185
+    Left = 7
+    Top = 104
+    Width = 91
+    Height = 150
     Caption = 'Gamma Test'
     TabOrder = 4
     object Label1: TLabel
-      Left = 8
-      Top = 56
-      Width = 10
-      Height = 16
+      Left = 7
+      Top = 46
+      Width = 8
+      Height = 13
       Caption = 'R'
     end
     object Label2: TLabel
-      Left = 8
-      Top = 88
-      Width = 10
-      Height = 16
+      Left = 7
+      Top = 72
+      Width = 8
+      Height = 13
       Caption = 'G'
     end
     object Label3: TLabel
-      Left = 8
-      Top = 120
-      Width = 9
-      Height = 16
+      Left = 7
+      Top = 98
+      Width = 7
+      Height = 13
       Caption = 'B'
     end
     object CheckBox1: TCheckBox
-      Left = 8
-      Top = 24
-      Width = 81
-      Height = 25
+      Left = 7
+      Top = 20
+      Width = 65
+      Height = 20
       Caption = 'Enable'
       TabOrder = 0
       OnClick = CheckBox1Click
     end
     object Edit_R: TEdit
-      Left = 24
-      Top = 56
-      Width = 73
-      Height = 24
+      Left = 20
+      Top = 46
+      Width = 59
+      Height = 21
       TabOrder = 1
       Text = '0'
       OnChange = Edit_RChange
     end
     object Edit_G: TEdit
-      Left = 24
-      Top = 88
-      Width = 73
-      Height = 24
+      Left = 20
+      Top = 72
+      Width = 59
+      Height = 21
       TabOrder = 2
       Text = '0'
       OnChange = Edit_GChange
     end
     object Edit_B: TEdit
-      Left = 24
-      Top = 120
-      Width = 73
-      Height = 24
+      Left = 20
+      Top = 98
+      Width = 59
+      Height = 21
       TabOrder = 3
       Text = '0'
       OnChange = Edit_BChange
     end
     object CheckBox_IndepRGB: TCheckBox
-      Left = 8
-      Top = 152
-      Width = 89
-      Height = 25
+      Left = 7
+      Top = 124
+      Width = 72
+      Height = 20
       Caption = 'Indep RGB'
       Checked = True
       State = cbChecked
@@ -184,104 +184,132 @@ object I2CTestForm: TI2CTestForm
     end
   end
   object GroupBox4: TGroupBox
-    Left = 128
-    Top = 128
-    Width = 137
-    Height = 185
+    Left = 104
+    Top = 104
+    Width = 111
+    Height = 150
     Caption = 'Address'
     TabOrder = 5
     object Label4: TLabel
-      Left = 8
-      Top = 24
-      Width = 43
-      Height = 16
+      Left = 7
+      Top = 20
+      Width = 34
+      Height = 13
       Caption = 'Device'
     end
     object Label5: TLabel
-      Left = 8
-      Top = 56
-      Width = 15
-      Height = 16
+      Left = 7
+      Top = 46
+      Width = 12
+      Height = 13
       Caption = 'Bit'
     end
     object Label6: TLabel
-      Left = 8
-      Top = 88
-      Width = 29
-      Height = 16
-      Caption = 'Data'
+      Left = 7
+      Top = 72
+      Width = 36
+      Height = 13
+      Caption = 'Gamma'
     end
     object Edit_GammaTestAddress: TEdit
-      Left = 56
-      Top = 24
-      Width = 73
-      Height = 24
+      Left = 46
+      Top = 20
+      Width = 59
+      Height = 21
       TabOrder = 0
       Text = '4A1'
     end
     object Edit_GammaTestBit: TEdit
-      Left = 56
-      Top = 56
-      Width = 73
-      Height = 24
+      Left = 46
+      Top = 46
+      Width = 59
+      Height = 21
       TabOrder = 1
-      Text = '1'
+      Text = '2'
     end
     object Edit_TestRGBAdress: TEdit
-      Left = 56
-      Top = 88
-      Width = 73
-      Height = 24
+      Left = 46
+      Top = 72
+      Width = 59
+      Height = 21
       TabOrder = 2
       Text = '4A7'
     end
-    object CheckBox_2ByteAddress: TCheckBox
+    object ComboBox_AddressingSize: TComboBox
       Left = 8
-      Top = 120
-      Width = 121
-      Height = 25
-      Caption = '2ByteAddress'
+      Top = 104
+      Width = 89
+      Height = 21
+      ItemHeight = 13
       TabOrder = 3
+      Text = '2k'
+      Items.Strings = (
+        '2k'
+        '4k'
+        '8k'
+        '16k'
+        '32k'
+        '64k'
+        '128k'
+        '256k'
+        '512k')
     end
   end
   object GroupBox5: TGroupBox
-    Left = 272
-    Top = 128
-    Width = 145
-    Height = 185
+    Left = 221
+    Top = 104
+    Width = 118
+    Height = 150
     Caption = 'Data'
     TabOrder = 6
-    object Edit1: TEdit
-      Left = 64
-      Top = 24
-      Width = 73
-      Height = 24
+    object Label7: TLabel
+      Left = 7
+      Top = 20
+      Width = 38
+      Height = 13
+      Caption = 'Address'
+    end
+    object Edit_WriteData: TEdit
+      Left = 52
+      Top = 46
+      Width = 59
+      Height = 21
       TabOrder = 0
     end
-    object Edit2: TEdit
-      Left = 64
-      Top = 56
-      Width = 73
-      Height = 24
+    object Edit_ReadData: TEdit
+      Left = 52
+      Top = 72
+      Width = 59
+      Height = 21
       Color = cl3DLight
       Enabled = False
       TabOrder = 1
     end
-    object Button2: TButton
-      Left = 8
-      Top = 24
-      Width = 49
-      Height = 25
+    object Button_Write: TButton
+      Left = 7
+      Top = 46
+      Width = 39
+      Height = 20
       Caption = 'Write'
       TabOrder = 2
+      OnClick = Button_WriteClick
     end
-    object Button3: TButton
-      Left = 8
-      Top = 56
-      Width = 49
-      Height = 25
+    object Button_Read: TButton
+      Left = 7
+      Top = 72
+      Width = 39
+      Height = 20
       Caption = 'Read'
       TabOrder = 3
+      OnClick = Button_ReadClick
+    end
+    object Edit_Address: TEdit
+      Left = 52
+      Top = 20
+      Width = 59
+      Height = 21
+      TabOrder = 4
+      Text = '0'
     end
   end
 end

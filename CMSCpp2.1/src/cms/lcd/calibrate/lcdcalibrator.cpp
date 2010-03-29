@@ -58,11 +58,21 @@ namespace cms {
 	    };
 
 	    Component_vector_ptr ComponentFetcher::
-		fetchComponent(int start, int end, int step) {
+		fetchComponent(int start, int end, int firstStep,
+			       int step) {
 
 		Component_vector_ptr result(new Component_vector());
-		for (int x = start; x >= end; x -= step) {
-		    RGB_ptr rgb(new RGBColor(x, x, x));
+		int measureStep = firstStep;
+		bool first = true;
+		for (int x = start; x >= end; x -= measureStep) {
+		    if (x != start && true == first) {
+			first = false;
+			measureStep = step;
+		    }
+
+		    RGB_ptr rgb(tconInput ?
+				new RGBColor(x, x, x, MaxValue::Int10Bit) :
+				new RGBColor(x, x, x));
 		    RGB_ptr intensity = analyzer->getIntensity(rgb);
 		    XYZ_ptr XYZ = analyzer->getCIEXYZ();
 		    Component_ptr component(new Component(rgb, intensity,
@@ -71,11 +81,18 @@ namespace cms {
 		    if (true == stop) {
 			break;
 		    }
+
 		};
 		return result;
 	    };
 	    void ComponentFetcher::setStop(bool stop) {
 		this->stop = stop;
+	    };
+	    void ComponentFetcher::setTCONInput(bool tconInput) {
+		this->tconInput = tconInput;
+	    };
+	    void ComponentFetcher::setReal10Bit(bool real10bit) {
+		this->real10Bit = real10Bit;
 	    };
 	    void ComponentFetcher::storeToExcel(const string & filename,
 						Component_vector_ptr
@@ -279,9 +296,11 @@ namespace cms {
 	    //==================================================================
 	    // LCDCalibrator
 	    //==================================================================
-	    void LCDCalibrator::set(int start, int end, int step) {
+	    void LCDCalibrator::set(int start, int end, int firstStep,
+				    int step) {
 		this->start = start;
 		this->end = end;
+		this->firstStep = firstStep;
 		this->step = step;
 	    };
 
@@ -375,15 +394,119 @@ namespace cms {
 	    /*
 	       CCT + Gamma
 	     */
+	    /*RGB_vector_ptr LCDCalibrator::
+	       getDGLut(int start, int end, int step) {
+	       set(start, end, step);
+	       if (null == gammaCurve) {
+	       throw new IllegalStateException("null == gammaCurve");
+	       }
+	       //量測start->end得到的coponent/Y 
+	       componentVector =
+	       fetcher->fetchComponent(start, end, step);
+	       STORE_COMPONENT("o_fetch.xls", componentVector);
+
+	       //產生generator
+	       generator.
+	       reset(new DGLutGenerator(componentVector, bitDepth));
+	       RGBGamma_ptr rgbgamma = generator->getRGBGamma(gammaCurve);
+	       STORE_DOUBLE_VECTOR("0_gammacurve.xls", gammaCurve);
+	       STORE_RGBGAMMA("1_rgbgamma_org.xls", rgbgamma);
+
+	       if (bIntensityGain != 1.0) {
+	       //重新產生目標gamma curve
+	       bptr < BIntensityGainOp >
+	       bgain(new BIntensityGainOp(bIntensityGain, 236,
+	       bitDepth));
+	       RGBGammaOp gammaop;
+	       gammaop.setSource(rgbgamma);
+	       gammaop.addOp(bgain);
+	       rgbgamma = gammaop.createInstance();
+	       };
+	       initialRGBGamma = rgbgamma->clone();
+	       STORE_RGBGAMMA("2_rgbgamma_init.xls", rgbgamma);
+
+	       //從目標gamma curve產生dg code, 此處是傳入normal gammaCurve
+	       RGB_vector_ptr dglut = generator->produce(rgbgamma);
+	       STORE_RGBVECTOR("3_dgcode.xls", dglut);
+	       //==============================================================
+	       //第一次量化處理
+	       //==============================================================
+	       //量化
+	       MaxValue quantizationBit = (bitDepth->is6in6Out()
+	       || bitDepth->
+	       is10in8Out())? bitDepth->
+	       getFRCMaxValue() : bitDepth->getLutMaxValue();
+	       //MaxValue quantizationBit = bitDepth->getLutMaxValue();
+	       RGBVector::quantization(dglut, quantizationBit);
+	       //==============================================================
+
+	       if (correct == P1P2) {
+	       //==========================================================
+	       //p1p2第一階段, 對gamma做調整
+	       //==========================================================
+	       bptr < P1P2GammaOp >
+	       p1p2(new P1P2GammaOp(p1, p2, dglut));
+	       RGBGammaOp gammaop;
+	       gammaop.setSource(rgbgamma);
+	       gammaop.addOp(p1p2);
+
+	       //產生修正後的gamma2(若沒有p1p2,則為原封不動)
+	       rgbgamma = gammaop.createInstance();
+	       STORE_RGBGAMMA("4_rgbgamma_p1p2.xls", rgbgamma);
+
+	       //從目標gamma curve產生dg code, 此處是傳入normal gammaCurve
+	       dglut = generator->produce(rgbgamma);
+	       //量化
+	       RGBVector::quantization(dglut, quantizationBit);
+	       STORE_RGBVECTOR("5_dgcode_p1p2g.xls", dglut);
+	       //==========================================================
+
+
+	       //==========================================================
+	       //p1p2第二階段, 對dg code調整
+	       //==========================================================
+	       DGLutOp dgop;
+	       dgop.setSource(dglut);
+	       bptr < DGLutOp >
+	       op(new P1P2DGOp(p1, p2, quantizationBit));
+	       dgop.addOp(op);
+	       dglut = dgop.createInstance();
+	       //量化
+	       STORE_RGBVECTOR("6_dgcode_p1p2dg.xls", dglut);
+	       //==========================================================
+	       };
+	       //RGB_vector_ptr dgcode2 = dglut;
+	       finalRGBGamma = rgbgamma;
+
+	       //==============================================================
+	       // DG Code Op block
+	       //==============================================================
+	       //量化
+	       RGB_vector_ptr result = getDGLutOpResult(dglut);
+	       //==============================================================
+
+	       STORE_RGBVECTOR("7_dgcode_final.xls", result);
+	       //調整max value
+	       RGBVector::changeMaxValue(result,
+	       bitDepth->getLutMaxValue());
+
+	       this->dglut = result;
+	       return result;
+	       }; */
+
+	    /*
+	       CCT + Gamma
+	     */
 	    RGB_vector_ptr LCDCalibrator::
-		getDGLut(int start, int end, int step) {
-		set(start, end, step);
+		getDGLut(int start, int end, int firstStep, int step) {
+		set(start, end, firstStep, step);
 		if (null == gammaCurve) {
 		    throw new IllegalStateException("null == gammaCurve");
 		}
+		fetcher->setTCONInput(bitDepth->isTCONInput());
 		//量測start->end得到的coponent/Y 
 		componentVector =
-		    fetcher->fetchComponent(start, end, step);
+		    fetcher->fetchComponent(start, end, firstStep, step);
 		STORE_COMPONENT("o_fetch.xls", componentVector);
 
 		//產生generator
@@ -479,8 +602,8 @@ namespace cms {
 	    /*
 	       Gamma Only
 	     */
-	    RGB_vector_ptr LCDCalibrator::getDGLut(int step) {
-		set(255, 0, step);
+	    RGB_vector_ptr LCDCalibrator::getDGLut(int firstStep, int step) {
+		set(255, 0, firstStep, step);
 	    };
 
 	    void LCDCalibrator::storeDGLut(const std::

@@ -44,16 +44,23 @@ namespace cms {
 	    _50KHz = 0, _100KHz = 1, _400KHz = 2
 	};
 
+        enum AddressingSize {
+          _2k,_4k,_8k,_16k,_32k,_64k,_128k,_256k,_512k
+        };
+
 	class i2cControl {
 	  private:
 	    const unsigned char deviceAddress;
 	    const int dataAddressLength;
+            const AddressingSize size;
+            static int getDataAddressLength(const AddressingSize size);
+            const unsigned char  getRealDeviceAddress();
+            unsigned char dataAddressByteArray[2];
 	  protected:
 	    static RW_Func i2cio;
-	    unsigned char dataAddressByteArray[2];
-	    //const int dataAddressLength;
-	    //void initDataAddress(int dataAddress);
-	    void setDataAddressByteArray(int dataAddress);
+
+	    //void setDataAddressByteArray(int dataAddress);
+            unsigned char * getDataAddressByteArray(int dataAddress);
 	    virtual void write0(unsigned char dev_addr,
 				unsigned char *data_addr,
 				int data_addr_cnt,
@@ -65,8 +72,10 @@ namespace cms {
 
 
 	  public:
+	     /*i2cControl(const unsigned char deviceAddress,
+			int dataAddressLength);*/
 	     i2cControl(const unsigned char deviceAddress,
-			int dataAddressLength);
+		 const AddressingSize size);
 	    virtual bool connect() = 0;
 	    virtual void disconnect() = 0;
 	    void write(int dataAddress,
@@ -77,10 +86,10 @@ namespace cms {
 	    unsigned char readByte(int dataAddress);
 	    static bptr < i2cControl >
 		getLPTInstance(const unsigned char deviceAddress,
-			       const int dataAddressLength);
+			       const AddressingSize size);
 	    static bptr < i2cControl >
 		getUSBInstance(const unsigned char deviceAddress,
-			       const int dataAddressLength, USBPower power,
+			       const AddressingSize size, USBPower power,
 			       USBSpeed speed);
 	};
 
@@ -99,7 +108,7 @@ namespace cms {
 	     bool connect();
 	    void disconnect();
 	     i2cLPTControl(const unsigned char deviceAddress,
-			   int dataAddressLength);
+			    const AddressingSize size);
 	};
 
 	class i2cUSBControl:public i2cControl {
@@ -116,7 +125,7 @@ namespace cms {
 			       unsigned char *data_read, int data_cnt);
 	  public:
 	     i2cUSBControl(const unsigned char deviceAddress,
-			   int dataAddressLength, USBPower power,
+			   const AddressingSize size, USBPower power,
 			   USBSpeed speed);
 	    bool connect();
 	    void disconnect();

@@ -14,28 +14,28 @@ USEFORM("src\gui\TI2CTestForm.cpp", I2CTestForm);
 //---------------------------------------------------------------------------
 WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 {
-        try
-        {
-                 Application->Initialize();
-                 Application->Title = "CCTv3 Adjustment";
+    try {
+	Application->Initialize();
+	Application->Title = "CCTv3 Adjustment";
+	Application->CreateForm(__classid(TMainForm), &MainForm);
                  Application->CreateForm(__classid(TI2CTestForm), &I2CTestForm);
+                 Application->CreateForm(__classid(TCCTLUTForm), &CCTLUTForm);
+                 Application->CreateForm(__classid(TMeasureWindow), &MeasureWindow);
                  Application->Run();
-        }
-        catch (Exception &exception)
-        {
-                 Application->ShowException(&exception);
-        }
-        catch (...)
-        {
-                 try
-                 {
-                         throw Exception("");
-                 }
-                 catch (Exception &exception)
-                 {
-                         Application->ShowException(&exception);
-                 }
-        }
-        return 0;
+    }
+    catch(Exception & exception) {
+	Application->ShowException(&exception);
+    }
+    catch(...) {
+	try {
+	    throw Exception("");
+	}
+	catch(Exception & exception) {
+	    Application->ShowException(&exception);
+	}
+    }
+    return 0;
 }
+
 //---------------------------------------------------------------------------
+

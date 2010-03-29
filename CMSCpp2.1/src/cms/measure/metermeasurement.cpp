@@ -144,19 +144,12 @@ namespace cms {
 		       AnsiString("Measure Window " + titleNote); */
 
 		} else {
-		    //measureWindow.setTitle("Measure Window");
 		    measureWindow->Caption = AnsiString("Measure Window");
 		}
 		/*measureWindow.setNorthLabel1(name + "   " +
 		   rgb.toString() + "   " +
 		   titleNote); */
 	    }
-	    //設定好顏色
-	    /*Color c =
-	       this.isCPCodeLoading()? this.cpBackground : background;
-	       measureWindow.setBackground(c); */
-
-	    //measureWindow->SetFocus();
 
 	    //==========================================================================
 	    // 變換完視窗顏色的短暫停留
@@ -164,20 +157,8 @@ namespace cms {
 	    if (!fakeMeasure) {
 		measureWindow->setRGB(measureRGB);
 		Sleep(waitTimes);
-	    } else {
-		/*if (null == dgc) {
-                dgc.reset(dynamic_cast < DGLutFileMeter * >(meter.get()));
-		}
-
-		int v = measureRGB->getValue(Channel::W);*/
-		//dgc->setIndex(v);
 	    }
 	    //==========================================================================
-
-	    /*if (meter instanceof DummyMeter) {
-	       //如果是dummy, 就直接指定RGB, 由dummy轉換成XYZ
-	       ((DummyMeter) meter).setRGB(measureRGB);
-	       } */
 
 	    if (true == measureWindowClosing) {
 		//如果視窗被關閉, 就結束量測

@@ -39,7 +39,14 @@ namespace cms {
 		maxValue(&MaxValue::Int8Bit) {
 		setValues(r, g, b);
 	    };
-
+	    RGBColor::RGBColor(int r, int g,
+			       int b,
+			       const MaxValue &
+			       maxValue):rgbColorSpace(&RGBColorSpace::
+						       unknowRGB),
+		maxValue(&maxValue) {
+		setValues(r, g, b);
+	    };
 	    RGBColor::RGBColor(double r, double g,
 			       double b):rgbColorSpace(&RGBColorSpace::
 						       unknowRGB),

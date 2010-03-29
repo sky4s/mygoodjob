@@ -216,8 +216,17 @@ void __fastcall TCCTLUTForm::Button_RunClick(TObject * Sender)
 		return;
 	    }
 	}
+	//預設的第一階
+	int firstStep = bitDepth->getMeasureFirstStep();
+	if (bitDepth->getMeasureStart() != start
+	    || bitDepth->getMeasureEnd() != end
+	    || bitDepth->getMeasureStep() != step) {
+	    //如果量測條件被改變, 則不要採用原本的第一階
+	    firstStep = step;
+	}
 
-	RGB_vector_ptr dglut = calibrator.getDGLut(start, end, step);
+	RGB_vector_ptr dglut =
+	    calibrator.getDGLut(start, end, firstStep, step);
 
 	AnsiString sid = FormatFloat("00", serialid);
 	AnsiString astr =

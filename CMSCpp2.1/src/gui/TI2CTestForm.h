@@ -45,21 +45,27 @@ class TI2CTestForm:public TForm {
     TLabel *Label5;
     TLabel *Label6;
     TGroupBox *GroupBox5;
-    TEdit *Edit1;
-    TEdit *Edit2;
-    TButton *Button2;
-    TButton *Button3;
-    TCheckBox *CheckBox_2ByteAddress;
+    TEdit *Edit_WriteData;
+    TEdit *Edit_ReadData;
+    TButton *Button_Write;
+    TButton *Button_Read;
+    TComboBox *ComboBox_AddressingSize;
+    TEdit *Edit_Address;
+    TLabel *Label7;
     void __fastcall Button1Click(TObject * Sender);
     void __fastcall CheckBox_ConnectingClick(TObject * Sender);
     void __fastcall CheckBox1Click(TObject * Sender);
     void __fastcall Edit_RChange(TObject * Sender);
     void __fastcall Edit_GChange(TObject * Sender);
     void __fastcall Edit_BChange(TObject * Sender);
+    void __fastcall Button_ReadClick(TObject * Sender);
+    void __fastcall Button_WriteClick(TObject * Sender);
   private:			// User declarations
     //bptr < cms::i2c::i2cControl > i2c;
      bptr < cms::i2c::TCONParameter > parameter;
      bptr < cms::i2c::TCONControl > control;
+    const cms::i2c::AddressingSize getAddressingSize();
+    void setOptionsEditable(bool editable);
   public:			// User declarations
      __fastcall TI2CTestForm(TComponent * Owner);
 
