@@ -27,6 +27,8 @@ namespace cms {
 	    virtual void setupComponent(const Dep::Channel & ch,
 					RGB_ptr rgb) = 0;
 	    virtual void enter() = 0;
+           virtual void beginAnalyze()=0;
+           virtual void endAnalyze()=0;
 	};
 
 	class CA210IntensityAnalyzer:public IntensityAnalyzerIF {
@@ -60,6 +62,8 @@ namespace cms {
 	    void setupComponent(const Dep::Channel & ch, RGB_ptr rgb);
 	    void enter();
 	    void setChannel(int no, string_ptr id);
+        void beginAnalyze();
+           void endAnalyze();
 	};
 
 	class StocktonComponentAnayzer:public CA210IntensityAnalyzer {
@@ -83,6 +87,8 @@ namespace cms {
 	    XYZ_ptr getCIEXYZ();
 	    void setupComponent(const Dep::Channel & ch, RGB_ptr rgb) = 0;
 	    void enter();
+    void beginAnalyze();
+           void endAnalyze();            
 	};
     };
 };

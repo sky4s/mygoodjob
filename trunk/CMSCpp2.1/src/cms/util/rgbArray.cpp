@@ -20,7 +20,7 @@ namespace cms {
 	using namespace boost;
 
 	//==================================================================
-        // RGBVector
+	// RGBVector
 	//==================================================================
 	string_ptr RGBVector::toString(RGB_vector_ptr rgbVector) {
 
@@ -149,25 +149,31 @@ namespace cms {
 		g(new double_vector()), b(new double_vector()),
 		w(new double_vector());
 	    excel->setTableName("Sheet1");
-	    bptr < DBQuery > query = excel->selectAll();
-	    while (query->hasNext()) {
-		string_vector_ptr result = query->nextResult();
-		w->push_back(_toDouble((*result)[1]));
-		r->push_back(_toDouble((*result)[2]));
-		g->push_back(_toDouble((*result)[3]));
-		b->push_back(_toDouble((*result)[4]));
+	    try {
+		bptr < DBQuery > query = excel->selectAll();
+		while (query->hasNext()) {
+		    string_vector_ptr result = query->nextResult();
+		    w->push_back(_toDouble((*result)[1]));
+		    r->push_back(_toDouble((*result)[2]));
+		    g->push_back(_toDouble((*result)[3]));
+		    b->push_back(_toDouble((*result)[4]));
 
-	    };
-	    //==============================================================
-	    // 反轉處理
-	    //==============================================================
-	    w.reset(new double_vector(w->rbegin(), w->rend()));
-	    r.reset(new double_vector(r->rbegin(), r->rend()));
-	    g.reset(new double_vector(g->rbegin(), g->rend()));
-	    b.reset(new double_vector(b->rbegin(), b->rend()));
-	    //==============================================================
-	    RGBGamma_ptr rgbgamma(new RGBGamma(r, g, b, w));
-	    return rgbgamma;
+		};
+		//==============================================================
+		// 反轉處理
+		//==============================================================
+		w.reset(new double_vector(w->rbegin(), w->rend()));
+		r.reset(new double_vector(r->rbegin(), r->rend()));
+		g.reset(new double_vector(g->rbegin(), g->rend()));
+		b.reset(new double_vector(b->rbegin(), b->rend()));
+		//==============================================================
+		RGBGamma_ptr rgbgamma(new RGBGamma(r, g, b, w));
+		return rgbgamma;
+	    }
+	    catch(EOleException & ex) {
+		//ShowMessage("Desired Gamma File Format is wrong!");
+		return RGBGamma_ptr((RGBGamma*)null);
+	    }
 	};
 
 	RGBGamma_ptr RGBGamma::clone() {
@@ -189,5 +195,5 @@ namespace cms {
 	//==================================================================
 
     };
-}
+};
 

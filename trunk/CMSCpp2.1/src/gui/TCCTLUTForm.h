@@ -78,12 +78,12 @@ class TCCTLUTForm:public TForm {
     void __fastcall Button_ResetClick(TObject * Sender);
     void __fastcall RadioButton_Out6Click(TObject * Sender);
     void __fastcall RadioButton_Out8Click(TObject * Sender);
-    void __fastcall Button_LoadGammaCurveClick(TObject * Sender);
     void __fastcall CheckBox_Gamma256Click(TObject * Sender);
     void __fastcall RadioButton_Out10Click(TObject * Sender);
     void __fastcall FormShow(TObject * Sender);
     void __fastcall RadioButton_Lut12Click(TObject * Sender);
     void __fastcall RadioButton_Lut10Click(TObject * Sender);
+    void __fastcall RadioButton_GammaCurveClick(TObject * Sender);
   private:			// User declarations
     void setBitDepthEnable(bool lut10, bool lut12, bool out6, bool out8,
 			   bool out10);
@@ -92,6 +92,7 @@ class TCCTLUTForm:public TForm {
     int serialid;
      bptr < cms::lcd::calibrate::BitDepthProcessor > bitDepth;
     int in, lut, out;
+    RGBGamma_ptr rgbGamma;
 
 
   public:			// User declarations

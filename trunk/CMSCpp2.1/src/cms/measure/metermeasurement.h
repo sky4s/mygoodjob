@@ -72,7 +72,10 @@ namespace cms {
 	     bptr < cms::measure::cp::MeasureInterface >
 		getMeasureInterface();
 	     bptr < cms::measure::meter::Meter > getMeter();
-
+             void setTCONControl(bptr < cms::i2c::TCONControl > tconcontrl);
+             void setTCONControlOff();
+             //void startTCONMeasure();
+             //void endTCONMeasure();
 
 	  protected:
 	    void meterClose();

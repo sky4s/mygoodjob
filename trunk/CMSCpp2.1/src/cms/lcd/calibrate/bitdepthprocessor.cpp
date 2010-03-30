@@ -102,7 +102,7 @@ namespace cms {
 		case b8_6:
 		    return 1;
 		case b6_6:
-		    return 3;
+		    return 4;
 		}
 	    };
 	    int BitDepthProcessor::getMeasureLevel() {

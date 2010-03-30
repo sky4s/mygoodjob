@@ -26,7 +26,7 @@ void __fastcall TCCTLUTForm::Button_BrowseDirClick(TObject * Sender)
     AnsiString Dir = this->Edit_Directory->Text;
     //AnsiString Dir = "C:\\Program Files\\";
     SelectDirectory("選擇目錄", "", Dir);
-    this->Edit_Directory->Text = Dir;
+    this->Edit_Directory->Text = Dir + "\\";
 }
 
 //---------------------------------------------------------------------------
@@ -183,8 +183,9 @@ void __fastcall TCCTLUTForm::Button_RunClick(TObject * Sender)
     if (this->RadioButton_Gamma->Checked) {
 	double gamma = this->ComboBox_Gamma->Text.ToDouble();
 	calibrator.setGamma(gamma);
-    } else {
-
+    } else if (this->RadioButton_GammaCurve->Checked) {
+	double_vector_ptr gammaCurve = rgbGamma->w;
+	calibrator.setGammaCurve(gammaCurve);
     }
     calibrator.setGByPass(this->CheckBox_GByPass->Checked);
     //==========================================================================
@@ -236,7 +237,7 @@ void __fastcall TCCTLUTForm::Button_RunClick(TObject * Sender)
 	calibrator.storeDGLut(filename, dglut);
 	ShowMessage("Ok!");
     }
-    catch(java::lang::IllegalStateException ex) {
+    catch(java::lang::IllegalStateException & ex) {
 	ShowMessage(ex.toString().c_str());
     }
 
@@ -251,10 +252,15 @@ void __fastcall TCCTLUTForm::FormCreate(TObject * Sender)
 {
     using namespace cms::lcd::calibrate;
 
+    //==========================================================================
+    // debug模式的設定
+    //==========================================================================
     bool debug = !MainForm->linkCA210;
     this->Button_Debug->Visible = debug;
     this->Button_Reset->Visible = debug;
     this->RadioButton_None->Visible = debug;
+    //this->CheckBox_Gamma256->Visible = debug;
+    //==========================================================================
 
     //bool tconInput = MainForm->RadioButton_TCON->Checked;
     bitDepth.reset(new BitDepthProcessor(in, lut, out, false, false));
@@ -268,6 +274,7 @@ void __fastcall TCCTLUTForm::FormCreate(TObject * Sender)
 void __fastcall TCCTLUTForm::Button_DebugClick(TObject * Sender)
 {
     using namespace std;
+    OpenDialog1->Filter = "DGCode Files(*.xls)|*.xls";
     if (OpenDialog1->Execute()) {
 	const AnsiString & filename = OpenDialog1->FileName;
 	MainForm->setDummyMeterFilename(string(filename.c_str()));
@@ -302,12 +309,6 @@ void __fastcall TCCTLUTForm::RadioButton_Out8Click(TObject * Sender)
 
 //---------------------------------------------------------------------------
 
-void __fastcall TCCTLUTForm::Button_LoadGammaCurveClick(TObject * Sender)
-{
-    this->CheckBox_GByPass->Visible = true;
-}
-
-//---------------------------------------------------------------------------
 
 void __fastcall TCCTLUTForm::CheckBox_Gamma256Click(TObject * Sender)
 {
@@ -350,6 +351,30 @@ void __fastcall TCCTLUTForm::RadioButton_Lut12Click(TObject * Sender)
 void __fastcall TCCTLUTForm::RadioButton_Lut10Click(TObject * Sender)
 {
     bitDepth->setLUTBit(10);
+}
+
+//---------------------------------------------------------------------------
+
+void __fastcall TCCTLUTForm::RadioButton_GammaCurveClick(TObject * Sender)
+{
+    using namespace cms::util;
+    OpenDialog1->Filter = "Desired Gamma Files(*.xls)|*.xls";
+    if (OpenDialog1->Execute()) {
+	const AnsiString & filename = OpenDialog1->FileName;
+	rgbGamma = RGBGamma::loadFromDesiredGamma(filename.c_str());
+	//int effectiven = bitDepth->getEffectiveLevel();
+	int n = bitDepth->getLevel();
+	if (rgbGamma != null && rgbGamma->w->size() == n) {
+	    this->RadioButton_GammaCurve->Checked = true;
+	    bool gByPassEnable = this->bitDepth->is8in6Out()
+		|| this->bitDepth->is6in6Out();
+	    this->CheckBox_GByPass->Visible = gByPassEnable;
+	    return;
+	} else {
+	    ShowMessage("Desired Gamma File Format is wrong!");
+	}
+    }
+    this->RadioButton_Gamma->Checked = true;
 }
 
 //---------------------------------------------------------------------------

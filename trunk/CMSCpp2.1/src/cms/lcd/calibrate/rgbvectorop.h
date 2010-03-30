@@ -82,10 +82,12 @@ namespace cms {
 	    };
 
 	    class KeepMaxLuminanceOp:public DGLutOp {
-
+	      private:
+		bptr < BitDepthProcessor > bitDepth;
 	      protected:
 		RGB_vector_ptr getRendering(RGB_vector_ptr source);
-
+	      public:
+		KeepMaxLuminanceOp(bptr < BitDepthProcessor > bitDepth);
 
 	    };
 	};

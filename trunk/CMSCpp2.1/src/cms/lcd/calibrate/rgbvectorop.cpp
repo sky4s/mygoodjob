@@ -120,7 +120,7 @@ namespace cms {
 		int n = bitDepth->getLevel() - 1;
 		int effectiven = (bitDepth->getEffectiveLevel() - 1);
 		//STORE_RGBVECTOR("0.xls", result);
-                
+
 		for (int x = n; x >= effectiven; x--) {
 		    RGB_ptr rgb = (*result)[x];
 		    rgb->B = bitDepth->getMaxDigitalCount();
@@ -239,10 +239,17 @@ namespace cms {
 	    //==================================================================
 	    RGB_vector_ptr KeepMaxLuminanceOp::
 		getRendering(RGB_vector_ptr source) {
-		/* TODO : KeepMaxLuminanceOp */
+		/* TODO : KeepMaxLuminanceOpÅçÃÒ */
 		int size = source->size();
 		RGB_vector_ptr result = RGBVector::clone(source);
+		RGB_ptr white = (*result)[size - 1];
+		double max = bitDepth->getMaxDigitalCount();
+		white->setValues(max, max, max);
 		return result;
+	    };
+	  KeepMaxLuminanceOp::KeepMaxLuminanceOp(bptr < BitDepthProcessor > bitDepth):bitDepth(bitDepth)
+	    {
+
 	    };
 	    //==================================================================
 	};

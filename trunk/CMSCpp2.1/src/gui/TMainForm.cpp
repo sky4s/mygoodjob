@@ -79,6 +79,7 @@ void TMainForm::setDummyMeterFilename(const std::string & filename)
     using namespace cms::colorformat;
     bptr < DGLutFile > dgcode(new DGLutFile(filename));
     meter.reset(new DGLutFileMeter(dgcode));
+    //meter = bptr < Meter > (new DGLutFileMeter(dgcode));
     mm.reset(new MeterMeasurement(meter, false));
     mm->setFakeMeasure(true);
     analyzer.reset(new CA210IntensityAnalyzer(mm));
@@ -121,7 +122,7 @@ void __fastcall TMainForm::CCTLUT1Click(TObject * Sender)
 
 void __fastcall TMainForm::GammaAdj1Click(TObject * Sender)
 {
-    //MeasureWindow->ShowModal();
+    MeasureWindow->ShowModal();
     //MeasureWindow->Visible = true;
 }
 
@@ -195,11 +196,10 @@ void __fastcall TMainForm::Button_ConnectClick(TObject * Sender)
     }
 
     if (true == connect) {
-	//setOptionsEditable(false);
 
 	int gammaTestAddress =
 	    StrToInt("0x" + this->Edit_EnableAddress->Text);
-	int gammaTestBit = StrToInt(this->Edit_EnableBit->Text);
+	int gammaTestBit = StrToInt(this->Edit_EnableBit->Text)+1;
 	int testRGBAddress = StrToInt("0x" + this->Edit_LUTAddress->Text);
 	bool indepRGB = this->CheckBox_IndepRGB->Checked;
 	parameter.reset(new
@@ -210,7 +210,13 @@ void __fastcall TMainForm::Button_ConnectClick(TObject * Sender)
 	} else {
 	    control.reset(new TCONControl(parameter, i2c1st, i2c2nd));
 	}
-
+	this->Button_Connect->Enabled = false;
+	this->CheckBox_Connecting->Checked = true;
+	this->CheckBox_Connecting->Enabled = true;
+        this->mm->setTCONControl(control);
+    }
+    else {
+        this->mm->setTCONControlOff();
     }
 }
 
@@ -241,4 +247,22 @@ const cms::i2c::AddressingSize TMainForm::getAddressingSize()
 
     }
 }
+
+
+void __fastcall TMainForm::CheckBox_ConnectingClick(TObject * Sender)
+{
+    if (false == this->CheckBox_Connecting->Checked) {
+//this->CheckBox_Connecting->Checked=false;
+	this->Button_Connect->Enabled = true;
+	this->CheckBox_Connecting->Enabled = false;
+    }
+}
+
+//---------------------------------------------------------------------------
+
+void __fastcall TMainForm::Measurement1Click(TObject *Sender)
+{
+  MeasureWindow->ShowModal();
+}
+//---------------------------------------------------------------------------
 
