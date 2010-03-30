@@ -25,7 +25,18 @@ namespace cms {
 					    bool calibration):meter(meter),
 	    waitTimes(meter->getSuggestedWaitTimes()),
 	    measureWindowClosing(false), titleTouched(false),
-	    fakeMeasure(false) {
+	    fakeMeasure(false), tconinput(false) {
+	    measureWindow = MeasureWindow;
+	    if (true == calibration) {
+		calibrate();
+	    }
+	};
+
+      MeterMeasurement::MeterMeasurement(bptr < cms::measure::meter::Meter > meter, bptr < cms::i2c::TCONControl > tconcontrl, bool calibration):meter(meter),
+	    tconcontrl(tconcontrl),
+	    waitTimes(meter->getSuggestedWaitTimes()),
+	    measureWindowClosing(false), titleTouched(false),
+	    fakeMeasure(false), tconinput(true) {
 	    measureWindow = MeasureWindow;
 	    if (true == calibration) {
 		calibrate();
@@ -150,12 +161,27 @@ namespace cms {
 		   rgb.toString() + "   " +
 		   titleNote); */
 	    }
-
 	    //==========================================================================
 	    // 變換完視窗顏色的短暫停留
 	    //==========================================================================
 	    if (!fakeMeasure) {
-		measureWindow->setRGB(measureRGB);
+		if (tconinput) {
+		    const MaxValue & maxValue = measureRGB->getMaxValue();
+		    RGB_ptr testRGB = measureRGB->clone();
+		    if (maxValue == MaxValue::Int10Bit
+			|| maxValue == MaxValue::RealInt10Bit) {
+			testRGB->R *= 4;
+			testRGB->G *= 4;
+			testRGB->B *= 4;
+		    } else {
+			testRGB->R *= 16;
+			testRGB->G *= 16;
+			testRGB->B *= 16;
+		    }
+		    tconcontrl->setTestRGB(testRGB);
+		} else {
+		    measureWindow->setRGB(measureRGB);
+		}
 		Sleep(waitTimes);
 	    }
 	    //==========================================================================
@@ -166,20 +192,6 @@ namespace cms {
 	    }
 	    double_array result = meter->triggerMeasurementInXYZ();
 
-	    /*String measureString = getMeasureString(result);
-	       measureWindow.setNorthLabel3(measureString +
-	       (softCalibrate ?
-	       (" (" +
-	       DoubleArray.
-	       toString(unSoftCalXYZValues)
-	       + " )") : ""));
-	       if (informationProvider != null) {
-	       String info = informationProvider.getInformation();
-	       measureWindow.setSouthLabel(info);
-	       }
-	       if (timeNote != null) {
-	       measureWindow.setNorthLabel2(timeNote);
-	       } */
 	    XYZ_ptr XYZ(new Indep::CIEXYZ(result));
 	    Patch_ptr patch(new Patch(patchName, XYZ, XYZ, measureRGB));
 	    return patch;
@@ -191,10 +203,8 @@ namespace cms {
 	    meterCalibrate( /*measureWindow, */ meter,
 			   measureWindow);
 	};
-	void MeasureUtils::meterCalibrate(	/*Component parentComponent, */
-					     shared_ptr < Meter > meter,
-					     TMeasureWindow *
-					     measureWindow) {
+	void MeasureUtils::meterCalibrate(shared_ptr < Meter > meter,
+					  TMeasureWindow * measureWindow) {
 	    if (!meter->isConnected()) {
 		throw IllegalStateException("!meter.isConnected()");
 	    } else {

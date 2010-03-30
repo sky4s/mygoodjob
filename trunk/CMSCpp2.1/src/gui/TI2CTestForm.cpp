@@ -82,9 +82,14 @@ void __fastcall TI2CTestForm::Button1Click(TObject * Sender)
 					   _3_3V, _400KHz);
 	};
     } else {
-	i2c1st = i2cControl::getLPTInstance(first, addressingSize);
+
+	const LPTCard card =
+	    this->RadioButton_LPTLarge->Checked ? Large : Small;
+
+	i2c1st = i2cControl::getLPTInstance(first, addressingSize, card);
 	if (dual) {
-	    i2c2nd = i2cControl::getLPTInstance(second, addressingSize);
+	    i2c2nd =
+		i2cControl::getLPTInstance(second, addressingSize, card);
 	};
     };
     bool connect = i2c1st->connect();
@@ -94,13 +99,6 @@ void __fastcall TI2CTestForm::Button1Click(TObject * Sender)
     //connect = true;
     if (true == connect) {
 	setOptionsEditable(false);
-	/*this->CheckBox_Connecting->Checked = connect;
-	   this->CheckBox_Connecting->Enabled = true;
-	   this->Edit_GammaTestAddress->Enabled = false;
-	   this->Edit_GammaTestBit->Enabled = false;
-	   this->Edit_TestRGBAdress->Enabled = false;
-	   this->CheckBox_IndepRGB->Enabled = false; */
-
 
 	int gammaTestAddress =
 	    StrToInt("0x" + this->Edit_GammaTestAddress->Text);
@@ -208,4 +206,5 @@ void __fastcall TI2CTestForm::Button_WriteClick(TObject * Sender)
 }
 
 //---------------------------------------------------------------------------
+
 

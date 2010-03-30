@@ -63,7 +63,7 @@
       -c -tW -tWM"/>
     <PFLAGS value="-N2build -N0build -$YD -$W -$O- -$A8 -v -JPHNE -M"/>
     <RFLAGS value=""/>
-    <AFLAGS value="/mx /w2 /zd"/>
+    <AFLAGS value="/mx /w2 /zi"/>
     <LFLAGS value="-llib -Ibuild -D&quot;&quot; -aa -Tpe -x -Gn -v"/>
     <OTHERFILES value=""/>
   </OPTIONS>
@@ -129,6 +129,7 @@
       <FILE FILENAME="src\gui\TTargetWhiteForm2.cpp" FORMNAME="TargetWhiteForm2" UNITNAME="TTargetWhiteForm2" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="lib\hid.lib" FORMNAME="" UNITNAME="hid.lib" CONTAINERID="LibTool" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="src\gui\TI2CTestForm.cpp" FORMNAME="I2CTestForm" UNITNAME="TI2CTestForm" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="src\cms\i2c\core\PrintPortI2C.h" FORMNAME="" UNITNAME="PrintPortI2C.h" CONTAINERID="" DESIGNCLASS="" LOCALCOMMAND=""/>
   </FILELIST>
   <BUILDTOOLS>
   </BUILDTOOLS>

@@ -313,6 +313,9 @@ namespace cms {
 		//再轉回原本的domain
 		changeMaxValue(origin, integerRoundDown);
 	    };
+	    const MaxValue & RGBColor::getMaxValue() {
+		return *maxValue;
+	    };
 	    int RGBColor::getNumberBands() {
 		return RGBNumberBands;
 	    };

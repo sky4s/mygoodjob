@@ -24,7 +24,6 @@ class TMainForm:public TForm {
     TMenuItem *CCTLUT1;
     TMenuItem *GammaAdj1;
     TMenuItem *Measurement1;
-    TMenuItem *config1;
     TMenuItem *About1;
     TMenuItem *Exit1;
     TGroupBox *Resolution;
@@ -38,21 +37,29 @@ class TMainForm:public TForm {
     TRadioButton *RadioButton_TCON;
     TEdit *Edit_Width;
     TEdit *Edit_Height;
-        TGroupBox *GroupBox3;
-        TRadioButton *RadioButton_SingleTCON;
-        TRadioButton *RadioButton_DualTCON;
-        TEdit *Edit_DeviceAddress;
-        TEdit *Edit_MasterDeviceAddress;
-        TEdit *Edit_SlaveDeviceAddress;
-        TButton *Button_Connect;
-        TGroupBox *GroupBox4;
-        TGroupBox *GroupBox5;
-        TLabel *Label2;
-        TEdit *Edit_EnableAddress;
-        TLabel *Label3;
-        TEdit *Edit_EnableBit;
-        TLabel *Label4;
-        TEdit *Edit_LUTAddress;
+    TGroupBox *GroupBox_DeviceAddress;
+    TRadioButton *RadioButton_SingleTCON;
+    TRadioButton *RadioButton_DualTCON;
+    TEdit *Edit_DeviceAddress;
+    TEdit *Edit_MasterDeviceAddress;
+    TEdit *Edit_SlaveDeviceAddress;
+    TButton *Button_Connect;
+    TGroupBox *GroupBox_GammaTestAddress;
+    TGroupBox *GroupBox5;
+    TLabel *Label2;
+    TEdit *Edit_EnableAddress;
+    TLabel *Label3;
+    TEdit *Edit_EnableBit;
+    TLabel *Label4;
+    TEdit *Edit_LUTAddress;
+    TGroupBox *GroupBox_Card;
+    TRadioButton *RadioButton_USB;
+    TRadioButton *RadioButton_LPTLarge;
+    TRadioButton *RadioButton_LPTSmall;
+    TCheckBox *CheckBox_Connecting;
+    TLabel *Label5;
+    TComboBox *ComboBox_AddressingSize;
+    TCheckBox *CheckBox_IndepRGB;
     void __fastcall About1Click(TObject * Sender);
     void __fastcall Exit1Click(TObject * Sender);
     void __fastcall TargetWhite1Click(TObject * Sender);
@@ -61,6 +68,7 @@ class TMainForm:public TForm {
     void __fastcall GammaAdj1Click(TObject * Sender);
     void __fastcall RadioButton_TCONClick(TObject * Sender);
     void __fastcall RadioButton_PCClick(TObject * Sender);
+    void __fastcall Button_ConnectClick(TObject * Sender);
   private:			// User declarations
     //==========================================================================
     // meter
@@ -69,6 +77,9 @@ class TMainForm:public TForm {
      bptr < cms::measure::meter::Meter > meter;
      bptr < cms::measure::meter::CA210 > getCA210();
     //==========================================================================
+    const cms::i2c::AddressingSize getAddressingSize();
+     bptr < cms::i2c::TCONParameter > parameter;
+     bptr < cms::i2c::TCONControl > control;
   public:			// User declarations
     //==========================================================================
     // meter

@@ -31,18 +31,20 @@ namespace cms {
 		bptr < cms::measure::IntensityAnalyzerIF > analyzer;
 		//bptr < cms::measure::MeterMeasurement > mm;
 		bool stop;
-		bool tconInput;
-		bool real10Bit;
+		//bool tconInput;
+		//bool real10Bit;
+		 bptr < cms::lcd::calibrate::BitDepthProcessor > bitDepth;
 	      public:
 		 ComponentFetcher(bptr <
 				  cms::measure::IntensityAnalyzerIF >
-				  analyzer);
+				  analyzer,
+				  bptr < BitDepthProcessor > bitDepth);
 		Component_vector_ptr fetchComponent(int start, int end,
 						    int firstStep,
 						    int step);
 		void setStop(bool stop);
-		void setTCONInput(bool tconInput);
-		void setReal10Bit(bool real10bit);
+		/*void setTCONInput(bool tconInput);
+		   void setReal10Bit(bool real10Bit); */
 		static void storeToExcel(const std::string & filename,
 					 Component_vector_ptr
 					 componentVector);
