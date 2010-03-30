@@ -278,7 +278,7 @@ namespace cms {
 	    i2cio.USB_disconnect();
 	};
 	i2cUSBControl::~i2cUSBControl() {
-	    disconnect();
+	    //disconnect();
 	};
 	//======================================================================
     };

@@ -22,7 +22,6 @@ class TMainForm:public TForm {
     TMainMenu * MainMenu1;
     TMenuItem *TargetWhite1;
     TMenuItem *CCTLUT1;
-    TMenuItem *GammaAdj1;
     TMenuItem *Measurement1;
     TMenuItem *About1;
     TMenuItem *Exit1;
@@ -69,6 +68,8 @@ class TMainForm:public TForm {
     void __fastcall RadioButton_TCONClick(TObject * Sender);
     void __fastcall RadioButton_PCClick(TObject * Sender);
     void __fastcall Button_ConnectClick(TObject * Sender);
+    void __fastcall CheckBox_ConnectingClick(TObject * Sender);
+        void __fastcall Measurement1Click(TObject *Sender);
   private:			// User declarations
     //==========================================================================
     // meter

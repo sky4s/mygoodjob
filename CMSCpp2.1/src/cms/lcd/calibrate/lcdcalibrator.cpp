@@ -67,6 +67,7 @@ namespace cms {
 		bool tconInput = bitDepth->isTCONInput();
 		bool real10Bit = bitDepth->is10in10Out();
 
+                analyzer->beginAnalyze();
 		for (int x = start; x >= end; x -= measureStep) {
 		    if (x != start && true == first) {
 			first = false;
@@ -89,6 +90,7 @@ namespace cms {
 		    }
 
 		};
+                analyzer->endAnalyze();
 		return result;
 	    };
 	    void ComponentFetcher::setStop(bool stop) {
@@ -137,6 +139,8 @@ namespace cms {
 		double_vector_ptr rValues(new double_vector(size));
 		double_vector_ptr gValues(new double_vector(size));
 		double_vector_ptr bValues(new double_vector(size));
+		double_array values(new double[3]);
+
 
 		for (int x = 0; x != size; x++) {
 		    Component_ptr component = (*componentVector)[x];
@@ -148,7 +152,11 @@ namespace cms {
 		    (*input)[x][2] = intensity->B;
 		    (*output)[x][0] = Y;
 
-		    (*keys)[x] = component->rgb->getValue(Channel::W);
+		    RGB_ptr code = component->rgb;
+		    code->getValues(values, MaxValue::Double255);
+		    //(*keys)[x] = code->getValue(Channel::W);
+		    (*keys)[x] = values[0];
+
 		    (*rValues)[x] = intensity->R;
 		    (*gValues)[x] = intensity->G;
 		    (*bValues)[x] = intensity->B;
@@ -245,22 +253,23 @@ namespace cms {
 
 		int size = rIntensityCurve->size();
 		RGB_vector_ptr dglut(new RGB_vector(size));
-		double intensity[3];
+		//double intensity[3];
+		double rIntensity, gIntensity, bIntensity;
 		//將code 0強制設定為0
 		(*dglut)[0] = RGB_ptr(new RGBColor(0, 0, 0));
 
-		for (int x = 1; x != size; x++) {
-		    intensity[0] = (*rIntensityCurve)[x];
-		    intensity[1] = (*gIntensityCurve)[x];
-		    intensity[2] = (*bIntensityCurve)[x];
+		for (int x = size-1; x != 0; x--) {
+		    rIntensity = (*rIntensityCurve)[x];
+		    gIntensity = (*gIntensityCurve)[x];
+		    bIntensity = (*bIntensityCurve)[x];
 
-		    intensity[0] = rLut->correctValueInRange(intensity[0]);
-		    intensity[1] = gLut->correctValueInRange(intensity[1]);
-		    intensity[2] = bLut->correctValueInRange(intensity[2]);
+		    rIntensity = rLut->correctValueInRange(rIntensity);
+		    gIntensity = gLut->correctValueInRange(gIntensity);
+		    bIntensity = bLut->correctValueInRange(bIntensity);
 
-		    double r = rLut->getKey(intensity[0]);
-		    double g = gLut->getKey(intensity[1]);
-		    double b = bLut->getKey(intensity[2]);
+		    double r = rLut->getKey(rIntensity);
+		    double g = gLut->getKey(gIntensity);
+		    double b = bLut->getKey(bIntensity);
 
 		    RGB_ptr rgb(new RGBColor(r, g, b));
 		    (*dglut)[x] = rgb;
@@ -343,7 +352,8 @@ namespace cms {
 		int n = bitDepth->getLevel();
 		int effectiven = bitDepth->getEffectiveLevel();
 		int measureLevel = bitDepth->getMeasureLevel();
-		setGammaCurve(getGammaCurveVector(gamma, n, effectiven));
+		setGammaCurve0(getGammaCurveVector(gamma, n, effectiven));
+		useGammaCurve = false;
 	    };
 	    void LCDCalibrator::setGamma(double rgamma, double ggamma,
 					 double bgamma) {
@@ -352,23 +362,34 @@ namespace cms {
 		this->bgamma = bgamma;
 		int n = bitDepth->getLevel();
 		int effectiven = bitDepth->getEffectiveLevel();
-		setGammaCurve(getGammaCurveVector
-			      (rgamma, n, effectiven),
-			      getGammaCurveVector(ggamma, n,
-						  effectiven),
-			      getGammaCurveVector(bgamma, n, effectiven));
+		setGammaCurve0(getGammaCurveVector(rgamma, n, effectiven),
+			       getGammaCurveVector(ggamma, n, effectiven),
+			       getGammaCurveVector(bgamma, n, effectiven));
+		useGammaCurve = false;
+	    };
+	    void LCDCalibrator::
+		setGammaCurve0(double_vector_ptr gammaCurve) {
+		this->gammaCurve = gammaCurve;
+	    };
+	    void LCDCalibrator::
+		setGammaCurve0(double_vector_ptr rgammaCurve,
+			       double_vector_ptr ggammaCurve,
+			       double_vector_ptr bgammaCurve) {
+		this->rgammaCurve = rgammaCurve;
+		this->ggammaCurve = ggammaCurve;
+		this->bgammaCurve = bgammaCurve;
 	    };
 	    void LCDCalibrator::
 		setGammaCurve(double_vector_ptr gammaCurve) {
-		this->gammaCurve = gammaCurve;
+		setGammaCurve0(gammaCurve);
+		useGammaCurve = true;
 	    };
 	    void LCDCalibrator::
 		setGammaCurve(double_vector_ptr rgammaCurve,
 			      double_vector_ptr ggammaCurve,
 			      double_vector_ptr bgammaCurve) {
-		this->rgammaCurve = rgammaCurve;
-		this->ggammaCurve = ggammaCurve;
-		this->bgammaCurve = bgammaCurve;
+		setGammaCurve0(rgammaCurve, ggammaCurve, bgammaCurve);
+		useGammaCurve = true;
 	    };
 	    void LCDCalibrator::setGByPass(bool byPass) {
 		this->gByPass = byPass;
@@ -390,6 +411,7 @@ namespace cms {
 		bitDepth(bitDepth)
 	    {
 		rgbgamma = false;
+		useGammaCurve = false;
 		bIntensityGain = 1;
 		rbInterpUnder = 0;
 		p1 = p2 = 0;
@@ -466,6 +488,7 @@ namespace cms {
 		    //從目標gamma curve產生dg code, 此處是傳入normal gammaCurve
 		    dglut = generator->produce(rgbgamma);
 		    //量化
+		    STORE_RGBVECTOR("4.9_dgcode_p1p2g.xls", dglut);
 		    RGBVector::quantization(dglut, quantizationBit);
 		    STORE_RGBVECTOR("5_dgcode_p1p2g.xls", dglut);
 		    //==========================================================
@@ -567,7 +590,8 @@ namespace cms {
 		   } */
 		if (keepMaxLuminance) {
 		    //keep最大亮度
-		    bptr < DGLutOp > KeepMax(new KeepMaxLuminanceOp());
+		    bptr < DGLutOp >
+			KeepMax(new KeepMaxLuminanceOp(bitDepth));
 		    dgop.addOp(KeepMax);
 		}
 		RGB_vector_ptr result = dgop.createInstance();

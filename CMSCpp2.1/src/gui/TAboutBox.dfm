@@ -3,8 +3,8 @@ object AboutBox: TAboutBox
   Top = 289
   BorderStyle = bsDialog
   Caption = 'About'
-  ClientHeight = 262
-  ClientWidth = 367
+  ClientHeight = 265
+  ClientWidth = 444
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -18,8 +18,8 @@ object AboutBox: TAboutBox
   object Panel1: TPanel
     Left = 10
     Top = 10
-    Width = 346
-    Height = 198
+    Width = 423
+    Height = 247
     BevelInner = bvRaised
     BevelOuter = bvLowered
     ParentColor = True
@@ -343,40 +343,44 @@ object AboutBox: TAboutBox
     object ProductName: TLabel
       Left = 108
       Top = 20
-      Width = 86
+      Width = 113
       Height = 16
-      Caption = 'Product Name'
+      Caption = 'CCT Adjustment v3'
       IsControl = True
     end
     object Version: TLabel
       Left = 108
       Top = 49
-      Width = 46
+      Width = 66
       Height = 16
-      Caption = 'Version'
+      Caption = 'Version 3.2'
       IsControl = True
     end
     object Copyright: TLabel
       Left = 10
       Top = 98
-      Width = 57
+      Width = 349
       Height = 16
-      Caption = 'Copyright'
+      Caption = 'Copyright (C) 2010, AU Optronics Corp., All Right Reserved.'
       IsControl = True
     end
     object Comments: TLabel
       Left = 10
       Top = 128
-      Width = 64
-      Height = 16
-      Caption = 'Comments'
+      Width = 407
+      Height = 105
+      Caption = 
+        'Warning: this computer program is protected by copyright law and' +
+        ' international treaties. Unauthorized reproduction or distributi' +
+        'on of this program, or any portion of it, may result in severe c' +
+        'ivil and criminal penalties, and will be prosecuted to the maxi'
       WordWrap = True
       IsControl = True
     end
   end
   object OKButton: TButton
-    Left = 137
-    Top = 222
+    Left = 177
+    Top = 214
     Width = 92
     Height = 30
     Caption = 'OK'

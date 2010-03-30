@@ -214,7 +214,7 @@ namespace cms {
 	    string_vector_ptr fieldNames(new string_vector());
 	    fieldNames->push_back(fieldName);
 	    string_vector_ptr values(new string_vector());
-	    values->push_back(_toString (value));
+	    values->push_back(_toString(value));
 
 	    update0(keyField, keyValue, fieldNames, values, false);
 	};
@@ -258,13 +258,11 @@ namespace cms {
 
 	string_vector_ptr ExcelFileDB::select(const std::string & keyField,
 					      const int keyValue) {
-	    return select0(keyField, _toString(keyValue),
-			   false);
+	    return select0(keyField, _toString(keyValue), false);
 	};
 
 	string_vector_ptr ExcelFileDB::select(const int keyValue) {
-	    return select0(getKeyField(),
-			   _toString (keyValue), false);
+	    return select0(getKeyField(), _toString(keyValue), false);
 	};
 	string_vector_ptr ExcelFileDB::select(const std::string & keyField,
 					      const std::
@@ -276,10 +274,10 @@ namespace cms {
 	};
 
 	bptr < DBQuery > ExcelFileDB::selectAll() {
-	    string select = "SELECT * FROM [" + getTableName() + "$]";
- 	    bptr < TADODataSet > dataSet = selectDataSet(select);
-	    bptr < DBQuery > query(new DBQuery(dataSet));
-	    return query;
+		string select = "SELECT * FROM [" + getTableName() + "$]";
+		bptr < TADODataSet > dataSet = selectDataSet(select);
+		bptr < DBQuery > query(new DBQuery(dataSet));
+		return query;
 	};
 
 	void ExcelFileDB::close() {
@@ -304,19 +302,6 @@ namespace cms {
 		execute(cachesql);
 		cachesql.clear();
 	    }
-	    /*
-	       String   strSQL;  
-	       strSQL   =   "";  
-	       for   (   int   i   =   0;   i   <   1500;   ++i   )  
-	       {  
-	       strSQL   =   strSQL   +   "insert   into   test   valuse   ("   +   IntToStr(i)   +   ")";  
-	       }  
-	       ADOQuery1->Close();  
-	       ADOQuery1->SQL->Clear();  
-	       ADOQuery1->SQL->Add(strSQL);  
-	       ADOQuery1->Execute();  
-	       ADOQuery1->Close();
-	     */
 	};
 	//======================================================================
 

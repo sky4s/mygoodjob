@@ -61,7 +61,7 @@
       -I$(BCB)\include\vcl -Ilib -src_suffix cpp -D_DEBUG -boa"/>
     <CFLAG1 value="-Od -H=$(BCB)\lib\vcl60.csm -Hc -Vx -Ve -X- -r- -a1 -6 -b- -k -y -v -vi- 
       -c -tW -tWM"/>
-    <PFLAGS value="-N2build -N0build -$YD -$W -$O- -$A8 -v -JPHNE -M"/>
+    <PFLAGS value="-N2build -N0build -$Y+ -$W -$O- -$A8 -v -JPHNE -M"/>
     <RFLAGS value=""/>
     <AFLAGS value="/mx /w2 /zi"/>
     <LFLAGS value="-llib -Ibuild -D&quot;&quot; -aa -Tpe -x -Gn -v"/>
@@ -136,31 +136,32 @@
 
   <IDEOPTIONS>
 [Version Info]
-IncludeVerInfo=0
-AutoIncBuild=0
-MajorVer=1
-MinorVer=0
+IncludeVerInfo=1
+AutoIncBuild=1
+MajorVer=3
+MinorVer=2
 Release=0
-Build=0
+Build=7
 Debug=0
 PreRelease=0
 Special=0
-Private=0
+Private=1
 DLL=0
 Locale=1028
 CodePage=950
 
 [Version Info Keys]
-CompanyName=
-FileDescription=
-FileVersion=1.0.0.0
+CompanyName=AUO
+FileDescription=CCT Adjustment v3
+FileVersion=3.2.0.7
 InternalName=
-LegalCopyright=
+LegalCopyright=Algorithm by StocktonTsai &amp; skyforce, Implement by skyforce
 LegalTrademarks=
 OriginalFilename=
-ProductName=
-ProductVersion=1.0.0.0
+ProductName=CCT Adjustment v3
+ProductVersion=3.2
 Comments=
+PrivateBuild=
 
 [HistoryLists\hlIncludePath]
 Count=7

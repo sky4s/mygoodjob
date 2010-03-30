@@ -510,9 +510,11 @@ namespace cms {
 	    dgcode.addProperty(End, c.end);
 	    dgcode.addProperty(Step, c.step);
 	    dgcode.addProperty(DimCorrect,
-			       (c.correct == 1) ? "P1P2" :
 			       (c.correct ==
-				2) ? "RBInterpolation" : "None");
+				cms::lcd::calibrate::P1P2) ? "P1P2" :
+			       (c.correct ==
+				cms::lcd::calibrate::RBInterpolation)
+			       ? "RBInterpolation" : "None");
 	    dgcode.addProperty(P1, c.p1);
 	    dgcode.addProperty(P2, c.p2);
 	    dgcode.addProperty(RBUnder, c.rbInterpUnder);
@@ -527,6 +529,7 @@ namespace cms {
 			       *bitDepth->getFRCMaxValue().toString());
 
 	    dgcode.addProperty(Gamma, c.gamma);
+	    dgcode.addProperty(GammaCurve, c.useGammaCurve ? On : Off);
 	    dgcode.addProperty(GByPass, c.gByPass ? On : Off);
 	    dgcode.addProperty(BGain, c.bIntensityGain);
 	    dgcode.addProperty(BMax, c.bMax ? On : Off);

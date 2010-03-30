@@ -19,7 +19,7 @@ namespace cms {
 	  private:
 	    bptr < ExcelFileDB > db;
 	    const Mode mode;
-	     //map < const std::string, string_vector_ptr) fieldNameMap;
+	    //map < const std::string, string_vector_ptr) fieldNameMap;
 	    void setSheet(bool create, const std::string & sheetname,
 			  string_vector_ptr fieldNames);
 	  public:

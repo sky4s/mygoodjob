@@ -117,6 +117,7 @@ namespace cms {
 		bool avoidFRCNoise;
 		bool rgbgamma;
 		double gamma, rgamma, ggamma, bgamma;
+		bool useGammaCurve;
 		double_vector_ptr gammaCurve;
 		double_vector_ptr rgammaCurve;
 		double_vector_ptr ggammaCurve;
@@ -133,6 +134,10 @@ namespace cms {
 		int start, end, firstStep, step;
 		void set(int start, int end, int firstStep, int step);
 		 bptr < BitDepthProcessor > bitDepth;
+		void setGammaCurve0(double_vector_ptr gammaCurve);
+		void setGammaCurve0(double_vector_ptr rgammaCurve,
+				    double_vector_ptr ggammaCurve,
+				    double_vector_ptr bgammaCurve);
 	      public:
 		static double_vector_ptr getGammaCurveVector
 		    (double gamma, int n, int effectiven);

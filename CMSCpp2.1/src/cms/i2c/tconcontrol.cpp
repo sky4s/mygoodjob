@@ -29,7 +29,7 @@ namespace cms {
 	};
 	void TCONControl::setTestRGB(RGB_ptr rgb) {
 	    double_array rgbValues(new double[3]);
-	    rgb->getValues(rgbValues, Dep::MaxValue::Int12Bit);
+	    rgb->getValues(rgbValues/*, Dep::MaxValue::Int12Bit*/);
 	    int r = _toInt(rgbValues[0]);
 	    int g = _toInt(rgbValues[1]);
 	    int b = _toInt(rgbValues[2]);

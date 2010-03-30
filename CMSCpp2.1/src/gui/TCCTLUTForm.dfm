@@ -90,6 +90,7 @@ object CCTLUTForm: TCCTLUTForm
       Height = 25
       Caption = 'Gamma Curve'
       TabOrder = 0
+      OnClick = RadioButton_GammaCurveClick
     end
     object Button_LoadGammaCurve: TButton
       Left = 120
@@ -98,7 +99,7 @@ object CCTLUTForm: TCCTLUTForm
       Height = 25
       Caption = 'Load'
       TabOrder = 1
-      OnClick = Button_LoadGammaCurveClick
+      Visible = False
     end
     object CheckBox_GByPass: TCheckBox
       Left = 8
@@ -463,11 +464,11 @@ object CCTLUTForm: TCCTLUTForm
     OnClick = Button_DebugClick
   end
   object Button_Reset: TButton
-    Left = 616
+    Left = 592
     Top = 296
-    Width = 17
+    Width = 41
     Height = 17
-    Caption = 'R'
+    Caption = 'reset'
     TabOrder = 8
     Visible = False
     OnClick = Button_ResetClick

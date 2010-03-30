@@ -88,7 +88,7 @@ void __fastcall TTargetWhiteForm2::Edit_CTChange(TObject * Sender)
 	double_array uvpValues = xyY->getuvPrimeValues();
 	setColorimetricValues(xyY->x, xyY->y, uvpValues[0], uvpValues[1]);
     }
-    catch(IllegalArgumentException ex) {
+    catch(IllegalArgumentException & ex) {
 	setColorimetricValues(-1, -1, -1, -1);
     }
 }
