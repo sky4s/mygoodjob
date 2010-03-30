@@ -38,12 +38,17 @@ namespace cms {
 	    bool measureWindowClosing;
 	    bool titleTouched;
 	    bool fakeMeasure;
+	    bool tconinput;
 	     bptr < cms::measure::meter::DGLutFileMeter > dgc;
+	     bptr < cms::i2c::TCONControl > tconcontrl;
 	  protected:
 	     bptr < cms::measure::meter::Meter > meter;
 	    TMeasureWindow *measureWindow;
 	  public:
 	     MeterMeasurement(bptr < cms::measure::meter::Meter > meter,
+			      bool calibration);
+	     MeterMeasurement(bptr < cms::measure::meter::Meter > meter,
+			      bptr < cms::i2c::TCONControl > tconcontrl,
 			      bool calibration);
 
 	    void calibrate();

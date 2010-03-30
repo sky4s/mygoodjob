@@ -9,7 +9,7 @@
 //其他庫頭文件
 
 //本項目內頭文件
-
+#include <cms/i2c/core/PrintPortI2C.h>
 
 namespace cms {
     namespace i2c {
@@ -45,51 +45,54 @@ namespace cms {
 	// i2cControl
 	//======================================================================
 	RW_Func i2cControl::i2cio;
-              int i2cControl::getDataAddressLength(const AddressingSize size) {
-                switch(size) {
-                 case _2k:
-                 case _4k:
-                 case _8k:
-                 case _16k:
-                 return 1;
-                 default:
-                 return 2;
-                }
-            };
-                        const unsigned char  i2cControl::getRealDeviceAddress() {
-    /*int itemIndex = cbo_mem_addr_size->ItemIndex;
-    //從記憶體的大小決定dev_ad_new要怎麼設定, dev_ad => dev_ad_new
-    if (itemIndex == 1) {
-	*dev_ad_new = (dev_ad & 0xFC) + (data_ad[1] & 0x01);
-    } else if (itemIndex == 2) {
-	*dev_ad_new = (dev_ad & 0xF8) + (data_ad[1] & 0x03);
-    } else if (itemIndex == 3) {
-	*dev_ad_new = (dev_ad & 0xF0) + (data_ad[1] & 0x07);
-    } else {
-	*dev_ad_new = dev_ad;
-    }*/
-                          switch(size) {
-                           case _4k: //1
-                           return (deviceAddress & 0xFC) + (dataAddressByteArray[1] & 0x01);
-                           case _8k: //2
-                           return (deviceAddress & 0xF8) + (dataAddressByteArray[1] & 0x03);
-                           case _16k: //3
-                           return (deviceAddress & 0xF0) + (dataAddressByteArray[1] & 0x07);
-                           default:
-                                return deviceAddress;
-                          }
+	int i2cControl::getDataAddressLength(const AddressingSize size) {
+	    switch (size) {
+	    case _2k:
+	    case _4k:
+	    case _8k:
+	    case _16k:
+		return 1;
+	    default:
+		return 2;
+	    }
+	};
+	const unsigned char i2cControl::getRealDeviceAddress() {
+	    /*int itemIndex = cbo_mem_addr_size->ItemIndex;
+	       //從記憶體的大小決定dev_ad_new要怎麼設定, dev_ad => dev_ad_new
+	       if (itemIndex == 1) {
+	       *dev_ad_new = (dev_ad & 0xFC) + (data_ad[1] & 0x01);
+	       } else if (itemIndex == 2) {
+	       *dev_ad_new = (dev_ad & 0xF8) + (data_ad[1] & 0x03);
+	       } else if (itemIndex == 3) {
+	       *dev_ad_new = (dev_ad & 0xF0) + (data_ad[1] & 0x07);
+	       } else {
+	       *dev_ad_new = dev_ad;
+	       } */
+	    switch (size) {
+	    case _4k:		//1
+		return (deviceAddress & 0xFC) +
+		    (dataAddressByteArray[1] & 0x01);
+	    case _8k:		//2
+		return (deviceAddress & 0xF8) +
+		    (dataAddressByteArray[1] & 0x03);
+	    case _16k:		//3
+		return (deviceAddress & 0xF0) +
+		    (dataAddressByteArray[1] & 0x07);
+	    default:
+		return deviceAddress;
+	    }
 
-                        };
+	};
 
-	     i2cControl::i2cControl(const unsigned char deviceAddress,
-		 const AddressingSize size):deviceAddress
-	    (deviceAddress), dataAddressLength(getDataAddressLength(size)),size(size) {
-               	    if (dataAddressLength != 1 && dataAddressLength != 2) {
+      i2cControl::i2cControl(const unsigned char deviceAddress, const AddressingSize size):deviceAddress
+	    (deviceAddress), dataAddressLength(getDataAddressLength(size)),
+	    size(size) {
+	    if (dataAddressLength != 1 && dataAddressLength != 2) {
 		throw
 		    IllegalArgumentException
 		    ("dataAddressLength != 1 && dataAddressLength != 2");
 	    }
-                 };
+	};
 	/*void i2cControl::initDataAddress(int dataAddress) {
 	   dataAddressLength = dataAddress > 255 ? 2 : 1;
 	   dataAddressByteArray[0] = dataAddress & 255;
@@ -98,18 +101,18 @@ namespace cms {
 	   }
 	   }; */
 	/*void i2cControl::setDataAddressByteArray(int dataAddress) {
+	   dataAddressByteArray[0] = dataAddress & 255;
+	   if (dataAddressLength == 2) {
+	   dataAddressByteArray[1] = dataAddress >> 8 & 255;
+	   }
+	   }; */
+	unsigned char *i2cControl::getDataAddressByteArray(int dataAddress) {
 	    dataAddressByteArray[0] = dataAddress & 255;
 	    if (dataAddressLength == 2) {
 		dataAddressByteArray[1] = dataAddress >> 8 & 255;
 	    }
-	};*/
-            unsigned char  * i2cControl::getDataAddressByteArray(int dataAddress) {
-	    dataAddressByteArray[0] = dataAddress & 255;
-	    if (dataAddressLength == 2) {
-		dataAddressByteArray[1] = dataAddress >> 8 & 255;
-	    }
-            return dataAddressByteArray;
-            };
+	    return dataAddressByteArray;
+	};
 	/*
 	   int LPT_Write(unsigned char dev_addr, unsigned char *data_addr,
 	   int data_addr_cnt, unsigned char *data_write,
@@ -120,15 +123,17 @@ namespace cms {
 	   int data_len);
 	 */
 	void i2cControl::write(int dataAddress, bptr < ByteBuffer > data) {
-	unsigned char*  dataAddressByteArray=  getDataAddressByteArray(dataAddress);
-             const unsigned char  realDeviceAddress= getRealDeviceAddress();
+	    unsigned char *dataAddressByteArray =
+		getDataAddressByteArray(dataAddress);
+	    const unsigned char realDeviceAddress = getRealDeviceAddress();
 	    int dataLength = data->getSize();
 	    write0(realDeviceAddress, dataAddressByteArray,
 		   dataAddressLength - 1, data->buffer, dataLength);
 	};
 	void i2cControl::writeByte(int dataAddress, unsigned char data) {
-	    	unsigned char*  dataAddressByteArray=  getDataAddressByteArray(dataAddress);
-                         const unsigned char  realDeviceAddress= getRealDeviceAddress();
+	    unsigned char *dataAddressByteArray =
+		getDataAddressByteArray(dataAddress);
+	    const unsigned char realDeviceAddress = getRealDeviceAddress();
 	    bptr < ByteBuffer > byteBuffer(new ByteBuffer(1));
 	    (*byteBuffer)[0] = data;
 	    write0(realDeviceAddress, dataAddressByteArray,
@@ -137,8 +142,9 @@ namespace cms {
 	bptr < ByteBuffer > i2cControl::read(int dataAddress,
 					     int dataLength) {
 	    bptr < ByteBuffer > data(new ByteBuffer(dataLength));
-	    	unsigned char*  dataAddressByteArray=  getDataAddressByteArray(dataAddress);
-            const unsigned char  realDeviceAddress= getRealDeviceAddress();
+	    unsigned char *dataAddressByteArray =
+		getDataAddressByteArray(dataAddress);
+	    const unsigned char realDeviceAddress = getRealDeviceAddress();
 	    read0(realDeviceAddress, dataAddressByteArray,
 		  dataAddressLength - 1, data->buffer, dataLength);
 	    return data;
@@ -150,18 +156,17 @@ namespace cms {
 
 	bptr < i2cControl >
 	    i2cControl::getLPTInstance(const unsigned char deviceAddress,
-				       const AddressingSize size) {
+				       const AddressingSize size,
+				       const LPTCard card) {
 	    return bptr < i2cControl >
-		(new i2cLPTControl(deviceAddress, size));
+		(new i2cLPTControl(deviceAddress, size, card));
 	};
 	bptr < i2cControl >
 	    i2cControl::getUSBInstance(const unsigned char deviceAddress,
-				        const AddressingSize size,
+				       const AddressingSize size,
 				       USBPower power, USBSpeed speed) {
 	    return bptr < i2cControl >
-		(new
-		 i2cUSBControl(deviceAddress, size, power,
-			       speed));
+		(new i2cUSBControl(deviceAddress, size, power, speed));
 	};
 	//======================================================================
 
@@ -211,8 +216,19 @@ namespace cms {
 	};
 	i2cLPTControl::i2cLPTControl(const unsigned char
 				     deviceAddress,
-				      const AddressingSize size):i2cControl
-	    (deviceAddress, size) {
+				     const AddressingSize size,
+				     const LPTCard
+				     card):i2cControl(deviceAddress,
+						      size) {
+	    switch (card) {
+	    case Large:
+		SetCardLarge();
+		break;
+	    case Small:
+		SetCardSmall();
+		break;
+	    }
+
 	    int result = i2cio.LPT_connect();
 	    using namespace java::lang;
 	    switch (result) {
@@ -236,18 +252,18 @@ namespace cms {
 				   int data_addr_cnt,
 				   unsigned char *data_write,
 				   int data_len) {
-	    i2cio.USB_write(dev_addr, data_addr, data_addr_cnt, data_write,
-			    data_len);
+	    i2cio.USB_write(dev_addr, data_addr, data_addr_cnt,
+			    data_write, data_len);
 	};
 	void i2cUSBControl::read0(unsigned char dev_addr,
 				  unsigned char *data_addr,
 				  int data_addr_cnt,
 				  unsigned char *data_read, int data_cnt) {
-	    i2cio.USB_read(dev_addr, data_addr, data_addr_cnt, data_read,
-			   data_cnt);
+	    i2cio.USB_read(dev_addr, data_addr, data_addr_cnt,
+			   data_read, data_cnt);
 	};
 	i2cUSBControl::i2cUSBControl(const unsigned char deviceAddress,
-				      const AddressingSize size,
+				     const AddressingSize size,
 				     USBPower power,
 				     USBSpeed
 				     speed):i2cControl(deviceAddress,

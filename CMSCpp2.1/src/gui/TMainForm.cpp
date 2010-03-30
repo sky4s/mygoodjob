@@ -131,6 +131,11 @@ void __fastcall TMainForm::GammaAdj1Click(TObject * Sender)
 void __fastcall TMainForm::RadioButton_TCONClick(TObject * Sender)
 {
     CCTLUTForm->setTCONInput(true);
+    this->GroupBox_Card->Enabled = true;
+    this->GroupBox_DeviceAddress->Enabled = true;
+    this->GroupBox_GammaTestAddress->Enabled = true;
+    ShowMessage
+	("Please Turn On DG and FRC for Measurement when T-CON Input Source is selected!!!");
 }
 
 //---------------------------------------------------------------------------
@@ -138,7 +143,102 @@ void __fastcall TMainForm::RadioButton_TCONClick(TObject * Sender)
 void __fastcall TMainForm::RadioButton_PCClick(TObject * Sender)
 {
     CCTLUTForm->setTCONInput(false);
+    this->GroupBox_Card->Enabled = false;
+    this->GroupBox_DeviceAddress->Enabled = false;
+    this->GroupBox_GammaTestAddress->Enabled = false;
 }
 
 //---------------------------------------------------------------------------
+
+
+
+void __fastcall TMainForm::Button_ConnectClick(TObject * Sender)
+{
+    using namespace cms::i2c;
+    bptr < i2cControl > i2c1st;
+    bptr < i2cControl > i2c2nd;
+    unsigned char first, second;
+    bool dual = false;
+
+    if (this->RadioButton_SingleTCON->Checked) {
+	first = StrToInt("0x" + this->Edit_DeviceAddress->Text);
+    } else {
+	first = StrToInt("0x" + this->Edit_MasterDeviceAddress->Text);
+	second = StrToInt("0x" + this->Edit_SlaveDeviceAddress->Text);
+	dual = true;
+    }
+    AddressingSize addressingSize = getAddressingSize();
+
+    if (this->RadioButton_USB->Checked) {
+	i2c1st =
+	    i2cControl::getUSBInstance(first, addressingSize, _3_3V,
+				       _400KHz);
+	if (dual) {
+	    i2c2nd =
+		i2cControl::getUSBInstance(second, addressingSize,
+					   _3_3V, _400KHz);
+	};
+    } else {
+
+	const LPTCard card =
+	    this->RadioButton_LPTLarge->Checked ? Large : Small;
+
+	i2c1st = i2cControl::getLPTInstance(first, addressingSize, card);
+	if (dual) {
+	    i2c2nd =
+		i2cControl::getLPTInstance(second, addressingSize, card);
+	};
+    };
+    bool connect = i2c1st->connect();
+    if (dual) {
+	i2c2nd->connect();
+    }
+
+    if (true == connect) {
+	//setOptionsEditable(false);
+
+	int gammaTestAddress =
+	    StrToInt("0x" + this->Edit_EnableAddress->Text);
+	int gammaTestBit = StrToInt(this->Edit_EnableBit->Text);
+	int testRGBAddress = StrToInt("0x" + this->Edit_LUTAddress->Text);
+	bool indepRGB = this->CheckBox_IndepRGB->Checked;
+	parameter.reset(new
+			TCONParameter(gammaTestAddress, gammaTestBit,
+				      testRGBAddress, indepRGB));
+	if (!dual) {
+	    control.reset(new TCONControl(parameter, i2c1st));
+	} else {
+	    control.reset(new TCONControl(parameter, i2c1st, i2c2nd));
+	}
+
+    }
+}
+
+//---------------------------------------------------------------------------
+const cms::i2c::AddressingSize TMainForm::getAddressingSize()
+{
+    using namespace cms::i2c;
+    int index = this->ComboBox_AddressingSize->ItemIndex;
+    switch (index) {
+    case 0:
+	return _2k;
+    case 1:
+	return _4k;
+    case 2:
+	return _8k;
+    case 3:
+	return _16k;
+    case 4:
+	return _32k;
+    case 5:
+	return _64k;
+    case 6:
+	return _128k;
+    case 7:
+	return _256k;
+    case 8:
+	return _512k;
+
+    }
+}
 

@@ -26,7 +26,7 @@ class TI2CTestForm:public TForm {
     TEdit *Edit_Slave;
     TGroupBox *GroupBox2;
     TRadioButton *RadioButton_USB;
-    TRadioButton *RadioButton_LPT;
+    TRadioButton *RadioButton_LPTLarge;
     TCheckBox *CheckBox_Connecting;
     TGroupBox *GroupBox3;
     TLabel *Label1;
@@ -52,6 +52,7 @@ class TI2CTestForm:public TForm {
     TComboBox *ComboBox_AddressingSize;
     TEdit *Edit_Address;
     TLabel *Label7;
+    TRadioButton *RadioButton_LPTSmall;
     void __fastcall Button1Click(TObject * Sender);
     void __fastcall CheckBox_ConnectingClick(TObject * Sender);
     void __fastcall CheckBox1Click(TObject * Sender);
@@ -61,7 +62,6 @@ class TI2CTestForm:public TForm {
     void __fastcall Button_ReadClick(TObject * Sender);
     void __fastcall Button_WriteClick(TObject * Sender);
   private:			// User declarations
-    //bptr < cms::i2c::i2cControl > i2c;
      bptr < cms::i2c::TCONParameter > parameter;
      bptr < cms::i2c::TCONControl > control;
     const cms::i2c::AddressingSize getAddressingSize();

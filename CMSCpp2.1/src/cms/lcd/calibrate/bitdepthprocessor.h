@@ -47,6 +47,7 @@ namespace cms {
 		bool is8in6Out();
 		bool is6in6Out();
 		bool is10in8Out();
+                bool is10in10Out();
 		const Dep::MaxValue & getInputMaxValue();
 		const Dep::MaxValue & getLutMaxValue();
 		const Dep::MaxValue & getOutputMaxValue();

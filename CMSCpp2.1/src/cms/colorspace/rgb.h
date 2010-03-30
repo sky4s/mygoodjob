@@ -41,6 +41,7 @@ namespace cms {
 		void quantization(const MaxValue & maxValue);
 		void quantization(const MaxValue & maxValue,
 				  bool integerRoundDown);
+		const MaxValue & getMaxValue();
 	      protected:
 		 double_array _getValues(double_array values);
 		void _setValues(double_array values);

@@ -186,6 +186,9 @@ namespace cms {
 	    bool BitDepthProcessor::is10in8Out() {
 		return bitDepth == b10_8;
 	    };
+	    bool BitDepthProcessor::is10in10Out() {
+		return bitDepth == b10_10;
+	    };
 
 	    const Dep::MaxValue & BitDepthProcessor::getInputMaxValue() {
 		return *in;
