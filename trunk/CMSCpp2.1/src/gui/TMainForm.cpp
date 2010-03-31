@@ -16,6 +16,9 @@
 #include "TTargetWhiteForm2.h"
 #include "TAboutBox.h"
 #include "TCCTLUTForm.h"
+#include "TMatrixCalibration.h"
+#include "TGammaAdjustmentForm.h"
+#include "TGammaMeasurementForm.h"
 
 #include <debug.h>
 
@@ -34,6 +37,9 @@ linkCA210(!FileExists(DEBUG_FILE))
 
 void __fastcall TMainForm::About1Click(TObject * Sender)
 {
+    if (AboutBox == null) {
+	Application->CreateForm(__classid(TAboutBox), &AboutBox);
+    }
     AboutBox->ShowModal();
 }
 
@@ -48,8 +54,11 @@ void __fastcall TMainForm::Exit1Click(TObject * Sender)
 
 void __fastcall TMainForm::TargetWhite1Click(TObject * Sender)
 {
+    if (TargetWhiteForm2 == null) {
+	Application->CreateForm(__classid(TTargetWhiteForm2),
+				&TargetWhiteForm2);
+    }
     TargetWhiteForm2->ShowModal();
-    //TargetWhiteForm2->Show();
 }
 
 //---------------------------------------------------------------------------
@@ -60,13 +69,19 @@ void __fastcall TMainForm::FormCreate(TObject * Sender)
     using namespace cms::measure;
     using namespace cms::colorformat;
     if (true == linkCA210) {
-	meter = bptr < Meter > (new CA210());
-	mm = bptr < MeterMeasurement >
-	    (new MeterMeasurement(meter, false));
+	try {
+	    meter = bptr < Meter > (new CA210());
+	    mm = bptr < MeterMeasurement >
+		(new MeterMeasurement(meter, false));
 
-	analyzer.reset(new CA210IntensityAnalyzer(getCA210(), mm));
+	    analyzer.reset(new CA210IntensityAnalyzer(getCA210(), mm));
+	}
+	catch(EOleException & ex) {
+	    ShowMessage("CA210 cannot be linked.");
+	}
     } else {
 	setDummyMeterFilename(METER_FILE);
+	this->Caption = this->Caption + " (debug mode)";
     }
 }
 
@@ -79,7 +94,6 @@ void TMainForm::setDummyMeterFilename(const std::string & filename)
     using namespace cms::colorformat;
     bptr < DGLutFile > dgcode(new DGLutFile(filename));
     meter.reset(new DGLutFileMeter(dgcode));
-    //meter = bptr < Meter > (new DGLutFileMeter(dgcode));
     mm.reset(new MeterMeasurement(meter, false));
     mm->setFakeMeasure(true);
     analyzer.reset(new CA210IntensityAnalyzer(mm));
@@ -98,11 +112,19 @@ void TMainForm::resetDummyMeter()
 //---------------------------------------------------------------------------
 bptr < cms::measure::meter::CA210 > TMainForm::getCA210()
 {
-    if (null == ca210) {
+    if (null == ca210 && true == linkCA210) {
 	ca210.reset(dynamic_cast <
 		    cms::measure::meter::CA210 * >(meter.get()));
     }
     return ca210;
+};
+
+//---------------------------------------------------------------------------
+void TMainForm::setChannel(int channel)
+{
+    if (true == linkCA210) {
+	getCA210()->getCA210API()->setChannelNO(channel);
+    }
 };
 
 //---------------------------------------------------------------------------
@@ -115,6 +137,9 @@ int TMainForm::getInterval()
 
 void __fastcall TMainForm::CCTLUT1Click(TObject * Sender)
 {
+    if (CCTLUTForm == null) {
+	Application->CreateForm(__classid(TCCTLUTForm), &CCTLUTForm);
+    }
     CCTLUTForm->ShowModal();
 }
 
@@ -122,8 +147,11 @@ void __fastcall TMainForm::CCTLUT1Click(TObject * Sender)
 
 void __fastcall TMainForm::GammaAdj1Click(TObject * Sender)
 {
-    MeasureWindow->ShowModal();
-    //MeasureWindow->Visible = true;
+    if (GammaAdjustmentForm == null) {
+	Application->CreateForm(__classid(TGammaAdjustmentForm),
+				&GammaAdjustmentForm);
+    }
+    GammaAdjustmentForm->ShowModal();
 }
 
 //---------------------------------------------------------------------------
@@ -131,10 +159,11 @@ void __fastcall TMainForm::GammaAdj1Click(TObject * Sender)
 
 void __fastcall TMainForm::RadioButton_TCONClick(TObject * Sender)
 {
-    CCTLUTForm->setTCONInput(true);
-    this->GroupBox_Card->Enabled = true;
-    this->GroupBox_DeviceAddress->Enabled = true;
-    this->GroupBox_GammaTestAddress->Enabled = true;
+    //CCTLUTForm->setTCONInput(true);
+    this->Panel_TCON->Visible = true;
+    /*this->GroupBox_Card->Enabled = true;
+       this->GroupBox_DeviceAddress->Enabled = true;
+       this->GroupBox_GammaTestAddress->Enabled = true; */
     ShowMessage
 	("Please Turn On DG and FRC for Measurement when T-CON Input Source is selected!!!");
 }
@@ -143,10 +172,11 @@ void __fastcall TMainForm::RadioButton_TCONClick(TObject * Sender)
 
 void __fastcall TMainForm::RadioButton_PCClick(TObject * Sender)
 {
-    CCTLUTForm->setTCONInput(false);
-    this->GroupBox_Card->Enabled = false;
-    this->GroupBox_DeviceAddress->Enabled = false;
-    this->GroupBox_GammaTestAddress->Enabled = false;
+    //CCTLUTForm->setTCONInput(false);
+    this->Panel_TCON->Visible = false;
+    /*this->GroupBox_Card->Enabled = false;
+       this->GroupBox_DeviceAddress->Enabled = false;
+       this->GroupBox_GammaTestAddress->Enabled = false; */
 }
 
 //---------------------------------------------------------------------------
@@ -199,7 +229,7 @@ void __fastcall TMainForm::Button_ConnectClick(TObject * Sender)
 
 	int gammaTestAddress =
 	    StrToInt("0x" + this->Edit_EnableAddress->Text);
-	int gammaTestBit = StrToInt(this->Edit_EnableBit->Text)+1;
+	int gammaTestBit = StrToInt(this->Edit_EnableBit->Text) + 1;
 	int testRGBAddress = StrToInt("0x" + this->Edit_LUTAddress->Text);
 	bool indepRGB = this->CheckBox_IndepRGB->Checked;
 	parameter.reset(new
@@ -213,10 +243,9 @@ void __fastcall TMainForm::Button_ConnectClick(TObject * Sender)
 	this->Button_Connect->Enabled = false;
 	this->CheckBox_Connecting->Checked = true;
 	this->CheckBox_Connecting->Enabled = true;
-        this->mm->setTCONControl(control);
-    }
-    else {
-        this->mm->setTCONControlOff();
+	this->mm->setTCONControl(control);
+    } else {
+	this->mm->setTCONControlOff();
     }
 }
 
@@ -252,7 +281,6 @@ const cms::i2c::AddressingSize TMainForm::getAddressingSize()
 void __fastcall TMainForm::CheckBox_ConnectingClick(TObject * Sender)
 {
     if (false == this->CheckBox_Connecting->Checked) {
-//this->CheckBox_Connecting->Checked=false;
 	this->Button_Connect->Enabled = true;
 	this->CheckBox_Connecting->Enabled = false;
     }
@@ -260,9 +288,33 @@ void __fastcall TMainForm::CheckBox_ConnectingClick(TObject * Sender)
 
 //---------------------------------------------------------------------------
 
-void __fastcall TMainForm::Measurement1Click(TObject *Sender)
+void __fastcall TMainForm::Measurement1Click(TObject * Sender)
 {
-  MeasureWindow->ShowModal();
+    if (GammaMeasurementForm == null) {
+	Application->CreateForm(__classid(TGammaMeasurementForm),
+				&GammaMeasurementForm);
+    }
+    GammaMeasurementForm->ShowModal();
 }
+
+//---------------------------------------------------------------------------
+
+
+
+void __fastcall TMainForm::MatrixCalibration1Click(TObject * Sender)
+{
+    if (MatrixCalibrationForm == null) {
+	Application->CreateForm(__classid(TMatrixCalibrationForm),
+				&MatrixCalibrationForm);
+    }
+#ifdef _DEBUG
+    if (true) {
+#else
+    if (true == MatrixCalibrationForm->setCA210(ca210)) {
+#endif
+	MatrixCalibrationForm->ShowModal();
+    }
+}
+
 //---------------------------------------------------------------------------
 

@@ -1,8 +1,8 @@
 object TargetWhiteForm2: TTargetWhiteForm2
-  Left = 370
-  Top = 233
-  Width = 922
-  Height = 531
+  Left = 300
+  Top = 300
+  Width = 929
+  Height = 553
   Caption = 'TargetWhiteForm'
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
@@ -14,6 +14,13 @@ object TargetWhiteForm2: TTargetWhiteForm2
   OldCreateOrder = False
   PixelsPerInch = 120
   TextHeight = 16
+  object Label3: TLabel
+    Left = 560
+    Top = 496
+    Width = 349
+    Height = 16
+    Caption = 'Copyright (C) 2010, AU Optronics Corp., All Right Reserved.'
+  end
   object PageControl1: TPageControl
     Left = 8
     Top = 8
@@ -61,7 +68,7 @@ object TargetWhiteForm2: TTargetWhiteForm2
           Top = 153
           Width = 209
           Height = 120
-          Caption = 'Target xy on D-Locus'
+          Caption = 'Target xy on D-Illuminant Locus'
           TabOrder = 0
           object Label10: TLabel
             Left = 9
@@ -316,16 +323,16 @@ object TargetWhiteForm2: TTargetWhiteForm2
         object Label8: TLabel
           Left = 9
           Top = 57
-          Width = 75
+          Width = 78
           Height = 16
-          Caption = 'TargetW CH'
+          Caption = 'Target W CH'
         end
         object Label9: TLabel
           Left = 9
           Top = 89
-          Width = 69
+          Width = 72
           Height = 16
-          Caption = 'TargetW ID'
+          Caption = 'Target W ID'
         end
         object Edit_SourceCH: TEdit
           Left = 97

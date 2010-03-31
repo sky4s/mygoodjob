@@ -19,11 +19,12 @@ namespace cms {
 		class CIEuv1960NearestAlgorithm:public NearestAlgorithm {
 		  public:
 		    CIEuv1960NearestAlgorithm(XYZ_ptr white,
-					      bptr < cms::measure::cp::
-					      MeasureInterface > mi);
+					      bptr <
+					      cms::measure::
+					      MeterMeasurement > mm);
 		    double_array getDelta(XYZ_ptr center, XYZ_ptr XYZ);
 		  protected:
-		    double getIndex(XYZ_ptr center, XYZ_ptr around);
+		   virtual double getIndex(XYZ_ptr center, XYZ_ptr around);
 		};
 	    };
 	};

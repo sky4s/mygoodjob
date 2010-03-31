@@ -57,26 +57,36 @@ namespace cms {
 		//==============================================================
 		// NearestAlgorithm
 		//==============================================================
-	      NearestAlgorithm::NearestAlgorithm(XYZ_ptr white, bptr < MeasureInterface > mi):white(white),
-		    mi(mi)
+	      NearestAlgorithm::NearestAlgorithm(XYZ_ptr white, bptr < cms::measure::MeterMeasurement > mm):white(white),
+		    mm(mm)
 		{
 		};
 		double_array NearestAlgorithm::getDelta(XYZ_ptr XYZ,
 							RGB_ptr rgb) {
-		    Patch_ptr p = mi->measure(rgb, false, false);
+		    //Patch_ptr p = mi->measure(rgb, false, false);
+		    Patch_ptr p = mm->measure(rgb, rgb->toString());
 		    return getDelta(XYZ, p->getXYZ());
 		}
 
 		bptr < cms::measure::MeasureResult >
 		    NearestAlgorithm::
 		    getMeasureResult(RGB_vector_ptr aroundRGB) {
-		    bptr < cms::measure::MeasureResult > measureResult =
-			mi->measureResult(aroundRGB, false, false);
-		    /*MeasureResult measureResult =
-		       mi.measureResult(aroundRGB,
-		       this.isForceTrigger(),
-		       AutoCPOptions.get("CPM_MeasureRequestThanTrigger")); */
+		    /*bptr < cms::measure::MeasureResult > measureResult =
+		       mi->measureResult(aroundRGB, false, false); */
+		    //mi->measureResult(aroundRGB, false, false);
+
+		    int size = aroundRGB->size();
+		    Patch_vector_ptr result(new Patch_vector());
+
+		    foreach(RGB_ptr rgb, *aroundRGB) {
+			Patch_ptr p = mm->measure(rgb, rgb->toString());
+			result->push_back(p);
+		    };
+
+		    bptr < MeasureResult >
+			measureResult(new MeasureResult(result, size));
 		    return measureResult;
+
 		};
 
 		bptr < AlgoResult >
@@ -96,7 +106,8 @@ namespace cms {
 			Patch_ptr patch = (*patchVec)[x];
 			XYZ_ptr XYZ = patch->getXYZ();
 			aroundXYZ->push_back(XYZ);
-			dist->push_back(getIndex(center, XYZ));
+                        double index=getIndex(center, XYZ);
+			dist->push_back(index);
 
 		    }
 		    int index = Math::minIndex(dist);

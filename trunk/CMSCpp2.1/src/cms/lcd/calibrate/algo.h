@@ -55,7 +55,7 @@ namespace cms {
 
 		class NearestAlgorithm:public Algorithm {
 		  private:
-		    bptr < cms::measure::cp::MeasureInterface > mi;
+		    bptr < cms::measure::MeterMeasurement > mm;
 
 		  protected:
 		    XYZ_ptr white;
@@ -70,8 +70,8 @@ namespace cms {
 
 		     double_array getDelta(XYZ_ptr XYZ, RGB_ptr rgb);
 		     NearestAlgorithm(XYZ_ptr white,
-				      bptr < cms::measure::cp::
-				      MeasureInterface > mi);
+				      bptr <
+				      cms::measure::MeterMeasurement > mm);
 		     bptr < AlgoResult > getNearestRGB(XYZ_ptr center,
 						       RGB_vector_ptr
 						       aroundRGB);

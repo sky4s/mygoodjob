@@ -2,8 +2,14 @@
 #include <includeall.h>
 #pragma hdrstop
 
-#include "TCCTLUTForm.h"
+//C系統文件
+
+//C++系統文件
+
+//其他庫頭文件
 #include <FileCtrl.hpp>
+//本項目內頭文件
+#include "TCCTLUTForm.h"
 #include "TMainForm.h"
 
 //---------------------------------------------------------------------------
@@ -155,6 +161,9 @@ void __fastcall TCCTLUTForm::Button_RunClick(TObject * Sender)
 {
     using namespace std;
     using namespace Dep;
+
+    int targetWhiteChannel = this->Edit_TargetWhiteChannel->Text.ToInt();
+    MainForm->setChannel(targetWhiteChannel);
 
     cms::lcd::calibrate::LCDCalibrator calibrator(MainForm->analyzer,
 						  bitDepth);
@@ -318,10 +327,10 @@ void __fastcall TCCTLUTForm::CheckBox_Gamma256Click(TObject * Sender)
 
 //---------------------------------------------------------------------------
 
-void TCCTLUTForm::setTCONInput(bool tconInput)
+/*void TCCTLUTForm::setTCONInput(bool tconInput)
 {
     bitDepth->setTCONInput(tconInput);
-}
+}*/
 
 void __fastcall TCCTLUTForm::RadioButton_Out10Click(TObject * Sender)
 {
@@ -336,6 +345,8 @@ void __fastcall TCCTLUTForm::RadioButton_Out10Click(TObject * Sender)
 
 void __fastcall TCCTLUTForm::FormShow(TObject * Sender)
 {
+    bool tconinput = MainForm->RadioButton_TCON->Checked;
+    bitDepth->setTCONInput(tconinput);
     setMeasureInfo();
 }
 
@@ -375,6 +386,14 @@ void __fastcall TCCTLUTForm::RadioButton_GammaCurveClick(TObject * Sender)
 	}
     }
     this->RadioButton_Gamma->Checked = true;
+}
+
+//---------------------------------------------------------------------------
+
+void __fastcall TCCTLUTForm::FormActivate(TObject * Sender)
+{
+    /*bool tconinput = MainForm->RadioButton_TCON->Checked;
+    bitDepth->setTCONInput(tconinput);*/
 }
 
 //---------------------------------------------------------------------------

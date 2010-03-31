@@ -13,9 +13,6 @@
 namespace cms {
     namespace i2c {
 
-
-
-
 	class DeviceAddressSendFailException:public java::lang::
 	    RuntimeException {
 	  public:

@@ -44,6 +44,7 @@ namespace cms {
 	  protected:
 	     bptr < cms::measure::meter::Meter > meter;
 	    TMeasureWindow *measureWindow;
+	    void init(bool calibration);
 	  public:
 	     MeterMeasurement(bptr < cms::measure::meter::Meter > meter,
 			      bool calibration);
@@ -69,13 +70,9 @@ namespace cms {
 	    void setFakeMeasure(bool fake);
 	    bool isFakeMeasure();
 
-	     bptr < cms::measure::cp::MeasureInterface >
-		getMeasureInterface();
 	     bptr < cms::measure::meter::Meter > getMeter();
-             void setTCONControl(bptr < cms::i2c::TCONControl > tconcontrl);
-             void setTCONControlOff();
-             //void startTCONMeasure();
-             //void endTCONMeasure();
+	    void setTCONControl(bptr < cms::i2c::TCONControl > tconcontrl);
+	    void setTCONControlOff();
 
 	  protected:
 	    void meterClose();
@@ -89,7 +86,7 @@ namespace cms {
 
 
 	};
-	using namespace std;
+	//using namespace std;
 	class MeasureResult {
 	  public:
 	    Patch_vector_ptr result;

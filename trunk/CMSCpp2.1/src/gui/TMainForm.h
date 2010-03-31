@@ -13,8 +13,11 @@
 #include <StdCtrls.hpp>
 #include <Forms.hpp>
 #include <Menus.hpp>
+#include <ExtCtrls.hpp>
+#include <jpeg.hpp>
 //本項目內頭文件
 #include <java/lang.h>
+#include <cms/i2c/i2ccontrol.h>
 //---------------------------------------------------------------------------
 
 class TMainForm:public TForm {
@@ -36,29 +39,35 @@ class TMainForm:public TForm {
     TRadioButton *RadioButton_TCON;
     TEdit *Edit_Width;
     TEdit *Edit_Height;
+    TLabel *Label6;
+    TPanel *Panel_TCON;
+    TGroupBox *GroupBox_Card;
+    TRadioButton *RadioButton_USB;
+    TRadioButton *RadioButton_LPTLarge;
+    TRadioButton *RadioButton_LPTSmall;
     TGroupBox *GroupBox_DeviceAddress;
+    TLabel *Label5;
     TRadioButton *RadioButton_SingleTCON;
     TRadioButton *RadioButton_DualTCON;
     TEdit *Edit_DeviceAddress;
     TEdit *Edit_MasterDeviceAddress;
     TEdit *Edit_SlaveDeviceAddress;
     TButton *Button_Connect;
+    TCheckBox *CheckBox_Connecting;
+    TComboBox *ComboBox_AddressingSize;
     TGroupBox *GroupBox_GammaTestAddress;
+    TLabel *Label4;
     TGroupBox *GroupBox5;
     TLabel *Label2;
-    TEdit *Edit_EnableAddress;
     TLabel *Label3;
+    TEdit *Edit_EnableAddress;
     TEdit *Edit_EnableBit;
-    TLabel *Label4;
     TEdit *Edit_LUTAddress;
-    TGroupBox *GroupBox_Card;
-    TRadioButton *RadioButton_USB;
-    TRadioButton *RadioButton_LPTLarge;
-    TRadioButton *RadioButton_LPTSmall;
-    TCheckBox *CheckBox_Connecting;
-    TLabel *Label5;
-    TComboBox *ComboBox_AddressingSize;
     TCheckBox *CheckBox_IndepRGB;
+    TImage *Image1;
+    TMenuItem *Config1;
+    TMenuItem *MatrixCalibration1;
+    TMenuItem *GammaAdj1;
     void __fastcall About1Click(TObject * Sender);
     void __fastcall Exit1Click(TObject * Sender);
     void __fastcall TargetWhite1Click(TObject * Sender);
@@ -69,7 +78,8 @@ class TMainForm:public TForm {
     void __fastcall RadioButton_PCClick(TObject * Sender);
     void __fastcall Button_ConnectClick(TObject * Sender);
     void __fastcall CheckBox_ConnectingClick(TObject * Sender);
-        void __fastcall Measurement1Click(TObject *Sender);
+    void __fastcall Measurement1Click(TObject * Sender);
+    void __fastcall MatrixCalibration1Click(TObject * Sender);
   private:			// User declarations
     //==========================================================================
     // meter
@@ -85,7 +95,8 @@ class TMainForm:public TForm {
     //==========================================================================
     // meter
     //==========================================================================
-     bool linkCA210;
+    void setChannel(int channel);
+    bool linkCA210;
      bptr < cms::measure::MeterMeasurement > mm;
      bptr < cms::measure::IntensityAnalyzerIF > analyzer;
     int getInterval();

@@ -11,10 +11,6 @@
 //本項目內頭文件
 #include <java/lang.h>
 
-namespace ca210api {
-    class CA210API;
-};
-
 namespace cms {
 
     namespace measure {
