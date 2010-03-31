@@ -14,7 +14,7 @@
 namespace cms {
     namespace measure {
 	namespace cp {
-	    class MeasureInterface {
+	    /*class MeasureInterface {
 	      public:
 		virtual bptr < MeasureResult >
 		    measureResult(RGB_vector_ptr rgbVec, bool forceTrigger,
@@ -26,7 +26,7 @@ namespace cms {
 		virtual void reset() = 0;
 		//int[] getMeasureCount();
 		//void triggerMeasure(MeasureTrigger measureTrigger);
-	    };
+	    };*/
 	};
     };
 };

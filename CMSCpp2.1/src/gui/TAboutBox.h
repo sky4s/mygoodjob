@@ -12,17 +12,18 @@
 #include <vcl\StdCtrls.hpp>
 #include <vcl\Buttons.hpp>
 #include <vcl\ExtCtrls.hpp>
+#include <jpeg.hpp>
 //----------------------------------------------------------------------------
 class TAboutBox : public TForm
 {
 __published:
 	TPanel *Panel1;
-	TImage *ProgramIcon;
 	TLabel *ProductName;
 	TLabel *Version;
 	TLabel *Copyright;
 	TLabel *Comments;
 	TButton *OKButton;
+        TImage *Image1;
 private:
 public:
 	virtual __fastcall TAboutBox(TComponent* AOwner);

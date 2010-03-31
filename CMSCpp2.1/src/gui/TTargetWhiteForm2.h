@@ -64,6 +64,7 @@ class TTargetWhiteForm2:public TForm {
     TEdit *Edit_TargetCH;
     TEdit *Edit_TargetID;
     TMainMenu *MainMenu1;
+        TLabel *Label3;
     void __fastcall RadioButton_MaxRGBClick(TObject * Sender);
     void __fastcall ScrollBar_RChange(TObject * Sender);
     void __fastcall ScrollBar_GChange(TObject * Sender);

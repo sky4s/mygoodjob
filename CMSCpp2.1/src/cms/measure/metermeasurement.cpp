@@ -19,17 +19,22 @@ namespace cms {
 	using namespace cms::measure::cp;
 	using namespace std;
 	using namespace java::lang;
-
-	 MeterMeasurement::MeterMeasurement(shared_ptr < Meter >
-					    meter,
-					    bool calibration):meter(meter),
-	    waitTimes(meter->getSuggestedWaitTimes()),
-	    measureWindowClosing(false), titleTouched(false),
-	    fakeMeasure(false), tconinput(false) {
+	void MeterMeasurement::init(bool calibration) {
+	    /*if (MeasureWindow == null) {
+	       Application->CreateForm(__classid(TMeasureWindow),
+	       &MeasureWindow);
+	       } */
 	    measureWindow = MeasureWindow;
 	    if (true == calibration) {
 		calibrate();
 	    }
+	};
+      MeterMeasurement::MeterMeasurement(shared_ptr < Meter > meter, bool calibration):meter(meter),
+	    waitTimes(meter->getSuggestedWaitTimes()),
+	    measureWindowClosing(false), titleTouched(false),
+	    fakeMeasure(false), tconinput(false) {
+
+	    init(calibration);
 	};
 
       MeterMeasurement::MeterMeasurement(bptr < cms::measure::meter::Meter > meter, bptr < cms::i2c::TCONControl > tconcontrl, bool calibration):meter(meter),
@@ -37,10 +42,8 @@ namespace cms {
 	    waitTimes(meter->getSuggestedWaitTimes()),
 	    measureWindowClosing(false), titleTouched(false),
 	    fakeMeasure(false), tconinput(true) {
-	    measureWindow = MeasureWindow;
-	    if (true == calibration) {
-		calibrate();
-	    }
+
+	    init(calibration);
 	};
 
 	void MeterMeasurement::calibrate() {
@@ -54,18 +57,17 @@ namespace cms {
 	};
 
 	void MeterMeasurement::setMeasureWindowsVisible(bool visible) {
-	    if (!fakeMeasure ) {
-            if( tconinput) {
-                this->tconcontrl->setGammaTest(visible);
-            }
-            else {
-		if (null == measureWindow) {
-		    measureWindow = MeasureWindow;
+	    if (!fakeMeasure) {
+		if (tconinput) {
+		    this->tconcontrl->setGammaTest(visible);
+		} else {
+		    if (null == measureWindow) {
+			measureWindow = MeasureWindow;
+		    }
+		    measureWindow->Visible = visible;
+		    //measureWindow->ShowModal();
+		    measureWindowClosing = !visible;
 		}
-		measureWindow->Visible = visible;
-		//measureWindow->ShowModal();
-		measureWindowClosing = !visible;
-            }
 
 	    }
 	};
@@ -103,24 +105,35 @@ namespace cms {
 	    return fakeMeasure;
 	};
 
-	bptr < MeasureInterface > MeterMeasurement::getMeasureInterface() {
+	/*bptr < MeasureInterface > MeterMeasurement::getMeasureInterface() {
 	    class MI:public MeasureInterface {
 	      public:
-		bptr < MeasureResult >
+	       virtual	bptr < MeasureResult >
 		    measureResult(RGB_vector_ptr rgbVec, bool forceTrigger,
 				  bool trigger) {
-		    int size = rgbVec->size();
+		    using namespace cms::measure;
 
+		    int size = rgbVec->size();
+		    Patch_vector_ptr result(new Patch_vector());
+
+		     foreach(RGB_ptr rgb, *rgbVec) {
+			Patch_ptr p = measure(rgb);
+			 result->push_back(p);
+		    };
+
+		    bptr < MeasureResult >
+			measureResult(new MeasureResult(result, size));
+		    return measureResult;
 		};
 
-		Patch_ptr measure(RGB_ptr rgb, bool forceTrigger,
+	      virtual	Patch_ptr measure(RGB_ptr rgb, bool forceTrigger,
 				  bool trigger) {
 		    this->measure(rgb);
 		};
-		Patch_ptr measure(RGB_ptr rgb) {
+	       virtual	Patch_ptr measure(RGB_ptr rgb) {
 		    return mm->measure(rgb, rgb->toString());
 		};
-		void reset() {
+	       virtual	void reset() {
 		};
 
 	      private:
@@ -132,29 +145,22 @@ namespace cms {
 	    return bptr < MeasureInterface > (dynamic_cast <
 					      MeasureInterface *
 					      >(new MI(this)));
-	};
+	};*/
 
 	bptr < cms::measure::meter::Meter > MeterMeasurement::getMeter() {
 	    return meter;
 	};
 
-                     void MeterMeasurement::setTCONControl(bptr < cms::i2c::TCONControl > tconcontrl) {
-                           this->tconcontrl=tconcontrl;
-                           tconinput=true;
-                     };
+	void MeterMeasurement::setTCONControl(bptr <
+					      cms::i2c::TCONControl >
+					      tconcontrl) {
+	    this->tconcontrl = tconcontrl;
+	    tconinput = true;
+	};
 
-                                  void MeterMeasurement::setTCONControlOff() {tconinput=false;};
-
-             /*void MeterMeasurement::startTCONMeasure() {
-             if(tconinput) {
-                tconcontrl->setGammaTest(true);
-                }
-             };
-             void MeterMeasurement::endTCONMeasure(){
-             if(tconinput) {
-                tconcontrl->setGammaTest(false);
-                }
-             };*/
+	void MeterMeasurement::setTCONControlOff() {
+	    tconinput = false;
+	};
 
 	void MeterMeasurement::meterClose() {
 	    //meter->close();
@@ -167,9 +173,6 @@ namespace cms {
 				       string_ptr timeNote) {
 	    setMeasureWindowsVisible(true);
 	    //量測的顏色, 量測的顏色可能與導具的顏色不同, 所以特別獨立出此變數
-	    //final RGB measureRGB = processInverseRGB(rgb);
-	    //string_ptr name =
-	    //  (patchName == NULL) ? measureRGB.toString() : patchName;
 
 	    if (!titleTouched) {
 		//如果title沒被設定過
@@ -181,9 +184,6 @@ namespace cms {
 		} else {
 		    measureWindow->Caption = AnsiString("Measure Window");
 		}
-		/*measureWindow.setNorthLabel1(name + "   " +
-		   rgb.toString() + "   " +
-		   titleNote); */
 	    }
 	    //==========================================================================
 	    // 變換完視窗顏色的短暫停留
@@ -191,9 +191,9 @@ namespace cms {
 	    if (!fakeMeasure) {
 		if (tconinput) {
 		    const MaxValue & maxValue = measureRGB->getMaxValue();
-                    double r = measureRGB->R;
-                    double g = measureRGB->G;
-                    double b = measureRGB->B;
+		    double r = measureRGB->R;
+		    double g = measureRGB->G;
+		    double b = measureRGB->B;
 
 		    if (maxValue == MaxValue::Int10Bit
 			|| maxValue == MaxValue::RealInt10Bit) {
@@ -205,11 +205,8 @@ namespace cms {
 			g *= 16;
 			b *= 16;
 		    }
-                    //testRGB->R=testRGB->G=testRGB->B=0;
-                    RGB_ptr rgb(new RGBColor(r,g,b,MaxValue::Int12Bit));
+		    RGB_ptr rgb(new RGBColor(r, g, b, MaxValue::Int12Bit));
 		    tconcontrl->setTestRGB(rgb);
-                    //Sleep(11);
-                    //tconcontrl->setGammaTest(true);
 		} else {
 		    measureWindow->setRGB(measureRGB);
 		}
@@ -222,9 +219,6 @@ namespace cms {
 		return Patch_ptr((Patch *) NULL);
 	    }
 	    double_array result = meter->triggerMeasurementInXYZ();
-            /*if(!fakeMeasure &&tconinput) {
-             tconcontrl->setGammaTest(false);
-            }*/
 
 	    XYZ_ptr XYZ(new Indep::CIEXYZ(result));
 	    Patch_ptr patch(new Patch(patchName, XYZ, XYZ, measureRGB));
@@ -234,8 +228,7 @@ namespace cms {
 	    meterCalibrate(MeterMeasurement & meterMeasurement) {
 	    shared_ptr < Meter > meter = meterMeasurement.meter;
 	    TMeasureWindow *measureWindow = meterMeasurement.measureWindow;
-	    meterCalibrate( /*measureWindow, */ meter,
-			   measureWindow);
+	    meterCalibrate(meter, measureWindow);
 	};
 	void MeasureUtils::meterCalibrate(shared_ptr < Meter > meter,
 					  TMeasureWindow * measureWindow) {
@@ -244,19 +237,13 @@ namespace cms {
 	    } else {
 		if (measureWindow != NULL) {
 		    //show出黑幕, 避免影響校正
-		    //measureWindow.setColor(Color.black);
 		    measureWindow->setRGB(0, 0, 0);
 		    measureWindow->Visible = true;
 		}
-		//string s = meter->getCalibrationDescription();
 		ShowMessage(meter->getCalibrationDescription()->c_str());
-		/*ShowMessage(AnsiString
-		   ((*meter.getCalibrationDescription()).
-		   c_str())); */
 		meter->calibrate();
 		if (measureWindow != null) {
 		    //關閉黑幕
-		    //measureWindow.setVisible(false);
 		    measureWindow->Visible = false;
 		}
 		ShowMessage("End of calibration");

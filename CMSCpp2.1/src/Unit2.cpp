@@ -606,6 +606,21 @@ void rgbGammaTry()
     };
 };
 
+class Base {
+  public:
+    virtual void _do() = 0;
+    void doing() {
+	_do();
+    };
+};
+
+class Son:public Base {
+  public:
+    virtual void _do() {
+	cout << "do" << endl;
+    };
+};
+
 #pragma argsused
 int main(int argc, char *argv[])
 {
@@ -649,8 +664,12 @@ int main(int argc, char *argv[])
     //cout << java::lang::Math::roundTo(94.5) << endl;
     //byteOpTry();
     //castTry();
-    rgbGammaTry();
+    //rgbGammaTry();
     //bufferTry();
+    Son son;
+    Base & base = son;
+    base.doing();
+
     getch();
 }
 

@@ -24,8 +24,7 @@ namespace cms {
 						mm):mm(mm),
 		aroundAlgo(ChromaticAroundAlgorithm())
 	    , nearAlgo(CIEuv1960NearestAlgorithm
-		       (XYZ_ptr((CIEXYZ *) NULL), mm->getMeasureInterface()
-		       )) {
+		       (XYZ_ptr((CIEXYZ *) NULL), mm)) {
 	    };
 
 	    RGB_ptr WhitePointFinder::findMatchRGB0(xyY_ptr xyY,

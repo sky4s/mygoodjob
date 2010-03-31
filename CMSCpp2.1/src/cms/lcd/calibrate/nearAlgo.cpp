@@ -14,19 +14,20 @@ namespace cms {
     namespace lcd {
 	namespace calibrate {
 	    namespace algo {
-		using namespace cms::measure::cp;
+
+		using namespace cms::measure;
 		using namespace java::lang;
 		 CIEuv1960NearestAlgorithm::
 		    CIEuv1960NearestAlgorithm(XYZ_ptr white,
-					      bptr < MeasureInterface >
-					      mi):NearestAlgorithm(white,
-								   mi) {
+					      bptr < MeterMeasurement >
+					      mm):NearestAlgorithm(white,
+								   mm) {
 		};
 		double_array CIEuv1960NearestAlgorithm::
 		    getDelta(XYZ_ptr center, XYZ_ptr XYZ) {
 		    return MeasuredUtils::getDeltauvPrime(center, XYZ);
 		};
-		double CIEuv1960NearestAlgorithm::getIndex(XYZ_ptr center,
+	       	double CIEuv1960NearestAlgorithm::getIndex(XYZ_ptr center,
 							   XYZ_ptr around)
 		{
 		    double_array duvp = getDelta(center, around);

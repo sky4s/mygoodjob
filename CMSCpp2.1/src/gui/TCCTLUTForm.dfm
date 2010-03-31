@@ -1,8 +1,8 @@
 object CCTLUTForm: TCCTLUTForm
-  Left = 203
-  Top = 401
-  Width = 656
-  Height = 426
+  Left = 300
+  Top = 300
+  Width = 657
+  Height = 465
   Caption = 'CCT LUT'
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
@@ -11,15 +11,23 @@ object CCTLUTForm: TCCTLUTForm
   Font.Name = 'MS Sans Serif'
   Font.Style = []
   OldCreateOrder = False
+  OnActivate = FormActivate
   OnCreate = FormCreate
   OnShow = FormShow
   PixelsPerInch = 120
   TextHeight = 16
+  object Label9: TLabel
+    Left = 288
+    Top = 408
+    Width = 349
+    Height = 16
+    Caption = 'Copyright (C) 2010, AU Optronics Corp., All Right Reserved.'
+  end
   object GroupBox1: TGroupBox
     Left = 16
     Top = 16
     Width = 193
-    Height = 129
+    Height = 121
     Caption = 'Gray Level Option'
     TabOrder = 0
     object Label1: TLabel
@@ -78,14 +86,14 @@ object CCTLUTForm: TCCTLUTForm
   end
   object GroupBox2: TGroupBox
     Left = 16
-    Top = 152
+    Top = 200
     Width = 193
-    Height = 129
+    Height = 113
     Caption = 'Gamma'
     TabOrder = 1
     object RadioButton_GammaCurve: TRadioButton
       Left = 8
-      Top = 56
+      Top = 48
       Width = 113
       Height = 25
       Caption = 'Gamma Curve'
@@ -94,7 +102,7 @@ object CCTLUTForm: TCCTLUTForm
     end
     object Button_LoadGammaCurve: TButton
       Left = 120
-      Top = 56
+      Top = 48
       Width = 65
       Height = 25
       Caption = 'Load'
@@ -103,7 +111,7 @@ object CCTLUTForm: TCCTLUTForm
     end
     object CheckBox_GByPass: TCheckBox
       Left = 8
-      Top = 88
+      Top = 80
       Width = 97
       Height = 25
       Caption = 'G ByPass'
@@ -112,7 +120,7 @@ object CCTLUTForm: TCCTLUTForm
     end
     object RadioButton_Gamma: TRadioButton
       Left = 8
-      Top = 24
+      Top = 16
       Width = 113
       Height = 25
       Caption = 'Gamma'
@@ -122,7 +130,7 @@ object CCTLUTForm: TCCTLUTForm
     end
     object ComboBox_Gamma: TComboBox
       Left = 80
-      Top = 24
+      Top = 16
       Width = 105
       Height = 24
       ItemHeight = 16
@@ -225,7 +233,7 @@ object CCTLUTForm: TCCTLUTForm
     Left = 216
     Top = 176
     Width = 193
-    Height = 105
+    Height = 137
     Caption = 'Blue Correction'
     TabOrder = 3
     object CheckBox_BGain: TCheckBox
@@ -257,7 +265,7 @@ object CCTLUTForm: TCCTLUTForm
     Left = 416
     Top = 16
     Width = 217
-    Height = 265
+    Height = 297
     Caption = 'Options'
     TabOrder = 4
     object GroupBox6: TGroupBox
@@ -378,6 +386,7 @@ object CCTLUTForm: TCCTLUTForm
       Height = 25
       Caption = 'Gamma 256'
       TabOrder = 0
+      Visible = False
       OnClick = CheckBox_Gamma256Click
     end
     object CheckBox_AvoidNoise: TCheckBox
@@ -399,7 +408,7 @@ object CCTLUTForm: TCCTLUTForm
   end
   object GroupBox7: TGroupBox
     Left = 16
-    Top = 288
+    Top = 320
     Width = 553
     Height = 89
     Caption = 'Output File'
@@ -446,7 +455,7 @@ object CCTLUTForm: TCCTLUTForm
   end
   object Button_Run: TButton
     Left = 576
-    Top = 344
+    Top = 376
     Width = 57
     Height = 25
     Caption = 'Run'
@@ -455,7 +464,7 @@ object CCTLUTForm: TCCTLUTForm
   end
   object Button_Debug: TButton
     Left = 576
-    Top = 312
+    Top = 344
     Width = 57
     Height = 25
     Caption = 'Debug'
@@ -465,13 +474,36 @@ object CCTLUTForm: TCCTLUTForm
   end
   object Button_Reset: TButton
     Left = 592
-    Top = 296
+    Top = 328
     Width = 41
     Height = 17
     Caption = 'reset'
     TabOrder = 8
     Visible = False
     OnClick = Button_ResetClick
+  end
+  object GroupBox11: TGroupBox
+    Left = 16
+    Top = 144
+    Width = 193
+    Height = 49
+    Caption = 'Channel'
+    TabOrder = 9
+    object Label10: TLabel
+      Left = 8
+      Top = 16
+      Width = 129
+      Height = 25
+      Caption = 'Target White Channel'
+    end
+    object Edit_TargetWhiteChannel: TEdit
+      Left = 144
+      Top = 16
+      Width = 41
+      Height = 25
+      TabOrder = 0
+      Text = '2'
+    end
   end
   object OpenDialog1: TOpenDialog
     Filter = 'DGCode Files(*.xls)|*.xls'

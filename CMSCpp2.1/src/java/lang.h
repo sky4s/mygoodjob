@@ -147,6 +147,9 @@
 #define _toDouble boost::lexical_cast < double >
 //==============================================================================
 
+//==============================================================================
+// 預先宣告, 可以減少include .h的需要
+//==============================================================================
 namespace math {
     class Interpolation1DLUT;
 };
@@ -190,9 +193,6 @@ namespace cms {
 	class MeasureResult;
 	class IntensityAnalyzerIF;
 
-	namespace cp {
-	    class MeasureInterface;
-	};
 	namespace meter {
 	    class Meter;
 	    class CA210;
@@ -206,6 +206,7 @@ namespace cms {
         class ByteBuffer;
     };
     namespace i2c {
+    //enum AddressingSize;
 	class i2cControl;
 	class TCONParameter;
 	class TCONControl;
@@ -272,6 +273,9 @@ namespace cms {
  可以 Enumeration::item1使用, 較好辨識.
 */
 
+namespace ca210api {
+    class CA210API;
+};
 
 namespace java {
     namespace lang {
@@ -377,7 +381,9 @@ namespace java {
     };
 };
 
-
+//==============================================================================
+// 擴充型enum
+//==============================================================================
 #define Enumeration(E) \
 struct E \
 { \
@@ -400,6 +406,7 @@ public: \
 private: \
      __Enum _value; \
 };
+//==============================================================================
 
 #endif
 

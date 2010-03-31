@@ -66,6 +66,10 @@ class TCCTLUTForm:public TForm {
     TRadioButton *RadioButton_None;
     TButton *Button_Reset;
     TCheckBox *CheckBox_KeepMax;
+    TLabel *Label9;
+    TGroupBox *GroupBox11;
+    TLabel *Label10;
+    TEdit *Edit_TargetWhiteChannel;
     void __fastcall Button_BrowseDirClick(TObject * Sender);
     void __fastcall RadioButton_In6Click(TObject * Sender);
     void __fastcall RadioButton_In8Click(TObject * Sender);
@@ -84,6 +88,7 @@ class TCCTLUTForm:public TForm {
     void __fastcall RadioButton_Lut12Click(TObject * Sender);
     void __fastcall RadioButton_Lut10Click(TObject * Sender);
     void __fastcall RadioButton_GammaCurveClick(TObject * Sender);
+    void __fastcall FormActivate(TObject * Sender);
   private:			// User declarations
     void setBitDepthEnable(bool lut10, bool lut12, bool out6, bool out8,
 			   bool out10);
@@ -97,7 +102,7 @@ class TCCTLUTForm:public TForm {
 
   public:			// User declarations
      __fastcall TCCTLUTForm(TComponent * Owner);
-    void setTCONInput(bool tconInput);
+    //void setTCONInput(bool tconInput);
 };
 //---------------------------------------------------------------------------
 extern PACKAGE TCCTLUTForm *CCTLUTForm;
