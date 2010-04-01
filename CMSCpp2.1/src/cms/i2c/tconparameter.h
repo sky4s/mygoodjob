@@ -18,7 +18,6 @@ namespace cms {
 	    const int testRGBAddress;
 	    const bool independentRGB;
 	    const unsigned char gammaTestBit;
-	    //const int dataAddressLength;
 	  public:
 	     TCONParameter(int gammaTestAddress,
 			   unsigned char gammaTestBit, int testRGBAddress,
@@ -27,7 +26,6 @@ namespace cms {
 	    int getTestRGBAddress();
 	    bool isIndependentRGB();
 	    unsigned char getGammaTestBit();
-	    //int getDataAddressLength();
 	};
     };
 };
