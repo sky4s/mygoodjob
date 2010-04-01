@@ -31,6 +31,8 @@ namespace cms {
 	      public:
 		 BitDepthProcessor(int inBit, int lutBit, int outBit,
 				   bool gamma256, bool tconinput);
+		 BitDepthProcessor(int inBit, int lutBit, int outBit,
+				   bool tconinput);
 
 		int getMeasureStart();
 		int getMeasureEnd();
@@ -47,7 +49,7 @@ namespace cms {
 		bool is8in6Out();
 		bool is6in6Out();
 		bool is10in8Out();
-                bool is10in10Out();
+		bool is10in10Out();
 		const Dep::MaxValue & getInputMaxValue();
 		const Dep::MaxValue & getLutMaxValue();
 		const Dep::MaxValue & getOutputMaxValue();

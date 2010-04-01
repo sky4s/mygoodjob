@@ -160,7 +160,7 @@ void __fastcall TMainForm::GammaAdj1Click(TObject * Sender)
 void __fastcall TMainForm::RadioButton_TCONClick(TObject * Sender)
 {
     //CCTLUTForm->setTCONInput(true);
-    this->Panel_TCON->Visible = true;
+    //this->Panel_TCON->Visible = true;
     /*this->GroupBox_Card->Enabled = true;
        this->GroupBox_DeviceAddress->Enabled = true;
        this->GroupBox_GammaTestAddress->Enabled = true; */
@@ -173,7 +173,7 @@ void __fastcall TMainForm::RadioButton_TCONClick(TObject * Sender)
 void __fastcall TMainForm::RadioButton_PCClick(TObject * Sender)
 {
     //CCTLUTForm->setTCONInput(false);
-    this->Panel_TCON->Visible = false;
+    //this->Panel_TCON->Visible = false;
     /*this->GroupBox_Card->Enabled = false;
        this->GroupBox_DeviceAddress->Enabled = false;
        this->GroupBox_GammaTestAddress->Enabled = false; */
@@ -317,4 +317,6 @@ void __fastcall TMainForm::MatrixCalibration1Click(TObject * Sender)
 }
 
 //---------------------------------------------------------------------------
+
+
 
