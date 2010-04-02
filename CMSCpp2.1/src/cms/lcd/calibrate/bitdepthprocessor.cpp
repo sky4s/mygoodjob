@@ -39,14 +39,14 @@ namespace cms {
 		}
 	    };
 
-	  BitDepthProcessor::BitDepthProcessor(int inBit, int lutBit, int outBit, bool gamma256, bool tconInput):gamma256(gamma256),
+	  /*BitDepthProcessor::BitDepthProcessor(int inBit, int lutBit, int outBit, bool gamma256, bool tconInput):gamma256(gamma256),
 		tconInput(tconInput)
 	    {
 		in = &MaxValue::getByBit(inBit);
 		lut = &MaxValue::getByBit(lutBit);
 		out = &MaxValue::getByBit(outBit);
 		bitDepth = getBitDepth(*in, *out);
-	    };
+	    };*/
 
 	    BitDepthProcessor::BitDepthProcessor(int inBit, int lutBit,
 						 int outBit,
@@ -210,15 +210,15 @@ namespace cms {
 	    const Dep::MaxValue & BitDepthProcessor::getOutputMaxValue() {
 		return *out;
 	    };
-	    bool BitDepthProcessor::isGamma256() {
+	    /*bool BitDepthProcessor::isGamma256() {
 		return gamma256;
-	    };
+	    };*/
 	    bool BitDepthProcessor::isTCONInput() {
 		return tconInput;
 	    };
-	    void BitDepthProcessor::setGamma256(bool gamma256) {
+	    /*void BitDepthProcessor::setGamma256(bool gamma256) {
 		this->gamma256 = gamma256;
-	    };
+	    };*/
 	    void BitDepthProcessor::setTCONInput(bool tconInput) {
 		this->tconInput = tconInput;
 	    };

@@ -29,8 +29,8 @@ namespace cms {
 		int getMaxDigitalCountIndex();
 		int getMaxEffectiveDigitalCountIndex();
 	      public:
-		 BitDepthProcessor(int inBit, int lutBit, int outBit,
-				   bool gamma256, bool tconinput);
+		 /*BitDepthProcessor(int inBit, int lutBit, int outBit,
+				   bool gamma256, bool tconinput);*/
 		 BitDepthProcessor(int inBit, int lutBit, int outBit,
 				   bool tconinput);
 
@@ -53,10 +53,10 @@ namespace cms {
 		const Dep::MaxValue & getInputMaxValue();
 		const Dep::MaxValue & getLutMaxValue();
 		const Dep::MaxValue & getOutputMaxValue();
-		bool isGamma256();
+		//bool isGamma256();
 		bool isTCONInput();
 
-		void setGamma256(bool gamam256);
+		//void setGamma256(bool gamam256);
 		void setTCONInput(bool tconInput);
 		void setInBit(int inBit);
 		void setLUTBit(int lutBit);

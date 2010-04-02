@@ -210,8 +210,8 @@ void __fastcall TCCTLUTForm::Button_ResetClick(TObject * Sender)
 
 void __fastcall TCCTLUTForm::CheckBox_Gamma256Click(TObject * Sender)
 {
-    bool gamma256 = this->CheckBox_Gamma256->Checked;
-    bitDepth->setGamma256(gamma256);
+    //bool gamma256 = this->CheckBox_Gamma256->Checked;
+    //bitDepth->setGamma256(gamma256);
 }
 
 //---------------------------------------------------------------------------
@@ -239,9 +239,9 @@ void __fastcall TCCTLUTForm::RadioButton_GammaCurveClick(TObject * Sender)
 	int n = bitDepth->getLevel();
 	if (rgbGamma != null && rgbGamma->w->size() == n) {
 	    this->RadioButton_GammaCurve->Checked = true;
-	    bool gByPassEnable = this->bitDepth->is8in6Out()
-		|| this->bitDepth->is6in6Out();
-	    this->CheckBox_GByPass->Visible = gByPassEnable;
+	    /*bool gByPassEnable = this->bitDepth->is8in6Out()
+	       || this->bitDepth->is6in6Out(); */
+	    this->CheckBox_GByPass->Visible = true;
 	    return;
 	} else {
 	    ShowMessage("Desired Gamma File Format is wrong!");
@@ -268,13 +268,27 @@ TOutputFileFrame1Button_BrowseDirClick(TObject * Sender)
 
 //---------------------------------------------------------------------------
 
-void __fastcall TCCTLUTForm::FormKeyPress(TObject *Sender, char &Key)
+void __fastcall TCCTLUTForm::FormKeyPress(TObject * Sender, char &Key)
 {
     if (Key == 27) {
 	//this->Visible = false;
-        this->Close();
+	this->Close();
     }
 }
+
 //---------------------------------------------------------------------------
 
+void __fastcall TCCTLUTForm::RadioButton_GammaClick(TObject * Sender)
+{
+    this->CheckBox_GByPass->Visible = false;
+}
+
+//---------------------------------------------------------------------------
+
+void __fastcall TCCTLUTForm::ComboBox_GammaChange(TObject * Sender)
+{
+    RadioButton_GammaClick(Sender);
+}
+
+//---------------------------------------------------------------------------
 

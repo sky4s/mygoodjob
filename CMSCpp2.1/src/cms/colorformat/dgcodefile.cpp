@@ -534,7 +534,7 @@ namespace cms {
 	    dgcode.addProperty(BGain, c.bIntensityGain);
 	    dgcode.addProperty(BMax, c.bMax ? On : Off);
 
-	    dgcode.addProperty(Gamma256, bitDepth->isGamma256()? On : Off);
+	    //dgcode.addProperty(Gamma256, bitDepth->isGamma256()? On : Off);
 	    dgcode.addProperty(FRC_NR, c.avoidFRCNoise ? On : Off);
 	};
 	DGLutProperty::DGLutProperty(const

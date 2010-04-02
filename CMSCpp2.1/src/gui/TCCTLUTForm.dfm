@@ -128,6 +128,7 @@ object CCTLUTForm: TCCTLUTForm
       Checked = True
       TabOrder = 3
       TabStop = True
+      OnClick = RadioButton_GammaClick
     end
     object ComboBox_Gamma: TComboBox
       Left = 80
@@ -137,6 +138,7 @@ object CCTLUTForm: TCCTLUTForm
       ItemHeight = 16
       TabOrder = 4
       Text = '2.4'
+      OnChange = ComboBox_GammaChange
       Items.Strings = (
         '1.8'
         '1.9'
