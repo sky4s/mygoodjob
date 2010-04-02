@@ -90,6 +90,8 @@ class TMainForm:public TForm {
     TRadioButton *RadioButton_Out6;
     TRadioButton *RadioButton_Out8;
     TRadioButton *RadioButton_Out10;
+        TLabel *Label10;
+        TEdit *Edit1;
     void __fastcall About1Click(TObject * Sender);
     void __fastcall Exit1Click(TObject * Sender);
     void __fastcall TargetWhite1Click(TObject * Sender);

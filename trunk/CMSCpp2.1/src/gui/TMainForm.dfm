@@ -1,8 +1,8 @@
 object MainForm: TMainForm
   Left = 300
   Top = 300
-  Width = 827
-  Height = 387
+  Width = 817
+  Height = 376
   Caption = 'CCT Adjustment v3'
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
@@ -721,14 +721,14 @@ object MainForm: TMainForm
   TextHeight = 16
   object Label6: TLabel
     Left = 448
-    Top = 312
+    Top = 296
     Width = 349
     Height = 16
     Caption = 'Copyright (C) 2010, AU Optronics Corp., All Right Reserved.'
   end
   object Image1: TImage
     Left = 8
-    Top = 281
+    Top = 273
     Width = 113
     Height = 41
     Picture.Data = {
@@ -832,9 +832,9 @@ object MainForm: TMainForm
     Left = 8
     Top = 16
     Width = 793
-    Height = 257
-    ActivePage = TabSheet1
-    TabIndex = 0
+    Height = 249
+    ActivePage = TabSheet2
+    TabIndex = 1
     TabOrder = 0
     object TabSheet1: TTabSheet
       Caption = 'Measure Setup'
@@ -991,7 +991,7 @@ object MainForm: TMainForm
         Left = 209
         Top = 1
         Width = 528
-        Height = 185
+        Height = 184
         Caption = 'Panel_TCON'
         TabOrder = 0
         Visible = False
@@ -1041,8 +1041,8 @@ object MainForm: TMainForm
           object Label5: TLabel
             Left = 16
             Top = 89
-            Width = 87
-            Height = 16
+            Width = 105
+            Height = 24
             Caption = 'EEPROM Size'
           end
           object RadioButton_SingleTCON: TRadioButton
@@ -1152,7 +1152,7 @@ object MainForm: TMainForm
               Left = 9
               Top = 16
               Width = 51
-              Height = 16
+              Height = 25
               Caption = 'Address'
             end
             object Label3: TLabel
@@ -1203,9 +1203,16 @@ object MainForm: TMainForm
         Left = 0
         Top = 8
         Width = 201
-        Height = 169
+        Height = 201
         Caption = 'Bit Depth'
         TabOrder = 1
+        object Label10: TLabel
+          Left = 8
+          Top = 168
+          Width = 33
+          Height = 25
+          Caption = 'FRC'
+        end
         object GroupBox8: TGroupBox
           Left = 8
           Top = 24
@@ -1308,6 +1315,16 @@ object MainForm: TMainForm
             TabOrder = 2
             OnClick = RadioButton_Out10Click
           end
+        end
+        object Edit1: TEdit
+          Left = 40
+          Top = 168
+          Width = 65
+          Height = 25
+          Color = cl3DLight
+          Enabled = False
+          TabOrder = 3
+          Text = '8+2'
         end
       end
     end

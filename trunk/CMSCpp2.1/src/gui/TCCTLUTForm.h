@@ -62,7 +62,9 @@ class TCCTLUTForm:public TForm {
     void __fastcall RadioButton_GammaCurveClick(TObject * Sender);
     void __fastcall TOutputFileFrame1Button_BrowseDirClick(TObject *
 							   Sender);
-        void __fastcall FormKeyPress(TObject *Sender, char &Key);
+    void __fastcall FormKeyPress(TObject * Sender, char &Key);
+    void __fastcall RadioButton_GammaClick(TObject * Sender);
+    void __fastcall ComboBox_GammaChange(TObject * Sender);
   private:			// User declarations
     void setMeasureInfo();
     int serialid;
