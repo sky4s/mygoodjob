@@ -2,7 +2,7 @@ object CCTLUTForm: TCCTLUTForm
   Left = 300
   Top = 300
   Width = 657
-  Height = 465
+  Height = 415
   Caption = 'CCT LUT'
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
@@ -10,15 +10,16 @@ object CCTLUTForm: TCCTLUTForm
   Font.Height = -13
   Font.Name = 'MS Sans Serif'
   Font.Style = []
+  KeyPreview = True
   OldCreateOrder = False
-  OnActivate = FormActivate
   OnCreate = FormCreate
+  OnKeyPress = FormKeyPress
   OnShow = FormShow
   PixelsPerInch = 120
   TextHeight = 16
   object Label9: TLabel
     Left = 288
-    Top = 408
+    Top = 360
     Width = 349
     Height = 16
     Caption = 'Copyright (C) 2010, AU Optronics Corp., All Right Reserved.'
@@ -86,9 +87,9 @@ object CCTLUTForm: TCCTLUTForm
   end
   object GroupBox2: TGroupBox
     Left = 16
-    Top = 200
+    Top = 144
     Width = 193
-    Height = 113
+    Height = 121
     Caption = 'Gamma'
     TabOrder = 1
     object RadioButton_GammaCurve: TRadioButton
@@ -233,7 +234,7 @@ object CCTLUTForm: TCCTLUTForm
     Left = 216
     Top = 176
     Width = 193
-    Height = 137
+    Height = 89
     Caption = 'Blue Correction'
     TabOrder = 3
     object CheckBox_BGain: TCheckBox
@@ -265,123 +266,12 @@ object CCTLUTForm: TCCTLUTForm
     Left = 416
     Top = 16
     Width = 217
-    Height = 297
+    Height = 249
     Caption = 'Options'
     TabOrder = 4
-    object GroupBox6: TGroupBox
-      Left = 8
-      Top = 24
-      Width = 201
-      Height = 169
-      Caption = 'Bit Depth'
-      TabOrder = 2
-      object GroupBox8: TGroupBox
-        Left = 8
-        Top = 24
-        Width = 57
-        Height = 137
-        Caption = 'IN'
-        TabOrder = 0
-        object RadioButton_In6: TRadioButton
-          Left = 8
-          Top = 24
-          Width = 40
-          Height = 17
-          Caption = '6'
-          TabOrder = 0
-          OnClick = RadioButton_In6Click
-        end
-        object RadioButton_In8: TRadioButton
-          Left = 8
-          Top = 64
-          Width = 40
-          Height = 17
-          Caption = '8'
-          Checked = True
-          TabOrder = 1
-          TabStop = True
-          OnClick = RadioButton_In8Click
-        end
-        object RadioButton_In10: TRadioButton
-          Left = 8
-          Top = 104
-          Width = 40
-          Height = 17
-          Caption = '10'
-          TabOrder = 2
-          OnClick = RadioButton_In10Click
-        end
-      end
-      object GroupBox9: TGroupBox
-        Left = 72
-        Top = 24
-        Width = 57
-        Height = 137
-        Caption = 'LUT'
-        TabOrder = 1
-        object RadioButton_Lut10: TRadioButton
-          Left = 8
-          Top = 24
-          Width = 40
-          Height = 17
-          Caption = '10'
-          Checked = True
-          TabOrder = 0
-          TabStop = True
-          OnClick = RadioButton_Lut10Click
-        end
-        object RadioButton_Lut12: TRadioButton
-          Left = 8
-          Top = 64
-          Width = 40
-          Height = 17
-          Caption = '12'
-          TabOrder = 1
-          OnClick = RadioButton_Lut12Click
-        end
-      end
-      object GroupBox10: TGroupBox
-        Left = 136
-        Top = 24
-        Width = 57
-        Height = 137
-        Caption = 'OUT'
-        TabOrder = 2
-        object RadioButton_Out6: TRadioButton
-          Left = 8
-          Top = 24
-          Width = 40
-          Height = 17
-          Caption = '6'
-          TabOrder = 0
-          OnClick = RadioButton_Out6Click
-        end
-        object RadioButton_Out8: TRadioButton
-          Left = 8
-          Top = 64
-          Width = 40
-          Height = 17
-          Caption = '8'
-          Checked = True
-          TabOrder = 1
-          TabStop = True
-          OnClick = RadioButton_Out8Click
-        end
-        object RadioButton_Out10: TRadioButton
-          Left = 8
-          Top = 104
-          Width = 40
-          Height = 17
-          Caption = '10'
-          Enabled = False
-          TabOrder = 2
-          OnClick = RadioButton_Out10Click
-        end
-      end
-    end
     object CheckBox_Gamma256: TCheckBox
-      Left = 112
-      Top = 184
+      Left = 120
+      Top = 8
       Width = 97
       Height = 25
       Caption = 'Gamma 256'
@@ -391,7 +281,7 @@ object CCTLUTForm: TCCTLUTForm
     end
     object CheckBox_AvoidNoise: TCheckBox
       Left = 8
-      Top = 232
+      Top = 56
       Width = 137
       Height = 25
       Caption = 'Avoid FRC Noise'
@@ -399,110 +289,52 @@ object CCTLUTForm: TCCTLUTForm
     end
     object CheckBox_KeepMax: TCheckBox
       Left = 8
-      Top = 200
+      Top = 24
       Width = 153
       Height = 25
       Caption = 'Keep Max Luminance'
-      TabOrder = 3
-    end
-  end
-  object GroupBox7: TGroupBox
-    Left = 16
-    Top = 320
-    Width = 553
-    Height = 89
-    Caption = 'Output File'
-    TabOrder = 5
-    object Label5: TLabel
-      Left = 8
-      Top = 24
-      Width = 92
-      Height = 16
-      Caption = 'Filename Prefix'
-    end
-    object Label6: TLabel
-      Left = 8
-      Top = 56
-      Width = 95
-      Height = 16
-      Caption = 'Output Directory'
-    end
-    object Edit_Prefix: TEdit
-      Left = 112
-      Top = 24
-      Width = 201
-      Height = 24
-      TabOrder = 0
-      Text = 'Calib00_Table'
-    end
-    object Edit_Directory: TEdit
-      Left = 112
-      Top = 56
-      Width = 369
-      Height = 24
-      TabOrder = 1
-      Text = 'D:\Gamma Table\'
-    end
-    object Button_BrowseDir: TButton
-      Left = 488
-      Top = 56
-      Width = 57
-      Height = 25
-      Caption = 'Browse'
       TabOrder = 2
-      OnClick = Button_BrowseDirClick
     end
   end
   object Button_Run: TButton
     Left = 576
-    Top = 376
+    Top = 328
     Width = 57
     Height = 25
     Caption = 'Run'
-    TabOrder = 6
+    TabOrder = 5
     OnClick = Button_RunClick
   end
   object Button_Debug: TButton
     Left = 576
-    Top = 344
+    Top = 296
     Width = 57
     Height = 25
     Caption = 'Debug'
-    TabOrder = 7
+    TabOrder = 6
     Visible = False
     OnClick = Button_DebugClick
   end
   object Button_Reset: TButton
     Left = 592
-    Top = 328
+    Top = 280
     Width = 41
     Height = 17
     Caption = 'reset'
-    TabOrder = 8
+    TabOrder = 7
     Visible = False
     OnClick = Button_ResetClick
   end
-  object GroupBox11: TGroupBox
+  inline TOutputFileFrame1: TOutputFileFrame
     Left = 16
-    Top = 144
-    Width = 193
-    Height = 49
-    Caption = 'Channel'
-    TabOrder = 9
-    object Label10: TLabel
-      Left = 8
-      Top = 16
-      Width = 129
-      Height = 25
-      Caption = 'Target White Channel'
-    end
-    object Edit_TargetWhiteChannel: TEdit
-      Left = 144
-      Top = 16
-      Width = 41
-      Height = 25
-      TabOrder = 0
-      Text = '2'
+    Top = 272
+    Width = 553
+    Height = 88
+    TabOrder = 8
+    inherited GroupBox_OutputFile: TGroupBox
+      inherited Button_BrowseDir: TButton
+        OnClick = TOutputFileFrame1Button_BrowseDirClick
+      end
     end
   end
   object OpenDialog1: TOpenDialog

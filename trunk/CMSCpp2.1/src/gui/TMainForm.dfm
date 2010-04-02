@@ -833,8 +833,8 @@ object MainForm: TMainForm
     Top = 16
     Width = 793
     Height = 257
-    ActivePage = TabSheet2
-    TabIndex = 1
+    ActivePage = TabSheet1
+    TabIndex = 0
     TabOrder = 0
     object TabSheet1: TTabSheet
       Caption = 'Measure Setup'
@@ -927,7 +927,7 @@ object MainForm: TMainForm
           Text = '750'
         end
       end
-      object GroupBox3: TGroupBox
+      object GroupBox_CHSetting: TGroupBox
         Left = 424
         Top = 9
         Width = 209
@@ -971,6 +971,7 @@ object MainForm: TMainForm
           Height = 24
           TabOrder = 1
           Text = '2'
+          OnChange = Edit_TargetCHChange
         end
         object Edit_TargetID: TEdit
           Left = 97
@@ -979,6 +980,7 @@ object MainForm: TMainForm
           Height = 24
           TabOrder = 2
           Text = ' '
+          OnChange = Edit_TargetIDChange
         end
       end
     end
@@ -1218,6 +1220,7 @@ object MainForm: TMainForm
             Height = 17
             Caption = '6'
             TabOrder = 0
+            OnClick = RadioButton_In6Click
           end
           object RadioButton_In8: TRadioButton
             Left = 8
@@ -1228,6 +1231,7 @@ object MainForm: TMainForm
             Checked = True
             TabOrder = 1
             TabStop = True
+            OnClick = RadioButton_In8Click
           end
           object RadioButton_In10: TRadioButton
             Left = 8
@@ -1236,6 +1240,7 @@ object MainForm: TMainForm
             Height = 17
             Caption = '10'
             TabOrder = 2
+            OnClick = RadioButton_In10Click
           end
         end
         object GroupBox9: TGroupBox
@@ -1254,6 +1259,7 @@ object MainForm: TMainForm
             Checked = True
             TabOrder = 0
             TabStop = True
+            OnClick = RadioButton_Lut10Click
           end
           object RadioButton_Lut12: TRadioButton
             Left = 8
@@ -1262,6 +1268,7 @@ object MainForm: TMainForm
             Height = 17
             Caption = '12'
             TabOrder = 1
+            OnClick = RadioButton_Lut12Click
           end
         end
         object GroupBox10: TGroupBox
@@ -1278,6 +1285,7 @@ object MainForm: TMainForm
             Height = 17
             Caption = '6'
             TabOrder = 0
+            OnClick = RadioButton_Out6Click
           end
           object RadioButton_Out8: TRadioButton
             Left = 8
@@ -1288,6 +1296,7 @@ object MainForm: TMainForm
             Checked = True
             TabOrder = 1
             TabStop = True
+            OnClick = RadioButton_Out8Click
           end
           object RadioButton_Out10: TRadioButton
             Left = 8
@@ -1297,6 +1306,7 @@ object MainForm: TMainForm
             Caption = '10'
             Enabled = False
             TabOrder = 2
+            OnClick = RadioButton_Out10Click
           end
         end
       end
@@ -1322,9 +1332,6 @@ object MainForm: TMainForm
     object Measurement1: TMenuItem
       Caption = 'Measurement'
       OnClick = Measurement1Click
-    end
-    object Config1: TMenuItem
-      Caption = 'Config'
     end
     object About1: TMenuItem
       Caption = 'About'

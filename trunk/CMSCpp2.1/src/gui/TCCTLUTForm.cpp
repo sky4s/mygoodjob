@@ -14,11 +14,12 @@
 
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
+#pragma link "TOutputFileFrame"
 #pragma resource "*.dfm"
 TCCTLUTForm *CCTLUTForm;
 //---------------------------------------------------------------------------
 __fastcall TCCTLUTForm::TCCTLUTForm(TComponent * Owner)
-:TForm(Owner), serialid(0), in(8), lut(10), out(8)
+:TForm(Owner), serialid(0)
 {
 }
 
@@ -26,50 +27,9 @@ __fastcall TCCTLUTForm::TCCTLUTForm(TComponent * Owner)
 
 
 
-void __fastcall TCCTLUTForm::Button_BrowseDirClick(TObject * Sender)
-{
-    //this->OpenDialog1->Execute();
-    AnsiString Dir = this->Edit_Directory->Text;
-    //AnsiString Dir = "C:\\Program Files\\";
-    SelectDirectory("選擇目錄", "", Dir);
-    this->Edit_Directory->Text = Dir + "\\";
-}
 
 //---------------------------------------------------------------------------
 
-void TCCTLUTForm::setBitDepthEnable(bool lut10, bool lut12, bool out6,
-				    bool out8, bool out10)
-{
-    this->RadioButton_Lut10->Enabled = lut10;
-    this->RadioButton_Lut12->Enabled = lut12;
-    this->RadioButton_Out6->Enabled = out6;
-    this->RadioButton_Out8->Enabled = out8;
-    this->RadioButton_Out10->Enabled = out10;
-};
-
-void TCCTLUTForm::setBitDepthChecked(int lutSelect, int outSelect)
-{
-
-    switch (lutSelect) {
-    case 0:
-	this->RadioButton_Lut10->Checked = true;
-	break;
-    case 1:
-	this->RadioButton_Lut12->Checked = true;
-	break;
-    };
-    switch (outSelect) {
-    case 0:
-	this->RadioButton_Out6->Checked = true;
-	break;
-    case 1:
-	this->RadioButton_Out8->Checked = true;
-	break;
-    case 2:
-	this->RadioButton_Out10->Checked = true;
-	break;
-    };
-};
 
 void TCCTLUTForm::setMeasureInfo()
 {
@@ -80,58 +40,6 @@ void TCCTLUTForm::setMeasureInfo()
     this->ComboBox_LevelStep->Text = Util::toString(step).c_str();
 };
 
-void __fastcall TCCTLUTForm::RadioButton_In6Click(TObject * Sender)
-{
-    using namespace boost;
-    bitDepth->setInBit(in = 6);
-    // 設定lut/out bit depth checked
-    setBitDepthChecked(0, 0);
-    // 設定enable
-    setBitDepthEnable(true, false, true, false, false);
-    // 設定量測step
-    //setMeasureInfo();
-    // 設定Avoid Noise
-    this->CheckBox_AvoidNoise->Enabled = true;
-    //設定Gamma256
-    this->CheckBox_Gamma256->Checked = false;
-
-}
-
-//---------------------------------------------------------------------------
-
-void __fastcall TCCTLUTForm::RadioButton_In8Click(TObject * Sender)
-{
-    using namespace cms::util;
-    bitDepth->setInBit(in = 8);
-    // 設定lut/out bit depth checked
-    setBitDepthChecked(0, 1);
-    // 設定enable
-    setBitDepthEnable(true, true, true, true, false);
-    // 設定量測step
-    //setMeasureInfo();
-    // 設定Avoid Noise
-    this->CheckBox_AvoidNoise->Enabled = true;
-    //設定Gamma256
-    this->CheckBox_Gamma256->Checked = false;
-}
-
-//---------------------------------------------------------------------------
-
-void __fastcall TCCTLUTForm::RadioButton_In10Click(TObject * Sender)
-{
-    using namespace cms::util;
-    bitDepth->setInBit(in = 10);
-    // 設定lut/out bit depth checked
-    setBitDepthChecked(1, 1);
-    // 設定enable
-    setBitDepthEnable(false, true, false, true, true);
-    // 設定量測step
-    //setMeasureInfo();
-    // 設定Avoid Noise
-    this->CheckBox_AvoidNoise->Enabled = false;
-    //設定Gamma256
-    this->CheckBox_Gamma256->Checked = true;
-}
 
 //---------------------------------------------------------------------------
 
@@ -162,8 +70,9 @@ void __fastcall TCCTLUTForm::Button_RunClick(TObject * Sender)
     using namespace std;
     using namespace Dep;
 
-    int targetWhiteChannel = this->Edit_TargetWhiteChannel->Text.ToInt();
-    MainForm->setChannel(targetWhiteChannel);
+    /*int targetWhiteChannel = this->Edit_TargetWhiteChannel->Text.ToInt();
+       MainForm->setChannel(targetWhiteChannel); */
+    MainForm->setToTargetChannel();
 
     cms::lcd::calibrate::LCDCalibrator calibrator(MainForm->analyzer,
 						  bitDepth);
@@ -218,14 +127,15 @@ void __fastcall TCCTLUTForm::Button_RunClick(TObject * Sender)
     int waitTimes = MainForm->getInterval();
     MainForm->mm->setWaitTimes(waitTimes);
     try {
-	AnsiString dir = this->Edit_Directory->Text;
-	if (!DirectoryExists(dir)) {
-	    bool result = CreateDir(dir);
-	    if (!result) {
-		ShowMessage("Create " + dir + " is failed.");
-		return;
-	    }
-	}
+	this->TOutputFileFrame1->createDir();
+
+	/*if (!DirectoryExists(dir)) {
+	   bool result = CreateDir(dir);
+	   if (!result) {
+	   ShowMessage("Create " + dir + " is failed.");
+	   return;
+	   }
+	   } */
 	//預設的第一階
 	int firstStep = bitDepth->getMeasureFirstStep();
 	if (bitDepth->getMeasureStart() != start
@@ -238,9 +148,9 @@ void __fastcall TCCTLUTForm::Button_RunClick(TObject * Sender)
 	RGB_vector_ptr dglut =
 	    calibrator.getDGLut(start, end, firstStep, step);
 
-	AnsiString sid = FormatFloat("00", serialid);
 	AnsiString astr =
-	    dir + "\\" + this->Edit_Prefix->Text + sid + ".xls";
+	    this->TOutputFileFrame1->getFullPrefix() +
+	    FormatFloat("00", serialid) + ".xls";
 	string filename = astr.c_str();
 
 	calibrator.storeDGLut(filename, dglut);
@@ -268,12 +178,7 @@ void __fastcall TCCTLUTForm::FormCreate(TObject * Sender)
     this->Button_Debug->Visible = debug;
     this->Button_Reset->Visible = debug;
     this->RadioButton_None->Visible = debug;
-    //this->CheckBox_Gamma256->Visible = debug;
     //==========================================================================
-
-    //bool tconInput = MainForm->RadioButton_TCON->Checked;
-    bitDepth.reset(new BitDepthProcessor(in, lut, out, false, false));
-    setMeasureInfo();
 }
 
 //---------------------------------------------------------------------------
@@ -302,22 +207,6 @@ void __fastcall TCCTLUTForm::Button_ResetClick(TObject * Sender)
 
 //---------------------------------------------------------------------------
 
-void __fastcall TCCTLUTForm::RadioButton_Out6Click(TObject * Sender)
-{
-    bitDepth->setOutBit(6);
-    setMeasureInfo();
-}
-
-//---------------------------------------------------------------------------
-
-void __fastcall TCCTLUTForm::RadioButton_Out8Click(TObject * Sender)
-{
-    bitDepth->setOutBit(8);
-    setMeasureInfo();
-}
-
-//---------------------------------------------------------------------------
-
 
 void __fastcall TCCTLUTForm::CheckBox_Gamma256Click(TObject * Sender)
 {
@@ -327,44 +216,17 @@ void __fastcall TCCTLUTForm::CheckBox_Gamma256Click(TObject * Sender)
 
 //---------------------------------------------------------------------------
 
-/*void TCCTLUTForm::setTCONInput(bool tconInput)
-{
-    bitDepth->setTCONInput(tconInput);
-}*/
-
-void __fastcall TCCTLUTForm::RadioButton_Out10Click(TObject * Sender)
-{
-    if (!bitDepth->isTCONInput()) {
-	ShowMessage("Recommend using T-CON Input.");
-    };
-    bitDepth->setOutBit(10);
-    setMeasureInfo();
-}
-
-//---------------------------------------------------------------------------
-
 void __fastcall TCCTLUTForm::FormShow(TObject * Sender)
 {
-    bool tconinput = MainForm->RadioButton_TCON->Checked;
-    bitDepth->setTCONInput(tconinput);
+    using namespace Dep;
+    //bool tconinput = MainForm->RadioButton_TCON->Checked;
+    //bitDepth->setTCONInput(tconinput);
+    MaxValue & input = bitDepth->getInputMaxValue();
+    bool avoidNoise = (input == MaxValue::Int6Bit
+		       || input == MaxValue::Int8Bit);
+    this->CheckBox_AvoidNoise->Enabled = avoidNoise;
     setMeasureInfo();
 }
-
-//---------------------------------------------------------------------------
-
-void __fastcall TCCTLUTForm::RadioButton_Lut12Click(TObject * Sender)
-{
-    bitDepth->setLUTBit(12);
-}
-
-//---------------------------------------------------------------------------
-
-void __fastcall TCCTLUTForm::RadioButton_Lut10Click(TObject * Sender)
-{
-    bitDepth->setLUTBit(10);
-}
-
-//---------------------------------------------------------------------------
 
 void __fastcall TCCTLUTForm::RadioButton_GammaCurveClick(TObject * Sender)
 {
@@ -388,13 +250,31 @@ void __fastcall TCCTLUTForm::RadioButton_GammaCurveClick(TObject * Sender)
     this->RadioButton_Gamma->Checked = true;
 }
 
-//---------------------------------------------------------------------------
 
-void __fastcall TCCTLUTForm::FormActivate(TObject * Sender)
+//---------------------------------------------------------------------------
+void TCCTLUTForm::setBitDepthProcessor(bptr <
+				       cms::lcd::calibrate::
+				       BitDepthProcessor > bitDepth)
 {
-    /*bool tconinput = MainForm->RadioButton_TCON->Checked;
-    bitDepth->setTCONInput(tconinput);*/
+    this->bitDepth = bitDepth;
+}
+
+void __fastcall TCCTLUTForm::
+TOutputFileFrame1Button_BrowseDirClick(TObject * Sender)
+{
+    TOutputFileFrame1->Button_BrowseDirClick(Sender);
+
 }
 
 //---------------------------------------------------------------------------
+
+void __fastcall TCCTLUTForm::FormKeyPress(TObject *Sender, char &Key)
+{
+    if (Key == 27) {
+	//this->Visible = false;
+        this->Close();
+    }
+}
+//---------------------------------------------------------------------------
+
 

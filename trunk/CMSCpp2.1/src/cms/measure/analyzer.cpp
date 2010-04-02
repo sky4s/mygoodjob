@@ -120,8 +120,12 @@ namespace cms {
 		ca210api->setAnalyzerCalMode();
 	    }
 	};
-                void CA210IntensityAnalyzer::beginAnalyze() {mm->setMeasureWindowsVisible(true);  };
-           void CA210IntensityAnalyzer::endAnalyze(){ mm->setMeasureWindowsVisible(false); };
+	void CA210IntensityAnalyzer::beginAnalyze() {
+	    mm->setMeasureWindowsVisible(true);
+	};
+	void CA210IntensityAnalyzer::endAnalyze() {
+	    mm->setMeasureWindowsVisible(false);
+	};
 	//======================================================================
 
       StocktonComponentAnayzer::StocktonComponentAnayzer(bptr < CA210 > ca210, bptr < MeterMeasurement > mm):CA210IntensityAnalyzer(ca210, mm)
@@ -195,8 +199,10 @@ namespace cms {
 	};
 	void MaxMatrixComponentAnalyzer::enter() {
 	};
-               void MaxMatrixComponentAnalyzer::beginAnalyze() {};
-           void MaxMatrixComponentAnalyzer::endAnalyze(){};
+	void MaxMatrixComponentAnalyzer::beginAnalyze() {
+	};
+	void MaxMatrixComponentAnalyzer::endAnalyze() {
+	};
     };
 };
 

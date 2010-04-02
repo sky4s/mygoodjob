@@ -4,7 +4,7 @@ object OutputFileFrame: TOutputFileFrame
   Width = 553
   Height = 88
   TabOrder = 0
-  object GroupBox7: TGroupBox
+  object GroupBox_OutputFile: TGroupBox
     Left = -1
     Top = -1
     Width = 553
@@ -48,6 +48,7 @@ object OutputFileFrame: TOutputFileFrame
       Height = 25
       Caption = 'Browse'
       TabOrder = 2
+      OnClick = Button_BrowseDirClick
     end
   end
 end

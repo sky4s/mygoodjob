@@ -23,7 +23,6 @@ class TTargetWhiteForm2:public TForm {
     __published:		// IDE-managed Components
     TPageControl * PageControl1;
     TTabSheet *TabSheet1;
-    TTabSheet *TabSheet2;
     TGroupBox *GroupBox2;
     TRadioButton *RadioButton_Targetxy;
     TRadioButton *RadioButton_RGBRatio;
@@ -56,15 +55,8 @@ class TTargetWhiteForm2:public TForm {
     TEdit *Edit_ScrollR;
     TEdit *Edit_ScrollG;
     TEdit *Edit_ScrollB;
-    TGroupBox *GroupBox3;
-    TLabel *Label7;
-    TLabel *Label8;
-    TLabel *Label9;
-    TEdit *Edit_SourceCH;
-    TEdit *Edit_TargetCH;
-    TEdit *Edit_TargetID;
     TMainMenu *MainMenu1;
-        TLabel *Label3;
+    TLabel *Label3;
     void __fastcall RadioButton_MaxRGBClick(TObject * Sender);
     void __fastcall ScrollBar_RChange(TObject * Sender);
     void __fastcall ScrollBar_GChange(TObject * Sender);

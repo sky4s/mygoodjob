@@ -23,8 +23,8 @@ namespace cms {
 	    virtual void setupComponent(const Dep::Channel & ch,
 					RGB_ptr rgb) = 0;
 	    virtual void enter() = 0;
-           virtual void beginAnalyze()=0;
-           virtual void endAnalyze()=0;
+	    virtual void beginAnalyze() = 0;
+	    virtual void endAnalyze() = 0;
 	};
 
 	class CA210IntensityAnalyzer:public IntensityAnalyzerIF {
@@ -37,11 +37,8 @@ namespace cms {
 	    bool dummyMode;
 	    void init();
 	     cms::measure::meter::DGLutFileMeter * dgc;
-	    //bptr < cms::measure::meter::DGLutFileMeter > dgc;
 	  public:
 
-	    /*CA210ComponentAnalyzer(bptr < cms::measure::meter::CA210 >
-	       ca210); */
 	    /*
 	       採用CA210為analyze結果的來源
 	     */
@@ -58,8 +55,8 @@ namespace cms {
 	    void setupComponent(const Dep::Channel & ch, RGB_ptr rgb);
 	    void enter();
 	    void setChannel(int no, string_ptr id);
-        void beginAnalyze();
-           void endAnalyze();
+	    void beginAnalyze();
+	    void endAnalyze();
 	};
 
 	class StocktonComponentAnayzer:public CA210IntensityAnalyzer {
@@ -83,8 +80,8 @@ namespace cms {
 	    XYZ_ptr getCIEXYZ();
 	    void setupComponent(const Dep::Channel & ch, RGB_ptr rgb) = 0;
 	    void enter();
-    void beginAnalyze();
-           void endAnalyze();            
+	    void beginAnalyze();
+	    void endAnalyze();
 	};
     };
 };
