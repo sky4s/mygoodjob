@@ -3,11 +3,19 @@
 #ifndef TGammaMeasurementFormH
 #define TGammaMeasurementFormH
 //---------------------------------------------------------------------------
+//C系統文件
+
+//C++系統文件
+
+//其他庫頭文件
 #include <Classes.hpp>
 #include <Controls.hpp>
 #include <StdCtrls.hpp>
 #include <Forms.hpp>
 #include <ExtCtrls.hpp>
+#include "TOutputFileFrame.h"
+//本項目內頭文件
+#include <java/lang.h>
 //---------------------------------------------------------------------------
 class TGammaMeasurementForm:public TForm {
     __published:		// IDE-managed Components
@@ -20,21 +28,10 @@ class TGammaMeasurementForm:public TForm {
     TEdit *Edit_StartLevel;
     TComboBox *ComboBox_LevelStep;
     TEdit *Edit_EndLevel;
-    TGroupBox *GroupBox3;
-    TCheckBox *CheckBox_W;
-    TCheckBox *CheckBox_R;
-    TCheckBox *CheckBox_G;
-    TCheckBox *CheckBox_B;
-    TGroupBox *GroupBox4;
-    TEdit *Edit_Channel;
-    TButton *Button_PCMeasure;
     TLabel *Copyright;
     TPanel *Panel2;
     TGroupBox *GroupBox5;
     TGroupBox *GroupBox6;
-    TGroupBox *GroupBox7;
-    TRadioButton *RadioButton1;
-    TRadioButton *RadioButton2;
     TGroupBox *GroupBox8;
     TGroupBox *GroupBox9;
     TCheckBox *CheckBox5;
@@ -42,20 +39,27 @@ class TGammaMeasurementForm:public TForm {
     TRadioButton *RadioButton3;
     TRadioButton *RadioButton4;
     TLabel *Label4;
-    TButton *Button2;
-    TGroupBox *GroupBox10;
-    TCheckBox *CheckBox_W2;
-    TCheckBox *CheckBox_R2;
-    TCheckBox *CheckBox_G2;
-    TCheckBox *CheckBox_B2;
-    TGroupBox *GroupBox11;
-    TEdit *Edit_Channel2;
-    TButton *Button_TCONMeasure;
-    void __fastcall Button_PCMeasureClick(TObject * Sender);
-    void __fastcall Button_TCONMeasureClick(TObject * Sender);
+    TOutputFileFrame *TOutputFileFrame1;
+    TGroupBox *GroupBox3;
+    TCheckBox *CheckBox_W;
+    TCheckBox *CheckBox_R;
+    TCheckBox *CheckBox_G;
+    TCheckBox *CheckBox_B;
+    TButton *Button_Measure;
+        TGroupBox *Table;
+        TRadioButton *RadioButton1;
+        TRadioButton *RadioButton2;
+        TButton *Button2;
+    void __fastcall Button_MeasureClick(TObject * Sender);
+    void __fastcall FormShow(TObject * Sender);
   private:			// User declarations
+     bptr < cms::lcd::calibrate::BitDepthProcessor > bitDepth;
+    void setMeasureInfo();
   public:			// User declarations
      __fastcall TGammaMeasurementForm(TComponent * Owner);
+    void setBitDepthProcessor(bptr <
+			      cms::lcd::calibrate::BitDepthProcessor >
+			      bitDepth);
 };
 //---------------------------------------------------------------------------
 extern PACKAGE TGammaMeasurementForm *GammaMeasurementForm;

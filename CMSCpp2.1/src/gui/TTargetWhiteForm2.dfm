@@ -26,8 +26,8 @@ object TargetWhiteForm2: TTargetWhiteForm2
     Top = 8
     Width = 905
     Height = 489
-    ActivePage = TabSheet2
-    TabIndex = 1
+    ActivePage = TabSheet1
+    TabIndex = 0
     TabOrder = 0
     object TabSheet1: TTabSheet
       Caption = 'Target White'
@@ -300,64 +300,6 @@ object TargetWhiteForm2: TTargetWhiteForm2
           Enabled = False
           TabOrder = 6
           Text = '255'
-        end
-      end
-    end
-    object TabSheet2: TTabSheet
-      Caption = 'CA-210 Setting'
-      ImageIndex = 1
-      object GroupBox3: TGroupBox
-        Left = 8
-        Top = 9
-        Width = 209
-        Height = 112
-        Caption = 'CH Setting'
-        TabOrder = 0
-        object Label7: TLabel
-          Left = 9
-          Top = 25
-          Width = 65
-          Height = 16
-          Caption = 'Source CH'
-        end
-        object Label8: TLabel
-          Left = 9
-          Top = 57
-          Width = 78
-          Height = 16
-          Caption = 'Target W CH'
-        end
-        object Label9: TLabel
-          Left = 9
-          Top = 89
-          Width = 72
-          Height = 16
-          Caption = 'Target W ID'
-        end
-        object Edit_SourceCH: TEdit
-          Left = 97
-          Top = 16
-          Width = 48
-          Height = 24
-          Enabled = False
-          TabOrder = 0
-          Text = '0'
-        end
-        object Edit_TargetCH: TEdit
-          Left = 97
-          Top = 48
-          Width = 48
-          Height = 24
-          TabOrder = 1
-          Text = '2'
-        end
-        object Edit_TargetID: TEdit
-          Left = 97
-          Top = 80
-          Width = 104
-          Height = 24
-          TabOrder = 2
-          Text = ' '
         end
       end
     end

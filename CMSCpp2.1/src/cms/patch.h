@@ -20,18 +20,21 @@ namespace cms {
 	XYZ_ptr XYZ;
 	XYZ_ptr normalizedXYZ;
 	RGB_ptr rgb;
+	RGB_ptr intensity;
 	//shared_ptr < RGBColor > originalRGB = null;
-	bptr < Spectra > spectra;
-	bptr < Spectra > reflectSpectra;
+	 bptr < Spectra > spectra;
+	 bptr < Spectra > reflectSpectra;
       public:
-	Patch(bptr < std::string > name,
-	      XYZ_ptr XYZ,
-	      XYZ_ptr normalizedXYZ,
-	      RGB_ptr rgb);
-	bptr < std::string > getName();
+	 Patch(bptr < std::string > name,
+	       XYZ_ptr XYZ, XYZ_ptr normalizedXYZ, RGB_ptr rgb);
+	 Patch(bptr < std::string > name,
+	       XYZ_ptr XYZ,
+	       XYZ_ptr normalizedXYZ, RGB_ptr rgb, RGB_ptr intensity);
+	 bptr < std::string > getName();
 	XYZ_ptr getXYZ();
 	XYZ_ptr getNormalizedXYZ();
 	RGB_ptr getRGB();
+	RGB_ptr getIntensity();
     };
 
 };

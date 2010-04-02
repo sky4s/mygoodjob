@@ -68,6 +68,8 @@ void __fastcall TMainForm::FormCreate(TObject * Sender)
     using namespace cms::measure::meter;
     using namespace cms::measure;
     using namespace cms::colorformat;
+    using namespace cms::lcd::calibrate;
+
     if (true == linkCA210) {
 	try {
 	    meter = bptr < Meter > (new CA210());
@@ -82,7 +84,10 @@ void __fastcall TMainForm::FormCreate(TObject * Sender)
     } else {
 	setDummyMeterFilename(METER_FILE);
 	this->Caption = this->Caption + " (debug mode)";
+	this->GroupBox_CHSetting->Visible = false;
     }
+
+    bitDepth.reset(new BitDepthProcessor(8, 10, 8, false));
 }
 
 //---------------------------------------------------------------------------
@@ -120,9 +125,18 @@ bptr < cms::measure::meter::CA210 > TMainForm::getCA210()
 };
 
 //---------------------------------------------------------------------------
-void TMainForm::setChannel(int channel)
+/*void TMainForm::setChannel(int channel)
 {
     if (true == linkCA210) {
+	getCA210()->getCA210API()->setChannelNO(channel);
+    }
+};*/
+
+//---------------------------------------------------------------------------
+void TMainForm::setToTargetChannel()
+{
+    if (true == linkCA210) {
+	int channel = this->Edit_TargetCH->Text.ToInt();
 	getCA210()->getCA210API()->setChannelNO(channel);
     }
 };
@@ -140,6 +154,7 @@ void __fastcall TMainForm::CCTLUT1Click(TObject * Sender)
     if (CCTLUTForm == null) {
 	Application->CreateForm(__classid(TCCTLUTForm), &CCTLUTForm);
     }
+    CCTLUTForm->setBitDepthProcessor(bitDepth);
     CCTLUTForm->ShowModal();
 }
 
@@ -151,6 +166,7 @@ void __fastcall TMainForm::GammaAdj1Click(TObject * Sender)
 	Application->CreateForm(__classid(TGammaAdjustmentForm),
 				&GammaAdjustmentForm);
     }
+    GammaAdjustmentForm->setBitDepthProcessor(bitDepth);
     GammaAdjustmentForm->ShowModal();
 }
 
@@ -159,11 +175,8 @@ void __fastcall TMainForm::GammaAdj1Click(TObject * Sender)
 
 void __fastcall TMainForm::RadioButton_TCONClick(TObject * Sender)
 {
-    //CCTLUTForm->setTCONInput(true);
-    //this->Panel_TCON->Visible = true;
-    /*this->GroupBox_Card->Enabled = true;
-       this->GroupBox_DeviceAddress->Enabled = true;
-       this->GroupBox_GammaTestAddress->Enabled = true; */
+    this->Panel_TCON->Visible = true;
+    this->bitDepth->setTCONInput(true);
     ShowMessage
 	("Please Turn On DG and FRC for Measurement when T-CON Input Source is selected!!!");
 }
@@ -173,7 +186,8 @@ void __fastcall TMainForm::RadioButton_TCONClick(TObject * Sender)
 void __fastcall TMainForm::RadioButton_PCClick(TObject * Sender)
 {
     //CCTLUTForm->setTCONInput(false);
-    //this->Panel_TCON->Visible = false;
+    this->Panel_TCON->Visible = false;
+    bitDepth->setTCONInput(false);
     /*this->GroupBox_Card->Enabled = false;
        this->GroupBox_DeviceAddress->Enabled = false;
        this->GroupBox_GammaTestAddress->Enabled = false; */
@@ -277,6 +291,8 @@ const cms::i2c::AddressingSize TMainForm::getAddressingSize()
     }
 }
 
+//---------------------------------------------------------------------------
+
 
 void __fastcall TMainForm::CheckBox_ConnectingClick(TObject * Sender)
 {
@@ -294,6 +310,7 @@ void __fastcall TMainForm::Measurement1Click(TObject * Sender)
 	Application->CreateForm(__classid(TGammaMeasurementForm),
 				&GammaMeasurementForm);
     }
+    GammaMeasurementForm->setBitDepthProcessor(bitDepth);
     GammaMeasurementForm->ShowModal();
 }
 
@@ -318,5 +335,131 @@ void __fastcall TMainForm::MatrixCalibration1Click(TObject * Sender)
 
 //---------------------------------------------------------------------------
 
+void TMainForm::setBitDepthEnable(bool lut10, bool lut12, bool out6,
+				  bool out8, bool out10)
+{
+    this->RadioButton_Lut10->Enabled = lut10;
+    this->RadioButton_Lut12->Enabled = lut12;
+    this->RadioButton_Out6->Enabled = out6;
+    this->RadioButton_Out8->Enabled = out8;
+    this->RadioButton_Out10->Enabled = out10;
+};
+
+//---------------------------------------------------------------------------
+
+void TMainForm::setBitDepthChecked(int lutSelect, int outSelect)
+{
+
+    switch (lutSelect) {
+    case 0:
+	this->RadioButton_Lut10->Checked = true;
+	break;
+    case 1:
+	this->RadioButton_Lut12->Checked = true;
+	break;
+    };
+    switch (outSelect) {
+    case 0:
+	this->RadioButton_Out6->Checked = true;
+	break;
+    case 1:
+	this->RadioButton_Out8->Checked = true;
+	break;
+    case 2:
+	this->RadioButton_Out10->Checked = true;
+	break;
+    };
+};
+
+void __fastcall TMainForm::RadioButton_In6Click(TObject * Sender)
+{
+    using namespace boost;
+    bitDepth->setInBit(6);
+    // 設定lut/out bit depth checked
+    setBitDepthChecked(0, 0);
+    // 設定enable
+    setBitDepthEnable(true, false, true, false, false);
+}
+
+//---------------------------------------------------------------------------
+
+void __fastcall TMainForm::RadioButton_In8Click(TObject * Sender)
+{
+    using namespace cms::util;
+    bitDepth->setInBit(8);
+    // 設定lut/out bit depth checked
+    setBitDepthChecked(0, 1);
+    // 設定enable
+    setBitDepthEnable(true, true, true, true, false);
+}
+
+//---------------------------------------------------------------------------
+
+void __fastcall TMainForm::RadioButton_In10Click(TObject * Sender)
+{
+    using namespace cms::util;
+    bitDepth->setInBit(10);
+    // 設定lut/out bit depth checked
+    setBitDepthChecked(1, 1);
+    // 設定enable
+    setBitDepthEnable(false, true, false, true, true);
+}
+
+//---------------------------------------------------------------------------
+
+void __fastcall TMainForm::RadioButton_Lut10Click(TObject * Sender)
+{
+    bitDepth->setLUTBit(10);
+}
+
+//---------------------------------------------------------------------------
+
+void __fastcall TMainForm::RadioButton_Lut12Click(TObject * Sender)
+{
+    bitDepth->setLUTBit(12);
+}
+
+//---------------------------------------------------------------------------
+
+void __fastcall TMainForm::RadioButton_Out6Click(TObject * Sender)
+{
+    bitDepth->setOutBit(6);
+}
+
+//---------------------------------------------------------------------------
+
+void __fastcall TMainForm::RadioButton_Out8Click(TObject * Sender)
+{
+    bitDepth->setOutBit(8);
+}
+
+//---------------------------------------------------------------------------
+
+void __fastcall TMainForm::RadioButton_Out10Click(TObject * Sender)
+{
+    if (!bitDepth->isTCONInput()) {
+	ShowMessage("Recommend using T-CON Input.");
+    };
+    bitDepth->setOutBit(10);
+}
+
+//---------------------------------------------------------------------------
+
+void __fastcall TMainForm::Edit_TargetIDChange(TObject * Sender)
+{
+    using namespace ca210api;
+    bptr < CA210API > ca210api = getCA210()->getCA210API();
+    ca210api->setChannelNO(Edit_TargetCH->Text.ToInt());
+    ca210api->setChannelID(Edit_TargetID->Text);
+}
+
+//---------------------------------------------------------------------------
+
+void __fastcall TMainForm::Edit_TargetCHChange(TObject * Sender)
+{
+    getCA210()->getCA210API()->setChannelNO(Edit_TargetCH->Text.ToInt());
+}
+
+//---------------------------------------------------------------------------
 
 

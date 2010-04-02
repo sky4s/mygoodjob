@@ -5,24 +5,31 @@ namespace cms {
     using namespace std;
     using namespace Indep;
     using namespace Dep;
-     Patch::Patch(shared_ptr < string > name, shared_ptr < CIEXYZ > XYZ,
-		  shared_ptr < CIEXYZ > normalizedXYZ,
-		  shared_ptr < RGBColor > rgb):name(name), XYZ(XYZ),
+     Patch::Patch(string_ptr name, XYZ_ptr XYZ,
+		  XYZ_ptr normalizedXYZ,
+		  RGB_ptr rgb):name(name), XYZ(XYZ),
 	normalizedXYZ(normalizedXYZ), rgb(rgb) {
     };
-
+  Patch::Patch(string_ptr name, XYZ_ptr XYZ, XYZ_ptr normalizedXYZ, RGB_ptr rgb, RGB_ptr intensity):name(name), XYZ(XYZ),
+	normalizedXYZ(normalizedXYZ), rgb(rgb),
+	intensity(intensity) {
+    };
     string_ptr Patch::getName() {
 	return name;
     };
 
-    shared_ptr < CIEXYZ > Patch::getXYZ() {
+    XYZ_ptr Patch::getXYZ() {
 	return XYZ;
     };
-    shared_ptr < CIEXYZ > Patch::getNormalizedXYZ() {
+    XYZ_ptr Patch::getNormalizedXYZ() {
 	return normalizedXYZ;
     };
-    shared_ptr < RGBColor > Patch::getRGB() {
+    RGB_ptr Patch::getRGB() {
 	return rgb;
+    };
+
+    RGB_ptr Patch::getIntensity() {
+	return intensity;
     };
 };
 

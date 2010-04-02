@@ -1,6 +1,6 @@
 //---------------------------------------------------------------------------
 
-#include <vcl.h>
+#include <includeall.h>
 #pragma hdrstop
 
 //C系統文件
@@ -15,6 +15,7 @@
 
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
+#pragma link "TOutputFileFrame"
 #pragma resource "*.dfm"
 TGammaMeasurementForm *GammaMeasurementForm;
 //---------------------------------------------------------------------------
@@ -24,20 +25,40 @@ __fastcall TGammaMeasurementForm::TGammaMeasurementForm(TComponent * Owner)
 }
 
 //---------------------------------------------------------------------------
-void __fastcall TGammaMeasurementForm::Button_PCMeasureClick(TObject *
-							     Sender)
+void __fastcall TGammaMeasurementForm::Button_MeasureClick(TObject *
+							   Sender)
 {
-    int targetWhiteChannel = this->Edit_Channel->Text.ToInt();
-    MainForm->setChannel(targetWhiteChannel);
+    MainForm->setToTargetChannel();
+}
+
+
+//---------------------------------------------------------------------------
+void TGammaMeasurementForm::setBitDepthProcessor(bptr <
+						 cms::lcd::calibrate::
+						 BitDepthProcessor >
+						 bitDepth)
+{
+    this->bitDepth = bitDepth;
 }
 
 //---------------------------------------------------------------------------
-void __fastcall TGammaMeasurementForm::Button_TCONMeasureClick(TObject *
-							       Sender)
+
+
+void TGammaMeasurementForm::setMeasureInfo()
 {
-    int targetWhiteChannel = this->Edit_Channel2->Text.ToInt();
-    MainForm->setChannel(targetWhiteChannel);
+    using namespace cms::util;
+    int start = bitDepth->getMeasureStart();
+    int step = bitDepth->getMeasureStep();
+    this->Edit_StartLevel->Text = Util::toString(start).c_str();
+    this->ComboBox_LevelStep->Text = Util::toString(step).c_str();
+};
+
+void __fastcall TGammaMeasurementForm::FormShow(TObject * Sender)
+{
+    setMeasureInfo();
 }
+
+//---------------------------------------------------------------------------
 
 //---------------------------------------------------------------------------
 
