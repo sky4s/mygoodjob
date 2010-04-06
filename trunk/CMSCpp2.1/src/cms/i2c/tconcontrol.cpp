@@ -28,11 +28,45 @@ namespace cms {
 
 	};
 	void TCONControl::setTestRGB(RGB_ptr rgb) {
-	    double_array rgbValues(new double[3]);
-	    rgb->getValues(rgbValues/*, Dep::MaxValue::Int12Bit*/);
-	    int r = _toInt(rgbValues[0]);
-	    int g = _toInt(rgbValues[1]);
-	    int b = _toInt(rgbValues[2]);
+	    //double_array rgbValues(new double[3]);
+	    //rgb->getValues(rgbValues/*, Dep::MaxValue::Int12Bit*/);
+	    int r = _toInt(rgb->R);
+	    int g = _toInt(rgb->G);
+	    int b = _toInt(rgb->B);
+	    setTestRGB(r, g, b);
+	    /*bptr < ByteBuffer > data;
+
+	       if (parameter->isIndependentRGB()) {
+	       //如果test RGB各自獨立
+	       //BBLL 00BH GGLL 00GH RRLL 00RH
+	       data.reset(new ByteBuffer(6));
+	       (*data)[0] = r >> 8;
+	       (*data)[1] = r & 255;
+	       (*data)[2] = g >> 8;
+	       (*data)[3] = g & 255;
+	       (*data)[4] = b >> 8;
+	       (*data)[5] = b & 255;
+
+	       } else {
+	       //如果test RGB沒有獨立
+	       //00BH BBLL GGLL GHRH RRLL
+	       data.reset(new ByteBuffer(5));
+	       (*data)[0] = r & 255;
+	       (*data)[1] = r >> 8 + g >> 8 & 15 << 4;
+	       (*data)[2] = g & 255;
+	       (*data)[3] = b & 255;
+	       (*data)[4] = g >> 8 & 15;
+	       }
+	       int address = parameter->getTestRGBAddress();
+	       control->write(address, data);
+	       if (true == dualTCON) {
+	       control2->write(address, data);
+	       } */
+	};
+	void TCONControl::setTestRGB(int r, int g, int b) {
+	    /*int r = _toInt(rgb->R);
+	       int g = _toInt(rgb->G);
+	       int b = _toInt(rgb->B); */
 	    bptr < ByteBuffer > data;
 
 	    if (parameter->isIndependentRGB()) {
@@ -80,6 +114,9 @@ namespace cms {
 	    if (true == dualTCON) {
 		control2->writeByte(dataAddress, data);
 	    }
+	};
+	const Dep::MaxValue & TCONControl::getLUTBit() {
+	    return parameter->getLUTBit();
 	};
     };
 };

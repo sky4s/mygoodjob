@@ -44,8 +44,8 @@ namespace cms {
 		int getLevel();
 
 		int getEffectiveLevel();
-		int getFRCBitDepth();
-		const Dep::MaxValue & getFRCMaxValue();
+		//int getFRCBitDepth();
+		//const Dep::MaxValue & getFRCMaxValue();
 		bool is8in6Out();
 		bool is6in6Out();
 		bool is10in8Out();

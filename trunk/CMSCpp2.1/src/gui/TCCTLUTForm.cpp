@@ -219,8 +219,6 @@ void __fastcall TCCTLUTForm::CheckBox_Gamma256Click(TObject * Sender)
 void __fastcall TCCTLUTForm::FormShow(TObject * Sender)
 {
     using namespace Dep;
-    //bool tconinput = MainForm->RadioButton_TCON->Checked;
-    //bitDepth->setTCONInput(tconinput);
     MaxValue & input = bitDepth->getInputMaxValue();
     bool avoidNoise = (input == MaxValue::Int6Bit
 		       || input == MaxValue::Int8Bit);

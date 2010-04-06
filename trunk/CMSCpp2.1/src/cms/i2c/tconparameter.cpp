@@ -10,13 +10,16 @@
 
 namespace cms {
     namespace i2c {
-	TCONParameter::TCONParameter(int gammaTestAddress,
-				     unsigned char gammaTestBit,
-				     int testRGBAddress,
-				     bool independentRGB):gammaTestAddress
+	using namespace Dep;
+	 TCONParameter::TCONParameter(int gammaTestAddress,
+				      unsigned char gammaTestBit,
+				      int testRGBAddress,
+				      bool independentRGB,
+				      const MaxValue &
+				      lutBit):gammaTestAddress
 	    (gammaTestAddress), gammaTestBit(gammaTestBit),
 	    testRGBAddress(testRGBAddress),
-	    independentRGB(independentRGB) {
+	    independentRGB(independentRGB), lutBit(lutBit) {
 
 	};
 	int TCONParameter::getGammaTestAddress() {
@@ -30,6 +33,9 @@ namespace cms {
 	};
 	unsigned char TCONParameter::getGammaTestBit() {
 	    return gammaTestBit;
+	};
+	const MaxValue & TCONParameter::getLUTBit() {
+	    return lutBit;
 	};
     };
 };

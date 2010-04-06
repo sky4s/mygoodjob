@@ -29,22 +29,20 @@ namespace cms {
 		calibrate();
 	    }
 	};
-      MeterMeasurement::MeterMeasurement(shared_ptr < Meter > meter, bool calibration):meter(meter),
-	    waitTimes(meter->getSuggestedWaitTimes()),
-	    measureWindowClosing(false), titleTouched(false),
-	    fakeMeasure(false), tconinput(false) {
+      MeterMeasurement::MeterMeasurement(shared_ptr < Meter > meter, bool calibration):meter(meter), waitTimes(meter->getSuggestedWaitTimes()), measureWindowClosing(false), titleTouched(false), fakeMeasure(false) {
+																	/*, tconinput(false) */
 
 	    init(calibration);
 	};
 
-      MeterMeasurement::MeterMeasurement(bptr < cms::measure::meter::Meter > meter, bptr < cms::i2c::TCONControl > tconcontrl, bool calibration):meter(meter),
-	    tconcontrl(tconcontrl),
-	    waitTimes(meter->getSuggestedWaitTimes()),
-	    measureWindowClosing(false), titleTouched(false),
-	    fakeMeasure(false), tconinput(true) {
+	/*MeterMeasurement::MeterMeasurement(bptr < cms::measure::meter::Meter > meter, bptr < cms::i2c::TCONControl > tconcontrol, bool calibration):meter(meter),
+	   tconcontrol(tconcontrol),
+	   waitTimes(meter->getSuggestedWaitTimes()),
+	   measureWindowClosing(false), titleTouched(false),
+	   fakeMeasure(false), tconinput(true) {
 
-	    init(calibration);
-	};
+	   init(calibration);
+	   }; */
 
 	void MeterMeasurement::calibrate() {
 	    MeasureUtils::meterCalibrate(*this);
@@ -58,16 +56,16 @@ namespace cms {
 
 	void MeterMeasurement::setMeasureWindowsVisible(bool visible) {
 	    if (!fakeMeasure) {
-		if (tconinput) {
-		    this->tconcontrl->setGammaTest(visible);
-		} else {
-		    if (null == measureWindow) {
-			measureWindow = MeasureWindow;
-		    }
-		    measureWindow->Visible = visible;
-		    //measureWindow->ShowModal();
-		    measureWindowClosing = !visible;
+		/*if (tconinput) {
+		   this->tconcontrol->setGammaTest(visible);
+		   } else { */
+		if (null == measureWindow) {
+		    measureWindow = MeasureWindow;
 		}
+		measureWindow->Visible = visible;
+		//measureWindow->ShowModal();
+		measureWindowClosing = !visible;
+		//}
 
 	    }
 	};
@@ -106,61 +104,63 @@ namespace cms {
 	};
 
 	/*bptr < MeasureInterface > MeterMeasurement::getMeasureInterface() {
-	    class MI:public MeasureInterface {
-	      public:
-	       virtual	bptr < MeasureResult >
-		    measureResult(RGB_vector_ptr rgbVec, bool forceTrigger,
-				  bool trigger) {
-		    using namespace cms::measure;
+	   class MI:public MeasureInterface {
+	   public:
+	   virtual      bptr < MeasureResult >
+	   measureResult(RGB_vector_ptr rgbVec, bool forceTrigger,
+	   bool trigger) {
+	   using namespace cms::measure;
 
-		    int size = rgbVec->size();
-		    Patch_vector_ptr result(new Patch_vector());
+	   int size = rgbVec->size();
+	   Patch_vector_ptr result(new Patch_vector());
 
-		     foreach(RGB_ptr rgb, *rgbVec) {
-			Patch_ptr p = measure(rgb);
-			 result->push_back(p);
-		    };
+	   foreach(RGB_ptr rgb, *rgbVec) {
+	   Patch_ptr p = measure(rgb);
+	   result->push_back(p);
+	   };
 
-		    bptr < MeasureResult >
-			measureResult(new MeasureResult(result, size));
-		    return measureResult;
-		};
+	   bptr < MeasureResult >
+	   measureResult(new MeasureResult(result, size));
+	   return measureResult;
+	   };
 
-	      virtual	Patch_ptr measure(RGB_ptr rgb, bool forceTrigger,
-				  bool trigger) {
-		    this->measure(rgb);
-		};
-	       virtual	Patch_ptr measure(RGB_ptr rgb) {
-		    return mm->measure(rgb, rgb->toString());
-		};
-	       virtual	void reset() {
-		};
+	   virtual      Patch_ptr measure(RGB_ptr rgb, bool forceTrigger,
+	   bool trigger) {
+	   this->measure(rgb);
+	   };
+	   virtual      Patch_ptr measure(RGB_ptr rgb) {
+	   return mm->measure(rgb, rgb->toString());
+	   };
+	   virtual      void reset() {
+	   };
 
-	      private:
-		friend class MeterMeasurement;
-		MeterMeasurement *mm;
-	      MI(MeterMeasurement * mm):mm(mm) {
-		};
-	    };
-	    return bptr < MeasureInterface > (dynamic_cast <
-					      MeasureInterface *
-					      >(new MI(this)));
-	};*/
+	   private:
+	   friend class MeterMeasurement;
+	   MeterMeasurement *mm;
+	   MI(MeterMeasurement * mm):mm(mm) {
+	   };
+	   };
+	   return bptr < MeasureInterface > (dynamic_cast <
+	   MeasureInterface *
+	   >(new MI(this)));
+	   }; */
 
 	bptr < cms::measure::meter::Meter > MeterMeasurement::getMeter() {
 	    return meter;
 	};
 
-	void MeterMeasurement::setTCONControl(bptr <
+	/*void MeterMeasurement::setTCONControl(bptr <
 					      cms::i2c::TCONControl >
-					      tconcontrl) {
-	    this->tconcontrl = tconcontrl;
-	    tconinput = true;
+					      tconcontrol) {
+	    //this->tconcontrol = tconcontrol;
+	    //tconinput = true;
+	    measureWindow->setTCONControl(tconcontrol);;
 	};
 
 	void MeterMeasurement::setTCONControlOff() {
-	    tconinput = false;
-	};
+	    //tconinput = false;
+	    measureWindow->setTCONControlOff();
+	};*/
 
 	void MeterMeasurement::meterClose() {
 	    //meter->close();
@@ -189,27 +189,27 @@ namespace cms {
 	    // 變換完視窗顏色的短暫停留
 	    //==========================================================================
 	    if (!fakeMeasure) {
-		if (tconinput) {
-		    const MaxValue & maxValue = measureRGB->getMaxValue();
-		    double r = measureRGB->R;
-		    double g = measureRGB->G;
-		    double b = measureRGB->B;
+		/*if (tconinput) {
+		   const MaxValue & maxValue = measureRGB->getMaxValue();
+		   double r = measureRGB->R;
+		   double g = measureRGB->G;
+		   double b = measureRGB->B;
 
-		    if (maxValue == MaxValue::Int10Bit
-			|| maxValue == MaxValue::RealInt10Bit) {
-			r *= 4;
-			g *= 4;
-			b *= 4;
-		    } else {
-			r *= 16;
-			g *= 16;
-			b *= 16;
-		    }
-		    RGB_ptr rgb(new RGBColor(r, g, b, MaxValue::Int12Bit));
-		    tconcontrl->setTestRGB(rgb);
-		} else {
-		    measureWindow->setRGB(measureRGB);
-		}
+		   if (maxValue == MaxValue::Int10Bit
+		   || maxValue == MaxValue::RealInt10Bit) {
+		   r *= 4;
+		   g *= 4;
+		   b *= 4;
+		   } else {
+		   r *= 16;
+		   g *= 16;
+		   b *= 16;
+		   }
+		   RGB_ptr rgb(new RGBColor(r, g, b, MaxValue::Int12Bit));
+		   tconcontrol->setTestRGB(rgb);
+		   } else { */
+		measureWindow->setRGB(measureRGB);
+		//}
 		Sleep(waitTimes);
 	    }
 	    //==========================================================================

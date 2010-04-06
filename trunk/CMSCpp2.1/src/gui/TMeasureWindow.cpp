@@ -22,14 +22,20 @@ __fastcall TMeasureWindow::TMeasureWindow(TComponent * Owner)
 :TForm(Owner)
 {
     DoubleBuffered = true;
+    this->Button1->OnClick = Button1Click;
 }
 
 //---------------------------------------------------------------------------
 void __fastcall TMeasureWindow::FormKeyPress(TObject * Sender, char &Key)
 {
-    if (Key == 27) {
-	//this->Visible = false;
-        this->Close();
+
+
+    switch (Key) {
+    case 27:			//esc
+	this->Close();
+	break;
+    case 32:			//space
+	this->Button1->Visible = true;
     }
 }
 
@@ -38,18 +44,52 @@ void __fastcall TMeasureWindow::FormKeyPress(TObject * Sender, char &Key)
 
 void TMeasureWindow::setRGB(int r, int g, int b)
 {
-    int color = (b << 16) + (g << 8) + r;
-    this->Color = (TColor) color;
-    this->Update();
+    if (true == tconinput) {
+	tconcontrol->setTestRGB(r, g, b);
+    } else {
+	int color = (b << 16) + (g << 8) + r;
+	this->Color = (TColor) color;
+    }
+    //this->Update();
 }
 
 void TMeasureWindow::setRGB(bptr < Dep::RGBColor > rgb)
 {
-    int r = static_cast < int >(rgb->R);
-    int g = static_cast < int >(rgb->G);
-    int b = static_cast < int >(rgb->B);
+    double_array values(new double[3]);
+    rgb->getValues(values, tconcontrol->getLUTBit());
+    int r = static_cast < int >(values[0]);
+    int g = static_cast < int >(values[1]);
+    int b = static_cast < int >(values[2]);
     setRGB(r, g, b);
 }
 
 //---------------------------------------------------------------------------
+
+void __fastcall TMeasureWindow::Button1Click(TObject * Sender)
+{
+    setRGB(128, 0, 128);
+}
+
+//---------------------------------------------------------------------------
+void TMeasureWindow::setTCONControl(bptr <
+				    cms::i2c::TCONControl > tconcontrol)
+{
+    this->tconcontrol = tconcontrol;
+    tconinput = true;
+};
+
+//---------------------------------------------------------------------------
+void TMeasureWindow::setTCONControlOff()
+{
+    tconinput = false;
+};
+
+//---------------------------------------------------------------------------
+void TMeasureWindow::setVisible(bool visible)
+{
+    this->Visible = visible;
+    if (tconinput) {
+	tconcontrol->setGammaTest(visible);
+    }
+};
 

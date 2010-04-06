@@ -67,7 +67,7 @@ namespace cms {
 		bool tconInput = bitDepth->isTCONInput();
 		bool real10Bit = bitDepth->is10in10Out();
 
-                analyzer->beginAnalyze();
+		analyzer->beginAnalyze();
 		for (int x = start; x >= end; x -= measureStep) {
 		    if (x != start && true == first) {
 			first = false;
@@ -90,18 +90,13 @@ namespace cms {
 		    }
 
 		};
-                analyzer->endAnalyze();
+		analyzer->endAnalyze();
 		return result;
 	    };
 	    void ComponentFetcher::setStop(bool stop) {
 		this->stop = stop;
 	    };
-	    /*void ComponentFetcher::setTCONInput(bool tconInput) {
-	       this->tconInput = tconInput;
-	       };
-	       void ComponentFetcher::setReal10Bit(bool real10Bit) {
-	       this->real10Bit = real10Bit;
-	       }; */
+
 	    void ComponentFetcher::storeToExcel(const string & filename,
 						Component_vector_ptr
 						componentVector) {
@@ -258,7 +253,7 @@ namespace cms {
 		//將code 0強制設定為0
 		(*dglut)[0] = RGB_ptr(new RGBColor(0, 0, 0));
 
-		for (int x = size-1; x != 0; x--) {
+		for (int x = size - 1; x != 0; x--) {
 		    rIntensity = (*rIntensityCurve)[x];
 		    gIntensity = (*gIntensityCurve)[x];
 		    bIntensity = (*bIntensityCurve)[x];
@@ -429,8 +424,7 @@ namespace cms {
 		if (null == gammaCurve) {
 		    throw new IllegalStateException("null == gammaCurve");
 		}
-		//fetcher->setTCONInput(bitDepth->isTCONInput());
-		//量測start->end得到的coponent/Y 
+		//量測start->end得到的coponent/Y
 		componentVector =
 		    fetcher->fetchComponent(start, end, firstStep, step);
 		STORE_COMPONENT("o_fetch.xls", componentVector);
@@ -463,11 +457,7 @@ namespace cms {
 		//第一次量化處理
 		//==============================================================
 		//量化
-		MaxValue quantizationBit = (bitDepth->is6in6Out()
-					    || bitDepth->
-					    is10in8Out())? bitDepth->
-		    getFRCMaxValue() : bitDepth->getLutMaxValue();
-		//MaxValue quantizationBit = bitDepth->getLutMaxValue();
+		MaxValue quantizationBit = bitDepth->getLutMaxValue();
 		RGBVector::quantization(dglut, quantizationBit);
 		//==============================================================
 

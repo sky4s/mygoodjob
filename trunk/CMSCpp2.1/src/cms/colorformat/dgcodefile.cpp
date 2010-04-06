@@ -525,8 +525,8 @@ namespace cms {
 			       *bitDepth->getLutMaxValue().toString());
 	    dgcode.addProperty(Out,
 			       *bitDepth->getOutputMaxValue().toString());
-	    dgcode.addProperty(FRC,
-			       *bitDepth->getFRCMaxValue().toString());
+	    /*dgcode.addProperty(FRC,
+			       *bitDepth->getFRCMaxValue().toString());*/
 
 	    dgcode.addProperty(Gamma, c.gamma);
 	    dgcode.addProperty(GammaCurve, c.useGammaCurve ? On : Off);
