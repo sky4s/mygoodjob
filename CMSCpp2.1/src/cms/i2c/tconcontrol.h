@@ -26,9 +26,11 @@ namespace cms {
 			 bptr < i2cControl > control1,
 			 bptr < i2cControl > control2);
 	    void setTestRGB(RGB_ptr rgb);
+	    void setTestRGB(int r, int g, int b);
 	    void setGammaTest(bool enable);
 	    unsigned char readByte(int dataAddress);
 	    void writeByte(int dataAddress, unsigned char data);
+	    const Dep::MaxValue & getLUTBit();
 	};
     };
 };

@@ -29,10 +29,7 @@ namespace cms {
 	    class ComponentFetcher {
 	      private:
 		bptr < cms::measure::IntensityAnalyzerIF > analyzer;
-		//bptr < cms::measure::MeterMeasurement > mm;
 		bool stop;
-		//bool tconInput;
-		//bool real10Bit;
 		 bptr < cms::lcd::calibrate::BitDepthProcessor > bitDepth;
 	      public:
 		 ComponentFetcher(bptr <
@@ -43,8 +40,6 @@ namespace cms {
 						    int firstStep,
 						    int step);
 		void setStop(bool stop);
-		/*void setTCONInput(bool tconInput);
-		   void setReal10Bit(bool real10Bit); */
 		static void storeToExcel(const std::string & filename,
 					 Component_vector_ptr
 					 componentVector);

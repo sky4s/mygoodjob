@@ -185,12 +185,9 @@ void __fastcall TMainForm::RadioButton_TCONClick(TObject * Sender)
 
 void __fastcall TMainForm::RadioButton_PCClick(TObject * Sender)
 {
-    //CCTLUTForm->setTCONInput(false);
     this->Panel_TCON->Visible = false;
     bitDepth->setTCONInput(false);
-    /*this->GroupBox_Card->Enabled = false;
-       this->GroupBox_DeviceAddress->Enabled = false;
-       this->GroupBox_GammaTestAddress->Enabled = false; */
+    MeasureWindow->setTCONControlOff();
 }
 
 //---------------------------------------------------------------------------
@@ -246,9 +243,12 @@ void __fastcall TMainForm::Button_ConnectClick(TObject * Sender)
 	int gammaTestBit = StrToInt(this->Edit_EnableBit->Text) + 1;
 	int testRGBAddress = StrToInt("0x" + this->Edit_LUTAddress->Text);
 	bool indepRGB = this->CheckBox_IndepRGB->Checked;
+
+
 	parameter.reset(new
 			TCONParameter(gammaTestAddress, gammaTestBit,
-				      testRGBAddress, indepRGB));
+				      testRGBAddress, indepRGB,
+				      bitDepth->getLutMaxValue()));
 	if (!dual) {
 	    control.reset(new TCONControl(parameter, i2c1st));
 	} else {
@@ -257,9 +257,11 @@ void __fastcall TMainForm::Button_ConnectClick(TObject * Sender)
 	this->Button_Connect->Enabled = false;
 	this->CheckBox_Connecting->Checked = true;
 	this->CheckBox_Connecting->Enabled = true;
-	this->mm->setTCONControl(control);
+	//this->mm->setTCONControl(control);
+	MeasureWindow->setTCONControl(control);
     } else {
-	this->mm->setTCONControlOff();
+	//this->mm->setTCONControlOff();
+	MeasureWindow->setTCONControlOff();
     }
 }
 
@@ -461,5 +463,4 @@ void __fastcall TMainForm::Edit_TargetCHChange(TObject * Sender)
 }
 
 //---------------------------------------------------------------------------
-
 

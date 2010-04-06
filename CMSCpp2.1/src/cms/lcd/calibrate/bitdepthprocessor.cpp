@@ -39,14 +39,6 @@ namespace cms {
 		}
 	    };
 
-	  /*BitDepthProcessor::BitDepthProcessor(int inBit, int lutBit, int outBit, bool gamma256, bool tconInput):gamma256(gamma256),
-		tconInput(tconInput)
-	    {
-		in = &MaxValue::getByBit(inBit);
-		lut = &MaxValue::getByBit(lutBit);
-		out = &MaxValue::getByBit(outBit);
-		bitDepth = getBitDepth(*in, *out);
-	    };*/
 
 	    BitDepthProcessor::BitDepthProcessor(int inBit, int lutBit,
 						 int outBit,
@@ -168,7 +160,7 @@ namespace cms {
 		return getMaxEffectiveDigitalCountIndex() + 1;
 	    };
 
-	    int BitDepthProcessor::getFRCBitDepth() {
+	    /*int BitDepthProcessor::getFRCBitDepth() {
 		switch (bitDepth) {
 		case b10_10:
 		    return 12;
@@ -181,12 +173,12 @@ namespace cms {
 		case b6_6:
 		    return 9;
 		}
-	    };
+	    };*/
 
-	    const MaxValue & BitDepthProcessor::getFRCMaxValue() {
+	    /*const MaxValue & BitDepthProcessor::getFRCMaxValue() {
 		return MaxValue::getByBit(getFRCBitDepth());
 
-	    };
+	    };*/
 
 	    bool BitDepthProcessor::is8in6Out() {
 		return bitDepth == b8_6;

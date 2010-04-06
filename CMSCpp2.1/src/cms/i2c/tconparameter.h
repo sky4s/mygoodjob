@@ -18,14 +18,17 @@ namespace cms {
 	    const int testRGBAddress;
 	    const bool independentRGB;
 	    const unsigned char gammaTestBit;
+	    const Dep::MaxValue & lutBit;
 	  public:
 	     TCONParameter(int gammaTestAddress,
 			   unsigned char gammaTestBit, int testRGBAddress,
-			   bool independentRGB);
+			   bool independentRGB,
+			   const Dep::MaxValue & lutBit);
 	    int getGammaTestAddress();
 	    int getTestRGBAddress();
 	    bool isIndependentRGB();
 	    unsigned char getGammaTestBit();
+	    const Dep::MaxValue & getLUTBit();
 	};
     };
 };

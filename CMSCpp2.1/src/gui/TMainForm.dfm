@@ -1041,8 +1041,8 @@ object MainForm: TMainForm
           object Label5: TLabel
             Left = 16
             Top = 89
-            Width = 105
-            Height = 24
+            Width = 87
+            Height = 16
             Caption = 'EEPROM Size'
           end
           object RadioButton_SingleTCON: TRadioButton
@@ -1152,7 +1152,7 @@ object MainForm: TMainForm
               Left = 9
               Top = 16
               Width = 51
-              Height = 25
+              Height = 16
               Caption = 'Address'
             end
             object Label3: TLabel
@@ -1209,8 +1209,8 @@ object MainForm: TMainForm
         object Label10: TLabel
           Left = 8
           Top = 168
-          Width = 33
-          Height = 25
+          Width = 27
+          Height = 16
           Caption = 'FRC'
         end
         object GroupBox8: TGroupBox
@@ -1320,7 +1320,7 @@ object MainForm: TMainForm
           Left = 40
           Top = 168
           Width = 65
-          Height = 25
+          Height = 24
           Color = cl3DLight
           Enabled = False
           TabOrder = 3

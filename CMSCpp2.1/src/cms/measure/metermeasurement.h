@@ -38,9 +38,9 @@ namespace cms {
 	    bool measureWindowClosing;
 	    bool titleTouched;
 	    bool fakeMeasure;
-	    bool tconinput;
+	    //bool tconinput;
 	     bptr < cms::measure::meter::DGLutFileMeter > dgc;
-	     bptr < cms::i2c::TCONControl > tconcontrl;
+	    //bptr < cms::i2c::TCONControl > tconcontrol;
 	  protected:
 	     bptr < cms::measure::meter::Meter > meter;
 	    TMeasureWindow *measureWindow;
@@ -48,9 +48,9 @@ namespace cms {
 	  public:
 	     MeterMeasurement(bptr < cms::measure::meter::Meter > meter,
 			      bool calibration);
-	     MeterMeasurement(bptr < cms::measure::meter::Meter > meter,
-			      bptr < cms::i2c::TCONControl > tconcontrl,
-			      bool calibration);
+	    /*MeterMeasurement(bptr < cms::measure::meter::Meter > meter,
+	       bptr < cms::i2c::TCONControl > tconcontrl,
+	       bool calibration); */
 
 	    void calibrate();
 
@@ -71,8 +71,8 @@ namespace cms {
 	    bool isFakeMeasure();
 
 	     bptr < cms::measure::meter::Meter > getMeter();
-	    void setTCONControl(bptr < cms::i2c::TCONControl > tconcontrl);
-	    void setTCONControlOff();
+	    /*void setTCONControl(bptr < cms::i2c::TCONControl > tconcontrl);
+	    void setTCONControlOff();*/
 
 	  protected:
 	    void meterClose();

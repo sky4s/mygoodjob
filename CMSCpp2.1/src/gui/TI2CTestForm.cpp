@@ -106,14 +106,14 @@ void __fastcall TI2CTestForm::Button1Click(TObject * Sender)
 	int testRGBAddress =
 	    StrToInt("0x" + this->Edit_TestRGBAdress->Text);
 	bool indepRGB = this->CheckBox_IndepRGB->Checked;
-	parameter.reset(new
+	/*parameter.reset(new
 			TCONParameter(gammaTestAddress, gammaTestBit,
 				      testRGBAddress, indepRGB));
 	if (!dual) {
 	    control.reset(new TCONControl(parameter, i2c1st));
 	} else {
 	    control.reset(new TCONControl(parameter, i2c1st, i2c2nd));
-	}
+	}*/
 
     }
 }
