@@ -18,7 +18,7 @@
 #include <ComCtrls.hpp>
 //本項目內頭文件
 #include <java/lang.h>
-#include <cms/i2c/i2ccontrol.h>
+#include <i2c/i2ccontrol.h>
 //---------------------------------------------------------------------------
 
 class TMainForm:public TForm {

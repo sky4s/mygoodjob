@@ -34,15 +34,13 @@ namespace java {
 	//======================================================================
 	int Object::globalID = 0;
 	const bool Object::equals(shared_ptr < Object > obj) {
-	    //return this->Equals(&obj);
-	    return false;
+	    return this->objectID == obj->objectID;
 	};
 
 	const Class & Object::getClass() const {
 	    return c;
 	};
 	const int Object::hashCode() {
-	    //return this->Hash();
 	    return -1;
 	};
 
@@ -50,26 +48,22 @@ namespace java {
 	    return getClass().getName();
 	};
 	const bool Object::isNull() {
-	    return _null;
+	    return null_;
 	};
-      Object::Object(bool _null):_null(_null), c(*this),
+      Object::Object(bool null_):null_(null_), c(*this),
 	    objectID(globalID++) {
 
 	};
-      Object::Object():_null(false), c(*this),
+      Object::Object():null_(false), c(*this),
 	    objectID(globalID++) {
 
 	};
-	/*Object::Object(Object & o):null(false), c(*this),
-	   objectID(globalID++) {
 
-	   }; */
 	const int Object::getObjectID() {
 	    return objectID;
 	};
 	Object_ptr Object::clone() {
 	    throw UnsupportedOperationException();
-	    //return object_ptr(new Object(this));
 	};
 	void Object::finalize() {
 	};
