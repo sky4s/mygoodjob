@@ -35,12 +35,12 @@ class TMeasureWindow:public TForm {
     void __fastcall Button1Click(TObject * Sender);
   private:			// User declarations
      bool tconinput;
-     bptr < cms::i2c::TCONControl > tconcontrol;
+     bptr < i2c::TCONControl > tconcontrol;
   public:			// User declarations
      __fastcall TMeasureWindow(TComponent * Owner);
     void setRGB(int r, int g, int b);
     void setRGB(bptr < Dep::RGBColor > rgb);
-    void setTCONControl(bptr < cms::i2c::TCONControl > tconcontrl);
+    void setTCONControl(bptr < i2c::TCONControl > tconcontrl);
     void setTCONControlOff();
     void setVisible(bool visible);
 };

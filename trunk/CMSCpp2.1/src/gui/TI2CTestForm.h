@@ -62,9 +62,9 @@ class TI2CTestForm:public TForm {
     void __fastcall Button_ReadClick(TObject * Sender);
     void __fastcall Button_WriteClick(TObject * Sender);
   private:			// User declarations
-     bptr < cms::i2c::TCONParameter > parameter;
-     bptr < cms::i2c::TCONControl > control;
-    const cms::i2c::AddressingSize getAddressingSize();
+     bptr < i2c::TCONParameter > parameter;
+     bptr < i2c::TCONControl > control;
+    const i2c::AddressingSize getAddressingSize();
     void setOptionsEditable(bool editable);
   public:			// User declarations
      __fastcall TI2CTestForm(TComponent * Owner);

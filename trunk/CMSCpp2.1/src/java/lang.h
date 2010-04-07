@@ -155,6 +155,13 @@ namespace math {
     class Interpolation1DLUT;
 };
 
+namespace i2c {
+    class TestRGBBit;
+    class i2cControl;
+    class TCONParameter;
+    class TCONControl;
+};
+
 namespace cms {
     class Patch;
     class Spectra;
@@ -206,12 +213,7 @@ namespace cms {
 	class RGBGamma;
 	class ByteBuffer;
     };
-    namespace i2c {
-	//enum AddressingSize;
-	class i2cControl;
-	class TCONParameter;
-	class TCONControl;
-    };
+
 };
 
 //==============================================================================
@@ -383,10 +385,10 @@ namespace java {
 	    IndexOutOfBoundsException(std::string message);
 	};
 	/*class Test:public TObject {
-	  public:
-	    __fastcall ~ Test() {
-	    };
-	};*/
+	   public:
+	   __fastcall ~ Test() {
+	   };
+	   }; */
     };
 };
 

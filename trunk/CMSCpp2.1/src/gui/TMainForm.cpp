@@ -196,7 +196,7 @@ void __fastcall TMainForm::RadioButton_PCClick(TObject * Sender)
 
 void __fastcall TMainForm::Button_ConnectClick(TObject * Sender)
 {
-    using namespace cms::i2c;
+    using namespace i2c;
     bptr < i2cControl > i2c1st;
     bptr < i2cControl > i2c2nd;
     unsigned char first, second;
@@ -266,9 +266,9 @@ void __fastcall TMainForm::Button_ConnectClick(TObject * Sender)
 }
 
 //---------------------------------------------------------------------------
-const cms::i2c::AddressingSize TMainForm::getAddressingSize()
+const i2c::AddressingSize TMainForm::getAddressingSize()
 {
-    using namespace cms::i2c;
+    using namespace i2c;
     int index = this->ComboBox_AddressingSize->ItemIndex;
     switch (index) {
     case 0:

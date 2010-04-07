@@ -127,9 +127,9 @@ class TMainForm:public TForm {
     //==========================================================================
     // T-CON
     //==========================================================================
-    const cms::i2c::AddressingSize getAddressingSize();
-     bptr < cms::i2c::TCONParameter > parameter;
-     bptr < cms::i2c::TCONControl > control;
+    const i2c::AddressingSize getAddressingSize();
+     bptr < i2c::TCONParameter > parameter;
+     bptr < i2c::TCONControl > control;
     void setBitDepthEnable(bool lut10, bool lut12, bool out6, bool out8,
 			   bool out10);
     void setBitDepthChecked(int lutSelect, int outSelect);
