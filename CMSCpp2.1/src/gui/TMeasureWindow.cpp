@@ -72,7 +72,7 @@ void __fastcall TMeasureWindow::Button1Click(TObject * Sender)
 
 //---------------------------------------------------------------------------
 void TMeasureWindow::setTCONControl(bptr <
-				    cms::i2c::TCONControl > tconcontrol)
+				    i2c::TCONControl > tconcontrol)
 {
     this->tconcontrol = tconcontrol;
     tconinput = true;

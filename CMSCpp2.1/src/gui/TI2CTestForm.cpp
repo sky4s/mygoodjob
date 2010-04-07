@@ -16,9 +16,9 @@ __fastcall TI2CTestForm::TI2CTestForm(TComponent * Owner)
 
 //---------------------------------------------------------------------------
 
-const cms::i2c::AddressingSize TI2CTestForm::getAddressingSize()
+const i2c::AddressingSize TI2CTestForm::getAddressingSize()
 {
-    using namespace cms::i2c;
+    using namespace i2c;
     int index = this->ComboBox_AddressingSize->ItemIndex;
     switch (index) {
     case 0:
@@ -56,7 +56,7 @@ void TI2CTestForm::setOptionsEditable(bool editable)
 
 void __fastcall TI2CTestForm::Button1Click(TObject * Sender)
 {
-    using namespace cms::i2c;
+    using namespace i2c;
     bptr < i2cControl > i2c1st;
     bptr < i2cControl > i2c2nd;
     unsigned char first, second;

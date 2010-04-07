@@ -8,35 +8,48 @@
 
 //本項目內頭文件
 
-namespace cms {
-    namespace i2c {
-	using namespace Dep;
-	 TCONParameter::TCONParameter(int gammaTestAddress,
-				      unsigned char gammaTestBit,
-				      int testRGBAddress,
-				      bool independentRGB,
-				      const MaxValue &
-				      lutBit):gammaTestAddress
-	    (gammaTestAddress), gammaTestBit(gammaTestBit),
-	    testRGBAddress(testRGBAddress),
-	    independentRGB(independentRGB), lutBit(lutBit) {
+namespace i2c {
+    using namespace Dep;
+     TCONParameter::TCONParameter(int gammaTestAddress,
+				  unsigned char gammaTestBit,
+				  int testRGBAddress,
+				  bool independentRGB,
+				  const MaxValue &
+				  lutBit):gammaTestAddress
+	(gammaTestAddress), gammaTestBit(gammaTestBit),
+	testRGBAddress(testRGBAddress), lutBit(lutBit),
+	testRGBBit(independentRGB ? TestRGBBit::
+		   IndependentInstance : TestRGBBit::DependentInstance) {
 
-	};
-	/*int TCONParameter::getGammaTestAddress() {
-	    return gammaTestAddress;
-	};
-	int TCONParameter::getTestRGBAddress() {
-	    return testRGBAddress;
-	};
-	bool TCONParameter::isIndependentRGB() {
-	    return independentRGB;
-	};
-	unsigned char TCONParameter::getGammaTestBit() {
-	    return gammaTestBit;
-	};
-	const MaxValue & TCONParameter::getLUTBit() {
-	    return lutBit;
-	};*/
     };
+    TCONParameter::TCONParameter(int gammaTestAddress,
+				 unsigned char gammaTestBit,
+				 int testRGBAddress,
+				 const TestRGBBit & testRGBBit,
+				 const Dep::
+				 MaxValue &
+				 lutBit):gammaTestAddress
+	(gammaTestAddress), gammaTestBit(gammaTestBit),
+	testRGBAddress(testRGBAddress), lutBit(lutBit),
+	testRGBBit(testRGBBit) {
+
+    };
+    TestRGBBit::TestRGBBit(const int rLowBit, const int rHighBit,
+			   const int gLowBit, const int gHighBit,
+			   const int bLowBit, const int bHighBit)
+    :rLowBit(rLowBit), rHighBit(rHighBit), gLowBit(gLowBit),
+	gHighBit(gHighBit), bLowBit(bLowBit), bHighBit(bHighBit) {
+
+    };
+    const TestRGBBit TestRGBBit::IndependentInstance(8, 0, 24, 16, 40, 32);
+    const TestRGBBit TestRGBBit::DependentInstance(0, 8, 16, 12, 24, 32);
+    /*const TestRGBBit TestRGBBit::getIndependentInstance() {
+       TestRGBBit rgbbit(8, 0, 24, 16, 40, 32);
+       return rgbbit;
+       };
+       const TestRGBBit TestRGBBit::getDependentInstance() {
+       TestRGBBit rgbbit(0, 8, 16, 12, 24, 32);
+       return rgbbit;
+       }; */
 };
 
