@@ -69,7 +69,7 @@ namespace cms {
 	       int b = _toInt(rgb->B); */
 	    bptr < ByteBuffer > data;
 
-	    if (parameter->isIndependentRGB()) {
+	    if (parameter->independentRGB) {
 		//如果test RGB各自獨立
 		//BBLL 00BH GGLL 00GH RRLL 00RH
 		data.reset(new ByteBuffer(6));
@@ -90,15 +90,15 @@ namespace cms {
 		(*data)[3] = b & 255;
 		(*data)[4] = g >> 8 & 15;
 	    }
-	    int address = parameter->getTestRGBAddress();
+	    int address = parameter->testRGBAddress;
 	    control->write(address, data);
 	    if (true == dualTCON) {
 		control2->write(address, data);
 	    }
 	};
 	void TCONControl::setGammaTest(bool enable) {
-	    int address = parameter->getGammaTestAddress();
-	    unsigned char bit = parameter->getGammaTestBit();
+	    int address = parameter->gammaTestAddress;
+	    unsigned char bit = parameter->gammaTestBit;
 	    unsigned char data = enable << (bit - 1);
 	    control->writeByte(address, data);
 	    if (true == dualTCON) {
@@ -116,7 +116,7 @@ namespace cms {
 	    }
 	};
 	const Dep::MaxValue & TCONControl::getLUTBit() {
-	    return parameter->getLUTBit();
+	    return parameter->lutBit;
 	};
     };
 };

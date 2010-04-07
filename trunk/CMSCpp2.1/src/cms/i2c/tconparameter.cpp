@@ -22,7 +22,7 @@ namespace cms {
 	    independentRGB(independentRGB), lutBit(lutBit) {
 
 	};
-	int TCONParameter::getGammaTestAddress() {
+	/*int TCONParameter::getGammaTestAddress() {
 	    return gammaTestAddress;
 	};
 	int TCONParameter::getTestRGBAddress() {
@@ -36,7 +36,7 @@ namespace cms {
 	};
 	const MaxValue & TCONParameter::getLUTBit() {
 	    return lutBit;
-	};
+	};*/
     };
 };
 
