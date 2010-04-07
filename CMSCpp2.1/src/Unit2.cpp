@@ -25,12 +25,12 @@
 #include <boost/numeric/conversion/cast.hpp>
 #include <boost/lexical_cast.hpp>
 
+using namespace std;
 
 //---------------------------------------------------------------------------
 void excel()
 {
     using namespace cms::colorformat;
-    using namespace std;
     using namespace cms::util;
     //string_ptr filename(new string("a.xls"));
 
@@ -79,7 +79,6 @@ void excel()
 void excel2()
 {
     using namespace cms::colorformat;
-    using namespace std;
     using namespace cms::util;
     string_vector_ptr fieldsNames = StringVector::fromCString(2, "a", "b");
 
@@ -127,7 +126,6 @@ void excel2()
 void lut()
 {
     using namespace math;
-    using namespace std;
     double a[] = { 1, 2, 3, 4, 5, 6 };
     double b[] = { 2, 4, 5, 6, 8, 10 };
 
@@ -510,7 +508,6 @@ void ca210()
 
 void strTry()
 {
-    using namespace std;
     string a = " 1 ";
     string b = " 2 ";
     string c = a + b;
@@ -524,7 +521,6 @@ void strTry()
 void measureFileTry()
 {
     using namespace cms::colorformat;
-    using namespace std;
 
     const string & filename = "ramp.xls";
     ExcelFileDB db(filename, ReadOnly);
@@ -554,7 +550,6 @@ void maxValueTry()
 
 void byteOpTry()
 {
-    using namespace std;
     int i = 259;
     int i1 = i & 255;
     int i2 = i >> 8 & 255;
@@ -597,7 +592,6 @@ void bufferTry()
 void rgbGammaTry()
 {
     using namespace cms::lcd::calibrate;
-    using namespace std;
     RGBGamma_ptr rgbgamma =
 	RGBGamma::loadFromDesiredGamma("DesiredGamma.xls");
     double_vector_ptr r = rgbgamma->r;

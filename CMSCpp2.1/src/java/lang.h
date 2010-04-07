@@ -14,6 +14,7 @@
 #include <boost/scoped_ptr.hpp>
 #include <boost/foreach.hpp>
 #include <boost/lexical_cast.hpp>
+#include <vcl.h>
 //本項目內頭文件
 
 
@@ -203,10 +204,10 @@ namespace cms {
 	class Util;
 	class RGBVector;
 	class RGBGamma;
-        class ByteBuffer;
+	class ByteBuffer;
     };
     namespace i2c {
-    //enum AddressingSize;
+	//enum AddressingSize;
 	class i2cControl;
 	class TCONParameter;
 	class TCONControl;
@@ -293,11 +294,13 @@ namespace java {
 	    const string_ptr getName() const;
 	};
 
-	class Object {
+	class Object /*:public TObject */  {
 	  private:
+	    //用來計量產生的物件數
 	    static int globalID;
+	    //用來記錄目前物件的ID
 	    const int objectID;
-	    bool _null;
+	    bool null_;
 	    const Class c;
 	  public:
 	    const bool equals(Object_ptr obj);
@@ -305,7 +308,7 @@ namespace java {
 	    const int hashCode();
 	    const string_ptr toString() const;
 	    const bool isNull();
-	     Object(bool _null);
+	     Object(bool null_);
 	     Object();
 	    const int getObjectID();
 
@@ -349,6 +352,8 @@ namespace java {
 	  private:
 	    std::string message;
 	};
+
+
 	class RuntimeException:public Exception /*, std::runtime_error */  {
 	  public:
 	    RuntimeException();
@@ -377,7 +382,11 @@ namespace java {
 	    IndexOutOfBoundsException();
 	    IndexOutOfBoundsException(std::string message);
 	};
-
+	/*class Test:public TObject {
+	  public:
+	    __fastcall ~ Test() {
+	    };
+	};*/
     };
 };
 
