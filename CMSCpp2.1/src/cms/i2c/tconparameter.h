@@ -13,7 +13,7 @@
 namespace cms {
     namespace i2c {
 	class TCONParameter {
-	  private:
+	  public:
 	    const int gammaTestAddress;
 	    const int testRGBAddress;
 	    const bool independentRGB;
@@ -24,11 +24,11 @@ namespace cms {
 			   unsigned char gammaTestBit, int testRGBAddress,
 			   bool independentRGB,
 			   const Dep::MaxValue & lutBit);
-	    int getGammaTestAddress();
+	    /*int getGammaTestAddress();
 	    int getTestRGBAddress();
 	    bool isIndependentRGB();
 	    unsigned char getGammaTestBit();
-	    const Dep::MaxValue & getLUTBit();
+	    const Dep::MaxValue & getLUTBit();*/
 	};
     };
 };

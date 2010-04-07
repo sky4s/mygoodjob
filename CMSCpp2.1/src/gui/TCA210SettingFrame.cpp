@@ -59,7 +59,23 @@ void __fastcall TCA210SettingFrame::ComboBox_SyncModeChange(TObject *
 	return;
     };
     int index = this->ComboBox_SyncMode->ItemIndex;
-    ca210API->setSyncMode(index);
+    using namespace ca210api;
+    SyncMode mode;
+    switch (index) {
+    case 0:
+	mode = NTSC;
+	break;
+    case 1:
+	mode = PAL;
+	break;
+    case 2:
+	mode = EXT;
+	break;
+    case 3:
+	mode = UNIV;
+	break;
+    }
+    ca210API->setSyncMode(mode);
 }
 
 //---------------------------------------------------------------------------
@@ -71,7 +87,19 @@ void __fastcall TCA210SettingFrame::ComboBox_CalStandardChange(TObject *
 	return;
     };
     int index = this->ComboBox_CalStandard->ItemIndex;
-    ca210API->setCalStandard(index);
+
+    using namespace ca210api;
+    CalStandard std;
+    switch (index) {
+    case 0:
+	std = D6500k;
+	break;
+    case 1:
+	std = D9300k;
+	break;
+    }
+
+    ca210API->setCalStandard(std);
 }
 
 //---------------------------------------------------------------------------
