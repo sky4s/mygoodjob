@@ -60,20 +60,19 @@ namespace cms {
 	    Component_vector_ptr ComponentFetcher::
 		fetchComponent(int start, int end, int firstStep,
 			       int step) {
+		int_vector_ptr measurecode =
+		    getMeasureCode(start, end, firstStep, step);
+		return fetchComponent(measurecode);
+	    };
 
-		Component_vector_ptr result(new Component_vector());
-		int measureStep = firstStep;
-		bool first = true;
+	    Component_vector_ptr ComponentFetcher::
+		fetchComponent(int_vector_ptr measureCode) {
 		bool tconInput = bitDepth->isTCONInput();
 		bool real10Bit = bitDepth->is10in10Out();
+		Component_vector_ptr result(new Component_vector());
 
 		analyzer->beginAnalyze();
-		for (int x = start; x >= end; x -= measureStep) {
-		    if (x != start && true == first) {
-			first = false;
-			measureStep = step;
-		    }
-
+		foreach(const int &x, *measureCode) {
 		    RGB_ptr rgb(tconInput ?
 				(real10Bit ?
 				 new RGBColor(x, x, x,
@@ -88,11 +87,30 @@ namespace cms {
 		    if (true == stop) {
 			break;
 		    }
-
-		};
+		}
 		analyzer->endAnalyze();
 		return result;
 	    };
+
+	    int_vector_ptr ComponentFetcher::getMeasureCode(int start,
+							    int end,
+							    int firstStep,
+							    int step) {
+		int_vector_ptr measureCode;
+		int measureStep = firstStep;
+		bool first = true;
+
+		for (int x = start; x >= end; x -= measureStep) {
+		    if (x != start && true == first) {
+			first = false;
+			measureStep = step;
+		    }
+		    measureCode->push_back(x);
+		}
+
+		return measureCode;
+	    };
+
 	    void ComponentFetcher::setStop(bool stop) {
 		this->stop = stop;
 	    };
@@ -431,7 +449,7 @@ namespace cms {
 		STORE_COMPONENT("o_fetch.xls", componentVector);
 		if (true == stop) {
 		    stop = false;
-		    return null;
+		    return RGB_vector_ptr((RGB_vector *) null);
 		}
 		//²£¥Ígenerator
 		generator.
@@ -525,6 +543,7 @@ namespace cms {
 	     */
 	    RGB_vector_ptr LCDCalibrator::getDGLut(int firstStep, int step) {
 		set(255, 0, firstStep, step);
+		throw java::lang::UnsupportedOperationException();
 	    };
 
 	    void LCDCalibrator::storeDGLut(const std::

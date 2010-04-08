@@ -29,9 +29,6 @@ void __fastcall TTargetWhiteForm2::RadioButton_MaxRGBClick(TObject *
     this->Edit_R->SetTextBuf("255");
     this->Edit_G->SetTextBuf("255");
     this->Edit_B->SetTextBuf("255");
-    //this->ScrollBar_R->Position = 255;
-    //this->ScrollBar_G->Position = 255;
-    //this->ScrollBar_B->Position = 255;
 }
 
 //---------------------------------------------------------------------------

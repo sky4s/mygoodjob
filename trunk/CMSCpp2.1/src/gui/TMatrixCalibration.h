@@ -57,6 +57,8 @@ class TMatrixCalibrationForm:public TForm {
     TButton *Button_LoadFromFile;
     TCA210SettingFrame *TCA210SettingFrame1;
     TLabel *Label13;
+        void __fastcall TCA210SettingFrame1Button_ConnectClick(
+          TObject *Sender);
   private:			// User declarations
      bptr < cms::measure::meter::CA210 > ca210;
      bptr < ca210api::CA210API > ca210API;
