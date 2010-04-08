@@ -20,9 +20,11 @@ namespace i2c {
 	const int gHighBit;
 	const int bLowBit;
 	const int bHighBit;
+	const int totalByte;
 	 TestRGBBit(const int rLowBit, const int rHighBit,
 		    const int gLowBit, const int gHighBit,
-		    const int bLowBit, const int bHighBit);
+		    const int bLowBit, const int bHighBit,
+		    const int totalByte);
 	/*static const TestRGBBit & getIndependentInstance();
 	   static const TestRGBBit & getDependentInstance(); */
 	//private:
@@ -34,7 +36,6 @@ namespace i2c {
       public:
 	const int gammaTestAddress;
 	const int testRGBAddress;
-	//const bool independentRGB;
 	const unsigned char gammaTestBit;
 	const Dep::MaxValue & lutBit;
 	const TestRGBBit & testRGBBit;

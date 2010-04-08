@@ -185,7 +185,7 @@ namespace cms {
 		RGB_vector_ptr result = RGBVector::clone(source);
 
 		RGB_ptr rgb255 = (*result)[255];
-		STORE_RGBVECTOR("1.xls", result);
+		STORE_RGBVECTOR("frcNR_0.xls", result);
 		if (!bitDepth->is6in6Out()) {
 		    foreach(const Channel & ch, *Channel::RGBChannel) {
 			if (rgb255->getValue(ch) >= 248.5) {
@@ -206,7 +206,7 @@ namespace cms {
 			    }
 			}
 		    }
-		    STORE_RGBVECTOR("2.xls", result);
+		    STORE_RGBVECTOR("frcNR_1.xls", result);
 		}
 		foreach(const Channel & ch, *Channel::RGBChannel) {
 		    for (int x = 1; x != 31; x++) {
@@ -228,7 +228,7 @@ namespace cms {
 
 		    }
 		}
-		STORE_RGBVECTOR("3.xls", result);
+		STORE_RGBVECTOR("frcNR_2.xls", result);
 		return result;
 	    };
 	  FrcNROp::FrcNROp(bptr < BitDepthProcessor > bitDepth):bitDepth(bitDepth)

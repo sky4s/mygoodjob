@@ -412,6 +412,7 @@ namespace cms {
 		p1 = p2 = 0;
 		gamma = rgamma = ggamma = bgamma = -1;
 		fetcher.reset(new ComponentFetcher(analyzer, bitDepth));
+		stop = false;
 	    };
 
 
@@ -428,7 +429,10 @@ namespace cms {
 		componentVector =
 		    fetcher->fetchComponent(start, end, firstStep, step);
 		STORE_COMPONENT("o_fetch.xls", componentVector);
-
+		if (true == stop) {
+		    stop = false;
+		    return null;
+		}
 		//²£¥Ígenerator
 		generator.
 		    reset(new DGLutGenerator(componentVector, bitDepth));
@@ -542,6 +546,10 @@ namespace cms {
 		file.setRawData(componentVector, initialRGBGamma,
 				finalRGBGamma);
 
+	    };
+
+	    void LCDCalibrator::setStop(bool stop) {
+		fetcher->setStop(stop);
 	    };
 
 	    RGB_vector_ptr LCDCalibrator::

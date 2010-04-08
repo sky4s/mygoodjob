@@ -69,9 +69,8 @@ class TCCTLUTForm:public TForm {
     void setMeasureInfo();
     int serialid;
      bptr < cms::lcd::calibrate::BitDepthProcessor > bitDepth;
-    //int in, lut, out;
     RGBGamma_ptr rgbGamma;
-
+     bptr < cms::lcd::calibrate::LCDCalibrator > calibrator;
 
   public:			// User declarations
      __fastcall TCCTLUTForm(TComponent * Owner);

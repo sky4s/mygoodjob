@@ -133,6 +133,7 @@ namespace cms {
 		void setGammaCurve0(double_vector_ptr rgammaCurve,
 				    double_vector_ptr ggammaCurve,
 				    double_vector_ptr bgammaCurve);
+		bool stop;
 	      public:
 		static double_vector_ptr getGammaCurveVector
 		    (double gamma, int n, int effectiven);
@@ -162,6 +163,7 @@ namespace cms {
 		RGB_vector_ptr getDGLut(int firstStep, int step);
 		void storeDGLut(const std::string & filename,
 				RGB_vector_ptr dglut);
+		void setStop(bool stop);
 	      private:
 		 RGB_vector_ptr getDGLutOpResult(RGB_vector_ptr dglut);
 	    };
