@@ -30,32 +30,52 @@ namespace i2c {
 	int b = _toInt(rgb->B);
 	setTestRGB(r, g, b);
     };
+    bptr < ByteBuffer > TCONControl::getRGBByteBuffer(int r, int g, int b,
+						      const TestRGBBit &
+						      testRGBBit) {
+	bptr < ByteBuffer > data(new ByteBuffer(testRGBBit.totalByte));
+	int rLow = r & 255;
+	int rHigh = (r >> 8) & 15;
+	int gLow = g & 255;
+	int gHigh = (g >> 8) & 15;
+	int bLow = b & 255;
+	int bHigh = (b >> 8) & 15;
+
+	(*data)[testRGBBit.rLowBit / 8] = rLow;
+	(*data)[testRGBBit.gLowBit / 8] = gLow;
+	(*data)[testRGBBit.bLowBit / 8] = bLow;
+        
+	return data;
+    };
+
     void TCONControl::setTestRGB(int r, int g, int b) {
-	bptr < ByteBuffer > data;
+	//bptr < ByteBuffer > data;
+	const TestRGBBit & testRGBBit = parameter->testRGBBit;
+	//data.reset(new ByteBuffer(testRGBBit.totalByte));
+	bptr < ByteBuffer > data = getRGBByteBuffer(r, g, b, testRGBBit);
+	/*if (parameter->independentRGB) {
+	   //¦pªGtest RGB¦U¦Û¿W¥ß
+	   //BBLL 00BH GGLL 00GH RRLL 00RH
+	   // 8 0 24 16 40 32
+	   data.reset(new ByteBuffer(6));
+	   (*data)[0] = r >> 8;
+	   (*data)[1] = r & 255;
+	   (*data)[2] = g >> 8;
+	   (*data)[3] = g & 255;
+	   (*data)[4] = b >> 8;
+	   (*data)[5] = b & 255;
 
-	if (parameter->independentRGB) {
-	    //¦pªGtest RGB¦U¦Û¿W¥ß
-	    //BBLL 00BH GGLL 00GH RRLL 00RH
-            // 8 0 24 16 40 32
-	    data.reset(new ByteBuffer(6));
-	    (*data)[0] = r >> 8;
-	    (*data)[1] = r & 255;
-	    (*data)[2] = g >> 8;
-	    (*data)[3] = g & 255;
-	    (*data)[4] = b >> 8;
-	    (*data)[5] = b & 255;
-
-	} else {
-	    //¦pªGtest RGB¨S¦³¿W¥ß
-	    //00BH BBLL GGLL GHRH RRLL
-            // 0 8 16 12 24 32
-	    data.reset(new ByteBuffer(5));
-	    (*data)[0] = r & 255;
-	    (*data)[1] = r >> 8 + g >> 8 & 15 << 4;
-	    (*data)[2] = g & 255;
-	    (*data)[3] = b & 255;
-	    (*data)[4] = g >> 8 & 15;
-	}
+	   } else {
+	   //¦pªGtest RGB¨S¦³¿W¥ß
+	   //00BH BBLL GGLL GHRH RRLL
+	   // 0 8 16 12 24 32
+	   data.reset(new ByteBuffer(5));
+	   (*data)[0] = r & 255;
+	   (*data)[1] = r >> 8 + g >> 8 & 15 << 4;
+	   (*data)[2] = g & 255;
+	   (*data)[3] = b & 255;
+	   (*data)[4] = g >> 8 & 15;
+	   } */
 	int address = parameter->testRGBAddress;
 	control->write(address, data);
 	if (true == dualTCON) {

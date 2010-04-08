@@ -69,13 +69,13 @@ void __fastcall TCCTLUTForm::Button_RunClick(TObject * Sender)
 {
     using namespace std;
     using namespace Dep;
+    using namespace cms::lcd::calibrate;
 
-    /*int targetWhiteChannel = this->Edit_TargetWhiteChannel->Text.ToInt();
-       MainForm->setChannel(targetWhiteChannel); */
     MainForm->setToTargetChannel();
 
-    cms::lcd::calibrate::LCDCalibrator calibrator(MainForm->analyzer,
-						  bitDepth);
+    /*cms::lcd::calibrate::LCDCalibrator calibrator(MainForm->analyzer,
+       bitDepth); */
+    calibrator.reset(new LCDCalibrator(MainForm->analyzer, bitDepth));
 
     //==========================================================================
     // P1P2和RBInterp的選擇
@@ -84,13 +84,13 @@ void __fastcall TCCTLUTForm::Button_RunClick(TObject * Sender)
 	//選了P1P2
 	int p1 = this->Edit_P1->Text.ToInt();
 	int p2 = this->Edit_P2->Text.ToInt();
-	calibrator.setP1P2(p1, p2);
+	calibrator->setP1P2(p1, p2);
     } else if (this->RadioButton_RBInterp->Checked) {
 	//選了RBInterp
 	int rbunder = this->Edit_RBInterpUnder->Text.ToInt();
-	calibrator.setRBInterpolation(rbunder);
+	calibrator->setRBInterpolation(rbunder);
     } else {
-	calibrator.setNoneDimCorrect();
+	calibrator->setNoneDimCorrect();
     }
 
     //==========================================================================
@@ -100,12 +100,12 @@ void __fastcall TCCTLUTForm::Button_RunClick(TObject * Sender)
     //==========================================================================
     if (this->RadioButton_Gamma->Checked) {
 	double gamma = this->ComboBox_Gamma->Text.ToDouble();
-	calibrator.setGamma(gamma);
+	calibrator->setGamma(gamma);
     } else if (this->RadioButton_GammaCurve->Checked) {
 	double_vector_ptr gammaCurve = rgbGamma->w;
-	calibrator.setGammaCurve(gammaCurve);
+	calibrator->setGammaCurve(gammaCurve);
     }
-    calibrator.setGByPass(this->CheckBox_GByPass->Checked);
+    calibrator->setGByPass(this->CheckBox_GByPass->Checked);
     //==========================================================================
 
     //==========================================================================
@@ -113,12 +113,12 @@ void __fastcall TCCTLUTForm::Button_RunClick(TObject * Sender)
     //==========================================================================
     if (this->CheckBox_BGain->Checked) {
 	double gain = this->Edit_BGain->Text.ToDouble();
-	calibrator.setBIntensityGain(gain);
+	calibrator->setBIntensityGain(gain);
     }
-    calibrator.setBMax(this->CheckBox_BMax->Checked);
+    calibrator->setBMax(this->CheckBox_BMax->Checked);
     //==========================================================================
-    calibrator.setAvoidFRCNoise(this->CheckBox_AvoidNoise->Checked);
-    calibrator.setKeepMaxLuminance(this->CheckBox_KeepMax->Checked);
+    calibrator->setAvoidFRCNoise(this->CheckBox_AvoidNoise->Checked);
+    calibrator->setKeepMaxLuminance(this->CheckBox_KeepMax->Checked);
 
     int start = this->Edit_StartLevel->Text.ToInt();
     int end = this->Edit_EndLevel->Text.ToInt();
@@ -129,13 +129,6 @@ void __fastcall TCCTLUTForm::Button_RunClick(TObject * Sender)
     try {
 	this->TOutputFileFrame1->createDir();
 
-	/*if (!DirectoryExists(dir)) {
-	   bool result = CreateDir(dir);
-	   if (!result) {
-	   ShowMessage("Create " + dir + " is failed.");
-	   return;
-	   }
-	   } */
 	//預設的第一階
 	int firstStep = bitDepth->getMeasureFirstStep();
 	if (bitDepth->getMeasureStart() != start
@@ -146,14 +139,17 @@ void __fastcall TCCTLUTForm::Button_RunClick(TObject * Sender)
 	}
 
 	RGB_vector_ptr dglut =
-	    calibrator.getDGLut(start, end, firstStep, step);
+	    calibrator->getDGLut(start, end, firstStep, step);
+	if (dglut == null) {
+	    return;
+	}
 
 	AnsiString astr =
 	    this->TOutputFileFrame1->getFullPrefix() +
 	    FormatFloat("00", serialid) + ".xls";
 	string filename = astr.c_str();
 
-	calibrator.storeDGLut(filename, dglut);
+	calibrator->storeDGLut(filename, dglut);
 	ShowMessage("Ok!");
     }
     catch(java::lang::IllegalStateException & ex) {
@@ -219,7 +215,7 @@ void __fastcall TCCTLUTForm::CheckBox_Gamma256Click(TObject * Sender)
 void __fastcall TCCTLUTForm::FormShow(TObject * Sender)
 {
     using namespace Dep;
-    MaxValue & input = bitDepth->getInputMaxValue();
+    const MaxValue & input = bitDepth->getInputMaxValue();
     bool avoidNoise = (input == MaxValue::Int6Bit
 		       || input == MaxValue::Int8Bit);
     this->CheckBox_AvoidNoise->Enabled = avoidNoise;
@@ -234,7 +230,7 @@ void __fastcall TCCTLUTForm::RadioButton_GammaCurveClick(TObject * Sender)
 	const AnsiString & filename = OpenDialog1->FileName;
 	rgbGamma = RGBGamma::loadFromDesiredGamma(filename.c_str());
 	//int effectiven = bitDepth->getEffectiveLevel();
-	int n = bitDepth->getLevel();
+	unsigned int n = bitDepth->getLevel();
 	if (rgbGamma != null && rgbGamma->w->size() == n) {
 	    this->RadioButton_GammaCurve->Checked = true;
 	    /*bool gByPassEnable = this->bitDepth->is8in6Out()
@@ -268,9 +264,9 @@ TOutputFileFrame1Button_BrowseDirClick(TObject * Sender)
 
 void __fastcall TCCTLUTForm::FormKeyPress(TObject * Sender, char &Key)
 {
-    if (Key == 27) {
-	//this->Visible = false;
-	this->Close();
+    if (Key == 27 && calibrator != null) {
+	calibrator->setStop(true);
+	ShowMessage("Interrupt!");
     }
 }
 

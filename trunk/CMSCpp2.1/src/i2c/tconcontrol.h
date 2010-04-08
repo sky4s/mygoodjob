@@ -24,6 +24,10 @@ namespace i2c {
 	 TCONControl(bptr < TCONParameter > parameter,
 		     bptr < i2cControl > control1,
 		     bptr < i2cControl > control2);
+	 bptr < cms::util::ByteBuffer > getRGBByteBuffer(int r, int g,
+							 int b,
+							 const TestRGBBit &
+							 testRGBBit);
 	void setTestRGB(RGB_ptr rgb);
 	void setTestRGB(int r, int g, int b);
 	void setGammaTest(bool enable);

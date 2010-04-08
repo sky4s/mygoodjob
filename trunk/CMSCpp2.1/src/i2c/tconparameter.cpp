@@ -36,13 +36,17 @@ namespace i2c {
     };
     TestRGBBit::TestRGBBit(const int rLowBit, const int rHighBit,
 			   const int gLowBit, const int gHighBit,
-			   const int bLowBit, const int bHighBit)
+			   const int bLowBit, const int bHighBit,
+			   const int totalByte)
     :rLowBit(rLowBit), rHighBit(rHighBit), gLowBit(gLowBit),
-	gHighBit(gHighBit), bLowBit(bLowBit), bHighBit(bHighBit) {
+	gHighBit(gHighBit), bLowBit(bLowBit), bHighBit(bHighBit),
+	totalByte(totalByte) {
 
     };
-    const TestRGBBit TestRGBBit::IndependentInstance(8, 0, 24, 16, 40, 32);
-    const TestRGBBit TestRGBBit::DependentInstance(0, 8, 16, 12, 24, 32);
+    const TestRGBBit TestRGBBit::IndependentInstance(8, 0, 24, 16, 40, 32,
+						     6);
+    const TestRGBBit TestRGBBit::DependentInstance(0, 8, 16, 12, 24, 32,
+						   5);
     /*const TestRGBBit TestRGBBit::getIndependentInstance() {
        TestRGBBit rgbbit(8, 0, 24, 16, 40, 32);
        return rgbbit;
