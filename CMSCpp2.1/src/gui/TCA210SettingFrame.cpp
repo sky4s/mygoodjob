@@ -23,13 +23,17 @@ __fastcall TCA210SettingFrame::TCA210SettingFrame(TComponent * Owner)
 
 //---------------------------------------------------------------------------
 
-void TCA210SettingFrame::setCA210(bptr < cms::measure::meter::CA210 >
+/*void TCA210SettingFrame::setCA210(bptr < cms::measure::meter::CA210 >
 				  ca210)
 {
     this->ca210 = ca210;
     this->ca210API = ca210->getCA210API();
-}
+}*/
 
+void TCA210SettingFrame::setCA210API(bptr < ca210api::CA210API > ca210API)
+{
+    this->ca210API = ca210API;
+};
 
 void __fastcall TCA210SettingFrame::Button_ConnectClick(TObject * Sender)
 {

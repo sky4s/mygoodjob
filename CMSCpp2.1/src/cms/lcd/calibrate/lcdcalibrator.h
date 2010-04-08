@@ -39,6 +39,12 @@ namespace cms {
 		Component_vector_ptr fetchComponent(int start, int end,
 						    int firstStep,
 						    int step);
+		Component_vector_ptr fetchComponent(int_vector_ptr
+						    measureCode);
+		static int_vector_ptr getMeasureCode(int start, int end,
+						     int firstStep,
+						     int step);
+
 		void setStop(bool stop);
 		static void storeToExcel(const std::string & filename,
 					 Component_vector_ptr

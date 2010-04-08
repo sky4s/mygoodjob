@@ -310,5 +310,10 @@ object MatrixCalibrationForm: TMatrixCalibrationForm
     Width = 499
     Height = 154
     TabOrder = 2
+    inherited GroupBox1: TGroupBox
+      inherited Button_Connect: TButton
+        OnClick = TCA210SettingFrame1Button_ConnectClick
+      end
+    end
   end
 end

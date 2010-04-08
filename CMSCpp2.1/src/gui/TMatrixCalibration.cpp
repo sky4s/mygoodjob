@@ -41,3 +41,11 @@ bool TMatrixCalibrationForm::setCA210(bptr < cms::measure::meter::CA210 >
 
 //---------------------------------------------------------------------------
 
+void __fastcall TMatrixCalibrationForm::TCA210SettingFrame1Button_ConnectClick(
+      TObject *Sender)
+{
+  TCA210SettingFrame1->Button_ConnectClick(Sender);
+
+}
+//---------------------------------------------------------------------------
+

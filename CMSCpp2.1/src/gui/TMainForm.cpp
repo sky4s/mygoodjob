@@ -462,5 +462,6 @@ void __fastcall TMainForm::Edit_TargetCHChange(TObject * Sender)
     getCA210()->getCA210API()->setChannelNO(Edit_TargetCH->Text.ToInt());
 }
 
+
 //---------------------------------------------------------------------------
 
