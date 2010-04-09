@@ -118,8 +118,9 @@ void TMainForm::resetDummyMeter()
 bptr < cms::measure::meter::CA210 > TMainForm::getCA210()
 {
     if (null == ca210 && true == linkCA210) {
+   cms::measure::meter::Meter *pointer=  meter.get();
 	ca210.reset(dynamic_cast <
-		    cms::measure::meter::CA210 * >(meter.get()));
+		    cms::measure::meter::CA210 * >(pointer));
     }
     return ca210;
 };
@@ -463,5 +464,11 @@ void __fastcall TMainForm::Edit_TargetCHChange(TObject * Sender)
 }
 
 
+//---------------------------------------------------------------------------
+
+void __fastcall TMainForm::Button1Click(TObject *Sender)
+{
+MeasureWindow->setVisible(true);
+}
 //---------------------------------------------------------------------------
 

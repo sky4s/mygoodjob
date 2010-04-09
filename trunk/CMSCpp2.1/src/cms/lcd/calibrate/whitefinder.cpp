@@ -23,8 +23,8 @@ namespace cms {
 						MeterMeasurement >
 						mm):mm(mm),
 		aroundAlgo(ChromaticAroundAlgorithm())
-	    , nearAlgo(CIEuv1960NearestAlgorithm
-		       (XYZ_ptr((CIEXYZ *) NULL), mm)) {
+	    , nearAlgo(CIEuv1960NearestAlgorithm_
+		       (XYZ_ptr((CIEXYZ *) null), mm)) {
 	    };
 
 	    RGB_ptr WhitePointFinder::findMatchRGB0(xyY_ptr xyY,

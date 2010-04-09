@@ -64,7 +64,7 @@ namespace cms {
 		if (null == measureWindow) {
 		    measureWindow = MeasureWindow;
 		}
-		measureWindow->Visible = visible;
+                measureWindow->setVisible(visible);
 		//measureWindow->ShowModal();
 		measureWindowClosing = !visible;
 		//}
@@ -220,13 +220,13 @@ namespace cms {
 		if (measureWindow != NULL) {
 		    //show出黑幕, 避免影響校正
 		    measureWindow->setRGB(0, 0, 0);
-		    measureWindow->Visible = true;
+		    measureWindow->setVisible(true);
 		}
 		ShowMessage(meter->getCalibrationDescription()->c_str());
 		meter->calibrate();
 		if (measureWindow != null) {
 		    //關閉黑幕
-		    measureWindow->Visible = false;
+		    measureWindow->setVisible(false);
 		}
 		ShowMessage("End of calibration");
 	    };

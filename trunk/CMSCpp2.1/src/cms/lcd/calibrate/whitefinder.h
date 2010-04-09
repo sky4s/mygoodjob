@@ -24,7 +24,7 @@ namespace cms {
 		 cms::lcd::calibrate::algo::
 		    ChromaticAroundAlgorithm & aroundAlgo;
 		 cms::lcd::calibrate::algo::
-		    CIEuv1960NearestAlgorithm & nearAlgo;
+		    CIEuv1960NearestAlgorithm_ & nearAlgo;
 
 	      public:
 		 WhitePointFinder(bptr < cms::measure::MeterMeasurement >

@@ -194,6 +194,7 @@ namespace cms {
 	    namespace algo {
 		class ChromaticAroundAlgorithm;
 		class CIEuv1960NearestAlgorithm;
+                class CIEuv1960NearestAlgorithm_;
 	    };
 	};
     };

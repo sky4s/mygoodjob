@@ -330,7 +330,7 @@ namespace cms {
 	    int_vector_ptr MeasureCondition::
 		getMeasureCode(const int start, const int end,
 			       const int firstStep, const int step) {
-		int_vector_ptr measureCode;
+		int_vector_ptr measureCode(new int_vector());
 		int measureStep = firstStep;
 		bool first = true;
 
