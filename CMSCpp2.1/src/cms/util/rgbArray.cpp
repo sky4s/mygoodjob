@@ -1,6 +1,6 @@
 #include <includeall.h>
 #pragma hdrstop
-#include "rgbArray.h"
+//#include "rgbArray.h"
 
 //C系統文件
 
@@ -9,9 +9,9 @@
 //其他庫頭文件
 
 //本項目內頭文件
-#include "util.h"
+//#include "util.h"
 
-namespace cms {
+namespace cms { 
     namespace util {
 	using namespace std;
 	using Dep::RGBColor;

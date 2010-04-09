@@ -8,7 +8,6 @@
 #include <ADODB.hpp>
 #include <DB.hpp>
 //本項目內頭文件
-#include <java/lang.h>
 
 //#define USE_QUERY
 

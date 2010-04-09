@@ -1,6 +1,6 @@
 #include <includeall.h>
 #pragma hdrstop
-#include "svd.h"
+//#include "svd.h"
 
 //C系統文件
 

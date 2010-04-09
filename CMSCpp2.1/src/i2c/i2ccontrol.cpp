@@ -1,6 +1,6 @@
 #include <includeall.h>
 #pragma hdrstop
-#include "i2ccontrol.h"
+//#include "i2ccontrol.h"
 
 //C系統文件
 

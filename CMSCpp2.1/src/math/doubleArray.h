@@ -8,8 +8,15 @@
 
 //本項目內頭文件
 #include <java/lang.h>
+
+#ifdef __BORLANDC__
+# pragma pack(push, 8)
+#endif
 #include <tnt/tnt_array1d.h>
 #include <tnt/tnt_array2d.h>
+#ifdef __BORLANDC__
+# pragma pack(pop)
+#endif
 
 namespace math {
     class DoubleArray {

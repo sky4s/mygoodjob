@@ -9,7 +9,6 @@
 //其他庫頭文件
 
 //本項目內頭文件
-#include <java/lang.h>
 #include <gui/TMeasureWindow.h>
 
 namespace cms {
@@ -38,7 +37,6 @@ namespace cms {
 	    bool measureWindowClosing;
 	    bool titleTouched;
 	    bool fakeMeasure;
-	    //bool tconinput;
 	     bptr < cms::measure::meter::DGLutFileMeter > dgc;
 	  protected:
 	     bptr < cms::measure::meter::Meter > meter;

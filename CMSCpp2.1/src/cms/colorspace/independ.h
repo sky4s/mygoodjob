@@ -9,7 +9,6 @@
 
 //本項目內頭文件
 #include "colorspace.h"
-#include <java/lang.h>
 
 namespace cms {
     namespace colorspace {

@@ -100,7 +100,7 @@ void TMainForm::setDummyMeterFilename(const std::string & filename)
     bptr < DGLutFile > dgcode(new DGLutFile(filename));
     meter.reset(new DGLutFileMeter(dgcode));
     mm.reset(new MeterMeasurement(meter, false));
-    mm->setFakeMeasure(true);
+    //mm->setFakeMeasure(true);
     analyzer.reset(new CA210IntensityAnalyzer(mm));
 };
 
@@ -118,7 +118,7 @@ void TMainForm::resetDummyMeter()
 bptr < cms::measure::meter::CA210 > TMainForm::getCA210()
 {
     if (null == ca210 && true == linkCA210) {
-   cms::measure::meter::Meter *pointer=  meter.get();
+	cms::measure::meter::Meter * pointer = meter.get();
 	ca210.reset(dynamic_cast <
 		    cms::measure::meter::CA210 * >(pointer));
     }
@@ -290,7 +290,8 @@ const i2c::AddressingSize TMainForm::getAddressingSize()
 	return _256k;
     case 8:
 	return _512k;
-
+    default:
+	return _2k;
     }
 }
 
@@ -466,9 +467,10 @@ void __fastcall TMainForm::Edit_TargetCHChange(TObject * Sender)
 
 //---------------------------------------------------------------------------
 
-void __fastcall TMainForm::Button1Click(TObject *Sender)
+void __fastcall TMainForm::Button1Click(TObject * Sender)
 {
-MeasureWindow->setVisible(true);
+    MeasureWindow->setVisible(true);
 }
+
 //---------------------------------------------------------------------------
 

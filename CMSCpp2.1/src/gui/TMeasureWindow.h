@@ -14,7 +14,6 @@
 #include <Forms.hpp>
 #include <Menus.hpp>
 //本項目內頭文件
-#include <java/lang.h>
 //---------------------------------------------------------------------------
 /*
  要不要把TCON Control拉到measure window來?

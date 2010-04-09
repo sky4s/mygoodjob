@@ -1,6 +1,6 @@
 #include <includeall.h>
 #pragma hdrstop
-#include "regression.h"
+//#include "regression.h"
 
 //C系統文件
 #include <assert.h>

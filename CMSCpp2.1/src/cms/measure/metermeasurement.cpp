@@ -1,6 +1,6 @@
 #include <includeall.h>
 #pragma hdrstop
-#include "MeterMeasurement.h"
+//#include "MeterMeasurement.h"
 
 //C系統文件
 

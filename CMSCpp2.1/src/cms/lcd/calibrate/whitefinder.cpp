@@ -1,6 +1,6 @@
 #include <includeall.h>
 #pragma hdrstop
-#include "whitefinder.h"
+//#include "whitefinder.h"
 
 //C系統文件
 

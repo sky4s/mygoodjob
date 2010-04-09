@@ -7,11 +7,17 @@
 
 //其他庫頭文件
 #include <vcl.h>
+#ifdef __BORLANDC__
+# pragma pack(push, 8)
+#endif
+#include <tnt/tnt_array2d.h>
+#ifdef __BORLANDC__
+# pragma pack(pop)
+#endif
+
 //本項目內頭文件
 #include <cms/core.h>
 #include "colorspace.h"
-#include <tnt/tnt_array2d.h>
-#include <java/lang.h>
 
 #define MaxValue_vector std::vector < MaxValue >
 
@@ -234,7 +240,7 @@ namespace cms {
 		//MaxValue & operator=(const MaxValue & that);
 		//static MaxValue getMaxValue(BitDepth bitDepth);
 		static const MaxValue & getByBit(int bit);
-		const string_ptr toString();
+		const string_ptr toString() const;
 	    };
 	};
     };

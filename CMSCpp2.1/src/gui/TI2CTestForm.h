@@ -13,7 +13,6 @@
 #include <StdCtrls.hpp>
 #include <Forms.hpp>
 //本項目內頭文件
-#include <java/lang.h>
 //---------------------------------------------------------------------------
 class TI2CTestForm:public TForm {
     __published:		// IDE-managed Components

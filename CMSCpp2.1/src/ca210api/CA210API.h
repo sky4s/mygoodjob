@@ -11,7 +11,7 @@
 #include <CA200SRVRLib/CA200SRVRLib_TLB.h>
 //#include <vcl.h>
 //本項目內頭文件
-#include <java/lang.h>
+
 //---------------------------------------------------------------------------
 
 namespace ca210api {

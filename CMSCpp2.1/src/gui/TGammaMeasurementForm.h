@@ -15,7 +15,6 @@
 #include <ExtCtrls.hpp>
 #include "TOutputFileFrame.h"
 //本項目內頭文件
-#include <java/lang.h>
 //---------------------------------------------------------------------------
 class TGammaMeasurementForm:public TForm {
     __published:		// IDE-managed Components

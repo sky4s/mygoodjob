@@ -15,7 +15,6 @@
 #include <StdCtrls.hpp>
 #include <Forms.hpp>
 //本項目內頭文件
-#include <java/lang.h>
 //---------------------------------------------------------------------------
 class TCA210SettingFrame:public TFrame {
     __published:		// IDE-managed Components

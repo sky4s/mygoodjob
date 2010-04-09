@@ -9,7 +9,6 @@
 //其他庫頭文件
 
 //本項目內頭文件
-#include <java/lang.h>
 #include "algo.h"
 
 namespace cms {

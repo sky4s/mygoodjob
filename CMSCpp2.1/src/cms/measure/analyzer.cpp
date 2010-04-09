@@ -1,6 +1,6 @@
 #include <includeall.h>
 #pragma hdrstop
-#include "analyzer.h"
+//#include "analyzer.h"
 
 //C系統文件
 

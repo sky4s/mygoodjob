@@ -1,6 +1,6 @@
 #include <includeall.h>
 #pragma hdrstop
-#include "tconcontrol.h"
+//#include "tconcontrol.h"
 
 //C系統文件
 
@@ -33,6 +33,7 @@ namespace i2c {
     bptr < ByteBuffer > TCONControl::getRGBByteBuffer(int r, int g, int b,
 						      const TestRGBBit &
 						      testRGBBit) {
+	/* TODO : getRGBByteBuffer */
 	bptr < ByteBuffer > data(new ByteBuffer(testRGBBit.totalByte));
 	int rLow = r & 255;
 	int rHigh = (r >> 8) & 15;
@@ -44,7 +45,7 @@ namespace i2c {
 	(*data)[testRGBBit.rLowBit / 8] = rLow;
 	(*data)[testRGBBit.gLowBit / 8] = gLow;
 	(*data)[testRGBBit.bLowBit / 8] = bLow;
-        
+
 	return data;
     };
 

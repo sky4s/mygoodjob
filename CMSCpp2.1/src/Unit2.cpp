@@ -16,10 +16,16 @@
 #include <iterator>
 
 #include <boost/array.hpp>
-//#include <jama/jama_svd.h>
 
+#include <vcl.h>
+#ifdef __BORLANDC__
+# pragma pack(push, 8)
+#endif
 #include <locale>
-#include <ca210api/CA210API.h>
+#ifdef __BORLANDC__
+# pragma pack(pop)
+#endif
+
 
 #include <math.hpp>
 #include <boost/numeric/conversion/cast.hpp>

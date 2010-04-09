@@ -1,6 +1,6 @@
 #include <includeall.h>
 #pragma hdrstop
-#include "doublearray.h"
+//#include "doublearray.h"
 
 //C系統文件
 #include <cstdarg>
