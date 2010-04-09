@@ -70,7 +70,7 @@ namespace ca210api {
 
 	void close();
 	float_array triggerMeasurement();
-	float_array triggerComponentAnalyze();
+	float_array triggerIntensityAnalyze();
 	 bptr < CAMeasureResult > triggerMeasureResult();
 
 	// Options

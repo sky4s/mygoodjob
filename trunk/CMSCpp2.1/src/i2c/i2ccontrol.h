@@ -59,7 +59,6 @@ namespace i2c {
       protected:
 	static RW_Func i2cio;
 
-	//void setDataAddressByteArray(int dataAddress);
 	unsigned char *getDataAddressByteArray(int dataAddress);
 	virtual void write0(unsigned char dev_addr,
 			    unsigned char *data_addr,
@@ -71,8 +70,6 @@ namespace i2c {
 
 
       public:
-	/*i2cControl(const unsigned char deviceAddress,
-	   int dataAddressLength); */
 	 i2cControl(const unsigned char deviceAddress,
 		    const AddressingSize size);
 	virtual bool connect() = 0;

@@ -64,7 +64,7 @@ namespace cms {
 
 	    class CA210:public Meter {
 	      protected:
-		static bptr < ca210api::CA210API > _CA210API;
+		static bptr < ca210api::CA210API > CA210API_;
 		//Date calibrateTime;
 		static void initCA210API();
 		int measureCount;

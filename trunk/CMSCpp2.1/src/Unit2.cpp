@@ -615,6 +615,16 @@ class Son:public Base {
     };
 };
 
+void measureConditionTry()
+{
+    using namespace cms::lcd::calibrate;
+    MeasureCondition mc(64, 0, 8, 255, 64, 16);
+    int_vector_ptr code = mc.getMeasureCode();
+    foreach(const int &c, *code) {
+	cout << c << endl;
+    }
+};
+
 #pragma argsused
 int main(int argc, char *argv[])
 {
@@ -660,9 +670,7 @@ int main(int argc, char *argv[])
     //castTry();
     //rgbGammaTry();
     //bufferTry();
-    Son son;
-    Base & base = son;
-    base.doing();
+    measureConditionTry();
 
     getch();
 }

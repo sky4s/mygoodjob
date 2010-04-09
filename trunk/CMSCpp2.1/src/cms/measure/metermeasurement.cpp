@@ -29,8 +29,10 @@ namespace cms {
 		calibrate();
 	    }
 	};
-      MeterMeasurement::MeterMeasurement(shared_ptr < Meter > meter, bool calibration):meter(meter), waitTimes(meter->getSuggestedWaitTimes()), measureWindowClosing(false), titleTouched(false), fakeMeasure(false) {
-																	/*, tconinput(false) */
+      MeterMeasurement::MeterMeasurement(shared_ptr < Meter > meter, bool calibration):meter(meter), waitTimes(meter->getSuggestedWaitTimes()),
+	    measureWindowClosing(false), titleTouched(false),
+	    fakeMeasure(false) {
+	    /*, tconinput(false) */
 
 	    init(calibration);
 	};
@@ -150,17 +152,17 @@ namespace cms {
 	};
 
 	/*void MeterMeasurement::setTCONControl(bptr <
-					      cms::i2c::TCONControl >
-					      tconcontrol) {
-	    //this->tconcontrol = tconcontrol;
-	    //tconinput = true;
-	    measureWindow->setTCONControl(tconcontrol);;
-	};
+	   cms::i2c::TCONControl >
+	   tconcontrol) {
+	   //this->tconcontrol = tconcontrol;
+	   //tconinput = true;
+	   measureWindow->setTCONControl(tconcontrol);;
+	   };
 
-	void MeterMeasurement::setTCONControlOff() {
-	    //tconinput = false;
-	    measureWindow->setTCONControlOff();
-	};*/
+	   void MeterMeasurement::setTCONControlOff() {
+	   //tconinput = false;
+	   measureWindow->setTCONControlOff();
+	   }; */
 
 	void MeterMeasurement::meterClose() {
 	    //meter->close();
@@ -189,27 +191,7 @@ namespace cms {
 	    // 變換完視窗顏色的短暫停留
 	    //==========================================================================
 	    if (!fakeMeasure) {
-		/*if (tconinput) {
-		   const MaxValue & maxValue = measureRGB->getMaxValue();
-		   double r = measureRGB->R;
-		   double g = measureRGB->G;
-		   double b = measureRGB->B;
-
-		   if (maxValue == MaxValue::Int10Bit
-		   || maxValue == MaxValue::RealInt10Bit) {
-		   r *= 4;
-		   g *= 4;
-		   b *= 4;
-		   } else {
-		   r *= 16;
-		   g *= 16;
-		   b *= 16;
-		   }
-		   RGB_ptr rgb(new RGBColor(r, g, b, MaxValue::Int12Bit));
-		   tconcontrol->setTestRGB(rgb);
-		   } else { */
 		measureWindow->setRGB(measureRGB);
-		//}
 		Sleep(waitTimes);
 	    }
 	    //==========================================================================

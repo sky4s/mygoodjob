@@ -73,8 +73,6 @@ void __fastcall TCCTLUTForm::Button_RunClick(TObject * Sender)
 
     MainForm->setToTargetChannel();
 
-    /*cms::lcd::calibrate::LCDCalibrator calibrator(MainForm->analyzer,
-       bitDepth); */
     calibrator.reset(new LCDCalibrator(MainForm->analyzer, bitDepth));
 
     //==========================================================================
@@ -120,26 +118,27 @@ void __fastcall TCCTLUTForm::Button_RunClick(TObject * Sender)
     calibrator->setAvoidFRCNoise(this->CheckBox_AvoidNoise->Checked);
     calibrator->setKeepMaxLuminance(this->CheckBox_KeepMax->Checked);
 
-    int start = this->Edit_StartLevel->Text.ToInt();
-    int end = this->Edit_EndLevel->Text.ToInt();
-    int step = this->ComboBox_LevelStep->Text.ToInt();
+    /*int start = this->Edit_StartLevel->Text.ToInt();
+       int end = this->Edit_EndLevel->Text.ToInt();
+       int step = this->ComboBox_LevelStep->Text.ToInt(); */
 
     int waitTimes = MainForm->getInterval();
     MainForm->mm->setWaitTimes(waitTimes);
+
     try {
 	this->TOutputFileFrame1->createDir();
 
 	//預設的第一階
-	int firstStep = bitDepth->getMeasureFirstStep();
-	if (bitDepth->getMeasureStart() != start
-	    || bitDepth->getMeasureEnd() != end
-	    || bitDepth->getMeasureStep() != step) {
-	    //如果量測條件被改變, 則不要採用原本的第一階
-	    firstStep = step;
-	}
+	/*int firstStep = bitDepth->getMeasureFirstStep();
+	   if (bitDepth->getMeasureStart() != start
+	   || bitDepth->getMeasureEnd() != end
+	   || bitDepth->getMeasureStep() != step) {
+	   //如果量測條件被改變, 則不要採用原本的第一階
+	   firstStep = step;
+	   } */
+	bptr < MeasureCondition > measureCondition = getMeasureCondition();
 
-	RGB_vector_ptr dglut =
-	    calibrator->getDGLut(start, end, firstStep, step);
+	RGB_vector_ptr dglut = calibrator->getDGLut(measureCondition);
 	if (dglut == null) {
 	    return;
 	}
@@ -175,6 +174,7 @@ void __fastcall TCCTLUTForm::FormCreate(TObject * Sender)
     this->Button_Reset->Visible = debug;
     this->RadioButton_None->Visible = debug;
     //==========================================================================
+
 }
 
 //---------------------------------------------------------------------------
@@ -215,10 +215,15 @@ void __fastcall TCCTLUTForm::CheckBox_Gamma256Click(TObject * Sender)
 void __fastcall TCCTLUTForm::FormShow(TObject * Sender)
 {
     using namespace Dep;
+
     const MaxValue & input = bitDepth->getInputMaxValue();
     bool avoidNoise = (input == MaxValue::Int6Bit
 		       || input == MaxValue::Int8Bit);
     this->CheckBox_AvoidNoise->Enabled = avoidNoise;
+
+    bool tconInput = bitDepth->isTCONInput();
+    this->CheckBox_Expand->Visible = !tconInput;
+
     setMeasureInfo();
 }
 
@@ -282,6 +287,51 @@ void __fastcall TCCTLUTForm::RadioButton_GammaClick(TObject * Sender)
 void __fastcall TCCTLUTForm::ComboBox_GammaChange(TObject * Sender)
 {
     RadioButton_GammaClick(Sender);
+}
+
+//---------------------------------------------------------------------------
+
+void __fastcall TCCTLUTForm::CheckBox_ExpandClick(TObject * Sender)
+{
+    bool checked = this->CheckBox_Expand->Checked;
+    this->Panel_Expand->Visible = checked;
+}
+
+//---------------------------------------------------------------------------
+bptr < cms::lcd::calibrate::MeasureCondition >
+    TCCTLUTForm::getMeasureCondition()
+{
+    using namespace cms::lcd::calibrate;
+    bool expand = this->CheckBox_Expand->Checked;
+    bptr < MeasureCondition > condition;
+    if (expand) {
+	int lowstart = this->Edit_LowStartLevel->Text.ToInt();
+	int lowend = this->Edit_LowEndLevel->Text.ToInt();
+	int lowstep = this->ComboBox_LowStep->Text.ToInt();
+	int highstart = this->Edit_HighStartLevel->Text.ToInt();
+	int highend = this->Edit_HighEndLevel->Text.ToInt();
+	int highstep = this->ComboBox_HighStep->Text.ToInt();
+	condition.reset(new
+			MeasureCondition(lowstart, lowend, lowstep,
+					 highstart, highend, highstep));
+    } else {
+	int start = this->Edit_StartLevel->Text.ToInt();
+	int end = this->Edit_EndLevel->Text.ToInt();
+	int step = this->ComboBox_LevelStep->Text.ToInt();
+
+	//預設的第一階
+	int firstStep = bitDepth->getMeasureFirstStep();
+	if (bitDepth->getMeasureStart() != start
+	    || bitDepth->getMeasureEnd() != end
+	    || bitDepth->getMeasureStep() != step) {
+	    //如果量測條件被改變, 則不要採用原本的第一階
+	    firstStep = step;
+	}
+
+	condition.reset(new MeasureCondition(start, end, firstStep, step));
+    }
+    return condition;
+
 }
 
 //---------------------------------------------------------------------------
