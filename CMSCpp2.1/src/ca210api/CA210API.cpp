@@ -105,7 +105,7 @@ namespace ca210api {
 	return measureResult;
     };
 
-    float_array CA210API::triggerComponentAnalyze() {
+    float_array CA210API::triggerIntensityAnalyze() {
 	ca.set_DisplayMode(Analyzer_nodisplay);
 	ca.Measure(0);
 

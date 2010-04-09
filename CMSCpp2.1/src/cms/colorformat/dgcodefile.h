@@ -96,6 +96,12 @@ namespace cms {
 	    static const std::string Start;
 	    static const std::string End;
 	    static const std::string Step;
+	    static const std::string LowStart;
+	    static const std::string LowEnd;
+	    static const std::string LowStep;
+	    static const std::string HighStart;
+	    static const std::string HighEnd;
+	    static const std::string HighStep;
 	    static const std::string P1P2;
 	    static const std::string P1;
 	    static const std::string P2;

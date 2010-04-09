@@ -97,9 +97,42 @@ namespace cms {
 
 	    };
 
-
 	    enum Correct {
 		P1P2 = 1, RBInterpolation = 2, None = 3
+	    };
+
+	    class MeasureCondition {
+	      public:
+		const int start;
+		const int end;
+		const int step;
+		const int firstStep;
+
+		const int lowStart;
+		const int lowEnd;
+		const int lowStep;
+		const int highStart;
+		const int highEnd;
+		const int highStep;
+		const bool normalCondition;
+		 MeasureCondition(const int start, const int end,
+				  const int firstStep, const int step);
+		 MeasureCondition(const int lowStart, const int lowEnd,
+				  const int lowStep, const int highStart,
+				  const int highEnd, const int highStep);
+		int_vector_ptr getMeasureCode();
+	      private:
+		 int_vector_ptr getMeasureCode(const int start,
+					       const int end,
+					       const int firstStep,
+					       const int step);
+		int_vector_ptr getMeasureCode(const int lowStart,
+					      const int lowEnd,
+					      const int lowStep,
+					      const int highStart,
+					      const int highEnd,
+					      const int highStep);
+		bool isNoRemainder(int start, int end, int step);
 	    };
 
 	    class LCDCalibrator {
@@ -132,8 +165,7 @@ namespace cms {
 		RGBGamma_ptr finalRGBGamma;
 		RGBGamma_ptr initialRGBGamma;
 
-		int start, end, firstStep, step;
-		void set(int start, int end, int firstStep, int step);
+		 bptr < MeasureCondition > measureCondition;
 		 bptr < BitDepthProcessor > bitDepth;
 		void setGammaCurve0(double_vector_ptr gammaCurve);
 		void setGammaCurve0(double_vector_ptr rgammaCurve,
@@ -164,6 +196,8 @@ namespace cms {
 			       bptr < BitDepthProcessor > bitDepth);
 
 		//RGB_vector_ptr getDGLut(int start, int end, int step);
+		RGB_vector_ptr getDGLut(bptr < MeasureCondition >
+					measureCondition);
 		RGB_vector_ptr getDGLut(int start, int end, int firstStep,
 					int step);
 		RGB_vector_ptr getDGLut(int firstStep, int step);

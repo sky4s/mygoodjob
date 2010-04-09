@@ -47,7 +47,7 @@ namespace cms {
 	RGB_ptr CA210IntensityAnalyzer::getIntensity(RGB_ptr rgb) {
 	    Patch_ptr patch = mm->measure(rgb, rgb->toString());
 	    XYZ = patch->getXYZ();
-	    float_array rgbComponent;
+	    float_array rgbIntensity;
 	    if (true == dummyMode) {
 		//若為dummy mode, 代表從meter直接撈資料
 		//而meter是假的, 其實是從檔案撈資料
@@ -59,17 +59,17 @@ namespace cms {
 		}
 		Component_ptr c = dgc->getComponent();
 		RGB_ptr intensity = c->intensity;
-		rgbComponent.reset(new float[3]);
-		rgbComponent[0] = intensity->R;
-		rgbComponent[1] = intensity->G;
-		rgbComponent[2] = intensity->B;
+		rgbIntensity.reset(new float[3]);
+		rgbIntensity[0] = intensity->R;
+		rgbIntensity[1] = intensity->G;
+		rgbIntensity[2] = intensity->B;
 	    } else {
-		rgbComponent = ca210api->triggerComponentAnalyze();
+		rgbIntensity = ca210api->triggerIntensityAnalyze();
 	    }
 
-	    float r = rgbComponent[0];
-	    float g = rgbComponent[1];
-	    float b = rgbComponent[2];
+	    float r = rgbIntensity[0];
+	    float g = rgbIntensity[1];
+	    float b = rgbIntensity[2];
 	    RGB_ptr intensity(new RGBColor(r, g, b));
 	    return intensity;
 

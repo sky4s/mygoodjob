@@ -51,6 +51,22 @@ class TCCTLUTForm:public TForm {
     TCheckBox *CheckBox_KeepMax;
     TLabel *Label9;
     TOutputFileFrame *TOutputFileFrame1;
+    TCheckBox *CheckBox_Expand;
+    TPanel *Panel_Expand;
+    TGroupBox *GroupBox6;
+    TComboBox *ComboBox_LowStep;
+    TLabel *Label5;
+    TLabel *Label6;
+    TEdit *Edit_LowEndLevel;
+    TEdit *Edit_LowStartLevel;
+    TLabel *Label10;
+    TGroupBox *GroupBox7;
+    TLabel *Label11;
+    TEdit *Edit_HighStartLevel;
+    TEdit *Edit_HighEndLevel;
+    TComboBox *ComboBox_HighStep;
+    TLabel *Label12;
+    TLabel *Label13;
     void __fastcall RadioButton_RBInterpClick(TObject * Sender);
     void __fastcall RadioButton_P1P2Click(TObject * Sender);
     void __fastcall Button_RunClick(TObject * Sender);
@@ -65,12 +81,14 @@ class TCCTLUTForm:public TForm {
     void __fastcall FormKeyPress(TObject * Sender, char &Key);
     void __fastcall RadioButton_GammaClick(TObject * Sender);
     void __fastcall ComboBox_GammaChange(TObject * Sender);
+    void __fastcall CheckBox_ExpandClick(TObject * Sender);
   private:			// User declarations
     void setMeasureInfo();
     int serialid;
      bptr < cms::lcd::calibrate::BitDepthProcessor > bitDepth;
     RGBGamma_ptr rgbGamma;
      bptr < cms::lcd::calibrate::LCDCalibrator > calibrator;
+     bptr < cms::lcd::calibrate::MeasureCondition > getMeasureCondition();
 
   public:			// User declarations
      __fastcall TCCTLUTForm(TComponent * Owner);

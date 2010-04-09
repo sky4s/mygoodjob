@@ -188,6 +188,7 @@ namespace cms {
     namespace lcd {
 	namespace calibrate {
 	    class BitDepthProcessor;
+	    class MeasureCondition;
 	    class LCDCalibrator;
 	    class Component;
 	    namespace algo {

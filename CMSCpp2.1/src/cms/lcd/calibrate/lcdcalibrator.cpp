@@ -60,8 +60,10 @@ namespace cms {
 	    Component_vector_ptr ComponentFetcher::
 		fetchComponent(int start, int end, int firstStep,
 			       int step) {
+		MeasureCondition measureCondition(start, end, firstStep,
+						  step);
 		int_vector_ptr measurecode =
-		    getMeasureCode(start, end, firstStep, step);
+		    measureCondition.getMeasureCode();
 		return fetchComponent(measurecode);
 	    };
 
@@ -90,25 +92,6 @@ namespace cms {
 		}
 		analyzer->endAnalyze();
 		return result;
-	    };
-
-	    int_vector_ptr ComponentFetcher::getMeasureCode(int start,
-							    int end,
-							    int firstStep,
-							    int step) {
-		int_vector_ptr measureCode;
-		int measureStep = firstStep;
-		bool first = true;
-
-		for (int x = start; x >= end; x -= measureStep) {
-		    if (x != start && true == first) {
-			first = false;
-			measureStep = step;
-		    }
-		    measureCode->push_back(x);
-		}
-
-		return measureCode;
 	    };
 
 	    void ComponentFetcher::setStop(bool stop) {
@@ -319,18 +302,82 @@ namespace cms {
 
 	    //==================================================================
 
+	    //==================================================================
+	  MeasureCondition::MeasureCondition(const int start, const int end, const int firstStep, const int step):start(start), end(end),
+		firstStep(firstStep), step(step), lowStart(0), lowEnd(0),
+		lowStep(0), highStart(0), highEnd(0), highStep(0),
+		normalCondition(true) {
+
+	    };
+	    MeasureCondition::MeasureCondition(const int lowStart,
+					       const int lowEnd,
+					       const int lowStep,
+					       const int highStart,
+					       const int highEnd, const int
+					       highStep):start(0), end(0),
+		firstStep(0), step(0), lowStart(lowStart), lowEnd(lowEnd),
+		lowStep(lowStep), highStart(highStart), highEnd(highEnd),
+		highStep(highStep), normalCondition(false) {
+	    };
+	    int_vector_ptr MeasureCondition::getMeasureCode() {
+		if (normalCondition) {
+		    return getMeasureCode(start, end, firstStep, step);
+		} else {
+		    return getMeasureCode(lowStart, lowEnd, lowStep,
+					  highStart, highEnd, highStep);
+		}
+	    };
+	    int_vector_ptr MeasureCondition::
+		getMeasureCode(const int start, const int end,
+			       const int firstStep, const int step) {
+		int_vector_ptr measureCode;
+		int measureStep = firstStep;
+		bool first = true;
+
+		for (int x = start; x >= end; x -= measureStep) {
+		    if (x != start && true == first) {
+			first = false;
+			measureStep = step;
+		    }
+		    measureCode->push_back(x);
+		}
+
+		return measureCode;
+	    };
+	    int_vector_ptr MeasureCondition::
+		getMeasureCode(const int lowStart, const int lowEnd,
+			       const int lowStep, const int highStart,
+			       const int highEnd, const int highStep) {
+		int_vector_ptr measureCode(new int_vector());
+
+		int start = isNoRemainder(highStart, highEnd, highStep) ?
+		    highStart : highStart + 1;
+
+		for (int x = start; x >= highEnd; x -= highStep) {
+		    int code = x > 255 ? 255 : x;
+		    measureCode->push_back(code);
+		}
+
+		for (int x = lowStart; x >= lowEnd; x -= lowStep) {
+		    measureCode->push_back(x);
+		}
+
+		return measureCode;
+	    };
+
+	    bool MeasureCondition::isNoRemainder(int start, int end,
+						 int step) {
+		double dividend = ((double) start - end) / step;
+		bool noremainder =
+		    dividend == static_cast < int >(dividend);
+		return noremainder;
+	    }
+	    //==================================================================
 
 
 	    //==================================================================
 	    // LCDCalibrator
 	    //==================================================================
-	    void LCDCalibrator::set(int start, int end, int firstStep,
-				    int step) {
-		this->start = start;
-		this->end = end;
-		this->firstStep = firstStep;
-		this->step = step;
-	    };
 
 	    double_vector_ptr
 		LCDCalibrator::getGammaCurveVector(double gamma, int n,
@@ -434,18 +481,18 @@ namespace cms {
 	    };
 
 
-	    /*
-	       CCT + Gamma
-	     */
-	    RGB_vector_ptr LCDCalibrator::
-		getDGLut(int start, int end, int firstStep, int step) {
-		set(start, end, firstStep, step);
+	    RGB_vector_ptr LCDCalibrator::getDGLut(bptr <
+						   MeasureCondition >
+						   measureCondition) {
+		this->measureCondition = measureCondition;
+
 		if (null == gammaCurve) {
 		    throw new IllegalStateException("null == gammaCurve");
 		}
 		//量測start->end得到的coponent/Y
 		componentVector =
-		    fetcher->fetchComponent(start, end, firstStep, step);
+		    fetcher->fetchComponent(measureCondition->
+					    getMeasureCode());
 		STORE_COMPONENT("o_fetch.xls", componentVector);
 		if (true == stop) {
 		    stop = false;
@@ -539,10 +586,24 @@ namespace cms {
 	    };
 
 	    /*
+	       CCT + Gamma
+	     */
+	    RGB_vector_ptr LCDCalibrator::
+		getDGLut(int start, int end, int firstStep, int step) {
+		bptr < MeasureCondition >
+		    measureCondition(new
+				     MeasureCondition(start, end,
+						      firstStep, step));
+		return getDGLut(measureCondition);
+
+
+	    };
+
+	    /*
 	       Gamma Only
 	     */
 	    RGB_vector_ptr LCDCalibrator::getDGLut(int firstStep, int step) {
-		set(255, 0, firstStep, step);
+		//set(255, 0, firstStep, step);
 		throw java::lang::UnsupportedOperationException();
 	    };
 

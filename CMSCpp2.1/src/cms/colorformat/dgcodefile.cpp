@@ -463,6 +463,18 @@ namespace cms {
 	const
 	string DGLutProperty::Step = "step";
 	const
+	string DGLutProperty::HighStart = "high level start";
+	const
+	string DGLutProperty::HighEnd = "high level end";
+	const
+	string DGLutProperty::HighStep = "high level step";
+	const
+	string DGLutProperty::LowStart = "low level start";
+	const
+	string DGLutProperty::LowEnd = "low level end";
+	const
+	string DGLutProperty::LowStep = "low level step";
+	const
 	string DGLutProperty::P1P2 = "p1p2";
 	const
 	string DGLutProperty::P1 = "p1";
@@ -506,9 +518,20 @@ namespace cms {
 	const string DGLutProperty::Off = "Off";
 	void
 	 DGLutProperty::store(DGLutFile & dgcode) const {
-	    dgcode.addProperty(Start, c.start);
-	    dgcode.addProperty(End, c.end);
-	    dgcode.addProperty(Step, c.step);
+	    bptr < MeasureCondition > mc = c.measureCondition;
+	    if (mc->normalCondition) {
+		dgcode.addProperty(Start, mc->start);
+		dgcode.addProperty(End, mc->end);
+		dgcode.addProperty(Step, mc->step);
+	    } else {
+		dgcode.addProperty(HighStart, mc->highStart);
+		dgcode.addProperty(HighEnd, mc->highEnd);
+		dgcode.addProperty(HighStep, mc->highStep);
+		dgcode.addProperty(LowStart, mc->lowStart);
+		dgcode.addProperty(LowEnd, mc->lowEnd);
+		dgcode.addProperty(LowStep, mc->lowStep);
+	    }
+
 	    dgcode.addProperty(DimCorrect,
 			       (c.correct ==
 				cms::lcd::calibrate::P1P2) ? "P1P2" :
@@ -526,7 +549,7 @@ namespace cms {
 	    dgcode.addProperty(Out,
 			       *bitDepth->getOutputMaxValue().toString());
 	    /*dgcode.addProperty(FRC,
-			       *bitDepth->getFRCMaxValue().toString());*/
+	     *bitDepth->getFRCMaxValue().toString());*/
 
 	    dgcode.addProperty(Gamma, c.gamma);
 	    dgcode.addProperty(GammaCurve, c.useGammaCurve ? On : Off);

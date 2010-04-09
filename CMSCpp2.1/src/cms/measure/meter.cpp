@@ -66,7 +66,7 @@ namespace cms {
 	    };
 
 	    void CA210::calibrate() {
-		_CA210API->calibrate();
+		CA210API_->calibrate();
 		//calibrateTime = new Date();
 		measureCount = 0;
 	    };
@@ -83,19 +83,19 @@ namespace cms {
 		//using namespace ca210api;
 		switch (patchIntensity) {
 		case Bleak:
-		    _CA210API->setAveragingMode(ca210api::Fast);
+		    CA210API_->setAveragingMode(ca210api::Fast);
 		    break;
 		case Bright:
-		    _CA210API->setAveragingMode(ca210api::Slow);
+		    CA210API_->setAveragingMode(ca210api::Slow);
 		    break;
 		case Auto:
-		    _CA210API->setAveragingMode(ca210api::Auto);
+		    CA210API_->setAveragingMode(ca210api::Auto);
 		    break;
 		}
 	    };
 	    double_array CA210::triggerMeasurementInXYZ() {
 		measureCount++;
-		float_array values = _CA210API->triggerMeasurement();
+		float_array values = CA210API_->triggerMeasurement();
 		double_array result(new double[3]);
 		result[0] = values[0];
 		result[1] = values[1];
@@ -115,19 +115,19 @@ namespace cms {
 		return Instr::CA210;
 	    };
 	    void CA210::close() {
-		_CA210API->close();
+		CA210API_->close();
 	    };
-	    //ca210api::CA210API CA210::_CA210API;
+	    //ca210api::CA210API CA210::CA210API_;
 	    bptr < ca210api::CA210API > CA210::getCA210API() {
-		return _CA210API;
+		return CA210API_;
 	    };
-	    bptr < ca210api::CA210API > CA210::_CA210API;
+	    bptr < ca210api::CA210API > CA210::CA210API_;
 	    void CA210::initCA210API() {
-		_CA210API =
+		CA210API_ =
 		    bptr < ca210api::CA210API > (new ca210api::CA210API());
 	    };
 	    CA210::CA210() {
-		if (null == _CA210API) {
+		if (null == CA210API_) {
 		    initCA210API();
 		}
 	    };

@@ -2,7 +2,7 @@ object CCTLUTForm: TCCTLUTForm
   Left = 300
   Top = 300
   Width = 657
-  Height = 415
+  Height = 480
   Caption = 'CCT LUT'
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
@@ -19,7 +19,7 @@ object CCTLUTForm: TCCTLUTForm
   TextHeight = 16
   object Label9: TLabel
     Left = 288
-    Top = 360
+    Top = 424
     Width = 349
     Height = 16
     Caption = 'Copyright (C) 2010, AU Optronics Corp., All Right Reserved.'
@@ -28,33 +28,33 @@ object CCTLUTForm: TCCTLUTForm
     Left = 16
     Top = 16
     Width = 193
-    Height = 121
+    Height = 313
     Caption = 'Gray Level Option'
     TabOrder = 0
     object Label1: TLabel
       Left = 8
-      Top = 24
+      Top = 48
       Width = 63
       Height = 16
       Caption = 'Start Level'
     end
     object Label2: TLabel
       Left = 8
-      Top = 56
+      Top = 80
       Width = 60
       Height = 16
       Caption = 'End Level'
     end
     object Label3: TLabel
       Left = 8
-      Top = 88
+      Top = 112
       Width = 64
       Height = 16
       Caption = 'Level Step'
     end
     object Edit_StartLevel: TEdit
       Left = 80
-      Top = 24
+      Top = 48
       Width = 105
       Height = 24
       TabOrder = 0
@@ -62,7 +62,7 @@ object CCTLUTForm: TCCTLUTForm
     end
     object ComboBox_LevelStep: TComboBox
       Left = 80
-      Top = 88
+      Top = 112
       Width = 105
       Height = 24
       ItemHeight = 16
@@ -78,18 +78,27 @@ object CCTLUTForm: TCCTLUTForm
     end
     object Edit_EndLevel: TEdit
       Left = 80
-      Top = 56
+      Top = 80
       Width = 105
       Height = 24
       TabOrder = 2
       Text = '0'
     end
+    object CheckBox_Expand: TCheckBox
+      Left = 8
+      Top = 16
+      Width = 121
+      Height = 25
+      Caption = 'Expand Mode'
+      TabOrder = 3
+      OnClick = CheckBox_ExpandClick
+    end
   end
   object GroupBox2: TGroupBox
-    Left = 16
-    Top = 144
-    Width = 193
-    Height = 121
+    Left = 216
+    Top = 16
+    Width = 201
+    Height = 113
     Caption = 'Gamma'
     TabOrder = 1
     object RadioButton_GammaCurve: TRadioButton
@@ -131,9 +140,9 @@ object CCTLUTForm: TCCTLUTForm
       OnClick = RadioButton_GammaClick
     end
     object ComboBox_Gamma: TComboBox
-      Left = 80
+      Left = 88
       Top = 16
-      Width = 105
+      Width = 97
       Height = 24
       ItemHeight = 16
       TabOrder = 4
@@ -152,9 +161,9 @@ object CCTLUTForm: TCCTLUTForm
   end
   object GroupBox3: TGroupBox
     Left = 216
-    Top = 16
-    Width = 193
-    Height = 153
+    Top = 136
+    Width = 201
+    Height = 193
     Caption = 'Low Level Correction'
     TabOrder = 2
     object Label4: TLabel
@@ -201,7 +210,7 @@ object CCTLUTForm: TCCTLUTForm
     object Edit_RBInterpUnder: TEdit
       Left = 80
       Top = 104
-      Width = 105
+      Width = 81
       Height = 24
       Enabled = False
       TabOrder = 2
@@ -233,10 +242,10 @@ object CCTLUTForm: TCCTLUTForm
     end
   end
   object GroupBox4: TGroupBox
-    Left = 216
-    Top = 176
-    Width = 193
-    Height = 89
+    Left = 424
+    Top = 16
+    Width = 209
+    Height = 137
     Caption = 'Blue Correction'
     TabOrder = 3
     object CheckBox_BGain: TCheckBox
@@ -248,7 +257,7 @@ object CCTLUTForm: TCCTLUTForm
       TabOrder = 0
     end
     object Edit_BGain: TEdit
-      Left = 128
+      Left = 136
       Top = 24
       Width = 57
       Height = 24
@@ -265,14 +274,14 @@ object CCTLUTForm: TCCTLUTForm
     end
   end
   object GroupBox5: TGroupBox
-    Left = 416
-    Top = 16
-    Width = 217
-    Height = 249
+    Left = 424
+    Top = 160
+    Width = 209
+    Height = 169
     Caption = 'Options'
     TabOrder = 4
     object CheckBox_Gamma256: TCheckBox
-      Left = 120
+      Left = 88
       Top = 8
       Width = 97
       Height = 25
@@ -300,7 +309,7 @@ object CCTLUTForm: TCCTLUTForm
   end
   object Button_Run: TButton
     Left = 576
-    Top = 328
+    Top = 392
     Width = 57
     Height = 25
     Caption = 'Run'
@@ -309,7 +318,7 @@ object CCTLUTForm: TCCTLUTForm
   end
   object Button_Debug: TButton
     Left = 576
-    Top = 296
+    Top = 360
     Width = 57
     Height = 25
     Caption = 'Debug'
@@ -319,7 +328,7 @@ object CCTLUTForm: TCCTLUTForm
   end
   object Button_Reset: TButton
     Left = 592
-    Top = 280
+    Top = 344
     Width = 41
     Height = 17
     Caption = 'reset'
@@ -329,13 +338,144 @@ object CCTLUTForm: TCCTLUTForm
   end
   inline TOutputFileFrame1: TOutputFileFrame
     Left = 16
-    Top = 272
+    Top = 336
     Width = 553
     Height = 88
     TabOrder = 8
     inherited GroupBox_OutputFile: TGroupBox
       inherited Button_BrowseDir: TButton
         OnClick = TOutputFileFrame1Button_BrowseDirClick
+      end
+    end
+  end
+  object Panel_Expand: TPanel
+    Left = 24
+    Top = 64
+    Width = 177
+    Height = 257
+    Caption = 'Panel_Expand'
+    TabOrder = 9
+    Visible = False
+    object GroupBox6: TGroupBox
+      Left = 8
+      Top = 8
+      Width = 161
+      Height = 121
+      Caption = 'Low Gray Level'
+      TabOrder = 0
+      object Label5: TLabel
+        Left = 8
+        Top = 88
+        Width = 64
+        Height = 16
+        Caption = 'Level Step'
+      end
+      object Label6: TLabel
+        Left = 8
+        Top = 56
+        Width = 60
+        Height = 16
+        Caption = 'End Level'
+      end
+      object Label10: TLabel
+        Left = 8
+        Top = 24
+        Width = 63
+        Height = 16
+        Caption = 'Start Level'
+      end
+      object ComboBox_LowStep: TComboBox
+        Left = 80
+        Top = 88
+        Width = 73
+        Height = 24
+        ItemHeight = 16
+        TabOrder = 0
+        Text = '8'
+        Items.Strings = (
+          '1'
+          '2'
+          '4'
+          '8'
+          '16'
+          '32')
+      end
+      object Edit_LowEndLevel: TEdit
+        Left = 80
+        Top = 56
+        Width = 73
+        Height = 24
+        TabOrder = 1
+        Text = '0'
+      end
+      object Edit_LowStartLevel: TEdit
+        Left = 80
+        Top = 24
+        Width = 73
+        Height = 24
+        TabOrder = 2
+        Text = '64'
+      end
+    end
+    object GroupBox7: TGroupBox
+      Left = 8
+      Top = 128
+      Width = 161
+      Height = 121
+      Caption = 'High Gray Level'
+      TabOrder = 1
+      object Label11: TLabel
+        Left = 8
+        Top = 24
+        Width = 63
+        Height = 16
+        Caption = 'Start Level'
+      end
+      object Label12: TLabel
+        Left = 8
+        Top = 88
+        Width = 64
+        Height = 16
+        Caption = 'Level Step'
+      end
+      object Label13: TLabel
+        Left = 8
+        Top = 56
+        Width = 60
+        Height = 16
+        Caption = 'End Level'
+      end
+      object Edit_HighStartLevel: TEdit
+        Left = 80
+        Top = 24
+        Width = 73
+        Height = 24
+        TabOrder = 0
+        Text = '255'
+      end
+      object Edit_HighEndLevel: TEdit
+        Left = 80
+        Top = 56
+        Width = 73
+        Height = 24
+        TabOrder = 1
+        Text = '64'
+      end
+      object ComboBox_HighStep: TComboBox
+        Left = 80
+        Top = 88
+        Width = 73
+        Height = 24
+        ItemHeight = 16
+        TabOrder = 2
+        Text = '16'
+        Items.Strings = (
+          '1'
+          '2'
+          '4'
+          '8'
+          '16'
+          '32')
       end
     end
   end
