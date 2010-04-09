@@ -1,6 +1,6 @@
 #include <includeall.h>
 #pragma hdrstop
-//#include "MeterMeasurement.h"
+#include "MeterMeasurement.h"
 
 //C系統文件
 
@@ -64,8 +64,7 @@ namespace cms {
 		if (null == measureWindow) {
 		    measureWindow = MeasureWindow;
 		}
-                measureWindow->setVisible(visible);
-		//measureWindow->ShowModal();
+		measureWindow->setVisible(visible);
 		measureWindowClosing = !visible;
 		//}
 
@@ -192,6 +191,7 @@ namespace cms {
 	    //==========================================================================
 	    if (!fakeMeasure) {
 		measureWindow->setRGB(measureRGB);
+		Application->ProcessMessages();
 		Sleep(waitTimes);
 	    }
 	    //==========================================================================

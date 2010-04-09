@@ -470,6 +470,17 @@ void __fastcall TMainForm::Edit_TargetCHChange(TObject * Sender)
 void __fastcall TMainForm::Button1Click(TObject * Sender)
 {
     MeasureWindow->setVisible(true);
+    MeasureWindow->Visible = true;
+    MeasureWindow->setRGB(255, 0, 0);
+    Application->ProcessMessages();
+    Sleep(300);
+    MeasureWindow->setRGB(0, 255, 0);
+    Application->ProcessMessages();
+    Sleep(300);
+    MeasureWindow->setRGB(0, 0, 255);
+    Application->ProcessMessages();
+    Sleep(1000);
+    MeasureWindow->setVisible(false);
 }
 
 //---------------------------------------------------------------------------

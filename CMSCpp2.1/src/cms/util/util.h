@@ -6,8 +6,7 @@
 //C++系統文件
 
 //其他庫頭文件
-#include <ADODB.hpp>
-#include <DB.hpp>
+
 
 //本項目內頭文件
 

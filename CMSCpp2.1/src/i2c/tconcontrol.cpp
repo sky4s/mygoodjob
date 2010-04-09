@@ -1,6 +1,6 @@
 #include <includeall.h>
 #pragma hdrstop
-//#include "tconcontrol.h"
+#include "tconcontrol.h"
 
 //C系統文件
 

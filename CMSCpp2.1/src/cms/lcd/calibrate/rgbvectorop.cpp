@@ -1,6 +1,6 @@
 #include <includeall.h>
 #pragma hdrstop
-//#include "rgbvectorop.h"
+#include "rgbvectorop.h"
 
 //C系統文件
 
@@ -9,6 +9,7 @@
 //其他庫頭文件
 
 //本項目內頭文件
+//#include "rgbvectorop.h";
 #include <debug.h>
 
 namespace cms {

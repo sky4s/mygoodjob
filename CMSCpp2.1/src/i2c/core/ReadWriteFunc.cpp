@@ -27,17 +27,17 @@ int RW_Func::LPT_Read_Byte_Skip_Ack(unsigned char dev_addr,
 				    int data_addr_cnt,
 				    unsigned char *data_read)
 {
-    bool ok = true;
+    //bool ok = true;                                             
     i2c_start();
     Ack_Stop_remove();
-    ok = i2c_send_byte(dev_addr & 0xFE);	//write
+    i2c_send_byte(dev_addr & 0xFE);	//write
     while (data_addr_cnt > 0) {	//2 byte data address
 	Ack_Stop_remove();
-	ok = i2c_send_byte(data_addr[data_addr_cnt]);	//send high byte first
+	i2c_send_byte(data_addr[data_addr_cnt]);	//send high byte first
 	data_addr_cnt--;
     }
     Ack_Stop_remove();
-    ok = i2c_send_byte(data_addr[0]);
+    i2c_send_byte(data_addr[0]);
     Ack_Stop_remove();
     i2c_read_byte(dev_addr, data_read);
     return 1;

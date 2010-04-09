@@ -1,6 +1,6 @@
 #include <includeall.h>
 #pragma hdrstop
-//#include "nearAlgo.h"
+#include "nearAlgo.h"
 
 //C系統文件
 
@@ -78,9 +78,6 @@ namespace cms {
 		bptr < cms::measure::MeasureResult >
 		    CIEuv1960NearestAlgorithm_::
 		    getMeasureResult(RGB_vector_ptr aroundRGB) {
-		    /*bptr < cms::measure::MeasureResult > measureResult =
-		       mi->measureResult(aroundRGB, false, false); */
-		    //mi->measureResult(aroundRGB, false, false);
 
 		    int size = aroundRGB->size();
 		    Patch_vector_ptr result(new Patch_vector());
