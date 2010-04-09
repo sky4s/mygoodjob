@@ -56,7 +56,12 @@ void TMeasureWindow::setRGB(int r, int g, int b)
 void TMeasureWindow::setRGB(bptr < Dep::RGBColor > rgb)
 {
     double_array values(new double[3]);
+     if (true == tconinput) {
     rgb->getValues(values, tconcontrol->getLUTBit());
+     }else {
+    rgb->getValues(values);
+     }
+
     int r = static_cast < int >(values[0]);
     int g = static_cast < int >(values[1]);
     int b = static_cast < int >(values[2]);

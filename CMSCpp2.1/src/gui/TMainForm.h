@@ -92,6 +92,7 @@ class TMainForm:public TForm {
     TRadioButton *RadioButton_Out10;
     TLabel *Label10;
     TEdit *Edit1;
+        TButton *Button1;
     void __fastcall About1Click(TObject * Sender);
     void __fastcall Exit1Click(TObject * Sender);
     void __fastcall TargetWhite1Click(TObject * Sender);
@@ -114,6 +115,7 @@ class TMainForm:public TForm {
     void __fastcall RadioButton_Out10Click(TObject * Sender);
     void __fastcall Edit_TargetIDChange(TObject * Sender);
     void __fastcall Edit_TargetCHChange(TObject * Sender);
+        void __fastcall Button1Click(TObject *Sender);
   private:			// User declarations
     //==========================================================================
     // meter

@@ -106,7 +106,8 @@ namespace cms {
 			Patch_ptr patch = (*patchVec)[x];
 			XYZ_ptr XYZ = patch->getXYZ();
 			aroundXYZ->push_back(XYZ);
-                        double index=getIndex(center, XYZ);
+                        double index=this->getIndex(center, XYZ);
+                        //double index=getIndex(center, XYZ);
 			dist->push_back(index);
 
 		    }
