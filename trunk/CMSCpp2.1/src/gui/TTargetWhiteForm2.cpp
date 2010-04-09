@@ -204,9 +204,6 @@ void __fastcall TTargetWhiteForm2::Button2Click(TObject * Sender)
     CA210IntensityAnalyzer *ca210Analyzer =
 	dynamic_cast < CA210IntensityAnalyzer * >(analyzer.get());
 
-    //int no = this->Edit_TargetCH->Text.ToInt();
-    //string_ptr id(new string(this->Edit_TargetID->Text.c_str()));
-    //ca210Analyzer->setChannel(no, id);
     MainForm->setToTargetChannel();
     analyzer->setupComponent(Channel::R, r);
     analyzer->setupComponent(Channel::G, g);

@@ -1,4 +1,6 @@
-#include "depend.h"
+#include <includeall.h>
+#pragma hdrstop
+
 //C系統文件
 #include <cstdarg>
 //C++系統文件
@@ -7,7 +9,6 @@
 //其他庫頭文件
 
 //本項目內頭文件
-#include <math/doublearray.h>
 
 namespace cms {
     namespace colorspace {
@@ -326,7 +327,7 @@ namespace cms {
 		}
 		throw IllegalStateException("");
 	    };
-	    const string_ptr MaxValue::toString() {
+	    const string_ptr MaxValue::toString() const {
 		return string_ptr(new string(_toString(bit) + "bit"));
 	    };
 	    //======================================================================

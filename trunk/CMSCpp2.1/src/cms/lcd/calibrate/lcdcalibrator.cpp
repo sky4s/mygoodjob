@@ -1,6 +1,6 @@
 #include <includeall.h>
 #pragma hdrstop
-#include "lcdcalibrator.h"
+//#include "lcdcalibrator.h"
 
 //C系統文件
 
@@ -10,10 +10,6 @@
 
 //本項目內頭文件
 
-#include <math/doublearray.h>
-#include <math/interpolation.h>
-#include "rgbvectorop.h"
-#include "rgbgamma.h"
 #include <debug.h>
 
 namespace cms {
@@ -626,7 +622,7 @@ namespace cms {
 		file.setRawData(componentVector, initialRGBGamma,
 				finalRGBGamma);
 
-	    };
+            };
 
 	    void LCDCalibrator::setStop(bool stop) {
 		fetcher->setStop(stop);

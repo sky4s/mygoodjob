@@ -4,7 +4,13 @@
 //C系統文件
 
 //C++系統文件
+#ifdef __BORLANDC__
+# pragma pack(push, 8)
+#endif
 #include <vector>
+#ifdef __BORLANDC__
+# pragma pack(pop)
+#endif
 //其他庫頭文件
 
 //本項目內頭文件

@@ -1,6 +1,6 @@
 #include <includeall.h>
 #pragma hdrstop
-#include "nearAlgo.h"
+//#include "nearAlgo.h"
 
 //C系統文件
 

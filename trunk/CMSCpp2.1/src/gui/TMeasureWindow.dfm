@@ -3,12 +3,12 @@ object MeasureWindow: TMeasureWindow
   Top = 190
   BorderStyle = bsNone
   Caption = 'MeasureWindow'
-  ClientHeight = 492
-  ClientWidth = 699
+  ClientHeight = 606
+  ClientWidth = 860
   Color = clBlack
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
-  Font.Height = -10
+  Font.Height = -13
   Font.Name = 'MS Sans Serif'
   Font.Style = []
   FormStyle = fsStayOnTop
@@ -16,13 +16,13 @@ object MeasureWindow: TMeasureWindow
   OldCreateOrder = False
   WindowState = wsMaximized
   OnKeyPress = FormKeyPress
-  PixelsPerInch = 96
-  TextHeight = 13
+  PixelsPerInch = 120
+  TextHeight = 16
   object Button1: TButton
-    Left = 7
-    Top = 7
-    Width = 60
-    Height = 20
+    Left = 9
+    Top = 9
+    Width = 73
+    Height = 24
     Caption = 'Test'
     TabOrder = 0
     Visible = False

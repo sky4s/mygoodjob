@@ -9,7 +9,6 @@
 
 //本項目內頭文件
 #include "independ.h"
-#include <java/lang.h>
 
 namespace cms {
     namespace colorspace {

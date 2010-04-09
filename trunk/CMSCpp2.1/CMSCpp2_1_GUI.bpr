@@ -9,16 +9,15 @@
       build\CA200SRVRLib_OCX.obj build\CA200SRVRLib_TLB.obj build\CA210API.obj 
       build\util.obj build\rgbArray.obj build\ciexyz.obj build\colorspace.obj 
       build\depend.obj build\independ.obj build\rgb.obj build\core.obj 
-      build\patch.obj build\dgcodefile.obj build\excelfile.obj 
-      build\excelfiletester.obj build\logo.obj build\measurefile.obj 
-      build\doubleArray.obj build\interpolation.obj build\regression.obj 
-      build\searcher.obj build\svd.obj build\algo.obj build\aroundAlgo.obj 
-      build\bitdepthprocessor.obj build\lcdcalibrator.obj build\nearAlgo.obj 
-      build\rgbgamma.obj build\rgbvectorop.obj build\whitefinder.obj 
-      build\metermeasurement.obj build\analyzer.obj build\cp.obj build\meter.obj 
-      build\Unit2.obj build\TMeasureWindow.obj build\TMainForm.obj 
-      build\TCCTLUTForm.obj build\TAnalyzerFrame.obj build\TAboutBox.obj 
-      build\TTargetWhiteForm2.obj build\TI2CTestForm.obj 
+      build\patch.obj build\dgcodefile.obj build\excelfile.obj build\logo.obj 
+      build\measurefile.obj build\doubleArray.obj build\interpolation.obj 
+      build\regression.obj build\searcher.obj build\svd.obj build\algo.obj 
+      build\aroundAlgo.obj build\bitdepthprocessor.obj build\lcdcalibrator.obj 
+      build\nearAlgo.obj build\rgbgamma.obj build\rgbvectorop.obj 
+      build\whitefinder.obj build\metermeasurement.obj build\analyzer.obj 
+      build\cp.obj build\meter.obj build\Unit2.obj build\TMeasureWindow.obj 
+      build\TMainForm.obj build\TCCTLUTForm.obj build\TAnalyzerFrame.obj 
+      build\TAboutBox.obj build\TTargetWhiteForm2.obj build\TI2CTestForm.obj 
       build\TMatrixCalibration.obj build\TCA210SettingFrame.obj 
       build\TGammaAdjustmentForm.obj build\TOptionsFrame.obj 
       build\TOutputFileFrame.obj build\TGammaMeasurementForm.obj 
@@ -44,7 +43,7 @@
       inetdbbde.bpi inetdbxpress.bpi inetdb.bpi nmfast.bpi webdsnap.bpi 
       bcbie.bpi websnap.bpi soaprtl.bpi dclocx.bpi dbexpress.bpi dbxcds.bpi 
       indy.bpi bcb2kaxserver.bpi bcbindent.bpi"/>
-    <PATHCPP value=".;src;lib\LPT_lib;lib\LPT_lib;lib\USB_i2c_lib;src\java;lib\CA200SRVRLib;lib\CA200SRVRLib;src\ca210api;src\cms\util;src\cms\util;src\cms\colorspace;src\cms\colorspace;src\cms\colorspace;src\cms\colorspace;src\cms\colorspace;src\cms;src\cms;src\cms\colorformat;src\cms\colorformat;src\cms\colorformat;src\cms\colorformat;src\cms\colorformat;src\math;src\math;src\math;src\math;src\math;src\cms\lcd\calibrate;src\cms\lcd\calibrate;src\cms\lcd\calibrate;src\cms\lcd\calibrate;src\cms\lcd\calibrate;src\cms\lcd\calibrate;src\cms\lcd\calibrate;src\cms\lcd\calibrate;src\cms\measure;src\cms\measure;src\cms\measure;src\cms\measure;src;src\gui;src\gui;src\gui;src\gui;src\gui;src\gui;src\gui;src\gui;src\gui;src\gui;src\gui;src\gui;src\gui;src\i2c;src\i2c;src\i2c;src\i2c\core"/>
+    <PATHCPP value=".;src;lib\LPT_lib;lib\USB_i2c_lib;src\java;lib\CA200SRVRLib;src\ca210api;src\cms\util;src\cms\colorspace;src\cms;src\cms\colorformat;src\math;src\cms\lcd\calibrate;src\cms\measure;src\gui;src\i2c;src\i2c\core"/>
     <PATHPAS value=".;"/>
     <PATHRC value=".;"/>
     <PATHASM value=".;"/>
@@ -66,8 +65,8 @@
       -Isrc\ca210api -Ilib\CA200SRVRLib -Isrc\java -Isrc\cms\i2c 
       -Isrc\cms\i2c\core -Ilib\USB_i2c_lib -Ilib\LPT_lib -Isrc -I$(BCB)\include 
       -I$(BCB)\include\vcl -Ilib -src_suffix cpp -D_DEBUG -boa"/>
-    <CFLAG1 value="-Od -H=$(BCB)\lib\vcl60.csm -Hc -Vx -Ve -X- -r- -a1 -6 -b- -k -y -v -vi- 
-      -c -tW -tWM"/>
+    <CFLAG1 value="-Od -H=$(BCB)\lib\vcl60.csm -Hc -Q -Vx -Ve -X- -r- -a1 -6 -b- -k -y -v 
+      -vi- -c -tW -tWM"/>
     <PFLAGS value="-N2build -N0build -$Y+ -$W -$O- -$A8 -v -JPHNE -M"/>
     <RFLAGS value=""/>
     <AFLAGS value="/mx /w2 /zi"/>
@@ -103,7 +102,6 @@
       <FILE FILENAME="src\cms\patch.cpp" FORMNAME="" UNITNAME="patch.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="src\cms\colorformat\dgcodefile.cpp" FORMNAME="" UNITNAME="dgcodefile.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="src\cms\colorformat\excelfile.cpp" FORMNAME="" UNITNAME="excelfile.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="src\cms\colorformat\excelfiletester.cpp" FORMNAME="" UNITNAME="excelfiletester.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="src\cms\colorformat\logo.cpp" FORMNAME="" UNITNAME="logo.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="src\cms\colorformat\measurefile.cpp" FORMNAME="" UNITNAME="measurefile.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="src\math\doubleArray.cpp" FORMNAME="" UNITNAME="doubleArray.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
@@ -154,7 +152,7 @@ AutoIncBuild=1
 MajorVer=3
 MinorVer=2
 Release=0
-Build=29
+Build=47
 Debug=1
 PreRelease=0
 Special=0
@@ -166,7 +164,7 @@ CodePage=950
 [Version Info Keys]
 CompanyName=AUO
 FileDescription=CCT Adjustment v3
-FileVersion=3.2.0.29
+FileVersion=3.2.0.47
 InternalName=
 LegalCopyright=Algorithm by StocktonTsai &amp; skyforce, Implement by skyforce
 LegalTrademarks=

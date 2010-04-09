@@ -9,7 +9,6 @@
 
 //本項目內頭文件
 #include <cms/util/util.h>
-#include <java/lang.h>
 
 namespace cms {
     class Patch:public jObject, cms::util::NameIF {

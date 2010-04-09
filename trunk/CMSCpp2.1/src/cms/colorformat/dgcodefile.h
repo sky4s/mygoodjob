@@ -3,13 +3,19 @@
 //C系統文件
 
 //C++系統文件
+#ifdef __BORLANDC__
+# pragma pack(push, 8)
+#endif 
 #include <map>
+#ifdef __BORLANDC__
+# pragma pack(pop)
+#endif
+
 
 //其他庫頭文件
 #include <ADODB.hpp>
 #include <DB.hpp>
 //本項目內頭文件
-#include <java/lang.h>
 #include "excelfile.h"
 
 namespace cms {

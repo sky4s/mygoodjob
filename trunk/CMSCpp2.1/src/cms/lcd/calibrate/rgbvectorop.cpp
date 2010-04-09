@@ -1,6 +1,6 @@
 #include <includeall.h>
 #pragma hdrstop
-#include "rgbvectorop.h"
+//#include "rgbvectorop.h"
 
 //C系統文件
 

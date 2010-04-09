@@ -1,6 +1,6 @@
 #include <includeall.h>
 #pragma hdrstop
-#include "excelfile.h"
+//#include "excelfile.h"
 
 //C系統文件
 

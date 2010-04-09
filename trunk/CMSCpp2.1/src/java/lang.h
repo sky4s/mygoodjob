@@ -4,6 +4,9 @@
 //C系統文件
 
 //C++系統文件
+#ifdef __BORLANDC__
+# pragma pack(push, 8)
+#endif
 #include <string>
 #include <vector>
 #include <exception>
@@ -14,7 +17,10 @@
 #include <boost/scoped_ptr.hpp>
 #include <boost/foreach.hpp>
 #include <boost/lexical_cast.hpp>
-#include <vcl.h>
+#ifdef __BORLANDC__
+# pragma pack(pop)
+#endif
+
 //本項目內頭文件
 
 
@@ -28,6 +34,19 @@
 //其他庫頭文件
 
 //本項目內頭文件
+//==============================================================================
+
+//==============================================================================
+// change the byte alignment macro
+//==============================================================================
+#include <vcl.h>
+#ifdef __BORLANDC__
+# pragma pack(push, 8)
+#endif
+
+#ifdef __BORLANDC__
+# pragma pack(pop)
+#endif
 //==============================================================================
 
 //==============================================================================
@@ -194,7 +213,7 @@ namespace cms {
 	    namespace algo {
 		class ChromaticAroundAlgorithm;
 		class CIEuv1960NearestAlgorithm;
-                class CIEuv1960NearestAlgorithm_;
+		class CIEuv1960NearestAlgorithm_;
 	    };
 	};
     };
