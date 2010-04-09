@@ -1,6 +1,6 @@
 #include <includeall.h>
 #pragma hdrstop
-//#include "util.h"
+#include "util.h"
 
 //C系統文件
 #include <cstdarg>

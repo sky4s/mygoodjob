@@ -7,7 +7,6 @@
 #include <cms/colorformat/include.h>
 #include <i2c/include.h>
 #include <java/lang.h>
-#include <util.h>
 #include <vcl.h>
 
  

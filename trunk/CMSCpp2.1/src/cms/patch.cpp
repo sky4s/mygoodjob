@@ -1,5 +1,6 @@
 #include <includeall.h>
 #pragma hdrstop
+#include "patch.h"
 //C系統文件
 
 //C++系統文件

@@ -1,6 +1,6 @@
 #include <includeall.h>
 #pragma hdrstop
-//#include "aroundAlgo.h"
+#include "aroundAlgo.h"
 
 //C系統文件
 

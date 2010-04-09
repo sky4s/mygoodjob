@@ -1,6 +1,6 @@
 #include <includeall.h>
 #pragma hdrstop
-//#include "bitdepthprocessor.h"
+#include "bitdepthprocessor.h"
 
 //C系統文件
 

@@ -1,5 +1,6 @@
 #include <includeall.h>
 #pragma hdrstop
+#include "depend.h"
 
 //C系統文件
 #include <cstdarg>

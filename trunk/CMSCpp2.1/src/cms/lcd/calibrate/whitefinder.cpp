@@ -1,6 +1,6 @@
 #include <includeall.h>
 #pragma hdrstop
-//#include "whitefinder.h"
+#include "whitefinder.h"
 
 //C系統文件
 
@@ -67,12 +67,13 @@ namespace cms {
 	    };
 
 	    RGB_ptr WhitePointFinder::fixRGB2TouchMax(RGB_ptr rgb) {
+		RGB_ptr clone = rgb->clone();
 		//然後再調整White使RGB其中一點為255.
-		const Channel & maxChannel = rgb->getMaxChannel();
-		double maxChannelValue = rgb->getValue(maxChannel);
+		const Channel & maxChannel = clone->getMaxChannel();
+		double maxChannelValue = clone->getValue(maxChannel);
 		double diff = 255 - maxChannelValue;
-		rgb->addValue(diff);
-		return rgb;
+		clone->addValue(diff);
+		return clone;
 	    };
 
 	    /*

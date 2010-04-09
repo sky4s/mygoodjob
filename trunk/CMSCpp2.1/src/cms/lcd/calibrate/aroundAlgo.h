@@ -43,13 +43,6 @@ namespace cms {
 		    static bool ChromaticSkipByDelta;
 		    double maxCode;
 		  public:
-		    /*virtual RGB_vector_ptr
-		       getAroundRGB(RGB_ptr centerRGB, double_array delta,
-		       double step, bool involveWhite);
-
-		       virtual RGB_vector_ptr getAroundRGB(RGB_ptr centerRGB,
-		       double step,
-		       bool involeWhite); */
 		     virtual RGB_vector_ptr getAroundRGB(RGB_ptr centerRGB,
 							 double_array
 							 delta,

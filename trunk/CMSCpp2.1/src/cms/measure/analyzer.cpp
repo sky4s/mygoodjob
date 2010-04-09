@@ -1,6 +1,6 @@
 #include <includeall.h>
 #pragma hdrstop
-//#include "analyzer.h"
+#include "analyzer.h"
 
 //C系統文件
 
@@ -106,8 +106,8 @@ namespace cms {
 	void CA210IntensityAnalyzer::enter() {
 	    if (false == dummyMode) {
 		ca210api->enter();
-		mm->setMeasureWindowsVisible(false);
 	    }
+	    mm->setMeasureWindowsVisible(false);
 	};
 
 	void CA210IntensityAnalyzer::setChannel(int no, string_ptr id) {
