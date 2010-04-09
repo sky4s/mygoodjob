@@ -67,6 +67,8 @@ namespace cms {
 	    };
 
 	    RGB_ptr WhitePointFinder::fixRGB2TouchMax(RGB_ptr rgb) {
+		/*if (true)
+		   return rgb; */
 		RGB_ptr clone = rgb->clone();
 		//然後再調整White使RGB其中一點為255.
 		const Channel & maxChannel = clone->getMaxChannel();
@@ -89,6 +91,7 @@ namespace cms {
 		RGB_ptr fixRGB = fixRGB2TouchMax(initRGB);
 		RGB_ptr finalRGB = findMatchRGB(xyY, fixRGB);
 		return finalRGB;
+		return initRGB;
 	    };
 	};
 
