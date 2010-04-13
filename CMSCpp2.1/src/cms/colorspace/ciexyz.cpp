@@ -32,7 +32,7 @@ namespace cms {
 	    };
 
 	    NormalizeY CIEXYZ::getNormalizeY() {
-		return _normalizeY;
+		return normalizeY_;
 	    };
 	    double CIEXYZ::getSaturation(CIEXYZ white) {
 		/*double[] uv = this.getuvPrimeValues();
@@ -50,16 +50,16 @@ namespace cms {
 	    };
 	    double_array CIEXYZ::getValues(double_array values,
 					   NormalizeY normalizeY) {
-		if (_normalizeY == Not) {
+		if (normalizeY_ == Not) {
 		    throw
 			IllegalStateException
 			("this.normalizeY == NormalizeY.Not");
 		}
 		getValues(values);
-		if (_normalizeY == normalizeY) {
+		if (normalizeY_ == normalizeY) {
 		    return values;
 		}
-		switch (_normalizeY) {
+		switch (normalizeY_) {
 		case Normal100:
 		    //DoubleArray.copy(DoubleArray.times(values, 1. / 100),
 		    //values);
@@ -181,7 +181,7 @@ namespace cms {
 		X *= factor;
 		Y *= factor;
 		Z *= factor;
-		_normalizeY = Normal1;
+		normalizeY_ = Normal1;
 	    };
 
 	    void CIEXYZ::normalizeY() {
@@ -189,7 +189,7 @@ namespace cms {
 		X *= factor;
 		Z *= factor;
 		Y = NormalFactor;
-		_normalizeY = Normal1;
+		normalizeY_ = Normal1;
 	    };
 
 	    void CIEXYZ::normalize(NormalizeY normalizeY) {
@@ -197,7 +197,7 @@ namespace cms {
 		    getValues(double_array(new double[3]),
 			      normalizeY);
 		setValues(values);
-		_normalizeY = normalizeY;
+		normalizeY_ = normalizeY;
 	    };
 
 	    void CIEXYZ::rationalize() {
@@ -242,7 +242,7 @@ namespace cms {
 
 	    CIEXYZ::CIEXYZ() {
 	    };
-	  CIEXYZ::CIEXYZ(double_array XYZValues, NormalizeY normalizeY):_normalizeY(normalizeY)
+	  CIEXYZ::CIEXYZ(double_array XYZValues, NormalizeY normalizeY):normalizeY_(normalizeY)
 	    {
 		setValues(XYZValues);
 	    };
@@ -250,7 +250,7 @@ namespace cms {
 		setValues(XYZValues);
 	    };
 	    CIEXYZ::CIEXYZ(double X, double Y, double Z,
-			   NormalizeY normalizeY):_normalizeY(normalizeY) {
+			   NormalizeY normalizeY):normalizeY_(normalizeY) {
 		setValues(X, Y, Z);
 	    };
 	    CIEXYZ::CIEXYZ(double X, double Y, double Z) {
@@ -266,12 +266,12 @@ namespace cms {
 	    CIExyY::CIExyY() {
 	    };
 
-	  CIExyY::CIExyY(XYZ_ptr XYZ):_normalizeY(XYZ->_normalizeY)
+	  CIExyY::CIExyY(XYZ_ptr XYZ):normalizeY_(XYZ->normalizeY_)
 	    {
 		double_array xyValues = XYZ->getxyValues();
 		setValues(xyValues[0], xyValues[1], XYZ->Y);
 	    };
-	  CIExyY::CIExyY(double_array xyValues, NormalizeY normalizeY):_normalizeY(normalizeY)
+	  CIExyY::CIExyY(double_array xyValues, NormalizeY normalizeY):normalizeY_(normalizeY)
 	    {
 		setValues(xyValues);
 	    };
@@ -279,7 +279,7 @@ namespace cms {
 		setValues(xyValues);
 	    };
 	    CIExyY::CIExyY(double x, double y, double Y,
-			   NormalizeY normalizeY):_normalizeY(normalizeY) {
+			   NormalizeY normalizeY):normalizeY_(normalizeY) {
 		setValues(x, y, Y);
 	    };
 	    CIExyY::CIExyY(double x, double y, double Y) {
@@ -299,7 +299,7 @@ namespace cms {
 		double_array xyValues = XYZ->getxyValues();
 		xyY_ptr
 		    xyY(new CIExyY(xyValues[0], xyValues[1], XYZ->Y,
-				   XYZ->_normalizeY));
+				   XYZ->normalizeY_));
 		return xyY;
 	    }
 
@@ -313,8 +313,8 @@ namespace cms {
 		XYZ->X = (xyY.x / xyY.y) * xyY.Y;
 		XYZ->Y = xyY.Y;
 		XYZ->Z = ((1 - xyY.x - xyY.y) / xyY.y) * xyY.Y;
-		XYZ->_normalizeY = xyY._normalizeY;
-		XYZ->_degree = xyY._degree;
+		XYZ->normalizeY_ = xyY.normalizeY_;
+		XYZ->degree_ = xyY.degree_;
 		return XYZ;
 	    };
 
@@ -338,26 +338,26 @@ namespace cms {
 	    };
 	    void CIExyY::normalize(NormalizeY normalizeY) {
 		Y = normalizeY;
-		_normalizeY = normalizeY;
+		normalizeY_ = normalizeY;
 	    };
 	    void CIExyY::normalizeY() {
 		Y = NormalFactor;
-		_normalizeY = Normal1;
+		normalizeY_ = Normal1;
 	    };
 
 	    double_array CIExyY::getValues(double_array values,
 					   NormalizeY normalizeY) {
-		if (_normalizeY == Not) {
+		if (normalizeY_ == Not) {
 		    throw
 			IllegalStateException
 			("this.normalizeY == NormalizeY.Not");
 		}
 		getValues(values);
-		if (_normalizeY == normalizeY) {
+		if (normalizeY_ == normalizeY) {
 		    return values;
 		}
 		/* TODO : getValues */
-		switch (_normalizeY) {
+		switch (normalizeY_) {
 		case Normal100:
 		    //DoubleArray.copy(DoubleArray.times(values, 1. / 100),
 		    //values);

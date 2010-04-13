@@ -22,12 +22,12 @@ namespace cms {
 		 RGB_vector_ptr
 		    StepAroundAlgorithm::
 		    rgbAdjust(channel_vector_ptr channels,
-			      Channel & maxChannel,
+			      const Channel & maxChannel,
 			      bptr < RGBColor > centerRGB, double
 			      adjustStep, double_array delta) {
 
 		    RGB_vector_ptr rgbVec(new RGB_vector());;
-		     foreach(Dep::Channel ch, *channels) {
+		     foreach(const Dep::Channel & ch, *channels) {
 			if (checkAdjustable
 			    (centerRGB, adjustStep, maxChannel, ch,
 			     delta)) {
@@ -42,8 +42,9 @@ namespace cms {
 		};
 
 		RGB_vector_ptr StepAroundAlgorithm::
-		    whiteAdjust(Channel & maxChannel, bptr < RGBColor >
-				centerRGB, double adjustStep) {
+		    whiteAdjust(const Channel & maxChannel,
+				bptr < RGBColor > centerRGB,
+				double adjustStep) {
 		    RGB_vector_ptr rgbVec(new RGB_vector());;
 		    if (whiteCheckAdjustable
 			(centerRGB, adjustStep, maxChannel)) {
@@ -169,6 +170,9 @@ namespace cms {
 		RGB_vector_ptr ChromaticAroundAlgorithm::
 		    getAroundRGB(RGB_ptr centerRGB, double step) {
 		    return getAroundRGB(centerRGB, nil_double_array, step);
+		};
+		ChromaticAroundAlgorithm::ChromaticAroundAlgorithm() {
+		    setMode(Normal);
 		};
 		//==============================================================
 	    };

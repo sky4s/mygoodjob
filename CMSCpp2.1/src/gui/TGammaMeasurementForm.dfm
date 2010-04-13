@@ -3,7 +3,7 @@ object GammaMeasurementForm: TGammaMeasurementForm
   Top = 300
   Width = 723
   Height = 468
-  Caption = 'GammaMeasurementForm'
+  Caption = 'Gamma Measurement'
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText

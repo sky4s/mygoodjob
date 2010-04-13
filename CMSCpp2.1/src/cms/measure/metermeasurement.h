@@ -61,6 +61,7 @@ namespace cms {
 
 	    void setBlankTimes(int blankTimes);
 	    void setWaitTimes(int waitTimes);
+	    int getWaitTimes();
 	    void setFakeMeasure(bool fake);
 	    bool isFakeMeasure();
 

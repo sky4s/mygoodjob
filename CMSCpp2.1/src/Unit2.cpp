@@ -251,7 +251,7 @@ void stringtest()
 
 //---------------------------------------------------------------------------
 
- 
+
 
 void sizeCompare()
 {
@@ -618,6 +618,18 @@ void measureConditionTry()
     }
 };
 
+void vectorTry()
+{
+
+    vector < int >v;
+    int a = 3;
+    int b = 4;
+    v.push_back(a);
+    v.push_back(b);
+    cout << v[0] << endl;
+    cout << v[1] << endl;
+};
+
 #pragma argsused
 int main(int argc, char *argv[])
 {
@@ -663,7 +675,8 @@ int main(int argc, char *argv[])
     //castTry();
     //rgbGammaTry();
     //bufferTry();
-    measureConditionTry();
+    //measureConditionTry();
+    vectorTry();
 
     getch();
 }

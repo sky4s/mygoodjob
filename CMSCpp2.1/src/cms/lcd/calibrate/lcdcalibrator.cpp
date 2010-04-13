@@ -501,7 +501,7 @@ namespace cms {
 		STORE_DOUBLE_VECTOR("0_gammacurve.xls", gammaCurve);
 		STORE_RGBGAMMA("1_rgbgamma_org.xls", rgbgamma);
 
-		/* TODO : 要確認 */
+		/* TODO : bIntensityGain要確認 */
 		if (bIntensityGain != 1.0) {
 		    //重新產生目標gamma curve
 		    bptr < BIntensityGainOp >

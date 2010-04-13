@@ -31,7 +31,7 @@ namespace cms {
 
 	    class DeviceIndependentSpace:public ColorSpace {
 	      protected:
-		Degree _degree;
+		Degree degree_;
 		static double epsilon;
 		static double kappa;
 		 DeviceIndependentSpace();
@@ -50,7 +50,7 @@ namespace cms {
 
 	    class NormalizeYOperator {
 	      protected:
-		NormalizeY _normalizeY;
+		NormalizeY normalizeY_;
 	      public:
 		virtual void normalize(NormalizeY normalizeY) = 0;
 		virtual void normalizeY() = 0;

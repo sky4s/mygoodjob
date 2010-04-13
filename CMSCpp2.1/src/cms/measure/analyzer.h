@@ -24,12 +24,15 @@ namespace cms {
 	    virtual void enter() = 0;
 	    virtual void beginAnalyze() = 0;
 	    virtual void endAnalyze() = 0;
+	    virtual void setWaitTimes(int waitTimes) = 0;
+	    virtual void setDefaultWaitTimes() = 0;
 	};
 
 	class CA210IntensityAnalyzer:public IntensityAnalyzerIF {
 	  protected:
-	    bptr < cms::measure::meter::CA210 > ca210;
-	    bptr < ca210api::CA210API > ca210api;
+	    int defaultWaitTimes;
+	     bptr < cms::measure::meter::CA210 > ca210;
+	     bptr < ca210api::CA210API > ca210api;
 	    XYZ_ptr XYZ;
 	     bptr < MeterMeasurement > mm;
 	    static const WideString & CalibrationDataFilename;
@@ -56,6 +59,8 @@ namespace cms {
 	    void setChannel(int no, string_ptr id);
 	    void beginAnalyze();
 	    void endAnalyze();
+	    void setWaitTimes(int waitTimes);
+	    void setDefaultWaitTimes();
 	};
 
 	class StocktonComponentAnayzer:public CA210IntensityAnalyzer {

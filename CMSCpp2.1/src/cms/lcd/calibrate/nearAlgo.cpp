@@ -27,7 +27,7 @@ namespace cms {
 		    getDelta(XYZ_ptr center, XYZ_ptr XYZ) {
 		    return MeasuredUtils::getDeltauvPrime(center, XYZ);
 		};
-	       	double CIEuv1960NearestAlgorithm::getIndex(XYZ_ptr center,
+		double CIEuv1960NearestAlgorithm::getIndex(XYZ_ptr center,
 							   XYZ_ptr around)
 		{
 		    double_array duvp = getDelta(center, around);
@@ -41,88 +41,80 @@ namespace cms {
 		//==============================================================
 		// CIEuv1960NearestAlgorithm_
 		//==============================================================
-		 /*CIEuv1960NearestAlgorithm_::
-		    CIEuv1960NearestAlgorithm_(XYZ_ptr white,
-					      bptr < MeterMeasurement >
-					      mm):NearestAlgorithm(white,
-								   mm) {
-		};*/
-		double_array CIEuv1960NearestAlgorithm_::
-		    getDelta(XYZ_ptr center, XYZ_ptr XYZ) {
-		    return MeasuredUtils::getDeltauvPrime(center, XYZ);
-		};
-	       	double CIEuv1960NearestAlgorithm_::getIndex(XYZ_ptr center,
-							   XYZ_ptr around)
-		{
-		    double_array duvp = getDelta(center, around);
-		    double de =
-			Math::sqrt(Math::sqr(duvp[0]) +
-				   Math::sqr(duvp[1]));
-		     return de;
-		};
+		/*double_array CIEuv1960NearestAlgorithm_::
+		   getDelta(XYZ_ptr center, XYZ_ptr XYZ) {
+		   return MeasuredUtils::getDeltauvPrime(center, XYZ);
+		   };
+		   double CIEuv1960NearestAlgorithm_::getIndex(XYZ_ptr center,
+		   XYZ_ptr around)
+		   {
+		   double_array duvp = getDelta(center, around);
+		   double de =
+		   Math::sqrt(Math::sqr(duvp[0]) +
+		   Math::sqr(duvp[1]));
+		   return de;
+		   };
 
-		//==============================================================
-		// CIEuv1960NearestAlgorithm_
-		//==============================================================
-	      CIEuv1960NearestAlgorithm_::CIEuv1960NearestAlgorithm_(XYZ_ptr white, bptr < cms::measure::MeterMeasurement > mm):white(white),
-		    mm(mm)
-		{
-		};
-		double_array CIEuv1960NearestAlgorithm_::getDelta(XYZ_ptr XYZ,
-							RGB_ptr rgb) {
-		    //Patch_ptr p = mi->measure(rgb, false, false);
-		    Patch_ptr p = mm->measure(rgb, rgb->toString());
-		    return getDelta(XYZ, p->getXYZ());
-		}
+		   //==============================================================
+		   // CIEuv1960NearestAlgorithm_
+		   //==============================================================
+		   CIEuv1960NearestAlgorithm_::CIEuv1960NearestAlgorithm_(XYZ_ptr white, bptr < cms::measure::MeterMeasurement > mm):white(white),
+		   mm(mm)
+		   {
+		   };
+		   double_array CIEuv1960NearestAlgorithm_::
+		   getDelta(XYZ_ptr XYZ, RGB_ptr rgb) {
+		   //Patch_ptr p = mi->measure(rgb, false, false);
+		   Patch_ptr p = mm->measure(rgb, rgb->toString());
+		   return getDelta(XYZ, p->getXYZ());
+		   }
 
-		bptr < cms::measure::MeasureResult >
-		    CIEuv1960NearestAlgorithm_::
-		    getMeasureResult(RGB_vector_ptr aroundRGB) {
+		   bptr < cms::measure::MeasureResult >
+		   CIEuv1960NearestAlgorithm_::
+		   getMeasureResult(RGB_vector_ptr aroundRGB) {
+		   //this->mm;
 
-		    int size = aroundRGB->size();
-		    Patch_vector_ptr result(new Patch_vector());
+		   int size = aroundRGB->size();
+		   Patch_vector_ptr result(new Patch_vector());
 
-		    foreach(RGB_ptr rgb, *aroundRGB) {
-			Patch_ptr p = mm->measure(rgb, rgb->toString());
-			result->push_back(p);
-		    };
+		   foreach(RGB_ptr rgb, *aroundRGB) {
+		   Patch_ptr p = mm->measure(rgb, rgb->toString());
+		   result->push_back(p);
+		   };
 
-		    bptr < MeasureResult >
-			measureResult(new MeasureResult(result, size));
-		    return measureResult;
+		   bptr < MeasureResult >
+		   measureResult(new MeasureResult(result, size));
+		   return measureResult;
 
-		};
+		   };
 
-		bptr < AlgoResult >
-		    CIEuv1960NearestAlgorithm_::getNearestRGB(XYZ_ptr center,
-						    RGB_vector_ptr
-						    aroundRGB) {
-		    bptr < MeasureResult > measureResult =
-			getMeasureResult(aroundRGB);
-		    Patch_vector_ptr patchVec = measureResult->result;
-		    int size = patchVec->size();
-		    double_vector_ptr dist(new double_vector());
+		   bptr < AlgoResult >
+		   CIEuv1960NearestAlgorithm_::
+		   getNearestRGB(XYZ_ptr center,
+		   RGB_vector_ptr aroundRGB) {
+		   this->mm;
+		   bptr < MeasureResult > measureResult =
+		   getMeasureResult(aroundRGB);
+		   Patch_vector_ptr patchVec = measureResult->result;
+		   int size = patchVec->size();
+		   double_vector_ptr dist(new double_vector());
 
-		    XYZ_vector_ptr aroundXYZ(new XYZ_vector());
+		   XYZ_vector_ptr aroundXYZ(new XYZ_vector());
 
-
-		    for (int x = 0; x < size; x++) {
-			Patch_ptr patch = (*patchVec)[x];
-			XYZ_ptr XYZ = patch->getXYZ();
-			aroundXYZ->push_back(XYZ);
-                        double index=this->getIndex(center, XYZ);
-                        //double index=getIndex(center, XYZ);
-			dist->push_back(index);
-
-		    }
-		    int index = Math::minIndex(dist);
-		    RGB_ptr rgb = (*patchVec)[index]->getRGB();
-		    bptr < AlgoResult >
-			result(new AlgoResult(rgb, dist,
-					      aroundRGB,
-					      aroundXYZ, index));
-		    return result;
-		};
+		   foreach(Patch_ptr patch, *patchVec) {
+		   XYZ_ptr XYZ = patch->getXYZ();
+		   aroundXYZ->push_back(XYZ);
+		   double index = this->getIndex(center, XYZ);
+		   dist->push_back(index);
+		   }
+		   int minIndex = Math::minIndex(dist);
+		   RGB_ptr rgb = (*patchVec)[minIndex]->getRGB();
+		   bptr < AlgoResult >
+		   result(new AlgoResult(rgb, dist,
+		   aroundRGB,
+		   aroundXYZ, minIndex));
+		   return result;
+		   }; */
 
 		//==============================================================
 
