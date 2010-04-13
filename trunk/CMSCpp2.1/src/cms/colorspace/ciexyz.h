@@ -16,7 +16,7 @@ namespace cms {
 	    class CIEXYZ:public DeviceIndependentSpace, NormalizeYOperator {
 	      protected:
 		friend class CIExyY;
-		NormalizeY _normalizeY;
+		NormalizeY normalizeY_;
 		double_array _getValues(double_array values);
 		void _setValues(double_array values);
 
@@ -79,7 +79,7 @@ namespace cms {
 
 	    class CIExyY:public DeviceIndependentSpace, NormalizeYOperator {
 	      protected:
-		NormalizeY _normalizeY;
+		NormalizeY normalizeY_;
 		static CIExyY D65xyY;
 	      public:
 		double x, y, Y;

@@ -21,32 +21,32 @@ object TargetWhiteForm2: TTargetWhiteForm2
     Caption = 'Copyright (C) 2010, AU Optronics Corp., All Right Reserved.'
   end
   object PageControl1: TPageControl
-    Left = 8
-    Top = 8
-    Width = 905
-    Height = 489
+    Left = 9
+    Top = 9
+    Width = 904
+    Height = 488
     ActivePage = TabSheet1
     TabIndex = 0
     TabOrder = 0
     object TabSheet1: TTabSheet
       Caption = 'Target White'
       object GroupBox2: TGroupBox
-        Left = 8
+        Left = 9
         Top = 9
-        Width = 241
+        Width = 240
         Height = 440
         Caption = 'Target Color'
         TabOrder = 0
         object RadioButton_Targetxy: TRadioButton
-          Left = 8
+          Left = 9
           Top = 128
-          Width = 168
+          Width = 167
           Height = 25
           Caption = 'Adjust to Target x,y'
           TabOrder = 1
         end
         object RadioButton_RGBRatio: TRadioButton
-          Left = 8
+          Left = 9
           Top = 41
           Width = 160
           Height = 24
@@ -55,17 +55,17 @@ object TargetWhiteForm2: TTargetWhiteForm2
         end
         object Button2: TButton
           Left = 81
-          Top = 408
+          Top = 409
           Width = 80
-          Height = 25
+          Height = 24
           Caption = 'Run'
           TabOrder = 3
           OnClick = Button2Click
         end
         object GroupBox4: TGroupBox
-          Left = 24
+          Left = 25
           Top = 153
-          Width = 209
+          Width = 208
           Height = 120
           Caption = 'Target xy on D-Illuminant Locus'
           TabOrder = 0
@@ -98,7 +98,7 @@ object TargetWhiteForm2: TTargetWhiteForm2
             Caption = 'CT'
           end
           object Label5: TLabel
-            Left = 8
+            Left = 9
             Top = 97
             Width = 10
             Height = 16
@@ -158,9 +158,9 @@ object TargetWhiteForm2: TTargetWhiteForm2
           end
         end
         object RadioButton_MaxRGB: TRadioButton
-          Left = 8
+          Left = 9
           Top = 16
-          Width = 145
+          Width = 144
           Height = 25
           Caption = 'Adjust to Max RGB'
           Checked = True
@@ -169,9 +169,9 @@ object TargetWhiteForm2: TTargetWhiteForm2
           OnClick = RadioButton_MaxRGBClick
         end
         object GroupBox1: TGroupBox
-          Left = 24
+          Left = 25
           Top = 64
-          Width = 209
+          Width = 208
           Height = 57
           Caption = 'RGB ratio'
           TabOrder = 5
@@ -209,21 +209,21 @@ object TargetWhiteForm2: TTargetWhiteForm2
         Caption = 'RGB Pattern'
         TabOrder = 1
         object Label13: TLabel
-          Left = 8
+          Left = 9
           Top = 377
           Width = 10
           Height = 16
           Caption = 'G'
         end
         object Label14: TLabel
-          Left = 8
+          Left = 9
           Top = 409
           Width = 9
           Height = 16
           Caption = 'B'
         end
         object Label12: TLabel
-          Left = 8
+          Left = 9
           Top = 345
           Width = 10
           Height = 16

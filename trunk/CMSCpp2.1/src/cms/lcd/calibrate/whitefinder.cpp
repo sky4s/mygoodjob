@@ -19,36 +19,45 @@ namespace cms {
 	    using namespace cms::lcd::calibrate::algo;
 	    using namespace Dep;
 	    using namespace Indep;
-	     WhitePointFinder::WhitePointFinder(bptr <
-						MeterMeasurement >
-						mm):mm(mm),
-		aroundAlgo(ChromaticAroundAlgorithm())
-	    , nearAlgo(CIEuv1960NearestAlgorithm_
-		       (XYZ_ptr((CIEXYZ *) null), mm)) {
+	    //==================================================================
+	    // WhitePointFinder
+	    //==================================================================
+	     WhitePointFinder::WhitePointFinder(bptr < MeterMeasurement > mm):mm(mm) {	/*,
+											   aroundAlgo(ChromaticAroundAlgorithm()) */
+		aroundAlgo =
+		    bptr < ChromaticAroundAlgorithm >
+		    (new ChromaticAroundAlgorithm());
+		nearAlgo =
+		    bptr < CIEuv1960NearestAlgorithm >
+		    (new CIEuv1960NearestAlgorithm
+		     (XYZ_ptr((CIEXYZ *) null), mm));
 	    };
 
 	    RGB_ptr WhitePointFinder::findMatchRGB0(xyY_ptr xyY,
 						    RGB_ptr initRGB) {
+		this->mm;
 		RGB_ptr nearestRGB = initRGB;
 		bool findNearest = false;
 
 		do {
 		    RGB_vector_ptr aroundRGB =
-			aroundAlgo.getAroundRGB(nearestRGB, 1);
+			aroundAlgo->getAroundRGB(nearestRGB, 1);
 		    XYZ_ptr center = xyY->toXYZ();
 		     bptr < AlgoResult > algoResult =
-			nearAlgo.getNearestRGB(center, aroundRGB);
+			nearAlgo->getNearestRGB(center, aroundRGB);
 		    XYZ_vector_ptr aroundXYZ = algoResult->aroundXYZ;
 		     nearestRGB = algoResult->nearestRGB;
 		     findNearest =
 			MeasuredUtils::isFirstNearestXYZInuvPrime(center,
 								  aroundXYZ);
+		    //findNearest = true;
+
 		} while (!findNearest);
 		 return nearestRGB;
 	    };
 
 	    RGB_ptr WhitePointFinder::findRGBAround(xyY_ptr xyY) {
-		aroundAlgo.setMode(Normal);
+		aroundAlgo->setMode(Normal);
 		RGB_ptr result = findMatchRGB0(xyY, RGBColor::White);
 		return result;
 	    };
@@ -61,14 +70,12 @@ namespace cms {
 	     */
 	    RGB_ptr WhitePointFinder::findMatchRGB(xyY_ptr xyY,
 						   RGB_ptr initRGB) {
-		aroundAlgo.setMode(White);
+		aroundAlgo->setMode(White);
 		RGB_ptr result = findMatchRGB0(xyY, initRGB);
 		return result;
 	    };
 
 	    RGB_ptr WhitePointFinder::fixRGB2TouchMax(RGB_ptr rgb) {
-		/*if (true)
-		   return rgb; */
 		RGB_ptr clone = rgb->clone();
 		//然後再調整White使RGB其中一點為255.
 		const Channel & maxChannel = clone->getMaxChannel();
@@ -91,10 +98,33 @@ namespace cms {
 		RGB_ptr fixRGB = fixRGB2TouchMax(initRGB);
 		RGB_ptr finalRGB = findMatchRGB(xyY, fixRGB);
 		return finalRGB;
-		return initRGB;
 	    };
-	};
 
+	    //==================================================================
+	    //
+	    //==================================================================
+	  StocktonWhitePointFinder::StocktonWhitePointFinder(bptr < MeterMeasurement > mm, RGB_ptr initRGB):
+	    WhitePointFinder(mm), initRGB(initRGB) {
+
+	    };
+	    RGB_ptr StocktonWhitePointFinder::findRGB(xyY_ptr xyY) {
+		double_array delta(new double[2]);
+		Patch_ptr patch =
+		    mm->measure(initRGB, initRGB->toString());
+		xyY_ptr measurexyY(new CIExyY(patch->getXYZ()));
+		double_array delta = measurexyY->getDeltaxy(xyY);
+		if (Math::abs(delta[0]) > 0.012
+		    && Math::abs(delta[1]) > 0.012) {
+
+		} else if (Math::abs(delta[0]) > 0.003
+			   && Math::abs(delta[1]) > 0.003) {
+
+		}
+                //if(
+
+	    };
+	    //==================================================================
+	};
     };
 };
 

@@ -153,26 +153,26 @@ namespace cms {
 	    //======================================================================
 	    // RGBColorSpace
 	    //======================================================================
-	  RGBColorSpace::RGBColorSpace(const CSType & type, const cms::Illuminant & referenceWhite, const double gamma):_type(type), referenceWhite(referenceWhite),
-		_gamma(gamma)
+	  RGBColorSpace::RGBColorSpace(const CSType & type, const cms::Illuminant & referenceWhite, const double gamma):type_(type), referenceWhite(referenceWhite),
+		gamma_(gamma)
 	    {
 	    };
 	    RGBColorSpace::RGBColorSpace(const CSType & type,
 					 const cms::
 					 Illuminant & referenceWhite,
 					 double toXYZMatrix[9],
-					 const double gamma):_type(type),
-		referenceWhite(referenceWhite), _gamma(gamma) {
+					 const double gamma):type_(type),
+		referenceWhite(referenceWhite), gamma_(gamma) {
 
-		_toXYZMatrix.reset(new double2D(3, 3, toXYZMatrix));
-		_toRGBMatrix = DoubleArray::inverse(_toXYZMatrix);
+		toXYZMatrix_.reset(new double2D(3, 3, toXYZMatrix));
+		toRGBMatrix_ = DoubleArray::inverse(toXYZMatrix_);
 	    };
 	    RGBColorSpace::RGBColorSpace(const CSType & type,
 					 const double gamma,
 					 const cms::
 					 Illuminant & referenceWhite,
-					 ...):_type(type),
-		referenceWhite(referenceWhite), _gamma(gamma) {
+					 ...):type_(type),
+		referenceWhite(referenceWhite), gamma_(gamma) {
 		//double_array result(new double[n]);
 		//_toXYZMatrix.reset(new double2D(3, 3));
 		const int n = 9;
@@ -184,8 +184,8 @@ namespace cms {
 		    const double d = va_arg(num_list, const double);
 		    array[i] = d;
 		} va_end(num_list);
-		_toXYZMatrix.reset(new double2D(3, 3, array));
-		_toRGBMatrix = DoubleArray::inverse(_toXYZMatrix);
+		toXYZMatrix_.reset(new double2D(3, 3, array));
+		toRGBMatrix_ = DoubleArray::inverse(toXYZMatrix_);
 	    };
 	    const RGBColorSpace & RGBColorSpace::unknowRGB =
 		RGBColorSpace(CSType::Unknow, Illuminant::D50, 2.2);
@@ -242,7 +242,7 @@ namespace cms {
 
 			rgbValues[x] =
 			    Math::pow(rgbValues[x],
-				      1. / rgbColorSpace._gamma);
+				      1. / rgbColorSpace.gamma_);
 
 			if (negative) {
 			    rgbValues[x] = -rgbValues[x];

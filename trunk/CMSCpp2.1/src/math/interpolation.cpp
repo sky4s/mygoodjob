@@ -51,8 +51,8 @@ namespace math {
     };
 
 
-  Interpolation::Interpolation(double_vector_ptr xn, double_vector_ptr yn):_xn(xn),
-	_yn(yn)
+  Interpolation::Interpolation(double_vector_ptr xn, double_vector_ptr yn):xn_(xn),
+	yn_(yn)
     {
 	if (xn->size() < 4 || yn->size() < 4 || xn->size() != yn->size()) {
 	    throw
@@ -99,19 +99,19 @@ namespace math {
 	int noInterpolateIndex = -1;
 	switch (interpolationType) {
 	case Linear:{
-		int startIndex = getxnPartStartIndex(_xn, x, 2);
+		int startIndex = getxnPartStartIndex(xn_, x, 2);
 		if (startIndex < 0) {
 		    noInterpolateIndex = (-startIndex) - 1;
 		    break;
 		}
-		xnpart = getPart(_xn, startIndex, 2);
-		ynpart = getPart(_yn, startIndex, 2);
+		xnpart = getPart(xn_, startIndex, 2);
+		ynpart = getPart(yn_, startIndex, 2);
 		break;
 	    }
 	};
 
 	if (noInterpolateIndex != -1) {
-	    return (*_yn)[noInterpolateIndex];
+	    return (*yn_)[noInterpolateIndex];
 	} else {
 	    return interpolate(xnpart, ynpart, x, interpolationType);
 	}
@@ -222,13 +222,13 @@ namespace math {
 					      double_vector_ptr
 					      numberArray) {
 	int arraySize = numberArray->size();
-	_hasCorrectedInRange = false;
+	hasCorrectedInRange_ = false;
 	if (number < (*numberArray)[0]) {
-	    _hasCorrectedInRange = true;
+	    hasCorrectedInRange_ = true;
 	    return (*numberArray)[0];
 	} else if (number > (*numberArray)[arraySize - 1]
 	    ) {
-	    _hasCorrectedInRange = true;
+	    hasCorrectedInRange_ = true;
 	    return (*numberArray)[arraySize - 1];
 	}
 	return number;
@@ -249,7 +249,7 @@ namespace math {
 	    && value <= (*valueArray)[size - 1];
     };
     bool Interpolation1DLUT::hasCorrectedInRange() {
-	return _hasCorrectedInRange;
+	return hasCorrectedInRange_;
     }
 };
 

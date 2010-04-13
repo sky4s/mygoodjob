@@ -46,11 +46,11 @@ namespace cms {
 		friend class RGBBase;
 	      private:
 
-		const double _gamma;
-		const CSType & _type;
+		const double gamma_;
+		const CSType & type_;
 		const cms::Illuminant & referenceWhite;
-		double2D_ptr _toXYZMatrix;
-		double2D_ptr _toRGBMatrix;
+		double2D_ptr toXYZMatrix_;
+		double2D_ptr toRGBMatrix_;
 
 		 RGBColorSpace::RGBColorSpace(const CSType & type,
 					      const cms::
@@ -74,7 +74,7 @@ namespace cms {
 
 
 		inline bool operator==(const RGBColorSpace & that) const {
-		    return _type == that._type;
+		    return type_ == that.type_;
 		};
 	    };
 

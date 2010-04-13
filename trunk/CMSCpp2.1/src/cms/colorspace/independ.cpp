@@ -17,7 +17,7 @@ namespace cms {
 	    double DeviceIndependentSpace::epsilon = INTENT_EPSILON;
 	    double DeviceIndependentSpace::kappa = INTENT_KAPPA;
 
-	     DeviceIndependentSpace::DeviceIndependentSpace():_degree(Two) {
+	     DeviceIndependentSpace::DeviceIndependentSpace():degree_(Two) {
 
 	    };
 
@@ -27,10 +27,10 @@ namespace cms {
 	    };
 
 	    Degree DeviceIndependentSpace::getDegree() {
-		return _degree;
+		return degree_;
 	    };
 	    void DeviceIndependentSpace::setDegree(Degree degree) {
-		_degree = degree;
+		degree_ = degree;
 	    };
 	    void DeviceIndependentSpace::
 		setCIEStandard(CIEStandard standard) {
@@ -54,7 +54,7 @@ namespace cms {
 		normalize(Normal100);
 	    };
 	    void NormalizeYOperator::setNormalizeNot() {
-		_normalizeY = Not;
+		normalizeY_ = Not;
 	    };
 	    //======================================================================
 

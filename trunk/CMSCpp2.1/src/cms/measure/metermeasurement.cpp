@@ -19,6 +19,9 @@ namespace cms {
 	using namespace cms::measure::cp;
 	using namespace std;
 	using namespace java::lang;
+	//const int MeterMeasurement::DefaultWaitTimes = 300;
+	//const int MeterMeasurement::DefaultBlankTimes = 17;
+
 	void MeterMeasurement::init(bool calibration) {
 	    /*if (MeasureWindow == null) {
 	       Application->CreateForm(__classid(TMeasureWindow),
@@ -96,6 +99,9 @@ namespace cms {
 	};
 	void MeterMeasurement::setWaitTimes(int waitTimes) {
 	    this->waitTimes = waitTimes;
+	};
+	int MeterMeasurement::getWaitTimes() {
+	    return waitTimes;
 	};
 	void MeterMeasurement::setFakeMeasure(bool fake) {
 	    this->fakeMeasure = fake;

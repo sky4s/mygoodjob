@@ -202,14 +202,16 @@ void __fastcall TTargetWhiteForm2::Button2Click(TObject * Sender)
     //利用ca210做成分分析器, 並且設定回MainForm
     bptr < IntensityAnalyzerIF > analyzer = MainForm->analyzer;
     /*CA210IntensityAnalyzer *ca210Analyzer =
-	dynamic_cast < CA210IntensityAnalyzer * >(analyzer.get());*/
+       dynamic_cast < CA210IntensityAnalyzer * >(analyzer.get()); */
 
     MainForm->setToTargetChannel();
+    analyzer->setWaitTimes(5000);
     analyzer->setupComponent(Channel::R, r);
     analyzer->setupComponent(Channel::G, g);
     analyzer->setupComponent(Channel::B, b);
     analyzer->setupComponent(Channel::W, rgb);
     analyzer->enter();
+    analyzer->setDefaultWaitTimes();
     //==========================================================================
     this->Close();
 }

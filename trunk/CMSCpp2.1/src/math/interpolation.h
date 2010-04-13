@@ -20,7 +20,7 @@ namespace math {
 
     class Interpolation {
       protected:
-	double_vector_ptr _xn, _yn;
+	double_vector_ptr xn_, yn_;
 	static int getxnPartStartIndex(double_vector_ptr xn, double x,
 				       int width);
 	static int
@@ -44,7 +44,7 @@ namespace math {
 
     class Interpolation1DLUT {
       private:
-	bool _hasCorrectedInRange;
+	bool hasCorrectedInRange_;
 	double_vector_ptr valueArray;
 	double_vector_ptr keyArray;
 	int size;

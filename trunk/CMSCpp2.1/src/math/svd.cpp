@@ -82,15 +82,15 @@ namespace math {
 	svd.getV(*v);
 #else
 	SVD < long double >svd(toLongDouobleArray(input));
-	longdouble2D _u;
-	longdouble1D _sv;
-	longdouble2D _v;
-	svd.getU(_u);
-	svd.getSingularValues(_sv);
-	svd.getV(_v);
-	u = toDoubleArray(_u);
-	sv = toDoubleArray(_sv);
-	v = toDoubleArray(_v);
+	longdouble2D u_;
+	longdouble1D sv_;
+	longdouble2D v_;
+	svd.getU(u_);
+	svd.getSingularValues(sv_);
+	svd.getV(v_);
+	u = toDoubleArray(u_);
+	sv = toDoubleArray(sv_);
+	v = toDoubleArray(v_);
 #endif
 
     };

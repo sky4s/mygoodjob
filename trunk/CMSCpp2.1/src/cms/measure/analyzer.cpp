@@ -24,7 +24,7 @@ namespace cms {
 	    CalibrationDataFilename = "ca210.dat";
 
 	void CA210IntensityAnalyzer::init() {
-	    mm->setWaitTimes(5000);
+	    //mm->setWaitTimes(5000);
 	    ca210api->setChannelNO(0);
 	    ca210api->copyToFile(CalibrationDataFilename);
 	};
@@ -35,12 +35,12 @@ namespace cms {
 							MeterMeasurement >
 							mm):ca210(ca210),
 	    ca210api(ca210->getCA210API()), mm(mm), dummyMode(false),
-	    dgc(null) {
+	    dgc(null), defaultWaitTimes(-1) {
 	    init();
 	};
 
       CA210IntensityAnalyzer::CA210IntensityAnalyzer(bptr < MeterMeasurement > mm):mm(mm),
-	    dummyMode(true), dgc(null)
+	    dummyMode(true), dgc(null), defaultWaitTimes(-1)
 	{
 	};
 
@@ -125,6 +125,16 @@ namespace cms {
 	};
 	void CA210IntensityAnalyzer::endAnalyze() {
 	    mm->setMeasureWindowsVisible(false);
+	};
+	void CA210IntensityAnalyzer::setWaitTimes(int waitTimes) {
+	    if (-1 == defaultWaitTimes) {
+		defaultWaitTimes = mm->getWaitTimes();
+	    }
+	    mm->setWaitTimes(waitTimes);
+	};
+	void CA210IntensityAnalyzer::setDefaultWaitTimes() {
+	    mm->setWaitTimes(defaultWaitTimes);
+	    defaultWaitTimes = -1;
 	};
 	//======================================================================
 

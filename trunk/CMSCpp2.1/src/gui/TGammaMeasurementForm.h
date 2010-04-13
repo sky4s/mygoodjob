@@ -45,15 +45,17 @@ class TGammaMeasurementForm:public TForm {
     TCheckBox *CheckBox_G;
     TCheckBox *CheckBox_B;
     TButton *Button_Measure;
-        TGroupBox *Table;
-        TRadioButton *RadioButton1;
-        TRadioButton *RadioButton2;
-        TButton *Button2;
+    TGroupBox *Table;
+    TRadioButton *RadioButton1;
+    TRadioButton *RadioButton2;
+    TButton *Button2;
     void __fastcall Button_MeasureClick(TObject * Sender);
     void __fastcall FormShow(TObject * Sender);
   private:			// User declarations
      bptr < cms::lcd::calibrate::BitDepthProcessor > bitDepth;
     void setMeasureInfo();
+    void pcMeasure(bool_vector_ptr rgbw);
+    void tconMeasure(bool_vector_ptr rgbw);
   public:			// User declarations
      __fastcall TGammaMeasurementForm(TComponent * Owner);
     void setBitDepthProcessor(bptr <

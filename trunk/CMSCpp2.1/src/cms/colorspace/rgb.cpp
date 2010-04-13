@@ -54,13 +54,14 @@ namespace cms {
 		setValues(r, g, b);
 	    };
 
-	    RGBColor::RGBColor(const RGBColorSpace & rgbColorSpace,
+	    /* TODO : RGBColor */
+	    /*RGBColor::RGBColor(const RGBColorSpace & rgbColorSpace,
 			       XYZ_ptr XYZ):rgbColorSpace(&rgbColorSpace),
 		maxValue(&MaxValue::Double1) {
-		/* TODO : RGBColor */
+
 		//this(colorSpace, fromXYZValues(XYZ.getValues(), colorSpace),
 		//MaxValue.Double1);
-	    };
+	    };*/
 
 
 	    double_array RGBColor::_getValues(double_array values) {

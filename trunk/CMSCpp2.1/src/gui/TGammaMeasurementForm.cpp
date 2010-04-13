@@ -28,7 +28,18 @@ __fastcall TGammaMeasurementForm::TGammaMeasurementForm(TComponent * Owner)
 void __fastcall TGammaMeasurementForm::Button_MeasureClick(TObject *
 							   Sender)
 {
+    using namespace std;
     MainForm->setToTargetChannel();
+    bool_vector_ptr rgbw(new bool_vector(4));
+    (*rgbw)[0] = this->CheckBox_R->Checked;
+    (*rgbw)[1] = this->CheckBox_G->Checked;
+    (*rgbw)[2] = this->CheckBox_B->Checked;
+    (*rgbw)[3] = this->CheckBox_W->Checked;
+    if (bitDepth->isTCONInput()) {
+	tconMeasure(rgbw);
+    } else {
+	pcMeasure(rgbw);
+    }
 }
 
 
@@ -52,6 +63,28 @@ void TGammaMeasurementForm::setMeasureInfo()
     this->Edit_StartLevel->Text = Util::toString(start).c_str();
     this->ComboBox_LevelStep->Text = Util::toString(step).c_str();
 };
+
+//---------------------------------------------------------------------------
+void TGammaMeasurementForm::pcMeasure(bool_vector_ptr rgbw)
+{
+    using namespace Dep;
+    channel_vector_ptr channels = Channel::RGBWChannel;
+    int size = channels->size();
+
+    for (int x = 0; x < size; x++) {
+	const Channel & ch = (*channels)[x];
+    }
+};
+
+//---------------------------------------------------------------------------
+void TGammaMeasurementForm::tconMeasure(bool_vector_ptr rgbw)
+{
+    using namespace Dep;
+    channel_vector_ptr channels = Channel::RGBWChannel;
+    int size = channels->size();
+};
+
+//---------------------------------------------------------------------------
 
 void __fastcall TGammaMeasurementForm::FormShow(TObject * Sender)
 {

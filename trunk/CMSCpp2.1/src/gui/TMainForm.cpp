@@ -329,7 +329,7 @@ void __fastcall TMainForm::MatrixCalibration1Click(TObject * Sender)
 				&MatrixCalibrationForm);
     }
 #ifdef _DEBUG
-    if (true) {
+    if (true == true) {
 #else
     if (true == MatrixCalibrationForm->setCA210(ca210)) {
 #endif

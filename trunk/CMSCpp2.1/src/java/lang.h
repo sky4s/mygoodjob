@@ -71,6 +71,9 @@
 #define int_vector std::vector < int >
 #define int_vector_ptr bptr < int_vector >
 
+#define bool_vector std::vector < bool >
+#define bool_vector_ptr bptr < bool_vector >
+
 #define double_vector std::vector < double >
 #define double_vector_ptr bptr < double_vector >
 #define nil_double_vector_ptr double_vector_ptr ((double_vector*)NULL)
