@@ -39,7 +39,7 @@ namespace cms {
 		StocktonWhitePointFinder(bptr <
 					 cms::measure::MeterMeasurement >
 					 mm, RGB_ptr initRGB);
-		RGB_ptr findRGB(xyY_ptr xyY);
+		RGB_ptr findRGB(xyY_ptr targetxyY);
 	    };
 	};
     };

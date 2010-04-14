@@ -73,7 +73,9 @@ void __fastcall TCCTLUTForm::Button_RunClick(TObject * Sender)
 
     MainForm->setToTargetChannel();
 
-    calibrator.reset(new LCDCalibrator(MainForm->analyzer, bitDepth));
+    calibrator.
+	reset(new
+	      LCDCalibrator(MainForm->getComponentFetcher(), bitDepth));
 
     //==========================================================================
     // P1P2©MRBInterpªº¿ï¾Ü
@@ -143,10 +145,11 @@ void __fastcall TCCTLUTForm::Button_RunClick(TObject * Sender)
 	    return;
 	}
 
-	AnsiString astr =
-	    this->TOutputFileFrame1->getFullPrefix() +
-	    FormatFloat("00", serialid) + ".xls";
-	string filename = astr.c_str();
+	/*AnsiString astr =
+	   this->TOutputFileFrame1->getFullPrefix() +
+	   FormatFloat("00", serialid) + ".xls"; */
+	String_ptr astr = this->TOutputFileFrame1->getOutputFilename();
+	string filename = astr->c_str();
 
 	calibrator->storeDGLut(filename, dglut);
 	ShowMessage("Ok!");

@@ -65,6 +65,7 @@
 #define bptr_ boost::scoped_ptr
 
 #define string_ptr bptr < std::string >
+#define String_ptr bptr < AnsiString >
 #define nil_string_ptr string_ptr ((std::string*)NULL)
 #define Object_ptr bptr < jObject >
 
@@ -84,12 +85,14 @@
 #define stringp_vector std::vector < string_ptr >
 #define stringp_vector_ptr bptr < string_ptr_vector >
 #define string_doublevector std::vector < string_vector_ptr >
-#define string_doublevector_ptr bptr < std::vector >
+#define string_doublevector_ptr bptr < string_doublevector >
 
 #define double_array barray <double>
 #define nil_double_array double_array ((double*)NULL)
 #define float_array barray <float>
 #define nil_float_array float_array ((float*)NULL)
+#define int_array barray <int>
+#define nil_int_array int_array ((int*)NULL)
 
 //boost提供的foreach, 若要對vector<int> ivec做foreach, 語法為: foreach(const int & i, ivec) { ... }
 #define foreach BOOST_FOREACH
@@ -117,14 +120,13 @@
 #define XYZ_vector_ptr bptr < XYZ_vector >
 
 
-#define channel_vector std::vector < Dep::Channel >
-#define channel_vector_ptr bptr < channel_vector >
+#define Channel_vector std::vector < Dep::Channel >
+#define Channel_vector_ptr bptr < Channel_vector >
 
 #define Patch_ptr bptr < cms::Patch >
-#define Patch_list std::list < Patch_ptr >
-#define Patch_list_ptr bptr < Patch_list >
 #define Patch_vector std::vector < Patch_ptr >
 #define Patch_vector_ptr bptr < Patch_vector >
+#define nil_Patch_vector_ptr Patch_vector_ptr( (Patch_vector*) null)
 
 #define Component_ptr  bptr < cms::lcd::calibrate::Component >
 #define Component_vector std::vector < Component_ptr >
@@ -193,7 +195,9 @@ namespace cms {
 	};
 	class ExcelFileDB;
 	class DGLutFile;
+	class DGLutFile_;
 	class DGLutProperty;
+	class RampMeasureFile;
     };
     namespace colorspace {
 	namespace depend {
@@ -345,6 +349,7 @@ namespace java {
 
 	class Math {
 	  public:
+	    static double abs(double a);
 	    static double sqrt(double a);
 	    static double pow(double a, double b);
 	    static double atan2(double y, double x);

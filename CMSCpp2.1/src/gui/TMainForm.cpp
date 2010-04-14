@@ -75,7 +75,6 @@ void __fastcall TMainForm::FormCreate(TObject * Sender)
 	    meter = bptr < Meter > (new CA210());
 	    mm = bptr < MeterMeasurement >
 		(new MeterMeasurement(meter, false));
-
 	    analyzer.reset(new CA210IntensityAnalyzer(getCA210(), mm));
 	}
 	catch(EOleException & ex) {
@@ -86,7 +85,6 @@ void __fastcall TMainForm::FormCreate(TObject * Sender)
 	this->Caption = this->Caption + " (debug mode)";
 	this->GroupBox_CHSetting->Visible = false;
     }
-
     bitDepth.reset(new BitDepthProcessor(8, 10, 8, false));
 }
 
@@ -97,7 +95,7 @@ void TMainForm::setDummyMeterFilename(const std::string & filename)
     using namespace cms::measure::meter;
     using namespace cms::measure;
     using namespace cms::colorformat;
-    bptr < DGLutFile > dgcode(new DGLutFile(filename));
+    bptr < DGLutFile > dgcode(new DGLutFile(filename, ReadOnly));
     meter.reset(new DGLutFileMeter(dgcode));
     mm.reset(new MeterMeasurement(meter, false));
     //mm->setFakeMeasure(true);
@@ -113,6 +111,17 @@ void TMainForm::resetDummyMeter()
     dgc->reset();
 };
 
+//---------------------------------------------------------------------------
+bptr < cms::lcd::calibrate::ComponentFetcher >
+    TMainForm::getComponentFetcher()
+{
+    if (null == fetcher) {
+	fetcher.
+	    reset(new cms::lcd::calibrate::
+		  ComponentFetcher(analyzer, bitDepth));
+    }
+    return fetcher;
+};
 
 //---------------------------------------------------------------------------
 bptr < cms::measure::meter::CA210 > TMainForm::getCA210()

@@ -20,7 +20,7 @@
 TGammaMeasurementForm *GammaMeasurementForm;
 //---------------------------------------------------------------------------
 __fastcall TGammaMeasurementForm::TGammaMeasurementForm(TComponent * Owner)
-:TForm(Owner)
+:TForm(Owner), mm(MainForm->mm), fetcher(MainForm->getComponentFetcher())
 {
 }
 
@@ -35,10 +35,15 @@ void __fastcall TGammaMeasurementForm::Button_MeasureClick(TObject *
     (*rgbw)[1] = this->CheckBox_G->Checked;
     (*rgbw)[2] = this->CheckBox_B->Checked;
     (*rgbw)[3] = this->CheckBox_W->Checked;
+    int start = this->Edit_StartLevel->Text.ToInt();
+    int end = this->Edit_EndLevel->Text.ToInt();
+    int step = this->ComboBox_LevelStep->Text.ToInt();
+
     if (bitDepth->isTCONInput()) {
-	tconMeasure(rgbw);
+	//tconMeasure(rgbw, start, end, step);
+
     } else {
-	pcMeasure(rgbw);
+	pcMeasure(rgbw, start, end, step);
     }
 }
 
@@ -65,22 +70,49 @@ void TGammaMeasurementForm::setMeasureInfo()
 };
 
 //---------------------------------------------------------------------------
-void TGammaMeasurementForm::pcMeasure(bool_vector_ptr rgbw)
+void TGammaMeasurementForm::pcMeasure(bool_vector_ptr rgbw, int start,
+				      int end, int step)
 {
     using namespace Dep;
-    channel_vector_ptr channels = Channel::RGBWChannel;
-    int size = channels->size();
+    using namespace std;
+    using namespace cms::colorformat;
+    Channel_vector_ptr channels = Channel::RGBChannel;
+    Patch_vector_ptr vectors[3];
 
-    for (int x = 0; x < size; x++) {
-	const Channel & ch = (*channels)[x];
+    Component_vector_ptr componentVector =
+	(true == (*rgbw)[3]) ?
+	fetcher->fetchComponent(start, end, step, step) :
+	Component_vector_ptr((Component_vector *) null);
+
+    foreach(const Channel & ch, *channels) {
+	int index = ch.getArrayIndex();
+	if (true == (*rgbw)[index]) {
+	    Patch_vector_ptr vector(new Patch_vector());
+	    for (int c = start; c >= end; c -= step) {
+		RGB_ptr rgb(new RGBColor());
+		rgb->setValue(ch, c);
+		Patch_ptr patch = mm->measure(rgb, rgb->toString());
+		vector->push_back(patch);
+	    };
+	    vectors[index] = vector;
+	} else {
+	    vectors[index] = Patch_vector_ptr((Patch_vector *) null);
+	}
     }
+
+    String_ptr filename = this->TOutputFileFrame1->getOutputFilename();
+    string stlstring = filename->c_str();
+    RampMeasureFile measureFile(stlstring, Create);
+    measureFile.setMeasureData(componentVector, vectors[0], vectors[1],
+			       vectors[2]);
 };
 
 //---------------------------------------------------------------------------
-void TGammaMeasurementForm::tconMeasure(bool_vector_ptr rgbw)
+void TGammaMeasurementForm::tconMeasure(bool_vector_ptr rgbw, int start,
+					int end, int step)
 {
     using namespace Dep;
-    channel_vector_ptr channels = Channel::RGBWChannel;
+    Channel_vector_ptr channels = Channel::RGBWChannel;
     int size = channels->size();
 };
 

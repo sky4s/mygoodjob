@@ -17,7 +17,7 @@
 TOutputFileFrame *OutputFileFrame;
 //---------------------------------------------------------------------------
 __fastcall TOutputFileFrame::TOutputFileFrame(TComponent * Owner)
-:TFrame(Owner)
+:TFrame(Owner), serialid(0)
 {
 }
 
@@ -43,11 +43,20 @@ void TOutputFileFrame::createDir()
 }
 
 //---------------------------------------------------------------------------
-AnsiString TOutputFileFrame::getFullPrefix()
+bptr < AnsiString > TOutputFileFrame::getFullPrefix()
 {
-    AnsiString dir = this->Edit_Directory->Text;
-    AnsiString full = dir + "\\" + this->Edit_Prefix->Text;
-    return full;
+    String_ptr
+	prefix(new AnsiString(this->Edit_Directory->Text + "\\" +
+			      this->Edit_Prefix->Text));
+    return prefix;
 }
+
 //---------------------------------------------------------------------------
+bptr < AnsiString > TOutputFileFrame::getOutputFilename()
+{
+    String_ptr output(new
+		      String(*getFullPrefix() +
+			     FormatFloat("00", serialid++) + ".xls"));
+    return output;
+};
 

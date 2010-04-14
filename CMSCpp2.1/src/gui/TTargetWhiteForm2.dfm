@@ -55,9 +55,9 @@ object TargetWhiteForm2: TTargetWhiteForm2
         end
         object Button2: TButton
           Left = 81
-          Top = 409
+          Top = 414
           Width = 80
-          Height = 24
+          Height = 19
           Caption = 'Run'
           TabOrder = 3
           OnClick = Button2Click
@@ -66,7 +66,7 @@ object TargetWhiteForm2: TTargetWhiteForm2
           Left = 25
           Top = 153
           Width = 208
-          Height = 120
+          Height = 152
           Caption = 'Target xy on D-Illuminant Locus'
           TabOrder = 0
           object Label10: TLabel
@@ -156,6 +156,15 @@ object TargetWhiteForm2: TTargetWhiteForm2
             TabOrder = 4
             Text = '0.4419'
           end
+          object CheckBox_MoreAccurate: TCheckBox
+            Left = 9
+            Top = 121
+            Width = 120
+            Height = 24
+            Caption = 'More Accurate'
+            TabOrder = 5
+            Visible = False
+          end
         end
         object RadioButton_MaxRGB: TRadioButton
           Left = 9
@@ -182,6 +191,7 @@ object TargetWhiteForm2: TTargetWhiteForm2
             Height = 24
             TabOrder = 0
             Text = '255'
+            OnChange = Edit_RChange
           end
           object Edit_G: TEdit
             Left = 57
@@ -190,6 +200,7 @@ object TargetWhiteForm2: TTargetWhiteForm2
             Height = 24
             TabOrder = 1
             Text = '255'
+            OnChange = Edit_GChange
           end
           object Edit_B: TEdit
             Left = 105
@@ -198,6 +209,7 @@ object TargetWhiteForm2: TTargetWhiteForm2
             Height = 24
             TabOrder = 2
             Text = '255'
+            OnChange = Edit_BChange
           end
         end
       end

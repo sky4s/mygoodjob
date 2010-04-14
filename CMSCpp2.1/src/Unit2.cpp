@@ -299,7 +299,7 @@ void dgcodefile()
     const string & filename = "test.xls";
     //string_ptr filename(new string(" test.xls "));
     Util::deleteExist(filename);
-    DGLutFile dgcode(filename, Create);
+    DGLutFile  dgcode(filename, Create);
     //dgcode.setProperty(" a ", " b ");
     //dgcode.setProperty(" b ", " bbb ");
     //dgcode.setRawData()
@@ -309,10 +309,8 @@ void dgcodefile()
     Component_ptr c(new Component(rgb, rgb, XYZ));
     compositionVec->push_back(c);
     compositionVec->push_back(c);
-    //dgcode.setRawData(compositionVec);
-
+    dgcode.setRawData(compositionVec, nil_RGBGamma, nil_RGBGamma);
 };
-
 void dgcode()
 {
     using namespace cms::lcd::calibrate;
@@ -329,31 +327,30 @@ void dgcode()
     };
     //DGLutGenerator generator(vector);
 };
-
 void rgbTry()
 {
+
     using namespace Dep;
     using namespace math;
-
     RGBColor rgb(RGBColorSpace::unknowRGB,
-		 DoubleArray::toDoubleArray(3, 0.25, 0.5, 0.75),
-		 MaxValue::Double255);
+		 DoubleArray::toDoubleArray(3, 0.25, 0.5,
+					    0.75), MaxValue::Double255);
     cout << *rgb.toString() << endl;
     //rgb.quantization(MaxValue::Int8Bit);
     rgb.changeMaxValue(MaxValue::Int10Bit);
     cout << *rgb.toString() << endl;
 };
-
 void doubleArrayTry()
 {
     using namespace math;
     double_array a = DoubleArray::toDoubleArray(3, 1.1, 2.1, 3.1);
     cout << *DoubleArray::toString(a, 3) << endl;
-    double bb[] = { 4, 5, 6 };
+    double bb[] = {
+	4, 5, 6
+    };
     double_array b = DoubleArray::toDoubleArray(bb, 3);
     cout << *DoubleArray::toString(b, 3) << endl;
 };
-
 void mathTry()
 {
     /*using namespace java::lang;
@@ -364,43 +361,40 @@ void mathTry()
        cout << Math::round(0.5) << endl;
        cout << Math::round(0.4) << endl; */
 };
-
 void rgbop()
 {
+
     using namespace cms::lcd::calibrate;
     //RGBOp < RGBGamma_ptr > rgbgammaop;
 };
-
 class AA {
 };
 class BB {
 };
 template < class T > class TA {
+
   public:
     virtual double get() {
     };
-
 };
-
 template <> double TA < AA >::get()
 {
     return 1;
 };
-
 template <> double TA < BB >::get()
 {
     return 2;
 };
-
 class TB:public TA < double > {
+
   public:
     double get() {
 	return 100;
     };
 };
-
 void templateTry()
 {
+
     using namespace std;
     TA < AA > aa;
     TA < BB > bb;
@@ -411,9 +405,9 @@ void templateTry()
     //cout << cc.get() << endl;
     cout << dd.get() << endl;
 };
-
 void forTry()
 {
+
     for (int x = 0; x < 100; x++) {
 	cout << x << endl;
 	if (x == 50) {
@@ -421,8 +415,8 @@ void forTry()
 	}
     }
 };
-
 namespace a {
+
     namespace b {
 	double x = 1;
 	double y = b::x;
@@ -431,27 +425,21 @@ namespace a {
 namespace b {
     double x = 2;
 };
-
 void namespaceTry()
 {
     cout << a::b::x << endl;
     cout << a::b::y << endl;
     cout << b::x << endl;
 };
-
-
-
 void pointerEample()
 {
     vector < int >*a = new vector < int >(3);
     (*a)[0] = 3;
 };
-
 void lcdcalibratorTry()
 {
     Application->Initialize();
     Application->CreateForm(__classid(TMeasureWindow), &MeasureWindow);
-
     using namespace cms::measure::meter;
     using namespace cms::measure;
     using namespace cms::lcd::calibrate;
@@ -460,16 +448,11 @@ void lcdcalibratorTry()
     bptr < MeterMeasurement > mm(new MeterMeasurement(ca210, false));
     bptr < CA210IntensityAnalyzer >
 	analyzer(new CA210IntensityAnalyzer(ca210, mm));
-
     mm->measure(0, 0, 128, " test ");
-
-
 };
-
 void channelTry()
 {
     using namespace Dep;
-
     cout << ChannelIndex::R << endl;
     //cout << R_ << endl;
     cout << Channel::R.chindex << endl;
@@ -485,9 +468,9 @@ void channelTry()
 
 
 };
-
 void ca210()
 {
+
     ca210api::CA210API ca210;
     /*ca210.setChannelNO(0);
        ca210.resetLvxyCalMode();
@@ -497,8 +480,6 @@ void ca210()
        ca210.resetAnalyzerCalMode(); */
     ca210.triggerMeasurement();
 };
-
-
 void strTry()
 {
     string a = " 1 ";
@@ -508,13 +489,10 @@ void strTry()
     string str = " 12345 ";
     str.replace(3, 1, " 90 ");
     cout << str << endl;
-
 };
-
 void measureFileTry()
 {
     using namespace cms::colorformat;
-
     const string & filename = "ramp.xls";
     ExcelFileDB db(filename, ReadOnly);
     db.setTableName("Sheet1");
@@ -527,11 +505,10 @@ void measureFileTry()
 	}
 	cout << endl;
     };
-
 };
-
 void maxValueTry()
 {
+
     /*using namespace Dep;
        using namespace std;
        const MaxValue & m = MaxValue::getByBit(5);
@@ -540,7 +517,6 @@ void maxValueTry()
        cout << *n.toString() << endl; */
 
 };
-
 void byteOpTry()
 {
     int i = 259;
@@ -548,40 +524,30 @@ void byteOpTry()
     int i2 = i >> 8 & 255;
     cout << i1 << " " << i2 << endl;
 };
-
 void castTry()
 {
     using boost::numeric_cast;
-
     using boost::numeric::bad_numeric_cast;
     using boost::numeric::positive_overflow;
     using boost::numeric::negative_overflow;
-
     using namespace std;
     float ff = -42.1234;
-
     int ii = numeric_cast < int >(ff);
     cout << ii << endl;
-
     //try {
     //float f = -42.1234;
-
     // This will cause a boost::numeric::negative_overflow exception to be thrown
     //unsigned int i = numeric_cast < unsigned int >(f);
     /*}
        catch(bad_numeric_cast & e) {
        std::cout << e.what();
        } */
-
-
 };
-
 void bufferTry()
 {
     using namespace cms::util;
     ByteBuffer buffer(3);
 };
-
 void rgbGammaTry()
 {
     using namespace cms::lcd::calibrate;
@@ -592,22 +558,21 @@ void rgbGammaTry()
 	cout << v << endl;
     };
 };
-
 class Base {
+
   public:
     virtual void _do() = 0;
     void doing() {
 	_do();
     };
 };
-
 class Son:public Base {
+
   public:
     virtual void _do() {
 	cout << "do" << endl;
     };
 };
-
 void measureConditionTry()
 {
     using namespace cms::lcd::calibrate;
@@ -617,7 +582,6 @@ void measureConditionTry()
 	cout << c << endl;
     }
 };
-
 void vectorTry()
 {
 
@@ -649,7 +613,7 @@ int main(int argc, char *argv[])
     //sizeCompare();
     //gammaCurve();
     //header();
-    //dgcodefile();
+    dgcodefile();
     //dgcode();
     //inverse();
     //rgbTry();
@@ -662,11 +626,9 @@ int main(int argc, char *argv[])
     //lcdcalibratorTry();
     //channelTry();
     //ca210();
-
     //strTry();
     //measureFileTry();
     //maxValueTry();
-
     //using namespace cms::colorformat;
     //DGLutFile dg(" test.xls ",256);
     //cout << RoundTo(94.5, 0) << endl;
@@ -676,8 +638,7 @@ int main(int argc, char *argv[])
     //rgbGammaTry();
     //bufferTry();
     //measureConditionTry();
-    vectorTry();
-
+    //vectorTry();
     getch();
 }
 

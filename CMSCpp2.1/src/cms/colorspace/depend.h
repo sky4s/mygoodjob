@@ -70,7 +70,7 @@ namespace cms {
 		static const RGBColorSpace & unknowRGB;
 		static const RGBColorSpace & sRGB;
 		static const RGBColorSpace & sRGB_gamma22;
-		static const RGBColorSpace & NTSCRGB;
+		//static const RGBColorSpace & NTSCRGB;
 
 
 		inline bool operator==(const RGBColorSpace & that) const {
@@ -144,7 +144,7 @@ namespace cms {
 		static bool isPrimaryColorChannel(const Channel & channel);
 		static bool isSecondaryColorChannel(const Channel &
 						    channel);
-		static channel_vector_ptr getChannelVector(int count, ...);
+		static Channel_vector_ptr getChannelVector(int count, ...);
 	      public:
 		const ChannelIndex chindex;
 		//const int index;
@@ -162,7 +162,7 @@ namespace cms {
 		int getArrayIndex();
 		bool isPrimaryColorChannel() const;
 		bool isSecondaryColorChannel() const;
-		static channel_vector_ptr getBesidePrimaryChannel(const
+		static Channel_vector_ptr getBesidePrimaryChannel(const
 								  Channel &
 								  primaryColorChannel);
 
@@ -172,12 +172,12 @@ namespace cms {
 		static const Channel & getChannelByArrayIndex(int
 							      arrayIndex);
 
-		static const channel_vector_ptr RGBYMCChannel;
-		static const channel_vector_ptr RGBYMCWChannel;
-		static const channel_vector_ptr RGBChannel;
-		static const channel_vector_ptr RGBWChannel;
-		static const channel_vector_ptr WRGBChannel;
-		static const channel_vector_ptr YMCChannel;
+		static const Channel_vector_ptr RGBYMCChannel;
+		static const Channel_vector_ptr RGBYMCWChannel;
+		static const Channel_vector_ptr RGBChannel;
+		static const Channel_vector_ptr RGBWChannel;
+		static const Channel_vector_ptr WRGBChannel;
+		static const Channel_vector_ptr YMCChannel;
 
 	    };
 

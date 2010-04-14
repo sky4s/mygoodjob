@@ -98,12 +98,25 @@ namespace cms {
 		(*result)[x] = strings[x];
 	    } return result;
 	};
+	void StringVector::setContent(string_vector_ptr vector,
+				      const std::string & content,
+				      int n, ...) {
+	    //int_array result(new int[n]);
+	    va_list num_list;
+	    va_start(num_list, n);
+
+	    for (int i = 0; i < n; i++) {
+		const int d = va_arg(num_list, const int);
+		//result[i] = d;
+		(*vector)[d] = content;
+	    } va_end(num_list);
+	};
 	//======================================================================
 
 	//======================================================================
 	// ByteBuffer
 	//======================================================================
-      ByteBuffer::ByteBuffer(const unsigned int size):size(size) {
+	ByteBuffer::ByteBuffer(const unsigned int size):size(size) {
 	    buffer = new unsigned char[size];
 	};
 	ByteBuffer::~ByteBuffer() {

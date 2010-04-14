@@ -72,6 +72,9 @@ namespace java {
 	//======================================================================
 	// Math
 	//======================================================================
+	double Math::abs(double a) {
+	    return std::abs(a);
+	};
 	double Math::sqrt(double a) {
 	    return std::sqrt(a);
 	};

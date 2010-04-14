@@ -47,17 +47,17 @@ namespace cms {
 	    const Channel & Channel::W =
 		Channel::Channel(7, clWhite, "W", ChannelIndex::W);
 
-	    const channel_vector_ptr Channel::RGBYMCChannel =
+	    const Channel_vector_ptr Channel::RGBYMCChannel =
 		getChannelVector(6, R, G, B, Y, M, C);
-	    const channel_vector_ptr Channel::RGBYMCWChannel =
+	    const Channel_vector_ptr Channel::RGBYMCWChannel =
 		getChannelVector(7, R, G, B, Y, M, C, W);
-	    const channel_vector_ptr Channel::RGBChannel =
+	    const Channel_vector_ptr Channel::RGBChannel =
 		getChannelVector(3, R, G, B);
-	    const channel_vector_ptr Channel::RGBWChannel =
+	    const Channel_vector_ptr Channel::RGBWChannel =
 		getChannelVector(4, R, G, B, W);
-	    const channel_vector_ptr Channel::WRGBChannel =
+	    const Channel_vector_ptr Channel::WRGBChannel =
 		getChannelVector(4, W, R, G, B);
-	    const channel_vector_ptr Channel::YMCChannel =
+	    const Channel_vector_ptr Channel::YMCChannel =
 		getChannelVector(3, Y, M, C);
 
 
@@ -76,8 +76,8 @@ namespace cms {
 	    bool Channel::isSecondaryColorChannel(const Channel & channel) {
 		return channel == C || channel == M || channel == Y;
 	    };
-	    channel_vector_ptr Channel::getChannelVector(int count, ...) {
-		channel_vector_ptr result(new channel_vector());
+	    Channel_vector_ptr Channel::getChannelVector(int count, ...) {
+		Channel_vector_ptr result(new Channel_vector());
 		va_list num_list;
 		va_start(num_list, count);
 
@@ -136,7 +136,7 @@ namespace cms {
 	    bool Channel::isSecondaryColorChannel() const {
 		return isSecondaryColorChannel(*this);
 	    };
-	    channel_vector_ptr Channel::getBesidePrimaryChannel(const
+	    Channel_vector_ptr Channel::getBesidePrimaryChannel(const
 								Channel &
 								primaryColorChannel)
 	    {

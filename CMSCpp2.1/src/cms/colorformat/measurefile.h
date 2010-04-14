@@ -20,7 +20,16 @@ namespace cms {
 	};
 	class MeasureFile {
 	};
-	class RampMeasureFile {
+	class RampMeasureFile:public ExcelAccessBase {
+	  private:
+	    static const std::string & Sheet1;
+	  public:
+	     RampMeasureFile(const std::string & fileName,
+			     const Mode mode);
+	    void setMeasureData(Component_vector_ptr wMeasureData,
+				Patch_vector_ptr rMeasureData,
+				Patch_vector_ptr gMeasureData,
+				Patch_vector_ptr bMeasureData);
 	};
     };
 };

@@ -56,6 +56,7 @@ class TTargetWhiteForm2:public TForm {
     TEdit *Edit_ScrollG;
     TEdit *Edit_ScrollB;
     TLabel *Label3;
+    TCheckBox *CheckBox_MoreAccurate;
     void __fastcall RadioButton_MaxRGBClick(TObject * Sender);
     void __fastcall ScrollBar_RChange(TObject * Sender);
     void __fastcall ScrollBar_GChange(TObject * Sender);
@@ -64,6 +65,9 @@ class TTargetWhiteForm2:public TForm {
     void __fastcall Edit_targetxChange(TObject * Sender);
     void __fastcall Edit_targetyChange(TObject * Sender);
     void __fastcall Button2Click(TObject * Sender);
+        void __fastcall Edit_RChange(TObject *Sender);
+        void __fastcall Edit_GChange(TObject *Sender);
+        void __fastcall Edit_BChange(TObject *Sender);
   private:			// User declarations
     void setColorimetricValues(double x, double y, double up, double vp);
     void scrollBar_Change();
