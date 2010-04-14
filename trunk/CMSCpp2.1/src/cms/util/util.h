@@ -37,6 +37,9 @@ namespace cms {
 
 	    static string_vector_ptr fromString(int n, const std::string *
 						strings);
+	    static void setContent(string_vector_ptr vector,
+				   const std::string & content, int n,
+				   ...);
 	};
 	class NameIF {
 	  public:

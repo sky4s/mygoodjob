@@ -4,10 +4,18 @@
 #ifndef TOutputFileFrameH
 #define TOutputFileFrameH
 //---------------------------------------------------------------------------
+//C系統文件
+
+//C++系統文件
+
+//其他庫頭文件
 #include <Classes.hpp>
 #include <Controls.hpp>
 #include <StdCtrls.hpp>
 #include <Forms.hpp>
+//本項目內頭文件
+#include <java/lang.h>
+
 //---------------------------------------------------------------------------
 class TOutputFileFrame:public TFrame {
     __published:		// IDE-managed Components
@@ -19,10 +27,12 @@ class TOutputFileFrame:public TFrame {
     TButton *Button_BrowseDir;
     void __fastcall Button_BrowseDirClick(TObject * Sender);
   private:			// User declarations
+    int serialid;
   public:			// User declarations
      __fastcall TOutputFileFrame(TComponent * Owner);
     void createDir();
-    AnsiString getFullPrefix();
+    String_ptr getFullPrefix();
+    String_ptr getOutputFilename();
 };
 //---------------------------------------------------------------------------
 extern PACKAGE TOutputFileFrame *OutputFileFrame;

@@ -172,23 +172,27 @@ void __fastcall TTargetWhiteForm2::Button2Click(TObject * Sender)
     using namespace cms::measure;
 
     bool usexy = this->RadioButton_Targetxy->Checked;
-    RGB_ptr rgb;
+    bool moreAccurate = this->CheckBox_MoreAccurate->Checked;
+    //已知rgb
+    int rvalue = this->Edit_R->Text.ToInt();
+    int gvalue = this->Edit_G->Text.ToInt();
+    int bvalue = this->Edit_B->Text.ToInt();
+    //已知rgb
+    RGB_ptr rgb(new RGBColor(rvalue, gvalue, bvalue));
 
     if (true == usexy) {
 	double targetx = this->Edit_targetx->Text.ToDouble();
 	double targety = this->Edit_targety->Text.ToDouble();
 	xyY_ptr xyY(new CIExyY(targetx, targety, 1));
 	//已知xy, 求rgb
-	WhitePointFinder finder(MainForm->mm);
-	rgb = finder.findRGB(xyY);
-    } else {
-	//已知rgb
-	int r = this->Edit_R->Text.ToInt();
-	int g = this->Edit_G->Text.ToInt();
-	int b = this->Edit_B->Text.ToInt();
-	rgb.reset(new RGBColor(r, g, b));
+	if (true == moreAccurate) {
+	    StocktonWhitePointFinder finder(MainForm->mm, rgb);
+	    rgb = finder.findRGB(xyY);
+	} else {
+	    WhitePointFinder finder(MainForm->mm);
+	    rgb = finder.findRGB(xyY);
+	}
     }
-
     RGB_ptr r(new RGBColor());
     RGB_ptr g(new RGBColor());
     RGB_ptr b(new RGBColor());
@@ -213,8 +217,34 @@ void __fastcall TTargetWhiteForm2::Button2Click(TObject * Sender)
     analyzer->enter();
     analyzer->setDefaultWaitTimes();
     //==========================================================================
-    this->Close();
+    //this->Close();
+
+    this->Edit_R->Text=r->R;
+     this->Edit_G->Text=g->G;
+       this->Edit_B->Text=b->B;
 }
 
+//---------------------------------------------------------------------------
+
+
+
+void __fastcall TTargetWhiteForm2::Edit_RChange(TObject *Sender)
+{
+ScrollBar_R->Position =this->Edit_R->Text.ToInt();
+;
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TTargetWhiteForm2::Edit_GChange(TObject *Sender)
+{
+ScrollBar_G->Position =this->Edit_G->Text.ToInt();
+
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TTargetWhiteForm2::Edit_BChange(TObject *Sender)
+{
+ScrollBar_B->Position =this->Edit_B->Text.ToInt() ;        
+}
 //---------------------------------------------------------------------------
 

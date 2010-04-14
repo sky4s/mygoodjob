@@ -21,6 +21,7 @@ namespace cms {
 	    using namespace java::lang;
 	    using namespace cms::colorformat;
 	    using namespace cms::util;
+	    using namespace cms::lcd::calibrate;
 	    //==================================================================
 	    // Component
 	    //==================================================================
@@ -463,8 +464,20 @@ namespace cms {
 		this->keepMaxLuminance = keepMaxLuminance;
 	    };
 
-	  LCDCalibrator::LCDCalibrator(bptr < cms::measure::IntensityAnalyzerIF > analyzer, bptr < BitDepthProcessor > bitDepth):analyzer(analyzer),
-		bitDepth(bitDepth)
+	  LCDCalibrator::LCDCalibrator(bptr < cms::measure::IntensityAnalyzerIF > analyzer, bptr < BitDepthProcessor > bitDepth):	/*analyzer(analyzer), */
+	    bitDepth(bitDepth) {
+		rgbgamma = false;
+		useGammaCurve = false;
+		bIntensityGain = 1;
+		rbInterpUnder = 0;
+		p1 = p2 = 0;
+		gamma = rgamma = ggamma = bgamma = -1;
+		this->fetcher.
+		    reset(new ComponentFetcher(analyzer, bitDepth));
+		stop = false;
+	    };
+
+	  LCDCalibrator::LCDCalibrator(bptr < ComponentFetcher > fetcher, bptr < BitDepthProcessor > bitDepth):bitDepth(bitDepth)
 	    {
 		rgbgamma = false;
 		useGammaCurve = false;
@@ -472,7 +485,7 @@ namespace cms {
 		rbInterpUnder = 0;
 		p1 = p2 = 0;
 		gamma = rgamma = ggamma = bgamma = -1;
-		fetcher.reset(new ComponentFetcher(analyzer, bitDepth));
+		this->fetcher = fetcher;
 		stop = false;
 	    };
 
@@ -622,7 +635,7 @@ namespace cms {
 		file.setRawData(componentVector, initialRGBGamma,
 				finalRGBGamma);
 
-            };
+	    };
 
 	    void LCDCalibrator::setStop(bool stop) {
 		fetcher->setStop(stop);

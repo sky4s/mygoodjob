@@ -21,7 +21,7 @@ namespace cms {
 		//==============================================================
 		 RGB_vector_ptr
 		    StepAroundAlgorithm::
-		    rgbAdjust(channel_vector_ptr channels,
+		    rgbAdjust(Channel_vector_ptr channels,
 			      const Channel & maxChannel,
 			      bptr < RGBColor > centerRGB, double
 			      adjustStep, double_array delta) {

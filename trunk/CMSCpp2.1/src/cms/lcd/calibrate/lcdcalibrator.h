@@ -146,7 +146,6 @@ namespace cms {
 		double bIntensityGain;
 		bool bMax;
 		bool keepMaxLuminance;
-		//bool gamma256;
 		bool avoidFRCNoise;
 		bool rgbgamma;
 		double gamma, rgamma, ggamma, bgamma;
@@ -157,7 +156,7 @@ namespace cms {
 		double_vector_ptr bgammaCurve;
 		 bptr < DGLutGenerator > generator;
 		 bptr < ComponentFetcher > fetcher;
-		 bptr < cms::measure::IntensityAnalyzerIF > analyzer;
+		//bptr < cms::measure::IntensityAnalyzerIF > analyzer;
 
 		RGB_vector_ptr dglut;
 		Component_vector_ptr componentVector;
@@ -192,6 +191,10 @@ namespace cms {
 
 		 LCDCalibrator(bptr < cms::measure::IntensityAnalyzerIF >
 			       analyzer,
+			       bptr < BitDepthProcessor > bitDepth);
+		 LCDCalibrator(bptr <
+			       cms::lcd::calibrate::ComponentFetcher >
+			       fetcher,
 			       bptr < BitDepthProcessor > bitDepth);
 
 		//RGB_vector_ptr getDGLut(int start, int end, int step);

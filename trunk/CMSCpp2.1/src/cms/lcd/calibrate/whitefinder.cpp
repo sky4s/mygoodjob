@@ -107,21 +107,103 @@ namespace cms {
 	    WhitePointFinder(mm), initRGB(initRGB) {
 
 	    };
-	    RGB_ptr StocktonWhitePointFinder::findRGB(xyY_ptr xyY) {
-		double_array delta(new double[2]);
-		Patch_ptr patch =
-		    mm->measure(initRGB, initRGB->toString());
-		xyY_ptr measurexyY(new CIExyY(patch->getXYZ()));
-		double_array delta = measurexyY->getDeltaxy(xyY);
-		if (Math::abs(delta[0]) > 0.012
-		    && Math::abs(delta[1]) > 0.012) {
+	    RGB_ptr StocktonWhitePointFinder::findRGB(xyY_ptr targetxyY) {
+		using java::lang::Math;
+		double_array delta;
+		RGB_ptr findRGB = initRGB->clone();
+		//==============================================================
+		// blue的處理(x/y)
+		//==============================================================
+		do {
+		    Patch_ptr patch =
+			mm->measure(findRGB, findRGB->toString());
+		    xyY_ptr measurexyY(new CIExyY(patch->getXYZ()));
+		    delta = measurexyY->getDeltaxy(targetxyY);
+		    int adjust = 0;
+		    if (Math::abs(delta[0]) > 0.012
+			&& Math::abs(delta[1]) > 0.012) {
+			adjust = 5;
+		    } else if (Math::abs(delta[0]) > 0.003
+			       && Math::abs(delta[1]) > 0.003) {
+			adjust = 3;
+		    } else {
+			adjust = 1;
+		    }
 
-		} else if (Math::abs(delta[0]) > 0.003
-			   && Math::abs(delta[1]) > 0.003) {
-
+		    if (delta[0] < 0 && delta[1] < 0) {
+			findRGB->B -= adjust;
+		    }
 		}
-                //if(
+		while (!(delta[0] > 0 && delta[1] > 0));
+		//==============================================================
 
+		//==============================================================
+		// red的處理(x)
+		//==============================================================
+		do {
+		    Patch_ptr patch =
+			mm->measure(findRGB, findRGB->toString());
+		    xyY_ptr measurexyY(new CIExyY(patch->getXYZ()));
+		    delta = measurexyY->getDeltaxy(targetxyY);
+		    if (delta[0] > 0) {
+			findRGB->R -= 1;
+		    }
+		} while (!(delta[0] < 0));
+		//==============================================================
+
+		//==============================================================
+		// red的處理(x)
+		//==============================================================
+		bool stop = false;
+		do {
+		    Patch_ptr patch =
+			mm->measure(findRGB, findRGB->toString());
+		    xyY_ptr measurexyY(new CIExyY(patch->getXYZ()));
+		    delta = measurexyY->getDeltaxy(targetxyY);
+		    if (delta[1] > 0) {
+			//green的處理
+			findRGB->G -= 1;
+		    }
+		    if (delta[0] > 0 && findRGB->B < 255) {
+			findRGB->B += 1;
+		    }
+		    if (delta[0] > 0 && 255 == findRGB->B) {
+			findRGB->R -= 1;
+		    }
+		    stop = (delta[0] < 0 && delta[1] < 0)
+			|| (255 == findRGB->B && delta[1] < 0);
+		} while (true == stop);
+		//==============================================================
+
+		//==============================================================
+		// 最終一次調整
+		//==============================================================
+		Patch_ptr patch =
+		    mm->measure(findRGB, findRGB->toString());
+		xyY_ptr measurexyY(new CIExyY(patch->getXYZ()));
+		delta = measurexyY->getDeltaxy(targetxyY);
+		if (findRGB->R < 255) {
+		    findRGB->R += 1;
+		    patch = mm->measure(findRGB, findRGB->toString());
+		    measurexyY.reset(new CIExyY(patch->getXYZ()));
+		    double_array delta2 =
+			measurexyY->getDeltaxy(targetxyY);
+		    if (Math::abs(delta2[0]) > Math::abs(delta[0])) {
+			findRGB->R -= 1;
+		    }
+		}
+		if (findRGB->G < 255) {
+		    findRGB->G += 1;
+		    patch = mm->measure(findRGB, findRGB->toString());
+		    measurexyY.reset(new CIExyY(patch->getXYZ()));
+		    double_array delta2 =
+			measurexyY->getDeltaxy(targetxyY);
+		    if (Math::abs(delta2[1]) > Math::abs(delta[1])) {
+			findRGB->G -= 1;
+		    }
+		}
+		//==============================================================
+		return findRGB;
 	    };
 	    //==================================================================
 	};

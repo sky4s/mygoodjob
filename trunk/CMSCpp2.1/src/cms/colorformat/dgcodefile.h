@@ -3,19 +3,21 @@
 //C系統文件
 
 //C++系統文件
+
+#include <vcl.h>
 #ifdef __BORLANDC__
 # pragma pack(push, 8)
-#endif 
+#endif
 #include <map>
 #ifdef __BORLANDC__
 # pragma pack(pop)
 #endif
 
-
 //其他庫頭文件
 #include <ADODB.hpp>
 #include <DB.hpp>
 //本項目內頭文件
+#include <java/lang.h>
 #include "excelfile.h"
 
 namespace cms {
@@ -23,54 +25,47 @@ namespace cms {
 
 	class ExcelAccessBase {
 	  private:
-	    bptr < ExcelFileDB > db;
-	    const Mode mode;
-	    //map < const std::string, string_vector_ptr) fieldNameMap;
-	    void setSheet(bool create, const std::string & sheetname,
-			  string_vector_ptr fieldNames);
-	  public:
-	     ExcelAccessBase(const std::string & filename);
-	    void createSheet(const std::string & sheetname,
-			     string_vector_ptr fieldNames);
-	    void setSheet(const std::string & sheetname,
-			  string_vector_ptr fieldNames);
 
+	    const std::string & filename;
+
+	    const Mode mode;
+	     std::map < const std::string,
+		string_vector_ptr) headerNamesMap;
+
+	  protected:
+	     bptr < ExcelFileDB > db;
+	    const bool lazyMode;
+	    string_vector_ptr getHeaderNames(const std::
+					     string & sheetname);
+	    void initSheet(const std::string & sheetname, int headerCount,
+			   ...);
+	    void initPropertySheet();
+	    void initBegin();
+	  public:
+
+	     ExcelAccessBase(const std::string & filename, Mode mode);
+	    void
+	     addProperty(const std::string & key,
+			 const std::string & value);
+	    void
+	     addProperty(const std::string & key, const double value);
+	    static const std::string & Properties;
 	};
 
 	class DGLutProperty;
-	class DGLutFile {
+	class DGLutFile:public ExcelAccessBase {
 	  private:
-	    bptr < ExcelFileDB > db;
-	    const Mode mode;
-	    void init();
-	    /*void initDefaultData(string_vector_ptr fieldNames,
-	       const std::string & tableName, int n,
-	       bool reverse);
-	       void initDefaultData(string_vector_ptr fieldNames,
-	       const std::string & tableName,
-	       int_vector_ptr nvector, bool reverse); */
-	    //const int n;
-	    //const int_vector_ptr nvector;
-	    const std::string & filename;
-	    bool lazyMode;
-	  public:
-	    static const std::string GammaHeader[4];
-	    static const std::string RawHeader[13];
-	    static const std::string PropertiesHeader[2];
+	    string_vector_ptr makeValues(int n, Component_ptr c);
+	    string_vector_ptr makeValues(int n,
+					 Component_ptr c,
+					 RGB_ptr rgbGamma,
+					 RGB_ptr rgbGammaFix);
 	    static const std::string & GammaTable;
 	    static const std::string & RawData;
-	    static const std::string & Properties;
-	    static string_vector_ptr GammaFieldNames;
-	    static string_vector_ptr RawFieldNames;
-	    static string_vector_ptr PropertiesFieldNames;
-	    /*DGLutFile(const std::string & filename, int n);
-	       DGLutFile(const std::string & filename,
-	       int_vector_ptr nvector); */
-	     DGLutFile(const std::string & filename);
+	  public:
 	     DGLutFile(const std::string & filename, Mode mode);
-	    void addProperty(const std::string & key,
-			     const std::string & value);
-	    void addProperty(const std::string & key, const double value);
+
+
 	    void setProperty(const DGLutProperty & property);
 
 	    void setRawData(Component_vector_ptr componentVector,
@@ -86,15 +81,59 @@ namespace cms {
 	       2. 取有量測到的gamma, 但是缺乏的gamma..就缺乏吧...
 	       反正產生DG Code的時候還是可以生出來.
 
-	       選擇方案二, 所以不用刻意去縮減rgbgamma, 由setRawData自己去篩
-	     */
-
-	  private:
-	     string_vector_ptr makeValues(int n, Component_ptr c);
-	    string_vector_ptr makeValues(int n, Component_ptr c,
-					 RGB_ptr rgbGamma,
-					 RGB_ptr rgbGammaFix);
+	       選擇方案二, 所以不用刻意去縮減rgbgamma, 由setRawData自己去篩 */
 	};
+
+
+	/*class DGLutFile {
+	   private:
+	   bptr < ExcelFileDB > db;
+	   const Mode mode;
+	   void init();
+	   const std::string & filename;
+	   bool lazyMode;
+	   public:
+	   static const std::string GammaHeader[4];
+	   static const std::string RawHeader[13];
+	   static const std::string PropertiesHeader[2];
+	   static const std::string & GammaTable;
+	   static const std::string & RawData;
+	   static const std::string & Properties;
+	   static string_vector_ptr GammaFieldNames;
+	   static string_vector_ptr RawFieldNames;
+	   static string_vector_ptr PropertiesFieldNames;
+	   DGLutFile(const std::string & filename);
+	   DGLutFile(const std::string & filename, Mode mode);
+	   void addProperty(const std::string & key,
+	   const std::string & value);
+	   void addProperty(const std::string & key, const double value);
+	   void setProperty(const DGLutProperty & property);
+
+	   void setRawData(Component_vector_ptr componentVector,
+	   RGBGamma_ptr initialRGBGamma,
+	   RGBGamma_ptr finalRGBGamma);
+	   void setGammaTable(RGB_vector_ptr dglut);
+	   Component_vector_ptr getComponentVector();
+
+	   private:
+	   string_vector_ptr makeValues(int n, Component_ptr c);
+	   string_vector_ptr makeValues(int n,
+	   Component_ptr c,
+	   RGB_ptr rgbGamma,
+	   RGB_ptr rgbGammaFix);
+
+	   /*
+	   量測的資料不見得是0~255全量, 但是產生的gamma一定是全部
+	   該如何整合兩者?兩種作法
+	   1. 內插量測值, 使資料為0~255
+	   2. 取有量測到的gamma, 但是缺乏的gamma..就缺乏吧...
+	   反正產生DG Code的時候還是可以生出來.
+
+	   選擇方案二, 所以不用刻意去縮減rgbgamma, 由setRawData自己去篩
+	 */
+
+
+	//};
 
 	class DGLutProperty {
 	    friend class DGLutFile;

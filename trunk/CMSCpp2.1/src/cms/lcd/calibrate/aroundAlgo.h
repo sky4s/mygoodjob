@@ -19,7 +19,7 @@ namespace cms {
 		class StepAroundAlgorithm:public AroundAlgorithm {
 		  private:
 		    RGB_vector_ptr
-			rgbAdjust(channel_vector_ptr channels,
+			rgbAdjust(Channel_vector_ptr channels,
 				  const Dep::Channel & maxChannel,
 				  RGB_ptr centerRGB, double adjustStep,
 				  double_array delta);

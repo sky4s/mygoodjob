@@ -54,8 +54,11 @@ class TGammaMeasurementForm:public TForm {
   private:			// User declarations
      bptr < cms::lcd::calibrate::BitDepthProcessor > bitDepth;
     void setMeasureInfo();
-    void pcMeasure(bool_vector_ptr rgbw);
-    void tconMeasure(bool_vector_ptr rgbw);
+    void pcMeasure(bool_vector_ptr rgbw, int start, int end, int step);
+    void tconMeasure(bool_vector_ptr rgbw, int start, int end, int step);
+     bptr < cms::measure::MeterMeasurement > mm;
+     bptr < cms::lcd::calibrate::ComponentFetcher > fetcher;
+    //bptr < cms::measure::IntensityAnalyzerIF > analyzer;
   public:			// User declarations
      __fastcall TGammaMeasurementForm(TComponent * Owner);
     void setBitDepthProcessor(bptr <

@@ -122,6 +122,7 @@ class TMainForm:public TForm {
      bptr < cms::measure::meter::CA210 > ca210;
      bptr < cms::measure::meter::Meter > meter;
      bptr < cms::measure::meter::CA210 > getCA210();
+     bptr < cms::lcd::calibrate::ComponentFetcher > fetcher;
     //==========================================================================
 
 
@@ -139,14 +140,15 @@ class TMainForm:public TForm {
     //==========================================================================
     // meter
     //==========================================================================
-    //void setChannel(int channel);
     void setToTargetChannel();
     bool linkCA210;
      bptr < cms::measure::MeterMeasurement > mm;
      bptr < cms::measure::IntensityAnalyzerIF > analyzer;
+     //
     int getInterval();
     void setDummyMeterFilename(const std::string & filename);
     void resetDummyMeter();
+    bptr < cms::lcd::calibrate::ComponentFetcher > getComponentFetcher();
     //==========================================================================
 
     //==========================================================================
