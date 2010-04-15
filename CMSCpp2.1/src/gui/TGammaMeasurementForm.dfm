@@ -1,7 +1,7 @@
 object GammaMeasurementForm: TGammaMeasurementForm
   Left = 300
   Top = 300
-  Width = 723
+  Width = 418
   Height = 468
   Caption = 'Gamma Measurement'
   Color = clBtnFace
@@ -100,7 +100,7 @@ object GammaMeasurementForm: TGammaMeasurementForm
     end
   end
   object Panel2: TPanel
-    Left = 400
+    Left = 8
     Top = 16
     Width = 305
     Height = 297
@@ -221,6 +221,9 @@ object GammaMeasurementForm: TGammaMeasurementForm
     TabOrder = 2
     inherited GroupBox_OutputFile: TGroupBox
       Width = 386
+      inherited Edit_Prefix: TEdit
+        Text = 'Measurement'
+      end
       inherited Edit_Directory: TEdit
         Width = 201
       end
@@ -242,6 +245,8 @@ object GammaMeasurementForm: TGammaMeasurementForm
       Width = 41
       Height = 25
       Caption = 'W'
+      Checked = True
+      State = cbChecked
       TabOrder = 0
     end
     object CheckBox_R: TCheckBox

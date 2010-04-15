@@ -56,11 +56,11 @@ void TMeasureWindow::setRGB(int r, int g, int b)
 void TMeasureWindow::setRGB(bptr < Dep::RGBColor > rgb)
 {
     double_array values(new double[3]);
-     if (true == tconinput) {
-    rgb->getValues(values, tconcontrol->getLUTBit());
-     }else {
-    rgb->getValues(values);
-     }
+    if (true == tconinput) {
+	rgb->getValues(values, tconcontrol->getLUTBit());
+    } else {
+	rgb->getValues(values);
+    }
 
     int r = static_cast < int >(values[0]);
     int g = static_cast < int >(values[1]);
@@ -76,8 +76,7 @@ void __fastcall TMeasureWindow::Button1Click(TObject * Sender)
 }
 
 //---------------------------------------------------------------------------
-void TMeasureWindow::setTCONControl(bptr <
-				    i2c::TCONControl > tconcontrol)
+void TMeasureWindow::setTCONControl(bptr < i2c::TCONControl > tconcontrol)
 {
     this->tconcontrol = tconcontrol;
     tconinput = true;
@@ -97,4 +96,24 @@ void TMeasureWindow::setVisible(bool visible)
 	tconcontrol->setGammaTest(visible);
     }
 };
+
+//---------------------------------------------------------------------------
+void TMeasureWindow::addWindowListener(bptr < cms::util::WindowListener >
+				       listener)
+{
+    listenerVector.push_back(listener);
+}
+
+//---------------------------------------------------------------------------
+
+
+void __fastcall TMeasureWindow::FormClose(TObject * Sender,
+					  TCloseAction & Action)
+{
+    foreach(bptr < cms::util::WindowListener > listener, listenerVector) {
+	listener->windowClosing();
+    }
+}
+
+//---------------------------------------------------------------------------
 

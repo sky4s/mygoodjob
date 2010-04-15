@@ -21,7 +21,7 @@ namespace cms {
 					  mode):ExcelAccessBase(fileName,
 								mode) {
 	    initSheet(Sheet1, 18, "Gray Level", "W_x", "W_y", "W_Y (nit)",
-		      "W_C.T.", "£GUV", "W_R", "W_G", "W_B", "R_x", "R_y",
+		      "W_CCT", "£GUV", "W_R", "W_G", "W_B", "R_x", "R_y",
 		      "R_Y (nit)", "G_x", "G_y", "G_Y (nit)", "B_x", "B_y",
 		      "B_Y (nit)");
 	};

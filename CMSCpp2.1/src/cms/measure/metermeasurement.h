@@ -88,6 +88,17 @@ namespace cms {
 			   int practicalMeasureCount);
 	};
 
+	class MeasureTool {
+	  private:
+	    bptr < cms::measure::MeterMeasurement > mm;
+	  public:
+	    MeasureTool(bptr < cms::measure::MeterMeasurement > mm);
+	    Patch_vector_ptr rampMeasure(const Dep::Channel & channel,
+					 int start, int end, int step);
+	};
+
+
+
     };
 };
 #endif

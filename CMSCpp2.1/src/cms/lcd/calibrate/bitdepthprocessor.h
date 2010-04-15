@@ -28,8 +28,8 @@ namespace cms {
 		int getMaxDigitalCountIndex();
 		int getMaxEffectiveDigitalCountIndex();
 	      public:
-		 /*BitDepthProcessor(int inBit, int lutBit, int outBit,
-				   bool gamma256, bool tconinput);*/
+		/*BitDepthProcessor(int inBit, int lutBit, int outBit,
+		   bool gamma256, bool tconinput); */
 		 BitDepthProcessor(int inBit, int lutBit, int outBit,
 				   bool tconinput);
 
@@ -60,6 +60,7 @@ namespace cms {
 		void setInBit(int inBit);
 		void setLUTBit(int lutBit);
 		void setOutBit(int outBit);
+		string_ptr getFRCAbility();
 
 	    };
 	};

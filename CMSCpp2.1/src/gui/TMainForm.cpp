@@ -120,6 +120,7 @@ bptr < cms::lcd::calibrate::ComponentFetcher >
 	    reset(new cms::lcd::calibrate::
 		  ComponentFetcher(analyzer, bitDepth));
     }
+    MeasureWindow->addWindowListener(fetcher);
     return fetcher;
 };
 
@@ -172,12 +173,13 @@ void __fastcall TMainForm::CCTLUT1Click(TObject * Sender)
 
 void __fastcall TMainForm::GammaAdj1Click(TObject * Sender)
 {
-    if (GammaAdjustmentForm == null) {
-	Application->CreateForm(__classid(TGammaAdjustmentForm),
-				&GammaAdjustmentForm);
-    }
-    GammaAdjustmentForm->setBitDepthProcessor(bitDepth);
-    GammaAdjustmentForm->ShowModal();
+    ShowMessage("Sorry! This function is unavailable right now.");
+    /*if (GammaAdjustmentForm == null) {
+       Application->CreateForm(__classid(TGammaAdjustmentForm),
+       &GammaAdjustmentForm);
+       }
+       GammaAdjustmentForm->setBitDepthProcessor(bitDepth);
+       GammaAdjustmentForm->ShowModal(); */
 }
 
 //---------------------------------------------------------------------------
@@ -319,6 +321,13 @@ void __fastcall TMainForm::CheckBox_ConnectingClick(TObject * Sender)
 
 void __fastcall TMainForm::Measurement1Click(TObject * Sender)
 {
+    if (bitDepth->isTCONInput()) {
+	ShowMessage
+	    ("Sorry! T-CON Input measurement is unavailable right now.");
+	return;
+    }
+
+
     if (GammaMeasurementForm == null) {
 	Application->CreateForm(__classid(TGammaMeasurementForm),
 				&GammaMeasurementForm);
@@ -333,17 +342,18 @@ void __fastcall TMainForm::Measurement1Click(TObject * Sender)
 
 void __fastcall TMainForm::MatrixCalibration1Click(TObject * Sender)
 {
-    if (MatrixCalibrationForm == null) {
-	Application->CreateForm(__classid(TMatrixCalibrationForm),
-				&MatrixCalibrationForm);
-    }
-#ifdef _DEBUG
-    if (true == true) {
-#else
-    if (true == MatrixCalibrationForm->setCA210(ca210)) {
-#endif
-	MatrixCalibrationForm->ShowModal();
-    }
+    ShowMessage("Sorry! This function is unavailable right now.");
+    /*if (MatrixCalibrationForm == null) {
+       Application->CreateForm(__classid(TMatrixCalibrationForm),
+       &MatrixCalibrationForm);
+       }
+       #ifdef _DEBUG
+       if (true == true) {
+       #else
+       if (true == MatrixCalibrationForm->setCA210(ca210)) {
+       #endif
+       MatrixCalibrationForm->ShowModal();
+       } */
 }
 
 //---------------------------------------------------------------------------
@@ -384,6 +394,15 @@ void TMainForm::setBitDepthChecked(int lutSelect, int outSelect)
     };
 };
 
+//---------------------------------------------------------------------------
+void TMainForm::setFRCAbility()
+{
+    string_ptr ability = bitDepth->getFRCAbility();
+    this->Edit_FRCAbility->Text = ability->c_str();
+}
+
+//---------------------------------------------------------------------------
+
 void __fastcall TMainForm::RadioButton_In6Click(TObject * Sender)
 {
     using namespace boost;
@@ -392,6 +411,7 @@ void __fastcall TMainForm::RadioButton_In6Click(TObject * Sender)
     setBitDepthChecked(0, 0);
     // 設定enable
     setBitDepthEnable(true, false, true, false, false);
+    setFRCAbility();
 }
 
 //---------------------------------------------------------------------------
@@ -404,6 +424,7 @@ void __fastcall TMainForm::RadioButton_In8Click(TObject * Sender)
     setBitDepthChecked(0, 1);
     // 設定enable
     setBitDepthEnable(true, true, true, true, false);
+    setFRCAbility();
 }
 
 //---------------------------------------------------------------------------
@@ -416,6 +437,7 @@ void __fastcall TMainForm::RadioButton_In10Click(TObject * Sender)
     setBitDepthChecked(1, 1);
     // 設定enable
     setBitDepthEnable(false, true, false, true, true);
+    setFRCAbility();
 }
 
 //---------------------------------------------------------------------------
@@ -423,6 +445,7 @@ void __fastcall TMainForm::RadioButton_In10Click(TObject * Sender)
 void __fastcall TMainForm::RadioButton_Lut10Click(TObject * Sender)
 {
     bitDepth->setLUTBit(10);
+    setFRCAbility();
 }
 
 //---------------------------------------------------------------------------
@@ -430,6 +453,7 @@ void __fastcall TMainForm::RadioButton_Lut10Click(TObject * Sender)
 void __fastcall TMainForm::RadioButton_Lut12Click(TObject * Sender)
 {
     bitDepth->setLUTBit(12);
+    setFRCAbility();
 }
 
 //---------------------------------------------------------------------------
@@ -437,6 +461,7 @@ void __fastcall TMainForm::RadioButton_Lut12Click(TObject * Sender)
 void __fastcall TMainForm::RadioButton_Out6Click(TObject * Sender)
 {
     bitDepth->setOutBit(6);
+    setFRCAbility();
 }
 
 //---------------------------------------------------------------------------
@@ -444,6 +469,7 @@ void __fastcall TMainForm::RadioButton_Out6Click(TObject * Sender)
 void __fastcall TMainForm::RadioButton_Out8Click(TObject * Sender)
 {
     bitDepth->setOutBit(8);
+    setFRCAbility();
 }
 
 //---------------------------------------------------------------------------
@@ -454,6 +480,7 @@ void __fastcall TMainForm::RadioButton_Out10Click(TObject * Sender)
 	ShowMessage("Recommend using T-CON Input.");
     };
     bitDepth->setOutBit(10);
+    setFRCAbility();
 }
 
 //---------------------------------------------------------------------------

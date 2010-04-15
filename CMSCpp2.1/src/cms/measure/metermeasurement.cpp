@@ -212,6 +212,11 @@ namespace cms {
 	    Patch_ptr patch(new Patch(patchName, XYZ, XYZ, measureRGB));
 	    return patch;
 	};
+	//======================================================================
+
+	//======================================================================
+	// MeasureResult
+	//======================================================================
 	void MeasureUtils::
 	    meterCalibrate(MeterMeasurement & meterMeasurement) {
 	    shared_ptr < Meter > meter = meterMeasurement.meter;
@@ -243,6 +248,29 @@ namespace cms {
 	    (result), practicalMeasureCount(practicalMeasureCount) {
 
 	};
+	//======================================================================
+
+	//======================================================================
+	// MeasureTool
+	//======================================================================
+      MeasureTool::MeasureTool(bptr < cms::measure::MeterMeasurement > mm):mm(mm)
+	{
+
+	};
+	Patch_vector_ptr MeasureTool::rampMeasure(const Dep::
+						  Channel & channel,
+						  int start, int end,
+						  int step) {
+	    Patch_vector_ptr vector(new Patch_vector());
+	    for (int c = start; c >= end; c -= step) {
+		RGB_ptr rgb(new RGBColor());
+		rgb->setValue(channel, c);
+		Patch_ptr patch = mm->measure(rgb, rgb->toString());
+		vector->push_back(patch);
+	    };
+	    return vector;
+	};
+	//======================================================================
     };
 };
 

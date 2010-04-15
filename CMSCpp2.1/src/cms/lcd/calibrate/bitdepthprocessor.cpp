@@ -40,11 +40,9 @@ namespace cms {
 	    };
 
 
-	    BitDepthProcessor::BitDepthProcessor(int inBit, int lutBit,
-						 int outBit,
-						 bool
-						 tconInput):tconInput
-		(tconInput) {
+	  BitDepthProcessor::BitDepthProcessor(int inBit, int lutBit, int outBit, bool tconInput):tconInput
+		(tconInput)
+	    {
 		in = &MaxValue::getByBit(inBit);
 		lut = &MaxValue::getByBit(lutBit);
 		out = &MaxValue::getByBit(outBit);
@@ -161,24 +159,24 @@ namespace cms {
 	    };
 
 	    /*int BitDepthProcessor::getFRCBitDepth() {
-		switch (bitDepth) {
-		case b10_10:
-		    return 12;
-		case b10_8:
-		    return 11;
-		case b8_8:
-		    return 10;
-		case b8_6:
-		    return 9;
-		case b6_6:
-		    return 9;
-		}
-	    };*/
+	       switch (bitDepth) {
+	       case b10_10:
+	       return 12;
+	       case b10_8:
+	       return 11;
+	       case b8_8:
+	       return 10;
+	       case b8_6:
+	       return 9;
+	       case b6_6:
+	       return 9;
+	       }
+	       }; */
 
 	    /*const MaxValue & BitDepthProcessor::getFRCMaxValue() {
-		return MaxValue::getByBit(getFRCBitDepth());
+	       return MaxValue::getByBit(getFRCBitDepth());
 
-	    };*/
+	       }; */
 
 	    bool BitDepthProcessor::is8in6Out() {
 		return bitDepth == b8_6;
@@ -203,14 +201,14 @@ namespace cms {
 		return *out;
 	    };
 	    /*bool BitDepthProcessor::isGamma256() {
-		return gamma256;
-	    };*/
+	       return gamma256;
+	       }; */
 	    bool BitDepthProcessor::isTCONInput() {
 		return tconInput;
 	    };
 	    /*void BitDepthProcessor::setGamma256(bool gamma256) {
-		this->gamma256 = gamma256;
-	    };*/
+	       this->gamma256 = gamma256;
+	       }; */
 	    void BitDepthProcessor::setTCONInput(bool tconInput) {
 		this->tconInput = tconInput;
 	    };
@@ -225,7 +223,24 @@ namespace cms {
 		out = &MaxValue::getByBit(outBit);
 		bitDepth = getBitDepth(*in, *out);
 	    };
-	    //==================================================================
+	    string_ptr BitDepthProcessor::getFRCAbility() {
+		switch (bitDepth) {
+		case b10_10:
+		    return string_ptr(new string("10+2"));
+		case b10_8:
+		    return string_ptr(new string("8+3"));
+		case b8_8:
+		    if (*lut == MaxValue::Int12Bit) {
+			return string_ptr(new string("8+3"));
+		    } else {
+			return string_ptr(new string("8+2"));
+		    }
+		case b8_6:
+		case b6_6:
+		    return string_ptr(new string("6+3"));
+		}
+	    };
+//==================================================================
 	};
     };
 };
