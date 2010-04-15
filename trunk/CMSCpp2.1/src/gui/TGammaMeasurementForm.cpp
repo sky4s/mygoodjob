@@ -29,21 +29,33 @@ void __fastcall TGammaMeasurementForm::Button_MeasureClick(TObject *
 							   Sender)
 {
     using namespace std;
+    using namespace cms::util;
     MainForm->setToTargetChannel();
     bool_vector_ptr rgbw(new bool_vector(4));
     (*rgbw)[0] = this->CheckBox_R->Checked;
     (*rgbw)[1] = this->CheckBox_G->Checked;
     (*rgbw)[2] = this->CheckBox_B->Checked;
     (*rgbw)[3] = this->CheckBox_W->Checked;
+
+    if (false == (*rgbw)[0] && false == (*rgbw)[1] && false == (*rgbw)[2]
+	&& false == (*rgbw)[3]) {
+	ShowMessage("Select at least one color.");
+	return;
+    }
+
+
     int start = this->Edit_StartLevel->Text.ToInt();
     int end = this->Edit_EndLevel->Text.ToInt();
     int step = this->ComboBox_LevelStep->Text.ToInt();
+    String_ptr filename = this->TOutputFileFrame1->getOutputFilename();
+    string stlstring = filename->c_str();
+    Util::deleteExist(stlstring);
 
     if (bitDepth->isTCONInput()) {
 	//tconMeasure(rgbw, start, end, step);
 
     } else {
-	pcMeasure(rgbw, start, end, step);
+	pcMeasure(rgbw, start, end, step, stlstring);
     }
 }
 
@@ -71,11 +83,13 @@ void TGammaMeasurementForm::setMeasureInfo()
 
 //---------------------------------------------------------------------------
 void TGammaMeasurementForm::pcMeasure(bool_vector_ptr rgbw, int start,
-				      int end, int step)
+				      int end, int step,
+				      const std::string & filename)
 {
     using namespace Dep;
     using namespace std;
     using namespace cms::colorformat;
+    using namespace cms::measure;
     Channel_vector_ptr channels = Channel::RGBChannel;
     Patch_vector_ptr vectors[3];
 
@@ -84,32 +98,26 @@ void TGammaMeasurementForm::pcMeasure(bool_vector_ptr rgbw, int start,
 	fetcher->fetchComponent(start, end, step, step) :
 	Component_vector_ptr((Component_vector *) null);
 
+    MeasureTool mt(mm);
+
     foreach(const Channel & ch, *channels) {
 	int index = ch.getArrayIndex();
 	if (true == (*rgbw)[index]) {
-	    Patch_vector_ptr vector(new Patch_vector());
-	    for (int c = start; c >= end; c -= step) {
-		RGB_ptr rgb(new RGBColor());
-		rgb->setValue(ch, c);
-		Patch_ptr patch = mm->measure(rgb, rgb->toString());
-		vector->push_back(patch);
-	    };
-	    vectors[index] = vector;
+	    vectors[index] = mt.rampMeasure(ch, start, end, step);
 	} else {
 	    vectors[index] = Patch_vector_ptr((Patch_vector *) null);
 	}
     }
 
-    String_ptr filename = this->TOutputFileFrame1->getOutputFilename();
-    string stlstring = filename->c_str();
-    RampMeasureFile measureFile(stlstring, Create);
+    RampMeasureFile measureFile(filename, Create);
     measureFile.setMeasureData(componentVector, vectors[0], vectors[1],
 			       vectors[2]);
 };
 
 //---------------------------------------------------------------------------
 void TGammaMeasurementForm::tconMeasure(bool_vector_ptr rgbw, int start,
-					int end, int step)
+					int end, int step,
+					const std::string & filename)
 {
     using namespace Dep;
     Channel_vector_ptr channels = Channel::RGBWChannel;
@@ -120,6 +128,9 @@ void TGammaMeasurementForm::tconMeasure(bool_vector_ptr rgbw, int start,
 
 void __fastcall TGammaMeasurementForm::FormShow(TObject * Sender)
 {
+//bitDepth->
+    bool tconInput = bitDepth->isTCONInput();
+    this->Panel2->Visible = tconInput;
     setMeasureInfo();
 }
 

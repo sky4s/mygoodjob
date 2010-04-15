@@ -58,7 +58,10 @@ namespace cms {
 	    unsigned char &operator[] (const size_t index);
 	    const unsigned char &operator[] (const size_t index) const;
 	};
-
+	class WindowListener {
+	  public:
+	    virtual void windowClosing() = 0;
+	};
     };
 };
 #endif

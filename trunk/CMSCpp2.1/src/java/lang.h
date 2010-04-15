@@ -228,7 +228,7 @@ namespace cms {
 	class MeterMeasurement;
 	class MeasureResult;
 	class IntensityAnalyzerIF;
-
+	class WindowListener;
 	namespace meter {
 	    class Meter;
 	    class CA210;

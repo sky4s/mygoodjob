@@ -90,7 +90,7 @@ class TMainForm:public TForm {
     TRadioButton *RadioButton_Out8;
     TRadioButton *RadioButton_Out10;
     TLabel *Label10;
-    TEdit *Edit1;
+    TEdit *Edit_FRCAbility;
     TButton *Button1;
     void __fastcall About1Click(TObject * Sender);
     void __fastcall Exit1Click(TObject * Sender);
@@ -135,6 +135,7 @@ class TMainForm:public TForm {
     void setBitDepthEnable(bool lut10, bool lut12, bool out6, bool out8,
 			   bool out10);
     void setBitDepthChecked(int lutSelect, int outSelect);
+    void setFRCAbility();
     //==========================================================================
   public:			// User declarations
     //==========================================================================
@@ -144,11 +145,11 @@ class TMainForm:public TForm {
     bool linkCA210;
      bptr < cms::measure::MeterMeasurement > mm;
      bptr < cms::measure::IntensityAnalyzerIF > analyzer;
-     //
+    //
     int getInterval();
     void setDummyMeterFilename(const std::string & filename);
     void resetDummyMeter();
-    bptr < cms::lcd::calibrate::ComponentFetcher > getComponentFetcher();
+     bptr < cms::lcd::calibrate::ComponentFetcher > getComponentFetcher();
     //==========================================================================
 
     //==========================================================================

@@ -14,6 +14,7 @@
 #include <Forms.hpp>
 #include <Menus.hpp>
 //本項目內頭文件
+#include <cms/measure/MeterMeasurement.h>
 //---------------------------------------------------------------------------
 /*
  要不要把TCON Control拉到measure window來?
@@ -32,9 +33,11 @@ class TMeasureWindow:public TForm {
     TButton * Button1;
     void __fastcall FormKeyPress(TObject * Sender, char &Key);
     void __fastcall Button1Click(TObject * Sender);
+    void __fastcall FormClose(TObject * Sender, TCloseAction & Action);
   private:			// User declarations
      bool tconinput;
      bptr < i2c::TCONControl > tconcontrol;
+     std::vector < bptr < cms::util::WindowListener > >listenerVector;
   public:			// User declarations
      __fastcall TMeasureWindow(TComponent * Owner);
     void setRGB(int r, int g, int b);
@@ -42,6 +45,7 @@ class TMeasureWindow:public TForm {
     void setTCONControl(bptr < i2c::TCONControl > tconcontrl);
     void setTCONControlOff();
     void setVisible(bool visible);
+    void addWindowListener(bptr < cms::util::WindowListener > listener);
 };
 //---------------------------------------------------------------------------
 extern PACKAGE TMeasureWindow *MeasureWindow;

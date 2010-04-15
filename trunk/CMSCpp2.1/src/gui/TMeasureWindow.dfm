@@ -15,6 +15,7 @@ object MeasureWindow: TMeasureWindow
   KeyPreview = True
   OldCreateOrder = False
   WindowState = wsMaximized
+  OnClose = FormClose
   OnKeyPress = FormKeyPress
   PixelsPerInch = 120
   TextHeight = 16

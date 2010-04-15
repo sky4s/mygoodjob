@@ -1316,7 +1316,7 @@ object MainForm: TMainForm
             OnClick = RadioButton_Out10Click
           end
         end
-        object Edit1: TEdit
+        object Edit_FRCAbility: TEdit
           Left = 41
           Top = 169
           Width = 64

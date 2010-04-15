@@ -51,7 +51,6 @@ namespace cms {
 	  ComponentFetcher::ComponentFetcher(bptr < IntensityAnalyzerIF > analyzer, bptr < BitDepthProcessor > bitDepth):analyzer
 		(analyzer), bitDepth(bitDepth)
 	    {
-
 	    };
 
 	    Component_vector_ptr ComponentFetcher::
@@ -104,6 +103,9 @@ namespace cms {
 		DGLutFile dglut(filename, Create);
 		dglut.setRawData(componentVector, nil_RGBGamma,
 				 nil_RGBGamma);
+	    };
+	    void ComponentFetcher::windowClosing() {
+		this->setStop(true);
 	    };
 	    //==================================================================
 
@@ -464,18 +466,18 @@ namespace cms {
 		this->keepMaxLuminance = keepMaxLuminance;
 	    };
 
-	  LCDCalibrator::LCDCalibrator(bptr < cms::measure::IntensityAnalyzerIF > analyzer, bptr < BitDepthProcessor > bitDepth):	/*analyzer(analyzer), */
-	    bitDepth(bitDepth) {
-		rgbgamma = false;
-		useGammaCurve = false;
-		bIntensityGain = 1;
-		rbInterpUnder = 0;
-		p1 = p2 = 0;
-		gamma = rgamma = ggamma = bgamma = -1;
-		this->fetcher.
-		    reset(new ComponentFetcher(analyzer, bitDepth));
-		stop = false;
-	    };
+	    /*LCDCalibrator::LCDCalibrator(bptr < cms::measure::IntensityAnalyzerIF > analyzer, bptr < BitDepthProcessor > bitDepth): 
+	       bitDepth(bitDepth) {
+	       rgbgamma = false;
+	       useGammaCurve = false;
+	       bIntensityGain = 1;
+	       rbInterpUnder = 0;
+	       p1 = p2 = 0;
+	       gamma = rgamma = ggamma = bgamma = -1;
+	       this->fetcher.
+	       reset(new ComponentFetcher(analyzer, bitDepth));
+	       stop = false;
+	       }; */
 
 	  LCDCalibrator::LCDCalibrator(bptr < ComponentFetcher > fetcher, bptr < BitDepthProcessor > bitDepth):bitDepth(bitDepth)
 	    {
@@ -499,9 +501,12 @@ namespace cms {
 		    throw new IllegalStateException("null == gammaCurve");
 		}
 		//量測start->end得到的coponent/Y
-		componentVector =
-		    fetcher->fetchComponent(measureCondition->
-					    getMeasureCode());
+		int_vector_ptr measurecode =
+		    measureCondition->getMeasureCode();
+		componentVector = fetcher->fetchComponent(measurecode);
+		if (measurecode->size() != componentVector->size()) {
+		    return RGB_vector_ptr((RGB_vector *) null);
+		}
 		STORE_COMPONENT("o_fetch.xls", componentVector);
 		if (true == stop) {
 		    stop = false;

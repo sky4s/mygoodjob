@@ -25,7 +25,7 @@ namespace cms {
 		XYZ_ptr XYZ;
 		RGB_ptr gamma;
 	    };
-	    class ComponentFetcher {
+	    class ComponentFetcher:public cms::util::WindowListener {
 	      private:
 		bptr < cms::measure::IntensityAnalyzerIF > analyzer;
 		bool stop;
@@ -48,6 +48,7 @@ namespace cms {
 		static void storeToExcel(const std::string & filename,
 					 Component_vector_ptr
 					 componentVector);
+		void windowClosing();
 	    };
 
 	    /*
@@ -189,9 +190,9 @@ namespace cms {
 		void setAvoidFRCNoise(bool avoid);
 		void setKeepMaxLuminance(bool keepMaxLuminance);
 
-		 LCDCalibrator(bptr < cms::measure::IntensityAnalyzerIF >
-			       analyzer,
-			       bptr < BitDepthProcessor > bitDepth);
+		/*LCDCalibrator(bptr < cms::measure::IntensityAnalyzerIF >
+		   analyzer,
+		   bptr < BitDepthProcessor > bitDepth); */
 		 LCDCalibrator(bptr <
 			       cms::lcd::calibrate::ComponentFetcher >
 			       fetcher,
