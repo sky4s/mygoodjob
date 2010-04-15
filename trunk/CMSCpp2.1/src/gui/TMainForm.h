@@ -115,6 +115,7 @@ class TMainForm:public TForm {
     void __fastcall Edit_TargetIDChange(TObject * Sender);
     void __fastcall Edit_TargetCHChange(TObject * Sender);
     void __fastcall Button1Click(TObject * Sender);
+        void __fastcall Edit_IntervalChange(TObject *Sender);
   private:			// User declarations
     //==========================================================================
     // meter
@@ -123,6 +124,7 @@ class TMainForm:public TForm {
      bptr < cms::measure::meter::Meter > meter;
      bptr < cms::measure::meter::CA210 > getCA210();
      bptr < cms::lcd::calibrate::ComponentFetcher > fetcher;
+      int getInterval();
     //==========================================================================
 
 
@@ -146,7 +148,7 @@ class TMainForm:public TForm {
      bptr < cms::measure::MeterMeasurement > mm;
      bptr < cms::measure::IntensityAnalyzerIF > analyzer;
     //
-    int getInterval();
+
     void setDummyMeterFilename(const std::string & filename);
     void resetDummyMeter();
      bptr < cms::lcd::calibrate::ComponentFetcher > getComponentFetcher();

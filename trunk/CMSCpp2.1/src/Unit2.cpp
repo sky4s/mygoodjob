@@ -184,17 +184,22 @@ void lut()
 
 }*/
 
-void inverse()
+double2D_ptr inverse()
 {
     using namespace math;
     double d[] = { 0.5767309, 0.1855540, 0.1881852,
 	0.2973769, 0.6273491, 0.0752741,
 	0.0270343, 0.0706872, 0.9911085
     };
-    double2D_ptr m(new double2D(3, 3, d));
+    //double2D_ptr m(new double2D(3, 3, d));
+    double2D_ptr m = DoubleArray::toDouble2D(3, 3, d);
+    //m = DoubleArray::toDouble2D(1, 1, 0.5767309 );
     double2D_ptr inv = DoubleArray::inverse(m);
     cout << *DoubleArray::toString(m) << endl;
     cout << *DoubleArray::toString(inv) << endl;
+    return m;
+    //double_array a = DoubleArray::toDoubleArray(3, 1.1, 2.2, 3.3);
+    //cout << *DoubleArray::toString(a,3) << endl;
     //cout << *DoubleArray::toString(DoubleArray::identity(3,4)) << endl;
 
 };
@@ -299,7 +304,7 @@ void dgcodefile()
     const string & filename = "test.xls";
     //string_ptr filename(new string(" test.xls "));
     Util::deleteExist(filename);
-    DGLutFile  dgcode(filename, Create);
+    DGLutFile dgcode(filename, Create);
     //dgcode.setProperty(" a ", " b ");
     //dgcode.setProperty(" b ", " bbb ");
     //dgcode.setRawData()
@@ -613,9 +618,10 @@ int main(int argc, char *argv[])
     //sizeCompare();
     //gammaCurve();
     //header();
-    dgcodefile();
+    //dgcodefile();
     //dgcode();
-    //inverse();
+    double2D_ptr m = inverse();
+    cout << *math::DoubleArray::toString(m) << endl;
     //rgbTry();
     //mathTry();
     //doubleArrayTry();

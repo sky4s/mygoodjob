@@ -124,8 +124,8 @@ void __fastcall TCCTLUTForm::Button_RunClick(TObject * Sender)
        int end = this->Edit_EndLevel->Text.ToInt();
        int step = this->ComboBox_LevelStep->Text.ToInt(); */
 
-    int waitTimes = MainForm->getInterval();
-    MainForm->mm->setWaitTimes(waitTimes);
+    //int waitTimes = MainForm->getInterval();
+    //MainForm->mm->setWaitTimes(waitTimes);
 
     try {
 	this->TOutputFileFrame1->createDir();
