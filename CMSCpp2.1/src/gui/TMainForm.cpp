@@ -75,14 +75,16 @@ void __fastcall TMainForm::FormCreate(TObject * Sender)
 	    meter = bptr < Meter > (new CA210());
 	    mm = bptr < MeterMeasurement >
 		(new MeterMeasurement(meter, false));
+                mm->setWaitTimes(this->getInterval());
 
 	    //analyzer.reset(new CA210IntensityAnalyzer(getCA210(), mm));
 
 	    bptr < CA210IntensityAnalyzer >
 		ca(new CA210IntensityAnalyzer(getCA210(), mm));
 	    bptr < MaxMatrixIntensityAnayzer >
-		ma(new MaxMatrixIntensityAnayzer( mm));
-	    analyzer.reset(new IntensityAnayzer(ma,ca));
+		ma(new MaxMatrixIntensityAnayzer(mm));
+            Util::deleteExist("intensity.xls");
+	    analyzer.reset(new IntensityAnayzer(ma, ca));
 	}
 	catch(EOleException & ex) {
 	    ShowMessage("CA210 cannot be linked.");
@@ -354,11 +356,9 @@ void __fastcall TMainForm::MatrixCalibration1Click(TObject * Sender)
 	Application->CreateForm(__classid(TMatrixCalibrationForm),
 				&MatrixCalibrationForm);
     }
-#ifdef _DEBUG
-    if (true == true) {
-#else
-    if (true == MatrixCalibrationForm->setCA210(ca210)) {
-#endif
+
+    if (true == linkCA210
+	&& true == MatrixCalibrationForm->setCA210(ca210)) {
 	MatrixCalibrationForm->ShowModal();
     }
 }
@@ -526,5 +526,11 @@ void __fastcall TMainForm::Button1Click(TObject * Sender)
     MeasureWindow->setVisible(false);
 }
 
+//---------------------------------------------------------------------------
+
+void __fastcall TMainForm::Edit_IntervalChange(TObject *Sender)
+{
+mm->setWaitTimes(this->getInterval());        
+}
 //---------------------------------------------------------------------------
 

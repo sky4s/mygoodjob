@@ -204,24 +204,18 @@ namespace cms {
 	    XYZ = patch->getXYZ();
 
 	    return getIntensity(XYZ);
-	    /*double2D_ptr color =
-	       DoubleArray::toDouble2D(3, 1, XYZ->X, XYZ->Y, XYZ->Z);
-	       double2D_ptr ratio = DoubleArray::times(inverseMatrix, color);
-	       double_array rgbIntensity(new double[3]);
-	       rgbIntensity[0] = (*ratio)[0][0] / (*targetRatio)[0][0];
-	       rgbIntensity[1] = (*ratio)[1][0] / (*targetRatio)[1][0];
-	       rgbIntensity[2] = (*ratio)[2][0] / (*targetRatio)[2][0];
-
-	       RGB_ptr intensity(new
-	       RGBColor(rgbIntensity[0], rgbIntensity[1],
-	       rgbIntensity[2]));
-	       return intensity; */
 	};
 
 	RGB_ptr MaxMatrixIntensityAnayzer::getIntensity(XYZ_ptr XYZ) {
-	    double2D_ptr color =
-		DoubleArray::toDouble2D(3, 1, XYZ->X, XYZ->Y, XYZ->Z);
+	    double XYZValues[3] = { XYZ->X, XYZ->Y, XYZ->Z };
+	    double2D_ptr color = DoubleArray::toDouble2D(3, 1, XYZValues);
 	    double2D_ptr ratio = DoubleArray::times(inverseMatrix, color);
+	    double r1 = (*ratio)[0][0];
+	    double r2 = (*ratio)[1][0];
+	    double r3 = (*ratio)[2][0];
+	    double t1 = (*targetRatio)[0][0];
+	    double t2 = (*targetRatio)[1][0];
+	    double t3 = (*targetRatio)[2][0];
 	    double_array rgbIntensity(new double[3]);
 	    rgbIntensity[0] = (*ratio)[0][0] / (*targetRatio)[0][0];
 	    rgbIntensity[1] = (*ratio)[1][0] / (*targetRatio)[1][0];
@@ -263,14 +257,15 @@ namespace cms {
 	    XYZ_ptr gXYZ = gPatch->getXYZ();
 	    XYZ_ptr bXYZ = bPatch->getXYZ();
 	    XYZ_ptr wXYZ = wPatch->getXYZ();
-
-	    double2D_ptr m =
-		DoubleArray::toDouble2D(3, 3, rXYZ->X, gXYZ->X, bXYZ->X,
-					rXYZ->Y, gXYZ->Y, bXYZ->Y,
-					rXYZ->Z, gXYZ->Z, bXYZ->Z);
+	    double rgbMatrix[9] = { rXYZ->X, gXYZ->X, bXYZ->X,
+		rXYZ->Y, gXYZ->Y, bXYZ->Y,
+		rXYZ->Z, gXYZ->Z, bXYZ->Z
+	    };
+	    double2D_ptr m = DoubleArray::toDouble2D(3, 3, rgbMatrix);
 	    this->inverseMatrix = DoubleArray::inverse(m);
+	    double wXYZValues[3] = { wXYZ->X, wXYZ->Y, wXYZ->Z };
 	    double2D_ptr targetWhite =
-		DoubleArray::toDouble2D(3, 1, wXYZ->X, wXYZ->Y, wXYZ->Z);
+		DoubleArray::toDouble2D(3, 1, wXYZValues);
 	    this->targetRatio =
 		DoubleArray::times(inverseMatrix, targetWhite);
 

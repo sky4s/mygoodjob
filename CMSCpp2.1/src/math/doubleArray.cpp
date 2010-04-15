@@ -201,6 +201,12 @@ namespace math {
 	    (*dest)[x + destPos] = (*src)[x + srcPos];
 	};
     };
+    void DoubleArray::arraycopy(double *src, int srcPos, double *dest,
+				int destPos, int length) {
+	for (int x = 0; x != length; x++) {
+	    dest[x + destPos] = src[x + srcPos];
+	};
+    }
 
     double2D_ptr DoubleArray::diagonal(double1D_ptr m) {
 	int size = m->dim();
@@ -298,21 +304,28 @@ namespace math {
     };
 
     double2D_ptr DoubleArray::toDouble2D(int m, int n, ...) {
-	va_list num_list;
+	throw UnsupportedOperationException("Had problem.");
 	int count = m * n;
-	va_start(num_list, count);
 	double *array = new double[count];
+	va_list num_list;
+	va_start(num_list, count);
 
 	for (int i = 0; i < count; i++) {
-	    const double c = va_arg(num_list, const double);
-	    array[i] = c;
+	    const double d = va_arg(num_list, const double);
+	    array[i] = d;
+	    cout << d << endl;
 	} va_end(num_list);
+
 	double2D_ptr result(new double2D(m, n, array));
 	return result;
     };
 
     double2D_ptr DoubleArray::toDouble2D(int m, int n, double *array) {
-	double2D_ptr result(new double2D(m, n, array));
+	int count = m * n;
+	double *newarray = new double[count];
+	arraycopy(array, 0, newarray, 0, count);
+	double2D_ptr result(new double2D(m, n, newarray));
+	//double2D_ptr result(new double2D(m, n, array));
 	return result;
     };
 
