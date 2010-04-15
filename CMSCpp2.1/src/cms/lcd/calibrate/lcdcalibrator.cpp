@@ -83,6 +83,7 @@ namespace cms {
 							  XYZ));
 		    result->push_back(component);
 		    if (true == stop) {
+			stop = false;
 			break;
 		    }
 		}

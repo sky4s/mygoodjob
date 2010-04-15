@@ -65,9 +65,9 @@ class TTargetWhiteForm2:public TForm {
     void __fastcall Edit_targetxChange(TObject * Sender);
     void __fastcall Edit_targetyChange(TObject * Sender);
     void __fastcall Button2Click(TObject * Sender);
-        void __fastcall Edit_RChange(TObject *Sender);
-        void __fastcall Edit_GChange(TObject *Sender);
-        void __fastcall Edit_BChange(TObject *Sender);
+    void __fastcall Edit_RChange(TObject * Sender);
+    void __fastcall Edit_GChange(TObject * Sender);
+    void __fastcall Edit_BChange(TObject * Sender);
   private:			// User declarations
     void setColorimetricValues(double x, double y, double up, double vp);
     void scrollBar_Change();

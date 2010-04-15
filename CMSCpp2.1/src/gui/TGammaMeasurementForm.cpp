@@ -36,6 +36,10 @@ void __fastcall TGammaMeasurementForm::Button_MeasureClick(TObject *
     (*rgbw)[1] = this->CheckBox_G->Checked;
     (*rgbw)[2] = this->CheckBox_B->Checked;
     (*rgbw)[3] = this->CheckBox_W->Checked;
+    /*bool r = (*rgbw)[0];
+    bool g = (*rgbw)[1];
+    bool b = (*rgbw)[2];
+    bool w = (*rgbw)[3];*/
 
     if (false == (*rgbw)[0] && false == (*rgbw)[1] && false == (*rgbw)[2]
 	&& false == (*rgbw)[3]) {

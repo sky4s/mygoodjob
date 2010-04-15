@@ -1341,6 +1341,7 @@ object MainForm: TMainForm
   object MainMenu1: TMainMenu
     object MatrixCalibration1: TMenuItem
       Caption = 'Matrix Calibration'
+      Visible = False
       OnClick = MatrixCalibration1Click
     end
     object TargetWhite1: TMenuItem
@@ -1353,6 +1354,7 @@ object MainForm: TMainForm
     end
     object GammaAdj1: TMenuItem
       Caption = 'GammaAdj'
+      Visible = False
       OnClick = GammaAdj1Click
     end
     object Measurement1: TMenuItem

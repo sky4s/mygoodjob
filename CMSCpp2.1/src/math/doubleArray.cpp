@@ -25,10 +25,10 @@ namespace math {
 	string_ptr str(new string("["));
 	for (int x = 0; x != n - 1; x++) {
 	    double v = m[x];
-	     (*str) += _toString (v);
+	     (*str) += _toString(v);
 	     (*str) += ", ";
 	};
-	(*str) += _toString (m[n - 1]);
+	(*str) += _toString(m[n - 1]);
 	(*str) += "]";
 	return str;
     };
@@ -38,10 +38,10 @@ namespace math {
 	int n = m->size();
 	for (int x = 0; x != n - 1; x++) {
 	    double v = (*m)[x];
-	    (*str) += _toString (v);
+	    (*str) += _toString(v);
 	    (*str) += ", ";
 	};
-	(*str) += _toString ((*m)[n - 1]);
+	(*str) += _toString((*m)[n - 1]);
 	(*str) += "]";
 	return str;
     };
@@ -50,9 +50,9 @@ namespace math {
 	string_ptr str(new string());
 
 	for (int i = 0; i < m->dim1() - 1; i++) {
-	    (*str) += _toString ((*m)[i]) + " ";
+	    (*str) += _toString((*m)[i]) + " ";
 	}
-	(*str) += _toString ((*m)[m->dim1() - 1]) + "\n";
+	(*str) += _toString((*m)[m->dim1() - 1]) + "\n";
 
 	return str;
     };
@@ -63,9 +63,9 @@ namespace math {
 
 	for (int i = 0; i < m->dim1(); i++) {
 	    for (int j = 0; j < m->dim2() - 1; j++) {
-		(*str) += _toString ((*m)[i][j]) + " ";
+		(*str) += _toString((*m)[i][j]) + " ";
 	    }
-	    (*str) += _toString ((*m)[i][m->dim2() - 1]);
+	    (*str) += _toString((*m)[i][m->dim2() - 1]);
 	    if (i < m->dim1() - 1) {
 		(*str) += "\n";
 	    }
@@ -78,9 +78,9 @@ namespace math {
 
 	for (int i = 0; i < m.dim1(); i++) {
 	    for (int j = 0; j < m.dim2() - 1; j++) {
-		(*str) += _toString (m[i][j]) + " ";
+		(*str) += _toString(m[i][j]) + " ";
 	    }
-	    (*str) += _toString (m[i][m.dim2() - 1]);
+	    (*str) += _toString(m[i][m.dim2() - 1]);
 	    if (i < m.dim1() - 1) {
 		(*str) += "\n";
 	    }
@@ -92,7 +92,7 @@ namespace math {
 	string_ptr str(new string());
 
 	for (int i = 0; i < m.dim1() - 1; i++) {
-	    (*str) += _toString (m[i]) + " ";
+	    (*str) += _toString(m[i]) + " ";
 	}
 	(*str) += _toString(m[m.dim1() - 1]) + "\n";
 
@@ -296,6 +296,26 @@ namespace math {
 	svd.getSingularValues(sv);
 	svd.getV(v);
     };
+
+    double2D_ptr DoubleArray::toDouble2D(int m, int n, ...) {
+	va_list num_list;
+	int count = m * n;
+	va_start(num_list, count);
+	double *array = new double[count];
+
+	for (int i = 0; i < count; i++) {
+	    const double c = va_arg(num_list, const double);
+	    array[i] = c;
+	} va_end(num_list);
+	double2D_ptr result(new double2D(m, n, array));
+	return result;
+    };
+
+    double2D_ptr DoubleArray::toDouble2D(int m, int n, double *array) {
+	double2D_ptr result(new double2D(m, n, array));
+	return result;
+    };
+
     const double DoubleArray::e = Math::pow(2, -53);
     double DoubleArray::getTolerance(int m, int n, double1D sv) {
 	/* TODO : getTolerance */
@@ -332,7 +352,7 @@ namespace math {
 	int size = doubleVector->size();
 
 	for (int x = 0; x != size; x++) {
-	    string v = _toString ((*doubleVector)[x]);
+	    string v = _toString((*doubleVector)[x]);
 	    string_vector_ptr values = StringVector::fromString(1, v);
 	    excel->insert(fieldNames, values);
 	}

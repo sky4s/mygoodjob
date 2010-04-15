@@ -219,32 +219,35 @@ void __fastcall TTargetWhiteForm2::Button2Click(TObject * Sender)
     //==========================================================================
     //this->Close();
 
-    this->Edit_R->Text=r->R;
-     this->Edit_G->Text=g->G;
-       this->Edit_B->Text=b->B;
+    this->Edit_R->Text = r->R;
+    this->Edit_G->Text = g->G;
+    this->Edit_B->Text = b->B;
 }
 
 //---------------------------------------------------------------------------
 
 
 
-void __fastcall TTargetWhiteForm2::Edit_RChange(TObject *Sender)
+void __fastcall TTargetWhiteForm2::Edit_RChange(TObject * Sender)
 {
-ScrollBar_R->Position =this->Edit_R->Text.ToInt();
-;
+    ScrollBar_R->Position = this->Edit_R->Text.ToInt();
+    ;
 }
+
 //---------------------------------------------------------------------------
 
-void __fastcall TTargetWhiteForm2::Edit_GChange(TObject *Sender)
+void __fastcall TTargetWhiteForm2::Edit_GChange(TObject * Sender)
 {
-ScrollBar_G->Position =this->Edit_G->Text.ToInt();
+    ScrollBar_G->Position = this->Edit_G->Text.ToInt();
 
 }
+
 //---------------------------------------------------------------------------
 
-void __fastcall TTargetWhiteForm2::Edit_BChange(TObject *Sender)
+void __fastcall TTargetWhiteForm2::Edit_BChange(TObject * Sender)
 {
-ScrollBar_B->Position =this->Edit_B->Text.ToInt() ;        
+    ScrollBar_B->Position = this->Edit_B->Text.ToInt();
 }
+
 //---------------------------------------------------------------------------
 

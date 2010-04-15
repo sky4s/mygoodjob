@@ -9,6 +9,7 @@
 #include <vcl.h>
 
 //本項目內頭文件
+#include <cms/colorformat/excelfile.h>
 
 namespace cms {
 
@@ -63,29 +64,59 @@ namespace cms {
 	    void setDefaultWaitTimes();
 	};
 
-	class StocktonComponentAnayzer:public CA210IntensityAnalyzer {
+	class StocktonIntensityAnayzer:public CA210IntensityAnalyzer {
 	  private:
 	    Patch_ptr rp, gp, bp, wp;
 	  public:
-	    StocktonComponentAnayzer(bptr < cms::measure::meter::CA210 >
+	    StocktonIntensityAnayzer(bptr < cms::measure::meter::CA210 >
 				     ca210, bptr < MeterMeasurement > mm);
 	    void setupComponent(const Dep::Channel & ch, RGB_ptr rgb);
 	    void enter();
 	};
 
-	class MaxMatrixComponentAnalyzer:public IntensityAnalyzerIF {
-	  private:
-	    const Dep::RGBColorSpace & rgbColorSpace;
+	class MaxMatrixIntensityAnayzer:public IntensityAnalyzerIF {
+	  protected:
+	    bptr < MeterMeasurement > mm;
+	    double2D_ptr inverseMatrix;
+	    double2D_ptr targetRatio;
+	    Patch_ptr rPatch;
+	    Patch_ptr gPatch;
+	    Patch_ptr bPatch;
+	    Patch_ptr wPatch;
+	    XYZ_ptr XYZ;
+	    int defaultWaitTimes;
 	  public:
-	     MaxMatrixComponentAnalyzer(const Dep::RGBColorSpace &
-					rgbColorSpace);
+	     MaxMatrixIntensityAnayzer(bptr < MeterMeasurement > mm);
 
-	    RGB_ptr getIntensity(RGB_ptr rgb) = 0;
+	    RGB_ptr getIntensity(RGB_ptr rgb);
+	    RGB_ptr getIntensity(XYZ_ptr XYZ);
 	    XYZ_ptr getCIEXYZ();
-	    void setupComponent(const Dep::Channel & ch, RGB_ptr rgb) = 0;
+	    void setupComponent(const Dep::Channel & ch, RGB_ptr rgb);
 	    void enter();
 	    void beginAnalyze();
 	    void endAnalyze();
+	    void setWaitTimes(int waitTimes);
+	    void setDefaultWaitTimes();
+	};
+
+	class IntensityAnayzer:public IntensityAnalyzerIF {
+	  private:
+	    bptr < MaxMatrixIntensityAnayzer > matrix;
+	    bptr < CA210IntensityAnalyzer > ca210;
+	    cms::colorformat::ExcelFileDB excel;
+	    string_vector_ptr fieldNames;
+	    int no;
+	  public:
+	     IntensityAnayzer(bptr < MaxMatrixIntensityAnayzer > matrix,
+			      bptr < CA210IntensityAnalyzer > ca210);
+	    RGB_ptr getIntensity(RGB_ptr rgb);
+	    XYZ_ptr getCIEXYZ();
+	    void setupComponent(const Dep::Channel & ch, RGB_ptr rgb);
+	    void enter();
+	    void beginAnalyze();
+	    void endAnalyze();
+	    void setWaitTimes(int waitTimes);
+	    void setDefaultWaitTimes();
 	};
     };
 };
