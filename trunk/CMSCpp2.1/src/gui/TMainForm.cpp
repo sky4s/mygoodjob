@@ -75,7 +75,14 @@ void __fastcall TMainForm::FormCreate(TObject * Sender)
 	    meter = bptr < Meter > (new CA210());
 	    mm = bptr < MeterMeasurement >
 		(new MeterMeasurement(meter, false));
-	    analyzer.reset(new CA210IntensityAnalyzer(getCA210(), mm));
+
+	    //analyzer.reset(new CA210IntensityAnalyzer(getCA210(), mm));
+
+	    bptr < CA210IntensityAnalyzer >
+		ca(new CA210IntensityAnalyzer(getCA210(), mm));
+	    bptr < MaxMatrixIntensityAnayzer >
+		ma(new MaxMatrixIntensityAnayzer( mm));
+	    analyzer.reset(new IntensityAnayzer(ma,ca));
 	}
 	catch(EOleException & ex) {
 	    ShowMessage("CA210 cannot be linked.");
@@ -173,13 +180,13 @@ void __fastcall TMainForm::CCTLUT1Click(TObject * Sender)
 
 void __fastcall TMainForm::GammaAdj1Click(TObject * Sender)
 {
-    ShowMessage("Sorry! This function is unavailable right now.");
-    /*if (GammaAdjustmentForm == null) {
-       Application->CreateForm(__classid(TGammaAdjustmentForm),
-       &GammaAdjustmentForm);
-       }
-       GammaAdjustmentForm->setBitDepthProcessor(bitDepth);
-       GammaAdjustmentForm->ShowModal(); */
+    //ShowMessage("Sorry! This function is unavailable right now.");
+    if (GammaAdjustmentForm == null) {
+	Application->CreateForm(__classid(TGammaAdjustmentForm),
+				&GammaAdjustmentForm);
+    }
+    GammaAdjustmentForm->setBitDepthProcessor(bitDepth);
+    GammaAdjustmentForm->ShowModal();
 }
 
 //---------------------------------------------------------------------------
@@ -342,18 +349,18 @@ void __fastcall TMainForm::Measurement1Click(TObject * Sender)
 
 void __fastcall TMainForm::MatrixCalibration1Click(TObject * Sender)
 {
-    ShowMessage("Sorry! This function is unavailable right now.");
-    /*if (MatrixCalibrationForm == null) {
-       Application->CreateForm(__classid(TMatrixCalibrationForm),
-       &MatrixCalibrationForm);
-       }
-       #ifdef _DEBUG
-       if (true == true) {
-       #else
-       if (true == MatrixCalibrationForm->setCA210(ca210)) {
-       #endif
-       MatrixCalibrationForm->ShowModal();
-       } */
+    //ShowMessage("Sorry! This function is unavailable right now.");
+    if (MatrixCalibrationForm == null) {
+	Application->CreateForm(__classid(TMatrixCalibrationForm),
+				&MatrixCalibrationForm);
+    }
+#ifdef _DEBUG
+    if (true == true) {
+#else
+    if (true == MatrixCalibrationForm->setCA210(ca210)) {
+#endif
+	MatrixCalibrationForm->ShowModal();
+    }
 }
 
 //---------------------------------------------------------------------------
