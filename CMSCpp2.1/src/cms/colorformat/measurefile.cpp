@@ -16,6 +16,7 @@ namespace cms {
 	using namespace java::lang;
 	using namespace cms::util;
 	const std::string & RampMeasureFile::Sheet1 = "Sheet1";
+ 
 	 RampMeasureFile::RampMeasureFile(const std::string & fileName,
 					  const Mode
 					  mode):ExcelAccessBase(fileName,
@@ -40,9 +41,7 @@ namespace cms {
 	    if (size != rsize || size != gsize || size != bsize) {
 		throw IllegalArgumentException("size is not match");
 	    }
-	    //==================================================================//==================================================================// 初始資料設定//==================================================================
-		db->setTableName(Sheet1);
-	    string_vector_ptr headerNames = getHeaderNames(Sheet1);
+	    //==================================================================//==================================================================// 初始資料設定//==================================================================//db->setTableName(Sheet1);//string_vector_ptr headerNames = getHeaderNames(Sheet1);
 	    string_vector_ptr values(new string_vector(18));
 	    //==================================================================
 	    //==================================================================
@@ -81,9 +80,6 @@ namespace cms {
 		    (*values)[10] = _toString(rxyY->y);
 		    (*values)[11] = _toString(rxyY->Y);
 		} else {
-		    /*(*values)[9] = "0";
-		       (*values)[10] = "0";
-		       (*values)[11] = "0"; */
 		    StringVector::setContent(values, "0", 3, 9, 10, 11);
 		}
 		if (gMeasureData != null) {
@@ -93,9 +89,6 @@ namespace cms {
 		    (*values)[13] = _toString(gxyY->y);
 		    (*values)[14] = _toString(gxyY->Y);
 		} else {
-		    /*(*values)[12] = "0";
-		       (*values)[13] = "0";
-		       (*values)[14] = "0"; */
 		    StringVector::setContent(values, "0", 3, 12, 13, 14);
 		}
 		if (bMeasureData != null) {
@@ -105,13 +98,11 @@ namespace cms {
 		    (*values)[16] = _toString(bxyY->y);
 		    (*values)[17] = _toString(bxyY->Y);
 		} else {
-		    /*(*values)[15] = "0";
-		       (*values)[16] = "0";
-		       (*values)[17] = "0"; */
 		    StringVector::setContent(values, "0", 3, 15, 16, 17);
 		}
 
-		db->insert(headerNames, values, false);
+		//db->insert(headerNames, values, false);
+		this->insertData(Sheet1, values, false);
 	    }
 	    //==================================================================
 	};

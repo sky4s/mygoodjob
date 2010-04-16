@@ -25,6 +25,7 @@ namespace cms {
 		towchar_t(std::string & str);
 	    static wchar_t *towchar_t2(std::string & str);
 	    static void deleteExist(const std::string & filename);
+	    static bool isFileExist(const std::string & filename);
 	    static bptr < WideString > toWideString(const std::string & s);
 
 
@@ -34,9 +35,9 @@ namespace cms {
 	  public:
 	    static string_vector_ptr fromCString(int count, ...);
 	    static string_vector_ptr fromString(int count, ...);
-
 	    static string_vector_ptr fromString(int n, const std::string *
 						strings);
+	    static string_vector_ptr fromDouble(int count, ...);
 	    static void setContent(string_vector_ptr vector,
 				   const std::string & content, int n,
 				   ...);

@@ -57,6 +57,10 @@ namespace cms {
 	    }
 	};
 
+	bool Util::isFileExist(const std::string & filename) {
+	    return FileExists(filename.c_str());
+	}
+
 	bptr < WideString > Util::toWideString(const std::string & s) {
 	    bptr < WideString > wstring(new WideString(s.c_str()));
 	    return wstring;
@@ -97,6 +101,18 @@ namespace cms {
 	    for (int x = 0; x < n; x++) {
 		(*result)[x] = strings[x];
 	    } return result;
+	};
+	string_vector_ptr StringVector::fromDouble(int count, ...) {
+	    string_vector_ptr result(new string_vector());
+	    va_list num_list;
+	    va_start(num_list, count);
+
+	    for (int i = 0; i < count; i++) {
+		const double d = va_arg(num_list, const double);
+		const string & str = _toString(d);
+		result->push_back(str);
+	    } va_end(num_list);
+	    return result;
 	};
 	void StringVector::setContent(string_vector_ptr vector,
 				      const std::string & content,

@@ -4,15 +4,6 @@
 
 //C++系統文件
 
-#include <vcl.h>
-#ifdef __BORLANDC__
-# pragma pack(push, 8)
-#endif
-#include <map>
-#ifdef __BORLANDC__
-# pragma pack(pop)
-#endif
-
 //其他庫頭文件
 #include <ADODB.hpp>
 #include <DB.hpp>
@@ -23,34 +14,6 @@
 namespace cms {
     namespace colorformat {
 
-	class ExcelAccessBase {
-	  private:
-
-	    const std::string & filename;
-
-	    const Mode mode;
-	     std::map < const std::string,
-		string_vector_ptr) headerNamesMap;
-
-	  protected:
-	     bptr < ExcelFileDB > db;
-	    const bool lazyMode;
-	    string_vector_ptr getHeaderNames(const std::
-					     string & sheetname);
-	    void initSheet(const std::string & sheetname, int headerCount,
-			   ...);
-	    void initPropertySheet();
-	    void initBegin();
-	  public:
-
-	     ExcelAccessBase(const std::string & filename, Mode mode);
-	    void
-	     addProperty(const std::string & key,
-			 const std::string & value);
-	    void
-	     addProperty(const std::string & key, const double value);
-	    static const std::string & Properties;
-	};
 
 	class DGLutProperty;
 	class DGLutFile:public ExcelAccessBase {
@@ -62,6 +25,7 @@ namespace cms {
 					 RGB_ptr rgbGammaFix);
 	    static const std::string & GammaTable;
 	    static const std::string & RawData;
+
 	  public:
 	     DGLutFile(const std::string & filename, Mode mode);
 

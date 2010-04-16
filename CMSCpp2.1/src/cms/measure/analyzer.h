@@ -14,7 +14,6 @@
 namespace cms {
 
     namespace measure {
-
 	class MeterMeasurement;
 	class IntensityAnalyzerIF:public jObject {
 	  public:
@@ -79,12 +78,13 @@ namespace cms {
 	    bptr < MeterMeasurement > mm;
 	    double2D_ptr inverseMatrix;
 	    double2D_ptr targetRatio;
-	    Patch_ptr rPatch;
-	    Patch_ptr gPatch;
-	    Patch_ptr bPatch;
-	    Patch_ptr wPatch;
 	    XYZ_ptr XYZ;
+	    XYZ_ptr rXYZ;
+	    XYZ_ptr gXYZ;
+	    XYZ_ptr bXYZ;
+	    XYZ_ptr wXYZ;
 	    int defaultWaitTimes;
+	     bptr < cms::colorformat::ExcelFileDB > excel;
 	  public:
 	     MaxMatrixIntensityAnayzer(bptr < MeterMeasurement > mm);
 
@@ -92,18 +92,23 @@ namespace cms {
 	    RGB_ptr getIntensity(XYZ_ptr XYZ);
 	    XYZ_ptr getCIEXYZ();
 	    void setupComponent(const Dep::Channel & ch, RGB_ptr rgb);
+	    void setupComponent(const Dep::Channel & ch,
+				XYZ_ptr measureXYZ);
 	    void enter();
 	    void beginAnalyze();
 	    void endAnalyze();
 	    void setWaitTimes(int waitTimes);
 	    void setDefaultWaitTimes();
+	    static const std::string & CoefficientFilename;
+
 	};
 
 	class IntensityAnayzer:public IntensityAnalyzerIF {
 	  private:
 	    bptr < MaxMatrixIntensityAnayzer > matrix;
 	    bptr < CA210IntensityAnalyzer > ca210;
-	    cms::colorformat::ExcelFileDB excel;
+	    //cms::colorformat::ExcelFileDB excel;
+	    bptr < cms::colorformat::SimpleExcelAccess > excel;
 	    string_vector_ptr fieldNames;
 	    int no;
 	  public:
