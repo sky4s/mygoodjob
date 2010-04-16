@@ -303,21 +303,36 @@ namespace math {
 	svd.getV(v);
     };
 
-    double2D_ptr DoubleArray::toDouble2D(int m, int n, ...) {
-	throw UnsupportedOperationException("Had problem.");
-	int count = m * n;
-	double *array = new double[count];
-	va_list num_list;
-	va_start(num_list, count);
 
-	for (int i = 0; i < count; i++) {
+
+    double2D_ptr DoubleArray::toDouble2D(int width, int n, ...) {
+	//throw UnsupportedOperationException("Had problem.");
+	//int count = m * n;
+	double *array = new double[n];
+	va_list num_list;
+	va_start(num_list, n);
+
+	for (int i = 0; i < n; i++) {
 	    const double d = va_arg(num_list, const double);
 	    array[i] = d;
-	    cout << d << endl;
 	} va_end(num_list);
 
-	double2D_ptr result(new double2D(m, n, array));
+	int height = n / width;
+	double2D_ptr result(new double2D(height, width, array));
 	return result;
+    };
+
+    void DoubleArray::toDouble2D_(int m, int n, ...) {
+	//int count = m * n;
+	va_list num_list;
+	va_start(num_list, n);
+
+	for (int i = 0; i < n; i++) {
+	    const double d = va_arg(num_list, const double);
+	    //result[i] = d;
+	    cout << "v:" << d << endl;
+	} va_end(num_list);
+	//return result;
     };
 
     double2D_ptr DoubleArray::toDouble2D(int m, int n, double *array) {
@@ -358,16 +373,20 @@ namespace math {
     void DoubleArray::storeToExcel(const string & filename,
 				   double_vector_ptr doubleVector) {
 	Util::deleteExist(filename);
-	bptr_ < ExcelFileDB > excel(new ExcelFileDB(filename, Create));
+	//SimpleExcelAccess excel(filename,Create,
+	/*ExcelFileDB excel(filename, Create);
 	string_vector_ptr fieldNames =
 	    StringVector::fromCString(1, "value");
-	excel->createTable("Sheet1", fieldNames);
+	excel.createTable("Sheet1", fieldNames);*/
+	bptr < SimpleExcelAccess > excel =
+	    SimpleExcelAccess::getValueStoreInstance(filename);
 	int size = doubleVector->size();
 
 	for (int x = 0; x != size; x++) {
 	    string v = _toString((*doubleVector)[x]);
 	    string_vector_ptr values = StringVector::fromString(1, v);
-	    excel->insert(fieldNames, values);
+	    //excel.insert(fieldNames, values);
+            excel->insert(values);
 	}
     };
 };

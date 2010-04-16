@@ -198,6 +198,8 @@ namespace cms {
 	class DGLutFile_;
 	class DGLutProperty;
 	class RampMeasureFile;
+	class ExcelAccessBase;
+	class SimpleExcelAccess;
     };
     namespace colorspace {
 	namespace depend {

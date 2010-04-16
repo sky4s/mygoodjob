@@ -3,6 +3,14 @@
 //C系統文件
 
 //C++系統文件
+#include <vcl.h>
+#ifdef __BORLANDC__
+# pragma pack(push, 8)
+#endif
+#include <map>
+#ifdef __BORLANDC__
+# pragma pack(pop)
+#endif
 
 //其他庫頭文件
 #include <ADODB.hpp>
@@ -114,6 +122,54 @@ namespace cms {
 						    result);
 	    bool hasNext();
 	    const string_ptr get(int row, int column);
+	};
+
+	class ExcelAccessBase {
+	  private:
+	    const std::string & filename;
+	    const Mode mode;
+	     std::map < const std::string,
+		string_vector_ptr) headerNamesMap;
+	  protected:
+	     bptr < ExcelFileDB > db;
+	    string_vector_ptr getHeaderNames(const std::
+					     string & sheetname);
+	    const int getHeaderCount(const std::string & sheetname);
+	    void initSheet(const std::string & sheetname, int headerCount,
+			   ...);
+	    void initSheet(const std::string & sheetname,
+			   string_vector_ptr headerNames);
+	    void initPropertySheet();
+	    void initBegin();
+	    void insertData(const std::string & sheetname,
+			    string_vector_ptr values, bool text);
+	    //virtual void init() = 0;
+	  public:
+
+	     ExcelAccessBase(const std::string & filename, Mode mode);
+	    void
+	     addProperty(const std::string & key,
+			 const std::string & value);
+	    void
+	     addProperty(const std::string & key, const double value);
+	    static const std::string & Properties;
+	     bptr < DBQuery > retrieve(const std::string & sheetname);
+
+	};
+	class SimpleExcelAccess:public ExcelAccessBase {
+	  private:
+	    const static std::string & Sheet1;
+	  protected:
+	     string_vector_ptr headerNames;
+	    //void init();
+	  public:
+	     SimpleExcelAccess(const std::string & filename, Mode mode,
+			       string_vector_ptr headerNames);
+	     SimpleExcelAccess(const std::string & filename);
+	     bptr < DBQuery > retrieve();
+	    void insert(string_vector_ptr values);
+	    static bptr < SimpleExcelAccess >
+		getValueStoreInstance(const std::string & filename);
 	};
     };
 };

@@ -47,7 +47,6 @@ void excel()
     string_vector_ptr fieldsNames = StringVector::fromCString(2, "a", "b");
 
     const string & filename = "a.xls";
-    //DGLutFile::deleteExist( filename);
     ExcelFileDB db(filename, Create);
 
     //string_ptr tbname(new string("tb"));
@@ -187,16 +186,25 @@ void lut()
 double2D_ptr inverse()
 {
     using namespace math;
-    double d[] = { 0.5767309, 0.1855540, 0.1881852,
-	0.2973769, 0.6273491, 0.0752741,
-	0.0270343, 0.0706872, 0.9911085
-    };
+    /*double d[] = { 0.5767309, 0.1855540, 0.1881852,
+       0.2973769, 0.6273491, 0.0752741,
+       0.0270343, 0.0706872, 0.9911085
+       }; */
     //double2D_ptr m(new double2D(3, 3, d));
-    double2D_ptr m = DoubleArray::toDouble2D(3, 3, d);
-    //m = DoubleArray::toDouble2D(1, 1, 0.5767309 );
+    double2D_ptr m =
+	DoubleArray::toDouble2D(3, 9, 0.5767309, 0.1855540, 0.1881852,
+				0.2973769, 0.6273491, 0.0752741,
+				0.0270343, 0.0706872, 0.9911085);
     double2D_ptr inv = DoubleArray::inverse(m);
     cout << *DoubleArray::toString(m) << endl;
     cout << *DoubleArray::toString(inv) << endl;
+
+    /*double2D_ptr m2 = DoubleArray::toDouble2D(3, 3, 1.1, 2.1, 3.1);
+       cout << "test:" << *DoubleArray::toString(m2) << endl; */
+    //DoubleArray::toDouble2D_( 1,3, 1.1, 2.1, 3.1);
+    /*cout << *DoubleArray::toString(DoubleArray::toDoubleArray(3, 1.1, 2.1, 3.1),
+       3) << endl; */
+
     return m;
     //double_array a = DoubleArray::toDoubleArray(3, 1.1, 2.2, 3.3);
     //cout << *DoubleArray::toString(a,3) << endl;
@@ -599,6 +607,8 @@ void vectorTry()
     cout << v[1] << endl;
 };
 
+
+
 #pragma argsused
 int main(int argc, char *argv[])
 {
@@ -620,8 +630,10 @@ int main(int argc, char *argv[])
     //header();
     //dgcodefile();
     //dgcode();
-    double2D_ptr m = inverse();
-    cout << *math::DoubleArray::toString(m) << endl;
+
+    //double2D_ptr m = inverse();
+    //cout << *math::DoubleArray::toString(m) << endl;
+
     //rgbTry();
     //mathTry();
     //doubleArrayTry();
@@ -645,6 +657,8 @@ int main(int argc, char *argv[])
     //bufferTry();
     //measureConditionTry();
     //vectorTry();
+
+    //persistence();
     getch();
 }
 

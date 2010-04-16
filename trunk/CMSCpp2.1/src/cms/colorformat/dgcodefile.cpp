@@ -11,7 +11,7 @@
 //本項目內頭文件
 
 //不做初使化(其實沒有初始化的必要了)
-#define LAZY_EXCEL true
+//#define LAZY_EXCEL true
 //將多筆sql合併成一句執行(excel似乎不能這樣玩)
 //#define CACHE_SQL
 
@@ -25,69 +25,7 @@ namespace cms {
 	using namespace Dep;
 	using namespace cms::util;
 
-	//======================================================================
-	// ExcelAccessBase
-	//======================================================================
-	string_vector_ptr ExcelAccessBase::getHeaderNames(const std::
-							  string &
-							  sheetname) {
-	    return headerNamesMap[sheetname];
-	};
-	void ExcelAccessBase::initSheet(const std::string & sheetname,
-					int headerCount, ...) {
-	    string_vector_ptr headers(new string_vector());
-	    va_list num_list;
-	     va_start(num_list, headerCount);
 
-	    for (int i = 0; i < headerCount; i++) {
-		const char *c = va_arg(num_list, const char *);
-		string str(c);
-		 headers->push_back(str);
-	    } va_end(num_list);
-
-	    headerNamesMap.insert(make_pair(sheetname, headers));
-	    if (Create == mode) {
-		db->createTable(sheetname, headers);
-	    }
-	};
-	void ExcelAccessBase::initPropertySheet() {
-	    initSheet(Properties, 2, "Key", "Value");
-	};
-	void
-	 ExcelAccessBase::initBegin() {
-	    if (Create == mode && FileExists(filename.c_str())) {
-		throw IllegalStateException("File " + filename +
-					    " exists.");
-	    }
-	    db.reset(new ExcelFileDB(filename, mode));
-	};
-	ExcelAccessBase::ExcelAccessBase(const std::string & filename,
-					 Mode mode):filename(filename),
-	    mode(mode), lazyMode(LAZY_EXCEL) {
-	    initBegin();
-	};
-	void
-	 ExcelAccessBase::addProperty(const
-				      string & key, const
-				      string & value) {
-	    db->setTableName(Properties);
-	    string_vector_ptr values =
-		StringVector::fromString(2, key, value);
-	    db->setCacheMode(false);
-	    db->insert(getHeaderNames(Properties), values, true);
-#ifdef CACHE_SQL
-	    db->setCacheMode(true);
-#endif
-	};
-	void
-	 ExcelAccessBase::addProperty(const std::string & key,
-				      const double value) {
-	    addProperty(key, _toString(value));
-	};
-
-	const string & ExcelAccessBase::Properties = "Properties";
-
-	//======================================================================
 
 	//======================================================================
 	// DGLutFile
@@ -101,22 +39,15 @@ namespace cms {
 	    makeValues(int n, Component_ptr c, RGB_ptr rgbGamma,
 		       RGB_ptr rgbGammaFix) {
 	    string_vector_ptr values(new string_vector(13));
-	    (*values)
-		[0] = _toString(n);
+	     (*values)[0] = _toString(n);
 	    xyY_ptr xyY(new CIExyY(c->XYZ));
-	    (*values)
-		[1] = _toString(xyY->x);
-	    (*values)
-		[2] = _toString(xyY->y);
-	    (*values)
-		[3] = _toString(xyY->Y);
+	     (*values)[1] = _toString(xyY->x);
+	     (*values)[2] = _toString(xyY->y);
+	     (*values)[3] = _toString(xyY->Y);
 	    RGB_ptr intensity = c->intensity;
-	    (*values)
-		[4] = _toString(intensity->R);
-	    (*values)
-		[5] = _toString(intensity->G);
-	    (*values)
-		[6] = _toString(intensity->B);
+	     (*values)[4] = _toString(intensity->R);
+	     (*values)[5] = _toString(intensity->G);
+	     (*values)[6] = _toString(intensity->B);
 	    //gamma 0~100
 	    if (null != rgbGamma) {
 		(*values)[7] = _toString(rgbGamma->R);
@@ -142,6 +73,7 @@ namespace cms {
 		      "BP_Intensity_Fix");
 	    initPropertySheet();
 	};
+
 	const string & DGLutFile::GammaTable = "Gamma_Table";
 	const string & DGLutFile::RawData = "Raw_Data";
 
@@ -155,7 +87,8 @@ namespace cms {
 	    if (null != initialRGBGamma && null != finalRGBGamma
 		&& initialRGBGamma->r->size() !=
 		finalRGBGamma->r->size()) {
-		throw IllegalArgumentException
+		throw
+		    IllegalArgumentException
 		    ("initialRGBGamma->size() != finalRGBGamma->size()");
 	    };
 
@@ -167,11 +100,11 @@ namespace cms {
 	    int part2Size =
 		null !=
 		initialRGBGamma ? initialRGBGamma->r->size() : part1Size;
-	    db->setTableName(RawData);
+	    //db->setTableName(RawData);
 	    int size = componentVector->size();
-	    string_vector_ptr headerNames = getHeaderNames(RawData);
-	    string_vector_ptr values(new
-				     string_vector(headerNames->size()));
+	    //string_vector_ptr headerNames = getHeaderNames(RawData);
+	    const int headerCount = getHeaderCount(RawData);
+	    string_vector_ptr values(new string_vector(headerCount));
 	    //==================================================================
 	    //==================================================================
 	    // 迴圈處理
@@ -202,9 +135,6 @@ namespace cms {
 		    (*values)[8] = _toString((*initialRGBGamma->g)[n]);
 		    (*values)[9] = _toString((*initialRGBGamma->b)[n]);
 		} else {
-		    /*(*values)[7] = "0";
-		       (*values)[8] = "0";
-		       (*values)[9] = "0"; */
 		    StringVector::setContent(values, "0", 3, 7, 8, 9);
 		}
 
@@ -213,29 +143,20 @@ namespace cms {
 		    (*values)[11] = _toString((*finalRGBGamma->g)[n]);
 		    (*values)[12] = _toString((*finalRGBGamma->b)[n]);
 		} else {
-		    /*(*values)[10] = "0";
-		       (*values)[11] = "0";
-		       (*values)[12] = "0"; */
 		    StringVector::setContent(values, "0", 3, 10, 11, 12);
 		}
 
-		if (!lazyMode) {
-		    db->update((*headerNames)[0], w, headerNames, values,
-			       false);
-		} else {
-		    db->insert(headerNames, values, false);
-		}
+		/*if (!lazyMode) {
+		   db->update((*headerNames)[0], w, headerNames, values,
+		   false);
+		   } else { */
+		//db->insert(headerNames, values, false);
+		this->insertData(RawData, values, false);
+		//}
 	    }
 
 	    for (int x = part1Size; x != part2Size; x++) {
 		int n = part2Size - 1 - x;
-		/*(*values)[0] = "0";
-		(*values)[1] = "0";
-		(*values)[2] = "0";
-		(*values)[3] = "0";
-		(*values)[4] = "0";
-		(*values)[5] = "0";
-		(*values)[6] = "0";*/
 		StringVector::setContent(values, "0", 7, 0, 1, 2, 3, 4, 5,
 					 6);
 
@@ -245,9 +166,6 @@ namespace cms {
 		    (*values)[8] = _toString((*initialRGBGamma->g)[n]);
 		    (*values)[9] = _toString((*initialRGBGamma->b)[n]);
 		} else {
-		    /*(*values)[7] = "0";
-		    (*values)[8] = "0";
-		    (*values)[9] = "0";*/
 		    StringVector::setContent(values, "0", 3, 7, 8, 9);
 		}
 
@@ -256,18 +174,16 @@ namespace cms {
 		    (*values)[11] = _toString((*finalRGBGamma->g)[n]);
 		    (*values)[12] = _toString((*finalRGBGamma->b)[n]);
 		} else {
-		    /*(*values)[10] = "0";
-		    (*values)[11] = "0";
-		    (*values)[12] = "0";*/
-		    StringVector::setContent(values, "0", 3, 10,11,12);
+		    StringVector::setContent(values, "0", 3, 10, 11, 12);
 		}
 
-		if (!lazyMode) {
-		    db->update((*headerNames)[0], 0, headerNames, values,
-			       false);
-		} else {
-		    db->insert(headerNames, values, false);
-		}
+		/*if (!lazyMode) {
+		   db->update((*headerNames)[0], 0, headerNames, values,
+		   false);
+		   } else { */
+		//db->insert(headerNames, values, false);
+		this->insertData(RawData, values, false);
+		//}
 	    }
 #ifdef CACHE_SQL
 	    db->excuteCache();
@@ -280,21 +196,18 @@ namespace cms {
 	    //==================================================================
 	    // 初始資料設定
 	    //==================================================================
-	    db->setTableName(GammaTable);
+	    //db->setTableName(GammaTable);
 	    int
 	     size = dglut->size();
 	    string_vector_ptr values(new string_vector(4));
-	    string_vector_ptr headerNames = getHeaderNames(GammaTable);
+	    //string_vector_ptr headerNames = getHeaderNames(GammaTable);
 	    //==================================================================
 	    //==================================================================
 	    // 迴圈處理
 	    //==================================================================
 	    for (int x = 0; x != size; x++) {
-		//int n = size - 1 - x;
-		//Composition_ptr c = (*compositionVector)[x];
 
 		RGB_ptr rgb = (*dglut)[x];
-		//int w = static_cast < int >(rgb->getValue(Channel::W));
 		(*values)[0] = _toString(x);
 		(*values)
 		    [1] = _toString(rgb->R);
@@ -302,12 +215,13 @@ namespace cms {
 		    [2] = _toString(rgb->G);
 		(*values)
 		    [3] = _toString(rgb->B);
-		if (!lazyMode) {
-		    db->update((*headerNames)[0], x, headerNames, values,
-			       false);
-		} else {
-		    db->insert(headerNames, values, false);
-		}
+		/*if (!lazyMode) {
+		   db->update((*headerNames)[0], x, headerNames, values,
+		   false);
+		   } else { */
+		//db->insert(headerNames, values, false);
+		this->insertData(GammaTable, values, false);
+		//}
 	    }
 #ifdef CACHE_SQL
 	    db->excuteCache();

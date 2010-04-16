@@ -274,10 +274,10 @@ namespace cms {
 	};
 
 	bptr < DBQuery > ExcelFileDB::selectAll() {
-		string select = "SELECT * FROM [" + getTableName() + "$]";
-		bptr < TADODataSet > dataSet = selectDataSet(select);
-		bptr < DBQuery > query(new DBQuery(dataSet));
-		return query;
+	    string select = "SELECT * FROM [" + getTableName() + "$]";
+	    bptr < TADODataSet > dataSet = selectDataSet(select);
+	    bptr < DBQuery > query(new DBQuery(dataSet));
+	    return query;
 	};
 
 	void ExcelFileDB::close() {
@@ -340,24 +340,132 @@ namespace cms {
 	    };
 	    string_vector_ptr result = nextResult();
 	    string_ptr str(new string((*result)[column]));
-	    //dataSet->UpdateRecord();
 	    return str;
 	};
-	/*void DBQuery::set(int row, int column, const std::string & value) {
-	   throw UnsupportedOperationException();
-	   dataSet->First();
-	   for (int x = 0; x < row; x++) {
-	   dataSet->Next();
-	   };
-	   AnsiString astr(value.c_str());
-	   dataSet->Fields->Fields[column]->Text = astr;
-	   };
+	//======================================================================
 
-	   void DBQuery::refresh() {
-	   throw UnsupportedOperationException();
-	   dataSet->Refresh();
-	   }; */
 
+
+	//======================================================================
+	// ExcelAccessBase
+	//======================================================================
+	string_vector_ptr ExcelAccessBase::getHeaderNames(const std::
+							  string &
+							  sheetname) {
+	    return headerNamesMap[sheetname];
+	};
+	const int ExcelAccessBase::getHeaderCount(const std::
+						  string & sheetname) {
+	    return headerNamesMap[sheetname]->size();
+	};
+	void ExcelAccessBase::initSheet(const std::string & sheetname,
+					int headerCount, ...) {
+	    string_vector_ptr headers(new string_vector());
+	    va_list num_list;
+	    va_start(num_list, headerCount);
+
+	    for (int i = 0; i < headerCount; i++) {
+		const char *c = va_arg(num_list, const char *);
+		string str(c);
+		headers->push_back(str);
+	    } va_end(num_list);
+
+	    initSheet(sheetname, headers);
+	};
+	void ExcelAccessBase::initSheet(const std::string & sheetname,
+					string_vector_ptr headerNames) {
+	    headerNamesMap.insert(make_pair(sheetname, headerNames));
+	    if (Create == mode) {
+		db->createTable(sheetname, headerNames);
+	    }
+
+	};
+	void ExcelAccessBase::initPropertySheet() {
+	    initSheet(Properties, 2, "Key", "Value");
+	};
+	void
+	 ExcelAccessBase::initBegin() {
+	    if (Create == mode && FileExists(filename.c_str())) {
+		throw IllegalStateException("File " + filename +
+					    " exists.");
+	    }
+	    db.reset(new ExcelFileDB(filename, mode));
+	};
+	void ExcelAccessBase::insertData(const std::string & sheetname,
+					 string_vector_ptr values,
+					 bool text) {
+	    string_vector_ptr headerNames = getHeaderNames(sheetname);
+	    db->setTableName(sheetname);
+	    db->insert(headerNames, values, text);
+	};
+
+	ExcelAccessBase::ExcelAccessBase(const std::string & filename, Mode mode):filename(filename), mode(mode) {	/*, lazyMode(LAZY_EXCEL) */
+	    initBegin();
+	    //init();
+	};
+	void
+	 ExcelAccessBase::addProperty(const
+				      string & key, const
+				      string & value) {
+	    //db->setTableName(Properties);
+	    string_vector_ptr values =
+		StringVector::fromString(2, key, value);
+	    db->setCacheMode(false);
+	    //db->insert(getHeaderNames(Properties), values, true);
+	    this->insertData(Properties, values, true);
+#ifdef CACHE_SQL
+	    db->setCacheMode(true);
+#endif
+	};
+	void
+	 ExcelAccessBase::addProperty(const std::string & key,
+				      const double value) {
+	    addProperty(key, _toString(value));
+	};
+
+	const string & ExcelAccessBase::Properties = "Properties";
+	bptr < DBQuery >
+	    ExcelAccessBase::retrieve(const std::string & sheetname) {
+	    db->setTableName(sheetname);
+	    return db->selectAll();
+	};
+	//======================================================================
+
+	//======================================================================
+	// SimpleExcelAccess
+	//======================================================================
+	const std::string & SimpleExcelAccess::Sheet1 = "Sheet1";
+	SimpleExcelAccess::SimpleExcelAccess(const std::string & filename,
+					     Mode
+					     mode,
+					     string_vector_ptr
+					     headerNames):ExcelAccessBase
+	    (filename, mode), headerNames(headerNames) {
+             initSheet(Sheet1, headerNames);
+	};
+	SimpleExcelAccess::SimpleExcelAccess(const std::
+					     string &
+					     filename):ExcelAccessBase
+	    (filename, ReadOnly) {
+             initSheet(Sheet1, headerNames);
+	};
+ 
+	bptr < DBQuery > SimpleExcelAccess::retrieve() {
+	    return ExcelAccessBase::retrieve(Sheet1);
+	};
+	void SimpleExcelAccess::insert(string_vector_ptr values) {
+	    insertData(Sheet1, values, false);
+	};
+	bptr < SimpleExcelAccess >
+	    SimpleExcelAccess::getValueStoreInstance(const std::
+						     string & filename) {
+	    string_vector_ptr fieldNames = StringVector::fromCString(1,
+								     "value");
+	    bptr < SimpleExcelAccess >
+		access(new
+		       SimpleExcelAccess(filename, Create, fieldNames));
+	    return access;
+	};
 	//======================================================================
     };
 };

@@ -10,7 +10,7 @@
 
 //本項目內頭文件
 
-namespace cms { 
+namespace cms {
     namespace util {
 	using namespace std;
 	using Dep::RGBColor;
@@ -44,21 +44,17 @@ namespace cms {
 
 
 	    Util::deleteExist(filename);
-	    bptr_ < ExcelFileDB > excel(new ExcelFileDB(filename, Create));
-
-	    string_vector_ptr fieldNames =
-		StringVector::fromCString(4, "Gray Level", "R", "G", "B");
-	    excel->createTable("Sheet1", fieldNames);
+	    SimpleExcelAccess excel(filename, Create,
+				    StringVector::
+				    fromCString(4, "Gray Level", "R", "G",
+					       "B"));
 	    int size = rgbVector->size();
 	    for (int x = 0; x != size; x++) {
 		RGB_ptr rgb = (*rgbVector)[x];
-		string r = _toString(rgb->R);
-		string g = _toString(rgb->G);
-		string b = _toString(rgb->B);
-		string xstring = _toString(x);
 		string_vector_ptr values =
-		    StringVector::fromString(4, xstring, r, g, b);
-		excel->insert(fieldNames, values);
+		    StringVector::fromDouble(4, static_cast < double >(x),
+					     rgb->R, rgb->G, rgb->B);
+		excel.insert(values);
 	    }
 
 	};
@@ -114,23 +110,22 @@ namespace cms {
 
 
 	    Util::deleteExist(filename);
-	    bptr_ < ExcelFileDB > excel(new ExcelFileDB(filename, Create));
+	    SimpleExcelAccess excel(filename, Create,
+				    StringVector::
+				    fromCString(4, "Gray Level", "R gamma",
+					       "G gamma", "B gamma"));
 
-	    string_vector_ptr fieldNames =
-		StringVector::fromCString(4, "Gray Level", "R gamma",
-					  "G gamma", "B gamma");
-	    excel->createTable("Sheet1", fieldNames);
 	    int size = rgbgamma->r->size();
 
 	    for (int x = 0; x != size; x++) {
 		(*rgbgamma->r)[x];
-		string r = _toString((*rgbgamma->r)[x]);
-		string g = _toString((*rgbgamma->g)[x]);
-		string b = _toString((*rgbgamma->b)[x]);
-		string xstring = _toString(x);
 		string_vector_ptr values =
-		    StringVector::fromString(4, xstring, r, g, b);
-		excel->insert(fieldNames, values);
+		    StringVector::fromDouble(4, static_cast < double >(x),
+					     (*rgbgamma->r)[x],
+					     (*rgbgamma->g)[x],
+					     (*rgbgamma->b)[x]);
+		//excel->insert(fieldNames, values);
+		excel.insert(values);
 	    };
 	};
 
@@ -142,14 +137,13 @@ namespace cms {
 
 	RGBGamma_ptr RGBGamma::loadFromDesiredGamma(const std::
 						    string & filename) {
-	    bptr_ < ExcelFileDB >
-		excel(new ExcelFileDB(filename, ReadOnly));
+	    SimpleExcelAccess excel(filename);
+
 	    double_vector_ptr r(new double_vector()),
 		g(new double_vector()), b(new double_vector()),
 		w(new double_vector());
-	    excel->setTableName("Sheet1");
 	    try {
-		bptr < DBQuery > query = excel->selectAll();
+		bptr < DBQuery > query = excel.retrieve();
 		while (query->hasNext()) {
 		    string_vector_ptr result = query->nextResult();
 		    w->push_back(_toDouble((*result)[1]));
@@ -171,7 +165,7 @@ namespace cms {
 	    }
 	    catch(EOleException & ex) {
 		//ShowMessage("Desired Gamma File Format is wrong!");
-		return RGBGamma_ptr((RGBGamma*)null);
+		return RGBGamma_ptr((RGBGamma *) null);
 	    }
 	};
 
