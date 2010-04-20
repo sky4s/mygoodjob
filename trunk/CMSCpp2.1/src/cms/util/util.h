@@ -25,6 +25,8 @@ namespace cms {
 		towchar_t(std::string & str);
 	    static wchar_t *towchar_t2(std::string & str);
 	    static void deleteExist(const std::string & filename);
+            static void deleteExist(const char * filename);
+            static void deleteExist(const WideString & filename);
 	    static bool isFileExist(const std::string & filename);
 	    static bptr < WideString > toWideString(const std::string & s);
 

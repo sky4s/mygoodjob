@@ -36,7 +36,7 @@ namespace cms {
 	     bptr < ca210api::CA210API > ca210api;
 	    XYZ_ptr XYZ;
 	     bptr < MeterMeasurement > mm;
-	    static const WideString & CalibrationDataFilename;
+	    //static const WideString & CalibrationDataFilename;
 	    bool dummyMode;
 	    void init();
 	     cms::measure::meter::DGLutFileMeter * dgc;

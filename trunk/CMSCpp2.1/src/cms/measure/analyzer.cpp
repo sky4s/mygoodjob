@@ -11,6 +11,8 @@
 //本項目內頭文件
 #include <ca210api/CA210API.h>
 
+#define CA210DAT "ca210.dat"
+
 namespace cms {
     namespace measure {
 
@@ -22,14 +24,14 @@ namespace cms {
 	using namespace Indep;
 	using namespace ca210api;
 
-	const WideString & CA210IntensityAnalyzer::
-	    CalibrationDataFilename = "ca210.dat";
+	/*const WideString & CA210IntensityAnalyzer::
+	    CalibrationDataFilename = "ca210.dat";*/
 
 	void CA210IntensityAnalyzer::init() {
-	    //mm->setWaitTimes(5000);
 	    ca210api->setDisplayMode(Lvxy);
 	    ca210api->setChannelNO(0);
-	    ca210api->copyToFile(CalibrationDataFilename);
+                Util::deleteExist(CA210DAT);
+	    ca210api->copyToFile(CA210DAT);
 	};
 
 	 CA210IntensityAnalyzer::CA210IntensityAnalyzer(bptr < CA210 >
@@ -127,7 +129,7 @@ namespace cms {
 		//重新設定CalMode
 		//ca210api->resetLvxyCalMode();
                 if( true == reset) {
-                        ca210api->copyFromFile(CalibrationDataFilename);
+                        ca210api->copyFromFile(CA210DAT);
                 }
 		ca210api->setAnalyzerCalMode();
 	    }
