@@ -88,7 +88,7 @@ void __fastcall TMainForm::FormCreate(TObject * Sender)
     }
     bitDepth.reset(new BitDepthProcessor(8, 10, 8, false));
 
-  	 /**bptr < ca210api::CA210API > ca=  getCA210()->getCA210API();
+  	 /*bptr < ca210api::CA210API > ca=  getCA210()->getCA210API();
          ca->setChannelNO(0);
          ca->copyToFile("1.dat");
          ca->setChannelNO(1);
@@ -107,14 +107,17 @@ bptr < cms::measure::IntensityAnalyzerIF > TMainForm::getAnalyzer()
 	//產生ca210
 	ca210Analyzer.reset(new CA210IntensityAnalyzer(getCA210(), mm));
 
+        if(true) {
 	//產生max matrix
-	/*bptr < MaxMatrixIntensityAnayzer >
+	bptr < MaxMatrixIntensityAnayzer >
 	    ma(new MaxMatrixIntensityAnayzer(mm));
 	Util::deleteExist("intensity.xls");
 	//產生兩者的合體
-	analyzer.reset(new IntensityAnayzer(ma, ca210Analyzer));*/
-
+	analyzer.reset(new IntensityAnayzer(ma, ca210Analyzer));
+        }
+        else {
         analyzer = ca210Analyzer;
+        }
     }
     return analyzer;
 }

@@ -51,9 +51,24 @@ namespace cms {
 
 
 	void Util::deleteExist(const std::string & filename) {
-	    const char *cstr = filename.c_str();
-	    if (FileExists(cstr)) {
+	    //const char *cstr = filename.c_str();
+	    /*if (FileExists(cstr)) {
 		DeleteFile(cstr);
+	    }*/
+            deleteExist(filename.c_str());
+	};
+
+        	void Util::deleteExist(const char * filename) {
+	    //const char *cstr = filename.c_str();
+	    if (FileExists(filename)) {
+		DeleteFile(filename);
+	    }
+	};
+
+	void Util::deleteExist(	const WideString &  filename) {
+	    //const char *cstr = filename.c_str();
+	    if (FileExists(filename)) {
+		DeleteFile(filename);
 	    }
 	};
 
