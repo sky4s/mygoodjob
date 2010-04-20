@@ -71,7 +71,8 @@ void __fastcall TCCTLUTForm::Button_RunClick(TObject * Sender)
     using namespace Dep;
     using namespace cms::lcd::calibrate;
 
-    MainForm->setToTargetChannel();
+    MainForm->getAnalyzer();
+    MainForm->setAnalyzerToTargetChannel(false);
 
     calibrator.
 	reset(new
@@ -119,13 +120,6 @@ void __fastcall TCCTLUTForm::Button_RunClick(TObject * Sender)
     //==========================================================================
     calibrator->setAvoidFRCNoise(this->CheckBox_AvoidNoise->Checked);
     calibrator->setKeepMaxLuminance(this->CheckBox_KeepMax->Checked);
-
-    /*int start = this->Edit_StartLevel->Text.ToInt();
-       int end = this->Edit_EndLevel->Text.ToInt();
-       int step = this->ComboBox_LevelStep->Text.ToInt(); */
-
-    //int waitTimes = MainForm->getInterval();
-    //MainForm->mm->setWaitTimes(waitTimes);
 
     try {
 	this->TOutputFileFrame1->createDir();

@@ -93,7 +93,7 @@ namespace cms {
 		 return str;
 	    };
 
-	    int Channel::getArrayIndex() {
+	    const int Channel::getArrayIndex() const{
 		return chindex - 1;
 	    };
 

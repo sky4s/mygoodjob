@@ -8,9 +8,11 @@
 
 //其他庫頭文件
 
+
 //本項目內頭文件
 #include "TTargetWhiteForm2.h"
 #include "TMainForm.h"
+#include <cms/util/util.h>
 
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
@@ -18,7 +20,7 @@
 TTargetWhiteForm2 *TargetWhiteForm2;
 //---------------------------------------------------------------------------
 __fastcall TTargetWhiteForm2::TTargetWhiteForm2(TComponent * Owner)
-:TForm(Owner)
+:TForm(Owner),stopMeasure(false)
 {
 }
 
@@ -62,7 +64,7 @@ void __fastcall TTargetWhiteForm2::ScrollBar_BChange(TObject * Sender)
 
 void __fastcall TTargetWhiteForm2::Edit_CTChange(TObject * Sender)
 {
-    if (true == changing) {
+    if (true == colorimetricChanging) {
 	return;
     }
 
@@ -98,12 +100,12 @@ void TTargetWhiteForm2::setColorimetricValues(double x, double y,
 
     AnsiString xStr = AnsiString().sprintf("%1.4g", x);
     AnsiString yStr = AnsiString().sprintf("%1.4g", y);
-    changing = true;
+    colorimetricChanging = true;
     this->Edit_targetx->Text = xStr;
     this->Edit_targety->Text = yStr;
     this->Edit_up->Text = AnsiString().sprintf("%1.4g", up);
     this->Edit_vp->Text = AnsiString().sprintf("%1.4g", vp);
-    changing = false;
+    colorimetricChanging = false;
 }
 
 
@@ -116,7 +118,7 @@ void TTargetWhiteForm2::scrollBar_Change()
 
 void __fastcall TTargetWhiteForm2::Edit_targetxChange(TObject * Sender)
 {
-    if (true == changing) {
+    if (true == colorimetricChanging) {
 	return;
     }
 
@@ -124,24 +126,24 @@ void __fastcall TTargetWhiteForm2::Edit_targetxChange(TObject * Sender)
     using Indep::CIExyY;
     double x = this->Edit_targetx->Text.ToDouble();
     double y = this->Edit_targety->Text.ToDouble();
-    changing = true;
+    colorimetricChanging = true;
     this->Edit_CT->Text = AnsiString(calculateCCT(x, y));
-    changing = false;
+    colorimetricChanging = false;
 }
 
 //---------------------------------------------------------------------------
 
 void __fastcall TTargetWhiteForm2::Edit_targetyChange(TObject * Sender)
 {
-    if (true == changing) {
+    if (true == colorimetricChanging) {
 	return;
     }
 
     double x = this->Edit_targetx->Text.ToDouble();
     double y = this->Edit_targety->Text.ToDouble();
-    changing = true;
+    colorimetricChanging = true;
     this->Edit_CT->Text = AnsiString(calculateCCT(x, y));
-    changing = false;
+    colorimetricChanging = false;
 }
 
 //---------------------------------------------------------------------------
@@ -203,17 +205,30 @@ void __fastcall TTargetWhiteForm2::Button2Click(TObject * Sender)
     //==========================================================================
     // 設定到ca-210去
     //==========================================================================
-    //利用ca210做成分分析器, 並且設定回MainForm
-    bptr < IntensityAnalyzerIF > analyzer = MainForm->analyzer;
-    /*CA210IntensityAnalyzer *ca210Analyzer =
-       dynamic_cast < CA210IntensityAnalyzer * >(analyzer.get()); */
 
-    MainForm->setToTargetChannel();
+    bptr < IntensityAnalyzerIF > analyzer = MainForm->getAnalyzer();
+    MainForm->setAnalyzerToTargetChannel(true);
+
+  try
+  {
+
     analyzer->setWaitTimes(5000);
     analyzer->setupComponent(Channel::R, r);
+    if(true ==stopMeasure) {
+     return;
+    }
     analyzer->setupComponent(Channel::G, g);
+    if(true ==stopMeasure) {
+     return;
+    }
     analyzer->setupComponent(Channel::B, b);
+    if(true ==stopMeasure) {
+     return;
+    }
     analyzer->setupComponent(Channel::W, rgb);
+    if(true ==stopMeasure) {
+     return;
+    }
     analyzer->enter();
     analyzer->setDefaultWaitTimes();
     //==========================================================================
@@ -222,6 +237,10 @@ void __fastcall TTargetWhiteForm2::Button2Click(TObject * Sender)
     this->Edit_R->Text = r->R;
     this->Edit_G->Text = g->G;
     this->Edit_B->Text = b->B;
+    }
+    __finally {
+    stopMeasure=false;
+    }
 }
 
 //---------------------------------------------------------------------------
@@ -249,5 +268,16 @@ void __fastcall TTargetWhiteForm2::Edit_BChange(TObject * Sender)
     ScrollBar_B->Position = this->Edit_B->Text.ToInt();
 }
 
+//---------------------------------------------------------------------------
+
+void TTargetWhiteForm2::windowClosing(){
+    stopMeasure=true;
+}
+void __fastcall TTargetWhiteForm2::FormCreate(TObject *Sender)
+{
+       using namespace cms::util;
+bptr<  WindowListener  > formPtr(dynamic_cast<WindowListener*>( this));
+MeasureWindow->addWindowListener(formPtr);
+}
 //---------------------------------------------------------------------------
 

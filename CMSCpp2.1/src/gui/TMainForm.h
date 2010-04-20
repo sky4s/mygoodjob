@@ -91,7 +91,6 @@ class TMainForm:public TForm {
     TRadioButton *RadioButton_Out10;
     TLabel *Label10;
     TEdit *Edit_FRCAbility;
-    TButton *Button1;
     void __fastcall About1Click(TObject * Sender);
     void __fastcall Exit1Click(TObject * Sender);
     void __fastcall TargetWhite1Click(TObject * Sender);
@@ -112,10 +111,8 @@ class TMainForm:public TForm {
     void __fastcall RadioButton_Out6Click(TObject * Sender);
     void __fastcall RadioButton_Out8Click(TObject * Sender);
     void __fastcall RadioButton_Out10Click(TObject * Sender);
-    void __fastcall Edit_TargetIDChange(TObject * Sender);
-    void __fastcall Edit_TargetCHChange(TObject * Sender);
     void __fastcall Button1Click(TObject * Sender);
-        void __fastcall Edit_IntervalChange(TObject *Sender);
+    void __fastcall Edit_IntervalChange(TObject * Sender);
   private:			// User declarations
     //==========================================================================
     // meter
@@ -124,7 +121,9 @@ class TMainForm:public TForm {
      bptr < cms::measure::meter::Meter > meter;
      bptr < cms::measure::meter::CA210 > getCA210();
      bptr < cms::lcd::calibrate::ComponentFetcher > fetcher;
-      int getInterval();
+    int getInterval();
+     bptr < cms::measure::CA210IntensityAnalyzer > ca210Analyzer;
+     bptr < cms::measure::IntensityAnalyzerIF > analyzer;
     //==========================================================================
 
 
@@ -143,10 +142,11 @@ class TMainForm:public TForm {
     //==========================================================================
     // meter
     //==========================================================================
-    void setToTargetChannel();
-    bool linkCA210;
+    void setAnalyzerToTargetChannel(bool reset);
+    const bool linkCA210;
      bptr < cms::measure::MeterMeasurement > mm;
-     bptr < cms::measure::IntensityAnalyzerIF > analyzer;
+
+     bptr < cms::measure::IntensityAnalyzerIF > getAnalyzer();
     //
 
     void setDummyMeterFilename(const std::string & filename);

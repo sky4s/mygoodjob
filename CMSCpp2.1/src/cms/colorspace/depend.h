@@ -159,7 +159,7 @@ namespace cms {
 		//Channel();
 
 		const string_ptr toString() const;
-		int getArrayIndex();
+		const int getArrayIndex() const;
 		bool isPrimaryColorChannel() const;
 		bool isSecondaryColorChannel() const;
 		static Channel_vector_ptr getBesidePrimaryChannel(const
