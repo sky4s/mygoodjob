@@ -70,10 +70,19 @@ namespace math {
 
 	static double_array toDoubleArray(double array[], int n);
 	static double_array toDoubleArray(int n, ...);
-	static double_array toDoubleArray(float_array floatArray,int n);        
+	static double_array toDoubleArray(float_array floatArray, int n);
 
 	static void storeToExcel(const std::string & filename,
 				 double_vector_ptr doubleVector);
+    };
+
+    class FloatArray {
+      public:
+	static float2D_ptr toFloat2D(int width, int n, ...);
+	static float2D_ptr inverse(float2D_ptr m);
+	static float2D_ptr solve(float2D_ptr a, float2D_ptr b);
+	static float2D_ptr identity(int m, int n);
+	static float2D_ptr times(float2D_ptr a, float2D_ptr b);
     };
 };
 #endif

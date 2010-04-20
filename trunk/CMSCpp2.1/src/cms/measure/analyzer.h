@@ -57,7 +57,7 @@ namespace cms {
 	    XYZ_ptr getCIEXYZ();
 	    void setupComponent(const Dep::Channel & ch, RGB_ptr rgb);
 	    void enter();
-	    void setChannel(int no, string_ptr id,bool reset);
+	    void setChannel(int no, string_ptr id, bool reset);
 	    void beginAnalyze();
 	    void endAnalyze();
 	    void setWaitTimes(int waitTimes);
@@ -106,6 +106,7 @@ namespace cms {
 	    void setDefaultWaitTimes();
 	};
 
+
 	class IntensityAnayzer:public IntensityAnalyzerIF {
 	  private:
 	    bptr < MaxMatrixIntensityAnayzer > matrix;
@@ -124,6 +125,18 @@ namespace cms {
 	    void endAnalyze();
 	    void setWaitTimes(int waitTimes);
 	    void setDefaultWaitTimes();
+	};
+
+
+	class MaxMatrixIntensityAnayzer2:public MaxMatrixIntensityAnayzer {
+	  protected:
+	    float2D_ptr inverseMatrix;
+	    float2D_ptr targetRatio;
+	    float2D_ptr rgbValues;
+	  public:
+	     MaxMatrixIntensityAnayzer2(bptr < MeterMeasurement > mm);
+	    void enter();
+	    RGB_ptr getIntensity(XYZ_ptr XYZ);
 	};
     };
 };

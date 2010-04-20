@@ -25,12 +25,12 @@ namespace cms {
 	using namespace ca210api;
 
 	/*const WideString & CA210IntensityAnalyzer::
-	    CalibrationDataFilename = "ca210.dat";*/
+	   CalibrationDataFilename = "ca210.dat"; */
 
 	void CA210IntensityAnalyzer::init() {
 	    ca210api->setDisplayMode(Lvxy);
 	    ca210api->setChannelNO(0);
-                Util::deleteExist(CA210DAT);
+	    Util::deleteExist(CA210DAT);
 	    ca210api->copyToFile(CA210DAT);
 	};
 
@@ -106,8 +106,9 @@ namespace cms {
 	    if (false == dummyMode) {
 		ca210api->setAnalyzerCalData(lclr);
 	    }
-         float_array XYZValues=   ca210api->triggerMeasurement();
-         XYZ.reset(new CIEXYZ(XYZValues[0],XYZValues[1],XYZValues[2]));
+	    float_array XYZValues = ca210api->triggerMeasurement();
+	    XYZ.reset(new
+		      CIEXYZ(XYZValues[0], XYZValues[1], XYZValues[2]));
 	};
 
 	void CA210IntensityAnalyzer::enter() {
@@ -120,7 +121,8 @@ namespace cms {
 	/*
 	   設定channel的no和id
 	 */
-	void CA210IntensityAnalyzer::setChannel(int no, string_ptr id,bool reset) {
+	void CA210IntensityAnalyzer::setChannel(int no, string_ptr id,
+						bool reset) {
 	    if (false == dummyMode) {
 		//設定no
 		ca210api->setChannelNO(no);
@@ -128,9 +130,9 @@ namespace cms {
 		ca210api->setChannelID(WideString(id->c_str()));
 		//重新設定CalMode
 		//ca210api->resetLvxyCalMode();
-                if( true == reset) {
-                        ca210api->copyFromFile(CA210DAT);
-                }
+		if (true == reset) {
+		    ca210api->copyFromFile(CA210DAT);
+		}
 		ca210api->setAnalyzerCalMode();
 	    }
 	};
@@ -390,6 +392,57 @@ namespace cms {
 	    ca210->setDefaultWaitTimes();
 	};
 	//=====================================================================
+
+      MaxMatrixIntensityAnayzer2::MaxMatrixIntensityAnayzer2(bptr < MeterMeasurement > mm):MaxMatrixIntensityAnayzer(mm)
+	{
+
+	};
+
+	void MaxMatrixIntensityAnayzer2::enter() {
+	    mm->setMeasureWindowsVisible(false);
+	    if (rXYZ == null || gXYZ == null || bXYZ == null
+		|| wXYZ == null) {
+		throw IllegalStateException
+		    ("Excute setupComponent() with RGBW first.");
+	    }
+	    float2D_ptr m =
+		FloatArray::toFloat2D(3, 9, static_cast < float >(rXYZ->X),
+				      static_cast < float >(gXYZ->X),
+				      static_cast < float >(bXYZ->X),
+				      static_cast < float >(rXYZ->Y),
+				      static_cast < float >(gXYZ->Y),
+				      static_cast < float >(bXYZ->Y),
+				      static_cast < float >(rXYZ->Z),
+				      static_cast < float >(gXYZ->Z),
+				      static_cast < float >(bXYZ->Z));
+	    this->inverseMatrix = FloatArray::inverse(m);
+	    float2D_ptr targetWhite =
+		FloatArray::toFloat2D(1, 3, wXYZ->X, wXYZ->Y, wXYZ->Z);
+	    this->targetRatio =
+		FloatArray::times(inverseMatrix, targetWhite);
+
+	};
+
+	RGB_ptr MaxMatrixIntensityAnayzer2::getIntensity(XYZ_ptr XYZ) {
+	    float2D_ptr color =
+		FloatArray::toFloat2D(1, 3, static_cast < float >(XYZ->X),
+				      static_cast < float >(XYZ->Y),
+				      static_cast < float >(XYZ->Z));
+	    rgbValues = FloatArray::times(inverseMatrix, color);
+	    (*rgbValues)[0][0] *= 100;
+	    (*rgbValues)[1][0] *= 100;
+	    (*rgbValues)[2][0] *= 100;
+	    float_array intensityValues(new float[3]);
+	    intensityValues[0] = (*rgbValues)[0][0] / (*targetRatio)[0][0];
+	    intensityValues[1] = (*rgbValues)[1][0] / (*targetRatio)[1][0];
+	    intensityValues[2] = (*rgbValues)[2][0] / (*targetRatio)[2][0];
+
+	    RGB_ptr intensity(new
+			      RGBColor(intensityValues[0],
+				       intensityValues[1],
+				       intensityValues[2]));
+	    return intensity;
+	};
     };
 };
 

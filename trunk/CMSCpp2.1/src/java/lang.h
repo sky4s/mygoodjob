@@ -162,6 +162,9 @@
 #define float1D TNT::Array1D< float >
 #define float2D TNT::Array2D< float >
 #define float3D TNT::Array3D< float >
+#define float1D_ptr bptr< float1D >
+#define float2D_ptr bptr< float2D >
+#define float3D_ptr bptr< float3D >
 //==============================================================================
 
 //==============================================================================

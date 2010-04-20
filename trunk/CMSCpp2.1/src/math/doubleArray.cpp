@@ -222,20 +222,6 @@ namespace math {
 	int n = a->dim2();
 	int bn = b->dim2();
 
-	/*double2D_ptr X(new double2D(m, bn));
-	   for (int i = 0; i < m; i++) {
-	   for (int j = 0; j < bn; j++) {
-	   double tmp = 0;
-	   for (int k = 0; k < n; k++) {
-	   tmp += (*a)[i][k] * (*b)[k][j];
-	   }
-	   (*X)[i][j] = tmp;
-	   }
-	   }
-	   return X; */
-
-
-
 	double2D_ptr X(new double2D(m, bn));
 	double1D Bcolj(n);
 	for (int j = 0; j < bn; j++) {
@@ -275,9 +261,6 @@ namespace math {
 	double2D_ptr result;
 	if (m == n) {
 	    LU < double >lu(*a);
-	    /*cout<<*a<<endl;
-	       cout<<*b<<endl;
-	       cout << lu.solve(*b) << endl; */
 	    result.reset(new double2D(lu.solve(*b)));
 	} else {
 	    QR < double >qr(*a);
@@ -306,8 +289,6 @@ namespace math {
 
 
     double2D_ptr DoubleArray::toDouble2D(int width, int n, ...) {
-	//throw UnsupportedOperationException("Had problem.");
-	//int count = m * n;
 	double *array = new double[n];
 	va_list num_list;
 	va_start(num_list, n);
@@ -370,22 +351,22 @@ namespace math {
 	return result;
     };
 
-	double_array DoubleArray::toDoubleArray(float_array floatArray,int n) {
-        double_array result(new double[n]);
+    double_array DoubleArray::toDoubleArray(float_array floatArray, int n) {
+	double_array result(new double[n]);
 	for (int x = 0; x != n; x++) {
 	    result[x] = floatArray[x];
 	}
 	return result;
-        }
+    }
 
     void DoubleArray::storeToExcel(const string & filename,
 				   double_vector_ptr doubleVector) {
 	Util::deleteExist(filename);
 	//SimpleExcelAccess excel(filename,Create,
 	/*ExcelFileDB excel(filename, Create);
-	string_vector_ptr fieldNames =
-	    StringVector::fromCString(1, "value");
-	excel.createTable("Sheet1", fieldNames);*/
+	   string_vector_ptr fieldNames =
+	   StringVector::fromCString(1, "value");
+	   excel.createTable("Sheet1", fieldNames); */
 	bptr < SimpleExcelAccess > excel =
 	    SimpleExcelAccess::getValueStoreInstance(filename);
 	int size = doubleVector->size();
@@ -394,8 +375,75 @@ namespace math {
 	    string v = _toString((*doubleVector)[x]);
 	    string_vector_ptr values = StringVector::fromString(1, v);
 	    //excel.insert(fieldNames, values);
-            excel->insert(values);
+	    excel->insert(values);
 	}
+    };
+    //==========================================================================
+    float2D_ptr FloatArray::toFloat2D(int width, int n, ...) {
+	float *array = new float[n];
+	va_list num_list;
+	va_start(num_list, n);
+
+	for (int i = 0; i < n; i++) {
+	    const float d = va_arg(num_list, const float);
+	    array[i] = d;
+	} va_end(num_list);
+
+	int height = n / width;
+	float2D_ptr result(new float2D(height, width, array));
+	return result;
+    }
+
+    float2D_ptr FloatArray::inverse(float2D_ptr matrix) {
+	int m = matrix->dim1();
+	int n = matrix->dim2();
+	return solve(matrix, identity(m, n));
+    };
+
+    float2D_ptr FloatArray::solve(float2D_ptr a, float2D_ptr b) {
+
+	int m = a->dim1();
+	int n = a->dim2();
+	float2D_ptr result;
+	if (m == n) {
+	    LU < float >lu(*a);
+	    result.reset(new float2D(lu.solve(*b)));
+	} else {
+	    QR < float >qr(*a);
+	    result.reset(new float2D(qr.solve(*b)));
+	}
+	return result;
+    };
+
+    float2D_ptr FloatArray::identity(int m, int n) {
+	float2D_ptr result(new float2D(m, n));
+	int size = Math::min(m, n);
+	for (int x = 0; x < size; x++) {
+	    (*result)[x][x] = 1;
+	}
+	return result;
+    };
+
+    float2D_ptr FloatArray::times(float2D_ptr a, float2D_ptr b) {
+	int m = a->dim1();
+	int n = a->dim2();
+	int bn = b->dim2();
+
+	float2D_ptr X(new float2D(m, bn));
+	float1D Bcolj(n);
+	for (int j = 0; j < bn; j++) {
+	    for (int k = 0; k < n; k++) {
+		Bcolj[k] = (*b)[k][j];
+	    }
+	    for (int i = 0; i < m; i++) {
+		long double s = 0;
+		for (int k = 0; k < n; k++) {
+		    s += (*a)[i][k] * Bcolj[k];
+		}
+		(*X)[i][j] = s;
+	    }
+	}
+	return X;
     };
 };
 
