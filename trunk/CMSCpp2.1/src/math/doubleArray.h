@@ -70,6 +70,7 @@ namespace math {
 
 	static double_array toDoubleArray(double array[], int n);
 	static double_array toDoubleArray(int n, ...);
+	static double_array toDoubleArray(float_array floatArray,int n);        
 
 	static void storeToExcel(const std::string & filename,
 				 double_vector_ptr doubleVector);

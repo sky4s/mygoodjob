@@ -481,18 +481,7 @@ void channelTry()
 
 
 };
-void ca210()
-{
-
-    ca210api::CA210API ca210;
-    /*ca210.setChannelNO(0);
-       ca210.resetLvxyCalMode();
-       ca210.resetAnalyzerCalMode();
-       ca210.setChannelNO(1);
-       ca210.resetLvxyCalMode();
-       ca210.resetAnalyzerCalMode(); */
-    ca210.triggerMeasurement();
-};
+ 
 void strTry()
 {
     string a = " 1 ";
@@ -607,7 +596,13 @@ void vectorTry()
     cout << v[1] << endl;
 };
 
+void ca210Try() {
+    using namespace ca210api;
+CA210API ca;
+ca.setChannelNO(0);
+ca.copyFromFile("a.dat");
 
+};
 
 #pragma argsused
 int main(int argc, char *argv[])
@@ -643,7 +638,6 @@ int main(int argc, char *argv[])
     //namespaceTry();
     //lcdcalibratorTry();
     //channelTry();
-    //ca210();
     //strTry();
     //measureFileTry();
     //maxValueTry();
@@ -657,6 +651,7 @@ int main(int argc, char *argv[])
     //bufferTry();
     //measureConditionTry();
     //vectorTry();
+    ca210Try();
 
     //persistence();
     getch();

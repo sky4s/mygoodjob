@@ -308,7 +308,7 @@ namespace cms {
 	    };
 
 	    XYZ_ptr CIExyY::toXYZ(const CIExyY & xyY) {
-		shared_ptr < CIEXYZ > XYZ(new CIEXYZ());
+		XYZ_ptr XYZ(new CIEXYZ());
 
 		XYZ->X = (xyY.x / xyY.y) * xyY.Y;
 		XYZ->Y = xyY.Y;

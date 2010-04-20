@@ -370,6 +370,14 @@ namespace math {
 	return result;
     };
 
+	double_array DoubleArray::toDoubleArray(float_array floatArray,int n) {
+        double_array result(new double[n]);
+	for (int x = 0; x != n; x++) {
+	    result[x] = floatArray[x];
+	}
+	return result;
+        }
+
     void DoubleArray::storeToExcel(const string & filename,
 				   double_vector_ptr doubleVector) {
 	Util::deleteExist(filename);

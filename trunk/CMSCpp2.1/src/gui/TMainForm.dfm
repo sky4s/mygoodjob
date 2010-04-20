@@ -966,22 +966,20 @@ object MainForm: TMainForm
           Text = '0'
         end
         object Edit_TargetCH: TEdit
-          Left = 79
+          Left = 80
           Top = 39
-          Width = 39
+          Width = 38
           Height = 24
           TabOrder = 1
           Text = '2'
-          OnChange = Edit_TargetCHChange
         end
         object Edit_TargetID: TEdit
-          Left = 79
+          Left = 80
           Top = 65
-          Width = 84
+          Width = 83
           Height = 24
           TabOrder = 2
           Text = ' '
-          OnChange = Edit_TargetIDChange
         end
       end
     end
@@ -1329,16 +1327,6 @@ object MainForm: TMainForm
         end
       end
     end
-  end
-  object Button1: TButton
-    Left = 104
-    Top = 224
-    Width = 75
-    Height = 25
-    Caption = 'Button1'
-    TabOrder = 1
-    Visible = False
-    OnClick = Button1Click
   end
   object MainMenu1: TMainMenu
     object MatrixCalibration1: TMenuItem

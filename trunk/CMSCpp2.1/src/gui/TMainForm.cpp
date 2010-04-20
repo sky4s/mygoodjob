@@ -75,16 +75,8 @@ void __fastcall TMainForm::FormCreate(TObject * Sender)
 	    meter = bptr < Meter > (new CA210());
 	    mm = bptr < MeterMeasurement >
 		(new MeterMeasurement(meter, false));
-                mm->setWaitTimes(this->getInterval());
+	    mm->setWaitTimes(this->getInterval());
 
-	    //analyzer.reset(new CA210IntensityAnalyzer(getCA210(), mm));
-
-	    bptr < CA210IntensityAnalyzer >
-		ca(new CA210IntensityAnalyzer(getCA210(), mm));
-	    bptr < MaxMatrixIntensityAnayzer >
-		ma(new MaxMatrixIntensityAnayzer(mm));
-            Util::deleteExist("intensity.xls");
-	    analyzer.reset(new IntensityAnayzer(ma, ca));
 	}
 	catch(EOleException & ex) {
 	    ShowMessage("CA210 cannot be linked.");
@@ -95,7 +87,56 @@ void __fastcall TMainForm::FormCreate(TObject * Sender)
 	this->GroupBox_CHSetting->Visible = false;
     }
     bitDepth.reset(new BitDepthProcessor(8, 10, 8, false));
+
+  	 /**bptr < ca210api::CA210API > ca=  getCA210()->getCA210API();
+         ca->setChannelNO(0);
+         ca->copyToFile("1.dat");
+         ca->setChannelNO(1);
+         ca->copyFromFile("1.dat");*/
+
 }
+
+//---------------------------------------------------------------------------
+bptr < cms::measure::IntensityAnalyzerIF > TMainForm::getAnalyzer()
+{
+    using namespace cms::measure::meter;
+    using namespace cms::measure;
+    using namespace cms::colorformat;
+    using namespace cms::lcd::calibrate;
+    if (null == analyzer) {
+	//產生ca210
+	ca210Analyzer.reset(new CA210IntensityAnalyzer(getCA210(), mm));
+
+	//產生max matrix
+	/*bptr < MaxMatrixIntensityAnayzer >
+	    ma(new MaxMatrixIntensityAnayzer(mm));
+	Util::deleteExist("intensity.xls");
+	//產生兩者的合體
+	analyzer.reset(new IntensityAnayzer(ma, ca210Analyzer));*/
+
+        analyzer = ca210Analyzer;
+    }
+    return analyzer;
+}
+
+//---------------------------------------------------------------------------
+void TMainForm::setAnalyzerToTargetChannel(bool reset)
+{
+    using namespace std;
+    if (true == linkCA210) {
+	if (null == ca210Analyzer) {
+	    throw java::lang::
+		IllegalStateException("call getAnalyzer() first!");
+	}
+
+        //撈出channel no和id
+	int channel = this->Edit_TargetCH->Text.ToInt();
+	string_ptr id(new string(Edit_TargetID->Text.c_str()));
+        //設定在ca210
+	ca210Analyzer->setChannel(channel, id,reset);
+
+    }
+};
 
 //---------------------------------------------------------------------------
 
@@ -145,21 +186,8 @@ bptr < cms::measure::meter::CA210 > TMainForm::getCA210()
 };
 
 //---------------------------------------------------------------------------
-/*void TMainForm::setChannel(int channel)
-{
-    if (true == linkCA210) {
-	getCA210()->getCA210API()->setChannelNO(channel);
-    }
-};*/
 
-//---------------------------------------------------------------------------
-void TMainForm::setToTargetChannel()
-{
-    if (true == linkCA210) {
-	int channel = this->Edit_TargetCH->Text.ToInt();
-	getCA210()->getCA210API()->setChannelNO(channel);
-    }
-};
+
 
 //---------------------------------------------------------------------------
 int TMainForm::getInterval()
@@ -492,23 +520,7 @@ void __fastcall TMainForm::RadioButton_Out10Click(TObject * Sender)
 
 //---------------------------------------------------------------------------
 
-void __fastcall TMainForm::Edit_TargetIDChange(TObject * Sender)
-{
-    using namespace ca210api;
-    bptr < CA210API > ca210api = getCA210()->getCA210API();
-    ca210api->setChannelNO(Edit_TargetCH->Text.ToInt());
-    ca210api->setChannelID(Edit_TargetID->Text);
-}
 
-//---------------------------------------------------------------------------
-
-void __fastcall TMainForm::Edit_TargetCHChange(TObject * Sender)
-{
-    getCA210()->getCA210API()->setChannelNO(Edit_TargetCH->Text.ToInt());
-}
-
-
-//---------------------------------------------------------------------------
 
 void __fastcall TMainForm::Button1Click(TObject * Sender)
 {
@@ -528,9 +540,10 @@ void __fastcall TMainForm::Button1Click(TObject * Sender)
 
 //---------------------------------------------------------------------------
 
-void __fastcall TMainForm::Edit_IntervalChange(TObject *Sender)
+void __fastcall TMainForm::Edit_IntervalChange(TObject * Sender)
 {
-mm->setWaitTimes(this->getInterval());        
+    mm->setWaitTimes(this->getInterval());
 }
+
 //---------------------------------------------------------------------------
 
