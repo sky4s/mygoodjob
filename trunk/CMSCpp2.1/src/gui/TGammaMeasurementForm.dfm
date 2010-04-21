@@ -1,6 +1,6 @@
 object GammaMeasurementForm: TGammaMeasurementForm
-  Left = 300
-  Top = 300
+  Left = 252
+  Top = 251
   Width = 418
   Height = 468
   Caption = 'Gamma Measurement'
@@ -86,7 +86,9 @@ object GammaMeasurementForm: TGammaMeasurementForm
             '4'
             '8'
             '16'
-            '32')
+            '17'
+            '32'
+            '34')
         end
         object Edit_EndLevel: TEdit
           Left = 65

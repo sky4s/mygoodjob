@@ -40,12 +40,12 @@ namespace cms {
 							MeterMeasurement >
 							mm):ca210(ca210),
 	    ca210api(ca210->getCA210API()), mm(mm), dummyMode(false),
-	    dgc(null), defaultWaitTimes(-1) {
+	    dgc(null)/*, defaultWaitTimes(-1)*/ {
 	    init();
 	};
 
       CA210IntensityAnalyzer::CA210IntensityAnalyzer(bptr < MeterMeasurement > mm):mm(mm),
-	    dummyMode(true), dgc(null), defaultWaitTimes(-1)
+	    dummyMode(true), dgc(null)//, defaultWaitTimes(-1)
 	{
 	};
 
@@ -144,18 +144,18 @@ namespace cms {
 	    mm->setMeasureWindowsVisible(false);
 	};
 	void CA210IntensityAnalyzer::setWaitTimes(int waitTimes) {
-	    if (-1 == defaultWaitTimes) {
+	    /*if (-1 == defaultWaitTimes) {
 		defaultWaitTimes = mm->getWaitTimes();
-	    }
+	    }*/
 	    mm->setWaitTimes(waitTimes);
 	};
-	void CA210IntensityAnalyzer::setDefaultWaitTimes() {
+	/*void CA210IntensityAnalyzer::setDefaultWaitTimes() {
 	    if (defaultWaitTimes != -1) {
 		mm->setWaitTimes(defaultWaitTimes);
 		defaultWaitTimes = -1;
 	    }
 
-	};
+	};*/
 	//======================================================================
 
       StocktonIntensityAnayzer::StocktonIntensityAnayzer(bptr < CA210 > ca210, bptr < MeterMeasurement > mm):CA210IntensityAnalyzer(ca210, mm)
@@ -216,7 +216,7 @@ namespace cms {
 	//======================================================================
 	// MaxMatrixIntensityAnayzer
 	//======================================================================
-      MaxMatrixIntensityAnayzer::MaxMatrixIntensityAnayzer(bptr < MeterMeasurement > mm):mm(mm), defaultWaitTimes(-1)
+      MaxMatrixIntensityAnayzer::MaxMatrixIntensityAnayzer(bptr < MeterMeasurement > mm):mm(mm)//, defaultWaitTimes(-1)
 	{
 
 	};
@@ -237,6 +237,7 @@ namespace cms {
 	    (*rgbValues)[1][0] *= 100;
 	    (*rgbValues)[2][0] *= 100;
 	    double_array intensityValues(new double[3]);
+
 	    intensityValues[0] = (*rgbValues)[0][0] / (*targetRatio)[0][0];
 	    intensityValues[1] = (*rgbValues)[1][0] / (*targetRatio)[1][0];
 	    intensityValues[2] = (*rgbValues)[2][0] / (*targetRatio)[2][0];
@@ -290,11 +291,36 @@ namespace cms {
 		DoubleArray::toDouble2D(3, 9, rXYZ->X, gXYZ->X, bXYZ->X,
 					rXYZ->Y, gXYZ->Y, bXYZ->Y,
 					rXYZ->Z, gXYZ->Z, bXYZ->Z);
+            double m0=(*m)[0][0];
+            double m1=(*m)[0][1];
+            double m2=(*m)[0][2];
+            double m3=(*m)[1][0];
+            double m4=(*m)[1][1];
+            double m5=(*m)[1][2];
+            double m6=(*m)[2][0];
+            double m7=(*m)[2][1];
+            double m8=(*m)[2][2];
+
 	    this->inverseMatrix = DoubleArray::inverse(m);
+
+            double im0=(*inverseMatrix)[0][0];
+            double im1=(*inverseMatrix)[0][1];
+            double im2=(*inverseMatrix)[0][2];
+            double im3=(*inverseMatrix)[1][0];
+            double im4=(*inverseMatrix)[1][1];
+            double im5=(*inverseMatrix)[1][2];
+            double im6=(*inverseMatrix)[2][0];
+            double im7=(*inverseMatrix)[2][1];
+            double im8=(*inverseMatrix)[2][2];
+
+
 	    double2D_ptr targetWhite =
 		DoubleArray::toDouble2D(1, 3, wXYZ->X, wXYZ->Y, wXYZ->Z);
 	    this->targetRatio =
 		DoubleArray::times(inverseMatrix, targetWhite);
+                double rR=(*targetRatio)[0][0];
+                double rG=(*targetRatio)[1][0];
+                double rB=(*targetRatio)[2][0];
 
 	};
 	void MaxMatrixIntensityAnayzer::beginAnalyze() {
@@ -304,18 +330,18 @@ namespace cms {
 	    mm->setMeasureWindowsVisible(false);
 	};
 	void MaxMatrixIntensityAnayzer::setWaitTimes(int waitTimes) {
-	    if (-1 == defaultWaitTimes) {
+	    /*if (-1 == defaultWaitTimes) {
 		defaultWaitTimes = mm->getWaitTimes();
-	    }
+	    }*/
 	    mm->setWaitTimes(waitTimes);
 	};
-	void MaxMatrixIntensityAnayzer::setDefaultWaitTimes() {
+	/*void MaxMatrixIntensityAnayzer::setDefaultWaitTimes() {
 	    if (defaultWaitTimes != -1) {
 		mm->setWaitTimes(defaultWaitTimes);
 		defaultWaitTimes = -1;
 	    }
 
-	};
+	};*/
 	/*const std::string & MaxMatrixIntensityAnayzer::
 	   CoefficientFilename = "analyzer.xls"; */
 	//=====================================================================
@@ -325,7 +351,7 @@ namespace cms {
 	//=====================================================================
       IntensityAnayzer::IntensityAnayzer(bptr < MaxMatrixIntensityAnayzer > matrix, bptr < MaxMatrixIntensityAnayzer2 > matrix2, bptr < CA210IntensityAnalyzer > ca210):matrix(matrix), matrix2(matrix2),
 	    ca210(ca210),
-	    no(0) {
+	    no(0),useMatrix2(true) {
 
 	    fieldNames =
 		StringVector::fromCString(13, "no", "CA_R", "CA_G", "CA_B",
@@ -338,14 +364,33 @@ namespace cms {
 					cms::colorformat::Create,
 					fieldNames));
 	};
+
+              IntensityAnayzer::IntensityAnayzer(bptr < MaxMatrixIntensityAnayzer > matrix, bptr < CA210IntensityAnalyzer > ca210):matrix(matrix),
+	    ca210(ca210),
+	    no(0),useMatrix2(false) {
+
+	    fieldNames =
+		StringVector::fromCString(13, "no", "CA_R", "CA_G", "CA_B",
+					  "MA_R", "MA_G", "MA_B", "MA_Ro",
+					  "MA_Go", "MA_Bo", "MA2_R",
+					  "MA2_G", "MA2_B");
+	    excel.
+		reset(new
+		      SimpleExcelAccess("intensity.xls",
+					cms::colorformat::Create,
+					fieldNames));
+	};
+
 	RGB_ptr IntensityAnayzer::getIntensity(RGB_ptr rgb) {
 	    RGB_ptr ca210Intensity = ca210->getIntensity(rgb);
 	    XYZ_ptr XYZ = ca210->getCIEXYZ();
 	    RGB_ptr matrixIntensity = matrix->getIntensity(XYZ);
 	    double2D_ptr originalIntensity = matrix->rgbValues;
-	    RGB_ptr matrix2Intensity = matrix2->getIntensity(XYZ);
+            string_vector_ptr values;
 
-	    string_vector_ptr values =
+            if( true == useMatrix2) {
+            RGB_ptr matrix2Intensity = matrix2->getIntensity(XYZ);
+ values =
 		StringVector::fromDouble(13, static_cast < double >(no++),
 					 ca210Intensity->R,
 					 ca210Intensity->G,
@@ -359,6 +404,20 @@ namespace cms {
 					 matrix2Intensity->R,
 					 matrix2Intensity->G,
 					 matrix2Intensity->B);
+            }
+            else {
+values =
+		StringVector::fromDouble(13, static_cast < double >(no++),
+					 ca210Intensity->R,
+					 ca210Intensity->G,
+					 ca210Intensity->B,
+					 matrixIntensity->R,
+					 matrixIntensity->G,
+					 matrixIntensity->B,
+					 (*originalIntensity)[0][0],
+					 (*originalIntensity)[1][0],
+					 (*originalIntensity)[2][0],0.,0.,0.);
+            }
 	    excel->insert(values);
 	    return ca210Intensity;
 	};
@@ -370,24 +429,36 @@ namespace cms {
 	    ca210->setupComponent(ch, rgb);
 	    XYZ_ptr XYZ = ca210->getCIEXYZ();
 	    matrix->setupComponent(ch, XYZ);
+             if( true == useMatrix2) {
 	    matrix2->setupComponent(ch, XYZ);
+            }
 	};
 	void IntensityAnayzer::enter() {
 	    ca210->enter();
 	    matrix->enter();
+             if( true == useMatrix2) {
 	    matrix2->enter();
+            }
 
 	    double2D_ptr targetRatio = matrix->targetRatio;
-	    float2D_ptr targetRatio2 = matrix2->targetRatio;
+            string_vector_ptr values;
 
-	    string_vector_ptr values =
-		StringVector::fromDouble(13, 99., 0., 0., 0., 0., 0., 0.,
+             if( true == useMatrix2) {
+              float2D_ptr targetRatio2 = matrix2->targetRatio2;
+               values= StringVector::fromDouble(13, 99., 0., 0., 0., 0., 0., 0.,
 					 (*targetRatio)[0][0],
 					 (*targetRatio)[1][0],
 					 (*targetRatio)[2][0],
-					 (*targetRatio2)[0][0],
-					 (*targetRatio2)[1][0],
-					 (*targetRatio2)[2][0]);
+					 (double)(*targetRatio2)[0][0],
+					 (double)(*targetRatio2)[1][0],
+                                         (double)(*targetRatio2)[2][0]);
+             }
+             else {
+               values=	StringVector::fromDouble(13, 99., 0., 0., 0., 0., 0., 0.,
+					 (*targetRatio)[0][0],
+					 (*targetRatio)[1][0],
+					 (*targetRatio)[2][0],0.,0.,0.);
+             }
 	    excel->insert(values);
 
 	};
@@ -400,9 +471,9 @@ namespace cms {
 	void IntensityAnayzer::setWaitTimes(int waitTimes) {
 	    ca210->setWaitTimes(waitTimes);
 	};
-	void IntensityAnayzer::setDefaultWaitTimes() {
+	/*void IntensityAnayzer::setDefaultWaitTimes() {
 	    ca210->setDefaultWaitTimes();
-	};
+	};*/
 	//=====================================================================
 
       MaxMatrixIntensityAnayzer2::MaxMatrixIntensityAnayzer2(bptr < MeterMeasurement > mm):MaxMatrixIntensityAnayzer(mm)
@@ -422,25 +493,25 @@ namespace cms {
 		FloatArray::toFloat2D(3, 9, rXYZ->X, rXYZ->Y, rXYZ->Z,
 				      gXYZ->X, gXYZ->Y, gXYZ->Z,
 				      bXYZ->X, bXYZ->Y, bXYZ->Z);
-	    this->inverseMatrix = FloatArray::inverse(m);
+	    this->inverseMatrix2 = FloatArray::inverse(m);
 	    float2D_ptr targetWhite =
 		FloatArray::toFloat2D(1, 3, wXYZ->X, wXYZ->Y, wXYZ->Z);
-	    this->targetRatio =
-		FloatArray::times(inverseMatrix, targetWhite);
+	    this->targetRatio2 =
+		FloatArray::times(inverseMatrix2, targetWhite);
 
 	};
 
 	RGB_ptr MaxMatrixIntensityAnayzer2::getIntensity(XYZ_ptr XYZ) {
 	    float2D_ptr color =
 		FloatArray::toFloat2D(1, 3, XYZ->X, XYZ->Y, XYZ->Z);
-	    rgbValues = FloatArray::times(inverseMatrix, color);
-	    (*rgbValues)[0][0] *= 100;
-	    (*rgbValues)[1][0] *= 100;
-	    (*rgbValues)[2][0] *= 100;
+	    rgbValues2 = FloatArray::times(inverseMatrix2, color);
+	    (*rgbValues2)[0][0] *= 100;
+	    (*rgbValues2)[1][0] *= 100;
+	    (*rgbValues2)[2][0] *= 100;
 	    float_array intensityValues(new float[3]);
-	    intensityValues[0] = (*rgbValues)[0][0] / (*targetRatio)[0][0];
-	    intensityValues[1] = (*rgbValues)[1][0] / (*targetRatio)[1][0];
-	    intensityValues[2] = (*rgbValues)[2][0] / (*targetRatio)[2][0];
+	    intensityValues[0] = (*rgbValues2)[0][0] / (*targetRatio2)[0][0];
+	    intensityValues[1] = (*rgbValues2)[1][0] / (*targetRatio2)[1][0];
+	    intensityValues[2] = (*rgbValues2)[2][0] / (*targetRatio2)[2][0];
 
 	    RGB_ptr intensity(new
 			      RGBColor(static_cast <

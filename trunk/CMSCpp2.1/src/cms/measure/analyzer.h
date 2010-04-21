@@ -26,17 +26,16 @@ namespace cms {
 	    virtual void beginAnalyze() = 0;
 	    virtual void endAnalyze() = 0;
 	    virtual void setWaitTimes(int waitTimes) = 0;
-	    virtual void setDefaultWaitTimes() = 0;
+	    //virtual void setDefaultWaitTimes() = 0;
 	};
 
 	class CA210IntensityAnalyzer:public IntensityAnalyzerIF {
 	  protected:
-	    int defaultWaitTimes;
+	    //int defaultWaitTimes;
 	     bptr < cms::measure::meter::CA210 > ca210;
 	     bptr < ca210api::CA210API > ca210api;
 	    XYZ_ptr XYZ;
 	     bptr < MeterMeasurement > mm;
-	    //static const WideString & CalibrationDataFilename;
 	    bool dummyMode;
 	    void init();
 	     cms::measure::meter::DGLutFileMeter * dgc;
@@ -61,7 +60,7 @@ namespace cms {
 	    void beginAnalyze();
 	    void endAnalyze();
 	    void setWaitTimes(int waitTimes);
-	    void setDefaultWaitTimes();
+	    //void setDefaultWaitTimes();
 	};
 
 	class StocktonIntensityAnayzer:public CA210IntensityAnalyzer {
@@ -77,19 +76,20 @@ namespace cms {
 	class MaxMatrixIntensityAnayzer:public IntensityAnalyzerIF {
 	    friend class IntensityAnayzer;
 	  private:
-	    //static const std::string & CoefficientFilename;
+          double2D_ptr inverseMatrix;
+	    double2D_ptr targetRatio;
+            double2D_ptr rgbValues;
 	  protected:
 	     bptr < MeterMeasurement > mm;
-	    double2D_ptr inverseMatrix;
-	    double2D_ptr targetRatio;
+
 	    Patch_ptr rPatch;
 	    Patch_ptr gPatch;
 	    Patch_ptr bPatch;
 	    Patch_ptr wPatch;
 	    XYZ_ptr XYZ;
 	    XYZ_ptr rXYZ, gXYZ, bXYZ, wXYZ;
-	    int defaultWaitTimes;
-	    double2D_ptr rgbValues;
+	    //int defaultWaitTimes;
+
 	  public:
 	     MaxMatrixIntensityAnayzer(bptr < MeterMeasurement > mm);
 
@@ -103,7 +103,7 @@ namespace cms {
 	    void beginAnalyze();
 	    void endAnalyze();
 	    void setWaitTimes(int waitTimes);
-	    void setDefaultWaitTimes();
+	    //void setDefaultWaitTimes();
 	};
 
 	class MaxMatrixIntensityAnayzer2;
@@ -116,9 +116,12 @@ namespace cms {
 	    bptr < cms::colorformat::SimpleExcelAccess > excel;
 	    string_vector_ptr fieldNames;
 	    int no;
+            const bool useMatrix2;
 	  public:
 	     IntensityAnayzer(bptr < MaxMatrixIntensityAnayzer > matrix,
 			      bptr < MaxMatrixIntensityAnayzer2 > matrix2,
+			      bptr < CA210IntensityAnalyzer > ca210);
+	     IntensityAnayzer(bptr < MaxMatrixIntensityAnayzer > matrix,
 			      bptr < CA210IntensityAnalyzer > ca210);
 	    RGB_ptr getIntensity(RGB_ptr rgb);
 	    XYZ_ptr getCIEXYZ();
@@ -127,16 +130,16 @@ namespace cms {
 	    void beginAnalyze();
 	    void endAnalyze();
 	    void setWaitTimes(int waitTimes);
-	    void setDefaultWaitTimes();
+	    //void setDefaultWaitTimes();
 	};
 
 
 	class MaxMatrixIntensityAnayzer2:public MaxMatrixIntensityAnayzer {
 	    friend class IntensityAnayzer;
 	  protected:
-	     float2D_ptr inverseMatrix;
-	    float2D_ptr targetRatio;
-	    float2D_ptr rgbValues;
+	     float2D_ptr inverseMatrix2;
+	    float2D_ptr targetRatio2;
+	    float2D_ptr rgbValues2;
 	  public:
 	     MaxMatrixIntensityAnayzer2(bptr < MeterMeasurement > mm);
 	    void enter();
