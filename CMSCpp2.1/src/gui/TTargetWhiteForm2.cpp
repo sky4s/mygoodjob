@@ -186,14 +186,23 @@ void __fastcall TTargetWhiteForm2::Button2Click(TObject * Sender)
 	double targetx = this->Edit_targetx->Text.ToDouble();
 	double targety = this->Edit_targety->Text.ToDouble();
 	xyY_ptr xyY(new CIExyY(targetx, targety, 1));
+        bptr<WhitePointFinder> finder;
 	//¤wª¾xy, ¨Drgb
 	if (true == moreAccurate) {
-	    StocktonWhitePointFinder finder(MainForm->mm, rgb);
-	    rgb = finder.findRGB(xyY);
+                finder.reset(new WhitePointFinder(MainForm->mm));
+	    //WhitePointFinder finder(MainForm->mm);
+            MeasureWindow->addWindowListener(finder);
+	    rgb = finder->findRGB(xyY);
 	} else {
-	    WhitePointFinder finder(MainForm->mm);
-	    rgb = finder.findRGB(xyY);
+                        finder.reset(new StocktonWhitePointFinder(MainForm->mm,rgb));
+             //StocktonWhitePointFinder finder(MainForm->mm, rgb);
+            MeasureWindow->addWindowListener(finder);
+	    rgb = finder->findRGB(xyY);
 	}
+
+        if( null == rgb) {
+         return ;
+        }
     }
     RGB_ptr r(new RGBColor());
     RGB_ptr g(new RGBColor());

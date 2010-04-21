@@ -481,7 +481,7 @@ void channelTry()
 
 
 };
- 
+
 void strTry()
 {
     string a = " 1 ";
@@ -596,12 +596,20 @@ void vectorTry()
     cout << v[1] << endl;
 };
 
-void ca210Try() {
+void ca210Try()
+{
     using namespace ca210api;
-CA210API ca;
-ca.setChannelNO(0);
-ca.copyFromFile("a.dat");
+    CA210API ca;
+    ca.setChannelNO(0);
+    ca.copyFromFile("a.dat");
 
+};
+
+void floatArrayTry()
+{
+    using namespace math;
+    float2D_ptr f = FloatArray::toFloat2D(3, 3, 1.1 , 2.2f, 3.3f);
+    cout << *(FloatArray::toString(f)) << endl;
 };
 
 #pragma argsused
@@ -651,7 +659,8 @@ int main(int argc, char *argv[])
     //bufferTry();
     //measureConditionTry();
     //vectorTry();
-    ca210Try();
+    //ca210Try();
+    floatArrayTry();
 
     //persistence();
     getch();

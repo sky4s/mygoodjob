@@ -385,8 +385,8 @@ namespace math {
 	va_start(num_list, n);
 
 	for (int i = 0; i < n; i++) {
-	    const float d = va_arg(num_list, const float);
-	    array[i] = d;
+	    const double d = va_arg(num_list, const double);
+	    array[i] = static_cast < float >(d);
 	} va_end(num_list);
 
 	int height = n / width;
@@ -445,5 +445,22 @@ namespace math {
 	}
 	return X;
     };
+
+    string_ptr FloatArray::toString(float2D_ptr m) {
+
+	string_ptr str(new string());
+
+	for (int i = 0; i < m->dim1(); i++) {
+	    for (int j = 0; j < m->dim2() - 1; j++) {
+		(*str) += _toString((*m)[i][j]) + " ";
+	    }
+	    (*str) += _toString((*m)[i][m->dim2() - 1]);
+	    if (i < m->dim1() - 1) {
+		(*str) += "\n";
+	    }
+	}
+	return str;
+    };
+
 };
 

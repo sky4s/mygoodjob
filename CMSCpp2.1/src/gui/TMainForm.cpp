@@ -80,6 +80,7 @@ void __fastcall TMainForm::FormCreate(TObject * Sender)
 	}
 	catch(EOleException & ex) {
 	    ShowMessage("CA210 cannot be linked.");
+	    this->Close();
 	}
     } else {
 	setDummyMeterFilename(METER_FILE);
@@ -88,11 +89,11 @@ void __fastcall TMainForm::FormCreate(TObject * Sender)
     }
     bitDepth.reset(new BitDepthProcessor(8, 10, 8, false));
 
-  	 /*bptr < ca210api::CA210API > ca=  getCA210()->getCA210API();
-         ca->setChannelNO(0);
-         ca->copyToFile("1.dat");
-         ca->setChannelNO(1);
-         ca->copyFromFile("1.dat");*/
+    /*bptr < ca210api::CA210API > ca=  getCA210()->getCA210API();
+       ca->setChannelNO(0);
+       ca->copyToFile("1.dat");
+       ca->setChannelNO(1);
+       ca->copyFromFile("1.dat"); */
 
 }
 
@@ -107,17 +108,18 @@ bptr < cms::measure::IntensityAnalyzerIF > TMainForm::getAnalyzer()
 	//產生ca210
 	ca210Analyzer.reset(new CA210IntensityAnalyzer(getCA210(), mm));
 
-        if(true) {
-	//產生max matrix
-	bptr < MaxMatrixIntensityAnayzer >
-	    ma(new MaxMatrixIntensityAnayzer(mm));
-	Util::deleteExist("intensity.xls");
-	//產生兩者的合體
-	analyzer.reset(new IntensityAnayzer(ma, ca210Analyzer));
-        }
-        else {
-        analyzer = ca210Analyzer;
-        }
+	if (true) {
+	    //產生max matrix
+	    bptr < MaxMatrixIntensityAnayzer >
+		ma(new MaxMatrixIntensityAnayzer(mm));
+	    bptr < MaxMatrixIntensityAnayzer2 >
+		ma2(new MaxMatrixIntensityAnayzer2(mm));
+	    Util::deleteExist("intensity.xls");
+	    //產生兩者的合體
+	    analyzer.reset(new IntensityAnayzer(ma, ma2, ca210Analyzer));
+	} else {
+	    analyzer = ca210Analyzer;
+	}
     }
     return analyzer;
 }
@@ -131,12 +133,11 @@ void TMainForm::setAnalyzerToTargetChannel(bool reset)
 	    throw java::lang::
 		IllegalStateException("call getAnalyzer() first!");
 	}
-
-        //撈出channel no和id
+	//撈出channel no和id
 	int channel = this->Edit_TargetCH->Text.ToInt();
 	string_ptr id(new string(Edit_TargetID->Text.c_str()));
-        //設定在ca210
-	ca210Analyzer->setChannel(channel, id,reset);
+	//設定在ca210
+	ca210Analyzer->setChannel(channel, id, reset);
 
     }
 };
@@ -169,6 +170,8 @@ bptr < cms::lcd::calibrate::ComponentFetcher >
     TMainForm::getComponentFetcher()
 {
     if (null == fetcher) {
+	bptr < cms::measure::IntensityAnalyzerIF > analyzer =
+	    getAnalyzer();
 	fetcher.
 	    reset(new cms::lcd::calibrate::
 		  ComponentFetcher(analyzer, bitDepth));

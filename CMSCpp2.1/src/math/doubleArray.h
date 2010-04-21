@@ -83,6 +83,7 @@ namespace math {
 	static float2D_ptr solve(float2D_ptr a, float2D_ptr b);
 	static float2D_ptr identity(int m, int n);
 	static float2D_ptr times(float2D_ptr a, float2D_ptr b);
+	static string_ptr toString(float2D_ptr m);
     };
 };
 #endif

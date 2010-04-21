@@ -77,7 +77,7 @@ namespace cms {
 	class MaxMatrixIntensityAnayzer:public IntensityAnalyzerIF {
 	    friend class IntensityAnayzer;
 	  private:
-	    static const std::string & CoefficientFilename;
+	    //static const std::string & CoefficientFilename;
 	  protected:
 	     bptr < MeterMeasurement > mm;
 	    double2D_ptr inverseMatrix;
@@ -106,16 +106,19 @@ namespace cms {
 	    void setDefaultWaitTimes();
 	};
 
+	class MaxMatrixIntensityAnayzer2;
 
 	class IntensityAnayzer:public IntensityAnalyzerIF {
 	  private:
 	    bptr < MaxMatrixIntensityAnayzer > matrix;
 	    bptr < CA210IntensityAnalyzer > ca210;
+	    bptr < MaxMatrixIntensityAnayzer2 > matrix2;
 	    bptr < cms::colorformat::SimpleExcelAccess > excel;
 	    string_vector_ptr fieldNames;
 	    int no;
 	  public:
 	     IntensityAnayzer(bptr < MaxMatrixIntensityAnayzer > matrix,
+			      bptr < MaxMatrixIntensityAnayzer2 > matrix2,
 			      bptr < CA210IntensityAnalyzer > ca210);
 	    RGB_ptr getIntensity(RGB_ptr rgb);
 	    XYZ_ptr getCIEXYZ();
@@ -129,8 +132,9 @@ namespace cms {
 
 
 	class MaxMatrixIntensityAnayzer2:public MaxMatrixIntensityAnayzer {
+	    friend class IntensityAnayzer;
 	  protected:
-	    float2D_ptr inverseMatrix;
+	     float2D_ptr inverseMatrix;
 	    float2D_ptr targetRatio;
 	    float2D_ptr rgbValues;
 	  public:

@@ -105,6 +105,7 @@
 #define Indep cms::colorspace::independ
 
 #define RGB_ptr bptr < Dep::RGBColor >
+#define nil_RGB_ptr RGB_ptr( (Dep::RGBColor*) null)
 #define RGB_array barray < RGB_ptr >
 #define RGB_list std::list < RGB_ptr >
 #define RGB_list_ptr bptr < RGB_list >
@@ -180,6 +181,8 @@
 //==============================================================================
 namespace math {
     class Interpolation1DLUT;
+    class DoubleArray;
+    class FloatArray;
 };
 
 namespace i2c {
