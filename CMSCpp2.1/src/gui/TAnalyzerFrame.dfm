@@ -14,29 +14,29 @@ object AnalyzerFrame: TAnalyzerFrame
     object Label7: TLabel
       Left = 9
       Top = 25
-      Width = 65
-      Height = 16
+      Width = 52
+      Height = 13
       Caption = 'Source CH'
     end
     object Label8: TLabel
       Left = 9
       Top = 57
-      Width = 75
-      Height = 16
+      Width = 60
+      Height = 13
       Caption = 'TargetW CH'
     end
     object Label9: TLabel
       Left = 9
       Top = 89
-      Width = 69
-      Height = 16
+      Width = 56
+      Height = 13
       Caption = 'TargetW ID'
     end
     object Edit_SourceCH: TEdit
       Left = 97
       Top = 16
       Width = 48
-      Height = 24
+      Height = 21
       TabOrder = 0
       Text = '0'
     end
@@ -44,7 +44,7 @@ object AnalyzerFrame: TAnalyzerFrame
       Left = 97
       Top = 48
       Width = 48
-      Height = 24
+      Height = 21
       TabOrder = 1
       Text = '2'
     end
@@ -52,7 +52,7 @@ object AnalyzerFrame: TAnalyzerFrame
       Left = 97
       Top = 80
       Width = 104
-      Height = 24
+      Height = 21
       TabOrder = 2
     end
   end
@@ -67,7 +67,7 @@ object AnalyzerFrame: TAnalyzerFrame
       Left = 9
       Top = 25
       Width = 40
-      Height = 24
+      Height = 21
       TabOrder = 0
       Text = '255'
     end
@@ -75,7 +75,7 @@ object AnalyzerFrame: TAnalyzerFrame
       Left = 57
       Top = 25
       Width = 40
-      Height = 24
+      Height = 21
       TabOrder = 1
       Text = '255'
     end
@@ -83,7 +83,7 @@ object AnalyzerFrame: TAnalyzerFrame
       Left = 105
       Top = 25
       Width = 40
-      Height = 24
+      Height = 21
       TabOrder = 2
       Text = '255'
     end

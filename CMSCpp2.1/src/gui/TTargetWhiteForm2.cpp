@@ -68,6 +68,8 @@ void __fastcall TTargetWhiteForm2::Edit_CTChange(TObject * Sender)
 	return;
     }
 
+    this->RadioButton_Targetxy->Checked=true;
+
     using cms::CorrelatedColorTemperature;
     using Indep::CIExyY;
     using java::lang::IllegalArgumentException;
@@ -182,6 +184,10 @@ void __fastcall TTargetWhiteForm2::Button2Click(TObject * Sender)
     //已知rgb
     RGB_ptr rgb(new RGBColor(rvalue, gvalue, bvalue));
 
+    bptr < IntensityAnalyzerIF > analyzer = MainForm->getAnalyzer();
+    MainForm->setAnalyzerToTargetChannel(true);
+    MainForm->setMeterMeasurementWaitTimes();
+
     if (true == usexy) {
 	double targetx = this->Edit_targetx->Text.ToDouble();
 	double targety = this->Edit_targety->Text.ToDouble();
@@ -215,8 +221,7 @@ void __fastcall TTargetWhiteForm2::Button2Click(TObject * Sender)
     // 設定到ca-210去
     //==========================================================================
 
-    bptr < IntensityAnalyzerIF > analyzer = MainForm->getAnalyzer();
-    MainForm->setAnalyzerToTargetChannel(true);
+
 
   try
   {
@@ -239,7 +244,8 @@ void __fastcall TTargetWhiteForm2::Button2Click(TObject * Sender)
      return;
     }
     analyzer->enter();
-    analyzer->setDefaultWaitTimes();
+    //analyzer->setDefaultWaitTimes();
+    MainForm->setMeterMeasurementWaitTimes();
     //==========================================================================
     //this->Close();
 
@@ -259,7 +265,7 @@ void __fastcall TTargetWhiteForm2::Button2Click(TObject * Sender)
 void __fastcall TTargetWhiteForm2::Edit_RChange(TObject * Sender)
 {
     ScrollBar_R->Position = this->Edit_R->Text.ToInt();
-    ;
+    //this->RadioButton_RGBRatio->Checked=true;
 }
 
 //---------------------------------------------------------------------------
@@ -267,7 +273,7 @@ void __fastcall TTargetWhiteForm2::Edit_RChange(TObject * Sender)
 void __fastcall TTargetWhiteForm2::Edit_GChange(TObject * Sender)
 {
     ScrollBar_G->Position = this->Edit_G->Text.ToInt();
-
+    //this->RadioButton_RGBRatio->Checked=true;
 }
 
 //---------------------------------------------------------------------------
@@ -275,6 +281,7 @@ void __fastcall TTargetWhiteForm2::Edit_GChange(TObject * Sender)
 void __fastcall TTargetWhiteForm2::Edit_BChange(TObject * Sender)
 {
     ScrollBar_B->Position = this->Edit_B->Text.ToInt();
+    //this->RadioButton_RGBRatio->Checked=true;    
 }
 
 //---------------------------------------------------------------------------

@@ -102,8 +102,7 @@ bptr < cms::measure::IntensityAnalyzerIF > TMainForm::getAnalyzer()
     if (null == analyzer) {
 	//產生ca210
 	ca210Analyzer.reset(new CA210IntensityAnalyzer(getCA210(), mm));
-
-	if (false) {
+#ifdef DEBUG_MODE
 	    //產生max matrix
 	    bptr < MaxMatrixIntensityAnayzer >
 		ma(new MaxMatrixIntensityAnayzer(mm));
@@ -111,10 +110,11 @@ bptr < cms::measure::IntensityAnalyzerIF > TMainForm::getAnalyzer()
 		ma2(new MaxMatrixIntensityAnayzer2(mm));
 	    Util::deleteExist("intensity.xls");
 	    //產生兩者的合體
-	    analyzer.reset(new IntensityAnayzer(ma, ma2, ca210Analyzer));
-	} else {
+	    //analyzer.reset(new IntensityAnayzer(ma, ma2, ca210Analyzer));
+	    analyzer.reset(new IntensityAnayzer(ma, ca210Analyzer));
+#else
 	    analyzer = ca210Analyzer;
-	}
+#endif
     }
     return analyzer;
 }
@@ -561,4 +561,6 @@ void __fastcall TMainForm::FormShow(TObject * Sender)
 }
 
 //---------------------------------------------------------------------------
-
+     void TMainForm::setMeterMeasurementWaitTimes() {
+this->mm->setWaitTimes(     this->getInterval());
+     };
