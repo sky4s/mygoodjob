@@ -315,21 +315,22 @@ namespace cms {
 	    }
 
 	};
-	const std::string & MaxMatrixIntensityAnayzer::
-	    CoefficientFilename = "analyzer.xls";
+	/*const std::string & MaxMatrixIntensityAnayzer::
+	   CoefficientFilename = "analyzer.xls"; */
 	//=====================================================================
 
 	//=====================================================================
 	// IntensityAnayzer
 	//=====================================================================
-      IntensityAnayzer::IntensityAnayzer(bptr < MaxMatrixIntensityAnayzer > matrix, bptr < CA210IntensityAnalyzer > ca210):matrix(matrix),
+      IntensityAnayzer::IntensityAnayzer(bptr < MaxMatrixIntensityAnayzer > matrix, bptr < MaxMatrixIntensityAnayzer2 > matrix2, bptr < CA210IntensityAnalyzer > ca210):matrix(matrix), matrix2(matrix2),
 	    ca210(ca210),
 	    no(0) {
 
 	    fieldNames =
-		StringVector::fromCString(10, "no", "CA_R", "CA_G", "CA_B",
+		StringVector::fromCString(13, "no", "CA_R", "CA_G", "CA_B",
 					  "MA_R", "MA_G", "MA_B", "MA_Ro",
-					  "MA_Go", "MA_Bo");
+					  "MA_Go", "MA_Bo", "MA2_R",
+					  "MA2_G", "MA2_B");
 	    excel.
 		reset(new
 		      SimpleExcelAccess("intensity.xls",
@@ -341,9 +342,10 @@ namespace cms {
 	    XYZ_ptr XYZ = ca210->getCIEXYZ();
 	    RGB_ptr matrixIntensity = matrix->getIntensity(XYZ);
 	    double2D_ptr originalIntensity = matrix->rgbValues;
+	    RGB_ptr matrix2Intensity = matrix2->getIntensity(XYZ);
 
 	    string_vector_ptr values =
-		StringVector::fromDouble(10, static_cast < double >(no++),
+		StringVector::fromDouble(13, static_cast < double >(no++),
 					 ca210Intensity->R,
 					 ca210Intensity->G,
 					 ca210Intensity->B,
@@ -352,7 +354,10 @@ namespace cms {
 					 matrixIntensity->B,
 					 (*originalIntensity)[0][0],
 					 (*originalIntensity)[1][0],
-					 (*originalIntensity)[2][0]);
+					 (*originalIntensity)[2][0],
+					 matrix2Intensity->R,
+					 matrix2Intensity->G,
+					 matrix2Intensity->B);
 	    excel->insert(values);
 	    return ca210Intensity;
 	};
@@ -364,18 +369,24 @@ namespace cms {
 	    ca210->setupComponent(ch, rgb);
 	    XYZ_ptr XYZ = ca210->getCIEXYZ();
 	    matrix->setupComponent(ch, XYZ);
+	    matrix2->setupComponent(ch, XYZ);
 	};
 	void IntensityAnayzer::enter() {
 	    ca210->enter();
 	    matrix->enter();
+	    matrix2->enter();
 
 	    double2D_ptr targetRatio = matrix->targetRatio;
+	    float2D_ptr targetRatio2 = matrix2->targetRatio;
 
 	    string_vector_ptr values =
-		StringVector::fromDouble(10, 99., 0., 0., 0., 0., 0., 0.,
+		StringVector::fromDouble(13, 99., 0., 0., 0., 0., 0., 0.,
 					 (*targetRatio)[0][0],
 					 (*targetRatio)[1][0],
-					 (*targetRatio)[2][0]);
+					 (*targetRatio)[2][0],
+					 (*targetRatio2)[0][0],
+					 (*targetRatio2)[1][0],
+					 (*targetRatio2)[2][0]);
 	    excel->insert(values);
 
 	};
@@ -405,16 +416,11 @@ namespace cms {
 		throw IllegalStateException
 		    ("Excute setupComponent() with RGBW first.");
 	    }
+
 	    float2D_ptr m =
-		FloatArray::toFloat2D(3, 9, static_cast < float >(rXYZ->X),
-				      static_cast < float >(gXYZ->X),
-				      static_cast < float >(bXYZ->X),
-				      static_cast < float >(rXYZ->Y),
-				      static_cast < float >(gXYZ->Y),
-				      static_cast < float >(bXYZ->Y),
-				      static_cast < float >(rXYZ->Z),
-				      static_cast < float >(gXYZ->Z),
-				      static_cast < float >(bXYZ->Z));
+		FloatArray::toFloat2D(3, 9, rXYZ->X, rXYZ->Y, rXYZ->Z,
+				      gXYZ->X, gXYZ->Y, gXYZ->Z,
+				      bXYZ->X, bXYZ->Y, bXYZ->Z);
 	    this->inverseMatrix = FloatArray::inverse(m);
 	    float2D_ptr targetWhite =
 		FloatArray::toFloat2D(1, 3, wXYZ->X, wXYZ->Y, wXYZ->Z);
@@ -425,9 +431,7 @@ namespace cms {
 
 	RGB_ptr MaxMatrixIntensityAnayzer2::getIntensity(XYZ_ptr XYZ) {
 	    float2D_ptr color =
-		FloatArray::toFloat2D(1, 3, static_cast < float >(XYZ->X),
-				      static_cast < float >(XYZ->Y),
-				      static_cast < float >(XYZ->Z));
+		FloatArray::toFloat2D(1, 3, XYZ->X, XYZ->Y, XYZ->Z);
 	    rgbValues = FloatArray::times(inverseMatrix, color);
 	    (*rgbValues)[0][0] *= 100;
 	    (*rgbValues)[1][0] *= 100;
@@ -438,9 +442,12 @@ namespace cms {
 	    intensityValues[2] = (*rgbValues)[2][0] / (*targetRatio)[2][0];
 
 	    RGB_ptr intensity(new
-			      RGBColor(intensityValues[0],
-				       intensityValues[1],
-				       intensityValues[2]));
+			      RGBColor(static_cast <
+				       double >(intensityValues[0]),
+				       static_cast <
+				       double >(intensityValues[1]),
+				       static_cast <
+				       double >(intensityValues[2])));
 	    return intensity;
 	};
     };

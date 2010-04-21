@@ -22,7 +22,7 @@ namespace cms {
 	    //==================================================================
 	    // WhitePointFinder
 	    //==================================================================
-	     WhitePointFinder::WhitePointFinder(bptr < MeterMeasurement > mm):mm(mm) {	/*,
+	     WhitePointFinder::WhitePointFinder(bptr < MeterMeasurement > mm):mm(mm),stop(false) {	/*,
 											   aroundAlgo(ChromaticAroundAlgorithm()) */
 		aroundAlgo =
 		    bptr < ChromaticAroundAlgorithm >
@@ -51,6 +51,10 @@ namespace cms {
 			MeasuredUtils::isFirstNearestXYZInuvPrime(center,
 								  aroundXYZ);
 		    //findNearest = true;
+                    if( true == stop) {
+                     stop = false;
+                     return nil_RGB_ptr;
+                    }
 
 		} while (!findNearest);
 		 return nearestRGB;
@@ -95,11 +99,17 @@ namespace cms {
 	     */
 	    RGB_ptr WhitePointFinder::findRGB(xyY_ptr xyY) {
 		RGB_ptr initRGB = findRGBAround(xyY);
+                if( null == initRGB) {
+                  return initRGB;
+                }
 		RGB_ptr fixRGB = fixRGB2TouchMax(initRGB);
 		RGB_ptr finalRGB = findMatchRGB(xyY, fixRGB);
 		return finalRGB;
 	    };
 
+            void WhitePointFinder::windowClosing() {
+                stop = true;
+            };
 	    //==================================================================
 	    //
 	    //==================================================================
@@ -133,6 +143,11 @@ namespace cms {
 		    if (delta[0] < 0 && delta[1] < 0) {
 			findRGB->B -= adjust;
 		    }
+
+                    if( true == stop) {
+                     stop = false;
+                     return nil_RGB_ptr;
+                    }
 		}
 		while (!(delta[0] > 0 && delta[1] > 0));
 		//==============================================================
@@ -148,13 +163,17 @@ namespace cms {
 		    if (delta[0] > 0) {
 			findRGB->R -= 1;
 		    }
+                    if( true == stop) {
+                     stop = false;
+                     return nil_RGB_ptr;
+                    }
 		} while (!(delta[0] < 0));
 		//==============================================================
 
 		//==============================================================
 		// redªº³B²z(x)
 		//==============================================================
-		bool stop = false;
+		bool stopLoop = false;
 		do {
 		    Patch_ptr patch =
 			mm->measure(findRGB, findRGB->toString());
@@ -170,10 +189,15 @@ namespace cms {
 		    if (delta[0] > 0 && 255 == findRGB->B) {
 			findRGB->R -= 1;
 		    }
-		    stop = (delta[0] < 0 && delta[1] < 0)
+		    stopLoop = (delta[0] < 0 && delta[1] < 0)
 			|| (255 == findRGB->B && delta[1] < 0);
-		} while (true == stop);
-		stop = false;
+
+                    if( true == stop) {
+                     stop = false;
+                     return nil_RGB_ptr;
+                    }                        
+		} while (true == stopLoop);
+		//stopLoop = false;
 		//==============================================================
 
 		//==============================================================

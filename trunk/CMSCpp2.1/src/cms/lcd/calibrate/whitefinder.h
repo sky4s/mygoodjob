@@ -12,7 +12,7 @@
 namespace cms {
     namespace lcd {
 	namespace calibrate {
-	    class WhitePointFinder {
+	    class WhitePointFinder :public cms::util::WindowListener {
 	      private:
 
 		RGB_ptr findMatchRGB0(xyY_ptr xyY, RGB_ptr initRGB);
@@ -24,12 +24,15 @@ namespace cms {
 		    ChromaticAroundAlgorithm > aroundAlgo;
 		 bptr < cms::lcd::calibrate::algo::
 		    CIEuv1960NearestAlgorithm > nearAlgo;
+
 	      protected:
+                 bool stop;
 		 bptr < cms::measure::MeterMeasurement > mm;
 	      public:
 		 WhitePointFinder(bptr < cms::measure::MeterMeasurement >
 				  mm);
 		RGB_ptr findRGB(xyY_ptr xyY);
+                void windowClosing();
 	    };
 
 	    class StocktonWhitePointFinder:public WhitePointFinder {
