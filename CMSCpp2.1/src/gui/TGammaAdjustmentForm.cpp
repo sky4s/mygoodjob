@@ -34,14 +34,11 @@ void __fastcall TGammaAdjustmentForm::FormShow(TObject * Sender)
     int step = bitDepth->getMeasureStep();
     this->ComboBox_LevelStep->Text = Util::toString(step).c_str();
 
-    MaxValue & input = bitDepth->getInputMaxValue();
+    const MaxValue & input = bitDepth->getInputMaxValue();
     bool avoidNoise = (input == MaxValue::Int6Bit
 		       || input == MaxValue::Int8Bit);
     this->CheckBox_AvoidNoise->Enabled = avoidNoise;
 }
 
 //---------------------------------------------------------------------------
-
-
-
 

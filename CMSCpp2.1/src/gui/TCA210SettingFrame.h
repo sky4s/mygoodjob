@@ -25,7 +25,7 @@ class TCA210SettingFrame:public TFrame {
     TComboBox *ComboBox_SyncMode;
     TComboBox *ComboBox_Speed;
     TComboBox *ComboBox_CalStandard;
-    TEdit *Edit1_Hz;
+    TEdit *Edit_Hz;
     TLabel *Label4;
     TLabel *Label5;
     TComboBox *ComboBox_DisplayMode;
@@ -35,12 +35,12 @@ class TCA210SettingFrame:public TFrame {
     void __fastcall Button_DisconnectClick(TObject * Sender);
     void __fastcall ComboBox_SyncModeChange(TObject * Sender);
     void __fastcall ComboBox_CalStandardChange(TObject * Sender);
+    void __fastcall Edit_HzChange(TObject * Sender);
   private:			// User declarations
     //bptr < cms::measure::meter::CA210 > ca210;
      bptr < ca210api::CA210API > ca210API;
   public:			// User declarations
      __fastcall TCA210SettingFrame(TComponent * Owner);
-    //void setCA210(bptr < cms::measure::meter::CA210 > ca210);
     void setCA210API(bptr < ca210api::CA210API > ca210API);
 };
 //---------------------------------------------------------------------------

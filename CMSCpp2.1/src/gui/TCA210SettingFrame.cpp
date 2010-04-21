@@ -23,12 +23,6 @@ __fastcall TCA210SettingFrame::TCA210SettingFrame(TComponent * Owner)
 
 //---------------------------------------------------------------------------
 
-/*void TCA210SettingFrame::setCA210(bptr < cms::measure::meter::CA210 >
-				  ca210)
-{
-    this->ca210 = ca210;
-    this->ca210API = ca210->getCA210API();
-}*/
 
 void TCA210SettingFrame::setCA210API(bptr < ca210api::CA210API > ca210API)
 {
@@ -59,12 +53,11 @@ void __fastcall TCA210SettingFrame::Button_DisconnectClick(TObject *
 void __fastcall TCA210SettingFrame::ComboBox_SyncModeChange(TObject *
 							    Sender)
 {
-    if (ca210API == null) {
-	return;
-    };
+
     int index = this->ComboBox_SyncMode->ItemIndex;
     using namespace ca210api;
     SyncMode mode;
+    this->Edit_Hz->Enabled = false;
     switch (index) {
     case 0:
 	mode = NTSC;
@@ -78,7 +71,13 @@ void __fastcall TCA210SettingFrame::ComboBox_SyncModeChange(TObject *
     case 3:
 	mode = UNIV;
 	break;
+    case 4:
+	this->Edit_Hz->Enabled = true;
+	break;
     }
+    if (ca210API == null) {
+	return;
+    };
     ca210API->setSyncMode(mode);
 }
 
@@ -104,6 +103,14 @@ void __fastcall TCA210SettingFrame::ComboBox_CalStandardChange(TObject *
     }
 
     ca210API->setCalStandard(std);
+}
+
+//---------------------------------------------------------------------------
+
+void __fastcall TCA210SettingFrame::Edit_HzChange(TObject * Sender)
+{
+    int hz = this->Edit_Hz->Text.ToInt();
+    ca210API->setSyncHz(hz);
 }
 
 //---------------------------------------------------------------------------

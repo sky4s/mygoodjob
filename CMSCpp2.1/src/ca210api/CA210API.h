@@ -75,6 +75,7 @@ namespace ca210api {
 
 	// Options
 	void setSyncMode(SyncMode mode);
+	void setSyncHz(int hz);
 	void setAveragingMode(AveragingMode mode);
 
 	void setBrightnessUnit(BrightnessUnit unit);

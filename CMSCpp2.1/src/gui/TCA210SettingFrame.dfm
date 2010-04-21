@@ -88,7 +88,7 @@ object CA210SettingFrame: TCA210SettingFrame
         '6500K'
         '9300K')
     end
-    object Edit1_Hz: TEdit
+    object Edit_Hz: TEdit
       Left = 200
       Top = 24
       Width = 49
@@ -96,6 +96,7 @@ object CA210SettingFrame: TCA210SettingFrame
       Enabled = False
       TabOrder = 3
       Text = '60'
+      OnChange = Edit_HzChange
     end
     object ComboBox_DisplayMode: TComboBox
       Left = 96

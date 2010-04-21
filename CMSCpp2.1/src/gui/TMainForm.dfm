@@ -717,6 +717,7 @@ object MainForm: TMainForm
   Menu = MainMenu1
   OldCreateOrder = False
   OnCreate = FormCreate
+  OnShow = FormShow
   PixelsPerInch = 120
   TextHeight = 16
   object Label6: TLabel
