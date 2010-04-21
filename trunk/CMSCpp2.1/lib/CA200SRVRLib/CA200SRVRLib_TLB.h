@@ -27,6 +27,7 @@
 #pragma option push -b -w-inl
 
 #include <vcl.h>
+#define NO_PROMPT_ON_HRCHECK_FAILURE
 #include <utilcls.h>
 #if !defined(__UTILCLS_H_VERSION) || (__UTILCLS_H_VERSION < 0x0600)
 //

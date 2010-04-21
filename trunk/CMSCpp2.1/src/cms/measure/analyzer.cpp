@@ -132,8 +132,9 @@ namespace cms {
 		//ca210api->resetLvxyCalMode();
 		if (true == reset) {
 		    ca210api->copyFromFile(CA210DAT);
+                    ca210api->setAnalyzerCalMode();
 		}
-		ca210api->setAnalyzerCalMode();
+
 	    }
 	};
 	void CA210IntensityAnalyzer::beginAnalyze() {

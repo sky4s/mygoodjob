@@ -37,7 +37,6 @@ class TCCTLUTForm:public TForm {
     TEdit *Edit_BGain;
     TCheckBox *CheckBox_BMax;
     TGroupBox *GroupBox5;
-    TCheckBox *CheckBox_Gamma256;
     TCheckBox *CheckBox_AvoidNoise;
     TOpenDialog *OpenDialog1;
     TButton *Button_Run;
@@ -73,7 +72,6 @@ class TCCTLUTForm:public TForm {
     void __fastcall FormCreate(TObject * Sender);
     void __fastcall Button_DebugClick(TObject * Sender);
     void __fastcall Button_ResetClick(TObject * Sender);
-    void __fastcall CheckBox_Gamma256Click(TObject * Sender);
     void __fastcall FormShow(TObject * Sender);
     void __fastcall RadioButton_GammaCurveClick(TObject * Sender);
     void __fastcall TOutputFileFrame1Button_BrowseDirClick(TObject *

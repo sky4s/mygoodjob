@@ -113,6 +113,7 @@ class TMainForm:public TForm {
     void __fastcall RadioButton_Out10Click(TObject * Sender);
     void __fastcall Button1Click(TObject * Sender);
     void __fastcall Edit_IntervalChange(TObject * Sender);
+    void __fastcall FormShow(TObject * Sender);
   private:			// User declarations
     //==========================================================================
     // meter

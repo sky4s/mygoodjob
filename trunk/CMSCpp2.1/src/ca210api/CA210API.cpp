@@ -124,6 +124,9 @@ namespace ca210api {
     void CA210API::setSyncMode(SyncMode mode) {
 	ca.set_SyncMode(mode);
     };
+    void CA210API::setSyncHz(int hz) {
+	ca.set_SyncMode(hz);
+    };
     void CA210API::setAveragingMode(AveragingMode mode) {
 	ca.set_AveragingMode(mode);
     };

@@ -110,6 +110,7 @@ namespace cms {
 		int level =
 		    (getMeasureStart() -
 		     getMeasureFirstStep()) / getMeasureStep() + 2;
+		return level;
 	    };
 	    /*
 	       DG Lut³Ì¤j­È(in 8Bit)
@@ -158,26 +159,6 @@ namespace cms {
 		return getMaxEffectiveDigitalCountIndex() + 1;
 	    };
 
-	    /*int BitDepthProcessor::getFRCBitDepth() {
-	       switch (bitDepth) {
-	       case b10_10:
-	       return 12;
-	       case b10_8:
-	       return 11;
-	       case b8_8:
-	       return 10;
-	       case b8_6:
-	       return 9;
-	       case b6_6:
-	       return 9;
-	       }
-	       }; */
-
-	    /*const MaxValue & BitDepthProcessor::getFRCMaxValue() {
-	       return MaxValue::getByBit(getFRCBitDepth());
-
-	       }; */
-
 	    bool BitDepthProcessor::is8in6Out() {
 		return bitDepth == b8_6;
 	    };
@@ -200,15 +181,11 @@ namespace cms {
 	    const Dep::MaxValue & BitDepthProcessor::getOutputMaxValue() {
 		return *out;
 	    };
-	    /*bool BitDepthProcessor::isGamma256() {
-	       return gamma256;
-	       }; */
+
 	    bool BitDepthProcessor::isTCONInput() {
 		return tconInput;
 	    };
-	    /*void BitDepthProcessor::setGamma256(bool gamma256) {
-	       this->gamma256 = gamma256;
-	       }; */
+
 	    void BitDepthProcessor::setTCONInput(bool tconInput) {
 		this->tconInput = tconInput;
 	    };

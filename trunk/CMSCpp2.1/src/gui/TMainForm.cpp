@@ -1,9 +1,6 @@
 //---------------------------------------------------------------------------
-
-
 #include <includeall.h>
 #pragma hdrstop
-
 //C系統文件
 
 //C++系統文件
@@ -21,7 +18,6 @@
 #include "TGammaMeasurementForm.h"
 
 #include <debug.h>
-
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
 #pragma resource "*.dfm"
@@ -62,7 +58,6 @@ void __fastcall TMainForm::TargetWhite1Click(TObject * Sender)
 }
 
 //---------------------------------------------------------------------------
-
 void __fastcall TMainForm::FormCreate(TObject * Sender)
 {
     using namespace cms::measure::meter;
@@ -80,7 +75,7 @@ void __fastcall TMainForm::FormCreate(TObject * Sender)
 	}
 	catch(EOleException & ex) {
 	    ShowMessage("CA210 cannot be linked.");
-	    this->Close();
+	    Application->Terminate();
 	}
     } else {
 	setDummyMeterFilename(METER_FILE);
@@ -108,7 +103,7 @@ bptr < cms::measure::IntensityAnalyzerIF > TMainForm::getAnalyzer()
 	//產生ca210
 	ca210Analyzer.reset(new CA210IntensityAnalyzer(getCA210(), mm));
 
-	if (true) {
+	if (false) {
 	    //產生max matrix
 	    bptr < MaxMatrixIntensityAnayzer >
 		ma(new MaxMatrixIntensityAnayzer(mm));
@@ -392,9 +387,12 @@ void __fastcall TMainForm::MatrixCalibration1Click(TObject * Sender)
     }
 
     if (true == linkCA210
-	&& true == MatrixCalibrationForm->setCA210(ca210)) {
+	&& true == MatrixCalibrationForm->setMeter(ca210,mm)) {
 	MatrixCalibrationForm->ShowModal();
+    } else {
+	//MatrixCalibrationForm->ShowModal();
     }
+
 }
 
 //---------------------------------------------------------------------------
@@ -549,6 +547,17 @@ void __fastcall TMainForm::Button1Click(TObject * Sender)
 void __fastcall TMainForm::Edit_IntervalChange(TObject * Sender)
 {
     mm->setWaitTimes(this->getInterval());
+}
+
+//---------------------------------------------------------------------------
+
+void __fastcall TMainForm::FormShow(TObject * Sender)
+{
+    if (null == meter) {
+	ShowMessage
+	    ("CA210 cannot be linked. Application would be terminated.");
+	Application->Terminate();
+    }
 }
 
 //---------------------------------------------------------------------------

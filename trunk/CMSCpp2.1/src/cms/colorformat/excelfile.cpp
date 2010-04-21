@@ -381,7 +381,11 @@ namespace cms {
 
 	};
 	void ExcelAccessBase::initPropertySheet() {
-	    initSheet(Properties, 2, "Key", "Value");
+           string_vector_ptr headerNames=StringVector::fromCString(2,"Key", "Value");
+           string_vector_ptr fieldType=StringVector::fromCString(2,"Text", "Text");
+	    headerNamesMap.insert(make_pair(Properties, headerNames));
+            db->createTable(Properties, headerNames,fieldType);
+	    //initSheet(Properties, 2, "Key", "Value");
 	};
 	void
 	 ExcelAccessBase::initBegin() {

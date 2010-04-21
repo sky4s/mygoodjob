@@ -160,22 +160,13 @@ object GammaAdjustmentForm: TGammaAdjustmentForm
     Height = 185
     Caption = 'Options'
     TabOrder = 2
-    object CheckBox_Gamma256: TCheckBox
-      Left = 120
-      Top = 8
-      Width = 97
-      Height = 25
-      Caption = 'Gamma 256'
-      TabOrder = 0
-      Visible = False
-    end
     object CheckBox_AvoidNoise: TCheckBox
       Left = 8
       Top = 56
       Width = 137
       Height = 25
       Caption = 'Avoid FRC Noise'
-      TabOrder = 1
+      TabOrder = 0
     end
     object CheckBox_KeepMax: TCheckBox
       Left = 8
@@ -183,7 +174,7 @@ object GammaAdjustmentForm: TGammaAdjustmentForm
       Width = 153
       Height = 25
       Caption = 'Keep Max Luminance'
-      TabOrder = 2
+      TabOrder = 1
     end
   end
   inline TOutputFileFrame1: TOutputFileFrame

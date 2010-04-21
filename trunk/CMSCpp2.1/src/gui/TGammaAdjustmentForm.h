@@ -35,10 +35,9 @@ class TGammaAdjustmentForm:public TForm {
     TButton *Button2;
     TButton *Button3;
     TGroupBox *GroupBox1;
-    TCheckBox *CheckBox_Gamma256;
     TCheckBox *CheckBox_AvoidNoise;
     TCheckBox *CheckBox_KeepMax;
-        TOutputFileFrame *TOutputFileFrame1;
+    TOutputFileFrame *TOutputFileFrame1;
     void __fastcall FormShow(TObject * Sender);
   private:			// User declarations
      bptr < cms::lcd::calibrate::BitDepthProcessor > bitDepth;

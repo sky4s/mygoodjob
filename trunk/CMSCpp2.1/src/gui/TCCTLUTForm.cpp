@@ -201,13 +201,6 @@ void __fastcall TCCTLUTForm::Button_ResetClick(TObject * Sender)
 //---------------------------------------------------------------------------
 
 
-void __fastcall TCCTLUTForm::CheckBox_Gamma256Click(TObject * Sender)
-{
-    //bool gamma256 = this->CheckBox_Gamma256->Checked;
-    //bitDepth->setGamma256(gamma256);
-}
-
-//---------------------------------------------------------------------------
 
 void __fastcall TCCTLUTForm::FormShow(TObject * Sender)
 {
