@@ -75,7 +75,7 @@ void __fastcall TMainForm::FormCreate(TObject * Sender)
 	}
 	catch(EOleException & ex) {
 	    ShowMessage("CA210 cannot be linked.");
-	    Application->Terminate();
+	    //Application->Terminate();
 	}
     } else {
 	setDummyMeterFilename(METER_FILE);
@@ -102,7 +102,7 @@ bptr < cms::measure::IntensityAnalyzerIF > TMainForm::getAnalyzer()
     if (null == analyzer) {
 	//產生ca210
 	ca210Analyzer.reset(new CA210IntensityAnalyzer(getCA210(), mm));
-#ifdef DEBUG_MODE
+#ifdef DEBUG_ANALYZER
 	    //產生max matrix
 	    bptr < MaxMatrixIntensityAnayzer >
 		ma(new MaxMatrixIntensityAnayzer(mm));
@@ -555,8 +555,8 @@ void __fastcall TMainForm::FormShow(TObject * Sender)
 {
     if (null == meter) {
 	ShowMessage
-	    ("CA210 cannot be linked. Application would be terminated.");
-	Application->Terminate();
+	    ("CA210 cannot be linked.");
+	//Application->Terminate();
     }
 }
 

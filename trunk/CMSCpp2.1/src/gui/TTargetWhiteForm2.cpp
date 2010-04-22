@@ -20,7 +20,7 @@
 TTargetWhiteForm2 *TargetWhiteForm2;
 //---------------------------------------------------------------------------
 __fastcall TTargetWhiteForm2::TTargetWhiteForm2(TComponent * Owner)
-:TForm(Owner),stopMeasure(false)
+:TForm(Owner), stopMeasure(false)
 {
 }
 
@@ -68,7 +68,7 @@ void __fastcall TTargetWhiteForm2::Edit_CTChange(TObject * Sender)
 	return;
     }
 
-    this->RadioButton_Targetxy->Checked=true;
+    this->RadioButton_Targetxy->Checked = true;
 
     using cms::CorrelatedColorTemperature;
     using Indep::CIExyY;
@@ -192,23 +192,23 @@ void __fastcall TTargetWhiteForm2::Button2Click(TObject * Sender)
 	double targetx = this->Edit_targetx->Text.ToDouble();
 	double targety = this->Edit_targety->Text.ToDouble();
 	xyY_ptr xyY(new CIExyY(targetx, targety, 1));
-        bptr<WhitePointFinder> finder;
+	bptr < WhitePointFinder > finder;
 	//已知xy, 求rgb
 	if (true == moreAccurate) {
-                finder.reset(new WhitePointFinder(MainForm->mm));
+	    finder.reset(new WhitePointFinder(MainForm->mm));
 	    //WhitePointFinder finder(MainForm->mm);
-            MeasureWindow->addWindowListener(finder);
+	    MeasureWindow->addWindowListener(finder);
 	    rgb = finder->findRGB(xyY);
 	} else {
-                        finder.reset(new StocktonWhitePointFinder(MainForm->mm,rgb));
-             //StocktonWhitePointFinder finder(MainForm->mm, rgb);
-            MeasureWindow->addWindowListener(finder);
+	    finder.reset(new StocktonWhitePointFinder(MainForm->mm, rgb));
+	    //StocktonWhitePointFinder finder(MainForm->mm, rgb);
+	    MeasureWindow->addWindowListener(finder);
 	    rgb = finder->findRGB(xyY);
 	}
 
-        if( null == rgb) {
-         return ;
-        }
+	if (null == rgb) {
+	    return;
+	}
     }
     RGB_ptr r(new RGBColor());
     RGB_ptr g(new RGBColor());
@@ -220,41 +220,35 @@ void __fastcall TTargetWhiteForm2::Button2Click(TObject * Sender)
     //==========================================================================
     // 設定到ca-210去
     //==========================================================================
+    try {
 
+	analyzer->setWaitTimes(5000);
+	analyzer->setupComponent(Channel::R, r);
+	if (true == stopMeasure) {
+	    return;
+	}
+	analyzer->setupComponent(Channel::G, g);
+	if (true == stopMeasure) {
+	    return;
+	}
+	analyzer->setupComponent(Channel::B, b);
+	if (true == stopMeasure) {
+	    return;
+	}
+	analyzer->setupComponent(Channel::W, rgb);
+	if (true == stopMeasure) {
+	    return;
+	}
+	analyzer->enter();
+	MainForm->setMeterMeasurementWaitTimes();
+	//==========================================================================
 
-
-  try
-  {
-
-    analyzer->setWaitTimes(5000);
-    analyzer->setupComponent(Channel::R, r);
-    if(true ==stopMeasure) {
-     return;
-    }
-    analyzer->setupComponent(Channel::G, g);
-    if(true ==stopMeasure) {
-     return;
-    }
-    analyzer->setupComponent(Channel::B, b);
-    if(true ==stopMeasure) {
-     return;
-    }
-    analyzer->setupComponent(Channel::W, rgb);
-    if(true ==stopMeasure) {
-     return;
-    }
-    analyzer->enter();
-    //analyzer->setDefaultWaitTimes();
-    MainForm->setMeterMeasurementWaitTimes();
-    //==========================================================================
-    //this->Close();
-
-    this->Edit_R->Text = r->R;
-    this->Edit_G->Text = g->G;
-    this->Edit_B->Text = b->B;
+	this->Edit_R->Text = r->R;
+	this->Edit_G->Text = g->G;
+	this->Edit_B->Text = b->B;
     }
     __finally {
-    stopMeasure=false;
+	stopMeasure = false;
     }
 }
 
@@ -286,14 +280,17 @@ void __fastcall TTargetWhiteForm2::Edit_BChange(TObject * Sender)
 
 //---------------------------------------------------------------------------
 
-void TTargetWhiteForm2::windowClosing(){
-    stopMeasure=true;
-}
-void __fastcall TTargetWhiteForm2::FormCreate(TObject *Sender)
+void TTargetWhiteForm2::windowClosing()
 {
-       using namespace cms::util;
-bptr<  WindowListener  > formPtr(dynamic_cast<WindowListener*>( this));
-MeasureWindow->addWindowListener(formPtr);
+    stopMeasure = true;
 }
+void __fastcall TTargetWhiteForm2::FormCreate(TObject * Sender)
+{
+    using namespace cms::util;
+    bptr < WindowListener > formPtr(dynamic_cast <
+				    WindowListener * >(this));
+    MeasureWindow->addWindowListener(formPtr);
+}
+
 //---------------------------------------------------------------------------
 

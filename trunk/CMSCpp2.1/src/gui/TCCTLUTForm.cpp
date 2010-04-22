@@ -124,14 +124,6 @@ void __fastcall TCCTLUTForm::Button_RunClick(TObject * Sender)
     try {
 	this->TOutputFileFrame1->createDir();
 
-	//預設的第一階
-	/*int firstStep = bitDepth->getMeasureFirstStep();
-	   if (bitDepth->getMeasureStart() != start
-	   || bitDepth->getMeasureEnd() != end
-	   || bitDepth->getMeasureStep() != step) {
-	   //如果量測條件被改變, 則不要採用原本的第一階
-	   firstStep = step;
-	   } */
 	bptr < MeasureCondition > measureCondition = getMeasureCondition();
 
 	RGB_vector_ptr dglut = calibrator->getDGLut(measureCondition);
@@ -139,9 +131,6 @@ void __fastcall TCCTLUTForm::Button_RunClick(TObject * Sender)
 	    return;
 	}
 
-	/*AnsiString astr =
-	   this->TOutputFileFrame1->getFullPrefix() +
-	   FormatFloat("00", serialid) + ".xls"; */
 	String_ptr astr = this->TOutputFileFrame1->getOutputFilename();
 	string filename = astr->c_str();
 
