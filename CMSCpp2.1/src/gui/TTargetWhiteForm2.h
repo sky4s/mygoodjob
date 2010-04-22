@@ -19,7 +19,7 @@
 //本項目內頭文件
 
 //---------------------------------------------------------------------------
-class TTargetWhiteForm2:public TForm,  cms::util::WindowListener {
+class TTargetWhiteForm2:public TForm, cms::util::WindowListener {
     __published:		// IDE-managed Components
     TPageControl * PageControl1;
     TTabSheet *TabSheet1;
@@ -68,7 +68,7 @@ class TTargetWhiteForm2:public TForm,  cms::util::WindowListener {
     void __fastcall Edit_RChange(TObject * Sender);
     void __fastcall Edit_GChange(TObject * Sender);
     void __fastcall Edit_BChange(TObject * Sender);
-        void __fastcall FormCreate(TObject *Sender);
+    void __fastcall FormCreate(TObject * Sender);
   private:			// User declarations
     void setColorimetricValues(double x, double y, double up, double vp);
     void scrollBar_Change();
@@ -76,8 +76,8 @@ class TTargetWhiteForm2:public TForm,  cms::util::WindowListener {
     bool colorimetricChanging;
     bool stopMeasure;
   public:			// User declarations
-     __fastcall TTargetWhiteForm2(TComponent * Owner);
-	     void windowClosing();     
+    __fastcall TTargetWhiteForm2(TComponent * Owner);
+    void windowClosing();
 };
 //---------------------------------------------------------------------------
 extern PACKAGE TTargetWhiteForm2 *TargetWhiteForm2;

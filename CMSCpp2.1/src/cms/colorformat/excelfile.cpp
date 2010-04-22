@@ -381,10 +381,14 @@ namespace cms {
 
 	};
 	void ExcelAccessBase::initPropertySheet() {
-           string_vector_ptr headerNames=StringVector::fromCString(2,"Key", "Value");
-           string_vector_ptr fieldType=StringVector::fromCString(2,"Text", "Text");
+	    string_vector_ptr headerNames =
+		StringVector::fromCString(2, "Key", "Value");
+	    string_vector_ptr fieldType =
+		StringVector::fromCString(2, "Text", "Text");
 	    headerNamesMap.insert(make_pair(Properties, headerNames));
-            db->createTable(Properties, headerNames,fieldType);
+	    if (Create == mode) {
+		db->createTable(Properties, headerNames, fieldType);
+	    }
 	    //initSheet(Properties, 2, "Key", "Value");
 	};
 	void
@@ -445,15 +449,15 @@ namespace cms {
 					     string_vector_ptr
 					     headerNames):ExcelAccessBase
 	    (filename, mode), headerNames(headerNames) {
-             initSheet(Sheet1, headerNames);
+	    initSheet(Sheet1, headerNames);
 	};
 	SimpleExcelAccess::SimpleExcelAccess(const std::
 					     string &
 					     filename):ExcelAccessBase
 	    (filename, ReadOnly) {
-             initSheet(Sheet1, headerNames);
+	    initSheet(Sheet1, headerNames);
 	};
- 
+
 	bptr < DBQuery > SimpleExcelAccess::retrieve() {
 	    return ExcelAccessBase::retrieve(Sheet1);
 	};

@@ -188,8 +188,11 @@ namespace cms {
 		RGB_ptr rgb255 = (*result)[255];
 		STORE_RGBVECTOR("frcNR_0.xls", result);
 		if (!bitDepth->is6in6Out()) {
+		    //6in6out才啟動以下修正(nb panel即是)
 		    foreach(const Channel & ch, *Channel::RGBChannel) {
+			//亮位的修正
 			if (rgb255->getValue(ch) >= 248.5) {
+			    //若使用到248.5以上, 修正讓254才使用到FRC
 			    (*result)[255]->setValue(ch, 252);
 			    (*result)[254]->setValue(ch, 250);
 			    (*result)[253]->setValue(ch, 248);
@@ -200,6 +203,7 @@ namespace cms {
 				double thisv = thisRGB->getValue(ch);
 				double nextv = nextRGB->getValue(ch);
 				if (thisv >= nextv) {
+				    //若有反轉, 則強制設定差異為0.5
 				    thisRGB->setValue(ch, nextv - 2 / 4.);
 				} else {
 				    break;
@@ -209,10 +213,13 @@ namespace cms {
 		    }
 		    STORE_RGBVECTOR("frcNR_1.xls", result);
 		}
+		//以下修正則不限定是nb panel
 		foreach(const Channel & ch, *Channel::RGBChannel) {
+		    //暗位的修正1~30
 		    for (int x = 1; x != 31; x++) {
 			RGB_ptr rgb = (*result)[x];
 			double v = rgb->getValue(ch);
+			//只有在v為3 or 1才做修正
 			if (v == 12 / 4. || v == 4 / 4.) {
 			    double setvalue =
 				(v == 12 / 4.) ? 10 / 4. : 2 / 4.;
