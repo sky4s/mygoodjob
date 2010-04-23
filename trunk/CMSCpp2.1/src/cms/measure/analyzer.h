@@ -27,13 +27,14 @@ namespace cms {
 	    virtual void endAnalyze() = 0;
 	    virtual void setWaitTimes(int waitTimes) = 0;
 	    //virtual void setDefaultWaitTimes() = 0;
+	    virtual xyY_ptr getReferenceColor() = 0;
 	};
 
 	class CA210IntensityAnalyzer:public IntensityAnalyzerIF {
 	  protected:
 	    //int defaultWaitTimes;
-	     bptr < cms::measure::meter::CA210 > ca210;
-	     bptr < ca210api::CA210API > ca210api;
+	    bptr < cms::measure::meter::CA210 > ca210;
+	    bptr < ca210api::CA210API > ca210api;
 	    XYZ_ptr XYZ;
 	     bptr < MeterMeasurement > mm;
 	    bool dummyMode;
@@ -60,6 +61,7 @@ namespace cms {
 	    void beginAnalyze();
 	    void endAnalyze();
 	    void setWaitTimes(int waitTimes);
+	    xyY_ptr getReferenceColor();
 	    //void setDefaultWaitTimes();
 	};
 
@@ -76,9 +78,9 @@ namespace cms {
 	class MaxMatrixIntensityAnayzer:public IntensityAnalyzerIF {
 	    friend class IntensityAnayzer;
 	  private:
-          double2D_ptr inverseMatrix;
+	     double2D_ptr inverseMatrix;
 	    double2D_ptr targetRatio;
-            double2D_ptr rgbValues;
+	    double2D_ptr rgbValues;
 	  protected:
 	     bptr < MeterMeasurement > mm;
 
@@ -104,6 +106,7 @@ namespace cms {
 	    void endAnalyze();
 	    void setWaitTimes(int waitTimes);
 	    //void setDefaultWaitTimes();
+	    xyY_ptr getReferenceColor();
 	};
 
 	class MaxMatrixIntensityAnayzer2;
@@ -116,7 +119,7 @@ namespace cms {
 	    bptr < cms::colorformat::SimpleExcelAccess > excel;
 	    string_vector_ptr fieldNames;
 	    int no;
-            const bool useMatrix2;
+	    const bool useMatrix2;
 	  public:
 	     IntensityAnayzer(bptr < MaxMatrixIntensityAnayzer > matrix,
 			      bptr < MaxMatrixIntensityAnayzer2 > matrix2,
@@ -131,6 +134,7 @@ namespace cms {
 	    void endAnalyze();
 	    void setWaitTimes(int waitTimes);
 	    //void setDefaultWaitTimes();
+	    xyY_ptr getReferenceColor();
 	};
 
 

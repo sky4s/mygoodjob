@@ -59,18 +59,14 @@ namespace cms {
 		    RGB_ptr rgb = (*result)[x];
 		    rgb->setValues(v, v, v);
 		    rgb->quantization(maxValue);
-		    //double d2 = rgb->getValue(Channel::G);
 		}
 
-		//if (true == smooth) {
 		RGB_ptr rgbp0 = (*result)[p1 - 1];
-		//RGB_ptr rgbp1 = (*result)[p1];
 		RGB_ptr rgbp2 = (*result)[p1 + 1];
 		rgbp1->R = (rgbp0->R + rgbp2->R) / 2;
 		rgbp1->G = (rgbp0->G + rgbp2->G) / 2;
 		rgbp1->B = (rgbp0->B + rgbp2->B) / 2;
 		rgbp1->quantization(maxValue);
-		//};
 
 		return result;
 	    };

@@ -246,6 +246,14 @@ void __fastcall TTargetWhiteForm2::Button2Click(TObject * Sender)
 	this->Edit_R->Text = r->R;
 	this->Edit_G->Text = g->G;
 	this->Edit_B->Text = b->B;
+
+	xyY_ptr referenceColor = analyzer->getReferenceColor();
+	this->Edit_refx->Text =
+	    AnsiString().sprintf("%1.4g", referenceColor->x);
+	this->Edit_refy->Text =
+	    AnsiString().sprintf("%1.4g", referenceColor->y);
+	this->Edit_refLuminance->Text =
+	    AnsiString().sprintf("%1.4g", referenceColor->Y);
     }
     __finally {
 	stopMeasure = false;

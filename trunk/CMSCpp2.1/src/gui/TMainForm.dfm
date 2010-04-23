@@ -843,7 +843,7 @@ object MainForm: TMainForm
         Left = 0
         Top = 9
         Width = 97
-        Height = 112
+        Height = 120
         Caption = 'Input Source'
         TabOrder = 0
         object RadioButton_PC: TRadioButton
@@ -871,7 +871,7 @@ object MainForm: TMainForm
         Left = 105
         Top = 9
         Width = 152
-        Height = 112
+        Height = 120
         Caption = 'Resolution'
         TabOrder = 1
         object Width: TLabel
@@ -909,7 +909,7 @@ object MainForm: TMainForm
         Left = 265
         Top = 9
         Width = 152
-        Height = 112
+        Height = 120
         Caption = 'Pattern Display Interval'
         TabOrder = 2
         object Label1: TLabel
@@ -933,7 +933,7 @@ object MainForm: TMainForm
         Left = 425
         Top = 9
         Width = 208
-        Height = 112
+        Height = 120
         Caption = 'CH Setting'
         TabOrder = 3
         object Label7: TLabel
@@ -981,6 +981,40 @@ object MainForm: TMainForm
           Height = 24
           TabOrder = 2
           Text = ' '
+        end
+      end
+      object GroupBox3: TGroupBox
+        Left = 640
+        Top = 8
+        Width = 137
+        Height = 121
+        Caption = 'Analyzer'
+        TabOrder = 4
+        object RadioButton_AnalyzerCA210: TRadioButton
+          Left = 8
+          Top = 24
+          Width = 113
+          Height = 25
+          Caption = 'CA-210'
+          Checked = True
+          TabOrder = 0
+          TabStop = True
+        end
+        object RadioButton_AnalyzerMaxMatrix: TRadioButton
+          Left = 8
+          Top = 56
+          Width = 121
+          Height = 25
+          Caption = 'Max Matrix'
+          TabOrder = 1
+        end
+        object RadioButton_AnalyzerDebug: TRadioButton
+          Left = 8
+          Top = 88
+          Width = 97
+          Height = 25
+          Caption = 'Debug'
+          TabOrder = 2
         end
       end
     end

@@ -113,6 +113,7 @@ namespace ca210api {
 	//void copyFromFile(const std::string & filename);
 	void copyToFile(const WideString & filename);
 	void copyFromFile(const WideString & filename);
+	xyY_ptr getReferenceColor();
     };
 };
 #endif

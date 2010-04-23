@@ -196,11 +196,6 @@ namespace ca210api {
 	memory.SetChannelID(id);
     };
 
-    /*void CA210API::setChannelID(const string & id) {
-       wchar_t *wid = util::Util::towchar_t2(id);
-       memory.SetChannelID(wid);
-       delete[]wid;
-       }; */
     void CA210API::setChannelID(const WideString & id) {
 	memory.SetChannelID(id);
     };
@@ -209,17 +204,19 @@ namespace ca210api {
 	wchar_t *channelID = memory.get_ChannelID();
 	return channelID;
     };
-    /*void CA210API::copyToFile(const std::string & filename) {
 
-       };
-       void CA210API::copyFromFile(const std::string & filename) {
-
-       }; */
     void CA210API::copyToFile(const WideString & filename) {
 	memory.CopyToFile(probe.Number, filename);
     };
     void CA210API::copyFromFile(const WideString & filename) {
 	memory.CopyFromFile(probe.Number, filename);
+    };
+    xyY_ptr CA210API::getReferenceColor() {
+	using namespace Indep;
+	float x, y, Y;
+	memory.GetReferenceColor(memory.get_ChannelID(), &x, &y, &Y);
+	xyY_ptr xyY(new CIExyY(x, y, Y));
+	return xyY;
     };
 };
 

@@ -212,6 +212,62 @@ object TargetWhiteForm2: TTargetWhiteForm2
             OnChange = Edit_BChange
           end
         end
+        object GroupBox3: TGroupBox
+          Left = 16
+          Top = 320
+          Width = 217
+          Height = 73
+          Caption = 'Reference Color'
+          TabOrder = 6
+          object Label4: TLabel
+            Left = 8
+            Top = 24
+            Width = 17
+            Height = 25
+            Caption = 'x'
+          end
+          object Label7: TLabel
+            Left = 72
+            Top = 24
+            Width = 17
+            Height = 25
+            Caption = 'y'
+          end
+          object Label8: TLabel
+            Left = 144
+            Top = 24
+            Width = 17
+            Height = 25
+            Caption = 'Y'
+          end
+          object Edit_refx: TEdit
+            Left = 16
+            Top = 24
+            Width = 49
+            Height = 24
+            Enabled = False
+            TabOrder = 0
+            Text = '0.0000'
+          end
+          object Edit_refy: TEdit
+            Left = 88
+            Top = 24
+            Width = 49
+            Height = 24
+            Enabled = False
+            TabOrder = 1
+            Text = '0.0000'
+          end
+          object Edit_refLuminance: TEdit
+            Left = 160
+            Top = 24
+            Width = 49
+            Height = 24
+            Enabled = False
+            TabOrder = 2
+            Text = '0.0'
+          end
+        end
       end
       object GroupBox5: TGroupBox
         Left = 256

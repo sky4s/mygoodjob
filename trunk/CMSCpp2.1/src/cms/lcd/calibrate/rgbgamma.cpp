@@ -93,7 +93,6 @@ namespace cms {
 
 		double_vector & r = (*source->r);
 		double_vector & b = (*source->b);
-		//double ar=r[p1],ab=b[p1];
 		r[p1] =
 		    r[indexR] + (r[indexR + 1] - r[indexR]) *
 		    (rgbp1->G - (*dglut)[indexR]->R) /
@@ -103,7 +102,6 @@ namespace cms {
 		    (rgbp1->G - (*dglut)[indexB]->B) /
 		    ((*dglut)[indexB + 1]->B - (*dglut)[indexB]->B);
 
-		//double ar1=r[p1],ab1=b[p1];
 		return source;
 	    };
 	    RGBGamma_ptr P1P2GammaOp::processP1P2(RGBGamma_ptr source) {
