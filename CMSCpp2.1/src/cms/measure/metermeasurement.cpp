@@ -19,14 +19,8 @@ namespace cms {
 	using namespace cms::measure::cp;
 	using namespace std;
 	using namespace java::lang;
-	//const int MeterMeasurement::DefaultWaitTimes = 300;
-	//const int MeterMeasurement::DefaultBlankTimes = 17;
 
 	void MeterMeasurement::init(bool calibration) {
-	    /*if (MeasureWindow == null) {
-	       Application->CreateForm(__classid(TMeasureWindow),
-	       &MeasureWindow);
-	       } */
 	    measureWindow = MeasureWindow;
 	    if (true == calibration) {
 		calibrate();
@@ -35,19 +29,8 @@ namespace cms {
       MeterMeasurement::MeterMeasurement(shared_ptr < Meter > meter, bool calibration):meter(meter), waitTimes(meter->getSuggestedWaitTimes()),
 	    measureWindowClosing(false), titleTouched(false),
 	    fakeMeasure(false) {
-	    /*, tconinput(false) */
-
 	    init(calibration);
 	};
-
-	/*MeterMeasurement::MeterMeasurement(bptr < cms::measure::meter::Meter > meter, bptr < cms::i2c::TCONControl > tconcontrol, bool calibration):meter(meter),
-	   tconcontrol(tconcontrol),
-	   waitTimes(meter->getSuggestedWaitTimes()),
-	   measureWindowClosing(false), titleTouched(false),
-	   fakeMeasure(false), tconinput(true) {
-
-	   init(calibration);
-	   }; */
 
 	void MeterMeasurement::calibrate() {
 	    MeasureUtils::meterCalibrate(*this);
@@ -61,16 +44,11 @@ namespace cms {
 
 	void MeterMeasurement::setMeasureWindowsVisible(bool visible) {
 	    if (!fakeMeasure) {
-		/*if (tconinput) {
-		   this->tconcontrol->setGammaTest(visible);
-		   } else { */
 		if (null == measureWindow) {
 		    measureWindow = MeasureWindow;
 		}
 		measureWindow->setVisible(visible);
 		measureWindowClosing = !visible;
-		//}
-
 	    }
 	};
 
@@ -99,9 +77,9 @@ namespace cms {
 	};
 	void MeterMeasurement::setWaitTimes(int waitTimes) {
 	    this->waitTimes = waitTimes;
-            if(waitTimes==0) {
-            int x=1;
-            }
+	    if (waitTimes == 0) {
+		int x = 1;
+	    }
 	};
 	int MeterMeasurement::getWaitTimes() {
 	    return waitTimes;
@@ -113,67 +91,12 @@ namespace cms {
 	    return fakeMeasure;
 	};
 
-	/*bptr < MeasureInterface > MeterMeasurement::getMeasureInterface() {
-	   class MI:public MeasureInterface {
-	   public:
-	   virtual      bptr < MeasureResult >
-	   measureResult(RGB_vector_ptr rgbVec, bool forceTrigger,
-	   bool trigger) {
-	   using namespace cms::measure;
-
-	   int size = rgbVec->size();
-	   Patch_vector_ptr result(new Patch_vector());
-
-	   foreach(RGB_ptr rgb, *rgbVec) {
-	   Patch_ptr p = measure(rgb);
-	   result->push_back(p);
-	   };
-
-	   bptr < MeasureResult >
-	   measureResult(new MeasureResult(result, size));
-	   return measureResult;
-	   };
-
-	   virtual      Patch_ptr measure(RGB_ptr rgb, bool forceTrigger,
-	   bool trigger) {
-	   this->measure(rgb);
-	   };
-	   virtual      Patch_ptr measure(RGB_ptr rgb) {
-	   return mm->measure(rgb, rgb->toString());
-	   };
-	   virtual      void reset() {
-	   };
-
-	   private:
-	   friend class MeterMeasurement;
-	   MeterMeasurement *mm;
-	   MI(MeterMeasurement * mm):mm(mm) {
-	   };
-	   };
-	   return bptr < MeasureInterface > (dynamic_cast <
-	   MeasureInterface *
-	   >(new MI(this)));
-	   }; */
-
 	bptr < cms::measure::meter::Meter > MeterMeasurement::getMeter() {
 	    return meter;
 	};
 
-	/*void MeterMeasurement::setTCONControl(bptr <
-	   cms::i2c::TCONControl >
-	   tconcontrol) {
-	   //this->tconcontrol = tconcontrol;
-	   //tconinput = true;
-	   measureWindow->setTCONControl(tconcontrol);;
-	   };
-
-	   void MeterMeasurement::setTCONControlOff() {
-	   //tconinput = false;
-	   measureWindow->setTCONControlOff();
-	   }; */
-
 	void MeterMeasurement::meterClose() {
-	    //meter->close();
+
 	};
 
 	Patch_ptr

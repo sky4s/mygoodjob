@@ -85,6 +85,11 @@ namespace math {
 	static float2D_ptr times(float2D_ptr a, float2D_ptr b);
 	static string_ptr toString(float2D_ptr m);
     };
+
+    class IntArray {
+      public:
+	static int max(int_array array, int n);
+    };
 };
 #endif
 

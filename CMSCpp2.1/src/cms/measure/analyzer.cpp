@@ -12,6 +12,7 @@
 #include <ca210api/CA210API.h>
 
 #define CA210DAT "ca210.dat"
+#define INTENSITY_FILE "intensity.xls"
 
 namespace cms {
     namespace measure {
@@ -223,7 +224,7 @@ namespace cms {
       MaxMatrixIntensityAnayzer::MaxMatrixIntensityAnayzer(bptr < MeterMeasurement > mm):mm(mm)
 	    //, defaultWaitTimes(-1)
 	{
-
+	    Util::deleteExist(INTENSITY_FILE);
 	};
 
 	RGB_ptr MaxMatrixIntensityAnayzer::getIntensity(RGB_ptr rgb) {
@@ -369,7 +370,7 @@ namespace cms {
 					  "MA2_G", "MA2_B");
 	    excel.
 		reset(new
-		      SimpleExcelAccess("intensity.xls",
+		      SimpleExcelAccess(INTENSITY_FILE,
 					cms::colorformat::Create,
 					fieldNames));
 	};
@@ -385,7 +386,7 @@ namespace cms {
 					  "MA2_G", "MA2_B");
 	    excel.
 		reset(new
-		      SimpleExcelAccess("intensity.xls",
+		      SimpleExcelAccess(INTENSITY_FILE,
 					cms::colorformat::Create,
 					fieldNames));
 	};
@@ -491,7 +492,7 @@ namespace cms {
 	   ca210->setDefaultWaitTimes();
 	   }; */
 	xyY_ptr IntensityAnayzer::getReferenceColor() {
-	   return ca210->getReferenceColor();
+	    return ca210->getReferenceColor();
 	};
 	//=====================================================================
 
@@ -546,4 +547,4 @@ namespace cms {
 	};
     };
 };
- 
+

@@ -18,7 +18,10 @@ namespace cms {
 	class RampMeasureFile:public ExcelAccessBase {
 	  private:
 	    static const std::string & Sheet1;
-
+	    int getMaximumSize(Component_vector_ptr wMeasureData,
+			       Patch_vector_ptr rMeasureData,
+			       Patch_vector_ptr gMeasureData,
+			       Patch_vector_ptr bMeasureData);
 	  public:
 	     RampMeasureFile(const std::string & fileName,
 			     const Mode mode);
