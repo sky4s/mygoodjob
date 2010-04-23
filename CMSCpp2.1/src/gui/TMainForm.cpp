@@ -66,31 +66,32 @@ void __fastcall TMainForm::FormCreate(TObject * Sender)
     using namespace cms::lcd::calibrate;
 
     if (true == linkCA210) {
-	try {
-	    meter = bptr < Meter > (new CA210());
-	    mm = bptr < MeterMeasurement >
-		(new MeterMeasurement(meter, false));
-	    mm->setWaitTimes(this->getInterval());
-
-	}
-	catch(EOleException & ex) {
-	    ShowMessage("CA210 cannot be linked.");
-	    //Application->Terminate();
-	}
+	initCA210Meter();
     } else {
 	setDummyMeterFilename(METER_FILE);
 	this->Caption = this->Caption + " (debug mode)";
 	this->GroupBox_CHSetting->Visible = false;
     }
     bitDepth.reset(new BitDepthProcessor(8, 10, 8, false));
-
-    /*bptr < ca210api::CA210API > ca=  getCA210()->getCA210API();
-       ca->setChannelNO(0);
-       ca->copyToFile("1.dat");
-       ca->setChannelNO(1);
-       ca->copyFromFile("1.dat"); */
-
 }
+
+//---------------------------------------------------------------------------
+void TMainForm::initCA210Meter()
+{
+    using namespace cms::measure::meter;
+    using namespace cms::measure;
+    try {
+	meter = bptr < Meter > (new CA210());
+	mm = bptr < MeterMeasurement >
+	    (new MeterMeasurement(meter, false));
+	mm->setWaitTimes(this->getInterval());
+
+    }
+    catch(EOleException & ex) {
+	ShowMessage("CA210 cannot be linked.");
+	//Application->Terminate();
+    }
+};
 
 //---------------------------------------------------------------------------
 bptr < cms::measure::IntensityAnalyzerIF > TMainForm::getAnalyzer()
@@ -102,19 +103,22 @@ bptr < cms::measure::IntensityAnalyzerIF > TMainForm::getAnalyzer()
     if (null == analyzer) {
 	//產生ca210
 	ca210Analyzer.reset(new CA210IntensityAnalyzer(getCA210(), mm));
-#ifdef DEBUG_ANALYZER
-	    //產生max matrix
-	    bptr < MaxMatrixIntensityAnayzer >
-		ma(new MaxMatrixIntensityAnayzer(mm));
-	    bptr < MaxMatrixIntensityAnayzer2 >
-		ma2(new MaxMatrixIntensityAnayzer2(mm));
-	    Util::deleteExist("intensity.xls");
-	    //產生兩者的合體
-	    //analyzer.reset(new IntensityAnayzer(ma, ma2, ca210Analyzer));
-	    analyzer.reset(new IntensityAnayzer(ma, ca210Analyzer));
-#else
+	//產生max matrix
+	bptr < MaxMatrixIntensityAnayzer >
+	    ma(new MaxMatrixIntensityAnayzer(mm));
+	/*bptr < MaxMatrixIntensityAnayzer2 >
+	   ma2(new MaxMatrixIntensityAnayzer2(mm)); */
+	Util::deleteExist("intensity.xls");
+
+	if (true == this->RadioButton_AnalyzerCA210->Checked) {
 	    analyzer = ca210Analyzer;
-#endif
+	} else if (true == this->RadioButton_AnalyzerMaxMatrix->Checked) {
+	    analyzer = ma;
+	} else if (true == this->RadioButton_AnalyzerDebug->Checked) {
+	    //產生兩者的合體
+	    analyzer.reset(new IntensityAnayzer(ma, ca210Analyzer));
+	}
+
     }
     return analyzer;
 }
@@ -179,6 +183,11 @@ bptr < cms::lcd::calibrate::ComponentFetcher >
 bptr < cms::measure::meter::CA210 > TMainForm::getCA210()
 {
     if (null == ca210 && true == linkCA210) {
+	if (null == meter) {
+	    //throw IllegalStateException("CA210 cannot be linked.");
+	    ShowMessage("CA210 cannot be linked.");
+	}
+
 	cms::measure::meter::Meter * pointer = meter.get();
 	ca210.reset(dynamic_cast <
 		    cms::measure::meter::CA210 * >(pointer));
@@ -387,7 +396,7 @@ void __fastcall TMainForm::MatrixCalibration1Click(TObject * Sender)
     }
 
     if (true == linkCA210
-	&& true == MatrixCalibrationForm->setMeter(ca210,mm)) {
+	&& true == MatrixCalibrationForm->setMeter(ca210, mm)) {
 	MatrixCalibrationForm->ShowModal();
     } else {
 	//MatrixCalibrationForm->ShowModal();
@@ -554,13 +563,14 @@ void __fastcall TMainForm::Edit_IntervalChange(TObject * Sender)
 void __fastcall TMainForm::FormShow(TObject * Sender)
 {
     if (null == meter) {
-	ShowMessage
-	    ("CA210 cannot be linked.");
+	ShowMessage("CA210 cannot be linked.");
 	//Application->Terminate();
     }
 }
 
 //---------------------------------------------------------------------------
-     void TMainForm::setMeterMeasurementWaitTimes() {
-this->mm->setWaitTimes(     this->getInterval());
-     };
+void TMainForm::setMeterMeasurementWaitTimes()
+{
+    this->mm->setWaitTimes(this->getInterval());
+};
+

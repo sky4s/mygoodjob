@@ -91,6 +91,10 @@ class TMainForm:public TForm {
     TRadioButton *RadioButton_Out10;
     TLabel *Label10;
     TEdit *Edit_FRCAbility;
+    TGroupBox *GroupBox3;
+    TRadioButton *RadioButton_AnalyzerCA210;
+    TRadioButton *RadioButton_AnalyzerMaxMatrix;
+    TRadioButton *RadioButton_AnalyzerDebug;
     void __fastcall About1Click(TObject * Sender);
     void __fastcall Exit1Click(TObject * Sender);
     void __fastcall TargetWhite1Click(TObject * Sender);
@@ -125,6 +129,7 @@ class TMainForm:public TForm {
     int getInterval();
      bptr < cms::measure::CA210IntensityAnalyzer > ca210Analyzer;
      bptr < cms::measure::IntensityAnalyzerIF > analyzer;
+    void initCA210Meter();
     //==========================================================================
 
 
@@ -146,7 +151,7 @@ class TMainForm:public TForm {
     void setAnalyzerToTargetChannel(bool reset);
     const bool linkCA210;
      bptr < cms::measure::MeterMeasurement > mm;
-     void setMeterMeasurementWaitTimes();
+    void setMeterMeasurementWaitTimes();
      bptr < cms::measure::IntensityAnalyzerIF > getAnalyzer();
     //
 

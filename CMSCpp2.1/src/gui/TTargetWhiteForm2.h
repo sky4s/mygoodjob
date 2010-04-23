@@ -57,6 +57,9 @@ class TTargetWhiteForm2:public TForm, cms::util::WindowListener {
     TEdit *Edit_ScrollB;
     TLabel *Label3;
     TCheckBox *CheckBox_MoreAccurate;
+    TEdit *Edit_refx;
+    TEdit *Edit_refy;
+    TEdit *Edit_refLuminance;
     void __fastcall RadioButton_MaxRGBClick(TObject * Sender);
     void __fastcall ScrollBar_RChange(TObject * Sender);
     void __fastcall ScrollBar_GChange(TObject * Sender);

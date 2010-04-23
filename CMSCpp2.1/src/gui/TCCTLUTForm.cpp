@@ -125,7 +125,6 @@ void __fastcall TCCTLUTForm::Button_RunClick(TObject * Sender)
 	this->TOutputFileFrame1->createDir();
 
 	bptr < MeasureCondition > measureCondition = getMeasureCondition();
-
 	RGB_vector_ptr dglut = calibrator->getDGLut(measureCondition);
 	if (dglut == null) {
 	    return;
@@ -133,7 +132,6 @@ void __fastcall TCCTLUTForm::Button_RunClick(TObject * Sender)
 
 	String_ptr astr = this->TOutputFileFrame1->getOutputFilename();
 	string filename = astr->c_str();
-
 	calibrator->storeDGLut(filename, dglut);
 	ShowMessage("Ok!");
     }
