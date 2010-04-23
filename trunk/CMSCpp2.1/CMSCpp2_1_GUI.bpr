@@ -50,7 +50,7 @@
     <DEBUGLIBPATH value="$(BCB)\lib\debug"/>
     <RELEASELIBPATH value="$(BCB)\lib\release"/>
     <LINKER value="ilink32"/>
-    <USERDEFINES value=""/>
+    <USERDEFINES value="_DEBUG"/>
     <SYSDEFINES value="NO_STRICT"/>
     <MAINSOURCE value="CMSCpp2_1_GUI.cpp"/>
     <INCLUDEPATH value="&quot;C:\Program Files\Borland\CBuilder6\Projects&quot;;src\i2c\core;src\i2c;&quot;D:\Program Files\Borland\CBuilder6\Projects&quot;;src\math;src\gui;src\cms;src\cms\util;src\cms\measure;src\cms\lcd\calibrate;src\cms\colorspace;src\cms\colorformat;src\ca210api;lib\CA200SRVRLib;src\java;src\cms\i2c;src\cms\i2c\core;lib\USB_i2c_lib;lib\LPT_lib;src;$(BCB)\include;$(BCB)\include\vcl;lib"/>
@@ -65,7 +65,7 @@
       -Isrc\cms\colorspace -Isrc\cms\colorformat -Isrc\ca210api 
       -Ilib\CA200SRVRLib -Isrc\java -Isrc\cms\i2c -Isrc\cms\i2c\core 
       -Ilib\USB_i2c_lib -Ilib\LPT_lib -Isrc -I$(BCB)\include 
-      -I$(BCB)\include\vcl -Ilib -src_suffix cpp 1 -boa"/>
+      -I$(BCB)\include\vcl -Ilib -src_suffix cpp -D_DEBUG 1 -boa"/>
     <CFLAG1 value="-Od -H=$(BCB)\lib\vcl60.csm -Hc -Q -Vx -Ve -X- -r- -a1 -6 -b- -k -y -v 
       -vi- -c -tW -tWM"/>
     <PFLAGS value="-N2build -N0build -$Y+ -$W -$O- -$A8 -v -JPHNE -M"/>
@@ -154,7 +154,7 @@ AutoIncBuild=1
 MajorVer=3
 MinorVer=2
 Release=0
-Build=127
+Build=141
 Debug=1
 PreRelease=0
 Special=0
@@ -166,7 +166,7 @@ CodePage=950
 [Version Info Keys]
 CompanyName=AUO
 FileDescription=CCT Adjustment v3
-FileVersion=3.2.0.127
+FileVersion=3.2.0.141
 InternalName=
 LegalCopyright=Algorithm by StocktonTsai &amp; skyforce, Implement by skyforce
 LegalTrademarks=

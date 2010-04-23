@@ -102,13 +102,16 @@ bptr < cms::measure::IntensityAnalyzerIF > TMainForm::getAnalyzer()
     using namespace cms::lcd::calibrate;
     if (null == analyzer) {
 	//產生ca210
-	ca210Analyzer.reset(new CA210IntensityAnalyzer(getCA210(), mm));
+	bptr < cms::measure::meter::CA210 > ca210 = getCA210();
+	if (null == ca210) {
+	    return bptr < IntensityAnalyzerIF >
+		((IntensityAnalyzerIF *) null);
+	}
+	ca210Analyzer.reset(new CA210IntensityAnalyzer(ca210, mm));
 	//產生max matrix
 	bptr < MaxMatrixIntensityAnayzer >
 	    ma(new MaxMatrixIntensityAnayzer(mm));
-	/*bptr < MaxMatrixIntensityAnayzer2 >
-	   ma2(new MaxMatrixIntensityAnayzer2(mm)); */
-	Util::deleteExist("intensity.xls");
+
 
 	if (true == this->RadioButton_AnalyzerCA210->Checked) {
 	    analyzer = ca210Analyzer;
@@ -183,14 +186,15 @@ bptr < cms::lcd::calibrate::ComponentFetcher >
 bptr < cms::measure::meter::CA210 > TMainForm::getCA210()
 {
     if (null == ca210 && true == linkCA210) {
+	using namespace cms::measure::meter;
 	if (null == meter) {
 	    //throw IllegalStateException("CA210 cannot be linked.");
 	    ShowMessage("CA210 cannot be linked.");
+	    return bptr < CA210 > ((CA210 *) null);
 	}
 
 	cms::measure::meter::Meter * pointer = meter.get();
-	ca210.reset(dynamic_cast <
-		    cms::measure::meter::CA210 * >(pointer));
+	ca210.reset(dynamic_cast < CA210 * >(pointer));
     }
     return ca210;
 };

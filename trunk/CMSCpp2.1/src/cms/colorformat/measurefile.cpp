@@ -16,7 +16,7 @@ namespace cms {
 	using namespace java::lang;
 	using namespace cms::util;
 	const std::string & RampMeasureFile::Sheet1 = "Sheet1";
- 
+
 	 RampMeasureFile::RampMeasureFile(const std::string & fileName,
 					  const Mode
 					  mode):ExcelAccessBase(fileName,
@@ -26,6 +26,25 @@ namespace cms {
 		      "R_Y (nit)", "G_x", "G_y", "G_Y (nit)", "B_x", "B_y",
 		      "B_Y (nit)");
 	};
+
+	int RampMeasureFile::
+	    getMaximumSize(Component_vector_ptr wMeasureData,
+			   Patch_vector_ptr rMeasureData,
+			   Patch_vector_ptr gMeasureData,
+			   Patch_vector_ptr bMeasureData) {
+	    using namespace math;
+	    int wsize = wMeasureData != null ? wMeasureData->size() : 0;
+	    int rsize = rMeasureData != null ? rMeasureData->size() : 0;
+	    int gsize = gMeasureData != null ? gMeasureData->size() : 0;
+	    int bsize = bMeasureData != null ? bMeasureData->size() : 0;
+	    int_array sizes(new int[4]);
+	     sizes[0] = wsize;
+	     sizes[1] = rsize;
+	     sizes[2] = gsize;
+	     sizes[3] = bsize;
+	     return IntArray::max(sizes, 4);
+	};
+
 	void RampMeasureFile::
 	    setMeasureData(Component_vector_ptr wMeasureData,
 			   Patch_vector_ptr rMeasureData,
@@ -34,13 +53,8 @@ namespace cms {
 	    //==================================================================
 	    // 檢查來源資料
 	    //==================================================================
-	    int size = wMeasureData->size();
-	    int rsize = rMeasureData != null ? rMeasureData->size() : size;
-	    int gsize = gMeasureData != null ? gMeasureData->size() : size;
-	    int bsize = bMeasureData != null ? bMeasureData->size() : size;
-	    if (size != rsize || size != gsize || size != bsize) {
-		throw IllegalArgumentException("size is not match");
-	    }
+	    int size = getMaximumSize(wMeasureData, rMeasureData,
+				      gMeasureData, bMeasureData);
 	    //==================================================================//==================================================================// 初始資料設定//==================================================================//db->setTableName(Sheet1);//string_vector_ptr headerNames = getHeaderNames(Sheet1);
 	    string_vector_ptr values(new string_vector(18));
 	    //==================================================================
@@ -57,14 +71,11 @@ namespace cms {
 		    (*values)[1] = _toString(xyY->x);
 		    (*values)[2] = _toString(xyY->y);
 		    (*values)[3] = _toString(xyY->Y);
-
 		    double cct =
 			CorrelatedColorTemperature::
 			xy2CCTByMcCamyFloat(xyY);
 		    (*values)[4] = _toString(static_cast < int >(cct));
 		    (*values)[5] = "0";
-
-
 		    RGB_ptr intensity = c->intensity;
 		    (*values)[6] = _toString(intensity->R);
 		    (*values)[7] = _toString(intensity->G);
@@ -106,7 +117,6 @@ namespace cms {
 	    }
 	    //==================================================================
 	};
-
 	/*void RampMeasureFile::setMeasureData(const Channel & channel,
 	   Patch_vector_ptr measureData)
 	   {

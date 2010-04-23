@@ -461,6 +461,15 @@ namespace math {
 	}
 	return str;
     };
-
+    //==========================================================================
+    int IntArray::max(int_array array, int n) {
+	int max = std::numeric_limits < double >::min();
+	for (int x = 0; x != n; x++) {
+	    const int &v = array[x];
+	    max = v > max ? v : max;
+	}
+	return max;
+    };
+    //==========================================================================
 };
 

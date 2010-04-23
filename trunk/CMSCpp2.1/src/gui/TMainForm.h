@@ -89,12 +89,11 @@ class TMainForm:public TForm {
     TRadioButton *RadioButton_Out6;
     TRadioButton *RadioButton_Out8;
     TRadioButton *RadioButton_Out10;
-    TLabel *Label10;
-    TEdit *Edit_FRCAbility;
-    TGroupBox *GroupBox3;
     TRadioButton *RadioButton_AnalyzerCA210;
     TRadioButton *RadioButton_AnalyzerMaxMatrix;
     TRadioButton *RadioButton_AnalyzerDebug;
+    TLabel *Label10;
+    TEdit *Edit_FRCAbility;
     void __fastcall About1Click(TObject * Sender);
     void __fastcall Exit1Click(TObject * Sender);
     void __fastcall TargetWhite1Click(TObject * Sender);
@@ -131,8 +130,6 @@ class TMainForm:public TForm {
      bptr < cms::measure::IntensityAnalyzerIF > analyzer;
     void initCA210Meter();
     //==========================================================================
-
-
     //==========================================================================
     // T-CON
     //==========================================================================
