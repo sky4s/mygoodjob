@@ -27,7 +27,7 @@ namespace cms {
 
 	/*const WideString & CA210IntensityAnalyzer::
 	   CalibrationDataFilename = "ca210.dat"; */
-	bool CA210IntensityAnalyzer::ANALYZER_MODE_CAL = false;
+	bool CA210IntensityAnalyzer::ANALYZER_CAL_MODE = false;
 
 	void CA210IntensityAnalyzer::init() {
 	    ca210api->setDisplayMode(Lvxy);
@@ -83,7 +83,7 @@ namespace cms {
 	};
 
 	void CA210IntensityAnalyzer::beginSetup() {
-	    if (ANALYZER_MODE_CAL) {
+	    if (ANALYZER_CAL_MODE) {
 		ca210api->setAnalyzerCalMode();
 	    } else {
 		ca210api->setLvxyCalMode();
@@ -93,8 +93,6 @@ namespace cms {
 	void CA210IntensityAnalyzer::setupComponent(const Dep::
 						    Channel & ch,
 						    RGB_ptr rgb) {
-	    //ca210api->setAnalyzerCalMode();
-
 	    Patch_ptr p = mm->measure(rgb, rgb->toString());
 
 	    lClr lclr;
@@ -113,7 +111,7 @@ namespace cms {
 		break;
 	    };
 	    if (false == dummyMode) {
-		if (ANALYZER_MODE_CAL) {
+		if (ANALYZER_CAL_MODE) {
 		    ca210api->setAnalyzerCalData(lclr);
 		} else {
 		    ca210api->setLvxyCalData(lclr,
@@ -143,11 +141,8 @@ namespace cms {
 		ca210api->setChannelNO(no);
 		//設定id
 		ca210api->setChannelID(WideString(id->c_str()));
-		//重新設定CalMode
-		//ca210api->resetLvxyCalMode();
 		if (true == reset) {
 		    ca210api->copyFromFile(CA210DAT);
-		    //ca210api->setAnalyzerCalMode();
 		}
 
 	    }
@@ -312,7 +307,7 @@ namespace cms {
 		DoubleArray::toDouble2D(3, 9, rXYZ->X, gXYZ->X, bXYZ->X,
 					rXYZ->Y, gXYZ->Y, bXYZ->Y,
 					rXYZ->Z, gXYZ->Z, bXYZ->Z);
-	    double m0 = (*m)[0][0];
+	    /*double m0 = (*m)[0][0];
 	    double m1 = (*m)[0][1];
 	    double m2 = (*m)[0][2];
 	    double m3 = (*m)[1][0];
@@ -320,11 +315,11 @@ namespace cms {
 	    double m5 = (*m)[1][2];
 	    double m6 = (*m)[2][0];
 	    double m7 = (*m)[2][1];
-	    double m8 = (*m)[2][2];
+	    double m8 = (*m)[2][2];*/
 
 	    this->inverseMatrix = DoubleArray::inverse(m);
 
-	    double im0 = (*inverseMatrix)[0][0];
+	    /*double im0 = (*inverseMatrix)[0][0];
 	    double im1 = (*inverseMatrix)[0][1];
 	    double im2 = (*inverseMatrix)[0][2];
 	    double im3 = (*inverseMatrix)[1][0];
@@ -332,7 +327,7 @@ namespace cms {
 	    double im5 = (*inverseMatrix)[1][2];
 	    double im6 = (*inverseMatrix)[2][0];
 	    double im7 = (*inverseMatrix)[2][1];
-	    double im8 = (*inverseMatrix)[2][2];
+	    double im8 = (*inverseMatrix)[2][2];*/
 
 
 	    double2D_ptr targetWhite =

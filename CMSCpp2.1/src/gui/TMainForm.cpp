@@ -54,6 +54,7 @@ void __fastcall TMainForm::TargetWhite1Click(TObject * Sender)
 	Application->CreateForm(__classid(TTargetWhiteForm2),
 				&TargetWhiteForm2);
     }
+    TargetWhiteForm2->setBitDepthProcessor(bitDepth);
     TargetWhiteForm2->ShowModal();
 }
 
@@ -139,7 +140,7 @@ void TMainForm::setAnalyzerToTargetChannel(bool reset)
 	//撈出channel no和id
 	int channel = this->Edit_TargetCH->Text.ToInt();
 	string targetid = Edit_TargetID->Text.c_str();
-        //若沒有值強制指定為空白字元的字串
+	//若沒有值強制指定為空白字元的字串
 	targetid = targetid.empty()? string(" ") : targetid;
 	string_ptr id(new string(targetid));
 	//設定在ca210
@@ -155,11 +156,13 @@ void TMainForm::setDummyMeterFilename(const std::string & filename)
     using namespace cms::measure::meter;
     using namespace cms::measure;
     using namespace cms::colorformat;
+    using namespace cms::lcd::calibrate;
     bptr < DGLutFile > dgcode(new DGLutFile(filename, ReadOnly));
     meter.reset(new DGLutFileMeter(dgcode));
     mm.reset(new MeterMeasurement(meter, false));
     mm->setFakeMeasure(true);
     analyzer.reset(new CA210IntensityAnalyzer(mm));
+    fetcher.reset((ComponentFetcher *) null);
 };
 
 //---------------------------------------------------------------------------
@@ -167,8 +170,10 @@ void TMainForm::setDummyMeterFilename(const std::string & filename)
 void TMainForm::resetDummyMeter()
 {
     using namespace cms::measure::meter;
+    using namespace cms::lcd::calibrate;
     DGLutFileMeter *dgc = dynamic_cast < DGLutFileMeter * >(meter.get());
     dgc->reset();
+    //fetcher.reset((ComponentFetcher *) null);
 };
 
 //---------------------------------------------------------------------------
@@ -581,5 +586,4 @@ void TMainForm::setMeterMeasurementWaitTimes()
 {
     this->mm->setWaitTimes(this->getInterval());
 };
-
 

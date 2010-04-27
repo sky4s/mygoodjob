@@ -12,7 +12,7 @@
 namespace cms {
     namespace lcd {
 	namespace calibrate {
-	    class WhitePointFinder :public cms::util::WindowListener {
+	    class WhitePointFinder:public cms::util::WindowListener {
 	      private:
 
 		RGB_ptr findMatchRGB0(xyY_ptr xyY, RGB_ptr initRGB);
@@ -26,22 +26,30 @@ namespace cms {
 		    CIEuv1960NearestAlgorithm > nearAlgo;
 
 	      protected:
-                 bool stop;
+		 bool stop;
 		 bptr < cms::measure::MeterMeasurement > mm;
+		double maxcode;
 	      public:
 		 WhitePointFinder(bptr < cms::measure::MeterMeasurement >
 				  mm);
-		RGB_ptr findRGB(xyY_ptr xyY);
-                void windowClosing();
+		 WhitePointFinder(bptr < cms::measure::MeterMeasurement >
+				  mm, double maxcode);
+		virtual RGB_ptr findRGB(xyY_ptr xyY);
+		void windowClosing();
 	    };
 
 	    class StocktonWhitePointFinder:public WhitePointFinder {
 	      private:
 		RGB_ptr initRGB;
+		//double max;
 	      public:
 		StocktonWhitePointFinder(bptr <
 					 cms::measure::MeterMeasurement >
 					 mm, RGB_ptr initRGB);
+		StocktonWhitePointFinder(bptr <
+					 cms::measure::MeterMeasurement >
+					 mm, RGB_ptr initRGB,
+					 double maxcode);
 		RGB_ptr findRGB(xyY_ptr targetxyY);
 	    };
 	};

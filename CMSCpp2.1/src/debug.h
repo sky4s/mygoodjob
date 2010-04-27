@@ -6,10 +6,12 @@
 #define DEBUG_DIR  "debug/"
 //#define DEBUG_ANALYZER
 
+//#define DEBUG_CCTLUT
+
 //==============================================================================
 // debug¥Î¥¨¶°
 //==============================================================================
-#ifdef _DEBUG
+#ifdef DEBUG_CCTLUT
 #include <cms/util/rgbarray.h>
 #define _ std::string
 #define debug_dir _(DEBUG_DIR)

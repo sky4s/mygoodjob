@@ -78,9 +78,14 @@ class TTargetWhiteForm2:public TForm, cms::util::WindowListener {
     int calculateCCT(double x, double y);
     bool colorimetricChanging;
     bool stopMeasure;
+    bptr < cms::lcd::calibrate::BitDepthProcessor > bitDepth;
+    void setRGBRatio(int r, int g, int b);
   public:			// User declarations
     __fastcall TTargetWhiteForm2(TComponent * Owner);
     void windowClosing();
+    void setBitDepthProcessor(bptr <
+			      cms::lcd::calibrate::BitDepthProcessor >
+			      bitDepth);
 };
 //---------------------------------------------------------------------------
 extern PACKAGE TTargetWhiteForm2 *TargetWhiteForm2;

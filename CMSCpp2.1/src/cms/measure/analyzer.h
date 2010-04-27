@@ -34,7 +34,7 @@ namespace cms {
 
 	class CA210IntensityAnalyzer:public IntensityAnalyzerIF {
 	  protected:
-	    static bool ANALYZER_MODE_CAL;
+	    static bool ANALYZER_CAL_MODE;
 	    //int defaultWaitTimes;
 	     bptr < cms::measure::meter::CA210 > ca210;
 	     bptr < ca210api::CA210API > ca210api;

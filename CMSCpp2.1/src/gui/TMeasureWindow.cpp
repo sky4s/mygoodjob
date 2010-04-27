@@ -111,9 +111,9 @@ void __fastcall TMeasureWindow::FormClose(TObject * Sender,
 					  TCloseAction & Action)
 {
     foreach(bptr < cms::util::WindowListener > listener, listenerVector) {
-        if(null != listener) {
-	  listener->windowClosing();
-        }
+	if (null != listener) {
+	    listener->windowClosing();
+	}
     }
 }
 

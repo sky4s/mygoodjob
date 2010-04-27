@@ -51,6 +51,7 @@ namespace cms {
 		    virtual RGB_vector_ptr getAroundRGB(RGB_ptr centerRGB,
 							double step) = 0;
 		     StepAroundAlgorithm();
+		     StepAroundAlgorithm(double maxcode);
 		};
 
 		class ChromaticAroundAlgorithm:public StepAroundAlgorithm {
@@ -68,6 +69,7 @@ namespace cms {
 		    RGB_vector_ptr getAroundRGB(RGB_ptr centerRGB,
 						double step);
 		     ChromaticAroundAlgorithm();
+		     ChromaticAroundAlgorithm(double maxcode);
 		};
 	    };
 	};

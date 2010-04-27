@@ -214,7 +214,7 @@ namespace ca210api {
     };
     xyY_ptr CA210API::getReferenceColor() {
 	using namespace Indep;
-	float x, y, Y;
+	float x = 0, y = 0, Y = 0;
 	memory.GetReferenceColor(memory.get_ChannelID(), &x, &y, &Y);
 	xyY_ptr xyY(new CIExyY(x, y, Y));
 	return xyY;

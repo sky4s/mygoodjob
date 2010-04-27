@@ -116,7 +116,7 @@ object TargetWhiteForm2: TTargetWhiteForm2
             Left = 27
             Top = 20
             Width = 58
-            Height = 24
+            Height = 21
             ImeName = #26085#25991#36664#20837#31995#32113' (MS-IME2002)'
             TabOrder = 0
             Text = '0.2788'
@@ -126,7 +126,7 @@ object TargetWhiteForm2: TTargetWhiteForm2
             Left = 105
             Top = 20
             Width = 58
-            Height = 24
+            Height = 21
             ImeName = #26085#25991#36664#20837#31995#32113' (MS-IME2002)'
             TabOrder = 1
             Text = '0.2920'
@@ -136,7 +136,7 @@ object TargetWhiteForm2: TTargetWhiteForm2
             Left = 26
             Top = 46
             Width = 59
-            Height = 24
+            Height = 21
             ImeName = #26085#25991#36664#20837#31995#32113' (MS-IME2002)'
             TabOrder = 2
             Text = '10000'
@@ -146,7 +146,7 @@ object TargetWhiteForm2: TTargetWhiteForm2
             Left = 26
             Top = 72
             Width = 59
-            Height = 24
+            Height = 21
             Enabled = False
             ImeName = #26085#25991#36664#20837#31995#32113' (MS-IME2002)'
             TabOrder = 3
@@ -156,7 +156,7 @@ object TargetWhiteForm2: TTargetWhiteForm2
             Left = 104
             Top = 72
             Width = 59
-            Height = 24
+            Height = 21
             Enabled = False
             ImeName = #26085#25991#36664#20837#31995#32113' (MS-IME2002)'
             TabOrder = 4
@@ -193,7 +193,7 @@ object TargetWhiteForm2: TTargetWhiteForm2
             Left = 7
             Top = 20
             Width = 33
-            Height = 24
+            Height = 21
             ImeName = #26085#25991#36664#20837#31995#32113' (MS-IME2002)'
             TabOrder = 0
             Text = '255'
@@ -203,7 +203,7 @@ object TargetWhiteForm2: TTargetWhiteForm2
             Left = 46
             Top = 20
             Width = 33
-            Height = 24
+            Height = 21
             ImeName = #26085#25991#36664#20837#31995#32113' (MS-IME2002)'
             TabOrder = 1
             Text = '255'
@@ -213,7 +213,7 @@ object TargetWhiteForm2: TTargetWhiteForm2
             Left = 85
             Top = 20
             Width = 33
-            Height = 24
+            Height = 21
             ImeName = #26085#25991#36664#20837#31995#32113' (MS-IME2002)'
             TabOrder = 2
             Text = '255'
@@ -227,6 +227,7 @@ object TargetWhiteForm2: TTargetWhiteForm2
           Height = 59
           Caption = 'Reference Color'
           TabOrder = 6
+          Visible = False
           object Label4: TLabel
             Left = 7
             Top = 20
@@ -252,7 +253,7 @@ object TargetWhiteForm2: TTargetWhiteForm2
             Left = 13
             Top = 20
             Width = 40
-            Height = 24
+            Height = 21
             Enabled = False
             ImeName = #26085#25991#36664#20837#31995#32113' (MS-IME2002)'
             TabOrder = 0
@@ -262,7 +263,7 @@ object TargetWhiteForm2: TTargetWhiteForm2
             Left = 72
             Top = 20
             Width = 39
-            Height = 24
+            Height = 21
             Enabled = False
             ImeName = #26085#25991#36664#20837#31995#32113' (MS-IME2002)'
             TabOrder = 1
@@ -272,7 +273,7 @@ object TargetWhiteForm2: TTargetWhiteForm2
             Left = 130
             Top = 20
             Width = 40
-            Height = 24
+            Height = 21
             Enabled = False
             ImeName = #26085#25991#36664#20837#31995#32113' (MS-IME2002)'
             TabOrder = 2
@@ -356,7 +357,7 @@ object TargetWhiteForm2: TTargetWhiteForm2
           Left = 20
           Top = 280
           Width = 33
-          Height = 24
+          Height = 21
           Enabled = False
           ImeName = #26085#25991#36664#20837#31995#32113' (MS-IME2002)'
           TabOrder = 4
@@ -366,7 +367,7 @@ object TargetWhiteForm2: TTargetWhiteForm2
           Left = 20
           Top = 306
           Width = 33
-          Height = 24
+          Height = 21
           Enabled = False
           ImeName = #26085#25991#36664#20837#31995#32113' (MS-IME2002)'
           TabOrder = 5
@@ -376,7 +377,7 @@ object TargetWhiteForm2: TTargetWhiteForm2
           Left = 20
           Top = 332
           Width = 33
-          Height = 24
+          Height = 21
           Enabled = False
           ImeName = #26085#25991#36664#20837#31995#32113' (MS-IME2002)'
           TabOrder = 6

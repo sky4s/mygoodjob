@@ -28,9 +28,7 @@ __fastcall TTargetWhiteForm2::TTargetWhiteForm2(TComponent * Owner)
 void __fastcall TTargetWhiteForm2::RadioButton_MaxRGBClick(TObject *
 							   Sender)
 {
-    this->Edit_R->SetTextBuf("255");
-    this->Edit_G->SetTextBuf("255");
-    this->Edit_B->SetTextBuf("255");
+    setRGBRatio(255, 255, 255);
 }
 
 //---------------------------------------------------------------------------
@@ -193,14 +191,17 @@ void __fastcall TTargetWhiteForm2::Button2Click(TObject * Sender)
 	double targety = this->Edit_targety->Text.ToDouble();
 	xyY_ptr xyY(new CIExyY(targetx, targety, 1));
 	bptr < WhitePointFinder > finder;
+	double maxCount = bitDepth->getMaxDigitalCount();
 	//¤wª¾xy, ¨Drgb
 	if (true == moreAccurate) {
-	    finder.reset(new WhitePointFinder(MainForm->mm));
+	    finder.reset(new WhitePointFinder(MainForm->mm, maxCount));
 	    //WhitePointFinder finder(MainForm->mm);
 	    MeasureWindow->addWindowListener(finder);
 	    rgb = finder->findRGB(xyY);
 	} else {
-	    finder.reset(new StocktonWhitePointFinder(MainForm->mm, rgb));
+
+	    finder.reset(new StocktonWhitePointFinder(MainForm->mm, rgb,
+						      maxCount));
 	    //StocktonWhitePointFinder finder(MainForm->mm, rgb);
 	    MeasureWindow->addWindowListener(finder);
 	    rgb = finder->findRGB(xyY);
@@ -223,7 +224,7 @@ void __fastcall TTargetWhiteForm2::Button2Click(TObject * Sender)
     try {
 
 	analyzer->setWaitTimes(5000);
-        analyzer->beginSetup();
+	analyzer->beginSetup();
 	analyzer->setupComponent(Channel::R, r);
 	if (true == stopMeasure) {
 	    return;
@@ -244,17 +245,15 @@ void __fastcall TTargetWhiteForm2::Button2Click(TObject * Sender)
 	MainForm->setMeterMeasurementWaitTimes();
 	//==========================================================================
 
-	this->Edit_R->Text = r->R;
-	this->Edit_G->Text = g->G;
-	this->Edit_B->Text = b->B;
+	setRGBRatio(r->R, g->G, b->B);
 
-	xyY_ptr referenceColor = analyzer->getReferenceColor();
-	this->Edit_refx->Text =
-	    AnsiString().sprintf("%1.4g", referenceColor->x);
-	this->Edit_refy->Text =
-	    AnsiString().sprintf("%1.4g", referenceColor->y);
-	this->Edit_refLuminance->Text =
-	    AnsiString().sprintf("%1.4g", referenceColor->Y);
+	/*xyY_ptr referenceColor = analyzer->getReferenceColor();
+	   this->Edit_refx->Text =
+	   AnsiString().sprintf("%1.4g", referenceColor->x);
+	   this->Edit_refy->Text =
+	   AnsiString().sprintf("%1.4g", referenceColor->y);
+	   this->Edit_refLuminance->Text =
+	   AnsiString().sprintf("%1.4g", referenceColor->Y); */
     }
     __finally {
 	stopMeasure = false;
@@ -268,7 +267,6 @@ void __fastcall TTargetWhiteForm2::Button2Click(TObject * Sender)
 void __fastcall TTargetWhiteForm2::Edit_RChange(TObject * Sender)
 {
     ScrollBar_R->Position = this->Edit_R->Text.ToInt();
-    //this->RadioButton_RGBRatio->Checked=true;
 }
 
 //---------------------------------------------------------------------------
@@ -276,7 +274,6 @@ void __fastcall TTargetWhiteForm2::Edit_RChange(TObject * Sender)
 void __fastcall TTargetWhiteForm2::Edit_GChange(TObject * Sender)
 {
     ScrollBar_G->Position = this->Edit_G->Text.ToInt();
-    //this->RadioButton_RGBRatio->Checked=true;
 }
 
 //---------------------------------------------------------------------------
@@ -284,7 +281,6 @@ void __fastcall TTargetWhiteForm2::Edit_GChange(TObject * Sender)
 void __fastcall TTargetWhiteForm2::Edit_BChange(TObject * Sender)
 {
     ScrollBar_B->Position = this->Edit_B->Text.ToInt();
-    //this->RadioButton_RGBRatio->Checked=true;    
 }
 
 //---------------------------------------------------------------------------
@@ -302,4 +298,21 @@ void __fastcall TTargetWhiteForm2::FormCreate(TObject * Sender)
 }
 
 //---------------------------------------------------------------------------
+
+void TTargetWhiteForm2::setBitDepthProcessor(bptr <
+					     cms::lcd::calibrate::
+					     BitDepthProcessor > bitDepth)
+{
+    this->bitDepth = bitDepth;
+    double maxCount = bitDepth->getMaxDigitalCount();
+    setRGBRatio(maxCount, maxCount, maxCount);
+}
+
+//---------------------------------------------------------------------------
+void TTargetWhiteForm2::setRGBRatio(int r, int g, int b)
+{
+    this->Edit_R->Text = r;
+    this->Edit_G->Text = g;
+    this->Edit_B->Text = b;
+};
 
