@@ -23,7 +23,6 @@ class TCCTLUTForm:public TForm {
     TEdit *Edit_EndLevel;
     TGroupBox *GroupBox2;
     TRadioButton *RadioButton_GammaCurve;
-    TButton *Button_LoadGammaCurve;
     TCheckBox *CheckBox_GByPass;
     TRadioButton *RadioButton_Gamma;
     TComboBox *ComboBox_Gamma;

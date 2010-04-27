@@ -346,24 +346,12 @@ namespace cms {
 	    mm->setMeasureWindowsVisible(false);
 	};
 	void MaxMatrixIntensityAnayzer::setWaitTimes(int waitTimes) {
-	    /*if (-1 == defaultWaitTimes) {
-	       defaultWaitTimes = mm->getWaitTimes();
-	       } */
 	    mm->setWaitTimes(waitTimes);
 	};
 
 	int MaxMatrixIntensityAnayzer::getWaitTimes() {
 	    return mm->getWaitTimes();
 	};
-	/*void MaxMatrixIntensityAnayzer::setDefaultWaitTimes() {
-	   if (defaultWaitTimes != -1) {
-	   mm->setWaitTimes(defaultWaitTimes);
-	   defaultWaitTimes = -1;
-	   }
-
-	   }; */
-	/*const std::string & MaxMatrixIntensityAnayzer::
-	   CoefficientFilename = "analyzer.xls"; */
 	xyY_ptr MaxMatrixIntensityAnayzer::getReferenceColor() {
 	    xyY_ptr xyY(new CIExyY(wXYZ));
 	    return xyY;

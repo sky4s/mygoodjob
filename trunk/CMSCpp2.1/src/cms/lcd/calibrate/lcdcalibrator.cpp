@@ -502,10 +502,12 @@ namespace cms {
 		stop = false;
 	    };
 
-
-	    RGB_vector_ptr LCDCalibrator::getDGLut(bptr <
-						   MeasureCondition >
-						   measureCondition) {
+	    /*
+	       CCT + Gamma
+	     */
+	    RGB_vector_ptr LCDCalibrator::getCCTDGLut(bptr <
+						      MeasureCondition >
+						      measureCondition) {
 		this->measureCondition = measureCondition;
 
 		if (null == gammaCurve) {
@@ -610,26 +612,8 @@ namespace cms {
 		return result;
 	    };
 
-	    /*
-	       CCT + Gamma
-	     */
-	    RGB_vector_ptr LCDCalibrator::
-		getDGLut(int start, int end, int firstStep, int step) {
-		bptr < MeasureCondition >
-		    measureCondition(new
-				     MeasureCondition(start, end,
-						      firstStep, step));
-		return getDGLut(measureCondition);
+	    RGB_vector_ptr LCDCalibrator::getGammaDGLut(int step) {
 
-
-	    };
-
-	    /*
-	       Gamma Only
-	     */
-	    RGB_vector_ptr LCDCalibrator::getDGLut(int firstStep, int step) {
-		//set(255, 0, firstStep, step);
-		throw java::lang::UnsupportedOperationException();
 	    };
 
 	    void LCDCalibrator::storeDGLut(const std::
