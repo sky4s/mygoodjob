@@ -72,6 +72,9 @@ namespace cms {
 	      StepAroundAlgorithm::StepAroundAlgorithm():maxCode(255)
 		{
 		};
+	      StepAroundAlgorithm::StepAroundAlgorithm(double maxcode):maxCode(maxcode)
+		{
+		};
 		//==============================================================
 
 		//==============================================================
@@ -172,6 +175,10 @@ namespace cms {
 		    return getAroundRGB(centerRGB, nil_double_array, step);
 		};
 		ChromaticAroundAlgorithm::ChromaticAroundAlgorithm() {
+		    setMode(Normal);
+		};
+	      ChromaticAroundAlgorithm::ChromaticAroundAlgorithm(double maxcode):StepAroundAlgorithm(maxcode)
+		{
 		    setMode(Normal);
 		};
 		//==============================================================

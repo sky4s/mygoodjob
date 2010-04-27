@@ -22,15 +22,30 @@ namespace cms {
 	    //==================================================================
 	    // WhitePointFinder
 	    //==================================================================
-	     WhitePointFinder::WhitePointFinder(bptr < MeterMeasurement > mm):mm(mm),stop(false) {	/*,
-											   aroundAlgo(ChromaticAroundAlgorithm()) */
+	     WhitePointFinder::WhitePointFinder(bptr < MeterMeasurement >
+						mm):mm(mm), stop(false),
+		maxcode(255) {
 		aroundAlgo =
 		    bptr < ChromaticAroundAlgorithm >
 		    (new ChromaticAroundAlgorithm());
 		nearAlgo =
 		    bptr < CIEuv1960NearestAlgorithm >
-		    (new CIEuv1960NearestAlgorithm
-		     (XYZ_ptr((CIEXYZ *) null), mm));
+		    (new
+		     CIEuv1960NearestAlgorithm(XYZ_ptr((CIEXYZ *) null),
+					       mm));
+	    };
+
+	     WhitePointFinder::WhitePointFinder(bptr < MeterMeasurement >
+						mm, double maxcode):mm(mm),
+		stop(false), maxcode(maxcode) {
+		aroundAlgo =
+		    bptr < ChromaticAroundAlgorithm >
+		    (new ChromaticAroundAlgorithm(maxcode));
+		nearAlgo =
+		    bptr < CIEuv1960NearestAlgorithm >
+		    (new
+		     CIEuv1960NearestAlgorithm(XYZ_ptr((CIEXYZ *) null),
+					       mm));
 	    };
 
 	    RGB_ptr WhitePointFinder::findMatchRGB0(xyY_ptr xyY,
@@ -38,6 +53,7 @@ namespace cms {
 		this->mm;
 		RGB_ptr nearestRGB = initRGB;
 		bool findNearest = false;
+		 stop = false;
 
 		do {
 		    RGB_vector_ptr aroundRGB =
@@ -51,13 +67,13 @@ namespace cms {
 			MeasuredUtils::isFirstNearestXYZInuvPrime(center,
 								  aroundXYZ);
 		    //findNearest = true;
-                    if( true == stop) {
-                     stop = false;
-                     return nil_RGB_ptr;
-                    }
+		    if (true == stop) {
+			stop = false;
+			return nil_RGB_ptr;
+		    }
 
 		} while (!findNearest);
-		 return nearestRGB;
+		return nearestRGB;
 	    };
 
 	    RGB_ptr WhitePointFinder::findRGBAround(xyY_ptr xyY) {
@@ -84,7 +100,7 @@ namespace cms {
 		//然後再調整White使RGB其中一點為255.
 		const Channel & maxChannel = clone->getMaxChannel();
 		double maxChannelValue = clone->getValue(maxChannel);
-		double diff = 255 - maxChannelValue;
+		double diff = maxcode - maxChannelValue;
 		clone->addValue(diff);
 		return clone;
 	    };
@@ -99,28 +115,39 @@ namespace cms {
 	     */
 	    RGB_ptr WhitePointFinder::findRGB(xyY_ptr xyY) {
 		RGB_ptr initRGB = findRGBAround(xyY);
-                if( null == initRGB) {
-                  return initRGB;
-                }
+		if (null == initRGB) {
+		    return initRGB;
+		}
 		RGB_ptr fixRGB = fixRGB2TouchMax(initRGB);
 		RGB_ptr finalRGB = findMatchRGB(xyY, fixRGB);
 		return finalRGB;
 	    };
 
-            void WhitePointFinder::windowClosing() {
-                stop = true;
-            };
+	    void WhitePointFinder::windowClosing() {
+		stop = true;
+	    };
 	    //==================================================================
 	    //
 	    //==================================================================
 	  StocktonWhitePointFinder::StocktonWhitePointFinder(bptr < MeterMeasurement > mm, RGB_ptr initRGB):
-	    WhitePointFinder(mm), initRGB(initRGB) {
+	    WhitePointFinder(mm, 255), initRGB(initRGB) {
+
+	    };
+	    StocktonWhitePointFinder::StocktonWhitePointFinder(bptr <
+							       MeterMeasurement
+							       > mm,
+							       RGB_ptr
+							       initRGB,
+							       double
+							       maxcode):WhitePointFinder
+		(mm, maxcode), initRGB(initRGB) {
 
 	    };
 	    RGB_ptr StocktonWhitePointFinder::findRGB(xyY_ptr targetxyY) {
 		using java::lang::Math;
 		double_array delta;
 		RGB_ptr findRGB = initRGB->clone();
+		stop = false;
 		//==============================================================
 		// blue的處理(x/y)
 		//==============================================================
@@ -140,14 +167,14 @@ namespace cms {
 			adjust = 1;
 		    }
 
-		    if (delta[0] < 0 && delta[1] < 0) {
+		    if (delta[0] < 0 || delta[1] < 0) {
 			findRGB->B -= adjust;
 		    }
 
-                    if( true == stop) {
-                     stop = false;
-                     return nil_RGB_ptr;
-                    }
+		    if (true == stop) {
+			stop = false;
+			return nil_RGB_ptr;
+		    }
 		}
 		while (!(delta[0] > 0 && delta[1] > 0));
 		//==============================================================
@@ -163,15 +190,15 @@ namespace cms {
 		    if (delta[0] > 0) {
 			findRGB->R -= 1;
 		    }
-                    if( true == stop) {
-                     stop = false;
-                     return nil_RGB_ptr;
-                    }
+		    if (true == stop) {
+			stop = false;
+			return nil_RGB_ptr;
+		    }
 		} while (!(delta[0] < 0));
 		//==============================================================
 
 		//==============================================================
-		// red的處理(x)
+		// rgb的處理
 		//==============================================================
 		bool stopLoop = false;
 		do {
@@ -183,21 +210,21 @@ namespace cms {
 			//green的處理
 			findRGB->G -= 1;
 		    }
-		    if (delta[0] > 0 && findRGB->B < 255) {
+		    if (delta[0] > 0 && findRGB->B < maxcode) {
+			//blue的處理
 			findRGB->B += 1;
 		    }
-		    if (delta[0] > 0 && 255 == findRGB->B) {
+		    if (delta[0] > 0 && maxcode == findRGB->B) {
 			findRGB->R -= 1;
 		    }
 		    stopLoop = (delta[0] < 0 && delta[1] < 0)
-			|| (255 == findRGB->B && delta[1] < 0);
+			|| (maxcode == findRGB->B && delta[1] < 0);
 
-                    if( true == stop) {
-                     stop = false;
-                     return nil_RGB_ptr;
-                    }                        
-		} while (true == stopLoop);
-		//stopLoop = false;
+		    if (true == stop) {
+			stop = false;
+			return nil_RGB_ptr;
+		    }
+		} while (false == stopLoop);
 		//==============================================================
 
 		//==============================================================
@@ -207,7 +234,7 @@ namespace cms {
 		    mm->measure(findRGB, findRGB->toString());
 		xyY_ptr measurexyY(new CIExyY(patch->getXYZ()));
 		delta = measurexyY->getDeltaxy(targetxyY);
-		if (findRGB->R < 255) {
+		if (findRGB->R < maxcode) {
 		    findRGB->R += 1;
 		    patch = mm->measure(findRGB, findRGB->toString());
 		    measurexyY.reset(new CIExyY(patch->getXYZ()));
@@ -217,7 +244,7 @@ namespace cms {
 			findRGB->R -= 1;
 		    }
 		}
-		if (findRGB->G < 255) {
+		if (findRGB->G < maxcode) {
 		    findRGB->G += 1;
 		    patch = mm->measure(findRGB, findRGB->toString());
 		    measurexyY.reset(new CIExyY(patch->getXYZ()));
