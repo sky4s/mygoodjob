@@ -126,7 +126,7 @@ void __fastcall TCCTLUTForm::Button_RunClick(TObject * Sender)
 
 	bptr < MeasureCondition > measureCondition = getMeasureCondition();
 
-	RGB_vector_ptr dglut = calibrator->getDGLut(measureCondition);
+	RGB_vector_ptr dglut = calibrator->getCCTDGLut(measureCondition);
 	if (dglut == null) {
 	    return;
 	}
@@ -212,12 +212,9 @@ void __fastcall TCCTLUTForm::RadioButton_GammaCurveClick(TObject * Sender)
     if (OpenDialog1->Execute()) {
 	const AnsiString & filename = OpenDialog1->FileName;
 	rgbGamma = RGBGamma::loadFromDesiredGamma(filename.c_str());
-	//int effectiven = bitDepth->getEffectiveLevel();
 	unsigned int n = bitDepth->getLevel();
 	if (rgbGamma != null && rgbGamma->w->size() == n) {
 	    this->RadioButton_GammaCurve->Checked = true;
-	    /*bool gByPassEnable = this->bitDepth->is8in6Out()
-	       || this->bitDepth->is6in6Out(); */
 	    this->CheckBox_GByPass->Visible = true;
 	    return;
 	} else {
@@ -313,4 +310,6 @@ bptr < cms::lcd::calibrate::MeasureCondition >
 }
 
 //---------------------------------------------------------------------------
+
+
 

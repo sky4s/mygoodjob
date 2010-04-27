@@ -190,20 +190,14 @@ namespace cms {
 		void setAvoidFRCNoise(bool avoid);
 		void setKeepMaxLuminance(bool keepMaxLuminance);
 
-		/*LCDCalibrator(bptr < cms::measure::IntensityAnalyzerIF >
-		   analyzer,
-		   bptr < BitDepthProcessor > bitDepth); */
 		 LCDCalibrator(bptr <
 			       cms::lcd::calibrate::ComponentFetcher >
 			       fetcher,
 			       bptr < BitDepthProcessor > bitDepth);
 
-		//RGB_vector_ptr getDGLut(int start, int end, int step);
-		RGB_vector_ptr getDGLut(bptr < MeasureCondition >
-					measureCondition);
-		RGB_vector_ptr getDGLut(int start, int end, int firstStep,
-					int step);
-		RGB_vector_ptr getDGLut(int firstStep, int step);
+		RGB_vector_ptr getCCTDGLut(bptr < MeasureCondition >
+					   measureCondition);
+		RGB_vector_ptr getGammaDGLut(int step);
 		void storeDGLut(const std::string & filename,
 				RGB_vector_ptr dglut);
 		void setStop(bool stop);
