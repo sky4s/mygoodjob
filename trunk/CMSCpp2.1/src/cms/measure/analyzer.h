@@ -20,26 +20,30 @@ namespace cms {
 	  public:
 	    virtual RGB_ptr getIntensity(RGB_ptr rgb) = 0;
 	    virtual XYZ_ptr getCIEXYZ() = 0;
+	    virtual void beginSetup() = 0;
 	    virtual void setupComponent(const Dep::Channel & ch,
 					RGB_ptr rgb) = 0;
 	    virtual void enter() = 0;
 	    virtual void beginAnalyze() = 0;
 	    virtual void endAnalyze() = 0;
 	    virtual void setWaitTimes(int waitTimes) = 0;
+	    virtual int getWaitTimes() = 0;
 	    //virtual void setDefaultWaitTimes() = 0;
 	    virtual xyY_ptr getReferenceColor() = 0;
 	};
 
 	class CA210IntensityAnalyzer:public IntensityAnalyzerIF {
 	  protected:
+	    static bool ANALYZER_MODE_CAL;
 	    //int defaultWaitTimes;
-	    bptr < cms::measure::meter::CA210 > ca210;
-	    bptr < ca210api::CA210API > ca210api;
+	     bptr < cms::measure::meter::CA210 > ca210;
+	     bptr < ca210api::CA210API > ca210api;
 	    XYZ_ptr XYZ;
 	     bptr < MeterMeasurement > mm;
 	    bool dummyMode;
 	    void init();
 	     cms::measure::meter::DGLutFileMeter * dgc;
+
 	  public:
 
 	    /*
@@ -55,12 +59,14 @@ namespace cms {
 
 	    RGB_ptr getIntensity(RGB_ptr rgb);
 	    XYZ_ptr getCIEXYZ();
+	    void beginSetup();
 	    void setupComponent(const Dep::Channel & ch, RGB_ptr rgb);
 	    void enter();
 	    void setChannel(int no, string_ptr id, bool reset);
 	    void beginAnalyze();
 	    void endAnalyze();
 	    void setWaitTimes(int waitTimes);
+	    int getWaitTimes();
 	    xyY_ptr getReferenceColor();
 	    //void setDefaultWaitTimes();
 	};
@@ -98,6 +104,7 @@ namespace cms {
 	    RGB_ptr getIntensity(RGB_ptr rgb);
 	    RGB_ptr getIntensity(XYZ_ptr XYZ);
 	    XYZ_ptr getCIEXYZ();
+	    void beginSetup();
 	    void setupComponent(const Dep::Channel & ch, RGB_ptr rgb);
 	    void setupComponent(const Dep::Channel & ch,
 				XYZ_ptr measureXYZ);
@@ -105,6 +112,7 @@ namespace cms {
 	    void beginAnalyze();
 	    void endAnalyze();
 	    void setWaitTimes(int waitTimes);
+	    int getWaitTimes();
 	    //void setDefaultWaitTimes();
 	    xyY_ptr getReferenceColor();
 	};
@@ -128,11 +136,13 @@ namespace cms {
 			      bptr < CA210IntensityAnalyzer > ca210);
 	    RGB_ptr getIntensity(RGB_ptr rgb);
 	    XYZ_ptr getCIEXYZ();
+	    void beginSetup();
 	    void setupComponent(const Dep::Channel & ch, RGB_ptr rgb);
 	    void enter();
 	    void beginAnalyze();
 	    void endAnalyze();
 	    void setWaitTimes(int waitTimes);
+	    int getWaitTimes();
 	    //void setDefaultWaitTimes();
 	    xyY_ptr getReferenceColor();
 	};

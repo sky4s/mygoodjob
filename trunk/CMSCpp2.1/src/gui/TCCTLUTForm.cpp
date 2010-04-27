@@ -125,6 +125,7 @@ void __fastcall TCCTLUTForm::Button_RunClick(TObject * Sender)
 	this->TOutputFileFrame1->createDir();
 
 	bptr < MeasureCondition > measureCondition = getMeasureCondition();
+
 	RGB_vector_ptr dglut = calibrator->getDGLut(measureCondition);
 	if (dglut == null) {
 	    return;
@@ -156,7 +157,7 @@ void __fastcall TCCTLUTForm::FormCreate(TObject * Sender)
     bool debug = !MainForm->linkCA210;
     this->Button_Debug->Visible = debug;
     this->Button_Reset->Visible = debug;
-    this->RadioButton_None->Visible = debug;
+    //this->RadioButton_None->Visible = debug;
     //==========================================================================
 
 }

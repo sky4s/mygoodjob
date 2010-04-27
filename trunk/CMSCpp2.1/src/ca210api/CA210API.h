@@ -46,7 +46,7 @@ namespace ca210api {
     };
     enum DisplayDigits { Display3digit = 0, Display4digit
     };
-    enum CalStandard { D6500k = 0, D9300k
+    enum CalStandard { D6500k = 1, D9300k
     };
     enum RemoteMode { Off = 0, On, Locked
     };

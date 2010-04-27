@@ -69,6 +69,10 @@ namespace cms {
 		bool real10Bit = bitDepth->is10in10Out();
 		Component_vector_ptr result(new Component_vector());
 
+		bool waitingStable = true;
+		int waitTimes = analyzer->getWaitTimes();
+		analyzer->setWaitTimes(10000);
+
 		analyzer->beginAnalyze();
 		foreach(const int &x, *measureCode) {
 		    RGB_ptr rgb(tconInput ?
@@ -82,6 +86,12 @@ namespace cms {
 		    Component_ptr component(new Component(rgb, intensity,
 							  XYZ));
 		    result->push_back(component);
+
+		    if (true == waitingStable) {
+			waitingStable = false;
+			analyzer->setWaitTimes(waitTimes);
+		    }
+
 		    if (true == stop) {
 			stop = false;
 			break;
@@ -357,8 +367,9 @@ namespace cms {
 		    int code = x > 255 ? 255 : x;
 		    measureCode->push_back(code);
 		}
-
-		for (int x = lowStart; x >= lowEnd; x -= lowStep) {
+		start =
+		    (lowStart == highEnd) ? (lowStart - lowStep) : highEnd;
+		for (int x = start; x >= lowEnd; x -= lowStep) {
 		    measureCode->push_back(x);
 		}
 
@@ -439,8 +450,7 @@ namespace cms {
 		this->ggammaCurve = ggammaCurve;
 		this->bgammaCurve = bgammaCurve;
 	    };
-	    void LCDCalibrator::
-		setGammaCurve(double_vector_ptr gammaCurve) {
+	    void LCDCalibrator::setGammaCurve(double_vector_ptr gammaCurve) {
 		setGammaCurve0(gammaCurve);
 		useGammaCurve = true;
 	    };

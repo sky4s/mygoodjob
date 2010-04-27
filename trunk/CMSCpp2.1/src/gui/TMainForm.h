@@ -126,7 +126,7 @@ class TMainForm:public TForm {
      bptr < cms::measure::meter::CA210 > getCA210();
      bptr < cms::lcd::calibrate::ComponentFetcher > fetcher;
     int getInterval();
-     bptr < cms::measure::CA210IntensityAnalyzer > ca210Analyzer;
+     bptr < cms::measure::CA210IntensityAnalyzer > realAnalyzer;
      bptr < cms::measure::IntensityAnalyzerIF > analyzer;
     void initCA210Meter();
     //==========================================================================

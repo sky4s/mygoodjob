@@ -33,6 +33,7 @@ bool TMatrixCalibrationForm::setMeter(bptr < cms::measure::meter::CA210 >
     this->ca210 = ca210;
     if (ca210 != null) {
 	ca210API = ca210->getCA210API();
+	TCA210SettingFrame1->setCA210API(ca210API);
 	this->mm = mm;
 	return true;
     } else {
@@ -74,6 +75,32 @@ Button_MatrixCalibrateClick(TObject * Sender)
 	ShowMessage("CH00 cannot be calibrated.");
 	return;
     }
+
+    double rx = this->Edit_Rx->Text.ToDouble();
+    double ry = this->Edit_Ry->Text.ToDouble();
+    double rY = this->Edit_RLv->Text.ToDouble();
+    double gx = this->Edit_Gx->Text.ToDouble();
+    double gy = this->Edit_Gy->Text.ToDouble();
+    double gY = this->Edit_GLv->Text.ToDouble();
+    double bx = this->Edit_Bx->Text.ToDouble();
+    double by = this->Edit_By->Text.ToDouble();
+    double bY = this->Edit_BLv->Text.ToDouble();
+    double wx = this->Edit_Wx->Text.ToDouble();
+    double wy = this->Edit_Wy->Text.ToDouble();
+    double wY = this->Edit_WLv->Text.ToDouble();
+
+    if (rx == 0 || ry == 0 || rY == 0 || gx == 0 || gy == 0 || gY == 0 ||
+	bx == 0 || by == 0 || bY == 0 || wx == 0 || wy == 0 || wY == 0) {
+	ShowMessage("Target xyY is empty.");
+	return;
+    }
+
+    if (this->Edit_R->Text.IsEmpty() || this->Edit_G->Text.IsEmpty()
+	|| this->Edit_B->Text.IsEmpty()) {
+	ShowMessage("Pattern RGB is empty.");
+	return;
+    }
+
     int rValue = this->Edit_R->Text.ToInt();
     int gValue = this->Edit_G->Text.ToInt();
     int bValue = this->Edit_B->Text.ToInt();
@@ -81,31 +108,28 @@ Button_MatrixCalibrateClick(TObject * Sender)
     RGB_ptr g(new RGBColor(0, gValue, 0));
     RGB_ptr b(new RGBColor(0, 0, bValue));
     RGB_ptr w(new RGBColor(rValue, gValue, bValue));
+
     ca210API->setLvxyCalMode();
     int waitTimes = mm->getWaitTimes();
     mm->setWaitTimes(10000);
 
     Patch_ptr rp = mm->measure(r, r->toString());
-    xyY_ptr rxyY(new CIExyY(rp->getXYZ()));
-    ca210API->setLvxyCalData(Red, rxyY->x, rxyY->y, rxyY->Y);
+    ca210API->setLvxyCalData(Red, rx, ry, rY);
 
-    Patch_ptr gp = mm->measure(r, r->toString());
-    xyY_ptr gxyY(new CIExyY(gp->getXYZ()));
-    ca210API->setLvxyCalData(Green, gxyY->x, gxyY->y, gxyY->Y);
+    Patch_ptr gp = mm->measure(g, g->toString());
+    ca210API->setLvxyCalData(Green, gx, gy, gY);
 
-    Patch_ptr bp = mm->measure(r, r->toString());
-    xyY_ptr bxyY(new CIExyY(bp->getXYZ()));
-    ca210API->setLvxyCalData(Blue, bxyY->x, bxyY->y, bxyY->Y);
+    Patch_ptr bp = mm->measure(b, b->toString());
+    ca210API->setLvxyCalData(Blue, bx, by, bY);
 
-    Patch_ptr wp = mm->measure(r, r->toString());
-    xyY_ptr wxyY(new CIExyY(wp->getXYZ()));
-    ca210API->setLvxyCalData(White, wxyY->x, wxyY->y, wxyY->Y);
+    Patch_ptr wp = mm->measure(w, w->toString());
+    ca210API->setLvxyCalData(White, wx, wy, wY);
 
     ca210API->enter();
-
     mm->setWaitTimes(waitTimes);
     ShowMessage("Matrix Calibration is Success!");
 }
 
 //---------------------------------------------------------------------------
+
 

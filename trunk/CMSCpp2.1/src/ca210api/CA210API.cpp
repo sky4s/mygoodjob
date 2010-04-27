@@ -109,6 +109,7 @@ namespace ca210api {
 	ca.set_DisplayMode(Analyzer_nodisplay);
 	ca.Measure(0);
 
+
 	float_array measureValues(new float[3]);
 	measureValues[0] = probe.get_R();
 	measureValues[1] = probe.get_G();

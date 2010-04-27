@@ -27,6 +27,7 @@ namespace cms {
 
 	/*const WideString & CA210IntensityAnalyzer::
 	   CalibrationDataFilename = "ca210.dat"; */
+	bool CA210IntensityAnalyzer::ANALYZER_MODE_CAL = false;
 
 	void CA210IntensityAnalyzer::init() {
 	    ca210api->setDisplayMode(Lvxy);
@@ -48,7 +49,9 @@ namespace cms {
 
 	RGB_ptr CA210IntensityAnalyzer::getIntensity(RGB_ptr rgb) {
 	    //mm->measure(rgb, rgb->toString());
-	    ca210api->setDisplayMode(Lvxy);
+	    if (false == dummyMode) {
+		ca210api->setDisplayMode(Lvxy);
+	    }
 	    Patch_ptr patch = mm->measure(rgb, rgb->toString());
 	    XYZ = patch->getXYZ();
 	    float_array rgbIntensity;
@@ -79,11 +82,20 @@ namespace cms {
 	    return XYZ;
 	};
 
+	void CA210IntensityAnalyzer::beginSetup() {
+	    if (ANALYZER_MODE_CAL) {
+		ca210api->setAnalyzerCalMode();
+	    } else {
+		ca210api->setLvxyCalMode();
+	    }
+	};
+
 	void CA210IntensityAnalyzer::setupComponent(const Dep::
 						    Channel & ch,
 						    RGB_ptr rgb) {
+	    //ca210api->setAnalyzerCalMode();
 
-	    mm->measure(rgb, rgb->toString());
+	    Patch_ptr p = mm->measure(rgb, rgb->toString());
 
 	    lClr lclr;
 	    switch (ch.chindex) {
@@ -101,7 +113,13 @@ namespace cms {
 		break;
 	    };
 	    if (false == dummyMode) {
-		ca210api->setAnalyzerCalData(lclr);
+		if (ANALYZER_MODE_CAL) {
+		    ca210api->setAnalyzerCalData(lclr);
+		} else {
+		    ca210api->setLvxyCalData(lclr,
+					     (new CIExyY(p->getXYZ()))->
+					     getValues()) ;
+		}
 	    }
 	    float_array XYZValues = ca210api->triggerMeasurement();
 	    XYZ.reset(new
@@ -129,7 +147,7 @@ namespace cms {
 		//ca210api->resetLvxyCalMode();
 		if (true == reset) {
 		    ca210api->copyFromFile(CA210DAT);
-		    ca210api->setAnalyzerCalMode();
+		    //ca210api->setAnalyzerCalMode();
 		}
 
 	    }
@@ -141,18 +159,12 @@ namespace cms {
 	    mm->setMeasureWindowsVisible(false);
 	};
 	void CA210IntensityAnalyzer::setWaitTimes(int waitTimes) {
-	    /*if (-1 == defaultWaitTimes) {
-	       defaultWaitTimes = mm->getWaitTimes();
-	       } */
 	    mm->setWaitTimes(waitTimes);
 	};
-	/*void CA210IntensityAnalyzer::setDefaultWaitTimes() {
-	   if (defaultWaitTimes != -1) {
-	   mm->setWaitTimes(defaultWaitTimes);
-	   defaultWaitTimes = -1;
-	   }
 
-	   }; */
+	int CA210IntensityAnalyzer::getWaitTimes() {
+	    return mm->getWaitTimes();
+	};
 	xyY_ptr CA210IntensityAnalyzer::getReferenceColor() {
 	    return ca210api->getReferenceColor();
 	};
@@ -190,25 +202,25 @@ namespace cms {
 	    mm->measure(p->getRGB(), p->getRGB()->toString());
 	    ca210api->setLvxyCalData(Red,
 				     (new CIExyY(p->getXYZ()))->
-				     getxyValues());
+				     getValues());
 	    //==================================================================
 	    p = gp;
 	    mm->measure(p->getRGB(), p->getRGB()->toString());
 	    ca210api->setLvxyCalData(Green,
 				     (new CIExyY(p->getXYZ()))->
-				     getxyValues());
+				     getValues());
 	    //==================================================================
 	    p = bp;
 	    mm->measure(p->getRGB(), p->getRGB()->toString());
 	    ca210api->setLvxyCalData(Blue,
 				     (new CIExyY(p->getXYZ()))->
-				     getxyValues());
+				     getValues());
 	    //==================================================================
 	    p = wp;
 	    mm->measure(p->getRGB(), p->getRGB()->toString());
 	    ca210api->setLvxyCalData(White,
 				     (new CIExyY(p->getXYZ()))->
-				     getxyValues());
+				     getValues());
 	    //==================================================================
 
 	    ca210api->enter();
@@ -257,6 +269,9 @@ namespace cms {
 
 	XYZ_ptr MaxMatrixIntensityAnayzer::getCIEXYZ() {
 	    return XYZ;
+	};
+
+	void MaxMatrixIntensityAnayzer::beginSetup() {
 	};
 
 	void MaxMatrixIntensityAnayzer::setupComponent(const Dep::
@@ -340,6 +355,10 @@ namespace cms {
 	       defaultWaitTimes = mm->getWaitTimes();
 	       } */
 	    mm->setWaitTimes(waitTimes);
+	};
+
+	int MaxMatrixIntensityAnayzer::getWaitTimes() {
+	    return mm->getWaitTimes();
 	};
 	/*void MaxMatrixIntensityAnayzer::setDefaultWaitTimes() {
 	   if (defaultWaitTimes != -1) {
@@ -436,6 +455,8 @@ namespace cms {
 	XYZ_ptr IntensityAnayzer::getCIEXYZ() {
 	    return ca210->getCIEXYZ();
 	};
+	void IntensityAnayzer::beginSetup() {
+	};
 	void IntensityAnayzer::
 	    setupComponent(const Dep::Channel & ch, RGB_ptr rgb) {
 	    ca210->setupComponent(ch, rgb);
@@ -487,6 +508,9 @@ namespace cms {
 	};
 	void IntensityAnayzer::setWaitTimes(int waitTimes) {
 	    ca210->setWaitTimes(waitTimes);
+	};
+	int IntensityAnayzer::getWaitTimes() {
+	    return ca210->getWaitTimes();
 	};
 	/*void IntensityAnayzer::setDefaultWaitTimes() {
 	   ca210->setDefaultWaitTimes();
