@@ -42,3 +42,5 @@ void __fastcall TGammaAdjustmentForm::FormShow(TObject * Sender)
 
 //---------------------------------------------------------------------------
 
+
+

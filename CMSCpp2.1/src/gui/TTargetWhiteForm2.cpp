@@ -223,6 +223,7 @@ void __fastcall TTargetWhiteForm2::Button2Click(TObject * Sender)
     try {
 
 	analyzer->setWaitTimes(5000);
+        analyzer->beginSetup();
 	analyzer->setupComponent(Channel::R, r);
 	if (true == stopMeasure) {
 	    return;

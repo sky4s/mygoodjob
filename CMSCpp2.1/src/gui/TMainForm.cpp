@@ -26,7 +26,7 @@ TMainForm *MainForm;
 __fastcall TMainForm::TMainForm(TComponent * Owner):TForm(Owner),
 linkCA210(!FileExists(DEBUG_FILE))
 {
-    //bool debug = FileExists(DEBUG_FILE);
+
 }
 
 //---------------------------------------------------------------------------
@@ -107,19 +107,20 @@ bptr < cms::measure::IntensityAnalyzerIF > TMainForm::getAnalyzer()
 	    return bptr < IntensityAnalyzerIF >
 		((IntensityAnalyzerIF *) null);
 	}
-	ca210Analyzer.reset(new CA210IntensityAnalyzer(ca210, mm));
+	//realAnalyzer.reset(new StocktonIntensityAnayzer(ca210, mm));
+	realAnalyzer.reset(new CA210IntensityAnalyzer(ca210, mm));
 	//產生max matrix
 	bptr < MaxMatrixIntensityAnayzer >
 	    ma(new MaxMatrixIntensityAnayzer(mm));
 
 
 	if (true == this->RadioButton_AnalyzerCA210->Checked) {
-	    analyzer = ca210Analyzer;
+	    analyzer = realAnalyzer;
 	} else if (true == this->RadioButton_AnalyzerMaxMatrix->Checked) {
 	    analyzer = ma;
 	} else if (true == this->RadioButton_AnalyzerDebug->Checked) {
 	    //產生兩者的合體
-	    analyzer.reset(new IntensityAnayzer(ma, ca210Analyzer));
+	    analyzer.reset(new IntensityAnayzer(ma, realAnalyzer));
 	}
 
     }
@@ -131,15 +132,18 @@ void TMainForm::setAnalyzerToTargetChannel(bool reset)
 {
     using namespace std;
     if (true == linkCA210) {
-	if (null == ca210Analyzer) {
+	if (null == realAnalyzer) {
 	    throw java::lang::
 		IllegalStateException("call getAnalyzer() first!");
 	}
 	//撈出channel no和id
 	int channel = this->Edit_TargetCH->Text.ToInt();
-	string_ptr id(new string(Edit_TargetID->Text.c_str()));
+	string targetid = Edit_TargetID->Text.c_str();
+        //若沒有值強制指定為空白字元的字串
+	targetid = targetid.empty()? string(" ") : targetid;
+	string_ptr id(new string(targetid));
 	//設定在ca210
-	ca210Analyzer->setChannel(channel, id, reset);
+	realAnalyzer->setChannel(channel, id, reset);
 
     }
 };
@@ -154,7 +158,7 @@ void TMainForm::setDummyMeterFilename(const std::string & filename)
     bptr < DGLutFile > dgcode(new DGLutFile(filename, ReadOnly));
     meter.reset(new DGLutFileMeter(dgcode));
     mm.reset(new MeterMeasurement(meter, false));
-    //mm->setFakeMeasure(true);
+    mm->setFakeMeasure(true);
     analyzer.reset(new CA210IntensityAnalyzer(mm));
 };
 
@@ -400,10 +404,10 @@ void __fastcall TMainForm::MatrixCalibration1Click(TObject * Sender)
     }
 
     if (true == linkCA210
-	&& true == MatrixCalibrationForm->setMeter(ca210, mm)) {
+	&& true == MatrixCalibrationForm->setMeter(getCA210(), mm)) {
 	MatrixCalibrationForm->ShowModal();
     } else {
-	//MatrixCalibrationForm->ShowModal();
+	MatrixCalibrationForm->ShowModal();
     }
 
 }
@@ -577,4 +581,5 @@ void TMainForm::setMeterMeasurementWaitTimes()
 {
     this->mm->setWaitTimes(this->getInterval());
 };
+
 
