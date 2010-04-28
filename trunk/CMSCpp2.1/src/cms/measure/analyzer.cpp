@@ -116,7 +116,7 @@ namespace cms {
 		} else {
 		    ca210api->setLvxyCalData(lclr,
 					     (new CIExyY(p->getXYZ()))->
-					     getValues()) ;
+					     getValues());
 		}
 	    }
 	    float_array XYZValues = ca210api->triggerMeasurement();
@@ -307,7 +307,7 @@ namespace cms {
 		DoubleArray::toDouble2D(3, 9, rXYZ->X, gXYZ->X, bXYZ->X,
 					rXYZ->Y, gXYZ->Y, bXYZ->Y,
 					rXYZ->Z, gXYZ->Z, bXYZ->Z);
-	    /*double m0 = (*m)[0][0];
+	    double m0 = (*m)[0][0];
 	    double m1 = (*m)[0][1];
 	    double m2 = (*m)[0][2];
 	    double m3 = (*m)[1][0];
@@ -315,11 +315,19 @@ namespace cms {
 	    double m5 = (*m)[1][2];
 	    double m6 = (*m)[2][0];
 	    double m7 = (*m)[2][1];
-	    double m8 = (*m)[2][2];*/
+	    double m8 = (*m)[2][2];
 
 	    this->inverseMatrix = DoubleArray::inverse(m);
+	    double2D_ptr identify = DoubleArray::times(m, inverseMatrix);
 
-	    /*double im0 = (*inverseMatrix)[0][0];
+	    double i0 = (*identify)[0][0];
+	    double i1 = (*identify)[1][1];
+	    double i2 = (*identify)[2][2];
+	    if (i0 != 1 || i1 != 1 || i2 != 2) {
+		int x = 0;
+	    }
+
+	    double im0 = (*inverseMatrix)[0][0];
 	    double im1 = (*inverseMatrix)[0][1];
 	    double im2 = (*inverseMatrix)[0][2];
 	    double im3 = (*inverseMatrix)[1][0];
@@ -327,7 +335,7 @@ namespace cms {
 	    double im5 = (*inverseMatrix)[1][2];
 	    double im6 = (*inverseMatrix)[2][0];
 	    double im7 = (*inverseMatrix)[2][1];
-	    double im8 = (*inverseMatrix)[2][2];*/
+	    double im8 = (*inverseMatrix)[2][2];
 
 
 	    double2D_ptr targetWhite =

@@ -608,8 +608,23 @@ void ca210Try()
 void floatArrayTry()
 {
     using namespace math;
-    float2D_ptr f = FloatArray::toFloat2D(3, 3, 1.1 , 2.2f, 3.3f);
+    float2D_ptr f = FloatArray::toFloat2D(3, 3, 1.1, 2.2f, 3.3f);
     cout << *(FloatArray::toString(f)) << endl;
+};
+
+void inverseTry()
+{
+    using namespace std;
+    using namespace math;
+    double2D_ptr m =
+	DoubleArray::toDouble2D(3, 9, 0.9649, 0.9572, 0.1419, 0.1576,
+				0.4854,
+				0.4218, 0.9706, 0.8003, 0.9157);
+    double2D_ptr invm = DoubleArray::inverse(m);
+    cout << *DoubleArray::toString(invm) << endl;
+    double2D_ptr mm = DoubleArray::times(m, invm);
+    cout << *DoubleArray::toString(mm) << endl;
+
 };
 
 #pragma argsused
@@ -660,9 +675,12 @@ int main(int argc, char *argv[])
     //measureConditionTry();
     //vectorTry();
     //ca210Try();
-    floatArrayTry();
+    //floatArrayTry();
+    inverseTry();
 
     //persistence();
     getch();
+
+
 }
 

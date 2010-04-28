@@ -222,7 +222,7 @@ namespace math {
 	int n = a->dim2();
 	int bn = b->dim2();
 
-	double2D_ptr X(new double2D(m, bn));
+	double2D_ptr result(new double2D(m, bn));
 	double1D Bcolj(n);
 	for (int j = 0; j < bn; j++) {
 	    for (int k = 0; k < n; k++) {
@@ -233,10 +233,10 @@ namespace math {
 		for (int k = 0; k < n; k++) {
 		    s += (*a)[i][k] * Bcolj[k];
 		}
-		(*X)[i][j] = s;
+		(*result)[i][j] = s;
 	    }
 	}
-	return X;
+	return result;
     };
 
     double2D_ptr DoubleArray::identity(int n) {
@@ -271,8 +271,8 @@ namespace math {
 
     double2D_ptr DoubleArray::inverse(double2D_ptr matrix) {
 	int m = matrix->dim1();
-	int n = matrix->dim2();
-	return solve(matrix, identity(m, n));
+	//int n = matrix->dim2();
+	return solve(matrix, identity(m, m));
     };
 
     double2D_ptr DoubleArray::pseudoInverse(double2D_ptr m) {
