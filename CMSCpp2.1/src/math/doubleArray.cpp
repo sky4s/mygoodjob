@@ -73,6 +73,22 @@ namespace math {
 	return str;
     };
 
+    string DoubleArray::toString(double2D m) {
+	using namespace std;
+	string str;
+
+	for (int i = 0; i < m.dim1(); i++) {
+	    for (int j = 0; j < m.dim2() - 1; j++) {
+		str += _toString(m[i][j]) + " ";
+	    }
+	    str += _toString(m[i][m.dim2() - 1]);
+	    if (i < m.dim1() - 1) {
+		str += "\n";
+	    }
+	}
+	return str;
+    };
+
     string_ptr DoubleArray::toString(const longdouble2D & m) {
 	string_ptr str(new string());
 
@@ -239,6 +255,28 @@ namespace math {
 	return result;
     };
 
+    double2D DoubleArray::times(double2D a, double2D b) {
+	int m = a.dim1();
+	int n = a.dim2();
+	int bn = b.dim2();
+
+	double2D result(m, bn);
+	double1D Bcolj(n);
+	for (int j = 0; j < bn; j++) {
+	    for (int k = 0; k < n; k++) {
+		Bcolj[k] = b[k][j];
+	    }
+	    for (int i = 0; i < m; i++) {
+		long double s = 0;
+		for (int k = 0; k < n; k++) {
+		    s += a[i][k] * Bcolj[k];
+		}
+		result[i][j] = s;
+	    }
+	}
+	return result;
+    };
+
     double2D_ptr DoubleArray::identity(int n) {
 	double2D_ptr m(new double2D(n, n));
 	for (int x = 0; x < n; x++) {
@@ -249,8 +287,22 @@ namespace math {
     double2D_ptr DoubleArray::identity(int m, int n) {
 	double2D_ptr result(new double2D(m, n));
 	int size = Math::min(m, n);
-	for (int x = 0; x < size; x++) {
-	    (*result)[x][x] = 1;
+	for (int x = 0; x < m; x++) {
+	    for (int y = 0; y < n; y++) {
+		(*result)[x][y] = (x == y) ? 1 : 0;
+                //(*result)[x][y] = (x == y) ? 1 : (*result)[x][y];
+	    }
+	}
+
+	return result;
+    };
+    double2D DoubleArray::identity_(int m, int n) {
+	double2D result(m, n);
+	int size = Math::min(m, n);
+	for (int x = 0; x < m; x++) {
+	    for (int y = 0; y < n; y++) {
+		result[x][y] = (x == y) ? 1 : 0;
+	    }
 	}
 	return result;
     };
@@ -268,11 +320,26 @@ namespace math {
 	}
 	return result;
     };
+    double2D DoubleArray::solve(double2D a, double2D b) {
+
+	int m = a.dim1();
+	int n = a.dim2();
+	if (m == n) {
+	    LU < double >lu(a);
+	    return lu.solve(b);
+	} else {
+	    QR < double >qr(a);
+	    return qr.solve(b);
+	}
+    };
 
     double2D_ptr DoubleArray::inverse(double2D_ptr matrix) {
 	int m = matrix->dim1();
-	//int n = matrix->dim2();
 	return solve(matrix, identity(m, m));
+    };
+    double2D DoubleArray::inverse(double2D matrix) {
+	int m = matrix.dim1();
+	return solve(matrix, identity_(m, m));
     };
 
     double2D_ptr DoubleArray::pseudoInverse(double2D_ptr m) {

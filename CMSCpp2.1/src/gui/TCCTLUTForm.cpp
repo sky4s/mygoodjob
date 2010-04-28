@@ -72,7 +72,7 @@ void __fastcall TCCTLUTForm::Button_RunClick(TObject * Sender)
     using namespace cms::lcd::calibrate;
 
     MainForm->getAnalyzer();
-    MainForm->setAnalyzerToTargetChannel(false);
+    MainForm->setAnalyzerToTargetChannel();
 
     calibrator.
 	reset(new

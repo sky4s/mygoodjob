@@ -183,8 +183,9 @@ void __fastcall TTargetWhiteForm2::Button2Click(TObject * Sender)
     RGB_ptr rgb(new RGBColor(rvalue, gvalue, bvalue));
 
     bptr < IntensityAnalyzerIF > analyzer = MainForm->getAnalyzer();
-    MainForm->setAnalyzerToTargetChannel(true);
+
     MainForm->setMeterMeasurementWaitTimes();
+    MainForm->setAnalyzerToSourceChannel();
 
     if (true == usexy) {
 	double targetx = this->Edit_targetx->Text.ToDouble();
@@ -195,14 +196,12 @@ void __fastcall TTargetWhiteForm2::Button2Click(TObject * Sender)
 	//已知xy, 求rgb
 	if (true == moreAccurate) {
 	    finder.reset(new WhitePointFinder(MainForm->mm, maxCount));
-	    //WhitePointFinder finder(MainForm->mm);
 	    MeasureWindow->addWindowListener(finder);
 	    rgb = finder->findRGB(xyY);
 	} else {
 
 	    finder.reset(new StocktonWhitePointFinder(MainForm->mm, rgb,
 						      maxCount));
-	    //StocktonWhitePointFinder finder(MainForm->mm, rgb);
 	    MeasureWindow->addWindowListener(finder);
 	    rgb = finder->findRGB(xyY);
 	}
@@ -222,9 +221,8 @@ void __fastcall TTargetWhiteForm2::Button2Click(TObject * Sender)
     // 設定到ca-210去
     //==========================================================================
     try {
-
 	analyzer->setWaitTimes(5000);
-	analyzer->beginSetup();
+	//analyzer->beginSetup();
 	analyzer->setupComponent(Channel::R, r);
 	if (true == stopMeasure) {
 	    return;
@@ -241,19 +239,12 @@ void __fastcall TTargetWhiteForm2::Button2Click(TObject * Sender)
 	if (true == stopMeasure) {
 	    return;
 	}
+	MainForm->setAnalyzerToTargetChannel();
 	analyzer->enter();
 	MainForm->setMeterMeasurementWaitTimes();
 	//==========================================================================
 
 	setRGBRatio(r->R, g->G, b->B);
-
-	/*xyY_ptr referenceColor = analyzer->getReferenceColor();
-	   this->Edit_refx->Text =
-	   AnsiString().sprintf("%1.4g", referenceColor->x);
-	   this->Edit_refy->Text =
-	   AnsiString().sprintf("%1.4g", referenceColor->y);
-	   this->Edit_refLuminance->Text =
-	   AnsiString().sprintf("%1.4g", referenceColor->Y); */
     }
     __finally {
 	stopMeasure = false;

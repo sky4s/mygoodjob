@@ -31,7 +31,7 @@ void __fastcall TGammaMeasurementForm::Button_MeasureClick(TObject *
     using namespace std;
     using namespace cms::util;
     MainForm->getAnalyzer();
-    MainForm->setAnalyzerToTargetChannel(false);
+    MainForm->setAnalyzerToTargetChannel();
     bool_vector_ptr rgbw(new bool_vector(4));
     (*rgbw)[0] = this->CheckBox_R->Checked;
     (*rgbw)[1] = this->CheckBox_G->Checked;

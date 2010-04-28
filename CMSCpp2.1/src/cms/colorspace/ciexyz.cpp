@@ -310,9 +310,11 @@ namespace cms {
 	    XYZ_ptr CIExyY::toXYZ(const CIExyY & xyY) {
 		XYZ_ptr XYZ(new CIEXYZ());
 
-		XYZ->X = (xyY.x / xyY.y) * xyY.Y;
-		XYZ->Y = xyY.Y;
-		XYZ->Z = ((1 - xyY.x - xyY.y) / xyY.y) * xyY.Y;
+		if (xyY.x != 0 || xyY.y != 0 || xyY.Y != 0) {
+		    XYZ->X = (xyY.x / xyY.y) * xyY.Y;
+		    XYZ->Y = xyY.Y;
+		    XYZ->Z = ((1 - xyY.x - xyY.y) / xyY.y) * xyY.Y;
+		}
 		XYZ->normalizeY_ = xyY.normalizeY_;
 		XYZ->degree_ = xyY.degree_;
 		return XYZ;

@@ -620,11 +620,23 @@ void inverseTry()
 	DoubleArray::toDouble2D(3, 9, 0.9649, 0.9572, 0.1419, 0.1576,
 				0.4854,
 				0.4218, 0.9706, 0.8003, 0.9157);
-    double2D_ptr invm = DoubleArray::inverse(m);
-    cout << *DoubleArray::toString(invm) << endl;
-    double2D_ptr mm = DoubleArray::times(m, invm);
-    cout << *DoubleArray::toString(mm) << endl;
 
+
+    double2D_ptr invm = DoubleArray::inverse(m);
+    double2D_ptr mm = DoubleArray::times(m, invm);
+
+    cout << *(DoubleArray::toString(m)) << endl;
+    cout << *(DoubleArray::toString(invm)) << endl;
+    cout << *(DoubleArray::toString(mm)) << endl;
+    cout << "==" << endl;
+
+    double2D m_ = *m;
+    double2D invm_ = DoubleArray::inverse(m_);
+    double2D mm_ = DoubleArray::times(m_, invm_);
+
+    cout << DoubleArray::toString(m_) << endl;
+    cout << DoubleArray::toString(invm_) << endl;
+    cout << DoubleArray::toString(mm_) << endl;
 };
 
 #pragma argsused
