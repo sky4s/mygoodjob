@@ -27,7 +27,7 @@ namespace cms {
 
 	/*const WideString & CA210IntensityAnalyzer::
 	   CalibrationDataFilename = "ca210.dat"; */
-	bool CA210IntensityAnalyzer::ANALYZER_CAL_MODE = false;
+	//bool CA210IntensityAnalyzer::ANALYZER_CAL_MODE = false;
 
 	void CA210IntensityAnalyzer::init() {
 	    ca210api->setDisplayMode(Lvxy);
@@ -82,50 +82,85 @@ namespace cms {
 	    return XYZ;
 	};
 
-	void CA210IntensityAnalyzer::beginSetup() {
-	    if (ANALYZER_CAL_MODE) {
-		ca210api->setAnalyzerCalMode();
-	    } else {
-		ca210api->setLvxyCalMode();
-	    }
-	};
+ 
+
+	/*lClr CA210IntensityAnalyzer::getlClr(Dep::ChannelIndex chindex) {
+	   switch (chindex) {
+	   case ChannelIndex::R:
+	   return Red;
+	   case ChannelIndex::G:
+	   return Green;
+	   case ChannelIndex::B:
+	   return Blue;
+	   case ChannelIndex::W:
+	   return White;
+	   };
+	   }; */
 
 	void CA210IntensityAnalyzer::setupComponent(const Dep::
 						    Channel & ch,
 						    RGB_ptr rgb) {
 	    Patch_ptr p = mm->measure(rgb, rgb->toString());
-
-	    lClr lclr;
+            XYZ = p->getXYZ();
+            
 	    switch (ch.chindex) {
 	    case ChannelIndex::R:
-		lclr = Red;
+		rp = p;
 		break;
 	    case ChannelIndex::G:
-		lclr = Green;
+		gp = p;
 		break;
 	    case ChannelIndex::B:
-		lclr = Blue;
+		bp = p;
 		break;
 	    case ChannelIndex::W:
-		lclr = White;
+		wp = p;
 		break;
 	    };
-	    if (false == dummyMode) {
-		if (ANALYZER_CAL_MODE) {
-		    ca210api->setAnalyzerCalData(lclr);
-		} else {
-		    ca210api->setLvxyCalData(lclr,
-					     (new CIExyY(p->getXYZ()))->
-					     getValues());
-		}
-	    }
-	    float_array XYZValues = ca210api->triggerMeasurement();
-	    XYZ.reset(new
-		      CIEXYZ(XYZValues[0], XYZValues[1], XYZValues[2]));
-	};
 
+	    /*if (false == dummyMode) {
+	       if (ANALYZER_CAL_MODE) {
+	       ca210api->setAnalyzerCalData(lclr);
+	       } else {
+	       ca210api->setLvxyCalData(lclr,
+	       (new CIExyY(p->getXYZ()))->
+	       getValues());
+	       }
+	       }
+	       float_array XYZValues = ca210api->triggerMeasurement();
+	       XYZ.reset(new
+	       CIEXYZ(XYZValues[0], XYZValues[1], XYZValues[2])); */
+	};
+        
 	void CA210IntensityAnalyzer::enter() {
 	    if (false == dummyMode) {
+                ca210api->copyFromFile(CA210DAT);
+		ca210api->setLvxyCalMode();
+
+		RGB_ptr r = rp->getRGB();
+		mm->measure(r, r->toString());
+		ca210api->setLvxyCalData(Red,
+					 (new CIExyY(rp->getXYZ()))->
+					 getValues());
+
+		RGB_ptr g = gp->getRGB();
+		mm->measure(g, g->toString());
+		ca210api->setLvxyCalData(Green,
+					 (new CIExyY(gp->getXYZ()))->
+					 getValues());
+
+		RGB_ptr b = bp->getRGB();
+		mm->measure(b, b->toString());
+		ca210api->setLvxyCalData(Blue,
+					 (new CIExyY(bp->getXYZ()))->
+					 getValues());
+
+		RGB_ptr w = wp->getRGB();
+		mm->measure(w, w->toString());
+		ca210api->setLvxyCalData(White,
+					 (new CIExyY(wp->getXYZ()))->
+					 getValues());
+
 		ca210api->enter();
 	    }
 	    mm->setMeasureWindowsVisible(false);
@@ -134,7 +169,7 @@ namespace cms {
 	/*
 	   設定channel的no和id
 	 */
-	void CA210IntensityAnalyzer::setChannel(int no, string_ptr id,
+	/*void CA210IntensityAnalyzer::setChannel(int no, string_ptr id,
 						bool reset) {
 	    if (false == dummyMode) {
 		//設定no
@@ -142,9 +177,17 @@ namespace cms {
 		//設定id
 		ca210api->setChannelID(WideString(id->c_str()));
 		if (true == reset) {
-		    ca210api->copyFromFile(CA210DAT);
+		    //ca210api->copyFromFile(CA210DAT);
 		}
 
+	    }
+	};*/
+	void CA210IntensityAnalyzer::setChannel(int no, string_ptr id) {
+	    if (false == dummyMode) {
+		//設定no
+		ca210api->setChannelNO(no);
+		//設定id
+		ca210api->setChannelID(WideString(id->c_str()));
 	    }
 	};
 	void CA210IntensityAnalyzer::beginAnalyze() {
@@ -165,62 +208,61 @@ namespace cms {
 	};
 	//======================================================================
 
-      StocktonIntensityAnayzer::StocktonIntensityAnayzer(bptr < CA210 > ca210, bptr < MeterMeasurement > mm):CA210IntensityAnalyzer(ca210, mm)
-	{
-	    mm->setWaitTimes(5000);
-	    ca210api->setLvxyCalMode();
-	};
+	/*StocktonIntensityAnayzer::StocktonIntensityAnayzer(bptr < CA210 > ca210, bptr < MeterMeasurement > mm):CA210IntensityAnalyzer(ca210, mm)
+	   {
+	   mm->setWaitTimes(5000);
+	   ca210api->setLvxyCalMode();
+	   };
 
-	void StocktonIntensityAnayzer::setupComponent(const Dep::
-						      Channel & ch,
-						      RGB_ptr rgb) {
-	    Patch_ptr p = mm->measure(rgb, rgb->toString());
-	    switch (ch.chindex) {
-	    case ChannelIndex::R:
-		rp = p;
-		break;
-	    case ChannelIndex::G:
-		gp = p;
-		break;
-	    case ChannelIndex::B:
-		bp = p;
-		break;
-	    case ChannelIndex::W:
-		wp = p;
-		break;
-	    };
-	};
+	   void StocktonIntensityAnayzer::setupComponent(const Dep::
+	   Channel & ch,
+	   RGB_ptr rgb) {
+	   Patch_ptr p = mm->measure(rgb, rgb->toString());
+	   switch (ch.chindex) {
+	   case ChannelIndex::R:
+	   rp = p;
+	   break;
+	   case ChannelIndex::G:
+	   gp = p;
+	   break;
+	   case ChannelIndex::B:
+	   bp = p;
+	   break;
+	   case ChannelIndex::W:
+	   wp = p;
+	   break;
+	   };
+	   };
 
-	void StocktonIntensityAnayzer::enter() {
-	    //==================================================================
-	    Patch_ptr p = rp;
-	    mm->measure(p->getRGB(), p->getRGB()->toString());
-	    ca210api->setLvxyCalData(Red,
-				     (new CIExyY(p->getXYZ()))->
-				     getValues());
-	    //==================================================================
-	    p = gp;
-	    mm->measure(p->getRGB(), p->getRGB()->toString());
-	    ca210api->setLvxyCalData(Green,
-				     (new CIExyY(p->getXYZ()))->
-				     getValues());
-	    //==================================================================
-	    p = bp;
-	    mm->measure(p->getRGB(), p->getRGB()->toString());
-	    ca210api->setLvxyCalData(Blue,
-				     (new CIExyY(p->getXYZ()))->
-				     getValues());
-	    //==================================================================
-	    p = wp;
-	    mm->measure(p->getRGB(), p->getRGB()->toString());
-	    ca210api->setLvxyCalData(White,
-				     (new CIExyY(p->getXYZ()))->
-				     getValues());
-	    //==================================================================
+	   void StocktonIntensityAnayzer::enter() {
+	   //==================================================================
+	   Patch_ptr p = rp;
+	   mm->measure(p->getRGB(), p->getRGB()->toString());
+	   ca210api->setLvxyCalData(Red,
+	   (new CIExyY(p->getXYZ()))->
+	   getValues());
+	   //==================================================================
+	   p = gp;
+	   mm->measure(p->getRGB(), p->getRGB()->toString());
+	   ca210api->setLvxyCalData(Green,
+	   (new CIExyY(p->getXYZ()))->
+	   getValues());
+	   //==================================================================
+	   p = bp;
+	   mm->measure(p->getRGB(), p->getRGB()->toString());
+	   ca210api->setLvxyCalData(Blue,
+	   (new CIExyY(p->getXYZ()))->
+	   getValues());
+	   //==================================================================
+	   p = wp;
+	   mm->measure(p->getRGB(), p->getRGB()->toString());
+	   ca210api->setLvxyCalData(White,
+	   (new CIExyY(p->getXYZ()))->
+	   getValues());
+	   //==================================================================
 
-	    ca210api->enter();
-	};
-
+	   ca210api->enter();
+	   }; */
 
 
 	//======================================================================
@@ -231,7 +273,7 @@ namespace cms {
       MaxMatrixIntensityAnayzer::MaxMatrixIntensityAnayzer(bptr < MeterMeasurement > mm):mm(mm)
 	    //, defaultWaitTimes(-1)
 	{
-	    Util::deleteExist(INTENSITY_FILE);
+
 	};
 
 	RGB_ptr MaxMatrixIntensityAnayzer::getIntensity(RGB_ptr rgb) {
@@ -265,10 +307,7 @@ namespace cms {
 	XYZ_ptr MaxMatrixIntensityAnayzer::getCIEXYZ() {
 	    return XYZ;
 	};
-
-	void MaxMatrixIntensityAnayzer::beginSetup() {
-	};
-
+ 
 	void MaxMatrixIntensityAnayzer::setupComponent(const Dep::
 						       Channel & ch,
 						       RGB_ptr rgb) {
@@ -307,36 +346,8 @@ namespace cms {
 		DoubleArray::toDouble2D(3, 9, rXYZ->X, gXYZ->X, bXYZ->X,
 					rXYZ->Y, gXYZ->Y, bXYZ->Y,
 					rXYZ->Z, gXYZ->Z, bXYZ->Z);
-	    double m0 = (*m)[0][0];
-	    double m1 = (*m)[0][1];
-	    double m2 = (*m)[0][2];
-	    double m3 = (*m)[1][0];
-	    double m4 = (*m)[1][1];
-	    double m5 = (*m)[1][2];
-	    double m6 = (*m)[2][0];
-	    double m7 = (*m)[2][1];
-	    double m8 = (*m)[2][2];
 
 	    this->inverseMatrix = DoubleArray::inverse(m);
-	    double2D_ptr identify = DoubleArray::times(m, inverseMatrix);
-
-	    double i0 = (*identify)[0][0];
-	    double i1 = (*identify)[1][1];
-	    double i2 = (*identify)[2][2];
-	    if (i0 != 1 || i1 != 1 || i2 != 2) {
-		int x = 0;
-	    }
-
-	    double im0 = (*inverseMatrix)[0][0];
-	    double im1 = (*inverseMatrix)[0][1];
-	    double im2 = (*inverseMatrix)[0][2];
-	    double im3 = (*inverseMatrix)[1][0];
-	    double im4 = (*inverseMatrix)[1][1];
-	    double im5 = (*inverseMatrix)[1][2];
-	    double im6 = (*inverseMatrix)[2][0];
-	    double im7 = (*inverseMatrix)[2][1];
-	    double im8 = (*inverseMatrix)[2][2];
-
 
 	    double2D_ptr targetWhite =
 		DoubleArray::toDouble2D(1, 3, wXYZ->X, wXYZ->Y, wXYZ->Z);
@@ -378,6 +389,7 @@ namespace cms {
 					  "MA_R", "MA_G", "MA_B", "MA_Ro",
 					  "MA_Go", "MA_Bo", "MA2_R",
 					  "MA2_G", "MA2_B");
+	    Util::deleteExist(INTENSITY_FILE);
 	    excel.
 		reset(new
 		      SimpleExcelAccess(INTENSITY_FILE,
@@ -394,6 +406,7 @@ namespace cms {
 					  "MA_R", "MA_G", "MA_B", "MA_Ro",
 					  "MA_Go", "MA_Bo", "MA2_R",
 					  "MA2_G", "MA2_B");
+	    Util::deleteExist(INTENSITY_FILE);
 	    excel.
 		reset(new
 		      SimpleExcelAccess(INTENSITY_FILE,
@@ -446,8 +459,7 @@ namespace cms {
 	XYZ_ptr IntensityAnayzer::getCIEXYZ() {
 	    return ca210->getCIEXYZ();
 	};
-	void IntensityAnayzer::beginSetup() {
-	};
+
 	void IntensityAnayzer::
 	    setupComponent(const Dep::Channel & ch, RGB_ptr rgb) {
 	    ca210->setupComponent(ch, rgb);

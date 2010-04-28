@@ -108,7 +108,6 @@ bptr < cms::measure::IntensityAnalyzerIF > TMainForm::getAnalyzer()
 	    return bptr < IntensityAnalyzerIF >
 		((IntensityAnalyzerIF *) null);
 	}
-	//realAnalyzer.reset(new StocktonIntensityAnayzer(ca210, mm));
 	realAnalyzer.reset(new CA210IntensityAnalyzer(ca210, mm));
 	//產生max matrix
 	bptr < MaxMatrixIntensityAnayzer >
@@ -129,7 +128,7 @@ bptr < cms::measure::IntensityAnalyzerIF > TMainForm::getAnalyzer()
 }
 
 //---------------------------------------------------------------------------
-void TMainForm::setAnalyzerToTargetChannel(bool reset)
+void TMainForm::setAnalyzerToTargetChannel()
 {
     using namespace std;
     if (true == linkCA210) {
@@ -144,7 +143,26 @@ void TMainForm::setAnalyzerToTargetChannel(bool reset)
 	targetid = targetid.empty()? string(" ") : targetid;
 	string_ptr id(new string(targetid));
 	//設定在ca210
-	realAnalyzer->setChannel(channel, id, reset);
+	realAnalyzer->setChannel(channel, id);
+
+    }
+};
+
+//---------------------------------------------------------------------------
+
+void TMainForm::setAnalyzerToSourceChannel()
+{
+    using namespace std;
+    if (true == linkCA210) {
+	if (null == realAnalyzer) {
+	    throw java::lang::
+		IllegalStateException("call getAnalyzer() first!");
+	}
+	//撈出channel no和id
+	int channel = this->Edit_SourceCH->Text.ToInt();
+	string_ptr id(new string(" "));
+	//設定在ca210
+	realAnalyzer->setChannel(channel, id);
 
     }
 };
@@ -586,5 +604,4 @@ void TMainForm::setMeterMeasurementWaitTimes()
 {
     this->mm->setWaitTimes(this->getInterval());
 };
-
 

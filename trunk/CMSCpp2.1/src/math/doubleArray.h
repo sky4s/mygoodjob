@@ -23,6 +23,7 @@ namespace math {
       private:
 	static const double e;
 	static double getTolerance(int m, int n, double1D sv);
+	static double2D identity_(int m, int n);
       public:
 	static double_array plus(double_array v1, double v, int n);
 	static double_array minus(double_array v1, double_array v2, int n);
@@ -32,6 +33,7 @@ namespace math {
 	static string_ptr toString(double_vector_ptr m);
 	static string_ptr toString(double1D_ptr m);
 	static string_ptr toString(double2D_ptr m);
+	static std::string toString(double2D m);
 	static string_ptr toString(const longdouble2D & m);
 	static string_ptr toString(const longdouble1D & m);
 
@@ -59,10 +61,14 @@ namespace math {
 
 	static double2D_ptr diagonal(double1D_ptr m);
 	static double2D_ptr times(double2D_ptr a, double2D_ptr b);
+	static double2D times(double2D a, double2D b);
 	static double2D_ptr identity(int n);
 	static double2D_ptr identity(int m, int n);
+
 	static double2D_ptr solve(double2D_ptr a, double2D_ptr b);
+	static double2D solve(double2D a, double2D b);
 	static double2D_ptr inverse(double2D_ptr m);
+	static double2D inverse(double2D m);
 	static double2D_ptr pseudoInverse(double2D_ptr m);
 	static double2D_ptr toDouble2D(int width, int n, ...);
 	static void toDouble2D_(int x, int n, ...);

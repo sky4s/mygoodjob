@@ -145,7 +145,8 @@ class TMainForm:public TForm {
     //==========================================================================
     // meter
     //==========================================================================
-    void setAnalyzerToTargetChannel(bool reset);
+    void setAnalyzerToTargetChannel();
+    void setAnalyzerToSourceChannel();
     const bool linkCA210;
      bptr < cms::measure::MeterMeasurement > mm;
     void setMeterMeasurementWaitTimes();
