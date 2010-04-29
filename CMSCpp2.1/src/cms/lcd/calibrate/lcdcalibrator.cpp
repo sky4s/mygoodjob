@@ -94,16 +94,17 @@ namespace cms {
 
 		    if (true == stop) {
 			stop = false;
-			break;
+			return Component_vector_ptr((Component_vector *)
+						    null);
 		    }
 		}
 		analyzer->endAnalyze();
 		return result;
 	    };
 
-	    void ComponentFetcher::setStop(bool stop) {
-		this->stop = stop;
-	    };
+	    /*void ComponentFetcher::setStop(bool stop) {
+	       this->stop = stop;
+	       }; */
 
 	    void ComponentFetcher::storeToExcel(const string & filename,
 						Component_vector_ptr
@@ -116,7 +117,8 @@ namespace cms {
 				 nil_RGBGamma);
 	    };
 	    void ComponentFetcher::windowClosing() {
-		this->setStop(true);
+		//this->setStop(true);
+		stop = true;
 	    };
 	    //==================================================================
 
@@ -499,7 +501,7 @@ namespace cms {
 		p1 = p2 = 0;
 		gamma = rgamma = ggamma = bgamma = -1;
 		this->fetcher = fetcher;
-		stop = false;
+		//stop = false;
 	    };
 
 	    /*
@@ -517,14 +519,16 @@ namespace cms {
 		int_vector_ptr measurecode =
 		    measureCondition->getMeasureCode();
 		componentVector = fetcher->fetchComponent(measurecode);
-		if (measurecode->size() != componentVector->size()) {
-		    return RGB_vector_ptr((RGB_vector *) null);
-		}
-		STORE_COMPONENT("o_fetch.xls", componentVector);
-		if (true == stop) {
+		/*if (true == stop) {
 		    stop = false;
 		    return RGB_vector_ptr((RGB_vector *) null);
+		}*/
+		if (componentVector == null
+		    || measurecode->size() != componentVector->size()) {
+		    return RGB_vector_ptr((RGB_vector *) null);
 		}
+
+		STORE_COMPONENT("o_fetch.xls", componentVector);
 		//²£¥Ígenerator
 		generator.
 		    reset(new DGLutGenerator(componentVector, bitDepth));
@@ -637,9 +641,9 @@ namespace cms {
 
 	    };
 
-	    void LCDCalibrator::setStop(bool stop) {
-		fetcher->setStop(stop);
-	    };
+	    /*void LCDCalibrator::setStop(bool stop) {
+	       fetcher->setStop(stop);
+	       }; */
 
 	    RGB_vector_ptr LCDCalibrator::
 		getDGLutOpResult(RGB_vector_ptr dglut) {

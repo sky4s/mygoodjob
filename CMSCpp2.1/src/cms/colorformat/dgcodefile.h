@@ -133,6 +133,8 @@ namespace cms {
 	    static const std::string DimCorrect;
 	    static const std::string On;
 	    static const std::string Off;
+	    static const std::string KeepMaxLumi;
+
 	    const cms::lcd::calibrate::LCDCalibrator & c;
 	    void store(DGLutFile & dglut) const;
 	  public:

@@ -19,7 +19,7 @@
 TCCTLUTForm *CCTLUTForm;
 //---------------------------------------------------------------------------
 __fastcall TCCTLUTForm::TCCTLUTForm(TComponent * Owner)
-:TForm(Owner), serialid(0)
+:TForm(Owner), serialid(0), run(false)
 {
 }
 
@@ -71,12 +71,16 @@ void __fastcall TCCTLUTForm::Button_RunClick(TObject * Sender)
     using namespace Dep;
     using namespace cms::lcd::calibrate;
 
+    run = true;
+
     MainForm->getAnalyzer();
     MainForm->setAnalyzerToTargetChannel();
+    MainForm->setMeterMeasurementWaitTimes();
 
     calibrator.
-	reset(new
-	      LCDCalibrator(MainForm->getComponentFetcher(), bitDepth));
+       reset(new
+       LCDCalibrator(MainForm->getComponentFetcher(), bitDepth));
+
 
     //==========================================================================
     // P1P2©MRBInterpªº¿ï¾Ü
@@ -120,26 +124,33 @@ void __fastcall TCCTLUTForm::Button_RunClick(TObject * Sender)
     //==========================================================================
     calibrator->setAvoidFRCNoise(this->CheckBox_AvoidNoise->Checked);
     calibrator->setKeepMaxLuminance(this->CheckBox_KeepMax->Checked);
-
     try {
-	this->TOutputFileFrame1->createDir();
+	try {
+	    this->TOutputFileFrame1->createDir();
 
-	bptr < MeasureCondition > measureCondition = getMeasureCondition();
+	    bptr < MeasureCondition > measureCondition =
+		getMeasureCondition();
 
-	RGB_vector_ptr dglut = calibrator->getCCTDGLut(measureCondition);
-	if (dglut == null) {
-	    return;
+	    RGB_vector_ptr dglut =
+		calibrator->getCCTDGLut(measureCondition);
+	    if (dglut == null) {
+		//run = false;
+		return;
+	    }
+
+	    String_ptr astr = this->TOutputFileFrame1->getOutputFilename();
+	    string filename = astr->c_str();
+	    calibrator->storeDGLut(filename, dglut);
+	    ShowMessage("Ok!");
+
 	}
-
-	String_ptr astr = this->TOutputFileFrame1->getOutputFilename();
-	string filename = astr->c_str();
-	calibrator->storeDGLut(filename, dglut);
-	ShowMessage("Ok!");
+	catch(java::lang::IllegalStateException & ex) {
+	    ShowMessage(ex.toString().c_str());
+	}
     }
-    catch(java::lang::IllegalStateException & ex) {
-	ShowMessage(ex.toString().c_str());
+    __finally {
+	run = false;
     }
-
 }
 
 //---------------------------------------------------------------------------
@@ -156,8 +167,7 @@ void __fastcall TCCTLUTForm::FormCreate(TObject * Sender)
     //==========================================================================
     bool debug = !MainForm->linkCA210;
     this->Button_Debug->Visible = debug;
-    this->Button_Reset->Visible = debug;
-    //this->RadioButton_None->Visible = debug;
+    //this->Button_Reset->Visible = debug;
     //==========================================================================
 
 }
@@ -181,18 +191,17 @@ void __fastcall TCCTLUTForm::Button_DebugClick(TObject * Sender)
 //---------------------------------------------------------------------------
 
 
-void __fastcall TCCTLUTForm::Button_ResetClick(TObject * Sender)
-{
-    MainForm->resetDummyMeter();
-}
-
-//---------------------------------------------------------------------------
 
 
 
 void __fastcall TCCTLUTForm::FormShow(TObject * Sender)
 {
     using namespace Dep;
+    using namespace cms::lcd::calibrate;
+    
+    /*calibrator.reset(new
+		     LCDCalibrator(MainForm->getComponentFetcher(),
+				   bitDepth));*/
 
     const MaxValue & input = bitDepth->getInputMaxValue();
     bool avoidNoise = (input == MaxValue::Int6Bit
@@ -244,8 +253,8 @@ TOutputFileFrame1Button_BrowseDirClick(TObject * Sender)
 
 void __fastcall TCCTLUTForm::FormKeyPress(TObject * Sender, char &Key)
 {
-    if (Key == 27 && calibrator != null) {
-	calibrator->setStop(true);
+    if (27 == Key && true == run) {
+	//calibrator->setStop(true);
 	ShowMessage("Interrupt!");
     }
 }
@@ -310,6 +319,4 @@ bptr < cms::lcd::calibrate::MeasureCondition >
 }
 
 //---------------------------------------------------------------------------
-
-
 
