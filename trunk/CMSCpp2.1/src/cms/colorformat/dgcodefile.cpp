@@ -652,6 +652,7 @@ namespace cms {
 	string DGLutProperty::DimCorrect = "low level correct";
 	const string DGLutProperty::On = "On";
 	const string DGLutProperty::Off = "Off";
+	const string DGLutProperty::KeepMaxLumi = "keep max luminance";
 	void
 	 DGLutProperty::store(DGLutFile & dgcode) const {
 	    bptr < MeasureCondition > mc = c.measureCondition;
@@ -693,6 +694,7 @@ namespace cms {
 
 	    //dgcode.addProperty(Gamma256, bitDepth->isGamma256()? On : Off);
 	    dgcode.addProperty(FRC_NR, c.avoidFRCNoise ? On : Off);
+	    dgcode.addProperty(KeepMaxLumi, c.keepMaxLuminance ? On : Off);
 	};
 	DGLutProperty::DGLutProperty(const
 				     LCDCalibrator & c):c(c) {

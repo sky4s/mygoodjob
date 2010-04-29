@@ -45,7 +45,6 @@ class TCCTLUTForm:public TForm {
     TEdit *Edit_P2;
     TButton *Button_Debug;
     TRadioButton *RadioButton_None;
-    TButton *Button_Reset;
     TCheckBox *CheckBox_KeepMax;
     TLabel *Label9;
     TOutputFileFrame *TOutputFileFrame1;
@@ -71,7 +70,6 @@ class TCCTLUTForm:public TForm {
     void __fastcall Button_RunClick(TObject * Sender);
     void __fastcall FormCreate(TObject * Sender);
     void __fastcall Button_DebugClick(TObject * Sender);
-    void __fastcall Button_ResetClick(TObject * Sender);
     void __fastcall FormShow(TObject * Sender);
     void __fastcall RadioButton_GammaCurveClick(TObject * Sender);
     void __fastcall TOutputFileFrame1Button_BrowseDirClick(TObject *
@@ -87,6 +85,7 @@ class TCCTLUTForm:public TForm {
     RGBGamma_ptr rgbGamma;
      bptr < cms::lcd::calibrate::LCDCalibrator > calibrator;
      bptr < cms::lcd::calibrate::MeasureCondition > getMeasureCondition();
+    bool run;
 
   public:			// User declarations
      __fastcall TCCTLUTForm(TComponent * Owner);

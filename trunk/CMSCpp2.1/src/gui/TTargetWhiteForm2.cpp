@@ -222,6 +222,7 @@ void __fastcall TTargetWhiteForm2::Button2Click(TObject * Sender)
     //==========================================================================
     try {
 	analyzer->setWaitTimes(5000);
+	stopMeasure = false;
 	//analyzer->beginSetup();
 	analyzer->setupComponent(Channel::R, r);
 	if (true == stopMeasure) {
@@ -241,13 +242,14 @@ void __fastcall TTargetWhiteForm2::Button2Click(TObject * Sender)
 	}
 	MainForm->setAnalyzerToTargetChannel();
 	analyzer->enter();
-	MainForm->setMeterMeasurementWaitTimes();
+	//MainForm->setMeterMeasurementWaitTimes();
 	//==========================================================================
 
 	setRGBRatio(r->R, g->G, b->B);
     }
     __finally {
 	stopMeasure = false;
+	MainForm->setMeterMeasurementWaitTimes();
     }
 }
 
