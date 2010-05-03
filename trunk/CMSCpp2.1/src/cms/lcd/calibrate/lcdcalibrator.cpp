@@ -123,6 +123,47 @@ namespace cms {
 	    //==================================================================
 
 	    //==================================================================
+	    // LuminanceIntensityLinearRelation
+	    //==================================================================
+	    void LuminanceIntensityLinearRelation::init(double2D_ptr input,
+							double2D_ptr
+							output) {
+		//==============================================================
+		// 計算a/c/d
+		//==============================================================
+		regression.reset(new PolynomialRegression(input, output,
+							  Polynomial::
+							  COEF_3::BY_3C));
+		regression->regress();
+		const double *coefs = (*regression->getCoefs())[0];
+		a1 = coefs[1];
+		a2 = coefs[2];
+		a3 = coefs[3];
+		a0 = coefs[0];
+		c = 1 / (a1 + a2 + a3);
+		d = -a0 / (a1 + a2 + a3);
+		//==============================================================
+	    };
+
+	    LuminanceIntensityLinearRelation::
+		LuminanceIntensityLinearRelation(double2D_ptr input,
+						 double2D_ptr output) {
+		init(input, output);
+
+	    };
+	    double LuminanceIntensityLinearRelation::
+		getIntensity(double luminance) {
+		return c * luminance + d;
+	    };
+	    double LuminanceIntensityLinearRelation::
+		getLuminance(double rIntensity, double gIntensity,
+			     double bIntensity) {
+		return a0 + rIntensity * a1 + gIntensity * a2 +
+		    bIntensity * a3;
+	    };
+	    //==================================================================
+
+	    //==================================================================
 	    // DGLutGenerator
 	    //==================================================================
 	    /*
@@ -172,24 +213,29 @@ namespace cms {
 		//==============================================================
 
 		//==============================================================
-		// 計算c/d
+		// 計算a/c/d
 		//==============================================================
-		regression.reset(new PolynomialRegression(input, output,
-							  Polynomial::
-							  COEF_3::BY_3C));
-		regression->regress();
-		const double *coefs = (*regression->getCoefs())[0];
-		a1 = coefs[1];
-		a2 = coefs[2];
-		a3 = coefs[3];
-		a0 = coefs[0];
-		c = 1 / (a1 + a2 + a3);
-		d = -a0 / (a1 + a2 + a3);
+		/*regression.reset(new PolynomialRegression(input, output,
+		   Polynomial::
+		   COEF_3::BY_3C));
+		   regression->regress();
+		   const double *coefs = (*regression->getCoefs())[0];
+		   a1 = coefs[1];
+		   a2 = coefs[2];
+		   a3 = coefs[3];
+		   a0 = coefs[0];
+		   c = 1 / (a1 + a2 + a3);
+		   d = -a0 / (a1 + a2 + a3); */
+		lumiIntensityRelation.
+		    reset(new
+			  LuminanceIntensityLinearRelation(input, output));
 		//==============================================================
 		double maxintensity = Math::roundTo(getMaximumIntensity());
 
 		maxLuminance =
-		    getLuminance(maxintensity, maxintensity, maxintensity);
+		    lumiIntensityRelation->getLuminance(maxintensity,
+							maxintensity,
+							maxintensity);
 		minLuminance = (*output)[size - 1][0];
 
 		//==============================================================
@@ -204,15 +250,15 @@ namespace cms {
 		bLut.reset(new Interpolation1DLUT(keys, bValues));
 		//==============================================================
 	    };
-	    double DGLutGenerator::getIntensity(double luminance) {
-		return c * luminance + d;
-	    };
-	    double DGLutGenerator::getLuminance(double rIntensity,
-						double gIntensity,
-						double bIntensity) {
-		return a0 + rIntensity * a1 + gIntensity * a2 +
-		    bIntensity * a3;
-	    };
+	    /*double DGLutGenerator::getIntensity(double luminance) {
+	       return c * luminance + d;
+	       };
+	       double DGLutGenerator::getLuminance(double rIntensity,
+	       double gIntensity,
+	       double bIntensity) {
+	       return a0 + rIntensity * a1 + gIntensity * a2 +
+	       bIntensity * a3;
+	       }; */
 	    /*
 	       將正規化的gamma curve, 轉換為絕對的亮度curve
 	     */
@@ -298,7 +344,8 @@ namespace cms {
 
 		for (int x = 0; x != size; x++) {
 		    double luminance = (*luminanceGammaCurve)[x];
-		    double intensity = getIntensity(luminance);
+		    double intensity =
+			lumiIntensityRelation->getIntensity(luminance);
 		    (*rIntenisty)[x] = intensity;
 		    (*gIntenisty)[x] = intensity;
 		    (*bIntenisty)[x] = intensity;
@@ -520,9 +567,9 @@ namespace cms {
 		    measureCondition->getMeasureCode();
 		componentVector = fetcher->fetchComponent(measurecode);
 		/*if (true == stop) {
-		    stop = false;
-		    return RGB_vector_ptr((RGB_vector *) null);
-		}*/
+		   stop = false;
+		   return RGB_vector_ptr((RGB_vector *) null);
+		   } */
 		if (componentVector == null
 		    || measurecode->size() != componentVector->size()) {
 		    return RGB_vector_ptr((RGB_vector *) null);
