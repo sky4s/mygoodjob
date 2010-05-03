@@ -14,6 +14,7 @@
 namespace cms {
     namespace lcd {
 	namespace calibrate {
+	    using namespace math;
 	    class Component:public jObject {
 	      public:
 		Component(RGB_ptr rgb, RGB_ptr intensity);
@@ -51,6 +52,31 @@ namespace cms {
 		void windowClosing();
 	    };
 
+	    class LuminanceIntensityRelationIF {
+	      public:
+		virtual double getIntensity(double luminance) = 0;
+		virtual double getLuminance(double rIntensity,
+					    double gIntensity,
+					    double bIntensity) = 0;
+	    };
+	    class LuminanceIntensityLinearRelation:public
+		LuminanceIntensityRelationIF {
+	      private:
+		bptr < PolynomialRegression > regression;
+		double a0, a1, a2, a3, c, d;
+		void init(double2D_ptr input, double2D_ptr output);
+	      public:
+		 LuminanceIntensityLinearRelation(double2D_ptr input,
+						  double2D_ptr output);
+		double getIntensity(double luminance);
+		double getLuminance(double rIntensity, double gIntensity,
+				    double bIntensity);
+	    };
+
+	    class LuminanceIntensityPLRelation:public
+		LuminanceIntensityRelationIF {
+	    };
+
 	    /*
 	       DGLutGenerator擔任產出DG Code的重責大任
 	       1. 首先接手ComponentFetcher產出的rgb,對應的componet,亮度
@@ -62,22 +88,24 @@ namespace cms {
 	       3/4由produce產出
 
 	     */
-	    using namespace math;
+
 	    class DGLutGenerator {
 	      private:
-		bptr < PolynomialRegression > regression;
+		//bptr < PolynomialRegression > regression;
 		Component_vector_ptr componentVector;
-		double a0, a1, a2, a3, c, d;
+		//double a0, a1, a2, a3, c, d;
 		double minLuminance, maxLuminance;
 		 bptr < math::Interpolation1DLUT > rLut;
 		 bptr < math::Interpolation1DLUT > gLut;
 		 bptr < math::Interpolation1DLUT > bLut;
 		 bptr < BitDepthProcessor > bitDepth;
+		 bptr < LuminanceIntensityRelationIF >
+		    lumiIntensityRelation;
 	      protected:
 		void init();
-		double getIntensity(double luminance);
-		double getLuminance(double rIntensity, double gIntensity,
-				    double bIntensity);
+		/*double getIntensity(double luminance);
+		   double getLuminance(double rIntensity, double gIntensity,
+		   double bIntensity); */
 		double_vector_ptr getLuminanceGammaCurve(double_vector_ptr
 							 normalGammaCurve);
 		double_vector_ptr getReverse(double_vector_ptr vec);
