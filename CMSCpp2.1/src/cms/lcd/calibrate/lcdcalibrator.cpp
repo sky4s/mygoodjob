@@ -453,7 +453,7 @@ namespace cms {
 		}
 		return result;
 	    };
-	    void LCDCalibrator::setP1P2(double p1, double p2) {
+	    void LCDCalibrator::setP1P2(int p1, int p2) {
 		this->p1 = p1;
 		this->p2 = p2;
 		//this->p1p2 = true;
@@ -462,11 +462,16 @@ namespace cms {
 	    void LCDCalibrator::setRBInterpolation(int under) {
 		//this->p1p2 = false;
 		this->correct = RBInterpolation;
-		this->rbInterpUnder = under;
+		this->under = under;
 	    };
 	    void LCDCalibrator::setNoneDimCorrect() {
 		this->correct = None;
 	    };
+	    void LCDCalibrator::setNew(int under) {
+		this->correct = New;
+		this->under = under;
+	    };
+
 	    void LCDCalibrator::setGamma(double gamma) {
 		this->gamma = gamma;
 		int n = bitDepth->getLevel();
@@ -544,7 +549,7 @@ namespace cms {
 		rgbgamma = false;
 		useGammaCurve = false;
 		bIntensityGain = 1;
-		rbInterpUnder = 0;
+		under = 0;
 		p1 = p2 = 0;
 		gamma = rgamma = ggamma = bgamma = -1;
 		this->fetcher = fetcher;
@@ -702,9 +707,10 @@ namespace cms {
 
 
 		if (correct == RBInterpolation) {
-		    bptr < DGLutOp >
-			op(new RBInterpolationOp(rbInterpUnder));
+		    bptr < DGLutOp > op(new RBInterpolationOp(under));
 		    dgop.addOp(op);
+		} else if (correct == New) {
+
 		}
 
 		if (bMax) {

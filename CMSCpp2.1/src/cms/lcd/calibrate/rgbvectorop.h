@@ -50,6 +50,15 @@ namespace cms {
 		 RBInterpolationOp(double under);
 	    };
 
+	    class NewOp:public DGLutOp {
+	      private:
+		double under;
+	      protected:
+		 RGB_vector_ptr getRendering(RGB_vector_ptr source);
+	      public:
+		 NewOp(double under);
+	    };
+
 	    class BMaxOp:public DGLutOp {
 	      private:
 		//const Dep::MaxValue & out;

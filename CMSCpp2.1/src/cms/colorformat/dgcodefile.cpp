@@ -677,7 +677,7 @@ namespace cms {
 			       ? "RBInterpolation" : "None");
 	    dgcode.addProperty(P1, c.p1);
 	    dgcode.addProperty(P2, c.p2);
-	    dgcode.addProperty(RBUnder, c.rbInterpUnder);
+	    dgcode.addProperty(RBUnder, c.under);
 	    bptr < BitDepthProcessor > bitDepth = c.bitDepth;
 	    dgcode.addProperty(In,
 			       *bitDepth->getInputMaxValue().toString());
