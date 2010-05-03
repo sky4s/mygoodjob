@@ -123,7 +123,7 @@ namespace cms {
 	    };
 
 	    enum Correct {
-		P1P2 = 1, RBInterpolation = 2, None = 3
+		P1P2 = 1, RBInterpolation = 2, None = 3, New = 4
 	    };
 
 	    class MeasureCondition {
@@ -168,8 +168,8 @@ namespace cms {
 		// 校正參數
 		//==============================================================
 		 Correct correct;
-		double p1, p2;
-		double rbInterpUnder;
+		int p1, p2;
+		double under;
 		bool gByPass;
 		double bIntensityGain;
 		bool bMax;
@@ -202,9 +202,12 @@ namespace cms {
 		static double_vector_ptr getGammaCurveVector
 		    (double gamma, int n, int effectiven);
 
-		void setP1P2(double p1, double p2);
+		void setP1P2(int p1, int p2);
 		void setRBInterpolation(int under);
 		void setNoneDimCorrect();
+		void setNew(int under);
+
+
 		void setGamma(double gamma);
 		void setGamma(double rgamma, double ggamma, double bgamma);
 		void setGammaCurve(double_vector_ptr gammaCurve);

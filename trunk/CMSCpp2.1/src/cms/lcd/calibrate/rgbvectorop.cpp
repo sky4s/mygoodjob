@@ -18,6 +18,7 @@ namespace cms {
 	    //==================================================================
 	    using namespace Dep;
 	    using namespace cms::util;
+	    using namespace math;
 	    RGB_vector_ptr LinearOp::getRendering(RGB_vector_ptr source) {
 
 		int size = source->size();
@@ -99,6 +100,52 @@ namespace cms {
 	    };
 	  RBInterpolationOp::RBInterpolationOp(double under):under(under)
 	    {
+	    };
+	    //==================================================================
+
+	    //==================================================================
+	    // NewOp
+	    //==================================================================
+	    RGB_vector_ptr NewOp::getRendering(RGB_vector_ptr source) {
+
+		//int size=source->size();
+		int zeroIndex;
+		for (zeroIndex = under; (*source)[zeroIndex]->B != 0;
+		     zeroIndex--) {
+		}
+		RGB_vector_ptr result = RGBVector::deepClone(source);
+		if (zeroIndex == 0) {
+		    return result;
+		}
+		int size = under - zeroIndex;
+		/*double_vector_ptr input(new double_vector(under));
+		   double_vector_ptr output(new double_vector(under));
+		   for (int x = 0; x < under; x++) {
+		   (*input)[x] = x + 1;
+		   } */
+		double_vector_ptr input(new double_vector(size));
+		double_vector_ptr output(new double_vector(size));
+		for (int x = 0; x < size; x++) {
+		    int index = x + zeroIndex + 1;
+		    (*input)[x] = index;
+		    (*output)[x] = (*source)[index]->B;
+		}
+		Interpolation1DLUT interpLut(input, output);
+
+
+		for (int x = 1; x != under; x++) {
+		    //°µRB interpolation
+		    RGB_ptr rgb = (*result)[x];
+		    //rgb->B = interpLut.getValue(x);
+		    //interpLut.
+		    /*rgb->R = rInterval * x;
+		       rgb->G = gInterval * x;
+		       rgb->B = bInterval * x; */
+
+		}
+		return result;
+	    };
+	  NewOp::NewOp(double under):under(under) {
 	    };
 	    //==================================================================
 

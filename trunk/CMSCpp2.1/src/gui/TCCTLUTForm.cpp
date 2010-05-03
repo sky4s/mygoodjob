@@ -78,8 +78,8 @@ void __fastcall TCCTLUTForm::Button_RunClick(TObject * Sender)
     MainForm->setMeterMeasurementWaitTimes();
 
     calibrator.
-       reset(new
-       LCDCalibrator(MainForm->getComponentFetcher(), bitDepth));
+	reset(new
+	      LCDCalibrator(MainForm->getComponentFetcher(), bitDepth));
 
 
     //==========================================================================
@@ -94,6 +94,9 @@ void __fastcall TCCTLUTForm::Button_RunClick(TObject * Sender)
 	//¿ï¤FRBInterp
 	int rbunder = this->Edit_RBInterpUnder->Text.ToInt();
 	calibrator->setRBInterpolation(rbunder);
+    } else if (this->RadioButton_New->Checked) {
+	int under = this->Edit_NewUnder->Text.ToInt();
+	calibrator->setNew(under);
     } else {
 	calibrator->setNoneDimCorrect();
     }
@@ -198,10 +201,10 @@ void __fastcall TCCTLUTForm::FormShow(TObject * Sender)
 {
     using namespace Dep;
     using namespace cms::lcd::calibrate;
-    
+
     /*calibrator.reset(new
-		     LCDCalibrator(MainForm->getComponentFetcher(),
-				   bitDepth));*/
+       LCDCalibrator(MainForm->getComponentFetcher(),
+       bitDepth)); */
 
     const MaxValue & input = bitDepth->getInputMaxValue();
     bool avoidNoise = (input == MaxValue::Int6Bit
