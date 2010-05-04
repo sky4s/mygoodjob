@@ -95,7 +95,8 @@ void __fastcall TCCTLUTForm::Button_RunClick(TObject * Sender)
 	calibrator->setRBInterpolation(rbunder);
     } else if (this->RadioButton_New->Checked) {
 	int under = this->Edit_NewUnder->Text.ToInt();
-	calibrator->setNew(under);
+	double gammaShift = this->Edit_GammaShift->Text.ToDouble();
+	calibrator->setNew(under, gammaShift);
     } else {
 	calibrator->setNoneDimCorrect();
     }
@@ -169,7 +170,7 @@ void __fastcall TCCTLUTForm::FormCreate(TObject * Sender)
     //==========================================================================
     bool debug = !MainForm->linkCA210;
     this->Button_Debug->Visible = debug;
-    //this->Button_Reset->Visible = debug;
+    this->Button_Reset->Visible = debug;
     //==========================================================================
 
 }
@@ -340,6 +341,13 @@ void __fastcall TCCTLUTForm::RadioButton_NewClick(TObject * Sender)
 {
     setLowLevelCorrectionEditDisable();
     this->Edit_NewUnder->Enabled = true;
+}
+
+//---------------------------------------------------------------------------
+
+void __fastcall TCCTLUTForm::Button_ResetClick(TObject * Sender)
+{
+    MainForm->resetDummyMeter();
 }
 
 //---------------------------------------------------------------------------

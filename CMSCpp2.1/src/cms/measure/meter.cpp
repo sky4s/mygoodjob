@@ -173,7 +173,7 @@ namespace cms {
 		return c;
 	    };
 	    void DGLutFileMeter::setIndex(int index) {
-		//this->index = 0;
+		this->index = index;
 	    };
 	    void DGLutFileMeter::reset() {
 		this->index = 0;

@@ -154,15 +154,21 @@ namespace cms {
 		double_vector_ptr normaloutput =
 		    GammaFinder::normalize(output, (*output)[0],
 					   (*output)[under]);
-		/*double gamma = GammaFinder::findingGamma(input, output, 0,
-		   (*output)[0],
-		   under,
-		   (*output)[under]); */
-		double gamma = GammaFinder::findingGamma(input, output);
+		double gamma =
+		    GammaFinder::findingGamma(normalinput, normaloutput);
 
+		double_vector_ptr newNormalOutput =
+		    GammaFinder::gamma(normalinput, gamma + gammaShift);
+
+		for (int x = 1; x < under; x++) {
+		    double normal = (*newNormalOutput)[x];
+		    b[x] = b[0] + (b[under] - b[0]) * normal;
+		}
 		return source;
 	    };
-	  NewGammaOp::NewGammaOp(int under):under(under) {
+	  NewGammaOp::NewGammaOp(int under, double gammaShift, RGB_vector_ptr dglut):under(under), gammaShift(gammaShift),
+		dglut(dglut)
+	    {
 	    };
 
 	    //==================================================================

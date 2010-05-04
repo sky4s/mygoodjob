@@ -169,7 +169,8 @@ namespace cms {
 		//==============================================================
 		 Correct correct;
 		int p1, p2;
-		double under;
+		int under;
+		double gammaShift;
 		bool gByPass;
 		double bIntensityGain;
 		bool bMax;
@@ -205,9 +206,7 @@ namespace cms {
 		void setP1P2(int p1, int p2);
 		void setRBInterpolation(int under);
 		void setNoneDimCorrect();
-		void setNew(int under);
-
-
+		void setNew(int under, double gammaShift);
 		void setGamma(double gamma);
 		void setGamma(double rgamma, double ggamma, double bgamma);
 		void setGammaCurve(double_vector_ptr gammaCurve);

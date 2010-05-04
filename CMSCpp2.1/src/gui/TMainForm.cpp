@@ -185,14 +185,14 @@ void TMainForm::setDummyMeterFilename(const std::string & filename)
 
 //---------------------------------------------------------------------------
 
-/*void TMainForm::resetDummyMeter()
+void TMainForm::resetDummyMeter()
 {
     using namespace cms::measure::meter;
     using namespace cms::lcd::calibrate;
     DGLutFileMeter *dgc = dynamic_cast < DGLutFileMeter * >(meter.get());
     dgc->reset();
     //fetcher.reset((ComponentFetcher *) null);
-};*/
+};
 
 //---------------------------------------------------------------------------
 bptr < cms::lcd::calibrate::ComponentFetcher >

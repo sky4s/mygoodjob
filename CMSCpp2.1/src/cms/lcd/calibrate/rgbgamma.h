@@ -46,10 +46,13 @@ namespace cms {
 	    class NewGammaOp:public RGBGammaOp {
 	      private:
 		int under;
+		double gammaShift;
+		RGB_vector_ptr dglut;
 	      protected:
 		 RGBGamma_ptr getRendering(RGBGamma_ptr source);
 	      public:
-		 NewGammaOp(int under);
+		 NewGammaOp(int under, double gammaShift,
+			    RGB_vector_ptr dglut);
 	    };
 	};
     };

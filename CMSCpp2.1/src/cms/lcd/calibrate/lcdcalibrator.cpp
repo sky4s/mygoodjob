@@ -467,9 +467,10 @@ namespace cms {
 	    void LCDCalibrator::setNoneDimCorrect() {
 		this->correct = None;
 	    };
-	    void LCDCalibrator::setNew(int under) {
+	    void LCDCalibrator::setNew(int under, double gammaShift) {
 		this->correct = New;
 		this->under = under;
+		this->gammaShift = gammaShift;
 	    };
 
 	    void LCDCalibrator::setGamma(double gamma) {
@@ -599,10 +600,12 @@ namespace cms {
 						   bitDepth));
 		    gammaop.addOp(bgain);
 		}
-		if (correct == New) {
-		    bptr < NewGammaOp > newgamma(new NewGammaOp(50));
-		    gammaop.addOp(newgamma);
-		}
+		/*if (correct == New) {
+		   bptr < NewGammaOp >
+		   newgamma(new NewGammaOp(50, gammaShift,
+		   componentVector));
+		   gammaop.addOp(newgamma);
+		   } */
 		rgbgamma = gammaop.createInstance();
 
 
@@ -654,6 +657,16 @@ namespace cms {
 		    //量化
 		    STORE_RGBVECTOR("6_dgcode_p1p2dg.xls", dglut);
 		    //==========================================================
+		} else if (correct == New) {
+		    bptr < NewGammaOp >
+			newgamma(new NewGammaOp(under, gammaShift, dglut));
+
+		    RGBGammaOp gammaop;
+		    gammaop.setSource(rgbgamma);
+		    gammaop.addOp(newgamma);
+		    rgbgamma = gammaop.createInstance();
+		    dglut = generator->produce(rgbgamma);
+		    RGBVector::quantization(dglut, quantizationBit);
 		}
 		//RGB_vector_ptr dgcode2 = dglut;
 		finalRGBGamma = rgbgamma;
@@ -662,6 +675,7 @@ namespace cms {
 		// DG Code Op block
 		//==============================================================
 		//量化
+		//RGBVector::quantization(dglut, quantizationBit);
 		RGB_vector_ptr result = getDGLutOpResult(dglut);
 		//==============================================================
 
@@ -715,10 +729,10 @@ namespace cms {
 		if (correct == RBInterpolation) {
 		    bptr < DGLutOp > op(new RBInterpolationOp(under));
 		    dgop.addOp(op);
-		} else if (correct == New) {
-
 		}
+		/*else if (correct == New) {
 
+		   } */
 		if (bMax) {
 		    //bmax的調整
 		    bptr < DGLutOp > bmax(new BMaxOp(bitDepth));

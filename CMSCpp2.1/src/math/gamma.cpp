@@ -95,5 +95,14 @@ namespace math {
     double GammaFinder::gamma(double input, double gamma) {
 	return Math::pow(input, gamma);
     };
+    double_vector_ptr GammaFinder::gamma(double_vector_ptr input,
+					 double gamma) {
+	int size = input->size();
+	double_vector_ptr correcInput(new double_vector(size));
+	for (int x = 0; x < size; x++) {
+	    (*correcInput)[x] = GammaFinder::gamma((*input)[x], gamma);
+	}
+	return correcInput;
+    };
 };
 
