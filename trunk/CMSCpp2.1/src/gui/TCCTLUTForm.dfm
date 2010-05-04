@@ -57,7 +57,7 @@ object CCTLUTForm: TCCTLUTForm
       Top = 48
       Width = 105
       Height = 24
-      ImeName = #26085#25991#36664#20837#31995#32113' (MS-IME2002)'
+      ImeName = 'らゅ块╰参 (MS-IME2002)'
       TabOrder = 0
       Text = '255'
     end
@@ -66,7 +66,7 @@ object CCTLUTForm: TCCTLUTForm
       Top = 112
       Width = 105
       Height = 24
-      ImeName = #26085#25991#36664#20837#31995#32113' (MS-IME2002)'
+      ImeName = 'らゅ块╰参 (MS-IME2002)'
       ItemHeight = 16
       TabOrder = 1
       Text = '1'
@@ -85,7 +85,7 @@ object CCTLUTForm: TCCTLUTForm
       Top = 80
       Width = 105
       Height = 24
-      ImeName = #26085#25991#36664#20837#31995#32113' (MS-IME2002)'
+      ImeName = 'らゅ块╰参 (MS-IME2002)'
       TabOrder = 2
       Text = '0'
     end
@@ -140,7 +140,7 @@ object CCTLUTForm: TCCTLUTForm
       Top = 16
       Width = 96
       Height = 24
-      ImeName = #20013#25991' ('#32321#39636') - '#26032#27880#38899
+      ImeName = 'いゅ (羉砰) - 穝猔'
       ItemHeight = 16
       TabOrder = 3
       Text = '2.4'
@@ -210,7 +210,7 @@ object CCTLUTForm: TCCTLUTForm
       Width = 81
       Height = 24
       Enabled = False
-      ImeName = #26085#25991#36664#20837#31995#32113' (MS-IME2002)'
+      ImeName = 'らゅ块╰参 (MS-IME2002)'
       TabOrder = 2
       Text = '50'
     end
@@ -219,7 +219,7 @@ object CCTLUTForm: TCCTLUTForm
       Top = 48
       Width = 40
       Height = 24
-      ImeName = #26085#25991#36664#20837#31995#32113' (MS-IME2002)'
+      ImeName = 'らゅ块╰参 (MS-IME2002)'
       TabOrder = 3
       Text = '20'
     end
@@ -228,7 +228,7 @@ object CCTLUTForm: TCCTLUTForm
       Top = 48
       Width = 41
       Height = 24
-      ImeName = #26085#25991#36664#20837#31995#32113' (MS-IME2002)'
+      ImeName = 'らゅ块╰参 (MS-IME2002)'
       TabOrder = 4
       Text = '50'
     end
@@ -247,7 +247,7 @@ object CCTLUTForm: TCCTLUTForm
       Width = 41
       Height = 24
       Enabled = False
-      ImeName = #26085#25991#36664#20837#31995#32113' (MS-IME2002)'
+      ImeName = 'らゅ块╰参 (MS-IME2002)'
       TabOrder = 6
       Text = '50'
     end
@@ -289,7 +289,7 @@ object CCTLUTForm: TCCTLUTForm
       Top = 25
       Width = 56
       Height = 24
-      ImeName = #26085#25991#36664#20837#31995#32113' (MS-IME2002)'
+      ImeName = 'らゅ块╰参 (MS-IME2002)'
       TabOrder = 1
       Text = '1.05'
     end
@@ -417,7 +417,7 @@ object CCTLUTForm: TCCTLUTForm
         Top = 89
         Width = 73
         Height = 24
-        ImeName = #26085#25991#36664#20837#31995#32113' (MS-IME2002)'
+        ImeName = 'らゅ块╰参 (MS-IME2002)'
         ItemHeight = 16
         TabOrder = 0
         Text = '8'
@@ -434,7 +434,7 @@ object CCTLUTForm: TCCTLUTForm
         Top = 57
         Width = 73
         Height = 24
-        ImeName = #26085#25991#36664#20837#31995#32113' (MS-IME2002)'
+        ImeName = 'らゅ块╰参 (MS-IME2002)'
         TabOrder = 1
         Text = '0'
       end
@@ -443,7 +443,7 @@ object CCTLUTForm: TCCTLUTForm
         Top = 25
         Width = 73
         Height = 24
-        ImeName = #26085#25991#36664#20837#31995#32113' (MS-IME2002)'
+        ImeName = 'らゅ块╰参 (MS-IME2002)'
         TabOrder = 2
         Text = '64'
       end
@@ -481,7 +481,7 @@ object CCTLUTForm: TCCTLUTForm
         Top = 25
         Width = 73
         Height = 24
-        ImeName = #26085#25991#36664#20837#31995#32113' (MS-IME2002)'
+        ImeName = 'らゅ块╰参 (MS-IME2002)'
         TabOrder = 0
         Text = '255'
       end
@@ -490,7 +490,7 @@ object CCTLUTForm: TCCTLUTForm
         Top = 57
         Width = 73
         Height = 24
-        ImeName = #26085#25991#36664#20837#31995#32113' (MS-IME2002)'
+        ImeName = 'らゅ块╰参 (MS-IME2002)'
         TabOrder = 1
         Text = '64'
       end
@@ -499,7 +499,7 @@ object CCTLUTForm: TCCTLUTForm
         Top = 89
         Width = 73
         Height = 24
-        ImeName = #26085#25991#36664#20837#31995#32113' (MS-IME2002)'
+        ImeName = 'らゅ块╰参 (MS-IME2002)'
         ItemHeight = 16
         TabOrder = 2
         Text = '16'
