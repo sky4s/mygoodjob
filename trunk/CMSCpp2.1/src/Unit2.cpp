@@ -688,9 +688,12 @@ int main(int argc, char *argv[])
     //vectorTry();
     //ca210Try();
     //floatArrayTry();
-    inverseTry();
+    //inverseTry();
 
     //persistence();
+    int x = _toInt("123");
+    string s = "222";
+    x = _toInt(s);
     getch();
 
 

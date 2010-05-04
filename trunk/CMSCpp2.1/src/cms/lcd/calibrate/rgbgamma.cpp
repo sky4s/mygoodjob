@@ -62,8 +62,8 @@ namespace cms {
 		for (int x = effectiveLevel; x != bitDepth->getLevel();
 		     x++) {
 		    (*b)[x] = (*b)[effectiveLevel - 1];
-		} RGBGamma_ptr result(new
-				      RGBGamma(source->r, source->g, b));
+		};
+		RGBGamma_ptr result(new RGBGamma(source->r, source->g, b));
 		return result;
 	    };
 	  BIntensityGainOp::BIntensityGainOp(double gain, int start, bptr < BitDepthProcessor > bitDepth):gain(gain), start(start),
@@ -122,17 +122,49 @@ namespace cms {
 		source = processP1P2(source);
 		return source;
 	    };
-	  P1P2GammaOp::P1P2GammaOp(double p1, double p2, RGB_vector_ptr dglut):p1(p1), p2(p2),
+	  P1P2GammaOp::P1P2GammaOp(int p1, int p2, RGB_vector_ptr dglut):p1(p1), p2(p2),
 		dglut(dglut)
 	    {
 	    };
-	    P1P2GammaOp::
-		P1P2GammaOp(RGBGamma_ptr source, double p1,
-			    double p2,
-			    RGB_vector_ptr dglut):p1(p1),
-		p2(p2), dglut(dglut) {
-		this->source = source;
+	    /*P1P2GammaOp::
+	       P1P2GammaOp(RGBGamma_ptr source, int p1, int p2,
+	       RGB_vector_ptr dglut):p1(p1), p2(p2),
+	       dglut(dglut) {
+	       this->source = source;
+	       }; */
+	    //==================================================================
+
+	    //==================================================================
+	    // NewGammaOp
+	    //==================================================================
+	    RGBGamma_ptr NewGammaOp::getRendering(RGBGamma_ptr source) {
+		using namespace math;
+		double_vector & b = (*source->b);
+		int size = under + 1;
+
+		double_vector_ptr input(new double_vector(size));
+		double_vector_ptr output(new double_vector(size));
+		for (int x = 0; x <= under; x++) {
+		    (*input)[x] = x;
+		    (*output)[x] = b[x];
+		}
+		double_vector_ptr normalinput =
+		    GammaFinder::normalize(input, (*input)[0],
+					   (*input)[under]);
+		double_vector_ptr normaloutput =
+		    GammaFinder::normalize(output, (*output)[0],
+					   (*output)[under]);
+		/*double gamma = GammaFinder::findingGamma(input, output, 0,
+		   (*output)[0],
+		   under,
+		   (*output)[under]); */
+		double gamma = GammaFinder::findingGamma(input, output);
+
+		return source;
 	    };
+	  NewGammaOp::NewGammaOp(int under):under(under) {
+	    };
+
 	    //==================================================================
 	};
     };

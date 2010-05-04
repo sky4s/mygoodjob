@@ -239,15 +239,7 @@ object CCTLUTForm: TCCTLUTForm
       Height = 25
       Caption = 'None'
       TabOrder = 5
-    end
-    object RadioButton_New: TRadioButton
-      Left = 9
-      Top = 150
-      Width = 64
-      Height = 25
-      Caption = 'New'
-      TabOrder = 6
-      Visible = False
+      OnClick = RadioButton_NoneClick
     end
     object Edit_NewUnder: TEdit
       Left = 80
@@ -256,8 +248,17 @@ object CCTLUTForm: TCCTLUTForm
       Height = 24
       Enabled = False
       ImeName = #26085#25991#36664#20837#31995#32113' (MS-IME2002)'
-      TabOrder = 7
+      TabOrder = 6
       Text = '50'
+    end
+    object RadioButton_New: TRadioButton
+      Left = 8
+      Top = 152
+      Width = 73
+      Height = 25
+      Caption = 'New'
+      TabOrder = 7
+      OnClick = RadioButton_NewClick
     end
   end
   object GroupBox4: TGroupBox

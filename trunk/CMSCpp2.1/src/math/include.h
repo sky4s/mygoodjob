@@ -4,4 +4,5 @@
 #include "regression.h"
 #include "searcher.h"
 #include "svd.h"
+#include "gamma.h"
  
