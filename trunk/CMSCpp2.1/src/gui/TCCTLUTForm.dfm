@@ -242,9 +242,9 @@ object CCTLUTForm: TCCTLUTForm
       OnClick = RadioButton_NoneClick
     end
     object Edit_NewUnder: TEdit
-      Left = 80
+      Left = 64
       Top = 153
-      Width = 81
+      Width = 41
       Height = 24
       Enabled = False
       ImeName = #26085#25991#36664#20837#31995#32113' (MS-IME2002)'
@@ -254,11 +254,19 @@ object CCTLUTForm: TCCTLUTForm
     object RadioButton_New: TRadioButton
       Left = 8
       Top = 152
-      Width = 73
+      Width = 57
       Height = 25
       Caption = 'New'
       TabOrder = 7
       OnClick = RadioButton_NewClick
+    end
+    object Edit_GammaShift: TEdit
+      Left = 120
+      Top = 152
+      Width = 49
+      Height = 24
+      TabOrder = 8
+      Text = '-0.2'
     end
   end
   object GroupBox4: TGroupBox
@@ -334,7 +342,6 @@ object CCTLUTForm: TCCTLUTForm
     Height = 24
     Caption = 'Debug'
     TabOrder = 6
-    Visible = False
     OnClick = Button_DebugClick
   end
   inline TOutputFileFrame1: TOutputFileFrame
@@ -505,6 +512,16 @@ object CCTLUTForm: TCCTLUTForm
           '32')
       end
     end
+  end
+  object Button_Reset: TButton
+    Left = 584
+    Top = 344
+    Width = 49
+    Height = 17
+    Caption = 'reset'
+    TabOrder = 9
+    Visible = False
+    OnClick = Button_ResetClick
   end
   object OpenDialog1: TOpenDialog
     Filter = 'DGCode Files(*.xls)|*.xls'

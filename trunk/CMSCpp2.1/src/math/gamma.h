@@ -26,6 +26,8 @@ namespace math {
 					   double minValue,
 					   double maxValue);
 	static double gamma(double input, double gamma);
+	static double_vector_ptr gamma(double_vector_ptr input,
+				       double gamma);
       protected:
 	static barray < double_vector_ptr >
 	    normalize(double_vector_ptr input, double_vector_ptr output,

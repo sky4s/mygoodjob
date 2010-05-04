@@ -236,6 +236,7 @@ namespace cms {
 		string_vector_ptr result = query->nextResult();
 		//string s = (*result)[0];
 		//int gg = _toInt(s);
+                //int gg = boost::lexical_cast < int >("1234");
 		int gray = _toInt((*result)[0]);
 		double x = _toDouble((*result)[1]);
 		double y = _toDouble((*result)[2]);

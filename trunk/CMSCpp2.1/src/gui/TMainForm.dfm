@@ -1,8 +1,8 @@
 object MainForm: TMainForm
   Left = 300
-  Top = 300
+  Top = 299
   Width = 817
-  Height = 376
+  Height = 377
   Caption = 'CCT Adjustment v3'
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
