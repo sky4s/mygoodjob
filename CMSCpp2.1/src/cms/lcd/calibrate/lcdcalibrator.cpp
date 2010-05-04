@@ -585,21 +585,27 @@ namespace cms {
 		generator.
 		    reset(new DGLutGenerator(componentVector, bitDepth));
 		RGBGamma_ptr rgbgamma = generator->getRGBGamma(gammaCurve);
+		initialRGBGamma = rgbgamma->clone();
 		STORE_DOUBLE_VECTOR("0_gammacurve.xls", gammaCurve);
 		STORE_RGBGAMMA("1_rgbgamma_org.xls", rgbgamma);
 
+		RGBGammaOp gammaop;
+		gammaop.setSource(rgbgamma);
 		/* TODO : bIntensityGain要確認 */
 		if (bIntensityGain != 1.0) {
 		    //重新產生目標gamma curve
 		    bptr < BIntensityGainOp >
 			bgain(new BIntensityGainOp(bIntensityGain, 236,
 						   bitDepth));
-		    RGBGammaOp gammaop;
-		    gammaop.setSource(rgbgamma);
 		    gammaop.addOp(bgain);
-		    rgbgamma = gammaop.createInstance();
-		};
-		initialRGBGamma = rgbgamma->clone();
+		}
+		if (correct == New) {
+		    bptr < NewGammaOp > newgamma(new NewGammaOp(50));
+		    gammaop.addOp(newgamma);
+		}
+		rgbgamma = gammaop.createInstance();
+
+
 		STORE_RGBGAMMA("2_rgbgamma_init.xls", rgbgamma);
 
 		//從目標gamma curve產生dg code, 此處是傳入normal gammaCurve
@@ -648,7 +654,7 @@ namespace cms {
 		    //量化
 		    STORE_RGBVECTOR("6_dgcode_p1p2dg.xls", dglut);
 		    //==========================================================
-		};
+		}
 		//RGB_vector_ptr dgcode2 = dglut;
 		finalRGBGamma = rgbgamma;
 

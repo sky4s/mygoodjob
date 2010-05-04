@@ -234,8 +234,9 @@ namespace cms {
 	    bptr < DBQuery > query = db->selectAll();
 	    while (query->hasNext()) {
 		string_vector_ptr result = query->nextResult();
-		int
-		 gray = _toInt((*result)[0]);
+		//string s = (*result)[0];
+		//int gg = _toInt(s);
+		int gray = _toInt((*result)[0]);
 		double x = _toDouble((*result)[1]);
 		double y = _toDouble((*result)[2]);
 		double Y = _toDouble((*result)[3]);

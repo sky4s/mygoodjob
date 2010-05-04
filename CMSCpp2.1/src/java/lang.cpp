@@ -107,6 +107,9 @@ namespace java {
 	    return RoundTo(v, 0);
 	    //return round(v);
 	};
+	double Math::log(double v) {
+	    return std::log(v);
+	};
 	int Math::minIndex(double_array values, int n) {
 	    double minValue = std::numeric_limits < double >::max();
 	    int minIndex = -1;
@@ -162,6 +165,13 @@ namespace java {
 		};
 	    };
 	    return minIndex;
+	};
+	double_vector_ptr Math::normalize(double_vector_ptr original,
+					  double normal) {
+	    for (int x = 0; x < original->size(); x++) {
+		(*original)[x] /= normal;
+	    }
+	    return original;
 	};
 	//======================================================================
 

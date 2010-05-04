@@ -31,16 +31,25 @@ namespace cms {
 	    };
 	    class P1P2GammaOp:public RGBGammaOp {
 	      private:
-		double p1, p2;
+		int p1, p2;
 		RGB_vector_ptr dglut;
 	      protected:
 		 RGBGamma_ptr getRendering(RGBGamma_ptr source);
 		RGBGamma_ptr processP1(RGBGamma_ptr source);
 		RGBGamma_ptr processP1P2(RGBGamma_ptr source);
 	      public:
-		 P1P2GammaOp(double p1, double p2, RGB_vector_ptr dglut);
-		 P1P2GammaOp(RGBGamma_ptr source, double p1, double p2,
-			     RGB_vector_ptr dglut);
+		 P1P2GammaOp(int p1, int p2, RGB_vector_ptr dglut);
+		/*P1P2GammaOp(RGBGamma_ptr source, int p1, int p2,
+		   RGB_vector_ptr dglut); */
+	    };
+
+	    class NewGammaOp:public RGBGammaOp {
+	      private:
+		int under;
+	      protected:
+		 RGBGamma_ptr getRendering(RGBGamma_ptr source);
+	      public:
+		 NewGammaOp(int under);
 	    };
 	};
     };

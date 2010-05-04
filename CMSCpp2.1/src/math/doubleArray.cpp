@@ -132,6 +132,14 @@ namespace math {
 	return array;
     };
 
+    double_vector_ptr DoubleArray::minus(double_vector_ptr v1, double v) {
+	double_vector_ptr array(new double_vector(v1->size()));
+	for (int i = 0; i < v1->size(); i++) {
+	    (*array)[i] = (*v1)[i] - v;
+	}
+	return array;
+    };
+
     double_array DoubleArray::times(double_array v1, double v, int n) {
 	double_array array(new double[n]);
 	for (int i = 0; i < n; i++) {
@@ -290,7 +298,7 @@ namespace math {
 	for (int x = 0; x < m; x++) {
 	    for (int y = 0; y < n; y++) {
 		(*result)[x][y] = (x == y) ? 1 : 0;
-                //(*result)[x][y] = (x == y) ? 1 : (*result)[x][y];
+		//(*result)[x][y] = (x == y) ? 1 : (*result)[x][y];
 	    }
 	}
 

@@ -47,16 +47,15 @@ void TCCTLUTForm::setMeasureInfo()
 
 void __fastcall TCCTLUTForm::RadioButton_RBInterpClick(TObject * Sender)
 {
+    setLowLevelCorrectionEditDisable();
     this->Edit_RBInterpUnder->Enabled = true;
-    this->Edit_P1->Enabled = false;
-    this->Edit_P2->Enabled = false;
 }
 
 //---------------------------------------------------------------------------
 
 void __fastcall TCCTLUTForm::RadioButton_P1P2Click(TObject * Sender)
 {
-    this->Edit_RBInterpUnder->Enabled = false;
+    setLowLevelCorrectionEditDisable();
     this->Edit_P1->Enabled = true;
     this->Edit_P2->Enabled = true;
 }
@@ -319,6 +318,28 @@ bptr < cms::lcd::calibrate::MeasureCondition >
     }
     return condition;
 
+}
+
+//---------------------------------------------------------------------------
+void TCCTLUTForm::setLowLevelCorrectionEditDisable()
+{
+    this->Edit_P1->Enabled = false;
+    this->Edit_P2->Enabled = false;
+    this->Edit_RBInterpUnder->Enabled = false;
+    this->Edit_NewUnder->Enabled = false;
+};
+
+void __fastcall TCCTLUTForm::RadioButton_NoneClick(TObject * Sender)
+{
+    setLowLevelCorrectionEditDisable();
+}
+
+//---------------------------------------------------------------------------
+
+void __fastcall TCCTLUTForm::RadioButton_NewClick(TObject * Sender)
+{
+    setLowLevelCorrectionEditDisable();
+    this->Edit_NewUnder->Enabled = true;
 }
 
 //---------------------------------------------------------------------------
