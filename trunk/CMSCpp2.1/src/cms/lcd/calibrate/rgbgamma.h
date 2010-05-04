@@ -48,6 +48,7 @@ namespace cms {
 		int under;
 		double gammaShift;
 		RGB_vector_ptr dglut;
+		int getNonZeroBlueIndex();
 	      protected:
 		 RGBGamma_ptr getRendering(RGBGamma_ptr source);
 	      public:

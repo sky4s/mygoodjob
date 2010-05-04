@@ -137,10 +137,23 @@ namespace cms {
 	    //==================================================================
 	    // NewGammaOp
 	    //==================================================================
+	    int NewGammaOp::getNonZeroBlueIndex() {
+		for (int x = 1; x < under; x++) {
+		    //dglut->get_allocator()
+		    double b = (*dglut)[x]->B;
+		    if (b != 0) {
+			return x;
+		    }
+		}
+		return -1;
+	    };
 	    RGBGamma_ptr NewGammaOp::getRendering(RGBGamma_ptr source) {
 		using namespace math;
 		double_vector & b = (*source->b);
 		int size = under + 1;
+
+		int nonZeroIndex = getNonZeroBlueIndex();
+		double minIntensity = b[nonZeroIndex];
 
 		double_vector_ptr input(new double_vector(size));
 		double_vector_ptr output(new double_vector(size));
@@ -162,7 +175,8 @@ namespace cms {
 
 		for (int x = 1; x < under; x++) {
 		    double normal = (*newNormalOutput)[x];
-		    b[x] = b[0] + (b[under] - b[0]) * normal;
+		    b[x] =
+			minIntensity + (b[under] - minIntensity) * normal;
 		}
 		return source;
 	    };
