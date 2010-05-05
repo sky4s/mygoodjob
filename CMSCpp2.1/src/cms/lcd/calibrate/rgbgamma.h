@@ -8,12 +8,14 @@
 
 //本項目內頭文件
 #include "rgbop.h"
+#include "lcdcalibrator.h"
 #include <cms/util/rgbarray.h>
 
 namespace cms {
     namespace lcd {
 	namespace calibrate {
 	    using namespace cms::util;
+	    //using namespace cms::lcd::calibrate;
 	    class RGBGammaOp:public RGBOp < RGBGamma > {
 
 	    };
@@ -45,15 +47,22 @@ namespace cms {
 
 	    class NewGammaOp:public RGBGammaOp {
 	      private:
-		int under;
+		int p1, p2;
 		double gammaShift;
 		RGB_vector_ptr dglut;
 		int getNonZeroBlueIndex();
+		double getNonZeroRIntensty();
+		 bptr < ComponentLUT > componentLUT;
 	      protected:
 		 RGBGamma_ptr getRendering(RGBGamma_ptr source);
+		double getBCode(double rRatio, double gRatio,
+				double GCode);
+		double getRCode(double rRatio, double GCode, double BCode);
+                //double getRRatio(
 	      public:
-		 NewGammaOp(int under, double gammaShift,
-			    RGB_vector_ptr dglut);
+		 NewGammaOp(int p1, int p2, double gammaShift,
+			    RGB_vector_ptr dglut,
+			    bptr < ComponentLUT > componentLUT);
 	    };
 	};
     };

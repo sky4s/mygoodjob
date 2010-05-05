@@ -17,7 +17,7 @@ namespace cms {
     // CorrelatedColorTemperature
     //==========================================================================
      bptr < CIExyY >
-	CorrelatedColorTemperature::CCT2DIlluminantxyY(int tempK) {
+	CorrelatedColorTemperature::CCT2DIlluminantxyY(double tempK) {
 	//using namespace std;
 	double x = 0.0, y;
 	double T, T2, T3;
@@ -67,6 +67,23 @@ namespace cms {
 	double sqr = Math::sqr(n);
 	double cct = -449 * sqr * n + 3525 * sqr - 6823.3 * n + 5520.33;
 	return cct;
+    }
+
+    double_array CorrelatedColorTemperature::
+	getdudvWithDIlluminant(XYZ_ptr XYZ) {
+	xyY_ptr xyY(new CIExyY(XYZ));
+	double cct = xy2CCTByMcCamyFloat(xyY);
+	xyY_ptr dxyY = CCT2DIlluminantxyY(cct);
+	return dxyY->getDeltauv(xyY);
+    };
+
+    double CorrelatedColorTemperature::getduvWithDIlluminant(XYZ_ptr XYZ) {
+	double_array duv = getdudvWithDIlluminant(XYZ);
+	double d = Math::sqrt(Math::sqr(duv[0]) + Math::sqr(duv[1]));
+	if (duv[0] < 0 || duv[1] > 0) {
+	    d = -d;
+	}
+	return d;
     }
     //==========================================================================
 

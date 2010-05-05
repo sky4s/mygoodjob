@@ -75,7 +75,13 @@ namespace cms {
 			CorrelatedColorTemperature::
 			xy2CCTByMcCamyFloat(xyY);
 		    (*values)[4] = _toString(static_cast < int >(cct));
-		    (*values)[5] = "0";
+
+		    double duv =
+			CorrelatedColorTemperature::
+			getduvWithDIlluminant(c->XYZ);
+		    (*values)[5] = _toString(duv);
+		    //(*values)[5] = "0";
+
 		    RGB_ptr intensity = c->intensity;
 		    (*values)[6] = _toString(intensity->R);
 		    (*values)[7] = _toString(intensity->G);

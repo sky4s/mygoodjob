@@ -225,6 +225,10 @@ namespace cms {
 	    class MeasureCondition;
 	    class LCDCalibrator;
 	    class Component;
+	    class ComponentLUT;
+            class ComponentRelationIF;
+            class ComponentLinearRelation;
+            class ComponentPLRelation;
 	    namespace algo {
 		class ChromaticAroundAlgorithm;
 		class CIEuv1960NearestAlgorithm;
