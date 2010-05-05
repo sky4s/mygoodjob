@@ -1,8 +1,8 @@
 object CCTLUTForm: TCCTLUTForm
   Left = 300
   Top = 300
-  Width = 657
-  Height = 480
+  Width = 642
+  Height = 473
   Caption = 'CCT LUT'
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
@@ -18,15 +18,15 @@ object CCTLUTForm: TCCTLUTForm
   PixelsPerInch = 120
   TextHeight = 16
   object Label9: TLabel
-    Left = 288
-    Top = 425
+    Left = 280
+    Top = 417
     Width = 349
     Height = 16
     Caption = 'Copyright (C) 2010, AU Optronics Corp., All Right Reserved.'
   end
   object GroupBox1: TGroupBox
-    Left = 16
-    Top = 16
+    Left = 8
+    Top = 8
     Width = 193
     Height = 313
     Caption = 'Gray Level Option'
@@ -57,7 +57,7 @@ object CCTLUTForm: TCCTLUTForm
       Top = 48
       Width = 105
       Height = 24
-      ImeName = 'らゅ块╰参 (MS-IME2002)'
+      ImeName = #26085#25991#36664#20837#31995#32113' (MS-IME2002)'
       TabOrder = 0
       Text = '255'
     end
@@ -66,7 +66,7 @@ object CCTLUTForm: TCCTLUTForm
       Top = 112
       Width = 105
       Height = 24
-      ImeName = 'らゅ块╰参 (MS-IME2002)'
+      ImeName = #26085#25991#36664#20837#31995#32113' (MS-IME2002)'
       ItemHeight = 16
       TabOrder = 1
       Text = '1'
@@ -85,7 +85,7 @@ object CCTLUTForm: TCCTLUTForm
       Top = 80
       Width = 105
       Height = 24
-      ImeName = 'らゅ块╰参 (MS-IME2002)'
+      ImeName = #26085#25991#36664#20837#31995#32113' (MS-IME2002)'
       TabOrder = 2
       Text = '0'
     end
@@ -100,15 +100,15 @@ object CCTLUTForm: TCCTLUTForm
     end
   end
   object GroupBox2: TGroupBox
-    Left = 217
-    Top = 16
+    Left = 209
+    Top = 8
     Width = 200
-    Height = 113
+    Height = 185
     Caption = 'Gamma'
     TabOrder = 1
     object RadioButton_GammaCurve: TRadioButton
       Left = 9
-      Top = 48
+      Top = 56
       Width = 112
       Height = 25
       Caption = 'Gamma Curve'
@@ -117,7 +117,7 @@ object CCTLUTForm: TCCTLUTForm
     end
     object CheckBox_GByPass: TCheckBox
       Left = 9
-      Top = 80
+      Top = 88
       Width = 96
       Height = 25
       Caption = 'G ByPass'
@@ -126,8 +126,8 @@ object CCTLUTForm: TCCTLUTForm
     end
     object RadioButton_Gamma: TRadioButton
       Left = 9
-      Top = 16
-      Width = 112
+      Top = 24
+      Width = 80
       Height = 25
       Caption = 'Gamma'
       Checked = True
@@ -137,10 +137,10 @@ object CCTLUTForm: TCCTLUTForm
     end
     object ComboBox_Gamma: TComboBox
       Left = 89
-      Top = 16
+      Top = 24
       Width = 96
       Height = 24
-      ImeName = 'いゅ (羉砰) - 穝猔'
+      ImeName = #20013#25991' ('#32321#39636') - '#26032#27880#38899
       ItemHeight = 16
       TabOrder = 3
       Text = '2.4'
@@ -157,36 +157,50 @@ object CCTLUTForm: TCCTLUTForm
     end
   end
   object GroupBox3: TGroupBox
-    Left = 217
-    Top = 137
-    Width = 200
-    Height = 192
+    Left = 417
+    Top = 96
+    Width = 208
+    Height = 225
     Caption = 'Low Level Correction'
     TabOrder = 2
     object Label4: TLabel
       Left = 32
-      Top = 97
+      Top = 89
       Width = 37
       Height = 16
       Caption = 'Under'
     end
     object Label7: TLabel
       Left = 32
-      Top = 48
+      Top = 40
       Width = 16
       Height = 16
       Caption = 'P1'
     end
     object Label8: TLabel
       Left = 121
-      Top = 48
+      Top = 40
       Width = 16
       Height = 16
       Caption = 'P2'
     end
+    object Label14: TLabel
+      Left = 32
+      Top = 153
+      Width = 49
+      Height = 24
+      Caption = 'Under'
+    end
+    object Label15: TLabel
+      Left = 32
+      Top = 184
+      Width = 81
+      Height = 25
+      Caption = 'Gamma Shift'
+    end
     object RadioButton_P1P2: TRadioButton
       Left = 9
-      Top = 25
+      Top = 17
       Width = 96
       Height = 24
       Caption = 'P1 P2'
@@ -197,7 +211,7 @@ object CCTLUTForm: TCCTLUTForm
     end
     object RadioButton_RBInterp: TRadioButton
       Left = 9
-      Top = 73
+      Top = 65
       Width = 128
       Height = 24
       Caption = 'RB Interpolation'
@@ -206,54 +220,54 @@ object CCTLUTForm: TCCTLUTForm
     end
     object Edit_RBInterpUnder: TEdit
       Left = 80
-      Top = 97
+      Top = 89
       Width = 81
       Height = 24
       Enabled = False
-      ImeName = 'らゅ块╰参 (MS-IME2002)'
+      ImeName = #26085#25991#36664#20837#31995#32113' (MS-IME2002)'
       TabOrder = 2
       Text = '50'
     end
     object Edit_P1: TEdit
       Left = 57
-      Top = 48
+      Top = 40
       Width = 40
       Height = 24
-      ImeName = 'らゅ块╰参 (MS-IME2002)'
+      ImeName = #26085#25991#36664#20837#31995#32113' (MS-IME2002)'
       TabOrder = 3
       Text = '20'
     end
     object Edit_P2: TEdit
       Left = 144
-      Top = 48
+      Top = 40
       Width = 41
       Height = 24
-      ImeName = 'らゅ块╰参 (MS-IME2002)'
+      ImeName = #26085#25991#36664#20837#31995#32113' (MS-IME2002)'
       TabOrder = 4
       Text = '50'
     end
     object RadioButton_None: TRadioButton
       Left = 9
-      Top = 124
-      Width = 112
+      Top = 108
+      Width = 72
       Height = 25
       Caption = 'None'
       TabOrder = 5
       OnClick = RadioButton_NoneClick
     end
     object Edit_NewUnder: TEdit
-      Left = 64
+      Left = 80
       Top = 153
-      Width = 41
+      Width = 81
       Height = 24
       Enabled = False
-      ImeName = 'らゅ块╰参 (MS-IME2002)'
+      ImeName = #26085#25991#36664#20837#31995#32113' (MS-IME2002)'
       TabOrder = 6
       Text = '50'
     end
     object RadioButton_New: TRadioButton
       Left = 8
-      Top = 152
+      Top = 128
       Width = 57
       Height = 25
       Caption = 'New'
@@ -262,18 +276,18 @@ object CCTLUTForm: TCCTLUTForm
     end
     object Edit_GammaShift: TEdit
       Left = 120
-      Top = 152
-      Width = 49
+      Top = 184
+      Width = 41
       Height = 24
       TabOrder = 8
       Text = '-0.2'
     end
   end
   object GroupBox4: TGroupBox
-    Left = 425
-    Top = 16
+    Left = 417
+    Top = 8
     Width = 208
-    Height = 137
+    Height = 89
     Caption = 'Blue Correction'
     TabOrder = 3
     object CheckBox_BGain: TCheckBox
@@ -289,7 +303,7 @@ object CCTLUTForm: TCCTLUTForm
       Top = 25
       Width = 56
       Height = 24
-      ImeName = 'らゅ块╰参 (MS-IME2002)'
+      ImeName = #26085#25991#36664#20837#31995#32113' (MS-IME2002)'
       TabOrder = 1
       Text = '1.05'
     end
@@ -303,10 +317,10 @@ object CCTLUTForm: TCCTLUTForm
     end
   end
   object GroupBox5: TGroupBox
-    Left = 425
-    Top = 160
-    Width = 208
-    Height = 169
+    Left = 209
+    Top = 192
+    Width = 200
+    Height = 129
     Caption = 'Options'
     TabOrder = 4
     object CheckBox_AvoidNoise: TCheckBox
@@ -327,8 +341,8 @@ object CCTLUTForm: TCCTLUTForm
     end
   end
   object Button_Run: TButton
-    Left = 576
-    Top = 393
+    Left = 568
+    Top = 385
     Width = 57
     Height = 24
     Caption = 'Run'
@@ -336,8 +350,8 @@ object CCTLUTForm: TCCTLUTForm
     OnClick = Button_RunClick
   end
   object Button_Debug: TButton
-    Left = 576
-    Top = 361
+    Left = 568
+    Top = 353
     Width = 57
     Height = 24
     Caption = 'Debug'
@@ -345,8 +359,8 @@ object CCTLUTForm: TCCTLUTForm
     OnClick = Button_DebugClick
   end
   inline TOutputFileFrame1: TOutputFileFrame
-    Left = 16
-    Top = 336
+    Left = 8
+    Top = 328
     Width = 553
     Height = 89
     TabOrder = 7
@@ -377,8 +391,8 @@ object CCTLUTForm: TCCTLUTForm
     end
   end
   object Panel_Expand: TPanel
-    Left = 25
-    Top = 64
+    Left = 17
+    Top = 56
     Width = 176
     Height = 257
     Caption = 'Panel_Expand'
@@ -417,7 +431,7 @@ object CCTLUTForm: TCCTLUTForm
         Top = 89
         Width = 73
         Height = 24
-        ImeName = 'らゅ块╰参 (MS-IME2002)'
+        ImeName = #26085#25991#36664#20837#31995#32113' (MS-IME2002)'
         ItemHeight = 16
         TabOrder = 0
         Text = '8'
@@ -434,7 +448,7 @@ object CCTLUTForm: TCCTLUTForm
         Top = 57
         Width = 73
         Height = 24
-        ImeName = 'らゅ块╰参 (MS-IME2002)'
+        ImeName = #26085#25991#36664#20837#31995#32113' (MS-IME2002)'
         TabOrder = 1
         Text = '0'
       end
@@ -443,7 +457,7 @@ object CCTLUTForm: TCCTLUTForm
         Top = 25
         Width = 73
         Height = 24
-        ImeName = 'らゅ块╰参 (MS-IME2002)'
+        ImeName = #26085#25991#36664#20837#31995#32113' (MS-IME2002)'
         TabOrder = 2
         Text = '64'
       end
@@ -481,7 +495,7 @@ object CCTLUTForm: TCCTLUTForm
         Top = 25
         Width = 73
         Height = 24
-        ImeName = 'らゅ块╰参 (MS-IME2002)'
+        ImeName = #26085#25991#36664#20837#31995#32113' (MS-IME2002)'
         TabOrder = 0
         Text = '255'
       end
@@ -490,7 +504,7 @@ object CCTLUTForm: TCCTLUTForm
         Top = 57
         Width = 73
         Height = 24
-        ImeName = 'らゅ块╰参 (MS-IME2002)'
+        ImeName = #26085#25991#36664#20837#31995#32113' (MS-IME2002)'
         TabOrder = 1
         Text = '64'
       end
@@ -499,7 +513,7 @@ object CCTLUTForm: TCCTLUTForm
         Top = 89
         Width = 73
         Height = 24
-        ImeName = 'らゅ块╰参 (MS-IME2002)'
+        ImeName = #26085#25991#36664#20837#31995#32113' (MS-IME2002)'
         ItemHeight = 16
         TabOrder = 2
         Text = '16'
@@ -514,8 +528,8 @@ object CCTLUTForm: TCCTLUTForm
     end
   end
   object Button_Reset: TButton
-    Left = 584
-    Top = 344
+    Left = 576
+    Top = 336
     Width = 49
     Height = 17
     Caption = 'reset'

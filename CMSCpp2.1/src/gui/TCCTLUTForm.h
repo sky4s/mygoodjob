@@ -68,6 +68,8 @@ class TCCTLUTForm:public TForm {
     TRadioButton *RadioButton_New;
     TEdit *Edit_GammaShift;
     TButton *Button_Reset;
+        TLabel *Label14;
+        TLabel *Label15;
     void __fastcall RadioButton_RBInterpClick(TObject * Sender);
     void __fastcall RadioButton_P1P2Click(TObject * Sender);
     void __fastcall Button_RunClick(TObject * Sender);

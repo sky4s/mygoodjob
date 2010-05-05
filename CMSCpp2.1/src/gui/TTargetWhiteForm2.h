@@ -60,6 +60,28 @@ class TTargetWhiteForm2:public TForm, cms::util::WindowListener {
     TEdit *Edit_refx;
     TEdit *Edit_refy;
     TEdit *Edit_refLuminance;
+    TTabSheet *TabSheet2;
+    TGroupBox *GroupBox6;
+    TEdit *Edit_RZ;
+    TEdit *Edit_GZ;
+    TEdit *Edit_BZ;
+    TEdit *Edit_WZ;
+    TEdit *Edit_WY;
+    TEdit *Edit_BY;
+    TEdit *Edit_GY;
+    TEdit *Edit_RY;
+    TEdit *Edit_RX;
+    TEdit *Edit_GX;
+    TEdit *Edit_BX;
+    TEdit *Edit_WX;
+    TLabel *Label17;
+    TLabel *Label20;
+    TLabel *Label18;
+    TLabel *Label19;
+    TLabel *Label15;
+    TLabel *Label9;
+    TLabel *Label16;
+    TButton *Button1;
     void __fastcall RadioButton_MaxRGBClick(TObject * Sender);
     void __fastcall ScrollBar_RChange(TObject * Sender);
     void __fastcall ScrollBar_GChange(TObject * Sender);
@@ -72,6 +94,9 @@ class TTargetWhiteForm2:public TForm, cms::util::WindowListener {
     void __fastcall Edit_GChange(TObject * Sender);
     void __fastcall Edit_BChange(TObject * Sender);
     void __fastcall FormCreate(TObject * Sender);
+    void __fastcall Edit_BZChange(TObject * Sender);
+    void __fastcall FormShow(TObject * Sender);
+    void __fastcall Button1Click(TObject * Sender);
   private:			// User declarations
     void setColorimetricValues(double x, double y, double up, double vp);
     void scrollBar_Change();

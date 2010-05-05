@@ -288,6 +288,8 @@ void __fastcall TTargetWhiteForm2::FormCreate(TObject * Sender)
     bptr < WindowListener > formPtr(dynamic_cast <
 				    WindowListener * >(this));
     MeasureWindow->addWindowListener(formPtr);
+
+
 }
 
 //---------------------------------------------------------------------------
@@ -308,4 +310,78 @@ void TTargetWhiteForm2::setRGBRatio(int r, int g, int b)
     this->Edit_G->Text = g;
     this->Edit_B->Text = b;
 };
+
+
+void __fastcall TTargetWhiteForm2::Edit_BZChange(TObject * Sender)
+{
+    double rX = this->Edit_RX->Text.ToDouble();
+    double rY = this->Edit_RY->Text.ToDouble();
+    double rZ = this->Edit_RZ->Text.ToDouble();
+
+    double gX = this->Edit_GX->Text.ToDouble();
+    double gY = this->Edit_GY->Text.ToDouble();
+    double gZ = this->Edit_GZ->Text.ToDouble();
+
+    double bX = this->Edit_BX->Text.ToDouble();
+    double bY = this->Edit_BY->Text.ToDouble();
+    double bZ = this->Edit_BZ->Text.ToDouble();
+
+    double wX = rX + gX + bX;
+    double wY = rY + gY + bY;
+    double wZ = rZ + gZ + bZ;
+    this->Edit_WX->Text = wX;
+    this->Edit_WY->Text = wY;
+    this->Edit_WZ->Text = wZ;
+}
+
+//---------------------------------------------------------------------------
+
+void __fastcall TTargetWhiteForm2::FormShow(TObject * Sender)
+{
+    bool maxMatrix = MainForm->RadioButton_AnalyzerMaxMatrix->Checked;
+    this->Button1->Enabled = maxMatrix;
+}
+
+//---------------------------------------------------------------------------
+
+void __fastcall TTargetWhiteForm2::Button1Click(TObject * Sender)
+{
+    using namespace cms::measure;
+    using namespace Dep;
+    bptr < IntensityAnalyzerIF > analyzer = MainForm->getAnalyzer();
+    bptr < MaxMatrixIntensityAnayzer >
+	maxmatrix(dynamic_cast <
+		  MaxMatrixIntensityAnayzer * >(analyzer.get()));
+
+    double rX = this->Edit_RX->Text.ToDouble();
+    double rY = this->Edit_RY->Text.ToDouble();
+    double rZ = this->Edit_RZ->Text.ToDouble();
+
+    double gX = this->Edit_GX->Text.ToDouble();
+    double gY = this->Edit_GY->Text.ToDouble();
+    double gZ = this->Edit_GZ->Text.ToDouble();
+
+    double bX = this->Edit_BX->Text.ToDouble();
+    double bY = this->Edit_BY->Text.ToDouble();
+    double bZ = this->Edit_BZ->Text.ToDouble();
+
+    double wX = this->Edit_WX->Text.ToDouble();
+    double wY = this->Edit_WY->Text.ToDouble();
+    double wZ = this->Edit_WZ->Text.ToDouble();
+
+    XYZ_ptr r(new Indep::CIEXYZ(rX, rY, rZ));
+    XYZ_ptr g(new Indep::CIEXYZ(gX, gY, gZ));
+    XYZ_ptr b(new Indep::CIEXYZ(bX, bY, bZ));
+    XYZ_ptr w(new Indep::CIEXYZ(wX, wY, wZ));
+
+    maxmatrix->setupComponent(Channel::R, r);
+    maxmatrix->setupComponent(Channel::G, g);
+    maxmatrix->setupComponent(Channel::B, b);
+    maxmatrix->setupComponent(Channel::W, w);
+    //maxmatrix->setupComponent()
+
+    maxmatrix->enter();
+}
+
+//---------------------------------------------------------------------------
 
