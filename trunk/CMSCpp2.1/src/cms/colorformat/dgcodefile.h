@@ -48,57 +48,6 @@ namespace cms {
 	       選擇方案二, 所以不用刻意去縮減rgbgamma, 由setRawData自己去篩 */
 	};
 
-
-	/*class DGLutFile {
-	   private:
-	   bptr < ExcelFileDB > db;
-	   const Mode mode;
-	   void init();
-	   const std::string & filename;
-	   bool lazyMode;
-	   public:
-	   static const std::string GammaHeader[4];
-	   static const std::string RawHeader[13];
-	   static const std::string PropertiesHeader[2];
-	   static const std::string & GammaTable;
-	   static const std::string & RawData;
-	   static const std::string & Properties;
-	   static string_vector_ptr GammaFieldNames;
-	   static string_vector_ptr RawFieldNames;
-	   static string_vector_ptr PropertiesFieldNames;
-	   DGLutFile(const std::string & filename);
-	   DGLutFile(const std::string & filename, Mode mode);
-	   void addProperty(const std::string & key,
-	   const std::string & value);
-	   void addProperty(const std::string & key, const double value);
-	   void setProperty(const DGLutProperty & property);
-
-	   void setRawData(Component_vector_ptr componentVector,
-	   RGBGamma_ptr initialRGBGamma,
-	   RGBGamma_ptr finalRGBGamma);
-	   void setGammaTable(RGB_vector_ptr dglut);
-	   Component_vector_ptr getComponentVector();
-
-	   private:
-	   string_vector_ptr makeValues(int n, Component_ptr c);
-	   string_vector_ptr makeValues(int n,
-	   Component_ptr c,
-	   RGB_ptr rgbGamma,
-	   RGB_ptr rgbGammaFix);
-
-	   /*
-	   量測的資料不見得是0~255全量, 但是產生的gamma一定是全部
-	   該如何整合兩者?兩種作法
-	   1. 內插量測值, 使資料為0~255
-	   2. 取有量測到的gamma, 但是缺乏的gamma..就缺乏吧...
-	   反正產生DG Code的時候還是可以生出來.
-
-	   選擇方案二, 所以不用刻意去縮減rgbgamma, 由setRawData自己去篩
-	 */
-
-
-	//};
-
 	class DGLutProperty {
 	    friend class DGLutFile;
 	  private:

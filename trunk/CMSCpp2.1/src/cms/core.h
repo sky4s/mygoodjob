@@ -36,9 +36,11 @@ namespace cms {
 
     class CorrelatedColorTemperature:public jObject {
       public:
-	static xyY_ptr CCT2DIlluminantxyY(int tempK);
+	static xyY_ptr CCT2DIlluminantxyY(double tempK);
 	static double xy2CCTByMcCamyFloat(xyY_ptr xyY);
-        
+	static double_array getdudvWithDIlluminant(XYZ_ptr XYZ);
+	static double getduvWithDIlluminant(XYZ_ptr XYZ);
+
     };
     class DeltaE:public jObject {
     };

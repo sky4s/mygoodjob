@@ -138,7 +138,7 @@ namespace cms {
 	    // NewGammaOp
 	    //==================================================================
 	    int NewGammaOp::getNonZeroBlueIndex() {
-		for (int x = 1; x < under; x++) {
+		for (int x = 1; x < p2; x++) {
 		    //dglut->get_allocator()
 		    double b = (*dglut)[x]->B;
 		    if (b != 0) {
@@ -147,42 +147,76 @@ namespace cms {
 		}
 		return -1;
 	    };
+	    double NewGammaOp::getNonZeroRIntensty() {
+		//第一個非零G值
+		double g = (*dglut)[1]->G;
+		//找到與這個非零G值相同的R值的intensity
+		return componentLUT->getIntensity(Dep::Channel::R, g);
+	    };
 	    RGBGamma_ptr NewGammaOp::getRendering(RGBGamma_ptr source) {
 		using namespace math;
+		double_vector & r = (*source->r);
 		double_vector & b = (*source->b);
-		int size = under + 1;
+		int size = p2 + 1;
 
-		int nonZeroIndex = getNonZeroBlueIndex();
-		double minIntensity = b[nonZeroIndex];
+		double rminIntensity = getNonZeroRIntensty();
+		int nonZeroBlueIndex = getNonZeroBlueIndex();
+		double bminIntensity = b[nonZeroBlueIndex];
 
+		//產生b的intensity curve
 		double_vector_ptr input(new double_vector(size));
-		double_vector_ptr output(new double_vector(size));
-		for (int x = 0; x <= under; x++) {
+		double_vector_ptr rOutput(new double_vector(size));
+		double_vector_ptr bOutput(new double_vector(size));
+		for (int x = 0; x <= p2; x++) {
 		    (*input)[x] = x;
-		    (*output)[x] = b[x];
+		    (*rOutput)[x] = r[x];
+		    (*bOutput)[x] = b[x];
 		}
+
+		//做正規化
 		double_vector_ptr normalinput =
 		    GammaFinder::normalize(input, (*input)[0],
-					   (*input)[under]);
-		double_vector_ptr normaloutput =
-		    GammaFinder::normalize(output, (*output)[0],
-					   (*output)[under]);
-		double gamma =
-		    GammaFinder::findingGamma(normalinput, normaloutput);
+					   (*input)[p2]);
+		double_vector_ptr rNormaloutput =
+		    GammaFinder::normalize(rOutput, (*rOutput)[0],
+					   (*rOutput)[p2]);
+		double_vector_ptr bNormaloutput =
+		    GammaFinder::normalize(bOutput, (*bOutput)[0],
+					   (*bOutput)[p2]);
+		//計算出gamma
+		double rgamma =
+		    GammaFinder::findingGamma(normalinput, rNormaloutput);
+		double bgamma =
+		    GammaFinder::findingGamma(normalinput, bNormaloutput);
 
-		double_vector_ptr newNormalOutput =
-		    GammaFinder::gamma(normalinput, gamma + gammaShift);
+		//重新產生output
+		double_vector_ptr newRNormalOutput =
+		    GammaFinder::gamma(normalinput, rgamma);
+		double_vector_ptr newBNormalOutput =
+		    GammaFinder::gamma(normalinput, bgamma + gammaShift);
 
-		for (int x = 1; x < under; x++) {
-		    double normal = (*newNormalOutput)[x];
+		//將output轉成實際的intensity
+		for (int x = 1; x < p2; x++) {
+		    double bnormal = (*newBNormalOutput)[x];
 		    b[x] =
-			minIntensity + (b[under] - minIntensity) * normal;
+			bminIntensity + (b[p2] - bminIntensity) * bnormal;
+		    double rnormal = (*newRNormalOutput)[x];
+		    r[x] =
+			rminIntensity + (r[p2] - rminIntensity) * rnormal;
 		}
 		return source;
 	    };
-	  NewGammaOp::NewGammaOp(int under, double gammaShift, RGB_vector_ptr dglut):under(under), gammaShift(gammaShift),
-		dglut(dglut)
-	    {
+	    double NewGammaOp::getBCode(double rRatio, double gRatio,
+					double GCode) {
+		return (1 - rRatio - gRatio) * GCode / gRatio;
+	    };
+	    double NewGammaOp::getRCode(double rRatio, double GCode,
+					double BCode) {
+		return rRatio * (GCode + BCode) / (1 - rRatio);
+	    };
+	  NewGammaOp::NewGammaOp(int p1, int p2, double gammaShift, RGB_vector_ptr dglut, bptr < ComponentLUT > componentLUT):p1(p1), p2(p2),
+		gammaShift(gammaShift), dglut(dglut),
+		componentLUT(componentLUT) {
 	    };
 
 	    //==================================================================

@@ -64,12 +64,15 @@ class TCCTLUTForm:public TForm {
     TComboBox *ComboBox_HighStep;
     TLabel *Label12;
     TLabel *Label13;
-    TEdit *Edit_NewUnder;
     TRadioButton *RadioButton_New;
     TEdit *Edit_GammaShift;
     TButton *Button_Reset;
-        TLabel *Label14;
-        TLabel *Label15;
+    TLabel *Label15;
+    TCheckBox *CheckBox_;
+    TEdit *Edit_NewP1;
+    TEdit *Edit_NewP2;
+    TLabel *Label14;
+    TLabel *Label16;
     void __fastcall RadioButton_RBInterpClick(TObject * Sender);
     void __fastcall RadioButton_P1P2Click(TObject * Sender);
     void __fastcall Button_RunClick(TObject * Sender);

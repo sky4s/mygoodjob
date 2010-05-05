@@ -94,9 +94,10 @@ void __fastcall TCCTLUTForm::Button_RunClick(TObject * Sender)
 	int rbunder = this->Edit_RBInterpUnder->Text.ToInt();
 	calibrator->setRBInterpolation(rbunder);
     } else if (this->RadioButton_New->Checked) {
-	int under = this->Edit_NewUnder->Text.ToInt();
+	int p1 = this->Edit_NewP1->Text.ToInt();
+	int p2 = this->Edit_NewP2->Text.ToInt();
 	double gammaShift = this->Edit_GammaShift->Text.ToDouble();
-	calibrator->setNew(under, gammaShift);
+	calibrator->setNew(p1, p2, gammaShift);
     } else {
 	calibrator->setNoneDimCorrect();
     }
@@ -327,7 +328,8 @@ void TCCTLUTForm::setLowLevelCorrectionEditDisable()
     this->Edit_P1->Enabled = false;
     this->Edit_P2->Enabled = false;
     this->Edit_RBInterpUnder->Enabled = false;
-    this->Edit_NewUnder->Enabled = false;
+    this->Edit_NewP1->Enabled = false;
+    this->Edit_NewP2->Enabled = false;
 };
 
 void __fastcall TCCTLUTForm::RadioButton_NoneClick(TObject * Sender)
@@ -340,7 +342,8 @@ void __fastcall TCCTLUTForm::RadioButton_NoneClick(TObject * Sender)
 void __fastcall TCCTLUTForm::RadioButton_NewClick(TObject * Sender)
 {
     setLowLevelCorrectionEditDisable();
-    this->Edit_NewUnder->Enabled = true;
+    this->Edit_NewP1->Enabled = true;
+    this->Edit_NewP2->Enabled = true;
 }
 
 //---------------------------------------------------------------------------

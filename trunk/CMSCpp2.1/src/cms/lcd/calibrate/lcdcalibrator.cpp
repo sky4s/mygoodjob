@@ -123,11 +123,10 @@ namespace cms {
 	    //==================================================================
 
 	    //==================================================================
-	    // LuminanceIntensityLinearRelation
+	    // ComponentLinearRelation
 	    //==================================================================
-	    void LuminanceIntensityLinearRelation::init(double2D_ptr input,
-							double2D_ptr
-							output) {
+	    void ComponentLinearRelation::init(double2D_ptr input,
+					       double2D_ptr output) {
 		//==============================================================
 		// 計算a/c/d
 		//==============================================================
@@ -145,21 +144,144 @@ namespace cms {
 		//==============================================================
 	    };
 
-	    LuminanceIntensityLinearRelation::
-		LuminanceIntensityLinearRelation(double2D_ptr input,
-						 double2D_ptr output) {
+	    void ComponentLinearRelation::
+		init(Component_vector_ptr componentVector) {
+		//==============================================================
+		// 建立回歸資料
+		//==============================================================
+		int size = componentVector->size();
+		double2D_ptr input(new double2D(size, 3));
+		double2D_ptr output(new double2D(size, 1));
+
+		for (int x = 0; x != size; x++) {
+		    Component_ptr component = (*componentVector)[x];
+		    double Y = component->XYZ->Y;
+		    RGB_ptr intensity = component->intensity;
+
+		    (*input)[x][0] = intensity->R;
+		    (*input)[x][1] = intensity->G;
+		    (*input)[x][2] = intensity->B;
+		    (*output)[x][0] = Y;
+		}
+		//==============================================================
+
+		//==============================================================
+		// 計算a/c/d
+		//==============================================================
+		init(input, output);
+		//==============================================================                
+	    };
+
+	    ComponentLinearRelation::
+		ComponentLinearRelation(double2D_ptr input,
+					double2D_ptr output) {
 		init(input, output);
 
 	    };
-	    double LuminanceIntensityLinearRelation::
-		getIntensity(double luminance) {
+	  ComponentLinearRelation::ComponentLinearRelation(Component_vector_ptr componentVector):componentVector(componentVector)
+	    {
+		init(componentVector);
+	    };
+	    double ComponentLinearRelation::getIntensity(double luminance) {
 		return c * luminance + d;
 	    };
-	    double LuminanceIntensityLinearRelation::
+	    double ComponentLinearRelation::
 		getLuminance(double rIntensity, double gIntensity,
 			     double bIntensity) {
 		return a0 + rIntensity * a1 + gIntensity * a2 +
 		    bIntensity * a3;
+	    };
+	    //==================================================================
+
+	    //==================================================================
+	    // ComponentLUT
+	    //==================================================================
+	    ComponentLUT::init(Component_vector_ptr componentVector) {
+		//==============================================================
+		// 建立回歸資料
+		//==============================================================
+		int size = componentVector->size();
+		double_vector_ptr keys(new double_vector(size));
+		double_vector_ptr rValues(new double_vector(size));
+		double_vector_ptr gValues(new double_vector(size));
+		double_vector_ptr bValues(new double_vector(size));
+		double_array values(new double[3]);
+
+
+		for (int x = 0; x != size; x++) {
+		    Component_ptr component = (*componentVector)[x];
+		    double Y = component->XYZ->Y;
+		    RGB_ptr intensity = component->intensity;
+
+		    RGB_ptr code = component->rgb;
+		    code->getValues(values, MaxValue::Double255);
+		    (*keys)[x] = values[0];
+
+		    (*rValues)[x] = intensity->R;
+		    (*gValues)[x] = intensity->G;
+		    (*bValues)[x] = intensity->B;
+		}
+		//==============================================================
+
+		//==============================================================
+		// 產生RGB LUT
+		//==============================================================
+		keys = getReverse(keys);
+		rValues = getReverse(rValues);
+		gValues = getReverse(gValues);
+		bValues = getReverse(bValues);
+		rLut.reset(new Interpolation1DLUT(keys, rValues));
+		gLut.reset(new Interpolation1DLUT(keys, gValues));
+		bLut.reset(new Interpolation1DLUT(keys, bValues));
+		//==============================================================                
+	    };
+	  ComponentLUT::ComponentLUT(Component_vector_ptr componentVector):componentVector(componentVector)
+	    {
+		init(componentVector);
+	    };
+	    double ComponentLUT::getIntensity(const Dep::Channel & ch,
+					      double code) {
+		switch (ch.chindex) {
+		case ChannelIndex::R:
+		    return rLut->getValue(code);
+		case ChannelIndex::G:
+		    return gLut->getValue(code);
+		case ChannelIndex::B:
+		    return bLut->getValue(code);
+		}
+	    };
+	    double ComponentLUT::getCode(const Dep::Channel & ch,
+					 double intensity) {
+		switch (ch.chindex) {
+		case ChannelIndex::R:
+		    return rLut->getKey(intensity);
+		case ChannelIndex::G:
+		    return gLut->getKey(intensity);
+		case ChannelIndex::B:
+		    return bLut->getKey(intensity);
+		}
+	    };
+	    double ComponentLUT::correctIntensityInRange(const Dep::
+							 Channel & ch,
+							 double intensity)
+	    {
+		switch (ch.chindex) {
+		case ChannelIndex::R:
+		    return rLut->correctValueInRange(intensity);
+		case ChannelIndex::G:
+		    return gLut->correctValueInRange(intensity);
+		case ChannelIndex::B:
+		    return bLut->correctValueInRange(intensity);
+		}
+	    };
+	    double_vector_ptr ComponentLUT::
+		getReverse(double_vector_ptr vec) {
+		int size = vec->size();
+		double_vector_ptr result(new double_vector(size));
+		for (int x = 0; x != size; x++) {
+		    (*result)[x] = (*vec)[size - 1 - x];
+		}
+		return result;
 	    };
 	    //==================================================================
 
@@ -179,86 +301,30 @@ namespace cms {
 	     */
 	    void DGLutGenerator::init() {
 		//==============================================================
-		// 建立回歸資料
-		//==============================================================
-		int size = componentVector->size();
-		double2D_ptr input(new double2D(size, 3));
-		double2D_ptr output(new double2D(size, 1));
-		double_vector_ptr keys(new double_vector(size));
-		double_vector_ptr rValues(new double_vector(size));
-		double_vector_ptr gValues(new double_vector(size));
-		double_vector_ptr bValues(new double_vector(size));
-		double_array values(new double[3]);
-
-
-		for (int x = 0; x != size; x++) {
-		    Component_ptr component = (*componentVector)[x];
-		    double Y = component->XYZ->Y;
-		    RGB_ptr intensity = component->intensity;
-
-		    (*input)[x][0] = intensity->R;
-		    (*input)[x][1] = intensity->G;
-		    (*input)[x][2] = intensity->B;
-		    (*output)[x][0] = Y;
-
-		    RGB_ptr code = component->rgb;
-		    code->getValues(values, MaxValue::Double255);
-		    //(*keys)[x] = code->getValue(Channel::W);
-		    (*keys)[x] = values[0];
-
-		    (*rValues)[x] = intensity->R;
-		    (*gValues)[x] = intensity->G;
-		    (*bValues)[x] = intensity->B;
-		}
-		//==============================================================
-
-		//==============================================================
 		// 計算a/c/d
 		//==============================================================
-		/*regression.reset(new PolynomialRegression(input, output,
-		   Polynomial::
-		   COEF_3::BY_3C));
-		   regression->regress();
-		   const double *coefs = (*regression->getCoefs())[0];
-		   a1 = coefs[1];
-		   a2 = coefs[2];
-		   a3 = coefs[3];
-		   a0 = coefs[0];
-		   c = 1 / (a1 + a2 + a3);
-		   d = -a0 / (a1 + a2 + a3); */
-		lumiIntensityRelation.
-		    reset(new
-			  LuminanceIntensityLinearRelation(input, output));
+		componentRelation.
+		    reset(new ComponentLinearRelation(componentVector));
 		//==============================================================
-		double maxintensity = Math::roundTo(getMaximumIntensity());
-
-		maxLuminance =
-		    lumiIntensityRelation->getLuminance(maxintensity,
-							maxintensity,
-							maxintensity);
-		minLuminance = (*output)[size - 1][0];
 
 		//==============================================================
 		// 產生RGB LUT
 		//==============================================================
-		keys = getReverse(keys);
-		rValues = getReverse(rValues);
-		gValues = getReverse(gValues);
-		bValues = getReverse(bValues);
-		rLut.reset(new Interpolation1DLUT(keys, rValues));
-		gLut.reset(new Interpolation1DLUT(keys, gValues));
-		bLut.reset(new Interpolation1DLUT(keys, bValues));
+		lut.reset(new ComponentLUT(componentVector));
 		//==============================================================
+
+		double maxintensity = Math::roundTo(getMaximumIntensity());
+
+		maxLuminance =
+		    componentRelation->getLuminance(maxintensity,
+						    maxintensity,
+						    maxintensity);
+		int size = componentVector->size();
+		minLuminance = (*componentVector)[size - 1]->XYZ->Y;
+		//minLuminance = (*output)[size - 1][0];
+
+
 	    };
-	    /*double DGLutGenerator::getIntensity(double luminance) {
-	       return c * luminance + d;
-	       };
-	       double DGLutGenerator::getLuminance(double rIntensity,
-	       double gIntensity,
-	       double bIntensity) {
-	       return a0 + rIntensity * a1 + gIntensity * a2 +
-	       bIntensity * a3;
-	       }; */
 	    /*
 	       將正規化的gamma curve, 轉換為絕對的亮度curve
 	     */
@@ -274,15 +340,6 @@ namespace cms {
 			differ * (*normalGammaCurve)[x] + minLuminance;
 		}
 		return luminanceGammaCurve;
-	    };
-	    double_vector_ptr DGLutGenerator::
-		getReverse(double_vector_ptr vec) {
-		int size = vec->size();
-		double_vector_ptr result(new double_vector(size));
-		for (int x = 0; x != size; x++) {
-		    (*result)[x] = (*vec)[size - 1 - x];
-		}
-		return result;
 	    };
 	    double DGLutGenerator::getMaximumIntensity() {
 		//int maxindex = (out == Dep::MaxValue::Int6Bit) ? 3 : 0;
@@ -301,6 +358,7 @@ namespace cms {
 
 	    RGB_vector_ptr DGLutGenerator::
 		produce(RGBGamma_ptr rgbIntensityCurve) {
+		using namespace Dep;
 		double_vector_ptr rIntensityCurve = rgbIntensityCurve->r;
 		double_vector_ptr gIntensityCurve = rgbIntensityCurve->g;
 		double_vector_ptr bIntensityCurve = rgbIntensityCurve->b;
@@ -317,13 +375,19 @@ namespace cms {
 		    gIntensity = (*gIntensityCurve)[x];
 		    bIntensity = (*bIntensityCurve)[x];
 
-		    rIntensity = rLut->correctValueInRange(rIntensity);
-		    gIntensity = gLut->correctValueInRange(gIntensity);
-		    bIntensity = bLut->correctValueInRange(bIntensity);
+		    rIntensity =
+			lut->correctIntensityInRange(Channel::R,
+						     rIntensity);
+		    gIntensity =
+			lut->correctIntensityInRange(Channel::G,
+						     gIntensity);
+		    bIntensity =
+			lut->correctIntensityInRange(Channel::B,
+						     bIntensity);
 
-		    double r = rLut->getKey(rIntensity);
-		    double g = gLut->getKey(gIntensity);
-		    double b = bLut->getKey(bIntensity);
+		    double r = lut->getCode(Channel::R, rIntensity);
+		    double g = lut->getCode(Channel::G, gIntensity);
+		    double b = lut->getCode(Channel::B, bIntensity);
 
 		    RGB_ptr rgb(new RGBColor(r, g, b));
 		    (*dglut)[x] = rgb;
@@ -345,7 +409,7 @@ namespace cms {
 		for (int x = 0; x != size; x++) {
 		    double luminance = (*luminanceGammaCurve)[x];
 		    double intensity =
-			lumiIntensityRelation->getIntensity(luminance);
+			componentRelation->getIntensity(luminance);
 		    (*rIntenisty)[x] = intensity;
 		    (*gIntenisty)[x] = intensity;
 		    (*bIntenisty)[x] = intensity;
@@ -358,7 +422,9 @@ namespace cms {
 
 		return rgbgamma;
 	    };
-
+	    bptr < ComponentLUT > DGLutGenerator::getComponentLUT() {
+		return lut;
+	    };
 	    //==================================================================
 
 	    //==================================================================
@@ -456,20 +522,19 @@ namespace cms {
 	    void LCDCalibrator::setP1P2(int p1, int p2) {
 		this->p1 = p1;
 		this->p2 = p2;
-		//this->p1p2 = true;
 		this->correct = P1P2;
 	    };
 	    void LCDCalibrator::setRBInterpolation(int under) {
-		//this->p1p2 = false;
 		this->correct = RBInterpolation;
 		this->under = under;
 	    };
 	    void LCDCalibrator::setNoneDimCorrect() {
 		this->correct = None;
 	    };
-	    void LCDCalibrator::setNew(int under, double gammaShift) {
+	    void LCDCalibrator::setNew(int p1, int p2, double gammaShift) {
 		this->correct = New;
-		this->under = under;
+		this->p1 = p1;
+		this->p2 = p2;
 		this->gammaShift = gammaShift;
 	    };
 
@@ -600,12 +665,7 @@ namespace cms {
 						   bitDepth));
 		    gammaop.addOp(bgain);
 		}
-		/*if (correct == New) {
-		   bptr < NewGammaOp >
-		   newgamma(new NewGammaOp(50, gammaShift,
-		   componentVector));
-		   gammaop.addOp(newgamma);
-		   } */
+
 		rgbgamma = gammaop.createInstance();
 
 
@@ -659,8 +719,9 @@ namespace cms {
 		    //==========================================================
 		} else if (correct == New) {
 		    bptr < NewGammaOp >
-			newgamma(new NewGammaOp(under, gammaShift, dglut));
-
+			newgamma(new
+				 NewGammaOp(p1, p2, gammaShift, dglut,
+					    generator->getComponentLUT()));
 		    RGBGammaOp gammaop;
 		    gammaop.setSource(rgbgamma);
 		    gammaop.addOp(newgamma);
@@ -728,6 +789,9 @@ namespace cms {
 
 		if (correct == RBInterpolation) {
 		    bptr < DGLutOp > op(new RBInterpolationOp(under));
+		    dgop.addOp(op);
+		} else if (correct == New) {
+		    bptr < DGLutOp > op(new NewOp(p1, p2));
 		    dgop.addOp(op);
 		}
 		/*else if (correct == New) {

@@ -52,11 +52,11 @@ namespace cms {
 
 	    class NewOp:public DGLutOp {
 	      private:
-		double under;
+		int p1, p2;
 	      protected:
 		 RGB_vector_ptr getRendering(RGB_vector_ptr source);
 	      public:
-		 NewOp(double under);
+		 NewOp(int p1, int p2);
 	    };
 
 	    class BMaxOp:public DGLutOp {

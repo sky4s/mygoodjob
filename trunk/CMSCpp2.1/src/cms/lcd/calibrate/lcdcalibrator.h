@@ -52,29 +52,31 @@ namespace cms {
 		void windowClosing();
 	    };
 
-	    class LuminanceIntensityRelationIF {
+	    class ComponentRelationIF {
 	      public:
 		virtual double getIntensity(double luminance) = 0;
 		virtual double getLuminance(double rIntensity,
 					    double gIntensity,
 					    double bIntensity) = 0;
 	    };
-	    class LuminanceIntensityLinearRelation:public
-		LuminanceIntensityRelationIF {
+	    class ComponentLinearRelation:public ComponentRelationIF {
 	      private:
 		bptr < PolynomialRegression > regression;
 		double a0, a1, a2, a3, c, d;
 		void init(double2D_ptr input, double2D_ptr output);
+		void init(Component_vector_ptr componentVector);
+		Component_vector_ptr componentVector;
 	      public:
-		 LuminanceIntensityLinearRelation(double2D_ptr input,
-						  double2D_ptr output);
+		 ComponentLinearRelation(double2D_ptr input,
+					 double2D_ptr output);
+		 ComponentLinearRelation(Component_vector_ptr
+					 componentVector);
 		double getIntensity(double luminance);
 		double getLuminance(double rIntensity, double gIntensity,
 				    double bIntensity);
 	    };
 
-	    class LuminanceIntensityPLRelation:public
-		LuminanceIntensityRelationIF {
+	    class ComponentPLRelation:public ComponentRelationIF {
 	    };
 
 	    /*
@@ -89,26 +91,34 @@ namespace cms {
 
 	     */
 
-	    class DGLutGenerator {
+	    class ComponentLUT {
 	      private:
-		//bptr < PolynomialRegression > regression;
 		Component_vector_ptr componentVector;
-		//double a0, a1, a2, a3, c, d;
-		double minLuminance, maxLuminance;
-		 bptr < math::Interpolation1DLUT > rLut;
-		 bptr < math::Interpolation1DLUT > gLut;
-		 bptr < math::Interpolation1DLUT > bLut;
-		 bptr < BitDepthProcessor > bitDepth;
-		 bptr < LuminanceIntensityRelationIF >
-		    lumiIntensityRelation;
+		bptr < math::Interpolation1DLUT > rLut;
+		bptr < math::Interpolation1DLUT > gLut;
+		bptr < math::Interpolation1DLUT > bLut;
 	      protected:
+		init(Component_vector_ptr componentVector);
+		double_vector_ptr getReverse(double_vector_ptr vec);
+	      public:
+		 ComponentLUT(Component_vector_ptr componentVector);
+		double getIntensity(const Dep::Channel & ch, double code);
+		double getCode(const Dep::Channel & ch, double intensity);
+		double correctIntensityInRange(const Dep::Channel & ch,
+					       double intensity);
+	    };
+
+	    class DGLutGenerator {
+	      protected:
+		Component_vector_ptr componentVector;
+		double minLuminance, maxLuminance;
+		 bptr < ComponentLUT > lut;
+		 bptr < BitDepthProcessor > bitDepth;
+		 bptr < ComponentRelationIF > componentRelation;
 		void init();
-		/*double getIntensity(double luminance);
-		   double getLuminance(double rIntensity, double gIntensity,
-		   double bIntensity); */
 		double_vector_ptr getLuminanceGammaCurve(double_vector_ptr
 							 normalGammaCurve);
-		double_vector_ptr getReverse(double_vector_ptr vec);
+
 		double getMaximumIntensity();
 	      public:
 		 DGLutGenerator(Component_vector_ptr componentVector,
@@ -116,10 +126,7 @@ namespace cms {
 		RGB_vector_ptr produce(RGBGamma_ptr normalRGBGammaCurve);
 		RGBGamma_ptr getRGBGamma(double_vector_ptr
 					 normalGammaCurve);
-	    };
-
-	    class IntensityGenerator {
-
+		 bptr < ComponentLUT > getComponentLUT();
 	    };
 
 	    enum Correct {
@@ -206,7 +213,7 @@ namespace cms {
 		void setP1P2(int p1, int p2);
 		void setRBInterpolation(int under);
 		void setNoneDimCorrect();
-		void setNew(int under, double gammaShift);
+		void setNew(int p1, int p2, double gammaShift);
 		void setGamma(double gamma);
 		void setGamma(double rgamma, double ggamma, double bgamma);
 		void setGammaCurve(double_vector_ptr gammaCurve);
