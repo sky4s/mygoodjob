@@ -1,8 +1,8 @@
 object TargetWhiteForm2: TTargetWhiteForm2
-  Left = 0
-  Top = 20
-  Width = 800
-  Height = 553
+  Left = 300
+  Top = 300
+  Width = 928
+  Height = 554
   Caption = 'TargetWhiteForm'
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
@@ -12,6 +12,7 @@ object TargetWhiteForm2: TTargetWhiteForm2
   Font.Style = []
   OldCreateOrder = False
   OnCreate = FormCreate
+  OnShow = FormShow
   PixelsPerInch = 120
   TextHeight = 16
   object Label3: TLabel
@@ -382,6 +383,186 @@ object TargetWhiteForm2: TTargetWhiteForm2
           ImeName = #26085#25991#36664#20837#31995#32113' (MS-IME2002)'
           TabOrder = 6
           Text = '255'
+        end
+      end
+    end
+    object TabSheet2: TTabSheet
+      Caption = 'Max Matrix'
+      ImageIndex = 1
+      object GroupBox6: TGroupBox
+        Left = 8
+        Top = 8
+        Width = 209
+        Height = 201
+        Caption = 'Target Color'
+        TabOrder = 0
+        object Label17: TLabel
+          Left = 9
+          Top = 136
+          Width = 13
+          Height = 16
+          Caption = 'W'
+        end
+        object Label20: TLabel
+          Left = 9
+          Top = 104
+          Width = 9
+          Height = 16
+          Caption = 'B'
+        end
+        object Label18: TLabel
+          Left = 9
+          Top = 72
+          Width = 10
+          Height = 16
+          Caption = 'G'
+        end
+        object Label19: TLabel
+          Left = 9
+          Top = 40
+          Width = 10
+          Height = 16
+          Caption = 'R'
+        end
+        object Label15: TLabel
+          Left = 112
+          Top = 17
+          Width = 9
+          Height = 16
+          Caption = 'Y'
+        end
+        object Label9: TLabel
+          Left = 57
+          Top = 17
+          Width = 8
+          Height = 16
+          Caption = 'X'
+        end
+        object Label16: TLabel
+          Left = 160
+          Top = 17
+          Width = 8
+          Height = 16
+          Caption = 'Z'
+        end
+        object Edit_RZ: TEdit
+          Left = 144
+          Top = 40
+          Width = 49
+          Height = 24
+          ImeName = #26085#25991#36664#20837#31995#32113' (MS-IME2002)'
+          TabOrder = 0
+          Text = '0'
+        end
+        object Edit_GZ: TEdit
+          Left = 144
+          Top = 72
+          Width = 49
+          Height = 24
+          ImeName = #26085#25991#36664#20837#31995#32113' (MS-IME2002)'
+          TabOrder = 1
+          Text = '0'
+        end
+        object Edit_BZ: TEdit
+          Left = 144
+          Top = 104
+          Width = 49
+          Height = 24
+          ImeName = #26085#25991#36664#20837#31995#32113' (MS-IME2002)'
+          TabOrder = 2
+          Text = '0'
+          OnChange = Edit_BZChange
+        end
+        object Edit_WZ: TEdit
+          Left = 144
+          Top = 136
+          Width = 49
+          Height = 24
+          ImeName = #26085#25991#36664#20837#31995#32113' (MS-IME2002)'
+          TabOrder = 3
+          Text = '0'
+        end
+        object Edit_WY: TEdit
+          Left = 89
+          Top = 136
+          Width = 48
+          Height = 24
+          ImeName = #26085#25991#36664#20837#31995#32113' (MS-IME2002)'
+          TabOrder = 4
+          Text = '0'
+        end
+        object Edit_BY: TEdit
+          Left = 89
+          Top = 104
+          Width = 48
+          Height = 24
+          ImeName = #26085#25991#36664#20837#31995#32113' (MS-IME2002)'
+          TabOrder = 5
+          Text = '0'
+        end
+        object Edit_GY: TEdit
+          Left = 89
+          Top = 72
+          Width = 48
+          Height = 24
+          ImeName = #26085#25991#36664#20837#31995#32113' (MS-IME2002)'
+          TabOrder = 6
+          Text = '0'
+        end
+        object Edit_RY: TEdit
+          Left = 89
+          Top = 40
+          Width = 48
+          Height = 24
+          ImeName = #26085#25991#36664#20837#31995#32113' (MS-IME2002)'
+          TabOrder = 7
+          Text = '0'
+        end
+        object Edit_RX: TEdit
+          Left = 32
+          Top = 40
+          Width = 49
+          Height = 24
+          ImeName = #26085#25991#36664#20837#31995#32113' (MS-IME2002)'
+          TabOrder = 8
+          Text = '0'
+        end
+        object Edit_GX: TEdit
+          Left = 32
+          Top = 72
+          Width = 49
+          Height = 24
+          ImeName = #26085#25991#36664#20837#31995#32113' (MS-IME2002)'
+          TabOrder = 9
+          Text = '0'
+        end
+        object Edit_BX: TEdit
+          Left = 32
+          Top = 104
+          Width = 49
+          Height = 24
+          ImeName = #26085#25991#36664#20837#31995#32113' (MS-IME2002)'
+          TabOrder = 10
+          Text = '0'
+        end
+        object Edit_WX: TEdit
+          Left = 32
+          Top = 136
+          Width = 49
+          Height = 24
+          ImeName = #26085#25991#36664#20837#31995#32113' (MS-IME2002)'
+          TabOrder = 11
+          Text = '0'
+        end
+        object Button1: TButton
+          Left = 65
+          Top = 170
+          Width = 80
+          Height = 23
+          Caption = 'Set'
+          Enabled = False
+          TabOrder = 12
+          OnClick = Button1Click
         end
       end
     end
