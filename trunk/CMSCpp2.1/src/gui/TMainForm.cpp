@@ -347,10 +347,8 @@ void __fastcall TMainForm::Button_ConnectClick(TObject * Sender)
 	this->Button_Connect->Enabled = false;
 	this->CheckBox_Connecting->Checked = true;
 	this->CheckBox_Connecting->Enabled = true;
-	//this->mm->setTCONControl(control);
 	MeasureWindow->setTCONControl(control);
     } else {
-	//this->mm->setTCONControlOff();
 	MeasureWindow->setTCONControlOff();
     }
 }
@@ -399,11 +397,11 @@ void __fastcall TMainForm::CheckBox_ConnectingClick(TObject * Sender)
 
 void __fastcall TMainForm::Measurement1Click(TObject * Sender)
 {
-    if (bitDepth->isTCONInput()) {
+    /*if (bitDepth->isTCONInput()) {
 	ShowMessage
 	    ("Sorry! T-CON Input measurement is unavailable right now.");
 	return;
-    }
+    }*/
 
 
     if (GammaMeasurementForm == null) {

@@ -234,9 +234,6 @@ namespace cms {
 	    bptr < DBQuery > query = db->selectAll();
 	    while (query->hasNext()) {
 		string_vector_ptr result = query->nextResult();
-		//string s = (*result)[0];
-		//int gg = _toInt(s);
-		//int gg = boost::lexical_cast < int >("1234");
 		int gray = _toInt((*result)[0]);
 		double x = _toDouble((*result)[1]);
 		double y = _toDouble((*result)[2]);
@@ -258,6 +255,23 @@ namespace cms {
 	    };
 	    return vector;
 	};
+
+	RGB_vector_ptr DGLutFile::getGammaTable() {
+	    db->setTableName(GammaTable);
+	    RGB_vector_ptr vector(new RGB_vector());
+
+	    bptr < DBQuery > query = db->selectAll();
+	    while (query->hasNext()) {
+		string_vector_ptr result = query->nextResult();
+		int R = _toInt((*result)[1]);
+		int G = _toInt((*result)[2]);
+		int B = _toInt((*result)[3]);
+
+		RGB_ptr rgb(new RGBColor(R, G, B));
+		vector->push_back(rgb);
+	    };
+	    return vector;
+	};
 	void
 	 DGLutFile::setProperty(const
 				DGLutProperty & property) {
@@ -268,82 +282,84 @@ namespace cms {
 	//======================================================================
 	// DGLutProperty
 	//======================================================================
-	const
-	string DGLutProperty::Start = "start";
-	const
-	string DGLutProperty::End = "end";
-	const
-	string DGLutProperty::Step = "step";
-	const
-	string DGLutProperty::HighStart = "high level start";
-	const
-	string DGLutProperty::HighEnd = "high level end";
-	const
-	string DGLutProperty::HighStep = "high level step";
-	const
-	string DGLutProperty::LowStart = "low level start";
-	const
-	string DGLutProperty::LowEnd = "low level end";
-	const
-	string DGLutProperty::LowStep = "low level step";
-	const
-	string DGLutProperty::P1P2 = "p1p2";
-	const
-	string DGLutProperty::P1 = "p1";
-	const
-	string DGLutProperty::P2 = "p2";
-	const
-	string DGLutProperty::RB = "rb interpolation";
-	const
-	string DGLutProperty::RBUnder = "rb under";
-	const
-	string DGLutProperty::In = "in";
-	const
-	string DGLutProperty::LUT = "lut";
-	const
-	string DGLutProperty::FRC = "FRC";
-	const
-	string DGLutProperty::Out = "out";
-	const
-	string DGLutProperty::Gamma = "gamma";
-	const
-	string DGLutProperty::RGamma = "r gamma";
-	const
-	string DGLutProperty::GGamma = "g gamma";
-	const
-	string DGLutProperty::BGamma = "b gamma";
-	const
-	string DGLutProperty::GammaCurve = "gamma curve";
-	const
-	string DGLutProperty::GByPass = "g bypass";
-	const
-	string DGLutProperty::BGain = "b gain";
-	const
-	string DGLutProperty::BMax = "b max";
-	const
-	string DGLutProperty::Gamma256 = "gamma 256";
-	const
-	string DGLutProperty::FRC_NR = "avoid FRC noise";
-	const
-	string DGLutProperty::DimCorrect = "low level correct";
+	/*const
+	   string DGLutProperty::Start = "start";
+	   const
+	   string DGLutProperty::End = "end";
+	   const
+	   string DGLutProperty::Step = "step";
+	   const
+	   string DGLutProperty::HighStart = "high level start";
+	   const
+	   string DGLutProperty::HighEnd = "high level end";
+	   const
+	   string DGLutProperty::HighStep = "high level step";
+	   const
+	   string DGLutProperty::LowStart = "low level start";
+	   const
+	   string DGLutProperty::LowEnd = "low level end";
+	   const
+	   string DGLutProperty::LowStep = "low level step";
+	   const
+	   string DGLutProperty::P1P2 = "p1p2";
+	   const
+	   string DGLutProperty::P1 = "p1";
+	   const
+	   string DGLutProperty::P2 = "p2";
+	   const
+	   string DGLutProperty::RB = "rb interpolation";
+	   const
+	   string DGLutProperty::RBUnder = "rb under";
+	   const
+	   string DGLutProperty::In = "in";
+	   const
+	   string DGLutProperty::LUT = "lut";
+	   const
+	   string DGLutProperty::FRC = "FRC";
+	   const
+	   string DGLutProperty::Out = "out";
+	   const
+	   string DGLutProperty::Gamma = "gamma";
+	   const
+	   string DGLutProperty::RGamma = "r gamma";
+	   const
+	   string DGLutProperty::GGamma = "g gamma";
+	   const
+	   string DGLutProperty::BGamma = "b gamma";
+	   const
+	   string DGLutProperty::GammaCurve = "gamma curve";
+	   const
+	   string DGLutProperty::GByPass = "g bypass";
+	   const
+	   string DGLutProperty::BGain = "b gain";
+	   const
+	   string DGLutProperty::BMax = "b max";
+	   const
+	   string DGLutProperty::Gamma256 = "gamma 256";
+	   const
+	   string DGLutProperty::FRC_NR = "avoid FRC noise";
+	   const
+	   string DGLutProperty::DimCorrect = "low level correct";
+
+	   const string DGLutProperty::KeepMaxLumi = "keep max luminance"; */
 	const string DGLutProperty::On = "On";
 	const string DGLutProperty::Off = "Off";
-	const string DGLutProperty::KeepMaxLumi = "keep max luminance";
+
 	void
 	 DGLutProperty::store(DGLutFile & dgcode) const {
 
 	    bptr < MeasureCondition > mc = c.measureCondition;
 	    if (mc->normalCondition) {
-		dgcode.addProperty(Start, mc->start);
-		dgcode.addProperty(End, mc->end);
-		dgcode.addProperty(Step, mc->step);
+		dgcode.addProperty("start", mc->start);
+		dgcode.addProperty("end", mc->end);
+		dgcode.addProperty("step", mc->step);
 	    } else {
-		dgcode.addProperty(HighStart, mc->highStart);
-		dgcode.addProperty(HighEnd, mc->highEnd);
-		dgcode.addProperty(HighStep, mc->highStep);
-		dgcode.addProperty(LowStart, mc->lowStart);
-		dgcode.addProperty(LowEnd, mc->lowEnd);
-		dgcode.addProperty(LowStep, mc->lowStep);
+		dgcode.addProperty("high level start", mc->highStart);
+		dgcode.addProperty("high level end", mc->highEnd);
+		dgcode.addProperty("high level step", mc->highStep);
+		dgcode.addProperty("low level start", mc->lowStart);
+		dgcode.addProperty("low level end", mc->lowEnd);
+		dgcode.addProperty("low level step", mc->lowStep);
 	    }
 	    string correctstr;
 	    switch (c.correct) {
@@ -360,27 +376,29 @@ namespace cms {
 		correctstr = "new";
 		break;
 	    }
-	    dgcode.addProperty(DimCorrect, correctstr);
+	    dgcode.addProperty("low level correct", correctstr);
 
-	    dgcode.addProperty(P1, c.p1);
-	    dgcode.addProperty(P2, c.p2);
-	    dgcode.addProperty(RBUnder, c.under);
+	    dgcode.addProperty("p1", c.p1);
+	    dgcode.addProperty("p2", c.p2);
+	    dgcode.addProperty("rb under", c.under);
 	    bptr < BitDepthProcessor > bitDepth = c.bitDepth;
-	    dgcode.addProperty(In,
+	    dgcode.addProperty("in",
 			       *bitDepth->getInputMaxValue().toString());
-	    dgcode.addProperty(LUT,
+	    dgcode.addProperty("lut",
 			       *bitDepth->getLutMaxValue().toString());
-	    dgcode.addProperty(Out,
+	    dgcode.addProperty("out",
 			       *bitDepth->getOutputMaxValue().toString());
 
-	    dgcode.addProperty(Gamma, c.gamma);
-	    dgcode.addProperty(GammaCurve, c.useGammaCurve ? On : Off);
-	    dgcode.addProperty(GByPass, c.gByPass ? On : Off);
-	    dgcode.addProperty(BGain, c.bIntensityGain);
-	    dgcode.addProperty(BMax, c.bMax ? On : Off);
+	    dgcode.addProperty("gamma", c.gamma);
+	    dgcode.addProperty("gamma curve", c.useGammaCurve ? On : Off);
+	    dgcode.addProperty("g bypass", c.gByPass ? On : Off);
+	    dgcode.addProperty("b gain", c.bIntensityGain);
+	    dgcode.addProperty("b max", c.bMax ? On : Off);
 
-	    dgcode.addProperty(FRC_NR, c.avoidFRCNoise ? On : Off);
-	    dgcode.addProperty(KeepMaxLumi, c.keepMaxLuminance ? On : Off);
+	    dgcode.addProperty("avoid FRC noise",
+			       c.avoidFRCNoise ? On : Off);
+	    dgcode.addProperty("keep max luminance",
+			       c.keepMaxLuminance ? On : Off);
 	};
 	DGLutProperty::DGLutProperty(const
 				     LCDCalibrator & c):c(c) {

@@ -120,56 +120,27 @@ object GammaMeasurementForm: TGammaMeasurementForm
         Left = 9
         Top = 25
         Width = 168
-        Height = 248
+        Height = 112
         Caption = 'Pattern Type'
         TabOrder = 0
-        object GroupBox8: TGroupBox
-          Left = 9
-          Top = 153
-          Width = 136
-          Height = 88
-          Caption = 'Options'
-          TabOrder = 0
-          object CheckBox5: TCheckBox
-            Left = 9
-            Top = 57
-            Width = 96
-            Height = 24
-            Caption = 'Interpolation'
-            TabOrder = 0
-          end
-          object CheckBox6: TCheckBox
-            Left = 9
-            Top = 25
-            Width = 96
-            Height = 24
-            Caption = 'Gamma 256'
-            TabOrder = 1
-          end
-        end
         object GroupBox9: TGroupBox
           Left = 9
           Top = 25
           Width = 152
-          Height = 120
+          Height = 80
           Caption = 'Patterns'
-          TabOrder = 1
-          object Label4: TLabel
-            Left = 32
-            Top = 73
-            Width = 112
-            Height = 16
-            Caption = '(S/W Interpolation)'
-          end
-          object RadioButton3: TRadioButton
+          TabOrder = 0
+          object RadioButton_0To256: TRadioButton
             Left = 9
             Top = 25
             Width = 112
             Height = 24
             Caption = '0~256 Pattern'
+            Checked = True
             TabOrder = 0
+            TabStop = True
           end
-          object RadioButton4: TRadioButton
+          object RadioButton_0To1023: TRadioButton
             Left = 9
             Top = 48
             Width = 112
@@ -186,7 +157,7 @@ object GammaMeasurementForm: TGammaMeasurementForm
         Height = 112
         Caption = 'Table'
         TabOrder = 1
-        object RadioButton1: TRadioButton
+        object RadioButton_10Bit: TRadioButton
           Left = 9
           Top = 25
           Width = 72
@@ -196,7 +167,7 @@ object GammaMeasurementForm: TGammaMeasurementForm
           TabOrder = 0
           TabStop = True
         end
-        object RadioButton2: TRadioButton
+        object RadioButton_12Bit: TRadioButton
           Left = 9
           Top = 48
           Width = 80
@@ -211,6 +182,7 @@ object GammaMeasurementForm: TGammaMeasurementForm
           Height = 25
           Caption = 'Load Table'
           TabOrder = 2
+          OnClick = Button2Click
         end
       end
     end
@@ -244,6 +216,7 @@ object GammaMeasurementForm: TGammaMeasurementForm
         Left = 320
         Top = 57
         Height = 24
+        OnClick = TOutputFileFrame1Button_BrowseDirClick
       end
     end
   end
@@ -297,5 +270,7 @@ object GammaMeasurementForm: TGammaMeasurementForm
     Caption = 'Measure'
     TabOrder = 4
     OnClick = Button_MeasureClick
+  end
+  object OpenDialog1: TOpenDialog
   end
 end

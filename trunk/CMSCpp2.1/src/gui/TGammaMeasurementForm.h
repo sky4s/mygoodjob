@@ -14,6 +14,7 @@
 #include <Forms.hpp>
 #include <ExtCtrls.hpp>
 #include "TOutputFileFrame.h"
+#include <Dialogs.hpp>
 //本項目內頭文件
 //---------------------------------------------------------------------------
 class TGammaMeasurementForm:public TForm {
@@ -31,13 +32,9 @@ class TGammaMeasurementForm:public TForm {
     TPanel *Panel2;
     TGroupBox *GroupBox5;
     TGroupBox *GroupBox6;
-    TGroupBox *GroupBox8;
     TGroupBox *GroupBox9;
-    TCheckBox *CheckBox5;
-    TCheckBox *CheckBox6;
-    TRadioButton *RadioButton3;
-    TRadioButton *RadioButton4;
-    TLabel *Label4;
+    TRadioButton *RadioButton_0To256;
+    TRadioButton *RadioButton_0To1023;
     TOutputFileFrame *TOutputFileFrame1;
     TGroupBox *GroupBox3;
     TCheckBox *CheckBox_W;
@@ -46,11 +43,15 @@ class TGammaMeasurementForm:public TForm {
     TCheckBox *CheckBox_B;
     TButton *Button_Measure;
     TGroupBox *Table;
-    TRadioButton *RadioButton1;
-    TRadioButton *RadioButton2;
+    TRadioButton *RadioButton_10Bit;
+    TRadioButton *RadioButton_12Bit;
     TButton *Button2;
+    TOpenDialog *OpenDialog1;
     void __fastcall Button_MeasureClick(TObject * Sender);
     void __fastcall FormShow(TObject * Sender);
+    void __fastcall TOutputFileFrame1Button_BrowseDirClick(TObject *
+							   Sender);
+    void __fastcall Button2Click(TObject * Sender);
   private:			// User declarations
      bptr < cms::lcd::calibrate::BitDepthProcessor > bitDepth;
     void setMeasureInfo();
@@ -61,6 +62,7 @@ class TGammaMeasurementForm:public TForm {
      bptr < cms::measure::MeterMeasurement > mm;
      bptr < cms::lcd::calibrate::ComponentFetcher > fetcher;
     //bptr < cms::measure::IntensityAnalyzerIF > analyzer;
+    RGB_vector_ptr gammaTable;
   public:			// User declarations
      __fastcall TGammaMeasurementForm(TComponent * Owner);
     void setBitDepthProcessor(bptr <

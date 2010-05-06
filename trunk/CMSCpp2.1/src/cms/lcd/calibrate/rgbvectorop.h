@@ -55,6 +55,13 @@ namespace cms {
 		int p1, p2;
 	      protected:
 		 RGB_vector_ptr getRendering(RGB_vector_ptr source);
+		RGB_vector_ptr getRendering6_(RGB_vector_ptr source);
+		RGB_vector_ptr getRendering7_(RGB_vector_ptr source);
+		int getBBiggerThanG(RGB_vector_ptr rgbVector);
+		static double getBCode(double rRatio, double gRatio,
+				       double GCode);
+		static double getRCode(double rRatio, double GCode,
+				       double BCode);
 	      public:
 		 NewOp(int p1, int p2);
 	    };

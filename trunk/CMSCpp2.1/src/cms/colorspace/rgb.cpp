@@ -56,12 +56,12 @@ namespace cms {
 
 	    /* TODO : RGBColor */
 	    /*RGBColor::RGBColor(const RGBColorSpace & rgbColorSpace,
-			       XYZ_ptr XYZ):rgbColorSpace(&rgbColorSpace),
-		maxValue(&MaxValue::Double1) {
+	       XYZ_ptr XYZ):rgbColorSpace(&rgbColorSpace),
+	       maxValue(&MaxValue::Double1) {
 
-		//this(colorSpace, fromXYZValues(XYZ.getValues(), colorSpace),
-		//MaxValue.Double1);
-	    };*/
+	       //this(colorSpace, fromXYZValues(XYZ.getValues(), colorSpace),
+	       //MaxValue.Double1);
+	       }; */
 
 
 	    double_array RGBColor::_getValues(double_array values) {
@@ -316,6 +316,18 @@ namespace cms {
 	    };
 	    const MaxValue & RGBColor::getMaxValue() {
 		return *maxValue;
+	    };
+	    double_array RGBColor::getRGBRatio() {
+		double_array result(new double[3]);
+		double total = R + G + B;
+		if (total == 0) {
+		    result[0] = result[1] = result[2] = 0;
+		} else {
+		    result[0] = R / total;
+		    result[1] = G / total;
+		    result[2] = B / total;
+		}
+		return result;
 	    };
 	    int RGBColor::getNumberBands() {
 		return RGBNumberBands;

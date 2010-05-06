@@ -106,16 +106,88 @@ namespace cms {
 	    //==================================================================
 	    // NewOp
 	    //==================================================================
- 	    RGB_vector_ptr NewOp::getRendering(RGB_vector_ptr source) {
+	    RGB_vector_ptr NewOp::getRendering(RGB_vector_ptr source) {
+		return getRendering7_(source);
+	    };
+
+	    RGB_vector_ptr NewOp::getRendering6_(RGB_vector_ptr source) {
 
 		RGB_vector_ptr result = RGBVector::deepClone(source);
+		int begin = getBBiggerThanG(source);
+		int end = 1;
+
+		double_array beginRatio = (*result)[begin]->getRGBRatio();
+		RGB_ptr endrgb = (*result)[end];
+		double endr = (endrgb->G + endrgb->B) / 2;
+		double endTotal = endr + endrgb->G + endrgb->B;
+		double endRRatio = endr / endTotal;
+
+		for (int x = begin - 1; x > 0; x--) {
+		    double rratio = Interpolation::linear(begin, end,
+							  beginRatio[0],
+							  endRRatio,
+							  x);
+
+		    RGB_ptr rgb = (*result)[x];
+		    double r = getRCode(rratio, rgb->G, rgb->B);
+		    rgb->R = r;
+		}
 
 		return result;
 	    };
-	  NewOp::NewOp(int p1, int p2):p1(p1),p2(p2) {
+	    RGB_vector_ptr NewOp::getRendering7_(RGB_vector_ptr source) {
+
+		RGB_vector_ptr result = RGBVector::deepClone(source);
+		//int begin = getBBiggerThanG(source);
+		int begin = p1;
+		int end = 1;
+
+		double_array beginRatio = (*result)[begin]->getRGBRatio();
+		/*RGB_ptr endrgb = (*result)[end];
+		   double endr = (endrgb->G + endrgb->B) / 2;
+		   double endTotal = endr + endrgb->G + endrgb->B;
+		   double endRRatio = endr / endTotal; */
+		double endRatio = 1. / 3;
+
+		for (int x = begin - 1; x > 0; x--) {
+		    double rratio = Interpolation::linear(begin, end,
+							  beginRatio[0],
+							  endRatio,
+							  x);
+		    double gratio = Interpolation::linear(begin, end,
+							  beginRatio[1],
+							  endRatio,
+							  x);
+
+		    RGB_ptr rgb = (*result)[x];
+		    double b = getBCode(rratio, gratio, rgb->G);
+		    double r = getRCode(rratio, rgb->G, b);
+		    rgb->R = r;
+		    rgb->B = b;
+		}
+
+		return result;
+	    };
+	    int NewOp::getBBiggerThanG(RGB_vector_ptr rgbVector) {
+		for (int x = p1; x > 0; x--) {
+		    RGB_ptr rgb = (*rgbVector)[x];
+		    if (rgb->B > rgb->G) {
+			return x;
+		    }
+		}
+		return -1;
+	    };
+	    double NewOp::getBCode(double rRatio,
+				   double gRatio, double GCode) {
+		return (1 - rRatio - gRatio) * GCode / gRatio;
+	    };
+	    double NewOp::getRCode(double rRatio,
+				   double GCode, double BCode) {
+		return rRatio * (GCode + BCode) / (1 - rRatio);
+	    };
+	  NewOp::NewOp(int p1, int p2):p1(p1), p2(p2) {
 	    };
 	    //==================================================================
-
 	    //==================================================================
 	    /*BMaxOp::BMaxOp(const Dep::MaxValue & out):out(out) {
 
@@ -131,7 +203,6 @@ namespace cms {
 		int n = bitDepth->getLevel() - 1;
 		int effectiven = (bitDepth->getEffectiveLevel() - 1);
 		//STORE_RGBVECTOR("0.xls", result);
-
 		for (int x = n; x >= effectiven; x--) {
 		    RGB_ptr rgb = (*result)[x];
 		    rgb->B = bitDepth->getMaxDigitalCount();
@@ -146,8 +217,6 @@ namespace cms {
 			x > 252 ? 10 / 4. : (x > 232 ? 8 / 4. : 6 / 4.);
 		    double thisB = rgb->B;
 		    double nextB = nextrgb->B;
-
-
 		    if (thisB > nextB) {
 			nextrgb->B = thisB - diff;
 		    } else {
@@ -185,7 +254,6 @@ namespace cms {
 		}
 		return result;
 	    };
-
 	  GByPassOp::GByPassOp(bptr < BitDepthProcessor > bitDepth):bitDepth(bitDepth)
 	    {
 
@@ -194,7 +262,6 @@ namespace cms {
 	    RGB_vector_ptr FrcNROp::getRendering(RGB_vector_ptr source) {
 		int size = source->size();
 		RGB_vector_ptr result = RGBVector::clone(source);
-
 		RGB_ptr rgb255 = (*result)[255];
 		STORE_RGBVECTOR("frcNR_0.xls", result);
 		if (!bitDepth->is6in6Out()) {
@@ -206,7 +273,6 @@ namespace cms {
 			    (*result)[255]->setValue(ch, 252);
 			    (*result)[254]->setValue(ch, 250);
 			    (*result)[253]->setValue(ch, 248);
-
 			    for (int x = 252; x != -1; x--) {
 				RGB_ptr thisRGB = (*result)[x];
 				RGB_ptr nextRGB = (*result)[x + 1];
@@ -253,7 +319,6 @@ namespace cms {
 	    {
 	    };
 	    //==================================================================
-
 	    //==================================================================
 	    RGB_vector_ptr KeepMaxLuminanceOp::
 		getRendering(RGB_vector_ptr source) {
