@@ -107,7 +107,6 @@ namespace cms {
 	    RGB_ptr getIntensity(RGB_ptr rgb);
 	    RGB_ptr getIntensity(XYZ_ptr XYZ);
 	    XYZ_ptr getCIEXYZ();
-	    //void beginSetup();
 	    void setupComponent(const Dep::Channel & ch, RGB_ptr rgb);
 	    void setupComponent(const Dep::Channel & ch,
 				XYZ_ptr measureXYZ);
@@ -116,7 +115,6 @@ namespace cms {
 	    void endAnalyze();
 	    void setWaitTimes(int waitTimes);
 	    int getWaitTimes();
-	    //void setDefaultWaitTimes();
 	    xyY_ptr getReferenceColor();
 	};
 

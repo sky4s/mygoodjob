@@ -353,9 +353,9 @@ namespace cms {
 		DoubleArray::toDouble2D(1, 3, wXYZ->X, wXYZ->Y, wXYZ->Z);
 	    this->targetRatio =
 		DoubleArray::times(inverseMatrix, targetWhite);
-	    double rR = (*targetRatio)[0][0];
+	    /*double rR = (*targetRatio)[0][0];
 	    double rG = (*targetRatio)[1][0];
-	    double rB = (*targetRatio)[2][0];
+	    double rB = (*targetRatio)[2][0];*/
 
 	};
 	void MaxMatrixIntensityAnayzer::beginAnalyze() {
