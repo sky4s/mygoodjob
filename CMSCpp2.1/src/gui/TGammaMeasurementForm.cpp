@@ -50,16 +50,23 @@ void __fastcall TGammaMeasurementForm::Button_MeasureClick(TObject *
     int start = this->Edit_StartLevel->Text.ToInt();
     int end = this->Edit_EndLevel->Text.ToInt();
     int step = this->ComboBox_LevelStep->Text.ToInt();
-    String_ptr filename = this->TOutputFileFrame1->getOutputFilename();
-    string stlstring = filename->c_str();
-    Util::deleteExist(stlstring);
 
     if (bitDepth->isTCONInput()) {
-	//tconMeasure(rgbw, start, end, step);
-
-    } else {
-	pcMeasure(rgbw, start, end, step, stlstring);
+	start = 0;
+	end = this->RadioButton_0To1023->Checked ? 1023 : 256;
+	step = 1;
     }
+
+    String_ptr filename = this->TOutputFileFrame1->getOutputFilename();
+    string stlfilename = filename->c_str();
+    Util::deleteExist(stlfilename);
+
+    /*if (bitDepth->isTCONInput()) {
+       //tconMeasure(rgbw, start, end, step);
+
+       } else { */
+    pcMeasure(rgbw, start, end, step, stlfilename);
+    //}
 }
 
 
@@ -138,6 +145,31 @@ void __fastcall TGammaMeasurementForm::FormShow(TObject * Sender)
 }
 
 //---------------------------------------------------------------------------
+
+//---------------------------------------------------------------------------
+
+
+void __fastcall TGammaMeasurementForm::
+TOutputFileFrame1Button_BrowseDirClick(TObject * Sender)
+{
+    TOutputFileFrame1->Button_BrowseDirClick(Sender);
+
+}
+
+//---------------------------------------------------------------------------
+
+void __fastcall TGammaMeasurementForm::Button2Click(TObject * Sender)
+{
+    using namespace cms::colorformat;
+    OpenDialog1->Filter = "Gamma Table Files(*.xls)|*.xls";
+    if (OpenDialog1->Execute()) {
+	const AnsiString & filename = OpenDialog1->FileName;
+	/*bptr < DGLutFile >
+	   dgcode(new DGLutFile(filename.c_str(), ReadOnly)); */
+	DGLutFile dgcode(filename.c_str(), ReadOnly);
+	gammaTable = dgcode.getGammaTable();
+    }
+}
 
 //---------------------------------------------------------------------------
 

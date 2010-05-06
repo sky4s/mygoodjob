@@ -639,6 +639,39 @@ void inverseTry()
     cout << DoubleArray::toString(mm_) << endl;
 };
 
+void ddLutFileReadTry()
+{
+    using namespace cms::colorformat;
+    DGLutFile file("debug.xls", ReadOnly);
+    RGB_vector_ptr gammaTable = file.getGammaTable();
+    foreach(const RGB_ptr rgb, *gammaTable) {
+	cout << *rgb->toString() << endl;
+    }
+};
+
+void newCCTAlgoTry()
+{
+    using namespace cms::colorformat;
+    using namespace cms::lcd::calibrate;
+
+    DGLutFile file("debug.xls", ReadOnly);
+    Component_vector_ptr vector = file.getComponentVector();
+    ComponentLUT lut(vector);
+    int size = vector->size();
+
+    for (int x = size - 1; x >= 0; x--) {
+	const Component_ptr c = (*vector)[x];
+	RGB_ptr intensity = c->intensity;
+	double rintensity = intensity->G - (intensity->B - intensity->G);
+	rintensity =
+	    lut.correctIntensityInRange(Dep::Channel::R, rintensity);
+	double rcode = lut.getCode(Dep::Channel::R, rintensity);
+	double g = c->rgb->G;
+	cout << java::lang::Math::roundTo(rcode * 16) << " " << g *
+	    16 << " " << g * 16 << endl;
+    }
+}
+
 #pragma argsused
 int main(int argc, char *argv[])
 {
@@ -691,11 +724,8 @@ int main(int argc, char *argv[])
     //inverseTry();
 
     //persistence();
-    int x = _toInt("123");
-    string s = "222";
-    x = _toInt(s);
+    //ddLutFileReadTry();
+    newCCTAlgoTry();
     getch();
-
-
 }
 

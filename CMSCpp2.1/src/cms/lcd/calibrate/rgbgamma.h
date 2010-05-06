@@ -58,7 +58,6 @@ namespace cms {
 		double getBCode(double rRatio, double gRatio,
 				double GCode);
 		double getRCode(double rRatio, double GCode, double BCode);
-                //double getRRatio(
 	      public:
 		 NewGammaOp(int p1, int p2, double gammaShift,
 			    RGB_vector_ptr dglut,

@@ -17,8 +17,8 @@ namespace cms {
 		 RGBColor(int r, int g, int b);
 		 RGBColor(int r, int g, int b, const MaxValue & maxValue);
 		 RGBColor(double r, double g, double b);
-		 /*RGBColor(const RGBColorSpace & rgbColorSpace,
-			  XYZ_ptr XYZ);*/
+		/*RGBColor(const RGBColorSpace & rgbColorSpace,
+		   XYZ_ptr XYZ); */
 
 		string_vector_ptr getBandNames();
 
@@ -42,6 +42,7 @@ namespace cms {
 		void quantization(const MaxValue & maxValue,
 				  bool integerRoundDown);
 		const MaxValue & getMaxValue();
+		double_array getRGBRatio();
 	      protected:
 		 double_array _getValues(double_array values);
 		void _setValues(double_array values);

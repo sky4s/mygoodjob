@@ -37,6 +37,7 @@ namespace cms {
 			    RGBGamma_ptr finalRGBGamma);
 	    void setGammaTable(RGB_vector_ptr dglut);
 	    Component_vector_ptr getComponentVector();
+	    RGB_vector_ptr getGammaTable();
 
 	    /*
 	       量測的資料不見得是0~255全量, 但是產生的gamma一定是全部
@@ -50,39 +51,40 @@ namespace cms {
 
 	class DGLutProperty {
 	    friend class DGLutFile;
-	  private:
-	    static const std::string Start;
-	    static const std::string End;
-	    static const std::string Step;
-	    static const std::string LowStart;
-	    static const std::string LowEnd;
-	    static const std::string LowStep;
-	    static const std::string HighStart;
-	    static const std::string HighEnd;
-	    static const std::string HighStep;
-	    static const std::string P1P2;
-	    static const std::string P1;
-	    static const std::string P2;
-	    static const std::string RB;
-	    static const std::string RBUnder;
-	    static const std::string In;
-	    static const std::string LUT;
-	    static const std::string FRC;
-	    static const std::string Out;
-	    static const std::string Gamma;
-	    static const std::string RGamma;
-	    static const std::string GGamma;
-	    static const std::string BGamma;
-	    static const std::string GammaCurve;
-	    static const std::string GByPass;
-	    static const std::string BGain;
-	    static const std::string BMax;
-	    static const std::string Gamma256;
-	    static const std::string FRC_NR;
-	    static const std::string DimCorrect;
+	    /*private:
+	       static const std::string Start;
+	       static const std::string End;
+	       static const std::string Step;
+	       static const std::string LowStart;
+	       static const std::string LowEnd;
+	       static const std::string LowStep;
+	       static const std::string HighStart;
+	       static const std::string HighEnd;
+	       static const std::string HighStep;
+	       static const std::string P1P2;
+	       static const std::string P1;
+	       static const std::string P2;
+	       static const std::string RB;
+	       static const std::string RBUnder;
+	       static const std::string In;
+	       static const std::string LUT;
+	       static const std::string FRC;
+	       static const std::string Out;
+	       static const std::string Gamma;
+	       static const std::string RGamma;
+	       static const std::string GGamma;
+	       static const std::string BGamma;
+	       static const std::string GammaCurve;
+	       static const std::string GByPass;
+	       static const std::string BGain;
+	       static const std::string BMax;
+	       static const std::string Gamma256;
+	       static const std::string FRC_NR;
+	       static const std::string DimCorrect;
+
+	       static const std::string KeepMaxLumi; */
 	    static const std::string On;
 	    static const std::string Off;
-	    static const std::string KeepMaxLumi;
 
 	    const cms::lcd::calibrate::LCDCalibrator & c;
 	    void store(DGLutFile & dglut) const;
@@ -92,4 +94,5 @@ namespace cms {
     };
 };
 #endif
+
 
