@@ -45,11 +45,11 @@ namespace cms {
 						     int firstStep,
 						     int step);
 
-		//void setStop(bool stop);
 		static void storeToExcel(const std::string & filename,
 					 Component_vector_ptr
 					 componentVector);
 		void windowClosing();
+		 bptr < cms::measure::IntensityAnalyzerIF > getAnalyzer();
 	    };
 
 	    class ComponentRelationIF {
@@ -116,8 +116,7 @@ namespace cms {
 		 bptr < BitDepthProcessor > bitDepth;
 		 bptr < ComponentRelationIF > componentRelation;
 		void init();
-		double_vector_ptr getLuminanceGammaCurve(double_vector_ptr
-							 normalGammaCurve);
+
 
 		double getMaximumIntensity();
 	      public:
@@ -129,6 +128,8 @@ namespace cms {
 		RGBGamma_ptr getRGBGamma(double_vector_ptr
 					 normalGammaCurve);
 		 bptr < ComponentLUT > getComponentLUT();
+		double_vector_ptr getLuminanceGammaCurve(double_vector_ptr
+							 normalGammaCurve);
 	    };
 
 	    enum Correct {

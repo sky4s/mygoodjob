@@ -82,7 +82,7 @@ namespace cms {
 	    return XYZ;
 	};
 
- 
+
 
 	/*lClr CA210IntensityAnalyzer::getlClr(Dep::ChannelIndex chindex) {
 	   switch (chindex) {
@@ -101,8 +101,8 @@ namespace cms {
 						    Channel & ch,
 						    RGB_ptr rgb) {
 	    Patch_ptr p = mm->measure(rgb, rgb->toString());
-            XYZ = p->getXYZ();
-            
+	    XYZ = p->getXYZ();
+
 	    switch (ch.chindex) {
 	    case ChannelIndex::R:
 		rp = p;
@@ -131,10 +131,10 @@ namespace cms {
 	       XYZ.reset(new
 	       CIEXYZ(XYZValues[0], XYZValues[1], XYZValues[2])); */
 	};
-        
+
 	void CA210IntensityAnalyzer::enter() {
 	    if (false == dummyMode) {
-                ca210api->copyFromFile(CA210DAT);
+		ca210api->copyFromFile(CA210DAT);
 		ca210api->setLvxyCalMode();
 
 		RGB_ptr r = rp->getRGB();
@@ -170,18 +170,18 @@ namespace cms {
 	   設定channel的no和id
 	 */
 	/*void CA210IntensityAnalyzer::setChannel(int no, string_ptr id,
-						bool reset) {
-	    if (false == dummyMode) {
-		//設定no
-		ca210api->setChannelNO(no);
-		//設定id
-		ca210api->setChannelID(WideString(id->c_str()));
-		if (true == reset) {
-		    //ca210api->copyFromFile(CA210DAT);
-		}
+	   bool reset) {
+	   if (false == dummyMode) {
+	   //設定no
+	   ca210api->setChannelNO(no);
+	   //設定id
+	   ca210api->setChannelID(WideString(id->c_str()));
+	   if (true == reset) {
+	   //ca210api->copyFromFile(CA210DAT);
+	   }
 
-	    }
-	};*/
+	   }
+	   }; */
 	void CA210IntensityAnalyzer::setChannel(int no, string_ptr id) {
 	    if (false == dummyMode) {
 		//設定no
@@ -205,6 +205,17 @@ namespace cms {
 	};
 	xyY_ptr CA210IntensityAnalyzer::getReferenceColor() {
 	    return ca210api->getReferenceColor();
+	};
+	xyY_ptr CA210IntensityAnalyzer::getPrimaryColor(const Dep::
+							Channel & ch) {
+	    switch (ch.chindex) {
+	    case ChannelIndex::R:
+		return xyY_ptr(new CIExyY(rp->getXYZ()));
+	    case ChannelIndex::G:
+		return xyY_ptr(new CIExyY(gp->getXYZ()));
+	    case ChannelIndex::B:
+		return xyY_ptr(new CIExyY(bp->getXYZ()));
+	    };
 	};
 	//======================================================================
 
@@ -271,8 +282,10 @@ namespace cms {
 	// MaxMatrixIntensityAnayzer
 	//======================================================================
       MaxMatrixIntensityAnayzer::MaxMatrixIntensityAnayzer(bptr < MeterMeasurement > mm):mm(mm)
-	    //, defaultWaitTimes(-1)
 	{
+
+	};
+	MaxMatrixIntensityAnayzer::MaxMatrixIntensityAnayzer() {
 
 	};
 
@@ -307,7 +320,7 @@ namespace cms {
 	XYZ_ptr MaxMatrixIntensityAnayzer::getCIEXYZ() {
 	    return XYZ;
 	};
- 
+
 	void MaxMatrixIntensityAnayzer::setupComponent(const Dep::
 						       Channel & ch,
 						       RGB_ptr rgb) {
@@ -353,9 +366,6 @@ namespace cms {
 		DoubleArray::toDouble2D(1, 3, wXYZ->X, wXYZ->Y, wXYZ->Z);
 	    this->targetRatio =
 		DoubleArray::times(inverseMatrix, targetWhite);
-	    /*double rR = (*targetRatio)[0][0];
-	    double rG = (*targetRatio)[1][0];
-	    double rB = (*targetRatio)[2][0];*/
 
 	};
 	void MaxMatrixIntensityAnayzer::beginAnalyze() {
@@ -374,6 +384,17 @@ namespace cms {
 	xyY_ptr MaxMatrixIntensityAnayzer::getReferenceColor() {
 	    xyY_ptr xyY(new CIExyY(wXYZ));
 	    return xyY;
+	};
+	xyY_ptr MaxMatrixIntensityAnayzer::getPrimaryColor(const Dep::
+							   Channel & ch) {
+	    switch (ch.chindex) {
+	    case ChannelIndex::R:
+		return xyY_ptr(new CIExyY(rXYZ));
+	    case ChannelIndex::G:
+		return xyY_ptr(new CIExyY(gXYZ));
+	    case ChannelIndex::B:
+		return xyY_ptr(new CIExyY(bXYZ));
+	    };
 	};
 	//=====================================================================
 
@@ -520,6 +541,9 @@ namespace cms {
 	   }; */
 	xyY_ptr IntensityAnayzer::getReferenceColor() {
 	    return ca210->getReferenceColor();
+	};
+	xyY_ptr IntensityAnayzer::getPrimaryColor(const Dep::Channel & ch) {
+	    return ca210->getPrimaryColor(ch);
 	};
 	//=====================================================================
 

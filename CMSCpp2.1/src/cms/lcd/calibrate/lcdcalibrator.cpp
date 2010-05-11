@@ -63,6 +63,7 @@ namespace cms {
 		return fetchComponent(measurecode);
 	    };
 
+
 	    Component_vector_ptr ComponentFetcher::
 		fetchComponent(int_vector_ptr measureCode) {
 		bool tconInput = bitDepth->isTCONInput();
@@ -102,10 +103,6 @@ namespace cms {
 		return result;
 	    };
 
-	    /*void ComponentFetcher::setStop(bool stop) {
-	       this->stop = stop;
-	       }; */
-
 	    void ComponentFetcher::storeToExcel(const string & filename,
 						Component_vector_ptr
 						componentVector) {
@@ -119,6 +116,9 @@ namespace cms {
 	    void ComponentFetcher::windowClosing() {
 		//this->setStop(true);
 		stop = true;
+	    };
+	    bptr < IntensityAnalyzerIF > ComponentFetcher::getAnalyzer() {
+		return analyzer;
 	    };
 	    //==================================================================
 
@@ -321,9 +321,6 @@ namespace cms {
 						    maxintensity);
 		int size = componentVector->size();
 		minLuminance = (*componentVector)[size - 1]->XYZ->Y;
-		//minLuminance = (*output)[size - 1][0];
-
-
 	    };
 	    /*
 	       將正規化的gamma curve, 轉換為絕對的亮度curve
@@ -342,7 +339,6 @@ namespace cms {
 		return luminanceGammaCurve;
 	    };
 	    double DGLutGenerator::getMaximumIntensity() {
-		//int maxindex = (out == Dep::MaxValue::Int6Bit) ? 3 : 0;
 		int maxindex = 0;
 		Component_ptr maxcomponent = (*componentVector)[maxindex];
 		RGB_ptr maxintensity = maxcomponent->intensity;
@@ -387,10 +383,9 @@ namespace cms {
 		(*dglut)[0] = RGB_ptr(new RGBColor(0, 0, 0));
 
 		for (int x = size - 1; x != 0; x--) {
-		    RGB_ptr rgb =
-			produce((*rIntensityCurve)[x],
-				(*gIntensityCurve)[x],
-				(*bIntensityCurve)[x]);
+		    RGB_ptr rgb = produce((*rIntensityCurve)[x],
+					  (*gIntensityCurve)[x],
+					  (*bIntensityCurve)[x]);
 		    (*dglut)[x] = rgb;
 		}
 		return dglut;
@@ -601,19 +596,6 @@ namespace cms {
 		this->keepMaxLuminance = keepMaxLuminance;
 	    };
 
-	    /*LCDCalibrator::LCDCalibrator(bptr < cms::measure::IntensityAnalyzerIF > analyzer, bptr < BitDepthProcessor > bitDepth): 
-	       bitDepth(bitDepth) {
-	       rgbgamma = false;
-	       useGammaCurve = false;
-	       bIntensityGain = 1;
-	       rbInterpUnder = 0;
-	       p1 = p2 = 0;
-	       gamma = rgamma = ggamma = bgamma = -1;
-	       this->fetcher.
-	       reset(new ComponentFetcher(analyzer, bitDepth));
-	       stop = false;
-	       }; */
-
 	  LCDCalibrator::LCDCalibrator(bptr < ComponentFetcher > fetcher, bptr < BitDepthProcessor > bitDepth):bitDepth(bitDepth)
 	    {
 		rgbgamma = false;
@@ -623,7 +605,6 @@ namespace cms {
 		p1 = p2 = 0;
 		gamma = rgamma = ggamma = bgamma = -1;
 		this->fetcher = fetcher;
-		//stop = false;
 	    };
 
 	    /*
@@ -720,9 +701,20 @@ namespace cms {
 		    //==========================================================
 		} else if (correct == New2) {
 		    /*
+		       DimDGLutGenerator
 		       in: target white , gamma(Y)
 		       out: DG Code
 		     */
+		    DimDGLutGenerator dimgenerator(componentVector);
+		    bptr < IntensityAnalyzerIF > analyzer =
+			fetcher->getAnalyzer();
+		    //XYZ_ptr targetWhite =  analyzer->getReferenceColor()->
+		    XYZ_ptr targetWhite =
+			analyzer->getReferenceColor()->toXYZ();
+
+		    RGB_vector_ptr dimdglut =
+			dimgenerator.produce(targetWhite, gammaCurve,
+					     under);
 		}
 		//RGB_vector_ptr dgcode2 = dglut;
 		finalRGBGamma = rgbgamma;
@@ -777,7 +769,9 @@ namespace cms {
 		DGLutOp dgop;
 		dgop.setSource(dglut);
 
-
+		//==============================================================
+		// dim修正
+		//==============================================================
 		if (correct == RBInterpolation) {
 		    bptr < DGLutOp > op(new RBInterpolationOp(under));
 		    dgop.addOp(op);
@@ -785,6 +779,7 @@ namespace cms {
 		    bptr < DGLutOp > op(new NewOp(p1, p2));
 		    dgop.addOp(op);
 		}
+		//==============================================================
 
 		if (bMax) {
 		    //bmax的調整

@@ -174,6 +174,7 @@ void __fastcall TCCTLUTForm::FormCreate(TObject * Sender)
     bool debug = !MainForm->linkCA210;
     this->Button_Debug->Visible = debug;
     this->Button_Reset->Visible = debug;
+    this->Button_Process->Visible = debug;
     //==========================================================================
 
 }
