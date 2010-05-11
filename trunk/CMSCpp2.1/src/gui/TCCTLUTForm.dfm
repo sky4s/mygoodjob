@@ -205,6 +205,13 @@ object CCTLUTForm: TCCTLUTForm
       Height = 16
       Caption = 'P2'
     end
+    object Label17: TLabel
+      Left = 32
+      Top = 233
+      Width = 57
+      Height = 24
+      Caption = 'Under'
+    end
     object RadioButton_P1P2: TRadioButton
       Left = 9
       Top = 17
@@ -278,6 +285,25 @@ object CCTLUTForm: TCCTLUTForm
       Height = 24
       TabOrder = 7
       Text = '-0.2'
+    end
+    object RadioButton_New2: TRadioButton
+      Left = 8
+      Top = 208
+      Width = 65
+      Height = 25
+      Caption = 'New2'
+      TabOrder = 8
+      OnClick = RadioButton_New2Click
+    end
+    object Edit_New2Under: TEdit
+      Left = 80
+      Top = 233
+      Width = 81
+      Height = 24
+      Enabled = False
+      ImeName = #26085#25991#36664#20837#31995#32113' (MS-IME2002)'
+      TabOrder = 9
+      Text = '50'
     end
   end
   object GroupBox4: TGroupBox

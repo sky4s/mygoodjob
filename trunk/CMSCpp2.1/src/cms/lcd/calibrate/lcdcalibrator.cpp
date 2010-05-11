@@ -356,6 +356,24 @@ namespace cms {
 		init();
 	    };
 
+	    RGB_ptr DGLutGenerator::
+		produce(double rIntensity, double gIntensity,
+			double bIntensity) {
+		rIntensity =
+		    lut->correctIntensityInRange(Channel::R, rIntensity);
+		gIntensity =
+		    lut->correctIntensityInRange(Channel::G, gIntensity);
+		bIntensity =
+		    lut->correctIntensityInRange(Channel::B, bIntensity);
+
+		double r = lut->getCode(Channel::R, rIntensity);
+		double g = lut->getCode(Channel::G, gIntensity);
+		double b = lut->getCode(Channel::B, bIntensity);
+
+		RGB_ptr rgb(new RGBColor(r, g, b));
+		return rgb;
+	    }
+
 	    RGB_vector_ptr DGLutGenerator::
 		produce(RGBGamma_ptr rgbIntensityCurve) {
 		using namespace Dep;
@@ -365,31 +383,14 @@ namespace cms {
 
 		int size = rIntensityCurve->size();
 		RGB_vector_ptr dglut(new RGB_vector(size));
-		//double intensity[3];
-		double rIntensity, gIntensity, bIntensity;
 		//將code 0強制設定為0
 		(*dglut)[0] = RGB_ptr(new RGBColor(0, 0, 0));
 
 		for (int x = size - 1; x != 0; x--) {
-		    rIntensity = (*rIntensityCurve)[x];
-		    gIntensity = (*gIntensityCurve)[x];
-		    bIntensity = (*bIntensityCurve)[x];
-
-		    rIntensity =
-			lut->correctIntensityInRange(Channel::R,
-						     rIntensity);
-		    gIntensity =
-			lut->correctIntensityInRange(Channel::G,
-						     gIntensity);
-		    bIntensity =
-			lut->correctIntensityInRange(Channel::B,
-						     bIntensity);
-
-		    double r = lut->getCode(Channel::R, rIntensity);
-		    double g = lut->getCode(Channel::G, gIntensity);
-		    double b = lut->getCode(Channel::B, bIntensity);
-
-		    RGB_ptr rgb(new RGBColor(r, g, b));
+		    RGB_ptr rgb =
+			produce((*rIntensityCurve)[x],
+				(*gIntensityCurve)[x],
+				(*bIntensityCurve)[x]);
 		    (*dglut)[x] = rgb;
 		}
 		return dglut;
@@ -537,7 +538,10 @@ namespace cms {
 		this->p2 = p2;
 		this->gammaShift = gammaShift;
 	    };
-
+	    void LCDCalibrator::setNew2(int under) {
+		this->correct = New2;
+		this->under = under;
+	    };
 	    void LCDCalibrator::setGamma(double gamma) {
 		this->gamma = gamma;
 		int n = bitDepth->getLevel();
@@ -637,10 +641,7 @@ namespace cms {
 		int_vector_ptr measurecode =
 		    measureCondition->getMeasureCode();
 		componentVector = fetcher->fetchComponent(measurecode);
-		/*if (true == stop) {
-		   stop = false;
-		   return RGB_vector_ptr((RGB_vector *) null);
-		   } */
+
 		if (componentVector == null
 		    || measurecode->size() != componentVector->size()) {
 		    return RGB_vector_ptr((RGB_vector *) null);
@@ -717,17 +718,11 @@ namespace cms {
 		    //量化
 		    STORE_RGBVECTOR("6_dgcode_p1p2dg.xls", dglut);
 		    //==========================================================
-		} else if (correct == New) {
-		    bptr < NewGammaOp >
-			newgamma(new
-				 NewGammaOp(p1, p2, gammaShift, dglut,
-					    generator->getComponentLUT()));
-		    RGBGammaOp gammaop;
-		    gammaop.setSource(rgbgamma);
-		    gammaop.addOp(newgamma);
-		    rgbgamma = gammaop.createInstance();
-		    dglut = generator->produce(rgbgamma);
-		    RGBVector::quantization(dglut, quantizationBit);
+		} else if (correct == New2) {
+		    /*
+		       in: target white , gamma(Y)
+		       out: DG Code
+		     */
 		}
 		//RGB_vector_ptr dgcode2 = dglut;
 		finalRGBGamma = rgbgamma;
@@ -774,10 +769,6 @@ namespace cms {
 
 	    };
 
-	    /*void LCDCalibrator::setStop(bool stop) {
-	       fetcher->setStop(stop);
-	       }; */
-
 	    RGB_vector_ptr LCDCalibrator::
 		getDGLutOpResult(RGB_vector_ptr dglut) {
 		//==============================================================
@@ -794,9 +785,7 @@ namespace cms {
 		    bptr < DGLutOp > op(new NewOp(p1, p2));
 		    dgop.addOp(op);
 		}
-		/*else if (correct == New) {
 
-		   } */
 		if (bMax) {
 		    //bmax的調整
 		    bptr < DGLutOp > bmax(new BMaxOp(bitDepth));
@@ -813,9 +802,6 @@ namespace cms {
 		    dgop.addOp(avoidNoise);
 		}
 
-		/*if (gamma256) {
-
-		   } */
 		if (keepMaxLuminance) {
 		    //keep最大亮度
 		    bptr < DGLutOp >

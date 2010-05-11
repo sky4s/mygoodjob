@@ -54,6 +54,7 @@ namespace cms {
 		RGB_vector_ptr result = RGBVector::deepClone(source);
 		RGB_ptr rgbp1 = (*result)[p1];
 
+
 		for (int x = 0; x != p1; x++) {
 		    double v = x * rgbp1->G / p1;
 		    double d = java::lang::Math::roundTo(v * 4);
@@ -107,7 +108,8 @@ namespace cms {
 	    // NewOp
 	    //==================================================================
 	    RGB_vector_ptr NewOp::getRendering(RGB_vector_ptr source) {
-		return getRendering7_(source);
+		//return getRendering7_(source);
+		return getRendering8_(source);
 	    };
 
 	    RGB_vector_ptr NewOp::getRendering6_(RGB_vector_ptr source) {
@@ -138,15 +140,10 @@ namespace cms {
 	    RGB_vector_ptr NewOp::getRendering7_(RGB_vector_ptr source) {
 
 		RGB_vector_ptr result = RGBVector::deepClone(source);
-		//int begin = getBBiggerThanG(source);
 		int begin = p1;
 		int end = 1;
 
 		double_array beginRatio = (*result)[begin]->getRGBRatio();
-		/*RGB_ptr endrgb = (*result)[end];
-		   double endr = (endrgb->G + endrgb->B) / 2;
-		   double endTotal = endr + endrgb->G + endrgb->B;
-		   double endRRatio = endr / endTotal; */
 		double endRatio = 1. / 3;
 
 		for (int x = begin - 1; x > 0; x--) {
@@ -168,6 +165,35 @@ namespace cms {
 
 		return result;
 	    };
+
+	    RGB_vector_ptr NewOp::getRendering8_(RGB_vector_ptr source) {
+		RGB_vector_ptr result = RGBVector::deepClone(source);
+		int begin = p2;
+		int end = 1;
+
+		double_array beginRatio = (*result)[begin]->getRGBRatio();
+		double endRatio = 1. / 3;
+
+		for (int x = begin - 1; x > 0; x--) {
+		    double rratio = Interpolation::linear(begin, end,
+							  beginRatio[0],
+							  endRatio,
+							  x);
+		    double gratio = Interpolation::linear(begin, end,
+							  beginRatio[1],
+							  endRatio,
+							  x);
+
+		    RGB_ptr rgb = (*result)[x];
+		    double b = getBCode(rratio, gratio, rgb->G);
+		    double r = getRCode(rratio, rgb->G, b);
+		    rgb->R = r;
+		    rgb->B = b;
+		}
+
+		return result;
+	    }
+
 	    int NewOp::getBBiggerThanG(RGB_vector_ptr rgbVector) {
 		for (int x = p1; x > 0; x--) {
 		    RGB_ptr rgb = (*rgbVector)[x];
