@@ -123,6 +123,8 @@ namespace cms {
 	      public:
 		 DGLutGenerator(Component_vector_ptr componentVector,
 				bptr < BitDepthProcessor > bitDepth);
+		RGB_ptr produce(double rIntensity, double gIntensity,
+				double bIntensity);
 		RGB_vector_ptr produce(RGBGamma_ptr normalRGBGammaCurve);
 		RGBGamma_ptr getRGBGamma(double_vector_ptr
 					 normalGammaCurve);
@@ -130,7 +132,7 @@ namespace cms {
 	    };
 
 	    enum Correct {
-		P1P2 = 1, RBInterpolation = 2, None = 3, New = 4
+		P1P2 = 1, RBInterpolation = 2, None = 3, New = 4, New2 = 5
 	    };
 
 	    class MeasureCondition {
@@ -214,6 +216,7 @@ namespace cms {
 		void setRBInterpolation(int under);
 		void setNoneDimCorrect();
 		void setNew(int p1, int p2, double gammaShift);
+		void setNew2(int under);
 		void setGamma(double gamma);
 		void setGamma(double rgamma, double ggamma, double bgamma);
 		void setGammaCurve(double_vector_ptr gammaCurve);

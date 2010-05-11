@@ -42,19 +42,6 @@ namespace cms {
 
 
 		for (int x = realstart; x != effectiveLevel; x++) {
-
-		    //start-size
-		    //' 19thBP*gain+(100-19thBP*gain)/(255-236)*(19-i)
-		    //19以下 0~19 , 對我們這邊是其實是236以上
-		    //temp_diff = 255 - Val(Text4.Text)=255=236=19
-		    //BP(i) = BP(temp_diff) * Val(Text3.Text) + (100 - BP(temp_diff) * Val(Text3.Text)) / (255 - Val(Text4.Text)) * (temp_diff - i)
-		    //BP(i) = BP(19) * gain + (100 - BP(19) * gain) / (255 - 236) * (19 - i)
-		    //bstart_1 = b19*gain =
-		    /*int n = x - start;
-		       (*b)[x] = bstart_1 + (1 - bstart_1)
-		       * (static_cast < double >(n) / remainder); */
-		    /*double c = bstartRemainder / remainder;
-		       double ss = (effectiveLevel - x); */
 		    (*b)[x] = bstart +
 			bstartRemainder / remainder * (x - realstart + 1);
 		};
@@ -80,6 +67,7 @@ namespace cms {
 		int size = dglut->size();
 		//原本p1點的dg code
 		RGB_ptr rgbp1 = (*dglut)[p1];
+		//找到與p1點DG code的G相同的R和B的DG code所在DG count
 		for (int x = 0;
 		     x != size && (indexR == -1 || indexB == -1); x++) {
 		    RGB_ptr rgb = (*dglut)[x];
@@ -94,11 +82,13 @@ namespace cms {
 		double_vector & r = (*source->r);
 		double_vector & b = (*source->b);
 		r[p1] =
-		    r[indexR] + (r[indexR + 1] - r[indexR]) *
+		    r[indexR] +
+		    (r[indexR + 1] - r[indexR]) *//跟下一個gamma的差異
 		    (rgbp1->G - (*dglut)[indexR]->R) /
 		    ((*dglut)[indexR + 1]->R - (*dglut)[indexR]->R);
 		b[p1] =
-		    b[indexB] + (b[indexB + 1] - b[indexB]) *
+		    b[indexB] +
+		    (b[indexB + 1] - b[indexB]) *
 		    (rgbp1->G - (*dglut)[indexB]->B) /
 		    ((*dglut)[indexB + 1]->B - (*dglut)[indexB]->B);
 
@@ -108,9 +98,10 @@ namespace cms {
 		double_vector & r = (*source->r);
 		double_vector & g = (*source->g);
 		double_vector & b = (*source->b);
+		double base = g[p2] - g[p1];
 		for (int x = p1 + 1; x != p2 - 1; x++) {
 		    //x在p1p2之間所佔的比例
-		    double ratio = (g[x] - g[p1]) / (g[p2] - g[p1]);
+		    double ratio = (g[x] - g[p1]) / base;
 		    //r&b依照g的比例做調整
 		    r[x] = r[p1] + (r[p2] - r[p1]) * ratio;
 		    b[x] = b[p1] + (b[p2] - b[p1]) * ratio;
@@ -126,12 +117,6 @@ namespace cms {
 		dglut(dglut)
 	    {
 	    };
-	    /*P1P2GammaOp::
-	       P1P2GammaOp(RGBGamma_ptr source, int p1, int p2,
-	       RGB_vector_ptr dglut):p1(p1), p2(p2),
-	       dglut(dglut) {
-	       this->source = source;
-	       }; */
 	    //==================================================================
 
 	    //==================================================================

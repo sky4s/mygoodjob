@@ -57,6 +57,7 @@ namespace cms {
 		 RGB_vector_ptr getRendering(RGB_vector_ptr source);
 		RGB_vector_ptr getRendering6_(RGB_vector_ptr source);
 		RGB_vector_ptr getRendering7_(RGB_vector_ptr source);
+		RGB_vector_ptr getRendering8_(RGB_vector_ptr source);
 		int getBBiggerThanG(RGB_vector_ptr rgbVector);
 		static double getBCode(double rRatio, double gRatio,
 				       double GCode);
