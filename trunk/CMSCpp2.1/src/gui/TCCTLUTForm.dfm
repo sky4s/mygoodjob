@@ -208,8 +208,8 @@ object CCTLUTForm: TCCTLUTForm
     object Label17: TLabel
       Left = 32
       Top = 233
-      Width = 57
-      Height = 24
+      Width = 37
+      Height = 16
       Caption = 'Under'
     end
     object RadioButton_P1P2: TRadioButton
@@ -373,7 +373,7 @@ object CCTLUTForm: TCCTLUTForm
   end
   object Button_Run: TButton
     Left = 568
-    Top = 385
+    Top = 369
     Width = 57
     Height = 24
     Caption = 'Run'
@@ -384,8 +384,8 @@ object CCTLUTForm: TCCTLUTForm
     Left = 568
     Top = 353
     Width = 57
-    Height = 24
-    Caption = 'Debug'
+    Height = 16
+    Caption = 'debug'
     TabOrder = 6
     OnClick = Button_DebugClick
   end
@@ -559,9 +559,9 @@ object CCTLUTForm: TCCTLUTForm
     end
   end
   object Button_Reset: TButton
-    Left = 576
+    Left = 568
     Top = 336
-    Width = 49
+    Width = 57
     Height = 17
     Caption = 'reset'
     TabOrder = 9
@@ -585,6 +585,15 @@ object CCTLUTForm: TCCTLUTForm
     ImeName = #26085#25991#36664#20837#31995#32113' (MS-IME2002)'
     TabOrder = 11
     Text = '50'
+  end
+  object Button_Process: TButton
+    Left = 568
+    Top = 392
+    Width = 57
+    Height = 25
+    Caption = 'Process'
+    TabOrder = 12
+    Visible = False
   end
   object OpenDialog1: TOpenDialog
     Filter = 'DGCode Files(*.xls)|*.xls'

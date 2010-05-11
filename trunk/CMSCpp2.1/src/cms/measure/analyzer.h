@@ -16,11 +16,14 @@ namespace cms {
     namespace measure {
 
 	class MeterMeasurement;
+	/*
+	   Intensity Analyer的皮
+	   Analyzer的功用就是從XYZ分析出Intensity
+	 */
 	class IntensityAnalyzerIF:public jObject {
 	  public:
 	    virtual RGB_ptr getIntensity(RGB_ptr rgb) = 0;
 	    virtual XYZ_ptr getCIEXYZ() = 0;
-	    //virtual void beginSetup() = 0;
 	    virtual void setupComponent(const Dep::Channel & ch,
 					RGB_ptr rgb) = 0;
 	    virtual void enter() = 0;
@@ -28,18 +31,19 @@ namespace cms {
 	    virtual void endAnalyze() = 0;
 	    virtual void setWaitTimes(int waitTimes) = 0;
 	    virtual int getWaitTimes() = 0;
-	    //virtual void setDefaultWaitTimes() = 0;
 	    virtual xyY_ptr getReferenceColor() = 0;
+	    virtual xyY_ptr getPrimaryColor(const Dep::Channel & ch) = 0;
 	};
 
+	/*
+	   利用CA-210內建的Analyzer Mode分析 Intensity
+	 */
 	class CA210IntensityAnalyzer:public IntensityAnalyzerIF {
 	  private:
 	    Patch_ptr rp, gp, bp, wp;
-	    //XYZ_ptr rXYZ, gXYZ, bXYZ, wXYZ;
 	  protected:
-	    //static bool ANALYZER_CAL_MODE;
-	     bptr < cms::measure::meter::CA210 > ca210;
-	     bptr < ca210api::CA210API > ca210api;
+	    bptr < cms::measure::meter::CA210 > ca210;
+	    bptr < ca210api::CA210API > ca210api;
 	    XYZ_ptr XYZ;
 	     bptr < MeterMeasurement > mm;
 	    bool dummyMode;
@@ -61,29 +65,20 @@ namespace cms {
 
 	    RGB_ptr getIntensity(RGB_ptr rgb);
 	    XYZ_ptr getCIEXYZ();
-	    //void beginSetup();
 	    void setupComponent(const Dep::Channel & ch, RGB_ptr rgb);
 	    void enter();
-	    //void setChannel(int no, string_ptr id, bool reset);
 	    void setChannel(int no, string_ptr id);
 	    void beginAnalyze();
 	    void endAnalyze();
 	    void setWaitTimes(int waitTimes);
 	    int getWaitTimes();
 	    xyY_ptr getReferenceColor();
-	    //void setDefaultWaitTimes();
+	    xyY_ptr getPrimaryColor(const Dep::Channel & ch);
 	};
 
-	/*class StocktonIntensityAnayzer:public CA210IntensityAnalyzer {
-	   private:
-	   Patch_ptr rp, gp, bp, wp;
-	   public:
-	   StocktonIntensityAnayzer(bptr < cms::measure::meter::CA210 >
-	   ca210, bptr < MeterMeasurement > mm);
-	   void setupComponent(const Dep::Channel & ch, RGB_ptr rgb);
-	   void enter();
-	   }; */
-
+	/*
+	   利用矩陣運算推算出Intensity
+	 */
 	class MaxMatrixIntensityAnayzer:public IntensityAnalyzerIF {
 	    friend class IntensityAnayzer;
 	  private:
@@ -93,16 +88,16 @@ namespace cms {
 	  protected:
 	     bptr < MeterMeasurement > mm;
 
-	    Patch_ptr rPatch;
-	    Patch_ptr gPatch;
-	    Patch_ptr bPatch;
-	    Patch_ptr wPatch;
+	    /*Patch_ptr rPatch;
+	       Patch_ptr gPatch;
+	       Patch_ptr bPatch;
+	       Patch_ptr wPatch; */
 	    XYZ_ptr XYZ;
 	    XYZ_ptr rXYZ, gXYZ, bXYZ, wXYZ;
-	    //int defaultWaitTimes;
 
 	  public:
 	     MaxMatrixIntensityAnayzer(bptr < MeterMeasurement > mm);
+	     MaxMatrixIntensityAnayzer();
 
 	    RGB_ptr getIntensity(RGB_ptr rgb);
 	    RGB_ptr getIntensity(XYZ_ptr XYZ);
@@ -116,10 +111,14 @@ namespace cms {
 	    void setWaitTimes(int waitTimes);
 	    int getWaitTimes();
 	    xyY_ptr getReferenceColor();
+	    xyY_ptr getPrimaryColor(const Dep::Channel & ch);
 	};
 
 	class MaxMatrixIntensityAnayzer2;
-
+	/*
+	   用來合併CA-210與MaxMatrix兩種方法來分析Intensity
+	   實際上輸出的值為CA-210的, MaxMatrix的輸出值會另外存在檔案
+	 */
 	class IntensityAnayzer:public IntensityAnalyzerIF {
 	  private:
 	    bptr < MaxMatrixIntensityAnayzer > matrix;
@@ -137,18 +136,19 @@ namespace cms {
 			      bptr < CA210IntensityAnalyzer > ca210);
 	    RGB_ptr getIntensity(RGB_ptr rgb);
 	    XYZ_ptr getCIEXYZ();
-	    //void beginSetup();
 	    void setupComponent(const Dep::Channel & ch, RGB_ptr rgb);
 	    void enter();
 	    void beginAnalyze();
 	    void endAnalyze();
 	    void setWaitTimes(int waitTimes);
 	    int getWaitTimes();
-	    //void setDefaultWaitTimes();
 	    xyY_ptr getReferenceColor();
+	    xyY_ptr getPrimaryColor(const Dep::Channel & ch);
 	};
 
-
+	/*
+	   以float進行矩陣運算, 問題多多不能使用
+	 */
 	class MaxMatrixIntensityAnayzer2:public MaxMatrixIntensityAnayzer {
 	    friend class IntensityAnayzer;
 	  protected:

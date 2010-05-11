@@ -226,9 +226,12 @@ namespace cms {
 	    class LCDCalibrator;
 	    class Component;
 	    class ComponentLUT;
-            class ComponentRelationIF;
-            class ComponentLinearRelation;
-            class ComponentPLRelation;
+	    class ComponentRelationIF;
+	    class ComponentLinearRelation;
+	    class ComponentPLRelation;
+
+	    class DimDGLutGenerator;
+	    class DimTargetGenerator;
 	    namespace algo {
 		class ChromaticAroundAlgorithm;
 		class CIEuv1960NearestAlgorithm;

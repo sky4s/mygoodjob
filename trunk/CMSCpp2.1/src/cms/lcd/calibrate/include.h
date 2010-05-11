@@ -8,4 +8,5 @@
 //#include "rgbvectorop.h";
 #include "whitefinder.h";
 #include "bitdepthprocessor.h";
+#include "sandbox.h";
  
