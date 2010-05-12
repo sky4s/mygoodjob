@@ -168,7 +168,7 @@ namespace java {
 	};
 	double_vector_ptr Math::normalize(double_vector_ptr original,
 					  double normal) {
-	    for (int x = 0; x < original->size(); x++) {
+	    for (unsigned int x = 0; x < original->size(); x++) {
 		(*original)[x] /= normal;
 	    }
 	    return original;

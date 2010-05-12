@@ -24,8 +24,7 @@ namespace cms {
 	using namespace Indep;
 	using namespace Dep;
 	using namespace cms::util;
-
-
+	using namespace cms::measure;
 
 	//======================================================================
 	// DGLutFile
@@ -101,7 +100,7 @@ namespace cms {
 		null !=
 		initialRGBGamma ? initialRGBGamma->r->size() : part1Size;
 	    //db->setTableName(RawData);
-	    int size = componentVector->size();
+	    //int size = componentVector->size();
 	    //string_vector_ptr headerNames = getHeaderNames(RawData);
 	    const int headerCount = getHeaderCount(RawData);
 	    string_vector_ptr values(new string_vector(headerCount));
@@ -399,6 +398,21 @@ namespace cms {
 			       c.avoidFRCNoise ? On : Off);
 	    dgcode.addProperty("keep max luminance",
 			       c.keepMaxLuminance ? On : Off);
+	    bptr < IntensityAnalyzerIF > analyzer =
+		c.fetcher->getAnalyzer();
+
+	    //¬ö¿ýref color
+	    xyY_ptr refWhitexyY = analyzer->getReferenceColor();
+	    if (null != refWhitexyY) {
+		xyY_ptr refRxyY = analyzer->getPrimaryColor(Channel::R);
+		xyY_ptr refGxyY = analyzer->getPrimaryColor(Channel::G);
+		xyY_ptr refBxyY = analyzer->getPrimaryColor(Channel::B);
+		dgcode.addProperty("reference white",
+				   *refWhitexyY->toString());
+		dgcode.addProperty("Primary R", *refRxyY->toString());
+		dgcode.addProperty("Primary G", *refRxyY->toString());
+		dgcode.addProperty("Primary B", *refRxyY->toString());
+	    }
 	};
 	DGLutProperty::DGLutProperty(const
 				     LCDCalibrator & c):c(c) {

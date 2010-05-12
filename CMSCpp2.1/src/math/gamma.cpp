@@ -23,14 +23,14 @@ namespace math {
 	}
 
 	double denominator = 0;
-	for (int x = 0; x < normalizeInput->size(); x++) {
+	for (unsigned int x = 0; x < normalizeInput->size(); x++) {
 	    if ((*normalizeInput)[x] == 0) {
 		continue;
 	    }
 	    denominator += Math::sqr(Math::log((*normalizeInput)[x]));
 	}
 	double numerator = 0;
-	for (int x = 0; x < normalizeInput->size(); x++) {
+	for (unsigned int x = 0; x < normalizeInput->size(); x++) {
 	    if ((*normalizeInput)[x] == 0 || (*normalizeOutput)[x] == 0) {
 		continue;
 	    }

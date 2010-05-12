@@ -1,3 +1,5 @@
+#include <includeall.h>
+#pragma hdrstop
 #include "ciexyz.h"
 
 //C系統文件
@@ -7,7 +9,7 @@
 //其他庫頭文件
 
 //本項目內頭文件
-#include <math/doublearray.h>
+//#include <math/doublearray.h>
 
 namespace cms {
     namespace colorspace {
@@ -28,7 +30,10 @@ namespace cms {
 	    };
 
 	    double CIEXYZ::getCCT() {
-		//return CorrelatedColorTemperature.XYZ2CCTByRobertson(this);
+		//xyY_ptr  (new CIExyY(XYZ_ptr(this)));
+		return CorrelatedColorTemperature::
+		    xy2CCTByMcCamyFloat(xyY_ptr
+					(new CIExyY(XYZ_ptr(this))));
 	    };
 
 	    NormalizeY CIEXYZ::getNormalizeY() {
@@ -41,12 +46,12 @@ namespace cms {
 		   Maths.sqr(uv[1] - uvn[1])); */
 	    };
 	    double_array CIEXYZ::getuvPrimeValues() {
-		/*CIExyY xyY = CIExyY.fromXYZ(this);
-		   return xyY.getuvPrimeValues(); */
+		CIExyY xyY(XYZ_ptr(this));
+		return xyY.getuvPrimeValues();
 	    };
 	    double_array CIEXYZ::getuvValues() {
-		/*CIExyY xyY = CIExyY.fromXYZ(this);
-		   return xyY.getuvValues(); */
+		CIExyY xyY(XYZ_ptr(this));
+		return xyY.getuvValues();
 	    };
 	    double_array CIEXYZ::getValues(double_array values,
 					   NormalizeY normalizeY) {
@@ -94,12 +99,14 @@ namespace cms {
 		return ColorSpace::getValues(values);
 	    };
 
-	    shared_ptr < CIEXYZ > CIEXYZ::toXYZ() {
+	    XYZ_ptr CIEXYZ::toXYZ() {
 		//return *this;
+		return XYZ_ptr(this);
 	    };
 
 	    double_array CIEXYZ::getWhitenessIndex() {
 		//return new CIExyY(this).getWhitenessIndex();
+		return CIExyY(toXYZ()).getWhitenessIndex();
 	    };
 
 	    double_array CIEXYZ::getxyValues() const {
@@ -293,7 +300,7 @@ namespace cms {
 		//return CorrelatedColorTemperature.CCT2BlackbodyxyY(CCT);
 	    };
 	    xyY_ptr CIExyY::fromCCT2DIlluminant(int CCT) {
-		//return CorrelatedColorTemperature.CCT2DIlluminantxyY(CCT);
+		return CorrelatedColorTemperature::CCT2DIlluminantxyY(CCT);
 	    };
 	    xyY_ptr CIExyY::fromXYZ(const XYZ_ptr XYZ) {
 		double_array xyValues = XYZ->getxyValues();

@@ -159,6 +159,7 @@ namespace cms {
 	     MaxMatrixIntensityAnayzer2(bptr < MeterMeasurement > mm);
 	    void enter();
 	    RGB_ptr getIntensity(XYZ_ptr XYZ);
+	    RGB_ptr getIntensity(RGB_ptr rgb);
 	};
     };
 };

@@ -16,6 +16,8 @@ namespace cms {
 	    class DimDGLutGenerator {
 	      private:
 		Component_vector_ptr componentVector;
+		bptr < cms::measure::IntensityAnalyzerIF > analyzer;
+
 		Component_vector_ptr fetchComponent(bptr <
 						    cms::measure::
 						    MaxMatrixIntensityAnayzer
@@ -28,7 +30,10 @@ namespace cms {
 						luminanceGammaCurve);
 
 	      public:
-		 DimDGLutGenerator(Component_vector_ptr componentVector);
+		 DimDGLutGenerator(Component_vector_ptr componentVector,
+				   bptr <
+				   cms::measure::IntensityAnalyzerIF >
+				   analyzer);
 		RGB_vector_ptr produce(XYZ_ptr targetWhite,
 				       double_vector_ptr
 				       luminanceGammaCurve, int under);

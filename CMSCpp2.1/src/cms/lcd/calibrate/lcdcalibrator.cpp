@@ -107,7 +107,7 @@ namespace cms {
 						Component_vector_ptr
 						componentVector) {
 
-		int n = componentVector->size();
+		//int n = componentVector->size();
 		Util::deleteExist(filename);
 		DGLutFile dglut(filename, Create);
 		dglut.setRawData(componentVector, nil_RGBGamma,
@@ -196,7 +196,7 @@ namespace cms {
 	    //==================================================================
 	    // ComponentLUT
 	    //==================================================================
-	    ComponentLUT::init(Component_vector_ptr componentVector) {
+	    void ComponentLUT::init(Component_vector_ptr componentVector) {
 		//==============================================================
 		// 建立回歸資料
 		//==============================================================
@@ -210,7 +210,7 @@ namespace cms {
 
 		for (int x = 0; x != size; x++) {
 		    Component_ptr component = (*componentVector)[x];
-		    double Y = component->XYZ->Y;
+		    //double Y = component->XYZ->Y;
 		    RGB_ptr intensity = component->intensity;
 
 		    RGB_ptr code = component->rgb;
@@ -248,6 +248,9 @@ namespace cms {
 		    return gLut->getValue(code);
 		case ChannelIndex::B:
 		    return bLut->getValue(code);
+		default:
+		    throw IllegalArgumentException("Unsupported Channel:" +
+						   *ch.toString());
 		}
 	    };
 	    double ComponentLUT::getCode(const Dep::Channel & ch,
@@ -259,6 +262,9 @@ namespace cms {
 		    return gLut->getKey(intensity);
 		case ChannelIndex::B:
 		    return bLut->getKey(intensity);
+		default:
+		    throw IllegalArgumentException("Unsupported Channel:" +
+						   *ch.toString());
 		}
 	    };
 	    double ComponentLUT::correctIntensityInRange(const Dep::
@@ -272,6 +278,9 @@ namespace cms {
 		    return gLut->correctValueInRange(intensity);
 		case ChannelIndex::B:
 		    return bLut->correctValueInRange(intensity);
+		default:
+		    throw IllegalArgumentException("Unsupported Channel:" +
+						   *ch.toString());
 		}
 	    };
 	    double_vector_ptr ComponentLUT::
@@ -346,8 +355,12 @@ namespace cms {
 		double maxvalue = maxintensity->getValue(minchannel);
 		return maxvalue;
 	    };
-	  DGLutGenerator::DGLutGenerator(Component_vector_ptr componentVector, bptr < BitDepthProcessor > bitDepth):componentVector
-		(componentVector), bitDepth(bitDepth)
+	    /*DGLutGenerator::DGLutGenerator(Component_vector_ptr componentVector, bptr < BitDepthProcessor > bitDepth):componentVector(componentVector) {
+
+	       init();
+	       }; */
+	  DGLutGenerator::DGLutGenerator(Component_vector_ptr componentVector):componentVector
+		(componentVector)
 	    {
 		init();
 	    };
@@ -541,7 +554,7 @@ namespace cms {
 		this->gamma = gamma;
 		int n = bitDepth->getLevel();
 		int effectiven = bitDepth->getEffectiveLevel();
-		int measureLevel = bitDepth->getMeasureLevel();
+		//int measureLevel = bitDepth->getMeasureLevel();
 		setGammaCurve0(getGammaCurveVector(gamma, n, effectiven));
 		useGammaCurve = false;
 	    };
@@ -630,8 +643,7 @@ namespace cms {
 
 		STORE_COMPONENT("o_fetch.xls", componentVector);
 		//產生generator
-		generator.
-		    reset(new DGLutGenerator(componentVector, bitDepth));
+		generator.reset(new DGLutGenerator(componentVector));
 		RGBGamma_ptr rgbgamma = generator->getRGBGamma(gammaCurve);
 		initialRGBGamma = rgbgamma->clone();
 		STORE_DOUBLE_VECTOR("0_gammacurve.xls", gammaCurve);
@@ -699,26 +711,28 @@ namespace cms {
 		    //量化
 		    STORE_RGBVECTOR("6_dgcode_p1p2dg.xls", dglut);
 		    //==========================================================
-		} else if (correct == New2) {
+		}
+		finalRGBGamma = rgbgamma;
+
+		if (correct == New2) {
 		    /*
 		       DimDGLutGenerator
 		       in: target white , gamma(Y)
 		       out: DG Code
 		     */
-		    DimDGLutGenerator dimgenerator(componentVector);
 		    bptr < IntensityAnalyzerIF > analyzer =
 			fetcher->getAnalyzer();
-		    //XYZ_ptr targetWhite =  analyzer->getReferenceColor()->
+		    DimDGLutGenerator dimgenerator(componentVector,
+						   analyzer);
+		    //analyzer若沒有設定過target color, 會使此步驟失效
 		    XYZ_ptr targetWhite =
 			analyzer->getReferenceColor()->toXYZ();
 
 		    RGB_vector_ptr dimdglut =
 			dimgenerator.produce(targetWhite, gammaCurve,
 					     under);
+		    int size = dimdglut->size();
 		}
-		//RGB_vector_ptr dgcode2 = dglut;
-		finalRGBGamma = rgbgamma;
-
 		//==============================================================
 		// DG Code Op block
 		//==============================================================
@@ -743,7 +757,7 @@ namespace cms {
 	    void LCDCalibrator::storeDGLut(const std::
 					   string & filename,
 					   RGB_vector_ptr dglut) {
-		int n = bitDepth->getLevel();
+		//int n = bitDepth->getLevel();
 		//int n = true == gamma256 ? 257 : 256;
 		//砍掉已存在的
 		Util::deleteExist(filename);
