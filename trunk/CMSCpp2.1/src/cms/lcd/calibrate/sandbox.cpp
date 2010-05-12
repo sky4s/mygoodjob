@@ -36,12 +36,15 @@ namespace cms {
 	    };
 	     DimDGLutGenerator::
 		DimDGLutGenerator(Component_vector_ptr
-				  componentVector):componentVector
-		(componentVector) {
+				  componentVector,
+				  bptr < IntensityAnalyzerIF >
+				  analyzer):componentVector
+		(componentVector), analyzer(analyzer) {
 	    };
 	    RGB_vector_ptr DimDGLutGenerator::
 		produce(XYZ_ptr targetWhite,
 			double_vector_ptr luminanceGammaCurve, int under) {
+		using namespace Dep;
 		//==============================================================
 		// 資訊準備
 		//==============================================================
@@ -58,10 +61,23 @@ namespace cms {
 		//==============================================================
 		RGB_vector_ptr result(new RGB_vector(size));
 
+		xyY_ptr rxyY = analyzer->getPrimaryColor(Channel::R);
+		xyY_ptr gxyY = analyzer->getPrimaryColor(Channel::G);
+		xyY_ptr bxyY = analyzer->getPrimaryColor(Channel::B);
+
 		foreach(const XYZ_ptr targetXYZ, *targetXYZVector) {
 		    bptr < MaxMatrixIntensityAnayzer >
 			analyzer(new MaxMatrixIntensityAnayzer());
-		    //fetchComponent(
+
+		    analyzer->setupComponent(Channel::R, rxyY->toXYZ());
+		    analyzer->setupComponent(Channel::G, gxyY->toXYZ());
+		    analyzer->setupComponent(Channel::B, bxyY->toXYZ());
+		    analyzer->setupComponent(Channel::W, targetXYZ);
+		    Component_vector_ptr newcomponentVector =
+			fetchComponent(analyzer, componentVector);
+		    DGLutGenerator lutgen(newcomponentVector);
+		    RGB_ptr rgb = lutgen.produce(100, 100, 100);
+		    result->push_back(rgb);
 		};
 
 		return result;

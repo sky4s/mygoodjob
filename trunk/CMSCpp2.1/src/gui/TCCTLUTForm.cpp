@@ -333,6 +333,7 @@ void TCCTLUTForm::setLowLevelCorrectionEditDisable()
     this->Edit_RBInterpUnder->Enabled = false;
     this->Edit_NewP1->Enabled = false;
     this->Edit_NewP2->Enabled = false;
+    this->Edit_GammaShift->Enabled = false;
     this->Edit_New2Under->Enabled = false;
 };
 
@@ -348,6 +349,7 @@ void __fastcall TCCTLUTForm::RadioButton_NewClick(TObject * Sender)
     setLowLevelCorrectionEditDisable();
     this->Edit_NewP1->Enabled = true;
     this->Edit_NewP2->Enabled = true;
+    this->Edit_GammaShift->Enabled = true;
 }
 
 //---------------------------------------------------------------------------

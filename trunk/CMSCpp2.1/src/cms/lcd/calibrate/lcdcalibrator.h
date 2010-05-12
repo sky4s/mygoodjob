@@ -98,7 +98,7 @@ namespace cms {
 		bptr < math::Interpolation1DLUT > gLut;
 		bptr < math::Interpolation1DLUT > bLut;
 	      protected:
-		init(Component_vector_ptr componentVector);
+		void init(Component_vector_ptr componentVector);
 		double_vector_ptr getReverse(double_vector_ptr vec);
 	      public:
 		 ComponentLUT(Component_vector_ptr componentVector);
@@ -113,15 +113,13 @@ namespace cms {
 		Component_vector_ptr componentVector;
 		double minLuminance, maxLuminance;
 		 bptr < ComponentLUT > lut;
-		 bptr < BitDepthProcessor > bitDepth;
 		 bptr < ComponentRelationIF > componentRelation;
 		void init();
 
 
 		double getMaximumIntensity();
 	      public:
-		 DGLutGenerator(Component_vector_ptr componentVector,
-				bptr < BitDepthProcessor > bitDepth);
+		 DGLutGenerator(Component_vector_ptr componentVector);
 		RGB_ptr produce(double rIntensity, double gIntensity,
 				double bIntensity);
 		RGB_vector_ptr produce(RGBGamma_ptr normalRGBGammaCurve);

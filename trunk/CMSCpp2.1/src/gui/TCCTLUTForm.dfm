@@ -283,6 +283,7 @@ object CCTLUTForm: TCCTLUTForm
       Top = 184
       Width = 41
       Height = 24
+      Enabled = False
       TabOrder = 7
       Text = '-0.2'
     end
@@ -573,6 +574,7 @@ object CCTLUTForm: TCCTLUTForm
     Top = 160
     Width = 40
     Height = 24
+    Enabled = False
     ImeName = #26085#25991#36664#20837#31995#32113' (MS-IME2002)'
     TabOrder = 10
     Text = '20'
@@ -582,6 +584,7 @@ object CCTLUTForm: TCCTLUTForm
     Top = 160
     Width = 41
     Height = 24
+    Enabled = False
     ImeName = #26085#25991#36664#20837#31995#32113' (MS-IME2002)'
     TabOrder = 11
     Text = '50'
