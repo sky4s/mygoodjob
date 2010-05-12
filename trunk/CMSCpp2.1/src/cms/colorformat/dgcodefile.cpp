@@ -82,7 +82,7 @@ namespace cms {
 	    //==================================================================
 	    // 檢查來源資料
 	    //==================================================================
-	    int componentSize = componentVector->size();
+	    //int componentSize = componentVector->size();
 	    if (null != initialRGBGamma && null != finalRGBGamma
 		&& initialRGBGamma->r->size() !=
 		finalRGBGamma->r->size()) {
@@ -410,8 +410,8 @@ namespace cms {
 		dgcode.addProperty("reference white",
 				   *refWhitexyY->toString());
 		dgcode.addProperty("Primary R", *refRxyY->toString());
-		dgcode.addProperty("Primary G", *refRxyY->toString());
-		dgcode.addProperty("Primary B", *refRxyY->toString());
+		dgcode.addProperty("Primary G", *refGxyY->toString());
+		dgcode.addProperty("Primary B", *refBxyY->toString());
 	    }
 	};
 	DGLutProperty::DGLutProperty(const

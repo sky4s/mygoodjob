@@ -181,6 +181,7 @@ void TMainForm::setDummyMeterFilename(const std::string & filename)
     mm->setFakeMeasure(true);
     analyzer.reset(new CA210IntensityAnalyzer(mm));
     fetcher.reset((ComponentFetcher *) null);
+
 };
 
 //---------------------------------------------------------------------------

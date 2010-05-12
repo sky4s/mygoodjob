@@ -66,14 +66,14 @@ namespace cms {
 							  adjustChannel,
 							  double_array
 							  delta) {
-
+		    /* TODO : checkAdjustable */
 		};
 		bool StepAroundAlgorithm::ChromaticSkipByDelta = true;
 	      StepAroundAlgorithm::StepAroundAlgorithm():maxCode(255)
 		{
 		};
-	      StepAroundAlgorithm::StepAroundAlgorithm(double maxcode):maxCode(maxcode)
-		{
+		StepAroundAlgorithm::
+		    StepAroundAlgorithm(double maxcode):maxCode(maxcode) {
 		};
 		//==============================================================
 

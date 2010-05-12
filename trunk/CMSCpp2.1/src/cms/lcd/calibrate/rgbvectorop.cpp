@@ -57,7 +57,7 @@ namespace cms {
 
 		for (int x = 0; x != p1; x++) {
 		    double v = x * rgbp1->G / p1;
-		    double d = java::lang::Math::roundTo(v * 4);
+		    //double d = java::lang::Math::roundTo(v * 4);
 		    RGB_ptr rgb = (*result)[x];
 		    rgb->setValues(v, v, v);
 		    rgb->quantization(maxValue);
@@ -224,7 +224,7 @@ namespace cms {
 	    };
 	    RGB_vector_ptr BMaxOp::getRendering(RGB_vector_ptr source) {
 		RGB_vector_ptr result = RGBVector::deepClone(source);
-		int size = result->size();
+		//int size = result->size();
 		//把未用到的區域全部處理成最大值
 		int n = bitDepth->getLevel() - 1;
 		int effectiven = (bitDepth->getEffectiveLevel() - 1);
@@ -232,7 +232,7 @@ namespace cms {
 		for (int x = n; x >= effectiven; x--) {
 		    RGB_ptr rgb = (*result)[x];
 		    rgb->B = bitDepth->getMaxDigitalCount();
-		    int y = x;
+		    //int y = x;
 		}
 		//STORE_RGBVECTOR("1.xls", result);
 
@@ -286,7 +286,7 @@ namespace cms {
 	    };
 	    //==================================================================
 	    RGB_vector_ptr FrcNROp::getRendering(RGB_vector_ptr source) {
-		int size = source->size();
+		//int size = source->size();
 		RGB_vector_ptr result = RGBVector::clone(source);
 		RGB_ptr rgb255 = (*result)[255];
 		STORE_RGBVECTOR("frcNR_0.xls", result);

@@ -131,7 +131,7 @@ void TGammaMeasurementForm::tconMeasure(bool_vector_ptr rgbw, int start,
 {
     using namespace Dep;
     Channel_vector_ptr channels = Channel::RGBWChannel;
-    int size = channels->size();
+    //int size = channels->size();
 };
 
 //---------------------------------------------------------------------------

@@ -77,9 +77,9 @@ namespace cms {
 	};
 	void MeterMeasurement::setWaitTimes(int waitTimes) {
 	    this->waitTimes = waitTimes;
-	    if (waitTimes == 0) {
+	    /*if (waitTimes == 0) {
 		int x = 1;
-	    }
+	    }*/
 	};
 	int MeterMeasurement::getWaitTimes() {
 	    return waitTimes;

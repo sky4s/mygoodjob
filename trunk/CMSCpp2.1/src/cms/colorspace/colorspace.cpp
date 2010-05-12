@@ -71,7 +71,7 @@ namespace cms {
 
 	bool ColorSpace::equalsValues(ColorSpace & colorSpace) {
 	    double_array thisValues = this->getValues();
-
+            /* TODO : equalsValues */
 	}
 	string_ptr ColorSpace::getName() {
 	    return this->getClass().getSimpleName();

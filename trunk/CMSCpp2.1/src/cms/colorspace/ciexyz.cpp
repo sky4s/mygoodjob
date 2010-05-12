@@ -44,6 +44,7 @@ namespace cms {
 		   double[] uvn = white.getuvPrimeValues();
 		   return 13 * Math.sqrt(Maths.sqr(uv[0] - uvn[0]) +
 		   Maths.sqr(uv[1] - uvn[1])); */
+		/* TODO : getSaturation */
 	    };
 	    double_array CIEXYZ::getuvPrimeValues() {
 		CIExyY xyY(XYZ_ptr(this));

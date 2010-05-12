@@ -731,7 +731,7 @@ namespace cms {
 		    RGB_vector_ptr dimdglut =
 			dimgenerator.produce(targetWhite, gammaCurve,
 					     under);
-		    int size = dimdglut->size();
+		    //int size = dimdglut->size();
 		}
 		//==============================================================
 		// DG Code Op block
@@ -751,7 +751,7 @@ namespace cms {
 	    };
 
 	    RGB_vector_ptr LCDCalibrator::getGammaDGLut(int step) {
-
+		/* TODO : getGammaDGLut */
 	    };
 
 	    void LCDCalibrator::storeDGLut(const std::

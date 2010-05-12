@@ -173,6 +173,11 @@ void __fastcall TTargetWhiteForm2::Button2Click(TObject * Sender)
     using namespace cms::measure::meter;
     using namespace cms::measure;
 
+    if( false == MainForm->linkCA210) {
+        ShowMessage("CA210 cannot be linked.");
+        return;
+    }
+
     bool usexy = this->RadioButton_Targetxy->Checked;
     bool moreAccurate = this->CheckBox_MoreAccurate->Checked;
     //¤wª¾rgb

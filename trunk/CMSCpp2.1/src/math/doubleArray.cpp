@@ -134,7 +134,7 @@ namespace math {
 
     double_vector_ptr DoubleArray::minus(double_vector_ptr v1, double v) {
 	double_vector_ptr array(new double_vector(v1->size()));
-	for (int i = 0; i < v1->size(); i++) {
+	for (unsigned int i = 0; i < v1->size(); i++) {
 	    (*array)[i] = (*v1)[i] - v;
 	}
 	return array;
@@ -294,7 +294,7 @@ namespace math {
     };
     double2D_ptr DoubleArray::identity(int m, int n) {
 	double2D_ptr result(new double2D(m, n));
-	int size = Math::min(m, n);
+	//int size = Math::min(m, n);
 	for (int x = 0; x < m; x++) {
 	    for (int y = 0; y < n; y++) {
 		(*result)[x][y] = (x == y) ? 1 : 0;
@@ -306,7 +306,7 @@ namespace math {
     };
     double2D DoubleArray::identity_(int m, int n) {
 	double2D result(m, n);
-	int size = Math::min(m, n);
+	//int size = Math::min(m, n);
 	for (int x = 0; x < m; x++) {
 	    for (int y = 0; y < n; y++) {
 		result[x][y] = (x == y) ? 1 : 0;
@@ -359,6 +359,7 @@ namespace math {
 	svd.getU(u);
 	svd.getSingularValues(sv);
 	svd.getV(v);
+        /* TODO : pseudoInverse */
     };
 
 

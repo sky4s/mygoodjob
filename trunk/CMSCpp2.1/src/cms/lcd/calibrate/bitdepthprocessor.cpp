@@ -15,6 +15,7 @@ namespace cms {
 	namespace calibrate {
 
 	    using namespace Dep;
+	    using namespace java::lang;
 
 	    //==================================================================
 	    // BitDepthProcessor
@@ -36,13 +37,18 @@ namespace cms {
 		} else if (in == MaxValue::Int6Bit
 			   && out == MaxValue::Int6Bit) {
 		    return b6_6;
+		} else {
+		    throw
+			IllegalArgumentException("Unsupported BitDepth.");
 		}
 	    };
 
 
-	  BitDepthProcessor::BitDepthProcessor(int inBit, int lutBit, int outBit, bool tconInput):tconInput
-		(tconInput)
-	    {
+	    BitDepthProcessor::BitDepthProcessor(int inBit, int lutBit,
+						 int outBit,
+						 bool
+						 tconInput):tconInput
+		(tconInput) {
 		in = &MaxValue::getByBit(inBit);
 		lut = &MaxValue::getByBit(lutBit);
 		out = &MaxValue::getByBit(outBit);
@@ -62,6 +68,9 @@ namespace cms {
 		case b8_6:
 		case b6_6:
 		    return 252;
+		default:
+		    throw IllegalStateException("Unsupported bitDepth: " +
+						bitDepth);
 		}
 	    };
 	    /*
@@ -75,6 +84,9 @@ namespace cms {
 		case b8_6:
 		case b6_6:
 		    return 0;
+		default:
+		    throw IllegalStateException("Unsupported bitDepth: " +
+						bitDepth);
 		}
 	    };
 	    /*
@@ -90,6 +102,9 @@ namespace cms {
 		    return 1;
 		case b6_6:
 		    return 4;
+		default:
+		    throw IllegalStateException("Unsupported bitDepth: " +
+						bitDepth);
 		}
 	    };
 
@@ -104,6 +119,9 @@ namespace cms {
 		    return 1;
 		case b6_6:
 		    return 4;
+		default:
+		    throw IllegalStateException("Unsupported bitDepth: " +
+						bitDepth);
 		}
 	    };
 	    int BitDepthProcessor::getMeasureLevel() {
@@ -125,6 +143,9 @@ namespace cms {
 		case b8_6:
 		case b6_6:
 		    return 252;
+		default:
+		    throw IllegalStateException("Unsupported bitDepth: " +
+						bitDepth);
 		}
 	    };
 	    int BitDepthProcessor::getMaxDigitalCountIndex() {
@@ -136,6 +157,9 @@ namespace cms {
 		case b8_6:
 		case b6_6:
 		    return gamma256 ? 256 : 255;
+		default:
+		    throw IllegalStateException("Unsupported bitDepth: " +
+						bitDepth);
 		}
 	    };
 
@@ -152,6 +176,9 @@ namespace cms {
 		    return 255;
 		case b6_6:
 		    return 252;
+		default:
+		    throw IllegalStateException("Unsupported bitDepth: " +
+						bitDepth);
 		}
 	    };
 
@@ -215,6 +242,9 @@ namespace cms {
 		case b8_6:
 		case b6_6:
 		    return string_ptr(new string("6+3"));
+		default:
+		    throw IllegalStateException("Unsupported bitDepth: " +
+						bitDepth);
 		}
 	    };
 //==================================================================

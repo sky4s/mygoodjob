@@ -151,8 +151,6 @@ class TMainForm:public TForm {
      bptr < cms::measure::MeterMeasurement > mm;
     void setMeterMeasurementWaitTimes();
      bptr < cms::measure::IntensityAnalyzerIF > getAnalyzer();
-    //
-
     void setDummyMeterFilename(const std::string & filename);
     void resetDummyMeter();
      bptr < cms::lcd::calibrate::ComponentFetcher > getComponentFetcher();
@@ -162,7 +160,6 @@ class TMainForm:public TForm {
     // T-CON
     //==========================================================================
      bptr < cms::lcd::calibrate::BitDepthProcessor > bitDepth;
-
     //==========================================================================
     __fastcall TMainForm(TComponent * Owner);
 

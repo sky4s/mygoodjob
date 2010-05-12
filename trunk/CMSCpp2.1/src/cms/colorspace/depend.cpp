@@ -93,7 +93,7 @@ namespace cms {
 		 return str;
 	    };
 
-	    const int Channel::getArrayIndex() const{
+	    const int Channel::getArrayIndex() const {
 		return chindex - 1;
 	    };
 
@@ -124,6 +124,9 @@ namespace cms {
 		    return W;
 		    /*default:
 		       return NULL; */
+		default:
+		    throw IllegalArgumentException("Unsupported chIndex:" +
+						   chIndex);
 		}
 	    };
 	    const Channel & Channel::getChannelByArrayIndex(int arrayIndex) {
@@ -147,15 +150,21 @@ namespace cms {
 		    return getChannelVector(2, R, B);
 		case ChannelIndex::B:
 		    return getChannelVector(2, R, G);
+		default:
+		    throw IllegalArgumentException("Unsupported Channel: "
+						   + *primaryColorChannel.
+						   toString());
 		}
 	    };
 	    //======================================================================
 	    //======================================================================
 	    // RGBColorSpace
 	    //======================================================================
-	  RGBColorSpace::RGBColorSpace(const CSType & type, const cms::Illuminant & referenceWhite, const double gamma):type_(type), referenceWhite(referenceWhite),
-		gamma_(gamma)
-	    {
+	    RGBColorSpace::RGBColorSpace(const CSType & type,
+					 const cms::
+					 Illuminant & referenceWhite,
+					 const double gamma):type_(type),
+		referenceWhite(referenceWhite), gamma_(gamma) {
 	    };
 	    RGBColorSpace::RGBColorSpace(const CSType & type,
 					 const cms::
@@ -300,8 +309,10 @@ namespace cms {
 			       Int16Bit, Int20Bit, Int24Bit);
 
 	    MaxValue MaxValue::getIntegerMaxValueByLevel(int level) {
+		/* TODO : getIntegerMaxValueByLevel */
 	    };
 	    MaxValue MaxValue::getIntegerMaxValueByMax(int max) {
+		/* TODO : getIntegerMaxValueByMax */
 	    };
 	    double MaxValue::getStepIn255() {
 		return 255. / max;
