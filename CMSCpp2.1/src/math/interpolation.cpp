@@ -77,8 +77,6 @@ namespace math {
 	if (xn->size() != 2 || xn->size() != 2) {
 	    throw IllegalArgumentException();
 	}
-	double x0 = (*xn)[0];
-	double x1 = (*xn)[1];
 	return linear((*xn)[0], (*xn)[1], (*yn)[0], (*yn)[1], x);
     };
     double Interpolation::interpolate(double_vector_ptr xn,
@@ -146,13 +144,14 @@ namespace math {
 	//==========================================================================
 	// 內插位置點的判斷
 	//==========================================================================
+	int size = static_cast < int >(keys->size());
 	if (index == 0) {
 	    interpoStart = index;
 	    head = true;
-	} else if (index == (keys->size() - 1)) {
+	} else if (index == (size - 1)) {
 	    interpoStart = index - 3;
 	    tail = true;
-	} else if (index == (keys->size() - 2)) {
+	} else if (index == (size - 2)) {
 	    interpoStart = index - 2;
 	    tail = true;
 	} else if (index == -1) {

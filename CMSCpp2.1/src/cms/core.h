@@ -47,13 +47,16 @@ namespace cms {
     class Illuminant:public jObject, SpectraIF {
       public:
 	double_array getData() {
-
+	    /* TODO : getData */
 	};
 	int getEnd() {
+	    /* TODO : getEnd */
 	};
 	int getInterval() {
+	    /* TODO : getInterval */
 	};
 	int getStart() {
+	    /* TODO : getStart */
 	};
 
 	static const Illuminant & D50;

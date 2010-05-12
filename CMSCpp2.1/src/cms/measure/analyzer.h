@@ -87,11 +87,6 @@ namespace cms {
 	    double2D_ptr rgbValues;
 	  protected:
 	     bptr < MeterMeasurement > mm;
-
-	    /*Patch_ptr rPatch;
-	       Patch_ptr gPatch;
-	       Patch_ptr bPatch;
-	       Patch_ptr wPatch; */
 	    XYZ_ptr XYZ;
 	    XYZ_ptr rXYZ, gXYZ, bXYZ, wXYZ;
 

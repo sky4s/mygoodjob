@@ -21,9 +21,9 @@ namespace math {
     //======================================================================
     // Regression
     //======================================================================
-  Regression::Regression(double2D_ptr input, double2D_ptr output):inputCoefs(input),
-	output(output)
-    {
+    Regression::Regression(double2D_ptr input,
+			   double2D_ptr output):inputCoefs(input),
+	output(output) {
     };
   Regression::Regression(double1D_ptr input, double1D_ptr output):inputCoefs(DoubleArray::transpose(input)),
 	output(DoubleArray::transpose(output))
@@ -57,8 +57,10 @@ namespace math {
 	return DoubleArray::transpose(predict);
     };
     double Regression::getRMSD() {
+	/* TODO : getRMSD */
     };
     double Regression::getrSquare() {
+	/* TODO : getrSquare */
     };
     void Regression::regress() {
 	SVDLib svdLib(inputCoefs);

@@ -39,7 +39,9 @@ const i2c::AddressingSize TI2CTestForm::getAddressingSize()
 	return _256k;
     case 8:
 	return _512k;
-
+    default:
+	throw java::lang::
+	    IllegalArgumentException("Unsupported AddressingSize.");
     }
 }
 
@@ -100,12 +102,12 @@ void __fastcall TI2CTestForm::Button1Click(TObject * Sender)
     if (true == connect) {
 	setOptionsEditable(false);
 
-	int gammaTestAddress =
+	/*int gammaTestAddress =
 	    StrToInt("0x" + this->Edit_GammaTestAddress->Text);
 	int gammaTestBit = StrToInt(this->Edit_GammaTestBit->Text);
 	int testRGBAddress =
 	    StrToInt("0x" + this->Edit_TestRGBAdress->Text);
-	bool indepRGB = this->CheckBox_IndepRGB->Checked;
+	bool indepRGB = this->CheckBox_IndepRGB->Checked;*/
     }
 }
 
@@ -197,5 +199,4 @@ void __fastcall TI2CTestForm::Button_WriteClick(TObject * Sender)
 }
 
 //---------------------------------------------------------------------------
-
 

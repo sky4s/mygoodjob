@@ -82,21 +82,6 @@ namespace cms {
 	    return XYZ;
 	};
 
-
-
-	/*lClr CA210IntensityAnalyzer::getlClr(Dep::ChannelIndex chindex) {
-	   switch (chindex) {
-	   case ChannelIndex::R:
-	   return Red;
-	   case ChannelIndex::G:
-	   return Green;
-	   case ChannelIndex::B:
-	   return Blue;
-	   case ChannelIndex::W:
-	   return White;
-	   };
-	   }; */
-
 	void CA210IntensityAnalyzer::setupComponent(const Dep::
 						    Channel & ch,
 						    RGB_ptr rgb) {
@@ -117,19 +102,6 @@ namespace cms {
 		wp = p;
 		break;
 	    };
-
-	    /*if (false == dummyMode) {
-	       if (ANALYZER_CAL_MODE) {
-	       ca210api->setAnalyzerCalData(lclr);
-	       } else {
-	       ca210api->setLvxyCalData(lclr,
-	       (new CIExyY(p->getXYZ()))->
-	       getValues());
-	       }
-	       }
-	       float_array XYZValues = ca210api->triggerMeasurement();
-	       XYZ.reset(new
-	       CIEXYZ(XYZValues[0], XYZValues[1], XYZValues[2])); */
 	};
 
 	void CA210IntensityAnalyzer::enter() {
@@ -166,22 +138,6 @@ namespace cms {
 	    mm->setMeasureWindowsVisible(false);
 	};
 
-	/*
-	   設定channel的no和id
-	 */
-	/*void CA210IntensityAnalyzer::setChannel(int no, string_ptr id,
-	   bool reset) {
-	   if (false == dummyMode) {
-	   //設定no
-	   ca210api->setChannelNO(no);
-	   //設定id
-	   ca210api->setChannelID(WideString(id->c_str()));
-	   if (true == reset) {
-	   //ca210api->copyFromFile(CA210DAT);
-	   }
-
-	   }
-	   }; */
 	void CA210IntensityAnalyzer::setChannel(int no, string_ptr id) {
 	    if (false == dummyMode) {
 		//設定no
@@ -204,7 +160,8 @@ namespace cms {
 	    return mm->getWaitTimes();
 	};
 	xyY_ptr CA210IntensityAnalyzer::getReferenceColor() {
-	    return ca210api->getReferenceColor();
+	    //return ca210api->getReferenceColor();
+	    return xyY_ptr(new CIExyY(wp->getXYZ()));
 	};
 	xyY_ptr CA210IntensityAnalyzer::getPrimaryColor(const Dep::
 							Channel & ch) {
@@ -215,6 +172,9 @@ namespace cms {
 		return xyY_ptr(new CIExyY(gp->getXYZ()));
 	    case ChannelIndex::B:
 		return xyY_ptr(new CIExyY(bp->getXYZ()));
+	    default:
+		throw IllegalArgumentException("Unsupported Channel:" +
+					       *ch.toString());
 	    };
 	};
 	//======================================================================
@@ -394,6 +354,9 @@ namespace cms {
 		return xyY_ptr(new CIExyY(gXYZ));
 	    case ChannelIndex::B:
 		return xyY_ptr(new CIExyY(bXYZ));
+	    default:
+		throw IllegalArgumentException("Unsupported Channel: " +
+					       *ch.toString());
 	    };
 	};
 	//=====================================================================
