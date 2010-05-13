@@ -184,30 +184,9 @@ object CCTLUTForm: TCCTLUTForm
       Height = 16
       Caption = 'P2'
     end
-    object Label15: TLabel
-      Left = 32
-      Top = 184
-      Width = 76
-      Height = 16
-      Caption = 'Gamma Shift'
-    end
-    object Label14: TLabel
-      Left = 32
-      Top = 152
-      Width = 16
-      Height = 16
-      Caption = 'P1'
-    end
-    object Label16: TLabel
-      Left = 121
-      Top = 152
-      Width = 16
-      Height = 16
-      Caption = 'P2'
-    end
     object Label17: TLabel
       Left = 32
-      Top = 233
+      Top = 161
       Width = 37
       Height = 16
       Caption = 'Under'
@@ -269,41 +248,23 @@ object CCTLUTForm: TCCTLUTForm
       TabOrder = 5
       OnClick = RadioButton_NoneClick
     end
-    object RadioButton_New: TRadioButton
-      Left = 8
-      Top = 128
-      Width = 57
-      Height = 25
-      Caption = 'New'
-      TabOrder = 6
-      OnClick = RadioButton_NewClick
-    end
-    object Edit_GammaShift: TEdit
-      Left = 120
-      Top = 184
-      Width = 41
-      Height = 24
-      Enabled = False
-      TabOrder = 7
-      Text = '-0.2'
-    end
     object RadioButton_New2: TRadioButton
       Left = 8
-      Top = 208
+      Top = 136
       Width = 65
       Height = 25
       Caption = 'New2'
-      TabOrder = 8
+      TabOrder = 6
       OnClick = RadioButton_New2Click
     end
     object Edit_New2Under: TEdit
       Left = 80
-      Top = 233
+      Top = 161
       Width = 81
       Height = 24
       Enabled = False
       ImeName = #26085#25991#36664#20837#31995#32113' (MS-IME2002)'
-      TabOrder = 9
+      TabOrder = 7
       Text = '50'
     end
   end
@@ -569,33 +530,13 @@ object CCTLUTForm: TCCTLUTForm
     Visible = False
     OnClick = Button_ResetClick
   end
-  object Edit_NewP1: TEdit
-    Left = 473
-    Top = 160
-    Width = 40
-    Height = 24
-    Enabled = False
-    ImeName = #26085#25991#36664#20837#31995#32113' (MS-IME2002)'
-    TabOrder = 10
-    Text = '20'
-  end
-  object Edit_NewP2: TEdit
-    Left = 560
-    Top = 160
-    Width = 41
-    Height = 24
-    Enabled = False
-    ImeName = #26085#25991#36664#20837#31995#32113' (MS-IME2002)'
-    TabOrder = 11
-    Text = '50'
-  end
   object Button_Process: TButton
     Left = 568
     Top = 392
     Width = 57
     Height = 25
     Caption = 'Process'
-    TabOrder = 12
+    TabOrder = 10
     Visible = False
   end
   object OpenDialog1: TOpenDialog

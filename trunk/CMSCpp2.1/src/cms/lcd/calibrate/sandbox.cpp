@@ -10,6 +10,7 @@
 //其他庫頭文件
 
 //本項目內頭文件
+#include <debug.h>
 
 namespace cms {
     namespace lcd {
@@ -23,9 +24,9 @@ namespace cms {
 								   componentVector)
 	    {
 		int size = componentVector->size();
-		Component_vector_ptr result(new Component_vector(size));
+		Component_vector_ptr result(new Component_vector());
 
-		 foreach(const Component_ptr c, *result) {
+		 foreach(const Component_ptr c, *componentVector) {
 		    RGB_ptr intensity = analyzer->getIntensity(c->XYZ);
 		    Component_ptr component(new
 					    Component(c->rgb, intensity,
@@ -54,16 +55,36 @@ namespace cms {
 		double_vector_ptr partGammaCurve =
 		    DoubleArray::getRangeCopy(luminanceGammaCurve, 0,
 					      size);
+
 		//求目標值曲線
 		XYZ_vector_ptr targetXYZVector =
 		    DimTargetGenerator::
-		    getLinearTarget(targetWhite, blackXYZ, partGammaCurve);
+		    getLinearTarget(blackXYZ, targetWhite, partGammaCurve);
+		{
+		    using namespace cms::colorformat;
+		    Util::deleteExist("target.xls");
+		    SimpleExcelAccess excel("target.xls", Create,
+					    StringVector::
+					    fromCString(4, "Gray Level",
+							"X", "Y", "Z"));
+		    int size = targetXYZVector->size();
+		    for (int x = 0; x != size; x++) {
+			XYZ_ptr XYZ = (*targetXYZVector)[x];
+			string_vector_ptr values =
+			    StringVector::fromDouble(4,
+						     static_cast <
+						     double >(x), XYZ->X,
+						     XYZ->Y, XYZ->Z);
+			excel.insert(values);
+		    }
+		}
 		//==============================================================
-		RGB_vector_ptr result(new RGB_vector(size));
+		RGB_vector_ptr result(new RGB_vector());
 
 		xyY_ptr rxyY = analyzer->getPrimaryColor(Channel::R);
 		xyY_ptr gxyY = analyzer->getPrimaryColor(Channel::G);
 		xyY_ptr bxyY = analyzer->getPrimaryColor(Channel::B);
+		int x = 0;
 
 		foreach(const XYZ_ptr targetXYZ, *targetXYZVector) {
 		    bptr < MaxMatrixIntensityAnayzer >
@@ -73,9 +94,14 @@ namespace cms {
 		    analyzer->setupComponent(Channel::G, gxyY->toXYZ());
 		    analyzer->setupComponent(Channel::B, bxyY->toXYZ());
 		    analyzer->setupComponent(Channel::W, targetXYZ);
+		    analyzer->enter();
+
 		    Component_vector_ptr newcomponentVector =
 			fetchComponent(analyzer, componentVector);
+		    STORE_COMPONENT(_toString(x++) + ".xls",
+				    newcomponentVector);
 		    DGLutGenerator lutgen(newcomponentVector);
+		    //採100嗎?
 		    RGB_ptr rgb = lutgen.produce(100, 100, 100);
 		    result->push_back(rgb);
 		};
@@ -88,6 +114,9 @@ namespace cms {
 				double_vector_ptr luminanceGammaCurve) {
 		using namespace Indep;
 		int size = luminanceGammaCurve->size();
+
+		//double_array startuvpValues = startXYZ->getuvValues();
+		//double_array enduvpValues = endXYZ->getuvValues();
 		double_array startuvpValues = startXYZ->getuvPrimeValues();
 		double_array enduvpValues = endXYZ->getuvPrimeValues();
 		XYZ_vector_ptr result(new XYZ_vector(size));
@@ -96,10 +125,12 @@ namespace cms {
 		    //在uv'上線性變化
 		    double up = Interpolation::linear(0, size - 1,
 						      startuvpValues[0],
-						      enduvpValues[0], x);
+						      enduvpValues[0],
+						      x);
 		    double vp = Interpolation::linear(0, size - 1,
 						      startuvpValues[1],
-						      enduvpValues[1], x);
+						      enduvpValues[1],
+						      x);
 		    double Y = (*luminanceGammaCurve)[x];
 		    xyY_ptr targetxyY(new CIExyY());
 		    double_array targetValues(new double[3]);
@@ -107,10 +138,16 @@ namespace cms {
 		    targetValues[1] = vp;
 		    targetValues[2] = Y;
 		    targetxyY->setuvPrimeYValues(targetValues);
-		    result->push_back(targetxyY->toXYZ());
+		    (*result)[x] = targetxyY->toXYZ();
 		}
 
 		return result;
+	    };
+
+	    XYZ_vector_ptr DimTargetGenerator::
+		getGammaTarget(XYZ_ptr startXYZ, XYZ_ptr endXYZ,
+			       double_vector_ptr luminanceGammaCurve,
+			       double gamma) {
 	    };
 	};
     };

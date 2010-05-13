@@ -175,13 +175,32 @@ void TMainForm::setDummyMeterFilename(const std::string & filename)
     using namespace cms::measure;
     using namespace cms::colorformat;
     using namespace cms::lcd::calibrate;
+    using namespace Indep;
+    using namespace Dep;
     bptr < DGLutFile > dgcode(new DGLutFile(filename, ReadOnly));
     meter.reset(new DGLutFileMeter(dgcode));
     mm.reset(new MeterMeasurement(meter, false));
     mm->setFakeMeasure(true);
-    analyzer.reset(new CA210IntensityAnalyzer(mm));
+    bptr < MaxMatrixIntensityAnayzer >
+	matrixAnalyzer(new MaxMatrixIntensityAnayzer(mm));
+    //analyzer.reset(matrixAnalyzer.get());
+    analyzer = matrixAnalyzer;
+
     fetcher.reset((ComponentFetcher *) null);
 
+    bptr < DGLutProperty > property = dgcode->getProperty();
+    xyY_ptr wxyY = property->getReferenceColor(Channel::W);
+    if (null != wxyY) {
+	xyY_ptr rxyY = property->getReferenceColor(Channel::R);
+	xyY_ptr gxyY = property->getReferenceColor(Channel::G);
+	xyY_ptr bxyY = property->getReferenceColor(Channel::B);
+
+	matrixAnalyzer->setupComponent(Channel::W, wxyY->toXYZ());
+	matrixAnalyzer->setupComponent(Channel::R, rxyY->toXYZ());
+	matrixAnalyzer->setupComponent(Channel::G, gxyY->toXYZ());
+	matrixAnalyzer->setupComponent(Channel::B, bxyY->toXYZ());
+	matrixAnalyzer->enter();
+    }
 };
 
 //---------------------------------------------------------------------------
@@ -192,7 +211,6 @@ void TMainForm::resetDummyMeter()
     using namespace cms::lcd::calibrate;
     DGLutFileMeter *dgc = dynamic_cast < DGLutFileMeter * >(meter.get());
     dgc->reset();
-    //fetcher.reset((ComponentFetcher *) null);
 };
 
 //---------------------------------------------------------------------------
@@ -399,10 +417,10 @@ void __fastcall TMainForm::CheckBox_ConnectingClick(TObject * Sender)
 void __fastcall TMainForm::Measurement1Click(TObject * Sender)
 {
     /*if (bitDepth->isTCONInput()) {
-	ShowMessage
-	    ("Sorry! T-CON Input measurement is unavailable right now.");
-	return;
-    }*/
+       ShowMessage
+       ("Sorry! T-CON Input measurement is unavailable right now.");
+       return;
+       } */
 
 
     if (GammaMeasurementForm == null) {

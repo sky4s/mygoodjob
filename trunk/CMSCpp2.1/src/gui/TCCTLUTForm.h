@@ -64,15 +64,8 @@ class TCCTLUTForm:public TForm {
     TComboBox *ComboBox_HighStep;
     TLabel *Label12;
     TLabel *Label13;
-    TRadioButton *RadioButton_New;
-    TEdit *Edit_GammaShift;
     TButton *Button_Reset;
-    TLabel *Label15;
     TCheckBox *CheckBox_;
-    TEdit *Edit_NewP1;
-    TEdit *Edit_NewP2;
-    TLabel *Label14;
-    TLabel *Label16;
     TRadioButton *RadioButton_New2;
     TLabel *Label17;
     TEdit *Edit_New2Under;
@@ -91,7 +84,7 @@ class TCCTLUTForm:public TForm {
     void __fastcall ComboBox_GammaChange(TObject * Sender);
     void __fastcall CheckBox_ExpandClick(TObject * Sender);
     void __fastcall RadioButton_NoneClick(TObject * Sender);
-    void __fastcall RadioButton_NewClick(TObject * Sender);
+    //void __fastcall RadioButton_NewClick(TObject * Sender);
     void __fastcall Button_ResetClick(TObject * Sender);
     void __fastcall RadioButton_New2Click(TObject * Sender);
   private:			// User declarations

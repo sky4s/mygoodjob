@@ -93,9 +93,11 @@ namespace cms {
 		 CIExyY(double x, double y, double Y);
 		 CIExyY(double x, double y);
 
-		static bptr < CIExyY > fromCCT2Blackbody(int CCT);
-		static bptr < CIExyY > fromCCT2DIlluminant(int CCT);
-		static bptr < CIExyY > fromXYZ(const XYZ_ptr XYZ);
+		static xyY_ptr fromCCT2Blackbody(int CCT);
+		static xyY_ptr fromCCT2DIlluminant(int CCT);
+		static xyY_ptr fromXYZ(const XYZ_ptr XYZ);
+		/*static xyY_ptr fromValuesString(const std::
+		   string & valuesString); */
 
 		 bptr < CIEXYZ > toXYZ();
 
@@ -128,6 +130,7 @@ namespace cms {
 		void rationalize();
 		void setuvPrimeValues(double_array uvPrimeValues);
 		void setuvPrimeYValues(double_array uvPrimeYValues);
+		void setuvValues(double_array uvValues);
 	    };
 	};
     };

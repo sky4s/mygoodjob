@@ -342,8 +342,9 @@ namespace cms {
 						      double_vector(size));
 		double differ = maxLuminance - minLuminance;
 		for (int x = 0; x != size; x++) {
-		    (*luminanceGammaCurve)[x] =
+		    double v =
 			differ * (*normalGammaCurve)[x] + minLuminance;
+		    (*luminanceGammaCurve)[x] = v;
 		}
 		return luminanceGammaCurve;
 	    };
@@ -727,11 +728,20 @@ namespace cms {
 		    //analyzer若沒有設定過target color, 會使此步驟失效
 		    XYZ_ptr targetWhite =
 			analyzer->getReferenceColor()->toXYZ();
+		    double_vector_ptr luminanceGammaCurve =
+			generator->getLuminanceGammaCurve(gammaCurve);
+		    /*STORE_DOUBLE_VECTOR("x_lumicurve.xls",
+					luminanceGammaCurve);*/
 
 		    RGB_vector_ptr dimdglut =
-			dimgenerator.produce(targetWhite, gammaCurve,
+			dimgenerator.produce(targetWhite,
+					     luminanceGammaCurve,
 					     under);
-		    //int size = dimdglut->size();
+		    int size = dimdglut->size();
+		    for (int x = 0; x < size; x++) {
+			(*dglut)[x] = (*dimdglut)[x];
+		    }
+                    RGBVector::quantization(dglut, quantizationBit);
 		}
 		//==============================================================
 		// DG Code Op block
@@ -764,7 +774,7 @@ namespace cms {
 		//產生新檔
 		DGLutFile file(filename, Create);
 		//產生property物件
-		DGLutProperty property(*this);
+		DGLutProperty property(bptr < LCDCalibrator > (this));
 		//寫入property
 		file.setProperty(property);
 		//寫入dgcode

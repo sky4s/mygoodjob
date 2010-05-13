@@ -30,6 +30,7 @@
 #include <math.hpp>
 #include <boost/numeric/conversion/cast.hpp>
 #include <boost/lexical_cast.hpp>
+#include <boost/tokenizer.hpp>
 
 
 using namespace std;
@@ -672,6 +673,24 @@ void newCCTAlgoTry()
     }
 }
 
+void token()
+{
+    //using namespace boost;
+    string str =
+	"'[0.2789347051678352, 0.2900524607588401, 561.2361450195312]";
+    typedef boost::tokenizer < boost::char_separator < char > >tokenizer;
+    boost::char_separator < char >sep("[], '");
+    tokenizer tokens(str, sep);
+    for (tokenizer::iterator tok_iter = tokens.begin();
+	 tok_iter != tokens.end(); ++tok_iter) {
+	std::cout << "<" << *tok_iter << "> ";
+    }
+    std::cout << "\n";
+
+
+}
+
+
 #pragma argsused
 int main(int argc, char *argv[])
 {
@@ -725,7 +744,9 @@ int main(int argc, char *argv[])
 
     //persistence();
     //ddLutFileReadTry();
-    newCCTAlgoTry();
+    //newCCTAlgoTry();
+    //token();
+
     getch();
 }
 

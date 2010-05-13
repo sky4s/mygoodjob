@@ -145,13 +145,7 @@ namespace cms {
 		    StringVector::setContent(values, "0", 3, 10, 11, 12);
 		}
 
-		/*if (!lazyMode) {
-		   db->update((*headerNames)[0], w, headerNames, values,
-		   false);
-		   } else { */
-		//db->insert(headerNames, values, false);
 		this->insertData(RawData, values, false);
-		//}
 	    }
 
 	    for (int x = part1Size; x != part2Size; x++) {
@@ -176,13 +170,7 @@ namespace cms {
 		    StringVector::setContent(values, "0", 3, 10, 11, 12);
 		}
 
-		/*if (!lazyMode) {
-		   db->update((*headerNames)[0], 0, headerNames, values,
-		   false);
-		   } else { */
-		//db->insert(headerNames, values, false);
 		this->insertData(RawData, values, false);
-		//}
 	    }
 #ifdef CACHE_SQL
 	    db->excuteCache();
@@ -214,13 +202,7 @@ namespace cms {
 		    [2] = _toString(rgb->G);
 		(*values)
 		    [3] = _toString(rgb->B);
-		/*if (!lazyMode) {
-		   db->update((*headerNames)[0], x, headerNames, values,
-		   false);
-		   } else { */
-		//db->insert(headerNames, values, false);
 		this->insertData(GammaTable, values, false);
-		//}
 	    }
 #ifdef CACHE_SQL
 	    db->excuteCache();
@@ -275,6 +257,11 @@ namespace cms {
 	 DGLutFile::setProperty(const
 				DGLutProperty & property) {
 	    property.store(*this);
+	};
+	bptr < DGLutProperty > DGLutFile::getProperty() {
+	    bptr < DGLutProperty >
+		property(new DGLutProperty(bptr < DGLutFile > (this)));
+	    return property;
 	};
 	//======================================================================
 
@@ -347,7 +334,7 @@ namespace cms {
 	void
 	 DGLutProperty::store(DGLutFile & dgcode) const {
 
-	    bptr < MeasureCondition > mc = c.measureCondition;
+	    bptr < MeasureCondition > mc = c->measureCondition;
 	    if (mc->normalCondition) {
 		dgcode.addProperty("start", mc->start);
 		dgcode.addProperty("end", mc->end);
@@ -361,7 +348,7 @@ namespace cms {
 		dgcode.addProperty("low level step", mc->lowStep);
 	    }
 	    string correctstr;
-	    switch (c.correct) {
+	    switch (c->correct) {
 	    case cms::lcd::calibrate::P1P2:
 		correctstr = "P1P2";
 		break;
@@ -377,10 +364,10 @@ namespace cms {
 	    }
 	    dgcode.addProperty("low level correct", correctstr);
 
-	    dgcode.addProperty("p1", c.p1);
-	    dgcode.addProperty("p2", c.p2);
-	    dgcode.addProperty("rb under", c.under);
-	    bptr < BitDepthProcessor > bitDepth = c.bitDepth;
+	    dgcode.addProperty("p1", c->p1);
+	    dgcode.addProperty("p2", c->p2);
+	    dgcode.addProperty("rb under", c->under);
+	    bptr < BitDepthProcessor > bitDepth = c->bitDepth;
 	    dgcode.addProperty("in",
 			       *bitDepth->getInputMaxValue().toString());
 	    dgcode.addProperty("lut",
@@ -388,18 +375,18 @@ namespace cms {
 	    dgcode.addProperty("out",
 			       *bitDepth->getOutputMaxValue().toString());
 
-	    dgcode.addProperty("gamma", c.gamma);
-	    dgcode.addProperty("gamma curve", c.useGammaCurve ? On : Off);
-	    dgcode.addProperty("g bypass", c.gByPass ? On : Off);
-	    dgcode.addProperty("b gain", c.bIntensityGain);
-	    dgcode.addProperty("b max", c.bMax ? On : Off);
+	    dgcode.addProperty("gamma", c->gamma);
+	    dgcode.addProperty("gamma curve", c->useGammaCurve ? On : Off);
+	    dgcode.addProperty("g bypass", c->gByPass ? On : Off);
+	    dgcode.addProperty("b gain", c->bIntensityGain);
+	    dgcode.addProperty("b max", c->bMax ? On : Off);
 
 	    dgcode.addProperty("avoid FRC noise",
-			       c.avoidFRCNoise ? On : Off);
+			       c->avoidFRCNoise ? On : Off);
 	    dgcode.addProperty("keep max luminance",
-			       c.keepMaxLuminance ? On : Off);
+			       c->keepMaxLuminance ? On : Off);
 	    bptr < IntensityAnalyzerIF > analyzer =
-		c.fetcher->getAnalyzer();
+		c->fetcher->getAnalyzer();
 
 	    //¬ö¿ýref color
 	    xyY_ptr refWhitexyY = analyzer->getReferenceColor();
@@ -409,13 +396,66 @@ namespace cms {
 		xyY_ptr refBxyY = analyzer->getPrimaryColor(Channel::B);
 		dgcode.addProperty("reference white",
 				   *refWhitexyY->toString());
-		dgcode.addProperty("Primary R", *refRxyY->toString());
-		dgcode.addProperty("Primary G", *refGxyY->toString());
-		dgcode.addProperty("Primary B", *refBxyY->toString());
+		dgcode.addProperty("primary R", *refRxyY->toString());
+		dgcode.addProperty("primary G", *refGxyY->toString());
+		dgcode.addProperty("primary B", *refBxyY->toString());
 	    }
 	};
-	DGLutProperty::DGLutProperty(const
-				     LCDCalibrator & c):c(c) {
+	void DGLutProperty::addProperty(const std::string key,
+					string_ptr value) {
+	    propertyMap.insert(make_pair(key, value));
+	};
+	void DGLutProperty::addProperty(const std::string key,
+					const std::string value) {
+	    propertyMap.
+		insert(make_pair(key, string_ptr(new string(value))));
+	};
+      DGLutProperty::DGLutProperty(bptr < cms::lcd::calibrate::LCDCalibrator > c):c(c),
+	    d(bptr < DGLutFile >
+	      ((DGLutFile *) null)) {
+
+	};
+	void DGLutProperty::initProperty(bptr < DGLutFile > d) {
+	    bptr < DBQuery > query = d->retrieve(DGLutFile::Properties);
+	    while (query->hasNext()) {
+		string_vector_ptr result = query->nextResult();
+		addProperty((*result)[0], (*result)[1]);
+	    }
+	};
+      DGLutProperty::DGLutProperty(bptr < DGLutFile > d):c(bptr <
+	  LCDCalibrator >
+	  ((LCDCalibrator *) null)), d(d) {
+	    initProperty(d);
+	};
+	string_ptr DGLutProperty::getProperty(const std::string key) {
+	    return propertyMap[key];
+	};
+	xyY_ptr DGLutProperty::getReferenceColor(const Channel & ch) {
+	    string_ptr value;
+	    switch (ch.chindex) {
+	    case ChannelIndex::R:
+		value = getProperty("primary R");
+		break;
+	    case ChannelIndex::G:
+		value = getProperty("primary G");
+		break;
+	    case ChannelIndex::B:
+		value = getProperty("primary B");
+		break;
+	    case ChannelIndex::W:
+		value = getProperty("reference white");
+		break;
+	    default:
+		throw IllegalArgumentException("Unsupported Channel: " +
+					       *ch.toString());
+	    }
+	    if (null != value) {
+		xyY_ptr xyY(new
+			    CIExyY(CIExyY::getValuesFromString(value)));
+		return xyY;
+	    } else {
+		return xyY_ptr((CIExyY *) null);
+	    }
 	};
 	//======================================================================
     };
