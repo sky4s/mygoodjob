@@ -476,10 +476,10 @@ namespace cms {
 		y = 3 * v / denominator;
 	    };
 	    void CIExyY::setuvPrimeYValues(double_array uvPrimeYValues) {
-		double_array uv(new double[2]);
-		uv[0] = uvPrimeYValues[0];
-		uv[1] = uvPrimeYValues[1];
-		setuvPrimeValues(uv);
+		/*double_array uv(new double[2]);
+		   uv[0] = uvPrimeYValues[0];
+		   uv[1] = uvPrimeYValues[1]; */
+		setuvPrimeValues(uvPrimeYValues);
 		Y = uvPrimeYValues[2];
 	    }
 	    void CIExyY::setuvValues(double_array uvValues) {
@@ -489,6 +489,16 @@ namespace cms {
 
 		x = 3 * u / denominator;
 		y = 2 * u / denominator;
+	    }
+	    void CIExyY::setuvYValues(double_array uvYValues) {
+		setuvValues(uvYValues);
+		/*double u = uvYValues[0];
+		   double v = uvYValues[1];
+		   double denominator = 2 * u - 8 * v + 4;
+
+		   x = 3 * u / denominator;
+		   y = 2 * u / denominator; */
+		Y = uvYValues[2];
 	    }
 	    //======================================================================
 	};

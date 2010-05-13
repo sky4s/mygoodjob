@@ -115,29 +115,28 @@ namespace cms {
 		using namespace Indep;
 		int size = luminanceGammaCurve->size();
 
-		//double_array startuvpValues = startXYZ->getuvValues();
-		//double_array enduvpValues = endXYZ->getuvValues();
-		double_array startuvpValues = startXYZ->getuvPrimeValues();
-		double_array enduvpValues = endXYZ->getuvPrimeValues();
+		double_array startuvValues = startXYZ->getuvValues();
+		double_array enduvValues = endXYZ->getuvValues();
+		//double_array startuvpValues = startXYZ->getuvPrimeValues();
+		//double_array enduvpValues = endXYZ->getuvPrimeValues();
 		XYZ_vector_ptr result(new XYZ_vector(size));
 
 		for (int x = 0; x < size; x++) {
 		    //在uv'上線性變化
-		    double up = Interpolation::linear(0, size - 1,
-						      startuvpValues[0],
-						      enduvpValues[0],
-						      x);
-		    double vp = Interpolation::linear(0, size - 1,
-						      startuvpValues[1],
-						      enduvpValues[1],
-						      x);
+		    double u = Interpolation::linear(0, size - 1,
+						      startuvValues[0],
+						      enduvValues[0], x);
+		    double v = Interpolation::linear(0, size - 1,
+						      startuvValues[1],
+						      enduvValues[1], x);
 		    double Y = (*luminanceGammaCurve)[x];
 		    xyY_ptr targetxyY(new CIExyY());
 		    double_array targetValues(new double[3]);
-		    targetValues[0] = up;
-		    targetValues[1] = vp;
+		    targetValues[0] = u;
+		    targetValues[1] = v;
 		    targetValues[2] = Y;
-		    targetxyY->setuvPrimeYValues(targetValues);
+		    //targetxyY->setuvPrimeYValues(targetValues);
+                    targetxyY->setuvYValues(targetValues);
 		    (*result)[x] = targetxyY->toXYZ();
 		}
 
