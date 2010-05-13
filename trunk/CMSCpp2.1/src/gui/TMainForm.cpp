@@ -181,8 +181,11 @@ void TMainForm::setDummyMeterFilename(const std::string & filename)
     meter.reset(new DGLutFileMeter(dgcode));
     mm.reset(new MeterMeasurement(meter, false));
     mm->setFakeMeasure(true);
+
     bptr < MaxMatrixIntensityAnayzer >
 	matrixAnalyzer(new MaxMatrixIntensityAnayzer(mm));
+
+    //analyzer.reset(ma);
     //analyzer.reset(matrixAnalyzer.get());
     analyzer = matrixAnalyzer;
 

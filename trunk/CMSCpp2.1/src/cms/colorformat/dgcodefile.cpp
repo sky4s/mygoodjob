@@ -259,8 +259,7 @@ namespace cms {
 	    property.store(*this);
 	};
 	bptr < DGLutProperty > DGLutFile::getProperty() {
-	    bptr < DGLutProperty >
-		property(new DGLutProperty(bptr < DGLutFile > (this)));
+	    bptr < DGLutProperty > property(new DGLutProperty(this));
 	    return property;
 	};
 	//======================================================================
@@ -422,9 +421,21 @@ namespace cms {
 		addProperty((*result)[0], (*result)[1]);
 	    }
 	};
+	void DGLutProperty::initProperty(DGLutFile * d) {
+	    bptr < DBQuery > query = d->retrieve(DGLutFile::Properties);
+	    while (query->hasNext()) {
+		string_vector_ptr result = query->nextResult();
+		addProperty((*result)[0], (*result)[1]);
+	    }
+	};
       DGLutProperty::DGLutProperty(bptr < DGLutFile > d):c(bptr <
 	  LCDCalibrator >
 	  ((LCDCalibrator *) null)), d(d) {
+	    initProperty(d);
+	};
+      DGLutProperty::DGLutProperty(DGLutFile * d):c(bptr <
+	  LCDCalibrator >
+	  ((LCDCalibrator *) null)), d2(d) {
 	    initProperty(d);
 	};
 	string_ptr DGLutProperty::getProperty(const std::string key) {

@@ -91,15 +91,18 @@ namespace cms {
 
 	     bptr < cms::lcd::calibrate::LCDCalibrator > c;
 	     bptr < DGLutFile > d;
+	    DGLutFile *d2;
 	    void store(DGLutFile & dglut) const;
 	     std::map < const std::string, string_ptr) propertyMap;
 	    void addProperty(const std::string key, string_ptr value);
 	    void addProperty(const std::string key,
 			     const std::string value);
 	    void initProperty(bptr < DGLutFile > d);
+	    void initProperty(DGLutFile * d);
 	  public:
 	     DGLutProperty(bptr < cms::lcd::calibrate::LCDCalibrator > c);
 	     DGLutProperty(bptr < DGLutFile > d);
+	     DGLutProperty(DGLutFile * d);
 	    string_ptr getProperty(const std::string key);
 	    xyY_ptr getReferenceColor(const Dep::Channel & ch);
 	};
