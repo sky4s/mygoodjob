@@ -109,7 +109,7 @@ namespace cms {
 	    xyY_ptr getPrimaryColor(const Dep::Channel & ch);
 	};
 
-	class MaxMatrixIntensityAnayzer2;
+	//class MaxMatrixIntensityAnayzer2;
 	/*
 	   用來合併CA-210與MaxMatrix兩種方法來分析Intensity
 	   實際上輸出的值為CA-210的, MaxMatrix的輸出值會另外存在檔案
@@ -118,15 +118,15 @@ namespace cms {
 	  private:
 	    bptr < MaxMatrixIntensityAnayzer > matrix;
 	    bptr < CA210IntensityAnalyzer > ca210;
-	    bptr < MaxMatrixIntensityAnayzer2 > matrix2;
+	    //bptr < MaxMatrixIntensityAnayzer2 > matrix2;
 	    bptr < cms::colorformat::SimpleExcelAccess > excel;
 	    string_vector_ptr fieldNames;
 	    int no;
-	    const bool useMatrix2;
+	    //const bool useMatrix2;
 	  public:
-	     IntensityAnayzer(bptr < MaxMatrixIntensityAnayzer > matrix,
-			      bptr < MaxMatrixIntensityAnayzer2 > matrix2,
-			      bptr < CA210IntensityAnalyzer > ca210);
+	    /*IntensityAnayzer(bptr < MaxMatrixIntensityAnayzer > matrix,
+	       bptr < MaxMatrixIntensityAnayzer2 > matrix2,
+	       bptr < CA210IntensityAnalyzer > ca210); */
 	     IntensityAnayzer(bptr < MaxMatrixIntensityAnayzer > matrix,
 			      bptr < CA210IntensityAnalyzer > ca210);
 	    RGB_ptr getIntensity(RGB_ptr rgb);
@@ -144,18 +144,18 @@ namespace cms {
 	/*
 	   以float進行矩陣運算, 問題多多不能使用
 	 */
-	class MaxMatrixIntensityAnayzer2:public MaxMatrixIntensityAnayzer {
-	    friend class IntensityAnayzer;
-	  protected:
-	     float2D_ptr inverseMatrix2;
-	    float2D_ptr targetRatio2;
-	    float2D_ptr rgbValues2;
-	  public:
-	     MaxMatrixIntensityAnayzer2(bptr < MeterMeasurement > mm);
-	    void enter();
-	    RGB_ptr getIntensity(XYZ_ptr XYZ);
-	    RGB_ptr getIntensity(RGB_ptr rgb);
-	};
+	/*class MaxMatrixIntensityAnayzer2:public MaxMatrixIntensityAnayzer {
+	   friend class IntensityAnayzer;
+	   protected:
+	   float2D_ptr inverseMatrix2;
+	   float2D_ptr targetRatio2;
+	   float2D_ptr rgbValues2;
+	   public:
+	   MaxMatrixIntensityAnayzer2(bptr < MeterMeasurement > mm);
+	   void enter();
+	   RGB_ptr getIntensity(XYZ_ptr XYZ);
+	   RGB_ptr getIntensity(RGB_ptr rgb);
+	   }; */
     };
 };
 #endif

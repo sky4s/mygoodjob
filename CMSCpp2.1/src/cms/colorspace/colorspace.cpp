@@ -1,3 +1,5 @@
+#include <includeall.h>
+#pragma hdrstop
 #include "colorspace.h"
 
 //C系統文件
@@ -7,7 +9,7 @@
 //其他庫頭文件
 
 //本項目內頭文件
-#include <math/doublearray.h>
+//#include <math/doublearray.h>
 
 namespace cms {
     namespace colorspace {
@@ -71,7 +73,7 @@ namespace cms {
 
 	bool ColorSpace::equalsValues(ColorSpace & colorSpace) {
 	    double_array thisValues = this->getValues();
-            /* TODO : equalsValues */
+	    /* TODO : equalsValues */
 	}
 	string_ptr ColorSpace::getName() {
 	    return this->getClass().getSimpleName();
@@ -132,6 +134,20 @@ namespace cms {
 	const string_ptr ColorSpace::toString() {
 	    double_array values = this->getValues();
 	    return math::DoubleArray::toString(values, getNumberBands());
+	};
+	double_array ColorSpace::
+	    getValuesFromString(const string_ptr string) {
+	    using namespace cms::util;
+	    string_vector_ptr stringvector =
+		StringVector::tokenize(*string, "[], '");
+	    if (stringvector->size() != 3) {
+		throw IllegalArgumentException("stringvector->size() != 3");
+	    }
+	    double_array result(new double[3]);
+	    result[0] = _toDouble((*stringvector)[0]);
+	    result[1] = _toDouble((*stringvector)[1]);
+	    result[2] = _toDouble((*stringvector)[2]);
+	    return result;
 	};
     };
 };

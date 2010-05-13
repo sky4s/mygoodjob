@@ -30,7 +30,6 @@ namespace cms {
 	    };
 
 	    double CIEXYZ::getCCT() {
-		//xyY_ptr  (new CIExyY(XYZ_ptr(this)));
 		return CorrelatedColorTemperature::
 		    xy2CCTByMcCamyFloat(xyY_ptr
 					(new CIExyY(XYZ_ptr(this))));
@@ -47,11 +46,11 @@ namespace cms {
 		/* TODO : getSaturation */
 	    };
 	    double_array CIEXYZ::getuvPrimeValues() {
-		CIExyY xyY(XYZ_ptr(this));
+		CIExyY xyY(XYZ_ptr(new CIEXYZ(*this)));
 		return xyY.getuvPrimeValues();
 	    };
 	    double_array CIEXYZ::getuvValues() {
-		CIExyY xyY(XYZ_ptr(this));
+		CIExyY xyY(XYZ_ptr(new CIEXYZ(*this)));
 		return xyY.getuvValues();
 	    };
 	    double_array CIEXYZ::getValues(double_array values,
@@ -101,12 +100,10 @@ namespace cms {
 	    };
 
 	    XYZ_ptr CIEXYZ::toXYZ() {
-		//return *this;
 		return XYZ_ptr(this);
 	    };
 
 	    double_array CIEXYZ::getWhitenessIndex() {
-		//return new CIExyY(this).getWhitenessIndex();
 		return CIExyY(toXYZ()).getWhitenessIndex();
 	    };
 
@@ -310,6 +307,20 @@ namespace cms {
 				   XYZ->normalizeY_));
 		return xyY;
 	    }
+	    /*xyY_ptr CIExyY::fromValuesString(const std::
+	       string & valuesString) {
+	       using namespace cms::util;
+	       string_vector_ptr string =
+	       StringVector::tokenize(valuesString, "[], '");
+	       if (string->size() != 3) {
+	       throw IllegalArgumentException("string->size() != 3");
+	       }
+	       xyY_ptr xyY(new
+	       CIExyY(_toInt((*string)[0]),
+	       _toInt((*string)[1]),
+	       _toInt((*string)[2])));
+	       return xyY;
+	       }; */
 
 	    XYZ_ptr CIExyY::toXYZ() {
 		return toXYZ(*this);
@@ -470,6 +481,14 @@ namespace cms {
 		uv[1] = uvPrimeYValues[1];
 		setuvPrimeValues(uv);
 		Y = uvPrimeYValues[2];
+	    }
+	    void CIExyY::setuvValues(double_array uvValues) {
+		double u = uvValues[0];
+		double v = uvValues[1];
+		double denominator = 2 * u - 8 * v + 4;
+
+		x = 3 * u / denominator;
+		y = 2 * u / denominator;
 	    }
 	    //======================================================================
 	};

@@ -389,7 +389,6 @@ namespace cms {
 	    if (Create == mode) {
 		db->createTable(Properties, headerNames, fieldType);
 	    }
-	    //initSheet(Properties, 2, "Key", "Value");
 	};
 	void
 	 ExcelAccessBase::initBegin() {
@@ -409,17 +408,14 @@ namespace cms {
 
 	ExcelAccessBase::ExcelAccessBase(const std::string & filename, Mode mode):filename(filename), mode(mode) {	/*, lazyMode(LAZY_EXCEL) */
 	    initBegin();
-	    //init();
 	};
 	void
 	 ExcelAccessBase::addProperty(const
 				      string & key, const
 				      string & value) {
-	    //db->setTableName(Properties);
 	    string_vector_ptr values =
 		StringVector::fromString(2, key, value);
 	    db->setCacheMode(false);
-	    //db->insert(getHeaderNames(Properties), values, true);
 	    this->insertData(Properties, values, true);
 #ifdef CACHE_SQL
 	    db->setCacheMode(true);

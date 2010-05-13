@@ -7,7 +7,7 @@
 //C++系統文件
 
 //其他庫頭文件
-
+#include <boost/tokenizer.hpp>
 //本項目內頭文件
 
 namespace cms {
@@ -53,19 +53,19 @@ namespace cms {
 	void Util::deleteExist(const std::string & filename) {
 	    //const char *cstr = filename.c_str();
 	    /*if (FileExists(cstr)) {
-		DeleteFile(cstr);
-	    }*/
-            deleteExist(filename.c_str());
+	       DeleteFile(cstr);
+	       } */
+	    deleteExist(filename.c_str());
 	};
 
-        	void Util::deleteExist(const char * filename) {
+	void Util::deleteExist(const char *filename) {
 	    //const char *cstr = filename.c_str();
 	    if (FileExists(filename)) {
 		DeleteFile(filename);
 	    }
 	};
 
-	void Util::deleteExist(	const WideString &  filename) {
+	void Util::deleteExist(const WideString & filename) {
 	    //const char *cstr = filename.c_str();
 	    if (FileExists(filename)) {
 		DeleteFile(filename);
@@ -142,12 +142,26 @@ namespace cms {
 		(*vector)[d] = content;
 	    } va_end(num_list);
 	};
+	string_vector_ptr StringVector::tokenize(const std::
+						 string & content,
+						 const std::
+						 string & delim) {
+	    string_vector_ptr result(new string_vector());
+#define TOKENIZER boost::tokenizer < boost::char_separator < char > >
+	    boost::char_separator < char >sep(delim.c_str());
+	    TOKENIZER tokens(content, sep);
+	    for (TOKENIZER::iterator tok_iter = tokens.begin();
+		 tok_iter != tokens.end(); ++tok_iter) {
+		result->push_back(*tok_iter);
+	    }
+	    return result;
+	};
 	//======================================================================
 
 	//======================================================================
 	// ByteBuffer
 	//======================================================================
-	ByteBuffer::ByteBuffer(const unsigned int size):size(size) {
+      ByteBuffer::ByteBuffer(const unsigned int size):size(size) {
 	    buffer = new unsigned char[size];
 	};
 	ByteBuffer::~ByteBuffer() {

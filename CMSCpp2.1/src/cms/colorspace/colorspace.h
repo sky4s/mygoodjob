@@ -51,6 +51,8 @@ namespace cms {
 	    virtual string_vector_ptr getBandNames() = 0;
 	    void setValuesLock(bool lock);
 	    const string_ptr toString();
+	    static double_array getValuesFromString(const string_ptr
+						    string);
 	};
     };
 };

@@ -31,6 +31,8 @@ namespace cms {
 
 
 	    void setProperty(const DGLutProperty & property);
+	     bptr < DGLutProperty > getProperty();
+
 
 	    void setRawData(Component_vector_ptr componentVector,
 			    RGBGamma_ptr initialRGBGamma,
@@ -51,7 +53,8 @@ namespace cms {
 
 	class DGLutProperty {
 	    friend class DGLutFile;
-	    /*private:
+	  private:
+	    /*
 	       static const std::string Start;
 	       static const std::string End;
 	       static const std::string Step;
@@ -86,10 +89,19 @@ namespace cms {
 	    static const std::string On;
 	    static const std::string Off;
 
-	    const cms::lcd::calibrate::LCDCalibrator & c;
+	     bptr < cms::lcd::calibrate::LCDCalibrator > c;
+	     bptr < DGLutFile > d;
 	    void store(DGLutFile & dglut) const;
+	     std::map < const std::string, string_ptr) propertyMap;
+	    void addProperty(const std::string key, string_ptr value);
+	    void addProperty(const std::string key,
+			     const std::string value);
+	    void initProperty(bptr < DGLutFile > d);
 	  public:
-	     DGLutProperty(const cms::lcd::calibrate::LCDCalibrator & c);
+	     DGLutProperty(bptr < cms::lcd::calibrate::LCDCalibrator > c);
+	     DGLutProperty(bptr < DGLutFile > d);
+	    string_ptr getProperty(const std::string key);
+	    xyY_ptr getReferenceColor(const Dep::Channel & ch);
 	};
     };
 };
