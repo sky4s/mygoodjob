@@ -131,6 +131,7 @@ namespace cms {
 		void setuvPrimeValues(double_array uvPrimeValues);
 		void setuvPrimeYValues(double_array uvPrimeYValues);
 		void setuvValues(double_array uvValues);
+		void setuvYValues(double_array uvYValues);
 	    };
 	};
     };
