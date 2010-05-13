@@ -224,7 +224,7 @@ namespace cms {
 	    };
 	    RGB_vector_ptr BMaxOp::getRendering(RGB_vector_ptr source) {
 		RGB_vector_ptr result = RGBVector::deepClone(source);
-		//int size = result->size();
+		//==============================================================
 		//把未用到的區域全部處理成最大值
 		int n = bitDepth->getLevel() - 1;
 		int effectiven = (bitDepth->getEffectiveLevel() - 1);
@@ -232,13 +232,14 @@ namespace cms {
 		for (int x = n; x >= effectiven; x--) {
 		    RGB_ptr rgb = (*result)[x];
 		    rgb->B = bitDepth->getMaxDigitalCount();
-		    //int y = x;
 		}
 		//STORE_RGBVECTOR("1.xls", result);
+		//==============================================================                
 
 		for (int x = effectiven; x != -1; x--) {
 		    RGB_ptr rgb = (*result)[x];
 		    RGB_ptr nextrgb = (*result)[x - 1];
+                    //設定差異
 		    double diff =
 			x > 252 ? 10 / 4. : (x > 232 ? 8 / 4. : 6 / 4.);
 		    double thisB = rgb->B;
@@ -255,6 +256,8 @@ namespace cms {
 
 		return result;
 	    };
+	    //==================================================================
+
 	    //==================================================================
 	    RGB_vector_ptr GByPassOp::getRendering(RGB_vector_ptr source) {
 		RGB_vector_ptr result = RGBVector::deepClone(source);
