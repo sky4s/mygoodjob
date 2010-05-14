@@ -78,8 +78,8 @@ namespace cms {
 	void MeterMeasurement::setWaitTimes(int waitTimes) {
 	    this->waitTimes = waitTimes;
 	    /*if (waitTimes == 0) {
-		int x = 1;
-	    }*/
+	       int x = 1;
+	       } */
 	};
 	int MeterMeasurement::getWaitTimes() {
 	    return waitTimes;
@@ -179,7 +179,8 @@ namespace cms {
 	//======================================================================
 	// MeasureTool
 	//======================================================================
-      MeasureTool::MeasureTool(bptr < cms::measure::MeterMeasurement > mm):mm(mm)
+      MeasureTool::MeasureTool(bptr < cms::measure::MeterMeasurement > mm):mm(mm),
+	    stop(false)
 	{
 
 	};
@@ -193,9 +194,18 @@ namespace cms {
 		rgb->setValue(channel, c);
 		Patch_ptr patch = mm->measure(rgb, rgb->toString());
 		vector->push_back(patch);
+		if (true == stop) {
+		    stop = false;
+		    mm->setMeasureWindowsVisible(false);
+		    return nil_Patch_vector_ptr;
+		}
 	    };
+	    mm->setMeasureWindowsVisible(false);
 	    return vector;
 	};
+	void MeasureTool::windowClosing() {
+	    stop = true;
+	}
 	//======================================================================
     };
 };

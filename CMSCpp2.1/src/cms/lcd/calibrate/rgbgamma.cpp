@@ -24,22 +24,21 @@ namespace cms {
 	    RGBGamma_ptr BIntensityGainOp::
 		getRendering(RGBGamma_ptr source) {
 		double_vector_ptr b(new double_vector(*source->b));
-		//int size = b->size();
 		int effectiveLevel = bitDepth->getEffectiveLevel();
-
+                //從effectiveLevel推算真正的起始點
 		int realstart = effectiveLevel - (255 - start);
 
 		for (int x = 0; x != realstart; x++) {
-		    //0~start
+		    //0~start 一律乘上gain值
+                    //BP(i) = BP(i) * Val(Text3.Text) '''' Gain
 		    double value = (*b)[x] * gain;
 		     (*b)[x] = value;
 		};
 
-
 		double bstart = (*b)[realstart - 1];
 		double bstartRemainder = 100 - bstart;
 		int remainder = 255 - start;
-
+                //19thBP*gain+(100-19thBP*gain)/(255-236)*(19-i)
 
 		for (int x = realstart; x != effectiveLevel; x++) {
 		    (*b)[x] = bstart +
