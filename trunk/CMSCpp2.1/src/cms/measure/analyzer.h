@@ -33,6 +33,7 @@ namespace cms {
 	    virtual int getWaitTimes() = 0;
 	    virtual xyY_ptr getReferenceColor() = 0;
 	    virtual xyY_ptr getPrimaryColor(const Dep::Channel & ch) = 0;
+	    virtual RGB_ptr getReferenceRGB() = 0;
 	};
 
 	/*
@@ -74,6 +75,7 @@ namespace cms {
 	    int getWaitTimes();
 	    xyY_ptr getReferenceColor();
 	    xyY_ptr getPrimaryColor(const Dep::Channel & ch);
+	    RGB_ptr getReferenceRGB();
 	};
 
 	/*
@@ -89,6 +91,7 @@ namespace cms {
 	     bptr < MeterMeasurement > mm;
 	    XYZ_ptr XYZ;
 	    XYZ_ptr rXYZ, gXYZ, bXYZ, wXYZ;
+	    RGB_ptr referenceRGB;
 
 	  public:
 	     MaxMatrixIntensityAnayzer(bptr < MeterMeasurement > mm);
@@ -107,6 +110,7 @@ namespace cms {
 	    int getWaitTimes();
 	    xyY_ptr getReferenceColor();
 	    xyY_ptr getPrimaryColor(const Dep::Channel & ch);
+	    RGB_ptr getReferenceRGB();
 	};
 
 	//class MaxMatrixIntensityAnayzer2;
@@ -139,6 +143,7 @@ namespace cms {
 	    int getWaitTimes();
 	    xyY_ptr getReferenceColor();
 	    xyY_ptr getPrimaryColor(const Dep::Channel & ch);
+	    RGB_ptr getReferenceRGB();
 	};
 
 	/*
