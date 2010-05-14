@@ -173,9 +173,9 @@ void __fastcall TTargetWhiteForm2::Button2Click(TObject * Sender)
     using namespace cms::measure::meter;
     using namespace cms::measure;
 
-    if( false == MainForm->linkCA210) {
-        ShowMessage("CA210 cannot be linked.");
-        return;
+    if (false == MainForm->linkCA210) {
+	ShowMessage("CA210 cannot be linked.");
+	return;
     }
 
     bool usexy = this->RadioButton_Targetxy->Checked;
@@ -245,7 +245,9 @@ void __fastcall TTargetWhiteForm2::Button2Click(TObject * Sender)
 	if (true == stopMeasure) {
 	    return;
 	}
-	MainForm->setAnalyzerToTargetChannel();
+	if (MainForm->isCA210Analyzer()) {
+	    MainForm->setAnalyzerToTargetChannel();
+	}
 	analyzer->enter();
 	//MainForm->setMeterMeasurementWaitTimes();
 	//==========================================================================

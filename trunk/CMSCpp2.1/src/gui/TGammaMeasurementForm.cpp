@@ -31,7 +31,9 @@ void __fastcall TGammaMeasurementForm::Button_MeasureClick(TObject *
     using namespace std;
     using namespace cms::util;
     MainForm->getAnalyzer();
-    MainForm->setAnalyzerToTargetChannel();
+    if (MainForm->isCA210Analyzer()) {
+	MainForm->setAnalyzerToTargetChannel();
+    }
     MainForm->setMeterMeasurementWaitTimes();
 
     bool_vector_ptr rgbw(new bool_vector(4));
@@ -107,13 +109,21 @@ void TGammaMeasurementForm::pcMeasure(bool_vector_ptr rgbw, int start,
 	(true == (*rgbw)[3]) ?
 	fetcher->fetchComponent(start, end, step, step) :
 	Component_vector_ptr((Component_vector *) null);
+    if (true == (*rgbw)[3] && null == componentVector) {
+	//代表被阻斷量測
+	return;
+    }
 
-    MeasureTool mt(mm);
+    bptr < MeasureTool > mt(new MeasureTool(mm));
+    MeasureWindow->addWindowListener(mt);
 
     foreach(const Channel & ch, *channels) {
 	int index = ch.getArrayIndex();
 	if (true == (*rgbw)[index]) {
-	    vectors[index] = mt.rampMeasure(ch, start, end, step);
+	    vectors[index] = mt->rampMeasure(ch, start, end, step);
+	    if (null == vectors[index]) {
+		return;
+	    }
 	} else {
 	    vectors[index] = nil_Patch_vector_ptr;
 	}

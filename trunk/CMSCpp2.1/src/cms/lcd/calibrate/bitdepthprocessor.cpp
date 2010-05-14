@@ -38,17 +38,16 @@ namespace cms {
 			   && out == MaxValue::Int6Bit) {
 		    return b6_6;
 		} else {
-		    throw
-			IllegalArgumentException("Unsupported BitDepth.");
+		    /*throw
+		       IllegalArgumentException("Unsupported BitDepth."); */
+		    return -1;
 		}
 	    };
 
 
-	    BitDepthProcessor::BitDepthProcessor(int inBit, int lutBit,
-						 int outBit,
-						 bool
-						 tconInput):tconInput
-		(tconInput) {
+	  BitDepthProcessor::BitDepthProcessor(int inBit, int lutBit, int outBit, bool tconInput):tconInput
+		(tconInput)
+	    {
 		in = &MaxValue::getByBit(inBit);
 		lut = &MaxValue::getByBit(lutBit);
 		out = &MaxValue::getByBit(outBit);
@@ -243,8 +242,9 @@ namespace cms {
 		case b6_6:
 		    return string_ptr(new string("6+3"));
 		default:
-		    throw IllegalStateException("Unsupported bitDepth: " +
-						bitDepth);
+		    /*throw IllegalStateException("Unsupported bitDepth: " +
+		       bitDepth); */
+		    return string_ptr(new string("N/A"));
 		}
 	    };
 //==================================================================

@@ -131,6 +131,8 @@ bptr < cms::measure::IntensityAnalyzerIF > TMainForm::getAnalyzer()
 void TMainForm::setAnalyzerToTargetChannel()
 {
     using namespace std;
+
+
     if (true == linkCA210) {
 	if (null == realAnalyzer) {
 	    throw java::lang::
@@ -165,6 +167,18 @@ void TMainForm::setAnalyzerToSourceChannel()
 	realAnalyzer->setChannel(channel, id);
 
     }
+};
+
+//---------------------------------------------------------------------------
+bool TMainForm::isCA210Analyzer()
+{
+    using namespace cms::measure::meter;
+    using namespace cms::measure;
+    using namespace cms::colorformat;
+    using namespace cms::lcd::calibrate;
+    CA210IntensityAnalyzer *ca210Analyzer =
+	dynamic_cast < CA210IntensityAnalyzer * >(analyzer.get());
+    return ca210Analyzer != null;
 };
 
 //---------------------------------------------------------------------------
@@ -511,6 +525,7 @@ void __fastcall TMainForm::RadioButton_In6Click(TObject * Sender)
     // 設定enable
     setBitDepthEnable(true, false, true, false, false);
     setFRCAbility();
+
 }
 
 //---------------------------------------------------------------------------
@@ -524,6 +539,7 @@ void __fastcall TMainForm::RadioButton_In8Click(TObject * Sender)
     // 設定enable
     setBitDepthEnable(true, true, true, true, false);
     setFRCAbility();
+
 }
 
 //---------------------------------------------------------------------------
@@ -537,6 +553,7 @@ void __fastcall TMainForm::RadioButton_In10Click(TObject * Sender)
     // 設定enable
     setBitDepthEnable(false, true, false, true, true);
     setFRCAbility();
+
 }
 
 //---------------------------------------------------------------------------

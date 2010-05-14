@@ -73,7 +73,9 @@ void __fastcall TCCTLUTForm::Button_RunClick(TObject * Sender)
     run = true;
 
     MainForm->getAnalyzer();
-    MainForm->setAnalyzerToTargetChannel();
+    if (MainForm->isCA210Analyzer()) {
+	MainForm->setAnalyzerToTargetChannel();
+    }
     MainForm->setMeterMeasurementWaitTimes();
 
     calibrator.
@@ -93,12 +95,13 @@ void __fastcall TCCTLUTForm::Button_RunClick(TObject * Sender)
 	//¿ï¤FRBInterp
 	int rbunder = this->Edit_RBInterpUnder->Text.ToInt();
 	calibrator->setRBInterpolation(rbunder);
-    } /*else if (this->RadioButton_New->Checked) {
-	int p1 = this->Edit_NewP1->Text.ToInt();
-	int p2 = this->Edit_NewP2->Text.ToInt();
-	double gammaShift = this->Edit_GammaShift->Text.ToDouble();
-	calibrator->setNew(p1, p2, gammaShift);
-    }*/ else if (this->RadioButton_New2->Checked) {
+    }				/*else if (this->RadioButton_New->Checked) {
+				   int p1 = this->Edit_NewP1->Text.ToInt();
+				   int p2 = this->Edit_NewP2->Text.ToInt();
+				   double gammaShift = this->Edit_GammaShift->Text.ToDouble();
+				   calibrator->setNew(p1, p2, gammaShift);
+				   } */
+    else if (this->RadioButton_New2->Checked) {
 	int under = this->Edit_New2Under->Text.ToInt();
 	calibrator->setNew2(under);
     } else {

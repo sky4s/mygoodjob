@@ -109,7 +109,7 @@ namespace cms {
 		    StringVector::setContent(values, "0", 3, 12, 13, 14);
 		}
 		if (bMeasureData != null) {
-		    Patch_ptr p = (*gMeasureData)[x];
+		    Patch_ptr p = (*bMeasureData)[x];
 		    xyY_ptr bxyY(new CIExyY(p->getXYZ()));
 		    (*values)[15] = _toString(bxyY->x);
 		    (*values)[16] = _toString(bxyY->y);
