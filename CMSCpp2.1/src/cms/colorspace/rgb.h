@@ -12,6 +12,7 @@ namespace cms {
 		double R, G, B;
 
 		 RGBColor();
+		 RGBColor(const MaxValue & maxValue);
 		 RGBColor(const RGBColorSpace & rgbColorSpace,
 			  double_array rgb, const MaxValue & maxValue);
 		 RGBColor(int r, int g, int b);

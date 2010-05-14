@@ -177,6 +177,12 @@ namespace cms {
 					       *ch.toString());
 	    };
 	};
+	RGB_ptr CA210IntensityAnalyzer::getReferenceRGB() {
+	    double r = rp->getRGB()->R;
+	    double g = gp->getRGB()->G;
+	    double b = bp->getRGB()->B;
+	    return RGB_ptr(new RGBColor(r, g, b));
+	};
 	//======================================================================
 
 	/*StocktonIntensityAnayzer::StocktonIntensityAnayzer(bptr < CA210 > ca210, bptr < MeterMeasurement > mm):CA210IntensityAnalyzer(ca210, mm)
@@ -285,6 +291,10 @@ namespace cms {
 						       Channel & ch,
 						       RGB_ptr rgb) {
 	    Patch_ptr p = mm->measure(rgb, rgb->toString());
+	    if (null == referenceRGB) {
+		referenceRGB.reset(new RGBColor(MaxValue::Double255));
+	    }
+	    referenceRGB->setValue(ch, rgb->getValue(ch));
 	    XYZ_ptr measureXYZ = p->getXYZ();
 	    setupComponent(ch, measureXYZ);
 	};
@@ -364,6 +374,9 @@ namespace cms {
 		throw IllegalArgumentException("Unsupported Channel: " +
 					       *ch.toString());
 	    };
+	};
+	RGB_ptr MaxMatrixIntensityAnayzer::getReferenceRGB() {
+	    return referenceRGB;
 	};
 	//=====================================================================
 
@@ -513,6 +526,9 @@ namespace cms {
 	};
 	xyY_ptr IntensityAnayzer::getPrimaryColor(const Dep::Channel & ch) {
 	    return ca210->getPrimaryColor(ch);
+	};
+	RGB_ptr IntensityAnayzer::getReferenceRGB() {
+	    return ca210->getReferenceRGB();
 	};
 	//=====================================================================
 
