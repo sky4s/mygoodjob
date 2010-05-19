@@ -17,27 +17,18 @@ namespace cms {
 	    using namespace cms;
 	    using namespace cms::measure;
 	    using namespace cms::lcd::calibrate::algo;
+	    //using namespace cms::lcd::calibrate;
 	    using namespace Dep;
 	    using namespace Indep;
 	    //==================================================================
 	    // WhitePointFinder
 	    //==================================================================
 	     WhitePointFinder::WhitePointFinder(bptr < MeterMeasurement >
-						mm):mm(mm), stop(false),
-		maxcode(255) {
-		aroundAlgo =
-		    bptr < ChromaticAroundAlgorithm >
-		    (new ChromaticAroundAlgorithm());
-		nearAlgo =
-		    bptr < CIEuv1960NearestAlgorithm >
-		    (new
-		     CIEuv1960NearestAlgorithm(XYZ_ptr((CIEXYZ *) null),
-					       mm));
-	    };
-
-	     WhitePointFinder::WhitePointFinder(bptr < MeterMeasurement >
-						mm, double maxcode):mm(mm),
-		stop(false), maxcode(maxcode) {
+						mm,
+						bptr < BitDepthProcessor >
+						bitDepth,
+						double maxcode):mm(mm),
+		stop(false), maxcode(maxcode), bitDepth(bitDepth) {
 		aroundAlgo =
 		    bptr < ChromaticAroundAlgorithm >
 		    (new ChromaticAroundAlgorithm(maxcode));
@@ -54,10 +45,11 @@ namespace cms {
 		RGB_ptr nearestRGB = initRGB;
 		bool findNearest = false;
 		 stop = false;
+		double step = bitDepth->getMeasureStep();
 
 		do {
 		    RGB_vector_ptr aroundRGB =
-			aroundAlgo->getAroundRGB(nearestRGB, 1);
+			aroundAlgo->getAroundRGB(nearestRGB, step);
 		    XYZ_ptr center = xyY->toXYZ();
 		     bptr < AlgoResult > algoResult =
 			nearAlgo->getNearestRGB(center, aroundRGB);
@@ -78,7 +70,8 @@ namespace cms {
 
 	    RGB_ptr WhitePointFinder::findRGBAround(xyY_ptr xyY) {
 		aroundAlgo->setMode(Normal);
-		RGB_ptr result = findMatchRGB0(xyY, RGBColor::White);
+		RGB_ptr maxrgb(new RGBColor(maxcode, maxcode, maxcode));
+		RGB_ptr result = findMatchRGB0(xyY, maxrgb);
 		return result;
 	    };
 
@@ -126,21 +119,20 @@ namespace cms {
 	    void WhitePointFinder::windowClosing() {
 		stop = true;
 	    };
+
 	    //==================================================================
 	    //
 	    //==================================================================
-	  StocktonWhitePointFinder::StocktonWhitePointFinder(bptr < MeterMeasurement > mm, RGB_ptr initRGB):
-	    WhitePointFinder(mm, 255), initRGB(initRGB) {
-
-	    };
 	    StocktonWhitePointFinder::StocktonWhitePointFinder(bptr <
 							       MeterMeasurement
-							       > mm,
+							       > mm, bptr <
+							       BitDepthProcessor
+							       > bitDepth,
 							       RGB_ptr
 							       initRGB,
 							       double
 							       maxcode):WhitePointFinder
-		(mm, maxcode), initRGB(initRGB) {
+		(mm, bitDepth, maxcode), initRGB(initRGB) {
 
 	    };
 	    RGB_ptr StocktonWhitePointFinder::findRGB(xyY_ptr targetxyY) {
@@ -258,6 +250,7 @@ namespace cms {
 		return findRGB;
 	    };
 	    //==================================================================
+
 	};
     };
 };

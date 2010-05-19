@@ -142,9 +142,13 @@ void __fastcall TGammaAdjustmentForm::FormCreate(TObject * Sender)
 {
     using namespace cms::lcd::calibrate;
 
-    calibrator.
+    /*calibrator.
 	reset(new
-	      LCDCalibrator(MainForm->getComponentFetcher(), bitDepth));
+	      LCDCalibrator(MainForm->getComponentFetcher(), bitDepth));*/
+    calibrator = bptr < LCDCalibrator > (new
+					 LCDCalibrator(MainForm->
+						       getComponentFetcher
+						       (), bitDepth));
 }
 
 //---------------------------------------------------------------------------
