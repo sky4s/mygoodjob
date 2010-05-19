@@ -78,9 +78,14 @@ void __fastcall TCCTLUTForm::Button_RunClick(TObject * Sender)
     }
     MainForm->setMeterMeasurementWaitTimes();
 
-    calibrator.
-	reset(new
-	      LCDCalibrator(MainForm->getComponentFetcher(), bitDepth));
+    //會出問題@@a
+    /*calibrator.
+       reset(new
+       LCDCalibrator(MainForm->getComponentFetcher(), bitDepth)); */
+    calibrator = bptr < LCDCalibrator > (new
+					 LCDCalibrator(MainForm->
+						       getComponentFetcher
+						       (), bitDepth));
 
 
     //==========================================================================

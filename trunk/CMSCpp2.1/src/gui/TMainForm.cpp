@@ -234,12 +234,16 @@ void TMainForm::resetDummyMeter()
 bptr < cms::lcd::calibrate::ComponentFetcher >
     TMainForm::getComponentFetcher()
 {
+    using namespace cms::lcd::calibrate;
     if (null == fetcher) {
 	bptr < cms::measure::IntensityAnalyzerIF > analyzer =
 	    getAnalyzer();
-	fetcher.
-	    reset(new cms::lcd::calibrate::
-		  ComponentFetcher(analyzer, bitDepth));
+	/*fetcher.
+	   reset(new cms::lcd::calibrate::
+	   ComponentFetcher(analyzer, bitDepth)); */
+	fetcher = bptr < ComponentFetcher > (new cms::lcd::calibrate::
+					     ComponentFetcher(analyzer,
+							      bitDepth));
     }
     MeasureWindow->addWindowListener(fetcher);
     return fetcher;

@@ -399,6 +399,11 @@ namespace cms {
 		dgcode.addProperty("primary G", *refGxyY->toString());
 		dgcode.addProperty("primary B", *refBxyY->toString());
 	    }
+	    //¬ö¿ýtarget white¥Îªºrgb
+	    RGB_ptr refRGB = analyzer->getReferenceRGB();
+	    if (null != refRGB) {
+		dgcode.addProperty("reference white RGB", *refRGB->toString());
+	    }
 	};
 	void DGLutProperty::addProperty(const std::string key,
 					string_ptr value) {

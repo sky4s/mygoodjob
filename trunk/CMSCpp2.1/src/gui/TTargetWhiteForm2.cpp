@@ -200,13 +200,24 @@ void __fastcall TTargetWhiteForm2::Button2Click(TObject * Sender)
 	double maxCount = bitDepth->getMaxDigitalCount();
 	//¤wª¾xy, ¨Drgb
 	if (true == moreAccurate) {
-	    finder.reset(new WhitePointFinder(MainForm->mm, maxCount));
+	    //finder.reset(new WhitePointFinder(MainForm->mm, maxCount));
+	    //MainForm->bitDepth;
+	    finder =
+		bptr < WhitePointFinder >
+		(new WhitePointFinder(MainForm->mm, bitDepth, maxCount));
 	    MeasureWindow->addWindowListener(finder);
 	    rgb = finder->findRGB(xyY);
 	} else {
 
-	    finder.reset(new StocktonWhitePointFinder(MainForm->mm, rgb,
-						      maxCount));
+	    /*finder.
+	       reset(new
+	       StocktonWhitePointFinder(MainForm->mm, bitDepth, rgb,
+	       maxCount)); */
+	    finder =
+		bptr < StocktonWhitePointFinder > (new
+						   StocktonWhitePointFinder
+						   (MainForm->mm, bitDepth,
+						    rgb, maxCount));
 	    MeasureWindow->addWindowListener(finder);
 	    rgb = finder->findRGB(xyY);
 	}
