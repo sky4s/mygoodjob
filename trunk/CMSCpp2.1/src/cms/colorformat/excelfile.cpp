@@ -380,6 +380,15 @@ namespace cms {
 	    }
 
 	};
+	void ExcelAccessBase::initSheet(const std::string & sheetname,
+					string_vector_ptr headerNames,
+					string_vector_ptr fieldTypes) {
+	    headerNamesMap.insert(make_pair(sheetname, headerNames));
+	    if (Create == mode) {
+		db->createTable(sheetname, headerNames, fieldTypes);
+	    }
+
+	};
 	void ExcelAccessBase::initPropertySheet() {
 	    string_vector_ptr headerNames =
 		StringVector::fromCString(2, "Key", "Value");
@@ -396,7 +405,8 @@ namespace cms {
 		throw IllegalStateException("File " + filename +
 					    " exists.");
 	    }
-	    db.reset(new ExcelFileDB(filename, mode));
+	    //db.reset(new ExcelFileDB(filename, mode));
+	    db = bptr < ExcelFileDB > (new ExcelFileDB(filename, mode));
 	};
 	void ExcelAccessBase::insertData(const std::string & sheetname,
 					 string_vector_ptr values,
@@ -440,12 +450,19 @@ namespace cms {
 	//======================================================================
 	const std::string & SimpleExcelAccess::Sheet1 = "Sheet1";
 	SimpleExcelAccess::SimpleExcelAccess(const std::string & filename,
-					     Mode
-					     mode,
+					     Mode mode,
 					     string_vector_ptr
 					     headerNames):ExcelAccessBase
 	    (filename, mode), headerNames(headerNames) {
 	    initSheet(Sheet1, headerNames);
+	};
+	SimpleExcelAccess::SimpleExcelAccess(const std::string & filename,
+					     Mode mode,
+					     string_vector_ptr headerNames,
+					     string_vector_ptr
+					     fieldTypes):ExcelAccessBase
+	    (filename, mode), headerNames(headerNames) {
+	    initSheet(Sheet1, headerNames, fieldTypes);
 	};
 	SimpleExcelAccess::SimpleExcelAccess(const std::
 					     string &

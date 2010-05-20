@@ -139,6 +139,9 @@ namespace cms {
 			   ...);
 	    void initSheet(const std::string & sheetname,
 			   string_vector_ptr headerNames);
+	    void initSheet(const std::string & sheetname,
+			   string_vector_ptr headerNames,
+			   string_vector_ptr fieldTypes);
 	    void initPropertySheet();
 	    void initBegin();
 	    void insertData(const std::string & sheetname,
@@ -165,9 +168,15 @@ namespace cms {
 	  public:
 	     SimpleExcelAccess(const std::string & filename, Mode mode,
 			       string_vector_ptr headerNames);
+	     SimpleExcelAccess(const std::string & filename, Mode mode,
+			       string_vector_ptr headerNames,
+			       string_vector_ptr fieldTypes);
 	     SimpleExcelAccess(const std::string & filename);
 	     bptr < DBQuery > retrieve();
 	    void insert(string_vector_ptr values);
+	    /*
+	       提供可用來儲存value的預先定義格式
+	     */
 	    static bptr < SimpleExcelAccess >
 		getValueStoreInstance(const std::string & filename);
 	};

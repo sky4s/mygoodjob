@@ -10,6 +10,7 @@
 //其他庫頭文件
 
 //本項目內頭文件
+#include <debug.h>
 
 namespace cms {
     namespace lcd {
@@ -17,7 +18,7 @@ namespace cms {
 	    using namespace cms;
 	    using namespace cms::measure;
 	    using namespace cms::lcd::calibrate::algo;
-	    //using namespace cms::lcd::calibrate;
+	    using namespace cms::colorformat;
 	    using namespace Dep;
 	    using namespace Indep;
 	    //==================================================================
@@ -135,11 +136,18 @@ namespace cms {
 		(mm, bitDepth, maxcode), initRGB(initRGB) {
 
 	    };
+
+
 	    RGB_ptr StocktonWhitePointFinder::findRGB(xyY_ptr targetxyY) {
 		using java::lang::Math;
 		double_array delta;
 		RGB_ptr findRGB = initRGB->clone();
 		stop = false;
+
+		//==============================================================
+		BEGIN_STORE("findwhite.xls");
+		//==============================================================
+
 		//==============================================================
 		// blue的處理(x/y)
 		//==============================================================
@@ -148,6 +156,9 @@ namespace cms {
 			mm->measure(findRGB, findRGB->toString());
 		    xyY_ptr measurexyY(new CIExyY(patch->getXYZ()));
 		    delta = measurexyY->getDeltaxy(targetxyY);
+
+		    STORE_RGBXY(findRGB, measurexyY);
+
 		    int adjust = 0;
 		    if (Math::abs(delta[0]) > 0.012
 			&& Math::abs(delta[1]) > 0.012) {
@@ -179,6 +190,9 @@ namespace cms {
 			mm->measure(findRGB, findRGB->toString());
 		    xyY_ptr measurexyY(new CIExyY(patch->getXYZ()));
 		    delta = measurexyY->getDeltaxy(targetxyY);
+
+		    STORE_RGBXY(findRGB, measurexyY);
+
 		    if (delta[0] > 0) {
 			findRGB->R -= 1;
 		    }
@@ -198,6 +212,9 @@ namespace cms {
 			mm->measure(findRGB, findRGB->toString());
 		    xyY_ptr measurexyY(new CIExyY(patch->getXYZ()));
 		    delta = measurexyY->getDeltaxy(targetxyY);
+
+		    STORE_RGBXY(findRGB, measurexyY);
+
 		    if (delta[1] > 0) {
 			//green的處理
 			findRGB->G -= 1;
@@ -226,10 +243,16 @@ namespace cms {
 		    mm->measure(findRGB, findRGB->toString());
 		xyY_ptr measurexyY(new CIExyY(patch->getXYZ()));
 		delta = measurexyY->getDeltaxy(targetxyY);
+
+		STORE_RGBXY(findRGB, measurexyY);
+
 		if (findRGB->R < maxcode) {
 		    findRGB->R += 1;
 		    patch = mm->measure(findRGB, findRGB->toString());
-		    measurexyY.reset(new CIExyY(patch->getXYZ()));
+		    measurexyY = xyY_ptr(new CIExyY(patch->getXYZ()));
+
+		    STORE_RGBXY(findRGB, measurexyY);
+
 		    double_array delta2 =
 			measurexyY->getDeltaxy(targetxyY);
 		    if (Math::abs(delta2[0]) > Math::abs(delta[0])) {
@@ -239,7 +262,10 @@ namespace cms {
 		if (findRGB->G < maxcode) {
 		    findRGB->G += 1;
 		    patch = mm->measure(findRGB, findRGB->toString());
-		    measurexyY.reset(new CIExyY(patch->getXYZ()));
+		    measurexyY = xyY_ptr(new CIExyY(patch->getXYZ()));
+
+		    STORE_RGBXY(findRGB, measurexyY);
+
 		    double_array delta2 =
 			measurexyY->getDeltaxy(targetxyY);
 		    if (Math::abs(delta2[1]) > Math::abs(delta[1])) {
