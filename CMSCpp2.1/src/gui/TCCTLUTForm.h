@@ -92,7 +92,7 @@ class TCCTLUTForm:public TForm {
     int serialid;
      bptr < cms::lcd::calibrate::BitDepthProcessor > bitDepth;
     RGBGamma_ptr rgbGamma;
-     bptr < cms::lcd::calibrate::LCDCalibrator > calibrator;
+    //bptr < cms::lcd::calibrate::LCDCalibrator > calibrator;
      bptr < cms::lcd::calibrate::MeasureCondition > getMeasureCondition();
     bool run;
     void setLowLevelCorrectionEditDisable();

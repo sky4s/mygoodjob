@@ -256,13 +256,11 @@ object GammaAdjustmentForm: TGammaAdjustmentForm
         Left = 91
         Top = 20
         Width = 163
-        Height = 24
       end
       inherited Edit_Directory: TEdit
         Left = 91
         Top = 46
         Width = 209
-        Height = 24
       end
       inherited Button_BrowseDir: TButton
         Left = 306

@@ -47,7 +47,7 @@ namespace cms {
 	    SimpleExcelAccess excel(filename, Create,
 				    StringVector::
 				    fromCString(4, "Gray Level", "R", "G",
-					       "B"));
+						"B"));
 	    int size = rgbVector->size();
 	    for (int x = 0; x != size; x++) {
 		RGB_ptr rgb = (*rgbVector)[x];
@@ -113,7 +113,7 @@ namespace cms {
 	    SimpleExcelAccess excel(filename, Create,
 				    StringVector::
 				    fromCString(4, "Gray Level", "R gamma",
-					       "G gamma", "B gamma"));
+						"G gamma", "B gamma"));
 
 	    int size = rgbgamma->r->size();
 
@@ -155,10 +155,18 @@ namespace cms {
 		//==============================================================
 		// 反轉處理
 		//==============================================================
-		w.reset(new double_vector(w->rbegin(), w->rend()));
-		r.reset(new double_vector(r->rbegin(), r->rend()));
-		g.reset(new double_vector(g->rbegin(), g->rend()));
-		b.reset(new double_vector(b->rbegin(), b->rend()));
+		w = double_vector_ptr(new
+				      double_vector(w->rbegin(),
+						    w->rend()));
+		r = double_vector_ptr(new
+				      double_vector(r->rbegin(),
+						    r->rend()));
+		g = double_vector_ptr(new
+				      double_vector(g->rbegin(),
+						    g->rend()));
+		b = double_vector_ptr(new
+				      double_vector(b->rbegin(),
+						    b->rend()));
 		//==============================================================
 		RGBGamma_ptr rgbgamma(new RGBGamma(r, g, b, w));
 		return rgbgamma;

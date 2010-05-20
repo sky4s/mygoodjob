@@ -73,7 +73,9 @@ void __fastcall TMainForm::FormCreate(TObject * Sender)
 	this->Caption = this->Caption + " (debug mode)";
 	this->GroupBox_CHSetting->Visible = false;
     }
-    bitDepth.reset(new BitDepthProcessor(8, 10, 8, false));
+    bitDepth =
+	bptr < BitDepthProcessor >
+	(new BitDepthProcessor(8, 10, 8, false));
 }
 
 //---------------------------------------------------------------------------
@@ -108,7 +110,9 @@ bptr < cms::measure::IntensityAnalyzerIF > TMainForm::getAnalyzer()
 	    return bptr < IntensityAnalyzerIF >
 		((IntensityAnalyzerIF *) null);
 	}
-	realAnalyzer.reset(new CA210IntensityAnalyzer(ca210, mm));
+	realAnalyzer =
+	    bptr < CA210IntensityAnalyzer >
+	    (new CA210IntensityAnalyzer(ca210, mm));
 	//產生max matrix
 	bptr < MaxMatrixIntensityAnayzer >
 	    ma(new MaxMatrixIntensityAnayzer(mm));
@@ -120,7 +124,9 @@ bptr < cms::measure::IntensityAnalyzerIF > TMainForm::getAnalyzer()
 	    analyzer = ma;
 	} else if (true == this->RadioButton_AnalyzerDebug->Checked) {
 	    //產生兩者的合體
-	    analyzer.reset(new IntensityAnayzer(ma, realAnalyzer));
+	    analyzer =
+		bptr < IntensityAnalyzerIF >
+		(new IntensityAnayzer(ma, realAnalyzer));
 	}
 
     }
@@ -192,18 +198,16 @@ void TMainForm::setDummyMeterFilename(const std::string & filename)
     using namespace Indep;
     using namespace Dep;
     bptr < DGLutFile > dgcode(new DGLutFile(filename, ReadOnly));
-    meter.reset(new DGLutFileMeter(dgcode));
-    mm.reset(new MeterMeasurement(meter, false));
+    meter = bptr < Meter > (new DGLutFileMeter(dgcode));
+    mm = bptr < MeterMeasurement > (new MeterMeasurement(meter, false));
     mm->setFakeMeasure(true);
 
     bptr < MaxMatrixIntensityAnayzer >
 	matrixAnalyzer(new MaxMatrixIntensityAnayzer(mm));
 
-    //analyzer.reset(ma);
-    //analyzer.reset(matrixAnalyzer.get());
     analyzer = matrixAnalyzer;
 
-    fetcher.reset((ComponentFetcher *) null);
+    fetcher = bptr < ComponentFetcher > ((ComponentFetcher *) null);
 
     bptr < DGLutProperty > property = dgcode->getProperty();
     xyY_ptr wxyY = property->getReferenceColor(Channel::W);
@@ -238,14 +242,12 @@ bptr < cms::lcd::calibrate::ComponentFetcher >
     if (null == fetcher) {
 	bptr < cms::measure::IntensityAnalyzerIF > analyzer =
 	    getAnalyzer();
-	/*fetcher.
-	   reset(new cms::lcd::calibrate::
-	   ComponentFetcher(analyzer, bitDepth)); */
 	fetcher = bptr < ComponentFetcher > (new cms::lcd::calibrate::
 					     ComponentFetcher(analyzer,
 							      bitDepth));
+	MeasureWindow->addWindowListener(fetcher);
     }
-    MeasureWindow->addWindowListener(fetcher);
+
     return fetcher;
 };
 
@@ -261,7 +263,7 @@ bptr < cms::measure::meter::CA210 > TMainForm::getCA210()
 	}
 
 	cms::measure::meter::Meter * pointer = meter.get();
-	ca210.reset(dynamic_cast < CA210 * >(pointer));
+	ca210 = bptr < CA210 > (dynamic_cast < CA210 * >(pointer));
     }
     return ca210;
 };
@@ -375,14 +377,21 @@ void __fastcall TMainForm::Button_ConnectClick(TObject * Sender)
 	bool indepRGB = this->CheckBox_IndepRGB->Checked;
 
 
-	parameter.reset(new
-			TCONParameter(gammaTestAddress, gammaTestBit,
-				      testRGBAddress, indepRGB,
-				      bitDepth->getLutMaxValue()));
+	parameter = bptr < TCONParameter > (new
+					    TCONParameter(gammaTestAddress,
+							  gammaTestBit,
+							  testRGBAddress,
+							  indepRGB,
+							  bitDepth->
+							  getLutMaxValue
+							  ()));
 	if (!dual) {
-	    control.reset(new TCONControl(parameter, i2c1st));
+	    control =
+		bptr < TCONControl > (new TCONControl(parameter, i2c1st));
 	} else {
-	    control.reset(new TCONControl(parameter, i2c1st, i2c2nd));
+	    control =
+		bptr < TCONControl >
+		(new TCONControl(parameter, i2c1st, i2c2nd));
 	}
 	this->Button_Connect->Enabled = false;
 	this->CheckBox_Connecting->Checked = true;

@@ -64,7 +64,7 @@ namespace cms {
 		}
 		Component_ptr c = dgc->getComponent();
 		RGB_ptr intensity = c->intensity;
-		rgbIntensity.reset(new float[3]);
+		rgbIntensity = float_array(new float[3]);
 		rgbIntensity[0] = intensity->R;
 		rgbIntensity[1] = intensity->G;
 		rgbIntensity[2] = intensity->B;
@@ -178,10 +178,11 @@ namespace cms {
 	    };
 	};
 	RGB_ptr CA210IntensityAnalyzer::getReferenceRGB() {
-	    double r = rp->getRGB()->R;
-	    double g = gp->getRGB()->G;
-	    double b = bp->getRGB()->B;
-	    return RGB_ptr(new RGBColor(r, g, b));
+	    /*double r = rp->getRGB()->R;
+	       double g = gp->getRGB()->G;
+	       double b = bp->getRGB()->B; */
+	    return wp->getRGB();
+	    //return RGB_ptr(new RGBColor(r, g, b));
 	};
 	//======================================================================
 
@@ -292,7 +293,7 @@ namespace cms {
 						       RGB_ptr rgb) {
 	    Patch_ptr p = mm->measure(rgb, rgb->toString());
 	    if (null == referenceRGB) {
-		referenceRGB.reset(new RGBColor(MaxValue::Double255));
+		referenceRGB = RGB_ptr(new RGBColor(MaxValue::Double255));
 	    }
 	    referenceRGB->setValue(ch, rgb->getValue(ch));
 	    XYZ_ptr measureXYZ = p->getXYZ();
@@ -383,22 +384,7 @@ namespace cms {
 	//=====================================================================
 	// IntensityAnayzer
 	//=====================================================================
-	/*IntensityAnayzer::IntensityAnayzer(bptr < MaxMatrixIntensityAnayzer > matrix, bptr < MaxMatrixIntensityAnayzer2 > matrix2, bptr < CA210IntensityAnalyzer > ca210):matrix(matrix), matrix2(matrix2),
-	   ca210(ca210),
-	   no(0), useMatrix2(true) {
 
-	   fieldNames =
-	   StringVector::fromCString(13, "no", "CA_R", "CA_G", "CA_B",
-	   "MA_R", "MA_G", "MA_B", "MA_Ro",
-	   "MA_Go", "MA_Bo", "MA2_R",
-	   "MA2_G", "MA2_B");
-	   Util::deleteExist(INTENSITY_FILE);
-	   excel.
-	   reset(new
-	   SimpleExcelAccess(INTENSITY_FILE,
-	   cms::colorformat::Create,
-	   fieldNames));
-	   }; */
 
       IntensityAnayzer::IntensityAnayzer(bptr < MaxMatrixIntensityAnayzer > matrix, bptr < CA210IntensityAnalyzer > ca210):matrix(matrix), ca210(ca210),
 	    no(0)
@@ -411,11 +397,11 @@ namespace cms {
 					  "MA_Go", "MA_Bo", "MA2_R",
 					  "MA2_G", "MA2_B");
 	    Util::deleteExist(INTENSITY_FILE);
-	    excel.
-		reset(new
-		      SimpleExcelAccess(INTENSITY_FILE,
-					cms::colorformat::Create,
-					fieldNames));
+	    excel = bptr < SimpleExcelAccess > (new
+						SimpleExcelAccess
+						(INTENSITY_FILE,
+						 cms::colorformat::Create,
+						 fieldNames));
 	};
 
 	RGB_ptr IntensityAnayzer::getIntensity(RGB_ptr rgb) {
