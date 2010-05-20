@@ -281,6 +281,14 @@ object TargetWhiteForm2: TTargetWhiteForm2
             Text = '0.0'
           end
         end
+        object CheckBox_MaxRGB: TCheckBox
+          Left = 59
+          Top = 319
+          Width = 78
+          Height = 13
+          Caption = 'MaxRGB'
+          TabOrder = 7
+        end
       end
       object GroupBox5: TGroupBox
         Left = 208

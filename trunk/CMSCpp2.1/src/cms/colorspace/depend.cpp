@@ -173,7 +173,8 @@ namespace cms {
 					 const double gamma):type_(type),
 		referenceWhite(referenceWhite), gamma_(gamma) {
 
-		toXYZMatrix_.reset(new double2D(3, 3, toXYZMatrix));
+		toXYZMatrix_ =
+		    double2D_ptr(new double2D(3, 3, toXYZMatrix));
 		toRGBMatrix_ = DoubleArray::inverse(toXYZMatrix_);
 	    };
 	    RGBColorSpace::RGBColorSpace(const CSType & type,
@@ -182,8 +183,6 @@ namespace cms {
 					 Illuminant & referenceWhite,
 					 ...):type_(type),
 		referenceWhite(referenceWhite), gamma_(gamma) {
-		//double_array result(new double[n]);
-		//_toXYZMatrix.reset(new double2D(3, 3));
 		const int n = 9;
 		double array[n];
 		va_list num_list;
@@ -193,7 +192,7 @@ namespace cms {
 		    const double d = va_arg(num_list, const double);
 		    array[i] = d;
 		} va_end(num_list);
-		toXYZMatrix_.reset(new double2D(3, 3, array));
+		toXYZMatrix_ = double2D_ptr(new double2D(3, 3, array));
 		toRGBMatrix_ = DoubleArray::inverse(toXYZMatrix_);
 	    };
 	    const RGBColorSpace & RGBColorSpace::unknowRGB =

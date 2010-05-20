@@ -130,9 +130,9 @@ namespace cms {
 		//==============================================================
 		// 計算a/c/d
 		//==============================================================
-		regression.reset(new PolynomialRegression(input, output,
-							  Polynomial::
-							  COEF_3::BY_3C));
+		regression = bptr < PolynomialRegression >
+		    (new PolynomialRegression(input, output,
+					      Polynomial::COEF_3::BY_3C));
 		regression->regress();
 		const double *coefs = (*regression->getCoefs())[0];
 		a1 = coefs[1];
@@ -230,9 +230,15 @@ namespace cms {
 		rValues = getReverse(rValues);
 		gValues = getReverse(gValues);
 		bValues = getReverse(bValues);
-		rLut.reset(new Interpolation1DLUT(keys, rValues));
-		gLut.reset(new Interpolation1DLUT(keys, gValues));
-		bLut.reset(new Interpolation1DLUT(keys, bValues));
+		rLut =
+		    bptr < Interpolation1DLUT >
+		    (new Interpolation1DLUT(keys, rValues));
+		gLut =
+		    bptr < Interpolation1DLUT >
+		    (new Interpolation1DLUT(keys, gValues));
+		bLut =
+		    bptr < Interpolation1DLUT >
+		    (new Interpolation1DLUT(keys, bValues));
 		//==============================================================                
 	    };
 	  ComponentLUT::ComponentLUT(Component_vector_ptr componentVector):componentVector(componentVector)
@@ -312,14 +318,16 @@ namespace cms {
 		//==============================================================
 		// 計算a/c/d
 		//==============================================================
-		componentRelation.
-		    reset(new ComponentLinearRelation(componentVector));
+		componentRelation =
+		    bptr < ComponentRelationIF >
+		    (new ComponentLinearRelation(componentVector));
 		//==============================================================
 
 		//==============================================================
 		// 產生RGB LUT
 		//==============================================================
-		lut.reset(new ComponentLUT(componentVector));
+		lut = bptr < ComponentLUT >
+		    (new ComponentLUT(componentVector));
 		//==============================================================
 
 		double maxintensity = Math::roundTo(getMaximumIntensity());
@@ -644,7 +652,9 @@ namespace cms {
 
 		STORE_COMPONENT("o_fetch.xls", componentVector);
 		//產生generator
-		generator.reset(new DGLutGenerator(componentVector));
+		generator =
+		    bptr < DGLutGenerator >
+		    (new DGLutGenerator(componentVector));
 		RGBGamma_ptr rgbgamma = generator->getRGBGamma(gammaCurve);
 		initialRGBGamma = rgbgamma->clone();
 		STORE_DOUBLE_VECTOR("0_gammacurve.xls", gammaCurve);
@@ -731,7 +741,7 @@ namespace cms {
 		    double_vector_ptr luminanceGammaCurve =
 			generator->getLuminanceGammaCurve(gammaCurve);
 		    /*STORE_DOUBLE_VECTOR("x_lumicurve.xls",
-					luminanceGammaCurve);*/
+		       luminanceGammaCurve); */
 
 		    RGB_vector_ptr dimdglut =
 			dimgenerator.produce(targetWhite,
@@ -741,7 +751,7 @@ namespace cms {
 		    for (int x = 0; x < size; x++) {
 			(*dglut)[x] = (*dimdglut)[x];
 		    }
-                    RGBVector::quantization(dglut, quantizationBit);
+		    RGBVector::quantization(dglut, quantizationBit);
 		}
 		//==============================================================
 		// DG Code Op block
@@ -838,4 +848,4 @@ namespace cms {
 	};
     };
 };
-
+ 

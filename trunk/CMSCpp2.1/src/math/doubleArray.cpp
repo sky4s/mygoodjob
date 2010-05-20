@@ -321,10 +321,10 @@ namespace math {
 	double2D_ptr result;
 	if (m == n) {
 	    LU < double >lu(*a);
-	    result.reset(new double2D(lu.solve(*b)));
+	    result = double2D_ptr(new double2D(lu.solve(*b)));
 	} else {
 	    QR < double >qr(*a);
-	    result.reset(new double2D(qr.solve(*b)));
+	    result = double2D_ptr(new double2D(qr.solve(*b)));
 	}
 	return result;
     };
@@ -359,7 +359,7 @@ namespace math {
 	svd.getU(u);
 	svd.getSingularValues(sv);
 	svd.getV(v);
-        /* TODO : pseudoInverse */
+	/* TODO : pseudoInverse */
     };
 
 
@@ -478,10 +478,10 @@ namespace math {
 	float2D_ptr result;
 	if (m == n) {
 	    LU < float >lu(*a);
-	    result.reset(new float2D(lu.solve(*b)));
+	    result = float2D_ptr(new float2D(lu.solve(*b)));
 	} else {
 	    QR < float >qr(*a);
-	    result.reset(new float2D(qr.solve(*b)));
+	    result = float2D_ptr(new float2D(qr.solve(*b)));
 	}
 	return result;
     };

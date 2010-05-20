@@ -79,13 +79,12 @@ void __fastcall TCCTLUTForm::Button_RunClick(TObject * Sender)
     MainForm->setMeterMeasurementWaitTimes();
 
     //會出問題@@a
-    /*calibrator.
-       reset(new
-       LCDCalibrator(MainForm->getComponentFetcher(), bitDepth)); */
-    calibrator = bptr < LCDCalibrator > (new
-					 LCDCalibrator(MainForm->
-						       getComponentFetcher
-						       (), bitDepth));
+    bptr < ComponentFetcher > fetcher = MainForm->getComponentFetcher();
+    /*calibrator =
+       bptr < LCDCalibrator > (new LCDCalibrator(fetcher, bitDepth)); */
+    /*bptr_ < LCDCalibrator >
+       calibrator(new LCDCalibrator(fetcher, bitDepth)); */
+    LCDCalibrator calibrator(fetcher, bitDepth);
 
 
     //==========================================================================
@@ -95,11 +94,11 @@ void __fastcall TCCTLUTForm::Button_RunClick(TObject * Sender)
 	//選了P1P2
 	int p1 = this->Edit_P1->Text.ToInt();
 	int p2 = this->Edit_P2->Text.ToInt();
-	calibrator->setP1P2(p1, p2);
+	calibrator.setP1P2(p1, p2);
     } else if (this->RadioButton_RBInterp->Checked) {
 	//選了RBInterp
 	int rbunder = this->Edit_RBInterpUnder->Text.ToInt();
-	calibrator->setRBInterpolation(rbunder);
+	calibrator.setRBInterpolation(rbunder);
     }				/*else if (this->RadioButton_New->Checked) {
 				   int p1 = this->Edit_NewP1->Text.ToInt();
 				   int p2 = this->Edit_NewP2->Text.ToInt();
@@ -108,9 +107,9 @@ void __fastcall TCCTLUTForm::Button_RunClick(TObject * Sender)
 				   } */
     else if (this->RadioButton_New2->Checked) {
 	int under = this->Edit_New2Under->Text.ToInt();
-	calibrator->setNew2(under);
+	calibrator.setNew2(under);
     } else {
-	calibrator->setNoneDimCorrect();
+	calibrator.setNoneDimCorrect();
     }
     //==========================================================================
 
@@ -119,12 +118,12 @@ void __fastcall TCCTLUTForm::Button_RunClick(TObject * Sender)
     //==========================================================================
     if (this->RadioButton_Gamma->Checked) {
 	double gamma = this->ComboBox_Gamma->Text.ToDouble();
-	calibrator->setGamma(gamma);
+	calibrator.setGamma(gamma);
     } else if (this->RadioButton_GammaCurve->Checked) {
 	double_vector_ptr gammaCurve = rgbGamma->w;
-	calibrator->setGammaCurve(gammaCurve);
+	calibrator.setGammaCurve(gammaCurve);
     }
-    calibrator->setGByPass(this->CheckBox_GByPass->Checked);
+    calibrator.setGByPass(this->CheckBox_GByPass->Checked);
     //==========================================================================
 
     //==========================================================================
@@ -132,21 +131,21 @@ void __fastcall TCCTLUTForm::Button_RunClick(TObject * Sender)
     //==========================================================================
     if (this->CheckBox_BGain->Checked) {
 	double gain = this->Edit_BGain->Text.ToDouble();
-	calibrator->setBIntensityGain(gain);
+	calibrator.setBIntensityGain(gain);
     }
-    calibrator->setBMax(this->CheckBox_BMax->Checked);
+    calibrator.setBMax(this->CheckBox_BMax->Checked);
     //==========================================================================
-    calibrator->setAvoidFRCNoise(this->CheckBox_AvoidNoise->Checked);
-    calibrator->setKeepMaxLuminance(this->CheckBox_KeepMax->Checked);
+    calibrator.setAvoidFRCNoise(this->CheckBox_AvoidNoise->Checked);
+    calibrator.setKeepMaxLuminance(this->CheckBox_KeepMax->Checked);
     try {
 	try {
 	    this->TOutputFileFrame1->createDir();
 
-	    bptr < MeasureCondition > measureCondition =
-		getMeasureCondition();
+	    /*bptr < MeasureCondition > measureCondition =
+	       getMeasureCondition(); */
 
 	    RGB_vector_ptr dglut =
-		calibrator->getCCTDGLut(measureCondition);
+		calibrator.getCCTDGLut(getMeasureCondition());
 	    if (dglut == null) {
 		//run = false;
 		return;
@@ -154,7 +153,7 @@ void __fastcall TCCTLUTForm::Button_RunClick(TObject * Sender)
 
 	    String_ptr astr = this->TOutputFileFrame1->getOutputFilename();
 	    string filename = astr->c_str();
-	    calibrator->storeDGLut(filename, dglut);
+	    calibrator.storeDGLut(filename, dglut);
 	    ShowMessage("Ok!");
 
 	}
@@ -213,10 +212,6 @@ void __fastcall TCCTLUTForm::FormShow(TObject * Sender)
 {
     using namespace Dep;
     using namespace cms::lcd::calibrate;
-
-    /*calibrator.reset(new
-       LCDCalibrator(MainForm->getComponentFetcher(),
-       bitDepth)); */
 
     const MaxValue & input = bitDepth->getInputMaxValue();
     bool avoidNoise = (input == MaxValue::Int6Bit
@@ -310,9 +305,13 @@ bptr < cms::lcd::calibrate::MeasureCondition >
 	int highstart = this->Edit_HighStartLevel->Text.ToInt();
 	int highend = this->Edit_HighEndLevel->Text.ToInt();
 	int highstep = this->ComboBox_HighStep->Text.ToInt();
-	condition.reset(new
-			MeasureCondition(lowstart, lowend, lowstep,
-					 highstart, highend, highstep));
+	condition = bptr < MeasureCondition > (new
+					       MeasureCondition(lowstart,
+								lowend,
+								lowstep,
+								highstart,
+								highend,
+								highstep));
     } else {
 	int start = this->Edit_StartLevel->Text.ToInt();
 	int end = this->Edit_EndLevel->Text.ToInt();
@@ -327,7 +326,10 @@ bptr < cms::lcd::calibrate::MeasureCondition >
 	    firstStep = step;
 	}
 
-	condition.reset(new MeasureCondition(start, end, firstStep, step));
+	condition =
+	    bptr < MeasureCondition > (new
+				       MeasureCondition(start, end,
+							firstStep, step));
     }
     return condition;
 

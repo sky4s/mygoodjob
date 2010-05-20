@@ -200,19 +200,12 @@ void __fastcall TTargetWhiteForm2::Button2Click(TObject * Sender)
 	double maxCount = bitDepth->getMaxDigitalCount();
 	//已知xy, 求rgb
 	if (true == moreAccurate) {
-	    //finder.reset(new WhitePointFinder(MainForm->mm, maxCount));
-	    //MainForm->bitDepth;
 	    finder =
 		bptr < WhitePointFinder >
 		(new WhitePointFinder(MainForm->mm, bitDepth, maxCount));
 	    MeasureWindow->addWindowListener(finder);
 	    rgb = finder->findRGB(xyY);
 	} else {
-
-	    /*finder.
-	       reset(new
-	       StocktonWhitePointFinder(MainForm->mm, bitDepth, rgb,
-	       maxCount)); */
 	    finder =
 		bptr < StocktonWhitePointFinder > (new
 						   StocktonWhitePointFinder
@@ -229,9 +222,14 @@ void __fastcall TTargetWhiteForm2::Button2Click(TObject * Sender)
     RGB_ptr r(new RGBColor());
     RGB_ptr g(new RGBColor());
     RGB_ptr b(new RGBColor());
-    r->R = rgb->R;
-    g->G = rgb->G;
-    b->B = rgb->B;
+    if (this->CheckBox_MaxRGB->Checked) {
+	r->R = g->G = b->B = 255;
+    } else {
+	r->R = rgb->R;
+	g->G = rgb->G;
+	b->B = rgb->B;
+    }
+
 
     //==========================================================================
     // 設定到ca-210去
@@ -263,7 +261,7 @@ void __fastcall TTargetWhiteForm2::Button2Click(TObject * Sender)
 	//MainForm->setMeterMeasurementWaitTimes();
 	//==========================================================================
 
-	setRGBRatio(r->R, g->G, b->B);
+	setRGBRatio(rgb->R, rgb->G, rgb->B);
     }
     __finally {
 	stopMeasure = false;

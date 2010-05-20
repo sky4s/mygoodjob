@@ -41,7 +41,7 @@ namespace cms {
 		bptr_ < TStringList > stringList(new TStringList());
 		connection->GetFieldNames(tableName->c_str(),
 					  stringList.get());
-		fieldNames.reset(new string_vector());
+		fieldNames = string_vector_ptr(new string_vector());
 		for (int x = 0; x != stringList->Count; x++) {
 		    AnsiString as = (*stringList)[x];
 		    string s(as.c_str());
@@ -66,7 +66,8 @@ namespace cms {
 		";Mode=ReadWrite;Extended Properties=Excel 8.0;Persist Security Info=False";
 
 	    CoInitialize(null);
-	    connection.reset(new TADOConnection(null));
+	    connection =
+		bptr < TADOConnection > (new TADOConnection(null));
 	    connection->ConnectionString = connectstr;
 	    connection->Provider = "Microsoft.Jet.OLEDB.4.0";
 	    connection->Open();
@@ -405,7 +406,6 @@ namespace cms {
 		throw IllegalStateException("File " + filename +
 					    " exists.");
 	    }
-	    //db.reset(new ExcelFileDB(filename, mode));
 	    db = bptr < ExcelFileDB > (new ExcelFileDB(filename, mode));
 	};
 	void ExcelAccessBase::insertData(const std::string & sheetname,

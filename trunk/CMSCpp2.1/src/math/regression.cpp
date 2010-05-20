@@ -67,7 +67,7 @@ namespace math {
 
 	int items = output->dim1();
 	int outSize = output->dim2();
-	coefs.reset(new double2D(outSize, inputCoefs->dim2()));
+	coefs = double2D_ptr(new double2D(outSize, inputCoefs->dim2()));
 
 	for (int x = 0; x < outSize; x++) {
 	    double1D_ptr singleOutput(new double1D(items));
@@ -198,7 +198,6 @@ namespace math {
 	switch (coefs.coef3_) {
 	case COEF3_::BY_3:
 	case COEF3_::BY_3C:
-	    //coef3.reset(new double1D(*Coef3X::getCoef3By3(x, y, z)));
 	    coef3 = Coef3X::getCoef3By3(x, y, z);
 	    break;
 	case COEF3_::BY_6:
