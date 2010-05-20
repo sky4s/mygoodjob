@@ -438,11 +438,6 @@ namespace math {
     void DoubleArray::storeToExcel(const string & filename,
 				   double_vector_ptr doubleVector) {
 	Util::deleteExist(filename);
-	//SimpleExcelAccess excel(filename,Create,
-	/*ExcelFileDB excel(filename, Create);
-	   string_vector_ptr fieldNames =
-	   StringVector::fromCString(1, "value");
-	   excel.createTable("Sheet1", fieldNames); */
 	bptr < SimpleExcelAccess > excel =
 	    SimpleExcelAccess::getValueStoreInstance(filename);
 	int size = doubleVector->size();

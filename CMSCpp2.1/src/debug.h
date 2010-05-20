@@ -6,9 +6,10 @@
 #define DEBUG_DIR  "debug/"
 
 //#define DEBUG_CCTLUT
+#define DEBUG_FINDWHITE
 
 //==============================================================================
-// debug用巨集
+// CCT巨集
 //==============================================================================
 #ifdef DEBUG_CCTLUT
 #include <cms/util/rgbarray.h>
@@ -40,6 +41,31 @@ DoubleArray::storeToExcel(debug_dir + _(filename), result);
 #define STORE_RGBGAMMA( filename , result )
 #define STORE_RGBVECTOR( filename , result )
 #define STORE_DOUBLE_VECTOR( filename , result )
+#endif
+//==============================================================================
+
+//==============================================================================
+// white finder巨集
+//==============================================================================
+#ifdef DEBUG_FINDWHITE
+#define BEGIN_STORE( filename ) \
+		Util::deleteExist(filename);\
+		string_vector_ptr fieldNames =\
+		    StringVector::fromCString(5, "R", "G", "B", "x", "y");\
+		bptr < SimpleExcelAccess >\
+		    access(new SimpleExcelAccess(filename, Create,\
+					     fieldNames));
+#define STORE_RGBXY( rgb , xyY )\
+		    access->insert(StringVector::\
+				   fromString(5, _toString(rgb->R),\
+                                              _toString(rgb->G),\
+                                              _toString(rgb->B),\
+					      _toString(xyY->x),\
+					      _toString(xyY->y)));
+
+#else
+#define BEGIN_STORE( filename )
+#define STORE_RGBXY( rgb , xyY )
 #endif
 //==============================================================================
 
