@@ -655,3 +655,4 @@ void TMainForm::setMeterMeasurementWaitTimes()
     this->mm->setWaitTimes(this->getInterval());
 };
 
+

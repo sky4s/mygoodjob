@@ -402,7 +402,8 @@ namespace cms {
 	    //¬ö¿ýtarget white¥Îªºrgb
 	    RGB_ptr refRGB = analyzer->getReferenceRGB();
 	    if (null != refRGB) {
-		dgcode.addProperty("reference white RGB", *refRGB->toString());
+		dgcode.addProperty("reference white RGB",
+				   *refRGB->toString());
 	    }
 	};
 	void DGLutProperty::addProperty(const std::string key,
@@ -414,7 +415,12 @@ namespace cms {
 	    propertyMap.
 		insert(make_pair(key, string_ptr(new string(value))));
 	};
-      DGLutProperty::DGLutProperty(bptr < cms::lcd::calibrate::LCDCalibrator > c):c(c),
+	/*DGLutProperty::DGLutProperty(bptr < cms::lcd::calibrate::LCDCalibrator > c):c(c),
+	   d(bptr < DGLutFile >
+	   ((DGLutFile *) null)) {
+
+	   }; */
+      DGLutProperty::DGLutProperty(cms::lcd::calibrate::LCDCalibrator * c):c(c),
 	    d(bptr < DGLutFile >
 	      ((DGLutFile *) null)) {
 
@@ -433,14 +439,13 @@ namespace cms {
 		addProperty((*result)[0], (*result)[1]);
 	    }
 	};
-      DGLutProperty::DGLutProperty(bptr < DGLutFile > d):c(bptr <
-	  LCDCalibrator >
-	  ((LCDCalibrator *) null)), d(d) {
+      DGLutProperty::DGLutProperty(bptr < DGLutFile > d):c((LCDCalibrator *) null),
+	    d(d)
+	{
 	    initProperty(d);
 	};
-      DGLutProperty::DGLutProperty(DGLutFile * d):c(bptr <
-	  LCDCalibrator >
-	  ((LCDCalibrator *) null)), d2(d) {
+      DGLutProperty::DGLutProperty(DGLutFile * d):c((LCDCalibrator *) null),
+	    d2(d) {
 	    initProperty(d);
 	};
 	string_ptr DGLutProperty::getProperty(const std::string key) {
