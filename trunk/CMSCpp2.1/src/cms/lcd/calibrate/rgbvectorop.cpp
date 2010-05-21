@@ -10,7 +10,6 @@
 
 //本項目內頭文件
 //#include "rgbvectorop.h";
-#include <debug.h>
 
 namespace cms {
     namespace lcd {

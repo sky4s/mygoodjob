@@ -8,7 +8,6 @@
 
 //其他庫頭文件
 
-
 //本項目內頭文件
 #include "TTargetWhiteForm2.h"
 #include "TMainForm.h"
@@ -301,10 +300,15 @@ void TTargetWhiteForm2::windowClosing()
 void __fastcall TTargetWhiteForm2::FormCreate(TObject * Sender)
 {
     using namespace cms::util;
+    /*bptr < WindowListener > formPtr(dynamic_cast <
+				    WindowListener * >(this));*/
     bptr < WindowListener > formPtr(dynamic_cast <
 				    WindowListener * >(this));
     MeasureWindow->addWindowListener(formPtr);
-
+#ifdef DEBUG_TARGETWHITE
+    this->CheckBox_MoreAccurate->Visible = true;
+    this->CheckBox_MaxRGB->Visible = true;
+#endif
 
 }
 
@@ -397,6 +401,16 @@ void __fastcall TTargetWhiteForm2::Button1Click(TObject * Sender)
     //maxmatrix->setupComponent()
 
     maxmatrix->enter();
+}
+
+//---------------------------------------------------------------------------
+
+void __fastcall TTargetWhiteForm2::FormKeyPress(TObject * Sender,
+						char &Key)
+{
+    if (Key == 27) {		//esc
+	this->Close();
+    }
 }
 
 //---------------------------------------------------------------------------

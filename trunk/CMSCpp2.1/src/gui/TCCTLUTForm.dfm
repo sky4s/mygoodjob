@@ -143,7 +143,7 @@ object CCTLUTForm: TCCTLUTForm
       ImeName = #20013#25991' ('#32321#39636') - '#26032#27880#38899
       ItemHeight = 16
       TabOrder = 3
-      Text = '2.4'
+      Text = '2.2'
       OnChange = ComboBox_GammaChange
       Items.Strings = (
         '1.8'
@@ -324,7 +324,7 @@ object CCTLUTForm: TCCTLUTForm
       Caption = 'Keep Max Luminance'
       TabOrder = 1
     end
-    object CheckBox_: TCheckBox
+    object CheckBox_NewDG: TCheckBox
       Left = 9
       Top = 80
       Width = 137

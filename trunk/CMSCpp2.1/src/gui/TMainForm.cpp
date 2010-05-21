@@ -17,7 +17,6 @@
 #include "TGammaAdjustmentForm.h"
 #include "TGammaMeasurementForm.h"
 
-#include <debug.h>
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
 #pragma resource "*.dfm"
