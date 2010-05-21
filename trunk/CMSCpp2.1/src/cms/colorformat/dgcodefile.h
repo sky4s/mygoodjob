@@ -89,7 +89,8 @@ namespace cms {
 	    static const std::string On;
 	    static const std::string Off;
 
-	     bptr < cms::lcd::calibrate::LCDCalibrator > c;
+	    //bptr < cms::lcd::calibrate::LCDCalibrator > c;
+	     cms::lcd::calibrate::LCDCalibrator * c;
 	     bptr < DGLutFile > d;
 	    DGLutFile *d2;
 	    void store(DGLutFile & dglut) const;
@@ -100,7 +101,8 @@ namespace cms {
 	    void initProperty(bptr < DGLutFile > d);
 	    void initProperty(DGLutFile * d);
 	  public:
-	     DGLutProperty(bptr < cms::lcd::calibrate::LCDCalibrator > c);
+	    //DGLutProperty(bptr < cms::lcd::calibrate::LCDCalibrator > c);
+	     DGLutProperty(cms::lcd::calibrate::LCDCalibrator * c);
 	     DGLutProperty(bptr < DGLutFile > d);
 	     DGLutProperty(DGLutFile * d);
 	    string_ptr getProperty(const std::string key);

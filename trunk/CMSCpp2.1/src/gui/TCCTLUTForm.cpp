@@ -80,11 +80,8 @@ void __fastcall TCCTLUTForm::Button_RunClick(TObject * Sender)
 
     //會出問題@@a
     bptr < ComponentFetcher > fetcher = MainForm->getComponentFetcher();
-    /*calibrator =
-       bptr < LCDCalibrator > (new LCDCalibrator(fetcher, bitDepth)); */
-    /*bptr_ < LCDCalibrator >
-       calibrator(new LCDCalibrator(fetcher, bitDepth)); */
     LCDCalibrator calibrator(fetcher, bitDepth);
+
 
 
     //==========================================================================
@@ -137,6 +134,7 @@ void __fastcall TCCTLUTForm::Button_RunClick(TObject * Sender)
     //==========================================================================
     calibrator.setAvoidFRCNoise(this->CheckBox_AvoidNoise->Checked);
     calibrator.setKeepMaxLuminance(this->CheckBox_KeepMax->Checked);
+
     try {
 	try {
 	    this->TOutputFileFrame1->createDir();
@@ -147,7 +145,6 @@ void __fastcall TCCTLUTForm::Button_RunClick(TObject * Sender)
 	    RGB_vector_ptr dglut =
 		calibrator.getCCTDGLut(getMeasureCondition());
 	    if (dglut == null) {
-		//run = false;
 		return;
 	    }
 

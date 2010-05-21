@@ -784,7 +784,8 @@ namespace cms {
 		//產生新檔
 		DGLutFile file(filename, Create);
 		//產生property物件
-		DGLutProperty property(bptr < LCDCalibrator > (this));
+		//bptr < LCDCalibrator > thisbptr(this);
+		DGLutProperty property(this);
 		//寫入property
 		file.setProperty(property);
 		//寫入dgcode
@@ -848,4 +849,4 @@ namespace cms {
 	};
     };
 };
- 
+
