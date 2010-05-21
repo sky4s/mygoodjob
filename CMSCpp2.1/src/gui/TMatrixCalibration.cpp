@@ -133,3 +133,13 @@ Button_MatrixCalibrateClick(TObject * Sender)
 //---------------------------------------------------------------------------
 
 
+void __fastcall TMatrixCalibrationForm::FormKeyPress(TObject * Sender,
+						     char &Key)
+{
+    if (Key == 27) {		//esc
+	this->Close();
+    }
+}
+
+//---------------------------------------------------------------------------
+

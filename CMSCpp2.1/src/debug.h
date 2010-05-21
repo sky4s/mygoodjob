@@ -7,6 +7,7 @@
 
 //#define DEBUG_CCTLUT
 #define DEBUG_FINDWHITE
+#define DEBUG_TARGETWHITE
 
 //==============================================================================
 // CCT¥¨¶°

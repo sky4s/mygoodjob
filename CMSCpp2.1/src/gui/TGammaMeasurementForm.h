@@ -52,6 +52,7 @@ class TGammaMeasurementForm:public TForm {
     void __fastcall TOutputFileFrame1Button_BrowseDirClick(TObject *
 							   Sender);
     void __fastcall Button2Click(TObject * Sender);
+    void __fastcall FormKeyPress(TObject * Sender, char &Key);
   private:			// User declarations
      bptr < cms::lcd::calibrate::BitDepthProcessor > bitDepth;
     void setMeasureInfo();

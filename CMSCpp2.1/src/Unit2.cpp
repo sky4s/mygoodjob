@@ -746,7 +746,10 @@ int main(int argc, char *argv[])
     //ddLutFileReadTry();
     //newCCTAlgoTry();
     //token();
-
+    Indep::CIEXYZ * a = new Indep::CIEXYZ();
+    XYZ_ptr b(a);
+    XYZ_ptr c(a);
+    XYZ_ptr d(a);
     getch();
 }
 

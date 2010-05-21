@@ -9,5 +9,6 @@
 #include <i2c/include.h>
 #include <java/lang.h>
 #include <vcl.h>
+#include <debug.h>
 
  

@@ -98,6 +98,7 @@ class TTargetWhiteForm2:public TForm, cms::util::WindowListener {
     void __fastcall Edit_BZChange(TObject * Sender);
     void __fastcall FormShow(TObject * Sender);
     void __fastcall Button1Click(TObject * Sender);
+    void __fastcall FormKeyPress(TObject * Sender, char &Key);
   private:			// User declarations
     void setColorimetricValues(double x, double y, double up, double vp);
     void scrollBar_Change();

@@ -11,8 +11,10 @@ object AboutBox: TAboutBox
   Font.Height = -14
   Font.Name = 'MS Sans Serif'
   Font.Style = []
+  KeyPreview = True
   OldCreateOrder = True
   Position = poScreenCenter
+  OnKeyPress = FormKeyPress
   PixelsPerInch = 120
   TextHeight = 16
   object Panel1: TPanel

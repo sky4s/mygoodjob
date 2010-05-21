@@ -183,3 +183,13 @@ void __fastcall TGammaMeasurementForm::Button2Click(TObject * Sender)
 
 //---------------------------------------------------------------------------
 
+void __fastcall TGammaMeasurementForm::FormKeyPress(TObject * Sender,
+						    char &Key)
+{
+    if (Key == 27) {		//esc
+	this->Close();
+    }
+}
+
+//---------------------------------------------------------------------------
+

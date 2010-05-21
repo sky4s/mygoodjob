@@ -14,21 +14,21 @@
 #include <vcl\ExtCtrls.hpp>
 #include <jpeg.hpp>
 //----------------------------------------------------------------------------
-class TAboutBox : public TForm
-{
-__published:
-	TPanel *Panel1;
-	TLabel *ProductName;
-	TLabel *Version;
-	TLabel *Copyright;
-	TLabel *Comments;
-	TButton *OKButton;
-        TImage *Image1;
-private:
-public:
-	virtual __fastcall TAboutBox(TComponent* AOwner);
+class TAboutBox:public TForm {
+    __published:TPanel * Panel1;
+    TLabel *ProductName;
+    TLabel *Version;
+    TLabel *Copyright;
+    TLabel *Comments;
+    TButton *OKButton;
+    TImage *Image1;
+    void __fastcall FormKeyPress(TObject * Sender, char &Key);
+  private:
+  public:
+     virtual __fastcall TAboutBox(TComponent * AOwner);
 };
 //----------------------------------------------------------------------------
 extern PACKAGE TAboutBox *AboutBox;
 //----------------------------------------------------------------------------
-#endif    
+#endif
+

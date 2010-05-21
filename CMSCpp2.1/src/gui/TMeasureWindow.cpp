@@ -102,6 +102,7 @@ void TMeasureWindow::addWindowListener(bptr < cms::util::WindowListener >
 				       listener)
 {
     listenerVector.push_back(listener);
+
 }
 
 //---------------------------------------------------------------------------

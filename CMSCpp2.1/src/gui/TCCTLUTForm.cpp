@@ -78,7 +78,6 @@ void __fastcall TCCTLUTForm::Button_RunClick(TObject * Sender)
     }
     MainForm->setMeterMeasurementWaitTimes();
 
-    //會出問題@@a
     bptr < ComponentFetcher > fetcher = MainForm->getComponentFetcher();
     LCDCalibrator calibrator(fetcher, bitDepth);
 
@@ -139,12 +138,10 @@ void __fastcall TCCTLUTForm::Button_RunClick(TObject * Sender)
 	try {
 	    this->TOutputFileFrame1->createDir();
 
-	    /*bptr < MeasureCondition > measureCondition =
-	       getMeasureCondition(); */
-
 	    RGB_vector_ptr dglut =
 		calibrator.getCCTDGLut(getMeasureCondition());
 	    if (dglut == null) {
+		//被中斷就直接return
 		return;
 	    }
 
@@ -260,9 +257,12 @@ TOutputFileFrame1Button_BrowseDirClick(TObject * Sender)
 
 void __fastcall TCCTLUTForm::FormKeyPress(TObject * Sender, char &Key)
 {
-    if (27 == Key && true == run) {
-	//calibrator->setStop(true);
-	ShowMessage("Interrupt!");
+    if (27 == Key) {
+	if (true == run) {
+	    ShowMessage("Interrupt!");
+	} else {
+	    this->Close();
+	}
     }
 }
 

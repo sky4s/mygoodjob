@@ -10,7 +10,6 @@
 //其他庫頭文件
 
 //本項目內頭文件
-#include <debug.h>
 
 namespace cms {
     namespace lcd {

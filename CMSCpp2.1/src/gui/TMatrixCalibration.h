@@ -62,6 +62,7 @@ class TMatrixCalibrationForm:public TForm {
     void __fastcall TCA210SettingFrame1ComboBox_SyncModeChange(TObject *
 							       Sender);
     void __fastcall Button_MatrixCalibrateClick(TObject * Sender);
+    void __fastcall FormKeyPress(TObject * Sender, char &Key);
   private:			// User declarations
      bptr < cms::measure::meter::CA210 > ca210;
      bptr < ca210api::CA210API > ca210API;

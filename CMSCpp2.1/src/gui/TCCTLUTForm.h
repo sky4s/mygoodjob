@@ -65,7 +65,7 @@ class TCCTLUTForm:public TForm {
     TLabel *Label12;
     TLabel *Label13;
     TButton *Button_Reset;
-    TCheckBox *CheckBox_;
+    TCheckBox *CheckBox_NewDG;
     TRadioButton *RadioButton_New2;
     TLabel *Label17;
     TEdit *Edit_New2Under;

@@ -10,7 +10,9 @@ object MatrixCalibrationForm: TMatrixCalibrationForm
   Font.Height = -13
   Font.Name = 'MS Sans Serif'
   Font.Style = []
+  KeyPreview = True
   OldCreateOrder = False
+  OnKeyPress = FormKeyPress
   PixelsPerInch = 120
   TextHeight = 16
   object Label13: TLabel
