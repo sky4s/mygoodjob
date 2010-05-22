@@ -135,7 +135,7 @@ void __fastcall TCCTLUTForm::Button_RunClick(TObject * Sender)
     calibrator.setAvoidFRCNoise(this->CheckBox_AvoidNoise->Checked);
     calibrator.setKeepMaxLuminance(this->CheckBox_KeepMax->Checked);
 
-    try {
+    try { //為了對應__finally使用的try
 	try {
 	    this->TOutputFileFrame1->createDir();
 
@@ -176,9 +176,11 @@ void __fastcall TCCTLUTForm::FormCreate(TObject * Sender)
     bool debug = !MainForm->linkCA210;
     this->Button_Debug->Visible = debug;
     this->Button_Reset->Visible = debug;
-    this->Button_Process->Visible = debug;
     //==========================================================================
-
+#ifdef DEBUG_CCTLUT
+    this->Button_Process->Visible = true;
+    this->CheckBox_NewDG->Visible = true;
+#endif
 }
 
 //---------------------------------------------------------------------------
