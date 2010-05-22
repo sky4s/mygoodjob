@@ -43,7 +43,12 @@ namespace cms {
 	    };
 
 	    class AdvancedDGLutGenerator:private DimDGLutGenerator {
-
+	      public:
+		AdvancedDGLutGenerator(Component_vector_ptr
+				       componentVector,
+				       bptr <
+				       cms::measure::IntensityAnalyzerIF >
+				       analyzer);
 	    };
 
 	    class DimTargetGenerator {

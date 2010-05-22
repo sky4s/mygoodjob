@@ -119,6 +119,18 @@ namespace cms {
 		return result;
 	    };
 
+	    //==================================================================
+	    // AdvancedDGLutGenerator
+	    //==================================================================
+	  AdvancedDGLutGenerator::AdvancedDGLutGenerator(Component_vector_ptr componentVector, bptr < IntensityAnalyzerIF > analyzer):DimDGLutGenerator(componentVector,
+			      analyzer)
+	    {
+	    };
+	    //==================================================================
+
+	    //==================================================================
+	    // DimTargetGenerator
+	    //==================================================================
 	    XYZ_vector_ptr DimTargetGenerator::
 		getLinearTarget(XYZ_ptr startXYZ, XYZ_ptr endXYZ,
 				double_vector_ptr luminanceGammaCurve) {
@@ -158,6 +170,7 @@ namespace cms {
 			       double_vector_ptr luminanceGammaCurve,
 			       double gamma) {
 	    };
+	    //==================================================================
 	};
     };
 };

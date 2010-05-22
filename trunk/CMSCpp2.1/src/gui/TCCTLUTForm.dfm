@@ -331,6 +331,7 @@ object CCTLUTForm: TCCTLUTForm
       Height = 25
       Caption = 'New DG Generate'
       TabOrder = 2
+      Visible = False
     end
   end
   object Button_Run: TButton
