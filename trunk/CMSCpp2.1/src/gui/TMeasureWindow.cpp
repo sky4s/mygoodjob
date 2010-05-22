@@ -12,6 +12,7 @@
 
 //本項目內頭文件
 #include "TMeasureWindow.h"
+#define WEAK_PTR
 
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
@@ -101,8 +102,12 @@ void TMeasureWindow::setVisible(bool visible)
 void TMeasureWindow::addWindowListener(bptr < cms::util::WindowListener >
 				       listener)
 {
+#ifndef WEAK_PTR
     listenerVector.push_back(listener);
-
+#else
+    bwptr < cms::util::WindowListener > wptr(listener);
+    listenerVector2.push_back(wptr);
+#endif
 }
 
 //---------------------------------------------------------------------------
@@ -111,11 +116,20 @@ void TMeasureWindow::addWindowListener(bptr < cms::util::WindowListener >
 void __fastcall TMeasureWindow::FormClose(TObject * Sender,
 					  TCloseAction & Action)
 {
+#ifndef WEAK_PTR
     foreach(bptr < cms::util::WindowListener > listener, listenerVector) {
 	if (null != listener) {
 	    listener->windowClosing();
 	}
     }
+#else
+    foreach(bwptr < cms::util::WindowListener > listener, listenerVector2) {
+	bptr < cms::util::WindowListener > l = listener.lock();
+	if (null != l) {
+	    l->windowClosing();
+	}
+    }
+#endif
 }
 
 //---------------------------------------------------------------------------

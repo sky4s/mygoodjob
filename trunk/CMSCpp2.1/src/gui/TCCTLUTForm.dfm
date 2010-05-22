@@ -248,16 +248,16 @@ object CCTLUTForm: TCCTLUTForm
       TabOrder = 5
       OnClick = RadioButton_NoneClick
     end
-    object RadioButton_New2: TRadioButton
+    object RadioButton_DefinedDim: TRadioButton
       Left = 9
       Top = 137
-      Width = 64
+      Width = 120
       Height = 24
-      Caption = 'New2'
+      Caption = 'Defined Dim'
       TabOrder = 6
-      OnClick = RadioButton_New2Click
+      OnClick = RadioButton_DefinedDimClick
     end
-    object Edit_New2Under: TEdit
+    object Edit_DefinedDimUnder: TEdit
       Left = 80
       Top = 161
       Width = 81

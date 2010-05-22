@@ -66,9 +66,9 @@ class TCCTLUTForm:public TForm {
     TLabel *Label13;
     TButton *Button_Reset;
     TCheckBox *CheckBox_NewDG;
-    TRadioButton *RadioButton_New2;
+        TRadioButton *RadioButton_DefinedDim;
     TLabel *Label17;
-    TEdit *Edit_New2Under;
+        TEdit *Edit_DefinedDimUnder;
     TButton *Button_Process;
     void __fastcall RadioButton_RBInterpClick(TObject * Sender);
     void __fastcall RadioButton_P1P2Click(TObject * Sender);
@@ -86,7 +86,7 @@ class TCCTLUTForm:public TForm {
     void __fastcall RadioButton_NoneClick(TObject * Sender);
     //void __fastcall RadioButton_NewClick(TObject * Sender);
     void __fastcall Button_ResetClick(TObject * Sender);
-    void __fastcall RadioButton_New2Click(TObject * Sender);
+    void __fastcall RadioButton_DefinedDimClick(TObject * Sender);
   private:			// User declarations
     void setMeasureInfo();
     int serialid;

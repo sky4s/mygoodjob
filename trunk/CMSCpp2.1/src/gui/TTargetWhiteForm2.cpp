@@ -300,8 +300,6 @@ void TTargetWhiteForm2::windowClosing()
 void __fastcall TTargetWhiteForm2::FormCreate(TObject * Sender)
 {
     using namespace cms::util;
-    /*bptr < WindowListener > formPtr(dynamic_cast <
-				    WindowListener * >(this));*/
     bptr < WindowListener > formPtr(dynamic_cast <
 				    WindowListener * >(this));
     MeasureWindow->addWindowListener(formPtr);
