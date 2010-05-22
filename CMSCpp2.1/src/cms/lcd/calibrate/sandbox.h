@@ -13,6 +13,8 @@
 namespace cms {
     namespace lcd {
 	namespace calibrate {
+
+
 	    class DimDGLutGenerator {
 	      private:
 		Component_vector_ptr componentVector;
@@ -28,6 +30,7 @@ namespace cms {
 						XYZ_ptr endXYZ,
 						double_vector_ptr
 						luminanceGammaCurve);
+		static void storeXYZVector(XYZ_vector_ptr XYZVector);
 
 	      public:
 		 DimDGLutGenerator(Component_vector_ptr componentVector,
@@ -37,6 +40,10 @@ namespace cms {
 		RGB_vector_ptr produce(XYZ_ptr targetWhite,
 				       double_vector_ptr
 				       luminanceGammaCurve, int under);
+	    };
+
+	    class AdvancedDGLutGenerator:private DimDGLutGenerator {
+
 	    };
 
 	    class DimTargetGenerator {

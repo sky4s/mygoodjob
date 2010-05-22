@@ -554,8 +554,8 @@ namespace cms {
 		this->p2 = p2;
 		this->gammaShift = gammaShift;
 	    };
-	    void LCDCalibrator::setNew2(int under) {
-		this->correct = New2;
+	    void LCDCalibrator::setDefinedDim(int under) {
+		this->correct = DefinedDim;
 		this->under = under;
 	    };
 	    void LCDCalibrator::setGamma(double gamma) {
@@ -724,7 +724,7 @@ namespace cms {
 		}
 		finalRGBGamma = rgbgamma;
 
-		if (correct == New2) {
+		if (correct == DefinedDim) {
 		    /*
 		       DimDGLutGenerator
 		       in: target white , gamma(Y)

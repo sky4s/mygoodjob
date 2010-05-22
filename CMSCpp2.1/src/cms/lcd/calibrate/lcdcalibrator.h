@@ -131,7 +131,8 @@ namespace cms {
 	    };
 
 	    enum Correct {
-		P1P2 = 1, RBInterpolation = 2, None = 3, New = 4, New2 = 5
+		P1P2 = 1, RBInterpolation = 2, None = 3, New = 4, New2 =
+		    5, DefinedDim = 6
 	    };
 
 	    class MeasureCondition {
@@ -215,7 +216,8 @@ namespace cms {
 		void setRBInterpolation(int under);
 		void setNoneDimCorrect();
 		void setNew(int p1, int p2, double gammaShift);
-		void setNew2(int under);
+		//void setNew2(int under);
+                void setDefinedDim(int under);
 		void setGamma(double gamma);
 		void setGamma(double rgamma, double ggamma, double bgamma);
 		void setGammaCurve(double_vector_ptr gammaCurve);

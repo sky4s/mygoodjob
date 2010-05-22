@@ -15,6 +15,7 @@ namespace cms {
     namespace lcd {
 	namespace calibrate {
 	    using namespace cms::measure;
+	    using namespace cms::colorformat;
 	    Component_vector_ptr DimDGLutGenerator::fetchComponent(bptr <
 								   MaxMatrixIntensityAnayzer
 								   >
@@ -22,7 +23,6 @@ namespace cms {
 								   Component_vector_ptr
 								   componentVector)
 	    {
-		int size = componentVector->size();
 		Component_vector_ptr result(new Component_vector());
 
 		 foreach(const Component_ptr c, *componentVector) {
@@ -34,12 +34,37 @@ namespace cms {
 		};
 		 return result;
 	    };
-	     DimDGLutGenerator::
-		DimDGLutGenerator(Component_vector_ptr
-				  componentVector,
-				  bptr < IntensityAnalyzerIF >
-				  analyzer):componentVector
-		(componentVector), analyzer(analyzer) {
+	    XYZ_vector_ptr DimDGLutGenerator::getTarget(XYZ_ptr startXYZ,
+							XYZ_ptr endXYZ,
+							double_vector_ptr
+							luminanceGammaCurve)
+	    {
+		XYZ_vector_ptr targetXYZVector =
+		    DimTargetGenerator::
+		    getLinearTarget(startXYZ, endXYZ, luminanceGammaCurve);
+		 return targetXYZVector;
+	    };
+	    void DimDGLutGenerator::
+		storeXYZVector(XYZ_vector_ptr XYZVector) {
+
+		Util::deleteExist("target.xls");
+		SimpleExcelAccess excel("target.xls", Create,
+					StringVector::
+					fromCString(4, "Gray Level",
+						    "X", "Y", "Z"));
+		int size = XYZVector->size();
+		for (int x = 0; x != size; x++) {
+		    XYZ_ptr XYZ = (*XYZVector)[x];
+		    string_vector_ptr values =
+			StringVector::fromDouble(4, static_cast < double
+						 >(x), XYZ->X, XYZ->Y,
+						 XYZ->Z);
+		    excel.insert(values);
+		}
+	    };
+	  DimDGLutGenerator::DimDGLutGenerator(Component_vector_ptr componentVector, bptr < IntensityAnalyzerIF > analyzer):componentVector
+		(componentVector),
+		analyzer(analyzer) {
 	    };
 	    RGB_vector_ptr DimDGLutGenerator::
 		produce(XYZ_ptr targetWhite,
@@ -56,27 +81,12 @@ namespace cms {
 					      size);
 
 		//求目標值曲線
+		/*XYZ_vector_ptr targetXYZVector =
+		   DimTargetGenerator::
+		   getLinearTarget(blackXYZ, targetWhite, partGammaCurve); */
 		XYZ_vector_ptr targetXYZVector =
-		    DimTargetGenerator::
-		    getLinearTarget(blackXYZ, targetWhite, partGammaCurve);
-		{
-		    using namespace cms::colorformat;
-		    Util::deleteExist("target.xls");
-		    SimpleExcelAccess excel("target.xls", Create,
-					    StringVector::
-					    fromCString(4, "Gray Level",
-							"X", "Y", "Z"));
-		    int size = targetXYZVector->size();
-		    for (int x = 0; x != size; x++) {
-			XYZ_ptr XYZ = (*targetXYZVector)[x];
-			string_vector_ptr values =
-			    StringVector::fromDouble(4,
-						     static_cast <
-						     double >(x), XYZ->X,
-						     XYZ->Y, XYZ->Z);
-			excel.insert(values);
-		    }
-		}
+		    getTarget(blackXYZ, targetWhite, partGammaCurve);
+		storeXYZVector(targetXYZVector);
 		//==============================================================
 		RGB_vector_ptr result(new RGB_vector());
 
@@ -84,6 +94,7 @@ namespace cms {
 		xyY_ptr gxyY = analyzer->getPrimaryColor(Channel::G);
 		xyY_ptr bxyY = analyzer->getPrimaryColor(Channel::B);
 		int x = 0;
+		x;
 
 		foreach(const XYZ_ptr targetXYZ, *targetXYZVector) {
 		    bptr < MaxMatrixIntensityAnayzer >
@@ -123,11 +134,11 @@ namespace cms {
 		for (int x = 0; x < size; x++) {
 		    //在uv'上線性變化
 		    double u = Interpolation::linear(0, size - 1,
-						      startuvValues[0],
-						      enduvValues[0], x);
+						     startuvValues[0],
+						     enduvValues[0], x);
 		    double v = Interpolation::linear(0, size - 1,
-						      startuvValues[1],
-						      enduvValues[1], x);
+						     startuvValues[1],
+						     enduvValues[1], x);
 		    double Y = (*luminanceGammaCurve)[x];
 		    xyY_ptr targetxyY(new CIExyY());
 		    double_array targetValues(new double[3]);
@@ -135,7 +146,7 @@ namespace cms {
 		    targetValues[1] = v;
 		    targetValues[2] = Y;
 		    //targetxyY->setuvPrimeYValues(targetValues);
-                    targetxyY->setuvYValues(targetValues);
+		    targetxyY->setuvYValues(targetValues);
 		    (*result)[x] = targetxyY->toXYZ();
 		}
 

@@ -101,9 +101,10 @@ void __fastcall TCCTLUTForm::Button_RunClick(TObject * Sender)
 				   double gammaShift = this->Edit_GammaShift->Text.ToDouble();
 				   calibrator->setNew(p1, p2, gammaShift);
 				   } */
-    else if (this->RadioButton_New2->Checked) {
-	int under = this->Edit_New2Under->Text.ToInt();
-	calibrator.setNew2(under);
+    else if (this->RadioButton_DefinedDim->Checked) {
+	//新低灰階修正方法
+	int under = this->Edit_DefinedDimUnder->Text.ToInt();
+	calibrator.setDefinedDim(under);
     } else {
 	calibrator.setNoneDimCorrect();
     }
@@ -341,7 +342,7 @@ void TCCTLUTForm::setLowLevelCorrectionEditDisable()
     //this->Edit_NewP1->Enabled = false;
     //this->Edit_NewP2->Enabled = false;
     //this->Edit_GammaShift->Enabled = false;
-    this->Edit_New2Under->Enabled = false;
+    this->Edit_DefinedDimUnder->Enabled = false;
 };
 
 void __fastcall TCCTLUTForm::RadioButton_NoneClick(TObject * Sender)
@@ -360,10 +361,10 @@ void __fastcall TCCTLUTForm::Button_ResetClick(TObject * Sender)
 
 //---------------------------------------------------------------------------
 
-void __fastcall TCCTLUTForm::RadioButton_New2Click(TObject * Sender)
+void __fastcall TCCTLUTForm::RadioButton_DefinedDimClick(TObject * Sender)
 {
     setLowLevelCorrectionEditDisable();
-    this->Edit_New2Under->Enabled = true;
+    this->Edit_DefinedDimUnder->Enabled = true;
 }
 
 //---------------------------------------------------------------------------

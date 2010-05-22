@@ -38,6 +38,7 @@ class TMeasureWindow:public TForm {
      bool tconinput;
      bptr < i2c::TCONControl > tconcontrol;
      std::vector < bptr < cms::util::WindowListener > >listenerVector;
+     std::vector < bwptr < cms::util::WindowListener > >listenerVector2;
   public:			// User declarations
      __fastcall TMeasureWindow(TComponent * Owner);
     void setRGB(int r, int g, int b);
