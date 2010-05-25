@@ -127,7 +127,7 @@ namespace cms {
 	class ExcelAccessBase {
 	  private:
 	    const std::string & filename;
-	    const Mode mode;
+	    const Mode mode; 
 	     std::map < const std::string,
 		string_vector_ptr) headerNamesMap;
 	  protected:
@@ -135,6 +135,12 @@ namespace cms {
 	    string_vector_ptr getHeaderNames(const std::
 					     string & sheetname);
 	    const int getHeaderCount(const std::string & sheetname);
+
+	    void initPropertySheet();
+	    void initBegin();
+
+	    //virtual void init() = 0;
+	  public:
 	    void initSheet(const std::string & sheetname, int headerCount,
 			   ...);
 	    void initSheet(const std::string & sheetname,
@@ -142,12 +148,8 @@ namespace cms {
 	    void initSheet(const std::string & sheetname,
 			   string_vector_ptr headerNames,
 			   string_vector_ptr fieldTypes);
-	    void initPropertySheet();
-	    void initBegin();
 	    void insertData(const std::string & sheetname,
 			    string_vector_ptr values, bool text);
-	    //virtual void init() = 0;
-	  public:
 
 	     ExcelAccessBase(const std::string & filename, Mode mode);
 	    void
@@ -159,13 +161,14 @@ namespace cms {
 	     bptr < DBQuery > retrieve(const std::string & sheetname);
 
 	};
-	class SimpleExcelAccess:public ExcelAccessBase {
+	class SimpleExcelAccess:protected ExcelAccessBase {
 	  private:
 	    const static std::string & Sheet1;
 	  protected:
-	     string_vector_ptr headerNames;
+	    //string_vector_ptr headerNames;
 	    //void init();
 	  public:
+	     SimpleExcelAccess(const std::string & filename, Mode mode);
 	     SimpleExcelAccess(const std::string & filename, Mode mode,
 			       string_vector_ptr headerNames);
 	     SimpleExcelAccess(const std::string & filename, Mode mode,
@@ -174,6 +177,9 @@ namespace cms {
 	     SimpleExcelAccess(const std::string & filename);
 	     bptr < DBQuery > retrieve();
 	    void insert(string_vector_ptr values);
+	    /*void insert(const std::string & sheetname,
+	       string_vector_ptr values); */
+
 	    /*
 	       提供可用來儲存value的預先定義格式
 	     */

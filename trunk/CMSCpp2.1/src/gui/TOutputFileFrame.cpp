@@ -43,7 +43,7 @@ void TOutputFileFrame::createDir()
 }
 
 //---------------------------------------------------------------------------
-bptr < AnsiString > TOutputFileFrame::getFullPrefix()
+String_ptr TOutputFileFrame::getFullPrefix()
 {
     String_ptr
 	prefix(new AnsiString(this->Edit_Directory->Text + "\\" +
@@ -52,7 +52,7 @@ bptr < AnsiString > TOutputFileFrame::getFullPrefix()
 }
 
 //---------------------------------------------------------------------------
-bptr < AnsiString > TOutputFileFrame::getOutputFilename()
+String_ptr TOutputFileFrame::getOutputFilename()
 {
     String_ptr output(new
 		      String(*getFullPrefix() +

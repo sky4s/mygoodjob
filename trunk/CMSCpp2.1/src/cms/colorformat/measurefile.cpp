@@ -38,11 +38,11 @@ namespace cms {
 	    int gsize = gMeasureData != null ? gMeasureData->size() : 0;
 	    int bsize = bMeasureData != null ? bMeasureData->size() : 0;
 	    int_array sizes(new int[4]);
-	     sizes[0] = wsize;
-	     sizes[1] = rsize;
-	     sizes[2] = gsize;
-	     sizes[3] = bsize;
-	     return IntArray::max(sizes, 4);
+	    sizes[0] = wsize;
+	    sizes[1] = rsize;
+	    sizes[2] = gsize;
+	    sizes[3] = bsize;
+	    return IntArray::max(sizes, 4);
 	};
 
 	void RampMeasureFile::

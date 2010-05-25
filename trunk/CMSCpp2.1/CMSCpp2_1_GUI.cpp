@@ -19,14 +19,16 @@ USEFORM("src\gui\TGammaAdjustmentForm.cpp", GammaAdjustmentForm);
 USEFORM("src\gui\TOptionsFrame.cpp", OptionsFrame); /* TFrame: File Type */
 USEFORM("src\gui\TOutputFileFrame.cpp", OutputFileFrame); /* TFrame: File Type */
 USEFORM("src\gui\TGammaMeasurementForm.cpp", GammaMeasurementForm);
+USEFORM("src\gui\T3DMeasureWindow.cpp", ThreeDMeasureWindow);
+USEFORM("src\gui\T3DMeasurementForm.cpp", ThreeDMeasurementForm);
 //---------------------------------------------------------------------------
 WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 {
     try {
 	Application->Initialize();
 	Application->Title = "CCTv3 Adjustment";
-	Application->CreateForm(__classid(TMainForm), &MainForm);
-                 Application->CreateForm(__classid(TMeasureWindow), &MeasureWindow);
+	Application->CreateForm(__classid(TThreeDMeasurementForm), &ThreeDMeasurementForm);
+                 Application->CreateForm(__classid(TThreeDMeasureWindow), &ThreeDMeasureWindow);
                  Application->Run();
     }
     catch(EOleException & ex) {

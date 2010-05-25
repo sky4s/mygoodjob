@@ -290,8 +290,6 @@ void sizeCompare()
 
 }
 
-class A {
-};
 
 void gammaCurve()
 {
@@ -381,44 +379,9 @@ void rgbop()
     using namespace cms::lcd::calibrate;
     //RGBOp < RGBGamma_ptr > rgbgammaop;
 };
-class AA {
-};
-class BB {
-};
-template < class T > class TA {
 
-  public:
-    virtual double get() {
-    };
-};
-template <> double TA < AA >::get()
-{
-    return 1;
-};
-template <> double TA < BB >::get()
-{
-    return 2;
-};
-class TB:public TA < double > {
 
-  public:
-    double get() {
-	return 100;
-    };
-};
-void templateTry()
-{
 
-    using namespace std;
-    TA < AA > aa;
-    TA < BB > bb;
-    //TA < double >cc;
-    TB dd;
-    cout << aa.get() << endl;
-    cout << bb.get() << endl;
-    //cout << cc.get() << endl;
-    cout << dd.get() << endl;
-};
 void forTry()
 {
 
@@ -561,21 +524,7 @@ void rgbGammaTry()
 	cout << v << endl;
     };
 };
-class Base {
 
-  public:
-    virtual void _do() = 0;
-    void doing() {
-	_do();
-    };
-};
-class Son:public Base {
-
-  public:
-    virtual void _do() {
-	cout << "do" << endl;
-    };
-};
 void measureConditionTry()
 {
     using namespace cms::lcd::calibrate;

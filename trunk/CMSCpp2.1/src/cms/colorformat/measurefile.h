@@ -25,6 +25,7 @@ namespace cms {
 	  public:
 	     RampMeasureFile(const std::string & fileName,
 			     const Mode mode);
+	     RampMeasureFile(const string_ptr fileName, const Mode mode);
 	    void setMeasureData(Component_vector_ptr wMeasureData,
 				Patch_vector_ptr rMeasureData,
 				Patch_vector_ptr gMeasureData,
