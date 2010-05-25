@@ -72,9 +72,25 @@ namespace cms {
 	};
 
 	bool ColorSpace::equalsValues(ColorSpace & colorSpace) {
+	    int bands = this->getNumberBands();
+	    if (colorSpace.getNumberBands() != bands) {
+		throw
+		    IllegalArgumentException
+		    ("colorSpace.getNumberBands() != this->getNumberBands()");
+	    }
+
 	    double_array thisValues = this->getValues();
-	    /* TODO : equalsValues */
+	    double_array thatValues = colorSpace.getValues();
+	    for (int x = 0; x < bands; x++) {
+		if (thisValues[x] != thatValues[x]) {
+		    return false;
+		}
+	    }
+	    return true;
 	}
+	bool ColorSpace::equalsValues(ColorSpace_ptr colorSpace) {
+	    return equalsValues(*colorSpace);
+	};
 	string_ptr ColorSpace::getName() {
 	    return this->getClass().getSimpleName();
 	};
@@ -98,10 +114,9 @@ namespace cms {
 
 	    return cartesianValues;
 	};
-	double_array ColorSpace::polar2cartesianCoordinatesValues(double
-								  distance,
-								  double
-								  angle) {
+	double_array ColorSpace::
+	    polar2cartesianCoordinatesValues(double distance,
+					     double angle) {
 	    double t = (angle * Math::PI) / 180.0;
 
 	    double_array cartesianValues(new double[2]);
@@ -141,7 +156,8 @@ namespace cms {
 	    string_vector_ptr stringvector =
 		StringVector::tokenize(*string, "[], '");
 	    if (stringvector->size() != 3) {
-		throw IllegalArgumentException("stringvector->size() != 3");
+		throw
+		    IllegalArgumentException("stringvector->size() != 3");
 	    }
 	    double_array result(new double[3]);
 	    result[0] = _toDouble((*stringvector)[0]);

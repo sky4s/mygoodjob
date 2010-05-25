@@ -356,7 +356,9 @@ namespace cms {
 	int MaxMatrixIntensityAnayzer::getWaitTimes() {
 	    if (null != mm) {
 		return mm->getWaitTimes();
-	    }
+	    } else {
+		return -1;
+	    };
 	};
 	xyY_ptr MaxMatrixIntensityAnayzer::getReferenceColor() {
 	    xyY_ptr xyY(new CIExyY(wXYZ));

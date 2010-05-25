@@ -295,7 +295,7 @@ namespace cms {
 	    };
 
 	    xyY_ptr CIExyY::fromCCT2Blackbody(int CCT) {
-		//return CorrelatedColorTemperature.CCT2BlackbodyxyY(CCT);
+		return CorrelatedColorTemperature::CCT2BlackbodyxyY(CCT);
 	    };
 	    xyY_ptr CIExyY::fromCCT2DIlluminant(int CCT) {
 		return CorrelatedColorTemperature::CCT2DIlluminantxyY(CCT);

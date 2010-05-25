@@ -46,6 +46,10 @@ namespace i2c {
 	(*data)[testRGBBit.gLowBit / 8] = gLow;
 	(*data)[testRGBBit.bLowBit / 8] = bLow;
 
+	rHigh;
+	gHigh;
+	bHigh;
+
 	return data;
     };
 

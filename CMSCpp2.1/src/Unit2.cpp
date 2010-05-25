@@ -624,21 +624,50 @@ void newCCTAlgoTry()
 
 void token()
 {
-    //using namespace boost;
-    string str =
-	"'[0.2789347051678352, 0.2900524607588401, 561.2361450195312]";
-    typedef boost::tokenizer < boost::char_separator < char > >tokenizer;
-    boost::char_separator < char >sep("[], '");
-    tokenizer tokens(str, sep);
-    for (tokenizer::iterator tok_iter = tokens.begin();
-	 tok_iter != tokens.end(); ++tok_iter) {
-	std::cout << "<" << *tok_iter << "> ";
-    }
-    std::cout << "\n";
+    /*string str =
+       "'[0.2789347051678352, 0.2900524607588401, 561.2361450195312]";
+       typedef boost::tokenizer < boost::char_separator < char > >tokenizer;
+       boost::char_separator < char >sep("[], '");
+       tokenizer tokens(str, sep);
+       for (tokenizer::iterator tok_iter = tokens.begin();
+       tok_iter != tokens.end(); ++tok_iter) {
+       std::cout << "<" << *tok_iter << "> ";
+       }
+       std::cout << "\n"; */
 
 
 }
 
+void readTextTester()
+{
+    /*TStringList *sl = new TStringList;
+       sl->LoadFromFile("../src/cms/reference/cie/ciexyz31_1.txt");
+       for (int i = 0; i < sl->Count; i++) {
+       //Memo1->Lines->Add(SLTmp->Strings[i]);
+       cout << sl->Strings[i] << endl;
+       } */
+
+    using namespace cms::colorformat;
+    Parser parser("ciexyz31_1.txt");
+    //for(int x=0;x<parser.
+    for (int x = 0; x < parser.getCount(); x++) {
+	string_vector_ptr tokenize = parser.getTokenize(x);
+	foreach(const string & s, *tokenize) {
+	    cout << s << endl;
+	}
+    }
+}
+
+void cmfTester()
+{
+    using namespace cms;
+    const ColorMatchingFunction & cmf =
+	*ColorMatchingFunction::CIE_1931_2DEG_XYZ;
+    cout << cmf.getStart() << endl;
+    cout << cmf.getInterval() << endl;
+    cout << cmf.getEnd() << endl;
+    cout << cmf.getSpectra(0)->getXYZ() << endl;
+};
 
 #pragma argsused
 int main(int argc, char *argv[])
@@ -695,10 +724,8 @@ int main(int argc, char *argv[])
     //ddLutFileReadTry();
     //newCCTAlgoTry();
     //token();
-    Indep::CIEXYZ * a = new Indep::CIEXYZ();
-    XYZ_ptr b(a);
-    XYZ_ptr c(a);
-    XYZ_ptr d(a);
+    //readTextTester();
+    cmfTester();
     getch();
 }
 
