@@ -3,7 +3,7 @@
 //C系統文件
 
 //C++系統文件
-#include <vcl.h>
+
 #ifdef __BORLANDC__
 # pragma pack(push, 8)
 #endif
@@ -13,6 +13,7 @@
 #endif
 
 //其他庫頭文件
+#include <vcl.h>
 #include <ADODB.hpp>
 #include <DB.hpp>
 //本項目內頭文件

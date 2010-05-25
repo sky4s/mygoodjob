@@ -80,6 +80,7 @@ namespace i2c {
 namespace cms {
     class Patch;
     class Spectra;
+    class ColorMatchingFunction;
     namespace colorformat {
 	namespace logo {
 	    class LogoFile;
@@ -96,6 +97,7 @@ namespace cms {
 
     };
     namespace colorspace {
+	class ColorSpace;
 	namespace depend {
 	    class RGBColor;
 	    class Channel;
@@ -165,38 +167,22 @@ typedef java::lang::Object jObject;
 //scope內用smart_ptr
 #define bptr_ boost::scoped_ptr
 
-/*#define string_ptr bptr < std::string >
-#define String_ptr bptr < AnsiString >
-#define nil_string_ptr string_ptr ((std::string*)NULL)*/
 #define Object_ptr bptr < jObject >
 typedef bptr < std::string > string_ptr;
 typedef bptr < AnsiString > String_ptr;
 #define nil_string_ptr string_ptr ((std::string*)NULL)
-//typedef bptr < jObject > Object_ptr
 
-/*#define int_vector std::vector < int >
-#define int_vector_ptr bptr < int_vector >*/
 typedef std::vector < int >int_vector;
 typedef bptr < int_vector > int_vector_ptr;
 
-/*#define bool_vector std::vector < bool >
-#define bool_vector_ptr bptr < bool_vector >*/
 typedef std::vector < bool > bool_vector;
 typedef bptr < bool_vector > bool_vector_ptr;
 
-/*#define double_vector std::vector < double >
-#define double_vector_ptr bptr < double_vector >*/
 #define nil_double_vector_ptr double_vector_ptr ((double_vector*)NULL)
 #define nil_double_vector nil_double_vector_ptr
 typedef std::vector < double >double_vector;
 typedef bptr < double_vector > double_vector_ptr;
 
-/*#define string_vector std::vector < std::string >
-#define string_vector_ptr bptr < string_vector >
-#define stringp_vector std::vector < string_ptr >
-#define stringp_vector_ptr bptr < stringp_vector >
-#define string_doublevector std::vector < string_vector_ptr >
-#define string_doublevector_ptr bptr < string_doublevector >*/
 typedef std::vector < std::string > string_vector;
 typedef bptr < string_vector > string_vector_ptr;
 typedef std::vector < string_ptr > stringp_vector;
@@ -205,12 +191,6 @@ typedef std::vector < string_vector_ptr > string_doublevector;
 typedef bptr < string_doublevector > string_doublevector_ptr;
 
 
-/*#define double_array barray <double>
-#define nil_double_array double_array ((double*)NULL)
-#define float_array barray <float>
-#define nil_float_array float_array ((float*)NULL)
-#define int_array barray <int>
-#define nil_int_array int_array ((int*)NULL)*/
 typedef barray < double >double_array;
 #define nil_double_array double_array ((double*)NULL)
 typedef barray < float >float_array;
@@ -228,59 +208,40 @@ typedef barray < int >int_array;
 #define Dep cms::colorspace::depend
 #define Indep cms::colorspace::independ
 
-/*#define RGB_ptr bptr < Dep::RGBColor >
-#define nil_RGB_ptr RGB_ptr( (Dep::RGBColor*) null)
-#define RGB_array barray < RGB_ptr >
-#define RGB_list std::list < RGB_ptr >
-#define RGB_list_ptr bptr < RGB_list >
-#define RGB_vector std::vector < RGB_ptr >
-#define RGB_vector_ptr bptr < RGB_vector >*/
+typedef bptr < cms::colorspace::ColorSpace > ColorSpace_ptr;
 typedef bptr < Dep::RGBColor > RGB_ptr;
 #define nil_RGB_ptr RGB_ptr( (Dep::RGBColor*) null)
 typedef barray < RGB_ptr > RGB_array;
-/*typedef std::list < RGB_ptr > RGB_list;
-typedef bptr < RGB_list > RGB_list_ptr;*/
 typedef std::vector < RGB_ptr > RGB_vector;
 typedef bptr < RGB_vector > RGB_vector_ptr;
 
-/*#define xyY_ptr bptr < Indep::CIExyY >
-#define xyY_vector std::vector < xyY_ptr >
-#define xyY_vector_ptr bptr < xyY_vector >*/
 typedef bptr < Indep::CIExyY > xyY_ptr;
 typedef std::vector < xyY_ptr > xyY_vector;
 typedef bptr < xyY_vector > xyY_vector_ptr;
 
-/*#define XYZ_ptr bptr < Indep::CIEXYZ >
-#define XYZ_vector std::vector < XYZ_ptr >
-#define XYZ_vector_ptr bptr < XYZ_vector >*/
 typedef bptr < Indep::CIEXYZ > XYZ_ptr;
 typedef std::vector < XYZ_ptr > XYZ_vector;
 typedef bptr < XYZ_vector > XYZ_vector_ptr;
 
-
-/*#define Channel_vector std::vector < Dep::Channel >
-#define Channel_vector_ptr bptr < Channel_vector >*/
 typedef std::vector < Dep::Channel > Channel_vector;
 typedef bptr < Channel_vector > Channel_vector_ptr;
 
-/*#define Patch_ptr bptr < cms::Patch >
-#define Patch_vector std::vector < Patch_ptr >
-#define Patch_vector_ptr bptr < Patch_vector >
-#define nil_Patch_vector_ptr Patch_vector_ptr( (Patch_vector*) null)*/
 typedef bptr < cms::Patch > Patch_ptr;
 typedef std::vector < Patch_ptr > Patch_vector;
 typedef bptr < Patch_vector > Patch_vector_ptr;
 #define nil_Patch_vector_ptr Patch_vector_ptr( (Patch_vector*) null)
 
-/*#define Component_ptr bptr < cms::lcd::calibrate::Component >
-#define Component_vector std::vector < Component_ptr >
-#define Component_vector_ptr bptr < Component_vector >*/
+typedef bptr < cms::Spectra > Spectra_ptr;
+typedef std::vector < Spectra_ptr > Spectra_vector;
+typedef bptr < Spectra_vector > Spectra_vector_ptr;
+
+typedef bptr < cms::ColorMatchingFunction > CMF_ptr;
+
 typedef bptr < cms::lcd::calibrate::Component > Component_ptr;
 typedef std::vector < Component_ptr > Component_vector;
 typedef bptr < Component_vector > Component_vector_ptr;
 
-/*#define RGBGamma_ptr  bptr < cms::util::RGBGamma >
-#define nil_RGBGamma RGBGamma_ptr( (RGBGamma*) null)*/
+
 typedef bptr < cms::util::RGBGamma > RGBGamma_ptr;
 #define nil_RGBGamma RGBGamma_ptr( (RGBGamma*) null)
 //==============================================================================
@@ -288,9 +249,6 @@ typedef bptr < cms::util::RGBGamma > RGBGamma_ptr;
 //==============================================================================
 //簡化tnt使用上的巨集
 //==============================================================================
-/*#define longdouble1D TNT::Array1D< long double >
-#define longdouble2D TNT::Array2D< long double >
-#define longdouble2D_ptr bptr< longdouble2D >*/
 typedef TNT::Array1D < long double >longdouble1D;
 typedef TNT::Array2D < long double >longdouble2D;
 typedef bptr < longdouble2D > longdouble2D_ptr;
@@ -298,34 +256,19 @@ typedef bptr < longdouble2D > longdouble2D_ptr;
 //#define _USE_LONG_DOUBLE_
 
 #ifdef  _USE_LONG_DOUBLE_
-/*#define double1D TNT::Array1D< long double >
-#define double2D TNT::Array2D< long double >
-#define double3D TNT::Array3D< long double >*/
 typedef TNT::Array1D < long double >double1D;
 typedef TNT::Array2D < long double >double2D;
 typedef TNT::Array3D < long double >double3D;
 #else
-/*#define double1D TNT::Array1D< double >
-#define double2D TNT::Array2D< double >
-#define double3D TNT::Array3D< double >*/
 typedef TNT::Array1D < double >double1D;
 typedef TNT::Array2D < double >double2D;
 typedef TNT::Array3D < double >double3D;
 #endif
 
-/*#define double1D_ptr bptr< double1D >
-#define double2D_ptr bptr< double2D >
-#define double3D_ptr bptr< double3D >*/
 typedef bptr < double1D > double1D_ptr;
 typedef bptr < double2D > double2D_ptr;
 typedef bptr < double3D > double3D_ptr;
 
-/*#define float1D TNT::Array1D< float >
-#define float2D TNT::Array2D< float >
-#define float3D TNT::Array3D< float >
-#define float1D_ptr bptr< float1D >
-#define float2D_ptr bptr< float2D >
-#define float3D_ptr bptr< float3D >*/
 typedef TNT::Array1D < float >float1D;
 typedef TNT::Array2D < float >float2D;
 typedef TNT::Array3D < float >float3D;
@@ -340,6 +283,8 @@ typedef bptr < float3D > float3D_ptr;
 #define _toString boost::lexical_cast < std::string >
 #define _toInt boost::lexical_cast < int >
 #define _toDouble boost::lexical_cast < double >
+#define _toAnsiString(s)\
+        AnsiString(s.c_str())
 //==============================================================================
 
 /*
@@ -449,6 +394,7 @@ namespace java {
 	    static double pow(double a, double b);
 	    static double atan2(double y, double x);
 	    static const double PI;
+	    static const double E;
 	    static double cos(double x);
 	    static double sin(double x);
 	    static double sqr(double v);
@@ -459,6 +405,7 @@ namespace java {
 
 	    static double min(double a, double b);
 	    static double max(double a, double b);
+	    static double max(double1D_ptr values);
 
 	    static int maxIndex(double_array values, int n);
 	    static int minIndex(double_array values, int n);
@@ -467,6 +414,7 @@ namespace java {
 
 	    static double_vector_ptr normalize(double_vector_ptr original,
 					       double normal);
+
 	};
 
 	/*

@@ -84,7 +84,8 @@ namespace java {
 	double Math::atan2(double y, double x) {
 	    return std::atan2(y, x);
 	};
-	const double Math::PI = 3.1415926;
+	const double Math::PI = 3.141592653589793;
+	const double Math::E = 2.718281828459045;
 	double Math::cos(double x) {
 	    return std::cos(x);
 	};
@@ -139,6 +140,14 @@ namespace java {
 	};
 	double Math::max(double a, double b) {
 	    return std::max(a, b);
+	};
+	double Math::max(double1D_ptr values) {
+	    double max = std::numeric_limits < double >::infinity();
+	    for (int x = 0; x < values->dim1(); x++) {
+		double d = (*values)[x];
+		max = Math::max(max, d);
+	    }
+	    return max;
 	};
 	int Math::maxIndex(double_vector_ptr values) {
 	    double maxValue = std::numeric_limits < double >::min();

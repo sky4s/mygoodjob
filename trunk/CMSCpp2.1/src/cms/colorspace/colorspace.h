@@ -36,6 +36,7 @@ namespace cms {
 								 double y);
 
 	    bool equalsValues(ColorSpace & colorSpace);
+	    bool equalsValues(ColorSpace_ptr colorSpace);
 
 	    string_ptr getName();
 	    double_array getValues();

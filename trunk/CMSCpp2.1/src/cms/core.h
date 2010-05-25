@@ -20,14 +20,32 @@
 namespace cms {
     class SpectraIF {
       public:
-	virtual double_array getData() = 0;
-	virtual int getEnd() = 0;
-	virtual int getInterval() = 0;
-	virtual int getStart() = 0;
+	virtual double1D_ptr getData() = 0;
+	virtual int getEnd() const = 0;
+	virtual int getInterval() const = 0;
+	virtual int getStart() const = 0;
     };
 
     class ColorMatchingFunction:public jObject, SpectraIF {
+      private:
+	//int start, end, interval;
+	int index;
+	Spectra_vector_ptr spectraVector;
+	 ColorMatchingFunction();
+      public:
+	static const CMF_ptr CIE_1931_2DEG_XYZ;
+	 ColorMatchingFunction(Spectra_vector_ptr spectraVector);
 
+	double1D_ptr getData(int index);
+	double1D_ptr getData();
+	void setIndex(int index);
+	int getEnd() const;
+	int getInterval() const;
+	int getStart() const;
+	Spectra_ptr getSpectra(int index) const;
+      private:
+	static CMF_ptr getColorMatchingFunction(const std::
+						string & filename);
     };
 
     enum CCTMethod {
@@ -37,27 +55,33 @@ namespace cms {
     class CorrelatedColorTemperature:public jObject {
       public:
 	static xyY_ptr CCT2DIlluminantxyY(double tempK);
+	static xyY_ptr CCT2BlackbodyxyY(int tempK);
 	static double xy2CCTByMcCamyFloat(xyY_ptr xyY);
 	static double_array getdudvWithDIlluminant(XYZ_ptr XYZ);
 	static double getduvWithDIlluminant(XYZ_ptr XYZ);
-
+	static Spectra_ptr getSpectraOfBlackbodyRadiator(int tempK,
+							 int start,
+							 int end,
+							 int interval);
+	static Spectra_ptr getSpectraOfBlackbodyRadiator(int tempK);
+      private:
+	static const double c;
+	static const double h;
+	static const double k;
+	static const double c1;
+	static const double c2;
     };
     class DeltaE:public jObject {
     };
     class Illuminant:public jObject, SpectraIF {
+      private:
+	int start, end, interval;
+	double1D_ptr data;
       public:
-	double_array getData() {
-	    /* TODO : getData */
-	};
-	int getEnd() {
-	    /* TODO : getEnd */
-	};
-	int getInterval() {
-	    /* TODO : getInterval */
-	};
-	int getStart() {
-	    /* TODO : getStart */
-	};
+	 double1D_ptr getData();
+	int getEnd() const;
+	int getInterval() const;
+	int getStart() const;
 
 	static const Illuminant & D50;
 	static const Illuminant & D65;
@@ -65,6 +89,34 @@ namespace cms {
     };
 
     class Spectra:public jObject, SpectraIF /*, util::NameIF */  {
+	friend class ColorMatchingFunction;
+      protected:
+	//string_ptr name;
+	const std::string & name;
+	int start, end, interval;
+	double1D_ptr data;
+	XYZ_ptr CIE1931XYZ;
+      public:
+	 Spectra(const std::string & name, int start, int end,
+		 int interval, double1D_ptr data);
+	XYZ_ptr getXYZ();
+	XYZ_ptr getXYZ(const ColorMatchingFunction & cmf);
+	double1D_ptr getData();
+	int getEnd() const;
+	int getInterval() const;
+	int getStart() const;
+	void normalizeDataToMax();
+	void normalizeData(double normal);
+      private:
+	 XYZ_ptr getXYZFill(const ColorMatchingFunction & cmf);
+	Spectra_ptr doFillPurlieus(int start, int end);
+	static double1D_ptr fillPurlieusData(const double1D_ptr data,
+					     int leftBorder,
+					     int rightBorder);
+	static bool fillZero;
+	static double sigma(int start, int end,
+			    double1D_ptr data1, int interval1,
+			    double1D_ptr data2, int interval2);
     };
 
 
