@@ -449,26 +449,20 @@ namespace cms {
 	// SimpleExcelAccess
 	//======================================================================
 	const std::string & SimpleExcelAccess::Sheet1 = "Sheet1";
-	SimpleExcelAccess::SimpleExcelAccess(const std::string & filename,
-					     Mode mode,
-					     string_vector_ptr
-					     headerNames):ExcelAccessBase
-	    (filename, mode), headerNames(headerNames) {
+	SimpleExcelAccess::SimpleExcelAccess(const std::string & filename, Mode mode):ExcelAccessBase(filename, mode) {	/*, headerNames(headerNames) */
+
+	};
+	SimpleExcelAccess::SimpleExcelAccess(const std::string & filename, Mode mode, string_vector_ptr headerNames):ExcelAccessBase(filename, mode) {	/*, headerNames(headerNames) */
 	    initSheet(Sheet1, headerNames);
 	};
-	SimpleExcelAccess::SimpleExcelAccess(const std::string & filename,
-					     Mode mode,
-					     string_vector_ptr headerNames,
-					     string_vector_ptr
-					     fieldTypes):ExcelAccessBase
-	    (filename, mode), headerNames(headerNames) {
+	SimpleExcelAccess::SimpleExcelAccess(const std::string & filename, Mode mode, string_vector_ptr headerNames, string_vector_ptr fieldTypes):ExcelAccessBase(filename, mode) {	/*, headerNames(headerNames) */
 	    initSheet(Sheet1, headerNames, fieldTypes);
 	};
 	SimpleExcelAccess::SimpleExcelAccess(const std::
 					     string &
 					     filename):ExcelAccessBase
 	    (filename, ReadOnly) {
-	    initSheet(Sheet1, headerNames);
+	    //initSheet(Sheet1, headerNames);
 	};
 
 	bptr < DBQuery > SimpleExcelAccess::retrieve() {
@@ -477,6 +471,10 @@ namespace cms {
 	void SimpleExcelAccess::insert(string_vector_ptr values) {
 	    insertData(Sheet1, values, false);
 	};
+	/*void SimpleExcelAccess::insert(const std::string & sheetname,
+	   string_vector_ptr values) {
+	   insertData(sheetname, values, false);
+	   }; */
 	bptr < SimpleExcelAccess >
 	    SimpleExcelAccess::getValueStoreInstance(const std::
 						     string & filename) {

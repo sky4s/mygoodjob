@@ -72,6 +72,7 @@ namespace cms {
 	    }
 	};
 
+
 	bool Util::isFileExist(const std::string & filename) {
 	    return FileExists(filename.c_str());
 	}
@@ -127,6 +128,27 @@ namespace cms {
 		const string & str = _toString(d);
 		result->push_back(str);
 	    } va_end(num_list);
+	    return result;
+	};
+	string_vector_ptr StringVector::
+	    fromDoubleArray(double1D_ptr doubleArray) {
+
+	    string_vector_ptr result(new string_vector());
+	    int size = doubleArray->dim1();
+	    for (int x = 0; x < size; x++) {
+		result->push_back(_toString((*doubleArray)[x]));
+	    }
+
+	    return result;
+	};
+	string_vector_ptr StringVector::
+	    fromDoubleArray(double2D_ptr doubleArray, int n) {
+
+	    string_vector_ptr result(new string_vector());
+	    int size = doubleArray->dim2();
+	    for (int x = 0; x < size; x++) {
+		result->push_back(_toString((*doubleArray)[n][x]));
+	    }
 	    return result;
 	};
 	void StringVector::setContent(string_vector_ptr vector,

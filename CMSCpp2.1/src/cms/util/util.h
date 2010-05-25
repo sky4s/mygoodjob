@@ -40,6 +40,10 @@ namespace cms {
 	    static string_vector_ptr fromString(int n, const std::string *
 						strings);
 	    static string_vector_ptr fromDouble(int count, ...);
+	    static string_vector_ptr fromDoubleArray(double1D_ptr
+						     doubleArray);
+	    static string_vector_ptr fromDoubleArray(double2D_ptr
+						     doubleArray, int n);
 	    static void setContent(string_vector_ptr vector,
 				   const std::string & content, int n,
 				   ...);

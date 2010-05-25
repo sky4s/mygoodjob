@@ -84,13 +84,16 @@ namespace cms {
 	namespace logo {
 	    class LogoFile;
 	};
+
 	class ExcelFileDB;
+	class ExcelAccessBase;
+	class SimpleExcelAccess;
+
 	class DGLutFile;
 	class DGLutFile_;
 	class DGLutProperty;
 	class RampMeasureFile;
-	class ExcelAccessBase;
-	class SimpleExcelAccess;
+
     };
     namespace colorspace {
 	namespace depend {
@@ -545,4 +548,4 @@ private: \
 //==============================================================================
 
 #endif
- 
+

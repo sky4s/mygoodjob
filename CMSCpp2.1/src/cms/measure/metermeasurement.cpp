@@ -157,6 +157,7 @@ namespace cms {
 		if (measureWindow != NULL) {
 		    //show出黑幕, 避免影響校正
 		    measureWindow->setRGB(0, 0, 0);
+		    Application->ProcessMessages();
 		    measureWindow->setVisible(true);
 		}
 		ShowMessage(meter->getCalibrationDescription()->c_str());

@@ -14,7 +14,7 @@
 #include <Forms.hpp>
 #include <Menus.hpp>
 //本項目內頭文件
-#include <cms/measure/MeterMeasurement.h>
+//#include <cms/measure/MeterMeasurement.h>
 //---------------------------------------------------------------------------
 /*
  要不要把TCON Control拉到measure window來?
@@ -27,6 +27,8 @@
  要有外部元件來決定是要控制measure windows還是直接控制tcon control
  這個外部元件通常就是meter measurement(mm), 如果mm沒有沒有tcon control的需求.
  乾脆就把tcon control交給measure window
+
+ final: 最後決議拉
  */
 class TMeasureWindow:public TForm {
     __published:		// IDE-managed Components
@@ -42,7 +44,7 @@ class TMeasureWindow:public TForm {
   public:			// User declarations
      __fastcall TMeasureWindow(TComponent * Owner);
     void setRGB(int r, int g, int b);
-    void setRGB(bptr < Dep::RGBColor > rgb);
+    void setRGB(RGB_ptr rgb);
     void setTCONControl(bptr < i2c::TCONControl > tconcontrl);
     void setTCONControlOff();
     void setVisible(bool visible);

@@ -9,4 +9,5 @@
 #include "whitefinder.h";
 #include "bitdepthprocessor.h";
 #include "sandbox.h";
+#include "dimdg.h";
  

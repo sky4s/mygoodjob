@@ -8,39 +8,12 @@
 //其他庫頭文件
 
 //本項目內頭文件
+#include "dimdg.h"
 
 
 namespace cms {
     namespace lcd {
 	namespace calibrate {
-
-
-	    class DimDGLutGenerator {
-	      private:
-		Component_vector_ptr componentVector;
-		bptr < cms::measure::IntensityAnalyzerIF > analyzer;
-
-		Component_vector_ptr fetchComponent(bptr <
-						    cms::measure::
-						    MaxMatrixIntensityAnayzer
-						    > analyzer,
-						    Component_vector_ptr
-						    componentVector);
-		static XYZ_vector_ptr getTarget(XYZ_ptr startXYZ,
-						XYZ_ptr endXYZ,
-						double_vector_ptr
-						luminanceGammaCurve);
-		static void storeXYZVector(XYZ_vector_ptr XYZVector);
-
-	      public:
-		 DimDGLutGenerator(Component_vector_ptr componentVector,
-				   bptr <
-				   cms::measure::IntensityAnalyzerIF >
-				   analyzer);
-		RGB_vector_ptr produce(XYZ_ptr targetWhite,
-				       double_vector_ptr
-				       luminanceGammaCurve, int under);
-	    };
 
 	    class AdvancedDGLutGenerator:private DimDGLutGenerator {
 	      public:
@@ -49,6 +22,15 @@ namespace cms {
 				       bptr <
 				       cms::measure::IntensityAnalyzerIF >
 				       analyzer);
+		RGB_vector_ptr produce(XYZ_ptr targetWhite,
+				       double_vector_ptr
+				       luminanceGammaCurve, int turn);
+	      private:
+		static XYZ_vector_ptr getTarget(XYZ_ptr startXYZ,
+						XYZ_ptr endXYZ,
+						double_vector_ptr
+						luminanceGammaCurve,
+						int turn);
 	    };
 
 	    class DimTargetGenerator {
