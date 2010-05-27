@@ -1,3 +1,5 @@
+#include <includeall.h>
+#pragma hdrstop
 #include "interpolation.h"
 
 //C系統文件

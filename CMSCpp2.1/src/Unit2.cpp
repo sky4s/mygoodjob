@@ -726,6 +726,7 @@ int main(int argc, char *argv[])
     //token();
     //readTextTester();
     cmfTester();
+    cout<<_toDouble("123");
     getch();
 }
 

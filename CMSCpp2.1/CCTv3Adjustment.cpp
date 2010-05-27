@@ -19,8 +19,8 @@ USEFORM("src\gui\TGammaAdjustmentForm.cpp", GammaAdjustmentForm);
 USEFORM("src\gui\TOptionsFrame.cpp", OptionsFrame); /* TFrame: File Type */
 USEFORM("src\gui\TOutputFileFrame.cpp", OutputFileFrame); /* TFrame: File Type */
 USEFORM("src\gui\TGammaMeasurementForm.cpp", GammaMeasurementForm);
-USEFORM("src\gui\T3DMeasureWindow.cpp", ThreeDMeasureWindow);
 USEFORM("src\gui\T3DMeasurementForm.cpp", ThreeDMeasurementForm);
+USEFORM("src\gui\T3DMeasureWindow.cpp", ThreeDMeasureWindow);
 //---------------------------------------------------------------------------
 WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 {

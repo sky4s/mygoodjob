@@ -1,3 +1,5 @@
+#include <includeall.h>
+#pragma hdrstop
 #include "searcher.h"
 
 //C系統文件
@@ -5,7 +7,7 @@
 //C++系統文件
 
 //其他庫頭文件
-#include   <math.hpp>
+#include <math.hpp>
 //本項目內頭文件
 
 namespace math {

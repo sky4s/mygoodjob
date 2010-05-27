@@ -9,6 +9,7 @@
 
 //其他庫頭文件
 #include <FileCtrl.hpp>
+#pragma   link   "vclx.lib"
 //本項目內頭文件
 #include "TOutputFileFrame.h"
 //---------------------------------------------------------------------------

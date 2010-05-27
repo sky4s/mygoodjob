@@ -1,5 +1,12 @@
 #ifndef EXCELFILEH
 #define EXCELFILEH
+
+
+//#if   !defined(_DEBUG)
+#pragma   link   "dbrtl.lib"
+#pragma   link   "adortl.lib"
+//#endif
+
 //C系統文件
 
 //C++系統文件
@@ -128,7 +135,7 @@ namespace cms {
 	class ExcelAccessBase {
 	  private:
 	    const std::string & filename;
-	    const Mode mode; 
+	    const Mode mode;
 	     std::map < const std::string,
 		string_vector_ptr) headerNamesMap;
 	  protected:
