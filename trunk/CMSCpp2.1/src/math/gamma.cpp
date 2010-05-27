@@ -1,3 +1,5 @@
+#include <includeall.h>
+#pragma hdrstop
 #include "gamma.h"
 
 //C系統文件
@@ -6,11 +8,8 @@
 
 
 //其他庫頭文件
-#include <math.hpp>
 
 //本項目內頭文件
-//#include "searcher.h"
-#include <math/doublearray.h>
 
 namespace math {
     using namespace java::lang;

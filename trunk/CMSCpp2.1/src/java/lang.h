@@ -27,6 +27,8 @@
 # pragma pack(pop)
 #endif
 
+//#include <math.hpp>
+
 //本項目內頭文件
 
 
@@ -94,6 +96,9 @@ namespace cms {
 	class DGLutFile_;
 	class DGLutProperty;
 	class RampMeasureFile;
+
+	class Parser;
+	class ColorMatchingFunctionFile;
 
     };
     namespace colorspace {
