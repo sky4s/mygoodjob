@@ -725,8 +725,11 @@ int main(int argc, char *argv[])
     //newCCTAlgoTry();
     //token();
     //readTextTester();
-    cmfTester();
-    cout<<_toDouble("123");
+    //cmfTester();
+    //cout<<_toDouble("123");
+    ShellExecute(null, null, "target.xls", null, null, SW_SHOW);
+    //ShellExecute(null, null, "target.xls", null, null, SW_HIDE);
+
     getch();
 }
 

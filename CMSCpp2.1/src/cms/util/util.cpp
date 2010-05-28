@@ -82,7 +82,10 @@ namespace cms {
 	    return wstring;
 	};
 
-
+	void Util::shellExecute(const std::string & filename) {
+	    ShellExecute(null, null, filename.c_str(), null, null,
+			 SW_SHOW);
+	};
 	//==========================================================================
 
 	string_vector_ptr StringVector::fromCString(int count, ...) {
