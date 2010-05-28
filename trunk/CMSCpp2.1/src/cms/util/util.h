@@ -29,7 +29,7 @@ namespace cms {
 	    static void deleteExist(const WideString & filename);
 	    static bool isFileExist(const std::string & filename);
 	    static bptr < WideString > toWideString(const std::string & s);
-
+	    static void shellExecute(const std::string & filename);
 
 	};
 

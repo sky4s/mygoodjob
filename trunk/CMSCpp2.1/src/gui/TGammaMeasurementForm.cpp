@@ -68,6 +68,7 @@ void __fastcall TGammaMeasurementForm::Button_MeasureClick(TObject *
 
        } else { */
     pcMeasure(rgbw, start, end, step, stlfilename);
+    Util::shellExecute(stlfilename);
     //}
 }
 

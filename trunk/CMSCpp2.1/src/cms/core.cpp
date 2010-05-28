@@ -20,12 +20,12 @@ namespace cms {
 
     //==========================================================================
     const CMF_ptr ColorMatchingFunction::
-	CIE_1931_2DEG_XYZ = getColorMatchingFunction("ciexyz31_1.txt");
+	//CIE_1931_2DEG_XYZ = getColorMatchingFunction("ciexyz31_1.txt");
      /*CIE_1931_2DEG_XYZ =
 	FileExists(CIE_1931_2DEG) ?
 	getColorMatchingFunction(CIE_1931_2DEG) :
 	CMF_ptr(new ColorMatchingFunction());*/
-    //CIE_1931_2DEG_XYZ = CMF_ptr(new ColorMatchingFunction());
+    CIE_1931_2DEG_XYZ = CMF_ptr(new ColorMatchingFunction());
 
      ColorMatchingFunction::
 	ColorMatchingFunction(Spectra_vector_ptr

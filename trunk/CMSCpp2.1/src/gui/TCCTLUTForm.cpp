@@ -150,7 +150,7 @@ void __fastcall TCCTLUTForm::Button_RunClick(TObject * Sender)
 	    string filename = astr->c_str();
 	    calibrator.storeDGLut(filename, dglut);
 	    ShowMessage("Ok!");
-
+            Util::shellExecute(filename);
 	}
 	catch(java::lang::IllegalStateException & ex) {
 	    ShowMessage(ex.toString().c_str());
