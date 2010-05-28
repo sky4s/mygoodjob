@@ -27,7 +27,7 @@
       inetdbbde.bpi inetdbxpress.bpi inetdb.bpi nmfast.bpi webdsnap.bpi 
       bcbie.bpi websnap.bpi soaprtl.bpi dclocx.bpi dbexpress.bpi dbxcds.bpi 
       indy.bpi bcb2kaxserver.bpi bcbindent.bpi"/>
-    <PATHCPP value=".;src;src\gui;src\gui;src\gui;src\cms\util;src\cms\colorspace;src\cms\colorspace;src\cms\colorspace;src\cms\colorspace;src\cms\colorspace;src\cms\colorformat;src\cms\colorformat;src\java;src\cms;src\math;src\cms\measure;lib\CA200SRVRLib;lib\CA200SRVRLib;src\ca210api;src\cms\colorformat"/>
+    <PATHCPP value=".;src;src\gui;src\cms\util;src\cms\colorspace;src\cms\colorformat;src\java;src\cms;src\math;src\cms\measure;lib\CA200SRVRLib;src\ca210api"/>
     <PATHPAS value=".;"/>
     <PATHRC value=".;"/>
     <PATHASM value=".;"/>
