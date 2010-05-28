@@ -33,12 +33,22 @@ namespace cms {
 						int turn);
 	    };
 
+	    enum Domain {
+		CIEuv, CIEuvPrime
+	    };
+
 	    class DimTargetGenerator {
 	      public:
+
 		static XYZ_vector_ptr getLinearTarget(XYZ_ptr startXYZ,
 						      XYZ_ptr endXYZ,
 						      double_vector_ptr
 						      luminanceGammaCurve);
+		static XYZ_vector_ptr getLinearTarget(XYZ_ptr startXYZ,
+						      XYZ_ptr endXYZ,
+						      double_vector_ptr
+						      luminanceGammaCurve,
+						      Domain domain);
 		static XYZ_vector_ptr getGammaTarget(XYZ_ptr startXYZ,
 						     XYZ_ptr endXYZ,
 						     double_vector_ptr

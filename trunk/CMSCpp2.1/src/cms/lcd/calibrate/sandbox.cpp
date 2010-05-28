@@ -16,6 +16,7 @@ namespace cms {
 	namespace calibrate {
 	    using namespace cms::measure;
 	    using namespace cms::colorformat;
+	    using namespace Indep;
 
 	    //==================================================================
 	    // AdvancedDGLutGenerator
@@ -93,13 +94,11 @@ namespace cms {
 	    XYZ_vector_ptr DimTargetGenerator::
 		getLinearTarget(XYZ_ptr startXYZ, XYZ_ptr endXYZ,
 				double_vector_ptr luminanceGammaCurve) {
-		using namespace Indep;
+
 		int size = luminanceGammaCurve->size();
 
 		double_array startuvValues = startXYZ->getuvValues();
 		double_array enduvValues = endXYZ->getuvValues();
-		//double_array startuvpValues = startXYZ->getuvPrimeValues();
-		//double_array enduvpValues = endXYZ->getuvPrimeValues();
 		XYZ_vector_ptr result(new XYZ_vector(size));
 
 		for (int x = 0; x < size; x++) {
@@ -118,8 +117,56 @@ namespace cms {
 		    targetValues[2] = Y;
 		    targetxyY->setuvYValues(targetValues);
 		    (*result)[x] = targetxyY->toXYZ();
-		} return result;
+		};
+		return result;
 	    };
+
+	    XYZ_vector_ptr DimTargetGenerator::
+		getLinearTarget(XYZ_ptr startXYZ, XYZ_ptr endXYZ,
+				double_vector_ptr luminanceGammaCurve,
+				Domain domain) {
+		int size = luminanceGammaCurve->size();
+
+		double_array startuvValues;
+		double_array enduvValues;
+		switch (domain) {
+		case CIEuv:
+		    startuvValues = startXYZ->getuvValues();
+		    enduvValues = endXYZ->getuvValues();
+		case CIEuvPrime:
+		    startuvValues = startXYZ->getuvPrimeValues();
+		    enduvValues = endXYZ->getuvPrimeValues();
+		};
+
+		XYZ_vector_ptr result(new XYZ_vector(size));
+
+		for (int x = 0; x < size; x++) {
+		    //在uv'上線性變化
+		    double u = Interpolation::linear(0, size - 1,
+						     startuvValues[0],
+						     enduvValues[0], x);
+		    double v = Interpolation::linear(0, size - 1,
+						     startuvValues[1],
+						     enduvValues[1], x);
+		    double Y = (*luminanceGammaCurve)[x];
+
+		    double_array targetValues(new double[3]);
+		    targetValues[0] = u;
+		    targetValues[1] = v;
+		    targetValues[2] = Y;
+
+		    xyY_ptr targetxyY(new CIExyY());
+		    switch (domain) {
+		    case CIEuv:
+			targetxyY->setuvYValues(targetValues);
+		    case CIEuvPrime:
+			targetxyY->setuvPrimeYValues(targetValues);
+		    };
+
+		    (*result)[x] = targetxyY->toXYZ();
+		};
+		return result;
+	    }
 
 	    XYZ_vector_ptr DimTargetGenerator::
 		getGammaTarget(XYZ_ptr startXYZ, XYZ_ptr endXYZ,
