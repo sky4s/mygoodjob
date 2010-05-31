@@ -32,7 +32,7 @@
       inetdbbde.bpi inetdbxpress.bpi inetdb.bpi nmfast.bpi webdsnap.bpi 
       bcbie.bpi websnap.bpi soaprtl.bpi dclocx.bpi dbexpress.bpi dbxcds.bpi 
       indy.bpi bcb2kaxserver.bpi bcbindent.bpi"/>
-    <PATHCPP value=".;src;src\ca210api;src\cms;src\cms\colorformat;src\cms\colorspace;src\cms\lcd\calibrate;src\cms\measure;src\cms\util;src\gui;src\java;src\math;lib\CA200SRVRLib;lib\LPT_lib;src\i2c;src\i2c\core"/>
+    <PATHCPP value=".;src;src;src\ca210api;src\cms;src\cms;src\cms\colorformat;src\cms\colorformat;src\cms\colorspace;src\cms\colorspace;src\cms\colorspace;src\cms\colorspace;src\cms\colorspace;src\cms\lcd\calibrate;src\cms\lcd\calibrate;src\cms\lcd\calibrate;src\cms\lcd\calibrate;src\cms\lcd\calibrate;src\cms\lcd\calibrate;src\cms\measure;src\cms\measure;src\cms\measure;src\cms\util;src\gui;src\cms\measure;src\cms\colorformat;src\cms\colorformat;src\cms\util;src\java;src\math;src\math;src\math;src\math;src\math;lib\CA200SRVRLib;lib\CA200SRVRLib;lib\LPT_lib;lib\LPT_lib;src\cms\lcd\calibrate;src\i2c;src\i2c;src\i2c;src\i2c\core;src\cms\colorformat"/>
     <PATHPAS value=".;"/>
     <PATHRC value=".;"/>
     <PATHASM value=".;"/>
@@ -43,7 +43,7 @@
     <SYSDEFINES value="NO_STRICT;_RTLDLL;USEPACKAGES"/>
     <MAINSOURCE value="CMSCpp2.bpf"/>
     <INCLUDEPATH value="src\i2c\core;src\i2c;lib\LPT_lib;lib\CA200SRVRLib;imports\LPT_lib;imports\CA200SRVRLib;src\math;src\java;src\static\math;src\static\java;src\cms\i2c\core;src\cms\i2c;src\gui;src\cms\util;src\cms\measure;src\cms\lcd\calibrate;src\cms\colorspace;src\cms\colorformat;src\cms;src\ca210api;src;$(BCB)\include;$(BCB)\include\vcl;lib"/>
-    <LIBPATH value="src\i2c\core;src\i2c;lib\LPT_lib;lib\CA200SRVRLib;imports\LPT_lib;imports\CA200SRVRLib;src\math;src\java;src\static\math;src\static\java;src\cms\i2c\core;src\cms\i2c;src\gui;$(BCB)\Projects\Lib;src\cms\util;src\cms\measure;src\cms\lcd\calibrate;src\cms\colorspace;src\cms\colorformat;src\cms;src\ca210api;src;$(BCB)\lib\obj;$(BCB)\lib;lib"/>
+    <LIBPATH value="d:\PRO;src\i2c\core;src\i2c;lib\LPT_lib;lib\CA200SRVRLib;imports\LPT_lib;imports\CA200SRVRLib;src\math;src\java;src\static\math;src\static\java;src\cms\i2c\core;src\cms\i2c;src\gui;$(BCB)\Projects\Lib;src\cms\util;src\cms\measure;src\cms\lcd\calibrate;src\cms\colorspace;src\cms\colorformat;src\cms;src\ca210api;src;$(BCB)\lib\obj;$(BCB)\lib;lib"/>
     <WARNINGS value="-w-par"/>
     <OTHERFILES value=""/>
   </MACROS>
