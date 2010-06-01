@@ -17,6 +17,7 @@ namespace cms {
 	    using namespace cms::measure;
 	    using namespace cms::colorformat;
 	    using namespace Indep;
+	    using namespace java::lang;
 
 	    //==================================================================
 	    // AdvancedDGLutGenerator
@@ -118,24 +119,31 @@ namespace cms {
 		//==============================================================
 		// dim區段
 		//==============================================================
+		double dimbase = dimTurn - 1;
 		for (int x = 0; x < dimTurn; x++) {
+		    double normal = ((double) x) / dimbase;
+		    double gamma = Math::pow(normal, dimGamma) * dimbase;
 		    //在uv'上線性變化
 		    double u = Interpolation::linear(0, dimTurn - 1,
 						     dimstartValues[0],
-						     dimendValues[0], x);
+						     dimendValues[0],
+						     gamma);
 		    double v = Interpolation::linear(0, dimTurn - 1,
 						     dimstartValues[1],
-						     dimendValues[1], x);
+						     dimendValues[1],
+						     gamma);
 		    double Y = (*luminanceGammaCurve)[x];
 
 		    (*result)[x] = getTargetXYZ(u, v, Y, domain);
 		}
+
 		//==============================================================
 
 		//==============================================================
 		// 中間區段
 		//==============================================================
 		for (int x = dimTurn; x < brightTurn; x++) {
+		    //僅Y有變化
 		    double Y = (*luminanceGammaCurve)[x];
 		    (*result)[x] =
 			getTargetXYZ(dimendValues[0], dimendValues[1], Y,
@@ -146,16 +154,21 @@ namespace cms {
 		//==============================================================
 		// bright區段
 		//==============================================================
+		double brightbase = size - 1 - brightTurn;
 		for (int x = brightTurn; x < size; x++) {
+		    double normal = ((double) x - brightTurn) / brightbase;
+		    double gamma = Math::pow(normal,
+					     brightGamma) * brightbase +
+			brightTurn;
 		    //在uv'上線性變化
 		    double u = Interpolation::linear(brightTurn, size - 1,
 						     brightstartValues[0],
 						     brightendValues[0],
-						     x);
+						     gamma);
 		    double v = Interpolation::linear(brightTurn, size - 1,
 						     brightstartValues[1],
 						     brightendValues[1],
-						     x);
+						     gamma);
 		    double Y = (*luminanceGammaCurve)[x];
 
 		    (*result)[x] = getTargetXYZ(u, v, Y, domain);
