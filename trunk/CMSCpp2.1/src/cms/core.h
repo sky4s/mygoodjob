@@ -55,15 +55,15 @@ namespace cms {
     class CorrelatedColorTemperature:public jObject {
       public:
 	static xyY_ptr CCT2DIlluminantxyY(double tempK);
-	static xyY_ptr CCT2BlackbodyxyY(int tempK);
+	static xyY_ptr CCT2BlackbodyxyY(double tempK);
 	static double xy2CCTByMcCamyFloat(xyY_ptr xyY);
 	static double_array getdudvWithDIlluminant(XYZ_ptr XYZ);
 	static double getduvWithDIlluminant(XYZ_ptr XYZ);
-	static Spectra_ptr getSpectraOfBlackbodyRadiator(int tempK,
+	static Spectra_ptr getSpectraOfBlackbodyRadiator(double tempK,
 							 int start,
 							 int end,
 							 int interval);
-	static Spectra_ptr getSpectraOfBlackbodyRadiator(int tempK);
+	static Spectra_ptr getSpectraOfBlackbodyRadiator(double tempK);
       private:
 	static const double c;
 	static const double h;

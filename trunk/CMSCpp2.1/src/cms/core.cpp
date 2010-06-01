@@ -21,11 +21,11 @@ namespace cms {
     //==========================================================================
     const CMF_ptr ColorMatchingFunction::
 	//CIE_1931_2DEG_XYZ = getColorMatchingFunction("ciexyz31_1.txt");
-     /*CIE_1931_2DEG_XYZ =
-	FileExists(CIE_1931_2DEG) ?
-	getColorMatchingFunction(CIE_1931_2DEG) :
-	CMF_ptr(new ColorMatchingFunction());*/
-    CIE_1931_2DEG_XYZ = CMF_ptr(new ColorMatchingFunction());
+	/*CIE_1931_2DEG_XYZ =
+	   FileExists(CIE_1931_2DEG) ?
+	   getColorMatchingFunction(CIE_1931_2DEG) :
+	   CMF_ptr(new ColorMatchingFunction()); */
+     CIE_1931_2DEG_XYZ = CMF_ptr(new ColorMatchingFunction());
 
      ColorMatchingFunction::
 	ColorMatchingFunction(Spectra_vector_ptr
@@ -102,7 +102,7 @@ namespace cms {
 	return xyY;
     };
 
-    xyY_ptr CorrelatedColorTemperature::CCT2BlackbodyxyY(int tempK) {
+    xyY_ptr CorrelatedColorTemperature::CCT2BlackbodyxyY(double tempK) {
 	Spectra_ptr blackbody = getSpectraOfBlackbodyRadiator(tempK);
 	XYZ_ptr XYZ = blackbody->getXYZ();
 	XYZ->normalizeY();
@@ -135,7 +135,7 @@ namespace cms {
 	return d;
     }
     Spectra_ptr CorrelatedColorTemperature::
-	getSpectraOfBlackbodyRadiator(int tempK, int start, int end,
+	getSpectraOfBlackbodyRadiator(double tempK, int start, int end,
 				      int interval) {
 	int size = (end - start) / interval + 1;
 	double1D_ptr data(new double1D(size, new double[size]));
@@ -146,13 +146,13 @@ namespace cms {
 		 (Math::pow(Math::E, c2 / (tempK * lambda)) - 1));
 	}
 	Spectra_ptr spectra(new
-			    Spectra(tempK + "K", start, end, interval,
-				    data));
+			    Spectra(_toString(tempK) + "K", start, end,
+				    interval, data));
 	spectra->normalizeDataToMax();
 	return spectra;
     };
     Spectra_ptr CorrelatedColorTemperature::
-	getSpectraOfBlackbodyRadiator(int tempK) {
+	getSpectraOfBlackbodyRadiator(double tempK) {
 	return getSpectraOfBlackbodyRadiator(tempK, 360, 830, 1);
     };
     const double CorrelatedColorTemperature::c = 2.99792458E8;

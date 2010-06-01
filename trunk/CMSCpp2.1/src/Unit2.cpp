@@ -669,6 +669,32 @@ void cmfTester()
     cout << cmf.getSpectra(0)->getXYZ() << endl;
 };
 
+void targetTester()
+{
+    using namespace cms::lcd::calibrate;
+    using namespace cms;
+    using namespace Indep;
+    XYZ_ptr black =
+	CorrelatedColorTemperature::CCT2DIlluminantxyY(20000)->toXYZ();
+    XYZ_ptr targetWhite =
+	CorrelatedColorTemperature::CCT2DIlluminantxyY(6500)->toXYZ();
+    XYZ_ptr nativeWhite =
+	CorrelatedColorTemperature::CCT2DIlluminantxyY(8000)->toXYZ();
+    double_vector_ptr gamaCurve =
+	LCDCalibrator::getGammaCurveVector(2.2, 256, 256);
+    for (int x = 0; x < 256; x++) {
+	(*gamaCurve)[x] += 0.1;
+    }
+    XYZ_vector_ptr result =
+	AdvancedDGLutGenerator::getTarget(black, targetWhite, nativeWhite,
+					  gamaCurve, 50, 200, .3, 2.2,
+					  CIEuvPrime);
+    foreach(XYZ_ptr XYZ, *result) {
+	xyY_ptr xyY(new CIExyY(XYZ));
+	cout << *xyY->toString() << endl;
+    };
+};
+
 #pragma argsused
 int main(int argc, char *argv[])
 {
@@ -727,9 +753,9 @@ int main(int argc, char *argv[])
     //readTextTester();
     //cmfTester();
     //cout<<_toDouble("123");
-    ShellExecute(null, null, "target.xls", null, null, SW_SHOW);
+    //ShellExecute(null, null, "target.xls", null, null, SW_SHOW);
     //ShellExecute(null, null, "target.xls", null, null, SW_HIDE);
-
+    targetTester();
     getch();
 }
 

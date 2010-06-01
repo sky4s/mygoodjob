@@ -29,7 +29,7 @@ namespace cms {
 		RGB_vector_ptr produce(XYZ_ptr targetWhite,
 				       double_vector_ptr
 				       luminanceGammaCurve, int turn);
-	      private:
+		//private:
 		static XYZ_vector_ptr getTarget(XYZ_ptr startXYZ,
 						XYZ_ptr turnXYZ,
 						XYZ_ptr endXYZ,
