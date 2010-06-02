@@ -102,13 +102,13 @@ object CCTLUTForm: TCCTLUTForm
   object GroupBox2: TGroupBox
     Left = 209
     Top = 9
-    Width = 200
-    Height = 112
+    Width = 216
+    Height = 96
     Caption = 'Gamma'
     TabOrder = 1
     object RadioButton_GammaCurve: TRadioButton
       Left = 9
-      Top = 48
+      Top = 40
       Width = 112
       Height = 25
       Caption = 'Gamma Curve'
@@ -117,7 +117,7 @@ object CCTLUTForm: TCCTLUTForm
     end
     object CheckBox_GByPass: TCheckBox
       Left = 9
-      Top = 80
+      Top = 64
       Width = 96
       Height = 25
       Caption = 'G ByPass'
@@ -157,10 +157,10 @@ object CCTLUTForm: TCCTLUTForm
     end
   end
   object GroupBox3: TGroupBox
-    Left = 417
+    Left = 433
     Top = 9
-    Width = 208
-    Height = 312
+    Width = 192
+    Height = 240
     Caption = 'Low Level Correction'
     TabOrder = 2
     object Label4: TLabel
@@ -186,10 +186,17 @@ object CCTLUTForm: TCCTLUTForm
     end
     object Label17: TLabel
       Left = 32
-      Top = 161
+      Top = 153
       Width = 37
       Height = 16
       Caption = 'Under'
+    end
+    object Label14: TLabel
+      Left = 32
+      Top = 184
+      Width = 49
+      Height = 16
+      Caption = 'Strength'
     end
     object RadioButton_P1P2: TRadioButton
       Left = 9
@@ -212,9 +219,9 @@ object CCTLUTForm: TCCTLUTForm
       OnClick = RadioButton_RBInterpClick
     end
     object Edit_RBInterpUnder: TEdit
-      Left = 80
+      Left = 88
       Top = 89
-      Width = 81
+      Width = 73
       Height = 24
       Enabled = False
       ImeName = #26085#25991#36664#20837#31995#32113' (MS-IME2002)'
@@ -250,7 +257,7 @@ object CCTLUTForm: TCCTLUTForm
     end
     object RadioButton_DefinedDim: TRadioButton
       Left = 9
-      Top = 137
+      Top = 129
       Width = 120
       Height = 24
       Caption = 'Defined Dim'
@@ -258,21 +265,40 @@ object CCTLUTForm: TCCTLUTForm
       OnClick = RadioButton_DefinedDimClick
     end
     object Edit_DefinedDimUnder: TEdit
-      Left = 80
-      Top = 161
-      Width = 81
+      Left = 88
+      Top = 153
+      Width = 73
       Height = 24
       Enabled = False
       ImeName = #26085#25991#36664#20837#31995#32113' (MS-IME2002)'
       TabOrder = 7
       Text = '50'
     end
+    object CheckBox_AverageDimDG: TCheckBox
+      Left = 32
+      Top = 208
+      Width = 137
+      Height = 25
+      Caption = 'Average Dim DG'
+      Enabled = False
+      TabOrder = 8
+    end
+    object Edit_DimGamma: TEdit
+      Left = 88
+      Top = 185
+      Width = 73
+      Height = 24
+      Enabled = False
+      ImeName = #26085#25991#36664#20837#31995#32113' (MS-IME2002)'
+      TabOrder = 9
+      Text = '2.2'
+    end
   end
   object GroupBox4: TGroupBox
-    Left = 209
-    Top = 233
-    Width = 200
-    Height = 88
+    Left = 433
+    Top = 249
+    Width = 192
+    Height = 72
     Caption = 'Blue Correction'
     TabOrder = 3
     object CheckBox_BGain: TCheckBox
@@ -284,7 +310,7 @@ object CCTLUTForm: TCCTLUTForm
       TabOrder = 0
     end
     object Edit_BGain: TEdit
-      Left = 137
+      Left = 129
       Top = 17
       Width = 56
       Height = 24
@@ -294,7 +320,7 @@ object CCTLUTForm: TCCTLUTForm
     end
     object CheckBox_BMax: TCheckBox
       Left = 9
-      Top = 49
+      Top = 41
       Width = 96
       Height = 24
       Caption = 'B Max'
@@ -303,14 +329,28 @@ object CCTLUTForm: TCCTLUTForm
   end
   object GroupBox5: TGroupBox
     Left = 209
-    Top = 121
-    Width = 200
-    Height = 112
+    Top = 105
+    Width = 216
+    Height = 216
     Caption = 'Options'
     TabOrder = 4
+    object Label15: TLabel
+      Left = 32
+      Top = 88
+      Width = 29
+      Height = 16
+      Caption = 'Over'
+    end
+    object Label16: TLabel
+      Left = 32
+      Top = 120
+      Width = 49
+      Height = 16
+      Caption = 'Strength'
+    end
     object CheckBox_AvoidNoise: TCheckBox
       Left = 9
-      Top = 49
+      Top = 17
       Width = 136
       Height = 24
       Caption = 'Avoid FRC Noise'
@@ -318,20 +358,48 @@ object CCTLUTForm: TCCTLUTForm
     end
     object CheckBox_KeepMax: TCheckBox
       Left = 9
-      Top = 17
+      Top = 41
       Width = 152
       Height = 24
       Caption = 'Keep Max Luminance'
       TabOrder = 1
     end
-    object CheckBox_NewDG: TCheckBox
+    object CheckBox_KeepMaxAdv: TCheckBox
       Left = 9
-      Top = 80
-      Width = 137
-      Height = 25
-      Caption = 'New DG Generate'
+      Top = 65
+      Width = 200
+      Height = 24
+      Caption = 'Keep Max Luminance(Adv.)'
       TabOrder = 2
-      Visible = False
+      OnClick = CheckBox_KeepMaxAdvClick
+    end
+    object Edit_AdvOver: TEdit
+      Left = 88
+      Top = 88
+      Width = 73
+      Height = 24
+      Enabled = False
+      ImeName = #26085#25991#36664#20837#31995#32113' (MS-IME2002)'
+      TabOrder = 3
+      Text = '50'
+    end
+    object Edit_AdvGamma: TEdit
+      Left = 88
+      Top = 120
+      Width = 73
+      Height = 24
+      Enabled = False
+      ImeName = #26085#25991#36664#20837#31995#32113' (MS-IME2002)'
+      TabOrder = 4
+      Text = '2.2'
+    end
+    object CheckBox_NewMethod: TCheckBox
+      Left = 8
+      Top = 144
+      Width = 121
+      Height = 25
+      Caption = 'New Method'
+      TabOrder = 5
     end
   end
   object Button_Run: TButton

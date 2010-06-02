@@ -17,6 +17,7 @@ namespace cms {
 	    using namespace cms::measure;
 	    using namespace cms::colorformat;
 	    using namespace Indep;
+	    using namespace Dep;
 	    using namespace java::lang;
 
 	    //==================================================================
@@ -29,10 +30,10 @@ namespace cms {
 				       analyzer):DimDGLutGenerator
 		(componentVector, analyzer) {
 	    };
-	    RGB_vector_ptr AdvancedDGLutGenerator::
+	    /*RGB_vector_ptr AdvancedDGLutGenerator::
 		produce(XYZ_ptr targetWhite,
 			double_vector_ptr luminanceGammaCurve, int turn) {
-		using namespace Dep;
+
 		//==============================================================
 		// 資訊準備
 		//==============================================================
@@ -82,11 +83,69 @@ namespace cms {
 		};
 
 		 return result;
+	    };*/
+
+	    RGB_vector_ptr AdvancedDGLutGenerator::
+		produce(XYZ_ptr targetWhite,
+			double_vector_ptr
+			luminanceGammaCurve,
+			int dimTurn,
+			int brightTurn,
+			double dimGamma, double brightGamma) {
+		//==============================================================
+		// 資訊準備
+		//==============================================================
+		XYZ_ptr blackXYZ =
+		    (*componentVector)[componentVector->size() - 1]->XYZ;
+		XYZ_ptr nativeWhite = (*componentVector)[0]->XYZ;
+
+		//求目標值曲線
+		XYZ_vector_ptr targetXYZVector = getTarget(blackXYZ,
+							   targetWhite,
+							   nativeWhite,
+							   luminanceGammaCurve,
+							   dimTurn,
+							   brightTurn,
+							   dimGamma,
+							   brightGamma,
+							   CIEuvPrime);
+		storeXYZVector(targetXYZVector);
+		//==============================================================
+		RGB_vector_ptr result(new RGB_vector());
+
+		//primary color只能用target white~
+		xyY_ptr rxyY = analyzer->getPrimaryColor(Channel::R);
+		xyY_ptr gxyY = analyzer->getPrimaryColor(Channel::G);
+		xyY_ptr bxyY = analyzer->getPrimaryColor(Channel::B);
+		int x = 0;
+		x;
+
+		foreach(const XYZ_ptr targetXYZ, *targetXYZVector) {
+		    bptr < MaxMatrixIntensityAnayzer >
+			analyzer(new MaxMatrixIntensityAnayzer());
+
+		    analyzer->setupComponent(Channel::R, rxyY->toXYZ());
+		    analyzer->setupComponent(Channel::G, gxyY->toXYZ());
+		    analyzer->setupComponent(Channel::B, bxyY->toXYZ());
+		    analyzer->setupComponent(Channel::W, targetXYZ);
+		    analyzer->enter();
+
+		    Component_vector_ptr newcomponentVector =
+			fetchComponent(analyzer, componentVector);
+		    STORE_COMPONENT(_toString(x++) + ".xls",
+				    newcomponentVector);
+		    DGLutGenerator lutgen(newcomponentVector);
+		    //採100嗎?
+		    RGB_ptr rgb = lutgen.produce(100, 100, 100);
+		    result->push_back(rgb);
+		};
+
+		return result;
 	    };
 
 	    XYZ_vector_ptr AdvancedDGLutGenerator::
 		getTarget(XYZ_ptr startXYZ,
-			  XYZ_ptr turnXYZ,
+			  XYZ_ptr targetXYZ,
 			  XYZ_ptr endXYZ,
 			  double_vector_ptr
 			  luminanceGammaCurve,
@@ -104,13 +163,13 @@ namespace cms {
 		switch (domain) {
 		case CIEuv:
 		    dimstartValues = startXYZ->getuvValues();
-		    dimendValues = turnXYZ->getuvValues();
-		    brightstartValues = turnXYZ->getuvValues();
+		    dimendValues = targetXYZ->getuvValues();
+		    brightstartValues = targetXYZ->getuvValues();
 		    brightendValues = endXYZ->getuvValues();
 		case CIEuvPrime:
 		    dimstartValues = startXYZ->getuvPrimeValues();
-		    dimendValues = turnXYZ->getuvPrimeValues();
-		    brightstartValues = turnXYZ->getuvPrimeValues();
+		    dimendValues = targetXYZ->getuvPrimeValues();
+		    brightstartValues = targetXYZ->getuvPrimeValues();
 		    brightendValues = endXYZ->getuvPrimeValues();
 		};
 
@@ -124,17 +183,18 @@ namespace cms {
 		    double normal = ((double) x) / dimbase;
 		    double gamma = Math::pow(normal, dimGamma) * dimbase;
 		    //在uv'上線性變化
-		    double u = Interpolation::linear(0, dimTurn - 1,
-						     dimstartValues[0],
+		    double u = Interpolation::linear(0, dimbase,
 						     dimendValues[0],
+						     dimstartValues[0],
 						     gamma);
-		    double v = Interpolation::linear(0, dimTurn - 1,
-						     dimstartValues[1],
+		    double v = Interpolation::linear(0, dimbase,
 						     dimendValues[1],
+						     dimstartValues[1],
 						     gamma);
-		    double Y = (*luminanceGammaCurve)[x];
+		    int index = dimbase - x;
+		    double Y = (*luminanceGammaCurve)[index];
 
-		    (*result)[x] = getTargetXYZ(u, v, Y, domain);
+		    (*result)[index] = getTargetXYZ(u, v, Y, domain);
 		}
 
 		//==============================================================

@@ -188,6 +188,8 @@ namespace cms {
 		bool rgbgamma;
 		double gamma, rgamma, ggamma, bgamma;
 		bool useGammaCurve;
+		bool averageDimDG;
+		bool newMethod;
 		double_vector_ptr gammaCurve;
 		double_vector_ptr rgammaCurve;
 		double_vector_ptr ggammaCurve;
@@ -196,7 +198,7 @@ namespace cms {
 		 bptr < BitDepthProcessor > bitDepth;
 		//==============================================================
 
-		 bptr < DGLutGenerator > generator;
+		//bptr < DGLutGenerator > generator;
 		 bptr < ComponentFetcher > fetcher;
 		RGB_vector_ptr dglut;
 		Component_vector_ptr componentVector;
@@ -217,7 +219,7 @@ namespace cms {
 		void setNoneDimCorrect();
 		void setNew(int p1, int p2, double gammaShift);
 		//void setNew2(int under);
-                void setDefinedDim(int under);
+		void setDefinedDim(int under, bool averageDimDG);
 		void setGamma(double gamma);
 		void setGamma(double rgamma, double ggamma, double bgamma);
 		void setGammaCurve(double_vector_ptr gammaCurve);
@@ -229,6 +231,7 @@ namespace cms {
 		void setBMax(bool bMax);
 		void setAvoidFRCNoise(bool avoid);
 		void setKeepMaxLuminance(bool keepMaxLuminance);
+		void setNewMethod(bool enable);
 
 		 LCDCalibrator(bptr <
 			       cms::lcd::calibrate::ComponentFetcher >

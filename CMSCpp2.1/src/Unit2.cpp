@@ -687,11 +687,13 @@ void targetTester()
     }
     XYZ_vector_ptr result =
 	AdvancedDGLutGenerator::getTarget(black, targetWhite, nativeWhite,
-					  gamaCurve, 50, 200, .3, 2.2,
+					  gamaCurve, 50, 200, 3.5, 2.2,
 					  CIEuvPrime);
     foreach(XYZ_ptr XYZ, *result) {
 	xyY_ptr xyY(new CIExyY(XYZ));
-	cout << *xyY->toString() << endl;
+	//cout << *xyY->toString() << endl;
+	cout << CorrelatedColorTemperature::
+	    xy2CCTByMcCamyFloat(xyY) << endl;
     };
 };
 
