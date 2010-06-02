@@ -63,7 +63,7 @@ class TGammaMeasurementForm:public TForm {
      bptr < cms::measure::MeterMeasurement > mm;
      bptr < cms::lcd::calibrate::ComponentFetcher > fetcher;
     //bptr < cms::measure::IntensityAnalyzerIF > analyzer;
-    RGB_vector_ptr gammaTable;
+    RGB_vector_ptr dgcodeTable;
   public:			// User declarations
      __fastcall TGammaMeasurementForm(TComponent * Owner);
     void setBitDepthProcessor(bptr <

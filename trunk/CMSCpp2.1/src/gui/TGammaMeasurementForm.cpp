@@ -54,8 +54,10 @@ void __fastcall TGammaMeasurementForm::Button_MeasureClick(TObject *
     int step = this->ComboBox_LevelStep->Text.ToInt();
 
     if (bitDepth->isTCONInput()) {
-	start = 0;
-	end = this->RadioButton_0To1023->Checked ? 1023 : 256;
+	start = bitDepth->getMeasureStart();
+	//end = this->RadioButton_0To1023->Checked ? 1023 : 256;
+	//end = bitDepth->getMeasureEnd();
+	end = 0;
 	step = 1;
     }
 
@@ -103,6 +105,7 @@ void TGammaMeasurementForm::pcMeasure(bool_vector_ptr rgbw, int start,
     using namespace std;
     using namespace cms::colorformat;
     using namespace cms::measure;
+    using namespace cms::util;
     Channel_vector_ptr channels = Channel::RGBChannel;
     Patch_vector_ptr vectors[3];
 
@@ -133,6 +136,7 @@ void TGammaMeasurementForm::pcMeasure(bool_vector_ptr rgbw, int start,
     RampMeasureFile measureFile(filename, Create);
     measureFile.setMeasureData(componentVector, vectors[0], vectors[1],
 			       vectors[2]);
+    Util::shellExecute(filename);
 };
 
 //---------------------------------------------------------------------------
@@ -178,7 +182,7 @@ void __fastcall TGammaMeasurementForm::Button2Click(TObject * Sender)
 	/*bptr < DGLutFile >
 	   dgcode(new DGLutFile(filename.c_str(), ReadOnly)); */
 	DGLutFile dgcode(filename.c_str(), ReadOnly);
-	gammaTable = dgcode.getGammaTable();
+	dgcodeTable = dgcode.getGammaTable();
     }
 }
 

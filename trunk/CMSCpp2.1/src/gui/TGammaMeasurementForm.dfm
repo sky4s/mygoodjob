@@ -119,8 +119,8 @@ object GammaMeasurementForm: TGammaMeasurementForm
       Caption = 'Direct Pattern Measurement (T-CON Input)'
       TabOrder = 0
       object GroupBox6: TGroupBox
-        Left = 9
-        Top = 25
+        Left = 113
+        Top = 17
         Width = 168
         Height = 112
         Caption = 'Pattern Type'
@@ -153,8 +153,8 @@ object GammaMeasurementForm: TGammaMeasurementForm
         end
       end
       object Table: TGroupBox
-        Left = 185
-        Top = 25
+        Left = 9
+        Top = 17
         Width = 96
         Height = 112
         Caption = 'Table'

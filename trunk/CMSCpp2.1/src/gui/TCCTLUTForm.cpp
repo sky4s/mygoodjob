@@ -95,16 +95,11 @@ void __fastcall TCCTLUTForm::Button_RunClick(TObject * Sender)
 	//選了RBInterp
 	int rbunder = this->Edit_RBInterpUnder->Text.ToInt();
 	calibrator.setRBInterpolation(rbunder);
-    }				/*else if (this->RadioButton_New->Checked) {
-				   int p1 = this->Edit_NewP1->Text.ToInt();
-				   int p2 = this->Edit_NewP2->Text.ToInt();
-				   double gammaShift = this->Edit_GammaShift->Text.ToDouble();
-				   calibrator->setNew(p1, p2, gammaShift);
-				   } */
-    else if (this->RadioButton_DefinedDim->Checked) {
+    } else if (this->RadioButton_DefinedDim->Checked) {
 	//新低灰階修正方法
 	int under = this->Edit_DefinedDimUnder->Text.ToInt();
-	calibrator.setDefinedDim(under);
+	bool averageDim = this->CheckBox_AverageDimDG->Checked;
+	calibrator.setDefinedDim(under, averageDim);
     } else {
 	calibrator.setNoneDimCorrect();
     }
@@ -134,8 +129,9 @@ void __fastcall TCCTLUTForm::Button_RunClick(TObject * Sender)
     //==========================================================================
     calibrator.setAvoidFRCNoise(this->CheckBox_AvoidNoise->Checked);
     calibrator.setKeepMaxLuminance(this->CheckBox_KeepMax->Checked);
+    calibrator.setNewMethod(this->CheckBox_NewMethod->Checked);
 
-    try { //為了對應__finally使用的try
+    try {			//為了對應__finally使用的try
 	try {
 	    this->TOutputFileFrame1->createDir();
 
@@ -150,7 +146,7 @@ void __fastcall TCCTLUTForm::Button_RunClick(TObject * Sender)
 	    string filename = astr->c_str();
 	    calibrator.storeDGLut(filename, dglut);
 	    ShowMessage("Ok!");
-            Util::shellExecute(filename);
+	    Util::shellExecute(filename);
 	}
 	catch(java::lang::IllegalStateException & ex) {
 	    ShowMessage(ex.toString().c_str());
@@ -179,7 +175,7 @@ void __fastcall TCCTLUTForm::FormCreate(TObject * Sender)
     //==========================================================================
 #ifdef DEBUG_CCTLUT
     this->Button_Process->Visible = true;
-    this->CheckBox_NewDG->Visible = true;
+    //this->CheckBox_NewDG->Visible = true;
 #endif
 }
 
@@ -345,6 +341,8 @@ void TCCTLUTForm::setLowLevelCorrectionEditDisable()
     //this->Edit_NewP2->Enabled = false;
     //this->Edit_GammaShift->Enabled = false;
     this->Edit_DefinedDimUnder->Enabled = false;
+    this->CheckBox_AverageDimDG->Enabled = false;
+    this->Edit_DimGamma->Enabled = false;
 };
 
 void __fastcall TCCTLUTForm::RadioButton_NoneClick(TObject * Sender)
@@ -367,6 +365,18 @@ void __fastcall TCCTLUTForm::RadioButton_DefinedDimClick(TObject * Sender)
 {
     setLowLevelCorrectionEditDisable();
     this->Edit_DefinedDimUnder->Enabled = true;
+    this->CheckBox_AverageDimDG->Enabled = true;
+    this->Edit_DimGamma->Enabled = true;
+}
+
+//---------------------------------------------------------------------------
+
+void __fastcall TCCTLUTForm::CheckBox_KeepMaxAdvClick(TObject * Sender)
+{
+    setLowLevelCorrectionEditDisable();
+    bool enable = this->CheckBox_KeepMaxAdv->Checked;
+    this->Edit_AdvGamma->Enabled = enable;
+    this->Edit_AdvOver->Enabled = enable;
 }
 
 //---------------------------------------------------------------------------
