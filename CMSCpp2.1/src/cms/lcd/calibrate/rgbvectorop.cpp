@@ -227,13 +227,11 @@ namespace cms {
 		//把未用到的區域全部處理成最大值
 		int n = bitDepth->getLevel() - 1;
 		int effectiven = (bitDepth->getEffectiveLevel() - 1);
-		//STORE_RGBVECTOR("0.xls", result);
 		for (int x = n; x >= effectiven; x--) {
 		    RGB_ptr rgb = (*result)[x];
 		    rgb->B = bitDepth->getMaxDigitalCount();
 		}
-		//STORE_RGBVECTOR("1.xls", result);
-		//==============================================================                
+		//==============================================================
 
 		for (int x = effectiven; x != -1; x--) {
 		    RGB_ptr rgb = (*result)[x];
@@ -251,7 +249,6 @@ namespace cms {
 			break;
 		    }
 		}
-		//STORE_RGBVECTOR("2.xls", result);
 
 		return result;
 	    };
