@@ -16,7 +16,7 @@ namespace cms {
 	namespace calibrate {
 
 	    enum Domain {
-		CIEuv, CIEuvPrime
+		CIExy, CIEuv, CIEuvPrime
 	    };
 
 	    class AdvancedDGLutGenerator:private DimDGLutGenerator {
@@ -27,8 +27,8 @@ namespace cms {
 				       cms::measure::IntensityAnalyzerIF >
 				       analyzer);
 		/*RGB_vector_ptr produce(XYZ_ptr targetWhite,
-				       double_vector_ptr
-				       luminanceGammaCurve, int turn);*/
+		   double_vector_ptr
+		   luminanceGammaCurve, int turn); */
 
 		RGB_vector_ptr produce(XYZ_ptr targetWhite,
 				       double_vector_ptr
@@ -49,7 +49,7 @@ namespace cms {
 						double dimGamma,
 						double brightGamma,
 						Domain domain);
-		static XYZ_ptr getTargetXYZ(double u, double v, double Y,
+		static XYZ_ptr getTargetXYZ(double x, double y, double z,
 					    Domain domain);
 	    };
 

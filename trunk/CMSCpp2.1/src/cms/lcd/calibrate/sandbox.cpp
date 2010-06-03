@@ -31,26 +31,84 @@ namespace cms {
 		(componentVector, analyzer) {
 	    };
 	    /*RGB_vector_ptr AdvancedDGLutGenerator::
-		produce(XYZ_ptr targetWhite,
-			double_vector_ptr luminanceGammaCurve, int turn) {
+	       produce(XYZ_ptr targetWhite,
+	       double_vector_ptr luminanceGammaCurve, int turn) {
 
+	       //==============================================================
+	       // 資訊準備
+	       //==============================================================
+	       XYZ_ptr blackXYZ =
+	       (*componentVector)[componentVector->size() - 1]->XYZ;
+	       XYZ_ptr nativeXYZ = (*componentVector)[0]->XYZ;
+
+	       //求目標值曲線
+	       double gamma = 1;
+	       Domain domain = CIEuvPrime;
+	       XYZ_vector_ptr targetXYZVector = getTarget(blackXYZ,
+	       targetWhite,
+	       nativeXYZ,
+	       luminanceGammaCurve,
+	       turn, turn,
+	       gamma, gamma,
+	       domain);
+	       storeXYZVector(targetXYZVector);
+	       //==============================================================
+	       RGB_vector_ptr result(new RGB_vector());
+
+	       //primary color只能用target white~
+	       xyY_ptr rxyY = analyzer->getPrimaryColor(Channel::R);
+	       xyY_ptr gxyY = analyzer->getPrimaryColor(Channel::G);
+	       xyY_ptr bxyY = analyzer->getPrimaryColor(Channel::B);
+	       int x = 0;
+	       x;
+
+	       foreach(const XYZ_ptr targetXYZ, *targetXYZVector) {
+	       bptr < MaxMatrixIntensityAnayzer >
+	       analyzer(new MaxMatrixIntensityAnayzer());
+
+	       analyzer->setupComponent(Channel::R, rxyY->toXYZ());
+	       analyzer->setupComponent(Channel::G, gxyY->toXYZ());
+	       analyzer->setupComponent(Channel::B, bxyY->toXYZ());
+	       analyzer->setupComponent(Channel::W, targetXYZ);
+	       analyzer->enter();
+
+	       Component_vector_ptr newcomponentVector =
+	       fetchComponent(analyzer, componentVector);
+	       STORE_COMPONENT(_toString(x++) + ".xls",
+	       newcomponentVector);
+	       DGLutGenerator lutgen(newcomponentVector);
+	       //採100嗎?
+	       RGB_ptr rgb = lutgen.produce(100, 100, 100);
+	       result->push_back(rgb);
+	       };
+
+	       return result;
+	       }; */
+
+	    RGB_vector_ptr AdvancedDGLutGenerator::
+		produce(XYZ_ptr targetWhite,
+			double_vector_ptr
+			luminanceGammaCurve,
+			int dimTurn,
+			int brightTurn,
+			double dimGamma, double brightGamma) {
 		//==============================================================
 		// 資訊準備
 		//==============================================================
 		XYZ_ptr blackXYZ =
 		    (*componentVector)[componentVector->size() - 1]->XYZ;
-		XYZ_ptr nativeXYZ = (*componentVector)[0]->XYZ;
+		XYZ_ptr nativeWhite = (*componentVector)[0]->XYZ;
 
 		//求目標值曲線
-		double gamma = 1;
-		Domain domain = CIEuvPrime;
 		XYZ_vector_ptr targetXYZVector = getTarget(blackXYZ,
 							   targetWhite,
-							   nativeXYZ,
+							   nativeWhite,
 							   luminanceGammaCurve,
-							   turn, turn,
-							   gamma, gamma,
-							   domain);
+							   dimTurn,
+							   brightTurn,
+							   dimGamma,
+							   brightGamma,
+							   CIEuvPrime);
 		 storeXYZVector(targetXYZVector);
 		//==============================================================
 		RGB_vector_ptr result(new RGB_vector());
@@ -83,64 +141,6 @@ namespace cms {
 		};
 
 		 return result;
-	    };*/
-
-	    RGB_vector_ptr AdvancedDGLutGenerator::
-		produce(XYZ_ptr targetWhite,
-			double_vector_ptr
-			luminanceGammaCurve,
-			int dimTurn,
-			int brightTurn,
-			double dimGamma, double brightGamma) {
-		//==============================================================
-		// 資訊準備
-		//==============================================================
-		XYZ_ptr blackXYZ =
-		    (*componentVector)[componentVector->size() - 1]->XYZ;
-		XYZ_ptr nativeWhite = (*componentVector)[0]->XYZ;
-
-		//求目標值曲線
-		XYZ_vector_ptr targetXYZVector = getTarget(blackXYZ,
-							   targetWhite,
-							   nativeWhite,
-							   luminanceGammaCurve,
-							   dimTurn,
-							   brightTurn,
-							   dimGamma,
-							   brightGamma,
-							   CIEuvPrime);
-		storeXYZVector(targetXYZVector);
-		//==============================================================
-		RGB_vector_ptr result(new RGB_vector());
-
-		//primary color只能用target white~
-		xyY_ptr rxyY = analyzer->getPrimaryColor(Channel::R);
-		xyY_ptr gxyY = analyzer->getPrimaryColor(Channel::G);
-		xyY_ptr bxyY = analyzer->getPrimaryColor(Channel::B);
-		int x = 0;
-		x;
-
-		foreach(const XYZ_ptr targetXYZ, *targetXYZVector) {
-		    bptr < MaxMatrixIntensityAnayzer >
-			analyzer(new MaxMatrixIntensityAnayzer());
-
-		    analyzer->setupComponent(Channel::R, rxyY->toXYZ());
-		    analyzer->setupComponent(Channel::G, gxyY->toXYZ());
-		    analyzer->setupComponent(Channel::B, bxyY->toXYZ());
-		    analyzer->setupComponent(Channel::W, targetXYZ);
-		    analyzer->enter();
-
-		    Component_vector_ptr newcomponentVector =
-			fetchComponent(analyzer, componentVector);
-		    STORE_COMPONENT(_toString(x++) + ".xls",
-				    newcomponentVector);
-		    DGLutGenerator lutgen(newcomponentVector);
-		    //採100嗎?
-		    RGB_ptr rgb = lutgen.produce(100, 100, 100);
-		    result->push_back(rgb);
-		};
-
-		return result;
 	    };
 
 	    XYZ_vector_ptr AdvancedDGLutGenerator::
@@ -161,6 +161,11 @@ namespace cms {
 		double_array brightendValues;
 
 		switch (domain) {
+		case CIExy:
+		    dimstartValues = startXYZ->getxyValues();
+		    dimendValues = targetXYZ->getxyValues();
+		    brightstartValues = targetXYZ->getxyValues();
+		    brightendValues = endXYZ->getxyValues();
 		case CIEuv:
 		    dimstartValues = startXYZ->getuvValues();
 		    dimendValues = targetXYZ->getuvValues();
@@ -237,17 +242,19 @@ namespace cms {
 		return result;
 	    };
 
-	    XYZ_ptr AdvancedDGLutGenerator::getTargetXYZ(double u,
-							 double v,
-							 double Y,
+	    XYZ_ptr AdvancedDGLutGenerator::getTargetXYZ(double x,
+							 double y,
+							 double z,
 							 Domain domain) {
 		double_array targetValues(new double[3]);
-		targetValues[0] = u;
-		targetValues[1] = v;
-		targetValues[2] = Y;
-		//xyY_ptr targetxyY(new CIExyY());
+		targetValues[0] = x;
+		targetValues[1] = y;
+		targetValues[2] = z;
+
 		CIExyY targetxyY;
 		switch (domain) {
+		case CIExy:
+		    targetxyY.setValues(targetValues);
 		case CIEuv:
 		    targetxyY.setuvYValues(targetValues);
 		case CIEuvPrime:

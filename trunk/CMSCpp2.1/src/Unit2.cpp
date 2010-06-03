@@ -30,7 +30,7 @@
 #include <math.hpp>
 #include <boost/numeric/conversion/cast.hpp>
 #include <boost/lexical_cast.hpp>
-#include <boost/tokenizer.hpp>
+//#include <boost/tokenizer.hpp>
 
 
 using namespace std;
@@ -42,9 +42,6 @@ void excel()
     using namespace cms::util;
     //string_ptr filename(new string("a.xls"));
 
-    /*string_vector_ptr fieldsNames(new string_vector());
-       fieldsNames->push_back("a");
-       fieldsNames->push_back("b"); */
     string_vector_ptr fieldsNames = StringVector::fromCString(2, "a", "b");
 
     const string & filename = "a.xls";
@@ -115,17 +112,9 @@ void excel2()
 
     } else {
 	for (int x = 0; x < 1000; x++) {
-	    /*db.insert(fieldsNames,
-	       ExcelFileDB::makes(2, _toString(x),
-	       _toString((x + 1)))); */
-	    //string a = "INSERT INTO [tb] ([a],[b]) VALUES (";
-	    //string sql = a + _toString(x)+", "+_toString(x+1)+") ";
+
 	    db.execute(" INSERT INTO[tb] ([a],[b]) VALUES(0, 1) ");
-	    //db.execute(sql);
-	    /*
-	       不管有用到字串處理還是沒有都一樣慢, 所以用不著一口氣將初使化和update
-	       做在一起了, 因為還是一樣慢
-	     */
+
 	}
     }
 }
@@ -145,53 +134,10 @@ void lut()
 }
 
 
-/*void regress()
-{
-    using namespace std;
-    using namespace TNT;
-    using namespace math;
-    using namespace JAMA;
-
-
-
-    int count = 10;
-    double2D_ptr rgb(new double2D(count, 3));
-    double2D_ptr XYZ(new double2D(count, 3));
-
-    for (int x = 0; x < count; x++) {
-	for (int y = 0; y < 3; y++) {
-	    (*rgb)[x][y] = x + 100 + y;
-	    //(*XYZ)[x][y] = pow((*rgb)[x][y] * 10, 1.2);
-	    (*XYZ)[x][y] = (*rgb)[x][y] * 10;
-	}
-    }
-
-    Polynomial::COEF_3 coefsArray[] = {
-    Polynomial::COEF_3::BY_3, Polynomial::COEF_3::BY_3C,
-	    Polynomial::COEF_3::BY_6, Polynomial::COEF_3::BY_6C};
-    foreach(const Polynomial::COEF_3 & coef, coefsArray) {
-	PolynomialRegression regression(rgb, XYZ, coef);
-
-	regression.regress();
-	double2D_ptr input(new double2D(1, 3));
-	(*input)[0][0] = 105;
-	(*input)[0][1] = 106;
-	(*input)[0][2] = 107;
-	double2D_ptr d = regression.getPredict(input);
-	cout << *d << endl;
-	cout << *regression.getCoefs() << endl;
-    }
-
-}*/
-
 double2D_ptr inverse()
 {
     using namespace math;
-    /*double d[] = { 0.5767309, 0.1855540, 0.1881852,
-       0.2973769, 0.6273491, 0.0752741,
-       0.0270343, 0.0706872, 0.9911085
-       }; */
-    //double2D_ptr m(new double2D(3, 3, d));
+
     double2D_ptr m =
 	DoubleArray::toDouble2D(3, 9, 0.5767309, 0.1855540, 0.1881852,
 				0.2973769, 0.6273491, 0.0752741,
@@ -200,11 +146,7 @@ double2D_ptr inverse()
     cout << *DoubleArray::toString(m) << endl;
     cout << *DoubleArray::toString(inv) << endl;
 
-    /*double2D_ptr m2 = DoubleArray::toDouble2D(3, 3, 1.1, 2.1, 3.1);
-       cout << "test:" << *DoubleArray::toString(m2) << endl; */
-    //DoubleArray::toDouble2D_( 1,3, 1.1, 2.1, 3.1);
-    /*cout << *DoubleArray::toString(DoubleArray::toDoubleArray(3, 1.1, 2.1, 3.1),
-       3) << endl; */
+
 
     return m;
     //double_array a = DoubleArray::toDoubleArray(3, 1.1, 2.2, 3.3);
@@ -296,8 +238,7 @@ void gammaCurve()
     using namespace cms::lcd::calibrate;
     using namespace math;
     //int n = 256;
-    /*double_array curve = LCDCalibrator::getGammaCurve(2.2, n);
-       cout << *DoubleArray::toString(curve, n); */
+
 };
 
 
@@ -363,22 +304,7 @@ void doubleArrayTry()
     double_array b = DoubleArray::toDoubleArray(bb, 3);
     cout << *DoubleArray::toString(b, 3) << endl;
 };
-void mathTry()
-{
-    /*using namespace java::lang;
-       c*out << std::ceil(0.25) << endl;
-       cout << std::ceil(0.5) << endl;
-       cout << std::ceil(0.9) << endl;
-       //cout << std::round(1.0) << endl;
-       cout << Math::round(0.5) << endl;
-       cout << Math::round(0.4) << endl; */
-};
-void rgbop()
-{
 
-    using namespace cms::lcd::calibrate;
-    //RGBOp < RGBGamma_ptr > rgbgammaop;
-};
 
 
 
@@ -472,17 +398,7 @@ void measureFileTry()
 	cout << endl;
     };
 };
-void maxValueTry()
-{
 
-    /*using namespace Dep;
-       using namespace std;
-       const MaxValue & m = MaxValue::getByBit(5);
-       const MaxValue & n = MaxValue::getByBit(8);
-       cout << *m.toString() << endl;
-       cout << *n.toString() << endl; */
-
-};
 void byteOpTry()
 {
     int i = 259;
@@ -500,14 +416,7 @@ void castTry()
     float ff = -42.1234;
     int ii = numeric_cast < int >(ff);
     cout << ii << endl;
-    //try {
-    //float f = -42.1234;
-    // This will cause a boost::numeric::negative_overflow exception to be thrown
-    //unsigned int i = numeric_cast < unsigned int >(f);
-    /*}
-       catch(bad_numeric_cast & e) {
-       std::cout << e.what();
-       } */
+
 };
 void bufferTry()
 {
@@ -622,30 +531,10 @@ void newCCTAlgoTry()
     }
 }
 
-void token()
-{
-    /*string str =
-       "'[0.2789347051678352, 0.2900524607588401, 561.2361450195312]";
-       typedef boost::tokenizer < boost::char_separator < char > >tokenizer;
-       boost::char_separator < char >sep("[], '");
-       tokenizer tokens(str, sep);
-       for (tokenizer::iterator tok_iter = tokens.begin();
-       tok_iter != tokens.end(); ++tok_iter) {
-       std::cout << "<" << *tok_iter << "> ";
-       }
-       std::cout << "\n"; */
-
-
-}
 
 void readTextTester()
 {
-    /*TStringList *sl = new TStringList;
-       sl->LoadFromFile("../src/cms/reference/cie/ciexyz31_1.txt");
-       for (int i = 0; i < sl->Count; i++) {
-       //Memo1->Lines->Add(SLTmp->Strings[i]);
-       cout << sl->Strings[i] << endl;
-       } */
+
 
     using namespace cms::colorformat;
     Parser parser("ciexyz31_1.txt");
@@ -687,8 +576,8 @@ void targetTester()
     }
     XYZ_vector_ptr result =
 	AdvancedDGLutGenerator::getTarget(black, targetWhite, nativeWhite,
-					  gamaCurve, 50, 200, 3.5, 2.2,
-					  CIEuvPrime);
+					  gamaCurve, 30, 240, 2.2, 3,
+					  CIExy);
     foreach(XYZ_ptr XYZ, *result) {
 	xyY_ptr xyY(new CIExyY(XYZ));
 	//cout << *xyY->toString() << endl;
