@@ -39,6 +39,8 @@ void __fastcall TGammaAdjustmentForm::FormShow(TObject * Sender)
 {
     using namespace cms::util;
     using namespace Dep;
+    using namespace cms::lcd::calibrate;
+
     int step = bitDepth->getMeasureStep();
     this->ComboBox_LevelStep->Text = Util::toString(step).c_str();
 
@@ -46,6 +48,11 @@ void __fastcall TGammaAdjustmentForm::FormShow(TObject * Sender)
     bool avoidNoise = (input == MaxValue::Int6Bit
 		       || input == MaxValue::Int8Bit);
     this->CheckBox_AvoidNoise->Enabled = avoidNoise;
+
+    calibrator = bptr < LCDCalibrator > (new
+					 LCDCalibrator(MainForm->
+						       getComponentFetcher
+						       (), bitDepth));
 }
 
 //---------------------------------------------------------------------------
@@ -105,14 +112,17 @@ void __fastcall TGammaAdjustmentForm::Button_RGBGammaClick(TObject *
 void TGammaAdjustmentForm::gammaAdjust(bool rgbGammaAdjust)
 {
     using namespace std;
-    int step = this->ComboBox_LevelStep->Text.ToInt();
+    using namespace cms::util;
+    //int step = this->ComboBox_LevelStep->Text.ToInt();
     //==========================================================================
     // gamma的處理
     //==========================================================================
     if (this->CheckBox_LoadingGamma->Checked) {
+	//載入gamma
 	double_vector_ptr gammaCurve = rgbGamma->w;
 	calibrator->setGammaCurve(gammaCurve);
     } else if (rgbGammaAdjust) {
+	//rgb gamma分開設定
 	double rgamma = this->ComboBox_RGamma->Text.ToDouble();
 	double ggamma = this->ComboBox_GGamma->Text.ToDouble();
 	double bgamma = this->ComboBox_BGamma->Text.ToDouble();
@@ -126,7 +136,8 @@ void TGammaAdjustmentForm::gammaAdjust(bool rgbGammaAdjust)
     calibrator->setKeepMaxLuminance(this->CheckBox_KeepMax->Checked);
 
     this->TOutputFileFrame1->createDir();
-    RGB_vector_ptr dglut = calibrator->getGammaDGLut(step);
+    RGB_vector_ptr dglut =
+	calibrator->getGammaDGLut(getMeasureCondition());
     if (dglut == null) {
 	return;
     }
@@ -134,19 +145,26 @@ void TGammaAdjustmentForm::gammaAdjust(bool rgbGammaAdjust)
     string filename = astr->c_str();
     calibrator->storeDGLut(filename, dglut);
     ShowMessage("Ok!");
+    Util::shellExecute(filename);
 };
 
-//---------------------------------------------------------------------------
 
-void __fastcall TGammaAdjustmentForm::FormCreate(TObject * Sender)
+bptr < cms::lcd::calibrate::MeasureCondition >
+    TGammaAdjustmentForm::getMeasureCondition()
 {
     using namespace cms::lcd::calibrate;
+    int start = bitDepth->getMeasureStart();
+    int end = bitDepth->getMeasureEnd();
+    int step = this->ComboBox_LevelStep->Text.ToInt();
 
-    calibrator = bptr < LCDCalibrator > (new
-					 LCDCalibrator(MainForm->
-						       getComponentFetcher
-						       (), bitDepth));
-}
+    //預設的第一階
+    int firstStep =
+	(bitDepth->getMeasureStep() !=
+	 step) ? step : bitDepth->getMeasureFirstStep();
+
+    return bptr < MeasureCondition >
+	(new MeasureCondition(start, end, firstStep, step));
+};
 
 //---------------------------------------------------------------------------
 

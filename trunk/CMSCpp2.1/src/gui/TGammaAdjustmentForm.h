@@ -46,12 +46,12 @@ class TGammaAdjustmentForm:public TForm {
     void __fastcall CheckBox_LoadingGammaClick(TObject * Sender);
     void __fastcall Button_GrayGammaClick(TObject * Sender);
     void __fastcall Button_RGBGammaClick(TObject * Sender);
-    void __fastcall FormCreate(TObject * Sender);
   private:			// User declarations
      bptr < cms::lcd::calibrate::BitDepthProcessor > bitDepth;
     RGBGamma_ptr rgbGamma;
      bptr < cms::lcd::calibrate::LCDCalibrator > calibrator;
     void gammaAdjust(bool rgbGammaAdjust);
+ bptr < cms::lcd::calibrate::MeasureCondition > getMeasureCondition();    
   public:			// User declarations
      __fastcall TGammaAdjustmentForm(TComponent * Owner);
     void setBitDepthProcessor(bptr <

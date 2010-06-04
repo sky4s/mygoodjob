@@ -94,6 +94,9 @@ class TMainForm:public TForm {
     TRadioButton *RadioButton_AnalyzerDebug;
     TLabel *Label10;
     TEdit *Edit_FRCAbility;
+    TComboBox *ComboBox_Type;
+    TLabel *Label11;
+    TButton *Button_I2CTest;
     void __fastcall About1Click(TObject * Sender);
     void __fastcall Exit1Click(TObject * Sender);
     void __fastcall TargetWhite1Click(TObject * Sender);
@@ -117,6 +120,7 @@ class TMainForm:public TForm {
     void __fastcall Button1Click(TObject * Sender);
     void __fastcall Edit_IntervalChange(TObject * Sender);
     void __fastcall FormShow(TObject * Sender);
+    void __fastcall Button_I2CTestClick(TObject * Sender);
   private:			// User declarations
     //==========================================================================
     // meter

@@ -110,7 +110,7 @@ namespace cms {
 				    //newcomponentVector);
 		    DGLutGenerator lutgen(newcomponentVector);
 		    //±Ä100¶Ü?
-		    RGB_ptr rgb = lutgen.produce(100, 100, 100);
+		    RGB_ptr rgb = lutgen.getDGCode(100, 100, 100);
 		    result->push_back(rgb);
 		};
 

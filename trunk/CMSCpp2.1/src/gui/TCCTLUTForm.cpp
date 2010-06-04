@@ -101,7 +101,7 @@ void __fastcall TCCTLUTForm::Button_RunClick(TObject * Sender)
 	bool averageDim = this->CheckBox_AverageDimDG->Checked;
 	calibrator.setDefinedDim(under, averageDim);
     } else {
-	calibrator.setNoneDimCorrect();
+	calibrator.setNonDimCorrect();
     }
     //==========================================================================
 

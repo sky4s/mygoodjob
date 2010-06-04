@@ -4,6 +4,7 @@
 #pragma hdrstop
 
 #include "TI2CTestForm.h"
+#include "TMainForm.h"
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
 #pragma resource "*.dfm"
@@ -94,20 +95,43 @@ void __fastcall TI2CTestForm::Button1Click(TObject * Sender)
 		i2cControl::getLPTInstance(second, addressingSize, card);
 	};
     };
-    bool connect = i2c1st->connect();
-    if (dual) {
-	i2c2nd->connect();
-    }
-    //connect = true;
-    if (true == connect) {
-	setOptionsEditable(false);
+    try {
+	bool connect = i2c1st->connect();
+	if (dual) {
+	    i2c2nd->connect();
+	}
+	if (true == connect) {
+	    setOptionsEditable(false);
 
-	/*int gammaTestAddress =
-	    StrToInt("0x" + this->Edit_GammaTestAddress->Text);
-	int gammaTestBit = StrToInt(this->Edit_GammaTestBit->Text);
-	int testRGBAddress =
-	    StrToInt("0x" + this->Edit_TestRGBAdress->Text);
-	bool indepRGB = this->CheckBox_IndepRGB->Checked;*/
+	    int gammaTestAddress =
+		StrToInt("0x" + this->Edit_GammaTestAddress->Text);
+	    int gammaTestBit = StrToInt(this->Edit_GammaTestBit->Text) + 1;
+	    int testRGBAddress =
+		StrToInt("0x" + this->Edit_TestRGBAdress->Text);
+	    bool indepRGB = CheckBox_IndepRGB->Checked;
+
+	    parameter = bptr < TCONParameter > (new
+						TCONParameter
+						(gammaTestAddress,
+						 gammaTestBit,
+						 testRGBAddress, indepRGB,
+						 MainForm->bitDepth->
+						 getLutMaxValue()));
+	    if (!dual) {
+		control =
+		    bptr < TCONControl >
+		    (new TCONControl(parameter, i2c1st));
+	    } else {
+		control =
+		    bptr < TCONControl >
+		    (new TCONControl(parameter, i2c1st, i2c2nd));
+	    }
+	}
+
+
+    }
+    catch(java::lang::RuntimeException & ex) {
+	ShowMessage("I2C link error!");
     }
 }
 

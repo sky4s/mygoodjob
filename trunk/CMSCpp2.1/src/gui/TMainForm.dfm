@@ -1070,6 +1070,16 @@ object MainForm: TMainForm
             Caption = 'LPT Small'
             TabOrder = 2
           end
+          object Button_I2CTest: TButton
+            Left = 10
+            Top = 118
+            Width = 80
+            Height = 21
+            Caption = 'I2C Test'
+            TabOrder = 3
+            Visible = False
+            OnClick = Button_I2CTestClick
+          end
         end
         object GroupBox_DeviceAddress: TGroupBox
           Left = 129
@@ -1185,6 +1195,13 @@ object MainForm: TMainForm
             Height = 16
             Caption = 'LUT Address'
           end
+          object Label11: TLabel
+            Left = 9
+            Top = 137
+            Width = 32
+            Height = 16
+            Caption = 'Type'
+          end
           object GroupBox5: TGroupBox
             Left = 9
             Top = 16
@@ -1235,14 +1252,27 @@ object MainForm: TMainForm
             Text = '4A7'
           end
           object CheckBox_IndepRGB: TCheckBox
-            Left = 9
-            Top = 137
+            Left = 41
+            Top = -7
             Width = 128
             Height = 24
             Caption = 'Independent RGB'
             Checked = True
             State = cbChecked
             TabOrder = 2
+            Visible = False
+          end
+          object ComboBox_Type: TComboBox
+            Left = 48
+            Top = 137
+            Width = 105
+            Height = 24
+            ItemHeight = 16
+            TabOrder = 3
+            Text = '12401'
+            Items.Strings = (
+              '12401'
+              '12403')
           end
         end
       end
@@ -1392,7 +1422,6 @@ object MainForm: TMainForm
     end
     object GammaAdj1: TMenuItem
       Caption = 'GammaAdj'
-      Visible = False
       OnClick = GammaAdj1Click
     end
     object Measurement1: TMenuItem
