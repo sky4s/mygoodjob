@@ -153,6 +153,11 @@ namespace cms {
 		setPatchIntensity(PatchIntensity patchIntensity) {
 	    };
 	    double_array DGLutFileMeter::triggerMeasurementInXYZ() {
+		//int size = vector->size();
+		if (index >= vector->size()) {
+		    throw java::lang::IndexOutOfBoundsException("index >= vector->size()");
+		}
+
 		c = (*vector)[index];
 		index++;
 		XYZ_ptr XYZ = c->XYZ;

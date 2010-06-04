@@ -150,7 +150,7 @@ namespace cms {
 
 	    for (int x = part1Size; x != part2Size; x++) {
 		int n = part2Size - 1 - x;
-		StringVector::setContent(values, "0", 7, 0, 1, 2, 3, 4, 5,
+		StringVector::setContent(values, "-1", 7, 0, 1, 2, 3, 4, 5,
 					 6);
 
 		//gamma 0~100
@@ -219,6 +219,9 @@ namespace cms {
 		double x = _toDouble((*result)[1]);
 		double y = _toDouble((*result)[2]);
 		double Y = _toDouble((*result)[3]);
+		if (gray == -1 || Y == 0) {
+		    break;
+		}
 		double R = _toDouble((*result)[4]);
 		double G = _toDouble((*result)[5]);
 		double B = _toDouble((*result)[6]);
@@ -232,6 +235,7 @@ namespace cms {
 		RGB_ptr gamma(new RGBColor(r, g, b));
 		bptr < Component >
 		    component(new Component(rgb, intensity, XYZ, gamma));
+
 		vector->push_back(component);
 	    };
 	    return vector;
@@ -267,66 +271,6 @@ namespace cms {
 	//======================================================================
 	// DGLutProperty
 	//======================================================================
-	/*const
-	   string DGLutProperty::Start = "start";
-	   const
-	   string DGLutProperty::End = "end";
-	   const
-	   string DGLutProperty::Step = "step";
-	   const
-	   string DGLutProperty::HighStart = "high level start";
-	   const
-	   string DGLutProperty::HighEnd = "high level end";
-	   const
-	   string DGLutProperty::HighStep = "high level step";
-	   const
-	   string DGLutProperty::LowStart = "low level start";
-	   const
-	   string DGLutProperty::LowEnd = "low level end";
-	   const
-	   string DGLutProperty::LowStep = "low level step";
-	   const
-	   string DGLutProperty::P1P2 = "p1p2";
-	   const
-	   string DGLutProperty::P1 = "p1";
-	   const
-	   string DGLutProperty::P2 = "p2";
-	   const
-	   string DGLutProperty::RB = "rb interpolation";
-	   const
-	   string DGLutProperty::RBUnder = "rb under";
-	   const
-	   string DGLutProperty::In = "in";
-	   const
-	   string DGLutProperty::LUT = "lut";
-	   const
-	   string DGLutProperty::FRC = "FRC";
-	   const
-	   string DGLutProperty::Out = "out";
-	   const
-	   string DGLutProperty::Gamma = "gamma";
-	   const
-	   string DGLutProperty::RGamma = "r gamma";
-	   const
-	   string DGLutProperty::GGamma = "g gamma";
-	   const
-	   string DGLutProperty::BGamma = "b gamma";
-	   const
-	   string DGLutProperty::GammaCurve = "gamma curve";
-	   const
-	   string DGLutProperty::GByPass = "g bypass";
-	   const
-	   string DGLutProperty::BGain = "b gain";
-	   const
-	   string DGLutProperty::BMax = "b max";
-	   const
-	   string DGLutProperty::Gamma256 = "gamma 256";
-	   const
-	   string DGLutProperty::FRC_NR = "avoid FRC noise";
-	   const
-	   string DGLutProperty::DimCorrect = "low level correct";
-
-	   const string DGLutProperty::KeepMaxLumi = "keep max luminance"; */
 	const string DGLutProperty::On = "On";
 	const string DGLutProperty::Off = "Off";
 
@@ -415,11 +359,7 @@ namespace cms {
 	    propertyMap.
 		insert(make_pair(key, string_ptr(new string(value))));
 	};
-	/*DGLutProperty::DGLutProperty(bptr < cms::lcd::calibrate::LCDCalibrator > c):c(c),
-	   d(bptr < DGLutFile >
-	   ((DGLutFile *) null)) {
 
-	   }; */
       DGLutProperty::DGLutProperty(cms::lcd::calibrate::LCDCalibrator * c):c(c),
 	    d(bptr < DGLutFile >
 	      ((DGLutFile *) null)) {
