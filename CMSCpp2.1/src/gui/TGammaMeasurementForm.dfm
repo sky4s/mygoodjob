@@ -125,6 +125,7 @@ object GammaMeasurementForm: TGammaMeasurementForm
         Height = 112
         Caption = 'Pattern Type'
         TabOrder = 0
+        Visible = False
         object GroupBox9: TGroupBox
           Left = 9
           Top = 25
@@ -158,6 +159,7 @@ object GammaMeasurementForm: TGammaMeasurementForm
         Width = 96
         Height = 112
         Caption = 'Table'
+        Enabled = False
         TabOrder = 1
         object RadioButton_10Bit: TRadioButton
           Left = 9

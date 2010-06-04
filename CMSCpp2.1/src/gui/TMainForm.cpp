@@ -16,6 +16,7 @@
 #include "TMatrixCalibration.h"
 #include "TGammaAdjustmentForm.h"
 #include "TGammaMeasurementForm.h"
+#include "TI2CTestForm.h"
 
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
@@ -71,6 +72,7 @@ void __fastcall TMainForm::FormCreate(TObject * Sender)
 	setDummyMeterFilename(METER_FILE);
 	this->Caption = this->Caption + " (debug mode)";
 	this->GroupBox_CHSetting->Visible = false;
+	this->Button_I2CTest->Visible = true;
     }
     bitDepth =
 	bptr < BitDepthProcessor >
@@ -332,7 +334,7 @@ void __fastcall TMainForm::Button_ConnectClick(TObject * Sender)
     bptr < i2cControl > i2c2nd;
     unsigned char first, second;
     bool dual = false;
-
+    //bool bindepRGB = this->ComboBox_Type->ItemIndex == 1;
     if (this->RadioButton_SingleTCON->Checked) {
 	first = StrToInt("0x" + this->Edit_DeviceAddress->Text);
     } else {
@@ -373,8 +375,7 @@ void __fastcall TMainForm::Button_ConnectClick(TObject * Sender)
 	    StrToInt("0x" + this->Edit_EnableAddress->Text);
 	int gammaTestBit = StrToInt(this->Edit_EnableBit->Text) + 1;
 	int testRGBAddress = StrToInt("0x" + this->Edit_LUTAddress->Text);
-	bool indepRGB = this->CheckBox_IndepRGB->Checked;
-
+	bool indepRGB = this->ComboBox_Type->ItemIndex == 1;
 
 	parameter = bptr < TCONParameter > (new
 					    TCONParameter(gammaTestAddress,
@@ -654,4 +655,14 @@ void TMainForm::setMeterMeasurementWaitTimes()
     this->mm->setWaitTimes(this->getInterval());
 };
 
+void __fastcall TMainForm::Button_I2CTestClick(TObject * Sender)
+{
+    if (I2CTestForm == null) {
+	Application->CreateForm(__classid(TI2CTestForm), &I2CTestForm);
+    }
+    I2CTestForm->ShowModal();
+
+}
+
+//---------------------------------------------------------------------------
 

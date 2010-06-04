@@ -97,6 +97,7 @@ namespace cms {
 		bptr < math::Interpolation1DLUT > rLut;
 		bptr < math::Interpolation1DLUT > gLut;
 		bptr < math::Interpolation1DLUT > bLut;
+		bptr < math::Interpolation1DLUT > YLut;
 	      protected:
 		void init(Component_vector_ptr componentVector);
 		double_vector_ptr getReverse(double_vector_ptr vec);
@@ -104,6 +105,7 @@ namespace cms {
 		 ComponentLUT(Component_vector_ptr componentVector);
 		double getIntensity(const Dep::Channel & ch, double code);
 		double getCode(const Dep::Channel & ch, double intensity);
+		RGB_ptr getCode(double luminance);
 		double correctIntensityInRange(const Dep::Channel & ch,
 					       double intensity);
 	    };
@@ -120,12 +122,17 @@ namespace cms {
 		double getMaximumIntensity();
 	      public:
 		 DGLutGenerator(Component_vector_ptr componentVector);
-		RGB_ptr produce(double rIntensity, double gIntensity,
-				double bIntensity);
-		RGB_vector_ptr produce(RGBGamma_ptr normalRGBGammaCurve);
+		RGB_ptr getDGCode(double rIntensity, double gIntensity,
+				  double bIntensity);
+		RGB_vector_ptr getCCTDGLut(RGBGamma_ptr
+					   normalRGBGammaCurve);
+		RGB_vector_ptr getGammaDGLut(double_vector_ptr
+					     normalGammaCurve);
+
+		//¥Ñgamma curveÂàrgb intensity
 		RGBGamma_ptr getRGBGamma(double_vector_ptr
 					 normalGammaCurve);
-		 bptr < ComponentLUT > getComponentLUT();
+		//bptr < ComponentLUT > getComponentLUT();
 		double_vector_ptr getLuminanceGammaCurve(double_vector_ptr
 							 normalGammaCurve);
 	    };
@@ -185,7 +192,8 @@ namespace cms {
 		bool bMax;
 		bool keepMaxLuminance;
 		bool avoidFRCNoise;
-		bool rgbgamma;
+		//bool rgbgamma;
+		bool rgbIndepGamma;
 		double gamma, rgamma, ggamma, bgamma;
 		bool useGammaCurve;
 		bool averageDimDG;
@@ -210,15 +218,18 @@ namespace cms {
 		void setGammaCurve0(double_vector_ptr rgammaCurve,
 				    double_vector_ptr ggammaCurve,
 				    double_vector_ptr bgammaCurve);
+		Component_vector_ptr fetchComponentVector(bptr <
+							  MeasureCondition
+							  >
+							  measureCondition);
 	      public:
 		static double_vector_ptr getGammaCurveVector
 		    (double gamma, int n, int effectiven);
 
 		void setP1P2(int p1, int p2);
 		void setRBInterpolation(int under);
-		void setNoneDimCorrect();
+		void setNonDimCorrect();
 		void setNew(int p1, int p2, double gammaShift);
-		//void setNew2(int under);
 		void setDefinedDim(int under, bool averageDimDG);
 		void setGamma(double gamma);
 		void setGamma(double rgamma, double ggamma, double bgamma);
@@ -240,7 +251,8 @@ namespace cms {
 
 		RGB_vector_ptr getCCTDGLut(bptr < MeasureCondition >
 					   measureCondition);
-		RGB_vector_ptr getGammaDGLut(int step);
+		RGB_vector_ptr getGammaDGLut(bptr < MeasureCondition >
+					     measureCondition);
 		void storeDGLut(const std::string & filename,
 				RGB_vector_ptr dglut);
 	      private:
