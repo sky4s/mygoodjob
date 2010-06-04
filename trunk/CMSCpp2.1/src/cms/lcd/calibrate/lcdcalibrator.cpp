@@ -207,8 +207,9 @@ namespace cms {
 		double_vector_ptr YValues(new double_vector(size));
 		double_array values(new double[3]);
 
-		int index = 0;
-		for (int x = size - 1; x >= 0; x--) {
+		//int index = 0;
+		//for (int x = size - 1; x >= 0; x--) {
+		for (int x = 0; x != size; x++) {
 		    Component_ptr component = (*componentVector)[x];
 		    //double Y = component->XYZ->Y;
 		    RGB_ptr intensity = component->intensity;
@@ -216,23 +217,23 @@ namespace cms {
 		    RGB_ptr code = component->rgb;
 		    code->getValues(values, MaxValue::Double255);
 
-		    (*keys)[index] = values[0];
-		    (*rValues)[index] = intensity->R;
-		    (*gValues)[index] = intensity->G;
-		    (*bValues)[index] = intensity->B;
-		    (*YValues)[index] = component->XYZ->Y;
-		    index++;
+		    (*keys)[x] = values[0];
+		    (*rValues)[x] = intensity->R;
+		    (*gValues)[x] = intensity->G;
+		    (*bValues)[x] = intensity->B;
+		    (*YValues)[x] = component->XYZ->Y;
+		    //index++;
 		}
 		//==============================================================
 
 		//==============================================================
 		// 產生RGB LUT
 		//==============================================================
-		/*keys = getReverse(keys);
-		   rValues = getReverse(rValues);
-		   gValues = getReverse(gValues);
-		   bValues = getReverse(bValues);
-		   YValues = getReverse(YValues); */
+		keys = getReverse(keys);
+		rValues = getReverse(rValues);
+		gValues = getReverse(gValues);
+		bValues = getReverse(bValues);
+		YValues = getReverse(YValues);
 		rLut =
 		    bptr < Interpolation1DLUT >
 		    (new Interpolation1DLUT(keys, rValues));
@@ -280,6 +281,7 @@ namespace cms {
 		}
 	    };
 	    RGB_ptr ComponentLUT::getCode(double luminance) {
+		luminance = YLut->correctValueInRange(luminance);
 		double key = YLut->getKey(luminance);
 		RGB_ptr rgb(new RGBColor(key, key, key));
 		return rgb;
@@ -875,17 +877,24 @@ namespace cms {
 		if (componentVector == null) {
 		    return RGB_vector_ptr((RGB_vector *) null);
 		}
+		RGB_vector_ptr dglut;
 		if (true == rgbIndepGamma) {
 		    //暫不提供
-		    return RGB_vector_ptr((RGB_vector *) null);
+		    dglut = RGB_vector_ptr((RGB_vector *) null);
 		} else {
 		    DGLutGenerator generator(componentVector);
-		    RGB_vector_ptr dglut =
-			generator.getGammaDGLut(gammaCurve);
-		    return dglut;
+		    dglut = generator.getGammaDGLut(gammaCurve);
+
 		}
+		//量化
+		MaxValue quantizationBit = bitDepth->getLutMaxValue();
+		RGBVector::quantization(dglut, quantizationBit);
+		//調整max value
+		RGBVector::changeMaxValue(dglut,
+					  bitDepth->getLutMaxValue());
 
-
+		this->dglut = dglut;
+		return dglut;
 	    };
 
 	    void LCDCalibrator::storeDGLut(const std::
