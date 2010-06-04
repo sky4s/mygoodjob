@@ -1,7 +1,7 @@
 object CCTLUTForm: TCCTLUTForm
   Left = 334
   Top = 360
-  Width = 641
+  Width = 842
   Height = 482
   Caption = 'CCT LUT'
   Color = clBtnFace
@@ -18,7 +18,7 @@ object CCTLUTForm: TCCTLUTForm
   PixelsPerInch = 120
   TextHeight = 16
   object Label9: TLabel
-    Left = 281
+    Left = 473
     Top = 425
     Width = 349
     Height = 16
@@ -102,7 +102,7 @@ object CCTLUTForm: TCCTLUTForm
   object GroupBox2: TGroupBox
     Left = 209
     Top = 9
-    Width = 216
+    Width = 208
     Height = 96
     Caption = 'Gamma'
     TabOrder = 1
@@ -157,10 +157,10 @@ object CCTLUTForm: TCCTLUTForm
     end
   end
   object GroupBox3: TGroupBox
-    Left = 433
+    Left = 425
     Top = 9
     Width = 192
-    Height = 240
+    Height = 312
     Caption = 'Low Level Correction'
     TabOrder = 2
     object Label4: TLabel
@@ -295,12 +295,26 @@ object CCTLUTForm: TCCTLUTForm
     end
   end
   object GroupBox4: TGroupBox
-    Left = 433
-    Top = 249
+    Left = 625
+    Top = 9
     Width = 192
-    Height = 72
+    Height = 152
     Caption = 'Blue Correction'
     TabOrder = 3
+    object Label18: TLabel
+      Left = 32
+      Top = 88
+      Width = 35
+      Height = 16
+      Caption = 'Begin'
+    end
+    object Label19: TLabel
+      Left = 32
+      Top = 120
+      Width = 49
+      Height = 16
+      Caption = 'Strength'
+    end
     object CheckBox_BGain: TCheckBox
       Left = 9
       Top = 17
@@ -326,11 +340,40 @@ object CCTLUTForm: TCCTLUTForm
       Caption = 'B Max'
       TabOrder = 2
     end
+    object CheckBox_BMax2: TCheckBox
+      Left = 9
+      Top = 65
+      Width = 96
+      Height = 24
+      Caption = 'B Max 2'
+      TabOrder = 3
+      OnClick = CheckBox_BMax2Click
+    end
+    object Edit_BMax2Begin: TEdit
+      Left = 88
+      Top = 88
+      Width = 73
+      Height = 24
+      Enabled = False
+      ImeName = #26085#25991#36664#20837#31995#32113' (MS-IME2002)'
+      TabOrder = 4
+      Text = '235'
+    end
+    object Edit_BMax2Gamma: TEdit
+      Left = 88
+      Top = 120
+      Width = 73
+      Height = 24
+      Enabled = False
+      ImeName = #26085#25991#36664#20837#31995#32113' (MS-IME2002)'
+      TabOrder = 5
+      Text = '2.2'
+    end
   end
   object GroupBox5: TGroupBox
     Left = 209
     Top = 105
-    Width = 216
+    Width = 208
     Height = 216
     Caption = 'Options'
     TabOrder = 4
@@ -367,7 +410,7 @@ object CCTLUTForm: TCCTLUTForm
     object CheckBox_KeepMaxAdv: TCheckBox
       Left = 9
       Top = 65
-      Width = 200
+      Width = 192
       Height = 24
       Caption = 'Keep Max Luminance(Adv.)'
       TabOrder = 2
@@ -381,7 +424,7 @@ object CCTLUTForm: TCCTLUTForm
       Enabled = False
       ImeName = #26085#25991#36664#20837#31995#32113' (MS-IME2002)'
       TabOrder = 3
-      Text = '50'
+      Text = '235'
     end
     object Edit_AdvGamma: TEdit
       Left = 88
@@ -403,7 +446,7 @@ object CCTLUTForm: TCCTLUTForm
     end
   end
   object Button_Run: TButton
-    Left = 569
+    Left = 625
     Top = 369
     Width = 56
     Height = 24
@@ -415,7 +458,7 @@ object CCTLUTForm: TCCTLUTForm
     OnClick = Button_RunClick
   end
   object Button_Debug: TButton
-    Left = 569
+    Left = 625
     Top = 353
     Width = 56
     Height = 16
@@ -426,11 +469,11 @@ object CCTLUTForm: TCCTLUTForm
   inline TOutputFileFrame1: TOutputFileFrame
     Left = 9
     Top = 329
-    Width = 560
+    Width = 616
     Height = 96
     TabOrder = 7
     inherited GroupBox_OutputFile: TGroupBox
-      Width = 554
+      Width = 610
       Height = 90
       inherited Label5: TLabel
         Left = 9
@@ -445,9 +488,10 @@ object CCTLUTForm: TCCTLUTForm
       end
       inherited Edit_Directory: TEdit
         Top = 57
+        Width = 425
       end
       inherited Button_BrowseDir: TButton
-        Left = 489
+        Left = 545
         Top = 57
         Width = 56
         Height = 24
@@ -593,7 +637,7 @@ object CCTLUTForm: TCCTLUTForm
     end
   end
   object Button_Reset: TButton
-    Left = 569
+    Left = 625
     Top = 336
     Width = 56
     Height = 17
@@ -603,7 +647,7 @@ object CCTLUTForm: TCCTLUTForm
     OnClick = Button_ResetClick
   end
   object Button_Process: TButton
-    Left = 569
+    Left = 625
     Top = 393
     Width = 56
     Height = 24

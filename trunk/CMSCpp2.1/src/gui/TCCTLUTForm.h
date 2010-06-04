@@ -78,6 +78,11 @@ class TCCTLUTForm:public TForm {
     TEdit *Edit_AdvGamma;
     TLabel *Label16;
     TCheckBox *CheckBox_NewMethod;
+    TCheckBox *CheckBox_BMax2;
+    TLabel *Label18;
+    TEdit *Edit_BMax2Begin;
+    TLabel *Label19;
+    TEdit *Edit_BMax2Gamma;
     void __fastcall RadioButton_RBInterpClick(TObject * Sender);
     void __fastcall RadioButton_P1P2Click(TObject * Sender);
     void __fastcall Button_RunClick(TObject * Sender);
@@ -96,6 +101,7 @@ class TCCTLUTForm:public TForm {
     void __fastcall Button_ResetClick(TObject * Sender);
     void __fastcall RadioButton_DefinedDimClick(TObject * Sender);
     void __fastcall CheckBox_KeepMaxAdvClick(TObject * Sender);
+    void __fastcall CheckBox_BMax2Click(TObject * Sender);
   private:			// User declarations
     void setMeasureInfo();
     int serialid;

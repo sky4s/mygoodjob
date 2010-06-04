@@ -18,6 +18,7 @@ namespace cms {
 	    using namespace Dep;
 	    using namespace cms::util;
 	    using namespace math;
+	    using namespace java::lang;
 	    RGB_vector_ptr LinearOp::getRendering(RGB_vector_ptr source) {
 
 		int size = source->size();
@@ -106,117 +107,117 @@ namespace cms {
 	    //==================================================================
 	    // NewOp
 	    //==================================================================
-	    RGB_vector_ptr NewOp::getRendering(RGB_vector_ptr source) {
-		//return getRendering7_(source);
-		return getRendering8_(source);
-	    };
+	    /*RGB_vector_ptr NewOp::getRendering(RGB_vector_ptr source) {
+	       //return getRendering7_(source);
+	       return getRendering8_(source);
+	       };
 
-	    RGB_vector_ptr NewOp::getRendering6_(RGB_vector_ptr source) {
+	       RGB_vector_ptr NewOp::getRendering6_(RGB_vector_ptr source) {
 
-		RGB_vector_ptr result = RGBVector::deepClone(source);
-		int begin = getBBiggerThanG(source);
-		int end = 1;
+	       RGB_vector_ptr result = RGBVector::deepClone(source);
+	       int begin = getBBiggerThanG(source);
+	       int end = 1;
 
-		double_array beginRatio = (*result)[begin]->getRGBRatio();
-		RGB_ptr endrgb = (*result)[end];
-		double endr = (endrgb->G + endrgb->B) / 2;
-		double endTotal = endr + endrgb->G + endrgb->B;
-		double endRRatio = endr / endTotal;
+	       double_array beginRatio = (*result)[begin]->getRGBRatio();
+	       RGB_ptr endrgb = (*result)[end];
+	       double endr = (endrgb->G + endrgb->B) / 2;
+	       double endTotal = endr + endrgb->G + endrgb->B;
+	       double endRRatio = endr / endTotal;
 
-		for (int x = begin - 1; x > 0; x--) {
-		    double rratio = Interpolation::linear(begin, end,
-							  beginRatio[0],
-							  endRRatio,
-							  x);
+	       for (int x = begin - 1; x > 0; x--) {
+	       double rratio = Interpolation::linear(begin, end,
+	       beginRatio[0],
+	       endRRatio,
+	       x);
 
-		    RGB_ptr rgb = (*result)[x];
-		    double r = getRCode(rratio, rgb->G, rgb->B);
-		    rgb->R = r;
-		}
+	       RGB_ptr rgb = (*result)[x];
+	       double r = getRCode(rratio, rgb->G, rgb->B);
+	       rgb->R = r;
+	       }
 
-		return result;
-	    };
-	    RGB_vector_ptr NewOp::getRendering7_(RGB_vector_ptr source) {
+	       return result;
+	       };
+	       RGB_vector_ptr NewOp::getRendering7_(RGB_vector_ptr source) {
 
-		RGB_vector_ptr result = RGBVector::deepClone(source);
-		int begin = p1;
-		int end = 1;
+	       RGB_vector_ptr result = RGBVector::deepClone(source);
+	       int begin = p1;
+	       int end = 1;
 
-		double_array beginRatio = (*result)[begin]->getRGBRatio();
-		double endRatio = 1. / 3;
+	       double_array beginRatio = (*result)[begin]->getRGBRatio();
+	       double endRatio = 1. / 3;
 
-		for (int x = begin - 1; x > 0; x--) {
-		    double rratio = Interpolation::linear(begin, end,
-							  beginRatio[0],
-							  endRatio,
-							  x);
-		    double gratio = Interpolation::linear(begin, end,
-							  beginRatio[1],
-							  endRatio,
-							  x);
+	       for (int x = begin - 1; x > 0; x--) {
+	       double rratio = Interpolation::linear(begin, end,
+	       beginRatio[0],
+	       endRatio,
+	       x);
+	       double gratio = Interpolation::linear(begin, end,
+	       beginRatio[1],
+	       endRatio,
+	       x);
 
-		    RGB_ptr rgb = (*result)[x];
-		    double b = getBCode(rratio, gratio, rgb->G);
-		    double r = getRCode(rratio, rgb->G, b);
-		    rgb->R = r;
-		    rgb->B = b;
-		}
+	       RGB_ptr rgb = (*result)[x];
+	       double b = getBCode(rratio, gratio, rgb->G);
+	       double r = getRCode(rratio, rgb->G, b);
+	       rgb->R = r;
+	       rgb->B = b;
+	       }
 
-		return result;
-	    };
+	       return result;
+	       };
 
-	    RGB_vector_ptr NewOp::getRendering8_(RGB_vector_ptr source) {
-		RGB_vector_ptr result = RGBVector::deepClone(source);
-		int begin = p2;
-		int end = 1;
+	       RGB_vector_ptr NewOp::getRendering8_(RGB_vector_ptr source) {
+	       RGB_vector_ptr result = RGBVector::deepClone(source);
+	       int begin = p2;
+	       int end = 1;
 
-		double_array beginRatio = (*result)[begin]->getRGBRatio();
-		double endRatio = 1. / 3;
+	       double_array beginRatio = (*result)[begin]->getRGBRatio();
+	       double endRatio = 1. / 3;
 
-		for (int x = begin - 1; x > 0; x--) {
-		    double rratio = Interpolation::linear(begin, end,
-							  beginRatio[0],
-							  endRatio,
-							  x);
-		    double gratio = Interpolation::linear(begin, end,
-							  beginRatio[1],
-							  endRatio,
-							  x);
+	       for (int x = begin - 1; x > 0; x--) {
+	       double rratio = Interpolation::linear(begin, end,
+	       beginRatio[0],
+	       endRatio,
+	       x);
+	       double gratio = Interpolation::linear(begin, end,
+	       beginRatio[1],
+	       endRatio,
+	       x);
 
-		    RGB_ptr rgb = (*result)[x];
-		    double b = getBCode(rratio, gratio, rgb->G);
-		    double r = getRCode(rratio, rgb->G, b);
-		    rgb->R = r;
-		    rgb->B = b;
-		}
+	       RGB_ptr rgb = (*result)[x];
+	       double b = getBCode(rratio, gratio, rgb->G);
+	       double r = getRCode(rratio, rgb->G, b);
+	       rgb->R = r;
+	       rgb->B = b;
+	       }
 
-		return result;
-	    }
+	       return result;
+	       }
 
-	    int NewOp::getBBiggerThanG(RGB_vector_ptr rgbVector) {
-		for (int x = p1; x > 0; x--) {
-		    RGB_ptr rgb = (*rgbVector)[x];
-		    if (rgb->B > rgb->G) {
-			return x;
-		    }
-		}
-		return -1;
-	    };
-	    double NewOp::getBCode(double rRatio,
-				   double gRatio, double GCode) {
-		return (1 - rRatio - gRatio) * GCode / gRatio;
-	    };
-	    double NewOp::getRCode(double rRatio,
-				   double GCode, double BCode) {
-		return rRatio * (GCode + BCode) / (1 - rRatio);
-	    };
-	  NewOp::NewOp(int p1, int p2):p1(p1), p2(p2) {
-	    };
-	    //==================================================================
-	    //==================================================================
-	    /*BMaxOp::BMaxOp(const Dep::MaxValue & out):out(out) {
-
+	       int NewOp::getBBiggerThanG(RGB_vector_ptr rgbVector) {
+	       for (int x = p1; x > 0; x--) {
+	       RGB_ptr rgb = (*rgbVector)[x];
+	       if (rgb->B > rgb->G) {
+	       return x;
+	       }
+	       }
+	       return -1;
+	       };
+	       double NewOp::getBCode(double rRatio,
+	       double gRatio, double GCode) {
+	       return (1 - rRatio - gRatio) * GCode / gRatio;
+	       };
+	       double NewOp::getRCode(double rRatio,
+	       double GCode, double BCode) {
+	       return rRatio * (GCode + BCode) / (1 - rRatio);
+	       };
+	       NewOp::NewOp(int p1, int p2):p1(p1), p2(p2) {
 	       }; */
+	    //==================================================================
+
+	    //==================================================================
+	    // BMaxOp
+	    //==================================================================
 	  BMaxOp::BMaxOp(bptr < BitDepthProcessor > bitDepth):bitDepth(bitDepth)
 	    {
 
@@ -236,7 +237,7 @@ namespace cms {
 		for (int x = effectiven; x != -1; x--) {
 		    RGB_ptr rgb = (*result)[x];
 		    RGB_ptr nextrgb = (*result)[x - 1];
-                    //設定差異
+		    //設定差異
 		    double diff =
 			x > 252 ? 10 / 4. : (x > 232 ? 8 / 4. : 6 / 4.);
 		    double thisB = rgb->B;
@@ -248,6 +249,56 @@ namespace cms {
 			rgb->B = (preB + nextB) / 2.;
 			break;
 		    }
+		}
+
+		return result;
+	    };
+	    //==================================================================
+
+	    //==================================================================
+	    // BMax2Op
+	    //==================================================================
+	  BMax2Op::BMax2Op(bptr < BitDepthProcessor > bitDepth, int begin, double gamma):bitDepth(bitDepth), begin(begin), gamma(gamma)
+	    {
+
+	    };
+	    RGB_vector_ptr BMax2Op::getRendering(RGB_vector_ptr source) {
+		RGB_vector_ptr result = RGBVector::deepClone(source);
+		//==============================================================
+		//把未用到的區域全部處理成最大值
+		int n = bitDepth->getLevel() - 1;
+		int effectiven = (bitDepth->getEffectiveLevel() - 1);
+		for (int x = n; x >= effectiven; x--) {
+		    RGB_ptr rgb = (*result)[x];
+		    rgb->B = bitDepth->getMaxDigitalCount();
+		}
+		//==============================================================
+		RGB_ptr rgb0 = (*result)[begin];
+		RGB_ptr rgb1 = (*result)[effectiven];
+		int base = effectiven - 1;
+		for (int x = base; x != begin; x--) {
+		    RGB_ptr rgb = (*result)[x];
+		    double normal = ((double) x - begin) / (base - begin);
+		    normal = Math::pow(normal, gamma);
+		    double b = Interpolation::linear(0, 1,
+						     rgb0->B, rgb1->B,
+						     normal);
+		    rgb->B = b;
+
+		    /*RGB_ptr rgb = (*result)[x];
+		       RGB_ptr nextrgb = (*result)[x - 1];
+		       //設定差異
+		       double diff =
+		       x > 252 ? 10 / 4. : (x > 232 ? 8 / 4. : 6 / 4.);
+		       double thisB = rgb->B;
+		       double nextB = nextrgb->B;
+		       if (thisB > nextB) {
+		       nextrgb->B = thisB - diff;
+		       } else {
+		       double preB = (*result)[x + 1]->B;
+		       rgb->B = (preB + nextB) / 2.;
+		       break;
+		       } */
 		}
 
 		return result;
