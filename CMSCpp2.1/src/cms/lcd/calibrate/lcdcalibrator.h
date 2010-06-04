@@ -138,8 +138,8 @@ namespace cms {
 	    };
 
 	    enum Correct {
-		P1P2 = 1, RBInterpolation = 2, None = 3, New = 4, New2 =
-		    5, DefinedDim = 6
+		P1P2 = 1, RBInterpolation = 2, None = 3,	/*New = 4, New2 =
+								   5, */ DefinedDim = 6
 	    };
 
 	    class MeasureCondition {
@@ -190,6 +190,9 @@ namespace cms {
 		bool gByPass;
 		double bIntensityGain;
 		bool bMax;
+		bool bMax2;
+		int bMax2Begin;
+		double bMax2Gamma;
 		bool keepMaxLuminance;
 		bool avoidFRCNoise;
 		//bool rgbgamma;
@@ -229,7 +232,7 @@ namespace cms {
 		void setP1P2(int p1, int p2);
 		void setRBInterpolation(int under);
 		void setNonDimCorrect();
-		void setNew(int p1, int p2, double gammaShift);
+		//void setNew(int p1, int p2, double gammaShift);
 		void setDefinedDim(int under, bool averageDimDG);
 		void setGamma(double gamma);
 		void setGamma(double rgamma, double ggamma, double bgamma);
@@ -240,6 +243,7 @@ namespace cms {
 		void setGByPass(bool byPass);
 		void setBIntensityGain(double gain);
 		void setBMax(bool bMax);
+		void setBMax2(bool bMax2, int begin, double gamma);
 		void setAvoidFRCNoise(bool avoid);
 		void setKeepMaxLuminance(bool keepMaxLuminance);
 		void setNewMethod(bool enable);

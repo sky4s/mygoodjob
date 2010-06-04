@@ -581,12 +581,12 @@ namespace cms {
 	    void LCDCalibrator::setNonDimCorrect() {
 		this->correct = None;
 	    };
-	    void LCDCalibrator::setNew(int p1, int p2, double gammaShift) {
-		this->correct = New;
-		this->p1 = p1;
-		this->p2 = p2;
-		this->gammaShift = gammaShift;
-	    };
+	    /*void LCDCalibrator::setNew(int p1, int p2, double gammaShift) {
+	       this->correct = New;
+	       this->p1 = p1;
+	       this->p2 = p2;
+	       this->gammaShift = gammaShift;
+	       }; */
 	    void LCDCalibrator::setDefinedDim(int under, bool averageDimDG) {
 		this->correct = DefinedDim;
 		this->under = under;
@@ -648,6 +648,12 @@ namespace cms {
 	    void LCDCalibrator::setBMax(bool bMax) {
 		this->bMax = bMax;
 	    };
+	    void LCDCalibrator::setBMax2(bool bMax2, int begin,
+					 double gamma) {
+		this->bMax2 = bMax2;
+		bMax2Begin = begin;
+		bMax2Gamma = gamma;
+	    };
 	    void LCDCalibrator::setAvoidFRCNoise(bool avoid) {
 		this->avoidFRCNoise = avoid;
 	    };
@@ -670,13 +676,12 @@ namespace cms {
 		this->fetcher = fetcher;
 		averageDimDG = false;
 		newMethod = false;
+		bMax = bMax2 = false;
 	    };
 
-	    Component_vector_ptr LCDCalibrator::fetchComponentVector(bptr <
-								     MeasureCondition
-								     >
-								     measureCondition)
-	    {
+	    Component_vector_ptr LCDCalibrator::
+		fetchComponentVector(bptr < MeasureCondition >
+				     measureCondition) {
 		this->measureCondition = measureCondition;
 		//量測start->end得到的coponent/Y
 		int_vector_ptr measurecode =
@@ -685,7 +690,8 @@ namespace cms {
 
 		if (componentVector == null
 		    || measurecode->size() != componentVector->size()) {
-		    return Component_vector_ptr((Component_vector *) null);
+		    return Component_vector_ptr((Component_vector *)
+						null);
 		} else {
 		    return componentVector;
 		}
@@ -695,8 +701,8 @@ namespace cms {
 	       CCT + Gamma
 	     */
 	    RGB_vector_ptr LCDCalibrator::getCCTDGLut(bptr <
-						      MeasureCondition >
-						      measureCondition) {
+						      MeasureCondition
+						      > measureCondition) {
 
 		if (null == gammaCurve) {
 		    throw new IllegalStateException("null == gammaCurve");
@@ -715,8 +721,8 @@ namespace cms {
 		if (true == newMethod) {
 		    bptr < IntensityAnalyzerIF > analyzer =
 			fetcher->getAnalyzer();
-		    AdvancedDGLutGenerator advgenerator(componentVector,
-							analyzer);
+		    AdvancedDGLutGenerator
+			advgenerator(componentVector, analyzer);
 		    //analyzer若沒有設定過target color, 會使此步驟失效
 		    XYZ_ptr targetWhite =
 			analyzer->getReferenceColor()->toXYZ();
@@ -724,8 +730,8 @@ namespace cms {
 			generator.getLuminanceGammaCurve(gammaCurve);
 
 		    dglut = advgenerator.produce(targetWhite,
-						 luminanceGammaCurve, 50,
-						 200, 3.5, 2.2);
+						 luminanceGammaCurve,
+						 50, 200, 3.5, 2.2);
 		} else {
 		    //產生generator
 		    //DGLutGenerator generator(componentVector);
@@ -740,8 +746,9 @@ namespace cms {
 		    if (bIntensityGain != 1.0) {
 			//重新產生目標gamma curve
 			bptr < BIntensityGainOp >
-			    bgain(new BIntensityGainOp(bIntensityGain, 236,
-						       bitDepth));
+			    bgain(new
+				  BIntensityGainOp(bIntensityGain, 236,
+						   bitDepth));
 
 			RGBGammaOp gammaop;
 			gammaop.setSource(rgbgamma);
@@ -857,13 +864,15 @@ namespace cms {
 	    };
 
 	    RGB_vector_ptr LCDCalibrator::getGammaDGLut(bptr <
-							MeasureCondition >
+							MeasureCondition
+							>
 							measureCondition) {
 
 		if (false == rgbIndepGamma && null == gammaCurve) {
 		    throw new IllegalStateException("null == gammaCurve");
 		} else if (true == rgbIndepGamma
-			   && (null == rgammaCurve || null == ggammaCurve
+			   && (null == rgammaCurve
+			       || null == ggammaCurve
 			       || null == bgammaCurve)) {
 		    throw new
 			IllegalStateException
@@ -933,16 +942,22 @@ namespace cms {
 		if (correct == RBInterpolation) {
 		    bptr < DGLutOp > op(new RBInterpolationOp(under));
 		    dgop.addOp(op);
-		} else if (correct == New) {
-		    bptr < DGLutOp > op(new NewOp(p1, p2));
-		    dgop.addOp(op);
-		}
+		}		/*else if (correct == New) {
+				   bptr < DGLutOp > op(new NewOp(p1, p2));
+				   dgop.addOp(op);
+				   } */
 		//==============================================================
 
 		if (bMax) {
 		    //bmax的調整
 		    bptr < DGLutOp > bmax(new BMaxOp(bitDepth));
 		    dgop.addOp(bmax);
+		} else if (bMax2) {
+		    //bmax2的調整
+		    bptr < DGLutOp >
+			bmax2(new
+			      BMax2Op(bitDepth, bMax2Begin, bMax2Gamma));
+		    dgop.addOp(bmax2);
 		}
 		if (gByPass) {
 		    //g bypass的調整

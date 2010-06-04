@@ -50,32 +50,44 @@ namespace cms {
 		 RBInterpolationOp(double under);
 	    };
 
-	    class NewOp:public DGLutOp {
-	      private:
-		int p1, p2;
-	      protected:
-		 RGB_vector_ptr getRendering(RGB_vector_ptr source);
-		RGB_vector_ptr getRendering6_(RGB_vector_ptr source);
-		RGB_vector_ptr getRendering7_(RGB_vector_ptr source);
-		RGB_vector_ptr getRendering8_(RGB_vector_ptr source);
-		int getBBiggerThanG(RGB_vector_ptr rgbVector);
-		static double getBCode(double rRatio, double gRatio,
-				       double GCode);
-		static double getRCode(double rRatio, double GCode,
-				       double BCode);
-	      public:
-		 NewOp(int p1, int p2);
-	    };
+	    /*class NewOp:public DGLutOp {
+	       private:
+	       int p1, p2;
+	       protected:
+	       RGB_vector_ptr getRendering(RGB_vector_ptr source);
+	       RGB_vector_ptr getRendering6_(RGB_vector_ptr source);
+	       RGB_vector_ptr getRendering7_(RGB_vector_ptr source);
+	       RGB_vector_ptr getRendering8_(RGB_vector_ptr source);
+	       int getBBiggerThanG(RGB_vector_ptr rgbVector);
+	       static double getBCode(double rRatio, double gRatio,
+	       double GCode);
+	       static double getRCode(double rRatio, double GCode,
+	       double BCode);
+	       public:
+	       NewOp(int p1, int p2);
+	       }; */
 
 	    class BMaxOp:public DGLutOp {
 	      private:
 		//const Dep::MaxValue & out;
 		bptr < BitDepthProcessor > bitDepth;
+
 	      public:
-		//BMaxOp(const Dep::MaxValue & out);
 		BMaxOp(bptr < BitDepthProcessor > bitDepth);
 	      protected:
 		RGB_vector_ptr getRendering(RGB_vector_ptr source);
+	    };
+
+	    class BMax2Op:public DGLutOp {
+	      private:
+		bptr < BitDepthProcessor > bitDepth;
+		int begin;
+		double gamma;
+	      public:
+		 BMax2Op(bptr < BitDepthProcessor > bitDepth, int begin,
+			 double gamma);
+	      protected:
+		 RGB_vector_ptr getRendering(RGB_vector_ptr source);
 	    };
 
 	    class GByPassOp:public DGLutOp {

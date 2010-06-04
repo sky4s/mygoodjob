@@ -301,9 +301,9 @@ namespace cms {
 	    case cms::lcd::calibrate::None:
 		correctstr = "None";
 		break;
-	    case cms::lcd::calibrate::New:
+	    /*case cms::lcd::calibrate::New:
 		correctstr = "new";
-		break;
+		break;*/
 	    }
 	    dgcode.addProperty("low level correct", correctstr);
 

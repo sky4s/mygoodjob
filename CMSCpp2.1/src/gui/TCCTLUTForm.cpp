@@ -126,6 +126,11 @@ void __fastcall TCCTLUTForm::Button_RunClick(TObject * Sender)
 	calibrator.setBIntensityGain(gain);
     }
     calibrator.setBMax(this->CheckBox_BMax->Checked);
+    if (true == CheckBox_BMax2->Checked) {
+	int begin = Edit_BMax2Begin->Text.ToInt();
+	double gamma = Edit_BMax2Gamma->Text.ToDouble();
+	calibrator.setBMax2(CheckBox_BMax2->Checked, begin, gamma);
+    }
     //==========================================================================
     calibrator.setAvoidFRCNoise(this->CheckBox_AvoidNoise->Checked);
     calibrator.setKeepMaxLuminance(this->CheckBox_KeepMax->Checked);
@@ -377,6 +382,16 @@ void __fastcall TCCTLUTForm::CheckBox_KeepMaxAdvClick(TObject * Sender)
     bool enable = this->CheckBox_KeepMaxAdv->Checked;
     this->Edit_AdvGamma->Enabled = enable;
     this->Edit_AdvOver->Enabled = enable;
+}
+
+//---------------------------------------------------------------------------
+
+
+void __fastcall TCCTLUTForm::CheckBox_BMax2Click(TObject * Sender)
+{
+    bool enable = this->CheckBox_BMax2->Checked;
+    Edit_BMax2Begin->Enabled = enable;
+    Edit_BMax2Gamma->Enabled = enable;
 }
 
 //---------------------------------------------------------------------------
