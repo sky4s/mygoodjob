@@ -586,6 +586,19 @@ void targetTester()
     };
 };
 
+void directGammaTester()
+{
+    using namespace i2c;
+    bptr < cms::util::ByteBuffer > buf =
+	TCONControl::getRGBByteBuffer(513, 2052, 0,
+				      TestRGBBit::DependentInstance);
+    int size = buf->getSize();
+    for (int x = 0; x < size; x++) {
+	byte b = (*buf)[x];
+	cout << (int) b << endl;
+    }
+};
+
 #pragma argsused
 int main(int argc, char *argv[])
 {
@@ -646,7 +659,8 @@ int main(int argc, char *argv[])
     //cout<<_toDouble("123");
     //ShellExecute(null, null, "target.xls", null, null, SW_SHOW);
     //ShellExecute(null, null, "target.xls", null, null, SW_HIDE);
-    targetTester();
+    //targetTester();
+    directGammaTester();
     getch();
 }
 

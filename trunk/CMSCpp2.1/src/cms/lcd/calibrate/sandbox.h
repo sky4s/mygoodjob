@@ -51,6 +51,8 @@ namespace cms {
 						Domain domain);
 		static XYZ_ptr getTargetXYZ(double x, double y, double z,
 					    Domain domain);
+		static bool isDuplicateBlue100(Component_vector_ptr
+					       componentVector);
 	    };
 
 

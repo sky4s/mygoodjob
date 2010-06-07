@@ -30,60 +30,6 @@ namespace cms {
 				       analyzer):DimDGLutGenerator
 		(componentVector, analyzer) {
 	    };
-	    /*RGB_vector_ptr AdvancedDGLutGenerator::
-	       produce(XYZ_ptr targetWhite,
-	       double_vector_ptr luminanceGammaCurve, int turn) {
-
-	       //==============================================================
-	       // 資訊準備
-	       //==============================================================
-	       XYZ_ptr blackXYZ =
-	       (*componentVector)[componentVector->size() - 1]->XYZ;
-	       XYZ_ptr nativeXYZ = (*componentVector)[0]->XYZ;
-
-	       //求目標值曲線
-	       double gamma = 1;
-	       Domain domain = CIEuvPrime;
-	       XYZ_vector_ptr targetXYZVector = getTarget(blackXYZ,
-	       targetWhite,
-	       nativeXYZ,
-	       luminanceGammaCurve,
-	       turn, turn,
-	       gamma, gamma,
-	       domain);
-	       storeXYZVector(targetXYZVector);
-	       //==============================================================
-	       RGB_vector_ptr result(new RGB_vector());
-
-	       //primary color只能用target white~
-	       xyY_ptr rxyY = analyzer->getPrimaryColor(Channel::R);
-	       xyY_ptr gxyY = analyzer->getPrimaryColor(Channel::G);
-	       xyY_ptr bxyY = analyzer->getPrimaryColor(Channel::B);
-	       int x = 0;
-	       x;
-
-	       foreach(const XYZ_ptr targetXYZ, *targetXYZVector) {
-	       bptr < MaxMatrixIntensityAnayzer >
-	       analyzer(new MaxMatrixIntensityAnayzer());
-
-	       analyzer->setupComponent(Channel::R, rxyY->toXYZ());
-	       analyzer->setupComponent(Channel::G, gxyY->toXYZ());
-	       analyzer->setupComponent(Channel::B, bxyY->toXYZ());
-	       analyzer->setupComponent(Channel::W, targetXYZ);
-	       analyzer->enter();
-
-	       Component_vector_ptr newcomponentVector =
-	       fetchComponent(analyzer, componentVector);
-	       STORE_COMPONENT(_toString(x++) + ".xls",
-	       newcomponentVector);
-	       DGLutGenerator lutgen(newcomponentVector);
-	       //採100嗎?
-	       RGB_ptr rgb = lutgen.produce(100, 100, 100);
-	       result->push_back(rgb);
-	       };
-
-	       return result;
-	       }; */
 
 	    RGB_vector_ptr AdvancedDGLutGenerator::
 		produce(XYZ_ptr targetWhite,
@@ -262,9 +208,25 @@ namespace cms {
 		};
 		return targetxyY.toXYZ();
 	    };
-
+	    bool AdvancedDGLutGenerator::
+		isDuplicateBlue100(Component_vector_ptr componentVector) {
+		int size = componentVector->size();
+		int timesOfB100 = 0;
+		for (int x = size - 1; x > 0; x--) {
+		    Component_ptr c0 = (*componentVector)[x];
+		    Component_ptr c1 = (*componentVector)[x - 1];
+		    if (c0->intensity->B > 100 && c1->intensity->B < 100 ||
+			c0->intensity->B < 100 && c1->intensity->B > 100 ||
+			//剛好等於100, 應該很難
+			c0->intensity->B == 100 ||
+			//最後一個逼近100, 也視為100
+			(c0->intensity->B > 99.0 && x == size - 1)) {
+			timesOfB100++;
+		    }
+		}
+		return timesOfB100 == 2;
+	    };
 	    //==================================================================
-
 	    //==================================================================
 	    // DimTargetGenerator
 	    //==================================================================
@@ -274,13 +236,11 @@ namespace cms {
 		return getLinearTarget(startXYZ, endXYZ,
 				       luminanceGammaCurve, CIEuvPrime);
 	    };
-
 	    XYZ_vector_ptr DimTargetGenerator::
 		getLinearTarget(XYZ_ptr startXYZ, XYZ_ptr endXYZ,
-				double_vector_ptr luminanceGammaCurve,
-				Domain domain) {
+				double_vector_ptr
+				luminanceGammaCurve, Domain domain) {
 		int size = luminanceGammaCurve->size();
-
 		double_array startuvValues;
 		double_array enduvValues;
 		switch (domain) {
@@ -291,24 +251,22 @@ namespace cms {
 		    startuvValues = startXYZ->getuvPrimeValues();
 		    enduvValues = endXYZ->getuvPrimeValues();
 		};
-
 		XYZ_vector_ptr result(new XYZ_vector(size));
-
 		for (int x = 0; x < size; x++) {
 		    //在uv'上線性變化
 		    double u = Interpolation::linear(0, size - 1,
 						     startuvValues[0],
-						     enduvValues[0], x);
+						     enduvValues[0],
+						     x);
 		    double v = Interpolation::linear(0, size - 1,
 						     startuvValues[1],
-						     enduvValues[1], x);
+						     enduvValues[1],
+						     x);
 		    double Y = (*luminanceGammaCurve)[x];
-
 		    double_array targetValues(new double[3]);
 		    targetValues[0] = u;
 		    targetValues[1] = v;
 		    targetValues[2] = Y;
-
 		    xyY_ptr targetxyY(new CIExyY());
 		    switch (domain) {
 		    case CIEuv:
@@ -316,7 +274,6 @@ namespace cms {
 		    case CIEuvPrime:
 			targetxyY->setuvPrimeYValues(targetValues);
 		    };
-
 		    (*result)[x] = targetxyY->toXYZ();
 		};
 		return result;
@@ -324,8 +281,8 @@ namespace cms {
 
 	    XYZ_vector_ptr DimTargetGenerator::
 		getGammaTarget(XYZ_ptr startXYZ, XYZ_ptr endXYZ,
-			       double_vector_ptr luminanceGammaCurve,
-			       double gamma) {
+			       double_vector_ptr
+			       luminanceGammaCurve, double gamma) {
 	    };
 	    //==================================================================
 	};

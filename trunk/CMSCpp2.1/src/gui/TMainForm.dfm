@@ -834,8 +834,8 @@ object MainForm: TMainForm
     Top = 16
     Width = 792
     Height = 249
-    ActivePage = TabSheet1
-    TabIndex = 0
+    ActivePage = TabSheet2
+    TabIndex = 1
     TabOrder = 0
     object TabSheet1: TTabSheet
       Caption = 'Measure Setup'

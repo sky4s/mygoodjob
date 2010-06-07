@@ -24,9 +24,7 @@ namespace i2c {
 		    const int gLowBit, const int gHighBit,
 		    const int bLowBit, const int bHighBit,
 		    const int totalByte);
-	/*static const TestRGBBit & getIndependentInstance();
-	   static const TestRGBBit & getDependentInstance(); */
-	//private:
+
 	static const TestRGBBit IndependentInstance;
 	static const TestRGBBit DependentInstance;
     };

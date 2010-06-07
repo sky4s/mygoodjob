@@ -34,7 +34,7 @@ namespace i2c {
 						      const TestRGBBit &
 						      testRGBBit) {
 	/* TODO : getRGBByteBuffer */
-	bptr < ByteBuffer > data(new ByteBuffer(testRGBBit.totalByte));
+
 	int rLow = r & 255;
 	int rHigh = (r >> 8) & 15;
 	int gLow = g & 255;
@@ -42,13 +42,44 @@ namespace i2c {
 	int bLow = b & 255;
 	int bHigh = (b >> 8) & 15;
 
-	(*data)[testRGBBit.rLowBit / 8] = rLow;
-	(*data)[testRGBBit.gLowBit / 8] = gLow;
-	(*data)[testRGBBit.bLowBit / 8] = bLow;
+	int totalByte = testRGBBit.totalByte;
+	bptr < ByteBuffer > data(new ByteBuffer(totalByte));
+	for (int x = 0; x < totalByte; x++) {
+	    (*data)[x] = 0;
+	}
+	//0, 8, 16, 12, 24, 32
+	//0,1,2,1,3,4
+	(*data)[testRGBBit.rLowBit / 8] = rLow;	//0
+	(*data)[testRGBBit.gLowBit / 8] = gLow;	//16
+	(*data)[testRGBBit.bLowBit / 8] = bLow;	//24
 
-	rHigh;
-	gHigh;
-	bHigh;
+	if (testRGBBit.rHighBit % 8 != 0) {
+	    int index = testRGBBit.rHighBit / 8;
+	    byte d = (*data)[index];
+	    (*data)[index] = d + (rHigh << 4);
+	} else {
+	    int index = testRGBBit.rHighBit / 8;
+	    byte d = (*data)[index];
+	    (*data)[index] = d + rHigh;
+	}
+	if (testRGBBit.gHighBit % 8 != 0) {
+	    int index = testRGBBit.gHighBit / 8;
+	    byte d = (*data)[index];
+	    (*data)[index] = d + (gHigh << 4);
+	} else {
+	    int index = testRGBBit.gHighBit / 8;
+	    byte d = (*data)[index];
+	    (*data)[index] = d + gHigh;
+	}
+	if (testRGBBit.bHighBit % 8 != 0) {
+	    int index = testRGBBit.bHighBit / 8;
+	    byte d = (*data)[index];
+	    (*data)[index] = d + (bHigh << 4);
+	} else {
+	    int index = testRGBBit.bHighBit / 8;
+	    byte d = (*data)[index];
+	    (*data)[index] = d + bHigh;
+	}
 
 	return data;
     };
