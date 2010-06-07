@@ -60,7 +60,8 @@ namespace cms {
 	    int BitDepthProcessor::getMeasureStart() {
 		switch (bitDepth) {
 		case b10_10:
-		    return tconInput ? 1023 : 255;
+		    //return tconInput ? 1023 : 255;
+		    return tconInput ? 4095 : 255;
 		case b10_8:
 		case b8_8:
 		    return tconInput ? 1020 : 255;
@@ -94,6 +95,7 @@ namespace cms {
 	    int BitDepthProcessor::getMeasureStep() {
 		switch (bitDepth) {
 		case b10_10:
+		    return tconInput ? 16 : 1;
 		case b10_8:
 		case b8_8:
 		    return tconInput ? 4 : 1;

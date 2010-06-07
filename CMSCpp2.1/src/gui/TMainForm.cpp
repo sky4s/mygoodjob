@@ -375,7 +375,7 @@ void __fastcall TMainForm::Button_ConnectClick(TObject * Sender)
 	    StrToInt("0x" + this->Edit_EnableAddress->Text);
 	int gammaTestBit = StrToInt(this->Edit_EnableBit->Text) + 1;
 	int testRGBAddress = StrToInt("0x" + this->Edit_LUTAddress->Text);
-	bool indepRGB = this->ComboBox_Type->ItemIndex == 1;
+	bool indepRGB = this->ComboBox_Type->ItemIndex == 0;
 
 	parameter = bptr < TCONParameter > (new
 					    TCONParameter(gammaTestAddress,

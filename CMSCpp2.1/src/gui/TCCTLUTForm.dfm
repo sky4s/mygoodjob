@@ -116,7 +116,7 @@ object CCTLUTForm: TCCTLUTForm
       OnClick = RadioButton_GammaCurveClick
     end
     object CheckBox_GByPass: TCheckBox
-      Left = 9
+      Left = 33
       Top = 64
       Width = 96
       Height = 25
@@ -282,6 +282,7 @@ object CCTLUTForm: TCCTLUTForm
       Caption = 'Average Dim DG'
       Enabled = False
       TabOrder = 8
+      Visible = False
     end
     object Edit_DimGamma: TEdit
       Left = 88
@@ -307,6 +308,7 @@ object CCTLUTForm: TCCTLUTForm
       Width = 35
       Height = 16
       Caption = 'Begin'
+      Visible = False
     end
     object Label19: TLabel
       Left = 32
@@ -314,6 +316,7 @@ object CCTLUTForm: TCCTLUTForm
       Width = 49
       Height = 16
       Caption = 'Strength'
+      Visible = False
     end
     object CheckBox_BGain: TCheckBox
       Left = 9
@@ -347,6 +350,7 @@ object CCTLUTForm: TCCTLUTForm
       Height = 24
       Caption = 'B Max 2'
       TabOrder = 3
+      Visible = False
       OnClick = CheckBox_BMax2Click
     end
     object Edit_BMax2Begin: TEdit
@@ -358,6 +362,7 @@ object CCTLUTForm: TCCTLUTForm
       ImeName = #26085#25991#36664#20837#31995#32113' (MS-IME2002)'
       TabOrder = 4
       Text = '235'
+      Visible = False
     end
     object Edit_BMax2Gamma: TEdit
       Left = 88
@@ -368,6 +373,7 @@ object CCTLUTForm: TCCTLUTForm
       ImeName = #26085#25991#36664#20837#31995#32113' (MS-IME2002)'
       TabOrder = 5
       Text = '2.2'
+      Visible = False
     end
   end
   object GroupBox5: TGroupBox
@@ -383,6 +389,7 @@ object CCTLUTForm: TCCTLUTForm
       Width = 29
       Height = 16
       Caption = 'Over'
+      Visible = False
     end
     object Label16: TLabel
       Left = 32
@@ -390,6 +397,7 @@ object CCTLUTForm: TCCTLUTForm
       Width = 49
       Height = 16
       Caption = 'Strength'
+      Visible = False
     end
     object CheckBox_AvoidNoise: TCheckBox
       Left = 9
@@ -414,6 +422,7 @@ object CCTLUTForm: TCCTLUTForm
       Height = 24
       Caption = 'Keep Max Luminance(Adv.)'
       TabOrder = 2
+      Visible = False
       OnClick = CheckBox_KeepMaxAdvClick
     end
     object Edit_AdvOver: TEdit
@@ -425,6 +434,7 @@ object CCTLUTForm: TCCTLUTForm
       ImeName = #26085#25991#36664#20837#31995#32113' (MS-IME2002)'
       TabOrder = 3
       Text = '235'
+      Visible = False
     end
     object Edit_AdvGamma: TEdit
       Left = 88
@@ -435,6 +445,7 @@ object CCTLUTForm: TCCTLUTForm
       ImeName = #26085#25991#36664#20837#31995#32113' (MS-IME2002)'
       TabOrder = 4
       Text = '2.2'
+      Visible = False
     end
     object CheckBox_NewMethod: TCheckBox
       Left = 8
@@ -443,6 +454,7 @@ object CCTLUTForm: TCCTLUTForm
       Height = 25
       Caption = 'New Method'
       TabOrder = 5
+      Visible = False
     end
   end
   object Button_Run: TButton

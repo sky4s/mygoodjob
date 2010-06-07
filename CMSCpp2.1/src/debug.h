@@ -5,7 +5,8 @@
 #define METER_FILE "debug.xls"
 #define DEBUG_DIR  "debug/"
 
-//#define DEBUG_CCTLUT
+//#define DEBUG_NEWFUNC
+#define DEBUG_CCTLUT
 //#define DEBUG_FINDWHITE
 //#define DEBUG_TARGETWHITE
 
