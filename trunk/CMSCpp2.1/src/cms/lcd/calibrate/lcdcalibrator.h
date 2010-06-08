@@ -225,6 +225,9 @@ namespace cms {
 							  MeasureCondition
 							  >
 							  measureCondition);
+		double_vector_ptr fetchLuminanceVector(bptr <
+						       MeasureCondition >
+						       measureCondition);
 	      public:
 		static double_vector_ptr getGammaCurveVector
 		    (double gamma, int n, int effectiven);

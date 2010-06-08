@@ -25,14 +25,15 @@ namespace cms {
 	      protected:
 		 Component_vector_ptr componentVector;
 		 bptr < cms::measure::IntensityAnalyzerIF > analyzer;
-		Component_vector_ptr fetchComponent(bptr <
-						    cms::measure::
-						    MaxMatrixIntensityAnayzer
-						    > analyzer,
-						    Component_vector_ptr
-						    componentVector);
+
 		static void storeXYZVector(XYZ_vector_ptr XYZVector);
 	      public:
+		 Component_vector_ptr fetchComponent(bptr <
+						     cms::measure::
+						     MaxMatrixIntensityAnayzer
+						     > analyzer,
+						     Component_vector_ptr
+						     componentVector);
 		 DimDGLutGenerator(Component_vector_ptr componentVector,
 				   bptr <
 				   cms::measure::IntensityAnalyzerIF >

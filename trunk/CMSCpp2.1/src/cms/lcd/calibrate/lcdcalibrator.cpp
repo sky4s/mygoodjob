@@ -434,7 +434,8 @@ namespace cms {
 		int size = luminanceGammaCurve->size();
 		RGB_vector_ptr dglut(new RGB_vector(size));
 
-		for (int x = 0; x != size; x++) {
+		//for (int x = 0; x != size; x++) {
+		for (int x = size - 1; x != -1; x--) {
 		    double luminance = (*luminanceGammaCurve)[x];
 		    RGB_ptr rgb = lut->getCode(luminance);
 		    (*dglut)[x] = rgb;
@@ -697,6 +698,26 @@ namespace cms {
 		}
 	    };
 
+	    double_vector_ptr LCDCalibrator::fetchLuminanceVector(bptr <
+								  MeasureCondition
+								  >
+								  measureCondition)
+	    {
+		/*this->measureCondition = measureCondition;
+		   //量測start->end得到的coponent/Y
+		   int_vector_ptr measurecode =
+		   measureCondition->getMeasureCode();
+		   componentVector = fetcher->fetchComponent(measurecode);
+
+		   if (componentVector == null
+		   || measurecode->size() != componentVector->size()) {
+		   return Component_vector_ptr((Component_vector *)
+		   null);
+		   } else {
+		   return componentVector;
+		   } */
+	    };
+
 	    /*
 	       CCT + Gamma
 	     */
@@ -879,18 +900,21 @@ namespace cms {
 			("null == rgammaCurve || null == ggammaCurve || null == bgammaCurve");
 		}
 
-		Component_vector_ptr componentVector =
-		    fetchComponentVector(measureCondition);
-		STORE_COMPONENT("o_fetch.xls", componentVector);
 
-		if (componentVector == null) {
-		    return RGB_vector_ptr((RGB_vector *) null);
-		}
 		RGB_vector_ptr dglut;
 		if (true == rgbIndepGamma) {
 		    //暫不提供
 		    dglut = RGB_vector_ptr((RGB_vector *) null);
+		    return dglut;
 		} else {
+		    Component_vector_ptr componentVector =
+			fetchComponentVector(measureCondition);
+		    STORE_COMPONENT("o_fetch.xls", componentVector);
+
+		    if (componentVector == null) {
+			return RGB_vector_ptr((RGB_vector *) null);
+		    }
+
 		    DGLutGenerator generator(componentVector);
 		    dglut = generator.getGammaDGLut(gammaCurve);
 
