@@ -161,6 +161,7 @@ object GammaMeasurementForm: TGammaMeasurementForm
         Caption = 'Table'
         Enabled = False
         TabOrder = 1
+        Visible = False
         object RadioButton_10Bit: TRadioButton
           Left = 9
           Top = 25

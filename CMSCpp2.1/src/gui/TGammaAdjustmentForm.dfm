@@ -130,6 +130,7 @@ object GammaAdjustmentForm: TGammaAdjustmentForm
         Width = 49
         Height = 24
         Caption = 'Run'
+        Enabled = False
         TabOrder = 0
         OnClick = Button_RGBGammaClick
       end

@@ -265,6 +265,9 @@ namespace cms {
 	};
 
 	RGB_ptr MaxMatrixIntensityAnayzer::getIntensity(XYZ_ptr XYZ) {
+	    if (NULL == inverseMatrix) {
+		throw IllegalStateException("NULL == inverseMatrix");
+	    }
 	    double2D_ptr color =
 		DoubleArray::toDouble2D(1, 3, XYZ->X, XYZ->Y, XYZ->Z);
 	    rgbValues = DoubleArray::times(inverseMatrix, color);

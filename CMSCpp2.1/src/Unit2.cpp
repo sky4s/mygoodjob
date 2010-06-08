@@ -502,9 +502,13 @@ void ddLutFileReadTry()
 {
     using namespace cms::colorformat;
     DGLutFile file("debug.xls", ReadOnly);
-    RGB_vector_ptr gammaTable = file.getGammaTable();
-    foreach(const RGB_ptr rgb, *gammaTable) {
-	cout << *rgb->toString() << endl;
+    /*RGB_vector_ptr gammaTable = file.getGammaTable();
+       foreach(const RGB_ptr rgb, *gammaTable) {
+       cout << *rgb->toString() << endl;
+       } */
+    Component_vector_ptr cv = file.getComponentVector();
+    foreach(Component_ptr c, *cv) {
+	cout << *c->rgb->toString() << endl;
     }
 };
 
@@ -599,6 +603,67 @@ void directGammaTester()
     }
 };
 
+void hookTester()
+{
+    string filename = "debug.xls";
+    using namespace cms::measure::meter;
+    using namespace cms::measure;
+    using namespace cms::colorformat;
+    using namespace cms::lcd::calibrate;
+    using namespace Indep;
+    using namespace Dep;
+    bptr < DGLutFile > dgcode(new DGLutFile(filename, ReadOnly));
+    bptr < Meter > meter = bptr < Meter > (new DGLutFileMeter(dgcode));
+    bptr < MeterMeasurement > mm =
+	bptr < MeterMeasurement > (new MeterMeasurement(meter, false));
+    mm->setFakeMeasure(true);
+
+    bptr < MaxMatrixIntensityAnayzer >
+	matrixAnalyzer(new MaxMatrixIntensityAnayzer(mm));
+
+    bptr < MaxMatrixIntensityAnayzer > analyzer = matrixAnalyzer;
+    //fetcher = bptr < ComponentFetcher > ((ComponentFetcher *) null);
+
+    bptr < DGLutProperty > property = dgcode->getProperty();
+    xyY_ptr wxyY = property->getReferenceColor(Channel::W);
+    if (null != wxyY) {
+	xyY_ptr rxyY = property->getReferenceColor(Channel::R);
+	xyY_ptr gxyY = property->getReferenceColor(Channel::G);
+	xyY_ptr bxyY = property->getReferenceColor(Channel::B);
+
+	matrixAnalyzer->setupComponent(Channel::W, wxyY->toXYZ());
+	matrixAnalyzer->setupComponent(Channel::R, rxyY->toXYZ());
+	matrixAnalyzer->setupComponent(Channel::G, gxyY->toXYZ());
+	matrixAnalyzer->setupComponent(Channel::B, bxyY->toXYZ());
+	matrixAnalyzer->enter();
+    }
+    Component_vector_ptr componentVector = dgcode->getComponentVector();
+
+    /*bptr < MaxMatrixIntensityAnayzer >
+       analyzer(new MaxMatrixIntensityAnayzer());
+
+       analyzer->setupComponent(Channel::R, rxyY->toXYZ());
+       analyzer->setupComponent(Channel::G, gxyY->toXYZ());
+       analyzer->setupComponent(Channel::B, bxyY->toXYZ());
+       analyzer->setupComponent(Channel::W, targetXYZ);
+       analyzer->enter(); */
+
+    DimDGLutGenerator generator(componentVector, analyzer);
+
+    Component_vector_ptr newcomponentVector =
+	generator.fetchComponent(analyzer, componentVector);
+    foreach(Component_ptr p, *newcomponentVector) {
+	cout << p->intensity->B << endl;
+    }
+    //STORE_COMPONENT(_toString(x++) + ".xls", newcomponentVector);
+    //DGLutGenerator lutgen(newcomponentVector);
+    //±Ä100¶Ü?
+    //RGB_ptr rgb = lutgen.getDGCode(100, 100, 100);
+
+    //result->push_back(rgb);
+
+};
+
 #pragma argsused
 int main(int argc, char *argv[])
 {
@@ -651,7 +716,7 @@ int main(int argc, char *argv[])
     //inverseTry();
 
     //persistence();
-    //ddLutFileReadTry();
+    ddLutFileReadTry();
     //newCCTAlgoTry();
     //token();
     //readTextTester();
@@ -660,7 +725,8 @@ int main(int argc, char *argv[])
     //ShellExecute(null, null, "target.xls", null, null, SW_SHOW);
     //ShellExecute(null, null, "target.xls", null, null, SW_HIDE);
     //targetTester();
-    directGammaTester();
+    //directGammaTester();
+    //hookTester();
     getch();
 }
 
