@@ -65,8 +65,8 @@ namespace cms {
 
 	    Component_vector_ptr ComponentFetcher::
 		fetchComponent(int_vector_ptr measureCode) {
-		bool tconInput = bitDepth->isTCONInput();
-		bool real10Bit = bitDepth->is10in10Out();
+		//bool tconInput = bitDepth->isTCONInput();
+		//bool real10Bit = bitDepth->is10in10Out();
 		Component_vector_ptr result(new Component_vector());
 
 		bool waitingStable = true;
@@ -75,12 +75,13 @@ namespace cms {
 
 		analyzer->beginAnalyze();
 		foreach(const int &x, *measureCode) {
-		    RGB_ptr rgb(tconInput ?
-				(real10Bit ?
-				 new RGBColor(x, x, x,
-					      MaxValue::RealInt10Bit) :
-				 new RGBColor(x, x, x, MaxValue::Int10Bit))
-				: new RGBColor(x, x, x));
+		    /*RGB_ptr rgb(tconInput ?
+		       (real10Bit ?
+		       new RGBColor(x, x, x,
+		       MaxValue::RealInt10Bit) :
+		       new RGBColor(x, x, x, MaxValue::Int10Bit))
+		       : new RGBColor(x, x, x)); */
+		    RGB_ptr rgb(new RGBColor(x, x, x));
 		    RGB_ptr intensity = analyzer->getIntensity(rgb);
 		    XYZ_ptr XYZ = analyzer->getCIEXYZ();
 		    Component_ptr component(new Component(rgb, intensity,
@@ -96,6 +97,35 @@ namespace cms {
 			stop = false;
 			return Component_vector_ptr((Component_vector *)
 						    null);
+		    }
+		}
+		analyzer->endAnalyze();
+		return result;
+	    };
+
+	    double_vector_ptr ComponentFetcher::
+		fetchLuminance(int_vector_ptr measureCode) {
+		double_vector_ptr result(new double_vector());
+
+		bool waitingStable = true;
+		int waitTimes = analyzer->getWaitTimes();
+		analyzer->setWaitTimes(10000);
+
+		analyzer->beginAnalyze();
+		foreach(const int &x, *measureCode) {
+		    RGB_ptr rgb(new RGBColor(x, x, x));
+		    XYZ_ptr XYZ = analyzer->getCIEXYZOnly(rgb);
+		    result->push_back(XYZ->Y);
+
+		    if (true == waitingStable) {
+			waitingStable = false;
+			analyzer->setWaitTimes(waitTimes);
+		    }
+
+		    if (true == stop) {
+			stop = false;
+			return double_vector_ptr((double_vector *)
+						 null);
 		    }
 		}
 		analyzer->endAnalyze();
@@ -229,11 +259,11 @@ namespace cms {
 		//==============================================================
 		// 產生RGB LUT
 		//==============================================================
-		keys = getReverse(keys);
-		rValues = getReverse(rValues);
-		gValues = getReverse(gValues);
-		bValues = getReverse(bValues);
-		YValues = getReverse(YValues);
+		keys = DoubleArray::getReverse(keys);
+		rValues = DoubleArray::getReverse(rValues);
+		gValues = DoubleArray::getReverse(gValues);
+		bValues = DoubleArray::getReverse(bValues);
+		YValues = DoubleArray::getReverse(YValues);
 		rLut =
 		    bptr < Interpolation1DLUT >
 		    (new Interpolation1DLUT(keys, rValues));
@@ -302,56 +332,12 @@ namespace cms {
 						   *ch.toString());
 		}
 	    };
-	    double_vector_ptr ComponentLUT::
-		getReverse(double_vector_ptr vec) {
-		int size = vec->size();
-		double_vector_ptr result(new double_vector(size));
-		for (int x = 0; x != size; x++) {
-		    (*result)[x] = (*vec)[size - 1 - x];
-		}
-		return result;
-	    };
+
 	    //==================================================================
 
 	    //==================================================================
 	    // DGLutGenerator
 	    //==================================================================
-	    /*
-	       DGLutGenerator擔任產出DG Code的重責大任
-	       1. 首先接手ComponentFetcher產出的rgb,對應的componet,亮度
-	       2. 藉由regression找出componet與亮度的關係
-	       1/2由init產出
-
-	       3. 由目標gamma curve經步驟二找到對應的component
-	       4. 由compomenet對應出DG Code, DG Code產出
-	       3/4由produce產出
-
-	     */
-	    void DGLutGenerator::init() {
-		//==============================================================
-		// 計算a/c/d
-		//==============================================================
-		componentRelation =
-		    bptr < ComponentRelationIF >
-		    (new ComponentLinearRelation(componentVector));
-		//==============================================================
-
-		//==============================================================
-		// 產生RGB LUT
-		//==============================================================
-		lut = bptr < ComponentLUT >
-		    (new ComponentLUT(componentVector));
-		//==============================================================
-
-		double maxintensity = Math::roundTo(getMaximumIntensity());
-
-		maxLuminance =
-		    componentRelation->getLuminance(maxintensity,
-						    maxintensity,
-						    maxintensity);
-		int size = componentVector->size();
-		minLuminance = (*componentVector)[size - 1]->XYZ->Y;
-	    };
 	    /*
 	       將正規化的gamma curve, 轉換為絕對的亮度curve
 	     */
@@ -377,14 +363,61 @@ namespace cms {
 		double maxvalue = maxintensity->getValue(minchannel);
 		return maxvalue;
 	    };
-	    /*DGLutGenerator::DGLutGenerator(Component_vector_ptr componentVector, bptr < BitDepthProcessor > bitDepth):componentVector(componentVector) {
+	    /*
+	       DGLutGenerator擔任產出DG Code的重責大任
+	       1. 首先接手ComponentFetcher產出的rgb,對應的componet,亮度
+	       2. 藉由regression找出componet與亮度的關係
+	       1/2由init產出
 
-	       init();
-	       }; */
+	       3. 由目標gamma curve經步驟二找到對應的component
+	       4. 由compomenet對應出DG Code, DG Code產出
+	       3/4由produce產出
+
+	     */
 	  DGLutGenerator::DGLutGenerator(Component_vector_ptr componentVector):componentVector
-		(componentVector)
+		(componentVector), mode(Component)
 	    {
-		init();
+		//==============================================================
+		// 計算a/c/d
+		//==============================================================
+		componentRelation =
+		    bptr < ComponentRelationIF >
+		    (new ComponentLinearRelation(componentVector));
+		//==============================================================
+
+		//==============================================================
+		// 產生RGB LUT
+		//==============================================================
+		lut = bptr < ComponentLUT >
+		    (new ComponentLUT(componentVector));
+		//==============================================================
+
+		double maxintensity = Math::roundTo(getMaximumIntensity());
+
+		maxLuminance =
+		    componentRelation->getLuminance(maxintensity,
+						    maxintensity,
+						    maxintensity);
+		int size = componentVector->size();
+		minLuminance = (*componentVector)[size - 1]->XYZ->Y;
+	    };
+	  DGLutGenerator::DGLutGenerator(double_vector_ptr luminanceVector):luminanceVector(luminanceVector), mode(WLumi)
+	    {
+		maxLuminance = (*luminanceVector)[0];
+		int size = luminanceVector->size();
+		minLuminance = (*luminanceVector)[size - 1];
+		double_vector_ptr key(new double_vector(size));
+		for (int x = 0; x != size; x++) {
+		    (*key)[x] = size - x - 1;
+		}
+		key = DoubleArray::getReverse(key);
+		double_vector_ptr value =
+		    DoubleArray::getReverse(luminanceVector);
+
+		wlut =
+		    bptr < Interpolation1DLUT >
+		    (new Interpolation1DLUT(key, value));
+
 	    };
 
 	    RGB_ptr DGLutGenerator::
@@ -407,6 +440,12 @@ namespace cms {
 
 	    RGB_vector_ptr DGLutGenerator::
 		getCCTDGLut(RGBGamma_ptr rgbIntensityCurve) {
+		if (mode == WLumi || mode == RGBLumi) {
+		    throw
+			UnsupportedOperationException
+			("DGLutGenerator is in luminanceMode.");
+		}
+
 		using namespace Dep;
 		double_vector_ptr rIntensityCurve = rgbIntensityCurve->r;
 		double_vector_ptr gIntensityCurve = rgbIntensityCurve->g;
@@ -437,7 +476,19 @@ namespace cms {
 		//for (int x = 0; x != size; x++) {
 		for (int x = size - 1; x != -1; x--) {
 		    double luminance = (*luminanceGammaCurve)[x];
-		    RGB_ptr rgb = lut->getCode(luminance);
+		    RGB_ptr rgb;
+		    switch (mode) {
+		    case Component:
+			rgb = lut->getCode(luminance);
+			break;
+		    case WLumi:
+			luminance = wlut->correctValueInRange(luminance);
+			double key = wlut->getKey(luminance);
+			rgb = RGB_ptr(new RGBColor(key, key, key));
+			break;
+			/*case RGBLumi:
+			   break; */
+		    }
 		    (*dglut)[x] = rgb;
 		}
 
@@ -473,9 +524,7 @@ namespace cms {
 
 		return rgbgamma;
 	    };
-	    /*bptr < ComponentLUT > DGLutGenerator::getComponentLUT() {
-	       return lut;
-	       }; */
+
 	    //==================================================================
 
 	    //==================================================================
@@ -582,12 +631,7 @@ namespace cms {
 	    void LCDCalibrator::setNonDimCorrect() {
 		this->correct = None;
 	    };
-	    /*void LCDCalibrator::setNew(int p1, int p2, double gammaShift) {
-	       this->correct = New;
-	       this->p1 = p1;
-	       this->p2 = p2;
-	       this->gammaShift = gammaShift;
-	       }; */
+
 	    void LCDCalibrator::setDefinedDim(int under, bool averageDimDG) {
 		this->correct = DefinedDim;
 		this->under = under;
@@ -597,7 +641,6 @@ namespace cms {
 		this->gamma = gamma;
 		int n = bitDepth->getLevel();
 		int effectiven = bitDepth->getEffectiveLevel();
-		//int measureLevel = bitDepth->getMeasureLevel();
 		setGammaCurve0(getGammaCurveVector(gamma, n, effectiven));
 		useGammaCurve = false;
 		rgbIndepGamma = false;
@@ -703,19 +746,19 @@ namespace cms {
 								  >
 								  measureCondition)
 	    {
-		/*this->measureCondition = measureCondition;
-		   //量測start->end得到的coponent/Y
-		   int_vector_ptr measurecode =
-		   measureCondition->getMeasureCode();
-		   componentVector = fetcher->fetchComponent(measurecode);
+		this->measureCondition = measureCondition;
+		//量測start->end得到的coponent/Y
+		int_vector_ptr measurecode =
+		    measureCondition->getMeasureCode();
+		luminanceVector = fetcher->fetchLuminance(measurecode);
 
-		   if (componentVector == null
-		   || measurecode->size() != componentVector->size()) {
-		   return Component_vector_ptr((Component_vector *)
-		   null);
-		   } else {
-		   return componentVector;
-		   } */
+		if (luminanceVector == null
+		    || measurecode->size() != luminanceVector->size()) {
+		    return double_vector_ptr((double_vector *)
+					     null);
+		} else {
+		    return luminanceVector;
+		}
 	    };
 
 	    /*
@@ -907,15 +950,17 @@ namespace cms {
 		    dglut = RGB_vector_ptr((RGB_vector *) null);
 		    return dglut;
 		} else {
-		    Component_vector_ptr componentVector =
-			fetchComponentVector(measureCondition);
-		    STORE_COMPONENT("o_fetch.xls", componentVector);
+		    /*Component_vector_ptr componentVector =
+		       fetchComponentVector(measureCondition); */
+		    double_vector_ptr luminanceVector =
+			fetchLuminanceVector(measureCondition);
+		    //STORE_COMPONENT("o_fetch.xls", componentVector);
 
-		    if (componentVector == null) {
+		    if (luminanceVector == null) {
 			return RGB_vector_ptr((RGB_vector *) null);
 		    }
 
-		    DGLutGenerator generator(componentVector);
+		    DGLutGenerator generator(luminanceVector);
 		    dglut = generator.getGammaDGLut(gammaCurve);
 
 		}
@@ -946,9 +991,11 @@ namespace cms {
 		file.setProperty(property);
 		//寫入dgcode
 		file.setGammaTable(dglut);
-		//寫入raw data
-		file.setRawData(componentVector, initialRGBGamma,
-				finalRGBGamma);
+		if (null != componentVector) {
+		    //寫入raw data
+		    file.setRawData(componentVector, initialRGBGamma,
+				    finalRGBGamma);
+		}
 
 	    };
 

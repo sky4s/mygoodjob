@@ -25,10 +25,6 @@ namespace cms {
 	using namespace Indep;
 	using namespace ca210api;
 
-	/*const WideString & CA210IntensityAnalyzer::
-	   CalibrationDataFilename = "ca210.dat"; */
-	//bool CA210IntensityAnalyzer::ANALYZER_CAL_MODE = false;
-
 	void CA210IntensityAnalyzer::init() {
 	    ca210api->setDisplayMode(Lvxy);
 	    ca210api->setChannelNO(0);
@@ -42,18 +38,14 @@ namespace cms {
 
       CA210IntensityAnalyzer::CA210IntensityAnalyzer(bptr < MeterMeasurement > mm):mm(mm), dummyMode(true),
 	    dgc
-	    (null)
-	    //, defaultWaitTimes(-1)
-	{
+	    (null) {
 	};
 
 	RGB_ptr CA210IntensityAnalyzer::getIntensity(RGB_ptr rgb) {
-	    //mm->measure(rgb, rgb->toString());
 	    if (false == dummyMode) {
 		ca210api->setDisplayMode(Lvxy);
 	    }
-	    Patch_ptr patch = mm->measure(rgb, rgb->toString());
-	    XYZ = patch->getXYZ();
+	    getCIEXYZOnly(rgb);
 	    float_array rgbIntensity;
 	    if (true == dummyMode) {
 		//若為dummy mode, 代表從meter直接撈資料
@@ -79,6 +71,11 @@ namespace cms {
 
 	};
 	XYZ_ptr CA210IntensityAnalyzer::getCIEXYZ() {
+	    return XYZ;
+	};
+	XYZ_ptr CA210IntensityAnalyzer::getCIEXYZOnly(RGB_ptr rgb) {
+	    Patch_ptr patch = mm->measure(rgb, rgb->toString());
+	    XYZ = patch->getXYZ();
 	    return XYZ;
 	};
 
@@ -160,7 +157,6 @@ namespace cms {
 	    return mm->getWaitTimes();
 	};
 	xyY_ptr CA210IntensityAnalyzer::getReferenceColor() {
-	    //return ca210api->getReferenceColor();
 	    return xyY_ptr(new CIExyY(wp->getXYZ()));
 	};
 	xyY_ptr CA210IntensityAnalyzer::getPrimaryColor(const Dep::
@@ -178,72 +174,8 @@ namespace cms {
 	    };
 	};
 	RGB_ptr CA210IntensityAnalyzer::getReferenceRGB() {
-	    /*double r = rp->getRGB()->R;
-	       double g = gp->getRGB()->G;
-	       double b = bp->getRGB()->B; */
 	    return wp->getRGB();
-	    //return RGB_ptr(new RGBColor(r, g, b));
 	};
-	//======================================================================
-
-	/*StocktonIntensityAnayzer::StocktonIntensityAnayzer(bptr < CA210 > ca210, bptr < MeterMeasurement > mm):CA210IntensityAnalyzer(ca210, mm)
-	   {
-	   mm->setWaitTimes(5000);
-	   ca210api->setLvxyCalMode();
-	   };
-
-	   void StocktonIntensityAnayzer::setupComponent(const Dep::
-	   Channel & ch,
-	   RGB_ptr rgb) {
-	   Patch_ptr p = mm->measure(rgb, rgb->toString());
-	   switch (ch.chindex) {
-	   case ChannelIndex::R:
-	   rp = p;
-	   break;
-	   case ChannelIndex::G:
-	   gp = p;
-	   break;
-	   case ChannelIndex::B:
-	   bp = p;
-	   break;
-	   case ChannelIndex::W:
-	   wp = p;
-	   break;
-	   };
-	   };
-
-	   void StocktonIntensityAnayzer::enter() {
-	   //==================================================================
-	   Patch_ptr p = rp;
-	   mm->measure(p->getRGB(), p->getRGB()->toString());
-	   ca210api->setLvxyCalData(Red,
-	   (new CIExyY(p->getXYZ()))->
-	   getValues());
-	   //==================================================================
-	   p = gp;
-	   mm->measure(p->getRGB(), p->getRGB()->toString());
-	   ca210api->setLvxyCalData(Green,
-	   (new CIExyY(p->getXYZ()))->
-	   getValues());
-	   //==================================================================
-	   p = bp;
-	   mm->measure(p->getRGB(), p->getRGB()->toString());
-	   ca210api->setLvxyCalData(Blue,
-	   (new CIExyY(p->getXYZ()))->
-	   getValues());
-	   //==================================================================
-	   p = wp;
-	   mm->measure(p->getRGB(), p->getRGB()->toString());
-	   ca210api->setLvxyCalData(White,
-	   (new CIExyY(p->getXYZ()))->
-	   getValues());
-	   //==================================================================
-
-	   ca210api->enter();
-	   }; */
-
-
-	//======================================================================
 
 	//======================================================================
 	// MaxMatrixIntensityAnayzer
@@ -258,8 +190,7 @@ namespace cms {
 
 	RGB_ptr MaxMatrixIntensityAnayzer::getIntensity(RGB_ptr rgb) {
 	    //component: 0~100%
-	    Patch_ptr patch = mm->measure(rgb, rgb->toString());
-	    XYZ = patch->getXYZ();
+	    getCIEXYZOnly(rgb);
 
 	    return getIntensity(XYZ);
 	};
@@ -288,6 +219,12 @@ namespace cms {
 	};
 
 	XYZ_ptr MaxMatrixIntensityAnayzer::getCIEXYZ() {
+	    return XYZ;
+	};
+
+	XYZ_ptr MaxMatrixIntensityAnayzer::getCIEXYZOnly(RGB_ptr rgb) {
+	    Patch_ptr patch = mm->measure(rgb, rgb->toString());
+	    XYZ = patch->getXYZ();
 	    return XYZ;
 	};
 
@@ -394,7 +331,6 @@ namespace cms {
       IntensityAnayzer::IntensityAnayzer(bptr < MaxMatrixIntensityAnayzer > matrix, bptr < CA210IntensityAnalyzer > ca210):matrix(matrix), ca210(ca210),
 	    no(0)
 	{
-	    /*, useMatrix2(false) */
 
 	    fieldNames =
 		StringVector::fromCString(13, "no", "CA_R", "CA_G", "CA_B",
@@ -416,24 +352,6 @@ namespace cms {
 	    double2D_ptr originalIntensity = matrix->rgbValues;
 	    string_vector_ptr values;
 
-	    /*if (true == useMatrix2) {
-	       RGB_ptr matrix2Intensity = matrix2->getIntensity(XYZ);
-	       values =
-	       StringVector::fromDouble(13,
-	       static_cast < double >(no++),
-	       ca210Intensity->R,
-	       ca210Intensity->G,
-	       ca210Intensity->B,
-	       matrixIntensity->R,
-	       matrixIntensity->G,
-	       matrixIntensity->B,
-	       (*originalIntensity)[0][0],
-	       (*originalIntensity)[1][0],
-	       (*originalIntensity)[2][0],
-	       matrix2Intensity->R,
-	       matrix2Intensity->G,
-	       matrix2Intensity->B);
-	       } else { */
 	    values =
 		StringVector::fromDouble(13,
 					 static_cast < double >(no++),
@@ -447,7 +365,6 @@ namespace cms {
 					 (*originalIntensity)[1][0],
 					 (*originalIntensity)[2][0],
 					 0., 0., 0.);
-	    //}
 	    excel->insert(values);
 	    return ca210Intensity;
 	};
@@ -455,45 +372,28 @@ namespace cms {
 	    return ca210->getCIEXYZ();
 	};
 
+	XYZ_ptr IntensityAnayzer::getCIEXYZOnly(RGB_ptr rgb) {
+	    throw UnsupportedOperationException();
+	};
+
 	void IntensityAnayzer::
 	    setupComponent(const Dep::Channel & ch, RGB_ptr rgb) {
 	    ca210->setupComponent(ch, rgb);
 	    XYZ_ptr XYZ = ca210->getCIEXYZ();
 	    matrix->setupComponent(ch, XYZ);
-	    /*if (true == useMatrix2) {
-	       matrix2->setupComponent(ch, XYZ);
-	       } */
 	};
 	void IntensityAnayzer::enter() {
 	    ca210->enter();
 	    matrix->enter();
-	    /*if (true == useMatrix2) {
-	       matrix2->enter();
-	       } */
 
 	    double2D_ptr targetRatio = matrix->targetRatio;
 	    string_vector_ptr values;
 
-	    /*if (true == useMatrix2) {
-	       float2D_ptr targetRatio2 = matrix2->targetRatio2;
-	       values =
-	       StringVector::fromDouble(13, 99., 0., 0., 0., 0., 0.,
-	       0., (*targetRatio)[0][0],
-	       (*targetRatio)[1][0],
-	       (*targetRatio)[2][0],
-	       (double) (*targetRatio2)[0]
-	       [0],
-	       (double) (*targetRatio2)[1]
-	       [0],
-	       (double) (*targetRatio2)[2]
-	       [0]);
-	       } else { */
 	    values =
 		StringVector::fromDouble(13, 99., 0., 0., 0., 0., 0.,
 					 0., (*targetRatio)[0][0],
 					 (*targetRatio)[1][0],
 					 (*targetRatio)[2][0], 0., 0., 0.);
-	    //}
 	    excel->insert(values);
 
 	};
@@ -509,9 +409,6 @@ namespace cms {
 	int IntensityAnayzer::getWaitTimes() {
 	    return ca210->getWaitTimes();
 	};
-	/*void IntensityAnayzer::setDefaultWaitTimes() {
-	   ca210->setDefaultWaitTimes();
-	   }; */
 	xyY_ptr IntensityAnayzer::getReferenceColor() {
 	    return ca210->getReferenceColor();
 	};
@@ -523,55 +420,6 @@ namespace cms {
 	};
 	//=====================================================================
 
-	/*MaxMatrixIntensityAnayzer2::MaxMatrixIntensityAnayzer2(bptr < MeterMeasurement > mm):MaxMatrixIntensityAnayzer(mm)
-	   {
-
-	   };
-
-	   void MaxMatrixIntensityAnayzer2::enter() {
-	   mm->setMeasureWindowsVisible(false);
-	   if (rXYZ == null || gXYZ == null || bXYZ == null
-	   || wXYZ == null) {
-	   throw IllegalStateException
-	   ("Excute setupComponent() with RGBW first.");
-	   }
-
-	   float2D_ptr m =
-	   FloatArray::toFloat2D(3, 9, rXYZ->X, rXYZ->Y, rXYZ->Z,
-	   gXYZ->X, gXYZ->Y, gXYZ->Z,
-	   bXYZ->X, bXYZ->Y, bXYZ->Z);
-	   this->inverseMatrix2 = FloatArray::inverse(m);
-	   float2D_ptr targetWhite =
-	   FloatArray::toFloat2D(1, 3, wXYZ->X, wXYZ->Y, wXYZ->Z);
-	   this->targetRatio2 =
-	   FloatArray::times(inverseMatrix2, targetWhite);
-
-	   };
-
-	   RGB_ptr MaxMatrixIntensityAnayzer2::getIntensity(XYZ_ptr XYZ) {
-	   float2D_ptr color =
-	   FloatArray::toFloat2D(1, 3, XYZ->X, XYZ->Y, XYZ->Z);
-	   rgbValues2 = FloatArray::times(inverseMatrix2, color);
-	   (*rgbValues2)[0][0] *= 100;
-	   (*rgbValues2)[1][0] *= 100;
-	   (*rgbValues2)[2][0] *= 100;
-	   float_array intensityValues(new float[3]);
-	   intensityValues[0] =
-	   (*rgbValues2)[0][0] / (*targetRatio2)[0][0];
-	   intensityValues[1] =
-	   (*rgbValues2)[1][0] / (*targetRatio2)[1][0];
-	   intensityValues[2] =
-	   (*rgbValues2)[2][0] / (*targetRatio2)[2][0];
-
-	   RGB_ptr intensity(new
-	   RGBColor(static_cast <
-	   double >(intensityValues[0]),
-	   static_cast <
-	   double >(intensityValues[1]),
-	   static_cast <
-	   double >(intensityValues[2])));
-	   return intensity;  
-	   }; */
     };
 };
 

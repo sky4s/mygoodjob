@@ -64,10 +64,12 @@ namespace cms {
 		    return tconInput ? 4095 : 255;
 		case b10_8:
 		case b8_8:
-		    return tconInput ? 1020 : 255;
+		    //return tconInput ? 1020 : 255;
+		    return tconInput ? 4080 : 255;
 		case b8_6:
 		case b6_6:
-		    return 252;
+		    //return 252;
+		    return tconInput ? 4032 : 252;
 		default:
 		    throw IllegalStateException("Unsupported bitDepth: " +
 						bitDepth);
@@ -98,11 +100,11 @@ namespace cms {
 		    return tconInput ? 16 : 1;
 		case b10_8:
 		case b8_8:
-		    return tconInput ? 4 : 1;
+		    return tconInput ? 16 : 1;
 		case b8_6:
-		    return 1;
+		    return tconInput ? 16 : 1;
 		case b6_6:
-		    return 4;
+		    return tconInput ? 16 : 4;
 		default:
 		    throw IllegalStateException("Unsupported bitDepth: " +
 						bitDepth);
@@ -113,14 +115,14 @@ namespace cms {
 		switch (bitDepth) {
 		case b10_10:
 		    //return tconInput ? 3 : 1;
-                    return tconInput ? 15 : 1;
+		    return tconInput ? 15 : 1;
 		case b10_8:
 		case b8_8:
-		    return tconInput ? 4 : 1;
+		    return tconInput ? 16 : 1;
 		case b8_6:
-		    return 1;
+		    return tconInput ? 16 : 1;
 		case b6_6:
-		    return 4;
+		    return tconInput ? 16 : 4;
 		default:
 		    throw IllegalStateException("Unsupported bitDepth: " +
 						bitDepth);

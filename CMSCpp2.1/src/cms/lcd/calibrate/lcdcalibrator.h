@@ -41,6 +41,8 @@ namespace cms {
 						    int step);
 		Component_vector_ptr fetchComponent(int_vector_ptr
 						    measureCode);
+		double_vector_ptr fetchLuminance(int_vector_ptr
+						 measureCode);
 		static int_vector_ptr getMeasureCode(int start, int end,
 						     int firstStep,
 						     int step);
@@ -100,7 +102,7 @@ namespace cms {
 		bptr < math::Interpolation1DLUT > YLut;
 	      protected:
 		void init(Component_vector_ptr componentVector);
-		double_vector_ptr getReverse(double_vector_ptr vec);
+
 	      public:
 		 ComponentLUT(Component_vector_ptr componentVector);
 		double getIntensity(const Dep::Channel & ch, double code);
@@ -108,20 +110,31 @@ namespace cms {
 		RGB_ptr getCode(double luminance);
 		double correctIntensityInRange(const Dep::Channel & ch,
 					       double intensity);
+
 	    };
 
 	    class DGLutGenerator {
+	      private:
+		enum Mode {
+		    Component, WLumi, RGBLumi
+		};
 	      protected:
+		 Mode mode;
 		Component_vector_ptr componentVector;
+		double_vector_ptr luminanceVector;
+		double_vector_ptr rLuminanceVector, gLuminanceVector,
+		    bLuminanceVector;
 		double minLuminance, maxLuminance;
 		 bptr < ComponentLUT > lut;
 		 bptr < ComponentRelationIF > componentRelation;
-		void init();
-
-
+		 bptr < Interpolation1DLUT > wlut;
+		//void initComponent();
+		//void initWLuminance();
 		double getMaximumIntensity();
+		//bool luminanceMode;
 	      public:
 		 DGLutGenerator(Component_vector_ptr componentVector);
+		 DGLutGenerator(double_vector_ptr luminanceVector);
 		RGB_ptr getDGCode(double rIntensity, double gIntensity,
 				  double bIntensity);
 		RGB_vector_ptr getCCTDGLut(RGBGamma_ptr
@@ -213,6 +226,7 @@ namespace cms {
 		 bptr < ComponentFetcher > fetcher;
 		RGB_vector_ptr dglut;
 		Component_vector_ptr componentVector;
+		double_vector_ptr luminanceVector;
 		RGBGamma_ptr finalRGBGamma;
 		RGBGamma_ptr initialRGBGamma;
 

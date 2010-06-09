@@ -12,6 +12,7 @@
 
 //本項目內頭文件
 #include "TMeasureWindow.h"
+//運用若參考指標去儲存WindowListener
 #define WEAK_PTR
 
 //---------------------------------------------------------------------------
@@ -57,11 +58,12 @@ void TMeasureWindow::setRGB(int r, int g, int b)
 void TMeasureWindow::setRGB(bptr < Dep::RGBColor > rgb)
 {
     double_array values(new double[3]);
-    if (true == tconinput) {
+    /*if (true == tconinput) {
+	//若是tcon input, 要轉到該lut強度下
 	rgb->getValues(values, tconcontrol->getLUTBit());
-    } else {
+    } else {*/
 	rgb->getValues(values);
-    }
+    //}
 
     int r = static_cast < int >(values[0]);
     int g = static_cast < int >(values[1]);

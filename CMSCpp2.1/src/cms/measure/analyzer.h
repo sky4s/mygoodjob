@@ -24,6 +24,7 @@ namespace cms {
 	  public:
 	    virtual RGB_ptr getIntensity(RGB_ptr rgb) = 0;
 	    virtual XYZ_ptr getCIEXYZ() = 0;
+	    virtual XYZ_ptr getCIEXYZOnly(RGB_ptr rgb) = 0;
 	    virtual void setupComponent(const Dep::Channel & ch,
 					RGB_ptr rgb) = 0;
 	    virtual void enter() = 0;
@@ -66,6 +67,7 @@ namespace cms {
 
 	    RGB_ptr getIntensity(RGB_ptr rgb);
 	    XYZ_ptr getCIEXYZ();
+	    XYZ_ptr getCIEXYZOnly(RGB_ptr rgb);
 	    void setupComponent(const Dep::Channel & ch, RGB_ptr rgb);
 	    void enter();
 	    void setChannel(int no, string_ptr id);
@@ -100,6 +102,7 @@ namespace cms {
 	    RGB_ptr getIntensity(RGB_ptr rgb);
 	    RGB_ptr getIntensity(XYZ_ptr XYZ);
 	    XYZ_ptr getCIEXYZ();
+	    XYZ_ptr getCIEXYZOnly(RGB_ptr rgb);
 	    void setupComponent(const Dep::Channel & ch, RGB_ptr rgb);
 	    void setupComponent(const Dep::Channel & ch,
 				XYZ_ptr measureXYZ);
@@ -113,7 +116,6 @@ namespace cms {
 	    RGB_ptr getReferenceRGB();
 	};
 
-	//class MaxMatrixIntensityAnayzer2;
 	/*
 	   用來合併CA-210與MaxMatrix兩種方法來分析Intensity
 	   實際上輸出的值為CA-210的, MaxMatrix的輸出值會另外存在檔案
@@ -122,19 +124,16 @@ namespace cms {
 	  private:
 	    bptr < MaxMatrixIntensityAnayzer > matrix;
 	    bptr < CA210IntensityAnalyzer > ca210;
-	    //bptr < MaxMatrixIntensityAnayzer2 > matrix2;
 	    bptr < cms::colorformat::SimpleExcelAccess > excel;
 	    string_vector_ptr fieldNames;
 	    int no;
-	    //const bool useMatrix2;
+	    XYZ_ptr XYZ;
 	  public:
-	    /*IntensityAnayzer(bptr < MaxMatrixIntensityAnayzer > matrix,
-	       bptr < MaxMatrixIntensityAnayzer2 > matrix2,
-	       bptr < CA210IntensityAnalyzer > ca210); */
 	     IntensityAnayzer(bptr < MaxMatrixIntensityAnayzer > matrix,
 			      bptr < CA210IntensityAnalyzer > ca210);
 	    RGB_ptr getIntensity(RGB_ptr rgb);
 	    XYZ_ptr getCIEXYZ();
+	    XYZ_ptr getCIEXYZOnly(RGB_ptr rgb);
 	    void setupComponent(const Dep::Channel & ch, RGB_ptr rgb);
 	    void enter();
 	    void beginAnalyze();

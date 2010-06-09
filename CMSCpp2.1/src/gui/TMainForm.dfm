@@ -835,195 +835,8 @@ object MainForm: TMainForm
     Width = 792
     Height = 249
     ActivePage = TabSheet2
-    TabIndex = 1
+    TabIndex = 0
     TabOrder = 0
-    object TabSheet1: TTabSheet
-      Caption = 'Measure Setup'
-      object GroupBox2: TGroupBox
-        Left = 0
-        Top = 9
-        Width = 97
-        Height = 120
-        Caption = 'Input Source'
-        TabOrder = 0
-        object RadioButton_PC: TRadioButton
-          Left = 9
-          Top = 25
-          Width = 72
-          Height = 24
-          Caption = 'PC'
-          Checked = True
-          TabOrder = 0
-          TabStop = True
-          OnClick = RadioButton_PCClick
-        end
-        object RadioButton_TCON: TRadioButton
-          Left = 9
-          Top = 57
-          Width = 80
-          Height = 24
-          Caption = 'T-CON'
-          TabOrder = 1
-          OnClick = RadioButton_TCONClick
-        end
-      end
-      object Resolution: TGroupBox
-        Left = 105
-        Top = 9
-        Width = 152
-        Height = 120
-        Caption = 'Resolution'
-        TabOrder = 1
-        object Width: TLabel
-          Left = 9
-          Top = 25
-          Width = 34
-          Height = 16
-          Caption = 'Width'
-        end
-        object Height: TLabel
-          Left = 9
-          Top = 57
-          Width = 39
-          Height = 16
-          Caption = 'Height'
-        end
-        object Edit_Width: TEdit
-          Left = 57
-          Top = 25
-          Width = 88
-          Height = 24
-          ImeName = #26085#25991#36664#20837#31995#32113' (MS-IME2002)'
-          TabOrder = 0
-          Text = '1366'
-        end
-        object Edit_Height: TEdit
-          Left = 57
-          Top = 57
-          Width = 88
-          Height = 24
-          ImeName = #26085#25991#36664#20837#31995#32113' (MS-IME2002)'
-          TabOrder = 1
-          Text = '768'
-        end
-      end
-      object GroupBox1: TGroupBox
-        Left = 265
-        Top = 9
-        Width = 152
-        Height = 120
-        Caption = 'Pattern Display Interval'
-        TabOrder = 2
-        object Label1: TLabel
-          Left = 112
-          Top = 25
-          Width = 33
-          Height = 16
-          Caption = 'msec'
-        end
-        object Edit_Interval: TEdit
-          Left = 9
-          Top = 25
-          Width = 96
-          Height = 24
-          ImeName = #26085#25991#36664#20837#31995#32113' (MS-IME2002)'
-          TabOrder = 0
-          Text = '750'
-          OnChange = Edit_IntervalChange
-        end
-      end
-      object GroupBox_CHSetting: TGroupBox
-        Left = 425
-        Top = 9
-        Width = 208
-        Height = 120
-        Caption = 'CH Setting'
-        TabOrder = 3
-        object Label7: TLabel
-          Left = 9
-          Top = 25
-          Width = 65
-          Height = 16
-          Caption = 'Source CH'
-        end
-        object Label8: TLabel
-          Left = 9
-          Top = 57
-          Width = 78
-          Height = 16
-          Caption = 'Target W CH'
-        end
-        object Label9: TLabel
-          Left = 9
-          Top = 89
-          Width = 72
-          Height = 16
-          Caption = 'Target W ID'
-        end
-        object Edit_SourceCH: TEdit
-          Left = 97
-          Top = 16
-          Width = 48
-          Height = 24
-          Enabled = False
-          ImeName = #26085#25991#36664#20837#31995#32113' (MS-IME2002)'
-          TabOrder = 0
-          Text = '0'
-        end
-        object Edit_TargetCH: TEdit
-          Left = 98
-          Top = 48
-          Width = 47
-          Height = 24
-          ImeName = #26085#25991#36664#20837#31995#32113' (MS-IME2002)'
-          TabOrder = 1
-          Text = '2'
-        end
-        object Edit_TargetID: TEdit
-          Left = 98
-          Top = 80
-          Width = 103
-          Height = 24
-          ImeName = #26085#25991#36664#20837#31995#32113' (MS-IME2002)'
-          TabOrder = 2
-          Text = ' '
-        end
-      end
-      object GroupBox3: TGroupBox
-        Left = 640
-        Top = 9
-        Width = 137
-        Height = 120
-        Caption = 'Analyzer'
-        TabOrder = 4
-        object RadioButton_AnalyzerCA210: TRadioButton
-          Left = 9
-          Top = 25
-          Width = 112
-          Height = 24
-          Caption = 'CA-210'
-          Checked = True
-          TabOrder = 0
-          TabStop = True
-        end
-        object RadioButton_AnalyzerMaxMatrix: TRadioButton
-          Left = 9
-          Top = 57
-          Width = 120
-          Height = 24
-          Caption = 'Max Matrix'
-          TabOrder = 1
-        end
-        object RadioButton_AnalyzerDebug: TRadioButton
-          Left = 9
-          Top = 89
-          Width = 96
-          Height = 24
-          Caption = 'Debug'
-          TabOrder = 2
-        end
-      end
-    end
     object TabSheet2: TTabSheet
       Caption = 'T-CON Setup'
       ImageIndex = 1
@@ -1403,6 +1216,194 @@ object MainForm: TMainForm
           ImeName = #26085#25991#36664#20837#31995#32113' (MS-IME2002)'
           TabOrder = 3
           Text = '8+2'
+        end
+      end
+    end
+    object TabSheet1: TTabSheet
+      Caption = 'Measure Setup'
+      object GroupBox2: TGroupBox
+        Left = 0
+        Top = 9
+        Width = 97
+        Height = 120
+        Caption = 'Input Source'
+        TabOrder = 0
+        object RadioButton_PC: TRadioButton
+          Left = 9
+          Top = 25
+          Width = 72
+          Height = 24
+          Caption = 'PC'
+          Checked = True
+          TabOrder = 0
+          TabStop = True
+          OnClick = RadioButton_PCClick
+        end
+        object RadioButton_TCON: TRadioButton
+          Left = 9
+          Top = 57
+          Width = 80
+          Height = 24
+          Caption = 'T-CON'
+          TabOrder = 1
+          OnClick = RadioButton_TCONClick
+        end
+      end
+      object Resolution: TGroupBox
+        Left = 105
+        Top = 9
+        Width = 152
+        Height = 120
+        Caption = 'Resolution'
+        TabOrder = 1
+        Visible = False
+        object Width: TLabel
+          Left = 9
+          Top = 25
+          Width = 34
+          Height = 16
+          Caption = 'Width'
+        end
+        object Height: TLabel
+          Left = 9
+          Top = 57
+          Width = 39
+          Height = 16
+          Caption = 'Height'
+        end
+        object Edit_Width: TEdit
+          Left = 57
+          Top = 25
+          Width = 88
+          Height = 24
+          ImeName = #26085#25991#36664#20837#31995#32113' (MS-IME2002)'
+          TabOrder = 0
+          Text = '1366'
+        end
+        object Edit_Height: TEdit
+          Left = 57
+          Top = 57
+          Width = 88
+          Height = 24
+          ImeName = #26085#25991#36664#20837#31995#32113' (MS-IME2002)'
+          TabOrder = 1
+          Text = '768'
+        end
+      end
+      object GroupBox1: TGroupBox
+        Left = 265
+        Top = 9
+        Width = 152
+        Height = 120
+        Caption = 'Pattern Display Interval'
+        TabOrder = 2
+        object Label1: TLabel
+          Left = 112
+          Top = 25
+          Width = 33
+          Height = 16
+          Caption = 'msec'
+        end
+        object Edit_Interval: TEdit
+          Left = 9
+          Top = 25
+          Width = 96
+          Height = 24
+          ImeName = #26085#25991#36664#20837#31995#32113' (MS-IME2002)'
+          TabOrder = 0
+          Text = '750'
+          OnChange = Edit_IntervalChange
+        end
+      end
+      object GroupBox_CHSetting: TGroupBox
+        Left = 425
+        Top = 9
+        Width = 208
+        Height = 120
+        Caption = 'CH Setting'
+        TabOrder = 3
+        object Label7: TLabel
+          Left = 9
+          Top = 25
+          Width = 65
+          Height = 16
+          Caption = 'Source CH'
+        end
+        object Label8: TLabel
+          Left = 9
+          Top = 57
+          Width = 78
+          Height = 16
+          Caption = 'Target W CH'
+        end
+        object Label9: TLabel
+          Left = 9
+          Top = 89
+          Width = 72
+          Height = 16
+          Caption = 'Target W ID'
+        end
+        object Edit_SourceCH: TEdit
+          Left = 97
+          Top = 16
+          Width = 48
+          Height = 24
+          Enabled = False
+          ImeName = #26085#25991#36664#20837#31995#32113' (MS-IME2002)'
+          TabOrder = 0
+          Text = '0'
+        end
+        object Edit_TargetCH: TEdit
+          Left = 98
+          Top = 48
+          Width = 47
+          Height = 24
+          ImeName = #26085#25991#36664#20837#31995#32113' (MS-IME2002)'
+          TabOrder = 1
+          Text = '2'
+        end
+        object Edit_TargetID: TEdit
+          Left = 98
+          Top = 80
+          Width = 103
+          Height = 24
+          ImeName = #26085#25991#36664#20837#31995#32113' (MS-IME2002)'
+          TabOrder = 2
+          Text = ' '
+        end
+      end
+      object GroupBox3: TGroupBox
+        Left = 640
+        Top = 9
+        Width = 137
+        Height = 120
+        Caption = 'Analyzer'
+        TabOrder = 4
+        object RadioButton_AnalyzerCA210: TRadioButton
+          Left = 9
+          Top = 25
+          Width = 112
+          Height = 24
+          Caption = 'CA-210'
+          Checked = True
+          TabOrder = 0
+          TabStop = True
+        end
+        object RadioButton_AnalyzerMaxMatrix: TRadioButton
+          Left = 9
+          Top = 57
+          Width = 120
+          Height = 24
+          Caption = 'Max Matrix'
+          TabOrder = 1
+        end
+        object RadioButton_AnalyzerDebug: TRadioButton
+          Left = 9
+          Top = 89
+          Width = 96
+          Height = 24
+          Caption = 'Debug'
+          TabOrder = 2
         end
       end
     end

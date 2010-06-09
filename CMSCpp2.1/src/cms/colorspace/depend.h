@@ -215,6 +215,7 @@ namespace cms {
 		static const MaxValue & Int11Bit;
 		static const MaxValue & Double4080;
 		static const MaxValue & Int12Bit;
+		static const MaxValue & Real12Bit;
 		static const MaxValue & Int13Bit;
 		static const MaxValue & Int14Bit;
 		static const MaxValue & Int15Bit;

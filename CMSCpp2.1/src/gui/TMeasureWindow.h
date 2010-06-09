@@ -55,3 +55,4 @@ extern PACKAGE TMeasureWindow *MeasureWindow;
 //---------------------------------------------------------------------------
 #endif
 
+
