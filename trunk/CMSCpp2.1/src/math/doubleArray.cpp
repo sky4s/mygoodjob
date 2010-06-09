@@ -449,6 +449,15 @@ namespace math {
 	    excel->insert(values);
 	}
     };
+
+    double_vector_ptr DoubleArray::getReverse(double_vector_ptr vec) {
+	int size = vec->size();
+	double_vector_ptr result(new double_vector(size));
+	for (int x = 0; x != size; x++) {
+	    (*result)[x] = (*vec)[size - 1 - x];
+	}
+	return result;
+    };
     //==========================================================================
     float2D_ptr FloatArray::toFloat2D(int width, int n, ...) {
 	float *array = new float[n];

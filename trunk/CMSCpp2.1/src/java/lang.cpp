@@ -217,6 +217,12 @@ namespace java {
 
 	};
 
+	UnsupportedOperationException::UnsupportedOperationException() {
+	};
+      UnsupportedOperationException::UnsupportedOperationException(string message):RuntimeException(message)
+	{
+
+	};
 	IndexOutOfBoundsException::IndexOutOfBoundsException() {
 	};
       IndexOutOfBoundsException::IndexOutOfBoundsException(string message):RuntimeException(message)

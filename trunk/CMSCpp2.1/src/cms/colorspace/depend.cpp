@@ -292,6 +292,7 @@ namespace cms {
 	    const MaxValue & MaxValue::Int11Bit = MaxValue(2040, true, true, 11);	//11bit
 	    const MaxValue & MaxValue::Double4080 = MaxValue(4080, false, true, -1);	//12bit
 	    const MaxValue & MaxValue::Int12Bit = MaxValue(4080, true, true, 12);	//12bit
+	    const MaxValue & MaxValue::Real12Bit = MaxValue(4095, true, true, 12);	//12bit            
 	    const MaxValue & MaxValue::Int13Bit = MaxValue(8160, true, true, 13);	//13bit
 	    const MaxValue & MaxValue::Int14Bit = MaxValue(16320, true, true, 14);	//14bit
 	    const MaxValue & MaxValue::Int15Bit = MaxValue(32640, true, true, 15);	//15bit

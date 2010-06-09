@@ -81,6 +81,8 @@ namespace math {
 
 	static void storeToExcel(const std::string & filename,
 				 double_vector_ptr doubleVector);
+
+	static double_vector_ptr getReverse(double_vector_ptr vec);
     };
 
     class FloatArray {
