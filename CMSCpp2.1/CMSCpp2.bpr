@@ -17,12 +17,14 @@
       build\HWINTERFACELib_TLB.obj build\HWINTERFACELib_OCX.obj 
       build\rgbgamma.obj build\tconparameter.obj build\i2ccontrol.obj 
       build\tconcontrol.obj build\ReadWriteFunc.obj build\cmf.obj 
-      build\sandbox.obj build\dimdg.obj"/>
+      build\sandbox.obj build\dimdg.obj build\T3DMeasurementForm.obj 
+      build\TOutputFileFrame.obj"/>
     <RESFILES value="CMSCpp2.res"/>
     <IDLFILES value=""/>
     <IDLGENFILES value=""/>
     <DEFFILE value=""/>
-    <RESDEPEN value="$(RESFILES) src\gui\TMeasureWindow.dfm"/>
+    <RESDEPEN value="$(RESFILES) src\gui\TMeasureWindow.dfm src\gui\T3DMeasurementForm.dfm 
+      src\gui\TOutputFileFrame.dfm"/>
     <LIBFILES value=""/>
     <LIBRARIES value=""/>
     <SPARELIBS value="rtl.lib vcl.lib dbrtl.lib adortl.lib"/>
@@ -33,7 +35,7 @@
       inetdbbde.bpi inetdbxpress.bpi inetdb.bpi nmfast.bpi webdsnap.bpi 
       bcbie.bpi websnap.bpi soaprtl.bpi dclocx.bpi dbexpress.bpi dbxcds.bpi 
       indy.bpi bcb2kaxserver.bpi bcbindent.bpi"/>
-    <PATHCPP value=".;src;src;src\ca210api;src\cms;src\cms;src\cms\colorformat;src\cms\colorformat;src\cms\colorspace;src\cms\colorspace;src\cms\colorspace;src\cms\colorspace;src\cms\colorspace;src\cms\lcd\calibrate;src\cms\lcd\calibrate;src\cms\lcd\calibrate;src\cms\lcd\calibrate;src\cms\lcd\calibrate;src\cms\lcd\calibrate;src\cms\measure;src\cms\measure;src\cms\measure;src\cms\util;src\gui;src\cms\measure;src\cms\colorformat;src\cms\colorformat;src\cms\util;src\java;src\math;src\math;src\math;src\math;src\math;lib\CA200SRVRLib;lib\CA200SRVRLib;lib\LPT_lib;lib\LPT_lib;src\cms\lcd\calibrate;src\i2c;src\i2c;src\i2c;src\i2c\core;src\cms\colorformat;src\cms\lcd\calibrate;src\cms\lcd\calibrate"/>
+    <PATHCPP value=".;src;src;src\ca210api;src\cms;src\cms;src\cms\colorformat;src\cms\colorformat;src\cms\colorspace;src\cms\colorspace;src\cms\colorspace;src\cms\colorspace;src\cms\colorspace;src\cms\lcd\calibrate;src\cms\lcd\calibrate;src\cms\lcd\calibrate;src\cms\lcd\calibrate;src\cms\lcd\calibrate;src\cms\lcd\calibrate;src\cms\measure;src\cms\measure;src\cms\measure;src\cms\util;src\gui;src\cms\measure;src\cms\colorformat;src\cms\colorformat;src\cms\util;src\java;src\math;src\math;src\math;src\math;src\math;lib\CA200SRVRLib;lib\CA200SRVRLib;lib\LPT_lib;lib\LPT_lib;src\cms\lcd\calibrate;src\i2c;src\i2c;src\i2c;src\i2c\core;src\cms\colorformat;src\cms\lcd\calibrate;src\cms\lcd\calibrate;src\gui;src\gui"/>
     <PATHPAS value=".;"/>
     <PATHRC value=".;"/>
     <PATHASM value=".;"/>
@@ -118,6 +120,8 @@
       <FILE FILENAME="src\cms\colorformat\cmf.cpp" FORMNAME="" UNITNAME="cmf" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="src\cms\lcd\calibrate\sandbox.cpp" FORMNAME="" UNITNAME="sandbox" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="src\cms\lcd\calibrate\dimdg.cpp" FORMNAME="" UNITNAME="dimdg" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="src\gui\T3DMeasurementForm.cpp" FORMNAME="ThreeDMeasurementForm" UNITNAME="T3DMeasurementForm" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="src\gui\TOutputFileFrame.cpp" FORMNAME="OutputFileFrame" UNITNAME="TOutputFileFrame" CONTAINERID="CCompiler" DESIGNCLASS="TFrame" LOCALCOMMAND=""/>
   </FILELIST>
   <BUILDTOOLS>
   </BUILDTOOLS>

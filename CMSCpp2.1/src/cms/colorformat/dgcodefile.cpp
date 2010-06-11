@@ -301,9 +301,9 @@ namespace cms {
 	    case cms::lcd::calibrate::None:
 		correctstr = "None";
 		break;
-	    /*case cms::lcd::calibrate::New:
-		correctstr = "new";
-		break;*/
+		/*case cms::lcd::calibrate::New:
+		   correctstr = "new";
+		   break; */
 	    }
 	    dgcode.addProperty("low level correct", correctstr);
 
@@ -331,23 +331,28 @@ namespace cms {
 	    bptr < IntensityAnalyzerIF > analyzer =
 		c->fetcher->getAnalyzer();
 
-	    //¬ö¿ýref color
-	    xyY_ptr refWhitexyY = analyzer->getReferenceColor();
-	    if (null != refWhitexyY) {
-		xyY_ptr refRxyY = analyzer->getPrimaryColor(Channel::R);
-		xyY_ptr refGxyY = analyzer->getPrimaryColor(Channel::G);
-		xyY_ptr refBxyY = analyzer->getPrimaryColor(Channel::B);
-		dgcode.addProperty("reference white",
-				   *refWhitexyY->toString());
-		dgcode.addProperty("primary R", *refRxyY->toString());
-		dgcode.addProperty("primary G", *refGxyY->toString());
-		dgcode.addProperty("primary B", *refBxyY->toString());
-	    }
-	    //¬ö¿ýtarget white¥Îªºrgb
-	    RGB_ptr refRGB = analyzer->getReferenceRGB();
-	    if (null != refRGB) {
-		dgcode.addProperty("reference white RGB",
-				   *refRGB->toString());
+	    if (null != analyzer) {
+		//¬ö¿ýref color
+		xyY_ptr refWhitexyY = analyzer->getReferenceColor();
+		if (null != refWhitexyY) {
+		    xyY_ptr refRxyY =
+			analyzer->getPrimaryColor(Channel::R);
+		    xyY_ptr refGxyY =
+			analyzer->getPrimaryColor(Channel::G);
+		    xyY_ptr refBxyY =
+			analyzer->getPrimaryColor(Channel::B);
+		    dgcode.addProperty("reference white",
+				       *refWhitexyY->toString());
+		    dgcode.addProperty("primary R", *refRxyY->toString());
+		    dgcode.addProperty("primary G", *refGxyY->toString());
+		    dgcode.addProperty("primary B", *refBxyY->toString());
+		}
+		//¬ö¿ýtarget white¥Îªºrgb
+		RGB_ptr refRGB = analyzer->getReferenceRGB();
+		if (null != refRGB) {
+		    dgcode.addProperty("reference white RGB",
+				       *refRGB->toString());
+		}
 	    }
 	};
 	void DGLutProperty::addProperty(const std::string key,
