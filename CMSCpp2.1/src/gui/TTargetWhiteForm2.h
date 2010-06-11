@@ -83,6 +83,9 @@ class TTargetWhiteForm2:public TForm, cms::util::WindowListener {
     TLabel *Label16;
     TButton *Button1;
     TCheckBox *CheckBox_MaxRGB;
+    TLabel *Label21;
+    TButton *Button3;
+    TButton *Button4;
     void __fastcall RadioButton_MaxRGBClick(TObject * Sender);
     void __fastcall ScrollBar_RChange(TObject * Sender);
     void __fastcall ScrollBar_GChange(TObject * Sender);
@@ -99,6 +102,8 @@ class TTargetWhiteForm2:public TForm, cms::util::WindowListener {
     void __fastcall FormShow(TObject * Sender);
     void __fastcall Button1Click(TObject * Sender);
     void __fastcall FormKeyPress(TObject * Sender, char &Key);
+    void __fastcall Button3Click(TObject * Sender);
+    void __fastcall Button4Click(TObject * Sender);
   private:			// User declarations
     void setColorimetricValues(double x, double y, double up, double vp);
     void scrollBar_Change();
@@ -113,6 +118,7 @@ class TTargetWhiteForm2:public TForm, cms::util::WindowListener {
     void setBitDepthProcessor(bptr <
 			      cms::lcd::calibrate::BitDepthProcessor >
 			      bitDepth);
+ 
 };
 //---------------------------------------------------------------------------
 extern PACKAGE TTargetWhiteForm2 *TargetWhiteForm2;

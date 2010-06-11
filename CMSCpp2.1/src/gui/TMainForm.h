@@ -159,6 +159,8 @@ class TMainForm:public TForm {
     void setDummyMeterFilename(const std::string & filename);
     void resetDummyMeter();
      bptr < cms::lcd::calibrate::ComponentFetcher > getComponentFetcher();
+    void disconnectMeter();
+    void connectMeter();
     //==========================================================================
 
     //==========================================================================
