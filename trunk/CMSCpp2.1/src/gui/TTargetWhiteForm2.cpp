@@ -421,3 +421,19 @@ void __fastcall TTargetWhiteForm2::FormKeyPress(TObject * Sender,
 
 //---------------------------------------------------------------------------
 
+void __fastcall TTargetWhiteForm2::Button3Click(TObject * Sender)
+{
+    if (MainForm->isCA210Analyzer()) {
+    }
+}
+
+//---------------------------------------------------------------------------
+
+void __fastcall TTargetWhiteForm2::Button4Click(TObject * Sender)
+{
+    if (MainForm->isCA210Analyzer()) {
+    }
+}
+
+//---------------------------------------------------------------------------
+ 

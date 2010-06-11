@@ -474,7 +474,8 @@ void __fastcall TMainForm::MatrixCalibration1Click(TObject * Sender)
     }
 
     if (true == linkCA210
-	&& true == MatrixCalibrationForm->setMeter(getCA210(), mm)) {
+	&& true ==
+	MatrixCalibrationForm->setMeter(getCA210()->getCA210API(), mm)) {
 	MatrixCalibrationForm->ShowModal();
     } else {
 	MatrixCalibrationForm->ShowModal();
@@ -665,4 +666,19 @@ void __fastcall TMainForm::Button_I2CTestClick(TObject * Sender)
 }
 
 //---------------------------------------------------------------------------
+
+void TMainForm::disconnectMeter()
+{
+    getCA210();
+    if (null != ca210) {
+	ca210->getCA210API()->setRemoteMode(ca210api::Locked);
+    }
+};
+void TMainForm::connectMeter()
+{
+    getCA210();
+    if (null != ca210) {
+	ca210->getCA210API()->setRemoteMode(ca210api::Off);
+    }
+};
 

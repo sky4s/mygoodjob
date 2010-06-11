@@ -64,12 +64,12 @@ class TMatrixCalibrationForm:public TForm {
     void __fastcall Button_MatrixCalibrateClick(TObject * Sender);
     void __fastcall FormKeyPress(TObject * Sender, char &Key);
   private:			// User declarations
-     bptr < cms::measure::meter::CA210 > ca210;
+    //bptr < cms::measure::meter::CA210 > ca210;
      bptr < ca210api::CA210API > ca210API;
      bptr < cms::measure::MeterMeasurement > mm;
   public:			// User declarations
      __fastcall TMatrixCalibrationForm(TComponent * Owner);
-    bool setMeter(bptr < cms::measure::meter::CA210 > ca210,
+    bool setMeter(bptr < ca210api::CA210API > ca210API,
 		  bptr < cms::measure::MeterMeasurement > mm);
 };
 //---------------------------------------------------------------------------

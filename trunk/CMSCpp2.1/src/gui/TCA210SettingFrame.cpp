@@ -11,6 +11,7 @@
 
 //本項目內頭文件
 #include "TCA210SettingFrame.h"
+#include "TMainForm.h"
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
 #pragma resource "*.dfm"
@@ -35,6 +36,8 @@ void __fastcall TCA210SettingFrame::Button_ConnectClick(TObject * Sender)
 	return;
     };
     ca210API->setRemoteMode(ca210api::Locked);
+    //MainForm->connectMeter();
+
 }
 
 //---------------------------------------------------------------------------
@@ -46,6 +49,7 @@ void __fastcall TCA210SettingFrame::Button_DisconnectClick(TObject *
 	return;
     };
     ca210API->setRemoteMode(ca210api::Off);
+    //MainForm->disconnectMeter();
 }
 
 //---------------------------------------------------------------------------

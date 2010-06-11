@@ -844,7 +844,8 @@ object MainForm: TMainForm
         Left = 209
         Top = 1
         Width = 528
-        Height = 184
+        Height = 216
+        BevelOuter = bvNone
         Caption = 'Panel_TCON'
         TabOrder = 0
         Visible = False
@@ -852,7 +853,7 @@ object MainForm: TMainForm
           Left = 9
           Top = 9
           Width = 112
-          Height = 168
+          Height = 200
           Caption = 'I2C Card'
           Color = clBtnFace
           ParentColor = False
@@ -869,7 +870,7 @@ object MainForm: TMainForm
           end
           object RadioButton_LPTLarge: TRadioButton
             Left = 9
-            Top = 57
+            Top = 49
             Width = 88
             Height = 24
             Caption = 'LPT Large'
@@ -877,16 +878,16 @@ object MainForm: TMainForm
           end
           object RadioButton_LPTSmall: TRadioButton
             Left = 9
-            Top = 89
+            Top = 73
             Width = 89
             Height = 24
             Caption = 'LPT Small'
             TabOrder = 2
           end
           object Button_I2CTest: TButton
-            Left = 10
-            Top = 118
-            Width = 80
+            Left = 18
+            Top = 102
+            Width = 71
             Height = 21
             Caption = 'I2C Test'
             TabOrder = 3
@@ -898,7 +899,7 @@ object MainForm: TMainForm
           Left = 129
           Top = 9
           Width = 216
-          Height = 168
+          Height = 200
           Caption = 'Device Address'
           TabOrder = 1
           object Label5: TLabel
@@ -955,7 +956,7 @@ object MainForm: TMainForm
           end
           object Button_Connect: TButton
             Left = 16
-            Top = 137
+            Top = 169
             Width = 73
             Height = 24
             Caption = 'Connect'
@@ -964,7 +965,7 @@ object MainForm: TMainForm
           end
           object CheckBox_Connecting: TCheckBox
             Left = 105
-            Top = 137
+            Top = 169
             Width = 96
             Height = 24
             Caption = 'Connecting'
@@ -998,7 +999,7 @@ object MainForm: TMainForm
           Left = 353
           Top = 9
           Width = 168
-          Height = 168
+          Height = 200
           Caption = 'Gamma Test Address'
           TabOrder = 2
           object Label4: TLabel
@@ -1065,8 +1066,8 @@ object MainForm: TMainForm
             Text = '4A7'
           end
           object CheckBox_IndepRGB: TCheckBox
-            Left = 41
-            Top = -7
+            Left = 25
+            Top = 161
             Width = 128
             Height = 24
             Caption = 'Independent RGB'
@@ -1241,7 +1242,7 @@ object MainForm: TMainForm
         end
         object RadioButton_TCON: TRadioButton
           Left = 9
-          Top = 57
+          Top = 49
           Width = 80
           Height = 24
           Caption = 'T-CON'
@@ -1391,7 +1392,7 @@ object MainForm: TMainForm
         end
         object RadioButton_AnalyzerMaxMatrix: TRadioButton
           Left = 9
-          Top = 57
+          Top = 49
           Width = 120
           Height = 24
           Caption = 'Max Matrix'
@@ -1399,7 +1400,7 @@ object MainForm: TMainForm
         end
         object RadioButton_AnalyzerDebug: TRadioButton
           Left = 9
-          Top = 89
+          Top = 73
           Width = 96
           Height = 24
           Caption = 'Debug'

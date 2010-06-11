@@ -25,14 +25,13 @@ __fastcall TMatrixCalibrationForm::TMatrixCalibrationForm(TComponent *
 }
 
 //---------------------------------------------------------------------------
-bool TMatrixCalibrationForm::setMeter(bptr < cms::measure::meter::CA210 >
-				      ca210,
+bool TMatrixCalibrationForm::setMeter(bptr < ca210api::CA210API > ca210API,
 				      bptr <
 				      cms::measure::MeterMeasurement > mm)
 {
-    this->ca210 = ca210;
-    if (ca210 != null) {
-	ca210API = ca210->getCA210API();
+    //this->ca210 = ca210;
+    if (ca210API != null) {
+	this->ca210API = ca210API;	//ca210->getCA210API();
 	TCA210SettingFrame1->setCA210API(ca210API);
 	this->mm = mm;
 	return true;
