@@ -954,7 +954,7 @@ namespace cms {
 		       fetchComponentVector(measureCondition); */
 		    double_vector_ptr luminanceVector =
 			fetchLuminanceVector(measureCondition);
-		    //STORE_COMPONENT("o_fetch.xls", componentVector);
+		    STORE_DOUBLE_VECTOR("o_fetch.xls", luminanceVector);
 
 		    if (luminanceVector == null) {
 			return RGB_vector_ptr((RGB_vector *) null);

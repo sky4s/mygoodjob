@@ -157,24 +157,43 @@ namespace cms {
 	    return mm->getWaitTimes();
 	};
 	xyY_ptr CA210IntensityAnalyzer::getReferenceColor() {
-	    return xyY_ptr(new CIExyY(wp->getXYZ()));
+	    if (null != wp) {
+		return xyY_ptr(new CIExyY(wp->getXYZ()));
+	    } else {
+		return xyY_ptr((CIExyY *) null);
+	    }
+
 	};
 	xyY_ptr CA210IntensityAnalyzer::getPrimaryColor(const Dep::
 							Channel & ch) {
 	    switch (ch.chindex) {
 	    case ChannelIndex::R:
-		return xyY_ptr(new CIExyY(rp->getXYZ()));
+		if (null != rp) {
+		    return xyY_ptr(new CIExyY(rp->getXYZ()));
+		}
+		break;
 	    case ChannelIndex::G:
-		return xyY_ptr(new CIExyY(gp->getXYZ()));
+		if (null != gp) {
+		    return xyY_ptr(new CIExyY(gp->getXYZ()));
+		}
+		break;
 	    case ChannelIndex::B:
-		return xyY_ptr(new CIExyY(bp->getXYZ()));
+		if (null != bp) {
+		    return xyY_ptr(new CIExyY(bp->getXYZ()));
+		}
+		break;
 	    default:
 		throw IllegalArgumentException("Unsupported Channel:" +
 					       *ch.toString());
 	    };
+	    return xyY_ptr((CIExyY *) null);
 	};
 	RGB_ptr CA210IntensityAnalyzer::getReferenceRGB() {
-	    return wp->getRGB();
+	    if (null != wp) {
+		return wp->getRGB();
+	    } else {
+		return RGB_ptr((RGBColor *) null);
+	    }
 	};
 
 	//======================================================================

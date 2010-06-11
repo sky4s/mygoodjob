@@ -260,7 +260,15 @@ void __fastcall TTargetWhiteForm2::Button2Click(TObject * Sender)
 	//MainForm->setMeterMeasurementWaitTimes();
 	//==========================================================================
 
+	//==========================================================================
+	// 將info設定到UI
+	//==========================================================================
 	setRGBRatio(rgb->R, rgb->G, rgb->B);
+	xyY_ptr refWhite = analyzer->getReferenceColor();
+	this->Edit_refLuminance->Text = refWhite->Y;
+	this->Edit_refx->Text = refWhite->x;
+	this->Edit_refy->Text = refWhite->y;
+	//==========================================================================
     }
     __finally {
 	stopMeasure = false;

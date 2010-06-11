@@ -30,6 +30,7 @@
 #include <math.hpp>
 #include <boost/numeric/conversion/cast.hpp>
 #include <boost/lexical_cast.hpp>
+#include "T3DMeasurementForm.h"
 //#include <boost/tokenizer.hpp>
 
 
@@ -664,6 +665,15 @@ void hookTester()
 
 };
 
+void odTester()
+{
+    double v0 = 11.02;
+    double v1 = 13.59;
+    double v2 = 11.06;
+    double v = TThreeDMeasurementForm::blackXTalk(v2, v0, v1);
+    cout << v << endl;
+};
+
 #pragma argsused
 int main(int argc, char *argv[])
 {
@@ -716,7 +726,7 @@ int main(int argc, char *argv[])
     //inverseTry();
 
     //persistence();
-    ddLutFileReadTry();
+    //ddLutFileReadTry();
     //newCCTAlgoTry();
     //token();
     //readTextTester();
@@ -727,6 +737,7 @@ int main(int argc, char *argv[])
     //targetTester();
     //directGammaTester();
     //hookTester();
+    odTester();
     getch();
 }
 
