@@ -272,7 +272,7 @@ namespace cms {
 		    (new Interpolation1DLUT(keys, gValues));
 		bLut =
 		    bptr < Interpolation1DLUT >
-		    (new Interpolation1DLUT(keys, bValues));
+		    (new Interpolation1DLUT(keys, bValues, Ripple));
 		YLut =
 		    bptr < Interpolation1DLUT >
 		    (new Interpolation1DLUT(keys, YValues));
@@ -333,6 +333,9 @@ namespace cms {
 		}
 	    };
 
+	    double ComponentLUT::getMaxBIntensity() {
+		return bLut->getMaxValue();
+	    };
 	    //==================================================================
 
 	    //==================================================================
@@ -420,15 +423,21 @@ namespace cms {
 
 	    };
 
-	    RGB_ptr DGLutGenerator::
-		getDGCode(double rIntensity, double gIntensity,
-			  double bIntensity) {
-		rIntensity =
-		    lut->correctIntensityInRange(Channel::R, rIntensity);
-		gIntensity =
-		    lut->correctIntensityInRange(Channel::G, gIntensity);
-		bIntensity =
-		    lut->correctIntensityInRange(Channel::B, bIntensity);
+	    RGB_ptr DGLutGenerator::getDGCode(double rIntensity,
+					      double gIntensity,
+					      double bIntensity,
+					      bool correctInRange) {
+		if (true == correctInRange) {
+		    rIntensity =
+			lut->correctIntensityInRange(Channel::R,
+						     rIntensity);
+		    gIntensity =
+			lut->correctIntensityInRange(Channel::G,
+						     gIntensity);
+		    bIntensity =
+			lut->correctIntensityInRange(Channel::B,
+						     bIntensity);
+		}
 
 		double r = lut->getCode(Channel::R, rIntensity);
 		double g = lut->getCode(Channel::G, gIntensity);
@@ -436,6 +445,12 @@ namespace cms {
 
 		RGB_ptr rgb(new RGBColor(r, g, b));
 		return rgb;
+	    };
+
+	    RGB_ptr DGLutGenerator::
+		getDGCode(double rIntensity, double gIntensity,
+			  double bIntensity) {
+		return getDGCode(rIntensity, gIntensity, bIntensity, true);
 	    }
 
 	    RGB_vector_ptr DGLutGenerator::
@@ -478,6 +493,9 @@ namespace cms {
 		    double luminance = (*luminanceGammaCurve)[x];
 		    RGB_ptr rgb;
 		    switch (mode) {
+		    case RGBLumi:
+			//rgb = RGB_ptr(new RGBColor(key, key, key));
+			throw java::lang::UnsupportedOperationException();
 		    case Component:
 			rgb = lut->getCode(luminance);
 			break;
@@ -486,8 +504,7 @@ namespace cms {
 			double key = wlut->getKey(luminance);
 			rgb = RGB_ptr(new RGBColor(key, key, key));
 			break;
-			/*case RGBLumi:
-			   break; */
+
 		    }
 		    (*dglut)[x] = rgb;
 		}
@@ -524,14 +541,16 @@ namespace cms {
 
 		return rgbgamma;
 	    };
-
+	    double DGLutGenerator::getMaxBIntensity() {
+		return lut->getMaxBIntensity();
+	    };
 	    //==================================================================
 
 	    //==================================================================
-	  MeasureCondition::MeasureCondition(const int start, const int end, const int firstStep, const int step):start(start), end(end),
-		firstStep(firstStep), step(step), lowStart(0), lowEnd(0),
-		lowStep(0), highStart(0), highEnd(0), highStep(0),
-		normalCondition(true) {
+	  MeasureCondition::MeasureCondition(const int start, const int end, const int firstStep, const int step):start(start),
+		end(end), firstStep(firstStep), step(step), lowStart(0),
+		lowEnd(0), lowStep(0), highStart(0), highEnd(0),
+		highStep(0), normalCondition(true) {
 
 	    };
 	    MeasureCondition::MeasureCondition(const int lowStart,

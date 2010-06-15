@@ -416,6 +416,8 @@ namespace java {
 	    static int minIndex(double_array values, int n);
 	    static int maxIndex(double_vector_ptr values);
 	    static int minIndex(double_vector_ptr values);
+	    static double max(double_vector_ptr values);
+	    static double min(double_vector_ptr values);
 
 	    static double_vector_ptr normalize(double_vector_ptr original,
 					       double normal);

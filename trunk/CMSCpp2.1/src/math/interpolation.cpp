@@ -130,6 +130,28 @@ namespace math {
     //======================================================================
     // Interpolation1DLUT
     //======================================================================
+    double Interpolation1DLUT::getMaxValue(double_vector_ptr array) {
+	switch (lutType) {
+	default:
+	    throw IllegalStateException();
+	case Ripple:
+	    return Math::max(array);
+	case Progressive:
+	    int arraySize = array->size();
+	    return (*array)[arraySize - 1];
+
+	};
+    };
+    double Interpolation1DLUT::getMinValue(double_vector_ptr array) {
+	switch (lutType) {
+	case Ripple:
+	    return Math::min(array);
+	case Progressive:
+	    return (*array)[0];
+	default:
+	    throw IllegalStateException();
+	};
+    };
     double Interpolation1DLUT::interpolationValue(double key,
 						  double_vector_ptr
 						  keys,
@@ -159,10 +181,11 @@ namespace math {
 	} else if (index == -1) {
 	    throw IndexOutOfBoundsException("key[" + _toString(key) +
 					    "] out of keys[" +
-					    _toString((*keys)[0]) + "~" +
-					    _toString((*keys)
-						      [keys->size() - 1]) +
-					    "]");
+					    _toString((*keys)[0]) +
+					    "~" + _toString((*keys)
+							    [keys->
+							     size() -
+							     1]) + "]");
 	} else {
 	    interpoStart = index - 1;
 	}
@@ -200,17 +223,13 @@ namespace math {
 	return result;
     };
 
-    Interpolation1DLUT::Interpolation1DLUT(double_vector_ptr key,
-					   double_vector_ptr value) {
-	this->keyArray = key;
-	this->valueArray = value;
-	size = keyArray->size();
-	/*double k0 = (*keyArray)[0];
-	   double k1 = (*keyArray)[1];
-	   double v0 = (*valueArray)[0];
-	   double v1 = (*valueArray)[1];
-	   double a = 1; */
-
+  Interpolation1DLUT::Interpolation1DLUT(double_vector_ptr key, double_vector_ptr value):keyArray(key), valueArray(value),
+	size(keyArray->
+	     size()), lutType(Progressive) {
+    };
+  Interpolation1DLUT::Interpolation1DLUT(double_vector_ptr key, double_vector_ptr value, LUTType lutType):keyArray(key), valueArray(value),
+	size(keyArray->
+	     size()), lutType(lutType) {
     };
     double Interpolation1DLUT::correctKeyInRange(double key) {
 	return correctInRange(key, keyArray);
@@ -222,17 +241,33 @@ namespace math {
     double Interpolation1DLUT::correctInRange(double number,
 					      double_vector_ptr
 					      numberArray) {
-	int arraySize = numberArray->size();
+	using java::lang;
 	hasCorrectedInRange_ = false;
-	if (number < (*numberArray)[0]) {
+	/*double maxValue, minValue;
+
+	   switch (lutType) {
+	   case Ripple:
+	   maxValue = Math::max(numberArray);
+	   minValue = Math::min(numberArray);
+	   break;
+	   case Progressive:
+	   int arraySize = numberArray->size();
+	   maxValue = (*numberArray)[arraySize - 1];
+	   minValue = (*numberArray)[0];
+	   break;
+	   }; */
+	double maxValue = getMaxValue(numberArray);
+	double minValue = getMinValue(numberArray);
+
+	if (number < minValue) {
 	    hasCorrectedInRange_ = true;
-	    return (*numberArray)[0];
-	} else if (number > (*numberArray)[arraySize - 1]
-	    ) {
+	    return minValue;
+	} else if (number > maxValue) {
 	    hasCorrectedInRange_ = true;
-	    return (*numberArray)[arraySize - 1];
+	    return maxValue;
+	} else {
+	    return number;
 	}
-	return number;
 
     };
 
@@ -243,14 +278,23 @@ namespace math {
 	return interpolationValue(key, keyArray, valueArray, Linear);
     };
     bool Interpolation1DLUT::isKeyInRange(double key) {
-	return key >= (*keyArray)[0] && key <= (*keyArray)[size - 1];
+	double maxValue = getMaxValue(keyArray);
+	double minValue = getMinValue(keyArray);
+	return key >= minValue && key <= maxValue;
     };
     bool Interpolation1DLUT::isValueInRange(double value) {
-	return value >= (*valueArray)[0]
-	    && value <= (*valueArray)[size - 1];
+	double maxValue = getMaxValue(valueArray);
+	double minValue = getMinValue(valueArray);
+	return value >= minValue && value <= maxValue;
     };
     bool Interpolation1DLUT::hasCorrectedInRange() {
 	return hasCorrectedInRange_;
     }
+    double Interpolation1DLUT::getMaxKey() {
+	return getMaxValue(keyArray);
+    };
+    double Interpolation1DLUT::getMaxValue() {
+	return getMaxValue(valueArray);
+    };
 };
 

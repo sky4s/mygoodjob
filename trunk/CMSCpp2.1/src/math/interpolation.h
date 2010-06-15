@@ -41,6 +41,14 @@ namespace math {
 				  Algo interpolationType);
 	double interpolate(double x, Algo interpolationType);
     };
+    /*
+       影響到array內最大值與最小值的判定
+       Progressive: 漸增的
+       Ripple: 有起伏的
+     */
+    enum LUTType {
+	Progressive, Ripple
+    };
 
     class Interpolation1DLUT {
       private:
@@ -48,6 +56,9 @@ namespace math {
 	double_vector_ptr valueArray;
 	double_vector_ptr keyArray;
 	int size;
+	LUTType lutType;
+	double getMaxValue(double_vector_ptr array);
+	double getMinValue(double_vector_ptr array);
       protected:
 	static double interpolationValue(double key,
 					 double_vector_ptr keys,
@@ -58,6 +69,8 @@ namespace math {
       public:
 	 Interpolation1DLUT(double_vector_ptr key,
 			    double_vector_ptr value);
+	 Interpolation1DLUT(double_vector_ptr key,
+			    double_vector_ptr value, LUTType lutType);
 	double correctKeyInRange(double key);
 	double correctValueInRange(double value);
 
@@ -66,6 +79,8 @@ namespace math {
 	bool isKeyInRange(double key);
 	bool isValueInRange(double value);
 	bool hasCorrectedInRange();
+	double getMaxKey();
+	double getMaxValue();
     };
 };
 #endif
