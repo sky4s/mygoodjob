@@ -1,6 +1,7 @@
 #include <includeall.h>
 #pragma hdrstop
 #include "sandbox.h"
+#include <debug.h>
 
 
 //C系統文件
@@ -57,7 +58,8 @@ namespace cms {
 							   CIEuvPrime);
 		 storeXYZVector(targetXYZVector);
 		//==============================================================
-		RGB_vector_ptr result(new RGB_vector());
+		int size = targetXYZVector->size();
+		RGB_vector_ptr result(new RGB_vector(size));
 
 		//primary color只能用target white~
 		xyY_ptr rxyY = analyzer->getPrimaryColor(Channel::R);
@@ -65,16 +67,18 @@ namespace cms {
 		xyY_ptr bxyY = analyzer->getPrimaryColor(Channel::B);
 		int x = 0;
 		 x;
+		double targetBIntensity = -1;
 
-		 foreach(const XYZ_ptr targetXYZ, *targetXYZVector) {
-		    bptr < MaxMatrixIntensityAnayzer >
+		for (x = size - 1; x != -1; x--) {
+		    XYZ_ptr targetXYZ = (*targetXYZVector)[x];
+		     bptr < MaxMatrixIntensityAnayzer >
 			analyzer(new MaxMatrixIntensityAnayzer());
 
-		    analyzer->setupComponent(Channel::R, rxyY->toXYZ());
-		    analyzer->setupComponent(Channel::G, gxyY->toXYZ());
-		    analyzer->setupComponent(Channel::B, bxyY->toXYZ());
-		    analyzer->setupComponent(Channel::W, targetXYZ);
-		    analyzer->enter();
+		     analyzer->setupComponent(Channel::R, rxyY->toXYZ());
+		     analyzer->setupComponent(Channel::G, gxyY->toXYZ());
+		     analyzer->setupComponent(Channel::B, bxyY->toXYZ());
+		     analyzer->setupComponent(Channel::W, targetXYZ);
+		     analyzer->enter();
 
 		    Component_vector_ptr newcomponentVector =
 			fetchComponent(analyzer, componentVector);
@@ -82,11 +86,17 @@ namespace cms {
 				     newcomponentVector);
 		    DGLutGenerator lutgen(newcomponentVector);
 		    //採100嗎?
+		    if (targetBIntensity == -1) {
+			targetBIntensity = lutgen.getMaxBIntensity();
+		    };
 		    RGB_ptr rgb = lutgen.getDGCode(100, 100, 100);
-		     result->push_back(rgb);
+		    /*RGB_ptr rgb =
+		       lutgen.getDGCode(100, 100, targetBIntensity); */
+
+		     (*result)[x] = rgb;
 		};
 
-		 return result;
+		return result;
 	    };
 
 	    XYZ_vector_ptr AdvancedDGLutGenerator::

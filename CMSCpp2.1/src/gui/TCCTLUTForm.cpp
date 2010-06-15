@@ -191,6 +191,7 @@ void __fastcall TCCTLUTForm::FormCreate(TObject * Sender)
     CheckBox_BMax2->Visible = true;
     Edit_BMax2Begin->Visible = true;
     Edit_BMax2Gamma->Visible = true;
+    CheckBox_NewMethod->Visible = true;
 #endif
 }
 

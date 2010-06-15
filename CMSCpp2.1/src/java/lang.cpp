@@ -153,7 +153,7 @@ namespace java {
 	    double maxValue = std::numeric_limits < double >::min();
 	    int maxIndex = -1;
 	    int size = values->size();
-	    for (int x = 0; x < size; x++) {
+	    for (int x = 0; x != size; x++) {
 		double v = (*values)[x];
 		if (v > maxValue) {
 		    maxValue = v;
@@ -166,7 +166,7 @@ namespace java {
 	    double minValue = std::numeric_limits < double >::max();
 	    int minIndex = -1;
 	    int size = values->size();
-	    for (int x = 0; x < size; x++) {
+	    for (int x = 0; x != size; x++) {
 		double v = (*values)[x];
 		if (v < minValue) {
 		    minValue = v;
@@ -174,6 +174,14 @@ namespace java {
 		};
 	    };
 	    return minIndex;
+	};
+	double Math::max(double_vector_ptr values) {
+	    int index = maxIndex(values);
+	    return (*values)[index];
+	};
+	double Math::min(double_vector_ptr values) {
+	    int index = minIndex(values);
+	    return (*values)[index];
 	};
 	double_vector_ptr Math::normalize(double_vector_ptr original,
 					  double normal) {

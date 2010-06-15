@@ -54,6 +54,9 @@ namespace cms {
 		 bptr < cms::measure::IntensityAnalyzerIF > getAnalyzer();
 	    };
 
+	    /*
+	       建立Component內亮度與Intensity的關係式
+	     */
 	    class ComponentRelationIF {
 	      public:
 		virtual double getIntensity(double luminance) = 0;
@@ -78,6 +81,9 @@ namespace cms {
 				    double bIntensity);
 	    };
 
+	    /*
+	       建立Component內亮度與Intensity的關係式
+	     */
 	    class ComponentPLRelation:public ComponentRelationIF {
 	    };
 
@@ -110,13 +116,16 @@ namespace cms {
 		RGB_ptr getCode(double luminance);
 		double correctIntensityInRange(const Dep::Channel & ch,
 					       double intensity);
-
+		double getMaxBIntensity();
 	    };
 
+	    /*
+	       根據量測結果, 產生需求的DG Lut
+	     */
 	    class DGLutGenerator {
 	      private:
 		enum Mode {
-		    Component, WLumi, RGBLumi
+		    Component, WLumi, RGBLumi,
 		};
 	      protected:
 		 Mode mode;
@@ -128,15 +137,14 @@ namespace cms {
 		 bptr < ComponentLUT > lut;
 		 bptr < ComponentRelationIF > componentRelation;
 		 bptr < Interpolation1DLUT > wlut;
-		//void initComponent();
-		//void initWLuminance();
 		double getMaximumIntensity();
-		//bool luminanceMode;
 	      public:
 		 DGLutGenerator(Component_vector_ptr componentVector);
 		 DGLutGenerator(double_vector_ptr luminanceVector);
 		RGB_ptr getDGCode(double rIntensity, double gIntensity,
 				  double bIntensity);
+		RGB_ptr getDGCode(double rIntensity, double gIntensity,
+				  double bIntensity, bool correctInRange);
 		RGB_vector_ptr getCCTDGLut(RGBGamma_ptr
 					   normalRGBGammaCurve);
 		RGB_vector_ptr getGammaDGLut(double_vector_ptr
@@ -145,9 +153,9 @@ namespace cms {
 		//由gamma curve轉rgb intensity
 		RGBGamma_ptr getRGBGamma(double_vector_ptr
 					 normalGammaCurve);
-		//bptr < ComponentLUT > getComponentLUT();
 		double_vector_ptr getLuminanceGammaCurve(double_vector_ptr
 							 normalGammaCurve);
+		double getMaxBIntensity();
 	    };
 
 	    enum Correct {
@@ -155,6 +163,9 @@ namespace cms {
 								   5, */ DefinedDim = 6
 	    };
 
+	    /*
+	       用來記載量測的條件, 方便做參數傳遞
+	     */
 	    class MeasureCondition {
 	      public:
 		const int start;

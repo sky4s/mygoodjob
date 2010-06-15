@@ -209,8 +209,7 @@ namespace cms {
     };
     void Spectra::normalizeDataToMax() {
 	//checkReadOnly();
-	double max = 0.0;
-	max = Math::max(max, Math::max(data));
+	double max = Math::max(data);
 	normalizeData(max);
     };
     void Spectra::normalizeData(double normal) {

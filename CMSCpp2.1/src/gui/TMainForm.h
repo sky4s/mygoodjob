@@ -121,6 +121,9 @@ class TMainForm:public TForm {
     void __fastcall Edit_IntervalChange(TObject * Sender);
     void __fastcall FormShow(TObject * Sender);
     void __fastcall Button_I2CTestClick(TObject * Sender);
+    void __fastcall RadioButton_AnalyzerMaxMatrixClick(TObject * Sender);
+    void __fastcall RadioButton_AnalyzerCA210Click(TObject * Sender);
+    void __fastcall RadioButton_AnalyzerDebugClick(TObject * Sender);
   private:			// User declarations
     //==========================================================================
     // meter

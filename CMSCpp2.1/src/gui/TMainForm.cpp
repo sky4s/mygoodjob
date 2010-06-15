@@ -129,7 +129,6 @@ bptr < cms::measure::IntensityAnalyzerIF > TMainForm::getAnalyzer()
 		bptr < IntensityAnalyzerIF >
 		(new IntensityAnayzer(ma, realAnalyzer));
 	}
-
     }
     return analyzer;
 }
@@ -681,4 +680,26 @@ void TMainForm::connectMeter()
 	ca210->getCA210API()->setRemoteMode(ca210api::Off);
     }
 };
+
+void __fastcall TMainForm::RadioButton_AnalyzerMaxMatrixClick(TObject *
+							      Sender)
+{
+    this->analyzer.reset();
+}
+
+//---------------------------------------------------------------------------
+
+void __fastcall TMainForm::RadioButton_AnalyzerCA210Click(TObject * Sender)
+{
+    this->analyzer.reset();
+}
+
+//---------------------------------------------------------------------------
+
+void __fastcall TMainForm::RadioButton_AnalyzerDebugClick(TObject * Sender)
+{
+    this->analyzer.reset();
+}
+
+//---------------------------------------------------------------------------
 

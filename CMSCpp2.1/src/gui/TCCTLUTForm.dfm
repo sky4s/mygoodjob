@@ -7,7 +7,7 @@ object CCTLUTForm: TCCTLUTForm
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
-  Font.Height = -13
+  Font.Height = -10
   Font.Name = 'MS Sans Serif'
   Font.Style = []
   KeyPreview = True
@@ -15,59 +15,59 @@ object CCTLUTForm: TCCTLUTForm
   OnCreate = FormCreate
   OnKeyPress = FormKeyPress
   OnShow = FormShow
-  PixelsPerInch = 120
-  TextHeight = 16
+  PixelsPerInch = 96
+  TextHeight = 13
   object Label9: TLabel
-    Left = 473
-    Top = 425
-    Width = 349
-    Height = 16
+    Left = 384
+    Top = 345
+    Width = 281
+    Height = 13
     Caption = 'Copyright (C) 2010, AU Optronics Corp., All Right Reserved.'
   end
   object GroupBox1: TGroupBox
-    Left = 9
-    Top = 9
-    Width = 192
-    Height = 312
+    Left = 7
+    Top = 7
+    Width = 156
+    Height = 254
     Caption = 'Gray Level Option'
     TabOrder = 0
     object Label1: TLabel
-      Left = 9
-      Top = 48
-      Width = 63
-      Height = 16
+      Left = 7
+      Top = 39
+      Width = 51
+      Height = 13
       Caption = 'Start Level'
     end
     object Label2: TLabel
-      Left = 9
-      Top = 80
-      Width = 60
-      Height = 16
+      Left = 7
+      Top = 65
+      Width = 48
+      Height = 13
       Caption = 'End Level'
     end
     object Label3: TLabel
-      Left = 9
-      Top = 112
-      Width = 64
-      Height = 16
+      Left = 7
+      Top = 91
+      Width = 51
+      Height = 13
       Caption = 'Level Step'
     end
     object Edit_StartLevel: TEdit
-      Left = 80
-      Top = 48
-      Width = 105
+      Left = 65
+      Top = 39
+      Width = 85
       Height = 24
       ImeName = #26085#25991#36664#20837#31995#32113' (MS-IME2002)'
       TabOrder = 0
       Text = '255'
     end
     object ComboBox_LevelStep: TComboBox
-      Left = 80
-      Top = 112
-      Width = 105
-      Height = 24
+      Left = 65
+      Top = 91
+      Width = 85
+      Height = 21
       ImeName = #26085#25991#36664#20837#31995#32113' (MS-IME2002)'
-      ItemHeight = 16
+      ItemHeight = 13
       TabOrder = 1
       Text = '1'
       Items.Strings = (
@@ -81,54 +81,54 @@ object CCTLUTForm: TCCTLUTForm
         '34')
     end
     object Edit_EndLevel: TEdit
-      Left = 80
-      Top = 80
-      Width = 105
+      Left = 65
+      Top = 65
+      Width = 85
       Height = 24
       ImeName = #26085#25991#36664#20837#31995#32113' (MS-IME2002)'
       TabOrder = 2
       Text = '0'
     end
     object CheckBox_Expand: TCheckBox
-      Left = 9
-      Top = 16
-      Width = 120
-      Height = 25
+      Left = 7
+      Top = 13
+      Width = 98
+      Height = 20
       Caption = 'Expand Mode'
       TabOrder = 3
       OnClick = CheckBox_ExpandClick
     end
   end
   object GroupBox2: TGroupBox
-    Left = 209
-    Top = 9
-    Width = 208
-    Height = 96
+    Left = 170
+    Top = 7
+    Width = 169
+    Height = 78
     Caption = 'Gamma'
     TabOrder = 1
     object RadioButton_GammaCurve: TRadioButton
-      Left = 9
-      Top = 40
-      Width = 112
-      Height = 25
+      Left = 7
+      Top = 33
+      Width = 91
+      Height = 20
       Caption = 'Gamma Curve'
       TabOrder = 0
       OnClick = RadioButton_GammaCurveClick
     end
     object CheckBox_GByPass: TCheckBox
-      Left = 33
-      Top = 64
-      Width = 96
-      Height = 25
+      Left = 27
+      Top = 52
+      Width = 78
+      Height = 20
       Caption = 'G ByPass'
       TabOrder = 1
       Visible = False
     end
     object RadioButton_Gamma: TRadioButton
-      Left = 9
-      Top = 16
-      Width = 80
-      Height = 25
+      Left = 7
+      Top = 13
+      Width = 65
+      Height = 20
       Caption = 'Gamma'
       Checked = True
       TabOrder = 2
@@ -136,12 +136,12 @@ object CCTLUTForm: TCCTLUTForm
       OnClick = RadioButton_GammaClick
     end
     object ComboBox_Gamma: TComboBox
-      Left = 89
-      Top = 16
-      Width = 96
-      Height = 24
+      Left = 72
+      Top = 13
+      Width = 78
+      Height = 21
       ImeName = #20013#25991' ('#32321#39636') - '#26032#27880#38899
-      ItemHeight = 16
+      ItemHeight = 13
       TabOrder = 3
       Text = '2.2'
       OnChange = ComboBox_GammaChange
@@ -157,52 +157,52 @@ object CCTLUTForm: TCCTLUTForm
     end
   end
   object GroupBox3: TGroupBox
-    Left = 425
-    Top = 9
-    Width = 192
-    Height = 312
+    Left = 345
+    Top = 7
+    Width = 156
+    Height = 254
     Caption = 'Low Level Correction'
     TabOrder = 2
     object Label4: TLabel
-      Left = 32
-      Top = 89
-      Width = 37
-      Height = 16
+      Left = 26
+      Top = 72
+      Width = 29
+      Height = 13
       Caption = 'Under'
     end
     object Label7: TLabel
-      Left = 32
-      Top = 41
-      Width = 16
-      Height = 16
+      Left = 26
+      Top = 33
+      Width = 13
+      Height = 13
       Caption = 'P1'
     end
     object Label8: TLabel
-      Left = 121
-      Top = 41
-      Width = 16
-      Height = 16
+      Left = 98
+      Top = 33
+      Width = 13
+      Height = 13
       Caption = 'P2'
     end
     object Label17: TLabel
-      Left = 32
-      Top = 153
-      Width = 37
-      Height = 16
+      Left = 26
+      Top = 124
+      Width = 29
+      Height = 13
       Caption = 'Under'
     end
     object Label14: TLabel
-      Left = 32
-      Top = 184
-      Width = 49
-      Height = 16
+      Left = 26
+      Top = 150
+      Width = 40
+      Height = 13
       Caption = 'Strength'
     end
     object RadioButton_P1P2: TRadioButton
-      Left = 9
-      Top = 17
-      Width = 96
-      Height = 24
+      Left = 7
+      Top = 14
+      Width = 78
+      Height = 19
       Caption = 'P1 P2'
       Checked = True
       TabOrder = 0
@@ -210,18 +210,18 @@ object CCTLUTForm: TCCTLUTForm
       OnClick = RadioButton_P1P2Click
     end
     object RadioButton_RBInterp: TRadioButton
-      Left = 9
-      Top = 65
-      Width = 128
-      Height = 24
+      Left = 7
+      Top = 53
+      Width = 104
+      Height = 19
       Caption = 'RB Interpolation'
       TabOrder = 1
       OnClick = RadioButton_RBInterpClick
     end
     object Edit_RBInterpUnder: TEdit
-      Left = 88
-      Top = 89
-      Width = 73
+      Left = 72
+      Top = 72
+      Width = 59
       Height = 24
       Enabled = False
       ImeName = #26085#25991#36664#20837#31995#32113' (MS-IME2002)'
@@ -229,45 +229,45 @@ object CCTLUTForm: TCCTLUTForm
       Text = '50'
     end
     object Edit_P1: TEdit
-      Left = 57
-      Top = 41
-      Width = 40
+      Left = 46
+      Top = 33
+      Width = 33
       Height = 24
       ImeName = #26085#25991#36664#20837#31995#32113' (MS-IME2002)'
       TabOrder = 3
       Text = '20'
     end
     object Edit_P2: TEdit
-      Left = 144
-      Top = 41
-      Width = 41
+      Left = 117
+      Top = 33
+      Width = 33
       Height = 24
       ImeName = #26085#25991#36664#20837#31995#32113' (MS-IME2002)'
       TabOrder = 4
       Text = '50'
     end
     object RadioButton_None: TRadioButton
-      Left = 9
-      Top = 108
-      Width = 72
-      Height = 25
+      Left = 7
+      Top = 88
+      Width = 59
+      Height = 20
       Caption = 'None'
       TabOrder = 5
       OnClick = RadioButton_NoneClick
     end
     object RadioButton_DefinedDim: TRadioButton
-      Left = 9
-      Top = 129
-      Width = 120
-      Height = 24
+      Left = 7
+      Top = 105
+      Width = 98
+      Height = 19
       Caption = 'Defined Dim'
       TabOrder = 6
       OnClick = RadioButton_DefinedDimClick
     end
     object Edit_DefinedDimUnder: TEdit
-      Left = 88
-      Top = 153
-      Width = 73
+      Left = 72
+      Top = 124
+      Width = 59
       Height = 24
       Enabled = False
       ImeName = #26085#25991#36664#20837#31995#32113' (MS-IME2002)'
@@ -275,88 +275,89 @@ object CCTLUTForm: TCCTLUTForm
       Text = '50'
     end
     object CheckBox_AverageDimDG: TCheckBox
-      Left = 32
-      Top = 208
-      Width = 137
-      Height = 25
+      Left = 26
+      Top = 169
+      Width = 111
+      Height = 20
       Caption = 'Average Dim DG'
       Enabled = False
       TabOrder = 8
       Visible = False
     end
     object Edit_DimGamma: TEdit
-      Left = 88
-      Top = 185
-      Width = 73
+      Left = 72
+      Top = 150
+      Width = 59
       Height = 24
       Enabled = False
       ImeName = #26085#25991#36664#20837#31995#32113' (MS-IME2002)'
       TabOrder = 9
       Text = '2.2'
+      Visible = False
     end
   end
   object GroupBox4: TGroupBox
-    Left = 625
-    Top = 9
-    Width = 192
-    Height = 152
+    Left = 508
+    Top = 7
+    Width = 156
+    Height = 124
     Caption = 'Blue Correction'
     TabOrder = 3
     object Label18: TLabel
-      Left = 32
-      Top = 88
-      Width = 35
-      Height = 16
+      Left = 26
+      Top = 72
+      Width = 27
+      Height = 13
       Caption = 'Begin'
       Visible = False
     end
     object Label19: TLabel
-      Left = 32
-      Top = 120
-      Width = 49
-      Height = 16
+      Left = 26
+      Top = 98
+      Width = 40
+      Height = 13
       Caption = 'Strength'
       Visible = False
     end
     object CheckBox_BGain: TCheckBox
-      Left = 9
-      Top = 17
-      Width = 120
-      Height = 24
+      Left = 7
+      Top = 14
+      Width = 98
+      Height = 19
       Caption = 'B Intensity Gain'
       TabOrder = 0
     end
     object Edit_BGain: TEdit
-      Left = 129
-      Top = 17
-      Width = 56
+      Left = 105
+      Top = 14
+      Width = 45
       Height = 24
       ImeName = #26085#25991#36664#20837#31995#32113' (MS-IME2002)'
       TabOrder = 1
       Text = '1.05'
     end
     object CheckBox_BMax: TCheckBox
-      Left = 9
-      Top = 41
-      Width = 96
-      Height = 24
+      Left = 7
+      Top = 33
+      Width = 78
+      Height = 20
       Caption = 'B Max'
       TabOrder = 2
     end
     object CheckBox_BMax2: TCheckBox
-      Left = 9
-      Top = 65
-      Width = 96
-      Height = 24
+      Left = 7
+      Top = 53
+      Width = 78
+      Height = 19
       Caption = 'B Max 2'
       TabOrder = 3
       Visible = False
       OnClick = CheckBox_BMax2Click
     end
     object Edit_BMax2Begin: TEdit
-      Left = 88
-      Top = 88
-      Width = 73
+      Left = 72
+      Top = 72
+      Width = 59
       Height = 24
       Enabled = False
       ImeName = #26085#25991#36664#20837#31995#32113' (MS-IME2002)'
@@ -365,9 +366,9 @@ object CCTLUTForm: TCCTLUTForm
       Visible = False
     end
     object Edit_BMax2Gamma: TEdit
-      Left = 88
-      Top = 120
-      Width = 73
+      Left = 72
+      Top = 98
+      Width = 59
       Height = 24
       Enabled = False
       ImeName = #26085#25991#36664#20837#31995#32113' (MS-IME2002)'
@@ -377,58 +378,58 @@ object CCTLUTForm: TCCTLUTForm
     end
   end
   object GroupBox5: TGroupBox
-    Left = 209
-    Top = 105
-    Width = 208
-    Height = 216
+    Left = 170
+    Top = 85
+    Width = 169
+    Height = 176
     Caption = 'Options'
     TabOrder = 4
     object Label15: TLabel
-      Left = 32
-      Top = 88
-      Width = 29
-      Height = 16
+      Left = 26
+      Top = 72
+      Width = 23
+      Height = 13
       Caption = 'Over'
       Visible = False
     end
     object Label16: TLabel
-      Left = 32
-      Top = 120
-      Width = 49
-      Height = 16
+      Left = 26
+      Top = 98
+      Width = 40
+      Height = 13
       Caption = 'Strength'
       Visible = False
     end
     object CheckBox_AvoidNoise: TCheckBox
-      Left = 9
-      Top = 17
-      Width = 136
-      Height = 24
+      Left = 7
+      Top = 14
+      Width = 111
+      Height = 19
       Caption = 'Avoid FRC Noise'
       TabOrder = 0
     end
     object CheckBox_KeepMax: TCheckBox
-      Left = 9
-      Top = 41
-      Width = 152
-      Height = 24
+      Left = 7
+      Top = 33
+      Width = 124
+      Height = 20
       Caption = 'Keep Max Luminance'
       TabOrder = 1
     end
     object CheckBox_KeepMaxAdv: TCheckBox
-      Left = 9
-      Top = 65
-      Width = 192
-      Height = 24
+      Left = 7
+      Top = 53
+      Width = 156
+      Height = 19
       Caption = 'Keep Max Luminance(Adv.)'
       TabOrder = 2
       Visible = False
       OnClick = CheckBox_KeepMaxAdvClick
     end
     object Edit_AdvOver: TEdit
-      Left = 88
-      Top = 88
-      Width = 73
+      Left = 72
+      Top = 72
+      Width = 59
       Height = 24
       Enabled = False
       ImeName = #26085#25991#36664#20837#31995#32113' (MS-IME2002)'
@@ -437,9 +438,9 @@ object CCTLUTForm: TCCTLUTForm
       Visible = False
     end
     object Edit_AdvGamma: TEdit
-      Left = 88
-      Top = 120
-      Width = 73
+      Left = 72
+      Top = 98
+      Width = 59
       Height = 24
       Enabled = False
       ImeName = #26085#25991#36664#20837#31995#32113' (MS-IME2002)'
@@ -448,20 +449,20 @@ object CCTLUTForm: TCCTLUTForm
       Visible = False
     end
     object CheckBox_NewMethod: TCheckBox
-      Left = 8
-      Top = 144
-      Width = 121
-      Height = 25
+      Left = 7
+      Top = 117
+      Width = 98
+      Height = 20
       Caption = 'New Method'
       TabOrder = 5
       Visible = False
     end
   end
   object Button_Run: TButton
-    Left = 625
-    Top = 369
-    Width = 56
-    Height = 24
+    Left = 508
+    Top = 300
+    Width = 45
+    Height = 19
     Hint = 'Measure panel characteristic and produce CCT DG LUT.'
     Caption = 'Run'
     ParentShowHint = False
@@ -470,90 +471,95 @@ object CCTLUTForm: TCCTLUTForm
     OnClick = Button_RunClick
   end
   object Button_Debug: TButton
-    Left = 625
-    Top = 353
-    Width = 56
-    Height = 16
+    Left = 508
+    Top = 287
+    Width = 45
+    Height = 13
     Caption = 'debug'
     TabOrder = 6
     OnClick = Button_DebugClick
   end
   inline TOutputFileFrame1: TOutputFileFrame
-    Left = 9
-    Top = 329
-    Width = 616
-    Height = 96
+    Left = 7
+    Top = 267
+    Width = 501
+    Height = 78
     TabOrder = 7
     inherited GroupBox_OutputFile: TGroupBox
-      Width = 610
-      Height = 90
+      Width = 496
+      Height = 73
       inherited Label5: TLabel
-        Left = 9
-        Top = 25
+        Left = 7
+        Top = 20
       end
       inherited Label6: TLabel
-        Left = 9
-        Top = 57
+        Left = 7
+        Top = 46
       end
       inherited Edit_Prefix: TEdit
-        Top = 25
+        Left = 91
+        Top = 20
+        Width = 163
+        Height = 24
       end
       inherited Edit_Directory: TEdit
-        Top = 57
-        Width = 425
+        Left = 91
+        Top = 46
+        Width = 345
+        Height = 24
       end
       inherited Button_BrowseDir: TButton
-        Left = 545
-        Top = 57
-        Width = 56
-        Height = 24
+        Left = 443
+        Top = 46
+        Width = 45
+        Height = 20
         OnClick = TOutputFileFrame1Button_BrowseDirClick
       end
     end
   end
   object Panel_Expand: TPanel
-    Left = 17
-    Top = 57
-    Width = 176
-    Height = 256
+    Left = 14
+    Top = 46
+    Width = 143
+    Height = 208
     Caption = 'Panel_Expand'
     TabOrder = 8
     Visible = False
     object GroupBox6: TGroupBox
-      Left = 9
-      Top = 9
-      Width = 160
-      Height = 120
+      Left = 7
+      Top = 7
+      Width = 130
+      Height = 98
       Caption = 'Low Gray Level'
       TabOrder = 0
       object Label5: TLabel
-        Left = 9
-        Top = 89
-        Width = 64
-        Height = 16
+        Left = 7
+        Top = 72
+        Width = 51
+        Height = 13
         Caption = 'Level Step'
       end
       object Label6: TLabel
-        Left = 9
-        Top = 57
-        Width = 60
-        Height = 16
+        Left = 7
+        Top = 46
+        Width = 48
+        Height = 13
         Caption = 'End Level'
       end
       object Label10: TLabel
-        Left = 9
-        Top = 25
-        Width = 63
-        Height = 16
+        Left = 7
+        Top = 20
+        Width = 51
+        Height = 13
         Caption = 'Start Level'
       end
       object ComboBox_LowStep: TComboBox
-        Left = 80
-        Top = 89
-        Width = 73
-        Height = 24
+        Left = 65
+        Top = 72
+        Width = 59
+        Height = 21
         ImeName = #26085#25991#36664#20837#31995#32113' (MS-IME2002)'
-        ItemHeight = 16
+        ItemHeight = 13
         TabOrder = 0
         Text = '8'
         Items.Strings = (
@@ -565,18 +571,18 @@ object CCTLUTForm: TCCTLUTForm
           '32')
       end
       object Edit_LowEndLevel: TEdit
-        Left = 80
-        Top = 57
-        Width = 73
+        Left = 65
+        Top = 46
+        Width = 59
         Height = 24
         ImeName = #26085#25991#36664#20837#31995#32113' (MS-IME2002)'
         TabOrder = 1
         Text = '0'
       end
       object Edit_LowStartLevel: TEdit
-        Left = 80
-        Top = 25
-        Width = 73
+        Left = 65
+        Top = 20
+        Width = 59
         Height = 24
         ImeName = #26085#25991#36664#20837#31995#32113' (MS-IME2002)'
         TabOrder = 2
@@ -584,58 +590,58 @@ object CCTLUTForm: TCCTLUTForm
       end
     end
     object GroupBox7: TGroupBox
-      Left = 9
-      Top = 128
-      Width = 160
-      Height = 121
+      Left = 7
+      Top = 104
+      Width = 130
+      Height = 98
       Caption = 'High Gray Level'
       TabOrder = 1
       object Label11: TLabel
-        Left = 9
-        Top = 25
-        Width = 63
-        Height = 16
+        Left = 7
+        Top = 20
+        Width = 51
+        Height = 13
         Caption = 'Start Level'
       end
       object Label12: TLabel
-        Left = 9
-        Top = 89
-        Width = 64
-        Height = 16
+        Left = 7
+        Top = 72
+        Width = 51
+        Height = 13
         Caption = 'Level Step'
       end
       object Label13: TLabel
-        Left = 9
-        Top = 57
-        Width = 60
-        Height = 16
+        Left = 7
+        Top = 46
+        Width = 48
+        Height = 13
         Caption = 'End Level'
       end
       object Edit_HighStartLevel: TEdit
-        Left = 80
-        Top = 25
-        Width = 73
+        Left = 65
+        Top = 20
+        Width = 59
         Height = 24
         ImeName = #26085#25991#36664#20837#31995#32113' (MS-IME2002)'
         TabOrder = 0
         Text = '255'
       end
       object Edit_HighEndLevel: TEdit
-        Left = 80
-        Top = 57
-        Width = 73
+        Left = 65
+        Top = 46
+        Width = 59
         Height = 24
         ImeName = #26085#25991#36664#20837#31995#32113' (MS-IME2002)'
         TabOrder = 1
         Text = '64'
       end
       object ComboBox_HighStep: TComboBox
-        Left = 80
-        Top = 89
-        Width = 73
-        Height = 24
+        Left = 65
+        Top = 72
+        Width = 59
+        Height = 21
         ImeName = #26085#25991#36664#20837#31995#32113' (MS-IME2002)'
-        ItemHeight = 16
+        ItemHeight = 13
         TabOrder = 2
         Text = '16'
         Items.Strings = (
@@ -649,20 +655,20 @@ object CCTLUTForm: TCCTLUTForm
     end
   end
   object Button_Reset: TButton
-    Left = 625
-    Top = 336
-    Width = 56
-    Height = 17
+    Left = 508
+    Top = 273
+    Width = 45
+    Height = 14
     Caption = 'reset'
     TabOrder = 9
     Visible = False
     OnClick = Button_ResetClick
   end
   object Button_Process: TButton
-    Left = 625
-    Top = 393
-    Width = 56
-    Height = 24
+    Left = 508
+    Top = 319
+    Width = 45
+    Height = 20
     Caption = 'Process'
     TabOrder = 10
     Visible = False
