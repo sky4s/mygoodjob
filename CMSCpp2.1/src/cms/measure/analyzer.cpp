@@ -256,6 +256,7 @@ namespace cms {
 	       }
 	       referenceRGB->setValue(ch, rgb->getValue(ch)); */
 	    if (ch == Channel::W) {
+		referenceRGB = rgb->clone();
 	    }
 	    XYZ_ptr measureXYZ = p->getXYZ();
 	    setupComponent(ch, measureXYZ);
