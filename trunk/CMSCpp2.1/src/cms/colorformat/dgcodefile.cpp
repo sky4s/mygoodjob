@@ -306,6 +306,7 @@ namespace cms {
 		   break; */
 	    }
 	    dgcode.addProperty("low level correct", correctstr);
+	    dgcode.addProperty("New Method", c->newMethod ? On : Off);
 
 	    dgcode.addProperty("p1", c->p1);
 	    dgcode.addProperty("p2", c->p2);
@@ -323,6 +324,7 @@ namespace cms {
 	    dgcode.addProperty("g bypass", c->gByPass ? On : Off);
 	    dgcode.addProperty("b gain", c->bIntensityGain);
 	    dgcode.addProperty("b max", c->bMax ? On : Off);
+
 
 	    dgcode.addProperty("avoid FRC noise",
 			       c->avoidFRCNoise ? On : Off);
