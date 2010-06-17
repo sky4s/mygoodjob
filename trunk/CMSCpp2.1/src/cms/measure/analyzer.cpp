@@ -251,10 +251,12 @@ namespace cms {
 						       Channel & ch,
 						       RGB_ptr rgb) {
 	    Patch_ptr p = mm->measure(rgb, rgb->toString());
-	    if (null == referenceRGB) {
-		referenceRGB = RGB_ptr(new RGBColor(MaxValue::Double255));
+	    /*if (null == referenceRGB) {
+	       referenceRGB = RGB_ptr(new RGBColor(MaxValue::Double255));
+	       }
+	       referenceRGB->setValue(ch, rgb->getValue(ch)); */
+	    if (ch == Channel::W) {
 	    }
-	    referenceRGB->setValue(ch, rgb->getValue(ch));
 	    XYZ_ptr measureXYZ = p->getXYZ();
 	    setupComponent(ch, measureXYZ);
 	};
