@@ -176,9 +176,6 @@ void __fastcall TTargetWhiteForm2::Button2Click(TObject * Sender)
 	ShowMessage("CA210 cannot be linked.");
 	return;
     }
-
-    bool usexy = this->RadioButton_Targetxy->Checked;
-    bool moreAccurate = this->CheckBox_MoreAccurate->Checked;
     //已知rgb
     int rvalue = this->Edit_R->Text.ToInt();
     int gvalue = this->Edit_G->Text.ToInt();
@@ -191,7 +188,19 @@ void __fastcall TTargetWhiteForm2::Button2Click(TObject * Sender)
     MainForm->setMeterMeasurementWaitTimes();
     MainForm->setAnalyzerToSourceChannel();
 
-    if (true == usexy) {
+    bool usemaxRGB = this->RadioButton_MaxRGB->Checked;
+    bool useRGBRatio = this->RadioButton_RGBRatio->Checked;
+    bool usexy = this->RadioButton_Targetxy->Checked;
+    bool moreAccurate = this->CheckBox_MoreAccurate->Checked;
+
+    if (usemaxRGB) {
+	analyzer->setReferenceColorComment("Max RGB");
+    } else if (useRGBRatio) {
+	analyzer->setReferenceColorComment("RGB Ratio");
+    } else if (usexy) {
+	string comment =
+	    "Target x,y(" + string(Edit_CT->Text.c_str()) + "k)";
+	analyzer->setReferenceColorComment(comment);
 	double targetx = this->Edit_targetx->Text.ToDouble();
 	double targety = this->Edit_targety->Text.ToDouble();
 	xyY_ptr xyY(new CIExyY(targetx, targety, 1));
@@ -218,6 +227,9 @@ void __fastcall TTargetWhiteForm2::Button2Click(TObject * Sender)
 	    return;
 	}
     }
+    //==========================================================================
+    // primary color的設定
+    //==========================================================================
     RGB_ptr r(new RGBColor());
     RGB_ptr g(new RGBColor());
     RGB_ptr b(new RGBColor());
@@ -228,7 +240,7 @@ void __fastcall TTargetWhiteForm2::Button2Click(TObject * Sender)
 	g->G = rgb->G;
 	b->B = rgb->B;
     }
-
+    //==========================================================================
 
     //==========================================================================
     // 設定到ca-210去
@@ -423,17 +435,19 @@ void __fastcall TTargetWhiteForm2::FormKeyPress(TObject * Sender,
 
 void __fastcall TTargetWhiteForm2::Button3Click(TObject * Sender)
 {
-    if (MainForm->isCA210Analyzer()) {
-    }
+    //if (MainForm->isCA210Analyzer()) {
+	MainForm->connectMeter();
+    //}
 }
 
 //---------------------------------------------------------------------------
 
 void __fastcall TTargetWhiteForm2::Button4Click(TObject * Sender)
 {
-    if (MainForm->isCA210Analyzer()) {
-    }
+    //if (MainForm->isCA210Analyzer()) {
+	MainForm->disconnectMeter();
+    //}
 }
 
 //---------------------------------------------------------------------------
- 
+

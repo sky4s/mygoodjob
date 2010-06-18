@@ -25,6 +25,21 @@ namespace cms {
 	using namespace Indep;
 	using namespace ca210api;
 
+	//======================================================================
+	// IntensityAnalyzerIF
+	//======================================================================
+	void IntensityAnalyzerIF::
+	    setReferenceColorComment(const string & comment) {
+	    this->comment = string_ptr(new string(comment));
+	};
+	string_ptr IntensityAnalyzerIF::getReferenceColorComment() {
+	    return comment;
+	};
+	//======================================================================
+
+	//======================================================================
+	//
+	//======================================================================
 	void CA210IntensityAnalyzer::init() {
 	    ca210api->setDisplayMode(Lvxy);
 	    ca210api->setChannelNO(0);
@@ -32,7 +47,10 @@ namespace cms {
 	    ca210api->copyToFile(CA210DAT);
 	};
 
-	 CA210IntensityAnalyzer::CA210IntensityAnalyzer(bptr < CA210 > ca210, bptr < MeterMeasurement > mm):ca210(ca210), ca210api(ca210->getCA210API()), mm(mm), dummyMode(false), dgc(null) {	/*, defaultWaitTimes(-1) */
+      CA210IntensityAnalyzer::CA210IntensityAnalyzer(bptr < CA210 > ca210, bptr < MeterMeasurement > mm):ca210(ca210), ca210api(ca210->getCA210API()), mm(mm),
+	    dummyMode(false),
+	    dgc(null) {
+	    /*, defaultWaitTimes(-1) */
 	    init();
 	};
 

@@ -5,10 +5,10 @@
 #define METER_FILE "debug.xls"
 #define DEBUG_DIR  "debug/"
 
-#define DEBUG_NEWFUNC
-//#define DEBUG_CCTLUT
-//#define DEBUG_FINDWHITE
-//#define DEBUG_TARGETWHITE
+#define DEBUG_NEWFUNC //新功能的開啟
+#define DEBUG_CCTLUT //CCT功能的debug功能開啟
+//#define DEBUG_FINDWHITE //find white過程的紀錄
+//#define DEBUG_TARGETWHITE //Target White測試功能的開啟
 
 //==============================================================================
 // CCT巨集

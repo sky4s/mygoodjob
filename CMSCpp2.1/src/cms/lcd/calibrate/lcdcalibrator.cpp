@@ -75,12 +75,6 @@ namespace cms {
 
 		analyzer->beginAnalyze();
 		foreach(const int &x, *measureCode) {
-		    /*RGB_ptr rgb(tconInput ?
-		       (real10Bit ?
-		       new RGBColor(x, x, x,
-		       MaxValue::RealInt10Bit) :
-		       new RGBColor(x, x, x, MaxValue::Int10Bit))
-		       : new RGBColor(x, x, x)); */
 		    RGB_ptr rgb(new RGBColor(x, x, x));
 		    RGB_ptr intensity = analyzer->getIntensity(rgb);
 		    XYZ_ptr XYZ = analyzer->getCIEXYZ();
@@ -358,11 +352,17 @@ namespace cms {
 		}
 		return luminanceGammaCurve;
 	    };
+	    /*
+	       計算可用的最大intensity
+	     */
 	    double DGLutGenerator::getMaximumIntensity() {
 		int maxindex = 0;
+		//找到最亮量測點
 		Component_ptr maxcomponent = (*componentVector)[maxindex];
 		RGB_ptr maxintensity = maxcomponent->intensity;
+		//最小值的channel
 		const Channel & minchannel = maxintensity->getMinChannel();
+		//以最小值得channel的intensity為最大的intensity
 		double maxvalue = maxintensity->getValue(minchannel);
 		return maxvalue;
 	    };
@@ -375,11 +375,10 @@ namespace cms {
 	       3. 由目標gamma curve經步驟二找到對應的component
 	       4. 由compomenet對應出DG Code, DG Code產出
 	       3/4由produce產出
-
 	     */
-	  DGLutGenerator::DGLutGenerator(Component_vector_ptr componentVector):componentVector
-		(componentVector), mode(Component)
-	    {
+	    void DGLutGenerator::
+		initComponent(Component_vector_ptr componentVector,
+			      bool keepMaxLuminance) {
 		//==============================================================
 		// 計算a/c/d
 		//==============================================================
@@ -396,6 +395,10 @@ namespace cms {
 		//==============================================================
 
 		double maxintensity = Math::roundTo(getMaximumIntensity());
+		if (!keepMaxLuminance) {
+		    maxintensity =
+			(maxintensity > 100) ? 100 : maxintensity;
+		}
 
 		maxLuminance =
 		    componentRelation->getLuminance(maxintensity,
@@ -403,6 +406,17 @@ namespace cms {
 						    maxintensity);
 		int size = componentVector->size();
 		minLuminance = (*componentVector)[size - 1]->XYZ->Y;
+	    };
+
+	  DGLutGenerator::DGLutGenerator(Component_vector_ptr componentVector):componentVector
+		(componentVector), mode(Component)
+	    {
+		initComponent(componentVector, true);
+	    };
+	  DGLutGenerator::DGLutGenerator(Component_vector_ptr componentVector, bool keepMaxLuminance):componentVector
+		(componentVector), mode(Component)
+	    {
+		initComponent(componentVector, keepMaxLuminance);
 	    };
 	  DGLutGenerator::DGLutGenerator(double_vector_ptr luminanceVector):luminanceVector(luminanceVector), mode(WLumi)
 	    {
@@ -512,6 +526,9 @@ namespace cms {
 		return dglut;
 	    };
 
+	    /*
+	       normalGammaCurve轉LuminanceGammaCurve再轉intensity
+	     */
 	    RGBGamma_ptr DGLutGenerator::
 		getRGBGamma(double_vector_ptr normalGammaCurve) {
 		//gamma curve轉luminance curve
@@ -798,10 +815,15 @@ namespace cms {
 		}
 
 		STORE_COMPONENT("o_fetch.xls", componentVector);
-		DGLutGenerator generator(componentVector);
+
+		DGLutGenerator generator(componentVector,
+					 keepMaxLuminance);
 
 
 		if (true == newMethod) {
+		    //==========================================================
+		    // 新方法
+		    //==========================================================
 		    bptr < IntensityAnalyzerIF > analyzer =
 			fetcher->getAnalyzer();
 		    AdvancedDGLutGenerator
@@ -815,9 +837,11 @@ namespace cms {
 		    dglut = advgenerator.produce(targetWhite,
 						 luminanceGammaCurve,
 						 50, 200, 3.5, 2.2);
+		    //==========================================================
 		} else {
-		    //產生generator
-		    //DGLutGenerator generator(componentVector);
+		    //==========================================================
+		    // 老方法
+		    //==========================================================
 		    RGBGamma_ptr rgbgamma =
 			generator.getRGBGamma(gammaCurve);
 		    initialRGBGamma = rgbgamma->clone();
@@ -837,10 +861,8 @@ namespace cms {
 			gammaop.setSource(rgbgamma);
 			gammaop.addOp(bgain);
 			rgbgamma = gammaop.createInstance();
+			STORE_RGBGAMMA("2_rgbgamma_bGain.xls", rgbgamma);
 		    }
-
-		    STORE_RGBGAMMA("2_rgbgamma_init.xls", rgbgamma);
-
 		    //從目標gamma curve產生dg code, 此處是傳入normal gammaCurve
 		    dglut = generator.getCCTDGLut(rgbgamma);
 		    STORE_RGBVECTOR("3_dgcode.xls", dglut);
@@ -927,6 +949,7 @@ namespace cms {
 			RGBVector::quantization(dglut, quantizationBit);
 		    }
 		    finalRGBGamma = rgbgamma;
+		    //==========================================================
 		}
 
 		//==============================================================
@@ -1060,12 +1083,12 @@ namespace cms {
 		    dgop.addOp(avoidNoise);
 		}
 
-		if (keepMaxLuminance) {
-		    //keep最大亮度
-		    bptr < DGLutOp >
-			KeepMax(new KeepMaxLuminanceOp(bitDepth));
-		    dgop.addOp(KeepMax);
-		}
+		/*if (keepMaxLuminance) {
+		   //keep最大亮度
+		   bptr < DGLutOp >
+		   KeepMax(new KeepMaxLuminanceOp(bitDepth));
+		   dgop.addOp(KeepMax);
+		   } */
 		RGB_vector_ptr result = dgop.createInstance();
 		return result;
 		//==============================================================

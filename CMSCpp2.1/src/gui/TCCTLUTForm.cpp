@@ -180,17 +180,25 @@ void __fastcall TCCTLUTForm::FormCreate(TObject * Sender)
     //==========================================================================
 #ifdef DEBUG_NEWFUNC
     this->Button_Process->Visible = true;
-    this->CheckBox_KeepMaxAdv->Visible = true;
-    Label15->Visible = true;
-    Label16->Visible = true;
+
+
+
+    /*
+       this->CheckBox_KeepMaxAdv->Visible = true;
+       Label15->Visible = true;
+       Label16->Visible = true;
+       Edit_AdvOver->Visible = true;
+       Edit_AdvGamma->Visible = true;
+     */
+
+    CheckBox_AverageDimDG->Visible = true;
+
     Label18->Visible = true;
     Label19->Visible = true;
-    Edit_AdvOver->Visible = true;
-    Edit_AdvGamma->Visible = true;
-    CheckBox_AverageDimDG->Visible = true;
     CheckBox_BMax2->Visible = true;
     Edit_BMax2Begin->Visible = true;
     Edit_BMax2Gamma->Visible = true;
+
     CheckBox_NewMethod->Visible = true;
 #endif
 }
