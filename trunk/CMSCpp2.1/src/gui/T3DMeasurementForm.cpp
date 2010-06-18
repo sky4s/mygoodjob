@@ -1,0 +1,439 @@
+//---------------------------------------------------------------------------
+
+#include <includeall.h>
+#pragma hdrstop
+
+//C系統文件
+
+//C++系統文件
+
+
+//其他庫頭文件
+#include <math.hpp>
+
+//本項目內頭文件
+#include "T3DMeasurementForm.h"
+#include "T3DMeasureWindow.h"
+//---------------------------------------------------------------------------
+#pragma package(smart_init)
+#pragma link "TOutputFileFrame"
+#pragma resource "*.dfm"
+TThreeDMeasurementForm *ThreeDMeasurementForm;
+//---------------------------------------------------------------------------
+__fastcall TThreeDMeasurementForm::TThreeDMeasurementForm(TComponent *
+							  Owner)
+:TForm(Owner), linkCA210(!FileExists(DEBUG_FILE)), stop(false)
+{
+    using namespace cms::util;
+    fieldNames =
+	StringVector::fromCString(18, "Target", "0", "16", "32", "48",
+				  "64", "80", "96", "112", "128", "144",
+				  "160", "176", "192", "208", "224", "240",
+				  "255");
+}
+
+//---------------------------------------------------------------------------
+
+
+
+void __fastcall TThreeDMeasurementForm::Button_MeasureClick(TObject *
+							    Sender)
+{
+    using namespace Dep;
+    using namespace cms::util;
+    using namespace cms::colorformat;
+
+
+
+
+    bool_vector_ptr rgbw(new bool_vector(7));
+    (*rgbw)[0] = this->CheckBox_R->Checked;
+    (*rgbw)[1] = this->CheckBox_G->Checked;
+    (*rgbw)[2] = this->CheckBox_B->Checked;
+    (*rgbw)[3] = false;
+    (*rgbw)[4] = false;
+    (*rgbw)[5] = false;
+    (*rgbw)[6] = this->CheckBox_W->Checked;
+
+    bool leftrightChange = this->CheckBox_LeftRightChange->Checked;
+
+
+    if (false == (*rgbw)[0] && false == (*rgbw)[1] && false == (*rgbw)[2]
+	&& false == (*rgbw)[6]) {
+	ShowMessage("Select at least one color.");
+	return;
+    }
+
+    int idleTime = this->Edit_IdleTime->Text.ToInt();
+    int aveTimes = this->Edit_AveTimes->Text.ToInt();
+
+    /*if (true == this->CheckBox_StableTest->Checked) {
+       stableTest(idleTime, aveTimes);
+       return;
+       } */
+    bool stableTest = this->CheckBox_StableTest->Checked;
+
+    string filename = this->OutputFileFrame1->getOutputFilename()->c_str();
+    Util::deleteExist(filename);
+    bptr < ExcelAccessBase > excel(new ExcelAccessBase(filename, Create));
+
+    foreach(const Channel & ch, *Channel::RGBWChannel) {
+	if (true == (*rgbw)[ch.getArrayIndex()]) {
+	    double2D_ptr result =
+		ODMeasure(ch, idleTime, aveTimes, leftrightChange,
+			  stableTest);
+	    if (null == result) {
+		return;
+	    }
+	    string measureSheet = *ch.toString() + "_Measure";
+	    excel->initSheet(measureSheet, fieldNames);
+	    storeResult(measureSheet, result, excel);
+
+	    string xtalkSheet = *ch.toString() + "_Xtalk";
+	    excel->initSheet(xtalkSheet, fieldNames);
+	    double2D_ptr xtalkresult = crosstalk(result);
+	    storeResult(xtalkSheet, xtalkresult, excel);
+	}
+    }
+    ShowMessage("Measure complete.");
+    excel.reset();		//釋放掉excel, 就可以釋放掉檔案的控制權
+    Util::shellExecute(filename);
+}
+
+//---------------------------------------------------------------------------
+double TThreeDMeasurementForm::patternMeasure(RGB_ptr left, RGB_ptr right,
+					      int idleTime, int aveTimes,
+					      bool leftrightChange)
+{
+
+    /*if (!leftrightChange) {
+       ThreeDMeasureWindow->setLeftRGB(left);
+       ThreeDMeasureWindow->setRightRGB(right);
+       } else {
+       ThreeDMeasureWindow->setLeftRGB(right);
+       ThreeDMeasureWindow->setRightRGB(left);
+       }
+
+       ThreeDMeasureWindow->Visible = true;
+       Application->ProcessMessages();
+
+       Sleep(idleTime);
+       if (true == stop) {
+       return -1;
+       }
+
+       double totalY = 0;
+       if (true == linkCA210) {
+       for (int x = 0; x < aveTimes; x++) {
+       if (true == stop) {
+       return -1;
+       }
+       totalY += ca210->triggerMeasurementInXYZ()[1];
+       }
+       }
+       double meanY = totalY / aveTimes;
+       return meanY; */
+    double_vector_ptr result =
+	patternMeasure0(left, right, idleTime, aveTimes, leftrightChange);
+    return getMeanLuminance(result);
+};
+
+double_vector_ptr TThreeDMeasurementForm::patternMeasure0(RGB_ptr left,
+							  RGB_ptr right,
+							  int idleTime,
+							  int aveTimes,
+							  bool
+							  leftrightChange)
+{
+    if (!leftrightChange) {
+	ThreeDMeasureWindow->setLeftRGB(left);
+	ThreeDMeasureWindow->setRightRGB(right);
+    } else {
+	ThreeDMeasureWindow->setLeftRGB(right);
+	ThreeDMeasureWindow->setRightRGB(left);
+    }
+
+    ThreeDMeasureWindow->Visible = true;
+    Application->ProcessMessages();
+
+    Sleep(idleTime);
+    if (true == stop) {
+	return double_vector_ptr((double_vector *) null);
+    }
+
+    double_vector_ptr result(new double_vector());
+    for (int x = 0; x < aveTimes; x++) {
+	if (true == stop) {
+	    return double_vector_ptr((double_vector *) null);
+	}
+	double Y = 0;
+	if (true == linkCA210) {
+	    Y = ca210->triggerMeasurementInXYZ()[1];
+	} else {
+	    Y = 1;
+	}
+	result->push_back(Y);
+    }
+    return result;
+};
+
+double2D_ptr TThreeDMeasurementForm::ODMeasure(const Dep::Channel & ch,
+					       int idleTime,
+					       int aveTimes,
+					       bool leftrightChange,
+					       bool stableTest)
+{
+    using namespace Dep;
+    using namespace math;
+    using namespace cms::colorformat;
+    using namespace cms::util;
+
+    double2D_ptr result(new double2D(17, 17));
+    bptr < ExcelAccessBase > excel;
+    string_vector_ptr fieldNames =
+	StringVector::fromCString(18, "number", "0", "16", "32", "48",
+				  "64", "80", "96", "112", "128", "144",
+				  "160", "176", "192", "208", "224", "240",
+				  "255");
+
+    if (true == stableTest) {
+	string filename = *ch.toString() + "_stableTest.xls";
+	Util::deleteExist(filename);
+	excel =
+	    bptr < ExcelAccessBase >
+	    (new ExcelAccessBase(filename, Create));
+    }
+
+    try {
+	for (int x = 0; x < 17; x++) {
+	  std:vector < double_vector_ptr > vec;
+	    for (int y = 0; y < 17; y++) {
+		//==================================================================
+		// rgb prepare
+		//==================================================================
+		int l = 16 * x;
+		int r = 16 * y;
+		l = l > 255 ? 255 : l;
+		r = r > 255 ? 255 : r;
+		RGB_ptr rrgb(new RGBColor(MaxValue::Double255));
+		RGB_ptr lrgb(new RGBColor(MaxValue::Double255));
+		rrgb->setValue(ch, r);
+		lrgb->setValue(ch, l);
+		//==================================================================
+		double_vector_ptr measureResult =
+		    patternMeasure0(lrgb, rrgb, idleTime, aveTimes,
+				    leftrightChange);
+		if (true == stableTest) {
+		    vec.push_back(measureResult);
+		}
+		double meanY = getMeanLuminance(measureResult);
+		if (true == stop) {
+		    return double2D_ptr((double2D *) null);
+		}
+		(*result)[x][y] = meanY;
+	    }
+
+	    if (true == stableTest) {
+		int sheetNum = x * 16;
+		sheetNum = sheetNum >= 255 ? 255 : sheetNum;
+		string sheetName = _toString(sheetNum);
+		excel->initSheet(sheetName, fieldNames);
+
+		for (int m = 0; m < aveTimes; m++) {
+		    string_vector_ptr values(new string_vector());
+		    values->push_back(_toString(m + 1));
+		    for (int n = 0; n < 17; n++) {
+			double v = (*vec[n])[m];
+			values->push_back(_toString(v));
+		    }
+		    excel->insertData(sheetName, values, false);
+		}
+	    }
+	}
+
+	result = DoubleArray::transpose(result);
+	return result;
+    }
+
+    __finally {
+	stop = false;
+	ThreeDMeasureWindow->Visible = false;
+    }
+
+    return double2D_ptr((double2D *) null);
+};
+
+double TThreeDMeasurementForm::getMeanLuminance(double_vector_ptr result)
+{
+    int size = result->size();
+    double total = 0;
+    for (int x = 0; x != size; x++) {
+	total += (*result)[x];
+    }
+    return total / size;
+};
+void TThreeDMeasurementForm::
+storeResult(const string & sheetName,
+	    double2D_ptr result,
+	    bptr < cms::colorformat::ExcelAccessBase > excel)
+{
+    using namespace cms::util;
+    int height = result->dim1();
+    int weight = result->dim2();
+    if (height != 17 || weight != 17) {
+	ShowMessage("Measure result isn't 17x17 format.");
+	return;
+    }
+
+    for (int y = 0; y < height; y++) {
+	int v = y * 16;
+	v = v > 255 ? 255 : v;
+	string_vector_ptr measure =
+	    StringVector::fromDoubleArray(result, y);
+	string_vector_ptr data(new string_vector());
+	data->push_back(_toString(v));
+	data->insert(data->end(), measure->begin(), measure->end());
+	excel->insertData(sheetName, data, false);
+    }
+}
+
+double2D_ptr TThreeDMeasurementForm::crosstalk(double2D_ptr meaureResult)
+{
+    using namespace java::lang;
+    int height = meaureResult->dim1();
+    int weight = meaureResult->dim2();
+    if (height != 17 || weight != 17) {
+	throw
+	    IllegalArgumentException
+	    ("meaureResult->dim1() != 17 || meaureResult->dim1() != 17");
+    }
+
+    double2D_ptr result(new double2D(17, 17));
+    for (int h = 0; h < 17; h++) {
+	for (int w = 0; w < 17; w++) {
+
+	    if (h == w) {
+		(*result)[h][w] = -1;
+	    } else if (w > h) {
+		double BB = (*meaureResult)[h][h];
+		double BW = (*meaureResult)[h][w];
+		double WW = (*meaureResult)[w][w];
+		double v = whiteXTalk(BB, BW, WW);
+		(*result)[h][w] = IsNan(v) ? 0 : v;
+		//(*result)[h][w] =  std::isnan(v) ? 0 : v;
+	    } else {
+		double BB = (*meaureResult)[w][w];
+		double WB = (*meaureResult)[h][w];
+		double WW = (*meaureResult)[h][h];
+		double v = blackXTalk(BB, WB, WW);
+		(*result)[h][w] = IsNan(v) ? 0 : v;
+	    }
+
+	}
+    }
+    return result;
+};
+double TThreeDMeasurementForm::whiteXTalk(double BB, double BW, double WW)
+{
+    double denominator = WW - BB;
+    if (denominator == 0) {
+	return 0;
+    } else {
+	return (BW - BB) / denominator * 100;
+    }
+};
+double TThreeDMeasurementForm::blackXTalk(double BB, double WB, double WW)
+{
+    double denominator = WW - BB;
+    if (denominator == 0) {
+	return 0;
+    } else {
+	return (WW - WB) / denominator * 100;
+    }
+};
+void __fastcall TThreeDMeasurementForm::FormCreate(TObject * Sender)
+{
+    using namespace cms::measure::meter;
+    using namespace cms::measure;
+    if (true == linkCA210) {
+	try {
+	    ca210 = bptr < CA210 > (new CA210());
+	}
+	catch(EOleException & ex) {
+	    ShowMessage("CA210 cannot be linked.");
+	}
+    }
+}
+
+//---------------------------------------------------------------------------
+
+
+void __fastcall TThreeDMeasurementForm::
+Button_SpotMeasureClick(TObject * Sender)
+{
+    using namespace Dep;
+    int start = this->Edit_Start->Text.ToInt();
+    int target = this->Edit_Target->Text.ToInt();
+    this->Edit5->Text = start;
+    this->Edit6->Text = target;
+    this->Edit7->Text = start;
+    this->Edit8->Text = start;
+    this->Edit9->Text = target;
+    this->Edit10->Text = target;
+
+    bool leftrightChange = this->CheckBox_LeftRightChange->Checked;
+    int idleTime = this->Edit_IdleTime->Text.ToInt();
+    int aveTimes = this->Edit_AveTimes->Text.ToInt();
+
+    RGB_ptr lrgb(new RGBColor(start, start, start));
+    RGB_ptr rrgb(new RGBColor(target, target, target));
+
+    try {
+	double v0 = patternMeasure(lrgb, rrgb, idleTime, aveTimes,
+				   leftrightChange);
+	double v1 = patternMeasure(lrgb, lrgb, idleTime, aveTimes,
+				   leftrightChange);
+	double v2 = patternMeasure(rrgb, rrgb, idleTime, aveTimes,
+				   leftrightChange);
+	this->Edit11->Text = v0;
+	this->Edit12->Text = v1;
+	this->Edit13->Text = v2;
+	double v = 0;
+	if (start > target) {
+	    //lrgb > rrgb
+
+            //whiteXTalk(BB, BW, WW);
+            //v0,v1,v2=BW,WW,BB
+            v = whiteXTalk(v2, v0, v1);
+	} else {
+	    //lrgb < rrgb
+
+            //blackXTalk(BB, WB, WW);
+            //v0,v1,v2=WB,BB,WW
+            v = blackXTalk(v1, v0, v2);
+	}
+	this->Edit1->Text = v;
+
+    }
+    __finally {
+	stop = false;
+	ThreeDMeasureWindow->Visible = false;
+    }
+}
+
+//---------------------------------------------------------------------------
+
+void __fastcall TThreeDMeasurementForm::
+CheckBox_StableTestClick(TObject * Sender)
+{
+    /*if (true == this->CheckBox_StableTest->Checked) {
+       this->Edit_IdleTime->Enabled = false;
+       this->Edit_IdleTime->Text = 0;
+       } else {
+       this->Edit_IdleTime->Enabled = true;
+       this->Edit_IdleTime->Text = 200;
+       } */
+}
+
+//---------------------------------------------------------------------------
+
