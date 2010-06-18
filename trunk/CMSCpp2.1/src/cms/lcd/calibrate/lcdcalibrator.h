@@ -138,8 +138,12 @@ namespace cms {
 		 bptr < ComponentRelationIF > componentRelation;
 		 bptr < Interpolation1DLUT > wlut;
 		double getMaximumIntensity();
+		void initComponent(Component_vector_ptr componentVector,
+				   bool keepMaxLuminance);
 	      public:
 		 DGLutGenerator(Component_vector_ptr componentVector);
+		 DGLutGenerator(Component_vector_ptr componentVector,
+				bool keepMaxLuminance);
 		 DGLutGenerator(double_vector_ptr luminanceVector);
 		RGB_ptr getDGCode(double rIntensity, double gIntensity,
 				  double bIntensity);

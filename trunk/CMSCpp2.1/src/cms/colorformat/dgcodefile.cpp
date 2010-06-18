@@ -345,6 +345,12 @@ namespace cms {
 			analyzer->getPrimaryColor(Channel::B);
 		    dgcode.addProperty("reference white",
 				       *refWhitexyY->toString());
+		    string_ptr comment =
+			analyzer->getReferenceColorComment();
+		    if (null != comment) {
+			dgcode.addProperty("reference white comment",
+					   *comment);
+		    }
 		    dgcode.addProperty("primary R", *refRxyY->toString());
 		    dgcode.addProperty("primary G", *refGxyY->toString());
 		    dgcode.addProperty("primary B", *refBxyY->toString());

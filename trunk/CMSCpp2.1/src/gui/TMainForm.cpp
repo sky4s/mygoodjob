@@ -670,14 +670,14 @@ void TMainForm::disconnectMeter()
 {
     getCA210();
     if (null != ca210) {
-	ca210->getCA210API()->setRemoteMode(ca210api::Locked);
+	ca210->getCA210API()->setRemoteMode(ca210api::Off);
     }
 };
 void TMainForm::connectMeter()
 {
     getCA210();
     if (null != ca210) {
-	ca210->getCA210API()->setRemoteMode(ca210api::Off);
+        ca210->getCA210API()->setRemoteMode(ca210api::Locked);
     }
 };
 

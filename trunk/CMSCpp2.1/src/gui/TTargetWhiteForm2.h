@@ -118,7 +118,7 @@ class TTargetWhiteForm2:public TForm, cms::util::WindowListener {
     void setBitDepthProcessor(bptr <
 			      cms::lcd::calibrate::BitDepthProcessor >
 			      bitDepth);
- 
+
 };
 //---------------------------------------------------------------------------
 extern PACKAGE TTargetWhiteForm2 *TargetWhiteForm2;

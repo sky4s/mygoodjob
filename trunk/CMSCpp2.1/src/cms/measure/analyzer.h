@@ -21,12 +21,16 @@ namespace cms {
 	   Analyzer的功用就是從XYZ分析出Intensity
 	 */
 	class IntensityAnalyzerIF:public jObject {
+	  private:
+	    string_ptr comment;
 	  public:
 	    virtual RGB_ptr getIntensity(RGB_ptr rgb) = 0;
 	    virtual XYZ_ptr getCIEXYZ() = 0;
 	    virtual XYZ_ptr getCIEXYZOnly(RGB_ptr rgb) = 0;
 	    virtual void setupComponent(const Dep::Channel & ch,
 					RGB_ptr rgb) = 0;
+	    void setReferenceColorComment(const string & comment);
+	    string_ptr getReferenceColorComment();
 	    virtual void enter() = 0;
 	    virtual void beginAnalyze() = 0;
 	    virtual void endAnalyze() = 0;
