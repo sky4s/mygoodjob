@@ -133,9 +133,22 @@ void __fastcall TCCTLUTForm::Button_RunClick(TObject * Sender)
     }
     //==========================================================================
     calibrator.setAvoidFRCNoise(this->CheckBox_AvoidNoise->Checked);
-    calibrator.setKeepMaxLuminance(this->CheckBox_KeepMax->Checked);
+    //calibrator.setKeepMaxLuminance(this->CheckBox_KeepMax->Checked);
     calibrator.setNewMethod(this->CheckBox_NewMethod->Checked);
 
+    //==========================================================================
+    // Keep Max Luminance
+    //==========================================================================
+    if (true == RadioButton_MaxYNone->Checked) {
+	calibrator.setKeepMaxLuminance(KeepMaxLuminance::None);
+    } else if (true == RadioButton_MaxYTarget->Checked) {
+	calibrator.setKeepMaxLuminance(KeepMaxLuminance::TargetWhite);
+    } else if (true == RadioButton_MaxYNative->Checked) {
+	calibrator.setKeepMaxLuminance(KeepMaxLuminance::NativeWhite);
+    } else if (true == RadioButton_MaxYNativeAdv->Checked) {
+	calibrator.setKeepMaxLuminance(KeepMaxLuminance::NativeWhiteAdvanced);
+    }
+    //==========================================================================
     try {			//為了對應__finally使用的try
 	try {
 	    this->TOutputFileFrame1->createDir();
@@ -326,12 +339,10 @@ bptr < cms::lcd::calibrate::MeasureCondition >
 	int highend = this->Edit_HighEndLevel->Text.ToInt();
 	int highstep = this->ComboBox_HighStep->Text.ToInt();
 	condition = bptr < MeasureCondition > (new
-					       MeasureCondition(lowstart,
-								lowend,
-								lowstep,
-								highstart,
-								highend,
-								highstep));
+					       MeasureCondition
+					       (lowstart, lowend,
+						lowstep, highstart,
+						highend, highstep));
     } else {
 	int start = this->Edit_StartLevel->Text.ToInt();
 	int end = this->Edit_EndLevel->Text.ToInt();
@@ -395,15 +406,6 @@ void __fastcall TCCTLUTForm::RadioButton_DefinedDimClick(TObject * Sender)
 
 //---------------------------------------------------------------------------
 
-void __fastcall TCCTLUTForm::CheckBox_KeepMaxAdvClick(TObject * Sender)
-{
-    setLowLevelCorrectionEditDisable();
-    bool enable = this->CheckBox_KeepMaxAdv->Checked;
-    this->Edit_AdvGamma->Enabled = enable;
-    this->Edit_AdvOver->Enabled = enable;
-}
-
-//---------------------------------------------------------------------------
 
 
 void __fastcall TCCTLUTForm::CheckBox_BMax2Click(TObject * Sender)

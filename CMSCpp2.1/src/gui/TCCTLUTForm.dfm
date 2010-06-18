@@ -377,28 +377,12 @@ object CCTLUTForm: TCCTLUTForm
     end
   end
   object GroupBox5: TGroupBox
-    Left = 209
-    Top = 105
-    Width = 208
-    Height = 216
+    Left = 625
+    Top = 161
+    Width = 192
+    Height = 160
     Caption = 'Options'
     TabOrder = 4
-    object Label15: TLabel
-      Left = 32
-      Top = 89
-      Width = 29
-      Height = 16
-      Caption = 'Over'
-      Visible = False
-    end
-    object Label16: TLabel
-      Left = 32
-      Top = 121
-      Width = 49
-      Height = 16
-      Caption = 'Strength'
-      Visible = False
-    end
     object CheckBox_AvoidNoise: TCheckBox
       Left = 9
       Top = 17
@@ -407,55 +391,13 @@ object CCTLUTForm: TCCTLUTForm
       Caption = 'Avoid FRC Noise'
       TabOrder = 0
     end
-    object CheckBox_KeepMax: TCheckBox
-      Left = 9
-      Top = 41
-      Width = 152
-      Height = 24
-      Caption = 'Keep Max Luminance'
-      Checked = True
-      State = cbChecked
-      TabOrder = 1
-    end
-    object CheckBox_KeepMaxAdv: TCheckBox
-      Left = 9
-      Top = 65
-      Width = 192
-      Height = 24
-      Caption = 'Keep Max Luminance(Adv.)'
-      TabOrder = 2
-      Visible = False
-      OnClick = CheckBox_KeepMaxAdvClick
-    end
-    object Edit_AdvOver: TEdit
-      Left = 89
-      Top = 89
-      Width = 72
-      Height = 24
-      Enabled = False
-      ImeName = #26085#25991#36664#20837#31995#32113' (MS-IME2002)'
-      TabOrder = 3
-      Text = '235'
-      Visible = False
-    end
-    object Edit_AdvGamma: TEdit
-      Left = 89
-      Top = 121
-      Width = 72
-      Height = 24
-      Enabled = False
-      ImeName = #26085#25991#36664#20837#31995#32113' (MS-IME2002)'
-      TabOrder = 4
-      Text = '2.2'
-      Visible = False
-    end
     object CheckBox_NewMethod: TCheckBox
       Left = 9
-      Top = 144
+      Top = 40
       Width = 120
       Height = 25
       Caption = 'New Method'
-      TabOrder = 5
+      TabOrder = 1
       Visible = False
     end
   end
@@ -668,6 +610,84 @@ object CCTLUTForm: TCCTLUTForm
     Caption = 'Process'
     TabOrder = 10
     Visible = False
+  end
+  object GroupBox8: TGroupBox
+    Left = 208
+    Top = 104
+    Width = 209
+    Height = 217
+    Caption = 'Keep Max Luminance'
+    TabOrder = 11
+    object Label20: TLabel
+      Left = 32
+      Top = 113
+      Width = 29
+      Height = 16
+      Caption = 'Over'
+      Visible = False
+    end
+    object Label21: TLabel
+      Left = 32
+      Top = 145
+      Width = 49
+      Height = 16
+      Caption = 'Strength'
+      Visible = False
+    end
+    object RadioButton_MaxYTarget: TRadioButton
+      Left = 8
+      Top = 40
+      Width = 169
+      Height = 25
+      Caption = 'Target White'
+      TabOrder = 0
+    end
+    object RadioButton_MaxYNative: TRadioButton
+      Left = 8
+      Top = 64
+      Width = 161
+      Height = 25
+      Caption = 'Native White'
+      TabOrder = 1
+    end
+    object RadioButton_MaxYNone: TRadioButton
+      Left = 8
+      Top = 16
+      Width = 145
+      Height = 25
+      Caption = 'None'
+      Checked = True
+      TabOrder = 2
+      TabStop = True
+    end
+    object RadioButton_MaxYNativeAdv: TRadioButton
+      Left = 8
+      Top = 88
+      Width = 169
+      Height = 25
+      Caption = 'Native White(Advance)'
+      TabOrder = 3
+    end
+    object Edit_MaxYAdvOver: TEdit
+      Left = 89
+      Top = 113
+      Width = 72
+      Height = 24
+      ImeName = #26085#25991#36664#20837#31995#32113' (MS-IME2002)'
+      TabOrder = 4
+      Text = '235'
+      Visible = False
+    end
+    object Edit_MaxYAdvGamma: TEdit
+      Left = 89
+      Top = 145
+      Width = 72
+      Height = 24
+      ImeName = #26085#25991#36664#20837#31995#32113' (MS-IME2002)'
+      TabOrder = 5
+      Text = '2.2'
+      Visible = False
+    end
   end
   object OpenDialog1: TOpenDialog
     Filter = 'DGCode Files(*.xls)|*.xls'
