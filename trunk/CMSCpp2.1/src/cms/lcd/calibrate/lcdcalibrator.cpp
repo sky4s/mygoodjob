@@ -378,7 +378,7 @@ namespace cms {
 	     */
 	    void DGLutGenerator::
 		initComponent(Component_vector_ptr componentVector,
-			      bool keepMaxLuminance) {
+			      bool keepTargetWhiteMaxLuminance) {
 		//==============================================================
 		// 計算a/c/d
 		//==============================================================
@@ -395,7 +395,7 @@ namespace cms {
 		//==============================================================
 
 		double maxintensity = Math::roundTo(getMaximumIntensity());
-		if (!keepMaxLuminance) {
+		if (!keepTargetWhiteMaxLuminance) {
 		    maxintensity =
 			(maxintensity > 100) ? 100 : maxintensity;
 		}
@@ -409,14 +409,22 @@ namespace cms {
 	    };
 
 	  DGLutGenerator::DGLutGenerator(Component_vector_ptr componentVector):componentVector
-		(componentVector), mode(Component)
-	    {
-		initComponent(componentVector, true);
+		(componentVector), mode(Component),
+		keepMaxLuminance(KeepMaxLuminance::TargetWhite) {
+		initComponent(componentVector, keepMaxLuminance ==
+			      KeepMaxLuminance::TargetWhite);
 	    };
-	  DGLutGenerator::DGLutGenerator(Component_vector_ptr componentVector, bool keepMaxLuminance):componentVector
-		(componentVector), mode(Component)
-	    {
-		initComponent(componentVector, keepMaxLuminance);
+	    /*DGLutGenerator::DGLutGenerator(Component_vector_ptr componentVector, bool keepMaxLuminance):componentVector
+	       (componentVector), mode(Component)
+	       {
+	       initComponent(componentVector, keepMaxLuminance);
+	       }; */
+	  DGLutGenerator::DGLutGenerator(Component_vector_ptr componentVector, KeepMaxLuminance keepMaxLuminance):componentVector
+		(componentVector),
+		mode(Component), keepMaxLuminance(keepMaxLuminance) {
+		initComponent(componentVector,
+			      keepMaxLuminance ==
+			      KeepMaxLuminance::TargetWhite);
 	    };
 	  DGLutGenerator::DGLutGenerator(double_vector_ptr luminanceVector):luminanceVector(luminanceVector), mode(WLumi)
 	    {
@@ -658,18 +666,18 @@ namespace cms {
 	    void LCDCalibrator::setP1P2(int p1, int p2) {
 		this->p1 = p1;
 		this->p2 = p2;
-		this->correct = P1P2;
+		this->correct = Correct::P1P2;
 	    };
 	    void LCDCalibrator::setRBInterpolation(int under) {
-		this->correct = RBInterpolation;
+		this->correct = Correct::RBInterpolation;
 		this->under = under;
 	    };
 	    void LCDCalibrator::setNonDimCorrect() {
-		this->correct = None;
+		this->correct = Correct::None;
 	    };
 
 	    void LCDCalibrator::setDefinedDim(int under, bool averageDimDG) {
-		this->correct = DefinedDim;
+		this->correct = Correct::DefinedDim;
 		this->under = under;
 		this->averageDimDG = averageDimDG;
 	    };
@@ -737,7 +745,8 @@ namespace cms {
 	    void LCDCalibrator::setAvoidFRCNoise(bool avoid) {
 		this->avoidFRCNoise = avoid;
 	    };
-	    void LCDCalibrator::setKeepMaxLuminance(bool keepMaxLuminance) {
+	    void LCDCalibrator::
+		setKeepMaxLuminance(KeepMaxLuminance keepMaxLuminance) {
 		this->keepMaxLuminance = keepMaxLuminance;
 	    };
 	    void LCDCalibrator::setNewMethod(bool enable) {
@@ -874,7 +883,7 @@ namespace cms {
 		    RGBVector::quantization(dglut, quantizationBit);
 		    //==============================================================
 
-		    if (correct == P1P2) {
+		    if (correct == Correct::P1P2) {
 			//==========================================================
 			//p1p2第一階段, 對gamma做調整
 			//==========================================================
@@ -909,7 +918,7 @@ namespace cms {
 			//量化
 			STORE_RGBVECTOR("6_dgcode_p1p2dg.xls", dglut);
 			//==========================================================
-		    } else if (correct == DefinedDim) {
+		    } else if (correct == Correct::DefinedDim) {
 			/*
 			   DimDGLutGenerator
 			   in: target white , gamma(Y)
@@ -1052,7 +1061,7 @@ namespace cms {
 		//==============================================================
 		// dim修正
 		//==============================================================
-		if (correct == RBInterpolation) {
+		if (correct == Correct::RBInterpolation) {
 		    bptr < DGLutOp > op(new RBInterpolationOp(under));
 		    dgop.addOp(op);
 		}		/*else if (correct == New) {

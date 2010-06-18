@@ -45,7 +45,6 @@ class TCCTLUTForm:public TForm {
     TEdit *Edit_P2;
     TButton *Button_Debug;
     TRadioButton *RadioButton_None;
-    TCheckBox *CheckBox_KeepMax;
     TLabel *Label9;
     TOutputFileFrame *TOutputFileFrame1;
     TCheckBox *CheckBox_Expand;
@@ -72,17 +71,21 @@ class TCCTLUTForm:public TForm {
     TCheckBox *CheckBox_AverageDimDG;
     TLabel *Label14;
     TEdit *Edit_DimGamma;
-    TCheckBox *CheckBox_KeepMaxAdv;
-    TLabel *Label15;
-    TEdit *Edit_AdvOver;
-    TEdit *Edit_AdvGamma;
-    TLabel *Label16;
     TCheckBox *CheckBox_NewMethod;
     TCheckBox *CheckBox_BMax2;
     TLabel *Label18;
     TEdit *Edit_BMax2Begin;
     TLabel *Label19;
     TEdit *Edit_BMax2Gamma;
+    TGroupBox *GroupBox8;
+    TRadioButton *RadioButton_MaxYTarget;
+    TRadioButton *RadioButton_MaxYNative;
+    TRadioButton *RadioButton_MaxYNone;
+    TRadioButton *RadioButton_MaxYNativeAdv;
+    TLabel *Label20;
+    TEdit *Edit_MaxYAdvOver;
+    TEdit *Edit_MaxYAdvGamma;
+    TLabel *Label21;
     void __fastcall RadioButton_RBInterpClick(TObject * Sender);
     void __fastcall RadioButton_P1P2Click(TObject * Sender);
     void __fastcall Button_RunClick(TObject * Sender);
@@ -100,7 +103,6 @@ class TCCTLUTForm:public TForm {
     //void __fastcall RadioButton_NewClick(TObject * Sender);
     void __fastcall Button_ResetClick(TObject * Sender);
     void __fastcall RadioButton_DefinedDimClick(TObject * Sender);
-    void __fastcall CheckBox_KeepMaxAdvClick(TObject * Sender);
     void __fastcall CheckBox_BMax2Click(TObject * Sender);
   private:			// User declarations
     void setMeasureInfo();

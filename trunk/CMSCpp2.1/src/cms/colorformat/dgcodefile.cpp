@@ -292,13 +292,13 @@ namespace cms {
 	    }
 	    string correctstr;
 	    switch (c->correct) {
-	    case cms::lcd::calibrate::P1P2:
+	    case Correct::P1P2:
 		correctstr = "P1P2";
 		break;
-	    case cms::lcd::calibrate::RBInterpolation:
+	    case Correct::RBInterpolation:
 		correctstr = "RBInterpolation";
 		break;
-	    case cms::lcd::calibrate::None:
+	    case Correct::None:
 		correctstr = "None";
 		break;
 		/*case cms::lcd::calibrate::New:

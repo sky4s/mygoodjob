@@ -118,15 +118,19 @@ namespace cms {
 					       double intensity);
 		double getMaxBIntensity();
 	    };
+	     Enumeration(KeepMaxLuminance)
+	     None, TargetWhite, NativeWhite, NativeWhiteAdvanced,
+		EnumerationEnd()
 
-	    /*
-	       根據量測結果, 產生需求的DG Lut
-	     */
+		/*
+		   根據量測結果, 產生需求的DG Lut
+		 */
 	    class DGLutGenerator {
 	      private:
 		enum Mode {
 		    Component, WLumi, RGBLumi,
 		};
+		KeepMaxLuminance keepMaxLuminance;
 	      protected:
 		 Mode mode;
 		Component_vector_ptr componentVector;
@@ -139,11 +143,13 @@ namespace cms {
 		 bptr < Interpolation1DLUT > wlut;
 		double getMaximumIntensity();
 		void initComponent(Component_vector_ptr componentVector,
-				   bool keepMaxLuminance);
+				   bool keepTargetWhiteMaxLuminance);
 	      public:
 		 DGLutGenerator(Component_vector_ptr componentVector);
+		/*DGLutGenerator(Component_vector_ptr componentVector,
+		   bool keepMaxLuminance); */
 		 DGLutGenerator(Component_vector_ptr componentVector,
-				bool keepMaxLuminance);
+				KeepMaxLuminance keepMaxLuminance);
 		 DGLutGenerator(double_vector_ptr luminanceVector);
 		RGB_ptr getDGCode(double rIntensity, double gIntensity,
 				  double bIntensity);
@@ -162,14 +168,15 @@ namespace cms {
 		double getMaxBIntensity();
 	    };
 
-	    enum Correct {
-		P1P2 = 1, RBInterpolation = 2, None = 3,	/*New = 4, New2 =
-								   5, */ DefinedDim = 6
-	    };
+	    /*enum Correct {
+	       P1P2 = 1, RBInterpolation = 2, None = 3, DefinedDim = 6
+	       }; */
+	     Enumeration(Correct)
+	     P1P2, RBInterpolation, None, DefinedDim, EnumerationEnd()
 
-	    /*
-	       用來記載量測的條件, 方便做參數傳遞
-	     */
+		/*
+		   用來記載量測的條件, 方便做參數傳遞
+		 */
 	    class MeasureCondition {
 	      public:
 		const int start;
@@ -204,6 +211,8 @@ namespace cms {
 		bool isNoRemainder(int start, int end, int step);
 	    };
 
+
+
 	    class LCDCalibrator {
 		friend class cms::colorformat::DGLutProperty;
 	      private:
@@ -221,9 +230,7 @@ namespace cms {
 		bool bMax2;
 		int bMax2Begin;
 		double bMax2Gamma;
-		bool keepMaxLuminance;
 		bool avoidFRCNoise;
-		//bool rgbgamma;
 		bool rgbIndepGamma;
 		double gamma, rgamma, ggamma, bgamma;
 		bool useGammaCurve;
@@ -235,6 +242,7 @@ namespace cms {
 		double_vector_ptr bgammaCurve;
 		 bptr < MeasureCondition > measureCondition;
 		 bptr < BitDepthProcessor > bitDepth;
+		KeepMaxLuminance keepMaxLuminance;
 		//==============================================================
 
 		//bptr < DGLutGenerator > generator;
@@ -277,7 +285,8 @@ namespace cms {
 		void setBMax(bool bMax);
 		void setBMax2(bool bMax2, int begin, double gamma);
 		void setAvoidFRCNoise(bool avoid);
-		void setKeepMaxLuminance(bool keepMaxLuminance);
+		void setKeepMaxLuminance(KeepMaxLuminance
+					 keepMaxLuminance);
 		void setNewMethod(bool enable);
 
 		 LCDCalibrator(bptr <
