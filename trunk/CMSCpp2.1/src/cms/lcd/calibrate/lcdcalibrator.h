@@ -243,6 +243,8 @@ namespace cms {
 		 bptr < MeasureCondition > measureCondition;
 		 bptr < BitDepthProcessor > bitDepth;
 		KeepMaxLuminance keepMaxLuminance;
+		int keepMaxLumiOver;
+		double keepMaxLumiGamma;
 		//==============================================================
 
 		//bptr < DGLutGenerator > generator;
@@ -287,6 +289,8 @@ namespace cms {
 		void setAvoidFRCNoise(bool avoid);
 		void setKeepMaxLuminance(KeepMaxLuminance
 					 keepMaxLuminance);
+		void setKeepMaxLuminanceNativeWhiteAdvanced(int over,
+							    double gamma);
 		void setNewMethod(bool enable);
 
 		 LCDCalibrator(bptr <

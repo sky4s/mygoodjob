@@ -417,3 +417,4 @@ void __fastcall TCCTLUTForm::CheckBox_BMax2Click(TObject * Sender)
 
 //---------------------------------------------------------------------------
 
+
