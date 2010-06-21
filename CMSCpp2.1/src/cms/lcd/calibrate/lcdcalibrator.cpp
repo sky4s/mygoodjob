@@ -747,7 +747,21 @@ namespace cms {
 	    };
 	    void LCDCalibrator::
 		setKeepMaxLuminance(KeepMaxLuminance keepMaxLuminance) {
+		if (keepMaxLuminance ==
+		    KeepMaxLuminance::NativeWhiteAdvanced) {
+		    throw
+			UnsupportedOperationException
+			("Please call setKeepMaxLuminanceNativeWhiteAdvanced().");
+		}
 		this->keepMaxLuminance = keepMaxLuminance;
+	    };
+	    void LCDCalibrator::
+		setKeepMaxLuminanceNativeWhiteAdvanced(int over,
+						       double gamma) {
+		this->keepMaxLuminance =
+		    KeepMaxLuminance::NativeWhiteAdvanced;
+		this->keepMaxLumiOver = over;
+		this->keepMaxLumiGamma = gamma;
 	    };
 	    void LCDCalibrator::setNewMethod(bool enable) {
 		this->newMethod = enable;
@@ -1092,12 +1106,12 @@ namespace cms {
 		    dgop.addOp(avoidNoise);
 		}
 
-		/*if (keepMaxLuminance) {
-		   //keep最大亮度
-		   bptr < DGLutOp >
-		   KeepMax(new KeepMaxLuminanceOp(bitDepth));
-		   dgop.addOp(KeepMax);
-		   } */
+		if (KeepMaxLuminance::TargetWhite == keepMaxLuminance) {
+		    //keep最大亮度
+		    bptr < DGLutOp >
+			KeepMax(new KeepMaxLuminanceOp(bitDepth));
+		    dgop.addOp(KeepMax);
+		}
 		RGB_vector_ptr result = dgop.createInstance();
 		return result;
 		//==============================================================
