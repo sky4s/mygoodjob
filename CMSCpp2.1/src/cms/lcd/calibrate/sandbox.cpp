@@ -29,7 +29,8 @@ namespace cms {
 				       componentVector,
 				       bptr < IntensityAnalyzerIF >
 				       analyzer):DimDGLutGenerator
-		(componentVector, analyzer) {
+		(componentVector, analyzer),
+		useMaxTargetBIntensity(false) {
 	    };
 
 	    RGB_vector_ptr AdvancedDGLutGenerator::
@@ -65,38 +66,68 @@ namespace cms {
 		xyY_ptr rxyY = analyzer->getPrimaryColor(Channel::R);
 		xyY_ptr gxyY = analyzer->getPrimaryColor(Channel::G);
 		xyY_ptr bxyY = analyzer->getPrimaryColor(Channel::B);
-		int x = 0;
-		 x;
 		double targetBIntensity = -1;
 
-		for (x = size - 1; x != -1; x--) {
+		for (int x = size - 1; x != -1; x--) {
 		    XYZ_ptr targetXYZ = (*targetXYZVector)[x];
 		     bptr < MaxMatrixIntensityAnayzer >
-			analyzer(new MaxMatrixIntensityAnayzer());
+			mmia(new MaxMatrixIntensityAnayzer());
 
-		     analyzer->setupComponent(Channel::R, rxyY->toXYZ());
-		     analyzer->setupComponent(Channel::G, gxyY->toXYZ());
-		     analyzer->setupComponent(Channel::B, bxyY->toXYZ());
-		     analyzer->setupComponent(Channel::W, targetXYZ);
-		     analyzer->enter();
+		     mmia->setupComponent(Channel::R, rxyY->toXYZ());
+		     mmia->setupComponent(Channel::G, gxyY->toXYZ());
+		     mmia->setupComponent(Channel::B, bxyY->toXYZ());
+		     mmia->setupComponent(Channel::W, targetXYZ);
+		     mmia->enter();
 
 		    Component_vector_ptr newcomponentVector =
-			fetchComponent(analyzer, componentVector);
+			fetchComponent(mmia, componentVector);
 		     STORE_COMPONENT(_toString(x++) + ".xls",
 				     newcomponentVector);
 		    DGLutGenerator lutgen(newcomponentVector);
 		    //±Ä100¶Ü?
 		    if (targetBIntensity == -1) {
-			targetBIntensity = lutgen.getMaxBIntensity();
+			targetBIntensity =
+			    useMaxTargetBIntensity ? lutgen.
+			    getMaxBIntensity() : 100;
 		    };
-		    RGB_ptr rgb = lutgen.getDGCode(100, 100, 100);
-		    /*RGB_ptr rgb =
-		       lutgen.getDGCode(100, 100, targetBIntensity); */
-
+		    RGB_ptr rgb = lutgen.getDGCode(100, 100,
+						   targetBIntensity);
 		     (*result)[x] = rgb;
 		};
 
 		return result;
+	    };
+	    bool AdvancedDGLutGenerator::isAvoidHook(XYZ_ptr targetXYZ,
+						     double offsetInK) {
+		xyY_ptr xyY(new CIExyY(targetXYZ));
+		double cct =
+		    CorrelatedColorTemperature::xy2CCTByMcCamyFloat(xyY);
+		double cctOffset = cct + offsetInK;
+		xyY_ptr xyYOffset =
+		    CorrelatedColorTemperature::
+		    CCT2DIlluminantxyY(cctOffset);
+		xyYOffset->Y = targetXYZ->Y;
+		XYZ_ptr XYZOffset = xyYOffset->toXYZ();
+		return isDuplicateBlue100(XYZOffset);
+	    };
+	    bool AdvancedDGLutGenerator::
+		isDuplicateBlue100(XYZ_ptr targetXYZ) {
+		xyY_ptr rxyY = analyzer->getPrimaryColor(Channel::R);
+		xyY_ptr gxyY = analyzer->getPrimaryColor(Channel::G);
+		xyY_ptr bxyY = analyzer->getPrimaryColor(Channel::B);
+
+		bptr < MaxMatrixIntensityAnayzer >
+		    mmia(new MaxMatrixIntensityAnayzer());
+		mmia->setupComponent(Channel::R, rxyY->toXYZ());
+		mmia->setupComponent(Channel::G, gxyY->toXYZ());
+		mmia->setupComponent(Channel::B, bxyY->toXYZ());
+		mmia->setupComponent(Channel::W, targetXYZ);
+		mmia->enter();
+
+		Component_vector_ptr newcomponentVector =
+		    fetchComponent(mmia, componentVector);
+
+		return isDuplicateBlue100(newcomponentVector);
 	    };
 
 	    XYZ_vector_ptr AdvancedDGLutGenerator::
@@ -198,14 +229,19 @@ namespace cms {
 		return result;
 	    };
 
-	    XYZ_ptr AdvancedDGLutGenerator::getTargetXYZ(double x,
-							 double y,
-							 double z,
+	    void AdvancedDGLutGenerator::
+		setUseMaxTargetBIntensity(bool useMaxTargetBIntensity) {
+		this->useMaxTargetBIntensity = useMaxTargetBIntensity;
+	    };
+
+	    XYZ_ptr AdvancedDGLutGenerator::getTargetXYZ(double v1,
+							 double v2,
+							 double v3,
 							 Domain domain) {
 		double_array targetValues(new double[3]);
-		targetValues[0] = x;
-		targetValues[1] = y;
-		targetValues[2] = z;
+		targetValues[0] = v1;
+		targetValues[1] = v2;
+		targetValues[2] = v3;
 
 		CIExyY targetxyY;
 		switch (domain) {
@@ -236,6 +272,8 @@ namespace cms {
 		}
 		return timesOfB100 == 2;
 	    };
+
+
 	    //==================================================================
 	    //==================================================================
 	    // DimTargetGenerator
