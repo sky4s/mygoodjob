@@ -56,10 +56,19 @@ class TThreeDMeasurementForm:public TForm {
     TEdit *Edit1;
     TLabel *Label7;
     TCheckBox *CheckBox_StableTest;
+    TComboBox *ComboBox_MeasureMode;
+    TEdit *Edit2;
+    TEdit *Edit3;
+    TEdit *Edit4;
+    TEdit *Edit14;
+    TLabel *Label8;
+    TCheckBox *CheckBox_Extend;
     void __fastcall Button_MeasureClick(TObject * Sender);
     void __fastcall FormCreate(TObject * Sender);
     void __fastcall Button_SpotMeasureClick(TObject * Sender);
     void __fastcall CheckBox_StableTestClick(TObject * Sender);
+    void __fastcall CheckBox_ExtendClick(TObject * Sender);
+    //void __fastcall CheckBox_ExtendClick(TObject *Sender);
 
   private:			// User declarations
      bptr < cms::measure::meter::CA210 > ca210;

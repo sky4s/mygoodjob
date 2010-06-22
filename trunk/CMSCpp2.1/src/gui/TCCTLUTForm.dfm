@@ -441,6 +441,7 @@ object CCTLUTForm: TCCTLUTForm
       end
       inherited Edit_Prefix: TEdit
         Top = 25
+        Text = 'Cal_Table'
       end
       inherited Edit_Directory: TEdit
         Top = 57

@@ -99,6 +99,10 @@ namespace math {
       public:
 	static int max(int_array array, int n);
     };
+    
+    class Minimisation {
+
+    };
 };
 #endif
 
