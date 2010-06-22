@@ -1,8 +1,8 @@
 object ThreeDMeasurementForm: TThreeDMeasurementForm
   Left = 287
   Top = 178
-  Width = 434
-  Height = 340
+  Width = 436
+  Height = 337
   Caption = '3D OD Measurement'
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
@@ -134,6 +134,20 @@ object ThreeDMeasurementForm: TThreeDMeasurementForm
           TabOrder = 3
           OnClick = CheckBox_StableTestClick
         end
+        object ComboBox_MeasureMode: TComboBox
+          Left = 112
+          Top = 120
+          Width = 89
+          Height = 24
+          Enabled = False
+          ItemHeight = 16
+          ItemIndex = 1
+          TabOrder = 4
+          Text = 'Fast'
+          Items.Strings = (
+            'Auto'
+            'Fast')
+        end
       end
       object GroupBox3: TGroupBox
         Left = 240
@@ -232,7 +246,7 @@ object ThreeDMeasurementForm: TThreeDMeasurementForm
         Left = 8
         Top = 104
         Width = 369
-        Height = 121
+        Height = 161
         Caption = 'Result'
         TabOrder = 2
         object Label7: TLabel
@@ -241,6 +255,14 @@ object ThreeDMeasurementForm: TThreeDMeasurementForm
           Width = 12
           Height = 16
           Caption = '%'
+        end
+        object Label8: TLabel
+          Left = 320
+          Top = 120
+          Width = 12
+          Height = 16
+          Caption = '%'
+          Visible = False
         end
         object Edit5: TEdit
           Left = 8
@@ -328,6 +350,53 @@ object ThreeDMeasurementForm: TThreeDMeasurementForm
           TabOrder = 9
           Text = '0.0'
         end
+        object Edit2: TEdit
+          Left = 8
+          Top = 120
+          Width = 41
+          Height = 24
+          Color = cl3DLight
+          Enabled = False
+          TabOrder = 10
+          Visible = False
+        end
+        object Edit3: TEdit
+          Left = 56
+          Top = 120
+          Width = 41
+          Height = 24
+          Color = cl3DLight
+          Enabled = False
+          TabOrder = 11
+          Visible = False
+        end
+        object Edit4: TEdit
+          Left = 112
+          Top = 120
+          Width = 89
+          Height = 24
+          TabOrder = 12
+          Text = '0.0'
+          Visible = False
+        end
+        object Edit14: TEdit
+          Left = 224
+          Top = 120
+          Width = 89
+          Height = 24
+          TabOrder = 13
+          Text = '0.0'
+          Visible = False
+        end
+      end
+      object CheckBox_Extend: TCheckBox
+        Left = 144
+        Top = 40
+        Width = 89
+        Height = 25
+        Caption = 'Extend'
+        TabOrder = 3
+        OnClick = CheckBox_ExtendClick
       end
     end
   end

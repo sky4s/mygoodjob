@@ -42,7 +42,7 @@ void __fastcall TThreeDMeasurementForm::Button_MeasureClick(TObject *
     using namespace Dep;
     using namespace cms::util;
     using namespace cms::colorformat;
-
+    using namespace ca210api;
 
 
 
@@ -72,6 +72,18 @@ void __fastcall TThreeDMeasurementForm::Button_MeasureClick(TObject *
        return;
        } */
     bool stableTest = this->CheckBox_StableTest->Checked;
+    if (true == stableTest) {
+	int index = this->ComboBox_MeasureMode->ItemIndex;
+	bptr < ca210api::CA210API > ca210api = ca210->getCA210API();
+	switch (index) {
+	case 0:
+	    ca210api->setAveragingMode(Auto);
+	    break;
+	case 1:
+	    ca210api->setAveragingMode(Fast);
+	    break;
+	}
+    }
 
     string filename = this->OutputFileFrame1->getOutputFilename()->c_str();
     Util::deleteExist(filename);
@@ -380,8 +392,11 @@ Button_SpotMeasureClick(TObject * Sender)
     this->Edit8->Text = start;
     this->Edit9->Text = target;
     this->Edit10->Text = target;
+    this->Edit2->Text = target;
+    this->Edit3->Text = start;
 
     bool leftrightChange = this->CheckBox_LeftRightChange->Checked;
+    bool extend = this->CheckBox_Extend->Checked;
     int idleTime = this->Edit_IdleTime->Text.ToInt();
     int aveTimes = this->Edit_AveTimes->Text.ToInt();
 
@@ -395,25 +410,28 @@ Button_SpotMeasureClick(TObject * Sender)
 				   leftrightChange);
 	double v2 = patternMeasure(rrgb, rrgb, idleTime, aveTimes,
 				   leftrightChange);
+	double v3 = 0;
+	if (extend) {
+	    v3 = patternMeasure(rrgb, lrgb, idleTime, aveTimes,
+				leftrightChange);
+	    this->Edit4->Text = v3;
+	}
+
 	this->Edit11->Text = v0;
 	this->Edit12->Text = v1;
 	this->Edit13->Text = v2;
-	double v = 0;
+	double v = 0, vv = 0;
 	if (start > target) {
 	    //lrgb > rrgb
-
-            //whiteXTalk(BB, BW, WW);
-            //v0,v1,v2=BW,WW,BB
-            v = whiteXTalk(v2, v0, v1);
+	    v = whiteXTalk(v2, v0, v1);
+	    vv = blackXTalk(v2, v3, v1);
 	} else {
 	    //lrgb < rrgb
-
-            //blackXTalk(BB, WB, WW);
-            //v0,v1,v2=WB,BB,WW
-            v = blackXTalk(v1, v0, v2);
+	    v = blackXTalk(v1, v0, v2);
+	    vv = whiteXTalk(v1, v3, v2);
 	}
 	this->Edit1->Text = v;
-
+	this->Edit14->Text = vv;
     }
     __finally {
 	stop = false;
@@ -426,13 +444,29 @@ Button_SpotMeasureClick(TObject * Sender)
 void __fastcall TThreeDMeasurementForm::
 CheckBox_StableTestClick(TObject * Sender)
 {
-    /*if (true == this->CheckBox_StableTest->Checked) {
-       this->Edit_IdleTime->Enabled = false;
-       this->Edit_IdleTime->Text = 0;
-       } else {
-       this->Edit_IdleTime->Enabled = true;
-       this->Edit_IdleTime->Text = 200;
-       } */
+    bool test = this->CheckBox_StableTest->Checked;
+    ComboBox_MeasureMode->Enabled = test;
+    if (test) {
+	Edit_IdleTime->Text = 0;
+	Edit_AveTimes->Text = 66;
+    }
+
+}
+
+//---------------------------------------------------------------------------
+
+
+//---------------------------------------------------------------------------
+
+void __fastcall TThreeDMeasurementForm::CheckBox_ExtendClick(TObject *
+							     Sender)
+{
+    bool extend = this->CheckBox_Extend->Checked;
+    Edit2->Visible = extend;
+    Edit3->Visible = extend;
+    Edit4->Visible = extend;
+    Edit14->Visible = extend;
+    Label8->Visible = extend;
 }
 
 //---------------------------------------------------------------------------
