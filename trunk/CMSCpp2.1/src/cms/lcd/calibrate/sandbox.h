@@ -20,6 +20,8 @@ namespace cms {
 	    };
 
 	    class AdvancedDGLutGenerator:private DimDGLutGenerator {
+	      private:
+		bool useMaxTargetBIntensity;
 	      public:
 		AdvancedDGLutGenerator(Component_vector_ptr
 				       componentVector,
@@ -33,6 +35,8 @@ namespace cms {
 				       int brightTurn,
 				       double dimGamma,
 				       double brightGamma);
+		bool isAvoidHook(XYZ_ptr targetXYZ, double offsetInK);
+		bool isDuplicateBlue100(XYZ_ptr targetXYZ);
 		static XYZ_vector_ptr getTarget(XYZ_ptr startXYZ,
 						XYZ_ptr targetXYZ,
 						XYZ_ptr endXYZ,
@@ -43,10 +47,15 @@ namespace cms {
 						double dimGamma,
 						double brightGamma,
 						Domain domain);
-		static XYZ_ptr getTargetXYZ(double x, double y, double z,
-					    Domain domain);
+		void setUseMaxTargetBIntensity(bool
+					       useMaxTargetBIntensity);
+	      private:
+		static XYZ_ptr getTargetXYZ(double v1, double v2,
+					    double v3, Domain domain);
 		static bool isDuplicateBlue100(Component_vector_ptr
 					       componentVector);
+
+
 	    };
 
 
