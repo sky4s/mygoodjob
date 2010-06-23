@@ -22,21 +22,33 @@ namespace cms {
 	    class AdvancedDGLutGenerator:private DimDGLutGenerator {
 	      private:
 		bool useMaxTargetBIntensity;
+		bool isAvoidHook(XYZ_ptr targetXYZ, double offsetK);
+		XYZ_ptr getXYZ(XYZ_ptr XYZ, double offsetK);
+		bool isDuplicateBlue100(XYZ_ptr targetXYZ);
 	      public:
-		AdvancedDGLutGenerator(Component_vector_ptr
-				       componentVector,
-				       bptr <
-				       cms::measure::IntensityAnalyzerIF >
-				       analyzer);
+		 AdvancedDGLutGenerator(Component_vector_ptr
+					componentVector,
+					bptr <
+					cms::measure::IntensityAnalyzerIF >
+					analyzer);
 		RGB_vector_ptr produce(XYZ_ptr targetWhite,
 				       double_vector_ptr
-				       luminanceGammaCurve,
-				       int dimTurn,
-				       int brightTurn,
-				       double dimGamma,
+				       luminanceGammaCurve, int dimTurn,
+				       int brightTurn, double dimGamma,
 				       double brightGamma);
-		bool isAvoidHook(XYZ_ptr targetXYZ, double offsetInK);
-		bool isDuplicateBlue100(XYZ_ptr targetXYZ);
+		RGB_vector_ptr produce(XYZ_ptr targetWhite,
+				       double_vector_ptr
+				       luminanceGammaCurve, int dimTurn,
+				       int brightTurn, double dimGamma,
+				       double brightGamma, bool avoidHook);
+
+		XYZ_vector_ptr getAvoidHookTarget(XYZ_ptr startXYZ,
+						  XYZ_ptr targetXYZ,
+						  double_vector_ptr
+						  luminanceGammaCurve,
+						  int dimTurn,
+						  int brightTurn,
+						  double dimGamma);
 		static XYZ_vector_ptr getTarget(XYZ_ptr startXYZ,
 						XYZ_ptr targetXYZ,
 						XYZ_ptr endXYZ,
@@ -45,13 +57,28 @@ namespace cms {
 						int dimTurn,
 						int brightTurn,
 						double dimGamma,
-						double brightGamma,
-						Domain domain);
+						double brightGamma);
+
 		void setUseMaxTargetBIntensity(bool
 					       useMaxTargetBIntensity);
 	      private:
+
+		static XYZ_vector_ptr getDimGammaTarget(double_vector_ptr
+							luminanceGammaCurve,
+							XYZ_ptr startXYZ,
+							XYZ_ptr endXYZ,
+							double dimGamma,
+							int dimTurn);
+		static XYZ_vector_ptr
+		    getBrightGammaTarget(double_vector_ptr
+					 luminanceGammaCurve,
+					 XYZ_ptr startXYZ, XYZ_ptr endXYZ,
+					 double brightGamma,
+					 int brightTurn);
 		static XYZ_ptr getTargetXYZ(double v1, double v2,
 					    double v3, Domain domain);
+		static XYZ_ptr getTargetXYZ(double v1, double v2,
+					    double v3);
 		static bool isDuplicateBlue100(Component_vector_ptr
 					       componentVector);
 

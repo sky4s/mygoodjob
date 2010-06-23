@@ -30,7 +30,8 @@ namespace cms {
 	    static bool isFileExist(const std::string & filename);
 	    static bptr < WideString > toWideString(const std::string & s);
 	    static void shellExecute(const std::string & filename);
-
+	    static void storeXYZxyVector(const std::string & filename,
+					 XYZ_vector_ptr XYZVector);
 	};
 
 	class StringVector {

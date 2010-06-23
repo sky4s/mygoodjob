@@ -35,11 +35,18 @@ namespace cms {
 
 	    RGB_vector_ptr AdvancedDGLutGenerator::
 		produce(XYZ_ptr targetWhite,
-			double_vector_ptr
-			luminanceGammaCurve,
-			int dimTurn,
-			int brightTurn,
-			double dimGamma, double brightGamma) {
+			double_vector_ptr luminanceGammaCurve, int dimTurn,
+			int brightTurn, double dimGamma,
+			double brightGamma) {
+		return produce(targetWhite, luminanceGammaCurve, dimTurn,
+			       brightTurn, dimGamma, brightGamma, false);
+	    };
+
+	    RGB_vector_ptr AdvancedDGLutGenerator::
+		produce(XYZ_ptr targetWhite,
+			double_vector_ptr luminanceGammaCurve, int dimTurn,
+			int brightTurn, double dimGamma,
+			double brightGamma, bool avoidHook) {
 		//==============================================================
 		// 資訊準備
 		//==============================================================
@@ -48,16 +55,24 @@ namespace cms {
 		XYZ_ptr nativeWhite = (*componentVector)[0]->XYZ;
 
 		//求目標值曲線
-		XYZ_vector_ptr targetXYZVector = getTarget(blackXYZ,
-							   targetWhite,
-							   nativeWhite,
-							   luminanceGammaCurve,
-							   dimTurn,
-							   brightTurn,
-							   dimGamma,
-							   brightGamma,
-							   CIEuvPrime);
-		 storeXYZVector(targetXYZVector);
+		XYZ_vector_ptr targetXYZVector;
+
+		if (avoidHook) {
+		    targetXYZVector = getAvoidHookTarget(blackXYZ,
+							 nativeWhite,
+							 luminanceGammaCurve,
+							 dimTurn,
+							 brightTurn,
+							 dimGamma);
+		} else {
+		    targetXYZVector = getTarget(blackXYZ,
+						targetWhite,
+						nativeWhite,
+						luminanceGammaCurve,
+						dimTurn, brightTurn,
+						dimGamma, brightGamma);
+		}
+		STORE_XYZXY_VECTOE("target.xls", targetXYZVector);
 		//==============================================================
 		int size = targetXYZVector->size();
 		RGB_vector_ptr result(new RGB_vector(size));
@@ -70,19 +85,21 @@ namespace cms {
 
 		for (int x = size - 1; x != -1; x--) {
 		    XYZ_ptr targetXYZ = (*targetXYZVector)[x];
-		     bptr < MaxMatrixIntensityAnayzer >
+		    bptr < MaxMatrixIntensityAnayzer >
 			mmia(new MaxMatrixIntensityAnayzer());
 
-		     mmia->setupComponent(Channel::R, rxyY->toXYZ());
-		     mmia->setupComponent(Channel::G, gxyY->toXYZ());
-		     mmia->setupComponent(Channel::B, bxyY->toXYZ());
-		     mmia->setupComponent(Channel::W, targetXYZ);
-		     mmia->enter();
+		    mmia->setupComponent(Channel::R, rxyY->toXYZ());
+		    mmia->setupComponent(Channel::G, gxyY->toXYZ());
+		    mmia->setupComponent(Channel::B, bxyY->toXYZ());
+		    mmia->setupComponent(Channel::W, targetXYZ);
+		    mmia->enter();
 
 		    Component_vector_ptr newcomponentVector =
 			fetchComponent(mmia, componentVector);
-		     STORE_COMPONENT(_toString(x++) + ".xls",
-				     newcomponentVector);
+#ifdef DEBUG_CCTLUT_NEWMETHOD
+		    STORE_COMPONENT(_toString(x) + ".xls",
+				    newcomponentVector);
+#endif
 		    DGLutGenerator lutgen(newcomponentVector);
 		    //採100嗎?
 		    if (targetBIntensity == -1) {
@@ -92,23 +109,43 @@ namespace cms {
 		    };
 		    RGB_ptr rgb = lutgen.getDGCode(100, 100,
 						   targetBIntensity);
-		     (*result)[x] = rgb;
+		    (*result)[x] = rgb;
 		};
 
 		return result;
 	    };
 	    bool AdvancedDGLutGenerator::isAvoidHook(XYZ_ptr targetXYZ,
-						     double offsetInK) {
-		xyY_ptr xyY(new CIExyY(targetXYZ));
+						     double offsetK) {
+		XYZ_ptr XYZOffset = getXYZ(targetXYZ, offsetK);
+		return isDuplicateBlue100(XYZOffset);
+	    };
+	    XYZ_ptr AdvancedDGLutGenerator::getXYZ(XYZ_ptr XYZ,
+						   double offsetK) {
+		//==============================================================
+		// 材料準備
+		//==============================================================
+		xyY_ptr xyY(new CIExyY(XYZ));
 		double cct =
 		    CorrelatedColorTemperature::xy2CCTByMcCamyFloat(xyY);
-		double cctOffset = cct + offsetInK;
+		xyY_ptr xyYOriginal =
+		    CorrelatedColorTemperature::CCT2DIlluminantxyY(cct);
+		double cctOffset = cct + offsetK;
 		xyY_ptr xyYOffset =
 		    CorrelatedColorTemperature::
 		    CCT2DIlluminantxyY(cctOffset);
-		xyYOffset->Y = targetXYZ->Y;
+		//==============================================================
+
+		//==============================================================
+		// shift
+		//==============================================================
+		double_array dxy = xyY->getDeltaxy(xyYOriginal);
+		xyYOffset->x += dxy[0];
+		xyYOffset->y += dxy[1];
+		//==============================================================
+
+		xyYOffset->Y = XYZ->Y;
 		XYZ_ptr XYZOffset = xyYOffset->toXYZ();
-		return isDuplicateBlue100(XYZOffset);
+		return XYZOffset;
 	    };
 	    bool AdvancedDGLutGenerator::
 		isDuplicateBlue100(XYZ_ptr targetXYZ) {
@@ -131,6 +168,60 @@ namespace cms {
 	    };
 
 	    XYZ_vector_ptr AdvancedDGLutGenerator::
+		getAvoidHookTarget(XYZ_ptr startXYZ, XYZ_ptr targetXYZ,
+				   double_vector_ptr luminanceGammaCurve,
+				   int dimTurn, int brightTurn,
+				   double dimGamma) {
+		int size = luminanceGammaCurve->size();
+		double_array dimendValues = targetXYZ->getxyValues();
+
+		XYZ_vector_ptr result(new XYZ_vector(size));
+
+		//==============================================================
+		// dim區段
+		//==============================================================
+		XYZ_vector_ptr dimResult =
+		    getDimGammaTarget(luminanceGammaCurve, startXYZ,
+				      targetXYZ, dimGamma, dimTurn);
+		int dimSize = dimResult->size();
+		for (int x = 0; x < dimSize; x++) {
+		    (*result)[x] = (*dimResult)[x];
+		}
+		//==============================================================
+
+		//==============================================================
+		// 中間區段+bright區段
+		//==============================================================
+		for (int x = dimTurn; x < size; x++) {
+		    //僅Y有變化
+		    double Y = (*luminanceGammaCurve)[x];
+		    (*result)[x] =
+			getTargetXYZ(dimendValues[0], dimendValues[1], Y);
+		}
+		//==============================================================
+
+		//==============================================================
+		// bright區段
+		//==============================================================
+		for (int x = size - 1; x >= brightTurn; x--) {
+		    XYZ_ptr XYZ = (*result)[x];
+		    if (!isDuplicateBlue100(XYZ)) {
+			int offsetK = 0;
+			for (int x = 10; x < 3000; x += 10) {
+			    if (isAvoidHook(XYZ, x)) {
+				//若可以避免就跳開
+				offsetK = x;
+				break;
+			    }
+			}
+			(*result)[x] = getXYZ(XYZ, offsetK);
+		    }
+		}
+		//==============================================================
+		return result;
+	    };
+
+	    XYZ_vector_ptr AdvancedDGLutGenerator::
 		getTarget(XYZ_ptr startXYZ,
 			  XYZ_ptr targetXYZ,
 			  XYZ_ptr endXYZ,
@@ -138,39 +229,104 @@ namespace cms {
 			  luminanceGammaCurve,
 			  int dimTurn,
 			  int brightTurn,
-			  double dimGamma,
-			  double brightGamma, Domain domain) {
+			  double dimGamma, double brightGamma) {
 		int size = luminanceGammaCurve->size();
-
-		double_array dimstartValues;
-		double_array dimendValues;
-		double_array brightstartValues;
-		double_array brightendValues;
-
-		switch (domain) {
-		case CIExy:
-		    dimstartValues = startXYZ->getxyValues();
-		    dimendValues = targetXYZ->getxyValues();
-		    brightstartValues = targetXYZ->getxyValues();
-		    brightendValues = endXYZ->getxyValues();
-		case CIEuv:
-		    dimstartValues = startXYZ->getuvValues();
-		    dimendValues = targetXYZ->getuvValues();
-		    brightstartValues = targetXYZ->getuvValues();
-		    brightendValues = endXYZ->getuvValues();
-		case CIEuvPrime:
-		    dimstartValues = startXYZ->getuvPrimeValues();
-		    dimendValues = targetXYZ->getuvPrimeValues();
-		    brightstartValues = targetXYZ->getuvPrimeValues();
-		    brightendValues = endXYZ->getuvPrimeValues();
-		};
+		//double_array dimstartValues = startXYZ->getxyValues();
+		double_array dimendValues = targetXYZ->getxyValues();
+		//double_array brightstartValues = targetXYZ->getxyValues();
+		//double_array brightendValues = endXYZ->getxyValues();
 
 		XYZ_vector_ptr result(new XYZ_vector(size));
 
 		//==============================================================
 		// dim區段
 		//==============================================================
+		/*
+		   double dimbase = dimTurn - 1;
+		   for (int x = 0; x < dimTurn; x++) {
+		   double normal = ((double) x) / dimbase;
+		   double gamma = Math::pow(normal, dimGamma) * dimbase;
+		   //在uv'上線性變化
+		   double u = Interpolation::linear(0, dimbase,
+		   dimendValues[0],
+		   dimstartValues[0],
+		   gamma);
+		   double v = Interpolation::linear(0, dimbase,
+		   dimendValues[1],
+		   dimstartValues[1],
+		   gamma);
+		   int index = dimbase - x;
+		   double Y = (*luminanceGammaCurve)[index];
+
+		   (*result)[index] = getTargetXYZ(u, v, Y, domain);
+		   }
+		 */
+		XYZ_vector_ptr dimResult =
+		    getDimGammaTarget(luminanceGammaCurve, startXYZ,
+				      targetXYZ, dimGamma, dimTurn);
+		int dimSize = dimResult->size();
+		for (int x = 0; x < dimSize; x++) {
+		    (*result)[x] = (*dimResult)[x];
+		}
+		//==============================================================
+
+		//==============================================================
+		// 中間區段
+		//==============================================================
+		for (int x = dimTurn; x < brightTurn; x++) {
+		    //僅Y有變化
+		    double Y = (*luminanceGammaCurve)[x];
+		    (*result)[x] =
+			getTargetXYZ(dimendValues[0], dimendValues[1], Y);
+		}
+		//==============================================================
+
+		//==============================================================
+		// bright區段
+		//==============================================================
+		/*double brightbase = size - 1 - brightTurn;
+
+		   for (int x = brightTurn; x < size; x++) {
+		   double normal = ((double) x - brightTurn) / brightbase;
+		   double gamma = Math::pow(normal,
+		   brightGamma) * brightbase +
+		   brightTurn;
+		   //在uv'上線性變化
+		   double u = Interpolation::linear(brightTurn, size - 1,
+		   brightstartValues[0],
+		   brightendValues[0],
+		   gamma);
+		   double v = Interpolation::linear(brightTurn, size - 1,
+		   brightstartValues[1],
+		   brightendValues[1],
+		   gamma);
+		   double Y = (*luminanceGammaCurve)[x];
+
+		   (*result)[x] = getTargetXYZ(u, v, Y);
+		   } */
+		XYZ_vector_ptr brightResult =
+		    getBrightGammaTarget(luminanceGammaCurve, targetXYZ,
+					 endXYZ, brightGamma, brightTurn);
+		int brightSize = brightResult->size();
+		for (int x = 0; x < brightSize; x++) {
+		    (*result)[x + brightTurn] = (*brightResult)[x];
+		}
+		//==============================================================
+		return result;
+	    };
+
+	    XYZ_vector_ptr AdvancedDGLutGenerator::
+		getDimGammaTarget(double_vector_ptr luminanceGammaCurve,
+				  XYZ_ptr startXYZ, XYZ_ptr endXYZ,
+				  double dimGamma, int dimTurn) {
+		//==============================================================
+		// dim區段
+		//==============================================================
+		XYZ_vector_ptr result(new XYZ_vector(dimTurn));
+		double_array dimstartValues = startXYZ->getxyValues();
+		double_array dimendValues = endXYZ->getxyValues();
 		double dimbase = dimTurn - 1;
+
 		for (int x = 0; x < dimTurn; x++) {
 		    double normal = ((double) x) / dimbase;
 		    double gamma = Math::pow(normal, dimGamma) * dimbase;
@@ -186,27 +342,26 @@ namespace cms {
 		    int index = dimbase - x;
 		    double Y = (*luminanceGammaCurve)[index];
 
-		    (*result)[index] = getTargetXYZ(u, v, Y, domain);
-		}
-
-		//==============================================================
-
-		//==============================================================
-		// 中間區段
-		//==============================================================
-		for (int x = dimTurn; x < brightTurn; x++) {
-		    //僅Y有變化
-		    double Y = (*luminanceGammaCurve)[x];
-		    (*result)[x] =
-			getTargetXYZ(dimendValues[0], dimendValues[1], Y,
-				     domain);
+		    (*result)[index] = getTargetXYZ(u, v, Y);
 		}
 		//==============================================================
-
+		return result;
+	    };
+	    XYZ_vector_ptr
+		AdvancedDGLutGenerator::
+		getBrightGammaTarget(double_vector_ptr luminanceGammaCurve,
+				     XYZ_ptr startXYZ, XYZ_ptr endXYZ,
+				     double brightGamma, int brightTurn) {
 		//==============================================================
 		// bright區段
 		//==============================================================
+		int size = luminanceGammaCurve->size();
+		int resultSize = size - brightTurn;
+		XYZ_vector_ptr result(new XYZ_vector(resultSize));
+		double_array brightstartValues = startXYZ->getxyValues();
+		double_array brightendValues = endXYZ->getxyValues();
 		double brightbase = size - 1 - brightTurn;
+
 		for (int x = brightTurn; x < size; x++) {
 		    double normal = ((double) x - brightTurn) / brightbase;
 		    double gamma = Math::pow(normal,
@@ -223,10 +378,11 @@ namespace cms {
 						     gamma);
 		    double Y = (*luminanceGammaCurve)[x];
 
-		    (*result)[x] = getTargetXYZ(u, v, Y, domain);
+		    //(*result)[x] = getTargetXYZ(u, v, Y);
+		    (*result)[x - brightTurn] = getTargetXYZ(u, v, Y);
 		}
-		//==============================================================
 		return result;
+		//==============================================================
 	    };
 
 	    void AdvancedDGLutGenerator::
@@ -252,6 +408,15 @@ namespace cms {
 		case CIEuvPrime:
 		    targetxyY.setuvPrimeYValues(targetValues);
 		};
+		return targetxyY.toXYZ();
+	    };
+	    XYZ_ptr AdvancedDGLutGenerator::getTargetXYZ(double v1,
+							 double v2,
+							 double v3) {
+		CIExyY targetxyY;
+		targetxyY.x = v1;
+		targetxyY.y = v2;
+		targetxyY.Y = v3;
 		return targetxyY.toXYZ();
 	    };
 	    bool AdvancedDGLutGenerator::

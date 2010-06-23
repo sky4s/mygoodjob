@@ -26,7 +26,7 @@ namespace cms {
 		 Component_vector_ptr componentVector;
 		 bptr < cms::measure::IntensityAnalyzerIF > analyzer;
 
-		static void storeXYZVector(XYZ_vector_ptr XYZVector);
+		//static void storeXYZxyVector(XYZ_vector_ptr XYZVector);
 	      public:
 		 Component_vector_ptr fetchComponent(bptr <
 						     cms::measure::

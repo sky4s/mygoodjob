@@ -399,6 +399,15 @@ object CCTLUTForm: TCCTLUTForm
       Caption = 'New Method'
       TabOrder = 1
       Visible = False
+      OnClick = CheckBox_NewMethodClick
+    end
+    object CheckBox_AvoidHook: TCheckBox
+      Left = 9
+      Top = 64
+      Width = 113
+      Height = 25
+      Caption = 'Avoid Hook'
+      TabOrder = 2
     end
   end
   object Button_Run: TButton

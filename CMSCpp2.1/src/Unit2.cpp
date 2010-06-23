@@ -581,8 +581,7 @@ void targetTester()
     }
     XYZ_vector_ptr result =
 	AdvancedDGLutGenerator::getTarget(black, targetWhite, nativeWhite,
-					  gamaCurve, 30, 240, 2.2, 3,
-					  CIExy);
+					  gamaCurve, 30, 240, 2.2, 3);
     foreach(XYZ_ptr XYZ, *result) {
 	xyY_ptr xyY(new CIExyY(XYZ));
 	//cout << *xyY->toString() << endl;
