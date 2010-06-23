@@ -658,7 +658,8 @@ namespace cms {
 			static_cast < double >(x) / (effectiven - 1);
 		    double v = java::lang::Math::pow(normal, gamma);
 		    (*result)[x] = v;
-		} for (int x = effectiven; x < n; x++) {
+		};
+		for (int x = effectiven; x < n; x++) {
 		    (*result)[x] = 1;
 		}
 		return result;
@@ -960,6 +961,9 @@ namespace cms {
 						 luminanceGammaCurve,
 						 under);
 			int size = dimdglut->size();
+			//======================================================
+			// 對 Dim DG作平均
+			//======================================================
 			if (true == averageDimDG) {
 			    for (int x = 1; x < size - 1; x++) {
 				//(*dglut)[x] = (*dimdglut)[x];
@@ -971,6 +975,7 @@ namespace cms {
 				rgb1->B = (rgb0->B + rgb2->B) / 2.;
 			    }
 			}
+			//======================================================
 			for (int x = 0; x < size; x++) {
 			    (*dglut)[x] = (*dimdglut)[x];
 			}
@@ -1111,7 +1116,7 @@ namespace cms {
 		    dgop.addOp(avoidNoise);
 		}
 
-		if (KeepMaxLuminance::TargetWhite == keepMaxLuminance) {
+		if (KeepMaxLuminance::NativeWhite == keepMaxLuminance) {
 		    //keep最大亮度
 		    bptr < DGLutOp >
 			KeepMax(new KeepMaxLuminanceOp(bitDepth));

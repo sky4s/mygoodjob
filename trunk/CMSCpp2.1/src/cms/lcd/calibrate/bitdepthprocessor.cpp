@@ -173,8 +173,9 @@ namespace cms {
 	    int BitDepthProcessor::getMaxEffectiveDigitalCountIndex() {
 		switch (bitDepth) {
 		case b10_10:
-		case b10_8:
 		    return 256;
+		case b10_8:
+		    return 255;
 		case b8_8:
 		case b8_6:
 		    return 255;
@@ -247,8 +248,6 @@ namespace cms {
 		case b6_6:
 		    return string_ptr(new string("6+3"));
 		default:
-		    /*throw IllegalStateException("Unsupported bitDepth: " +
-		       bitDepth); */
 		    return string_ptr(new string("N/A"));
 		}
 	    };

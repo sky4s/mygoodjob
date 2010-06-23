@@ -202,25 +202,34 @@ void TMainForm::setDummyMeterFilename(const std::string & filename)
     mm = bptr < MeterMeasurement > (new MeterMeasurement(meter, false));
     mm->setFakeMeasure(true);
 
-    bptr < MaxMatrixIntensityAnayzer >
-	matrixAnalyzer(new MaxMatrixIntensityAnayzer(mm));
-
-    analyzer = matrixAnalyzer;
 
     fetcher = bptr < ComponentFetcher > ((ComponentFetcher *) null);
 
     bptr < DGLutProperty > property = dgcode->getProperty();
-    xyY_ptr wxyY = property->getReferenceColor(Channel::W);
-    if (null != wxyY) {
-	xyY_ptr rxyY = property->getReferenceColor(Channel::R);
-	xyY_ptr gxyY = property->getReferenceColor(Channel::G);
-	xyY_ptr bxyY = property->getReferenceColor(Channel::B);
+    if (null != property) {
+	//若有property則為新版
+	bptr < MaxMatrixIntensityAnayzer >
+	    matrixAnalyzer(new MaxMatrixIntensityAnayzer(mm));
+	analyzer = matrixAnalyzer;
 
-	matrixAnalyzer->setupComponent(Channel::W, wxyY->toXYZ());
-	matrixAnalyzer->setupComponent(Channel::R, rxyY->toXYZ());
-	matrixAnalyzer->setupComponent(Channel::G, gxyY->toXYZ());
-	matrixAnalyzer->setupComponent(Channel::B, bxyY->toXYZ());
-	matrixAnalyzer->enter();
+	xyY_ptr wxyY = property->getReferenceColor(Channel::W);
+	if (null != wxyY) {
+	    xyY_ptr rxyY = property->getReferenceColor(Channel::R);
+	    xyY_ptr gxyY = property->getReferenceColor(Channel::G);
+	    xyY_ptr bxyY = property->getReferenceColor(Channel::B);
+
+	    matrixAnalyzer->setupComponent(Channel::W, wxyY->toXYZ());
+	    matrixAnalyzer->setupComponent(Channel::R, rxyY->toXYZ());
+	    matrixAnalyzer->setupComponent(Channel::G, gxyY->toXYZ());
+	    matrixAnalyzer->setupComponent(Channel::B, bxyY->toXYZ());
+	    matrixAnalyzer->enter();
+	}
+    } else {
+	ShowMessage("Old version Raw Data.");
+	//無property則為舊版
+	analyzer =
+	    bptr < CA210IntensityAnalyzer >
+	    (new CA210IntensityAnalyzer(mm));
     }
 };
 
@@ -677,7 +686,7 @@ void TMainForm::connectMeter()
 {
     getCA210();
     if (null != ca210) {
-        ca210->getCA210API()->setRemoteMode(ca210api::Locked);
+	ca210->getCA210API()->setRemoteMode(ca210api::Locked);
     }
 };
 

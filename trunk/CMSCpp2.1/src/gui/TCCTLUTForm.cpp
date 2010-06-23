@@ -99,7 +99,7 @@ void __fastcall TCCTLUTForm::Button_RunClick(TObject * Sender)
 	int under = this->Edit_DefinedDimUnder->Text.ToInt();
 	bool averageDim = this->CheckBox_AverageDimDG->Checked;
 	calibrator.setDefinedDim(under, averageDim);
-    } else {
+    } else if (this->RadioButton_None->Checked) {
 	calibrator.setNonDimCorrect();
     }
     //==========================================================================
@@ -150,6 +150,7 @@ void __fastcall TCCTLUTForm::Button_RunClick(TObject * Sender)
 	calibrator.setKeepMaxLuminanceNativeWhiteAdvanced(over, gamma);
     }
     //==========================================================================
+
     try {			//為了對應__finally使用的try
 	try {
 	    this->TOutputFileFrame1->createDir();
@@ -193,19 +194,17 @@ void __fastcall TCCTLUTForm::FormCreate(TObject * Sender)
     this->Button_Reset->Visible = debug;
     //==========================================================================
 #ifdef DEBUG_NEWFUNC
+    this->GroupBox_KeepMaxLuminance->Visible = true;
     this->Button_Process->Visible = true;
 
 
-
-    /*
-       this->CheckBox_KeepMaxAdv->Visible = true;
-       Label15->Visible = true;
-       Label16->Visible = true;
-       Edit_AdvOver->Visible = true;
-       Edit_AdvGamma->Visible = true;
-     */
-
+    RadioButton_None->Visible = true;
+    RadioButton_DefinedDim->Visible = true;
     CheckBox_AverageDimDG->Visible = true;
+    Label14->Visible = true;
+    Label17->Visible = true;
+    Edit_DefinedDimUnder->Visible = true;
+    Edit_DimGamma->Visible = true;
 
     Label18->Visible = true;
     Label19->Visible = true;
