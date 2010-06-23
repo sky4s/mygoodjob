@@ -263,8 +263,13 @@ namespace cms {
 	    property.store(*this);
 	};
 	bptr < DGLutProperty > DGLutFile::getProperty() {
-	    bptr < DGLutProperty > property(new DGLutProperty(this));
-	    return property;
+	    try {
+		bptr < DGLutProperty > property(new DGLutProperty(this));
+		return property;
+	    }
+	    catch(IllegalStateException & ex) {
+		return bptr < DGLutProperty > ((DGLutProperty *) null);
+	    }
 	};
 	//======================================================================
 
@@ -276,6 +281,7 @@ namespace cms {
 
 	void
 	 DGLutProperty::store(DGLutFile & dgcode) const {
+	    dgcode.addProperty("Version", "3.2");
 
 	    bptr < MeasureCondition > mc = c->measureCondition;
 	    if (mc->normalCondition) {
@@ -290,6 +296,10 @@ namespace cms {
 		dgcode.addProperty("low level end", mc->lowEnd);
 		dgcode.addProperty("low level step", mc->lowStep);
 	    }
+
+	    //==================================================================
+	    // low level correct
+	    //==================================================================
 	    string correctstr;
 	    switch (c->correct) {
 	    case Correct::P1P2:
@@ -301,16 +311,17 @@ namespace cms {
 	    case Correct::None:
 		correctstr = "None";
 		break;
-		/*case cms::lcd::calibrate::New:
-		   correctstr = "new";
-		   break; */
 	    }
 	    dgcode.addProperty("low level correct", correctstr);
+	    if (Correct::P1P2 == c->correct) {
+		dgcode.addProperty("p1", c->p1);
+		dgcode.addProperty("p2", c->p2);
+	    } else if (Correct::RBInterpolation == c->correct) {
+		dgcode.addProperty("rb under", c->under);
+	    }
+	    //==================================================================
+            
 	    dgcode.addProperty("New Method", c->newMethod ? On : Off);
-
-	    dgcode.addProperty("p1", c->p1);
-	    dgcode.addProperty("p2", c->p2);
-	    dgcode.addProperty("rb under", c->under);
 	    bptr < BitDepthProcessor > bitDepth = c->bitDepth;
 	    dgcode.addProperty("in",
 			       *bitDepth->getInputMaxValue().toString());
@@ -318,21 +329,46 @@ namespace cms {
 			       *bitDepth->getLutMaxValue().toString());
 	    dgcode.addProperty("out",
 			       *bitDepth->getOutputMaxValue().toString());
-
 	    dgcode.addProperty("gamma", c->gamma);
 	    dgcode.addProperty("gamma curve", c->useGammaCurve ? On : Off);
 	    dgcode.addProperty("g bypass", c->gByPass ? On : Off);
 	    dgcode.addProperty("b gain", c->bIntensityGain);
 	    dgcode.addProperty("b max", c->bMax ? On : Off);
-
-
 	    dgcode.addProperty("avoid FRC noise",
 			       c->avoidFRCNoise ? On : Off);
-	    dgcode.addProperty("keep max luminance",
-			       c->keepMaxLuminance ? On : Off);
+	    //==================================================================
+	    // KeepMaxLuminance
+	    //==================================================================
+	    string keepstr;
+	    switch (c->keepMaxLuminance) {
+	    case KeepMaxLuminance::None:
+		keepstr = "None";
+		break;
+	    case KeepMaxLuminance::TargetWhite:
+		keepstr = "Target White";
+		break;
+	    case KeepMaxLuminance::NativeWhite:
+		keepstr = "Native White";
+		break;
+	    case KeepMaxLuminance::NativeWhiteAdvanced:
+		keepstr = "Native White Advanced";
+		break;
+	    }
+	    dgcode.addProperty("keep max luminance", keepstr);
+	    if (c->keepMaxLuminance ==
+		KeepMaxLuminance::NativeWhiteAdvanced) {
+		dgcode.addProperty("keep max lumi adv over",
+				   c->keepMaxLumiOver);
+		dgcode.addProperty("keep max lumi adv gamma",
+				   c->keepMaxLumiGamma);
+	    }
+	    //==================================================================
+
+	    //==================================================================
+	    // target color
+	    //==================================================================
 	    bptr < IntensityAnalyzerIF > analyzer =
 		c->fetcher->getAnalyzer();
-
 	    if (null != analyzer) {
 		//¬ö¿ýref color
 		xyY_ptr refWhitexyY = analyzer->getReferenceColor();
@@ -362,44 +398,59 @@ namespace cms {
 				       *refRGB->toString());
 		}
 	    }
+	    //==================================================================
 	};
-	void DGLutProperty::addProperty(const std::string key,
-					string_ptr value) {
+	void DGLutProperty::addProperty(const std::
+					string key, string_ptr value) {
 	    propertyMap.insert(make_pair(key, value));
 	};
-	void DGLutProperty::addProperty(const std::string key,
+	void DGLutProperty::addProperty(const std::
+					string key,
 					const std::string value) {
 	    propertyMap.
 		insert(make_pair(key, string_ptr(new string(value))));
 	};
-
       DGLutProperty::DGLutProperty(cms::lcd::calibrate::LCDCalibrator * c):c(c),
 	    d(bptr < DGLutFile >
 	      ((DGLutFile *) null)) {
 
 	};
-	void DGLutProperty::initProperty(bptr < DGLutFile > d) {
+	bool DGLutProperty::initProperty(bptr < DGLutFile > d) {
 	    bptr < DBQuery > query = d->retrieve(DGLutFile::Properties);
-	    while (query->hasNext()) {
-		string_vector_ptr result = query->nextResult();
-		addProperty((*result)[0], (*result)[1]);
+	    if (query != null) {
+		while (query->hasNext()) {
+		    string_vector_ptr result = query->nextResult();
+		    addProperty((*result)[0], (*result)[1]);
+		}
+		return true;
+	    } else {
+		return false;
 	    }
 	};
-	void DGLutProperty::initProperty(DGLutFile * d) {
+	bool DGLutProperty::initProperty(DGLutFile * d) {
 	    bptr < DBQuery > query = d->retrieve(DGLutFile::Properties);
-	    while (query->hasNext()) {
-		string_vector_ptr result = query->nextResult();
-		addProperty((*result)[0], (*result)[1]);
+	    if (query != null) {
+		while (query->hasNext()) {
+		    string_vector_ptr result = query->nextResult();
+		    addProperty((*result)[0], (*result)[1]);
+		}
+		return true;
+	    } else {
+		return false;
 	    }
 	};
       DGLutProperty::DGLutProperty(bptr < DGLutFile > d):c((LCDCalibrator *) null),
 	    d(d)
 	{
-	    initProperty(d);
+	    if (false == initProperty(d)) {
+		throw IllegalStateException("init Property failed.");
+	    }
 	};
       DGLutProperty::DGLutProperty(DGLutFile * d):c((LCDCalibrator *) null),
 	    d2(d) {
-	    initProperty(d);
+	    if (false == initProperty(d)) {
+		throw IllegalStateException("init Property failed.");
+	    }
 	};
 	string_ptr DGLutProperty::getProperty(const std::string key) {
 	    return propertyMap[key];
@@ -420,8 +471,9 @@ namespace cms {
 		value = getProperty("reference white");
 		break;
 	    default:
-		throw IllegalArgumentException("Unsupported Channel: " +
-					       *ch.toString());
+		throw
+		    IllegalArgumentException("Unsupported Channel: " +
+					     *ch.toString());
 	    }
 	    if (null != value) {
 		xyY_ptr xyY(new

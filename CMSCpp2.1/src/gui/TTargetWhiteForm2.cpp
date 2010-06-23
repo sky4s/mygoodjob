@@ -250,19 +250,19 @@ void __fastcall TTargetWhiteForm2::Button2Click(TObject * Sender)
 	stopMeasure = false;
 	//analyzer->beginSetup();
 	analyzer->setupComponent(Channel::R, r);
-	if (true == stopMeasure) {
+	if (true == stopMeasure || false == MeasureWindow->Visible) {
 	    return;
 	}
 	analyzer->setupComponent(Channel::G, g);
-	if (true == stopMeasure) {
+	if (true == stopMeasure || false == MeasureWindow->Visible) {
 	    return;
 	}
 	analyzer->setupComponent(Channel::B, b);
-	if (true == stopMeasure) {
+	if (true == stopMeasure || false == MeasureWindow->Visible) {
 	    return;
 	}
 	analyzer->setupComponent(Channel::W, rgb);
-	if (true == stopMeasure) {
+	if (true == stopMeasure || false == MeasureWindow->Visible) {
 	    return;
 	}
 	if (MainForm->isCA210Analyzer()) {
@@ -436,7 +436,7 @@ void __fastcall TTargetWhiteForm2::FormKeyPress(TObject * Sender,
 void __fastcall TTargetWhiteForm2::Button3Click(TObject * Sender)
 {
     //if (MainForm->isCA210Analyzer()) {
-	MainForm->connectMeter();
+    MainForm->connectMeter();
     //}
 }
 
@@ -445,7 +445,7 @@ void __fastcall TTargetWhiteForm2::Button3Click(TObject * Sender)
 void __fastcall TTargetWhiteForm2::Button4Click(TObject * Sender)
 {
     //if (MainForm->isCA210Analyzer()) {
-	MainForm->disconnectMeter();
+    MainForm->disconnectMeter();
     //}
 }
 

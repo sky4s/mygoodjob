@@ -284,21 +284,6 @@ namespace cms {
 						     rgb0->B, rgb1->B,
 						     normal);
 		    rgb->B = b;
-
-		    /*RGB_ptr rgb = (*result)[x];
-		       RGB_ptr nextrgb = (*result)[x - 1];
-		       //³]©w®t²§
-		       double diff =
-		       x > 252 ? 10 / 4. : (x > 232 ? 8 / 4. : 6 / 4.);
-		       double thisB = rgb->B;
-		       double nextB = nextrgb->B;
-		       if (thisB > nextB) {
-		       nextrgb->B = thisB - diff;
-		       } else {
-		       double preB = (*result)[x + 1]->B;
-		       rgb->B = (preB + nextB) / 2.;
-		       break;
-		       } */
 		}
 
 		return result;
@@ -398,12 +383,12 @@ namespace cms {
 	    //==================================================================
 	    RGB_vector_ptr KeepMaxLuminanceOp::
 		getRendering(RGB_vector_ptr source) {
-		/* TODO : KeepMaxLuminanceOpÅçÃÒ */
 		int size = source->size();
 		RGB_vector_ptr result = RGBVector::clone(source);
 		RGB_ptr white = (*result)[size - 1];
 		double max = bitDepth->getMaxDigitalCount();
 		white->setValues(max, max, max);
+
 		return result;
 	    };
 	  KeepMaxLuminanceOp::KeepMaxLuminanceOp(bptr < BitDepthProcessor > bitDepth):bitDepth(bitDepth)

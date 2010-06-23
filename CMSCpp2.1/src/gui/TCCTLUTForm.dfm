@@ -190,6 +190,7 @@ object CCTLUTForm: TCCTLUTForm
       Width = 37
       Height = 16
       Caption = 'Under'
+      Visible = False
     end
     object Label14: TLabel
       Left = 32
@@ -197,6 +198,7 @@ object CCTLUTForm: TCCTLUTForm
       Width = 49
       Height = 16
       Caption = 'Strength'
+      Visible = False
     end
     object RadioButton_P1P2: TRadioButton
       Left = 9
@@ -253,6 +255,7 @@ object CCTLUTForm: TCCTLUTForm
       Height = 25
       Caption = 'None'
       TabOrder = 5
+      Visible = False
       OnClick = RadioButton_NoneClick
     end
     object RadioButton_DefinedDim: TRadioButton
@@ -262,6 +265,7 @@ object CCTLUTForm: TCCTLUTForm
       Height = 24
       Caption = 'Defined Dim'
       TabOrder = 6
+      Visible = False
       OnClick = RadioButton_DefinedDimClick
     end
     object Edit_DefinedDimUnder: TEdit
@@ -273,6 +277,7 @@ object CCTLUTForm: TCCTLUTForm
       ImeName = #26085#25991#36664#20837#31995#32113' (MS-IME2002)'
       TabOrder = 7
       Text = '50'
+      Visible = False
     end
     object CheckBox_AverageDimDG: TCheckBox
       Left = 32
@@ -293,6 +298,7 @@ object CCTLUTForm: TCCTLUTForm
       ImeName = #26085#25991#36664#20837#31995#32113' (MS-IME2002)'
       TabOrder = 9
       Text = '2.2'
+      Visible = False
     end
   end
   object GroupBox4: TGroupBox
@@ -346,9 +352,9 @@ object CCTLUTForm: TCCTLUTForm
     object CheckBox_BMax2: TCheckBox
       Left = 9
       Top = 65
-      Width = 96
+      Width = 160
       Height = 24
-      Caption = 'B Max 2'
+      Caption = 'B Max (Smooth)'
       TabOrder = 3
       Visible = False
       OnClick = CheckBox_BMax2Click
@@ -408,6 +414,7 @@ object CCTLUTForm: TCCTLUTForm
       Height = 25
       Caption = 'Avoid Hook'
       TabOrder = 2
+      Visible = False
     end
   end
   object Button_Run: TButton
@@ -621,13 +628,14 @@ object CCTLUTForm: TCCTLUTForm
     TabOrder = 10
     Visible = False
   end
-  object GroupBox8: TGroupBox
+  object GroupBox_KeepMaxLuminance: TGroupBox
     Left = 208
     Top = 104
     Width = 209
     Height = 217
     Caption = 'Keep Max Luminance'
     TabOrder = 11
+    Visible = False
     object Label20: TLabel
       Left = 32
       Top = 113
@@ -675,7 +683,7 @@ object CCTLUTForm: TCCTLUTForm
       Top = 88
       Width = 169
       Height = 25
-      Caption = 'Native White(Advance)'
+      Caption = 'Native White (Smooth)'
       TabOrder = 3
     end
     object Edit_MaxYAdvOver: TEdit

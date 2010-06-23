@@ -235,13 +235,18 @@ namespace cms {
 
 	bptr < TADODataSet >
 	    ExcelFileDB::selectDataSet(const std::string & sql) {
-	    bptr < TADODataSet >
-		dataSet(new TADODataSet((TComponent *) null));
-	    dataSet->Connection = connection.get();
-	    dataSet->CommandText = *Util::toWideString(sql);
-	    dataSet->Open();
-	    dataSet->First();
-	    return dataSet;
+	    try {
+		bptr < TADODataSet >
+		    dataSet(new TADODataSet((TComponent *) null));
+		dataSet->Connection = connection.get();
+		dataSet->CommandText = *Util::toWideString(sql);
+		dataSet->Open();
+		dataSet->First();
+		return dataSet;
+	    }
+	    catch(EOleException & ex) {
+		return bptr < TADODataSet > ((TADODataSet *) null);
+	    }
 	};
 
 	string_vector_ptr ExcelFileDB::getResult(bptr < TADODataSet >
@@ -277,8 +282,12 @@ namespace cms {
 	bptr < DBQuery > ExcelFileDB::selectAll() {
 	    string select = "SELECT * FROM [" + getTableName() + "$]";
 	    bptr < TADODataSet > dataSet = selectDataSet(select);
-	    bptr < DBQuery > query(new DBQuery(dataSet));
-	    return query;
+	    if (null != dataSet) {
+		bptr < DBQuery > query(new DBQuery(dataSet));
+		return query;
+	    } else {
+		return bptr < DBQuery > ((DBQuery *) null);
+	    }
 	};
 
 	void ExcelFileDB::close() {

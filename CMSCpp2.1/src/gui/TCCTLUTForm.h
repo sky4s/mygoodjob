@@ -77,7 +77,7 @@ class TCCTLUTForm:public TForm {
     TEdit *Edit_BMax2Begin;
     TLabel *Label19;
     TEdit *Edit_BMax2Gamma;
-    TGroupBox *GroupBox8;
+    TGroupBox *GroupBox_KeepMaxLuminance;
     TRadioButton *RadioButton_MaxYTarget;
     TRadioButton *RadioButton_MaxYNative;
     TRadioButton *RadioButton_MaxYNone;

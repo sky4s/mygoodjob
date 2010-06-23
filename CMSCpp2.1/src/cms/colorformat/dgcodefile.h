@@ -98,8 +98,8 @@ namespace cms {
 	    void addProperty(const std::string key, string_ptr value);
 	    void addProperty(const std::string key,
 			     const std::string value);
-	    void initProperty(bptr < DGLutFile > d);
-	    void initProperty(DGLutFile * d);
+	    bool initProperty(bptr < DGLutFile > d);
+	    bool initProperty(DGLutFile * d);
 	  public:
 	    //DGLutProperty(bptr < cms::lcd::calibrate::LCDCalibrator > c);
 	     DGLutProperty(cms::lcd::calibrate::LCDCalibrator * c);
