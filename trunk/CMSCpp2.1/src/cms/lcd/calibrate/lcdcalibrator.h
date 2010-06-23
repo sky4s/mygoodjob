@@ -236,6 +236,7 @@ namespace cms {
 		bool useGammaCurve;
 		bool averageDimDG;
 		bool newMethod;
+		bool avoidHook;
 		double_vector_ptr gammaCurve;
 		double_vector_ptr rgammaCurve;
 		double_vector_ptr ggammaCurve;
@@ -292,6 +293,7 @@ namespace cms {
 		void setKeepMaxLuminanceNativeWhiteAdvanced(int over,
 							    double gamma);
 		void setNewMethod(bool enable);
+		void setNewMethod(bool newMethod, bool avoidHook);
 
 		 LCDCalibrator(bptr <
 			       cms::lcd::calibrate::ComponentFetcher >

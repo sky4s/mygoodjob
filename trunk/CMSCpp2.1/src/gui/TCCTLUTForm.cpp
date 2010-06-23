@@ -49,6 +49,7 @@ void __fastcall TCCTLUTForm::RadioButton_RBInterpClick(TObject * Sender)
 {
     setLowLevelCorrectionEditDisable();
     this->Edit_RBInterpUnder->Enabled = true;
+    this->CheckBox_NewMethod->Checked = false;
 }
 
 //---------------------------------------------------------------------------
@@ -58,6 +59,7 @@ void __fastcall TCCTLUTForm::RadioButton_P1P2Click(TObject * Sender)
     setLowLevelCorrectionEditDisable();
     this->Edit_P1->Enabled = true;
     this->Edit_P2->Enabled = true;
+    this->CheckBox_NewMethod->Checked = false;
 }
 
 //---------------------------------------------------------------------------
@@ -77,11 +79,8 @@ void __fastcall TCCTLUTForm::Button_RunClick(TObject * Sender)
 	MainForm->setAnalyzerToTargetChannel();
     }
     MainForm->setMeterMeasurementWaitTimes();
-
     bptr < ComponentFetcher > fetcher = MainForm->getComponentFetcher();
     LCDCalibrator calibrator(fetcher, bitDepth);
-
-
 
     //==========================================================================
     // P1P2和RBInterp的選擇
@@ -133,8 +132,8 @@ void __fastcall TCCTLUTForm::Button_RunClick(TObject * Sender)
     }
     //==========================================================================
     calibrator.setAvoidFRCNoise(this->CheckBox_AvoidNoise->Checked);
-    //calibrator.setKeepMaxLuminance(this->CheckBox_KeepMax->Checked);
-    calibrator.setNewMethod(this->CheckBox_NewMethod->Checked);
+    calibrator.setNewMethod(this->CheckBox_NewMethod->Checked,
+			    this->CheckBox_AvoidHook->Checked);
 
     //==========================================================================
     // Keep Max Luminance
@@ -146,7 +145,9 @@ void __fastcall TCCTLUTForm::Button_RunClick(TObject * Sender)
     } else if (true == RadioButton_MaxYNative->Checked) {
 	calibrator.setKeepMaxLuminance(KeepMaxLuminance::NativeWhite);
     } else if (true == RadioButton_MaxYNativeAdv->Checked) {
-	calibrator.setKeepMaxLuminance(KeepMaxLuminance::NativeWhiteAdvanced);
+	int over = this->Edit_MaxYAdvOver->Text.ToInt();
+	double gamma = this->Edit_MaxYAdvGamma->Text.ToDouble();
+	calibrator.setKeepMaxLuminanceNativeWhiteAdvanced(over, gamma);
     }
     //==========================================================================
     try {			//為了對應__finally使用的try
@@ -402,6 +403,7 @@ void __fastcall TCCTLUTForm::RadioButton_DefinedDimClick(TObject * Sender)
     this->Edit_DefinedDimUnder->Enabled = true;
     this->CheckBox_AverageDimDG->Enabled = true;
     this->Edit_DimGamma->Enabled = true;
+    this->CheckBox_NewMethod->Checked = false;
 }
 
 //---------------------------------------------------------------------------
@@ -417,4 +419,10 @@ void __fastcall TCCTLUTForm::CheckBox_BMax2Click(TObject * Sender)
 
 //---------------------------------------------------------------------------
 
+void __fastcall TCCTLUTForm::CheckBox_NewMethodClick(TObject * Sender)
+{
+    this->RadioButton_None->Checked = true;
+}
+
+//---------------------------------------------------------------------------
 

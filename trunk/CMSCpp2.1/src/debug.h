@@ -5,8 +5,9 @@
 #define METER_FILE "debug.xls"
 #define DEBUG_DIR  "debug/"
 
-#define DEBUG_NEWFUNC //新功能的開啟
-#define DEBUG_CCTLUT //CCT功能的debug功能開啟
+#define DEBUG_NEWFUNC		//新功能的開啟
+#define DEBUG_CCTLUT		//CCT功能的debug功能開啟
+//#define DEBUG_CCTLUT_NEWMETHOD  //新方法的過程debug功能開啟
 //#define DEBUG_FINDWHITE //find white過程的紀錄
 //#define DEBUG_TARGETWHITE //Target White測試功能的開啟
 
@@ -39,11 +40,16 @@ RGBVector::storeToExcel(debug_dir + _s(filename), result);
 MAKE_DEBUG_DIR(); \
 DoubleArray::storeToExcel(debug_dir + _s(filename), result);
 
+#define STORE_XYZXY_VECTOE( filename, result ) \
+MAKE_DEBUG_DIR(); \
+Util::storeXYZxyVector(debug_dir + _s(filename), result);
+
 #else
 #define STORE_COMPONENT( filename , result )
 #define STORE_RGBGAMMA( filename , result )
 #define STORE_RGBVECTOR( filename , result )
 #define STORE_DOUBLE_VECTOR( filename , result )
+#define STORE_XYZXY_VECTOE( filename, result )
 #endif
 //==============================================================================
 

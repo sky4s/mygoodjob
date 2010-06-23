@@ -19,6 +19,7 @@ namespace cms {
 	using namespace std;
 	using namespace boost;
 	using namespace java::lang;
+	using namespace cms::colorformat;
 	 shared_ptr < string > Util::toString(wchar_t * wc) {
 	    size_t size = wcslen(wc);
 	    char *c = new char[size];
@@ -85,6 +86,25 @@ namespace cms {
 	void Util::shellExecute(const std::string & filename) {
 	    ShellExecute(null, null, filename.c_str(), null, null,
 			 SW_SHOW);
+	};
+	void Util::storeXYZxyVector(const std::string & filename,
+				    XYZ_vector_ptr XYZVector) {
+
+	    Util::deleteExist(filename);
+	    SimpleExcelAccess excel(filename, Create,
+				    StringVector::
+				    fromCString(6, "Gray Level",
+						"X", "Y", "Z",
+						"_x", "_y"));
+	    int size = XYZVector->size();
+	    for (int x = 0; x != size; x++) {
+		XYZ_ptr XYZ = (*XYZVector)[x];
+		Indep::CIExyY xyY(XYZ);
+		string_vector_ptr values = StringVector::fromDouble
+		    (6, static_cast < double >(x), XYZ->X, XYZ->Y,
+		     XYZ->Z, xyY.x, xyY.y);
+		excel.insert(values);
+	    }
 	};
 	//==========================================================================
 

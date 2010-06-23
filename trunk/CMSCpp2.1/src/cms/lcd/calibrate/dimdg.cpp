@@ -44,27 +44,28 @@ namespace cms {
 		    getLinearTarget(startXYZ, endXYZ, luminanceGammaCurve);
 		 return targetXYZVector;
 	    };
-	    void DimDGLutGenerator::
-		storeXYZVector(XYZ_vector_ptr XYZVector) {
+	    /*void DimDGLutGenerator::
+	       storeXYZxyVector(XYZ_vector_ptr XYZVector) {
 
-		Util::deleteExist("target.xls");
-		SimpleExcelAccess excel("target.xls", Create,
-					StringVector::
-					fromCString(4, "Gray Level",
-						    "X", "Y", "Z"));
-		int size = XYZVector->size();
-		for (int x = 0; x != size; x++) {
-		    XYZ_ptr XYZ = (*XYZVector)[x];
-		    string_vector_ptr values =
-			StringVector::fromDouble(4, static_cast < double
-						 >(x), XYZ->X, XYZ->Y,
-						 XYZ->Z);
-		    excel.insert(values);
-		}
-	    };
-	  DimDGLutGenerator::DimDGLutGenerator(Component_vector_ptr componentVector, bptr < IntensityAnalyzerIF > analyzer):componentVector
-		(componentVector),
-		analyzer(analyzer) {
+	       Util::deleteExist("target.xls");
+	       SimpleExcelAccess excel("target.xls", Create,
+	       StringVector::
+	       fromCString(6, "Gray Level",
+	       "X", "Y", "Z",
+	       "_x", "_y"));
+	       int size = XYZVector->size();
+	       for (int x = 0; x != size; x++) {
+	       XYZ_ptr XYZ = (*XYZVector)[x];
+	       Indep::CIExyY xyY(XYZ);
+	       string_vector_ptr values = StringVector::fromDouble
+	       (6, static_cast < double >(x), XYZ->X, XYZ->Y,
+	       XYZ->Z, xyY.x, xyY.y);
+	       excel.insert(values);
+	       }
+	       }; */
+	  DimDGLutGenerator::DimDGLutGenerator(Component_vector_ptr componentVector, bptr < IntensityAnalyzerIF > analyzer):componentVector(componentVector),
+		analyzer(analyzer)
+	    {
 	    };
 	    RGB_vector_ptr DimDGLutGenerator::
 		produce(XYZ_ptr targetWhite,
@@ -73,38 +74,35 @@ namespace cms {
 		//==============================================================
 		// 資訊準備
 		//==============================================================
-		XYZ_ptr blackXYZ =
-		    (*componentVector)[componentVector->size() - 1]->XYZ;
+		XYZ_ptr blackXYZ = (*componentVector)
+		    [componentVector->size() - 1]->XYZ;
 		int size = under - 1;
 		double_vector_ptr partGammaCurve =
-		    DoubleArray::getRangeCopy(luminanceGammaCurve, 0,
-					      size);
-
+		    DoubleArray::getRangeCopy(luminanceGammaCurve,
+					      0, size);
 		//求目標值曲線
 		XYZ_vector_ptr targetXYZVector =
-		    getTarget(blackXYZ, targetWhite, partGammaCurve);
-		storeXYZVector(targetXYZVector);
+		    getTarget(blackXYZ, targetWhite,
+			      partGammaCurve);
+		STORE_XYZXY_VECTOE("target.xls", targetXYZVector);
 		//==============================================================
 		RGB_vector_ptr result(new RGB_vector());
-
 		//primary color只能用target white~
 		xyY_ptr rxyY = analyzer->getPrimaryColor(Channel::R);
 		xyY_ptr gxyY = analyzer->getPrimaryColor(Channel::G);
 		xyY_ptr bxyY = analyzer->getPrimaryColor(Channel::B);
 		int x = 0;
 		x;
-
 		foreach(const XYZ_ptr targetXYZ, *targetXYZVector) {
 		    bptr < MaxMatrixIntensityAnayzer >
 			analyzer(new MaxMatrixIntensityAnayzer());
-
 		    analyzer->setupComponent(Channel::R, rxyY->toXYZ());
 		    analyzer->setupComponent(Channel::G, gxyY->toXYZ());
 		    analyzer->setupComponent(Channel::B, bxyY->toXYZ());
 		    analyzer->setupComponent(Channel::W, targetXYZ);
 		    analyzer->enter();
-
-		    Component_vector_ptr newcomponentVector =
+		    Component_vector_ptr
+			newcomponentVector =
 			fetchComponent(analyzer, componentVector);
 		    //STORE_COMPONENT(_toString(x++) + ".xls",
 		    //newcomponentVector);
@@ -113,10 +111,8 @@ namespace cms {
 		    RGB_ptr rgb = lutgen.getDGCode(100, 100, 100);
 		    result->push_back(rgb);
 		};
-
 		return result;
 	    };
-
 	};
     };
 };

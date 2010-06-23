@@ -766,10 +766,14 @@ namespace cms {
 	    void LCDCalibrator::setNewMethod(bool enable) {
 		this->newMethod = enable;
 	    };
+	    void LCDCalibrator::setNewMethod(bool newMethod,
+					     bool avoidHook) {
+		this->newMethod = newMethod;
+		this->avoidHook = avoidHook;
+	    };
 
 	  LCDCalibrator::LCDCalibrator(bptr < ComponentFetcher > fetcher, bptr < BitDepthProcessor > bitDepth):bitDepth(bitDepth)
 	    {
-		//rgbgamma = false;
 		rgbIndepGamma = false;
 		useGammaCurve = false;
 		bIntensityGain = 1;
@@ -779,6 +783,7 @@ namespace cms {
 		this->fetcher = fetcher;
 		averageDimDG = false;
 		newMethod = false;
+		avoidHook = false;
 		bMax = bMax2 = false;
 	    };
 
@@ -856,10 +861,10 @@ namespace cms {
 			analyzer->getReferenceColor()->toXYZ();
 		    double_vector_ptr luminanceGammaCurve =
 			generator.getLuminanceGammaCurve(gammaCurve);
-
 		    dglut = advgenerator.produce(targetWhite,
 						 luminanceGammaCurve,
-						 50, 200, 3.5, 2.2);
+						 50, 200, 3.5, 2.2,
+						 avoidHook);
 		    //==========================================================
 		} else {
 		    //==========================================================
