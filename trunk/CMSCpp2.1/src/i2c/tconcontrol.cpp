@@ -33,8 +33,6 @@ namespace i2c {
     bptr < ByteBuffer > TCONControl::getRGBByteBuffer(int r, int g, int b,
 						      const TestRGBBit &
 						      testRGBBit) {
-	/* TODO : getRGBByteBuffer */
-
 	int rLow = r & 255;
 	int rHigh = (r >> 8) & 15;
 	int gLow = g & 255;
@@ -115,6 +113,9 @@ namespace i2c {
     };
     const Dep::MaxValue & TCONControl::getLUTBit() {
 	return parameter->lutBit;
+    };
+    void TCONControl::setDGLut(RGB_vector_ptr rgbVector) {
+	/* TODO : setDGLut */
     };
 };
 

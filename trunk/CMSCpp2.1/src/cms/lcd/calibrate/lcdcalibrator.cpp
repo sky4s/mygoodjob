@@ -516,7 +516,6 @@ namespace cms {
 		    RGB_ptr rgb;
 		    switch (mode) {
 		    case RGBLumi:
-			//rgb = RGB_ptr(new RGBColor(key, key, key));
 			throw java::lang::UnsupportedOperationException();
 		    case Component:
 			rgb = lut->getCode(luminance);
