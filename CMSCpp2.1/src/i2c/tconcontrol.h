@@ -34,6 +34,7 @@ namespace i2c {
 	unsigned char readByte(int dataAddress);
 	void writeByte(int dataAddress, unsigned char data);
 	const Dep::MaxValue & getLUTBit();
+	void setDGLut(RGB_vector_ptr rgbVector);
     };
 };
 

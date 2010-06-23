@@ -19,7 +19,20 @@ namespace i2c {
 	(gammaTestAddress), gammaTestBit(gammaTestBit),
 	testRGBAddress(testRGBAddress), lutBit(lutBit),
 	testRGBBit(independentRGB ? TestRGBBit::
-		   IndependentInstance : TestRGBBit::DependentInstance) {
+		   IndependentInstance : TestRGBBit::DependentInstance),
+	DGLutAddress(-1) {
+
+    };
+    TCONParameter::TCONParameter(int gammaTestAddress,
+				 unsigned char gammaTestBit,
+				 int testRGBAddress, bool independentRGB,
+				 const Dep::MaxValue & lutBit,
+				 int DGLutAddress):gammaTestAddress
+	(gammaTestAddress), gammaTestBit(gammaTestBit),
+	testRGBAddress(testRGBAddress), lutBit(lutBit),
+	testRGBBit(independentRGB ? TestRGBBit::
+		   IndependentInstance : TestRGBBit::DependentInstance),
+	DGLutAddress(DGLutAddress) {
 
     };
     TCONParameter::TCONParameter(int gammaTestAddress,
@@ -31,7 +44,7 @@ namespace i2c {
 				 lutBit):gammaTestAddress
 	(gammaTestAddress), gammaTestBit(gammaTestBit),
 	testRGBAddress(testRGBAddress), lutBit(lutBit),
-	testRGBBit(testRGBBit) {
+	testRGBBit(testRGBBit), DGLutAddress(-1) {
 
     };
     TestRGBBit::TestRGBBit(const int rLowBit, const int rHighBit,
@@ -44,18 +57,10 @@ namespace i2c {
 
     };
     //12401
-    const TestRGBBit TestRGBBit::IndependentInstance(8, 0, 24, 16, 40, 32,
-						     6);
+    const TestRGBBit TestRGBBit::IndependentInstance(8, 0, 24, 16, 40,
+						     32, 6);
     //12403
-    const TestRGBBit TestRGBBit::DependentInstance(0, 8, 16, 12, 24, 32,
-						   5);
-    /*const TestRGBBit TestRGBBit::getIndependentInstance() {
-       TestRGBBit rgbbit(8, 0, 24, 16, 40, 32);
-       return rgbbit;
-       };
-       const TestRGBBit TestRGBBit::getDependentInstance() {
-       TestRGBBit rgbbit(0, 8, 16, 12, 24, 32);
-       return rgbbit;
-       }; */
+    const TestRGBBit TestRGBBit::DependentInstance(0, 8, 16, 12, 24,
+						   32, 5);
 };
 
