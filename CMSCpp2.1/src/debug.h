@@ -15,7 +15,6 @@
 // CCT¥¨¶°
 //==============================================================================
 #ifdef DEBUG_CCTLUT
-//#include <cms/util/rgbarray.h>
 #define _s std::string
 #define debug_dir _s(DEBUG_DIR)
 
