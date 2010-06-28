@@ -1,6 +1,6 @@
 object ThreeDMeasureWindow: TThreeDMeasureWindow
-  Left = -12
-  Top = 67
+  Left = 185
+  Top = 162
   BorderStyle = bsNone
   Caption = 'ThreeDMeasureWindow'
   ClientHeight = 825
@@ -15,6 +15,7 @@ object ThreeDMeasureWindow: TThreeDMeasureWindow
   KeyPreview = True
   OldCreateOrder = False
   WindowState = wsMaximized
+  OnCreate = FormCreate
   OnKeyPress = FormKeyPress
   OnPaint = FormPaint
   PixelsPerInch = 120
@@ -27,6 +28,34 @@ object ThreeDMeasureWindow: TThreeDMeasureWindow
     BevelOuter = bvNone
     Color = clMaroon
     TabOrder = 0
+    object Label_StartAdj: TLabel
+      Left = 0
+      Top = 40
+      Width = 7
+      Height = 16
+      Caption = '0'
+    end
+    object Label_TargetAdj: TLabel
+      Left = 0
+      Top = 64
+      Width = 7
+      Height = 16
+      Caption = '0'
+    end
+    object Label_StartBase: TLabel
+      Left = 0
+      Top = 88
+      Width = 7
+      Height = 16
+      Caption = '0'
+    end
+    object Label_TargetBase: TLabel
+      Left = 0
+      Top = 112
+      Width = 7
+      Height = 16
+      Caption = '0'
+    end
     object Button1: TButton
       Left = 9
       Top = 9
