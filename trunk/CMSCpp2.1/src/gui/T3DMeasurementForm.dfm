@@ -13,6 +13,7 @@ object ThreeDMeasurementForm: TThreeDMeasurementForm
   KeyPreview = True
   OldCreateOrder = False
   OnCreate = FormCreate
+  OnKeyPress = FormKeyPress
   PixelsPerInch = 120
   TextHeight = 16
   object PageControl1: TPageControl
@@ -20,8 +21,8 @@ object ThreeDMeasurementForm: TThreeDMeasurementForm
     Top = 8
     Width = 409
     Height = 289
-    ActivePage = TabSheet1
-    TabIndex = 0
+    ActivePage = TabSheet3
+    TabIndex = 2
     TabOrder = 0
     object TabSheet1: TTabSheet
       Caption = 'Batch'
@@ -71,7 +72,7 @@ object ThreeDMeasurementForm: TThreeDMeasurementForm
         Top = 9
         Width = 224
         Height = 152
-        Caption = 'Measurement Setup'
+        Caption = 'Common Setup'
         TabOrder = 2
         object Label1: TLabel
           Left = 9
@@ -397,6 +398,57 @@ object ThreeDMeasurementForm: TThreeDMeasurementForm
         Caption = 'Extend'
         TabOrder = 3
         OnClick = CheckBox_ExtendClick
+      end
+    end
+    object TabSheet3: TTabSheet
+      Caption = 'Dynamic'
+      ImageIndex = 2
+      object GroupBox2: TGroupBox
+        Left = 8
+        Top = 8
+        Width = 129
+        Height = 89
+        Caption = 'Spot'
+        TabOrder = 0
+        object Label9: TLabel
+          Left = 8
+          Top = 24
+          Width = 27
+          Height = 16
+          Caption = 'Start'
+        end
+        object Label10: TLabel
+          Left = 8
+          Top = 56
+          Width = 40
+          Height = 16
+          Caption = 'Target'
+        end
+        object Edit_DStart: TEdit
+          Left = 56
+          Top = 24
+          Width = 65
+          Height = 24
+          TabOrder = 0
+          Text = '16'
+        end
+        object Edit_DTarget: TEdit
+          Left = 56
+          Top = 56
+          Width = 65
+          Height = 24
+          TabOrder = 1
+          Text = '32'
+        end
+      end
+      object Button_DynamicMeasure: TButton
+        Left = 144
+        Top = 72
+        Width = 73
+        Height = 25
+        Caption = 'Measure'
+        TabOrder = 1
+        OnClick = Button_DynamicMeasureClick
       end
     end
   end

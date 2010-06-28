@@ -22,7 +22,8 @@ TThreeDMeasurementForm *ThreeDMeasurementForm;
 //---------------------------------------------------------------------------
 __fastcall TThreeDMeasurementForm::TThreeDMeasurementForm(TComponent *
 							  Owner)
-:TForm(Owner), linkCA210(!FileExists(DEBUG_FILE)), stop(false)
+:TForm(Owner), linkCA210(!FileExists(DEBUG_FILE)), stop(false),
+dynamicMode(false)
 {
     using namespace cms::util;
     fieldNames =
@@ -117,34 +118,6 @@ double TThreeDMeasurementForm::patternMeasure(RGB_ptr left, RGB_ptr right,
 					      int idleTime, int aveTimes,
 					      bool leftrightChange)
 {
-
-    /*if (!leftrightChange) {
-       ThreeDMeasureWindow->setLeftRGB(left);
-       ThreeDMeasureWindow->setRightRGB(right);
-       } else {
-       ThreeDMeasureWindow->setLeftRGB(right);
-       ThreeDMeasureWindow->setRightRGB(left);
-       }
-
-       ThreeDMeasureWindow->Visible = true;
-       Application->ProcessMessages();
-
-       Sleep(idleTime);
-       if (true == stop) {
-       return -1;
-       }
-
-       double totalY = 0;
-       if (true == linkCA210) {
-       for (int x = 0; x < aveTimes; x++) {
-       if (true == stop) {
-       return -1;
-       }
-       totalY += ca210->triggerMeasurementInXYZ()[1];
-       }
-       }
-       double meanY = totalY / aveTimes;
-       return meanY; */
     double_vector_ptr result =
 	patternMeasure0(left, right, idleTime, aveTimes, leftrightChange);
     return getMeanLuminance(result);
@@ -395,25 +368,29 @@ Button_SpotMeasureClick(TObject * Sender)
     this->Edit2->Text = target;
     this->Edit3->Text = start;
 
-    bool leftrightChange = this->CheckBox_LeftRightChange->Checked;
+    /*bool leftrightChange = this->CheckBox_LeftRightChange->Checked;
+       bool extend = this->CheckBox_Extend->Checked;
+       int idleTime = this->Edit_IdleTime->Text.ToInt();
+       int aveTimes = this->Edit_AveTimes->Text.ToInt();
+
+       RGB_ptr lrgb(new RGBColor(start, start, start));
+       RGB_ptr rrgb(new RGBColor(target, target, target)); */
     bool extend = this->CheckBox_Extend->Checked;
-    int idleTime = this->Edit_IdleTime->Text.ToInt();
-    int aveTimes = this->Edit_AveTimes->Text.ToInt();
-
-    RGB_ptr lrgb(new RGBColor(start, start, start));
-    RGB_ptr rrgb(new RGBColor(target, target, target));
-
     try {
-	double v0 = patternMeasure(lrgb, rrgb, idleTime, aveTimes,
-				   leftrightChange);
-	double v1 = patternMeasure(lrgb, lrgb, idleTime, aveTimes,
-				   leftrightChange);
-	double v2 = patternMeasure(rrgb, rrgb, idleTime, aveTimes,
-				   leftrightChange);
+	double v0 = measure(start, target);
+	double v1 = measure(start, start);
+	double v2 = measure(target, target);
+	/*double v0 = patternMeasure(lrgb, rrgb, idleTime, aveTimes,
+	   leftrightChange);
+	   double v1 = patternMeasure(lrgb, lrgb, idleTime, aveTimes,
+	   leftrightChange);
+	   double v2 = patternMeasure(rrgb, rrgb, idleTime, aveTimes,
+	   leftrightChange); */
 	double v3 = 0;
 	if (extend) {
-	    v3 = patternMeasure(rrgb, lrgb, idleTime, aveTimes,
-				leftrightChange);
+	    /*v3 = patternMeasure(rrgb, lrgb, idleTime, aveTimes,
+	       leftrightChange); */
+	    v3 = measure(target, start);
 	    this->Edit4->Text = v3;
 	}
 
@@ -424,14 +401,20 @@ Button_SpotMeasureClick(TObject * Sender)
 	if (start > target) {
 	    //lrgb > rrgb
 	    v = whiteXTalk(v2, v0, v1);
-	    vv = blackXTalk(v2, v3, v1);
+	    if (extend) {
+		vv = blackXTalk(v2, v3, v1);
+	    }
 	} else {
 	    //lrgb < rrgb
 	    v = blackXTalk(v1, v0, v2);
-	    vv = whiteXTalk(v1, v3, v2);
+	    if (extend) {
+		vv = whiteXTalk(v1, v3, v2);
+	    }
 	}
 	this->Edit1->Text = v;
-	this->Edit14->Text = vv;
+	if (extend) {
+	    this->Edit14->Text = vv;
+	}
     }
     __finally {
 	stop = false;
@@ -467,6 +450,91 @@ void __fastcall TThreeDMeasurementForm::CheckBox_ExtendClick(TObject *
     Edit4->Visible = extend;
     Edit14->Visible = extend;
     Label8->Visible = extend;
+}
+
+//---------------------------------------------------------------------------
+
+
+void __fastcall TThreeDMeasurementForm::
+Button_DynamicMeasureClick(TObject * Sender)
+{
+
+    dynamicMode = true;
+    int start = this->Edit_DStart->Text.ToInt();
+    int target = this->Edit_DTarget->Text.ToInt();
+    /*bool leftrightChange = this->CheckBox_LeftRightChange->Checked;
+       int idleTime = this->Edit_IdleTime->Text.ToInt();
+       int aveTimes = this->Edit_AveTimes->Text.ToInt();
+
+       RGB_ptr lrgb(new RGBColor(start, start, start));
+       RGB_ptr rrgb(new RGBColor(target, target, target)); */
+
+    try {
+	double v0 = measure(start, target);
+	double v1 = measure(start, start);
+	double v2 = measure(target, target);
+	/*double v0 = patternMeasure(lrgb, rrgb, idleTime, aveTimes,
+	   leftrightChange);
+	   double v1 = patternMeasure(lrgb, lrgb, idleTime, aveTimes,
+	   leftrightChange);    //start
+	   double v2 = patternMeasure(rrgb, rrgb, idleTime, aveTimes,
+	   leftrightChange);    //target */
+	ThreeDMeasureWindow->Label_StartBase->Caption =
+	    (_toString(start) + "->" + _toString(start) + " " +
+	     _toString(v1)).c_str();
+	ThreeDMeasureWindow->Label_TargetBase->Caption =
+	    (_toString(target) + "->" + _toString(target) + " " +
+	     _toString(v2)).c_str();
+
+
+
+    }
+    __finally {
+	//stop = false;
+	//ThreeDMeasureWindow->Visible = false;
+    }
+}
+
+double TThreeDMeasurementForm::measure(int start, int target)
+{
+    using namespace Dep;
+    bool leftrightChange = this->CheckBox_LeftRightChange->Checked;
+    int idleTime = this->Edit_IdleTime->Text.ToInt();
+    int aveTimes = this->Edit_AveTimes->Text.ToInt();
+
+    RGB_ptr lrgb(new RGBColor(start, start, start));
+    RGB_ptr rrgb(new RGBColor(target, target, target));
+    double v0 = patternMeasure(lrgb, rrgb, idleTime, aveTimes,
+			       leftrightChange);
+    return v0;
+}
+
+//---------------------------------------------------------------------------
+
+void TThreeDMeasurementForm::keyPress(TObject * Sender, char &Key)
+{
+    FormKeyPress(Sender, Key);
+};
+
+
+void __fastcall TThreeDMeasurementForm::FormKeyPress(TObject * Sender,
+						     char &Key)
+{
+    switch (Key) {
+    case 27:			//esc
+	//this->stop = true;
+	ThreeDMeasureWindow->Visible = false;
+
+	break;
+    case 72:			//up
+	break;
+    case 80:			//dw
+	break;
+    case 75:			//lt
+	break;
+    case 77:			//rt
+	break;
+    }
 }
 
 //---------------------------------------------------------------------------

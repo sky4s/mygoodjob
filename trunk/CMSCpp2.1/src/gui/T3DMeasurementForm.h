@@ -14,10 +14,15 @@
 #include <Forms.hpp>
 //本項目內頭文件
 #include "TOutputFileFrame.h"
+//#include "T3DMeasureWindow.h"
 #include <ComCtrls.hpp>
-
 //---------------------------------------------------------------------------
-class TThreeDMeasurementForm:public TForm {
+class KeyPressListener {
+  public:
+    virtual void keyPress(TObject * Sender, char &Key) = 0;
+};
+//---------------------------------------------------------------------------
+class TThreeDMeasurementForm:public TForm, KeyPressListener {
     __published:		// IDE-managed Components
     TPageControl * PageControl1;
     TTabSheet *TabSheet1;
@@ -63,11 +68,20 @@ class TThreeDMeasurementForm:public TForm {
     TEdit *Edit14;
     TLabel *Label8;
     TCheckBox *CheckBox_Extend;
+    TTabSheet *TabSheet3;
+    TGroupBox *GroupBox2;
+    TLabel *Label9;
+    TLabel *Label10;
+    TEdit *Edit_DStart;
+    TEdit *Edit_DTarget;
+    TButton *Button_DynamicMeasure;
     void __fastcall Button_MeasureClick(TObject * Sender);
     void __fastcall FormCreate(TObject * Sender);
     void __fastcall Button_SpotMeasureClick(TObject * Sender);
     void __fastcall CheckBox_StableTestClick(TObject * Sender);
     void __fastcall CheckBox_ExtendClick(TObject * Sender);
+    void __fastcall Button_DynamicMeasureClick(TObject * Sender);
+    void __fastcall FormKeyPress(TObject * Sender, char &Key);
     //void __fastcall CheckBox_ExtendClick(TObject *Sender);
 
   private:			// User declarations
@@ -86,12 +100,14 @@ class TThreeDMeasurementForm:public TForm {
     string_vector_ptr fieldNames;
     const bool linkCA210;
     double2D_ptr crosstalk(double2D_ptr meaureResult);
-
+    bool dynamicMode;
+    double measure(int start, int target);
   public:			// User declarations
     static double whiteXTalk(double BB, double BW, double WW);
     static double blackXTalk(double BB, double WB, double WW);
     __fastcall TThreeDMeasurementForm(TComponent * Owner);
     bool stop;
+    void keyPress(TObject * Sender, char &Key);
 };
 //---------------------------------------------------------------------------
 extern PACKAGE TThreeDMeasurementForm *ThreeDMeasurementForm;
