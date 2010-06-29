@@ -29,6 +29,9 @@ void __fastcall TThreeDMeasureWindow::FormKeyPress(TObject * Sender,
     if (null != keyPressListener) {
 	keyPressListener->keyPress(Sender, Key);
     }
+ 
+
+
 }
 
 //---------------------------------------------------------------------------
@@ -85,7 +88,7 @@ void __fastcall TThreeDMeasureWindow::FormPaint(TObject * Sender)
 }
 
 //---------------------------------------------------------------------------
-void TThreeDMeasureWindow::addKeyPressListener(KeyPressListener * listener)
+void TThreeDMeasureWindow::setKeyPressListener(KeyPressListener * listener)
 {
     this->keyPressListener = listener;
 }
@@ -96,7 +99,7 @@ void __fastcall TThreeDMeasureWindow::FormCreate(TObject * Sender)
        KeyPressListener * >(ThreeDMeasurementForm)); */
     /*TThreeDMeasurementForm *listener =
        dynamic_cast < TThreeDMeasurementForm * >(ThreeDMeasurementForm); */
-    this->addKeyPressListener((KeyPressListener *) ThreeDMeasurementForm);
+    this->setKeyPressListener((KeyPressListener *) ThreeDMeasurementForm);
 }
 
 //---------------------------------------------------------------------------

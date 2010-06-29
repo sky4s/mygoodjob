@@ -23,7 +23,7 @@ TThreeDMeasurementForm *ThreeDMeasurementForm;
 __fastcall TThreeDMeasurementForm::TThreeDMeasurementForm(TComponent *
 							  Owner)
 :TForm(Owner), linkCA210(!FileExists(DEBUG_FILE)), stop(false),
-dynamicMode(false)
+dynamicMode(false), whiteFont(false)
 {
     using namespace cms::util;
     fieldNames =
@@ -56,24 +56,18 @@ void __fastcall TThreeDMeasurementForm::Button_MeasureClick(TObject *
     (*rgbw)[5] = false;
     (*rgbw)[6] = this->CheckBox_W->Checked;
 
-    bool leftrightChange = this->CheckBox_LeftRightChange->Checked;
-
-
     if (false == (*rgbw)[0] && false == (*rgbw)[1] && false == (*rgbw)[2]
 	&& false == (*rgbw)[6]) {
 	ShowMessage("Select at least one color.");
 	return;
     }
 
+    bool leftrightChange = this->CheckBox_LeftRightChange->Checked;
     int idleTime = this->Edit_IdleTime->Text.ToInt();
     int aveTimes = this->Edit_AveTimes->Text.ToInt();
-
-    /*if (true == this->CheckBox_StableTest->Checked) {
-       stableTest(idleTime, aveTimes);
-       return;
-       } */
     bool stableTest = this->CheckBox_StableTest->Checked;
-    if (true == stableTest) {
+
+    if (true == stableTest && true == linkCA210) {
 	int index = this->ComboBox_MeasureMode->ItemIndex;
 	bptr < ca210api::CA210API > ca210api = ca210->getCA210API();
 	switch (index) {
@@ -120,7 +114,11 @@ double TThreeDMeasurementForm::patternMeasure(RGB_ptr left, RGB_ptr right,
 {
     double_vector_ptr result =
 	patternMeasure0(left, right, idleTime, aveTimes, leftrightChange);
-    return getMeanLuminance(result);
+    if (null != result) {
+	return getMeanLuminance(result);
+    } else {
+	return -1;
+    }
 };
 
 double_vector_ptr TThreeDMeasurementForm::patternMeasure0(RGB_ptr left,
@@ -368,28 +366,13 @@ Button_SpotMeasureClick(TObject * Sender)
     this->Edit2->Text = target;
     this->Edit3->Text = start;
 
-    /*bool leftrightChange = this->CheckBox_LeftRightChange->Checked;
-       bool extend = this->CheckBox_Extend->Checked;
-       int idleTime = this->Edit_IdleTime->Text.ToInt();
-       int aveTimes = this->Edit_AveTimes->Text.ToInt();
-
-       RGB_ptr lrgb(new RGBColor(start, start, start));
-       RGB_ptr rrgb(new RGBColor(target, target, target)); */
     bool extend = this->CheckBox_Extend->Checked;
     try {
 	double v0 = measure(start, target);
 	double v1 = measure(start, start);
 	double v2 = measure(target, target);
-	/*double v0 = patternMeasure(lrgb, rrgb, idleTime, aveTimes,
-	   leftrightChange);
-	   double v1 = patternMeasure(lrgb, lrgb, idleTime, aveTimes,
-	   leftrightChange);
-	   double v2 = patternMeasure(rrgb, rrgb, idleTime, aveTimes,
-	   leftrightChange); */
 	double v3 = 0;
 	if (extend) {
-	    /*v3 = patternMeasure(rrgb, lrgb, idleTime, aveTimes,
-	       leftrightChange); */
 	    v3 = measure(target, start);
 	    this->Edit4->Text = v3;
 	}
@@ -454,6 +437,31 @@ void __fastcall TThreeDMeasurementForm::CheckBox_ExtendClick(TObject *
 
 //---------------------------------------------------------------------------
 
+void TThreeDMeasurementForm::dynamicMeasure(int start, int target)
+{
+    double v0 = measure(start, target);
+    double v1 = measure(start, start);
+    double v2 = measure(target, target);
+    ThreeDMeasureWindow->Label_StartBase->Caption =
+	(_toString(start) + "->" + _toString(start) + " " +
+	 _toString(v1)).c_str();
+    ThreeDMeasureWindow->Label_TargetBase->Caption =
+	(_toString(target) + "->" + _toString(target) + " " +
+	 _toString(v2)).c_str();
+    ThreeDMeasureWindow->Label_StartTarget->Caption =
+	(_toString(start) + "->" + _toString(target) + " " +
+	 _toString(v0)).c_str();
+}
+
+void TThreeDMeasurementForm::updateAdjust()
+{
+    startAdj = startAdj > 255 ? 255 : startAdj < 0 ? 0 : startAdj;
+    targetAdj = targetAdj > 255 ? 255 : targetAdj < 0 ? 0 : targetAdj;
+    ThreeDMeasureWindow->Label_StartAdj->Caption =
+	("start: " + _toString(startAdj)).c_str();
+    ThreeDMeasureWindow->Label_TargetAdj->Caption =
+	("target: " + _toString(targetAdj)).c_str();
+}
 
 void __fastcall TThreeDMeasurementForm::
 Button_DynamicMeasureClick(TObject * Sender)
@@ -462,36 +470,15 @@ Button_DynamicMeasureClick(TObject * Sender)
     dynamicMode = true;
     int start = this->Edit_DStart->Text.ToInt();
     int target = this->Edit_DTarget->Text.ToInt();
-    /*bool leftrightChange = this->CheckBox_LeftRightChange->Checked;
-       int idleTime = this->Edit_IdleTime->Text.ToInt();
-       int aveTimes = this->Edit_AveTimes->Text.ToInt();
-
-       RGB_ptr lrgb(new RGBColor(start, start, start));
-       RGB_ptr rrgb(new RGBColor(target, target, target)); */
+    startAdj = start;
+    targetAdj = target;
 
     try {
-	double v0 = measure(start, target);
-	double v1 = measure(start, start);
-	double v2 = measure(target, target);
-	/*double v0 = patternMeasure(lrgb, rrgb, idleTime, aveTimes,
-	   leftrightChange);
-	   double v1 = patternMeasure(lrgb, lrgb, idleTime, aveTimes,
-	   leftrightChange);    //start
-	   double v2 = patternMeasure(rrgb, rrgb, idleTime, aveTimes,
-	   leftrightChange);    //target */
-	ThreeDMeasureWindow->Label_StartBase->Caption =
-	    (_toString(start) + "->" + _toString(start) + " " +
-	     _toString(v1)).c_str();
-	ThreeDMeasureWindow->Label_TargetBase->Caption =
-	    (_toString(target) + "->" + _toString(target) + " " +
-	     _toString(v2)).c_str();
-
-
+	updateAdjust();
+	dynamicMeasure(startAdj, targetAdj);
 
     }
     __finally {
-	//stop = false;
-	//ThreeDMeasureWindow->Visible = false;
     }
 }
 
@@ -520,20 +507,142 @@ void TThreeDMeasurementForm::keyPress(TObject * Sender, char &Key)
 void __fastcall TThreeDMeasurementForm::FormKeyPress(TObject * Sender,
 						     char &Key)
 {
+
     switch (Key) {
     case 27:			//esc
 	//this->stop = true;
 	ThreeDMeasureWindow->Visible = false;
 
 	break;
-    case 72:			//up
+    case 87:			//W
+    case 119:
+	startAdj++;
+	updateAdjust();
 	break;
-    case 80:			//dw
+    case 83:			//s
+    case 115:
+	startAdj--;
+	updateAdjust();
 	break;
-    case 75:			//lt
+    case 65:			//a
+    case 97:
+	targetAdj--;
+	updateAdjust();
 	break;
-    case 77:			//rt
+    case 68:			//d
+    case 100:
+	targetAdj++;
+	updateAdjust();
 	break;
+
+    case 88:			//x for swap
+    case 120:
+	{
+	    int startTemp = startAdj;
+	    startAdj = targetAdj;
+	    targetAdj = startTemp;
+	    updateAdjust();
+	}
+	break;
+    case 67:			//c for measure
+    case 99:
+	updateAdjust();
+	dynamicMeasure(startAdj, targetAdj);
+	break;
+    case 32:			//space
+	{
+	    whiteFont = !whiteFont;
+	    TColor c = whiteFont ? clWhite : clBlack;
+	    ThreeDMeasureWindow->Label_StartBase->Font->Color = c;
+	    ThreeDMeasureWindow->Label_TargetBase->Font->Color = c;
+	    ThreeDMeasureWindow->Label_StartAdj->Font->Color = c;
+	    ThreeDMeasureWindow->Label_TargetAdj->Font->Color = c;
+	    ThreeDMeasureWindow->Label_StartTarget->Font->Color = c;
+	    break;
+	}
+
+    }
+}
+
+//---------------------------------------------------------------------------
+
+void __fastcall TThreeDMeasurementForm::Button1Click(TObject * Sender)
+{
+    using namespace Dep;
+    using namespace cms::util;
+    using namespace cms::colorformat;
+    using namespace ca210api;
+
+    bool stableTest = this->CheckBox_StableTest->Checked;
+    if (true == stableTest) {
+
+	if (true == linkCA210) {
+	    int index = this->ComboBox_MeasureMode->ItemIndex;
+	    bptr < ca210api::CA210API > ca210api = ca210->getCA210API();
+	    switch (index) {
+	    case 0:
+		ca210api->setAveragingMode(Auto);
+		break;
+	    case 1:
+		ca210api->setAveragingMode(Fast);
+		break;
+	    case 2:
+		ca210api->setAveragingMode(Slow);
+		break;
+	    }
+	}
+
+	string filename = "W_stableTest.xls";
+	Util::deleteExist(filename);
+	bptr < ExcelAccessBase > excel =
+	    bptr < ExcelAccessBase >
+	    (new ExcelAccessBase(filename, Create));
+
+	int idleTime = this->Edit_IdleTime->Text.ToInt();
+	int aveTimes = this->Edit_AveTimes->Text.ToInt();
+	bool leftrightChange = this->CheckBox_LeftRightChange->Checked;
+
+      std:vector < double_vector_ptr > vec;
+	for (int y = 0; y < 17; y++) {
+	    //==================================================================
+	    // rgb prepare
+	    //==================================================================
+	    int r = 16 * y;
+	    r = r > 255 ? 255 : r;
+	    RGB_ptr rrgb(new RGBColor(MaxValue::Double255));
+	    rrgb->setValue(Channel::W, r);
+	    //==================================================================
+	    double_vector_ptr measureResult =
+		patternMeasure0(rrgb, rrgb, idleTime, aveTimes,
+				leftrightChange);
+	    if (true == stableTest) {
+		vec.push_back(measureResult);
+	    }
+	    //double meanY = getMeanLuminance(measureResult);
+	    if (true == stop) {
+		//return double2D_ptr((double2D *) null);
+		break;
+	    }
+	    //(*result)[x][y] = meanY;
+	}
+
+	//int sheetNum = y * 16;
+	//sheetNum = sheetNum >= 255 ? 255 : sheetNum;
+	//string sheetName = _toString(sheetNum);
+	string sheetName = "Sheet1";
+	//excel->initSheet(sheetName, fieldNames);
+	excel->initSheet(sheetName, fieldNames);
+
+	for (int m = 0; m < aveTimes; m++) {
+	    string_vector_ptr values(new string_vector());
+	    values->push_back(_toString(m + 1));
+	    for (int n = 0; n < 17; n++) {
+		double v = (*vec[n])[m];
+		values->push_back(_toString(v));
+	    }
+	    excel->insertData(sheetName, values, false);
+	}
+	ThreeDMeasureWindow->Visible = false;
     }
 }
 
