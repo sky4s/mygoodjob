@@ -75,6 +75,9 @@ class TThreeDMeasurementForm:public TForm, KeyPressListener {
     TEdit *Edit_DStart;
     TEdit *Edit_DTarget;
     TButton *Button_DynamicMeasure;
+    TTabSheet *TabSheet4;
+    TButton *Button1;
+    TComboBox *ComboBox_MeasureMode2;
     void __fastcall Button_MeasureClick(TObject * Sender);
     void __fastcall FormCreate(TObject * Sender);
     void __fastcall Button_SpotMeasureClick(TObject * Sender);
@@ -82,6 +85,7 @@ class TThreeDMeasurementForm:public TForm, KeyPressListener {
     void __fastcall CheckBox_ExtendClick(TObject * Sender);
     void __fastcall Button_DynamicMeasureClick(TObject * Sender);
     void __fastcall FormKeyPress(TObject * Sender, char &Key);
+    void __fastcall Button1Click(TObject * Sender);
     //void __fastcall CheckBox_ExtendClick(TObject *Sender);
 
   private:			// User declarations
@@ -102,6 +106,10 @@ class TThreeDMeasurementForm:public TForm, KeyPressListener {
     double2D_ptr crosstalk(double2D_ptr meaureResult);
     bool dynamicMode;
     double measure(int start, int target);
+    bool whiteFont;
+    int startAdj, targetAdj;
+    void dynamicMeasure(int start, int target);
+    void updateAdjust();
   public:			// User declarations
     static double whiteXTalk(double BB, double BW, double WW);
     static double blackXTalk(double BB, double WB, double WW);

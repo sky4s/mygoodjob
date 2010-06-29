@@ -1,6 +1,6 @@
 object ThreeDMeasureWindow: TThreeDMeasureWindow
-  Left = 185
-  Top = 162
+  Left = 217
+  Top = 206
   BorderStyle = bsNone
   Caption = 'ThreeDMeasureWindow'
   ClientHeight = 825
@@ -29,35 +29,72 @@ object ThreeDMeasureWindow: TThreeDMeasureWindow
     Color = clMaroon
     TabOrder = 0
     object Label_StartAdj: TLabel
-      Left = 0
+      Left = 24
       Top = 40
-      Width = 7
-      Height = 16
-      Caption = '0'
+      Width = 61
+      Height = 25
+      Caption = 'start 0'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -20
+      Font.Name = 'MS Sans Serif'
+      Font.Style = [fsBold]
+      ParentFont = False
     end
     object Label_TargetAdj: TLabel
-      Left = 0
-      Top = 64
-      Width = 7
-      Height = 16
-      Caption = '0'
+      Left = 24
+      Top = 72
+      Width = 74
+      Height = 25
+      Caption = 'target 0'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -20
+      Font.Name = 'MS Sans Serif'
+      Font.Style = [fsBold]
+      ParentFont = False
     end
     object Label_StartBase: TLabel
-      Left = 0
-      Top = 88
-      Width = 7
-      Height = 16
-      Caption = '0'
+      Left = 24
+      Top = 104
+      Width = 124
+      Height = 25
+      Caption = 'start->start 0'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -20
+      Font.Name = 'MS Sans Serif'
+      Font.Style = [fsBold]
+      ParentFont = False
     end
     object Label_TargetBase: TLabel
-      Left = 0
-      Top = 112
-      Width = 7
-      Height = 16
-      Caption = '0'
+      Left = 24
+      Top = 136
+      Width = 150
+      Height = 25
+      Caption = 'target->target 0'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -20
+      Font.Name = 'MS Sans Serif'
+      Font.Style = [fsBold]
+      ParentFont = False
+    end
+    object Label_StartTarget: TLabel
+      Left = 24
+      Top = 168
+      Width = 137
+      Height = 25
+      Caption = 'start->target 0'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -20
+      Font.Name = 'MS Sans Serif'
+      Font.Style = [fsBold]
+      ParentFont = False
     end
     object Button1: TButton
-      Left = 9
+      Left = 25
       Top = 9
       Width = 73
       Height = 24

@@ -451,5 +451,31 @@ object ThreeDMeasurementForm: TThreeDMeasurementForm
         OnClick = Button_DynamicMeasureClick
       end
     end
+    object TabSheet4: TTabSheet
+      Caption = 'StableTest'
+      ImageIndex = 3
+      object Button1: TButton
+        Left = 104
+        Top = 8
+        Width = 73
+        Height = 25
+        Caption = 'Measure'
+        TabOrder = 0
+        OnClick = Button1Click
+      end
+      object ComboBox_MeasureMode2: TComboBox
+        Left = 8
+        Top = 8
+        Width = 89
+        Height = 24
+        ItemHeight = 16
+        TabOrder = 1
+        Text = 'Fast'
+        Items.Strings = (
+          'Auto'
+          'Fast'
+          'Slow')
+      end
+    end
   end
 end
