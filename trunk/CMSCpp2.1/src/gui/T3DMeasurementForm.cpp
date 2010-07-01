@@ -414,7 +414,7 @@ CheckBox_StableTestClick(TObject * Sender)
     ComboBox_MeasureMode->Enabled = test;
     if (test) {
 	Edit_IdleTime->Text = 0;
-	Edit_AveTimes->Text = 66;
+	Edit_AveTimes->Text = 200;
     }
 
 }
@@ -439,9 +439,36 @@ void __fastcall TThreeDMeasurementForm::CheckBox_ExtendClick(TObject *
 
 void TThreeDMeasurementForm::dynamicMeasure(int start, int target)
 {
-    double v0 = measure(start, target);
+    ThreeDMeasureWindow->Label_StartBase->Caption =
+	(_toString(start) + "->" + _toString(start) +
+	 " measuring...").c_str();
+    ThreeDMeasureWindow->Label_TargetBase->Caption =
+	(_toString(target) + "->" + _toString(target) +
+	 " measuring...").c_str();
+    ThreeDMeasureWindow->Label_StartTarget->Caption =
+	(_toString(start) + "->" + _toString(target) +
+	 " measuring...").c_str();
+    ThreeDMeasureWindow->Label_TargetStart->Caption =
+	(_toString(target) + "->" + _toString(start) +
+	 " measuring...").c_str();
+
+    ThreeDMeasureWindow->Label_WXtalk->Caption = "w xtalk measuring...";
+    ThreeDMeasureWindow->Label_BXtalk->Caption = "b xtalk measuring...";
+
+    bool release = CheckBox_AutoReleaseCA210->Checked;
+    if (true == linkCA210 && release) {
+	ca210->getCA210API()->setRemoteMode(ca210api::Locked);
+    }
+
     double v1 = measure(start, start);
     double v2 = measure(target, target);
+    double v3 = measure(target, start);
+    double v0 = measure(start, target);
+
+    if (true == linkCA210 && release) {
+	ca210->getCA210API()->setRemoteMode(ca210api::Off);
+    }
+
     ThreeDMeasureWindow->Label_StartBase->Caption =
 	(_toString(start) + "->" + _toString(start) + " " +
 	 _toString(v1)).c_str();
@@ -451,16 +478,38 @@ void TThreeDMeasurementForm::dynamicMeasure(int start, int target)
     ThreeDMeasureWindow->Label_StartTarget->Caption =
 	(_toString(start) + "->" + _toString(target) + " " +
 	 _toString(v0)).c_str();
+    ThreeDMeasureWindow->Label_TargetStart->Caption =
+	(_toString(target) + "->" + _toString(start) + " " +
+	 _toString(v3)).c_str();
+
+    double bb = start > target ? v2 : v1;
+    double ww = start > target ? v1 : v2;
+    double bw = start > target ? v3 : v0;
+    double wb = start > target ? v0 : v3;
+
+    double wxtalk = whiteXTalk(bb, bw, ww);
+    double bxtalk = whiteXTalk(bb, wb, ww);
+    ThreeDMeasureWindow->Label_WXtalk->Caption =
+	("w xtalk " + _toString(wxtalk)).c_str();
+    ThreeDMeasureWindow->Label_BXtalk->Caption =
+	("b xtalk " + _toString(bxtalk)).c_str();
+    updateAdjust();
 }
 
 void TThreeDMeasurementForm::updateAdjust()
 {
+    using namespace Dep;
     startAdj = startAdj > 255 ? 255 : startAdj < 0 ? 0 : startAdj;
     targetAdj = targetAdj > 255 ? 255 : targetAdj < 0 ? 0 : targetAdj;
     ThreeDMeasureWindow->Label_StartAdj->Caption =
-	("start: " + _toString(startAdj)).c_str();
-    ThreeDMeasureWindow->Label_TargetAdj->Caption =
-	("target: " + _toString(targetAdj)).c_str();
+	("(Left) start: " + _toString(startAdj)).c_str();
+    ThreeDMeasureWindow->Label_TargetAdj2->Caption =
+	("(Right) target: " + _toString(targetAdj)).c_str();
+
+    RGB_ptr lrgb(new RGBColor(startAdj, startAdj, startAdj));
+    RGB_ptr rrgb(new RGBColor(targetAdj, targetAdj, targetAdj));
+    ThreeDMeasureWindow->setLeftRGB(lrgb);
+    ThreeDMeasureWindow->setRightRGB(rrgb);
 }
 
 void __fastcall TThreeDMeasurementForm::
@@ -556,8 +605,11 @@ void __fastcall TThreeDMeasurementForm::FormKeyPress(TObject * Sender,
 	    ThreeDMeasureWindow->Label_StartBase->Font->Color = c;
 	    ThreeDMeasureWindow->Label_TargetBase->Font->Color = c;
 	    ThreeDMeasureWindow->Label_StartAdj->Font->Color = c;
-	    ThreeDMeasureWindow->Label_TargetAdj->Font->Color = c;
+	    ThreeDMeasureWindow->Label_TargetAdj2->Font->Color = c;
 	    ThreeDMeasureWindow->Label_StartTarget->Font->Color = c;
+	    ThreeDMeasureWindow->Label_TargetStart->Font->Color = c;
+	    ThreeDMeasureWindow->Label_WXtalk->Font->Color = c;
+	    ThreeDMeasureWindow->Label_BXtalk->Font->Color = c;
 	    break;
 	}
 

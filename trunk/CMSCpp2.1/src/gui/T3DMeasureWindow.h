@@ -27,6 +27,11 @@ class TThreeDMeasureWindow:public TForm {
     TLabel *Label_StartBase;
     TLabel *Label_TargetBase;
         TLabel *Label_StartTarget;
+        TLabel *Label_TargetAdj2;
+        TLabel *Label_TargetStart;
+        TLabel *Label_WXtalk;
+        TLabel *Label_BXtalk;
+        TLabel *Label_RealTimeMeasure;
     void __fastcall FormKeyPress(TObject * Sender, char &Key);
     void __fastcall Button1Click(TObject * Sender);
     void __fastcall FormPaint(TObject * Sender);
