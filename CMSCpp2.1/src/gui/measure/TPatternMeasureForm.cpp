@@ -3,13 +3,13 @@
 #include <vcl.h>
 #pragma hdrstop
 
-#include "PatternMeasure.h"
+#include "TPatternMeasureForm.h"
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
 #pragma resource "*.dfm"
-TForm1 *Form1;
+TPatternMeasureForm *PatternMeasureForm;
 //---------------------------------------------------------------------------
-__fastcall TForm1::TForm1(TComponent* Owner)
+__fastcall TPatternMeasureForm::TPatternMeasureForm(TComponent* Owner)
         : TForm(Owner)
 {
 }

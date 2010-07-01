@@ -1,9 +1,9 @@
-object Form1: TForm1
+object PatternMeasureForm: TPatternMeasureForm
   Left = 192
   Top = 131
   Width = 870
   Height = 640
-  Caption = 'Form1'
+  Caption = 'PatternMeasureForm'
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
