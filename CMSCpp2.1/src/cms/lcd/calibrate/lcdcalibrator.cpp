@@ -1049,28 +1049,31 @@ namespace cms {
 		return dglut;
 	    };
 
-	    void LCDCalibrator::storeDGLut(const std::
-					   string & filename,
-					   RGB_vector_ptr dglut) {
+	    bptr < DGLutFile > LCDCalibrator::storeDGLutFile(const std::
+							     string &
+							     filename,
+							     RGB_vector_ptr
+							     dglut) {
 		//int n = bitDepth->getLevel();
 		//int n = true == gamma256 ? 257 : 256;
 		//砍掉已存在的
 		Util::deleteExist(filename);
 		//產生新檔
-		DGLutFile file(filename, Create);
+		bptr < DGLutFile > file(new DGLutFile(filename, Create));
+		//DGLutFile file(filename, Create);
 		//產生property物件
 		//bptr < LCDCalibrator > thisbptr(this);
 		DGLutProperty property(this);
 		//寫入property
-		file.setProperty(property);
+		file->setProperty(property);
 		//寫入dgcode
-		file.setGammaTable(dglut);
+		file->setGammaTable(dglut);
 		if (null != componentVector) {
 		    //寫入raw data
-		    file.setRawData(componentVector, initialRGBGamma,
-				    finalRGBGamma);
+		    file->setRawData(componentVector, initialRGBGamma,
+				     finalRGBGamma);
 		}
-
+		return file;
 	    };
 
 	    RGB_vector_ptr LCDCalibrator::

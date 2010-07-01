@@ -304,8 +304,9 @@ namespace cms {
 					   measureCondition);
 		RGB_vector_ptr getGammaDGLut(bptr < MeasureCondition >
 					     measureCondition);
-		void storeDGLut(const std::string & filename,
-				RGB_vector_ptr dglut);
+		 bptr < cms::colorformat::DGLutFile > 
+		    storeDGLutFile(const std::string & filename,
+				   RGB_vector_ptr dglut);
 	      private:
 		 RGB_vector_ptr getDGLutOpResult(RGB_vector_ptr dglut);
 	    };
