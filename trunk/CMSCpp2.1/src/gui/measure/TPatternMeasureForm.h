@@ -1,21 +1,21 @@
 //---------------------------------------------------------------------------
 
-#ifndef PatternMeasureH
-#define PatternMeasureH
+#ifndef TPatternMeasureFormH
+#define TPatternMeasureFormH
 //---------------------------------------------------------------------------
 #include <Classes.hpp>
 #include <Controls.hpp>
 #include <StdCtrls.hpp>
 #include <Forms.hpp>
 //---------------------------------------------------------------------------
-class TForm1 : public TForm
+class TPatternMeasureForm : public TForm
 {
 __published:	// IDE-managed Components
 private:	// User declarations
 public:		// User declarations
-        __fastcall TForm1(TComponent* Owner);
+        __fastcall TPatternMeasureForm(TComponent* Owner);
 };
 //---------------------------------------------------------------------------
-extern PACKAGE TForm1 *Form1;
+extern PACKAGE TPatternMeasureForm *PatternMeasureForm;
 //---------------------------------------------------------------------------
 #endif
