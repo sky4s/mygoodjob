@@ -625,6 +625,7 @@ object CCTLUTForm: TCCTLUTForm
     Width = 56
     Height = 24
     Caption = 'Process'
+    Enabled = False
     TabOrder = 10
     Visible = False
   end

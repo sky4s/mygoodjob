@@ -188,8 +188,15 @@ bool TMainForm::isCA210Analyzer()
 };
 
 //---------------------------------------------------------------------------
-
 void TMainForm::setDummyMeterFilename(const std::string & filename)
+{
+    using namespace cms::colorformat;
+    bptr < DGLutFile > dglutFile(new DGLutFile(filename, ReadOnly));
+    setDummyMeterFilename(dglutFile);
+}
+
+void TMainForm::setDummyMeterFilename(bptr < cms::colorformat::DGLutFile >
+				      dglutFile)
 {
     using namespace cms::measure::meter;
     using namespace cms::measure;
@@ -197,15 +204,15 @@ void TMainForm::setDummyMeterFilename(const std::string & filename)
     using namespace cms::lcd::calibrate;
     using namespace Indep;
     using namespace Dep;
-    bptr < DGLutFile > dgcode(new DGLutFile(filename, ReadOnly));
-    meter = bptr < Meter > (new DGLutFileMeter(dgcode));
+    //bptr < DGLutFile > dgcode(new DGLutFile(filename, ReadOnly));
+    meter = bptr < Meter > (new DGLutFileMeter(dglutFile));
     mm = bptr < MeterMeasurement > (new MeterMeasurement(meter, false));
     mm->setFakeMeasure(true);
 
 
     fetcher = bptr < ComponentFetcher > ((ComponentFetcher *) null);
 
-    bptr < DGLutProperty > property = dgcode->getProperty();
+    bptr < DGLutProperty > property = dglutFile->getProperty();
     if (null != property) {
 	//若有property則為新版
 	bptr < MaxMatrixIntensityAnayzer >

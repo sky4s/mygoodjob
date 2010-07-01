@@ -164,7 +164,7 @@ void __fastcall TCCTLUTForm::Button_RunClick(TObject * Sender)
 
 	    String_ptr astr = this->TOutputFileFrame1->getOutputFilename();
 	    string filename = astr->c_str();
-	    calibrator.storeDGLut(filename, dglut);
+	    calibrator.storeDGLutFile(filename, dglut);
 	    ShowMessage("Ok!");
 	    Util::shellExecute(filename);
 	}
@@ -424,4 +424,5 @@ void __fastcall TCCTLUTForm::CheckBox_NewMethodClick(TObject * Sender)
 }
 
 //---------------------------------------------------------------------------
+
 

@@ -160,6 +160,8 @@ class TMainForm:public TForm {
     void setMeterMeasurementWaitTimes();
      bptr < cms::measure::IntensityAnalyzerIF > getAnalyzer();
     void setDummyMeterFilename(const std::string & filename);
+    void setDummyMeterFilename(bptr < cms::colorformat::DGLutFile >
+			       dglutFile);
     void resetDummyMeter();
      bptr < cms::lcd::calibrate::ComponentFetcher > getComponentFetcher();
     void disconnectMeter();
