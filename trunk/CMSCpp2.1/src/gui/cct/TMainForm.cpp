@@ -9,14 +9,14 @@
 
 //本項目內頭文件
 #include "TMainForm.h"
-#include "TTargetWhiteForm.h"
+//#include "TTargetWhiteForm.h"
 #include "TTargetWhiteForm2.h"
 #include "TAboutBox.h"
 #include "TCCTLUTForm.h"
-#include "TMatrixCalibration.h"
+#include "../TMatrixCalibration.h"
 #include "TGammaAdjustmentForm.h"
 #include "TGammaMeasurementForm.h"
-#include "TI2CTestForm.h"
+#include "../TI2CTestForm.h"
 
 //---------------------------------------------------------------------------
 #pragma package(smart_init)

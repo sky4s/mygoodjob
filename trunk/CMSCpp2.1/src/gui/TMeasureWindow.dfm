@@ -1,10 +1,10 @@
 object MeasureWindow: TMeasureWindow
-  Left = 360
-  Top = 190
+  Left = 290
+  Top = 149
   BorderStyle = bsNone
   Caption = 'MeasureWindow'
-  ClientHeight = 606
-  ClientWidth = 860
+  ClientHeight = 447
+  ClientWidth = 655
   Color = clBlack
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -17,8 +17,17 @@ object MeasureWindow: TMeasureWindow
   WindowState = wsMaximized
   OnClose = FormClose
   OnKeyPress = FormKeyPress
+  OnShow = FormShow
   PixelsPerInch = 120
   TextHeight = 16
+  object Image1: TImage
+    Left = 0
+    Top = 0
+    Width = 105
+    Height = 105
+    AutoSize = True
+    Visible = False
+  end
   object Button1: TButton
     Left = 9
     Top = 9
@@ -28,5 +37,14 @@ object MeasureWindow: TMeasureWindow
     TabOrder = 0
     Visible = False
     OnClick = Button1Click
+  end
+  object Button2: TButton
+    Left = 120
+    Top = 8
+    Width = 81
+    Height = 25
+    Caption = 'Button2'
+    TabOrder = 1
+    OnClick = Button2Click
   end
 end

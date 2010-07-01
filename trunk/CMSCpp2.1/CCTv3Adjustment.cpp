@@ -25,13 +25,8 @@ WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
     try {
 	Application->Initialize();
 	Application->Title = "CCTv3 Adjustment";
-	Application->CreateForm(__classid(TMeasureWindow), &MeasureWindow);
-                 Application->CreateForm(__classid(TGammaAdjustmentForm), &GammaAdjustmentForm);
-                 Application->CreateForm(__classid(TGammaMeasurementForm), &GammaMeasurementForm);
-                 Application->CreateForm(__classid(TMainForm), &MainForm);
-                 Application->CreateForm(__classid(TTargetWhiteForm2), &TargetWhiteForm2);
-                 Application->CreateForm(__classid(TAboutBox), &AboutBox);
-                 Application->CreateForm(__classid(TCCTLUTForm), &CCTLUTForm);
+	Application->CreateForm(__classid(TMainForm), &MainForm);
+                 Application->CreateForm(__classid(TMeasureWindow), &MeasureWindow);
                  Application->Run();
     }
     catch(EOleException & ex) {
