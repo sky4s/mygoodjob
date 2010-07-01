@@ -30,7 +30,7 @@
 #include <math.hpp>
 #include <boost/numeric/conversion/cast.hpp>
 #include <boost/lexical_cast.hpp>
-#include "T3DMeasurementForm.h"
+#include "gui/3d/T3DMeasurementForm.h"
 //#include <boost/tokenizer.hpp>
 
 

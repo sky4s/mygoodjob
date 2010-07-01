@@ -1,6 +1,7 @@
 USEFORM("src\gui\TMeasureWindow.cpp", MeasureWindow);
-USEFORM("src\gui\T3DMeasurementForm.cpp", ThreeDMeasurementForm);
 USEFORM("src\gui\TOutputFileFrame.cpp", OutputFileFrame); /* TFrame: File Type */
+USEFORM("src\gui\3d\T3DMeasureWindow.cpp", ThreeDMeasureWindow);
+USEFORM("src\gui\3d\T3DMeasurementForm.cpp", ThreeDMeasurementForm);
 //---------------------------------------------------------------------------
 This file is used by the project manager only and should be treated like the project file
 
