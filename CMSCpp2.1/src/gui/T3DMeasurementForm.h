@@ -16,6 +16,8 @@
 #include "TOutputFileFrame.h"
 //#include "T3DMeasureWindow.h"
 #include <ComCtrls.hpp>
+#include <ExtCtrls.hpp>
+#include <jpeg.hpp>
 //---------------------------------------------------------------------------
 class KeyPressListener {
   public:
@@ -60,8 +62,6 @@ class TThreeDMeasurementForm:public TForm, KeyPressListener {
     TEdit *Edit13;
     TEdit *Edit1;
     TLabel *Label7;
-    TCheckBox *CheckBox_StableTest;
-    TComboBox *ComboBox_MeasureMode;
     TEdit *Edit2;
     TEdit *Edit3;
     TEdit *Edit4;
@@ -78,6 +78,11 @@ class TThreeDMeasurementForm:public TForm, KeyPressListener {
     TTabSheet *TabSheet4;
     TButton *Button1;
     TComboBox *ComboBox_MeasureMode2;
+    TCheckBox *CheckBox_AutoReleaseCA210;
+        TImage *Image1;
+        TLabel *Label11;
+        TCheckBox *CheckBox_StableTest;
+        TComboBox *ComboBox_MeasureMode;
     void __fastcall Button_MeasureClick(TObject * Sender);
     void __fastcall FormCreate(TObject * Sender);
     void __fastcall Button_SpotMeasureClick(TObject * Sender);
