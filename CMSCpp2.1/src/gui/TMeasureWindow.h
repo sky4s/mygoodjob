@@ -13,8 +13,9 @@
 #include <StdCtrls.hpp>
 #include <Forms.hpp>
 #include <Menus.hpp>
+#include <ExtCtrls.hpp>
 //本項目內頭文件
-//#include <cms/measure/MeterMeasurement.h>
+#include <i2c/tconcontrol.h>
 //---------------------------------------------------------------------------
 /*
  要不要把TCON Control拉到measure window來?
@@ -33,9 +34,13 @@
 class TMeasureWindow:public TForm {
     __published:		// IDE-managed Components
     TButton * Button1;
+    TImage *Image1;
+    TButton *Button2;
     void __fastcall FormKeyPress(TObject * Sender, char &Key);
     void __fastcall Button1Click(TObject * Sender);
     void __fastcall FormClose(TObject * Sender, TCloseAction & Action);
+    void __fastcall FormShow(TObject * Sender);
+    void __fastcall Button2Click(TObject * Sender);
   private:			// User declarations
      bool tconinput;
      bptr < i2c::TCONControl > tconcontrol;
@@ -54,5 +59,4 @@ class TMeasureWindow:public TForm {
 extern PACKAGE TMeasureWindow *MeasureWindow;
 //---------------------------------------------------------------------------
 #endif
-
 

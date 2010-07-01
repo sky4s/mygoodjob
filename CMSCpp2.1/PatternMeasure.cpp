@@ -3,14 +3,17 @@
 #include <vcl.h>
 #pragma hdrstop
 //---------------------------------------------------------------------------
-USEFORM("src\gui\measure\PatternMeasure.cpp", Form1);
+USEFORM("src\gui\measure\TPatternMeasureForm.cpp", PatternMeasureForm);
+USEFORM("src\gui\TOutputFileFrame.cpp", OutputFileFrame); /* TFrame: File Type */
+USEFORM("src\gui\TMeasureWindow.cpp", MeasureWindow);
 //---------------------------------------------------------------------------
 WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 {
         try
         {
                  Application->Initialize();
-                 Application->CreateForm(__classid(TForm1), &Form1);
+                 Application->CreateForm(__classid(TMeasureWindow), &MeasureWindow);
+                 Application->CreateForm(__classid(TPatternMeasureForm), &PatternMeasureForm);
                  Application->Run();
         }
         catch (Exception &exception)

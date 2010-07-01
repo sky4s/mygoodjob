@@ -55,8 +55,6 @@ void __fastcall TGammaMeasurementForm::Button_MeasureClick(TObject *
 
     if (bitDepth->isTCONInput()) {
 	start = bitDepth->getMeasureStart();
-	//end = this->RadioButton_0To1023->Checked ? 1023 : 256;
-	//end = bitDepth->getMeasureEnd();
 	end = 0;
 	step = 1;
     }
@@ -65,13 +63,8 @@ void __fastcall TGammaMeasurementForm::Button_MeasureClick(TObject *
     string stlfilename = filename->c_str();
     Util::deleteExist(stlfilename);
 
-    /*if (bitDepth->isTCONInput()) {
-       //tconMeasure(rgbw, start, end, step);
-
-       } else { */
     pcMeasure(rgbw, start, end, step, stlfilename);
     Util::shellExecute(stlfilename);
-    //}
 }
 
 

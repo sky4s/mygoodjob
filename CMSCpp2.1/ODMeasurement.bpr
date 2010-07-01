@@ -96,7 +96,7 @@ AutoIncBuild=1
 MajorVer=0
 MinorVer=1
 Release=0
-Build=70
+Build=79
 Debug=0
 PreRelease=1
 Special=0
@@ -108,7 +108,7 @@ CodePage=950
 [Version Info Keys]
 CompanyName=AUO
 FileDescription=
-FileVersion=0.1.0.70
+FileVersion=0.1.0.79
 InternalName=
 LegalCopyright=
 LegalTrademarks=
@@ -125,18 +125,20 @@ d:\program files\borland\cbuilder6\Bin\dcltqr60.bpl=TeeChart for QuickReport Com
 d:\program files\borland\cbuilder6\Bin\DBWEBXPRT.BPL=Borland Web Wizard Package
 
 [HistoryLists\hlIncludePath]
-Count=7
-Item0=src\cms;src\ca210api;src\cms\measure;src\math;src\java;src\cms\colorformat;src\cms\colorspace;src\cms\util;src\gui;src;D:\Program Files\Borland\CBuilder6\Projects;$(BCB)\include;$(BCB)\include\vcl;lib;lib\CA200SRVRLib
-Item1=
+Count=8
+Item0=src\gui\3d;src\cms;src\ca210api;src\cms\measure;src\math;src\java;src\cms\colorformat;src\cms\colorspace;src\cms\util;src\gui;src;D:\Program Files\Borland\CBuilder6\Projects;$(BCB)\include;$(BCB)\include\vcl;lib;lib\CA200SRVRLib
+Item1=src\cms;src\ca210api;src\cms\measure;src\math;src\java;src\cms\colorformat;src\cms\colorspace;src\cms\util;src\gui;src;D:\Program Files\Borland\CBuilder6\Projects;$(BCB)\include;$(BCB)\include\vcl;lib;lib\CA200SRVRLib
 Item2=
 Item3=
 Item4=
 Item5=
 Item6=
+Item7=
 
 [HistoryLists\hlLibraryPath]
-Count=1
-Item0=src\math;src\ca210api;src\cms\measure;src\cms;src\java;src\cms\colorformat;src\cms\colorspace;src\cms\util;src\gui;src;D:\Program Files\Borland\CBuilder6\Projects;$(BCB)\Projects\Lib;$(BCB)\lib\obj;$(BCB)\lib;lib;lib\CA200SRVRLib
+Count=2
+Item0=src\gui\3d;src\math;src\ca210api;src\cms\measure;src\cms;src\java;src\cms\colorformat;src\cms\colorspace;src\cms\util;src\gui;src;D:\Program Files\Borland\CBuilder6\Projects;$(BCB)\Projects\Lib;$(BCB)\lib\obj;$(BCB)\lib;lib;lib\CA200SRVRLib
+Item1=src\math;src\ca210api;src\cms\measure;src\cms;src\java;src\cms\colorformat;src\cms\colorspace;src\cms\util;src\gui;src;D:\Program Files\Borland\CBuilder6\Projects;$(BCB)\Projects\Lib;$(BCB)\lib\obj;$(BCB)\lib;lib;lib\CA200SRVRLib
 
 [HistoryLists\hlConditionals]
 Count=1

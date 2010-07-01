@@ -30,8 +30,6 @@ __fastcall TMeasureWindow::TMeasureWindow(TComponent * Owner)
 //---------------------------------------------------------------------------
 void __fastcall TMeasureWindow::FormKeyPress(TObject * Sender, char &Key)
 {
-
-
     switch (Key) {
     case 27:			//esc
 	this->Close();
@@ -59,10 +57,10 @@ void TMeasureWindow::setRGB(bptr < Dep::RGBColor > rgb)
 {
     double_array values(new double[3]);
     /*if (true == tconinput) {
-	//若是tcon input, 要轉到該lut強度下
-	rgb->getValues(values, tconcontrol->getLUTBit());
-    } else {*/
-	rgb->getValues(values);
+       //若是tcon input, 要轉到該lut強度下
+       rgb->getValues(values, tconcontrol->getLUTBit());
+       } else { */
+    rgb->getValues(values);
     //}
 
     int r = static_cast < int >(values[0]);
@@ -135,4 +133,20 @@ void __fastcall TMeasureWindow::FormClose(TObject * Sender,
 }
 
 //---------------------------------------------------------------------------
+
+void __fastcall TMeasureWindow::FormShow(TObject * Sender)
+{
+    Image1->Width = this->Width;
+    Image1->Height = this->Height;
+}
+
+//---------------------------------------------------------------------------
+
+void __fastcall TMeasureWindow::Button2Click(TObject * Sender)
+{
+    Image1->Picture->LoadFromFile("sponge.jpg");
+}
+
+//---------------------------------------------------------------------------
+
 
