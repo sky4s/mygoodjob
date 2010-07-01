@@ -6,17 +6,17 @@
 
 //---------------------------------------------------------------------------
 USEFORM("src\Unit3.cpp", Form3);
-USEFORM("src\gui\T3DMeasurementForm.cpp", ThreeDMeasurementForm);
-USEFORM("src\gui\T3DMeasureWindow.cpp", ThreeDMeasureWindow);
 USEFORM("src\gui\TOutputFileFrame.cpp", OutputFileFrame); /* TFrame: File Type */
+USEFORM("src\gui\3d\T3DMeasureWindow.cpp", ThreeDMeasureWindow);
+USEFORM("src\gui\3d\T3DMeasurementForm.cpp", ThreeDMeasurementForm);
 //---------------------------------------------------------------------------
 WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 {
     try {
 	Application->Initialize();
 	Application->Title = "ODMeasurement.exe";
-	Application->CreateForm(__classid(TThreeDMeasurementForm), &ThreeDMeasurementForm);
-                 Application->CreateForm(__classid(TThreeDMeasureWindow), &ThreeDMeasureWindow);
+	Application->CreateForm(__classid(TThreeDMeasureWindow), &ThreeDMeasureWindow);
+                 Application->CreateForm(__classid(TThreeDMeasurementForm), &ThreeDMeasurementForm);
                  Application->Run();
     }
     catch(EOleException & ex) {
