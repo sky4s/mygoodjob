@@ -3,7 +3,7 @@ object PatternMeasureForm: TPatternMeasureForm
   Top = 131
   Width = 578
   Height = 240
-  Caption = 'PatternMeasureForm'
+  Caption = 'Pattern Measure'
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -161,5 +161,23 @@ object PatternMeasureForm: TPatternMeasureForm
     Width = 553
     Height = 88
     TabOrder = 2
+    inherited GroupBox_OutputFile: TGroupBox
+      inherited Edit_Prefix: TEdit
+        Text = 'Measurement'
+      end
+    end
+  end
+  object ComboBox_FileFormat: TComboBox
+    Left = 168
+    Top = 32
+    Width = 97
+    Height = 24
+    ItemHeight = 16
+    ItemIndex = 0
+    TabOrder = 3
+    Text = 'JPG'
+    Items.Strings = (
+      'JPG'
+      'BMP')
   end
 end

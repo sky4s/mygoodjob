@@ -89,11 +89,16 @@ namespace cms {
 	};
 	void Util::storeXYZxyVector(const std::string & filename,
 				    XYZ_vector_ptr XYZVector) {
+	    storeXYZxyVector(filename, XYZVector, "Gray Level");
+	};
+	void Util::storeXYZxyVector(const std::string & filename,
+				    XYZ_vector_ptr XYZVector,
+				    const std::string firstColumn) {
 
 	    Util::deleteExist(filename);
 	    SimpleExcelAccess excel(filename, Create,
 				    StringVector::
-				    fromCString(6, "Gray Level",
+				    fromCString(6, firstColumn.c_str(),
 						"X", "Y", "Z",
 						"_x", "_y"));
 	    int size = XYZVector->size();
