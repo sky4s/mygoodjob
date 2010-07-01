@@ -12,8 +12,8 @@ WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
         try
         {
                  Application->Initialize();
-                 Application->CreateForm(__classid(TMeasureWindow), &MeasureWindow);
                  Application->CreateForm(__classid(TPatternMeasureForm), &PatternMeasureForm);
+                 Application->CreateForm(__classid(TMeasureWindow), &MeasureWindow);
                  Application->Run();
         }
         catch (Exception &exception)

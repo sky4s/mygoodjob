@@ -54,6 +54,8 @@ class TMeasureWindow:public TForm {
     void setTCONControlOff();
     void setVisible(bool visible);
     void addWindowListener(bptr < cms::util::WindowListener > listener);
+    void setImageFilename(const std::string & filename);
+    void setImageOff();
 };
 //---------------------------------------------------------------------------
 extern PACKAGE TMeasureWindow *MeasureWindow;

@@ -32,6 +32,9 @@ namespace cms {
 	    static void shellExecute(const std::string & filename);
 	    static void storeXYZxyVector(const std::string & filename,
 					 XYZ_vector_ptr XYZVector);
+	    static void storeXYZxyVector(const std::string & filename,
+					 XYZ_vector_ptr XYZVector,
+					 const std::string firstColumn);
 	};
 
 	class StringVector {

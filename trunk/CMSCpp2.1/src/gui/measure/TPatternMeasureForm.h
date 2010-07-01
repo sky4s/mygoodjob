@@ -20,6 +20,7 @@ class TPatternMeasureForm:public TForm {
     TOutputFileFrame *TOutputFileFrame1;
     TImage *Image1;
     TLabel *Label6;
+    TComboBox *ComboBox_FileFormat;
     void __fastcall Button_MeasureClick(TObject * Sender);
   private:			// User declarations
      bptr < cms::measure::meter::Meter > meter;

@@ -147,6 +147,15 @@ void __fastcall TMeasureWindow::Button2Click(TObject * Sender)
     Image1->Picture->LoadFromFile("sponge.jpg");
 }
 
-//---------------------------------------------------------------------------
+//----\-----------------------------------------------------------------------
+void TMeasureWindow::setImageFilename(const std::string & filename)
+{
+    Image1->Picture->LoadFromFile(filename.c_str());
+    Image1->Visible = true;
+}
 
+void TMeasureWindow::setImageOff()
+{
+    Image1->Visible = false;
+}
 
