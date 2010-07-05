@@ -1,6 +1,6 @@
 object PatternMeasureForm: TPatternMeasureForm
-  Left = 192
-  Top = 131
+  Left = 196
+  Top = 134
   Width = 578
   Height = 240
   Caption = 'Pattern Measure'
@@ -16,8 +16,10 @@ object PatternMeasureForm: TPatternMeasureForm
   object Image1: TImage
     Left = 9
     Top = 161
-    Width = 112
-    Height = 41
+    Width = 113
+    Height = 42
+    AutoSize = True
+    IncrementalDisplay = True
     Picture.Data = {
       0A544A504547496D616765CC0B0000FFD8FFE100E645786966000049492A0008
       0000000500120103000100000001000000310102001C0000004A000000320102

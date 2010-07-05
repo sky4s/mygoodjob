@@ -18,7 +18,7 @@
     <RESDEPEN value="$(RESFILES) src\gui\measure\TPatternMeasureForm.dfm 
       src\gui\TOutputFileFrame.dfm src\gui\TMeasureWindow.dfm"/>
     <LIBFILES value=""/>
-    <LIBRARIES value=""/>
+    <LIBRARIES value="vcl.lib rtl.lib"/>
     <SPARELIBS value="rtl.lib vcl.lib"/>
     <PACKAGES value="rtl.bpi vcl.bpi dbrtl.bpi adortl.bpi vcldb.bpi vclx.bpi bdertl.bpi 
       ibxpress.bpi dsnap.bpi cds.bpi bdecds.bpi qrpt.bpi visualclx.bpi 
@@ -34,7 +34,7 @@
     <RELEASELIBPATH value="$(BCB)\lib\release"/>
     <LINKER value="ilink32"/>
     <USERDEFINES value="_DEBUG"/>
-    <SYSDEFINES value="_RTLDLL;NO_STRICT;USEPACKAGES"/>
+    <SYSDEFINES value="NO_STRICT"/>
     <MAINSOURCE value="PatternMeasure.cpp"/>
     <INCLUDEPATH value="src\cms\colorspace;src;src\i2c\core;lib\LPT_lib;src\i2c;lib\CA200SRVRLib;src\ca210api;src\cms\measure;src\cms\colorformat;src\cms\util;src\java;src\gui;src\gui\measure;&quot;D:\Program Files\Borland\CBuilder6\Projects&quot;;$(BCB)\include;$(BCB)\include\vcl;lib;lib\USB_i2c_lib"/>
     <LIBPATH value="src\cms\colorspace;src\i2c\core;lib\USB_i2c_lib;lib\LPT_lib;src\i2c;lib\CA200SRVRLib;src\ca210api;src\cms\measure;src\cms\colorformat;src\cms\util;src\java;src\gui;src\gui\measure;&quot;D:\Program Files\Borland\CBuilder6\Projects&quot;;$(BCB)\Projects\Lib;$(BCB)\lib\obj;$(BCB)\lib"/>
@@ -56,9 +56,9 @@
     <OTHERFILES value=""/>
   </OPTIONS>
   <LINKER>
-    <ALLOBJ value="c0w32.obj $(PACKAGES) Memmgr.Lib sysinit.obj $(OBJFILES)"/>
+    <ALLOBJ value="c0w32.obj sysinit.obj $(OBJFILES)"/>
     <ALLRES value="$(RESFILES)"/>
-    <ALLLIB value="$(LIBFILES) $(LIBRARIES) import32.lib cp32mti.lib"/>
+    <ALLLIB value="$(LIBFILES) $(LIBRARIES) import32.lib cp32mt.lib"/>
     <OTHERFILES value=""/>
   </LINKER>
   <FILELIST>
@@ -122,22 +122,24 @@ d:\program files\borland\cbuilder6\Bin\dcltqr60.bpl=TeeChart for QuickReport Com
 d:\program files\borland\cbuilder6\Bin\DBWEBXPRT.BPL=Borland Web Wizard Package
 
 [HistoryLists\hlIncludePath]
-Count=8
-Item0=src;src\i2c\core;lib\LPT_lib;src\i2c;lib\CA200SRVRLib;src\ca210api;src\cms\measure;src\cms\colorformat;src\cms\util;src\java;src\gui;src\gui\measure;D:\Program Files\Borland\CBuilder6\Projects;$(BCB)\include;$(BCB)\include\vcl;lib;lib\USB_i2c_lib
-Item1=src\i2c\core;lib\LPT_lib;src\i2c;lib\CA200SRVRLib;src\ca210api;src\cms\measure;src\cms\colorformat;src\cms\util;src\java;src\gui;src\gui\measure;D:\Program Files\Borland\CBuilder6\Projects;$(BCB)\include;$(BCB)\include\vcl;lib;src;lib\USB_i2c_lib
-Item2=lib\LPT_lib;src\i2c;lib\CA200SRVRLib;src\ca210api;src\cms\measure;src\cms\colorformat;src\cms\util;src\java;src\gui;src\gui\measure;D:\Program Files\Borland\CBuilder6\Projects;$(BCB)\include;$(BCB)\include\vcl;lib;src;lib\USB_i2c_lib
-Item3=lib\LPT_lib;src\i2c;lib\CA200SRVRLib;src\ca210api;src\cms\measure;src\cms\colorformat;src\cms\util;src\java;src\gui;src\gui\measure;D:\Program Files\Borland\CBuilder6\Projects;$(BCB)\include;$(BCB)\include\vcl;lib;src
-Item4=src\java;src\gui;src\gui\measure;D:\Program Files\Borland\CBuilder6\Projects;$(BCB)\include;$(BCB)\include\vcl;lib;src
-Item5=src\java;src\gui;src\gui\measure;D:\Program Files\Borland\CBuilder6\Projects;$(BCB)\include;$(BCB)\include\vcl;lib
-Item6=src\java;src\gui;src\gui\measure;D:\Program Files\Borland\CBuilder6\Projects;D:\WorkSpace\CMSCpp2.1\src\gui\measure;$(BCB)\include;$(BCB)\include\vcl;lib
-Item7=src\java;src\gui;src\gui\measure;D:\Program Files\Borland\CBuilder6\Projects;D:\WorkSpace\CMSCpp2.1\src\gui\measure;$(BCB)\include;$(BCB)\include\vcl
+Count=9
+Item0=src\cms\colorspace;src;src\i2c\core;lib\LPT_lib;src\i2c;lib\CA200SRVRLib;src\ca210api;src\cms\measure;src\cms\colorformat;src\cms\util;src\java;src\gui;src\gui\measure;D:\Program Files\Borland\CBuilder6\Projects;$(BCB)\include;$(BCB)\include\vcl;lib;lib\USB_i2c_lib
+Item1=src;src\i2c\core;lib\LPT_lib;src\i2c;lib\CA200SRVRLib;src\ca210api;src\cms\measure;src\cms\colorformat;src\cms\util;src\java;src\gui;src\gui\measure;D:\Program Files\Borland\CBuilder6\Projects;$(BCB)\include;$(BCB)\include\vcl;lib;lib\USB_i2c_lib
+Item2=src\i2c\core;lib\LPT_lib;src\i2c;lib\CA200SRVRLib;src\ca210api;src\cms\measure;src\cms\colorformat;src\cms\util;src\java;src\gui;src\gui\measure;D:\Program Files\Borland\CBuilder6\Projects;$(BCB)\include;$(BCB)\include\vcl;lib;src;lib\USB_i2c_lib
+Item3=lib\LPT_lib;src\i2c;lib\CA200SRVRLib;src\ca210api;src\cms\measure;src\cms\colorformat;src\cms\util;src\java;src\gui;src\gui\measure;D:\Program Files\Borland\CBuilder6\Projects;$(BCB)\include;$(BCB)\include\vcl;lib;src;lib\USB_i2c_lib
+Item4=lib\LPT_lib;src\i2c;lib\CA200SRVRLib;src\ca210api;src\cms\measure;src\cms\colorformat;src\cms\util;src\java;src\gui;src\gui\measure;D:\Program Files\Borland\CBuilder6\Projects;$(BCB)\include;$(BCB)\include\vcl;lib;src
+Item5=src\java;src\gui;src\gui\measure;D:\Program Files\Borland\CBuilder6\Projects;$(BCB)\include;$(BCB)\include\vcl;lib;src
+Item6=src\java;src\gui;src\gui\measure;D:\Program Files\Borland\CBuilder6\Projects;$(BCB)\include;$(BCB)\include\vcl;lib
+Item7=src\java;src\gui;src\gui\measure;D:\Program Files\Borland\CBuilder6\Projects;D:\WorkSpace\CMSCpp2.1\src\gui\measure;$(BCB)\include;$(BCB)\include\vcl;lib
+Item8=src\java;src\gui;src\gui\measure;D:\Program Files\Borland\CBuilder6\Projects;D:\WorkSpace\CMSCpp2.1\src\gui\measure;$(BCB)\include;$(BCB)\include\vcl
 
 [HistoryLists\hlLibraryPath]
-Count=4
-Item0=src\i2c\core;lib\USB_i2c_lib;lib\LPT_lib;src\i2c;lib\CA200SRVRLib;src\ca210api;src\cms\measure;src\cms\colorformat;src\cms\util;src\java;src\gui;src\gui\measure;D:\Program Files\Borland\CBuilder6\Projects;$(BCB)\Projects\Lib;$(BCB)\lib\obj;$(BCB)\lib
-Item1=lib\LPT_lib;src\i2c;lib\CA200SRVRLib;src\ca210api;src\cms\measure;src\cms\colorformat;src\cms\util;src\java;src\gui;src\gui\measure;D:\Program Files\Borland\CBuilder6\Projects;$(BCB)\Projects\Lib;$(BCB)\lib\obj;$(BCB)\lib
-Item2=src\java;src\gui;src\gui\measure;D:\Program Files\Borland\CBuilder6\Projects;$(BCB)\Projects\Lib;$(BCB)\lib\obj;$(BCB)\lib
-Item3=src\java;src\gui;src\gui\measure;D:\Program Files\Borland\CBuilder6\Projects;D:\WorkSpace\CMSCpp2.1\src\gui\measure;$(BCB)\Projects\Lib;$(BCB)\lib\obj;$(BCB)\lib
+Count=5
+Item0=src\cms\colorspace;src\i2c\core;lib\USB_i2c_lib;lib\LPT_lib;src\i2c;lib\CA200SRVRLib;src\ca210api;src\cms\measure;src\cms\colorformat;src\cms\util;src\java;src\gui;src\gui\measure;D:\Program Files\Borland\CBuilder6\Projects;$(BCB)\Projects\Lib;$(BCB)\lib\obj;$(BCB)\lib
+Item1=src\i2c\core;lib\USB_i2c_lib;lib\LPT_lib;src\i2c;lib\CA200SRVRLib;src\ca210api;src\cms\measure;src\cms\colorformat;src\cms\util;src\java;src\gui;src\gui\measure;D:\Program Files\Borland\CBuilder6\Projects;$(BCB)\Projects\Lib;$(BCB)\lib\obj;$(BCB)\lib
+Item2=lib\LPT_lib;src\i2c;lib\CA200SRVRLib;src\ca210api;src\cms\measure;src\cms\colorformat;src\cms\util;src\java;src\gui;src\gui\measure;D:\Program Files\Borland\CBuilder6\Projects;$(BCB)\Projects\Lib;$(BCB)\lib\obj;$(BCB)\lib
+Item3=src\java;src\gui;src\gui\measure;D:\Program Files\Borland\CBuilder6\Projects;$(BCB)\Projects\Lib;$(BCB)\lib\obj;$(BCB)\lib
+Item4=src\java;src\gui;src\gui\measure;D:\Program Files\Borland\CBuilder6\Projects;D:\WorkSpace\CMSCpp2.1\src\gui\measure;$(BCB)\Projects\Lib;$(BCB)\lib\obj;$(BCB)\lib
 
 [HistoryLists\hlDebugSourcePath]
 Count=1

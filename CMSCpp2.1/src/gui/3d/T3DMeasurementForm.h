@@ -79,10 +79,10 @@ class TThreeDMeasurementForm:public TForm, KeyPressListener {
     TButton *Button1;
     TComboBox *ComboBox_MeasureMode2;
     TCheckBox *CheckBox_AutoReleaseCA210;
-        TImage *Image1;
-        TLabel *Label11;
-        TCheckBox *CheckBox_StableTest;
-        TComboBox *ComboBox_MeasureMode;
+    TImage *Image1;
+    TLabel *Label11;
+    TCheckBox *CheckBox_StableTest;
+    TComboBox *ComboBox_MeasureMode;
     void __fastcall Button_MeasureClick(TObject * Sender);
     void __fastcall FormCreate(TObject * Sender);
     void __fastcall Button_SpotMeasureClick(TObject * Sender);
