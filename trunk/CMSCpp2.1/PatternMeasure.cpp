@@ -12,6 +12,7 @@ WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
         try
         {
                  Application->Initialize();
+                 Application->Title = "Pattern Measure";
                  Application->CreateForm(__classid(TPatternMeasureForm), &PatternMeasureForm);
                  Application->CreateForm(__classid(TMeasureWindow), &MeasureWindow);
                  Application->Run();

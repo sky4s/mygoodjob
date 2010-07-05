@@ -186,7 +186,7 @@ double2D_ptr TThreeDMeasurementForm::ODMeasure(const Dep::Channel & ch,
 	    bptr < ExcelAccessBase >
 	    (new ExcelAccessBase(filename, Create));
     }
-
+    stop = false;
     try {
 	for (int x = 0; x < 17; x++) {
 	  std:vector < double_vector_ptr > vec;
@@ -367,6 +367,7 @@ Button_SpotMeasureClick(TObject * Sender)
     this->Edit3->Text = start;
 
     bool extend = this->CheckBox_Extend->Checked;
+    stop = false;
     try {
 	double v0 = measure(start, target);
 	double v1 = measure(start, start);
@@ -559,7 +560,7 @@ void __fastcall TThreeDMeasurementForm::FormKeyPress(TObject * Sender,
 
     switch (Key) {
     case 27:			//esc
-	//this->stop = true;
+	this->stop = true;
 	ThreeDMeasureWindow->Visible = false;
 
 	break;
