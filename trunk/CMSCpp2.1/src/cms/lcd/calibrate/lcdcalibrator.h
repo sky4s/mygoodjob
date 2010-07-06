@@ -119,8 +119,9 @@ namespace cms {
 		double getMaxBIntensity();
 	    };
 	     Enumeration(KeepMaxLuminance)
-	     None, TargetWhite, NativeWhite, NativeWhiteAdvanced,
-		EnumerationEnd()
+	     None, TargetWhite, NativeWhite	//keep狾程獹&︹放
+	    , NativeWhiteAdvanced	//keep狾程獹&︹放, smooth跑て
+	    , EnumerationEnd()
 
 		/*
 		   沮秖代挡狦, 玻ネ惠―DG Lut
@@ -313,5 +314,4 @@ namespace cms {
 };
 
 #endif
-
 

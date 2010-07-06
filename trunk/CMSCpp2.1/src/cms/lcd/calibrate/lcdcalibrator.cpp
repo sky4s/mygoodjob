@@ -870,6 +870,7 @@ namespace cms {
 			KeepMaxLuminance::NativeWhiteAdvanced) {
 			brightgammaParameter = keepMaxLumiGamma;
 			overParameter = keepMaxLumiOver;
+		    } else {
 		    }
 		    dglut =
 			advgenerator.produce(targetWhite,
