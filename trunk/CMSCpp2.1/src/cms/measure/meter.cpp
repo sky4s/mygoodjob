@@ -40,18 +40,6 @@ namespace cms {
 	    //==================================================================
 	    void Meter::setLogoFileHeader(cms::colorformat::logo::
 					  LogoFile & logo) {
-		/*logo.setHeader(LogoFile.Reserved.Created,
-		   new Date().toString());
-		   logo.setHeader(LogoFile.Reserved.Instrumentation,
-		   getType().name());
-		   logo.setHeader(LogoFile.Reserved.MeasurementSource,
-		   "Illumination=Unknown    ObserverAngle=Unknown   WhiteBase=Abs   Filter=Unknown");
-		   logo.setNumberOfFields(8);
-		   logo.addKeyword("SampleID");
-		   logo.addKeyword("SAMPLE_NAME");
-		   logo.
-		   setDataFormat
-		   ("SampleID       SAMPLE_NAME     RGB_R   RGB_G   RGB_B   XYZ_X   XYZ_Y   XYZ_Z"); */
 	    };
 	    int Meter::getSuggestedWaitTimes() {
 		return 300;
@@ -117,7 +105,6 @@ namespace cms {
 	    void CA210::close() {
 		CA210API_->close();
 	    };
-	    //ca210api::CA210API CA210::CA210API_;
 	    bptr < ca210api::CA210API > CA210::getCA210API() {
 		return CA210API_;
 	    };
@@ -133,9 +120,9 @@ namespace cms {
 	    };
 	    //==================================================================
 
-	  DGLutFileMeter::DGLutFileMeter(bptr < DGLutFile > dglut):dglut(dglut), vector(dglut->getComponentVector()),
-		index(0)
-	    {
+	  DGLutFileMeter::DGLutFileMeter(bptr < DGLutFile > dglut):	/*dglut(dglut), */ vector(dglut->
+				      getComponentVector()),
+		index(0) {
 	    };
 	    void DGLutFileMeter::close() {
 	    };
@@ -155,7 +142,9 @@ namespace cms {
 	    double_array DGLutFileMeter::triggerMeasurementInXYZ() {
 		int size = vector->size();
 		if (index >= vector->size()) {
-		    throw java::lang::IndexOutOfBoundsException("index >= vector->size()");
+		    throw java::lang::
+			IndexOutOfBoundsException
+			("index >= vector->size()");
 		}
 
 		c = (*vector)[index];

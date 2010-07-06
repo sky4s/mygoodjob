@@ -604,6 +604,9 @@ namespace cms {
 		    }
 		    measureCode->push_back(x);
 		}
+               if( (*measureCode)[ measureCode->size()-1] != end) {
+               measureCode->push_back(end);
+               }
 
 		return measureCode;
 	    };

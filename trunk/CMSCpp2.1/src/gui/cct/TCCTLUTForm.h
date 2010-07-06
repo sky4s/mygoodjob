@@ -38,7 +38,7 @@ class TCCTLUTForm:public TForm {
     TGroupBox *GroupBox5;
     TCheckBox *CheckBox_AvoidNoise;
     TOpenDialog *OpenDialog1;
-    TButton *Button_Run;
+    TButton *Button_MeaRun;
     TLabel *Label7;
     TEdit *Edit_P1;
     TLabel *Label8;
@@ -67,7 +67,7 @@ class TCCTLUTForm:public TForm {
     TRadioButton *RadioButton_DefinedDim;
     TLabel *Label17;
     TEdit *Edit_DefinedDimUnder;
-    TButton *Button_Process;
+    TButton *Button_Run;
     TCheckBox *CheckBox_AverageDimDG;
     TLabel *Label14;
     TEdit *Edit_DimGamma;
@@ -87,7 +87,7 @@ class TCCTLUTForm:public TForm {
     TEdit *Edit_MaxYAdvGamma;
     TLabel *Label21;
     void __fastcall RadioButton_P1P2Click(TObject * Sender);
-    void __fastcall Button_RunClick(TObject * Sender);
+    void __fastcall Button_MeaRunClick(TObject * Sender);
     void __fastcall FormCreate(TObject * Sender);
     void __fastcall Button_DebugClick(TObject * Sender);
     void __fastcall FormShow(TObject * Sender);
@@ -103,6 +103,8 @@ class TCCTLUTForm:public TForm {
     void __fastcall CheckBox_BMax2Click(TObject * Sender);
     void __fastcall CheckBox_NewMethodClick(TObject * Sender);
     void __fastcall RadioButton_MaxYNativeAdvClick(TObject * Sender);
+    void __fastcall FormClose(TObject * Sender, TCloseAction & Action);
+    void __fastcall Button_RunClick(TObject * Sender);
   private:			// User declarations
     void setMeasureInfo();
     int serialid;

@@ -111,9 +111,11 @@ bptr < cms::measure::IntensityAnalyzerIF > TMainForm::getAnalyzer()
 	    return bptr < IntensityAnalyzerIF >
 		((IntensityAnalyzerIF *) null);
 	}
-	realAnalyzer =
-	    bptr < CA210IntensityAnalyzer >
-	    (new CA210IntensityAnalyzer(ca210, mm));
+	if (null == realAnalyzer) {
+	    realAnalyzer =
+		bptr < CA210IntensityAnalyzer >
+		(new CA210IntensityAnalyzer(ca210, mm));
+	}
 	//²£¥Ímax matrix
 	bptr < MaxMatrixIntensityAnayzer >
 	    ma(new MaxMatrixIntensityAnayzer(mm));
@@ -204,11 +206,10 @@ void TMainForm::setDummyMeterFilename(bptr < cms::colorformat::DGLutFile >
     using namespace cms::lcd::calibrate;
     using namespace Indep;
     using namespace Dep;
-    //bptr < DGLutFile > dgcode(new DGLutFile(filename, ReadOnly));
+
     meter = bptr < Meter > (new DGLutFileMeter(dglutFile));
     mm = bptr < MeterMeasurement > (new MeterMeasurement(meter, false));
     mm->setFakeMeasure(true);
-
 
     fetcher = bptr < ComponentFetcher > ((ComponentFetcher *) null);
 
@@ -249,6 +250,12 @@ void TMainForm::resetDummyMeter()
     DGLutFileMeter *dgc = dynamic_cast < DGLutFileMeter * >(meter.get());
     dgc->reset();
 };
+
+//---------------------------------------------------------------------------
+void TMainForm::setAnalyzerNull()
+{
+    analyzer.reset();
+}
 
 //---------------------------------------------------------------------------
 bptr < cms::lcd::calibrate::ComponentFetcher >
@@ -298,8 +305,20 @@ int TMainForm::getInterval()
 
 void __fastcall TMainForm::CCTLUT1Click(TObject * Sender)
 {
+    using namespace cms::measure::meter;
+    using namespace cms::measure;
+    using namespace cms::lcd::calibrate;
     if (CCTLUTForm == null) {
 	Application->CreateForm(__classid(TCCTLUTForm), &CCTLUTForm);
+    }
+
+    if (true == this->RadioButton_AnalyzerMaxMatrix->Checked) {
+	MaxMatrixIntensityAnayzer *ma =
+	    dynamic_cast < MaxMatrixIntensityAnayzer * >(analyzer.get());
+	if (null == ma || ma->isInverseMatrixNull()) {
+	    ShowMessage("Set \"Target White\" first.");
+	    return;
+	}
     }
     CCTLUTForm->setBitDepthProcessor(bitDepth);
     CCTLUTForm->ShowModal();
@@ -700,21 +719,21 @@ void TMainForm::connectMeter()
 void __fastcall TMainForm::RadioButton_AnalyzerMaxMatrixClick(TObject *
 							      Sender)
 {
-    this->analyzer.reset();
+    setAnalyzerNull();
 }
 
 //---------------------------------------------------------------------------
 
 void __fastcall TMainForm::RadioButton_AnalyzerCA210Click(TObject * Sender)
 {
-    this->analyzer.reset();
+    setAnalyzerNull();
 }
 
 //---------------------------------------------------------------------------
 
 void __fastcall TMainForm::RadioButton_AnalyzerDebugClick(TObject * Sender)
 {
-    this->analyzer.reset();
+    setAnalyzerNull();
 }
 
 //---------------------------------------------------------------------------
