@@ -223,7 +223,7 @@ namespace cms {
 		 Correct correct;
 		int p1, p2;
 		int under;
-		double gammaShift;
+		double dimGamma;
 		bool gByPass;
 		double bIntensityGain;
 		bool bMax;
@@ -236,7 +236,6 @@ namespace cms {
 		bool useGammaCurve;
 		bool averageDimDG;
 		bool newMethod;
-		bool avoidHook;
 		double_vector_ptr gammaCurve;
 		double_vector_ptr rgammaCurve;
 		double_vector_ptr ggammaCurve;
@@ -247,8 +246,6 @@ namespace cms {
 		int keepMaxLumiOver;
 		double keepMaxLumiGamma;
 		//==============================================================
-
-		//bptr < DGLutGenerator > generator;
 		 bptr < ComponentFetcher > fetcher;
 		RGB_vector_ptr dglut;
 		Component_vector_ptr componentVector;
@@ -275,8 +272,8 @@ namespace cms {
 		void setP1P2(int p1, int p2);
 		void setRBInterpolation(int under);
 		void setNonDimCorrect();
-		//void setNew(int p1, int p2, double gammaShift);
-		void setDefinedDim(int under, bool averageDimDG);
+		void setDefinedDim(int under, double gamma,
+				   bool averageDimDG);
 		void setGamma(double gamma);
 		void setGamma(double rgamma, double ggamma, double bgamma);
 		void setGammaCurve(double_vector_ptr gammaCurve);
@@ -293,7 +290,6 @@ namespace cms {
 		void setKeepMaxLuminanceNativeWhiteAdvanced(int over,
 							    double gamma);
 		void setNewMethod(bool enable);
-		void setNewMethod(bool newMethod, bool avoidHook);
 
 		 LCDCalibrator(bptr <
 			       cms::lcd::calibrate::ComponentFetcher >
@@ -304,7 +300,7 @@ namespace cms {
 					   measureCondition);
 		RGB_vector_ptr getGammaDGLut(bptr < MeasureCondition >
 					     measureCondition);
-		 bptr < cms::colorformat::DGLutFile > 
+		 bptr < cms::colorformat::DGLutFile >
 		    storeDGLutFile(const std::string & filename,
 				   RGB_vector_ptr dglut);
 	      private:
@@ -317,4 +313,5 @@ namespace cms {
 };
 
 #endif
+
 

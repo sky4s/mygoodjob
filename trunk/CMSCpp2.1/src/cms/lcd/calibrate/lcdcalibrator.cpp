@@ -414,11 +414,7 @@ namespace cms {
 		initComponent(componentVector, keepMaxLuminance ==
 			      KeepMaxLuminance::TargetWhite);
 	    };
-	    /*DGLutGenerator::DGLutGenerator(Component_vector_ptr componentVector, bool keepMaxLuminance):componentVector
-	       (componentVector), mode(Component)
-	       {
-	       initComponent(componentVector, keepMaxLuminance);
-	       }; */
+
 	  DGLutGenerator::DGLutGenerator(Component_vector_ptr componentVector, KeepMaxLuminance keepMaxLuminance):componentVector
 		(componentVector),
 		mode(Component), keepMaxLuminance(keepMaxLuminance) {
@@ -442,7 +438,6 @@ namespace cms {
 		wlut =
 		    bptr < Interpolation1DLUT >
 		    (new Interpolation1DLUT(key, value));
-
 	    };
 
 	    RGB_ptr DGLutGenerator::getDGCode(double rIntensity,
@@ -676,11 +671,18 @@ namespace cms {
 		this->correct = Correct::None;
 	    };
 
-	    void LCDCalibrator::setDefinedDim(int under, bool averageDimDG) {
+	    /*void LCDCalibrator::setDefinedDim(int under, bool averageDimDG) {
+	       this->correct = Correct::DefinedDim;
+	       this->under = under;
+	       this->averageDimDG = averageDimDG;
+	       }; */
+	    void LCDCalibrator::setDefinedDim(int under, double gamma,
+					      bool averageDimDG) {
 		this->correct = Correct::DefinedDim;
 		this->under = under;
+		this->dimGamma = gamma;
 		this->averageDimDG = averageDimDG;
-	    };
+	    }
 	    void LCDCalibrator::setGamma(double gamma) {
 		this->gamma = gamma;
 		int n = bitDepth->getLevel();
@@ -766,12 +768,6 @@ namespace cms {
 	    void LCDCalibrator::setNewMethod(bool enable) {
 		this->newMethod = enable;
 	    };
-	    void LCDCalibrator::setNewMethod(bool newMethod,
-					     bool avoidHook) {
-		this->newMethod = newMethod;
-		this->avoidHook = avoidHook;
-	    };
-
 	  LCDCalibrator::LCDCalibrator(bptr < ComponentFetcher > fetcher, bptr < BitDepthProcessor > bitDepth):bitDepth(bitDepth)
 	    {
 		rgbIndepGamma = false;
@@ -783,7 +779,6 @@ namespace cms {
 		this->fetcher = fetcher;
 		averageDimDG = false;
 		newMethod = false;
-		avoidHook = false;
 		bMax = bMax2 = false;
 	    };
 
@@ -843,10 +838,10 @@ namespace cms {
 		}
 
 		STORE_COMPONENT("o_fetch.xls", componentVector);
-
 		DGLutGenerator generator(componentVector,
 					 keepMaxLuminance);
-
+		STORE_DOUBLE_VECTOR("0_gammacurve.xls", gammaCurve);
+		MaxValue quantizationBit = bitDepth->getLutMaxValue();
 
 		if (true == newMethod) {
 		    //==========================================================
@@ -861,10 +856,28 @@ namespace cms {
 			analyzer->getReferenceColor()->toXYZ();
 		    double_vector_ptr luminanceGammaCurve =
 			generator.getLuminanceGammaCurve(gammaCurve);
-		    dglut = advgenerator.produce(targetWhite,
-						 luminanceGammaCurve,
-						 50, 200, 3.5, 2.2,
-						 avoidHook);
+		    STORE_DOUBLE_VECTOR("1_lumigammacurve.xls",
+					luminanceGammaCurve);
+		    double dimgammaParameter = 3.5;
+		    int underParameter = 50;
+		    double brightgammaParameter = 2.2;
+		    int overParameter = 200;
+		    if (correct == Correct::DefinedDim) {
+			dimgammaParameter = dimGamma;
+			underParameter = under;
+		    }
+		    if (keepMaxLuminance ==
+			KeepMaxLuminance::NativeWhiteAdvanced) {
+			brightgammaParameter = keepMaxLumiGamma;
+			overParameter = keepMaxLumiOver;
+		    }
+		    dglut =
+			advgenerator.produce(targetWhite,
+					     luminanceGammaCurve,
+					     underParameter, overParameter,
+					     dimgammaParameter,
+					     brightgammaParameter);
+		    STORE_RGBVECTOR("3_dgcode.xls", dglut);
 		    //==========================================================
 		} else {
 		    //==========================================================
@@ -873,7 +886,7 @@ namespace cms {
 		    RGBGamma_ptr rgbgamma =
 			generator.getRGBGamma(gammaCurve);
 		    initialRGBGamma = rgbgamma->clone();
-		    STORE_DOUBLE_VECTOR("0_gammacurve.xls", gammaCurve);
+
 		    STORE_RGBGAMMA("1_rgbgamma_org.xls", rgbgamma);
 
 
@@ -881,9 +894,8 @@ namespace cms {
 		    if (bIntensityGain != 1.0) {
 			//重新產生目標gamma curve
 			bptr < BIntensityGainOp >
-			    bgain(new
-				  BIntensityGainOp(bIntensityGain, 236,
-						   bitDepth));
+			    bgain(new BIntensityGainOp(bIntensityGain, 236,
+						       bitDepth));
 
 			RGBGammaOp gammaop;
 			gammaop.setSource(rgbgamma);
@@ -898,7 +910,7 @@ namespace cms {
 		    //第一次量化處理
 		    //==============================================================
 		    //量化
-		    MaxValue quantizationBit = bitDepth->getLutMaxValue();
+		    //MaxValue quantizationBit = bitDepth->getLutMaxValue();
 		    RGBVector::quantization(dglut, quantizationBit);
 		    //==============================================================
 
@@ -937,49 +949,45 @@ namespace cms {
 			//量化
 			STORE_RGBVECTOR("6_dgcode_p1p2dg.xls", dglut);
 			//==========================================================
-		    } else if (correct == Correct::DefinedDim) {
-			/*
-			   DimDGLutGenerator
-			   in: target white , gamma(Y)
-			   out: DG Code
-			 */
-			bptr < IntensityAnalyzerIF > analyzer =
-			    fetcher->getAnalyzer();
-			DimDGLutGenerator dimgenerator(componentVector,
-						       analyzer);
-			//analyzer若沒有設定過target color, 會使此步驟失效
-			XYZ_ptr targetWhite =
-			    analyzer->getReferenceColor()->toXYZ();
-			double_vector_ptr luminanceGammaCurve =
-			    generator.getLuminanceGammaCurve(gammaCurve);
-			/*STORE_DOUBLE_VECTOR("x_lumicurve.xls",
-			   luminanceGammaCurve); */
+		    }		/*else if (correct == Correct::DefinedDim) {
+				   // DimDGLutGenerator
+				   // in: target white , gamma(Y)
+				   // out: DG Code
+				   bptr < IntensityAnalyzerIF > analyzer =
+				   fetcher->getAnalyzer();
+				   DimDGLutGenerator dimgenerator(componentVector,
+				   analyzer);
+				   //analyzer若沒有設定過target color, 會使此步驟失效
+				   XYZ_ptr targetWhite =
+				   analyzer->getReferenceColor()->toXYZ();
+				   double_vector_ptr luminanceGammaCurve =
+				   generator.getLuminanceGammaCurve(gammaCurve);
 
-			RGB_vector_ptr dimdglut =
-			    dimgenerator.produce(targetWhite,
-						 luminanceGammaCurve,
-						 under);
-			int size = dimdglut->size();
-			//======================================================
-			// 對 Dim DG作平均
-			//======================================================
-			if (true == averageDimDG) {
-			    for (int x = 1; x < size - 1; x++) {
-				//(*dglut)[x] = (*dimdglut)[x];
-				RGB_ptr rgb0 = (*dimdglut)[x - 1];
-				RGB_ptr rgb1 = (*dimdglut)[x];
-				RGB_ptr rgb2 = (*dimdglut)[x + 1];
-				rgb1->R = (rgb0->R + rgb2->R) / 2.;
-				rgb1->G = (rgb0->G + rgb2->G) / 2.;
-				rgb1->B = (rgb0->B + rgb2->B) / 2.;
-			    }
-			}
-			//======================================================
-			for (int x = 0; x < size; x++) {
-			    (*dglut)[x] = (*dimdglut)[x];
-			}
-			RGBVector::quantization(dglut, quantizationBit);
-		    }
+				   RGB_vector_ptr dimdglut =
+				   dimgenerator.produce(targetWhite,
+				   luminanceGammaCurve,
+				   under, dimGamma);
+				   int size = dimdglut->size();
+				   //======================================================
+				   // 對 Dim DG作平均
+				   //======================================================
+				   if (true == averageDimDG) {
+				   for (int x = 1; x < size - 1; x++) {
+				   //(*dglut)[x] = (*dimdglut)[x];
+				   RGB_ptr rgb0 = (*dimdglut)[x - 1];
+				   RGB_ptr rgb1 = (*dimdglut)[x];
+				   RGB_ptr rgb2 = (*dimdglut)[x + 1];
+				   rgb1->R = (rgb0->R + rgb2->R) / 2.;
+				   rgb1->G = (rgb0->G + rgb2->G) / 2.;
+				   rgb1->B = (rgb0->B + rgb2->B) / 2.;
+				   }
+				   }
+				   //======================================================
+				   for (int x = 0; x < size; x++) {
+				   (*dglut)[x] = (*dimdglut)[x];
+				   }
+				   RGBVector::quantization(dglut, quantizationBit);
+				   } */
 		    finalRGBGamma = rgbgamma;
 		    //==========================================================
 		}
@@ -988,7 +996,6 @@ namespace cms {
 		// DG Code Op block
 		//==============================================================
 		//量化
-		//RGBVector::quantization(dglut, quantizationBit);
 		RGB_vector_ptr result = getDGLutOpResult(dglut);
 		//==============================================================
 
@@ -1090,10 +1097,7 @@ namespace cms {
 		if (correct == Correct::RBInterpolation) {
 		    bptr < DGLutOp > op(new RBInterpolationOp(under));
 		    dgop.addOp(op);
-		}		/*else if (correct == New) {
-				   bptr < DGLutOp > op(new NewOp(p1, p2));
-				   dgop.addOp(op);
-				   } */
+		}
 		//==============================================================
 
 		if (bMax) {

@@ -45,20 +45,9 @@ void TCCTLUTForm::setMeasureInfo()
 
 
 
-void __fastcall TCCTLUTForm::RadioButton_RBInterpClick(TObject * Sender)
-{
-    setLowLevelCorrectionEditDisable();
-    this->Edit_RBInterpUnder->Enabled = true;
-    this->CheckBox_NewMethod->Checked = false;
-}
-
-//---------------------------------------------------------------------------
 
 void __fastcall TCCTLUTForm::RadioButton_P1P2Click(TObject * Sender)
 {
-    setLowLevelCorrectionEditDisable();
-    this->Edit_P1->Enabled = true;
-    this->Edit_P2->Enabled = true;
     this->CheckBox_NewMethod->Checked = false;
 }
 
@@ -98,7 +87,8 @@ void __fastcall TCCTLUTForm::Button_RunClick(TObject * Sender)
 	//新低灰階修正方法
 	int under = this->Edit_DefinedDimUnder->Text.ToInt();
 	bool averageDim = this->CheckBox_AverageDimDG->Checked;
-	calibrator.setDefinedDim(under, averageDim);
+	double gamma = this->Edit_DimGamma->Text.ToDouble();
+	calibrator.setDefinedDim(under, averageDim, gamma);
     } else if (this->RadioButton_None->Checked) {
 	calibrator.setNonDimCorrect();
     }
@@ -132,8 +122,7 @@ void __fastcall TCCTLUTForm::Button_RunClick(TObject * Sender)
     }
     //==========================================================================
     calibrator.setAvoidFRCNoise(this->CheckBox_AvoidNoise->Checked);
-    calibrator.setNewMethod(this->CheckBox_NewMethod->Checked,
-			    this->CheckBox_AvoidHook->Checked);
+    calibrator.setNewMethod(this->CheckBox_NewMethod->Checked);
 
     //==========================================================================
     // Keep Max Luminance
@@ -367,25 +356,7 @@ bptr < cms::lcd::calibrate::MeasureCondition >
 }
 
 //---------------------------------------------------------------------------
-void TCCTLUTForm::setLowLevelCorrectionEditDisable()
-{
-    this->Edit_P1->Enabled = false;
-    this->Edit_P2->Enabled = false;
-    this->Edit_RBInterpUnder->Enabled = false;
-    //this->Edit_NewP1->Enabled = false;
-    //this->Edit_NewP2->Enabled = false;
-    //this->Edit_GammaShift->Enabled = false;
-    this->Edit_DefinedDimUnder->Enabled = false;
-    this->CheckBox_AverageDimDG->Enabled = false;
-    this->Edit_DimGamma->Enabled = false;
-};
 
-void __fastcall TCCTLUTForm::RadioButton_NoneClick(TObject * Sender)
-{
-    setLowLevelCorrectionEditDisable();
-}
-
-//---------------------------------------------------------------------------
 
 //---------------------------------------------------------------------------
 
@@ -396,16 +367,6 @@ void __fastcall TCCTLUTForm::Button_ResetClick(TObject * Sender)
 
 //---------------------------------------------------------------------------
 
-void __fastcall TCCTLUTForm::RadioButton_DefinedDimClick(TObject * Sender)
-{
-    setLowLevelCorrectionEditDisable();
-    this->Edit_DefinedDimUnder->Enabled = true;
-    this->CheckBox_AverageDimDG->Enabled = true;
-    this->Edit_DimGamma->Enabled = true;
-    this->CheckBox_NewMethod->Checked = false;
-}
-
-//---------------------------------------------------------------------------
 
 
 
@@ -420,9 +381,37 @@ void __fastcall TCCTLUTForm::CheckBox_BMax2Click(TObject * Sender)
 
 void __fastcall TCCTLUTForm::CheckBox_NewMethodClick(TObject * Sender)
 {
-    this->RadioButton_None->Checked = true;
+    if (CheckBox_NewMethod->Checked) {
+	RadioButton_P1P2->Enabled = false;
+	RadioButton_DefinedDim->Enabled = true;
+	RadioButton_MaxYNativeAdv->Enabled = true;
+	if (RadioButton_P1P2->Checked) {
+	    this->RadioButton_DefinedDim->Checked = true;
+	}
+
+    } else {
+	RadioButton_P1P2->Enabled = true;
+	RadioButton_DefinedDim->Enabled = false;
+	RadioButton_MaxYNativeAdv->Enabled = false;
+	if (RadioButton_DefinedDim->Checked) {
+	    this->RadioButton_P1P2->Checked = true;
+	}
+	if (RadioButton_MaxYNativeAdv->Checked) {
+	    this->RadioButton_MaxYTarget->Checked = true;
+	}
+    }
+
 }
 
 //---------------------------------------------------------------------------
 
+void __fastcall TCCTLUTForm::RadioButton_MaxYNativeAdvClick(TObject *
+							    Sender)
+{
+    bool checked = RadioButton_MaxYNativeAdv->Checked;
+    Edit_MaxYAdvOver->Enabled = checked;
+    Edit_MaxYAdvGamma->Enabled = checked;
+}
+
+//---------------------------------------------------------------------------
 
