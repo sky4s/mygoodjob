@@ -26,6 +26,7 @@ WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	Application->Initialize();
 	Application->Title = "CCTv3 Adjustment";
 	Application->CreateForm(__classid(TMainForm), &MainForm);
+                 Application->CreateForm(__classid(TMeasureWindow), &MeasureWindow);
                  Application->Run();
     }
     catch(EOleException & ex) {
