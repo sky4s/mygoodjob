@@ -123,6 +123,7 @@ namespace cms {
 	    //==========================================================================
 	    if (!fakeMeasure) {
 		measureWindow->setRGB(measureRGB);
+                //measureWindow->
 		Application->ProcessMessages();
 		Sleep(waitTimes);
 	    }

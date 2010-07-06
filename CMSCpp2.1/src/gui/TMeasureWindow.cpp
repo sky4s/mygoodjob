@@ -93,6 +93,9 @@ void TMeasureWindow::setTCONControlOff()
 void TMeasureWindow::setVisible(bool visible)
 {
     this->Visible = visible;
+    if(visible){
+        this->BringToFront();
+    }
     if (tconinput) {
 	tconcontrol->setGammaTest(visible);
     }

@@ -84,7 +84,7 @@ namespace cms {
 
 	    class DGLutFileMeter:public Meter {
 	      private:
-		bptr < cms::colorformat::DGLutFile > dglut;
+		//bptr < cms::colorformat::DGLutFile > dglut;
 		const Component_vector_ptr vector;
 		int index;
 		Component_ptr c;

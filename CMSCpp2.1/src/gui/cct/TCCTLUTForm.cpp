@@ -55,92 +55,94 @@ void __fastcall TCCTLUTForm::RadioButton_P1P2Click(TObject * Sender)
 
 
 
-void __fastcall TCCTLUTForm::Button_RunClick(TObject * Sender)
+void __fastcall TCCTLUTForm::Button_MeaRunClick(TObject * Sender)
 {
     using namespace std;
     using namespace Dep;
     using namespace cms::lcd::calibrate;
+    using namespace cms::colorformat;
 
     run = true;
-
-    MainForm->getAnalyzer();
-    if (MainForm->isCA210Analyzer()) {
-	MainForm->setAnalyzerToTargetChannel();
-    }
-    MainForm->setMeterMeasurementWaitTimes();
-    bptr < ComponentFetcher > fetcher = MainForm->getComponentFetcher();
-    LCDCalibrator calibrator(fetcher, bitDepth);
-
-    //==========================================================================
-    // P1P2和RBInterp的選擇
-    //==========================================================================
-    if (this->RadioButton_P1P2->Checked) {
-	//選了P1P2
-	int p1 = this->Edit_P1->Text.ToInt();
-	int p2 = this->Edit_P2->Text.ToInt();
-	calibrator.setP1P2(p1, p2);
-    } else if (this->RadioButton_RBInterp->Checked) {
-	//選了RBInterp
-	int rbunder = this->Edit_RBInterpUnder->Text.ToInt();
-	calibrator.setRBInterpolation(rbunder);
-    } else if (this->RadioButton_DefinedDim->Checked) {
-	//新低灰階修正方法
-	int under = this->Edit_DefinedDimUnder->Text.ToInt();
-	bool averageDim = this->CheckBox_AverageDimDG->Checked;
-	double gamma = this->Edit_DimGamma->Text.ToDouble();
-	calibrator.setDefinedDim(under, averageDim, gamma);
-    } else if (this->RadioButton_None->Checked) {
-	calibrator.setNonDimCorrect();
-    }
-    //==========================================================================
-
-    //==========================================================================
-    // gamma的處理
-    //==========================================================================
-    if (this->RadioButton_Gamma->Checked) {
-	double gamma = this->ComboBox_Gamma->Text.ToDouble();
-	calibrator.setGamma(gamma);
-    } else if (this->RadioButton_GammaCurve->Checked) {
-	double_vector_ptr gammaCurve = rgbGamma->w;
-	calibrator.setGammaCurve(gammaCurve);
-    }
-    calibrator.setGByPass(this->CheckBox_GByPass->Checked);
-    //==========================================================================
-
-    //==========================================================================
-    // blue correction
-    //==========================================================================
-    if (this->CheckBox_BGain->Checked) {
-	double gain = this->Edit_BGain->Text.ToDouble();
-	calibrator.setBIntensityGain(gain);
-    }
-    calibrator.setBMax(this->CheckBox_BMax->Checked);
-    if (true == CheckBox_BMax2->Checked) {
-	int begin = Edit_BMax2Begin->Text.ToInt();
-	double gamma = Edit_BMax2Gamma->Text.ToDouble();
-	calibrator.setBMax2(CheckBox_BMax2->Checked, begin, gamma);
-    }
-    //==========================================================================
-    calibrator.setAvoidFRCNoise(this->CheckBox_AvoidNoise->Checked);
-    calibrator.setNewMethod(this->CheckBox_NewMethod->Checked);
-
-    //==========================================================================
-    // Keep Max Luminance
-    //==========================================================================
-    if (true == RadioButton_MaxYNone->Checked) {
-	calibrator.setKeepMaxLuminance(KeepMaxLuminance::None);
-    } else if (true == RadioButton_MaxYTarget->Checked) {
-	calibrator.setKeepMaxLuminance(KeepMaxLuminance::TargetWhite);
-    } else if (true == RadioButton_MaxYNative->Checked) {
-	calibrator.setKeepMaxLuminance(KeepMaxLuminance::NativeWhite);
-    } else if (true == RadioButton_MaxYNativeAdv->Checked) {
-	int over = this->Edit_MaxYAdvOver->Text.ToInt();
-	double gamma = this->Edit_MaxYAdvGamma->Text.ToDouble();
-	calibrator.setKeepMaxLuminanceNativeWhiteAdvanced(over, gamma);
-    }
-    //==========================================================================
-
     try {			//為了對應__finally使用的try
+	MainForm->getAnalyzer();
+	if (MainForm->isCA210Analyzer()) {
+	    MainForm->setAnalyzerToTargetChannel();
+	}
+	MainForm->setMeterMeasurementWaitTimes();
+	bptr < ComponentFetcher > fetcher =
+	    MainForm->getComponentFetcher();
+	LCDCalibrator calibrator(fetcher, bitDepth);
+
+	//==========================================================================
+	// P1P2和RBInterp的選擇
+	//==========================================================================
+	if (this->RadioButton_P1P2->Checked) {
+	    //選了P1P2
+	    int p1 = this->Edit_P1->Text.ToInt();
+	    int p2 = this->Edit_P2->Text.ToInt();
+	    calibrator.setP1P2(p1, p2);
+	} else if (this->RadioButton_RBInterp->Checked) {
+	    //選了RBInterp
+	    int rbunder = this->Edit_RBInterpUnder->Text.ToInt();
+	    calibrator.setRBInterpolation(rbunder);
+	} else if (this->RadioButton_DefinedDim->Checked) {
+	    //新低灰階修正方法
+	    int under = this->Edit_DefinedDimUnder->Text.ToInt();
+	    bool averageDim = this->CheckBox_AverageDimDG->Checked;
+	    double gamma = this->Edit_DimGamma->Text.ToDouble();
+	    calibrator.setDefinedDim(under, averageDim, gamma);
+	} else if (this->RadioButton_None->Checked) {
+	    calibrator.setNonDimCorrect();
+	}
+	//==========================================================================
+
+	//==========================================================================
+	// gamma的處理
+	//==========================================================================
+	if (this->RadioButton_Gamma->Checked) {
+	    double gamma = this->ComboBox_Gamma->Text.ToDouble();
+	    calibrator.setGamma(gamma);
+	} else if (this->RadioButton_GammaCurve->Checked) {
+	    double_vector_ptr gammaCurve = rgbGamma->w;
+	    calibrator.setGammaCurve(gammaCurve);
+	}
+	calibrator.setGByPass(this->CheckBox_GByPass->Checked);
+	//==========================================================================
+
+	//==========================================================================
+	// blue correction
+	//==========================================================================
+	if (this->CheckBox_BGain->Checked) {
+	    double gain = this->Edit_BGain->Text.ToDouble();
+	    calibrator.setBIntensityGain(gain);
+	}
+	calibrator.setBMax(this->CheckBox_BMax->Checked);
+	if (true == CheckBox_BMax2->Checked) {
+	    int begin = Edit_BMax2Begin->Text.ToInt();
+	    double gamma = Edit_BMax2Gamma->Text.ToDouble();
+	    calibrator.setBMax2(CheckBox_BMax2->Checked, begin, gamma);
+	}
+	//==========================================================================
+	calibrator.setAvoidFRCNoise(this->CheckBox_AvoidNoise->Checked);
+	calibrator.setNewMethod(this->CheckBox_NewMethod->Checked);
+
+	//==========================================================================
+	// Keep Max Luminance
+	//==========================================================================
+	if (true == RadioButton_MaxYNone->Checked) {
+	    calibrator.setKeepMaxLuminance(KeepMaxLuminance::None);
+	} else if (true == RadioButton_MaxYTarget->Checked) {
+	    calibrator.setKeepMaxLuminance(KeepMaxLuminance::TargetWhite);
+	} else if (true == RadioButton_MaxYNative->Checked) {
+	    calibrator.setKeepMaxLuminance(KeepMaxLuminance::NativeWhite);
+	} else if (true == RadioButton_MaxYNativeAdv->Checked) {
+	    int over = this->Edit_MaxYAdvOver->Text.ToInt();
+	    double gamma = this->Edit_MaxYAdvGamma->Text.ToDouble();
+	    calibrator.setKeepMaxLuminanceNativeWhiteAdvanced(over, gamma);
+	}
+	//==========================================================================
+
+
 	try {
 	    this->TOutputFileFrame1->createDir();
 
@@ -153,7 +155,12 @@ void __fastcall TCCTLUTForm::Button_RunClick(TObject * Sender)
 
 	    String_ptr astr = this->TOutputFileFrame1->getOutputFilename();
 	    string filename = astr->c_str();
-	    calibrator.storeDGLutFile(filename, dglut);
+	    bptr < DGLutFile > dgLutFile =
+		calibrator.storeDGLutFile(filename, dglut);
+	    MainForm->setDummyMeterFilename(dgLutFile);
+	    //要release掉, 才可以讀取該檔
+	    dgLutFile.reset();
+	    this->Button_Run->Enabled = true;
 	    ShowMessage("Ok!");
 	    Util::shellExecute(filename);
 	}
@@ -175,6 +182,7 @@ void __fastcall TCCTLUTForm::FormCreate(TObject * Sender)
 {
     using namespace cms::lcd::calibrate;
 
+
     //==========================================================================
     // debug模式的設定
     //==========================================================================
@@ -184,7 +192,7 @@ void __fastcall TCCTLUTForm::FormCreate(TObject * Sender)
     //==========================================================================
 #ifdef DEBUG_NEWFUNC
     this->GroupBox_KeepMaxLuminance->Visible = true;
-    this->Button_Process->Visible = true;
+    this->Button_Run->Visible = true;
 
 
     RadioButton_None->Visible = true;
@@ -239,6 +247,7 @@ void __fastcall TCCTLUTForm::FormShow(TObject * Sender)
 
     bool tconInput = bitDepth->isTCONInput();
     this->CheckBox_Expand->Visible = !tconInput;
+    Button_Run->Enabled = false;
 
     setMeasureInfo();
 }
@@ -411,6 +420,25 @@ void __fastcall TCCTLUTForm::RadioButton_MaxYNativeAdvClick(TObject *
     bool checked = RadioButton_MaxYNativeAdv->Checked;
     Edit_MaxYAdvOver->Enabled = checked;
     Edit_MaxYAdvGamma->Enabled = checked;
+}
+
+//---------------------------------------------------------------------------
+
+
+void __fastcall TCCTLUTForm::FormClose(TObject * Sender,
+				       TCloseAction & Action)
+{
+    if (Button_Run->Enabled) {
+	MainForm->setAnalyzerNull();
+    }
+}
+
+//---------------------------------------------------------------------------
+
+void __fastcall TCCTLUTForm::Button_RunClick(TObject * Sender)
+{
+    Button_ResetClick(Sender);
+    Button_MeaRunClick(Sender);
 }
 
 //---------------------------------------------------------------------------

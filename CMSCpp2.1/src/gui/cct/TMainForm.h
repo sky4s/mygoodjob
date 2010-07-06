@@ -163,6 +163,7 @@ class TMainForm:public TForm {
     void setDummyMeterFilename(bptr < cms::colorformat::DGLutFile >
 			       dglutFile);
     void resetDummyMeter();
+    void setAnalyzerNull();
      bptr < cms::lcd::calibrate::ComponentFetcher > getComponentFetcher();
     void disconnectMeter();
     void connectMeter();

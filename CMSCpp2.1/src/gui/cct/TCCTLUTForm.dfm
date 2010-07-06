@@ -1,6 +1,6 @@
 object CCTLUTForm: TCCTLUTForm
-  Left = 334
-  Top = 360
+  Left = 336
+  Top = 306
   Width = 842
   Height = 482
   Caption = 'CCT LUT'
@@ -12,6 +12,7 @@ object CCTLUTForm: TCCTLUTForm
   Font.Style = []
   KeyPreview = True
   OldCreateOrder = False
+  OnClose = FormClose
   OnCreate = FormCreate
   OnKeyPress = FormKeyPress
   OnShow = FormShow
@@ -391,26 +392,26 @@ object CCTLUTForm: TCCTLUTForm
     end
     object CheckBox_NewMethod: TCheckBox
       Left = 9
-      Top = 40
+      Top = 41
       Width = 120
-      Height = 25
+      Height = 24
       Caption = 'New Method'
       TabOrder = 1
       Visible = False
       OnClick = CheckBox_NewMethodClick
     end
   end
-  object Button_Run: TButton
+  object Button_MeaRun: TButton
     Left = 625
     Top = 369
-    Width = 56
+    Width = 104
     Height = 24
     Hint = 'Measure panel characteristic and produce CCT DG LUT.'
-    Caption = 'Run'
+    Caption = 'Measue&&Run'
     ParentShowHint = False
     ShowHint = True
     TabOrder = 5
-    OnClick = Button_RunClick
+    OnClick = Button_MeaRunClick
   end
   object Button_Debug: TButton
     Left = 625
@@ -602,21 +603,22 @@ object CCTLUTForm: TCCTLUTForm
     Visible = False
     OnClick = Button_ResetClick
   end
-  object Button_Process: TButton
+  object Button_Run: TButton
     Left = 625
     Top = 393
-    Width = 56
+    Width = 104
     Height = 24
-    Caption = 'Process'
+    Caption = 'Run'
     Enabled = False
     TabOrder = 10
     Visible = False
+    OnClick = Button_RunClick
   end
   object GroupBox_KeepMaxLuminance: TGroupBox
     Left = 208
-    Top = 104
+    Top = 105
     Width = 209
-    Height = 217
+    Height = 216
     Caption = 'Keep Max Luminance'
     TabOrder = 11
     Visible = False
@@ -635,25 +637,25 @@ object CCTLUTForm: TCCTLUTForm
       Caption = 'Strength'
     end
     object RadioButton_MaxYTarget: TRadioButton
-      Left = 8
-      Top = 40
-      Width = 169
-      Height = 25
+      Left = 9
+      Top = 41
+      Width = 168
+      Height = 24
       Caption = 'Target White'
       TabOrder = 0
     end
     object RadioButton_MaxYNative: TRadioButton
-      Left = 8
+      Left = 9
       Top = 64
-      Width = 161
+      Width = 160
       Height = 25
       Caption = 'Native White'
       TabOrder = 1
     end
     object RadioButton_MaxYNone: TRadioButton
-      Left = 8
+      Left = 9
       Top = 16
-      Width = 145
+      Width = 144
       Height = 25
       Caption = 'None'
       Checked = True
@@ -661,10 +663,10 @@ object CCTLUTForm: TCCTLUTForm
       TabStop = True
     end
     object RadioButton_MaxYNativeAdv: TRadioButton
-      Left = 8
-      Top = 88
-      Width = 169
-      Height = 25
+      Left = 9
+      Top = 89
+      Width = 168
+      Height = 24
       Caption = 'Native White (Smooth)'
       Enabled = False
       TabOrder = 3

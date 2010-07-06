@@ -233,7 +233,7 @@ namespace cms {
 	};
 
 	RGB_ptr MaxMatrixIntensityAnayzer::getIntensity(XYZ_ptr XYZ) {
-	    if (NULL == inverseMatrix) {
+	    if (null == inverseMatrix) {
 		throw IllegalStateException("NULL == inverseMatrix");
 	    }
 	    double2D_ptr color =
@@ -361,6 +361,9 @@ namespace cms {
 	RGB_ptr MaxMatrixIntensityAnayzer::getReferenceRGB() {
 	    return referenceRGB;
 	};
+	bool MaxMatrixIntensityAnayzer::isInverseMatrixNull() {
+	    return null == inverseMatrix;
+	}
 	//=====================================================================
 
 	//=====================================================================
