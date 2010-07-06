@@ -22,11 +22,14 @@ namespace cms {
 						XYZ_ptr endXYZ,
 						double_vector_ptr
 						luminanceGammaCurve);
+		static XYZ_vector_ptr getTarget(XYZ_ptr startXYZ,
+						XYZ_ptr endXYZ,
+						double_vector_ptr
+						luminanceGammaCurve,
+						double gamma);
 	      protected:
 		 Component_vector_ptr componentVector;
 		 bptr < cms::measure::IntensityAnalyzerIF > analyzer;
-
-		//static void storeXYZxyVector(XYZ_vector_ptr XYZVector);
 	      public:
 		 Component_vector_ptr fetchComponent(bptr <
 						     cms::measure::
@@ -41,6 +44,10 @@ namespace cms {
 		RGB_vector_ptr produce(XYZ_ptr targetWhite,
 				       double_vector_ptr
 				       luminanceGammaCurve, int under);
+		RGB_vector_ptr produce(XYZ_ptr targetWhite,
+				       double_vector_ptr
+				       luminanceGammaCurve, int under,
+				       double gamma);
 	    };
 	};
     };

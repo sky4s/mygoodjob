@@ -44,25 +44,17 @@ namespace cms {
 		    getLinearTarget(startXYZ, endXYZ, luminanceGammaCurve);
 		 return targetXYZVector;
 	    };
-	    /*void DimDGLutGenerator::
-	       storeXYZxyVector(XYZ_vector_ptr XYZVector) {
-
-	       Util::deleteExist("target.xls");
-	       SimpleExcelAccess excel("target.xls", Create,
-	       StringVector::
-	       fromCString(6, "Gray Level",
-	       "X", "Y", "Z",
-	       "_x", "_y"));
-	       int size = XYZVector->size();
-	       for (int x = 0; x != size; x++) {
-	       XYZ_ptr XYZ = (*XYZVector)[x];
-	       Indep::CIExyY xyY(XYZ);
-	       string_vector_ptr values = StringVector::fromDouble
-	       (6, static_cast < double >(x), XYZ->X, XYZ->Y,
-	       XYZ->Z, xyY.x, xyY.y);
-	       excel.insert(values);
-	       }
-	       }; */
+	    XYZ_vector_ptr DimDGLutGenerator::getTarget(XYZ_ptr startXYZ,
+							XYZ_ptr endXYZ,
+							double_vector_ptr
+							luminanceGammaCurve,
+							double gamma) {
+		XYZ_vector_ptr targetXYZVector =
+		    DimTargetGenerator::getGammaTarget(startXYZ, endXYZ,
+						       luminanceGammaCurve,
+						       gamma);
+		return targetXYZVector;
+	    };
 	  DimDGLutGenerator::DimDGLutGenerator(Component_vector_ptr componentVector, bptr < IntensityAnalyzerIF > analyzer):componentVector(componentVector),
 		analyzer(analyzer)
 	    {
@@ -70,6 +62,13 @@ namespace cms {
 	    RGB_vector_ptr DimDGLutGenerator::
 		produce(XYZ_ptr targetWhite,
 			double_vector_ptr luminanceGammaCurve, int under) {
+		return produce(targetWhite, luminanceGammaCurve, -1);
+	    };
+
+	    RGB_vector_ptr DimDGLutGenerator::
+		produce(XYZ_ptr targetWhite,
+			double_vector_ptr luminanceGammaCurve, int under,
+			double gamma) {
 		using namespace Dep;
 		//==============================================================
 		// 資訊準備
@@ -81,9 +80,10 @@ namespace cms {
 		    DoubleArray::getRangeCopy(luminanceGammaCurve,
 					      0, size);
 		//求目標值曲線
-		XYZ_vector_ptr targetXYZVector =
-		    getTarget(blackXYZ, targetWhite,
-			      partGammaCurve);
+		XYZ_vector_ptr targetXYZVector = gamma != -1 ?
+		    getTarget(blackXYZ, targetWhite, partGammaCurve,
+			      gamma) : getTarget(blackXYZ, targetWhite,
+						 partGammaCurve);
 		STORE_XYZXY_VECTOE("target.xls", targetXYZVector);
 		//==============================================================
 		RGB_vector_ptr result(new RGB_vector());

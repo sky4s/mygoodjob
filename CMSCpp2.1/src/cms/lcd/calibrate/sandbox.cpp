@@ -231,36 +231,13 @@ namespace cms {
 			  int brightTurn,
 			  double dimGamma, double brightGamma) {
 		int size = luminanceGammaCurve->size();
-		//double_array dimstartValues = startXYZ->getxyValues();
 		double_array dimendValues = targetXYZ->getxyValues();
-		//double_array brightstartValues = targetXYZ->getxyValues();
-		//double_array brightendValues = endXYZ->getxyValues();
 
 		XYZ_vector_ptr result(new XYZ_vector(size));
 
 		//==============================================================
 		// dim區段
 		//==============================================================
-		/*
-		   double dimbase = dimTurn - 1;
-		   for (int x = 0; x < dimTurn; x++) {
-		   double normal = ((double) x) / dimbase;
-		   double gamma = Math::pow(normal, dimGamma) * dimbase;
-		   //在uv'上線性變化
-		   double u = Interpolation::linear(0, dimbase,
-		   dimendValues[0],
-		   dimstartValues[0],
-		   gamma);
-		   double v = Interpolation::linear(0, dimbase,
-		   dimendValues[1],
-		   dimstartValues[1],
-		   gamma);
-		   int index = dimbase - x;
-		   double Y = (*luminanceGammaCurve)[index];
-
-		   (*result)[index] = getTargetXYZ(u, v, Y, domain);
-		   }
-		 */
 		XYZ_vector_ptr dimResult =
 		    getDimGammaTarget(luminanceGammaCurve, startXYZ,
 				      targetXYZ, dimGamma, dimTurn);
@@ -284,26 +261,6 @@ namespace cms {
 		//==============================================================
 		// bright區段
 		//==============================================================
-		/*double brightbase = size - 1 - brightTurn;
-
-		   for (int x = brightTurn; x < size; x++) {
-		   double normal = ((double) x - brightTurn) / brightbase;
-		   double gamma = Math::pow(normal,
-		   brightGamma) * brightbase +
-		   brightTurn;
-		   //在uv'上線性變化
-		   double u = Interpolation::linear(brightTurn, size - 1,
-		   brightstartValues[0],
-		   brightendValues[0],
-		   gamma);
-		   double v = Interpolation::linear(brightTurn, size - 1,
-		   brightstartValues[1],
-		   brightendValues[1],
-		   gamma);
-		   double Y = (*luminanceGammaCurve)[x];
-
-		   (*result)[x] = getTargetXYZ(u, v, Y);
-		   } */
 		XYZ_vector_ptr brightResult =
 		    getBrightGammaTarget(luminanceGammaCurve, targetXYZ,
 					 endXYZ, brightGamma, brightTurn);

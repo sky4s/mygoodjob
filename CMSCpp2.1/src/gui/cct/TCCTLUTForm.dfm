@@ -218,14 +218,12 @@ object CCTLUTForm: TCCTLUTForm
       Height = 24
       Caption = 'RB Interpolation'
       TabOrder = 1
-      OnClick = RadioButton_RBInterpClick
     end
     object Edit_RBInterpUnder: TEdit
       Left = 89
       Top = 89
       Width = 72
       Height = 24
-      Enabled = False
       ImeName = #26085#25991#36664#20837#31995#32113' (MS-IME2002)'
       TabOrder = 2
       Text = '50'
@@ -256,7 +254,6 @@ object CCTLUTForm: TCCTLUTForm
       Caption = 'None'
       TabOrder = 5
       Visible = False
-      OnClick = RadioButton_NoneClick
     end
     object RadioButton_DefinedDim: TRadioButton
       Left = 9
@@ -264,16 +261,15 @@ object CCTLUTForm: TCCTLUTForm
       Width = 120
       Height = 24
       Caption = 'Defined Dim'
+      Enabled = False
       TabOrder = 6
       Visible = False
-      OnClick = RadioButton_DefinedDimClick
     end
     object Edit_DefinedDimUnder: TEdit
       Left = 89
       Top = 153
       Width = 72
       Height = 24
-      Enabled = False
       ImeName = #26085#25991#36664#20837#31995#32113' (MS-IME2002)'
       TabOrder = 7
       Text = '50'
@@ -285,7 +281,6 @@ object CCTLUTForm: TCCTLUTForm
       Width = 137
       Height = 25
       Caption = 'Average Dim DG'
-      Enabled = False
       TabOrder = 8
       Visible = False
     end
@@ -294,7 +289,6 @@ object CCTLUTForm: TCCTLUTForm
       Top = 185
       Width = 72
       Height = 24
-      Enabled = False
       ImeName = #26085#25991#36664#20837#31995#32113' (MS-IME2002)'
       TabOrder = 9
       Text = '2.2'
@@ -364,7 +358,6 @@ object CCTLUTForm: TCCTLUTForm
       Top = 89
       Width = 72
       Height = 24
-      Enabled = False
       ImeName = #26085#25991#36664#20837#31995#32113' (MS-IME2002)'
       TabOrder = 4
       Text = '235'
@@ -375,7 +368,6 @@ object CCTLUTForm: TCCTLUTForm
       Top = 121
       Width = 72
       Height = 24
-      Enabled = False
       ImeName = #26085#25991#36664#20837#31995#32113' (MS-IME2002)'
       TabOrder = 5
       Text = '2.2'
@@ -406,15 +398,6 @@ object CCTLUTForm: TCCTLUTForm
       TabOrder = 1
       Visible = False
       OnClick = CheckBox_NewMethodClick
-    end
-    object CheckBox_AvoidHook: TCheckBox
-      Left = 9
-      Top = 64
-      Width = 113
-      Height = 25
-      Caption = 'Avoid Hook'
-      TabOrder = 2
-      Visible = False
     end
   end
   object Button_Run: TButton
@@ -643,7 +626,6 @@ object CCTLUTForm: TCCTLUTForm
       Width = 29
       Height = 16
       Caption = 'Over'
-      Visible = False
     end
     object Label21: TLabel
       Left = 32
@@ -651,7 +633,6 @@ object CCTLUTForm: TCCTLUTForm
       Width = 49
       Height = 16
       Caption = 'Strength'
-      Visible = False
     end
     object RadioButton_MaxYTarget: TRadioButton
       Left = 8
@@ -685,7 +666,9 @@ object CCTLUTForm: TCCTLUTForm
       Width = 169
       Height = 25
       Caption = 'Native White (Smooth)'
+      Enabled = False
       TabOrder = 3
+      OnClick = RadioButton_MaxYNativeAdvClick
     end
     object Edit_MaxYAdvOver: TEdit
       Left = 89
@@ -695,7 +678,6 @@ object CCTLUTForm: TCCTLUTForm
       ImeName = #26085#25991#36664#20837#31995#32113' (MS-IME2002)'
       TabOrder = 4
       Text = '235'
-      Visible = False
     end
     object Edit_MaxYAdvGamma: TEdit
       Left = 89
@@ -705,7 +687,6 @@ object CCTLUTForm: TCCTLUTForm
       ImeName = #26085#25991#36664#20837#31995#32113' (MS-IME2002)'
       TabOrder = 5
       Text = '2.2'
-      Visible = False
     end
   end
   object OpenDialog1: TOpenDialog
