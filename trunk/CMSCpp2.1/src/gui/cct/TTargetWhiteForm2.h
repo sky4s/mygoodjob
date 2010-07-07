@@ -86,6 +86,7 @@ class TTargetWhiteForm2:public TForm, cms::util::WindowListener {
     TLabel *Label21;
     TButton *Button3;
     TButton *Button4;
+    TCheckBox *CheckBox_Lock;
     void __fastcall RadioButton_MaxRGBClick(TObject * Sender);
     void __fastcall ScrollBar_RChange(TObject * Sender);
     void __fastcall ScrollBar_GChange(TObject * Sender);

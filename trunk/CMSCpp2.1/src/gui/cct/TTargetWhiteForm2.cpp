@@ -36,6 +36,10 @@ void __fastcall TTargetWhiteForm2::ScrollBar_RChange(TObject * Sender)
 {
     Edit_R->Text = AnsiString(ScrollBar_R->Position);
     Edit_ScrollR->Text = AnsiString(ScrollBar_R->Position);
+    if (CheckBox_Lock->Checked) {
+	ScrollBar_G->Position = ScrollBar_R->Position;
+	ScrollBar_B->Position = ScrollBar_R->Position;
+    }
     scrollBar_Change();
 }
 
@@ -45,6 +49,10 @@ void __fastcall TTargetWhiteForm2::ScrollBar_GChange(TObject * Sender)
 {
     Edit_G->Text = AnsiString(ScrollBar_G->Position);
     Edit_ScrollG->Text = AnsiString(ScrollBar_G->Position);
+    if (CheckBox_Lock->Checked) {
+	ScrollBar_R->Position = ScrollBar_G->Position;
+	ScrollBar_B->Position = ScrollBar_G->Position;
+    }
     scrollBar_Change();
 }
 
@@ -54,6 +62,10 @@ void __fastcall TTargetWhiteForm2::ScrollBar_BChange(TObject * Sender)
 {
     Edit_B->Text = AnsiString(ScrollBar_B->Position);
     Edit_ScrollB->Text = AnsiString(ScrollBar_B->Position);
+    if (CheckBox_Lock->Checked) {
+	ScrollBar_R->Position = ScrollBar_B->Position;
+	ScrollBar_G->Position = ScrollBar_B->Position;
+    }
     scrollBar_Change();
 }
 

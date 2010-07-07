@@ -2,7 +2,7 @@ object TargetWhiteForm2: TTargetWhiteForm2
   Left = 300
   Top = 300
   Width = 928
-  Height = 611
+  Height = 617
   Caption = 'TargetWhiteForm'
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
@@ -19,7 +19,7 @@ object TargetWhiteForm2: TTargetWhiteForm2
   TextHeight = 16
   object Label3: TLabel
     Left = 560
-    Top = 537
+    Top = 561
     Width = 349
     Height = 16
     Caption = 'Copyright (C) 2010, AU Optronics Corp., All Right Reserved.'
@@ -28,7 +28,7 @@ object TargetWhiteForm2: TTargetWhiteForm2
     Left = 9
     Top = 9
     Width = 904
-    Height = 520
+    Height = 544
     ActivePage = TabSheet1
     TabIndex = 0
     TabOrder = 0
@@ -38,7 +38,7 @@ object TargetWhiteForm2: TTargetWhiteForm2
         Left = 9
         Top = 9
         Width = 240
-        Height = 472
+        Height = 496
         Caption = 'Target Color'
         TabOrder = 0
         object RadioButton_Targetxy: TRadioButton
@@ -59,7 +59,7 @@ object TargetWhiteForm2: TTargetWhiteForm2
         end
         object Button2: TButton
           Left = 89
-          Top = 441
+          Top = 465
           Width = 80
           Height = 22
           Caption = 'Run'
@@ -308,7 +308,7 @@ object TargetWhiteForm2: TTargetWhiteForm2
         end
         object CheckBox_MaxRGB: TCheckBox
           Left = 9
-          Top = 441
+          Top = 465
           Width = 80
           Height = 16
           Caption = 'MaxRGB'
@@ -320,7 +320,7 @@ object TargetWhiteForm2: TTargetWhiteForm2
         Left = 256
         Top = 9
         Width = 633
-        Height = 472
+        Height = 496
         Caption = 'RGB Pattern'
         TabOrder = 1
         object Label13: TLabel
@@ -345,9 +345,9 @@ object TargetWhiteForm2: TTargetWhiteForm2
           Caption = 'R'
         end
         object ScrollBar_R: TScrollBar
-          Left = 80
+          Left = 72
           Top = 384
-          Width = 545
+          Width = 553
           Height = 17
           LargeChange = 10
           Max = 255
@@ -357,9 +357,9 @@ object TargetWhiteForm2: TTargetWhiteForm2
           OnChange = ScrollBar_RChange
         end
         object ScrollBar_G: TScrollBar
-          Left = 80
+          Left = 72
           Top = 416
-          Width = 545
+          Width = 553
           Height = 17
           LargeChange = 10
           Max = 255
@@ -369,9 +369,9 @@ object TargetWhiteForm2: TTargetWhiteForm2
           OnChange = ScrollBar_GChange
         end
         object ScrollBar_B: TScrollBar
-          Left = 80
+          Left = 72
           Top = 448
-          Width = 545
+          Width = 553
           Height = 17
           LargeChange = 10
           Max = 255
@@ -417,6 +417,14 @@ object TargetWhiteForm2: TTargetWhiteForm2
           ImeName = #26085#25991#36664#20837#31995#32113' (MS-IME2002)'
           TabOrder = 6
           Text = '255'
+        end
+        object CheckBox_Lock: TCheckBox
+          Left = 8
+          Top = 464
+          Width = 97
+          Height = 25
+          Caption = 'RGB Lock'
+          TabOrder = 7
         end
       end
     end

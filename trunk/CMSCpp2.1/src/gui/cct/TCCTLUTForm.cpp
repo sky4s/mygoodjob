@@ -64,6 +64,9 @@ void __fastcall TCCTLUTForm::Button_MeaRunClick(TObject * Sender)
 
     run = true;
     try {			//為了對應__finally使用的try
+	    String_ptr astr = this->TOutputFileFrame1->getOutputFilename();
+	    string filename = astr->c_str();
+
 	MainForm->getAnalyzer();
 	if (MainForm->isCA210Analyzer()) {
 	    MainForm->setAnalyzerToTargetChannel();
@@ -90,7 +93,7 @@ void __fastcall TCCTLUTForm::Button_MeaRunClick(TObject * Sender)
 	    int under = this->Edit_DefinedDimUnder->Text.ToInt();
 	    bool averageDim = this->CheckBox_AverageDimDG->Checked;
 	    double gamma = this->Edit_DimGamma->Text.ToDouble();
-	    calibrator.setDefinedDim(under, averageDim, gamma);
+	    calibrator.setDefinedDim(under,  gamma,averageDim);
 	} else if (this->RadioButton_None->Checked) {
 	    calibrator.setNonDimCorrect();
 	}
@@ -153,14 +156,12 @@ void __fastcall TCCTLUTForm::Button_MeaRunClick(TObject * Sender)
 		return;
 	    }
 
-	    String_ptr astr = this->TOutputFileFrame1->getOutputFilename();
-	    string filename = astr->c_str();
 	    bptr < DGLutFile > dgLutFile =
 		calibrator.storeDGLutFile(filename, dglut);
-	    MainForm->setDummyMeterFilename(dgLutFile);
+	    //MainForm->setDummyMeterFilename(dgLutFile);
 	    //要release掉, 才可以讀取該檔
 	    dgLutFile.reset();
-	    this->Button_Run->Enabled = true;
+	    //this->Button_Run->Enabled = true;
 	    ShowMessage("Ok!");
 	    Util::shellExecute(filename);
 	}
