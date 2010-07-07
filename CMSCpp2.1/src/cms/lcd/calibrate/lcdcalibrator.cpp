@@ -89,6 +89,7 @@ namespace cms {
 
 		    if (true == stop) {
 			stop = false;
+                        analyzer->endAnalyze();
 			return Component_vector_ptr((Component_vector *)
 						    null);
 		    }
@@ -118,6 +119,7 @@ namespace cms {
 
 		    if (true == stop) {
 			stop = false;
+                        analyzer->endAnalyze();
 			return double_vector_ptr((double_vector *)
 						 null);
 		    }
@@ -653,7 +655,7 @@ namespace cms {
 		for (int x = 0; x < effectiven; x++) {
 		    double normal =
 			static_cast < double >(x) / (effectiven - 1);
-		    double v = java::lang::Math::pow(normal, gamma);
+		    double v = Math::pow(normal, gamma);
 		    (*result)[x] = v;
 		};
 		for (int x = effectiven; x < n; x++) {

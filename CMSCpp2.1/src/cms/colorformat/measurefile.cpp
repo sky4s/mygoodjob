@@ -38,11 +38,11 @@ namespace cms {
 	    int gsize = gMeasureData != null ? gMeasureData->size() : 0;
 	    int bsize = bMeasureData != null ? bMeasureData->size() : 0;
 	    int_array sizes(new int[4]);
-	    sizes[0] = wsize;
-	    sizes[1] = rsize;
-	    sizes[2] = gsize;
-	    sizes[3] = bsize;
-	    return IntArray::max(sizes, 4);
+	     sizes[0] = wsize;
+	     sizes[1] = rsize;
+	     sizes[2] = gsize;
+	     sizes[3] = bsize;
+	     return IntArray::max(sizes, 4);
 	};
 
 	void RampMeasureFile::
@@ -80,14 +80,14 @@ namespace cms {
 			CorrelatedColorTemperature::
 			getduvWithDIlluminant(c->XYZ);
 		    (*values)[5] = _toString(duv);
-		    //(*values)[5] = "0";
 
 		    RGB_ptr intensity = c->intensity;
 		    (*values)[6] = _toString(intensity->R);
 		    (*values)[7] = _toString(intensity->G);
 		    (*values)[8] = _toString(intensity->B);
 		} else {
-
+		    StringVector::setContent(values, "0", 9, 0, 1, 2, 3, 4,
+					     5, 6, 7, 8);
 		}
 
 		if (rMeasureData != null) {

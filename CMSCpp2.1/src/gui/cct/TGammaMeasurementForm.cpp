@@ -129,7 +129,7 @@ void TGammaMeasurementForm::pcMeasure(bool_vector_ptr rgbw, int start,
     RampMeasureFile measureFile(filename, Create);
     measureFile.setMeasureData(componentVector, vectors[0], vectors[1],
 			       vectors[2]);
-    Util::shellExecute(filename);
+    //Util::shellExecute(filename);
 };
 
 //---------------------------------------------------------------------------

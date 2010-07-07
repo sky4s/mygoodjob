@@ -673,6 +673,47 @@ void odTester()
     cout << v << endl;
 };
 
+void txtTester()
+{
+    TStringList *ClickList = new TStringList;
+    ClickList->Add("131213");	//add a string to the list
+
+    ClickList->SaveToFile(ChangeFileExt(Application->ExeName, ".LOG"));	//Save the list
+    delete ClickList;
+
+};
+
+
+
+
+class PropTest {
+  public:
+    PropTest() {
+	Count.setContainer(this);
+	Count.setter(&PropTest::setCount);
+	Count.getter(&PropTest::getCount);
+    } int getCount() {
+	return m_nCount;
+    }
+    void setCount(int nCount) {
+	m_nCount = nCount;
+    }
+    Property < PropTest, int, READ_WRITE > Count;
+
+
+  private:
+    int m_nCount;
+};
+
+void propTester()
+{
+    int i = 5, j;
+    PropTest test;
+    test.Count = i;		//-- call the set method --
+    j = test.Count;		//-- call the get method --
+
+}
+
 #pragma argsused
 int main(int argc, char *argv[])
 {
@@ -736,7 +777,9 @@ int main(int argc, char *argv[])
     //targetTester();
     //directGammaTester();
     //hookTester();
-    odTester();
+    //odTester();
+    //txtTester();
+    propTester();
     getch();
 }
 
