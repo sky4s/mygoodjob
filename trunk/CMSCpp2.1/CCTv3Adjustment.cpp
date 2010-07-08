@@ -5,7 +5,6 @@
 #include <comobj.hpp>
 
 //---------------------------------------------------------------------------
-USEFORM("src\Unit1.cpp", Form1);
 USEFORM("src\gui\TMeasureWindow.cpp", MeasureWindow);
 USEFORM("src\gui\TAnalyzerFrame.cpp", AnalyzerFrame); /* TFrame: File Type */
 USEFORM("src\gui\TI2CTestForm.cpp", I2CTestForm);

@@ -30,7 +30,7 @@ class TOutputFileFrame:public TFrame {
     int serialid;
   public:			// User declarations
      __fastcall TOutputFileFrame(TComponent * Owner);
-    void createDir();
+    bool createDir();
     String_ptr getFullPrefix();
     String_ptr getOutputFilename();
 };

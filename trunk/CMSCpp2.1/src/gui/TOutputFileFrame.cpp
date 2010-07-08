@@ -31,16 +31,17 @@ void __fastcall TOutputFileFrame::Button_BrowseDirClick(TObject * Sender)
 }
 
 //---------------------------------------------------------------------------
-void TOutputFileFrame::createDir()
+bool TOutputFileFrame::createDir()
 {
     AnsiString dir = this->Edit_Directory->Text;
     if (!DirectoryExists(dir)) {
 	bool result = CreateDir(dir);
 	if (!result) {
 	    ShowMessage("Create " + dir + " is failed.");
-	    return;
+	    return false;
 	}
     }
+    return true;
 }
 
 //---------------------------------------------------------------------------

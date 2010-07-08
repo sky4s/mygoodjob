@@ -21,13 +21,13 @@ namespace cms {
 
 	    class AdvancedDGLutGenerator:private DimDGLutGenerator {
 	      private:
+		//採用用大值的B Intensity或者100?
 		bool useMaxTargetBIntensity;
 		bool isAvoidHook(XYZ_ptr targetXYZ, double offsetK);
 		XYZ_ptr getXYZ(XYZ_ptr XYZ, double offsetK);
 		bool isDuplicateBlue100(XYZ_ptr targetXYZ);
-		double targetBIntensity;
+		double bTargetIntensity;
 	      public:
-		void setTargetBIntensity(double intensity);
 		 AdvancedDGLutGenerator(Component_vector_ptr
 					componentVector,
 					bptr <
@@ -63,6 +63,7 @@ namespace cms {
 
 		void setUseMaxTargetBIntensity(bool
 					       useMaxTargetBIntensity);
+		void setBTargetIntensity(double bTargetIntensity);
 	      private:
 
 		static XYZ_vector_ptr getDimGammaTarget(double_vector_ptr

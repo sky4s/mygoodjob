@@ -4,7 +4,7 @@
   <MACROS>
     <VERSION value="BCB.06.00"/>
     <PROJECT value="build\CCTv3Adjustment.exe"/>
-    <OBJFILES value="build\CCTv3Adjustment.obj build\Unit1.obj build\HWINTERFACELib_OCX.obj 
+    <OBJFILES value="build\CCTv3Adjustment.obj build\HWINTERFACELib_OCX.obj 
       build\HWINTERFACELib_TLB.obj build\USBHIDIOC.obj build\lang.obj 
       build\CA200SRVRLib_OCX.obj build\CA200SRVRLib_TLB.obj build\CA210API.obj 
       build\util.obj build\rgbArray.obj build\ciexyz.obj build\colorspace.obj 
@@ -28,13 +28,13 @@
     <IDLFILES value=""/>
     <IDLGENFILES value=""/>
     <DEFFILE value=""/>
-    <RESDEPEN value="$(RESFILES) src\Unit1.dfm src\gui\TMeasureWindow.dfm 
-      src\gui\TAnalyzerFrame.dfm src\gui\TI2CTestForm.dfm 
-      src\gui\TMatrixCalibration.dfm src\gui\TCA210SettingFrame.dfm 
-      src\gui\TOptionsFrame.dfm src\gui\TOutputFileFrame.dfm 
-      src\gui\cct\TGammaAdjustmentForm.dfm src\gui\cct\TGammaMeasurementForm.dfm 
-      src\gui\cct\TMainForm.dfm src\gui\cct\TTargetWhiteForm2.dfm 
-      src\gui\cct\TAboutBox.dfm src\gui\cct\TCCTLUTForm.dfm"/>
+    <RESDEPEN value="$(RESFILES) src\gui\TMeasureWindow.dfm src\gui\TAnalyzerFrame.dfm 
+      src\gui\TI2CTestForm.dfm src\gui\TMatrixCalibration.dfm 
+      src\gui\TCA210SettingFrame.dfm src\gui\TOptionsFrame.dfm 
+      src\gui\TOutputFileFrame.dfm src\gui\cct\TGammaAdjustmentForm.dfm 
+      src\gui\cct\TGammaMeasurementForm.dfm src\gui\cct\TMainForm.dfm 
+      src\gui\cct\TTargetWhiteForm2.dfm src\gui\cct\TAboutBox.dfm 
+      src\gui\cct\TCCTLUTForm.dfm"/>
     <LIBFILES value="lib\hid.lib"/>
     <LIBRARIES value="adortl.lib dbrtl.lib vclx.lib vcl.lib rtl.lib"/>
     <SPARELIBS value="rtl.lib vcl.lib vclx.lib dbrtl.lib adortl.lib"/>
@@ -45,7 +45,7 @@
       inetdbbde.bpi inetdbxpress.bpi inetdb.bpi nmfast.bpi webdsnap.bpi 
       bcbie.bpi websnap.bpi soaprtl.bpi dclocx.bpi dbexpress.bpi dbxcds.bpi 
       indy.bpi bcb2kaxserver.bpi bcbindent.bpi"/>
-    <PATHCPP value=".;src;lib\LPT_lib;lib\LPT_lib;lib\USB_i2c_lib;src\java;lib\CA200SRVRLib;lib\CA200SRVRLib;src\ca210api;src\cms\util;src\cms\util;src\cms\colorspace;src\cms\colorspace;src\cms\colorspace;src\cms\colorspace;src\cms\colorspace;src\cms;src\cms;src\cms\colorformat;src\cms\colorformat;src\cms\colorformat;src\cms\colorformat;src\math;src\math;src\math;src\math;src\math;src\cms\lcd\calibrate;src\cms\lcd\calibrate;src\cms\lcd\calibrate;src\cms\lcd\calibrate;src\cms\lcd\calibrate;src\cms\lcd\calibrate;src\cms\lcd\calibrate;src\cms\lcd\calibrate;src\cms\measure;src\cms\measure;src\cms\measure;src\cms\measure;src;src\gui;src\gui;src\gui;src\gui;src\gui;src\gui;src\gui;src\i2c;src\i2c;src\i2c;src\i2c\core;src\math;src\cms\lcd\calibrate;src\cms\lcd\calibrate;src\cms\colorformat;src\math;src\gui\cct;src\gui\cct;src\gui\cct;src\gui\cct;src\gui\cct;src\gui\cct"/>
+    <PATHCPP value=".;lib\LPT_lib;lib\USB_i2c_lib;src\java;lib\CA200SRVRLib;src\ca210api;src\cms\util;src\cms\colorspace;src\cms;src\cms\colorformat;src\math;src\cms\lcd\calibrate;src\cms\measure;src;src\gui;src\i2c;src\i2c\core;src\gui\cct"/>
     <PATHPAS value=".;"/>
     <PATHRC value=".;"/>
     <PATHASM value=".;"/>
@@ -85,7 +85,6 @@
   <FILELIST>
       <FILE FILENAME="CCTv3Adjustment.res" FORMNAME="" UNITNAME="CCTv3Adjustment.res" CONTAINERID="ResTool" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="CCTv3Adjustment.cpp" FORMNAME="" UNITNAME="CCTv3Adjustment" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="src\Unit1.cpp" FORMNAME="Form1" UNITNAME="Unit1" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="lib\LPT_lib\HWINTERFACELib_OCX.cpp" FORMNAME="" UNITNAME="HWINTERFACELib_OCX.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="lib\LPT_lib\HWINTERFACELib_TLB.cpp" FORMNAME="" UNITNAME="HWINTERFACELib_TLB.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="lib\USB_i2c_lib\USBHIDIOC.CPP" FORMNAME="" UNITNAME="USBHIDIOC" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
