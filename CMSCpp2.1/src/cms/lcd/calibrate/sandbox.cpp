@@ -24,17 +24,13 @@ namespace cms {
 	    //==================================================================
 	    // AdvancedDGLutGenerator
 	    //==================================================================
-	    void AdvancedDGLutGenerator::
-		setTargetBIntensity(double intensity) {
-		this->targetBIntensity = targetBIntensity;
-	    };
 	     AdvancedDGLutGenerator::
 		AdvancedDGLutGenerator(Component_vector_ptr
 				       componentVector,
 				       bptr < IntensityAnalyzerIF >
 				       analyzer):DimDGLutGenerator
 		(componentVector, analyzer),
-		useMaxTargetBIntensity(false), targetBIntensity(-1) {
+		useMaxTargetBIntensity(false), bTargetIntensity(-1) {
 	    };
 
 	    RGB_vector_ptr AdvancedDGLutGenerator::
@@ -106,13 +102,13 @@ namespace cms {
 #endif
 		    DGLutGenerator lutgen(newcomponentVector);
 		    //±Ä100¶Ü?
-		    if (targetBIntensity == -1) {
-			targetBIntensity =
+		    if (bTargetIntensity == -1) {
+			bTargetIntensity =
 			    useMaxTargetBIntensity ? lutgen.
 			    getMaxBIntensity() : 100;
 		    };
 		    RGB_ptr rgb = lutgen.getDGCode(100, 100,
-						   targetBIntensity);
+						   bTargetIntensity);
 		    (*result)[x] = rgb;
 		};
 
@@ -350,7 +346,10 @@ namespace cms {
 		setUseMaxTargetBIntensity(bool useMaxTargetBIntensity) {
 		this->useMaxTargetBIntensity = useMaxTargetBIntensity;
 	    };
-
+	    void AdvancedDGLutGenerator::
+		setBTargetIntensity(double bTargetIntensity) {
+		this->bTargetIntensity = bTargetIntensity;
+	    }
 	    XYZ_ptr AdvancedDGLutGenerator::getTargetXYZ(double v1,
 							 double v2,
 							 double v3,

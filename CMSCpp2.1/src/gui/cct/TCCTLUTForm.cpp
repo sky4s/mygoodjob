@@ -127,8 +127,18 @@ void __fastcall TCCTLUTForm::Button_MeaRunClick(TObject * Sender)
 	    calibrator.setBMax2(CheckBox_BMax2->Checked, begin, gamma);
 	}
 	//==========================================================================
+
+	//==========================================================================
+	// others
+	//==========================================================================
 	calibrator.setAvoidFRCNoise(this->CheckBox_AvoidNoise->Checked);
 	calibrator.setNewMethod(this->CheckBox_NewMethod->Checked);
+	if (CheckBox_BTargetIntensity->Checked) {
+	    double bTargetIntensity =
+		Edit_BTargetIntensity->Text.ToDouble();
+	    calibrator.setBTargetIntensity(bTargetIntensity);
+	}
+	//==========================================================================
 
 	//==========================================================================
 	// Keep Max Luminance
@@ -148,7 +158,9 @@ void __fastcall TCCTLUTForm::Button_MeaRunClick(TObject * Sender)
 
 
 	try {
-	    this->TOutputFileFrame1->createDir();
+	    if (this->TOutputFileFrame1->createDir() == false) {
+		return;
+	    }
 
 	    RGB_vector_ptr dglut =
 		calibrator.getCCTDGLut(getMeasureCondition());

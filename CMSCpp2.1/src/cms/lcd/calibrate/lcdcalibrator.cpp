@@ -89,7 +89,7 @@ namespace cms {
 
 		    if (true == stop) {
 			stop = false;
-                        analyzer->endAnalyze();
+			analyzer->endAnalyze();
 			return Component_vector_ptr((Component_vector *)
 						    null);
 		    }
@@ -119,7 +119,7 @@ namespace cms {
 
 		    if (true == stop) {
 			stop = false;
-                        analyzer->endAnalyze();
+			analyzer->endAnalyze();
 			return double_vector_ptr((double_vector *)
 						 null);
 		    }
@@ -606,9 +606,9 @@ namespace cms {
 		    }
 		    measureCode->push_back(x);
 		}
-               if( (*measureCode)[ measureCode->size()-1] != end) {
-               measureCode->push_back(end);
-               }
+		if ((*measureCode)[measureCode->size() - 1] != end) {
+		    measureCode->push_back(end);
+		}
 
 		return measureCode;
 	    };
@@ -785,6 +785,7 @@ namespace cms {
 		averageDimDG = false;
 		newMethod = false;
 		bMax = bMax2 = false;
+		bTargetIntensity = -1;
 	    };
 
 	    Component_vector_ptr LCDCalibrator::
@@ -867,16 +868,23 @@ namespace cms {
 		    int underParameter = 50;
 		    double brightgammaParameter = 2.2;
 		    int overParameter = 200;
+
 		    if (correct == Correct::DefinedDim) {
 			dimgammaParameter = dimGamma;
 			underParameter = under;
 		    }
+
 		    if (keepMaxLuminance ==
 			KeepMaxLuminance::NativeWhiteAdvanced) {
 			brightgammaParameter = keepMaxLumiGamma;
 			overParameter = keepMaxLumiOver;
 		    } else {
 		    }
+
+		    if (this->bTargetIntensity != -1) {
+			advgenerator.setBTargetIntensity(bTargetIntensity);
+		    }
+
 		    dglut =
 			advgenerator.produce(targetWhite,
 					     luminanceGammaCurve,
@@ -1139,7 +1147,10 @@ namespace cms {
 		//==============================================================
 	    };
 
-
+	    void LCDCalibrator::
+		setBTargetIntensity(double bTargetIntensity) {
+		this->bTargetIntensity = bTargetIntensity;
+	    };
 	    //==================================================================
 
 	};

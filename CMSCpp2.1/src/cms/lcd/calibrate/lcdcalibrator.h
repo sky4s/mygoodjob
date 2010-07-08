@@ -246,6 +246,7 @@ namespace cms {
 		KeepMaxLuminance keepMaxLuminance;
 		int keepMaxLumiOver;
 		double keepMaxLumiGamma;
+		double bTargetIntensity;
 		//==============================================================
 		 bptr < ComponentFetcher > fetcher;
 		RGB_vector_ptr dglut;
@@ -304,6 +305,7 @@ namespace cms {
 		 bptr < cms::colorformat::DGLutFile >
 		    storeDGLutFile(const std::string & filename,
 				   RGB_vector_ptr dglut);
+		void setBTargetIntensity(double bTargetIntensity);
 	      private:
 		 RGB_vector_ptr getDGLutOpResult(RGB_vector_ptr dglut);
 	    };

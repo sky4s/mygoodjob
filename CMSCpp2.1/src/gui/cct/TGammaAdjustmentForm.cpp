@@ -135,7 +135,9 @@ void TGammaAdjustmentForm::gammaAdjust(bool rgbGammaAdjust)
     calibrator->setAvoidFRCNoise(this->CheckBox_AvoidNoise->Checked);
     calibrator->setKeepMaxLuminance(this->CheckBox_KeepMax->Checked);
 
-    this->TOutputFileFrame1->createDir();
+    if (this->TOutputFileFrame1->createDir() == false) {
+	return;
+    }
     RGB_vector_ptr dglut =
 	calibrator->getGammaDGLut(getMeasureCondition());
     if (dglut == null) {
