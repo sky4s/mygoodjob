@@ -24,13 +24,17 @@ namespace cms {
 	    //==================================================================
 	    // AdvancedDGLutGenerator
 	    //==================================================================
+	    void AdvancedDGLutGenerator::
+		setTargetBIntensity(double intensity) {
+		this->targetBIntensity = targetBIntensity;
+	    };
 	     AdvancedDGLutGenerator::
 		AdvancedDGLutGenerator(Component_vector_ptr
 				       componentVector,
 				       bptr < IntensityAnalyzerIF >
 				       analyzer):DimDGLutGenerator
 		(componentVector, analyzer),
-		useMaxTargetBIntensity(false) {
+		useMaxTargetBIntensity(false), targetBIntensity(-1) {
 	    };
 
 	    RGB_vector_ptr AdvancedDGLutGenerator::
@@ -81,7 +85,7 @@ namespace cms {
 		xyY_ptr rxyY = analyzer->getPrimaryColor(Channel::R);
 		xyY_ptr gxyY = analyzer->getPrimaryColor(Channel::G);
 		xyY_ptr bxyY = analyzer->getPrimaryColor(Channel::B);
-		double targetBIntensity = -1;
+		//double targetBIntensity = -1;
 
 		for (int x = size - 1; x != -1; x--) {
 		    XYZ_ptr targetXYZ = (*targetXYZVector)[x];

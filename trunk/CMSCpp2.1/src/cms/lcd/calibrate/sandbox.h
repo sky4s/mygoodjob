@@ -25,7 +25,9 @@ namespace cms {
 		bool isAvoidHook(XYZ_ptr targetXYZ, double offsetK);
 		XYZ_ptr getXYZ(XYZ_ptr XYZ, double offsetK);
 		bool isDuplicateBlue100(XYZ_ptr targetXYZ);
+		double targetBIntensity;
 	      public:
+		void setTargetBIntensity(double intensity);
 		 AdvancedDGLutGenerator(Component_vector_ptr
 					componentVector,
 					bptr <

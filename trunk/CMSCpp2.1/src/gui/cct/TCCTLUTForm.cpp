@@ -15,6 +15,7 @@
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
 #pragma link "TOutputFileFrame"
+#pragma link "TOutputFileFrame"
 #pragma resource "*.dfm"
 TCCTLUTForm *CCTLUTForm;
 //---------------------------------------------------------------------------
@@ -64,8 +65,8 @@ void __fastcall TCCTLUTForm::Button_MeaRunClick(TObject * Sender)
 
     run = true;
     try {			//為了對應__finally使用的try
-	    String_ptr astr = this->TOutputFileFrame1->getOutputFilename();
-	    string filename = astr->c_str();
+	String_ptr astr = this->TOutputFileFrame1->getOutputFilename();
+	string filename = astr->c_str();
 
 	MainForm->getAnalyzer();
 	if (MainForm->isCA210Analyzer()) {
@@ -93,7 +94,7 @@ void __fastcall TCCTLUTForm::Button_MeaRunClick(TObject * Sender)
 	    int under = this->Edit_DefinedDimUnder->Text.ToInt();
 	    bool averageDim = this->CheckBox_AverageDimDG->Checked;
 	    double gamma = this->Edit_DimGamma->Text.ToDouble();
-	    calibrator.setDefinedDim(under,  gamma,averageDim);
+	    calibrator.setDefinedDim(under, gamma, averageDim);
 	} else if (this->RadioButton_None->Checked) {
 	    calibrator.setNonDimCorrect();
 	}
@@ -440,6 +441,18 @@ void __fastcall TCCTLUTForm::Button_RunClick(TObject * Sender)
 {
     Button_ResetClick(Sender);
     Button_MeaRunClick(Sender);
+}
+
+//---------------------------------------------------------------------------
+
+
+//---------------------------------------------------------------------------
+
+void __fastcall TCCTLUTForm::CheckBox_BTargetIntensityClick(TObject *
+							    Sender)
+{
+    bool check = this->CheckBox_BTargetIntensity->Checked;
+    this->Edit_BTargetIntensity->Enabled = check;
 }
 
 //---------------------------------------------------------------------------
