@@ -4,14 +4,14 @@
   <MACROS>
     <VERSION value="BCB.06.00"/>
     <PROJECT value="build\Project1.exe"/>
-    <OBJFILES value="build\Project1.obj build\Form.obj"/>
+    <OBJFILES value="build\Project1.obj build\Unit4.obj"/>
     <RESFILES value="Project1.res"/>
     <IDLFILES value=""/>
     <IDLGENFILES value=""/>
     <DEFFILE value=""/>
-    <RESDEPEN value="$(RESFILES) src\gui\test\Form.dfm"/>
+    <RESDEPEN value="$(RESFILES) src\gui\test\Unit4.dfm"/>
     <LIBFILES value=""/>
-    <LIBRARIES value=""/>
+    <LIBRARIES value="vcl.lib rtl.lib"/>
     <SPARELIBS value="rtl.lib vcl.lib"/>
     <PACKAGES value="rtl.bpi vcl.bpi dbrtl.bpi adortl.bpi vcldb.bpi vclx.bpi bdertl.bpi 
       ibxpress.bpi dsnap.bpi cds.bpi bdecds.bpi qrpt.bpi visualclx.bpi 
@@ -27,18 +27,17 @@
     <RELEASELIBPATH value="$(BCB)\lib\release"/>
     <LINKER value="ilink32"/>
     <USERDEFINES value="_DEBUG"/>
-    <SYSDEFINES value="_RTLDLL;NO_STRICT;USEPACKAGES"/>
+    <SYSDEFINES value="NO_STRICT"/>
     <MAINSOURCE value="Project1.cpp"/>
-    <INCLUDEPATH value="&quot;D:\Program Files\Borland\CBuilder6\Projects&quot;;D:\WorkSpace\CMSCpp2.1\src\gui\test;$(BCB)\include;$(BCB)\include\vcl"/>
-    <LIBPATH value="&quot;D:\Program Files\Borland\CBuilder6\Projects&quot;;D:\WorkSpace\CMSCpp2.1\src\gui\test;$(BCB)\Projects\Lib;$(BCB)\lib\obj;$(BCB)\lib"/>
+    <INCLUDEPATH value="src\gui\test;&quot;D:\Program Files\Borland\CBuilder6\Projects&quot;;$(BCB)\include;$(BCB)\include\vcl"/>
+    <LIBPATH value="src\gui\test;&quot;D:\Program Files\Borland\CBuilder6\Projects&quot;;$(BCB)\Projects\Lib;$(BCB)\lib\obj;$(BCB)\lib"/>
     <WARNINGS value="-w-par"/>
     <OTHERFILES value=""/>
   </MACROS>
   <OPTIONS>
-    <IDLCFLAGS value="-I&quot;D:\Program Files\Borland\CBuilder6\Projects&quot; 
-      -ID:\WorkSpace\CMSCpp2.1\src\gui\test -I$(BCB)\include 
-      -I$(BCB)\include\vcl -src_suffix cpp -D_DEBUG -boa"/>
-    <CFLAG1 value="-Od -H=$(BCB)\lib\vcl60.csm -Hc -Vx -Ve -X- -r- -a8 -b- -k -y -v -vi- -c 
+    <IDLCFLAGS value="-Isrc\gui\test -I&quot;D:\Program Files\Borland\CBuilder6\Projects&quot; 
+      -I$(BCB)\include -I$(BCB)\include\vcl -src_suffix cpp -D_DEBUG -boa"/>
+    <CFLAG1 value="-Od -H=$(BCB)\lib\vcl60.csm -Hc -Vx -Ve -X- -r- -a1 -b- -k -y -v -vi- -c 
       -tW -tWM"/>
     <PFLAGS value="-N2build -N0build -$YD -$W -$O- -$A8 -v -JPHNE -M"/>
     <RFLAGS value=""/>
@@ -47,15 +46,15 @@
     <OTHERFILES value=""/>
   </OPTIONS>
   <LINKER>
-    <ALLOBJ value="c0w32.obj $(PACKAGES) Memmgr.Lib sysinit.obj $(OBJFILES)"/>
+    <ALLOBJ value="c0w32.obj sysinit.obj $(OBJFILES)"/>
     <ALLRES value="$(RESFILES)"/>
-    <ALLLIB value="$(LIBFILES) $(LIBRARIES) import32.lib cp32mti.lib"/>
+    <ALLLIB value="$(LIBFILES) $(LIBRARIES) import32.lib cp32mt.lib"/>
     <OTHERFILES value=""/>
   </LINKER>
   <FILELIST>
       <FILE FILENAME="Project1.res" FORMNAME="" UNITNAME="Project1.res" CONTAINERID="ResTool" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Project1.cpp" FORMNAME="" UNITNAME="Project1" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="src\gui\test\Form.cpp" FORMNAME="Form1" UNITNAME="Form" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="src\gui\test\Unit4.cpp" FORMNAME="Form4" UNITNAME="Unit4" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
   </FILELIST>
   <BUILDTOOLS>
   </BUILDTOOLS>
@@ -96,12 +95,16 @@ d:\program files\borland\cbuilder6\Bin\dcltqr60.bpl=TeeChart for QuickReport Com
 d:\program files\borland\cbuilder6\Bin\DBWEBXPRT.BPL=Borland Web Wizard Package
 
 [HistoryLists\hlIncludePath]
-Count=1
-Item0=D:\Program Files\Borland\CBuilder6\Projects;D:\WorkSpace\CMSCpp2.1\src\gui\test;$(BCB)\include;$(BCB)\include\vcl
+Count=3
+Item0=src\gui\test;D:\Program Files\Borland\CBuilder6\Projects;$(BCB)\include;$(BCB)\include\vcl
+Item1=src\gui\test;D:\Program Files\Borland\CBuilder6\Projects;D:\WorkSpace\CMSCpp2.1\src\gui\test;$(BCB)\include;$(BCB)\include\vcl
+Item2=D:\Program Files\Borland\CBuilder6\Projects;D:\WorkSpace\CMSCpp2.1\src\gui\test;$(BCB)\include;$(BCB)\include\vcl
 
 [HistoryLists\hlLibraryPath]
-Count=1
-Item0=D:\Program Files\Borland\CBuilder6\Projects;D:\WorkSpace\CMSCpp2.1\src\gui\test;$(BCB)\Projects\Lib;$(BCB)\lib\obj;$(BCB)\lib
+Count=3
+Item0=src\gui\test;D:\Program Files\Borland\CBuilder6\Projects;$(BCB)\Projects\Lib;$(BCB)\lib\obj;$(BCB)\lib
+Item1=src\gui\test;D:\Program Files\Borland\CBuilder6\Projects;D:\WorkSpace\CMSCpp2.1\src\gui\test;$(BCB)\Projects\Lib;$(BCB)\lib\obj;$(BCB)\lib
+Item2=D:\Program Files\Borland\CBuilder6\Projects;D:\WorkSpace\CMSCpp2.1\src\gui\test;$(BCB)\Projects\Lib;$(BCB)\lib\obj;$(BCB)\lib
 
 [HistoryLists\hlDebugSourcePath]
 Count=1
@@ -116,8 +119,9 @@ Count=1
 Item0=build
 
 [HistoryLists\hlFinalOutputDir]
-Count=1
-Item0=build
+Count=2
+Item0=build\
+Item1=build
 
 [HistoryLists\hIBPIOutputDir]
 Count=1

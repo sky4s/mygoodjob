@@ -5,7 +5,6 @@
 #include <comobj.hpp>
 
 //---------------------------------------------------------------------------
-USEFORM("src\Unit3.cpp", Form3);
 USEFORM("src\gui\TOutputFileFrame.cpp", OutputFileFrame); /* TFrame: File Type */
 USEFORM("src\gui\3d\T3DMeasureWindow.cpp", ThreeDMeasureWindow);
 USEFORM("src\gui\3d\T3DMeasurementForm.cpp", ThreeDMeasurementForm);

@@ -5,7 +5,6 @@
 #include <comobj.hpp>
 
 //---------------------------------------------------------------------------
-USEFORM("src\Unit1.cpp", Form1);
 USEFORM("src\gui\TMeasureWindow.cpp", MeasureWindow);
 USEFORM("src\gui\TAnalyzerFrame.cpp", AnalyzerFrame); /* TFrame: File Type */
 USEFORM("src\gui\TI2CTestForm.cpp", I2CTestForm);
@@ -19,14 +18,14 @@ USEFORM("src\gui\cct\TTargetWhiteForm2.cpp", TargetWhiteForm2);
 USEFORM("src\gui\cct\TAboutBox.cpp", AboutBox);
 USEFORM("src\gui\cct\TCCTLUTForm.cpp", CCTLUTForm);
 USEFORM("src\gui\cct\TGammaAdjustmentForm.cpp", GammaAdjustmentForm);
+USEFORM("src\gui\test\Unit4.cpp", Form4);
 //---------------------------------------------------------------------------
 WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 {
     try {
 	Application->Initialize();
 	Application->Title = "CCTv3 Adjustment";
-	Application->CreateForm(__classid(TForm1), &Form1);
-                 Application->CreateForm(__classid(TMainForm), &MainForm);
+	Application->CreateForm(__classid(TMainForm), &MainForm);
                  Application->CreateForm(__classid(TMeasureWindow), &MeasureWindow);
                  Application->Run();
     }
