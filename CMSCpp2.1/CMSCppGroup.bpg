@@ -10,7 +10,7 @@ DCC = $(ROOT)\bin\dcc32.exe $**
 BRCC = $(ROOT)\bin\brcc32.exe $**
 #------------------------------------------------------------------------------
 PROJECTS = CMSCpp2.exe ODMeasurement.exe CMSCpp2_1_GUI.exe CCTv3Adjustment.exe \
-  PatternMeasure.exe
+  PatternMeasure.exe Project1.exe
 #------------------------------------------------------------------------------
 default: $(PROJECTS)
 #------------------------------------------------------------------------------
@@ -36,6 +36,10 @@ CCTv3Adjustment.exe: CCTv3Adjustment.bpr
   $(ROOT)\bin\make -$(MAKEFLAGS) -f$*.mak
 
 PatternMeasure.exe: PatternMeasure.bpr
+  $(ROOT)\bin\bpr2mak $**
+  $(ROOT)\bin\make -$(MAKEFLAGS) -f$*.mak
+
+Project1.exe: Project1.bpr
   $(ROOT)\bin\bpr2mak $**
   $(ROOT)\bin\make -$(MAKEFLAGS) -f$*.mak
 
