@@ -1,8 +1,12 @@
 //---------------------------------------------------------------------------
 #include <includeall.h>
 #pragma hdrstop
+//#include "utilcls.h"
+//#include "system.hpp"
+//#include "ComObj.hpp"
 
-#include <conio.h>
+
+/*#include <conio.h>
 
 
 #include <cmath>
@@ -29,15 +33,15 @@
 
 #include <math.hpp>
 #include <boost/numeric/conversion/cast.hpp>
-#include <boost/lexical_cast.hpp>
-#include "gui/3d/T3DMeasurementForm.h"
+#include <boost/lexical_cast.hpp>*/
+//#include "gui/3d/T3DMeasurementForm.h"
 //#include <boost/tokenizer.hpp>
 
 
 using namespace std;
 
 //---------------------------------------------------------------------------
-void excel()
+/*void excel()
 {
     using namespace cms::colorformat;
     using namespace cms::util;
@@ -503,10 +507,7 @@ void ddLutFileReadTry()
 {
     using namespace cms::colorformat;
     DGLutFile file("debug.xls", ReadOnly);
-    /*RGB_vector_ptr gammaTable = file.getGammaTable();
-       foreach(const RGB_ptr rgb, *gammaTable) {
-       cout << *rgb->toString() << endl;
-       } */
+
     Component_vector_ptr cv = file.getComponentVector();
     foreach(Component_ptr c, *cv) {
 	cout << *c->rgb->toString() << endl;
@@ -639,14 +640,6 @@ void hookTester()
     }
     Component_vector_ptr componentVector = dgcode->getComponentVector();
 
-    /*bptr < MaxMatrixIntensityAnayzer >
-       analyzer(new MaxMatrixIntensityAnayzer());
-
-       analyzer->setupComponent(Channel::R, rxyY->toXYZ());
-       analyzer->setupComponent(Channel::G, gxyY->toXYZ());
-       analyzer->setupComponent(Channel::B, bxyY->toXYZ());
-       analyzer->setupComponent(Channel::W, targetXYZ);
-       analyzer->enter(); */
 
     DimDGLutGenerator generator(componentVector, analyzer);
 
@@ -712,6 +705,22 @@ void propTester()
     test.Count = i;		//-- call the set method --
     j = test.Count;		//-- call the get method --
 
+}*/
+
+void excelTester()
+{
+    //OleInitialize(NULL);
+    CoInitialize(NULL);
+    Variant EXCEL, WORKbooks, WORKbook, WORKsheets, WORKsheet, CELL;
+    EXCEL = CreateOleObject("Excel.Application");
+    EXCEL.OlePropertySet("Visible", true);
+    WORKbooks = EXCEL.OlePropertyGet("Workbooks");
+    WORKbook = WORKbooks.OleFunction("Add");
+    WORKsheets = WORKbook.OlePropertyGet("Worksheets");
+    WORKsheet = WORKsheets.OlePropertyGet("Item", 1);
+    CELL = WORKsheet.OlePropertyGet("Cells", 1, 1);
+    CELL.OlePropertySet("Value", "MY DATA");
+    OleUninitialize();
 }
 
 #pragma argsused
@@ -779,7 +788,8 @@ int main(int argc, char *argv[])
     //hookTester();
     //odTester();
     //txtTester();
-    propTester();
-    getch();
+    //propTester();
+    excelTester();
+//    getch();
 }
 
