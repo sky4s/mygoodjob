@@ -4,18 +4,18 @@
   <MACROS>
     <VERSION value="BCB.06.00"/>
     <PROJECT value="build\ODMeasurement.exe"/>
-    <OBJFILES value="build\ODMeasurement.obj build\Unit3.obj build\TOutputFileFrame.obj 
-      build\util.obj build\colorspace.obj build\depend.obj build\independ.obj 
-      build\rgb.obj build\ciexyz.obj build\dgcodefile.obj build\excelfile.obj 
-      build\lang.obj build\core.obj build\doubleArray.obj build\meter.obj 
+    <OBJFILES value="build\ODMeasurement.obj build\TOutputFileFrame.obj build\util.obj 
+      build\colorspace.obj build\depend.obj build\independ.obj build\rgb.obj 
+      build\ciexyz.obj build\dgcodefile.obj build\excelfile.obj build\lang.obj 
+      build\core.obj build\doubleArray.obj build\meter.obj 
       build\CA200SRVRLib_OCX.obj build\CA200SRVRLib_TLB.obj build\CA210API.obj 
       build\cmf.obj build\T3DMeasureWindow.obj build\T3DMeasurementForm.obj"/>
     <RESFILES value="ODMeasurement.res"/>
     <IDLFILES value=""/>
     <IDLGENFILES value=""/>
     <DEFFILE value=""/>
-    <RESDEPEN value="$(RESFILES) src\Unit3.dfm src\gui\TOutputFileFrame.dfm 
-      src\gui\3d\T3DMeasureWindow.dfm src\gui\3d\T3DMeasurementForm.dfm"/>
+    <RESDEPEN value="$(RESFILES) src\gui\TOutputFileFrame.dfm src\gui\3d\T3DMeasureWindow.dfm 
+      src\gui\3d\T3DMeasurementForm.dfm"/>
     <LIBFILES value=""/>
     <LIBRARIES value="adortl.lib dbrtl.lib vclx.lib vcl.lib rtl.lib"/>
     <SPARELIBS value="rtl.lib vcl.lib vclx.lib dbrtl.lib adortl.lib"/>
@@ -26,7 +26,7 @@
       inetdbbde.bpi inetdbxpress.bpi inetdb.bpi nmfast.bpi webdsnap.bpi 
       bcbie.bpi websnap.bpi soaprtl.bpi dclocx.bpi dbexpress.bpi dbxcds.bpi 
       indy.bpi bcb2kaxserver.bpi bcbindent.bpi"/>
-    <PATHCPP value=".;src;src\gui;src\cms\util;src\cms\colorspace;src\cms\colorspace;src\cms\colorspace;src\cms\colorspace;src\cms\colorspace;src\cms\colorformat;src\cms\colorformat;src\java;src\cms;src\math;src\cms\measure;lib\CA200SRVRLib;lib\CA200SRVRLib;src\ca210api;src\cms\colorformat;src\gui\3d;src\gui\3d"/>
+    <PATHCPP value=".;src\gui;src\cms\util;src\cms\colorspace;src\cms\colorspace;src\cms\colorspace;src\cms\colorspace;src\cms\colorspace;src\cms\colorformat;src\cms\colorformat;src\java;src\cms;src\math;src\cms\measure;lib\CA200SRVRLib;lib\CA200SRVRLib;src\ca210api;src\cms\colorformat;src\gui\3d;src\gui\3d"/>
     <PATHPAS value=".;"/>
     <PATHRC value=".;"/>
     <PATHASM value=".;"/>
@@ -64,7 +64,6 @@
   <FILELIST>
       <FILE FILENAME="ODMeasurement.res" FORMNAME="" UNITNAME="ODMeasurement.res" CONTAINERID="ResTool" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="ODMeasurement.cpp" FORMNAME="" UNITNAME="ODMeasurement" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="src\Unit3.cpp" FORMNAME="Form3" UNITNAME="Unit3" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="src\gui\TOutputFileFrame.cpp" FORMNAME="OutputFileFrame" UNITNAME="TOutputFileFrame" CONTAINERID="CCompiler" DESIGNCLASS="TFrame" LOCALCOMMAND=""/>
       <FILE FILENAME="src\cms\util\util.cpp" FORMNAME="" UNITNAME="util" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="src\cms\colorspace\colorspace.cpp" FORMNAME="" UNITNAME="colorspace.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>

@@ -4,7 +4,7 @@
   <MACROS>
     <VERSION value="BCB.06.00"/>
     <PROJECT value="build\CMSCpp2_1_GUI.exe"/>
-    <OBJFILES value="build\CMSCpp2_1_GUI.obj build\Unit1.obj build\HWINTERFACELib_OCX.obj 
+    <OBJFILES value="build\CMSCpp2_1_GUI.obj build\HWINTERFACELib_OCX.obj 
       build\HWINTERFACELib_TLB.obj build\USBHIDIOC.obj build\lang.obj 
       build\CA200SRVRLib_OCX.obj build\CA200SRVRLib_TLB.obj build\CA210API.obj 
       build\util.obj build\rgbArray.obj build\ciexyz.obj build\colorspace.obj 
@@ -23,18 +23,18 @@
       build\gamma.obj build\dimdg.obj build\sandbox.obj build\cmf.obj 
       build\TGammaMeasurementForm.obj build\TMainForm.obj 
       build\TTargetWhiteForm2.obj build\TAboutBox.obj build\TCCTLUTForm.obj 
-      build\TGammaAdjustmentForm.obj"/>
+      build\TGammaAdjustmentForm.obj build\Unit4.obj"/>
     <RESFILES value="CMSCpp2_1_GUI.res"/>
     <IDLFILES value=""/>
     <IDLGENFILES value=""/>
     <DEFFILE value=""/>
-    <RESDEPEN value="$(RESFILES) src\Unit1.dfm src\gui\TMeasureWindow.dfm 
-      src\gui\TAnalyzerFrame.dfm src\gui\TI2CTestForm.dfm 
-      src\gui\TMatrixCalibration.dfm src\gui\TCA210SettingFrame.dfm 
-      src\gui\TOptionsFrame.dfm src\gui\TOutputFileFrame.dfm 
-      src\gui\cct\TGammaMeasurementForm.dfm src\gui\cct\TMainForm.dfm 
-      src\gui\cct\TTargetWhiteForm2.dfm src\gui\cct\TAboutBox.dfm 
-      src\gui\cct\TCCTLUTForm.dfm src\gui\cct\TGammaAdjustmentForm.dfm"/>
+    <RESDEPEN value="$(RESFILES) src\gui\TMeasureWindow.dfm src\gui\TAnalyzerFrame.dfm 
+      src\gui\TI2CTestForm.dfm src\gui\TMatrixCalibration.dfm 
+      src\gui\TCA210SettingFrame.dfm src\gui\TOptionsFrame.dfm 
+      src\gui\TOutputFileFrame.dfm src\gui\cct\TGammaMeasurementForm.dfm 
+      src\gui\cct\TMainForm.dfm src\gui\cct\TTargetWhiteForm2.dfm 
+      src\gui\cct\TAboutBox.dfm src\gui\cct\TCCTLUTForm.dfm 
+      src\gui\cct\TGammaAdjustmentForm.dfm src\gui\test\Unit4.dfm"/>
     <LIBFILES value="lib\hid.lib"/>
     <LIBRARIES value="adortl.lib dbrtl.lib vclx.lib vcl.lib rtl.lib"/>
     <SPARELIBS value="rtl.lib vcl.lib vclx.lib dbrtl.lib adortl.lib"/>
@@ -45,7 +45,7 @@
       inetdbbde.bpi inetdbxpress.bpi inetdb.bpi nmfast.bpi webdsnap.bpi 
       bcbie.bpi websnap.bpi soaprtl.bpi dclocx.bpi dbexpress.bpi dbxcds.bpi 
       indy.bpi bcb2kaxserver.bpi bcbindent.bpi"/>
-    <PATHCPP value=".;src;lib\LPT_lib;lib\LPT_lib;lib\USB_i2c_lib;src\java;lib\CA200SRVRLib;lib\CA200SRVRLib;src\ca210api;src\cms\util;src\cms\util;src\cms\colorspace;src\cms\colorspace;src\cms\colorspace;src\cms\colorspace;src\cms\colorspace;src\cms;src\cms;src\cms\colorformat;src\cms\colorformat;src\cms\colorformat;src\cms\colorformat;src\math;src\math;src\math;src\math;src\math;src\cms\lcd\calibrate;src\cms\lcd\calibrate;src\cms\lcd\calibrate;src\cms\lcd\calibrate;src\cms\lcd\calibrate;src\cms\lcd\calibrate;src\cms\lcd\calibrate;src\cms\lcd\calibrate;src\cms\measure;src\cms\measure;src\cms\measure;src\cms\measure;src;src\gui;src\gui;src\gui;src\gui;src\gui;src\gui;src\gui;src\i2c;src\i2c;src\i2c;src\i2c\core;src\math;src\cms\lcd\calibrate;src\cms\lcd\calibrate;src\cms\colorformat;src\gui\cct;src\gui\cct;src\gui\cct;src\gui\cct;src\gui\cct;src\gui\cct"/>
+    <PATHCPP value=".;lib\LPT_lib;lib\LPT_lib;lib\USB_i2c_lib;src\java;lib\CA200SRVRLib;lib\CA200SRVRLib;src\ca210api;src\cms\util;src\cms\util;src\cms\colorspace;src\cms\colorspace;src\cms\colorspace;src\cms\colorspace;src\cms\colorspace;src\cms;src\cms;src\cms\colorformat;src\cms\colorformat;src\cms\colorformat;src\cms\colorformat;src\math;src\math;src\math;src\math;src\math;src\cms\lcd\calibrate;src\cms\lcd\calibrate;src\cms\lcd\calibrate;src\cms\lcd\calibrate;src\cms\lcd\calibrate;src\cms\lcd\calibrate;src\cms\lcd\calibrate;src\cms\lcd\calibrate;src\cms\measure;src\cms\measure;src\cms\measure;src\cms\measure;src;src\gui;src\gui;src\gui;src\gui;src\gui;src\gui;src\gui;src\i2c;src\i2c;src\i2c;src\i2c\core;src\math;src\cms\lcd\calibrate;src\cms\lcd\calibrate;src\cms\colorformat;src\gui\cct;src\gui\cct;src\gui\cct;src\gui\cct;src\gui\cct;src\gui\cct;src\gui\test"/>
     <PATHPAS value=".;"/>
     <PATHRC value=".;"/>
     <PATHASM value=".;"/>
@@ -55,18 +55,19 @@
     <USERDEFINES value="_DEBUG"/>
     <SYSDEFINES value="NO_STRICT"/>
     <MAINSOURCE value="CMSCpp2_1_GUI.cpp"/>
-    <INCLUDEPATH value="src\gui\cct;&quot;C:\Program Files\Borland\CBuilder6\Projects&quot;;src\i2c\core;src\i2c;&quot;D:\Program Files\Borland\CBuilder6\Projects&quot;;src\math;src\gui;src\cms;src\cms\util;src\cms\measure;src\cms\lcd\calibrate;src\cms\colorspace;src\cms\colorformat;src\ca210api;lib\CA200SRVRLib;src\java;src\cms\i2c;src\cms\i2c\core;lib\USB_i2c_lib;lib\LPT_lib;src;$(BCB)\include;$(BCB)\include\vcl;lib"/>
-    <LIBPATH value="src\gui\cct;&quot;C:\Program Files\Borland\CBuilder6\Projects&quot;;src\i2c\core;src\i2c;&quot;D:\Program Files\Borland\CBuilder6\Projects&quot;;src\math;src\gui;src\cms;src\cms\util;src\cms\measure;src\cms\lcd\calibrate;src\cms\colorspace;src\cms\colorformat;src\ca210api;lib\CA200SRVRLib;src\java;src\cms\i2c;src\cms\i2c\core;lib\USB_i2c_lib;lib\LPT_lib;src;$(BCB)\Projects\Lib;$(BCB)\lib\obj;$(BCB)\lib;lib"/>
+    <INCLUDEPATH value="src\gui\test;src\gui\cct;&quot;C:\Program Files\Borland\CBuilder6\Projects&quot;;src\i2c\core;src\i2c;&quot;D:\Program Files\Borland\CBuilder6\Projects&quot;;src\math;src\gui;src\cms;src\cms\util;src\cms\measure;src\cms\lcd\calibrate;src\cms\colorspace;src\cms\colorformat;src\ca210api;lib\CA200SRVRLib;src\java;src\cms\i2c;src\cms\i2c\core;lib\USB_i2c_lib;lib\LPT_lib;src;$(BCB)\include;$(BCB)\include\vcl;lib"/>
+    <LIBPATH value="src\gui\test;src\gui\cct;&quot;C:\Program Files\Borland\CBuilder6\Projects&quot;;src\i2c\core;src\i2c;&quot;D:\Program Files\Borland\CBuilder6\Projects&quot;;src\math;src\gui;src\cms;src\cms\util;src\cms\measure;src\cms\lcd\calibrate;src\cms\colorspace;src\cms\colorformat;src\ca210api;lib\CA200SRVRLib;src\java;src\cms\i2c;src\cms\i2c\core;lib\USB_i2c_lib;lib\LPT_lib;src;$(BCB)\Projects\Lib;$(BCB)\lib\obj;$(BCB)\lib;lib"/>
     <WARNINGS value="-w-par"/>
     <OTHERFILES value=""/>
   </MACROS>
   <OPTIONS>
-    <IDLCFLAGS value="-Isrc\gui\cct -I&quot;C:\Program Files\Borland\CBuilder6\Projects&quot; 
-      -Isrc\i2c\core -Isrc\i2c -I&quot;D:\Program Files\Borland\CBuilder6\Projects&quot; 
-      -Isrc\math -Isrc\gui -Isrc\cms -Isrc\cms\util -Isrc\cms\measure 
-      -Isrc\cms\lcd\calibrate -Isrc\cms\colorspace -Isrc\cms\colorformat 
-      -Isrc\ca210api -Ilib\CA200SRVRLib -Isrc\java -Isrc\cms\i2c 
-      -Isrc\cms\i2c\core -Ilib\USB_i2c_lib -Ilib\LPT_lib -Isrc -I$(BCB)\include 
+    <IDLCFLAGS value="-Isrc\gui\test -Isrc\gui\cct 
+      -I&quot;C:\Program Files\Borland\CBuilder6\Projects&quot; -Isrc\i2c\core -Isrc\i2c 
+      -I&quot;D:\Program Files\Borland\CBuilder6\Projects&quot; -Isrc\math -Isrc\gui 
+      -Isrc\cms -Isrc\cms\util -Isrc\cms\measure -Isrc\cms\lcd\calibrate 
+      -Isrc\cms\colorspace -Isrc\cms\colorformat -Isrc\ca210api 
+      -Ilib\CA200SRVRLib -Isrc\java -Isrc\cms\i2c -Isrc\cms\i2c\core 
+      -Ilib\USB_i2c_lib -Ilib\LPT_lib -Isrc -I$(BCB)\include 
       -I$(BCB)\include\vcl -Ilib -src_suffix cpp -D_DEBUG 1 -boa"/>
     <CFLAG1 value="-Od -H=$(BCB)\lib\vcl60.csm -Hc -Q -Vx -Ve -X- -r- -a1 -6 -b- -k -y -v 
       -vi- -c -tW -tWM"/>
@@ -85,7 +86,6 @@
   <FILELIST>
       <FILE FILENAME="CMSCpp2_1_GUI.res" FORMNAME="" UNITNAME="CMSCpp2_1_GUI.res" CONTAINERID="ResTool" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="CMSCpp2_1_GUI.cpp" FORMNAME="" UNITNAME="CMSCpp2_1_GUI" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="src\Unit1.cpp" FORMNAME="Form1" UNITNAME="Unit1" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="lib\LPT_lib\HWINTERFACELib_OCX.cpp" FORMNAME="" UNITNAME="HWINTERFACELib_OCX.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="lib\LPT_lib\HWINTERFACELib_TLB.cpp" FORMNAME="" UNITNAME="HWINTERFACELib_TLB.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="lib\USB_i2c_lib\USBHIDIOC.CPP" FORMNAME="" UNITNAME="USBHIDIOC" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
@@ -149,6 +149,7 @@
       <FILE FILENAME="src\gui\cct\TAboutBox.cpp" FORMNAME="AboutBox" UNITNAME="TAboutBox" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="src\gui\cct\TCCTLUTForm.cpp" FORMNAME="CCTLUTForm" UNITNAME="TCCTLUTForm" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="src\gui\cct\TGammaAdjustmentForm.cpp" FORMNAME="GammaAdjustmentForm" UNITNAME="TGammaAdjustmentForm" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="src\gui\test\Unit4.cpp" FORMNAME="Form4" UNITNAME="Unit4" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
   </FILELIST>
   <BUILDTOOLS>
   </BUILDTOOLS>
@@ -160,7 +161,7 @@ AutoIncBuild=1
 MajorVer=3
 MinorVer=2
 Release=0
-Build=218
+Build=219
 Debug=1
 PreRelease=0
 Special=0
@@ -172,7 +173,7 @@ CodePage=950
 [Version Info Keys]
 CompanyName=AUO
 FileDescription=CCT Adjustment v3
-FileVersion=3.2.0.218
+FileVersion=3.2.0.219
 InternalName=
 LegalCopyright=Algorithm by StocktonTsai &amp; skyforce, Implement by skyforce
 LegalTrademarks=
@@ -189,30 +190,32 @@ d:\program files\borland\cbuilder6\Bin\dcltqr60.bpl=TeeChart for QuickReport Com
 d:\program files\borland\cbuilder6\Bin\DBWEBXPRT.BPL=Borland Web Wizard Package
 
 [HistoryLists\hlIncludePath]
-Count=10
-Item0=src\gui\cct;C:\Program Files\Borland\CBuilder6\Projects;src\i2c\core;src\i2c;D:\Program Files\Borland\CBuilder6\Projects;src\math;src\gui;src\cms;src\cms\util;src\cms\measure;src\cms\lcd\calibrate;src\cms\colorspace;src\cms\colorformat;src\ca210api;lib\CA200SRVRLib;src\java;src\cms\i2c;src\cms\i2c\core;lib\USB_i2c_lib;lib\LPT_lib;src;$(BCB)\include;$(BCB)\include\vcl;lib
-Item1=C:\Program Files\Borland\CBuilder6\Projects;src\i2c\core;src\i2c;D:\Program Files\Borland\CBuilder6\Projects;src\math;src\gui;src\cms;src\cms\util;src\cms\measure;src\cms\lcd\calibrate;src\cms\colorspace;src\cms\colorformat;src\ca210api;lib\CA200SRVRLib;src\java;src\cms\i2c;src\cms\i2c\core;lib\USB_i2c_lib;lib\LPT_lib;src;$(BCB)\include;$(BCB)\include\vcl;lib
-Item2=src\i2c\core;src\i2c;D:\Program Files\Borland\CBuilder6\Projects;src\math;src\gui;src\cms;src\cms\util;src\cms\measure;src\cms\lcd\calibrate;src\cms\colorspace;src\cms\colorformat;src\ca210api;lib\CA200SRVRLib;src\java;src\cms\i2c;src\cms\i2c\core;lib\USB_i2c_lib;lib\LPT_lib;src;$(BCB)\include;$(BCB)\include\vcl;lib
-Item3=D:\Program Files\Borland\CBuilder6\Projects;src\math;src\gui;src\cms;src\cms\util;src\cms\measure;src\cms\lcd\calibrate;src\cms\colorspace;src\cms\colorformat;src\ca210api;lib\CA200SRVRLib;src\java;src\cms\i2c;src\cms\i2c\core;lib\USB_i2c_lib;lib\LPT_lib;src;$(BCB)\include;$(BCB)\include\vcl;lib
-Item4=src\math;src\gui;src\cms;src\cms\util;src\cms\measure;src\cms\lcd\calibrate;src\cms\colorspace;src\cms\colorformat;src\ca210api;lib\CA200SRVRLib;src\java;src\cms\i2c;src\cms\i2c\core;lib\USB_i2c_lib;lib\LPT_lib;src;$(BCB)\include;$(BCB)\include\vcl;lib
-Item5=src\math;src\gui;src\cms;src\cms\util;src\cms\measure;src\cms\lcd\calibrate;src\cms\colorspace;src\cms\colorformat;src\ca210api;lib\CA200SRVRLib;src\java;src\cms\i2c;src\cms\i2c\core;lib\USB_i2c_lib;lib\LPT_lib;src;F:\Program Files\Borland\CBuilder6\Projects;Z:\workspace\CMSCpp2.1;$(BCB)\include;$(BCB)\include\vcl;lib
-Item6=src\java;src\cms\i2c;src\cms\i2c\core;lib\USB_i2c_lib;lib\LPT_lib;src;F:\Program Files\Borland\CBuilder6\Projects;Z:\workspace\CMSCpp2.1;$(BCB)\include;$(BCB)\include\vcl;lib
-Item7=src\cms\i2c\core;lib\USB_i2c_lib;lib\LPT_lib;src;F:\Program Files\Borland\CBuilder6\Projects;Z:\workspace\CMSCpp2.1;$(BCB)\include;$(BCB)\include\vcl;lib
-Item8=src\cms\i2c\core;lib\USB_i2c_lib;lib\LPT_lib;src;F:\Program Files\Borland\CBuilder6\Projects;Z:\workspace\CMSCpp2.1;$(BCB)\include;$(BCB)\include\vcl
-Item9=F:\Program Files\Borland\CBuilder6\Projects;Z:\workspace\CMSCpp2.1;$(BCB)\include;$(BCB)\include\vcl
+Count=11
+Item0=src\gui\test;src\gui\cct;C:\Program Files\Borland\CBuilder6\Projects;src\i2c\core;src\i2c;D:\Program Files\Borland\CBuilder6\Projects;src\math;src\gui;src\cms;src\cms\util;src\cms\measure;src\cms\lcd\calibrate;src\cms\colorspace;src\cms\colorformat;src\ca210api;lib\CA200SRVRLib;src\java;src\cms\i2c;src\cms\i2c\core;lib\USB_i2c_lib;lib\LPT_lib;src;$(BCB)\include;$(BCB)\include\vcl;lib
+Item1=src\gui\cct;C:\Program Files\Borland\CBuilder6\Projects;src\i2c\core;src\i2c;D:\Program Files\Borland\CBuilder6\Projects;src\math;src\gui;src\cms;src\cms\util;src\cms\measure;src\cms\lcd\calibrate;src\cms\colorspace;src\cms\colorformat;src\ca210api;lib\CA200SRVRLib;src\java;src\cms\i2c;src\cms\i2c\core;lib\USB_i2c_lib;lib\LPT_lib;src;$(BCB)\include;$(BCB)\include\vcl;lib
+Item2=C:\Program Files\Borland\CBuilder6\Projects;src\i2c\core;src\i2c;D:\Program Files\Borland\CBuilder6\Projects;src\math;src\gui;src\cms;src\cms\util;src\cms\measure;src\cms\lcd\calibrate;src\cms\colorspace;src\cms\colorformat;src\ca210api;lib\CA200SRVRLib;src\java;src\cms\i2c;src\cms\i2c\core;lib\USB_i2c_lib;lib\LPT_lib;src;$(BCB)\include;$(BCB)\include\vcl;lib
+Item3=src\i2c\core;src\i2c;D:\Program Files\Borland\CBuilder6\Projects;src\math;src\gui;src\cms;src\cms\util;src\cms\measure;src\cms\lcd\calibrate;src\cms\colorspace;src\cms\colorformat;src\ca210api;lib\CA200SRVRLib;src\java;src\cms\i2c;src\cms\i2c\core;lib\USB_i2c_lib;lib\LPT_lib;src;$(BCB)\include;$(BCB)\include\vcl;lib
+Item4=D:\Program Files\Borland\CBuilder6\Projects;src\math;src\gui;src\cms;src\cms\util;src\cms\measure;src\cms\lcd\calibrate;src\cms\colorspace;src\cms\colorformat;src\ca210api;lib\CA200SRVRLib;src\java;src\cms\i2c;src\cms\i2c\core;lib\USB_i2c_lib;lib\LPT_lib;src;$(BCB)\include;$(BCB)\include\vcl;lib
+Item5=src\math;src\gui;src\cms;src\cms\util;src\cms\measure;src\cms\lcd\calibrate;src\cms\colorspace;src\cms\colorformat;src\ca210api;lib\CA200SRVRLib;src\java;src\cms\i2c;src\cms\i2c\core;lib\USB_i2c_lib;lib\LPT_lib;src;$(BCB)\include;$(BCB)\include\vcl;lib
+Item6=src\math;src\gui;src\cms;src\cms\util;src\cms\measure;src\cms\lcd\calibrate;src\cms\colorspace;src\cms\colorformat;src\ca210api;lib\CA200SRVRLib;src\java;src\cms\i2c;src\cms\i2c\core;lib\USB_i2c_lib;lib\LPT_lib;src;F:\Program Files\Borland\CBuilder6\Projects;Z:\workspace\CMSCpp2.1;$(BCB)\include;$(BCB)\include\vcl;lib
+Item7=src\java;src\cms\i2c;src\cms\i2c\core;lib\USB_i2c_lib;lib\LPT_lib;src;F:\Program Files\Borland\CBuilder6\Projects;Z:\workspace\CMSCpp2.1;$(BCB)\include;$(BCB)\include\vcl;lib
+Item8=src\cms\i2c\core;lib\USB_i2c_lib;lib\LPT_lib;src;F:\Program Files\Borland\CBuilder6\Projects;Z:\workspace\CMSCpp2.1;$(BCB)\include;$(BCB)\include\vcl;lib
+Item9=src\cms\i2c\core;lib\USB_i2c_lib;lib\LPT_lib;src;F:\Program Files\Borland\CBuilder6\Projects;Z:\workspace\CMSCpp2.1;$(BCB)\include;$(BCB)\include\vcl
+Item10=F:\Program Files\Borland\CBuilder6\Projects;Z:\workspace\CMSCpp2.1;$(BCB)\include;$(BCB)\include\vcl
 
 [HistoryLists\hlLibraryPath]
-Count=10
-Item0=src\gui\cct;C:\Program Files\Borland\CBuilder6\Projects;src\i2c\core;src\i2c;D:\Program Files\Borland\CBuilder6\Projects;src\math;src\gui;src\cms;src\cms\util;src\cms\measure;src\cms\lcd\calibrate;src\cms\colorspace;src\cms\colorformat;src\ca210api;lib\CA200SRVRLib;src\java;src\cms\i2c;src\cms\i2c\core;lib\USB_i2c_lib;lib\LPT_lib;src;$(BCB)\Projects\Lib;$(BCB)\lib\obj;$(BCB)\lib;lib
-Item1=C:\Program Files\Borland\CBuilder6\Projects;src\i2c\core;src\i2c;D:\Program Files\Borland\CBuilder6\Projects;src\math;src\gui;src\cms;src\cms\util;src\cms\measure;src\cms\lcd\calibrate;src\cms\colorspace;src\cms\colorformat;src\ca210api;lib\CA200SRVRLib;src\java;src\cms\i2c;src\cms\i2c\core;lib\USB_i2c_lib;lib\LPT_lib;src;$(BCB)\Projects\Lib;$(BCB)\lib\obj;$(BCB)\lib;lib
-Item2=src\i2c\core;src\i2c;D:\Program Files\Borland\CBuilder6\Projects;src\math;src\gui;src\cms;src\cms\util;src\cms\measure;src\cms\lcd\calibrate;src\cms\colorspace;src\cms\colorformat;src\ca210api;lib\CA200SRVRLib;src\java;src\cms\i2c;src\cms\i2c\core;lib\USB_i2c_lib;lib\LPT_lib;src;$(BCB)\Projects\Lib;$(BCB)\lib\obj;$(BCB)\lib;lib
-Item3=D:\Program Files\Borland\CBuilder6\Projects;src\math;src\gui;src\cms;src\cms\util;src\cms\measure;src\cms\lcd\calibrate;src\cms\colorspace;src\cms\colorformat;src\ca210api;lib\CA200SRVRLib;src\java;src\cms\i2c;src\cms\i2c\core;lib\USB_i2c_lib;lib\LPT_lib;src;$(BCB)\Projects\Lib;$(BCB)\lib\obj;$(BCB)\lib;lib
-Item4=src\math;src\gui;src\cms;src\cms\util;src\cms\measure;src\cms\lcd\calibrate;src\cms\colorspace;src\cms\colorformat;src\ca210api;lib\CA200SRVRLib;src\java;src\cms\i2c;src\cms\i2c\core;lib\USB_i2c_lib;lib\LPT_lib;src;$(BCB)\Projects\Lib;$(BCB)\lib\obj;$(BCB)\lib;lib
-Item5=src\math;src\gui;src\cms;src\cms\util;src\cms\measure;src\cms\lcd\calibrate;src\cms\colorspace;src\cms\colorformat;src\ca210api;lib\CA200SRVRLib;src\java;src\cms\i2c;src\cms\i2c\core;lib\USB_i2c_lib;lib\LPT_lib;src;F:\Program Files\Borland\CBuilder6\Projects;Z:\workspace\CMSCpp2.1;$(BCB)\Projects\Lib;$(BCB)\lib\obj;$(BCB)\lib;lib
-Item6=src\java;src\cms\i2c;src\cms\i2c\core;lib\USB_i2c_lib;lib\LPT_lib;src;F:\Program Files\Borland\CBuilder6\Projects;Z:\workspace\CMSCpp2.1;$(BCB)\Projects\Lib;$(BCB)\lib\obj;$(BCB)\lib;lib
-Item7=src\cms\i2c\core;lib\USB_i2c_lib;lib\LPT_lib;src;F:\Program Files\Borland\CBuilder6\Projects;Z:\workspace\CMSCpp2.1;$(BCB)\Projects\Lib;$(BCB)\lib\obj;$(BCB)\lib;lib
-Item8=src\cms\i2c\core;lib\USB_i2c_lib;lib\LPT_lib;src;F:\Program Files\Borland\CBuilder6\Projects;Z:\workspace\CMSCpp2.1;$(BCB)\Projects\Lib;$(BCB)\lib\obj;$(BCB)\lib
-Item9=F:\Program Files\Borland\CBuilder6\Projects;Z:\workspace\CMSCpp2.1;$(BCB)\Projects\Lib;$(BCB)\lib\obj;$(BCB)\lib
+Count=11
+Item0=src\gui\test;src\gui\cct;C:\Program Files\Borland\CBuilder6\Projects;src\i2c\core;src\i2c;D:\Program Files\Borland\CBuilder6\Projects;src\math;src\gui;src\cms;src\cms\util;src\cms\measure;src\cms\lcd\calibrate;src\cms\colorspace;src\cms\colorformat;src\ca210api;lib\CA200SRVRLib;src\java;src\cms\i2c;src\cms\i2c\core;lib\USB_i2c_lib;lib\LPT_lib;src;$(BCB)\Projects\Lib;$(BCB)\lib\obj;$(BCB)\lib;lib
+Item1=src\gui\cct;C:\Program Files\Borland\CBuilder6\Projects;src\i2c\core;src\i2c;D:\Program Files\Borland\CBuilder6\Projects;src\math;src\gui;src\cms;src\cms\util;src\cms\measure;src\cms\lcd\calibrate;src\cms\colorspace;src\cms\colorformat;src\ca210api;lib\CA200SRVRLib;src\java;src\cms\i2c;src\cms\i2c\core;lib\USB_i2c_lib;lib\LPT_lib;src;$(BCB)\Projects\Lib;$(BCB)\lib\obj;$(BCB)\lib;lib
+Item2=C:\Program Files\Borland\CBuilder6\Projects;src\i2c\core;src\i2c;D:\Program Files\Borland\CBuilder6\Projects;src\math;src\gui;src\cms;src\cms\util;src\cms\measure;src\cms\lcd\calibrate;src\cms\colorspace;src\cms\colorformat;src\ca210api;lib\CA200SRVRLib;src\java;src\cms\i2c;src\cms\i2c\core;lib\USB_i2c_lib;lib\LPT_lib;src;$(BCB)\Projects\Lib;$(BCB)\lib\obj;$(BCB)\lib;lib
+Item3=src\i2c\core;src\i2c;D:\Program Files\Borland\CBuilder6\Projects;src\math;src\gui;src\cms;src\cms\util;src\cms\measure;src\cms\lcd\calibrate;src\cms\colorspace;src\cms\colorformat;src\ca210api;lib\CA200SRVRLib;src\java;src\cms\i2c;src\cms\i2c\core;lib\USB_i2c_lib;lib\LPT_lib;src;$(BCB)\Projects\Lib;$(BCB)\lib\obj;$(BCB)\lib;lib
+Item4=D:\Program Files\Borland\CBuilder6\Projects;src\math;src\gui;src\cms;src\cms\util;src\cms\measure;src\cms\lcd\calibrate;src\cms\colorspace;src\cms\colorformat;src\ca210api;lib\CA200SRVRLib;src\java;src\cms\i2c;src\cms\i2c\core;lib\USB_i2c_lib;lib\LPT_lib;src;$(BCB)\Projects\Lib;$(BCB)\lib\obj;$(BCB)\lib;lib
+Item5=src\math;src\gui;src\cms;src\cms\util;src\cms\measure;src\cms\lcd\calibrate;src\cms\colorspace;src\cms\colorformat;src\ca210api;lib\CA200SRVRLib;src\java;src\cms\i2c;src\cms\i2c\core;lib\USB_i2c_lib;lib\LPT_lib;src;$(BCB)\Projects\Lib;$(BCB)\lib\obj;$(BCB)\lib;lib
+Item6=src\math;src\gui;src\cms;src\cms\util;src\cms\measure;src\cms\lcd\calibrate;src\cms\colorspace;src\cms\colorformat;src\ca210api;lib\CA200SRVRLib;src\java;src\cms\i2c;src\cms\i2c\core;lib\USB_i2c_lib;lib\LPT_lib;src;F:\Program Files\Borland\CBuilder6\Projects;Z:\workspace\CMSCpp2.1;$(BCB)\Projects\Lib;$(BCB)\lib\obj;$(BCB)\lib;lib
+Item7=src\java;src\cms\i2c;src\cms\i2c\core;lib\USB_i2c_lib;lib\LPT_lib;src;F:\Program Files\Borland\CBuilder6\Projects;Z:\workspace\CMSCpp2.1;$(BCB)\Projects\Lib;$(BCB)\lib\obj;$(BCB)\lib;lib
+Item8=src\cms\i2c\core;lib\USB_i2c_lib;lib\LPT_lib;src;F:\Program Files\Borland\CBuilder6\Projects;Z:\workspace\CMSCpp2.1;$(BCB)\Projects\Lib;$(BCB)\lib\obj;$(BCB)\lib;lib
+Item9=src\cms\i2c\core;lib\USB_i2c_lib;lib\LPT_lib;src;F:\Program Files\Borland\CBuilder6\Projects;Z:\workspace\CMSCpp2.1;$(BCB)\Projects\Lib;$(BCB)\lib\obj;$(BCB)\lib
+Item10=F:\Program Files\Borland\CBuilder6\Projects;Z:\workspace\CMSCpp2.1;$(BCB)\Projects\Lib;$(BCB)\lib\obj;$(BCB)\lib
 
 [HistoryLists\hlDebugSourcePath]
 Count=1
