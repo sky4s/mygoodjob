@@ -31,7 +31,6 @@ WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
     }
     catch(EOleException & ex) {
 	ShowMessage("CA210 cannot be linked.");
-	//Application->Terminate();
     }
     catch(Exception & exception) {
 	Application->ShowException(&exception);
