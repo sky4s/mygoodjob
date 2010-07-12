@@ -174,6 +174,7 @@ void __fastcall TCCTLUTForm::Button_MeaRunClick(TObject * Sender)
 	    //MainForm->setDummyMeterFilename(dgLutFile);
 	    //要release掉, 才可以讀取該檔
 	    dgLutFile.reset();
+            //寫到文字檔
 	    //this->Button_Run->Enabled = true;
 	    ShowMessage("Ok!");
 	    Util::shellExecute(filename);

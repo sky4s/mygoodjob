@@ -48,17 +48,6 @@ void __fastcall TGammaMeasurementForm::Button_MeasureClick(TObject *
 	return;
     }
 
-
-    /*int start = this->Edit_StartLevel->Text.ToInt();
-       int end = this->Edit_EndLevel->Text.ToInt();
-       int step = this->ComboBox_LevelStep->Text.ToInt();
-
-       if (bitDepth->isTCONInput()) {
-       start = bitDepth->getMeasureStart();
-       end = 0;
-       step = 1;
-       } */
-
     String_ptr filename = this->TOutputFileFrame1->getOutputFilename();
     string stlfilename = filename->c_str();
     Util::deleteExist(stlfilename);
@@ -197,11 +186,12 @@ TOutputFileFrame1Button_BrowseDirClick(TObject * Sender)
 void __fastcall TGammaMeasurementForm::Button2Click(TObject * Sender)
 {
     using namespace cms::colorformat;
+    using namespace cms::util;
     OpenDialog1->Filter = "Gamma Table Files(*.xls)|*.xls";
     if (OpenDialog1->Execute()) {
 	const AnsiString & filename = OpenDialog1->FileName;
 	DGLutFile dgcode(filename.c_str(), ReadOnly);
-	dgcodeTable = dgcode.getGammaTable();
+	dgcodeTable = RGBVector::reverse(dgcode.getGammaTable());
 	this->CheckBox_Loaded->Checked = true;
 	this->CheckBox_Loaded->Enabled = true;
     }
@@ -229,5 +219,4 @@ void __fastcall TGammaMeasurementForm::CheckBox_LoadedClick(TObject *
 }
 
 //---------------------------------------------------------------------------
-
 

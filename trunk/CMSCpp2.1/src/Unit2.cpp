@@ -6,7 +6,7 @@
 //#include "ComObj.hpp"
 
 
-/*#include <conio.h>
+#include <conio.h>
 
 
 #include <cmath>
@@ -41,7 +41,7 @@
 using namespace std;
 
 //---------------------------------------------------------------------------
-/*void excel()
+void excel()
 {
     using namespace cms::colorformat;
     using namespace cms::util;
@@ -662,8 +662,8 @@ void odTester()
     double v0 = 11.02;
     double v1 = 13.59;
     double v2 = 11.06;
-    double v = TThreeDMeasurementForm::blackXTalk(v2, v0, v1);
-    cout << v << endl;
+    //double v = TThreeDMeasurementForm::blackXTalk(v2, v0, v1);
+    //cout << v << endl;
 };
 
 void txtTester()
@@ -705,7 +705,7 @@ void propTester()
     test.Count = i;		//-- call the set method --
     j = test.Count;		//-- call the get method --
 
-}*/
+}
 
 void excelTester()
 {
@@ -787,9 +787,9 @@ int main(int argc, char *argv[])
     //directGammaTester();
     //hookTester();
     //odTester();
-    //txtTester();
+    txtTester();
     //propTester();
-    excelTester();
-//    getch();
+    //excelTester();
+    getch();
 }
 
