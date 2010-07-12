@@ -58,6 +58,10 @@ namespace cms {
 	    }
 
 	};
+	void RGBVector::storeToText(const std::string & filename,
+				    RGB_vector_ptr rgbVector) {
+                                    
+	};
 	RGB_vector_ptr RGBVector::clone(RGB_vector_ptr vector) {
 	    RGB_vector_ptr result(new RGB_vector(*vector));
 	    return result;
@@ -82,6 +86,15 @@ namespace cms {
 		rgb->quantization(maxValue);
 	    }
 	};
+	RGB_vector_ptr RGBVector::reverse(RGB_vector_ptr rgbVector) {
+	    RGB_vector_ptr result(new RGB_vector());
+	    int size = rgbVector->size();
+	    for (int x = size - 1; x != -1; x--) {
+		RGB_ptr rgb = (*rgbVector)[x];
+		result->push_back(rgb);
+	    }
+	    return result;
+	};
 	//==================================================================
 
 	//==================================================================
@@ -95,10 +108,9 @@ namespace cms {
 	    w(w), max(1),
 	    type(Gamma) {
 	};
-	RGBGamma::RGBGamma(double_vector_ptr r, double_vector_ptr g,
-			   double_vector_ptr b, const double max,
-			   const Type type):r(r), g(g), b(b),
-	    max(max), type(type) {
+      RGBGamma::RGBGamma(double_vector_ptr r, double_vector_ptr g, double_vector_ptr b, const double max, const Type type):r(r), g(g), b(b),
+	    max(max),
+	    type(type) {
 	};
 	RGBGamma::RGBGamma(double_vector_ptr r, double_vector_ptr g,
 			   double_vector_ptr b, double_vector_ptr w,
