@@ -123,7 +123,7 @@ namespace cms {
 	    //==========================================================================
 	    if (!fakeMeasure) {
 		measureWindow->setRGB(measureRGB);
-                //measureWindow->
+		//measureWindow->
 		Application->ProcessMessages();
 		Sleep(waitTimes);
 	    }
@@ -190,8 +190,23 @@ namespace cms {
 						  Channel & channel,
 						  int start, int end,
 						  int step) {
+	    using namespace cms::lcd::calibrate;
+	    bptr < MeasureCondition >
+		measureCondition(new
+				 MeasureCondition(start, end, step, step));
+	    return rampMeasure(channel, measureCondition);
+	};
+	Patch_vector_ptr MeasureTool::rampMeasure(const Dep::
+						  Channel & channel,
+						  bptr <
+						  cms::lcd::calibrate::
+						  MeasureCondition >
+						  measureCondition) {
+
+	    int_vector_ptr measureCode =
+		measureCondition->getMeasureCode();
 	    Patch_vector_ptr vector(new Patch_vector());
-	    for (int c = start; c >= end; c -= step) {
+	    foreach(int c, *measureCode) {
 		RGB_ptr rgb(new RGBColor());
 		rgb->setValue(channel, c);
 		Patch_ptr patch = mm->measure(rgb, rgb->toString());
@@ -205,6 +220,36 @@ namespace cms {
 	    mm->setMeasureWindowsVisible(false);
 	    return vector;
 	};
+	Patch_vector_ptr MeasureTool::rampMeasure(const Dep::
+						  Channel & channel,
+						  RGB_vector_ptr
+						  rgbMeasureCode) {
+	    Patch_vector_ptr vector(new Patch_vector());
+	    foreach(RGB_ptr & c, *rgbMeasureCode) {
+		RGB_ptr rgb;
+		if (channel == Channel::W) {
+		    rgb = c;
+		} else {
+		    rgb = RGB_ptr(new RGBColor());
+		    rgb->setValue(channel, c->getValue(channel));
+		}
+
+		Patch_ptr patch = mm->measure(rgb, rgb->toString());
+		vector->push_back(patch);
+		if (true == stop) {
+		    stop = false;
+		    mm->setMeasureWindowsVisible(false);
+		    return nil_Patch_vector_ptr;
+		}
+	    };
+	    mm->setMeasureWindowsVisible(false);
+	    return vector;
+	}
+
+	Patch_vector_ptr MeasureTool::rampMeasure(RGB_vector_ptr
+						  rgbMeasureCode) {
+	    return rampMeasure(Channel::W, rgbMeasureCode);
+	}
 	void MeasureTool::windowClosing() {
 	    stop = true;
 	}

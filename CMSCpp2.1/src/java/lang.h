@@ -467,11 +467,6 @@ namespace java {
 	    IndexOutOfBoundsException();
 	    IndexOutOfBoundsException(std::string message);
 	};
-	/*class Test:public TObject {
-	   public:
-	   __fastcall ~ Test() {
-	   };
-	   }; */
     };
 };
 

@@ -284,23 +284,35 @@ namespace cms {
 	    dgcode.addProperty("Version", "3.2");
 
 	    bptr < MeasureCondition > mc = c->measureCondition;
-	    if (mc->normalCondition) {
+	    switch (mc->type) {
+	    case MeasureCondition::Normal:
 		dgcode.addProperty("start", mc->start);
 		dgcode.addProperty("end", mc->end);
 		dgcode.addProperty("step", mc->step);
-	    } else {
-		dgcode.addProperty("high level start", mc->highStart);
+		break;
+		case MeasureCondition::Extend:dgcode.
+		    addProperty("high level start", mc->highStart);
 		dgcode.addProperty("high level end", mc->highEnd);
 		dgcode.addProperty("high level step", mc->highStep);
 		dgcode.addProperty("low level start", mc->lowStart);
 		dgcode.addProperty("low level end", mc->lowEnd);
 		dgcode.addProperty("low level step", mc->lowStep);
+		break;
+		case MeasureCondition::Plain:break;
 	    }
-
-	    //==================================================================
-	    // low level correct
-	    //==================================================================
-	    string correctstr;
+	    /*if (mc->normalCondition) {
+	       dgcode.addProperty("start", mc->start);
+	       dgcode.addProperty("end", mc->end);
+	       dgcode.addProperty("step", mc->step);
+	       } else {
+	       dgcode.addProperty("high level start", mc->highStart);
+	       dgcode.addProperty("high level end", mc->highEnd);
+	       dgcode.addProperty("high level step", mc->highStep);
+	       dgcode.addProperty("low level start", mc->lowStart);
+	       dgcode.addProperty("low level end", mc->lowEnd);
+	       dgcode.addProperty("low level step", mc->lowStep);
+	       } *///==================================================================// low level correct//==================================================================
+		string correctstr;
 	    switch (c->correct) {
 	    case Correct::P1P2:
 		correctstr = "P1P2";
@@ -320,7 +332,7 @@ namespace cms {
 		dgcode.addProperty("rb under", c->under);
 	    }
 	    //==================================================================
-            
+
 	    dgcode.addProperty("New Method", c->newMethod ? On : Off);
 	    bptr < BitDepthProcessor > bitDepth = c->bitDepth;
 	    dgcode.addProperty("in",

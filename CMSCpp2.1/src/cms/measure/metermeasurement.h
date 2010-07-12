@@ -96,6 +96,15 @@ namespace cms {
 	    MeasureTool(bptr < cms::measure::MeterMeasurement > mm);
 	    Patch_vector_ptr rampMeasure(const Dep::Channel & channel,
 					 int start, int end, int step);
+	    Patch_vector_ptr rampMeasure(const Dep::Channel & channel,
+					 bptr <
+					 cms::lcd::calibrate::
+					 MeasureCondition >
+					 measureCondition);
+	    Patch_vector_ptr rampMeasure(const Dep::
+					 Channel & channel,
+					 RGB_vector_ptr rgbMeasureCode);
+	    Patch_vector_ptr rampMeasure(RGB_vector_ptr rgbMeasureCode);
 	    void windowClosing();
 	};
 
