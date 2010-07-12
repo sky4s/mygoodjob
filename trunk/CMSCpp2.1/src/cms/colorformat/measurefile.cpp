@@ -118,31 +118,10 @@ namespace cms {
 		    StringVector::setContent(values, "0", 3, 15, 16, 17);
 		}
 
-		//db->insert(headerNames, values, false);
 		this->insertData(Sheet1, values, false);
 	    }
 	    //==================================================================
 	};
-	/*void RampMeasureFile::setMeasureData(const Channel & channel,
-	   Patch_vector_ptr measureData)
-	   {
-	   //==================================================================
-	   // 初始資料設定
-	   //==================================================================
-	   int size = measureData->size();
-	   db->setTableName(Sheet1);
-	   string_vector_ptr headerNames = getHeaderNames(Sheet1);
-	   string_vector_ptr values(new string_vector(18));
-	   //==================================================================
-	   //==================================================================
-	   // 迴圈處理
-	   //==================================================================
-	   for (int x = 0; x < size; x++) {
-	   Patch_ptr patch = (*measureData)[x];
-	   xyY_ptr xyY(new CIExyY(patch->getXYZ()));
-	   }
-	   //==================================================================
-	   }; */
     };
 };
 

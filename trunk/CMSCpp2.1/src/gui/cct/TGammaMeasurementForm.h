@@ -31,10 +31,6 @@ class TGammaMeasurementForm:public TForm {
     TLabel *Copyright;
     TPanel *Panel2;
     TGroupBox *GroupBox5;
-    TGroupBox *GroupBox6;
-    TGroupBox *GroupBox9;
-    TRadioButton *RadioButton_0To256;
-    TRadioButton *RadioButton_0To1023;
     TOutputFileFrame *TOutputFileFrame1;
     TGroupBox *GroupBox3;
     TCheckBox *CheckBox_W;
@@ -47,23 +43,27 @@ class TGammaMeasurementForm:public TForm {
     TRadioButton *RadioButton_12Bit;
     TButton *Button2;
     TOpenDialog *OpenDialog1;
+    TCheckBox *CheckBox_Loaded;
     void __fastcall Button_MeasureClick(TObject * Sender);
     void __fastcall FormShow(TObject * Sender);
     void __fastcall TOutputFileFrame1Button_BrowseDirClick(TObject *
 							   Sender);
     void __fastcall Button2Click(TObject * Sender);
     void __fastcall FormKeyPress(TObject * Sender, char &Key);
+    void __fastcall CheckBox_LoadedClick(TObject * Sender);
   private:			// User declarations
      bptr < cms::lcd::calibrate::BitDepthProcessor > bitDepth;
     void setMeasureInfo();
-    void pcMeasure(bool_vector_ptr rgbw, int start, int end, int step,
-		   const std::string & filename);
+    void measure(bool_vector_ptr rgbw,
+		 bptr < cms::lcd::calibrate::MeasureCondition >
+		 measureCondition, const std::string & filename);
     void tconMeasure(bool_vector_ptr rgbw, int start, int end, int step,
 		     const std::string & filename);
      bptr < cms::measure::MeterMeasurement > mm;
      bptr < cms::lcd::calibrate::ComponentFetcher > fetcher;
     //bptr < cms::measure::IntensityAnalyzerIF > analyzer;
     RGB_vector_ptr dgcodeTable;
+     bptr < cms::lcd::calibrate::MeasureCondition > getMeasureCondition();
   public:			// User declarations
      __fastcall TGammaMeasurementForm(TComponent * Owner);
     void setBitDepthProcessor(bptr <

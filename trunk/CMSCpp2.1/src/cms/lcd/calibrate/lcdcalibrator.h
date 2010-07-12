@@ -41,6 +41,11 @@ namespace cms {
 						    int step);
 		Component_vector_ptr fetchComponent(int_vector_ptr
 						    measureCode);
+		Component_vector_ptr fetchComponent(bptr <
+						    MeasureCondition >
+						    measureCondition);
+		Component_vector_ptr fetchComponent(RGB_vector_ptr
+						    rgbMeasureCode);
 		double_vector_ptr fetchLuminance(int_vector_ptr
 						 measureCode);
 		static int_vector_ptr getMeasureCode(int start, int end,
@@ -169,9 +174,6 @@ namespace cms {
 		double getMaxBIntensity();
 	    };
 
-	    /*enum Correct {
-	       P1P2 = 1, RBInterpolation = 2, None = 3, DefinedDim = 6
-	       }; */
 	     Enumeration(Correct)
 	     P1P2, RBInterpolation, None, DefinedDim, EnumerationEnd()
 
@@ -179,7 +181,13 @@ namespace cms {
 		   ノㄓ癘更秖代兵ン, よ獽暗把计肚患
 		 */
 	    class MeasureCondition {
+	      private:
+		int_vector_ptr measureCode;
+		RGB_vector_ptr rgbMeasureCode;
 	      public:
+		enum Type {
+		    Normal, Extend, Plain, RGB
+		};
 		const int start;
 		const int end;
 		const int step;
@@ -191,13 +199,18 @@ namespace cms {
 		const int highStart;
 		const int highEnd;
 		const int highStep;
-		const bool normalCondition;
+		//const bool normalCondition;
 		 MeasureCondition(const int start, const int end,
 				  const int firstStep, const int step);
 		 MeasureCondition(const int lowStart, const int lowEnd,
 				  const int lowStep, const int highStart,
 				  const int highEnd, const int highStep);
+		 MeasureCondition(int_vector_ptr measureCode);
+		 MeasureCondition(RGB_vector_ptr rgbMeasureCode);
 		int_vector_ptr getMeasureCode();
+		RGB_vector_ptr getRGBMeasureCode();
+		const Type type;
+		bool isRGBType();
 	      private:
 		 int_vector_ptr getMeasureCode(const int start,
 					       const int end,
@@ -210,6 +223,7 @@ namespace cms {
 					      const int highEnd,
 					      const int highStep);
 		bool isNoRemainder(int start, int end, int step);
+
 	    };
 
 

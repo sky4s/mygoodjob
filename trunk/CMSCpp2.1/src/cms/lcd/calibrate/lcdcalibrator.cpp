@@ -65,8 +65,45 @@ namespace cms {
 
 	    Component_vector_ptr ComponentFetcher::
 		fetchComponent(int_vector_ptr measureCode) {
-		//bool tconInput = bitDepth->isTCONInput();
-		//bool real10Bit = bitDepth->is10in10Out();
+		RGB_vector_ptr rgbMeasureCode(new RGB_vector());
+		foreach(const int &x, *measureCode) {
+		    RGB_ptr rgb(new RGBColor(x, x, x));
+		    rgbMeasureCode->push_back(rgb);
+		}
+		return fetchComponent(rgbMeasureCode);
+		/*Component_vector_ptr result(new Component_vector());
+
+		   bool waitingStable = true;
+		   int waitTimes = analyzer->getWaitTimes();
+		   analyzer->setWaitTimes(10000);
+
+		   analyzer->beginAnalyze();
+		   foreach(const int &x, *measureCode) {
+		   RGB_ptr rgb(new RGBColor(x, x, x));
+		   RGB_ptr intensity = analyzer->getIntensity(rgb);
+		   XYZ_ptr XYZ = analyzer->getCIEXYZ();
+		   Component_ptr component(new Component(rgb, intensity,
+		   XYZ));
+		   result->push_back(component);
+
+		   if (true == waitingStable) {
+		   waitingStable = false;
+		   analyzer->setWaitTimes(waitTimes);
+		   }
+
+		   if (true == stop) {
+		   stop = false;
+		   analyzer->endAnalyze();
+		   return Component_vector_ptr((Component_vector *)
+		   null);
+		   }
+		   }
+		   analyzer->endAnalyze();
+		   return result; */
+	    };
+
+	    Component_vector_ptr ComponentFetcher::
+		fetchComponent(RGB_vector_ptr rgbMeasureCode) {
 		Component_vector_ptr result(new Component_vector());
 
 		bool waitingStable = true;
@@ -74,8 +111,7 @@ namespace cms {
 		analyzer->setWaitTimes(10000);
 
 		analyzer->beginAnalyze();
-		foreach(const int &x, *measureCode) {
-		    RGB_ptr rgb(new RGBColor(x, x, x));
+		foreach(const RGB_ptr & rgb, *rgbMeasureCode) {
 		    RGB_ptr intensity = analyzer->getIntensity(rgb);
 		    XYZ_ptr XYZ = analyzer->getCIEXYZ();
 		    Component_ptr component(new Component(rgb, intensity,
@@ -96,6 +132,20 @@ namespace cms {
 		}
 		analyzer->endAnalyze();
 		return result;
+	    };
+
+	    Component_vector_ptr ComponentFetcher::fetchComponent(bptr <
+								  MeasureCondition
+								  >
+								  measureCondition)
+	    {
+		if (measureCondition->isRGBType()) {
+		    return fetchComponent(measureCondition->
+					  getRGBMeasureCode());
+		} else {
+		    return fetchComponent(measureCondition->
+					  getMeasureCode());
+		}
 	    };
 
 	    double_vector_ptr ComponentFetcher::
@@ -571,7 +621,7 @@ namespace cms {
 	  MeasureCondition::MeasureCondition(const int start, const int end, const int firstStep, const int step):start(start),
 		end(end), firstStep(firstStep), step(step), lowStart(0),
 		lowEnd(0), lowStep(0), highStart(0), highEnd(0),
-		highStep(0), normalCondition(true) {
+		highStep(0), type(Normal) {
 
 	    };
 	    MeasureCondition::MeasureCondition(const int lowStart,
@@ -582,15 +632,47 @@ namespace cms {
 					       highStep):start(0), end(0),
 		firstStep(0), step(0), lowStart(lowStart), lowEnd(lowEnd),
 		lowStep(lowStep), highStart(highStart), highEnd(highEnd),
-		highStep(highStep), normalCondition(false) {
+		highStep(highStep), type(Extend) {
+	    };
+	  MeasureCondition::MeasureCondition(int_vector_ptr measureCode):start(0), end(0),
+		firstStep(0), step(0), lowStart(0), lowEnd(0), lowStep(0),
+		highStart(0), highEnd(0), highStep(0), type(Plain) {
+		this->measureCode = measureCode;
+	    };
+	  MeasureCondition::MeasureCondition(RGB_vector_ptr rgbMeasureCode):start(0), end(0),
+		firstStep(0), step(0), lowStart(0), lowEnd(0), lowStep(0),
+		highStart(0), highEnd(0), highStep(0), type(RGB) {
+		this->rgbMeasureCode = rgbMeasureCode;
 	    };
 	    int_vector_ptr MeasureCondition::getMeasureCode() {
-		if (normalCondition) {
+		switch (type) {
+		case Normal:
 		    return getMeasureCode(start, end, firstStep, step);
-		} else {
+		case Extend:
 		    return getMeasureCode(lowStart, lowEnd, lowStep,
 					  highStart, highEnd, highStep);
+		case Plain:
+		    return measureCode;
+		case RGB:
+		    throw new IllegalStateException();
 		}
+
+		/*if (normalCondition) {
+		   return getMeasureCode(start, end, firstStep, step);
+		   } else {
+		   return getMeasureCode(lowStart, lowEnd, lowStep,
+		   highStart, highEnd, highStep);
+		   } */
+	    };
+	    RGB_vector_ptr MeasureCondition::getRGBMeasureCode() {
+		if (isRGBType()) {
+		    return rgbMeasureCode;
+		} else {
+		    throw new IllegalStateException();
+		}
+	    };
+	    bool MeasureCondition::isRGBType() {
+		return type == RGB;
 	    };
 	    int_vector_ptr MeasureCondition::
 		getMeasureCode(const int start, const int end,
@@ -618,8 +700,9 @@ namespace cms {
 			       const int highEnd, const int highStep) {
 		int_vector_ptr measureCode(new int_vector());
 
-		int start = isNoRemainder(highStart, highEnd, highStep) ?
-		    highStart : highStart + 1;
+		int start = isNoRemainder(highStart, highEnd,
+					  highStep) ? highStart : highStart
+		    + 1;
 
 		for (int x = start; x >= highEnd; x -= highStep) {
 		    int code = x > 255 ? 255 : x;
@@ -687,8 +770,7 @@ namespace cms {
 		this->under = under;
 		this->dimGamma = gamma;
 		this->averageDimDG = averageDimDG;
-	    }
-	    void LCDCalibrator::setGamma(double gamma) {
+	    } void LCDCalibrator::setGamma(double gamma) {
 		this->gamma = gamma;
 		int n = bitDepth->getLevel();
 		int effectiven = bitDepth->getEffectiveLevel();
@@ -703,8 +785,10 @@ namespace cms {
 		this->bgamma = bgamma;
 		int n = bitDepth->getLevel();
 		int effectiven = bitDepth->getEffectiveLevel();
-		setGammaCurve0(getGammaCurveVector(rgamma, n, effectiven),
-			       getGammaCurveVector(ggamma, n, effectiven),
+		setGammaCurve0(getGammaCurveVector
+			       (rgamma, n, effectiven),
+			       getGammaCurveVector(ggamma, n,
+						   effectiven),
 			       getGammaCurveVector(bgamma, n, effectiven));
 		useGammaCurve = false;
 		rgbIndepGamma = true;
@@ -721,7 +805,8 @@ namespace cms {
 		this->ggammaCurve = ggammaCurve;
 		this->bgammaCurve = bgammaCurve;
 	    };
-	    void LCDCalibrator::setGammaCurve(double_vector_ptr gammaCurve) {
+	    void LCDCalibrator::
+		setGammaCurve(double_vector_ptr gammaCurve) {
 		setGammaCurve0(gammaCurve);
 		useGammaCurve = true;
 		rgbIndepGamma = false;
@@ -806,11 +891,9 @@ namespace cms {
 		}
 	    };
 
-	    double_vector_ptr LCDCalibrator::fetchLuminanceVector(bptr <
-								  MeasureCondition
-								  >
-								  measureCondition)
-	    {
+	    double_vector_ptr LCDCalibrator::
+		fetchLuminanceVector(bptr < MeasureCondition >
+				     measureCondition) {
 		this->measureCondition = measureCondition;
 		//量測start->end得到的coponent/Y
 		int_vector_ptr measurecode =
@@ -888,7 +971,8 @@ namespace cms {
 		    dglut =
 			advgenerator.produce(targetWhite,
 					     luminanceGammaCurve,
-					     underParameter, overParameter,
+					     underParameter,
+					     overParameter,
 					     dimgammaParameter,
 					     brightgammaParameter);
 		    STORE_RGBVECTOR("3_dgcode.xls", dglut);
@@ -908,8 +992,9 @@ namespace cms {
 		    if (bIntensityGain != 1.0) {
 			//重新產生目標gamma curve
 			bptr < BIntensityGainOp >
-			    bgain(new BIntensityGainOp(bIntensityGain, 236,
-						       bitDepth));
+			    bgain(new
+				  BIntensityGainOp(bIntensityGain, 236,
+						   bitDepth));
 
 			RGBGammaOp gammaop;
 			gammaop.setSource(rgbgamma);
@@ -1070,11 +1155,10 @@ namespace cms {
 		return dglut;
 	    };
 
-	    bptr < DGLutFile > LCDCalibrator::storeDGLutFile(const std::
-							     string &
-							     filename,
-							     RGB_vector_ptr
-							     dglut) {
+	    bptr < DGLutFile >
+		LCDCalibrator::storeDGLutFile(const std::
+					      string & filename,
+					      RGB_vector_ptr dglut) {
 		//int n = bitDepth->getLevel();
 		//int n = true == gamma256 ? 257 : 256;
 		//砍掉已存在的

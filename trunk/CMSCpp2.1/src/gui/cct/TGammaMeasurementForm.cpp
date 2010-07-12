@@ -49,6 +49,29 @@ void __fastcall TGammaMeasurementForm::Button_MeasureClick(TObject *
     }
 
 
+    /*int start = this->Edit_StartLevel->Text.ToInt();
+       int end = this->Edit_EndLevel->Text.ToInt();
+       int step = this->ComboBox_LevelStep->Text.ToInt();
+
+       if (bitDepth->isTCONInput()) {
+       start = bitDepth->getMeasureStart();
+       end = 0;
+       step = 1;
+       } */
+
+    String_ptr filename = this->TOutputFileFrame1->getOutputFilename();
+    string stlfilename = filename->c_str();
+    Util::deleteExist(stlfilename);
+
+    measure(rgbw, getMeasureCondition(), stlfilename);
+    Util::shellExecute(stlfilename);
+}
+
+bptr < cms::lcd::calibrate::MeasureCondition >
+    TGammaMeasurementForm::getMeasureCondition()
+{
+    using namespace cms::lcd::calibrate;
+
     int start = this->Edit_StartLevel->Text.ToInt();
     int end = this->Edit_EndLevel->Text.ToInt();
     int step = this->ComboBox_LevelStep->Text.ToInt();
@@ -56,16 +79,21 @@ void __fastcall TGammaMeasurementForm::Button_MeasureClick(TObject *
     if (bitDepth->isTCONInput()) {
 	start = bitDepth->getMeasureStart();
 	end = 0;
-	step = 1;
+	step = bitDepth->getMeasureStep();
     }
-
-    String_ptr filename = this->TOutputFileFrame1->getOutputFilename();
-    string stlfilename = filename->c_str();
-    Util::deleteExist(stlfilename);
-
-    pcMeasure(rgbw, start, end, step, stlfilename);
-    Util::shellExecute(stlfilename);
-}
+    bptr < MeasureCondition > condition;
+    if (null == dgcodeTable) {
+	condition = bptr < MeasureCondition > (new
+					       MeasureCondition(start, end,
+								step,
+								step));
+    } else {
+	condition = bptr < MeasureCondition > (new
+					       MeasureCondition
+					       (dgcodeTable));
+    }
+    return condition;
+};
 
 
 //---------------------------------------------------------------------------
@@ -90,21 +118,23 @@ void TGammaMeasurementForm::setMeasureInfo()
 };
 
 //---------------------------------------------------------------------------
-void TGammaMeasurementForm::pcMeasure(bool_vector_ptr rgbw, int start,
-				      int end, int step,
-				      const std::string & filename)
+void TGammaMeasurementForm::measure(bool_vector_ptr rgbw,
+				    bptr <
+				    cms::lcd::calibrate::MeasureCondition >
+				    measureCondition,
+				    const std::string & filename)
 {
     using namespace Dep;
     using namespace std;
     using namespace cms::colorformat;
     using namespace cms::measure;
     using namespace cms::util;
-    Channel_vector_ptr channels = Channel::RGBChannel;
+
     Patch_vector_ptr vectors[3];
 
     Component_vector_ptr componentVector =
 	(true == (*rgbw)[3]) ?
-	fetcher->fetchComponent(start, end, step, step) :
+	fetcher->fetchComponent(measureCondition) :
 	Component_vector_ptr((Component_vector *) null);
     if (true == (*rgbw)[3] && null == componentVector) {
 	//代表被阻斷量測
@@ -113,11 +143,10 @@ void TGammaMeasurementForm::pcMeasure(bool_vector_ptr rgbw, int start,
 
     bptr < MeasureTool > mt(new MeasureTool(mm));
     MeasureWindow->addWindowListener(mt);
-
-    foreach(const Channel & ch, *channels) {
+    foreach(const Channel & ch, *Channel::RGBChannel) {
 	int index = ch.getArrayIndex();
 	if (true == (*rgbw)[index]) {
-	    vectors[index] = mt->rampMeasure(ch, start, end, step);
+	    vectors[index] = mt->rampMeasure(ch, measureCondition);
 	    if (null == vectors[index]) {
 		return;
 	    }
@@ -129,7 +158,6 @@ void TGammaMeasurementForm::pcMeasure(bool_vector_ptr rgbw, int start,
     RampMeasureFile measureFile(filename, Create);
     measureFile.setMeasureData(componentVector, vectors[0], vectors[1],
 			       vectors[2]);
-    //Util::shellExecute(filename);
 };
 
 //---------------------------------------------------------------------------
@@ -172,10 +200,10 @@ void __fastcall TGammaMeasurementForm::Button2Click(TObject * Sender)
     OpenDialog1->Filter = "Gamma Table Files(*.xls)|*.xls";
     if (OpenDialog1->Execute()) {
 	const AnsiString & filename = OpenDialog1->FileName;
-	/*bptr < DGLutFile >
-	   dgcode(new DGLutFile(filename.c_str(), ReadOnly)); */
 	DGLutFile dgcode(filename.c_str(), ReadOnly);
 	dgcodeTable = dgcode.getGammaTable();
+	this->CheckBox_Loaded->Checked = true;
+	this->CheckBox_Loaded->Enabled = true;
     }
 }
 
@@ -190,4 +218,16 @@ void __fastcall TGammaMeasurementForm::FormKeyPress(TObject * Sender,
 }
 
 //---------------------------------------------------------------------------
+
+void __fastcall TGammaMeasurementForm::CheckBox_LoadedClick(TObject *
+							    Sender)
+{
+    if (false == CheckBox_Loaded->Checked) {
+	this->CheckBox_Loaded->Enabled = false;
+	dgcodeTable.reset();
+    }
+}
+
+//---------------------------------------------------------------------------
+
 
