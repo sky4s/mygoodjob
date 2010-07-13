@@ -834,8 +834,8 @@ object MainForm: TMainForm
     Top = 16
     Width = 792
     Height = 249
-    ActivePage = TabSheet1
-    TabIndex = 1
+    ActivePage = TabSheet2
+    TabIndex = 0
     TabOrder = 0
     object TabSheet2: TTabSheet
       Caption = 'T-CON Setup'
