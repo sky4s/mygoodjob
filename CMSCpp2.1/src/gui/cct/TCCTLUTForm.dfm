@@ -2,7 +2,7 @@ object CCTLUTForm: TCCTLUTForm
   Left = 339
   Top = 312
   Width = 842
-  Height = 482
+  Height = 487
   Caption = 'CCT LUT'
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
@@ -19,8 +19,8 @@ object CCTLUTForm: TCCTLUTForm
   PixelsPerInch = 120
   TextHeight = 16
   object Label9: TLabel
-    Left = 473
-    Top = 425
+    Left = 481
+    Top = 433
     Width = 349
     Height = 16
     Caption = 'Copyright (C) 2010, AU Optronics Corp., All Right Reserved.'
@@ -29,7 +29,7 @@ object CCTLUTForm: TCCTLUTForm
     Left = 9
     Top = 9
     Width = 192
-    Height = 312
+    Height = 320
     Caption = 'Gray Level Option'
     TabOrder = 0
     object Label1: TLabel
@@ -104,7 +104,7 @@ object CCTLUTForm: TCCTLUTForm
     Left = 209
     Top = 9
     Width = 208
-    Height = 96
+    Height = 112
     Caption = 'Gamma'
     TabOrder = 1
     object RadioButton_GammaCurve: TRadioButton
@@ -156,12 +156,21 @@ object CCTLUTForm: TCCTLUTForm
         '2.4'
         '2.5')
     end
+    object RadioButton_GammaValue: TRadioButton
+      Left = 9
+      Top = 88
+      Width = 137
+      Height = 17
+      Caption = 'Gamma Value'
+      TabOrder = 4
+      OnClick = RadioButton_GammaValueClick
+    end
   end
   object GroupBox3: TGroupBox
     Left = 425
     Top = 9
     Width = 192
-    Height = 312
+    Height = 320
     Caption = 'Low Level Correction'
     TabOrder = 2
     object Label4: TLabel
@@ -195,7 +204,7 @@ object CCTLUTForm: TCCTLUTForm
     end
     object Label14: TLabel
       Left = 32
-      Top = 185
+      Top = 177
       Width = 49
       Height = 16
       Caption = 'Strength'
@@ -278,7 +287,7 @@ object CCTLUTForm: TCCTLUTForm
     end
     object CheckBox_AverageDimDG: TCheckBox
       Left = 32
-      Top = 208
+      Top = 200
       Width = 137
       Height = 25
       Caption = 'Average Dim DG'
@@ -287,7 +296,7 @@ object CCTLUTForm: TCCTLUTForm
     end
     object Edit_DimGamma: TEdit
       Left = 89
-      Top = 185
+      Top = 177
       Width = 72
       Height = 24
       ImeName = #26085#25991#36664#20837#31995#32113' (MS-IME2002)'
@@ -300,7 +309,7 @@ object CCTLUTForm: TCCTLUTForm
     Left = 625
     Top = 9
     Width = 192
-    Height = 152
+    Height = 144
     Caption = 'Blue Correction'
     TabOrder = 3
     object Label18: TLabel
@@ -313,7 +322,7 @@ object CCTLUTForm: TCCTLUTForm
     end
     object Label19: TLabel
       Left = 32
-      Top = 121
+      Top = 113
       Width = 49
       Height = 16
       Caption = 'Strength'
@@ -366,7 +375,7 @@ object CCTLUTForm: TCCTLUTForm
     end
     object Edit_BMax2Gamma: TEdit
       Left = 89
-      Top = 121
+      Top = 113
       Width = 72
       Height = 24
       ImeName = #26085#25991#36664#20837#31995#32113' (MS-IME2002)'
@@ -379,7 +388,7 @@ object CCTLUTForm: TCCTLUTForm
     Left = 625
     Top = 161
     Width = 192
-    Height = 160
+    Height = 168
     Caption = 'Options'
     TabOrder = 4
     object CheckBox_AvoidNoise: TCheckBox
@@ -403,7 +412,7 @@ object CCTLUTForm: TCCTLUTForm
   end
   object Button_MeaRun: TButton
     Left = 625
-    Top = 369
+    Top = 377
     Width = 104
     Height = 24
     Hint = 'Measure panel characteristic and produce CCT DG LUT.'
@@ -415,7 +424,7 @@ object CCTLUTForm: TCCTLUTForm
   end
   object Button_Debug: TButton
     Left = 625
-    Top = 353
+    Top = 361
     Width = 56
     Height = 16
     Caption = 'debug'
@@ -424,7 +433,7 @@ object CCTLUTForm: TCCTLUTForm
   end
   inline TOutputFileFrame1: TOutputFileFrame
     Left = 9
-    Top = 329
+    Top = 337
     Width = 616
     Height = 96
     TabOrder = 7
@@ -595,7 +604,7 @@ object CCTLUTForm: TCCTLUTForm
   end
   object Button_Reset: TButton
     Left = 625
-    Top = 336
+    Top = 344
     Width = 56
     Height = 17
     Caption = 'reset'
@@ -605,7 +614,7 @@ object CCTLUTForm: TCCTLUTForm
   end
   object Button_Run: TButton
     Left = 625
-    Top = 393
+    Top = 401
     Width = 104
     Height = 24
     Caption = 'Run'
@@ -616,9 +625,9 @@ object CCTLUTForm: TCCTLUTForm
   end
   object GroupBox_KeepMaxLuminance: TGroupBox
     Left = 208
-    Top = 105
+    Top = 129
     Width = 209
-    Height = 216
+    Height = 200
     Caption = 'Keep Max Luminance'
     TabOrder = 11
     Visible = False
@@ -631,7 +640,7 @@ object CCTLUTForm: TCCTLUTForm
     end
     object Label21: TLabel
       Left = 32
-      Top = 145
+      Top = 137
       Width = 49
       Height = 16
       Caption = 'Strength'
@@ -683,7 +692,7 @@ object CCTLUTForm: TCCTLUTForm
     end
     object Edit_MaxYAdvGamma: TEdit
       Left = 89
-      Top = 145
+      Top = 137
       Width = 72
       Height = 24
       ImeName = #26085#25991#36664#20837#31995#32113' (MS-IME2002)'
@@ -692,7 +701,7 @@ object CCTLUTForm: TCCTLUTForm
     end
     object CheckBox_BTargetIntensity: TCheckBox
       Left = 8
-      Top = 176
+      Top = 168
       Width = 137
       Height = 25
       Caption = 'B Target intensity'
@@ -701,7 +710,7 @@ object CCTLUTForm: TCCTLUTForm
     end
     object Edit_BTargetIntensity: TEdit
       Left = 152
-      Top = 176
+      Top = 168
       Width = 49
       Height = 24
       Enabled = False

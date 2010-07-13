@@ -88,6 +88,7 @@ class TCCTLUTForm:public TForm {
     TLabel *Label21;
     TCheckBox *CheckBox_BTargetIntensity;
     TEdit *Edit_BTargetIntensity;
+    TRadioButton *RadioButton_GammaValue;
     void __fastcall RadioButton_P1P2Click(TObject * Sender);
     void __fastcall Button_MeaRunClick(TObject * Sender);
     void __fastcall FormCreate(TObject * Sender);
@@ -108,6 +109,7 @@ class TCCTLUTForm:public TForm {
     void __fastcall FormClose(TObject * Sender, TCloseAction & Action);
     void __fastcall Button_RunClick(TObject * Sender);
     void __fastcall CheckBox_BTargetIntensityClick(TObject * Sender);
+    void __fastcall RadioButton_GammaValueClick(TObject * Sender);
   private:			// User declarations
     void setMeasureInfo();
     int serialid;

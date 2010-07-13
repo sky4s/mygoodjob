@@ -33,6 +33,11 @@ namespace cms {
 	    Intensity, Gamma
 	};
 	class RGBGamma:public jObject {
+	  private:
+	    static RGBGamma_ptr loadFromDesiredGamma(const std::
+						     string &
+						     filename,
+						     bool isGammaValue);
 	  public:
 	    const Type type;
 	    const double max;
@@ -54,6 +59,9 @@ namespace cms {
 					    RGBGamma_ptr rgbgamma);
 	    static RGBGamma_ptr loadFromDesiredGamma(const std::
 						     string & filename);
+	    static RGBGamma_ptr loadFromDesiredGammaValue(const std::
+							  string &
+							  filename);
 	    RGBGamma_ptr clone();
 
 	};
