@@ -60,7 +60,15 @@ namespace cms {
 	};
 	void RGBVector::storeToText(const std::string & filename,
 				    RGB_vector_ptr rgbVector) {
-                                    
+
+	    bptr_ < TStringList > list(new TStringList);
+	    foreach(RGB_ptr rgb, *rgbVector) {
+		list->Add((_toString(rgb->R) + "\t" + _toString(rgb->G) +
+			   "\t" + _toString(rgb->B) + "\t").c_str());
+	    }
+	    //list->Add("");
+	    list->SaveToFile(filename.c_str());	//Save the list
+
 	};
 	RGB_vector_ptr RGBVector::clone(RGB_vector_ptr vector) {
 	    RGB_vector_ptr result(new RGB_vector(*vector));
@@ -87,12 +95,18 @@ namespace cms {
 	    }
 	};
 	RGB_vector_ptr RGBVector::reverse(RGB_vector_ptr rgbVector) {
-	    RGB_vector_ptr result(new RGB_vector());
-	    int size = rgbVector->size();
-	    for (int x = size - 1; x != -1; x--) {
-		RGB_ptr rgb = (*rgbVector)[x];
-		result->push_back(rgb);
-	    }
+	    /*RGB_vector_ptr result(new RGB_vector());
+	       int size = rgbVector->size();
+	       for (int x = size - 1; x != -1; x--) {
+	       RGB_ptr rgb = (*rgbVector)[x];
+	       result->push_back(rgb);
+	       }
+	       return result;
+	       w = double_vector_ptr(new
+	       double_vector(w->rbegin(), w->rend())); */
+	    RGB_vector_ptr result(new
+				  RGB_vector(rgbVector->rbegin(),
+					     rgbVector->rend()));
 	    return result;
 	};
 	//==================================================================
@@ -149,19 +163,50 @@ namespace cms {
 
 	RGBGamma_ptr RGBGamma::loadFromDesiredGamma(const std::
 						    string & filename) {
-	    SimpleExcelAccess excel(filename);
+	    return loadFromDesiredGamma(filename, false);
+	};
 
+	RGBGamma_ptr RGBGamma::loadFromDesiredGammaValue(const std::
+							 string & filename)
+	{
+	    return loadFromDesiredGamma(filename, true);
+	};
+
+	RGBGamma_ptr RGBGamma::loadFromDesiredGamma(const std::
+						    string & filename,
+						    bool isGammaValue) {
+	    using namespace java::lang;
+            
+	    SimpleExcelAccess excel(filename);
 	    double_vector_ptr r(new double_vector()),
 		g(new double_vector()), b(new double_vector()),
 		w(new double_vector());
 	    try {
 		bptr < DBQuery > query = excel.retrieve();
+		double maxLevel = -1;
 		while (query->hasNext()) {
 		    string_vector_ptr result = query->nextResult();
-		    w->push_back(_toDouble((*result)[1]));
-		    r->push_back(_toDouble((*result)[2]));
-		    g->push_back(_toDouble((*result)[3]));
-		    b->push_back(_toDouble((*result)[4]));
+		    double level = _toDouble((*result)[0]);
+		    if (maxLevel == -1) {
+			maxLevel = level;
+		    }
+
+		    double wg = _toDouble((*result)[1]);
+		    double rg = _toDouble((*result)[2]);
+		    double gg = _toDouble((*result)[3]);
+		    double bg = _toDouble((*result)[4]);
+		    if (isGammaValue) {
+			double normal = level / maxLevel;
+			wg = Math::pow(normal, wg);
+			rg = Math::pow(normal, rg);
+			gg = Math::pow(normal, gg);
+			bg = Math::pow(normal, bg);
+		    }
+
+		    w->push_back(wg);
+		    r->push_back(rg);
+		    g->push_back(gg);
+		    b->push_back(bg);
 
 		};
 		//==============================================================
@@ -188,6 +233,7 @@ namespace cms {
 		return RGBGamma_ptr((RGBGamma *) null);
 	    }
 	};
+
 
 	RGBGamma_ptr RGBGamma::clone() {
 	    double_vector_ptr rclone(new double_vector(*r));

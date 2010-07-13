@@ -438,7 +438,9 @@ void __fastcall TThreeDMeasurementForm::CheckBox_ExtendClick(TObject *
 
 //---------------------------------------------------------------------------
 
-void TThreeDMeasurementForm::dynamicMeasure(int start, int target)
+void TThreeDMeasurementForm::dynamicMeasure(int start, int target,
+					    int adjustStart,
+					    int adjustTarget)
 {
     ThreeDMeasureWindow->Label_StartBase->Caption =
 	(_toString(start) + "->" + _toString(start) +
@@ -447,10 +449,10 @@ void TThreeDMeasurementForm::dynamicMeasure(int start, int target)
 	(_toString(target) + "->" + _toString(target) +
 	 " measuring...").c_str();
     ThreeDMeasureWindow->Label_StartTarget->Caption =
-	(_toString(start) + "->" + _toString(target) +
+	(_toString(adjustStart) + "->" + _toString(adjustTarget) +
 	 " measuring...").c_str();
     ThreeDMeasureWindow->Label_TargetStart->Caption =
-	(_toString(target) + "->" + _toString(start) +
+	(_toString(adjustTarget) + "->" + _toString(adjustStart) +
 	 " measuring...").c_str();
 
     ThreeDMeasureWindow->Label_WXtalk->Caption = "w xtalk measuring...";
@@ -463,8 +465,8 @@ void TThreeDMeasurementForm::dynamicMeasure(int start, int target)
 
     double v1 = measure(start, start);
     double v2 = measure(target, target);
-    double v3 = measure(target, start);
-    double v0 = measure(start, target);
+    double v3 = measure(adjustTarget, adjustStart);
+    double v0 = measure(adjustStart, adjustTarget);
 
     if (true == linkCA210 && release) {
 	ca210->getCA210API()->setRemoteMode(ca210api::Off);
@@ -477,10 +479,10 @@ void TThreeDMeasurementForm::dynamicMeasure(int start, int target)
 	(_toString(target) + "->" + _toString(target) + " " +
 	 _toString(v2)).c_str();
     ThreeDMeasureWindow->Label_StartTarget->Caption =
-	(_toString(start) + "->" + _toString(target) + " " +
+	(_toString(adjustStart) + "->" + _toString(adjustTarget) + " " +
 	 _toString(v0)).c_str();
     ThreeDMeasureWindow->Label_TargetStart->Caption =
-	(_toString(target) + "->" + _toString(start) + " " +
+	(_toString(adjustTarget) + "->" + _toString(adjustStart) + " " +
 	 _toString(v3)).c_str();
 
     double bb = start > target ? v2 : v1;
@@ -518,14 +520,14 @@ Button_DynamicMeasureClick(TObject * Sender)
 {
 
     dynamicMode = true;
-    int start = this->Edit_DStart->Text.ToInt();
-    int target = this->Edit_DTarget->Text.ToInt();
+    start = this->Edit_DStart->Text.ToInt();
+    target = this->Edit_DTarget->Text.ToInt();
     startAdj = start;
     targetAdj = target;
 
     try {
 	updateAdjust();
-	dynamicMeasure(startAdj, targetAdj);
+	dynamicMeasure(start, target, startAdj, targetAdj);
 
     }
     __finally {
@@ -597,7 +599,7 @@ void __fastcall TThreeDMeasurementForm::FormKeyPress(TObject * Sender,
     case 67:			//c for measure
     case 99:
 	updateAdjust();
-	dynamicMeasure(startAdj, targetAdj);
+	dynamicMeasure(start, target, startAdj, targetAdj);
 	break;
     case 32:			//space
 	{
@@ -671,19 +673,12 @@ void __fastcall TThreeDMeasurementForm::Button1Click(TObject * Sender)
 	    if (true == stableTest) {
 		vec.push_back(measureResult);
 	    }
-	    //double meanY = getMeanLuminance(measureResult);
 	    if (true == stop) {
-		//return double2D_ptr((double2D *) null);
 		break;
 	    }
-	    //(*result)[x][y] = meanY;
 	}
 
-	//int sheetNum = y * 16;
-	//sheetNum = sheetNum >= 255 ? 255 : sheetNum;
-	//string sheetName = _toString(sheetNum);
 	string sheetName = "Sheet1";
-	//excel->initSheet(sheetName, fieldNames);
 	excel->initSheet(sheetName, fieldNames);
 
 	for (int m = 0; m < aveTimes; m++) {

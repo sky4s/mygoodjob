@@ -112,8 +112,9 @@ class TThreeDMeasurementForm:public TForm, KeyPressListener {
     bool dynamicMode;
     double measure(int start, int target);
     bool whiteFont;
-    int startAdj, targetAdj;
-    void dynamicMeasure(int start, int target);
+    int startAdj, targetAdj, start, target;
+    void dynamicMeasure(int start, int target, int adjustStart,
+			int adjustTarget);
     void updateAdjust();
   public:			// User declarations
     static double whiteXTalk(double BB, double BW, double WW);

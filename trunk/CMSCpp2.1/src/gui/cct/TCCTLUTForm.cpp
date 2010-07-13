@@ -106,11 +106,12 @@ void __fastcall TCCTLUTForm::Button_MeaRunClick(TObject * Sender)
 	if (this->RadioButton_Gamma->Checked) {
 	    double gamma = this->ComboBox_Gamma->Text.ToDouble();
 	    calibrator.setGamma(gamma);
-	} else if (this->RadioButton_GammaCurve->Checked) {
+	} else if (this->RadioButton_GammaCurve->Checked
+		   || this->RadioButton_GammaValue->Checked) {
 	    double_vector_ptr gammaCurve = rgbGamma->w;
 	    calibrator.setGammaCurve(gammaCurve);
+	    calibrator.setGByPass(this->CheckBox_GByPass->Checked);
 	}
-	calibrator.setGByPass(this->CheckBox_GByPass->Checked);
 	//==========================================================================
 
 	//==========================================================================
@@ -174,7 +175,9 @@ void __fastcall TCCTLUTForm::Button_MeaRunClick(TObject * Sender)
 	    //MainForm->setDummyMeterFilename(dgLutFile);
 	    //要release掉, 才可以讀取該檔
 	    dgLutFile.reset();
-            //寫到文字檔
+	    //寫到文字檔
+	    RGBVector::storeToText(ChangeFileExt(filename.c_str(), ".txt").
+				   c_str(), dglut);
 	    //this->Button_Run->Enabled = true;
 	    ShowMessage("Ok!");
 	    Util::shellExecute(filename);
@@ -466,6 +469,27 @@ void __fastcall TCCTLUTForm::CheckBox_BTargetIntensityClick(TObject *
 {
     bool check = this->CheckBox_BTargetIntensity->Checked;
     this->Edit_BTargetIntensity->Enabled = check;
+}
+
+//---------------------------------------------------------------------------
+
+void __fastcall TCCTLUTForm::RadioButton_GammaValueClick(TObject * Sender)
+{
+    using namespace cms::util;
+    OpenDialog1->Filter = "Desired Gamma Values Files(*.xls)|*.xls";
+    if (OpenDialog1->Execute()) {
+	const AnsiString & filename = OpenDialog1->FileName;
+	rgbGamma = RGBGamma::loadFromDesiredGammaValue(filename.c_str());
+	unsigned int n = bitDepth->getLevel();
+	if (rgbGamma != null && rgbGamma->w->size() == n) {
+	    this->RadioButton_GammaValue->Checked = true;
+	    //this->CheckBox_GByPass->Visible = true;
+	    return;
+	} else {
+	    ShowMessage("Desired Gamma File Format is wrong!");
+	}
+    }
+    this->RadioButton_Gamma->Checked = true;
 }
 
 //---------------------------------------------------------------------------
