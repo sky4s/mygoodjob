@@ -408,18 +408,17 @@ void __fastcall TCCTLUTForm::CheckBox_BMax2Click(TObject * Sender)
 
 void __fastcall TCCTLUTForm::CheckBox_NewMethodClick(TObject * Sender)
 {
-    if (CheckBox_NewMethod->Checked) {
-	RadioButton_P1P2->Enabled = false;
-	RadioButton_DefinedDim->Enabled = true;
-	RadioButton_MaxYNativeAdv->Enabled = true;
+    bool newMethod = CheckBox_NewMethod->Checked;
+    RadioButton_P1P2->Enabled = !newMethod;
+    RadioButton_DefinedDim->Enabled = newMethod;
+    RadioButton_MaxYNativeAdv->Enabled = newMethod;
+    CheckBox_BTargetIntensity->Enabled = newMethod;
+
+    if (newMethod) {
 	if (RadioButton_P1P2->Checked) {
 	    this->RadioButton_DefinedDim->Checked = true;
 	}
-
     } else {
-	RadioButton_P1P2->Enabled = true;
-	RadioButton_DefinedDim->Enabled = false;
-	RadioButton_MaxYNativeAdv->Enabled = false;
 	if (RadioButton_DefinedDim->Checked) {
 	    this->RadioButton_P1P2->Checked = true;
 	}

@@ -74,6 +74,7 @@ namespace cms {
 		    double cct =
 			CorrelatedColorTemperature::
 			xy2CCTByMcCamyFloat(xyY);
+		    cct = cct > 50000 ? -1 : cct;
 		    (*values)[4] = _toString(static_cast < int >(cct));
 
 		    double duv =

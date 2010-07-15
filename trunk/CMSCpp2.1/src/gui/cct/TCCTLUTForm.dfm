@@ -705,6 +705,7 @@ object CCTLUTForm: TCCTLUTForm
       Width = 137
       Height = 25
       Caption = 'B Target intensity'
+      Enabled = False
       TabOrder = 6
       OnClick = CheckBox_BTargetIntensityClick
     end
