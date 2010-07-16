@@ -409,6 +409,14 @@ object CCTLUTForm: TCCTLUTForm
       Visible = False
       OnClick = CheckBox_NewMethodClick
     end
+    object CheckBox_HStripePattern: TCheckBox
+      Left = 9
+      Top = 72
+      Width = 136
+      Height = 17
+      Caption = 'H Stripe Pattern'
+      TabOrder = 2
+    end
   end
   object Button_MeaRun: TButton
     Left = 625
