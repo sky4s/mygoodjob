@@ -64,6 +64,9 @@ namespace cms {
 							 int end,
 							 int interval);
 	static Spectra_ptr getSpectraOfBlackbodyRadiator(double tempK);
+	static bool isCCTMeaningful(xyY_ptr xyY);
+	static double getduvWithBlackbody(XYZ_ptr XYZ);
+	static double_array getdudvWithBlackbody(XYZ_ptr XYZ);
       private:
 	static const double c;
 	static const double h;

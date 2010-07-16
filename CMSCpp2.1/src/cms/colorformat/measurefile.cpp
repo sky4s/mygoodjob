@@ -74,7 +74,10 @@ namespace cms {
 		    double cct =
 			CorrelatedColorTemperature::
 			xy2CCTByMcCamyFloat(xyY);
-		    cct = cct > 50000 ? -1 : cct;
+		    //計算出來的cct是否有意義 
+		    cct =
+			CorrelatedColorTemperature::
+			isCCTMeaningful(xyY) ? cct : -1;
 		    (*values)[4] = _toString(static_cast < int >(cct));
 
 		    double duv =

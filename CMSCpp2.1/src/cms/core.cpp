@@ -161,6 +161,29 @@ namespace cms {
     const double CorrelatedColorTemperature::c1 =
 	2 * Math::PI * h * Math::sqr(c);
     const double CorrelatedColorTemperature::c2 = h * c / k;
+    bool CorrelatedColorTemperature::isCCTMeaningful(xyY_ptr xyY) {
+	double duv = getduvWithBlackbody(xyY->toXYZ());
+	return duv <= 5e-2;
+    };
+    double CorrelatedColorTemperature::getduvWithBlackbody(XYZ_ptr XYZ) {
+	double_array duv = getdudvWithBlackbody(XYZ);
+	double d = Math::sqrt(Math::sqr(duv[0]) + Math::sqr(duv[1]));
+	if (duv[0] < 0 || duv[1] > 0) {
+	    d = -d;
+	}
+	return d;
+    }
+    double_array CorrelatedColorTemperature::
+	getdudvWithBlackbody(XYZ_ptr XYZ) {
+	double cct = xy2CCTByMcCamyFloat(xyY_ptr(new CIExyY(XYZ)));
+	//getSpectraOfBlackbodyRadiator(cct, 380, 730, 1);
+	XYZ_ptr blackbodyXYZ =
+	    getSpectraOfBlackbodyRadiator(cct, 380, 730, 1)->getXYZ();
+	xyY_ptr bbxyY = CIExyY::fromXYZ(blackbodyXYZ);
+	xyY_ptr xyY = CIExyY::fromXYZ(XYZ);
+	double_array duv = bbxyY->getDeltauv(xyY);
+	return duv;
+    }
     //==========================================================================
     // Illuminant
     //==========================================================================
@@ -180,9 +203,13 @@ namespace cms {
     const Illuminant & Illuminant::D65 = Illuminant();
     const Illuminant & Illuminant::C = Illuminant();
     //==========================================================================
-    Spectra::Spectra(const std::string & name, int start,
-		     int end, int interval,
-		     double1D_ptr data):name(name),
+    Spectra::Spectra(const std::
+		     string & name,
+		     int start,
+		     int end,
+		     int interval,
+		     double1D_ptr
+		     data):name(name),
 	start(start), end(end), interval(interval), data(data) {
 
     }
@@ -217,7 +244,8 @@ namespace cms {
 	    (*data)[x] = ((*data)[x] / normal);
 	}
     };
-    XYZ_ptr Spectra::getXYZFill(const ColorMatchingFunction & cmf) {
+    XYZ_ptr Spectra::getXYZFill(const
+				ColorMatchingFunction & cmf) {
 	double1D_ptr modifyData = doFillPurlieus(cmf.getStart(),
 						 cmf.getEnd())->getData();
 	double_array XYZValues(new double[3]);
@@ -225,8 +253,10 @@ namespace cms {
 	    Spectra_ptr cmfSpectra = cmf.getSpectra(x);
 	    XYZValues[x] =
 		.683002 * sigma(cmfSpectra->start,
-				cmfSpectra->end, modifyData,
-				interval, cmfSpectra->data,
+				cmfSpectra->end,
+				modifyData,
+				interval,
+				cmfSpectra->data,
 				cmfSpectra->interval) * interval;
 	}
 	XYZ_ptr result(new CIEXYZ(XYZValues));
@@ -235,16 +265,19 @@ namespace cms {
     Spectra_ptr Spectra::doFillPurlieus(int start, int end) {
 	int leftFill = (this->start - start) / interval;
 	int rightFill = (end - this->end) / interval;
-	double1D_ptr modifyData =
-	    fillPurlieusData(data, leftFill, rightFill);
+	double1D_ptr modifyData = fillPurlieusData(data, leftFill,
+						   rightFill);
 	Spectra_ptr spectra(new
-			    Spectra(this->name, start,
+			    Spectra(this->
+				    name,
+				    start,
 				    end, this->interval, modifyData));
 	return spectra;
     };
     double1D_ptr Spectra::
-	fillPurlieusData(const double1D_ptr data,
-			 int leftBorder, int rightBorder) {
+	fillPurlieusData(const
+			 double1D_ptr
+			 data, int leftBorder, int rightBorder) {
 	using namespace math;
 	int dataSize = data->dim1();
 	int resultSize = dataSize + leftBorder + rightBorder;
@@ -268,10 +301,9 @@ namespace cms {
 	return result;
     };
     bool Spectra::fillZero = false;
-    double Spectra::sigma(int start, int end,
-			  double1D_ptr data1,
-			  int interval1,
-			  double1D_ptr data2, int interval2) {
+    double Spectra::sigma(int start, int end, double1D_ptr data1, int
+			  interval1, double1D_ptr data2, int
+			  interval2) {
 	//double[] a = null, b = null;
 	double1D_ptr a, b;
 	int step = 0, size = 0;
