@@ -139,6 +139,8 @@ void __fastcall TCCTLUTForm::Button_MeaRunClick(TObject * Sender)
 		Edit_BTargetIntensity->Text.ToDouble();
 	    calibrator.setBTargetIntensity(bTargetIntensity);
 	}
+	MeasureWindow->setHStripePattern(this->CheckBox_HStripePattern->
+					 Checked);
 	//==========================================================================
 
 	//==========================================================================
@@ -156,7 +158,6 @@ void __fastcall TCCTLUTForm::Button_MeaRunClick(TObject * Sender)
 	    calibrator.setKeepMaxLuminanceNativeWhiteAdvanced(over, gamma);
 	}
 	//==========================================================================
-
 
 	try {
 	    if (this->TOutputFileFrame1->createDir() == false) {

@@ -46,6 +46,7 @@ class TMeasureWindow:public TForm {
      bptr < i2c::TCONControl > tconcontrol;
      std::vector < bptr < cms::util::WindowListener > >listenerVector;
      std::vector < bwptr < cms::util::WindowListener > >listenerVector2;
+    bool hStripePattern;
   public:			// User declarations
      __fastcall TMeasureWindow(TComponent * Owner);
     void setRGB(int r, int g, int b);
@@ -56,6 +57,7 @@ class TMeasureWindow:public TForm {
     void addWindowListener(bptr < cms::util::WindowListener > listener);
     void setImageFilename(const std::string & filename);
     void setImageOff();
+    void setHStripePattern(bool enable);
 };
 //---------------------------------------------------------------------------
 extern PACKAGE TMeasureWindow *MeasureWindow;

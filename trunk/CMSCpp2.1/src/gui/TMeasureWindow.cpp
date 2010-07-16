@@ -25,6 +25,7 @@ __fastcall TMeasureWindow::TMeasureWindow(TComponent * Owner)
 {
     DoubleBuffered = true;
     this->Button1->OnClick = Button1Click;
+    //hStripePattern = true;
 }
 
 //---------------------------------------------------------------------------
@@ -48,8 +49,26 @@ void TMeasureWindow::setRGB(int r, int g, int b)
 	tconcontrol->setTestRGB(r, g, b);
     } else {
 	int color = (b << 16) + (g << 8) + r;
-	this->Color = (TColor) color;
+
+	if (hStripePattern) {
+	    TCanvas *canvas = this->Canvas;
+	    int w = this->Width;
+	    int h = this->Height;
+	    for (int y = 0; y < h; y++) {
+		canvas->PenPos = TPoint(0, y);
+		if (y % 2 == 0) {
+		    canvas->Pen->Color = color;
+		} else {
+		    canvas->Pen->Color = clBlack;
+		}
+		canvas->LineTo(w, y);
+	    }
+
+	} else {
+	    this->Color = (TColor) color;
+	}
     }
+
     //this->Update();
 }
 
@@ -74,6 +93,9 @@ void TMeasureWindow::setRGB(bptr < Dep::RGBColor > rgb)
 void __fastcall TMeasureWindow::Button1Click(TObject * Sender)
 {
     setRGB(128, 0, 128);
+    /*int color = (255 << 16) + (255 << 8) + 255;
+       this->Canvas->Pen->Color = color;
+       this->Canvas->LineTo(100, 100); */
 }
 
 //---------------------------------------------------------------------------
@@ -93,8 +115,8 @@ void TMeasureWindow::setTCONControlOff()
 void TMeasureWindow::setVisible(bool visible)
 {
     this->Visible = visible;
-    if(visible){
-        this->BringToFront();
+    if (visible) {
+	this->BringToFront();
     }
     if (tconinput) {
 	tconcontrol->setGammaTest(visible);
@@ -161,4 +183,9 @@ void TMeasureWindow::setImageOff()
 {
     Image1->Visible = false;
 }
+
+void TMeasureWindow::setHStripePattern(bool enable)
+{
+    hStripePattern = enable;
+};
 
