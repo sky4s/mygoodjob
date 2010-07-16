@@ -178,7 +178,7 @@ namespace cms {
 	double cct = xy2CCTByMcCamyFloat(xyY_ptr(new CIExyY(XYZ)));
 	//getSpectraOfBlackbodyRadiator(cct, 380, 730, 1);
 	XYZ_ptr blackbodyXYZ =
-	    getSpectraOfBlackbodyRadiator(cct, 380, 730, 1)->getXYZ();
+	    getSpectraOfBlackbodyRadiator(cct, 380, 780, 1)->getXYZ();
 	xyY_ptr bbxyY = CIExyY::fromXYZ(blackbodyXYZ);
 	xyY_ptr xyY = CIExyY::fromXYZ(XYZ);
 	double_array duv = bbxyY->getDeltauv(xyY);
