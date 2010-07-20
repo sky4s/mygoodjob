@@ -35,7 +35,6 @@ object MeasureWindow: TMeasureWindow
     Height = 24
     Caption = 'Test'
     TabOrder = 0
-    Visible = False
     OnClick = Button1Click
   end
   object Button2: TButton

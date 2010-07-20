@@ -738,10 +738,31 @@ void __fastcall TMainForm::RadioButton_AnalyzerDebugClick(TObject * Sender)
 
 //---------------------------------------------------------------------------
 
-void __fastcall TMainForm::CheckBox_HStripePatternClick(TObject * Sender)
+
+void __fastcall TMainForm::RadioButton_NormalClick(TObject * Sender)
 {
-    /*MeasureWindow->setHStripePattern(this->CheckBox_HStripePattern->
-				     Checked);*/
+    MeasureWindow->setPattern(Normal);
+}
+
+//---------------------------------------------------------------------------
+
+void __fastcall TMainForm::RadioButton_HStripeClick(TObject * Sender)
+{
+    MeasureWindow->setPattern(HStripe);
+}
+
+//---------------------------------------------------------------------------
+
+void __fastcall TMainForm::RadioButton_IndepClick(TObject * Sender)
+{
+    MeasureWindow->setPattern(Indepedent);
+}
+
+//---------------------------------------------------------------------------
+
+void __fastcall TMainForm::RadioButton_HSDClick(TObject * Sender)
+{
+    MeasureWindow->setPattern(HSD);
 }
 
 //---------------------------------------------------------------------------
