@@ -323,7 +323,8 @@ namespace cms {
 	       }; */
 
 	    XYZ_ptr CIExyY::toXYZ() {
-		return toXYZ(*this);
+		XYZ_ptr result = toXYZ(*this);
+		return result;
 	    };
 
 	    XYZ_ptr CIExyY::toXYZ(const CIExyY & xyY) {

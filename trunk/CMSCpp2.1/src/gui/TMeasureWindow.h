@@ -31,6 +31,11 @@
 
  final: 最後決議拉
  */
+/*Enumeration(WindowPattern)
+    Normal, HStripe, Indepedent, EnumerationEnd();*/
+enum Pattern {
+    Normal, HStripe, Indepedent, HSD, FlickrPixel, FlickrSubPixel
+};
 class TMeasureWindow:public TForm {
     __published:		// IDE-managed Components
     TButton * Button1;
@@ -46,7 +51,8 @@ class TMeasureWindow:public TForm {
      bptr < i2c::TCONControl > tconcontrol;
      std::vector < bptr < cms::util::WindowListener > >listenerVector;
      std::vector < bwptr < cms::util::WindowListener > >listenerVector2;
-    bool hStripePattern;
+    //bool hStripePattern;
+    Pattern pattern;
   public:			// User declarations
      __fastcall TMeasureWindow(TComponent * Owner);
     void setRGB(int r, int g, int b);
@@ -57,8 +63,11 @@ class TMeasureWindow:public TForm {
     void addWindowListener(bptr < cms::util::WindowListener > listener);
     void setImageFilename(const std::string & filename);
     void setImageOff();
-    void setHStripePattern(bool enable);
+    //void setHStripePattern(bool enable);
+    void setPattern(Pattern pattern);
+
 };
+
 //---------------------------------------------------------------------------
 extern PACKAGE TMeasureWindow *MeasureWindow;
 //---------------------------------------------------------------------------

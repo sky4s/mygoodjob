@@ -162,7 +162,8 @@ namespace cms {
 	2 * Math::PI * h * Math::sqr(c);
     const double CorrelatedColorTemperature::c2 = h * c / k;
     bool CorrelatedColorTemperature::isCCTMeaningful(xyY_ptr xyY) {
-	double duv = getduvWithBlackbody(xyY->toXYZ());
+	XYZ_ptr XYZ = xyY->toXYZ();
+	double duv = getduvWithBlackbody(XYZ);
 	return duv <= 5e-2;
     };
     double CorrelatedColorTemperature::getduvWithBlackbody(XYZ_ptr XYZ) {
@@ -177,8 +178,10 @@ namespace cms {
 	getdudvWithBlackbody(XYZ_ptr XYZ) {
 	double cct = xy2CCTByMcCamyFloat(xyY_ptr(new CIExyY(XYZ)));
 	//getSpectraOfBlackbodyRadiator(cct, 380, 730, 1);
-	XYZ_ptr blackbodyXYZ =
-	    getSpectraOfBlackbodyRadiator(cct, 380, 780, 1)->getXYZ();
+
+	Spectra_ptr spectra =
+	    getSpectraOfBlackbodyRadiator(cct, 380, 780, 1);
+	XYZ_ptr blackbodyXYZ = spectra->getXYZ();
 	xyY_ptr bbxyY = CIExyY::fromXYZ(blackbodyXYZ);
 	xyY_ptr xyY = CIExyY::fromXYZ(XYZ);
 	double_array duv = bbxyY->getDeltauv(xyY);

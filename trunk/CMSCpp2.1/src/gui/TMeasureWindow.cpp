@@ -23,9 +23,12 @@ TMeasureWindow *MeasureWindow;
 __fastcall TMeasureWindow::TMeasureWindow(TComponent * Owner)
 :TForm(Owner)
 {
+
     DoubleBuffered = true;
     this->Button1->OnClick = Button1Click;
-    //hStripePattern = true;
+    //pattern = Indepedent;
+    pattern = Normal;
+
 }
 
 //---------------------------------------------------------------------------
@@ -53,28 +56,101 @@ void TMeasureWindow::setRGB(int r, int g, int b)
 	tconcontrol->setTestRGB(r, g, b);
     } else {
 	int color = (b << 16) + (g << 8) + r;
-
-	if (hStripePattern) {
-	    TCanvas *canvas = this->Canvas;
-	    int w = this->Width;
-	    int h = this->Height;
-	    for (int y = 0; y < h; y++) {
-		canvas->PenPos = TPoint(0, y);
-		if (y % 2 != 0) {
-		    canvas->Pen->Color = color;
-		} else {
-		    canvas->Pen->Color = clBlack;
+	switch (pattern) {
+	case HStripe:{
+		TCanvas *canvas = this->Canvas;
+		int w = this->Width;
+		int h = this->Height;
+		for (int y = 0; y < h; y++) {
+		    canvas->PenPos = TPoint(0, y);
+		    if (y % 2 == 0) {
+			canvas->Pen->Color = (TColor) color;
+		    } else {
+			canvas->Pen->Color = clBlack;
+		    }
+		    canvas->LineTo(w, y);
 		}
-		canvas->LineTo(w, y);
-	    }
 
-	} else {
+	    }
+	    break;
+	case HSD:{
+		TCanvas *canvas = this->Canvas;
+
+		int w = this->Width;
+		int h = this->Height;
+		int w2 = w / 2;
+		int gcolor = g << 8;
+		int color1 = (b << 16) + r;
+
+		for (int x = 0; x < w2; x++) {
+		    int start = x * 2;
+		    canvas->Pen->Color = color1;
+		    canvas->PenPos = TPoint(start, 0);
+		    canvas->LineTo(start, h);
+
+		    start += 1;
+		    canvas->Pen->Color = gcolor;
+		    canvas->PenPos = TPoint(start, 0);
+		    canvas->LineTo(start, h);
+		}
+
+		canvas->Pen->Color = clBlack;
+		for (int y = 1; y < h; y += 2) {
+		    canvas->PenPos = TPoint(0, y);
+		    canvas->LineTo(w, y);
+		}
+	    }
+	    break;
+	case Indepedent:{
+		this->Color = clBlack;
+		TCanvas *canvas = this->Canvas;
+		//TCanvas *c = new TCanvas();
+
+		int w = this->Width;
+		int h = this->Height;
+		int w4 = w / 4;
+		int rcolor = r;
+		int gcolor = g << 8;
+		int bcolor = (b << 16);
+
+		for (int x = 0; x < w4; x++) {
+		    int start = x * 4;
+		    canvas->Pen->Color = rcolor;
+		    canvas->PenPos = TPoint(start, 0);
+		    canvas->LineTo(start, h);
+
+		    start += 1;
+		    canvas->Pen->Color = gcolor;
+		    canvas->PenPos = TPoint(start, 0);
+		    canvas->LineTo(start, h);
+
+		    start += 1;
+		    canvas->Pen->Color = bcolor;
+		    canvas->PenPos = TPoint(start, 0);
+		    canvas->LineTo(start, h);
+
+		    /*start += 1;
+		       canvas->Pen->Color = clBlack;
+		       canvas->PenPos = TPoint(start, 0);
+		       canvas->LineTo(start, h); */
+		}
+
+		canvas->Pen->Color = clBlack;
+		for (int y = 1; y < h; y += 2) {
+		    canvas->PenPos = TPoint(0, y);
+		    canvas->LineTo(w, y);
+		}
+	    }
+	    break;
+	case Normal:
 	    this->Color = (TColor) color;
+	    break;
+	case FlickrPixel:
+	    break;
+	case FlickrSubPixel:
+	    break;
 	}
     }
-
-
-    //Application->ProcessMessages();
 }
 
 void TMeasureWindow::setRGB(bptr < Dep::RGBColor > rgb)
@@ -86,7 +162,6 @@ void TMeasureWindow::setRGB(bptr < Dep::RGBColor > rgb)
        } else { */
     rgb->getValues(values);
     //}
-
     int r = static_cast < int >(values[0]);
     int g = static_cast < int >(values[1]);
     int b = static_cast < int >(values[2]);
@@ -97,7 +172,8 @@ void TMeasureWindow::setRGB(bptr < Dep::RGBColor > rgb)
 
 void __fastcall TMeasureWindow::Button1Click(TObject * Sender)
 {
-    setRGB(128, 0, 128);
+    pattern = Indepedent;
+    setRGB(255, 255, 255);
     /*int color = (255 << 16) + (255 << 8) + 255;
        this->Canvas->Pen->Color = color;
        this->Canvas->LineTo(100, 100); */
@@ -129,8 +205,8 @@ void TMeasureWindow::setVisible(bool visible)
 };
 
 //---------------------------------------------------------------------------
-void TMeasureWindow::addWindowListener(bptr < cms::util::WindowListener >
-				       listener)
+void TMeasureWindow::
+addWindowListener(bptr < cms::util::WindowListener > listener)
 {
 #ifndef WEAK_PTR
     listenerVector.push_back(listener);
@@ -143,8 +219,8 @@ void TMeasureWindow::addWindowListener(bptr < cms::util::WindowListener >
 //---------------------------------------------------------------------------
 
 
-void __fastcall TMeasureWindow::FormClose(TObject * Sender,
-					  TCloseAction & Action)
+void __fastcall TMeasureWindow::
+FormClose(TObject * Sender, TCloseAction & Action)
 {
 #ifndef WEAK_PTR
     foreach(bptr < cms::util::WindowListener > listener, listenerVector) {
@@ -189,8 +265,8 @@ void TMeasureWindow::setImageOff()
     Image1->Visible = false;
 }
 
-void TMeasureWindow::setHStripePattern(bool enable)
+void TMeasureWindow::setPattern(Pattern pattern)
 {
-    hStripePattern = enable;
+    this->pattern = pattern;
 };
 
