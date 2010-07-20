@@ -20,31 +20,31 @@ namespace i2c {
 	testRGBAddress(testRGBAddress), lutBit(lutBit),
 	testRGBBit(independentRGB ? TestRGBBit::
 		   IndependentInstance : TestRGBBit::DependentInstance),
-	DGLutAddress(-1) {
+	DGLutAddress(-1), DGAddress(DGAddress), DGBit(DGBit) {
 
     };
-    TCONParameter::TCONParameter(int gammaTestAddress,
-				 unsigned char gammaTestBit,
-				 int testRGBAddress, bool independentRGB,
-				 const Dep::MaxValue & lutBit,
-				 int DGLutAddress):gammaTestAddress
-	(gammaTestAddress), gammaTestBit(gammaTestBit),
-	testRGBAddress(testRGBAddress), lutBit(lutBit),
-	testRGBBit(independentRGB ? TestRGBBit::
-		   IndependentInstance : TestRGBBit::DependentInstance),
-	DGLutAddress(DGLutAddress) {
+    /*TCONParameter::TCONParameter(int gammaTestAddress,
+       unsigned char gammaTestBit,
+       int testRGBAddress, bool independentRGB,
+       const Dep::MaxValue & lutBit,
+       int DGLutAddress):gammaTestAddress
+       (gammaTestAddress), gammaTestBit(gammaTestBit),
+       testRGBAddress(testRGBAddress), lutBit(lutBit),
+       testRGBBit(independentRGB ? TestRGBBit::
+       IndependentInstance : TestRGBBit::DependentInstance),
+       DGLutAddress(DGLutAddress) {
 
-    };
-    TCONParameter::TCONParameter(int gammaTestAddress,
-				 unsigned char gammaTestBit,
-				 int testRGBAddress,
+       }; */
+    TCONParameter::TCONParameter(const int gammaTestAddress,
+				 const unsigned char gammaTestBit,
+				 const int testRGBAddress,
 				 const TestRGBBit & testRGBBit,
-				 const Dep::
-				 MaxValue &
-				 lutBit):gammaTestAddress
-	(gammaTestAddress), gammaTestBit(gammaTestBit),
-	testRGBAddress(testRGBAddress), lutBit(lutBit),
-	testRGBBit(testRGBBit), DGLutAddress(-1) {
+				 const Dep::MaxValue & lutBit, const int
+				 DGLutAddress, const int DGAddress, const unsigned char
+				 DGBit):gammaTestAddress(gammaTestAddress),
+	gammaTestBit(gammaTestBit), testRGBAddress(testRGBAddress),
+	lutBit(lutBit), testRGBBit(testRGBBit), DGLutAddress(DGLutAddress),
+	DGAddress(DGAddress), DGBit(DGBit) {
 
     };
     TestRGBBit::TestRGBBit(const int rLowBit, const int rHighBit,

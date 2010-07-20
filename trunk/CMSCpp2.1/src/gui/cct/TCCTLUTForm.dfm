@@ -1,6 +1,6 @@
 object CCTLUTForm: TCCTLUTForm
-  Left = 339
-  Top = 312
+  Left = 253
+  Top = 341
   Width = 842
   Height = 487
   Caption = 'CCT LUT'
@@ -408,14 +408,6 @@ object CCTLUTForm: TCCTLUTForm
       TabOrder = 1
       Visible = False
       OnClick = CheckBox_NewMethodClick
-    end
-    object CheckBox_HStripePattern: TCheckBox
-      Left = 9
-      Top = 72
-      Width = 136
-      Height = 17
-      Caption = 'H Stripe Pattern'
-      TabOrder = 2
     end
   end
   object Button_MeaRun: TButton

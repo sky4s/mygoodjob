@@ -139,8 +139,6 @@ void __fastcall TCCTLUTForm::Button_MeaRunClick(TObject * Sender)
 		Edit_BTargetIntensity->Text.ToDouble();
 	    calibrator.setBTargetIntensity(bTargetIntensity);
 	}
-	MeasureWindow->setHStripePattern(this->CheckBox_HStripePattern->
-					 Checked);
 	//==========================================================================
 
 	//==========================================================================

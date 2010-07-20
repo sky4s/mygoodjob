@@ -260,7 +260,7 @@ void __fastcall TTargetWhiteForm2::Button2Click(TObject * Sender)
     try {
 	analyzer->setWaitTimes(5000);
 	stopMeasure = false;
-	//analyzer->beginSetup();
+	analyzer->beginAnalyze();
 	analyzer->setupComponent(Channel::R, r);
 	if (true == stopMeasure || false == MeasureWindow->Visible) {
 	    return;
