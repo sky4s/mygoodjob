@@ -1,6 +1,6 @@
 object MainForm: TMainForm
-  Left = 302
-  Top = 300
+  Left = 288
+  Top = 362
   Width = 817
   Height = 377
   Caption = 'CCT Adjustment v3'
@@ -834,8 +834,8 @@ object MainForm: TMainForm
     Top = 16
     Width = 792
     Height = 249
-    ActivePage = TabSheet2
-    TabIndex = 0
+    ActivePage = TabSheet1
+    TabIndex = 1
     TabOrder = 0
     object TabSheet2: TTabSheet
       Caption = 'T-CON Setup'
@@ -1409,6 +1409,40 @@ object MainForm: TMainForm
           TabOrder = 2
           OnClick = RadioButton_AnalyzerDebugClick
         end
+      end
+      object RadioGroup1: TRadioGroup
+        Left = 0
+        Top = 128
+        Width = 97
+        Height = 73
+        Caption = 'Pattern'
+        TabOrder = 5
+      end
+      object RadioButton1: TRadioButton
+        Left = 8
+        Top = 144
+        Width = 81
+        Height = 17
+        Caption = 'Normal'
+        Checked = True
+        TabOrder = 6
+        TabStop = True
+      end
+      object RadioButton2: TRadioButton
+        Left = 8
+        Top = 160
+        Width = 81
+        Height = 17
+        Caption = 'H Stripe'
+        TabOrder = 7
+      end
+      object RadioButton3: TRadioButton
+        Left = 8
+        Top = 176
+        Width = 81
+        Height = 17
+        Caption = 'Indep'
+        TabOrder = 8
       end
     end
   end

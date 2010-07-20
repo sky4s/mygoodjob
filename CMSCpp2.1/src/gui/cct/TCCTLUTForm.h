@@ -89,7 +89,6 @@ class TCCTLUTForm:public TForm {
     TCheckBox *CheckBox_BTargetIntensity;
     TEdit *Edit_BTargetIntensity;
     TRadioButton *RadioButton_GammaValue;
-    TCheckBox *CheckBox_HStripePattern;
     void __fastcall RadioButton_P1P2Click(TObject * Sender);
     void __fastcall Button_MeaRunClick(TObject * Sender);
     void __fastcall FormCreate(TObject * Sender);

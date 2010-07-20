@@ -738,3 +738,11 @@ void __fastcall TMainForm::RadioButton_AnalyzerDebugClick(TObject * Sender)
 
 //---------------------------------------------------------------------------
 
+void __fastcall TMainForm::CheckBox_HStripePatternClick(TObject * Sender)
+{
+    /*MeasureWindow->setHStripePattern(this->CheckBox_HStripePattern->
+				     Checked);*/
+}
+
+//---------------------------------------------------------------------------
+

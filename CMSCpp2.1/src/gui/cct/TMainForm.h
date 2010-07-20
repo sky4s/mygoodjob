@@ -97,6 +97,10 @@ class TMainForm:public TForm {
     TComboBox *ComboBox_Type;
     TLabel *Label11;
     TButton *Button_I2CTest;
+        TRadioGroup *RadioGroup1;
+        TRadioButton *RadioButton1;
+        TRadioButton *RadioButton2;
+        TRadioButton *RadioButton3;
     void __fastcall About1Click(TObject * Sender);
     void __fastcall Exit1Click(TObject * Sender);
     void __fastcall TargetWhite1Click(TObject * Sender);
@@ -124,6 +128,7 @@ class TMainForm:public TForm {
     void __fastcall RadioButton_AnalyzerMaxMatrixClick(TObject * Sender);
     void __fastcall RadioButton_AnalyzerCA210Click(TObject * Sender);
     void __fastcall RadioButton_AnalyzerDebugClick(TObject * Sender);
+    void __fastcall CheckBox_HStripePatternClick(TObject * Sender);
   private:			// User declarations
     //==========================================================================
     // meter

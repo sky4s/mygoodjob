@@ -140,24 +140,30 @@ double_vector_ptr TThreeDMeasurementForm::patternMeasure0(RGB_ptr left,
     Application->ProcessMessages();
 
     Sleep(idleTime);
-    if (true == stop) {
-	return double_vector_ptr((double_vector *) null);
-    }
-
-    double_vector_ptr result(new double_vector());
-    for (int x = 0; x < aveTimes; x++) {
+    try {
 	if (true == stop) {
 	    return double_vector_ptr((double_vector *) null);
 	}
-	double Y = 0;
-	if (true == linkCA210) {
-	    Y = ca210->triggerMeasurementInXYZ()[1];
-	} else {
-	    Y = 1;
+
+	double_vector_ptr result(new double_vector());
+	for (int x = 0; x < aveTimes; x++) {
+	    if (true == stop) {
+		return double_vector_ptr((double_vector *) null);
+	    }
+	    double Y = 0;
+	    if (true == linkCA210) {
+		Y = ca210->triggerMeasurementInXYZ()[1];
+	    } else {
+		Y = 1;
+	    }
+	    result->push_back(Y);
 	}
-	result->push_back(Y);
+	return result;
+
     }
-    return result;
+    __finally {
+	stop = false;
+    }
 };
 
 double2D_ptr TThreeDMeasurementForm::ODMeasure(const Dep::Channel & ch,
@@ -658,24 +664,29 @@ void __fastcall TThreeDMeasurementForm::Button1Click(TObject * Sender)
 	bool leftrightChange = this->CheckBox_LeftRightChange->Checked;
 
       std:vector < double_vector_ptr > vec;
-	for (int y = 0; y < 17; y++) {
-	    //==================================================================
-	    // rgb prepare
-	    //==================================================================
-	    int r = 16 * y;
-	    r = r > 255 ? 255 : r;
-	    RGB_ptr rrgb(new RGBColor(MaxValue::Double255));
-	    rrgb->setValue(Channel::W, r);
-	    //==================================================================
-	    double_vector_ptr measureResult =
-		patternMeasure0(rrgb, rrgb, idleTime, aveTimes,
-				leftrightChange);
-	    if (true == stableTest) {
-		vec.push_back(measureResult);
+	try {
+	    for (int y = 0; y < 17; y++) {
+		//==================================================================
+		// rgb prepare
+		//==================================================================
+		int r = 16 * y;
+		r = r > 255 ? 255 : r;
+		RGB_ptr rrgb(new RGBColor(MaxValue::Double255));
+		rrgb->setValue(Channel::W, r);
+		//==================================================================
+		double_vector_ptr measureResult =
+		    patternMeasure0(rrgb, rrgb, idleTime, aveTimes,
+				    leftrightChange);
+		if (true == stableTest) {
+		    vec.push_back(measureResult);
+		}
+		if (true == stop) {
+		    break;
+		}
 	    }
-	    if (true == stop) {
-		break;
-	    }
+	}
+	__finally {
+	    stop = false;
 	}
 
 	string sheetName = "Sheet1";

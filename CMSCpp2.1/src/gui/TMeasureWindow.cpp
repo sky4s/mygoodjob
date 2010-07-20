@@ -45,6 +45,10 @@ void __fastcall TMeasureWindow::FormKeyPress(TObject * Sender, char &Key)
 
 void TMeasureWindow::setRGB(int r, int g, int b)
 {
+    //this->Repaint();
+    this->Update();
+    //Application->ProcessMessages();
+
     if (true == tconinput) {
 	tconcontrol->setTestRGB(r, g, b);
     } else {
@@ -56,7 +60,7 @@ void TMeasureWindow::setRGB(int r, int g, int b)
 	    int h = this->Height;
 	    for (int y = 0; y < h; y++) {
 		canvas->PenPos = TPoint(0, y);
-		if (y % 2 == 0) {
+		if (y % 2 != 0) {
 		    canvas->Pen->Color = color;
 		} else {
 		    canvas->Pen->Color = clBlack;
@@ -69,7 +73,8 @@ void TMeasureWindow::setRGB(int r, int g, int b)
 	}
     }
 
-    //this->Update();
+
+    //Application->ProcessMessages();
 }
 
 void TMeasureWindow::setRGB(bptr < Dep::RGBColor > rgb)

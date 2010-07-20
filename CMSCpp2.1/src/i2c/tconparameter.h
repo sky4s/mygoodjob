@@ -31,24 +31,38 @@ namespace i2c {
 
     class TCONParameter {
       public:
+	//======================================================================
+	// gamma test(direct gamma)
+	//======================================================================
 	const int gammaTestAddress;
 	const int testRGBAddress;
-	const int DGLutAddress;
 	const unsigned char gammaTestBit;
-	const Dep::MaxValue & lutBit;
 	const TestRGBBit & testRGBBit;
+	//======================================================================
+	// DG On/Off , Lut
+	//======================================================================
+	const int DGLutAddress;
+	const int DGAddress;
+	const unsigned char DGBit;
+	//======================================================================
+
+	const Dep::MaxValue & lutBit;
 
       public:
 	 TCONParameter(int gammaTestAddress,
 		       unsigned char gammaTestBit, int testRGBAddress,
 		       bool independentRGB, const Dep::MaxValue & lutBit);
-	 TCONParameter(int gammaTestAddress,
-		       unsigned char gammaTestBit, int testRGBAddress,
-		       bool independentRGB, const Dep::MaxValue & lutBit,
-		       int DGLutAddress);
-	 TCONParameter(int gammaTestAddress, unsigned char gammaTestBit,
-		       int testRGBAddress, const TestRGBBit & testRGBBit,
-		       const Dep::MaxValue & lutBit);
+	/*TCONParameter(int gammaTestAddress,
+	   unsigned char gammaTestBit, int testRGBAddress,
+	   bool independentRGB, const Dep::MaxValue & lutBit,
+	   int DGLutAddress); */
+	 TCONParameter(const int gammaTestAddress,
+		       const unsigned char gammaTestBit,
+		       const int testRGBAddress,
+		       const TestRGBBit & testRGBBit,
+		       const Dep::MaxValue & lutBit,
+		       const int DGLutAddress, const int DGAddress,
+		       const unsigned char DGBit);
     };
 
 };

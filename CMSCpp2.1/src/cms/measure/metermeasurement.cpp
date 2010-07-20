@@ -122,6 +122,7 @@ namespace cms {
 	    // 變換完視窗顏色的短暫停留
 	    //==========================================================================
 	    if (!fakeMeasure) {
+		Application->ProcessMessages();
 		measureWindow->setRGB(measureRGB);
 		//measureWindow->
 		Application->ProcessMessages();
