@@ -41,6 +41,7 @@ void __fastcall TGammaMeasurementForm::Button_MeasureClick(TObject *
     (*rgbw)[1] = this->CheckBox_G->Checked;
     (*rgbw)[2] = this->CheckBox_B->Checked;
     (*rgbw)[3] = this->CheckBox_W->Checked;
+    bool flicker = this->CheckBox_FlickerFMA->Checked;
 
     if (false == (*rgbw)[0] && false == (*rgbw)[1] && false == (*rgbw)[2]
 	&& false == (*rgbw)[3]) {
@@ -52,7 +53,7 @@ void __fastcall TGammaMeasurementForm::Button_MeasureClick(TObject *
     string stlfilename = filename->c_str();
     Util::deleteExist(stlfilename);
 
-    measure(rgbw, getMeasureCondition(), stlfilename);
+    measure(rgbw, getMeasureCondition(), flicker, stlfilename);
     Util::shellExecute(stlfilename);
 }
 
@@ -110,7 +111,7 @@ void TGammaMeasurementForm::setMeasureInfo()
 void TGammaMeasurementForm::measure(bool_vector_ptr rgbw,
 				    bptr <
 				    cms::lcd::calibrate::MeasureCondition >
-				    measureCondition,
+				    measureCondition, bool flicker,
 				    const std::string & filename)
 {
     using namespace Dep;
@@ -120,18 +121,20 @@ void TGammaMeasurementForm::measure(bool_vector_ptr rgbw,
     using namespace cms::util;
 
     Patch_vector_ptr vectors[3];
+    bptr < MeasureTool > mt(new MeasureTool(mm));
+    MeasureWindow->addWindowListener(mt);
 
     Component_vector_ptr componentVector =
 	(true == (*rgbw)[3]) ?
-	fetcher->fetchComponent(measureCondition) :
-	Component_vector_ptr((Component_vector *) null);
+	(flicker ? mt->flickerMeasure(measureCondition) : fetcher->
+	 fetchComponent(measureCondition)) : nil_Component_vector_ptr;
     if (true == (*rgbw)[3] && null == componentVector) {
 	//代表被阻斷量測
 	return;
     }
 
-    bptr < MeasureTool > mt(new MeasureTool(mm));
-    MeasureWindow->addWindowListener(mt);
+
+
     foreach(const Channel & ch, *Channel::RGBChannel) {
 	int index = ch.getArrayIndex();
 	if (true == (*rgbw)[index]) {

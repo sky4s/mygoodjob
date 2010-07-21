@@ -72,6 +72,7 @@ namespace ca210api {
 	float_array triggerMeasurement();
 	float_array triggerIntensityAnalyze();
 	 bptr < CAMeasureResult > triggerMeasureResult();
+	float triggerFlickerFMA();
 
 	// Options
 	void setSyncMode(SyncMode mode);

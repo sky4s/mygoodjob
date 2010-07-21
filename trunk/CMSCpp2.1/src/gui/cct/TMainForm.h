@@ -102,6 +102,8 @@ class TMainForm:public TForm {
     TRadioButton *RadioButton_HStripe;
     TRadioButton *RadioButton_Indep;
     TRadioButton *RadioButton_HSD;
+    TRadioButton *RadioButton_FlickrPixel;
+    TRadioButton *RadioButton_FlickrSubPixel;
     void __fastcall About1Click(TObject * Sender);
     void __fastcall Exit1Click(TObject * Sender);
     void __fastcall TargetWhite1Click(TObject * Sender);
@@ -133,6 +135,8 @@ class TMainForm:public TForm {
     void __fastcall RadioButton_HStripeClick(TObject * Sender);
     void __fastcall RadioButton_IndepClick(TObject * Sender);
     void __fastcall RadioButton_HSDClick(TObject * Sender);
+    void __fastcall RadioButton_FlickrPixelClick(TObject * Sender);
+    void __fastcall RadioButton_FlickrSubPixelClick(TObject * Sender);
   private:			// User declarations
     //==========================================================================
     // meter

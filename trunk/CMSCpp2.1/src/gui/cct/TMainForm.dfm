@@ -1276,7 +1276,7 @@ object MainForm: TMainForm
           Left = 46
           Top = 20
           Width = 72
-          Height = 24
+          Height = 21
           ImeName = #26085#25991#36664#20837#31995#32113' (MS-IME2002)'
           TabOrder = 0
           Text = '1366'
@@ -1285,7 +1285,7 @@ object MainForm: TMainForm
           Left = 46
           Top = 46
           Width = 72
-          Height = 24
+          Height = 21
           ImeName = #26085#25991#36664#20837#31995#32113' (MS-IME2002)'
           TabOrder = 1
           Text = '768'
@@ -1309,7 +1309,7 @@ object MainForm: TMainForm
           Left = 7
           Top = 20
           Width = 78
-          Height = 24
+          Height = 21
           ImeName = #26085#25991#36664#20837#31995#32113' (MS-IME2002)'
           TabOrder = 0
           Text = '750'
@@ -1348,7 +1348,7 @@ object MainForm: TMainForm
           Left = 79
           Top = 13
           Width = 39
-          Height = 24
+          Height = 21
           Enabled = False
           ImeName = #26085#25991#36664#20837#31995#32113' (MS-IME2002)'
           TabOrder = 0
@@ -1358,7 +1358,7 @@ object MainForm: TMainForm
           Left = 80
           Top = 39
           Width = 38
-          Height = 24
+          Height = 21
           ImeName = #26085#25991#36664#20837#31995#32113' (MS-IME2002)'
           TabOrder = 1
           Text = '2'
@@ -1367,7 +1367,7 @@ object MainForm: TMainForm
           Left = 80
           Top = 65
           Width = 83
-          Height = 24
+          Height = 21
           ImeName = #26085#25991#36664#20837#31995#32113' (MS-IME2002)'
           TabOrder = 2
           Text = ' '
@@ -1413,7 +1413,7 @@ object MainForm: TMainForm
       object RadioGroup1: TRadioGroup
         Left = 0
         Top = 104
-        Width = 129
+        Width = 193
         Height = 65
         Caption = 'Pattern'
         TabOrder = 5
@@ -1451,10 +1451,28 @@ object MainForm: TMainForm
         Left = 71
         Top = 116
         Width = 50
-        Height = 14
+        Height = 21
         Caption = 'HSD'
         TabOrder = 9
         OnClick = RadioButton_HSDClick
+      end
+      object RadioButton_FlickrPixel: TRadioButton
+        Left = 71
+        Top = 130
+        Width = 113
+        Height = 17
+        Caption = 'FlickrPixel'
+        TabOrder = 10
+        OnClick = RadioButton_FlickrPixelClick
+      end
+      object RadioButton_FlickrSubPixel: TRadioButton
+        Left = 71
+        Top = 143
+        Width = 113
+        Height = 17
+        Caption = 'FlickrSubPixel'
+        TabOrder = 11
+        OnClick = RadioButton_FlickrSubPixelClick
       end
     end
   end

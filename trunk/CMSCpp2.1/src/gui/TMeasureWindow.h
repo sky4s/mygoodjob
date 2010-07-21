@@ -53,6 +53,8 @@ class TMeasureWindow:public TForm {
      std::vector < bwptr < cms::util::WindowListener > >listenerVector2;
     //bool hStripePattern;
     Pattern pattern;
+     bptr < cms::util::DoubleBufferedCanvas > doubleBuffered;
+     bptr < cms::util::DoubleBufferedCanvas > getDoubleBufferedCanvas();
   public:			// User declarations
      __fastcall TMeasureWindow(TComponent * Owner);
     void setRGB(int r, int g, int b);

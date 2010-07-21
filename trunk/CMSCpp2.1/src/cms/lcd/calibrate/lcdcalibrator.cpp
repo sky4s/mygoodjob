@@ -71,35 +71,6 @@ namespace cms {
 		    rgbMeasureCode->push_back(rgb);
 		}
 		return fetchComponent(rgbMeasureCode);
-		/*Component_vector_ptr result(new Component_vector());
-
-		   bool waitingStable = true;
-		   int waitTimes = analyzer->getWaitTimes();
-		   analyzer->setWaitTimes(10000);
-
-		   analyzer->beginAnalyze();
-		   foreach(const int &x, *measureCode) {
-		   RGB_ptr rgb(new RGBColor(x, x, x));
-		   RGB_ptr intensity = analyzer->getIntensity(rgb);
-		   XYZ_ptr XYZ = analyzer->getCIEXYZ();
-		   Component_ptr component(new Component(rgb, intensity,
-		   XYZ));
-		   result->push_back(component);
-
-		   if (true == waitingStable) {
-		   waitingStable = false;
-		   analyzer->setWaitTimes(waitTimes);
-		   }
-
-		   if (true == stop) {
-		   stop = false;
-		   analyzer->endAnalyze();
-		   return Component_vector_ptr((Component_vector *)
-		   null);
-		   }
-		   }
-		   analyzer->endAnalyze();
-		   return result; */
 	    };
 
 	    Component_vector_ptr ComponentFetcher::
