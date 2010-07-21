@@ -30,7 +30,8 @@ namespace cms {
 				       bptr < IntensityAnalyzerIF >
 				       analyzer):DimDGLutGenerator
 		(componentVector, analyzer),
-		useMaxTargetBIntensity(false), bTargetIntensity(-1) {
+		useMaxTargetBIntensity(false), bTargetIntensity(-1),
+		multiPrimayColor(false), multiPrimayColorInterval(17) {
 	    };
 
 	    RGB_vector_ptr AdvancedDGLutGenerator::
@@ -81,16 +82,37 @@ namespace cms {
 		xyY_ptr rxyY = analyzer->getPrimaryColor(Channel::R);
 		xyY_ptr gxyY = analyzer->getPrimaryColor(Channel::G);
 		xyY_ptr bxyY = analyzer->getPrimaryColor(Channel::B);
-		//double targetBIntensity = -1;
+		XYZ_ptr rXYZ = rxyY->toXYZ();
+		XYZ_ptr gXYZ = gxyY->toXYZ();
+		XYZ_ptr bXYZ = bxyY->toXYZ();
+		bptr < MeterMeasurement > mm;
+		if (multiPrimayColor) {
+		    mm = analyzer->getMeterMeasurement();
+		}
 
 		for (int x = size - 1; x != -1; x--) {
 		    XYZ_ptr targetXYZ = (*targetXYZVector)[x];
 		    bptr < MaxMatrixIntensityAnayzer >
 			mmia(new MaxMatrixIntensityAnayzer());
 
-		    mmia->setupComponent(Channel::R, rxyY->toXYZ());
-		    mmia->setupComponent(Channel::G, gxyY->toXYZ());
-		    mmia->setupComponent(Channel::B, bxyY->toXYZ());
+		    if (multiPrimayColor
+			&& (x % multiPrimayColorInterval == 0)
+			&& (x != size - 1)) {
+			RGB_ptr preRGB = (*result)[x + 1];
+			rXYZ =
+			    mm->measure((int) preRGB->R, 0, 0,
+					"")->getXYZ();
+			gXYZ =
+			    mm->measure(0, (int) preRGB->G, 0,
+					"")->getXYZ();
+			bXYZ =
+			    mm->measure(0, 0, (int) preRGB->B,
+					"")->getXYZ();
+		    }
+
+		    mmia->setupComponent(Channel::R, rXYZ);
+		    mmia->setupComponent(Channel::G, gXYZ);
+		    mmia->setupComponent(Channel::B, bXYZ);
 		    mmia->setupComponent(Channel::W, targetXYZ);
 		    mmia->enter();
 
@@ -350,6 +372,12 @@ namespace cms {
 		setBTargetIntensity(double bTargetIntensity) {
 		this->bTargetIntensity = bTargetIntensity;
 	    }
+	    void AdvancedDGLutGenerator::setMultiPrimayColor(bool enable,
+							     int interval)
+	    {
+		this->multiPrimayColor = enable;
+		this->multiPrimayColorInterval = interval;
+	    };
 	    XYZ_ptr AdvancedDGLutGenerator::getTargetXYZ(double v1,
 							 double v2,
 							 double v3,

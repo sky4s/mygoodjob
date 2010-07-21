@@ -27,6 +27,8 @@ namespace cms {
 		XYZ_ptr getXYZ(XYZ_ptr XYZ, double offsetK);
 		bool isDuplicateBlue100(XYZ_ptr targetXYZ);
 		double bTargetIntensity;
+		bool multiPrimayColor;
+		int multiPrimayColorInterval;
 	      public:
 		 AdvancedDGLutGenerator(Component_vector_ptr
 					componentVector,
@@ -64,6 +66,7 @@ namespace cms {
 		void setUseMaxTargetBIntensity(bool
 					       useMaxTargetBIntensity);
 		void setBTargetIntensity(double bTargetIntensity);
+		void setMultiPrimayColor(bool enable, int interval);
 	      private:
 
 		static XYZ_vector_ptr getDimGammaTarget(double_vector_ptr

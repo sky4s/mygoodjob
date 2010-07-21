@@ -39,6 +39,7 @@ namespace cms {
 	    virtual xyY_ptr getReferenceColor() = 0;
 	    virtual xyY_ptr getPrimaryColor(const Dep::Channel & ch) = 0;
 	    virtual RGB_ptr getReferenceRGB() = 0;
+	    virtual bptr < MeterMeasurement > getMeterMeasurement() = 0;
 	};
 
 	/*
@@ -82,6 +83,7 @@ namespace cms {
 	    xyY_ptr getReferenceColor();
 	    xyY_ptr getPrimaryColor(const Dep::Channel & ch);
 	    RGB_ptr getReferenceRGB();
+	     bptr < MeterMeasurement > getMeterMeasurement();
 	};
 
 	/*
@@ -119,6 +121,7 @@ namespace cms {
 	    xyY_ptr getPrimaryColor(const Dep::Channel & ch);
 	    RGB_ptr getReferenceRGB();
 	    bool isInverseMatrixNull();
+	     bptr < MeterMeasurement > getMeterMeasurement();
 	};
 
 	/*
@@ -148,23 +151,8 @@ namespace cms {
 	    xyY_ptr getReferenceColor();
 	    xyY_ptr getPrimaryColor(const Dep::Channel & ch);
 	    RGB_ptr getReferenceRGB();
+	     bptr < MeterMeasurement > getMeterMeasurement();
 	};
-
-	/*
-	   以float進行矩陣運算, 問題多多不能使用
-	 */
-	/*class MaxMatrixIntensityAnayzer2:public MaxMatrixIntensityAnayzer {
-	   friend class IntensityAnayzer;
-	   protected:
-	   float2D_ptr inverseMatrix2;
-	   float2D_ptr targetRatio2;
-	   float2D_ptr rgbValues2;
-	   public:
-	   MaxMatrixIntensityAnayzer2(bptr < MeterMeasurement > mm);
-	   void enter();
-	   RGB_ptr getIntensity(XYZ_ptr XYZ);
-	   RGB_ptr getIntensity(RGB_ptr rgb);
-	   }; */
     };
 };
 #endif
