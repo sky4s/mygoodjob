@@ -767,3 +767,18 @@ void __fastcall TMainForm::RadioButton_HSDClick(TObject * Sender)
 
 //---------------------------------------------------------------------------
 
+void __fastcall TMainForm::RadioButton_FlickrPixelClick(TObject * Sender)
+{
+    MeasureWindow->setPattern(FlickrPixel);
+}
+
+//---------------------------------------------------------------------------
+
+void __fastcall TMainForm::RadioButton_FlickrSubPixelClick(TObject *
+							   Sender)
+{
+    MeasureWindow->setPattern(FlickrSubPixel);
+}
+
+//---------------------------------------------------------------------------
+

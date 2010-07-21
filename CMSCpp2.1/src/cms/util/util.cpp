@@ -230,6 +230,43 @@ namespace cms {
 	    return buffer[index];
 	};
 	//======================================================================
+
+	//======================================================================
+	//
+	//======================================================================
+      DoubleBufferedCanvas::DoubleBufferedCanvas(TCanvas * canvas, int width, int height):canvas(canvas), width(width), height(height),
+	    doubleBuffered(true)
+	{
+	    if (doubleBuffered) {
+		bitmap =
+		    bptr < Graphics::TBitmap > (new Graphics::TBitmap());
+		bitmap->Canvas->Handle =
+		    CreateCompatibleDC(canvas->Handle);
+		bitmap->Width = width;
+		bitmap->Height = height;
+	    }
+	};
+	TCanvas *DoubleBufferedCanvas::getDoubleBufferedCanvas() {
+	    if (doubleBuffered) {
+		return bitmap->Canvas;
+	    } else {
+		return canvas;
+	    }
+	};
+	void DoubleBufferedCanvas::excute() {
+	    if (doubleBuffered) {
+		BitBlt(canvas->Handle, 0, 0, width, height,
+		       bitmap->Canvas->Handle, 0, 0, SRCCOPY);
+	    }
+	};
+	void DoubleBufferedCanvas::clear() {
+	    if (doubleBuffered) {
+		TCanvas *canvas = bitmap->Canvas;
+		canvas->Brush->Color = clBlack;
+		canvas->FillRect(TRect(0, 0, width, height));
+	    }
+	};
+	//======================================================================
     };
 };
 

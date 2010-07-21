@@ -75,6 +75,7 @@ namespace cms {
 		string_ptr getCalibrationDescription();
 		void setPatchIntensity(PatchIntensity patchIntensity);
 		double_array triggerMeasurementInXYZ();
+		double triggerMeasurementInFlickerFMA();
 		string_ptr getLastCalibration();
 		string_ptr getCalibrationCount();
 		void setScreenType(ScreenType screenType);

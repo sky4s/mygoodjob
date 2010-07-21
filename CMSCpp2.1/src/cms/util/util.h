@@ -75,6 +75,19 @@ namespace cms {
 	  public:
 	    virtual void windowClosing() = 0;
 	};
+
+	class DoubleBufferedCanvas {
+	  private:
+	    TCanvas * canvas;
+	    const int width, height;
+	     bptr < Graphics::TBitmap > bitmap;
+	    const bool doubleBuffered;
+	  public:
+	     DoubleBufferedCanvas(TCanvas * canvas, int width, int height);
+	    TCanvas *getDoubleBufferedCanvas();
+	    void excute();
+	    void clear();
+	};
     };
 };
 #endif

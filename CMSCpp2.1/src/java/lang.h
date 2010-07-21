@@ -245,6 +245,7 @@ typedef bptr < cms::ColorMatchingFunction > CMF_ptr;
 typedef bptr < cms::lcd::calibrate::Component > Component_ptr;
 typedef std::vector < Component_ptr > Component_vector;
 typedef bptr < Component_vector > Component_vector_ptr;
+#define nil_Component_vector_ptr Component_vector_ptr( (Component_vector*) null)
 
 
 typedef bptr < cms::util::RGBGamma > RGBGamma_ptr;
@@ -541,7 +542,7 @@ template < typename Container, typename ValueType, int nPropType >
     }
 //-- To make possible to cast the property class to the
 //   internal type --
-    operator  ValueType() {
+    operator   ValueType() {
 	assert(m_cObject != NULL);
 	assert(Get != NULL);
 	return (m_cObject->*Get) ();

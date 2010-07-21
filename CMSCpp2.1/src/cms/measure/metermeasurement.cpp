@@ -19,6 +19,7 @@ namespace cms {
 	using namespace cms::measure::cp;
 	using namespace std;
 	using namespace java::lang;
+	using namespace cms::lcd::calibrate;
 
 	void MeterMeasurement::init(bool calibration) {
 	    measureWindow = MeasureWindow;
@@ -56,7 +57,7 @@ namespace cms {
 	    MeterMeasurement::measure(RGB_ptr rgb,
 				      const string_ptr patchName) {
 	    return measure0(rgb, patchName, nil_string_ptr,
-			    nil_string_ptr);
+			    nil_string_ptr, false);
 	};
 
 	Patch_ptr MeterMeasurement::measure(int r, int g, int b,
@@ -98,12 +99,17 @@ namespace cms {
 	void MeterMeasurement::meterClose() {
 
 	};
-
+	Patch_ptr MeterMeasurement::measureFlicker(RGB_ptr rgb,
+						   const string_ptr
+						   patchName) {
+	    return measure0(rgb, patchName, nil_string_ptr, nil_string_ptr,
+			    true);
+	};
 	Patch_ptr
 	    MeterMeasurement::measure0(RGB_ptr measureRGB,
 				       string_ptr patchName,
 				       string_ptr titleNote,
-				       string_ptr timeNote) {
+				       string_ptr timeNote, bool flicker) {
 	    setMeasureWindowsVisible(true);
 	    //量測的顏色, 量測的顏色可能與導具的顏色不同, 所以特別獨立出此變數
 
@@ -134,7 +140,23 @@ namespace cms {
 		//如果視窗被關閉, 就結束量測
 		return Patch_ptr((Patch *) NULL);
 	    }
-	    double_array result = meter->triggerMeasurementInXYZ();
+	    double_array result;
+	    if (flicker) {
+		float flickerValue = -1;
+		CA210 *ca210 = dynamic_cast < CA210 * >(meter.get());
+		if (null != ca210) {
+		    bptr < ca210api::CA210API > ca210api =
+			ca210->getCA210API();
+		    flickerValue = ca210api->triggerFlickerFMA();
+		}
+		result = double_array(new double[3]);
+		result[0] = 0;
+		result[1] = flickerValue;
+		result[2] = 0;
+	    } else {
+		result = meter->triggerMeasurementInXYZ();
+	    }
+	    //double_array result = meter->triggerMeasurementInXYZ();
 
 	    XYZ_ptr XYZ(new Indep::CIEXYZ(result));
 	    Patch_ptr patch(new Patch(patchName, XYZ, XYZ, measureRGB));
@@ -251,6 +273,31 @@ namespace cms {
 						  rgbMeasureCode) {
 	    return rampMeasure(Channel::W, rgbMeasureCode);
 	}
+	Component_vector_ptr MeasureTool::flickerMeasure(bptr <
+							 MeasureCondition >
+							 measureCondition)
+	{
+	    int_vector_ptr measureCode =
+		measureCondition->getMeasureCode();
+	    Component_vector_ptr vector(new Component_vector());
+	    foreach(int c, *measureCode) {
+		RGB_ptr rgb(new RGBColor());
+		rgb->setValue(Dep::Channel::W, c);
+		Patch_ptr patch = mm->measureFlicker(rgb, rgb->toString());
+
+		Component_ptr component(new
+					Component(rgb, nil_RGB_ptr,
+						  patch->getXYZ()));
+		vector->push_back(component);
+		if (true == stop) {
+		    stop = false;
+		    mm->setMeasureWindowsVisible(false);
+		    return nil_Component_vector_ptr;
+		}
+	    };
+	    mm->setMeasureWindowsVisible(false);
+	    return vector;
+	};
 	void MeasureTool::windowClosing() {
 	    stop = true;
 	}

@@ -76,8 +76,8 @@ namespace cms {
 			xy2CCTByMcCamyFloat(xyY);
 		    //計算出來的cct是否有意義 
 		    /*cct =
-			CorrelatedColorTemperature::
-			isCCTMeaningful(xyY) ? cct : -1;*/
+		       CorrelatedColorTemperature::
+		       isCCTMeaningful(xyY) ? cct : -1; */
 		    (*values)[4] = _toString(static_cast < int >(cct));
 
 		    double duv =
@@ -86,9 +86,13 @@ namespace cms {
 		    (*values)[5] = _toString(duv);
 
 		    RGB_ptr intensity = c->intensity;
-		    (*values)[6] = _toString(intensity->R);
-		    (*values)[7] = _toString(intensity->G);
-		    (*values)[8] = _toString(intensity->B);
+		    if (null != intensity) {
+			(*values)[6] = _toString(intensity->R);
+			(*values)[7] = _toString(intensity->G);
+			(*values)[8] = _toString(intensity->B);
+		    } else {
+			StringVector::setContent(values, "0", 3, 6, 7, 8);
+		    }
 		} else {
 		    StringVector::setContent(values, "0", 9, 0, 1, 2, 3, 4,
 					     5, 6, 7, 8);

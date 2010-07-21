@@ -58,6 +58,8 @@ namespace cms {
 			      const string_ptr patchName);
 	    Patch_ptr measure(int r, int g, int b,
 			      const std::string & patchName);
+	    Patch_ptr measureFlicker(RGB_ptr rgb,
+				     const string_ptr patchName);
 
 	    void setBlankTimes(int blankTimes);
 	    void setWaitTimes(int waitTimes);
@@ -74,7 +76,7 @@ namespace cms {
 			       measureRGB,
 			       const string_ptr patchName,
 			       const string_ptr titleNote,
-			       string_ptr timeNote);
+			       string_ptr timeNote, bool flicker);
 
 
 
@@ -105,6 +107,10 @@ namespace cms {
 					 Channel & channel,
 					 RGB_vector_ptr rgbMeasureCode);
 	    Patch_vector_ptr rampMeasure(RGB_vector_ptr rgbMeasureCode);
+	    Component_vector_ptr flickerMeasure(bptr <
+						cms::lcd::calibrate::
+						MeasureCondition >
+						measureCondition);
 	    void windowClosing();
 	};
 

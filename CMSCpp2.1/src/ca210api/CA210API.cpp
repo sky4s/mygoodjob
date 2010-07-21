@@ -117,6 +117,12 @@ namespace ca210api {
 	return measureValues;
     };
 
+    float CA210API::triggerFlickerFMA() {
+	ca.set_DisplayMode(FMAflicker);
+	ca.Measure(0);
+	return probe.get_FlckrFMA();
+    };
+
     bptr < CAMeasureResult > CA210API::getMeasureResult() {
 	return measureResult;
     };

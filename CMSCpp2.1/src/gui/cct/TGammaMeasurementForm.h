@@ -44,6 +44,7 @@ class TGammaMeasurementForm:public TForm {
     TButton *Button2;
     TOpenDialog *OpenDialog1;
     TCheckBox *CheckBox_Loaded;
+    TCheckBox *CheckBox_FlickerFMA;
     void __fastcall Button_MeasureClick(TObject * Sender);
     void __fastcall FormShow(TObject * Sender);
     void __fastcall TOutputFileFrame1Button_BrowseDirClick(TObject *
@@ -56,7 +57,8 @@ class TGammaMeasurementForm:public TForm {
     void setMeasureInfo();
     void measure(bool_vector_ptr rgbw,
 		 bptr < cms::lcd::calibrate::MeasureCondition >
-		 measureCondition, const std::string & filename);
+		 measureCondition, bool flicker,
+		 const std::string & filename);
     void tconMeasure(bool_vector_ptr rgbw, int start, int end, int step,
 		     const std::string & filename);
      bptr < cms::measure::MeterMeasurement > mm;

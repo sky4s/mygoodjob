@@ -91,6 +91,11 @@ namespace cms {
 		return result;
 	    };
 
+	    double CA210::triggerMeasurementInFlickerFMA() {
+		measureCount++;
+		return (double) CA210API_->triggerFlickerFMA();
+	    };
+
 	    shared_ptr < std::string > CA210::getLastCalibration() {
 		return nil_string_ptr;
 	    };
@@ -120,9 +125,8 @@ namespace cms {
 	    };
 	    //==================================================================
 
-	  DGLutFileMeter::DGLutFileMeter(bptr < DGLutFile > dglut):	/*dglut(dglut), */ vector(dglut->
-				      getComponentVector()),
-		index(0) {
+	  DGLutFileMeter::DGLutFileMeter(bptr < DGLutFile > dglut):	/*dglut(dglut), */
+	    vector(dglut->getComponentVector()), index(0) {
 	    };
 	    void DGLutFileMeter::close() {
 	    };
