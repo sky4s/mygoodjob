@@ -213,6 +213,11 @@ namespace cms {
 		return RGB_ptr((RGBColor *) null);
 	    }
 	};
+	bptr < MeterMeasurement >
+	    CA210IntensityAnalyzer::getMeterMeasurement() {
+	    return mm;
+	};
+	//======================================================================
 
 	//======================================================================
 	// MaxMatrixIntensityAnayzer
@@ -260,24 +265,28 @@ namespace cms {
 	};
 
 	XYZ_ptr MaxMatrixIntensityAnayzer::getCIEXYZOnly(RGB_ptr rgb) {
-	    Patch_ptr patch = mm->measure(rgb, rgb->toString());
-	    XYZ = patch->getXYZ();
-	    return XYZ;
+	    if (null != mm) {
+		Patch_ptr patch = mm->measure(rgb, rgb->toString());
+		XYZ = patch->getXYZ();
+		return XYZ;
+	    } else {
+		throw IllegalStateException("mm = null");
+	    }
 	};
 
 	void MaxMatrixIntensityAnayzer::setupComponent(const Dep::
 						       Channel & ch,
 						       RGB_ptr rgb) {
-	    Patch_ptr p = mm->measure(rgb, rgb->toString());
-	    /*if (null == referenceRGB) {
-	       referenceRGB = RGB_ptr(new RGBColor(MaxValue::Double255));
-	       }
-	       referenceRGB->setValue(ch, rgb->getValue(ch)); */
-	    if (ch == Channel::W) {
-		referenceRGB = rgb->clone();
+	    if (null != mm) {
+		Patch_ptr p = mm->measure(rgb, rgb->toString());
+		if (ch == Channel::W) {
+		    referenceRGB = rgb->clone();
+		}
+		XYZ_ptr measureXYZ = p->getXYZ();
+		setupComponent(ch, measureXYZ);
+	    } else {
+		throw IllegalStateException("mm = null");
 	    }
-	    XYZ_ptr measureXYZ = p->getXYZ();
-	    setupComponent(ch, measureXYZ);
 	};
 
 	void MaxMatrixIntensityAnayzer::setupComponent(const Dep::
@@ -322,10 +331,18 @@ namespace cms {
 
 	};
 	void MaxMatrixIntensityAnayzer::beginAnalyze() {
-	    mm->setMeasureWindowsVisible(true);
+	    if (null != mm) {
+		mm->setMeasureWindowsVisible(true);
+	    } else {
+		throw IllegalStateException("mm = null");
+	    }
 	};
 	void MaxMatrixIntensityAnayzer::endAnalyze() {
-	    mm->setMeasureWindowsVisible(false);
+	    if (null != mm) {
+		mm->setMeasureWindowsVisible(false);
+	    } else {
+		throw IllegalStateException("mm = null");
+	    }
 	};
 	void MaxMatrixIntensityAnayzer::setWaitTimes(int waitTimes) {
 	    if (null != mm) {
@@ -364,6 +381,10 @@ namespace cms {
 	bool MaxMatrixIntensityAnayzer::isInverseMatrixNull() {
 	    return null == inverseMatrix;
 	}
+	bptr < MeterMeasurement >
+	    MaxMatrixIntensityAnayzer::getMeterMeasurement() {
+	    return mm;
+	};
 	//=====================================================================
 
 	//=====================================================================
@@ -460,6 +481,9 @@ namespace cms {
 	};
 	RGB_ptr IntensityAnayzer::getReferenceRGB() {
 	    return ca210->getReferenceRGB();
+	};
+	bptr < MeterMeasurement > IntensityAnayzer::getMeterMeasurement() {
+	    return bptr < MeterMeasurement > ((MeterMeasurement *) null);
 	};
 	//=====================================================================
 

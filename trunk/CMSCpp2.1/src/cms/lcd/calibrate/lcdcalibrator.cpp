@@ -938,6 +938,10 @@ namespace cms {
 		    if (this->bTargetIntensity != -1) {
 			advgenerator.setBTargetIntensity(bTargetIntensity);
 		    }
+		    if (multiPrimaryColor) {
+			advgenerator.setMultiPrimayColor(multiPrimaryColor,
+							 multiPrimaryColorInterval);
+		    }
 
 		    dglut =
 			advgenerator.produce(targetWhite,
@@ -1205,6 +1209,11 @@ namespace cms {
 	    void LCDCalibrator::
 		setBTargetIntensity(double bTargetIntensity) {
 		this->bTargetIntensity = bTargetIntensity;
+	    };
+	    void LCDCalibrator::setMultiPrimaryColor(bool enable,
+						     int interval) {
+		this->multiPrimaryColor = enable;
+		this->multiPrimaryColorInterval = interval;
 	    };
 	    //==================================================================
 

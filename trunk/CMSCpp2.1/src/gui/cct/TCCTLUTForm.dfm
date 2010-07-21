@@ -409,6 +409,24 @@ object CCTLUTForm: TCCTLUTForm
       Visible = False
       OnClick = CheckBox_NewMethodClick
     end
+    object CheckBox_MultiPrimayColor: TCheckBox
+      Left = 32
+      Top = 64
+      Width = 145
+      Height = 17
+      Caption = 'Multi Primay Color'
+      Enabled = False
+      TabOrder = 2
+    end
+    object Edit_MultiPrimaryColorInterval: TEdit
+      Left = 32
+      Top = 80
+      Width = 57
+      Height = 24
+      Enabled = False
+      TabOrder = 3
+      Text = '17'
+    end
   end
   object Button_MeaRun: TButton
     Left = 625
