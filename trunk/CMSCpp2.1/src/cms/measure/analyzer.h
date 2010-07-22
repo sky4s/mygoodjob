@@ -122,6 +122,8 @@ namespace cms {
 	    RGB_ptr getReferenceRGB();
 	    bool isInverseMatrixNull();
 	     bptr < MeterMeasurement > getMeterMeasurement();
+	    double2D_ptr getTargetRatio();
+	    void setTargetRatio(double2D_ptr targetRatio);
 	};
 
 	/*

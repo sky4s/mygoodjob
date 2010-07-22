@@ -85,7 +85,10 @@ namespace cms {
 		XYZ_ptr rXYZ = rxyY->toXYZ();
 		XYZ_ptr gXYZ = gxyY->toXYZ();
 		XYZ_ptr bXYZ = bxyY->toXYZ();
+		XYZ_ptr wXYZ;
+		double2D_ptr targetRatio;
 		bptr < MeterMeasurement > mm;
+
 		if (multiPrimayColor) {
 		    mm = analyzer->getMeterMeasurement();
 		}
@@ -95,9 +98,10 @@ namespace cms {
 		    bptr < MaxMatrixIntensityAnayzer >
 			mmia(new MaxMatrixIntensityAnayzer());
 
-		    if (multiPrimayColor
+		    bool doMultiPrimayColor = multiPrimayColor
 			&& (x % multiPrimayColorInterval == 0)
-			&& (x != size - 1)) {
+			&& (x != size - 1);
+		    if (doMultiPrimayColor) {
 			RGB_ptr preRGB = (*result)[x + 1];
 			rXYZ =
 			    mm->measure((int) preRGB->R, 0, 0,
@@ -108,13 +112,25 @@ namespace cms {
 			bXYZ =
 			    mm->measure(0, 0, (int) preRGB->B,
 					"")->getXYZ();
+			wXYZ =
+			    mm->measure(preRGB, nil_string_ptr)->getXYZ();
 		    }
 
 		    mmia->setupComponent(Channel::R, rXYZ);
 		    mmia->setupComponent(Channel::G, gXYZ);
 		    mmia->setupComponent(Channel::B, bXYZ);
+
+		    if (doMultiPrimayColor) {
+			mmia->setupComponent(Channel::W, wXYZ);
+			mmia->enter();
+			targetRatio = mmia->getTargetRatio();
+		    }
+
 		    mmia->setupComponent(Channel::W, targetXYZ);
 		    mmia->enter();
+		    if (doMultiPrimayColor) {
+			mmia->setTargetRatio(targetRatio);
+		    }
 
 		    Component_vector_ptr newcomponentVector =
 			fetchComponent(mmia, componentVector);
@@ -123,7 +139,7 @@ namespace cms {
 				    newcomponentVector);
 #endif
 		    DGLutGenerator lutgen(newcomponentVector);
-		    //±Ä100¶Ü?
+		    //B±Ä100¶Ü?
 		    if (bTargetIntensity == -1) {
 			bTargetIntensity =
 			    useMaxTargetBIntensity ? lutgen.

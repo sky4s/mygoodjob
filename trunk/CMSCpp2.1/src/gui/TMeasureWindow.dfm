@@ -1,6 +1,6 @@
 object MeasureWindow: TMeasureWindow
-  Left = 325
-  Top = 181
+  Left = 638
+  Top = 211
   BorderStyle = bsNone
   Caption = 'MeasureWindow'
   ClientHeight = 447
@@ -35,6 +35,7 @@ object MeasureWindow: TMeasureWindow
     Height = 24
     Caption = 'Test'
     TabOrder = 0
+    Visible = False
     OnClick = Button1Click
   end
   object Button2: TButton
