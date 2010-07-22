@@ -3,7 +3,7 @@
 <PROJECT>
   <MACROS>
     <VERSION value="BCB.06.00"/>
-    <PROJECT value="build\CCTv3Adjustment.exe"/>
+    <PROJECT value="workdir\CCTv3Adjustment.exe"/>
     <OBJFILES value="build\CCTv3Adjustment.obj build\HWINTERFACELib_OCX.obj 
       build\HWINTERFACELib_TLB.obj build\USBHIDIOC.obj build\lang.obj 
       build\CA200SRVRLib_OCX.obj build\CA200SRVRLib_TLB.obj build\CA210API.obj 
@@ -160,7 +160,7 @@ AutoIncBuild=1
 MajorVer=3
 MinorVer=2
 Release=0
-Build=272
+Build=278
 Debug=1
 PreRelease=0
 Special=0
@@ -172,7 +172,7 @@ CodePage=950
 [Version Info Keys]
 CompanyName=AUO
 FileDescription=CCT Adjustment v3
-FileVersion=3.2.0.272
+FileVersion=3.2.0.278
 InternalName=
 LegalCopyright=Algorithm by StocktonTsai &amp; skyforce, Implement by skyforce
 LegalTrademarks=
@@ -231,9 +231,10 @@ Count=1
 Item0=build
 
 [HistoryLists\hlFinalOutputDir]
-Count=2
-Item0=build\
-Item1=build
+Count=3
+Item0=workdir
+Item1=build\
+Item2=build
 
 [HistoryLists\hIBPIOutputDir]
 Count=1

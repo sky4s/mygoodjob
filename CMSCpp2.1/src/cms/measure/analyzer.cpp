@@ -385,6 +385,13 @@ namespace cms {
 	    MaxMatrixIntensityAnayzer::getMeterMeasurement() {
 	    return mm;
 	};
+	double2D_ptr MaxMatrixIntensityAnayzer::getTargetRatio() {
+	    return this->targetRatio;
+	};
+	void MaxMatrixIntensityAnayzer::
+	    setTargetRatio(double2D_ptr targetRatio) {
+	    this->targetRatio = targetRatio;
+	};
 	//=====================================================================
 
 	//=====================================================================
