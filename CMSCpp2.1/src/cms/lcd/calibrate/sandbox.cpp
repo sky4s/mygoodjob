@@ -83,13 +83,120 @@ namespace cms {
 		}
 		STORE_XYZXY_VECTOE("target.xls", targetXYZVector);
 		//==============================================================
+		bptr < MeterMeasurement > mm;
+		if (multiPrimayColor) {
+		    mm = analyzer->getMeterMeasurement();
+		}
+		RGB_vector_ptr result = produceDGLut(targetXYZVector);
+		/*int size = targetXYZVector->size();
+		   RGB_vector_ptr result(new RGB_vector(size));
+
+		   //primary color只能用target white~
+		   XYZ_ptr rXYZ =
+		   analyzer->getPrimaryColor(Channel::R)->toXYZ();
+		   XYZ_ptr gXYZ =
+		   analyzer->getPrimaryColor(Channel::G)->toXYZ();
+		   XYZ_ptr bXYZ =
+		   analyzer->getPrimaryColor(Channel::B)->toXYZ();
+		   //解crosstalk用
+		   XYZ_ptr wXYZ = (*targetXYZVector)[size - 1];
+		   //double2D_ptr targetRatio;
+		   bptr < MeterMeasurement > mm;
+
+		   if (multiPrimayColor) {
+		   mm = analyzer->getMeterMeasurement();
+		   }
+
+		   for (int x = size - 1; x != -1; x--) {
+		   XYZ_ptr targetXYZ = (*targetXYZVector)[x];
+
+		   bool doMultiPrimayColorMeasure =
+		   multiPrimayColor
+		   && (x % multiPrimayColorInterval == 0)
+		   && (x != size - 1)
+		   && x <= multiPrimayColorStart
+		   && x >= multiPrimayColorEnd;
+
+		   if (doMultiPrimayColorMeasure) {
+		   RGB_ptr preRGB = (*result)[x + 1];
+		   rXYZ =
+		   mm->measure((int) preRGB->R, 0, 0,
+		   "")->getXYZ();
+		   gXYZ =
+		   mm->measure(0, (int) preRGB->G, 0,
+		   "")->getXYZ();
+		   bXYZ =
+		   mm->measure(0, 0, (int) preRGB->B,
+		   "")->getXYZ();
+		   wXYZ =
+		   mm->measure(preRGB, nil_string_ptr)->getXYZ();
+		   if (true == stopMeasure) {
+		   stopMeasure = false;
+		   return RGB_vector_ptr((RGB_vector *)
+		   null);
+		   }
+		   }
+
+		   Component_vector_ptr newcomponentVector;
+		   if (multiPrimayColor) {
+		   bptr < AdvancedMaxMatrixIntensityAnayzer >
+		   ma(new AdvancedMaxMatrixIntensityAnayzer());
+		   ma->setupComponent(Channel::R, rXYZ);
+		   ma->setupComponent(Channel::G, gXYZ);
+		   ma->setupComponent(Channel::B, bXYZ);
+		   ma->setupComponent(Channel::W, wXYZ);
+		   ma->setupTarget(targetXYZ);
+		   ma->enter();
+
+		   newcomponentVector =
+		   fetchComponent(ma, componentVector);
+		   } else {
+		   bptr < MaxMatrixIntensityAnayzer >
+		   ma(new MaxMatrixIntensityAnayzer());
+		   ma->setupComponent(Channel::R, rXYZ);
+		   ma->setupComponent(Channel::G, gXYZ);
+		   ma->setupComponent(Channel::B, bXYZ);
+		   ma->setupComponent(Channel::W, targetXYZ);
+		   ma->enter();
+
+		   newcomponentVector =
+		   fetchComponent(ma, componentVector);
+		   }
+
+		   #ifdef DEBUG_CCTLUT_NEWMETHOD
+		   STORE_COMPONENT(_toString(x) + ".xls",
+		   newcomponentVector);
+		   #endif
+		   DGLutGenerator lutgen(newcomponentVector);
+		   //B採100嗎?
+		   if (bTargetIntensity == -1) {
+		   bTargetIntensity =
+		   useMaxTargetBIntensity ? lutgen.
+		   getMaxBIntensity() : 100;
+		   };
+		   RGB_ptr rgb = lutgen.getDGCode(100, 100,
+		   bTargetIntensity);
+		   (*result)[x] = rgb;
+		   } */
+
+		if (multiPrimayColor) {
+		    mm->setMeasureWindowsVisible(false);
+		}
+		return result;
+	    };
+	    RGB_vector_ptr AdvancedDGLutGenerator::
+		produceDGLut(XYZ_vector_ptr targetXYZVector) {
+		//==============================================================
 		int size = targetXYZVector->size();
 		RGB_vector_ptr result(new RGB_vector(size));
 
 		//primary color只能用target white~
-		XYZ_ptr rXYZ = analyzer->getPrimaryColor(Channel::R)->toXYZ();
-		XYZ_ptr gXYZ = analyzer->getPrimaryColor(Channel::G)->toXYZ();
-		XYZ_ptr bXYZ = analyzer->getPrimaryColor(Channel::B)->toXYZ();
+		XYZ_ptr rXYZ =
+		    analyzer->getPrimaryColor(Channel::R)->toXYZ();
+		XYZ_ptr gXYZ =
+		    analyzer->getPrimaryColor(Channel::G)->toXYZ();
+		XYZ_ptr bXYZ =
+		    analyzer->getPrimaryColor(Channel::B)->toXYZ();
 		//解crosstalk用
 		XYZ_ptr wXYZ = (*targetXYZVector)[size - 1];
 		//double2D_ptr targetRatio;
@@ -170,11 +277,6 @@ namespace cms {
 						   bTargetIntensity);
 		    (*result)[x] = rgb;
 		}
-
-		if (multiPrimayColor) {
-		    mm->setMeasureWindowsVisible(false);
-		}
-		return result;
 	    };
 	    bool AdvancedDGLutGenerator::
 		isAvoidHook(XYZ_ptr targetXYZ, double offsetK) {
