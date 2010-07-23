@@ -72,7 +72,7 @@ void __fastcall TMainForm::FormCreate(TObject * Sender)
 	setDummyMeterFilename(METER_FILE);
 	this->Caption = this->Caption + " (debug mode)";
 	this->GroupBox_CHSetting->Visible = false;
-	this->Button_I2CTest->Visible = true;
+	//this->Button_I2CTest->Visible = true;
     }
     bitDepth =
 	bptr < BitDepthProcessor >
@@ -778,6 +778,15 @@ void __fastcall TMainForm::RadioButton_FlickrSubPixelClick(TObject *
 							   Sender)
 {
     MeasureWindow->setPattern(FlickrSubPixel);
+}
+
+//---------------------------------------------------------------------------
+
+
+void __fastcall TMainForm::ComboBox_TypeChange(TObject * Sender)
+{
+    bool indepRGB = this->ComboBox_Type->ItemIndex == 0;
+    CheckBox_IndepRGB->Checked = indepRGB;
 }
 
 //---------------------------------------------------------------------------

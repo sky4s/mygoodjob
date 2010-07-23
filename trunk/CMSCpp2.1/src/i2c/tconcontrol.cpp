@@ -25,6 +25,7 @@ namespace i2c {
 
     };
     void TCONControl::setTestRGB(RGB_ptr rgb) {
+    //rgb->getValues()
 	int r = _toInt(rgb->R);
 	int g = _toInt(rgb->G);
 	int b = _toInt(rgb->B);

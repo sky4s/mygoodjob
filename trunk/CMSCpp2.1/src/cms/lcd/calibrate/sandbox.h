@@ -19,7 +19,8 @@ namespace cms {
 		CIExy, CIEuv, CIEuvPrime
 	    };
 
-	    class AdvancedDGLutGenerator:private DimDGLutGenerator {
+	    class AdvancedDGLutGenerator:private DimDGLutGenerator,
+		WindowListener {
 	      private:
 		//採用用大值的B Intensity或者100?
 		bool useMaxTargetBIntensity;
@@ -29,6 +30,8 @@ namespace cms {
 		double bTargetIntensity;
 		bool multiPrimayColor;
 		int multiPrimayColorInterval;
+		int multiPrimayColorStart, multiPrimayColorEnd;
+		bool stopMeasure;
 	      public:
 		 AdvancedDGLutGenerator(Component_vector_ptr
 					componentVector,
@@ -66,7 +69,9 @@ namespace cms {
 		void setUseMaxTargetBIntensity(bool
 					       useMaxTargetBIntensity);
 		void setBTargetIntensity(double bTargetIntensity);
-		void setMultiPrimayColor(bool enable, int interval);
+		void setMultiPrimayColor(bool enable, int start, int end,
+					 int interval);
+		void windowClosing();
 	      private:
 
 		static XYZ_vector_ptr getDimGammaTarget(double_vector_ptr

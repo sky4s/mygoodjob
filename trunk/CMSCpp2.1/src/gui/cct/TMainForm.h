@@ -137,6 +137,7 @@ class TMainForm:public TForm {
     void __fastcall RadioButton_HSDClick(TObject * Sender);
     void __fastcall RadioButton_FlickrPixelClick(TObject * Sender);
     void __fastcall RadioButton_FlickrSubPixelClick(TObject * Sender);
+    void __fastcall ComboBox_TypeChange(TObject * Sender);
   private:			// User declarations
     //==========================================================================
     // meter

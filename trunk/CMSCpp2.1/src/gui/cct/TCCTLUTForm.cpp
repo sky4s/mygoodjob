@@ -134,8 +134,13 @@ void __fastcall TCCTLUTForm::Button_MeaRunClick(TObject * Sender)
 	//==========================================================================
 	calibrator.setAvoidFRCNoise(this->CheckBox_AvoidNoise->Checked);
 	calibrator.setNewMethod(this->CheckBox_NewMethod->Checked);
+
 	calibrator.setMultiPrimaryColor(this->CheckBox_MultiPrimayColor->
 					Checked,
+					this->Edit_MultiPrimaryColorStart->
+					Text.ToInt(),
+					this->Edit_MultiPrimaryColorEnd->
+					Text.ToInt(),
 					this->
 					Edit_MultiPrimaryColorInterval->
 					Text.ToInt());

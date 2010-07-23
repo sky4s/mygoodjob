@@ -263,6 +263,7 @@ namespace cms {
 		double bTargetIntensity;
 		bool multiPrimaryColor;
 		int multiPrimaryColorInterval;
+		int multiPrimayColorStart, multiPrimayColorEnd;
 		//==============================================================
 		 bptr < ComponentFetcher > fetcher;
 		RGB_vector_ptr dglut;
@@ -322,7 +323,8 @@ namespace cms {
 		    storeDGLutFile(const std::string & filename,
 				   RGB_vector_ptr dglut);
 		void setBTargetIntensity(double bTargetIntensity);
-		void setMultiPrimaryColor(bool enable, int interval);
+		void setMultiPrimaryColor(bool enable, int start, int end,
+					  int interval);
 	      private:
 		 RGB_vector_ptr getDGLutOpResult(RGB_vector_ptr dglut);
 	    };

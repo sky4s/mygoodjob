@@ -65,9 +65,13 @@ namespace cms {
 
 	    Component_vector_ptr ComponentFetcher::
 		fetchComponent(int_vector_ptr measureCode) {
+		using namespace Dep;
 		RGB_vector_ptr rgbMeasureCode(new RGB_vector());
+		const MaxValue & maxValue =
+		    bitDepth->
+		    isTCONInput()? MaxValue::Int12Bit : MaxValue::Int8Bit;
 		foreach(const int &x, *measureCode) {
-		    RGB_ptr rgb(new RGBColor(x, x, x));
+		    RGB_ptr rgb(new RGBColor(x, x, x, maxValue));
 		    rgbMeasureCode->push_back(rgb);
 		}
 		return fetchComponent(rgbMeasureCode);
@@ -940,6 +944,8 @@ namespace cms {
 		    }
 		    if (multiPrimaryColor) {
 			advgenerator.setMultiPrimayColor(multiPrimaryColor,
+							 multiPrimayColorStart,
+							 multiPrimayColorEnd,
 							 multiPrimaryColorInterval);
 		    }
 
@@ -1211,8 +1217,11 @@ namespace cms {
 		this->bTargetIntensity = bTargetIntensity;
 	    };
 	    void LCDCalibrator::setMultiPrimaryColor(bool enable,
+						     int start, int end,
 						     int interval) {
 		this->multiPrimaryColor = enable;
+		this->multiPrimayColorStart = start;
+		this->multiPrimayColorEnd = end;
 		this->multiPrimaryColorInterval = interval;
 	    };
 	    //==================================================================

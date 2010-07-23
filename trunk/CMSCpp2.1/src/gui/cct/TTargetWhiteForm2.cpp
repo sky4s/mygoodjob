@@ -193,7 +193,7 @@ void __fastcall TTargetWhiteForm2::Button2Click(TObject * Sender)
     int gvalue = this->Edit_G->Text.ToInt();
     int bvalue = this->Edit_B->Text.ToInt();
     //已知rgb
-    RGB_ptr rgb(new RGBColor(rvalue, gvalue, bvalue));
+    RGB_ptr rgb(new RGBColor(rvalue, gvalue, bvalue, MaxValue::Int8Bit));
 
     bptr < IntensityAnalyzerIF > analyzer = MainForm->getAnalyzer();
 
@@ -242,9 +242,9 @@ void __fastcall TTargetWhiteForm2::Button2Click(TObject * Sender)
     //==========================================================================
     // primary color的設定
     //==========================================================================
-    RGB_ptr r(new RGBColor());
-    RGB_ptr g(new RGBColor());
-    RGB_ptr b(new RGBColor());
+    RGB_ptr r(new RGBColor(MaxValue::Int8Bit));
+    RGB_ptr g(new RGBColor(MaxValue::Int8Bit));
+    RGB_ptr b(new RGBColor(MaxValue::Int8Bit));
     if (this->CheckBox_MaxRGB->Checked) {
 	r->R = g->G = b->B = 255;
     } else {
@@ -262,19 +262,35 @@ void __fastcall TTargetWhiteForm2::Button2Click(TObject * Sender)
 	stopMeasure = false;
 	analyzer->beginAnalyze();
 	analyzer->setupComponent(Channel::R, r);
-	if (true == stopMeasure || false == MeasureWindow->Visible) {
+	if (true == stopMeasure
+#ifdef DEBUG_STOP_TCONINPUT
+	    || false == MeasureWindow->Visible
+#endif
+	    ) {
 	    return;
 	}
 	analyzer->setupComponent(Channel::G, g);
-	if (true == stopMeasure || false == MeasureWindow->Visible) {
+	if (true == stopMeasure
+#ifdef DEBUG_STOP_TCONINPUT
+	    || false == MeasureWindow->Visible
+#endif
+	    ) {
 	    return;
 	}
 	analyzer->setupComponent(Channel::B, b);
-	if (true == stopMeasure || false == MeasureWindow->Visible) {
+	if (true == stopMeasure
+#ifdef DEBUG_STOP_TCONINPUT
+	    || false == MeasureWindow->Visible
+#endif
+	    ) {
 	    return;
 	}
 	analyzer->setupComponent(Channel::W, rgb);
-	if (true == stopMeasure || false == MeasureWindow->Visible) {
+	if (true == stopMeasure
+#ifdef DEBUG_STOP_TCONINPUT
+	    || false == MeasureWindow->Visible
+#endif
+	    ) {
 	    return;
 	}
 	if (MainForm->isCA210Analyzer()) {
