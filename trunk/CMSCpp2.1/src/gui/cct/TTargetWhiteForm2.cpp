@@ -308,6 +308,23 @@ void __fastcall TTargetWhiteForm2::Button2Click(TObject * Sender)
 	this->Edit_refLuminance->Text = refWhite->Y;
 	this->Edit_refx->Text = refWhite->x;
 	this->Edit_refy->Text = refWhite->y;
+
+	XYZ_ptr rXYZ = analyzer->getPrimaryColor(Channel::R)->toXYZ();
+	XYZ_ptr gXYZ = analyzer->getPrimaryColor(Channel::G)->toXYZ();
+	XYZ_ptr bXYZ = analyzer->getPrimaryColor(Channel::B)->toXYZ();
+	XYZ_ptr wXYZ = refWhite->toXYZ();
+	this->Edit_RX->Text = rXYZ->X;
+	this->Edit_RY->Text = rXYZ->Y;
+	this->Edit_RZ->Text = rXYZ->Z;
+	this->Edit_GX->Text = gXYZ->X;
+	this->Edit_GY->Text = gXYZ->Y;
+	this->Edit_GZ->Text = gXYZ->Z;
+	this->Edit_BX->Text = bXYZ->X;
+	this->Edit_BY->Text = bXYZ->Y;
+	this->Edit_BZ->Text = bXYZ->Z;
+	this->Edit_WX->Text = wXYZ->X;
+	this->Edit_WY->Text = wXYZ->Y;
+	this->Edit_WZ->Text = wXYZ->Z;
 	//==========================================================================
     }
     __finally {
@@ -435,16 +452,15 @@ void __fastcall TTargetWhiteForm2::Button1Click(TObject * Sender)
     double wY = this->Edit_WY->Text.ToDouble();
     double wZ = this->Edit_WZ->Text.ToDouble();
 
-    XYZ_ptr r(new Indep::CIEXYZ(rX, rY, rZ));
-    XYZ_ptr g(new Indep::CIEXYZ(gX, gY, gZ));
-    XYZ_ptr b(new Indep::CIEXYZ(bX, bY, bZ));
-    XYZ_ptr w(new Indep::CIEXYZ(wX, wY, wZ));
+    XYZ_ptr rXYZ(new Indep::CIEXYZ(rX, rY, rZ));
+    XYZ_ptr gXYZ(new Indep::CIEXYZ(gX, gY, gZ));
+    XYZ_ptr bXYZ(new Indep::CIEXYZ(bX, bY, bZ));
+    XYZ_ptr wXYZ(new Indep::CIEXYZ(wX, wY, wZ));
 
-    maxmatrix->setupComponent(Channel::R, r);
-    maxmatrix->setupComponent(Channel::G, g);
-    maxmatrix->setupComponent(Channel::B, b);
-    maxmatrix->setupComponent(Channel::W, w);
-    //maxmatrix->setupComponent()
+    maxmatrix->setupComponent(Channel::R, rXYZ);
+    maxmatrix->setupComponent(Channel::G, gXYZ);
+    maxmatrix->setupComponent(Channel::B, bXYZ);
+    maxmatrix->setupComponent(Channel::W, wXYZ);
 
     maxmatrix->enter();
 }

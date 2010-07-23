@@ -91,11 +91,10 @@ namespace cms {
 	 */
 	class MaxMatrixIntensityAnayzer:public IntensityAnalyzerIF {
 	    friend class IntensityAnayzer;
-	  private:
+	  protected:
 	     double2D_ptr inverseMatrix;
 	    double2D_ptr targetRatio;
 	    double2D_ptr rgbValues;
-	  protected:
 	     bptr < MeterMeasurement > mm;
 	    XYZ_ptr XYZ;
 	    XYZ_ptr rXYZ, gXYZ, bXYZ, wXYZ;
@@ -122,8 +121,21 @@ namespace cms {
 	    RGB_ptr getReferenceRGB();
 	    bool isInverseMatrixNull();
 	     bptr < MeterMeasurement > getMeterMeasurement();
-	    double2D_ptr getTargetRatio();
-	    void setTargetRatio(double2D_ptr targetRatio);
+	};
+
+	/*
+	   µL®Ä!°h¶O!
+	 */
+	class AdvancedMaxMatrixIntensityAnayzer:public
+	    MaxMatrixIntensityAnayzer {
+	  protected:
+	    XYZ_ptr targetWhite;
+	    double2D_ptr xtalkRatio;
+	  public:
+	     AdvancedMaxMatrixIntensityAnayzer();
+	    void setupTarget(XYZ_ptr targetXYZ);
+	    RGB_ptr getIntensity(XYZ_ptr XYZ);
+	    void enter();
 	};
 
 	/*
@@ -139,7 +151,8 @@ namespace cms {
 	    int no;
 	    XYZ_ptr XYZ;
 	  public:
-	     IntensityAnayzer(bptr < MaxMatrixIntensityAnayzer > matrix,
+	     IntensityAnayzer(bptr < MaxMatrixIntensityAnayzer >
+			      matrix,
 			      bptr < CA210IntensityAnalyzer > ca210);
 	    RGB_ptr getIntensity(RGB_ptr rgb);
 	    XYZ_ptr getCIEXYZ();

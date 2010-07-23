@@ -86,8 +86,9 @@ namespace cms {
 		XYZ_ptr rXYZ = rxyY->toXYZ();
 		XYZ_ptr gXYZ = gxyY->toXYZ();
 		XYZ_ptr bXYZ = bxyY->toXYZ();
-		XYZ_ptr wXYZ;
-		double2D_ptr targetRatio;
+		//解crosstalk用
+		XYZ_ptr wXYZ = (*targetXYZVector)[size - 1];
+		//double2D_ptr targetRatio;
 		bptr < MeterMeasurement > mm;
 
 		if (multiPrimayColor) {
@@ -96,13 +97,14 @@ namespace cms {
 
 		for (int x = size - 1; x != -1; x--) {
 		    XYZ_ptr targetXYZ = (*targetXYZVector)[x];
-		    bptr < MaxMatrixIntensityAnayzer >
-			mmia(new MaxMatrixIntensityAnayzer());
 
-		    bool doMultiPrimayColorMeasure = multiPrimayColor
+		    bool doMultiPrimayColorMeasure =
+			multiPrimayColor
 			&& (x % multiPrimayColorInterval == 0)
-			&& (x != size - 1) && x <= multiPrimayColorStart
+			&& (x != size - 1)
+			&& x <= multiPrimayColorStart
 			&& x >= multiPrimayColorEnd;
+
 		    if (doMultiPrimayColorMeasure) {
 			RGB_ptr preRGB = (*result)[x + 1];
 			rXYZ =
@@ -116,30 +118,53 @@ namespace cms {
 					"")->getXYZ();
 			wXYZ =
 			    mm->measure(preRGB, nil_string_ptr)->getXYZ();
+			/*rXYZ = mm->measure(x, 0, 0, "")->getXYZ();
+			   gXYZ = mm->measure(0, x, 0, "")->getXYZ();
+			   bXYZ = mm->measure(0, 0, x, "")->getXYZ(); */
 			if (true == stopMeasure) {
 			    stopMeasure = false;
-			    return RGB_vector_ptr((RGB_vector *) null);
+			    return RGB_vector_ptr((RGB_vector *)
+						  null);
 			}
 		    }
 
-		    mmia->setupComponent(Channel::R, rXYZ);
-		    mmia->setupComponent(Channel::G, gXYZ);
-		    mmia->setupComponent(Channel::B, bXYZ);
+		    Component_vector_ptr newcomponentVector;
+		    if (multiPrimayColor) {
+			bptr < AdvancedMaxMatrixIntensityAnayzer >
+			    ma(new AdvancedMaxMatrixIntensityAnayzer());
+			ma->setupComponent(Channel::R, rXYZ);
+			ma->setupComponent(Channel::G, gXYZ);
+			ma->setupComponent(Channel::B, bXYZ);
+			ma->setupComponent(Channel::W, wXYZ);
+			ma->setupTarget(targetXYZ);
+			ma->enter();
 
-		    if (doMultiPrimayColorMeasure) {
-			mmia->setupComponent(Channel::W, wXYZ);
-			mmia->enter();
-			targetRatio = mmia->getTargetRatio();
+			newcomponentVector =
+			    fetchComponent(ma, componentVector);
+		    } else {
+			bptr < MaxMatrixIntensityAnayzer >
+			    ma(new MaxMatrixIntensityAnayzer());
+			ma->setupComponent(Channel::R, rXYZ);
+			ma->setupComponent(Channel::G, gXYZ);
+			ma->setupComponent(Channel::B, bXYZ);
+			ma->setupComponent(Channel::W, targetXYZ);
+			ma->enter();
+
+			newcomponentVector =
+			    fetchComponent(ma, componentVector);
 		    }
 
-		    mmia->setupComponent(Channel::W, targetXYZ);
-		    mmia->enter();
-		    if (multiPrimayColor && null != targetRatio) {
-			mmia->setTargetRatio(targetRatio);
-		    }
+		    /*bptr < MaxMatrixIntensityAnayzer >
+		       mmia(new MaxMatrixIntensityAnayzer());
+		       mmia->setupComponent(Channel::R, rXYZ);
+		       mmia->setupComponent(Channel::G, gXYZ);
+		       mmia->setupComponent(Channel::B, bXYZ);
+		       mmia->setupComponent(Channel::W, targetXYZ);
+		       mmia->enter();
 
-		    Component_vector_ptr newcomponentVector =
-			fetchComponent(mmia, componentVector);
+		       Component_vector_ptr newcomponentVector =
+		       fetchComponent(mmia, componentVector); */
+
 #ifdef DEBUG_CCTLUT_NEWMETHOD
 		    STORE_COMPONENT(_toString(x) + ".xls",
 				    newcomponentVector);
@@ -154,14 +179,15 @@ namespace cms {
 		    RGB_ptr rgb = lutgen.getDGCode(100, 100,
 						   bTargetIntensity);
 		    (*result)[x] = rgb;
-		};
+		}
+
 		if (multiPrimayColor) {
 		    mm->setMeasureWindowsVisible(false);
 		}
 		return result;
 	    };
-	    bool AdvancedDGLutGenerator::isAvoidHook(XYZ_ptr targetXYZ,
-						     double offsetK) {
+	    bool AdvancedDGLutGenerator::
+		isAvoidHook(XYZ_ptr targetXYZ, double offsetK) {
 		XYZ_ptr XYZOffset = getXYZ(targetXYZ, offsetK);
 		return isDuplicateBlue100(XYZOffset);
 	    };
@@ -214,8 +240,10 @@ namespace cms {
 	    };
 
 	    XYZ_vector_ptr AdvancedDGLutGenerator::
-		getAvoidHookTarget(XYZ_ptr startXYZ, XYZ_ptr targetXYZ,
-				   double_vector_ptr luminanceGammaCurve,
+		getAvoidHookTarget(XYZ_ptr startXYZ,
+				   XYZ_ptr targetXYZ,
+				   double_vector_ptr
+				   luminanceGammaCurve,
 				   int dimTurn, int brightTurn,
 				   double dimGamma) {
 		int size = luminanceGammaCurve->size();
@@ -227,8 +255,10 @@ namespace cms {
 		// dim區段
 		//==============================================================
 		XYZ_vector_ptr dimResult =
-		    getDimGammaTarget(luminanceGammaCurve, startXYZ,
-				      targetXYZ, dimGamma, dimTurn);
+		    getDimGammaTarget(luminanceGammaCurve,
+				      startXYZ,
+				      targetXYZ, dimGamma,
+				      dimTurn);
 		int dimSize = dimResult->size();
 		for (int x = 0; x < dimSize; x++) {
 		    (*result)[x] = (*dimResult)[x];
@@ -285,8 +315,10 @@ namespace cms {
 		// dim區段
 		//==============================================================
 		XYZ_vector_ptr dimResult =
-		    getDimGammaTarget(luminanceGammaCurve, startXYZ,
-				      targetXYZ, dimGamma, dimTurn);
+		    getDimGammaTarget(luminanceGammaCurve,
+				      startXYZ,
+				      targetXYZ, dimGamma,
+				      dimTurn);
 		int dimSize = dimResult->size();
 		for (int x = 0; x < dimSize; x++) {
 		    (*result)[x] = (*dimResult)[x];
@@ -308,8 +340,10 @@ namespace cms {
 		// bright區段
 		//==============================================================
 		XYZ_vector_ptr brightResult =
-		    getBrightGammaTarget(luminanceGammaCurve, targetXYZ,
-					 endXYZ, brightGamma, brightTurn);
+		    getBrightGammaTarget(luminanceGammaCurve,
+					 targetXYZ,
+					 endXYZ, brightGamma,
+					 brightTurn);
 		int brightSize = brightResult->size();
 		for (int x = 0; x < brightSize; x++) {
 		    (*result)[x + brightTurn] = (*brightResult)[x];
@@ -319,7 +353,8 @@ namespace cms {
 	    };
 
 	    XYZ_vector_ptr AdvancedDGLutGenerator::
-		getDimGammaTarget(double_vector_ptr luminanceGammaCurve,
+		getDimGammaTarget(double_vector_ptr
+				  luminanceGammaCurve,
 				  XYZ_ptr startXYZ, XYZ_ptr endXYZ,
 				  double dimGamma, int dimTurn) {
 		//==============================================================
@@ -352,8 +387,10 @@ namespace cms {
 	    };
 	    XYZ_vector_ptr
 		AdvancedDGLutGenerator::
-		getBrightGammaTarget(double_vector_ptr luminanceGammaCurve,
-				     XYZ_ptr startXYZ, XYZ_ptr endXYZ,
+		getBrightGammaTarget(double_vector_ptr
+				     luminanceGammaCurve,
+				     XYZ_ptr startXYZ,
+				     XYZ_ptr endXYZ,
 				     double brightGamma, int brightTurn) {
 		//==============================================================
 		// bright區段
@@ -368,8 +405,8 @@ namespace cms {
 		for (int x = brightTurn; x < size; x++) {
 		    double normal = ((double) x - brightTurn) / brightbase;
 		    double gamma = Math::pow(normal,
-					     brightGamma) * brightbase +
-			brightTurn;
+					     brightGamma) *
+			brightbase + brightTurn;
 		    //在uv'上線性變化
 		    double u = Interpolation::linear(brightTurn, size - 1,
 						     brightstartValues[0],
@@ -396,11 +433,9 @@ namespace cms {
 		setBTargetIntensity(double bTargetIntensity) {
 		this->bTargetIntensity = bTargetIntensity;
 	    }
-	    void AdvancedDGLutGenerator::setMultiPrimayColor(bool enable,
-							     int start,
-							     int end,
-							     int interval)
-	    {
+	    void AdvancedDGLutGenerator::
+		setMultiPrimayColor(bool enable, int start,
+				    int end, int interval) {
 		this->multiPrimayColor = enable;
 		this->multiPrimayColorStart = start;
 		this->multiPrimayColorEnd = end;
@@ -445,8 +480,10 @@ namespace cms {
 		for (int x = size - 1; x > 0; x--) {
 		    Component_ptr c0 = (*componentVector)[x];
 		    Component_ptr c1 = (*componentVector)[x - 1];
-		    if (c0->intensity->B > 100 && c1->intensity->B < 100 ||
-			c0->intensity->B < 100 && c1->intensity->B > 100 ||
+		    if (c0->intensity->B > 100
+			&& c1->intensity->B < 100
+			|| c0->intensity->B < 100
+			&& c1->intensity->B > 100 ||
 			//剛好等於100, 應該很難
 			c0->intensity->B == 100 ||
 			//最後一個逼近100, 也視為100
