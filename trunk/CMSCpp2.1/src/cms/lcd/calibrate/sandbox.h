@@ -93,7 +93,8 @@ namespace cms {
 					    double v3);
 		static bool isDuplicateBlue100(Component_vector_ptr
 					       componentVector);
-
+		RGB_vector_ptr produceDGLut(XYZ_vector_ptr
+					    targetXYZVector);
 
 	    };
 
