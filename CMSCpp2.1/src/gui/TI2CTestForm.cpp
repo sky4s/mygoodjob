@@ -163,8 +163,9 @@ void __fastcall TI2CTestForm::Edit_RChange(TObject * Sender)
 {
     using namespace Dep;
     bool doing = Edit_R->Text.Length() != 0 && Edit_G->Text.Length() != 0
-	&& Edit_B->Text.Length() != 0;
-    if (true == this->CheckBox_Connecting->Checked && doing) {
+	&& Edit_B->Text.Length() != 0 && true == CheckBox1->Checked
+	&& true == this->CheckBox_Connecting->Checked;
+    if (doing) {
 	try {
 	    int r = StrToInt(this->Edit_R->Text);
 	    int g = StrToInt(this->Edit_G->Text);

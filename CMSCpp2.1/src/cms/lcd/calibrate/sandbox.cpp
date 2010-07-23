@@ -31,7 +31,8 @@ namespace cms {
 				       analyzer):DimDGLutGenerator
 		(componentVector, analyzer),
 		useMaxTargetBIntensity(false), bTargetIntensity(-1),
-		multiPrimayColor(false), multiPrimayColorInterval(17) {
+		multiPrimayColor(false), multiPrimayColorInterval(17),
+		stopMeasure(false) {
 	    };
 
 	    RGB_vector_ptr AdvancedDGLutGenerator::
@@ -98,10 +99,11 @@ namespace cms {
 		    bptr < MaxMatrixIntensityAnayzer >
 			mmia(new MaxMatrixIntensityAnayzer());
 
-		    bool doMultiPrimayColor = multiPrimayColor
+		    bool doMultiPrimayColorMeasure = multiPrimayColor
 			&& (x % multiPrimayColorInterval == 0)
-			&& (x != size - 1);
-		    if (doMultiPrimayColor) {
+			&& (x != size - 1) && x <= multiPrimayColorStart
+			&& x >= multiPrimayColorEnd;
+		    if (doMultiPrimayColorMeasure) {
 			RGB_ptr preRGB = (*result)[x + 1];
 			rXYZ =
 			    mm->measure((int) preRGB->R, 0, 0,
@@ -114,13 +116,17 @@ namespace cms {
 					"")->getXYZ();
 			wXYZ =
 			    mm->measure(preRGB, nil_string_ptr)->getXYZ();
+			if (true == stopMeasure) {
+			    stopMeasure = false;
+			    return RGB_vector_ptr((RGB_vector *) null);
+			}
 		    }
 
 		    mmia->setupComponent(Channel::R, rXYZ);
 		    mmia->setupComponent(Channel::G, gXYZ);
 		    mmia->setupComponent(Channel::B, bXYZ);
 
-		    if (doMultiPrimayColor) {
+		    if (doMultiPrimayColorMeasure) {
 			mmia->setupComponent(Channel::W, wXYZ);
 			mmia->enter();
 			targetRatio = mmia->getTargetRatio();
@@ -128,7 +134,7 @@ namespace cms {
 
 		    mmia->setupComponent(Channel::W, targetXYZ);
 		    mmia->enter();
-		    if (doMultiPrimayColor) {
+		    if (multiPrimayColor && null != targetRatio) {
 			mmia->setTargetRatio(targetRatio);
 		    }
 
@@ -149,7 +155,9 @@ namespace cms {
 						   bTargetIntensity);
 		    (*result)[x] = rgb;
 		};
-
+		if (multiPrimayColor) {
+		    mm->setMeasureWindowsVisible(false);
+		}
 		return result;
 	    };
 	    bool AdvancedDGLutGenerator::isAvoidHook(XYZ_ptr targetXYZ,
@@ -389,10 +397,17 @@ namespace cms {
 		this->bTargetIntensity = bTargetIntensity;
 	    }
 	    void AdvancedDGLutGenerator::setMultiPrimayColor(bool enable,
+							     int start,
+							     int end,
 							     int interval)
 	    {
 		this->multiPrimayColor = enable;
+		this->multiPrimayColorStart = start;
+		this->multiPrimayColorEnd = end;
 		this->multiPrimayColorInterval = interval;
+	    };
+	    void AdvancedDGLutGenerator::windowClosing() {
+		stopMeasure = true;
 	    };
 	    XYZ_ptr AdvancedDGLutGenerator::getTargetXYZ(double v1,
 							 double v2,

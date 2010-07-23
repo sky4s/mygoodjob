@@ -91,6 +91,8 @@ class TCCTLUTForm:public TForm {
     TRadioButton *RadioButton_GammaValue;
     TCheckBox *CheckBox_MultiPrimayColor;
     TEdit *Edit_MultiPrimaryColorInterval;
+    TEdit *Edit_MultiPrimaryColorStart;
+    TEdit *Edit_MultiPrimaryColorEnd;
     void __fastcall RadioButton_P1P2Click(TObject * Sender);
     void __fastcall Button_MeaRunClick(TObject * Sender);
     void __fastcall FormCreate(TObject * Sender);

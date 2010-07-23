@@ -36,6 +36,9 @@ void __fastcall TMeasureWindow::FormKeyPress(TObject * Sender, char &Key)
 {
     switch (Key) {
     case 27:			//esc
+	if (tconinput) {
+	    tconcontrol->setGammaTest(false);
+	}
 	this->Close();
 	break;
     case 32:			//space
@@ -226,12 +229,11 @@ void TMeasureWindow::setRGB(int r, int g, int b)
 void TMeasureWindow::setRGB(bptr < Dep::RGBColor > rgb)
 {
     double_array values(new double[3]);
-    /*if (true == tconinput) {
-       //若是tcon input, 要轉到該lut強度下
-       rgb->getValues(values, tconcontrol->getLUTBit());
-       } else { */
-    rgb->getValues(values);
-    //}
+    using namespace Dep;
+    const MaxValue & maxValue =
+	tconinput ? MaxValue::Int12Bit : MaxValue::Int8Bit;
+    rgb->getValues(values, maxValue);
+
     int r = static_cast < int >(values[0]);
     int g = static_cast < int >(values[1]);
     int b = static_cast < int >(values[2]);
@@ -267,6 +269,15 @@ void TMeasureWindow::setTCONControlOff()
 //---------------------------------------------------------------------------
 void TMeasureWindow::setVisible(bool visible)
 {
+#ifdef DEBUG_STOP_TCONINPUT
+    if (tconinput) {
+	tconcontrol->setGammaTest(visible);
+    }
+    this->Visible = visible;
+    if (visible) {
+	this->BringToFront();
+    }
+#else
     if (tconinput) {
 	tconcontrol->setGammaTest(visible);
     } else {
@@ -275,6 +286,8 @@ void TMeasureWindow::setVisible(bool visible)
 	    this->BringToFront();
 	}
     }
+#endif
+
 };
 
 //---------------------------------------------------------------------------
