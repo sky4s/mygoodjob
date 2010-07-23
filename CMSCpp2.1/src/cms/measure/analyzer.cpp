@@ -385,20 +385,86 @@ namespace cms {
 	    MaxMatrixIntensityAnayzer::getMeterMeasurement() {
 	    return mm;
 	};
-	double2D_ptr MaxMatrixIntensityAnayzer::getTargetRatio() {
-	    return this->targetRatio;
+
+	//=====================================================================
+
+	//=====================================================================
+	// AdvancedMaxMatrixIntensityAnayzer
+	//=====================================================================
+	AdvancedMaxMatrixIntensityAnayzer::
+	    AdvancedMaxMatrixIntensityAnayzer() {
+	}
+
+	void AdvancedMaxMatrixIntensityAnayzer::
+	    setupTarget(XYZ_ptr targetXYZ) {
+	    this->targetWhite = targetXYZ;
 	};
-	void MaxMatrixIntensityAnayzer::
-	    setTargetRatio(double2D_ptr targetRatio) {
-	    this->targetRatio = targetRatio;
+	RGB_ptr AdvancedMaxMatrixIntensityAnayzer::
+	    getIntensity(XYZ_ptr XYZ) {
+	    if (null == inverseMatrix) {
+		throw IllegalStateException("NULL == inverseMatrix");
+	    }
+	    double2D_ptr color =
+		DoubleArray::toDouble2D(1, 3, XYZ->X, XYZ->Y, XYZ->Z);
+	    rgbValues = DoubleArray::times(inverseMatrix, color);
+	    (*rgbValues)[0][0] *= 100;
+	    (*rgbValues)[1][0] *= 100;
+	    (*rgbValues)[2][0] *= 100;
+	    double_array intensityValues(new double[3]);
+
+	    intensityValues[0] =
+		(*rgbValues)[0][0] / (*xtalkRatio)[0][0] /
+		(*targetRatio)[0][0];
+	    intensityValues[1] =
+		(*rgbValues)[1][0] / (*xtalkRatio)[1][0] /
+		(*targetRatio)[1][0];
+	    intensityValues[2] =
+		(*rgbValues)[2][0] / (*xtalkRatio)[2][0] /
+		(*targetRatio)[2][0];
+
+	    RGB_ptr intensity(new
+			      RGBColor(intensityValues[0],
+				       intensityValues[1],
+				       intensityValues[2]));
+	    return intensity;
+	};
+	void AdvancedMaxMatrixIntensityAnayzer::enter() {
+	    if (null != mm) {
+		mm->setMeasureWindowsVisible(false);
+	    }
+	    if (rXYZ == null || gXYZ == null || bXYZ == null
+		|| wXYZ == null || targetWhite == null) {
+		throw IllegalStateException
+		    ("Excute setupComponent() with RGBW and TargetWhite first.");
+	    }
+	    double2D_ptr m =
+		DoubleArray::toDouble2D(3, 9, rXYZ->X, gXYZ->X, bXYZ->X,
+					rXYZ->Y, gXYZ->Y, bXYZ->Y,
+					rXYZ->Z, gXYZ->Z, bXYZ->Z);
+	    //­pºâ¤Ï¯x°}
+	    this->inverseMatrix = DoubleArray::inverse(m);
+
+	    double2D_ptr whiteValues =
+		DoubleArray::toDouble2D(1, 3, wXYZ->X, wXYZ->Y, wXYZ->Z);
+	    double2D_ptr targetWhiteValues =
+		DoubleArray::toDouble2D(1, 3, targetWhite->X,
+					targetWhite->Y, targetWhite->Z);
+	    //>1.
+	    this->xtalkRatio =
+		DoubleArray::times(inverseMatrix, whiteValues);
+
+	    this->targetRatio =
+		DoubleArray::times(inverseMatrix, targetWhiteValues);
+	    (*targetRatio)[0][0] /= (*xtalkRatio)[0][0];
+	    (*targetRatio)[1][0] /= (*xtalkRatio)[1][0];
+	    (*targetRatio)[2][0] /= (*xtalkRatio)[2][0];
+
 	};
 	//=====================================================================
 
 	//=====================================================================
 	// IntensityAnayzer
 	//=====================================================================
-
-
       IntensityAnayzer::IntensityAnayzer(bptr < MaxMatrixIntensityAnayzer > matrix, bptr < CA210IntensityAnalyzer > ca210):matrix(matrix), ca210(ca210),
 	    no(0)
 	{
