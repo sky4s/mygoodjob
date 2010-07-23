@@ -32,7 +32,7 @@ namespace cms {
 		(componentVector, analyzer),
 		useMaxTargetBIntensity(false), bTargetIntensity(-1),
 		multiPrimayColor(false), multiPrimayColorInterval(17),
-		stopMeasure(false) {
+		stopMeasure(false), multiGenerate(false) {
 	    };
 
 	    RGB_vector_ptr AdvancedDGLutGenerator::
@@ -44,6 +44,13 @@ namespace cms {
 			       brightTurn, dimGamma, brightGamma, false);
 	    };
 
+	    /*
+	       更進階的產生方式
+	       1.先產生一組DG Lut
+	       2.把該組DG做量測當作Raw Data
+	       3.再拿該組偽Raw Data產生DG Lut
+	       4.若精準度要更高,就重複做到滿意為止
+	     */
 	    RGB_vector_ptr AdvancedDGLutGenerator::
 		produce(XYZ_ptr targetWhite,
 			double_vector_ptr luminanceGammaCurve, int dimTurn,
@@ -80,12 +87,9 @@ namespace cms {
 		RGB_vector_ptr result(new RGB_vector(size));
 
 		//primary color只能用target white~
-		xyY_ptr rxyY = analyzer->getPrimaryColor(Channel::R);
-		xyY_ptr gxyY = analyzer->getPrimaryColor(Channel::G);
-		xyY_ptr bxyY = analyzer->getPrimaryColor(Channel::B);
-		XYZ_ptr rXYZ = rxyY->toXYZ();
-		XYZ_ptr gXYZ = gxyY->toXYZ();
-		XYZ_ptr bXYZ = bxyY->toXYZ();
+		XYZ_ptr rXYZ = analyzer->getPrimaryColor(Channel::R)->toXYZ();
+		XYZ_ptr gXYZ = analyzer->getPrimaryColor(Channel::G)->toXYZ();
+		XYZ_ptr bXYZ = analyzer->getPrimaryColor(Channel::B)->toXYZ();
 		//解crosstalk用
 		XYZ_ptr wXYZ = (*targetXYZVector)[size - 1];
 		//double2D_ptr targetRatio;
@@ -118,9 +122,6 @@ namespace cms {
 					"")->getXYZ();
 			wXYZ =
 			    mm->measure(preRGB, nil_string_ptr)->getXYZ();
-			/*rXYZ = mm->measure(x, 0, 0, "")->getXYZ();
-			   gXYZ = mm->measure(0, x, 0, "")->getXYZ();
-			   bXYZ = mm->measure(0, 0, x, "")->getXYZ(); */
 			if (true == stopMeasure) {
 			    stopMeasure = false;
 			    return RGB_vector_ptr((RGB_vector *)
@@ -153,17 +154,6 @@ namespace cms {
 			newcomponentVector =
 			    fetchComponent(ma, componentVector);
 		    }
-
-		    /*bptr < MaxMatrixIntensityAnayzer >
-		       mmia(new MaxMatrixIntensityAnayzer());
-		       mmia->setupComponent(Channel::R, rXYZ);
-		       mmia->setupComponent(Channel::G, gXYZ);
-		       mmia->setupComponent(Channel::B, bXYZ);
-		       mmia->setupComponent(Channel::W, targetXYZ);
-		       mmia->enter();
-
-		       Component_vector_ptr newcomponentVector =
-		       fetchComponent(mmia, componentVector); */
 
 #ifdef DEBUG_CCTLUT_NEWMETHOD
 		    STORE_COMPONENT(_toString(x) + ".xls",

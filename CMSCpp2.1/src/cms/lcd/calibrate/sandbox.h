@@ -32,6 +32,7 @@ namespace cms {
 		int multiPrimayColorInterval;
 		int multiPrimayColorStart, multiPrimayColorEnd;
 		bool stopMeasure;
+		bool multiGenerate;
 	      public:
 		 AdvancedDGLutGenerator(Component_vector_ptr
 					componentVector,
