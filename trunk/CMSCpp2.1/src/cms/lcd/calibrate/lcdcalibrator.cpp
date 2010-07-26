@@ -21,343 +21,6 @@ namespace cms {
 	    using namespace cms::colorformat;
 	    using namespace cms::util;
 	    using namespace cms::lcd::calibrate;
-	    //==================================================================
-	    // Component
-	    //==================================================================
-	     Component::Component(RGB_ptr rgb,
-				  RGB_ptr intensity):rgb(rgb),
-		intensity(intensity) {
-
-	    };
-	     Component::Component(RGB_ptr rgb,
-				  RGB_ptr intensity,
-				  XYZ_ptr XYZ):rgb(rgb),
-		intensity(intensity), XYZ(XYZ) {
-
-	    };
-	     Component::Component(RGB_ptr rgb,
-				  RGB_ptr intensity,
-				  XYZ_ptr XYZ, RGB_ptr gamma):rgb(rgb),
-		intensity(intensity), XYZ(XYZ), gamma(gamma) {
-
-	    };
-	    //==================================================================
-
-
-	    //==================================================================
-	    // ComponentFetcher
-	    //==================================================================
-	  ComponentFetcher::ComponentFetcher(bptr < IntensityAnalyzerIF > analyzer, bptr < BitDepthProcessor > bitDepth):analyzer
-		(analyzer), bitDepth(bitDepth)
-	    {
-	    };
-
-	    Component_vector_ptr ComponentFetcher::
-		fetchComponent(int start, int end, int firstStep,
-			       int step) {
-		MeasureCondition measureCondition(start, end, firstStep,
-						  step);
-		int_vector_ptr measurecode =
-		    measureCondition.getMeasureCode();
-		return fetchComponent(measurecode);
-	    };
-
-
-	    Component_vector_ptr ComponentFetcher::
-		fetchComponent(int_vector_ptr measureCode) {
-		using namespace Dep;
-		RGB_vector_ptr rgbMeasureCode(new RGB_vector());
-		const MaxValue & maxValue =
-		    bitDepth->
-		    isTCONInput()? MaxValue::Int12Bit : MaxValue::Int8Bit;
-		foreach(const int &x, *measureCode) {
-		    RGB_ptr rgb(new RGBColor(x, x, x, maxValue));
-		    rgbMeasureCode->push_back(rgb);
-		}
-		return fetchComponent(rgbMeasureCode);
-	    };
-
-	    Component_vector_ptr ComponentFetcher::
-		fetchComponent(RGB_vector_ptr rgbMeasureCode) {
-		Component_vector_ptr result(new Component_vector());
-
-		bool waitingStable = true;
-		int waitTimes = analyzer->getWaitTimes();
-		analyzer->setWaitTimes(10000);
-
-		analyzer->beginAnalyze();
-		foreach(const RGB_ptr & rgb, *rgbMeasureCode) {
-		    RGB_ptr intensity = analyzer->getIntensity(rgb);
-		    XYZ_ptr XYZ = analyzer->getCIEXYZ();
-		    Component_ptr component(new Component(rgb, intensity,
-							  XYZ));
-		    result->push_back(component);
-
-		    if (true == waitingStable) {
-			waitingStable = false;
-			analyzer->setWaitTimes(waitTimes);
-		    }
-
-		    if (true == stop) {
-			stop = false;
-			analyzer->endAnalyze();
-			return Component_vector_ptr((Component_vector *)
-						    null);
-		    }
-		}
-		analyzer->endAnalyze();
-		return result;
-	    };
-
-	    Component_vector_ptr ComponentFetcher::fetchComponent(bptr <
-								  MeasureCondition
-								  >
-								  measureCondition)
-	    {
-		if (measureCondition->isRGBType()) {
-		    return fetchComponent(measureCondition->
-					  getRGBMeasureCode());
-		} else {
-		    return fetchComponent(measureCondition->
-					  getMeasureCode());
-		}
-	    };
-
-	    double_vector_ptr ComponentFetcher::
-		fetchLuminance(int_vector_ptr measureCode) {
-		double_vector_ptr result(new double_vector());
-
-		bool waitingStable = true;
-		int waitTimes = analyzer->getWaitTimes();
-		analyzer->setWaitTimes(10000);
-
-		analyzer->beginAnalyze();
-		foreach(const int &x, *measureCode) {
-		    RGB_ptr rgb(new RGBColor(x, x, x));
-		    XYZ_ptr XYZ = analyzer->getCIEXYZOnly(rgb);
-		    result->push_back(XYZ->Y);
-
-		    if (true == waitingStable) {
-			waitingStable = false;
-			analyzer->setWaitTimes(waitTimes);
-		    }
-
-		    if (true == stop) {
-			stop = false;
-			analyzer->endAnalyze();
-			return double_vector_ptr((double_vector *)
-						 null);
-		    }
-		}
-		analyzer->endAnalyze();
-		return result;
-	    };
-
-	    void ComponentFetcher::storeToExcel(const string & filename,
-						Component_vector_ptr
-						componentVector) {
-
-		//int n = componentVector->size();
-		Util::deleteExist(filename);
-		DGLutFile dglut(filename, Create);
-		dglut.setRawData(componentVector, nil_RGBGamma,
-				 nil_RGBGamma);
-	    };
-	    void ComponentFetcher::windowClosing() {
-		//this->setStop(true);
-		stop = true;
-	    };
-	    bptr < IntensityAnalyzerIF > ComponentFetcher::getAnalyzer() {
-		return analyzer;
-	    };
-	    //==================================================================
-
-	    //==================================================================
-	    // ComponentLinearRelation
-	    //==================================================================
-	    void ComponentLinearRelation::init(double2D_ptr input,
-					       double2D_ptr output) {
-		//==============================================================
-		// 計算a/c/d
-		//==============================================================
-		regression = bptr < PolynomialRegression >
-		    (new PolynomialRegression(input, output,
-					      Polynomial::COEF_3::BY_3C));
-		regression->regress();
-		const double *coefs = (*regression->getCoefs())[0];
-		a1 = coefs[1];
-		a2 = coefs[2];
-		a3 = coefs[3];
-		a0 = coefs[0];
-		c = 1 / (a1 + a2 + a3);
-		d = -a0 / (a1 + a2 + a3);
-		//==============================================================
-	    };
-
-	    void ComponentLinearRelation::
-		init(Component_vector_ptr componentVector) {
-		//==============================================================
-		// 建立回歸資料
-		//==============================================================
-		int size = componentVector->size();
-		double2D_ptr input(new double2D(size, 3));
-		double2D_ptr output(new double2D(size, 1));
-
-		for (int x = 0; x != size; x++) {
-		    Component_ptr component = (*componentVector)[x];
-		    double Y = component->XYZ->Y;
-		    RGB_ptr intensity = component->intensity;
-
-		    (*input)[x][0] = intensity->R;
-		    (*input)[x][1] = intensity->G;
-		    (*input)[x][2] = intensity->B;
-		    (*output)[x][0] = Y;
-		}
-		//==============================================================
-
-		//==============================================================
-		// 計算a/c/d
-		//==============================================================
-		init(input, output);
-		//==============================================================                
-	    };
-
-	    ComponentLinearRelation::
-		ComponentLinearRelation(double2D_ptr input,
-					double2D_ptr output) {
-		init(input, output);
-
-	    };
-	  ComponentLinearRelation::ComponentLinearRelation(Component_vector_ptr componentVector):componentVector(componentVector)
-	    {
-		init(componentVector);
-	    };
-	    double ComponentLinearRelation::getIntensity(double luminance) {
-		return c * luminance + d;
-	    };
-	    double ComponentLinearRelation::
-		getLuminance(double rIntensity, double gIntensity,
-			     double bIntensity) {
-		return a0 + rIntensity * a1 + gIntensity * a2 +
-		    bIntensity * a3;
-	    };
-	    //==================================================================
-
-	    //==================================================================
-	    // ComponentLUT
-	    //==================================================================
-	    void ComponentLUT::init(Component_vector_ptr componentVector) {
-		//==============================================================
-		// 建立回歸資料
-		//==============================================================
-		int size = componentVector->size();
-		double_vector_ptr keys(new double_vector(size));
-		double_vector_ptr rValues(new double_vector(size));
-		double_vector_ptr gValues(new double_vector(size));
-		double_vector_ptr bValues(new double_vector(size));
-		double_vector_ptr YValues(new double_vector(size));
-		double_array values(new double[3]);
-
-		//int index = 0;
-		//for (int x = size - 1; x >= 0; x--) {
-		for (int x = 0; x != size; x++) {
-		    Component_ptr component = (*componentVector)[x];
-		    //double Y = component->XYZ->Y;
-		    RGB_ptr intensity = component->intensity;
-
-		    RGB_ptr code = component->rgb;
-		    code->getValues(values, MaxValue::Double255);
-
-		    (*keys)[x] = values[0];
-		    (*rValues)[x] = intensity->R;
-		    (*gValues)[x] = intensity->G;
-		    (*bValues)[x] = intensity->B;
-		    (*YValues)[x] = component->XYZ->Y;
-		    //index++;
-		}
-		//==============================================================
-
-		//==============================================================
-		// 產生RGB LUT
-		//==============================================================
-		keys = DoubleArray::getReverse(keys);
-		rValues = DoubleArray::getReverse(rValues);
-		gValues = DoubleArray::getReverse(gValues);
-		bValues = DoubleArray::getReverse(bValues);
-		YValues = DoubleArray::getReverse(YValues);
-		rLut =
-		    bptr < Interpolation1DLUT >
-		    (new Interpolation1DLUT(keys, rValues));
-		gLut =
-		    bptr < Interpolation1DLUT >
-		    (new Interpolation1DLUT(keys, gValues));
-		bLut =
-		    bptr < Interpolation1DLUT >
-		    (new Interpolation1DLUT(keys, bValues, Ripple));
-		YLut =
-		    bptr < Interpolation1DLUT >
-		    (new Interpolation1DLUT(keys, YValues));
-		//==============================================================                
-	    };
-	  ComponentLUT::ComponentLUT(Component_vector_ptr componentVector):componentVector(componentVector)
-	    {
-		init(componentVector);
-	    };
-	    double ComponentLUT::getIntensity(const Dep::Channel & ch,
-					      double code) {
-		switch (ch.chindex) {
-		case ChannelIndex::R:
-		    return rLut->getValue(code);
-		case ChannelIndex::G:
-		    return gLut->getValue(code);
-		case ChannelIndex::B:
-		    return bLut->getValue(code);
-		default:
-		    throw IllegalArgumentException("Unsupported Channel:" +
-						   *ch.toString());
-		}
-	    };
-	    double ComponentLUT::getCode(const Dep::Channel & ch,
-					 double intensity) {
-		switch (ch.chindex) {
-		case ChannelIndex::R:
-		    return rLut->getKey(intensity);
-		case ChannelIndex::G:
-		    return gLut->getKey(intensity);
-		case ChannelIndex::B:
-		    return bLut->getKey(intensity);
-		default:
-		    throw IllegalArgumentException("Unsupported Channel:" +
-						   *ch.toString());
-		}
-	    };
-	    RGB_ptr ComponentLUT::getCode(double luminance) {
-		luminance = YLut->correctValueInRange(luminance);
-		double key = YLut->getKey(luminance);
-		RGB_ptr rgb(new RGBColor(key, key, key));
-		return rgb;
-	    };
-	    double ComponentLUT::correctIntensityInRange(const Dep::
-							 Channel & ch,
-							 double intensity)
-	    {
-		switch (ch.chindex) {
-		case ChannelIndex::R:
-		    return rLut->correctValueInRange(intensity);
-		case ChannelIndex::G:
-		    return gLut->correctValueInRange(intensity);
-		case ChannelIndex::B:
-		    return bLut->correctValueInRange(intensity);
-		default:
-		    throw IllegalArgumentException("Unsupported Channel:" +
-						   *ch.toString());
-		}
-	    };
-
-	    double ComponentLUT::getMaxBIntensity() {
-		return bLut->getMaxValue();
-	    };
-	    //==================================================================
 
 	    //==================================================================
 	    // DGLutGenerator
@@ -375,9 +38,8 @@ namespace cms {
 		for (int x = 0; x != size; x++) {
 		    double v =
 			differ * (*normalGammaCurve)[x] + minLuminance;
-		    (*luminanceGammaCurve)[x] = v;
-		}
-		return luminanceGammaCurve;
+		     (*luminanceGammaCurve)[x] = v;
+		} return luminanceGammaCurve;
 	    };
 	    /*
 	       計算可用的最大intensity
@@ -391,7 +53,7 @@ namespace cms {
 		const Channel & minchannel = maxintensity->getMinChannel();
 		//以最小值得channel的intensity為最大的intensity
 		double maxvalue = maxintensity->getValue(minchannel);
-		return maxvalue;
+		 return maxvalue;
 	    };
 	    /*
 	       DGLutGenerator擔任產出DG Code的重責大任
@@ -942,11 +604,16 @@ namespace cms {
 		    if (this->bTargetIntensity != -1) {
 			advgenerator.setBTargetIntensity(bTargetIntensity);
 		    }
-		    if (multiPrimaryColor) {
-			advgenerator.setMultiPrimayColor(multiPrimaryColor,
-							 multiPrimayColorStart,
-							 multiPrimayColorEnd,
-							 multiPrimaryColorInterval);
+		    /*if (multiPrimaryColor) {
+		       advgenerator.setMultiPrimayColor(multiPrimaryColor,
+		       multiPrimayColorStart,
+		       multiPrimayColorEnd,
+		       multiPrimaryColorInterval);
+		       } */
+		    if (multiGen) {
+			advgenerator.setMultiGen(multiGen, multiGenStart,
+						 multiGenEnd,
+						 multiGenTimes);
 		    }
 
 		    dglut =
@@ -1029,45 +696,7 @@ namespace cms {
 			//量化
 			STORE_RGBVECTOR("6_dgcode_p1p2dg.xls", dglut);
 			//==========================================================
-		    }		/*else if (correct == Correct::DefinedDim) {
-				   // DimDGLutGenerator
-				   // in: target white , gamma(Y)
-				   // out: DG Code
-				   bptr < IntensityAnalyzerIF > analyzer =
-				   fetcher->getAnalyzer();
-				   DimDGLutGenerator dimgenerator(componentVector,
-				   analyzer);
-				   //analyzer若沒有設定過target color, 會使此步驟失效
-				   XYZ_ptr targetWhite =
-				   analyzer->getReferenceColor()->toXYZ();
-				   double_vector_ptr luminanceGammaCurve =
-				   generator.getLuminanceGammaCurve(gammaCurve);
-
-				   RGB_vector_ptr dimdglut =
-				   dimgenerator.produce(targetWhite,
-				   luminanceGammaCurve,
-				   under, dimGamma);
-				   int size = dimdglut->size();
-				   //======================================================
-				   // 對 Dim DG作平均
-				   //======================================================
-				   if (true == averageDimDG) {
-				   for (int x = 1; x < size - 1; x++) {
-				   //(*dglut)[x] = (*dimdglut)[x];
-				   RGB_ptr rgb0 = (*dimdglut)[x - 1];
-				   RGB_ptr rgb1 = (*dimdglut)[x];
-				   RGB_ptr rgb2 = (*dimdglut)[x + 1];
-				   rgb1->R = (rgb0->R + rgb2->R) / 2.;
-				   rgb1->G = (rgb0->G + rgb2->G) / 2.;
-				   rgb1->B = (rgb0->B + rgb2->B) / 2.;
-				   }
-				   }
-				   //======================================================
-				   for (int x = 0; x < size; x++) {
-				   (*dglut)[x] = (*dimdglut)[x];
-				   }
-				   RGBVector::quantization(dglut, quantizationBit);
-				   } */
+		    }
 		    finalRGBGamma = rgbgamma;
 		    //==========================================================
 		}
@@ -1216,13 +845,20 @@ namespace cms {
 		setBTargetIntensity(double bTargetIntensity) {
 		this->bTargetIntensity = bTargetIntensity;
 	    };
-	    void LCDCalibrator::setMultiPrimaryColor(bool enable,
-						     int start, int end,
-						     int interval) {
-		this->multiPrimaryColor = enable;
-		this->multiPrimayColorStart = start;
-		this->multiPrimayColorEnd = end;
-		this->multiPrimaryColorInterval = interval;
+	    /*void LCDCalibrator::setMultiPrimaryColor(bool enable,
+	       int start, int end,
+	       int interval) {
+	       this->multiPrimaryColor = enable;
+	       this->multiPrimayColorStart = start;
+	       this->multiPrimayColorEnd = end;
+	       this->multiPrimaryColorInterval = interval;
+	       }; */
+	    void LCDCalibrator::setMultiGen(bool enable, int start,
+					    int end, int times) {
+		this->multiGen = enable;
+		this->multiGenStart = start;
+		this->multiGenEnd = end;
+		this->multiGenTimes = times;
 	    };
 	    //==================================================================
 
