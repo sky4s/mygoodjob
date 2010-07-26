@@ -402,7 +402,7 @@ namespace cms {
 	RGB_ptr AdvancedMaxMatrixIntensityAnayzer::
 	    getIntensity(XYZ_ptr XYZ) {
 	    if (null == inverseMatrix) {
-		throw IllegalStateException("NULL == inverseMatrix");
+		throw IllegalStateException("null == inverseMatrix");
 	    }
 	    double2D_ptr color =
 		DoubleArray::toDouble2D(1, 3, XYZ->X, XYZ->Y, XYZ->Z);
@@ -455,9 +455,9 @@ namespace cms {
 
 	    this->targetRatio =
 		DoubleArray::times(inverseMatrix, targetWhiteValues);
-	    (*targetRatio)[0][0] /= (*xtalkRatio)[0][0];
-	    (*targetRatio)[1][0] /= (*xtalkRatio)[1][0];
-	    (*targetRatio)[2][0] /= (*xtalkRatio)[2][0];
+	    /*(*targetRatio)[0][0] /= (*xtalkRatio)[0][0];
+	       (*targetRatio)[1][0] /= (*xtalkRatio)[1][0];
+	       (*targetRatio)[2][0] /= (*xtalkRatio)[2][0]; */
 
 	};
 	//=====================================================================

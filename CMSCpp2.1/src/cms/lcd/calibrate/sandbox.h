@@ -28,11 +28,12 @@ namespace cms {
 		XYZ_ptr getXYZ(XYZ_ptr XYZ, double offsetK);
 		bool isDuplicateBlue100(XYZ_ptr targetXYZ);
 		double bTargetIntensity;
-		bool multiPrimayColor;
-		int multiPrimayColorInterval;
-		int multiPrimayColorStart, multiPrimayColorEnd;
+		/*bool multiPrimayColor;
+		   int multiPrimayColorInterval;
+		   int multiPrimayColorStart, multiPrimayColorEnd; */
 		bool stopMeasure;
-		bool multiGenerate;
+		bool multiGen;
+		int multiGenTimes, multiGenStart, multiGenEnd;
 	      public:
 		 AdvancedDGLutGenerator(Component_vector_ptr
 					componentVector,
@@ -44,11 +45,6 @@ namespace cms {
 				       luminanceGammaCurve, int dimTurn,
 				       int brightTurn, double dimGamma,
 				       double brightGamma);
-		RGB_vector_ptr produce(XYZ_ptr targetWhite,
-				       double_vector_ptr
-				       luminanceGammaCurve, int dimTurn,
-				       int brightTurn, double dimGamma,
-				       double brightGamma, bool avoidHook);
 
 		XYZ_vector_ptr getAvoidHookTarget(XYZ_ptr startXYZ,
 						  XYZ_ptr targetXYZ,
@@ -70,9 +66,11 @@ namespace cms {
 		void setUseMaxTargetBIntensity(bool
 					       useMaxTargetBIntensity);
 		void setBTargetIntensity(double bTargetIntensity);
-		void setMultiPrimayColor(bool enable, int start, int end,
-					 int interval);
+		/*void setMultiPrimayColor(bool enable, int start, int end,
+		   int interval); */
 		void windowClosing();
+		void setMultiGen(bool enable, int start, int end,
+				 int times);
 	      private:
 
 		static XYZ_vector_ptr getDimGammaTarget(double_vector_ptr
@@ -93,9 +91,14 @@ namespace cms {
 					    double v3);
 		static bool isDuplicateBlue100(Component_vector_ptr
 					       componentVector);
-		RGB_vector_ptr produceDGLut(XYZ_vector_ptr
-					    targetXYZVector);
-
+		/*RGB_vector_ptr produceDGLut(XYZ_vector_ptr
+		   targetXYZVector); */
+		RGB_vector_ptr produceDGLut_(XYZ_vector_ptr
+					     targetXYZVector);
+		RGB_vector_ptr produceDGLut0(XYZ_vector_ptr
+					     targetXYZVector,
+					     Component_vector_ptr
+					     componentVector);
 	    };
 
 

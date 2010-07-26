@@ -135,15 +135,10 @@ void __fastcall TCCTLUTForm::Button_MeaRunClick(TObject * Sender)
 	calibrator.setAvoidFRCNoise(this->CheckBox_AvoidNoise->Checked);
 	calibrator.setNewMethod(this->CheckBox_NewMethod->Checked);
 
-	calibrator.setMultiPrimaryColor(this->CheckBox_MultiPrimayColor->
-					Checked,
-					this->Edit_MultiPrimaryColorStart->
-					Text.ToInt(),
-					this->Edit_MultiPrimaryColorEnd->
-					Text.ToInt(),
-					this->
-					Edit_MultiPrimaryColorInterval->
-					Text.ToInt());
+	calibrator.setMultiGen(this->CheckBox_MultiGen->Checked,
+			       this->Edit_MultiGenStart->Text.ToInt(),
+			       this->Edit_MultiGenEnd->Text.ToInt(),
+			       this->Edit_MultiGenTimes->Text.ToInt());
 	if (CheckBox_BTargetIntensity->Checked) {
 	    double bTargetIntensity =
 		Edit_BTargetIntensity->Text.ToDouble();
@@ -422,8 +417,8 @@ void __fastcall TCCTLUTForm::CheckBox_NewMethodClick(TObject * Sender)
     RadioButton_DefinedDim->Enabled = newMethod;
     RadioButton_MaxYNativeAdv->Enabled = newMethod;
     CheckBox_BTargetIntensity->Enabled = newMethod;
-    CheckBox_MultiPrimayColor->Enabled = newMethod;
-    Edit_MultiPrimaryColorInterval->Enabled = newMethod;
+    CheckBox_MultiGen->Enabled = newMethod;
+    Edit_MultiGenTimes->Enabled = newMethod;
 
     if (newMethod) {
 	if (RadioButton_P1P2->Checked) {

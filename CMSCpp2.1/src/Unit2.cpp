@@ -786,13 +786,15 @@ int main(int argc, char *argv[])
     //cout<<_toDouble("123");
     //ShellExecute(null, null, "target.xls", null, null, SW_SHOW);
     //ShellExecute(null, null, "target.xls", null, null, SW_HIDE);
-    targetTester();
+    //targetTester();
     //directGammaTester();
     //hookTester();
     //odTester();
     //txtTester();
     //propTester();
     //excelTester();
+
+    cout << 5 / 4 / 3. << endl;
     getch();
 }
 

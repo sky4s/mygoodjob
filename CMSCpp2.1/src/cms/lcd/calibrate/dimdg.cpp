@@ -91,8 +91,7 @@ namespace cms {
 		xyY_ptr rxyY = analyzer->getPrimaryColor(Channel::R);
 		xyY_ptr gxyY = analyzer->getPrimaryColor(Channel::G);
 		xyY_ptr bxyY = analyzer->getPrimaryColor(Channel::B);
-		int x = 0;
-		x;
+
 		foreach(const XYZ_ptr targetXYZ, *targetXYZVector) {
 		    bptr < MaxMatrixIntensityAnayzer >
 			analyzer(new MaxMatrixIntensityAnayzer());
