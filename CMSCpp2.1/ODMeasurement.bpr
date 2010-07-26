@@ -3,7 +3,7 @@
 <PROJECT>
   <MACROS>
     <VERSION value="BCB.06.00"/>
-    <PROJECT value="build\ODMeasurement.exe"/>
+    <PROJECT value="workdir\ODMeasurement.exe"/>
     <OBJFILES value="build\ODMeasurement.obj build\TOutputFileFrame.obj build\util.obj 
       build\colorspace.obj build\depend.obj build\independ.obj build\rgb.obj 
       build\ciexyz.obj build\dgcodefile.obj build\excelfile.obj build\lang.obj 
@@ -26,7 +26,7 @@
       inetdbbde.bpi inetdbxpress.bpi inetdb.bpi nmfast.bpi webdsnap.bpi 
       bcbie.bpi websnap.bpi soaprtl.bpi dclocx.bpi dbexpress.bpi dbxcds.bpi 
       indy.bpi bcb2kaxserver.bpi bcbindent.bpi"/>
-    <PATHCPP value=".;src\gui;src\cms\util;src\cms\colorspace;src\cms\colorspace;src\cms\colorspace;src\cms\colorspace;src\cms\colorspace;src\cms\colorformat;src\cms\colorformat;src\java;src\cms;src\math;src\cms\measure;lib\CA200SRVRLib;lib\CA200SRVRLib;src\ca210api;src\cms\colorformat;src\gui\3d;src\gui\3d"/>
+    <PATHCPP value=".;src\gui;src\cms\util;src\cms\colorspace;src\cms\colorformat;src\java;src\cms;src\math;src\cms\measure;lib\CA200SRVRLib;src\ca210api;src\gui\3d"/>
     <PATHPAS value=".;"/>
     <PATHRC value=".;"/>
     <PATHASM value=".;"/>
@@ -95,7 +95,7 @@ AutoIncBuild=1
 MajorVer=0
 MinorVer=1
 Release=0
-Build=79
+Build=93
 Debug=0
 PreRelease=1
 Special=0
@@ -107,7 +107,7 @@ CodePage=950
 [Version Info Keys]
 CompanyName=AUO
 FileDescription=
-FileVersion=0.1.0.79
+FileVersion=0.1.0.93
 InternalName=
 LegalCopyright=
 LegalTrademarks=
@@ -115,13 +115,6 @@ OriginalFilename=
 ProductName=
 ProductVersion=1.0.0.0
 Comments=
-
-[Excluded Packages]
-d:\program files\borland\cbuilder6\Bin\dclbde60.bpl=Borland BDE DB Components
-d:\program files\borland\cbuilder6\Bin\dcltee60.bpl=TeeChart Components
-d:\program files\borland\cbuilder6\Bin\dcldss60.bpl=Borland Decision Cube Components
-d:\program files\borland\cbuilder6\Bin\dcltqr60.bpl=TeeChart for QuickReport Components
-d:\program files\borland\cbuilder6\Bin\DBWEBXPRT.BPL=Borland Web Wizard Package
 
 [HistoryLists\hlIncludePath]
 Count=8
@@ -148,8 +141,9 @@ Count=1
 Item0=build
 
 [HistoryLists\hlFinalOutputDir]
-Count=1
-Item0=build\
+Count=2
+Item0=workdir
+Item1=build\
 
 [HistoryLists\hIBPIOutputDir]
 Count=1
