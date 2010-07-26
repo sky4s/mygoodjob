@@ -740,8 +740,6 @@ namespace cms {
 		    dglut = RGB_vector_ptr((RGB_vector *) null);
 		    return dglut;
 		} else {
-		    /*Component_vector_ptr componentVector =
-		       fetchComponentVector(measureCondition); */
 		    double_vector_ptr luminanceVector =
 			fetchLuminanceVector(measureCondition);
 		    STORE_DOUBLE_VECTOR("o_fetch.xls", luminanceVector);
