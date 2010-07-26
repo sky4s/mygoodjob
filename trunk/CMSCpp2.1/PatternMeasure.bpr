@@ -3,7 +3,7 @@
 <PROJECT>
   <MACROS>
     <VERSION value="BCB.06.00"/>
-    <PROJECT value="build\PatternMeasure.exe"/>
+    <PROJECT value="workdir\PatternMeasure.exe"/>
     <OBJFILES value="build\PatternMeasure.obj build\TPatternMeasureForm.obj 
       build\TOutputFileFrame.obj build\lang.obj build\util.obj 
       build\excelfile.obj build\meter.obj build\CA210API.obj 
@@ -26,7 +26,7 @@
       inet.bpi inetdbbde.bpi inetdbxpress.bpi nmfast.bpi webdsnap.bpi bcbie.bpi 
       websnap.bpi soaprtl.bpi dclocx.bpi dbexpress.bpi dbxcds.bpi indy.bpi 
       bcb2kaxserver.bpi bcbindent.bpi"/>
-    <PATHCPP value=".;src\gui\measure;src\gui;src\java;src\cms\util;src\cms\colorformat;src\cms\measure;src\ca210api;lib\CA200SRVRLib;src\gui;src\i2c;src\i2c;src\i2c\core;lib\LPT_lib;lib\LPT_lib;src\cms\colorspace;src\cms\colorspace;src\cms\colorspace"/>
+    <PATHCPP value=".;src\gui\measure;src\gui;src\java;src\cms\util;src\cms\colorformat;src\cms\measure;src\ca210api;lib\CA200SRVRLib;src\i2c;src\i2c\core;lib\LPT_lib;src\cms\colorspace"/>
     <PATHPAS value=".;"/>
     <PATHRC value=".;"/>
     <PATHASM value=".;"/>
@@ -114,13 +114,6 @@ ProductName=
 ProductVersion=1.0.0.0
 Comments=
 
-[Excluded Packages]
-d:\program files\borland\cbuilder6\Bin\dclbde60.bpl=Borland BDE DB Components
-d:\program files\borland\cbuilder6\Bin\dcltee60.bpl=TeeChart Components
-d:\program files\borland\cbuilder6\Bin\dcldss60.bpl=Borland Decision Cube Components
-d:\program files\borland\cbuilder6\Bin\dcltqr60.bpl=TeeChart for QuickReport Components
-d:\program files\borland\cbuilder6\Bin\DBWEBXPRT.BPL=Borland Web Wizard Package
-
 [HistoryLists\hlIncludePath]
 Count=9
 Item0=src\cms\colorspace;src;src\i2c\core;lib\LPT_lib;src\i2c;lib\CA200SRVRLib;src\ca210api;src\cms\measure;src\cms\colorformat;src\cms\util;src\java;src\gui;src\gui\measure;D:\Program Files\Borland\CBuilder6\Projects;$(BCB)\include;$(BCB)\include\vcl;lib;lib\USB_i2c_lib
@@ -154,9 +147,10 @@ Count=1
 Item0=build
 
 [HistoryLists\hlFinalOutputDir]
-Count=2
-Item0=build\
-Item1=build
+Count=3
+Item0=workdir
+Item1=build\
+Item2=build
 
 [HistoryLists\hIBPIOutputDir]
 Count=1

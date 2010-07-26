@@ -3,7 +3,7 @@
 <PROJECT>
   <MACROS>
     <VERSION value="BCB.06.00"/>
-    <PROJECT value="build\Project1.exe"/>
+    <PROJECT value="workdir\Project1.exe"/>
     <OBJFILES value="build\Project1.obj build\Unit4.obj"/>
     <RESFILES value="Project1.res"/>
     <IDLFILES value=""/>
@@ -87,13 +87,6 @@ ProductName=
 ProductVersion=1.0.0.0
 Comments=
 
-[Excluded Packages]
-d:\program files\borland\cbuilder6\Bin\dclbde60.bpl=Borland BDE DB Components
-d:\program files\borland\cbuilder6\Bin\dcltee60.bpl=TeeChart Components
-d:\program files\borland\cbuilder6\Bin\dcldss60.bpl=Borland Decision Cube Components
-d:\program files\borland\cbuilder6\Bin\dcltqr60.bpl=TeeChart for QuickReport Components
-d:\program files\borland\cbuilder6\Bin\DBWEBXPRT.BPL=Borland Web Wizard Package
-
 [HistoryLists\hlIncludePath]
 Count=3
 Item0=src\gui\test;D:\Program Files\Borland\CBuilder6\Projects;$(BCB)\include;$(BCB)\include\vcl
@@ -119,9 +112,11 @@ Count=1
 Item0=build
 
 [HistoryLists\hlFinalOutputDir]
-Count=2
-Item0=build\
-Item1=build
+Count=4
+Item0=workdir\
+Item1=workdir
+Item2=build\
+Item3=build
 
 [HistoryLists\hIBPIOutputDir]
 Count=1
