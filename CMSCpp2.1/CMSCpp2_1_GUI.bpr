@@ -3,7 +3,7 @@
 <PROJECT>
   <MACROS>
     <VERSION value="BCB.06.00"/>
-    <PROJECT value="build\CMSCpp2_1_GUI.exe"/>
+    <PROJECT value="workdir\CMSCpp2_1_GUI.exe"/>
     <OBJFILES value="build\CMSCpp2_1_GUI.obj build\HWINTERFACELib_OCX.obj 
       build\HWINTERFACELib_TLB.obj build\USBHIDIOC.obj build\lang.obj 
       build\CA200SRVRLib_OCX.obj build\CA200SRVRLib_TLB.obj build\CA210API.obj 
@@ -45,7 +45,11 @@
       inetdbbde.bpi inetdbxpress.bpi inetdb.bpi nmfast.bpi webdsnap.bpi 
       bcbie.bpi websnap.bpi soaprtl.bpi dclocx.bpi dbexpress.bpi dbxcds.bpi 
       indy.bpi bcb2kaxserver.bpi bcbindent.bpi"/>
+<<<<<<< .mine
+    <PATHCPP value=".;lib\LPT_lib;lib\USB_i2c_lib;src\java;lib\CA200SRVRLib;src\ca210api;src\cms\util;src\cms\colorspace;src\cms;src\cms\colorformat;src\math;src\cms\lcd\calibrate;src\cms\measure;src;src\gui;src\i2c;src\i2c\core;src\gui\cct;src\gui\test"/>
+=======
     <PATHCPP value=".;lib\LPT_lib;lib\LPT_lib;lib\USB_i2c_lib;src\java;lib\CA200SRVRLib;lib\CA200SRVRLib;src\ca210api;src\cms\util;src\cms\util;src\cms\colorspace;src\cms\colorspace;src\cms\colorspace;src\cms\colorspace;src\cms\colorspace;src\cms;src\cms;src\cms\colorformat;src\cms\colorformat;src\cms\colorformat;src\cms\colorformat;src\math;src\math;src\math;src\math;src\math;src\cms\lcd\calibrate;src\cms\lcd\calibrate;src\cms\lcd\calibrate;src\cms\lcd\calibrate;src\cms\lcd\calibrate;src\cms\lcd\calibrate;src\cms\lcd\calibrate;src\cms\lcd\calibrate;src\cms\measure;src\cms\measure;src\cms\measure;src\cms\measure;src;src\gui;src\gui;src\gui;src\gui;src\gui;src\gui;src\gui;src\i2c;src\i2c;src\i2c;src\i2c\core;src\math;src\cms\lcd\calibrate;src\cms\lcd\calibrate;src\cms\colorformat;src\gui\cct;src\gui\cct;src\gui\cct;src\gui\cct;src\gui\cct;src\gui\cct;src\gui\test;src\cms\lcd\calibrate"/>
+>>>>>>> .r417
     <PATHPAS value=".;"/>
     <PATHRC value=".;"/>
     <PATHASM value=".;"/>
@@ -227,9 +231,10 @@ Count=1
 Item0=build
 
 [HistoryLists\hlFinalOutputDir]
-Count=2
-Item0=build\
-Item1=build
+Count=3
+Item0=workdir
+Item1=build\
+Item2=build
 
 [HistoryLists\hIBPIOutputDir]
 Count=1
