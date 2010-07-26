@@ -218,8 +218,6 @@ namespace cms {
 		    storeDGLutFile(const std::string & filename,
 				   RGB_vector_ptr dglut);
 		void setBTargetIntensity(double bTargetIntensity);
-		/*void setMultiPrimaryColor(bool enable, int start, int end,
-		   int interval); */
 		void setMultiGen(bool enable, int start, int end,
 				 int times);
 	      private:

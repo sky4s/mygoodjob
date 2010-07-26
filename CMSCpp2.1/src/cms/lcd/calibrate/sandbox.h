@@ -34,12 +34,18 @@ namespace cms {
 		bool stopMeasure;
 		bool multiGen;
 		int multiGenTimes, multiGenStart, multiGenEnd;
+		 bptr < cms::lcd::calibrate::ComponentFetcher > fetcher;
 	      public:
 		 AdvancedDGLutGenerator(Component_vector_ptr
 					componentVector,
 					bptr <
 					cms::measure::IntensityAnalyzerIF >
 					analyzer);
+		 AdvancedDGLutGenerator(Component_vector_ptr
+					componentVector,
+					bptr <
+					cms::lcd::calibrate::
+					ComponentFetcher > fetcher);
 		RGB_vector_ptr produce(XYZ_ptr targetWhite,
 				       double_vector_ptr
 				       luminanceGammaCurve, int dimTurn,

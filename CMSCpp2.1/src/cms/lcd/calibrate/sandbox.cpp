@@ -20,6 +20,7 @@ namespace cms {
 	    using namespace Indep;
 	    using namespace Dep;
 	    using namespace java::lang;
+	    using namespace cms::lcd::calibrate;
 
 	    //==================================================================
 	    // AdvancedDGLutGenerator
@@ -31,9 +32,18 @@ namespace cms {
 				       analyzer):DimDGLutGenerator
 		(componentVector, analyzer),
 		useMaxTargetBIntensity(false), bTargetIntensity(-1),
-		/*multiPrimayColor(false), multiPrimayColorInterval(17), */
-	     stopMeasure(false), multiGen(false) {
+		stopMeasure(false), multiGen(false) {
 	    };
+	     AdvancedDGLutGenerator::
+		AdvancedDGLutGenerator(Component_vector_ptr
+				       componentVector,
+				       bptr < ComponentFetcher >
+				       fetcher):DimDGLutGenerator
+		(componentVector, fetcher->getAnalyzer()),
+		fetcher(fetcher), useMaxTargetBIntensity(false),
+		bTargetIntensity(-1), stopMeasure(false), multiGen(false) {
+	    };
+
 
 	    /*
 	       更進階的產生方式
@@ -66,21 +76,21 @@ namespace cms {
 		 STORE_XYZXY_VECTOE("target.xls", targetXYZVector);
 		//==============================================================
 		RGB_vector_ptr result = produceDGLut_(targetXYZVector);
-		/*RGB_vector_ptr result =
-		   produceDGLut0(targetXYZVector, componentVector); */
+		if (multiGen) {
+		    result = produceDGLut_(targetXYZVector);
+		} else {
+		    result =
+			produceDGLut0(targetXYZVector, componentVector);
+		}
 
-		 return result;
+		return result;
 	    };
 	    RGB_vector_ptr AdvancedDGLutGenerator::
 		produceDGLut_(XYZ_vector_ptr targetXYZVector) {
 		RGB_vector_ptr initRGBVector =
 		    produceDGLut0(targetXYZVector, componentVector);
 
-
 		//==============================================================
-		int size = targetXYZVector->size();
-		RGB_vector_ptr result(new RGB_vector(size));
-
 		//primary color只能用target white~
 		XYZ_ptr rXYZ =
 		    analyzer->getPrimaryColor(Channel::R)->toXYZ();
@@ -94,40 +104,37 @@ namespace cms {
 		   2. RGB都採用上一次的DG Code
 		   若是如此, 一定要求出該GL的DG才可以繼續下一個
 		 */
+		int size = targetXYZVector->size();
+		RGB_vector_ptr result = initRGBVector;
+		for (int t = 0; t < multiGenTimes; t++) {
+		    Component_vector_ptr componentVectorPrime =
+			fetcher->fetchComponent(result);
 
-		 bptr < MeterMeasurement > mm =
-		    analyzer->getMeterMeasurement();
+		    for (int x = size - 1; x != -1; x--) {
+			XYZ_ptr targetXYZ = (*targetXYZVector)[x];
+			bptr < MaxMatrixIntensityAnayzer >
+			    ma(new MaxMatrixIntensityAnayzer());
+			ma->setupComponent(Channel::R, rXYZ);
+			ma->setupComponent(Channel::G, gXYZ);
+			ma->setupComponent(Channel::B, bXYZ);
+			ma->setupComponent(Channel::W, targetXYZ);
+			ma->enter();
 
-		for (int x = size - 1; x != -1; x--) {
-		    XYZ_ptr targetXYZ = (*targetXYZVector)[x];
-
-		    Component_vector_ptr newcomponentVector;
-		     bptr < MaxMatrixIntensityAnayzer >
-			ma(new MaxMatrixIntensityAnayzer());
-		     ma->setupComponent(Channel::R, rXYZ);
-		     ma->setupComponent(Channel::G, gXYZ);
-		     ma->setupComponent(Channel::B, bXYZ);
-		     ma->setupComponent(Channel::W, targetXYZ);
-		     ma->enter();
-
-		     newcomponentVector =
-			fetchComponent(ma, componentVector);
-
-#ifdef DEBUG_CCTLUT_NEWMETHOD
-		     STORE_COMPONENT(_toString(x) + ".xls",
-				     newcomponentVector);
-#endif
-		    DGLutGenerator lutgen(newcomponentVector);
-		    //B採100嗎?
-		    if (bTargetIntensity == -1) {
-			bTargetIntensity =
-			    useMaxTargetBIntensity ? lutgen.
-			    getMaxBIntensity() : 100;
-		    };
-		    RGB_ptr rgb = lutgen.getDGCode(100, 100,
-						   bTargetIntensity);
-		    (*result)[x] = rgb;
+			Component_vector_ptr newcomponentVector =
+			    fetchComponent(ma, componentVectorPrime);
+			DGLutGenerator lutgen(newcomponentVector);
+			//B採100嗎?
+			if (bTargetIntensity == -1) {
+			    bTargetIntensity =
+				useMaxTargetBIntensity ? lutgen.
+				getMaxBIntensity() : 100;
+			};
+			RGB_ptr rgb = lutgen.getDGCode(100, 100,
+						       bTargetIntensity);
+			(*result)[x] = rgb;
+		    }
 		}
+
 		return result;
 	    };
 	    RGB_vector_ptr AdvancedDGLutGenerator::
@@ -148,7 +155,6 @@ namespace cms {
 		for (int x = size - 1; x != -1; x--) {
 		    XYZ_ptr targetXYZ = (*targetXYZVector)[x];
 
-		    Component_vector_ptr newcomponentVector;
 		    bptr < MaxMatrixIntensityAnayzer >
 			ma(new MaxMatrixIntensityAnayzer());
 		    ma->setupComponent(Channel::R, rXYZ);
@@ -157,7 +163,7 @@ namespace cms {
 		    ma->setupComponent(Channel::W, targetXYZ);
 		    ma->enter();
 
-		    newcomponentVector =
+		    Component_vector_ptr newcomponentVector =
 			fetchComponent(ma, componentVector);
 
 #ifdef DEBUG_CCTLUT_NEWMETHOD
@@ -424,14 +430,6 @@ namespace cms {
 		setBTargetIntensity(double bTargetIntensity) {
 		this->bTargetIntensity = bTargetIntensity;
 	    }
-	    /*void AdvancedDGLutGenerator::
-	       setMultiPrimayColor(bool enable, int start,
-	       int end, int interval) {
-	       this->multiPrimayColor = enable;
-	       this->multiPrimayColorStart = start;
-	       this->multiPrimayColorEnd = end;
-	       this->multiPrimayColorInterval = interval;
-	       }; */
 	    void AdvancedDGLutGenerator::windowClosing() {
 		stopMeasure = true;
 	    };
