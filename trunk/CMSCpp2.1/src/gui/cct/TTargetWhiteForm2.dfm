@@ -1,6 +1,6 @@
 object TargetWhiteForm2: TTargetWhiteForm2
-  Left = 440
-  Top = 358
+  Left = 352
+  Top = 339
   Width = 928
   Height = 617
   Caption = 'TargetWhiteForm'
