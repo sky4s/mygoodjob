@@ -16,6 +16,9 @@ namespace cms {
 	namespace calibrate {
 	    using namespace cms::measure;
 	    using namespace cms::colorformat;
+	    /*
+	       將componentVector以analyzer重新計算Component
+	     */
 	    Component_vector_ptr DimDGLutGenerator::fetchComponent(bptr <
 								   MaxMatrixIntensityAnayzer
 								   >
@@ -24,7 +27,7 @@ namespace cms {
 								   componentVector)
 	    {
 		Component_vector_ptr result(new Component_vector());
-
+		//不限長度
 		 foreach(const Component_ptr c, *componentVector) {
 		    RGB_ptr intensity = analyzer->getIntensity(c->XYZ);
 		    Component_ptr component(new
