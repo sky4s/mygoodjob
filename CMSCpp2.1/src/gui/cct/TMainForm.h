@@ -178,13 +178,12 @@ class TMainForm:public TForm {
     void setBitDepthChecked(int lutSelect, int outSelect);
     void setFRCAbility();
     //==========================================================================
-    void readTCONSetup(String section);
-    void readTCONCustomSetup();
+    void readTCONSetup(String filename, String section);
     void writeTCONCustomSetup();
     void readSetup();
     void writeSetup();
     void readTCONSections();
-     bptr < TStringList > tconSections;
+    //bptr < TStringList > tconSections;
   public:			// User declarations
     //==========================================================================
     // meter

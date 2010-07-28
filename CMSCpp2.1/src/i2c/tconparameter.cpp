@@ -20,47 +20,42 @@ namespace i2c {
 	testRGBAddress(testRGBAddress), lutBit(lutBit),
 	testRGBBit(independentRGB ? TestRGBBit::
 		   IndependentInstance : TestRGBBit::DependentInstance),
-	DGLutAddress(-1), DGAddress(DGAddress), DGBit(DGBit) {
+	DGLutAddress(-1), DGAddress(DGAddress), DGBit(DGBit), gammaTest(true) {
 
     };
-    /*TCONParameter::TCONParameter(int gammaTestAddress,
-       unsigned char gammaTestBit,
-       int testRGBAddress, bool independentRGB,
-       const Dep::MaxValue & lutBit,
-       int DGLutAddress):gammaTestAddress
-       (gammaTestAddress), gammaTestBit(gammaTestBit),
-       testRGBAddress(testRGBAddress), lutBit(lutBit),
-       testRGBBit(independentRGB ? TestRGBBit::
-       IndependentInstance : TestRGBBit::DependentInstance),
-       DGLutAddress(DGLutAddress) {
-
-       }; */
-    TCONParameter::TCONParameter(const int gammaTestAddress,
+    TCONParameter::TCONParameter(const Dep::MaxValue & lutBit, const int
+				 DGLutAddress, const int DGAddress, const unsigned char
+				 DGBit, const int gammaTestAddress,
 				 const unsigned char gammaTestBit,
 				 const int testRGBAddress,
-				 const TestRGBBit & testRGBBit,
-				 const Dep::MaxValue & lutBit, const int
-				 DGLutAddress, const int DGAddress, const unsigned char
-				 DGBit):gammaTestAddress(gammaTestAddress),
+				 const TestRGBBit & testRGBBit):gammaTestAddress(gammaTestAddress),
 	gammaTestBit(gammaTestBit), testRGBAddress(testRGBAddress),
 	lutBit(lutBit), testRGBBit(testRGBBit), DGLutAddress(DGLutAddress),
-	DGAddress(DGAddress), DGBit(DGBit) {
+	DGAddress(DGAddress), DGBit(DGBit), gammaTest(true) {
 
+    };
+
+    TCONParameter::TCONParameter(const Dep::MaxValue & lutBit, const int DGLutAddress,
+				 const int DGAddress,
+				 const unsigned char DGBit):gammaTestAddress(-1),
+	gammaTestBit(-1), testRGBAddress(-1), lutBit(lutBit),
+	testRGBBit(testRGBBit), DGLutAddress(DGLutAddress), DGAddress(DGAddress), DGBit(DGBit),
+	gammaTest(false) {
     };
     TestRGBBit::TestRGBBit(const int rLowBit, const int rHighBit,
 			   const int gLowBit, const int gHighBit,
-			   const int bLowBit, const int bHighBit,
-			   const int totalByte)
+			   const int bLowBit, const int bHighBit, const int totalByte)
     :rLowBit(rLowBit), rHighBit(rHighBit), gLowBit(gLowBit),
-	gHighBit(gHighBit), bLowBit(bLowBit), bHighBit(bHighBit),
-	totalByte(totalByte) {
+	gHighBit(gHighBit), bLowBit(bLowBit), bHighBit(bHighBit), totalByte(totalByte) {
 
     };
+    bool TCONParameter::isGammaTestEnable() {
+	return gammaTest;
+    };
+
     //12401
-    const TestRGBBit TestRGBBit::IndependentInstance(8, 0, 24, 16, 40,
-						     32, 6);
+    const TestRGBBit TestRGBBit::IndependentInstance(8, 0, 24, 16, 40, 32, 6);
     //12403
-    const TestRGBBit TestRGBBit::DependentInstance(0, 8, 16, 12, 24,
-						   32, 5);
+    const TestRGBBit TestRGBBit::DependentInstance(0, 8, 16, 12, 24, 32, 5);
 };
 

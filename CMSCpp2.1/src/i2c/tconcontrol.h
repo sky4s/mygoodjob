@@ -32,6 +32,7 @@ namespace i2c {
 	void setDG(bool enable);
 	unsigned char readByte(int dataAddress);
 	void writeByte(int dataAddress, unsigned char data);
+	bool isGammaTestEnable();
       private:
 
 	void write(int dataAddress, bptr < cms::util::ByteBuffer > data);

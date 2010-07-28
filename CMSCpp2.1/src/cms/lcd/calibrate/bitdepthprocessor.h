@@ -21,15 +21,13 @@ namespace cms {
 	      private:
 		const Dep::MaxValue * in, *lut, *out;
 		BitDepth bitDepth;
-		static BitDepth getBitDepth(const Dep::MaxValue & in,
-					    const Dep::MaxValue & out);
+		static BitDepth getBitDepth(const Dep::MaxValue & in, const Dep::MaxValue & out);
 		bool gamma256;
 		bool tconInput;
 		int getMaxDigitalCountIndex();
 		int getMaxEffectiveDigitalCountIndex();
 	      public:
-		 BitDepthProcessor(int inBit, int lutBit, int outBit,
-				   bool tconinput);
+		 BitDepthProcessor(int inBit, int lutBit, int outBit, bool tconinput);
 
 		int getMeasureStart();
 		int getMeasureEnd();

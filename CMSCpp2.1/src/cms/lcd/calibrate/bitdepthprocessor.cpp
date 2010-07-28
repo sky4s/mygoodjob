@@ -21,21 +21,16 @@ namespace cms {
 	    // BitDepthProcessor
 	    //==================================================================
 	     BitDepthProcessor::BitDepth BitDepthProcessor::
-		getBitDepth(const Dep::MaxValue & in,
-			    const Dep::MaxValue & out) {
+		getBitDepth(const Dep::MaxValue & in, const Dep::MaxValue & out) {
 		if (in == MaxValue::Int10Bit && out == MaxValue::Int10Bit) {
 		    return b10_10;
-		} else if (in == MaxValue::Int10Bit
-			   && out == MaxValue::Int8Bit) {
+		} else if (in == MaxValue::Int10Bit && out == MaxValue::Int8Bit) {
 		    return b10_8;
-		} else if (in == MaxValue::Int8Bit
-			   && out == MaxValue::Int8Bit) {
+		} else if (in == MaxValue::Int8Bit && out == MaxValue::Int8Bit) {
 		    return b8_8;
-		} else if (in == MaxValue::Int8Bit
-			   && out == MaxValue::Int6Bit) {
+		} else if (in == MaxValue::Int8Bit && out == MaxValue::Int6Bit) {
 		    return b8_6;
-		} else if (in == MaxValue::Int6Bit
-			   && out == MaxValue::Int6Bit) {
+		} else if (in == MaxValue::Int6Bit && out == MaxValue::Int6Bit) {
 		    return b6_6;
 		} else {
 		    /*throw
@@ -71,8 +66,7 @@ namespace cms {
 		    //return 252;
 		    return tconInput ? 4032 : 252;
 		default:
-		    throw IllegalStateException("Unsupported bitDepth: " +
-						bitDepth);
+		    throw IllegalStateException("Unsupported bitDepth: " + bitDepth);
 		}
 	    };
 	    /*
@@ -87,8 +81,7 @@ namespace cms {
 		case b6_6:
 		    return 0;
 		default:
-		    throw IllegalStateException("Unsupported bitDepth: " +
-						bitDepth);
+		    throw IllegalStateException("Unsupported bitDepth: " + bitDepth);
 		}
 	    };
 	    /*
@@ -106,8 +99,7 @@ namespace cms {
 		case b6_6:
 		    return tconInput ? 16 : 4;
 		default:
-		    throw IllegalStateException("Unsupported bitDepth: " +
-						bitDepth);
+		    throw IllegalStateException("Unsupported bitDepth: " + bitDepth);
 		}
 	    };
 
@@ -124,14 +116,11 @@ namespace cms {
 		case b6_6:
 		    return tconInput ? 16 : 4;
 		default:
-		    throw IllegalStateException("Unsupported bitDepth: " +
-						bitDepth);
+		    throw IllegalStateException("Unsupported bitDepth: " + bitDepth);
 		}
 	    };
 	    int BitDepthProcessor::getMeasureLevel() {
-		int level =
-		    (getMeasureStart() -
-		     getMeasureFirstStep()) / getMeasureStep() + 2;
+		int level = (getMeasureStart() - getMeasureFirstStep()) / getMeasureStep() + 2;
 		return level;
 	    };
 	    /*
@@ -148,8 +137,7 @@ namespace cms {
 		case b6_6:
 		    return 252;
 		default:
-		    throw IllegalStateException("Unsupported bitDepth: " +
-						bitDepth);
+		    throw IllegalStateException("Unsupported bitDepth: " + bitDepth);
 		}
 	    };
 	    int BitDepthProcessor::getMaxDigitalCountIndex() {
@@ -162,8 +150,7 @@ namespace cms {
 		case b6_6:
 		    return gamma256 ? 256 : 255;
 		default:
-		    throw IllegalStateException("Unsupported bitDepth: " +
-						bitDepth);
+		    throw IllegalStateException("Unsupported bitDepth: " + bitDepth);
 		}
 	    };
 
@@ -182,8 +169,7 @@ namespace cms {
 		case b6_6:
 		    return 252;
 		default:
-		    throw IllegalStateException("Unsupported bitDepth: " +
-						bitDepth);
+		    throw IllegalStateException("Unsupported bitDepth: " + bitDepth);
 		}
 	    };
 
