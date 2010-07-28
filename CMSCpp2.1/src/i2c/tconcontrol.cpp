@@ -12,11 +12,11 @@
 
 namespace i2c {
     using namespace cms::util;
+    using namespace Dep;
      TCONControl::TCONControl(bptr < TCONParameter >
 			      parameter,
 			      bptr < i2cControl >
-			      control):parameter(parameter),
-	control(control), dualTCON(false) {
+			      control):parameter(parameter), control(control), dualTCON(false) {
 
     };
   TCONControl::TCONControl(bptr < TCONParameter > parameter, bptr < i2cControl > control1, bptr < i2cControl > control2):parameter(parameter),
@@ -24,16 +24,15 @@ namespace i2c {
 	dualTCON(true) {
 
     };
-    void TCONControl::setTestRGB(RGB_ptr rgb) {
-    //rgb->getValues()
+    void TCONControl::setGammaTestRGB(RGB_ptr rgb) {
+	//rgb->getValues()
 	int r = _toInt(rgb->R);
 	int g = _toInt(rgb->G);
 	int b = _toInt(rgb->B);
-	setTestRGB(r, g, b);
+	setGammaTestRGB(r, g, b);
     };
     bptr < ByteBuffer > TCONControl::getRGBByteBuffer(int r, int g, int b,
-						      const TestRGBBit &
-						      testRGBBit) {
+						      const TestRGBBit & testRGBBit) {
 	int rLow = r & 255;
 	int rHigh = (r >> 8) & 15;
 	int gLow = g & 255;
@@ -83,24 +82,15 @@ namespace i2c {
 	return data;
     };
 
-    void TCONControl::setTestRGB(int r, int g, int b) {
+    void TCONControl::setGammaTestRGB(int r, int g, int b) {
 	const TestRGBBit & testRGBBit = parameter->testRGBBit;
 	bptr < ByteBuffer > data = getRGBByteBuffer(r, g, b, testRGBBit);
 
 	int address = parameter->testRGBAddress;
-	control->write(address, data);
-	if (true == dualTCON) {
-	    control2->write(address, data);
-	}
+	write(address, data);
     };
     void TCONControl::setGammaTest(bool enable) {
-	int address = parameter->gammaTestAddress;
-	unsigned char bit = parameter->gammaTestBit;
-	unsigned char data = enable << (bit - 1);
-	control->writeByte(address, data);
-	if (true == dualTCON) {
-	    control2->writeByte(address, data);
-	}
+	setBitData(parameter->gammaTestAddress, parameter->gammaTestBit, enable);
     };
 
     unsigned char TCONControl::readByte(int dataAddress) {
@@ -112,11 +102,73 @@ namespace i2c {
 	    control2->writeByte(dataAddress, data);
 	}
     };
-    const Dep::MaxValue & TCONControl::getLUTBit() {
+
+    void TCONControl::write(int dataAddress, bptr < ByteBuffer > data) {
+	control->write(dataAddress, data);
+	if (true == dualTCON) {
+	    control2->write(dataAddress, data);
+	}
+    }
+    const MaxValue & TCONControl::getLUTBit() {
 	return parameter->lutBit;
     };
+
+    bptr < ByteBuffer > TCONControl::getDGLut10BitByteBuffer(RGB_vector_ptr rgbVector) {
+    };
+    bptr < ByteBuffer > TCONControl::getDGLut12BitByteBuffer(RGB_vector_ptr rgbVector) {
+	int size = rgbVector->size();
+	int halfSize = size / 2;
+	int remainder = size % 2;
+	int singleChannelDataSize = halfSize * 3 + remainder ? 2 : 0;
+	int totalDataSize = singleChannelDataSize * 3;
+	bptr < ByteBuffer > data(new ByteBuffer(totalDataSize));
+	int index = 0;
+
+	foreach(const Channel & ch, *Channel::RGBChannel) {
+	    for (int x = 0; x < halfSize; x++) {
+		int d0 = static_cast < int >((*rgbVector)[x]->getValue(ch));
+		int d1 = static_cast < int >((*rgbVector)[x + 1]->getValue(ch));
+		int_array d0lmh = getLMHData(d0);
+		int_array d1lmh = getLMHData(d1);
+		(*data)[index++] = d0lmh[0] + (d0lmh[1] << 4);
+		(*data)[index++] = d0lmh[2] + (d1lmh[1] << 4);
+		(*data)[index++] = d1lmh[1] + (d1lmh[2] << 4);
+	    }
+	}
+	return data;
+    };
     void TCONControl::setDGLut(RGB_vector_ptr rgbVector) {
-	/* TODO : setDGLut */
+	const MaxValue & lutBit = getLUTBit();
+	bptr < ByteBuffer > data;
+
+	if (lutBit == MaxValue::Int12Bit) {
+	    data = getDGLut12BitByteBuffer(rgbVector);
+	} else if (lutBit == MaxValue::Int10Bit) {
+	    data = getDGLut10BitByteBuffer(rgbVector);
+	}
+	write(parameter->DGLutAddress, data);
+    }
+
+    int_array TCONControl::getLMHData(int data) {
+	int_array result(new int[3]);
+	result[0] = data & 15;
+	result[1] = data >> 4 & 15;
+	result[2] = data >> 8 & 15;
+	return result;
+    }
+
+    void TCONControl::setDG(bool enable) {
+	setBitData(parameter->DGAddress, parameter->DGBit, enable);
+    };
+    void TCONControl::setBitData(int dataAddress, unsigned char bit, bool data) {
+	unsigned char bytedata = readByte(dataAddress);
+	//製作遮罩
+	unsigned char mask = ~(1 << bit);
+	//挖掉要填的那個位元
+	bytedata = bytedata & mask;
+	//產生要填的data
+	bytedata = bytedata | data << bit;
+	writeByte(dataAddress, bytedata);
     };
 };
 

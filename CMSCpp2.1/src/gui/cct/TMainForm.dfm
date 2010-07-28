@@ -1,5 +1,5 @@
 object MainForm: TMainForm
-  Left = 200
+  Left = 195
   Top = 200
   Width = 938
   Height = 425
@@ -1110,7 +1110,7 @@ object MainForm: TMainForm
           Left = 1
           Top = 9
           Width = 112
-          Height = 112
+          Height = 120
           Caption = 'I2C Card'
           Color = clBtnFace
           ParentColor = False
@@ -1146,7 +1146,7 @@ object MainForm: TMainForm
           end
           object Button_I2CTest: TButton
             Left = 18
-            Top = 86
+            Top = 94
             Width = 71
             Height = 21
             Caption = 'I2C Test'
@@ -1156,9 +1156,9 @@ object MainForm: TMainForm
         end
         object GroupBox_DeviceAddress: TGroupBox
           Left = 121
-          Top = 57
+          Top = 9
           Width = 216
-          Height = 200
+          Height = 248
           Caption = 'Device Address'
           TabOrder = 1
           object Label5: TLabel
@@ -1237,9 +1237,9 @@ object MainForm: TMainForm
         end
         object GroupBox_GammaTestAddress: TGroupBox
           Left = 521
-          Top = 9
+          Top = 57
           Width = 168
-          Height = 248
+          Height = 200
           Caption = 'Gamma Test'
           TabOrder = 2
           object Label4: TLabel
@@ -1277,35 +1277,35 @@ object MainForm: TMainForm
               Height = 16
               Caption = 'Bit'
             end
-            object Edit_DirectGammaEnableAddress: TEdit
+            object Edit_GammaTestEnableAddress: TEdit
               Left = 64
               Top = 16
               Width = 81
               Height = 24
               ImeName = #26085#25991#36664#20837#31995#32113' (MS-IME2002)'
               TabOrder = 0
-              Text = '4A1'
+              Text = '29'
             end
-            object Edit_DirectGammaEnableBit: TEdit
+            object Edit_GammaTestEnableBit: TEdit
               Left = 64
               Top = 48
               Width = 81
               Height = 24
               ImeName = #26085#25991#36664#20837#31995#32113' (MS-IME2002)'
               TabOrder = 1
-              Text = '1'
+              Text = '0'
             end
           end
-          object Edit_DirectGammaAddress: TEdit
+          object Edit_GammaTestAddress: TEdit
             Left = 72
             Top = 105
             Width = 81
             Height = 24
             ImeName = #26085#25991#36664#20837#31995#32113' (MS-IME2002)'
             TabOrder = 1
-            Text = '4A7'
+            Text = '154'
           end
-          object CheckBox_DirectGammaIndepRGB: TCheckBox
+          object CheckBox_GammaTestIndepRGB: TCheckBox
             Left = 25
             Top = 161
             Width = 128
@@ -1316,7 +1316,7 @@ object MainForm: TMainForm
             State = cbChecked
             TabOrder = 2
           end
-          object ComboBox_DirectGammaType: TComboBox
+          object ComboBox_GammaTestType: TComboBox
             Left = 48
             Top = 137
             Width = 105
@@ -1325,7 +1325,7 @@ object MainForm: TMainForm
             ItemIndex = 0
             TabOrder = 3
             Text = '12401'
-            OnChange = ComboBox_DirectGammaTypeChange
+            OnChange = ComboBox_GammaTestTypeChange
             Items.Strings = (
               '12401'
               '12403')
@@ -1333,7 +1333,7 @@ object MainForm: TMainForm
         end
         object Button_Connect: TButton
           Left = 16
-          Top = 129
+          Top = 137
           Width = 81
           Height = 24
           Caption = 'Connect'
@@ -1342,9 +1342,9 @@ object MainForm: TMainForm
         end
         object GroupBox4: TGroupBox
           Left = 344
-          Top = 8
+          Top = 56
           Width = 169
-          Height = 249
+          Height = 201
           Caption = 'Digital Gamma '
           TabOrder = 4
           object Label12: TLabel
@@ -1368,7 +1368,7 @@ object MainForm: TMainForm
             Height = 24
             ImeName = #26085#25991#36664#20837#31995#32113' (MS-IME2002)'
             TabOrder = 0
-            Text = '4A7'
+            Text = '302'
           end
           object GroupBox11: TGroupBox
             Left = 9
@@ -1398,7 +1398,7 @@ object MainForm: TMainForm
               Height = 24
               ImeName = #26085#25991#36664#20837#31995#32113' (MS-IME2002)'
               TabOrder = 0
-              Text = '4A1'
+              Text = '28'
             end
             object Edit_DGEnableBit: TEdit
               Left = 64
@@ -1407,7 +1407,7 @@ object MainForm: TMainForm
               Height = 24
               ImeName = #26085#25991#36664#20837#31995#32113' (MS-IME2002)'
               TabOrder = 1
-              Text = '1'
+              Text = '0'
             end
           end
           object ComboBox_DGLUTType: TComboBox
@@ -1416,34 +1416,29 @@ object MainForm: TMainForm
             Width = 89
             Height = 24
             ItemHeight = 16
-            ItemIndex = 0
+            ItemIndex = 1
             TabOrder = 2
-            Text = '10bit'
+            Text = '12bit'
             Items.Strings = (
               '10bit'
               '12bit')
           end
         end
         object GroupBox7: TGroupBox
-          Left = 120
+          Left = 344
           Top = 8
-          Width = 217
+          Width = 345
           Height = 49
           Caption = 'TCON Type'
           TabOrder = 5
           object ComboBox_TCONType: TComboBox
             Left = 8
             Top = 16
-            Width = 201
+            Width = 153
             Height = 24
             ItemHeight = 16
             TabOrder = 0
-            Text = '12306'
-            Items.Strings = (
-              '12306'
-              '12401'
-              '12403'
-              'Custom')
+            OnChange = ComboBox_TCONTypeChange
           end
         end
       end

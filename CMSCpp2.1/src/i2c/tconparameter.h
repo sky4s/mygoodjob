@@ -52,10 +52,6 @@ namespace i2c {
 	 TCONParameter(int gammaTestAddress,
 		       unsigned char gammaTestBit, int testRGBAddress,
 		       bool independentRGB, const Dep::MaxValue & lutBit);
-	/*TCONParameter(int gammaTestAddress,
-	   unsigned char gammaTestBit, int testRGBAddress,
-	   bool independentRGB, const Dep::MaxValue & lutBit,
-	   int DGLutAddress); */
 	 TCONParameter(const int gammaTestAddress,
 		       const unsigned char gammaTestBit,
 		       const int testRGBAddress,

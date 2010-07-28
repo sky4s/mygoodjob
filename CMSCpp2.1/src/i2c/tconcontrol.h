@@ -18,23 +18,28 @@ namespace i2c {
 	const bool dualTCON;
 
       public:
+	 TCONControl(bptr < TCONParameter > parameter, bptr < i2cControl > control);
 	 TCONControl(bptr < TCONParameter > parameter,
-		     bptr < i2cControl > control);
-	 TCONControl(bptr < TCONParameter > parameter,
-		     bptr < i2cControl > control1,
-		     bptr < i2cControl > control2);
-	static bptr < cms::util::ByteBuffer > getRGBByteBuffer(int r,
-							       int g,
-							       int b, const
-							       TestRGBBit &
-							       testRGBBit);
-	void setTestRGB(RGB_ptr rgb);
-	void setTestRGB(int r, int g, int b);
+		     bptr < i2cControl > control1, bptr < i2cControl > control2);
+	static bptr < cms::util::ByteBuffer > getRGBByteBuffer(int r, int g, int b, const
+							       TestRGBBit & testRGBBit);
+	void setGammaTestRGB(RGB_ptr rgb);
+	void setGammaTestRGB(int r, int g, int b);
 	void setGammaTest(bool enable);
-	unsigned char readByte(int dataAddress);
-	void writeByte(int dataAddress, unsigned char data);
+
 	const Dep::MaxValue & getLUTBit();
 	void setDGLut(RGB_vector_ptr rgbVector);
+	void setDG(bool enable);
+	unsigned char readByte(int dataAddress);
+	void writeByte(int dataAddress, unsigned char data);
+      private:
+
+	void write(int dataAddress, bptr < cms::util::ByteBuffer > data);
+	static int_array getLMHData(int data);
+	 bptr < cms::util::ByteBuffer > getDGLut10BitByteBuffer(RGB_vector_ptr rgbVector);
+	 bptr < cms::util::ByteBuffer > getDGLut12BitByteBuffer(RGB_vector_ptr rgbVector);
+	void setBitData(int dataAddress, unsigned char bit, bool data);
+
     };
 };
 

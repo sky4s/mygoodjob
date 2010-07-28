@@ -2,7 +2,7 @@ object I2CTestForm: TI2CTestForm
   Left = 200
   Top = 200
   Width = 434
-  Height = 356
+  Height = 495
   Caption = 'I2C Tester'
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
@@ -321,5 +321,13 @@ object I2CTestForm: TI2CTestForm
       TabOrder = 4
       Text = '0'
     end
+  end
+  object CheckBox_DG: TCheckBox
+    Left = 16
+    Top = 320
+    Width = 65
+    Height = 17
+    Caption = 'DG'
+    TabOrder = 7
   end
 end

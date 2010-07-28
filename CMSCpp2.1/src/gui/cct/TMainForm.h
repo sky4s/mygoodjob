@@ -53,10 +53,10 @@ class TMainForm:public TForm {
     TGroupBox *GroupBox5;
     TLabel *Label2;
     TLabel *Label3;
-    TEdit *Edit_DirectGammaEnableAddress;
-    TEdit *Edit_DirectGammaEnableBit;
-    TEdit *Edit_DirectGammaAddress;
-    TCheckBox *CheckBox_DirectGammaIndepRGB;
+    TEdit *Edit_GammaTestEnableAddress;
+    TEdit *Edit_GammaTestEnableBit;
+    TEdit *Edit_GammaTestAddress;
+    TCheckBox *CheckBox_GammaTestIndepRGB;
     TGroupBox *GroupBox2;
     TRadioButton *RadioButton_PC;
     TRadioButton *RadioButton_TCON;
@@ -92,7 +92,7 @@ class TMainForm:public TForm {
     TRadioButton *RadioButton_AnalyzerDebug;
     TLabel *Label10;
     TEdit *Edit_FRCAbility;
-    TComboBox *ComboBox_DirectGammaType;
+    TComboBox *ComboBox_GammaTestType;
     TLabel *Label11;
     TButton *Button_I2CTest;
     TRadioGroup *RadioGroup_Pattern;
@@ -147,11 +147,12 @@ class TMainForm:public TForm {
     void __fastcall RadioButton_HSDClick(TObject * Sender);
     void __fastcall RadioButton_FlickrPixelClick(TObject * Sender);
     void __fastcall RadioButton_FlickrSubPixelClick(TObject * Sender);
-    void __fastcall ComboBox_DirectGammaTypeChange(TObject * Sender);
+    void __fastcall ComboBox_GammaTestTypeChange(TObject * Sender);
     void __fastcall FormDestroy(TObject * Sender);
     void __fastcall RadioButton_USBClick(TObject * Sender);
     void __fastcall RadioButton_LPTLargeClick(TObject * Sender);
     void __fastcall RadioButton_LPTSmallClick(TObject * Sender);
+    void __fastcall ComboBox_TCONTypeChange(TObject * Sender);
   private:			// User declarations
     //==========================================================================
     // meter
@@ -175,9 +176,11 @@ class TMainForm:public TForm {
     void setBitDepthChecked(int lutSelect, int outSelect);
     void setFRCAbility();
     //==========================================================================
-
+    void readTCONSetup(String section);
     void readSetup();
     void writeSetup();
+    void readTCONSections();
+     bptr < TStringList > tconSections;
   public:			// User declarations
     //==========================================================================
     // meter
