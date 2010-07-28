@@ -102,6 +102,9 @@ namespace i2c {
 	    control2->writeByte(dataAddress, data);
 	}
     };
+    bool TCONControl::isGammaTestEnable() {
+	return parameter->isGammaTestEnable();
+    };
 
     void TCONControl::write(int dataAddress, bptr < ByteBuffer > data) {
 	control->write(dataAddress, data);

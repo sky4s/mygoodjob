@@ -1357,9 +1357,9 @@ object MainForm: TMainForm
           object Label15: TLabel
             Left = 8
             Top = 136
-            Width = 61
+            Width = 83
             Height = 16
-            Caption = 'LUT Type'
+            Caption = 'LUT Type(bit)'
           end
           object Edit_DGLUTAddress: TEdit
             Left = 96
@@ -1411,17 +1411,17 @@ object MainForm: TMainForm
             end
           end
           object ComboBox_DGLUTType: TComboBox
-            Left = 72
+            Left = 96
             Top = 136
-            Width = 89
+            Width = 65
             Height = 24
             ItemHeight = 16
-            ItemIndex = 1
+            ItemIndex = 0
             TabOrder = 2
-            Text = '12bit'
+            Text = '10'
             Items.Strings = (
-              '10bit'
-              '12bit')
+              '10'
+              '12')
           end
         end
         object GroupBox7: TGroupBox

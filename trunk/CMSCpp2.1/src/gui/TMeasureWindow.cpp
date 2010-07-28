@@ -48,16 +48,12 @@ void __fastcall TMeasureWindow::FormKeyPress(TObject * Sender, char &Key)
 
 //---------------------------------------------------------------------------
 
-bptr < cms::util::DoubleBufferedCanvas >
-    TMeasureWindow::getDoubleBufferedCanvas()
+bptr < cms::util::DoubleBufferedCanvas > TMeasureWindow::getDoubleBufferedCanvas()
 {
     using namespace cms::util;
     if (doubleBuffered == null) {
 	doubleBuffered =
-	    bptr < DoubleBufferedCanvas > (new DoubleBufferedCanvas(this->
-								    Canvas,
-								    Width,
-								    Height));
+	    bptr < DoubleBufferedCanvas > (new DoubleBufferedCanvas(this->Canvas, Width, Height));
     }
     return doubleBuffered;
 
@@ -69,15 +65,17 @@ void TMeasureWindow::setRGB(int r, int g, int b)
     this->Update();
 
     if (true == tconinput) {
-	tconcontrol->setGammaTestRGB(r, g, b);
+	if (tconcontrol->isGammaTestEnable()) {
+	    tconcontrol->setGammaTestRGB(r, g, b);
+	} else {
+	    throw java::lang::UnsupportedOperationException("");
+	}
     } else {
 	int color = (b << 16) + (g << 8) + r;
 	switch (pattern) {
 	case HStripe:{
-		bptr < DoubleBufferedCanvas > doubleBuffered =
-		    getDoubleBufferedCanvas();
-		TCanvas *canvas =
-		    doubleBuffered->getDoubleBufferedCanvas();
+		bptr < DoubleBufferedCanvas > doubleBuffered = getDoubleBufferedCanvas();
+		TCanvas *canvas = doubleBuffered->getDoubleBufferedCanvas();
 		int w = this->Width;
 		int h = this->Height;
 		for (int y = 0; y < h; y++) {
@@ -93,10 +91,8 @@ void TMeasureWindow::setRGB(int r, int g, int b)
 	    }
 	    break;
 	case HSD:{
-		bptr < DoubleBufferedCanvas > doubleBuffered =
-		    getDoubleBufferedCanvas();
-		TCanvas *canvas =
-		    doubleBuffered->getDoubleBufferedCanvas();
+		bptr < DoubleBufferedCanvas > doubleBuffered = getDoubleBufferedCanvas();
+		TCanvas *canvas = doubleBuffered->getDoubleBufferedCanvas();
 
 		int w = this->Width;
 		int h = this->Height;
@@ -126,10 +122,8 @@ void TMeasureWindow::setRGB(int r, int g, int b)
 	    break;
 	case Indepedent:{
 		//this->Color = clBlack;
-		bptr < DoubleBufferedCanvas > doubleBuffered =
-		    getDoubleBufferedCanvas();
-		TCanvas *canvas =
-		    doubleBuffered->getDoubleBufferedCanvas();
+		bptr < DoubleBufferedCanvas > doubleBuffered = getDoubleBufferedCanvas();
+		TCanvas *canvas = doubleBuffered->getDoubleBufferedCanvas();
 		doubleBuffered->clear();
 
 
@@ -170,10 +164,8 @@ void TMeasureWindow::setRGB(int r, int g, int b)
 	    break;
 	case FlickrPixel:
 	    {
-		bptr < DoubleBufferedCanvas > doubleBuffered =
-		    getDoubleBufferedCanvas();
-		TCanvas *canvas =
-		    doubleBuffered->getDoubleBufferedCanvas();
+		bptr < DoubleBufferedCanvas > doubleBuffered = getDoubleBufferedCanvas();
+		TCanvas *canvas = doubleBuffered->getDoubleBufferedCanvas();
 		doubleBuffered->clear();
 		int w = this->Width;
 		int h = this->Height;
@@ -199,10 +191,8 @@ void TMeasureWindow::setRGB(int r, int g, int b)
 	    break;
 	case FlickrSubPixel:
 	    {
-		bptr < DoubleBufferedCanvas > doubleBuffered =
-		    getDoubleBufferedCanvas();
-		TCanvas *canvas =
-		    doubleBuffered->getDoubleBufferedCanvas();
+		bptr < DoubleBufferedCanvas > doubleBuffered = getDoubleBufferedCanvas();
+		TCanvas *canvas = doubleBuffered->getDoubleBufferedCanvas();
 
 		int w = this->Width;
 		int h = this->Height;
@@ -230,8 +220,7 @@ void TMeasureWindow::setRGB(bptr < Dep::RGBColor > rgb)
 {
     double_array values(new double[3]);
     using namespace Dep;
-    const MaxValue & maxValue =
-	tconinput ? MaxValue::Int12Bit : MaxValue::Int8Bit;
+    const MaxValue & maxValue = tconinput ? MaxValue::Int12Bit : MaxValue::Int8Bit;
     rgb->getValues(values, maxValue);
 
     int r = static_cast < int >(values[0]);
@@ -291,8 +280,7 @@ void TMeasureWindow::setVisible(bool visible)
 };
 
 //---------------------------------------------------------------------------
-void TMeasureWindow::
-addWindowListener(bptr < cms::util::WindowListener > listener)
+void TMeasureWindow::addWindowListener(bptr < cms::util::WindowListener > listener)
 {
 #ifndef WEAK_PTR
     listenerVector.push_back(listener);
@@ -305,8 +293,7 @@ addWindowListener(bptr < cms::util::WindowListener > listener)
 //---------------------------------------------------------------------------
 
 
-void __fastcall TMeasureWindow::
-FormClose(TObject * Sender, TCloseAction & Action)
+void __fastcall TMeasureWindow::FormClose(TObject * Sender, TCloseAction & Action)
 {
 #ifndef WEAK_PTR
     foreach(bptr < cms::util::WindowListener > listener, listenerVector) {
