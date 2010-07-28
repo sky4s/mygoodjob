@@ -97,7 +97,7 @@ void __fastcall TI2CTestForm::Button1Click(TObject * Sender)
 	    setOptionsEditable(false);
 
 	    int gammaTestAddress = StrToInt("0x" + this->Edit_GammaTestAddress->Text);
-	    int gammaTestBit = StrToInt(this->Edit_GammaTestBit->Text) + 1;
+	    int gammaTestBit = StrToInt(this->Edit_GammaTestBit->Text);
 	    int testRGBAddress = StrToInt("0x" + this->Edit_TestRGBAdress->Text);
 	    bool indepRGB = CheckBox_IndepRGB->Checked;
 
@@ -162,7 +162,7 @@ void __fastcall TI2CTestForm::Edit_RChange(TObject * Sender)
 	    rgbValues[1] = g;
 	    rgbValues[2] = b;
 	    RGB_ptr rgb(new RGBColor(RGBColorSpace::unknowRGB, rgbValues, MaxValue::Int12Bit));
-	    control->setTestRGB(rgb);
+	    control->setGammaTestRGB(rgb);
 	} catch(EConvertError & ex) {
 	    Application->ShowException(&ex);
 	}
@@ -210,9 +210,9 @@ void __fastcall TI2CTestForm::Button_WriteClick(TObject * Sender)
 
 void __fastcall TI2CTestForm::FormDeactivate(TObject * Sender)
 {
-    MainForm->Edit_DirectGammaEnableAddress->Text = this->Edit_GammaTestAddress->Text;
-    MainForm->Edit_DirectGammaEnableBit->Text = this->Edit_GammaTestBit->Text;
-    MainForm->Edit_DirectGammaAddress->Text = this->Edit_TestRGBAdress->Text;
+    MainForm->Edit_GammaTestEnableAddress->Text = this->Edit_GammaTestAddress->Text;
+    MainForm->Edit_GammaTestEnableBit->Text = this->Edit_GammaTestBit->Text;
+    MainForm->Edit_GammaTestAddress->Text = this->Edit_TestRGBAdress->Text;
     MainForm->ComboBox_AddressingSize->ItemIndex = this->ComboBox_AddressingSize->ItemIndex;
     MainForm->RadioButton_LPTLarge->Checked = this->RadioButton_LPTLarge->Checked;
     MainForm->RadioButton_LPTSmall->Checked = this->RadioButton_LPTSmall->Checked;
@@ -220,8 +220,8 @@ void __fastcall TI2CTestForm::FormDeactivate(TObject * Sender)
     MainForm->RadioButton_SingleTCON->Checked = this->RadioButton_Single->Checked;
     MainForm->RadioButton_DualTCON->Checked = this->RadioButton_Dual->Checked;
 
-    MainForm->ComboBox_DirectGammaType->ItemIndex = this->CheckBox_IndepRGB->Checked ? 0 : 1;
-    //MainForm->ComboBox_TypeChange(this);
+    MainForm->ComboBox_GammaTestType->ItemIndex = this->CheckBox_IndepRGB->Checked ? 0 : 1;
+    MainForm->ComboBox_GammaTestTypeChange(this);
 }
 
 //---------------------------------------------------------------------------

@@ -28,7 +28,9 @@ TMainForm *MainForm;
 //---------------------------------------------------------------------------
 __fastcall TMainForm::TMainForm(TComponent * Owner):TForm(Owner), linkCA210(!FileExists(DEBUG_FILE))
 {
-
+    bptr_ < TIniFile > ini(new TIniFile(ExtractFilePath(Application->ExeName) + INIFILE));
+    tconSections = bptr < TStringList > (new TStringList());
+    ini->ReadSections(tconSections.get());
 }
 
 //---------------------------------------------------------------------------
@@ -81,7 +83,45 @@ void __fastcall TMainForm::FormCreate(TObject * Sender)
     RadioGroup_Pattern->Visible = true;
 #endif
 
-    readSetup();
+    //readSetup();
+    readTCONSections();
+    ComboBox_TCONTypeChange(this);
+}
+
+void TMainForm::readTCONSections()
+{
+    int size = tconSections->Count;
+    for (int x = 0; x < size; x++) {
+	String section = (*tconSections)[x];
+	ComboBox_TCONType->AddItem(section, null);
+    }
+    ComboBox_TCONType->AddItem("Custom", null);
+    ComboBox_TCONType->ItemIndex = 0;
+}
+
+void TMainForm::readTCONSetup(String section)
+{
+    //String section = (*tconSections)[index];
+    //=========================================================================
+    bptr_ < TIniFile > ini(new TIniFile(ExtractFilePath(Application->ExeName) + INIFILE));
+    this->ComboBox_AddressingSize->ItemIndex = ini->ReadInteger(section, "AddressingSize", 5);
+
+    if (ini->ReadBool(section, "GammaTestFunc", false)) {
+	GroupBox_GammaTestAddress->Visible = true;
+	this->Edit_GammaTestEnableAddress->Text =
+	    ini->ReadString(section, "GammaTestEnableAddress", "29");
+	this->Edit_GammaTestEnableBit->Text = ini->ReadInteger(section, "GammaTestEnableBit", 0);
+	this->Edit_GammaTestAddress->Text = ini->ReadString(section, "GammaTestAddress", "154");
+	this->ComboBox_GammaTestType->ItemIndex = ini->ReadBool(section, "IndepRGB", true) ? 0 : 1;
+	ComboBox_GammaTestTypeChange(this);
+    } else {
+	GroupBox_GammaTestAddress->Visible = false;
+    }
+    this->Edit_DGEnableAddress->Text = ini->ReadString(section, "DigitalGammaEnableAddress", "28");
+    this->Edit_DGEnableBit->Text = ini->ReadInteger(section, "DigitalGammaEnableBit", 0);
+    this->Edit_DGLUTAddress->Text = ini->ReadString(section, "DigitalGammaLUTAddress", "302");
+    this->ComboBox_DGLUTType->ItemIndex =
+	ini->ReadInteger(section, "DigitalGammaLUTType", 10) == 10 ? 0 : 1;
 }
 
 void TMainForm::readSetup()
@@ -113,14 +153,15 @@ void TMainForm::readSetup()
     //=========================================================================
     this->ComboBox_AddressingSize->ItemIndex = ini->ReadInteger("TCON", "AddressingSize", 5);
     //=========================================================================
-    this->Edit_DirectGammaEnableAddress->Text = ini->ReadString("TCON", "EnableAddress", "4A1");
+    this->Edit_GammaTestEnableAddress->Text =
+	ini->ReadString("TCON", "GammaTestEnableAddress", "4A1");
     //=========================================================================
-    this->Edit_DirectGammaEnableBit->Text = ini->ReadInteger("TCON", "EnableBit", 1);
+    this->Edit_GammaTestEnableBit->Text = ini->ReadInteger("TCON", "GammaTestEnableBit", 1);
     //=========================================================================
-    this->Edit_DirectGammaAddress->Text = ini->ReadString("TCON", "DirectGammaAddress", "4A7");
+    this->Edit_GammaTestAddress->Text = ini->ReadString("TCON", "GammaTestAddress", "4A7");
     //=========================================================================
-    ComboBox_DirectGammaType->ItemIndex = ini->ReadBool("TCON", "IndepRGB", true) ? 0 : 1;
-    //ComboBox_TypeChange(this);
+    ComboBox_GammaTestType->ItemIndex = ini->ReadBool("TCON", "IndepRGB", true) ? 0 : 1;
+    ComboBox_GammaTestTypeChange(this);
     //=========================================================================
 }
 
@@ -137,13 +178,13 @@ void TMainForm::writeSetup()
     //=========================================================================
     ini->WriteInteger("TCON", "AddressingSize", this->ComboBox_AddressingSize->ItemIndex);
     //=========================================================================
-    ini->WriteString("TCON", "EnableAddress", this->Edit_DirectGammaEnableAddress->Text);
+    ini->WriteString("TCON", "GammaTestEnableAddress", this->Edit_GammaTestEnableAddress->Text);
     //=========================================================================
-    ini->WriteInteger("TCON", "EnableBit", this->Edit_DirectGammaEnableBit->Text.ToInt());
+    ini->WriteInteger("TCON", "GammaTestEnableBit", this->Edit_GammaTestEnableBit->Text.ToInt());
     //=========================================================================
-    ini->WriteString("TCON", "DirectGammaAddress", this->Edit_DirectGammaAddress->Text);
+    ini->WriteString("TCON", "GammaTestAddress", this->Edit_GammaTestAddress->Text);
     //=========================================================================
-    ini->WriteBool("TCON", "IndepRGB", ComboBox_DirectGammaType->ItemIndex == 0);
+    ini->WriteBool("TCON", "IndepRGB", ComboBox_GammaTestType->ItemIndex == 0);
 
 }
 
@@ -447,10 +488,19 @@ void __fastcall TMainForm::Button_ConnectClick(TObject * Sender)
 
     if (true == connect) {
 
-	int gammaTestAddress = StrToInt("0x" + this->Edit_DirectGammaEnableAddress->Text);
-	int gammaTestBit = StrToInt(this->Edit_DirectGammaEnableBit->Text) + 1;
-	int testRGBAddress = StrToInt("0x" + this->Edit_DirectGammaAddress->Text);
-	bool indepRGB = this->ComboBox_DirectGammaType->ItemIndex == 0;
+	//=====================================================================
+	// gamma test
+	//=====================================================================
+	int gammaTestAddress = StrToInt("0x" + this->Edit_GammaTestEnableAddress->Text);
+	int gammaTestBit = StrToInt(this->Edit_GammaTestEnableBit->Text);
+	int testRGBAddress = StrToInt("0x" + this->Edit_GammaTestAddress->Text);
+	bool indepRGB = this->ComboBox_GammaTestType->ItemIndex == 0;
+	//=====================================================================
+	// digital gamma
+	//=====================================================================
+	//int gammaTestAddress = StrToInt("0x" + this->Edit_GammaTestEnableAddress->Text);
+	//=====================================================================
+
 	parameter =
 	    bptr < TCONParameter >
 	    (new
@@ -462,8 +512,6 @@ void __fastcall TMainForm::Button_ConnectClick(TObject * Sender)
 	    control = bptr < TCONControl > (new TCONControl(parameter, i2c1st, i2c2nd));
 	}
 	this->Button_Connect->Enabled = false;
-	/*this->CheckBox_Connecting->Checked = true;
-	   this->CheckBox_Connecting->Enabled = true; */
 	MeasureWindow->setTCONControl(control);
     } else {
 	MeasureWindow->setTCONControlOff();
@@ -710,16 +758,16 @@ void __fastcall TMainForm::Button_I2CTestClick(TObject * Sender)
     if (I2CTestForm == null) {
 	Application->CreateForm(__classid(TI2CTestForm), &I2CTestForm);
     }
-    I2CTestForm->Edit_GammaTestAddress->Text = this->Edit_DirectGammaEnableAddress->Text;
-    I2CTestForm->Edit_GammaTestBit->Text = this->Edit_DirectGammaEnableBit->Text;
-    I2CTestForm->Edit_TestRGBAdress->Text = this->Edit_DirectGammaAddress->Text;
+    I2CTestForm->Edit_GammaTestAddress->Text = this->Edit_GammaTestEnableAddress->Text;
+    I2CTestForm->Edit_GammaTestBit->Text = this->Edit_GammaTestEnableBit->Text;
+    I2CTestForm->Edit_TestRGBAdress->Text = this->Edit_GammaTestAddress->Text;
     I2CTestForm->ComboBox_AddressingSize->ItemIndex = this->ComboBox_AddressingSize->ItemIndex;
     I2CTestForm->RadioButton_LPTLarge->Checked = this->RadioButton_LPTLarge->Checked;
     I2CTestForm->RadioButton_LPTSmall->Checked = this->RadioButton_LPTSmall->Checked;
     I2CTestForm->RadioButton_USB->Checked = this->RadioButton_USB->Checked;
     I2CTestForm->RadioButton_Single->Checked = this->RadioButton_SingleTCON->Checked;
     I2CTestForm->RadioButton_Dual->Checked = this->RadioButton_DualTCON->Checked;
-    I2CTestForm->CheckBox_IndepRGB->Checked = this->CheckBox_DirectGammaIndepRGB->Checked;
+    I2CTestForm->CheckBox_IndepRGB->Checked = this->CheckBox_GammaTestIndepRGB->Checked;
     I2CTestForm->ShowModal();
 }
 
@@ -805,10 +853,10 @@ void __fastcall TMainForm::RadioButton_FlickrSubPixelClick(TObject * Sender)
 //---------------------------------------------------------------------------
 
 
-void __fastcall TMainForm::ComboBox_DirectGammaTypeChange(TObject * Sender)
+void __fastcall TMainForm::ComboBox_GammaTestTypeChange(TObject * Sender)
 {
-    bool indepRGB = this->ComboBox_DirectGammaType->ItemIndex == 0;
-    CheckBox_DirectGammaIndepRGB->Checked = indepRGB;
+    bool indepRGB = this->ComboBox_GammaTestType->ItemIndex == 0;
+    CheckBox_GammaTestIndepRGB->Checked = indepRGB;
 }
 
 //---------------------------------------------------------------------------
@@ -817,7 +865,7 @@ void __fastcall TMainForm::ComboBox_DirectGammaTypeChange(TObject * Sender)
 
 void __fastcall TMainForm::FormDestroy(TObject * Sender)
 {
-    writeSetup();
+    //writeSetup();
 }
 
 //---------------------------------------------------------------------------
@@ -840,6 +888,19 @@ void __fastcall TMainForm::RadioButton_LPTLargeClick(TObject * Sender)
 void __fastcall TMainForm::RadioButton_LPTSmallClick(TObject * Sender)
 {
     Button_Connect->Enabled = true;
+}
+
+//---------------------------------------------------------------------------
+
+void __fastcall TMainForm::ComboBox_TCONTypeChange(TObject * Sender)
+{
+    String section = this->ComboBox_TCONType->Text;
+    if (section != "Custom") {
+	//若為最後一個就是custom, 不用載入
+	readTCONSetup(section);
+    } else {
+	GroupBox_GammaTestAddress->Visible = true;
+    }
 }
 
 //---------------------------------------------------------------------------

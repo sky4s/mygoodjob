@@ -69,7 +69,7 @@ void TMeasureWindow::setRGB(int r, int g, int b)
     this->Update();
 
     if (true == tconinput) {
-	tconcontrol->setTestRGB(r, g, b);
+	tconcontrol->setGammaTestRGB(r, g, b);
     } else {
 	int color = (b << 16) + (g << 8) + r;
 	switch (pattern) {

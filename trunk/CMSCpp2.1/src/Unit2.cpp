@@ -729,6 +729,47 @@ void iniTester()
        } */
 }
 
+void byteTester()
+{
+    unsigned char data = 53;
+    unsigned char mask = ~(1 << 2);
+    cout << (int) mask << endl;
+    data = data & mask;
+    cout << (int) data << endl;
+    unsigned char dg = false << 2;
+    cout << (int) dg << endl;
+    int remainder = 257 % 2;
+    cout << remainder << endl;
+}
+
+void produceTCONINIFile()
+{
+    bptr_ < TIniFile > ini(new TIniFile(ExtractFilePath(Application->ExeName) + "cctv3.ini"));
+
+    ini->WriteInteger("11306", "AddressingSize", 5);
+
+    ini->WriteString("11306", "DigitalGammaEnableAddress", "28");
+    ini->WriteInteger("11306", "DigitalGammaEnableBit", 0);
+    ini->WriteString("11306", "DigitalGammaLUTAddress", "3C0");
+    ini->WriteInteger("11306", "DigitalGammaLUTType", 10);
+
+    ini->WriteBool("11306", "GammaTestFunc", false);
+    //=========================================================================
+    ini->WriteInteger("12306", "AddressingSize", 5);
+
+    ini->WriteString("12306", "DigitalGammaEnableAddress", "28");
+    ini->WriteInteger("12306", "DigitalGammaEnableBit", 0);
+    ini->WriteString("12306", "DigitalGammaLUTAddress", "302");
+    ini->WriteInteger("12306", "DigitalGammaLUTType", 12);
+
+    ini->WriteBool("12306", "GammaTestFunc", true);
+    ini->WriteString("12306", "GammaTestEnableAddress", "29");
+    ini->WriteInteger("12306", "GammaTestEnableBit", 0);
+    ini->WriteString("12306", "GammaTestAddress", "154");
+    ini->WriteBool("12306", "IndepRGB", true);
+    //=========================================================================
+}
+
 #pragma argsused
 int main(int argc, char *argv[])
 {
@@ -796,7 +837,9 @@ int main(int argc, char *argv[])
     //txtTester();
     //propTester();
     //excelTester();
-    iniTester();
+    //iniTester();
+    //byteTester();
+    produceTCONINIFile();
 
     //cout << 5 / 4 / 3. << endl;
     //cout << _toString("123") << endl;
