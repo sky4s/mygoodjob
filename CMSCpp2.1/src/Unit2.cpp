@@ -744,7 +744,7 @@ void byteTester()
 
 void produceTCONINIFile()
 {
-    bptr_ < TIniFile > ini(new TIniFile(ExtractFilePath(Application->ExeName) + "cctv3.ini"));
+    bptr_ < TIniFile > ini(new TIniFile(ExtractFilePath(Application->ExeName) + "tcon.ini"));
 
     ini->WriteInteger("11306", "AddressingSize", 5);
 
