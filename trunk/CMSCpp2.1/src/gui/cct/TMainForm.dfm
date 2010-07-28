@@ -1440,6 +1440,15 @@ object MainForm: TMainForm
             TabOrder = 0
             OnChange = ComboBox_TCONTypeChange
           end
+          object CheckBox_GammaTest: TCheckBox
+            Left = 176
+            Top = 16
+            Width = 113
+            Height = 25
+            Caption = 'Gamma Test'
+            TabOrder = 1
+            OnClick = CheckBox_GammaTestClick
+          end
         end
       end
       object GroupBox6: TGroupBox

@@ -115,6 +115,7 @@ class TMainForm:public TForm {
     TEdit *Edit_DGEnableBit;
     TLabel *Label15;
     TComboBox *ComboBox_DGLUTType;
+    TCheckBox *CheckBox_GammaTest;
     void __fastcall About1Click(TObject * Sender);
     void __fastcall Exit1Click(TObject * Sender);
     void __fastcall TargetWhite1Click(TObject * Sender);
@@ -153,6 +154,7 @@ class TMainForm:public TForm {
     void __fastcall RadioButton_LPTLargeClick(TObject * Sender);
     void __fastcall RadioButton_LPTSmallClick(TObject * Sender);
     void __fastcall ComboBox_TCONTypeChange(TObject * Sender);
+    void __fastcall CheckBox_GammaTestClick(TObject * Sender);
   private:			// User declarations
     //==========================================================================
     // meter
@@ -177,6 +179,8 @@ class TMainForm:public TForm {
     void setFRCAbility();
     //==========================================================================
     void readTCONSetup(String section);
+    void readTCONCustomSetup();
+    void writeTCONCustomSetup();
     void readSetup();
     void writeSetup();
     void readTCONSections();
