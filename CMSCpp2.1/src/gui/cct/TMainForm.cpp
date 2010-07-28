@@ -6,6 +6,7 @@
 //C++系統文件
 
 //其他庫頭文件
+#include "inifiles.hpp"
 
 //本項目內頭文件
 #include "TMainForm.h"
@@ -18,13 +19,14 @@
 #include "TGammaMeasurementForm.h"
 #include "../TI2CTestForm.h"
 
+#define INIFILE  "cctv3.ini"
+
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
 #pragma resource "*.dfm"
 TMainForm *MainForm;
 //---------------------------------------------------------------------------
-__fastcall TMainForm::TMainForm(TComponent * Owner):TForm(Owner),
-linkCA210(!FileExists(DEBUG_FILE))
+__fastcall TMainForm::TMainForm(TComponent * Owner):TForm(Owner), linkCA210(!FileExists(DEBUG_FILE))
 {
 
 }
@@ -51,8 +53,7 @@ void __fastcall TMainForm::Exit1Click(TObject * Sender)
 void __fastcall TMainForm::TargetWhite1Click(TObject * Sender)
 {
     if (TargetWhiteForm2 == null) {
-	Application->CreateForm(__classid(TTargetWhiteForm2),
-				&TargetWhiteForm2);
+	Application->CreateForm(__classid(TTargetWhiteForm2), &TargetWhiteForm2);
     }
     TargetWhiteForm2->setBitDepthProcessor(bitDepth);
     TargetWhiteForm2->ShowModal();
@@ -74,9 +75,76 @@ void __fastcall TMainForm::FormCreate(TObject * Sender)
 	this->GroupBox_CHSetting->Visible = false;
 	//this->Button_I2CTest->Visible = true;
     }
-    bitDepth =
-	bptr < BitDepthProcessor >
-	(new BitDepthProcessor(8, 10, 8, false));
+    bitDepth = bptr < BitDepthProcessor > (new BitDepthProcessor(8, 10, 8, false));
+
+#ifdef DEBUG_NEWFUNC
+    RadioGroup_Pattern->Visible = true;
+#endif
+
+    readSetup();
+}
+
+void TMainForm::readSetup()
+{
+    bptr_ < TIniFile > ini(new TIniFile(ExtractFilePath(Application->ExeName) + INIFILE));
+    //=========================================================================
+    int cardIndex = ini->ReadInteger("I2C", "Card", 2);
+    switch (cardIndex) {
+    case 0:
+	this->RadioButton_USB->Checked = true;
+	break;
+    case 1:
+	this->RadioButton_LPTLarge->Checked = true;
+	break;
+    case 2:
+	this->RadioButton_LPTSmall->Checked = true;
+	break;
+    };
+    //=========================================================================
+    int tconIndex = ini->ReadInteger("TCON", "Count", 0);
+    switch (tconIndex) {
+    case 0:
+	this->RadioButton_SingleTCON->Checked = true;
+	break;
+    case 1:
+	this->RadioButton_DualTCON->Checked = true;
+	break;
+    }
+    //=========================================================================
+    this->ComboBox_AddressingSize->ItemIndex = ini->ReadInteger("TCON", "AddressingSize", 5);
+    //=========================================================================
+    this->Edit_DirectGammaEnableAddress->Text = ini->ReadString("TCON", "EnableAddress", "4A1");
+    //=========================================================================
+    this->Edit_DirectGammaEnableBit->Text = ini->ReadInteger("TCON", "EnableBit", 1);
+    //=========================================================================
+    this->Edit_DirectGammaAddress->Text = ini->ReadString("TCON", "DirectGammaAddress", "4A7");
+    //=========================================================================
+    ComboBox_DirectGammaType->ItemIndex = ini->ReadBool("TCON", "IndepRGB", true) ? 0 : 1;
+    //ComboBox_TypeChange(this);
+    //=========================================================================
+}
+
+void TMainForm::writeSetup()
+{
+    bptr_ < TIniFile > ini(new TIniFile(ExtractFilePath(Application->ExeName) + INIFILE));
+    //=========================================================================
+    int cardIndex = this->RadioButton_LPTLarge->Checked ? 1 : 0;
+    cardIndex += this->RadioButton_LPTSmall->Checked ? 2 : 0;
+    ini->WriteInteger("I2C", "Card", cardIndex);
+    //=========================================================================
+    int tconIndex = this->RadioButton_DualTCON->Checked ? 1 : 0;
+    ini->WriteInteger("TCON", "Count", tconIndex);
+    //=========================================================================
+    ini->WriteInteger("TCON", "AddressingSize", this->ComboBox_AddressingSize->ItemIndex);
+    //=========================================================================
+    ini->WriteString("TCON", "EnableAddress", this->Edit_DirectGammaEnableAddress->Text);
+    //=========================================================================
+    ini->WriteInteger("TCON", "EnableBit", this->Edit_DirectGammaEnableBit->Text.ToInt());
+    //=========================================================================
+    ini->WriteString("TCON", "DirectGammaAddress", this->Edit_DirectGammaAddress->Text);
+    //=========================================================================
+    ini->WriteBool("TCON", "IndepRGB", ComboBox_DirectGammaType->ItemIndex == 0);
+
 }
 
 //---------------------------------------------------------------------------
@@ -86,14 +154,12 @@ void TMainForm::initCA210Meter()
     using namespace cms::measure;
     try {
 	meter = bptr < Meter > (new CA210());
-	mm = bptr < MeterMeasurement >
-	    (new MeterMeasurement(meter, false));
+	mm = bptr < MeterMeasurement > (new MeterMeasurement(meter, false));
 	mm->setWaitTimes(this->getInterval());
 
     }
     catch(EOleException & ex) {
-	ShowMessage("CA210 cannot be linked.");
-	//Application->Terminate();
+	ShowMessage(" CA210 cannot be linked.");
     }
 };
 
@@ -108,17 +174,13 @@ bptr < cms::measure::IntensityAnalyzerIF > TMainForm::getAnalyzer()
 	//產生ca210
 	bptr < cms::measure::meter::CA210 > ca210 = getCA210();
 	if (null == ca210) {
-	    return bptr < IntensityAnalyzerIF >
-		((IntensityAnalyzerIF *) null);
+	    return bptr < IntensityAnalyzerIF > ((IntensityAnalyzerIF *) null);
 	}
 	if (null == realAnalyzer) {
-	    realAnalyzer =
-		bptr < CA210IntensityAnalyzer >
-		(new CA210IntensityAnalyzer(ca210, mm));
+	    realAnalyzer = bptr < CA210IntensityAnalyzer > (new CA210IntensityAnalyzer(ca210, mm));
 	}
 	//產生max matrix
-	bptr < MaxMatrixIntensityAnayzer >
-	    ma(new MaxMatrixIntensityAnayzer(mm));
+	bptr < MaxMatrixIntensityAnayzer > ma(new MaxMatrixIntensityAnayzer(mm));
 
 
 	if (true == this->RadioButton_AnalyzerCA210->Checked) {
@@ -127,9 +189,7 @@ bptr < cms::measure::IntensityAnalyzerIF > TMainForm::getAnalyzer()
 	    analyzer = ma;
 	} else if (true == this->RadioButton_AnalyzerDebug->Checked) {
 	    //產生兩者的合體
-	    analyzer =
-		bptr < IntensityAnalyzerIF >
-		(new IntensityAnayzer(ma, realAnalyzer));
+	    analyzer = bptr < IntensityAnalyzerIF > (new IntensityAnayzer(ma, realAnalyzer));
 	}
     }
     return analyzer;
@@ -143,8 +203,7 @@ void TMainForm::setAnalyzerToTargetChannel()
 
     if (true == linkCA210) {
 	if (null == realAnalyzer) {
-	    throw java::lang::
-		IllegalStateException("call getAnalyzer() first!");
+	    throw java::lang::IllegalStateException(" call getAnalyzer()first ! ");
 	}
 	//撈出channel no和id
 	int channel = this->Edit_TargetCH->Text.ToInt();
@@ -165,8 +224,7 @@ void TMainForm::setAnalyzerToSourceChannel()
     using namespace std;
     if (true == linkCA210) {
 	if (null == realAnalyzer) {
-	    throw java::lang::
-		IllegalStateException("call getAnalyzer() first!");
+	    throw java::lang::IllegalStateException(" call getAnalyzer()first ! ");
 	}
 	//撈出channel no和id
 	int channel = this->Edit_SourceCH->Text.ToInt();
@@ -197,8 +255,7 @@ void TMainForm::setDummyMeterFilename(const std::string & filename)
     setDummyMeterFilename(dglutFile);
 }
 
-void TMainForm::setDummyMeterFilename(bptr < cms::colorformat::DGLutFile >
-				      dglutFile)
+void TMainForm::setDummyMeterFilename(bptr < cms::colorformat::DGLutFile > dglutFile)
 {
     using namespace cms::measure::meter;
     using namespace cms::measure;
@@ -216,8 +273,7 @@ void TMainForm::setDummyMeterFilename(bptr < cms::colorformat::DGLutFile >
     bptr < DGLutProperty > property = dglutFile->getProperty();
     if (null != property) {
 	//若有property則為新版
-	bptr < MaxMatrixIntensityAnayzer >
-	    matrixAnalyzer(new MaxMatrixIntensityAnayzer(mm));
+	bptr < MaxMatrixIntensityAnayzer > matrixAnalyzer(new MaxMatrixIntensityAnayzer(mm));
 	analyzer = matrixAnalyzer;
 
 	xyY_ptr wxyY = property->getReferenceColor(Channel::W);
@@ -233,11 +289,9 @@ void TMainForm::setDummyMeterFilename(bptr < cms::colorformat::DGLutFile >
 	    matrixAnalyzer->enter();
 	}
     } else {
-	ShowMessage("Old version Raw Data.");
+	ShowMessage(" Old version Raw Data.");
 	//無property則為舊版
-	analyzer =
-	    bptr < CA210IntensityAnalyzer >
-	    (new CA210IntensityAnalyzer(mm));
+	analyzer = bptr < CA210IntensityAnalyzer > (new CA210IntensityAnalyzer(mm));
     }
 };
 
@@ -258,16 +312,13 @@ void TMainForm::setAnalyzerNull()
 }
 
 //---------------------------------------------------------------------------
-bptr < cms::lcd::calibrate::ComponentFetcher >
-    TMainForm::getComponentFetcher()
+bptr < cms::lcd::calibrate::ComponentFetcher > TMainForm::getComponentFetcher()
 {
     using namespace cms::lcd::calibrate;
     if (null == fetcher) {
-	bptr < cms::measure::IntensityAnalyzerIF > analyzer =
-	    getAnalyzer();
+	bptr < cms::measure::IntensityAnalyzerIF > analyzer = getAnalyzer();
 	fetcher = bptr < ComponentFetcher > (new cms::lcd::calibrate::
-					     ComponentFetcher(analyzer,
-							      bitDepth));
+					     ComponentFetcher(analyzer, bitDepth));
 	MeasureWindow->addWindowListener(fetcher);
     }
 
@@ -280,8 +331,8 @@ bptr < cms::measure::meter::CA210 > TMainForm::getCA210()
     if (null == ca210 && true == linkCA210) {
 	using namespace cms::measure::meter;
 	if (null == meter) {
-	    //throw IllegalStateException("CA210 cannot be linked.");
-	    ShowMessage("CA210 cannot be linked.");
+	    //throw IllegalStateException(" CA210 cannot be linked.");
+	    ShowMessage(" CA210 cannot be linked.");
 	    return bptr < CA210 > ((CA210 *) null);
 	}
 
@@ -316,10 +367,11 @@ void __fastcall TMainForm::CCTLUT1Click(TObject * Sender)
 	MaxMatrixIntensityAnayzer *ma =
 	    dynamic_cast < MaxMatrixIntensityAnayzer * >(analyzer.get());
 	if (null == ma || ma->isInverseMatrixNull()) {
-	    ShowMessage("Set \"Target White\" first.");
+	    ShowMessage(" Set \" Target White \" first.");
 	    return;
 	}
     }
+
     CCTLUTForm->setBitDepthProcessor(bitDepth);
     CCTLUTForm->ShowModal();
 }
@@ -330,8 +382,7 @@ void __fastcall TMainForm::GammaAdj1Click(TObject * Sender)
 {
     //ShowMessage("Sorry! This function is unavailable right now.");
     if (GammaAdjustmentForm == null) {
-	Application->CreateForm(__classid(TGammaAdjustmentForm),
-				&GammaAdjustmentForm);
+	Application->CreateForm(__classid(TGammaAdjustmentForm), &GammaAdjustmentForm);
     }
     GammaAdjustmentForm->setBitDepthProcessor(bitDepth);
     GammaAdjustmentForm->ShowModal();
@@ -344,8 +395,7 @@ void __fastcall TMainForm::RadioButton_TCONClick(TObject * Sender)
 {
     this->Panel_TCON->Visible = true;
     this->bitDepth->setTCONInput(true);
-    ShowMessage
-	("Please Turn On DG and FRC for Measurement when T-CON Input Source is selected!!!");
+    ShowMessage("Please Turn On DG and FRC for Measurement when T-CON Input Source is selected!!!");
 }
 
 //---------------------------------------------------------------------------
@@ -377,25 +427,17 @@ void __fastcall TMainForm::Button_ConnectClick(TObject * Sender)
 	dual = true;
     }
     AddressingSize addressingSize = getAddressingSize();
-
     if (this->RadioButton_USB->Checked) {
-	i2c1st =
-	    i2cControl::getUSBInstance(first, addressingSize, _3_3V,
-				       _400KHz);
+	i2c1st = i2cControl::getUSBInstance(first, addressingSize, _3_3V, _400KHz);
 	if (dual) {
-	    i2c2nd =
-		i2cControl::getUSBInstance(second, addressingSize,
-					   _3_3V, _400KHz);
+	    i2c2nd = i2cControl::getUSBInstance(second, addressingSize, _3_3V, _400KHz);
 	};
     } else {
 
-	const LPTCard card =
-	    this->RadioButton_LPTLarge->Checked ? Large : Small;
-
+	const LPTCard card = this->RadioButton_LPTLarge->Checked ? Large : Small;
 	i2c1st = i2cControl::getLPTInstance(first, addressingSize, card);
 	if (dual) {
-	    i2c2nd =
-		i2cControl::getLPTInstance(second, addressingSize, card);
+	    i2c2nd = i2cControl::getLPTInstance(second, addressingSize, card);
 	};
     };
     bool connect = i2c1st->connect();
@@ -405,31 +447,23 @@ void __fastcall TMainForm::Button_ConnectClick(TObject * Sender)
 
     if (true == connect) {
 
-	int gammaTestAddress =
-	    StrToInt("0x" + this->Edit_EnableAddress->Text);
-	int gammaTestBit = StrToInt(this->Edit_EnableBit->Text) + 1;
-	int testRGBAddress = StrToInt("0x" + this->Edit_LUTAddress->Text);
-	bool indepRGB = this->ComboBox_Type->ItemIndex == 0;
-
-	parameter = bptr < TCONParameter > (new
-					    TCONParameter(gammaTestAddress,
-							  gammaTestBit,
-							  testRGBAddress,
-							  indepRGB,
-							  bitDepth->
-							  getLutMaxValue
-							  ()));
+	int gammaTestAddress = StrToInt("0x" + this->Edit_DirectGammaEnableAddress->Text);
+	int gammaTestBit = StrToInt(this->Edit_DirectGammaEnableBit->Text) + 1;
+	int testRGBAddress = StrToInt("0x" + this->Edit_DirectGammaAddress->Text);
+	bool indepRGB = this->ComboBox_DirectGammaType->ItemIndex == 0;
+	parameter =
+	    bptr < TCONParameter >
+	    (new
+	     TCONParameter(gammaTestAddress, gammaTestBit, testRGBAddress, indepRGB,
+			   bitDepth->getLutMaxValue()));
 	if (!dual) {
-	    control =
-		bptr < TCONControl > (new TCONControl(parameter, i2c1st));
+	    control = bptr < TCONControl > (new TCONControl(parameter, i2c1st));
 	} else {
-	    control =
-		bptr < TCONControl >
-		(new TCONControl(parameter, i2c1st, i2c2nd));
+	    control = bptr < TCONControl > (new TCONControl(parameter, i2c1st, i2c2nd));
 	}
 	this->Button_Connect->Enabled = false;
-	this->CheckBox_Connecting->Checked = true;
-	this->CheckBox_Connecting->Enabled = true;
+	/*this->CheckBox_Connecting->Checked = true;
+	   this->CheckBox_Connecting->Enabled = true; */
 	MeasureWindow->setTCONControl(control);
     } else {
 	MeasureWindow->setTCONControlOff();
@@ -468,15 +502,6 @@ const i2c::AddressingSize TMainForm::getAddressingSize()
 //---------------------------------------------------------------------------
 
 
-void __fastcall TMainForm::CheckBox_ConnectingClick(TObject * Sender)
-{
-    if (false == this->CheckBox_Connecting->Checked) {
-	this->Button_Connect->Enabled = true;
-	this->CheckBox_Connecting->Enabled = false;
-    }
-}
-
-//---------------------------------------------------------------------------
 
 void __fastcall TMainForm::Measurement1Click(TObject * Sender)
 {
@@ -488,8 +513,7 @@ void __fastcall TMainForm::Measurement1Click(TObject * Sender)
 
 
     if (GammaMeasurementForm == null) {
-	Application->CreateForm(__classid(TGammaMeasurementForm),
-				&GammaMeasurementForm);
+	Application->CreateForm(__classid(TGammaMeasurementForm), &GammaMeasurementForm);
     }
     GammaMeasurementForm->setBitDepthProcessor(bitDepth);
     GammaMeasurementForm->ShowModal();
@@ -503,13 +527,10 @@ void __fastcall TMainForm::MatrixCalibration1Click(TObject * Sender)
 {
     //ShowMessage("Sorry! This function is unavailable right now.");
     if (MatrixCalibrationForm == null) {
-	Application->CreateForm(__classid(TMatrixCalibrationForm),
-				&MatrixCalibrationForm);
+	Application->CreateForm(__classid(TMatrixCalibrationForm), &MatrixCalibrationForm);
     }
 
-    if (true == linkCA210
-	&& true ==
-	MatrixCalibrationForm->setMeter(getCA210()->getCA210API(), mm)) {
+    if (true == linkCA210 && true == MatrixCalibrationForm->setMeter(getCA210()->getCA210API(), mm)) {
 	MatrixCalibrationForm->ShowModal();
     } else {
 	MatrixCalibrationForm->ShowModal();
@@ -519,8 +540,7 @@ void __fastcall TMainForm::MatrixCalibration1Click(TObject * Sender)
 
 //---------------------------------------------------------------------------
 
-void TMainForm::setBitDepthEnable(bool lut10, bool lut12, bool out6,
-				  bool out8, bool out10)
+void TMainForm::setBitDepthEnable(bool lut10, bool lut12, bool out6, bool out8, bool out10)
 {
     this->RadioButton_Lut10->Enabled = lut10;
     this->RadioButton_Lut12->Enabled = lut12;
@@ -530,7 +550,6 @@ void TMainForm::setBitDepthEnable(bool lut10, bool lut12, bool out6,
 };
 
 //---------------------------------------------------------------------------
-
 void TMainForm::setBitDepthChecked(int lutSelect, int outSelect)
 {
 
@@ -573,7 +592,6 @@ void __fastcall TMainForm::RadioButton_In6Click(TObject * Sender)
     // 設定enable
     setBitDepthEnable(true, false, true, false, false);
     setFRCAbility();
-
 }
 
 //---------------------------------------------------------------------------
@@ -587,7 +605,6 @@ void __fastcall TMainForm::RadioButton_In8Click(TObject * Sender)
     // 設定enable
     setBitDepthEnable(true, true, true, true, false);
     setFRCAbility();
-
 }
 
 //---------------------------------------------------------------------------
@@ -601,7 +618,6 @@ void __fastcall TMainForm::RadioButton_In10Click(TObject * Sender)
     // 設定enable
     setBitDepthEnable(false, true, false, true, true);
     setFRCAbility();
-
 }
 
 //---------------------------------------------------------------------------
@@ -689,14 +705,22 @@ void TMainForm::setMeterMeasurementWaitTimes()
 {
     this->mm->setWaitTimes(this->getInterval());
 };
-
 void __fastcall TMainForm::Button_I2CTestClick(TObject * Sender)
 {
     if (I2CTestForm == null) {
 	Application->CreateForm(__classid(TI2CTestForm), &I2CTestForm);
     }
+    I2CTestForm->Edit_GammaTestAddress->Text = this->Edit_DirectGammaEnableAddress->Text;
+    I2CTestForm->Edit_GammaTestBit->Text = this->Edit_DirectGammaEnableBit->Text;
+    I2CTestForm->Edit_TestRGBAdress->Text = this->Edit_DirectGammaAddress->Text;
+    I2CTestForm->ComboBox_AddressingSize->ItemIndex = this->ComboBox_AddressingSize->ItemIndex;
+    I2CTestForm->RadioButton_LPTLarge->Checked = this->RadioButton_LPTLarge->Checked;
+    I2CTestForm->RadioButton_LPTSmall->Checked = this->RadioButton_LPTSmall->Checked;
+    I2CTestForm->RadioButton_USB->Checked = this->RadioButton_USB->Checked;
+    I2CTestForm->RadioButton_Single->Checked = this->RadioButton_SingleTCON->Checked;
+    I2CTestForm->RadioButton_Dual->Checked = this->RadioButton_DualTCON->Checked;
+    I2CTestForm->CheckBox_IndepRGB->Checked = this->CheckBox_DirectGammaIndepRGB->Checked;
     I2CTestForm->ShowModal();
-
 }
 
 //---------------------------------------------------------------------------
@@ -710,14 +734,13 @@ void TMainForm::disconnectMeter()
 };
 void TMainForm::connectMeter()
 {
+
     getCA210();
     if (null != ca210) {
 	ca210->getCA210API()->setRemoteMode(ca210api::Locked);
     }
 };
-
-void __fastcall TMainForm::RadioButton_AnalyzerMaxMatrixClick(TObject *
-							      Sender)
+void __fastcall TMainForm::RadioButton_AnalyzerMaxMatrixClick(TObject * Sender)
 {
     setAnalyzerNull();
 }
@@ -774,8 +797,7 @@ void __fastcall TMainForm::RadioButton_FlickrPixelClick(TObject * Sender)
 
 //---------------------------------------------------------------------------
 
-void __fastcall TMainForm::RadioButton_FlickrSubPixelClick(TObject *
-							   Sender)
+void __fastcall TMainForm::RadioButton_FlickrSubPixelClick(TObject * Sender)
 {
     MeasureWindow->setPattern(FlickrSubPixel);
 }
@@ -783,10 +805,41 @@ void __fastcall TMainForm::RadioButton_FlickrSubPixelClick(TObject *
 //---------------------------------------------------------------------------
 
 
-void __fastcall TMainForm::ComboBox_TypeChange(TObject * Sender)
+void __fastcall TMainForm::ComboBox_DirectGammaTypeChange(TObject * Sender)
 {
-    bool indepRGB = this->ComboBox_Type->ItemIndex == 0;
-    CheckBox_IndepRGB->Checked = indepRGB;
+    bool indepRGB = this->ComboBox_DirectGammaType->ItemIndex == 0;
+    CheckBox_DirectGammaIndepRGB->Checked = indepRGB;
+}
+
+//---------------------------------------------------------------------------
+
+
+
+void __fastcall TMainForm::FormDestroy(TObject * Sender)
+{
+    writeSetup();
+}
+
+//---------------------------------------------------------------------------
+
+
+void __fastcall TMainForm::RadioButton_USBClick(TObject * Sender)
+{
+    Button_Connect->Enabled = true;
+}
+
+//---------------------------------------------------------------------------
+
+void __fastcall TMainForm::RadioButton_LPTLargeClick(TObject * Sender)
+{
+    Button_Connect->Enabled = true;
+}
+
+//---------------------------------------------------------------------------
+
+void __fastcall TMainForm::RadioButton_LPTSmallClick(TObject * Sender)
+{
+    Button_Connect->Enabled = true;
 }
 
 //---------------------------------------------------------------------------

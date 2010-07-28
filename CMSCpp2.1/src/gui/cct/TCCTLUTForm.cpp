@@ -64,6 +64,7 @@ void __fastcall TCCTLUTForm::Button_MeaRunClick(TObject * Sender)
     using namespace cms::colorformat;
 
     run = true;
+    this->Button_MeaRun->Enabled = false;
     try {			//為了對應__finally使用的try
 	String_ptr astr = this->TOutputFileFrame1->getOutputFilename();
 	string filename = astr->c_str();
@@ -73,8 +74,7 @@ void __fastcall TCCTLUTForm::Button_MeaRunClick(TObject * Sender)
 	    MainForm->setAnalyzerToTargetChannel();
 	}
 	MainForm->setMeterMeasurementWaitTimes();
-	bptr < ComponentFetcher > fetcher =
-	    MainForm->getComponentFetcher();
+	bptr < ComponentFetcher > fetcher = MainForm->getComponentFetcher();
 	LCDCalibrator calibrator(fetcher, bitDepth);
 
 	//==========================================================================
@@ -106,8 +106,7 @@ void __fastcall TCCTLUTForm::Button_MeaRunClick(TObject * Sender)
 	if (this->RadioButton_Gamma->Checked) {
 	    double gamma = this->ComboBox_Gamma->Text.ToDouble();
 	    calibrator.setGamma(gamma);
-	} else if (this->RadioButton_GammaCurve->Checked
-		   || this->RadioButton_GammaValue->Checked) {
+	} else if (this->RadioButton_GammaCurve->Checked || this->RadioButton_GammaValue->Checked) {
 	    double_vector_ptr gammaCurve = rgbGamma->w;
 	    calibrator.setGammaCurve(gammaCurve);
 	    calibrator.setGByPass(this->CheckBox_GByPass->Checked);
@@ -136,12 +135,9 @@ void __fastcall TCCTLUTForm::Button_MeaRunClick(TObject * Sender)
 	calibrator.setNewMethod(this->CheckBox_NewMethod->Checked);
 
 	calibrator.setMultiGen(this->CheckBox_MultiGen->Checked,
-			       this->Edit_MultiGenStart->Text.ToInt(),
-			       this->Edit_MultiGenEnd->Text.ToInt(),
 			       this->Edit_MultiGenTimes->Text.ToInt());
 	if (CheckBox_BTargetIntensity->Checked) {
-	    double bTargetIntensity =
-		Edit_BTargetIntensity->Text.ToDouble();
+	    double bTargetIntensity = Edit_BTargetIntensity->Text.ToDouble();
 	    calibrator.setBTargetIntensity(bTargetIntensity);
 	}
 	//==========================================================================
@@ -167,21 +163,18 @@ void __fastcall TCCTLUTForm::Button_MeaRunClick(TObject * Sender)
 		return;
 	    }
 
-	    RGB_vector_ptr dglut =
-		calibrator.getCCTDGLut(getMeasureCondition());
+	    RGB_vector_ptr dglut = calibrator.getCCTDGLut(getMeasureCondition());
 	    if (dglut == null) {
 		//被中斷就直接return
 		return;
 	    }
 
-	    bptr < DGLutFile > dgLutFile =
-		calibrator.storeDGLutFile(filename, dglut);
+	    bptr < DGLutFile > dgLutFile = calibrator.storeDGLutFile(filename, dglut);
 	    //MainForm->setDummyMeterFilename(dgLutFile);
 	    //要release掉, 才可以讀取該檔
 	    dgLutFile.reset();
 	    //寫到文字檔
-	    RGBVector::storeToText(ChangeFileExt(filename.c_str(), ".txt").
-				   c_str(), dglut);
+	    RGBVector::storeToText(ChangeFileExt(filename.c_str(), ".txt").c_str(), dglut);
 	    //this->Button_Run->Enabled = true;
 	    ShowMessage("Ok!");
 	    Util::shellExecute(filename);
@@ -192,6 +185,7 @@ void __fastcall TCCTLUTForm::Button_MeaRunClick(TObject * Sender)
     }
     __finally {
 	run = false;
+	this->Button_MeaRun->Enabled = true;
     }
 }
 
@@ -203,16 +197,10 @@ void __fastcall TCCTLUTForm::Button_MeaRunClick(TObject * Sender)
 void __fastcall TCCTLUTForm::FormCreate(TObject * Sender)
 {
     using namespace cms::lcd::calibrate;
-
-
-    //==========================================================================
-    // debug模式的設定
-    //==========================================================================
-    bool debug = !MainForm->linkCA210;
-    this->Button_Debug->Visible = debug;
-    this->Button_Reset->Visible = debug;
-    //==========================================================================
 #ifdef DEBUG_NEWFUNC
+    this->Button_Debug->Visible = true;
+    this->Button_Reset->Visible = true;
+
     this->GroupBox_KeepMaxLuminance->Visible = true;
     this->Button_Run->Visible = true;
 
@@ -263,8 +251,7 @@ void __fastcall TCCTLUTForm::FormShow(TObject * Sender)
     using namespace cms::lcd::calibrate;
 
     const MaxValue & input = bitDepth->getInputMaxValue();
-    bool avoidNoise = (input == MaxValue::Int6Bit
-		       || input == MaxValue::Int8Bit);
+    bool avoidNoise = (input == MaxValue::Int6Bit || input == MaxValue::Int8Bit);
     this->CheckBox_AvoidNoise->Enabled = avoidNoise;
 
     bool tconInput = bitDepth->isTCONInput();
@@ -295,15 +282,12 @@ void __fastcall TCCTLUTForm::RadioButton_GammaCurveClick(TObject * Sender)
 
 
 //---------------------------------------------------------------------------
-void TCCTLUTForm::setBitDepthProcessor(bptr <
-				       cms::lcd::calibrate::
-				       BitDepthProcessor > bitDepth)
+void TCCTLUTForm::setBitDepthProcessor(bptr < cms::lcd::calibrate::BitDepthProcessor > bitDepth)
 {
     this->bitDepth = bitDepth;
 }
 
-void __fastcall TCCTLUTForm::
-TOutputFileFrame1Button_BrowseDirClick(TObject * Sender)
+void __fastcall TCCTLUTForm::TOutputFileFrame1Button_BrowseDirClick(TObject * Sender)
 {
     TOutputFileFrame1->Button_BrowseDirClick(Sender);
 
@@ -345,8 +329,7 @@ void __fastcall TCCTLUTForm::CheckBox_ExpandClick(TObject * Sender)
 }
 
 //---------------------------------------------------------------------------
-bptr < cms::lcd::calibrate::MeasureCondition >
-    TCCTLUTForm::getMeasureCondition()
+bptr < cms::lcd::calibrate::MeasureCondition > TCCTLUTForm::getMeasureCondition()
 {
     using namespace cms::lcd::calibrate;
     bool expand = this->CheckBox_Expand->Checked;
@@ -358,11 +341,9 @@ bptr < cms::lcd::calibrate::MeasureCondition >
 	int highstart = this->Edit_HighStartLevel->Text.ToInt();
 	int highend = this->Edit_HighEndLevel->Text.ToInt();
 	int highstep = this->ComboBox_HighStep->Text.ToInt();
-	condition = bptr < MeasureCondition > (new
-					       MeasureCondition
-					       (lowstart, lowend,
-						lowstep, highstart,
-						highend, highstep));
+	condition =
+	    bptr < MeasureCondition >
+	    (new MeasureCondition(lowstart, lowend, lowstep, highstart, highend, highstep));
     } else {
 	int start = this->Edit_StartLevel->Text.ToInt();
 	int end = this->Edit_EndLevel->Text.ToInt();
@@ -371,16 +352,12 @@ bptr < cms::lcd::calibrate::MeasureCondition >
 	//預設的第一階
 	int firstStep = bitDepth->getMeasureFirstStep();
 	if (bitDepth->getMeasureStart() != start
-	    || bitDepth->getMeasureEnd() != end
-	    || bitDepth->getMeasureStep() != step) {
+	    || bitDepth->getMeasureEnd() != end || bitDepth->getMeasureStep() != step) {
 	    //如果量測條件被改變, 則不要採用原本的第一階
 	    firstStep = step;
 	}
 
-	condition =
-	    bptr < MeasureCondition > (new
-				       MeasureCondition(start, end,
-							firstStep, step));
+	condition = bptr < MeasureCondition > (new MeasureCondition(start, end, firstStep, step));
     }
     return condition;
 
@@ -437,8 +414,7 @@ void __fastcall TCCTLUTForm::CheckBox_NewMethodClick(TObject * Sender)
 
 //---------------------------------------------------------------------------
 
-void __fastcall TCCTLUTForm::RadioButton_MaxYNativeAdvClick(TObject *
-							    Sender)
+void __fastcall TCCTLUTForm::RadioButton_MaxYNativeAdvClick(TObject * Sender)
 {
     bool checked = RadioButton_MaxYNativeAdv->Checked;
     Edit_MaxYAdvOver->Enabled = checked;
@@ -448,8 +424,7 @@ void __fastcall TCCTLUTForm::RadioButton_MaxYNativeAdvClick(TObject *
 //---------------------------------------------------------------------------
 
 
-void __fastcall TCCTLUTForm::FormClose(TObject * Sender,
-				       TCloseAction & Action)
+void __fastcall TCCTLUTForm::FormClose(TObject * Sender, TCloseAction & Action)
 {
     if (Button_Run->Enabled) {
 	MainForm->setAnalyzerNull();
@@ -469,8 +444,7 @@ void __fastcall TCCTLUTForm::Button_RunClick(TObject * Sender)
 
 //---------------------------------------------------------------------------
 
-void __fastcall TCCTLUTForm::CheckBox_BTargetIntensityClick(TObject *
-							    Sender)
+void __fastcall TCCTLUTForm::CheckBox_BTargetIntensityClick(TObject * Sender)
 {
     bool check = this->CheckBox_BTargetIntensity->Checked;
     this->Edit_BTargetIntensity->Enabled = check;

@@ -91,16 +91,13 @@ class TCCTLUTForm:public TForm {
     TRadioButton *RadioButton_GammaValue;
     TCheckBox *CheckBox_MultiGen;
     TEdit *Edit_MultiGenTimes;
-    TEdit *Edit_MultiGenStart;
-    TEdit *Edit_MultiGenEnd;
     void __fastcall RadioButton_P1P2Click(TObject * Sender);
     void __fastcall Button_MeaRunClick(TObject * Sender);
     void __fastcall FormCreate(TObject * Sender);
     void __fastcall Button_DebugClick(TObject * Sender);
     void __fastcall FormShow(TObject * Sender);
     void __fastcall RadioButton_GammaCurveClick(TObject * Sender);
-    void __fastcall TOutputFileFrame1Button_BrowseDirClick(TObject *
-							   Sender);
+    void __fastcall TOutputFileFrame1Button_BrowseDirClick(TObject * Sender);
     void __fastcall FormKeyPress(TObject * Sender, char &Key);
     void __fastcall RadioButton_GammaClick(TObject * Sender);
     void __fastcall ComboBox_GammaChange(TObject * Sender);
@@ -124,9 +121,7 @@ class TCCTLUTForm:public TForm {
     bool run;
   public:			// User declarations
      __fastcall TCCTLUTForm(TComponent * Owner);
-    void setBitDepthProcessor(bptr <
-			      cms::lcd::calibrate::BitDepthProcessor >
-			      bitDepth);
+    void setBitDepthProcessor(bptr < cms::lcd::calibrate::BitDepthProcessor > bitDepth);
 };
 //---------------------------------------------------------------------------
 extern PACKAGE TCCTLUTForm *CCTLUTForm;

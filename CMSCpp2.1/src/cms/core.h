@@ -44,8 +44,7 @@ namespace cms {
 	int getStart() const;
 	Spectra_ptr getSpectra(int index) const;
       private:
-	static CMF_ptr getColorMatchingFunction(const std::
-						string & filename);
+	static CMF_ptr getColorMatchingFunction(const std::string & filename);
     };
 
     enum CCTMethod {
@@ -60,9 +59,7 @@ namespace cms {
 	static double_array getdudvWithDIlluminant(XYZ_ptr XYZ);
 	static double getduvWithDIlluminant(XYZ_ptr XYZ);
 	static Spectra_ptr getSpectraOfBlackbodyRadiator(double tempK,
-							 int start,
-							 int end,
-							 int interval);
+							 int start, int end, int interval);
 	static Spectra_ptr getSpectraOfBlackbodyRadiator(double tempK);
 	static bool isCCTMeaningful(xyY_ptr xyY);
 	static double getduvWithBlackbody(XYZ_ptr XYZ);
@@ -100,8 +97,7 @@ namespace cms {
 	double1D_ptr data;
 	XYZ_ptr CIE1931XYZ;
       public:
-	 Spectra(const std::string & name, int start, int end,
-		 int interval, double1D_ptr data);
+	 Spectra(const std::string & name, int start, int end, int interval, double1D_ptr data);
 	XYZ_ptr getXYZ();
 	XYZ_ptr getXYZ(const ColorMatchingFunction & cmf);
 	double1D_ptr getData();
@@ -114,12 +110,10 @@ namespace cms {
 	 XYZ_ptr getXYZFill(const ColorMatchingFunction & cmf);
 	Spectra_ptr doFillPurlieus(int start, int end);
 	static double1D_ptr fillPurlieusData(const double1D_ptr data,
-					     int leftBorder,
-					     int rightBorder);
+					     int leftBorder, int rightBorder);
 	static bool fillZero;
 	static double sigma(int start, int end,
-			    double1D_ptr data1, int interval1,
-			    double1D_ptr data2, int interval2);
+			    double1D_ptr data1, int interval1, double1D_ptr data2, int interval2);
     };
 
 

@@ -35,8 +35,7 @@ namespace cms {
 		 Mode mode;
 		Component_vector_ptr componentVector;
 		double_vector_ptr luminanceVector;
-		double_vector_ptr rLuminanceVector, gLuminanceVector,
-		    bLuminanceVector;
+		double_vector_ptr rLuminanceVector, gLuminanceVector, bLuminanceVector;
 		double minLuminance, maxLuminance;
 		 bptr < ComponentLUT > lut;
 		 bptr < ComponentRelationIF > componentRelation;
@@ -49,20 +48,15 @@ namespace cms {
 		 DGLutGenerator(Component_vector_ptr componentVector,
 				KeepMaxLuminance keepMaxLuminance);
 		 DGLutGenerator(double_vector_ptr luminanceVector);
-		RGB_ptr getDGCode(double rIntensity, double gIntensity,
-				  double bIntensity);
+		RGB_ptr getDGCode(double rIntensity, double gIntensity, double bIntensity);
 		RGB_ptr getDGCode(double rIntensity, double gIntensity,
 				  double bIntensity, bool correctInRange);
-		RGB_vector_ptr getCCTDGLut(RGBGamma_ptr
-					   normalRGBGammaCurve);
-		RGB_vector_ptr getGammaDGLut(double_vector_ptr
-					     normalGammaCurve);
+		RGB_vector_ptr getCCTDGLut(RGBGamma_ptr normalRGBGammaCurve);
+		RGB_vector_ptr getGammaDGLut(double_vector_ptr normalGammaCurve);
 
 		//¥Ñgamma curveÂàrgb intensity
-		RGBGamma_ptr getRGBGamma(double_vector_ptr
-					 normalGammaCurve);
-		double_vector_ptr getLuminanceGammaCurve(double_vector_ptr
-							 normalGammaCurve);
+		RGBGamma_ptr getRGBGamma(double_vector_ptr normalGammaCurve);
+		double_vector_ptr getLuminanceGammaCurve(double_vector_ptr normalGammaCurve);
 		double getMaxBIntensity();
 	    };
 
@@ -105,15 +99,12 @@ namespace cms {
 		bool isRGBType();
 	      private:
 		 int_vector_ptr getMeasureCode(const int start,
-					       const int end,
-					       const int firstStep,
-					       const int step);
+					       const int end, const int firstStep, const int step);
 		int_vector_ptr getMeasureCode(const int lowStart,
 					      const int lowEnd,
 					      const int lowStep,
 					      const int highStart,
-					      const int highEnd,
-					      const int highStep);
+					      const int highEnd, const int highStep);
 		bool isNoRemainder(int start, int end, int step);
 
 	    };
@@ -154,11 +145,8 @@ namespace cms {
 		double keepMaxLumiGamma;
 		double bTargetIntensity;
 
-		/*bool multiPrimaryColor;
-		   int multiPrimaryColorInterval;
-		   int multiPrimayColorStart, multiPrimayColorEnd; */
 		bool multiGen;
-		int multiGenTimes, multiGenStart, multiGenEnd;
+		int multiGenTimes;
 		//==============================================================
 		 bptr < ComponentFetcher > fetcher;
 		RGB_vector_ptr dglut;
@@ -170,56 +158,41 @@ namespace cms {
 
 		void setGammaCurve0(double_vector_ptr gammaCurve);
 		void setGammaCurve0(double_vector_ptr rgammaCurve,
-				    double_vector_ptr ggammaCurve,
-				    double_vector_ptr bgammaCurve);
+				    double_vector_ptr ggammaCurve, double_vector_ptr bgammaCurve);
 		Component_vector_ptr fetchComponentVector(bptr <
-							  MeasureCondition
-							  >
-							  measureCondition);
-		double_vector_ptr fetchLuminanceVector(bptr <
-						       MeasureCondition >
-						       measureCondition);
+							  MeasureCondition > measureCondition);
+		double_vector_ptr fetchLuminanceVector(bptr < MeasureCondition > measureCondition);
 	      public:
-		static double_vector_ptr getGammaCurveVector
-		    (double gamma, int n, int effectiven);
+		static double_vector_ptr getGammaCurveVector(double gamma, int n, int effectiven);
 
 		void setP1P2(int p1, int p2);
 		void setRBInterpolation(int under);
 		void setNonDimCorrect();
-		void setDefinedDim(int under, double gamma,
-				   bool averageDimDG);
+		void setDefinedDim(int under, double gamma, bool averageDimDG);
 		void setGamma(double gamma);
 		void setGamma(double rgamma, double ggamma, double bgamma);
 		void setGammaCurve(double_vector_ptr gammaCurve);
 		void setGammaCurve(double_vector_ptr rgammaCurve,
-				   double_vector_ptr ggammaCurve,
-				   double_vector_ptr bgammaCurve);
+				   double_vector_ptr ggammaCurve, double_vector_ptr bgammaCurve);
 		void setGByPass(bool byPass);
 		void setBIntensityGain(double gain);
 		void setBMax(bool bMax);
 		void setBMax2(bool bMax2, int begin, double gamma);
 		void setAvoidFRCNoise(bool avoid);
-		void setKeepMaxLuminance(KeepMaxLuminance
-					 keepMaxLuminance);
-		void setKeepMaxLuminanceNativeWhiteAdvanced(int over,
-							    double gamma);
+		void setKeepMaxLuminance(KeepMaxLuminance keepMaxLuminance);
+		void setKeepMaxLuminanceNativeWhiteAdvanced(int over, double gamma);
 		void setNewMethod(bool enable);
 
 		 LCDCalibrator(bptr <
 			       cms::lcd::calibrate::ComponentFetcher >
-			       fetcher,
-			       bptr < BitDepthProcessor > bitDepth);
+			       fetcher, bptr < BitDepthProcessor > bitDepth);
 
-		RGB_vector_ptr getCCTDGLut(bptr < MeasureCondition >
-					   measureCondition);
-		RGB_vector_ptr getGammaDGLut(bptr < MeasureCondition >
-					     measureCondition);
+		RGB_vector_ptr getCCTDGLut(bptr < MeasureCondition > measureCondition);
+		RGB_vector_ptr getGammaDGLut(bptr < MeasureCondition > measureCondition);
 		 bptr < cms::colorformat::DGLutFile >
-		    storeDGLutFile(const std::string & filename,
-				   RGB_vector_ptr dglut);
+		    storeDGLutFile(const std::string & filename, RGB_vector_ptr dglut);
 		void setBTargetIntensity(double bTargetIntensity);
-		void setMultiGen(bool enable, int start, int end,
-				 int times);
+		void setMultiGen(bool enable, int times);
 	      private:
 		 RGB_vector_ptr getDGLutOpResult(RGB_vector_ptr dglut);
 	    };

@@ -23,10 +23,7 @@ namespace cms {
 	//======================================================================
 	// Parser
 	//======================================================================
-	 Parser::Parser(const string & filename):strList(bptr <
-							 TStringList >
-							 (new
-							  TStringList())) {
+	 Parser::Parser(const string & filename):strList(bptr < TStringList > (new TStringList())) {
 	    strList->LoadFromFile(_toAnsiString(filename));
 	};
 	int Parser::getCount() {
@@ -35,8 +32,7 @@ namespace cms {
 	string_vector_ptr Parser::getTokenize(int index) {
 	    AnsiString str = strList->Strings[index];
 	    string stlstring(str.c_str());
-	    string_vector_ptr result =
-		StringVector::tokenize(stlstring, " ,");
+	    string_vector_ptr result = StringVector::tokenize(stlstring, " ,");
 	    return result;
 	};
 	//======================================================================
@@ -44,8 +40,7 @@ namespace cms {
 	//======================================================================
 	// Parser
 	//======================================================================
-	double2D_ptr ColorMatchingFunctionFile::
-	    filterCMFnTranspose(double2D_ptr cmf) {
+	double2D_ptr ColorMatchingFunctionFile::filterCMFnTranspose(double2D_ptr cmf) {
 	    int size = cmf->dim1();
 	    //double[][] filtered = new double[size][3];
 	    double2D_ptr filtered(new double2D(size, 3));
@@ -75,18 +70,15 @@ namespace cms {
 	    Spectra_vector_ptr spectraVector(new Spectra_vector(3));
 	    (*spectraVector)[0] =
 		Spectra_ptr(new Spectra("CIE X", start, end, interval,
-					double1D_ptr(new double1D(width,
-								  (*data)
+					double1D_ptr(new double1D(width, (*data)
 								  [0]))));
 	    (*spectraVector)[1] =
 		Spectra_ptr(new Spectra("CIE Y", start, end, interval,
-					double1D_ptr(new double1D(width,
-								  (*data)
+					double1D_ptr(new double1D(width, (*data)
 								  [1]))));
 	    (*spectraVector)[2] =
 		Spectra_ptr(new Spectra("CIE Z", start, end, interval,
-					double1D_ptr(new double1D(width,
-								  (*data)
+					double1D_ptr(new double1D(width, (*data)
 								  [2]))));
 	    return spectraVector;
 	};
@@ -99,8 +91,8 @@ namespace cms {
 		}
 		for (int y = 0; y < 4; y++) {
 		    string s = (*tokenize)[y];
-		    //cout << s << endl;
-		    (*CMF)[x][y] = _toDouble(s);
+		    (*CMF)[x][y] = atof(s.c_str());
+		    //(*CMF)[x][y] = _toDouble(s);
 		}
 	    }
 

@@ -23,7 +23,7 @@ class TI2CTestForm:public TForm {
     TRadioButton *RadioButton_Dual;
     TEdit *Edit_Master;
     TEdit *Edit_Slave;
-    TGroupBox *GroupBox2;
+    TGroupBox *GroupBox_I2CCard;
     TRadioButton *RadioButton_USB;
     TRadioButton *RadioButton_LPTLarge;
     TCheckBox *CheckBox_Connecting;
@@ -60,6 +60,7 @@ class TI2CTestForm:public TForm {
     void __fastcall Edit_BChange(TObject * Sender);
     void __fastcall Button_ReadClick(TObject * Sender);
     void __fastcall Button_WriteClick(TObject * Sender);
+    void __fastcall FormDeactivate(TObject * Sender);
   private:			// User declarations
      bptr < i2c::TCONParameter > parameter;
      bptr < i2c::TCONControl > control;
