@@ -47,18 +47,16 @@ class TMainForm:public TForm {
     TEdit *Edit_DeviceAddress;
     TEdit *Edit_MasterDeviceAddress;
     TEdit *Edit_SlaveDeviceAddress;
-    TButton *Button_Connect;
-    TCheckBox *CheckBox_Connecting;
     TComboBox *ComboBox_AddressingSize;
     TGroupBox *GroupBox_GammaTestAddress;
     TLabel *Label4;
     TGroupBox *GroupBox5;
     TLabel *Label2;
     TLabel *Label3;
-    TEdit *Edit_EnableAddress;
-    TEdit *Edit_EnableBit;
-    TEdit *Edit_LUTAddress;
-    TCheckBox *CheckBox_IndepRGB;
+    TEdit *Edit_DirectGammaEnableAddress;
+    TEdit *Edit_DirectGammaEnableBit;
+    TEdit *Edit_DirectGammaAddress;
+    TCheckBox *CheckBox_DirectGammaIndepRGB;
     TGroupBox *GroupBox2;
     TRadioButton *RadioButton_PC;
     TRadioButton *RadioButton_TCON;
@@ -94,16 +92,29 @@ class TMainForm:public TForm {
     TRadioButton *RadioButton_AnalyzerDebug;
     TLabel *Label10;
     TEdit *Edit_FRCAbility;
-    TComboBox *ComboBox_Type;
+    TComboBox *ComboBox_DirectGammaType;
     TLabel *Label11;
     TButton *Button_I2CTest;
-    TRadioGroup *RadioGroup1;
+    TRadioGroup *RadioGroup_Pattern;
     TRadioButton *RadioButton_Normal;
     TRadioButton *RadioButton_HStripe;
     TRadioButton *RadioButton_Indep;
     TRadioButton *RadioButton_HSD;
     TRadioButton *RadioButton_FlickrPixel;
     TRadioButton *RadioButton_FlickrSubPixel;
+    TButton *Button_Connect;
+    TGroupBox *GroupBox4;
+    TLabel *Label12;
+    TEdit *Edit_DGLUTAddress;
+    TGroupBox *GroupBox7;
+    TComboBox *ComboBox_TCONType;
+    TGroupBox *GroupBox11;
+    TLabel *Label13;
+    TLabel *Label14;
+    TEdit *Edit_DGEnableAddress;
+    TEdit *Edit_DGEnableBit;
+    TLabel *Label15;
+    TComboBox *ComboBox_DGLUTType;
     void __fastcall About1Click(TObject * Sender);
     void __fastcall Exit1Click(TObject * Sender);
     void __fastcall TargetWhite1Click(TObject * Sender);
@@ -113,7 +124,6 @@ class TMainForm:public TForm {
     void __fastcall RadioButton_TCONClick(TObject * Sender);
     void __fastcall RadioButton_PCClick(TObject * Sender);
     void __fastcall Button_ConnectClick(TObject * Sender);
-    void __fastcall CheckBox_ConnectingClick(TObject * Sender);
     void __fastcall Measurement1Click(TObject * Sender);
     void __fastcall MatrixCalibration1Click(TObject * Sender);
     void __fastcall RadioButton_In6Click(TObject * Sender);
@@ -137,7 +147,11 @@ class TMainForm:public TForm {
     void __fastcall RadioButton_HSDClick(TObject * Sender);
     void __fastcall RadioButton_FlickrPixelClick(TObject * Sender);
     void __fastcall RadioButton_FlickrSubPixelClick(TObject * Sender);
-    void __fastcall ComboBox_TypeChange(TObject * Sender);
+    void __fastcall ComboBox_DirectGammaTypeChange(TObject * Sender);
+    void __fastcall FormDestroy(TObject * Sender);
+    void __fastcall RadioButton_USBClick(TObject * Sender);
+    void __fastcall RadioButton_LPTLargeClick(TObject * Sender);
+    void __fastcall RadioButton_LPTSmallClick(TObject * Sender);
   private:			// User declarations
     //==========================================================================
     // meter
@@ -157,11 +171,13 @@ class TMainForm:public TForm {
     const i2c::AddressingSize getAddressingSize();
      bptr < i2c::TCONParameter > parameter;
      bptr < i2c::TCONControl > control;
-    void setBitDepthEnable(bool lut10, bool lut12, bool out6, bool out8,
-			   bool out10);
+    void setBitDepthEnable(bool lut10, bool lut12, bool out6, bool out8, bool out10);
     void setBitDepthChecked(int lutSelect, int outSelect);
     void setFRCAbility();
     //==========================================================================
+
+    void readSetup();
+    void writeSetup();
   public:			// User declarations
     //==========================================================================
     // meter
@@ -174,8 +190,7 @@ class TMainForm:public TForm {
     void setMeterMeasurementWaitTimes();
      bptr < cms::measure::IntensityAnalyzerIF > getAnalyzer();
     void setDummyMeterFilename(const std::string & filename);
-    void setDummyMeterFilename(bptr < cms::colorformat::DGLutFile >
-			       dglutFile);
+    void setDummyMeterFilename(bptr < cms::colorformat::DGLutFile > dglutFile);
     void resetDummyMeter();
     void setAnalyzerNull();
      bptr < cms::lcd::calibrate::ComponentFetcher > getComponentFetcher();

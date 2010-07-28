@@ -1,6 +1,6 @@
 object CCTLUTForm: TCCTLUTForm
-  Left = 394
-  Top = 495
+  Left = 200
+  Top = 200
   Width = 842
   Height = 487
   Caption = 'CCT LUT'
@@ -56,7 +56,7 @@ object CCTLUTForm: TCCTLUTForm
     object Edit_StartLevel: TEdit
       Left = 80
       Top = 48
-      Width = 105
+      Width = 97
       Height = 24
       ImeName = #26085#25991#36664#20837#31995#32113' (MS-IME2002)'
       TabOrder = 0
@@ -65,7 +65,7 @@ object CCTLUTForm: TCCTLUTForm
     object ComboBox_LevelStep: TComboBox
       Left = 80
       Top = 112
-      Width = 105
+      Width = 97
       Height = 24
       ImeName = #26085#25991#36664#20837#31995#32113' (MS-IME2002)'
       ItemHeight = 16
@@ -84,7 +84,7 @@ object CCTLUTForm: TCCTLUTForm
     object Edit_EndLevel: TEdit
       Left = 80
       Top = 80
-      Width = 105
+      Width = 97
       Height = 24
       ImeName = #26085#25991#36664#20837#31995#32113' (MS-IME2002)'
       TabOrder = 2
@@ -419,29 +419,13 @@ object CCTLUTForm: TCCTLUTForm
       TabOrder = 2
     end
     object Edit_MultiGenTimes: TEdit
-      Left = 32
-      Top = 80
+      Left = 144
+      Top = 56
       Width = 33
       Height = 24
       Enabled = False
       TabOrder = 3
-      Text = '17'
-    end
-    object Edit_MultiGenStart: TEdit
-      Left = 64
-      Top = 80
-      Width = 33
-      Height = 24
-      TabOrder = 4
-      Text = '254'
-    end
-    object Edit_MultiGenEnd: TEdit
-      Left = 96
-      Top = 80
-      Width = 33
-      Height = 24
-      TabOrder = 5
-      Text = '180'
+      Text = '1'
     end
   end
   object Button_MeaRun: TButton
@@ -463,6 +447,7 @@ object CCTLUTForm: TCCTLUTForm
     Height = 16
     Caption = 'debug'
     TabOrder = 6
+    Visible = False
     OnClick = Button_DebugClick
   end
   inline TOutputFileFrame1: TOutputFileFrame
@@ -501,7 +486,7 @@ object CCTLUTForm: TCCTLUTForm
   end
   object Panel_Expand: TPanel
     Left = 17
-    Top = 57
+    Top = 49
     Width = 176
     Height = 256
     Caption = 'Panel_Expand'

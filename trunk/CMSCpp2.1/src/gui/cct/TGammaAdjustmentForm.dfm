@@ -1,6 +1,6 @@
 object GammaAdjustmentForm: TGammaAdjustmentForm
-  Left = 300
-  Top = 300
+  Left = 200
+  Top = 200
   Width = 467
   Height = 426
   Caption = 'Gamma Adjustment'

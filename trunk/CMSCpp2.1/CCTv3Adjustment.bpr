@@ -46,11 +46,7 @@
       inetdbbde.bpi inetdbxpress.bpi inetdb.bpi nmfast.bpi webdsnap.bpi 
       bcbie.bpi websnap.bpi soaprtl.bpi dclocx.bpi dbexpress.bpi dbxcds.bpi 
       indy.bpi bcb2kaxserver.bpi bcbindent.bpi"/>
-<<<<<<< .mine
-    <PATHCPP value=".;lib\LPT_lib;lib\USB_i2c_lib;src\java;lib\CA200SRVRLib;src\ca210api;src\cms\util;src\cms\colorspace;src\cms;src\cms\colorformat;src\math;src\cms\lcd\calibrate;src\cms\measure;src;src\gui;src\i2c;src\i2c\core;src\gui\cct"/>
-=======
     <PATHCPP value=".;lib\LPT_lib;lib\LPT_lib;lib\USB_i2c_lib;src\java;lib\CA200SRVRLib;lib\CA200SRVRLib;src\ca210api;src\cms\util;src\cms\util;src\cms\colorspace;src\cms\colorspace;src\cms\colorspace;src\cms\colorspace;src\cms\colorspace;src\cms;src\cms;src\cms\colorformat;src\cms\colorformat;src\cms\colorformat;src\cms\colorformat;src\math;src\math;src\math;src\math;src\math;src\cms\lcd\calibrate;src\cms\lcd\calibrate;src\cms\lcd\calibrate;src\cms\lcd\calibrate;src\cms\lcd\calibrate;src\cms\lcd\calibrate;src\cms\lcd\calibrate;src\cms\lcd\calibrate;src\cms\measure;src\cms\measure;src\cms\measure;src\cms\measure;src;src\gui;src\gui;src\gui;src\gui;src\gui;src\gui;src\gui;src\i2c;src\i2c;src\i2c;src\i2c\core;src\math;src\cms\lcd\calibrate;src\cms\lcd\calibrate;src\cms\colorformat;src\math;src\gui\cct;src\gui\cct;src\gui\cct;src\gui\cct;src\gui\cct;src\gui\cct;src\cms\lcd\calibrate"/>
->>>>>>> .r417
     <PATHPAS value=".;"/>
     <PATHRC value=".;"/>
     <PATHASM value=".;"/>
@@ -166,7 +162,7 @@ AutoIncBuild=1
 MajorVer=3
 MinorVer=2
 Release=0
-Build=278
+Build=297
 Debug=1
 PreRelease=0
 Special=0
@@ -178,7 +174,7 @@ CodePage=950
 [Version Info Keys]
 CompanyName=AUO
 FileDescription=CCT Adjustment v3
-FileVersion=3.2.0.278
+FileVersion=3.2.0.297
 InternalName=
 LegalCopyright=Algorithm by StocktonTsai &amp; skyforce, Implement by skyforce
 LegalTrademarks=
@@ -186,13 +182,6 @@ OriginalFilename=
 ProductName=CCT Adjustment v3
 ProductVersion=3.2
 Comments=
-
-[Excluded Packages]
-d:\program files\borland\cbuilder6\Bin\dclbde60.bpl=Borland BDE DB Components
-d:\program files\borland\cbuilder6\Bin\dcltee60.bpl=TeeChart Components
-d:\program files\borland\cbuilder6\Bin\dcldss60.bpl=Borland Decision Cube Components
-d:\program files\borland\cbuilder6\Bin\dcltqr60.bpl=TeeChart for QuickReport Components
-d:\program files\borland\cbuilder6\Bin\DBWEBXPRT.BPL=Borland Web Wizard Package
 
 [HistoryLists\hlIncludePath]
 Count=11
@@ -237,10 +226,11 @@ Count=1
 Item0=build
 
 [HistoryLists\hlFinalOutputDir]
-Count=3
-Item0=workdir
-Item1=build\
-Item2=build
+Count=4
+Item0=workdir\
+Item1=workdir
+Item2=build\
+Item3=build
 
 [HistoryLists\hIBPIOutputDir]
 Count=1

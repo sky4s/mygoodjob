@@ -41,8 +41,7 @@ const i2c::AddressingSize TI2CTestForm::getAddressingSize()
     case 8:
 	return _512k;
     default:
-	throw java::lang::
-	    IllegalArgumentException("Unsupported AddressingSize.");
+	throw java::lang::IllegalArgumentException("Unsupported AddressingSize.");
     }
 }
 
@@ -76,23 +75,17 @@ void __fastcall TI2CTestForm::Button1Click(TObject * Sender)
     AddressingSize addressingSize = getAddressingSize();
 
     if (this->RadioButton_USB->Checked) {
-	i2c1st =
-	    i2cControl::getUSBInstance(first, addressingSize, _3_3V,
-				       _400KHz);
+	i2c1st = i2cControl::getUSBInstance(first, addressingSize, _3_3V, _400KHz);
 	if (dual) {
-	    i2c2nd =
-		i2cControl::getUSBInstance(second, addressingSize,
-					   _3_3V, _400KHz);
+	    i2c2nd = i2cControl::getUSBInstance(second, addressingSize, _3_3V, _400KHz);
 	};
     } else {
 
-	const LPTCard card =
-	    this->RadioButton_LPTLarge->Checked ? Large : Small;
+	const LPTCard card = this->RadioButton_LPTLarge->Checked ? Large : Small;
 
 	i2c1st = i2cControl::getLPTInstance(first, addressingSize, card);
 	if (dual) {
-	    i2c2nd =
-		i2cControl::getLPTInstance(second, addressingSize, card);
+	    i2c2nd = i2cControl::getLPTInstance(second, addressingSize, card);
 	};
     };
     try {
@@ -103,11 +96,9 @@ void __fastcall TI2CTestForm::Button1Click(TObject * Sender)
 	if (true == connect) {
 	    setOptionsEditable(false);
 
-	    int gammaTestAddress =
-		StrToInt("0x" + this->Edit_GammaTestAddress->Text);
+	    int gammaTestAddress = StrToInt("0x" + this->Edit_GammaTestAddress->Text);
 	    int gammaTestBit = StrToInt(this->Edit_GammaTestBit->Text) + 1;
-	    int testRGBAddress =
-		StrToInt("0x" + this->Edit_TestRGBAdress->Text);
+	    int testRGBAddress = StrToInt("0x" + this->Edit_TestRGBAdress->Text);
 	    bool indepRGB = CheckBox_IndepRGB->Checked;
 
 	    parameter = bptr < TCONParameter > (new
@@ -115,16 +106,11 @@ void __fastcall TI2CTestForm::Button1Click(TObject * Sender)
 						(gammaTestAddress,
 						 gammaTestBit,
 						 testRGBAddress, indepRGB,
-						 MainForm->bitDepth->
-						 getLutMaxValue()));
+						 MainForm->bitDepth->getLutMaxValue()));
 	    if (!dual) {
-		control =
-		    bptr < TCONControl >
-		    (new TCONControl(parameter, i2c1st));
+		control = bptr < TCONControl > (new TCONControl(parameter, i2c1st));
 	    } else {
-		control =
-		    bptr < TCONControl >
-		    (new TCONControl(parameter, i2c1st, i2c2nd));
+		control = bptr < TCONControl > (new TCONControl(parameter, i2c1st, i2c2nd));
 	    }
 	}
 
@@ -175,9 +161,7 @@ void __fastcall TI2CTestForm::Edit_RChange(TObject * Sender)
 	    rgbValues[0] = r;
 	    rgbValues[1] = g;
 	    rgbValues[2] = b;
-	    RGB_ptr rgb(new
-			RGBColor(RGBColorSpace::unknowRGB, rgbValues,
-				 MaxValue::Int12Bit));
+	    RGB_ptr rgb(new RGBColor(RGBColorSpace::unknowRGB, rgbValues, MaxValue::Int12Bit));
 	    control->setTestRGB(rgb);
 	} catch(EConvertError & ex) {
 	    Application->ShowException(&ex);
@@ -213,14 +197,31 @@ void __fastcall TI2CTestForm::Button_ReadClick(TObject * Sender)
 
 void __fastcall TI2CTestForm::Button_WriteClick(TObject * Sender)
 {
-    if (true == this->CheckBox_Connecting->Checked
-	&& this->Edit_WriteData->Text.Length() != 0) {
+    if (true == this->CheckBox_Connecting->Checked && this->Edit_WriteData->Text.Length() != 0) {
 	int address = StrToInt("0x" + this->Edit_Address->Text);
 	const unsigned int data =
-	    static_cast <
-	    const unsigned int >(StrToInt(this->Edit_WriteData->Text));
+	    static_cast < const unsigned int >(StrToInt(this->Edit_WriteData->Text));
 	control->writeByte(address, data);
     }
+}
+
+//---------------------------------------------------------------------------
+
+
+void __fastcall TI2CTestForm::FormDeactivate(TObject * Sender)
+{
+    MainForm->Edit_DirectGammaEnableAddress->Text = this->Edit_GammaTestAddress->Text;
+    MainForm->Edit_DirectGammaEnableBit->Text = this->Edit_GammaTestBit->Text;
+    MainForm->Edit_DirectGammaAddress->Text = this->Edit_TestRGBAdress->Text;
+    MainForm->ComboBox_AddressingSize->ItemIndex = this->ComboBox_AddressingSize->ItemIndex;
+    MainForm->RadioButton_LPTLarge->Checked = this->RadioButton_LPTLarge->Checked;
+    MainForm->RadioButton_LPTSmall->Checked = this->RadioButton_LPTSmall->Checked;
+    MainForm->RadioButton_USB->Checked = this->RadioButton_USB->Checked;
+    MainForm->RadioButton_SingleTCON->Checked = this->RadioButton_Single->Checked;
+    MainForm->RadioButton_DualTCON->Checked = this->RadioButton_Dual->Checked;
+
+    MainForm->ComboBox_DirectGammaType->ItemIndex = this->CheckBox_IndepRGB->Checked ? 0 : 1;
+    //MainForm->ComboBox_TypeChange(this);
 }
 
 //---------------------------------------------------------------------------
