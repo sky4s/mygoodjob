@@ -95,13 +95,6 @@ class TMainForm:public TForm {
     TComboBox *ComboBox_GammaTestType;
     TLabel *Label11;
     TButton *Button_I2CTest;
-    TRadioGroup *RadioGroup_Pattern;
-    TRadioButton *RadioButton_Normal;
-    TRadioButton *RadioButton_HStripe;
-    TRadioButton *RadioButton_Indep;
-    TRadioButton *RadioButton_HSD;
-    TRadioButton *RadioButton_FlickrPixel;
-    TRadioButton *RadioButton_FlickrSubPixel;
     TButton *Button_Connect;
     TGroupBox *GroupBox4;
     TLabel *Label12;
@@ -116,6 +109,13 @@ class TMainForm:public TForm {
     TLabel *Label15;
     TComboBox *ComboBox_DGLUTType;
     TCheckBox *CheckBox_GammaTest;
+        TGroupBox *GroupBox12;
+        TRadioButton *RadioButton_Normal;
+        TRadioButton *RadioButton_HStripe;
+        TRadioButton *RadioButton_Indep;
+        TRadioButton *RadioButton_HSD;
+        TRadioButton *RadioButton_FlickrPixel;
+        TRadioButton *RadioButton_FlickrSubPixel;
     void __fastcall About1Click(TObject * Sender);
     void __fastcall Exit1Click(TObject * Sender);
     void __fastcall TargetWhite1Click(TObject * Sender);

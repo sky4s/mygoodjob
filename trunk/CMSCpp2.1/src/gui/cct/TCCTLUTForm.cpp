@@ -300,6 +300,10 @@ void __fastcall TCCTLUTForm::FormKeyPress(TObject * Sender, char &Key)
     if (27 == Key) {
 	if (true == run) {
 	    ShowMessage("Interrupt!");
+	    if (false == MeasureWindow->Visible) {
+		MainForm->getComponentFetcher()->windowClosing();
+	    }
+	    run = false;
 	} else {
 	    this->Close();
 	}
@@ -332,8 +336,10 @@ void __fastcall TCCTLUTForm::CheckBox_ExpandClick(TObject * Sender)
 bptr < cms::lcd::calibrate::MeasureCondition > TCCTLUTForm::getMeasureCondition()
 {
     using namespace cms::lcd::calibrate;
+    using namespace Dep;
     bool expand = this->CheckBox_Expand->Checked;
     bptr < MeasureCondition > condition;
+    const MaxValue & maxValue = bitDepth->getMeasureMaxValue();
     if (expand) {
 	int lowstart = this->Edit_LowStartLevel->Text.ToInt();
 	int lowend = this->Edit_LowEndLevel->Text.ToInt();
@@ -343,7 +349,8 @@ bptr < cms::lcd::calibrate::MeasureCondition > TCCTLUTForm::getMeasureCondition(
 	int highstep = this->ComboBox_HighStep->Text.ToInt();
 	condition =
 	    bptr < MeasureCondition >
-	    (new MeasureCondition(lowstart, lowend, lowstep, highstart, highend, highstep));
+	    (new
+	     MeasureCondition(lowstart, lowend, lowstep, highstart, highend, highstep, maxValue));
     } else {
 	int start = this->Edit_StartLevel->Text.ToInt();
 	int end = this->Edit_EndLevel->Text.ToInt();
@@ -357,7 +364,8 @@ bptr < cms::lcd::calibrate::MeasureCondition > TCCTLUTForm::getMeasureCondition(
 	    firstStep = step;
 	}
 
-	condition = bptr < MeasureCondition > (new MeasureCondition(start, end, firstStep, step));
+	condition =
+	    bptr < MeasureCondition > (new MeasureCondition(start, end, firstStep, step, maxValue));
     }
     return condition;
 

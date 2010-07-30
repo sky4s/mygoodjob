@@ -30,13 +30,10 @@ namespace cms {
 	// DGLutFile
 	//======================================================================
 	string_vector_ptr DGLutFile::makeValues(int n, Component_ptr c) {
-	    return
-		makeValues(n, c, RGB_ptr((RGBColor *) null),
-			   RGB_ptr((RGBColor *) null));
+	    return makeValues(n, c, RGB_ptr((RGBColor *) null), RGB_ptr((RGBColor *) null));
 	};
 	string_vector_ptr DGLutFile::
-	    makeValues(int n, Component_ptr c, RGB_ptr rgbGamma,
-		       RGB_ptr rgbGammaFix) {
+	    makeValues(int n, Component_ptr c, RGB_ptr rgbGamma, RGB_ptr rgbGammaFix) {
 	    string_vector_ptr values(new string_vector(13));
 	     (*values)[0] = _toString(n);
 	    xyY_ptr xyY(new CIExyY(c->XYZ));
@@ -62,14 +59,11 @@ namespace cms {
 	    return values;
 	};
       DGLutFile::DGLutFile(const std::string & filename, Mode mode):ExcelAccessBase(filename,
-			mode)
-	{
-	    initSheet(GammaTable, 4, "Gray Level", "Gamma R", "Gamma G",
-		      "Gamma B");
+			mode) {
+	    initSheet(GammaTable, 4, "Gray Level", "Gamma R", "Gamma G", "Gamma B");
 	    initSheet(RawData, 13, "Gray Level", "W_x", "W_y",
 		      "W_Y (nit)", "W_R", "W_G", "W_B", "RP", "GP", "BP",
-		      "RP_Intensity_Fix", "GP_Intensity_Fix",
-		      "BP_Intensity_Fix");
+		      "RP_Intensity_Fix", "GP_Intensity_Fix", "BP_Intensity_Fix");
 	    initPropertySheet();
 	};
 
@@ -77,18 +71,14 @@ namespace cms {
 	const string & DGLutFile::RawData = "Raw_Data";
 
 	void DGLutFile::setRawData(Component_vector_ptr componentVector,
-				   RGBGamma_ptr initialRGBGamma,
-				   RGBGamma_ptr finalRGBGamma) {
+				   RGBGamma_ptr initialRGBGamma, RGBGamma_ptr finalRGBGamma) {
 	    //==================================================================
 	    // 檢查來源資料
 	    //==================================================================
 	    //int componentSize = componentVector->size();
 	    if (null != initialRGBGamma && null != finalRGBGamma
-		&& initialRGBGamma->r->size() !=
-		finalRGBGamma->r->size()) {
-		throw
-		    IllegalArgumentException
-		    ("initialRGBGamma->size() != finalRGBGamma->size()");
+		&& initialRGBGamma->r->size() != finalRGBGamma->r->size()) {
+		throw IllegalArgumentException("initialRGBGamma->size() != finalRGBGamma->size()");
 	    };
 
 	    //==================================================================
@@ -96,9 +86,7 @@ namespace cms {
 	    // 初始資料設定
 	    //==================================================================
 	    int part1Size = componentVector->size();
-	    int part2Size =
-		null !=
-		initialRGBGamma ? initialRGBGamma->r->size() : part1Size;
+	    int part2Size = null != initialRGBGamma ? initialRGBGamma->r->size() : part1Size;
 	    //db->setTableName(RawData);
 	    //int size = componentVector->size();
 	    //string_vector_ptr headerNames = getHeaderNames(RawData);
@@ -150,8 +138,7 @@ namespace cms {
 
 	    for (int x = part1Size; x != part2Size; x++) {
 		int n = part2Size - 1 - x;
-		StringVector::setContent(values, "-1", 7, 0, 1, 2, 3, 4, 5,
-					 6);
+		StringVector::setContent(values, "-1", 7, 0, 1, 2, 3, 4, 5, 6);
 
 		//gamma 0~100
 		if (null != initialRGBGamma) {
@@ -233,8 +220,7 @@ namespace cms {
 		xyY_ptr xyY(new CIExyY(x, y, Y));
 		XYZ_ptr XYZ(xyY->toXYZ());
 		RGB_ptr gamma(new RGBColor(r, g, b));
-		bptr < Component >
-		    component(new Component(rgb, intensity, XYZ, gamma));
+		bptr < Component > component(new Component(rgb, intensity, XYZ, gamma));
 
 		vector->push_back(component);
 	    };
@@ -290,28 +276,16 @@ namespace cms {
 		dgcode.addProperty("end", mc->end);
 		dgcode.addProperty("step", mc->step);
 		break;
-		case MeasureCondition::Extend:dgcode.
-		    addProperty("high level start", mc->highStart);
+		case MeasureCondition::Extend:dgcode.addProperty("high level start", mc->highStart);
 		dgcode.addProperty("high level end", mc->highEnd);
 		dgcode.addProperty("high level step", mc->highStep);
 		dgcode.addProperty("low level start", mc->lowStart);
 		dgcode.addProperty("low level end", mc->lowEnd);
 		dgcode.addProperty("low level step", mc->lowStep);
 		break;
-		case MeasureCondition::Plain:break;
+		//case MeasureCondition::Plain:break;
 	    }
-	    /*if (mc->normalCondition) {
-	       dgcode.addProperty("start", mc->start);
-	       dgcode.addProperty("end", mc->end);
-	       dgcode.addProperty("step", mc->step);
-	       } else {
-	       dgcode.addProperty("high level start", mc->highStart);
-	       dgcode.addProperty("high level end", mc->highEnd);
-	       dgcode.addProperty("high level step", mc->highStep);
-	       dgcode.addProperty("low level start", mc->lowStart);
-	       dgcode.addProperty("low level end", mc->lowEnd);
-	       dgcode.addProperty("low level step", mc->lowStep);
-	       } *///==================================================================// low level correct//==================================================================
+	    //==================================================================// low level correct//==================================================================
 		string correctstr;
 	    switch (c->correct) {
 	    case Correct::P1P2:
@@ -335,19 +309,15 @@ namespace cms {
 
 	    dgcode.addProperty("New Method", c->newMethod ? On : Off);
 	    bptr < BitDepthProcessor > bitDepth = c->bitDepth;
-	    dgcode.addProperty("in",
-			       *bitDepth->getInputMaxValue().toString());
-	    dgcode.addProperty("lut",
-			       *bitDepth->getLutMaxValue().toString());
-	    dgcode.addProperty("out",
-			       *bitDepth->getOutputMaxValue().toString());
+	    dgcode.addProperty("in", *bitDepth->getInputMaxValue().toString());
+	    dgcode.addProperty("lut", *bitDepth->getLutMaxValue().toString());
+	    dgcode.addProperty("out", *bitDepth->getOutputMaxValue().toString());
 	    dgcode.addProperty("gamma", c->gamma);
 	    dgcode.addProperty("gamma curve", c->useGammaCurve ? On : Off);
 	    dgcode.addProperty("g bypass", c->gByPass ? On : Off);
 	    dgcode.addProperty("b gain", c->bIntensityGain);
 	    dgcode.addProperty("b max", c->bMax ? On : Off);
-	    dgcode.addProperty("avoid FRC noise",
-			       c->avoidFRCNoise ? On : Off);
+	    dgcode.addProperty("avoid FRC noise", c->avoidFRCNoise ? On : Off);
 	    //==================================================================
 	    // KeepMaxLuminance
 	    //==================================================================
@@ -367,37 +337,27 @@ namespace cms {
 		break;
 	    }
 	    dgcode.addProperty("keep max luminance", keepstr);
-	    if (c->keepMaxLuminance ==
-		KeepMaxLuminance::NativeWhiteAdvanced) {
-		dgcode.addProperty("keep max lumi adv over",
-				   c->keepMaxLumiOver);
-		dgcode.addProperty("keep max lumi adv gamma",
-				   c->keepMaxLumiGamma);
+	    if (c->keepMaxLuminance == KeepMaxLuminance::NativeWhiteAdvanced) {
+		dgcode.addProperty("keep max lumi adv over", c->keepMaxLumiOver);
+		dgcode.addProperty("keep max lumi adv gamma", c->keepMaxLumiGamma);
 	    }
 	    //==================================================================
 
 	    //==================================================================
 	    // target color
 	    //==================================================================
-	    bptr < IntensityAnalyzerIF > analyzer =
-		c->fetcher->getAnalyzer();
+	    bptr < IntensityAnalyzerIF > analyzer = c->fetcher->getAnalyzer();
 	    if (null != analyzer) {
 		//紀錄ref color
 		xyY_ptr refWhitexyY = analyzer->getReferenceColor();
 		if (null != refWhitexyY) {
-		    xyY_ptr refRxyY =
-			analyzer->getPrimaryColor(Channel::R);
-		    xyY_ptr refGxyY =
-			analyzer->getPrimaryColor(Channel::G);
-		    xyY_ptr refBxyY =
-			analyzer->getPrimaryColor(Channel::B);
-		    dgcode.addProperty("reference white",
-				       *refWhitexyY->toString());
-		    string_ptr comment =
-			analyzer->getReferenceColorComment();
+		    xyY_ptr refRxyY = analyzer->getPrimaryColor(Channel::R);
+		    xyY_ptr refGxyY = analyzer->getPrimaryColor(Channel::G);
+		    xyY_ptr refBxyY = analyzer->getPrimaryColor(Channel::B);
+		    dgcode.addProperty("reference white", *refWhitexyY->toString());
+		    string_ptr comment = analyzer->getReferenceColorComment();
 		    if (null != comment) {
-			dgcode.addProperty("reference white comment",
-					   *comment);
+			dgcode.addProperty("reference white comment", *comment);
 		    }
 		    dgcode.addProperty("primary R", *refRxyY->toString());
 		    dgcode.addProperty("primary G", *refGxyY->toString());
@@ -406,21 +366,16 @@ namespace cms {
 		//紀錄target white用的rgb
 		RGB_ptr refRGB = analyzer->getReferenceRGB();
 		if (null != refRGB) {
-		    dgcode.addProperty("reference white RGB",
-				       *refRGB->toString());
+		    dgcode.addProperty("reference white RGB", *refRGB->toString());
 		}
 	    }
 	    //==================================================================
 	};
-	void DGLutProperty::addProperty(const std::
-					string key, string_ptr value) {
+	void DGLutProperty::addProperty(const std::string key, string_ptr value) {
 	    propertyMap.insert(make_pair(key, value));
 	};
-	void DGLutProperty::addProperty(const std::
-					string key,
-					const std::string value) {
-	    propertyMap.
-		insert(make_pair(key, string_ptr(new string(value))));
+	void DGLutProperty::addProperty(const std::string key, const std::string value) {
+	    propertyMap.insert(make_pair(key, string_ptr(new string(value))));
 	};
       DGLutProperty::DGLutProperty(cms::lcd::calibrate::LCDCalibrator * c):c(c),
 	    d(bptr < DGLutFile >
@@ -451,15 +406,12 @@ namespace cms {
 		return false;
 	    }
 	};
-      DGLutProperty::DGLutProperty(bptr < DGLutFile > d):c((LCDCalibrator *) null),
-	    d(d)
-	{
+      DGLutProperty::DGLutProperty(bptr < DGLutFile > d):c((LCDCalibrator *) null), d(d) {
 	    if (false == initProperty(d)) {
 		throw IllegalStateException("init Property failed.");
 	    }
 	};
-      DGLutProperty::DGLutProperty(DGLutFile * d):c((LCDCalibrator *) null),
-	    d2(d) {
+      DGLutProperty::DGLutProperty(DGLutFile * d):c((LCDCalibrator *) null), d2(d) {
 	    if (false == initProperty(d)) {
 		throw IllegalStateException("init Property failed.");
 	    }
@@ -483,13 +435,10 @@ namespace cms {
 		value = getProperty("reference white");
 		break;
 	    default:
-		throw
-		    IllegalArgumentException("Unsupported Channel: " +
-					     *ch.toString());
+		throw IllegalArgumentException("Unsupported Channel: " + *ch.toString());
 	    }
 	    if (null != value) {
-		xyY_ptr xyY(new
-			    CIExyY(CIExyY::getValuesFromString(value)));
+		xyY_ptr xyY(new CIExyY(CIExyY::getValuesFromString(value)));
 		return xyY;
 	    } else {
 		return xyY_ptr((CIExyY *) null);

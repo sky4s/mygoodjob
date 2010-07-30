@@ -117,6 +117,7 @@ namespace i2c {
     };
 
     bptr < ByteBuffer > TCONControl::getDGLut10BitByteBuffer(RGB_vector_ptr rgbVector) {
+	/* TODO : getDGLut10BitByteBuffer */
     };
     bptr < ByteBuffer > TCONControl::getDGLut12BitByteBuffer(RGB_vector_ptr rgbVector) {
 	int size = rgbVector->size();

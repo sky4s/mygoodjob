@@ -59,6 +59,7 @@ void TI2CTestForm::setOptionsEditable(bool editable)
 void __fastcall TI2CTestForm::Button1Click(TObject * Sender)
 {
     using namespace i2c;
+    using namespace Dep;
     bptr < i2cControl > i2c1st;
     bptr < i2cControl > i2c2nd;
     unsigned char first, second;
@@ -96,17 +97,33 @@ void __fastcall TI2CTestForm::Button1Click(TObject * Sender)
 	if (true == connect) {
 	    setOptionsEditable(false);
 
+	    int dgEnableAddress = StrToInt("0x" + MainForm->Edit_DGEnableAddress->Text);
+	    int dgEnableBit = MainForm->Edit_DGEnableBit->Text.ToInt();
+	    int dgLUTAddress = StrToInt("0x" + MainForm->Edit_DGLUTAddress->Text);
+	    int dgLUTType = MainForm->ComboBox_DGLUTType->Text.ToInt();
+
 	    int gammaTestAddress = StrToInt("0x" + this->Edit_GammaTestAddress->Text);
 	    int gammaTestBit = StrToInt(this->Edit_GammaTestBit->Text);
 	    int testRGBAddress = StrToInt("0x" + this->Edit_TestRGBAdress->Text);
 	    bool indepRGB = CheckBox_IndepRGB->Checked;
+	    const TestRGBBit & testRGBBit =
+		indepRGB ? TestRGBBit::IndependentInstance : TestRGBBit::DependentInstance;
 
-	    parameter = bptr < TCONParameter > (new
-						TCONParameter
-						(gammaTestAddress,
-						 gammaTestBit,
-						 testRGBAddress, indepRGB,
-						 MainForm->bitDepth->getLutMaxValue()));
+	    /*parameter = bptr < TCONParameter > (new
+	       TCONParameter
+	       (gammaTestAddress,
+	       gammaTestBit,
+	       testRGBAddress, indepRGB,
+	       MainForm->bitDepth->getLutMaxValue())); */
+
+	    parameter =
+		bptr < TCONParameter >
+		(new
+		 TCONParameter(dgLUTType == 10 ? MaxValue::Int10Bit : MaxValue::Int12Bit,
+			       dgLUTAddress, dgEnableAddress, dgEnableBit, gammaTestAddress,
+			       gammaTestBit, testRGBAddress, testRGBBit));
+
+
 	    if (!dual) {
 		control = bptr < TCONControl > (new TCONControl(parameter, i2c1st));
 	    } else {
@@ -222,6 +239,15 @@ void __fastcall TI2CTestForm::FormDeactivate(TObject * Sender)
 
     MainForm->ComboBox_GammaTestType->ItemIndex = this->CheckBox_IndepRGB->Checked ? 0 : 1;
     MainForm->ComboBox_GammaTestTypeChange(this);
+}
+
+//---------------------------------------------------------------------------
+
+
+void __fastcall TI2CTestForm::CheckBox_DGClick(TObject * Sender)
+{
+    bool enable = this->CheckBox_DG->Checked;
+    control->setDG(enable);
 }
 
 //---------------------------------------------------------------------------

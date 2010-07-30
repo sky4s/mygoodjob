@@ -43,15 +43,13 @@ namespace cms {
 	    class Meter:public jObject {
 	      public:
 		int getSuggestedWaitTimes();
-		void setLogoFileHeader(cms::colorformat::logo::
-				       LogoFile & logo);
+		void setLogoFileHeader(cms::colorformat::logo:: LogoFile & logo);
 
 		virtual void close() = 0;
 		virtual bool isConnected() = 0;
 		virtual void calibrate() = 0;
 		virtual string_ptr getCalibrationDescription() = 0;
-		virtual void setPatchIntensity(PatchIntensity
-					       patchIntensity) = 0;
+		virtual void setPatchIntensity(PatchIntensity patchIntensity) = 0;
 		virtual double_array triggerMeasurementInXYZ() = 0;
 		virtual string_ptr getLastCalibration() = 0;
 		virtual string_ptr getCalibrationCount() = 0;
@@ -90,8 +88,7 @@ namespace cms {
 		int index;
 		Component_ptr c;
 	      public:
-		 DGLutFileMeter(bptr < cms::colorformat::DGLutFile >
-				dglut);
+		 DGLutFileMeter(bptr < cms::colorformat::DGLutFile > dglut);
 		void close();
 		bool isConnected();
 		void calibrate();

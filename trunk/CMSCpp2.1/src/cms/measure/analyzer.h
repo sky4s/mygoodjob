@@ -126,7 +126,7 @@ namespace cms {
 	/*
 	   無效!退費!
 	 */
-	class AdvancedMaxMatrixIntensityAnayzer:public
+	/*class AdvancedMaxMatrixIntensityAnayzer:public
 	    MaxMatrixIntensityAnayzer {
 	  protected:
 	    XYZ_ptr targetWhite;
@@ -136,7 +136,7 @@ namespace cms {
 	    void setupTarget(XYZ_ptr targetXYZ);
 	    RGB_ptr getIntensity(XYZ_ptr XYZ);
 	    void enter();
-	};
+	};*/
 
 	/*
 	   用來合併CA-210與MaxMatrix兩種方法來分析Intensity

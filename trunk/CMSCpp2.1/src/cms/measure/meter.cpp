@@ -21,8 +21,7 @@ namespace cms {
 	    //==================================================================
 	    // Instr
 	    //==================================================================
-	     Instr::Instr(double width, double length):widthInch(width),
-		lengthInch(length) {
+	     Instr::Instr(double width, double length):widthInch(width), lengthInch(length) {
 	    };
 
 	    const Instr Instr::i1Display2(2.5, 3.3);
@@ -38,8 +37,7 @@ namespace cms {
 	    //==================================================================
 	    // Meter
 	    //==================================================================
-	    void Meter::setLogoFileHeader(cms::colorformat::logo::
-					  LogoFile & logo) {
+	    void Meter::setLogoFileHeader(cms::colorformat::logo:: LogoFile & logo) {
 	    };
 	    int Meter::getSuggestedWaitTimes() {
 		return 300;
@@ -62,9 +60,7 @@ namespace cms {
 
 	    shared_ptr < string > CA210::getCalibrationDescription() {
 		return shared_ptr < string >
-		    (new
-		     string
-		     ("Set the pointing ring to the 0-CAL position."));
+		    (new string("Set the pointing ring to the 0-CAL position."));
 	    };
 
 	    void CA210::setPatchIntensity(PatchIntensity patchIntensity) {
@@ -115,8 +111,7 @@ namespace cms {
 	    };
 	    bptr < ca210api::CA210API > CA210::CA210API_;
 	    void CA210::initCA210API() {
-		CA210API_ =
-		    bptr < ca210api::CA210API > (new ca210api::CA210API());
+		CA210API_ = bptr < ca210api::CA210API > (new ca210api::CA210API());
 	    };
 	    CA210::CA210() {
 		if (null == CA210API_) {
@@ -137,18 +132,14 @@ namespace cms {
 		index = 0;
 	    };
 	    string_ptr DGLutFileMeter::getCalibrationDescription() {
-		return shared_ptr < string >
-		    (new string("Calibration needless."));
+		return shared_ptr < string > (new string("Calibration needless."));
 	    };
-	    void DGLutFileMeter::
-		setPatchIntensity(PatchIntensity patchIntensity) {
+	    void DGLutFileMeter:: setPatchIntensity(PatchIntensity patchIntensity) {
 	    };
 	    double_array DGLutFileMeter::triggerMeasurementInXYZ() {
 		int size = vector->size();
-		if (index >= vector->size()) {
-		    throw java::lang::
-			IndexOutOfBoundsException
-			("index >= vector->size()");
+		if (index >= size) {
+		    throw java::lang::IndexOutOfBoundsException("index >= size");
 		}
 
 		c = (*vector)[index];

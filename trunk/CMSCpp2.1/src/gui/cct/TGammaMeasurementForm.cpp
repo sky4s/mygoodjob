@@ -22,11 +22,11 @@ TGammaMeasurementForm *GammaMeasurementForm;
 __fastcall TGammaMeasurementForm::TGammaMeasurementForm(TComponent * Owner)
 :TForm(Owner), mm(MainForm->mm), fetcher(MainForm->getComponentFetcher())
 {
+    run = false;
 }
 
 //---------------------------------------------------------------------------
-void __fastcall TGammaMeasurementForm::Button_MeasureClick(TObject *
-							   Sender)
+void __fastcall TGammaMeasurementForm::Button_MeasureClick(TObject * Sender)
 {
     using namespace std;
     using namespace cms::util;
@@ -53,14 +53,15 @@ void __fastcall TGammaMeasurementForm::Button_MeasureClick(TObject *
     string stlfilename = filename->c_str();
     Util::deleteExist(stlfilename);
 
-    measure(rgbw, getMeasureCondition(), flicker, stlfilename);
-    Util::shellExecute(stlfilename);
+    if (measure(rgbw, getMeasureCondition(), flicker, stlfilename)) {
+	Util::shellExecute(stlfilename);
+    }
 }
 
-bptr < cms::lcd::calibrate::MeasureCondition >
-    TGammaMeasurementForm::getMeasureCondition()
+bptr < cms::lcd::calibrate::MeasureCondition > TGammaMeasurementForm::getMeasureCondition()
 {
     using namespace cms::lcd::calibrate;
+    using namespace Dep;
 
     int start = this->Edit_StartLevel->Text.ToInt();
     int end = this->Edit_EndLevel->Text.ToInt();
@@ -68,19 +69,16 @@ bptr < cms::lcd::calibrate::MeasureCondition >
 
     if (bitDepth->isTCONInput()) {
 	start = bitDepth->getMeasureStart();
-	end = 0;
+	end = bitDepth->getMeasureEnd();
 	step = bitDepth->getMeasureStep();
     }
     bptr < MeasureCondition > condition;
     if (null == dgcodeTable) {
-	condition = bptr < MeasureCondition > (new
-					       MeasureCondition(start, end,
-								step,
-								step));
+	condition =
+	    bptr < MeasureCondition >
+	    (new MeasureCondition(start, end, step, step, bitDepth->getMeasureMaxValue()));
     } else {
-	condition = bptr < MeasureCondition > (new
-					       MeasureCondition
-					       (dgcodeTable));
+	condition = bptr < MeasureCondition > (new MeasureCondition(dgcodeTable));
     }
     return condition;
 };
@@ -88,9 +86,7 @@ bptr < cms::lcd::calibrate::MeasureCondition >
 
 //---------------------------------------------------------------------------
 void TGammaMeasurementForm::setBitDepthProcessor(bptr <
-						 cms::lcd::calibrate::
-						 BitDepthProcessor >
-						 bitDepth)
+						 cms::lcd::calibrate::BitDepthProcessor > bitDepth)
 {
     this->bitDepth = bitDepth;
 }
@@ -108,11 +104,10 @@ void TGammaMeasurementForm::setMeasureInfo()
 };
 
 //---------------------------------------------------------------------------
-void TGammaMeasurementForm::measure(bool_vector_ptr rgbw,
+bool TGammaMeasurementForm::measure(bool_vector_ptr rgbw,
 				    bptr <
 				    cms::lcd::calibrate::MeasureCondition >
-				    measureCondition, bool flicker,
-				    const std::string & filename)
+				    measureCondition, bool flicker, const std::string & filename)
 {
     using namespace Dep;
     using namespace std;
@@ -120,42 +115,47 @@ void TGammaMeasurementForm::measure(bool_vector_ptr rgbw,
     using namespace cms::measure;
     using namespace cms::util;
 
+    RampMeasureFile measureFile(filename, Create);
     Patch_vector_ptr vectors[3];
-    bptr < MeasureTool > mt(new MeasureTool(mm));
+    mt = bptr < MeasureTool > (new MeasureTool(mm));
     MeasureWindow->addWindowListener(mt);
+    Component_vector_ptr componentVector;
 
-    Component_vector_ptr componentVector =
-	(true == (*rgbw)[3]) ?
-	(flicker ? mt->flickerMeasure(measureCondition) : fetcher->
-	 fetchComponent(measureCondition)) : nil_Component_vector_ptr;
-    if (true == (*rgbw)[3] && null == componentVector) {
-	//代表被阻斷量測
-	return;
-    }
+    run = true;
+    try {
+	componentVector =
+	    (true == (*rgbw)[3]) ?
+	    (flicker ? mt->flickerMeasure(measureCondition) : fetcher->
+	     fetchComponent(measureCondition)) : nil_Component_vector_ptr;
+	if (true == (*rgbw)[3] && null == componentVector) {
+	    //代表被阻斷量測
+	    return false;
+	}
 
-
-
-    foreach(const Channel & ch, *Channel::RGBChannel) {
-	int index = ch.getArrayIndex();
-	if (true == (*rgbw)[index]) {
-	    vectors[index] = mt->rampMeasure(ch, measureCondition);
-	    if (null == vectors[index]) {
-		return;
+	foreach(const Channel & ch, *Channel::RGBChannel) {
+	    int index = ch.getArrayIndex();
+	    if (true == (*rgbw)[index]) {
+		vectors[index] = mt->rampMeasure(ch, measureCondition);
+		if (null == vectors[index]) {
+		    return false;
+		}
+	    } else {
+		vectors[index] = nil_Patch_vector_ptr;
 	    }
-	} else {
-	    vectors[index] = nil_Patch_vector_ptr;
 	}
     }
+    __finally {
+	run = false;
+    }
 
-    RampMeasureFile measureFile(filename, Create);
-    measureFile.setMeasureData(componentVector, vectors[0], vectors[1],
-			       vectors[2]);
+    measureFile.setMeasureData(componentVector, vectors[0], vectors[1], vectors[2], false);
+    measureFile.setMeasureData(componentVector, vectors[0], vectors[1], vectors[2], true);
+    return true;
 };
 
 //---------------------------------------------------------------------------
 void TGammaMeasurementForm::tconMeasure(bool_vector_ptr rgbw, int start,
-					int end, int step,
-					const std::string & filename)
+					int end, int step, const std::string & filename)
 {
     using namespace Dep;
     Channel_vector_ptr channels = Channel::RGBWChannel;
@@ -166,7 +166,6 @@ void TGammaMeasurementForm::tconMeasure(bool_vector_ptr rgbw, int start,
 
 void __fastcall TGammaMeasurementForm::FormShow(TObject * Sender)
 {
-//bitDepth->
     bool tconInput = bitDepth->isTCONInput();
     this->Panel2->Visible = tconInput;
     setMeasureInfo();
@@ -177,8 +176,7 @@ void __fastcall TGammaMeasurementForm::FormShow(TObject * Sender)
 //---------------------------------------------------------------------------
 
 
-void __fastcall TGammaMeasurementForm::
-TOutputFileFrame1Button_BrowseDirClick(TObject * Sender)
+void __fastcall TGammaMeasurementForm::TOutputFileFrame1Button_BrowseDirClick(TObject * Sender)
 {
     TOutputFileFrame1->Button_BrowseDirClick(Sender);
 
@@ -202,18 +200,27 @@ void __fastcall TGammaMeasurementForm::Button2Click(TObject * Sender)
 
 //---------------------------------------------------------------------------
 
-void __fastcall TGammaMeasurementForm::FormKeyPress(TObject * Sender,
-						    char &Key)
+void __fastcall TGammaMeasurementForm::FormKeyPress(TObject * Sender, char &Key)
 {
-    if (Key == 27) {		//esc
-	this->Close();
+    if (27 == Key) {
+	if (true == run) {
+	    ShowMessage("Interrupt!");
+	    if (false == MeasureWindow->Visible) {
+		MainForm->getComponentFetcher()->windowClosing();
+	    }
+	    if (null != mt) {
+		mt->windowClosing();
+	    }
+	    run = false;
+	} else {
+	    this->Close();
+	}
     }
 }
 
 //---------------------------------------------------------------------------
 
-void __fastcall TGammaMeasurementForm::CheckBox_LoadedClick(TObject *
-							    Sender)
+void __fastcall TGammaMeasurementForm::CheckBox_LoadedClick(TObject * Sender)
 {
     if (false == CheckBox_Loaded->Checked) {
 	this->CheckBox_Loaded->Enabled = false;

@@ -286,12 +286,17 @@ void rgbTry()
 
     using namespace Dep;
     using namespace math;
-    RGBColor rgb(RGBColorSpace::unknowRGB,
-		 DoubleArray::toDoubleArray(3, 0.25, 0.5, 0.75), MaxValue::Double255);
+    /*RGBColor rgb(RGBColorSpace::unknowRGB,
+       DoubleArray::toDoubleArray(3, 0.25, 0.5, 0.75), MaxValue::Double255);
+       cout << *rgb.toString() << endl;
+       rgb.changeMaxValue(MaxValue::Int10Bit);
+       cout << *rgb.toString() << endl; */
+    RGBColor rgb;
+    rgb.setValue(Channel::R, .5);
+    double_array d(new double[3]);
+    rgb.getValues(d, MaxValue::Int8Bit);
     cout << *rgb.toString() << endl;
-    //rgb.quantization(MaxValue::Int8Bit);
-    rgb.changeMaxValue(MaxValue::Int10Bit);
-    cout << *rgb.toString() << endl;
+    cout << *DoubleArray::toString(d, 3) << endl;
 };
 void doubleArrayTry()
 {
@@ -435,11 +440,11 @@ void rgbGammaTry()
 void measureConditionTry()
 {
     using namespace cms::lcd::calibrate;
-    MeasureCondition mc(64, 0, 8, 255, 64, 16);
-    int_vector_ptr code = mc.getMeasureCode();
-    foreach(const int &c, *code) {
-	cout << c << endl;
-    }
+    //MeasureCondition mc(64, 0, 8, 255, 64, 16);
+    /*int_vector_ptr code = mc.getMeasureCode();
+       foreach(const int &c, *code) {
+       cout << c << endl;
+       } */
 };
 void vectorTry()
 {
@@ -635,7 +640,8 @@ void hookTester()
 
     DimDGLutGenerator generator(componentVector, analyzer);
 
-    Component_vector_ptr newcomponentVector = generator.fetchComponent(analyzer, componentVector);
+    Component_vector_ptr newcomponentVector =
+	generator.fetchNewComponent(analyzer, componentVector);
     foreach(Component_ptr p, *newcomponentVector) {
 	cout << p->intensity->B << endl;
     }
@@ -650,11 +656,7 @@ void hookTester()
 
 void odTester()
 {
-    double v0 = 11.02;
-    double v1 = 13.59;
-    double v2 = 11.06;
-    //double v = TThreeDMeasurementForm::blackXTalk(v2, v0, v1);
-    //cout << v << endl;
+
 };
 
 void txtTester()
@@ -795,7 +797,7 @@ int main(int argc, char *argv[])
     //double2D_ptr m = inverse();
     //cout << *math::DoubleArray::toString(m) << endl;
 
-    //rgbTry();
+    rgbTry();
     //mathTry();
     //doubleArrayTry();
     //rgbop();

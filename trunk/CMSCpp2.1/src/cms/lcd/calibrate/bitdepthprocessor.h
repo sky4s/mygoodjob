@@ -16,7 +16,7 @@ namespace cms {
 	    class BitDepthProcessor {
 
 		enum BitDepth {
-		    b10_10, b10_8, b8_8, b8_6, b6_6
+		    b10_10, b10_8, b8_8, b8_6, b6_6, Unknow
 		};
 	      private:
 		const Dep::MaxValue * in, *lut, *out;
@@ -53,6 +53,7 @@ namespace cms {
 		void setLUTBit(int lutBit);
 		void setOutBit(int outBit);
 		string_ptr getFRCAbility();
+		const Dep::MaxValue & getMeasureMaxValue();
 
 	    };
 	};

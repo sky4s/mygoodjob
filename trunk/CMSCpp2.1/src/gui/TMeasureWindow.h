@@ -51,7 +51,6 @@ class TMeasureWindow:public TForm {
      bptr < i2c::TCONControl > tconcontrol;
      std::vector < bptr < cms::util::WindowListener > >listenerVector;
      std::vector < bwptr < cms::util::WindowListener > >listenerVector2;
-    //bool hStripePattern;
     Pattern pattern;
      bptr < cms::util::DoubleBufferedCanvas > doubleBuffered;
      bptr < cms::util::DoubleBufferedCanvas > getDoubleBufferedCanvas();
@@ -65,7 +64,6 @@ class TMeasureWindow:public TForm {
     void addWindowListener(bptr < cms::util::WindowListener > listener);
     void setImageFilename(const std::string & filename);
     void setImageOff();
-    //void setHStripePattern(bool enable);
     void setPattern(Pattern pattern);
 
 };

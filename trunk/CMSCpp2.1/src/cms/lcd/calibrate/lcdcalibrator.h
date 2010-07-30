@@ -67,46 +67,51 @@ namespace cms {
 		   ノㄓ癘更秖代兵ン, よ獽暗把计肚患
 		 */
 	    class MeasureCondition {
+		friend class cms::colorformat::DGLutProperty;
 	      private:
-		int_vector_ptr measureCode;
-		RGB_vector_ptr rgbMeasureCode;
+		//int_vector_ptr measureCode;
+		 RGB_vector_ptr rgbMeasureCode;
+		int start;
+		int end;
+		int step;
+		int firstStep;
+
+		int lowStart;
+		int lowEnd;
+		int lowStep;
+		int highStart;
+		int highEnd;
+		int highStep;
+		const Type type;
 	      public:
 		enum Type {
-		    Normal, Extend, Plain, RGB
+		    Normal, Extend
 		};
-		const int start;
-		const int end;
-		const int step;
-		const int firstStep;
-
-		const int lowStart;
-		const int lowEnd;
-		const int lowStep;
-		const int highStart;
-		const int highEnd;
-		const int highStep;
-		//const bool normalCondition;
+		 MeasureCondition(bptr < cms::lcd::calibrate::BitDepthProcessor > bitDepth);
 		 MeasureCondition(const int start, const int end,
-				  const int firstStep, const int step);
-		 MeasureCondition(const int lowStart, const int lowEnd,
-				  const int lowStep, const int highStart,
-				  const int highEnd, const int highStep);
-		 MeasureCondition(int_vector_ptr measureCode);
+				  const int firstStep, const int step,
+				  const Dep::MaxValue & maxValue);
+		 MeasureCondition(const int lowStart, const int lowEnd, const int lowStep,
+				  const int highStart, const int highEnd, const int highStep,
+				  const Dep::MaxValue & maxValue);
 		 MeasureCondition(RGB_vector_ptr rgbMeasureCode);
-		int_vector_ptr getMeasureCode();
 		RGB_vector_ptr getRGBMeasureCode();
-		const Type type;
-		bool isRGBType();
-	      private:
-		 int_vector_ptr getMeasureCode(const int start,
-					       const int end, const int firstStep, const int step);
-		int_vector_ptr getMeasureCode(const int lowStart,
-					      const int lowEnd,
-					      const int lowStep,
-					      const int highStart,
-					      const int highEnd, const int highStep);
-		bool isNoRemainder(int start, int end, int step);
 
+		//bool isRGBType();
+
+	      private:
+		static int_vector_ptr getMeasureCode(const int start,
+						     const int end, const int firstStep,
+						     const int step);
+		static int_vector_ptr getMeasureCode(const int lowStart, const int lowEnd,
+						     const int lowStep, const int highStart,
+						     const int highEnd, const int highStep);
+		static bool isNoRemainder(int start, int end, int step);
+		RGB_vector_ptr getRGBMeasureCode(int_vector_ptr measureCode,
+						 const Dep::Channel & channel);
+		RGB_vector_ptr getRGBMeasureCode(int_vector_ptr measureCode,
+						 const Dep::Channel & channel,
+						 const Dep::MaxValue & maxValue);
 	    };
 
 
@@ -163,7 +168,8 @@ namespace cms {
 							  MeasureCondition > measureCondition);
 		double_vector_ptr fetchLuminanceVector(bptr < MeasureCondition > measureCondition);
 	      public:
-		static double_vector_ptr getGammaCurveVector(double gamma, int n, int effectiven);
+		static double_vector_ptr getGammaCurveVector(double gamma, int n, int
+							     effectiven);
 
 		void setP1P2(int p1, int p2);
 		void setRBInterpolation(int under);

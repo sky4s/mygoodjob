@@ -103,8 +103,10 @@ namespace cms {
 		STORE_RGBVECTOR("MultiGen_0.xls", result);
 
 		for (int t = 0; t < multiGenTimes; t++) {
+		    bptr < MeasureCondition >
+			measureCondition(new MeasureCondition(RGBVector::reverse(result)));
 		    Component_vector_ptr componentVectorPrime =
-			fetcher->fetchComponent(RGBVector::reverse(result));
+			fetcher->fetchComponent(measureCondition);
 
 		    for (int x = size - 1; x != -1; x--) {
 			XYZ_ptr targetXYZ = (*targetXYZVector)[x];
@@ -116,7 +118,7 @@ namespace cms {
 			ma->enter();
 
 			Component_vector_ptr newcomponentVector =
-			    fetchComponent(ma, componentVectorPrime);
+			    fetchNewComponent(ma, componentVectorPrime);
 			DGLutGenerator lutgen(newcomponentVector);
 			//B±Ä100¶Ü?
 			if (bTargetIntensity == -1) {
@@ -154,7 +156,8 @@ namespace cms {
 		    ma->setupComponent(Channel::W, targetXYZ);
 		    ma->enter();
 
-		    Component_vector_ptr newcomponentVector = fetchComponent(ma, componentVector);
+		    Component_vector_ptr newcomponentVector =
+			fetchNewComponent(ma, componentVector);
 
 #ifdef DEBUG_CCTLUT_NEWMETHOD
 		    STORE_COMPONENT(_toString(x) + ".xls", newcomponentVector);
@@ -209,7 +212,7 @@ namespace cms {
 		mmia->setupComponent(Channel::W, targetXYZ);
 		mmia->enter();
 
-		Component_vector_ptr newcomponentVector = fetchComponent(mmia, componentVector);
+		Component_vector_ptr newcomponentVector = fetchNewComponent(mmia, componentVector);
 
 		return isDuplicateBlue100(newcomponentVector);
 	    };
@@ -499,6 +502,7 @@ namespace cms {
 	    XYZ_vector_ptr DimTargetGenerator::
 		getGammaTarget(XYZ_ptr startXYZ, XYZ_ptr endXYZ,
 			       double_vector_ptr luminanceGammaCurve, double gamma) {
+		/* TODO : getGammaTarget */
 	    };
 	    //==================================================================
 	};

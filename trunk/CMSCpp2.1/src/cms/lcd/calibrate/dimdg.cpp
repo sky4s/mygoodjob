@@ -19,7 +19,7 @@ namespace cms {
 	    /*
 	       將componentVector以analyzer重新計算Component
 	     */
-	    Component_vector_ptr DimDGLutGenerator::fetchComponent(bptr <
+	    Component_vector_ptr DimDGLutGenerator::fetchNewComponent(bptr <
 								   MaxMatrixIntensityAnayzer
 								   >
 								   analyzer,
@@ -105,7 +105,7 @@ namespace cms {
 		    analyzer->enter();
 		    Component_vector_ptr
 			newcomponentVector =
-			fetchComponent(analyzer, componentVector);
+			fetchNewComponent(analyzer, componentVector);
 		    //STORE_COMPONENT(_toString(x++) + ".xls",
 		    //newcomponentVector);
 		    DGLutGenerator lutgen(newcomponentVector);

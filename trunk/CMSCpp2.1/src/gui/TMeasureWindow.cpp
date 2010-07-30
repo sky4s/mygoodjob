@@ -26,8 +26,8 @@ __fastcall TMeasureWindow::TMeasureWindow(TComponent * Owner)
 
     DoubleBuffered = true;
     this->Button1->OnClick = Button1Click;
-    //pattern = Indepedent;
     pattern = Normal;
+    tconinput = false;
 
 }
 
@@ -71,7 +71,7 @@ void TMeasureWindow::setRGB(int r, int g, int b)
 	    throw java::lang::UnsupportedOperationException("");
 	}
     } else {
-	int color = (b << 16) + (g << 8) + r;
+	TColor color = (TColor) ((b << 16) + (g << 8) + r);
 	switch (pattern) {
 	case HStripe:{
 		bptr < DoubleBufferedCanvas > doubleBuffered = getDoubleBufferedCanvas();
@@ -81,7 +81,7 @@ void TMeasureWindow::setRGB(int r, int g, int b)
 		for (int y = 0; y < h; y++) {
 		    canvas->PenPos = TPoint(0, y);
 		    if (y % 2 == 0) {
-			canvas->Pen->Color = (TColor) color;
+			canvas->Pen->Color = color;
 		    } else {
 			canvas->Pen->Color = clBlack;
 		    }
@@ -97,17 +97,17 @@ void TMeasureWindow::setRGB(int r, int g, int b)
 		int w = this->Width;
 		int h = this->Height;
 		int w2 = w / 2;
-		int gcolor = g << 8;
-		int color1 = (b << 16) + r;
+		TColor gcolor = (TColor) (g << 8);
+		TColor color1 = (TColor) ((b << 16) + r);
 
 		for (int x = 0; x < w2; x++) {
 		    int start = x * 2;
-		    canvas->Pen->Color = (TColor) color1;
+		    canvas->Pen->Color = color1;
 		    canvas->PenPos = TPoint(start, 0);
 		    canvas->LineTo(start, h);
 
 		    start += 1;
-		    canvas->Pen->Color = (TColor) gcolor;
+		    canvas->Pen->Color = gcolor;
 		    canvas->PenPos = TPoint(start, 0);
 		    canvas->LineTo(start, h);
 		}
@@ -130,23 +130,23 @@ void TMeasureWindow::setRGB(int r, int g, int b)
 		int w = this->Width;
 		int h = this->Height;
 		int w4 = w / 4;
-		int rcolor = r;
-		int gcolor = g << 8;
-		int bcolor = (b << 16);
+		TColor rcolor = (TColor) (r);
+		TColor gcolor = (TColor) (g << 8);
+		TColor bcolor = (TColor) ((b << 16));
 
 		for (int x = 0; x < w4; x++) {
 		    int start = x * 4;
-		    canvas->Pen->Color = (TColor) rcolor;
+		    canvas->Pen->Color = rcolor;
 		    canvas->PenPos = TPoint(start, 0);
 		    canvas->LineTo(start, h);
 
 		    start += 1;
-		    canvas->Pen->Color = (TColor) gcolor;
+		    canvas->Pen->Color = gcolor;
 		    canvas->PenPos = TPoint(start, 0);
 		    canvas->LineTo(start, h);
 
 		    start += 1;
-		    canvas->Pen->Color = (TColor) bcolor;
+		    canvas->Pen->Color = bcolor;
 		    canvas->PenPos = TPoint(start, 0);
 		    canvas->LineTo(start, h);
 		}
@@ -160,7 +160,7 @@ void TMeasureWindow::setRGB(int r, int g, int b)
 	    }
 	    break;
 	case Normal:
-	    this->Color = (TColor) color;
+	    this->Color = color;
 	    break;
 	case FlickrPixel:
 	    {
@@ -197,9 +197,9 @@ void TMeasureWindow::setRGB(int r, int g, int b)
 		int w = this->Width;
 		int h = this->Height;
 		int w2 = w / 2;
-		int h2 = h / 2;
-		int gcolor = g << 8;
-		int color1 = (b << 16) + r;
+		//int h2 = h / 2;
+		TColor gcolor = (TColor) (g << 8);
+		TColor color1 = (TColor) ((b << 16) + r);
 
 		canvas->Brush->Color = gcolor;
 		canvas->FillRect(TRect(0, 0, w, h));
@@ -220,6 +220,7 @@ void TMeasureWindow::setRGB(bptr < Dep::RGBColor > rgb)
 {
     double_array values(new double[3]);
     using namespace Dep;
+    //bool tconinput = false;
     const MaxValue & maxValue = tconinput ? MaxValue::Int12Bit : MaxValue::Int8Bit;
     rgb->getValues(values, maxValue);
 
