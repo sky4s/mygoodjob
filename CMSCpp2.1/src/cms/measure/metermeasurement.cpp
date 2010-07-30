@@ -53,21 +53,16 @@ namespace cms {
 	    }
 	};
 
-	Patch_ptr
-	    MeterMeasurement::measure(RGB_ptr rgb,
-				      const string_ptr patchName) {
-	    return measure0(rgb, patchName, nil_string_ptr,
-			    nil_string_ptr, false);
+	Patch_ptr MeterMeasurement::measure(RGB_ptr rgb, const string_ptr patchName) {
+	    return measure0(rgb, patchName, nil_string_ptr, nil_string_ptr, false);
 	};
 
-	Patch_ptr MeterMeasurement::measure(int r, int g, int b,
-					    const string_ptr patchName) {
+	Patch_ptr MeterMeasurement::measure(int r, int g, int b, const string_ptr patchName) {
 	    RGB_ptr rgb(new RGBColor(r, g, b));
 	    return measure(rgb, patchName);
 	};
 
-	Patch_ptr MeterMeasurement::measure(int r, int g, int b,
-					    const string & patchName) {
+	Patch_ptr MeterMeasurement::measure(int r, int g, int b, const string & patchName) {
 	    string_ptr str(new string(patchName));
 	    RGB_ptr rgb(new RGBColor(r, g, b));
 	    return measure(rgb, str);
@@ -99,17 +94,13 @@ namespace cms {
 	void MeterMeasurement::meterClose() {
 
 	};
-	Patch_ptr MeterMeasurement::measureFlicker(RGB_ptr rgb,
-						   const string_ptr
-						   patchName) {
-	    return measure0(rgb, patchName, nil_string_ptr, nil_string_ptr,
-			    true);
+	Patch_ptr MeterMeasurement::measureFlicker(RGB_ptr rgb, const string_ptr patchName) {
+	    return measure0(rgb, patchName, nil_string_ptr, nil_string_ptr, true);
 	};
 	Patch_ptr
 	    MeterMeasurement::measure0(RGB_ptr measureRGB,
 				       string_ptr patchName,
-				       string_ptr titleNote,
-				       string_ptr timeNote, bool flicker) {
+				       string_ptr titleNote, string_ptr timeNote, bool flicker) {
 	    setMeasureWindowsVisible(true);
 	    //量測的顏色, 量測的顏色可能與導具的顏色不同, 所以特別獨立出此變數
 
@@ -130,7 +121,6 @@ namespace cms {
 	    if (!fakeMeasure) {
 		Application->ProcessMessages();
 		measureWindow->setRGB(measureRGB);
-		//measureWindow->
 		Application->ProcessMessages();
 		Sleep(waitTimes);
 	    }
@@ -145,8 +135,7 @@ namespace cms {
 		float flickerValue = -1;
 		CA210 *ca210 = dynamic_cast < CA210 * >(meter.get());
 		if (null != ca210) {
-		    bptr < ca210api::CA210API > ca210api =
-			ca210->getCA210API();
+		    bptr < ca210api::CA210API > ca210api = ca210->getCA210API();
 		    flickerValue = ca210api->triggerFlickerFMA();
 		}
 		result = double_array(new double[3]);
@@ -167,8 +156,7 @@ namespace cms {
 	//======================================================================
 	// MeasureResult
 	//======================================================================
-	void MeasureUtils::
-	    meterCalibrate(MeterMeasurement & meterMeasurement) {
+	void MeasureUtils::meterCalibrate(MeterMeasurement & meterMeasurement) {
 	    shared_ptr < Meter > meter = meterMeasurement.meter;
 	    TMeasureWindow *measureWindow = meterMeasurement.measureWindow;
 	    meterCalibrate(meter, measureWindow);
@@ -211,44 +199,12 @@ namespace cms {
 	};
 	Patch_vector_ptr MeasureTool::rampMeasure(const Dep::
 						  Channel & channel,
-						  int start, int end,
-						  int step) {
-	    using namespace cms::lcd::calibrate;
-	    bptr < MeasureCondition >
-		measureCondition(new
-				 MeasureCondition(start, end, step, step));
-	    return rampMeasure(channel, measureCondition);
-	};
-	Patch_vector_ptr MeasureTool::rampMeasure(const Dep::
-						  Channel & channel,
 						  bptr <
 						  cms::lcd::calibrate::
-						  MeasureCondition >
-						  measureCondition) {
+						  MeasureCondition > measureCondition) {
 
-	    int_vector_ptr measureCode =
-		measureCondition->getMeasureCode();
-	    Patch_vector_ptr vector(new Patch_vector());
-	    foreach(int c, *measureCode) {
-		RGB_ptr rgb(new RGBColor());
-		rgb->setValue(channel, c);
-		Patch_ptr patch = mm->measure(rgb, rgb->toString());
-		vector->push_back(patch);
-		if (true == stop) {
-		    stop = false;
-		    mm->setMeasureWindowsVisible(false);
-		    return nil_Patch_vector_ptr;
-		}
-	    };
-	    mm->setMeasureWindowsVisible(false);
-	    return vector;
-	};
-	Patch_vector_ptr MeasureTool::rampMeasure(const Dep::
-						  Channel & channel,
-						  RGB_vector_ptr
-						  rgbMeasureCode) {
-	    Patch_vector_ptr vector(new Patch_vector());
-	    foreach(RGB_ptr & c, *rgbMeasureCode) {
+	    RGB_vector_ptr trueMeasureCode(new RGB_vector());
+	    foreach(RGB_ptr & c, *measureCondition->getRGBMeasureCode()) {
 		RGB_ptr rgb;
 		if (channel == Channel::W) {
 		    rgb = c;
@@ -256,7 +212,16 @@ namespace cms {
 		    rgb = RGB_ptr(new RGBColor());
 		    rgb->setValue(channel, c->getValue(channel));
 		}
-
+		trueMeasureCode->push_back(rgb);
+	    };
+	    bptr < MeasureCondition > newMeasureCondition(new MeasureCondition(trueMeasureCode));
+	    return rampMeasure(newMeasureCondition);
+	};
+	Patch_vector_ptr MeasureTool::rampMeasure(bptr < cms::lcd::calibrate::MeasureCondition >
+						  measureCondition) {
+	    RGB_vector_ptr rgbMeasureCode = measureCondition->getRGBMeasureCode();
+	    Patch_vector_ptr vector(new Patch_vector());
+	    foreach(RGB_ptr rgb, *rgbMeasureCode) {
 		Patch_ptr patch = mm->measure(rgb, rgb->toString());
 		vector->push_back(patch);
 		if (true == stop) {
@@ -267,27 +232,14 @@ namespace cms {
 	    };
 	    mm->setMeasureWindowsVisible(false);
 	    return vector;
-	}
-
-	Patch_vector_ptr MeasureTool::rampMeasure(RGB_vector_ptr
-						  rgbMeasureCode) {
-	    return rampMeasure(Channel::W, rgbMeasureCode);
-	}
-	Component_vector_ptr MeasureTool::flickerMeasure(bptr <
-							 MeasureCondition >
-							 measureCondition)
-	{
-	    int_vector_ptr measureCode =
-		measureCondition->getMeasureCode();
+	};
+	Component_vector_ptr MeasureTool::flickerMeasure(bptr < MeasureCondition > measureCondition) {
+	    RGB_vector_ptr rgbMeasureCode = measureCondition->getRGBMeasureCode();
 	    Component_vector_ptr vector(new Component_vector());
-	    foreach(int c, *measureCode) {
-		RGB_ptr rgb(new RGBColor());
-		rgb->setValue(Dep::Channel::W, c);
+	    foreach(RGB_ptr rgb, *rgbMeasureCode) {
 		Patch_ptr patch = mm->measureFlicker(rgb, rgb->toString());
 
-		Component_ptr component(new
-					Component(rgb, nil_RGB_ptr,
-						  patch->getXYZ()));
+		Component_ptr component(new Component(rgb, nil_RGB_ptr, patch->getXYZ()));
 		vector->push_back(component);
 		if (true == stop) {
 		    stop = false;
@@ -300,6 +252,38 @@ namespace cms {
 	};
 	void MeasureTool::windowClosing() {
 	    stop = true;
+	}
+	int MeasureTool::getMaxZDGCode(bptr < cms::lcd::calibrate::MeasureCondition >
+				       measureCondition) {
+	    RGB_vector_ptr rgbMeasureCode = measureCondition->getRGBMeasureCode();
+	    //Patch_vector_ptr vector(new Patch_vector());
+	    Patch_ptr prePatch;
+	    XYZ_ptr maxZ;
+	    int maxZDG = -1;
+
+	    foreach(RGB_ptr rgb, *rgbMeasureCode) {
+		Patch_ptr patch = mm->measure(rgb, rgb->toString());
+		if (true == stop) {
+		    stop = false;
+		    mm->setMeasureWindowsVisible(false);
+		    return -1;
+		}
+		XYZ_ptr XYZ = patch->getXYZ();
+		if (null == maxZ) {
+		    maxZ = XYZ;
+		    maxZDG = (int) rgb->getValue(Channel::W);
+		    continue;
+		}
+		if (XYZ->Z > maxZ->Z) {
+		    maxZ = XYZ;
+		    maxZDG = (int) rgb->getValue(Channel::W);
+		} else {
+		    mm->setMeasureWindowsVisible(false);
+		    return maxZDG;
+		}
+	    };
+	    mm->setMeasureWindowsVisible(false);
+	    return -1;
 	}
 	//======================================================================
     };

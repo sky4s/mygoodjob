@@ -20,9 +20,7 @@ namespace cms {
 	  private:
 	    string_vector_ptr makeValues(int n, Component_ptr c);
 	    string_vector_ptr makeValues(int n,
-					 Component_ptr c,
-					 RGB_ptr rgbGamma,
-					 RGB_ptr rgbGammaFix);
+					 Component_ptr c, RGB_ptr rgbGamma, RGB_ptr rgbGammaFix);
 	    static const std::string & GammaTable;
 	    static const std::string & RawData;
 
@@ -35,8 +33,7 @@ namespace cms {
 
 
 	    void setRawData(Component_vector_ptr componentVector,
-			    RGBGamma_ptr initialRGBGamma,
-			    RGBGamma_ptr finalRGBGamma);
+			    RGBGamma_ptr initialRGBGamma, RGBGamma_ptr finalRGBGamma);
 	    void setGammaTable(RGB_vector_ptr dglut);
 	    Component_vector_ptr getComponentVector();
 	    RGB_vector_ptr getGammaTable();
@@ -96,8 +93,7 @@ namespace cms {
 	    void store(DGLutFile & dglut) const;
 	     std::map < const std::string, string_ptr) propertyMap;
 	    void addProperty(const std::string key, string_ptr value);
-	    void addProperty(const std::string key,
-			     const std::string value);
+	    void addProperty(const std::string key, const std::string value);
 	    bool initProperty(bptr < DGLutFile > d);
 	    bool initProperty(DGLutFile * d);
 	  public:

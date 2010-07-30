@@ -391,7 +391,7 @@ namespace cms {
 	//=====================================================================
 	// AdvancedMaxMatrixIntensityAnayzer
 	//=====================================================================
-	AdvancedMaxMatrixIntensityAnayzer::
+	/*AdvancedMaxMatrixIntensityAnayzer::
 	    AdvancedMaxMatrixIntensityAnayzer() {
 	}
 
@@ -455,11 +455,8 @@ namespace cms {
 
 	    this->targetRatio =
 		DoubleArray::times(inverseMatrix, targetWhiteValues);
-	    /*(*targetRatio)[0][0] /= (*xtalkRatio)[0][0];
-	       (*targetRatio)[1][0] /= (*xtalkRatio)[1][0];
-	       (*targetRatio)[2][0] /= (*xtalkRatio)[2][0]; */
 
-	};
+	};*/
 	//=====================================================================
 
 	//=====================================================================

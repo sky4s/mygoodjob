@@ -31,7 +31,7 @@ namespace cms {
 		 Component_vector_ptr componentVector;
 		 bptr < cms::measure::IntensityAnalyzerIF > analyzer;
 	      public:
-		 Component_vector_ptr fetchComponent(bptr <
+		 Component_vector_ptr fetchNewComponent(bptr <
 						     cms::measure::
 						     MaxMatrixIntensityAnayzer
 						     > analyzer,

@@ -16,14 +16,10 @@ namespace cms {
 	class MeterMeasurement;
 	class MeasureUtils {
 	  public:
-	    static void meterCalibrate(MeterMeasurement &
-				       meterMeasurement);
+	    static void meterCalibrate(MeterMeasurement & meterMeasurement);
 
-	    static void meterCalibrate(	/*Component parentComponent, */
-					  boost::shared_ptr <
-					  cms::measure::
-					  meter::Meter > meter,
-					  TMeasureWindow * measureWindow);
+	    static void meterCalibrate(boost::shared_ptr < cms::measure::meter::Meter > meter,
+				       TMeasureWindow * measureWindow);
 	};
 
 	class MeterMeasurement {
@@ -43,8 +39,7 @@ namespace cms {
 	    TMeasureWindow *measureWindow;
 	    void init(bool calibration);
 	  public:
-	     MeterMeasurement(bptr < cms::measure::meter::Meter > meter,
-			      bool calibration);
+	     MeterMeasurement(bptr < cms::measure::meter::Meter > meter, bool calibration);
 
 	    void calibrate();
 
@@ -54,12 +49,9 @@ namespace cms {
 
 	    Patch_ptr measure(RGB_ptr rgb, const string_ptr patchName);
 
-	    Patch_ptr measure(int r, int g, int b,
-			      const string_ptr patchName);
-	    Patch_ptr measure(int r, int g, int b,
-			      const std::string & patchName);
-	    Patch_ptr measureFlicker(RGB_ptr rgb,
-				     const string_ptr patchName);
+	    Patch_ptr measure(int r, int g, int b, const string_ptr patchName);
+	    Patch_ptr measure(int r, int g, int b, const std::string & patchName);
+	    Patch_ptr measureFlicker(RGB_ptr rgb, const string_ptr patchName);
 
 	    void setBlankTimes(int blankTimes);
 	    void setWaitTimes(int waitTimes);
@@ -75,19 +67,16 @@ namespace cms {
 	    Patch_ptr measure0(RGB_ptr
 			       measureRGB,
 			       const string_ptr patchName,
-			       const string_ptr titleNote,
-			       string_ptr timeNote, bool flicker);
+			       const string_ptr titleNote, string_ptr timeNote, bool flicker);
 
 
 
 	};
-	//using namespace std;
 	class MeasureResult {
 	  public:
 	    Patch_vector_ptr result;
 	    int practicalMeasureCount;
-	     MeasureResult(Patch_vector_ptr result,
-			   int practicalMeasureCount);
+	     MeasureResult(Patch_vector_ptr result, int practicalMeasureCount);
 	};
 
 	class MeasureTool:public cms::util::WindowListener {
@@ -97,21 +86,15 @@ namespace cms {
 	  public:
 	    MeasureTool(bptr < cms::measure::MeterMeasurement > mm);
 	    Patch_vector_ptr rampMeasure(const Dep::Channel & channel,
-					 int start, int end, int step);
-	    Patch_vector_ptr rampMeasure(const Dep::Channel & channel,
 					 bptr <
-					 cms::lcd::calibrate::
-					 MeasureCondition >
+					 cms::lcd::calibrate::MeasureCondition > measureCondition);
+	    Patch_vector_ptr rampMeasure(bptr < cms::lcd::calibrate::MeasureCondition >
 					 measureCondition);
-	    Patch_vector_ptr rampMeasure(const Dep::
-					 Channel & channel,
-					 RGB_vector_ptr rgbMeasureCode);
-	    Patch_vector_ptr rampMeasure(RGB_vector_ptr rgbMeasureCode);
 	    Component_vector_ptr flickerMeasure(bptr <
 						cms::lcd::calibrate::
-						MeasureCondition >
-						measureCondition);
+						MeasureCondition > measureCondition);
 	    void windowClosing();
+	    int getMaxZDGCode(bptr < cms::lcd::calibrate::MeasureCondition > measureCondition);
 	};
 
 

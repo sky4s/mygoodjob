@@ -25,9 +25,7 @@ __fastcall TGammaAdjustmentForm::TGammaAdjustmentForm(TComponent * Owner)
 
 //---------------------------------------------------------------------------
 void TGammaAdjustmentForm::setBitDepthProcessor(bptr <
-						cms::lcd::calibrate::
-						BitDepthProcessor >
-						bitDepth)
+						cms::lcd::calibrate::BitDepthProcessor > bitDepth)
 {
     this->bitDepth = bitDepth;
 }
@@ -45,14 +43,11 @@ void __fastcall TGammaAdjustmentForm::FormShow(TObject * Sender)
     this->ComboBox_LevelStep->Text = Util::toString(step).c_str();
 
     const MaxValue & input = bitDepth->getInputMaxValue();
-    bool avoidNoise = (input == MaxValue::Int6Bit
-		       || input == MaxValue::Int8Bit);
+    bool avoidNoise = (input == MaxValue::Int6Bit || input == MaxValue::Int8Bit);
     this->CheckBox_AvoidNoise->Enabled = avoidNoise;
 
     calibrator = bptr < LCDCalibrator > (new
-					 LCDCalibrator(MainForm->
-						       getComponentFetcher
-						       (), bitDepth));
+					 LCDCalibrator(MainForm->getComponentFetcher(), bitDepth));
 }
 
 //---------------------------------------------------------------------------
@@ -80,8 +75,7 @@ void __fastcall TGammaAdjustmentForm::Button3Click(TObject * Sender)
 
 //---------------------------------------------------------------------------
 
-void __fastcall TGammaAdjustmentForm::CheckBox_LoadingGammaClick(TObject *
-								 Sender)
+void __fastcall TGammaAdjustmentForm::CheckBox_LoadingGammaClick(TObject * Sender)
 {
     using namespace cms::util;
     if (false == this->CheckBox_LoadingGamma->Checked) {
@@ -93,16 +87,14 @@ void __fastcall TGammaAdjustmentForm::CheckBox_LoadingGammaClick(TObject *
 //---------------------------------------------------------------------------
 
 
-void __fastcall TGammaAdjustmentForm::Button_GrayGammaClick(TObject *
-							    Sender)
+void __fastcall TGammaAdjustmentForm::Button_GrayGammaClick(TObject * Sender)
 {
     gammaAdjust(false);
 }
 
 //---------------------------------------------------------------------------
 
-void __fastcall TGammaAdjustmentForm::Button_RGBGammaClick(TObject *
-							   Sender)
+void __fastcall TGammaAdjustmentForm::Button_RGBGammaClick(TObject * Sender)
 {
     gammaAdjust(true);
 }
@@ -138,8 +130,7 @@ void TGammaAdjustmentForm::gammaAdjust(bool rgbGammaAdjust)
     if (this->TOutputFileFrame1->createDir() == false) {
 	return;
     }
-    RGB_vector_ptr dglut =
-	calibrator->getGammaDGLut(getMeasureCondition());
+    RGB_vector_ptr dglut = calibrator->getGammaDGLut(getMeasureCondition());
     if (dglut == null) {
 	return;
     }
@@ -151,8 +142,7 @@ void TGammaAdjustmentForm::gammaAdjust(bool rgbGammaAdjust)
 };
 
 
-bptr < cms::lcd::calibrate::MeasureCondition >
-    TGammaAdjustmentForm::getMeasureCondition()
+bptr < cms::lcd::calibrate::MeasureCondition > TGammaAdjustmentForm::getMeasureCondition()
 {
     using namespace cms::lcd::calibrate;
     int start = bitDepth->getMeasureStart();
@@ -160,12 +150,10 @@ bptr < cms::lcd::calibrate::MeasureCondition >
     int step = this->ComboBox_LevelStep->Text.ToInt();
 
     //預設的第一階
-    int firstStep =
-	(bitDepth->getMeasureStep() !=
-	 step) ? step : bitDepth->getMeasureFirstStep();
+    int firstStep = (bitDepth->getMeasureStep() != step) ? step : bitDepth->getMeasureFirstStep();
 
     return bptr < MeasureCondition >
-	(new MeasureCondition(start, end, firstStep, step));
+	(new MeasureCondition(start, end, firstStep, step, bitDepth->getMeasureMaxValue()));
 };
 
 //---------------------------------------------------------------------------

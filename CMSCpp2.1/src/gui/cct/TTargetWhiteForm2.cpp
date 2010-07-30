@@ -24,8 +24,7 @@ __fastcall TTargetWhiteForm2::TTargetWhiteForm2(TComponent * Owner)
 }
 
 //---------------------------------------------------------------------------
-void __fastcall TTargetWhiteForm2::RadioButton_MaxRGBClick(TObject *
-							   Sender)
+void __fastcall TTargetWhiteForm2::RadioButton_MaxRGBClick(TObject * Sender)
 {
     setRGBRatio(255, 255, 255);
 }
@@ -93,8 +92,7 @@ void __fastcall TTargetWhiteForm2::Edit_CTChange(TObject * Sender)
     int ct = ctText.ToInt();
 
     try {
-	bptr < CIExyY > xyY =
-	    CorrelatedColorTemperature::CCT2DIlluminantxyY(ct);
+	bptr < CIExyY > xyY = CorrelatedColorTemperature::CCT2DIlluminantxyY(ct);
 	double_array uvpValues = xyY->getuvPrimeValues();
 	setColorimetricValues(xyY->x, xyY->y, uvpValues[0], uvpValues[1]);
     }
@@ -105,8 +103,7 @@ void __fastcall TTargetWhiteForm2::Edit_CTChange(TObject * Sender)
 
 //---------------------------------------------------------------------------
 
-void TTargetWhiteForm2::setColorimetricValues(double x, double y,
-					      double up, double vp)
+void TTargetWhiteForm2::setColorimetricValues(double x, double y, double up, double vp)
 {
 
     AnsiString xStr = AnsiString().sprintf("%1.4g", x);
@@ -165,9 +162,7 @@ int TTargetWhiteForm2::calculateCCT(double x, double y)
     using cms::CorrelatedColorTemperature;
     using Indep::CIExyY;
     bptr < CIExyY > xyY(new CIExyY(x, y));
-    int cct =
-	static_cast <
-	int >(CorrelatedColorTemperature::xy2CCTByMcCamyFloat(xyY));
+    int cct = static_cast < int >(CorrelatedColorTemperature::xy2CCTByMcCamyFloat(xyY));
     return cct;
 }
 
@@ -210,8 +205,7 @@ void __fastcall TTargetWhiteForm2::Button2Click(TObject * Sender)
     } else if (useRGBRatio) {
 	analyzer->setReferenceColorComment("RGB Ratio");
     } else if (usexy) {
-	string comment =
-	    "Target x,y(" + string(Edit_CT->Text.c_str()) + "k)";
+	string comment = "Target x,y(" + string(Edit_CT->Text.c_str()) + "k)";
 	analyzer->setReferenceColorComment(comment);
 	double targetx = this->Edit_targetx->Text.ToDouble();
 	double targety = this->Edit_targety->Text.ToDouble();
@@ -221,16 +215,14 @@ void __fastcall TTargetWhiteForm2::Button2Click(TObject * Sender)
 	//¤wª¾xy, ¨Drgb
 	if (true == moreAccurate) {
 	    finder =
-		bptr < WhitePointFinder >
-		(new WhitePointFinder(MainForm->mm, bitDepth, maxCount));
+		bptr < WhitePointFinder > (new WhitePointFinder(MainForm->mm, bitDepth, maxCount));
 	    MeasureWindow->addWindowListener(finder);
 	    rgb = finder->findRGB(xyY);
 	} else {
 	    finder =
 		bptr < StocktonWhitePointFinder > (new
 						   StocktonWhitePointFinder
-						   (MainForm->mm, bitDepth,
-						    rgb, maxCount));
+						   (MainForm->mm, bitDepth, rgb, maxCount));
 	    MeasureWindow->addWindowListener(finder);
 	    rgb = finder->findRGB(xyY);
 	}
@@ -365,8 +357,7 @@ void TTargetWhiteForm2::windowClosing()
 void __fastcall TTargetWhiteForm2::FormCreate(TObject * Sender)
 {
     using namespace cms::util;
-    bptr < WindowListener > formPtr(dynamic_cast <
-				    WindowListener * >(this));
+    bptr < WindowListener > formPtr(dynamic_cast < WindowListener * >(this));
     MeasureWindow->addWindowListener(formPtr);
 #ifdef DEBUG_TARGETWHITE
     this->CheckBox_MoreAccurate->Visible = true;
@@ -378,8 +369,7 @@ void __fastcall TTargetWhiteForm2::FormCreate(TObject * Sender)
 //---------------------------------------------------------------------------
 
 void TTargetWhiteForm2::setBitDepthProcessor(bptr <
-					     cms::lcd::calibrate::
-					     BitDepthProcessor > bitDepth)
+					     cms::lcd::calibrate::BitDepthProcessor > bitDepth)
 {
     this->bitDepth = bitDepth;
     double maxCount = bitDepth->getMaxDigitalCount();
@@ -433,8 +423,7 @@ void __fastcall TTargetWhiteForm2::Button1Click(TObject * Sender)
     using namespace Dep;
     bptr < IntensityAnalyzerIF > analyzer = MainForm->getAnalyzer();
     bptr < MaxMatrixIntensityAnayzer >
-	maxmatrix(dynamic_cast <
-		  MaxMatrixIntensityAnayzer * >(analyzer.get()));
+	maxmatrix(dynamic_cast < MaxMatrixIntensityAnayzer * >(analyzer.get()));
 
     double rX = this->Edit_RX->Text.ToDouble();
     double rY = this->Edit_RY->Text.ToDouble();
@@ -467,8 +456,7 @@ void __fastcall TTargetWhiteForm2::Button1Click(TObject * Sender)
 
 //---------------------------------------------------------------------------
 
-void __fastcall TTargetWhiteForm2::FormKeyPress(TObject * Sender,
-						char &Key)
+void __fastcall TTargetWhiteForm2::FormKeyPress(TObject * Sender, char &Key)
 {
     if (Key == 27) {		//esc
 	this->Close();
@@ -491,6 +479,19 @@ void __fastcall TTargetWhiteForm2::Button4Click(TObject * Sender)
     //if (MainForm->isCA210Analyzer()) {
     MainForm->disconnectMeter();
     //}
+}
+
+//---------------------------------------------------------------------------
+
+void __fastcall TTargetWhiteForm2::Button5Click(TObject * Sender)
+{
+    using namespace cms::measure;
+    using namespace cms::lcd::calibrate;
+    bptr < MeasureTool > mt(new MeasureTool(MainForm->mm));
+    MeasureWindow->addWindowListener(mt);
+    bptr < MeasureCondition > measureCondition(new MeasureCondition(bitDepth));
+    int maxZDG = mt->getMaxZDGCode(measureCondition);
+    Edit1->Text = maxZDG;
 }
 
 //---------------------------------------------------------------------------

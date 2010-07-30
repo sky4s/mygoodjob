@@ -51,12 +51,10 @@ class TGammaAdjustmentForm:public TForm {
     RGBGamma_ptr rgbGamma;
      bptr < cms::lcd::calibrate::LCDCalibrator > calibrator;
     void gammaAdjust(bool rgbGammaAdjust);
- bptr < cms::lcd::calibrate::MeasureCondition > getMeasureCondition();    
+     bptr < cms::lcd::calibrate::MeasureCondition > getMeasureCondition();
   public:			// User declarations
      __fastcall TGammaAdjustmentForm(TComponent * Owner);
-    void setBitDepthProcessor(bptr <
-			      cms::lcd::calibrate::BitDepthProcessor >
-			      bitDepth);
+    void setBitDepthProcessor(bptr < cms::lcd::calibrate::BitDepthProcessor > bitDepth);
 };
 //---------------------------------------------------------------------------
 extern PACKAGE TGammaAdjustmentForm *GammaAdjustmentForm;

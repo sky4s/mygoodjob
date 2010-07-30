@@ -79,11 +79,10 @@ void __fastcall TMainForm::FormCreate(TObject * Sender)
     bitDepth = bptr < BitDepthProcessor > (new BitDepthProcessor(8, 10, 8, false));
 
 #ifdef DEBUG_NEWFUNC
-    RadioGroup_Pattern->Visible = true;
+    //RadioGroup_Pattern->Visible = true;
 #endif
-
-    readSetup();
     readTCONSections();
+    readSetup();
     ComboBox_TCONTypeChange(this);
 }
 
@@ -181,6 +180,8 @@ void TMainForm::readSetup()
 	break;
     }
     //=========================================================================
+    int typeIndex = ini->ReadInteger("TCON", "Type", 0);
+    ComboBox_TCONType->ItemIndex = typeIndex;
     /*this->ComboBox_AddressingSize->ItemIndex = ini->ReadInteger("TCON ", "AddressingSize ", 5);
        this->Edit_GammaTestEnableAddress->Text =
        ini->ReadString("TCON ", "GammaTestEnableAddress ", "4 A1 ");
@@ -202,6 +203,9 @@ void TMainForm::writeSetup()
     int tconIndex = this->RadioButton_DualTCON->Checked ? 1 : 0;
     ini->WriteInteger("TCON", "Count", tconIndex);
     //=========================================================================
+    int typeIndex = ComboBox_TCONType->ItemIndex;
+    ini->WriteInteger("TCON", "Type", typeIndex);
+
     /*ini->WriteInteger("TCON ", "AddressingSize ", this->ComboBox_AddressingSize->ItemIndex);
        ini->WriteString("TCON ", "GammaTestEnableAddress ", this->Edit_GammaTestEnableAddress->Text);
        ini->WriteInteger("TCON ", "GammaTestEnableBit ", this->Edit_GammaTestEnableBit->Text.ToInt());
@@ -443,7 +447,6 @@ void __fastcall TMainForm::CCTLUT1Click(TObject * Sender)
 
 void __fastcall TMainForm::GammaAdj1Click(TObject * Sender)
 {
-    //ShowMessage("Sorry! This function is unavailable right now.");
     if (GammaAdjustmentForm == null) {
 	Application->CreateForm(__classid(TGammaAdjustmentForm), &GammaAdjustmentForm);
     }
@@ -528,14 +531,9 @@ void __fastcall TMainForm::Button_ConnectClick(TObject * Sender)
 	    int gammaTestBit = this->Edit_GammaTestEnableBit->Text.ToInt();
 	    int testRGBAddress = StrToInt("0x" + this->Edit_GammaTestAddress->Text);
 	    bool indepRGB = this->ComboBox_GammaTestType->ItemIndex == 0;
-	    TestRGBBit testRGBBit = indepRGB ? TestRGBBit::
+	    const TestRGBBit & testRGBBit = indepRGB ? TestRGBBit::
 		IndependentInstance : TestRGBBit::DependentInstance;
 
-	    /*parameter =
-	       bptr < TCONParameter >
-	       (new
-	       TCONParameter(gammaTestAddress, gammaTestBit, testRGBAddress, indepRGB,
-	       bitDepth->getLutMaxValue())); */
 	    parameter =
 		bptr < TCONParameter >
 		(new
@@ -600,13 +598,6 @@ const i2c::AddressingSize TMainForm::getAddressingSize()
 
 void __fastcall TMainForm::Measurement1Click(TObject * Sender)
 {
-    /*if (bitDepth->isTCONInput()) {
-       ShowMessage
-       ("Sorry! T-CON Input measurement is unavailable right now.");
-       return;
-       } */
-
-
     if (GammaMeasurementForm == null) {
 	Application->CreateForm(__classid(TGammaMeasurementForm), &GammaMeasurementForm);
     }

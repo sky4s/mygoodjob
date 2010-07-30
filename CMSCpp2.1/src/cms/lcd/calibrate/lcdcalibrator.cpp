@@ -221,59 +221,69 @@ namespace cms {
 	    //==================================================================
 
 	    //==================================================================
-	  MeasureCondition::MeasureCondition(const int start, const int end, const int firstStep, const int step):start(start),
-		end(end), firstStep(firstStep), step(step), lowStart(0),
-		lowEnd(0), lowStep(0), highStart(0), highEnd(0), highStep(0), type(Normal) {
-
+	  MeasureCondition::MeasureCondition(bptr < cms::lcd::calibrate::BitDepthProcessor > bitDepth):start(bitDepth->getMeasureStart()),
+		end(bitDepth->getMeasureEnd()), firstStep(bitDepth->getMeasureFirstStep()),
+		step(bitDepth->getMeasureStep()), type(Normal) {
+		this->rgbMeasureCode =
+		    getRGBMeasureCode(getMeasureCode(start, end, firstStep, step), Channel::W,
+				      bitDepth->getMeasureMaxValue());
+	    };
+	  MeasureCondition::MeasureCondition(const int start, const int end, const int firstStep, const int step, const Dep::MaxValue & maxValue):start(start),
+		end(end), firstStep(firstStep), step(step),
+		type(Normal) {
+		this->rgbMeasureCode =
+		    getRGBMeasureCode(getMeasureCode(start, end, firstStep, step), Channel::W,
+				      maxValue);
 	    };
 	    MeasureCondition::MeasureCondition(const int lowStart,
 					       const int lowEnd,
 					       const int lowStep,
 					       const int highStart, const int highEnd, const int
-					       highStep):start(0), end(0),
-		firstStep(0), step(0), lowStart(lowStart), lowEnd(lowEnd),
-		lowStep(lowStep), highStart(highStart), highEnd(highEnd),
+					       highStep,
+					       const Dep::MaxValue & maxValue):lowStart(lowStart),
+		lowEnd(lowEnd), lowStep(lowStep), highStart(highStart), highEnd(highEnd),
 		highStep(highStep), type(Extend) {
+		this->rgbMeasureCode =
+		    getRGBMeasureCode(getMeasureCode
+				      (lowStart, lowEnd, lowStep, highStart, highEnd, highStep),
+				      Channel::W, maxValue);
 	    };
-	  MeasureCondition::MeasureCondition(int_vector_ptr measureCode):start(0), end(0),
-		firstStep(0), step(0), lowStart(0), lowEnd(0), lowStep(0),
-		highStart(0), highEnd(0), highStep(0), type(Plain) {
-		this->measureCode = measureCode;
-	    };
-	  MeasureCondition::MeasureCondition(RGB_vector_ptr rgbMeasureCode):start(0), end(0),
-		firstStep(0), step(0), lowStart(0), lowEnd(0), lowStep(0),
-		highStart(0), highEnd(0), highStep(0), type(RGB) {
+	    /*MeasureCondition::MeasureCondition(int_vector_ptr measureCode):type(Normal) {
+	       this->rgbMeasureCode = getRGBMeasureCode(measureCode, Channel::W);
+	       };
+	       MeasureCondition::MeasureCondition(int_vector_ptr measureCode,
+	       const Dep::Channel & channel):type(Normal) {
+	       this->rgbMeasureCode = getRGBMeasureCode(measureCode, channel);
+	       }; */
+	  MeasureCondition::MeasureCondition(RGB_vector_ptr rgbMeasureCode):type(Normal)
+	    {
+		/*:start(0), end(0),
+		   firstStep(0), step(0), lowStart(0), lowEnd(0), lowStep(0),
+		   highStart(0), highEnd(0), highStep(0), type(RGB) */
 		this->rgbMeasureCode = rgbMeasureCode;
 	    };
-	    int_vector_ptr MeasureCondition::getMeasureCode() {
-		switch (type) {
-		case Normal:
-		    return getMeasureCode(start, end, firstStep, step);
-		case Extend:
-		    return getMeasureCode(lowStart, lowEnd, lowStep, highStart, highEnd, highStep);
-		case Plain:
-		    return measureCode;
-		case RGB:
-		    throw new IllegalStateException();
-		}
-
-		/*if (normalCondition) {
-		   return getMeasureCode(start, end, firstStep, step);
-		   } else {
-		   return getMeasureCode(lowStart, lowEnd, lowStep,
-		   highStart, highEnd, highStep);
+	    /*int_vector_ptr MeasureCondition::getMeasureCode() {
+	       switch (type) {
+	       case Normal:
+	       return getMeasureCode(start, end, firstStep, step);
+	       case Extend:
+	       return getMeasureCode(lowStart, lowEnd, lowStep, highStart, highEnd, highStep);
+	       case Plain:
+	       return measureCode;
+	       case RGB:
+	       throw new IllegalStateException();
+	       }
+	       }; */
+	    RGB_vector_ptr MeasureCondition::getRGBMeasureCode() {
+		//if (isRGBType()) {
+		return rgbMeasureCode;
+		/*} else {
+		   throw new IllegalStateException();
 		   } */
 	    };
-	    RGB_vector_ptr MeasureCondition::getRGBMeasureCode() {
-		if (isRGBType()) {
-		    return rgbMeasureCode;
-		} else {
-		    throw new IllegalStateException();
-		}
-	    };
-	    bool MeasureCondition::isRGBType() {
-		return type == RGB;
-	    };
+	    /*bool MeasureCondition::isRGBType() {
+	       return type == RGB;
+	       }; */
 	    int_vector_ptr MeasureCondition::
 		getMeasureCode(const int start, const int end,
 			       const int firstStep, const int step) {
@@ -320,6 +330,21 @@ namespace cms {
 		bool noremainder = dividend == static_cast < int >(dividend);
 		return noremainder;
 	    }
+	    RGB_vector_ptr MeasureCondition::getRGBMeasureCode(int_vector_ptr measureCode,
+							       const Dep::Channel & channel) {
+		return getRGBMeasureCode(measureCode, channel, MaxValue::Int8Bit);
+	    }
+	    RGB_vector_ptr MeasureCondition::getRGBMeasureCode(int_vector_ptr measureCode,
+							       const Dep::Channel & channel,
+							       const MaxValue & maxValue) {
+		RGB_vector_ptr rgbMeasureCode(new RGB_vector());
+		foreach(int c, *measureCode) {
+		    RGB_ptr rgb(new RGBColor(maxValue));
+		    rgb->setValue(channel, c);
+		    rgbMeasureCode->push_back(rgb);
+		}
+		return rgbMeasureCode;
+	    };
 	    //==================================================================
 
 
@@ -459,10 +484,10 @@ namespace cms {
 		fetchComponentVector(bptr < MeasureCondition > measureCondition) {
 		this->measureCondition = measureCondition;
 		//量測start->end得到的coponent/Y
-		int_vector_ptr measurecode = measureCondition->getMeasureCode();
-		componentVector = fetcher->fetchComponent(measurecode);
+		componentVector = fetcher->fetchComponent(measureCondition);
+		RGB_vector_ptr rgbMeasureCode = measureCondition->getRGBMeasureCode();
 
-		if (componentVector == null || measurecode->size() != componentVector->size()) {
+		if (componentVector == null || rgbMeasureCode->size() != componentVector->size()) {
 		    return Component_vector_ptr((Component_vector *)
 						null);
 		} else {
@@ -474,10 +499,9 @@ namespace cms {
 		fetchLuminanceVector(bptr < MeasureCondition > measureCondition) {
 		this->measureCondition = measureCondition;
 		//量測start->end得到的coponent/Y
-		int_vector_ptr measurecode = measureCondition->getMeasureCode();
-		luminanceVector = fetcher->fetchLuminance(measurecode);
+		luminanceVector = fetcher->fetchLuminance(measureCondition);
 
-		if (luminanceVector == null || measurecode->size() != luminanceVector->size()) {
+		if (luminanceVector == null /*|| measurecode->size() != luminanceVector->size() */ ) {
 		    return double_vector_ptr((double_vector *)
 					     null);
 		} else {
@@ -489,7 +513,7 @@ namespace cms {
 	       CCT + Gamma
 	     */
 	    RGB_vector_ptr LCDCalibrator::getCCTDGLut(bptr < MeasureCondition > measureCondition) {
-
+		this->measureCondition = measureCondition;
 		if (null == gammaCurve) {
 		    throw new IllegalStateException("null == gammaCurve");
 		}
@@ -641,6 +665,7 @@ namespace cms {
 	    };
 
 	    RGB_vector_ptr LCDCalibrator::getGammaDGLut(bptr < MeasureCondition > measureCondition) {
+		this->measureCondition = measureCondition;
 
 		if (false == rgbIndepGamma && null == gammaCurve) {
 		    throw new IllegalStateException("null == gammaCurve");

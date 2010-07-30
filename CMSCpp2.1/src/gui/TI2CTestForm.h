@@ -62,6 +62,7 @@ class TI2CTestForm:public TForm {
     void __fastcall Button_ReadClick(TObject * Sender);
     void __fastcall Button_WriteClick(TObject * Sender);
     void __fastcall FormDeactivate(TObject * Sender);
+    void __fastcall CheckBox_DGClick(TObject * Sender);
   private:			// User declarations
      bptr < i2c::TCONParameter > parameter;
      bptr < i2c::TCONControl > control;

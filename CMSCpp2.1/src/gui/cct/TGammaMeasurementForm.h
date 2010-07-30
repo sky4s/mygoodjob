@@ -47,18 +47,16 @@ class TGammaMeasurementForm:public TForm {
     TCheckBox *CheckBox_FlickerFMA;
     void __fastcall Button_MeasureClick(TObject * Sender);
     void __fastcall FormShow(TObject * Sender);
-    void __fastcall TOutputFileFrame1Button_BrowseDirClick(TObject *
-							   Sender);
+    void __fastcall TOutputFileFrame1Button_BrowseDirClick(TObject * Sender);
     void __fastcall Button2Click(TObject * Sender);
     void __fastcall FormKeyPress(TObject * Sender, char &Key);
     void __fastcall CheckBox_LoadedClick(TObject * Sender);
   private:			// User declarations
      bptr < cms::lcd::calibrate::BitDepthProcessor > bitDepth;
     void setMeasureInfo();
-    void measure(bool_vector_ptr rgbw,
+    bool measure(bool_vector_ptr rgbw,
 		 bptr < cms::lcd::calibrate::MeasureCondition >
-		 measureCondition, bool flicker,
-		 const std::string & filename);
+		 measureCondition, bool flicker, const std::string & filename);
     void tconMeasure(bool_vector_ptr rgbw, int start, int end, int step,
 		     const std::string & filename);
      bptr < cms::measure::MeterMeasurement > mm;
@@ -66,11 +64,11 @@ class TGammaMeasurementForm:public TForm {
     //bptr < cms::measure::IntensityAnalyzerIF > analyzer;
     RGB_vector_ptr dgcodeTable;
      bptr < cms::lcd::calibrate::MeasureCondition > getMeasureCondition();
+    bool run;
+     bptr < cms::measure::MeasureTool > mt;
   public:			// User declarations
      __fastcall TGammaMeasurementForm(TComponent * Owner);
-    void setBitDepthProcessor(bptr <
-			      cms::lcd::calibrate::BitDepthProcessor >
-			      bitDepth);
+    void setBitDepthProcessor(bptr < cms::lcd::calibrate::BitDepthProcessor > bitDepth);
 };
 //---------------------------------------------------------------------------
 extern PACKAGE TGammaMeasurementForm *GammaMeasurementForm;

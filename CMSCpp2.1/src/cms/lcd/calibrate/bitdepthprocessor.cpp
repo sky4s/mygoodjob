@@ -35,7 +35,7 @@ namespace cms {
 		} else {
 		    /*throw
 		       IllegalArgumentException("Unsupported BitDepth."); */
-		    return -1;
+		    return Unknow;
 		}
 	    };
 
@@ -236,6 +236,10 @@ namespace cms {
 		default:
 		    return string_ptr(new string("N/A"));
 		}
+	    };
+	    const Dep::MaxValue & BitDepthProcessor::getMeasureMaxValue() {
+		const MaxValue & maxValue = isTCONInput()? MaxValue::Int12Bit : MaxValue::Int8Bit;
+		return maxValue;
 	    };
 //==================================================================
 	};
