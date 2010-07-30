@@ -199,6 +199,27 @@ void __fastcall TTargetWhiteForm2::Button2Click(TObject * Sender)
     bool useRGBRatio = this->RadioButton_RGBRatio->Checked;
     bool usexy = this->RadioButton_Targetxy->Checked;
     bool moreAccurate = this->CheckBox_MoreAccurate->Checked;
+    bool avoidHookTV = usemaxRGB && this->CheckBox_AvoidHookTV->Checked;
+
+    if (avoidHookTV) {
+	//tv下的avoid hook
+	//1. 量測最大亮度點色度座標
+	//2. 找到反轉點
+	//3. 設定B為反轉點, 且保持不變
+	//4. 找到對應色度的RGB
+
+	/*usemaxRGB = false;
+	   usexy = true;
+	   Patch_ptr patch = MainForm->mm->measure(rgb, nil_string_ptr);
+	   CIExyY xyY(patch->getXYZ());
+	   this->Edit_targetx->Text = xyY.x;
+	   this->Edit_targety->Text = xyY.y; */
+
+	bptr < MeasureTool > mt(new MeasureTool(MainForm->mm));
+	MeasureWindow->addWindowListener(mt);
+	bptr < MeasureCondition > measureCondition(new MeasureCondition(bitDepth));
+	rgb->B = mt->getMaxZDGCode(measureCondition);
+    }
 
     if (usemaxRGB) {
 	analyzer->setReferenceColorComment("Max RGB");
@@ -206,6 +227,12 @@ void __fastcall TTargetWhiteForm2::Button2Click(TObject * Sender)
 	analyzer->setReferenceColorComment("RGB Ratio");
     } else if (usexy) {
 	string comment = "Target x,y(" + string(Edit_CT->Text.c_str()) + "k)";
+	/*if (avoidHookTV) {
+	   comment = "Target x,y(Max RGB) with avoid Hook TV";
+	   } else {
+	   comment = "Target x,y(" + string(Edit_CT->Text.c_str()) + "k)";
+	   } */
+
 	analyzer->setReferenceColorComment(comment);
 	double targetx = this->Edit_targetx->Text.ToDouble();
 	double targety = this->Edit_targety->Text.ToDouble();
@@ -222,7 +249,8 @@ void __fastcall TTargetWhiteForm2::Button2Click(TObject * Sender)
 	    finder =
 		bptr < StocktonWhitePointFinder > (new
 						   StocktonWhitePointFinder
-						   (MainForm->mm, bitDepth, rgb, maxCount));
+						   (MainForm->mm, bitDepth, rgb, maxCount,
+						    avoidHookTV));
 	    MeasureWindow->addWindowListener(finder);
 	    rgb = finder->findRGB(xyY);
 	}
@@ -297,26 +325,44 @@ void __fastcall TTargetWhiteForm2::Button2Click(TObject * Sender)
 	//==========================================================================
 	setRGBRatio(rgb->R, rgb->G, rgb->B);
 	xyY_ptr refWhite = analyzer->getReferenceColor();
-	this->Edit_refLuminance->Text = refWhite->Y;
-	this->Edit_refx->Text = refWhite->x;
-	this->Edit_refy->Text = refWhite->y;
+	String str;
+
+	/*this->Edit_refLuminance->Text = refWhite->Y;
+	   this->Edit_refx->Text = refWhite->x;
+	   this->Edit_refy->Text = refWhite->y; */
+	this->Edit_refLuminance->Text = str.sprintf("%.4f", refWhite->Y);
+	this->Edit_refx->Text = str.sprintf("%.4f", refWhite->x);
+	this->Edit_refy->Text = str.sprintf("%.4f", refWhite->y);
+
 
 	XYZ_ptr rXYZ = analyzer->getPrimaryColor(Channel::R)->toXYZ();
 	XYZ_ptr gXYZ = analyzer->getPrimaryColor(Channel::G)->toXYZ();
 	XYZ_ptr bXYZ = analyzer->getPrimaryColor(Channel::B)->toXYZ();
 	XYZ_ptr wXYZ = refWhite->toXYZ();
-	this->Edit_RX->Text = rXYZ->X;
-	this->Edit_RY->Text = rXYZ->Y;
-	this->Edit_RZ->Text = rXYZ->Z;
-	this->Edit_GX->Text = gXYZ->X;
-	this->Edit_GY->Text = gXYZ->Y;
-	this->Edit_GZ->Text = gXYZ->Z;
-	this->Edit_BX->Text = bXYZ->X;
-	this->Edit_BY->Text = bXYZ->Y;
-	this->Edit_BZ->Text = bXYZ->Z;
-	this->Edit_WX->Text = wXYZ->X;
-	this->Edit_WY->Text = wXYZ->Y;
-	this->Edit_WZ->Text = wXYZ->Z;
+	/*this->Edit_RX->Text = rXYZ->X;
+	   this->Edit_RY->Text = rXYZ->Y;
+	   this->Edit_RZ->Text = rXYZ->Z;
+	   this->Edit_GX->Text = gXYZ->X;
+	   this->Edit_GY->Text = gXYZ->Y;
+	   this->Edit_GZ->Text = gXYZ->Z;
+	   this->Edit_BX->Text = bXYZ->X;
+	   this->Edit_BY->Text = bXYZ->Y;
+	   this->Edit_BZ->Text = bXYZ->Z;
+	   this->Edit_WX->Text = wXYZ->X;
+	   this->Edit_WY->Text = wXYZ->Y;
+	   this->Edit_WZ->Text = wXYZ->Z; */
+	this->Edit_RX->Text = str.sprintf("%.4f", rXYZ->X);
+	this->Edit_RY->Text = str.sprintf("%.4f", rXYZ->Y);
+	this->Edit_RZ->Text = str.sprintf("%.4f", rXYZ->Z);
+	this->Edit_GX->Text = str.sprintf("%.4f", gXYZ->X);
+	this->Edit_GY->Text = str.sprintf("%.4f", gXYZ->Y);
+	this->Edit_GZ->Text = str.sprintf("%.4f", gXYZ->Z);
+	this->Edit_BX->Text = str.sprintf("%.4f", bXYZ->X);
+	this->Edit_BY->Text = str.sprintf("%.4f", bXYZ->Y);
+	this->Edit_BZ->Text = str.sprintf("%.4f", bXYZ->Z);
+	this->Edit_WX->Text = str.sprintf("%.4f", wXYZ->X);
+	this->Edit_WY->Text = str.sprintf("%.4f", wXYZ->Y);
+	this->Edit_WZ->Text = str.sprintf("%.4f", wXYZ->Z);
 	//==========================================================================
     }
     __finally {
@@ -464,7 +510,6 @@ void __fastcall TTargetWhiteForm2::FormKeyPress(TObject * Sender, char &Key)
 }
 
 //---------------------------------------------------------------------------
-
 void __fastcall TTargetWhiteForm2::Button3Click(TObject * Sender)
 {
     //if (MainForm->isCA210Analyzer()) {

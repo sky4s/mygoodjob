@@ -772,6 +772,18 @@ void produceTCONINIFile()
     //=========================================================================
 }
 
+void stringTester()
+{
+    String s = "1234";
+    String s1 = s.sprintf("%0.4f", 123456.1234567);
+    String s2 = s.sprintf("%0.4f", 123456.2234567);
+    String s3 = s.sprintf("%0.4f", 123456.3234567);
+    cout << s << endl;
+    cout << s1 << endl;
+    cout << s2 << endl;
+    cout << s3 << endl;
+}
+
 #pragma argsused
 int main(int argc, char *argv[])
 {
@@ -797,7 +809,7 @@ int main(int argc, char *argv[])
     //double2D_ptr m = inverse();
     //cout << *math::DoubleArray::toString(m) << endl;
 
-    rgbTry();
+    //rgbTry();
     //mathTry();
     //doubleArrayTry();
     //rgbop();
@@ -841,7 +853,8 @@ int main(int argc, char *argv[])
     //excelTester();
     //iniTester();
     //byteTester();
-    produceTCONINIFile();
+    //produceTCONINIFile();
+    stringTester();
 
     //cout << 5 / 4 / 3. << endl;
     //cout << _toString("123") << endl;
