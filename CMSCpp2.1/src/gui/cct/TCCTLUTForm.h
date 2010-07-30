@@ -86,11 +86,12 @@ class TCCTLUTForm:public TForm {
     TEdit *Edit_MaxYAdvOver;
     TEdit *Edit_MaxYAdvGamma;
     TLabel *Label21;
-    TCheckBox *CheckBox_BTargetIntensity;
-    TEdit *Edit_BTargetIntensity;
     TRadioButton *RadioButton_GammaValue;
     TCheckBox *CheckBox_MultiGen;
     TEdit *Edit_MultiGenTimes;
+        TCheckBox *CheckBox_BTargetIntensity;
+        TEdit *Edit_BTargetIntensity;
+        TCheckBox *CheckBox_AvoidHookNB;
     void __fastcall RadioButton_P1P2Click(TObject * Sender);
     void __fastcall Button_MeaRunClick(TObject * Sender);
     void __fastcall FormCreate(TObject * Sender);

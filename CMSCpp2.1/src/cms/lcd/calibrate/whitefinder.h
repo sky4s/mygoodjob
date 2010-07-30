@@ -20,10 +20,8 @@ namespace cms {
 		RGB_ptr findMatchRGB(xyY_ptr xyY, RGB_ptr initRGB);
 		RGB_ptr fixRGB2TouchMax(RGB_ptr rgb);
 
-		 bptr < cms::lcd::calibrate::algo::
-		    ChromaticAroundAlgorithm > aroundAlgo;
-		 bptr < cms::lcd::calibrate::algo::
-		    CIEuv1960NearestAlgorithm > nearAlgo;
+		 bptr < cms::lcd::calibrate::algo::ChromaticAroundAlgorithm > aroundAlgo;
+		 bptr < cms::lcd::calibrate::algo::CIEuv1960NearestAlgorithm > nearAlgo;
 
 		 bptr < cms::lcd::calibrate::BitDepthProcessor > bitDepth;
 
@@ -44,13 +42,14 @@ namespace cms {
 	    class StocktonWhitePointFinder:public WhitePointFinder {
 	      private:
 		RGB_ptr initRGB;
+		bool keepBlue;
 	      public:
-		StocktonWhitePointFinder(bptr <
-					 cms::measure::MeterMeasurement >
-					 mm, bptr <
-					 cms::lcd::calibrate::
-					 BitDepthProcessor > bitDepth,
-					 RGB_ptr initRGB, double maxcode);
+		 StocktonWhitePointFinder(bptr <
+					  cms::measure::MeterMeasurement >
+					  mm, bptr <
+					  cms::lcd::calibrate::
+					  BitDepthProcessor > bitDepth,
+					  RGB_ptr initRGB, double maxcode, bool keepBlue);
 		RGB_ptr findRGB(xyY_ptr targetxyY);
 	    };
 	};

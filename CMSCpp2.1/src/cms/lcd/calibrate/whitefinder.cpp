@@ -30,17 +30,13 @@ namespace cms {
 						double maxcode):mm(mm),
 		stop(false), maxcode(maxcode), bitDepth(bitDepth) {
 		aroundAlgo =
-		    bptr < ChromaticAroundAlgorithm >
-		    (new ChromaticAroundAlgorithm(maxcode));
+		    bptr < ChromaticAroundAlgorithm > (new ChromaticAroundAlgorithm(maxcode));
 		nearAlgo =
 		    bptr < CIEuv1960NearestAlgorithm >
-		    (new
-		     CIEuv1960NearestAlgorithm(XYZ_ptr((CIEXYZ *) null),
-					       mm));
+		    (new CIEuv1960NearestAlgorithm(XYZ_ptr((CIEXYZ *) null), mm));
 	    };
 
-	    RGB_ptr WhitePointFinder::findMatchRGB0(xyY_ptr xyY,
-						    RGB_ptr initRGB) {
+	    RGB_ptr WhitePointFinder::findMatchRGB0(xyY_ptr xyY, RGB_ptr initRGB) {
 		this->mm;
 		RGB_ptr nearestRGB = initRGB;
 		bool findNearest = false;
@@ -48,16 +44,12 @@ namespace cms {
 		double step = bitDepth->getMeasureStep();
 
 		do {
-		    RGB_vector_ptr aroundRGB =
-			aroundAlgo->getAroundRGB(nearestRGB, step);
+		    RGB_vector_ptr aroundRGB = aroundAlgo->getAroundRGB(nearestRGB, step);
 		    XYZ_ptr center = xyY->toXYZ();
-		     bptr < AlgoResult > algoResult =
-			nearAlgo->getNearestRGB(center, aroundRGB);
+		     bptr < AlgoResult > algoResult = nearAlgo->getNearestRGB(center, aroundRGB);
 		    XYZ_vector_ptr aroundXYZ = algoResult->aroundXYZ;
 		     nearestRGB = algoResult->nearestRGB;
-		     findNearest =
-			MeasuredUtils::isFirstNearestXYZInuvPrime(center,
-								  aroundXYZ);
+		     findNearest = MeasuredUtils::isFirstNearestXYZInuvPrime(center, aroundXYZ);
 		    //findNearest = true;
 		    if (true == stop) {
 			stop = false;
@@ -81,8 +73,7 @@ namespace cms {
 	       2. 計算目前xyY與目標值之delta
 	       3.
 	     */
-	    RGB_ptr WhitePointFinder::findMatchRGB(xyY_ptr xyY,
-						   RGB_ptr initRGB) {
+	    RGB_ptr WhitePointFinder::findMatchRGB(xyY_ptr xyY, RGB_ptr initRGB) {
 		aroundAlgo->setMode(White);
 		RGB_ptr result = findMatchRGB0(xyY, initRGB);
 		return result;
@@ -123,16 +114,13 @@ namespace cms {
 	    //==================================================================
 	    //
 	    //==================================================================
-	    StocktonWhitePointFinder::StocktonWhitePointFinder(bptr <
-							       MeterMeasurement
-							       > mm, bptr <
-							       BitDepthProcessor
-							       > bitDepth,
-							       RGB_ptr
-							       initRGB,
-							       double
-							       maxcode):WhitePointFinder
-		(mm, bitDepth, maxcode), initRGB(initRGB) {
+	    StocktonWhitePointFinder::StocktonWhitePointFinder(bptr < MeterMeasurement > mm,
+							       bptr < BitDepthProcessor > bitDepth,
+							       RGB_ptr initRGB, double maxcode,
+							       bool keepBlue):WhitePointFinder(mm,
+											       bitDepth,
+											       maxcode),
+		initRGB(initRGB), keepBlue(keepBlue) {
 
 	    };
 
@@ -150,43 +138,41 @@ namespace cms {
 		//==============================================================
 		// blue的處理(x/y)
 		//==============================================================
-		do {
-		    Patch_ptr patch =
-			mm->measure(findRGB, findRGB->toString());
-		    xyY_ptr measurexyY(new CIExyY(patch->getXYZ()));
-		    delta = measurexyY->getDeltaxy(targetxyY);
+		if (!keepBlue) {
+		    do {
+			Patch_ptr patch = mm->measure(findRGB, findRGB->toString());
+			xyY_ptr measurexyY(new CIExyY(patch->getXYZ()));
+			delta = measurexyY->getDeltaxy(targetxyY);
 
-		    STORE_RGBXY(findRGB, measurexyY);
+			STORE_RGBXY(findRGB, measurexyY);
 
-		    int adjust = 0;
-		    if (Math::abs(delta[0]) > 0.012
-			&& Math::abs(delta[1]) > 0.012) {
-			adjust = 5;
-		    } else if (Math::abs(delta[0]) > 0.003
-			       && Math::abs(delta[1]) > 0.003) {
-			adjust = 3;
-		    } else {
-			adjust = 1;
+			int adjust = 0;
+			if (Math::abs(delta[0]) > 0.012 && Math::abs(delta[1]) > 0.012) {
+			    adjust = 5;
+			} else if (Math::abs(delta[0]) > 0.003 && Math::abs(delta[1]) > 0.003) {
+			    adjust = 3;
+			} else {
+			    adjust = 1;
+			}
+
+			if (delta[0] < 0 || delta[1] < 0) {
+			    findRGB->B -= adjust;
+			}
+
+			if (true == stop) {
+			    stop = false;
+			    return nil_RGB_ptr;
+			}
 		    }
-
-		    if (delta[0] < 0 || delta[1] < 0) {
-			findRGB->B -= adjust;
-		    }
-
-		    if (true == stop) {
-			stop = false;
-			return nil_RGB_ptr;
-		    }
+		    while (!(delta[0] > 0 && delta[1] > 0));
 		}
-		while (!(delta[0] > 0 && delta[1] > 0));
 		//==============================================================
 
 		//==============================================================
 		// red的處理(x)
 		//==============================================================
 		do {
-		    Patch_ptr patch =
-			mm->measure(findRGB, findRGB->toString());
+		    Patch_ptr patch = mm->measure(findRGB, findRGB->toString());
 		    xyY_ptr measurexyY(new CIExyY(patch->getXYZ()));
 		    delta = measurexyY->getDeltaxy(targetxyY);
 
@@ -207,8 +193,7 @@ namespace cms {
 		//==============================================================
 		bool stopLoop = false;
 		do {
-		    Patch_ptr patch =
-			mm->measure(findRGB, findRGB->toString());
+		    Patch_ptr patch = mm->measure(findRGB, findRGB->toString());
 		    xyY_ptr measurexyY(new CIExyY(patch->getXYZ()));
 		    delta = measurexyY->getDeltaxy(targetxyY);
 
@@ -218,7 +203,7 @@ namespace cms {
 			//green的處理
 			findRGB->G -= 1;
 		    }
-		    if (delta[0] > 0 && findRGB->B < maxcode) {
+		    if (!keepBlue && delta[0] > 0 && findRGB->B < maxcode) {
 			//blue的處理
 			findRGB->B += 1;
 		    }
@@ -238,8 +223,7 @@ namespace cms {
 		//==============================================================
 		// 最終一次調整
 		//==============================================================
-		Patch_ptr patch =
-		    mm->measure(findRGB, findRGB->toString());
+		Patch_ptr patch = mm->measure(findRGB, findRGB->toString());
 		xyY_ptr measurexyY(new CIExyY(patch->getXYZ()));
 		delta = measurexyY->getDeltaxy(targetxyY);
 
@@ -252,8 +236,7 @@ namespace cms {
 
 		    STORE_RGBXY(findRGB, measurexyY);
 
-		    double_array delta2 =
-			measurexyY->getDeltaxy(targetxyY);
+		    double_array delta2 = measurexyY->getDeltaxy(targetxyY);
 		    if (Math::abs(delta2[0]) > Math::abs(delta[0])) {
 			findRGB->R -= 1;
 		    }
@@ -265,8 +248,7 @@ namespace cms {
 
 		    STORE_RGBXY(findRGB, measurexyY);
 
-		    double_array delta2 =
-			measurexyY->getDeltaxy(targetxyY);
+		    double_array delta2 = measurexyY->getDeltaxy(targetxyY);
 		    if (Math::abs(delta2[1]) > Math::abs(delta[1])) {
 			findRGB->G -= 1;
 		    }

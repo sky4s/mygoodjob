@@ -89,6 +89,7 @@ class TTargetWhiteForm2:public TForm, cms::util::WindowListener {
     TCheckBox *CheckBox_Lock;
     TButton *Button5;
     TEdit *Edit1;
+    TCheckBox *CheckBox_AvoidHookTV;
     void __fastcall RadioButton_MaxRGBClick(TObject * Sender);
     void __fastcall ScrollBar_RChange(TObject * Sender);
     void __fastcall ScrollBar_GChange(TObject * Sender);
