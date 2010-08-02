@@ -784,6 +784,13 @@ void stringTester()
     cout << s3 << endl;
 }
 
+void maxValueTry()
+{
+    using namespace Dep;
+    const Dep::MaxValue & m = Dep::MaxValue::Int6Bit;
+    cout << m.max << endl;
+}
+
 #pragma argsused
 int main(int argc, char *argv[])
 {
@@ -854,7 +861,11 @@ int main(int argc, char *argv[])
     //iniTester();
     //byteTester();
     //produceTCONINIFile();
-    stringTester();
+    //stringTester();
+    maxValueTry();
+
+
+
 
     //cout << 5 / 4 / 3. << endl;
     //cout << _toString("123") << endl;

@@ -89,9 +89,9 @@ class TCCTLUTForm:public TForm {
     TRadioButton *RadioButton_GammaValue;
     TCheckBox *CheckBox_MultiGen;
     TEdit *Edit_MultiGenTimes;
-        TCheckBox *CheckBox_BTargetIntensity;
-        TEdit *Edit_BTargetIntensity;
-        TCheckBox *CheckBox_AvoidHookNB;
+    TCheckBox *CheckBox_BTargetIntensity;
+    TEdit *Edit_BTargetIntensity;
+    TCheckBox *CheckBox_AvoidHookNB;
     void __fastcall RadioButton_P1P2Click(TObject * Sender);
     void __fastcall Button_MeaRunClick(TObject * Sender);
     void __fastcall FormCreate(TObject * Sender);
@@ -103,7 +103,6 @@ class TCCTLUTForm:public TForm {
     void __fastcall RadioButton_GammaClick(TObject * Sender);
     void __fastcall ComboBox_GammaChange(TObject * Sender);
     void __fastcall CheckBox_ExpandClick(TObject * Sender);
-    //void __fastcall RadioButton_NewClick(TObject * Sender);
     void __fastcall Button_ResetClick(TObject * Sender);
     void __fastcall CheckBox_BMax2Click(TObject * Sender);
     void __fastcall CheckBox_NewMethodClick(TObject * Sender);
@@ -117,9 +116,9 @@ class TCCTLUTForm:public TForm {
     int serialid;
      bptr < cms::lcd::calibrate::BitDepthProcessor > bitDepth;
     RGBGamma_ptr rgbGamma;
-    //bptr < cms::lcd::calibrate::LCDCalibrator > calibrator;
      bptr < cms::lcd::calibrate::MeasureCondition > getMeasureCondition();
     bool run;
+    int getMaxZDGCode();
   public:			// User declarations
      __fastcall TCCTLUTForm(TComponent * Owner);
     void setBitDepthProcessor(bptr < cms::lcd::calibrate::BitDepthProcessor > bitDepth);

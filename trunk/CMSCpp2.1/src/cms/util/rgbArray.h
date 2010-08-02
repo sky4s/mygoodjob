@@ -16,16 +16,15 @@ namespace cms {
 	  public:
 	    static string_ptr toString(RGB_vector_ptr rgbVector);
 	    static RGB_vector_ptr getLinearRGBVector(int n);
-	    static void storeToExcel(const std::string & filename,
-				     RGB_vector_ptr rgbVector);
-	    static void storeToText(const std::string & filename,
-				    RGB_vector_ptr rgbVector);
+	    static RGB_vector_ptr getLinearRGBVector(int n, double gain,
+						     bptr < cms::lcd::calibrate::BitDepthProcessor >
+						     bitDepth);
+	    static void storeToExcel(const std::string & filename, RGB_vector_ptr rgbVector);
+	    static void storeToText(const std::string & filename, RGB_vector_ptr rgbVector);
 	    static RGB_vector_ptr clone(RGB_vector_ptr vector);
 	    static RGB_vector_ptr deepClone(RGB_vector_ptr vector);
-	    static void changeMaxValue(RGB_vector_ptr vector,
-				       const Dep::MaxValue & type);
-	    static void quantization(RGB_vector_ptr vector,
-				     const Dep::MaxValue & maxValue);
+	    static void changeMaxValue(RGB_vector_ptr vector, const Dep::MaxValue & type);
+	    static void quantization(RGB_vector_ptr vector, const Dep::MaxValue & maxValue);
 	    static RGB_vector_ptr reverse(RGB_vector_ptr rgbVector);
 	};
 
@@ -35,33 +34,22 @@ namespace cms {
 	class RGBGamma:public jObject {
 	  private:
 	    static RGBGamma_ptr loadFromDesiredGamma(const std::
-						     string &
-						     filename,
-						     bool isGammaValue);
+						     string & filename, bool isGammaValue);
 	  public:
 	    const Type type;
 	    const double max;
 	    double_vector_ptr r, g, b, w;
-	     RGBGamma(double_vector_ptr r, double_vector_ptr g,
-		      double_vector_ptr b);
+	     RGBGamma(double_vector_ptr r, double_vector_ptr g, double_vector_ptr b);
 	     RGBGamma(double_vector_ptr r, double_vector_ptr g,
 		      double_vector_ptr b, double_vector_ptr w);
 	     RGBGamma(double_vector_ptr r, double_vector_ptr g,
-		      double_vector_ptr b, const double max,
-		      const Type type);
+		      double_vector_ptr b, const double max, const Type type);
 	     RGBGamma(double_vector_ptr r, double_vector_ptr g,
-		      double_vector_ptr b, double_vector_ptr w,
-		      const double max, const Type type);
-	    static void storeToExcel(const std::string & filename,
-				     RGBGamma_ptr rgbgamma);
-	    static void storeToDesiredGamma(const std::
-					    string & filename,
-					    RGBGamma_ptr rgbgamma);
-	    static RGBGamma_ptr loadFromDesiredGamma(const std::
-						     string & filename);
-	    static RGBGamma_ptr loadFromDesiredGammaValue(const std::
-							  string &
-							  filename);
+		      double_vector_ptr b, double_vector_ptr w, const double max, const Type type);
+	    static void storeToExcel(const std::string & filename, RGBGamma_ptr rgbgamma);
+	    static void storeToDesiredGamma(const std::string & filename, RGBGamma_ptr rgbgamma);
+	    static RGBGamma_ptr loadFromDesiredGamma(const std::string & filename);
+	    static RGBGamma_ptr loadFromDesiredGammaValue(const std::string & filename);
 	    RGBGamma_ptr clone();
 
 	};

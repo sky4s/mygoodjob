@@ -715,7 +715,6 @@ object CCTLUTForm: TCCTLUTForm
       Width = 168
       Height = 24
       Caption = 'Native White (Smooth)'
-      Enabled = False
       TabOrder = 3
       OnClick = RadioButton_MaxYNativeAdvClick
     end
@@ -724,6 +723,7 @@ object CCTLUTForm: TCCTLUTForm
       Top = 113
       Width = 72
       Height = 24
+      Enabled = False
       ImeName = #26085#25991#36664#20837#31995#32113' (MS-IME2002)'
       TabOrder = 4
       Text = '235'
@@ -733,6 +733,7 @@ object CCTLUTForm: TCCTLUTForm
       Top = 137
       Width = 72
       Height = 24
+      Enabled = False
       ImeName = #26085#25991#36664#20837#31995#32113' (MS-IME2002)'
       TabOrder = 5
       Text = '2.2'
@@ -743,6 +744,7 @@ object CCTLUTForm: TCCTLUTForm
       Width = 137
       Height = 17
       Caption = 'Avoid Hook(NB)'
+      Enabled = False
       TabOrder = 6
     end
   end

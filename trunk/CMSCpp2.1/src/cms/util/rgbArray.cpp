@@ -39,27 +39,29 @@ namespace cms {
 	    };
 	    return result;
 	};
-	void RGBVector::storeToExcel(const string & filename,
-				     RGB_vector_ptr rgbVector) {
+	RGB_vector_ptr getLinearRGBVector(int n, double bgain,
+					  bptr < cms::lcd::calibrate::BitDepthProcessor >
+					  bitDepth) {
+	    //bitDepth->getLutMaxValue();
+            bitDepth->getMaxDigitalCount();
+            //bitDepth->gete
+	};
+	void RGBVector::storeToExcel(const string & filename, RGB_vector_ptr rgbVector) {
 
 
 	    Util::deleteExist(filename);
 	    SimpleExcelAccess excel(filename, Create,
-				    StringVector::
-				    fromCString(4, "Gray Level", "R", "G",
-						"B"));
+				    StringVector::fromCString(4, "Gray Level", "R", "G", "B"));
 	    int size = rgbVector->size();
 	    for (int x = 0; x != size; x++) {
 		RGB_ptr rgb = (*rgbVector)[x];
-		string_vector_ptr values =
-		    StringVector::fromDouble(4, static_cast < double >(x),
-					     rgb->R, rgb->G, rgb->B);
+		string_vector_ptr values = StringVector::fromDouble(4, static_cast < double >(x),
+								    rgb->R, rgb->G, rgb->B);
 		excel.insert(values);
 	    }
 
 	};
-	void RGBVector::storeToText(const std::string & filename,
-				    RGB_vector_ptr rgbVector) {
+	void RGBVector::storeToText(const std::string & filename, RGB_vector_ptr rgbVector) {
 
 	    bptr_ < TStringList > list(new TStringList);
 	    foreach(RGB_ptr rgb, *rgbVector) {
@@ -82,14 +84,12 @@ namespace cms {
 	    }
 	    return result;
 	};
-	void RGBVector::changeMaxValue(RGB_vector_ptr vector,
-				       const MaxValue & type) {
+	void RGBVector::changeMaxValue(RGB_vector_ptr vector, const MaxValue & type) {
 	    foreach(RGB_ptr rgb, *vector) {
 		rgb->changeMaxValue(type);
 	    }
 	};
-	void RGBVector::quantization(RGB_vector_ptr vector,
-				     const MaxValue & maxValue) {
+	void RGBVector::quantization(RGB_vector_ptr vector, const MaxValue & maxValue) {
 	    foreach(RGB_ptr rgb, *vector) {
 		rgb->quantization(maxValue);
 	    }
@@ -104,9 +104,7 @@ namespace cms {
 	       return result;
 	       w = double_vector_ptr(new
 	       double_vector(w->rbegin(), w->rend())); */
-	    RGB_vector_ptr result(new
-				  RGB_vector(rgbVector->rbegin(),
-					     rgbVector->rend()));
+	    RGB_vector_ptr result(new RGB_vector(rgbVector->rbegin(), rgbVector->rend()));
 	    return result;
 	};
 	//==================================================================
@@ -131,56 +129,45 @@ namespace cms {
 			   const double max, const Type type):r(r),
 	    g(g), b(b), w(w), max(max), type(type) {
 	};
-	void RGBGamma::storeToExcel(const std::string & filename,
-				    RGBGamma_ptr rgbgamma) {
+	void RGBGamma::storeToExcel(const std::string & filename, RGBGamma_ptr rgbgamma) {
 
 
 	    Util::deleteExist(filename);
 	    SimpleExcelAccess excel(filename, Create,
 				    StringVector::
-				    fromCString(4, "Gray Level", "R gamma",
-						"G gamma", "B gamma"));
+				    fromCString(4, "Gray Level", "R gamma", "G gamma", "B gamma"));
 
 	    int size = rgbgamma->r->size();
 
 	    for (int x = 0; x != size; x++) {
 		(*rgbgamma->r)[x];
-		string_vector_ptr values =
-		    StringVector::fromDouble(4, static_cast < double >(x),
-					     (*rgbgamma->r)[x],
-					     (*rgbgamma->g)[x],
-					     (*rgbgamma->b)[x]);
+		string_vector_ptr values = StringVector::fromDouble(4, static_cast < double >(x),
+								    (*rgbgamma->r)[x],
+								    (*rgbgamma->g)[x],
+								    (*rgbgamma->b)[x]);
 		//excel->insert(fieldNames, values);
 		excel.insert(values);
 	    };
 	};
 
-	void RGBGamma::storeToDesiredGamma(const std::
-					   string & filename,
-					   RGBGamma_ptr rgbgamma) {
+	void RGBGamma::storeToDesiredGamma(const std::string & filename, RGBGamma_ptr rgbgamma) {
 	    /* TODO : storeToDesiredGamma */
 	};
 
-	RGBGamma_ptr RGBGamma::loadFromDesiredGamma(const std::
-						    string & filename) {
+	RGBGamma_ptr RGBGamma::loadFromDesiredGamma(const std::string & filename) {
 	    return loadFromDesiredGamma(filename, false);
 	};
 
-	RGBGamma_ptr RGBGamma::loadFromDesiredGammaValue(const std::
-							 string & filename)
-	{
+	RGBGamma_ptr RGBGamma::loadFromDesiredGammaValue(const std::string & filename) {
 	    return loadFromDesiredGamma(filename, true);
 	};
 
-	RGBGamma_ptr RGBGamma::loadFromDesiredGamma(const std::
-						    string & filename,
-						    bool isGammaValue) {
+	RGBGamma_ptr RGBGamma::loadFromDesiredGamma(const std::string & filename, bool isGammaValue) {
 	    using namespace java::lang;
-            
+
 	    SimpleExcelAccess excel(filename);
 	    double_vector_ptr r(new double_vector()),
-		g(new double_vector()), b(new double_vector()),
-		w(new double_vector());
+		g(new double_vector()), b(new double_vector()), w(new double_vector());
 	    try {
 		bptr < DBQuery > query = excel.retrieve();
 		double maxLevel = -1;
@@ -212,18 +199,10 @@ namespace cms {
 		//==============================================================
 		// 反轉處理
 		//==============================================================
-		w = double_vector_ptr(new
-				      double_vector(w->rbegin(),
-						    w->rend()));
-		r = double_vector_ptr(new
-				      double_vector(r->rbegin(),
-						    r->rend()));
-		g = double_vector_ptr(new
-				      double_vector(g->rbegin(),
-						    g->rend()));
-		b = double_vector_ptr(new
-				      double_vector(b->rbegin(),
-						    b->rend()));
+		w = double_vector_ptr(new double_vector(w->rbegin(), w->rend()));
+		r = double_vector_ptr(new double_vector(r->rbegin(), r->rend()));
+		g = double_vector_ptr(new double_vector(g->rbegin(), g->rend()));
+		b = double_vector_ptr(new double_vector(b->rbegin(), b->rend()));
 		//==============================================================
 		RGBGamma_ptr rgbgamma(new RGBGamma(r, g, b, w));
 		return rgbgamma;
@@ -241,13 +220,9 @@ namespace cms {
 	    double_vector_ptr bclone(new double_vector(*b));
 	    if (null != w) {
 		double_vector_ptr wclone(new double_vector(*w));
-		return RGBGamma_ptr(new
-				    RGBGamma(rclone, gclone, bclone,
-					     wclone, max, type));
+		return RGBGamma_ptr(new RGBGamma(rclone, gclone, bclone, wclone, max, type));
 	    } else {
-		return RGBGamma_ptr(new
-				    RGBGamma(rclone, gclone, bclone,
-					     max, type));
+		return RGBGamma_ptr(new RGBGamma(rclone, gclone, bclone, max, type));
 	    };
 
 	};

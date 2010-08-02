@@ -33,8 +33,6 @@ namespace cms {
 		} else if (in == MaxValue::Int6Bit && out == MaxValue::Int6Bit) {
 		    return b6_6;
 		} else {
-		    /*throw
-		       IllegalArgumentException("Unsupported BitDepth."); */
 		    return Unknow;
 		}
 	    };
@@ -55,15 +53,12 @@ namespace cms {
 	    int BitDepthProcessor::getMeasureStart() {
 		switch (bitDepth) {
 		case b10_10:
-		    //return tconInput ? 1023 : 255;
 		    return tconInput ? 4095 : 255;
 		case b10_8:
 		case b8_8:
-		    //return tconInput ? 1020 : 255;
 		    return tconInput ? 4080 : 255;
 		case b8_6:
 		case b6_6:
-		    //return 252;
 		    return tconInput ? 4032 : 252;
 		default:
 		    throw IllegalStateException("Unsupported bitDepth: " + bitDepth);
@@ -106,7 +101,6 @@ namespace cms {
 	    int BitDepthProcessor::getMeasureFirstStep() {
 		switch (bitDepth) {
 		case b10_10:
-		    //return tconInput ? 3 : 1;
 		    return tconInput ? 15 : 1;
 		case b10_8:
 		case b8_8:
@@ -119,17 +113,12 @@ namespace cms {
 		    throw IllegalStateException("Unsupported bitDepth: " + bitDepth);
 		}
 	    };
-	    int BitDepthProcessor::getMeasureLevel() {
-		int level = (getMeasureStart() - getMeasureFirstStep()) / getMeasureStep() + 2;
-		return level;
-	    };
 	    /*
 	       DG Lut³Ì¤j­È(in 8Bit)
 	     */
 	    double BitDepthProcessor::getMaxDigitalCount() {
 		switch (bitDepth) {
 		case b10_10:
-		    return 255.75;
 		case b10_8:
 		case b8_8:
 		    return 255;
@@ -140,29 +129,15 @@ namespace cms {
 		    throw IllegalStateException("Unsupported bitDepth: " + bitDepth);
 		}
 	    };
-	    int BitDepthProcessor::getMaxDigitalCountIndex() {
-		switch (bitDepth) {
-		case b10_10:
-		case b10_8:
-		    return 256;
-		case b8_8:
-		case b8_6:
-		case b6_6:
-		    return gamma256 ? 256 : 255;
-		default:
-		    throw IllegalStateException("Unsupported bitDepth: " + bitDepth);
-		}
-	    };
 
 	    int BitDepthProcessor::getLevel() {
-		return getMaxDigitalCountIndex() + 1;
+		return 257;
 	    };
 	    int BitDepthProcessor::getMaxEffectiveDigitalCountIndex() {
 		switch (bitDepth) {
 		case b10_10:
 		    return 256;
 		case b10_8:
-		    return 255;
 		case b8_8:
 		case b8_6:
 		    return 255;
