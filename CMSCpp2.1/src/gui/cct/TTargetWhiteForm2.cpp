@@ -512,18 +512,22 @@ void __fastcall TTargetWhiteForm2::FormKeyPress(TObject * Sender, char &Key)
 //---------------------------------------------------------------------------
 void __fastcall TTargetWhiteForm2::Button3Click(TObject * Sender)
 {
-    //if (MainForm->isCA210Analyzer()) {
-    MainForm->connectMeter();
-    //}
+    if (MainForm->isCA210Analyzer()) {
+	MainForm->connectMeter();
+	this->Button4->Enabled = true;
+	this->Button3->Enabled = false;
+    }
 }
 
 //---------------------------------------------------------------------------
 
 void __fastcall TTargetWhiteForm2::Button4Click(TObject * Sender)
 {
-    //if (MainForm->isCA210Analyzer()) {
-    MainForm->disconnectMeter();
-    //}
+    if (MainForm->isCA210Analyzer()) {
+	MainForm->disconnectMeter();
+	this->Button4->Enabled = false;
+	this->Button3->Enabled = true;
+    }
 }
 
 //---------------------------------------------------------------------------

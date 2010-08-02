@@ -293,6 +293,7 @@ object TargetWhiteForm2: TTargetWhiteForm2
             Width = 73
             Height = 25
             Caption = 'Connect'
+            Enabled = False
             TabOrder = 3
             OnClick = Button3Click
           end
@@ -607,7 +608,7 @@ object TargetWhiteForm2: TTargetWhiteForm2
         object Button1: TButton
           Left = 113
           Top = 170
-          Width = 80
+          Width = 72
           Height = 23
           Caption = 'Set'
           Enabled = False
@@ -631,7 +632,7 @@ object TargetWhiteForm2: TTargetWhiteForm2
     Left = 112
     Top = 560
     Width = 149
-    Height = 16
+    Height = 24
     TabOrder = 2
     Visible = False
   end

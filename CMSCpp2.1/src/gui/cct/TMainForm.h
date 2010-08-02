@@ -109,13 +109,13 @@ class TMainForm:public TForm {
     TLabel *Label15;
     TComboBox *ComboBox_DGLUTType;
     TCheckBox *CheckBox_GammaTest;
-        TGroupBox *GroupBox12;
-        TRadioButton *RadioButton_Normal;
-        TRadioButton *RadioButton_HStripe;
-        TRadioButton *RadioButton_Indep;
-        TRadioButton *RadioButton_HSD;
-        TRadioButton *RadioButton_FlickrPixel;
-        TRadioButton *RadioButton_FlickrSubPixel;
+    TGroupBox *GroupBox12;
+    TRadioButton *RadioButton_Normal;
+    TRadioButton *RadioButton_HStripe;
+    TRadioButton *RadioButton_Indep;
+    TRadioButton *RadioButton_HSD;
+    TRadioButton *RadioButton_FlickrPixel;
+    TRadioButton *RadioButton_FlickrSubPixel;
     void __fastcall About1Click(TObject * Sender);
     void __fastcall Exit1Click(TObject * Sender);
     void __fastcall TargetWhite1Click(TObject * Sender);
@@ -208,6 +208,7 @@ class TMainForm:public TForm {
     // T-CON
     //==========================================================================
      bptr < cms::lcd::calibrate::BitDepthProcessor > bitDepth;
+     bptr < i2c::TCONControl > getTCONControl();
     //==========================================================================
     __fastcall TMainForm(TComponent * Owner);
 

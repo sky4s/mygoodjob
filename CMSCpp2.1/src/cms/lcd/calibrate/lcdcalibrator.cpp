@@ -248,42 +248,16 @@ namespace cms {
 				      (lowStart, lowEnd, lowStep, highStart, highEnd, highStep),
 				      Channel::W, maxValue);
 	    };
-	    /*MeasureCondition::MeasureCondition(int_vector_ptr measureCode):type(Normal) {
-	       this->rgbMeasureCode = getRGBMeasureCode(measureCode, Channel::W);
-	       };
-	       MeasureCondition::MeasureCondition(int_vector_ptr measureCode,
-	       const Dep::Channel & channel):type(Normal) {
-	       this->rgbMeasureCode = getRGBMeasureCode(measureCode, channel);
-	       }; */
+
 	  MeasureCondition::MeasureCondition(RGB_vector_ptr rgbMeasureCode):type(Normal)
 	    {
-		/*:start(0), end(0),
-		   firstStep(0), step(0), lowStart(0), lowEnd(0), lowStep(0),
-		   highStart(0), highEnd(0), highStep(0), type(RGB) */
 		this->rgbMeasureCode = rgbMeasureCode;
 	    };
-	    /*int_vector_ptr MeasureCondition::getMeasureCode() {
-	       switch (type) {
-	       case Normal:
-	       return getMeasureCode(start, end, firstStep, step);
-	       case Extend:
-	       return getMeasureCode(lowStart, lowEnd, lowStep, highStart, highEnd, highStep);
-	       case Plain:
-	       return measureCode;
-	       case RGB:
-	       throw new IllegalStateException();
-	       }
-	       }; */
+
 	    RGB_vector_ptr MeasureCondition::getRGBMeasureCode() {
-		//if (isRGBType()) {
 		return rgbMeasureCode;
-		/*} else {
-		   throw new IllegalStateException();
-		   } */
 	    };
-	    /*bool MeasureCondition::isRGBType() {
-	       return type == RGB;
-	       }; */
+
 	    int_vector_ptr MeasureCondition::
 		getMeasureCode(const int start, const int end,
 			       const int firstStep, const int step) {
@@ -378,11 +352,6 @@ namespace cms {
 		this->correct = Correct::None;
 	    };
 
-	    /*void LCDCalibrator::setDefinedDim(int under, bool averageDimDG) {
-	       this->correct = Correct::DefinedDim;
-	       this->under = under;
-	       this->averageDimDG = averageDimDG;
-	       }; */
 	    void LCDCalibrator::setDefinedDim(int under, double gamma, bool averageDimDG) {
 		this->correct = Correct::DefinedDim;
 		this->under = under;
@@ -560,12 +529,7 @@ namespace cms {
 		    if (this->bTargetIntensity != -1) {
 			advgenerator.setBTargetIntensity(bTargetIntensity);
 		    }
-		    /*if (multiPrimaryColor) {
-		       advgenerator.setMultiPrimayColor(multiPrimaryColor,
-		       multiPrimayColorStart,
-		       multiPrimayColorEnd,
-		       multiPrimaryColorInterval);
-		       } */
+
 		    if (multiGen) {
 			advgenerator.setMultiGen(multiGen, multiGenTimes);
 		    }
@@ -657,7 +621,7 @@ namespace cms {
 		//==============================================================
 
 		STORE_RGBVECTOR("7_dgcode_final.xls", result);
-		//調整max value
+		//調整max value, 調整到LUT真正的max value
 		RGBVector::changeMaxValue(result, bitDepth->getLutMaxValue());
 
 		this->dglut = result;
@@ -776,14 +740,7 @@ namespace cms {
 	    void LCDCalibrator::setBTargetIntensity(double bTargetIntensity) {
 		this->bTargetIntensity = bTargetIntensity;
 	    };
-	    /*void LCDCalibrator::setMultiPrimaryColor(bool enable,
-	       int start, int end,
-	       int interval) {
-	       this->multiPrimaryColor = enable;
-	       this->multiPrimayColorStart = start;
-	       this->multiPrimayColorEnd = end;
-	       this->multiPrimaryColorInterval = interval;
-	       }; */
+
 	    void LCDCalibrator::setMultiGen(bool enable, int times) {
 		this->multiGen = enable;
 		this->multiGenTimes = times;

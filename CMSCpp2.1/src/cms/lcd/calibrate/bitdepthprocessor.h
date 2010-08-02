@@ -22,7 +22,7 @@ namespace cms {
 		const Dep::MaxValue * in, *lut, *out;
 		BitDepth bitDepth;
 		static BitDepth getBitDepth(const Dep::MaxValue & in, const Dep::MaxValue & out);
-		bool gamma256;
+		//bool gamma256;
 		bool tconInput;
 		int getMaxDigitalCountIndex();
 		int getMaxEffectiveDigitalCountIndex();
@@ -33,7 +33,7 @@ namespace cms {
 		int getMeasureEnd();
 		int getMeasureStep();
 		int getMeasureFirstStep();
-		int getMeasureLevel();
+		//int getMeasureLevel();
 		double getMaxDigitalCount();
 
 		int getLevel();

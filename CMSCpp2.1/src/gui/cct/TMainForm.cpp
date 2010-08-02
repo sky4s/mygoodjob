@@ -954,4 +954,8 @@ void __fastcall TMainForm::CheckBox_GammaTestClick(TObject * Sender)
 }
 
 //---------------------------------------------------------------------------
+bptr < i2c::TCONControl > TMainForm::getTCONControl()
+{
+    return control;
+};
 

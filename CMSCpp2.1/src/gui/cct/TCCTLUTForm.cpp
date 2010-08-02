@@ -63,6 +63,7 @@ void __fastcall TCCTLUTForm::Button_MeaRunClick(TObject * Sender)
     using namespace cms::lcd::calibrate;
     using namespace cms::colorformat;
 
+
     run = true;
     this->Button_MeaRun->Enabled = false;
     try {			//為了對應__finally使用的try
@@ -140,6 +141,7 @@ void __fastcall TCCTLUTForm::Button_MeaRunClick(TObject * Sender)
 	    double bTargetIntensity = Edit_BTargetIntensity->Text.ToDouble();
 	    calibrator.setBTargetIntensity(bTargetIntensity);
 	}
+	bool avoidHookNB = this->CheckBox_AvoidHookNB->Checked;
 	//==========================================================================
 
 	//==========================================================================
@@ -158,17 +160,29 @@ void __fastcall TCCTLUTForm::Button_MeaRunClick(TObject * Sender)
 	}
 	//==========================================================================
 
+
 	try {
 	    if (this->TOutputFileFrame1->createDir() == false) {
 		return;
 	    }
-
+	    int maxZDGCode = -1;
+	    if (avoidHookNB) {
+		//開始量測之前先更改面板原始特性
+		maxZDGCode = getMaxZDGCode();
+		double gain = ((double) maxZDGCode) / bitDepth->getMaxDigitalCount();
+	    }
 	    RGB_vector_ptr dglut = calibrator.getCCTDGLut(getMeasureCondition());
 	    if (dglut == null) {
 		//被中斷就直接return
 		return;
 	    }
 
+	    if (avoidHookNB) {
+		//儲存DG LUT之前, 要remapping回來
+	    }
+	    //=================================================================
+	    // 存檔
+	    //=================================================================
 	    bptr < DGLutFile > dgLutFile = calibrator.storeDGLutFile(filename, dglut);
 	    //MainForm->setDummyMeterFilename(dgLutFile);
 	    //要release掉, 才可以讀取該檔
@@ -176,6 +190,8 @@ void __fastcall TCCTLUTForm::Button_MeaRunClick(TObject * Sender)
 	    //寫到文字檔
 	    RGBVector::storeToText(ChangeFileExt(filename.c_str(), ".txt").c_str(), dglut);
 	    //this->Button_Run->Enabled = true;
+	    //=================================================================
+
 	    ShowMessage("Ok!");
 	    Util::shellExecute(filename);
 	}
@@ -191,7 +207,16 @@ void __fastcall TCCTLUTForm::Button_MeaRunClick(TObject * Sender)
 
 //---------------------------------------------------------------------------
 
-
+int TCCTLUTForm::getMaxZDGCode()
+{
+    using namespace cms::measure;
+    using namespace cms::lcd::calibrate;
+    bptr < MeasureTool > mt(new MeasureTool(MainForm->mm));
+    MeasureWindow->addWindowListener(mt);
+    bptr < MeasureCondition > measureCondition(new MeasureCondition(bitDepth));
+    int maxZDGCode = mt->getMaxZDGCode(measureCondition);
+    return maxZDGCode;
+};
 
 
 void __fastcall TCCTLUTForm::FormCreate(TObject * Sender)
@@ -427,6 +452,7 @@ void __fastcall TCCTLUTForm::RadioButton_MaxYNativeAdvClick(TObject * Sender)
     bool checked = RadioButton_MaxYNativeAdv->Checked;
     Edit_MaxYAdvOver->Enabled = checked;
     Edit_MaxYAdvGamma->Enabled = checked;
+    this->CheckBox_AvoidHookNB->Enabled = checked;
 }
 
 //---------------------------------------------------------------------------
