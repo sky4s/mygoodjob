@@ -16,9 +16,8 @@ namespace cms {
 	  public:
 	    static string_ptr toString(RGB_vector_ptr rgbVector);
 	    static RGB_vector_ptr getLinearRGBVector(int n);
-	    static RGB_vector_ptr getLinearRGBVector(int n, double gain,
-						     bptr < cms::lcd::calibrate::BitDepthProcessor >
-						     bitDepth);
+	    static RGB_vector_ptr getLinearRGBVector(bptr < cms::lcd::calibrate::BitDepthProcessor >
+						     bitDepth, double gain);
 	    static void storeToExcel(const std::string & filename, RGB_vector_ptr rgbVector);
 	    static void storeToText(const std::string & filename, RGB_vector_ptr rgbVector);
 	    static RGB_vector_ptr clone(RGB_vector_ptr vector);

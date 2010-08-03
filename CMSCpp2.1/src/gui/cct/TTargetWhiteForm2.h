@@ -26,7 +26,7 @@ class TTargetWhiteForm2:public TForm, cms::util::WindowListener {
     TGroupBox *GroupBox2;
     TRadioButton *RadioButton_Targetxy;
     TRadioButton *RadioButton_RGBRatio;
-    TButton *Button2;
+    TButton *Button_Run;
     TGroupBox *GroupBox4;
     TLabel *Label10;
     TLabel *Label11;
@@ -81,7 +81,7 @@ class TTargetWhiteForm2:public TForm, cms::util::WindowListener {
     TLabel *Label15;
     TLabel *Label9;
     TLabel *Label16;
-    TButton *Button1;
+    TButton *Button_setMaxMatrix;
     TCheckBox *CheckBox_MaxRGB;
     TLabel *Label21;
     TButton *Button3;
@@ -97,14 +97,14 @@ class TTargetWhiteForm2:public TForm, cms::util::WindowListener {
     void __fastcall Edit_CTChange(TObject * Sender);
     void __fastcall Edit_targetxChange(TObject * Sender);
     void __fastcall Edit_targetyChange(TObject * Sender);
-    void __fastcall Button2Click(TObject * Sender);
+    void __fastcall Button_RunClick(TObject * Sender);
     void __fastcall Edit_RChange(TObject * Sender);
     void __fastcall Edit_GChange(TObject * Sender);
     void __fastcall Edit_BChange(TObject * Sender);
     void __fastcall FormCreate(TObject * Sender);
     void __fastcall Edit_BZChange(TObject * Sender);
     void __fastcall FormShow(TObject * Sender);
-    void __fastcall Button1Click(TObject * Sender);
+    void __fastcall Button_setMaxMatrixClick(TObject * Sender);
     void __fastcall FormKeyPress(TObject * Sender, char &Key);
     void __fastcall Button3Click(TObject * Sender);
     void __fastcall Button4Click(TObject * Sender);

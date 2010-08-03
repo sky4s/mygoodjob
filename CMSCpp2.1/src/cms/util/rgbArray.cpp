@@ -33,18 +33,34 @@ namespace cms {
 	RGB_vector_ptr RGBVector::getLinearRGBVector(int n) {
 	    RGB_vector_ptr result(new RGB_vector());
 	    for (int x = 0; x < n; x++) {
-		RGB_ptr rgb(new RGBColor());
-		rgb->setValues(x, x, x);
+		//double v = ((double) x) / (n - 1) * 255;
+		RGB_ptr rgb(new RGBColor(x, x, x));
+		//rgb->setValues(x, x, x);
 		result->push_back(rgb);
 	    };
 	    return result;
 	};
-	RGB_vector_ptr getLinearRGBVector(int n, double bgain,
-					  bptr < cms::lcd::calibrate::BitDepthProcessor >
-					  bitDepth) {
-	    //bitDepth->getLutMaxValue();
-            bitDepth->getMaxDigitalCount();
-            //bitDepth->gete
+	RGB_vector_ptr RGBVector::getLinearRGBVector(bptr < cms::lcd::calibrate::BitDepthProcessor >
+						     bitDepth, double bgain) {
+	    //int n = bitDepth->getLevel();
+	    int n = bitDepth->getEffectiveLevel();
+	    double maxdc = bitDepth->getMaxDigitalCount();	//得到8bit下最大值
+	    const MaxValue & maxValue = bitDepth->getLutMaxValue();	//lut的maxvalue
+	    double factor = maxValue.max / 255.;
+	    RGB_vector_ptr result(new RGB_vector());
+	    for (int x = 0; x < n; x++) {
+		double v = maxdc * factor / (n - 1) * x;
+		double b = v * bgain;
+		RGB_ptr rgb(new RGBColor(v, v, b, maxValue));
+		result->push_back(rgb);
+	    }
+	    int deltan = bitDepth->getLevel() - n;
+	    RGB_ptr last = (*result)[result->size() - 1];
+	    for (int x = 0; x < deltan; x++) {
+		RGB_ptr rgb(new RGBColor(last->R, last->G, last->B, maxValue));
+		result->push_back(rgb);
+	    }
+	    return result;
 	};
 	void RGBVector::storeToExcel(const string & filename, RGB_vector_ptr rgbVector) {
 
@@ -58,9 +74,7 @@ namespace cms {
 		string_vector_ptr values = StringVector::fromDouble(4, static_cast < double >(x),
 								    rgb->R, rgb->G, rgb->B);
 		excel.insert(values);
-	    }
-
-	};
+	}};
 	void RGBVector::storeToText(const std::string & filename, RGB_vector_ptr rgbVector) {
 
 	    bptr_ < TStringList > list(new TStringList);
@@ -69,7 +83,8 @@ namespace cms {
 			   "\t" + _toString(rgb->B) + "\t").c_str());
 	    }
 	    //list->Add("");
-	    list->SaveToFile(filename.c_str());	//Save the list
+	    list->SaveToFile(filename.c_str());
+	    //Save the list
 
 	};
 	RGB_vector_ptr RGBVector::clone(RGB_vector_ptr vector) {
@@ -87,13 +102,11 @@ namespace cms {
 	void RGBVector::changeMaxValue(RGB_vector_ptr vector, const MaxValue & type) {
 	    foreach(RGB_ptr rgb, *vector) {
 		rgb->changeMaxValue(type);
-	    }
-	};
+	}};
 	void RGBVector::quantization(RGB_vector_ptr vector, const MaxValue & maxValue) {
 	    foreach(RGB_ptr rgb, *vector) {
 		rgb->quantization(maxValue);
-	    }
-	};
+	}};
 	RGB_vector_ptr RGBVector::reverse(RGB_vector_ptr rgbVector) {
 	    /*RGB_vector_ptr result(new RGB_vector());
 	       int size = rgbVector->size();

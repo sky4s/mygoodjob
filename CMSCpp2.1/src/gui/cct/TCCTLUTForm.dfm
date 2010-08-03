@@ -1,6 +1,6 @@
 object CCTLUTForm: TCCTLUTForm
-  Left = 279
-  Top = 254
+  Left = 311
+  Top = 305
   Width = 842
   Height = 487
   Caption = 'CCT LUT'
@@ -429,9 +429,9 @@ object CCTLUTForm: TCCTLUTForm
     end
     object CheckBox_BTargetIntensity: TCheckBox
       Left = 9
-      Top = 88
+      Top = 89
       Width = 136
-      Height = 24
+      Height = 23
       Caption = 'B Target intensity'
       Enabled = False
       TabOrder = 4
@@ -439,7 +439,7 @@ object CCTLUTForm: TCCTLUTForm
     end
     object Edit_BTargetIntensity: TEdit
       Left = 144
-      Top = 88
+      Top = 89
       Width = 41
       Height = 24
       Enabled = False
@@ -740,12 +740,13 @@ object CCTLUTForm: TCCTLUTForm
     end
     object CheckBox_AvoidHookNB: TCheckBox
       Left = 32
-      Top = 168
+      Top = 169
       Width = 137
-      Height = 17
+      Height = 16
       Caption = 'Avoid Hook(NB)'
       Enabled = False
       TabOrder = 6
+      Visible = False
     end
   end
   object OpenDialog1: TOpenDialog

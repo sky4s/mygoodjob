@@ -188,10 +188,13 @@ void __fastcall TGammaMeasurementForm::Button2Click(TObject * Sender)
 {
     using namespace cms::colorformat;
     using namespace cms::util;
+    using namespace Dep;
     OpenDialog1->Filter = "Gamma Table Files(*.xls)|*.xls";
     if (OpenDialog1->Execute()) {
 	const AnsiString & filename = OpenDialog1->FileName;
-	DGLutFile dgcode(filename.c_str(), ReadOnly);
+	const MaxValue & maxValue =
+	    RadioButton_12Bit->Checked ? MaxValue::Int12Bit : MaxValue::Int10Bit;
+	DGLutFile dgcode(filename.c_str(), ReadOnly, maxValue);
 	dgcodeTable = RGBVector::reverse(dgcode.getGammaTable());
 	this->CheckBox_Loaded->Checked = true;
 	this->CheckBox_Loaded->Enabled = true;

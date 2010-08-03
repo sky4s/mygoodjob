@@ -169,7 +169,7 @@ int TTargetWhiteForm2::calculateCCT(double x, double y)
 
 
 
-void __fastcall TTargetWhiteForm2::Button2Click(TObject * Sender)
+void __fastcall TTargetWhiteForm2::Button_RunClick(TObject * Sender)
 {
     using namespace boost;
     using namespace Dep;
@@ -199,7 +199,7 @@ void __fastcall TTargetWhiteForm2::Button2Click(TObject * Sender)
     bool useRGBRatio = this->RadioButton_RGBRatio->Checked;
     bool usexy = this->RadioButton_Targetxy->Checked;
     bool moreAccurate = this->CheckBox_MoreAccurate->Checked;
-    bool avoidHookTV = usemaxRGB && this->CheckBox_AvoidHookTV->Checked;
+    bool avoidHookTV = true == usexy && this->CheckBox_AvoidHookTV->Checked;
 
     if (avoidHookTV) {
 	//tv下的avoid hook
@@ -207,13 +207,6 @@ void __fastcall TTargetWhiteForm2::Button2Click(TObject * Sender)
 	//2. 找到反轉點
 	//3. 設定B為反轉點, 且保持不變
 	//4. 找到對應色度的RGB
-
-	/*usemaxRGB = false;
-	   usexy = true;
-	   Patch_ptr patch = MainForm->mm->measure(rgb, nil_string_ptr);
-	   CIExyY xyY(patch->getXYZ());
-	   this->Edit_targetx->Text = xyY.x;
-	   this->Edit_targety->Text = xyY.y; */
 
 	bptr < MeasureTool > mt(new MeasureTool(MainForm->mm));
 	MeasureWindow->addWindowListener(mt);
@@ -327,9 +320,6 @@ void __fastcall TTargetWhiteForm2::Button2Click(TObject * Sender)
 	xyY_ptr refWhite = analyzer->getReferenceColor();
 	String str;
 
-	/*this->Edit_refLuminance->Text = refWhite->Y;
-	   this->Edit_refx->Text = refWhite->x;
-	   this->Edit_refy->Text = refWhite->y; */
 	this->Edit_refLuminance->Text = str.sprintf("%.4f", refWhite->Y);
 	this->Edit_refx->Text = str.sprintf("%.4f", refWhite->x);
 	this->Edit_refy->Text = str.sprintf("%.4f", refWhite->y);
@@ -339,18 +329,7 @@ void __fastcall TTargetWhiteForm2::Button2Click(TObject * Sender)
 	XYZ_ptr gXYZ = analyzer->getPrimaryColor(Channel::G)->toXYZ();
 	XYZ_ptr bXYZ = analyzer->getPrimaryColor(Channel::B)->toXYZ();
 	XYZ_ptr wXYZ = refWhite->toXYZ();
-	/*this->Edit_RX->Text = rXYZ->X;
-	   this->Edit_RY->Text = rXYZ->Y;
-	   this->Edit_RZ->Text = rXYZ->Z;
-	   this->Edit_GX->Text = gXYZ->X;
-	   this->Edit_GY->Text = gXYZ->Y;
-	   this->Edit_GZ->Text = gXYZ->Z;
-	   this->Edit_BX->Text = bXYZ->X;
-	   this->Edit_BY->Text = bXYZ->Y;
-	   this->Edit_BZ->Text = bXYZ->Z;
-	   this->Edit_WX->Text = wXYZ->X;
-	   this->Edit_WY->Text = wXYZ->Y;
-	   this->Edit_WZ->Text = wXYZ->Z; */
+
 	this->Edit_RX->Text = str.sprintf("%.4f", rXYZ->X);
 	this->Edit_RY->Text = str.sprintf("%.4f", rXYZ->Y);
 	this->Edit_RZ->Text = str.sprintf("%.4f", rXYZ->Z);
@@ -458,12 +437,12 @@ void __fastcall TTargetWhiteForm2::Edit_BZChange(TObject * Sender)
 void __fastcall TTargetWhiteForm2::FormShow(TObject * Sender)
 {
     bool maxMatrix = MainForm->RadioButton_AnalyzerMaxMatrix->Checked;
-    this->Button1->Enabled = maxMatrix;
+    this->Button_setMaxMatrix->Enabled = maxMatrix;
 }
 
 //---------------------------------------------------------------------------
 
-void __fastcall TTargetWhiteForm2::Button1Click(TObject * Sender)
+void __fastcall TTargetWhiteForm2::Button_setMaxMatrixClick(TObject * Sender)
 {
     using namespace cms::measure;
     using namespace Dep;
@@ -516,6 +495,7 @@ void __fastcall TTargetWhiteForm2::Button3Click(TObject * Sender)
 	MainForm->connectMeter();
 	this->Button4->Enabled = true;
 	this->Button3->Enabled = false;
+	this->Button_Run->Enabled = true;
     }
 }
 
@@ -523,10 +503,12 @@ void __fastcall TTargetWhiteForm2::Button3Click(TObject * Sender)
 
 void __fastcall TTargetWhiteForm2::Button4Click(TObject * Sender)
 {
+    MainForm->getAnalyzer();
     if (MainForm->isCA210Analyzer()) {
 	MainForm->disconnectMeter();
 	this->Button4->Enabled = false;
 	this->Button3->Enabled = true;
+	this->Button_Run->Enabled = false;
     }
 }
 

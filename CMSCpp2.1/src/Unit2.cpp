@@ -791,6 +791,20 @@ void maxValueTry()
     cout << m.max << endl;
 }
 
+void linearRGBTry()
+{
+    using namespace cms::lcd::calibrate;
+    bptr < BitDepthProcessor > bitDepth(new BitDepthProcessor(8, 12, 8, false));
+    RGB_vector_ptr vec = RGBVector::getLinearRGBVector(bitDepth, .5);
+
+    int size = vec->size();
+    for (int x = 0; x < size; x++) {
+	cout << x << " ";
+	cout << *(*vec)[x]->toString() << endl;
+    }
+
+}
+
 #pragma argsused
 int main(int argc, char *argv[])
 {
@@ -862,8 +876,8 @@ int main(int argc, char *argv[])
     //byteTester();
     //produceTCONINIFile();
     //stringTester();
-    maxValueTry();
-
+    //maxValueTry();
+    linearRGBTry();
 
 
 
