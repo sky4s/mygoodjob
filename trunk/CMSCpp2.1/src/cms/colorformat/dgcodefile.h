@@ -23,9 +23,11 @@ namespace cms {
 					 Component_ptr c, RGB_ptr rgbGamma, RGB_ptr rgbGammaFix);
 	    static const std::string & GammaTable;
 	    static const std::string & RawData;
+	    const Dep::MaxValue & maxValue;
 
 	  public:
 	     DGLutFile(const std::string & filename, Mode mode);
+	     DGLutFile(const std::string & filename, Mode mode, const Dep::MaxValue & maxValue);
 
 
 	    void setProperty(const DGLutProperty & property);

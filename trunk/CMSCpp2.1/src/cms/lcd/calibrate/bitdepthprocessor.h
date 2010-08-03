@@ -22,23 +22,39 @@ namespace cms {
 		const Dep::MaxValue * in, *lut, *out;
 		BitDepth bitDepth;
 		static BitDepth getBitDepth(const Dep::MaxValue & in, const Dep::MaxValue & out);
-		//bool gamma256;
 		bool tconInput;
-		int getMaxDigitalCountIndex();
-		int getMaxEffectiveDigitalCountIndex();
 	      public:
 		 BitDepthProcessor(int inBit, int lutBit, int outBit, bool tconinput);
 
+		/*
+		   量測起始點
+		 */
 		int getMeasureStart();
+		/*
+		   量測終止點
+		 */
 		int getMeasureEnd();
+		/*
+		   量測間隔
+		 */
 		int getMeasureStep();
+		/*
+		   量測第一次間隔(可能與其他間隔不同)
+		 */
 		int getMeasureFirstStep();
-		//int getMeasureLevel();
+		/*
+		   最大的DG值
+		 */
 		double getMaxDigitalCount();
-
+		/*
+		   DG的總階數 (一律是257:0~256)
+		 */
 		int getLevel();
-
+		/*
+		   可呈現出差異的階數
+		 */
 		int getEffectiveLevel();
+
 		bool is8in6Out();
 		bool is6in6Out();
 		bool is10in8Out();

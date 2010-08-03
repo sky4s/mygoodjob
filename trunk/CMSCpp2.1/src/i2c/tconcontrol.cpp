@@ -123,20 +123,42 @@ namespace i2c {
 	int size = rgbVector->size();
 	int halfSize = size / 2;
 	int remainder = size % 2;
-	int singleChannelDataSize = halfSize * 3 + remainder ? 2 : 0;
+	int singleChannelDataSize = halfSize * 3 + (remainder ? 2 : 0);
 	int totalDataSize = singleChannelDataSize * 3;
 	bptr < ByteBuffer > data(new ByteBuffer(totalDataSize));
 	int index = 0;
 
 	foreach(const Channel & ch, *Channel::RGBChannel) {
 	    for (int x = 0; x < halfSize; x++) {
-		int d0 = static_cast < int >((*rgbVector)[x]->getValue(ch));
-		int d1 = static_cast < int >((*rgbVector)[x + 1]->getValue(ch));
+		int d0 = static_cast < int >((*rgbVector)[x * 2]->getValue(ch, MaxValue::Int12Bit));
+		int d1 =
+		    static_cast < int >((*rgbVector)[x * 2 + 1]->getValue(ch, MaxValue::Int12Bit));
 		int_array d0lmh = getLMHData(d0);
 		int_array d1lmh = getLMHData(d1);
-		(*data)[index++] = d0lmh[0] + (d0lmh[1] << 4);
-		(*data)[index++] = d0lmh[2] + (d1lmh[1] << 4);
-		(*data)[index++] = d1lmh[1] + (d1lmh[2] << 4);
+		int e0 = d0lmh[0];
+		int e1 = d0lmh[1];
+		int e2 = d0lmh[2];
+		int e3 = d1lmh[0];
+		int e4 = d1lmh[1];
+		int e5 = d1lmh[2];
+		int c0 = d0lmh[0] + (d0lmh[1] << 4);
+		int c1 = d0lmh[2] + (d1lmh[0] << 4);
+		int c2 = d1lmh[1] + (d1lmh[2] << 4);
+		(*data)[index++] = c0;
+		(*data)[index++] = c1;
+		(*data)[index++] = c2;
+	    }
+	    if (remainder) {
+		//RGB_ptr r0 = (*rgbVector)[rgbVector->size() - 1];
+		//RGB_ptr r1 = (*rgbVector)[rgbVector->size() - 2];
+		int d0 =
+		    static_cast <
+		    int >((*rgbVector)[rgbVector->size() - 1]->getValue(ch, MaxValue::Int12Bit));
+		int_array dlmh = getLMHData(d0);
+		int c0 = dlmh[0] + (dlmh[1] << 4);
+		int c1 = dlmh[2];
+		(*data)[index++] = c0;
+		(*data)[index++] = c1;
 	    }
 	}
 	return data;

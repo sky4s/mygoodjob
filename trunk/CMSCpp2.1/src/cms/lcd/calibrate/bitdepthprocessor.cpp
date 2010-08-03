@@ -119,6 +119,7 @@ namespace cms {
 	    double BitDepthProcessor::getMaxDigitalCount() {
 		switch (bitDepth) {
 		case b10_10:
+		    return 256;
 		case b10_8:
 		case b8_8:
 		    return 255;
@@ -133,23 +134,9 @@ namespace cms {
 	    int BitDepthProcessor::getLevel() {
 		return 257;
 	    };
-	    int BitDepthProcessor::getMaxEffectiveDigitalCountIndex() {
-		switch (bitDepth) {
-		case b10_10:
-		    return 256;
-		case b10_8:
-		case b8_8:
-		case b8_6:
-		    return 255;
-		case b6_6:
-		    return 252;
-		default:
-		    throw IllegalStateException("Unsupported bitDepth: " + bitDepth);
-		}
-	    };
 
 	    int BitDepthProcessor::getEffectiveLevel() {
-		return getMaxEffectiveDigitalCountIndex() + 1;
+		return getMaxDigitalCount() + 1;
 	    };
 
 	    bool BitDepthProcessor::is8in6Out() {
@@ -216,7 +203,7 @@ namespace cms {
 		const MaxValue & maxValue = isTCONInput()? MaxValue::Int12Bit : MaxValue::Int8Bit;
 		return maxValue;
 	    };
-//==================================================================
+	    //==================================================================
 	};
     };
 };

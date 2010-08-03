@@ -62,6 +62,7 @@ void __fastcall TCCTLUTForm::Button_MeaRunClick(TObject * Sender)
     using namespace Dep;
     using namespace cms::lcd::calibrate;
     using namespace cms::colorformat;
+    using namespace i2c;
 
 
     run = true;
@@ -166,10 +167,20 @@ void __fastcall TCCTLUTForm::Button_MeaRunClick(TObject * Sender)
 		return;
 	    }
 	    int maxZDGCode = -1;
+	    double bgain = -1;
 	    if (avoidHookNB) {
+
 		//開始量測之前先更改面板原始特性
-		maxZDGCode = getMaxZDGCode();
-		double gain = ((double) maxZDGCode) / bitDepth->getMaxDigitalCount();
+		//maxZDGCode = getMaxZDGCode();
+		maxZDGCode = 248;
+		bgain = ((double) maxZDGCode) / bitDepth->getMaxDigitalCount();
+		RGB_vector_ptr vec = RGBVector::getLinearRGBVector(bitDepth, bgain);
+		//RGB_vector_ptr vec = RGBVector::getLinearRGBVector(257);
+		//RGB_ptr rgb = (*vec)[vec->size() - 1];
+		bptr < TCONControl > tconctrl = MainForm->getTCONControl();
+		tconctrl->setDG(false);
+		tconctrl->setDGLut(vec);
+		tconctrl->setDG(true);
 	    }
 	    RGB_vector_ptr dglut = calibrator.getCCTDGLut(getMeasureCondition());
 	    if (dglut == null) {
@@ -179,6 +190,10 @@ void __fastcall TCCTLUTForm::Button_MeaRunClick(TObject * Sender)
 
 	    if (avoidHookNB) {
 		//儲存DG LUT之前, 要remapping回來
+		foreach(RGB_ptr rgb, *dglut) {
+		    rgb->B /= bgain;
+		    rgb->B = (int) rgb->B;
+		}
 	    }
 	    //=================================================================
 	    // 存檔
@@ -222,6 +237,7 @@ int TCCTLUTForm::getMaxZDGCode()
 void __fastcall TCCTLUTForm::FormCreate(TObject * Sender)
 {
     using namespace cms::lcd::calibrate;
+
 #ifdef DEBUG_NEWFUNC
     this->Button_Debug->Visible = true;
     this->Button_Reset->Visible = true;
@@ -245,6 +261,7 @@ void __fastcall TCCTLUTForm::FormCreate(TObject * Sender)
     Edit_BMax2Gamma->Visible = true;
 
     CheckBox_NewMethod->Visible = true;
+
 #endif
 }
 
@@ -274,6 +291,7 @@ void __fastcall TCCTLUTForm::FormShow(TObject * Sender)
 {
     using namespace Dep;
     using namespace cms::lcd::calibrate;
+    using namespace i2c;
 
     const MaxValue & input = bitDepth->getInputMaxValue();
     bool avoidNoise = (input == MaxValue::Int6Bit || input == MaxValue::Int8Bit);
@@ -282,6 +300,11 @@ void __fastcall TCCTLUTForm::FormShow(TObject * Sender)
     bool tconInput = bitDepth->isTCONInput();
     this->CheckBox_Expand->Visible = !tconInput;
     Button_Run->Enabled = false;
+
+    bptr < TCONControl > tconctrl = MainForm->getTCONControl();
+    if (null != tconctrl) {
+	CheckBox_AvoidHookNB->Visible = true;
+    }
 
     setMeasureInfo();
 }

@@ -59,7 +59,18 @@ namespace cms {
 	    return values;
 	};
       DGLutFile::DGLutFile(const std::string & filename, Mode mode):ExcelAccessBase(filename,
-			mode) {
+			mode),
+	    maxValue(Dep::MaxValue::Double255) {
+	    initSheet(GammaTable, 4, "Gray Level", "Gamma R", "Gamma G", "Gamma B");
+	    initSheet(RawData, 13, "Gray Level", "W_x", "W_y",
+		      "W_Y (nit)", "W_R", "W_G", "W_B", "RP", "GP", "BP",
+		      "RP_Intensity_Fix", "GP_Intensity_Fix", "BP_Intensity_Fix");
+	    initPropertySheet();
+	};
+
+	DGLutFile::DGLutFile(const std::string & filename, Mode mode,
+			     const Dep::MaxValue & maxValue):ExcelAccessBase(filename, mode),
+	    maxValue(maxValue) {
 	    initSheet(GammaTable, 4, "Gray Level", "Gamma R", "Gamma G", "Gamma B");
 	    initSheet(RawData, 13, "Gray Level", "W_x", "W_y",
 		      "W_Y (nit)", "W_R", "W_G", "W_B", "RP", "GP", "BP",
@@ -238,7 +249,7 @@ namespace cms {
 		int G = _toInt((*result)[2]);
 		int B = _toInt((*result)[3]);
 
-		RGB_ptr rgb(new RGBColor(R, G, B));
+		RGB_ptr rgb(new RGBColor(R, G, B, maxValue));
 		vector->push_back(rgb);
 	    };
 	    return vector;
