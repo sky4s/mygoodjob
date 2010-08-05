@@ -691,6 +691,29 @@ namespace cms {
 		return file;
 	    };
 
+	    void LCDCalibrator::storeDGLutFile(const std::string & filename, RGB_vector_ptr dglut,
+					       bptr < cms::colorformat::DGLutFile > dglutFile) {
+		//int n = bitDepth->getLevel();
+		//int n = true == gamma256 ? 257 : 256;
+		//砍掉已存在的
+		//Util::deleteExist(filename);
+		//產生新檔
+		//bptr < DGLutFile > file(new DGLutFile(filename, Create));
+		//DGLutFile file(filename, Create);
+		//產生property物件
+		//bptr < LCDCalibrator > thisbptr(this);
+		DGLutProperty property(this);
+		//寫入property
+		dglutFile->setProperty(property);
+		//寫入dgcode
+		dglutFile->setGammaTable(dglut);
+		if (null != componentVector) {
+		    //寫入raw data
+		    dglutFile->setRawData(componentVector, initialRGBGamma, finalRGBGamma);
+		}
+		//return file;
+	    };
+
 	    RGB_vector_ptr LCDCalibrator::getDGLutOpResult(RGB_vector_ptr dglut) {
 		//==============================================================
 		// DG Code Op block

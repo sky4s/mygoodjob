@@ -256,10 +256,10 @@ namespace cms {
 	int MeasureTool::getMaxZDGCode(bptr < cms::lcd::calibrate::MeasureCondition >
 				       measureCondition) {
 	    RGB_vector_ptr rgbMeasureCode = measureCondition->getRGBMeasureCode();
-	    //Patch_vector_ptr vector(new Patch_vector());
 	    Patch_ptr prePatch;
 	    XYZ_ptr maxZ;
 	    int maxZDG = -1;
+	    mm->setMeasureWindowsVisible(true);
 
 	    foreach(RGB_ptr rgb, *rgbMeasureCode) {
 		Patch_ptr patch = mm->measure(rgb, rgb->toString());

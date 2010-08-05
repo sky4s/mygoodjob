@@ -514,7 +514,7 @@ void __fastcall TTargetWhiteForm2::Button4Click(TObject * Sender)
 
 //---------------------------------------------------------------------------
 
-void __fastcall TTargetWhiteForm2::Button5Click(TObject * Sender)
+void __fastcall TTargetWhiteForm2::Button_FindInverseBClick(TObject * Sender)
 {
     using namespace cms::measure;
     using namespace cms::lcd::calibrate;
@@ -522,7 +522,15 @@ void __fastcall TTargetWhiteForm2::Button5Click(TObject * Sender)
     MeasureWindow->addWindowListener(mt);
     bptr < MeasureCondition > measureCondition(new MeasureCondition(bitDepth));
     int maxZDG = mt->getMaxZDGCode(measureCondition);
-    Edit1->Text = maxZDG;
+    Edit_InverseB->Text = maxZDG;
+    //Edit_B->Text = maxZDG;
+}
+
+//---------------------------------------------------------------------------
+
+void __fastcall TTargetWhiteForm2::Edit_InverseBClick(TObject * Sender)
+{
+    Edit_B->Text = Edit_InverseB->Text;
 }
 
 //---------------------------------------------------------------------------

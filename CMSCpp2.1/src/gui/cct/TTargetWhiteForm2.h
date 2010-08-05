@@ -87,8 +87,8 @@ class TTargetWhiteForm2:public TForm, cms::util::WindowListener {
     TButton *Button3;
     TButton *Button4;
     TCheckBox *CheckBox_Lock;
-    TButton *Button5;
-    TEdit *Edit1;
+    TButton *Button_FindInverseB;
+    TEdit *Edit_InverseB;
     TCheckBox *CheckBox_AvoidHookTV;
     void __fastcall RadioButton_MaxRGBClick(TObject * Sender);
     void __fastcall ScrollBar_RChange(TObject * Sender);
@@ -108,7 +108,8 @@ class TTargetWhiteForm2:public TForm, cms::util::WindowListener {
     void __fastcall FormKeyPress(TObject * Sender, char &Key);
     void __fastcall Button3Click(TObject * Sender);
     void __fastcall Button4Click(TObject * Sender);
-    void __fastcall Button5Click(TObject * Sender);
+    void __fastcall Button_FindInverseBClick(TObject * Sender);
+    void __fastcall Edit_InverseBClick(TObject * Sender);
   private:			// User declarations
     void setColorimetricValues(double x, double y, double up, double vp);
     void scrollBar_Change();

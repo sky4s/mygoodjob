@@ -296,25 +296,26 @@ namespace cms {
 		break;
 		//case MeasureCondition::Plain:break;
 	    }
-	    //==================================================================// low level correct//==================================================================
-		string correctstr;
+	    //==================================================================//low level correct//==================================================================
+		string lowLevelCorrect = "low level correct";
 	    switch (c->correct) {
 	    case Correct::P1P2:
-		correctstr = "P1P2";
-		break;
-	    case Correct::RBInterpolation:
-		correctstr = "RBInterpolation";
-		break;
-	    case Correct::None:
-		correctstr = "None";
-		break;
-	    }
-	    dgcode.addProperty("low level correct", correctstr);
-	    if (Correct::P1P2 == c->correct) {
+		dgcode.addProperty(lowLevelCorrect, "P1P2");
 		dgcode.addProperty("p1", c->p1);
 		dgcode.addProperty("p2", c->p2);
-	    } else if (Correct::RBInterpolation == c->correct) {
+		break;
+	    case Correct::RBInterpolation:
+		dgcode.addProperty(lowLevelCorrect, "RBInterpolation");
 		dgcode.addProperty("rb under", c->under);
+		break;
+	    case Correct::None:
+		dgcode.addProperty(lowLevelCorrect, "None");
+		break;
+	    case Correct::DefinedDim:
+		dgcode.addProperty(lowLevelCorrect, "DefinedDim");
+		dgcode.addProperty("defined dim under", c->under);
+		dgcode.addProperty("defined dim gamma", c->dimGamma);
+		break;
 	    }
 	    //==================================================================
 

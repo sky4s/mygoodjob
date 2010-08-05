@@ -197,6 +197,8 @@ namespace cms {
 		RGB_vector_ptr getGammaDGLut(bptr < MeasureCondition > measureCondition);
 		 bptr < cms::colorformat::DGLutFile >
 		    storeDGLutFile(const std::string & filename, RGB_vector_ptr dglut);
+		void storeDGLutFile(const std::string & filename, RGB_vector_ptr dglut,
+				    bptr < cms::colorformat::DGLutFile > dglutFile);
 		void setBTargetIntensity(double bTargetIntensity);
 		void setMultiGen(bool enable, int times);
 	      private:

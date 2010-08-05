@@ -1,39 +1,39 @@
 object GammaAdjustmentForm: TGammaAdjustmentForm
-  Left = 250
-  Top = 211
+  Left = 300
+  Top = 300
   Width = 467
   Height = 426
   Caption = 'Gamma Adjustment'
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
-  Font.Height = -10
+  Font.Height = -13
   Font.Name = 'MS Sans Serif'
   Font.Style = []
   OldCreateOrder = False
   OnShow = FormShow
-  PixelsPerInch = 96
-  TextHeight = 13
+  PixelsPerInch = 120
+  TextHeight = 16
   object Label9: TLabel
-    Left = 78
-    Top = 299
-    Width = 281
-    Height = 13
+    Left = 96
+    Top = 368
+    Width = 349
+    Height = 16
     Caption = 'Copyright (C) 2010, AU Optronics Corp., All Right Reserved.'
   end
   object GroupBox2: TGroupBox
-    Left = 7
-    Top = 13
-    Width = 176
-    Height = 46
+    Left = 9
+    Top = 16
+    Width = 216
+    Height = 57
     Caption = 'Gray Level Step'
     TabOrder = 0
     object ComboBox_LevelStep: TComboBox
-      Left = 7
-      Top = 20
-      Width = 85
-      Height = 21
-      ItemHeight = 13
+      Left = 9
+      Top = 25
+      Width = 104
+      Height = 24
+      ItemHeight = 16
       TabOrder = 0
       Text = '1'
       Items.Strings = (
@@ -46,41 +46,41 @@ object GammaAdjustmentForm: TGammaAdjustmentForm
     end
   end
   object GroupBox3: TGroupBox
-    Left = 189
-    Top = 13
-    Width = 176
-    Height = 202
+    Left = 233
+    Top = 16
+    Width = 216
+    Height = 249
     Caption = 'Gamma'
     TabOrder = 1
     object GroupBox4: TGroupBox
-      Left = 7
-      Top = 20
-      Width = 163
-      Height = 78
+      Left = 9
+      Top = 25
+      Width = 200
+      Height = 96
       Caption = 'Gray'
       TabOrder = 0
       object Label1: TLabel
-        Left = 13
-        Top = 20
-        Width = 11
-        Height = 13
+        Left = 16
+        Top = 25
+        Width = 13
+        Height = 16
         Caption = 'W'
       end
       object Button_GrayGamma: TButton
-        Left = 117
-        Top = 20
-        Width = 40
-        Height = 20
+        Left = 144
+        Top = 25
+        Width = 49
+        Height = 24
         Caption = 'Run'
         TabOrder = 0
         OnClick = Button_GrayGammaClick
       end
       object ComboBox_GrayGamma: TComboBox
-        Left = 33
-        Top = 20
-        Width = 78
-        Height = 21
-        ItemHeight = 13
+        Left = 41
+        Top = 25
+        Width = 96
+        Height = 24
+        ItemHeight = 16
         ItemIndex = 4
         TabOrder = 1
         Text = '2.2'
@@ -96,50 +96,50 @@ object GammaAdjustmentForm: TGammaAdjustmentForm
       end
     end
     object GroupBox5: TGroupBox
-      Left = 7
-      Top = 98
-      Width = 163
-      Height = 98
+      Left = 9
+      Top = 121
+      Width = 200
+      Height = 120
       Caption = 'RGB'
       Enabled = False
       TabOrder = 1
       object Label2: TLabel
-        Left = 13
-        Top = 20
-        Width = 8
-        Height = 13
+        Left = 16
+        Top = 25
+        Width = 10
+        Height = 16
         Caption = 'R'
       end
       object Label3: TLabel
-        Left = 13
-        Top = 46
-        Width = 8
-        Height = 13
+        Left = 16
+        Top = 57
+        Width = 10
+        Height = 16
         Caption = 'G'
       end
       object Label4: TLabel
-        Left = 13
-        Top = 72
-        Width = 7
-        Height = 13
+        Left = 16
+        Top = 89
+        Width = 9
+        Height = 16
         Caption = 'B'
       end
       object Button_RGBGamma: TButton
-        Left = 117
-        Top = 72
-        Width = 40
-        Height = 20
+        Left = 144
+        Top = 89
+        Width = 49
+        Height = 24
         Caption = 'Run'
         Enabled = False
         TabOrder = 0
         OnClick = Button_RGBGammaClick
       end
       object ComboBox_RGamma: TComboBox
-        Left = 33
-        Top = 20
-        Width = 78
-        Height = 21
-        ItemHeight = 13
+        Left = 41
+        Top = 25
+        Width = 96
+        Height = 24
+        ItemHeight = 16
         ItemIndex = 4
         TabOrder = 1
         Text = '2.2'
@@ -154,11 +154,11 @@ object GammaAdjustmentForm: TGammaAdjustmentForm
           '2.5')
       end
       object ComboBox_GGamma: TComboBox
-        Left = 33
-        Top = 46
-        Width = 78
-        Height = 21
-        ItemHeight = 13
+        Left = 41
+        Top = 57
+        Width = 96
+        Height = 24
+        ItemHeight = 16
         ItemIndex = 4
         TabOrder = 2
         Text = '2.2'
@@ -173,11 +173,11 @@ object GammaAdjustmentForm: TGammaAdjustmentForm
           '2.5')
       end
       object ComboBox_BGamma: TComboBox
-        Left = 33
-        Top = 72
-        Width = 78
-        Height = 21
-        ItemHeight = 13
+        Left = 41
+        Top = 89
+        Width = 96
+        Height = 24
+        ItemHeight = 16
         ItemIndex = 4
         TabOrder = 3
         Text = '2.2'
@@ -193,19 +193,19 @@ object GammaAdjustmentForm: TGammaAdjustmentForm
       end
     end
     object Button3: TButton
-      Left = 20
-      Top = 66
-      Width = 78
-      Height = 19
+      Left = 25
+      Top = 81
+      Width = 96
+      Height = 24
       Caption = 'Load Gamma'
       TabOrder = 2
       OnClick = Button3Click
     end
     object CheckBox_LoadingGamma: TCheckBox
-      Left = 105
-      Top = 66
-      Width = 58
-      Height = 19
+      Left = 129
+      Top = 81
+      Width = 72
+      Height = 24
       Caption = 'Loading'
       Enabled = False
       TabOrder = 3
@@ -213,63 +213,58 @@ object GammaAdjustmentForm: TGammaAdjustmentForm
     end
   end
   object GroupBox1: TGroupBox
-    Left = 7
-    Top = 65
-    Width = 176
-    Height = 150
+    Left = 9
+    Top = 80
+    Width = 216
+    Height = 185
     Caption = 'Options'
     TabOrder = 2
     object CheckBox_AvoidNoise: TCheckBox
-      Left = 7
-      Top = 46
-      Width = 111
-      Height = 20
+      Left = 9
+      Top = 57
+      Width = 136
+      Height = 24
       Caption = 'Avoid FRC Noise'
       TabOrder = 0
     end
     object CheckBox_KeepMax: TCheckBox
-      Left = 7
-      Top = 20
-      Width = 124
-      Height = 20
+      Left = 9
+      Top = 25
+      Width = 152
+      Height = 24
       Caption = 'Keep Max Luminance'
       TabOrder = 1
     end
   end
   inline TOutputFileFrame1: TOutputFileFrame
-    Left = 7
-    Top = 221
-    Width = 364
-    Height = 72
+    Left = 9
+    Top = 272
+    Width = 448
+    Height = 89
     TabOrder = 3
     inherited GroupBox_OutputFile: TGroupBox
-      Width = 359
-      Height = 73
+      Width = 442
+      Height = 90
       inherited Label5: TLabel
-        Left = 7
-        Top = 20
+        Left = 9
+        Top = 25
       end
       inherited Label6: TLabel
-        Left = 7
-        Top = 46
+        Left = 9
+        Top = 57
       end
       inherited Edit_Prefix: TEdit
-        Left = 91
-        Top = 20
-        Width = 163
-        Height = 24
+        Top = 25
       end
       inherited Edit_Directory: TEdit
-        Left = 91
-        Top = 46
-        Width = 209
-        Height = 24
+        Top = 57
+        Width = 257
       end
       inherited Button_BrowseDir: TButton
-        Left = 306
-        Top = 46
-        Width = 46
-        Height = 20
+        Left = 377
+        Top = 57
+        Width = 56
+        Height = 24
       end
     end
   end

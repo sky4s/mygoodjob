@@ -1,6 +1,6 @@
 object MainForm: TMainForm
-  Left = 272
-  Top = 254
+  Left = 300
+  Top = 300
   Width = 938
   Height = 425
   Caption = 'CCT Adjustment v3'
@@ -845,7 +845,7 @@ object MainForm: TMainForm
       object GroupBox2: TGroupBox
         Left = 0
         Top = 9
-        Width = 97
+        Width = 129
         Height = 120
         Caption = 'Input Source'
         TabOrder = 0
@@ -862,18 +862,27 @@ object MainForm: TMainForm
         end
         object RadioButton_TCON: TRadioButton
           Left = 9
-          Top = 49
+          Top = 73
           Width = 80
           Height = 24
           Caption = 'T-CON'
           TabOrder = 1
           OnClick = RadioButton_TCONClick
         end
+        object RadioButton_PCTCON: TRadioButton
+          Left = 9
+          Top = 49
+          Width = 113
+          Height = 24
+          Caption = 'PC(w/T-CON)'
+          TabOrder = 2
+          OnClick = RadioButton_PCTCONClick
+        end
       end
       object Resolution: TGroupBox
-        Left = 105
+        Left = 137
         Top = 9
-        Width = 152
+        Width = 120
         Height = 120
         Caption = 'Resolution'
         TabOrder = 1
@@ -895,7 +904,7 @@ object MainForm: TMainForm
         object Edit_Width: TEdit
           Left = 57
           Top = 25
-          Width = 88
+          Width = 56
           Height = 24
           ImeName = #26085#25991#36664#20837#31995#32113' (MS-IME2002)'
           TabOrder = 0
@@ -904,7 +913,7 @@ object MainForm: TMainForm
         object Edit_Height: TEdit
           Left = 57
           Top = 57
-          Width = 88
+          Width = 56
           Height = 24
           ImeName = #26085#25991#36664#20837#31995#32113' (MS-IME2002)'
           TabOrder = 1
@@ -1437,7 +1446,7 @@ object MainForm: TMainForm
             Top = 16
             Width = 152
             Height = 24
-            ItemHeight = 16
+            ItemHeight = 0
             TabOrder = 0
             OnChange = ComboBox_TCONTypeChange
           end
