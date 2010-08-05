@@ -37,7 +37,8 @@ namespace cms {
 	      protected:
 		 RGB_vector_ptr getRendering(RGB_vector_ptr source);
 	      public:
-		 P1P2DGOp(double p1, double p2, const Dep::MaxValue & maxValue);
+		 P1P2DGOp(double p1, double p2,
+			  const Dep::MaxValue & maxValue);
 	    };
 
 	    class RBInterpolationOp:public DGLutOp {
@@ -83,7 +84,8 @@ namespace cms {
 		int begin;
 		double gamma;
 	      public:
-		 BMax2Op(bptr < BitDepthProcessor > bitDepth, int begin, double gamma);
+		 BMax2Op(bptr < BitDepthProcessor > bitDepth, int begin,
+			 double gamma);
 	      protected:
 		 RGB_vector_ptr getRendering(RGB_vector_ptr source);
 	    };
@@ -107,14 +109,27 @@ namespace cms {
 		FrcNROp(bptr < BitDepthProcessor > bitDepth);
 	    };
 
-	    class KeepMaxLuminanceOp:public DGLutOp {
+	    class KeepMaxLuminanceNativeWhiteOp:public DGLutOp {
 	      private:
 		bptr < BitDepthProcessor > bitDepth;
 	      protected:
 		RGB_vector_ptr getRendering(RGB_vector_ptr source);
 	      public:
-		KeepMaxLuminanceOp(bptr < BitDepthProcessor > bitDepth);
+		KeepMaxLuminanceNativeWhiteOp(bptr < BitDepthProcessor >
+					      bitDepth);
 
+	    };
+
+	    class KeepMaxLuminanceNativeWhiteAdvancedOp:public DGLutOp {
+	      private:
+		bptr < BitDepthProcessor > bitDepth;
+		int over;
+	      protected:
+		 RGB_vector_ptr getRendering(RGB_vector_ptr source);
+	      public:
+		 KeepMaxLuminanceNativeWhiteAdvancedOp(bptr <
+						       BitDepthProcessor >
+						       bitDepth, int over);
 	    };
 	};
     };
