@@ -44,7 +44,8 @@ namespace cms {
 		};
 		return result;
 	    };
-	  MinusOp::MinusOp(double minusValue):minusValue(minusValue) {
+	  MinusOp::MinusOp(double minusValue):minusValue(minusValue)
+	    {
 	    };
 	    //==================================================================
 	    // P1P2DGOp
@@ -79,7 +80,8 @@ namespace cms {
 	    //==================================================================
 	    // RBInterpolation
 	    //==================================================================
-	    RGB_vector_ptr RBInterpolationOp::getRendering(RGB_vector_ptr source) {
+	    RGB_vector_ptr RBInterpolationOp::
+		getRendering(RGB_vector_ptr source) {
 
 		double rInterval = (*source)[under]->R / under;
 		double gInterval = (*source)[under]->G / under;
@@ -97,7 +99,8 @@ namespace cms {
 		}
 		return result;
 	    };
-	  RBInterpolationOp::RBInterpolationOp(double under):under(under) {
+	  RBInterpolationOp::RBInterpolationOp(double under):under(under)
+	    {
 	    };
 	    //==================================================================
 
@@ -215,7 +218,8 @@ namespace cms {
 	    //==================================================================
 	    // BMaxOp
 	    //==================================================================
-	  BMaxOp::BMaxOp(bptr < BitDepthProcessor > bitDepth):bitDepth(bitDepth) {
+	  BMaxOp::BMaxOp(bptr < BitDepthProcessor > bitDepth):bitDepth(bitDepth)
+	    {
 
 	    };
 	    RGB_vector_ptr BMaxOp::getRendering(RGB_vector_ptr source) {
@@ -234,7 +238,8 @@ namespace cms {
 		    RGB_ptr rgb = (*result)[x];
 		    RGB_ptr nextrgb = (*result)[x - 1];
 		    //設定差異
-		    double diff = x > 252 ? 10 / 4. : (x > 232 ? 8 / 4. : 6 / 4.);
+		    double diff =
+			x > 252 ? 10 / 4. : (x > 232 ? 8 / 4. : 6 / 4.);
 		    double thisB = rgb->B;
 		    double nextB = nextrgb->B;
 		    if (thisB > nextB) {
@@ -331,7 +336,8 @@ namespace cms {
 		   } */
 		return result;
 	    };
-	  GByPassOp::GByPassOp(bptr < BitDepthProcessor > bitDepth):bitDepth(bitDepth) {
+	  GByPassOp::GByPassOp(bptr < BitDepthProcessor > bitDepth):bitDepth(bitDepth)
+	    {
 
 	    };
 	    //==================================================================
@@ -373,7 +379,8 @@ namespace cms {
 			double v = rgb->getValue(ch);
 			//只有在v為3 or 1才做修正
 			if (v == 12 / 4. || v == 4 / 4.) {
-			    double setvalue = (v == 12 / 4.) ? 10 / 4. : 2 / 4.;
+			    double setvalue =
+				(v == 12 / 4.) ? 10 / 4. : 2 / 4.;
 			    rgb->setValue(ch, setvalue);
 			    RGB_ptr prergb = (*result)[x - 1];
 			    double prev = prergb->getValue(ch);
@@ -390,11 +397,13 @@ namespace cms {
 		STORE_RGBVECTOR("frcNR_2.xls", result);
 		return result;
 	    };
-	  FrcNROp::FrcNROp(bptr < BitDepthProcessor > bitDepth):bitDepth(bitDepth) {
+	  FrcNROp::FrcNROp(bptr < BitDepthProcessor > bitDepth):bitDepth(bitDepth)
+	    {
 	    };
 	    //==================================================================
 	    //==================================================================
-	    RGB_vector_ptr KeepMaxLuminanceOp::getRendering(RGB_vector_ptr source) {
+	    RGB_vector_ptr KeepMaxLuminanceNativeWhiteOp::
+		getRendering(RGB_vector_ptr source) {
 		int size = source->size();
 		RGB_vector_ptr result = RGBVector::clone(source);
 		RGB_ptr white = (*result)[size - 1];
@@ -403,8 +412,30 @@ namespace cms {
 
 		return result;
 	    };
-	  KeepMaxLuminanceOp::KeepMaxLuminanceOp(bptr < BitDepthProcessor > bitDepth):bitDepth(bitDepth)
+	  KeepMaxLuminanceNativeWhiteOp::KeepMaxLuminanceNativeWhiteOp(bptr < BitDepthProcessor > bitDepth):bitDepth(bitDepth)
 	    {
+
+	    };
+	    //==================================================================
+	    RGB_vector_ptr KeepMaxLuminanceNativeWhiteAdvancedOp::
+		getRendering(RGB_vector_ptr source) {
+		int size = source->size();
+		RGB_ptr lastRGB = (*source)[size - 1];
+
+		/*RGB_vector_ptr result = RGBVector::clone(source);
+		   RGB_ptr white = (*result)[size - 1];
+		   double max = bitDepth->getMaxDigitalCount();
+		   white->setValues(max, max, max);
+
+		   return result; */
+	    };
+	    KeepMaxLuminanceNativeWhiteAdvancedOp::
+		KeepMaxLuminanceNativeWhiteAdvancedOp(bptr <
+						      BitDepthProcessor >
+						      bitDepth,
+						      int
+						      over):bitDepth
+		(bitDepth), over(over) {
 
 	    };
 	    //==================================================================
