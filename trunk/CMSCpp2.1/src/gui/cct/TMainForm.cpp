@@ -460,7 +460,7 @@ void __fastcall TMainForm::GammaAdj1Click(TObject * Sender)
 void __fastcall TMainForm::RadioButton_TCONClick(TObject * Sender)
 {
     this->Panel_TCON->Visible = true;
-    this->bitDepth->setTCONInput(true);
+    //this->bitDepth->setTCONInput(true);
     ShowMessage("Please Turn On DG and FRC for Measurement when T-CON Input Source is selected!!!");
 }
 
@@ -557,7 +557,10 @@ void __fastcall TMainForm::Button_ConnectClick(TObject * Sender)
 	    control = bptr < TCONControl > (new TCONControl(parameter, i2c1st, i2c2nd));
 	}
 	this->Button_Connect->Enabled = false;
-	MeasureWindow->setTCONControl(control);
+	if (!this->RadioButton_PCTCON->Checked) {
+	    MeasureWindow->setTCONControl(control);
+	    this->bitDepth->setTCONInput(true);
+	}
     } else {
 	MeasureWindow->setTCONControlOff();
     }
@@ -958,4 +961,13 @@ bptr < i2c::TCONControl > TMainForm::getTCONControl()
 {
     return control;
 };
+
+void __fastcall TMainForm::RadioButton_PCTCONClick(TObject * Sender)
+{
+    this->Panel_TCON->Visible = true;
+    bitDepth->setTCONInput(false);
+    MeasureWindow->setTCONControlOff();
+}
+
+//---------------------------------------------------------------------------
 

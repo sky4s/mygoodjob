@@ -116,6 +116,7 @@ class TMainForm:public TForm {
     TRadioButton *RadioButton_HSD;
     TRadioButton *RadioButton_FlickrPixel;
     TRadioButton *RadioButton_FlickrSubPixel;
+    TRadioButton *RadioButton_PCTCON;
     void __fastcall About1Click(TObject * Sender);
     void __fastcall Exit1Click(TObject * Sender);
     void __fastcall TargetWhite1Click(TObject * Sender);
@@ -155,6 +156,7 @@ class TMainForm:public TForm {
     void __fastcall RadioButton_LPTSmallClick(TObject * Sender);
     void __fastcall ComboBox_TCONTypeChange(TObject * Sender);
     void __fastcall CheckBox_GammaTestClick(TObject * Sender);
+    void __fastcall RadioButton_PCTCONClick(TObject * Sender);
   private:			// User declarations
     //==========================================================================
     // meter

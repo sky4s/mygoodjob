@@ -1,6 +1,6 @@
 object CCTLUTForm: TCCTLUTForm
-  Left = 311
-  Top = 305
+  Left = 300
+  Top = 300
   Width = 842
   Height = 487
   Caption = 'CCT LUT'
@@ -715,6 +715,7 @@ object CCTLUTForm: TCCTLUTForm
       Width = 168
       Height = 24
       Caption = 'Native White (Smooth)'
+      Enabled = False
       TabOrder = 3
       OnClick = RadioButton_MaxYNativeAdvClick
     end

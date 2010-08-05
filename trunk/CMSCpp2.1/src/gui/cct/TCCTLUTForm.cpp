@@ -66,7 +66,7 @@ void __fastcall TCCTLUTForm::Button_MeaRunClick(TObject * Sender)
 
 
     run = true;
-    this->Button_MeaRun->Enabled = false;
+    //this->Button_MeaRun->Enabled = false;
     try {			//為了對應__finally使用的try
 	String_ptr astr = this->TOutputFileFrame1->getOutputFilename();
 	string filename = astr->c_str();
@@ -142,7 +142,6 @@ void __fastcall TCCTLUTForm::Button_MeaRunClick(TObject * Sender)
 	    double bTargetIntensity = Edit_BTargetIntensity->Text.ToDouble();
 	    calibrator.setBTargetIntensity(bTargetIntensity);
 	}
-	bool avoidHookNB = this->CheckBox_AvoidHookNB->Checked;
 	//==========================================================================
 
 	//==========================================================================
@@ -166,17 +165,20 @@ void __fastcall TCCTLUTForm::Button_MeaRunClick(TObject * Sender)
 	    if (this->TOutputFileFrame1->createDir() == false) {
 		return;
 	    }
+	    Util::deleteExist(filename);
+	    bptr < DGLutFile > dgLutFile(new DGLutFile(filename, Create));
 	    int maxZDGCode = -1;
 	    double bgain = -1;
-	    if (avoidHookNB) {
+	    bool avoidHookNB = this->CheckBox_AvoidHookNB->Checked;
 
+	    if (avoidHookNB) {
 		//開始量測之前先更改面板原始特性
-		//maxZDGCode = getMaxZDGCode();
-		maxZDGCode = 248;
+		maxZDGCode = getMaxZDGCode();
+		//maxZDGCode = 248;
 		bgain = ((double) maxZDGCode) / bitDepth->getMaxDigitalCount();
 		RGB_vector_ptr vec = RGBVector::getLinearRGBVector(bitDepth, bgain);
 		//RGB_vector_ptr vec = RGBVector::getLinearRGBVector(257);
-		//RGB_ptr rgb = (*vec)[vec->size() - 1];
+		STORE_RGBVECTOR("gain.xls", vec);
 		bptr < TCONControl > tconctrl = MainForm->getTCONControl();
 		tconctrl->setDG(false);
 		tconctrl->setDGLut(vec);
@@ -189,16 +191,19 @@ void __fastcall TCCTLUTForm::Button_MeaRunClick(TObject * Sender)
 	    }
 
 	    if (avoidHookNB) {
+		//STORE_RGBVECTOR("beforegain.xls", dglut);
 		//儲存DG LUT之前, 要remapping回來
 		foreach(RGB_ptr rgb, *dglut) {
-		    rgb->B /= bgain;
+		    rgb->B *= bgain;
 		    rgb->B = (int) rgb->B;
 		}
+		//STORE_RGBVECTOR("aftergain.xls", dglut);
 	    }
 	    //=================================================================
 	    // 存檔
 	    //=================================================================
-	    bptr < DGLutFile > dgLutFile = calibrator.storeDGLutFile(filename, dglut);
+	    //bptr < DGLutFile > dgLutFile = calibrator.storeDGLutFile(filename, dglut);
+	    calibrator.storeDGLutFile(filename, dglut, dgLutFile);
 	    //MainForm->setDummyMeterFilename(dgLutFile);
 	    //要release掉, 才可以讀取該檔
 	    dgLutFile.reset();
@@ -216,7 +221,7 @@ void __fastcall TCCTLUTForm::Button_MeaRunClick(TObject * Sender)
     }
     __finally {
 	run = false;
-	this->Button_MeaRun->Enabled = true;
+	//this->Button_MeaRun->Enabled = true;
     }
 }
 
@@ -351,6 +356,7 @@ void __fastcall TCCTLUTForm::FormKeyPress(TObject * Sender, char &Key)
 	    if (false == MeasureWindow->Visible) {
 		MainForm->getComponentFetcher()->windowClosing();
 	    }
+	    //this->Button_MeaRun->Enabled = true;
 	    run = false;
 	} else {
 	    this->Close();
