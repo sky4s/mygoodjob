@@ -49,82 +49,82 @@ namespace cms {
 	    setMeasureData(Component_vector_ptr wMeasureData,
 			   Patch_vector_ptr rMeasureData,
 			   Patch_vector_ptr gMeasureData, Patch_vector_ptr bMeasureData) {
+	    setMeasureData(wMeasureData, rMeasureData, gMeasureData, bMeasureData, false);
 	    //==================================================================
 	    // 檢查來源資料
 	    //==================================================================
-	    int size = getMaximumSize(wMeasureData, rMeasureData,
-				      gMeasureData, bMeasureData);
-	    //==================================================================
-	    //==================================================================
-	    // 初始資料設定
-	    //==================================================================
-	    string_vector_ptr values(new string_vector(18));
-	    //==================================================================
-	    //==================================================================
-	    // 迴圈處理
-	    //==================================================================
-	    for (int x = 0; x < size; x++) {
-		if (wMeasureData != null) {
-		    Component_ptr c = (*wMeasureData)[x];
-		    int w = static_cast < int >(c->rgb->getValue(Channel::W));
-		    (*values)[0] = _toString(w);
-		    xyY_ptr xyY(new CIExyY(c->XYZ));
-		    (*values)[1] = _toString(xyY->x);
-		    (*values)[2] = _toString(xyY->y);
-		    (*values)[3] = _toString(xyY->Y);
-		    double cct = CorrelatedColorTemperature::xy2CCTByMcCamyFloat(xyY);
-		    //計算出來的cct是否有意義 
-		    /*cct =
-		       CorrelatedColorTemperature::
-		       isCCTMeaningful(xyY) ? cct : -1; */
-		    (*values)[4] = _toString(static_cast < int >(cct));
+	    /*int size = getMaximumSize(wMeasureData, rMeasureData,
+	       gMeasureData, bMeasureData);
+	       //==================================================================
+	       //==================================================================
+	       // 初始資料設定
+	       //==================================================================
+	       string_vector_ptr values(new string_vector(18));
+	       //==================================================================
+	       //==================================================================
+	       // 迴圈處理
+	       //==================================================================
+	       for (int x = 0; x < size; x++) {
+	       if (wMeasureData != null) {
+	       Component_ptr c = (*wMeasureData)[x];
+	       int w = static_cast < int >(c->rgb->getValue(Channel::W));
+	       (*values)[0] = _toString(w);
+	       xyY_ptr xyY(new CIExyY(c->XYZ));
+	       (*values)[1] = _toString(xyY->x);
+	       (*values)[2] = _toString(xyY->y);
+	       (*values)[3] = _toString(xyY->Y);
+	       double cct = CorrelatedColorTemperature::xy2CCTByMcCamyFloat(xyY);
+	       //計算出來的cct是否有意義 
 
-		    double duv = CorrelatedColorTemperature::getduvWithDIlluminant(c->XYZ);
-		    (*values)[5] = _toString(duv);
+	       (*values)[4] = _toString(static_cast < int >(cct));
 
-		    RGB_ptr intensity = c->intensity;
-		    if (null != intensity) {
-			(*values)[6] = _toString(intensity->R);
-			(*values)[7] = _toString(intensity->G);
-			(*values)[8] = _toString(intensity->B);
-		    } else {
-			StringVector::setContent(values, "0", 3, 6, 7, 8);
-		    }
-		} else {
-		    StringVector::setContent(values, "0", 9, 0, 1, 2, 3, 4, 5, 6, 7, 8);
-		}
+	       double duv = CorrelatedColorTemperature::getduvWithDIlluminant(c->XYZ);
+	       (*values)[5] = _toString(duv);
 
-		if (rMeasureData != null) {
-		    Patch_ptr p = (*rMeasureData)[x];
-		    xyY_ptr rxyY(new CIExyY(p->getXYZ()));
-		    (*values)[9] = _toString(rxyY->x);
-		    (*values)[10] = _toString(rxyY->y);
-		    (*values)[11] = _toString(rxyY->Y);
-		} else {
-		    StringVector::setContent(values, "0", 3, 9, 10, 11);
-		}
-		if (gMeasureData != null) {
-		    Patch_ptr p = (*gMeasureData)[x];
-		    xyY_ptr gxyY(new CIExyY(p->getXYZ()));
-		    (*values)[12] = _toString(gxyY->x);
-		    (*values)[13] = _toString(gxyY->y);
-		    (*values)[14] = _toString(gxyY->Y);
-		} else {
-		    StringVector::setContent(values, "0", 3, 12, 13, 14);
-		}
-		if (bMeasureData != null) {
-		    Patch_ptr p = (*bMeasureData)[x];
-		    xyY_ptr bxyY(new CIExyY(p->getXYZ()));
-		    (*values)[15] = _toString(bxyY->x);
-		    (*values)[16] = _toString(bxyY->y);
-		    (*values)[17] = _toString(bxyY->Y);
-		} else {
-		    StringVector::setContent(values, "0", 3, 15, 16, 17);
-		}
+	       RGB_ptr intensity = c->intensity;
+	       if (null != intensity) {
+	       (*values)[6] = _toString(intensity->R);
+	       (*values)[7] = _toString(intensity->G);
+	       (*values)[8] = _toString(intensity->B);
+	       } else {
+	       StringVector::setContent(values, "0", 3, 6, 7, 8);
+	       }
+	       }
+	       else {
+	       StringVector::setContent(values, "0", 9, 0, 1, 2, 3, 4, 5, 6, 7, 8);
+	       }
 
-		this->insertData(Sheet1, values, false);
-	    }
-	}
+	       if (rMeasureData != null) {
+	       Patch_ptr p = (*rMeasureData)[x];
+	       xyY_ptr rxyY(new CIExyY(p->getXYZ()));
+	       (*values)[9] = _toString(rxyY->x);
+	       (*values)[10] = _toString(rxyY->y);
+	       (*values)[11] = _toString(rxyY->Y);
+	       } else {
+	       StringVector::setContent(values, "0", 3, 9, 10, 11);
+	       }
+	       if (gMeasureData != null) {
+	       Patch_ptr p = (*gMeasureData)[x];
+	       xyY_ptr gxyY(new CIExyY(p->getXYZ()));
+	       (*values)[12] = _toString(gxyY->x);
+	       (*values)[13] = _toString(gxyY->y);
+	       (*values)[14] = _toString(gxyY->Y);
+	       } else {
+	       StringVector::setContent(values, "0", 3, 12, 13, 14);
+	       }
+	       if (bMeasureData != null) {
+	       Patch_ptr p = (*bMeasureData)[x];
+	       xyY_ptr bxyY(new CIExyY(p->getXYZ()));
+	       (*values)[15] = _toString(bxyY->x);
+	       (*values)[16] = _toString(bxyY->y);
+	       (*values)[17] = _toString(bxyY->Y);
+	       } else {
+	       StringVector::setContent(values, "0", 3, 15, 16, 17);
+	       }
+
+	       this->insertData(Sheet1, values, false);
+	       }
+	     */ }
 
 	void RampMeasureFile::
 	    setMeasureData(Component_vector_ptr wMeasureData,
@@ -160,6 +160,7 @@ namespace cms {
 		    /*cct =
 		       CorrelatedColorTemperature::
 		       isCCTMeaningful(xyY) ? cct : -1; */
+		    cct = cct > 40000 ? -1 : cct;
 		    (*values)[4] = _toString(static_cast < int >(cct));
 
 		    double duv = CorrelatedColorTemperature::getduvWithDIlluminant(c->XYZ);
@@ -218,6 +219,7 @@ namespace cms {
 	    }
 	    return values;
 	}
+
 	//==================================================================
     };
 };

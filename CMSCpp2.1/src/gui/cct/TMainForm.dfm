@@ -1,6 +1,6 @@
 object MainForm: TMainForm
-  Left = 300
-  Top = 300
+  Left = 135
+  Top = 317
   Width = 938
   Height = 425
   Caption = 'CCT Adjustment v3'
@@ -845,10 +845,18 @@ object MainForm: TMainForm
       object GroupBox2: TGroupBox
         Left = 0
         Top = 9
-        Width = 129
+        Width = 208
         Height = 120
         Caption = 'Input Source'
         TabOrder = 0
+        object Label16: TLabel
+          Left = 25
+          Top = 73
+          Width = 101
+          Height = 16
+          Caption = '(Avoid Hook NB)'
+          Visible = False
+        end
         object RadioButton_PC: TRadioButton
           Left = 9
           Top = 25
@@ -862,27 +870,35 @@ object MainForm: TMainForm
         end
         object RadioButton_TCON: TRadioButton
           Left = 9
-          Top = 73
+          Top = 89
           Width = 80
           Height = 24
+          Hint = 'For Direct Gamma Use'
+          HelpType = htKeyword
           Caption = 'T-CON'
+          ParentShowHint = False
+          ShowHint = True
           TabOrder = 1
           OnClick = RadioButton_TCONClick
         end
         object RadioButton_PCTCON: TRadioButton
           Left = 9
           Top = 49
-          Width = 113
+          Width = 189
           Height = 24
-          Caption = 'PC(w/T-CON)'
+          Hint = 'For De-Hook with NB Panel Use'
+          Caption = 'PC(with T-CON)'
+          ParentShowHint = False
+          ShowHint = True
           TabOrder = 2
+          Visible = False
           OnClick = RadioButton_PCTCONClick
         end
       end
       object Resolution: TGroupBox
-        Left = 137
+        Left = 718
         Top = 9
-        Width = 120
+        Width = 179
         Height = 120
         Caption = 'Resolution'
         TabOrder = 1
@@ -921,9 +937,9 @@ object MainForm: TMainForm
         end
       end
       object GroupBox1: TGroupBox
-        Left = 265
+        Left = 215
         Top = 9
-        Width = 152
+        Width = 153
         Height = 120
         Caption = 'Pattern Display Interval'
         TabOrder = 2
@@ -946,7 +962,7 @@ object MainForm: TMainForm
         end
       end
       object GroupBox_CHSetting: TGroupBox
-        Left = 425
+        Left = 375
         Top = 9
         Width = 208
         Height = 120
@@ -1003,9 +1019,9 @@ object MainForm: TMainForm
         end
       end
       object GroupBox3: TGroupBox
-        Left = 640
+        Left = 591
         Top = 9
-        Width = 121
+        Width = 120
         Height = 120
         Caption = 'Analyzer'
         TabOrder = 4
@@ -1015,9 +1031,7 @@ object MainForm: TMainForm
           Width = 96
           Height = 24
           Caption = 'CA-210'
-          Checked = True
           TabOrder = 0
-          TabStop = True
           OnClick = RadioButton_AnalyzerCA210Click
         end
         object RadioButton_AnalyzerMaxMatrix: TRadioButton
@@ -1026,7 +1040,9 @@ object MainForm: TMainForm
           Width = 96
           Height = 24
           Caption = 'Max Matrix'
+          Checked = True
           TabOrder = 1
+          TabStop = True
           OnClick = RadioButton_AnalyzerMaxMatrixClick
         end
         object RadioButton_AnalyzerDebug: TRadioButton
@@ -1043,7 +1059,7 @@ object MainForm: TMainForm
       object GroupBox12: TGroupBox
         Left = 0
         Top = 128
-        Width = 257
+        Width = 208
         Height = 129
         Caption = 'Pattern'
         TabOrder = 5
@@ -1089,7 +1105,7 @@ object MainForm: TMainForm
         object RadioButton_FlickrPixel: TRadioButton
           Left = 87
           Top = 43
-          Width = 122
+          Width = 111
           Height = 17
           Caption = 'FlickrPixel'
           TabOrder = 4
@@ -1098,7 +1114,7 @@ object MainForm: TMainForm
         object RadioButton_FlickrSubPixel: TRadioButton
           Left = 87
           Top = 63
-          Width = 122
+          Width = 111
           Height = 17
           Caption = 'FlickrSubPixel'
           TabOrder = 5
@@ -1445,7 +1461,7 @@ object MainForm: TMainForm
             Left = 9
             Top = 16
             Width = 152
-            Height = 24
+            Height = 21
             ItemHeight = 0
             TabOrder = 0
             OnChange = ComboBox_TCONTypeChange

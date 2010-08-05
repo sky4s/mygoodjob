@@ -44,7 +44,7 @@ class TCCTLUTForm:public TForm {
     TLabel *Label8;
     TEdit *Edit_P2;
     TButton *Button_Debug;
-    TRadioButton *RadioButton_None;
+    TRadioButton *RadioButton_NoneLowLevelCorrect;
     TLabel *Label9;
     TOutputFileFrame *TOutputFileFrame1;
     TCheckBox *CheckBox_Expand;
@@ -92,6 +92,7 @@ class TCCTLUTForm:public TForm {
     TCheckBox *CheckBox_BTargetIntensity;
     TEdit *Edit_BTargetIntensity;
     TCheckBox *CheckBox_AvoidHookNB;
+    TRadioButton *RadioButton_OriginalGamma;
     void __fastcall RadioButton_P1P2Click(TObject * Sender);
     void __fastcall Button_MeaRunClick(TObject * Sender);
     void __fastcall FormCreate(TObject * Sender);
@@ -104,7 +105,6 @@ class TCCTLUTForm:public TForm {
     void __fastcall ComboBox_GammaChange(TObject * Sender);
     void __fastcall CheckBox_ExpandClick(TObject * Sender);
     void __fastcall Button_ResetClick(TObject * Sender);
-    void __fastcall CheckBox_BMax2Click(TObject * Sender);
     void __fastcall CheckBox_NewMethodClick(TObject * Sender);
     void __fastcall RadioButton_MaxYNativeAdvClick(TObject * Sender);
     void __fastcall FormClose(TObject * Sender, TCloseAction & Action);

@@ -82,7 +82,6 @@ class TTargetWhiteForm2:public TForm, cms::util::WindowListener {
     TLabel *Label9;
     TLabel *Label16;
     TButton *Button_setMaxMatrix;
-    TCheckBox *CheckBox_MaxRGB;
     TLabel *Label21;
     TButton *Button3;
     TButton *Button4;
@@ -128,4 +127,5 @@ class TTargetWhiteForm2:public TForm, cms::util::WindowListener {
 extern PACKAGE TTargetWhiteForm2 *TargetWhiteForm2;
 //---------------------------------------------------------------------------
 #endif
+
 

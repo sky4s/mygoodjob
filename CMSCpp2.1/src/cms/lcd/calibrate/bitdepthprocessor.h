@@ -55,6 +55,7 @@ namespace cms {
 		 */
 		int getEffectiveLevel();
 
+		bool is8in8Out();
 		bool is8in6Out();
 		bool is6in6Out();
 		bool is10in8Out();

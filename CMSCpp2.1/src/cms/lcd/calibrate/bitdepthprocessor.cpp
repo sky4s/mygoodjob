@@ -138,7 +138,9 @@ namespace cms {
 	    int BitDepthProcessor::getEffectiveLevel() {
 		return getMaxDigitalCount() + 1;
 	    };
-
+	    bool BitDepthProcessor::is8in8Out() {
+		return bitDepth == b8_8;
+	    };
 	    bool BitDepthProcessor::is8in6Out() {
 		return bitDepth == b8_6;
 	    };

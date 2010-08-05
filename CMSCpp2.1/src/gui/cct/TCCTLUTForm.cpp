@@ -97,7 +97,7 @@ void __fastcall TCCTLUTForm::Button_MeaRunClick(TObject * Sender)
 	    bool averageDim = this->CheckBox_AverageDimDG->Checked;
 	    double gamma = this->Edit_DimGamma->Text.ToDouble();
 	    calibrator.setDefinedDim(under, gamma, averageDim);
-	} else if (this->RadioButton_None->Checked) {
+	} else if (this->RadioButton_NoneLowLevelCorrect->Checked) {
 	    calibrator.setNonDimCorrect();
 	}
 	//==========================================================================
@@ -112,6 +112,9 @@ void __fastcall TCCTLUTForm::Button_MeaRunClick(TObject * Sender)
 	    double_vector_ptr gammaCurve = rgbGamma->w;
 	    calibrator.setGammaCurve(gammaCurve);
 	    calibrator.setGByPass(this->CheckBox_GByPass->Checked);
+	} else if (this->RadioButton_OriginalGamma->Checked) {
+	    calibrator.setOriginalGamma();
+	    calibrator.setGByPass(true);
 	}
 	//==========================================================================
 
@@ -171,25 +174,32 @@ void __fastcall TCCTLUTForm::Button_MeaRunClick(TObject * Sender)
 	    double bgain = -1;
 	    bool avoidHookNB = this->CheckBox_AvoidHookNB->Checked;
 
+	    //==========================================================================
+	    // avoid HOOK NB
+	    //==========================================================================
 	    if (avoidHookNB) {
 		//開始量測之前先更改面板原始特性
 		maxZDGCode = getMaxZDGCode();
 		//maxZDGCode = 248;
 		bgain = ((double) maxZDGCode) / bitDepth->getMaxDigitalCount();
 		RGB_vector_ptr vec = RGBVector::getLinearRGBVector(bitDepth, bgain);
-		//RGB_vector_ptr vec = RGBVector::getLinearRGBVector(257);
 		STORE_RGBVECTOR("gain.xls", vec);
 		bptr < TCONControl > tconctrl = MainForm->getTCONControl();
 		tconctrl->setDG(false);
 		tconctrl->setDGLut(vec);
 		tconctrl->setDG(true);
 	    }
+	    //==========================================================================
+
 	    RGB_vector_ptr dglut = calibrator.getCCTDGLut(getMeasureCondition());
 	    if (dglut == null) {
 		//被中斷就直接return
 		return;
-	    }
+	    };
 
+	    //==========================================================================
+	    // avoid HOOK NB
+	    //==========================================================================
 	    if (avoidHookNB) {
 		//STORE_RGBVECTOR("beforegain.xls", dglut);
 		//儲存DG LUT之前, 要remapping回來
@@ -199,6 +209,8 @@ void __fastcall TCCTLUTForm::Button_MeaRunClick(TObject * Sender)
 		}
 		//STORE_RGBVECTOR("aftergain.xls", dglut);
 	    }
+	    //==========================================================================
+
 	    //=================================================================
 	    // 存檔
 	    //=================================================================
@@ -244,28 +256,43 @@ void __fastcall TCCTLUTForm::FormCreate(TObject * Sender)
     using namespace cms::lcd::calibrate;
 
 #ifdef DEBUG_NEWFUNC
+    //=========================================================================
     this->Button_Debug->Visible = true;
     this->Button_Reset->Visible = true;
+    //=========================================================================
 
-    this->GroupBox_KeepMaxLuminance->Visible = true;
-    this->Button_Run->Visible = true;
+    //this->GroupBox_KeepMaxLuminance->Visible = true;
+    //this->Button_Run->Visible = true;
 
+    //=========================================================================
+    // dim correct
+    //=========================================================================
+    RadioButton_NoneLowLevelCorrect->Visible = true;
+    /*RadioButton_DefinedDim->Visible = true;
+       CheckBox_AverageDimDG->Visible = true;
+       Label14->Visible = true;
+       Label17->Visible = true;
+       Edit_DefinedDimUnder->Visible = true;
+       Edit_DimGamma->Visible = true; */
+    //=========================================================================
 
-    RadioButton_None->Visible = true;
-    RadioButton_DefinedDim->Visible = true;
-    CheckBox_AverageDimDG->Visible = true;
-    Label14->Visible = true;
-    Label17->Visible = true;
-    Edit_DefinedDimUnder->Visible = true;
-    Edit_DimGamma->Visible = true;
+    //=========================================================================
+    // smooth bmax
+    //=========================================================================
+    /*Label18->Visible = true;
+       Label19->Visible = true;
+       CheckBox_BMax2->Visible = true;
+       Edit_BMax2Begin->Visible = true;
+       Edit_BMax2Gamma->Visible = true; */
+    //=========================================================================
 
-    Label18->Visible = true;
-    Label19->Visible = true;
-    CheckBox_BMax2->Visible = true;
-    Edit_BMax2Begin->Visible = true;
-    Edit_BMax2Gamma->Visible = true;
-
-    CheckBox_NewMethod->Visible = true;
+    //=========================================================================
+    // multi gen
+    //=========================================================================
+    CheckBox_MultiGen->Visible = true;
+    Edit_MultiGenTimes->Visible = true;
+    //=========================================================================
+    //CheckBox_NewMethod->Visible = true;
 
 #endif
 }
@@ -304,7 +331,7 @@ void __fastcall TCCTLUTForm::FormShow(TObject * Sender)
 
     bool tconInput = bitDepth->isTCONInput();
     this->CheckBox_Expand->Visible = !tconInput;
-    Button_Run->Enabled = false;
+    //Button_Run->Enabled = false;
 
     bptr < TCONControl > tconctrl = MainForm->getTCONControl();
     if (null != tconctrl) {
@@ -440,14 +467,7 @@ void __fastcall TCCTLUTForm::Button_ResetClick(TObject * Sender)
 
 
 
-void __fastcall TCCTLUTForm::CheckBox_BMax2Click(TObject * Sender)
-{
-    bool enable = this->CheckBox_BMax2->Checked;
-    Edit_BMax2Begin->Enabled = enable;
-    Edit_BMax2Gamma->Enabled = enable;
-}
 
-//---------------------------------------------------------------------------
 
 void __fastcall TCCTLUTForm::CheckBox_NewMethodClick(TObject * Sender)
 {
@@ -463,15 +483,17 @@ void __fastcall TCCTLUTForm::CheckBox_NewMethodClick(TObject * Sender)
 	if (RadioButton_P1P2->Checked) {
 	    this->RadioButton_DefinedDim->Checked = true;
 	}
+
     } else {
 	if (RadioButton_DefinedDim->Checked) {
 	    this->RadioButton_P1P2->Checked = true;
 	}
-	if (RadioButton_MaxYNativeAdv->Checked) {
-	    this->RadioButton_MaxYTarget->Checked = true;
-	}
-    }
 
+    }
+    RadioButton_MaxYNativeAdv->Checked = newMethod;
+    RadioButton_MaxYTarget->Checked = !newMethod;
+    RadioButton_MaxYTarget->Enabled = !newMethod;
+    RadioButton_MaxYNative->Enabled = !newMethod;
 }
 
 //---------------------------------------------------------------------------
