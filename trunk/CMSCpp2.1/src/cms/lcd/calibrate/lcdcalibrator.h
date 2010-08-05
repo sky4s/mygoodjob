@@ -124,32 +124,44 @@ namespace cms {
 		// 校正參數
 		//==============================================================
 		 Correct correct;
+		//dim
 		int p1, p2;
 		int under;
 		double dimGamma;
-		bool gByPass;
+		bool averageDimDG;
+
 		double bIntensityGain;
+		bool avoidFRCNoise;
+
+		//bmax
 		bool bMax;
 		bool bMax2;
 		int bMax2Begin;
 		double bMax2Gamma;
-		bool avoidFRCNoise;
+
+		//gamma
 		bool rgbIndepGamma;
 		double gamma, rgamma, ggamma, bgamma;
 		bool useGammaCurve;
-		bool averageDimDG;
-		bool newMethod;
 		double_vector_ptr gammaCurve;
 		double_vector_ptr rgammaCurve;
 		double_vector_ptr ggammaCurve;
 		double_vector_ptr bgammaCurve;
+		bool gByPass;
+		bool originalGamma;
+
+		bool newMethod;
+
 		 bptr < MeasureCondition > measureCondition;
 		 bptr < BitDepthProcessor > bitDepth;
+
+		// max lumi
 		KeepMaxLuminance keepMaxLuminance;
 		int keepMaxLumiOver;
 		double keepMaxLumiGamma;
 		double bTargetIntensity;
 
+		//multi
 		bool multiGen;
 		int multiGenTimes;
 		//==============================================================
@@ -180,6 +192,7 @@ namespace cms {
 		void setGammaCurve(double_vector_ptr gammaCurve);
 		void setGammaCurve(double_vector_ptr rgammaCurve,
 				   double_vector_ptr ggammaCurve, double_vector_ptr bgammaCurve);
+		void setOriginalGamma();
 		void setGByPass(bool byPass);
 		void setBIntensityGain(double gain);
 		void setBMax(bool bMax);
@@ -192,7 +205,7 @@ namespace cms {
 		 LCDCalibrator(bptr <
 			       cms::lcd::calibrate::ComponentFetcher >
 			       fetcher, bptr < BitDepthProcessor > bitDepth);
-
+		double_vector_ptr getGammaCurve(Component_vector_ptr componentVector);
 		RGB_vector_ptr getCCTDGLut(bptr < MeasureCondition > measureCondition);
 		RGB_vector_ptr getGammaDGLut(bptr < MeasureCondition > measureCondition);
 		 bptr < cms::colorformat::DGLutFile >

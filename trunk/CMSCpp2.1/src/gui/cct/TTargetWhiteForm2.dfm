@@ -1,6 +1,6 @@
 object TargetWhiteForm2: TTargetWhiteForm2
   Left = 0
-  Top = 200
+  Top = 131
   Width = 929
   Height = 618
   Caption = 'TargetWhiteForm'
@@ -180,7 +180,10 @@ object TargetWhiteForm2: TTargetWhiteForm2
             Top = 95
             Width = 129
             Height = 26
+            Hint = 'Find Target and keep B at maximum B Intensity'
             Caption = 'Avoid Hook(TV)'
+            ParentShowHint = False
+            ShowHint = True
             TabOrder = 6
           end
         end
@@ -314,15 +317,6 @@ object TargetWhiteForm2: TTargetWhiteForm2
             TabOrder = 4
             OnClick = Button4Click
           end
-        end
-        object CheckBox_MaxRGB: TCheckBox
-          Left = 9
-          Top = 465
-          Width = 80
-          Height = 16
-          Caption = 'MaxRGB'
-          TabOrder = 7
-          Visible = False
         end
       end
       object GroupBox5: TGroupBox
@@ -500,7 +494,7 @@ object TargetWhiteForm2: TTargetWhiteForm2
           Left = 192
           Top = 41
           Width = 73
-          Height = 21
+          Height = 24
           ImeName = #26085#25991#36664#20837#31995#32113' (MS-IME2002)'
           TabOrder = 0
           Text = '0'
@@ -509,7 +503,7 @@ object TargetWhiteForm2: TTargetWhiteForm2
           Left = 192
           Top = 73
           Width = 73
-          Height = 21
+          Height = 24
           ImeName = #26085#25991#36664#20837#31995#32113' (MS-IME2002)'
           TabOrder = 1
           Text = '0'
@@ -518,7 +512,7 @@ object TargetWhiteForm2: TTargetWhiteForm2
           Left = 192
           Top = 105
           Width = 73
-          Height = 21
+          Height = 24
           ImeName = #26085#25991#36664#20837#31995#32113' (MS-IME2002)'
           TabOrder = 2
           Text = '0'
@@ -528,7 +522,7 @@ object TargetWhiteForm2: TTargetWhiteForm2
           Left = 192
           Top = 137
           Width = 73
-          Height = 21
+          Height = 24
           ImeName = #26085#25991#36664#20837#31995#32113' (MS-IME2002)'
           TabOrder = 3
           Text = '0'
@@ -537,7 +531,7 @@ object TargetWhiteForm2: TTargetWhiteForm2
           Left = 113
           Top = 137
           Width = 72
-          Height = 21
+          Height = 24
           ImeName = #26085#25991#36664#20837#31995#32113' (MS-IME2002)'
           TabOrder = 4
           Text = '0'
@@ -546,7 +540,7 @@ object TargetWhiteForm2: TTargetWhiteForm2
           Left = 113
           Top = 105
           Width = 72
-          Height = 21
+          Height = 24
           ImeName = #26085#25991#36664#20837#31995#32113' (MS-IME2002)'
           TabOrder = 5
           Text = '0'
@@ -555,7 +549,7 @@ object TargetWhiteForm2: TTargetWhiteForm2
           Left = 113
           Top = 73
           Width = 72
-          Height = 21
+          Height = 24
           ImeName = #26085#25991#36664#20837#31995#32113' (MS-IME2002)'
           TabOrder = 6
           Text = '0'
@@ -564,7 +558,7 @@ object TargetWhiteForm2: TTargetWhiteForm2
           Left = 113
           Top = 41
           Width = 72
-          Height = 21
+          Height = 24
           ImeName = #26085#25991#36664#20837#31995#32113' (MS-IME2002)'
           TabOrder = 7
           Text = '0'
@@ -573,7 +567,7 @@ object TargetWhiteForm2: TTargetWhiteForm2
           Left = 32
           Top = 41
           Width = 73
-          Height = 21
+          Height = 24
           ImeName = #26085#25991#36664#20837#31995#32113' (MS-IME2002)'
           TabOrder = 8
           Text = '0'
@@ -582,7 +576,7 @@ object TargetWhiteForm2: TTargetWhiteForm2
           Left = 32
           Top = 73
           Width = 73
-          Height = 21
+          Height = 24
           ImeName = #26085#25991#36664#20837#31995#32113' (MS-IME2002)'
           TabOrder = 9
           Text = '0'
@@ -591,7 +585,7 @@ object TargetWhiteForm2: TTargetWhiteForm2
           Left = 32
           Top = 105
           Width = 73
-          Height = 21
+          Height = 24
           ImeName = #26085#25991#36664#20837#31995#32113' (MS-IME2002)'
           TabOrder = 10
           Text = '0'
@@ -600,7 +594,7 @@ object TargetWhiteForm2: TTargetWhiteForm2
           Left = 32
           Top = 137
           Width = 73
-          Height = 21
+          Height = 24
           ImeName = #26085#25991#36664#20837#31995#32113' (MS-IME2002)'
           TabOrder = 11
           Text = '0'
@@ -623,7 +617,10 @@ object TargetWhiteForm2: TTargetWhiteForm2
     Top = 337
     Width = 101
     Height = 24
+    Hint = 'Find Inverse B Intensity '
     Caption = 'Find Inverse B'
+    ParentShowHint = False
+    ShowHint = True
     TabOrder = 1
     OnClick = Button_FindInverseBClick
   end
@@ -631,7 +628,10 @@ object TargetWhiteForm2: TTargetWhiteForm2
     Left = 152
     Top = 337
     Width = 41
-    Height = 25
+    Height = 24
+    Hint = 'Click this can auto copy Inverse B to B of RGB Ratio'
+    ParentShowHint = False
+    ShowHint = True
     TabOrder = 2
     OnClick = Edit_InverseBClick
   end

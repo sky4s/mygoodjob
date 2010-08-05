@@ -258,13 +258,9 @@ void __fastcall TTargetWhiteForm2::Button_RunClick(TObject * Sender)
     RGB_ptr r(new RGBColor(MaxValue::Int8Bit));
     RGB_ptr g(new RGBColor(MaxValue::Int8Bit));
     RGB_ptr b(new RGBColor(MaxValue::Int8Bit));
-    if (this->CheckBox_MaxRGB->Checked) {
-	r->R = g->G = b->B = 255;
-    } else {
-	r->R = rgb->R;
-	g->G = rgb->G;
-	b->B = rgb->B;
-    }
+    r->R = rgb->R;
+    g->G = rgb->G;
+    b->B = rgb->B;
     //==========================================================================
 
     //==========================================================================
@@ -491,7 +487,7 @@ void __fastcall TTargetWhiteForm2::FormKeyPress(TObject * Sender, char &Key)
 //---------------------------------------------------------------------------
 void __fastcall TTargetWhiteForm2::Button3Click(TObject * Sender)
 {
-    if (MainForm->isCA210Analyzer()) {
+    if (MainForm->linkCA210) {
 	MainForm->connectMeter();
 	this->Button4->Enabled = true;
 	this->Button3->Enabled = false;
@@ -503,8 +499,8 @@ void __fastcall TTargetWhiteForm2::Button3Click(TObject * Sender)
 
 void __fastcall TTargetWhiteForm2::Button4Click(TObject * Sender)
 {
-    MainForm->getAnalyzer();
-    if (MainForm->isCA210Analyzer()) {
+    //MainForm->getAnalyzer();
+    if (MainForm->linkCA210) {
 	MainForm->disconnectMeter();
 	this->Button4->Enabled = false;
 	this->Button3->Enabled = true;

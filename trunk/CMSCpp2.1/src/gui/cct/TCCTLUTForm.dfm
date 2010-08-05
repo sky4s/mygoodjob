@@ -1,5 +1,5 @@
 object CCTLUTForm: TCCTLUTForm
-  Left = 300
+  Left = 285
   Top = 300
   Width = 842
   Height = 487
@@ -104,7 +104,7 @@ object CCTLUTForm: TCCTLUTForm
     Left = 209
     Top = 9
     Width = 208
-    Height = 112
+    Height = 144
     Caption = 'Gamma'
     TabOrder = 1
     object RadioButton_GammaCurve: TRadioButton
@@ -158,12 +158,21 @@ object CCTLUTForm: TCCTLUTForm
     end
     object RadioButton_GammaValue: TRadioButton
       Left = 9
-      Top = 89
+      Top = 113
       Width = 137
       Height = 16
       Caption = 'Gamma Value'
       TabOrder = 4
+      Visible = False
       OnClick = RadioButton_GammaValueClick
+    end
+    object RadioButton_OriginalGamma: TRadioButton
+      Left = 9
+      Top = 89
+      Width = 136
+      Height = 16
+      Caption = 'Original Gamma'
+      TabOrder = 5
     end
   end
   object GroupBox3: TGroupBox
@@ -200,7 +209,6 @@ object CCTLUTForm: TCCTLUTForm
       Width = 37
       Height = 16
       Caption = 'Under'
-      Visible = False
     end
     object Label14: TLabel
       Left = 32
@@ -208,7 +216,6 @@ object CCTLUTForm: TCCTLUTForm
       Width = 49
       Height = 16
       Caption = 'Strength'
-      Visible = False
     end
     object RadioButton_P1P2: TRadioButton
       Left = 9
@@ -256,7 +263,7 @@ object CCTLUTForm: TCCTLUTForm
       TabOrder = 4
       Text = '50'
     end
-    object RadioButton_None: TRadioButton
+    object RadioButton_NoneLowLevelCorrect: TRadioButton
       Left = 9
       Top = 108
       Width = 72
@@ -273,7 +280,6 @@ object CCTLUTForm: TCCTLUTForm
       Caption = 'Defined Dim'
       Enabled = False
       TabOrder = 6
-      Visible = False
     end
     object Edit_DefinedDimUnder: TEdit
       Left = 89
@@ -283,7 +289,6 @@ object CCTLUTForm: TCCTLUTForm
       ImeName = #26085#25991#36664#20837#31995#32113' (MS-IME2002)'
       TabOrder = 7
       Text = '50'
-      Visible = False
     end
     object CheckBox_AverageDimDG: TCheckBox
       Left = 32
@@ -302,7 +307,6 @@ object CCTLUTForm: TCCTLUTForm
       ImeName = #26085#25991#36664#20837#31995#32113' (MS-IME2002)'
       TabOrder = 9
       Text = '2.2'
-      Visible = False
     end
   end
   object GroupBox4: TGroupBox
@@ -361,7 +365,6 @@ object CCTLUTForm: TCCTLUTForm
       Caption = 'B Max (Smooth)'
       TabOrder = 3
       Visible = False
-      OnClick = CheckBox_BMax2Click
     end
     object Edit_BMax2Begin: TEdit
       Left = 89
@@ -406,7 +409,6 @@ object CCTLUTForm: TCCTLUTForm
       Height = 24
       Caption = 'New CCT Method'
       TabOrder = 1
-      Visible = False
       OnClick = CheckBox_NewMethodClick
     end
     object CheckBox_MultiGen: TCheckBox
@@ -417,6 +419,7 @@ object CCTLUTForm: TCCTLUTForm
       Caption = 'Multi Generate'
       Enabled = False
       TabOrder = 2
+      Visible = False
     end
     object Edit_MultiGenTimes: TEdit
       Left = 144
@@ -426,6 +429,7 @@ object CCTLUTForm: TCCTLUTForm
       Enabled = False
       TabOrder = 3
       Text = '1'
+      Visible = False
     end
     object CheckBox_BTargetIntensity: TCheckBox
       Left = 9
@@ -435,6 +439,7 @@ object CCTLUTForm: TCCTLUTForm
       Caption = 'B Target intensity'
       Enabled = False
       TabOrder = 4
+      Visible = False
       OnClick = CheckBox_BTargetIntensityClick
     end
     object Edit_BTargetIntensity: TEdit
@@ -445,6 +450,7 @@ object CCTLUTForm: TCCTLUTForm
       Enabled = False
       TabOrder = 5
       Text = '100'
+      Visible = False
     end
   end
   object Button_MeaRun: TButton
@@ -663,55 +669,57 @@ object CCTLUTForm: TCCTLUTForm
   end
   object GroupBox_KeepMaxLuminance: TGroupBox
     Left = 208
-    Top = 129
+    Top = 161
     Width = 209
-    Height = 200
+    Height = 168
     Caption = 'Keep Max Luminance'
     TabOrder = 11
-    Visible = False
     object Label20: TLabel
       Left = 32
-      Top = 113
+      Top = 89
       Width = 29
       Height = 16
       Caption = 'Over'
     end
     object Label21: TLabel
       Left = 32
-      Top = 137
+      Top = 113
       Width = 49
       Height = 16
       Caption = 'Strength'
     end
     object RadioButton_MaxYTarget: TRadioButton
       Left = 9
-      Top = 41
-      Width = 168
+      Top = 17
+      Width = 72
       Height = 24
-      Caption = 'Target White'
+      Caption = 'None'
+      Checked = True
+      ParentShowHint = False
+      ShowHint = False
       TabOrder = 0
+      TabStop = True
     end
     object RadioButton_MaxYNative: TRadioButton
       Left = 9
-      Top = 64
+      Top = 41
       Width = 160
-      Height = 25
+      Height = 24
       Caption = 'Native White'
       TabOrder = 1
     end
     object RadioButton_MaxYNone: TRadioButton
-      Left = 9
-      Top = 16
-      Width = 144
+      Left = 137
+      Top = 17
+      Width = 64
       Height = 25
       Caption = 'None'
-      Checked = True
       TabOrder = 2
-      TabStop = True
+      Visible = False
     end
     object RadioButton_MaxYNativeAdv: TRadioButton
       Left = 9
-      Top = 89
+      Top = 65
       Width = 168
       Height = 24
       Caption = 'Native White (Smooth)'
@@ -721,7 +729,7 @@ object CCTLUTForm: TCCTLUTForm
     end
     object Edit_MaxYAdvOver: TEdit
       Left = 89
-      Top = 113
+      Top = 89
       Width = 72
       Height = 24
       Enabled = False
@@ -731,7 +739,7 @@ object CCTLUTForm: TCCTLUTForm
     end
     object Edit_MaxYAdvGamma: TEdit
       Left = 89
-      Top = 137
+      Top = 113
       Width = 72
       Height = 24
       Enabled = False
@@ -741,7 +749,7 @@ object CCTLUTForm: TCCTLUTForm
     end
     object CheckBox_AvoidHookNB: TCheckBox
       Left = 32
-      Top = 169
+      Top = 137
       Width = 137
       Height = 16
       Caption = 'Avoid Hook(NB)'
