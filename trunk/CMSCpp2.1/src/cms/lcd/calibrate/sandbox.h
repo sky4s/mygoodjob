@@ -31,31 +31,27 @@ namespace cms {
 		bool multiGen;
 		int multiGenTimes, multiGenStart, multiGenEnd;
 		 bptr < cms::lcd::calibrate::ComponentFetcher > fetcher;
+		 bptr < BitDepthProcessor > bitDepth;
 	      public:
 		 AdvancedDGLutGenerator(Component_vector_ptr
 					componentVector,
 					bptr < cms::measure::IntensityAnalyzerIF > analyzer);
 		 AdvancedDGLutGenerator(Component_vector_ptr
 					componentVector,
-					bptr < cms::lcd::calibrate::ComponentFetcher > fetcher);
-		RGB_vector_ptr produce(XYZ_ptr targetWhite,
-				       double_vector_ptr
-				       luminanceGammaCurve, int dimTurn,
-				       int brightTurn, double dimGamma, double brightGamma);
+					bptr < cms::lcd::calibrate::ComponentFetcher > fetcher,
+					bptr < BitDepthProcessor > bitDepth);
+		RGB_vector_ptr produce(XYZ_ptr targetWhite, double_vector_ptr luminanceGammaCurve,
+				       int dimTurn, int brightTurn, double dimGamma,
+				       double brightGamma);
 
 		XYZ_vector_ptr getAvoidHookTarget(XYZ_ptr startXYZ,
 						  XYZ_ptr targetXYZ,
 						  double_vector_ptr
 						  luminanceGammaCurve,
 						  int dimTurn, int brightTurn, double dimGamma);
-		static XYZ_vector_ptr getTarget(XYZ_ptr startXYZ,
-						XYZ_ptr targetXYZ,
-						XYZ_ptr endXYZ,
-						double_vector_ptr
-						luminanceGammaCurve,
-						int dimTurn,
-						int brightTurn,
-						double dimGamma, double brightGamma);
+		XYZ_vector_ptr getTarget(XYZ_ptr startXYZ, XYZ_ptr targetXYZ, XYZ_ptr endXYZ,
+					 double_vector_ptr luminanceGammaCurve, int dimTurn,
+					 int brightTurn, double dimGamma, double brightGamma);
 
 		void setUseMaxTargetBIntensity(bool useMaxTargetBIntensity);
 		void setBTargetIntensity(double bTargetIntensity);
@@ -74,7 +70,8 @@ namespace cms {
 		    getBrightGammaTarget(double_vector_ptr
 					 luminanceGammaCurve,
 					 XYZ_ptr startXYZ, XYZ_ptr endXYZ,
-					 double brightGamma, int brightTurn);
+					 double brightGamma, int brightTurn,
+					 bptr < BitDepthProcessor > bitDepth);
 		static XYZ_ptr getTargetXYZ(double v1, double v2, double v3, Domain domain);
 		static XYZ_ptr getTargetXYZ(double v1, double v2, double v3);
 		static bool isDuplicateBlue100(Component_vector_ptr componentVector);
