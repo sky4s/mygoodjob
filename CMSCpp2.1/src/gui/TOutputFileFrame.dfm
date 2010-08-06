@@ -14,22 +14,22 @@ object OutputFileFrame: TOutputFileFrame
     object Label5: TLabel
       Left = 8
       Top = 24
-      Width = 92
-      Height = 16
+      Width = 71
+      Height = 13
       Caption = 'Filename Prefix'
     end
     object Label6: TLabel
       Left = 8
       Top = 56
-      Width = 95
-      Height = 16
+      Width = 77
+      Height = 13
       Caption = 'Output Directory'
     end
     object Edit_Prefix: TEdit
       Left = 112
       Top = 24
       Width = 201
-      Height = 24
+      Height = 21
       TabOrder = 0
       Text = 'Calib00_Table'
     end
@@ -37,7 +37,7 @@ object OutputFileFrame: TOutputFileFrame
       Left = 112
       Top = 56
       Width = 369
-      Height = 24
+      Height = 21
       TabOrder = 1
       Text = 'D:\Gamma Table\'
     end

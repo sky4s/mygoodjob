@@ -209,7 +209,7 @@ namespace cms {
 		if (channel == Channel::W) {
 		    rgb = c;
 		} else {
-		    rgb = RGB_ptr(new RGBColor());
+		    rgb = RGB_ptr(new RGBColor(c->getMaxValue()));
 		    rgb->setValue(channel, c->getValue(channel));
 		}
 		trueMeasureCode->push_back(rgb);

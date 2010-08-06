@@ -38,10 +38,12 @@ namespace cms {
 		AdvancedDGLutGenerator(Component_vector_ptr
 				       componentVector,
 				       bptr < ComponentFetcher >
-				       fetcher):DimDGLutGenerator
-		(componentVector, fetcher->getAnalyzer()),
-		fetcher(fetcher), useMaxTargetBIntensity(false),
-		bTargetIntensity(-1), stopMeasure(false), multiGen(false) {
+				       fetcher,
+				       bptr < BitDepthProcessor >
+				       bitDepth):DimDGLutGenerator(componentVector,
+								   fetcher->getAnalyzer()),
+		fetcher(fetcher), useMaxTargetBIntensity(false), bTargetIntensity(-1),
+		stopMeasure(false), multiGen(false), bitDepth(bitDepth) {
 	    };
 
 
@@ -311,7 +313,7 @@ namespace cms {
 		XYZ_vector_ptr brightResult = getBrightGammaTarget(luminanceGammaCurve,
 								   targetXYZ,
 								   endXYZ, brightGamma,
-								   brightTurn);
+								   brightTurn, bitDepth);
 		int brightSize = brightResult->size();
 		for (int x = 0; x < brightSize; x++) {
 		    (*result)[x + brightTurn] = (*brightResult)[x];
@@ -357,27 +359,29 @@ namespace cms {
 		getBrightGammaTarget(double_vector_ptr
 				     luminanceGammaCurve,
 				     XYZ_ptr startXYZ,
-				     XYZ_ptr endXYZ, double brightGamma, int brightTurn) {
+				     XYZ_ptr endXYZ, double brightGamma, int brightTurn,
+				     bptr < BitDepthProcessor > bitDepth) {
 		//==============================================================
 		// bright區段
 		//==============================================================
 		int size = luminanceGammaCurve->size();
+		int birghtSize = bitDepth->getEffectiveLevel();
 		int resultSize = size - brightTurn;
 		XYZ_vector_ptr result(new XYZ_vector(resultSize));
 		double_array brightstartValues = startXYZ->getxyValues();
 		double_array brightendValues = endXYZ->getxyValues();
-		double brightbase = size - 1 - brightTurn;
+		double brightbase = birghtSize - 1 - brightTurn;
 
-		for (int x = brightTurn; x < size; x++) {
+		for (int x = brightTurn; x < birghtSize; x++) {
 		    double normal = ((double) x - brightTurn) / brightbase;
 		    double gamma = Math::pow(normal,
 					     brightGamma) * brightbase + brightTurn;
 		    //在uv'上線性變化
-		    double u = Interpolation::linear(brightTurn, size - 1,
+		    double u = Interpolation::linear(brightTurn, birghtSize - 1,
 						     brightstartValues[0],
 						     brightendValues[0],
 						     gamma);
-		    double v = Interpolation::linear(brightTurn, size - 1,
+		    double v = Interpolation::linear(brightTurn, birghtSize - 1,
 						     brightstartValues[1],
 						     brightendValues[1],
 						     gamma);
@@ -385,6 +389,10 @@ namespace cms {
 
 		    //(*result)[x] = getTargetXYZ(u, v, Y);
 		    (*result)[x - brightTurn] = getTargetXYZ(u, v, Y);
+		}
+		XYZ_ptr XYZ = (*result)[birghtSize - 1 - brightTurn];
+		for (int x = birghtSize; x < size; x++) {
+		    (*result)[x - brightTurn] = XYZ;
 		}
 		return result;
 		//==============================================================

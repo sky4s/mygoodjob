@@ -324,11 +324,16 @@ namespace cms {
 	    dgcode.addProperty("in", *bitDepth->getInputMaxValue().toString());
 	    dgcode.addProperty("lut", *bitDepth->getLutMaxValue().toString());
 	    dgcode.addProperty("out", *bitDepth->getOutputMaxValue().toString());
-	    dgcode.addProperty("gamma", c->gamma);
+	    dgcode.addProperty("gamma",
+			       c->originalGamma ? "Original Gamma" : _toString(c->gamma).c_str());
 	    dgcode.addProperty("gamma curve", c->useGammaCurve ? On : Off);
 	    dgcode.addProperty("g bypass", c->gByPass ? On : Off);
 	    dgcode.addProperty("b gain", c->bIntensityGain);
-	    dgcode.addProperty("b max", c->bMax ? On : Off);
+	    dgcode.addProperty("b max", c->bMax ? "B Max" : (c->bMax2 ? "B Max Smooth" : "Off"));
+	    if (c->bMax2) {
+		dgcode.addProperty("b max begin", c->bMax2Begin);
+		dgcode.addProperty("b max strength", c->bMax2Gamma);
+	    }
 	    dgcode.addProperty("avoid FRC noise", c->avoidFRCNoise ? On : Off);
 	    //==================================================================
 	    // KeepMaxLuminance
