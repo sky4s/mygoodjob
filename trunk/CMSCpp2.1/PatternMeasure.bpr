@@ -10,7 +10,7 @@
       build\CA200SRVRLib_TLB.obj build\TMeasureWindow.obj build\tconcontrol.obj 
       build\i2ccontrol.obj build\ReadWriteFunc.obj build\HWINTERFACELib_TLB.obj 
       build\HWINTERFACELib_OCX.obj build\ciexyz.obj build\independ.obj 
-      build\colorspace.obj"/>
+      build\colorspace.obj build\tconparameter.obj"/>
     <RESFILES value="PatternMeasure.res"/>
     <IDLFILES value=""/>
     <IDLGENFILES value=""/>
@@ -26,7 +26,7 @@
       inet.bpi inetdbbde.bpi inetdbxpress.bpi nmfast.bpi webdsnap.bpi bcbie.bpi 
       websnap.bpi soaprtl.bpi dclocx.bpi dbexpress.bpi dbxcds.bpi indy.bpi 
       bcb2kaxserver.bpi bcbindent.bpi"/>
-    <PATHCPP value=".;src\gui\measure;src\gui;src\java;src\cms\util;src\cms\colorformat;src\cms\measure;src\ca210api;lib\CA200SRVRLib;src\gui;src\i2c;src\i2c;src\i2c\core;lib\LPT_lib;lib\LPT_lib;src\cms\colorspace;src\cms\colorspace;src\cms\colorspace"/>
+    <PATHCPP value=".;src\gui\measure;src\gui;src\java;src\cms\util;src\cms\colorformat;src\cms\measure;src\ca210api;lib\CA200SRVRLib;src\gui;src\i2c;src\i2c;src\i2c\core;lib\LPT_lib;lib\LPT_lib;src\cms\colorspace;src\cms\colorspace;src\cms\colorspace;src\i2c"/>
     <PATHPAS value=".;"/>
     <PATHRC value=".;"/>
     <PATHASM value=".;"/>
@@ -82,6 +82,7 @@
       <FILE FILENAME="src\cms\colorspace\ciexyz.cpp" FORMNAME="" UNITNAME="ciexyz" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="src\cms\colorspace\independ.cpp" FORMNAME="" UNITNAME="independ" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="src\cms\colorspace\colorspace.cpp" FORMNAME="" UNITNAME="colorspace" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="src\i2c\tconparameter.cpp" FORMNAME="" UNITNAME="tconparameter" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
   </FILELIST>
   <BUILDTOOLS>
   </BUILDTOOLS>

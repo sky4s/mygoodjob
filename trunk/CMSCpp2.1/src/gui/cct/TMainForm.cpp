@@ -614,7 +614,6 @@ void __fastcall TMainForm::Measurement1Click(TObject * Sender)
 
 void __fastcall TMainForm::MatrixCalibration1Click(TObject * Sender)
 {
-    //ShowMessage("Sorry! This function is unavailable right now.");
     if (MatrixCalibrationForm == null) {
 	Application->CreateForm(__classid(TMatrixCalibrationForm), &MatrixCalibrationForm);
     }
