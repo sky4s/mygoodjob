@@ -29,10 +29,11 @@ namespace cms {
 		AdvancedDGLutGenerator(Component_vector_ptr
 				       componentVector,
 				       bptr < IntensityAnalyzerIF >
-				       analyzer):DimDGLutGenerator
-		(componentVector, analyzer),
+				       analyzer1, bptr < IntensityAnalyzerIF >
+				       analyzer2):DimDGLutGenerator
+		(componentVector, analyzer1),
 		useMaxTargetBIntensity(false), bTargetIntensity(-1),
-		stopMeasure(false), multiGen(false) {
+		stopMeasure(false), multiGen(false), analyzer2(analyzer2), smoothMode(true) {
 	    };
 	     AdvancedDGLutGenerator::
 		AdvancedDGLutGenerator(Component_vector_ptr
@@ -43,7 +44,7 @@ namespace cms {
 				       bitDepth):DimDGLutGenerator(componentVector,
 								   fetcher->getAnalyzer()),
 		fetcher(fetcher), useMaxTargetBIntensity(false), bTargetIntensity(-1),
-		stopMeasure(false), multiGen(false), bitDepth(bitDepth) {
+		stopMeasure(false), multiGen(false), bitDepth(bitDepth), smoothMode(false) {
 	    };
 
 
@@ -75,16 +76,35 @@ namespace cms {
 							   brightGamma);
 		 STORE_XYZXY_VECTOE("target.xls", targetXYZVector);
 		//==============================================================
+		/*
+		   若做了smooth target(基本上adv dg lut也只有smooth target的功能)
+		   但是analyzer裡的primary color並不是native white的primary color,
+		   所以做出來的native target無法如預期會是(255,255,255)
+		   為了解決這個問題, 必須要有兩組primary color;
+		   第一組給target white用, 第二組給native white用.
+		   問題在於如何混用這兩組primary color?
+
+		   方法1. 以兩組analyer都產生一組DG, 然後再bright turn到end這段, 以gain值做內插處理.
+		 */
 		if (multiGen) {
 		    return produceDGLut_(targetXYZVector, componentVector);
 		} else {
-		    return produceDGLut0(targetXYZVector, componentVector);
+		    if (smoothMode) {
+			RGB_vector_ptr result1 =
+			    produceDGLut0(targetXYZVector, componentVector, analyzer);
+			RGB_vector_ptr result2 =
+			    produceDGLut0(targetXYZVector, componentVector, analyzer2);
+		    } else {
+			return produceDGLut0(targetXYZVector, componentVector, analyzer);
+		    }
+
 		}
 	    };
 	    RGB_vector_ptr AdvancedDGLutGenerator::
 		produceDGLut_(XYZ_vector_ptr targetXYZVector,
 			      Component_vector_ptr componentVector) {
-		RGB_vector_ptr initRGBVector = produceDGLut0(targetXYZVector, componentVector);
+		RGB_vector_ptr initRGBVector =
+		    produceDGLut0(targetXYZVector, componentVector, analyzer);
 
 		//==============================================================
 		//primary color只能用target white~
@@ -138,7 +158,8 @@ namespace cms {
 	    };
 	    RGB_vector_ptr AdvancedDGLutGenerator::
 		produceDGLut0(XYZ_vector_ptr targetXYZVector,
-			      Component_vector_ptr componentVector) {
+			      Component_vector_ptr componentVector,
+			      bptr < cms::measure::IntensityAnalyzerIF > analyzer) {
 		//==============================================================
 		int size = targetXYZVector->size();
 		RGB_vector_ptr result(new RGB_vector(size));
@@ -408,6 +429,9 @@ namespace cms {
 		stopMeasure = true;
 	    };
 	    void AdvancedDGLutGenerator::setMultiGen(bool enable, int times) {
+		if (null == fetcher) {
+		    throw IllegalStateException("null == fetcher");
+		}
 		this->multiGen = enable;
 		this->multiGenTimes = times;
 	    };
@@ -483,13 +507,9 @@ namespace cms {
 		for (int x = 0; x < size; x++) {
 		    //在uv'上線性變化
 		    double u = Interpolation::linear(0, size - 1,
-						     startuvValues[0],
-						     enduvValues[0],
-						     x);
+						     startuvValues[0], enduvValues[0], x);
 		    double v = Interpolation::linear(0, size - 1,
-						     startuvValues[1],
-						     enduvValues[1],
-						     x);
+						     startuvValues[1], enduvValues[1], x);
 		    double Y = (*luminanceGammaCurve)[x];
 		    double_array targetValues(new double[3]);
 		    targetValues[0] = u;
