@@ -503,7 +503,7 @@ void __fastcall TCCTLUTForm::RadioButton_MaxYNativeAdvClick(TObject * Sender)
     bool checked = RadioButton_MaxYNativeAdv->Checked;
     Edit_MaxYAdvOver->Enabled = checked;
     Edit_MaxYAdvGamma->Enabled = checked;
-    this->CheckBox_AvoidHookNB->Enabled = checked;
+    //this->CheckBox_AvoidHookNB->Enabled = checked;
 }
 
 //---------------------------------------------------------------------------
