@@ -94,11 +94,15 @@ namespace cms {
 			    produceDGLut0(targetXYZVector, componentVector, analyzer);
 			RGB_vector_ptr result2 =
 			    produceDGLut0(targetXYZVector, componentVector, analyzer2);
+			return smooth(result1, result2, brightTurn);
 		    } else {
 			return produceDGLut0(targetXYZVector, componentVector, analyzer);
 		    }
 
 		}
+	    };
+	    RGB_vector_ptr AdvancedDGLutGenerator::smooth(RGB_vector_ptr result1,
+							  RGB_vector_ptr result2, int brightTurn) {
 	    };
 	    RGB_vector_ptr AdvancedDGLutGenerator::
 		produceDGLut_(XYZ_vector_ptr targetXYZVector,

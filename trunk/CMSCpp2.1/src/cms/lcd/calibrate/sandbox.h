@@ -80,6 +80,8 @@ namespace cms {
 		RGB_vector_ptr produceDGLut0(XYZ_vector_ptr
 					     targetXYZVector, Component_vector_ptr componentVector,
 					     bptr < cms::measure::IntensityAnalyzerIF > analyzer);
+		RGB_vector_ptr smooth(RGB_vector_ptr result1, RGB_vector_ptr result2,
+				      int brightTurn);
 	    };
 
 
