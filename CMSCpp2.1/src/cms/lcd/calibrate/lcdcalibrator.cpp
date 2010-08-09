@@ -25,30 +25,30 @@ namespace cms {
 
 
 	    //==================================================================
-	  MeasureCondition::MeasureCondition(bptr < cms::lcd::calibrate::BitDepthProcessor > bitDepth):start(bitDepth->getMeasureStart()),
-		end(bitDepth->getMeasureEnd()),
-		firstStep(bitDepth->getMeasureFirstStep()),
+	     MeasureCondition::MeasureCondition(bptr < cms::lcd::calibrate::BitDepthProcessor >
+						bitDepth):start(bitDepth->getMeasureStart()),
+		end(bitDepth->getMeasureEnd()), firstStep(bitDepth->getMeasureFirstStep()),
 		step(bitDepth->getMeasureStep()), type(Normal) {
 		this->rgbMeasureCode =
-		    getRGBMeasureCode(getMeasureCode
-				      (start, end, firstStep, step),
-				      Channel::W, bitDepth->getMeasureMaxValue());
+		    getRGBMeasureCode(getMeasureCode(start, end, firstStep, step), Channel::W,
+				      bitDepth->getMeasureMaxValue());
 	    };
-	  MeasureCondition::MeasureCondition(const int start, const int end, const int firstStep, const int step, const Dep::MaxValue & maxValue):start(start),
-		end(end), firstStep(firstStep), step(step),
-		type(Normal) {
+	     MeasureCondition::MeasureCondition(const int start, const int end, const int firstStep,
+						const int step,
+						const Dep::MaxValue & maxValue):start(start),
+		end(end), firstStep(firstStep), step(step), type(Normal) {
 		this->rgbMeasureCode =
-		    getRGBMeasureCode(getMeasureCode
-				      (start, end, firstStep, step), Channel::W, maxValue);
+		    getRGBMeasureCode(getMeasureCode(start, end, firstStep, step), Channel::W,
+				      maxValue);
 	    };
-	    MeasureCondition::MeasureCondition(const int lowStart,
-					       const int lowEnd,
-					       const int lowStep,
-					       const int highStart, const int highEnd, const int
-					       highStep,
-					       const Dep::
-					       MaxValue &
-					       maxValue):lowStart
+	     MeasureCondition::MeasureCondition(const int lowStart,
+						const int lowEnd,
+						const int lowStep,
+						const int highStart, const int highEnd, const int
+						highStep,
+						const Dep::
+						MaxValue &
+						maxValue):lowStart
 		(lowStart), lowEnd(lowEnd), lowStep(lowStep),
 		highStart(highStart), highEnd(highEnd), highStep(highStep), type(Extend) {
 		this->rgbMeasureCode =
@@ -358,8 +358,8 @@ namespace cms {
 		    //==========================================================
 		    // 新方法
 		    //==========================================================
-		    bptr < IntensityAnalyzerIF > analyzer = fetcher->getAnalyzer();
 		    AdvancedDGLutGenerator advgenerator(componentVector, fetcher, bitDepth);
+		    bptr < IntensityAnalyzerIF > analyzer = fetcher->getAnalyzer();
 		    //analyzer若沒有設定過target color, 會使此步驟失效
 		    XYZ_ptr targetWhite = analyzer->getReferenceColor()->toXYZ();
 		    //藉由傳統generator產生luminance gamma curve
@@ -368,7 +368,7 @@ namespace cms {
 		    STORE_DOUBLE_VECTOR("1_lumigammacurve.xls", luminanceGammaCurve);
 		    double dimgammaParameter = 3.5;
 		    int underParameter = 50;
-		    double brightgammaParameter = 2.2;
+		    double brightgammaParameter = 1;
 		    int overParameter = 200;
 
 		    if (correct == Correct::DefinedDim) {

@@ -32,12 +32,14 @@ namespace cms {
 		int multiGenTimes, multiGenStart, multiGenEnd;
 		 bptr < cms::lcd::calibrate::ComponentFetcher > fetcher;
 		 bptr < BitDepthProcessor > bitDepth;
+		 bptr < cms::measure::IntensityAnalyzerIF > analyzer2;
+		const bool smoothMode;
 	      public:
 		 AdvancedDGLutGenerator(Component_vector_ptr
 					componentVector,
-					bptr < cms::measure::IntensityAnalyzerIF > analyzer);
-		 AdvancedDGLutGenerator(Component_vector_ptr
-					componentVector,
+					bptr < cms::measure::IntensityAnalyzerIF > analyzer1,
+					bptr < cms::measure::IntensityAnalyzerIF > analyzer2);
+		 AdvancedDGLutGenerator(Component_vector_ptr componentVector,
 					bptr < cms::lcd::calibrate::ComponentFetcher > fetcher,
 					bptr < BitDepthProcessor > bitDepth);
 		RGB_vector_ptr produce(XYZ_ptr targetWhite, double_vector_ptr luminanceGammaCurve,
@@ -55,8 +57,6 @@ namespace cms {
 
 		void setUseMaxTargetBIntensity(bool useMaxTargetBIntensity);
 		void setBTargetIntensity(double bTargetIntensity);
-		/*void setMultiPrimayColor(bool enable, int start, int end,
-		   int interval); */
 		void windowClosing();
 		void setMultiGen(bool enable, int times);
 	      private:
@@ -78,7 +78,8 @@ namespace cms {
 		RGB_vector_ptr produceDGLut_(XYZ_vector_ptr
 					     targetXYZVector, Component_vector_ptr componentVector);
 		RGB_vector_ptr produceDGLut0(XYZ_vector_ptr
-					     targetXYZVector, Component_vector_ptr componentVector);
+					     targetXYZVector, Component_vector_ptr componentVector,
+					     bptr < cms::measure::IntensityAnalyzerIF > analyzer);
 	    };
 
 
