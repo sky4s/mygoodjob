@@ -48,6 +48,9 @@ namespace cms {
 		//¥Ñgamma curveÂàrgb intensity
 		RGBGamma_ptr getRGBGamma(double_vector_ptr normalGammaCurve);
 		double_vector_ptr getLuminanceGammaCurve(double_vector_ptr normalGammaCurve);
+		static double_vector_ptr getLuminanceGammaCurve(double_vector_ptr normalGammaCurve,
+								double maxLuminance,
+								double minLuminance);
 		double getMaxBIntensity();
 	    };
 	};

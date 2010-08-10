@@ -33,11 +33,12 @@ namespace cms {
 	    class P1P2DGOp:public DGLutOp {
 	      private:
 		double p1, p2;
-		const Dep::MaxValue & maxValue;
+		//const Dep::MaxValue & maxValue;
 	      protected:
 		 RGB_vector_ptr getRendering(RGB_vector_ptr source);
 	      public:
-		 P1P2DGOp(double p1, double p2, const Dep::MaxValue & maxValue);
+		//P1P2DGOp(double p1, double p2, const Dep::MaxValue & maxValue);
+		 P1P2DGOp(double p1, double p2);
 	    };
 
 	    class RBInterpolationOp:public DGLutOp {

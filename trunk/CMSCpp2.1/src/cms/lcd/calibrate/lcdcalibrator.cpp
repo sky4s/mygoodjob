@@ -339,6 +339,37 @@ namespace cms {
 		    throw new IllegalStateException("null == gammaCurve");
 		}
 
+		bptr < MaxMatrixIntensityAnayzer > ma;
+		bptr < cms::measure::IntensityAnalyzerIF > analyzer;
+		if (true == newMethod && keepMaxLuminance == KeepMaxLuminance::NativeWhiteAdvanced) {
+		    //=====================================================
+		    // 生出一組新的analyzer, 給smooth target的時候用
+		    // 有這組analyzer, 在smooth到native white的時候可以得到更準確的結果.
+		    //=====================================================
+		    //產生max matrix
+		    analyzer = fetcher->getAnalyzer();
+		    bptr < MeterMeasurement > mm = analyzer->getMeterMeasurement();
+		    ma = bptr < MaxMatrixIntensityAnayzer > (new MaxMatrixIntensityAnayzer(mm));
+
+		    int max = bitDepth->getMaxDigitalCount();
+		    //已知rgb
+		    RGB_ptr rgb(new RGBColor(max, max, max, MaxValue::Int8Bit));
+		    RGB_ptr r(new RGBColor(max, 0, 0, MaxValue::Int8Bit));
+		    RGB_ptr g(new RGBColor(0, max, 0, MaxValue::Int8Bit));
+		    RGB_ptr b(new RGBColor(0, 0, max, MaxValue::Int8Bit));
+
+		    int defaultWaitTimes = analyzer->getWaitTimes();
+		    analyzer->setWaitTimes(5000);
+		    ma->beginAnalyze();
+		    ma->setupComponent(Channel::R, r);
+		    ma->setupComponent(Channel::G, g);
+		    ma->setupComponent(Channel::B, b);
+		    ma->setupComponent(Channel::W, rgb);
+		    ma->enter();
+		    analyzer->setWaitTimes(defaultWaitTimes);
+		    //=====================================================
+		}
+
 		Component_vector_ptr componentVector = fetchComponentVector(measureCondition);
 		if (componentVector == null) {
 		    return RGB_vector_ptr((RGB_vector *) null);
@@ -358,44 +389,62 @@ namespace cms {
 		    //==========================================================
 		    // 新方法
 		    //==========================================================
-		    AdvancedDGLutGenerator advgenerator(componentVector, fetcher, bitDepth);
-		    bptr < IntensityAnalyzerIF > analyzer = fetcher->getAnalyzer();
-		    //analyzer若沒有設定過target color, 會使此步驟失效
-		    XYZ_ptr targetWhite = analyzer->getReferenceColor()->toXYZ();
+		    double brightgammaParameter = 1;
+		    int overParameter = 200;
+		    bptr < AdvancedDGLutGenerator > advgenerator;
+
 		    //藉由傳統generator產生luminance gamma curve
 		    double_vector_ptr luminanceGammaCurve =
 			generator.getLuminanceGammaCurve(gammaCurve);
+
+		    if (keepMaxLuminance == KeepMaxLuminance::NativeWhiteAdvanced) {
+			brightgammaParameter = keepMaxLumiGamma;
+			overParameter = keepMaxLumiOver;
+
+			advgenerator = bptr < AdvancedDGLutGenerator >
+			    (new AdvancedDGLutGenerator(componentVector, analyzer, ma, bitDepth));
+
+			/*double maxLuminance = (*componentVector)[0]->XYZ->Y;
+			   double minLuminance =
+			   (*componentVector)[componentVector->size() - 1]->XYZ->Y;
+			   luminanceGammaCurve =
+			   generator.getLuminanceGammaCurve(gammaCurve, maxLuminance,
+			   minLuminance); */
+		    } else {
+			advgenerator =
+			    bptr < AdvancedDGLutGenerator >
+			    (new AdvancedDGLutGenerator(componentVector, fetcher, bitDepth));
+			//luminanceGammaCurve = generator.getLuminanceGammaCurve(gammaCurve);
+
+		    }
 		    STORE_DOUBLE_VECTOR("1_lumigammacurve.xls", luminanceGammaCurve);
+
+		    //AdvancedDGLutGenerator advgenerator(componentVector, fetcher, bitDepth);
+		    bptr < IntensityAnalyzerIF > analyzer = fetcher->getAnalyzer();
+		    //analyzer若沒有設定過target color, 會使此步驟失效
+		    XYZ_ptr targetWhite = analyzer->getReferenceColor()->toXYZ();
+
+
 		    double dimgammaParameter = 3.5;
 		    int underParameter = 50;
-		    double brightgammaParameter = 1;
-		    int overParameter = 200;
 
 		    if (correct == Correct::DefinedDim) {
 			dimgammaParameter = dimGamma;
 			underParameter = under;
 		    }
 
-		    if (keepMaxLuminance == KeepMaxLuminance::NativeWhiteAdvanced) {
-			brightgammaParameter = keepMaxLumiGamma;
-			overParameter = keepMaxLumiOver;
-		    } else {
-		    }
-
 		    if (this->bTargetIntensity != -1) {
-			advgenerator.setBTargetIntensity(bTargetIntensity);
+			advgenerator->setBTargetIntensity(bTargetIntensity);
 		    }
 
 		    if (multiGen) {
-			advgenerator.setMultiGen(multiGen, multiGenTimes);
+			advgenerator->setMultiGen(multiGen, multiGenTimes);
 		    }
 
 		    dglut =
-			advgenerator.produce(targetWhite,
-					     luminanceGammaCurve,
-					     underParameter,
-					     overParameter,
-					     dimgammaParameter, brightgammaParameter);
+			advgenerator->produce(targetWhite, luminanceGammaCurve, underParameter,
+					      overParameter, dimgammaParameter,
+					      brightgammaParameter);
 		    STORE_RGBVECTOR("3_dgcode.xls", dglut);
 		    //==========================================================
 		} else {
@@ -458,7 +507,8 @@ namespace cms {
 			//==========================================================
 			DGLutOp dgop;
 			dgop.setSource(dglut);
-			bptr < DGLutOp > op(new P1P2DGOp(p1, p2, quantizationBit));
+			//bptr < DGLutOp > op(new P1P2DGOp(p1, p2, quantizationBit));
+			bptr < DGLutOp > op(new P1P2DGOp(p1, p2));
 			dgop.addOp(op);
 			dglut = dgop.createInstance();
 			//量化
@@ -474,6 +524,7 @@ namespace cms {
 		//==============================================================
 		//量化
 		RGB_vector_ptr result = getDGLutOpResult(dglut);
+		RGBVector::quantization(result, quantizationBit);
 		//==============================================================
 
 		STORE_RGBVECTOR("7_dgcode_final.xls", result);
@@ -624,11 +675,6 @@ namespace cms {
 		    bptr < DGLutOp > bmax2(new BMax2Op(bitDepth, bMax2Begin, bMax2Gamma));
 		    dgop.addOp(bmax2);
 		}
-		/*if (KeepMaxLuminance::NativeWhite == keepMaxLuminance) {
-		   //keep最大亮度
-		   bptr < DGLutOp > KeepMax(new KeepMaxLuminanceOp(bitDepth));
-		   dgop.addOp(KeepMax);
-		   } */
 
 		RGB_vector_ptr result = dgop.createInstance();
 		return result;

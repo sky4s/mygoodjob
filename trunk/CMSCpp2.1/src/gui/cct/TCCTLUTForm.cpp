@@ -180,7 +180,6 @@ void __fastcall TCCTLUTForm::Button_MeaRunClick(TObject * Sender)
 	    if (avoidHookNB) {
 		//開始量測之前先更改面板原始特性
 		maxZDGCode = getMaxZDGCode();
-		//maxZDGCode = 248;
 		bgain = ((double) maxZDGCode) / bitDepth->getMaxDigitalCount();
 		RGB_vector_ptr vec = RGBVector::getLinearRGBVector(bitDepth, bgain);
 		STORE_RGBVECTOR("gain.xls", vec);
@@ -214,7 +213,6 @@ void __fastcall TCCTLUTForm::Button_MeaRunClick(TObject * Sender)
 	    //=================================================================
 	    // 存檔
 	    //=================================================================
-	    //bptr < DGLutFile > dgLutFile = calibrator.storeDGLutFile(filename, dglut);
 	    calibrator.storeDGLutFile(filename, dglut, dgLutFile);
 	    //MainForm->setDummyMeterFilename(dgLutFile);
 	    //要release掉, 才可以讀取該檔
@@ -336,6 +334,11 @@ void __fastcall TCCTLUTForm::FormShow(TObject * Sender)
     bptr < TCONControl > tconctrl = MainForm->getTCONControl();
     if (null != tconctrl) {
 	CheckBox_AvoidHookNB->Visible = true;
+	Label18->Visible = true;
+	Label19->Visible = true;
+	//CheckBox_BMax2->Visible = true;
+	Edit_BMax2Begin->Visible = true;
+	Edit_BMax2Gamma->Visible = true;
     }
 
     setMeasureInfo();
@@ -554,6 +557,25 @@ void __fastcall TCCTLUTForm::RadioButton_GammaValueClick(TObject * Sender)
 	}
     }
     this->RadioButton_Gamma->Checked = true;
+}
+
+//---------------------------------------------------------------------------
+
+
+
+void __fastcall TCCTLUTForm::CheckBox_BMax2Click(TObject * Sender)
+{
+    bool checked = this->CheckBox_BMax2->Checked;
+    Edit_BMax2Begin->Enabled = checked;
+    Edit_BMax2Gamma->Enabled = checked;
+}
+
+//---------------------------------------------------------------------------
+
+void __fastcall TCCTLUTForm::CheckBox_AvoidHookNBClick(TObject * Sender)
+{
+    bool checked = this->CheckBox_AvoidHookNB->Checked;
+    CheckBox_BMax2->Checked = checked;
 }
 
 //---------------------------------------------------------------------------

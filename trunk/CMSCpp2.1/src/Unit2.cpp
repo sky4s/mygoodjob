@@ -805,6 +805,47 @@ void linearRGBTry()
 
 }
 
+void smoothTry()
+{
+    using namespace cms::lcd::calibrate;
+    using namespace cms::util;
+    bptr < BitDepthProcessor > bitDepth(new BitDepthProcessor(8, 10, 6, false));
+    RGB_vector_ptr vector1 = RGBVector::getLinearRGBVector(bitDepth, 0.5);
+    RGB_vector_ptr vector2 = RGBVector::getLinearRGBVector(bitDepth, 1);
+    /*foreach(RGB_ptr rgb, *vector1) {
+       cout << *rgb->toString() << endl;
+       }
+       foreach(RGB_ptr rgb, *vector2) {
+       cout << *rgb->toString() << endl;
+       } */
+    RGB_vector_ptr result = AdvancedDGLutGenerator::smooth(vector1, vector2, bitDepth, 230);
+    /*foreach(RGB_ptr rgb, *result) {
+       cout << *rgb->toString() << endl;
+       } */
+    for (int x = 200; x < vector1->size(); x++) {
+	cout << *(*vector1)[x]->toString() << endl;
+    }
+    for (int x = 200; x < vector1->size(); x++) {
+	cout << *(*vector2)[x]->toString() << endl;
+    }
+    for (int x = 200; x < vector1->size(); x++) {
+	cout << *(*result)[x]->toString() << endl;
+    }
+}
+
+void cloneTry()
+{
+    using namespace cms::lcd::calibrate;
+    using namespace cms::util;
+    bptr < BitDepthProcessor > bitDepth(new BitDepthProcessor(8, 10, 6, false));
+
+    RGB_vector_ptr vector2 = RGBVector::getLinearRGBVector(bitDepth, 1);
+    RGB_vector_ptr result = RGBVector::clone(vector2);
+    cout << (*vector2)[0]->R << endl;
+    (*result)[0]->R = 100;
+    cout << (*vector2)[0]->R << endl;
+};
+
 #pragma argsused
 int main(int argc, char *argv[])
 {
@@ -877,7 +918,9 @@ int main(int argc, char *argv[])
     //produceTCONINIFile();
     //stringTester();
     //maxValueTry();
-    linearRGBTry();
+    //linearRGBTry();
+    smoothTry();
+    //cloneTry();
 
 
 

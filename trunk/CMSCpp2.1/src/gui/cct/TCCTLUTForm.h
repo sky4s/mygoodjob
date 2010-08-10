@@ -72,11 +72,6 @@ class TCCTLUTForm:public TForm {
     TLabel *Label14;
     TEdit *Edit_DimGamma;
     TCheckBox *CheckBox_NewMethod;
-    TCheckBox *CheckBox_BMax2;
-    TLabel *Label18;
-    TEdit *Edit_BMax2Begin;
-    TLabel *Label19;
-    TEdit *Edit_BMax2Gamma;
     TGroupBox *GroupBox_KeepMaxLuminance;
     TRadioButton *RadioButton_MaxYTarget;
     TRadioButton *RadioButton_MaxYNative;
@@ -93,6 +88,11 @@ class TCCTLUTForm:public TForm {
     TEdit *Edit_BTargetIntensity;
     TCheckBox *CheckBox_AvoidHookNB;
     TRadioButton *RadioButton_OriginalGamma;
+    TCheckBox *CheckBox_BMax2;
+    TLabel *Label18;
+    TEdit *Edit_BMax2Begin;
+    TEdit *Edit_BMax2Gamma;
+    TLabel *Label19;
     void __fastcall RadioButton_P1P2Click(TObject * Sender);
     void __fastcall Button_MeaRunClick(TObject * Sender);
     void __fastcall FormCreate(TObject * Sender);
@@ -111,6 +111,8 @@ class TCCTLUTForm:public TForm {
     void __fastcall Button_RunClick(TObject * Sender);
     void __fastcall CheckBox_BTargetIntensityClick(TObject * Sender);
     void __fastcall RadioButton_GammaValueClick(TObject * Sender);
+    void __fastcall CheckBox_BMax2Click(TObject * Sender);
+    void __fastcall CheckBox_AvoidHookNBClick(TObject * Sender);
   private:			// User declarations
     void setMeasureInfo();
     int serialid;

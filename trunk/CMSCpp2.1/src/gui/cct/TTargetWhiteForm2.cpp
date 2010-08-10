@@ -306,7 +306,7 @@ void __fastcall TTargetWhiteForm2::Button_RunClick(TObject * Sender)
 	    MainForm->setAnalyzerToTargetChannel();
 	}
 	analyzer->enter();
-	//MainForm->setMeterMeasurementWaitTimes();
+        
 	//==========================================================================
 
 	//==========================================================================
