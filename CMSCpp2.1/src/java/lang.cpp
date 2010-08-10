@@ -50,12 +50,10 @@ namespace java {
 	const bool Object::isNull() {
 	    return null_;
 	};
-      Object::Object(bool null_):null_(null_), c(*this),
-	    objectID(globalID++) {
+      Object::Object(bool null_):null_(null_), c(*this), objectID(globalID++) {
 
 	};
-      Object::Object():null_(false), c(*this),
-	    objectID(globalID++) {
+      Object::Object():null_(false), c(*this), objectID(globalID++) {
 
 	};
 
@@ -183,8 +181,7 @@ namespace java {
 	    int index = minIndex(values);
 	    return (*values)[index];
 	};
-	double_vector_ptr Math::normalize(double_vector_ptr original,
-					  double normal) {
+	double_vector_ptr Math::normalize(double_vector_ptr original, double normal) {
 	    for (unsigned int x = 0; x < original->size(); x++) {
 		(*original)[x] /= normal;
 	    }
@@ -206,8 +203,7 @@ namespace java {
 
 	RuntimeException::RuntimeException() {
 	};
-      RuntimeException::RuntimeException(string message):Exception(message)
-	{
+      RuntimeException::RuntimeException(string message):Exception(message) {
 
 	};
 

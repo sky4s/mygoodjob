@@ -329,7 +329,12 @@ namespace cms {
 		//==============================================================
 		return result;
 	    };
-
+	    /*
+              產生smooth target還是有個問題, 就是luminance.
+              現在的作法是用原本的Target White的亮度來產生Luminance(也就是最大亮度),
+              但實際上高灰階的Target White已經被改變, 所以最大亮度也不同了.
+              若直接以高灰階的Target White為最大亮度, 部份高灰階卻又無法產生相同亮度及相同色度座標的DG
+	     */
 	    XYZ_vector_ptr AdvancedDGLutGenerator::
 		getTarget(XYZ_ptr startXYZ, XYZ_ptr targetXYZ,
 			  XYZ_ptr endXYZ,
