@@ -126,7 +126,7 @@ namespace cms {
 	    class ComponentPLRelation;
 
 	    class DimDGLutGenerator;
-	    class DimTargetGenerator;
+            class DimTargetGenerator;
 	    namespace algo {
 		class ChromaticAroundAlgorithm;
 		class CIEuv1960NearestAlgorithm;
@@ -420,8 +420,7 @@ namespace java {
 	    static double max(double_vector_ptr values);
 	    static double min(double_vector_ptr values);
 
-	    static double_vector_ptr normalize(double_vector_ptr original,
-					       double normal);
+	    static double_vector_ptr normalize(double_vector_ptr original, double normal);
 
 	};
 
@@ -506,8 +505,7 @@ private: \
 #define WRITE_ONLY 2
 #define READ_WRITE 3
 
-template < typename Container, typename ValueType, int nPropType >
-    class Property {
+template < typename Container, typename ValueType, int nPropType > class Property {
   public:
     Property() {
 	m_cObject = NULL;
@@ -542,7 +540,7 @@ template < typename Container, typename ValueType, int nPropType >
     }
 //-- To make possible to cast the property class to the
 //   internal type --
-    operator   ValueType() {
+    operator    ValueType() {
 	assert(m_cObject != NULL);
 	assert(Get != NULL);
 	return (m_cObject->*Get) ();
