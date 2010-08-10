@@ -33,16 +33,13 @@ namespace cms {
 	RGB_vector_ptr RGBVector::getLinearRGBVector(int n) {
 	    RGB_vector_ptr result(new RGB_vector());
 	    for (int x = 0; x < n; x++) {
-		//double v = ((double) x) / (n - 1) * 255;
 		RGB_ptr rgb(new RGBColor(x, x, x));
-		//rgb->setValues(x, x, x);
 		result->push_back(rgb);
 	    };
 	    return result;
 	};
 	RGB_vector_ptr RGBVector::getLinearRGBVector(bptr < cms::lcd::calibrate::BitDepthProcessor >
 						     bitDepth, double bgain) {
-	    //int n = bitDepth->getLevel();
 	    int n = bitDepth->getEffectiveLevel();
 	    double maxdc = bitDepth->getMaxDigitalCount();	//得到8bit下最大值
 	    const MaxValue & maxValue = bitDepth->getLutMaxValue();	//lut的maxvalue
@@ -80,7 +77,7 @@ namespace cms {
 	    bptr_ < TStringList > list(new TStringList);
 	    foreach(RGB_ptr rgb, *rgbVector) {
 		list->Add((_toString(rgb->R) + "\t" + _toString(rgb->G) +
-			   "\t" + _toString(rgb->B) + "\t").c_str());
+			   "\t" + _toString(rgb->B)).c_str());
 	    }
 	    //list->Add("");
 	    list->SaveToFile(filename.c_str());
@@ -88,7 +85,12 @@ namespace cms {
 
 	};
 	RGB_vector_ptr RGBVector::clone(RGB_vector_ptr vector) {
-	    RGB_vector_ptr result(new RGB_vector(*vector));
+	    RGB_vector_ptr result(new RGB_vector());
+	    foreach(RGB_ptr rgb, *vector) {
+		RGB_ptr clone = rgb->clone();
+		result->push_back(clone);
+	    }
+
 	    return result;
 	};
 	RGB_vector_ptr RGBVector::deepClone(RGB_vector_ptr vector) {

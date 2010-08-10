@@ -59,7 +59,7 @@ namespace cms {
 		    //double d = java::lang::Math::roundTo(v * 4);
 		    RGB_ptr rgb = (*result)[x];
 		    rgb->setValues(v, v, v);
-		    rgb->quantization(maxValue);
+		    //rgb->quantization(maxValue);
 		}
 
 		RGB_ptr rgbp0 = (*result)[p1 - 1];
@@ -67,12 +67,14 @@ namespace cms {
 		rgbp1->R = (rgbp0->R + rgbp2->R) / 2;
 		rgbp1->G = (rgbp0->G + rgbp2->G) / 2;
 		rgbp1->B = (rgbp0->B + rgbp2->B) / 2;
-		rgbp1->quantization(maxValue);
+		//rgbp1->quantization(maxValue);
 
 		return result;
 	    };
-	  P1P2DGOp::P1P2DGOp(double p1, double p2, const MaxValue & maxValue):p1(p1), p2(p2), maxValue(maxValue)
-	    {
+	    /*P1P2DGOp::P1P2DGOp(double p1, double p2, const MaxValue & maxValue):p1(p1), p2(p2), maxValue(maxValue)
+	       {
+	       }; */
+	  P1P2DGOp::P1P2DGOp(double p1, double p2):p1(p1), p2(p2) {
 	    };
 	    //==================================================================
 
@@ -407,7 +409,7 @@ namespace cms {
 	    };
 	    //==================================================================
 	    RGB_vector_ptr KeepNativeWhiteAdvancedOp::getRendering(RGB_vector_ptr source) {
-		STORE_RGBVECTOR("source.xls", source);
+		STORE_RGBVECTOR("op-source.xls", source);
 		RGB_vector_ptr result = RGBVector::clone(source);
 		int size = result->size();
 		RGB_ptr lastRGB = (*result)[size - 1];
@@ -432,7 +434,7 @@ namespace cms {
 		    rgb->setValues(max, max, max);
 		}
 
-		STORE_RGBVECTOR("result.xls", result);
+		STORE_RGBVECTOR("op-result.xls", result);
 		return result;
 
 	    };

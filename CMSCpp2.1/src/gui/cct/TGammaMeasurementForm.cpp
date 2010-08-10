@@ -30,9 +30,14 @@ void __fastcall TGammaMeasurementForm::Button_MeasureClick(TObject * Sender)
 {
     using namespace std;
     using namespace cms::util;
-    MainForm->getAnalyzer();
+    bptr < cms::measure::IntensityAnalyzerIF > analyzer = MainForm->getAnalyzer();
     if (MainForm->isCA210Analyzer()) {
 	MainForm->setAnalyzerToTargetChannel();
+    } else {
+	if (null == analyzer->getReferenceColor()) {
+	    ShowMessage("Set \"Target White\" first or use CA-210 Intensity Analyzer");
+	    return;
+	}
     }
     MainForm->setMeterMeasurementWaitTimes();
 
@@ -54,6 +59,7 @@ void __fastcall TGammaMeasurementForm::Button_MeasureClick(TObject * Sender)
     Util::deleteExist(stlfilename);
 
     if (measure(rgbw, getMeasureCondition(), flicker, stlfilename)) {
+	ShowMessage("Ok!");
 	Util::shellExecute(stlfilename);
     }
 }
