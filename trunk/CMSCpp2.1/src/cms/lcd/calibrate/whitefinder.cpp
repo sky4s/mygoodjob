@@ -130,6 +130,7 @@ namespace cms {
 		double_array delta;
 		RGB_ptr findRGB = initRGB->clone();
 		stop = false;
+		int adjustStep = bitDepth->getMeasureStep();
 
 		//==============================================================
 		BEGIN_STORE("findwhite.xls");
@@ -146,17 +147,17 @@ namespace cms {
 
 			STORE_RGBXY(findRGB, measurexyY);
 
-			int adjust = 0;
-			if (Math::abs(delta[0]) > 0.012 && Math::abs(delta[1]) > 0.012) {
-			    adjust = 5;
-			} else if (Math::abs(delta[0]) > 0.003 && Math::abs(delta[1]) > 0.003) {
-			    adjust = 3;
-			} else {
-			    adjust = 1;
-			}
+			/*int adjust = 0;
+			   if (Math::abs(delta[0]) > 0.012 && Math::abs(delta[1]) > 0.012) {
+			   adjust = 5;
+			   } else if (Math::abs(delta[0]) > 0.003 && Math::abs(delta[1]) > 0.003) {
+			   adjust = 3;
+			   } else {
+			   adjust = 1;
+			   } */
 
 			if (delta[0] < 0 || delta[1] < 0) {
-			    findRGB->B -= adjust;
+			    findRGB->B -= adjustStep;
 			}
 
 			if (true == stop) {
@@ -179,7 +180,7 @@ namespace cms {
 		    STORE_RGBXY(findRGB, measurexyY);
 
 		    if (delta[0] > 0) {
-			findRGB->R -= 1;
+			findRGB->R -= adjustStep;
 		    }
 		    if (true == stop) {
 			stop = false;
@@ -201,14 +202,14 @@ namespace cms {
 
 		    if (delta[1] > 0) {
 			//green的處理
-			findRGB->G -= 1;
+			findRGB->G -= adjustStep;
 		    }
 		    if (!keepBlue && delta[0] > 0 && findRGB->B < maxcode) {
 			//blue的處理
-			findRGB->B += 1;
+			findRGB->B += adjustStep;
 		    }
 		    if (delta[0] > 0 && maxcode == findRGB->B) {
-			findRGB->R -= 1;
+			findRGB->R -= adjustStep;
 		    }
 		    stopLoop = (delta[0] < 0 && delta[1] < 0)
 			|| (maxcode == findRGB->B && delta[1] < 0);
@@ -230,7 +231,7 @@ namespace cms {
 		STORE_RGBXY(findRGB, measurexyY);
 
 		if (findRGB->R < maxcode) {
-		    findRGB->R += 1;
+		    findRGB->R += adjustStep;
 		    patch = mm->measure(findRGB, findRGB->toString());
 		    measurexyY = xyY_ptr(new CIExyY(patch->getXYZ()));
 
@@ -238,11 +239,11 @@ namespace cms {
 
 		    double_array delta2 = measurexyY->getDeltaxy(targetxyY);
 		    if (Math::abs(delta2[0]) > Math::abs(delta[0])) {
-			findRGB->R -= 1;
+			findRGB->R -= adjustStep;
 		    }
 		}
 		if (findRGB->G < maxcode) {
-		    findRGB->G += 1;
+		    findRGB->G += adjustStep;
 		    patch = mm->measure(findRGB, findRGB->toString());
 		    measurexyY = xyY_ptr(new CIExyY(patch->getXYZ()));
 
@@ -250,7 +251,7 @@ namespace cms {
 
 		    double_array delta2 = measurexyY->getDeltaxy(targetxyY);
 		    if (Math::abs(delta2[1]) > Math::abs(delta[1])) {
-			findRGB->G -= 1;
+			findRGB->G -= adjustStep;
 		    }
 		}
 		//==============================================================

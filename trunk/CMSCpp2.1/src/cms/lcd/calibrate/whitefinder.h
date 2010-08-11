@@ -23,10 +23,9 @@ namespace cms {
 		 bptr < cms::lcd::calibrate::algo::ChromaticAroundAlgorithm > aroundAlgo;
 		 bptr < cms::lcd::calibrate::algo::CIEuv1960NearestAlgorithm > nearAlgo;
 
-		 bptr < cms::lcd::calibrate::BitDepthProcessor > bitDepth;
-
 	      protected:
-		 bool stop;
+		 bptr < cms::lcd::calibrate::BitDepthProcessor > bitDepth;
+		bool stop;
 		 bptr < cms::measure::MeterMeasurement > mm;
 		double maxcode;
 	      public:

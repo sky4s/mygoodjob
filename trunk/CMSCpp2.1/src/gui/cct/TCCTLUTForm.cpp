@@ -65,8 +65,12 @@ void __fastcall TCCTLUTForm::Button_MeaRunClick(TObject * Sender)
     using namespace i2c;
 
 
+    if (Button_Run->Enabled) {
+	MainForm->initCA210Meter();
+	MainForm->setAnalyzerNull();
+    }
+
     run = true;
-    //this->Button_MeaRun->Enabled = false;
     try {			//為了對應__finally使用的try
 	String_ptr astr = this->TOutputFileFrame1->getOutputFilename();
 	string filename = astr->c_str();
@@ -141,6 +145,7 @@ void __fastcall TCCTLUTForm::Button_MeaRunClick(TObject * Sender)
 
 	calibrator.setMultiGen(this->CheckBox_MultiGen->Checked,
 			       this->Edit_MultiGenTimes->Text.ToInt());
+
 	if (CheckBox_BTargetIntensity->Checked) {
 	    double bTargetIntensity = Edit_BTargetIntensity->Text.ToDouble();
 	    calibrator.setBTargetIntensity(bTargetIntensity);
@@ -159,6 +164,7 @@ void __fastcall TCCTLUTForm::Button_MeaRunClick(TObject * Sender)
 	} else if (true == RadioButton_MaxYNativeAdv->Checked) {
 	    int over = this->Edit_MaxYAdvOver->Text.ToInt();
 	    double gamma = this->Edit_MaxYAdvGamma->Text.ToDouble();
+	    calibrator.setSkipInverseB(this->CheckBox_SkipInverseB->Checked);
 	    calibrator.setKeepMaxLuminanceNativeWhiteAdvanced(over, gamma);
 	}
 	//==========================================================================
@@ -189,8 +195,9 @@ void __fastcall TCCTLUTForm::Button_MeaRunClick(TObject * Sender)
 		tconctrl->setDG(true);
 	    }
 	    //==========================================================================
-
+	    calibrator.setNativeWhiteAnalyzer(nativeWhiteAnalyzer);
 	    RGB_vector_ptr dglut = calibrator.getCCTDGLut(getMeasureCondition());
+	    nativeWhiteAnalyzer = calibrator.getNativeWhiteAnalyzer();
 	    if (dglut == null) {
 		//被中斷就直接return
 		return;
@@ -200,13 +207,11 @@ void __fastcall TCCTLUTForm::Button_MeaRunClick(TObject * Sender)
 	    // avoid HOOK NB
 	    //==========================================================================
 	    if (avoidHookNB) {
-		//STORE_RGBVECTOR("beforegain.xls", dglut);
 		//儲存DG LUT之前, 要remapping回來
 		foreach(RGB_ptr rgb, *dglut) {
 		    rgb->B *= bgain;
 		    rgb->B = (int) rgb->B;
 		}
-		//STORE_RGBVECTOR("aftergain.xls", dglut);
 	    }
 	    //==========================================================================
 
@@ -214,15 +219,25 @@ void __fastcall TCCTLUTForm::Button_MeaRunClick(TObject * Sender)
 	    // 存檔
 	    //=================================================================
 	    calibrator.storeDGLutFile(filename, dglut, dgLutFile);
-	    //MainForm->setDummyMeterFilename(dgLutFile);
-	    //要release掉, 才可以讀取該檔
+
+	    if (true == CheckBox_MemoryMeasure->Checked && false == MainForm->mm->isFakeMeasure()) {
+		//提供memory功能
+		//dummy
+		MainForm->setDummyMeterFile(dgLutFile);
+		this->Button_Run->Enabled = true;
+		this->Button_MeaRun->Enabled = false;
+	    }
+	    //要release掉, 才可以讀取該檔;但是要在set dummy後release, 要不然dummy沒東西可設
 	    dgLutFile.reset();
 	    //寫到文字檔
 	    RGBVector::storeToText(ChangeFileExt(filename.c_str(), ".txt").c_str(), dglut);
-	    //this->Button_Run->Enabled = true;
 	    //=================================================================
+	    if (RGBVector::isAscend(dglut, 0, bitDepth->getMaxDigitalCount())) {
+		ShowMessage("Ok!");
+	    } else {
+		ShowMessage("Warning: It's not ascend!");
+	    }
 
-	    ShowMessage("Ok!");
 	    Util::shellExecute(filename);
 	}
 	catch(java::lang::IllegalStateException & ex) {
@@ -260,7 +275,7 @@ void __fastcall TCCTLUTForm::FormCreate(TObject * Sender)
     //=========================================================================
 
     //this->GroupBox_KeepMaxLuminance->Visible = true;
-    //this->Button_Run->Visible = true;
+    this->Button_Run->Visible = true;
 
     //=========================================================================
     // dim correct
@@ -322,6 +337,7 @@ void __fastcall TCCTLUTForm::FormShow(TObject * Sender)
     using namespace Dep;
     using namespace cms::lcd::calibrate;
     using namespace i2c;
+    using namespace cms::measure;
 
     const MaxValue & input = bitDepth->getInputMaxValue();
     bool avoidNoise = (input == MaxValue::Int6Bit || input == MaxValue::Int8Bit);
@@ -342,6 +358,7 @@ void __fastcall TCCTLUTForm::FormShow(TObject * Sender)
     }
 
     setMeasureInfo();
+    nativeWhiteAnalyzer = bptr < MaxMatrixIntensityAnayzer > ((MaxMatrixIntensityAnayzer *) null);
 }
 
 void __fastcall TCCTLUTForm::RadioButton_GammaCurveClick(TObject * Sender)
@@ -373,7 +390,6 @@ void TCCTLUTForm::setBitDepthProcessor(bptr < cms::lcd::calibrate::BitDepthProce
 void __fastcall TCCTLUTForm::TOutputFileFrame1Button_BrowseDirClick(TObject * Sender)
 {
     TOutputFileFrame1->Button_BrowseDirClick(Sender);
-
 }
 
 //---------------------------------------------------------------------------
@@ -439,11 +455,11 @@ bptr < cms::lcd::calibrate::MeasureCondition > TCCTLUTForm::getMeasureCondition(
 	int start = this->Edit_StartLevel->Text.ToInt();
 	int end = this->Edit_EndLevel->Text.ToInt();
 	int step = this->ComboBox_LevelStep->Text.ToInt();
-
 	//預設的第一階
 	int firstStep = bitDepth->getMeasureFirstStep();
-	if (bitDepth->getMeasureStart() != start
-	    || bitDepth->getMeasureEnd() != end || bitDepth->getMeasureStep() != step) {
+	if (bitDepth->
+	    getMeasureStart() !=
+	    start || bitDepth->getMeasureEnd() != end || bitDepth->getMeasureStep() != step) {
 	    //如果量測條件被改變, 則不要採用原本的第一階
 	    firstStep = step;
 	}
@@ -452,7 +468,6 @@ bptr < cms::lcd::calibrate::MeasureCondition > TCCTLUTForm::getMeasureCondition(
 	    bptr < MeasureCondition > (new MeasureCondition(start, end, firstStep, step, maxValue));
     }
     return condition;
-
 }
 
 //---------------------------------------------------------------------------
@@ -481,7 +496,6 @@ void __fastcall TCCTLUTForm::CheckBox_NewMethodClick(TObject * Sender)
     CheckBox_BTargetIntensity->Enabled = newMethod;
     CheckBox_MultiGen->Enabled = newMethod;
     Edit_MultiGenTimes->Enabled = newMethod;
-
     if (newMethod) {
 	if (RadioButton_P1P2->Checked) {
 	    this->RadioButton_DefinedDim->Checked = true;
@@ -506,6 +520,7 @@ void __fastcall TCCTLUTForm::RadioButton_MaxYNativeAdvClick(TObject * Sender)
     bool checked = RadioButton_MaxYNativeAdv->Checked;
     Edit_MaxYAdvOver->Enabled = checked;
     Edit_MaxYAdvGamma->Enabled = checked;
+    this->CheckBox_SkipInverseB->Enabled = checked;
     //this->CheckBox_AvoidHookNB->Enabled = checked;
 }
 
@@ -514,8 +529,10 @@ void __fastcall TCCTLUTForm::RadioButton_MaxYNativeAdvClick(TObject * Sender)
 
 void __fastcall TCCTLUTForm::FormClose(TObject * Sender, TCloseAction & Action)
 {
-    if (Button_Run->Enabled) {
+    if (true == Button_Run->Enabled) {
+	MainForm->initCA210Meter();
 	MainForm->setAnalyzerNull();
+	Button_MeaRun->Enabled = true;
     }
 }
 
@@ -524,7 +541,9 @@ void __fastcall TCCTLUTForm::FormClose(TObject * Sender, TCloseAction & Action)
 void __fastcall TCCTLUTForm::Button_RunClick(TObject * Sender)
 {
     Button_ResetClick(Sender);
+    Button_Run->Enabled = false;
     Button_MeaRunClick(Sender);
+    Button_Run->Enabled = true;
 }
 
 //---------------------------------------------------------------------------

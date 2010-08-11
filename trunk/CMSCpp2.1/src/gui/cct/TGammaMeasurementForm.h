@@ -66,6 +66,7 @@ class TGammaMeasurementForm:public TForm {
      bptr < cms::lcd::calibrate::MeasureCondition > getMeasureCondition();
     bool run;
      bptr < cms::measure::MeasureTool > mt;
+    bool checkMeasureable();
   public:			// User declarations
      __fastcall TGammaMeasurementForm(TComponent * Owner);
     void setBitDepthProcessor(bptr < cms::lcd::calibrate::BitDepthProcessor > bitDepth);

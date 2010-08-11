@@ -110,18 +110,26 @@ namespace cms {
 		rgb->quantization(maxValue);
 	}};
 	RGB_vector_ptr RGBVector::reverse(RGB_vector_ptr rgbVector) {
-	    /*RGB_vector_ptr result(new RGB_vector());
-	       int size = rgbVector->size();
-	       for (int x = size - 1; x != -1; x--) {
-	       RGB_ptr rgb = (*rgbVector)[x];
-	       result->push_back(rgb);
-	       }
-	       return result;
-	       w = double_vector_ptr(new
-	       double_vector(w->rbegin(), w->rend())); */
 	    RGB_vector_ptr result(new RGB_vector(rgbVector->rbegin(), rgbVector->rend()));
 	    return result;
 	};
+	bool RGBVector::isAscend(RGB_vector_ptr rgbVector) {
+	    return isAscend(rgbVector, 0, rgbVector->size() - 1);
+	};
+	bool RGBVector::isAscend(RGB_vector_ptr rgbVector, int start, int end) {
+	    RGB_ptr preRGB;
+	    for (int x = start; x <= end; x++) {
+		RGB_ptr rgb = (*rgbVector)[x];
+		if (null == preRGB) {
+		    preRGB = rgb;
+		    continue;
+		} else if (rgb->R <= preRGB->R || rgb->G <= preRGB->G || rgb->B <= preRGB->B) {
+		    return false;
+		}
+		preRGB = rgb;
+	    }
+	    return true;
+	}
 	//==================================================================
 
 	//==================================================================
@@ -135,9 +143,9 @@ namespace cms {
 	    w(w), max(1),
 	    type(Gamma) {
 	};
-      RGBGamma::RGBGamma(double_vector_ptr r, double_vector_ptr g, double_vector_ptr b, const double max, const Type type):r(r), g(g), b(b),
-	    max(max),
-	    type(type) {
+      RGBGamma::RGBGamma(double_vector_ptr r, double_vector_ptr g, double_vector_ptr b, const double max, const Type type):r(r), g(g), b(b), max(max),
+	    type(type)
+	{
 	};
 	RGBGamma::RGBGamma(double_vector_ptr r, double_vector_ptr g,
 			   double_vector_ptr b, double_vector_ptr w,

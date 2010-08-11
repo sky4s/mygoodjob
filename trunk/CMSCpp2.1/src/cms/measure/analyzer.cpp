@@ -28,8 +28,7 @@ namespace cms {
 	//======================================================================
 	// IntensityAnalyzerIF
 	//======================================================================
-	void IntensityAnalyzerIF::
-	    setReferenceColorComment(const string & comment) {
+	void IntensityAnalyzerIF::setReferenceColorComment(const string & comment) {
 	    this->comment = string_ptr(new string(comment));
 	};
 	string_ptr IntensityAnalyzerIF::getReferenceColorComment() {
@@ -69,8 +68,7 @@ namespace cms {
 		//若為dummy mode, 代表從meter直接撈資料
 		//而meter是假的, 其實是從檔案撈資料
 		if (null == dgc) {
-		    dgc = dynamic_cast
-			< DGLutFileMeter * >(mm->getMeter().get());
+		    dgc = dynamic_cast < DGLutFileMeter * >(mm->getMeter().get());
 		}
 		Component_ptr c = dgc->getComponent();
 		RGB_ptr intensity = c->intensity;
@@ -82,9 +80,7 @@ namespace cms {
 		rgbIntensity = ca210api->triggerIntensityAnalyze();
 	    }
 
-	    RGB_ptr intensity(new
-			      RGBColor(rgbIntensity[0], rgbIntensity[1],
-				       rgbIntensity[2]));
+	    RGB_ptr intensity(new RGBColor(rgbIntensity[0], rgbIntensity[1], rgbIntensity[2]));
 	    return intensity;
 
 	};
@@ -97,9 +93,7 @@ namespace cms {
 	    return XYZ;
 	};
 
-	void CA210IntensityAnalyzer::setupComponent(const Dep::
-						    Channel & ch,
-						    RGB_ptr rgb) {
+	void CA210IntensityAnalyzer::setupComponent(const Dep::Channel & ch, RGB_ptr rgb) {
 	    Patch_ptr p = mm->measure(rgb, rgb->toString());
 	    XYZ = p->getXYZ();
 
@@ -126,27 +120,19 @@ namespace cms {
 
 		RGB_ptr r = rp->getRGB();
 		mm->measure(r, r->toString());
-		ca210api->setLvxyCalData(Red,
-					 (new CIExyY(rp->getXYZ()))->
-					 getValues());
+		ca210api->setLvxyCalData(Red, (new CIExyY(rp->getXYZ()))->getValues());
 
 		RGB_ptr g = gp->getRGB();
 		mm->measure(g, g->toString());
-		ca210api->setLvxyCalData(Green,
-					 (new CIExyY(gp->getXYZ()))->
-					 getValues());
+		ca210api->setLvxyCalData(Green, (new CIExyY(gp->getXYZ()))->getValues());
 
 		RGB_ptr b = bp->getRGB();
 		mm->measure(b, b->toString());
-		ca210api->setLvxyCalData(Blue,
-					 (new CIExyY(bp->getXYZ()))->
-					 getValues());
+		ca210api->setLvxyCalData(Blue, (new CIExyY(bp->getXYZ()))->getValues());
 
 		RGB_ptr w = wp->getRGB();
 		mm->measure(w, w->toString());
-		ca210api->setLvxyCalData(White,
-					 (new CIExyY(wp->getXYZ()))->
-					 getValues());
+		ca210api->setLvxyCalData(White, (new CIExyY(wp->getXYZ()))->getValues());
 
 		ca210api->enter();
 	    }
@@ -182,8 +168,7 @@ namespace cms {
 	    }
 
 	};
-	xyY_ptr CA210IntensityAnalyzer::getPrimaryColor(const Dep::
-							Channel & ch) {
+	xyY_ptr CA210IntensityAnalyzer::getPrimaryColor(const Dep::Channel & ch) {
 	    switch (ch.chindex) {
 	    case ChannelIndex::R:
 		if (null != rp) {
@@ -201,8 +186,7 @@ namespace cms {
 		}
 		break;
 	    default:
-		throw IllegalArgumentException("Unsupported Channel:" +
-					       *ch.toString());
+		throw IllegalArgumentException("Unsupported Channel:" + *ch.toString());
 	    };
 	    return xyY_ptr((CIExyY *) null);
 	};
@@ -213,8 +197,7 @@ namespace cms {
 		return RGB_ptr((RGBColor *) null);
 	    }
 	};
-	bptr < MeterMeasurement >
-	    CA210IntensityAnalyzer::getMeterMeasurement() {
+	bptr < MeterMeasurement > CA210IntensityAnalyzer::getMeterMeasurement() {
 	    return mm;
 	};
 	//======================================================================
@@ -241,8 +224,7 @@ namespace cms {
 	    if (null == inverseMatrix) {
 		throw IllegalStateException("NULL == inverseMatrix");
 	    }
-	    double2D_ptr color =
-		DoubleArray::toDouble2D(1, 3, XYZ->X, XYZ->Y, XYZ->Z);
+	    double2D_ptr color = DoubleArray::toDouble2D(1, 3, XYZ->X, XYZ->Y, XYZ->Z);
 	    rgbValues = DoubleArray::times(inverseMatrix, color);
 	    (*rgbValues)[0][0] *= 100;
 	    (*rgbValues)[1][0] *= 100;
@@ -254,9 +236,7 @@ namespace cms {
 	    intensityValues[2] = (*rgbValues)[2][0] / (*targetRatio)[2][0];
 
 	    RGB_ptr intensity(new
-			      RGBColor(intensityValues[0],
-				       intensityValues[1],
-				       intensityValues[2]));
+			      RGBColor(intensityValues[0], intensityValues[1], intensityValues[2]));
 	    return intensity;
 	};
 
@@ -274,25 +254,26 @@ namespace cms {
 	    }
 	};
 
-	void MaxMatrixIntensityAnayzer::setupComponent(const Dep::
-						       Channel & ch,
-						       RGB_ptr rgb) {
-	    if (null != mm) {
-		Patch_ptr p = mm->measure(rgb, rgb->toString());
-		if (ch == Channel::W) {
-		    referenceRGB = rgb->clone();
-		}
-		XYZ_ptr measureXYZ = p->getXYZ();
-		setupComponent(ch, measureXYZ);
-	    } else {
-		throw IllegalStateException("mm = null");
+	void MaxMatrixIntensityAnayzer::setupComponent(const Dep::Channel & ch, RGB_ptr rgb) {
+	    XYZ_ptr measureXYZ = getCIEXYZOnly(rgb);
+	    if (ch == Channel::W) {
+		referenceRGB = rgb->clone();
 	    }
+	    setupComponent(ch, measureXYZ);
+
+	    /*if (null != mm) {
+	       Patch_ptr p = mm->measure(rgb, rgb->toString());
+	       if (ch == Channel::W) {
+	       referenceRGB = rgb->clone();
+	       }
+	       XYZ_ptr measureXYZ = p->getXYZ();
+	       setupComponent(ch, measureXYZ);
+	       } else {
+	       throw IllegalStateException("mm = null");
+	       } */
 	};
 
-	void MaxMatrixIntensityAnayzer::setupComponent(const Dep::
-						       Channel & ch,
-						       XYZ_ptr measureXYZ)
-	{
+	void MaxMatrixIntensityAnayzer::setupComponent(const Dep::Channel & ch, XYZ_ptr measureXYZ) {
 	    switch (ch.chindex) {
 	    case ChannelIndex::R:
 		rXYZ = measureXYZ;
@@ -312,22 +293,17 @@ namespace cms {
 	    if (null != mm) {
 		mm->setMeasureWindowsVisible(false);
 	    }
-	    if (rXYZ == null || gXYZ == null || bXYZ == null
-		|| wXYZ == null) {
-		throw IllegalStateException
-		    ("Excute setupComponent() with RGBW first.");
+	    if (rXYZ == null || gXYZ == null || bXYZ == null || wXYZ == null) {
+		throw IllegalStateException("Excute setupComponent() with RGBW first.");
 	    }
-	    double2D_ptr m =
-		DoubleArray::toDouble2D(3, 9, rXYZ->X, gXYZ->X, bXYZ->X,
-					rXYZ->Y, gXYZ->Y, bXYZ->Y,
-					rXYZ->Z, gXYZ->Z, bXYZ->Z);
+	    double2D_ptr m = DoubleArray::toDouble2D(3, 9, rXYZ->X, gXYZ->X, bXYZ->X,
+						     rXYZ->Y, gXYZ->Y, bXYZ->Y,
+						     rXYZ->Z, gXYZ->Z, bXYZ->Z);
 
 	    this->inverseMatrix = DoubleArray::inverse(m);
 
-	    double2D_ptr targetWhite =
-		DoubleArray::toDouble2D(1, 3, wXYZ->X, wXYZ->Y, wXYZ->Z);
-	    this->targetRatio =
-		DoubleArray::times(inverseMatrix, targetWhite);
+	    double2D_ptr targetWhite = DoubleArray::toDouble2D(1, 3, wXYZ->X, wXYZ->Y, wXYZ->Z);
+	    this->targetRatio = DoubleArray::times(inverseMatrix, targetWhite);
 
 	};
 	void MaxMatrixIntensityAnayzer::beginAnalyze() {
@@ -358,11 +334,15 @@ namespace cms {
 	    };
 	};
 	xyY_ptr MaxMatrixIntensityAnayzer::getReferenceColor() {
-	    xyY_ptr xyY(new CIExyY(wXYZ));
-	    return xyY;
+	    if (null != wXYZ) {
+		xyY_ptr xyY(new CIExyY(wXYZ));
+		return xyY;
+	    } else {
+		xyY_ptr xyY((CIExyY *) null);
+		return xyY;
+	    }
 	};
-	xyY_ptr MaxMatrixIntensityAnayzer::getPrimaryColor(const Dep::
-							   Channel & ch) {
+	xyY_ptr MaxMatrixIntensityAnayzer::getPrimaryColor(const Dep::Channel & ch) {
 	    switch (ch.chindex) {
 	    case ChannelIndex::R:
 		return xyY_ptr(new CIExyY(rXYZ));
@@ -371,8 +351,7 @@ namespace cms {
 	    case ChannelIndex::B:
 		return xyY_ptr(new CIExyY(bXYZ));
 	    default:
-		throw IllegalArgumentException("Unsupported Channel: " +
-					       *ch.toString());
+		throw IllegalArgumentException("Unsupported Channel: " + *ch.toString());
 	    };
 	};
 	RGB_ptr MaxMatrixIntensityAnayzer::getReferenceRGB() {
@@ -381,8 +360,7 @@ namespace cms {
 	bool MaxMatrixIntensityAnayzer::isInverseMatrixNull() {
 	    return null == inverseMatrix;
 	}
-	bptr < MeterMeasurement >
-	    MaxMatrixIntensityAnayzer::getMeterMeasurement() {
+	bptr < MeterMeasurement > MaxMatrixIntensityAnayzer::getMeterMeasurement() {
 	    return mm;
 	};
 
@@ -398,14 +376,12 @@ namespace cms {
 	    fieldNames =
 		StringVector::fromCString(13, "no", "CA_R", "CA_G", "CA_B",
 					  "MA_R", "MA_G", "MA_B", "MA_Ro",
-					  "MA_Go", "MA_Bo", "MA2_R",
-					  "MA2_G", "MA2_B");
+					  "MA_Go", "MA_Bo", "MA2_R", "MA2_G", "MA2_B");
 	    Util::deleteExist(INTENSITY_FILE);
 	    excel = bptr < SimpleExcelAccess > (new
 						SimpleExcelAccess
 						(INTENSITY_FILE,
-						 cms::colorformat::Create,
-						 fieldNames));
+						 cms::colorformat::Create, fieldNames));
 	};
 
 	RGB_ptr IntensityAnayzer::getIntensity(RGB_ptr rgb) {
@@ -426,8 +402,7 @@ namespace cms {
 					 matrixIntensity->B,
 					 (*originalIntensity)[0][0],
 					 (*originalIntensity)[1][0],
-					 (*originalIntensity)[2][0],
-					 0., 0., 0.);
+					 (*originalIntensity)[2][0], 0., 0., 0.);
 	    excel->insert(values);
 	    return ca210Intensity;
 	};
@@ -439,8 +414,7 @@ namespace cms {
 	    throw UnsupportedOperationException();
 	};
 
-	void IntensityAnayzer::
-	    setupComponent(const Dep::Channel & ch, RGB_ptr rgb) {
+	void IntensityAnayzer::setupComponent(const Dep::Channel & ch, RGB_ptr rgb) {
 	    ca210->setupComponent(ch, rgb);
 	    XYZ_ptr XYZ = ca210->getCIEXYZ();
 	    matrix->setupComponent(ch, XYZ);
@@ -455,8 +429,7 @@ namespace cms {
 	    values =
 		StringVector::fromDouble(13, 99., 0., 0., 0., 0., 0.,
 					 0., (*targetRatio)[0][0],
-					 (*targetRatio)[1][0],
-					 (*targetRatio)[2][0], 0., 0., 0.);
+					 (*targetRatio)[1][0], (*targetRatio)[2][0], 0., 0., 0.);
 	    excel->insert(values);
 
 	};
