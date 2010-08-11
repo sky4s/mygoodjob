@@ -30,14 +30,17 @@ void __fastcall TGammaMeasurementForm::Button_MeasureClick(TObject * Sender)
 {
     using namespace std;
     using namespace cms::util;
-    bptr < cms::measure::IntensityAnalyzerIF > analyzer = MainForm->getAnalyzer();
-    if (MainForm->isCA210Analyzer()) {
-	MainForm->setAnalyzerToTargetChannel();
-    } else {
-	if (null == analyzer->getReferenceColor()) {
-	    ShowMessage("Set \"Target White\" first or use CA-210 Intensity Analyzer");
-	    return;
-	}
+    /*bptr < cms::measure::IntensityAnalyzerIF > analyzer = MainForm->getAnalyzer();
+       if (MainForm->isCA210Analyzer()) {
+       MainForm->setAnalyzerToTargetChannel();
+       } else {
+       if (null == analyzer->getReferenceColor()) {
+       ShowMessage("Set \"Target White\" first or use CA-210 Intensity Analyzer");
+       return;
+       }
+       } */
+    if (false == checkMeasureable()) {
+	return;
     }
     MainForm->setMeterMeasurementWaitTimes();
 
@@ -172,12 +175,31 @@ void TGammaMeasurementForm::tconMeasure(bool_vector_ptr rgbw, int start,
 
 void __fastcall TGammaMeasurementForm::FormShow(TObject * Sender)
 {
+    if (false == checkMeasureable()) {
+	return;
+    }
+
+
     bool tconInput = bitDepth->isTCONInput();
     this->Panel2->Visible = tconInput;
     setMeasureInfo();
+    fetcher = MainForm->getComponentFetcher();
 }
 
 //---------------------------------------------------------------------------
+bool TGammaMeasurementForm::checkMeasureable()
+{
+    bptr < cms::measure::IntensityAnalyzerIF > analyzer = MainForm->getAnalyzer();
+    if (MainForm->isCA210Analyzer()) {
+	MainForm->setAnalyzerToTargetChannel();
+    } else {
+	if (null == analyzer->getReferenceColor()) {
+	    ShowMessage("Set \"Target White\" first or use CA-210 Intensity Analyzer");
+	    return false;;
+	}
+    }
+    return true;
+}
 
 //---------------------------------------------------------------------------
 

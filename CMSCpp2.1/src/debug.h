@@ -5,12 +5,16 @@
 #define METER_FILE "debug.xls"
 #define DEBUG_DIR  "debug/"
 
-//#define DEBUG_NEWFUNC		//新功能的開啟
-#define DEBUG_CCTLUT          //CCT功能的debug功能開啟
-//#define DEBUG_CCTLUT_NEWMETHOD  //新方法的過程debug功能開啟
+#define DEBUG_NEWFUNC		//新功能的開啟
+#define DEBUG_CCTLUT		//CCT功能的debug功能開啟
+#define DEBUG_CCTLUT_NEWMETHOD	//新方法的過程debug功能開啟
+
 //#define DEBUG_FINDWHITE //find white過程的紀錄
 //#define DEBUG_TARGETWHITE //Target White測試功能的開啟
-//#define DEBUG_STOP_TCONINPUT //是否支援在tcon input狀況下, 能中止量測(若能中止意味著會有量測視窗)
+
+//是否支援在tcon input狀況下, 能中止量測;
+//若能中止意味著會跳出量測視窗來阻擋, 因為中止功能要靠視窗去攔截按鍵
+//#define DEBUG_STOP_TCONINPUT
 
 //==============================================================================
 // CCT巨集

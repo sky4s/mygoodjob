@@ -26,7 +26,9 @@ __fastcall TTargetWhiteForm2::TTargetWhiteForm2(TComponent * Owner)
 //---------------------------------------------------------------------------
 void __fastcall TTargetWhiteForm2::RadioButton_MaxRGBClick(TObject * Sender)
 {
-    setRGBRatio(255, 255, 255);
+    int max = bitDepth->getMaxDigitalCount();
+    setRGBRatio(max, max, max);
+    this->RadioButton_MaxRGB->Checked = true;
 }
 
 //---------------------------------------------------------------------------
@@ -119,6 +121,7 @@ void TTargetWhiteForm2::setColorimetricValues(double x, double y, double up, dou
 
 void TTargetWhiteForm2::scrollBar_Change()
 {
+    this->RadioButton_RGBRatio->Checked = true;
     Panel1->Color =
 	(TColor) ScrollBar_R->Position + ((ScrollBar_G->Position) << 8) +
 	((ScrollBar_B->Position) << 16);
@@ -306,7 +309,7 @@ void __fastcall TTargetWhiteForm2::Button_RunClick(TObject * Sender)
 	    MainForm->setAnalyzerToTargetChannel();
 	}
 	analyzer->enter();
-        
+
 	//==========================================================================
 
 	//==========================================================================
@@ -360,6 +363,7 @@ void __fastcall TTargetWhiteForm2::Edit_RChange(TObject * Sender)
 void __fastcall TTargetWhiteForm2::Edit_GChange(TObject * Sender)
 {
     ScrollBar_G->Position = this->Edit_G->Text.ToInt();
+
 }
 
 //---------------------------------------------------------------------------
@@ -392,9 +396,16 @@ void __fastcall TTargetWhiteForm2::FormCreate(TObject * Sender)
 void TTargetWhiteForm2::setBitDepthProcessor(bptr <
 					     cms::lcd::calibrate::BitDepthProcessor > bitDepth)
 {
+    /*if (this->bitDepth != bitDepth) {
+       double maxCount = bitDepth->getMaxDigitalCount();
+       setRGBRatio(maxCount, maxCount, maxCount);
+       } */
     this->bitDepth = bitDepth;
-    double maxCount = bitDepth->getMaxDigitalCount();
-    setRGBRatio(maxCount, maxCount, maxCount);
+    if (Edit_R->Text.ToInt() == 0) {
+	double maxCount = bitDepth->getMaxDigitalCount();
+	setRGBRatio(maxCount, maxCount, maxCount);
+	this->RadioButton_MaxRGB->Checked = true;
+    }
 }
 
 //---------------------------------------------------------------------------

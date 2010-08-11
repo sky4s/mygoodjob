@@ -106,6 +106,8 @@ namespace cms {
 		bool bMax2;
 		int bMax2Begin;
 		double bMax2Gamma;
+		bool skipInverseB;
+		int maxZDGCode;
 
 		//gamma
 		bool rgbIndepGamma;
@@ -169,6 +171,7 @@ namespace cms {
 		void setKeepMaxLuminance(KeepMaxLuminance keepMaxLuminance);
 		void setKeepMaxLuminanceNativeWhiteAdvanced(int over, double gamma);
 		void setNewMethod(bool enable);
+		void setSkipInverseB(bool skip);
 
 		 LCDCalibrator(bptr <
 			       cms::lcd::calibrate::ComponentFetcher >
@@ -185,6 +188,11 @@ namespace cms {
 		void setMultiGen(bool enable, int times);
 	      private:
 		 RGB_vector_ptr getDGLutOpResult(RGB_vector_ptr dglut);
+		 bptr < cms::measure::MaxMatrixIntensityAnayzer > nativeWhiteAnalyzer;
+	      public:
+		 bptr < cms::measure::MaxMatrixIntensityAnayzer > getNativeWhiteAnalyzer();
+		void setNativeWhiteAnalyzer(bptr < cms::measure::MaxMatrixIntensityAnayzer >
+					    analyzer);
 	    };
 
 

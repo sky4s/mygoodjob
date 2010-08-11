@@ -78,9 +78,6 @@ void __fastcall TMainForm::FormCreate(TObject * Sender)
     }
     bitDepth = bptr < BitDepthProcessor > (new BitDepthProcessor(8, 10, 8, false));
 
-#ifdef DEBUG_NEWFUNC
-    //RadioGroup_Pattern->Visible = true;
-#endif
     readTCONSections();
     readSetup();
     ComboBox_TCONTypeChange(this);
@@ -223,7 +220,6 @@ void TMainForm::initCA210Meter()
 	meter = bptr < Meter > (new CA210());
 	mm = bptr < MeterMeasurement > (new MeterMeasurement(meter, false));
 	mm->setWaitTimes(this->getInterval());
-
     }
     catch(EOleException & ex) {
 	ShowMessage("CA210 cannot be linked.");
@@ -319,10 +315,11 @@ void TMainForm::setDummyMeterFilename(const std::string & filename)
 {
     using namespace cms::colorformat;
     bptr < DGLutFile > dglutFile(new DGLutFile(filename, ReadOnly));
-    setDummyMeterFilename(dglutFile);
+    setDummyMeterFile(dglutFile);
 }
 
-void TMainForm::setDummyMeterFilename(bptr < cms::colorformat::DGLutFile > dglutFile)
+//---------------------------------------------------------------------------
+void TMainForm::setDummyMeterFile(bptr < cms::colorformat::DGLutFile > dglutFile)
 {
     using namespace cms::measure::meter;
     using namespace cms::measure;
@@ -360,7 +357,7 @@ void TMainForm::setDummyMeterFilename(bptr < cms::colorformat::DGLutFile > dglut
 	//µLproperty«h¬°ÂÂª©
 	analyzer = bptr < CA210IntensityAnalyzer > (new CA210IntensityAnalyzer(mm));
     }
-};
+}
 
 //---------------------------------------------------------------------------
 
@@ -376,6 +373,7 @@ void TMainForm::resetDummyMeter()
 void TMainForm::setAnalyzerNull()
 {
     analyzer.reset();
+    fetcher.reset();
 }
 
 //---------------------------------------------------------------------------

@@ -204,6 +204,8 @@ namespace cms {
 		XYZ_ptr gXYZ = analyzer->getPrimaryColor(Channel::G)->toXYZ();
 		XYZ_ptr bXYZ = analyzer->getPrimaryColor(Channel::B)->toXYZ();
 
+		Component_vector_ptr maxComponentVector(new Component_vector());
+
 		for (int x = size - 1; x != -1; x--) {
 		    XYZ_ptr targetXYZ = (*targetXYZVector)[x];
 
@@ -218,7 +220,12 @@ namespace cms {
 			fetchNewComponent(ma, componentVector);
 
 #ifdef DEBUG_CCTLUT_NEWMETHOD
-		    STORE_COMPONENT(_toString(x) + ".xls", newcomponentVector);
+		    //STORE_COMPONENT(_toString(x) + ".xls", newcomponentVector);
+		    //把第一個存起來, 第一個往往是最大的
+		    RGB_ptr grayLevel(new RGBColor(x, x, x));
+		    Component_ptr c(new Component(grayLevel,
+						  (*newcomponentVector)[0]->intensity, targetXYZ));
+		    maxComponentVector->push_back(c);
 #endif
 		    DGLutGenerator lutgen(newcomponentVector);
 		    //B採100嗎?
@@ -229,6 +236,9 @@ namespace cms {
 						   bTargetIntensity);
 		    (*result)[x] = rgb;
 		}
+#ifdef DEBUG_CCTLUT_NEWMETHOD
+		STORE_COMPONENT("maxIntensity.xls", maxComponentVector);
+#endif
 		return result;
 	    };
 	    bool AdvancedDGLutGenerator::isAvoidHook(XYZ_ptr targetXYZ, double offsetK) {
@@ -330,10 +340,10 @@ namespace cms {
 		return result;
 	    };
 	    /*
-              產生smooth target還是有個問題, 就是luminance.
-              現在的作法是用原本的Target White的亮度來產生Luminance(也就是最大亮度),
-              但實際上高灰階的Target White已經被改變, 所以最大亮度也不同了.
-              若直接以高灰階的Target White為最大亮度, 部份高灰階卻又無法產生相同亮度及相同色度座標的DG
+	       產生smooth target還是有個問題, 就是luminance.
+	       現在的作法是用原本的Target White的亮度來產生Luminance(也就是最大亮度),
+	       但實際上高灰階的Target White已經被改變, 所以最大亮度也不同了.
+	       若直接以高灰階的Target White為最大亮度, 部份高灰階卻又無法產生相同亮度及相同色度座標的DG
 	     */
 	    XYZ_vector_ptr AdvancedDGLutGenerator::
 		getTarget(XYZ_ptr startXYZ, XYZ_ptr targetXYZ,

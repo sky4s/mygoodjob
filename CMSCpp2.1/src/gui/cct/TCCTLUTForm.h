@@ -93,6 +93,8 @@ class TCCTLUTForm:public TForm {
     TEdit *Edit_BMax2Begin;
     TEdit *Edit_BMax2Gamma;
     TLabel *Label19;
+        TCheckBox *CheckBox_SkipInverseB;
+    TCheckBox *CheckBox_MemoryMeasure;
     void __fastcall RadioButton_P1P2Click(TObject * Sender);
     void __fastcall Button_MeaRunClick(TObject * Sender);
     void __fastcall FormCreate(TObject * Sender);
@@ -121,6 +123,7 @@ class TCCTLUTForm:public TForm {
      bptr < cms::lcd::calibrate::MeasureCondition > getMeasureCondition();
     bool run;
     int getMaxZDGCode();
+     bptr < cms::measure::MaxMatrixIntensityAnayzer > nativeWhiteAnalyzer;
   public:			// User declarations
      __fastcall TCCTLUTForm(TComponent * Owner);
     void setBitDepthProcessor(bptr < cms::lcd::calibrate::BitDepthProcessor > bitDepth);

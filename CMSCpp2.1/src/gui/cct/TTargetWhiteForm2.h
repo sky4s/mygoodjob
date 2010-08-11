@@ -128,4 +128,3 @@ extern PACKAGE TTargetWhiteForm2 *TargetWhiteForm2;
 //---------------------------------------------------------------------------
 #endif
 
-

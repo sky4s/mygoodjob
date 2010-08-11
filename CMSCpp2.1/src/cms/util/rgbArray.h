@@ -25,6 +25,8 @@ namespace cms {
 	    static void changeMaxValue(RGB_vector_ptr vector, const Dep::MaxValue & type);
 	    static void quantization(RGB_vector_ptr vector, const Dep::MaxValue & maxValue);
 	    static RGB_vector_ptr reverse(RGB_vector_ptr rgbVector);
+	    static bool isAscend(RGB_vector_ptr rgbVector);
+	    static bool isAscend(RGB_vector_ptr rgbVector, int start, int end);
 	};
 
 	enum Type {

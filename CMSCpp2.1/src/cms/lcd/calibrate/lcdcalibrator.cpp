@@ -243,6 +243,9 @@ namespace cms {
 	    void LCDCalibrator::setNewMethod(bool enable) {
 		this->newMethod = enable;
 	    };
+	    void LCDCalibrator::setSkipInverseB(bool skip) {
+		this->skipInverseB = skip;
+	    };
 	  LCDCalibrator::LCDCalibrator(bptr < ComponentFetcher > fetcher, bptr < BitDepthProcessor > bitDepth):bitDepth(bitDepth)
 	    {
 		rgbIndepGamma = false;
@@ -257,6 +260,7 @@ namespace cms {
 		bMax = bMax2 = false;
 		bTargetIntensity = -1;
 		originalGamma = false;
+		skipInverseB = false;
 	    };
 
 	    Component_vector_ptr LCDCalibrator::
@@ -339,34 +343,42 @@ namespace cms {
 		    throw new IllegalStateException("null == gammaCurve");
 		}
 
-		bptr < MaxMatrixIntensityAnayzer > ma;
-		bptr < cms::measure::IntensityAnalyzerIF > analyzer;
-		if (true == newMethod && keepMaxLuminance == KeepMaxLuminance::NativeWhiteAdvanced) {
+		if (true == newMethod && keepMaxLuminance == KeepMaxLuminance::NativeWhiteAdvanced
+		    && nativeWhiteAnalyzer == null) {
 		    //=====================================================
 		    // 生出一組新的analyzer, 給smooth target的時候用
 		    // 有這組analyzer, 在smooth到native white的時候可以得到更準確的結果.
 		    //=====================================================
 		    //產生max matrix
-		    analyzer = fetcher->getAnalyzer();
+		    bptr < cms::measure::IntensityAnalyzerIF > analyzer = fetcher->getAnalyzer();
 		    bptr < MeterMeasurement > mm = analyzer->getMeterMeasurement();
-		    ma = bptr < MaxMatrixIntensityAnayzer > (new MaxMatrixIntensityAnayzer(mm));
+		    nativeWhiteAnalyzer =
+			bptr < MaxMatrixIntensityAnayzer > (new MaxMatrixIntensityAnayzer(mm));
 
 		    int max = bitDepth->getMaxDigitalCount();
+		    int bmax = max;
+		    if (true == skipInverseB) {
+			bptr < MeasureTool > mt(new MeasureTool(mm));
+			MeasureWindow->addWindowListener(mt);
+			bptr < MeasureCondition > measureCondition(new MeasureCondition(bitDepth));
+			bmax = mt->getMaxZDGCode(measureCondition);
+		    }
 		    //已知rgb
-		    RGB_ptr rgb(new RGBColor(max, max, max, MaxValue::Int8Bit));
+		    RGB_ptr rgb(new RGBColor(max, max, bmax, MaxValue::Int8Bit));
 		    RGB_ptr r(new RGBColor(max, 0, 0, MaxValue::Int8Bit));
 		    RGB_ptr g(new RGBColor(0, max, 0, MaxValue::Int8Bit));
-		    RGB_ptr b(new RGBColor(0, 0, max, MaxValue::Int8Bit));
+		    RGB_ptr b(new RGBColor(0, 0, bmax, MaxValue::Int8Bit));
 
 		    int defaultWaitTimes = analyzer->getWaitTimes();
 		    analyzer->setWaitTimes(5000);
-		    ma->beginAnalyze();
-		    ma->setupComponent(Channel::R, r);
-		    ma->setupComponent(Channel::G, g);
-		    ma->setupComponent(Channel::B, b);
-		    ma->setupComponent(Channel::W, rgb);
-		    ma->enter();
+		    nativeWhiteAnalyzer->beginAnalyze();
+		    nativeWhiteAnalyzer->setupComponent(Channel::R, r);
+		    nativeWhiteAnalyzer->setupComponent(Channel::G, g);
+		    nativeWhiteAnalyzer->setupComponent(Channel::B, b);
+		    nativeWhiteAnalyzer->setupComponent(Channel::W, rgb);
+		    nativeWhiteAnalyzer->enter();
 		    analyzer->setWaitTimes(defaultWaitTimes);
+
 		    //=====================================================
 		}
 
@@ -374,6 +386,7 @@ namespace cms {
 		if (componentVector == null) {
 		    return RGB_vector_ptr((RGB_vector *) null);
 		}
+
 		if (true == originalGamma) {
 		    //若要採用original gamma, 從量測結果拉出gamma, 當作目標gamma curve
 		    double_vector_ptr gammaCurve = getGammaCurve(componentVector);
@@ -394,27 +407,31 @@ namespace cms {
 		    bptr < AdvancedDGLutGenerator > advgenerator;
 
 		    //藉由傳統generator產生luminance gamma curve
-		    double_vector_ptr luminanceGammaCurve =
-			generator.getLuminanceGammaCurve(gammaCurve);
+		    double_vector_ptr luminanceGammaCurve;
 
 		    if (keepMaxLuminance == KeepMaxLuminance::NativeWhiteAdvanced) {
 			brightgammaParameter = keepMaxLumiGamma;
 			overParameter = keepMaxLumiOver;
 
 			advgenerator = bptr < AdvancedDGLutGenerator >
-			    (new AdvancedDGLutGenerator(componentVector, analyzer, ma, bitDepth));
+			    (new
+			     AdvancedDGLutGenerator(componentVector, fetcher->getAnalyzer(),
+						    nativeWhiteAnalyzer, bitDepth));
 
-			/*double maxLuminance = (*componentVector)[0]->XYZ->Y;
-			   double minLuminance =
-			   (*componentVector)[componentVector->size() - 1]->XYZ->Y;
-			   luminanceGammaCurve =
-			   generator.getLuminanceGammaCurve(gammaCurve, maxLuminance,
-			   minLuminance); */
+			double maxLuminance =
+			    (true == skipInverseB) ?
+			    nativeWhiteAnalyzer->getReferenceColor()->Y : (*componentVector)[0]->
+			    XYZ->Y;
+			double minLuminance =
+			    (*componentVector)[componentVector->size() - 1]->XYZ->Y;
+			luminanceGammaCurve =
+			    generator.getLuminanceGammaCurve(gammaCurve, maxLuminance,
+							     minLuminance);
 		    } else {
 			advgenerator =
 			    bptr < AdvancedDGLutGenerator >
 			    (new AdvancedDGLutGenerator(componentVector, fetcher, bitDepth));
-			//luminanceGammaCurve = generator.getLuminanceGammaCurve(gammaCurve);
+			luminanceGammaCurve = generator.getLuminanceGammaCurve(gammaCurve);
 
 		    }
 		    STORE_DOUBLE_VECTOR("1_lumigammacurve.xls", luminanceGammaCurve);
@@ -602,15 +619,6 @@ namespace cms {
 					       string & filename,
 					       RGB_vector_ptr dglut,
 					       bptr < cms::colorformat::DGLutFile > dglutFile) {
-		//int n = bitDepth->getLevel();
-		//int n = true == gamma256 ? 257 : 256;
-		//砍掉已存在的
-		//Util::deleteExist(filename);
-		//產生新檔
-		//bptr < DGLutFile > file(new DGLutFile(filename, Create));
-		//DGLutFile file(filename, Create);
-		//產生property物件
-		//bptr < LCDCalibrator > thisbptr(this);
 		DGLutProperty property(this);
 		//寫入property
 		dglutFile->setProperty(property);
@@ -690,7 +698,14 @@ namespace cms {
 		this->multiGenTimes = times;
 	    };
 	    //==================================================================
-
+	    bptr < cms::measure::MaxMatrixIntensityAnayzer > LCDCalibrator::getNativeWhiteAnalyzer() {
+		return nativeWhiteAnalyzer;
+	    }
+	    void LCDCalibrator::setNativeWhiteAnalyzer(bptr <
+						       cms::measure::MaxMatrixIntensityAnayzer >
+						       analyzer) {
+		this->nativeWhiteAnalyzer = analyzer;
+	    }
 	};
     };
 };

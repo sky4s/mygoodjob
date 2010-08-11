@@ -27,8 +27,7 @@ namespace cms {
 	    virtual RGB_ptr getIntensity(RGB_ptr rgb) = 0;
 	    virtual XYZ_ptr getCIEXYZ() = 0;
 	    virtual XYZ_ptr getCIEXYZOnly(RGB_ptr rgb) = 0;
-	    virtual void setupComponent(const Dep::Channel & ch,
-					RGB_ptr rgb) = 0;
+	    virtual void setupComponent(const Dep::Channel & ch, RGB_ptr rgb) = 0;
 	    void setReferenceColorComment(const string & comment);
 	    string_ptr getReferenceColorComment();
 	    virtual void enter() = 0;
@@ -109,8 +108,7 @@ namespace cms {
 	    XYZ_ptr getCIEXYZ();
 	    XYZ_ptr getCIEXYZOnly(RGB_ptr rgb);
 	    void setupComponent(const Dep::Channel & ch, RGB_ptr rgb);
-	    void setupComponent(const Dep::Channel & ch,
-				XYZ_ptr measureXYZ);
+	    void setupComponent(const Dep::Channel & ch, XYZ_ptr measureXYZ);
 	    void enter();
 	    void beginAnalyze();
 	    void endAnalyze();
@@ -127,16 +125,16 @@ namespace cms {
 	   無效!退費!
 	 */
 	/*class AdvancedMaxMatrixIntensityAnayzer:public
-	    MaxMatrixIntensityAnayzer {
-	  protected:
-	    XYZ_ptr targetWhite;
-	    double2D_ptr xtalkRatio;
-	  public:
-	     AdvancedMaxMatrixIntensityAnayzer();
-	    void setupTarget(XYZ_ptr targetXYZ);
-	    RGB_ptr getIntensity(XYZ_ptr XYZ);
-	    void enter();
-	};*/
+	   MaxMatrixIntensityAnayzer {
+	   protected:
+	   XYZ_ptr targetWhite;
+	   double2D_ptr xtalkRatio;
+	   public:
+	   AdvancedMaxMatrixIntensityAnayzer();
+	   void setupTarget(XYZ_ptr targetXYZ);
+	   RGB_ptr getIntensity(XYZ_ptr XYZ);
+	   void enter();
+	   }; */
 
 	/*
 	   用來合併CA-210與MaxMatrix兩種方法來分析Intensity
@@ -152,8 +150,7 @@ namespace cms {
 	    XYZ_ptr XYZ;
 	  public:
 	     IntensityAnayzer(bptr < MaxMatrixIntensityAnayzer >
-			      matrix,
-			      bptr < CA210IntensityAnalyzer > ca210);
+			      matrix, bptr < CA210IntensityAnalyzer > ca210);
 	    RGB_ptr getIntensity(RGB_ptr rgb);
 	    XYZ_ptr getCIEXYZ();
 	    XYZ_ptr getCIEXYZOnly(RGB_ptr rgb);
