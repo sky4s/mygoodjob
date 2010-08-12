@@ -261,6 +261,7 @@ namespace cms {
 		bTargetIntensity = -1;
 		originalGamma = false;
 		skipInverseB = false;
+		maxZDGCode = -1;
 	    };
 
 	    Component_vector_ptr LCDCalibrator::
@@ -356,18 +357,20 @@ namespace cms {
 			bptr < MaxMatrixIntensityAnayzer > (new MaxMatrixIntensityAnayzer(mm));
 
 		    int max = bitDepth->getMaxDigitalCount();
-		    int bmax = max;
+		    int blueMax = max;
+
 		    if (true == skipInverseB) {
 			bptr < MeasureTool > mt(new MeasureTool(mm));
 			MeasureWindow->addWindowListener(mt);
 			bptr < MeasureCondition > measureCondition(new MeasureCondition(bitDepth));
-			bmax = mt->getMaxZDGCode(measureCondition);
+			blueMax = mt->getMaxZDGCode(measureCondition);
+			this->maxZDGCode = blueMax;
 		    }
 		    //¤wª¾rgb
-		    RGB_ptr rgb(new RGBColor(max, max, bmax, MaxValue::Int8Bit));
+		    RGB_ptr rgb(new RGBColor(max, max, blueMax, MaxValue::Int8Bit));
 		    RGB_ptr r(new RGBColor(max, 0, 0, MaxValue::Int8Bit));
 		    RGB_ptr g(new RGBColor(0, max, 0, MaxValue::Int8Bit));
-		    RGB_ptr b(new RGBColor(0, 0, bmax, MaxValue::Int8Bit));
+		    RGB_ptr b(new RGBColor(0, 0, blueMax, MaxValue::Int8Bit));
 
 		    int defaultWaitTimes = analyzer->getWaitTimes();
 		    analyzer->setWaitTimes(5000);

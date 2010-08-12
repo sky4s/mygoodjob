@@ -42,8 +42,8 @@ namespace cms {
 	void CA210IntensityAnalyzer::init() {
 	    ca210api->setDisplayMode(Lvxy);
 	    ca210api->setChannelNO(0);
-	    Util::deleteExist(CA210DAT);
-	    ca210api->copyToFile(CA210DAT);
+	    //Util::deleteExist(CA210DAT);
+	    //ca210api->copyToFile(CA210DAT);
 	};
 
       CA210IntensityAnalyzer::CA210IntensityAnalyzer(bptr < CA210 > ca210, bptr < MeterMeasurement > mm):ca210(ca210), ca210api(ca210->getCA210API()), mm(mm),

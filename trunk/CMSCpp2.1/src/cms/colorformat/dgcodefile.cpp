@@ -357,6 +357,10 @@ namespace cms {
 	    if (c->keepMaxLuminance == KeepMaxLuminance::NativeWhiteAdvanced) {
 		dgcode.addProperty("keep max lumi adv over", c->keepMaxLumiOver);
 		dgcode.addProperty("keep max lumi adv gamma", c->keepMaxLumiGamma);
+		dgcode.addProperty("skip inverse b", c->skipInverseB ? On : Off);
+		if (true == c->skipInverseB) {
+		    dgcode.addProperty("maxZ dg code", c->maxZDGCode);
+		}
 	    }
 	    //==================================================================
 
@@ -371,19 +375,19 @@ namespace cms {
 		    xyY_ptr refRxyY = analyzer->getPrimaryColor(Channel::R);
 		    xyY_ptr refGxyY = analyzer->getPrimaryColor(Channel::G);
 		    xyY_ptr refBxyY = analyzer->getPrimaryColor(Channel::B);
-		    dgcode.addProperty("reference white", *refWhitexyY->toString());
+		    dgcode.addProperty(" reference white ", *refWhitexyY->toString());
 		    string_ptr comment = analyzer->getReferenceColorComment();
 		    if (null != comment) {
-			dgcode.addProperty("reference white comment", *comment);
+			dgcode.addProperty(" reference white comment ", *comment);
 		    }
-		    dgcode.addProperty("primary R", *refRxyY->toString());
-		    dgcode.addProperty("primary G", *refGxyY->toString());
-		    dgcode.addProperty("primary B", *refBxyY->toString());
+		    dgcode.addProperty(" primary R ", *refRxyY->toString());
+		    dgcode.addProperty(" primary G ", *refGxyY->toString());
+		    dgcode.addProperty(" primary B ", *refBxyY->toString());
 		}
 		//¬ö¿ýtarget white¥Îªºrgb
 		RGB_ptr refRGB = analyzer->getReferenceRGB();
 		if (null != refRGB) {
-		    dgcode.addProperty("reference white RGB", *refRGB->toString());
+		    dgcode.addProperty(" reference white RGB ", *refRGB->toString());
 		}
 	    }
 	    //==================================================================
@@ -425,12 +429,12 @@ namespace cms {
 	};
       DGLutProperty::DGLutProperty(bptr < DGLutFile > d):c((LCDCalibrator *) null), d(d) {
 	    if (false == initProperty(d)) {
-		throw IllegalStateException("init Property failed.");
+		throw IllegalStateException(" init Property failed.");
 	    }
 	};
       DGLutProperty::DGLutProperty(DGLutFile * d):c((LCDCalibrator *) null), d2(d) {
 	    if (false == initProperty(d)) {
-		throw IllegalStateException("init Property failed.");
+		throw IllegalStateException(" init Property failed.");
 	    }
 	};
 	string_ptr DGLutProperty::getProperty(const std::string key) {
@@ -440,19 +444,19 @@ namespace cms {
 	    string_ptr value;
 	    switch (ch.chindex) {
 	    case ChannelIndex::R:
-		value = getProperty("primary R");
+		value = getProperty(" primary R ");
 		break;
 	    case ChannelIndex::G:
-		value = getProperty("primary G");
+		value = getProperty(" primary G ");
 		break;
 	    case ChannelIndex::B:
-		value = getProperty("primary B");
+		value = getProperty(" primary B ");
 		break;
 	    case ChannelIndex::W:
-		value = getProperty("reference white");
+		value = getProperty(" reference white ");
 		break;
 	    default:
-		throw IllegalArgumentException("Unsupported Channel: " + *ch.toString());
+		throw IllegalArgumentException(" Unsupported Channel : " + *ch.toString());
 	    }
 	    if (null != value) {
 		xyY_ptr xyY(new CIExyY(CIExyY::getValuesFromString(value)));
