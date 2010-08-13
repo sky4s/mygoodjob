@@ -335,6 +335,46 @@ namespace cms {
 		return gammaCurve;
 	    };
 
+	    void LCDCalibrator::initNativeWhiteAnalyzer() {
+		//=====================================================
+		// 生出一組新的analyzer, 給smooth target的時候用
+		// 有這組analyzer, 在smooth到native white的時候可以得到更準確的結果.
+		//=====================================================
+		//產生max matrix
+		bptr < cms::measure::IntensityAnalyzerIF > analyzer = fetcher->getAnalyzer();
+		bptr < MeterMeasurement > mm = analyzer->getMeterMeasurement();
+		nativeWhiteAnalyzer =
+		    bptr < MaxMatrixIntensityAnayzer > (new MaxMatrixIntensityAnayzer(mm));
+
+		int max = bitDepth->getMaxDigitalCount();
+		int blueMax = max;
+
+		if (true == skipInverseB) {
+		    bptr < MeasureTool > mt(new MeasureTool(mm));
+		    MeasureWindow->addWindowListener(mt);
+		    bptr < MeasureCondition > measureCondition(new MeasureCondition(bitDepth));
+		    blueMax = mt->getMaxZDGCode(measureCondition);
+		    this->maxZDGCode = blueMax;
+		}
+		//已知rgb
+		RGB_ptr rgb(new RGBColor(max, max, blueMax, MaxValue::Int8Bit));
+		RGB_ptr r(new RGBColor(max, 0, 0, MaxValue::Int8Bit));
+		RGB_ptr g(new RGBColor(0, max, 0, MaxValue::Int8Bit));
+		RGB_ptr b(new RGBColor(0, 0, blueMax, MaxValue::Int8Bit));
+
+		int defaultWaitTimes = nativeWhiteAnalyzer->getWaitTimes();
+		nativeWhiteAnalyzer->setWaitTimes(5000);
+		nativeWhiteAnalyzer->beginAnalyze();
+		nativeWhiteAnalyzer->setupComponent(Channel::R, r);
+		nativeWhiteAnalyzer->setupComponent(Channel::G, g);
+		nativeWhiteAnalyzer->setupComponent(Channel::B, b);
+		nativeWhiteAnalyzer->setupComponent(Channel::W, rgb);
+		nativeWhiteAnalyzer->enter();
+		nativeWhiteAnalyzer->setWaitTimes(defaultWaitTimes);
+
+		//=====================================================
+	    }
+
 	    /*
 	       CCT + Gamma
 	     */
@@ -346,43 +386,7 @@ namespace cms {
 
 		if (true == newMethod && keepMaxLuminance == KeepMaxLuminance::NativeWhiteAdvanced
 		    && nativeWhiteAnalyzer == null) {
-		    //=====================================================
-		    // 生出一組新的analyzer, 給smooth target的時候用
-		    // 有這組analyzer, 在smooth到native white的時候可以得到更準確的結果.
-		    //=====================================================
-		    //產生max matrix
-		    bptr < cms::measure::IntensityAnalyzerIF > analyzer = fetcher->getAnalyzer();
-		    bptr < MeterMeasurement > mm = analyzer->getMeterMeasurement();
-		    nativeWhiteAnalyzer =
-			bptr < MaxMatrixIntensityAnayzer > (new MaxMatrixIntensityAnayzer(mm));
-
-		    int max = bitDepth->getMaxDigitalCount();
-		    int blueMax = max;
-
-		    if (true == skipInverseB) {
-			bptr < MeasureTool > mt(new MeasureTool(mm));
-			MeasureWindow->addWindowListener(mt);
-			bptr < MeasureCondition > measureCondition(new MeasureCondition(bitDepth));
-			blueMax = mt->getMaxZDGCode(measureCondition);
-			this->maxZDGCode = blueMax;
-		    }
-		    //已知rgb
-		    RGB_ptr rgb(new RGBColor(max, max, blueMax, MaxValue::Int8Bit));
-		    RGB_ptr r(new RGBColor(max, 0, 0, MaxValue::Int8Bit));
-		    RGB_ptr g(new RGBColor(0, max, 0, MaxValue::Int8Bit));
-		    RGB_ptr b(new RGBColor(0, 0, blueMax, MaxValue::Int8Bit));
-
-		    int defaultWaitTimes = analyzer->getWaitTimes();
-		    analyzer->setWaitTimes(5000);
-		    nativeWhiteAnalyzer->beginAnalyze();
-		    nativeWhiteAnalyzer->setupComponent(Channel::R, r);
-		    nativeWhiteAnalyzer->setupComponent(Channel::G, g);
-		    nativeWhiteAnalyzer->setupComponent(Channel::B, b);
-		    nativeWhiteAnalyzer->setupComponent(Channel::W, rgb);
-		    nativeWhiteAnalyzer->enter();
-		    analyzer->setWaitTimes(defaultWaitTimes);
-
-		    //=====================================================
+		    initNativeWhiteAnalyzer();
 		}
 
 		Component_vector_ptr componentVector = fetchComponentVector(measureCondition);
@@ -420,7 +424,7 @@ namespace cms {
 			    (new
 			     AdvancedDGLutGenerator(componentVector, fetcher->getAnalyzer(),
 						    nativeWhiteAnalyzer, bitDepth));
-
+			// max luminance的採用還是很有爭議
 			double maxLuminance =
 			    (true == skipInverseB) ?
 			    nativeWhiteAnalyzer->getReferenceColor()->Y : (*componentVector)[0]->

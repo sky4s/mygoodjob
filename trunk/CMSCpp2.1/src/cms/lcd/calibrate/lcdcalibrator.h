@@ -149,6 +149,7 @@ namespace cms {
 		Component_vector_ptr fetchComponentVector(bptr <
 							  MeasureCondition > measureCondition);
 		double_vector_ptr fetchLuminanceVector(bptr < MeasureCondition > measureCondition);
+		void initNativeWhiteAnalyzer();
 	      public:
 		static double_vector_ptr getGammaCurveVector(double gamma, int n, int
 							     effectiven);
