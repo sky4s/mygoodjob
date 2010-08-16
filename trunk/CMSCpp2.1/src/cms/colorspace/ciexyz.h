@@ -22,15 +22,28 @@ namespace cms {
 
 	      public:
 		double X, Y, Z;
+		//===============================================================
+		// constructor
+		//===============================================================
+		 CIEXYZ();
+		 CIEXYZ(double_array XYZValues, NormalizeY normalizeY);
+		 CIEXYZ(double_array XYZValues);
+		 CIEXYZ(double X, double Y, double Z, NormalizeY normalizeY);
+		 CIEXYZ(double X, double Y, double Z);
+		//===============================================================
+
+		//===============================================================
+		// ColorSpace
+		//===============================================================
 		string_vector_ptr getBandNames();
+		//===============================================================
 		double getCCT();
 
 		NormalizeY getNormalizeY();
 		double getSaturation(CIEXYZ white);
 		double_array getuvPrimeValues();
 		double_array getuvValues();
-		double_array getValues(double_array values,
-				       NormalizeY normalizeY);
+		double_array getValues(double_array values, NormalizeY normalizeY);
 
 
 
@@ -50,11 +63,9 @@ namespace cms {
 
 		bool isLegal();
 		bool isLegal(XYZ_ptr white);
-		static bptr < CIEXYZ >
-		    minus(const XYZ_ptr XYZ1, const XYZ_ptr XYZ2);
+		static bptr < CIEXYZ > minus(const XYZ_ptr XYZ1, const XYZ_ptr XYZ2);
 
-		static XYZ_ptr
-		    plus(const XYZ_ptr XYZ1, const XYZ_ptr XYZ2);
+		static XYZ_ptr plus(const XYZ_ptr XYZ1, const XYZ_ptr XYZ2);
 
 		void normalize(XYZ_ptr normal);
 
@@ -68,12 +79,7 @@ namespace cms {
 		void scaleY(double scaleY);
 		void times(double factor);
 
-		 CIEXYZ();
-		 CIEXYZ(double_array XYZValues, NormalizeY normalizeY);
-		 CIEXYZ(double_array XYZValues);
-		 CIEXYZ(double X, double Y, double Z,
-			NormalizeY normalizeY);
-		 CIEXYZ(double X, double Y, double Z);
+
 	    };
 
 
@@ -81,47 +87,60 @@ namespace cms {
 	      protected:
 		NormalizeY normalizeY_;
 		static CIExyY D65xyY;
+		double_array _getValues(double_array values);
+		void _setValues(double_array values);
 	      public:
 		double x, y, Y;
+		//===============================================================
+		// constructor
+		//===============================================================
 		 CIExyY();
-
 		 CIExyY(const XYZ_ptr XYZ);
 		 CIExyY(double_array xyValues, NormalizeY normalizeY);
 		 CIExyY(double_array xyValues);
-		 CIExyY(double x, double y, double Y,
-			NormalizeY normalizeY);
+		 CIExyY(double x, double y, double Y, NormalizeY normalizeY);
 		 CIExyY(double x, double y, double Y);
 		 CIExyY(double x, double y);
+		//===============================================================
+		//===============================================================
+		// ColorSpace
+		//===============================================================
+		string_vector_ptr getBandNames();
+		//===============================================================
+		//===============================================================
+		// DeviceIndependentSpace
+		//===============================================================
+		XYZ_ptr toXYZ();
+		//===============================================================
 
+		//===============================================================
+		// static
+		//===============================================================
 		static xyY_ptr fromCCT2Blackbody(int CCT);
 		static xyY_ptr fromCCT2DIlluminant(int CCT);
 		static xyY_ptr fromXYZ(const XYZ_ptr XYZ);
 		/*static xyY_ptr fromValuesString(const std::
 		   string & valuesString); */
+		static XYZ_ptr toXYZ(const CIExyY & xyY);
 
-		 bptr < CIEXYZ > toXYZ();
-
-		static bptr < CIEXYZ > toXYZ(const CIExyY & xyY);
-
-		double_array _getValues(double_array values);
-		void _setValues(double_array values);
-		string_vector_ptr getBandNames();
+		//===============================================================
+		// NormalizeYOperator
+		//===============================================================
 		void normalize(NormalizeY normalizeY);
 		void normalizeY();
+		//===============================================================
 
-		double_array getValues(double_array values,
-				       NormalizeY normalizeY);
+		//===============================================================
+		// 
+		//===============================================================
+		double_array getValues(double_array values, NormalizeY normalizeY);
 		double_array getValues();
 		double_array getValues(double_array values);
 		double getCCT();
-
 		double_array getDeltauv(const xyY_ptr xyY);
-
 		double_array getDeltauvPrime(const xyY_ptr xyY);
 		double_array getDeltaxy(const xyY_ptr xyY);
-
 		double_array getuvPrimeValues();
-
 		double_array getuvPrimeYValues();
 		double_array getuvValues();
 		double_array getWhitenessIndex();
@@ -132,6 +151,15 @@ namespace cms {
 		void setuvPrimeYValues(double_array uvPrimeYValues);
 		void setuvValues(double_array uvValues);
 		void setuvYValues(double_array uvYValues);
+		//===============================================================
+	    };
+
+	    class CIELab:public DeviceIndependentSpace {
+	      public:
+		double L, a, b;
+		 CIELab();
+
+		XYZ_ptr toXYZ();
 	    };
 	};
     };

@@ -358,7 +358,12 @@ void __fastcall TCCTLUTForm::FormShow(TObject * Sender)
     }
 
     setMeasureInfo();
-    nativeWhiteAnalyzer = bptr < MaxMatrixIntensityAnayzer > ((MaxMatrixIntensityAnayzer *) null);
+    nativeWhiteAnalyzer = MainForm->getNativeWhiteAnalyzer();
+    /*if (null != MainForm->getNativeWhiteAnalyzer()) {
+    nativeWhiteAnalyzer =} else {
+	nativeWhiteAnalyzer =
+	    bptr < MaxMatrixIntensityAnayzer > ((MaxMatrixIntensityAnayzer *) null);
+    }*/
 }
 
 void __fastcall TCCTLUTForm::RadioButton_GammaCurveClick(TObject * Sender)

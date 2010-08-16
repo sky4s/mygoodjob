@@ -239,24 +239,29 @@ bptr < cms::measure::IntensityAnalyzerIF > TMainForm::getAnalyzer()
 	if (null == ca210) {
 	    return bptr < IntensityAnalyzerIF > ((IntensityAnalyzerIF *) null);
 	}
-	if (null == realAnalyzer) {
-	    realAnalyzer = bptr < CA210IntensityAnalyzer > (new CA210IntensityAnalyzer(ca210, mm));
+	if (null == ca210Analyzer) {
+	    ca210Analyzer = bptr < CA210IntensityAnalyzer > (new CA210IntensityAnalyzer(ca210, mm));
 	}
 	//產生max matrix
 	bptr < MaxMatrixIntensityAnayzer > ma(new MaxMatrixIntensityAnayzer(mm));
 
 
 	if (true == this->RadioButton_AnalyzerCA210->Checked) {
-	    analyzer = realAnalyzer;
+	    analyzer = ca210Analyzer;
 	} else if (true == this->RadioButton_AnalyzerMaxMatrix->Checked) {
 	    analyzer = ma;
 	} else if (true == this->RadioButton_AnalyzerDebug->Checked) {
 	    //產生兩者的合體
-	    analyzer = bptr < IntensityAnalyzerIF > (new IntensityAnayzer(ma, realAnalyzer));
+	    analyzer = bptr < IntensityAnalyzerIF > (new IntensityAnayzer(ma, ca210Analyzer));
 	}
     }
     return analyzer;
 }
+
+bptr < cms::measure::MaxMatrixIntensityAnayzer > TMainForm::getNativeWhiteAnalyzer()
+{
+    return nativeWhiteAnalyzer;
+};
 
 //---------------------------------------------------------------------------
 void TMainForm::setAnalyzerToTargetChannel()
@@ -265,7 +270,7 @@ void TMainForm::setAnalyzerToTargetChannel()
 
 
     if (true == linkCA210) {
-	if (null == realAnalyzer) {
+	if (null == ca210Analyzer) {
 	    throw java::lang::IllegalStateException("call getAnalyzer()first !");
 	}
 	//撈出channel no和id
@@ -275,7 +280,7 @@ void TMainForm::setAnalyzerToTargetChannel()
 	targetid = targetid.empty()? string("") : targetid;
 	string_ptr id(new string(targetid));
 	//設定在ca210
-	realAnalyzer->setChannel(channel, id);
+	ca210Analyzer->setChannel(channel, id);
 
     }
 };
@@ -286,14 +291,14 @@ void TMainForm::setAnalyzerToSourceChannel()
 {
     using namespace std;
     if (true == linkCA210) {
-	if (null == realAnalyzer) {
+	if (null == ca210Analyzer) {
 	    throw java::lang::IllegalStateException("call getAnalyzer()first !");
 	}
 	//撈出channel no和id
 	int channel = this->Edit_SourceCH->Text.ToInt();
 	string_ptr id(new string(""));
 	//設定在ca210
-	realAnalyzer->setChannel(channel, id);
+	ca210Analyzer->setChannel(channel, id);
 
     }
 };
@@ -340,17 +345,36 @@ void TMainForm::setDummyMeterFile(bptr < cms::colorformat::DGLutFile > dglutFile
 	bptr < MaxMatrixIntensityAnayzer > matrixAnalyzer(new MaxMatrixIntensityAnayzer(mm));
 	analyzer = matrixAnalyzer;
 
-	xyY_ptr wxyY = property->getReferenceColor(Channel::W);
-	if (null != wxyY) {
-	    xyY_ptr rxyY = property->getReferenceColor(Channel::R);
-	    xyY_ptr gxyY = property->getReferenceColor(Channel::G);
-	    xyY_ptr bxyY = property->getReferenceColor(Channel::B);
+	xyY_ptr targetwxyY = property->getTargetReferenceColor(Channel::W);
+	if (null != targetwxyY) {
+	    xyY_ptr rxyY = property->getTargetReferenceColor(Channel::R);
+	    xyY_ptr gxyY = property->getTargetReferenceColor(Channel::G);
+	    xyY_ptr bxyY = property->getTargetReferenceColor(Channel::B);
 
-	    matrixAnalyzer->setupComponent(Channel::W, wxyY->toXYZ());
+
+	    matrixAnalyzer->setupComponent(Channel::W, targetwxyY->toXYZ());
 	    matrixAnalyzer->setupComponent(Channel::R, rxyY->toXYZ());
 	    matrixAnalyzer->setupComponent(Channel::G, gxyY->toXYZ());
 	    matrixAnalyzer->setupComponent(Channel::B, bxyY->toXYZ());
 	    matrixAnalyzer->enter();
+
+	    matrixAnalyzer->setReferenceColorComment(*property->
+						     getProperty("reference white comment"));
+	    //matrixAnalyzer->setReferenceRGB()
+	}
+	xyY_ptr nativewxyY = property->getNativeReferenceColor(Channel::W);
+	if (null != nativewxyY) {
+	    bptr < MaxMatrixIntensityAnayzer > matrixAnalyzer2(new MaxMatrixIntensityAnayzer(mm));
+	    nativeWhiteAnalyzer = matrixAnalyzer2;
+	    xyY_ptr rxyY = property->getNativeReferenceColor(Channel::R);
+	    xyY_ptr gxyY = property->getNativeReferenceColor(Channel::G);
+	    xyY_ptr bxyY = property->getNativeReferenceColor(Channel::B);
+
+	    matrixAnalyzer2->setupComponent(Channel::W, nativewxyY->toXYZ());
+	    matrixAnalyzer2->setupComponent(Channel::R, rxyY->toXYZ());
+	    matrixAnalyzer2->setupComponent(Channel::G, gxyY->toXYZ());
+	    matrixAnalyzer2->setupComponent(Channel::B, bxyY->toXYZ());
+	    matrixAnalyzer2->enter();
 	}
     } else {
 	ShowMessage("Old version Raw Data.");

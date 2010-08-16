@@ -275,24 +275,25 @@ namespace cms {
 	//======================================================================
 	const string DGLutProperty::On = "On";
 	const string DGLutProperty::Off = "Off";
-
+	const string DGLutProperty::Native = "native";
+	const string DGLutProperty::Target = "target";
 	void
-	 DGLutProperty::store(DGLutFile & dgcode) const {
-	    dgcode.addProperty("Version", "3.2");
+	 DGLutProperty::store(DGLutFile & dgfile) const {
+	    dgfile.addProperty("Version", "3.2");
 
 	    bptr < MeasureCondition > mc = c->measureCondition;
 	    switch (mc->type) {
 	    case MeasureCondition::Normal:
-		dgcode.addProperty("start", mc->start);
-		dgcode.addProperty("end", mc->end);
-		dgcode.addProperty("step", mc->step);
+		dgfile.addProperty("start", mc->start);
+		dgfile.addProperty("end", mc->end);
+		dgfile.addProperty("step", mc->step);
 		break;
-		case MeasureCondition::Extend:dgcode.addProperty("high level start", mc->highStart);
-		dgcode.addProperty("high level end", mc->highEnd);
-		dgcode.addProperty("high level step", mc->highStep);
-		dgcode.addProperty("low level start", mc->lowStart);
-		dgcode.addProperty("low level end", mc->lowEnd);
-		dgcode.addProperty("low level step", mc->lowStep);
+		case MeasureCondition::Extend:dgfile.addProperty("high level start", mc->highStart);
+		dgfile.addProperty("high level end", mc->highEnd);
+		dgfile.addProperty("high level step", mc->highStep);
+		dgfile.addProperty("low level start", mc->lowStart);
+		dgfile.addProperty("low level end", mc->lowEnd);
+		dgfile.addProperty("low level step", mc->lowStep);
 		break;
 		//case MeasureCondition::Plain:break;
 	    }
@@ -300,41 +301,41 @@ namespace cms {
 		string lowLevelCorrect = "low level correct";
 	    switch (c->correct) {
 	    case Correct::P1P2:
-		dgcode.addProperty(lowLevelCorrect, "P1P2");
-		dgcode.addProperty("p1", c->p1);
-		dgcode.addProperty("p2", c->p2);
+		dgfile.addProperty(lowLevelCorrect, "P1P2");
+		dgfile.addProperty("p1", c->p1);
+		dgfile.addProperty("p2", c->p2);
 		break;
 	    case Correct::RBInterpolation:
-		dgcode.addProperty(lowLevelCorrect, "RBInterpolation");
-		dgcode.addProperty("rb under", c->under);
+		dgfile.addProperty(lowLevelCorrect, "RBInterpolation");
+		dgfile.addProperty("rb under", c->under);
 		break;
 	    case Correct::None:
-		dgcode.addProperty(lowLevelCorrect, "None");
+		dgfile.addProperty(lowLevelCorrect, "None");
 		break;
 	    case Correct::DefinedDim:
-		dgcode.addProperty(lowLevelCorrect, "DefinedDim");
-		dgcode.addProperty("defined dim under", c->under);
-		dgcode.addProperty("defined dim gamma", c->dimGamma);
+		dgfile.addProperty(lowLevelCorrect, "DefinedDim");
+		dgfile.addProperty("defined dim under", c->under);
+		dgfile.addProperty("defined dim gamma", c->dimGamma);
 		break;
 	    }
 	    //==================================================================
 
-	    dgcode.addProperty("New Method", c->newMethod ? On : Off);
+	    dgfile.addProperty("New Method", c->newMethod ? On : Off);
 	    bptr < BitDepthProcessor > bitDepth = c->bitDepth;
-	    dgcode.addProperty("in", *bitDepth->getInputMaxValue().toString());
-	    dgcode.addProperty("lut", *bitDepth->getLutMaxValue().toString());
-	    dgcode.addProperty("out", *bitDepth->getOutputMaxValue().toString());
-	    dgcode.addProperty("gamma",
+	    dgfile.addProperty("in", *bitDepth->getInputMaxValue().toString());
+	    dgfile.addProperty("lut", *bitDepth->getLutMaxValue().toString());
+	    dgfile.addProperty("out", *bitDepth->getOutputMaxValue().toString());
+	    dgfile.addProperty("gamma",
 			       c->originalGamma ? "Original Gamma" : _toString(c->gamma).c_str());
-	    dgcode.addProperty("gamma curve", c->useGammaCurve ? On : Off);
-	    dgcode.addProperty("g bypass", c->gByPass ? On : Off);
-	    dgcode.addProperty("b gain", c->bIntensityGain);
-	    dgcode.addProperty("b max", c->bMax ? "B Max" : (c->bMax2 ? "B Max Smooth" : "Off"));
+	    dgfile.addProperty("gamma curve", c->useGammaCurve ? On : Off);
+	    dgfile.addProperty("g bypass", c->gByPass ? On : Off);
+	    dgfile.addProperty("b gain", c->bIntensityGain);
+	    dgfile.addProperty("b max", c->bMax ? "B Max" : (c->bMax2 ? "B Max Smooth" : "Off"));
 	    if (c->bMax2) {
-		dgcode.addProperty("b max begin", c->bMax2Begin);
-		dgcode.addProperty("b max strength", c->bMax2Gamma);
+		dgfile.addProperty("b max begin", c->bMax2Begin);
+		dgfile.addProperty("b max strength", c->bMax2Gamma);
 	    }
-	    dgcode.addProperty("avoid FRC noise", c->avoidFRCNoise ? On : Off);
+	    dgfile.addProperty("avoid FRC noise", c->avoidFRCNoise ? On : Off);
 	    //==================================================================
 	    // KeepMaxLuminance
 	    //==================================================================
@@ -353,44 +354,52 @@ namespace cms {
 		keepstr = "Native White Advanced";
 		break;
 	    }
-	    dgcode.addProperty("keep max luminance", keepstr);
+	    dgfile.addProperty("keep max luminance", keepstr);
 	    if (c->keepMaxLuminance == KeepMaxLuminance::NativeWhiteAdvanced) {
-		dgcode.addProperty("keep max lumi adv over", c->keepMaxLumiOver);
-		dgcode.addProperty("keep max lumi adv gamma", c->keepMaxLumiGamma);
-		dgcode.addProperty("skip inverse b", c->skipInverseB ? On : Off);
+		dgfile.addProperty("keep max lumi adv over", c->keepMaxLumiOver);
+		dgfile.addProperty("keep max lumi adv gamma", c->keepMaxLumiGamma);
+		dgfile.addProperty("skip inverse b", c->skipInverseB ? On : Off);
 		if (true == c->skipInverseB) {
-		    dgcode.addProperty("maxZ dg code", c->maxZDGCode);
+		    dgfile.addProperty("maxZ dg code", c->maxZDGCode);
 		}
 	    }
 	    //==================================================================
 
 	    //==================================================================
-	    // target color
+	    // analyzer
 	    //==================================================================
 	    bptr < IntensityAnalyzerIF > analyzer = c->fetcher->getAnalyzer();
 	    if (null != analyzer) {
-		//¬ö¿ýref color
-		xyY_ptr refWhitexyY = analyzer->getReferenceColor();
-		if (null != refWhitexyY) {
-		    xyY_ptr refRxyY = analyzer->getPrimaryColor(Channel::R);
-		    xyY_ptr refGxyY = analyzer->getPrimaryColor(Channel::G);
-		    xyY_ptr refBxyY = analyzer->getPrimaryColor(Channel::B);
-		    dgcode.addProperty(" reference white ", *refWhitexyY->toString());
-		    string_ptr comment = analyzer->getReferenceColorComment();
-		    if (null != comment) {
-			dgcode.addProperty(" reference white comment ", *comment);
-		    }
-		    dgcode.addProperty(" primary R ", *refRxyY->toString());
-		    dgcode.addProperty(" primary G ", *refGxyY->toString());
-		    dgcode.addProperty(" primary B ", *refBxyY->toString());
-		}
-		//¬ö¿ýtarget white¥Îªºrgb
-		RGB_ptr refRGB = analyzer->getReferenceRGB();
-		if (null != refRGB) {
-		    dgcode.addProperty(" reference white RGB ", *refRGB->toString());
-		}
+		storeAnalyzer(dgfile, analyzer, Target);
+	    }
+	    if (null != c->nativeWhiteAnalyzer) {
+		storeAnalyzer(dgfile, c->nativeWhiteAnalyzer, Native);
 	    }
 	    //==================================================================
+	};
+	void DGLutProperty::storeAnalyzer(DGLutFile & dgfile,
+					  bptr < cms::measure::IntensityAnalyzerIF >
+					  analyzer, const string & prestring) const {
+	    //¬ö¿ýref color
+	    xyY_ptr refWhitexyY = analyzer->getReferenceColor();
+	    if (null != refWhitexyY) {
+		xyY_ptr refRxyY = analyzer->getPrimaryColor(Channel::R);
+		xyY_ptr refGxyY = analyzer->getPrimaryColor(Channel::G);
+		xyY_ptr refBxyY = analyzer->getPrimaryColor(Channel::B);
+		 dgfile.addProperty(prestring + " reference white", *refWhitexyY->toString());
+		string_ptr comment = analyzer->getReferenceColorComment();
+		if (null != comment) {
+		    dgfile.addProperty(" reference white comment ", *comment);
+		}
+		dgfile.addProperty(prestring + " primary R", *refRxyY->toString());
+		dgfile.addProperty(prestring + " primary G", *refGxyY->toString());
+		dgfile.addProperty(prestring + " primary B", *refBxyY->toString());
+	    }
+	    //¬ö¿ýtarget white¥Îªºrgb
+	    RGB_ptr refRGB = analyzer->getReferenceRGB();
+	    if (null != refRGB) {
+		dgfile.addProperty(prestring + " reference white RGB", *refRGB->toString());
+	    }
 	};
 	void DGLutProperty::addProperty(const std::string key, string_ptr value) {
 	    propertyMap.insert(make_pair(key, value));
@@ -440,23 +449,23 @@ namespace cms {
 	string_ptr DGLutProperty::getProperty(const std::string key) {
 	    return propertyMap[key];
 	};
-	xyY_ptr DGLutProperty::getReferenceColor(const Channel & ch) {
+	xyY_ptr DGLutProperty::getReferenceColor(const string & prestring, const Channel & ch) {
 	    string_ptr value;
 	    switch (ch.chindex) {
 	    case ChannelIndex::R:
-		value = getProperty(" primary R ");
+		value = getProperty(prestring + " primary R");
 		break;
 	    case ChannelIndex::G:
-		value = getProperty(" primary G ");
+		value = getProperty(prestring + " primary G");
 		break;
 	    case ChannelIndex::B:
-		value = getProperty(" primary B ");
+		value = getProperty(prestring + " primary B");
 		break;
 	    case ChannelIndex::W:
-		value = getProperty(" reference white ");
+		value = getProperty(prestring + " reference white");
 		break;
 	    default:
-		throw IllegalArgumentException(" Unsupported Channel : " + *ch.toString());
+		throw IllegalArgumentException("Unsupported Channel : " + *ch.toString());
 	    }
 	    if (null != value) {
 		xyY_ptr xyY(new CIExyY(CIExyY::getValuesFromString(value)));
@@ -465,6 +474,37 @@ namespace cms {
 		return xyY_ptr((CIExyY *) null);
 	    }
 	};
+	xyY_ptr DGLutProperty::getTargetReferenceColor(const Dep::Channel & ch) {
+	    return getReferenceColor(Target, ch);
+	};
+	xyY_ptr DGLutProperty::getNativeReferenceColor(const Dep::Channel & ch) {
+	    return getReferenceColor(Native, ch);
+	};
+	/*xyY_ptr DGLutProperty::getReferenceColor(const Channel & ch) {
+	   string_ptr value;
+	   switch (ch.chindex) {
+	   case ChannelIndex::R:
+	   value = getProperty("primary R");
+	   break;
+	   case ChannelIndex::G:
+	   value = getProperty("primary G");
+	   break;
+	   case ChannelIndex::B:
+	   value = getProperty("primary B");
+	   break;
+	   case ChannelIndex::W:
+	   value = getProperty("reference white");
+	   break;
+	   default:
+	   throw IllegalArgumentException("Unsupported Channel : " + *ch.toString());
+	   }
+	   if (null != value) {
+	   xyY_ptr xyY(new CIExyY(CIExyY::getValuesFromString(value)));
+	   return xyY;
+	   } else {
+	   return xyY_ptr((CIExyY *) null);
+	   }
+	   }; */
 	//======================================================================
     };
 };

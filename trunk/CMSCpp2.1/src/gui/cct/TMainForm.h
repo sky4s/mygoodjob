@@ -167,9 +167,9 @@ class TMainForm:public TForm {
      bptr < cms::measure::meter::CA210 > getCA210();
      bptr < cms::lcd::calibrate::ComponentFetcher > fetcher;
     int getInterval();
-     bptr < cms::measure::CA210IntensityAnalyzer > realAnalyzer;
+     bptr < cms::measure::CA210IntensityAnalyzer > ca210Analyzer;
      bptr < cms::measure::IntensityAnalyzerIF > analyzer;
-
+     bptr < cms::measure::MaxMatrixIntensityAnayzer > nativeWhiteAnalyzer;
     //==========================================================================
     //==========================================================================
     // T-CON
@@ -198,6 +198,7 @@ class TMainForm:public TForm {
      bptr < cms::measure::MeterMeasurement > mm;
     void setMeterMeasurementWaitTimes();
      bptr < cms::measure::IntensityAnalyzerIF > getAnalyzer();
+     bptr < cms::measure::MaxMatrixIntensityAnayzer > getNativeWhiteAnalyzer();
     void setDummyMeterFilename(const std::string & filename);
     void setDummyMeterFile(bptr < cms::colorformat::DGLutFile > dglutFile);
     void resetDummyMeter();

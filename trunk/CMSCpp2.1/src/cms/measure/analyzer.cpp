@@ -357,6 +357,9 @@ namespace cms {
 	RGB_ptr MaxMatrixIntensityAnayzer::getReferenceRGB() {
 	    return referenceRGB;
 	};
+	void MaxMatrixIntensityAnayzer::setReferenceRGB(RGB_ptr rgb) {
+	    this->referenceRGB = rgb;
+	};
 	bool MaxMatrixIntensityAnayzer::isInverseMatrixNull() {
 	    return null == inverseMatrix;
 	}
