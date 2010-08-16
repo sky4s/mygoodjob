@@ -21,14 +21,15 @@ namespace cms {
     //==========================================================================
     const CMF_ptr ColorMatchingFunction::
 	//CIE_1931_2DEG_XYZ = getColorMatchingFunction("ciexyz31_1.txt");
-     CIE_1931_2DEG_XYZ =
-	(true == FileExists(CIE_1931_2DEG)) ?
-	getColorMatchingFunction(CIE_1931_2DEG) : CMF_ptr(new ColorMatchingFunction());
-    //CIE_1931_2DEG_XYZ = CMF_ptr(new ColorMatchingFunction());
+	/*CIE_1931_2DEG_XYZ =
+	   (true == FileExists(CIE_1931_2DEG)) ?
+	   getColorMatchingFunction(CIE_1931_2DEG) : CMF_ptr(new ColorMatchingFunction()); */
+     CIE_1931_2DEG_XYZ = CMF_ptr(new ColorMatchingFunction());
 
      ColorMatchingFunction::
 	ColorMatchingFunction(Spectra_vector_ptr
-			      spectraVector):spectraVector(spectraVector), index(0) {
+			      spectraVector):spectraVector(spectraVector),
+	index(0) {
     };
   ColorMatchingFunction::ColorMatchingFunction():index(0) {
     };
@@ -51,7 +52,8 @@ namespace cms {
     Spectra_ptr ColorMatchingFunction::getSpectra(int index) const {
 	return (*spectraVector)[index];
     };
-    CMF_ptr ColorMatchingFunction::getColorMatchingFunction(const string & filename) {
+    CMF_ptr ColorMatchingFunction::
+	getColorMatchingFunction(const string & filename) {
 	if (!FileExists(filename.c_str())) {
 	    throw IllegalStateException("!FileExists(" + filename + ")");
 	}
@@ -61,7 +63,8 @@ namespace cms {
     //==========================================================================
     // CorrelatedColorTemperature
     //==========================================================================
-    bptr < CIExyY > CorrelatedColorTemperature::CCT2DIlluminantxyY(double tempK) {
+    bptr < CIExyY >
+	CorrelatedColorTemperature::CCT2DIlluminantxyY(double tempK) {
 	//using namespace std;
 	double x = 0.0, y;
 	double T, T2, T3;
@@ -74,12 +77,14 @@ namespace cms {
 	// For correlated color temperature (T) between 4000K and 7000K:
 
 	if (T >= 4000. && T <= 7000.) {
-	    x = -4.6070 * (1E9 / T3) + 2.9678 * (1E6 / T2) + 0.09911 * (1E3 / T) + 0.244063;
+	    x = -4.6070 * (1E9 / T3) + 2.9678 * (1E6 / T2) +
+		0.09911 * (1E3 / T) + 0.244063;
 	} else
 	    // or for correlated color temperature (T) between 7000K and 25000K:
 
 	if (T > 7000.0 && T <= 25000.0) {
-	    x = -2.0064 * (1E9 / T3) + 1.9018 * (1E6 / T2) + 0.24748 * (1E3 / T) + 0.237040;
+	    x = -2.0064 * (1E9 / T3) + 1.9018 * (1E6 / T2) +
+		0.24748 * (1E3 / T) + 0.237040;
 	} else {
 	    //string msg = "invalid temp: " + tempK +
 	    //    ", tempK must in 4000~25000K";
@@ -107,14 +112,16 @@ namespace cms {
 	return xyY;
     };
 
-    double CorrelatedColorTemperature::xy2CCTByMcCamyFloat(bptr < CIExyY > xyY) {
+    double CorrelatedColorTemperature::xy2CCTByMcCamyFloat(bptr < CIExyY >
+							   xyY) {
 	double n = (xyY->x - 0.332) / (xyY->y - 0.1858);
 	double sqr = Math::sqr(n);
 	double cct = -449 * sqr * n + 3525 * sqr - 6823.3 * n + 5520.33;
 	return cct;
     }
 
-    double_array CorrelatedColorTemperature::getdudvWithDIlluminant(XYZ_ptr XYZ) {
+    double_array CorrelatedColorTemperature::
+	getdudvWithDIlluminant(XYZ_ptr XYZ) {
 	xyY_ptr xyY(new CIExyY(XYZ));
 	double cct = xy2CCTByMcCamyFloat(xyY);
 	xyY_ptr dxyY = CCT2DIlluminantxyY(cct);
@@ -130,25 +137,31 @@ namespace cms {
 	return d;
     }
     Spectra_ptr CorrelatedColorTemperature::
-	getSpectraOfBlackbodyRadiator(double tempK, int start, int end, int interval) {
+	getSpectraOfBlackbodyRadiator(double tempK, int start, int end,
+				      int interval) {
 	int size = (end - start) / interval + 1;
 	double1D_ptr data(new double1D(size, new double[size]));
 	for (int x = 0; x < size; x++) {
 	    double lambda = (start + x * interval) * 1E-9;
 	    (*data)[x] = c1 /
-		(Math::pow(lambda, 5) * (Math::pow(Math::E, c2 / (tempK * lambda)) - 1));
+		(Math::pow(lambda, 5) *
+		 (Math::pow(Math::E, c2 / (tempK * lambda)) - 1));
 	}
-	Spectra_ptr spectra(new Spectra(_toString(tempK) + "K", start, end, interval, data));
+	Spectra_ptr spectra(new
+			    Spectra(_toString(tempK) + "K", start, end,
+				    interval, data));
 	spectra->normalizeDataToMax();
 	return spectra;
     };
-    Spectra_ptr CorrelatedColorTemperature::getSpectraOfBlackbodyRadiator(double tempK) {
+    Spectra_ptr CorrelatedColorTemperature::
+	getSpectraOfBlackbodyRadiator(double tempK) {
 	return getSpectraOfBlackbodyRadiator(tempK, 360, 830, 1);
     };
     const double CorrelatedColorTemperature::c = 2.99792458E8;
     const double CorrelatedColorTemperature::h = 6.626176E-34;
     const double CorrelatedColorTemperature::k = 1.380662E-23;
-    const double CorrelatedColorTemperature::c1 = 2 * Math::PI * h * Math::sqr(c);
+    const double CorrelatedColorTemperature::c1 =
+	2 * Math::PI * h * Math::sqr(c);
     const double CorrelatedColorTemperature::c2 = h * c / k;
     bool CorrelatedColorTemperature::isCCTMeaningful(xyY_ptr xyY) {
 	XYZ_ptr XYZ = xyY->toXYZ();
@@ -163,11 +176,13 @@ namespace cms {
 	}
 	return d;
     }
-    double_array CorrelatedColorTemperature::getdudvWithBlackbody(XYZ_ptr XYZ) {
+    double_array CorrelatedColorTemperature::
+	getdudvWithBlackbody(XYZ_ptr XYZ) {
 	double cct = xy2CCTByMcCamyFloat(xyY_ptr(new CIExyY(XYZ)));
 	//getSpectraOfBlackbodyRadiator(cct, 380, 730, 1);
 
-	Spectra_ptr spectra = getSpectraOfBlackbodyRadiator(cct, 380, 780, 1);
+	Spectra_ptr spectra =
+	    getSpectraOfBlackbodyRadiator(cct, 380, 780, 1);
 	XYZ_ptr blackbodyXYZ = spectra->getXYZ();
 	//xyY_ptr bbxyY = CIExyY::fromXYZ(blackbodyXYZ);
 	xyY_ptr bbxyY(new CIExyY(blackbodyXYZ));
@@ -201,7 +216,8 @@ namespace cms {
 		     int end,
 		     int interval,
 		     double1D_ptr
-		     data):name(name), start(start), end(end), interval(interval), data(data) {
+		     data):name(name), start(start), end(end),
+	interval(interval), data(data) {
 
     }
     XYZ_ptr Spectra::getXYZ() {
@@ -246,7 +262,8 @@ namespace cms {
 		.683002 * sigma(cmfSpectra->start,
 				cmfSpectra->end,
 				modifyData,
-				interval, cmfSpectra->data, cmfSpectra->interval) * interval;
+				interval, cmfSpectra->data,
+				cmfSpectra->interval) * interval;
 	}
 	XYZ_ptr result(new CIEXYZ(XYZValues));
 	return result;
@@ -256,10 +273,14 @@ namespace cms {
 	int rightFill = (end - this->end) / interval;
 	double1D_ptr modifyData = fillPurlieusData(data, leftFill,
 						   rightFill);
-	Spectra_ptr spectra(new Spectra(this->name, start, end, this->interval, modifyData));
+	Spectra_ptr spectra(new
+			    Spectra(this->name, start, end, this->interval,
+				    modifyData));
 	return spectra;
     };
-    double1D_ptr Spectra::fillPurlieusData(const double1D_ptr data, int leftBorder, int rightBorder) {
+    double1D_ptr Spectra::fillPurlieusData(const double1D_ptr data,
+					   int leftBorder,
+					   int rightBorder) {
 	using namespace math;
 	int dataSize = data->dim1();
 	int resultSize = dataSize + leftBorder + rightBorder;

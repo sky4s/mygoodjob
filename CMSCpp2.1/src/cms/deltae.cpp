@@ -13,15 +13,18 @@
 
 namespace cms {
     using namespace java::lang;
+    using namespace math;
 
-     DeltaE::DeltaE(const Lab_ptr Lab1, const Lab_ptr Lab2):Lab1(Lab1), Lab2(Lab2),
-	adaptedToD65(false) {
+     DeltaE::DeltaE(const Lab_ptr Lab1, const Lab_ptr Lab2):Lab1(Lab1),
+	Lab2(Lab2), adaptedToD65(false) {
 	cie2000DeltaE = -1;
 	cieDeltaE = -1;
     };
     DeltaE::DeltaE(const Lab_ptr Lab1, const Lab_ptr Lab2,
-		   bool adaptedToD65):Lab1(adaptedToD65 ? Lab1->getLabAdaptedToD65() : Lab1),
-	Lab2(adaptedToD65 ? Lab2->getLabAdaptedToD65() : Lab2), adaptedToD65(false) {
+		   bool adaptedToD65):Lab1(adaptedToD65 ? Lab1->
+					   getLabAdaptedToD65() : Lab1),
+	Lab2(adaptedToD65 ? Lab2->getLabAdaptedToD65() : Lab2),
+	adaptedToD65(false) {
 	cie2000DeltaE = -1;
 	cieDeltaE = -1;
     }
@@ -44,7 +47,8 @@ namespace cms {
 	double deltaE00 = Math::sqrt(Math::sqr(dL / (Sl * Kl)) +
 				     Math::sqr(dC / (Sc * Kc)) +
 				     Math::sqr(dh / (Sh * Kh)) +
-				     Rt * (dC / (Sc * Kc)) * (dh / (Sh * Kh)));
+				     Rt * (dC / (Sc * Kc)) * (dh /
+							      (Sh * Kh)));
 
 	return deltaE00;
     };
@@ -61,17 +65,20 @@ namespace cms {
 
 	double deltaab = Math::sqrt(Math::sqr(dC / (Sc * Kc)) +
 				    Math::sqr(dh / (Sh * Kh)) +
-				    Rt * (dC / (Sc * Kc)) * (dh / (Sh * Kh)));
+				    Rt * (dC / (Sc * Kc)) * (dh /
+							     (Sh * Kh)));
 	return deltaab;
     }
 
     double DeltaE::getCIE2000DeltaE() {
 	if (cie2000DeltaE == -1) {
-	    cie2000DeltaE = CIE2000DeltaE(Lab1, Lab2);
+	    cie2000DeltaE = CIE2000DeltaE(Lab1, Lab2, 1, 1, 1);
 	    CIE2000DeltaLCh = double_array(new double[3]);
-	    DoubleArray::arraycopy(_CIE2000DeltaLCH, 0, CIE2000DeltaLCh, 0, 3);
+	    DoubleArray::arraycopy(_CIE2000DeltaLCH, 0, CIE2000DeltaLCh, 0,
+				   3);
 	    CIE2000Parameters = double_array(new double[10]);
-	    DoubleArray::arraycopy(_CIE2000Parameters, 0, CIE2000Parameters, 0, 10);
+	    DoubleArray::arraycopy(_CIE2000Parameters, 0,
+				   CIE2000Parameters, 0, 10);
 	}
 	return cie2000DeltaE;
     }
@@ -80,7 +87,8 @@ namespace cms {
 	return (deg * Math::PI) / 180.;
     }
     void DeltaE::calculateCIE2000Parameters(const Lab_ptr Lab1,
-					    const Lab_ptr Lab2, double Kl, double Kc, double Kh) {
+					    const Lab_ptr Lab2, double Kl,
+					    double Kc, double Kh) {
 	double L1 = Lab1->L;
 	double a1 = Lab1->a;
 	double b1 = Lab1->b;
@@ -95,8 +103,9 @@ namespace cms {
 	// Neutral Correction (Derby)
 	//==========================================================================
 	double G = 0.5 *
-	    (1 - Math::sqrt(Math::pow((C + Cs) / 2, 7) / (Math::pow((C + Cs) / 2, 7) +
-							  Math::pow(25, 7))));
+	    (1 -
+	     Math::sqrt(Math::pow((C + Cs) / 2, 7) /
+			(Math::pow((C + Cs) / 2, 7) + Math::pow(25, 7))));
 
 	double a_p = (1 + G) * a1;
 	//==========================================================================
@@ -112,14 +121,18 @@ namespace cms {
 
 	double meanC_p = (C_p + C_ps) / 2;
 
-	double meanh_p = Math::abs(h_ps - h_p) <= 180 ? (h_ps + h_p) / 2 : (h_ps + h_p - 360) / 2;
+	double meanh_p =
+	    Math::abs(h_ps - h_p) <=
+	    180 ? (h_ps + h_p) / 2 : (h_ps + h_p - 360) / 2;
 
-	double delta_h = Math::abs(h_p - h_ps) <= 180 ? Math::abs(h_p - h_ps) :
-	    360 - Math::abs(h_p - h_ps);
+	double delta_h =
+	    Math::abs(h_p - h_ps) <=
+	    180 ? Math::abs(h_p - h_ps) : 360 - Math::abs(h_p - h_ps);
 	double delta_L = Math::abs(L1 - Ls);
 	double delta_C = Math::abs(C_p - C_ps);
 
-	double delta_H = 2 * Math::sqrt(C_ps * C_p) * Math::sin(RADIANES(delta_h) / 2);
+	double delta_H =
+	    2 * Math::sqrt(C_ps * C_p) * Math::sin(RADIANES(delta_h) / 2);
 	//==========================================================================
 	//Hue weighting function
 	//==========================================================================
@@ -135,16 +148,22 @@ namespace cms {
 	//Lightness weight function (Leeds)
 	double Sl = 1 +
 	    (0.015 * Math::sqr((Ls + L1) / 2 - 50)) / Math::sqrt(20 +
-								 Math::sqr((Ls + L1) / 2 - 50));
+								 Math::
+								 sqr((Ls +
+								      L1) /
+								     2 -
+								     50));
 	//Chroma weighting function
 	double Sc = 1 + 0.045 * (C_p + C_ps) / 2;
 
 	//==========================================================================
 	//Rotation Function
 	//==========================================================================
-	double delta_ro = 30 * Math::exp(-Math::sqr(((meanh_p - 275) / 25)));
-	double Rc = 2 *
-	    Math::sqrt((Math::pow(meanC_p, 7)) / (Math::pow(meanC_p, 7) + Math::pow(25, 7)));
+	double delta_ro =
+	    30 * Math::exp(-Math::sqr(((meanh_p - 275) / 25)));
+	double Rc =
+	    2 * Math::sqrt((Math::pow(meanC_p, 7)) /
+			   (Math::pow(meanC_p, 7) + Math::pow(25, 7)));
 	double Rt = -Math::sin(2 * RADIANES(delta_ro)) * Rc;
 	//==========================================================================
 

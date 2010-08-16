@@ -25,7 +25,9 @@ namespace cms {
 	double getCIE2000DeltaE();
       protected:
 	static void calculateCIE2000Parameters(const Lab_ptr Lab1,
-					       const Lab_ptr Lab2, double Kl, double Kc, double Kh);
+					       const Lab_ptr Lab2,
+					       double Kl, double Kc,
+					       double Kh);
 	static double RADIANES(double deg);
 	double_array CIE2000DeltaLCh;
 	double_array CIE2000Parameters;
