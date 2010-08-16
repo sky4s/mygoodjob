@@ -19,7 +19,7 @@
       build\tconcontrol.obj build\ReadWriteFunc.obj build\cmf.obj 
       build\sandbox.obj build\dimdg.obj build\TOutputFileFrame.obj 
       build\T3DMeasureWindow.obj build\T3DMeasurementForm.obj 
-      build\bitdepthprocessor.obj"/>
+      build\bitdepthprocessor.obj build\deltae.obj"/>
     <RESFILES value="CMSCpp2.res"/>
     <IDLFILES value=""/>
     <IDLGENFILES value=""/>
@@ -36,7 +36,7 @@
       inetdbbde.bpi inetdbxpress.bpi inetdb.bpi nmfast.bpi webdsnap.bpi 
       bcbie.bpi websnap.bpi soaprtl.bpi dclocx.bpi dbexpress.bpi dbxcds.bpi 
       indy.bpi bcb2kaxserver.bpi bcbindent.bpi"/>
-    <PATHCPP value=".;src;src\ca210api;src\cms;src\cms;src\cms\colorformat;src\cms\colorformat;src\cms\colorspace;src\cms\colorspace;src\cms\colorspace;src\cms\colorspace;src\cms\colorspace;src\cms\lcd\calibrate;src\cms\lcd\calibrate;src\cms\lcd\calibrate;src\cms\lcd\calibrate;src\cms\lcd\calibrate;src\cms\lcd\calibrate;src\cms\measure;src\cms\measure;src\cms\measure;src\cms\util;src\gui;src\cms\measure;src\cms\colorformat;src\cms\colorformat;src\cms\util;src\java;src\math;src\math;src\math;src\math;src\math;lib\CA200SRVRLib;lib\CA200SRVRLib;lib\LPT_lib;lib\LPT_lib;src\cms\lcd\calibrate;src\i2c;src\i2c;src\i2c;src\i2c\core;src\cms\colorformat;src\cms\lcd\calibrate;src\cms\lcd\calibrate;src\gui;src\gui\3d;src\gui\3d;src\cms\lcd\calibrate"/>
+    <PATHCPP value=".;src;src\ca210api;src\cms;src\cms\colorformat;src\cms\colorspace;src\cms\lcd\calibrate;src\cms\measure;src\cms\util;src\gui;src\java;src\math;lib\CA200SRVRLib;lib\LPT_lib;src\i2c;src\i2c\core;src\gui\3d"/>
     <PATHPAS value=".;"/>
     <PATHRC value=".;"/>
     <PATHASM value=".;"/>
@@ -124,6 +124,7 @@
       <FILE FILENAME="src\gui\3d\T3DMeasureWindow.cpp" FORMNAME="ThreeDMeasureWindow" UNITNAME="T3DMeasureWindow" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="src\gui\3d\T3DMeasurementForm.cpp" FORMNAME="ThreeDMeasurementForm" UNITNAME="T3DMeasurementForm" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="src\cms\lcd\calibrate\bitdepthprocessor.cpp" FORMNAME="" UNITNAME="bitdepthprocessor" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="src\cms\deltae.cpp" FORMNAME="" UNITNAME="deltae" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
   </FILELIST>
   <BUILDTOOLS>
   </BUILDTOOLS>

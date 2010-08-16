@@ -31,7 +31,8 @@ namespace cms {
 
 	    double CIEXYZ::getCCT() {
 		return CorrelatedColorTemperature::
-		    xy2CCTByMcCamyFloat(xyY_ptr(new CIExyY(XYZ_ptr(this))));
+		    xy2CCTByMcCamyFloat(xyY_ptr
+					(new CIExyY(XYZ_ptr(this))));
 	    };
 
 	    NormalizeY CIEXYZ::getNormalizeY() {
@@ -52,9 +53,12 @@ namespace cms {
 		CIExyY xyY(XYZ_ptr(new CIEXYZ(*this)));
 		return xyY.getuvValues();
 	    };
-	    double_array CIEXYZ::getValues(double_array values, NormalizeY normalizeY) {
+	    double_array CIEXYZ::getValues(double_array values,
+					   NormalizeY normalizeY) {
 		if (normalizeY_ == Not) {
-		    throw IllegalStateException("this.normalizeY == NormalizeY.Not");
+		    throw
+			IllegalStateException
+			("this.normalizeY == NormalizeY.Not");
 		}
 		getValues(values);
 		if (normalizeY_ == normalizeY) {
@@ -156,7 +160,8 @@ namespace cms {
 		return true;
 	    };
 	    bool CIEXYZ::isLegal(XYZ_ptr white) {
-		return isLegal() && X <= white->X && Y <= white->Y && Z <= white->Z;
+		return isLegal() && X <= white->X && Y <= white->Y
+		    && Z <= white->Z;
 	    };
 	    XYZ_ptr CIEXYZ::minus(const XYZ_ptr XYZ1, const XYZ_ptr XYZ2) {
 
@@ -192,8 +197,9 @@ namespace cms {
 	    };
 
 	    void CIEXYZ::normalize(NormalizeY normalizeY) {
-		double_array values = getValues(double_array(new double[3]),
-						normalizeY);
+		double_array values =
+		    getValues(double_array(new double[3]),
+			      normalizeY);
 		setValues(values);
 		normalizeY_ = normalizeY;
 	    };
@@ -264,7 +270,9 @@ namespace cms {
 	    CIExyY::CIExyY() {
 	    };
 
-	  CIExyY::CIExyY(XYZ_ptr XYZ):normalizeY_(XYZ->normalizeY_) {
+	  CIExyY::CIExyY(XYZ_ptr XYZ):normalizeY_(XYZ->
+			normalizeY_)
+	    {
 		double_array xyValues = XYZ->getxyValues();
 		setValues(xyValues[0], xyValues[1], XYZ->Y);
 	    };
@@ -353,9 +361,12 @@ namespace cms {
 		normalizeY_ = Normal1;
 	    };
 
-	    double_array CIExyY::getValues(double_array values, NormalizeY normalizeY) {
+	    double_array CIExyY::getValues(double_array values,
+					   NormalizeY normalizeY) {
 		if (normalizeY_ == Not) {
-		    throw IllegalStateException("this.normalizeY == NormalizeY.Not");
+		    throw
+			IllegalStateException
+			("this.normalizeY == NormalizeY.Not");
 		}
 		getValues(values);
 		if (normalizeY_ == normalizeY) {
@@ -534,6 +545,20 @@ namespace cms {
 		setValues(LabValues);
 		this->white = white;
 	    }
+	    CIELab::CIELab(double L, double a, double b) {
+		this->L = L;
+		this->a = a;
+		this->b = b;
+	    }
+	    string_vector_ptr CIELab::getBandNames() {
+		string_vector_ptr names(new string_vector(3));
+		(*names)[0] = "L";
+		(*names)[1] = "a";
+		(*names)[2] = "b";
+		return names;
+	    };
+	    XYZ_ptr CIELab::toXYZ() {
+	    };
 	    Lab_ptr CIELab::getLabAdaptedToD65() {
 		return Lab_ptr(this);
 		/*if (this.adaptedToD65 || this.white.equalsValues(Illuminant.D65WhitePoint)) {
