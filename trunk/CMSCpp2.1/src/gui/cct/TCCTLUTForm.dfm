@@ -1,5 +1,5 @@
 object CCTLUTForm: TCCTLUTForm
-  Left = 434
+  Left = 300
   Top = 300
   Width = 842
   Height = 492
@@ -364,6 +364,7 @@ object CCTLUTForm: TCCTLUTForm
       Height = 24
       Caption = 'New CCT Method'
       TabOrder = 1
+      Visible = False
       OnClick = CheckBox_NewMethodClick
     end
     object CheckBox_MultiGen: TCheckBox
@@ -631,21 +632,21 @@ object CCTLUTForm: TCCTLUTForm
     TabOrder = 11
     object Label20: TLabel
       Left = 32
-      Top = 89
+      Top = 105
       Width = 35
       Height = 16
       Caption = 'Begin'
     end
     object Label21: TLabel
       Left = 32
-      Top = 113
+      Top = 129
       Width = 49
       Height = 16
       Caption = 'Strength'
     end
     object Label18: TLabel
       Left = 32
-      Top = 193
+      Top = 201
       Width = 35
       Height = 16
       Caption = 'Begin'
@@ -653,7 +654,7 @@ object CCTLUTForm: TCCTLUTForm
     end
     object Label19: TLabel
       Left = 32
-      Top = 217
+      Top = 225
       Width = 49
       Height = 16
       Caption = 'Strength'
@@ -700,7 +701,7 @@ object CCTLUTForm: TCCTLUTForm
     end
     object Edit_MaxYAdvOver: TEdit
       Left = 89
-      Top = 89
+      Top = 105
       Width = 72
       Height = 24
       Enabled = False
@@ -710,17 +711,17 @@ object CCTLUTForm: TCCTLUTForm
     end
     object Edit_MaxYAdvGamma: TEdit
       Left = 89
-      Top = 113
+      Top = 129
       Width = 72
       Height = 24
       Enabled = False
       ImeName = #26085#25991#36664#20837#31995#32113' (MS-IME2002)'
       TabOrder = 5
-      Text = '2.2'
+      Text = '1'
     end
     object CheckBox_AvoidHookNB: TCheckBox
       Left = 9
-      Top = 169
+      Top = 177
       Width = 128
       Height = 24
       Caption = 'Avoid Hook(NB)'
@@ -730,7 +731,7 @@ object CCTLUTForm: TCCTLUTForm
     end
     object CheckBox_BMax2: TCheckBox
       Left = 137
-      Top = 169
+      Top = 177
       Width = 120
       Height = 24
       Caption = 'B Max (Smooth)'
@@ -740,7 +741,7 @@ object CCTLUTForm: TCCTLUTForm
     end
     object Edit_BMax2Begin: TEdit
       Left = 89
-      Top = 193
+      Top = 201
       Width = 72
       Height = 24
       Enabled = False
@@ -751,7 +752,7 @@ object CCTLUTForm: TCCTLUTForm
     end
     object Edit_BMax2Gamma: TEdit
       Left = 89
-      Top = 217
+      Top = 225
       Width = 72
       Height = 24
       Enabled = False
@@ -762,12 +763,21 @@ object CCTLUTForm: TCCTLUTForm
     end
     object CheckBox_SkipInverseB: TCheckBox
       Left = 32
-      Top = 144
+      Top = 160
       Width = 129
       Height = 17
       Caption = 'Skip Inverse B'
       Enabled = False
       TabOrder = 10
+    end
+    object CheckBox_MaxYAdvAuto: TCheckBox
+      Left = 32
+      Top = 88
+      Width = 129
+      Height = 17
+      Caption = 'Auto'
+      Enabled = False
+      TabOrder = 11
     end
   end
   object CheckBox_MemoryMeasure: TCheckBox
@@ -777,6 +787,7 @@ object CCTLUTForm: TCCTLUTForm
     Height = 21
     Caption = 'Memory Measure'
     TabOrder = 12
+    Visible = False
   end
   object OpenDialog1: TOpenDialog
     Filter = 'DGCode Files(*.xls)|*.xls'

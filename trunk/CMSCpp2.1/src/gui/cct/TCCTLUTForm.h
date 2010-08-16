@@ -95,6 +95,7 @@ class TCCTLUTForm:public TForm {
     TLabel *Label19;
     TCheckBox *CheckBox_SkipInverseB;
     TCheckBox *CheckBox_MemoryMeasure;
+    TCheckBox *CheckBox_MaxYAdvAuto;
     void __fastcall RadioButton_P1P2Click(TObject * Sender);
     void __fastcall Button_MeaRunClick(TObject * Sender);
     void __fastcall FormCreate(TObject * Sender);

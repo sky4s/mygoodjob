@@ -30,35 +30,23 @@ namespace cms {
 	    //======================================================================
 	    // Channel
 	    //======================================================================
-	    const Channel & Channel::R =
-		Channel::Channel(1, clRed, "R", ChannelIndex::R);
-	    const Channel & Channel::G =
-		Channel::Channel(2, clGreen, "G", ChannelIndex::G);
-	    const Channel & Channel::B =
-		Channel::Channel(3, clBlue, "B", ChannelIndex::B);
-	    const Channel & Channel::Y =
-		Channel::Channel(4, clYellow, "Y", ChannelIndex::Y);
-	    const Channel & Channel::M =
-		Channel::Channel(5, (TColor) 0xff00ff, "M",
-				 ChannelIndex::M);
-	    const Channel & Channel::C =
-		Channel::Channel(6, (TColor) 0xffff00, "C",
-				 ChannelIndex::C);
-	    const Channel & Channel::W =
-		Channel::Channel(7, clWhite, "W", ChannelIndex::W);
+	    const Channel & Channel::R = Channel::Channel(1, clRed, "R", ChannelIndex::R);
+	    const Channel & Channel::G = Channel::Channel(2, clGreen, "G", ChannelIndex::G);
+	    const Channel & Channel::B = Channel::Channel(3, clBlue, "B", ChannelIndex::B);
+	    const Channel & Channel::Y = Channel::Channel(4, clYellow, "Y", ChannelIndex::Y);
+	    const Channel & Channel::M = Channel::Channel(5, (TColor) 0xff00ff, "M",
+							  ChannelIndex::M);
+	    const Channel & Channel::C = Channel::Channel(6, (TColor) 0xffff00, "C",
+							  ChannelIndex::C);
+	    const Channel & Channel::W = Channel::Channel(7, clWhite, "W", ChannelIndex::W);
 
-	    const Channel_vector_ptr Channel::RGBYMCChannel =
-		getChannelVector(6, R, G, B, Y, M, C);
+	    const Channel_vector_ptr Channel::RGBYMCChannel = getChannelVector(6, R, G, B, Y, M, C);
 	    const Channel_vector_ptr Channel::RGBYMCWChannel =
 		getChannelVector(7, R, G, B, Y, M, C, W);
-	    const Channel_vector_ptr Channel::RGBChannel =
-		getChannelVector(3, R, G, B);
-	    const Channel_vector_ptr Channel::RGBWChannel =
-		getChannelVector(4, R, G, B, W);
-	    const Channel_vector_ptr Channel::WRGBChannel =
-		getChannelVector(4, W, R, G, B);
-	    const Channel_vector_ptr Channel::YMCChannel =
-		getChannelVector(3, Y, M, C);
+	    const Channel_vector_ptr Channel::RGBChannel = getChannelVector(3, R, G, B);
+	    const Channel_vector_ptr Channel::RGBWChannel = getChannelVector(4, R, G, B, W);
+	    const Channel_vector_ptr Channel::WRGBChannel = getChannelVector(4, W, R, G, B);
+	    const Channel_vector_ptr Channel::YMCChannel = getChannelVector(3, Y, M, C);
 
 
 	    /*Channel::Channel(int index, const TColor & color, string fullname):
@@ -97,8 +85,7 @@ namespace cms {
 		return chindex - 1;
 	    };
 
-	    const Channel & Channel::getChannel(boolean R, boolean G,
-						boolean B) {
+	    const Channel & Channel::getChannel(boolean R, boolean G, boolean B) {
 		int index = 0;
 		index += R ? 1 : 0;
 		index += G ? 2 : 0;
@@ -125,8 +112,7 @@ namespace cms {
 		    /*default:
 		       return NULL; */
 		default:
-		    throw IllegalArgumentException("Unsupported chIndex:" +
-						   chIndex);
+		    throw IllegalArgumentException("Unsupported chIndex:" + chIndex);
 		}
 	    };
 	    const Channel & Channel::getChannelByArrayIndex(int arrayIndex) {
@@ -139,10 +125,7 @@ namespace cms {
 	    bool Channel::isSecondaryColorChannel() const {
 		return isSecondaryColorChannel(*this);
 	    };
-	    Channel_vector_ptr Channel::getBesidePrimaryChannel(const
-								Channel &
-								primaryColorChannel)
-	    {
+	    Channel_vector_ptr Channel::getBesidePrimaryChannel(const Channel & primaryColorChannel) {
 		switch (primaryColorChannel.chindex) {
 		case ChannelIndex::R:
 		    return getChannelVector(2, G, B);
@@ -152,8 +135,7 @@ namespace cms {
 		    return getChannelVector(2, R, G);
 		default:
 		    throw IllegalArgumentException("Unsupported Channel: "
-						   + *primaryColorChannel.
-						   toString());
+						   + *primaryColorChannel.toString());
 		}
 	    };
 	    //======================================================================
@@ -173,8 +155,7 @@ namespace cms {
 					 const double gamma):type_(type),
 		referenceWhite(referenceWhite), gamma_(gamma) {
 
-		toXYZMatrix_ =
-		    double2D_ptr(new double2D(3, 3, toXYZMatrix));
+		toXYZMatrix_ = double2D_ptr(new double2D(3, 3, toXYZMatrix));
 		toRGBMatrix_ = DoubleArray::inverse(toXYZMatrix_);
 	    };
 	    RGBColorSpace::RGBColorSpace(const CSType & type,
@@ -218,8 +199,7 @@ namespace cms {
 	    // RGBBase
 	    //======================================================================
 	    double_array RGBBase::
-		linearToRGBValues(double_array linearRGBValues,
-				  RGBColorSpace rgbColorSpace) {
+		linearToRGBValues(double_array linearRGBValues, RGBColorSpace rgbColorSpace) {
 		double_array rgbValues;
 		boolean negative = false;
 
@@ -233,9 +213,7 @@ namespace cms {
 			if (rgbValues[x] <= 0.0031308) {
 			    rgbValues[x] *= 12.92;
 			} else {
-			    rgbValues[x] =
-				1.055 * Math::pow(rgbValues[x],
-						  1. / 2.4) - 0.055;
+			    rgbValues[x] = 1.055 * Math::pow(rgbValues[x], 1. / 2.4) - 0.055;
 			}
 			if (negative) {
 			    rgbValues[x] = -rgbValues[x];
@@ -248,9 +226,7 @@ namespace cms {
 			    rgbValues[x] = -rgbValues[x];
 			}
 
-			rgbValues[x] =
-			    Math::pow(rgbValues[x],
-				      1. / rgbColorSpace.gamma_);
+			rgbValues[x] = Math::pow(rgbValues[x], 1. / rgbColorSpace.gamma_);
 
 			if (negative) {
 			    rgbValues[x] = -rgbValues[x];
@@ -317,31 +293,40 @@ namespace cms {
 	    double MaxValue::getStepIn255() {
 		return 255. / max;
 	    };
-	    /*MaxValue MaxValue::getMaxValue(BitDepth bitDepth) {
-	       switch (bitDepth) {
-	       case Unknow:
-	       return DoubleUnlimited;
-	       case Bit6:
-	       return Int6Bit;
-	       case Bit8:
-	       return Int8Bit;
-	       case Bit10:
-	       return Int10Bit;
-	       case Bit12:
-	       return Int12Bit;
-	       }
-	       }; */
-	    const MaxValue & MaxValue::getByBit(int bit) {
+
+	    const MaxValue & MaxValue::getByIntegerBit(int bit) {
 		foreach(const MaxValue & m, *MaxValueVector) {
-		    if (m.bit == bit) {
+		    if (true == m.integer && m.bit == bit) {
 			return m;
 		    }
 		}
 		throw IllegalStateException("");
 	    };
 	    const string_ptr MaxValue::toString() const {
-		return string_ptr(new string(_toString(bit) + "bit"));
+		return string_ptr(new
+				  string((integer ? "Int" : "Double") + _toString(bit) + "Bit"));
 	    };
+	    const MaxValue & MaxValue::valueOf(string_ptr stringValue) {
+		if (*stringValue == "Int5Bit") {
+		    return Int5Bit;
+		} else if (*stringValue == "Int6Bit") {
+		    return Int6Bit;
+		} else if (*stringValue == "Int7Bit") {
+		    return Int7Bit;
+		} else if (*stringValue == "Int8Bit") {
+		    return Int8Bit;
+		} else if (*stringValue == "Int9Bit") {
+		    return Int9Bit;
+		} else if (*stringValue == "Int10Bit") {
+		    return Int10Bit;
+		} else if (*stringValue == "Int11Bit") {
+		    return Int11Bit;
+		} else if (*stringValue == "Int12Bit") {
+		    return Int12Bit;
+		} else {
+		    throw IllegalArgumentException();
+		}
+	    }
 	    //======================================================================
 	};
     };

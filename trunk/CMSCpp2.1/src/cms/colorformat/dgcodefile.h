@@ -23,6 +23,7 @@ namespace cms {
 					 Component_ptr c, RGB_ptr rgbGamma, RGB_ptr rgbGammaFix);
 	    static const std::string & GammaTable;
 	    static const std::string & RawData;
+	    static const std::string & Target;
 	    const Dep::MaxValue & maxValue;
 
 	  public:
@@ -37,6 +38,7 @@ namespace cms {
 	    void setRawData(Component_vector_ptr componentVector,
 			    RGBGamma_ptr initialRGBGamma, RGBGamma_ptr finalRGBGamma);
 	    void setGammaTable(RGB_vector_ptr dglut);
+	    void setTargetXYZVector(XYZ_vector_ptr targetXYZVector);
 	    Component_vector_ptr getComponentVector();
 	    RGB_vector_ptr getGammaTable();
 
@@ -53,47 +55,17 @@ namespace cms {
 	class DGLutProperty {
 	    friend class DGLutFile;
 	  private:
-	    /*
-	       static const std::string Start;
-	       static const std::string End;
-	       static const std::string Step;
-	       static const std::string LowStart;
-	       static const std::string LowEnd;
-	       static const std::string LowStep;
-	       static const std::string HighStart;
-	       static const std::string HighEnd;
-	       static const std::string HighStep;
-	       static const std::string P1P2;
-	       static const std::string P1;
-	       static const std::string P2;
-	       static const std::string RB;
-	       static const std::string RBUnder;
-	       static const std::string In;
-	       static const std::string LUT;
-	       static const std::string FRC;
-	       static const std::string Out;
-	       static const std::string Gamma;
-	       static const std::string RGamma;
-	       static const std::string GGamma;
-	       static const std::string BGamma;
-	       static const std::string GammaCurve;
-	       static const std::string GByPass;
-	       static const std::string BGain;
-	       static const std::string BMax;
-	       static const std::string Gamma256;
-	       static const std::string FRC_NR;
-	       static const std::string DimCorrect;
 
-	       static const std::string KeepMaxLumi; */
 	    static const std::string On;
 	    static const std::string Off;
 	    static const std::string Native;
 	    static const std::string Target;
+	    static std::string fileVersion;
+	    static std::string productVersion;
 
-	    //bptr < cms::lcd::calibrate::LCDCalibrator > c;
 	     cms::lcd::calibrate::LCDCalibrator * c;
 	     bptr < DGLutFile > d;
-	    DGLutFile *d2;
+	    //DGLutFile *d2;
 	    void store(DGLutFile & dglut) const;
 	    void DGLutProperty::storeAnalyzer(DGLutFile & dgfile,
 					      bptr < cms::measure::IntensityAnalyzerIF >
@@ -103,6 +75,7 @@ namespace cms {
 	    void addProperty(const std::string key, const std::string value);
 	    bool initProperty(bptr < DGLutFile > d);
 	    bool initProperty(DGLutFile * d);
+	    static void fetchVersionInfo();
 	  public:
 	    //DGLutProperty(bptr < cms::lcd::calibrate::LCDCalibrator > c);
 	     DGLutProperty(cms::lcd::calibrate::LCDCalibrator * c);
@@ -113,6 +86,7 @@ namespace cms {
 	    xyY_ptr getTargetReferenceColor(const Dep::Channel & ch);
 	    xyY_ptr getNativeReferenceColor(const Dep::Channel & ch);
 	    //xyY_ptr getReferenceColor(const Dep::Channel & ch);
+	     bptr < cms::lcd::calibrate::BitDepthProcessor > getBitDepthProcessor();
 	};
     };
 };

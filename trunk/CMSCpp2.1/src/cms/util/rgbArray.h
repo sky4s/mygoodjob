@@ -20,7 +20,7 @@ namespace cms {
 						     bitDepth, double gain);
 	    static void storeToExcel(const std::string & filename, RGB_vector_ptr rgbVector);
 	    static void storeToText(const std::string & filename, RGB_vector_ptr rgbVector);
-	    static RGB_vector_ptr clone(RGB_vector_ptr vector);
+	    //static RGB_vector_ptr clone(RGB_vector_ptr vector);
 	    static RGB_vector_ptr deepClone(RGB_vector_ptr vector);
 	    static void changeMaxValue(RGB_vector_ptr vector, const Dep::MaxValue & type);
 	    static void quantization(RGB_vector_ptr vector, const Dep::MaxValue & maxValue);

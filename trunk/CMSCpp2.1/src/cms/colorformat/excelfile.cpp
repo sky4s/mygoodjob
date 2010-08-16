@@ -436,9 +436,7 @@ namespace cms {
 		StringVector::fromString(2, key, value);
 	    db->setCacheMode(false);
 	    this->insertData(Properties, values, true);
-#ifdef CACHE_SQL
-	    db->setCacheMode(true);
-#endif
+ 
 	};
 	void
 	 ExcelAccessBase::addProperty(const std::string & key,

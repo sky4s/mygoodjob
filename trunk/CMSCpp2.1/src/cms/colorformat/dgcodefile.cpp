@@ -10,10 +10,6 @@
 
 //本項目內頭文件
 
-//不做初使化(其實沒有初始化的必要了)
-//#define LAZY_EXCEL true
-//將多筆sql合併成一句執行(excel似乎不能這樣玩)
-//#define CACHE_SQL
 
 namespace cms {
     namespace colorformat {
@@ -80,6 +76,7 @@ namespace cms {
 
 	const string & DGLutFile::GammaTable = "Gamma_Table";
 	const string & DGLutFile::RawData = "Raw_Data";
+	const string & DGLutFile::Target = "Target";
 
 	void DGLutFile::setRawData(Component_vector_ptr componentVector,
 				   RGBGamma_ptr initialRGBGamma, RGBGamma_ptr finalRGBGamma) {
@@ -98,9 +95,6 @@ namespace cms {
 	    //==================================================================
 	    int part1Size = componentVector->size();
 	    int part2Size = null != initialRGBGamma ? initialRGBGamma->r->size() : part1Size;
-	    //db->setTableName(RawData);
-	    //int size = componentVector->size();
-	    //string_vector_ptr headerNames = getHeaderNames(RawData);
 	    const int headerCount = getHeaderCount(RawData);
 	    string_vector_ptr values(new string_vector(headerCount));
 	    //==================================================================
@@ -170,9 +164,7 @@ namespace cms {
 
 		this->insertData(RawData, values, false);
 	    }
-#ifdef CACHE_SQL
-	    db->excuteCache();
-#endif
+
 	    //==================================================================
 	};
 
@@ -181,7 +173,6 @@ namespace cms {
 	    //==================================================================
 	    // 初始資料設定
 	    //==================================================================
-	    //db->setTableName(GammaTable);
 	    int
 	     size = dglut->size();
 	    string_vector_ptr values(new string_vector(4));
@@ -202,10 +193,40 @@ namespace cms {
 		    [3] = _toString(rgb->B);
 		this->insertData(GammaTable, values, false);
 	    }
-#ifdef CACHE_SQL
-	    db->excuteCache();
-#endif
+
 	    //==================================================================
+	};
+	void DGLutFile::setTargetXYZVector(XYZ_vector_ptr targetXYZVector) {
+	    //==================================================================
+	    // 初始資料設定
+	    //==================================================================
+	    initSheet(Target, 6, "Gray Level", "X", "Y (nit)", "Z", "_x", "_y");
+
+	    int size = targetXYZVector->size();
+	    const int headerCount = getHeaderCount(Target);
+	    string_vector_ptr values(new string_vector(headerCount));
+	    //==================================================================
+	    //==================================================================
+	    // 迴圈處理
+	    //==================================================================
+	    for (int x = 0; x != size; x++) {
+		XYZ_ptr XYZ = (*targetXYZVector)[x];
+
+		(*values)[0] = _toString(x);
+		(*values)
+		    [1] = _toString(XYZ->X);
+		(*values)
+		    [2] = _toString(XYZ->Y);
+		(*values)
+		    [3] = _toString(XYZ->Z);
+		xyY_ptr xyY(new CIExyY(XYZ));
+		(*values)
+		    [4] = _toString(xyY->x);
+		(*values)
+		    [5] = _toString(xyY->y);
+
+		this->insertData(Target, values, false);
+	    }
 	};
 	Component_vector_ptr DGLutFile::getComponentVector() {
 	    Component_vector_ptr vector(new Component_vector());
@@ -279,26 +300,30 @@ namespace cms {
 	const string DGLutProperty::Target = "target";
 	void
 	 DGLutProperty::store(DGLutFile & dgfile) const {
-	    dgfile.addProperty("Version", "3.2");
+	    //dgfile.addProperty("cct file version", "3.2");
+	    dgfile.addProperty("cct product version", "3.2");
 
 	    bptr < MeasureCondition > mc = c->measureCondition;
 	    switch (mc->type) {
-	    case MeasureCondition::Normal:
-		dgfile.addProperty("start", mc->start);
-		dgfile.addProperty("end", mc->end);
-		dgfile.addProperty("step", mc->step);
+	    case MeasureCondition::Normal:{
+		    dgfile.addProperty("start", mc->start);
+		    dgfile.addProperty("end", mc->end);
+		    dgfile.addProperty("step", mc->step);
+		};
 		break;
-		case MeasureCondition::Extend:dgfile.addProperty("high level start", mc->highStart);
-		dgfile.addProperty("high level end", mc->highEnd);
-		dgfile.addProperty("high level step", mc->highStep);
-		dgfile.addProperty("low level start", mc->lowStart);
-		dgfile.addProperty("low level end", mc->lowEnd);
-		dgfile.addProperty("low level step", mc->lowStep);
+	    case MeasureCondition::Extend:{
+		    dgfile.addProperty("high level start", mc->highStart);
+		    dgfile.addProperty("high level end", mc->highEnd);
+		    dgfile.addProperty("high level step", mc->highStep);
+		    dgfile.addProperty("low level start", mc->lowStart);
+		    dgfile.addProperty("low level end", mc->lowEnd);
+		    dgfile.addProperty("low level step", mc->lowStep);
+		};
 		break;
 		//case MeasureCondition::Plain:break;
 	    }
 	    //==================================================================//low level correct//==================================================================
-		string lowLevelCorrect = "low level correct";
+	    string lowLevelCorrect = "low level correct";
 	    switch (c->correct) {
 	    case Correct::P1P2:
 		dgfile.addProperty(lowLevelCorrect, "P1P2");
@@ -356,6 +381,9 @@ namespace cms {
 	    }
 	    dgfile.addProperty("keep max luminance", keepstr);
 	    if (c->keepMaxLuminance == KeepMaxLuminance::NativeWhiteAdvanced) {
+		if (true == c->autoKeepMaxLumiParameter) {
+		    dgfile.addProperty("auto keep max lumi adv parameter", On);
+		}
 		dgfile.addProperty("keep max lumi adv over", c->keepMaxLumiOver);
 		dgfile.addProperty("keep max lumi adv gamma", c->keepMaxLumiGamma);
 		dgfile.addProperty("skip inverse b", c->skipInverseB ? On : Off);
@@ -389,7 +417,7 @@ namespace cms {
 		 dgfile.addProperty(prestring + " reference white", *refWhitexyY->toString());
 		string_ptr comment = analyzer->getReferenceColorComment();
 		if (null != comment) {
-		    dgfile.addProperty(" reference white comment ", *comment);
+		    dgfile.addProperty("reference white comment", *comment);
 		}
 		dgfile.addProperty(prestring + " primary R", *refRxyY->toString());
 		dgfile.addProperty(prestring + " primary G", *refGxyY->toString());
@@ -436,12 +464,37 @@ namespace cms {
 		return false;
 	    }
 	};
+	void DGLutProperty::fetchVersionInfo() {
+	    const AnsiString InfoStr[10] =
+		{ "CompanyName", "FileDescription", "FileVersion", "InternalName", "LegalCopyright",
+		"LegalTradeMarks", "OriginalFileName", "ProductName", "ProductVersion", "Comments"
+	    };
+	    char *ExeName = Application->ExeName.c_str();
+	    DWORD n = GetFileVersionInfoSize(ExeName, null);
+
+	    if (n > 0) {
+		char *pBuf = (char *) malloc(n);
+		AnsiString temp = "VersionInfoSize = ";
+
+		GetFileVersionInfo(ExeName, 0, n, pBuf);
+		for (int i = 0; i < 10; i++) {
+		    char *pValue;
+		    DWORD Len;
+		    temp = "StringFileInfo\\040904E4\\";
+		    temp = temp + InfoStr[i];
+		    /*if (VerQueryValue(pBuf, temp.c_str(), pValue, &Len)) {
+
+		       } */
+		}
+		free(pBuf);
+	    }
+	};
       DGLutProperty::DGLutProperty(bptr < DGLutFile > d):c((LCDCalibrator *) null), d(d) {
 	    if (false == initProperty(d)) {
 		throw IllegalStateException(" init Property failed.");
 	    }
 	};
-      DGLutProperty::DGLutProperty(DGLutFile * d):c((LCDCalibrator *) null), d2(d) {
+      DGLutProperty::DGLutProperty(DGLutFile * d):c((LCDCalibrator *) null) {
 	    if (false == initProperty(d)) {
 		throw IllegalStateException(" init Property failed.");
 	    }
@@ -505,6 +558,14 @@ namespace cms {
 	   return xyY_ptr((CIExyY *) null);
 	   }
 	   }; */
+	bptr < BitDepthProcessor > DGLutProperty::getBitDepthProcessor() {
+	    const MaxValue & in = MaxValue::valueOf(getProperty("in"));
+	    const MaxValue & lut = MaxValue::valueOf(getProperty("lut"));
+	    const MaxValue & out = MaxValue::valueOf(getProperty("out"));
+	    bptr < BitDepthProcessor >
+		bitDepth(new BitDepthProcessor(in.bit, lut.bit, out.bit, false));
+	    return bitDepth;
+	}
 	//======================================================================
     };
 };

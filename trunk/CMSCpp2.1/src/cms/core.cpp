@@ -169,8 +169,10 @@ namespace cms {
 
 	Spectra_ptr spectra = getSpectraOfBlackbodyRadiator(cct, 380, 780, 1);
 	XYZ_ptr blackbodyXYZ = spectra->getXYZ();
-	xyY_ptr bbxyY = CIExyY::fromXYZ(blackbodyXYZ);
-	xyY_ptr xyY = CIExyY::fromXYZ(XYZ);
+	//xyY_ptr bbxyY = CIExyY::fromXYZ(blackbodyXYZ);
+	xyY_ptr bbxyY(new CIExyY(blackbodyXYZ));
+	//xyY_ptr xyY = CIExyY::fromXYZ(XYZ);
+	xyY_ptr xyY(new CIExyY(XYZ));
 	double_array duv = bbxyY->getDeltauv(xyY);
 	return duv;
     }

@@ -112,6 +112,7 @@ namespace cms {
 	namespace independ {
 	    class CIExyY;
 	    class CIEXYZ;
+	    class CIELab;
 	};
     };
     namespace lcd {
@@ -126,7 +127,7 @@ namespace cms {
 	    class ComponentPLRelation;
 
 	    class DimDGLutGenerator;
-            class DimTargetGenerator;
+	    class DimTargetGenerator;
 	    namespace algo {
 		class ChromaticAroundAlgorithm;
 		class CIEuv1960NearestAlgorithm;
@@ -227,6 +228,10 @@ typedef bptr < xyY_vector > xyY_vector_ptr;
 typedef bptr < Indep::CIEXYZ > XYZ_ptr;
 typedef std::vector < XYZ_ptr > XYZ_vector;
 typedef bptr < XYZ_vector > XYZ_vector_ptr;
+
+typedef bptr < Indep::CIELab > Lab_ptr;
+typedef std::vector < Lab_ptr > Lab_vector;
+typedef bptr < XYZ_vector > Lab_vector_ptr;
 
 typedef std::vector < Dep::Channel > Channel_vector;
 typedef bptr < Channel_vector > Channel_vector_ptr;
@@ -421,7 +426,9 @@ namespace java {
 	    static double min(double_vector_ptr values);
 
 	    static double_vector_ptr normalize(double_vector_ptr original, double normal);
-
+	    static double cubeRoot(double x);
+	    static double exp(double x);
+	    static double atan2deg(double b, double a);
 	};
 
 	/*
@@ -540,7 +547,7 @@ template < typename Container, typename ValueType, int nPropType > class Propert
     }
 //-- To make possible to cast the property class to the
 //   internal type --
-    operator    ValueType() {
+    operator                  ValueType() {
 	assert(m_cObject != NULL);
 	assert(Get != NULL);
 	return (m_cObject->*Get) ();

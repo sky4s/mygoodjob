@@ -41,9 +41,9 @@ namespace cms {
 	  BitDepthProcessor::BitDepthProcessor(int inBit, int lutBit, int outBit, bool tconInput):tconInput
 		(tconInput)
 	    {
-		in = &MaxValue::getByBit(inBit);
-		lut = &MaxValue::getByBit(lutBit);
-		out = &MaxValue::getByBit(outBit);
+		in = &MaxValue::getByIntegerBit(inBit);
+		lut = &MaxValue::getByIntegerBit(lutBit);
+		out = &MaxValue::getByIntegerBit(outBit);
 		bitDepth = getBitDepth(*in, *out);
 	    };
 
@@ -172,14 +172,14 @@ namespace cms {
 		this->tconInput = tconInput;
 	    };
 	    void BitDepthProcessor::setInBit(int inBit) {
-		in = &MaxValue::getByBit(inBit);
+		in = &MaxValue::getByIntegerBit(inBit);
 		bitDepth = getBitDepth(*in, *out);
 	    };
 	    void BitDepthProcessor::setLUTBit(int lutBit) {
-		lut = &MaxValue::getByBit(lutBit);
+		lut = &MaxValue::getByIntegerBit(lutBit);
 	    };
 	    void BitDepthProcessor::setOutBit(int outBit) {
-		out = &MaxValue::getByBit(outBit);
+		out = &MaxValue::getByIntegerBit(outBit);
 		bitDepth = getBitDepth(*in, *out);
 	    };
 	    string_ptr BitDepthProcessor::getFRCAbility() {
@@ -199,6 +199,25 @@ namespace cms {
 		    return string_ptr(new string("6+3"));
 		default:
 		    return string_ptr(new string("N/A"));
+		}
+	    };
+	    const Dep::MaxValue & BitDepthProcessor::getFRCAbilityBit() {
+		switch (bitDepth) {
+		case b10_10:
+		    return MaxValue::Int12Bit;
+		case b10_8:
+		    return MaxValue::Int11Bit;
+		case b8_8:
+		    if (*lut == MaxValue::Int12Bit) {
+			return MaxValue::Int11Bit;
+		    } else {
+			return MaxValue::Int10Bit;
+		    }
+		case b8_6:
+		case b6_6:
+		    return MaxValue::Int9Bit;
+		default:
+		    throw IllegalStateException();
 		}
 	    };
 	    const Dep::MaxValue & BitDepthProcessor::getMeasureMaxValue() {
