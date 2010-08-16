@@ -93,7 +93,7 @@ class TCCTLUTForm:public TForm {
     TEdit *Edit_BMax2Begin;
     TEdit *Edit_BMax2Gamma;
     TLabel *Label19;
-        TCheckBox *CheckBox_SkipInverseB;
+    TCheckBox *CheckBox_SkipInverseB;
     TCheckBox *CheckBox_MemoryMeasure;
     void __fastcall RadioButton_P1P2Click(TObject * Sender);
     void __fastcall Button_MeaRunClick(TObject * Sender);

@@ -623,11 +623,11 @@ void hookTester()
     //fetcher = bptr < ComponentFetcher > ((ComponentFetcher *) null);
 
     bptr < DGLutProperty > property = dgcode->getProperty();
-    xyY_ptr wxyY = property->getReferenceColor(Channel::W);
+    xyY_ptr wxyY = property->getTargetReferenceColor(Channel::W);
     if (null != wxyY) {
-	xyY_ptr rxyY = property->getReferenceColor(Channel::R);
-	xyY_ptr gxyY = property->getReferenceColor(Channel::G);
-	xyY_ptr bxyY = property->getReferenceColor(Channel::B);
+	xyY_ptr rxyY = property->getTargetReferenceColor(Channel::R);
+	xyY_ptr gxyY = property->getTargetReferenceColor(Channel::G);
+	xyY_ptr bxyY = property->getTargetReferenceColor(Channel::B);
 
 	matrixAnalyzer->setupComponent(Channel::W, wxyY->toXYZ());
 	matrixAnalyzer->setupComponent(Channel::R, rxyY->toXYZ());

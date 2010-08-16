@@ -45,7 +45,7 @@ namespace cms {
 
 		static const double INTENT_EPSILON;
 		static const double INTENT_KAPPA;
-		virtual boost::shared_ptr < CIEXYZ > toXYZ() = 0;
+		virtual XYZ_ptr toXYZ() = 0;
 	    };
 
 	    class NormalizeYOperator {

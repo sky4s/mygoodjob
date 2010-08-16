@@ -117,6 +117,7 @@ namespace cms {
 	    xyY_ptr getReferenceColor();
 	    xyY_ptr getPrimaryColor(const Dep::Channel & ch);
 	    RGB_ptr getReferenceRGB();
+	    void setReferenceRGB(RGB_ptr rgb);
 	    bool isInverseMatrixNull();
 	     bptr < MeterMeasurement > getMeterMeasurement();
 	};

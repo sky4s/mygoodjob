@@ -87,12 +87,17 @@ namespace cms {
 	       static const std::string KeepMaxLumi; */
 	    static const std::string On;
 	    static const std::string Off;
+	    static const std::string Native;
+	    static const std::string Target;
 
 	    //bptr < cms::lcd::calibrate::LCDCalibrator > c;
 	     cms::lcd::calibrate::LCDCalibrator * c;
 	     bptr < DGLutFile > d;
 	    DGLutFile *d2;
 	    void store(DGLutFile & dglut) const;
+	    void DGLutProperty::storeAnalyzer(DGLutFile & dgfile,
+					      bptr < cms::measure::IntensityAnalyzerIF >
+					      analyzer, const string & prestring) const;
 	     std::map < const std::string, string_ptr) propertyMap;
 	    void addProperty(const std::string key, string_ptr value);
 	    void addProperty(const std::string key, const std::string value);
@@ -104,7 +109,10 @@ namespace cms {
 	     DGLutProperty(bptr < DGLutFile > d);
 	     DGLutProperty(DGLutFile * d);
 	    string_ptr getProperty(const std::string key);
-	    xyY_ptr getReferenceColor(const Dep::Channel & ch);
+	    xyY_ptr getReferenceColor(const string & prestring, const Dep::Channel & ch);
+	    xyY_ptr getTargetReferenceColor(const Dep::Channel & ch);
+	    xyY_ptr getNativeReferenceColor(const Dep::Channel & ch);
+	    //xyY_ptr getReferenceColor(const Dep::Channel & ch);
 	};
     };
 };
