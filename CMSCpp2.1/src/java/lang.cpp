@@ -187,6 +187,65 @@ namespace java {
 	    }
 	    return original;
 	};
+
+	double Math::cubeRoot(double x) {
+
+	    double fr, r;
+	    int ex, shx;
+
+	    // Argument reduction
+	    fr = frexp(x, &ex);	// separate into mantissa and exponent
+	    //fr = (Double) p.get(0);
+	    //ex = (Integer) p.get(1);
+	    shx = ex % 3;
+
+	    if (shx > 0) {
+		shx -= 3;	// compute shx such that (ex - shx) is divisible by 3
+	    }
+
+	    ex = (ex - shx) / 3;	// exponent of cube root
+	    fr = ldexp(fr, shx);
+
+	    // 0.125 <= fr < 1.0
+
+	    // Use quartic rational polynomial with error < 2^(-24)
+
+	    fr = (((((45.2548339756803022511987494 * fr +
+		      192.2798368355061050458134625) * fr +
+		     119.1654824285581628956914143) * fr +
+		    13.43250139086239872172837314) * fr + 0.1636161226585754240958355063)
+		  /
+		  ((((14.80884093219134573786480845 * fr +
+		      151.9714051044435648658557668) * fr +
+		     168.5254414101568283957668343) * fr +
+		    33.9905941350215598754191872) * fr + 1.0));
+	    r = ldexp(fr, ex);	// 24 bits of precision
+	    return r;
+	}
+	double Math::exp(double x) {
+	    return std::exp(x);
+	}
+	  double Math::atan2deg(double b, double a) {
+	    double h;
+
+	    if (a == 0 && b == 0) {
+		h = 0;
+	    } else {
+		h = Math::atan2(a, b);
+	    }
+	    h *= (180. / Math::PI);
+
+	    while (h > 360.) {
+		h -= 360.;
+	    }
+
+	    while (h < 0) {
+		h += 360.;
+	    }
+
+	    return h;
+
+	}
 	//======================================================================
 
 	//======================================================================

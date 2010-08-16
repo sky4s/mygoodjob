@@ -164,8 +164,9 @@ void __fastcall TCCTLUTForm::Button_MeaRunClick(TObject * Sender)
 	} else if (true == RadioButton_MaxYNativeAdv->Checked) {
 	    int over = this->Edit_MaxYAdvOver->Text.ToInt();
 	    double gamma = this->Edit_MaxYAdvGamma->Text.ToDouble();
+	    bool autoParameter = CheckBox_MaxYAdvAuto->Checked;
 	    calibrator.setSkipInverseB(this->CheckBox_SkipInverseB->Checked);
-	    calibrator.setKeepMaxLuminanceNativeWhiteAdvanced(over, gamma);
+	    calibrator.setKeepMaxLuminanceNativeWhiteAdvanced(over, gamma, autoParameter);
 	}
 	//==========================================================================
 
@@ -218,7 +219,7 @@ void __fastcall TCCTLUTForm::Button_MeaRunClick(TObject * Sender)
 	    //=================================================================
 	    // 存檔
 	    //=================================================================
-	    calibrator.storeDGLutFile(filename, dglut, dgLutFile);
+	    calibrator.storeDGLutFile(dglut, dgLutFile);
 
 	    if (true == CheckBox_MemoryMeasure->Checked && false == MainForm->mm->isFakeMeasure()) {
 		//提供memory功能
@@ -268,46 +269,47 @@ void __fastcall TCCTLUTForm::FormCreate(TObject * Sender)
 {
     using namespace cms::lcd::calibrate;
 
-#ifdef DEBUG_NEWFUNC
-    //=========================================================================
-    this->Button_Debug->Visible = true;
-    this->Button_Reset->Visible = true;
-    //=========================================================================
+    if (true == MainForm->newFunction) {
+	//=========================================================================
+	this->Button_Debug->Visible = true;
+	this->Button_Reset->Visible = true;
+	//=========================================================================
 
-    //this->GroupBox_KeepMaxLuminance->Visible = true;
-    this->Button_Run->Visible = true;
+	//this->GroupBox_KeepMaxLuminance->Visible = true;
+	this->Button_Run->Visible = true;
 
-    //=========================================================================
-    // dim correct
-    //=========================================================================
-    RadioButton_NoneLowLevelCorrect->Visible = true;
-    /*RadioButton_DefinedDim->Visible = true;
-       CheckBox_AverageDimDG->Visible = true;
-       Label14->Visible = true;
-       Label17->Visible = true;
-       Edit_DefinedDimUnder->Visible = true;
-       Edit_DimGamma->Visible = true; */
-    //=========================================================================
+	//=========================================================================
+	// dim correct
+	//=========================================================================
+	RadioButton_NoneLowLevelCorrect->Visible = true;
+	/*RadioButton_DefinedDim->Visible = true;
+	   CheckBox_AverageDimDG->Visible = true;
+	   Label14->Visible = true;
+	   Label17->Visible = true;
+	   Edit_DefinedDimUnder->Visible = true;
+	   Edit_DimGamma->Visible = true; */
+	//=========================================================================
 
-    //=========================================================================
-    // smooth bmax
-    //=========================================================================
-    /*Label18->Visible = true;
-       Label19->Visible = true;
-       CheckBox_BMax2->Visible = true;
-       Edit_BMax2Begin->Visible = true;
-       Edit_BMax2Gamma->Visible = true; */
-    //=========================================================================
+	//=========================================================================
+	// smooth bmax
+	//=========================================================================
+	/*Label18->Visible = true;
+	   Label19->Visible = true;
+	   CheckBox_BMax2->Visible = true;
+	   Edit_BMax2Begin->Visible = true;
+	   Edit_BMax2Gamma->Visible = true; */
+	//=========================================================================
 
-    //=========================================================================
-    // multi gen
-    //=========================================================================
-    CheckBox_MultiGen->Visible = true;
-    Edit_MultiGenTimes->Visible = true;
-    //=========================================================================
-    //CheckBox_NewMethod->Visible = true;
-
-#endif
+	//=========================================================================
+	// multi gen
+	//=========================================================================
+	CheckBox_MultiGen->Visible = true;
+	Edit_MultiGenTimes->Visible = true;
+	//=========================================================================
+	//CheckBox_NewMethod->Visible = true;
+	CheckBox_MemoryMeasure->Visible = true;
+	CheckBox_NewMethod->Visible = true;
+    }
 }
 
 //---------------------------------------------------------------------------
@@ -360,10 +362,10 @@ void __fastcall TCCTLUTForm::FormShow(TObject * Sender)
     setMeasureInfo();
     nativeWhiteAnalyzer = MainForm->getNativeWhiteAnalyzer();
     /*if (null != MainForm->getNativeWhiteAnalyzer()) {
-    nativeWhiteAnalyzer =} else {
-	nativeWhiteAnalyzer =
-	    bptr < MaxMatrixIntensityAnayzer > ((MaxMatrixIntensityAnayzer *) null);
-    }*/
+       nativeWhiteAnalyzer =} else {
+       nativeWhiteAnalyzer =
+       bptr < MaxMatrixIntensityAnayzer > ((MaxMatrixIntensityAnayzer *) null);
+       } */
 }
 
 void __fastcall TCCTLUTForm::RadioButton_GammaCurveClick(TObject * Sender)
@@ -525,8 +527,8 @@ void __fastcall TCCTLUTForm::RadioButton_MaxYNativeAdvClick(TObject * Sender)
     bool checked = RadioButton_MaxYNativeAdv->Checked;
     Edit_MaxYAdvOver->Enabled = checked;
     Edit_MaxYAdvGamma->Enabled = checked;
+    this->CheckBox_MaxYAdvAuto->Enabled = checked;
     this->CheckBox_SkipInverseB->Enabled = checked;
-    //this->CheckBox_AvoidHookNB->Enabled = checked;
 }
 
 //---------------------------------------------------------------------------

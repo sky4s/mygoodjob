@@ -34,6 +34,7 @@ namespace cms {
 		 bptr < BitDepthProcessor > bitDepth;
 		 bptr < cms::measure::IntensityAnalyzerIF > analyzer2;
 		const bool smoothMode;
+		XYZ_vector_ptr targetXYZVector;
 	      public:
 		 AdvancedDGLutGenerator(Component_vector_ptr
 					componentVector,
@@ -49,11 +50,11 @@ namespace cms {
 				       int dimTurn, int brightTurn, double dimGamma,
 				       double brightGamma);
 
-		XYZ_vector_ptr getAvoidHookTarget(XYZ_ptr startXYZ,
-						  XYZ_ptr targetXYZ,
-						  double_vector_ptr
-						  luminanceGammaCurve,
-						  int dimTurn, int brightTurn, double dimGamma);
+		/*XYZ_vector_ptr getAvoidHookTarget(XYZ_ptr startXYZ,
+		   XYZ_ptr targetXYZ,
+		   double_vector_ptr
+		   luminanceGammaCurve,
+		   int dimTurn, int brightTurn, double dimGamma); */
 		XYZ_vector_ptr getTarget(XYZ_ptr startXYZ,
 					 XYZ_ptr targetXYZ, XYZ_ptr endXYZ,
 					 double_vector_ptr
@@ -64,6 +65,7 @@ namespace cms {
 		void setBTargetIntensity(double bTargetIntensity);
 		void windowClosing();
 		void setMultiGen(bool enable, int times);
+		XYZ_vector_ptr getTargetXYZVector();
 	      private:
 
 		static XYZ_vector_ptr getDimGammaTarget(double_vector_ptr

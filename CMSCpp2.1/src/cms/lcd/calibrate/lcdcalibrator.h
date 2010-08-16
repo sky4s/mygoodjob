@@ -129,6 +129,7 @@ namespace cms {
 		KeepMaxLuminance keepMaxLuminance;
 		int keepMaxLumiOver;
 		double keepMaxLumiGamma;
+		bool autoKeepMaxLumiParameter;
 		double bTargetIntensity;
 
 		//multi
@@ -141,6 +142,7 @@ namespace cms {
 		double_vector_ptr luminanceVector;
 		RGBGamma_ptr finalRGBGamma;
 		RGBGamma_ptr initialRGBGamma;
+		XYZ_vector_ptr targetXYZVector;
 
 
 		void setGammaCurve0(double_vector_ptr gammaCurve);
@@ -170,7 +172,8 @@ namespace cms {
 		void setBMax2(bool bMax2, int begin, double gamma);
 		void setAvoidFRCNoise(bool avoid);
 		void setKeepMaxLuminance(KeepMaxLuminance keepMaxLuminance);
-		void setKeepMaxLuminanceNativeWhiteAdvanced(int over, double gamma);
+		void setKeepMaxLuminanceNativeWhiteAdvanced(int over, double gamma,
+							    bool autoParameter);
 		void setNewMethod(bool enable);
 		void setSkipInverseB(bool skip);
 
@@ -182,8 +185,7 @@ namespace cms {
 		RGB_vector_ptr getGammaDGLut(bptr < MeasureCondition > measureCondition);
 		 bptr < cms::colorformat::DGLutFile >
 		    storeDGLutFile(const std::string & filename, RGB_vector_ptr dglut);
-		void storeDGLutFile(const std::string & filename,
-				    RGB_vector_ptr dglut,
+		void storeDGLutFile(RGB_vector_ptr dglut,
 				    bptr < cms::colorformat::DGLutFile > dglutFile);
 		void setBTargetIntensity(double bTargetIntensity);
 		void setMultiGen(bool enable, int times);

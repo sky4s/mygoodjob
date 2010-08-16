@@ -37,6 +37,11 @@ namespace cms {
 		//===============================================================
 		string_vector_ptr getBandNames();
 		//===============================================================
+		//===============================================================
+		// DeviceIndependentSpace
+		//===============================================================
+		XYZ_ptr toXYZ();
+		//===============================================================
 		double getCCT();
 
 		NormalizeY getNormalizeY();
@@ -50,7 +55,6 @@ namespace cms {
 		double_array getValues();
 		double_array getValues(double_array values);
 
-		 bptr < CIEXYZ > toXYZ();
 
 		double_array getWhitenessIndex();
 		double_array getxyValues() const;
@@ -118,9 +122,6 @@ namespace cms {
 		//===============================================================
 		static xyY_ptr fromCCT2Blackbody(int CCT);
 		static xyY_ptr fromCCT2DIlluminant(int CCT);
-		static xyY_ptr fromXYZ(const XYZ_ptr XYZ);
-		/*static xyY_ptr fromValuesString(const std::
-		   string & valuesString); */
 		static XYZ_ptr toXYZ(const CIExyY & xyY);
 
 		//===============================================================
@@ -155,11 +156,33 @@ namespace cms {
 	    };
 
 	    class CIELab:public DeviceIndependentSpace {
+	      protected:
+		double_array _getValues(double_array values);
+		void _setValues(double_array values);
+		XYZ_ptr white;
 	      public:
+		static const double epsilon;
+		static const double kappa;
 		double L, a, b;
+		//===============================================================
+		// constructor
+		//===============================================================
 		 CIELab();
-
+		 CIELab(XYZ_ptr XYZ, XYZ_ptr white);
+		 CIELab(double_array LabValues, XYZ_ptr white);
+		//===============================================================
+		//===============================================================
+		// ColorSpace
+		//===============================================================
+		string_vector_ptr getBandNames();
+		//===============================================================
+		//===============================================================
+		// DeviceIndependentSpace
+		//===============================================================
 		XYZ_ptr toXYZ();
+		//===============================================================
+		//Lab_ptr CIELab::fromXYZ(const XYZ_ptr XYZ, const XYZ_ptr whitePoint);
+		Lab_ptr getLabAdaptedToD65();
 	    };
 	};
     };

@@ -87,7 +87,6 @@ namespace cms {
 	    };
 
 
-	    //using ColorSpace::getValues;
 	    double_array CIEXYZ::getValues() {
 		return ColorSpace::getValues();
 	    };
@@ -293,11 +292,7 @@ namespace cms {
 	    xyY_ptr CIExyY::fromCCT2DIlluminant(int CCT) {
 		return CorrelatedColorTemperature::CCT2DIlluminantxyY(CCT);
 	    };
-	    xyY_ptr CIExyY::fromXYZ(const XYZ_ptr XYZ) {
-		double_array xyValues = XYZ->getxyValues();
-		xyY_ptr xyY(new CIExyY(xyValues[0], xyValues[1], XYZ->Y, XYZ->normalizeY_));
-		return xyY;
-	    }
+
 	    /*xyY_ptr CIExyY::fromValuesString(const std::
 	       string & valuesString) {
 	       using namespace cms::util;
@@ -490,8 +485,73 @@ namespace cms {
 		Y = uvYValues[2];
 	    }
 	    //======================================================================
-	};
-    };
 
+	    //======================================================================
+	    // CIELab
+	    //===================================================================
+	    const double epsilon = 216.0 / 24389.0;
+	    const double kappa = 24389.0 / 27.0;
+
+	    double_array CIELab::_getValues(double_array values) {
+		// double_array values(new double[3]);
+		values[0] = L;
+		values[1] = a;
+		values[2] = b;
+		return values;
+	    };
+	    void CIELab::_setValues(double_array values) {
+		L = values[0];
+		a = values[1];
+		b = values[2];
+	    };
+
+	    CIELab::CIELab(XYZ_ptr XYZ, XYZ_ptr white) {
+		double_array r(new double[3]);
+		r[0] = XYZ->X / white->X;
+		r[1] = XYZ->Y / white->Y;
+		r[2] = XYZ->Z / white->Z;
+
+		double_array f(new double[3]);
+
+		for (int i = 0; i < 3; i++) {
+		    if (r[i] > epsilon) {
+			f[i] = Math::cubeRoot(r[i]);	// more precisse than return pow(t, 1.0/3.0);
+		    } else {
+			f[i] = (kappa * r[i] + 16) / 116;
+		    }
+		}
+
+		double_array LabValues(new double[3]);
+		LabValues[0] = 116.0 * f[1] - 16;
+		LabValues[1] = 500.0 * (f[0] - f[1]);
+		LabValues[2] = 200.0 * (f[1] - f[2]);
+
+		setValues(LabValues);
+		this->white = white;
+	    };
+
+	    CIELab::CIELab(double_array LabValues, XYZ_ptr white) {
+		setValues(LabValues);
+		this->white = white;
+	    }
+	    Lab_ptr CIELab::getLabAdaptedToD65() {
+		return Lab_ptr(this);
+		/*if (this.adaptedToD65 || this.white.equalsValues(Illuminant.D65WhitePoint)) {
+		   return this;
+		   } else {
+		   CIEXYZ XYZ = toXYZ();
+		   CIEXYZ D65XYZ = XYZ.getXYZAdaptedToD65();
+		   CIELab D65Lab = new CIELab(D65XYZ, Illuminant.D65WhitePoint);
+		   D65Lab.originalWhite = XYZ.white;
+		   D65Lab.adaptedToD65 = true;
+		   return D65Lab;
+
+		   //===================================================================
+		   }; */
+	    };
+
+	};
+
+    };
 };
 

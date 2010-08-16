@@ -840,7 +840,7 @@ void cloneTry()
     bptr < BitDepthProcessor > bitDepth(new BitDepthProcessor(8, 10, 6, false));
 
     RGB_vector_ptr vector2 = RGBVector::getLinearRGBVector(bitDepth, 1);
-    RGB_vector_ptr result = RGBVector::clone(vector2);
+    RGB_vector_ptr result = RGBVector::deepClone(vector2);
     cout << (*vector2)[0]->R << endl;
     (*result)[0]->R = 100;
     cout << (*vector2)[0]->R << endl;

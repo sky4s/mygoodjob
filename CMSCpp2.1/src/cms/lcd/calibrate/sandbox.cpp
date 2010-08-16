@@ -71,14 +71,11 @@ namespace cms {
 		XYZ_ptr nativeWhite = (*componentVector)[0]->XYZ;
 
 		//求目標值曲線
-		XYZ_vector_ptr targetXYZVector = getTarget(blackXYZ,
-							   targetWhite,
-							   nativeWhite,
-							   luminanceGammaCurve,
-							   dimTurn,
-							   brightTurn,
-							   dimGamma,
-							   brightGamma);
+		 targetXYZVector = getTarget(blackXYZ,
+					     targetWhite,
+					     nativeWhite,
+					     luminanceGammaCurve,
+					     dimTurn, brightTurn, dimGamma, brightGamma);
 		 STORE_XYZXY_VECTOE("target.xls", targetXYZVector);
 		//==============================================================
 		/*
@@ -109,7 +106,7 @@ namespace cms {
 	    RGB_vector_ptr AdvancedDGLutGenerator::
 		smooth(RGB_vector_ptr result1, RGB_vector_ptr result2,
 		       bptr < BitDepthProcessor > bitDepth, int brightTurn) {
-		RGB_vector_ptr result = RGBVector::clone(result1);
+		RGB_vector_ptr result = RGBVector::deepClone(result1);
 
 		int level = bitDepth->getLevel();
 		int part = level - brightTurn;
@@ -285,60 +282,60 @@ namespace cms {
 		return isDuplicateBlue100(newcomponentVector);
 	    };
 
-	    XYZ_vector_ptr AdvancedDGLutGenerator::
-		getAvoidHookTarget(XYZ_ptr startXYZ,
-				   XYZ_ptr targetXYZ,
-				   double_vector_ptr
-				   luminanceGammaCurve,
-				   int dimTurn, int brightTurn, double dimGamma) {
-		int size = luminanceGammaCurve->size();
-		double_array dimendValues = targetXYZ->getxyValues();
+	    /*XYZ_vector_ptr AdvancedDGLutGenerator::
+	       getAvoidHookTarget(XYZ_ptr startXYZ,
+	       XYZ_ptr targetXYZ,
+	       double_vector_ptr
+	       luminanceGammaCurve,
+	       int dimTurn, int brightTurn, double dimGamma) {
+	       int size = luminanceGammaCurve->size();
+	       double_array dimendValues = targetXYZ->getxyValues();
 
-		XYZ_vector_ptr result(new XYZ_vector(size));
+	       XYZ_vector_ptr result(new XYZ_vector(size));
 
-		//==============================================================
-		// dim區段
-		//==============================================================
-		XYZ_vector_ptr dimResult = getDimGammaTarget(luminanceGammaCurve,
-							     startXYZ,
-							     targetXYZ, dimGamma,
-							     dimTurn);
-		int dimSize = dimResult->size();
-		for (int x = 0; x < dimSize; x++) {
-		    (*result)[x] = (*dimResult)[x];
-		}
-		//==============================================================
+	       //==============================================================
+	       // dim區段
+	       //==============================================================
+	       XYZ_vector_ptr dimResult = getDimGammaTarget(luminanceGammaCurve,
+	       startXYZ,
+	       targetXYZ, dimGamma,
+	       dimTurn);
+	       int dimSize = dimResult->size();
+	       for (int x = 0; x < dimSize; x++) {
+	       (*result)[x] = (*dimResult)[x];
+	       }
+	       //==============================================================
 
-		//==============================================================
-		// 中間區段+bright區段
-		//==============================================================
-		for (int x = dimTurn; x < size; x++) {
-		    //僅Y有變化
-		    double Y = (*luminanceGammaCurve)[x];
-		    (*result)[x] = getTargetXYZ(dimendValues[0], dimendValues[1], Y);
-		}
-		//==============================================================
+	       //==============================================================
+	       // 中間區段+bright區段
+	       //==============================================================
+	       for (int x = dimTurn; x < size; x++) {
+	       //僅Y有變化
+	       double Y = (*luminanceGammaCurve)[x];
+	       (*result)[x] = getTargetXYZ(dimendValues[0], dimendValues[1], Y);
+	       }
+	       //==============================================================
 
-		//==============================================================
-		// bright區段
-		//==============================================================
-		for (int x = size - 1; x >= brightTurn; x--) {
-		    XYZ_ptr XYZ = (*result)[x];
-		    if (!isDuplicateBlue100(XYZ)) {
-			int offsetK = 0;
-			for (int x = 10; x < 3000; x += 10) {
-			    if (isAvoidHook(XYZ, x)) {
-				//若可以避免就跳開
-				offsetK = x;
-				break;
-			    }
-			}
-			(*result)[x] = getXYZ(XYZ, offsetK);
-		    }
-		}
-		//==============================================================
-		return result;
-	    };
+	       //==============================================================
+	       // bright區段
+	       //==============================================================
+	       for (int x = size - 1; x >= brightTurn; x--) {
+	       XYZ_ptr XYZ = (*result)[x];
+	       if (!isDuplicateBlue100(XYZ)) {
+	       int offsetK = 0;
+	       for (int x = 10; x < 3000; x += 10) {
+	       if (isAvoidHook(XYZ, x)) {
+	       //若可以避免就跳開
+	       offsetK = x;
+	       break;
+	       }
+	       }
+	       (*result)[x] = getXYZ(XYZ, offsetK);
+	       }
+	       }
+	       //==============================================================
+	       return result;
+	       }; */
 	    /*
 	       產生smooth target還是有個問題, 就是luminance.
 	       現在的作法是用原本的Target White的亮度來產生Luminance(也就是最大亮度),
@@ -483,6 +480,9 @@ namespace cms {
 		}
 		this->multiGen = enable;
 		this->multiGenTimes = times;
+	    };
+	    XYZ_vector_ptr AdvancedDGLutGenerator::getTargetXYZVector() {
+		return targetXYZVector;
 	    };
 	    XYZ_ptr AdvancedDGLutGenerator::getTargetXYZ(double v1,
 							 double v2, double v3, Domain domain) {

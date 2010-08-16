@@ -84,7 +84,7 @@ namespace cms {
 	    //Save the list
 
 	};
-	RGB_vector_ptr RGBVector::clone(RGB_vector_ptr vector) {
+	/*RGB_vector_ptr RGBVector::clone(RGB_vector_ptr vector) {
 	    RGB_vector_ptr result(new RGB_vector());
 	    foreach(RGB_ptr rgb, *vector) {
 		RGB_ptr clone = rgb->clone();
@@ -92,7 +92,7 @@ namespace cms {
 	    }
 
 	    return result;
-	};
+	};*/
 	RGB_vector_ptr RGBVector::deepClone(RGB_vector_ptr vector) {
 	    int size = vector->size();
 	    RGB_vector_ptr result(new RGB_vector(size));

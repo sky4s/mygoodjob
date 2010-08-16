@@ -39,26 +39,24 @@ namespace math {
 	static string_ptr toString(const longdouble1D & m);
 
 
-	static double_vector_ptr getRangeCopy(double_vector_ptr M, int j1,
-					      int j2);
+	static double_vector_ptr getRangeCopy(double_vector_ptr M, int j1, int j2);
 	static double1D_ptr getRangeCopy(double1D_ptr M, int j1, int j2);
 
 	static double2D_ptr transpose(double1D_ptr a);
 	static double2D_ptr transpose(double2D_ptr M);
 
-	static void setDouble1D(double2D_ptr array2d, double1D_ptr array1d,
-				int n);
+	static void setDouble1D(double2D_ptr array2d, double1D_ptr array1d, int n);
 	static double1D_ptr getDouble1DCopy(double2D_ptr array2d, int n);
 	static double1D_ptr getDouble1D(double2D_ptr array2d, int n);
 	static double1D_ptr getDouble1D(double1D_ptr array1d, int n);
 
 	static void vectorcopy(double_vector_ptr src, int srcPos,
-			       double_vector_ptr dest, int destPos,
-			       int length);
+			       double_vector_ptr dest, int destPos, int length);
 	static void arraycopy(double1D_ptr src, int srcPos,
 			      double1D_ptr dest, int destPos, int length);
-	static void arraycopy(double *src, int srcPos, double *dest,
-			      int destPos, int length);
+	static void arraycopy(double *src, int srcPos, double *dest, int destPos, int length);
+	static void arraycopy(double_array src, int srcPos,
+			      double_array dest, int destPos, int length);
 
 	static double2D_ptr diagonal(double1D_ptr m);
 	static double2D_ptr times(double2D_ptr a, double2D_ptr b);
@@ -79,8 +77,7 @@ namespace math {
 	static double_array toDoubleArray(int n, ...);
 	static double_array toDoubleArray(float_array floatArray, int n);
 
-	static void storeToExcel(const std::string & filename,
-				 double_vector_ptr doubleVector);
+	static void storeToExcel(const std::string & filename, double_vector_ptr doubleVector);
 
 	static double_vector_ptr getReverse(double_vector_ptr vec);
     };

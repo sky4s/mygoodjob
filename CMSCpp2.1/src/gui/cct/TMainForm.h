@@ -195,6 +195,7 @@ class TMainForm:public TForm {
     void setAnalyzerToSourceChannel();
     bool isCA210Analyzer();
     const bool linkCA210;
+    const bool newFunction;
      bptr < cms::measure::MeterMeasurement > mm;
     void setMeterMeasurementWaitTimes();
      bptr < cms::measure::IntensityAnalyzerIF > getAnalyzer();

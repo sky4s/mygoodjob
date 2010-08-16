@@ -337,7 +337,7 @@ namespace cms {
 	    //==================================================================
 	    RGB_vector_ptr FrcNROp::getRendering(RGB_vector_ptr source) {
 		//int size = source->size();
-		RGB_vector_ptr result = RGBVector::clone(source);
+		RGB_vector_ptr result = RGBVector::deepClone(source);
 		RGB_ptr rgb255 = (*result)[255];
 		STORE_RGBVECTOR("frcNR_0.xls", result);
 		if (!bitDepth->is6in6Out()) {
@@ -396,7 +396,7 @@ namespace cms {
 	    //==================================================================
 	    RGB_vector_ptr KeepNativeWhiteOp::getRendering(RGB_vector_ptr source) {
 		int size = source->size();
-		RGB_vector_ptr result = RGBVector::clone(source);
+		RGB_vector_ptr result = RGBVector::deepClone(source);
 		RGB_ptr white = (*result)[size - 1];
 		double max = bitDepth->getMaxDigitalCount();
 		white->setValues(max, max, max);
@@ -410,7 +410,7 @@ namespace cms {
 	    //==================================================================
 	    RGB_vector_ptr KeepNativeWhiteAdvancedOp::getRendering(RGB_vector_ptr source) {
 		STORE_RGBVECTOR("op-source.xls", source);
-		RGB_vector_ptr result = RGBVector::clone(source);
+		RGB_vector_ptr result = RGBVector::deepClone(source);
 		int size = result->size();
 		RGB_ptr lastRGB = (*result)[size - 1];
 		RGB_ptr beginRGB = (*result)[over];

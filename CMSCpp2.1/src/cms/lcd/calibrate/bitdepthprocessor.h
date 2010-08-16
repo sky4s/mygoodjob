@@ -70,6 +70,7 @@ namespace cms {
 		void setLUTBit(int lutBit);
 		void setOutBit(int outBit);
 		string_ptr getFRCAbility();
+		const Dep::MaxValue & getFRCAbilityBit();
 		const Dep::MaxValue & getMeasureMaxValue();
 
 	    };

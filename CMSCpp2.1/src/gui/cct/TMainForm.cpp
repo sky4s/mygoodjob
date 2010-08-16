@@ -27,7 +27,8 @@
 #pragma resource "*.dfm"
 TMainForm *MainForm;
 //---------------------------------------------------------------------------
-__fastcall TMainForm::TMainForm(TComponent * Owner):TForm(Owner), linkCA210(!FileExists(DEBUG_FILE))
+__fastcall TMainForm::TMainForm(TComponent * Owner):TForm(Owner),
+linkCA210(!FileExists(DEBUG_FILE)), newFunction(FileExists(DEBUG_NEWFUNC_FILE))
 {
 
 }
@@ -68,6 +69,7 @@ void __fastcall TMainForm::FormCreate(TObject * Sender)
     using namespace cms::colorformat;
     using namespace cms::lcd::calibrate;
 
+    bitDepth = bptr < BitDepthProcessor > (new BitDepthProcessor(8, 10, 8, false));
     if (true == linkCA210) {
 	initCA210Meter();
     } else {
@@ -76,8 +78,6 @@ void __fastcall TMainForm::FormCreate(TObject * Sender)
 	this->GroupBox_CHSetting->Visible = false;
 	//this->Button_I2CTest->Visible = true;
     }
-    bitDepth = bptr < BitDepthProcessor > (new BitDepthProcessor(8, 10, 8, false));
-
     readTCONSections();
     readSetup();
     ComboBox_TCONTypeChange(this);
@@ -345,6 +345,9 @@ void TMainForm::setDummyMeterFile(bptr < cms::colorformat::DGLutFile > dglutFile
 	bptr < MaxMatrixIntensityAnayzer > matrixAnalyzer(new MaxMatrixIntensityAnayzer(mm));
 	analyzer = matrixAnalyzer;
 
+	//=====================================================================
+	// 設定target analyzer
+	//=====================================================================
 	xyY_ptr targetwxyY = property->getTargetReferenceColor(Channel::W);
 	if (null != targetwxyY) {
 	    xyY_ptr rxyY = property->getTargetReferenceColor(Channel::R);
@@ -358,10 +361,16 @@ void TMainForm::setDummyMeterFile(bptr < cms::colorformat::DGLutFile > dglutFile
 	    matrixAnalyzer->setupComponent(Channel::B, bxyY->toXYZ());
 	    matrixAnalyzer->enter();
 
-	    matrixAnalyzer->setReferenceColorComment(*property->
-						     getProperty("reference white comment"));
-	    //matrixAnalyzer->setReferenceRGB()
+	    string_ptr comment = property->getProperty("reference white comment");
+	    if (null != comment) {
+		matrixAnalyzer->setReferenceColorComment(*comment);
+	    }
 	}
+	//=====================================================================
+
+	//=====================================================================
+	// 設定native analyzer
+	//=====================================================================
 	xyY_ptr nativewxyY = property->getNativeReferenceColor(Channel::W);
 	if (null != nativewxyY) {
 	    bptr < MaxMatrixIntensityAnayzer > matrixAnalyzer2(new MaxMatrixIntensityAnayzer(mm));
@@ -376,12 +385,51 @@ void TMainForm::setDummyMeterFile(bptr < cms::colorformat::DGLutFile > dglutFile
 	    matrixAnalyzer2->setupComponent(Channel::B, bxyY->toXYZ());
 	    matrixAnalyzer2->enter();
 	}
+	//=====================================================================
+
+	//=====================================================================
+	// BitDepthProcessor
+	//=====================================================================
+	bptr < BitDepthProcessor > bitDepth = property->getBitDepthProcessor();
+	switch (bitDepth->getInputMaxValue().bit) {
+	case 6:
+	    RadioButton_In6->Checked = true;
+	    break;
+	case 8:
+	    RadioButton_In8->Checked = true;
+	    break;
+	case 10:
+	    RadioButton_In10->Checked = true;
+	    break;
+	}
+	switch (bitDepth->getLutMaxValue().bit) {
+	case 10:
+	    RadioButton_Lut10->Checked = true;
+	    break;
+	case 12:
+	    RadioButton_Lut12->Checked = true;
+	    break;
+	}
+	switch (bitDepth->getOutputMaxValue().bit) {
+	case 6:
+	    RadioButton_Out6->Checked = true;
+	    break;
+	case 8:
+	    RadioButton_Out8->Checked = true;
+	    break;
+	case 10:
+	    RadioButton_Out10->Checked = true;
+	    break;
+	}
+	//=====================================================================
+
     } else {
 	ShowMessage("Old version Raw Data.");
 	//無property則為舊版
 	analyzer = bptr < CA210IntensityAnalyzer > (new CA210IntensityAnalyzer(mm));
     }
 }
+
 
 //---------------------------------------------------------------------------
 

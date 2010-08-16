@@ -235,10 +235,12 @@ namespace cms {
 		}
 		this->keepMaxLuminance = keepMaxLuminance;
 	    };
-	    void LCDCalibrator::setKeepMaxLuminanceNativeWhiteAdvanced(int over, double gamma) {
+	    void LCDCalibrator::setKeepMaxLuminanceNativeWhiteAdvanced(int over, double gamma,
+								       bool autoParameter) {
 		this->keepMaxLuminance = KeepMaxLuminance::NativeWhiteAdvanced;
 		this->keepMaxLumiOver = over;
 		this->keepMaxLumiGamma = gamma;
+		this->autoKeepMaxLumiParameter = autoParameter;
 	    };
 	    void LCDCalibrator::setNewMethod(bool enable) {
 		this->newMethod = enable;
@@ -349,10 +351,13 @@ namespace cms {
 		int max = bitDepth->getMaxDigitalCount();
 		int blueMax = max;
 
-		if (true == skipInverseB) {
+		if (keepMaxLuminance == KeepMaxLuminance::NativeWhiteAdvanced
+		    && true == skipInverseB) {
+		    //若要略過inverse B, 則要先量測到B在哪裡反轉
 		    bptr < MeasureTool > mt(new MeasureTool(mm));
 		    MeasureWindow->addWindowListener(mt);
 		    bptr < MeasureCondition > measureCondition(new MeasureCondition(bitDepth));
+		    //然後設定b最大只用到反轉點
 		    blueMax = mt->getMaxZDGCode(measureCondition);
 		    this->maxZDGCode = blueMax;
 		}
@@ -403,158 +408,175 @@ namespace cms {
 		STORE_COMPONENT("o_fetch.xls", componentVector);
 		DGLutGenerator generator(componentVector, keepMaxLuminance);
 		STORE_DOUBLE_VECTOR("0_gammacurve.xls", gammaCurve);
-		MaxValue quantizationBit = bitDepth->getLutMaxValue();
+		const MaxValue & quantizationBit = bitDepth->getLutMaxValue();
+		RGB_vector_ptr result;
 
-		if (true == newMethod) {
-		    //==========================================================
-		    // 新方法
-		    //==========================================================
-		    double brightgammaParameter = 1;
-		    int overParameter = 200;
-		    bptr < AdvancedDGLutGenerator > advgenerator;
+		//==================================================================================
+		// bright的參數
+		//==================================================================================
+		double brightgammaParameter = 1;
+		int overParameter = keepMaxLumiOver;
+		int minOverParameter = autoKeepMaxLumiParameter ? 100 : keepMaxLumiOver;
+		//==================================================================================
 
-		    //藉由傳統generator產生luminance gamma curve
-		    double_vector_ptr luminanceGammaCurve;
+		for (; overParameter >= minOverParameter; overParameter -= 4) {
+		    //一次跳兩階是為了快點找到適當的起始點
 
-		    if (keepMaxLuminance == KeepMaxLuminance::NativeWhiteAdvanced) {
-			brightgammaParameter = keepMaxLumiGamma;
-			overParameter = keepMaxLumiOver;
+		    if (true == newMethod) {
+			//==========================================================
+			// 新方法
+			//==========================================================
 
-			advgenerator = bptr < AdvancedDGLutGenerator >
-			    (new
-			     AdvancedDGLutGenerator(componentVector, fetcher->getAnalyzer(),
-						    nativeWhiteAnalyzer, bitDepth));
-			// max luminance的採用還是很有爭議
-			double maxLuminance =
-			    (true == skipInverseB) ?
-			    nativeWhiteAnalyzer->getReferenceColor()->Y : (*componentVector)[0]->
-			    XYZ->Y;
-			double minLuminance =
-			    (*componentVector)[componentVector->size() - 1]->XYZ->Y;
-			luminanceGammaCurve =
-			    generator.getLuminanceGammaCurve(gammaCurve, maxLuminance,
-							     minLuminance);
+			bptr < AdvancedDGLutGenerator > advgenerator;
+			//藉由傳統generator產生luminance gamma curve
+			double_vector_ptr luminanceGammaCurve;
+
+			if (keepMaxLuminance == KeepMaxLuminance::NativeWhiteAdvanced) {
+			    brightgammaParameter = keepMaxLumiGamma;
+
+			    advgenerator = bptr < AdvancedDGLutGenerator >
+				(new
+				 AdvancedDGLutGenerator(componentVector, fetcher->getAnalyzer(),
+							nativeWhiteAnalyzer, bitDepth));
+			    // max luminance的採用還是很有爭議
+			    double maxLuminance =
+				(true == skipInverseB) ?
+				nativeWhiteAnalyzer->getReferenceColor()->
+				Y : (*componentVector)[0]->XYZ->Y;
+			    double minLuminance =
+				(*componentVector)[componentVector->size() - 1]->XYZ->Y;
+			    luminanceGammaCurve =
+				generator.getLuminanceGammaCurve(gammaCurve, maxLuminance,
+								 minLuminance);
+			} else {
+			    advgenerator =
+				bptr < AdvancedDGLutGenerator >
+				(new AdvancedDGLutGenerator(componentVector, fetcher, bitDepth));
+			    luminanceGammaCurve = generator.getLuminanceGammaCurve(gammaCurve);
+
+			}
+			STORE_DOUBLE_VECTOR("1_lumigammacurve.xls", luminanceGammaCurve);
+
+			bptr < IntensityAnalyzerIF > analyzer = fetcher->getAnalyzer();
+			//analyzer若沒有設定過target color, 會使此步驟失效
+			XYZ_ptr targetWhite = analyzer->getReferenceColor()->toXYZ();
+
+
+			double dimgammaParameter = 3.5;
+			int underParameter = 50;
+
+			if (correct == Correct::DefinedDim) {
+			    dimgammaParameter = dimGamma;
+			    underParameter = under;
+			}
+
+			if (this->bTargetIntensity != -1) {
+			    advgenerator->setBTargetIntensity(bTargetIntensity);
+			}
+
+			if (multiGen) {
+			    advgenerator->setMultiGen(multiGen, multiGenTimes);
+			}
+
+			dglut =
+			    advgenerator->produce(targetWhite, luminanceGammaCurve, underParameter,
+						  overParameter, dimgammaParameter,
+						  brightgammaParameter);
+			STORE_RGBVECTOR("3_dgcode.xls", dglut);
+			targetXYZVector = advgenerator->getTargetXYZVector();
+
+			//==========================================================
 		    } else {
-			advgenerator =
-			    bptr < AdvancedDGLutGenerator >
-			    (new AdvancedDGLutGenerator(componentVector, fetcher, bitDepth));
-			luminanceGammaCurve = generator.getLuminanceGammaCurve(gammaCurve);
-
-		    }
-		    STORE_DOUBLE_VECTOR("1_lumigammacurve.xls", luminanceGammaCurve);
-
-		    //AdvancedDGLutGenerator advgenerator(componentVector, fetcher, bitDepth);
-		    bptr < IntensityAnalyzerIF > analyzer = fetcher->getAnalyzer();
-		    //analyzer若沒有設定過target color, 會使此步驟失效
-		    XYZ_ptr targetWhite = analyzer->getReferenceColor()->toXYZ();
-
-
-		    double dimgammaParameter = 3.5;
-		    int underParameter = 50;
-
-		    if (correct == Correct::DefinedDim) {
-			dimgammaParameter = dimGamma;
-			underParameter = under;
-		    }
-
-		    if (this->bTargetIntensity != -1) {
-			advgenerator->setBTargetIntensity(bTargetIntensity);
-		    }
-
-		    if (multiGen) {
-			advgenerator->setMultiGen(multiGen, multiGenTimes);
-		    }
-
-		    dglut =
-			advgenerator->produce(targetWhite, luminanceGammaCurve, underParameter,
-					      overParameter, dimgammaParameter,
-					      brightgammaParameter);
-		    STORE_RGBVECTOR("3_dgcode.xls", dglut);
-		    //==========================================================
-		} else {
-		    //==========================================================
-		    // 老方法
-		    //==========================================================
-		    RGBGamma_ptr rgbgamma = generator.getRGBGamma(gammaCurve);
-		    initialRGBGamma = rgbgamma->clone();
-
-		    STORE_RGBGAMMA("1_rgbgamma_org.xls", rgbgamma);
-
-
-		    /* TODO : bIntensityGain要確認 */
-		    if (bIntensityGain != 1.0) {
-			//重新產生目標gamma curve
-			bptr < BIntensityGainOp >
-			    bgain(new BIntensityGainOp(bIntensityGain, 236, bitDepth));
-
-			RGBGammaOp gammaop;
-			gammaop.setSource(rgbgamma);
-			gammaop.addOp(bgain);
-			rgbgamma = gammaop.createInstance();
-			STORE_RGBGAMMA("2_rgbgamma_bGain.xls", rgbgamma);
-		    }
-		    //從目標gamma curve產生dg code, 此處是傳入normal gammaCurve
-		    dglut = generator.getCCTDGLut(rgbgamma);
-		    STORE_RGBVECTOR("3_dgcode.xls", dglut);
-		    //==============================================================
-		    //第一次量化處理
-		    //==============================================================
-		    //量化
-		    //MaxValue quantizationBit = bitDepth->getLutMaxValue();
-		    RGBVector::quantization(dglut, quantizationBit);
-		    //==============================================================
-
-		    if (correct == Correct::P1P2) {
 			//==========================================================
-			//p1p2第一階段, 對gamma做調整
+			// 老方法
 			//==========================================================
-			bptr < P1P2GammaOp > p1p2(new P1P2GammaOp(p1, p2, dglut));
-			RGBGammaOp gammaop;
-			gammaop.setSource(rgbgamma);
-			gammaop.addOp(p1p2);
+			RGBGamma_ptr rgbgamma = generator.getRGBGamma(gammaCurve);
+			initialRGBGamma = rgbgamma->clone();
 
-			//產生修正後的gamma2(若沒有p1p2,則為原封不動)
-			rgbgamma = gammaop.createInstance();
-			STORE_RGBGAMMA("4_rgbgamma_p1p2.xls", rgbgamma);
+			STORE_RGBGAMMA("1_rgbgamma_org.xls", rgbgamma);
 
+
+			/* TODO : bIntensityGain要確認 */
+			if (bIntensityGain != 1.0) {
+			    //重新產生目標gamma curve
+			    bptr < BIntensityGainOp >
+				bgain(new BIntensityGainOp(bIntensityGain, 236, bitDepth));
+
+			    RGBGammaOp gammaop;
+			    gammaop.setSource(rgbgamma);
+			    gammaop.addOp(bgain);
+			    rgbgamma = gammaop.createInstance();
+			    STORE_RGBGAMMA("2_rgbgamma_bGain.xls", rgbgamma);
+			}
 			//從目標gamma curve產生dg code, 此處是傳入normal gammaCurve
 			dglut = generator.getCCTDGLut(rgbgamma);
+			STORE_RGBVECTOR("3_dgcode.xls", dglut);
+			//==============================================================
+			//第一次量化處理
+			//==============================================================
 			//量化
-			STORE_RGBVECTOR("4.9_dgcode_p1p2g.xls", dglut);
+			//MaxValue quantizationBit = bitDepth->getLutMaxValue();
 			RGBVector::quantization(dglut, quantizationBit);
-			STORE_RGBVECTOR("5_dgcode_p1p2g.xls", dglut);
-			//==========================================================
+			//==============================================================
+
+			if (correct == Correct::P1P2) {
+			    //==========================================================
+			    //p1p2第一階段, 對gamma做調整
+			    //==========================================================
+			    bptr < P1P2GammaOp > p1p2(new P1P2GammaOp(p1, p2, dglut));
+			    RGBGammaOp gammaop;
+			    gammaop.setSource(rgbgamma);
+			    gammaop.addOp(p1p2);
+
+			    //產生修正後的gamma2(若沒有p1p2,則為原封不動)
+			    rgbgamma = gammaop.createInstance();
+			    STORE_RGBGAMMA("4_rgbgamma_p1p2.xls", rgbgamma);
+
+			    //從目標gamma curve產生dg code, 此處是傳入normal gammaCurve
+			    dglut = generator.getCCTDGLut(rgbgamma);
+			    //量化
+			    STORE_RGBVECTOR("4.9_dgcode_p1p2g.xls", dglut);
+			    RGBVector::quantization(dglut, quantizationBit);
+			    STORE_RGBVECTOR("5_dgcode_p1p2g.xls", dglut);
+			    //==========================================================
 
 
-			//==========================================================
-			//p1p2第二階段, 對dg code調整
-			//==========================================================
-			DGLutOp dgop;
-			dgop.setSource(dglut);
-			//bptr < DGLutOp > op(new P1P2DGOp(p1, p2, quantizationBit));
-			bptr < DGLutOp > op(new P1P2DGOp(p1, p2));
-			dgop.addOp(op);
-			dglut = dgop.createInstance();
-			//量化
-			STORE_RGBVECTOR("6_dgcode_p1p2dg.xls", dglut);
+			    //==========================================================
+			    //p1p2第二階段, 對dg code調整
+			    //==========================================================
+			    DGLutOp dgop;
+			    dgop.setSource(dglut);
+			    //bptr < DGLutOp > op(new P1P2DGOp(p1, p2, quantizationBit));
+			    bptr < DGLutOp > op(new P1P2DGOp(p1, p2));
+			    dgop.addOp(op);
+			    dglut = dgop.createInstance();
+			    //量化
+			    STORE_RGBVECTOR("6_dgcode_p1p2dg.xls", dglut);
+			    //==========================================================
+			}
+			finalRGBGamma = rgbgamma;
 			//==========================================================
 		    }
-		    finalRGBGamma = rgbgamma;
-		    //==========================================================
-		}
 
-		//==============================================================
-		// DG Code Op block
-		//==============================================================
-		//量化
-		RGB_vector_ptr result = getDGLutOpResult(dglut);
-		RGBVector::quantization(result, quantizationBit);
-		//==============================================================
+		    //==============================================================
+		    // DG Code Op block
+		    //==============================================================
+		    //量化
+		    result = getDGLutOpResult(dglut);
+		    RGBVector::quantization(result, quantizationBit);
+		    //==============================================================
+		    //調整max value, 調整到LUT真正的max value
+		    RGBVector::changeMaxValue(result, bitDepth->getLutMaxValue());
+
+		    RGB_vector_ptr checkResult = RGBVector::deepClone(result);
+		    RGBVector::changeMaxValue(checkResult, bitDepth->getFRCAbilityBit());
+		    if (RGBVector::isAscend(checkResult, 50, bitDepth->getMaxDigitalCount())) {
+			break;
+		    }
+		}
+		keepMaxLumiOver = autoKeepMaxLumiParameter ? overParameter : keepMaxLumiOver;
 
 		STORE_RGBVECTOR("7_dgcode_final.xls", result);
-		//調整max value, 調整到LUT真正的max value
-		RGBVector::changeMaxValue(result, bitDepth->getLutMaxValue());
-
 		this->dglut = result;
 		return result;
 	    };
@@ -607,24 +629,11 @@ namespace cms {
 		Util::deleteExist(filename);
 		//產生新檔
 		bptr < DGLutFile > file(new DGLutFile(filename, Create));
-		//DGLutFile file(filename, Create);
-		//產生property物件
-		//bptr < LCDCalibrator > thisbptr(this);
-		DGLutProperty property(this);
-		//寫入property
-		file->setProperty(property);
-		//寫入dgcode
-		file->setGammaTable(dglut);
-		if (null != componentVector) {
-		    //寫入raw data
-		    file->setRawData(componentVector, initialRGBGamma, finalRGBGamma);
-		}
+		storeDGLutFile(dglut, file);
 		return file;
 	    };
 
-	    void LCDCalibrator::storeDGLutFile(const std::
-					       string & filename,
-					       RGB_vector_ptr dglut,
+	    void LCDCalibrator::storeDGLutFile(RGB_vector_ptr dglut,
 					       bptr < cms::colorformat::DGLutFile > dglutFile) {
 		DGLutProperty property(this);
 		//寫入property
@@ -635,7 +644,9 @@ namespace cms {
 		    //寫入raw data
 		    dglutFile->setRawData(componentVector, initialRGBGamma, finalRGBGamma);
 		}
-		//return file;
+		if (null != targetXYZVector) {
+		    dglutFile->setTargetXYZVector(targetXYZVector);
+		}
 	    };
 
 	    RGB_vector_ptr LCDCalibrator::getDGLutOpResult(RGB_vector_ptr dglut) {

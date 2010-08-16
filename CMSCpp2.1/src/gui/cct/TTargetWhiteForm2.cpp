@@ -384,6 +384,9 @@ void __fastcall TTargetWhiteForm2::FormCreate(TObject * Sender)
     using namespace cms::util;
     bptr < WindowListener > formPtr(dynamic_cast < WindowListener * >(this));
     MeasureWindow->addWindowListener(formPtr);
+    if (MainForm->newFunction) {
+	CheckBox_AvoidHookTV->Visible = true;
+    }
 #ifdef DEBUG_TARGETWHITE
     this->CheckBox_MoreAccurate->Visible = true;
     this->CheckBox_MaxRGB->Visible = true;
@@ -396,10 +399,6 @@ void __fastcall TTargetWhiteForm2::FormCreate(TObject * Sender)
 void TTargetWhiteForm2::setBitDepthProcessor(bptr <
 					     cms::lcd::calibrate::BitDepthProcessor > bitDepth)
 {
-    /*if (this->bitDepth != bitDepth) {
-       double maxCount = bitDepth->getMaxDigitalCount();
-       setRGBRatio(maxCount, maxCount, maxCount);
-       } */
     this->bitDepth = bitDepth;
     if (Edit_R->Text.ToInt() == 0) {
 	double maxCount = bitDepth->getMaxDigitalCount();

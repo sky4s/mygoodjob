@@ -71,8 +71,6 @@ namespace cms {
 	static const double c1;
 	static const double c2;
     };
-    class DeltaE:public jObject {
-    };
     class Illuminant:public jObject, SpectraIF {
       private:
 	int start, end, interval;

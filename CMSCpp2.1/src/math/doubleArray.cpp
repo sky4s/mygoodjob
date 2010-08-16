@@ -123,8 +123,7 @@ namespace math {
 	return array;
     };
 
-    double_array DoubleArray::minus(double_array v1, double_array v2,
-				    int n) {
+    double_array DoubleArray::minus(double_array v1, double_array v2, int n) {
 	double_array array(new double[n]);
 	for (int i = 0; i < n; i++) {
 	    array[i] = v1[i] - v2[i];
@@ -148,8 +147,7 @@ namespace math {
 	return array;
     }
 
-    double_vector_ptr DoubleArray::getRangeCopy(double_vector_ptr M,
-						int j1, int j2) {
+    double_vector_ptr DoubleArray::getRangeCopy(double_vector_ptr M, int j1, int j2) {
 	double_vector_ptr copy(new double_vector);
 	vectorcopy(M, j1, copy, 0, j2 - j1 + 1);
 	return copy;
@@ -184,8 +182,7 @@ namespace math {
 	return tM;
 
     };
-    void DoubleArray::setDouble1D(double2D_ptr array2d,
-				  double1D_ptr array1d, int n) {
+    void DoubleArray::setDouble1D(double2D_ptr array2d, double1D_ptr array1d, int n) {
 	int size = array1d->dim1();
 	for (int x = 0; x != size; x++) {
 	    (*array2d)[n][x] = (*array1d)[x];
@@ -211,26 +208,29 @@ namespace math {
     };
 
     void DoubleArray::vectorcopy(double_vector_ptr src, int srcPos,
-				 double_vector_ptr dest, int destPos,
-				 int length) {
+				 double_vector_ptr dest, int destPos, int length) {
 	dest->insert(dest->begin() + destPos, src->begin() + srcPos,
 		     src->begin() + srcPos + length);
 
     };
 
     void DoubleArray::arraycopy(double1D_ptr src, int srcPos,
-				double1D_ptr dest, int destPos,
-				int length) {
+				double1D_ptr dest, int destPos, int length) {
 	for (int x = 0; x != length; x++) {
 	    (*dest)[x + destPos] = (*src)[x + srcPos];
 	};
     };
-    void DoubleArray::arraycopy(double *src, int srcPos, double *dest,
-				int destPos, int length) {
+    void DoubleArray::arraycopy(double *src, int srcPos, double *dest, int destPos, int length) {
 	for (int x = 0; x != length; x++) {
 	    dest[x + destPos] = src[x + srcPos];
 	};
     }
+    void DoubleArray::arraycopy(double_array src, int srcPos,
+				double_array dest, int destPos, int length) {
+	for (int x = 0; x != length; x++) {
+	    dest[x + destPos] = src[x + srcPos];
+	};
+    };
 
     double2D_ptr DoubleArray::diagonal(double1D_ptr m) {
 	int size = m->dim();
@@ -435,11 +435,9 @@ namespace math {
 	return result;
     }
 
-    void DoubleArray::storeToExcel(const string & filename,
-				   double_vector_ptr doubleVector) {
+    void DoubleArray::storeToExcel(const string & filename, double_vector_ptr doubleVector) {
 	Util::deleteExist(filename);
-	bptr < SimpleExcelAccess > excel =
-	    SimpleExcelAccess::getValueStoreInstance(filename);
+	bptr < SimpleExcelAccess > excel = SimpleExcelAccess::getValueStoreInstance(filename);
 	int size = doubleVector->size();
 
 	for (int x = 0; x != size; x++) {
