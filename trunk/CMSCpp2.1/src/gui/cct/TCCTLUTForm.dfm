@@ -379,9 +379,9 @@ object CCTLUTForm: TCCTLUTForm
     end
     object Edit_MultiGenTimes: TEdit
       Left = 144
-      Top = 57
+      Top = 56
       Width = 33
-      Height = 24
+      Height = 25
       Enabled = False
       TabOrder = 3
       Text = '1'
@@ -636,6 +636,7 @@ object CCTLUTForm: TCCTLUTForm
       Width = 35
       Height = 16
       Caption = 'Begin'
+      Visible = False
     end
     object Label21: TLabel
       Left = 32
@@ -643,6 +644,7 @@ object CCTLUTForm: TCCTLUTForm
       Width = 49
       Height = 16
       Caption = 'Strength'
+      Visible = False
     end
     object Label18: TLabel
       Left = 32
@@ -708,6 +710,7 @@ object CCTLUTForm: TCCTLUTForm
       ImeName = #26085#25991#36664#20837#31995#32113' (MS-IME2002)'
       TabOrder = 4
       Text = '235'
+      Visible = False
       OnChange = Edit_MaxYAdvOverChange
     end
     object Edit_MaxYAdvGamma: TEdit
@@ -719,6 +722,7 @@ object CCTLUTForm: TCCTLUTForm
       ImeName = #26085#25991#36664#20837#31995#32113' (MS-IME2002)'
       TabOrder = 5
       Text = '1'
+      Visible = False
     end
     object CheckBox_AvoidHookNB: TCheckBox
       Left = 9
@@ -768,8 +772,11 @@ object CCTLUTForm: TCCTLUTForm
       Width = 129
       Height = 17
       Caption = 'Skip Inverse B'
+      Checked = True
       Enabled = False
+      State = cbChecked
       TabOrder = 10
+      Visible = False
     end
     object CheckBox_MaxYAdvAuto: TCheckBox
       Left = 32
@@ -777,8 +784,11 @@ object CCTLUTForm: TCCTLUTForm
       Width = 129
       Height = 17
       Caption = 'Auto'
+      Checked = True
       Enabled = False
+      State = cbChecked
       TabOrder = 11
+      Visible = False
       OnClick = CheckBox_MaxYAdvAutoClick
     end
   end

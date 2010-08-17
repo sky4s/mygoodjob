@@ -41,18 +41,14 @@ namespace cms {
 		int brightTurn;
 	      public:
 		 AdvancedDGLutGenerator(Component_vector_ptr componentVector,
+					bptr < cms::lcd::calibrate::ComponentFetcher > fetcher,
 					bptr < cms::measure::IntensityAnalyzerIF > analyzer1,
 					bptr < cms::measure::IntensityAnalyzerIF > analyzer2,
 					bptr < BitDepthProcessor > bitDepth);
 		 AdvancedDGLutGenerator(Component_vector_ptr componentVector,
 					bptr < cms::lcd::calibrate::ComponentFetcher > fetcher,
 					bptr < BitDepthProcessor > bitDepth);
-		/*RGB_vector_ptr produce(XYZ_ptr targetWhite, double_vector_ptr luminanceGammaCurve,
-		   int dimTurn, int brightTurn, double dimGamma,
-		   double brightGamma);
-		   RGB_vector_ptr produce(XYZ_ptr targetWhite, double_vector_ptr luminanceGammaCurve,
-		   int dimTurn, int brightTurn, double dimGamma,
-		   double brightGamma, int brightWidth); */
+
 		RGB_vector_ptr produce(XYZ_vector_ptr targetXYZVector);
 		XYZ_vector_ptr getTarget0(XYZ_ptr startXYZ, XYZ_ptr targetXYZ, XYZ_ptr endXYZ,
 					  double_vector_ptr luminanceGammaCurve, int dimTurn,
@@ -87,16 +83,19 @@ namespace cms {
 		RGB_vector_ptr produceDGLutMulti(XYZ_vector_ptr
 						 targetXYZVector,
 						 Component_vector_ptr componentVector);
+		RGB_vector_ptr produceDGLut(XYZ_vector_ptr targetXYZVector,
+					    Component_vector_ptr componentVector,
+					    bptr < cms::measure::IntensityAnalyzerIF > analyzer);
 		RGB_vector_ptr produceDGLut0(XYZ_vector_ptr targetXYZVector,
-					     Component_vector_ptr componentVector,
-					     bptr < cms::measure::IntensityAnalyzerIF > analyzer);
+					     bptr < cms::measure::IntensityAnalyzerIF > analyzer,
+					     Component_vector_ptr componentVector);
 		bool checkTargetXYZVector(XYZ_vector_ptr targetXYZVector, int start, int end,
 					  double deltaabThreshold);
 	      public:
 		static RGB_vector_ptr smooth(RGB_vector_ptr result1,
 					     RGB_vector_ptr result2,
 					     bptr < BitDepthProcessor > bitDepth, int brightTurn);
-		void setAutoParameter(bool auto);
+		void setAutoParameter(bool autoParameter);
 		int getAutoBrightTurn();
 		int getAutoBrightWidth();
 	    };

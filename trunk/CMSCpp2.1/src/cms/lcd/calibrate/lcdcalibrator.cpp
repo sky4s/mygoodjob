@@ -364,8 +364,9 @@ namespace cms {
 		    brightgammaParameter = keepMaxLumiGamma;
 
 		    advgenerator = bptr < AdvancedDGLutGenerator >
-			(new AdvancedDGLutGenerator(componentVector, fetcher->getAnalyzer(),
-						    nativeWhiteAnalyzer, bitDepth));
+			(new
+			 AdvancedDGLutGenerator(componentVector, fetcher, fetcher->getAnalyzer(),
+						nativeWhiteAnalyzer, bitDepth));
 		    // max luminance的採用還是很有爭議
 		    double maxLuminance =
 			(true == skipInverseB) ?
@@ -402,28 +403,19 @@ namespace cms {
 		if (multiGen) {
 		    advgenerator->setMultiGen(multiGen, multiGenTimes);
 		}
-		//adv內部的auto根據deltaE拉開smooth width
-		//外部需要針對是否疊階來決定起始位置
+		//外部迴圈針對是否疊階來決定起始位置
 		int overParameter = keepMaxLumiOver;
 		int minOverParameter = (useNewMethod
-					&& autoKeepMaxLumiParameter) ? 100 : keepMaxLumiOver;
-		//int minOverParameter = keepMaxLumiOver;
-		/*int width =
-		   autoKeepMaxLumiParameter ? -1 : bitDepth->getEffectiveLevel() - keepMaxLumiOver; */
-		//auto只要作一次就可以
-		//bool didAutoParameter = false;
+					&& autoKeepMaxLumiParameter) ? 50 : keepMaxLumiOver;
 
 		for (; overParameter >= minOverParameter; overParameter -= 4) {
-		    //advgenerator->setAutoParameter(autoKeepMaxLumiParameter && !didAutoParameter);
-		    //didAutoParameter = true;
 		    int width = bitDepth->getEffectiveLevel() - overParameter;
 		    targetXYZVector =
 			advgenerator->getTargetXYZVector(targetWhite, luminanceGammaCurve,
 							 underParameter, overParameter,
-							 dimgammaParameter,
-							 brightgammaParameter, width);
+							 dimgammaParameter, brightgammaParameter,
+							 width);
 		    dglut = advgenerator->produce(targetXYZVector);
-		    //width = autoKeepMaxLumiParameter ? advgenerator->getAutoBrightWidth() : width;
 
 		    if (autoKeepMaxLumiParameter) {
 			RGB_vector_ptr checkResult = RGBVector::deepClone(dglut);
@@ -611,6 +603,7 @@ namespace cms {
 		    bptr < DGLutOp > avoidNoise(new FrcNROp(bitDepth));
 		    dgop.addOp(avoidNoise);
 		}
+
 		switch (keepMaxLuminance) {
 		case KeepMaxLuminance::NativeWhite:{
 			bptr < DGLutOp > nativeWhite(new KeepNativeWhiteOp(bitDepth));

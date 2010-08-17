@@ -124,7 +124,6 @@ namespace cms {
 		dglut.setRawData(componentVector, nil_RGBGamma, nil_RGBGamma);
 	    };
 	    void ComponentFetcher::windowClosing() {
-		//this->setStop(true);
 		stop = true;
 	    };
 	    bptr < IntensityAnalyzerIF > ComponentFetcher::getAnalyzer() {
