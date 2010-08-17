@@ -345,7 +345,7 @@ namespace cms {
 	    }
 	    //==================================================================
 
-	    dgfile.addProperty("New Method", c->newMethod ? On : Off);
+	    dgfile.addProperty("New Method", c->useNewMethod ? On : Off);
 	    bptr < BitDepthProcessor > bitDepth = c->bitDepth;
 	    dgfile.addProperty("in", *bitDepth->getInputMaxValue().toString());
 	    dgfile.addProperty("lut", *bitDepth->getLutMaxValue().toString());

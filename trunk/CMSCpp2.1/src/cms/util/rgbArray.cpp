@@ -85,14 +85,14 @@ namespace cms {
 
 	};
 	/*RGB_vector_ptr RGBVector::clone(RGB_vector_ptr vector) {
-	    RGB_vector_ptr result(new RGB_vector());
-	    foreach(RGB_ptr rgb, *vector) {
-		RGB_ptr clone = rgb->clone();
-		result->push_back(clone);
-	    }
+	   RGB_vector_ptr result(new RGB_vector());
+	   foreach(RGB_ptr rgb, *vector) {
+	   RGB_ptr clone = rgb->clone();
+	   result->push_back(clone);
+	   }
 
-	    return result;
-	};*/
+	   return result;
+	   }; */
 	RGB_vector_ptr RGBVector::deepClone(RGB_vector_ptr vector) {
 	    int size = vector->size();
 	    RGB_vector_ptr result(new RGB_vector(size));
@@ -143,13 +143,13 @@ namespace cms {
 	    w(w), max(1),
 	    type(Gamma) {
 	};
-      RGBGamma::RGBGamma(double_vector_ptr r, double_vector_ptr g, double_vector_ptr b, const double max, const Type type):r(r), g(g), b(b), max(max),
+      RGBGamma::RGBGamma(double_vector_ptr r, double_vector_ptr g, double_vector_ptr b, const double max, const RGBType type):r(r), g(g), b(b), max(max),
 	    type(type)
 	{
 	};
 	RGBGamma::RGBGamma(double_vector_ptr r, double_vector_ptr g,
 			   double_vector_ptr b, double_vector_ptr w,
-			   const double max, const Type type):r(r),
+			   const double max, const RGBType type):r(r),
 	    g(g), b(b), w(w), max(max), type(type) {
 	};
 	void RGBGamma::storeToExcel(const std::string & filename, RGBGamma_ptr rgbgamma) {

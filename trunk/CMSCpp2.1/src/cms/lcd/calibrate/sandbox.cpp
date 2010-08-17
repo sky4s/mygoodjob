@@ -52,31 +52,70 @@ namespace cms {
 		bitDepth(bitDepth), smoothMode(false) {
 	    };
 
+	    XYZ_vector_ptr AdvancedDGLutGenerator::getTargetXYZVector(XYZ_ptr targetWhite,
+								      double_vector_ptr
+								      luminanceGammaCurve,
+								      int dimTurn, int brightTurn,
+								      double dimGamma,
+								      double brightGamma,
+								      int brightWidth) {
+		//==============================================================
+		// 資訊準備
+		//==============================================================
+		XYZ_ptr blackXYZ = (*componentVector)[componentVector->size() - 1]->XYZ;
+		XYZ_ptr nativeWhite = (*componentVector)[0]->XYZ;
+		XYZ_vector_ptr targetXYZVector;
 
+		//求目標值曲線
+		if (true == autoParameter) {
+		    int turn = brightTurn;
+		    for (; turn >= 100; turn--) {
+			int width = bitDepth->getEffectiveLevel() - brightTurn;
+			 targetXYZVector =
+			    getTarget0(blackXYZ, targetWhite, nativeWhite, luminanceGammaCurve,
+				       dimTurn, turn, dimGamma, brightGamma, width);
+
+			if (true == checkTargetXYZVector(targetXYZVector, brightTurn,
+							 brightTurn + width, 3)) {
+			    //檢查若最大的dab小於threshold, 就跳出
+			    break;
+			}
+		    };
+		    this->brightTurn = turn;
+		} else {
+		    targetXYZVector =
+			getTarget0(blackXYZ, targetWhite, nativeWhite, luminanceGammaCurve, dimTurn,
+				   brightTurn, dimGamma, brightGamma, brightWidth);
+		}
+		return targetXYZVector;
+	    }
 	    /*
 	       更進階的產生方式
 	       1.先產生一組DG Lut
 	       2.把該組DG做量測當作Raw Data
 	       3.再拿該組偽Raw Data產生DG Lut
 	       4.若精準度要更高,就重複做到滿意為止
-	     */
+	     */ RGB_vector_ptr AdvancedDGLutGenerator::
+	     produce(XYZ_ptr targetWhite,
+		     double_vector_ptr luminanceGammaCurve, int dimTurn,
+		     int brightTurn, double dimGamma, double brightGamma) {
+		int width = bitDepth->getEffectiveLevel() - brightTurn;
+		return produce(targetWhite, luminanceGammaCurve, dimTurn, brightTurn, dimGamma,
+			       brightGamma, width);
+	    };
+
 	    RGB_vector_ptr AdvancedDGLutGenerator::
 		produce(XYZ_ptr targetWhite,
 			double_vector_ptr luminanceGammaCurve, int dimTurn,
-			int brightTurn, double dimGamma, double brightGamma) {
-		//==============================================================
-		// 資訊準備
-		//==============================================================
-		XYZ_ptr blackXYZ = (*componentVector)[componentVector->size() - 1]->XYZ;
-		XYZ_ptr nativeWhite = (*componentVector)[0]->XYZ;
+			int brightTurn, double dimGamma, double brightGamma, int brightWidth) {
+		targetXYZVector =
+		    getTargetXYZVector(targetWhite, luminanceGammaCurve, dimTurn, brightTurn,
+				       dimGamma, brightGamma, brightWidth);
+		return produce(targetXYZVector);
+	    }
 
-		//求目標值曲線
-		 targetXYZVector = getTarget(blackXYZ,
-					     targetWhite,
-					     nativeWhite,
-					     luminanceGammaCurve,
-					     dimTurn, brightTurn, dimGamma, brightGamma);
-		 STORE_XYZXY_VECTOE("target.xls", targetXYZVector);
+	    RGB_vector_ptr AdvancedDGLutGenerator::produce(XYZ_vector_ptr targetXYZVector) {
+		STORE_XYZXY_VECTOE("target.xls", targetXYZVector);
 		//==============================================================
 		/*
 		   若做了smooth target(基本上adv dg lut也只有smooth target的功能)
@@ -89,7 +128,7 @@ namespace cms {
 		   方法1. 以兩組analyer都產生一組DG, 然後再bright turn到end這段, 以gain值做內插處理.
 		 */
 		if (multiGen) {
-		    return produceDGLut_(targetXYZVector, componentVector);
+		    return produceDGLutMulti(targetXYZVector, componentVector);
 		} else {
 		    if (smoothMode) {
 			RGB_vector_ptr result1 = produceDGLut0(targetXYZVector, componentVector,
@@ -102,7 +141,7 @@ namespace cms {
 		    }
 
 		}
-	    };
+	    }
 	    RGB_vector_ptr AdvancedDGLutGenerator::
 		smooth(RGB_vector_ptr result1, RGB_vector_ptr result2,
 		       bptr < BitDepthProcessor > bitDepth, int brightTurn) {
@@ -133,8 +172,8 @@ namespace cms {
 		return result;
 	    };
 	    RGB_vector_ptr AdvancedDGLutGenerator::
-		produceDGLut_(XYZ_vector_ptr targetXYZVector,
-			      Component_vector_ptr componentVector) {
+		produceDGLutMulti(XYZ_vector_ptr targetXYZVector,
+				  Component_vector_ptr componentVector) {
 		RGB_vector_ptr initRGBVector = produceDGLut0(targetXYZVector, componentVector,
 							     analyzer);
 
@@ -282,60 +321,6 @@ namespace cms {
 		return isDuplicateBlue100(newcomponentVector);
 	    };
 
-	    /*XYZ_vector_ptr AdvancedDGLutGenerator::
-	       getAvoidHookTarget(XYZ_ptr startXYZ,
-	       XYZ_ptr targetXYZ,
-	       double_vector_ptr
-	       luminanceGammaCurve,
-	       int dimTurn, int brightTurn, double dimGamma) {
-	       int size = luminanceGammaCurve->size();
-	       double_array dimendValues = targetXYZ->getxyValues();
-
-	       XYZ_vector_ptr result(new XYZ_vector(size));
-
-	       //==============================================================
-	       // dim區段
-	       //==============================================================
-	       XYZ_vector_ptr dimResult = getDimGammaTarget(luminanceGammaCurve,
-	       startXYZ,
-	       targetXYZ, dimGamma,
-	       dimTurn);
-	       int dimSize = dimResult->size();
-	       for (int x = 0; x < dimSize; x++) {
-	       (*result)[x] = (*dimResult)[x];
-	       }
-	       //==============================================================
-
-	       //==============================================================
-	       // 中間區段+bright區段
-	       //==============================================================
-	       for (int x = dimTurn; x < size; x++) {
-	       //僅Y有變化
-	       double Y = (*luminanceGammaCurve)[x];
-	       (*result)[x] = getTargetXYZ(dimendValues[0], dimendValues[1], Y);
-	       }
-	       //==============================================================
-
-	       //==============================================================
-	       // bright區段
-	       //==============================================================
-	       for (int x = size - 1; x >= brightTurn; x--) {
-	       XYZ_ptr XYZ = (*result)[x];
-	       if (!isDuplicateBlue100(XYZ)) {
-	       int offsetK = 0;
-	       for (int x = 10; x < 3000; x += 10) {
-	       if (isAvoidHook(XYZ, x)) {
-	       //若可以避免就跳開
-	       offsetK = x;
-	       break;
-	       }
-	       }
-	       (*result)[x] = getXYZ(XYZ, offsetK);
-	       }
-	       }
-	       //==============================================================
-	       return result;
-	       }; */
 	    /*
 	       產生smooth target還是有個問題, 就是luminance.
 	       現在的作法是用原本的Target White的亮度來產生Luminance(也就是最大亮度),
@@ -343,10 +328,9 @@ namespace cms {
 	       若直接以高灰階的Target White為最大亮度, 部份高灰階卻又無法產生相同亮度及相同色度座標的DG
 	     */
 	    XYZ_vector_ptr AdvancedDGLutGenerator::
-		getTarget(XYZ_ptr startXYZ, XYZ_ptr targetXYZ,
-			  XYZ_ptr endXYZ,
-			  double_vector_ptr luminanceGammaCurve,
-			  int dimTurn, int brightTurn, double dimGamma, double brightGamma) {
+		getTarget0(XYZ_ptr startXYZ, XYZ_ptr targetXYZ, XYZ_ptr endXYZ,
+			   double_vector_ptr luminanceGammaCurve, int dimTurn, int brightTurn,
+			   double dimGamma, double brightGamma, int brightWidth) {
 		int size = luminanceGammaCurve->size();
 		double_array dimendValues = targetXYZ->getxyValues();
 
@@ -381,7 +365,8 @@ namespace cms {
 		XYZ_vector_ptr brightResult = getBrightGammaTarget(luminanceGammaCurve,
 								   targetXYZ,
 								   endXYZ, brightGamma,
-								   brightTurn, bitDepth);
+								   brightTurn, brightWidth,
+								   bitDepth);
 		int brightSize = brightResult->size();
 		for (int x = 0; x < brightSize; x++) {
 		    (*result)[x + brightTurn] = (*brightResult)[x];
@@ -422,34 +407,38 @@ namespace cms {
 		//==============================================================
 		return result;
 	    };
+
+
 	    XYZ_vector_ptr
 		AdvancedDGLutGenerator::
 		getBrightGammaTarget(double_vector_ptr
 				     luminanceGammaCurve,
 				     XYZ_ptr startXYZ,
 				     XYZ_ptr endXYZ, double brightGamma,
-				     int brightTurn, bptr < BitDepthProcessor > bitDepth) {
+				     int brightTurn, int brightWidth,
+				     bptr < BitDepthProcessor > bitDepth) {
 		//==============================================================
 		// bright區段
 		//==============================================================
 		int size = luminanceGammaCurve->size();
-		int birghtSize = bitDepth->getEffectiveLevel();
+		//int brightEnd  = bitDepth->getEffectiveLevel();
+		int brightEnd = brightTurn + brightWidth;
 		int resultSize = size - brightTurn;
 		XYZ_vector_ptr result(new XYZ_vector(resultSize));
 		double_array brightstartValues = startXYZ->getxyValues();
 		double_array brightendValues = endXYZ->getxyValues();
-		double brightbase = birghtSize - 1 - brightTurn;
+		double brightbase = brightEnd - 1 - brightTurn;
+		//double brightbase = brightEnd - brightTurn;
 
-		for (int x = brightTurn; x < birghtSize; x++) {
+		for (int x = brightTurn; x < brightEnd; x++) {
 		    double normal = ((double) x - brightTurn) / brightbase;
-		    double gamma = Math::pow(normal,
-					     brightGamma) * brightbase + brightTurn;
+		    double gamma = Math::pow(normal, brightGamma) * brightbase + brightTurn;
 		    //在uv'上線性變化
-		    double u = Interpolation::linear(brightTurn, birghtSize - 1,
+		    double u = Interpolation::linear(brightTurn, brightEnd - 1,
 						     brightstartValues[0],
 						     brightendValues[0],
 						     gamma);
-		    double v = Interpolation::linear(brightTurn, birghtSize - 1,
+		    double v = Interpolation::linear(brightTurn, brightEnd - 1,
 						     brightstartValues[1],
 						     brightendValues[1],
 						     gamma);
@@ -457,8 +446,8 @@ namespace cms {
 
 		    (*result)[x - brightTurn] = getTargetXYZ(u, v, Y);
 		}
-		XYZ_ptr XYZ = (*result)[birghtSize - 1 - brightTurn];
-		for (int x = birghtSize; x < size; x++) {
+		XYZ_ptr XYZ = (*result)[brightEnd - 1 - brightTurn];
+		for (int x = brightEnd; x < size; x++) {
 		    (*result)[x - brightTurn] = XYZ;
 		}
 		return result;
@@ -527,9 +516,34 @@ namespace cms {
 		}
 		return timesOfB100 == 2;
 	    };
+	    void AdvancedDGLutGenerator::setAutoParameter(bool autoParameter) {
+		this->autoParameter = autoParameter;
+	    };
+	    bool AdvancedDGLutGenerator::checkTargetXYZVector(XYZ_vector_ptr targetXYZVector,
+							      int start, int end,
+							      double deltaabThreshold) {
+		int size = targetXYZVector->size();
+		XYZ_ptr white = (*targetXYZVector)[size - 1];
+		int checkSize = end - start;
+		double_vector_ptr checkResult(new double_vector(checkSize));
 
-
+		for (int x = start + 1; x < end; x++) {
+		    XYZ_ptr x0 = (*targetXYZVector)[x - 1];
+		    XYZ_ptr x1 = (*targetXYZVector)[x];
+		    Lab_ptr lab0(new CIELab(x0, white));
+		    Lab_ptr lab1(new CIELab(x1, white));
+		    DeltaE de(lab0, lab1);
+		    double dab = de.getCIE2000Deltaab();
+		    (*checkResult)[x - (start + 1)] = dab;
+		}
+		double max = Math::max(checkResult);
+		return max < deltaabThreshold;
+	    };
+	    int AdvancedDGLutGenerator::getBrightTurn() {
+		return brightTurn;
+	    };
 	    //==================================================================
+
 	    //==================================================================
 	    // DimTargetGenerator
 	    //==================================================================
@@ -556,11 +570,9 @@ namespace cms {
 		for (int x = 0; x < size; x++) {
 		    //在uv'上線性變化
 		    double u = Interpolation::linear(0, size - 1,
-						     startuvValues[0],
-						     enduvValues[0], x);
+						     startuvValues[0], enduvValues[0], x);
 		    double v = Interpolation::linear(0, size - 1,
-						     startuvValues[1],
-						     enduvValues[1], x);
+						     startuvValues[1], enduvValues[1], x);
 		    double Y = (*luminanceGammaCurve)[x];
 		    double_array targetValues(new double[3]);
 		    targetValues[0] = u;

@@ -28,8 +28,7 @@ namespace cms {
 		 CIEXYZ();
 		 CIEXYZ(double_array XYZValues, NormalizeY normalizeY);
 		 CIEXYZ(double_array XYZValues);
-		 CIEXYZ(double X, double Y, double Z,
-			NormalizeY normalizeY);
+		 CIEXYZ(double X, double Y, double Z, NormalizeY normalizeY);
 		 CIEXYZ(double X, double Y, double Z);
 		//===============================================================
 
@@ -49,8 +48,7 @@ namespace cms {
 		double getSaturation(CIEXYZ white);
 		double_array getuvPrimeValues();
 		double_array getuvValues();
-		double_array getValues(double_array values,
-				       NormalizeY normalizeY);
+		double_array getValues(double_array values, NormalizeY normalizeY);
 
 
 
@@ -69,11 +67,9 @@ namespace cms {
 
 		bool isLegal();
 		bool isLegal(XYZ_ptr white);
-		static bptr < CIEXYZ > minus(const XYZ_ptr XYZ1,
-					     const XYZ_ptr XYZ2);
+		static bptr < CIEXYZ > minus(const XYZ_ptr XYZ1, const XYZ_ptr XYZ2);
 
-		static XYZ_ptr plus(const XYZ_ptr XYZ1,
-				    const XYZ_ptr XYZ2);
+		static XYZ_ptr plus(const XYZ_ptr XYZ1, const XYZ_ptr XYZ2);
 
 		void normalize(XYZ_ptr normal);
 
@@ -106,8 +102,7 @@ namespace cms {
 		 CIExyY(const XYZ_ptr XYZ);
 		 CIExyY(double_array xyValues, NormalizeY normalizeY);
 		 CIExyY(double_array xyValues);
-		 CIExyY(double x, double y, double Y,
-			NormalizeY normalizeY);
+		 CIExyY(double x, double y, double Y, NormalizeY normalizeY);
 		 CIExyY(double x, double y, double Y);
 		 CIExyY(double x, double y);
 		//===============================================================
@@ -139,8 +134,7 @@ namespace cms {
 		//===============================================================
 		// 
 		//===============================================================
-		double_array getValues(double_array values,
-				       NormalizeY normalizeY);
+		double_array getValues(double_array values, NormalizeY normalizeY);
 		double_array getValues();
 		double_array getValues(double_array values);
 		double getCCT();

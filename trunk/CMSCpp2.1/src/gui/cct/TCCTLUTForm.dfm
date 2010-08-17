@@ -708,6 +708,7 @@ object CCTLUTForm: TCCTLUTForm
       ImeName = #26085#25991#36664#20837#31995#32113' (MS-IME2002)'
       TabOrder = 4
       Text = '235'
+      OnChange = Edit_MaxYAdvOverChange
     end
     object Edit_MaxYAdvGamma: TEdit
       Left = 89
@@ -778,6 +779,7 @@ object CCTLUTForm: TCCTLUTForm
       Caption = 'Auto'
       Enabled = False
       TabOrder = 11
+      OnClick = CheckBox_MaxYAdvAutoClick
     end
   end
   object CheckBox_MemoryMeasure: TCheckBox
