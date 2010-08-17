@@ -270,7 +270,17 @@ namespace cms {
 		nativeWhiteAnalyzer->setWaitTimes(defaultWaitTimes);
 
 		//=====================================================
-	    }
+	    };
+	    int LCDCalibrator::getMaxZDGCode() {
+		using namespace cms::measure;
+		using namespace cms::lcd::calibrate;
+		bptr < MeterMeasurement > mm = fetcher->getAnalyzer()->getMeterMeasurement();
+		bptr < MeasureTool > mt(new MeasureTool(mm));
+		MeasureWindow->addWindowListener(mt);
+		bptr < MeasureCondition > measureCondition(new MeasureCondition(bitDepth));
+		int maxZDGCode = mt->getMaxZDGCode(measureCondition);
+		return maxZDGCode;
+	    };
 
 	    /*
 	       CCT + Gamma
@@ -306,19 +316,6 @@ namespace cms {
 		const MaxValue & quantizationBit = bitDepth->getLutMaxValue();
 		RGB_vector_ptr result;
 
-		//==================================================================================
-		// bright的參數
-		//==================================================================================
-		//double brightgammaParameter = 1;
-		//int overParameter = keepMaxLumiOver;
-		/*int minOverParameter = (useNewMethod
-		   && autoKeepMaxLumiParameter) ? 100 : keepMaxLumiOver; */
-		//int minOverParameter = keepMaxLumiOver;
-		//==================================================================================
-
-		//for (; overParameter >= minOverParameter; overParameter -= 4) {
-		//一次跳4階是為了快點找到適當的起始點
-
 		if (true == useNewMethod) {
 		    dglut = newMethod(generator);
 		} else {
@@ -330,19 +327,9 @@ namespace cms {
 		//==============================================================
 		//量化
 		result = getDGLutOpResult(dglut);
-		//RGBVector::quantization(result, quantizationBit);
 		//==============================================================
 		//調整max value, 調整到LUT真正的max value
 		RGBVector::changeMaxValue(result, bitDepth->getLutMaxValue());
-
-		/*RGB_vector_ptr checkResult = RGBVector::deepClone(result);
-		   RGBVector::changeMaxValue(checkResult, bitDepth->getFRCAbilityBit());
-		   //檢查
-		   if (RGBVector::isAscend(checkResult, 50, bitDepth->getMaxDigitalCount())) {
-		   break;
-		   } */
-		//}
-		//keepMaxLumiOver = autoKeepMaxLumiParameter ? overParameter : keepMaxLumiOver;
 
 		STORE_RGBVECTOR("7_dgcode_final.xls", result);
 		this->dglut = result;
@@ -351,7 +338,6 @@ namespace cms {
 
 	    RGB_vector_ptr LCDCalibrator::newMethod(DGLutGenerator & generator) {
 		double brightgammaParameter = 1;
-		//int overParameter = keepMaxLumiOver;
 		//==========================================================
 		// 新方法
 		//==========================================================
@@ -495,7 +481,6 @@ namespace cms {
 		    //==========================================================
 		    DGLutOp dgop;
 		    dgop.setSource(dglut);
-		    //bptr < DGLutOp > op(new P1P2DGOp(p1, p2, quantizationBit));
 		    bptr < DGLutOp > op(new P1P2DGOp(p1, p2));
 		    dgop.addOp(op);
 		    dglut = dgop.createInstance();

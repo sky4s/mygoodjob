@@ -177,7 +177,6 @@ void __fastcall TCCTLUTForm::Button_MeaRunClick(TObject * Sender)
 	    }
 	    Util::deleteExist(filename);
 	    bptr < DGLutFile > dgLutFile(new DGLutFile(filename, Create));
-	    int maxZDGCode = -1;
 	    double bgain = -1;
 	    bool avoidHookNB = this->CheckBox_AvoidHookNB->Checked;
 
@@ -186,14 +185,16 @@ void __fastcall TCCTLUTForm::Button_MeaRunClick(TObject * Sender)
 	    //==========================================================================
 	    if (avoidHookNB) {
 		//開始量測之前先更改面板原始特性
-		maxZDGCode = getMaxZDGCode();
+		int maxZDGCode = calibrator.getMaxZDGCode();
 		bgain = ((double) maxZDGCode) / bitDepth->getMaxDigitalCount();
 		RGB_vector_ptr vec = RGBVector::getLinearRGBVector(bitDepth, bgain);
 		STORE_RGBVECTOR("gain.xls", vec);
 		bptr < TCONControl > tconctrl = MainForm->getTCONControl();
-		tconctrl->setDG(false);
-		tconctrl->setDGLut(vec);
-		tconctrl->setDG(true);
+		if (null != tconctrl) {
+		    tconctrl->setDG(false);
+		    tconctrl->setDGLut(vec);
+		    tconctrl->setDG(true);
+		}
 	    }
 	    //==========================================================================
 	    calibrator.setNativeWhiteAnalyzer(nativeWhiteAnalyzer);
@@ -253,16 +254,6 @@ void __fastcall TCCTLUTForm::Button_MeaRunClick(TObject * Sender)
 
 //---------------------------------------------------------------------------
 
-int TCCTLUTForm::getMaxZDGCode()
-{
-    using namespace cms::measure;
-    using namespace cms::lcd::calibrate;
-    bptr < MeasureTool > mt(new MeasureTool(MainForm->mm));
-    MeasureWindow->addWindowListener(mt);
-    bptr < MeasureCondition > measureCondition(new MeasureCondition(bitDepth));
-    int maxZDGCode = mt->getMaxZDGCode(measureCondition);
-    return maxZDGCode;
-};
 
 
 void __fastcall TCCTLUTForm::FormCreate(TObject * Sender)

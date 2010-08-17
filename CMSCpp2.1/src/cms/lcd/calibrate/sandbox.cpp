@@ -37,6 +37,7 @@ namespace cms {
 		stopMeasure(false), multiGen(false), analyzer2(analyzer2), bitDepth(bitDepth),
 		smoothMode(true) {
 	    };
+
 	     AdvancedDGLutGenerator::
 		AdvancedDGLutGenerator(Component_vector_ptr
 				       componentVector,
@@ -134,8 +135,16 @@ namespace cms {
 		    if (smoothMode) {
 			RGB_vector_ptr result1 = produceDGLut(targetXYZVector, componentVector,
 							      analyzer);
-			RGB_vector_ptr result2 = produceDGLut(targetXYZVector, componentVector,
-							      analyzer2);
+			RGB_vector_ptr result2;
+			if (componentVector2 != null) {
+			    result2 = produceDGLut(targetXYZVector, componentVector2, analyzer2);
+			    foreach(RGB_ptr rgb, *result2) {
+				rgb->B *= bgain;
+				rgb->B = (int) rgb->B;
+			    }
+			} else {
+			    result2 = produceDGLut(targetXYZVector, componentVector, analyzer2);
+			}
 			return smooth(result1, result2, bitDepth, brightTurn);
 		    } else {
 			return produceDGLut(targetXYZVector, componentVector, analyzer);
@@ -602,6 +611,11 @@ namespace cms {
 	    };
 	    int AdvancedDGLutGenerator::getAutoBrightWidth() {
 		return autoBrightWidth;
+	    };
+	    void AdvancedDGLutGenerator::setComponentVector2(Component_vector_ptr componentVector2,
+							     double bgain) {
+		this->componentVector2 = componentVector2;
+		this->bgain = bgain;
 	    };
 	    //==================================================================
 
