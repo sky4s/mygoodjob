@@ -125,7 +125,6 @@ class TCCTLUTForm:public TForm {
     RGBGamma_ptr rgbGamma;
      bptr < cms::lcd::calibrate::MeasureCondition > getMeasureCondition();
     bool run;
-    int getMaxZDGCode();
      bptr < cms::measure::MaxMatrixIntensityAnayzer > nativeWhiteAnalyzer;
   public:			// User declarations
      __fastcall TCCTLUTForm(TComponent * Owner);

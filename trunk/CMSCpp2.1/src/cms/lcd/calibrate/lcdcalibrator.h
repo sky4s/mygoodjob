@@ -116,6 +116,7 @@ namespace cms {
 			       cms::lcd::calibrate::ComponentFetcher >
 			       fetcher, bptr < BitDepthProcessor > bitDepth);
 		double_vector_ptr getGammaCurve(Component_vector_ptr componentVector);
+		int getMaxZDGCode();
 		RGB_vector_ptr getCCTDGLut(bptr < MeasureCondition > measureCondition);
 		RGB_vector_ptr getGammaDGLut(bptr < MeasureCondition > measureCondition);
 		 bptr < cms::colorformat::DGLutFile >

@@ -39,12 +39,15 @@ namespace cms {
 		int autoBrightTurn;
 		int autoBrightWidth;
 		int brightTurn;
+		Component_vector_ptr componentVector2;
+		double bgain;
 	      public:
 		 AdvancedDGLutGenerator(Component_vector_ptr componentVector,
 					bptr < cms::lcd::calibrate::ComponentFetcher > fetcher,
 					bptr < cms::measure::IntensityAnalyzerIF > analyzer1,
 					bptr < cms::measure::IntensityAnalyzerIF > analyzer2,
 					bptr < BitDepthProcessor > bitDepth);
+
 		 AdvancedDGLutGenerator(Component_vector_ptr componentVector,
 					bptr < cms::lcd::calibrate::ComponentFetcher > fetcher,
 					bptr < BitDepthProcessor > bitDepth);
@@ -98,6 +101,7 @@ namespace cms {
 		void setAutoParameter(bool autoParameter);
 		int getAutoBrightTurn();
 		int getAutoBrightWidth();
+		void setComponentVector2(Component_vector_ptr componentVector2, double bgain);
 	    };
 
 
