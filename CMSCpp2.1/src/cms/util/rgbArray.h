@@ -29,7 +29,7 @@ namespace cms {
 	    static bool isAscend(RGB_vector_ptr rgbVector, int start, int end);
 	};
 
-	enum Type {
+	enum RGBType {
 	    Intensity, Gamma
 	};
 	class RGBGamma:public jObject {
@@ -37,16 +37,17 @@ namespace cms {
 	    static RGBGamma_ptr loadFromDesiredGamma(const std::
 						     string & filename, bool isGammaValue);
 	  public:
-	    const Type type;
+
+	    const RGBType type;
 	    const double max;
 	    double_vector_ptr r, g, b, w;
 	     RGBGamma(double_vector_ptr r, double_vector_ptr g, double_vector_ptr b);
 	     RGBGamma(double_vector_ptr r, double_vector_ptr g,
 		      double_vector_ptr b, double_vector_ptr w);
 	     RGBGamma(double_vector_ptr r, double_vector_ptr g,
-		      double_vector_ptr b, const double max, const Type type);
+		      double_vector_ptr b, const double max, const RGBType type);
 	     RGBGamma(double_vector_ptr r, double_vector_ptr g,
-		      double_vector_ptr b, double_vector_ptr w, const double max, const Type type);
+		      double_vector_ptr b, double_vector_ptr w, const double max, const RGBType type);
 	    static void storeToExcel(const std::string & filename, RGBGamma_ptr rgbgamma);
 	    static void storeToDesiredGamma(const std::string & filename, RGBGamma_ptr rgbgamma);
 	    static RGBGamma_ptr loadFromDesiredGamma(const std::string & filename);

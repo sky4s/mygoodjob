@@ -116,6 +116,8 @@ class TCCTLUTForm:public TForm {
     void __fastcall RadioButton_GammaValueClick(TObject * Sender);
     void __fastcall CheckBox_BMax2Click(TObject * Sender);
     void __fastcall CheckBox_AvoidHookNBClick(TObject * Sender);
+    void __fastcall Edit_MaxYAdvOverChange(TObject * Sender);
+    void __fastcall CheckBox_MaxYAdvAutoClick(TObject * Sender);
   private:			// User declarations
     void setMeasureInfo();
     int serialid;

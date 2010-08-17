@@ -10,5 +10,5 @@
 #include "bitdepthprocessor.h";
 #include "sandbox.h";
 #include "dimdg.h";
-#include "dg.h";
- 
+#include "dg.h"; 
+#include "common.h"; 

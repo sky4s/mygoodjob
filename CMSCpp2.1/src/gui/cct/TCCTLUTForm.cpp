@@ -606,3 +606,25 @@ void __fastcall TCCTLUTForm::CheckBox_AvoidHookNBClick(TObject * Sender)
 
 //---------------------------------------------------------------------------
 
+void __fastcall TCCTLUTForm::Edit_MaxYAdvOverChange(TObject * Sender)
+{
+    int over = Edit_MaxYAdvOver->Text.ToInt();
+    if (over >= bitDepth->getMaxDigitalCount()) {
+	ShowMessage(("Must < " + _toString(bitDepth->getMaxDigitalCount())).c_str());
+	Edit_MaxYAdvOver->Text = bitDepth->getMaxDigitalCount() - 1;
+    } else {
+	Edit_BMax2Begin->Text = Edit_MaxYAdvOver->Text;
+    }
+}
+
+//---------------------------------------------------------------------------
+
+void __fastcall TCCTLUTForm::CheckBox_MaxYAdvAutoClick(TObject * Sender)
+{
+    bool checked = CheckBox_MaxYAdvAuto->Checked;
+    Edit_MaxYAdvOver->Enabled = !checked;
+    Edit_MaxYAdvGamma->Enabled = !checked;
+}
+
+//---------------------------------------------------------------------------
+
