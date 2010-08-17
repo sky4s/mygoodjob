@@ -186,7 +186,6 @@ class TMainForm:public TForm {
     void readSetup();
     void writeSetup();
     void readTCONSections();
-    //bptr < TStringList > tconSections;
   public:			// User declarations
     //==========================================================================
     // meter
