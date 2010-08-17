@@ -309,110 +309,47 @@ namespace cms {
 		//==================================================================================
 		// bright的參數
 		//==================================================================================
-		double brightgammaParameter = 1;
-		int overParameter = keepMaxLumiOver;
-		//int minOverParameter = autoKeepMaxLumiParameter ? 100 : keepMaxLumiOver;
-		int minOverParameter = keepMaxLumiOver;
+		//double brightgammaParameter = 1;
+		//int overParameter = keepMaxLumiOver;
+		/*int minOverParameter = (useNewMethod
+		   && autoKeepMaxLumiParameter) ? 100 : keepMaxLumiOver; */
+		//int minOverParameter = keepMaxLumiOver;
 		//==================================================================================
 
-		for (; overParameter >= minOverParameter; overParameter -= 4) {
-		    //一次跳4階是為了快點找到適當的起始點
+		//for (; overParameter >= minOverParameter; overParameter -= 4) {
+		//一次跳4階是為了快點找到適當的起始點
 
-		    if (true == useNewMethod) {
-			newMethod(generator, overParameter);
-			//==========================================================
-			// 新方法
-			//==========================================================
-
-			/*bptr < AdvancedDGLutGenerator > advgenerator;
-			   //藉由傳統generator產生luminance gamma curve
-			   double_vector_ptr luminanceGammaCurve;
-
-			   if (keepMaxLuminance == KeepMaxLuminance::NativeWhiteAdvanced) {
-			   brightgammaParameter = keepMaxLumiGamma;
-
-			   advgenerator = bptr < AdvancedDGLutGenerator >
-			   (new AdvancedDGLutGenerator(componentVector, fetcher->getAnalyzer(),
-			   nativeWhiteAnalyzer, bitDepth));
-			   // max luminance的採用還是很有爭議
-			   double maxLuminance =
-			   (true == skipInverseB) ?
-			   nativeWhiteAnalyzer->getReferenceColor()->
-			   Y : (*componentVector)[0]->XYZ->Y;
-			   double minLuminance =
-			   (*componentVector)[componentVector->size() - 1]->XYZ->Y;
-			   luminanceGammaCurve =
-			   generator.getLuminanceGammaCurve(gammaCurve, maxLuminance,
-			   minLuminance);
-			   } else {
-			   advgenerator =
-			   bptr < AdvancedDGLutGenerator >
-			   (new AdvancedDGLutGenerator(componentVector, fetcher, bitDepth));
-			   luminanceGammaCurve = generator.getLuminanceGammaCurve(gammaCurve);
-
-			   }
-			   STORE_DOUBLE_VECTOR("1_lumigammacurve.xls", luminanceGammaCurve);
-
-			   bptr < IntensityAnalyzerIF > analyzer = fetcher->getAnalyzer();
-			   //analyzer若沒有設定過target color, 會使此步驟失效
-			   XYZ_ptr targetWhite = analyzer->getReferenceColor()->toXYZ();
-
-
-			   double dimgammaParameter = 3.5;
-			   int underParameter = 50;
-
-			   if (correct == Correct::DefinedDim) {
-			   dimgammaParameter = dimGamma;
-			   underParameter = under;
-			   }
-
-			   if (this->bTargetIntensity != -1) {
-			   advgenerator->setBTargetIntensity(bTargetIntensity);
-			   }
-
-			   if (multiGen) {
-			   advgenerator->setMultiGen(multiGen, multiGenTimes);
-			   }
-			   advgenerator->setAutoParameter(autoKeepMaxLumiParameter);
-			   int width = bitDepth->getEffectiveLevel() - keepMaxLumiOver;
-			   targetXYZVector =
-			   advgenerator->getTargetXYZVector(targetWhite, luminanceGammaCurve,
-			   underParameter, overParameter,
-			   dimgammaParameter,
-			   brightgammaParameter, width);
-			   dglut = advgenerator->produce(targetXYZVector);
-			   STORE_RGBVECTOR("3_dgcode.xls", dglut); */
-
-			//==========================================================
-		    } else {
-			dglut = oldMethod(generator, quantizationBit);
-		    }
-
-		    //==============================================================
-		    // DG Code Op block
-		    //==============================================================
-		    //量化
-		    result = getDGLutOpResult(dglut);
-		    RGBVector::quantization(result, quantizationBit);
-		    //==============================================================
-		    //調整max value, 調整到LUT真正的max value
-		    RGBVector::changeMaxValue(result, bitDepth->getLutMaxValue());
-
-		    RGB_vector_ptr checkResult = RGBVector::deepClone(result);
-		    RGBVector::changeMaxValue(checkResult, bitDepth->getFRCAbilityBit());
-		    //檢查
-		    if (RGBVector::isAscend(checkResult, 50, bitDepth->getMaxDigitalCount())) {
-			break;
-		    }
+		if (true == useNewMethod) {
+		    dglut = newMethod(generator);
+		} else {
+		    dglut = oldMethod(generator, quantizationBit);
 		}
-		keepMaxLumiOver = autoKeepMaxLumiParameter ? overParameter : keepMaxLumiOver;
+
+		//==============================================================
+		// DG Code Op block
+		//==============================================================
+		//量化
+		result = getDGLutOpResult(dglut);
+		//RGBVector::quantization(result, quantizationBit);
+		//==============================================================
+		//調整max value, 調整到LUT真正的max value
+		RGBVector::changeMaxValue(result, bitDepth->getLutMaxValue());
+
+		/*RGB_vector_ptr checkResult = RGBVector::deepClone(result);
+		   RGBVector::changeMaxValue(checkResult, bitDepth->getFRCAbilityBit());
+		   //檢查
+		   if (RGBVector::isAscend(checkResult, 50, bitDepth->getMaxDigitalCount())) {
+		   break;
+		   } */
+		//}
+		//keepMaxLumiOver = autoKeepMaxLumiParameter ? overParameter : keepMaxLumiOver;
 
 		STORE_RGBVECTOR("7_dgcode_final.xls", result);
 		this->dglut = result;
 		return result;
 	    };
 
-	    RGB_vector_ptr LCDCalibrator::newMethod(DGLutGenerator & generator, int overParameter) {
+	    RGB_vector_ptr LCDCalibrator::newMethod(DGLutGenerator & generator) {
 		double brightgammaParameter = 1;
 		//int overParameter = keepMaxLumiOver;
 		//==========================================================
@@ -465,21 +402,43 @@ namespace cms {
 		if (multiGen) {
 		    advgenerator->setMultiGen(multiGen, multiGenTimes);
 		}
-		advgenerator->setAutoParameter(autoKeepMaxLumiParameter);
-		int width = bitDepth->getEffectiveLevel() - keepMaxLumiOver;
-		targetXYZVector =
-		    advgenerator->getTargetXYZVector(targetWhite, luminanceGammaCurve,
-						     underParameter, overParameter,
-						     dimgammaParameter,
-						     brightgammaParameter, width);
-		/*dglut =
-		   advgenerator->produce(targetWhite, luminanceGammaCurve, underParameter,
-		   overParameter, dimgammaParameter,
-		   brightgammaParameter); */
-		dglut = advgenerator->produce(targetXYZVector);
-		STORE_RGBVECTOR("3_dgcode.xls", dglut);
-		//targetXYZVector = advgenerator->getTargetXYZVector();
+		//adv內部的auto根據deltaE拉開smooth width
+		//外部需要針對是否疊階來決定起始位置
+		int overParameter = keepMaxLumiOver;
+		int minOverParameter = (useNewMethod
+					&& autoKeepMaxLumiParameter) ? 100 : keepMaxLumiOver;
+		//int minOverParameter = keepMaxLumiOver;
+		/*int width =
+		   autoKeepMaxLumiParameter ? -1 : bitDepth->getEffectiveLevel() - keepMaxLumiOver; */
+		//auto只要作一次就可以
+		//bool didAutoParameter = false;
 
+		for (; overParameter >= minOverParameter; overParameter -= 4) {
+		    //advgenerator->setAutoParameter(autoKeepMaxLumiParameter && !didAutoParameter);
+		    //didAutoParameter = true;
+		    int width = bitDepth->getEffectiveLevel() - overParameter;
+		    targetXYZVector =
+			advgenerator->getTargetXYZVector(targetWhite, luminanceGammaCurve,
+							 underParameter, overParameter,
+							 dimgammaParameter,
+							 brightgammaParameter, width);
+		    dglut = advgenerator->produce(targetXYZVector);
+		    //width = autoKeepMaxLumiParameter ? advgenerator->getAutoBrightWidth() : width;
+
+		    if (autoKeepMaxLumiParameter) {
+			RGB_vector_ptr checkResult = RGBVector::deepClone(dglut);
+			checkResult = getDGLutOpResult(checkResult);
+			RGBVector::changeMaxValue(checkResult, bitDepth->getFRCAbilityBit());
+			//檢查
+			if (RGBVector::isAscend(checkResult, 50, bitDepth->getMaxDigitalCount())) {
+			    STORE_RGBVECTOR("checkResult.xls", checkResult);
+			    break;
+			}
+		    }
+		}
+		keepMaxLumiOver = autoKeepMaxLumiParameter ? overParameter + 1 : keepMaxLumiOver;
+		STORE_RGBVECTOR("3_dgcode.xls", dglut);
+		return dglut;
 		//==========================================================
 	    };
 

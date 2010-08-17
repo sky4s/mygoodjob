@@ -65,23 +65,25 @@ namespace cms {
 		XYZ_ptr blackXYZ = (*componentVector)[componentVector->size() - 1]->XYZ;
 		XYZ_ptr nativeWhite = (*componentVector)[0]->XYZ;
 		XYZ_vector_ptr targetXYZVector;
+		 this->brightTurn = brightTurn;
 
 		//求目標值曲線
 		if (true == autoParameter) {
 		    int turn = brightTurn;
+		    int width = -1;
 		    for (; turn >= 100; turn--) {
-			int width = bitDepth->getEffectiveLevel() - brightTurn;
-			 targetXYZVector =
+			width = bitDepth->getEffectiveLevel() - turn;
+			targetXYZVector =
 			    getTarget0(blackXYZ, targetWhite, nativeWhite, luminanceGammaCurve,
 				       dimTurn, turn, dimGamma, brightGamma, width);
 
-			if (true == checkTargetXYZVector(targetXYZVector, brightTurn,
-							 brightTurn + width, 3)) {
+			if (true == checkTargetXYZVector(targetXYZVector, turn, turn + width, 3)) {
 			    //檢查若最大的dab小於threshold, 就跳出
 			    break;
 			}
 		    };
-		    this->brightTurn = turn;
+		    this->autoBrightTurn = turn;
+		    this->autoBrightWidth = width;
 		} else {
 		    targetXYZVector =
 			getTarget0(blackXYZ, targetWhite, nativeWhite, luminanceGammaCurve, dimTurn,
@@ -95,10 +97,11 @@ namespace cms {
 	       2.把該組DG做量測當作Raw Data
 	       3.再拿該組偽Raw Data產生DG Lut
 	       4.若精準度要更高,就重複做到滿意為止
-	     */ RGB_vector_ptr AdvancedDGLutGenerator::
-	     produce(XYZ_ptr targetWhite,
-		     double_vector_ptr luminanceGammaCurve, int dimTurn,
-		     int brightTurn, double dimGamma, double brightGamma) {
+	     */
+	    /*RGB_vector_ptr AdvancedDGLutGenerator::
+		produce(XYZ_ptr targetWhite,
+			double_vector_ptr luminanceGammaCurve, int dimTurn,
+			int brightTurn, double dimGamma, double brightGamma) {
 		int width = bitDepth->getEffectiveLevel() - brightTurn;
 		return produce(targetWhite, luminanceGammaCurve, dimTurn, brightTurn, dimGamma,
 			       brightGamma, width);
@@ -112,7 +115,7 @@ namespace cms {
 		    getTargetXYZVector(targetWhite, luminanceGammaCurve, dimTurn, brightTurn,
 				       dimGamma, brightGamma, brightWidth);
 		return produce(targetXYZVector);
-	    }
+	    }*/
 
 	    RGB_vector_ptr AdvancedDGLutGenerator::produce(XYZ_vector_ptr targetXYZVector) {
 		STORE_XYZXY_VECTOE("target.xls", targetXYZVector);
@@ -539,8 +542,11 @@ namespace cms {
 		double max = Math::max(checkResult);
 		return max < deltaabThreshold;
 	    };
-	    int AdvancedDGLutGenerator::getBrightTurn() {
-		return brightTurn;
+	    int AdvancedDGLutGenerator::getAutoBrightTurn() {
+		return autoBrightTurn;
+	    };
+	    int AdvancedDGLutGenerator::getAutoBrightWidth() {
+		return autoBrightWidth;
 	    };
 	    //==================================================================
 
