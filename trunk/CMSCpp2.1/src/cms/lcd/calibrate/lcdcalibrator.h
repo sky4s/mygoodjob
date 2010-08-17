@@ -129,7 +129,7 @@ namespace cms {
 		 bptr < cms::measure::MaxMatrixIntensityAnayzer > nativeWhiteAnalyzer;
 		RGB_vector_ptr oldMethod(DGLutGenerator & generator,
 					 const Dep::MaxValue & quantizationBit);
-		RGB_vector_ptr newMethod(DGLutGenerator & generator, int overParameter);
+		RGB_vector_ptr newMethod(DGLutGenerator & generator);
 	      public:
 		 bptr < cms::measure::MaxMatrixIntensityAnayzer > getNativeWhiteAnalyzer();
 		void setNativeWhiteAnalyzer(bptr < cms::measure::MaxMatrixIntensityAnayzer >
