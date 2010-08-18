@@ -9,7 +9,7 @@
 
 //本項目內頭文件
 #include <math/regression.h>
-#include "rgbgamma.h"
+#include "rgbgammaop.h"
 
 namespace cms {
     namespace lcd {

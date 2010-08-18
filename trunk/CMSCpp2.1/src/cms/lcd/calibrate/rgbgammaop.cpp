@@ -1,6 +1,6 @@
 #include <includeall.h>
 #pragma hdrstop
-#include "rgbgamma.h"
+#include "rgbgammaop.h"
 
 //C系統文件
 

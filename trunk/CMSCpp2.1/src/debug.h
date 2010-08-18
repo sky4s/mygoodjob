@@ -7,7 +7,7 @@
 
 #define DEBUG_NEWFUNC_FILE "new.txt"
 
-//#define DEBUG_CCTLUT		//CCT功能的debug功能開啟
+#define DEBUG_CCTLUT		//CCT功能的debug功能開啟
 //#define DEBUG_CCTLUT_NEWMETHOD	//新方法的過程debug功能開啟
 
 //#define DEBUG_FINDWHITE //find white過程的紀錄

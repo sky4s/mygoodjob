@@ -1,5 +1,5 @@
-#ifndef RGBGAMMAH
-#define RGBGAMMAH
+#ifndef RGBGAMMAOPH
+#define RGBGAMMAOPH
 //C系統文件
 
 //C++系統文件
