@@ -15,6 +15,8 @@ namespace cms {
 	namespace calibrate {
 
 	    class DGLutOp:public RGBOp < RGB_vector > {
+	      public:
+		//RGB_vector_ptr createInstance();
 	    };
 
 	    class LinearOp:public DGLutOp {
@@ -84,7 +86,8 @@ namespace cms {
 		int begin;
 		double gamma;
 	      public:
-		 BMax2Op(bptr < BitDepthProcessor > bitDepth, int begin, double gamma);
+		 BMax2Op(bptr < BitDepthProcessor > bitDepth, int begin,
+			 double gamma);
 	      protected:
 		 RGB_vector_ptr getRendering(RGB_vector_ptr source);
 	    };
@@ -125,7 +128,8 @@ namespace cms {
 	      protected:
 		 RGB_vector_ptr getRendering(RGB_vector_ptr source);
 	      public:
-		 KeepNativeWhiteAdvancedOp(bptr < BitDepthProcessor > bitDepth, int over);
+		 KeepNativeWhiteAdvancedOp(bptr < BitDepthProcessor >
+					   bitDepth, int over);
 	    };
 	};
     };

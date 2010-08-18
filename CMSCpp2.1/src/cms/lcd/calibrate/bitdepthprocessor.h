@@ -8,7 +8,7 @@
 //其他庫頭文件
 
 //本項目內頭文件
-#include "rgbgamma.h"
+#include "rgbgammaop.h"
 
 namespace cms {
     namespace lcd {
