@@ -353,11 +353,25 @@ namespace cms {
 		//==============================================================
 		//量化
 		result = getDGLutOpResult(dglut);
+		//==============================================================
+
+		//==============================================================
+		// intensity的影響計算
+		//==============================================================
+		/*double_vector_ptr b1 =
+		    generator.getIntensityVector(Channel::B, dglut);
+		double_vector_ptr b2 =
+		    generator.getIntensityVector(Channel::B, result);
+		STORE_DOUBLE_VECTOR("b1.xls", b1);
+		STORE_DOUBLE_VECTOR("b2.xls", b2);*/
+		//==============================================================
 
 		//==============================================================
 		//調整max value, 調整到LUT真正的max value
+		//==============================================================
 		RGBVector::changeMaxValue(result,
 					  bitDepth->getLutMaxValue());
+		//==============================================================
 
 		STORE_RGBVECTOR("7_dgcode_final.xls", result);
 		this->dglut = result;
