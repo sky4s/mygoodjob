@@ -95,6 +95,8 @@ namespace cms {
 						MeasureCondition > measureCondition);
 	    void windowClosing();
 	    int getMaxZDGCode(bptr < cms::lcd::calibrate::MeasureCondition > measureCondition);
+	    static int getMaxZDGCode(bptr < cms::measure::MeterMeasurement > mm,
+				     bptr < cms::lcd::calibrate::BitDepthProcessor > bitDepth);
 	};
 
 

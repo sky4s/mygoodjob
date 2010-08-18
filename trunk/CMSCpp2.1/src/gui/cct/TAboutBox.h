@@ -22,6 +22,7 @@ class TAboutBox:public TForm {
     TLabel *Comments;
     TButton *OKButton;
     TImage *Image1;
+        TMemo *Memo1;
     void __fastcall FormKeyPress(TObject * Sender, char &Key);
   private:
   public:
