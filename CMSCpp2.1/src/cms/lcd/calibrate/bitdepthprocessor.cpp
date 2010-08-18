@@ -134,7 +134,19 @@ namespace cms {
 	    int BitDepthProcessor::getLevel() {
 		return 257;
 	    };
-
+	    int BitDepthProcessor::getLevelInTCon() {
+		switch (bitDepth) {
+		case b10_10:
+		case b10_8:
+		    return 257;
+		case b8_8:
+		case b8_6:
+		case b6_6:
+		    return 256;
+		default:
+		    throw IllegalStateException("Unsupported bitDepth: " + bitDepth);
+		}
+	    };
 	    int BitDepthProcessor::getEffectiveLevel() {
 		return getMaxDigitalCount() + 1;
 	    };

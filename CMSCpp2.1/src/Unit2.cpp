@@ -948,12 +948,12 @@ int main(int argc, char *argv[])
     //excelTester();
     //iniTester();
     //byteTester();
-    //produceTCONINIFile();
+    produceTCONINIFile();
     //stringTester();
     //maxValueTry();
     //linearRGBTry();
     //smoothTry();
-    deltaETry();
+    //deltaETry();
     //cloneTry();
 
 

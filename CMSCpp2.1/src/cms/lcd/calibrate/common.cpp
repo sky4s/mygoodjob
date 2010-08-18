@@ -129,6 +129,39 @@ namespace cms {
 	    };
 	    //==================================================================
 
+	    //==================================================================
+	    // PanelRegulator
+	    //==================================================================
+	  PanelRegulator::PanelRegulator(bptr < cms::lcd::calibrate::BitDepthProcessor > bitDepth, bptr < i2c::TCONControl > tconctrl, double rgain, double ggain, double bgain):
+	    bitDepth(bitDepth), tconctrl(tconctrl), rgain(rgain), ggain(ggain), bgain(bgain) {
+
+	    };
+	    void PanelRegulator::setEnable(bool enable) {
+		if (true == enable) {
+		    mappingRGBVector = RGBVector::getLinearRGBVector(bitDepth, rgain, ggain, bgain);
+		    tconctrl->setDG(false);
+		    tconctrl->setDGLut(mappingRGBVector);
+		    tconctrl->setDG(true);
+		} else {
+		    tconctrl->setDG(false);
+		}
+	    };
+	    RGB_vector_ptr PanelRegulator::remapping(RGB_vector_ptr dglut) {
+		RGB_vector_ptr result = RGBVector::deepClone(dglut);
+		foreach(RGB_ptr rgb, *result) {
+		    rgb->R *= rgain;
+		    rgb->R = (int) rgb->R;
+		    rgb->G *= ggain;
+		    rgb->G = (int) rgb->G;
+		    rgb->B *= bgain;
+		    rgb->B = (int) rgb->B;
+		}
+		return result;
+	    };
+	    RGB_vector_ptr PanelRegulator::getMappingRGBVector() {
+		return mappingRGBVector;
+	    };
+	    //==================================================================
 	};
     };
 };

@@ -285,6 +285,15 @@ namespace cms {
 	    mm->setMeasureWindowsVisible(false);
 	    return -1;
 	}
+
+	int MeasureTool::getMaxZDGCode(bptr < MeterMeasurement > mm,
+				       bptr < BitDepthProcessor > bitDepth) {
+	    bptr < MeasureTool > mt(new MeasureTool(mm));
+	    MeasureWindow->addWindowListener(mt);
+	    bptr < MeasureCondition > measureCondition(new MeasureCondition(bitDepth));
+	    int maxZDGCode = mt->getMaxZDGCode(measureCondition);
+	    return maxZDGCode;
+	};
 	//======================================================================
     };
 };

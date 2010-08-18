@@ -51,6 +51,10 @@ namespace cms {
 		 */
 		int getLevel();
 		/*
+		   TCon下的實際DG總階數
+		 */
+		int getLevelInTCon();
+		/*
 		   可呈現出差異的階數
 		 */
 		int getEffectiveLevel();

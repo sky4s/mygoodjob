@@ -14,7 +14,6 @@
 namespace cms {
     namespace lcd {
 	namespace calibrate {
-
 	    using namespace cms::measure;
 	    using namespace Dep;
 	    using namespace java::lang;
@@ -57,7 +56,8 @@ namespace cms {
 		this->under = under;
 		this->dimGamma = gamma;
 		this->averageDimDG = averageDimDG;
-	    } void LCDCalibrator::setGamma(double gamma) {
+	    };
+	    void LCDCalibrator::setGamma(double gamma) {
 		this->gamma = gamma;
 		int n = bitDepth->getLevel();
 		int effectiven = bitDepth->getEffectiveLevel();
@@ -156,6 +156,10 @@ namespace cms {
 		originalGamma = false;
 		skipInverseB = false;
 		maxZDGCode = -1;
+		gByPass = false;
+		avoidFRCNoise = false;
+		autoKeepMaxLumiParameter = false;
+		multiGen = false;
 	    };
 
 	    Component_vector_ptr LCDCalibrator::
@@ -246,11 +250,8 @@ namespace cms {
 		if (keepMaxLuminance == KeepMaxLuminance::NativeWhiteAdvanced
 		    && true == skipInverseB) {
 		    //若要略過inverse B, 則要先量測到B在哪裡反轉
-		    bptr < MeasureTool > mt(new MeasureTool(mm));
-		    MeasureWindow->addWindowListener(mt);
-		    bptr < MeasureCondition > measureCondition(new MeasureCondition(bitDepth));
 		    //然後設定b最大只用到反轉點
-		    blueMax = mt->getMaxZDGCode(measureCondition);
+		    blueMax = MeasureTool::getMaxZDGCode(mm, bitDepth);
 		    this->maxZDGCode = blueMax;
 		}
 		//已知rgb
@@ -270,16 +271,6 @@ namespace cms {
 		nativeWhiteAnalyzer->setWaitTimes(defaultWaitTimes);
 
 		//=====================================================
-	    };
-	    int LCDCalibrator::getMaxZDGCode() {
-		using namespace cms::measure;
-		using namespace cms::lcd::calibrate;
-		bptr < MeterMeasurement > mm = fetcher->getAnalyzer()->getMeterMeasurement();
-		bptr < MeasureTool > mt(new MeasureTool(mm));
-		MeasureWindow->addWindowListener(mt);
-		bptr < MeasureCondition > measureCondition(new MeasureCondition(bitDepth));
-		int maxZDGCode = mt->getMaxZDGCode(measureCondition);
-		return maxZDGCode;
 	    };
 
 	    /*
@@ -535,8 +526,6 @@ namespace cms {
 
 	    bptr < DGLutFile >
 		LCDCalibrator::storeDGLutFile(const std::string & filename, RGB_vector_ptr dglut) {
-		//int n = bitDepth->getLevel();
-		//int n = true == gamma256 ? 257 : 256;
 		//砍掉已存在的
 		Util::deleteExist(filename);
 		//產生新檔

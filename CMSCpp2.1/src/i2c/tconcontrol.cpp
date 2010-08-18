@@ -12,6 +12,7 @@
 
 namespace i2c {
     using namespace cms::util;
+    using namespace java::lang;
     using namespace Dep;
      TCONControl::TCONControl(bptr < TCONParameter >
 			      parameter,
@@ -117,10 +118,39 @@ namespace i2c {
     };
 
     bptr < ByteBuffer > TCONControl::getDGLut10BitByteBuffer(RGB_vector_ptr rgbVector) {
-	/* TODO : getDGLut10BitByteBuffer */
+	//int size = rgbVector->size();
+	int processSize = 256;
+	int quarterSize = processSize / 4;
+	int singleChannelDataSize = quarterSize * 5;
+	int totalDataSize = singleChannelDataSize * 3;
+	bptr < ByteBuffer > data(new ByteBuffer(totalDataSize));
+	int index = 0;
+
+	foreach(const Channel & ch, *Channel::RGBChannel) {
+	    for (int x = 0; x < quarterSize; x++) {
+		int d0 = static_cast < int >((*rgbVector)[x * 4]->getValue(ch, MaxValue::Int10Bit));
+		int d1 =
+		    static_cast < int >((*rgbVector)[x * 4 + 1]->getValue(ch, MaxValue::Int10Bit));
+		int d2 =
+		    static_cast < int >((*rgbVector)[x * 4 + 2]->getValue(ch, MaxValue::Int10Bit));
+		int d3 =
+		    static_cast < int >((*rgbVector)[x * 4 + 3]->getValue(ch, MaxValue::Int10Bit));
+		(*data)[index++] = d0 >> 2;
+		(*data)[index++] = ((d0 & 3) << 8) + d1 >> 4;
+		(*data)[index++] = ((d1 & 15) << 4) + d2 >> 6;
+		(*data)[index++] = ((d2 & 63) << 2) + d3 >> 8;
+		(*data)[index++] = d3 & 255;
+	    }
+	}
+
+
+	return data;
     };
     bptr < ByteBuffer > TCONControl::getDGLut12BitByteBuffer(RGB_vector_ptr rgbVector) {
 	int size = rgbVector->size();
+	if (size != 257) {
+	    throw IllegalArgumentException("rgbVector->size() != 257");
+	}
 	int halfSize = size / 2;
 	int remainder = size % 2;
 	int singleChannelDataSize = halfSize * 3 + (remainder ? 2 : 0);
@@ -149,8 +179,6 @@ namespace i2c {
 		(*data)[index++] = c2;
 	    }
 	    if (remainder) {
-		//RGB_ptr r0 = (*rgbVector)[rgbVector->size() - 1];
-		//RGB_ptr r1 = (*rgbVector)[rgbVector->size() - 2];
 		int d0 =
 		    static_cast <
 		    int >((*rgbVector)[rgbVector->size() - 1]->getValue(ch, MaxValue::Int12Bit));

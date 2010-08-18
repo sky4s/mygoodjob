@@ -40,6 +40,11 @@ namespace cms {
 	};
 	RGB_vector_ptr RGBVector::getLinearRGBVector(bptr < cms::lcd::calibrate::BitDepthProcessor >
 						     bitDepth, double bgain) {
+	    return getLinearRGBVector(bitDepth, 1, 1, bgain);
+	};
+	RGB_vector_ptr RGBVector::getLinearRGBVector(bptr < cms::lcd::calibrate::BitDepthProcessor >
+						     bitDepth, double rgain, double ggain,
+						     double bgain) {
 	    int n = bitDepth->getEffectiveLevel();
 	    double maxdc = bitDepth->getMaxDigitalCount();	//得到8bit下最大值
 	    const MaxValue & maxValue = bitDepth->getLutMaxValue();	//lut的maxvalue
@@ -47,13 +52,15 @@ namespace cms {
 	    RGB_vector_ptr result(new RGB_vector());
 	    for (int x = 0; x < n; x++) {
 		double v = maxdc * factor / (n - 1) * x;
+		double r = v * rgain;
+		double g = v * ggain;
 		double b = v * bgain;
-		RGB_ptr rgb(new RGBColor(v, v, b, maxValue));
+		RGB_ptr rgb(new RGBColor(r, g, b, maxValue));
 		result->push_back(rgb);
 	    }
-	    int deltan = bitDepth->getLevel() - n;
+	    int remainn = bitDepth->getLevel() - n;
 	    RGB_ptr last = (*result)[result->size() - 1];
-	    for (int x = 0; x < deltan; x++) {
+	    for (int x = 0; x < remainn; x++) {
 		RGB_ptr rgb(new RGBColor(last->R, last->G, last->B, maxValue));
 		result->push_back(rgb);
 	    }
@@ -68,8 +75,9 @@ namespace cms {
 	    int size = rgbVector->size();
 	    for (int x = 0; x != size; x++) {
 		RGB_ptr rgb = (*rgbVector)[x];
-		string_vector_ptr values = StringVector::fromDouble(4, static_cast < double >(x),
-								    rgb->R, rgb->G, rgb->B);
+		string_vector_ptr values =
+		    StringVector::fromDouble(4, static_cast < double >(x), rgb->R, rgb->G,
+					     rgb->B);
 		excel.insert(values);
 	}};
 	void RGBVector::storeToText(const std::string & filename, RGB_vector_ptr rgbVector) {
@@ -164,10 +172,9 @@ namespace cms {
 
 	    for (int x = 0; x != size; x++) {
 		(*rgbgamma->r)[x];
-		string_vector_ptr values = StringVector::fromDouble(4, static_cast < double >(x),
-								    (*rgbgamma->r)[x],
-								    (*rgbgamma->g)[x],
-								    (*rgbgamma->b)[x]);
+		string_vector_ptr values =
+		    StringVector::fromDouble(4, static_cast < double >(x), (*rgbgamma->r)[x],
+					     (*rgbgamma->g)[x], (*rgbgamma->b)[x]);
 		//excel->insert(fieldNames, values);
 		excel.insert(values);
 	    };

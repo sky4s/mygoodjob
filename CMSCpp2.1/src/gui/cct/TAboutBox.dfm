@@ -1,6 +1,6 @@
 object AboutBox: TAboutBox
-  Left = 300
-  Top = 300
+  Left = 375
+  Top = 316
   BorderStyle = bsDialog
   Caption = 'About'
   ClientHeight = 265
@@ -44,15 +44,15 @@ object AboutBox: TAboutBox
     end
     object Copyright: TLabel
       Left = 10
-      Top = 98
+      Top = 90
       Width = 349
       Height = 16
       Caption = 'Copyright (C) 2010, AU Optronics Corp., All Right Reserved.'
       IsControl = True
     end
     object Comments: TLabel
-      Left = 10
-      Top = 128
+      Left = 402
+      Top = 8
       Width = 404
       Height = 64
       Caption = 
@@ -60,6 +60,7 @@ object AboutBox: TAboutBox
         ' international treaties. Unauthorized reproduction or distributi' +
         'on of this program, or any portion of it, may result in severe c' +
         'ivil and criminal penalties, and will be prosecuted to the maxi'
+      Visible = False
       WordWrap = True
       IsControl = True
     end
@@ -164,6 +165,27 @@ object AboutBox: TAboutBox
         75DA49F17F84918581A1E1AB8B5090405102DE38D4B8BB7AEAF7E36351D37F14
         0E12FE28FCD8D4D86A1C5DBD757BF1BB4A529DB1513CBDA71240E06338824585
         8C30C1EEC7CF8107BD09F7630853E89B70F76338C245858C30FFD9}
+    end
+    object Memo1: TMemo
+      Left = 8
+      Top = 112
+      Width = 409
+      Height = 89
+      Lines.Strings = (
+        
+          'Warning: this computer program is protected by copyright law and' +
+          ' '
+        
+          'international treaties. Unauthorized reproduction or distributio' +
+          'n of this '
+        
+          'program, or any portion of it, may result in severe civil and cr' +
+          'iminal '
+        
+          'penalties, and will be prosecuted to the maximum extent possible' +
+          ' '
+        'under the law.')
+      TabOrder = 0
     end
   end
   object OKButton: TButton

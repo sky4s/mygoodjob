@@ -19,7 +19,7 @@
 TTargetWhiteForm2 *TargetWhiteForm2;
 //---------------------------------------------------------------------------
 __fastcall TTargetWhiteForm2::TTargetWhiteForm2(TComponent * Owner)
-:TForm(Owner), stopMeasure(false)
+:TForm(Owner), stopMeasure(false), maxZDGCode(-1)
 {
 }
 
@@ -210,11 +210,11 @@ void __fastcall TTargetWhiteForm2::Button_RunClick(TObject * Sender)
 	//2. 找到反轉點
 	//3. 設定B為反轉點, 且保持不變
 	//4. 找到對應色度的RGB
-
-	bptr < MeasureTool > mt(new MeasureTool(MainForm->mm));
-	MeasureWindow->addWindowListener(mt);
-	bptr < MeasureCondition > measureCondition(new MeasureCondition(bitDepth));
-	rgb->B = mt->getMaxZDGCode(measureCondition);
+	if (maxZDGCode == -1) {
+	    //this->maxZDGCode = MeasureTool::getMaxZDGCode(MainForm->mm, bitDepth);
+	    Button_FindInverseB->Click();
+	}
+	rgb->B = maxZDGCode;
     }
 
     if (usemaxRGB) {
@@ -245,8 +245,7 @@ void __fastcall TTargetWhiteForm2::Button_RunClick(TObject * Sender)
 	    finder =
 		bptr < StocktonWhitePointFinder > (new
 						   StocktonWhitePointFinder
-						   (MainForm->mm, bitDepth, rgb, maxCount,
-						    avoidHookTV));
+						   (MainForm->mm, bitDepth, rgb, maxCount, false));
 	    MeasureWindow->addWindowListener(finder);
 	    rgb = finder->findRGB(xyY);
 	}
@@ -524,19 +523,17 @@ void __fastcall TTargetWhiteForm2::Button_FindInverseBClick(TObject * Sender)
 {
     using namespace cms::measure;
     using namespace cms::lcd::calibrate;
-    bptr < MeasureTool > mt(new MeasureTool(MainForm->mm));
-    MeasureWindow->addWindowListener(mt);
-    bptr < MeasureCondition > measureCondition(new MeasureCondition(bitDepth));
-    int maxZDG = mt->getMaxZDGCode(measureCondition);
-    Edit_InverseB->Text = maxZDG;
-    //Edit_B->Text = maxZDG;
+    this->maxZDGCode = MeasureTool::getMaxZDGCode(MainForm->mm, bitDepth);
+    Edit_InverseB->Text = maxZDGCode;
 }
 
 //---------------------------------------------------------------------------
 
 void __fastcall TTargetWhiteForm2::Edit_InverseBClick(TObject * Sender)
 {
-    Edit_B->Text = Edit_InverseB->Text;
+    if (Edit_InverseB->Text.Length() != 0) {
+	Edit_B->Text = Edit_InverseB->Text;
+    }
 }
 
 //---------------------------------------------------------------------------

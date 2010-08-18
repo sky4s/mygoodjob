@@ -69,6 +69,20 @@ namespace cms {
 						 Channel & channel, const Dep::MaxValue & maxValue);
 	    };
 
+	    class PanelRegulator {
+	      private:
+		bptr < cms::lcd::calibrate::BitDepthProcessor > bitDepth;
+		bptr < i2c::TCONControl > tconctrl;
+		double rgain, ggain, bgain;
+		RGB_vector_ptr mappingRGBVector;
+	      public:
+		 PanelRegulator(bptr < cms::lcd::calibrate::BitDepthProcessor > bitDepth,
+				bptr < i2c::TCONControl > tconctrl, double rgain, double ggain,
+				double bgain);
+		void setEnable(bool enable);
+		RGB_vector_ptr remapping(RGB_vector_ptr dglut);
+		RGB_vector_ptr getMappingRGBVector();
+	    };
 	};
     };
 };

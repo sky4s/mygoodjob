@@ -62,6 +62,7 @@ void __fastcall TCCTLUTForm::Button_MeaRunClick(TObject * Sender)
     using namespace Dep;
     using namespace cms::lcd::calibrate;
     using namespace cms::colorformat;
+    using namespace cms::measure;
     using namespace i2c;
 
 
@@ -183,17 +184,20 @@ void __fastcall TCCTLUTForm::Button_MeaRunClick(TObject * Sender)
 	    //==========================================================================
 	    // avoid HOOK NB
 	    //==========================================================================
+	    bptr < PanelRegulator > panelRegulator;
 	    if (avoidHookNB) {
 		//開始量測之前先更改面板原始特性
-		int maxZDGCode = calibrator.getMaxZDGCode();
+		int maxZDGCode = MeasureTool::getMaxZDGCode(MainForm->mm, bitDepth);
 		bgain = ((double) maxZDGCode) / bitDepth->getMaxDigitalCount();
-		RGB_vector_ptr vec = RGBVector::getLinearRGBVector(bitDepth, bgain);
-		STORE_RGBVECTOR("gain.xls", vec);
+
 		bptr < TCONControl > tconctrl = MainForm->getTCONControl();
 		if (null != tconctrl) {
-		    tconctrl->setDG(false);
-		    tconctrl->setDGLut(vec);
-		    tconctrl->setDG(true);
+		    panelRegulator =
+			bptr < PanelRegulator >
+			(new PanelRegulator(bitDepth, tconctrl, 1, 1, bgain));
+		    panelRegulator->setEnable(true);
+		    RGB_vector_ptr vec = panelRegulator->getMappingRGBVector();
+		    STORE_RGBVECTOR("gain.xls", vec);
 		}
 	    }
 	    //==========================================================================
@@ -209,11 +213,10 @@ void __fastcall TCCTLUTForm::Button_MeaRunClick(TObject * Sender)
 	    // avoid HOOK NB
 	    //==========================================================================
 	    if (avoidHookNB) {
-		//儲存DG LUT之前, 要remapping回來
-		foreach(RGB_ptr rgb, *dglut) {
-		    rgb->B *= bgain;
-		    rgb->B = (int) rgb->B;
-		}
+		panelRegulator->setEnable(false);
+		STORE_RGBVECTOR("beforemap.xls", dglut);
+		dglut = panelRegulator->remapping(dglut);
+		STORE_RGBVECTOR("aftermap.xls", dglut);
 	    }
 	    //==========================================================================
 
@@ -400,7 +403,6 @@ void __fastcall TCCTLUTForm::FormKeyPress(TObject * Sender, char &Key)
 	    if (false == MeasureWindow->Visible) {
 		MainForm->getComponentFetcher()->windowClosing();
 	    }
-	    //this->Button_MeaRun->Enabled = true;
 	    run = false;
 	} else {
 	    this->Close();
@@ -567,7 +569,6 @@ void __fastcall TCCTLUTForm::RadioButton_GammaValueClick(TObject * Sender)
 	unsigned int n = bitDepth->getLevel();
 	if (rgbGamma != null && rgbGamma->w->size() == n) {
 	    this->RadioButton_GammaValue->Checked = true;
-	    //this->CheckBox_GByPass->Visible = true;
 	    return;
 	} else {
 	    ShowMessage("Desired Gamma File Format is wrong!");
