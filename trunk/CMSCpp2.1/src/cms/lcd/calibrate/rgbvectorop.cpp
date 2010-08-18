@@ -318,7 +318,7 @@ namespace cms {
 	    //==================================================================
 	    RGB_vector_ptr KeepNativeWhiteAdvancedOp::
 		getRendering(RGB_vector_ptr source) {
-		STORE_RGBVECTOR("op-source.xls", source);
+		//STORE_RGBVECTOR("op-source.xls", source);
 		RGB_vector_ptr result = RGBVector::deepClone(source);
 		int size = result->size();
 		RGB_ptr lastRGB = (*result)[size - 1];
@@ -349,7 +349,7 @@ namespace cms {
 		    rgb->setValues(max, max, max);
 		}
 
-		STORE_RGBVECTOR("op-result.xls", result);
+		//STORE_RGBVECTOR("op-result.xls", result);
 		return result;
 
 	    };
