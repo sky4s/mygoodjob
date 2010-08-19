@@ -331,4 +331,13 @@ object I2CTestForm: TI2CTestForm
     TabOrder = 7
     OnClick = CheckBox_DGClick
   end
+  object CheckBox_DGTest: TCheckBox
+    Left = 128
+    Top = 320
+    Width = 105
+    Height = 17
+    Caption = 'DG Test'
+    TabOrder = 8
+    OnClick = CheckBox_DGTestClick
+  end
 end

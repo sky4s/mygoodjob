@@ -82,80 +82,58 @@ namespace cms {
 
 		void setGammaCurve0(double_vector_ptr gammaCurve);
 		void setGammaCurve0(double_vector_ptr rgammaCurve,
-				    double_vector_ptr ggammaCurve,
-				    double_vector_ptr bgammaCurve);
+				    double_vector_ptr ggammaCurve, double_vector_ptr bgammaCurve);
 		Component_vector_ptr fetchComponentVector(bptr <
-							  MeasureCondition
-							  >
-							  measureCondition);
-		double_vector_ptr fetchLuminanceVector(bptr <
-						       MeasureCondition >
-						       measureCondition);
+							  MeasureCondition > measureCondition);
+		double_vector_ptr fetchLuminanceVector(bptr < MeasureCondition > measureCondition);
 		void initNativeWhiteAnalyzer();
 	      public:
-		static double_vector_ptr getGammaCurveVector(double gamma,
-							     int n, int
+		static double_vector_ptr getGammaCurveVector(double gamma, int n, int
 							     effectiven);
 
 		void setP1P2(int p1, int p2);
 		void setRBInterpolation(int under);
 		void setNonDimCorrect();
-		void setDefinedDim(int under, double gamma,
-				   bool averageDimDG);
+		void setDefinedDim(int under, double gamma, bool averageDimDG);
 		void setGamma(double gamma);
 		void setGamma(double rgamma, double ggamma, double bgamma);
 		void setGammaCurve(double_vector_ptr gammaCurve);
 		void setGammaCurve(double_vector_ptr rgammaCurve,
-				   double_vector_ptr ggammaCurve,
-				   double_vector_ptr bgammaCurve);
+				   double_vector_ptr ggammaCurve, double_vector_ptr bgammaCurve);
 		void setOriginalGamma();
 		void setGByPass(bool byPass);
 		void setBIntensityGain(double gain);
 		void setBMax(bool bMax);
 		void setBMax2(bool bMax2, int begin, double gamma);
 		void setAvoidFRCNoise(bool avoid);
-		void setKeepMaxLuminance(KeepMaxLuminance
-					 keepMaxLuminance);
+		void setKeepMaxLuminance(KeepMaxLuminance keepMaxLuminance);
 		void setKeepMaxLuminanceNativeWhiteAdvanced(int over,
-							    double gamma,
-							    bool
-							    autoParameter);
+							    double gamma, bool autoParameter);
 		void setNewMethod(bool enable);
 		void setSkipInverseB(bool skip);
 
 		 LCDCalibrator(bptr <
 			       cms::lcd::calibrate::ComponentFetcher >
-			       fetcher,
-			       bptr < BitDepthProcessor > bitDepth);
-		double_vector_ptr getGammaCurve(Component_vector_ptr
-						componentVector);
-		RGB_vector_ptr getCCTDGLut(bptr < MeasureCondition >
-					   measureCondition);
-		RGB_vector_ptr getGammaDGLut(bptr < MeasureCondition >
-					     measureCondition);
+			       fetcher, bptr < BitDepthProcessor > bitDepth);
+		double_vector_ptr getGammaCurve(Component_vector_ptr componentVector);
+		RGB_vector_ptr getCCTDGLut(bptr < MeasureCondition > measureCondition);
+		RGB_vector_ptr getGammaDGLut(bptr < MeasureCondition > measureCondition);
 		 bptr < cms::colorformat::DGLutFile >
-		    storeDGLutFile(const std::string & filename,
-				   RGB_vector_ptr dglut);
+		    storeDGLutFile(const std::string & filename, RGB_vector_ptr dglut);
 		void storeDGLutFile(RGB_vector_ptr dglut,
-				    bptr < cms::colorformat::DGLutFile >
-				    dglutFile);
+				    bptr < cms::colorformat::DGLutFile > dglutFile);
 		void setBTargetIntensity(double bTargetIntensity);
 		void setMultiGen(bool enable, int times);
 	      private:
 		 RGB_vector_ptr getDGLutOpResult(RGB_vector_ptr dglut);
-		 bptr < cms::measure::MaxMatrixIntensityAnayzer >
-		    nativeWhiteAnalyzer;
+		 bptr < cms::measure::MaxMatrixIntensityAnayzer > nativeWhiteAnalyzer;
 		RGB_vector_ptr oldMethod(DGLutGenerator & generator,
-					 const Dep::
-					 MaxValue & quantizationBit);
+					 const Dep::MaxValue & quantizationBit);
 		RGB_vector_ptr newMethod(DGLutGenerator & generator);
 	      public:
-		 bptr < cms::measure::MaxMatrixIntensityAnayzer >
-		    getNativeWhiteAnalyzer();
+		 bptr < cms::measure::MaxMatrixIntensityAnayzer > getNativeWhiteAnalyzer();
 		void setNativeWhiteAnalyzer(bptr <
-					    cms::measure::
-					    MaxMatrixIntensityAnayzer >
-					    analyzer);
+					    cms::measure:: MaxMatrixIntensityAnayzer > analyzer);
 	    };
 
 
