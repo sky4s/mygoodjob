@@ -125,7 +125,7 @@ namespace cms {
 		void setBTargetIntensity(double bTargetIntensity);
 		void setMultiGen(bool enable, int times);
 	      private:
-		 RGB_vector_ptr getDGLutOpResult(RGB_vector_ptr dglut);
+		 RGB_vector_ptr getDGLutOpResult(RGB_vector_ptr dglut, DGLutGenerator & generator);
 		 bptr < cms::measure::MaxMatrixIntensityAnayzer > nativeWhiteAnalyzer;
 		RGB_vector_ptr oldMethod(DGLutGenerator & generator,
 					 const Dep::MaxValue & quantizationBit);
@@ -133,7 +133,7 @@ namespace cms {
 	      public:
 		 bptr < cms::measure::MaxMatrixIntensityAnayzer > getNativeWhiteAnalyzer();
 		void setNativeWhiteAnalyzer(bptr <
-					    cms::measure:: MaxMatrixIntensityAnayzer > analyzer);
+					    cms::measure::MaxMatrixIntensityAnayzer > analyzer);
 	    };
 
 

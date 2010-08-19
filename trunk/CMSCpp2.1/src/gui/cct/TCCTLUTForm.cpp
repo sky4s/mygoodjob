@@ -214,9 +214,9 @@ void __fastcall TCCTLUTForm::Button_MeaRunClick(TObject * Sender)
 	    //==========================================================================
 	    if (avoidHookNB) {
 		panelRegulator->setEnable(false);
-		STORE_RGBVECTOR("beforemap.xls", dglut);
+		//STORE_RGBVECTOR("beforemap.xls", dglut);
 		dglut = panelRegulator->remapping(dglut);
-		STORE_RGBVECTOR("aftermap.xls", dglut);
+		//STORE_RGBVECTOR("aftermap.xls", dglut);
 	    }
 	    //==========================================================================
 
@@ -238,6 +238,7 @@ void __fastcall TCCTLUTForm::Button_MeaRunClick(TObject * Sender)
 	    RGBVector::storeToText(ChangeFileExt(filename.c_str(), ".txt").c_str(), dglut);
 	    //=================================================================
 	    if (RGBVector::isAscend(dglut, 0, bitDepth->getMaxDigitalCount())) {
+		//檢查是否遞增且無疊階
 		ShowMessage("Ok!");
 	    } else {
 		ShowMessage("Warning: It's not ascend!");
