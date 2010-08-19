@@ -258,7 +258,7 @@ void __fastcall TI2CTestForm::CheckBox_DGTestClick(TObject * Sender)
     bool test = this->CheckBox_DGTest->Checked;
     if (test) {
 	control->setDG(false);
-	RGB_vector_ptr rgbVector = RGBVector::getLinearRGBVector(256);
+	RGB_vector_ptr rgbVector = RGBVector::getLinearRGBVector(bitDepth->getLevelInTCon());
 	rgbVector = RGBVector::reverse(rgbVector);
 	control->setDGLut(rgbVector);
     }
@@ -266,4 +266,8 @@ void __fastcall TI2CTestForm::CheckBox_DGTestClick(TObject * Sender)
 }
 
 //---------------------------------------------------------------------------
+void TI2CTestForm::setBitDepthProcessor(bptr < cms::lcd::calibrate::BitDepthProcessor > bitDepth)
+{
+    this->bitDepth = bitDepth;
+}
 
