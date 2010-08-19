@@ -77,7 +77,7 @@ namespace cms {
 		useGammaCurve = false;
 		rgbIndepGamma = true;
 	    };
-	    void LCDCalibrator:: setGammaCurve0(double_vector_ptr gammaCurve) {
+	    void LCDCalibrator::setGammaCurve0(double_vector_ptr gammaCurve) {
 		this->gammaCurve = gammaCurve;
 	    };
 	    void LCDCalibrator::
@@ -119,7 +119,7 @@ namespace cms {
 	    void LCDCalibrator::setAvoidFRCNoise(bool avoid) {
 		this->avoidFRCNoise = avoid;
 	    };
-	    void LCDCalibrator:: setKeepMaxLuminance(KeepMaxLuminance keepMaxLuminance) {
+	    void LCDCalibrator::setKeepMaxLuminance(KeepMaxLuminance keepMaxLuminance) {
 		if (keepMaxLuminance == KeepMaxLuminance::NativeWhiteAdvanced) {
 		    throw
 			UnsupportedOperationException
@@ -305,7 +305,6 @@ namespace cms {
 
 		DGLutGenerator generator(componentVector, keepMaxLuminance);
 		const MaxValue & quantizationBit = bitDepth->getLutMaxValue();
-		RGB_vector_ptr result;
 
 		if (true == useNewMethod) {
 		    dglut = newMethod(generator);
@@ -317,7 +316,7 @@ namespace cms {
 		// DG Code Op block
 		//==============================================================
 		//量化
-		result = getDGLutOpResult(dglut);
+		RGB_vector_ptr result = getDGLutOpResult(dglut, generator);
 		//==============================================================
 
 		//==============================================================
@@ -414,7 +413,7 @@ namespace cms {
 
 		    if (autoKeepMaxLumiParameter) {
 			RGB_vector_ptr checkResult = RGBVector::deepClone(dglut);
-			checkResult = getDGLutOpResult(checkResult);
+			checkResult = getDGLutOpResult(checkResult, generator);
 			RGBVector::changeMaxValue(checkResult, bitDepth->getFRCAbilityBit());
 			//檢查
 			if (RGBVector::isAscend(checkResult, 50, bitDepth->getMaxDigitalCount())) {
@@ -553,7 +552,7 @@ namespace cms {
 	    };
 
 	    void LCDCalibrator::storeDGLutFile(RGB_vector_ptr dglut,
-					       bptr < cms::colorformat:: DGLutFile > dglutFile) {
+					       bptr < cms::colorformat::DGLutFile > dglutFile) {
 		DGLutProperty property(this);
 		//寫入property
 		dglutFile->setProperty(property);
@@ -568,7 +567,8 @@ namespace cms {
 		}
 	    };
 
-	    RGB_vector_ptr LCDCalibrator::getDGLutOpResult(RGB_vector_ptr dglut) {
+	    RGB_vector_ptr LCDCalibrator::getDGLutOpResult(RGB_vector_ptr dglut,
+							   DGLutGenerator & generator) {
 		//==============================================================
 		// DG Code Op block
 		//==============================================================
@@ -607,7 +607,8 @@ namespace cms {
 			//最後還是要對DG做一次smooth
 			bptr < DGLutOp >
 			    nativeWhiteAdv(new
-					   KeepNativeWhiteAdvancedOp(bitDepth, keepMaxLumiOver));
+					   KeepNativeWhiteAdvancedOp(bitDepth, keepMaxLumiOver,
+								     false));
 			dgop.addOp(nativeWhiteAdv);
 		    }
 		    break;
@@ -628,7 +629,7 @@ namespace cms {
 		//==============================================================
 	    };
 
-	    void LCDCalibrator:: setBTargetIntensity(double bTargetIntensity) {
+	    void LCDCalibrator::setBTargetIntensity(double bTargetIntensity) {
 		this->bTargetIntensity = bTargetIntensity;
 	    };
 

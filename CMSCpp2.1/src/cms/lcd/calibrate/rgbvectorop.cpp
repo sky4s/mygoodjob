@@ -21,9 +21,9 @@ namespace cms {
 	    using namespace java::lang;
 
 	    /*RGB_vector_ptr DGLutOp::createInstance() {
-		RGB_vector_ptr result = RGBVector::deepClone(source);
-		 return RGBOp < RGB_vector >::createInstance(result);
-	    };*/
+	       RGB_vector_ptr result = RGBVector::deepClone(source);
+	       return RGBOp < RGB_vector >::createInstance(result);
+	       }; */
 	    //==================================================================
 	    RGB_vector_ptr LinearOp::getRendering(RGB_vector_ptr source) {
 
@@ -41,17 +41,16 @@ namespace cms {
 	    //==================================================================
 	    RGB_vector_ptr MinusOp::getRendering(RGB_vector_ptr source) {
 		RGB_vector_ptr result(new RGB_vector());
-		foreach(RGB_ptr rgb, *source) {
+		 foreach(RGB_ptr rgb, *source) {
 		    RGB_ptr rgb2(new RGBColor());
-		    rgb2->R = rgb->R - minusValue;
-		    rgb2->G = rgb->G - minusValue;
-		    rgb2->B = rgb->B - minusValue;
-		    result->push_back(rgb2);
+		     rgb2->R = rgb->R - minusValue;
+		     rgb2->G = rgb->G - minusValue;
+		     rgb2->B = rgb->B - minusValue;
+		     result->push_back(rgb2);
 		};
 		return result;
 	    };
-	  MinusOp::MinusOp(double minusValue):minusValue(minusValue)
-	    {
+	  MinusOp::MinusOp(double minusValue):minusValue(minusValue) {
 	    };
 	    //==================================================================
 	    // P1P2DGOp
@@ -81,17 +80,14 @@ namespace cms {
 	    /*P1P2DGOp::P1P2DGOp(double p1, double p2, const MaxValue & maxValue):p1(p1), p2(p2), maxValue(maxValue)
 	       {
 	       }; */
-	  P1P2DGOp::P1P2DGOp(double p1, double p2):p1(p1),
-		p2(p2)
-	    {
+	  P1P2DGOp::P1P2DGOp(double p1, double p2):p1(p1), p2(p2) {
 	    };
 	    //==================================================================
 
 	    //==================================================================
 	    // RBInterpolation
 	    //==================================================================
-	    RGB_vector_ptr RBInterpolationOp::
-		getRendering(RGB_vector_ptr source) {
+	    RGB_vector_ptr RBInterpolationOp::getRendering(RGB_vector_ptr source) {
 
 		double rInterval = (*source)[under]->R / under;
 		double gInterval = (*source)[under]->G / under;
@@ -109,16 +105,14 @@ namespace cms {
 		}
 		return result;
 	    };
-	  RBInterpolationOp::RBInterpolationOp(double under):under(under)
-	    {
+	  RBInterpolationOp::RBInterpolationOp(double under):under(under) {
 	    };
 	    //==================================================================
 
 	    //==================================================================
 	    // BMaxOp
 	    //==================================================================
-	  BMaxOp::BMaxOp(bptr < BitDepthProcessor > bitDepth):bitDepth(bitDepth)
-	    {
+	  BMaxOp::BMaxOp(bptr < BitDepthProcessor > bitDepth):bitDepth(bitDepth) {
 
 	    };
 	    RGB_vector_ptr BMaxOp::getRendering(RGB_vector_ptr source) {
@@ -137,8 +131,7 @@ namespace cms {
 		    RGB_ptr rgb = (*result)[x];
 		    RGB_ptr nextrgb = (*result)[x - 1];
 		    //設定差異
-		    double diff =
-			x > 252 ? 10 / 4. : (x > 232 ? 8 / 4. : 6 / 4.);
+		    double diff = x > 252 ? 10 / 4. : (x > 232 ? 8 / 4. : 6 / 4.);
 		    double thisB = rgb->B;
 		    double nextB = nextrgb->B;
 		    if (thisB > nextB) {
@@ -178,9 +171,8 @@ namespace cms {
 		    RGB_ptr rgb = (*result)[x];
 		    double normal = ((double) x - begin) / (base - begin);
 		    normal = Math::pow(normal, gamma);
-		    double b =
-			Interpolation::linear(0, 1, rgb0->B, rgb1->B,
-					      normal);
+		    double b = Interpolation::linear(0, 1, rgb0->B, rgb1->B,
+						     normal);
 		    rgb->B = b;
 		}
 
@@ -235,8 +227,7 @@ namespace cms {
 		   } */
 		return result;
 	    };
-	  GByPassOp::GByPassOp(bptr < BitDepthProcessor > bitDepth):bitDepth(bitDepth)
-	    {
+	  GByPassOp::GByPassOp(bptr < BitDepthProcessor > bitDepth):bitDepth(bitDepth) {
 
 	    };
 	    //==================================================================
@@ -278,8 +269,7 @@ namespace cms {
 			double v = rgb->getValue(ch);
 			//只有在v為3 or 1才做修正
 			if (v == 12 / 4. || v == 4 / 4.) {
-			    double setvalue =
-				(v == 12 / 4.) ? 10 / 4. : 2 / 4.;
+			    double setvalue = (v == 12 / 4.) ? 10 / 4. : 2 / 4.;
 			    rgb->setValue(ch, setvalue);
 			    RGB_ptr prergb = (*result)[x - 1];
 			    double prev = prergb->getValue(ch);
@@ -296,13 +286,11 @@ namespace cms {
 		STORE_RGBVECTOR("frcNR_2.xls", result);
 		return result;
 	    };
-	  FrcNROp::FrcNROp(bptr < BitDepthProcessor > bitDepth):bitDepth(bitDepth)
-	    {
+	  FrcNROp::FrcNROp(bptr < BitDepthProcessor > bitDepth):bitDepth(bitDepth) {
 	    };
 	    //==================================================================
 	    //==================================================================
-	    RGB_vector_ptr KeepNativeWhiteOp::
-		getRendering(RGB_vector_ptr source) {
+	    RGB_vector_ptr KeepNativeWhiteOp::getRendering(RGB_vector_ptr source) {
 		int size = source->size();
 		RGB_vector_ptr result = RGBVector::deepClone(source);
 		RGB_ptr white = (*result)[size - 1];
@@ -316,8 +304,7 @@ namespace cms {
 
 	    };
 	    //==================================================================
-	    RGB_vector_ptr KeepNativeWhiteAdvancedOp::
-		getRendering(RGB_vector_ptr source) {
+	    RGB_vector_ptr KeepNativeWhiteAdvancedOp::getRendering(RGB_vector_ptr source) {
 		//STORE_RGBVECTOR("op-source.xls", source);
 		RGB_vector_ptr result = RGBVector::deepClone(source);
 		int size = result->size();
@@ -325,20 +312,18 @@ namespace cms {
 		RGB_ptr beginRGB = (*result)[over];
 		double max = bitDepth->getMaxDigitalCount();
 		int effectiven = bitDepth->getEffectiveLevel();
+		//把rgb都推到最大值
 		double rGain = max / lastRGB->R;
 		double gGain = max / lastRGB->G;
 		double bGain = max / lastRGB->B;
 
 		for (int x = over; x != effectiven; x++) {
-		    double realrgain =
-			Interpolation::linear(over, effectiven - 1, 1,
-					      rGain, x);
-		    double realggain =
-			Interpolation::linear(over, effectiven - 1, 1,
-					      gGain, x);
-		    double realbgain =
-			Interpolation::linear(over, effectiven - 1, 1,
-					      bGain, x);
+		    double realrgain = Interpolation::linear(over, effectiven - 1, 1,
+							     rGain, x);
+		    double realggain = Interpolation::linear(over, effectiven - 1, 1,
+							     gGain, x);
+		    double realbgain = Interpolation::linear(over, effectiven - 1, 1,
+							     bGain, x);
 		    RGB_ptr rgb = (*result)[x];
 		    rgb->R *= realrgain;
 		    rgb->G *= realggain;
@@ -353,12 +338,13 @@ namespace cms {
 		return result;
 
 	    };
-	  KeepNativeWhiteAdvancedOp::KeepNativeWhiteAdvancedOp(bptr < BitDepthProcessor > bitDepth, int over):bitDepth(bitDepth),
-		over(over)
+	  KeepNativeWhiteAdvancedOp::KeepNativeWhiteAdvancedOp(bptr < BitDepthProcessor > bitDepth, int over, bool compensationR):bitDepth(bitDepth),
+		over(over), compensationR(compensationR)
 	    {
 
 	    };
 	    //==================================================================
+
 	};
     };
 };

@@ -86,8 +86,7 @@ namespace cms {
 		int begin;
 		double gamma;
 	      public:
-		 BMax2Op(bptr < BitDepthProcessor > bitDepth, int begin,
-			 double gamma);
+		 BMax2Op(bptr < BitDepthProcessor > bitDepth, int begin, double gamma);
 	      protected:
 		 RGB_vector_ptr getRendering(RGB_vector_ptr source);
 	    };
@@ -125,12 +124,14 @@ namespace cms {
 	      private:
 		bptr < BitDepthProcessor > bitDepth;
 		int over;
+		bool compensationR;
 	      protected:
 		 RGB_vector_ptr getRendering(RGB_vector_ptr source);
 	      public:
-		 KeepNativeWhiteAdvancedOp(bptr < BitDepthProcessor >
-					   bitDepth, int over);
+		 KeepNativeWhiteAdvancedOp(bptr < BitDepthProcessor > bitDepth, int over,
+					   bool compensationR);
 	    };
+
 	};
     };
 }
