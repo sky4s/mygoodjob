@@ -53,6 +53,7 @@ class TI2CTestForm:public TForm {
     TLabel *Label7;
     TRadioButton *RadioButton_LPTSmall;
     TCheckBox *CheckBox_DG;
+    TCheckBox *CheckBox_DGTest;
     void __fastcall Button1Click(TObject * Sender);
     void __fastcall CheckBox_ConnectingClick(TObject * Sender);
     void __fastcall CheckBox1Click(TObject * Sender);
@@ -63,6 +64,7 @@ class TI2CTestForm:public TForm {
     void __fastcall Button_WriteClick(TObject * Sender);
     void __fastcall FormDeactivate(TObject * Sender);
     void __fastcall CheckBox_DGClick(TObject * Sender);
+    void __fastcall CheckBox_DGTestClick(TObject * Sender);
   private:			// User declarations
      bptr < i2c::TCONParameter > parameter;
      bptr < i2c::TCONControl > control;
