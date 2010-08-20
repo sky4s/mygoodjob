@@ -152,6 +152,7 @@ void __fastcall TCCTLUTForm::Button_MeaRunClick(TObject * Sender)
 	    double bTargetIntensity = Edit_BTargetIntensity->Text.ToDouble();
 	    calibrator.setBTargetIntensity(bTargetIntensity);
 	}
+	calibrator.setAccurateMode(this->CheckBox_Accurate->Checked);
 	//==========================================================================
 
 	//==========================================================================
@@ -185,8 +186,8 @@ void __fastcall TCCTLUTForm::Button_MeaRunClick(TObject * Sender)
 	    // avoid HOOK NB
 	    //==========================================================================
 	    bptr < PanelRegulator > panelRegulator;
+	    bptr < TCONControl > tconctrl = MainForm->getTCONControl();
 	    if (avoidHookNB) {
-		bptr < TCONControl > tconctrl = MainForm->getTCONControl();
 		if (null != tconctrl) {
 		    //開始量測之前先更改面板原始特性
 		    int maxZDGCode = MeasureTool::getMaxZDGCode(MainForm->mm, bitDepth);
@@ -202,6 +203,7 @@ void __fastcall TCCTLUTForm::Button_MeaRunClick(TObject * Sender)
 		}
 	    }
 	    //==========================================================================
+	    calibrator.setTCONControl(tconctrl);
 	    calibrator.setNativeWhiteAnalyzer(nativeWhiteAnalyzer);
 	    RGB_vector_ptr dglut = calibrator.getCCTDGLut(getMeasureCondition());
 	    nativeWhiteAnalyzer = calibrator.getNativeWhiteAnalyzer();

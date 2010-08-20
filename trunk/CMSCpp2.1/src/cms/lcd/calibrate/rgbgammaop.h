@@ -28,8 +28,7 @@ namespace cms {
 	      protected:
 		 RGBGamma_ptr getRendering(RGBGamma_ptr source);
 	      public:
-		 BIntensityGainOp(double gain, int start,
-				  bptr < BitDepthProcessor > bitDepth);
+		 BIntensityGainOp(double gain, int start, bptr < BitDepthProcessor > bitDepth);
 	    };
 	    class P1P2GammaOp:public RGBGammaOp {
 	      private:
@@ -55,13 +54,11 @@ namespace cms {
 		 bptr < ComponentLUT > componentLUT;
 	      protected:
 		 RGBGamma_ptr getRendering(RGBGamma_ptr source);
-		double getBCode(double rRatio, double gRatio,
-				double GCode);
+		double getBCode(double rRatio, double gRatio, double GCode);
 		double getRCode(double rRatio, double GCode, double BCode);
 	      public:
 		 NewGammaOp(int p1, int p2, double gammaShift,
-			    RGB_vector_ptr dglut,
-			    bptr < ComponentLUT > componentLUT);
+			    RGB_vector_ptr dglut, bptr < ComponentLUT > componentLUT);
 	    };
 	};
     };

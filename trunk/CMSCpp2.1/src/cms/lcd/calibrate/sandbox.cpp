@@ -114,8 +114,10 @@ namespace cms {
 		    return produceDGLutMulti(targetXYZVector, componentVector);
 		} else {
 		    if (smoothMode) {
+			//target white產生的結果
 			RGB_vector_ptr result1 = produceDGLut(targetXYZVector, componentVector,
 							      analyzer);
+			//native white產生的結果
 			RGB_vector_ptr result2;
 			if (componentVector2 != null) {
 			    result2 = produceDGLut(targetXYZVector, componentVector2, analyzer2);
@@ -123,6 +125,7 @@ namespace cms {
 			} else {
 			    result2 = produceDGLut(targetXYZVector, componentVector, analyzer2);
 			}
+			//將兩個結果銜接起來
 			return smooth(result1, result2, bitDepth, brightTurn);
 		    } else {
 			return produceDGLut(targetXYZVector, componentVector, analyzer);

@@ -84,11 +84,8 @@ namespace cms {
 		double bIntensityGain;
 		bool avoidFRCNoise;
 		bool useNewMethod;
+		bool accurateMode;
 		//==============================================================
-
-		 bptr < i2c::TCONControl > tconctrl;
-		 bptr < ComponentFetcher > fetcher;
-		 bptr < cms::measure::MaxMatrixIntensityAnayzer > nativeWhiteAnalyzer;
 
 		//==============================================================
 		// store
@@ -104,18 +101,36 @@ namespace cms {
 		 bptr < BitDepthProcessor > bitDepth;
 		//==============================================================
 
+		//==============================================================
 
+		//==============================================================
+		// 
+		//==============================================================
+		 bptr < i2c::TCONControl > tconctrl;
+		 bptr < ComponentFetcher > fetcher;
+		 bptr < cms::measure::MaxMatrixIntensityAnayzer > nativeWhiteAnalyzer;
+		//==============================================================
+
+		//==============================================================
+		// functions
+		//==============================================================
 		void setGammaCurve0(double_vector_ptr gammaCurve);
 		void setGammaCurve0(double_vector_ptr rgammaCurve,
 				    double_vector_ptr ggammaCurve, double_vector_ptr bgammaCurve);
-		Component_vector_ptr fetchComponentVector(bptr <
-							  MeasureCondition > measureCondition);
-		double_vector_ptr fetchLuminanceVector(bptr < MeasureCondition > measureCondition);
+		Component_vector_ptr fetchComponentVector();
+		double_vector_ptr fetchLuminanceVector();
 		void initNativeWhiteAnalyzer();
+		RGB_vector_ptr getDGLutOpResult(RGB_vector_ptr dglut, DGLutGenerator & generator);
+		RGB_vector_ptr oldMethod(DGLutGenerator & generator,
+					 const Dep::MaxValue & quantizationBit);
+		RGB_vector_ptr newMethod(DGLutGenerator & generator);
+		//==============================================================
 	      public:
 		static double_vector_ptr getGammaCurveVector(double gamma, int n, int
 							     effectiven);
-
+		//==============================================================
+		// options
+		//==============================================================
 		void setP1P2(int p1, int p2);
 		void setRBInterpolation(int under);
 		void setNonDimCorrect();
@@ -136,10 +151,22 @@ namespace cms {
 							    double gamma, bool autoParameter);
 		void setNewMethod(bool enable);
 		void setSkipInverseB(bool skip);
+		void setBTargetIntensity(double bTargetIntensity);
+		void setMultiGen(bool enable, int times);
+		void setAccurateMode(bool enable);
+		//==============================================================
 
+		//==============================================================
+		// constructor
+		//==============================================================
 		 LCDCalibrator(bptr <
 			       cms::lcd::calibrate::ComponentFetcher >
 			       fetcher, bptr < BitDepthProcessor > bitDepth);
+		//==============================================================
+
+		//==============================================================
+		// functions call from outside
+		//==============================================================
 		double_vector_ptr getGammaCurve(Component_vector_ptr componentVector);
 		RGB_vector_ptr getCCTDGLut(bptr < MeasureCondition > measureCondition);
 		RGB_vector_ptr getGammaDGLut(bptr < MeasureCondition > measureCondition);
@@ -147,18 +174,14 @@ namespace cms {
 		    storeDGLutFile(const std::string & filename, RGB_vector_ptr dglut);
 		void storeDGLutFile(RGB_vector_ptr dglut,
 				    bptr < cms::colorformat::DGLutFile > dglutFile);
-		void setBTargetIntensity(double bTargetIntensity);
-		void setMultiGen(bool enable, int times);
-	      private:
-		 RGB_vector_ptr getDGLutOpResult(RGB_vector_ptr dglut, DGLutGenerator & generator);
-		RGB_vector_ptr oldMethod(DGLutGenerator & generator,
-					 const Dep::MaxValue & quantizationBit);
-		RGB_vector_ptr newMethod(DGLutGenerator & generator);
-	      public:
 		 bptr < cms::measure::MaxMatrixIntensityAnayzer > getNativeWhiteAnalyzer();
 		void setNativeWhiteAnalyzer(bptr <
 					    cms::measure::MaxMatrixIntensityAnayzer > analyzer);
 		void setTCONControl(bptr < i2c::TCONControl > tconctrl);
+		//==============================================================
+
+
+
 	    };
 	};
     };
