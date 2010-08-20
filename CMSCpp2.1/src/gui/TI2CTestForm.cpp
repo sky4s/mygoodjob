@@ -256,13 +256,14 @@ void __fastcall TI2CTestForm::CheckBox_DGTestClick(TObject * Sender)
 {
     using namespace cms::util;
     bool test = this->CheckBox_DGTest->Checked;
+    CheckBox_DG->Checked = test;
     if (test) {
 	control->setDG(false);
 	RGB_vector_ptr rgbVector = RGBVector::getLinearRGBVector(bitDepth->getLevelInTCon());
 	rgbVector = RGBVector::reverse(rgbVector);
 	control->setDGLut(rgbVector);
     }
-    CheckBox_DG->Checked = test;
+
 }
 
 //---------------------------------------------------------------------------

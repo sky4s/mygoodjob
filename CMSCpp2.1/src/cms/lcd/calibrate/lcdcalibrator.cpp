@@ -159,13 +159,12 @@ namespace cms {
 		avoidFRCNoise = false;
 		autoKeepMaxLumiParameter = false;
 		multiGen = false;
+		accurateMode = false;
 	    };
 
-	    Component_vector_ptr LCDCalibrator::
-		fetchComponentVector(bptr < MeasureCondition > measureCondition) {
-		this->measureCondition = measureCondition;
+	    Component_vector_ptr LCDCalibrator::fetchComponentVector() {
 		//量測start->end得到的coponent/Y
-		componentVector = fetcher->fetchComponent(measureCondition);
+		Component_vector_ptr componentVector = fetcher->fetchComponent(measureCondition);
 		RGB_vector_ptr rgbMeasureCode = measureCondition->getRGBMeasureCode();
 
 		if (componentVector == null || rgbMeasureCode->size() != componentVector->size()) {
@@ -176,9 +175,7 @@ namespace cms {
 		}
 	    };
 
-	    double_vector_ptr LCDCalibrator::
-		fetchLuminanceVector(bptr < MeasureCondition > measureCondition) {
-		this->measureCondition = measureCondition;
+	    double_vector_ptr LCDCalibrator::fetchLuminanceVector() {
 		//量測start->end得到的coponent/Y
 		luminanceVector = fetcher->fetchLuminance(measureCondition);
 
@@ -284,7 +281,21 @@ namespace cms {
 		    throw new IllegalStateException("null == gammaCurve");
 		}
 
-		Component_vector_ptr componentVector = fetchComponentVector(measureCondition);
+		bool doAccurate = true == accurateMode && null != tconctrl;
+		bptr < PanelRegulator > panelRegulator;
+		if (doAccurate) {
+		    bptr < cms::measure::IntensityAnalyzerIF > analyzer = fetcher->getAnalyzer();
+		    RGB_ptr rgb = analyzer->getReferenceRGB();
+		    panelRegulator = bptr < PanelRegulator >
+			(new PanelRegulator(bitDepth, tconctrl, (int) rgb->R, (int) rgb->G,
+					    (int) rgb->B));
+		    panelRegulator->setEnable(true);
+		}
+
+		Component_vector_ptr componentVector = fetchComponentVector();
+		if (doAccurate) {
+		    panelRegulator->setEnable(false);
+		}
 		if (componentVector == null) {
 		    //null代表量測被中斷
 		    return RGB_vector_ptr((RGB_vector *) null);
@@ -308,6 +319,9 @@ namespace cms {
 		    dglut = oldMethod(generator, quantizationBit);
 		}
 
+		if (doAccurate) {
+		    dglut = panelRegulator->remapping(dglut);
+		}
 		//==============================================================
 		// DG Code Op block
 		//==============================================================
@@ -342,33 +356,36 @@ namespace cms {
 		//==========================================================
 		// 新方法
 		//==========================================================
-
-
 		bptr < AdvancedDGLutGenerator > advgenerator;
-		//藉由傳統generator產生luminance gamma curve
 		double_vector_ptr luminanceGammaCurve;
 
 		if (keepMaxLuminance == KeepMaxLuminance::NativeWhiteAdvanced) {
 		    bptr < PanelRegulator > panelRegulator;
+		    Component_vector_ptr componentVector2;
+		    bool doAccurate = true == accurateMode && true == skipInverseB
+			&& null != tconctrl;
 		    if (null == nativeWhiteAnalyzer) {
 			initNativeWhiteAnalyzer();
 
-			if (true == skipInverseB && null != tconctrl) {
+			if (doAccurate) {
 			    //若要skipInverseB, 就應該調整面板特性重新量測
 			    int max = bitDepth->getMaxDigitalCount();
 			    panelRegulator = bptr < PanelRegulator >
 				(new PanelRegulator(bitDepth, tconctrl, max, max, maxZDGCode));
+			    panelRegulator->setEnable(true);
+			    componentVector2 = fetchComponentVector();
+			    panelRegulator->setEnable(false);
 			}
 		    }
 
 		    brightgammaParameter = keepMaxLumiGamma;
 		    advgenerator = bptr < AdvancedDGLutGenerator >
-			(new
-			 AdvancedDGLutGenerator(componentVector, fetcher,
-						fetcher->getAnalyzer(),
-						nativeWhiteAnalyzer, bitDepth));
-		    //advgenerator->setComponentVector2();
-
+			(new AdvancedDGLutGenerator(componentVector, fetcher,
+						    fetcher->getAnalyzer(),
+						    nativeWhiteAnalyzer, bitDepth));
+		    if (doAccurate) {
+			advgenerator->setComponentVector2(componentVector2, panelRegulator);
+		    }
 		    //==============================================================================
 		    // luminanceGammaCurve的計算
 		    //==============================================================================
@@ -377,6 +394,7 @@ namespace cms {
 			(true == skipInverseB) ?
 			nativeWhiteAnalyzer->getReferenceColor()->Y : (*componentVector)[0]->XYZ->Y;
 		    double minLuminance = (*componentVector)[componentVector->size() - 1]->XYZ->Y;
+		    //藉由傳統generator產生luminance gamma curve
 		    luminanceGammaCurve =
 			generator.getLuminanceGammaCurve(gammaCurve, maxLuminance, minLuminance);
 		    //==============================================================================
@@ -426,8 +444,12 @@ namespace cms {
 		    dglut = advgenerator->produce(targetXYZVector);
 
 		    if (autoKeepMaxLumiParameter) {
+			//檢查的時候, 還是需要將整個流程跑完才做檢查.
+			//所以才需要呼叫getDGLutOpResult跟changeMaxValue
+			//但是回傳的時候要回傳尚未處裡的結果, 不該把檢查用的回傳
 			RGB_vector_ptr checkResult = RGBVector::deepClone(dglut);
 			checkResult = getDGLutOpResult(checkResult, generator);
+			//要切到FRC的bit下檢查才是正確的, 而非LUT的bit
 			RGBVector::changeMaxValue(checkResult, bitDepth->getFRCAbilityBit());
 			//檢查
 			if (RGBVector::isAscend(checkResult, 50, bitDepth->getMaxDigitalCount())) {
@@ -534,7 +556,7 @@ namespace cms {
 		    dglut = RGB_vector_ptr((RGB_vector *) null);
 		    return dglut;
 		} else {
-		    double_vector_ptr luminanceVector = fetchLuminanceVector(measureCondition);
+		    double_vector_ptr luminanceVector = fetchLuminanceVector();
 		    STORE_DOUBLE_VECTOR("o_fetch.xls", luminanceVector);
 
 		    if (luminanceVector == null) {
@@ -662,6 +684,9 @@ namespace cms {
 	    };
 	    void LCDCalibrator::setTCONControl(bptr < i2c::TCONControl > tconctrl) {
 		this->tconctrl = tconctrl;
+	    };
+	    void LCDCalibrator::setAccurateMode(bool enable) {
+		this->accurateMode = enable;
 	    };
 	};
     };
