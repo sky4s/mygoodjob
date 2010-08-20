@@ -27,24 +27,29 @@ namespace cms {
 		// 校正參數
 		//==============================================================
 		 Correct correct;
+		//==============================================================
 		//dim
+		//==============================================================
 		int p1, p2;
 		int under;
 		double dimGamma;
 		bool averageDimDG;
+		//==============================================================
 
-		double bIntensityGain;
-		bool avoidFRCNoise;
-
+		//==============================================================
 		//bmax
+		//==============================================================
 		bool bMax;
 		bool bMax2;
 		int bMax2Begin;
 		double bMax2Gamma;
 		bool skipInverseB;
 		int maxZDGCode;
+		//==============================================================
 
+		//==============================================================
 		//gamma
+		//==============================================================
 		bool rgbIndepGamma;
 		double gamma, rgamma, ggamma, bgamma;
 		bool useGammaCurve;
@@ -54,30 +59,50 @@ namespace cms {
 		double_vector_ptr bgammaCurve;
 		bool gByPass;
 		bool originalGamma;
+		//==============================================================
 
-		bool useNewMethod;
-
-		 bptr < MeasureCondition > measureCondition;
-		 bptr < BitDepthProcessor > bitDepth;
-
+		//==============================================================
 		// max lumi
+		//==============================================================
 		KeepMaxLuminance keepMaxLuminance;
 		int keepMaxLumiOver;
 		double keepMaxLumiGamma;
 		bool autoKeepMaxLumiParameter;
-		double bTargetIntensity;
+		//==============================================================
 
+		//==============================================================
 		//multi
+		//==============================================================
 		bool multiGen;
 		int multiGenTimes;
 		//==============================================================
+
+		//==============================================================
+		// others
+		//==============================================================
+		double bTargetIntensity;
+		double bIntensityGain;
+		bool avoidFRCNoise;
+		bool useNewMethod;
+		//==============================================================
+
+		 bptr < i2c::TCONControl > tconctrl;
 		 bptr < ComponentFetcher > fetcher;
+		 bptr < cms::measure::MaxMatrixIntensityAnayzer > nativeWhiteAnalyzer;
+
+		//==============================================================
+		// store
+		//==============================================================
 		RGB_vector_ptr dglut;
 		Component_vector_ptr componentVector;
 		double_vector_ptr luminanceVector;
 		RGBGamma_ptr finalRGBGamma;
 		RGBGamma_ptr initialRGBGamma;
 		XYZ_vector_ptr targetXYZVector;
+
+		 bptr < MeasureCondition > measureCondition;
+		 bptr < BitDepthProcessor > bitDepth;
+		//==============================================================
 
 
 		void setGammaCurve0(double_vector_ptr gammaCurve);
@@ -126,7 +151,6 @@ namespace cms {
 		void setMultiGen(bool enable, int times);
 	      private:
 		 RGB_vector_ptr getDGLutOpResult(RGB_vector_ptr dglut, DGLutGenerator & generator);
-		 bptr < cms::measure::MaxMatrixIntensityAnayzer > nativeWhiteAnalyzer;
 		RGB_vector_ptr oldMethod(DGLutGenerator & generator,
 					 const Dep::MaxValue & quantizationBit);
 		RGB_vector_ptr newMethod(DGLutGenerator & generator);
@@ -134,9 +158,8 @@ namespace cms {
 		 bptr < cms::measure::MaxMatrixIntensityAnayzer > getNativeWhiteAnalyzer();
 		void setNativeWhiteAnalyzer(bptr <
 					    cms::measure::MaxMatrixIntensityAnayzer > analyzer);
+		void setTCONControl(bptr < i2c::TCONControl > tconctrl);
 	    };
-
-
 	};
     };
 };

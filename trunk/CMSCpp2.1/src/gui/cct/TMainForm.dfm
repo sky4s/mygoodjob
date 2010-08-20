@@ -3,7 +3,7 @@ object MainForm: TMainForm
   Top = 344
   Width = 938
   Height = 425
-  Caption = 'property'
+  Caption = 'CCT v3 Adjustment'
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -1221,7 +1221,7 @@ object MainForm: TMainForm
             Left = 121
             Top = 17
             Width = 40
-            Height = 24
+            Height = 21
             ImeName = #26085#25991#36664#20837#31995#32113' (MS-IME2002)'
             TabOrder = 2
             Text = '7C'
@@ -1230,7 +1230,7 @@ object MainForm: TMainForm
             Left = 121
             Top = 49
             Width = 40
-            Height = 24
+            Height = 21
             ImeName = #26085#25991#36664#20837#31995#32113' (MS-IME2002)'
             TabOrder = 3
             Text = '7C'
@@ -1239,7 +1239,7 @@ object MainForm: TMainForm
             Left = 169
             Top = 49
             Width = 40
-            Height = 24
+            Height = 21
             ImeName = #26085#25991#36664#20837#31995#32113' (MS-IME2002)'
             TabOrder = 4
             Text = '7E'
@@ -1312,7 +1312,7 @@ object MainForm: TMainForm
               Left = 64
               Top = 16
               Width = 81
-              Height = 24
+              Height = 21
               ImeName = #26085#25991#36664#20837#31995#32113' (MS-IME2002)'
               TabOrder = 0
               Text = '29'
@@ -1321,7 +1321,7 @@ object MainForm: TMainForm
               Left = 64
               Top = 48
               Width = 81
-              Height = 24
+              Height = 21
               ImeName = #26085#25991#36664#20837#31995#32113' (MS-IME2002)'
               TabOrder = 1
               Text = '0'
@@ -1331,7 +1331,7 @@ object MainForm: TMainForm
             Left = 73
             Top = 105
             Width = 80
-            Height = 24
+            Height = 21
             ImeName = #26085#25991#36664#20837#31995#32113' (MS-IME2002)'
             TabOrder = 1
             Text = '154'
@@ -1396,7 +1396,7 @@ object MainForm: TMainForm
             Left = 96
             Top = 105
             Width = 65
-            Height = 24
+            Height = 21
             ImeName = #26085#25991#36664#20837#31995#32113' (MS-IME2002)'
             TabOrder = 0
             Text = '302'
@@ -1426,7 +1426,7 @@ object MainForm: TMainForm
               Left = 64
               Top = 16
               Width = 81
-              Height = 24
+              Height = 21
               ImeName = #26085#25991#36664#20837#31995#32113' (MS-IME2002)'
               TabOrder = 0
               Text = '28'
@@ -1435,7 +1435,7 @@ object MainForm: TMainForm
               Left = 64
               Top = 48
               Width = 81
-              Height = 24
+              Height = 21
               ImeName = #26085#25991#36664#20837#31995#32113' (MS-IME2002)'
               TabOrder = 1
               Text = '0'
@@ -1603,7 +1603,7 @@ object MainForm: TMainForm
           Left = 41
           Top = 169
           Width = 64
-          Height = 24
+          Height = 21
           Color = cl3DLight
           Enabled = False
           ImeName = #26085#25991#36664#20837#31995#32113' (MS-IME2002)'

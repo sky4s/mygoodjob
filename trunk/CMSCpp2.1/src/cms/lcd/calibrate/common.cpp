@@ -136,6 +136,14 @@ namespace cms {
 	    bitDepth(bitDepth), tconctrl(tconctrl), rgain(rgain), ggain(ggain), bgain(bgain) {
 
 	    };
+	    PanelRegulator::PanelRegulator(bptr < cms::lcd::calibrate::BitDepthProcessor > bitDepth,
+					   bptr < i2c::TCONControl > tconctrl, int maxR, int maxG,
+					   int maxB):bitDepth(bitDepth), tconctrl(tconctrl) {
+		int max = bitDepth->getMaxDigitalCount();
+		rgain = ((double) maxR) / max;
+		ggain = ((double) maxG) / max;
+		bgain = ((double) maxB) / max;
+	    };
 	    void PanelRegulator::setEnable(bool enable) {
 		if (true == enable) {
 		    mappingRGBVector = RGBVector::getLinearRGBVector(bitDepth, rgain, ggain, bgain);

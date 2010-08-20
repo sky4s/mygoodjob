@@ -97,25 +97,6 @@ namespace cms {
 	       3.再拿該組偽Raw Data產生DG Lut
 	       4.若精準度要更高,就重複做到滿意為止
 	     */
-	    /*RGB_vector_ptr AdvancedDGLutGenerator::
-	       produce(XYZ_ptr targetWhite,
-	       double_vector_ptr luminanceGammaCurve, int dimTurn,
-	       int brightTurn, double dimGamma, double brightGamma) {
-	       int width = bitDepth->getEffectiveLevel() - brightTurn;
-	       return produce(targetWhite, luminanceGammaCurve, dimTurn, brightTurn, dimGamma,
-	       brightGamma, width);
-	       };
-
-	       RGB_vector_ptr AdvancedDGLutGenerator::
-	       produce(XYZ_ptr targetWhite,
-	       double_vector_ptr luminanceGammaCurve, int dimTurn,
-	       int brightTurn, double dimGamma, double brightGamma, int brightWidth) {
-	       targetXYZVector =
-	       getTargetXYZVector(targetWhite, luminanceGammaCurve, dimTurn, brightTurn,
-	       dimGamma, brightGamma, brightWidth);
-	       return produce(targetXYZVector);
-	       } */
-
 	    RGB_vector_ptr AdvancedDGLutGenerator::produce(XYZ_vector_ptr targetXYZVector) {
 		STORE_XYZXY_VECTOE("target.xls", targetXYZVector);
 		//==============================================================
@@ -138,10 +119,7 @@ namespace cms {
 			RGB_vector_ptr result2;
 			if (componentVector2 != null) {
 			    result2 = produceDGLut(targetXYZVector, componentVector2, analyzer2);
-			    foreach(RGB_ptr rgb, *result2) {
-				rgb->B *= bgain;
-				rgb->B = (int) rgb->B;
-			    }
+			    result2 = panelRegulator->remapping(result2);
 			} else {
 			    result2 = produceDGLut(targetXYZVector, componentVector, analyzer2);
 			}
@@ -187,12 +165,6 @@ namespace cms {
 		RGB_vector_ptr initRGBVector = produceDGLut(targetXYZVector, componentVector,
 							    analyzer);
 
-		//==============================================================
-		//primary color只能用target white~
-		/*XYZ_ptr rXYZ = analyzer->getPrimaryColor(Channel::R)->toXYZ();
-		   XYZ_ptr gXYZ = analyzer->getPrimaryColor(Channel::G)->toXYZ();
-		   XYZ_ptr bXYZ = analyzer->getPrimaryColor(Channel::B)->toXYZ(); */
-
 		/*
 		   1. RGB不用換, 恆定255
 		   2. RGB都採用上一次的DG Code
@@ -212,29 +184,6 @@ namespace cms {
 			fetcher->fetchComponent(measureCondition);
 
 		    result = produceDGLut0(targetXYZVector, analyzer, componentVectorPrime);
-		    /*for (int x = size - 1; x != -1; x--) {
-		       XYZ_ptr targetXYZ = (*targetXYZVector)[x];
-
-		       bptr < MaxMatrixIntensityAnayzer > ma(new MaxMatrixIntensityAnayzer());
-		       ma->setupComponent(Channel::R, rXYZ);
-		       ma->setupComponent(Channel::G, gXYZ);
-		       ma->setupComponent(Channel::B, bXYZ);
-		       ma->setupComponent(Channel::W, targetXYZ);
-		       ma->enter();
-
-		       Component_vector_ptr newcomponentVector =
-		       fetchNewComponent(ma, componentVectorPrime);
-		       DGLutGenerator lutgen(newcomponentVector);
-		       //B採100嗎?
-		       if (bTargetIntensity == -1) {
-		       bTargetIntensity =
-		       useMaxTargetBIntensity ? lutgen.getMaxBIntensity() : 100;
-		       };
-		       RGB_ptr rgb = lutgen.getDGCode(100, 100,
-		       bTargetIntensity);
-		       (*result)[x] = rgb;
-		       } */
-
 		    STORE_RGBVECTOR("MultiGen_" + _toString(t + 1) + ".xls", result);
 		}
 
@@ -270,7 +219,9 @@ namespace cms {
 			fetchNewComponent(ma, componentVector);
 
 #ifdef DEBUG_CCTLUT_NEWMETHOD
-		    //STORE_COMPONENT(_toString(x) + ".xls", newcomponentVector);
+#ifdef DEBUG_CCTLUT_NEWMETHOD_STEP
+		    STORE_COMPONENT(_toString(x) + ".xls", newcomponentVector);
+#endif
 		    //把第一個存起來, 第一個往往是最大的
 		    RGB_ptr grayLevel(new RGBColor(x, x, x));
 		    Component_ptr c(new Component(grayLevel,
@@ -296,53 +247,8 @@ namespace cms {
 		produceDGLut(XYZ_vector_ptr targetXYZVector,
 			     Component_vector_ptr componentVector,
 			     bptr < cms::measure::IntensityAnalyzerIF > analyzer) {
-		//==============================================================
-		/*int size = targetXYZVector->size();
-		   RGB_vector_ptr result(new RGB_vector(size)); */
 
-		//primary color只能用target white~
-		/*XYZ_ptr rXYZ = analyzer->getPrimaryColor(Channel::R)->toXYZ();
-		   XYZ_ptr gXYZ = analyzer->getPrimaryColor(Channel::G)->toXYZ();
-		   XYZ_ptr bXYZ = analyzer->getPrimaryColor(Channel::B)->toXYZ(); */
 		return produceDGLut0(targetXYZVector, analyzer, componentVector);
-		/*
-		   #ifdef DEBUG_CCTLUT_NEWMETHOD
-		   Component_vector_ptr maxComponentVector(new Component_vector());
-		   #endif
-		   for (int x = size - 1; x != -1; x--) {
-		   XYZ_ptr targetXYZ = (*targetXYZVector)[x];
-
-		   bptr < MaxMatrixIntensityAnayzer > ma(new MaxMatrixIntensityAnayzer());
-		   ma->setupComponent(Channel::R, rXYZ);
-		   ma->setupComponent(Channel::G, gXYZ);
-		   ma->setupComponent(Channel::B, bXYZ);
-		   ma->setupComponent(Channel::W, targetXYZ);
-		   ma->enter();
-
-		   Component_vector_ptr newcomponentVector =
-		   fetchNewComponent(ma, componentVector);
-
-		   #ifdef DEBUG_CCTLUT_NEWMETHOD
-		   //STORE_COMPONENT(_toString(x) + ".xls", newcomponentVector);
-		   //把第一個存起來, 第一個往往是最大的
-		   RGB_ptr grayLevel(new RGBColor(x, x, x));
-		   Component_ptr c(new Component(grayLevel,
-		   (*newcomponentVector)[0]->intensity, targetXYZ));
-		   maxComponentVector->push_back(c);
-		   #endif
-		   DGLutGenerator lutgen(newcomponentVector);
-		   //B採100嗎?
-		   if (bTargetIntensity == -1) {
-		   bTargetIntensity = useMaxTargetBIntensity ? lutgen.getMaxBIntensity() : 100;
-		   };
-		   RGB_ptr rgb = lutgen.getDGCode(100, 100,
-		   bTargetIntensity);
-		   (*result)[x] = rgb;
-		   }
-		   #ifdef DEBUG_CCTLUT_NEWMETHOD
-		   STORE_COMPONENT("maxIntensity.xls", maxComponentVector);
-		   #endif
-		   return result; */
 	    };
 	    bool AdvancedDGLutGenerator::isAvoidHook(XYZ_ptr targetXYZ, double offsetK) {
 		XYZ_ptr XYZOffset = getXYZ(targetXYZ, offsetK);
@@ -488,14 +394,12 @@ namespace cms {
 		// bright區段
 		//==============================================================
 		int size = luminanceGammaCurve->size();
-		//int brightEnd  = bitDepth->getEffectiveLevel();
 		int brightEnd = brightTurn + brightWidth;
 		int resultSize = size - brightTurn;
 		XYZ_vector_ptr result(new XYZ_vector(resultSize));
 		double_array brightstartValues = startXYZ->getxyValues();
 		double_array brightendValues = endXYZ->getxyValues();
 		double brightbase = brightEnd - 1 - brightTurn;
-		//double brightbase = brightEnd - brightTurn;
 
 		for (int x = brightTurn; x < brightEnd; x++) {
 		    double normal = ((double) x - brightTurn) / brightbase;
@@ -613,9 +517,10 @@ namespace cms {
 		return autoBrightWidth;
 	    };
 	    void AdvancedDGLutGenerator::setComponentVector2(Component_vector_ptr componentVector2,
-							     double bgain) {
+							     bptr < PanelRegulator >
+							     panelRegulator) {
 		this->componentVector2 = componentVector2;
-		this->bgain = bgain;
+		this->panelRegulator = panelRegulator;
 	    };
 	    //==================================================================
 

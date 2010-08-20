@@ -172,7 +172,7 @@ class TMainForm:public TForm {
      bptr < cms::measure::MaxMatrixIntensityAnayzer > nativeWhiteAnalyzer;
     //==========================================================================
     //==========================================================================
-    // T-CON
+    // T-CON ctrl
     //==========================================================================
     const i2c::AddressingSize getAddressingSize();
      bptr < i2c::TCONParameter > parameter;
@@ -180,12 +180,18 @@ class TMainForm:public TForm {
     void setBitDepthEnable(bool lut10, bool lut12, bool out6, bool out8, bool out10);
     void setBitDepthChecked(int lutSelect, int outSelect);
     void setFRCAbility();
+     bptr < cms::lcd::calibrate::BitDepthProcessor > bitDepth;
+    //==========================================================================
+    // T-CON setup
     //==========================================================================
     void readTCONSetup(String filename, String section);
     void writeTCONCustomSetup();
     void readSetup();
     void writeSetup();
     void readTCONSections();
+    String tconFilename;
+    void initTCONFile();
+    //==========================================================================
   public:			// User declarations
     //==========================================================================
     // meter
@@ -212,7 +218,7 @@ class TMainForm:public TForm {
     //==========================================================================
     // T-CON
     //==========================================================================
-     bptr < cms::lcd::calibrate::BitDepthProcessor > bitDepth;
+
      bptr < i2c::TCONControl > getTCONControl();
     //==========================================================================
     __fastcall TMainForm(TComponent * Owner);

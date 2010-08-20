@@ -64,6 +64,7 @@ void __fastcall TCCTLUTForm::Button_MeaRunClick(TObject * Sender)
     using namespace cms::colorformat;
     using namespace cms::measure;
     using namespace i2c;
+    using namespace java::lang;
 
 
     if (Button_Run->Enabled) {
@@ -178,7 +179,6 @@ void __fastcall TCCTLUTForm::Button_MeaRunClick(TObject * Sender)
 	    }
 	    Util::deleteExist(filename);
 	    bptr < DGLutFile > dgLutFile(new DGLutFile(filename, Create));
-	    double bgain = -1;
 	    bool avoidHookNB = this->CheckBox_AvoidHookNB->Checked;
 
 	    //==========================================================================
@@ -186,18 +186,19 @@ void __fastcall TCCTLUTForm::Button_MeaRunClick(TObject * Sender)
 	    //==========================================================================
 	    bptr < PanelRegulator > panelRegulator;
 	    if (avoidHookNB) {
-		//開始量測之前先更改面板原始特性
-		int maxZDGCode = MeasureTool::getMaxZDGCode(MainForm->mm, bitDepth);
-		bgain = ((double) maxZDGCode) / bitDepth->getMaxDigitalCount();
-
 		bptr < TCONControl > tconctrl = MainForm->getTCONControl();
 		if (null != tconctrl) {
+		    //開始量測之前先更改面板原始特性
+		    int maxZDGCode = MeasureTool::getMaxZDGCode(MainForm->mm, bitDepth);
+		    int max = bitDepth->getMaxDigitalCount();
 		    panelRegulator =
 			bptr < PanelRegulator >
-			(new PanelRegulator(bitDepth, tconctrl, 1, 1, bgain));
+			(new PanelRegulator(bitDepth, tconctrl, max, max, maxZDGCode));
 		    panelRegulator->setEnable(true);
 		    RGB_vector_ptr vec = panelRegulator->getMappingRGBVector();
-		    STORE_RGBVECTOR("gain.xls", vec);
+		    //STORE_RGBVECTOR("gain.xls", vec);
+		} else {
+		    throw IllegalStateException("null == tconctrl");
 		}
 	    }
 	    //==========================================================================
