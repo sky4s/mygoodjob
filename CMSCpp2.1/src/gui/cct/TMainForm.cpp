@@ -78,15 +78,54 @@ void __fastcall TMainForm::FormCreate(TObject * Sender)
 	this->GroupBox_CHSetting->Visible = false;
 	//this->Button_I2CTest->Visible = true;
     }
+    initTCONFile();
     readTCONSections();
     readSetup();
     ComboBox_TCONTypeChange(this);
 }
 
+void TMainForm::initTCONFile()
+{
+    using namespace cms::util;
+    tconFilename = ExtractFilePath(Application->ExeName) + TCONFILE;
+    if (!Util::isFileExist(tconFilename.c_str())) {
+	//=========================================================================================
+	// produce tcon ini file
+	//=========================================================================================
+	bptr_ < TIniFile > ini(new TIniFile(tconFilename));
+	//=========================================================================
+	// 11306
+	//=========================================================================
+	ini->WriteInteger("11306", "AddressingSize", 5);
+
+	ini->WriteString("11306", "DigitalGammaEnableAddress", "28");
+	ini->WriteInteger("11306", "DigitalGammaEnableBit", 0);
+	ini->WriteString("11306", "DigitalGammaLUTAddress", "3C0");
+	ini->WriteInteger("11306", "DigitalGammaLUTType", 10);
+
+	ini->WriteBool("11306", "GammaTestFunc", false);
+	//=========================================================================
+	// 12306
+	//=========================================================================
+	ini->WriteInteger("12306", "AddressingSize", 5);
+
+	ini->WriteString("12306", "DigitalGammaEnableAddress", "28");
+	ini->WriteInteger("12306", "DigitalGammaEnableBit", 0);
+	ini->WriteString("12306", "DigitalGammaLUTAddress", "302");
+	ini->WriteInteger("12306", "DigitalGammaLUTType", 12);
+
+	ini->WriteBool("12306", "GammaTestFunc", true);
+	ini->WriteString("12306", "GammaTestEnableAddress", "29");
+	ini->WriteInteger("12306", "GammaTestEnableBit", 0);
+	ini->WriteString("12306", "GammaTestAddress", "154");
+	ini->WriteBool("12306", "IndepRGB", true);
+	//=========================================================================
+    }
+}
+
 void TMainForm::readTCONSections()
 {
-    bptr_ < TIniFile > ini(new TIniFile(ExtractFilePath(Application->ExeName) + TCONFILE));
-    //tconSections = bptr < TStringList > (new TStringList());
+    bptr_ < TIniFile > ini(new TIniFile(tconFilename));
     bptr_ < TStringList > tconSections(new TStringList());
     ini->ReadSections(tconSections.get());
     int size = tconSections->Count;
@@ -878,6 +917,7 @@ void __fastcall TMainForm::Button_I2CTestClick(TObject * Sender)
     I2CTestForm->RadioButton_Single->Checked = this->RadioButton_SingleTCON->Checked;
     I2CTestForm->RadioButton_Dual->Checked = this->RadioButton_DualTCON->Checked;
     I2CTestForm->CheckBox_IndepRGB->Checked = this->CheckBox_GammaTestIndepRGB->Checked;
+    I2CTestForm->setBitDepthProcessor(bitDepth);
     I2CTestForm->ShowModal();
 }
 
@@ -1005,11 +1045,14 @@ void __fastcall TMainForm::RadioButton_LPTSmallClick(TObject * Sender)
 
 void __fastcall TMainForm::ComboBox_TCONTypeChange(TObject * Sender)
 {
+    using namespace cms::util;
     String section = this->ComboBox_TCONType->Text;
     if (section != "Custom") {
 	CheckBox_GammaTest->Visible = false;
 	//若為最後一個就是custom, 不用載入
-	readTCONSetup(ExtractFilePath(Application->ExeName) + TCONFILE, section);
+	if (Util::isFileExist(tconFilename.c_str())) {
+	    readTCONSetup(tconFilename, section);
+	}
     } else {
 	readTCONSetup(ExtractFilePath(Application->ExeName) + SETUPFILE, "Custom");
 	CheckBox_GammaTest->Visible = true;

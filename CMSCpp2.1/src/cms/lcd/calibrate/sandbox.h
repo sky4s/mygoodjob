@@ -30,6 +30,7 @@ namespace cms {
 		bool stopMeasure;
 		bool multiGen;
 		int multiGenTimes, multiGenStart, multiGenEnd;
+		//multigen的時候會用到fetcher(因為要不斷重新量測)
 		 bptr < cms::lcd::calibrate::ComponentFetcher > fetcher;
 		 bptr < BitDepthProcessor > bitDepth;
 		 bptr < cms::measure::IntensityAnalyzerIF > analyzer2;
@@ -39,8 +40,9 @@ namespace cms {
 		int autoBrightTurn;
 		int autoBrightWidth;
 		int brightTurn;
+
 		Component_vector_ptr componentVector2;
-		double bgain;
+		 bptr < PanelRegulator > panelRegulator;
 	      public:
 		 AdvancedDGLutGenerator(Component_vector_ptr componentVector,
 					bptr < cms::lcd::calibrate::ComponentFetcher > fetcher,
@@ -101,7 +103,8 @@ namespace cms {
 		void setAutoParameter(bool autoParameter);
 		int getAutoBrightTurn();
 		int getAutoBrightWidth();
-		void setComponentVector2(Component_vector_ptr componentVector2, double bgain);
+		void setComponentVector2(Component_vector_ptr componentVector2,
+					 bptr < PanelRegulator > panelRegulator);
 	    };
 
 

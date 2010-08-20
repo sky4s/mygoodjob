@@ -21,7 +21,6 @@ namespace cms {
 	    using namespace cms::util;
 	    using namespace cms::lcd::calibrate;
 
-
 	    //==================================================================
 	    // LCDCalibrator
 	    //==================================================================
@@ -233,6 +232,10 @@ namespace cms {
 		return gammaCurve;
 	    };
 
+	    /*
+	       當有smooth CCT到native white需求時，就需要native white analyzer
+	       ，求得更準確的DG Lut
+	     */
 	    void LCDCalibrator::initNativeWhiteAnalyzer() {
 		//=====================================================
 		// 生出一組新的analyzer, 給smooth target的時候用
@@ -269,7 +272,6 @@ namespace cms {
 		nativeWhiteAnalyzer->setupComponent(Channel::W, rgb);
 		nativeWhiteAnalyzer->enter();
 		nativeWhiteAnalyzer->setWaitTimes(defaultWaitTimes);
-
 		//=====================================================
 	    };
 
@@ -280,12 +282,6 @@ namespace cms {
 		this->measureCondition = measureCondition;
 		if (false == originalGamma && null == gammaCurve) {
 		    throw new IllegalStateException("null == gammaCurve");
-		}
-
-		if (true == useNewMethod
-		    && keepMaxLuminance ==
-		    KeepMaxLuminance::NativeWhiteAdvanced && nativeWhiteAnalyzer == null) {
-		    initNativeWhiteAnalyzer();
 		}
 
 		Component_vector_ptr componentVector = fetchComponentVector(measureCondition);
@@ -347,18 +343,35 @@ namespace cms {
 		// 新方法
 		//==========================================================
 
+
 		bptr < AdvancedDGLutGenerator > advgenerator;
 		//藉由傳統generator產生luminance gamma curve
 		double_vector_ptr luminanceGammaCurve;
 
 		if (keepMaxLuminance == KeepMaxLuminance::NativeWhiteAdvanced) {
-		    brightgammaParameter = keepMaxLumiGamma;
+		    bptr < PanelRegulator > panelRegulator;
+		    if (null == nativeWhiteAnalyzer) {
+			initNativeWhiteAnalyzer();
 
+			if (true == skipInverseB && null != tconctrl) {
+			    //若要skipInverseB, 就應該調整面板特性重新量測
+			    int max = bitDepth->getMaxDigitalCount();
+			    panelRegulator = bptr < PanelRegulator >
+				(new PanelRegulator(bitDepth, tconctrl, max, max, maxZDGCode));
+			}
+		    }
+
+		    brightgammaParameter = keepMaxLumiGamma;
 		    advgenerator = bptr < AdvancedDGLutGenerator >
 			(new
 			 AdvancedDGLutGenerator(componentVector, fetcher,
 						fetcher->getAnalyzer(),
 						nativeWhiteAnalyzer, bitDepth));
+		    //advgenerator->setComponentVector2();
+
+		    //==============================================================================
+		    // luminanceGammaCurve的計算
+		    //==============================================================================
 		    // max luminance的採用還是很有爭議
 		    double maxLuminance =
 			(true == skipInverseB) ?
@@ -366,6 +379,7 @@ namespace cms {
 		    double minLuminance = (*componentVector)[componentVector->size() - 1]->XYZ->Y;
 		    luminanceGammaCurve =
 			generator.getLuminanceGammaCurve(gammaCurve, maxLuminance, minLuminance);
+		    //==============================================================================
 		} else {
 		    advgenerator =
 			bptr < AdvancedDGLutGenerator >
@@ -417,7 +431,7 @@ namespace cms {
 			RGBVector::changeMaxValue(checkResult, bitDepth->getFRCAbilityBit());
 			//檢查
 			if (RGBVector::isAscend(checkResult, 50, bitDepth->getMaxDigitalCount())) {
-			    STORE_RGBVECTOR("checkResult.xls", checkResult);
+			    //STORE_RGBVECTOR("checkResult.xls", checkResult);
 			    break;
 			}
 		    }
@@ -645,7 +659,10 @@ namespace cms {
 						       cms::measure::
 						       MaxMatrixIntensityAnayzer > analyzer) {
 		this->nativeWhiteAnalyzer = analyzer;
-	    }
+	    };
+	    void LCDCalibrator::setTCONControl(bptr < i2c::TCONControl > tconctrl) {
+		this->tconctrl = tconctrl;
+	    };
 	};
     };
 };

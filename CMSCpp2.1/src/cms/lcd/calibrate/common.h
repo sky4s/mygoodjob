@@ -69,6 +69,16 @@ namespace cms {
 						 Channel & channel, const Dep::MaxValue & maxValue);
 	    };
 
+	    /*
+	       PanelRegulator可用來改變面板特性
+	       主要的用意在於，把面板的白點修改為目標白點，才能使產生的DG Lut的白點剛好為目標白點
+
+	       正確使用流程為
+	       1. constructor具備必要的資訊
+	       2. setEnable(true)改變面板特性
+	       3. remapping將得到的DG Lut對應回正確的DG Code
+	       4. 視需要setEnable(false)恢復面板特性
+	     */
 	    class PanelRegulator {
 	      private:
 		bptr < cms::lcd::calibrate::BitDepthProcessor > bitDepth;
@@ -79,6 +89,8 @@ namespace cms {
 		 PanelRegulator(bptr < cms::lcd::calibrate::BitDepthProcessor > bitDepth,
 				bptr < i2c::TCONControl > tconctrl, double rgain, double ggain,
 				double bgain);
+		 PanelRegulator(bptr < cms::lcd::calibrate::BitDepthProcessor > bitDepth,
+				bptr < i2c::TCONControl > tconctrl, int maxR, int maxG, int maxB);
 		void setEnable(bool enable);
 		RGB_vector_ptr remapping(RGB_vector_ptr dglut);
 		RGB_vector_ptr getMappingRGBVector();
