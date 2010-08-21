@@ -274,6 +274,8 @@ namespace cms {
 
 	    /*
 	       CCT + Gamma
+               不管PanelRegulator要怎麼用, 都是從LCDCalibrator量好必要的資訊, 再傳到AdvancedDGLutGenerator去
+               因為需要將兩種結果做smooth(target和native), 所以必須將remapping放在AdvancedDGLutGenerator內
 	     */
 	    RGB_vector_ptr LCDCalibrator::getCCTDGLut(bptr < MeasureCondition > measureCondition) {
 		this->measureCondition = measureCondition;
