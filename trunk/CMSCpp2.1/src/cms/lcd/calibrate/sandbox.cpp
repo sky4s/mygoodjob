@@ -116,23 +116,30 @@ namespace cms {
 		    if (smoothMode) {
 			//target white產生的結果
 			RGB_vector_ptr result1 = produceDGLut(targetXYZVector, componentVector,
-							      analyzer);
+							      analyzer, panelRegulator1);
 			//native white產生的結果
 			RGB_vector_ptr result2;
 			if (componentVector2 != null) {
-			    result2 = produceDGLut(targetXYZVector, componentVector2, analyzer2);
-			    result2 = panelRegulator->remapping(result2);
+			    result2 =
+				produceDGLut(targetXYZVector, componentVector2, analyzer2,
+					     panelRegulator2);
 			} else {
-			    result2 = produceDGLut(targetXYZVector, componentVector, analyzer2);
+			    result2 =
+				produceDGLut(targetXYZVector, componentVector, analyzer2,
+					     panelRegulator1);
 			}
+
 			//將兩個結果銜接起來
 			return smooth(result1, result2, bitDepth, brightTurn);
 		    } else {
-			return produceDGLut(targetXYZVector, componentVector, analyzer);
+			RGB_vector_ptr result =
+			    produceDGLut(targetXYZVector, componentVector, analyzer,
+					 panelRegulator1);
+			return result;
 		    }
-
 		}
 	    }
+
 	    RGB_vector_ptr AdvancedDGLutGenerator::
 		smooth(RGB_vector_ptr result1, RGB_vector_ptr result2,
 		       bptr < BitDepthProcessor > bitDepth, int brightTurn) {
@@ -165,15 +172,15 @@ namespace cms {
 	    RGB_vector_ptr AdvancedDGLutGenerator::
 		produceDGLutMulti(XYZ_vector_ptr targetXYZVector,
 				  Component_vector_ptr componentVector) {
+		//先產生初步結果
 		RGB_vector_ptr initRGBVector = produceDGLut(targetXYZVector, componentVector,
-							    analyzer);
+							    analyzer, panelRegulator1);
 
 		/*
 		   1. RGB不用換, 恆定255
 		   2. RGB都採用上一次的DG Code
 		   若是如此, 一定要求出該GL的DG才可以繼續下一個
 		 */
-		//int size = targetXYZVector->size();
 		RGB_vector_ptr result = initRGBVector;
 		if (null == fetcher) {
 		    throw new IllegalStateException("null == fetcher");
@@ -186,17 +193,23 @@ namespace cms {
 		    Component_vector_ptr componentVectorPrime =
 			fetcher->fetchComponent(measureCondition);
 
-		    result = produceDGLut0(targetXYZVector, analyzer, componentVectorPrime);
+		    result =
+			produceDGLut(targetXYZVector, componentVectorPrime, analyzer,
+				     bptr < PanelRegulator > ((PanelRegulator *) null));
 		    STORE_RGBVECTOR("MultiGen_" + _toString(t + 1) + ".xls", result);
 		}
 
 		return result;
 	    };
 
+
+
 	    RGB_vector_ptr AdvancedDGLutGenerator::
-		produceDGLut0(XYZ_vector_ptr targetXYZVector,
-			      bptr < cms::measure::IntensityAnalyzerIF > analyzer,
-			      Component_vector_ptr componentVector) {
+		produceDGLut(XYZ_vector_ptr targetXYZVector,
+			     Component_vector_ptr componentVector,
+			     bptr < cms::measure::IntensityAnalyzerIF > analyzer,
+			     bptr < PanelRegulator > panelRegulator) {
+
 		int size = targetXYZVector->size();
 		RGB_vector_ptr result(new RGB_vector(size));
 		//==============================================================
@@ -243,15 +256,10 @@ namespace cms {
 #ifdef DEBUG_CCTLUT_NEWMETHOD
 		STORE_COMPONENT("maxIntensity.xls", maxComponentVector);
 #endif
+		if (null != panelRegulator) {
+		    result = panelRegulator->remapping(result);
+		}
 		return result;
-	    }
-
-	    RGB_vector_ptr AdvancedDGLutGenerator::
-		produceDGLut(XYZ_vector_ptr targetXYZVector,
-			     Component_vector_ptr componentVector,
-			     bptr < cms::measure::IntensityAnalyzerIF > analyzer) {
-
-		return produceDGLut0(targetXYZVector, analyzer, componentVector);
 	    };
 	    bool AdvancedDGLutGenerator::isAvoidHook(XYZ_ptr targetXYZ, double offsetK) {
 		XYZ_ptr XYZOffset = getXYZ(targetXYZ, offsetK);
@@ -447,8 +455,8 @@ namespace cms {
 	    XYZ_vector_ptr AdvancedDGLutGenerator::getTargetXYZVector() {
 		return targetXYZVector;
 	    };
-	    XYZ_ptr AdvancedDGLutGenerator::getTargetXYZ(double v1,
-							 double v2, double v3, Domain domain) {
+	    XYZ_ptr AdvancedDGLutGenerator::getTargetXYZ(double v1, double v2, double v3,
+							 Domain domain) {
 		double_array targetValues(new double[3]);
 		targetValues[0] = v1;
 		targetValues[1] = v2;
@@ -479,8 +487,8 @@ namespace cms {
 		    Component_ptr c0 = (*componentVector)[x];
 		    Component_ptr c1 = (*componentVector)[x - 1];
 		    if (c0->intensity->B > 100
-			&& c1->intensity->B < 100
-			|| c0->intensity->B < 100 && c1->intensity->B > 100 ||
+			&& c1->intensity->B < 100 || c0->intensity->B < 100
+			&& c1->intensity->B > 100 ||
 			//剛好等於100, 應該很難
 			c0->intensity->B == 100 ||
 			//最後一個逼近100, 也視為100
@@ -521,9 +529,12 @@ namespace cms {
 	    };
 	    void AdvancedDGLutGenerator::setComponentVector2(Component_vector_ptr componentVector2,
 							     bptr < PanelRegulator >
-							     panelRegulator) {
+							     panelRegulator2) {
 		this->componentVector2 = componentVector2;
-		this->panelRegulator = panelRegulator;
+		this->panelRegulator2 = panelRegulator2;
+	    };
+	    void AdvancedDGLutGenerator::setPanelRegulator(bptr < PanelRegulator > panelRegulator) {
+		this->panelRegulator1 = panelRegulator;
 	    };
 	    //==================================================================
 

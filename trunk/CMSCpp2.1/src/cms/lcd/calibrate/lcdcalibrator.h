@@ -123,7 +123,8 @@ namespace cms {
 		RGB_vector_ptr getDGLutOpResult(RGB_vector_ptr dglut, DGLutGenerator & generator);
 		RGB_vector_ptr oldMethod(DGLutGenerator & generator,
 					 const Dep::MaxValue & quantizationBit);
-		RGB_vector_ptr newMethod(DGLutGenerator & generator);
+		RGB_vector_ptr newMethod(DGLutGenerator & generator,
+					 bptr < PanelRegulator > panelRegulato);
 		//==============================================================
 	      public:
 		static double_vector_ptr getGammaCurveVector(double gamma, int n, int
