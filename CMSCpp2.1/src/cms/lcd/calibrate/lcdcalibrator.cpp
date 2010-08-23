@@ -274,8 +274,8 @@ namespace cms {
 
 	    /*
 	       CCT + Gamma
-               不管PanelRegulator要怎麼用, 都是從LCDCalibrator量好必要的資訊, 再傳到AdvancedDGLutGenerator去
-               因為需要將兩種結果做smooth(target和native), 所以必須將remapping放在AdvancedDGLutGenerator內
+	       不管PanelRegulator要怎麼用, 都是從LCDCalibrator量好必要的資訊, 再傳到AdvancedDGLutGenerator去
+	       因為需要將兩種結果做smooth(target和native), 所以必須將remapping放在AdvancedDGLutGenerator內
 	     */
 	    RGB_vector_ptr LCDCalibrator::getCCTDGLut(bptr < MeasureCondition > measureCondition) {
 		this->measureCondition = measureCondition;
@@ -316,14 +316,15 @@ namespace cms {
 		const MaxValue & quantizationBit = bitDepth->getLutMaxValue();
 
 		if (true == useNewMethod) {
-		    dglut = newMethod(generator);
+		    dglut = newMethod(generator, panelRegulator);
 		} else {
 		    dglut = oldMethod(generator, quantizationBit);
+		    if (doAccurate) {
+			dglut = panelRegulator->remapping(dglut);
+		    }
 		}
 
-		if (doAccurate) {
-		    dglut = panelRegulator->remapping(dglut);
-		}
+
 		//==============================================================
 		// DG Code Op block
 		//==============================================================
@@ -353,7 +354,8 @@ namespace cms {
 		return result;
 	    };
 
-	    RGB_vector_ptr LCDCalibrator::newMethod(DGLutGenerator & generator) {
+	    RGB_vector_ptr LCDCalibrator::newMethod(DGLutGenerator & generator,
+						    bptr < PanelRegulator > panelRegulator) {
 		double brightgammaParameter = 1;
 		//==========================================================
 		// 新方法
@@ -362,7 +364,7 @@ namespace cms {
 		double_vector_ptr luminanceGammaCurve;
 
 		if (keepMaxLuminance == KeepMaxLuminance::NativeWhiteAdvanced) {
-		    bptr < PanelRegulator > panelRegulator;
+		    bptr < PanelRegulator > panelRegulator2;
 		    Component_vector_ptr componentVector2;
 		    bool doAccurate = true == accurateMode && true == skipInverseB
 			&& null != tconctrl;
@@ -372,11 +374,11 @@ namespace cms {
 			if (doAccurate) {
 			    //若要skipInverseB, 就應該調整面板特性重新量測
 			    int max = bitDepth->getMaxDigitalCount();
-			    panelRegulator = bptr < PanelRegulator >
+			    panelRegulator2 = bptr < PanelRegulator >
 				(new PanelRegulator(bitDepth, tconctrl, max, max, maxZDGCode));
-			    panelRegulator->setEnable(true);
+			    panelRegulator2->setEnable(true);
 			    componentVector2 = fetchComponentVector();
-			    panelRegulator->setEnable(false);
+			    panelRegulator2->setEnable(false);
 			}
 		    }
 
@@ -386,7 +388,7 @@ namespace cms {
 						    fetcher->getAnalyzer(),
 						    nativeWhiteAnalyzer, bitDepth));
 		    if (doAccurate) {
-			advgenerator->setComponentVector2(componentVector2, panelRegulator);
+			advgenerator->setComponentVector2(componentVector2, panelRegulator2);
 		    }
 		    //==============================================================================
 		    // luminanceGammaCurve的計算
@@ -433,6 +435,7 @@ namespace cms {
 		int overParameter = keepMaxLumiOver;
 		int minOverParameter = (useNewMethod
 					&& autoKeepMaxLumiParameter) ? 50 : keepMaxLumiOver;
+		advgenerator->setPanelRegulator(panelRegulator);
 
 		for (; overParameter >= minOverParameter; overParameter -= 4) {
 		    int width = bitDepth->getEffectiveLevel() - overParameter;

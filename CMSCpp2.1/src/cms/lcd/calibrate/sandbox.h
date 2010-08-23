@@ -42,7 +42,8 @@ namespace cms {
 		int brightTurn;
 
 		Component_vector_ptr componentVector2;
-		 bptr < PanelRegulator > panelRegulator;
+		 bptr < PanelRegulator > panelRegulator1;
+		 bptr < PanelRegulator > panelRegulator2;
 	      public:
 		 AdvancedDGLutGenerator(Component_vector_ptr componentVector,
 					bptr < cms::lcd::calibrate::ComponentFetcher > fetcher,
@@ -90,10 +91,9 @@ namespace cms {
 						 Component_vector_ptr componentVector);
 		RGB_vector_ptr produceDGLut(XYZ_vector_ptr targetXYZVector,
 					    Component_vector_ptr componentVector,
-					    bptr < cms::measure::IntensityAnalyzerIF > analyzer);
-		RGB_vector_ptr produceDGLut0(XYZ_vector_ptr targetXYZVector,
-					     bptr < cms::measure::IntensityAnalyzerIF > analyzer,
-					     Component_vector_ptr componentVector);
+					    bptr < cms::measure::IntensityAnalyzerIF > analyzer,
+					    bptr < PanelRegulator > panelRegulator);
+
 		bool checkTargetXYZVector(XYZ_vector_ptr targetXYZVector, int start, int end,
 					  double deltaabThreshold);
 	      public:
@@ -104,7 +104,8 @@ namespace cms {
 		int getAutoBrightTurn();
 		int getAutoBrightWidth();
 		void setComponentVector2(Component_vector_ptr componentVector2,
-					 bptr < PanelRegulator > panelRegulator);
+					 bptr < PanelRegulator > panelRegulator2);
+		void setPanelRegulator(bptr < PanelRegulator > panelRegulator);
 	    };
 
 
