@@ -19,6 +19,7 @@ namespace cms {
 	using namespace cms::lcd::calibrate;
 	using namespace Indep;
 	using namespace Dep;
+	using namespace cms::colorspace;
 	using namespace cms::util;
 	using namespace cms::measure;
 
@@ -521,7 +522,7 @@ namespace cms {
 		throw IllegalArgumentException("Unsupported Channel : " + *ch.toString());
 	    }
 	    if (null != value) {
-		xyY_ptr xyY(new CIExyY(CIExyY::getValuesFromString(value)));
+		xyY_ptr xyY(new CIExyY(ColorSpace::getValuesFromString(value)));
 		return xyY;
 	    } else {
 		return xyY_ptr((CIExyY *) null);
@@ -533,31 +534,7 @@ namespace cms {
 	xyY_ptr DGLutProperty::getNativeReferenceColor(const Dep::Channel & ch) {
 	    return getReferenceColor(Native, ch);
 	};
-	/*xyY_ptr DGLutProperty::getReferenceColor(const Channel & ch) {
-	   string_ptr value;
-	   switch (ch.chindex) {
-	   case ChannelIndex::R:
-	   value = getProperty("primary R");
-	   break;
-	   case ChannelIndex::G:
-	   value = getProperty("primary G");
-	   break;
-	   case ChannelIndex::B:
-	   value = getProperty("primary B");
-	   break;
-	   case ChannelIndex::W:
-	   value = getProperty("reference white");
-	   break;
-	   default:
-	   throw IllegalArgumentException("Unsupported Channel : " + *ch.toString());
-	   }
-	   if (null != value) {
-	   xyY_ptr xyY(new CIExyY(CIExyY::getValuesFromString(value)));
-	   return xyY;
-	   } else {
-	   return xyY_ptr((CIExyY *) null);
-	   }
-	   }; */
+
 	bptr < BitDepthProcessor > DGLutProperty::getBitDepthProcessor() {
 	    const MaxValue & in = MaxValue::valueOf(getProperty("in"));
 	    const MaxValue & lut = MaxValue::valueOf(getProperty("lut"));
