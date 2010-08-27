@@ -167,6 +167,10 @@ namespace cms {
 		RGB_ptr rgb0 = (*result)[begin];
 		RGB_ptr rgb1 = (*result)[effectiven];
 		int base = effectiven - 1;
+
+		//==============================================================
+                // smoothªº³B²z
+                //==============================================================
 		for (int x = begin + 1; x != effectiven; x++) {
 		    RGB_ptr rgb = (*result)[x];
 		    double normal = ((double) x - begin) / (base - begin);
@@ -175,6 +179,7 @@ namespace cms {
 						     normal);
 		    rgb->B = b;
 		}
+		//==============================================================
 
 
 		return result;

@@ -84,23 +84,18 @@ namespace cms {
 	};
 
 	void Util::shellExecute(const std::string & filename) {
-	    ShellExecute(null, null, filename.c_str(), null, null,
-			 SW_SHOW);
+	    ShellExecute(null, null, filename.c_str(), null, null, SW_SHOW);
 	};
-	void Util::storeXYZxyVector(const std::string & filename,
-				    XYZ_vector_ptr XYZVector) {
+	void Util::storeXYZxyVector(const std::string & filename, XYZ_vector_ptr XYZVector) {
 	    storeXYZxyVector(filename, XYZVector, "Gray Level");
 	};
 	void Util::storeXYZxyVector(const std::string & filename,
-				    XYZ_vector_ptr XYZVector,
-				    const std::string firstColumn) {
+				    XYZ_vector_ptr XYZVector, const std::string firstColumn) {
 
 	    Util::deleteExist(filename);
 	    SimpleExcelAccess excel(filename, Create,
 				    StringVector::
-				    fromCString(6, firstColumn.c_str(),
-						"X", "Y", "Z",
-						"_x", "_y"));
+				    fromCString(6, firstColumn.c_str(), "X", "Y", "Z", "_x", "_y"));
 	    int size = XYZVector->size();
 	    for (int x = 0; x != size; x++) {
 		XYZ_ptr XYZ = (*XYZVector)[x];
@@ -138,9 +133,7 @@ namespace cms {
 	    return result;
 	};
 
-	string_vector_ptr StringVector::fromString(int n,
-						   const std::string *
-						   strings) {
+	string_vector_ptr StringVector::fromString(int n, const std::string * strings) {
 	    string_vector_ptr result(new string_vector(n));
 	    for (int x = 0; x < n; x++) {
 		(*result)[x] = strings[x];
@@ -158,8 +151,7 @@ namespace cms {
 	    } va_end(num_list);
 	    return result;
 	};
-	string_vector_ptr StringVector::
-	    fromDoubleArray(double1D_ptr doubleArray) {
+	string_vector_ptr StringVector::fromDoubleArray(double1D_ptr doubleArray) {
 
 	    string_vector_ptr result(new string_vector());
 	    int size = doubleArray->dim1();
@@ -169,8 +161,7 @@ namespace cms {
 
 	    return result;
 	};
-	string_vector_ptr StringVector::
-	    fromDoubleArray(double2D_ptr doubleArray, int n) {
+	string_vector_ptr StringVector::fromDoubleArray(double2D_ptr doubleArray, int n) {
 
 	    string_vector_ptr result(new string_vector());
 	    int size = doubleArray->dim2();
@@ -180,8 +171,7 @@ namespace cms {
 	    return result;
 	};
 	void StringVector::setContent(string_vector_ptr vector,
-				      const std::string & content,
-				      int n, ...) {
+				      const std::string & content, int n, ...) {
 	    //int_array result(new int[n]);
 	    va_list num_list;
 	    va_start(num_list, n);
@@ -193,9 +183,7 @@ namespace cms {
 	    } va_end(num_list);
 	};
 	string_vector_ptr StringVector::tokenize(const std::
-						 string & content,
-						 const std::
-						 string & delim) {
+						 string & content, const std::string & delim) {
 	    string_vector_ptr result(new string_vector());
 #define TOKENIZER boost::tokenizer < boost::char_separator < char > >
 	    boost::char_separator < char >sep(delim.c_str());
@@ -238,10 +226,8 @@ namespace cms {
 	    doubleBuffered(true)
 	{
 	    if (doubleBuffered) {
-		bitmap =
-		    bptr < Graphics::TBitmap > (new Graphics::TBitmap());
-		bitmap->Canvas->Handle =
-		    CreateCompatibleDC(canvas->Handle);
+		bitmap = bptr < Graphics::TBitmap > (new Graphics::TBitmap());
+		bitmap->Canvas->Handle = CreateCompatibleDC(canvas->Handle);
 		bitmap->Width = width;
 		bitmap->Height = height;
 	    }
@@ -255,8 +241,7 @@ namespace cms {
 	};
 	void DoubleBufferedCanvas::excute() {
 	    if (doubleBuffered) {
-		BitBlt(canvas->Handle, 0, 0, width, height,
-		       bitmap->Canvas->Handle, 0, 0, SRCCOPY);
+		BitBlt(canvas->Handle, 0, 0, width, height, bitmap->Canvas->Handle, 0, 0, SRCCOPY);
 	    }
 	};
 	void DoubleBufferedCanvas::clear() {
@@ -267,6 +252,24 @@ namespace cms {
 	    }
 	};
 	//======================================================================
+
+	double SCurve::getAbsoluteInput(double normalizeInput) {
+	    return (end - start) * normalizeInput + start;
+	};
+	double SCurve::sigmoidFunction(double t) {
+	    return 1. / (1 + Math::exp(-t));
+	};
+      SCurve::SCurve(double start, double end):start(start), end(end) {
+	    startValue = sigmoidFunction(start);
+	    endValue = sigmoidFunction(end);
+	};
+	double SCurve::getValue(double normalizeInput) {
+	    double abs = getAbsoluteInput(normalizeInput);
+	    double value = sigmoidFunction(abs);
+	    return (value - startValue) / (endValue - startValue);
+	};
     };
 };
+
+;
 
