@@ -70,6 +70,10 @@ namespace cms {
 						  double_vector_ptr luminanceGammaCurve,
 						  int dimTurn, int brightTurn, double dimGamma,
 						  double brightGamma, int brightWidth);
+		XYZ_vector_ptr getTargetXYZVector(XYZ_ptr targetWhite, XYZ_ptr nativeWhite,
+						  double_vector_ptr luminanceGammaCurve,
+						  int dimTurn, int brightTurn, double dimGamma,
+						  double brightGamma, int brightWidth);
 	      private:
 
 		static XYZ_vector_ptr getDimGammaTarget(double_vector_ptr

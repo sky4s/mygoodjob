@@ -393,7 +393,6 @@ void TMainForm::setDummyMeterFile(bptr < cms::colorformat::DGLutFile > dglutFile
 	    xyY_ptr gxyY = property->getTargetReferenceColor(Channel::G);
 	    xyY_ptr bxyY = property->getTargetReferenceColor(Channel::B);
 
-
 	    matrixAnalyzer->setupComponent(Channel::W, targetwxyY->toXYZ());
 	    matrixAnalyzer->setupComponent(Channel::R, rxyY->toXYZ());
 	    matrixAnalyzer->setupComponent(Channel::G, gxyY->toXYZ());
@@ -404,6 +403,8 @@ void TMainForm::setDummyMeterFile(bptr < cms::colorformat::DGLutFile > dglutFile
 	    if (null != comment) {
 		matrixAnalyzer->setReferenceColorComment(*comment);
 	    }
+	    RGB_ptr rgb = property->getTargetReferenceRGB();
+	    matrixAnalyzer->setReferenceRGB(rgb);
 	}
 	//=====================================================================
 
@@ -580,6 +581,8 @@ void __fastcall TMainForm::RadioButton_PCClick(TObject * Sender)
     this->Panel_TCON->Visible = false;
     bitDepth->setTCONInput(false);
     MeasureWindow->setTCONControlOff();
+    control.reset();
+    Button_Connect->Enabled = true;
 }
 
 //---------------------------------------------------------------------------
@@ -595,7 +598,6 @@ void __fastcall TMainForm::Button_ConnectClick(TObject * Sender)
     unsigned char first, second;
     bool dual = false;
 
-    //bool bindepRGB = this->ComboBox_Type->ItemIndex == 1;
     if (this->RadioButton_SingleTCON->Checked) {
 	first = StrToInt("0x" + this->Edit_DeviceAddress->Text);
     } else {

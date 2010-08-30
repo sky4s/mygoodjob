@@ -85,7 +85,9 @@ namespace cms {
 	    xyY_ptr getReferenceColor(const string & prestring, const Dep::Channel & ch);
 	    xyY_ptr getTargetReferenceColor(const Dep::Channel & ch);
 	    xyY_ptr getNativeReferenceColor(const Dep::Channel & ch);
-	    //xyY_ptr getReferenceColor(const Dep::Channel & ch);
+	    RGB_ptr getReferenceRGB(const string & prestring);
+	    RGB_ptr getTargetReferenceRGB();
+	    RGB_ptr getNativeReferenceRGB();
 	     bptr < cms::lcd::calibrate::BitDepthProcessor > getBitDepthProcessor();
 	};
     };

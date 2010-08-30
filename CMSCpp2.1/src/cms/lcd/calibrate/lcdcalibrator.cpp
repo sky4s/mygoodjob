@@ -160,6 +160,7 @@ namespace cms {
 		autoKeepMaxLumiParameter = false;
 		multiGen = false;
 		accurateMode = false;
+		remapped = false;
 	    };
 
 	    Component_vector_ptr LCDCalibrator::fetchComponentVector() {
@@ -288,13 +289,16 @@ namespace cms {
 		if (doAccurate) {
 		    bptr < cms::measure::IntensityAnalyzerIF > analyzer = fetcher->getAnalyzer();
 		    RGB_ptr rgb = analyzer->getReferenceRGB();
+		    //if (null != rgb) {
 		    panelRegulator = bptr < PanelRegulator >
 			(new PanelRegulator(bitDepth, tconctrl, (int) rgb->R, (int) rgb->G,
 					    (int) rgb->B));
 		    panelRegulator->setEnable(true);
+		    remapped = true;
+		    //} 
 		}
 
-		Component_vector_ptr componentVector = fetchComponentVector();
+		this->componentVector = fetchComponentVector();
 		if (doAccurate) {
 		    panelRegulator->setEnable(false);
 		}
@@ -318,10 +322,7 @@ namespace cms {
 		if (true == useNewMethod) {
 		    dglut = newMethod(generator, panelRegulator);
 		} else {
-		    dglut = oldMethod(generator, quantizationBit);
-		    if (doAccurate) {
-			dglut = panelRegulator->remapping(dglut);
-		    }
+		    dglut = oldMethod(generator, panelRegulator, quantizationBit);
 		}
 
 
@@ -343,9 +344,11 @@ namespace cms {
 		   STORE_DOUBLE_VECTOR("b2.xls", b2); */
 		//==============================================================
 
+
 		//==============================================================
 		//調整max value, 調整到LUT真正的max value
 		//==============================================================
+		STORE_RGBVECTOR("6.9_dgcode_final.xls", result);
 		RGBVector::changeMaxValue(result, bitDepth->getLutMaxValue());
 		//==============================================================
 
@@ -366,7 +369,7 @@ namespace cms {
 		if (keepMaxLuminance == KeepMaxLuminance::NativeWhiteAdvanced) {
 		    bptr < PanelRegulator > panelRegulator2;
 		    Component_vector_ptr componentVector2;
-		    bool doAccurate = true == accurateMode && true == skipInverseB
+		    bool doAccurate = (true == accurateMode) && (true == skipInverseB)
 			&& null != tconctrl;
 		    if (null == nativeWhiteAnalyzer) {
 			initNativeWhiteAnalyzer();
@@ -378,6 +381,7 @@ namespace cms {
 				(new PanelRegulator(bitDepth, tconctrl, max, max, maxZDGCode));
 			    panelRegulator2->setEnable(true);
 			    componentVector2 = fetchComponentVector();
+			    STORE_COMPONENT("o_fetch2.xls", componentVector2);
 			    panelRegulator2->setEnable(false);
 			}
 		    }
@@ -411,9 +415,7 @@ namespace cms {
 		}
 		STORE_DOUBLE_VECTOR("1_lumigammacurve.xls", luminanceGammaCurve);
 
-		bptr < IntensityAnalyzerIF > analyzer = fetcher->getAnalyzer();
-		//analyzer若沒有設定過target color, 會使此步驟失效
-		XYZ_ptr targetWhite = analyzer->getReferenceColor()->toXYZ();
+
 
 
 		double dimgammaParameter = 3.5;
@@ -433,14 +435,25 @@ namespace cms {
 		}
 		//外部迴圈針對是否疊階來決定起始位置
 		int overParameter = keepMaxLumiOver;
+		int startCheckPos = 50;
 		int minOverParameter = (useNewMethod
-					&& autoKeepMaxLumiParameter) ? 50 : keepMaxLumiOver;
+					&& autoKeepMaxLumiParameter) ? startCheckPos :
+		    keepMaxLumiOver;
 		advgenerator->setPanelRegulator(panelRegulator);
+		int step = 4;
 
-		for (; overParameter >= minOverParameter; overParameter -= 4) {
+		bptr < IntensityAnalyzerIF > analyzer = fetcher->getAnalyzer();
+		//analyzer若沒有設定過target color, 會使此步驟失效
+		XYZ_ptr targetWhite = analyzer->getReferenceColor()->toXYZ();
+		XYZ_ptr nativeWhite = (*componentVector)[0]->XYZ;
+		if (null != nativeWhiteAnalyzer) {
+		    //nativeWhite = nativeWhiteAnalyzer->getReferenceColor()->toXYZ();
+		}
+
+		for (; overParameter >= minOverParameter; overParameter -= step) {
 		    int width = bitDepth->getEffectiveLevel() - overParameter;
 		    targetXYZVector =
-			advgenerator->getTargetXYZVector(targetWhite,
+			advgenerator->getTargetXYZVector(targetWhite, nativeWhite,
 							 luminanceGammaCurve,
 							 underParameter,
 							 overParameter,
@@ -457,20 +470,22 @@ namespace cms {
 			//要切到FRC的bit下檢查才是正確的, 而非LUT的bit
 			RGBVector::changeMaxValue(checkResult, bitDepth->getFRCAbilityBit());
 			//檢查
-			if (RGBVector::isAscend(checkResult, 50, bitDepth->getMaxDigitalCount())) {
+			if (RGBVector::
+			    isAscend(checkResult, startCheckPos, bitDepth->getMaxDigitalCount())) {
 			    //STORE_RGBVECTOR("checkResult.xls", checkResult);
 			    break;
 			}
 		    }
 		}
-		keepMaxLumiOver = autoKeepMaxLumiParameter ? overParameter + 1 : keepMaxLumiOver;
+		keepMaxLumiOver = autoKeepMaxLumiParameter ? overParameter + step : keepMaxLumiOver;
 		STORE_RGBVECTOR("3_dgcode.xls", dglut);
 		return dglut;
 		//==========================================================
 	    };
 
 	    RGB_vector_ptr LCDCalibrator::
-		oldMethod(DGLutGenerator & generator, const MaxValue & quantizationBit) {
+		oldMethod(DGLutGenerator & generator, bptr < PanelRegulator > panelRegulator,
+			  const MaxValue & quantizationBit) {
 		//==========================================================
 		// 老方法
 		//==========================================================
@@ -500,6 +515,10 @@ namespace cms {
 		//==============================================================
 		//量化
 		//MaxValue quantizationBit = bitDepth->getLutMaxValue();
+		if (null != panelRegulator) {
+		    dglut = panelRegulator->remapping(dglut);
+		    STORE_RGBVECTOR("3.1_remap.xls", dglut);
+		}
 		RGBVector::quantization(dglut, quantizationBit);
 		//==============================================================
 

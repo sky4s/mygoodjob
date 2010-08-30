@@ -309,15 +309,15 @@ namespace cms {
 	    const MaxValue & MaxValue::valueOf(string_ptr stringValue) {
 		if (*stringValue == "Int5Bit") {
 		    return Int5Bit;
-		} else if (*stringValue == "Int6Bit") {
+		} else if (*stringValue == "Int6Bit" || *stringValue == "6bit") {
 		    return Int6Bit;
 		} else if (*stringValue == "Int7Bit") {
 		    return Int7Bit;
-		} else if (*stringValue == "Int8Bit") {
+		} else if (*stringValue == "Int8Bit" || *stringValue == "8bit") {
 		    return Int8Bit;
 		} else if (*stringValue == "Int9Bit") {
 		    return Int9Bit;
-		} else if (*stringValue == "Int10Bit") {
+		} else if (*stringValue == "Int10Bit" || *stringValue == "10bit") {
 		    return Int10Bit;
 		} else if (*stringValue == "Int11Bit") {
 		    return Int11Bit;

@@ -384,7 +384,7 @@ void __fastcall TTargetWhiteForm2::FormCreate(TObject * Sender)
     bptr < WindowListener > formPtr(dynamic_cast < WindowListener * >(this));
     MeasureWindow->addWindowListener(formPtr);
     if (MainForm->newFunction) {
-	CheckBox_AvoidHookTV->Visible = true;
+	//CheckBox_AvoidHookTV->Visible = true;
     }
 #ifdef DEBUG_TARGETWHITE
     this->CheckBox_MoreAccurate->Visible = true;

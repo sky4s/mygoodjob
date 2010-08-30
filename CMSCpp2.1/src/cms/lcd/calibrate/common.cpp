@@ -158,11 +158,11 @@ namespace cms {
 		RGB_vector_ptr result = RGBVector::deepClone(dglut);
 		foreach(RGB_ptr rgb, *result) {
 		    rgb->R *= rgain;
-		    rgb->R = (int) rgb->R;
+		    //rgb->R = (int) rgb->R;
 		    rgb->G *= ggain;
-		    rgb->G = (int) rgb->G;
+		    //rgb->G = (int) rgb->G;
 		    rgb->B *= bgain;
-		    rgb->B = (int) rgb->B;
+		    //rgb->B = (int) rgb->B;
 		}
 		return result;
 	    };
