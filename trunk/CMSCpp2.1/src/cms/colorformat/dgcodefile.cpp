@@ -301,9 +301,11 @@ namespace cms {
 	const string DGLutProperty::Target = "target";
 	void
 	 DGLutProperty::store(DGLutFile & dgfile) const {
-	    //dgfile.addProperty("cct file version", "3.2");
 	    dgfile.addProperty("cct product version", "3.2");
 
+	    //==================================================================
+	    // MeasureCondition
+	    //==================================================================
 	    bptr < MeasureCondition > mc = c->measureCondition;
 	    switch (mc->type) {
 	    case MeasureCondition::Normal:{
@@ -322,8 +324,12 @@ namespace cms {
 		};
 		break;
 		//case MeasureCondition::Plain:break;
-	    }
-	    //==================================================================//low level correct//==================================================================
+	    };
+	    //==================================================================
+
+	    //==================================================================
+	    //low level correct
+	    //==================================================================
 	    string lowLevelCorrect = "low level correct";
 	    switch (c->correct) {
 	    case Correct::P1P2:
@@ -346,6 +352,9 @@ namespace cms {
 	    }
 	    //==================================================================
 
+	    //==================================================================
+	    // others
+	    //==================================================================
 	    dgfile.addProperty("New Method", c->useNewMethod ? On : Off);
 	    bptr < BitDepthProcessor > bitDepth = c->bitDepth;
 	    dgfile.addProperty("in", *bitDepth->getInputMaxValue().toString());
@@ -362,6 +371,11 @@ namespace cms {
 		dgfile.addProperty("b max strength", c->bMax2Gamma);
 	    }
 	    dgfile.addProperty("avoid FRC noise", c->avoidFRCNoise ? On : Off);
+	    if (c->remapped) {
+		dgfile.addProperty("panel regulator remapping", On);
+	    }
+	    //==================================================================
+
 	    //==================================================================
 	    // KeepMaxLuminance
 	    //==================================================================
@@ -465,6 +479,9 @@ namespace cms {
 		return false;
 	    }
 	};
+	//=====================================================================
+	// 擷取app的檔案資訊, 很難寫, 所以尚未完成, 還不能用   
+	//=====================================================================
 	void DGLutProperty::fetchVersionInfo() {
 	    const AnsiString InfoStr[10] =
 		{ "CompanyName", "FileDescription", "FileVersion", "InternalName", "LegalCopyright",
@@ -508,15 +525,27 @@ namespace cms {
 	    switch (ch.chindex) {
 	    case ChannelIndex::R:
 		value = getProperty(prestring + " primary R");
+		if (null == value && Target == prestring) {
+		    value = getProperty("primary R");
+		}
 		break;
 	    case ChannelIndex::G:
 		value = getProperty(prestring + " primary G");
+		if (null == value && Target == prestring) {
+		    value = getProperty("primary G");
+		}
 		break;
 	    case ChannelIndex::B:
 		value = getProperty(prestring + " primary B");
+		if (null == value && Target == prestring) {
+		    value = getProperty("primary B");
+		}
 		break;
 	    case ChannelIndex::W:
 		value = getProperty(prestring + " reference white");
+		if (null == value && Target == prestring) {
+		    value = getProperty("reference white");
+		}
 		break;
 	    default:
 		throw IllegalArgumentException("Unsupported Channel : " + *ch.toString());
@@ -533,6 +562,20 @@ namespace cms {
 	};
 	xyY_ptr DGLutProperty::getNativeReferenceColor(const Dep::Channel & ch) {
 	    return getReferenceColor(Native, ch);
+	};
+
+	RGB_ptr DGLutProperty::getReferenceRGB(const string & prestring) {
+	    string_ptr value = getProperty(prestring + " reference white RGB");
+	    double_array rgbValues = ColorSpace::getValuesFromString(value);
+	    RGB_ptr rgb(new RGBColor(rgbValues[0], rgbValues[1], rgbValues[2]));
+	    return rgb;
+	};
+
+	RGB_ptr DGLutProperty::getTargetReferenceRGB() {
+	    return getReferenceRGB(Target);
+	};
+	RGB_ptr DGLutProperty::getNativeReferenceRGB() {
+	    return getReferenceRGB(Native);
 	};
 
 	bptr < BitDepthProcessor > DGLutProperty::getBitDepthProcessor() {

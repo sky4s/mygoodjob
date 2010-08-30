@@ -50,8 +50,19 @@ namespace cms {
 		bTargetIntensity(-1), stopMeasure(false), multiGen(false),
 		bitDepth(bitDepth), smoothMode(false) {
 	    };
-
 	    XYZ_vector_ptr AdvancedDGLutGenerator::getTargetXYZVector(XYZ_ptr targetWhite,
+								      double_vector_ptr
+								      luminanceGammaCurve,
+								      int dimTurn, int brightTurn,
+								      double dimGamma,
+								      double brightGamma,
+								      int brightWidth) {
+		XYZ_ptr nativeWhite = (*componentVector)[0]->XYZ;
+		 return getTargetXYZVector(targetWhite, nativeWhite, luminanceGammaCurve, dimTurn,
+					   brightTurn, dimGamma, brightGamma, brightWidth);
+	    };
+	    XYZ_vector_ptr AdvancedDGLutGenerator::getTargetXYZVector(XYZ_ptr targetWhite,
+								      XYZ_ptr nativeWhite,
 								      double_vector_ptr
 								      luminanceGammaCurve,
 								      int dimTurn, int brightTurn,
@@ -62,9 +73,9 @@ namespace cms {
 		// 資訊準備
 		//==============================================================
 		XYZ_ptr blackXYZ = (*componentVector)[componentVector->size() - 1]->XYZ;
-		XYZ_ptr nativeWhite = (*componentVector)[0]->XYZ;
+		//XYZ_ptr nativeWhite = (*componentVector)[0]->XYZ;
 		XYZ_vector_ptr targetXYZVector;
-		 this->brightTurn = brightTurn;
+		this->brightTurn = brightTurn;
 
 		//求目標值曲線
 		if (true == autoParameter) {
@@ -90,6 +101,7 @@ namespace cms {
 		}
 		return targetXYZVector;
 	    }
+
 	    /*
 	       更進階的產生方式
 	       1.先產生一組DG Lut
@@ -163,9 +175,9 @@ namespace cms {
 		for (int x = part13Start; x < level; x++) {
 		    (*result)[x] = (*result2)[x]->clone();
 		}
-		STORE_RGBVECTOR("sm-result1.xls", result1);
+		/*STORE_RGBVECTOR("sm-result1.xls", result1);
 		STORE_RGBVECTOR("sm-result2.xls", result2);
-		STORE_RGBVECTOR("sm-result.xls", result);
+		STORE_RGBVECTOR("sm-result.xls", result);*/
 
 		return result;
 	    };

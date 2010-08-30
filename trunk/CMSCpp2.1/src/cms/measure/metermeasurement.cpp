@@ -271,12 +271,10 @@ namespace cms {
 		XYZ_ptr XYZ = patch->getXYZ();
 		if (null == maxZ) {
 		    maxZ = XYZ;
-		    //maxZDG = (int) rgb->getValue(Channel::W);
 		    continue;
 		}
 		if (XYZ->Z > maxZ->Z) {
 		    maxZ = XYZ;
-		    //maxZDG = (int) rgb->getValue(Channel::W);
 		} else {
 		    mm->setMeasureWindowsVisible(false);
 		    return (int) rgb->getValue(Channel::W);
@@ -288,6 +286,9 @@ namespace cms {
 
 	int MeasureTool::getMaxZDGCode(bptr < MeterMeasurement > mm,
 				       bptr < BitDepthProcessor > bitDepth) {
+	    if (mm->isFakeMeasure()) {
+		throw IllegalStateException("mm->isFakeMeasure(), cannot do real measure.");
+	    }
 	    bptr < MeasureTool > mt(new MeasureTool(mm));
 	    MeasureWindow->addWindowListener(mt);
 	    bptr < MeasureCondition > measureCondition(new MeasureCondition(bitDepth));

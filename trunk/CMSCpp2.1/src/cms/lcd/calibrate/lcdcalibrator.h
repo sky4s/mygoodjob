@@ -85,6 +85,7 @@ namespace cms {
 		bool avoidFRCNoise;
 		bool useNewMethod;
 		bool accurateMode;
+		bool remapped;
 		//==============================================================
 
 		//==============================================================
@@ -122,6 +123,7 @@ namespace cms {
 		void initNativeWhiteAnalyzer();
 		RGB_vector_ptr getDGLutOpResult(RGB_vector_ptr dglut, DGLutGenerator & generator);
 		RGB_vector_ptr oldMethod(DGLutGenerator & generator,
+					 bptr < PanelRegulator > panelRegulator,
 					 const Dep::MaxValue & quantizationBit);
 		RGB_vector_ptr newMethod(DGLutGenerator & generator,
 					 bptr < PanelRegulator > panelRegulato);
