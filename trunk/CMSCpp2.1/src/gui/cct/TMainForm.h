@@ -199,8 +199,6 @@ class TMainForm:public TForm {
     void setAnalyzerToTargetChannel();
     void setAnalyzerToSourceChannel();
     bool isCA210Analyzer();
-    const bool linkCA210;
-    const bool newFunction;
      bptr < cms::measure::MeterMeasurement > mm;
     void setMeterMeasurementWaitTimes();
      bptr < cms::measure::IntensityAnalyzerIF > getAnalyzer();
@@ -218,8 +216,14 @@ class TMainForm:public TForm {
     //==========================================================================
     // T-CON
     //==========================================================================
-
      bptr < i2c::TCONControl > getTCONControl();
+    //==========================================================================
+
+    //==========================================================================
+    // info flag
+    //==========================================================================
+    const bool linkCA210;
+    const bool newFunction;
     //==========================================================================
     __fastcall TMainForm(TComponent * Owner);
 

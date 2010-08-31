@@ -20,10 +20,6 @@ namespace cms {
 	    using namespace math;
 	    using namespace java::lang;
 
-	    /*RGB_vector_ptr DGLutOp::createInstance() {
-	       RGB_vector_ptr result = RGBVector::deepClone(source);
-	       return RGBOp < RGB_vector >::createInstance(result);
-	       }; */
 	    //==================================================================
 	    RGB_vector_ptr LinearOp::getRendering(RGB_vector_ptr source) {
 
@@ -169,15 +165,26 @@ namespace cms {
 		int base = effectiven - 1;
 
 		//==============================================================
-                // smooth的處理
-                //==============================================================
-		for (int x = begin + 1; x != effectiven; x++) {
-		    RGB_ptr rgb = (*result)[x];
-		    double normal = ((double) x - begin) / (base - begin);
-		    normal = Math::pow(normal, gamma);
-		    double b = Interpolation::linear(0, 1, rgb0->B, rgb1->B,
-						     normal);
-		    rgb->B = b;
+		// smooth的處理
+		//==============================================================
+		bool useSCurve = false;
+		if (useSCurve) {
+		    SCurve scurve(-3, 3);
+		    for (int x = begin + 1; x != effectiven; x++) {
+			RGB_ptr rgb = (*result)[x];
+			double normal = ((double) x - begin) / (base - begin);
+			double v = scurve.getValue(normal);
+			double b = Interpolation::linear(0, 1, rgb0->B, rgb1->B, v);
+			rgb->B = b;
+		    }
+		} else {
+		    for (int x = begin + 1; x != effectiven; x++) {
+			RGB_ptr rgb = (*result)[x];
+			double normal = ((double) x - begin) / (base - begin);
+			double v = Math::pow(normal, gamma);
+			double b = Interpolation::linear(0, 1, rgb0->B, rgb1->B, v);
+			rgb->B = b;
+		    }
 		}
 		//==============================================================
 

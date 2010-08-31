@@ -84,6 +84,12 @@ namespace cms {
 		double bIntensityGain;
 		bool avoidFRCNoise;
 		bool useNewMethod;
+		//兩種狀況下 accurateMode會有作用, 當然都要搭配tcon才能用
+		//所以一定是搭配PanelRegulator去修改面板特性的
+		// 1. KeepMaxLuminance為NativeWhiteAdvanced的時候
+		//   為了讓結果跟接近NativeWhite, 所以Target White的B改為反轉點
+		// 2. 將面板白點修改為目標白點
+		//   修改面板特性讓面板白點為目標白點, 使求出來的白點正好就是目標
 		bool accurateMode;
 		bool remapped;
 		//==============================================================

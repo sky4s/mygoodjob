@@ -184,8 +184,7 @@ void __fastcall TCCTLUTForm::Button_MeaRunClick(TObject * Sender)
 	    //==========================================================================
 	    // avoid HOOK NB
 	    //==========================================================================
-	    bool avoidHookNB = this->CheckBox_AvoidHookNB->Checked;
-	    bptr < TCONControl > tconctrl = MainForm->getTCONControl();
+	    //bool avoidHookNB = this->CheckBox_AvoidHookNB->Checked;
 	    /*bptr < PanelRegulator > panelRegulator;
 	       if (avoidHookNB) {
 	       if (null != tconctrl) {
@@ -201,6 +200,7 @@ void __fastcall TCCTLUTForm::Button_MeaRunClick(TObject * Sender)
 	       }
 	       } */
 	    //==========================================================================
+	    bptr < TCONControl > tconctrl = MainForm->getTCONControl();
 	    calibrator.setTCONControl(tconctrl);
 	    calibrator.setNativeWhiteAnalyzer(nativeWhiteAnalyzer);
 	    RGB_vector_ptr dglut = calibrator.getCCTDGLut(getMeasureCondition());
@@ -304,7 +304,7 @@ void __fastcall TCCTLUTForm::FormCreate(TObject * Sender)
 	//=========================================================================
 	//CheckBox_NewMethod->Visible = true;
 	CheckBox_MemoryMeasure->Visible = true;
-	CheckBox_NewMethod->Visible = true;
+	//CheckBox_NewMethod->Visible = true;
     }
 }
 
@@ -348,13 +348,15 @@ void __fastcall TCCTLUTForm::FormShow(TObject * Sender)
     // tcon relative
     //=========================================================================
     bptr < TCONControl > tconctrl = MainForm->getTCONControl();
-    bool visible = null != tconctrl;
+
+    bool visible = null != tconctrl || false == MainForm->linkCA210;
     //avoid hook再考慮一下開啟方式
     CheckBox_AvoidHookNB->Visible = visible;
-    Label18->Visible = visible;
-    Label19->Visible = visible;
-    Edit_BMax2Begin->Visible = visible;
-    Edit_BMax2Gamma->Visible = visible;
+    /*Label18->Visible = visible;
+       Label19->Visible = visible;
+       Edit_BMax2Begin->Visible = visible;
+       Edit_BMax2Gamma->Visible = visible; */
+       
     //accurate太複雜...要重新思考
     //CheckBox_Accurate->Visible = visible;
     //=========================================================================
