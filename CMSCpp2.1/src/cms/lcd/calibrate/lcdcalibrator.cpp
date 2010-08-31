@@ -284,18 +284,16 @@ namespace cms {
 		    throw new IllegalStateException("null == gammaCurve");
 		}
 
-		bool doAccurate = true == accurateMode && null != tconctrl;
+		bool doAccurate = (true == accurateMode) && (null != tconctrl);
 		bptr < PanelRegulator > panelRegulator;
 		if (doAccurate) {
 		    bptr < cms::measure::IntensityAnalyzerIF > analyzer = fetcher->getAnalyzer();
 		    RGB_ptr rgb = analyzer->getReferenceRGB();
-		    //if (null != rgb) {
 		    panelRegulator = bptr < PanelRegulator >
 			(new PanelRegulator(bitDepth, tconctrl, (int) rgb->R, (int) rgb->G,
 					    (int) rgb->B));
 		    panelRegulator->setEnable(true);
 		    remapped = true;
-		    //} 
 		}
 
 		this->componentVector = fetchComponentVector();
@@ -370,7 +368,7 @@ namespace cms {
 		    bptr < PanelRegulator > panelRegulator2;
 		    Component_vector_ptr componentVector2;
 		    bool doAccurate = (true == accurateMode) && (true == skipInverseB)
-			&& null != tconctrl;
+			&& (null != tconctrl);
 		    if (null == nativeWhiteAnalyzer) {
 			initNativeWhiteAnalyzer();
 
