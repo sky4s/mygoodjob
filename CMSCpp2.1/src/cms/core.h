@@ -28,7 +28,6 @@ namespace cms {
 
     class ColorMatchingFunction:public jObject, SpectraIF {
       private:
-	//int start, end, interval;
 	int index;
 	Spectra_vector_ptr spectraVector;
 	 ColorMatchingFunction();
@@ -92,7 +91,6 @@ namespace cms {
     class Spectra:public jObject, SpectraIF /*, util::NameIF */  {
 	friend class ColorMatchingFunction;
       protected:
-	//string_ptr name;
 	const std::string & name;
 	int start, end, interval;
 	double1D_ptr data;

@@ -21,13 +21,13 @@ namespace cms {
 	 DeltaE(const Lab_ptr Lab1, const Lab_ptr Lab2, bool adaptedToD65);
 	static double CIE2000DeltaE(const Lab_ptr Lab1, const Lab_ptr Lab2,
 				    double Kl, double Kc, double Kh);
+	static double CIEDeltaE(const Lab_ptr Lab1, const Lab_ptr Lab2);
 	double getCIE2000Deltaab();
 	double getCIE2000DeltaE();
+	double getCIEDeltaE();
       protected:
 	static void calculateCIE2000Parameters(const Lab_ptr Lab1,
-					       const Lab_ptr Lab2,
-					       double Kl, double Kc,
-					       double Kh);
+					       const Lab_ptr Lab2, double Kl, double Kc, double Kh);
 	static double RADIANES(double deg);
 	double_array CIE2000DeltaLCh;
 	double_array CIE2000Parameters;

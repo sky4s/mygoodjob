@@ -92,15 +92,7 @@ namespace cms {
 	    //Save the list
 
 	};
-	/*RGB_vector_ptr RGBVector::clone(RGB_vector_ptr vector) {
-	   RGB_vector_ptr result(new RGB_vector());
-	   foreach(RGB_ptr rgb, *vector) {
-	   RGB_ptr clone = rgb->clone();
-	   result->push_back(clone);
-	   }
 
-	   return result;
-	   }; */
 	RGB_vector_ptr RGBVector::deepClone(RGB_vector_ptr vector) {
 	    int size = vector->size();
 	    RGB_vector_ptr result(new RGB_vector(size));
@@ -175,7 +167,6 @@ namespace cms {
 		string_vector_ptr values =
 		    StringVector::fromDouble(4, static_cast < double >(x), (*rgbgamma->r)[x],
 					     (*rgbgamma->g)[x], (*rgbgamma->b)[x]);
-		//excel->insert(fieldNames, values);
 		excel.insert(values);
 	    };
 	};
