@@ -74,7 +74,6 @@ namespace cms {
 	    };
 
 	    double_array CIEXYZ::_getValues(double_array values) {
-		// double_array values(new double[3]);
 		values[0] = X;
 		values[1] = Y;
 		values[2] = Z;
@@ -104,9 +103,6 @@ namespace cms {
 
 	    double_array CIEXYZ::getxyValues() const {
 		if (Y == 0) {
-		    //return new double[] {
-		    //0, 0};
-		    //double *result  = new double[2];
 		    double_array values(new double[2]);
 		     values[0] = 0;
 		     values[1] = 0;
@@ -293,21 +289,6 @@ namespace cms {
 		return CorrelatedColorTemperature::CCT2DIlluminantxyY(CCT);
 	    };
 
-	    /*xyY_ptr CIExyY::fromValuesString(const std::
-	       string & valuesString) {
-	       using namespace cms::util;
-	       string_vector_ptr string =
-	       StringVector::tokenize(valuesString, "[], '");
-	       if (string->size() != 3) {
-	       throw IllegalArgumentException("string->size() != 3");
-	       }
-	       xyY_ptr xyY(new
-	       CIExyY(_toInt((*string)[0]),
-	       _toInt((*string)[1]),
-	       _toInt((*string)[2])));
-	       return xyY;
-	       }; */
-
 	    XYZ_ptr CIExyY::toXYZ() {
 		XYZ_ptr result = toXYZ(*this);
 		return result;
@@ -460,9 +441,6 @@ namespace cms {
 		y = 3 * v / denominator;
 	    };
 	    void CIExyY::setuvPrimeYValues(double_array uvPrimeYValues) {
-		/*double_array uv(new double[2]);
-		   uv[0] = uvPrimeYValues[0];
-		   uv[1] = uvPrimeYValues[1]; */
 		setuvPrimeValues(uvPrimeYValues);
 		Y = uvPrimeYValues[2];
 	    }
@@ -476,12 +454,6 @@ namespace cms {
 	    }
 	    void CIExyY::setuvYValues(double_array uvYValues) {
 		setuvValues(uvYValues);
-		/*double u = uvYValues[0];
-		   double v = uvYValues[1];
-		   double denominator = 2 * u - 8 * v + 4;
-
-		   x = 3 * u / denominator;
-		   y = 2 * u / denominator; */
 		Y = uvYValues[2];
 	    }
 	    //======================================================================
@@ -493,7 +465,6 @@ namespace cms {
 	    const double CIELab::kappa = 24389.0 / 27.0;
 
 	    double_array CIELab::_getValues(double_array values) {
-		// double_array values(new double[3]);
 		values[0] = L;
 		values[1] = a;
 		values[2] = b;
@@ -550,18 +521,6 @@ namespace cms {
 	    };
 	    Lab_ptr CIELab::getLabAdaptedToD65() {
 		return Lab_ptr(this);
-		/*if (this.adaptedToD65 || this.white.equalsValues(Illuminant.D65WhitePoint)) {
-		   return this;
-		   } else {
-		   CIEXYZ XYZ = toXYZ();
-		   CIEXYZ D65XYZ = XYZ.getXYZAdaptedToD65();
-		   CIELab D65Lab = new CIELab(D65XYZ, Illuminant.D65WhitePoint);
-		   D65Lab.originalWhite = XYZ.white;
-		   D65Lab.adaptedToD65 = true;
-		   return D65Lab;
-
-		   //===================================================================
-		   }; */
 	    };
 
 	};
