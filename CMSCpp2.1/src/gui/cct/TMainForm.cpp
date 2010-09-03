@@ -73,7 +73,9 @@ void __fastcall TMainForm::FormCreate(TObject * Sender)
     if (true == linkCA210) {
 	initCA210Meter();
     } else {
-	setDummyMeterFilename(METER_FILE);
+	if (FileExists(METER_FILE)) {
+	    setDummyMeterFilename(METER_FILE);
+	}
 	this->Caption = this->Caption + " (debug mode)";
 	this->GroupBox_CHSetting->Visible = false;
 	//this->Button_I2CTest->Visible = true;
@@ -349,9 +351,13 @@ bool TMainForm::isCA210Analyzer()
     using namespace cms::measure;
     using namespace cms::colorformat;
     using namespace cms::lcd::calibrate;
-    CA210IntensityAnalyzer *ca210Analyzer =
-	dynamic_cast < CA210IntensityAnalyzer * >(analyzer.get());
-    return ca210Analyzer != null;
+    if (null != analyzer) {
+	CA210IntensityAnalyzer *ca210Analyzer =
+	    dynamic_cast < CA210IntensityAnalyzer * >(analyzer.get());
+	return null != ca210Analyzer;
+    } else {
+	return false;
+    }
 };
 
 //---------------------------------------------------------------------------
@@ -508,7 +514,6 @@ bptr < cms::measure::meter::CA210 > TMainForm::getCA210()
     if (null == ca210 && true == linkCA210) {
 	using namespace cms::measure::meter;
 	if (null == meter) {
-	    //throw IllegalStateException("CA210 cannot be linked.");
 	    ShowMessage("CA210 cannot be linked.");
 	    return bptr < CA210 > ((CA210 *) null);
 	}
@@ -895,7 +900,6 @@ void __fastcall TMainForm::FormShow(TObject * Sender)
 {
     if (null == meter) {
 	ShowMessage("CA210 cannot be linked.");
-	//Application->Terminate();
     }
 }
 

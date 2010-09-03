@@ -190,15 +190,18 @@ void __fastcall TGammaMeasurementForm::FormShow(TObject * Sender)
 bool TGammaMeasurementForm::checkMeasureable()
 {
     bptr < cms::measure::IntensityAnalyzerIF > analyzer = MainForm->getAnalyzer();
-    if (MainForm->isCA210Analyzer()) {
-	MainForm->setAnalyzerToTargetChannel();
-    } else {
-	if (null == analyzer->getReferenceColor()) {
-	    ShowMessage("Set \"Target White\" first or use CA-210 Intensity Analyzer");
-	    return false;;
+    if (null != analyzer) {
+	if (MainForm->isCA210Analyzer()) {
+	    MainForm->setAnalyzerToTargetChannel();
+	    return true;
+	} else {
+	    if (null == analyzer->getReferenceColor()) {
+		ShowMessage("Set \"Target White\" first or use CA-210 Intensity Analyzer");
+		return false;
+	    }
 	}
     }
-    return true;
+    return false;
 }
 
 //---------------------------------------------------------------------------
