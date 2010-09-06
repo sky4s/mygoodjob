@@ -86,7 +86,7 @@ class TCCTLUTForm:public TForm {
     TEdit *Edit_MultiGenTimes;
     TCheckBox *CheckBox_BTargetIntensity;
     TEdit *Edit_BTargetIntensity;
-    TCheckBox *CheckBox_AvoidHookNB;
+        TCheckBox *CheckBox_AvoidHookNB;
     TRadioButton *RadioButton_OriginalGamma;
     TCheckBox *CheckBox_BMax2;
     TLabel *Label18;
