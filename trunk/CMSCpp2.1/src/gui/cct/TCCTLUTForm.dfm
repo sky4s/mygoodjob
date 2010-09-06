@@ -738,13 +738,13 @@ object CCTLUTForm: TCCTLUTForm
       Top = 177
       Width = 128
       Height = 24
-      Caption = 'Avoid Hook(NB)'
+      Caption = 'Avoid Hook'
       TabOrder = 6
       Visible = False
       OnClick = CheckBox_AvoidHookNBClick
     end
     object CheckBox_BMax2: TCheckBox
-      Left = 137
+      Left = 113
       Top = 177
       Width = 120
       Height = 24

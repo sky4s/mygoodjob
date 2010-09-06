@@ -198,10 +198,13 @@ bool TGammaMeasurementForm::checkMeasureable()
 	    if (null == analyzer->getReferenceColor()) {
 		ShowMessage("Set \"Target White\" first or use CA-210 Intensity Analyzer");
 		return false;
+	    } else {
+		return true;
 	    }
 	}
+    } else {
+	return false;
     }
-    return false;
 }
 
 //---------------------------------------------------------------------------

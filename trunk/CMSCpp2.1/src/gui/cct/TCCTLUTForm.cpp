@@ -16,6 +16,7 @@
 #pragma package(smart_init)
 #pragma link "TOutputFileFrame"
 #pragma link "TOutputFileFrame"
+#pragma link "TOutputFileFrame"
 #pragma resource "*.dfm"
 TCCTLUTForm *CCTLUTForm;
 //---------------------------------------------------------------------------
@@ -356,7 +357,7 @@ void __fastcall TCCTLUTForm::FormShow(TObject * Sender)
        Label19->Visible = visible;
        Edit_BMax2Begin->Visible = visible;
        Edit_BMax2Gamma->Visible = visible; */
-       
+
     //accurate太複雜...要重新思考
     //CheckBox_Accurate->Visible = visible;
     //=========================================================================
@@ -603,8 +604,10 @@ void __fastcall TCCTLUTForm::CheckBox_BMax2Click(TObject * Sender)
 void __fastcall TCCTLUTForm::CheckBox_AvoidHookNBClick(TObject * Sender)
 {
     bool checked = this->CheckBox_AvoidHookNB->Checked;
-    CheckBox_BMax2->Checked = checked;
+    //CheckBox_BMax2->Checked = checked;
     CheckBox_Accurate->Checked = checked;
+    CheckBox_BMax->Checked = false;
+    CheckBox_BMax->Enabled = !checked;
 }
 
 //---------------------------------------------------------------------------
