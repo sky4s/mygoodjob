@@ -1,9 +1,9 @@
 object MainForm: TMainForm
-  Left = 214
-  Top = 344
+  Left = 88
+  Top = 431
   Width = 938
   Height = 425
-  Caption = 'CCT v3 Adjustment'
+  Caption = 'CCT Adjustment v3'
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -1221,7 +1221,7 @@ object MainForm: TMainForm
             Left = 121
             Top = 17
             Width = 40
-            Height = 21
+            Height = 24
             ImeName = #26085#25991#36664#20837#31995#32113' (MS-IME2002)'
             TabOrder = 2
             Text = '7C'
@@ -1230,7 +1230,7 @@ object MainForm: TMainForm
             Left = 121
             Top = 49
             Width = 40
-            Height = 21
+            Height = 24
             ImeName = #26085#25991#36664#20837#31995#32113' (MS-IME2002)'
             TabOrder = 3
             Text = '7C'
@@ -1239,7 +1239,7 @@ object MainForm: TMainForm
             Left = 169
             Top = 49
             Width = 40
-            Height = 21
+            Height = 24
             ImeName = #26085#25991#36664#20837#31995#32113' (MS-IME2002)'
             TabOrder = 4
             Text = '7E'
@@ -1276,9 +1276,9 @@ object MainForm: TMainForm
           object Label4: TLabel
             Left = 9
             Top = 105
-            Width = 51
+            Width = 87
             Height = 16
-            Caption = 'Address'
+            Caption = 'GAM_DIRECT'
           end
           object Label11: TLabel
             Left = 9
@@ -1287,12 +1287,19 @@ object MainForm: TMainForm
             Height = 16
             Caption = 'Type'
           end
+          object Label17: TLabel
+            Left = 72
+            Top = 120
+            Width = 29
+            Height = 16
+            Caption = '(hex)'
+          end
           object GroupBox5: TGroupBox
             Left = 9
             Top = 16
             Width = 152
             Height = 81
-            Caption = 'Enable'
+            Caption = 'GAM_TEST'
             TabOrder = 0
             object Label2: TLabel
               Left = 9
@@ -1308,11 +1315,18 @@ object MainForm: TMainForm
               Height = 16
               Caption = 'Bit'
             end
+            object Label20: TLabel
+              Left = 32
+              Top = 33
+              Width = 29
+              Height = 16
+              Caption = '(hex)'
+            end
             object Edit_GammaTestEnableAddress: TEdit
               Left = 64
               Top = 16
               Width = 81
-              Height = 21
+              Height = 24
               ImeName = #26085#25991#36664#20837#31995#32113' (MS-IME2002)'
               TabOrder = 0
               Text = '29'
@@ -1321,17 +1335,17 @@ object MainForm: TMainForm
               Left = 64
               Top = 48
               Width = 81
-              Height = 21
+              Height = 24
               ImeName = #26085#25991#36664#20837#31995#32113' (MS-IME2002)'
               TabOrder = 1
               Text = '0'
             end
           end
           object Edit_GammaTestAddress: TEdit
-            Left = 73
+            Left = 104
             Top = 105
-            Width = 80
-            Height = 21
+            Width = 57
+            Height = 24
             ImeName = #26085#25991#36664#20837#31995#32113' (MS-IME2002)'
             TabOrder = 1
             Text = '154'
@@ -1350,7 +1364,7 @@ object MainForm: TMainForm
           object ComboBox_GammaTestType: TComboBox
             Left = 48
             Top = 137
-            Width = 105
+            Width = 113
             Height = 24
             ItemHeight = 16
             ItemIndex = 0
@@ -1392,12 +1406,19 @@ object MainForm: TMainForm
             Height = 16
             Caption = 'LUT Type(bit)'
           end
+          object Label18: TLabel
+            Left = 64
+            Top = 120
+            Width = 29
+            Height = 16
+            Caption = '(hex)'
+          end
           object Edit_DGLUTAddress: TEdit
             Left = 96
             Top = 105
             Width = 65
-            Height = 21
-            ImeName = #26085#25991#36664#20837#31995#32113' (MS-IME2002)'
+            Height = 24
+            ImeName = #20013#25991' ('#32321#39636') - '#26032#27880#38899
             TabOrder = 0
             Text = '302'
           end
@@ -1406,7 +1427,7 @@ object MainForm: TMainForm
             Top = 16
             Width = 152
             Height = 81
-            Caption = 'Enable'
+            Caption = 'GAM_EN'
             TabOrder = 1
             object Label13: TLabel
               Left = 9
@@ -1422,11 +1443,18 @@ object MainForm: TMainForm
               Height = 16
               Caption = 'Bit'
             end
+            object Label19: TLabel
+              Left = 32
+              Top = 33
+              Width = 29
+              Height = 16
+              Caption = '(hex)'
+            end
             object Edit_DGEnableAddress: TEdit
               Left = 64
               Top = 16
               Width = 81
-              Height = 21
+              Height = 24
               ImeName = #26085#25991#36664#20837#31995#32113' (MS-IME2002)'
               TabOrder = 0
               Text = '28'
@@ -1435,7 +1463,7 @@ object MainForm: TMainForm
               Left = 64
               Top = 48
               Width = 81
-              Height = 21
+              Height = 24
               ImeName = #26085#25991#36664#20837#31995#32113' (MS-IME2002)'
               TabOrder = 1
               Text = '0'
@@ -1466,8 +1494,8 @@ object MainForm: TMainForm
             Left = 9
             Top = 16
             Width = 152
-            Height = 21
-            ItemHeight = 0
+            Height = 24
+            ItemHeight = 16
             TabOrder = 0
             OnChange = ComboBox_TCONTypeChange
           end
@@ -1603,7 +1631,7 @@ object MainForm: TMainForm
           Left = 41
           Top = 169
           Width = 64
-          Height = 21
+          Height = 24
           Color = cl3DLight
           Enabled = False
           ImeName = #26085#25991#36664#20837#31995#32113' (MS-IME2002)'
