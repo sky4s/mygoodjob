@@ -17,6 +17,7 @@
 #pragma link "TOutputFileFrame"
 #pragma link "TOutputFileFrame"
 #pragma link "TOutputFileFrame"
+#pragma link "TOutputFileFrame"
 #pragma resource "*.dfm"
 TCCTLUTForm *CCTLUTForm;
 //---------------------------------------------------------------------------
@@ -132,11 +133,17 @@ void __fastcall TCCTLUTForm::Button_MeaRunClick(TObject * Sender)
 	    double gain = this->Edit_BGain->Text.ToDouble();
 	    calibrator.setBIntensityGain(gain);
 	}
-	calibrator.setBMax(this->CheckBox_BMax->Checked);
-	if (true == CheckBox_BMax2->Checked) {
-	    int begin = Edit_BMax2Begin->Text.ToInt();
-	    double gamma = Edit_BMax2Gamma->Text.ToDouble();
-	    calibrator.setBMax2(CheckBox_BMax2->Checked, begin, gamma);
+
+	bool bMax = this->CheckBox_BMax->Checked;
+	bool avoidHook = CheckBox_AvoidHookNB->Checked;
+	if (bMax) {
+	    if (avoidHook) {
+		int begin = Edit_BMax2Begin->Text.ToInt();
+		double gamma = Edit_BMax2Gamma->Text.ToDouble();
+		calibrator.setBMax2(CheckBox_BMax2->Checked, begin, gamma);
+	    } else {
+		calibrator.setBMax(this->CheckBox_BMax->Checked);
+	    }
 	}
 	//==========================================================================
 
@@ -606,8 +613,8 @@ void __fastcall TCCTLUTForm::CheckBox_AvoidHookNBClick(TObject * Sender)
     bool checked = this->CheckBox_AvoidHookNB->Checked;
     //CheckBox_BMax2->Checked = checked;
     CheckBox_Accurate->Checked = checked;
-    CheckBox_BMax->Checked = false;
-    CheckBox_BMax->Enabled = !checked;
+    //CheckBox_BMax->Checked = false;
+    //CheckBox_BMax->Enabled = !checked;
 }
 
 //---------------------------------------------------------------------------

@@ -1,6 +1,6 @@
 object AboutBox: TAboutBox
-  Left = 375
-  Top = 316
+  Left = 303
+  Top = 396
   BorderStyle = bsDialog
   Caption = 'About'
   ClientHeight = 265

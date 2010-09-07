@@ -167,7 +167,7 @@ namespace cms {
 		//==============================================================
 		// smoothªº³B²z
 		//==============================================================
-		bool useSCurve = false;
+		bool useSCurve = true;
 		if (useSCurve) {
 		    SCurve scurve(-3, 3);
 		    for (int x = begin + 1; x != effectiven; x++) {

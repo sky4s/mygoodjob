@@ -122,6 +122,21 @@ void TMainForm::initTCONFile()
 	ini->WriteString("12306", "GammaTestAddress", "154");
 	ini->WriteBool("12306", "IndepRGB", true);
 	//=========================================================================
+	// 12401
+	//=========================================================================
+	ini->WriteInteger("12401", "AddressingSize", 5);
+
+	ini->WriteString("12401", "DigitalGammaEnableAddress", "28");
+	ini->WriteInteger("12401", "DigitalGammaEnableBit", 0);
+	ini->WriteString("12401", "DigitalGammaLUTAddress", "752");
+	ini->WriteInteger("12401", "DigitalGammaLUTType", 12);
+
+	ini->WriteBool("12401", "GammaTestFunc", true);
+	ini->WriteString("12401", "GammaTestEnableAddress", "4A1");
+	ini->WriteInteger("12401", "GammaTestEnableBit", 1);
+	ini->WriteString("12401", "GammaTestAddress", "4A7");
+	ini->WriteBool("12401", "IndepRGB", true);
+	//=========================================================================
     }
 }
 
@@ -146,9 +161,7 @@ void TMainForm::readTCONSetup(String filename, String section)
     this->ComboBox_AddressingSize->ItemIndex = ini->ReadInteger(section, "AddressingSize", 5);
     bool gammaTestFunc = ini->ReadBool(section, "GammaTestFunc", false);
 
-    //if (custom) {
     this->CheckBox_GammaTest->Checked = gammaTestFunc;
-    //}
 
     if (gammaTestFunc) {
 	GroupBox_GammaTestAddress->Visible = true;
@@ -1053,7 +1066,7 @@ void __fastcall TMainForm::ComboBox_TCONTypeChange(TObject * Sender)
 {
     using namespace cms::util;
     String section = this->ComboBox_TCONType->Text;
-    if (section != "Custom") {
+    if (section != null && section.Length() != 0 && section != "Custom") {
 	CheckBox_GammaTest->Visible = false;
 	//若為最後一個就是custom, 不用載入
 	if (Util::isFileExist(tconFilename.c_str())) {

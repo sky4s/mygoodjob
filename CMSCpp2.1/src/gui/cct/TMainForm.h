@@ -118,6 +118,10 @@ class TMainForm:public TForm {
     TRadioButton *RadioButton_FlickrSubPixel;
     TRadioButton *RadioButton_PCTCON;
     TLabel *Label16;
+        TLabel *Label17;
+        TLabel *Label18;
+        TLabel *Label19;
+        TLabel *Label20;
     void __fastcall About1Click(TObject * Sender);
     void __fastcall Exit1Click(TObject * Sender);
     void __fastcall TargetWhite1Click(TObject * Sender);
