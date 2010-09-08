@@ -8,6 +8,7 @@
 
 //本項目內頭文件
 #include <java/lang.h>
+#include <debug.h>
 
 #ifdef __BORLANDC__
 # pragma pack(push, 8)
