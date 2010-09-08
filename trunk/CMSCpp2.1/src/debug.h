@@ -9,17 +9,26 @@
 #define DEBUG_DIR  "debug/"
 #define DEBUG_NEWFUNC_FILE "new.txt"
 //=============================================================================
+//CCT功能的debug功能開啟
+#define DEBUG_CCTLUT
+//新方法的過程debug功能開啟
+//#define DEBUG_CCTLUT_NEWMETHOD
+//新方法的過程step debug功能開啟
+//#define DEBUG_CCTLUT_NEWMETHOD_STEP
 
-#define DEBUG_CCTLUT		//CCT功能的debug功能開啟
-//#define DEBUG_CCTLUT_NEWMETHOD        //新方法的過程debug功能開啟
-//#define DEBUG_CCTLUT_NEWMETHOD_STEP   //新方法的過程step debug功能開啟
+ //find white過程的紀錄
+//#define DEBUG_FINDWHITE
+//Target White測試功能的開啟
+//#define DEBUG_TARGETWHITE
 
-//#define DEBUG_FINDWHITE //find white過程的紀錄
-//#define DEBUG_TARGETWHITE //Target White測試功能的開啟
-
-//是否支援在tcon input狀況下, 能中止量測;
-//若能中止意味著會跳出量測視窗來阻擋, 因為中止功能要靠視窗去攔截按鍵
+/*
+  是否支援在tcon input狀況下, 能中止量測;
+  能中止意味著會跳出量測視窗來阻擋, 因為中止功能要靠視窗去攔截按鍵
+*/
 //#define DEBUG_STOP_TCONINPUT
+
+//是否提供excel讀寫功能
+#define EXCEL_ACCESSIBLE
 
 //==============================================================================
 // CCT巨集

@@ -434,7 +434,7 @@ namespace math {
 	}
 	return result;
     }
-
+#ifdef EXCEL_ACCESSIBLE
     void DoubleArray::storeToExcel(const string & filename, double_vector_ptr doubleVector) {
 	Util::deleteExist(filename);
 	bptr < SimpleExcelAccess > excel = SimpleExcelAccess::getValueStoreInstance(filename);
@@ -443,10 +443,10 @@ namespace math {
 	for (int x = 0; x != size; x++) {
 	    string v = _toString((*doubleVector)[x]);
 	    string_vector_ptr values = StringVector::fromString(1, v);
-	    //excel.insert(fieldNames, values);
 	    excel->insert(values);
 	}
     };
+#endif
 
     double_vector_ptr DoubleArray::getReverse(double_vector_ptr vec) {
 	int size = vec->size();

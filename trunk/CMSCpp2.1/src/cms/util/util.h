@@ -28,9 +28,11 @@ namespace cms {
 	    static bool isFileExist(const std::string & filename);
 	    static bptr < WideString > toWideString(const std::string & s);
 	    static void shellExecute(const std::string & filename);
+#ifdef EXCEL_ACCESSIBLE
 	    static void storeXYZxyVector(const std::string & filename, XYZ_vector_ptr XYZVector);
 	    static void storeXYZxyVector(const std::string & filename,
 					 XYZ_vector_ptr XYZVector, const std::string firstColumn);
+#endif
 	};
 
 	class StringVector {
