@@ -52,22 +52,16 @@ namespace cms {
 
 
 	void Util::deleteExist(const std::string & filename) {
-	    //const char *cstr = filename.c_str();
-	    /*if (FileExists(cstr)) {
-	       DeleteFile(cstr);
-	       } */
 	    deleteExist(filename.c_str());
 	};
 
 	void Util::deleteExist(const char *filename) {
-	    //const char *cstr = filename.c_str();
 	    if (FileExists(filename)) {
 		DeleteFile(filename);
 	    }
 	};
 
 	void Util::deleteExist(const WideString & filename) {
-	    //const char *cstr = filename.c_str();
 	    if (FileExists(filename)) {
 		DeleteFile(filename);
 	    }
@@ -86,6 +80,7 @@ namespace cms {
 	void Util::shellExecute(const std::string & filename) {
 	    ShellExecute(null, null, filename.c_str(), null, null, SW_SHOW);
 	};
+#ifdef EXCEL_ACCESSIBLE
 	void Util::storeXYZxyVector(const std::string & filename, XYZ_vector_ptr XYZVector) {
 	    storeXYZxyVector(filename, XYZVector, "Gray Level");
 	};
@@ -106,6 +101,7 @@ namespace cms {
 		excel.insert(values);
 	    }
 	};
+#endif
 	//==========================================================================
 
 	string_vector_ptr StringVector::fromCString(int count, ...) {
@@ -270,6 +266,4 @@ namespace cms {
 	};
     };
 };
-
-
 
