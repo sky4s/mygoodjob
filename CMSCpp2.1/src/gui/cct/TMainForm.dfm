@@ -1068,7 +1068,6 @@ object MainForm: TMainForm
         Height = 129
         Caption = 'Pattern'
         TabOrder = 5
-        Visible = False
         object RadioButton_Normal: TRadioButton
           Left = 9
           Top = 23
@@ -1495,7 +1494,7 @@ object MainForm: TMainForm
             Top = 16
             Width = 152
             Height = 24
-            ItemHeight = 16
+            ItemHeight = 0
             TabOrder = 0
             OnChange = ComboBox_TCONTypeChange
           end

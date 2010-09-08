@@ -9,6 +9,7 @@
 //其他庫頭文件
 #include <boost/tokenizer.hpp>
 //本項目內頭文件
+#include <debug.h>
 
 namespace cms {
     namespace util {
