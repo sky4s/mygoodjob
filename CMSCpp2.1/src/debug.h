@@ -16,7 +16,7 @@
 //新方法的過程step debug功能開啟
 //#define DEBUG_CCTLUT_NEWMETHOD_STEP
 
- //find white過程的紀錄
+//find white過程的紀錄
 //#define DEBUG_FINDWHITE
 //Target White測試功能的開啟
 //#define DEBUG_TARGETWHITE
@@ -29,6 +29,9 @@
 
 //是否提供excel讀寫功能
 #define EXCEL_ACCESSIBLE
+
+//是否開啟實驗性功能
+//#define EXPERIMENT_FUNC
 
 //==============================================================================
 // CCT巨集

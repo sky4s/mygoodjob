@@ -1061,13 +1061,14 @@ object MainForm: TMainForm
           OnClick = RadioButton_AnalyzerDebugClick
         end
       end
-      object GroupBox12: TGroupBox
+      object GroupBox_Pattern: TGroupBox
         Left = 0
         Top = 128
         Width = 201
         Height = 129
         Caption = 'Pattern'
         TabOrder = 5
+        Visible = False
         object RadioButton_Normal: TRadioButton
           Left = 9
           Top = 23
