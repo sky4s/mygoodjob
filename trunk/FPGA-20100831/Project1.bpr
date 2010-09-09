@@ -31,7 +31,7 @@
       inetdbbde.bpi inetdbxpress.bpi inetdb.bpi nmfast.bpi webdsnap.bpi 
       bcbie.bpi websnap.bpi soaprtl.bpi dclocx.bpi dbexpress.bpi dbxcds.bpi 
       indy.bpi bcb2kaxserver.bpi"/>
-    <PATHCPP value=".;LPT_lib;USB_i2c_lib;11307\Vender;11307\TCON;11307\ImageProcess;11307\Function;11307\DCR;java;math;cms\util"/>
+    <PATHCPP value=".;LPT_lib;LPT_lib;USB_i2c_lib;11307\Vender;11307\TCON;11307\ImageProcess;11307\Function;11307\DCR;java;math;math;cms\util;math"/>
     <PATHPAS value=".;"/>
     <PATHRC value=".;"/>
     <PATHASM value=".;"/>
