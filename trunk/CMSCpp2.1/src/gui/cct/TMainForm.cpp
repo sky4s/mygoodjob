@@ -84,6 +84,9 @@ void __fastcall TMainForm::FormCreate(TObject * Sender)
     readTCONSections();
     readSetup();
     ComboBox_TCONTypeChange(this);
+#ifdef EXPERIMENT_FUNC
+    GroupBox_Pattern->Visible = true;
+#endif
 }
 
 void TMainForm::initTCONFile()

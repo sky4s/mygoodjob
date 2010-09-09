@@ -184,6 +184,10 @@ void __fastcall TGammaMeasurementForm::FormShow(TObject * Sender)
     this->Panel2->Visible = tconInput;
     setMeasureInfo();
     fetcher = MainForm->getComponentFetcher();
+
+#ifdef EXPERIMENT_FUNC
+    CheckBox_FlickerFMA->Visible = true;
+#endif
 }
 
 //---------------------------------------------------------------------------

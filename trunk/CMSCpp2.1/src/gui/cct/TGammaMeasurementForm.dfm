@@ -108,6 +108,7 @@ object GammaMeasurementForm: TGammaMeasurementForm
         Height = 16
         Caption = 'FlickerFMA'
         TabOrder = 1
+        Visible = False
       end
     end
   end
