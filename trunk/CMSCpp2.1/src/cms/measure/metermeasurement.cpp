@@ -258,6 +258,7 @@ namespace cms {
 	    RGB_vector_ptr rgbMeasureCode = measureCondition->getRGBMeasureCode();
 	    Patch_ptr prePatch;
 	    XYZ_ptr maxZ;
+	    RGB_ptr maxZRGB;
 	    //int maxZDG = -1;
 	    mm->setMeasureWindowsVisible(true);
 
@@ -271,13 +272,15 @@ namespace cms {
 		XYZ_ptr XYZ = patch->getXYZ();
 		if (null == maxZ) {
 		    maxZ = XYZ;
+		    maxZRGB = rgb;
 		    continue;
 		}
 		if (XYZ->Z > maxZ->Z) {
 		    maxZ = XYZ;
 		} else {
 		    mm->setMeasureWindowsVisible(false);
-		    return (int) rgb->getValue(Channel::W);
+		    //return (int) rgb->getValue(Channel::W);
+		    return (int) maxZRGB->getValue(Channel::W);
 		}
 	    };
 	    mm->setMeasureWindowsVisible(false);
