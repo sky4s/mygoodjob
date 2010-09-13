@@ -160,7 +160,7 @@ namespace cms {
 		    /*cct =
 		       CorrelatedColorTemperature::
 		       isCCTMeaningful(xyY) ? cct : -1; */
-		    cct = cct > 40000 ? -1 : cct;
+		    cct = (cct > 30000 || cct < 0) ? -1 : cct;
 		    (*values)[4] = _toString(static_cast < int >(cct));
 
 		    double duv = CorrelatedColorTemperature::getduvWithDIlluminant(c->XYZ);
