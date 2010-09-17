@@ -122,6 +122,8 @@ class TMainForm:public TForm {
     TLabel *Label18;
     TLabel *Label19;
     TLabel *Label20;
+    TRadioButton *RadioButton_Ninth;
+    TCheckBox *CheckBox_LineAdjoin;
     void __fastcall About1Click(TObject * Sender);
     void __fastcall Exit1Click(TObject * Sender);
     void __fastcall TargetWhite1Click(TObject * Sender);
@@ -162,6 +164,7 @@ class TMainForm:public TForm {
     void __fastcall ComboBox_TCONTypeChange(TObject * Sender);
     void __fastcall CheckBox_GammaTestClick(TObject * Sender);
     void __fastcall RadioButton_PCTCONClick(TObject * Sender);
+    void __fastcall RadioButton_NinthClick(TObject * Sender);
   private:			// User declarations
     //==========================================================================
     // meter

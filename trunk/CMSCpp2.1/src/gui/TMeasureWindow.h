@@ -34,7 +34,7 @@
 /*Enumeration(WindowPattern)
     Normal, HStripe, Indepedent, EnumerationEnd();*/
 enum Pattern {
-    Normal, HStripe, Indepedent, HSD, FlickrPixel, FlickrSubPixel
+    Normal, HStripe, Indepedent, HSD, FlickrPixel, FlickrSubPixel, Ninth
 };
 class TMeasureWindow:public TForm {
     __published:		// IDE-managed Components
@@ -48,6 +48,7 @@ class TMeasureWindow:public TForm {
     void __fastcall Button2Click(TObject * Sender);
   private:			// User declarations
      bool tconinput;
+    bool lineAdjoin;
      bptr < i2c::TCONControl > tconcontrol;
      std::vector < bptr < cms::util::WindowListener > >listenerVector;
      std::vector < bwptr < cms::util::WindowListener > >listenerVector2;
@@ -65,6 +66,7 @@ class TMeasureWindow:public TForm {
     void setImageFilename(const std::string & filename);
     void setImageOff();
     void setPattern(Pattern pattern);
+    void setLineAdjoin(bool lineAdjoin);
 
 };
 

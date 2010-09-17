@@ -277,6 +277,7 @@ namespace cms {
 		}
 		if (XYZ->Z > maxZ->Z) {
 		    maxZ = XYZ;
+                    maxZRGB = rgb;
 		} else {
 		    mm->setMeasureWindowsVisible(false);
 		    //return (int) rgb->getValue(Channel::W);
