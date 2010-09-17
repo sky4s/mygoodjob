@@ -80,13 +80,19 @@ void __fastcall TMainForm::FormCreate(TObject * Sender)
 	this->GroupBox_CHSetting->Visible = false;
 	//this->Button_I2CTest->Visible = true;
     }
+
     initTCONFile();
     readTCONSections();
     readSetup();
     ComboBox_TCONTypeChange(this);
-#ifdef EXPERIMENT_FUNC
-    GroupBox_Pattern->Visible = true;
-#endif
+
+    if (newFunction) {
+	RadioButton_HStripe->Visible = true;
+	RadioButton_Indep->Visible = true;
+	RadioButton_HSD->Visible = true;
+	RadioButton_FlickrPixel->Visible = true;
+	RadioButton_FlickrSubPixel->Visible = true;
+    }
 }
 
 void TMainForm::initTCONFile()
@@ -259,12 +265,6 @@ void TMainForm::writeSetup()
     //=========================================================================
     int typeIndex = ComboBox_TCONType->ItemIndex;
     ini->WriteInteger("TCON", "Type", typeIndex);
-
-    /*ini->WriteInteger("TCON ", "AddressingSize ", this->ComboBox_AddressingSize->ItemIndex);
-       ini->WriteString("TCON ", "GammaTestEnableAddress ", this->Edit_GammaTestEnableAddress->Text);
-       ini->WriteInteger("TCON ", "GammaTestEnableBit ", this->Edit_GammaTestEnableBit->Text.ToInt());
-       ini->WriteString("TCON ", "GammaTestAddress ", this->Edit_GammaTestAddress->Text);
-       ini->WriteBool("TCON ", "IndepRGB ", ComboBox_GammaTestType->ItemIndex == 0); */
 
 }
 
@@ -963,6 +963,8 @@ void TMainForm::connectMeter()
 void __fastcall TMainForm::RadioButton_AnalyzerMaxMatrixClick(TObject * Sender)
 {
     setAnalyzerNull();
+    Edit_TargetCH->Enabled = false;
+    Edit_TargetID->Enabled = false;
 }
 
 //---------------------------------------------------------------------------
@@ -970,6 +972,8 @@ void __fastcall TMainForm::RadioButton_AnalyzerMaxMatrixClick(TObject * Sender)
 void __fastcall TMainForm::RadioButton_AnalyzerCA210Click(TObject * Sender)
 {
     setAnalyzerNull();
+    Edit_TargetCH->Enabled = true;
+    Edit_TargetID->Enabled = true;
 }
 
 //---------------------------------------------------------------------------
@@ -985,6 +989,7 @@ void __fastcall TMainForm::RadioButton_AnalyzerDebugClick(TObject * Sender)
 void __fastcall TMainForm::RadioButton_NormalClick(TObject * Sender)
 {
     MeasureWindow->setPattern(Normal);
+    this->CheckBox_LineAdjoin->Visible = false;
 }
 
 //---------------------------------------------------------------------------
@@ -992,6 +997,7 @@ void __fastcall TMainForm::RadioButton_NormalClick(TObject * Sender)
 void __fastcall TMainForm::RadioButton_HStripeClick(TObject * Sender)
 {
     MeasureWindow->setPattern(HStripe);
+    this->CheckBox_LineAdjoin->Visible = false;
 }
 
 //---------------------------------------------------------------------------
@@ -999,6 +1005,7 @@ void __fastcall TMainForm::RadioButton_HStripeClick(TObject * Sender)
 void __fastcall TMainForm::RadioButton_IndepClick(TObject * Sender)
 {
     MeasureWindow->setPattern(Indepedent);
+    this->CheckBox_LineAdjoin->Visible = true;
 }
 
 //---------------------------------------------------------------------------
@@ -1006,6 +1013,7 @@ void __fastcall TMainForm::RadioButton_IndepClick(TObject * Sender)
 void __fastcall TMainForm::RadioButton_HSDClick(TObject * Sender)
 {
     MeasureWindow->setPattern(HSD);
+    this->CheckBox_LineAdjoin->Visible = true;
 }
 
 //---------------------------------------------------------------------------
@@ -1013,6 +1021,7 @@ void __fastcall TMainForm::RadioButton_HSDClick(TObject * Sender)
 void __fastcall TMainForm::RadioButton_FlickrPixelClick(TObject * Sender)
 {
     MeasureWindow->setPattern(FlickrPixel);
+    this->CheckBox_LineAdjoin->Visible = false;
 }
 
 //---------------------------------------------------------------------------
@@ -1020,6 +1029,7 @@ void __fastcall TMainForm::RadioButton_FlickrPixelClick(TObject * Sender)
 void __fastcall TMainForm::RadioButton_FlickrSubPixelClick(TObject * Sender)
 {
     MeasureWindow->setPattern(FlickrSubPixel);
+    this->CheckBox_LineAdjoin->Visible = false;
 }
 
 //---------------------------------------------------------------------------
@@ -1101,6 +1111,14 @@ void __fastcall TMainForm::RadioButton_PCTCONClick(TObject * Sender)
     this->Panel_TCON->Visible = true;
     bitDepth->setTCONInput(false);
     MeasureWindow->setTCONControlOff();
+}
+
+//---------------------------------------------------------------------------
+
+void __fastcall TMainForm::RadioButton_NinthClick(TObject * Sender)
+{
+    MeasureWindow->setPattern(Ninth);
+    this->CheckBox_LineAdjoin->Visible = false;
 }
 
 //---------------------------------------------------------------------------

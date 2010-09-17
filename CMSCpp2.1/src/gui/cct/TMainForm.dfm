@@ -1,6 +1,6 @@
 object MainForm: TMainForm
-  Left = 88
-  Top = 431
+  Left = 267
+  Top = 453
   Width = 938
   Height = 425
   Caption = 'CCT Adjustment v3'
@@ -993,7 +993,6 @@ object MainForm: TMainForm
           Top = 16
           Width = 48
           Height = 24
-          Enabled = False
           ImeName = #26085#25991#36664#20837#31995#32113' (MS-IME2002)'
           TabOrder = 0
           Text = '0'
@@ -1003,6 +1002,7 @@ object MainForm: TMainForm
           Top = 48
           Width = 47
           Height = 24
+          Enabled = False
           ImeName = #26085#25991#36664#20837#31995#32113' (MS-IME2002)'
           TabOrder = 1
           Text = '2'
@@ -1012,6 +1012,7 @@ object MainForm: TMainForm
           Top = 80
           Width = 103
           Height = 24
+          Enabled = False
           ImeName = #26085#25991#36664#20837#31995#32113' (MS-IME2002)'
           TabOrder = 2
           Text = ' '
@@ -1068,7 +1069,6 @@ object MainForm: TMainForm
         Height = 129
         Caption = 'Pattern'
         TabOrder = 5
-        Visible = False
         object RadioButton_Normal: TRadioButton
           Left = 9
           Top = 23
@@ -1084,46 +1084,69 @@ object MainForm: TMainForm
           Left = 9
           Top = 43
           Width = 80
-          Height = 17
+          Height = 18
           Caption = 'H Stripe'
           TabOrder = 1
+          Visible = False
           OnClick = RadioButton_HStripeClick
         end
         object RadioButton_Indep: TRadioButton
           Left = 9
           Top = 63
           Width = 80
-          Height = 17
+          Height = 18
           Caption = 'Indep'
           TabOrder = 2
+          Visible = False
           OnClick = RadioButton_IndepClick
         end
         object RadioButton_HSD: TRadioButton
-          Left = 87
-          Top = 23
+          Left = 9
+          Top = 83
           Width = 64
           Height = 18
           Caption = 'HSD'
           TabOrder = 3
+          Visible = False
           OnClick = RadioButton_HSDClick
         end
         object RadioButton_FlickrPixel: TRadioButton
           Left = 87
           Top = 43
           Width = 111
-          Height = 17
+          Height = 18
           Caption = 'FlickrPixel'
           TabOrder = 4
+          Visible = False
           OnClick = RadioButton_FlickrPixelClick
         end
         object RadioButton_FlickrSubPixel: TRadioButton
           Left = 87
           Top = 63
           Width = 111
-          Height = 17
+          Height = 18
           Caption = 'FlickrSubPixel'
           TabOrder = 5
+          Visible = False
           OnClick = RadioButton_FlickrSubPixelClick
+        end
+        object RadioButton_Ninth: TRadioButton
+          Left = 87
+          Top = 23
+          Width = 80
+          Height = 18
+          Caption = '1/9'
+          TabOrder = 6
+          OnClick = RadioButton_NinthClick
+        end
+        object CheckBox_LineAdjoin: TCheckBox
+          Left = 9
+          Top = 104
+          Width = 89
+          Height = 18
+          Caption = 'Line Adjoin'
+          TabOrder = 7
+          Visible = False
         end
       end
     end
@@ -1495,7 +1518,7 @@ object MainForm: TMainForm
             Top = 16
             Width = 152
             Height = 24
-            ItemHeight = 0
+            ItemHeight = 16
             TabOrder = 0
             OnChange = ComboBox_TCONTypeChange
           end

@@ -28,7 +28,7 @@ __fastcall TMeasureWindow::TMeasureWindow(TComponent * Owner)
     this->Button1->OnClick = Button1Click;
     pattern = Normal;
     tconinput = false;
-
+    lineAdjoin = false;
 }
 
 //---------------------------------------------------------------------------
@@ -111,17 +111,18 @@ void TMeasureWindow::setRGB(int r, int g, int b)
 		    canvas->PenPos = TPoint(start, 0);
 		    canvas->LineTo(start, h);
 		}
-
-		canvas->Pen->Color = clBlack;
-		for (int y = 1; y < h; y += 2) {
-		    canvas->PenPos = TPoint(0, y);
-		    canvas->LineTo(w, y);
+		if (false == lineAdjoin) {
+		    //著黑色, 讓line之間不要相鄰
+		    canvas->Pen->Color = clBlack;
+		    for (int y = 1; y < h; y += 2) {
+			canvas->PenPos = TPoint(0, y);
+			canvas->LineTo(w, y);
+		    }
 		}
 		doubleBuffered->excute();
 	    }
 	    break;
 	case Indepedent:{
-		//this->Color = clBlack;
 		bptr < DoubleBufferedCanvas > doubleBuffered = getDoubleBufferedCanvas();
 		TCanvas *canvas = doubleBuffered->getDoubleBufferedCanvas();
 		doubleBuffered->clear();
@@ -150,11 +151,13 @@ void TMeasureWindow::setRGB(int r, int g, int b)
 		    canvas->PenPos = TPoint(start, 0);
 		    canvas->LineTo(start, h);
 		}
-
-		canvas->Pen->Color = clBlack;
-		for (int y = 1; y < h; y += 2) {
-		    canvas->PenPos = TPoint(0, y);
-		    canvas->LineTo(w, y);
+		if (false == lineAdjoin) {
+		    //著黑色, 讓line之間不要相鄰
+		    canvas->Pen->Color = clBlack;
+		    for (int y = 1; y < h; y += 2) {
+			canvas->PenPos = TPoint(0, y);
+			canvas->LineTo(w, y);
+		    }
 		}
 		doubleBuffered->excute();
 	    }
@@ -167,6 +170,7 @@ void TMeasureWindow::setRGB(int r, int g, int b)
 		bptr < DoubleBufferedCanvas > doubleBuffered = getDoubleBufferedCanvas();
 		TCanvas *canvas = doubleBuffered->getDoubleBufferedCanvas();
 		doubleBuffered->clear();
+
 		int w = this->Width;
 		int h = this->Height;
 		int w2 = w / 2;
@@ -197,7 +201,6 @@ void TMeasureWindow::setRGB(int r, int g, int b)
 		int w = this->Width;
 		int h = this->Height;
 		int w2 = w / 2;
-		//int h2 = h / 2;
 		TColor gcolor = (TColor) (g << 8);
 		TColor color1 = (TColor) ((b << 16) + r);
 
@@ -212,6 +215,21 @@ void TMeasureWindow::setRGB(int r, int g, int b)
 		doubleBuffered->excute();
 	    }
 	    break;
+	case Ninth:{
+		bptr < DoubleBufferedCanvas > doubleBuffered = getDoubleBufferedCanvas();
+		TCanvas *canvas = doubleBuffered->getDoubleBufferedCanvas();
+
+		int w = this->Width;
+		int h = this->Height;
+		int w3 = w / 3;
+		int h3 = h / 3;
+
+		canvas->Brush->Color = clBlack;
+		canvas->FillRect(TRect(0, 0, w, h));
+		canvas->Brush->Color = color;
+		canvas->FillRect(TRect(w3, h3, w3 * 2, h3 * 2));
+		doubleBuffered->excute();
+	    }
 	}
     }
 }
@@ -234,8 +252,11 @@ void TMeasureWindow::setRGB(bptr < Dep::RGBColor > rgb)
 
 void __fastcall TMeasureWindow::Button1Click(TObject * Sender)
 {
+    //pattern = HSD;
+    //pattern = HStripe;
     //pattern = Indepedent;
-    pattern = FlickrPixel;
+    //pattern = FlickrPixel;
+    //pattern = Ninth;
     //setRGB(255, 255, 255);
     setRGB(128, 128, 128);
     /*int color = (255 << 16) + (255 << 8) + 255;
@@ -342,5 +363,10 @@ void TMeasureWindow::setImageOff()
 void TMeasureWindow::setPattern(Pattern pattern)
 {
     this->pattern = pattern;
+};
+
+void TMeasureWindow::setLineAdjoin(bool lineAdjoin)
+{
+    this->lineAdjoin = lineAdjoin;
 };
 
