@@ -13,6 +13,15 @@
 namespace gui {
     namespace util {
 	class UIBinder {
+	  private:
+	    TEdit * edit;
+	    TScrollBar *scrollBar;
+	  protected:
+	    double editToScrollBar(double value);
+	    double scrollBarToEdit(double value);
+	  public:
+	     UIBinder(TEdit * edit, TScrollBar * scrollBar);
+
 	};
     };
 };
