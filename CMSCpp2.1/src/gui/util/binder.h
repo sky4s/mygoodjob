@@ -17,8 +17,8 @@ namespace gui {
 	    TEdit * edit;
 	    TScrollBar *scrollBar;
 	  protected:
-	    double editToScrollBar(double value);
-	    double scrollBarToEdit(double value);
+	     virtual double editToScrollBar(double value);
+	    virtual double scrollBarToEdit(double value);
 	  public:
 	     UIBinder(TEdit * edit, TScrollBar * scrollBar);
 

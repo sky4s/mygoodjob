@@ -106,21 +106,21 @@ object TargetWhiteForm2: TTargetWhiteForm2
             Top = 73
             Width = 10
             Height = 16
-            Caption = 'u'#39
+            Caption = 'u'''
           end
           object Label6: TLabel
             Left = 112
             Top = 73
             Width = 10
             Height = 16
-            Caption = 'v'#39
+            Caption = 'v'''
           end
           object Edit_targetx: TEdit
             Left = 33
             Top = 17
             Width = 72
             Height = 24
-            ImeName = #26085#25991#36664#20837#31995#32113' (MS-IME2002)'
+            ImeName = 'らゅ块╰参 (MS-IME2002)'
             TabOrder = 0
             Text = '0.2788'
             OnChange = Edit_targetxChange
@@ -130,7 +130,7 @@ object TargetWhiteForm2: TTargetWhiteForm2
             Top = 17
             Width = 72
             Height = 24
-            ImeName = #26085#25991#36664#20837#31995#32113' (MS-IME2002)'
+            ImeName = 'らゅ块╰参 (MS-IME2002)'
             TabOrder = 1
             Text = '0.2920'
             OnChange = Edit_targetyChange
@@ -140,7 +140,7 @@ object TargetWhiteForm2: TTargetWhiteForm2
             Top = 41
             Width = 73
             Height = 24
-            ImeName = #26085#25991#36664#20837#31995#32113' (MS-IME2002)'
+            ImeName = 'らゅ块╰参 (MS-IME2002)'
             TabOrder = 2
             Text = '10000'
             OnChange = Edit_CTChange
@@ -151,7 +151,7 @@ object TargetWhiteForm2: TTargetWhiteForm2
             Width = 73
             Height = 24
             Enabled = False
-            ImeName = #26085#25991#36664#20837#31995#32113' (MS-IME2002)'
+            ImeName = 'らゅ块╰参 (MS-IME2002)'
             TabOrder = 3
             Text = '0.1876'
           end
@@ -161,7 +161,7 @@ object TargetWhiteForm2: TTargetWhiteForm2
             Width = 73
             Height = 24
             Enabled = False
-            ImeName = #26085#25991#36664#20837#31995#32113' (MS-IME2002)'
+            ImeName = 'らゅ块╰参 (MS-IME2002)'
             TabOrder = 4
             Text = '0.4419'
           end
@@ -211,7 +211,7 @@ object TargetWhiteForm2: TTargetWhiteForm2
             Top = 17
             Width = 40
             Height = 24
-            ImeName = #26085#25991#36664#20837#31995#32113' (MS-IME2002)'
+            ImeName = 'らゅ块╰参 (MS-IME2002)'
             TabOrder = 0
             Text = '0'
             OnChange = Edit_RChange
@@ -221,7 +221,7 @@ object TargetWhiteForm2: TTargetWhiteForm2
             Top = 17
             Width = 40
             Height = 24
-            ImeName = #26085#25991#36664#20837#31995#32113' (MS-IME2002)'
+            ImeName = 'らゅ块╰参 (MS-IME2002)'
             TabOrder = 1
             Text = '0'
             OnChange = Edit_GChange
@@ -231,7 +231,7 @@ object TargetWhiteForm2: TTargetWhiteForm2
             Top = 17
             Width = 40
             Height = 24
-            ImeName = #26085#25991#36664#20837#31995#32113' (MS-IME2002)'
+            ImeName = 'らゅ块╰参 (MS-IME2002)'
             TabOrder = 2
             Text = '0'
             OnChange = Edit_BChange
@@ -277,7 +277,7 @@ object TargetWhiteForm2: TTargetWhiteForm2
             Top = 33
             Width = 49
             Height = 24
-            ImeName = #26085#25991#36664#20837#31995#32113' (MS-IME2002)'
+            ImeName = 'らゅ块╰参 (MS-IME2002)'
             TabOrder = 0
             Text = '0.0000'
           end
@@ -286,7 +286,7 @@ object TargetWhiteForm2: TTargetWhiteForm2
             Top = 33
             Width = 48
             Height = 24
-            ImeName = #26085#25991#36664#20837#31995#32113' (MS-IME2002)'
+            ImeName = 'らゅ块╰参 (MS-IME2002)'
             TabOrder = 1
             Text = '0.0000'
           end
@@ -295,7 +295,7 @@ object TargetWhiteForm2: TTargetWhiteForm2
             Top = 33
             Width = 48
             Height = 24
-            ImeName = #26085#25991#36664#20837#31995#32113' (MS-IME2002)'
+            ImeName = 'らゅ块╰参 (MS-IME2002)'
             TabOrder = 2
             Text = '0.0'
           end
@@ -394,6 +394,7 @@ object TargetWhiteForm2: TTargetWhiteForm2
           Position = 255
           TabOrder = 1
           OnChange = ScrollBar_GChange
+          OnChange = ScrollBar_GChange          
         end
         object ScrollBar_B: TScrollBar
           Left = 73
@@ -421,7 +422,7 @@ object TargetWhiteForm2: TTargetWhiteForm2
           Width = 40
           Height = 24
           Enabled = False
-          ImeName = #26085#25991#36664#20837#31995#32113' (MS-IME2002)'
+          ImeName = 'らゅ块╰参 (MS-IME2002)'
           TabOrder = 4
           Text = '255'
         end
@@ -431,7 +432,7 @@ object TargetWhiteForm2: TTargetWhiteForm2
           Width = 40
           Height = 24
           Enabled = False
-          ImeName = #26085#25991#36664#20837#31995#32113' (MS-IME2002)'
+          ImeName = 'らゅ块╰参 (MS-IME2002)'
           TabOrder = 5
           Text = '255'
         end
@@ -441,7 +442,7 @@ object TargetWhiteForm2: TTargetWhiteForm2
           Width = 40
           Height = 24
           Enabled = False
-          ImeName = #26085#25991#36664#20837#31995#32113' (MS-IME2002)'
+          ImeName = 'らゅ块╰参 (MS-IME2002)'
           TabOrder = 6
           Text = '255'
         end
@@ -519,7 +520,7 @@ object TargetWhiteForm2: TTargetWhiteForm2
           Top = 41
           Width = 73
           Height = 24
-          ImeName = #26085#25991#36664#20837#31995#32113' (MS-IME2002)'
+          ImeName = 'らゅ块╰参 (MS-IME2002)'
           TabOrder = 0
           Text = '0'
         end
@@ -528,7 +529,7 @@ object TargetWhiteForm2: TTargetWhiteForm2
           Top = 73
           Width = 73
           Height = 24
-          ImeName = #26085#25991#36664#20837#31995#32113' (MS-IME2002)'
+          ImeName = 'らゅ块╰参 (MS-IME2002)'
           TabOrder = 1
           Text = '0'
         end
@@ -537,7 +538,7 @@ object TargetWhiteForm2: TTargetWhiteForm2
           Top = 105
           Width = 73
           Height = 24
-          ImeName = #26085#25991#36664#20837#31995#32113' (MS-IME2002)'
+          ImeName = 'らゅ块╰参 (MS-IME2002)'
           TabOrder = 2
           Text = '0'
           OnChange = Edit_BZChange
@@ -547,7 +548,7 @@ object TargetWhiteForm2: TTargetWhiteForm2
           Top = 137
           Width = 73
           Height = 24
-          ImeName = #26085#25991#36664#20837#31995#32113' (MS-IME2002)'
+          ImeName = 'らゅ块╰参 (MS-IME2002)'
           TabOrder = 3
           Text = '0'
         end
@@ -556,7 +557,7 @@ object TargetWhiteForm2: TTargetWhiteForm2
           Top = 137
           Width = 72
           Height = 24
-          ImeName = #26085#25991#36664#20837#31995#32113' (MS-IME2002)'
+          ImeName = 'らゅ块╰参 (MS-IME2002)'
           TabOrder = 4
           Text = '0'
         end
@@ -565,7 +566,7 @@ object TargetWhiteForm2: TTargetWhiteForm2
           Top = 105
           Width = 72
           Height = 24
-          ImeName = #26085#25991#36664#20837#31995#32113' (MS-IME2002)'
+          ImeName = 'らゅ块╰参 (MS-IME2002)'
           TabOrder = 5
           Text = '0'
         end
@@ -574,7 +575,7 @@ object TargetWhiteForm2: TTargetWhiteForm2
           Top = 73
           Width = 72
           Height = 24
-          ImeName = #26085#25991#36664#20837#31995#32113' (MS-IME2002)'
+          ImeName = 'らゅ块╰参 (MS-IME2002)'
           TabOrder = 6
           Text = '0'
         end
@@ -583,7 +584,7 @@ object TargetWhiteForm2: TTargetWhiteForm2
           Top = 41
           Width = 72
           Height = 24
-          ImeName = #26085#25991#36664#20837#31995#32113' (MS-IME2002)'
+          ImeName = 'らゅ块╰参 (MS-IME2002)'
           TabOrder = 7
           Text = '0'
         end
@@ -592,7 +593,7 @@ object TargetWhiteForm2: TTargetWhiteForm2
           Top = 41
           Width = 73
           Height = 24
-          ImeName = #26085#25991#36664#20837#31995#32113' (MS-IME2002)'
+          ImeName = 'らゅ块╰参 (MS-IME2002)'
           TabOrder = 8
           Text = '0'
         end
@@ -601,7 +602,7 @@ object TargetWhiteForm2: TTargetWhiteForm2
           Top = 73
           Width = 73
           Height = 24
-          ImeName = #26085#25991#36664#20837#31995#32113' (MS-IME2002)'
+          ImeName = 'らゅ块╰参 (MS-IME2002)'
           TabOrder = 9
           Text = '0'
         end
@@ -610,7 +611,7 @@ object TargetWhiteForm2: TTargetWhiteForm2
           Top = 105
           Width = 73
           Height = 24
-          ImeName = #26085#25991#36664#20837#31995#32113' (MS-IME2002)'
+          ImeName = 'らゅ块╰参 (MS-IME2002)'
           TabOrder = 10
           Text = '0'
         end
@@ -619,7 +620,7 @@ object TargetWhiteForm2: TTargetWhiteForm2
           Top = 137
           Width = 73
           Height = 24
-          ImeName = #26085#25991#36664#20837#31995#32113' (MS-IME2002)'
+          ImeName = 'らゅ块╰参 (MS-IME2002)'
           TabOrder = 11
           Text = '0'
         end

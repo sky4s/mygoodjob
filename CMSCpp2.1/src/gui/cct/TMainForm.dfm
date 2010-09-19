@@ -1518,7 +1518,7 @@ object MainForm: TMainForm
             Top = 16
             Width = 152
             Height = 24
-            ItemHeight = 16
+            ItemHeight = 0
             TabOrder = 0
             OnChange = ComboBox_TCONTypeChange
           end
