@@ -13,9 +13,16 @@
 
 namespace gui {
     namespace util {
-	UIBinder::UIBinder(TEdit * edit,
-			   TScrollBar * scrollBar):edit(edit),
-	    scrollBar(scrollBar) {
+	double UIBinder::editToScrollBar(double value) {
+	    return value;
+	};
+	double UIBinder::scrollBarToEdit(double value) {
+	    return value;
+	};
+
+      UIBinder::UIBinder(TEdit * edit, TScrollBar * scrollBar):edit(edit),
+	    scrollBar(scrollBar)
+	{
 
 	};
     };

@@ -121,7 +121,9 @@ class TTargetWhiteForm2:public TForm, cms::util::WindowListener {
   public:			// User declarations
     __fastcall TTargetWhiteForm2(TComponent * Owner);
     void windowClosing();
-    void setBitDepthProcessor(bptr < cms::lcd::calibrate::BitDepthProcessor > bitDepth);
+    void setBitDepthProcessor(bptr <
+			      cms::lcd::calibrate::BitDepthProcessor >
+			      bitDepth);
 
 };
 //---------------------------------------------------------------------------
