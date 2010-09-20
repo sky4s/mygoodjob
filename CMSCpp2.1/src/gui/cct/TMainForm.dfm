@@ -1,6 +1,6 @@
 object MainForm: TMainForm
-  Left = 267
-  Top = 453
+  Left = 108
+  Top = 367
   Width = 938
   Height = 425
   Caption = 'CCT Adjustment v3'
@@ -718,7 +718,6 @@ object MainForm: TMainForm
   OldCreateOrder = False
   OnCreate = FormCreate
   OnDestroy = FormDestroy
-  OnShow = FormShow
   PixelsPerInch = 120
   TextHeight = 16
   object Label6: TLabel

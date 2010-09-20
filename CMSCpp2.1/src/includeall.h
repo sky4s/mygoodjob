@@ -10,6 +10,7 @@
 #include <java/lang.h>
 #include <vcl.h>
 #include <debug.h>
+#include <gui/util/binder.h>
 
 
  

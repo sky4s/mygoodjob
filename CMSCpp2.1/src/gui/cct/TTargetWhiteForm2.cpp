@@ -553,3 +553,4 @@ void __fastcall TTargetWhiteForm2::Edit_InverseBClick(TObject * Sender)
 
 //---------------------------------------------------------------------------
 
+
