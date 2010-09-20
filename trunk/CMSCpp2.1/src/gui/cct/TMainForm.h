@@ -145,7 +145,6 @@ class TMainForm:public TForm {
     void __fastcall RadioButton_Out10Click(TObject * Sender);
     void __fastcall Button1Click(TObject * Sender);
     void __fastcall Edit_IntervalChange(TObject * Sender);
-    void __fastcall FormShow(TObject * Sender);
     void __fastcall Button_I2CTestClick(TObject * Sender);
     void __fastcall RadioButton_AnalyzerMaxMatrixClick(TObject * Sender);
     void __fastcall RadioButton_AnalyzerCA210Click(TObject * Sender);
@@ -198,26 +197,33 @@ class TMainForm:public TForm {
     void readTCONSections();
     String tconFilename;
     void initTCONFile();
+    //bptr < gui::util::UIBinder > binder;
     //==========================================================================
   public:			// User declarations
     //==========================================================================
     // meter
     //==========================================================================
+     bptr < cms::measure::MeterMeasurement > mm;
+
     void setAnalyzerToTargetChannel();
     void setAnalyzerToSourceChannel();
+
+    //analyzer
     bool isCA210Analyzer();
-     bptr < cms::measure::MeterMeasurement > mm;
-    void setMeterMeasurementWaitTimes();
      bptr < cms::measure::IntensityAnalyzerIF > getAnalyzer();
      bptr < cms::measure::MaxMatrixIntensityAnayzer > getNativeWhiteAnalyzer();
+    void setAnalyzerNull();
+
+    //meter
+    void setMeterMeasurementWaitTimes();
     void setDummyMeterFilename(const std::string & filename);
     void setDummyMeterFile(bptr < cms::colorformat::DGLutFile > dglutFile);
     void resetDummyMeter();
-    void setAnalyzerNull();
-     bptr < cms::lcd::calibrate::ComponentFetcher > getComponentFetcher();
     void disconnectMeter();
     void connectMeter();
     void initCA210Meter();
+
+     bptr < cms::lcd::calibrate::ComponentFetcher > getComponentFetcher();
     //==========================================================================
 
     //==========================================================================

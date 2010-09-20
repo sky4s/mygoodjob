@@ -68,6 +68,7 @@ void __fastcall TMainForm::FormCreate(TObject * Sender)
     using namespace cms::measure;
     using namespace cms::colorformat;
     using namespace cms::lcd::calibrate;
+    using namespace gui::util;
 
     bitDepth = bptr < BitDepthProcessor > (new BitDepthProcessor(8, 10, 8, false));
     if (true == linkCA210) {
@@ -93,6 +94,7 @@ void __fastcall TMainForm::FormCreate(TObject * Sender)
 	RadioButton_FlickrPixel->Visible = true;
 	RadioButton_FlickrSubPixel->Visible = true;
     }
+    //binder = bptr < UIBinder > (new UIBinder(Edit1, ScrollBar1));
 }
 
 void TMainForm::initTCONFile()
@@ -279,7 +281,8 @@ void TMainForm::initCA210Meter()
 	mm->setWaitTimes(this->getInterval());
     }
     catch(EOleException & ex) {
-	ShowMessage("CA210 cannot be linked.");
+	ShowMessage
+	    ("CA210 cannot be linked or unsupported version of CA-SDK (CA-SDK v4.10 needed).");
     }
 };
 
@@ -912,14 +915,6 @@ void __fastcall TMainForm::Edit_IntervalChange(TObject * Sender)
 
 //---------------------------------------------------------------------------
 
-void __fastcall TMainForm::FormShow(TObject * Sender)
-{
-    if (null == meter) {
-	ShowMessage("CA210 cannot be linked.");
-    }
-}
-
-//---------------------------------------------------------------------------
 void TMainForm::setMeterMeasurementWaitTimes()
 {
     this->mm->setWaitTimes(this->getInterval());
@@ -1122,4 +1117,5 @@ void __fastcall TMainForm::RadioButton_NinthClick(TObject * Sender)
 }
 
 //---------------------------------------------------------------------------
+
 

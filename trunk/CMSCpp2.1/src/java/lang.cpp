@@ -225,7 +225,7 @@ namespace java {
 	double Math::exp(double x) {
 	    return std::exp(x);
 	}
-	  double Math::atan2deg(double b, double a) {
+	double Math::atan2deg(double b, double a) {
 	    double h;
 
 	    if (a == 0 && b == 0) {

@@ -102,8 +102,7 @@ namespace cms {
 	     SCurve(double start, double end);
 	    double getValue(double normalizeInput);
 	};
-	class UIBinder {
-	};
+ 
     };
 };
 #endif

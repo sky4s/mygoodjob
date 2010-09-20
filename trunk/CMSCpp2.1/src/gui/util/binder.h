@@ -4,24 +4,42 @@
 //C系統文件
 
 //C++系統文件
-
+#include <map>
 //其他庫頭文件
-
+#include <vcl.h>
+#include <Controls.hpp>
 //本項目內頭文件
-
+#include <java/lang.h>
 
 namespace gui {
     namespace util {
 	class UIBinder {
+	    enum Type { Edit2ScrollBar, Edit2Edit };
 	  private:
-	    TEdit * edit;
+	     TEdit * edit;
+	    TEdit *edit2;
 	    TScrollBar *scrollBar;
+	    Type type;
 	  protected:
-	     virtual double editToScrollBar(double value);
-	    virtual double scrollBarToEdit(double value);
+	     virtual double editToScrollBarValue(double value);
+	    virtual double scrollBarToEditValue(double value);
+	    void edit2ScrollBar(TObject * sender);
+	    void edit2Edit(TObject * sender);
 	  public:
 	     UIBinder(TEdit * edit, TScrollBar * scrollBar);
+	     UIBinder(TEdit * edit1, TEdit * edit2);
+	    void active(TObject * sender);
+	};
 
+	class MultiUIBinder {
+	  private:
+	    //TWinControl * t;
+	    std::map < TWinControl *, binder_ptr > bindebrMap;
+	  public:
+	    MultiUIBinder();
+	    void active(TObject * sender);
+	    void bind(TEdit * edit, TScrollBar * scrollBar);
+	    void bind(TEdit * edit1, TEdit * edit2);
 	};
     };
 };
