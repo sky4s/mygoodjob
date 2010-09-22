@@ -36,8 +36,10 @@ void __fastcall TTargetWhiteForm2::RadioButton_MaxRGBClick(TObject *
 
 void __fastcall TTargetWhiteForm2::ScrollBar_RChange(TObject * Sender)
 {
+    binder->active(Sender);
+
     Edit_R->Text = AnsiString(ScrollBar_R->Position);
-    Edit_ScrollR->Text = AnsiString(ScrollBar_R->Position);
+    //Edit_ScrollR->Text = AnsiString(ScrollBar_R->Position);
     if (CheckBox_Lock->Checked) {
 	ScrollBar_G->Position = ScrollBar_R->Position;
 	ScrollBar_B->Position = ScrollBar_R->Position;
@@ -390,6 +392,7 @@ void TTargetWhiteForm2::windowClosing()
 void __fastcall TTargetWhiteForm2::FormCreate(TObject * Sender)
 {
     using namespace cms::util;
+    using namespace gui::util;
     bptr < WindowListener > formPtr(dynamic_cast <
 				    WindowListener * >(this));
     MeasureWindow->addWindowListener(formPtr);
@@ -400,7 +403,8 @@ void __fastcall TTargetWhiteForm2::FormCreate(TObject * Sender)
     this->CheckBox_MoreAccurate->Visible = true;
     this->CheckBox_MaxRGB->Visible = true;
 #endif
-
+    binder = bptr < MultiUIBinder > (new MultiUIBinder());
+    binder->bind(Edit_ScrollR, ScrollBar_R);
 }
 
 //---------------------------------------------------------------------------
@@ -552,5 +556,4 @@ void __fastcall TTargetWhiteForm2::Edit_InverseBClick(TObject * Sender)
 }
 
 //---------------------------------------------------------------------------
-
 

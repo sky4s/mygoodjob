@@ -5,7 +5,7 @@
 //C系統文件
 //#include <cstdarg>
 //C++系統文件
-
+#include <utility>
 //其他庫頭文件
 //#include <boost/tokenizer.hpp>
 //本項目內頭文件
@@ -13,6 +13,7 @@
 
 namespace gui {
     namespace util {
+	using namespace std;
 	double UIBinder::editToScrollBarValue(double value) {
 	    return value;
 	};
@@ -26,7 +27,8 @@ namespace gui {
 
 	};
       UIBinder::UIBinder(TEdit * edit1, TEdit * edit2):edit(edit1),
-	    edit2(edit2), type(Edit2Edit) {
+	    edit2(edit2),
+	    type(Edit2Edit) {
 
 	};
 
@@ -60,23 +62,35 @@ namespace gui {
 	MultiUIBinder::MultiUIBinder() {
 	};
 	void MultiUIBinder::active(TObject * sender) {
+	    //using namespace std;
 	    TWinControl *ctrl = dynamic_cast < TWinControl * >(sender);
 	    if (null != ctrl) {
-		binder_ptr binder = bindebrMap[ctrl];
-		if (null != binder) {
+		Range range = binderMap2.equal_range(ctrl);
+		for (BinderItrator i = range.first; i != range.second; ++i) {
+		    binder_ptr binder = i->second;
 		    binder->active(ctrl);
 		}
+
+		/*binder_ptr binder = binderMap[ctrl];
+		if (null != binder) {
+		    binder->active(ctrl);
+		}*/
 	    }
 	};
 	void MultiUIBinder::bind(TEdit * edit, TScrollBar * scrollBar) {
 	    binder_ptr binder(new UIBinder(edit, scrollBar));
-	    bindebrMap[edit] = binder;
-	    bindebrMap[scrollBar] = binder;
+	    //binderMap[edit] = binder;
+	    //binderMap[scrollBar] = binder;
+	    binderMap2.insert(make_pair(edit, binder));
+	    binderMap2.insert(make_pair(scrollBar, binder));
 	};
 	void MultiUIBinder::bind(TEdit * edit1, TEdit * edit2) {
+	    using namespace std;
 	    binder_ptr binder(new UIBinder(edit1, edit2));
-	    bindebrMap[edit1] = binder;
-	    bindebrMap[edit2] = binder;
+	    //binderMap[edit1] = binder;
+	    //binderMap[edit2] = binder;
+	    binderMap2.insert(make_pair(edit1, binder));
+	    binderMap2.insert(make_pair(edit2, binder));
 	};
 
     };
