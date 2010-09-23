@@ -4,7 +4,7 @@
 //C系統文件
 
 //C++系統文件
-
+#include <string>
 //其他庫頭文件
 #include <vcl.h>
 
@@ -14,6 +14,7 @@
 namespace cms {
 
     namespace measure {
+	using namespace std;
 
 	class MeterMeasurement;
 	/*
@@ -85,6 +86,7 @@ namespace cms {
 	     bptr < MeterMeasurement > getMeterMeasurement();
 	};
 
+#ifdef TNT_LIB
 	/*
 	   利用矩陣運算推算出Intensity
 	 */
@@ -122,20 +124,6 @@ namespace cms {
 	     bptr < MeterMeasurement > getMeterMeasurement();
 	};
 
-	/*
-	   無效!退費!
-	 */
-	/*class AdvancedMaxMatrixIntensityAnayzer:public
-	   MaxMatrixIntensityAnayzer {
-	   protected:
-	   XYZ_ptr targetWhite;
-	   double2D_ptr xtalkRatio;
-	   public:
-	   AdvancedMaxMatrixIntensityAnayzer();
-	   void setupTarget(XYZ_ptr targetXYZ);
-	   RGB_ptr getIntensity(XYZ_ptr XYZ);
-	   void enter();
-	   }; */
 
 	/*
 	   用來合併CA-210與MaxMatrix兩種方法來分析Intensity
@@ -166,6 +154,7 @@ namespace cms {
 	    RGB_ptr getReferenceRGB();
 	     bptr < MeterMeasurement > getMeterMeasurement();
 	};
+#endif
     };
 };
 #endif

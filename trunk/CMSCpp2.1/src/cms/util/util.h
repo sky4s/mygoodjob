@@ -30,9 +30,11 @@ namespace cms {
 	    static bptr < WideString > toWideString(const std::string & s);
 	    static void shellExecute(const std::string & filename);
 #ifdef EXCEL_ACCESSIBLE
+#ifdef COLORSPACE
 	    static void storeXYZxyVector(const std::string & filename, XYZ_vector_ptr XYZVector);
 	    static void storeXYZxyVector(const std::string & filename,
 					 XYZ_vector_ptr XYZVector, const std::string firstColumn);
+#endif
 #endif
 	};
 

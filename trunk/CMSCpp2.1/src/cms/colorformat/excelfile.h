@@ -14,7 +14,9 @@
 #ifdef __BORLANDC__
 # pragma pack(push, 8)
 #endif
+
 #include <map>
+
 #ifdef __BORLANDC__
 # pragma pack(pop)
 #endif
@@ -57,55 +59,41 @@ namespace cms {
 
 	    void update0(const std::string & keyField,
 			 const int keyValue,
-			 string_vector_ptr fieldNames,
-			 string_vector_ptr values, bool textValues);
+			 string_vector_ptr fieldNames, string_vector_ptr values, bool textValues);
 	    string_vector_ptr select0(const std::string & keyField,
-				      const std::string & keyValue,
-				      bool textValues);
+				      const std::string & keyValue, bool textValues);
 	     bptr < TADODataSet > selectDataSet(const std::string & sql);
-	    static string_vector_ptr getResult(bptr < TADODataSet >
-					       dataSet);
+	    static string_vector_ptr getResult(bptr < TADODataSet > dataSet);
 	  public:
 	    void execute(const std::string & sql);
 	  public:
 	     ExcelFileDB(const std::string & fileName, const Mode mode);
 	    ~ExcelFileDB();
+	    void createTable(const std::string & tableName, string_vector_ptr fieldNames);
 	    void createTable(const std::string & tableName,
-			     string_vector_ptr fieldNames);
-	    void createTable(const std::string & tableName,
-			     string_vector_ptr fieldNames,
-			     string_vector_ptr fieldTypes);
+			     string_vector_ptr fieldNames, string_vector_ptr fieldTypes);
 
 	    void setTableName(const std::string & tableName);
-	    void insert(string_vector_ptr fieldNames,
-			string_vector_ptr values);
-	    void insert(string_vector_ptr fieldNames,
-			string_vector_ptr values, bool text);
+	    void insert(string_vector_ptr fieldNames, string_vector_ptr values);
+	    void insert(string_vector_ptr fieldNames, string_vector_ptr values, bool text);
 
 
 
 	    void update(const std::string & keyField,
-			const int keyValue,
-			string_vector_ptr fieldNames,
-			string_vector_ptr values);
+			const int keyValue, string_vector_ptr fieldNames, string_vector_ptr values);
 	    void update(const std::string & keyField,
 			const int keyValue,
-			string_vector_ptr fieldNames,
-			string_vector_ptr values, bool textValues);
+			string_vector_ptr fieldNames, string_vector_ptr values, bool textValues);
 	    void update(const std::string & keyField,
 			const int keyValue,
-			const std::string & fieldName,
-			const std::string & value);
+			const std::string & fieldName, const std::string & value);
 
 	    void update(const std::string & keyField,
-			const int keyValue,
-			const std::string & fieldName, const int value);
+			const int keyValue, const std::string & fieldName, const int value);
 
-	    string_vector_ptr select(const std::string & keyField,
-				     const int keyValue);
+	    string_vector_ptr select(const std::string & keyField, const int keyValue);
 	    string_vector_ptr select(const int keyValue);
-	    string_vector_ptr select(const std::string & keyField,
-				     const std::string & keyValue);
+	    string_vector_ptr select(const std::string & keyField, const std::string & keyValue);
 	    string_vector_ptr select(const std::string & keyValue);
 
 	     bptr < DBQuery > selectAll();
@@ -126,8 +114,7 @@ namespace cms {
 	    DBQuery(bptr < TADODataSet > dataSet);
 	  public:
 	    string_vector_ptr nextResult();
-	    static double_vector_ptr toDoubleVector(string_vector_ptr
-						    result);
+	    static double_vector_ptr toDoubleVector(string_vector_ptr result);
 	    bool hasNext();
 	    const string_ptr get(int row, int column);
 	};
@@ -136,12 +123,10 @@ namespace cms {
 	  private:
 	    const std::string & filename;
 	    const Mode mode;
-	     std::map < const std::string,
-		string_vector_ptr) headerNamesMap;
+	     std::map < const std::string, string_vector_ptr) headerNamesMap;
 	  protected:
 	     bptr < ExcelFileDB > db;
-	    string_vector_ptr getHeaderNames(const std::
-					     string & sheetname);
+	    string_vector_ptr getHeaderNames(const std::string & sheetname);
 	    const int getHeaderCount(const std::string & sheetname);
 
 	    void initPropertySheet();
@@ -149,20 +134,15 @@ namespace cms {
 
 	    //virtual void init() = 0;
 	  public:
-	    void initSheet(const std::string & sheetname, int headerCount,
-			   ...);
+	    void initSheet(const std::string & sheetname, int headerCount, ...);
+	    void initSheet(const std::string & sheetname, string_vector_ptr headerNames);
 	    void initSheet(const std::string & sheetname,
-			   string_vector_ptr headerNames);
-	    void initSheet(const std::string & sheetname,
-			   string_vector_ptr headerNames,
-			   string_vector_ptr fieldTypes);
-	    void insertData(const std::string & sheetname,
-			    string_vector_ptr values, bool text);
+			   string_vector_ptr headerNames, string_vector_ptr fieldTypes);
+	    void insertData(const std::string & sheetname, string_vector_ptr values, bool text);
 
 	     ExcelAccessBase(const std::string & filename, Mode mode);
 	    void
-	     addProperty(const std::string & key,
-			 const std::string & value);
+	     addProperty(const std::string & key, const std::string & value);
 	    void
 	     addProperty(const std::string & key, const double value);
 	    static const std::string & Properties;
@@ -180,8 +160,7 @@ namespace cms {
 	     SimpleExcelAccess(const std::string & filename, Mode mode,
 			       string_vector_ptr headerNames);
 	     SimpleExcelAccess(const std::string & filename, Mode mode,
-			       string_vector_ptr headerNames,
-			       string_vector_ptr fieldTypes);
+			       string_vector_ptr headerNames, string_vector_ptr fieldTypes);
 	     SimpleExcelAccess(const std::string & filename);
 	     bptr < DBQuery > retrieve();
 	    void insert(string_vector_ptr values);
@@ -191,8 +170,7 @@ namespace cms {
 	    /*
 	       提供可用來儲存value的預先定義格式
 	     */
-	    static bptr < SimpleExcelAccess >
-		getValueStoreInstance(const std::string & filename);
+	    static bptr < SimpleExcelAccess > getValueStoreInstance(const std::string & filename);
 	};
     };
 };

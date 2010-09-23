@@ -3,7 +3,7 @@
 //C系統文件
 
 //C++系統文件
-
+#include <string>
 //其他庫頭文件
 #include <ADODB.hpp>
 #include <DB.hpp>
@@ -13,7 +13,7 @@
 
 namespace cms {
     namespace colorformat {
-
+	using namespace std;
 
 	class DGLutProperty;
 	class DGLutFile:public ExcelAccessBase {

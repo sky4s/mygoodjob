@@ -8,6 +8,7 @@
 
 //本項目內頭文件
 #include <java/lang.h>
+#include <cms/cms.h>
 
 namespace i2c {
 

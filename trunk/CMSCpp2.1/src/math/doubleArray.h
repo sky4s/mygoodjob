@@ -13,13 +13,18 @@
 #ifdef __BORLANDC__
 # pragma pack(push, 8)
 #endif
+
+#ifdef TNT_LIB
 #include <tnt/tnt_array1d.h>
 #include <tnt/tnt_array2d.h>
+#endif
+
 #ifdef __BORLANDC__
 # pragma pack(pop)
 #endif
 
 namespace math {
+#ifdef TNT_LIB
     class DoubleArray {
       private:
 	static const double e;
@@ -33,6 +38,7 @@ namespace math {
 
 	static string_ptr toString(double_array m, int n);
 	static string_ptr toString(double_vector_ptr m);
+
 	static string_ptr toString(double1D_ptr m);
 	static string_ptr toString(double2D_ptr m);
 	static std::string toString(double2D m);
@@ -93,6 +99,7 @@ namespace math {
 	static float2D_ptr times(float2D_ptr a, float2D_ptr b);
 	static string_ptr toString(float2D_ptr m);
     };
+#endif
 
     class IntArray {
       public:

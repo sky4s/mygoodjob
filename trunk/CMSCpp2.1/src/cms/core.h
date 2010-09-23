@@ -16,11 +16,14 @@
 
 //本項目內頭文件
 #include <java/lang.h>
+#include <cms/cms.h>
 
 namespace cms {
     class SpectraIF {
       public:
+#ifdef TNT_LIB
 	virtual double1D_ptr getData() = 0;
+#endif
 	virtual int getEnd() const = 0;
 	virtual int getInterval() const = 0;
 	virtual int getStart() const = 0;
@@ -35,16 +38,17 @@ namespace cms {
 	static const CMF_ptr CIE_1931_2DEG_XYZ;
 	 ColorMatchingFunction(Spectra_vector_ptr spectraVector);
 
+#ifdef TNT_LIB
 	double1D_ptr getData(int index);
 	double1D_ptr getData();
+#endif
 	void setIndex(int index);
 	int getEnd() const;
 	int getInterval() const;
 	int getStart() const;
 	Spectra_ptr getSpectra(int index) const;
       private:
-	static CMF_ptr getColorMatchingFunction(const std::
-						string & filename);
+	static CMF_ptr getColorMatchingFunction(const std::string & filename);
     };
 
     enum CCTMethod {
@@ -59,9 +63,7 @@ namespace cms {
 	static double_array getdudvWithDIlluminant(XYZ_ptr XYZ);
 	static double getduvWithDIlluminant(XYZ_ptr XYZ);
 	static Spectra_ptr getSpectraOfBlackbodyRadiator(double tempK,
-							 int start,
-							 int end,
-							 int interval);
+							 int start, int end, int interval);
 	static Spectra_ptr getSpectraOfBlackbodyRadiator(double tempK);
 	static bool isCCTMeaningful(xyY_ptr xyY);
 	static double getduvWithBlackbody(XYZ_ptr XYZ);
@@ -76,9 +78,13 @@ namespace cms {
     class Illuminant:public jObject, SpectraIF {
       private:
 	int start, end, interval;
+#ifdef TNT_LIB
 	double1D_ptr data;
+#endif
       public:
+#ifdef TNT_LIB
 	 double1D_ptr getData();
+#endif
 	int getEnd() const;
 	int getInterval() const;
 	int getStart() const;
@@ -87,17 +93,17 @@ namespace cms {
 	static const Illuminant & D65;
 	static const Illuminant & C;
     };
-
+#ifdef TNT_LIB
     class Spectra:public jObject, SpectraIF /*, util::NameIF */  {
 	friend class ColorMatchingFunction;
       protected:
 	const std::string & name;
 	int start, end, interval;
+
 	double1D_ptr data;
 	XYZ_ptr CIE1931XYZ;
       public:
-	 Spectra(const std::string & name, int start, int end,
-		 int interval, double1D_ptr data);
+	 Spectra(const std::string & name, int start, int end, int interval, double1D_ptr data);
 	XYZ_ptr getXYZ();
 	XYZ_ptr getXYZ(const ColorMatchingFunction & cmf);
 	double1D_ptr getData();
@@ -110,13 +116,12 @@ namespace cms {
 	 XYZ_ptr getXYZFill(const ColorMatchingFunction & cmf);
 	Spectra_ptr doFillPurlieus(int start, int end);
 	static double1D_ptr fillPurlieusData(const double1D_ptr data,
-					     int leftBorder,
-					     int rightBorder);
+					     int leftBorder, int rightBorder);
 	static bool fillZero;
 	static double sigma(int start, int end,
-			    double1D_ptr data1, int interval1,
-			    double1D_ptr data2, int interval2);
+			    double1D_ptr data1, int interval1, double1D_ptr data2, int interval2);
     };
+#endif
 
 
     class Target:public jObject {

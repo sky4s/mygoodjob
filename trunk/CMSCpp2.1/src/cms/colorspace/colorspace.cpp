@@ -19,10 +19,7 @@ namespace cms {
 	 ColorSpace::ColorSpace():setValuesLocked(false) {
 	};
 
-	 double_array
-	    ColorSpace::
-	    cartesian2polarCoordinatesValues(double_array cartesianValues)
-	{
+	 double_array ColorSpace::cartesian2polarCoordinatesValues(double_array cartesianValues) {
 
 	    double_array polarValues(new double[3]);
 
@@ -31,8 +28,7 @@ namespace cms {
 	    double t1 = cartesianValues[1];
 	    double t2 = cartesianValues[2];
 	     polarValues[1] =
-		Math::sqrt(Math::pow(cartesianValues[1], 2) +
-			   Math::pow(cartesianValues[2], 2));
+		Math::sqrt(Math::pow(cartesianValues[1], 2) + Math::pow(cartesianValues[2], 2));
 	    if (t1 == 0 && t2 == 0) {
 		polarValues[2] = 0;
 	    } else {
@@ -47,15 +43,12 @@ namespace cms {
 	    }
 	    return polarValues;
 	};
-	double_array
-	    ColorSpace::cartesian2polarCoordinatesValues(double x,
-							 double y) {
+	double_array ColorSpace::cartesian2polarCoordinatesValues(double x, double y) {
 	    double_array polarValues(new double[2]);
 
 	    double t1 = x;
 	    double t2 = y;
-	    polarValues[0] =
-		Math::sqrt(Math::pow(t1, 2) + Math::pow(t2, 2));
+	    polarValues[0] = Math::sqrt(Math::pow(t1, 2) + Math::pow(t2, 2));
 	    if (t1 == 0 && t2 == 0) {
 		polarValues[1] = 0;
 	    } else {
@@ -102,8 +95,7 @@ namespace cms {
 	    return _getValues(values);
 	};
 
-	double_array ColorSpace::
-	    polar2cartesianCoordinatesValues(double_array polarValues) {
+	double_array ColorSpace::polar2cartesianCoordinatesValues(double_array polarValues) {
 	    double t = (polarValues[2] * Math::PI) / 180.0;
 
 	    double_array cartesianValues(new double[3]);
@@ -114,9 +106,7 @@ namespace cms {
 
 	    return cartesianValues;
 	};
-	double_array ColorSpace::
-	    polar2cartesianCoordinatesValues(double distance,
-					     double angle) {
+	double_array ColorSpace::polar2cartesianCoordinatesValues(double distance, double angle) {
 	    double t = (angle * Math::PI) / 180.0;
 
 	    double_array cartesianValues(new double[2]);
@@ -133,8 +123,7 @@ namespace cms {
 	    }
 	    _setValues(values);
 	};
-	void ColorSpace::setValues(double value1, double value2,
-				   double value3) {
+	void ColorSpace::setValues(double value1, double value2, double value3) {
 	    double_array values(new double[3]);
 	    values[0] = value1;
 	    values[1] = value2;
@@ -150,14 +139,11 @@ namespace cms {
 	    double_array values = this->getValues();
 	    return math::DoubleArray::toString(values, getNumberBands());
 	};
-	double_array ColorSpace::
-	    getValuesFromString(const string_ptr string) {
+	double_array ColorSpace::getValuesFromString(const string_ptr string) {
 	    using namespace cms::util;
-	    string_vector_ptr stringvector =
-		StringVector::tokenize(*string, "[], '");
+	    string_vector_ptr stringvector = StringVector::tokenize(*string, "[], '");
 	    if (stringvector->size() != 3) {
-		throw
-		    IllegalArgumentException("stringvector->size() != 3");
+		throw IllegalArgumentException("stringvector->size() != 3");
 	    }
 	    double_array result(new double[3]);
 	    result[0] = _toDouble((*stringvector)[0]);
