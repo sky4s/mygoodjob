@@ -19,9 +19,13 @@
 #include <boost/foreach.hpp>
 #include <boost/lexical_cast.hpp>
 
+//#define TNT
+
+#ifdef TNT
 #include <tnt/tnt_array1d.h>
 #include <tnt/tnt_array2d.h>
 #include <tnt/tnt_array3d.h>
+#endif
 
 #ifdef __BORLANDC__
 # pragma pack(pop)
@@ -274,6 +278,7 @@ typedef bptr < cms::util::RGBGamma > RGBGamma_ptr;
 //==============================================================================
 //簡化tnt使用上的巨集
 //==============================================================================
+#ifdef TNT
 typedef TNT::Array1D < long double >longdouble1D;
 typedef TNT::Array2D < long double >longdouble2D;
 typedef bptr < longdouble2D > longdouble2D_ptr;
@@ -300,6 +305,7 @@ typedef TNT::Array3D < float >float3D;
 typedef bptr < float1D > float1D_ptr;
 typedef bptr < float2D > float2D_ptr;
 typedef bptr < float3D > float3D_ptr;
+#endif
 //==============================================================================
 
 //==============================================================================
@@ -430,7 +436,9 @@ namespace java {
 
 	    static double min(double a, double b);
 	    static double max(double a, double b);
+#ifdef TNT
 	    static double max(double1D_ptr values);
+#endif
 
 	    static int maxIndex(double_array values, int n);
 	    static int minIndex(double_array values, int n);
@@ -561,7 +569,7 @@ template < typename Container, typename ValueType, int nPropType > class Propert
     }
 //-- To make possible to cast the property class to the
 //   internal type --
-    operator                           ValueType() {
+    operator                              ValueType() {
 	assert(m_cObject != NULL);
 	assert(Get != NULL);
 	return (m_cObject->*Get) ();

@@ -9,6 +9,7 @@
 #define DEBUG_DIR  "debug/"
 #define DEBUG_NEWFUNC_FILE "new.txt"
 //=============================================================================
+
 //CCT功能的debug功能開啟
 #define DEBUG_CCTLUT
 //新方法的過程debug功能開啟
