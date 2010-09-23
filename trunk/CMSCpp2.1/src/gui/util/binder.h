@@ -11,39 +11,51 @@
 //本項目內頭文件
 #include <java/lang.h>
 
-typedef std::multimap < TWinControl *,
-    binder_ptr >::const_iterator BinderItrator;
-typedef std::pair < BinderItrator, BinderItrator > Range;
+typedef std::multimap < TWinControl *, uiset_ptr >::const_iterator SetterItrator;
+typedef std::pair < SetterItrator, SetterItrator > Range;
 
 namespace gui {
     namespace util {
-	class UIBinder {
-	    enum Type { Edit2ScrollBar, Edit2Edit };
+	class UIValueSetter {
+	  public:
+	    virtual void set(TObject * sender) = 0;
+	};
+
+	class Edit2ScrollBarSetter:public UIValueSetter {
 	  private:
 	    TEdit * edit;
-	    TEdit *edit2;
 	    TScrollBar *scrollBar;
-	    Type type;
-	  protected:
-	    virtual double editToScrollBarValue(double value);
-	    virtual double scrollBarToEditValue(double value);
-	    void edit2ScrollBar(TObject * sender);
-	    void edit2Edit(TObject * sender);
 	  public:
-	    UIBinder(TEdit * edit, TScrollBar * scrollBar);
-	    UIBinder(TEdit * edit1, TEdit * edit2);
-	    void active(TObject * sender);
+	    Edit2ScrollBarSetter(TEdit * edit, TScrollBar * scrollBar);
+	    virtual void set(TObject * sender);
 	};
+
+	class ScrollBar2ScrollBarSetter:public UIValueSetter {
+	  private:
+	    TScrollBar * scrollBar1, *scrollBar2;
+	  public:
+	    ScrollBar2ScrollBarSetter(TScrollBar * scrollBar1, TScrollBar * scrollBar2);
+	    virtual void set(TObject * sender);
+	};
+
+	class Edit2EditSetter:public UIValueSetter {
+	  private:
+	    TEdit * edit1, *edit2;
+	  public:
+	    Edit2EditSetter(TEdit * edit1, TEdit * edit2);
+	    virtual void set(TObject * sender);
+	};
+
 
 	class MultiUIBinder {
 	  private:
-	    //std::map < TWinControl *, binder_ptr > binderMap;
-	    std::multimap < TWinControl *, binder_ptr > binderMap2;
+	    std::multimap < TWinControl *, uiset_ptr > setterMap;
 	  public:
 	    MultiUIBinder();
 	    void active(TObject * sender);
 	    void bind(TEdit * edit, TScrollBar * scrollBar);
 	    void bind(TEdit * edit1, TEdit * edit2);
+	    void bind(TScrollBar * scrollBar1, TScrollBar * scrollBar2);
 	};
     };
 };

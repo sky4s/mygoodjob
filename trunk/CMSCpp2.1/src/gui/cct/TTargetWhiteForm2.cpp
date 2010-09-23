@@ -24,8 +24,7 @@ __fastcall TTargetWhiteForm2::TTargetWhiteForm2(TComponent * Owner)
 }
 
 //---------------------------------------------------------------------------
-void __fastcall TTargetWhiteForm2::RadioButton_MaxRGBClick(TObject *
-							   Sender)
+void __fastcall TTargetWhiteForm2::RadioButton_MaxRGBClick(TObject * Sender)
 {
     int max = bitDepth->getMaxDigitalCount();
     setRGBRatio(max, max, max);
@@ -38,8 +37,6 @@ void __fastcall TTargetWhiteForm2::ScrollBar_RChange(TObject * Sender)
 {
     binder->active(Sender);
 
-    Edit_R->Text = AnsiString(ScrollBar_R->Position);
-    //Edit_ScrollR->Text = AnsiString(ScrollBar_R->Position);
     if (CheckBox_Lock->Checked) {
 	ScrollBar_G->Position = ScrollBar_R->Position;
 	ScrollBar_B->Position = ScrollBar_R->Position;
@@ -51,8 +48,8 @@ void __fastcall TTargetWhiteForm2::ScrollBar_RChange(TObject * Sender)
 
 void __fastcall TTargetWhiteForm2::ScrollBar_GChange(TObject * Sender)
 {
-    Edit_G->Text = AnsiString(ScrollBar_G->Position);
-    Edit_ScrollG->Text = AnsiString(ScrollBar_G->Position);
+    binder->active(Sender);
+
     if (CheckBox_Lock->Checked) {
 	ScrollBar_R->Position = ScrollBar_G->Position;
 	ScrollBar_B->Position = ScrollBar_G->Position;
@@ -64,8 +61,8 @@ void __fastcall TTargetWhiteForm2::ScrollBar_GChange(TObject * Sender)
 
 void __fastcall TTargetWhiteForm2::ScrollBar_BChange(TObject * Sender)
 {
-    Edit_B->Text = AnsiString(ScrollBar_B->Position);
-    Edit_ScrollB->Text = AnsiString(ScrollBar_B->Position);
+    binder->active(Sender);
+
     if (CheckBox_Lock->Checked) {
 	ScrollBar_R->Position = ScrollBar_B->Position;
 	ScrollBar_G->Position = ScrollBar_B->Position;
@@ -97,8 +94,7 @@ void __fastcall TTargetWhiteForm2::Edit_CTChange(TObject * Sender)
     int ct = ctText.ToInt();
 
     try {
-	bptr < CIExyY > xyY =
-	    CorrelatedColorTemperature::CCT2DIlluminantxyY(ct);
+	bptr < CIExyY > xyY = CorrelatedColorTemperature::CCT2DIlluminantxyY(ct);
 	double_array uvpValues = xyY->getuvPrimeValues();
 	setColorimetricValues(xyY->x, xyY->y, uvpValues[0], uvpValues[1]);
     }
@@ -109,8 +105,7 @@ void __fastcall TTargetWhiteForm2::Edit_CTChange(TObject * Sender)
 
 //---------------------------------------------------------------------------
 
-void TTargetWhiteForm2::setColorimetricValues(double x, double y,
-					      double up, double vp)
+void TTargetWhiteForm2::setColorimetricValues(double x, double y, double up, double vp)
 {
 
     AnsiString xStr = AnsiString().sprintf("%1.4g", x);
@@ -170,9 +165,7 @@ int TTargetWhiteForm2::calculateCCT(double x, double y)
     using cms::CorrelatedColorTemperature;
     using Indep::CIExyY;
     bptr < CIExyY > xyY(new CIExyY(x, y));
-    int cct =
-	static_cast <
-	int >(CorrelatedColorTemperature::xy2CCTByMcCamyFloat(xyY));
+    int cct = static_cast < int >(CorrelatedColorTemperature::xy2CCTByMcCamyFloat(xyY));
     return cct;
 }
 
@@ -209,8 +202,7 @@ void __fastcall TTargetWhiteForm2::Button_RunClick(TObject * Sender)
     bool useRGBRatio = this->RadioButton_RGBRatio->Checked;
     bool usexy = this->RadioButton_Targetxy->Checked;
     bool moreAccurate = this->CheckBox_MoreAccurate->Checked;
-    bool avoidHookTV = true == usexy
-	&& this->CheckBox_AvoidHookTV->Checked;
+    bool avoidHookTV = true == usexy && this->CheckBox_AvoidHookTV->Checked;
 
     if (avoidHookTV) {
 	//tv下的avoid hook
@@ -230,8 +222,7 @@ void __fastcall TTargetWhiteForm2::Button_RunClick(TObject * Sender)
     } else if (useRGBRatio) {
 	analyzer->setReferenceColorComment("RGB Ratio");
     } else if (usexy) {
-	string comment =
-	    "Target x,y(" + string(Edit_CT->Text.c_str()) + "k)";
+	string comment = "Target x,y(" + string(Edit_CT->Text.c_str()) + "k)";
 	/*if (avoidHookTV) {
 	   comment = "Target x,y(Max RGB) with avoid Hook TV";
 	   } else {
@@ -247,16 +238,14 @@ void __fastcall TTargetWhiteForm2::Button_RunClick(TObject * Sender)
 	//已知xy, 求rgb
 	if (true == moreAccurate) {
 	    finder =
-		bptr < WhitePointFinder >
-		(new WhitePointFinder(MainForm->mm, bitDepth, maxCount));
+		bptr < WhitePointFinder > (new WhitePointFinder(MainForm->mm, bitDepth, maxCount));
 	    MeasureWindow->addWindowListener(finder);
 	    rgb = finder->findRGB(xyY);
 	} else {
 	    finder =
 		bptr < StocktonWhitePointFinder > (new
 						   StocktonWhitePointFinder
-						   (MainForm->mm, bitDepth,
-						    rgb, maxCount, false));
+						   (MainForm->mm, bitDepth, rgb, maxCount, false));
 	    MeasureWindow->addWindowListener(finder);
 	    rgb = finder->findRGB(xyY);
 	}
@@ -365,23 +354,24 @@ void __fastcall TTargetWhiteForm2::Button_RunClick(TObject * Sender)
 
 void __fastcall TTargetWhiteForm2::Edit_RChange(TObject * Sender)
 {
-    ScrollBar_R->Position = this->Edit_R->Text.ToInt();
-}
-
-//---------------------------------------------------------------------------
-
-void __fastcall TTargetWhiteForm2::Edit_GChange(TObject * Sender)
-{
-    ScrollBar_G->Position = this->Edit_G->Text.ToInt();
-
+    binder->active(Sender);
 }
 
 //---------------------------------------------------------------------------
 
 void __fastcall TTargetWhiteForm2::Edit_BChange(TObject * Sender)
 {
-    ScrollBar_B->Position = this->Edit_B->Text.ToInt();
+    binder->active(Sender);
 }
+
+//---------------------------------------------------------------------------
+
+void __fastcall TTargetWhiteForm2::Edit_GChange(TObject * Sender)
+{
+    binder->active(Sender);
+}
+
+//----------------------------------------
 
 //---------------------------------------------------------------------------
 
@@ -393,8 +383,7 @@ void __fastcall TTargetWhiteForm2::FormCreate(TObject * Sender)
 {
     using namespace cms::util;
     using namespace gui::util;
-    bptr < WindowListener > formPtr(dynamic_cast <
-				    WindowListener * >(this));
+    bptr < WindowListener > formPtr(dynamic_cast < WindowListener * >(this));
     MeasureWindow->addWindowListener(formPtr);
     if (MainForm->newFunction) {
 	//CheckBox_AvoidHookTV->Visible = true;
@@ -403,21 +392,30 @@ void __fastcall TTargetWhiteForm2::FormCreate(TObject * Sender)
     this->CheckBox_MoreAccurate->Visible = true;
     this->CheckBox_MaxRGB->Visible = true;
 #endif
+
     binder = bptr < MultiUIBinder > (new MultiUIBinder());
     binder->bind(Edit_ScrollR, ScrollBar_R);
+    binder->bind(Edit_ScrollG, ScrollBar_G);
+    binder->bind(Edit_ScrollB, ScrollBar_B);
+    binder->bind(Edit_R, ScrollBar_R);
+    binder->bind(Edit_G, ScrollBar_G);
+    binder->bind(Edit_B, ScrollBar_B);
+    binder->bind(Edit_InverseB, Edit_B);
 }
 
 //---------------------------------------------------------------------------
 
 void TTargetWhiteForm2::setBitDepthProcessor(bptr <
-					     cms::lcd::calibrate::
-					     BitDepthProcessor > bitDepth)
+					     cms::lcd::calibrate::BitDepthProcessor > bitDepth)
 {
     this->bitDepth = bitDepth;
     if (Edit_R->Text.ToInt() == 0) {
-	double maxCount = bitDepth->getMaxDigitalCount();
+	int maxCount = (int) bitDepth->getMaxDigitalCount();
 	setRGBRatio(maxCount, maxCount, maxCount);
 	this->RadioButton_MaxRGB->Checked = true;
+	ScrollBar_R->Max = maxCount;
+	ScrollBar_G->Max = maxCount;
+	ScrollBar_B->Max = maxCount;
     }
 }
 
@@ -462,15 +460,13 @@ void __fastcall TTargetWhiteForm2::FormShow(TObject * Sender)
 
 //---------------------------------------------------------------------------
 
-void __fastcall TTargetWhiteForm2::Button_setMaxMatrixClick(TObject *
-							    Sender)
+void __fastcall TTargetWhiteForm2::Button_setMaxMatrixClick(TObject * Sender)
 {
     using namespace cms::measure;
     using namespace Dep;
     bptr < IntensityAnalyzerIF > analyzer = MainForm->getAnalyzer();
     bptr < MaxMatrixIntensityAnayzer >
-	maxmatrix(dynamic_cast <
-		  MaxMatrixIntensityAnayzer * >(analyzer.get()));
+	maxmatrix(dynamic_cast < MaxMatrixIntensityAnayzer * >(analyzer.get()));
 
     double rX = this->Edit_RX->Text.ToDouble();
     double rY = this->Edit_RY->Text.ToDouble();
@@ -503,8 +499,7 @@ void __fastcall TTargetWhiteForm2::Button_setMaxMatrixClick(TObject *
 
 //---------------------------------------------------------------------------
 
-void __fastcall TTargetWhiteForm2::FormKeyPress(TObject * Sender,
-						char &Key)
+void __fastcall TTargetWhiteForm2::FormKeyPress(TObject * Sender, char &Key)
 {
     if (Key == 27) {		//esc
 	this->Close();
@@ -537,8 +532,7 @@ void __fastcall TTargetWhiteForm2::Button4Click(TObject * Sender)
 
 //---------------------------------------------------------------------------
 
-void __fastcall TTargetWhiteForm2::Button_FindInverseBClick(TObject *
-							    Sender)
+void __fastcall TTargetWhiteForm2::Button_FindInverseBClick(TObject * Sender)
 {
     using namespace cms::measure;
     using namespace cms::lcd::calibrate;
@@ -551,7 +545,7 @@ void __fastcall TTargetWhiteForm2::Button_FindInverseBClick(TObject *
 void __fastcall TTargetWhiteForm2::Edit_InverseBClick(TObject * Sender)
 {
     if (Edit_InverseB->Text.Length() != 0) {
-	Edit_B->Text = Edit_InverseB->Text;
+	binder->active(Sender);
     }
 }
 

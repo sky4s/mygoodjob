@@ -118,13 +118,11 @@ class TTargetWhiteForm2:public TForm, cms::util::WindowListener {
     bptr < cms::lcd::calibrate::BitDepthProcessor > bitDepth;
     void setRGBRatio(int r, int g, int b);
     int maxZDGCode;
-    bptr < gui::util::MultiUIBinder > binder;
+    mbinder_ptr binder;
   public:			// User declarations
     __fastcall TTargetWhiteForm2(TComponent * Owner);
     void windowClosing();
-    void setBitDepthProcessor(bptr <
-			      cms::lcd::calibrate::BitDepthProcessor >
-			      bitDepth);
+    void setBitDepthProcessor(bptr < cms::lcd::calibrate::BitDepthProcessor > bitDepth);
 
 };
 //---------------------------------------------------------------------------
