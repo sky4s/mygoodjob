@@ -21,7 +21,7 @@
 #include "CM1.h"
 #include "Sharpness1.h"
 #include "ContrastEnhance1.h"
-#include "HueSatVal.h"
+
 
 //---------------------------------------------------------------------------
 class TMainForm : public TForm

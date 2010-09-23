@@ -2,6 +2,9 @@
 
 #pragma hdrstop
 #include "Unit1.h"
+
+#include "HueSatVal.h"
+#include "HueSatVal2.h"
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
 #pragma resource "*.dfm"
@@ -365,7 +368,7 @@ void __fastcall TMainForm::mn_HSVClick(TObject *Sender)
                 HSVForm->Show();
         else{
                 if(TCON_DEV=="12401"){
-                        HSVForm = new THSVForm1(this);
+                        HSVForm = new THSVForm2(this);
                         HSVForm->Show();
                 }
         }
