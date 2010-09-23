@@ -302,12 +302,12 @@ void TMeasureWindow::setVisible(bool visible)
 };
 
 //---------------------------------------------------------------------------
-void TMeasureWindow::addWindowListener(bptr < cms::util::WindowListener > listener)
+void TMeasureWindow::addWindowListener(bptr < gui::event::WindowListener > listener)
 {
 #ifndef WEAK_PTR
     listenerVector.push_back(listener);
 #else
-    bwptr < cms::util::WindowListener > wptr(listener);
+    bwptr < gui::event::WindowListener > wptr(listener);
     listenerVector2.push_back(wptr);
 #endif
 }
@@ -318,16 +318,16 @@ void TMeasureWindow::addWindowListener(bptr < cms::util::WindowListener > listen
 void __fastcall TMeasureWindow::FormClose(TObject * Sender, TCloseAction & Action)
 {
 #ifndef WEAK_PTR
-    foreach(bptr < cms::util::WindowListener > listener, listenerVector) {
+    foreach(bptr < gui::event::WindowListener > listener, listenerVector) {
 	if (null != listener) {
-	    listener->windowClosing();
+	    listener->windowClosing(Sender, Action);
 	}
     }
 #else
-    foreach(bwptr < cms::util::WindowListener > listener, listenerVector2) {
-	bptr < cms::util::WindowListener > l = listener.lock();
+    foreach(bwptr < gui::event::WindowListener > listener, listenerVector2) {
+	bptr < gui::event::WindowListener > l = listener.lock();
 	if (null != l) {
-	    l->windowClosing();
+	    l->windowClosing(Sender, Action);
 	}
     }
 #endif

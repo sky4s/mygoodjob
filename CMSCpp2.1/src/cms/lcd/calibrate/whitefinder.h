@@ -12,7 +12,7 @@
 namespace cms {
     namespace lcd {
 	namespace calibrate {
-	    class WhitePointFinder:public cms::util::WindowListener {
+	    class WhitePointFinder:public gui::event::WindowAdapter {
 	      private:
 
 		RGB_ptr findMatchRGB0(xyY_ptr xyY, RGB_ptr initRGB);
@@ -35,7 +35,7 @@ namespace cms {
 				  cms::lcd::calibrate::BitDepthProcessor >
 				  bitDepth, double maxcode);
 		virtual RGB_ptr findRGB(xyY_ptr xyY);
-		void windowClosing();
+		virtual void windowClosing(TObject * Sender, TCloseAction & Action);
 	    };
 
 	    class StocktonWhitePointFinder:public WhitePointFinder {

@@ -9,6 +9,7 @@
 
 //本項目內頭文件
 #include "dimdg.h"
+#include <gui/event/listener.h>
 
 
 namespace cms {
@@ -19,7 +20,7 @@ namespace cms {
 		CIExy, CIEuv, CIEuvPrime
 	    };
 
-	    class AdvancedDGLutGenerator:private DimDGLutGenerator, WindowListener {
+	    class AdvancedDGLutGenerator:private DimDGLutGenerator, gui::event::WindowAdapter {
 	      private:
 		//採用用大值的B Intensity或者100?
 		bool useMaxTargetBIntensity;
@@ -63,7 +64,7 @@ namespace cms {
 
 		void setUseMaxTargetBIntensity(bool useMaxTargetBIntensity);
 		void setBTargetIntensity(double bTargetIntensity);
-		void windowClosing();
+		virtual void windowClosing(TObject * Sender, TCloseAction & Action);
 		void setMultiGen(bool enable, int times);
 		XYZ_vector_ptr getTargetXYZVector();
 		XYZ_vector_ptr getTargetXYZVector(XYZ_ptr targetWhite,

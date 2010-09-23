@@ -25,7 +25,7 @@ namespace cms {
 		XYZ_ptr XYZ;
 		RGB_ptr gamma;
 	    };
-	    class ComponentFetcher:public cms::util::WindowListener {
+	    class ComponentFetcher:public gui::event::WindowAdapter {
 	      private:
 		bptr < cms::measure::IntensityAnalyzerIF > analyzer;
 		bool stop;
@@ -40,7 +40,7 @@ namespace cms {
 
 		static void storeToExcel(const std::string & filename,
 					 Component_vector_ptr componentVector);
-		void windowClosing();
+		virtual void windowClosing(TObject * Sender, TCloseAction & Action);
 		 bptr < cms::measure::IntensityAnalyzerIF > getAnalyzer();
 	    };
 

@@ -303,7 +303,7 @@ namespace cms {
 	    //==================================================================
 	    //==================================================================
 	    RGB_vector_ptr KeepNativeWhiteOp::getRendering(RGB_vector_ptr source) {
-		int size = source->size();
+		//int size = source->size();
 		RGB_vector_ptr result = RGBVector::deepClone(source);
 		double max = bitDepth->getMaxDigitalCount();
 		int effectiven = bitDepth->getEffectiveLevel();

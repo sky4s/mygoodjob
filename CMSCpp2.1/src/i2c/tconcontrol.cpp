@@ -165,12 +165,12 @@ namespace i2c {
 		    static_cast < int >((*rgbVector)[x * 2 + 1]->getValue(ch, MaxValue::Int12Bit));
 		int_array d0lmh = getLMHData(d0);
 		int_array d1lmh = getLMHData(d1);
-		int e0 = d0lmh[0];
+		/*int e0 = d0lmh[0];
 		int e1 = d0lmh[1];
 		int e2 = d0lmh[2];
 		int e3 = d1lmh[0];
 		int e4 = d1lmh[1];
-		int e5 = d1lmh[2];
+		int e5 = d1lmh[2];*/
 		int c0 = d0lmh[0] + (d0lmh[1] << 4);
 		int c1 = d0lmh[2] + (d1lmh[0] << 4);
 		int c2 = d1lmh[1] + (d1lmh[2] << 4);

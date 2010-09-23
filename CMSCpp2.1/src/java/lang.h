@@ -139,7 +139,7 @@ namespace cms {
 	class MeterMeasurement;
 	class MeasureResult;
 	class IntensityAnalyzerIF;
-	class WindowListener;
+
 	namespace meter {
 	    class Meter;
 	    class CA210;
@@ -158,8 +158,12 @@ namespace cms {
 namespace gui {
     namespace util {
 	class UIValueSetter;
-	class UIBinder;
 	class MultiUIBinder;
+    };
+    namespace event {
+	class EventListener;
+	class WindowListener;
+	class WindowAdapter;
     };
 };
 
@@ -557,7 +561,7 @@ template < typename Container, typename ValueType, int nPropType > class Propert
     }
 //-- To make possible to cast the property class to the
 //   internal type --
-    operator                         ValueType() {
+    operator                           ValueType() {
 	assert(m_cObject != NULL);
 	assert(Get != NULL);
 	return (m_cObject->*Get) ();

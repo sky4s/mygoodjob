@@ -417,7 +417,7 @@ void __fastcall TCCTLUTForm::FormKeyPress(TObject * Sender, char &Key)
 	if (true == run) {
 	    ShowMessage("Interrupt!");
 	    if (false == MeasureWindow->Visible) {
-		MainForm->getComponentFetcher()->windowClosing();
+		MainForm->getComponentFetcher()->windowClosing(Sender, caNone);
 	    }
 	    run = false;
 	} else {

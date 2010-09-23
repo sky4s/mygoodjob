@@ -10,6 +10,7 @@
 
 //本項目內頭文件
 #include <gui/TMeasureWindow.h>
+#include <gui/event/listener.h>
 
 namespace cms {
     namespace measure {
@@ -79,7 +80,7 @@ namespace cms {
 	     MeasureResult(Patch_vector_ptr result, int practicalMeasureCount);
 	};
 
-	class MeasureTool:public cms::util::WindowListener {
+	class MeasureTool:public gui::event::WindowAdapter {
 	  private:
 	    bool stop;
 	    bptr < cms::measure::MeterMeasurement > mm;
@@ -93,7 +94,7 @@ namespace cms {
 	    Component_vector_ptr flickerMeasure(bptr <
 						cms::lcd::calibrate::
 						MeasureCondition > measureCondition);
-	    void windowClosing();
+	    virtual void windowClosing(TObject * Sender, TCloseAction & Action);
 	    int getMaxZDGCode(bptr < cms::lcd::calibrate::MeasureCondition > measureCondition);
 	    static int getMaxZDGCode(bptr < cms::measure::MeterMeasurement > mm,
 				     bptr < cms::lcd::calibrate::BitDepthProcessor > bitDepth);

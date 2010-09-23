@@ -161,7 +161,7 @@ namespace cms {
 		int part = level - brightTurn;
 		int part13 = part / 3;
 		int part13Start = level - part13;
-		int size = result1->size();
+		//int size = result1->size();
 		for (int x = brightTurn; x < part13Start; x++) {
 		    RGB_ptr rgb = (*result)[x];
 		    RGB_ptr rgb1 = (*result1)[x];
@@ -176,8 +176,8 @@ namespace cms {
 		    (*result)[x] = (*result2)[x]->clone();
 		}
 		/*STORE_RGBVECTOR("sm-result1.xls", result1);
-		STORE_RGBVECTOR("sm-result2.xls", result2);
-		STORE_RGBVECTOR("sm-result.xls", result);*/
+		   STORE_RGBVECTOR("sm-result2.xls", result2);
+		   STORE_RGBVECTOR("sm-result.xls", result); */
 
 		return result;
 	    };
@@ -454,7 +454,7 @@ namespace cms {
 	    void AdvancedDGLutGenerator::setBTargetIntensity(double bTargetIntensity) {
 		this->bTargetIntensity = bTargetIntensity;
 	    }
-	    void AdvancedDGLutGenerator::windowClosing() {
+	    void AdvancedDGLutGenerator::windowClosing(TObject * Sender, TCloseAction & Action) {
 		stopMeasure = true;
 	    };
 	    void AdvancedDGLutGenerator::setMultiGen(bool enable, int times) {
