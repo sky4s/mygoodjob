@@ -19,9 +19,9 @@
 #include <boost/foreach.hpp>
 #include <boost/lexical_cast.hpp>
 
-//#define TNT
+#define TNT_LIB
 
-#ifdef TNT
+#ifdef TNT_LIB
 #include <tnt/tnt_array1d.h>
 #include <tnt/tnt_array2d.h>
 #include <tnt/tnt_array3d.h>
@@ -278,7 +278,7 @@ typedef bptr < cms::util::RGBGamma > RGBGamma_ptr;
 //==============================================================================
 //簡化tnt使用上的巨集
 //==============================================================================
-#ifdef TNT
+#ifdef TNT_LIB
 typedef TNT::Array1D < long double >longdouble1D;
 typedef TNT::Array2D < long double >longdouble2D;
 typedef bptr < longdouble2D > longdouble2D_ptr;
@@ -436,7 +436,7 @@ namespace java {
 
 	    static double min(double a, double b);
 	    static double max(double a, double b);
-#ifdef TNT
+#ifdef TNT_LIB
 	    static double max(double1D_ptr values);
 #endif
 
@@ -569,7 +569,7 @@ template < typename Container, typename ValueType, int nPropType > class Propert
     }
 //-- To make possible to cast the property class to the
 //   internal type --
-    operator                              ValueType() {
+    operator                               ValueType() {
 	assert(m_cObject != NULL);
 	assert(Get != NULL);
 	return (m_cObject->*Get) ();
