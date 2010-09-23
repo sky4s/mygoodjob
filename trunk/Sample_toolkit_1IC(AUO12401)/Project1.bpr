@@ -10,13 +10,14 @@
       Sharpness1.obj TCON1.obj 12401\DCR\DCR_12401.obj 
       12401\Function\Func_12401.obj 12401\TCON\TCON_12401.obj 
       12401\Vender\Vend_12401.obj 12401\ImageProcess\ImgProc_12401.obj 
-      Engineering.obj"/>
+      Engineering.obj HueSatVal2.obj"/>
     <RESFILES value="Project1.res"/>
     <IDLFILES value=""/>
     <IDLGENFILES value=""/>
     <DEFFILE value=""/>
     <RESDEPEN value="$(RESFILES) Unit1.dfm Vender1.dfm CM1.dfm ContrastEnhance1.dfm DCR1.dfm 
-      Function1.dfm HueSatVal.dfm Sharpness1.dfm TCON1.dfm Engineering.dfm"/>
+      Function1.dfm HueSatVal.dfm Sharpness1.dfm TCON1.dfm Engineering.dfm 
+      HueSatVal2.dfm"/>
     <LIBFILES value="USB_i2c_lib\hid.lib"/>
     <LIBRARIES value="tee.lib vclx.lib bcbsmp.lib rtl.lib vcl.lib"/>
     <SPARELIBS value="vcl.lib rtl.lib bcbsmp.lib vclx.lib tee.lib"/>
@@ -27,7 +28,7 @@
       inetdbbde.bpi inetdbxpress.bpi inetdb.bpi nmfast.bpi webdsnap.bpi 
       bcbie.bpi websnap.bpi soaprtl.bpi dclocx.bpi dbexpress.bpi dbxcds.bpi 
       indy.bpi bcb2kaxserver.bpi"/>
-    <PATHCPP value=".;LPT_lib;USB_i2c_lib;12401\DCR;12401\Function;12401\TCON;12401\Vender;12401\ImageProcess"/>
+    <PATHCPP value=".;LPT_lib;LPT_lib;USB_i2c_lib;12401\DCR;12401\Function;12401\TCON;12401\Vender;12401\ImageProcess"/>
     <PATHPAS value=".;"/>
     <PATHRC value=".;"/>
     <PATHASM value=".;"/>
@@ -37,14 +38,15 @@
     <USERDEFINES value="_DEBUG"/>
     <SYSDEFINES value="NO_STRICT"/>
     <MAINSOURCE value="Project1.cpp"/>
-    <INCLUDEPATH value="12303\ImageProcess;12303\DCR;12303\Vender;12303\Function;12303\TCON;12401\ImageProcess;12401\Vender;12401\DCR;12401\TCON;12401\Function;1240x\Function;1110x\Function;1240x\TCON;1110x\TCON;TCON1_addr2;TCON1_addr1;Main_addr1;TCON_addr2;TCON_addr1;&quot;C:\Documents and Settings\LynneLin\桌面\FPGA版toolkit\090331_Toolkit\sample\TCON_addr&quot;;..;USB_i2c_lib;LPT_lib;..\090331_Toolkit;..\I2C_Test;$(BCB)\include;$(BCB)\include\vcl"/>
-    <LIBPATH value="12303\ImageProcess;12303\DCR;12303\Vender;12303\Function;12303\TCON;12401\ImageProcess;12401\Vender;12401\DCR;12401\TCON;12401\Function;1240x\Function;1110x\Function;1240x\TCON;1110x\TCON;TCON1_addr2;TCON1_addr1;Main_addr1;TCON_addr2;TCON_addr1;&quot;C:\Documents and Settings\LynneLin\桌面\FPGA版toolkit\090331_Toolkit\sample\TCON_addr&quot;;..;USB_i2c_lib;LPT_lib;..\090331_Toolkit;..\I2C_Test;$(BCB)\lib\obj;$(BCB)\lib"/>
+    <INCLUDEPATH value="&quot;D:\Program Files\Borland\CBuilder6\Projects&quot;;12303\ImageProcess;12303\DCR;12303\Vender;12303\Function;12303\TCON;12401\ImageProcess;12401\Vender;12401\DCR;12401\TCON;12401\Function;1240x\Function;1110x\Function;1240x\TCON;1110x\TCON;TCON1_addr2;TCON1_addr1;Main_addr1;TCON_addr2;TCON_addr1;&quot;C:\Documents and Settings\LynneLin\桌面\FPGA版toolkit\090331_Toolkit\sample\TCON_addr&quot;;..;USB_i2c_lib;LPT_lib;..\090331_Toolkit;..\I2C_Test;$(BCB)\include;$(BCB)\include\vcl"/>
+    <LIBPATH value="&quot;D:\Program Files\Borland\CBuilder6\Projects&quot;;12303\ImageProcess;12303\DCR;12303\Vender;12303\Function;12303\TCON;12401\ImageProcess;12401\Vender;12401\DCR;12401\TCON;12401\Function;1240x\Function;1110x\Function;1240x\TCON;1110x\TCON;TCON1_addr2;TCON1_addr1;Main_addr1;TCON_addr2;TCON_addr1;&quot;C:\Documents and Settings\LynneLin\桌面\FPGA版toolkit\090331_Toolkit\sample\TCON_addr&quot;;..;USB_i2c_lib;LPT_lib;..\090331_Toolkit;..\I2C_Test;$(BCB)\lib\obj;$(BCB)\lib"/>
     <WARNINGS value="-w-par"/>
     <OTHERFILES value=""/>
   </MACROS>
   <OPTIONS>
-    <IDLCFLAGS value="-I12303\ImageProcess -I12303\DCR -I12303\Vender -I12303\Function 
-      -I12303\TCON -I12401\ImageProcess -I12401\Vender -I12401\DCR -I12401\TCON 
+    <IDLCFLAGS value="-I&quot;D:\Program Files\Borland\CBuilder6\Projects&quot; -I12303\ImageProcess 
+      -I12303\DCR -I12303\Vender -I12303\Function -I12303\TCON 
+      -I12401\ImageProcess -I12401\Vender -I12401\DCR -I12401\TCON 
       -I12401\Function -I1240x\Function -I1110x\Function -I1240x\TCON 
       -I1110x\TCON -ITCON1_addr2 -ITCON1_addr1 -IMain_addr1 -ITCON_addr2 
       -ITCON_addr1 
@@ -96,6 +98,7 @@
       <FILE FILENAME="gui_class.h" FORMNAME="" UNITNAME="gui_class.h" CONTAINERID="" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="12401\ImageProcess\ImgProc_12401.cpp" FORMNAME="" UNITNAME="ImgProc_12401" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Engineering.cpp" FORMNAME="EngineerForm" UNITNAME="Engineering" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="HueSatVal2.cpp" FORMNAME="HSVForm2" UNITNAME="HueSatVal2" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
   </FILELIST>
   <BUILDTOOLS>
   </BUILDTOOLS>

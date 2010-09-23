@@ -7,7 +7,7 @@ object HSVForm1: THSVForm1
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
-  Font.Height = -11
+  Font.Height = -14
   Font.Name = 'MS Sans Serif'
   Font.Style = []
   FormStyle = fsMDIChild
@@ -18,19 +18,19 @@ object HSVForm1: THSVForm1
   OnClose = FormClose
   OnCreate = FormCreate
   OnKeyDown = FormKeyDown
-  PixelsPerInch = 96
-  TextHeight = 13
+  PixelsPerInch = 120
+  TextHeight = 16
   object GroupBox1: TGroupBox
-    Left = 8
+    Left = 10
     Top = 0
-    Width = 705
-    Height = 593
+    Width = 868
+    Height = 730
     TabOrder = 0
     object Hue_Img: TImage
-      Left = 456
-      Top = 8
-      Width = 241
-      Height = 225
+      Left = 561
+      Top = 10
+      Width = 297
+      Height = 277
       ParentShowHint = False
       Picture.Data = {
         07544269746D617076810200424D76810200000000003600000028000000EF00
@@ -5170,27 +5170,27 @@ object HSVForm1: THSVForm1
       OnMouseMove = Hue_ImgMouseMove
     end
     object cb_en: TCheckBox
-      Left = 16
-      Top = 24
-      Width = 105
-      Height = 17
+      Left = 20
+      Top = 30
+      Width = 129
+      Height = 20
       Caption = 'cb_en'
       TabOrder = 0
       OnClick = cb_enClick
     end
     object CheckBox1: TCheckBox
-      Left = 16
-      Top = 56
-      Width = 113
-      Height = 17
+      Left = 20
+      Top = 69
+      Width = 139
+      Height = 21
       Caption = 'CheckBox1'
       TabOrder = 1
     end
     object rg_HSV_Mode: TRadioGroup
-      Left = 8
-      Top = 136
-      Width = 129
-      Height = 41
+      Left = 10
+      Top = 167
+      Width = 159
+      Height = 51
       Caption = 'HUE/Sat Mode'
       Columns = 3
       Items.Strings = (
@@ -5201,14 +5201,14 @@ object HSVForm1: THSVForm1
       OnClick = rg_HSV_ModeClick
     end
     object btn_HSV_load: TButton
-      Left = 8
-      Top = 184
-      Width = 57
-      Height = 25
+      Left = 10
+      Top = 226
+      Width = 70
+      Height = 31
       Caption = 'Load File'
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clWindowText
-      Font.Height = -8
+      Font.Height = -10
       Font.Name = 'MS Sans Serif'
       Font.Style = []
       ParentFont = False
@@ -5216,50 +5216,50 @@ object HSVForm1: THSVForm1
       OnClick = btn_HSV_loadClick
     end
     object btn_HSV_save: TButton
-      Left = 80
-      Top = 184
-      Width = 57
-      Height = 25
+      Left = 98
+      Top = 226
+      Width = 71
+      Height = 31
       Caption = 'Save File'
       TabOrder = 4
       OnClick = btn_HSV_saveClick
     end
     object GroupBox29: TGroupBox
-      Left = 144
-      Top = 24
-      Width = 305
-      Height = 185
+      Left = 177
+      Top = 30
+      Width = 376
+      Height = 227
       Caption = 'HSV Change'
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clWindowText
-      Font.Height = -11
+      Font.Height = -15
       Font.Name = 'MS Sans Serif'
       Font.Style = [fsBold]
       ParentFont = False
       TabOrder = 5
       DesignSize = (
-        305
-        185)
+        376
+        227)
       object Label111: TLabel
-        Left = 8
-        Top = 156
-        Width = 42
-        Height = 13
+        Left = 10
+        Top = 192
+        Width = 52
+        Height = 16
         Anchors = [akLeft, akBottom]
         Caption = 'Custom'
         Color = clWhite
         ParentColor = False
       end
       object cb_Hue_Red: TCheckBox
-        Left = 8
-        Top = 32
-        Width = 105
-        Height = 20
+        Left = 10
+        Top = 39
+        Width = 129
+        Height = 25
         Caption = 'Red         0'#176
         Color = clRed
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clWindow
-        Font.Height = -11
+        Font.Height = -15
         Font.Name = 'MS Sans Serif'
         Font.Style = [fsBold]
         ParentColor = False
@@ -5268,10 +5268,10 @@ object HSVForm1: THSVForm1
         OnClick = cb_Hue_RedClick
       end
       object sg_Hue_Sat_val: TStringGrid
-        Left = 114
-        Top = 31
-        Width = 183
-        Height = 146
+        Left = 140
+        Top = 38
+        Width = 226
+        Height = 180
         Align = alCustom
         Anchors = [akLeft, akTop, akRight, akBottom]
         BiDiMode = bdRightToLeftNoAlign
@@ -5285,7 +5285,7 @@ object HSVForm1: THSVForm1
         FixedRows = 0
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clWindowText
-        Font.Height = -11
+        Font.Height = -15
         Font.Name = 'MS Sans Serif'
         Font.Style = [fsBold]
         ParentBiDiMode = False
@@ -5295,15 +5295,15 @@ object HSVForm1: THSVForm1
         TabOrder = 5
       end
       object cb_Hue_Green: TCheckBox
-        Left = 8
-        Top = 72
-        Width = 105
-        Height = 22
+        Left = 10
+        Top = 89
+        Width = 129
+        Height = 27
         Caption = 'Green     120'#176
         Color = clGreen
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clWindow
-        Font.Height = -11
+        Font.Height = -15
         Font.Name = 'MS Sans Serif'
         Font.Style = [fsBold]
         ParentColor = False
@@ -5312,15 +5312,15 @@ object HSVForm1: THSVForm1
         OnClick = cb_Hue_GreenClick
       end
       object cb_Hue_Blue: TCheckBox
-        Left = 8
-        Top = 114
-        Width = 105
-        Height = 21
+        Left = 10
+        Top = 140
+        Width = 129
+        Height = 26
         Caption = 'Blue       240'#176
         Color = clBlue
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clWindow
-        Font.Height = -11
+        Font.Height = -15
         Font.Name = 'MS Sans Serif'
         Font.Style = [fsBold]
         ParentColor = False
@@ -5329,15 +5329,15 @@ object HSVForm1: THSVForm1
         OnClick = cb_Hue_BlueClick
       end
       object cb_Hue_Mag: TCheckBox
-        Left = 8
-        Top = 135
-        Width = 105
-        Height = 21
+        Left = 10
+        Top = 166
+        Width = 129
+        Height = 26
         Caption = 'Magenta 300'#176
         Color = clFuchsia
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clWindowText
-        Font.Height = -11
+        Font.Height = -15
         Font.Name = 'MS Sans Serif'
         Font.Style = [fsBold]
         ParentColor = False
@@ -5346,15 +5346,15 @@ object HSVForm1: THSVForm1
         OnClick = cb_Hue_MagClick
       end
       object cb_Hue_Yellow: TCheckBox
-        Left = 8
-        Top = 52
-        Width = 105
-        Height = 20
+        Left = 10
+        Top = 64
+        Width = 129
+        Height = 25
         Caption = 'Yellow     60'#176
         Color = clYellow
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clWindowText
-        Font.Height = -11
+        Font.Height = -15
         Font.Name = 'MS Sans Serif'
         Font.Style = [fsBold]
         ParentColor = False
@@ -5363,15 +5363,15 @@ object HSVForm1: THSVForm1
         OnClick = cb_Hue_YellowClick
       end
       object cb_Hue_Cyan: TCheckBox
-        Left = 8
-        Top = 94
-        Width = 105
-        Height = 20
+        Left = 10
+        Top = 116
+        Width = 129
+        Height = 24
         Caption = 'Cyan      180'#176
         Color = clAqua
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clWindowText
-        Font.Height = -11
+        Font.Height = -15
         Font.Name = 'MS Sans Serif'
         Font.Style = [fsBold]
         ParentColor = False
@@ -5380,10 +5380,10 @@ object HSVForm1: THSVForm1
         OnClick = cb_Hue_CyanClick
       end
       object StaticText31: TStaticText
-        Left = 112
-        Top = 16
-        Width = 62
-        Height = 17
+        Left = 138
+        Top = 20
+        Width = 76
+        Height = 21
         Alignment = taCenter
         AutoSize = False
         BevelKind = bkFlat
@@ -5391,10 +5391,10 @@ object HSVForm1: THSVForm1
         TabOrder = 7
       end
       object StaticText32: TStaticText
-        Left = 174
-        Top = 16
-        Width = 62
-        Height = 17
+        Left = 214
+        Top = 20
+        Width = 76
+        Height = 21
         Alignment = taCenter
         AutoSize = False
         BevelKind = bkFlat
@@ -5402,10 +5402,10 @@ object HSVForm1: THSVForm1
         TabOrder = 8
       end
       object StaticText33: TStaticText
-        Left = 234
-        Top = 16
-        Width = 65
-        Height = 17
+        Left = 288
+        Top = 20
+        Width = 80
+        Height = 21
         Alignment = taCenter
         AutoSize = False
         BevelKind = bkFlat
@@ -5413,13 +5413,13 @@ object HSVForm1: THSVForm1
         TabOrder = 9
       end
       object ed_Hue_Custom: TEdit
-        Left = 56
-        Top = 156
-        Width = 57
-        Height = 21
+        Left = 69
+        Top = 192
+        Width = 70
+        Height = 24
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
-        Font.Height = -11
+        Font.Height = -15
         Font.Name = 'MS Sans Serif'
         Font.Style = [fsBold]
         ParentFont = False
@@ -5428,88 +5428,88 @@ object HSVForm1: THSVForm1
       end
     end
     object btn_Hue_Img_load: TButton
-      Left = 448
+      Left = 551
       Top = 0
-      Width = 65
-      Height = 17
+      Width = 80
+      Height = 21
       Caption = 'Load Image'
       TabOrder = 6
       OnClick = btn_Hue_Img_loadClick
     end
     object GroupBox28: TGroupBox
-      Left = 8
-      Top = 234
-      Width = 681
-      Height = 327
+      Left = 10
+      Top = 288
+      Width = 838
+      Height = 402
       Caption = 'Adjust HSV'
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clWindowText
-      Font.Height = -11
+      Font.Height = -15
       Font.Name = 'MS Sans Serif'
       Font.Style = []
       ParentFont = False
       TabOrder = 7
       object GroupBox30: TGroupBox
-        Left = 24
-        Top = 12
-        Width = 633
-        Height = 77
+        Left = 30
+        Top = 15
+        Width = 779
+        Height = 95
         Caption = 'Hue'
         TabOrder = 0
         object Label136: TLabel
-          Left = 80
-          Top = 40
-          Width = 41
-          Height = 13
+          Left = 98
+          Top = 49
+          Width = 51
+          Height = 16
           Caption = 'Diffusion'
         end
         object lb_Hue_gain: TLabel
-          Left = 136
-          Top = 16
-          Width = 10
-          Height = 13
+          Left = 167
+          Top = 20
+          Width = 11
+          Height = 16
           Caption = '0'#176
         end
         object Label132: TLabel
-          Left = 88
-          Top = 16
-          Width = 20
-          Height = 13
+          Left = 108
+          Top = 20
+          Width = 25
+          Height = 16
           Caption = 'Hue'
         end
         object lb_Hue_dif_n: TLabel
-          Left = 136
-          Top = 40
-          Width = 10
-          Height = 13
+          Left = 167
+          Top = 49
+          Width = 11
+          Height = 16
           Caption = '0'#176
         end
         object lb_Hue_dif_p: TLabel
-          Left = 520
-          Top = 40
-          Width = 10
-          Height = 13
+          Left = 640
+          Top = 49
+          Width = 11
+          Height = 16
           Caption = '0'#176
         end
         object Label192: TLabel
-          Left = 160
-          Top = 56
-          Width = 26
-          Height = 13
+          Left = 197
+          Top = 69
+          Width = 34
+          Height = 16
           Caption = '(Neg)'
         end
         object Label193: TLabel
-          Left = 488
-          Top = 56
-          Width = 24
-          Height = 13
+          Left = 601
+          Top = 69
+          Width = 32
+          Height = 16
           Caption = '(Pos)'
         end
         object sb_Hue_gain: TScrollBar
-          Left = 168
-          Top = 16
-          Width = 337
-          Height = 17
+          Left = 207
+          Top = 20
+          Width = 415
+          Height = 21
           Max = 192
           PageSize = 0
           Position = 96
@@ -5517,14 +5517,14 @@ object HSVForm1: THSVForm1
           OnScroll = sb_Hue_gainScroll
         end
         object btn_set_hue: TBitBtn
-          Left = 552
-          Top = 8
-          Width = 65
-          Height = 25
+          Left = 679
+          Top = 10
+          Width = 80
+          Height = 31
           Caption = 'Set Hue'
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clWindowText
-          Font.Height = -11
+          Font.Height = -15
           Font.Name = 'MS Sans Serif'
           Font.Style = []
           ParentFont = False
@@ -5532,10 +5532,10 @@ object HSVForm1: THSVForm1
           OnClick = btn_set_hueClick
         end
         object sb_Hue_dif_n: TScrollBar
-          Left = 168
-          Top = 40
-          Width = 169
-          Height = 17
+          Left = 207
+          Top = 49
+          Width = 208
+          Height = 21
           Max = 48
           PageSize = 0
           Position = 47
@@ -5543,101 +5543,101 @@ object HSVForm1: THSVForm1
           OnChange = sb_Hue_dif_nChange
         end
         object btn_reset_hue: TButton
-          Left = 552
-          Top = 40
-          Width = 65
-          Height = 25
+          Left = 679
+          Top = 49
+          Width = 80
+          Height = 31
           Caption = 'Reset Hue'
           TabOrder = 3
           OnClick = btn_reset_hueClick
         end
         object sb_Hue_dif_p: TScrollBar
-          Left = 336
-          Top = 40
-          Width = 169
-          Height = 17
+          Left = 414
+          Top = 49
+          Width = 208
+          Height = 21
           Max = 47
           PageSize = 0
           TabOrder = 4
           OnChange = sb_Hue_dif_pChange
         end
         object cb_Hue_rotation: TCheckBox
-          Left = 8
-          Top = 16
-          Width = 73
-          Height = 25
+          Left = 10
+          Top = 20
+          Width = 90
+          Height = 30
           Caption = 'Rotation'
           TabOrder = 5
         end
       end
       object GroupBox27: TGroupBox
-        Left = 24
-        Top = 84
-        Width = 633
-        Height = 77
+        Left = 30
+        Top = 103
+        Width = 779
+        Height = 95
         Caption = 'Saturation'
         TabOrder = 1
         object Label139: TLabel
-          Left = 88
-          Top = 40
-          Width = 41
-          Height = 13
+          Left = 108
+          Top = 49
+          Width = 51
+          Height = 16
           Caption = 'Diffusion'
         end
         object lb_Sat_gain: TLabel
-          Left = 128
-          Top = 16
-          Width = 26
-          Height = 13
+          Left = 158
+          Top = 20
+          Width = 33
+          Height = 16
           Caption = '100%'
         end
         object Label140: TLabel
-          Left = 77
-          Top = 16
-          Width = 48
-          Height = 13
+          Left = 95
+          Top = 20
+          Width = 60
+          Height = 16
           Caption = 'Saturation'
         end
         object lb_Sat_dif_n: TLabel
-          Left = 136
-          Top = 40
-          Width = 10
-          Height = 13
+          Left = 167
+          Top = 49
+          Width = 11
+          Height = 16
           Caption = '0'#176
         end
         object lb_Sat_dif_p: TLabel
-          Left = 520
-          Top = 40
-          Width = 10
-          Height = 13
+          Left = 640
+          Top = 49
+          Width = 11
+          Height = 16
           Caption = '0'#176
         end
         object Label191: TLabel
-          Left = 160
-          Top = 56
-          Width = 26
-          Height = 13
+          Left = 197
+          Top = 69
+          Width = 34
+          Height = 16
           Caption = '(Neg)'
         end
         object Label194: TLabel
-          Left = 488
-          Top = 56
-          Width = 24
-          Height = 13
+          Left = 601
+          Top = 69
+          Width = 32
+          Height = 16
           Caption = '(Pos)'
         end
         object Label195: TLabel
-          Left = 25
-          Top = 40
-          Width = 43
-          Height = 13
+          Left = 31
+          Top = 49
+          Width = 53
+          Height = 16
           Caption = 'Enhance'
         end
         object sb_Sat_gain: TScrollBar
-          Left = 168
-          Top = 16
-          Width = 337
-          Height = 17
+          Left = 207
+          Top = 20
+          Width = 415
+          Height = 21
           Max = 200
           PageSize = 0
           Position = 100
@@ -5645,19 +5645,19 @@ object HSVForm1: THSVForm1
           OnScroll = sb_Sat_gainScroll
         end
         object btn_set_sat: TBitBtn
-          Left = 552
-          Top = 8
-          Width = 65
-          Height = 25
+          Left = 679
+          Top = 10
+          Width = 80
+          Height = 31
           Caption = 'Set Sat'
           TabOrder = 1
           OnClick = btn_set_satClick
         end
         object sb_Sat_dif_n: TScrollBar
-          Left = 168
-          Top = 40
-          Width = 169
-          Height = 17
+          Left = 207
+          Top = 49
+          Width = 208
+          Height = 21
           Max = 48
           PageSize = 0
           Position = 48
@@ -5665,109 +5665,109 @@ object HSVForm1: THSVForm1
           OnChange = sb_Sat_dif_nChange
         end
         object sb_Sat_dif_p: TScrollBar
-          Left = 336
-          Top = 40
-          Width = 169
-          Height = 17
+          Left = 414
+          Top = 49
+          Width = 208
+          Height = 21
           Max = 48
           PageSize = 0
           TabOrder = 3
           OnChange = sb_Sat_dif_pChange
         end
         object btn_reset_sat: TButton
-          Left = 552
-          Top = 40
-          Width = 65
-          Height = 25
+          Left = 679
+          Top = 49
+          Width = 80
+          Height = 31
           Caption = 'Reset Sat'
           TabOrder = 4
           OnClick = btn_reset_satClick
         end
         object cb_Sat_glb: TCheckBox
-          Left = 8
-          Top = 24
-          Width = 57
-          Height = 17
+          Left = 10
+          Top = 30
+          Width = 70
+          Height = 20
           Caption = 'Global '
           TabOrder = 5
         end
       end
       object GB_HSV_Val: TGroupBox
-        Left = 24
-        Top = 156
-        Width = 633
-        Height = 77
+        Left = 30
+        Top = 192
+        Width = 779
+        Height = 95
         Caption = 'Brightness'
         Color = clBtnFace
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clWindowText
-        Font.Height = -11
+        Font.Height = -15
         Font.Name = 'MS Sans Serif'
         Font.Style = []
         ParentColor = False
         ParentFont = False
         TabOrder = 2
         object Label189: TLabel
-          Left = 80
-          Top = 40
-          Width = 41
-          Height = 13
+          Left = 98
+          Top = 49
+          Width = 51
+          Height = 16
           Caption = 'Diffusion'
         end
         object lb_Val_gain: TLabel
-          Left = 136
-          Top = 16
-          Width = 10
-          Height = 13
+          Left = 167
+          Top = 20
+          Width = 11
+          Height = 16
           Caption = '0'#176
         end
         object Label196: TLabel
-          Left = 80
-          Top = 16
-          Width = 49
-          Height = 13
+          Left = 98
+          Top = 20
+          Width = 63
+          Height = 16
           Caption = 'Brightness'
         end
         object lb_Val_dif_n: TLabel
-          Left = 136
-          Top = 40
-          Width = 10
-          Height = 13
+          Left = 167
+          Top = 49
+          Width = 11
+          Height = 16
           Caption = '0'#176
         end
         object lb_Val_dif_p: TLabel
-          Left = 520
-          Top = 40
-          Width = 10
-          Height = 13
+          Left = 640
+          Top = 49
+          Width = 11
+          Height = 16
           Caption = '0'#176
         end
         object Label199: TLabel
-          Left = 160
-          Top = 56
-          Width = 26
-          Height = 13
+          Left = 197
+          Top = 69
+          Width = 34
+          Height = 16
           Caption = '(Neg)'
         end
         object Label200: TLabel
-          Left = 488
-          Top = 56
-          Width = 24
-          Height = 13
+          Left = 601
+          Top = 69
+          Width = 32
+          Height = 16
           Caption = '(Pos)'
         end
         object Label201: TLabel
-          Left = 25
-          Top = 40
-          Width = 43
-          Height = 13
+          Left = 31
+          Top = 49
+          Width = 53
+          Height = 16
           Caption = 'Enhance'
         end
         object sb_Val_gain: TScrollBar
-          Left = 168
-          Top = 16
-          Width = 337
-          Height = 17
+          Left = 207
+          Top = 20
+          Width = 415
+          Height = 21
           Max = 255
           PageSize = 0
           Position = 127
@@ -5775,14 +5775,14 @@ object HSVForm1: THSVForm1
           OnChange = sb_Val_gainChange
         end
         object btn_set_val: TBitBtn
-          Left = 552
-          Top = 16
-          Width = 65
-          Height = 25
+          Left = 679
+          Top = 20
+          Width = 80
+          Height = 30
           Caption = 'Set Bright'
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clWindowText
-          Font.Height = -11
+          Font.Height = -15
           Font.Name = 'MS Sans Serif'
           Font.Style = []
           ParentFont = False
@@ -5790,10 +5790,10 @@ object HSVForm1: THSVForm1
           OnClick = btn_set_valClick
         end
         object sb_Val_dif_n: TScrollBar
-          Left = 168
-          Top = 40
-          Width = 169
-          Height = 17
+          Left = 207
+          Top = 49
+          Width = 208
+          Height = 21
           Max = 48
           PageSize = 0
           Position = 48
@@ -5801,38 +5801,38 @@ object HSVForm1: THSVForm1
           OnChange = sb_Val_dif_nChange
         end
         object btn_reset_val: TButton
-          Left = 552
-          Top = 48
-          Width = 65
-          Height = 25
+          Left = 679
+          Top = 59
+          Width = 80
+          Height = 31
           Caption = 'Reset Bright'
           TabOrder = 3
           OnClick = btn_reset_valClick
         end
         object sb_Val_dif_p: TScrollBar
-          Left = 336
-          Top = 40
-          Width = 169
-          Height = 17
+          Left = 414
+          Top = 49
+          Width = 208
+          Height = 21
           Max = 48
           PageSize = 0
           TabOrder = 4
           OnChange = sb_Val_dif_pChange
         end
         object cb_Val_glb: TCheckBox
-          Left = 8
-          Top = 24
-          Width = 73
-          Height = 17
+          Left = 10
+          Top = 30
+          Width = 90
+          Height = 20
           Caption = 'Global'
           TabOrder = 5
         end
       end
       object sg_HSV_table: TStringGrid
-        Left = 24
-        Top = 232
-        Width = 633
-        Height = 89
+        Left = 30
+        Top = 286
+        Width = 779
+        Height = 109
         Cursor = crIBeam
         ColCount = 97
         DefaultColWidth = 40
@@ -5942,10 +5942,10 @@ object HSVForm1: THSVForm1
       end
     end
     object Btn_HSV_reload: TBitBtn
-      Left = 32
-      Top = 560
-      Width = 81
-      Height = 25
+      Left = 39
+      Top = 689
+      Width = 100
+      Height = 31
       Caption = '&Reload'
       ModalResult = 6
       TabOrder = 8
@@ -5970,10 +5970,10 @@ object HSVForm1: THSVForm1
       NumGlyphs = 2
     end
     object Hue_Img_Infor: TStaticText
-      Left = 448
-      Top = 224
-      Width = 181
-      Height = 17
+      Left = 551
+      Top = 276
+      Width = 215
+      Height = 20
       BevelKind = bkFlat
       BevelOuter = bvRaised
       Caption = 'Image Information R: G: B: H: S: V: I: '
@@ -5982,12 +5982,12 @@ object HSVForm1: THSVForm1
       TabOrder = 9
     end
     object le_ChAangle: TLabeledEdit
-      Left = 648
-      Top = 24
-      Width = 49
-      Height = 21
-      EditLabel.Width = 67
-      EditLabel.Height = 13
+      Left = 798
+      Top = 30
+      Width = 60
+      Height = 24
+      EditLabel.Width = 104
+      EditLabel.Height = 20
       EditLabel.Caption = 'Change Angle'
       LabelPosition = lpAbove
       LabelSpacing = 3

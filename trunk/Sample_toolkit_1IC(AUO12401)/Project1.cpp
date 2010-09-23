@@ -13,6 +13,7 @@ USEFORM("HueSatVal.cpp", HSVForm1);
 USEFORM("Sharpness1.cpp", SharpnessForm1);
 USEFORM("TCON1.cpp", TCONForm1);
 USEFORM("Engineering.cpp", EngineerForm);
+USEFORM("HueSatVal2.cpp", HSVForm2);
 //---------------------------------------------------------------------------
 WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 {
@@ -21,6 +22,7 @@ WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
                  Application->Initialize();
                  Application->CreateForm(__classid(TMainForm), &MainForm);
                  Application->CreateForm(__classid(TEngineerForm), &EngineerForm);
+                 Application->CreateForm(__classid(THSVForm2), &HSVForm2);
                  Application->Run();
         }
         catch (Exception &exception)
