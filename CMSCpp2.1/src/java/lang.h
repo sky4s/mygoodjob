@@ -157,7 +157,9 @@ namespace cms {
 
 namespace gui {
     namespace util {
+	class UIValueSetter;
 	class UIBinder;
+	class MultiUIBinder;
     };
 };
 
@@ -202,7 +204,8 @@ typedef bptr < stringp_vector > stringp_vector_ptr;
 typedef std::vector < string_vector_ptr > string_doublevector;
 typedef bptr < string_doublevector > string_doublevector_ptr;
 
-typedef bptr < gui::util::UIBinder > binder_ptr;
+typedef bptr < gui::util::UIValueSetter > uiset_ptr;
+typedef bptr < gui::util::MultiUIBinder > mbinder_ptr;
 
 typedef barray < double >double_array;
 #define nil_double_array double_array ((double*)NULL)
@@ -554,7 +557,7 @@ template < typename Container, typename ValueType, int nPropType > class Propert
     }
 //-- To make possible to cast the property class to the
 //   internal type --
-    operator                     ValueType() {
+    operator                         ValueType() {
 	assert(m_cObject != NULL);
 	assert(Get != NULL);
 	return (m_cObject->*Get) ();

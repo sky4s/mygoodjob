@@ -14,85 +14,84 @@
 namespace gui {
     namespace util {
 	using namespace std;
-	double UIBinder::editToScrollBarValue(double value) {
-	    return value;
-	};
-	double UIBinder::scrollBarToEditValue(double value) {
-	    return value;
-	};
 
-      UIBinder::UIBinder(TEdit * edit, TScrollBar * scrollBar):edit(edit),
-	    scrollBar(scrollBar),
-	    type(Edit2ScrollBar) {
-
-	};
-      UIBinder::UIBinder(TEdit * edit1, TEdit * edit2):edit(edit1),
-	    edit2(edit2),
-	    type(Edit2Edit) {
-
+	//=====================================================================
+	// setter group
+	//=====================================================================
+	 Edit2ScrollBarSetter::Edit2ScrollBarSetter(TEdit * edit,
+						    TScrollBar * scrollBar):edit(edit),
+	    scrollBar(scrollBar) {
 	};
 
-	void UIBinder::edit2ScrollBar(TObject * sender) {
+	void Edit2ScrollBarSetter::set(TObject * sender) {
 	    if (edit == sender) {
 		int value = edit->Text.ToInt();
-		scrollBar->Position = (int) editToScrollBarValue(value);
+		 scrollBar->Position = value;
 	    } else if (scrollBar == sender) {
 		int value = scrollBar->Position;
-		edit->Text = scrollBarToEditValue(value);
-	    }
-	};
-	void UIBinder::edit2Edit(TObject * sender) {
-	    if (edit == sender) {
-		edit2->Text = edit->Text;
-	    } else if (edit2 == sender) {
-		edit->Text = edit2->Text;
-	    }
-	};
-	void UIBinder::active(TObject * sender) {
-	    switch (type) {
-	    case Edit2ScrollBar:
-		edit2ScrollBar(sender);
-		break;
-	    case Edit2Edit:
-		edit2Edit(sender);
-		break;
+		edit->Text = value;
 	    }
 	};
 
+      ScrollBar2ScrollBarSetter::ScrollBar2ScrollBarSetter(TScrollBar * scrollBar1, TScrollBar * scrollBar2):scrollBar1(scrollBar1), scrollBar2(scrollBar2)
+	{
+	};
+
+	void ScrollBar2ScrollBarSetter::set(TObject * sender) {
+	    if (scrollBar1 == sender) {
+		scrollBar2->Position = scrollBar1->Position;
+	    } else if (scrollBar2 == sender) {
+		scrollBar1->Position = scrollBar2->Position;
+	    }
+	};
+
+      Edit2EditSetter::Edit2EditSetter(TEdit * edit1, TEdit * edit2):edit1(edit1), edit2(edit2)
+	{
+	};
+
+	void Edit2EditSetter::set(TObject * sender) {
+	    if (edit1 == sender) {
+		edit2->Text = edit1->Text;
+	    } else if (edit2 == sender) {
+		edit1->Text = edit2->Text;
+	    }
+	};
+
+	//=====================================================================
+
+	//=====================================================================
+	// binder group
+	//=====================================================================
 	MultiUIBinder::MultiUIBinder() {
 	};
 	void MultiUIBinder::active(TObject * sender) {
-	    //using namespace std;
 	    TWinControl *ctrl = dynamic_cast < TWinControl * >(sender);
 	    if (null != ctrl) {
-		Range range = binderMap2.equal_range(ctrl);
-		for (BinderItrator i = range.first; i != range.second; ++i) {
-		    binder_ptr binder = i->second;
-		    binder->active(ctrl);
+		Range range = setterMap.equal_range(ctrl);
+		for (SetterItrator i = range.first; i != range.second; ++i) {
+		    uiset_ptr setter = i->second;
+		    setter->set(ctrl);
 		}
-
-		/*binder_ptr binder = binderMap[ctrl];
-		if (null != binder) {
-		    binder->active(ctrl);
-		}*/
 	    }
 	};
 	void MultiUIBinder::bind(TEdit * edit, TScrollBar * scrollBar) {
-	    binder_ptr binder(new UIBinder(edit, scrollBar));
-	    //binderMap[edit] = binder;
-	    //binderMap[scrollBar] = binder;
-	    binderMap2.insert(make_pair(edit, binder));
-	    binderMap2.insert(make_pair(scrollBar, binder));
+	    uiset_ptr setter(new Edit2ScrollBarSetter(edit, scrollBar));
+	    setterMap.insert(make_pair(edit, setter));
+	    setterMap.insert(make_pair(scrollBar, setter));
 	};
 	void MultiUIBinder::bind(TEdit * edit1, TEdit * edit2) {
 	    using namespace std;
-	    binder_ptr binder(new UIBinder(edit1, edit2));
-	    //binderMap[edit1] = binder;
-	    //binderMap[edit2] = binder;
-	    binderMap2.insert(make_pair(edit1, binder));
-	    binderMap2.insert(make_pair(edit2, binder));
+	    uiset_ptr setter(new Edit2EditSetter(edit1, edit2));
+	    setterMap.insert(make_pair(edit1, setter));
+	    setterMap.insert(make_pair(edit2, setter));
 	};
-
+	void MultiUIBinder::bind(TScrollBar * scrollBar1, TScrollBar * scrollBar2) {
+	    using namespace std;
+	    uiset_ptr setter(new ScrollBar2ScrollBarSetter(scrollBar1, scrollBar2));
+	    setterMap.insert(make_pair(scrollBar1, setter));
+	    setterMap.insert(make_pair(scrollBar2, setter));
+	};
+	//=====================================================================
     };
 };
 
