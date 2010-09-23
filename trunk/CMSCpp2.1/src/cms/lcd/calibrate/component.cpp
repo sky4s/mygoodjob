@@ -123,7 +123,7 @@ namespace cms {
 		DGLutFile dglut(filename, Create);
 		dglut.setRawData(componentVector, nil_RGBGamma, nil_RGBGamma);
 	    };
-	    void ComponentFetcher::windowClosing() {
+	    void ComponentFetcher::windowClosing(TObject * Sender, TCloseAction & Action) {
 		stop = true;
 	    };
 	    bptr < IntensityAnalyzerIF > ComponentFetcher::getAnalyzer() {

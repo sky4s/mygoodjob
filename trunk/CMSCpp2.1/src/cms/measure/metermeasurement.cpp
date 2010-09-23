@@ -250,7 +250,7 @@ namespace cms {
 	    mm->setMeasureWindowsVisible(false);
 	    return vector;
 	};
-	void MeasureTool::windowClosing() {
+	void MeasureTool::windowClosing(TObject * Sender, TCloseAction & Action) {
 	    stop = true;
 	}
 	int MeasureTool::getMaxZDGCode(bptr < cms::lcd::calibrate::MeasureCondition >
@@ -277,7 +277,7 @@ namespace cms {
 		}
 		if (XYZ->Z > maxZ->Z) {
 		    maxZ = XYZ;
-                    maxZRGB = rgb;
+		    maxZRGB = rgb;
 		} else {
 		    mm->setMeasureWindowsVisible(false);
 		    //return (int) rgb->getValue(Channel::W);

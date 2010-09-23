@@ -107,7 +107,7 @@ namespace cms {
 		return finalRGB;
 	    };
 
-	    void WhitePointFinder::windowClosing() {
+	    void WhitePointFinder::windowClosing(TObject * Sender, TCloseAction & Action) {
 		stop = true;
 	    };
 

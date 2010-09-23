@@ -12,6 +12,7 @@
 #include "TTargetWhiteForm2.h"
 #include "TMainForm.h"
 #include <cms/util/util.h>
+#include <gui/event/listener.h>
 
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
@@ -383,6 +384,7 @@ void __fastcall TTargetWhiteForm2::FormCreate(TObject * Sender)
 {
     using namespace cms::util;
     using namespace gui::util;
+    using namespace gui::event;
     bptr < WindowListener > formPtr(dynamic_cast < WindowListener * >(this));
     MeasureWindow->addWindowListener(formPtr);
     if (MainForm->newFunction) {
@@ -550,4 +552,7 @@ void __fastcall TTargetWhiteForm2::Edit_InverseBClick(TObject * Sender)
 }
 
 //---------------------------------------------------------------------------
+
+
+
 

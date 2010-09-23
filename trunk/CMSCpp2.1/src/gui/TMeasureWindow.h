@@ -50,8 +50,8 @@ class TMeasureWindow:public TForm {
      bool tconinput;
     bool lineAdjoin;
      bptr < i2c::TCONControl > tconcontrol;
-     std::vector < bptr < cms::util::WindowListener > >listenerVector;
-     std::vector < bwptr < cms::util::WindowListener > >listenerVector2;
+     std::vector < bptr < gui::event::WindowListener > >listenerVector;
+     std::vector < bwptr < gui::event::WindowListener > >listenerVector2;
     Pattern pattern;
      bptr < cms::util::DoubleBufferedCanvas > doubleBuffered;
      bptr < cms::util::DoubleBufferedCanvas > getDoubleBufferedCanvas();
@@ -62,7 +62,7 @@ class TMeasureWindow:public TForm {
     void setTCONControl(bptr < i2c::TCONControl > tconcontrl);
     void setTCONControlOff();
     void setVisible(bool visible);
-    void addWindowListener(bptr < cms::util::WindowListener > listener);
+    void addWindowListener(bptr < gui::event::WindowListener > listener);
     void setImageFilename(const std::string & filename);
     void setImageOff();
     void setPattern(Pattern pattern);

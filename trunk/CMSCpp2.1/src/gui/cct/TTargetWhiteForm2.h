@@ -17,9 +17,11 @@
 #include <ComCtrls.hpp>
 #include <Menus.hpp>
 //本項目內頭文件
+#include <gui/event/listener.h>
+
 
 //---------------------------------------------------------------------------
-class TTargetWhiteForm2:public TForm, cms::util::WindowListener {
+class TTargetWhiteForm2:public TForm, gui::event::WindowListener {
     __published:		// IDE-managed Components
     TPageControl * PageControl1;
     TTabSheet *TabSheet1;
