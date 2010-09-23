@@ -8,7 +8,7 @@
 #include <iostream>
 
 //其他庫頭文件
-
+#include <comobj.hpp>
 //本項目內頭文件
 
 namespace cms {
@@ -16,7 +16,6 @@ namespace cms {
 	using namespace std;
 	using namespace boost;
 	using namespace java::lang;
-	using namespace lcd::calibrate;
 #ifdef COLORSPACE
 	using namespace Indep;
 	using namespace Dep;
