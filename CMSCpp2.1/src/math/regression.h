@@ -7,13 +7,15 @@
 
 
 //其他庫頭文件
+#ifdef TNT_LIB
 #include <tnt/tnt_array1d.h>
 #include <tnt/tnt_array2d.h>
+#endif
 //本項目內頭文件
 
 
 namespace math {
-
+#ifdef TNT_LIB
     class Polynomial {
       private:
 	class Coef3X {
@@ -29,8 +31,7 @@ namespace math {
 	   6, EnumerationEnd() */
 	 Enumeration(COEF3_)
 	 BY_3 = 1, BY_3C = 2, BY_6 = 3, BY_6C = 4, BY_7 = 5, BY_7C =
-	    6, BY_9 = 7, BY_9C = 8, BY_10 = 9, BY_10C =
-	    10, EnumerationEnd()
+	    6, BY_9 = 7, BY_9C = 8, BY_10 = 9, BY_10C = 10, EnumerationEnd()
       public:
 	 class COEF {
 	  protected:
@@ -77,14 +78,11 @@ namespace math {
 	};
 
 	static double1D_ptr addCoef3WithConstant(double1D_ptr coef3);
-	static double1D_ptr getCoef(double1D_ptr xyz,
-				    const COEF_3 & coefs);
+	static double1D_ptr getCoef(double1D_ptr xyz, const COEF_3 & coefs);
 	static double1D_ptr getCoef(double x, const COEF_1 & coefs);
-	static double1D_ptr getCoef(double x, double y, double z,
-				    const COEF_3 & coefs);
+	static double1D_ptr getCoef(double x, double y, double z, const COEF_3 & coefs);
 	static double1D_ptr getCoefWithConstant(double x, int coefs);
-	static double1D_ptr getCoef(double1D_ptr variables,
-				    const COEF & coefs);
+	static double1D_ptr getCoef(double1D_ptr variables, const COEF & coefs);
 
     };
 
@@ -93,8 +91,7 @@ namespace math {
 	double2D_ptr inputCoefs;
 	double2D_ptr output;
 	double2D_ptr coefs;
-	static double2D_ptr getPredict0(double2D_ptr input,
-					double2D_ptr coefs);
+	static double2D_ptr getPredict0(double2D_ptr input, double2D_ptr coefs);
       public:
 	 Regression(double2D_ptr input, double2D_ptr output);
 	 Regression(double1D_ptr input, double1D_ptr output);
@@ -112,17 +109,13 @@ namespace math {
       protected:
 	const Polynomial::COEF & polynomialCoef;
 	static double2D_ptr processPolynomialInput(double2D_ptr input,
-						   const Polynomial::
-						   COEF & polynomialCoef);
+						   const Polynomial::COEF & polynomialCoef);
 	static double2D_ptr processPolynomialInput(double1D_ptr input,
-						   const Polynomial::
-						   COEF_1 &
-						   polynomialCoef);
+						   const Polynomial::COEF_1 & polynomialCoef);
 	static double2D_ptr processRegressionOutput(double1D_ptr output);
 	static double2D_ptr getPredict0(double2D_ptr input,
 					double2D_ptr coefs,
-					const Polynomial::
-					COEF_3 & polynomialCoef);
+					const Polynomial::COEF_3 & polynomialCoef);
       public:
 	 double2D_ptr getPredict();
 	double2D_ptr getPredict(double2D_ptr input);
@@ -135,7 +128,7 @@ namespace math {
 			      const Polynomial::COEF_1 & polynomialCoef);
 
     };
-
+#endif
 
 
     class LinearRegression {

@@ -15,6 +15,7 @@
 
 //本項目內頭文件
 #include <java/lang.h>
+#include <cms/cms.h>
 
 namespace cms {
     namespace colorspace {
@@ -29,11 +30,8 @@ namespace cms {
 	    virtual void _setValues(double_array values) = 0;
 	     ColorSpace();
 	  public:
-	    static double_array
-		cartesian2polarCoordinatesValues(double_array
-						 cartesianValues);
-	    static double_array cartesian2polarCoordinatesValues(double x,
-								 double y);
+	    static double_array cartesian2polarCoordinatesValues(double_array cartesianValues);
+	    static double_array cartesian2polarCoordinatesValues(double x, double y);
 
 	    bool equalsValues(ColorSpace & colorSpace);
 	    bool equalsValues(ColorSpace_ptr colorSpace);
@@ -41,8 +39,7 @@ namespace cms {
 	    string_ptr getName();
 	    double_array getValues();
 	    double_array getValues(double_array values);
-	    static double_array
-		polar2cartesianCoordinatesValues(double_array polarValues);
+	    static double_array polar2cartesianCoordinatesValues(double_array polarValues);
 	    static double_array polar2cartesianCoordinatesValues(double
 								 distance, double
 								 angle);
@@ -52,8 +49,7 @@ namespace cms {
 	    virtual string_vector_ptr getBandNames() = 0;
 	    void setValuesLock(bool lock);
 	    const string_ptr toString();
-	    static double_array getValuesFromString(const string_ptr
-						    string);
+	    static double_array getValuesFromString(const string_ptr string);
 	};
     };
 };

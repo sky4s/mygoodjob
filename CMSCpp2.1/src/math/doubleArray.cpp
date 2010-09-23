@@ -21,6 +21,7 @@ namespace math {
     using namespace JAMA;
     using namespace cms::colorformat;
     using namespace cms::util;
+#ifdef TNT_LIB
     string_ptr DoubleArray::toString(double_array m, int n) {
 	string_ptr str(new string("["));
 	for (int x = 0; x != n - 1; x++) {
@@ -540,6 +541,8 @@ namespace math {
 	return str;
     };
     //==========================================================================
+#endif
+
     int IntArray::max(int_array array, int n) {
 	int max = std::numeric_limits < double >::min();
 	for (int x = 0; x != n; x++) {

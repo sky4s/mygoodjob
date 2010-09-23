@@ -10,6 +10,7 @@
 
 
 namespace math {
+#ifdef TNT_LIB
     class SVDLib {
       protected:
 	double1D_ptr sv;
@@ -20,17 +21,16 @@ namespace math {
       public:
 	 SVDLib(double2D_ptr array);
 	double1D_ptr getCoefficients(double1D_ptr output);
-	static double1D_ptr getPredict(double2D_ptr input,
-				       double1D_ptr coefs);
+	static double1D_ptr getPredict(double2D_ptr input, double1D_ptr coefs);
 	double1D_ptr getSingularValues();
 	double2D_ptr getU();
 	double2D_ptr getV();
 	void svd(double2D_ptr input);
 	static double1D_ptr svbksb(const double2D_ptr u,
 				   const double1D_ptr sv,
-				   const double2D_ptr v,
-				   const double1D_ptr output);
+				   const double2D_ptr v, const double1D_ptr output);
     };
+#endif
 };
 #endif
 

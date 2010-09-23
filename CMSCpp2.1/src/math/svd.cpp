@@ -11,7 +11,7 @@
 //本項目內頭文件
 
 namespace math {
-
+#ifdef TNT_LIB
     using namespace JAMA;
     //======================================================================
     // SVDLib
@@ -47,8 +47,7 @@ namespace math {
 	return result;
     };
 
-  SVDLib::SVDLib(double2D_ptr array):sv(new double1D()), v(new double2D()),
-	u(new double2D()) {
+  SVDLib::SVDLib(double2D_ptr array):sv(new double1D()), v(new double2D()), u(new double2D()) {
 	svd(array);
     };
     double1D_ptr SVDLib::getCoefficients(double1D_ptr output) {
@@ -98,8 +97,7 @@ namespace math {
 
     double1D_ptr SVDLib::svbksb(const double2D_ptr u,
 				const double1D_ptr sv,
-				const double2D_ptr v,
-				const double1D_ptr output) {
+				const double2D_ptr v, const double1D_ptr output) {
 	double s;
 	int m = u->dim1(), n = u->dim2();
 	double1D_ptr coef(new double1D(n));
@@ -126,5 +124,6 @@ namespace math {
 	return coef;
     };
     //======================================================================
+#endif
 };
 

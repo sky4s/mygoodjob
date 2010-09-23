@@ -82,12 +82,13 @@ namespace cms {
 	    ShellExecute(null, null, filename.c_str(), null, null, SW_SHOW);
 	};
 #ifdef EXCEL_ACCESSIBLE
+#ifdef COLORSPACE
 	void Util::storeXYZxyVector(const std::string & filename, XYZ_vector_ptr XYZVector) {
 	    storeXYZxyVector(filename, XYZVector, "Gray Level");
 	};
+
 	void Util::storeXYZxyVector(const std::string & filename,
 				    XYZ_vector_ptr XYZVector, const std::string firstColumn) {
-
 	    Util::deleteExist(filename);
 	    SimpleExcelAccess excel(filename, Create,
 				    StringVector::
@@ -101,7 +102,9 @@ namespace cms {
 		     XYZ->Z, xyY.x, xyY.y);
 		excel.insert(values);
 	    }
+
 	};
+#endif
 #endif
 	//==========================================================================
 
