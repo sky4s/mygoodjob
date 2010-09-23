@@ -139,6 +139,7 @@ namespace java {
 	double Math::max(double a, double b) {
 	    return std::max(a, b);
 	};
+#ifdef TNT_LIB
 	double Math::max(double1D_ptr values) {
 	    double max = std::numeric_limits < double >::infinity();
 	    for (int x = 0; x < values->dim1(); x++) {
@@ -147,6 +148,7 @@ namespace java {
 	    }
 	    return max;
 	};
+#endif
 	int Math::maxIndex(double_vector_ptr values) {
 	    double maxValue = std::numeric_limits < double >::min();
 	    int maxIndex = -1;

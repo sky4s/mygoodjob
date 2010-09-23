@@ -18,12 +18,10 @@ namespace cms {
 	class Util {
 	  public:
 	    static string_ptr toString(wchar_t * wc);
-	    static template < typename T >
-		const string Util::toString(const T t) {
+	    static template < typename T > const string Util::toString(const T t) {
 		return _toString(t);
 	    };
-	    static boost::shared_array < wchar_t >
-		towchar_t(std::string & str);
+	    static boost::shared_array < wchar_t > towchar_t(std::string & str);
 	    static wchar_t *towchar_t2(std::string & str);
 	    static void deleteExist(const std::string & filename);
 	    static void deleteExist(const char *filename);
@@ -32,11 +30,9 @@ namespace cms {
 	    static bptr < WideString > toWideString(const std::string & s);
 	    static void shellExecute(const std::string & filename);
 #ifdef EXCEL_ACCESSIBLE
+	    static void storeXYZxyVector(const std::string & filename, XYZ_vector_ptr XYZVector);
 	    static void storeXYZxyVector(const std::string & filename,
-					 XYZ_vector_ptr XYZVector);
-	    static void storeXYZxyVector(const std::string & filename,
-					 XYZ_vector_ptr XYZVector,
-					 const std::string firstColumn);
+					 XYZ_vector_ptr XYZVector, const std::string firstColumn);
 #endif
 	};
 
@@ -44,17 +40,14 @@ namespace cms {
 	  public:
 	    static string_vector_ptr fromCString(int count, ...);
 	    static string_vector_ptr fromString(int count, ...);
-	    static string_vector_ptr fromString(int n,
-						const std::string *
-						strings);
+	    static string_vector_ptr fromString(int n, const std::string * strings);
 	    static string_vector_ptr fromDouble(int count, ...);
-	    static string_vector_ptr fromDoubleArray(double1D_ptr
-						     doubleArray);
-	    static string_vector_ptr fromDoubleArray(double2D_ptr
-						     doubleArray, int n);
+#ifdef TNT_LIB
+	    static string_vector_ptr fromDoubleArray(double1D_ptr doubleArray);
+	    static string_vector_ptr fromDoubleArray(double2D_ptr doubleArray, int n);
+#endif
 	    static void setContent(string_vector_ptr vector,
-				   const std::string & content, int n,
-				   ...);
+				   const std::string & content, int n, ...);
 	    static string_vector_ptr tokenize(const std::string & content,
 					      const std::string & delim);
 	};
@@ -99,7 +92,7 @@ namespace cms {
 	     SCurve(double start, double end);
 	    double getValue(double normalizeInput);
 	};
- 
+
     };
 };
 #endif
