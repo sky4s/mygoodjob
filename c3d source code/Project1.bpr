@@ -9,14 +9,14 @@
       build\Engineering.obj build\GetCursorColor.obj build\ReadWriteFunc.obj 
       build\table_17.obj build\Unit1.obj build\Unit2.obj build\Unit3.obj 
       build\HWINTERFACELib_OCX.obj build\HWINTERFACELib_TLB.obj 
-      build\USBHIDIOC.obj"/>
+      build\USBHIDIOC.obj build\colorpicker.obj"/>
     <RESFILES value="Project1.res"/>
     <IDLFILES value=""/>
     <IDLGENFILES value=""/>
     <DEFFILE value=""/>
     <RESDEPEN value="$(RESFILES) src\c3d\c3d1_dis_new.dfm src\c3d\c3d_sim.dfm 
       src\c3d\color_converter.dfm src\c3d\Engineering.dfm src\c3d\Unit1.dfm 
-      src\c3d\Unit2.dfm src\c3d\Unit3.dfm"/>
+      src\c3d\Unit2.dfm src\c3d\Unit3.dfm src\gui\frame\colorpicker.dfm"/>
     <LIBFILES value="lib\USB_i2c_lib\hid.lib"/>
     <LIBRARIES value="adortl.lib dbrtl.lib rtl.lib vcl.lib"/>
     <SPARELIBS value="vcl.lib rtl.lib dbrtl.lib adortl.lib"/>
@@ -27,7 +27,7 @@
       inetdbbde.bpi inetdbxpress.bpi inetdb.bpi nmfast.bpi webdsnap.bpi 
       bcbie.bpi websnap.bpi soaprtl.bpi dclocx.bpi dbexpress.bpi dbxcds.bpi 
       indy.bpi bcb2kaxserver.bpi"/>
-    <PATHCPP value=".;src\c3d;src\c3d;src\c3d;src\c3d;src\c3d;src\c3d;src\c3d;src\c3d;src\c3d;src\c3d;src\c3d;src\c3d;lib\LPT_lib;lib\LPT_lib;lib\USB_i2c_lib"/>
+    <PATHCPP value=".;src\c3d;src\c3d;src\c3d;src\c3d;src\c3d;src\c3d;src\c3d;src\c3d;src\c3d;src\c3d;src\c3d;src\c3d;lib\LPT_lib;lib\LPT_lib;lib\USB_i2c_lib;src\gui\frame"/>
     <PATHPAS value=".;"/>
     <PATHRC value=".;"/>
     <PATHASM value=".;"/>
@@ -37,14 +37,16 @@
     <USERDEFINES value="_DEBUG"/>
     <SYSDEFINES value="NO_STRICT"/>
     <MAINSOURCE value="Project1.cpp"/>
-    <INCLUDEPATH value="src\c3d;lib\USB_i2c_lib;lib\LPT_lib;..;$(BCB)\include;$(BCB)\include\vcl;src"/>
-    <LIBPATH value="lib\USB_i2c_lib;lib\LPT_lib;src\c3d;src\cms\util;src\java;src\cms\colorformat;&quot;C:\Program Files\Borland\CBuilder6\Projects&quot;;USB_i2c_lib;LPT_lib;..;c3d;$(BCB)\lib\obj;$(BCB)\lib"/>
+    <INCLUDEPATH value="src\gui\frame;src\gui\c3d\frame;&quot;D:\Program Files\Borland\CBuilder6\Projects&quot;;src\c3d;lib\USB_i2c_lib;lib\LPT_lib;..;$(BCB)\include;$(BCB)\include\vcl;src"/>
+    <LIBPATH value="src\gui\frame;src\gui\c3d\frame;&quot;D:\Program Files\Borland\CBuilder6\Projects&quot;;lib\USB_i2c_lib;lib\LPT_lib;src\c3d;src\cms\util;src\java;src\cms\colorformat;&quot;C:\Program Files\Borland\CBuilder6\Projects&quot;;USB_i2c_lib;LPT_lib;..;c3d;$(BCB)\lib\obj;$(BCB)\lib"/>
     <WARNINGS value="-w-par"/>
     <OTHERFILES value=""/>
   </MACROS>
   <OPTIONS>
-    <IDLCFLAGS value="-Isrc\c3d -Ilib\USB_i2c_lib -Ilib\LPT_lib -I.. -I$(BCB)\include 
-      -I$(BCB)\include\vcl -Isrc -src_suffix cpp -D_DEBUG -boa"/>
+    <IDLCFLAGS value="-Isrc\gui\frame -Isrc\gui\c3d\frame 
+      -I&quot;D:\Program Files\Borland\CBuilder6\Projects&quot; -Isrc\c3d 
+      -Ilib\USB_i2c_lib -Ilib\LPT_lib -I.. -I$(BCB)\include -I$(BCB)\include\vcl 
+      -Isrc -src_suffix cpp -D_DEBUG -boa"/>
     <CFLAG1 value="-Od -H=$(BCB)\lib\c3d.csm -Vx -Ve -X- -r- -a1 -b- -k -y -v -vi- -c -tW -tWM"/>
     <PFLAGS value="-N2build -N0build -$YD -$W -$O- -$A8 -v -JPHNE -M"/>
     <RFLAGS value=""/>
@@ -79,6 +81,7 @@
       <FILE FILENAME="lib\USB_i2c_lib\hid.lib" FORMNAME="" UNITNAME="hid.lib" CONTAINERID="LibTool" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="src\debug.h" FORMNAME="" UNITNAME="debug.h" CONTAINERID="" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="src\includeall.h" FORMNAME="" UNITNAME="includeall.h" CONTAINERID="" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="src\gui\frame\colorpicker.cpp" FORMNAME="ColorPickerFrame" UNITNAME="colorpicker" CONTAINERID="CCompiler" DESIGNCLASS="TFrame" LOCALCOMMAND=""/>
   </FILELIST>
   <BUILDTOOLS>
   </BUILDTOOLS>

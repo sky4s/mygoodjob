@@ -10,6 +10,7 @@ USEFORM("src\c3d\Engineering.cpp", EngineerForm);
 USEFORM("src\c3d\Unit1.cpp", MainForm);
 USEFORM("src\c3d\Unit2.cpp", Frame2); /* TFrame: File Type */
 USEFORM("src\c3d\Unit3.cpp", Form3);
+USEFORM("src\gui\frame\colorpicker.cpp", ColorPickerFrame); /* TFrame: File Type */
 //---------------------------------------------------------------------------
 WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 {
