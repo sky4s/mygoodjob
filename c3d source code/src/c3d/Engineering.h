@@ -21,7 +21,8 @@
 #include <Dialogs.hpp>
 #include <windows.h>
 #include <time.h>
-#include "Unit1.h"
+//#include "Unit1.h"
+#include <gui\c3d\TMainForm.h>
 //---------------------------------------------------------------------------
 /*=========================================================================
 //   DCR table reverse at 20090804 by lynnelin

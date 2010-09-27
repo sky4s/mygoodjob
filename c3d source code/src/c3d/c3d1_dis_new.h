@@ -16,7 +16,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
-#include "Unit1.h"
+#include <Menus.hpp>
+//#include "Unit1.h"
+#include <gui\c3d\TMainForm.h>
 #include <ImgList.hpp>
 #include <Menus.hpp>
 #define  C3DChkBox_Nbr 2
