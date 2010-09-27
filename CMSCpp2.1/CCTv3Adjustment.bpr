@@ -15,16 +15,16 @@
       build\aroundAlgo.obj build\bitdepthprocessor.obj build\lcdcalibrator.obj 
       build\nearAlgo.obj build\rgbvectorop.obj build\whitefinder.obj 
       build\metermeasurement.obj build\analyzer.obj build\cp.obj build\meter.obj 
-      build\Unit2.obj build\TMeasureWindow.obj build\TAnalyzerFrame.obj 
-      build\TI2CTestForm.obj build\TMatrixCalibration.obj 
-      build\TCA210SettingFrame.obj build\TOptionsFrame.obj 
-      build\TOutputFileFrame.obj build\i2ccontrol.obj build\tconcontrol.obj 
-      build\tconparameter.obj build\ReadWriteFunc.obj build\gamma.obj 
-      build\dimdg.obj build\sandbox.obj build\cmf.obj build\asa047.obj 
-      build\TGammaAdjustmentForm.obj build\TGammaMeasurementForm.obj 
-      build\TMainForm.obj build\TTargetWhiteForm2.obj build\TAboutBox.obj 
-      build\TCCTLUTForm.obj build\component.obj build\dg.obj build\deltae.obj 
-      build\common.obj build\rgbgammaop.obj build\binder.obj build\listener.obj"/>
+      build\TMeasureWindow.obj build\TAnalyzerFrame.obj build\TI2CTestForm.obj 
+      build\TMatrixCalibration.obj build\TCA210SettingFrame.obj 
+      build\TOptionsFrame.obj build\TOutputFileFrame.obj build\i2ccontrol.obj 
+      build\tconcontrol.obj build\tconparameter.obj build\ReadWriteFunc.obj 
+      build\gamma.obj build\dimdg.obj build\sandbox.obj build\cmf.obj 
+      build\asa047.obj build\TGammaAdjustmentForm.obj 
+      build\TGammaMeasurementForm.obj build\TMainForm.obj 
+      build\TTargetWhiteForm2.obj build\TAboutBox.obj build\TCCTLUTForm.obj 
+      build\component.obj build\dg.obj build\deltae.obj build\common.obj 
+      build\rgbgammaop.obj build\binder.obj build\listener.obj"/>
     <RESFILES value="CCTv3Adjustment.res"/>
     <IDLFILES value=""/>
     <IDLGENFILES value=""/>
@@ -46,7 +46,7 @@
       inetdbbde.bpi inetdbxpress.bpi inetdb.bpi nmfast.bpi webdsnap.bpi 
       bcbie.bpi websnap.bpi soaprtl.bpi dclocx.bpi dbexpress.bpi dbxcds.bpi 
       indy.bpi bcb2kaxserver.bpi bcbindent.bpi"/>
-    <PATHCPP value=".;lib\LPT_lib;lib\LPT_lib;lib\USB_i2c_lib;src\java;lib\CA200SRVRLib;lib\CA200SRVRLib;src\ca210api;src\cms\util;src\cms\util;src\cms\colorspace;src\cms\colorspace;src\cms\colorspace;src\cms\colorspace;src\cms\colorspace;src\cms;src\cms;src\cms\colorformat;src\cms\colorformat;src\cms\colorformat;src\cms\colorformat;src\math;src\math;src\math;src\math;src\math;src\cms\lcd\calibrate;src\cms\lcd\calibrate;src\cms\lcd\calibrate;src\cms\lcd\calibrate;src\cms\lcd\calibrate;src\cms\lcd\calibrate;src\cms\lcd\calibrate;src\cms\measure;src\cms\measure;src\cms\measure;src\cms\measure;src;src\gui;src\gui;src\gui;src\gui;src\gui;src\gui;src\gui;src\i2c;src\i2c;src\i2c;src\i2c\core;src\math;src\cms\lcd\calibrate;src\cms\lcd\calibrate;src\cms\colorformat;src\math;src\gui\cct;src\gui\cct;src\gui\cct;src\gui\cct;src\gui\cct;src\gui\cct;src\cms\lcd\calibrate;src\cms\lcd\calibrate;src\cms;src\cms\lcd\calibrate;src\cms\lcd\calibrate;src\gui\util;src\gui\event"/>
+    <PATHCPP value=".;lib\LPT_lib;lib\LPT_lib;lib\USB_i2c_lib;src\java;lib\CA200SRVRLib;lib\CA200SRVRLib;src\ca210api;src\cms\util;src\cms\util;src\cms\colorspace;src\cms\colorspace;src\cms\colorspace;src\cms\colorspace;src\cms\colorspace;src\cms;src\cms;src\cms\colorformat;src\cms\colorformat;src\cms\colorformat;src\cms\colorformat;src\math;src\math;src\math;src\math;src\math;src\cms\lcd\calibrate;src\cms\lcd\calibrate;src\cms\lcd\calibrate;src\cms\lcd\calibrate;src\cms\lcd\calibrate;src\cms\lcd\calibrate;src\cms\lcd\calibrate;src\cms\measure;src\cms\measure;src\cms\measure;src\cms\measure;src\gui;src\gui;src\gui;src\gui;src\gui;src\gui;src\gui;src\i2c;src\i2c;src\i2c;src\i2c\core;src\math;src\cms\lcd\calibrate;src\cms\lcd\calibrate;src\cms\colorformat;src\math;src\gui\cct;src\gui\cct;src\gui\cct;src\gui\cct;src\gui\cct;src\gui\cct;src\cms\lcd\calibrate;src\cms\lcd\calibrate;src\cms;src\cms\lcd\calibrate;src\cms\lcd\calibrate;src\gui\util;src\gui\event"/>
     <PATHPAS value=".;"/>
     <PATHRC value=".;"/>
     <PATHASM value=".;"/>
@@ -124,7 +124,6 @@
       <FILE FILENAME="src\cms\measure\analyzer.cpp" FORMNAME="" UNITNAME="analyzer.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="src\cms\measure\cp.cpp" FORMNAME="" UNITNAME="cp.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="src\cms\measure\meter.cpp" FORMNAME="" UNITNAME="meter.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="src\Unit2.cpp" FORMNAME="" UNITNAME="Unit2" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="src\gui\TMeasureWindow.cpp" FORMNAME="MeasureWindow" UNITNAME="TMeasureWindow" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="src\gui\TAnalyzerFrame.cpp" FORMNAME="AnalyzerFrame" UNITNAME="TAnalyzerFrame" CONTAINERID="CCompiler" DESIGNCLASS="TFrame" LOCALCOMMAND=""/>
       <FILE FILENAME="lib\hid.lib" FORMNAME="" UNITNAME="hid.lib" CONTAINERID="LibTool" DESIGNCLASS="" LOCALCOMMAND=""/>

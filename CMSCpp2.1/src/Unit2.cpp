@@ -20,6 +20,8 @@
 #include <iterator>
 
 #include <boost/array.hpp>
+#include <boost/any.hpp>
+
 
 #include <vcl.h>
 #ifdef __BORLANDC__
@@ -79,8 +81,7 @@ void excel()
 	cout << *query->get(1, 1) << endl;
 	//query->set(1, 1, "333");
 	//string_vector_ptr fieldsNames = ExcelFileDB::make(2, "99", "9");
-	db.update("a", 44, fieldsNames,
-		  StringVector::fromCString(2, "55", "55"));
+	db.update("a", 44, fieldsNames, StringVector::fromCString(2, "55", "55"));
     };
 
 
@@ -104,15 +105,12 @@ void excel2()
     if (update) {
 	//兩倍時間
 	for (int x = 0; x < 1000; x++) {
-	    db.insert(fieldsNames,
-		      StringVector::fromString(2, _toString(x),
-					       _toString((x + 1))));
+	    db.insert(fieldsNames, StringVector::fromString(2, _toString(x), _toString((x + 1))));
 	}
 
 	for (int x = 0; x < 1000; x++) {
-	    string_vector_ptr values =
-		StringVector::fromString(2, _toString(x),
-					 _toString((x + 1)));
+	    string_vector_ptr values = StringVector::fromString(2, _toString(x),
+								_toString((x + 1)));
 	    db.update("a", x, fieldsNames, values);
 	}
 
@@ -145,10 +143,9 @@ double2D_ptr inverse()
 {
     using namespace math;
 
-    double2D_ptr m =
-	DoubleArray::toDouble2D(3, 9, 0.5767309, 0.1855540, 0.1881852,
-				0.2973769, 0.6273491, 0.0752741,
-				0.0270343, 0.0706872, 0.9911085);
+    double2D_ptr m = DoubleArray::toDouble2D(3, 9, 0.5767309, 0.1855540, 0.1881852,
+					     0.2973769, 0.6273491, 0.0752741,
+					     0.0270343, 0.0706872, 0.9911085);
     double2D_ptr inv = DoubleArray::inverse(m);
     cout << *DoubleArray::toString(m) << endl;
     cout << *DoubleArray::toString(inv) << endl;
@@ -360,8 +357,7 @@ void lcdcalibratorTry()
     bptr < CA210 > ca210(new CA210());
     //bptr < CA210 > ca2102(new CA210());
     bptr < MeterMeasurement > mm(new MeterMeasurement(ca210, false));
-    bptr < CA210IntensityAnalyzer >
-	analyzer(new CA210IntensityAnalyzer(ca210, mm));
+    bptr < CA210IntensityAnalyzer > analyzer(new CA210IntensityAnalyzer(ca210, mm));
     mm->measure(0, 0, 128, " test ");
 };
 void channelTry()
@@ -437,8 +433,7 @@ void bufferTry()
 void rgbGammaTry()
 {
     using namespace cms::lcd::calibrate;
-    RGBGamma_ptr rgbgamma =
-	RGBGamma::loadFromDesiredGamma("DesiredGamma.xls");
+    RGBGamma_ptr rgbgamma = RGBGamma::loadFromDesiredGamma("DesiredGamma.xls");
     double_vector_ptr r = rgbgamma->r;
     foreach(const double v, *r) {
 	cout << v << endl;
@@ -486,10 +481,9 @@ void inverseTry()
 {
     using namespace std;
     using namespace math;
-    double2D_ptr m =
-	DoubleArray::toDouble2D(3, 9, 0.9649, 0.9572, 0.1419, 0.1576,
-				0.4854,
-				0.4218, 0.9706, 0.8003, 0.9157);
+    double2D_ptr m = DoubleArray::toDouble2D(3, 9, 0.9649, 0.9572, 0.1419, 0.1576,
+					     0.4854,
+					     0.4218, 0.9706, 0.8003, 0.9157);
 
 
     double2D_ptr invm = DoubleArray::inverse(m);
@@ -534,12 +528,10 @@ void newCCTAlgoTry()
 	const Component_ptr c = (*vector)[x];
 	RGB_ptr intensity = c->intensity;
 	double rintensity = intensity->G - (intensity->B - intensity->G);
-	rintensity =
-	    lut.correctIntensityInRange(Dep::Channel::R, rintensity);
+	rintensity = lut.correctIntensityInRange(Dep::Channel::R, rintensity);
 	double rcode = lut.getCode(Dep::Channel::R, rintensity);
 	double g = c->rgb->G;
-	cout << java::lang::Math::roundTo(rcode * 16) << " " << g *
-	    16 << " " << g * 16 << endl;
+	cout << java::lang::Math::roundTo(rcode * 16) << " " << g * 16 << " " << g * 16 << endl;
     }
 }
 
@@ -564,8 +556,7 @@ void readTextTester()
 void cmfTester()
 {
     using namespace cms;
-    const ColorMatchingFunction & cmf =
-	*ColorMatchingFunction::CIE_1931_2DEG_XYZ;
+    const ColorMatchingFunction & cmf = *ColorMatchingFunction::CIE_1931_2DEG_XYZ;
     cout << cmf.getStart() << endl;
     cout << cmf.getInterval() << endl;
     cout << cmf.getEnd() << endl;
@@ -607,8 +598,7 @@ void directGammaTester()
 {
     using namespace i2c;
     bptr < cms::util::ByteBuffer > buf =
-	TCONControl::getRGBByteBuffer(513, 2052, 0,
-				      TestRGBBit::DependentInstance);
+	TCONControl::getRGBByteBuffer(513, 2052, 0, TestRGBBit::DependentInstance);
     int size = buf->getSize();
     for (int x = 0; x < size; x++) {
 	byte b = (*buf)[x];
@@ -627,12 +617,10 @@ void hookTester()
     using namespace Dep;
     bptr < DGLutFile > dgcode(new DGLutFile(filename, ReadOnly));
     bptr < Meter > meter = bptr < Meter > (new DGLutFileMeter(dgcode));
-    bptr < MeterMeasurement > mm =
-	bptr < MeterMeasurement > (new MeterMeasurement(meter, false));
+    bptr < MeterMeasurement > mm = bptr < MeterMeasurement > (new MeterMeasurement(meter, false));
     mm->setFakeMeasure(true);
 
-    bptr < MaxMatrixIntensityAnayzer >
-	matrixAnalyzer(new MaxMatrixIntensityAnayzer(mm));
+    bptr < MaxMatrixIntensityAnayzer > matrixAnalyzer(new MaxMatrixIntensityAnayzer(mm));
 
     bptr < MaxMatrixIntensityAnayzer > analyzer = matrixAnalyzer;
     //fetcher = bptr < ComponentFetcher > ((ComponentFetcher *) null);
@@ -733,9 +721,7 @@ void excelTester()
 
 void iniTester()
 {
-    bptr_ < TIniFile >
-	ini(new
-	    TIniFile(ExtractFilePath(Application->ExeName) + "tcon.ini"));
+    bptr_ < TIniFile > ini(new TIniFile(ExtractFilePath(Application->ExeName) + "tcon.ini"));
     ini->WriteInteger("I2C", "Card", 0);
     ini->WriteInteger("I2C2", "Card", 0);
     ini->WriteInteger("I2C3", "Card", 0);
@@ -763,9 +749,7 @@ void byteTester()
 
 void produceTCONINIFile()
 {
-    bptr_ < TIniFile >
-	ini(new
-	    TIniFile(ExtractFilePath(Application->ExeName) + "tcon.ini"));
+    bptr_ < TIniFile > ini(new TIniFile(ExtractFilePath(Application->ExeName) + "tcon.ini"));
 
     ini->WriteInteger("11306", "AddressingSize", 5);
 
@@ -813,8 +797,7 @@ void maxValueTry()
 void linearRGBTry()
 {
     using namespace cms::lcd::calibrate;
-    bptr < BitDepthProcessor >
-	bitDepth(new BitDepthProcessor(8, 12, 8, false));
+    bptr < BitDepthProcessor > bitDepth(new BitDepthProcessor(8, 12, 8, false));
     RGB_vector_ptr vec = RGBVector::getLinearRGBVector(bitDepth, .5);
 
     int size = vec->size();
@@ -829,8 +812,7 @@ void smoothTry()
 {
     using namespace cms::lcd::calibrate;
     using namespace cms::util;
-    bptr < BitDepthProcessor >
-	bitDepth(new BitDepthProcessor(8, 10, 6, false));
+    bptr < BitDepthProcessor > bitDepth(new BitDepthProcessor(8, 10, 6, false));
     RGB_vector_ptr vector1 = RGBVector::getLinearRGBVector(bitDepth, 0.5);
     RGB_vector_ptr vector2 = RGBVector::getLinearRGBVector(bitDepth, 1);
     /*foreach(RGB_ptr rgb, *vector1) {
@@ -839,8 +821,7 @@ void smoothTry()
        foreach(RGB_ptr rgb, *vector2) {
        cout << *rgb->toString() << endl;
        } */
-    RGB_vector_ptr result =
-	AdvancedDGLutGenerator::smooth(vector1, vector2, bitDepth, 230);
+    RGB_vector_ptr result = AdvancedDGLutGenerator::smooth(vector1, vector2, bitDepth, 230);
     /*foreach(RGB_ptr rgb, *result) {
        cout << *rgb->toString() << endl;
        } */
@@ -859,8 +840,7 @@ void cloneTry()
 {
     using namespace cms::lcd::calibrate;
     using namespace cms::util;
-    bptr < BitDepthProcessor >
-	bitDepth(new BitDepthProcessor(8, 10, 6, false));
+    bptr < BitDepthProcessor > bitDepth(new BitDepthProcessor(8, 10, 6, false));
 
     RGB_vector_ptr vector2 = RGBVector::getLinearRGBVector(bitDepth, 1);
     RGB_vector_ptr result = RGBVector::deepClone(vector2);
@@ -906,6 +886,113 @@ void domap()
 	cout << i->second << endl;
     }
 }
+
+class A {
+  public:
+    void some_function() {
+	std::cout << "A::some_function()\n";
+    };
+};
+class B {
+  public:
+    void some_function() {
+	std::cout << "B::some_function()\n";
+    };
+};
+
+void print_any(boost::any & a)
+{
+    if (A * pA = boost::any_cast < A > (&a)) {
+	pA->some_function();
+    } else if (B * pB = boost::any_cast < B > (&a)) {
+	pB->some_function();
+    } else {
+	try {
+	    std::cout << boost::any_cast < std::string > (a) << '\n';
+	}
+	catch(boost::bad_any_cast &) {
+	    std::cout << "Oops!\n";
+	}
+    }
+}
+
+
+void anyTest()
+{
+    std::cout << "Example of using any.\n\n";
+    std::vector < boost::any > store_anything;
+    store_anything.push_back(A());
+    store_anything.push_back(B());
+    // 我們再來，再加一些別的東西  
+    store_anything.push_back(std::string("This is fantastic! "));
+    store_anything.push_back(3);
+    store_anything.push_back(std::make_pair(true, 7.92));
+    std::for_each(store_anything.begin(), store_anything.end(), print_any);
+
+
+    std::cout << "Example of using any member functions\n\n";
+    boost::any a1(100);
+    boost::any a2(std::string("200"));
+    boost::any a3;
+    std::cout << "a3 is ";
+    if (!a3.empty()) {
+	std::cout << "not empty\n ";
+    }
+    std::cout << "empty\n";
+    a1.swap(a2);
+    try {
+	std::string s = boost::any_cast < std::string > (a1);
+	std::cout << "a1 contains a string: " << s << "\n";
+    }
+    catch(boost::bad_any_cast & e) {
+	std::cout << "I guess a1 doesn't contain a string!\n";
+    }
+    if (int *p = boost::any_cast < int >(&a2)) {
+	std::cout << "a2 seems to have swapped contents with a1: " << *p << "\n";
+    } else {
+	std::cout << "Nope, no int in a2\n";
+    }
+    if (typeid(int) == a2.type()) {
+	std::cout << "a2's type_info equals the type_info of int\n";
+    }
+
+}
+
+class property {
+    boost::any value_;
+    std::string name_;
+  public:
+    property(const std::string & name, const boost::any & value)
+    :name_(name), value_(value) {
+    } std::string name() const {
+	return name_;
+    } boost::any & value() {
+	return value_;
+    }
+    friend bool operator<(const property & lhs, const property & rhs) {
+	return lhs.name_ < rhs.name_;
+    }
+};
+void print_names(const property & p)
+{
+    std::cout << p.name() << "\n";
+}
+
+void propertyTest()
+{
+    std::cout << "Example of using any for storing properties.\n";
+    std::vector < property > properties;
+    properties.push_back(property("B", 30));
+    properties.push_back(property("A", std::string("Thirty something")));
+    properties.push_back(property("C", 3.1415));
+    std::sort(properties.begin(), properties.end());
+    std::for_each(properties.begin(), properties.end(), print_names);
+    std::cout << "\n";
+    std::cout << boost::any_cast < std::string > (properties[0].value()) << "\n";
+    std::cout << boost::any_cast < int >(properties[1].value()) << "\n";
+    std::cout << boost::any_cast < double >(properties[2].value()) << "\n";
+}
+
 
 #pragma argsused
 int main(int argc, char *argv[])
@@ -984,7 +1071,9 @@ int main(int argc, char *argv[])
     //deltaETry();
     //cloneTry();
     //scurve();
-    domap();
+    //domap();
+    //anyTest();
+    propertyTest();
 
 
 
