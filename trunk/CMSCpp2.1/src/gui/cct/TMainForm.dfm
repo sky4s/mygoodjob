@@ -1031,9 +1031,11 @@ object MainForm: TMainForm
           Height = 24
           Hint = 'Intensity from CA-210'
           Caption = 'CA-210'
+          Checked = True
           ParentShowHint = False
           ShowHint = True
           TabOrder = 0
+          TabStop = True
           OnClick = RadioButton_AnalyzerCA210Click
         end
         object RadioButton_AnalyzerMaxMatrix: TRadioButton
@@ -1043,11 +1045,9 @@ object MainForm: TMainForm
           Height = 24
           Hint = 'Intensity from software, more accuracy intensity'
           Caption = 'Max Matrix'
-          Checked = True
           ParentShowHint = False
           ShowHint = True
           TabOrder = 1
-          TabStop = True
           OnClick = RadioButton_AnalyzerMaxMatrixClick
         end
         object RadioButton_AnalyzerDebug: TRadioButton
