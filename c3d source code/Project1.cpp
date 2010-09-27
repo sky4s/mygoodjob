@@ -8,18 +8,19 @@ USEFORM("src\c3d\c3d_sim.cpp", C3D_SimualteForm);
 USEFORM("src\c3d\color_converter.cpp", Form_in_target);
 USEFORM("src\c3d\Engineering.cpp", EngineerForm);
 USEFORM("src\c3d\Unit1.cpp", MainForm);
-USEFORM("src\c3d\Unit2.cpp", Frame2); /* TFrame: File Type */
 USEFORM("src\c3d\Unit3.cpp", Form3);
-USEFORM("src\gui\frame\colorpicker.cpp", ColorPickerFrame); /* TFrame: File Type */
 //---------------------------------------------------------------------------
 WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 {
         try
         {
                  Application->Initialize();
-                 Application->CreateForm(__classid(TForm_in_target), &Form_in_target);
-                 Application->CreateForm(__classid(TMainForm), &MainForm);
+                  Application->CreateForm(__classid(TMainForm), &MainForm);
                  Application->CreateForm(__classid(TForm3), &Form3);
+                 Application->CreateForm(__classid(TC3DForm1), &C3DForm1);
+                 Application->CreateForm(__classid(TForm_in_target), &Form_in_target);
+                 Application->CreateForm(__classid(TEngineerForm), &EngineerForm);
+                 Application->CreateForm(__classid(TC3D_SimualteForm), &C3D_SimualteForm);
                  Application->Run();
         }
         catch (Exception &exception)
