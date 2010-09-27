@@ -1,7 +1,8 @@
 #include <vcl.h>
 #pragma hdrstop
 
-#include "Unit1.h"
+//#include "Unit1.h"
+#include <gui\c3d\TMainForm.h>
 #include "GetCursorColor.h"
 #include "c3d1_dis_new.h"
 #pragma package(smart_init)

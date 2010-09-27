@@ -7,7 +7,7 @@ object EngineerForm: TEngineerForm
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
-  Font.Height = -11
+  Font.Height = -14
   Font.Name = 'MS Sans Serif'
   Font.Style = []
   FormStyle = fsMDIChild
@@ -18,13 +18,13 @@ object EngineerForm: TEngineerForm
   WindowState = wsMaximized
   OnClose = FormClose
   OnCreate = FormCreate
-  PixelsPerInch = 96
-  TextHeight = 13
+  PixelsPerInch = 120
+  TextHeight = 16
   object PageControl1: TPageControl
     Left = 0
     Top = 0
-    Width = 713
-    Height = 481
+    Width = 878
+    Height = 592
     ActivePage = TabSheet1
     TabIndex = 0
     TabOrder = 0
@@ -33,22 +33,22 @@ object EngineerForm: TEngineerForm
       Caption = '&Configuration'
       object GroupBox1: TGroupBox
         Left = 0
-        Top = 4
-        Width = 665
-        Height = 165
+        Top = 5
+        Width = 818
+        Height = 203
         Caption = 'I2C Connect Card'
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clTeal
-        Font.Height = -13
+        Font.Height = -17
         Font.Name = 'MS Sans Serif'
         Font.Style = [fsBold]
         ParentFont = False
         TabOrder = 0
         object Img_LPT_04T: TImage
-          Left = 184
-          Top = 32
-          Width = 113
-          Height = 105
+          Left = 226
+          Top = 39
+          Width = 140
+          Height = 130
           Picture.Data = {
             0A544A504547496D616765FC280000FFD8FFE000104A46494600010101006000
             600000FFDB004300080606070605080707070909080A0C140D0C0B0B0C191213
@@ -383,10 +383,10 @@ object EngineerForm: TEngineerForm
           Transparent = True
         end
         object Img_LPT_06T: TImage
-          Left = 184
-          Top = 32
-          Width = 113
-          Height = 105
+          Left = 226
+          Top = 39
+          Width = 140
+          Height = 130
           Picture.Data = {
             0A544A504547496D616765D92F0000FFD8FFE000104A46494600010101006000
             600000FFDB004300080606070605080707070909080A0C140D0C0B0B0C191213
@@ -776,10 +776,10 @@ object EngineerForm: TEngineerForm
           Visible = False
         end
         object Img_usb: TImage
-          Left = 160
-          Top = 32
-          Width = 185
-          Height = 105
+          Left = 197
+          Top = 39
+          Width = 228
+          Height = 130
           Picture.Data = {
             07544269746D61709E7A0400424D9E7A0400000000003600000028000000A901
             0000E60000000100180000000000687A04000000000000000000000000000000
@@ -9959,28 +9959,28 @@ object EngineerForm: TEngineerForm
           Visible = False
         end
         object gb_USB_set: TGroupBox
-          Left = 368
-          Top = 16
-          Width = 281
-          Height = 97
+          Left = 453
+          Top = 20
+          Width = 346
+          Height = 119
           Caption = 'USB Setting'
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clBlack
-          Font.Height = -11
+          Font.Height = -15
           Font.Name = 'MS Sans Serif'
           Font.Style = []
           ParentFont = False
           TabOrder = 0
           object rg_speed: TRadioGroup
-            Left = 8
-            Top = 56
-            Width = 265
-            Height = 33
+            Left = 10
+            Top = 69
+            Width = 326
+            Height = 41
             Caption = 'Speed'
             Columns = 3
             Font.Charset = DEFAULT_CHARSET
             Font.Color = clBlack
-            Font.Height = -11
+            Font.Height = -15
             Font.Name = 'MS Sans Serif'
             Font.Style = []
             ItemIndex = 2
@@ -9992,15 +9992,15 @@ object EngineerForm: TEngineerForm
             TabOrder = 0
           end
           object rg_power: TRadioGroup
-            Left = 8
-            Top = 16
-            Width = 265
-            Height = 33
+            Left = 10
+            Top = 20
+            Width = 326
+            Height = 40
             Caption = 'Power'
             Columns = 3
             Font.Charset = DEFAULT_CHARSET
             Font.Color = clBlack
-            Font.Height = -11
+            Font.Height = -15
             Font.Name = 'MS Sans Serif'
             Font.Style = []
             ItemIndex = 2
@@ -10013,14 +10013,14 @@ object EngineerForm: TEngineerForm
           end
         end
         object rg_i2c_card_sel: TRadioGroup
-          Left = 16
-          Top = 40
-          Width = 129
-          Height = 97
+          Left = 20
+          Top = 49
+          Width = 158
+          Height = 120
           Caption = 'Card Select'
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clBlack
-          Font.Height = -11
+          Font.Height = -15
           Font.Name = 'MS Sans Serif'
           Font.Style = []
           ItemIndex = 0
@@ -10033,27 +10033,27 @@ object EngineerForm: TEngineerForm
           OnClick = rg_i2c_card_selClick
         end
         object GroupBox6: TGroupBox
-          Left = 368
-          Top = 120
-          Width = 281
-          Height = 41
+          Left = 453
+          Top = 148
+          Width = 346
+          Height = 50
           Caption = 'LPT Speed'
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clBlack
-          Font.Height = -11
+          Font.Height = -15
           Font.Name = 'MS Sans Serif'
           Font.Style = []
           ParentFont = False
           TabOrder = 2
           object btn_LPT_spd: TButton
-            Left = 8
-            Top = 16
-            Width = 73
-            Height = 17
+            Left = 10
+            Top = 20
+            Width = 90
+            Height = 21
             Caption = 'Check Speed'
             Font.Charset = DEFAULT_CHARSET
             Font.Color = clTeal
-            Font.Height = -11
+            Font.Height = -15
             Font.Name = 'MS Sans Serif'
             Font.Style = []
             ParentFont = False
@@ -10061,28 +10061,28 @@ object EngineerForm: TEngineerForm
             OnClick = btn_LPT_spdClick
           end
           object st_lpt_speed: TStaticText
-            Left = 99
-            Top = 16
-            Width = 62
-            Height = 17
+            Left = 122
+            Top = 20
+            Width = 66
+            Height = 20
             Caption = '             kHz'
             Font.Charset = DEFAULT_CHARSET
             Font.Color = clBlack
-            Font.Height = -11
+            Font.Height = -15
             Font.Name = 'MS Sans Serif'
             Font.Style = []
             ParentFont = False
             TabOrder = 1
           end
           object cb_low_freq: TCheckBox
-            Left = 176
-            Top = 16
-            Width = 89
-            Height = 17
+            Left = 217
+            Top = 20
+            Width = 109
+            Height = 21
             Caption = 'Half Freqency'
             Font.Charset = DEFAULT_CHARSET
             Font.Color = clBlack
-            Font.Height = -11
+            Font.Height = -15
             Font.Name = 'MS Sans Serif'
             Font.Style = []
             ParentFont = False
@@ -10093,57 +10093,57 @@ object EngineerForm: TEngineerForm
       end
       object GroupBox2: TGroupBox
         Left = 0
-        Top = 168
-        Width = 489
-        Height = 281
+        Top = 207
+        Width = 602
+        Height = 346
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clTeal
-        Font.Height = -13
+        Font.Height = -17
         Font.Name = 'MS Sans Serif'
         Font.Style = [fsBold]
         ParentFont = False
         TabOrder = 1
         object Label1: TLabel
-          Left = 8
-          Top = 16
-          Width = 204
-          Height = 16
+          Left = 10
+          Top = 20
+          Width = 248
+          Height = 20
           Caption = 'Memory Addressing Size (bit)'
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clTeal
-          Font.Height = -13
+          Font.Height = -17
           Font.Name = 'MS Sans Serif'
           Font.Style = [fsBold]
           ParentFont = False
         end
         object Label3: TLabel
-          Left = 240
-          Top = 24
-          Width = 153
-          Height = 16
+          Left = 295
+          Top = 30
+          Width = 185
+          Height = 20
           Caption = 'Device Address (Hex)'
         end
         object Label2: TLabel
-          Left = 8
-          Top = 32
-          Width = 109
-          Height = 16
+          Left = 10
+          Top = 39
+          Width = 135
+          Height = 20
           Caption = '(EEPROM Size)'
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clTeal
-          Font.Height = -13
+          Font.Height = -17
           Font.Name = 'MS Sans Serif'
           Font.Style = [fsBold]
           ParentFont = False
         end
         object rg_device_addr_sel: TRadioGroup
-          Left = 240
-          Top = 40
-          Width = 241
-          Height = 137
+          Left = 295
+          Top = 49
+          Width = 297
+          Height = 169
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clBlack
-          Font.Height = -11
+          Font.Height = -15
           Font.Name = 'MS Sans Serif'
           Font.Style = []
           ItemIndex = 1
@@ -10157,13 +10157,13 @@ object EngineerForm: TEngineerForm
           OnClick = rg_device_addr_selClick
         end
         object edt_addr_tcon_s: TEdit
-          Left = 336
-          Top = 56
-          Width = 33
-          Height = 21
+          Left = 414
+          Top = 69
+          Width = 40
+          Height = 24
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clBlack
-          Font.Height = -11
+          Font.Height = -15
           Font.Name = 'MS Sans Serif'
           Font.Style = []
           ParentFont = False
@@ -10172,16 +10172,16 @@ object EngineerForm: TEngineerForm
           OnChange = edt_addr_tcon_sChange
         end
         object cbo_mem_addr_size: TComboBox
-          Left = 64
-          Top = 49
-          Width = 73
-          Height = 24
+          Left = 79
+          Top = 60
+          Width = 90
+          Height = 28
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clBlack
-          Font.Height = -13
+          Font.Height = -17
           Font.Name = 'MS Sans Serif'
           Font.Style = [fsBold]
-          ItemHeight = 16
+          ItemHeight = 20
           ItemIndex = 5
           ParentFont = False
           TabOrder = 2
@@ -10199,13 +10199,13 @@ object EngineerForm: TEngineerForm
             '512k')
         end
         object edt_addr_tcon_dm: TEdit
-          Left = 400
-          Top = 88
-          Width = 33
-          Height = 21
+          Left = 492
+          Top = 108
+          Width = 41
+          Height = 24
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clBlack
-          Font.Height = -11
+          Font.Height = -15
           Font.Name = 'MS Sans Serif'
           Font.Style = []
           ParentFont = False
@@ -10214,13 +10214,13 @@ object EngineerForm: TEngineerForm
           OnChange = edt_addr_tcon_dmChange
         end
         object edt_addr_tcon_ds: TEdit
-          Left = 440
-          Top = 88
-          Width = 33
-          Height = 21
+          Left = 542
+          Top = 108
+          Width = 40
+          Height = 24
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clBlack
-          Font.Height = -11
+          Font.Height = -15
           Font.Name = 'MS Sans Serif'
           Font.Style = []
           ParentFont = False
@@ -10229,13 +10229,13 @@ object EngineerForm: TEngineerForm
           OnChange = edt_addr_tcon_dsChange
         end
         object edt_addr_EEP: TEdit
-          Left = 320
-          Top = 112
-          Width = 33
-          Height = 21
+          Left = 394
+          Top = 138
+          Width = 40
+          Height = 24
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clBlack
-          Font.Height = -11
+          Font.Height = -15
           Font.Name = 'MS Sans Serif'
           Font.Style = []
           ParentFont = False
@@ -10244,15 +10244,15 @@ object EngineerForm: TEngineerForm
           OnChange = edt_addr_EEPChange
         end
         object btn_en_ftm: TBitBtn
-          Left = 392
-          Top = 56
-          Width = 73
-          Height = 25
+          Left = 482
+          Top = 69
+          Width = 90
+          Height = 31
           Hint = 'Use Single TCON Device Address'
           Caption = '&FTM'
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clBlack
-          Font.Height = -11
+          Font.Height = -15
           Font.Name = 'MS Sans Serif'
           Font.Style = [fsBold]
           ModalResult = 6
@@ -10279,10 +10279,10 @@ object EngineerForm: TEngineerForm
           NumGlyphs = 2
         end
         object sg_device_addr: TStringGrid
-          Left = 232
-          Top = 184
-          Width = 211
-          Height = 28
+          Left = 286
+          Top = 226
+          Width = 259
+          Height = 35
           ColCount = 8
           Ctl3D = True
           DefaultColWidth = 25
@@ -10292,7 +10292,7 @@ object EngineerForm: TEngineerForm
           FixedRows = 0
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clBlack
-          Font.Height = -13
+          Font.Height = -17
           Font.Name = 'MS Sans Serif'
           Font.Style = [fsBold]
           ParentCtl3D = False
@@ -10301,29 +10301,29 @@ object EngineerForm: TEngineerForm
           Visible = False
         end
         object GroupBox4: TGroupBox
-          Left = 8
-          Top = 176
-          Width = 473
-          Height = 113
+          Left = 10
+          Top = 217
+          Width = 582
+          Height = 139
           Caption = 'EEPROM Setting'
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clBlack
-          Font.Height = -11
+          Font.Height = -15
           Font.Name = 'MS Sans Serif'
           Font.Style = []
           ParentFont = False
           TabOrder = 8
           Visible = False
           object rg_w_page: TRadioGroup
-            Left = 8
-            Top = 16
-            Width = 361
-            Height = 41
+            Left = 10
+            Top = 20
+            Width = 444
+            Height = 50
             Caption = 'Page Write Size'
             Columns = 5
             Font.Charset = DEFAULT_CHARSET
             Font.Color = clBlack
-            Font.Height = -11
+            Font.Height = -15
             Font.Name = 'MS Sans Serif'
             Font.Style = []
             ItemIndex = 4
@@ -10337,10 +10337,10 @@ object EngineerForm: TEngineerForm
             TabOrder = 0
           end
           object rg_w_cycl_t: TRadioGroup
-            Left = 8
-            Top = 64
-            Width = 361
-            Height = 41
+            Left = 10
+            Top = 79
+            Width = 444
+            Height = 50
             Caption = 'Write Cycle Time (twr)'
             Columns = 3
             ItemIndex = 1
@@ -10351,10 +10351,10 @@ object EngineerForm: TEngineerForm
             TabOrder = 1
           end
           object Memo3: TMemo
-            Left = 376
-            Top = 32
-            Width = 81
-            Height = 49
+            Left = 463
+            Top = 39
+            Width = 99
+            Height = 61
             Color = clScrollBar
             Lines.Strings = (
               'Note:'
@@ -10367,21 +10367,21 @@ object EngineerForm: TEngineerForm
           end
         end
         object GroupBox5: TGroupBox
-          Left = 8
-          Top = 88
-          Width = 209
-          Height = 89
+          Left = 10
+          Top = 108
+          Width = 257
+          Height = 110
           Caption = 'Page Operation'
           TabOrder = 9
           object btn_page_read: TButton
-            Left = 24
-            Top = 24
-            Width = 65
-            Height = 25
+            Left = 30
+            Top = 30
+            Width = 80
+            Height = 30
             Caption = '&Read'
             Font.Charset = DEFAULT_CHARSET
             Font.Color = clTeal
-            Font.Height = -11
+            Font.Height = -15
             Font.Name = 'MS Sans Serif'
             Font.Style = [fsBold]
             ParentFont = False
@@ -10389,14 +10389,14 @@ object EngineerForm: TEngineerForm
             OnClick = btn_page_readClick
           end
           object btn_page_write: TButton
-            Left = 120
-            Top = 24
-            Width = 65
-            Height = 25
+            Left = 148
+            Top = 30
+            Width = 80
+            Height = 30
             Caption = '&Write'
             Font.Charset = DEFAULT_CHARSET
             Font.Color = clTeal
-            Font.Height = -11
+            Font.Height = -15
             Font.Name = 'MS Sans Serif'
             Font.Style = [fsBold]
             ParentFont = False
@@ -10404,14 +10404,14 @@ object EngineerForm: TEngineerForm
             OnClick = btn_page_writeClick
           end
           object btn_page_save: TButton
-            Left = 24
-            Top = 56
-            Width = 65
-            Height = 25
+            Left = 30
+            Top = 69
+            Width = 80
+            Height = 31
             Caption = '&Save'
             Font.Charset = DEFAULT_CHARSET
             Font.Color = clTeal
-            Font.Height = -11
+            Font.Height = -15
             Font.Name = 'MS Sans Serif'
             Font.Style = [fsBold]
             ParentFont = False
@@ -10419,14 +10419,14 @@ object EngineerForm: TEngineerForm
             OnClick = btn_page_saveClick
           end
           object btn_page_load: TButton
-            Left = 120
-            Top = 56
-            Width = 65
-            Height = 25
+            Left = 148
+            Top = 69
+            Width = 80
+            Height = 31
             Caption = '&Load'
             Font.Charset = DEFAULT_CHARSET
             Font.Color = clTeal
-            Font.Height = -11
+            Font.Height = -15
             Font.Name = 'MS Sans Serif'
             Font.Style = [fsBold]
             ParentFont = False
@@ -10435,13 +10435,13 @@ object EngineerForm: TEngineerForm
           end
         end
         object edt_addr_OTP: TEdit
-          Left = 296
-          Top = 144
-          Width = 33
-          Height = 21
+          Left = 364
+          Top = 177
+          Width = 41
+          Height = 24
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clBlack
-          Font.Height = -11
+          Font.Height = -15
           Font.Name = 'MS Sans Serif'
           Font.Style = []
           ParentFont = False
@@ -10451,14 +10451,14 @@ object EngineerForm: TEngineerForm
         end
       end
       object btn_connect_card: TBitBtn
-        Left = 520
-        Top = 184
-        Width = 89
-        Height = 33
+        Left = 640
+        Top = 226
+        Width = 110
+        Height = 41
         Caption = '&Connect'
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clNavy
-        Font.Height = -11
+        Font.Height = -15
         Font.Name = 'MS Sans Serif'
         Font.Style = [fsBold]
         ParentFont = False
@@ -10467,14 +10467,14 @@ object EngineerForm: TEngineerForm
         Kind = bkAll
       end
       object btn_soft_reset: TBitBtn
-        Left = 520
-        Top = 248
-        Width = 89
-        Height = 25
+        Left = 640
+        Top = 305
+        Width = 110
+        Height = 31
         Caption = '&Reset'
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
-        Font.Height = -11
+        Font.Height = -15
         Font.Name = 'MS Sans Serif'
         Font.Style = [fsBold]
         ModalResult = 4
@@ -10501,14 +10501,14 @@ object EngineerForm: TEngineerForm
         NumGlyphs = 2
       end
       object btn_reload: TBitBtn
-        Left = 520
-        Top = 288
-        Width = 89
-        Height = 25
+        Left = 640
+        Top = 354
+        Width = 110
+        Height = 31
         Caption = 'Re&load'
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clWindowText
-        Font.Height = -11
+        Font.Height = -15
         Font.Name = 'MS Sans Serif'
         Font.Style = [fsBold]
         ParentFont = False
@@ -10523,36 +10523,36 @@ object EngineerForm: TEngineerForm
       ImageIndex = 1
       object gb_byte_write: TGroupBox
         Left = 0
-        Top = 4
-        Width = 481
-        Height = 81
+        Top = 5
+        Width = 592
+        Height = 100
         Caption = 'Byte Operation'
         Font.Charset = ANSI_CHARSET
         Font.Color = clTeal
-        Font.Height = -13
+        Font.Height = -17
         Font.Name = 'MS Sans Serif'
         Font.Style = [fsBold]
         ParentFont = False
         TabOrder = 0
         object edt_byte_rdata: TLabeledEdit
-          Left = 169
-          Top = 40
-          Width = 74
+          Left = 208
+          Top = 49
+          Width = 91
           Height = 21
           TabStop = False
           Color = clBtnFace
-          EditLabel.Width = 77
-          EditLabel.Height = 13
+          EditLabel.Width = 98
+          EditLabel.Height = 16
           EditLabel.Caption = 'Read Data(Hex)'
           EditLabel.Font.Charset = ANSI_CHARSET
           EditLabel.Font.Color = clBlack
-          EditLabel.Font.Height = -11
+          EditLabel.Font.Height = -15
           EditLabel.Font.Name = 'MS Sans Serif'
           EditLabel.Font.Style = []
           EditLabel.ParentFont = False
           Font.Charset = ANSI_CHARSET
           Font.Color = clBlack
-          Font.Height = -11
+          Font.Height = -15
           Font.Name = 'MS Sans Serif'
           Font.Style = []
           LabelPosition = lpAbove
@@ -10561,22 +10561,22 @@ object EngineerForm: TEngineerForm
           TabOrder = 4
         end
         object edt_byte_addr: TLabeledEdit
-          Left = 9
-          Top = 40
-          Width = 74
+          Left = 11
+          Top = 49
+          Width = 91
           Height = 21
-          EditLabel.Width = 66
-          EditLabel.Height = 13
+          EditLabel.Width = 86
+          EditLabel.Height = 16
           EditLabel.Caption = 'Address (Hex)'
           EditLabel.Font.Charset = ANSI_CHARSET
           EditLabel.Font.Color = clBlack
-          EditLabel.Font.Height = -11
+          EditLabel.Font.Height = -15
           EditLabel.Font.Name = 'MS Sans Serif'
           EditLabel.Font.Style = []
           EditLabel.ParentFont = False
           Font.Charset = ANSI_CHARSET
           Font.Color = clBlack
-          Font.Height = -11
+          Font.Height = -15
           Font.Name = 'MS Sans Serif'
           Font.Style = []
           LabelPosition = lpAbove
@@ -10586,23 +10586,23 @@ object EngineerForm: TEngineerForm
           Text = '0'
         end
         object edt_byte_wdata: TLabeledEdit
-          Left = 89
-          Top = 40
-          Width = 74
+          Left = 110
+          Top = 49
+          Width = 91
           Height = 21
           CharCase = ecUpperCase
-          EditLabel.Width = 51
-          EditLabel.Height = 13
+          EditLabel.Width = 64
+          EditLabel.Height = 16
           EditLabel.Caption = 'Data (Hex)'
           EditLabel.Font.Charset = ANSI_CHARSET
           EditLabel.Font.Color = clBlack
-          EditLabel.Font.Height = -11
+          EditLabel.Font.Height = -15
           EditLabel.Font.Name = 'MS Sans Serif'
           EditLabel.Font.Style = []
           EditLabel.ParentFont = False
           Font.Charset = ANSI_CHARSET
           Font.Color = clBlack
-          Font.Height = -11
+          Font.Height = -15
           Font.Name = 'MS Sans Serif'
           Font.Style = []
           ImeName = #10
@@ -10612,14 +10612,14 @@ object EngineerForm: TEngineerForm
           TabOrder = 1
         end
         object btn_byte_read: TBitBtn
-          Left = 367
-          Top = 40
-          Width = 76
-          Height = 25
+          Left = 452
+          Top = 49
+          Width = 93
+          Height = 31
           Caption = '&Read'
           Font.Charset = ANSI_CHARSET
           Font.Color = clBlack
-          Font.Height = -11
+          Font.Height = -15
           Font.Name = 'MS Sans Serif'
           Font.Style = [fsBold]
           ParentFont = False
@@ -10627,14 +10627,14 @@ object EngineerForm: TEngineerForm
           OnClick = btn_byte_readClick
         end
         object btn_byte_write: TBitBtn
-          Left = 263
-          Top = 40
-          Width = 76
-          Height = 25
+          Left = 324
+          Top = 49
+          Width = 93
+          Height = 31
           Caption = '&Write'
           Font.Charset = ANSI_CHARSET
           Font.Color = clBlack
-          Font.Height = -11
+          Font.Height = -15
           Font.Name = 'MS Sans Serif'
           Font.Style = [fsBold]
           ParentFont = False
@@ -10644,26 +10644,26 @@ object EngineerForm: TEngineerForm
       end
       object GroupBox3: TGroupBox
         Left = 0
-        Top = 96
-        Width = 705
-        Height = 369
+        Top = 118
+        Width = 868
+        Height = 454
         Caption = 'Sequential Operation'
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clTeal
-        Font.Height = -13
+        Font.Height = -17
         Font.Name = 'MS Sans Serif'
         Font.Style = [fsBold]
         ParentFont = False
         TabOrder = 1
         object btn_seq_write: TBitBtn
-          Left = 264
-          Top = 29
-          Width = 73
-          Height = 25
+          Left = 325
+          Top = 36
+          Width = 90
+          Height = 30
           Caption = 'Wri&te'
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clBlack
-          Font.Height = -11
+          Font.Height = -15
           Font.Name = 'MS Sans Serif'
           Font.Style = [fsBold]
           ParentFont = False
@@ -10671,14 +10671,14 @@ object EngineerForm: TEngineerForm
           OnClick = btn_seq_writeClick
         end
         object btn_seq_read: TBitBtn
-          Left = 368
-          Top = 29
-          Width = 73
-          Height = 24
+          Left = 453
+          Top = 36
+          Width = 90
+          Height = 29
           Caption = 'Rea&d'
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clBlack
-          Font.Height = -11
+          Font.Height = -15
           Font.Name = 'MS Sans Serif'
           Font.Style = [fsBold]
           ParentFont = False
@@ -10686,10 +10686,10 @@ object EngineerForm: TEngineerForm
           OnClick = btn_seq_readClick
         end
         object sg_seq_data: TStringGrid
-          Left = 8
-          Top = 64
-          Width = 689
-          Height = 297
+          Left = 10
+          Top = 79
+          Width = 848
+          Height = 365
           ColCount = 17
           DefaultColWidth = 38
           DefaultRowHeight = 18
@@ -10697,7 +10697,7 @@ object EngineerForm: TEngineerForm
           RowCount = 4097
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clWindowText
-          Font.Height = -13
+          Font.Height = -17
           Font.Name = 'MS Sans Serif'
           Font.Style = []
           Options = [goFixedVertLine, goFixedHorzLine, goVertLine, goHorzLine, goEditing]
@@ -10705,22 +10705,22 @@ object EngineerForm: TEngineerForm
           TabOrder = 2
         end
         object edt_seq_addr: TLabeledEdit
-          Left = 8
-          Top = 32
-          Width = 73
+          Left = 10
+          Top = 39
+          Width = 90
           Height = 21
-          EditLabel.Width = 63
-          EditLabel.Height = 13
+          EditLabel.Width = 83
+          EditLabel.Height = 16
           EditLabel.Caption = 'Address(Hex)'
           EditLabel.Font.Charset = DEFAULT_CHARSET
           EditLabel.Font.Color = clBlack
-          EditLabel.Font.Height = -11
+          EditLabel.Font.Height = -15
           EditLabel.Font.Name = 'MS Sans Serif'
           EditLabel.Font.Style = []
           EditLabel.ParentFont = False
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clBlack
-          Font.Height = -11
+          Font.Height = -15
           Font.Name = 'MS Sans Serif'
           Font.Style = []
           LabelPosition = lpAbove
@@ -10730,22 +10730,22 @@ object EngineerForm: TEngineerForm
           Text = '0'
         end
         object edt_seq_len: TLabeledEdit
-          Left = 88
-          Top = 32
-          Width = 73
+          Left = 108
+          Top = 39
+          Width = 90
           Height = 21
-          EditLabel.Width = 59
-          EditLabel.Height = 13
+          EditLabel.Width = 73
+          EditLabel.Height = 16
           EditLabel.Caption = 'Lenght(Dec)'
           EditLabel.Font.Charset = DEFAULT_CHARSET
           EditLabel.Font.Color = clBlack
-          EditLabel.Font.Height = -11
+          EditLabel.Font.Height = -15
           EditLabel.Font.Name = 'MS Sans Serif'
           EditLabel.Font.Style = []
           EditLabel.ParentFont = False
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clBlack
-          Font.Height = -11
+          Font.Height = -15
           Font.Name = 'MS Sans Serif'
           Font.Style = []
           LabelPosition = lpAbove
@@ -10755,14 +10755,14 @@ object EngineerForm: TEngineerForm
           Text = '1'
         end
         object btn_seq_load: TBitBtn
-          Left = 504
-          Top = 29
-          Width = 73
-          Height = 25
+          Left = 620
+          Top = 36
+          Width = 90
+          Height = 30
           Caption = '&Load'
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clBlack
-          Font.Height = -11
+          Font.Height = -15
           Font.Name = 'MS Sans Serif'
           Font.Style = [fsBold]
           ParentFont = False
@@ -10770,14 +10770,14 @@ object EngineerForm: TEngineerForm
           OnClick = btn_seq_loadClick
         end
         object btn_seq_save: TBitBtn
-          Left = 600
-          Top = 29
-          Width = 73
-          Height = 25
+          Left = 738
+          Top = 36
+          Width = 90
+          Height = 30
           Caption = '&Save'
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clBlack
-          Font.Height = -11
+          Font.Height = -15
           Font.Name = 'MS Sans Serif'
           Font.Style = [fsBold]
           ParentFont = False
@@ -10786,10 +10786,10 @@ object EngineerForm: TEngineerForm
         end
       end
       object btn_byte_read_no_ack: TButton
-        Left = 520
-        Top = 48
-        Width = 121
-        Height = 25
+        Left = 640
+        Top = 59
+        Width = 149
+        Height = 31
         Caption = 'Read (no check ack)'
         TabOrder = 2
         Visible = False
@@ -10799,8 +10799,8 @@ object EngineerForm: TEngineerForm
   end
   object stb_page_operat: TStatusBar
     Left = 0
-    Top = 483
-    Width = 717
+    Top = 592
+    Width = 878
     Height = 17
     Color = clSkyBlue
     Panels = <

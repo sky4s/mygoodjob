@@ -4,7 +4,8 @@
 #include <stdio.h>
 #include <string.h>
 #include <math.h>
-#include "Unit1.h"
+//#include "Unit1.h"
+#include <gui\c3d\TMainForm.h>
 #include "c3d1_dis_new.h"
 
 #define  C3D_EN         "C3D_EN,59,0,1"
