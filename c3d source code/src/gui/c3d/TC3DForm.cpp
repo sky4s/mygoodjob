@@ -27,19 +27,21 @@
 
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
+#pragma link "TColorPickerFrame"
 #pragma resource "*.dfm"
 #pragma warn -pck
 TC3DForm1 *C3DForm1;
 
 #define PointColor_D 2		//RGB diffusion 程秸俱秖50, 簿笆亥糷絛瞅ぃ禬筁32*2, ┮砞2
+
 AbstC3D *OC3D;
 double Color_move[150][3];
 int Color_move_Nbr = 4;
 int TBL_SIZE = 9;
 int cube_dis = 256 / (TBL_SIZE - 1);	// steps for non-uniform table
-int bit_num = 12;		// lookup table  bit 计
-double Ratio = pow(2, bit_num - 8);	// bit计10┪12┮计
-double scrl_ratio = 1;
+const int bit_num = 12;		// lookup table  bit 计
+const double Ratio = pow(2, bit_num - 8);	// bit计10┪12┮计
+const double scrl_ratio = 1;
 bool c3d_detailadjust = false;
 int tbl_s;
 
@@ -67,7 +69,6 @@ int sim_val[72] = { 8.1, 4.1, 0.2, -1.1, -0.8, -1.7, -2.3, -3.4, -4.9, -4.3, -4.
 int total_len = TBL_SIZE * TBL_SIZE * TBL_SIZE;	// the number of points in table
 int **c3d_r, **c3d_g, **c3d_b;
 
-//TC3D_SimualteForm *C3D_SimualteForm;
 TPColorThread1 *PColorThread1;
 int X_site, Y_site;
 
@@ -4564,6 +4565,10 @@ void __fastcall TC3DForm1::FormCreate(TObject * Sender)
        sg_12color1->Canvas->Brush->Color = clBlack;
        sg_12color1->Canvas->FrameRect(TheRect);
      */
+
+    TColorPickerFrame1->setFormInTarget(FormInTarget);
+    colorMouseListener = bptr < ColorMouseListener > (new ColorMouseListener(this));
+    TColorPickerFrame1->addMouseListener(colorMouseListener);
 }
 
 //---------------------------------------------------------------------------
@@ -7560,4 +7565,19 @@ void __fastcall TC3DForm1::SaveDialog1TypeChange(TObject * Sender)
 }
 
 //---------------------------------------------------------------------------
+TC3DForm1::ColorMouseListener::ColorMouseListener(TC3DForm1 * parent):parent(parent)
+{
+};
+void TC3DForm1::ColorMouseListener::mousePressed(TObject * Sender,
+						 TMouseButton Button, TShiftState Shift, int X,
+						 int Y)
+{
+    parent->Img_3DLUTMouseDown(Sender, Button, Shift, X, Y);
+};
+void TC3DForm1::ColorMouseListener::mouseReleased(TObject * Sender,
+						  TMouseButton Button, TShiftState Shift, int X,
+						  int Y)
+{
+
+};
 

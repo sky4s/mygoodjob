@@ -26,12 +26,13 @@
 #include <Menus.hpp>
 #include <ImgList.hpp>
 #include <Menus.hpp>
+#include "TColorPickerFrame.h"
 //其他庫頭文件
 
 //本項目內頭文件
 #include <c3d/Address_type.h>
 #include <c3d/core.h>
-
+#include <gui/event/listener.h>
 //本項目內gui頭文件
 
 #define  C3DChkBox_Nbr 2
@@ -323,6 +324,7 @@ class TC3DForm1:public TForm {
     TRadioGroup *rg_Color_Model;
     TCheckBox *CheckBox1;
     TButton *btn_c3d_load_img;
+    TColorPickerFrame *TColorPickerFrame1;
     void __fastcall btn_c3d_load_imgClick(TObject * Sender);
     void __fastcall rg_c3d_interplClick(TObject * Sender);
     void __fastcall btn_c3d_simClick(TObject * Sender);
@@ -414,9 +416,21 @@ class TC3DForm1:public TForm {
     void __fastcall SaveDialog1TypeChange(TObject * Sender);
 
   private:			// User declarations
+
+     class ColorMouseListener:public gui::event::MouseListener {
+	const TC3DForm1 *parent;
+      public:
+	 ColorMouseListener(TC3DForm1 * parent);
+	virtual void mousePressed(TObject * Sender,
+				  TMouseButton Button, TShiftState Shift, int X, int Y);
+	virtual void mouseReleased(TObject * Sender,
+				   TMouseButton Button, TShiftState Shift, int X, int Y);
+    };
+    bptr < ColorMouseListener > colorMouseListener;
+
   public:			// User declarations
-     __fastcall TC3DForm1(TComponent * Owner);
-     __fastcall ~ TC3DForm1();
+    __fastcall TC3DForm1(TComponent * Owner);
+    __fastcall ~ TC3DForm1();
     double ***c3d_lutR, ***c3d_lutG, ***c3d_lutB;
     double ***c3d_lutH, ***c3d_lutS, ***c3d_lutV, ***c3d_lutI;
     double ***tmp_c3d_lutR, ***tmp_c3d_lutG, ***tmp_c3d_lutB, ***tmp_c3d_lutH, ***tmp_c3d_lutS,
@@ -534,7 +548,10 @@ class TC3DForm1:public TForm {
     void refresh_c3d_color_grid();
 
     void c3d_lutAssign();
+
+
 };
+
 //---------------------------------------------------------------------------
 extern PACKAGE TC3DForm1 *C3DForm1;
 //---------------------------------------------------------------------------
@@ -613,5 +630,4 @@ char *Load_File(String Fpath)
 }
 
 #endif
-
 

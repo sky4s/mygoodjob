@@ -7,7 +7,7 @@
 #include <Controls.hpp>
 #include <StdCtrls.hpp>
 #include <Forms.hpp>
-#include "colorpicker.h"
+#include "TColorPickerFrame.h"
 //---------------------------------------------------------------------------
 class TTestForm2 : public TForm
 {

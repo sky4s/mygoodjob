@@ -6,7 +6,7 @@
 #include "TTestForm.h"
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
-#pragma link "colorpicker"
+#pragma link "TColorPickerFrame"
 #pragma resource "*.dfm"
 TTestForm2 *TestForm2;
 //---------------------------------------------------------------------------
