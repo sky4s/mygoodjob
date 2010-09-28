@@ -1,9 +1,9 @@
-object C3D_SimualteForm: TC3D_SimualteForm
+object C3DSimualteForm: TC3DSimualteForm
   Left = 201
   Top = 52
   Width = 458
   Height = 428
-  Caption = 'C3D_SimualteForm '
+  Caption = 'C3DSimualteForm '
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText

@@ -1,9 +1,9 @@
-object Form2: TForm2
+object TestForm2: TTestForm2
   Left = 192
-  Top = 140
-  Width = 1305
-  Height = 750
-  Caption = 'Form2'
+  Top = 132
+  Width = 870
+  Height = 640
+  Caption = 'TestForm2'
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -16,8 +16,8 @@ object Form2: TForm2
   inline TColorPickerFrame1: TColorPickerFrame
     Left = 8
     Top = 8
-    Width = 551
-    Height = 422
+    Width = 760
+    Height = 458
     TabOrder = 0
   end
 end

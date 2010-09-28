@@ -7,7 +7,7 @@
 //#include <cms/lcd/calibrate/include.h>
 //#include <cms/colorspace/include.h>
 #include <cms/colorformat/include.h>
-#include <i2c/include.h>
+//#include <i2c/include.h>
 #include <java/lang.h>
 #include <vcl.h>
 #include <debug.h>

@@ -23,10 +23,10 @@
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
 #pragma resource "*.dfm"
-TC3D_SimualteForm *C3D_SimualteForm;
+TC3DSimualteForm *C3DSimualteForm;
 //---------------------------------------------------------------------------
 int x_site, y_site;
-__fastcall TC3D_SimualteForm::TC3D_SimualteForm(TComponent* Owner)
+__fastcall TC3DSimualteForm::TC3DSimualteForm(TComponent* Owner)
         : TForm(Owner)
 {
 }
@@ -63,7 +63,7 @@ void rgb2hsv1(double r, double g, double b, double *h, double *s, double *i, dou
 }
 //----------------------------------------------------------------------------
 
-void __fastcall TC3D_SimualteForm::Image1MouseMove(TObject *Sender,
+void __fastcall TC3DSimualteForm::Image1MouseMove(TObject *Sender,
       TShiftState Shift, int X, int Y)
 {
         int color;
@@ -92,7 +92,7 @@ void __fastcall TC3D_SimualteForm::Image1MouseMove(TObject *Sender,
 }
 //---------------------------------------------------------------------------
 
-void __fastcall TC3D_SimualteForm::btn_img_saveClick(TObject *Sender)
+void __fastcall TC3DSimualteForm::btn_img_saveClick(TObject *Sender)
 {
         if(!SaveDialog_Img->Execute()){
                 return;
@@ -107,7 +107,7 @@ void __fastcall TC3D_SimualteForm::btn_img_saveClick(TObject *Sender)
 //---------------------------------------------------------------------------
 
 
-void __fastcall TC3D_SimualteForm::Image1MouseDown(TObject *Sender,
+void __fastcall TC3DSimualteForm::Image1MouseDown(TObject *Sender,
       TMouseButton Button, TShiftState Shift, int X, int Y)
 {
         int color = C3DForm1->Img_3DLUT->Canvas->Pixels[X][Y];
@@ -127,7 +127,7 @@ void __fastcall TC3D_SimualteForm::Image1MouseDown(TObject *Sender,
 }
 //---------------------------------------------------------------------------
 
-void __fastcall TC3D_SimualteForm::cb_record_u_wantClick(TObject *Sender)
+void __fastcall TC3DSimualteForm::cb_record_u_wantClick(TObject *Sender)
 {
         int color;
         double r_new, g_new, b_new;
@@ -182,7 +182,7 @@ void __fastcall TC3D_SimualteForm::cb_record_u_wantClick(TObject *Sender)
 
 
 
-void __fastcall TC3D_SimualteForm::Image1DblClick(TObject *Sender)
+void __fastcall TC3DSimualteForm::Image1DblClick(TObject *Sender)
 {
         int X = x_site-35;
         int Y = y_site-35;
@@ -246,7 +246,7 @@ void __fastcall TC3D_SimualteForm::Image1DblClick(TObject *Sender)
 }
 //---------------------------------------------------------------------------
 
-void __fastcall TC3D_SimualteForm::btn_dif_saveClick(TObject *Sender)
+void __fastcall TC3DSimualteForm::btn_dif_saveClick(TObject *Sender)
 {
        if(!SaveDialog_Img->Execute()){
                 return;
@@ -260,7 +260,7 @@ void __fastcall TC3D_SimualteForm::btn_dif_saveClick(TObject *Sender)
 }
 //---------------------------------------------------------------------------
 
-void __fastcall TC3D_SimualteForm::btn_saveHSVClick(TObject *Sender)
+void __fastcall TC3DSimualteForm::btn_saveHSVClick(TObject *Sender)
 {
         if(!SaveDialog_Img->Execute()){
                 return;
@@ -280,7 +280,7 @@ void __fastcall TC3D_SimualteForm::btn_saveHSVClick(TObject *Sender)
 //---------------------------------------------------------------------------
 
 
-void __fastcall TC3D_SimualteForm::SaveDialog_ImgTypeChange(
+void __fastcall TC3DSimualteForm::SaveDialog_ImgTypeChange(
       TObject *Sender)
 {
         if(SaveDialog_Img->FilterIndex==1)

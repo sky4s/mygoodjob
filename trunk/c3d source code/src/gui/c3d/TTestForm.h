@@ -9,15 +9,15 @@
 #include <Forms.hpp>
 #include "colorpicker.h"
 //---------------------------------------------------------------------------
-class TForm2 : public TForm
+class TTestForm2 : public TForm
 {
 __published:	// IDE-managed Components
         TColorPickerFrame *TColorPickerFrame1;
 private:	// User declarations
 public:		// User declarations
-        __fastcall TForm2(TComponent* Owner);
+        __fastcall TTestForm2(TComponent* Owner);
 };
 //---------------------------------------------------------------------------
-extern PACKAGE TForm2 *Form2;
+extern PACKAGE TTestForm2 *TestForm2;
 //---------------------------------------------------------------------------
 #endif

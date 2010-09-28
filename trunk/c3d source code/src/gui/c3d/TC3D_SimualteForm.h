@@ -13,7 +13,7 @@
 #include <Buttons.hpp>
 
 //---------------------------------------------------------------------------
-class TC3D_SimualteForm : public TForm
+class TC3DSimualteForm : public TForm
 {
 __published:	// IDE-managed Components
         TSaveDialog *SaveDialog1;
@@ -75,9 +75,9 @@ __published:	// IDE-managed Components
         void __fastcall SaveDialog_ImgTypeChange(TObject *Sender);
 private:	// User declarations
 public:		// User declarations
-        __fastcall TC3D_SimualteForm(TComponent* Owner);
+        __fastcall TC3DSimualteForm(TComponent* Owner);
 };
 //---------------------------------------------------------------------------
-extern PACKAGE TC3D_SimualteForm *C3D_SimualteForm;
+extern PACKAGE TC3DSimualteForm *C3DSimualteForm;
 //---------------------------------------------------------------------------
 #endif
