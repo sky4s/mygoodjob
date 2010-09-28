@@ -119,9 +119,6 @@ class THSVForm1:public TForm {
     void __fastcall Hue_ImgMouseDown(TObject * Sender,
 				     TMouseButton Button, TShiftState Shift, int X, int Y);
   private:			// User declarations
-  protected:
-    int Get_select_idx(double angle);
-    double Gauss(int x, double sigma);
   public:			// User declarations
      TBit * cb;
     _CHKB **ChkB;
@@ -204,7 +201,7 @@ int Cmplmnt2sToSign(int value, int Range)
 	value -= Range;
     return value;
 }
-
+int Get_select_idx(double angle);
 //---------------------------------------------------------------------------
 extern PACKAGE THSVForm1 *HSVForm1;
 //---------------------------------------------------------------------------

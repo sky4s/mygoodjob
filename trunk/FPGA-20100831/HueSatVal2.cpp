@@ -4,6 +4,7 @@
 #pragma hdrstop
 
 #include "HueSatVal2.h"
+#include "HueSatVal1.h"
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
 #pragma link "HueSatVal1"
