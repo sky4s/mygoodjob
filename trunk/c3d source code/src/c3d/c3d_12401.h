@@ -15,7 +15,7 @@
 //本項目內頭文件
 
 //本項目內gui頭文件
-#include <gui/c3d/TMainForm.h>
+#include <c3d/core.h>
 #include <gui/c3d/TC3DForm.h>
 
 #define  C3D_EN         "C3D_EN,59,0,1"
