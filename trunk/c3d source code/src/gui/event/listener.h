@@ -5,7 +5,13 @@
 
 //C++系統文件
 
+//vcl庫頭文件
+
 //其他庫頭文件
+
+//本項目內頭文件
+
+//本項目內gui頭文件
 
 
 //本項目內頭文件
@@ -26,12 +32,14 @@ namespace gui {
 	    void windowDeactivated(TObject * Sender, TCloseAction & Action);
 	};
 	class MouseListener {
+	  public:
 	    virtual void mousePressed(TObject * Sender,
 				      TMouseButton Button, TShiftState Shift, int X, int Y) = 0;
 	    virtual void mouseReleased(TObject * Sender,
 				       TMouseButton Button, TShiftState Shift, int X, int Y) = 0;
 	};
 	class MouseMotionListener {
+	  public:
 	    virtual void mouseMoved(TObject * Sender, TShiftState Shift, int X, int Y) = 0;
 	};
     };

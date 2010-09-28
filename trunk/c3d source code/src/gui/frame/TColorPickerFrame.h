@@ -3,15 +3,30 @@
 
 #ifndef TColorPickerFrameH
 #define TColorPickerFrameH
-//---------------------------------------------------------------------------
-#include <Classes.hpp>
-#include <Controls.hpp>
-#include <StdCtrls.hpp>
-#include <Forms.hpp>
 #include <Buttons.hpp>
+#include <Classes.hpp>
 #include <ComCtrls.hpp>
+#include <Controls.hpp>
 #include <ExtCtrls.hpp>
+#include <Forms.hpp>
 #include <Graphics.hpp>
+#include <StdCtrls.hpp>
+#include <Dialogs.hpp>
+//---------------------------------------------------------------------------
+
+//C系統文件
+
+//C++系統文件
+#include <vector>
+//vcl庫頭文件
+
+//其他庫頭文件
+
+//本項目內頭文件
+#include <gui/event/listener.h>
+#include <java/lang.h>
+//本項目內gui頭文件
+#include "TFormInTarget.h"
 //---------------------------------------------------------------------------
 class TColorPickerFrame:public TFrame {
     __published:		// IDE-managed Components
@@ -33,45 +48,25 @@ class TColorPickerFrame:public TFrame {
     TLabel *lb_c3d_showR;
     TLabel *lb_c3d_showY;
     TLabel *lb_c3d_showX;
-    TGroupBox *GroupBox44;
-    TGroupBox *GroupBox34;
-    TImage *Img_c3d_sel;
-    TLabel *lb_c3d_selR;
-    TLabel *lb_c3d_selH;
-    TLabel *lb_c3d_selG;
-    TLabel *lb_c3d_selB;
-    TLabel *lb_c3d_selV;
-    TLabel *lb_c3d_selS;
-    TLabel *lb_c3d_selI;
-    TLabel *Label190;
-    TLabel *Label198;
-    TLabel *Label202;
-    TLabel *Label206;
-    TLabel *Label208;
-    TLabel *Label209;
-    TLabel *Label213;
-    TGroupBox *GroupBox45;
-    TLabel *lb_c3d_simR;
-    TLabel *lb_c3d_simH;
-    TLabel *lb_c3d_simG;
-    TLabel *lb_c3d_simB;
-    TLabel *lb_c3d_simV;
-    TLabel *lb_c3d_simS;
-    TLabel *lb_c3d_simI;
-    TLabel *Label246;
-    TLabel *Label247;
-    TLabel *Label248;
-    TLabel *Label249;
-    TLabel *Label250;
-    TLabel *Label251;
-    TLabel *Label252;
-    TImage *Img_c3d_sim;
+    TButton *btn_c3d_load_img;
+    TCheckBox *cb_show_ref_img;
+    TOpenDialog *OpenDialog_img;
     void __fastcall Img_3DLUTMouseMove(TObject * Sender, TShiftState Shift, int X, int Y);
     void __fastcall Img_3DLUTMouseDown(TObject * Sender,
 				       TMouseButton Button, TShiftState Shift, int X, int Y);
+    void __fastcall Img_3DLUTMouseUp(TObject * Sender,
+				     TMouseButton Button, TShiftState Shift, int X, int Y);
+    void __fastcall btn_c3d_load_imgClick(TObject * Sender);
+    void __fastcall cb_show_ref_imgClick(TObject * Sender);
   private:			// User declarations
+     std::vector < bwptr < gui::event::MouseMotionListener > >mouseMotionListenerVector;
+     std::vector < bwptr < gui::event::MouseListener > >mouseListenerVector;
+    TFormInTarget *formInTarget;
   public:			// User declarations
      __fastcall TColorPickerFrame(TComponent * Owner);
+    void addMouseMotionListener(bptr < gui::event::MouseMotionListener > listener);
+    void addMouseListener(bptr < gui::event::MouseListener > listener);
+    void setFormInTarget(TFormInTarget * formInTarget);
 };
 //---------------------------------------------------------------------------
 extern PACKAGE TColorPickerFrame *ColorPickerFrame;

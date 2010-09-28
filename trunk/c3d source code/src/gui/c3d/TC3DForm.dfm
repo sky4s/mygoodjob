@@ -1,8 +1,8 @@
 object C3DForm1: TC3DForm1
   Left = 193
   Top = 11
-  Width = 969
-  Height = 858
+  Width = 971
+  Height = 859
   Align = alCustom
   Caption = 'C3D lookup table'
   Color = clBtnFace
@@ -489,7 +489,7 @@ object C3DForm1: TC3DForm1
       'NCTU modified')
   end
   object pc_img: TPageControl
-    Left = 2
+    Left = 898
     Top = 30
     Width = 551
     Height = 404
@@ -497,6 +497,7 @@ object C3DForm1: TC3DForm1
     MultiLine = True
     TabIndex = 0
     TabOrder = 18
+    Visible = False
     OnChange = pc_imgChange
     object ts_image: TTabSheet
       Caption = '&Image'
@@ -12848,8 +12849,8 @@ object C3DForm1: TC3DForm1
         Top = 0
         Width = 592
         Height = 336
-        ActivePage = TabSheet8
-        TabIndex = 1
+        ActivePage = TabSheet7
+        TabIndex = 0
         TabOrder = 0
         OnChange = pc_global_adjChange
         object TabSheet7: TTabSheet
@@ -13061,9 +13062,9 @@ object C3DForm1: TC3DForm1
             Top = -30
             Width = 257
             Height = 359
-            ActivePage = ts_light12
+            ActivePage = ts_gray9
             MultiLine = True
-            TabIndex = 0
+            TabIndex = 3
             TabOrder = 0
             TabWidth = 51
             object ts_light12: TTabSheet
@@ -14733,12 +14734,13 @@ object C3DForm1: TC3DForm1
     Text = 'Cursor Color'
   end
   object cb_show_ref_img: TCheckBox
-    Left = 384
-    Top = 30
+    Left = 776
+    Top = 150
     Width = 159
     Height = 20
     Caption = 'Show Compare &Figure'
     TabOrder = 24
+    Visible = False
     OnClick = cb_show_ref_imgClick
   end
   object rg_normal_target: TRadioGroup
@@ -14774,13 +14776,21 @@ object C3DForm1: TC3DForm1
     TabOrder = 27
   end
   object btn_c3d_load_img: TButton
-    Left = 286
-    Top = 22
+    Left = 774
+    Top = 118
     Width = 80
     Height = 31
     Caption = 'Loa&d Image'
     TabOrder = 28
+    Visible = False
     OnClick = btn_c3d_load_imgClick
+  end
+  inline TColorPickerFrame1: TColorPickerFrame
+    Left = 0
+    Top = 32
+    Width = 552
+    Height = 420
+    TabOrder = 29
   end
   object OpenDialog1: TOpenDialog
     Filter = 'Excel '#35430#31639#34920', Text '#25991#23383#25991#20214'|*.xls;*.txt'

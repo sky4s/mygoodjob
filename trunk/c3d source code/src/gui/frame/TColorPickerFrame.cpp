@@ -9,7 +9,7 @@
 //C++系統文件
 
 //vcl庫頭文件
-
+#include <jpeg.hpp>
 //其他庫頭文件
 
 //本項目內頭文件
@@ -54,45 +54,132 @@ void __fastcall TColorPickerFrame::Img_3DLUTMouseMove(TObject * Sender,
     lb_c3d_showH->Caption = "H: " + IntToStr((int) h);
     lb_c3d_showS->Caption = "S: " + FloatToStr((float) s);
     lb_c3d_showV->Caption = "V: " + IntToStr((int) v);
+    using namespace gui::event;
+    foreach(bwptr < MouseMotionListener > listener, mouseMotionListenerVector) {
+	bptr < MouseMotionListener > l = listener.lock();
+	if (null != l) {
+	    l->mouseMoved(Sender, Shift, X, Y);
+	}
+    }
 }
 
 //---------------------------------------------------------------------------
+void TColorPickerFrame::addMouseMotionListener(bptr < gui::event::MouseMotionListener > listener)
+{
+    bwptr < gui::event::MouseMotionListener > wptr(listener);
+    mouseMotionListenerVector.push_back(wptr);
+};
+void TColorPickerFrame::addMouseListener(bptr < gui::event::MouseListener > listener)
+{
+    bwptr < gui::event::MouseListener > wptr(listener);
+    mouseListenerVector.push_back(wptr);
+};
 
 void __fastcall TColorPickerFrame::Img_3DLUTMouseDown(TObject * Sender,
 						      TMouseButton Button, TShiftState Shift, int X,
 						      int Y)
 {
-    /*if (pc_Adjust->TabIndex == 0 && pc_global_adj->TabIndex == 1)
-	return;*/
-
-    //rb_c3d_point->Checked = true; //看不到
-    //c3d_scrollbar_reset();  //color adjust
-    int color;
-    double h, s, i, v, r, g, b, r_new, g_new, b_new;
-    X_site = X;
-    Y_site = Y;
-    color = Img_3DLUT->Canvas->Pixels[X][Y];
-    if (color == -1)
-	color = 0;
-    b = color / 65536;
-    g = color / 256 % 256;
-    r = color % 256;
-
-    ShowImageColor(img_color, r, g, b);
-    Set_Adj_Color(r, g, b);
-    Show_c3d_SelImg(r, g, b);
-    C3Dsim_t(r, g, b, &r_new, &g_new, &b_new);
-    Show_c3d_SimImg(r_new, g_new, b_new);
-    Show_c3d_Img_sim();
-    sg_rgb_input->Cells[0][1] = FloatToStr(r);
-    sg_rgb_input->Cells[1][1] = FloatToStr(g);
-    sg_rgb_input->Cells[2][1] = FloatToStr(b);
-
-    if (pc_Adjust->TabIndex == 1 && Button == mbRight) {
-	TPoint pt = C3DForm1->ClientToScreen(Point(X, Y));
-	PopupMenu_HSV_ref_img->Popup(pt.x, pt.y);
+    using namespace gui::event;
+    foreach(bwptr < MouseListener > listener, mouseListenerVector) {
+	bptr < MouseListener > l = listener.lock();
+	if (null != l) {
+	    l->mousePressed(Sender, Button, Shift, X, Y);
+	}
     }
+}
 
+//---------------------------------------------------------------------------
+
+void __fastcall TColorPickerFrame::Img_3DLUTMouseUp(TObject * Sender,
+						    TMouseButton Button, TShiftState Shift, int X,
+						    int Y)
+{
+    using namespace gui::event;
+    foreach(bwptr < MouseListener > listener, mouseListenerVector) {
+	bptr < MouseListener > l = listener.lock();
+	if (null != l) {
+	    l->mouseReleased(Sender, Button, Shift, X, Y);
+	}
+    }
+}
+
+//---------------------------------------------------------------------------
+
+void __fastcall TColorPickerFrame::btn_c3d_load_imgClick(TObject * Sender)
+{
+    AnsiString S1;
+    Graphics::TBitmap * OrgBitmap = new Graphics::TBitmap();
+
+    if (OpenDialog_img->Execute()) {
+	S1 = OpenDialog_img->FileName;
+
+	AnsiString curExt = LowerCase(ExtractFileExt(S1));
+	TJPEGImage *JPEG = new TJPEGImage;
+	Graphics::TBitmap * bitmap = new Graphics::TBitmap();
+
+	if (curExt == ".jpg" || curExt == ".jpeg" || curExt == ".JPG") {
+	    JPEG->Performance = jpBestQuality;
+	    JPEG->LoadFromFile(S1);
+	    JPEG->CompressionQuality = 100;
+
+	    // bitmap->Width = JPEG->Width;     //放到bitmap裡, 自己寫resize
+	    // bitmap->Height = JPEG->Height;
+	    // bitmap->Assign(JPEG);
+
+	    if (JPEG->Width > Img_3DLUT->Width * 4 + Img_3DLUT->Width * 2) {
+		JPEG->Scale = jsEighth;
+	    } else if (JPEG->Width > Img_3DLUT->Width * 2 + Img_3DLUT->Width) {
+		JPEG->Scale = jsQuarter;
+	    } else if (JPEG->Width > Img_3DLUT->Width + Img_3DLUT->Width) {
+		JPEG->Scale = jsHalf;
+	    } else {
+		JPEG->Scale = jsFullSize;
+	    }
+	    Img_3DLUT->Width = JPEG->Width;
+	    Img_3DLUT->Height = JPEG->Height;
+	    Img_3DLUT->Picture->Bitmap->Assign(JPEG);
+
+	} else if (curExt == ".bmp" || curExt == ".BMP" || curExt == ".Bitmap") {
+	    Img_3DLUT->Picture->LoadFromFile(S1);
+	    /* Graphics::TBitmap *pi = new Graphics::TBitmap();
+	       try{
+	       pi->LoadFromFile(S1);
+	       Img_3DLUT->Width = pi->Width;
+	       Img_3DLUT->Height = pi->Height;
+	       Img_3DLUT->Canvas->Draw(0,0,pi);
+
+	       }
+	       __finally{
+	       delete pi;
+	       } */
+	}
+	delete bitmap;
+	delete JPEG;
+	OrgBitmap->Assign(Img_3DLUT->Picture->Bitmap);
+	if (pc_img->TabIndex == 0 && null != formInTarget) {
+	    formInTarget->img_in_target->Picture->Bitmap->Assign(Img_3DLUT->Picture->Bitmap);
+	}
+    }
+    delete OrgBitmap;
+
+    //edt_show_h->Visible = false; //看不到
+}
+
+//---------------------------------------------------------------------------
+void TColorPickerFrame::setFormInTarget(TFormInTarget * formInTarget)
+{
+    this->formInTarget = formInTarget;
+};
+
+void __fastcall TColorPickerFrame::cb_show_ref_imgClick(TObject * Sender)
+{
+    if (null != formInTarget) {
+	if (cb_show_ref_img->Checked == true) {
+	    formInTarget->WindowState = wsNormal;
+	} else {
+	    formInTarget->WindowState = wsMinimized;
+	}
+    }
 }
 
 //---------------------------------------------------------------------------
