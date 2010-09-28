@@ -10,7 +10,7 @@ USEFORM("src\gui\c3d\TEngineering.cpp", EngineerForm);
 USEFORM("src\gui\c3d\TMainForm.cpp", MainForm);
 USEFORM("src\gui\c3d\THSVStepSimForm.cpp", HSVStepSimForm);
 USEFORM("src\gui\frame\colorpicker.cpp", ColorPickerFrame); /* TFrame: File Type */
-USEFORM("src\gui\c3d\Unit2.cpp", Form2);
+USEFORM("src\c3d\TTestForm.cpp", TestForm);
 //---------------------------------------------------------------------------
 WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 {
@@ -18,7 +18,7 @@ WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
         {
                  Application->Initialize();
                   Application->CreateForm(__classid(TMainForm), &MainForm);
-                 Application->CreateForm(__classid(TForm2), &Form2);
+                 Application->CreateForm(__classid(TTestForm), &TestForm);
                  Application->CreateForm(__classid(TC3DForm1), &C3DForm1);
                  Application->CreateForm(__classid(TC3D_SimualteForm), &C3D_SimualteForm);
                  Application->CreateForm(__classid(TFormInTarget), &FormInTarget);
