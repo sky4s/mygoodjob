@@ -19,7 +19,7 @@
 #include <boost/foreach.hpp>
 #include <boost/lexical_cast.hpp>
 
-#define TNT_LIB
+//#define TNT_LIB
 
 #ifdef TNT_LIB
 #include <tnt/tnt_array1d.h>
@@ -31,7 +31,6 @@
 # pragma pack(pop)
 #endif
 
-//#include <math.hpp>
 
 //本項目內頭文件
 
@@ -43,9 +42,13 @@
 
 //C++系統文件
 
+//vcl庫頭文件
+
 //其他庫頭文件
 
 //本項目內頭文件
+
+//本項目內gui頭文件
 //==============================================================================
 
 //==============================================================================
