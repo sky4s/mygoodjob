@@ -1,10 +1,21 @@
 #include <vcl.h>
 #pragma hdrstop
-
-//#include "Unit1.h"
-#include <gui\c3d\TMainForm.h>
 #include "GetCursorColor.h"
-#include "c3d1_dis_new.h"
+
+//C系統文件
+
+//C++系統文件
+
+//vcl庫頭文件
+
+//其他庫頭文件
+
+//本項目內頭文件
+
+//本項目內gui頭文件
+#include <gui\c3d\TMainForm.h>
+#include <gui/c3d/TC3DForm.h>
+
 #pragma package(smart_init)
 
 //---------------------------------------------------------------------------                       //---------------------------------------------------------------------------
