@@ -1,8 +1,21 @@
 #ifndef ADDRESS_TYPEH
 #define ADDRESS_TYPEH
 
+//C系統文件
 #include <math.h>
 #include <stdlib.h>
+//C++系統文件
+
+//vcl庫頭文件
+#include <vcl.h>
+
+//其他庫頭文件
+
+//本項目內頭文件
+
+//本項目內gui頭文件
+
+
 #define Num_ASIC 4
 
 
