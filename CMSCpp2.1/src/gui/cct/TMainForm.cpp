@@ -10,7 +10,6 @@
 
 //本項目內頭文件
 #include "TMainForm.h"
-//#include "TTargetWhiteForm.h"
 #include "TTargetWhiteForm2.h"
 #include "TAboutBox.h"
 #include "TCCTLUTForm.h"
