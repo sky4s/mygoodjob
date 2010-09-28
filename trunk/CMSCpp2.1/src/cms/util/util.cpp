@@ -81,8 +81,7 @@ namespace cms {
 	void Util::shellExecute(const std::string & filename) {
 	    ShellExecute(null, null, filename.c_str(), null, null, SW_SHOW);
 	};
-#ifdef EXCEL_ACCESSIBLE
-#ifdef COLORSPACE
+#if defined(EXCEL_ACCESSIBLE) && defined(COLORSPACE)
 	void Util::storeXYZxyVector(const std::string & filename, XYZ_vector_ptr XYZVector) {
 	    storeXYZxyVector(filename, XYZVector, "Gray Level");
 	};
@@ -104,7 +103,6 @@ namespace cms {
 	    }
 
 	};
-#endif
 #endif
 	//==========================================================================
 
