@@ -1,12 +1,22 @@
+#ifndef c3d_12401H
+#define c3d_12401H
 //---------------------------------------------------------------------------
+//C系統文件
 
+//C++系統文件
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
 #include <math.h>
-//#include "Unit1.h"
-#include <gui\c3d\TMainForm.h>
-#include "c3d1_dis_new.h"
+//vcl庫頭文件
+
+//其他庫頭文件
+
+//本項目內頭文件
+
+//本項目內gui頭文件
+#include <gui/c3d/TMainForm.h>
+#include <gui/c3d/TC3DForm.h>
 
 #define  C3D_EN         "C3D_EN,59,0,1"
 #define  C3D_DEMO       "C3D_DEMO,59,1,1"
@@ -22,10 +32,9 @@
 #define  C3D_DEMO       "C3D_DEMO,160,6,1"
 #define  C3D_DEMO_LEFT  "C3D_DEMO_LEFT,160,5,1"
 
-#ifndef c3d_12401H
-#define c3d_12401H
+
 //---------------------------------------------------------------------------
-#endif
+
 class C3D_12401: public AbstC3D
 {
         public:
@@ -274,3 +283,4 @@ bool SetAddr(TLUT* Addr, String str)   //Get TBit type Address
         Addr->set(val[0], val[1], val[2], val[3], name);
         return 1;
 }
+#endif

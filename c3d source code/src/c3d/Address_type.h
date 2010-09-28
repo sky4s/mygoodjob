@@ -1,3 +1,6 @@
+#ifndef ADDRESS_TYPEH
+#define ADDRESS_TYPEH
+
 #include <math.h>
 #include <stdlib.h>
 #define Num_ASIC 4
@@ -301,4 +304,4 @@ AnsiString TBit::Name()
         return name;
 }
 
-
+#endif

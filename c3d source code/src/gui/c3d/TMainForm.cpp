@@ -2,17 +2,21 @@
 
 #include <vcl.h>
 #pragma hdrstop
-
 #include "TMainForm.h"
-#include "Engineering.h"
-#include "c3d1_dis_new.h"
-#include "color_converter.h"
-#include <iostream>
+
+//C系統文件
 #include <conio.h>
+//C++系統文件
+
+//其他庫頭文件
+
+//本項目內頭文件
+#include "TEngineering.h"
+#include <gui/c3d/TC3DForm.h>
+#include "TFormInTarget.h"
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
 #pragma resource "*.dfm"
-
 TMainForm *MainForm;
 
 //---------------------------------------------------------------------------
