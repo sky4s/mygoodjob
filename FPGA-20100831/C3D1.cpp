@@ -267,7 +267,7 @@ void __fastcall TC3DForm1::btn_C3D_readClick(TObject *Sender)
                 C3D_LUT_FuncEnable(1);   // Table operation button enable
                 return;
         }
-        /*
+
         if(TBL_SIZE==7){   // 7x7x7 位置多一個空白數值的做法
                 int **C3D_table = new int* [OC3D->C3DLUT_Nbr];
                 // 新的look up table Address 定義
@@ -293,7 +293,7 @@ void __fastcall TC3DForm1::btn_C3D_readClick(TObject *Sender)
                 delete [] C3D_table;
                 delete [] Addr_LUT_7;
         }
-        else  */ //mark by jim 20100831
+        else
         {
                 int **C3D_table = new int* [OC3D->C3DLUT_Nbr];
                 int read_len = Addr_LUT[0].Addr();
@@ -326,7 +326,7 @@ void __fastcall TC3DForm1::btn_C3D_wrtClick(TObject *Sender)
                 C3D_LUT_FuncEnable(1);   // Table operation button enable
                 return;
         }
-        /*
+
         if(TBL_SIZE==7){   // 7x7x7 位置多一個空白數值的做法
                 int** lut = new int* [OC3D->C3DLUT_Nbr];
                 // 新的look up table Address 定義
@@ -348,7 +348,7 @@ void __fastcall TC3DForm1::btn_C3D_wrtClick(TObject *Sender)
                         delete [] lut;
                         delete [] Addr_LUT_7;
                 }
-        else   */ //mark by jim 20100831
+        else   
         {
                 int** lut = new int* [OC3D->C3DLUT_Nbr];
                 for(int i = 0; i < OC3D->C3DLUT_Nbr; i++){

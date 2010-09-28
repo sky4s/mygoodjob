@@ -139,7 +139,7 @@ void THSVForm1::Initial_HSV_table()
 }
 
 //---------------------------------------------------------------------------
-int THSVForm1::Get_select_idx(double angle)
+int Get_select_idx(double angle)
 {
     angle = fabs(angle);	//取絕對值, 型態為float
 
@@ -363,9 +363,6 @@ void __fastcall THSVForm1::btn_resetClick(TObject * Sender)
     Initial_HSV_table();
 }
 
-/*
-  將hsv顯示到scroll bar前面的label
-*/
 void THSVForm1::show_gain(int h, int s, int v)
 {
     double h_show = ((double) h / 768) * 360;
@@ -379,10 +376,6 @@ void THSVForm1::show_gain(int h, int s, int v)
 
     lb_Val_gain->Caption = IntToStr(v);
 }
-
-/*
-  從LUT取值放到tmp
-*/
 void THSVForm1::Get_Adj_tbl(int *tmp_H, int *tmp_S, int *tmp_V, int tbl_idx)
 {
     for (int i = -4; i <= 4; i++) {
@@ -393,10 +386,6 @@ void THSVForm1::Get_Adj_tbl(int *tmp_H, int *tmp_S, int *tmp_V, int tbl_idx)
 	tmp_V[i + 4] = Val_table[(tbl_idx + i + 24) % 24];
     }
 }
-
-/*
-  將tmp的值放到LUT
-*/
 void THSVForm1::Set_Adj_tbl(int *tmp_H, int *tmp_S, int *tmp_V, int tbl_idx)
 {
     for (int i = -4; i <= 4; i++) {
@@ -441,7 +430,7 @@ bool THSVForm1::CheckHueIncrease(int high, int low, int *tmp_H)
     }
     return ok;
 }
-double THSVForm1::Gauss(int x, double sigma)
+double Gauss(int x, double sigma)
 {
     double ratio = exp(((-1) * x * x) / (2 * sigma * sigma));
     return ratio;
@@ -456,7 +445,6 @@ void __fastcall THSVForm1::sb_Hue_gainScroll(TObject * Sender,
 	return;
     }
     int tbl_n = 24;
-    //copy過去的用意是??
     for (int i = 0; i < tbl_n; i++) {
 	Hue_table_t[i] = Hue_table[i];
 	Sat_table_t[i] = Sat_table[i];
@@ -464,31 +452,22 @@ void __fastcall THSVForm1::sb_Hue_gainScroll(TObject * Sender,
     }
 
     //將使用者輸入的角度換成table表中的index
-    //le_ChAangle: 從RGBCMY中選中的色相角
-    //tbl_idx: 色相角對映到LUT的index
     int tbl_idx = Get_select_idx(StrToFloat(le_ChAangle->Text));
 
-    //將scroll bar的值顯示出來
     show_gain(sb_Hue_gain->Position, sb_Sat_gain->Position, sb_Val_gain->Position);
     int gain_h = sb_Hue_gain->Position;	// Hue值為Gain
     int gain_s = sb_Sat_gain->Position - Sat_table[tbl_idx];	// 調整值與table數值的差異為gain
     int gain_v = sb_Val_gain->Position - Val_table[tbl_idx];
-    //依照值域(-96~96)來說, 這兩個判斷式應該沒有發生的可能!?
     if (gain_h > 768 / 2) {
 	gain_h -= 768;
     } else if (gain_h < (-1) * 768 / 2) {
 	gain_h += 768;
     }
-    //set按鈕是用來把調整量真正傳送到LUT
     btn_set->Enabled = true;
     if (cb_Hue_rotation->Checked == false) {
-	//似乎是為了diffusion, 所以才展開抓9個值
 	int tmp_H[9], tmp_S[9], tmp_V[9];
 	Get_Adj_tbl(tmp_H, tmp_S, tmp_V, tbl_idx);
 
-	//=====================================================================
-	//diffusion
-	//=====================================================================
 	int low = (4 - sb_dif_n->Position);
 	int high = sb_dif_p->Position;
 
@@ -502,10 +481,6 @@ void __fastcall THSVForm1::sb_Hue_gainScroll(TObject * Sender,
 	tmp_V[4] += gain_v;
 	double ratio;
 
-	//=====================================================================
-	// high
-	//=====================================================================
-	//設定diffusion的變化
 	if (high == 4)
 	    sigma = 0.4;
 	else if (high == 3)
@@ -513,18 +488,13 @@ void __fastcall THSVForm1::sb_Hue_gainScroll(TObject * Sender,
 	else if (high == 2)
 	    sigma = 0.6;
 
-
 	for (int i = 1; i < high; i++) {
 	    ratio = pow(double (high - i) / high, 2) + (double) i / high * Gauss(i, sigma);
 	    tmp_H[i + 4] = tmp_H[i + 4] + gain_h * ratio;
 	    tmp_S[i + 4] = tmp_S[i + 4] + gain_s * ratio;
 	    tmp_V[i + 4] = tmp_V[i + 4] + gain_v * ratio;
 	}
-	//=====================================================================
 
-	//=====================================================================
-	// low
-	//=====================================================================
 	if (low == 4)
 	    sigma = 0.4;
 	else if (low == 3)
@@ -538,10 +508,6 @@ void __fastcall THSVForm1::sb_Hue_gainScroll(TObject * Sender,
 	    tmp_S[4 - i] = tmp_S[4 - i] + gain_s * ratio;
 	    tmp_V[4 - i] = tmp_V[4 - i] + gain_v * ratio;
 	}
-	//=====================================================================
-	//=====================================================================
-
-
 	Set_Adj_tbl(tmp_H, tmp_S, tmp_V, tbl_idx);
 	if (!CheckHueIncrease(high, low, tmp_H)) {
 	    ShowMessage("Hue value has inverse.");
@@ -549,7 +515,6 @@ void __fastcall THSVForm1::sb_Hue_gainScroll(TObject * Sender,
 	    return;
 	}
     } else {			//rotation
-	//全部一起調整一樣的量
 	for (int i = 0; i < tbl_n; i++) {
 	    Hue_table_t[i] = (Hue_table[i] + gain_h + 768) % 768;
 	    Sat_table_t[i] = Sat_table[i] + gain_s;
@@ -557,9 +522,6 @@ void __fastcall THSVForm1::sb_Hue_gainScroll(TObject * Sender,
 	}
     }
 
-    //=========================================================================
-    // 將結果填到table中
-    //=========================================================================
     for (int i = 0; i < tbl_n; i++) {
 	sg_HSV->Cells[1][i + 1] = FloatToStr((double) Hue_table_t[i] / 768 * 360);
 	sg_HSV->Cells[2][i + 1] = FloatToStr((double) (Sat_table_t[i]) / 32);
@@ -574,7 +536,6 @@ void __fastcall THSVForm1::sb_Hue_gainScroll(TObject * Sender,
 	sg_6HSV->Cells[i][5] = sg_HSV->Cells[i + 1][21];	//Magenta
 	sg_6HSV->Cells[i][6] = sg_HSV->Cells[i + 1][tbl_idx + 1];
     }
-    //=========================================================================
 }
 
 //---------------------------------------------------------------------------

@@ -1,5 +1,5 @@
 object HSVForm1: THSVForm1
-  Left = 363
+  Left = 366
   Top = 149
   Width = 917
   Height = 669
@@ -6371,7 +6371,7 @@ object HSVForm1: THSVForm1
         Width = 129
         Height = 27
         Caption = 'Green     120'#176
-        Color = clLime
+        Color = clGreen
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clWindow
         Font.Height = -15
@@ -6796,8 +6796,8 @@ object HSVForm1: THSVForm1
       Top = 20
       Width = 60
       Height = 24
-      EditLabel.Width = 85
-      EditLabel.Height = 16
+      EditLabel.Width = 104
+      EditLabel.Height = 20
       EditLabel.Caption = 'Change Angle'
       LabelPosition = lpAbove
       LabelSpacing = 3

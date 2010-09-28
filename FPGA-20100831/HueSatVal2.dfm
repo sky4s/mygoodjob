@@ -67,6 +67,10 @@ inherited HSVForm2: THSVForm2
       Top = 635
       Visible = False
     end
+    inherited le_ChAangle: TLabeledEdit
+      EditLabel.Width = 85
+      EditLabel.Height = 16
+    end
     object GroupBox2: TGroupBox
       Left = 8
       Top = 120

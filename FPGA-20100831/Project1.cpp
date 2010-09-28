@@ -16,7 +16,6 @@ USEFORM("ContrastEnhance1.cpp", ContrastEnhanceForm1);
 USEFORM("C3D1.cpp", C3DForm1);
 USEFORM("SAT.cpp", SATForm);
 USEFORM("offset.cpp", offsetForm);
-USEFORM("HueSatVal2.cpp", HSVForm2);
 //---------------------------------------------------------------------------
 WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 {
