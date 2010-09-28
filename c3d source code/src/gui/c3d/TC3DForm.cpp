@@ -24,6 +24,7 @@
 #include "THSVStepSimForm.h"
 #include "GetCursorColor.h"
 #include "TFormInTarget.h"
+
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
 #pragma resource "*.dfm"
@@ -585,12 +586,12 @@ void TC3DForm1::calculate_disc()
     double r_new_d, g_new_d, b_new_d, tol, disc;
     double r_new_tol1, g_new_tol1, b_new_tol1;
     BYTE *p_Img, *p_Sim_Img1, *p_Sim_Img_Dif;
-    C3D_SimualteForm->Image1->Picture->Bitmap = Img_3DLUT->Picture->Bitmap;
-    C3D_SimualteForm->Img_diff->Picture->Bitmap = Img_3DLUT->Picture->Bitmap;
+    C3DSimualteForm->Image1->Picture->Bitmap = Img_3DLUT->Picture->Bitmap;
+    C3DSimualteForm->Img_diff->Picture->Bitmap = Img_3DLUT->Picture->Bitmap;
     for (int i = 0; i < y; i++) {
 	p_Img = (BYTE *) Img_3DLUT->Picture->Bitmap->ScanLine[i];
-	p_Sim_Img1 = (BYTE *) C3D_SimualteForm->Image1->Picture->Bitmap->ScanLine[i];
-	p_Sim_Img_Dif = (BYTE *) C3D_SimualteForm->Img_diff->Picture->Bitmap->ScanLine[i];
+	p_Sim_Img1 = (BYTE *) C3DSimualteForm->Image1->Picture->Bitmap->ScanLine[i];
+	p_Sim_Img_Dif = (BYTE *) C3DSimualteForm->Img_diff->Picture->Bitmap->ScanLine[i];
 	for (int j = 0; j < x * 3; j += 3) {
 	    b = p_Img[j];
 	    g = p_Img[j + 1];
@@ -696,12 +697,12 @@ void TC3DForm1::calculate_disc()
 	    }
 	}
     }
-    C3D_SimualteForm->lb_hsv_adj_h->Caption = FloatToStr(GetPointH_val());
-    C3D_SimualteForm->lb_hsv_adj_s->Caption = IntToStr(GetPointS_val());
-    C3D_SimualteForm->lb_hsv_adj_v->Caption = IntToStr(GetPointV_val());
+    C3DSimualteForm->lb_hsv_adj_h->Caption = FloatToStr(GetPointH_val());
+    C3DSimualteForm->lb_hsv_adj_s->Caption = IntToStr(GetPointS_val());
+    C3DSimualteForm->lb_hsv_adj_v->Caption = IntToStr(GetPointV_val());
     c3d_scrollbar_reset();
     btn_c3d_sim->Enabled = true;
-    C3D_SimualteForm->Show();
+    C3DSimualteForm->Show();
 }
 
 void TC3DForm1::calculate_HSV_disc()
@@ -725,10 +726,10 @@ void TC3DForm1::calculate_HSV_disc()
     double max_h_dis = 0.0, max_s_dis = 0.0, max_v_dis = 0.0;
 
     BYTE *p_Img, *p_Img_n_row, *p_Sim_Img, *p_diff_img_h, *p_diff_img_s, *p_diff_img_v;
-    C3D_SimualteForm->Image1->Picture->Bitmap = Img_3DLUT->Picture->Bitmap;
-    C3D_SimualteForm->Image_h->Picture->Bitmap = Img_3DLUT->Picture->Bitmap;
-    C3D_SimualteForm->Image_s->Picture->Bitmap = Img_3DLUT->Picture->Bitmap;
-    C3D_SimualteForm->Image_v->Picture->Bitmap = Img_3DLUT->Picture->Bitmap;
+    C3DSimualteForm->Image1->Picture->Bitmap = Img_3DLUT->Picture->Bitmap;
+    C3DSimualteForm->Image_h->Picture->Bitmap = Img_3DLUT->Picture->Bitmap;
+    C3DSimualteForm->Image_s->Picture->Bitmap = Img_3DLUT->Picture->Bitmap;
+    C3DSimualteForm->Image_v->Picture->Bitmap = Img_3DLUT->Picture->Bitmap;
     //C3D_SimualteForm->Image_v->Picture->Bitmap = Img_3DLUT->Picture->Bitmap;
     double tmp, tmp_s, tmp_v;
     int next_i, next_j;
@@ -737,10 +738,10 @@ void TC3DForm1::calculate_HSV_disc()
 	p_Img = (BYTE *) Img_3DLUT->Picture->Bitmap->ScanLine[i];
 	next_i = (i + 1 >= y ? i : i + 1);
 	p_Img_n_row = (BYTE *) Img_3DLUT->Picture->Bitmap->ScanLine[next_i];
-	p_Sim_Img = (BYTE *) C3D_SimualteForm->Image1->Picture->Bitmap->ScanLine[i];
-	p_diff_img_h = (BYTE *) C3D_SimualteForm->Image_h->Picture->Bitmap->ScanLine[i];
-	p_diff_img_s = (BYTE *) C3D_SimualteForm->Image_s->Picture->Bitmap->ScanLine[i];
-	p_diff_img_v = (BYTE *) C3D_SimualteForm->Image_v->Picture->Bitmap->ScanLine[i];
+	p_Sim_Img = (BYTE *) C3DSimualteForm->Image1->Picture->Bitmap->ScanLine[i];
+	p_diff_img_h = (BYTE *) C3DSimualteForm->Image_h->Picture->Bitmap->ScanLine[i];
+	p_diff_img_s = (BYTE *) C3DSimualteForm->Image_s->Picture->Bitmap->ScanLine[i];
+	p_diff_img_v = (BYTE *) C3DSimualteForm->Image_v->Picture->Bitmap->ScanLine[i];
 
 	for (int j = 0; j < x * 3; j += 3) {
 	    next_j = (j + 3 >= x * 3 ? j : j + 3);
@@ -787,12 +788,12 @@ void TC3DForm1::calculate_HSV_disc()
 	}
     }
 
-    C3D_SimualteForm->lb_hsv_adj_h->Caption = FloatToStr(GetPointH_val());
-    C3D_SimualteForm->lb_hsv_adj_s->Caption = IntToStr(GetPointS_val());
-    C3D_SimualteForm->lb_hsv_adj_v->Caption = IntToStr(GetPointV_val());
+    C3DSimualteForm->lb_hsv_adj_h->Caption = FloatToStr(GetPointH_val());
+    C3DSimualteForm->lb_hsv_adj_s->Caption = IntToStr(GetPointS_val());
+    C3DSimualteForm->lb_hsv_adj_v->Caption = IntToStr(GetPointV_val());
     c3d_scrollbar_reset();
     btn_c3d_sim->Enabled = true;
-    C3D_SimualteForm->Show();
+    C3DSimualteForm->Show();
     String str;
 /*
         double Array_hsv[3];
@@ -800,16 +801,16 @@ void TC3DForm1::calculate_HSV_disc()
         Array_hsv[0]=max_s_dis*/
 
     sprintf(str.c_str(), "Max dif---H:%2.6f, S:%2.6f, V:%2.6f", max_h_dis, max_s_dis, max_v_dis);
-    C3D_SimualteForm->lb_hsv_dis_max->Caption = (AnsiString) str.c_str();
+    C3DSimualteForm->lb_hsv_dis_max->Caption = (AnsiString) str.c_str();
     String H_gain = sb_c3d_Point_HSV_hdp->Position;
     AnsiString FilePath = "Sim_" + H_gain + ".bmp";
-    C3D_SimualteForm->Image1->Picture->SaveToFile(FilePath);
+    C3DSimualteForm->Image1->Picture->SaveToFile(FilePath);
     FilePath = "Sim_dif_h" + H_gain + ".bmp";
-    C3D_SimualteForm->Image_h->Picture->SaveToFile(FilePath);
+    C3DSimualteForm->Image_h->Picture->SaveToFile(FilePath);
     FilePath = "Sim_dif_s" + H_gain + ".bmp";
-    C3D_SimualteForm->Image_s->Picture->SaveToFile(FilePath);
+    C3DSimualteForm->Image_s->Picture->SaveToFile(FilePath);
     FilePath = "Sim_dif_v" + H_gain + ".bmp";
-    C3D_SimualteForm->Image_v->Picture->SaveToFile(FilePath);
+    C3DSimualteForm->Image_v->Picture->SaveToFile(FilePath);
 }
 
 void TC3DForm1::Caculate_dif_table(double ***c3d_dif_lutR, double ***c3d_dif_lutG,
@@ -1040,12 +1041,12 @@ void TC3DForm1::calculate_NCTU_dif()
     int max_dif = 0;
 
     BYTE *p_Img, *p_Sim_Img1, *p_Sim_Img_Dif;
-    C3D_SimualteForm->Image1->Picture->Bitmap = Img_3DLUT->Picture->Bitmap;
-    C3D_SimualteForm->Img_diff->Picture->Bitmap = Img_3DLUT->Picture->Bitmap;
+    C3DSimualteForm->Image1->Picture->Bitmap = Img_3DLUT->Picture->Bitmap;
+    C3DSimualteForm->Img_diff->Picture->Bitmap = Img_3DLUT->Picture->Bitmap;
     for (int i = 0; i < y; i++) {
 	p_Img = (BYTE *) Img_3DLUT->Picture->Bitmap->ScanLine[i];
-	p_Sim_Img1 = (BYTE *) C3D_SimualteForm->Image1->Picture->Bitmap->ScanLine[i];
-	p_Sim_Img_Dif = (BYTE *) C3D_SimualteForm->Img_diff->Picture->Bitmap->ScanLine[i];
+	p_Sim_Img1 = (BYTE *) C3DSimualteForm->Image1->Picture->Bitmap->ScanLine[i];
+	p_Sim_Img_Dif = (BYTE *) C3DSimualteForm->Img_diff->Picture->Bitmap->ScanLine[i];
 	for (int j = 0; j < x * 3; j += 3) {
 	    r = p_Img[j + 2];
 	    g = p_Img[j + 1];
@@ -1066,15 +1067,15 @@ void TC3DForm1::calculate_NCTU_dif()
 		max_dif = (int) r_new;
 	}
     }
-    C3D_SimualteForm->lb_hsv_adj_h->Caption = FloatToStr(GetPointH_val());
-    C3D_SimualteForm->lb_hsv_adj_s->Caption = IntToStr(GetPointS_val());
-    C3D_SimualteForm->lb_hsv_adj_v->Caption = IntToStr(GetPointV_val());
+    C3DSimualteForm->lb_hsv_adj_h->Caption = FloatToStr(GetPointH_val());
+    C3DSimualteForm->lb_hsv_adj_s->Caption = IntToStr(GetPointS_val());
+    C3DSimualteForm->lb_hsv_adj_v->Caption = IntToStr(GetPointV_val());
     c3d_scrollbar_reset();
     btn_c3d_sim->Enabled = true;
-    C3D_SimualteForm->Show();
+    C3DSimualteForm->Show();
     char str[20];
     sprintf(str, "max_dif: %3d", max_dif);
-    C3D_SimualteForm->lb_hsv_dis_max->Caption = (AnsiString) str;
+    C3DSimualteForm->lb_hsv_dis_max->Caption = (AnsiString) str;
 }
 
 
@@ -1122,8 +1123,8 @@ void __fastcall TC3DForm1::btn_c3d_simClick(TObject * Sender)
     btn_c3d_sim->Enabled = false;
     int x = Img_3DLUT->Picture->Width;
     int y = Img_3DLUT->Picture->Height;
-    C3D_SimualteForm->Image1->Width = Img_3DLUT->Picture->Width;
-    C3D_SimualteForm->Image1->Height = Img_3DLUT->Picture->Height;
+    C3DSimualteForm->Image1->Width = Img_3DLUT->Picture->Width;
+    C3DSimualteForm->Image1->Height = Img_3DLUT->Picture->Height;
 
     int color;
     c3d_tmp_tbl_save();
@@ -1173,18 +1174,18 @@ void __fastcall TC3DForm1::btn_c3d_simClick(TObject * Sender)
 	    g = color / 256 % 256;
 	    r = color % 256;
 	    C3Dsim(r, g, b, &r_new, &g_new, &b_new);
-	    C3D_SimualteForm->Image1->Canvas->Pixels[i][j] = (TColor) RGB(r_new, g_new, b_new);
+	    C3DSimualteForm->Image1->Canvas->Pixels[i][j] = (TColor) RGB(r_new, g_new, b_new);
 	}
 
     // simulate的hsv結果標示在simalate form
-    C3D_SimualteForm->lb_hsv_adj_h->Caption = lb_c3d_simH->Caption;
-    C3D_SimualteForm->lb_hsv_adj_s->Caption = lb_c3d_simS->Caption;
-    C3D_SimualteForm->lb_hsv_adj_v->Caption = lb_c3d_simV->Caption;
+    C3DSimualteForm->lb_hsv_adj_h->Caption = lb_c3d_simH->Caption;
+    C3DSimualteForm->lb_hsv_adj_s->Caption = lb_c3d_simS->Caption;
+    C3DSimualteForm->lb_hsv_adj_v->Caption = lb_c3d_simV->Caption;
 
     btn_c3d_sim->Enabled = true;
     BitBtn_c3d_undo->Enabled = true;
-    C3D_SimualteForm->Show();
-    C3D_SimualteForm->WindowState = wsNormal;
+    C3DSimualteForm->Show();
+    C3DSimualteForm->WindowState = wsNormal;
     cb_en->Checked = false;
     cb_enClick(Sender);
     /*
@@ -5271,12 +5272,12 @@ void __fastcall TC3DForm1::btn_directly_simClick(TObject * Sender)
 	       b_new = 0;
 	       } */
 	    //Img_3DLUT->Canvas->Pixels[i][j] = (TColor)RGB(r_new,g_new,b_new);
-	    C3D_SimualteForm->Image1->Canvas->Pixels[i][j] = (TColor) RGB(r_new, g_new, b_new);
+	    C3DSimualteForm->Image1->Canvas->Pixels[i][j] = (TColor) RGB(r_new, g_new, b_new);
 	    //C3D_SimualteForm->Image2->Canvas->Pixels[i][j] = (TColor)RGB(((r-r_new)>0?(r-r_new)+20:0),0,0);
 	    //C3D_SimualteForm->Image3->Canvas->Pixels[i][j] = (TColor)RGB(0,((g-g_new)>0?(g-g_new)+20:0),0);
 	    //C3D_SimualteForm->Image4->Canvas->Pixels[i][j] = (TColor)RGB(0,0,((b_new-b)>0?(b_new-b)+20:0));
 	}
-    C3D_SimualteForm->Image1->Picture->SaveToFile("sim_tmp.bmp");
+    C3DSimualteForm->Image1->Picture->SaveToFile("sim_tmp.bmp");
     Img_3DLUT->Picture->LoadFromFile("sim_tmp.bmp");
 
     delete TmpBitmap;
@@ -5296,7 +5297,7 @@ void __fastcall TC3DForm1::btn_directly_simClick(TObject * Sender)
        fclose(fptr); */
     c3d_scrollbar_reset();
     btn_directly_sim->Enabled = true;
-    C3D_SimualteForm->Show();
+    C3DSimualteForm->Show();
 
 }
 
@@ -5662,10 +5663,10 @@ void __fastcall TC3DForm1::btn_key_in_HSVClick(TObject * Sender)
 
     delete TmpBitmap;
     //C3D_SimualteForm = new TC3D_SimualteForm(this);
-    C3D_SimualteForm->Image1->Canvas->Draw(0, 0, Img_3DLUT->Picture->Bitmap);
-    C3D_SimualteForm->Label4->Caption = "Figure";
-    C3D_SimualteForm->Label4->Visible = true;
-    C3D_SimualteForm->Show();
+    C3DSimualteForm->Image1->Canvas->Draw(0, 0, Img_3DLUT->Picture->Bitmap);
+    C3DSimualteForm->Label4->Caption = "Figure";
+    C3DSimualteForm->Label4->Visible = true;
+    C3DSimualteForm->Show();
 }
 
 //---------------------------------------------------------------------------

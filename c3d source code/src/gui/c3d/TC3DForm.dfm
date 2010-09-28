@@ -12824,7 +12824,7 @@ object C3DForm1: TC3DForm1
     Top = 450
     Width = 602
     Height = 368
-    ActivePage = TabSheet22
+    ActivePage = TabSheet20
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clWindowText
     Font.Height = -15
@@ -12832,7 +12832,7 @@ object C3DForm1: TC3DForm1
     Font.Style = []
     MultiLine = True
     ParentFont = False
-    TabIndex = 1
+    TabIndex = 0
     TabOrder = 19
     OnChange = pc_AdjustChange
     object TabSheet20: TTabSheet
@@ -13405,8 +13405,8 @@ object C3DForm1: TC3DForm1
         Top = 0
         Width = 415
         Height = 336
-        ActivePage = TabSheet9
-        TabIndex = 0
+        ActivePage = TabSheet10
+        TabIndex = 1
         TabOrder = 0
         object TabSheet9: TTabSheet
           Caption = '&RGB Domain'

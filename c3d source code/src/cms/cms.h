@@ -32,7 +32,7 @@ namespace cms {
 	class ColorMatchingFunctionFile;
 
     };
-#define COLORSPACE
+//#define COLORSPACE
 #ifdef COLORSPACE
     namespace colorspace {
 	class ColorSpace;
