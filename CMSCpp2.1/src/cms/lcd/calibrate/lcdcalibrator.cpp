@@ -287,6 +287,7 @@ namespace cms {
 		bool doAccurate = (true == accurateMode) && (null != tconctrl);
 		bptr < PanelRegulator > panelRegulator;
 		if (doAccurate) {
+		    //以target white的rgb為最大值, 調整面板並重新量測
 		    bptr < cms::measure::IntensityAnalyzerIF > analyzer = fetcher->getAnalyzer();
 		    RGB_ptr rgb = analyzer->getReferenceRGB();
 		    panelRegulator = bptr < PanelRegulator >
@@ -412,8 +413,6 @@ namespace cms {
 
 		}
 		STORE_DOUBLE_VECTOR("1_lumigammacurve.xls", luminanceGammaCurve);
-
-
 
 
 		double dimgammaParameter = 3.5;

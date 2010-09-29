@@ -189,25 +189,6 @@ void __fastcall TCCTLUTForm::Button_MeaRunClick(TObject * Sender)
 	    Util::deleteExist(filename);
 	    bptr < DGLutFile > dgLutFile(new DGLutFile(filename, Create));
 
-	    //==========================================================================
-	    // avoid HOOK NB
-	    //==========================================================================
-	    //bool avoidHookNB = this->CheckBox_AvoidHookNB->Checked;
-	    /*bptr < PanelRegulator > panelRegulator;
-	       if (avoidHookNB) {
-	       if (null != tconctrl) {
-	       //開始量測之前先更改面板原始特性
-	       int maxZDGCode = MeasureTool::getMaxZDGCode(MainForm->mm, bitDepth);
-	       int max = bitDepth->getMaxDigitalCount();
-	       panelRegulator =
-	       bptr < PanelRegulator >
-	       (new PanelRegulator(bitDepth, tconctrl, max, max, maxZDGCode));
-	       panelRegulator->setEnable(true);
-	       } else {
-	       throw IllegalStateException("null == tconctrl");
-	       }
-	       } */
-	    //==========================================================================
 	    bptr < TCONControl > tconctrl = MainForm->getTCONControl();
 	    calibrator.setTCONControl(tconctrl);
 	    calibrator.setNativeWhiteAnalyzer(nativeWhiteAnalyzer);
@@ -217,15 +198,6 @@ void __fastcall TCCTLUTForm::Button_MeaRunClick(TObject * Sender)
 		//被中斷就直接return
 		return;
 	    };
-
-	    //==========================================================================
-	    // avoid HOOK NB
-	    //==========================================================================
-	    /*if (avoidHookNB) {
-	       panelRegulator->setEnable(false);
-	       dglut = panelRegulator->remapping(dglut);
-	       } */
-	    //==========================================================================
 
 	    //=================================================================
 	    // 存檔
@@ -640,4 +612,5 @@ void __fastcall TCCTLUTForm::CheckBox_MaxYAdvAutoClick(TObject * Sender)
 }
 
 //---------------------------------------------------------------------------
+
 

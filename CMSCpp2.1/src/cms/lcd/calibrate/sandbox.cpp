@@ -232,7 +232,7 @@ namespace cms {
 
 #ifdef DEBUG_CCTLUT_NEWMETHOD
 		Component_vector_ptr maxComponentVector(new Component_vector());
-#endif
+#endif				//DEBUG_CCTLUT_NEWMETHOD
 		for (int x = size - 1; x != -1; x--) {
 		    XYZ_ptr targetXYZ = (*targetXYZVector)[x];
 
@@ -249,13 +249,13 @@ namespace cms {
 #ifdef DEBUG_CCTLUT_NEWMETHOD
 #ifdef DEBUG_CCTLUT_NEWMETHOD_STEP
 		    STORE_COMPONENT(_toString(x) + ".xls", newcomponentVector);
-#endif
+#endif				//DEBUG_CCTLUT_NEWMETHOD_STEP
 		    //把第一個存起來, 第一個往往是最大的
 		    RGB_ptr grayLevel(new RGBColor(x, x, x));
 		    Component_ptr c(new Component(grayLevel,
 						  (*newcomponentVector)[0]->intensity, targetXYZ));
 		    maxComponentVector->push_back(c);
-#endif
+#endif				//DEBUG_CCTLUT_NEWMETHOD
 		    DGLutGenerator lutgen(newcomponentVector);
 		    //B採100嗎?
 		    if (bTargetIntensity == -1) {
@@ -539,12 +539,20 @@ namespace cms {
 	    int AdvancedDGLutGenerator::getAutoBrightWidth() {
 		return autoBrightWidth;
 	    };
+	    /*
+	       此第二組componentVector2和panelRegulator2, 是用在target white != native white,
+	       但是又想 smooth過去時使用
+	     */
 	    void AdvancedDGLutGenerator::setComponentVector2(Component_vector_ptr componentVector2,
 							     bptr < PanelRegulator >
 							     panelRegulator2) {
 		this->componentVector2 = componentVector2;
 		this->panelRegulator2 = panelRegulator2;
 	    };
+	    /*
+	       以載過DG的面板來產生DG Lut, 後續還需要panelRegulator做remap.
+	       因為載過DG的面板的Gray Level已經異動, 後續需要remap回正確的結果.
+	     */
 	    void AdvancedDGLutGenerator::setPanelRegulator(bptr < PanelRegulator > panelRegulator) {
 		this->panelRegulator1 = panelRegulator;
 	    };
