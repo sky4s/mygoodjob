@@ -408,7 +408,7 @@ object CCTLUTForm: TCCTLUTForm
       Visible = False
     end
     object CheckBox_Accurate: TCheckBox
-      Left = 32
+      Left = 9
       Top = 89
       Width = 149
       Height = 18

@@ -19,7 +19,7 @@
 #include <boost/foreach.hpp>
 #include <boost/lexical_cast.hpp>
 
-//#define TNT_LIB
+#define TNT_LIB
 
 #ifdef TNT_LIB
 #include <tnt/tnt_array1d.h>
