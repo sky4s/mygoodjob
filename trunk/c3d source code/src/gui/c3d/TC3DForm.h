@@ -414,6 +414,8 @@ class TC3DForm1:public TForm {
     void __fastcall btn_Auto_Trg_LoadClick(TObject * Sender);
     void __fastcall btn_Auto_Trg_BuildTblClick(TObject * Sender);
     void __fastcall SaveDialog1TypeChange(TObject * Sender);
+        void __fastcall TColorPickerFrame1cb_show_ref_imgClick(
+          TObject *Sender);
 
   private:			// User declarations
 

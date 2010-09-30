@@ -1,6 +1,6 @@
 object C3DForm1: TC3DForm1
-  Left = 210
-  Top = 82
+  Left = 237
+  Top = 72
   Width = 971
   Height = 859
   Align = alCustom
@@ -489,7 +489,7 @@ object C3DForm1: TC3DForm1
       'NCTU modified')
   end
   object pc_img: TPageControl
-    Left = 898
+    Left = 970
     Top = 30
     Width = 551
     Height = 404
@@ -13062,9 +13062,9 @@ object C3DForm1: TC3DForm1
             Top = -30
             Width = 257
             Height = 359
-            ActivePage = ts_gray9
+            ActivePage = ts_light12
             MultiLine = True
-            TabIndex = 3
+            TabIndex = 0
             TabOrder = 0
             TabWidth = 51
             object ts_light12: TTabSheet
@@ -14734,8 +14734,8 @@ object C3DForm1: TC3DForm1
     Text = 'Cursor Color'
   end
   object cb_show_ref_img: TCheckBox
-    Left = 776
-    Top = 150
+    Left = 976
+    Top = 470
     Width = 159
     Height = 20
     Caption = 'Show Compare &Figure'
@@ -14776,8 +14776,8 @@ object C3DForm1: TC3DForm1
     TabOrder = 27
   end
   object btn_c3d_load_img: TButton
-    Left = 774
-    Top = 118
+    Left = 974
+    Top = 438
     Width = 80
     Height = 31
     Caption = 'Loa&d Image'
@@ -14791,6 +14791,9 @@ object C3DForm1: TC3DForm1
     Width = 552
     Height = 420
     TabOrder = 29
+    inherited cb_show_ref_img: TCheckBox
+      OnClick = TColorPickerFrame1cb_show_ref_imgClick
+    end
   end
   object OpenDialog1: TOpenDialog
     Filter = 'Excel '#35430#31639#34920', Text '#25991#23383#25991#20214'|*.xls;*.txt'

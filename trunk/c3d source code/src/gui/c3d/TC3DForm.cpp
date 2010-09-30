@@ -7581,3 +7581,11 @@ void TC3DForm1::ColorMouseListener::mouseReleased(TObject * Sender,
 
 };
 
+void __fastcall TC3DForm1::TColorPickerFrame1cb_show_ref_imgClick(
+      TObject *Sender)
+{
+  TColorPickerFrame1->cb_show_ref_imgClick(Sender);
+
+}
+//---------------------------------------------------------------------------
+
