@@ -6796,8 +6796,8 @@ object HSVForm1: THSVForm1
       Top = 20
       Width = 60
       Height = 24
-      EditLabel.Width = 104
-      EditLabel.Height = 20
+      EditLabel.Width = 85
+      EditLabel.Height = 16
       EditLabel.Caption = 'Change Angle'
       LabelPosition = lpAbove
       LabelSpacing = 3
