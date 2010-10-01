@@ -993,6 +993,16 @@ void propertyTest()
     std::cout << boost::any_cast < double >(properties[2].value()) << "\n";
 }
 
+void hsvTest()
+{
+    using namespace Dep;
+    RGB_ptr rgb(new RGBColor(30, 40, 50));
+    cout << rgb->getHue() << endl;
+    double_array hsvi = rgb->getHSVIValues();
+    cout << *math::DoubleArray::toString(hsvi, 4) << endl;
+    double_array rgbValues = RGBColor::HSV2RGBValues(hsvi[0], hsvi[1], hsvi[2]);
+    cout << *math::DoubleArray::toString(rgbValues, 3) << endl;
+}
 
 #pragma argsused
 int main(int argc, char *argv[])
@@ -1073,7 +1083,8 @@ int main(int argc, char *argv[])
     //scurve();
     //domap();
     //anyTest();
-    propertyTest();
+    //propertyTest();
+    hsvTest();
 
 
 
