@@ -13,7 +13,7 @@
 //本項目內頭文件
 #include "TEngineering.h"
 #include <gui/c3d/TC3DForm.h>
-#include "TFormInTarget.h"
+#include "TInTargetForm.h"
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
 #pragma resource "*.dfm"

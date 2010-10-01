@@ -20,9 +20,9 @@
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
 #pragma resource "*.dfm"
-TFormInTarget *FormInTarget;
+TInTargetForm *InTargetForm;
 //---------------------------------------------------------------------------
-__fastcall TFormInTarget::TFormInTarget(TComponent* Owner)
+__fastcall TInTargetForm::TInTargetForm(TComponent* Owner)
         : TForm(Owner)
 {
         sg_rgb->Cells[0][0] = "R";
@@ -35,7 +35,7 @@ __fastcall TFormInTarget::TFormInTarget(TComponent* Owner)
 }
 //---------------------------------------------------------------------------
 
-void __fastcall TFormInTarget::btn_rgb2hsvClick(TObject *Sender)
+void __fastcall TInTargetForm::btn_rgb2hsvClick(TObject *Sender)
 {
         double r = StrToFloat(sg_rgb->Cells[1][0]);
         double g = StrToFloat(sg_rgb->Cells[1][1]);
@@ -50,7 +50,7 @@ void __fastcall TFormInTarget::btn_rgb2hsvClick(TObject *Sender)
 }
 //---------------------------------------------------------------------------
 
-void __fastcall TFormInTarget::btn_hsv2rgbClick(TObject *Sender)
+void __fastcall TInTargetForm::btn_hsv2rgbClick(TObject *Sender)
 {
         double h = StrToFloat(sg_hsv->Cells[1][0]);
         double s = StrToFloat(sg_hsv->Cells[1][1]);
@@ -65,7 +65,7 @@ void __fastcall TFormInTarget::btn_hsv2rgbClick(TObject *Sender)
 }
 //---------------------------------------------------------------------------
 
-void __fastcall TFormInTarget::btn_hsv2rgb_bachClick(TObject *Sender)
+void __fastcall TInTargetForm::btn_hsv2rgb_bachClick(TObject *Sender)
 {
         if(!OpenDialog1->Execute())
                 return;
@@ -126,7 +126,7 @@ void __fastcall TFormInTarget::btn_hsv2rgb_bachClick(TObject *Sender)
 }
 //---------------------------------------------------------------------------
 
-void __fastcall TFormInTarget::btn_rgb2hsv_bachClick(TObject *Sender)
+void __fastcall TInTargetForm::btn_rgb2hsv_bachClick(TObject *Sender)
 {
         if(!OpenDialog1->Execute())
                 return;
@@ -178,7 +178,7 @@ void __fastcall TFormInTarget::btn_rgb2hsv_bachClick(TObject *Sender)
 }
 //---------------------------------------------------------------------------
 
-void __fastcall TFormInTarget::btn_sim_colorClick(TObject *Sender)
+void __fastcall TInTargetForm::btn_sim_colorClick(TObject *Sender)
 {
         if(!OpenDialog1->Execute())
                 return;

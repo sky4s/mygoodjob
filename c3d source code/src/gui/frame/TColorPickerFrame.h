@@ -26,7 +26,7 @@
 #include <gui/event/listener.h>
 #include <java/lang.h>
 //本項目內gui頭文件
-#include "TFormInTarget.h"
+#include "TInTargetForm.h"
 //---------------------------------------------------------------------------
 class TColorPickerFrame:public TFrame {
     __published:		// IDE-managed Components
@@ -61,12 +61,12 @@ class TColorPickerFrame:public TFrame {
   private:			// User declarations
      std::vector < bwptr < gui::event::MouseMotionListener > >mouseMotionListenerVector;
      std::vector < bwptr < gui::event::MouseListener > >mouseListenerVector;
-    TFormInTarget *formInTarget;
+    TInTargetForm *inTargetForm;
   public:			// User declarations
      __fastcall TColorPickerFrame(TComponent * Owner);
     void addMouseMotionListener(bptr < gui::event::MouseMotionListener > listener);
     void addMouseListener(bptr < gui::event::MouseListener > listener);
-    void setFormInTarget(TFormInTarget * formInTarget);
+    void setTInTargetForm(TInTargetForm * inTargetForm);
 };
 //---------------------------------------------------------------------------
 extern PACKAGE TColorPickerFrame *ColorPickerFrame;

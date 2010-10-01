@@ -23,7 +23,7 @@
 #include "TEngineering.h"
 #include "THSVStepSimForm.h"
 #include "GetCursorColor.h"
-#include "TFormInTarget.h"
+#include "TInTargetForm.h"
 
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
@@ -289,7 +289,7 @@ void TC3DForm1::Ini_c3d_table()
 void TC3DForm1::C3Dini()
 {
     Ini_c3d_table();
-    ShowImageColor(img_color, 255, 255, 255);
+    ShowImageColor(colorPicker->img_color, 255, 255, 255);
     Show_c3d_Img_sim();
     Show_c3d_SelImg(255, 255, 255);
     Show_c3d_CorImg(255, 255, 255);
@@ -458,21 +458,24 @@ void TC3DForm1::Show_c3d_Img_sim()
 {
     double r, g, b, r_new, g_new, b_new;
     int color[4];
-    int x = img_sim->Width / 2;
-    int y = img_sim->Height / 2;
-    color[0] = img_color->Canvas->Pixels[10][10];
-    color[1] = img_color->Canvas->Pixels[x + 10][10];
-    color[2] = img_color->Canvas->Pixels[10][y + 10];
-    color[3] = img_color->Canvas->Pixels[x + 10][y + 10];
+    TImage *imageSim = colorPicker->img_sim;
+    TImage *imageColor = colorPicker->img_color;
+    int x = imageSim->Width / 2;
+    int y = imageSim->Height / 2;
+    TCanvas *canvas = imageColor->Canvas;
+    color[0] = canvas->Pixels[10][10];
+    color[1] = canvas->Pixels[x + 10][10];
+    color[2] = canvas->Pixels[10][y + 10];
+    color[3] = canvas->Pixels[x + 10][y + 10];
 
     Graphics::TBitmap * TmpBitmap = new Graphics::TBitmap();
     if ((color[0] == color[1]) && (color[0] == color[2]) && (color[0] == color[3])) {
 	//Simulate Color
-	TmpBitmap->Width = img_sim->Width;
-	TmpBitmap->Height = img_sim->Height;
+	TmpBitmap->Width = imageSim->Width;
+	TmpBitmap->Height = imageSim->Height;
 
 	double r, g, b, r_new, g_new, b_new;
-	int color = img_color->Canvas->Pixels[10][10];
+	int color = canvas->Pixels[10][10];
 	b = color / 65536;
 	g = color / 256 % 256;
 	r = color % 256;
@@ -480,10 +483,10 @@ void TC3DForm1::Show_c3d_Img_sim()
 	C3Dsim_t(r, g, b, &r_new, &g_new, &b_new);
 	TmpBitmap->Canvas->Brush->Color = (TColor) RGB(r_new, g_new, b_new);
 	TmpBitmap->Canvas->Rectangle(0, 0, TmpBitmap->Width, TmpBitmap->Height);
-	img_sim->Canvas->Draw(0, 0, TmpBitmap);
+	imageSim->Canvas->Draw(0, 0, TmpBitmap);
     } else {			// Simulate 影像
-	TmpBitmap->Width = img_color->Width / 2;
-	TmpBitmap->Height = img_color->Height / 2;
+	TmpBitmap->Width = imageColor->Width / 2;
+	TmpBitmap->Height = imageColor->Height / 2;
 
 	for (int i = 0; i < 4; i++) {
 	    if (color[i] == -1)
@@ -495,14 +498,15 @@ void TC3DForm1::Show_c3d_Img_sim()
 	    C3Dsim_t(r, g, b, &r_new, &g_new, &b_new);
 	    TmpBitmap->Canvas->Brush->Color = (TColor) RGB(r_new, g_new, b_new);
 	    TmpBitmap->Canvas->Rectangle(0, 0, TmpBitmap->Width, TmpBitmap->Height);
+	    TCanvas *canvas = imageSim->Canvas;
 	    if (i == 0)
-		img_sim->Canvas->Draw(0, 0, TmpBitmap);
+		canvas->Draw(0, 0, TmpBitmap);
 	    else if (i == 1)
-		img_sim->Canvas->Draw(x, 0, TmpBitmap);
+		canvas->Draw(x, 0, TmpBitmap);
 	    else if (i == 2)
-		img_sim->Canvas->Draw(0, y, TmpBitmap);
+		canvas->Draw(0, y, TmpBitmap);
 	    else
-		img_sim->Canvas->Draw(x, y, TmpBitmap);
+		canvas->Draw(x, y, TmpBitmap);
 	}
     }
 
@@ -515,6 +519,7 @@ void __fastcall TC3DForm1::btn_c3d_load_imgClick(TObject * Sender)
 {
     AnsiString S1;
     Graphics::TBitmap * OrgBitmap = new Graphics::TBitmap();
+    TImage *image3DLut = colorPicker->Img_3DLUT;
 
     if (OpenDialog_img->Execute()) {
 	S1 = OpenDialog_img->FileName;
@@ -531,22 +536,23 @@ void __fastcall TC3DForm1::btn_c3d_load_imgClick(TObject * Sender)
 	    // bitmap->Width = JPEG->Width;     //放到bitmap裡, 自己寫resize
 	    // bitmap->Height = JPEG->Height;
 	    // bitmap->Assign(JPEG);
+	    int width = image3DLut->Width;
 
-	    if (JPEG->Width > Img_3DLUT->Width * 4 + Img_3DLUT->Width * 2) {
+	    if (JPEG->Width > width * 4 + width * 2) {
 		JPEG->Scale = jsEighth;
-	    } else if (JPEG->Width > Img_3DLUT->Width * 2 + Img_3DLUT->Width) {
+	    } else if (JPEG->Width > width * 2 + width) {
 		JPEG->Scale = jsQuarter;
-	    } else if (JPEG->Width > Img_3DLUT->Width + Img_3DLUT->Width) {
+	    } else if (JPEG->Width > width + width) {
 		JPEG->Scale = jsHalf;
 	    } else {
 		JPEG->Scale = jsFullSize;
 	    }
-	    Img_3DLUT->Width = JPEG->Width;
-	    Img_3DLUT->Height = JPEG->Height;
-	    Img_3DLUT->Picture->Bitmap->Assign(JPEG);
+	    image3DLut->Width = JPEG->Width;
+	    image3DLut->Height = JPEG->Height;
+	    image3DLut->Picture->Bitmap->Assign(JPEG);
 
 	} else if (curExt == ".bmp" || curExt == ".BMP" || curExt == ".Bitmap") {
-	    Img_3DLUT->Picture->LoadFromFile(S1);
+	    image3DLut->Picture->LoadFromFile(S1);
 	    /* Graphics::TBitmap *pi = new Graphics::TBitmap();
 	       try{
 	       pi->LoadFromFile(S1);
@@ -561,9 +567,9 @@ void __fastcall TC3DForm1::btn_c3d_load_imgClick(TObject * Sender)
 	}
 	delete bitmap;
 	delete JPEG;
-	OrgBitmap->Assign(Img_3DLUT->Picture->Bitmap);
-	if (pc_img->TabIndex == 0)
-	    FormInTarget->img_in_target->Picture->Bitmap->Assign(Img_3DLUT->Picture->Bitmap);
+	OrgBitmap->Assign(image3DLut->Picture->Bitmap);
+	if (colorPicker->pc_img->TabIndex == 0)
+	    InTargetForm->img_in_target->Picture->Bitmap->Assign(image3DLut->Picture->Bitmap);
     }
     delete OrgBitmap;
 
@@ -574,9 +580,10 @@ void __fastcall TC3DForm1::btn_c3d_load_imgClick(TObject * Sender)
 void TC3DForm1::calculate_disc()
 {				//Measure discontinue by caculate difference at r+/-1,g+/-1, b+/-1, idea by NCTU
     //C3D_SimualteForm = new TC3D_SimualteForm(this);
+    TImage *image3DLut = colorPicker->Img_3DLUT;
     btn_c3d_sim->Enabled = false;
-    int x = Img_3DLUT->Picture->Width;
-    int y = Img_3DLUT->Picture->Height;
+    int x = image3DLut->Picture->Width;
+    int y = image3DLut->Picture->Height;
 
     //c3d_tmp_tbl_save();
     if (pc_Adjust->TabIndex == 1 && pc_point_color_adj->TabIndex == 1) {	//Point Color-HSV Domain
@@ -588,10 +595,10 @@ void TC3DForm1::calculate_disc()
     double r_new_d, g_new_d, b_new_d, tol, disc;
     double r_new_tol1, g_new_tol1, b_new_tol1;
     BYTE *p_Img, *p_Sim_Img1, *p_Sim_Img_Dif;
-    C3DSimualteForm->Image1->Picture->Bitmap = Img_3DLUT->Picture->Bitmap;
-    C3DSimualteForm->Img_diff->Picture->Bitmap = Img_3DLUT->Picture->Bitmap;
+    C3DSimualteForm->Image1->Picture->Bitmap = image3DLut->Picture->Bitmap;
+    C3DSimualteForm->Img_diff->Picture->Bitmap = image3DLut->Picture->Bitmap;
     for (int i = 0; i < y; i++) {
-	p_Img = (BYTE *) Img_3DLUT->Picture->Bitmap->ScanLine[i];
+	p_Img = (BYTE *) image3DLut->Picture->Bitmap->ScanLine[i];
 	p_Sim_Img1 = (BYTE *) C3DSimualteForm->Image1->Picture->Bitmap->ScanLine[i];
 	p_Sim_Img_Dif = (BYTE *) C3DSimualteForm->Img_diff->Picture->Bitmap->ScanLine[i];
 	for (int j = 0; j < x * 3; j += 3) {
@@ -711,8 +718,9 @@ void TC3DForm1::calculate_HSV_disc()
 {
     //C3D_SimualteForm = new TC3D_SimualteForm(this);
     btn_c3d_sim->Enabled = false;
-    int x = Img_3DLUT->Picture->Width;
-    int y = Img_3DLUT->Picture->Height;
+    TImage *image3DLut = colorPicker->Img_3DLUT;
+    int x = image3DLut->Picture->Width;
+    int y = image3DLut->Picture->Height;
     int color;
 
     if (pc_Adjust->TabIndex == 1 && pc_point_color_adj->TabIndex == 1) {	//Point Color - HSV Domain
@@ -728,18 +736,18 @@ void TC3DForm1::calculate_HSV_disc()
     double max_h_dis = 0.0, max_s_dis = 0.0, max_v_dis = 0.0;
 
     BYTE *p_Img, *p_Img_n_row, *p_Sim_Img, *p_diff_img_h, *p_diff_img_s, *p_diff_img_v;
-    C3DSimualteForm->Image1->Picture->Bitmap = Img_3DLUT->Picture->Bitmap;
-    C3DSimualteForm->Image_h->Picture->Bitmap = Img_3DLUT->Picture->Bitmap;
-    C3DSimualteForm->Image_s->Picture->Bitmap = Img_3DLUT->Picture->Bitmap;
-    C3DSimualteForm->Image_v->Picture->Bitmap = Img_3DLUT->Picture->Bitmap;
+    C3DSimualteForm->Image1->Picture->Bitmap = image3DLut->Picture->Bitmap;
+    C3DSimualteForm->Image_h->Picture->Bitmap = image3DLut->Picture->Bitmap;
+    C3DSimualteForm->Image_s->Picture->Bitmap = image3DLut->Picture->Bitmap;
+    C3DSimualteForm->Image_v->Picture->Bitmap = image3DLut->Picture->Bitmap;
     //C3D_SimualteForm->Image_v->Picture->Bitmap = Img_3DLUT->Picture->Bitmap;
     double tmp, tmp_s, tmp_v;
     int next_i, next_j;
 
     for (int i = 0; i < y; i++) {
-	p_Img = (BYTE *) Img_3DLUT->Picture->Bitmap->ScanLine[i];
+	p_Img = (BYTE *) image3DLut->Picture->Bitmap->ScanLine[i];
 	next_i = (i + 1 >= y ? i : i + 1);
-	p_Img_n_row = (BYTE *) Img_3DLUT->Picture->Bitmap->ScanLine[next_i];
+	p_Img_n_row = (BYTE *) image3DLut->Picture->Bitmap->ScanLine[next_i];
 	p_Sim_Img = (BYTE *) C3DSimualteForm->Image1->Picture->Bitmap->ScanLine[i];
 	p_diff_img_h = (BYTE *) C3DSimualteForm->Image_h->Picture->Bitmap->ScanLine[i];
 	p_diff_img_s = (BYTE *) C3DSimualteForm->Image_s->Picture->Bitmap->ScanLine[i];
@@ -1036,17 +1044,18 @@ void TC3DForm1::calculate_NCTU_dif()
 
     //Simulate the difference in test image
     //C3D_SimualteForm = new TC3D_SimualteForm(this);
-    int x = Img_3DLUT->Picture->Width;
-    int y = Img_3DLUT->Picture->Height;
+    TImage *image3DLut = colorPicker->Img_3DLUT;
+    int x = image3DLut->Picture->Width;
+    int y = image3DLut->Picture->Height;
     //int color;
     double r, g, b, r_new, g_new, b_new;
     int max_dif = 0;
 
     BYTE *p_Img, *p_Sim_Img1, *p_Sim_Img_Dif;
-    C3DSimualteForm->Image1->Picture->Bitmap = Img_3DLUT->Picture->Bitmap;
-    C3DSimualteForm->Img_diff->Picture->Bitmap = Img_3DLUT->Picture->Bitmap;
+    C3DSimualteForm->Image1->Picture->Bitmap = image3DLut->Picture->Bitmap;
+    C3DSimualteForm->Img_diff->Picture->Bitmap = image3DLut->Picture->Bitmap;
     for (int i = 0; i < y; i++) {
-	p_Img = (BYTE *) Img_3DLUT->Picture->Bitmap->ScanLine[i];
+	p_Img = (BYTE *) image3DLut->Picture->Bitmap->ScanLine[i];
 	p_Sim_Img1 = (BYTE *) C3DSimualteForm->Image1->Picture->Bitmap->ScanLine[i];
 	p_Sim_Img_Dif = (BYTE *) C3DSimualteForm->Img_diff->Picture->Bitmap->ScanLine[i];
 	for (int j = 0; j < x * 3; j += 3) {
@@ -1102,9 +1111,10 @@ void __fastcall TC3DForm1::btn_c3d_simClick(TObject * Sender)
 
     //根據目前分頁, 決定simulate的影像
     TImage *tmp_img = new TImage(this);
-    tmp_img = Img_3DLUT;
-    pc_img->TabIndex = 0;
-    ts_image->Show();
+    TImage *image3DLut = colorPicker->Img_3DLUT;
+    tmp_img = image3DLut;
+    colorPicker->pc_img->TabIndex = 0;
+    colorPicker->ts_image->Show();
     /*
        if(pc_img->TabIndex == 0)
        //當simulate影像為讀入的圖片(image 分頁)
@@ -1123,10 +1133,10 @@ void __fastcall TC3DForm1::btn_c3d_simClick(TObject * Sender)
 
     //C3D_SimualteForm = new TC3D_SimualteForm(this);
     btn_c3d_sim->Enabled = false;
-    int x = Img_3DLUT->Picture->Width;
-    int y = Img_3DLUT->Picture->Height;
-    C3DSimualteForm->Image1->Width = Img_3DLUT->Picture->Width;
-    C3DSimualteForm->Image1->Height = Img_3DLUT->Picture->Height;
+    int x = image3DLut->Picture->Width;
+    int y = image3DLut->Picture->Height;
+    C3DSimualteForm->Image1->Width = image3DLut->Picture->Width;
+    C3DSimualteForm->Image1->Height = image3DLut->Picture->Height;
 
     int color;
     c3d_tmp_tbl_save();
@@ -1508,23 +1518,26 @@ void TC3DForm1::PointAdjust_4()
 {
     int color;
     double r, g, b;
-    int width = Img_3DLUT->Width;
-    int height = Img_3DLUT->Height;
+    TImage *image3DLut = colorPicker->Img_3DLUT;
+    int width = image3DLut->Width;
+    int height = image3DLut->Height;
+    TCanvas *canvas = colorPicker->img_color->Canvas;
+
     if (rg_PCrgb_choose->ItemIndex == 0) {	// gain in rgb
 	double r_gain = double (sb_c3d_rgb_r->Position - sb_c3d_rgb_r->Max / 2) / scrl_ratio;
 	double g_gain = double (sb_c3d_rgb_g->Position - sb_c3d_rgb_g->Max / 2) / scrl_ratio;
 	double b_gain = double (sb_c3d_rgb_b->Position - sb_c3d_rgb_b->Max / 2) / scrl_ratio;
 
-	color = img_color->Canvas->Pixels[10][10];
+	color = canvas->Pixels[10][10];
 	Modif_Point(color, r_gain, g_gain, b_gain, 0);
 
-	color = img_color->Canvas->Pixels[10 + width / 2][10];
+	color = canvas->Pixels[10 + width / 2][10];
 	Modif_Point(color, r_gain, g_gain, b_gain, 0);
 
-	color = img_color->Canvas->Pixels[10][10 + height / 2];
+	color = canvas->Pixels[10][10 + height / 2];
 	Modif_Point(color, r_gain, g_gain, b_gain, 0);
 
-	color = img_color->Canvas->Pixels[10 + width / 2][10 + height / 2];
+	color = canvas->Pixels[10 + width / 2][10 + height / 2];
 	Modif_Point(color, r_gain, g_gain, b_gain, 0);
 
     } else if (rg_PCrgb_choose->ItemIndex == 1) {	// gain in hsv
@@ -1534,16 +1547,16 @@ void TC3DForm1::PointAdjust_4()
 	c = StrToFloat(edt_c3d_valC->Text);
 	double v_gain = ((double) sb_c3d_hsv_v->Position - sb_c3d_hsv_v->Max / 2) / 100 / c;
 
-	color = img_color->Canvas->Pixels[10][10];
+	color = canvas->Pixels[10][10];
 	Modif_Point(color, h_gain, s_gain, v_gain, 1);
 
-	color = img_color->Canvas->Pixels[10 + width / 2][10];
+	color = canvas->Pixels[10 + width / 2][10];
 	Modif_Point(color, h_gain, s_gain, v_gain, 1);
 
-	color = img_color->Canvas->Pixels[10][10 + height / 2];
+	color = canvas->Pixels[10][10 + height / 2];
 	Modif_Point(color, h_gain, s_gain, v_gain, 1);
 
-	color = img_color->Canvas->Pixels[10 + width / 2][10 + height / 2];
+	color = canvas->Pixels[10 + width / 2][10 + height / 2];
 	Modif_Point(color, h_gain, s_gain, v_gain, 1);
     }
 }
@@ -3932,24 +3945,29 @@ void __fastcall TC3DForm1::sb_c3d_hsv_Change(TObject * Sender)
 
 void TC3DForm1::Manual39_HSV_Bar_Move()
 {
+    //取得sel的RGB   
     double r = StrToFloat(lb_c3d_selR->Caption);
     double g = StrToFloat(lb_c3d_selG->Caption);
     double b = StrToFloat(lb_c3d_selB->Caption);
 
+    //
     double h_gain = (double) GetH_val();
     double c = StrToFloat(edt_c3d_satC->Text);
     double s_gain = (double) GetS_val() / 100 / c;
     c = StrToFloat(edt_c3d_valC->Text);
     double v_gain = (double) GetV_val() / 100 / c;
     double h, s, v, in;
+    //從RGB推算出HSV
     rgb2hsv(r, g, b, &h, &s, &in, &v);
+    //計算調整量
     h += h_gain;
     s *= (1 + s_gain);
     v *= (1 + v_gain);
-
+    //轉回RGB
     hsv2rgb(h, s, v, &r, &g, &b);
+    //顯示轉換完的RGB
     Show_c3d_SimImg(r, g, b);
-    ShowImageColor(img_sim, r, g, b);
+    ShowImageColor(colorPicker->img_sim, r, g, b);
     //Show_c3d_Img_sim();  //因為不會更改tmp_C3DLUT, 所以直接以上面的方式顯示Simulate Color
 }
 
@@ -4351,7 +4369,7 @@ void __fastcall TC3DForm1::Img_3DLUTMouseMove(TObject * Sender, TShiftState Shif
 {
     int color;
     double h, s, v, i, r, g, b;
-    color = Img_3DLUT->Canvas->Pixels[X][Y];
+    color = colorPicker->Img_3DLUT->Canvas->Pixels[X][Y];
     if (color == -1)
 	color = 0;
 
@@ -4424,14 +4442,14 @@ void __fastcall TC3DForm1::Img_3DLUTMouseDown(TObject * Sender,
     double h, s, i, v, r, g, b, r_new, g_new, b_new;
     X_site = X;
     Y_site = Y;
-    color = Img_3DLUT->Canvas->Pixels[X][Y];
+    color = colorPicker->Img_3DLUT->Canvas->Pixels[X][Y];
     if (color == -1)
 	color = 0;
     b = color / 65536;
     g = color / 256 % 256;
     r = color % 256;
 
-    ShowImageColor(img_color, r, g, b);
+    ShowImageColor(colorPicker->img_color, r, g, b);
     Set_Adj_Color(r, g, b);
     Show_c3d_SelImg(r, g, b);
     C3Dsim_t(r, g, b, &r_new, &g_new, &b_new);
@@ -4567,9 +4585,9 @@ void __fastcall TC3DForm1::FormCreate(TObject * Sender)
        sg_12color1->Canvas->FrameRect(TheRect);
      */
 
-    TColorPickerFrame1->setFormInTarget(FormInTarget);
+    colorPicker->setTInTargetForm(InTargetForm);
     colorMouseListener = bptr < ColorMouseListener > (new ColorMouseListener(this));
-    TColorPickerFrame1->addMouseListener(colorMouseListener);
+    colorPicker->addMouseListener(colorMouseListener);
 }
 
 //---------------------------------------------------------------------------
@@ -5246,9 +5264,9 @@ void __fastcall TC3DForm1::btn_directly_simClick(TObject * Sender)
     btn_directly_sim->Enabled = false;
     // TC3D_SimualteForm *C3D_SimualteForm;
     //C3D_SimualteForm = new TC3D_SimualteForm(this);
-
-    int x = Img_3DLUT->Picture->Width;
-    int y = Img_3DLUT->Picture->Height;
+    TImage *image3DLut = colorPicker->Img_3DLUT;
+    int x = image3DLut->Picture->Width;
+    int y = image3DLut->Picture->Height;
 
     int color;
     Graphics::TBitmap * TmpBitmap;
@@ -5259,7 +5277,7 @@ void __fastcall TC3DForm1::btn_directly_simClick(TObject * Sender)
     //double Y[15][11] ;
     for (int i = 0; i < x; i++)
 	for (int j = 0; j < y; j++) {
-	    color = Img_3DLUT->Canvas->Pixels[i][j];
+	    color = image3DLut->Canvas->Pixels[i][j];
 	    if (color == -1)
 		color = 0;
 
@@ -5284,7 +5302,7 @@ void __fastcall TC3DForm1::btn_directly_simClick(TObject * Sender)
 	    //C3D_SimualteForm->Image4->Canvas->Pixels[i][j] = (TColor)RGB(0,0,((b_new-b)>0?(b_new-b)+20:0));
 	}
     C3DSimualteForm->Image1->Picture->SaveToFile("sim_tmp.bmp");
-    Img_3DLUT->Picture->LoadFromFile("sim_tmp.bmp");
+    colorPicker->Img_3DLUT->Picture->LoadFromFile("sim_tmp.bmp");
 
     delete TmpBitmap;
     /*
@@ -5332,8 +5350,9 @@ void __fastcall TC3DForm1::BitBtn1Click(TObject * Sender)
 
 void __fastcall TC3DForm1::BitBtn2Click(TObject * Sender)
 {
-    int x = Img_3DLUT->Picture->Width;
-    int y = Img_3DLUT->Picture->Height;
+    TImage *image3DLut = colorPicker->Img_3DLUT;
+    int x = image3DLut->Picture->Width;
+    int y = image3DLut->Picture->Height;
 
     double r, g, b;
     double h = StrToFloat(LabeledEdit1->Text);
@@ -5347,7 +5366,7 @@ void __fastcall TC3DForm1::BitBtn2Click(TObject * Sender)
     hsv2rgb(h, s, v, &r, &g, &b);
     for (int i = 0; i < x; i++)
 	for (int j = 0; j < y; j++)
-	    Img_3DLUT->Canvas->Pixels[i][j] = (TColor) (r + 256 * g + 65536 * b);
+	    image3DLut->Canvas->Pixels[i][j] = (TColor) (r + 256 * g + 65536 * b);
 
     edt_show_h->Visible = false;
 }
@@ -5465,15 +5484,16 @@ void TC3DForm1::Set_Adj_Color(double r, double g, double b)
 
 void __fastcall TC3DForm1::btn_key_in_RGBClick(TObject * Sender)
 {
-    int x = img_color->Width;
-    int y = img_color->Height;
+    TImage *imageColor = colorPicker->img_color;
+    int x = imageColor->Width;
+    int y = imageColor->Height;
 
     double r = StrToFloat(sg_rgb_input->Cells[0][1]);
     double g = StrToFloat(sg_rgb_input->Cells[1][1]);
     double b = StrToFloat(sg_rgb_input->Cells[2][1]);
     double r_new, g_new, b_new;
     if (rg_PointNum->ItemIndex == 0) {	//1 color
-	ShowImageColor(img_color, r, g, b);
+	ShowImageColor(imageColor, r, g, b);
 	Set_Adj_Color(r, g, b);
 	Show_c3d_SelImg(r, g, b);
 	C3Dsim_t(r, g, b, &r_new, &g_new, &b_new);
@@ -5497,18 +5517,18 @@ void __fastcall TC3DForm1::btn_key_in_RGBClick(TObject * Sender)
 
 	Graphics::TBitmap * TmpBitmap;
 	TmpBitmap = new Graphics::TBitmap();
-	TmpBitmap->Width = img_color->Width / 2;
-	TmpBitmap->Height = img_color->Height / 2;
+	TmpBitmap->Width = imageColor->Width / 2;
+	TmpBitmap->Height = imageColor->Height / 2;
 
 	//small
 	TmpBitmap->Canvas->Brush->Color = (TColor) RGB(r_t, g_t, b_t);
 	TmpBitmap->Canvas->Rectangle(0, 0, TmpBitmap->Width, TmpBitmap->Height);
-	img_color->Canvas->Draw(0, 0, TmpBitmap);
+	imageColor->Canvas->Draw(0, 0, TmpBitmap);
 
 	//rgb
 	TmpBitmap->Canvas->Brush->Color = (TColor) RGB(r_t1, g_t1, b_t1);
 	TmpBitmap->Canvas->Rectangle(0, 0, TmpBitmap->Width, TmpBitmap->Height);
-	img_color->Canvas->Draw(x / 2, y / 2, TmpBitmap);
+	imageColor->Canvas->Draw(x / 2, y / 2, TmpBitmap);
 
 	double d_x = fmod(r, cube_dis);
 	double d_y = fmod(g, cube_dis);
@@ -5536,7 +5556,7 @@ void __fastcall TC3DForm1::btn_key_in_RGBClick(TObject * Sender)
 
 	TmpBitmap->Canvas->Brush->Color = (TColor) RGB(r_u, g_u, b_u);
 	TmpBitmap->Canvas->Rectangle(0, 0, TmpBitmap->Width, TmpBitmap->Height);
-	img_color->Canvas->Draw(x / 2, 0, TmpBitmap);
+	imageColor->Canvas->Draw(x / 2, 0, TmpBitmap);
 
 	if (d_mid == d_x)
 	    r_u = r_t1;
@@ -5547,7 +5567,7 @@ void __fastcall TC3DForm1::btn_key_in_RGBClick(TObject * Sender)
 
 	TmpBitmap->Canvas->Brush->Color = (TColor) RGB(r_u, g_u, b_u);
 	TmpBitmap->Canvas->Rectangle(0, 0, TmpBitmap->Width, TmpBitmap->Height);
-	img_color->Canvas->Draw(0, y / 2, TmpBitmap);
+	imageColor->Canvas->Draw(0, y / 2, TmpBitmap);
 	delete TmpBitmap;
 	Set_Adj_Color(r_t, g_t, b_t);
 
@@ -5561,13 +5581,14 @@ void __fastcall TC3DForm1::btn_key_in_RGBClick(TObject * Sender)
     } else
 	return;
 
-    pc_img->TabIndex = 1;
-    ts_color->Show();
+    colorPicker->pc_img->TabIndex = 1;
+    colorPicker->ts_color->Show();
 
-    if (pc_img->TabIndex == 0)
-	FormInTarget->img_in_target->Picture->Bitmap->Assign(Img_3DLUT->Picture->Bitmap);
+    if (colorPicker->pc_img->TabIndex == 0)
+	InTargetForm->img_in_target->Picture->Bitmap->Assign(colorPicker->Img_3DLUT->Picture->
+							     Bitmap);
     else
-	FormInTarget->img_in_target->Picture->Bitmap->Assign(img_color->Picture->Bitmap);
+	InTargetForm->img_in_target->Picture->Bitmap->Assign(imageColor->Picture->Bitmap);
 }
 
 //---------------------------------------------------------------------------
@@ -5581,8 +5602,9 @@ void __fastcall TC3DForm1::btn_key_in_HSVClick(TObject * Sender)
 
     double r, g, b;
     hsv2rgb(h, s, v, &r, &g, &b);
-    int x = Img_3DLUT->Width;
-    int y = Img_3DLUT->Height;
+    TImage *image3DLut = colorPicker->Img_3DLUT;
+    int x = image3DLut->Width;
+    int y = image3DLut->Height;
 
     int r_t = floor(r / cube_dis) * cube_dis, g_t = floor(g / cube_dis) * cube_dis, b_t =
 	floor(b / cube_dis) * cube_dis;
@@ -5592,18 +5614,18 @@ void __fastcall TC3DForm1::btn_key_in_HSVClick(TObject * Sender)
 
     Graphics::TBitmap * TmpBitmap;
     TmpBitmap = new Graphics::TBitmap();
-    TmpBitmap->Width = Img_3DLUT->Width / 4;
-    TmpBitmap->Height = Img_3DLUT->Height / 2;
+    TmpBitmap->Width = image3DLut->Width / 4;
+    TmpBitmap->Height = image3DLut->Height / 2;
 
     //small
     TmpBitmap->Canvas->Brush->Color = (TColor) RGB(r_t, g_t, b_t);
     TmpBitmap->Canvas->Rectangle(0, 0, TmpBitmap->Width, TmpBitmap->Height);
-    Img_3DLUT->Canvas->Draw(0, 0, TmpBitmap);
+    image3DLut->Canvas->Draw(0, 0, TmpBitmap);
 
     //rgb
     TmpBitmap->Canvas->Brush->Color = (TColor) RGB(r_t1, g_t1, b_t1);
     TmpBitmap->Canvas->Rectangle(0, 0, TmpBitmap->Width, TmpBitmap->Height);
-    Img_3DLUT->Canvas->Draw(x / 4 * 3, y / 2, TmpBitmap);
+    image3DLut->Canvas->Draw(x / 4 * 3, y / 2, TmpBitmap);
     double d_x = fmod(r, cube_dis);
     double d_y = fmod(g, cube_dis);
     double d_z = fmod(b, cube_dis);
@@ -5627,7 +5649,7 @@ void __fastcall TC3DForm1::btn_key_in_HSVClick(TObject * Sender)
 
     TmpBitmap->Canvas->Brush->Color = (TColor) RGB(r_u, g_u, b_u);
     TmpBitmap->Canvas->Rectangle(0, 0, TmpBitmap->Width, TmpBitmap->Height);
-    Img_3DLUT->Canvas->Draw(x / 2, 0, TmpBitmap);
+    image3DLut->Canvas->Draw(x / 2, 0, TmpBitmap);
 
     if (d_mid == d_x)
 	r_u = r_t1;
@@ -5638,7 +5660,7 @@ void __fastcall TC3DForm1::btn_key_in_HSVClick(TObject * Sender)
 
     TmpBitmap->Canvas->Brush->Color = (TColor) RGB(r_u, g_u, b_u);
     TmpBitmap->Canvas->Rectangle(0, 0, TmpBitmap->Width, TmpBitmap->Height);
-    Img_3DLUT->Canvas->Draw(0, y / 2, TmpBitmap);
+    image3DLut->Canvas->Draw(0, y / 2, TmpBitmap);
 
     /*
        //r
@@ -5669,7 +5691,7 @@ void __fastcall TC3DForm1::btn_key_in_HSVClick(TObject * Sender)
 
     delete TmpBitmap;
     //C3D_SimualteForm = new TC3D_SimualteForm(this);
-    C3DSimualteForm->Image1->Canvas->Draw(0, 0, Img_3DLUT->Picture->Bitmap);
+    C3DSimualteForm->Image1->Canvas->Draw(0, 0, image3DLut->Picture->Bitmap);
     C3DSimualteForm->Label4->Caption = "Figure";
     C3DSimualteForm->Label4->Visible = true;
     C3DSimualteForm->Show();
@@ -5719,7 +5741,7 @@ void TC3DForm1::Refresh_PointColor_rgb(double r, double g, double b)
 void TC3DForm1::ShowSelectCell(int ARow, double r, double g, double b, TStringGrid * sg)
 {
     Show_c3d_SelImg(r, g, b);
-    ShowImageColor(img_color, r, g, b);
+    ShowImageColor(colorPicker->img_color, r, g, b);
     // 更新到點調整(RGB)的介面上
     Refresh_PointColor_rgb(r, g, b);
 
@@ -5732,9 +5754,9 @@ void TC3DForm1::ShowSelectCell(int ARow, double r, double g, double b, TStringGr
 
     Show_c3d_SimImg(adj_r, adj_g, adj_b);
     Show_c3d_Img_sim();
-    ts_color->Show();
-    pc_img->TabIndex = 1;
-    FormInTarget->img_in_target->Picture->Bitmap->Assign(img_color->Picture->Bitmap);
+    colorPicker->ts_color->Show();
+    colorPicker->pc_img->TabIndex = 1;
+    InTargetForm->img_in_target->Picture->Bitmap->Assign(colorPicker->img_color->Picture->Bitmap);
 
     double h, s, v, in;
     rgb2hsv(r, g, b, &h, &s, &in, &v);
@@ -6001,13 +6023,12 @@ void __fastcall TC3DForm1::img_colorMouseDown(TObject * Sender,
     double h, s, i, v, r, g, b;
     X_site = X;
     Y_site = Y;
-    color = img_color->Canvas->Pixels[X][Y];
+    color = colorPicker->img_color->Canvas->Pixels[X][Y];
     if (color == -1)
 	color = 0;
     b = color / 65536;
     g = color / 256 % 256;
     r = color % 256;
-    //ShowImageColor(img_color,r,g,b);
     Show_c3d_SelImg(r, g, b);
     Set_Adj_Color(r, g, b);
     sg_rgb_input->Cells[0][1] = FloatToStr(r);
@@ -6041,10 +6062,10 @@ void __fastcall TC3DForm1::img_colorMouseMove(TObject * Sender, TShiftState Shif
 {
     int color;
     double h, s, v, i, r, g, b;
-    if (pc_img->TabIndex == 1)
-	color = img_color->Canvas->Pixels[X][Y];
-    else if (pc_img->TabIndex == 2)
-	color = img_sim->Canvas->Pixels[X][Y];
+    if (colorPicker->pc_img->TabIndex == 1)
+	color = colorPicker->img_color->Canvas->Pixels[X][Y];
+    else if (colorPicker->pc_img->TabIndex == 2)
+	color = colorPicker->img_sim->Canvas->Pixels[X][Y];
 
     if (color == -1)
 	color = 0;
@@ -6317,7 +6338,7 @@ void __fastcall TC3DForm1::btn_darkClick(TObject * Sender)
     TmpBitmap->Canvas->Brush->Color = (TColor) RGB(0, 0, 0);
     TmpBitmap->Canvas->Rectangle(0, 0, TmpBitmap->Width, TmpBitmap->Height);
 
-    img_color->Canvas->Draw(0, 0, TmpBitmap);
+    colorPicker->img_color->Canvas->Draw(0, 0, TmpBitmap);
 
     for (int i = 0; i < 7; i++) {
 	for (int j = 0; j < 5; j++) {
@@ -6327,7 +6348,7 @@ void __fastcall TC3DForm1::btn_darkClick(TObject * Sender)
 		(TColor) RGB(Color_move[i * 5 + j][0], Color_move[i * 5 + j][1],
 			     Color_move[i * 5 + j][2]);
 	    TmpBitmap->Canvas->Rectangle(0, 0, 60, 60);
-	    img_color->Canvas->Draw(i * 60, j * 60, TmpBitmap);
+	    colorPicker->img_color->Canvas->Draw(i * 60, j * 60, TmpBitmap);
 	}
     }
     delete TmpBitmap;
@@ -6336,7 +6357,7 @@ void __fastcall TC3DForm1::btn_darkClick(TObject * Sender)
     double g = Color_move[Color_move_Nbr - 1][1];
     double b = Color_move[Color_move_Nbr - 1][2];
     Show_c3d_SelImg(r, g, b);
-    ShowImageColor(img_color, r, g, b);
+    ShowImageColor(colorPicker->img_color, r, g, b);
     double sim_r, sim_g, sim_b;
     C3Dsim_t(r, g, b, &sim_r, &sim_g, &sim_b);
     Show_c3d_SimImg(sim_r, sim_g, sim_b);
@@ -6685,10 +6706,10 @@ void __fastcall TC3DForm1::c3d_Sim_Image_HSV_StepClick(TObject * Sender)
     TCanvas *pCanvas2 = HSVStepSimForm->Image2->Canvas;
     TCanvas *pCanvas3 = HSVStepSimForm->Image3->Canvas;
     TImage *Img;
-    if (pc_img->TabIndex == 0)
-	Img = Img_3DLUT;
-    else if (pc_img->TabIndex == 1)
-	Img = img_color;
+    if (colorPicker->pc_img->TabIndex == 0)
+	Img = colorPicker->Img_3DLUT;
+    else if (colorPicker->pc_img->TabIndex == 1)
+	Img = colorPicker->img_color;
 
     BYTE *p_Img1, *p_Img2, *p_Img3;
 
@@ -6987,19 +7008,21 @@ void TC3DForm1::SetPointV_Caption()
 void __fastcall TC3DForm1::cb_show_ref_imgClick(TObject * Sender)
 {
     if (cb_show_ref_img->Checked == true)
-	FormInTarget->WindowState = wsNormal;
+	InTargetForm->WindowState = wsNormal;
     else
-	FormInTarget->WindowState = wsMinimized;
+	InTargetForm->WindowState = wsMinimized;
 }
 
 //---------------------------------------------------------------------------
 
 void __fastcall TC3DForm1::pc_imgChange(TObject * Sender)
 {
-    if (pc_img->TabIndex == 0)
-	FormInTarget->img_in_target->Picture->Bitmap->Assign(Img_3DLUT->Picture->Bitmap);
+    if (colorPicker->pc_img->TabIndex == 0)
+	InTargetForm->img_in_target->Picture->Bitmap->Assign(colorPicker->Img_3DLUT->Picture->
+							     Bitmap);
     else
-	FormInTarget->img_in_target->Picture->Bitmap->Assign(img_color->Picture->Bitmap);
+	InTargetForm->img_in_target->Picture->Bitmap->Assign(colorPicker->img_color->Picture->
+							     Bitmap);
 }
 
 //---------------------------------------------------------------------------
@@ -7582,12 +7605,13 @@ void TC3DForm1::ColorMouseListener::mouseReleased(TObject * Sender,
 
 };
 
-void __fastcall TC3DForm1::TColorPickerFrame1cb_show_ref_imgClick(
-      TObject *Sender)
+void __fastcall TC3DForm1::TColorPickerFrame1cb_show_ref_imgClick(TObject * Sender)
 {
-  TColorPickerFrame1->cb_show_ref_imgClick(Sender);
+    colorPicker->cb_show_ref_imgClick(Sender);
 
 }
+
 //---------------------------------------------------------------------------
+
 
 
