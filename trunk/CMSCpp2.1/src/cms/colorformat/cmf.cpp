@@ -19,6 +19,7 @@ namespace cms {
 	using namespace Indep;
 	using namespace Dep;
 	using namespace cms::util;
+	using namespace math;
 
 	//======================================================================
 	// Parser
