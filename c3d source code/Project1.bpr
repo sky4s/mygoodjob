@@ -10,8 +10,8 @@
       build\table_17.obj build\TMainForm.obj build\THSVStepSimForm.obj 
       build\HWINTERFACELib_OCX.obj build\HWINTERFACELib_TLB.obj 
       build\USBHIDIOC.obj build\TColorPickerFrame.obj build\TTestForm.obj 
-      build\listener.obj build\TColorFrame.obj build\THSVAdjustFrame.obj 
-      build\binder.obj"/>
+      build\TColorFrame.obj build\THSVAdjustFrame.obj build\ReadWriteFunc.obj 
+      build\excelfile.obj build\lang.obj build\util.obj"/>
     <RESFILES value="Project1.res"/>
     <IDLFILES value=""/>
     <IDLGENFILES value=""/>
@@ -31,7 +31,7 @@
       inetdbbde.bpi inetdbxpress.bpi inetdb.bpi nmfast.bpi webdsnap.bpi 
       bcbie.bpi websnap.bpi soaprtl.bpi dclocx.bpi dbexpress.bpi dbxcds.bpi 
       indy.bpi bcb2kaxserver.bpi"/>
-    <PATHCPP value=".;src\gui\c3d;src\c3d;src\c3d;src\gui\c3d;src\gui\c3d;src\gui\c3d;src\c3d;src\c3d;src\gui\c3d;src\gui\c3d;lib\LPT_lib;lib\LPT_lib;lib\USB_i2c_lib;src\gui\frame;src\gui\c3d;src\gui\event;src\gui\frame;src\gui\frame;src\gui\util"/>
+    <PATHCPP value=".;src\gui\c3d;src\c3d;src\c3d;src\gui\c3d;src\gui\c3d;src\gui\c3d;src\c3d;src\c3d;src\gui\c3d;src\gui\c3d;lib\LPT_lib;lib\LPT_lib;lib\USB_i2c_lib;src\gui\frame;src\gui\c3d;src\gui\frame;src\gui\frame;lib\i2c\core;lib\cms\colorformat;lib\java;lib\cms\util"/>
     <PATHPAS value=".;"/>
     <PATHRC value=".;"/>
     <PATHASM value=".;"/>
@@ -41,18 +41,18 @@
     <USERDEFINES value="_DEBUG"/>
     <SYSDEFINES value="NO_STRICT"/>
     <MAINSOURCE value="Project1.cpp"/>
-    <INCLUDEPATH value="src\math;src\cms;src\cms\colorspace;src\gui\util;src\gui\event;&quot;D:\Program Files\Borland\CBuilder6\Projects&quot;;src\i2c\core;src\gui\c3d;&quot;F:\Program Files\Borland\CBuilder6\Projects&quot;;src\gui\frame;src\java;src\cms\util;src\cms\colorformat;src\c3d;lib\USB_i2c_lib;lib\LPT_lib;..;$(BCB)\include;$(BCB)\include\vcl;src;lib"/>
-    <LIBPATH value="src\math;src\cms;src\cms\colorspace;src\gui\util;src\gui\event;&quot;D:\Program Files\Borland\CBuilder6\Projects&quot;;src\i2c\core;src\gui\c3d;&quot;F:\Program Files\Borland\CBuilder6\Projects&quot;;src\gui\frame;lib\USB_i2c_lib;lib\LPT_lib;src\c3d;src\cms\util;src\java;src\cms\colorformat;&quot;C:\Program Files\Borland\CBuilder6\Projects&quot;;USB_i2c_lib;LPT_lib;..;c3d;$(BCB)\lib\obj;$(BCB)\lib;lib;src"/>
+    <INCLUDEPATH value="lib\cms\util;lib\java;lib\cms\colorformat;lib\i2c\core;src\gui\util;src\gui\event;&quot;D:\Program Files\Borland\CBuilder6\Projects&quot;;src\gui\c3d;src\gui\frame;src\c3d;lib\USB_i2c_lib;lib\LPT_lib;..;$(BCB)\include;$(BCB)\include\vcl;src;lib"/>
+    <LIBPATH value="lib\cms\util;lib\java;lib\cms\colorformat;lib\i2c\core;src\gui\util;src\gui\event;&quot;D:\Program Files\Borland\CBuilder6\Projects&quot;;src\gui\c3d;src\gui\frame;lib\USB_i2c_lib;lib\LPT_lib;src\c3d;$(BCB)\lib\obj;$(BCB)\lib;lib;src"/>
     <WARNINGS value="-w-par"/>
     <OTHERFILES value=""/>
   </MACROS>
   <OPTIONS>
-    <IDLCFLAGS value="-Isrc\math -Isrc\cms -Isrc\cms\colorspace -Isrc\gui\util -Isrc\gui\event 
-      -I&quot;D:\Program Files\Borland\CBuilder6\Projects&quot; -Isrc\i2c\core 
-      -Isrc\gui\c3d -I&quot;F:\Program Files\Borland\CBuilder6\Projects&quot; 
-      -Isrc\gui\frame -Isrc\java -Isrc\cms\util -Isrc\cms\colorformat -Isrc\c3d 
-      -Ilib\USB_i2c_lib -Ilib\LPT_lib -I.. -I$(BCB)\include -I$(BCB)\include\vcl 
-      -Isrc -Ilib -src_suffix cpp -D_DEBUG -boa"/>
+    <IDLCFLAGS value="-Ilib\cms\util -Ilib\java -Ilib\cms\colorformat -Ilib\i2c\core 
+      -Isrc\gui\util -Isrc\gui\event 
+      -I&quot;D:\Program Files\Borland\CBuilder6\Projects&quot; -Isrc\gui\c3d 
+      -Isrc\gui\frame -Isrc\c3d -Ilib\USB_i2c_lib -Ilib\LPT_lib -I.. 
+      -I$(BCB)\include -I$(BCB)\include\vcl -Isrc -Ilib -src_suffix cpp -D_DEBUG 
+      -boa"/>
     <CFLAG1 value="-Od -H=$(BCB)\lib\c3d.csm -Vx -Ve -X- -r- -a1 -b- -k -y -v -vi- -c -tW -tWM"/>
     <PFLAGS value="-N2build -N0build -$YD -$W -$O- -$A8 -v -JPHNE -M"/>
     <RFLAGS value=""/>
@@ -89,10 +89,12 @@
       <FILE FILENAME="src\c3d\core.h" FORMNAME="" UNITNAME="core.h" CONTAINERID="" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="src\c3d\Address_type.h" FORMNAME="" UNITNAME="Address_type.h" CONTAINERID="" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="src\gui\c3d\TTestForm.cpp" FORMNAME="TestForm2" UNITNAME="TTestForm" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="src\gui\event\listener.cpp" FORMNAME="" UNITNAME="listener" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="src\gui\frame\TColorFrame.cpp" FORMNAME="PointColorFrame" UNITNAME="TColorFrame" CONTAINERID="CCompiler" DESIGNCLASS="TFrame" LOCALCOMMAND=""/>
       <FILE FILENAME="src\gui\frame\THSVAdjustFrame.cpp" FORMNAME="HSVAdjustFrame" UNITNAME="THSVAdjustFrame" CONTAINERID="CCompiler" DESIGNCLASS="TFrame" LOCALCOMMAND=""/>
-      <FILE FILENAME="src\gui\util\binder.cpp" FORMNAME="" UNITNAME="binder" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="lib\i2c\core\ReadWriteFunc.cpp" FORMNAME="" UNITNAME="ReadWriteFunc" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="lib\cms\colorformat\excelfile.cpp" FORMNAME="" UNITNAME="excelfile" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="lib\java\lang.cpp" FORMNAME="" UNITNAME="lang" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="lib\cms\util\util.cpp" FORMNAME="" UNITNAME="util" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
   </FILELIST>
   <BUILDTOOLS>
   </BUILDTOOLS>
@@ -133,37 +135,41 @@ d:\program files\borland\cbuilder6\Bin\dcltqr60.bpl=TeeChart for QuickReport Com
 d:\program files\borland\cbuilder6\Bin\DBWEBXPRT.BPL=Borland Web Wizard Package
 
 [HistoryLists\hlIncludePath]
-Count=15
-Item0=src\gui\util;src\gui\event;D:\Program Files\Borland\CBuilder6\Projects;src\i2c\core;src\gui\c3d;F:\Program Files\Borland\CBuilder6\Projects;src\gui\frame;src\java;src\cms\util;src\cms\colorformat;src\c3d;lib\USB_i2c_lib;lib\LPT_lib;..;$(BCB)\include;$(BCB)\include\vcl;src;lib
-Item1=src\gui\event;D:\Program Files\Borland\CBuilder6\Projects;src\i2c\core;src\gui\c3d;F:\Program Files\Borland\CBuilder6\Projects;src\gui\frame;src\java;src\cms\util;src\cms\colorformat;src\c3d;lib\USB_i2c_lib;lib\LPT_lib;..;$(BCB)\include;$(BCB)\include\vcl;src;lib
-Item2=D:\Program Files\Borland\CBuilder6\Projects;src\i2c\core;src\gui\c3d;F:\Program Files\Borland\CBuilder6\Projects;src\gui\frame;src\java;src\cms\util;src\cms\colorformat;src\c3d;lib\USB_i2c_lib;lib\LPT_lib;..;$(BCB)\include;$(BCB)\include\vcl;src;lib
-Item3=src\i2c\core;src\gui\c3d;F:\Program Files\Borland\CBuilder6\Projects;src\gui\frame;src\java;src\cms\util;src\cms\colorformat;src\c3d;lib\USB_i2c_lib;lib\LPT_lib;..;$(BCB)\include;$(BCB)\include\vcl;src;lib
-Item4=src\i2c\core;src\gui\c3d;F:\Program Files\Borland\CBuilder6\Projects;src\gui\frame;src\java;src\cms\util;src\cms\colorformat;src\c3d;lib\USB_i2c_lib;lib\LPT_lib;..;$(BCB)\include;$(BCB)\include\vcl;src
-Item5=src\gui\c3d;F:\Program Files\Borland\CBuilder6\Projects;src\gui\frame;src\java;src\cms\util;src\cms\colorformat;src\c3d;lib\USB_i2c_lib;lib\LPT_lib;..;$(BCB)\include;$(BCB)\include\vcl;src
-Item6=src\java;src\cms\util;src\cms\colorformat;src\c3d;lib\USB_i2c_lib;lib\LPT_lib;..;$(BCB)\include;$(BCB)\include\vcl;src
-Item7=src\c3d;lib\USB_i2c_lib;lib\LPT_lib;..;$(BCB)\include;$(BCB)\include\vcl;src
-Item8=lib\USB_i2c_lib;lib\LPT_lib;..;$(BCB)\include;$(BCB)\include\vcl;src
-Item9=lib\USB_i2c_lib;lib\LPT_lib;src\c3d;src\cms\util;src\java;src\cms\colorformat;C:\Program Files\Borland\CBuilder6\Projects;USB_i2c_lib;LPT_lib;..;c3d;$(BCB)\include;$(BCB)\include\vcl;src
-Item10=src\cms\util;src\java;src\cms\colorformat;C:\Program Files\Borland\CBuilder6\Projects;USB_i2c_lib;LPT_lib;..;c3d;$(BCB)\include;$(BCB)\include\vcl;src
-Item11=src\java;src\cms\colorformat;C:\Program Files\Borland\CBuilder6\Projects;USB_i2c_lib;LPT_lib;..;c3d;$(BCB)\include;$(BCB)\include\vcl;src
-Item12=src\java;src\cms\colorformat;C:\Program Files\Borland\CBuilder6\Projects;USB_i2c_lib;LPT_lib;..;c3d;$(BCB)\include;$(BCB)\include\vcl
-Item13=C:\Program Files\Borland\CBuilder6\Projects;USB_i2c_lib;LPT_lib;..;c3d;$(BCB)\include;$(BCB)\include\vcl
-Item14=USB_i2c_lib;LPT_lib;..;c3d;$(BCB)\include;$(BCB)\include\vcl
+Count=17
+Item0=D:\Program Files\Borland\CBuilder6\Projects;src\gui\c3d;src\gui\frame;src\c3d;lib\USB_i2c_lib;lib\LPT_lib;..;$(BCB)\include;$(BCB)\include\vcl;src;lib
+Item1=src\math;src\cms;src\cms\colorspace;src\gui\util;src\gui\event;D:\Program Files\Borland\CBuilder6\Projects;src\i2c\core;src\gui\c3d;F:\Program Files\Borland\CBuilder6\Projects;src\gui\frame;src\java;src\cms\util;src\cms\colorformat;src\c3d;lib\USB_i2c_lib;lib\LPT_lib;..;$(BCB)\include;$(BCB)\include\vcl;src;lib
+Item2=src\gui\util;src\gui\event;D:\Program Files\Borland\CBuilder6\Projects;src\i2c\core;src\gui\c3d;F:\Program Files\Borland\CBuilder6\Projects;src\gui\frame;src\java;src\cms\util;src\cms\colorformat;src\c3d;lib\USB_i2c_lib;lib\LPT_lib;..;$(BCB)\include;$(BCB)\include\vcl;src;lib
+Item3=src\gui\event;D:\Program Files\Borland\CBuilder6\Projects;src\i2c\core;src\gui\c3d;F:\Program Files\Borland\CBuilder6\Projects;src\gui\frame;src\java;src\cms\util;src\cms\colorformat;src\c3d;lib\USB_i2c_lib;lib\LPT_lib;..;$(BCB)\include;$(BCB)\include\vcl;src;lib
+Item4=D:\Program Files\Borland\CBuilder6\Projects;src\i2c\core;src\gui\c3d;F:\Program Files\Borland\CBuilder6\Projects;src\gui\frame;src\java;src\cms\util;src\cms\colorformat;src\c3d;lib\USB_i2c_lib;lib\LPT_lib;..;$(BCB)\include;$(BCB)\include\vcl;src;lib
+Item5=src\i2c\core;src\gui\c3d;F:\Program Files\Borland\CBuilder6\Projects;src\gui\frame;src\java;src\cms\util;src\cms\colorformat;src\c3d;lib\USB_i2c_lib;lib\LPT_lib;..;$(BCB)\include;$(BCB)\include\vcl;src;lib
+Item6=src\i2c\core;src\gui\c3d;F:\Program Files\Borland\CBuilder6\Projects;src\gui\frame;src\java;src\cms\util;src\cms\colorformat;src\c3d;lib\USB_i2c_lib;lib\LPT_lib;..;$(BCB)\include;$(BCB)\include\vcl;src
+Item7=src\gui\c3d;F:\Program Files\Borland\CBuilder6\Projects;src\gui\frame;src\java;src\cms\util;src\cms\colorformat;src\c3d;lib\USB_i2c_lib;lib\LPT_lib;..;$(BCB)\include;$(BCB)\include\vcl;src
+Item8=src\java;src\cms\util;src\cms\colorformat;src\c3d;lib\USB_i2c_lib;lib\LPT_lib;..;$(BCB)\include;$(BCB)\include\vcl;src
+Item9=src\c3d;lib\USB_i2c_lib;lib\LPT_lib;..;$(BCB)\include;$(BCB)\include\vcl;src
+Item10=lib\USB_i2c_lib;lib\LPT_lib;..;$(BCB)\include;$(BCB)\include\vcl;src
+Item11=lib\USB_i2c_lib;lib\LPT_lib;src\c3d;src\cms\util;src\java;src\cms\colorformat;C:\Program Files\Borland\CBuilder6\Projects;USB_i2c_lib;LPT_lib;..;c3d;$(BCB)\include;$(BCB)\include\vcl;src
+Item12=src\cms\util;src\java;src\cms\colorformat;C:\Program Files\Borland\CBuilder6\Projects;USB_i2c_lib;LPT_lib;..;c3d;$(BCB)\include;$(BCB)\include\vcl;src
+Item13=src\java;src\cms\colorformat;C:\Program Files\Borland\CBuilder6\Projects;USB_i2c_lib;LPT_lib;..;c3d;$(BCB)\include;$(BCB)\include\vcl;src
+Item14=src\java;src\cms\colorformat;C:\Program Files\Borland\CBuilder6\Projects;USB_i2c_lib;LPT_lib;..;c3d;$(BCB)\include;$(BCB)\include\vcl
+Item15=C:\Program Files\Borland\CBuilder6\Projects;USB_i2c_lib;LPT_lib;..;c3d;$(BCB)\include;$(BCB)\include\vcl
+Item16=USB_i2c_lib;LPT_lib;..;c3d;$(BCB)\include;$(BCB)\include\vcl
 
 [HistoryLists\hlLibraryPath]
-Count=12
-Item0=src\gui\util;src\gui\event;D:\Program Files\Borland\CBuilder6\Projects;src\i2c\core;src\gui\c3d;F:\Program Files\Borland\CBuilder6\Projects;src\gui\frame;lib\USB_i2c_lib;lib\LPT_lib;src\c3d;src\cms\util;src\java;src\cms\colorformat;C:\Program Files\Borland\CBuilder6\Projects;USB_i2c_lib;LPT_lib;..;c3d;$(BCB)\lib\obj;$(BCB)\lib;lib;src
-Item1=src\gui\event;D:\Program Files\Borland\CBuilder6\Projects;src\i2c\core;src\gui\c3d;F:\Program Files\Borland\CBuilder6\Projects;src\gui\frame;lib\USB_i2c_lib;lib\LPT_lib;src\c3d;src\cms\util;src\java;src\cms\colorformat;C:\Program Files\Borland\CBuilder6\Projects;USB_i2c_lib;LPT_lib;..;c3d;$(BCB)\lib\obj;$(BCB)\lib;lib;src
-Item2=D:\Program Files\Borland\CBuilder6\Projects;src\i2c\core;src\gui\c3d;F:\Program Files\Borland\CBuilder6\Projects;src\gui\frame;lib\USB_i2c_lib;lib\LPT_lib;src\c3d;src\cms\util;src\java;src\cms\colorformat;C:\Program Files\Borland\CBuilder6\Projects;USB_i2c_lib;LPT_lib;..;c3d;$(BCB)\lib\obj;$(BCB)\lib;lib;src
-Item3=src\i2c\core;src\gui\c3d;F:\Program Files\Borland\CBuilder6\Projects;src\gui\frame;lib\USB_i2c_lib;lib\LPT_lib;src\c3d;src\cms\util;src\java;src\cms\colorformat;C:\Program Files\Borland\CBuilder6\Projects;USB_i2c_lib;LPT_lib;..;c3d;$(BCB)\lib\obj;$(BCB)\lib;lib;src
-Item4=src\i2c\core;src\gui\c3d;F:\Program Files\Borland\CBuilder6\Projects;src\gui\frame;lib\USB_i2c_lib;lib\LPT_lib;src\c3d;src\cms\util;src\java;src\cms\colorformat;C:\Program Files\Borland\CBuilder6\Projects;USB_i2c_lib;LPT_lib;..;c3d;$(BCB)\lib\obj;$(BCB)\lib;lib
-Item5=src\i2c\core;src\gui\c3d;F:\Program Files\Borland\CBuilder6\Projects;src\gui\frame;lib\USB_i2c_lib;lib\LPT_lib;src\c3d;src\cms\util;src\java;src\cms\colorformat;C:\Program Files\Borland\CBuilder6\Projects;USB_i2c_lib;LPT_lib;..;c3d;$(BCB)\lib\obj;$(BCB)\lib
-Item6=src\gui\c3d;F:\Program Files\Borland\CBuilder6\Projects;src\gui\frame;lib\USB_i2c_lib;lib\LPT_lib;src\c3d;src\cms\util;src\java;src\cms\colorformat;C:\Program Files\Borland\CBuilder6\Projects;USB_i2c_lib;LPT_lib;..;c3d;$(BCB)\lib\obj;$(BCB)\lib
-Item7=lib\USB_i2c_lib;lib\LPT_lib;src\c3d;src\cms\util;src\java;src\cms\colorformat;C:\Program Files\Borland\CBuilder6\Projects;USB_i2c_lib;LPT_lib;..;c3d;$(BCB)\lib\obj;$(BCB)\lib
-Item8=src\cms\util;src\java;src\cms\colorformat;C:\Program Files\Borland\CBuilder6\Projects;USB_i2c_lib;LPT_lib;..;c3d;$(BCB)\lib\obj;$(BCB)\lib
-Item9=src\java;src\cms\colorformat;C:\Program Files\Borland\CBuilder6\Projects;USB_i2c_lib;LPT_lib;..;c3d;$(BCB)\lib\obj;$(BCB)\lib
-Item10=C:\Program Files\Borland\CBuilder6\Projects;USB_i2c_lib;LPT_lib;..;c3d;$(BCB)\lib\obj;$(BCB)\lib
-Item11=USB_i2c_lib;LPT_lib;..;c3d;$(BCB)\lib\obj;$(BCB)\lib
+Count=14
+Item0=D:\Program Files\Borland\CBuilder6\Projects;src\gui\c3d;src\gui\frame;lib\USB_i2c_lib;lib\LPT_lib;src\c3d;$(BCB)\lib\obj;$(BCB)\lib;lib;src
+Item1=src\math;src\cms;src\cms\colorspace;src\gui\util;src\gui\event;D:\Program Files\Borland\CBuilder6\Projects;src\i2c\core;src\gui\c3d;F:\Program Files\Borland\CBuilder6\Projects;src\gui\frame;lib\USB_i2c_lib;lib\LPT_lib;src\c3d;src\cms\util;src\java;src\cms\colorformat;C:\Program Files\Borland\CBuilder6\Projects;USB_i2c_lib;LPT_lib;..;c3d;$(BCB)\lib\obj;$(BCB)\lib;lib;src
+Item2=src\gui\util;src\gui\event;D:\Program Files\Borland\CBuilder6\Projects;src\i2c\core;src\gui\c3d;F:\Program Files\Borland\CBuilder6\Projects;src\gui\frame;lib\USB_i2c_lib;lib\LPT_lib;src\c3d;src\cms\util;src\java;src\cms\colorformat;C:\Program Files\Borland\CBuilder6\Projects;USB_i2c_lib;LPT_lib;..;c3d;$(BCB)\lib\obj;$(BCB)\lib;lib;src
+Item3=src\gui\event;D:\Program Files\Borland\CBuilder6\Projects;src\i2c\core;src\gui\c3d;F:\Program Files\Borland\CBuilder6\Projects;src\gui\frame;lib\USB_i2c_lib;lib\LPT_lib;src\c3d;src\cms\util;src\java;src\cms\colorformat;C:\Program Files\Borland\CBuilder6\Projects;USB_i2c_lib;LPT_lib;..;c3d;$(BCB)\lib\obj;$(BCB)\lib;lib;src
+Item4=D:\Program Files\Borland\CBuilder6\Projects;src\i2c\core;src\gui\c3d;F:\Program Files\Borland\CBuilder6\Projects;src\gui\frame;lib\USB_i2c_lib;lib\LPT_lib;src\c3d;src\cms\util;src\java;src\cms\colorformat;C:\Program Files\Borland\CBuilder6\Projects;USB_i2c_lib;LPT_lib;..;c3d;$(BCB)\lib\obj;$(BCB)\lib;lib;src
+Item5=src\i2c\core;src\gui\c3d;F:\Program Files\Borland\CBuilder6\Projects;src\gui\frame;lib\USB_i2c_lib;lib\LPT_lib;src\c3d;src\cms\util;src\java;src\cms\colorformat;C:\Program Files\Borland\CBuilder6\Projects;USB_i2c_lib;LPT_lib;..;c3d;$(BCB)\lib\obj;$(BCB)\lib;lib;src
+Item6=src\i2c\core;src\gui\c3d;F:\Program Files\Borland\CBuilder6\Projects;src\gui\frame;lib\USB_i2c_lib;lib\LPT_lib;src\c3d;src\cms\util;src\java;src\cms\colorformat;C:\Program Files\Borland\CBuilder6\Projects;USB_i2c_lib;LPT_lib;..;c3d;$(BCB)\lib\obj;$(BCB)\lib;lib
+Item7=src\i2c\core;src\gui\c3d;F:\Program Files\Borland\CBuilder6\Projects;src\gui\frame;lib\USB_i2c_lib;lib\LPT_lib;src\c3d;src\cms\util;src\java;src\cms\colorformat;C:\Program Files\Borland\CBuilder6\Projects;USB_i2c_lib;LPT_lib;..;c3d;$(BCB)\lib\obj;$(BCB)\lib
+Item8=src\gui\c3d;F:\Program Files\Borland\CBuilder6\Projects;src\gui\frame;lib\USB_i2c_lib;lib\LPT_lib;src\c3d;src\cms\util;src\java;src\cms\colorformat;C:\Program Files\Borland\CBuilder6\Projects;USB_i2c_lib;LPT_lib;..;c3d;$(BCB)\lib\obj;$(BCB)\lib
+Item9=lib\USB_i2c_lib;lib\LPT_lib;src\c3d;src\cms\util;src\java;src\cms\colorformat;C:\Program Files\Borland\CBuilder6\Projects;USB_i2c_lib;LPT_lib;..;c3d;$(BCB)\lib\obj;$(BCB)\lib
+Item10=src\cms\util;src\java;src\cms\colorformat;C:\Program Files\Borland\CBuilder6\Projects;USB_i2c_lib;LPT_lib;..;c3d;$(BCB)\lib\obj;$(BCB)\lib
+Item11=src\java;src\cms\colorformat;C:\Program Files\Borland\CBuilder6\Projects;USB_i2c_lib;LPT_lib;..;c3d;$(BCB)\lib\obj;$(BCB)\lib
+Item12=C:\Program Files\Borland\CBuilder6\Projects;USB_i2c_lib;LPT_lib;..;c3d;$(BCB)\lib\obj;$(BCB)\lib
+Item13=USB_i2c_lib;LPT_lib;..;c3d;$(BCB)\lib\obj;$(BCB)\lib
 
 [HistoryLists\hlDebugSourcePath]
 Count=1
