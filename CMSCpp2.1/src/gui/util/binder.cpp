@@ -33,6 +33,21 @@ namespace gui {
 	    }
 	};
 
+      Label2ScrollBarSetter::Label2ScrollBarSetter(TLabel * label, TScrollBar * scrollBar):label(label),
+	    scrollBar(scrollBar)
+	{
+	};
+
+	void Label2ScrollBarSetter::set(TObject * sender) {
+	    if (label == sender) {
+		int value = label->Caption.ToInt();
+		scrollBar->Position = value;
+	    } else if (scrollBar == sender) {
+		int value = scrollBar->Position;
+		label->Caption = value;
+	    }
+	};
+
       ScrollBar2ScrollBarSetter::ScrollBar2ScrollBarSetter(TScrollBar * scrollBar1, TScrollBar * scrollBar2):scrollBar1(scrollBar1), scrollBar2(scrollBar2)
 	{
 	};
@@ -65,7 +80,7 @@ namespace gui {
 	MultiUIBinder::MultiUIBinder() {
 	};
 	void MultiUIBinder::active(TObject * sender) {
-	    TWinControl *ctrl = dynamic_cast < TWinControl * >(sender);
+	    TControl *ctrl = dynamic_cast < TControl * >(sender);
 	    if (null != ctrl) {
 		Range range = setterMap.equal_range(ctrl);
 		for (SetterItrator i = range.first; i != range.second; ++i) {
@@ -90,6 +105,31 @@ namespace gui {
 	    uiset_ptr setter(new ScrollBar2ScrollBarSetter(scrollBar1, scrollBar2));
 	    setterMap.insert(make_pair(scrollBar1, setter));
 	    setterMap.insert(make_pair(scrollBar2, setter));
+	};
+	void MultiUIBinder::bind(TLabel * label, TScrollBar * scrollBar) {
+	    using namespace std;
+	    uiset_ptr setter(new Label2ScrollBarSetter(label, scrollBar));
+	    setterMap.insert(make_pair(label, setter));
+	    setterMap.insert(make_pair(scrollBar, setter));
+	};
+	void MultiUIBinder::bind(TEdit * edit, TScrollBar * scrollBar, uiset_ptr setter) {
+	    setterMap.insert(make_pair(edit, setter));
+	    setterMap.insert(make_pair(scrollBar, setter));
+	};
+	void MultiUIBinder::bind(TEdit * edit1, TEdit * edit2, uiset_ptr setter) {
+	    using namespace std;
+	    setterMap.insert(make_pair(edit1, setter));
+	    setterMap.insert(make_pair(edit2, setter));
+	};
+	void MultiUIBinder::bind(TScrollBar * scrollBar1, TScrollBar * scrollBar2, uiset_ptr setter) {
+	    using namespace std;
+	    setterMap.insert(make_pair(scrollBar1, setter));
+	    setterMap.insert(make_pair(scrollBar2, setter));
+	};
+	void MultiUIBinder::bind(TLabel * label, TScrollBar * scrollBar, uiset_ptr setter) {
+	    using namespace std;
+	    setterMap.insert(make_pair(label, setter));
+	    setterMap.insert(make_pair(scrollBar, setter));
 	};
 	//=====================================================================
     };
