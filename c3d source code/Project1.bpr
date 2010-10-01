@@ -12,7 +12,9 @@
       build\USBHIDIOC.obj build\excelfile.obj build\logo.obj build\util.obj 
       build\lang.obj build\TColorPickerFrame.obj build\ReadWriteFunc.obj 
       build\TTestForm.obj build\listener.obj build\TColorFrame.obj 
-      build\THSVAdjustFrame.obj build\binder.obj"/>
+      build\THSVAdjustFrame.obj build\binder.obj build\ciexyz.obj 
+      build\colorspace.obj build\depend.obj build\independ.obj build\rgb.obj 
+      build\core.obj build\cmf.obj build\doubleArray.obj"/>
     <RESFILES value="Project1.res"/>
     <IDLFILES value=""/>
     <IDLGENFILES value=""/>
@@ -32,7 +34,7 @@
       inetdbbde.bpi inetdbxpress.bpi inetdb.bpi nmfast.bpi webdsnap.bpi 
       bcbie.bpi websnap.bpi soaprtl.bpi dclocx.bpi dbexpress.bpi dbxcds.bpi 
       indy.bpi bcb2kaxserver.bpi"/>
-    <PATHCPP value=".;src\gui\c3d;src\c3d;src\c3d;src\gui\c3d;src\gui\c3d;src\gui\c3d;src\c3d;src\c3d;src\gui\c3d;src\gui\c3d;lib\LPT_lib;lib\LPT_lib;lib\USB_i2c_lib;src\cms\colorformat;src\cms\colorformat;src\cms\util;src\java;src\gui\frame;src\i2c\core;src\gui\c3d;src\gui\event;src\gui\frame;src\gui\frame;src\gui\util"/>
+    <PATHCPP value=".;src\gui\c3d;src\c3d;src\c3d;src\gui\c3d;src\gui\c3d;src\gui\c3d;src\c3d;src\c3d;src\gui\c3d;src\gui\c3d;lib\LPT_lib;lib\LPT_lib;lib\USB_i2c_lib;src\cms\colorformat;src\cms\colorformat;src\cms\util;src\java;src\gui\frame;src\i2c\core;src\gui\c3d;src\gui\event;src\gui\frame;src\gui\frame;src\gui\util;src\cms\colorspace;src\cms\colorspace;src\cms\colorspace;src\cms\colorspace;src\cms\colorspace;src\cms;src\cms\colorformat;src\math"/>
     <PATHPAS value=".;"/>
     <PATHRC value=".;"/>
     <PATHASM value=".;"/>
@@ -42,13 +44,13 @@
     <USERDEFINES value="_DEBUG"/>
     <SYSDEFINES value="NO_STRICT"/>
     <MAINSOURCE value="Project1.cpp"/>
-    <INCLUDEPATH value="src\gui\util;src\gui\event;&quot;D:\Program Files\Borland\CBuilder6\Projects&quot;;src\i2c\core;src\gui\c3d;&quot;F:\Program Files\Borland\CBuilder6\Projects&quot;;src\gui\frame;src\java;src\cms\util;src\cms\colorformat;src\c3d;lib\USB_i2c_lib;lib\LPT_lib;..;$(BCB)\include;$(BCB)\include\vcl;src;lib"/>
-    <LIBPATH value="src\gui\util;src\gui\event;&quot;D:\Program Files\Borland\CBuilder6\Projects&quot;;src\i2c\core;src\gui\c3d;&quot;F:\Program Files\Borland\CBuilder6\Projects&quot;;src\gui\frame;lib\USB_i2c_lib;lib\LPT_lib;src\c3d;src\cms\util;src\java;src\cms\colorformat;&quot;C:\Program Files\Borland\CBuilder6\Projects&quot;;USB_i2c_lib;LPT_lib;..;c3d;$(BCB)\lib\obj;$(BCB)\lib;lib;src"/>
+    <INCLUDEPATH value="src\math;src\cms;src\cms\colorspace;src\gui\util;src\gui\event;&quot;D:\Program Files\Borland\CBuilder6\Projects&quot;;src\i2c\core;src\gui\c3d;&quot;F:\Program Files\Borland\CBuilder6\Projects&quot;;src\gui\frame;src\java;src\cms\util;src\cms\colorformat;src\c3d;lib\USB_i2c_lib;lib\LPT_lib;..;$(BCB)\include;$(BCB)\include\vcl;src;lib"/>
+    <LIBPATH value="src\math;src\cms;src\cms\colorspace;src\gui\util;src\gui\event;&quot;D:\Program Files\Borland\CBuilder6\Projects&quot;;src\i2c\core;src\gui\c3d;&quot;F:\Program Files\Borland\CBuilder6\Projects&quot;;src\gui\frame;lib\USB_i2c_lib;lib\LPT_lib;src\c3d;src\cms\util;src\java;src\cms\colorformat;&quot;C:\Program Files\Borland\CBuilder6\Projects&quot;;USB_i2c_lib;LPT_lib;..;c3d;$(BCB)\lib\obj;$(BCB)\lib;lib;src"/>
     <WARNINGS value="-w-par"/>
     <OTHERFILES value=""/>
   </MACROS>
   <OPTIONS>
-    <IDLCFLAGS value="-Isrc\gui\util -Isrc\gui\event 
+    <IDLCFLAGS value="-Isrc\math -Isrc\cms -Isrc\cms\colorspace -Isrc\gui\util -Isrc\gui\event 
       -I&quot;D:\Program Files\Borland\CBuilder6\Projects&quot; -Isrc\i2c\core 
       -Isrc\gui\c3d -I&quot;F:\Program Files\Borland\CBuilder6\Projects&quot; 
       -Isrc\gui\frame -Isrc\java -Isrc\cms\util -Isrc\cms\colorformat -Isrc\c3d 
@@ -99,6 +101,14 @@
       <FILE FILENAME="src\gui\frame\TColorFrame.cpp" FORMNAME="PointColorFrame" UNITNAME="TColorFrame" CONTAINERID="CCompiler" DESIGNCLASS="TFrame" LOCALCOMMAND=""/>
       <FILE FILENAME="src\gui\frame\THSVAdjustFrame.cpp" FORMNAME="HSVAdjustFrame" UNITNAME="THSVAdjustFrame" CONTAINERID="CCompiler" DESIGNCLASS="TFrame" LOCALCOMMAND=""/>
       <FILE FILENAME="src\gui\util\binder.cpp" FORMNAME="" UNITNAME="binder" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="src\cms\colorspace\ciexyz.cpp" FORMNAME="" UNITNAME="ciexyz.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="src\cms\colorspace\colorspace.cpp" FORMNAME="" UNITNAME="colorspace.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="src\cms\colorspace\depend.cpp" FORMNAME="" UNITNAME="depend.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="src\cms\colorspace\independ.cpp" FORMNAME="" UNITNAME="independ.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="src\cms\colorspace\rgb.cpp" FORMNAME="" UNITNAME="rgb.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="src\cms\core.cpp" FORMNAME="" UNITNAME="core" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="src\cms\colorformat\cmf.cpp" FORMNAME="" UNITNAME="cmf" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="src\math\doubleArray.cpp" FORMNAME="" UNITNAME="doubleArray" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
   </FILELIST>
   <BUILDTOOLS>
   </BUILDTOOLS>
