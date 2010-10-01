@@ -13,7 +13,7 @@
 #include <ExtCtrls.hpp>
 #include <Graphics.hpp>
 //---------------------------------------------------------------------------
-class TFormInTarget : public TForm
+class TInTargetForm : public TForm
 {
 __published:	// IDE-managed Components
         TOpenDialog *OpenDialog1;
@@ -40,9 +40,9 @@ __published:	// IDE-managed Components
         void __fastcall btn_sim_colorClick(TObject *Sender);
 private:	// User declarations
 public:		// User declarations
-        __fastcall TFormInTarget(TComponent* Owner);
+        __fastcall TInTargetForm(TComponent* Owner);
 };
 //---------------------------------------------------------------------------
-extern PACKAGE TFormInTarget *FormInTarget;
+extern PACKAGE TInTargetForm *InTargetForm;
 //---------------------------------------------------------------------------
 #endif

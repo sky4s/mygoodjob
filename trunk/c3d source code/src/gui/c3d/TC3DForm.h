@@ -82,14 +82,6 @@ class TC3DForm1:public TForm {
     TEdit *edt_show_h;
     TRadioGroup *rg_c3d_TblSize;
     TComboBox *cb_sim_type;
-    TPageControl *pc_img;
-    TTabSheet *ts_image;
-    TTabSheet *ts_color;
-    TImage *img_color;
-    TBitBtn *btn_img_next;
-    TBitBtn *btn_img_prev;
-    TTabSheet *TabSheet3;
-    TImage *img_sim;
     TLabel *lb_c3d_showY;
     TLabel *lb_c3d_showX;
     TLabel *lb_c3d_showR;
@@ -259,10 +251,6 @@ class TC3DForm1:public TForm {
     TScrollBar *sb_c3d_Manual39_s;
     TEdit *edt_c3d_satC;
     TEdit *Edit_c3d_Manual39_s_adj;
-    TEdit *Edit_c3d_Manual39_v_adj;
-    TScrollBar *sb_c3d_Manual39_v;
-    TLabel *lb_c3d_Manual39_v;
-    TLabel *Label25;
     TLabeledEdit *lbe_sat_sigma_light;
     TRadioGroup *rg_manual_39_choice;
     TGroupBox *GroupBox4;
@@ -319,13 +307,16 @@ class TC3DForm1:public TForm {
     TOpenDialog *OpenDialog_xls;
     TSaveDialog *SaveDialog_xls;
     TOpenDialog *OpenDialog_img;
-    TScrollBox *ScrollBox1;
-    TImage *Img_3DLUT;
     TRadioGroup *rg_normal_target;
     TRadioGroup *rg_Color_Model;
     TCheckBox *CheckBox1;
     TButton *btn_c3d_load_img;
-    TColorPickerFrame *TColorPickerFrame1;
+    TColorPickerFrame *colorPicker;
+        TGroupBox *GroupBox7;
+        TLabel *lb_c3d_Manual39_v;
+        TScrollBar *sb_c3d_Manual39_v;
+        TEdit *Edit_c3d_Manual39_v_adj;
+        TLabel *Label25;
     void __fastcall btn_c3d_load_imgClick(TObject * Sender);
     void __fastcall rg_c3d_interplClick(TObject * Sender);
     void __fastcall btn_c3d_simClick(TObject * Sender);
@@ -415,8 +406,7 @@ class TC3DForm1:public TForm {
     void __fastcall btn_Auto_Trg_LoadClick(TObject * Sender);
     void __fastcall btn_Auto_Trg_BuildTblClick(TObject * Sender);
     void __fastcall SaveDialog1TypeChange(TObject * Sender);
-        void __fastcall TColorPickerFrame1cb_show_ref_imgClick(
-          TObject *Sender);
+    void __fastcall TColorPickerFrame1cb_show_ref_imgClick(TObject * Sender);
 
   private:			// User declarations
 

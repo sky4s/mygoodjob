@@ -156,8 +156,8 @@ void __fastcall TColorPickerFrame::btn_c3d_load_imgClick(TObject * Sender)
 	delete bitmap;
 	delete JPEG;
 	OrgBitmap->Assign(Img_3DLUT->Picture->Bitmap);
-	if (pc_img->TabIndex == 0 && null != formInTarget) {
-	    formInTarget->img_in_target->Picture->Bitmap->Assign(Img_3DLUT->Picture->Bitmap);
+	if (pc_img->TabIndex == 0 && null != inTargetForm) {
+	    inTargetForm->img_in_target->Picture->Bitmap->Assign(Img_3DLUT->Picture->Bitmap);
 	}
     }
     delete OrgBitmap;
@@ -166,18 +166,18 @@ void __fastcall TColorPickerFrame::btn_c3d_load_imgClick(TObject * Sender)
 }
 
 //---------------------------------------------------------------------------
-void TColorPickerFrame::setFormInTarget(TFormInTarget * formInTarget)
+void TColorPickerFrame::setTInTargetForm(TInTargetForm * inTargetForm)
 {
-    this->formInTarget = formInTarget;
+    this->inTargetForm = inTargetForm;
 };
 
 void __fastcall TColorPickerFrame::cb_show_ref_imgClick(TObject * Sender)
 {
-    if (null != formInTarget) {
+    if (null != inTargetForm) {
 	if (cb_show_ref_img->Checked == true) {
-	    formInTarget->WindowState = wsNormal;
+	    inTargetForm->WindowState = wsNormal;
 	} else {
-	    formInTarget->WindowState = wsMinimized;
+	    inTargetForm->WindowState = wsMinimized;
 	}
     }
 }

@@ -7,6 +7,7 @@
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
 #pragma link "TColorPickerFrame"
+#pragma link "THSVAdjustFrame"
 #pragma resource "*.dfm"
 TTestForm2 *TestForm2;
 //---------------------------------------------------------------------------

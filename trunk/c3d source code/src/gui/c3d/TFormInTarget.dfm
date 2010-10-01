@@ -1,4 +1,4 @@
-object FormInTarget: TFormInTarget
+object InTargetForm: TInTargetForm
   Left = 168
   Top = 140
   BorderStyle = bsSingle
