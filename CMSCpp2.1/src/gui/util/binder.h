@@ -66,10 +66,13 @@ namespace gui {
 	    void bind(TEdit * edit1, TEdit * edit2);
 	    void bind(TScrollBar * scrollBar1, TScrollBar * scrollBar2);
 	    void bind(TLabel * label, TScrollBar * scrollBar);
-	    void bind(TEdit * edit, TScrollBar * scrollBaruiset_ptr, uiset_ptr setter);
-	    void bind(TEdit * edit1, TEdit * edit2, uiset_ptr setter);
-	    void bind(TScrollBar * scrollBar1, TScrollBar * scrollBar2, uiset_ptr setter);
-	    void bind(TLabel * label, TScrollBar * scrollBar, uiset_ptr setter);
+
+	    void bind(TControl * ctrl1, TControl * ctrl2, uiset_ptr setter);
+
+	    /*void bind(TEdit * edit, TScrollBar * scrollBaruiset_ptr, uiset_ptr setter);
+	       void bind(TEdit * edit1, TEdit * edit2, uiset_ptr setter);
+	       void bind(TScrollBar * scrollBar1, TScrollBar * scrollBar2, uiset_ptr setter);
+	       void bind(TLabel * label, TScrollBar * scrollBar, uiset_ptr setter); */
 	};
     };
 };

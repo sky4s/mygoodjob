@@ -112,25 +112,31 @@ namespace gui {
 	    setterMap.insert(make_pair(label, setter));
 	    setterMap.insert(make_pair(scrollBar, setter));
 	};
-	void MultiUIBinder::bind(TEdit * edit, TScrollBar * scrollBar, uiset_ptr setter) {
-	    setterMap.insert(make_pair(edit, setter));
-	    setterMap.insert(make_pair(scrollBar, setter));
+
+	void MultiUIBinder::bind(TControl * ctrl1, TControl * ctrl2, uiset_ptr setter) {
+	    setterMap.insert(make_pair(ctrl1, setter));
+	    setterMap.insert(make_pair(ctrl2, setter));
 	};
-	void MultiUIBinder::bind(TEdit * edit1, TEdit * edit2, uiset_ptr setter) {
-	    using namespace std;
-	    setterMap.insert(make_pair(edit1, setter));
-	    setterMap.insert(make_pair(edit2, setter));
-	};
-	void MultiUIBinder::bind(TScrollBar * scrollBar1, TScrollBar * scrollBar2, uiset_ptr setter) {
-	    using namespace std;
-	    setterMap.insert(make_pair(scrollBar1, setter));
-	    setterMap.insert(make_pair(scrollBar2, setter));
-	};
-	void MultiUIBinder::bind(TLabel * label, TScrollBar * scrollBar, uiset_ptr setter) {
-	    using namespace std;
-	    setterMap.insert(make_pair(label, setter));
-	    setterMap.insert(make_pair(scrollBar, setter));
-	};
+
+	/*void MultiUIBinder::bind(TEdit * edit, TScrollBar * scrollBar, uiset_ptr setter) {
+	   setterMap.insert(make_pair(edit, setter));
+	   setterMap.insert(make_pair(scrollBar, setter));
+	   };
+	   void MultiUIBinder::bind(TEdit * edit1, TEdit * edit2, uiset_ptr setter) {
+	   using namespace std;
+	   setterMap.insert(make_pair(edit1, setter));
+	   setterMap.insert(make_pair(edit2, setter));
+	   };
+	   void MultiUIBinder::bind(TScrollBar * scrollBar1, TScrollBar * scrollBar2, uiset_ptr setter) {
+	   using namespace std;
+	   setterMap.insert(make_pair(scrollBar1, setter));
+	   setterMap.insert(make_pair(scrollBar2, setter));
+	   };
+	   void MultiUIBinder::bind(TLabel * label, TScrollBar * scrollBar, uiset_ptr setter) {
+	   using namespace std;
+	   setterMap.insert(make_pair(label, setter));
+	   setterMap.insert(make_pair(scrollBar, setter));
+	   }; */
 	//=====================================================================
     };
 };
