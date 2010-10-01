@@ -14062,8 +14062,8 @@ object C3DForm1: TC3DForm1
     end
   end
   object PageControl7: TPageControl
-    Left = 1007
-    Top = 66
+    Left = 551
+    Top = -22
     Width = 218
     Height = 494
     ActivePage = TabSheet23
@@ -14794,13 +14794,6 @@ object C3DForm1: TC3DForm1
     inherited cb_show_ref_img: TCheckBox
       OnClick = TColorPickerFrame1cb_show_ref_imgClick
     end
-  end
-  inline PointColorFrame1: TPointColorFrame
-    Left = 560
-    Top = 8
-    Width = 209
-    Height = 458
-    TabOrder = 30
   end
   object OpenDialog1: TOpenDialog
     Filter = 'Excel '#35430#31639#34920', Text '#25991#23383#25991#20214'|*.xls;*.txt'
