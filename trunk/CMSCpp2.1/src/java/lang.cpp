@@ -87,6 +87,9 @@ namespace java {
 	double Math::cos(double x) {
 	    return std::cos(x);
 	};
+	double Math::acos(double x) {
+	    return std::acos(x);
+	};
 	double Math::sin(double x) {
 	    return std::sin(x);
 	};
@@ -108,6 +111,9 @@ namespace java {
 	};
 	double Math::log(double v) {
 	    return std::log(v);
+	};
+	double Math::fmod(double x, double y) {
+	    return std::fmod(x, y);
 	};
 	int Math::minIndex(double_array values, int n) {
 	    double minValue = std::numeric_limits < double >::max();

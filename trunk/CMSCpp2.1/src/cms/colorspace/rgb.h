@@ -39,6 +39,10 @@ namespace cms {
 		void quantization(const MaxValue & maxValue, bool integerRoundDown);
 		const MaxValue & getMaxValue();
 		double_array getRGBRatio();
+		double getHue();
+		double_array getHSVIValues();
+		static RGB_ptr fromHSVValues(double h, double s, double v);
+		static double_array HSV2RGBValues(double h, double s, double v);
 	      protected:
 		 double_array _getValues(double_array values);
 		void _setValues(double_array values);
@@ -46,7 +50,7 @@ namespace cms {
 		   MaxValue和RGBColorSpace採用指標(為何不用smart_ptr)的原因:
 
 		   由於MaxValue和RGBColorSpace原本是設計成java中的enum, 其個數不會改變,
-		   所以採用reference就好, reference不能變動, 但是有變動需求,
+		   所以應採用reference就好; 但c++下的reference不能re-assign, 有re-assign需求,
 		   因此只能考慮採用指標.
 
 		   指標可選擇c指標(傳統指標)或者smart_ptr兩種.
