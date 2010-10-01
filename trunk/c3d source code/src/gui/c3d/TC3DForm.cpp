@@ -28,6 +28,7 @@
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
 #pragma link "TColorPickerFrame"
+#pragma link "TColorFrame"
 #pragma resource "*.dfm"
 #pragma warn -pck
 TC3DForm1 *C3DForm1;
@@ -7588,4 +7589,5 @@ void __fastcall TC3DForm1::TColorPickerFrame1cb_show_ref_imgClick(
 
 }
 //---------------------------------------------------------------------------
+
 

@@ -7,15 +7,15 @@
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
 #pragma resource "*.dfm"
-TColorFrame *ColorFrame;
+TPointColorFrame *PointColorFrame;
 //---------------------------------------------------------------------------
-__fastcall TColorFrame::TColorFrame(TComponent * Owner)
+__fastcall TPointColorFrame::TPointColorFrame(TComponent * Owner)
 :TFrame(Owner)
 {
 }
 
 //---------------------------------------------------------------------------
-double_array TColorFrame::getRGBArray()
+double_array TPointColorFrame::getRGBArray()
 {
     double_array result(new double[3]);
     result[0] = StrToFloat(lb_c3d_selR->Caption);
@@ -23,7 +23,7 @@ double_array TColorFrame::getRGBArray()
     result[2] = StrToFloat(lb_c3d_selB->Caption);
     return result;
 };
-double_array TColorFrame::getHSIVArray()
+double_array TPointColorFrame::getHSIVArray()
 {
     double_array result(new double[4]);
     result[0] = StrToFloat(lb_c3d_selH->Caption);
@@ -32,7 +32,7 @@ double_array TColorFrame::getHSIVArray()
     result[3] = StrToFloat(lb_c3d_selV->Caption);
     return result;
 };
-void TColorFrame::setRGBHSIV(double r, double g, double b, double h, double s, double i, double v)
+void TPointColorFrame::setRGBHSIV(double r, double g, double b, double h, double s, double i, double v)
 {
     lb_c3d_selR->Caption = r;
     lb_c3d_selG->Caption = g;
