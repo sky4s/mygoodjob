@@ -3,5 +3,5 @@
 #include "excelfile.h"
 //#include "measurefile.h"
 #include "logo.h"
-//#include "cmf.h"
+#include "cmf.h"
 

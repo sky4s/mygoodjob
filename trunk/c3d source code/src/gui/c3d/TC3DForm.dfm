@@ -757,9 +757,9 @@ object C3DForm1: TC3DForm1
             Top = -30
             Width = 257
             Height = 359
-            ActivePage = ts_dark6
+            ActivePage = ts_light12
             MultiLine = True
-            TabIndex = 2
+            TabIndex = 0
             TabOrder = 0
             TabWidth = 51
             object ts_light12: TTabSheet
@@ -844,6 +844,14 @@ object C3DForm1: TC3DForm1
                 TabOrder = 1
                 OnDrawCell = sg_DarkDrawCell
                 OnSelectCell = sg_DarkSelectCell
+                RowHeights = (
+                  18
+                  18
+                  18
+                  18
+                  18
+                  18
+                  18)
               end
             end
             object ts_gray9: TTabSheet

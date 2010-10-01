@@ -19,7 +19,7 @@
 #include <boost/foreach.hpp>
 #include <boost/lexical_cast.hpp>
 
-//#define TNT_LIB
+#define TNT_LIB
 
 #ifdef TNT_LIB
 #include <tnt/tnt_array1d.h>
@@ -308,12 +308,14 @@ namespace java {
 	    static const double PI;
 	    static const double E;
 	    static double cos(double x);
+	    static double acos(double x);
 	    static double sin(double x);
 	    static double sqr(double v);
 	    static double round(double v);
 	    static double floor(double v);
 	    static double roundTo(double v);
 	    static double log(double v);
+	    static double fmod(double x, double y);
 
 	    static double min(double a, double b);
 	    static double max(double a, double b);
@@ -450,7 +452,7 @@ template < typename Container, typename ValueType, int nPropType > class Propert
     }
 //-- To make possible to cast the property class to the
 //   internal type --
-    operator                                 ValueType() {
+    operator                                       ValueType() {
 	assert(m_cObject != NULL);
 	assert(Get != NULL);
 	return (m_cObject->*Get) ();
