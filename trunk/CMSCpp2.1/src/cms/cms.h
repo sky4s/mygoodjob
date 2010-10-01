@@ -12,8 +12,12 @@
 
 namespace cms {
     class Patch;
-    class Spectra;
+
     class ColorMatchingFunction;
+    class CorrelatedColorTemperature;
+    class Illuminant;
+    class Spectra;
+    class Target;
     namespace colorformat {
 	namespace logo {
 	    class LogoFile;
@@ -141,4 +145,4 @@ typedef bptr < cms::util::RGBGamma > RGBGamma_ptr;
 //==============================================================================
 
 #endif
- 
+
