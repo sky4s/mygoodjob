@@ -21,7 +21,7 @@
 #include <java/lang.h>
 //本項目內gui頭文件
 //---------------------------------------------------------------------------
-class TColorFrame:public TFrame {
+class TPointColorFrame:public TFrame {
     __published:		// IDE-managed Components
     TGroupBox * GroupBox44;
     TGroupBox *GroupBox34;
@@ -58,13 +58,13 @@ class TColorFrame:public TFrame {
     TImage *Img_c3d_sim;
   private:			// User declarations
   public:			// User declarations
-     __fastcall TColorFrame(TComponent * Owner);
+     __fastcall TPointColorFrame(TComponent * Owner);
     double_array getRGBArray();
     double_array getHSIVArray();
     void setRGBHSIV(double r, double g, double b, double h, double s, double i, double v);
 };
 //---------------------------------------------------------------------------
-extern PACKAGE TColorFrame *ColorFrame;
+extern PACKAGE TPointColorFrame *PointColorFrame;
 //---------------------------------------------------------------------------
 #endif
 

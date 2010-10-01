@@ -27,6 +27,7 @@
 #include <ImgList.hpp>
 #include <Menus.hpp>
 #include "TColorPickerFrame.h"
+#include "TColorFrame.h"
 //其他庫頭文件
 
 //本項目內頭文件
@@ -325,6 +326,7 @@ class TC3DForm1:public TForm {
     TCheckBox *CheckBox1;
     TButton *btn_c3d_load_img;
     TColorPickerFrame *TColorPickerFrame1;
+        TPointColorFrame *PointColorFrame1;
     void __fastcall btn_c3d_load_imgClick(TObject * Sender);
     void __fastcall rg_c3d_interplClick(TObject * Sender);
     void __fastcall btn_c3d_simClick(TObject * Sender);
