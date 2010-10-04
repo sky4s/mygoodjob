@@ -7,7 +7,7 @@ object SharpnessForm1: TSharpnessForm1
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
-  Font.Height = -11
+  Font.Height = -14
   Font.Name = 'MS Sans Serif'
   Font.Style = []
   FormStyle = fsMDIChild
@@ -17,159 +17,159 @@ object SharpnessForm1: TSharpnessForm1
   OnClose = FormClose
   OnCreate = FormCreate
   OnKeyDown = FormKeyDown
-  PixelsPerInch = 96
-  TextHeight = 13
+  PixelsPerInch = 120
+  TextHeight = 16
   object GroupBox3: TGroupBox
-    Left = 8
+    Left = 10
     Top = 0
-    Width = 633
-    Height = 609
+    Width = 779
+    Height = 750
     TabOrder = 0
     object CheckBox1: TCheckBox
-      Left = 16
-      Top = 16
-      Width = 105
-      Height = 25
+      Left = 20
+      Top = 20
+      Width = 129
+      Height = 30
       Caption = 'CheckBox1'
       TabOrder = 0
     end
     object CheckBox2: TCheckBox
-      Left = 16
-      Top = 48
-      Width = 105
-      Height = 17
+      Left = 20
+      Top = 59
+      Width = 129
+      Height = 21
       Caption = 'CheckBox2'
       TabOrder = 1
     end
     object CheckBox4: TCheckBox
-      Left = 128
-      Top = 16
-      Width = 113
-      Height = 25
+      Left = 158
+      Top = 20
+      Width = 139
+      Height = 30
       Caption = 'CheckBox4'
       TabOrder = 2
     end
     object CheckBox5: TCheckBox
-      Left = 128
-      Top = 48
-      Width = 121
-      Height = 17
+      Left = 158
+      Top = 59
+      Width = 148
+      Height = 21
       Caption = 'CheckBox5'
       TabOrder = 3
     end
     object GroupBox1: TGroupBox
-      Left = 264
-      Top = 56
-      Width = 361
-      Height = 89
+      Left = 325
+      Top = 69
+      Width = 444
+      Height = 109
       Caption = 'Text Detection'
       TabOrder = 4
       object Label1: TLabel
-        Left = 8
-        Top = 24
-        Width = 32
-        Height = 13
+        Left = 10
+        Top = 30
+        Width = 41
+        Height = 16
         Caption = 'Label1'
       end
       object Label2: TLabel
-        Left = 8
-        Top = 56
-        Width = 32
-        Height = 13
+        Left = 10
+        Top = 69
+        Width = 41
+        Height = 16
         Caption = 'Label2'
       end
       object ScrollBar1: TScrollBar
-        Left = 144
-        Top = 24
-        Width = 185
-        Height = 17
+        Left = 177
+        Top = 30
+        Width = 228
+        Height = 20
         PageSize = 0
         TabOrder = 0
       end
       object ScrollBar2: TScrollBar
-        Left = 144
-        Top = 56
-        Width = 185
-        Height = 17
+        Left = 177
+        Top = 69
+        Width = 228
+        Height = 21
         PageSize = 0
         TabOrder = 1
       end
       object StaticText1: TStaticText
-        Left = 336
-        Top = 24
-        Width = 58
-        Height = 17
+        Left = 414
+        Top = 30
+        Width = 70
+        Height = 20
         BorderStyle = sbsSunken
         Caption = 'StaticText1'
         TabOrder = 2
       end
       object StaticText2: TStaticText
-        Left = 336
-        Top = 56
-        Width = 58
-        Height = 17
+        Left = 414
+        Top = 69
+        Width = 70
+        Height = 20
         BorderStyle = sbsSunken
         Caption = 'StaticText2'
         TabOrder = 3
       end
       object CheckBox3: TCheckBox
-        Left = 112
-        Top = -3
-        Width = 73
-        Height = 25
+        Left = 138
+        Top = -4
+        Width = 90
+        Height = 31
         Caption = 'CheckBox3'
         TabOrder = 4
       end
     end
     object GroupBox2: TGroupBox
-      Left = 8
-      Top = 144
-      Width = 617
-      Height = 425
+      Left = 10
+      Top = 177
+      Width = 759
+      Height = 523
       Caption = 'Weighting'
       TabOrder = 5
       object Label3: TLabel
-        Left = 24
-        Top = 24
-        Width = 32
-        Height = 13
+        Left = 30
+        Top = 30
+        Width = 41
+        Height = 16
         Caption = 'Label3'
       end
       object Label4: TLabel
-        Left = 24
-        Top = 48
-        Width = 32
-        Height = 13
+        Left = 30
+        Top = 59
+        Width = 41
+        Height = 16
         Caption = 'Label4'
       end
       object Label5: TLabel
-        Left = 24
-        Top = 72
-        Width = 67
-        Height = 13
+        Left = 30
+        Top = 89
+        Width = 83
+        Height = 16
         Caption = 'Software Gain'
       end
       object ScrollBar3: TScrollBar
-        Left = 176
-        Top = 24
-        Width = 273
-        Height = 17
+        Left = 217
+        Top = 30
+        Width = 336
+        Height = 20
         PageSize = 0
         TabOrder = 0
       end
       object ScrollBar4: TScrollBar
-        Left = 176
-        Top = 48
-        Width = 273
-        Height = 17
+        Left = 217
+        Top = 59
+        Width = 336
+        Height = 21
         PageSize = 0
         TabOrder = 1
       end
       object sb_softgain: TScrollBar
-        Left = 176
-        Top = 72
-        Width = 273
-        Height = 17
+        Left = 217
+        Top = 89
+        Width = 336
+        Height = 21
         Max = 150
         PageSize = 0
         Position = 10
@@ -177,55 +177,55 @@ object SharpnessForm1: TSharpnessForm1
         OnChange = sb_softgainChange
       end
       object StaticText3: TStaticText
-        Left = 464
-        Top = 24
-        Width = 58
-        Height = 17
+        Left = 571
+        Top = 30
+        Width = 70
+        Height = 20
         BorderStyle = sbsSunken
         Caption = 'StaticText3'
         TabOrder = 3
       end
       object StaticText4: TStaticText
-        Left = 464
-        Top = 48
-        Width = 58
-        Height = 17
+        Left = 571
+        Top = 59
+        Width = 70
+        Height = 20
         BorderStyle = sbsSunken
         Caption = 'StaticText4'
         TabOrder = 4
       end
       object st_softgain: TStaticText
-        Left = 464
-        Top = 72
-        Width = 10
-        Height = 17
+        Left = 571
+        Top = 89
+        Width = 11
+        Height = 20
         BorderStyle = sbsSunken
         Caption = '1'
         TabOrder = 5
       end
       object GroupBox47: TGroupBox
-        Left = 16
-        Top = 96
-        Width = 473
-        Height = 321
+        Left = 20
+        Top = 118
+        Width = 582
+        Height = 395
         TabOrder = 6
         object SP_LUT: TImage
-          Left = 8
-          Top = 16
-          Width = 369
-          Height = 305
+          Left = 10
+          Top = 20
+          Width = 454
+          Height = 375
           OnDblClick = SP_LUTDblClick
           OnMouseDown = SP_LUTMouseDown
         end
         object btn_sp_lut_write: TButton
-          Left = 400
-          Top = 24
-          Width = 57
-          Height = 25
+          Left = 492
+          Top = 30
+          Width = 70
+          Height = 30
           Caption = 'Write'
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clWindowText
-          Font.Height = -11
+          Font.Height = -15
           Font.Name = 'MS Sans Serif'
           Font.Style = [fsBold]
           ParentFont = False
@@ -233,14 +233,14 @@ object SharpnessForm1: TSharpnessForm1
           OnClick = btn_sp_lut_writeClick
         end
         object btn_sp_lut_Set: TButton
-          Left = 400
-          Top = 104
-          Width = 57
-          Height = 25
+          Left = 492
+          Top = 128
+          Width = 70
+          Height = 31
           Caption = 'Clear'
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clWindowText
-          Font.Height = -11
+          Font.Height = -15
           Font.Name = 'MS Sans Serif'
           Font.Style = [fsBold]
           ParentFont = False
@@ -248,14 +248,14 @@ object SharpnessForm1: TSharpnessForm1
           OnClick = btn_sp_lut_SetClick
         end
         object btn_sp_lut_read: TBitBtn
-          Left = 400
-          Top = 64
-          Width = 57
-          Height = 25
+          Left = 492
+          Top = 79
+          Width = 70
+          Height = 31
           Caption = 'Read'
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clWindowText
-          Font.Height = -11
+          Font.Height = -15
           Font.Name = 'MS Sans Serif'
           Font.Style = [fsBold]
           ParentFont = False
@@ -264,14 +264,14 @@ object SharpnessForm1: TSharpnessForm1
         end
       end
       object btn_GainSet: TButton
-        Left = 496
-        Top = 72
-        Width = 65
-        Height = 25
+        Left = 610
+        Top = 89
+        Width = 80
+        Height = 30
         Caption = 'Gain Set'
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clWindowText
-        Font.Height = -11
+        Font.Height = -15
         Font.Name = 'MS Sans Serif'
         Font.Style = [fsBold]
         ParentFont = False
@@ -280,15 +280,15 @@ object SharpnessForm1: TSharpnessForm1
       end
     end
     object LUT_type: TRadioGroup
-      Left = 8
-      Top = 88
-      Width = 193
-      Height = 49
+      Left = 10
+      Top = 108
+      Width = 237
+      Height = 61
       Caption = 'Sharpness Mode'
       Columns = 3
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clBlack
-      Font.Height = -11
+      Font.Height = -15
       Font.Name = 'MS Sans Serif'
       Font.Style = []
       Items.Strings = (
@@ -300,14 +300,14 @@ object SharpnessForm1: TSharpnessForm1
       OnClick = LUT_typeClick
     end
     object btn_sp_Load: TButton
-      Left = 208
-      Top = 80
-      Width = 49
-      Height = 25
+      Left = 256
+      Top = 98
+      Width = 60
+      Height = 31
       Caption = 'Load'
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clWindowText
-      Font.Height = -11
+      Font.Height = -15
       Font.Name = 'MS Sans Serif'
       Font.Style = [fsBold]
       ParentFont = False
@@ -317,15 +317,15 @@ object SharpnessForm1: TSharpnessForm1
       OnClick = btn_sp_LoadClick
     end
     object btn_sp_Save: TButton
-      Left = 208
-      Top = 112
-      Width = 49
-      Height = 25
+      Left = 256
+      Top = 138
+      Width = 60
+      Height = 31
       Hint = 'Save SP Table'
       Caption = 'Save'
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clWindowText
-      Font.Height = -11
+      Font.Height = -15
       Font.Name = 'MS Sans Serif'
       Font.Style = [fsBold]
       ParentFont = False
@@ -335,10 +335,10 @@ object SharpnessForm1: TSharpnessForm1
       OnClick = btn_sp_SaveClick
     end
     object Btn_SP_reload: TBitBtn
-      Left = 24
-      Top = 576
-      Width = 73
-      Height = 25
+      Left = 30
+      Top = 709
+      Width = 89
+      Height = 31
       Caption = '&Reload'
       ModalResult = 6
       TabOrder = 9
@@ -363,10 +363,10 @@ object SharpnessForm1: TSharpnessForm1
       NumGlyphs = 2
     end
     object CheckBox6: TCheckBox
-      Left = 256
-      Top = 24
-      Width = 97
-      Height = 17
+      Left = 315
+      Top = 30
+      Width = 119
+      Height = 20
       Caption = 'CheckBox6'
       TabOrder = 10
     end

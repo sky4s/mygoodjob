@@ -3,7 +3,7 @@
 #include <vcl.h>
 #pragma hdrstop
 #include "DCR1.h"
-#include "DCR_12401.h"
+#include <fpga/11307/DCR/DCR_12401.h>
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
 #pragma resource "*.dfm"
@@ -202,7 +202,7 @@ void __fastcall TDCRForm1::FormCreate(TObject *Sender)
         switch(ic_choice)
         {
                 case 0:
-                ODCR = new DCR_12401;
+                ODCR = new DCR_12401();
                 break;
 
         }
