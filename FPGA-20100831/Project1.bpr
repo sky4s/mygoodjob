@@ -12,14 +12,14 @@
       build\C3D1.obj build\SAT.obj build\SAT_11307.obj build\offset_11307.obj 
       build\offset.obj build\HueSatVal2.obj build\ReadWriteFunc.obj 
       build\USBHIDIOC.obj build\HWINTERFACELib_TLB.obj 
-      build\HWINTERFACELib_OCX.obj"/>
+      build\HWINTERFACELib_OCX.obj build\THSVForm3.obj"/>
     <RESFILES value="Project1.res"/>
     <IDLFILES value=""/>
     <IDLGENFILES value=""/>
     <DEFFILE value=""/>
     <RESDEPEN value="$(RESFILES) Unit1.dfm Vender1.dfm CM1.dfm HueSatVal1.dfm Sharpness1.dfm 
       TCON1.dfm Function1.dfm Engineering.dfm DCR1.dfm ContrastEnhance1.dfm 
-      C3D1.dfm SAT.dfm offset.dfm HueSatVal2.dfm"/>
+      C3D1.dfm SAT.dfm offset.dfm HueSatVal2.dfm src\fpga\gui\THSVForm3.dfm"/>
     <LIBFILES value="lib\USB_i2c_lib\hid.lib"/>
     <LIBRARIES value="tee.lib vclx.lib bcbsmp.lib rtl.lib vcl.lib"/>
     <SPARELIBS value="vcl.lib rtl.lib bcbsmp.lib vclx.lib tee.lib"/>
@@ -30,7 +30,7 @@
       inetdbbde.bpi inetdbxpress.bpi inetdb.bpi nmfast.bpi webdsnap.bpi 
       bcbie.bpi websnap.bpi soaprtl.bpi dclocx.bpi dbexpress.bpi dbxcds.bpi 
       indy.bpi bcb2kaxserver.bpi"/>
-    <PATHCPP value=".;11307\Vender;11307\TCON;11307\ImageProcess;11307\Function;11307\DCR;lib\i2c\core;lib\USB_i2c_lib;lib\LPT_lib;lib\LPT_lib"/>
+    <PATHCPP value=".;11307\Vender;11307\TCON;11307\ImageProcess;11307\Function;11307\DCR;lib\i2c\core;lib\USB_i2c_lib;lib\LPT_lib;lib\LPT_lib;src\fpga\gui"/>
     <PATHPAS value=".;"/>
     <PATHRC value=".;"/>
     <PATHASM value=".;"/>
@@ -40,13 +40,14 @@
     <USERDEFINES value="_DEBUG"/>
     <SYSDEFINES value="NO_STRICT"/>
     <MAINSOURCE value="Project1.cpp"/>
-    <INCLUDEPATH value="lib\i2c\core;&quot;D:\Program Files\Borland\CBuilder6\Projects&quot;;11307\DCR;11307\Function;11307\ImageProcess;11307\TCON;11307\Vender;12401\ImageProcess;12401\Vender;12401\DCR;12401\TCON;12401\Function;$(BCB)\include;$(BCB)\include\vcl;lib;./;lib\LPT_lib;lib\USB_i2c_lib"/>
-    <LIBPATH value="lib\i2c\core;11307\DCR;11307\Function;11307\ImageProcess;11307\TCON;11307\Vender;12401\ImageProcess;12401\Vender;12401\DCR;12401\TCON;12401\Function;$(BCB)\lib\obj;$(BCB)\lib;lib;lib\LPT_lib;lib\USB_i2c_lib"/>
+    <INCLUDEPATH value="src\fpga\gui;lib\i2c\core;&quot;D:\Program Files\Borland\CBuilder6\Projects&quot;;11307\DCR;11307\Function;11307\ImageProcess;11307\TCON;11307\Vender;12401\ImageProcess;12401\Vender;12401\DCR;12401\TCON;12401\Function;$(BCB)\include;$(BCB)\include\vcl;lib;./;lib\LPT_lib;lib\USB_i2c_lib"/>
+    <LIBPATH value="src\fpga\gui;&quot;D:\Program Files\Borland\CBuilder6\Projects&quot;;lib\i2c\core;11307\DCR;11307\Function;11307\ImageProcess;11307\TCON;11307\Vender;12401\ImageProcess;12401\Vender;12401\DCR;12401\TCON;12401\Function;$(BCB)\lib\obj;$(BCB)\lib;lib;lib\LPT_lib;lib\USB_i2c_lib"/>
     <WARNINGS value="-w-par"/>
     <OTHERFILES value=""/>
   </MACROS>
   <OPTIONS>
-    <IDLCFLAGS value="-Ilib\i2c\core -I&quot;D:\Program Files\Borland\CBuilder6\Projects&quot; -I11307\DCR 
+    <IDLCFLAGS value="-Isrc\fpga\gui -Ilib\i2c\core 
+      -I&quot;D:\Program Files\Borland\CBuilder6\Projects&quot; -I11307\DCR 
       -I11307\Function -I11307\ImageProcess -I11307\TCON -I11307\Vender 
       -I12401\ImageProcess -I12401\Vender -I12401\DCR -I12401\TCON 
       -I12401\Function -I$(BCB)\include -I$(BCB)\include\vcl -Ilib -I./ 
@@ -99,6 +100,7 @@
       <FILE FILENAME="lib\USB_i2c_lib\hid.lib" FORMNAME="" UNITNAME="hid.lib" CONTAINERID="LibTool" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="lib\LPT_lib\HWINTERFACELib_TLB.cpp" FORMNAME="" UNITNAME="HWINTERFACELib_TLB.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="lib\LPT_lib\HWINTERFACELib_OCX.cpp" FORMNAME="" UNITNAME="HWINTERFACELib_OCX.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="src\fpga\gui\THSVForm3.cpp" FORMNAME="HSVForm3" UNITNAME="THSVForm3" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
   </FILELIST>
   <BUILDTOOLS>
   </BUILDTOOLS>
