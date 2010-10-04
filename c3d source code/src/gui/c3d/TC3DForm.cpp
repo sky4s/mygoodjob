@@ -5719,27 +5719,6 @@ void __fastcall TC3DForm1::FormClose(TObject * Sender, TCloseAction & Action)
 
 //---------------------------------------------------------------------------
 
-void __fastcall TC3DForm1::sg_12color1MouseDown(TObject * Sender,
-						TMouseButton Button, TShiftState Shift, int X,
-						int Y)
-{
-/*        int Column, Row;//the coordinates of StirngGrid
-        sg_12color1->MouseToCell(X, Y, Column, Row);//to get the corrdinates of MouseDown
-        if(Row == 0)
-                return;
-
-        int rgb[12][3]={{192,64,64},{192,128,64},{192,192,64},{128,192,64},
-        {64,192,64},{64,192,128},{64, 192, 192},{64,128,192},{64, 64, 192},
-        {128,64,192},{192, 64, 192},{192,64,128}};
-
-        double r = rgb[Row-1][0];
-        double g = rgb[Row-1][1];
-        double b = rgb[Row-1][2];
-
-        ShowSelectCell(Row, r, g, b, sg_12color1);*/
-}
-
-//---------------------------------------------------------------------------
 void TC3DForm1::Refresh_PointColor_rgb(double r, double g, double b)
 {
     sg_rgb_input->Cells[0][1] = FloatToStr(r);

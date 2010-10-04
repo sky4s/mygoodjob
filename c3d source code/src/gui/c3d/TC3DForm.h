@@ -358,8 +358,6 @@ class TC3DForm1:public TForm {
     void __fastcall btn_key_in_RGBClick(TObject * Sender);
     void __fastcall btn_key_in_HSVClick(TObject * Sender);
     void __fastcall FormClose(TObject * Sender, TCloseAction & Action);
-    void __fastcall sg_12color1MouseDown(TObject * Sender,
-					 TMouseButton Button, TShiftState Shift, int X, int Y);
     void __fastcall sg_12color2MouseDown(TObject * Sender,
 					 TMouseButton Button, TShiftState Shift, int X, int Y);
     void __fastcall btn_c3d_save_rgbClick(TObject * Sender);
