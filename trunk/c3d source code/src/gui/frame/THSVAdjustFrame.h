@@ -49,18 +49,22 @@ class THSVAdjustFrame:public TFrame {
     void __fastcall sb_c3d_Manual39_sChange(TObject * Sender);
     void __fastcall sb_c3d_Manual39_vChange(TObject * Sender);
   private:			// User declarations
-     gui::util::MultiUIBinder binder;
+    //gui::util::MultiUIBinder binder;
     double h, s, v;
-     bptr < HueSetter > hueSetter;
-     bptr < SaturationSetter > saturationSetter, valueSetter;
+    //bptr < HueSetter > hueSetter;
+    //bptr < SaturationSetter > saturationSetter, valueSetter;
      std::vector < bwptr < gui::event::ChangeListener > >changeListenerVector;
   public:			// User declarations
      __fastcall THSVAdjustFrame(TComponent * Owner);
     void setHSV(double h, double s, double v);
     void addChangeListener(bptr < gui::event::ChangeListener > listener);
+    double_array getHSVGain();
+    void setColorAdjustable(bool enable);
 };
 
-class HueSetter:public gui::util::Label2ScrollBarSetter {
+/*class HueSetter:public gui::util::Label2ScrollBarSetter {
+  private:
+    THSVAdjustFrame * parent;
   public:
     HueSetter(TLabel * label, TScrollBar * scrollBar)
     :gui::util::Label2ScrollBarSetter(label, scrollBar) {
@@ -92,7 +96,7 @@ class SaturationSetter:public gui::util::Label2ScrollBarSetter {
     void setBase(double base) {
 	this->base = base;
     }
-};
+};*/
 
 //---------------------------------------------------------------------------
 extern PACKAGE THSVAdjustFrame *HSVAdjustFrame;

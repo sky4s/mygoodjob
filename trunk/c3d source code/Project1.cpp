@@ -18,7 +18,12 @@ WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 {
     try {
 	Application->Initialize();
-	Application->CreateForm(__classid(TTestForm2), &TestForm2);
+	Application->CreateForm(__classid(TMainForm), &MainForm);
+                 Application->CreateForm(__classid(TC3DForm1), &C3DForm1);
+                 Application->CreateForm(__classid(TC3DSimualteForm), &C3DSimualteForm);
+                 Application->CreateForm(__classid(TInTargetForm), &InTargetForm);
+                 Application->CreateForm(__classid(TEngineerForm), &EngineerForm);
+                 Application->CreateForm(__classid(THSVStepSimForm), &HSVStepSimForm);
                  Application->Run();
     }
     catch(Exception & exception) {

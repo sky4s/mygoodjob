@@ -28,6 +28,7 @@
 #include <Menus.hpp>
 #include "TColorPickerFrame.h"
 #include "TColorFrame.h"
+#include "THSVAdjustFrame.h"
 //其他庫頭文件
 
 //本項目內頭文件
@@ -411,17 +412,40 @@ class TC3DForm1:public TForm {
   private:			// User declarations
 
      class ColorMouseListener:public gui::event::MouseListener {
-	const TC3DForm1 *parent;
+	TC3DForm1 *parent;
       public:
-	 ColorMouseListener(TC3DForm1 * parent);
+	 ColorMouseListener(TC3DForm1 * parent):parent(parent) {
+	};
 	virtual void mousePressed(TObject * Sender,
-				  TMouseButton Button, TShiftState Shift, int X, int Y);
+				  TMouseButton Button, TShiftState Shift, int X, int Y) {
+	    parent->Img_3DLUTMouseDown(Sender, Button, Shift, X, Y);
+	};
 	virtual void mouseReleased(TObject * Sender,
-				   TMouseButton Button, TShiftState Shift, int X, int Y);
+				   TMouseButton Button, TShiftState Shift, int X, int Y) {
+	};
     };
-    bptr < ColorMouseListener > colorMouseListener;
+    bptr < ColorMouseListener > mouseListener;
+
+    class ScrollBarChangeListener:public gui::event::ChangeListener {
+	TC3DForm1 *parent;
+      public:
+	 ScrollBarChangeListener(TC3DForm1 * parent):parent(parent) {
+	};
+	virtual void stateChanged(TObject * Sender) {
+	    //HSV Diffusion page
+	    parent->Manual39_HSV_Bar_Move();	//改變SimImg顯示的色彩, 並不改變table值
+
+	    if (parent->Cell_move == true) {
+		//避免在selectcell時, 發生manual39的hue label當中的值優先寫到grid裡, 而不是點選的Cell值
+		parent->ColorSet();
+	    }
+	};
+    };
+    bptr < ScrollBarChangeListener > changeListener;
 
   public:			// User declarations
+    bool Cell_move;		//避免在selectcell時, 發生manual39的hue label當中的值優先寫到grid裡, 而不是點選的Cell值
+
     __fastcall TC3DForm1(TComponent * Owner);
     __fastcall ~ TC3DForm1();
     double ***c3d_lutR, ***c3d_lutG, ***c3d_lutB;
@@ -541,7 +565,6 @@ class TC3DForm1:public TForm {
     void refresh_c3d_color_grid();
 
     void c3d_lutAssign();
-
 
 };
 
