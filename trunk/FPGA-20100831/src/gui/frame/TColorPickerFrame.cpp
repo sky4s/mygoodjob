@@ -169,6 +169,9 @@ void __fastcall TColorPickerFrame::btn_c3d_load_imgClick(TObject * Sender)
 void TColorPickerFrame::setTInTargetForm(TInTargetForm * inTargetForm)
 {
     this->inTargetForm = inTargetForm;
+    if (null != inTargetForm) {
+	cb_show_ref_img->Visible = true;
+    }
 };
 
 void __fastcall TColorPickerFrame::cb_show_ref_imgClick(TObject * Sender)
