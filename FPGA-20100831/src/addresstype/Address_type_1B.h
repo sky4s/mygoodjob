@@ -2,8 +2,8 @@
 //      20100608 new  for class TBit
 //-----------------------------------------------------------------------------
 
-#ifndef Address_type_1BH
-#define Address_type_1BH
+#ifndef ADDRESS_TYPE_1BH
+#define ADDRESS_TYPE_1BH
 #include <math.h>
 #include <stdlib.h>
 
