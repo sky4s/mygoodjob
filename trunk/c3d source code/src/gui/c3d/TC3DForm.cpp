@@ -60,11 +60,16 @@ int tbl_val[4][33] = {
 //{0,16,96,144,176,200,224,240,255},      //table b
 };
 
-int sim_val[72] = { 8.1, 4.1, 0.2, -1.1, -0.8, -1.7, -2.3, -3.4, -4.9, -4.3, -4.4,
-    -4.8, -3.3, -3.4, -3.2, -3.1, -3.3, -2.8, -0.5, 3.0, 4.8, 12.0, 14.9, 14.8,
-    14.9, 13.0, 11.8, 10.4, 9.7, 10.0, 9.4, 8.2, 6.7, 5.8, 4.6, 2.8, 2.3, 1.6, 0.7,
-    -0.2, -0.5, -1.3, -1.4, -1.9, -1.4, -1.3, -2.6, -4.4, -4.4, -5.5, -8.2, -6.2,
-    -3.8, -2.0, -0.1, 1.5, 1.7, 2.4, 4.1, 4.0, 3.5, 4.1, 3.4, 3.6, 3.6, 3.3, 2.9,
+int sim_val[72] =
+    { 8.1, 4.1, 0.2, -1.1, -0.8, -1.7, -2.3, -3.4, -4.9, -4.3, -4.4,
+    -4.8, -3.3, -3.4, -3.2, -3.1, -3.3, -2.8, -0.5, 3.0, 4.8, 12.0, 14.9,
+    14.8,
+    14.9, 13.0, 11.8, 10.4, 9.7, 10.0, 9.4, 8.2, 6.7, 5.8, 4.6, 2.8, 2.3,
+    1.6, 0.7,
+    -0.2, -0.5, -1.3, -1.4, -1.9, -1.4, -1.3, -2.6, -4.4, -4.4, -5.5, -8.2,
+    -6.2,
+    -3.8, -2.0, -0.1, 1.5, 1.7, 2.4, 4.1, 4.0, 3.5, 4.1, 3.4, 3.6, 3.6,
+    3.3, 2.9,
     4.5, 3.7, 6.0, 8.9, 10.8
 };
 
@@ -266,8 +271,9 @@ void TC3DForm1::Ini_c3d_table()
 		c3d_lutR[i][j][k] = tbl_val[tbl_s][i];
 		c3d_lutG[i][j][k] = tbl_val[tbl_s][j];
 		c3d_lutB[i][j][k] = tbl_val[tbl_s][k];
-		rgb2hsv(c3d_lutR[i][j][k], c3d_lutG[i][j][k], c3d_lutB[i][j][k],
-			&c3d_lutH[i][j][k], &c3d_lutS[i][j][k], &c3d_lutI[i][j][k],
+		rgb2hsv(c3d_lutR[i][j][k], c3d_lutG[i][j][k],
+			c3d_lutB[i][j][k], &c3d_lutH[i][j][k],
+			&c3d_lutS[i][j][k], &c3d_lutI[i][j][k],
 			&c3d_lutV[i][j][k]);
 
 		tmp_c3d_lutR[i][j][k] = tbl_val[tbl_s][i];
@@ -329,8 +335,8 @@ void TC3DForm1::Show_c3d_TblImg(double tbl_r, double tbl_g, double tbl_b)
 }
 
 //---------------------------------------------------------------------------
-void c3d_find_point(int tbl_l, int tbl_n, double r, double g, double b, int *idx_r, int *idx_g,
-		    int *idx_b)
+void c3d_find_point(int tbl_l, int tbl_n, double r, double g, double b,
+		    int *idx_r, int *idx_g, int *idx_b)
 {
     //找最接近的點
     double t_r = fmod(r, cube_dis);
@@ -434,7 +440,8 @@ void TC3DForm1::Show_c3d_SimImg(double sim_r, double sim_g, double sim_b)
 	Edit_c3d_Manual39_h_adj->Text = FloatToStr(sim_h);
 	Edit_c3d_Manual39_s_adj->Text = FloatToStr(sim_s);
 	Edit_c3d_Manual39_v_adj->Text = FloatToStr(sim_v);
-    } else if (pc_Adjust->TabIndex == 1 && pc_point_color_adj->TabIndex == 1) {
+    } else if (pc_Adjust->TabIndex == 1
+	       && pc_point_color_adj->TabIndex == 1) {
 	Edit_c3d_Point_HSV_h_adj->Text = FloatToStr(sim_h);
 	Edit_c3d_Point_HSV_s_adj->Text = FloatToStr(sim_s);
 	Edit_c3d_Point_HSV_v_adj->Text = FloatToStr(sim_v);
@@ -450,7 +457,8 @@ void TC3DForm1::ShowImageColor(TImage * img, double r, double g, double b)
     TmpBitmap->Height = img->Height;
 
     TmpBitmap->Canvas->Brush->Color = (TColor) RGB(r, g, b);
-    TmpBitmap->Canvas->Rectangle(0, 0, TmpBitmap->Width, TmpBitmap->Height);
+    TmpBitmap->Canvas->Rectangle(0, 0, TmpBitmap->Width,
+				 TmpBitmap->Height);
     img->Canvas->Draw(0, 0, TmpBitmap);
     delete TmpBitmap;
 }
@@ -470,7 +478,8 @@ void TC3DForm1::Show_c3d_Img_sim()
     color[3] = canvas->Pixels[x + 10][y + 10];
 
     Graphics::TBitmap * TmpBitmap = new Graphics::TBitmap();
-    if ((color[0] == color[1]) && (color[0] == color[2]) && (color[0] == color[3])) {
+    if ((color[0] == color[1]) && (color[0] == color[2])
+	&& (color[0] == color[3])) {
 	//Simulate Color
 	TmpBitmap->Width = imageSim->Width;
 	TmpBitmap->Height = imageSim->Height;
@@ -482,8 +491,10 @@ void TC3DForm1::Show_c3d_Img_sim()
 	r = color % 256;
 
 	C3Dsim_t(r, g, b, &r_new, &g_new, &b_new);
-	TmpBitmap->Canvas->Brush->Color = (TColor) RGB(r_new, g_new, b_new);
-	TmpBitmap->Canvas->Rectangle(0, 0, TmpBitmap->Width, TmpBitmap->Height);
+	TmpBitmap->Canvas->Brush->Color =
+	    (TColor) RGB(r_new, g_new, b_new);
+	TmpBitmap->Canvas->Rectangle(0, 0, TmpBitmap->Width,
+				     TmpBitmap->Height);
 	imageSim->Canvas->Draw(0, 0, TmpBitmap);
     } else {			// Simulate 影像
 	TmpBitmap->Width = imageColor->Width / 2;
@@ -497,8 +508,10 @@ void TC3DForm1::Show_c3d_Img_sim()
 	    g = color[i] / 256 % 256;
 	    r = color[i] % 256;
 	    C3Dsim_t(r, g, b, &r_new, &g_new, &b_new);
-	    TmpBitmap->Canvas->Brush->Color = (TColor) RGB(r_new, g_new, b_new);
-	    TmpBitmap->Canvas->Rectangle(0, 0, TmpBitmap->Width, TmpBitmap->Height);
+	    TmpBitmap->Canvas->Brush->Color =
+		(TColor) RGB(r_new, g_new, b_new);
+	    TmpBitmap->Canvas->Rectangle(0, 0, TmpBitmap->Width,
+					 TmpBitmap->Height);
 	    TCanvas *canvas = imageSim->Canvas;
 	    if (i == 0)
 		canvas->Draw(0, 0, TmpBitmap);
@@ -552,7 +565,8 @@ void __fastcall TC3DForm1::btn_c3d_load_imgClick(TObject * Sender)
 	    image3DLut->Height = JPEG->Height;
 	    image3DLut->Picture->Bitmap->Assign(JPEG);
 
-	} else if (curExt == ".bmp" || curExt == ".BMP" || curExt == ".Bitmap") {
+	} else if (curExt == ".bmp" || curExt == ".BMP"
+		   || curExt == ".Bitmap") {
 	    image3DLut->Picture->LoadFromFile(S1);
 	    /* Graphics::TBitmap *pi = new Graphics::TBitmap();
 	       try{
@@ -570,7 +584,8 @@ void __fastcall TC3DForm1::btn_c3d_load_imgClick(TObject * Sender)
 	delete JPEG;
 	OrgBitmap->Assign(image3DLut->Picture->Bitmap);
 	if (colorPicker->pc_img->TabIndex == 0)
-	    InTargetForm->img_in_target->Picture->Bitmap->Assign(image3DLut->Picture->Bitmap);
+	    InTargetForm->img_in_target->Picture->Bitmap->
+		Assign(image3DLut->Picture->Bitmap);
     }
     delete OrgBitmap;
 
@@ -592,16 +607,21 @@ void TC3DForm1::calculate_disc()
 	    c3d_hsvBase_adj(true);
     }
     double r, g, b, r_new, g_new, b_new;
-    double r_new_dis, g_new_dis, b_new_dis, r_new_tol, g_new_tol, b_new_tol;
+    double r_new_dis, g_new_dis, b_new_dis, r_new_tol, g_new_tol,
+	b_new_tol;
     double r_new_d, g_new_d, b_new_d, tol, disc;
     double r_new_tol1, g_new_tol1, b_new_tol1;
     BYTE *p_Img, *p_Sim_Img1, *p_Sim_Img_Dif;
     C3DSimualteForm->Image1->Picture->Bitmap = image3DLut->Picture->Bitmap;
-    C3DSimualteForm->Img_diff->Picture->Bitmap = image3DLut->Picture->Bitmap;
+    C3DSimualteForm->Img_diff->Picture->Bitmap =
+	image3DLut->Picture->Bitmap;
     for (int i = 0; i < y; i++) {
 	p_Img = (BYTE *) image3DLut->Picture->Bitmap->ScanLine[i];
-	p_Sim_Img1 = (BYTE *) C3DSimualteForm->Image1->Picture->Bitmap->ScanLine[i];
-	p_Sim_Img_Dif = (BYTE *) C3DSimualteForm->Img_diff->Picture->Bitmap->ScanLine[i];
+	p_Sim_Img1 =
+	    (BYTE *) C3DSimualteForm->Image1->Picture->Bitmap->ScanLine[i];
+	p_Sim_Img_Dif =
+	    (BYTE *) C3DSimualteForm->Img_diff->Picture->Bitmap->
+	    ScanLine[i];
 	for (int j = 0; j < x * 3; j += 3) {
 	    b = p_Img[j];
 	    g = p_Img[j + 1];
@@ -619,7 +639,8 @@ void TC3DForm1::calculate_disc()
 	    p_Sim_Img1[j + 1] = (BYTE) g_new;
 	    p_Sim_Img1[j + 2] = (BYTE) r_new;
 
-	    C3Dsim((r + 1 > 255 ? 255 : r + 1), g, b, &r_new_dis, &g_new_dis, &b_new_dis);
+	    C3Dsim((r + 1 > 255 ? 255 : r + 1), g, b, &r_new_dis,
+		   &g_new_dis, &b_new_dis);
 	    r_new_tol += r_new_dis;
 	    g_new_tol += g_new_dis;
 	    b_new_tol += b_new_dis;
@@ -627,16 +648,8 @@ void TC3DForm1::calculate_disc()
 	    g_new_tol1 += fabs(g_new_dis - g_new);
 	    b_new_tol1 += fabs(b_new_dis - b_new);
 
-	    C3Dsim((r - 1 < 0 ? 0 : r - 1), g, b, &r_new_dis, &g_new_dis, &b_new_dis);
-	    r_new_tol += r_new_dis;
-	    g_new_tol += g_new_dis;
-	    b_new_tol += b_new_dis;
-
-	    r_new_tol1 += fabs(r_new_dis - r_new);
-	    g_new_tol1 += fabs(g_new_dis - g_new);
-	    b_new_tol1 += fabs(b_new_dis - b_new);
-
-	    C3Dsim(r, (g + 1 > 255 ? 255 : g + 1), b, &r_new_dis, &g_new_dis, &b_new_dis);
+	    C3Dsim((r - 1 < 0 ? 0 : r - 1), g, b, &r_new_dis, &g_new_dis,
+		   &b_new_dis);
 	    r_new_tol += r_new_dis;
 	    g_new_tol += g_new_dis;
 	    b_new_tol += b_new_dis;
@@ -645,7 +658,8 @@ void TC3DForm1::calculate_disc()
 	    g_new_tol1 += fabs(g_new_dis - g_new);
 	    b_new_tol1 += fabs(b_new_dis - b_new);
 
-	    C3Dsim(r, (g - 1 < 0 ? 0 : g - 1), b, &r_new_dis, &g_new_dis, &b_new_dis);
+	    C3Dsim(r, (g + 1 > 255 ? 255 : g + 1), b, &r_new_dis,
+		   &g_new_dis, &b_new_dis);
 	    r_new_tol += r_new_dis;
 	    g_new_tol += g_new_dis;
 	    b_new_tol += b_new_dis;
@@ -654,7 +668,8 @@ void TC3DForm1::calculate_disc()
 	    g_new_tol1 += fabs(g_new_dis - g_new);
 	    b_new_tol1 += fabs(b_new_dis - b_new);
 
-	    C3Dsim(r, g, (b + 1 > 255 ? 255 : b + 1), &r_new_dis, &g_new_dis, &b_new_dis);
+	    C3Dsim(r, (g - 1 < 0 ? 0 : g - 1), b, &r_new_dis, &g_new_dis,
+		   &b_new_dis);
 	    r_new_tol += r_new_dis;
 	    g_new_tol += g_new_dis;
 	    b_new_tol += b_new_dis;
@@ -663,7 +678,18 @@ void TC3DForm1::calculate_disc()
 	    g_new_tol1 += fabs(g_new_dis - g_new);
 	    b_new_tol1 += fabs(b_new_dis - b_new);
 
-	    C3Dsim(r, g, (b - 1 < 0 ? 0 : b - 1), &r_new_dis, &g_new_dis, &b_new_dis);
+	    C3Dsim(r, g, (b + 1 > 255 ? 255 : b + 1), &r_new_dis,
+		   &g_new_dis, &b_new_dis);
+	    r_new_tol += r_new_dis;
+	    g_new_tol += g_new_dis;
+	    b_new_tol += b_new_dis;
+
+	    r_new_tol1 += fabs(r_new_dis - r_new);
+	    g_new_tol1 += fabs(g_new_dis - g_new);
+	    b_new_tol1 += fabs(b_new_dis - b_new);
+
+	    C3Dsim(r, g, (b - 1 < 0 ? 0 : b - 1), &r_new_dis, &g_new_dis,
+		   &b_new_dis);
 	    r_new_tol += r_new_dis;
 	    g_new_tol += g_new_dis;
 	    b_new_tol += b_new_dis;
@@ -690,8 +716,10 @@ void TC3DForm1::calculate_disc()
 
 	    } else if (cb_sim_type->ItemIndex == 3) {
 		//tol = (r_new_d+g_new_d+b_new_d)*60;
-		disc = pow(pow(r_new_tol / 6 - r_new, 2) + pow(g_new_tol / 6 - g_new, 2)
-			   + pow(b_new_tol / 6 - b_new, 2), 0.5);
+		disc =
+		    pow(pow(r_new_tol / 6 - r_new, 2) +
+			pow(g_new_tol / 6 - g_new, 2)
+			+ pow(b_new_tol / 6 - b_new, 2), 0.5);
 		tol = disc * 60;
 		p_Sim_Img_Dif[j] = (BYTE) tol;
 		p_Sim_Img_Dif[j + 1] = (BYTE) tol;
@@ -699,7 +727,9 @@ void TC3DForm1::calculate_disc()
 		//C3D_SimualteForm->Img_diff->Canvas->Pixels[i][j] = (TColor)RGB(tol,tol,tol);
 
 	    } else if (cb_sim_type->ItemIndex == 4) {
-		tol = (r_new_d * 28 + g_new_d * 151 + b_new_d * 77) / 17 * 12;
+		tol =
+		    (r_new_d * 28 + g_new_d * 151 +
+		     b_new_d * 77) / 17 * 12;
 		p_Sim_Img_Dif[j] = (BYTE) tol;
 		p_Sim_Img_Dif[j + 1] = (BYTE) tol;
 		p_Sim_Img_Dif[j + 2] = (BYTE) tol;
@@ -736,11 +766,15 @@ void TC3DForm1::calculate_HSV_disc()
     double h[2], s[2], v[2], intance[2];
     double max_h_dis = 0.0, max_s_dis = 0.0, max_v_dis = 0.0;
 
-    BYTE *p_Img, *p_Img_n_row, *p_Sim_Img, *p_diff_img_h, *p_diff_img_s, *p_diff_img_v;
+    BYTE *p_Img, *p_Img_n_row, *p_Sim_Img, *p_diff_img_h, *p_diff_img_s,
+	*p_diff_img_v;
     C3DSimualteForm->Image1->Picture->Bitmap = image3DLut->Picture->Bitmap;
-    C3DSimualteForm->Image_h->Picture->Bitmap = image3DLut->Picture->Bitmap;
-    C3DSimualteForm->Image_s->Picture->Bitmap = image3DLut->Picture->Bitmap;
-    C3DSimualteForm->Image_v->Picture->Bitmap = image3DLut->Picture->Bitmap;
+    C3DSimualteForm->Image_h->Picture->Bitmap =
+	image3DLut->Picture->Bitmap;
+    C3DSimualteForm->Image_s->Picture->Bitmap =
+	image3DLut->Picture->Bitmap;
+    C3DSimualteForm->Image_v->Picture->Bitmap =
+	image3DLut->Picture->Bitmap;
     //C3D_SimualteForm->Image_v->Picture->Bitmap = Img_3DLUT->Picture->Bitmap;
     double tmp, tmp_s, tmp_v;
     int next_i, next_j;
@@ -748,11 +782,19 @@ void TC3DForm1::calculate_HSV_disc()
     for (int i = 0; i < y; i++) {
 	p_Img = (BYTE *) image3DLut->Picture->Bitmap->ScanLine[i];
 	next_i = (i + 1 >= y ? i : i + 1);
-	p_Img_n_row = (BYTE *) image3DLut->Picture->Bitmap->ScanLine[next_i];
-	p_Sim_Img = (BYTE *) C3DSimualteForm->Image1->Picture->Bitmap->ScanLine[i];
-	p_diff_img_h = (BYTE *) C3DSimualteForm->Image_h->Picture->Bitmap->ScanLine[i];
-	p_diff_img_s = (BYTE *) C3DSimualteForm->Image_s->Picture->Bitmap->ScanLine[i];
-	p_diff_img_v = (BYTE *) C3DSimualteForm->Image_v->Picture->Bitmap->ScanLine[i];
+	p_Img_n_row =
+	    (BYTE *) image3DLut->Picture->Bitmap->ScanLine[next_i];
+	p_Sim_Img =
+	    (BYTE *) C3DSimualteForm->Image1->Picture->Bitmap->ScanLine[i];
+	p_diff_img_h =
+	    (BYTE *) C3DSimualteForm->Image_h->Picture->Bitmap->
+	    ScanLine[i];
+	p_diff_img_s =
+	    (BYTE *) C3DSimualteForm->Image_s->Picture->Bitmap->
+	    ScanLine[i];
+	p_diff_img_v =
+	    (BYTE *) C3DSimualteForm->Image_v->Picture->Bitmap->
+	    ScanLine[i];
 
 	for (int j = 0; j < x * 3; j += 3) {
 	    next_j = (j + 3 >= x * 3 ? j : j + 3);
@@ -762,16 +804,19 @@ void TC3DForm1::calculate_HSV_disc()
 		col_hn[2 - c] = p_Img[next_j + c];
 	    }
 	    //Simulate current color to adjust
-	    C3Dsim(col[0], col[1], col[2], &col_sim[0], &col_sim[1], &col_sim[2]);
+	    C3Dsim(col[0], col[1], col[2], &col_sim[0], &col_sim[1],
+		   &col_sim[2]);
 	    for (int c = 0; c < 3; c++) {
 		p_Sim_Img[j + (2 - c)] = (BYTE) floor(col_sim[c]);
 	    }
 	    // h[0], s[0], v[0], intance[0] is current adjust color (hue, saturation, value, intensity)
-	    rgb2hsv(col_sim[0], col_sim[1], col_sim[2], &h[0], &s[0], &intance[0], &v[0]);
+	    rgb2hsv(col_sim[0], col_sim[1], col_sim[2], &h[0], &s[0],
+		    &intance[0], &v[0]);
 
 	    C3Dsim(col_vn[0], col_vn[1], col_vn[2], &col_vn_sim[0], &col_vn_sim[1], &col_vn_sim[2]);	//vertical
 	    // h[1], s[1], v[1], intance[1] is adjust color of next vertical (hue, saturation, value, intensity)
-	    rgb2hsv(col_vn_sim[0], col_vn_sim[1], col_vn_sim[2], &h[1], &s[1], &intance[1], &v[1]);
+	    rgb2hsv(col_vn_sim[0], col_vn_sim[1], col_vn_sim[2], &h[1],
+		    &s[1], &intance[1], &v[1]);
 
 	    tmp_s = fabs(s[0] - s[1]);
 	    tmp_v = fabs(v[0] - v[1]) / (v[0] + v[1]);
@@ -786,7 +831,8 @@ void TC3DForm1::calculate_HSV_disc()
 
 	    C3Dsim(col_hn[0], col_hn[1], col_hn[2], &col_hn_sim[0], &col_hn_sim[1], &col_hn_sim[2]);	//horizontal
 	    // h[1], s[1], v[1], intance[1] is adjust color of next horizontal (hue, saturation, value, intensity)
-	    rgb2hsv(col_hn_sim[0], col_hn_sim[1], col_hn_sim[2], &h[1], &s[1], &intance[1], &v[1]);
+	    rgb2hsv(col_hn_sim[0], col_hn_sim[1], col_hn_sim[2], &h[1],
+		    &s[1], &intance[1], &v[1]);
 	    tmp = fabs(h[0] - h[1]);	//Hue
 	    tmp = fabs(tmp > 300 ? 360 - tmp : tmp);
 	    if (tmp > max_h_dis)
@@ -811,7 +857,8 @@ void TC3DForm1::calculate_HSV_disc()
         Array_hsv[0]=max_h_dis;
         Array_hsv[0]=max_s_dis*/
 
-    sprintf(str.c_str(), "Max dif---H:%2.6f, S:%2.6f, V:%2.6f", max_h_dis, max_s_dis, max_v_dis);
+    sprintf(str.c_str(), "Max dif---H:%2.6f, S:%2.6f, V:%2.6f", max_h_dis,
+	    max_s_dis, max_v_dis);
     C3DSimualteForm->lb_hsv_dis_max->Caption = (AnsiString) str.c_str();
     String H_gain = sb_c3d_Point_HSV_hdp->Position;
     AnsiString FilePath = "Sim_" + H_gain + ".bmp";
@@ -824,8 +871,10 @@ void TC3DForm1::calculate_HSV_disc()
     C3DSimualteForm->Image_v->Picture->SaveToFile(FilePath);
 }
 
-void TC3DForm1::Caculate_dif_table(double ***c3d_dif_lutR, double ***c3d_dif_lutG,
-				   double ***c3d_dif_lutB, double ***c3d_dif, int modif)
+void TC3DForm1::Caculate_dif_table(double ***c3d_dif_lutR,
+				   double ***c3d_dif_lutG,
+				   double ***c3d_dif_lutB,
+				   double ***c3d_dif, int modif)
 {
     for (int i = 1; i < TBL_SIZE; i++)
 	for (int j = 1; j < TBL_SIZE; j++) {
@@ -860,47 +909,60 @@ void TC3DForm1::Caculate_dif_table(double ***c3d_dif_lutR, double ***c3d_dif_lut
 	    for (int j = 1; j < TBL_SIZE - 1; j++)
 		for (int k = 1; k < TBL_SIZE - 1; k++) {
 		    c3d_lutR[i][j][k] =
-			(c3d_lutR[i - 1][j][k] + c3d_lutR[i + 1][j][k] + c3d_lutR[i][j - 1][k]
-			 + c3d_lutR[i][j + 1][k] + c3d_lutR[i][j][k - 1] + c3d_lutR[i][j][k +
-											  1]) / 6;
+			(c3d_lutR[i - 1][j][k] + c3d_lutR[i + 1][j][k] +
+			 c3d_lutR[i][j - 1][k]
+			 + c3d_lutR[i][j + 1][k] + c3d_lutR[i][j][k - 1] +
+			 c3d_lutR[i][j][k + 1]) / 6;
 
 		    c3d_lutG[i][j][k] =
-			(c3d_lutG[i - 1][j][k] + c3d_lutG[i + 1][j][k] + c3d_lutG[i][j - 1][k]
-			 + c3d_lutG[i][j + 1][k] + c3d_lutG[i][j][k - 1] + c3d_lutG[i][j][k +
-											  1]) / 6;
+			(c3d_lutG[i - 1][j][k] + c3d_lutG[i + 1][j][k] +
+			 c3d_lutG[i][j - 1][k]
+			 + c3d_lutG[i][j + 1][k] + c3d_lutG[i][j][k - 1] +
+			 c3d_lutG[i][j][k + 1]) / 6;
 
 		    c3d_lutB[i][j][k] =
-			(c3d_lutB[i - 1][j][k] + c3d_lutB[i + 1][j][k] + c3d_lutB[i][j - 1][k]
-			 + c3d_lutB[i][j + 1][k] + c3d_lutB[i][j][k - 1] + c3d_lutB[i][j][k +
-											  1]) / 6;
+			(c3d_lutB[i - 1][j][k] + c3d_lutB[i + 1][j][k] +
+			 c3d_lutB[i][j - 1][k]
+			 + c3d_lutB[i][j + 1][k] + c3d_lutB[i][j][k - 1] +
+			 c3d_lutB[i][j][k + 1]) / 6;
 		}
     }
     for (int i = 1; i < TBL_SIZE - 1; i++)
 	for (int j = 1; j < TBL_SIZE - 1; j++)
 	    for (int k = 1; k < TBL_SIZE - 1; k++) {
 		c3d_dif_lutR[i][j][k] =
-		    (c3d_lutR[i - 1][j][k] + c3d_lutR[i + 1][j][k] + c3d_lutR[i][j - 1][k]
-		     + c3d_lutR[i][j + 1][k] + c3d_lutR[i][j][k - 1] + c3d_lutR[i][j][k + 1]) / 6;
-		c3d_dif_lutR[i][j][k] = c3d_lutR[i][j][k] - c3d_dif_lutR[i][j][k];
+		    (c3d_lutR[i - 1][j][k] + c3d_lutR[i + 1][j][k] +
+		     c3d_lutR[i][j - 1][k]
+		     + c3d_lutR[i][j + 1][k] + c3d_lutR[i][j][k - 1] +
+		     c3d_lutR[i][j][k + 1]) / 6;
+		c3d_dif_lutR[i][j][k] =
+		    c3d_lutR[i][j][k] - c3d_dif_lutR[i][j][k];
 
 		c3d_dif_lutG[i][j][k] =
-		    (c3d_lutG[i - 1][j][k] + c3d_lutG[i + 1][j][k] + c3d_lutG[i][j - 1][k]
-		     + c3d_lutG[i][j + 1][k] + c3d_lutG[i][j][k - 1] + c3d_lutG[i][j][k + 1]) / 6;
-		c3d_dif_lutG[i][j][k] = c3d_lutG[i][j][k] - c3d_dif_lutG[i][j][k];
+		    (c3d_lutG[i - 1][j][k] + c3d_lutG[i + 1][j][k] +
+		     c3d_lutG[i][j - 1][k]
+		     + c3d_lutG[i][j + 1][k] + c3d_lutG[i][j][k - 1] +
+		     c3d_lutG[i][j][k + 1]) / 6;
+		c3d_dif_lutG[i][j][k] =
+		    c3d_lutG[i][j][k] - c3d_dif_lutG[i][j][k];
 
 		c3d_dif_lutB[i][j][k] =
-		    (c3d_lutB[i - 1][j][k] + c3d_lutB[i + 1][j][k] + c3d_lutB[i][j - 1][k]
-		     + c3d_lutB[i][j + 1][k] + c3d_lutB[i][j][k - 1] + c3d_lutB[i][j][k + 1]) / 6;
-		c3d_dif_lutB[i][j][k] = c3d_lutB[i][j][k] - c3d_dif_lutB[i][j][k];
+		    (c3d_lutB[i - 1][j][k] + c3d_lutB[i + 1][j][k] +
+		     c3d_lutB[i][j - 1][k]
+		     + c3d_lutB[i][j + 1][k] + c3d_lutB[i][j][k - 1] +
+		     c3d_lutB[i][j][k + 1]) / 6;
+		c3d_dif_lutB[i][j][k] =
+		    c3d_lutB[i][j][k] - c3d_dif_lutB[i][j][k];
 
 		c3d_dif[i][j][k] =
-		    pow(pow(c3d_dif_lutR[i][j][k], 2) + pow(c3d_dif_lutG[i][j][k], 2) +
-			pow(c3d_dif_lutB[i][j][k], 2), 0.5);
+		    pow(pow(c3d_dif_lutR[i][j][k], 2) +
+			pow(c3d_dif_lutG[i][j][k],
+			    2) + pow(c3d_dif_lutB[i][j][k], 2), 0.5);
 	    }
 
 }
-void TC3DForm1::C3Dsim_dif(double r, double g, double b, double *r_new, double *g_new,
-			   double *b_new, double ***c3d_dif)
+void TC3DForm1::C3Dsim_dif(double r, double g, double b, double *r_new,
+			   double *g_new, double *b_new, double ***c3d_dif)
 {
     //techehedral
     int idx_r, idx_g, idx_b;
@@ -988,7 +1050,9 @@ void TC3DForm1::C3Dsim_dif(double r, double g, double b, double *r_new, double *
 
 	double P_[3];
 	for (int c = 0; c < 3; c++) {
-	    P_[c] = P[0][0][0][c] + C1[c] * dlt_x + C2[c] * dlt_y + C3[c] * dlt_z;
+	    P_[c] =
+		P[0][0][0][c] + C1[c] * dlt_x + C2[c] * dlt_y +
+		C3[c] * dlt_z;
 	}
 
 	*r_new = P_[0];
@@ -1041,7 +1105,8 @@ void TC3DForm1::calculate_NCTU_dif()
     int modif = 0;		// modif = 1, do Consistensity modification function
     if (cb_sim_type->ItemIndex == 7)
 	modif = 1;
-    Caculate_dif_table(c3d_dif_lutR, c3d_dif_lutG, c3d_dif_lutB, c3d_dif, modif);
+    Caculate_dif_table(c3d_dif_lutR, c3d_dif_lutG, c3d_dif_lutB, c3d_dif,
+		       modif);
 
     //Simulate the difference in test image
     //C3D_SimualteForm = new TC3D_SimualteForm(this);
@@ -1054,11 +1119,15 @@ void TC3DForm1::calculate_NCTU_dif()
 
     BYTE *p_Img, *p_Sim_Img1, *p_Sim_Img_Dif;
     C3DSimualteForm->Image1->Picture->Bitmap = image3DLut->Picture->Bitmap;
-    C3DSimualteForm->Img_diff->Picture->Bitmap = image3DLut->Picture->Bitmap;
+    C3DSimualteForm->Img_diff->Picture->Bitmap =
+	image3DLut->Picture->Bitmap;
     for (int i = 0; i < y; i++) {
 	p_Img = (BYTE *) image3DLut->Picture->Bitmap->ScanLine[i];
-	p_Sim_Img1 = (BYTE *) C3DSimualteForm->Image1->Picture->Bitmap->ScanLine[i];
-	p_Sim_Img_Dif = (BYTE *) C3DSimualteForm->Img_diff->Picture->Bitmap->ScanLine[i];
+	p_Sim_Img1 =
+	    (BYTE *) C3DSimualteForm->Image1->Picture->Bitmap->ScanLine[i];
+	p_Sim_Img_Dif =
+	    (BYTE *) C3DSimualteForm->Img_diff->Picture->Bitmap->
+	    ScanLine[i];
 	for (int j = 0; j < x * 3; j += 3) {
 	    r = p_Img[j + 2];
 	    g = p_Img[j + 1];
@@ -1155,7 +1224,8 @@ void __fastcall TC3DForm1::btn_c3d_simClick(TObject * Sender)
 	else
 	    ShowMessage("table size is not 9x9x9, do nothing.");
 
-    } else if (pc_Adjust->TabIndex == 1 && pc_point_color_adj->TabIndex == 1) {
+    } else if (pc_Adjust->TabIndex == 1
+	       && pc_point_color_adj->TabIndex == 1) {
 	if (rg_c3d_hsv_mode->ItemIndex == 0) {
 	    // Point Color && HSV diffusion, method 1
 	    c3d_hsvBase_adj(true);	//hsv adjust
@@ -1187,7 +1257,8 @@ void __fastcall TC3DForm1::btn_c3d_simClick(TObject * Sender)
 	    g = color / 256 % 256;
 	    r = color % 256;
 	    C3Dsim(r, g, b, &r_new, &g_new, &b_new);
-	    C3DSimualteForm->Image1->Canvas->Pixels[i][j] = (TColor) RGB(r_new, g_new, b_new);
+	    C3DSimualteForm->Image1->Canvas->Pixels[i][j] =
+		(TColor) RGB(r_new, g_new, b_new);
 	}
 
     // simulate的hsv結果標示在simalate form
@@ -1375,9 +1446,15 @@ void TC3DForm1::c3d_tmp_tbl_save()
 void TC3DForm1::PointAdjust_1(int idx_r, int idx_g, int idx_b)
 {
     int d = (sb_c3d_rgb_dis->Position);
-    double r_gain = double (sb_c3d_rgb_r->Position - sb_c3d_rgb_r->Max / 2) / scrl_ratio;
-    double g_gain = double (sb_c3d_rgb_g->Position - sb_c3d_rgb_g->Max / 2) / scrl_ratio;
-    double b_gain = double (sb_c3d_rgb_b->Position - sb_c3d_rgb_b->Max / 2) / scrl_ratio;
+    double r_gain =
+	double (sb_c3d_rgb_r->Position -
+		sb_c3d_rgb_r->Max / 2) / scrl_ratio;
+    double g_gain =
+	double (sb_c3d_rgb_g->Position -
+		sb_c3d_rgb_g->Max / 2) / scrl_ratio;
+    double b_gain =
+	double (sb_c3d_rgb_b->Position -
+		sb_c3d_rgb_b->Max / 2) / scrl_ratio;
     double ratio;
 
     int tmp_i, tmp_j, tmp_k;
@@ -1394,8 +1471,8 @@ void TC3DForm1::PointAdjust_1(int idx_r, int idx_g, int idx_b)
 	//Record_Move(idx_r,idx_g,idx_b,tmp_c3d_lutR[idx_r][idx_g][idx_b],
 	//  tmp_c3d_lutG[idx_r][idx_g][idx_b],tmp_c3d_lutB[idx_r][idx_g][idx_b]);
     } else if (d == 1) {	//choose distance = 1
-	for (int i_r = (idx_r - 1) > 0 ? (idx_r - 1) : 0; i_r <= (idx_r + 1 < 8 ? idx_r + 1 : 8);
-	     i_r++) {
+	for (int i_r = (idx_r - 1) > 0 ? (idx_r - 1) : 0;
+	     i_r <= (idx_r + 1 < 8 ? idx_r + 1 : 8); i_r++) {
 	    for (int i_g = (idx_g - 1) > 0 ? (idx_g - 1) : 0;
 		 i_g <= (idx_g + 1 < 8 ? idx_g + 1 : 8); i_g++) {
 		for (int i_b = (idx_b - 1) > 0 ? (idx_b - 1) : 0;
@@ -1436,25 +1513,43 @@ void TC3DForm1::PointAdjust_1(int idx_r, int idx_g, int idx_b)
 			    tmp_k = idx_b + k;
 			    if (tmp_k >= 0 & tmp_k <= TBL_SIZE - 1) {
 				//c3d_Aratio(i,j,k,&rat,d);
-				ratio = 1 - sqrt(double (i * i + j * j + k * k) / 3) / d;
+				ratio =
+				    1 -
+				    sqrt(double (i * i + j * j + k * k) /
+					 3) / d;
 				//ratio = 1-rat/d;
 				if (ratio > 0) {
-				    tmp_c3d_lutR[tmp_i][tmp_j][tmp_k] += ratio * r_gain;
-				    tmp_c3d_lutG[tmp_i][tmp_j][tmp_k] += ratio * g_gain;
-				    tmp_c3d_lutB[tmp_i][tmp_j][tmp_k] += ratio * b_gain;
+				    tmp_c3d_lutR[tmp_i][tmp_j][tmp_k] +=
+					ratio * r_gain;
+				    tmp_c3d_lutG[tmp_i][tmp_j][tmp_k] +=
+					ratio * g_gain;
+				    tmp_c3d_lutB[tmp_i][tmp_j][tmp_k] +=
+					ratio * b_gain;
 
-				    if (tmp_c3d_lutR[tmp_i][tmp_j][tmp_k] > 256 - 1.0 / Ratio)
-					tmp_c3d_lutR[tmp_i][tmp_j][tmp_k] = 256 - 1.0 / Ratio;
-				    else if (tmp_c3d_lutR[tmp_i][tmp_j][tmp_k] < 0)
-					tmp_c3d_lutR[tmp_i][tmp_j][tmp_k] = 0;
-				    if (tmp_c3d_lutG[tmp_i][tmp_j][tmp_k] > 256 - 1.0 / Ratio)
-					tmp_c3d_lutG[tmp_i][tmp_j][tmp_k] = 256 - 1.0 / Ratio;
-				    else if (tmp_c3d_lutG[tmp_i][tmp_j][tmp_k] < 0)
-					tmp_c3d_lutG[tmp_i][tmp_j][tmp_k] = 0;
-				    if (tmp_c3d_lutB[tmp_i][tmp_j][tmp_k] > 256 - 1.0 / Ratio)
-					tmp_c3d_lutB[tmp_i][tmp_j][tmp_k] = 256 - 1.0 / Ratio;
-				    else if (tmp_c3d_lutB[tmp_i][tmp_j][tmp_k] < 0)
-					tmp_c3d_lutB[tmp_i][tmp_j][tmp_k] = 0;
+				    if (tmp_c3d_lutR[tmp_i][tmp_j][tmp_k] >
+					256 - 1.0 / Ratio)
+					tmp_c3d_lutR[tmp_i][tmp_j][tmp_k] =
+					    256 - 1.0 / Ratio;
+				    else if (tmp_c3d_lutR[tmp_i][tmp_j]
+					     [tmp_k] < 0)
+					tmp_c3d_lutR[tmp_i][tmp_j][tmp_k] =
+					    0;
+				    if (tmp_c3d_lutG[tmp_i][tmp_j][tmp_k] >
+					256 - 1.0 / Ratio)
+					tmp_c3d_lutG[tmp_i][tmp_j][tmp_k] =
+					    256 - 1.0 / Ratio;
+				    else if (tmp_c3d_lutG[tmp_i][tmp_j]
+					     [tmp_k] < 0)
+					tmp_c3d_lutG[tmp_i][tmp_j][tmp_k] =
+					    0;
+				    if (tmp_c3d_lutB[tmp_i][tmp_j][tmp_k] >
+					256 - 1.0 / Ratio)
+					tmp_c3d_lutB[tmp_i][tmp_j][tmp_k] =
+					    256 - 1.0 / Ratio;
+				    else if (tmp_c3d_lutB[tmp_i][tmp_j]
+					     [tmp_k] < 0)
+					tmp_c3d_lutB[tmp_i][tmp_j][tmp_k] =
+					    0;
 
 				    //Record_Move(tmp_i,tmp_j,tmp_k,tmp_c3d_lutR[tmp_i][tmp_j][tmp_k],
 				    //tmp_c3d_lutG[tmp_i][tmp_j][tmp_k],tmp_c3d_lutB[tmp_i][tmp_j][tmp_k]);
@@ -1469,7 +1564,8 @@ void TC3DForm1::PointAdjust_1(int idx_r, int idx_g, int idx_b)
 }
 
 //------------------------------------------------------------------------
-void TC3DForm1::Modif_Point(int color, double gain1, double gain2, double gain3, bool fl_ranh)
+void TC3DForm1::Modif_Point(int color, double gain1, double gain2,
+			    double gain3, bool fl_ranh)
 {				//Point Color adjust (fl_rah=0 is rgb, fl_rah=1 is hsv)
     if (color == -1)
 	color = 0;
@@ -1480,27 +1576,35 @@ void TC3DForm1::Modif_Point(int color, double gain1, double gain2, double gain3,
     int idx_g = (g == 255 ? 8 : g / cube_dis);
     int idx_b = (b == 255 ? 8 : b / cube_dis);
     if (fl_ranh == 0) {		//rgb adjust
-	tmp_c3d_lutR[idx_r][idx_g][idx_b] = c3d_lutR[idx_r][idx_g][idx_b] + gain1;
-	tmp_c3d_lutG[idx_r][idx_g][idx_b] = c3d_lutG[idx_r][idx_g][idx_b] + gain2;
-	tmp_c3d_lutB[idx_r][idx_g][idx_b] = c3d_lutB[idx_r][idx_g][idx_b] + gain3;
+	tmp_c3d_lutR[idx_r][idx_g][idx_b] =
+	    c3d_lutR[idx_r][idx_g][idx_b] + gain1;
+	tmp_c3d_lutG[idx_r][idx_g][idx_b] =
+	    c3d_lutG[idx_r][idx_g][idx_b] + gain2;
+	tmp_c3d_lutB[idx_r][idx_g][idx_b] =
+	    c3d_lutB[idx_r][idx_g][idx_b] + gain3;
     } else {			//hsv adjust
 	double h, s, in, v;
-	rgb2hsv(c3d_lutR[idx_r][idx_g][idx_b], c3d_lutG[idx_r][idx_g][idx_b],
+	rgb2hsv(c3d_lutR[idx_r][idx_g][idx_b],
+		c3d_lutG[idx_r][idx_g][idx_b],
 		c3d_lutB[idx_r][idx_g][idx_b], &h, &s, &in, &v);
 	h = fmod((h + gain1 + 360), 360);
 	s *= (1 + gain2);
 	s = (s >= 1 ? 1 : s);
 	v *= (1 + gain3);
 	v = (v >= 256 ? 256 - 1 / Ratio : v);
-	hsv2rgb(h, s, v, &tmp_c3d_lutR[idx_r][idx_g][idx_b], &tmp_c3d_lutG[idx_r][idx_g][idx_b],
+	hsv2rgb(h, s, v, &tmp_c3d_lutR[idx_r][idx_g][idx_b],
+		&tmp_c3d_lutG[idx_r][idx_g][idx_b],
 		&tmp_c3d_lutB[idx_r][idx_g][idx_b]);
     }
     tmp_c3d_lutR[idx_r][idx_g][idx_b] =
-	(tmp_c3d_lutR[idx_r][idx_g][idx_b] < 0 ? 0 : tmp_c3d_lutR[idx_r][idx_g][idx_b]);
+	(tmp_c3d_lutR[idx_r][idx_g][idx_b] <
+	 0 ? 0 : tmp_c3d_lutR[idx_r][idx_g][idx_b]);
     tmp_c3d_lutG[idx_r][idx_g][idx_b] =
-	(tmp_c3d_lutG[idx_r][idx_g][idx_b] < 0 ? 0 : tmp_c3d_lutG[idx_r][idx_g][idx_b]);
+	(tmp_c3d_lutG[idx_r][idx_g][idx_b] <
+	 0 ? 0 : tmp_c3d_lutG[idx_r][idx_g][idx_b]);
     tmp_c3d_lutB[idx_r][idx_g][idx_b] =
-	(tmp_c3d_lutB[idx_r][idx_g][idx_b] < 0 ? 0 : tmp_c3d_lutB[idx_r][idx_g][idx_b]);
+	(tmp_c3d_lutB[idx_r][idx_g][idx_b] <
+	 0 ? 0 : tmp_c3d_lutB[idx_r][idx_g][idx_b]);
 
     tmp_c3d_lutR[idx_r][idx_g][idx_b] =
 	(tmp_c3d_lutR[idx_r][idx_g][idx_b] >=
@@ -1525,9 +1629,15 @@ void TC3DForm1::PointAdjust_4()
     TCanvas *canvas = colorPicker->img_color->Canvas;
 
     if (rg_PCrgb_choose->ItemIndex == 0) {	// gain in rgb
-	double r_gain = double (sb_c3d_rgb_r->Position - sb_c3d_rgb_r->Max / 2) / scrl_ratio;
-	double g_gain = double (sb_c3d_rgb_g->Position - sb_c3d_rgb_g->Max / 2) / scrl_ratio;
-	double b_gain = double (sb_c3d_rgb_b->Position - sb_c3d_rgb_b->Max / 2) / scrl_ratio;
+	double r_gain =
+	    double (sb_c3d_rgb_r->Position -
+		    sb_c3d_rgb_r->Max / 2) / scrl_ratio;
+	double g_gain =
+	    double (sb_c3d_rgb_g->Position -
+		    sb_c3d_rgb_g->Max / 2) / scrl_ratio;
+	double b_gain =
+	    double (sb_c3d_rgb_b->Position -
+		    sb_c3d_rgb_b->Max / 2) / scrl_ratio;
 
 	color = canvas->Pixels[10][10];
 	Modif_Point(color, r_gain, g_gain, b_gain, 0);
@@ -1542,11 +1652,16 @@ void TC3DForm1::PointAdjust_4()
 	Modif_Point(color, r_gain, g_gain, b_gain, 0);
 
     } else if (rg_PCrgb_choose->ItemIndex == 1) {	// gain in hsv
-	double h_gain = ((double) sb_c3d_hsv_h->Position - sb_c3d_hsv_h->Max / 2) / 2;
+	double h_gain =
+	    ((double) sb_c3d_hsv_h->Position - sb_c3d_hsv_h->Max / 2) / 2;
 	double c = StrToFloat(edt_c3d_satC->Text);
-	double s_gain = ((double) sb_c3d_hsv_s->Position - sb_c3d_hsv_s->Max / 2) / 100 / c;
+	double s_gain =
+	    ((double) sb_c3d_hsv_s->Position -
+	     sb_c3d_hsv_s->Max / 2) / 100 / c;
 	c = StrToFloat(edt_c3d_valC->Text);
-	double v_gain = ((double) sb_c3d_hsv_v->Position - sb_c3d_hsv_v->Max / 2) / 100 / c;
+	double v_gain =
+	    ((double) sb_c3d_hsv_v->Position -
+	     sb_c3d_hsv_v->Max / 2) / 100 / c;
 
 	color = canvas->Pixels[10][10];
 	Modif_Point(color, h_gain, s_gain, v_gain, 1);
@@ -1566,26 +1681,40 @@ void TC3DForm1::PointAdjust_4()
 void TC3DForm1::PointAdjust_m()
 {
     if (rg_PCrgb_choose->ItemIndex == 0) {	//gain in rgb
-	double r_gain = double (sb_c3d_rgb_r->Position - sb_c3d_rgb_r->Max / 2) / scrl_ratio;
-	double g_gain = double (sb_c3d_rgb_g->Position - sb_c3d_rgb_g->Max / 2) / scrl_ratio;
-	double b_gain = double (sb_c3d_rgb_b->Position - sb_c3d_rgb_b->Max / 2) / scrl_ratio;
+	double r_gain =
+	    double (sb_c3d_rgb_r->Position -
+		    sb_c3d_rgb_r->Max / 2) / scrl_ratio;
+	double g_gain =
+	    double (sb_c3d_rgb_g->Position -
+		    sb_c3d_rgb_g->Max / 2) / scrl_ratio;
+	double b_gain =
+	    double (sb_c3d_rgb_b->Position -
+		    sb_c3d_rgb_b->Max / 2) / scrl_ratio;
 	for (int i = 0; i < Color_move_Nbr; i++)
-	    Modif_Point(RGB(Color_move[i][0], Color_move[i][1], Color_move[i][2]), r_gain, g_gain,
-			b_gain, 0);
+	    Modif_Point(RGB
+			(Color_move[i][0], Color_move[i][1],
+			 Color_move[i][2]), r_gain, g_gain, b_gain, 0);
     } else if (rg_PCrgb_choose->ItemIndex == 1) {	//gain in hsv
-	double h_gain = ((double) sb_c3d_hsv_h->Position - sb_c3d_hsv_h->Max / 2) / 2;
+	double h_gain =
+	    ((double) sb_c3d_hsv_h->Position - sb_c3d_hsv_h->Max / 2) / 2;
 	double c = StrToFloat(edt_c3d_satC->Text);
-	double s_gain = ((double) sb_c3d_hsv_s->Position - sb_c3d_hsv_s->Max / 2) / 100 / c;
+	double s_gain =
+	    ((double) sb_c3d_hsv_s->Position -
+	     sb_c3d_hsv_s->Max / 2) / 100 / c;
 	c = StrToFloat(edt_c3d_valC->Text);
-	double v_gain = ((double) sb_c3d_hsv_v->Position - sb_c3d_hsv_v->Max / 2) / 100 / c;
+	double v_gain =
+	    ((double) sb_c3d_hsv_v->Position -
+	     sb_c3d_hsv_v->Max / 2) / 100 / c;
 	for (int i = 0; i < Color_move_Nbr; i++)
-	    Modif_Point(RGB(Color_move[i][0], Color_move[i][1], Color_move[i][2]), h_gain, s_gain,
-			v_gain, 1);
+	    Modif_Point(RGB
+			(Color_move[i][0], Color_move[i][1],
+			 Color_move[i][2]), h_gain, s_gain, v_gain, 1);
     }
 }
 
 //------------------------------------------------------------------------
-void TC3DForm1::Record_Move(int i_r, int i_g, int i_b, double r, double g, double b)
+void TC3DForm1::Record_Move(int i_r, int i_g, int i_b, double r, double g,
+			    double b)
 {				// 去除重複的點...(先不作)   紀錄點調整所移動的部份
     PointColor_array[PointColor_array_nbr][0] = i_r * cube_dis;
     PointColor_array[PointColor_array_nbr][1] = i_g * cube_dis;
@@ -1656,7 +1785,8 @@ void TC3DForm1::cal_c3d_rgb(bool flg_wri)
 
 //---------------------------------------------------------------------------
 
-void TC3DForm1::C3Dsim_t(double r, double g, double b, double *r_new, double *g_new, double *b_new)
+void TC3DForm1::C3Dsim_t(double r, double g, double b, double *r_new,
+			 double *g_new, double *b_new)
 {				//techehedral
     int idx_r, idx_g, idx_b;
     double v_r[2], v_g[2], v_b[2];
@@ -1691,9 +1821,12 @@ void TC3DForm1::C3Dsim_t(double r, double g, double b, double *r_new, double *g_
     for (int i = 0; i < 2; i++)
 	for (int j = 0; j < 2; j++)
 	    for (int k = 0; k < 2; k++) {
-		P[i][j][k][0] = tmp_c3d_lutR[idx_r + i][idx_g + j][idx_b + k];
-		P[i][j][k][1] = tmp_c3d_lutG[idx_r + i][idx_g + j][idx_b + k];
-		P[i][j][k][2] = tmp_c3d_lutB[idx_r + i][idx_g + j][idx_b + k];
+		P[i][j][k][0] =
+		    tmp_c3d_lutR[idx_r + i][idx_g + j][idx_b + k];
+		P[i][j][k][1] =
+		    tmp_c3d_lutG[idx_r + i][idx_g + j][idx_b + k];
+		P[i][j][k][2] =
+		    tmp_c3d_lutB[idx_r + i][idx_g + j][idx_b + k];
 	    }
 
     double dlt_x = (r - v_r[0]) / (v_r[1] - v_r[0]);
@@ -1743,7 +1876,9 @@ void TC3DForm1::C3Dsim_t(double r, double g, double b, double *r_new, double *g_
 
 	double P_[3];
 	for (int c = 0; c < 3; c++) {
-	    P_[c] = P[0][0][0][c] + C1[c] * dlt_x + C2[c] * dlt_y + C3[c] * dlt_z;
+	    P_[c] =
+		P[0][0][0][c] + C1[c] * dlt_x + C2[c] * dlt_y +
+		C3[c] * dlt_z;
 	}
 
 	*r_new = P_[0];
@@ -1769,7 +1904,8 @@ void TC3DForm1::C3Dsim_t(double r, double g, double b, double *r_new, double *g_
 }
 
 //---------------------------------------------------------------------------
-void TC3DForm1::C3Dsim(double r, double g, double b, double *r_new, double *g_new, double *b_new)
+void TC3DForm1::C3Dsim(double r, double g, double b, double *r_new,
+		       double *g_new, double *b_new)
 {
     int idx_r, idx_g, idx_b;
     double v_r[2], v_g[2], v_b[2];
@@ -1855,7 +1991,9 @@ void TC3DForm1::C3Dsim(double r, double g, double b, double *r_new, double *g_ne
 
 	double P_[3];
 	for (int c = 0; c < 3; c++) {
-	    P_[c] = P[0][0][0][c] + C1[c] * dlt_x + C2[c] * dlt_y + C3[c] * dlt_z;
+	    P_[c] =
+		P[0][0][0][c] + C1[c] * dlt_x + C2[c] * dlt_y +
+		C3[c] * dlt_z;
 	}
 
 	*r_new = P_[0];
@@ -1895,12 +2033,18 @@ void TC3DForm1::refresh_6axis_grid(double r, double g, double b)
 
     int idx = TBL_SIZE - 1;
     c3d_grid(0, r, g, b);
-    c3d_grid(1, c3d_lutR[idx][0][0], c3d_lutG[idx][0][0], c3d_lutB[idx][0][0]);
-    c3d_grid(2, c3d_lutR[idx][idx][0], c3d_lutG[idx][idx][0], c3d_lutB[idx][idx][0]);
-    c3d_grid(3, c3d_lutR[0][idx][0], c3d_lutG[0][idx][0], c3d_lutB[0][idx][0]);
-    c3d_grid(4, c3d_lutR[0][idx][idx], c3d_lutG[0][idx][idx], c3d_lutB[0][idx][idx]);
-    c3d_grid(5, c3d_lutR[0][0][idx], c3d_lutG[0][0][idx], c3d_lutB[0][0][idx]);
-    c3d_grid(6, c3d_lutR[idx][0][idx], c3d_lutG[idx][0][idx], c3d_lutB[idx][0][idx]);
+    c3d_grid(1, c3d_lutR[idx][0][0], c3d_lutG[idx][0][0],
+	     c3d_lutB[idx][0][0]);
+    c3d_grid(2, c3d_lutR[idx][idx][0], c3d_lutG[idx][idx][0],
+	     c3d_lutB[idx][idx][0]);
+    c3d_grid(3, c3d_lutR[0][idx][0], c3d_lutG[0][idx][0],
+	     c3d_lutB[0][idx][0]);
+    c3d_grid(4, c3d_lutR[0][idx][idx], c3d_lutG[0][idx][idx],
+	     c3d_lutB[0][idx][idx]);
+    c3d_grid(5, c3d_lutR[0][0][idx], c3d_lutG[0][0][idx],
+	     c3d_lutB[0][0][idx]);
+    c3d_grid(6, c3d_lutR[idx][0][idx], c3d_lutG[idx][0][idx],
+	     c3d_lutB[idx][0][idx]);
 }
 
 //----------------------------------------------------------------------------
@@ -1916,12 +2060,18 @@ void TC3DForm1::refresh_6axis_grid_t(double r, double g, double b)
 
     int idx = TBL_SIZE - 1;
     c3d_grid(0, r, g, b);
-    c3d_grid(1, tmp_c3d_lutR[idx][0][0], tmp_c3d_lutG[idx][0][0], tmp_c3d_lutB[idx][0][0]);
-    c3d_grid(2, tmp_c3d_lutR[idx][idx][0], tmp_c3d_lutG[idx][idx][0], tmp_c3d_lutB[idx][idx][0]);
-    c3d_grid(3, tmp_c3d_lutR[0][idx][0], tmp_c3d_lutG[0][idx][0], tmp_c3d_lutB[0][idx][0]);
-    c3d_grid(4, tmp_c3d_lutR[0][idx][idx], tmp_c3d_lutG[0][idx][idx], tmp_c3d_lutB[0][idx][idx]);
-    c3d_grid(5, tmp_c3d_lutR[0][0][idx], tmp_c3d_lutG[0][0][idx], tmp_c3d_lutB[0][0][idx]);
-    c3d_grid(6, tmp_c3d_lutR[idx][0][idx], tmp_c3d_lutG[idx][0][idx], tmp_c3d_lutB[idx][0][idx]);
+    c3d_grid(1, tmp_c3d_lutR[idx][0][0], tmp_c3d_lutG[idx][0][0],
+	     tmp_c3d_lutB[idx][0][0]);
+    c3d_grid(2, tmp_c3d_lutR[idx][idx][0], tmp_c3d_lutG[idx][idx][0],
+	     tmp_c3d_lutB[idx][idx][0]);
+    c3d_grid(3, tmp_c3d_lutR[0][idx][0], tmp_c3d_lutG[0][idx][0],
+	     tmp_c3d_lutB[0][idx][0]);
+    c3d_grid(4, tmp_c3d_lutR[0][idx][idx], tmp_c3d_lutG[0][idx][idx],
+	     tmp_c3d_lutB[0][idx][idx]);
+    c3d_grid(5, tmp_c3d_lutR[0][0][idx], tmp_c3d_lutG[0][0][idx],
+	     tmp_c3d_lutB[0][0][idx]);
+    c3d_grid(6, tmp_c3d_lutR[idx][0][idx], tmp_c3d_lutG[idx][0][idx],
+	     tmp_c3d_lutB[idx][0][idx]);
 }
 
 //------------------------------------------------------------------------------
@@ -1938,35 +2088,50 @@ void TC3DForm1::c3d_grid(int c, int r, int g, int b)
 
 void TC3DForm1::refresh_c3d_color_grid()
 {
-    int rgb1[12][3] = { {192, 64, 64}, {192, 128, 64}, {192, 192, 64}, {128, 192, 64},
-    {64, 192, 64}, {64, 192, 128}, {64, 192, 192}, {64, 128, 192}, {64, 64, 192},
+    int rgb1[12][3] =
+	{ {192, 64, 64}, {192, 128, 64}, {192, 192, 64}, {128, 192, 64},
+    {64, 192, 64}, {64, 192, 128}, {64, 192, 192}, {64, 128, 192}, {64, 64,
+								    192},
     {128, 64, 192}, {192, 64, 192}, {192, 64, 128}
     };
 
-    int rgb2[12][3] = { {96, 32, 32}, {96, 64, 32}, {96, 96, 32}, {64, 96, 32}, {32, 96, 32},
-    {32, 96, 64}, {32, 96, 96}, {32, 64, 96}, {32, 32, 96}, {64, 32, 96}, {96, 32, 96}, {96, 32, 64}
+    int rgb2[12][3] =
+	{ {96, 32, 32}, {96, 64, 32}, {96, 96, 32}, {64, 96, 32}, {32, 96,
+								   32},
+    {32, 96, 64}, {32, 96, 96}, {32, 64, 96}, {32, 32, 96}, {64, 32, 96},
+    {96, 32, 96}, {96, 32, 64}
     };
 
-    int rgb_d[6][3] = { {32, 0, 0}, {32, 32, 0}, {0, 32, 0}, {0, 32, 32}, {0, 0, 32}, {32, 0, 32} };
+    int rgb_d[6][3] =
+	{ {32, 0, 0}, {32, 32, 0}, {0, 32, 0}, {0, 32, 32}, {0, 0, 32},
+    {32, 0, 32}
+    };
 
-    int rgb_g[9][3] = { {0, 0, 0}, {32, 32, 32}, {64, 64, 64}, {96, 96, 96}, {128, 128, 128},
+    int rgb_g[9][3] =
+	{ {0, 0, 0}, {32, 32, 32}, {64, 64, 64}, {96, 96, 96}, {128, 128,
+								128},
     {160, 160, 160}, {192, 192, 192}, {224, 224, 224}, {255, 255, 255}
     };
 
     for (int i = 1; i <= 12; i++) {
-	set_c3d_color_grid(1, i, rgb1[i - 1][0], rgb1[i - 1][1], rgb1[i - 1][2]);
-	set_c3d_color_grid(2, i, rgb2[i - 1][0], rgb2[i - 1][1], rgb2[i - 1][2]);
+	set_c3d_color_grid(1, i, rgb1[i - 1][0], rgb1[i - 1][1],
+			   rgb1[i - 1][2]);
+	set_c3d_color_grid(2, i, rgb2[i - 1][0], rgb2[i - 1][1],
+			   rgb2[i - 1][2]);
     }
     for (int i = 1; i <= 6; i++) {
-	set_c3d_color_grid(3, i, rgb_d[i - 1][0], rgb_d[i - 1][1], rgb_d[i - 1][2]);
+	set_c3d_color_grid(3, i, rgb_d[i - 1][0], rgb_d[i - 1][1],
+			   rgb_d[i - 1][2]);
     }
     for (int i = 1; i <= 9; i++) {
-	set_c3d_color_grid(4, i, rgb_g[i - 1][0], rgb_g[i - 1][1], rgb_g[i - 1][2]);
+	set_c3d_color_grid(4, i, rgb_g[i - 1][0], rgb_g[i - 1][1],
+			   rgb_g[i - 1][2]);
     }
 }
 
 //------------------------------------------------------------------------------
-void TC3DForm1::set_c3d_color_grid(int grid_num, int c, int r, int g, int b)
+void TC3DForm1::set_c3d_color_grid(int grid_num, int c, int r, int g,
+				   int b)
 {
     double h, s, v, in;
     rgb2hsv(r, g, b, &h, &s, &in, &v);
@@ -2036,8 +2201,9 @@ void __fastcall TC3DForm1::rb_c3d_pointClick(TObject * Sender)
 	for (int i = 0; i < TBL_SIZE; i++)
 	    for (int j = 0; j < TBL_SIZE; j++)
 		for (int k = 0; k < TBL_SIZE; k++) {
-		    hsv2rgb(c3d_lutH[i][j][k], c3d_lutS[i][j][k], c3d_lutV[i][j][k],
-			    &c3d_lutR[i][j][k], &c3d_lutG[i][j][k], &c3d_lutB[i][j][k]);
+		    hsv2rgb(c3d_lutH[i][j][k], c3d_lutS[i][j][k],
+			    c3d_lutV[i][j][k], &c3d_lutR[i][j][k],
+			    &c3d_lutG[i][j][k], &c3d_lutB[i][j][k]);
 		}
     c3d_detailadjust = false;
     c3d_scrollbar_reset();
@@ -2053,8 +2219,9 @@ void __fastcall TC3DForm1::rb_c3d_colorClick(TObject * Sender)
 	for (int i = 0; i < TBL_SIZE; i++)
 	    for (int j = 0; j < TBL_SIZE; j++)
 		for (int k = 0; k < TBL_SIZE; k++) {
-		    rgb2hsv(c3d_lutR[i][j][k], c3d_lutG[i][j][k], c3d_lutB[i][j][k],
-			    &c3d_lutH[i][j][k], &c3d_lutS[i][j][k], &in, &c3d_lutV[i][j][k]);
+		    rgb2hsv(c3d_lutR[i][j][k], c3d_lutG[i][j][k],
+			    c3d_lutB[i][j][k], &c3d_lutH[i][j][k],
+			    &c3d_lutS[i][j][k], &in, &c3d_lutV[i][j][k]);
 		}
     c3d_detailadjust = true;
     int idx_r, idx_g, idx_b;
@@ -2179,17 +2346,23 @@ void __fastcall TC3DForm1::btn_c3d_loadClick(TObject * Sender)
 	    return;		//資料中的data缺少
 	}
 	if (c % 10 == 0)
-	    idx_r = (int) ceil((double) StrToInt((AnsiString) pch) / cube_dis);
+	    idx_r =
+		(int) ceil((double) StrToInt((AnsiString) pch) / cube_dis);
 	else if (c % 10 == 1)
-	    idx_g = (int) ceil((double) StrToInt((AnsiString) pch) / cube_dis);
+	    idx_g =
+		(int) ceil((double) StrToInt((AnsiString) pch) / cube_dis);
 	else if (c % 10 == 2)
-	    idx_b = (int) ceil((double) StrToInt((AnsiString) pch) / cube_dis);
+	    idx_b =
+		(int) ceil((double) StrToInt((AnsiString) pch) / cube_dis);
 	else if (c % 10 == 3)
-	    c3d_lutR[idx_r][idx_g][idx_b] = StrToFloat((AnsiString) pch) / scrl_ratio;
+	    c3d_lutR[idx_r][idx_g][idx_b] =
+		StrToFloat((AnsiString) pch) / scrl_ratio;
 	else if (c % 10 == 4)
-	    c3d_lutG[idx_r][idx_g][idx_b] = StrToFloat((AnsiString) pch) / scrl_ratio;
+	    c3d_lutG[idx_r][idx_g][idx_b] =
+		StrToFloat((AnsiString) pch) / scrl_ratio;
 	else if (c % 10 == 5)
-	    c3d_lutB[idx_r][idx_g][idx_b] = StrToFloat((AnsiString) pch) / scrl_ratio;
+	    c3d_lutB[idx_r][idx_g][idx_b] =
+		StrToFloat((AnsiString) pch) / scrl_ratio;
 	else if (c % 10 == 6)
 	    c3d_lutH[idx_r][idx_g][idx_b] = StrToFloat((AnsiString) pch);
 	else if (c % 10 == 7)
@@ -2220,13 +2393,15 @@ void __fastcall TC3DForm1::btn_c3d_save_hClick(TObject * Sender)
     FILE *fptr = fopen(Fpath.c_str(), "w");
 
     c3d_lutArrange();
-    fprintf(fptr, "C3D_LUT\nRin\tGin\tBin\tRout\tGout\tBout\tH\tS\tV\tI\n");
+    fprintf(fptr,
+	    "C3D_LUT\nRin\tGin\tBin\tRout\tGout\tBout\tH\tS\tV\tI\n");
     int tbl_tl = pow(TBL_SIZE, 3);
     double h, s, in, v;
     for (int i = 0; i < tbl_tl; i++) {
 	fprintf(fptr, "%d\t%d\t%d\t%d\t%d\t%d\t", c3d_r[0][i], c3d_g[0][i],
 		c3d_b[0][i], c3d_r[1][i], c3d_g[1][i], c3d_b[1][i]);
-	rgb2hsv(c3d_r[1][i] / Ratio, c3d_g[1][i] / Ratio, c3d_b[1][i] / Ratio, &h, &s, &in, &v);
+	rgb2hsv(c3d_r[1][i] / Ratio, c3d_g[1][i] / Ratio,
+		c3d_b[1][i] / Ratio, &h, &s, &in, &v);
 	fprintf(fptr, "%2.2f\t%2.3f\t%2.2f\t%2.2f\n", h, s, v, in);
     }
     fclose(fptr);
@@ -2933,12 +3108,15 @@ void TC3DForm1::c3d_6axisAdj_v(bool flag)
 void TC3DForm1::c3d_hsv_FixGain_h(double tmp_c3d_lutH[9][9][9])
 {
     if (cb_c3d_Point_HSV_h_g->Checked == true) {
-	double h_gain = double (sb_c3d_Manual39_h->Position - sb_c3d_Manual39_h->Max / 2) / 10;
+	double h_gain =
+	    double (sb_c3d_Manual39_h->Position -
+		    sb_c3d_Manual39_h->Max / 2) / 10;
 	for (int i = 0; i < 9; i++)
 	    for (int j = 0; j < 9; j++)
 		for (int k = 0; k < 9; k++) {
 		    if (c3d_lutH[i][j][k] != 0 || c3d_lutS[i][j][k] != 0)	//固定灰階
-			tmp_c3d_lutH[i][j][k] = fmod((c3d_lutH[i][j][k] + h_gain) + 360, 360);
+			tmp_c3d_lutH[i][j][k] =
+			    fmod((c3d_lutH[i][j][k] + h_gain) + 360, 360);
 		}
 	return;
     }
@@ -2947,7 +3125,9 @@ void TC3DForm1::c3d_hsv_FixGain_h(double tmp_c3d_lutH[9][9][9])
     int idx_g = StrToInt(lb_c3d_tbl_ig->Caption);
     int idx_b = StrToInt(lb_c3d_tbl_ib->Caption);
 
-    double h_gain = double (sb_c3d_Manual39_h->Position - sb_c3d_Manual39_h->Max / 2) / 10;
+    double h_gain =
+	double (sb_c3d_Manual39_h->Position -
+		sb_c3d_Manual39_h->Max / 2) / 10;
     if (h_gain == 0) {
 	for (int i = 0; i < TBL_SIZE; i++)
 	    for (int j = 0; j < TBL_SIZE; j++)
@@ -3103,13 +3283,15 @@ void TC3DForm1::SmoothSaturation(double s, double gain, double *col)
 	// Gaussian curve
 	if (s < 0.666) {
 	    double x = 1 - s / 0.666;
-	    double Gauss_distr = exp((-1) * (x * x) / (2 * sigma_lgt * sigma_lgt));
+	    double Gauss_distr =
+		exp((-1) * (x * x) / (2 * sigma_lgt * sigma_lgt));
 	    tmp_sat = Gauss_distr * Sat_smpl;
 	    if (Sat_smpl > 0.666 && tmp_sat < *col)
 		*col = tmp_sat;
 	} else {
 	    double x = (s - 0.666) / 0.334;
-	    double Gauss_distr = exp((-1) * (x * x) / (2 * sigma_st * sigma_st));
+	    double Gauss_distr =
+		exp((-1) * (x * x) / (2 * sigma_st * sigma_st));
 	    *col = (1 - Gauss_distr) * (1 - Sat_smpl) + Sat_smpl;
 	}
     } else if (rg_Sat_smooth->ItemIndex == 1) {
@@ -3117,13 +3299,16 @@ void TC3DForm1::SmoothSaturation(double s, double gain, double *col)
 	if (s < 0.666) {
 	    *col = s * ((Sat_smpl / 0.666) * (s / 0.666));
 	} else {
-	    *col = s * (Sat_smpl / 0.666 * (1 - (s - 0.666) / 0.333) + 1 * (s - 0.666) / 0.333);
+	    *col =
+		s * (Sat_smpl / 0.666 * (1 - (s - 0.666) / 0.333) +
+		     1 * (s - 0.666) / 0.333);
 	}
     } else if (rg_Sat_smooth->ItemIndex == 3) {
 	// Gaussian distribution with Gauss, by pass
 	if (s < 0.666) {
 	    double x = 1 - s / 0.666;
-	    double Gauss_distr = exp((-1) * (x * x) / (2 * sigma_lgt * sigma_lgt));
+	    double Gauss_distr =
+		exp((-1) * (x * x) / (2 * sigma_lgt * sigma_lgt));
 	    if (Sat_smpl > 0.666)
 		*col = s * (Gauss_distr * gain + (1 - Gauss_distr) * 1);
 	} else {
@@ -3201,8 +3386,10 @@ void TC3DForm1::Manual39_dark(double h, double s, double v, double col[3])
     col[0] = l_ratio * dh_h + (1 - l_ratio) * dh_l + h;
     col[1] = (l_ratio * rs_h + (1 - l_ratio) * rs_l) * s;
 
-    double rv_l_96 = StrToFloat(sg_12color2->Cells[3][h_l / 30 + 1]) / col_v;
-    double rv_h_96 = StrToFloat(sg_12color2->Cells[3][h_h / 30 + 1]) / col_v;
+    double rv_l_96 =
+	StrToFloat(sg_12color2->Cells[3][h_l / 30 + 1]) / col_v;
+    double rv_h_96 =
+	StrToFloat(sg_12color2->Cells[3][h_h / 30 + 1]) / col_v;
     double rv_96 = (l_ratio * rv_h_96 + (1 - l_ratio) * rv_l_96);
 
     /////////v32////////////
@@ -3320,8 +3507,9 @@ void TC3DForm1::Manual39_color_adj(bool flg_wri)
 		tmp_c3d_lutH[i][j][k] = col[0];
 		tmp_c3d_lutS[i][j][k] = col[1];
 		tmp_c3d_lutV[i][j][k] = col[2];
-		hsv2rgb(tmp_c3d_lutH[i][j][k], tmp_c3d_lutS[i][j][k], tmp_c3d_lutV[i][j][k],
-			&tmp_c3d_lutR[i][j][k], &tmp_c3d_lutG[i][j][k], &tmp_c3d_lutB[i][j][k]);
+		hsv2rgb(tmp_c3d_lutH[i][j][k], tmp_c3d_lutS[i][j][k],
+			tmp_c3d_lutV[i][j][k], &tmp_c3d_lutR[i][j][k],
+			&tmp_c3d_lutG[i][j][k], &tmp_c3d_lutB[i][j][k]);
 
 	    }
     ////////////////////////////////////////////////////////
@@ -3371,8 +3559,9 @@ void TC3DForm1::c3d_hsvBase_adj(bool flg_wri)
     for (int i = 0; i < TBL_SIZE; i++)	//RGB table 轉到 hsv table 以做調整
 	for (int j = 0; j < TBL_SIZE; j++)
 	    for (int k = 0; k < TBL_SIZE; k++) {
-		rgb2hsv(tmp_c3d_lutR[i][j][k], tmp_c3d_lutG[i][j][k], tmp_c3d_lutB[i][j][k],
-			&tmp_c3d_lutH[i][j][k], &tmp_c3d_lutS[i][j][k], &in,
+		rgb2hsv(tmp_c3d_lutR[i][j][k], tmp_c3d_lutG[i][j][k],
+			tmp_c3d_lutB[i][j][k], &tmp_c3d_lutH[i][j][k],
+			&tmp_c3d_lutS[i][j][k], &in,
 			&tmp_c3d_lutV[i][j][k]);
 	    }
 
@@ -3391,8 +3580,9 @@ void TC3DForm1::c3d_hsvBase_adj(bool flg_wri)
     for (int i = 0; i < TBL_SIZE; i++)	//調整後的HSV table 轉到RGB
 	for (int j = 0; j < TBL_SIZE; j++)
 	    for (int k = 0; k < TBL_SIZE; k++) {
-		hsv2rgb(tmp_c3d_lutH[i][j][k], tmp_c3d_lutS[i][j][k], tmp_c3d_lutV[i][j][k],
-			&tmp_c3d_lutR[i][j][k], &tmp_c3d_lutG[i][j][k], &tmp_c3d_lutB[i][j][k]);
+		hsv2rgb(tmp_c3d_lutH[i][j][k], tmp_c3d_lutS[i][j][k],
+			tmp_c3d_lutV[i][j][k], &tmp_c3d_lutR[i][j][k],
+			&tmp_c3d_lutG[i][j][k], &tmp_c3d_lutB[i][j][k]);
 	    }
 
     if (flg_wri == true) {	//調整值從暫存的table(tmp_c3d_lutR...)更新到紀錄的table(c3d_lutR...)
@@ -3413,7 +3603,8 @@ void TC3DForm1::c3d_hsvBase_adj(bool flg_wri)
     int idx_b = StrToInt(lb_c3d_tbl_ib->Caption);
 
     //顯示到user interface
-    Show_c3d_CorImg(tmp_c3d_lutR[idx_r][idx_g][idx_b], tmp_c3d_lutG[idx_r][idx_g][idx_b],
+    Show_c3d_CorImg(tmp_c3d_lutR[idx_r][idx_g][idx_b],
+		    tmp_c3d_lutG[idx_r][idx_g][idx_b],
 		    tmp_c3d_lutB[idx_r][idx_g][idx_b]);
 
     double r = StrToFloat(lb_c3d_selR->Caption);
@@ -3441,7 +3632,9 @@ void TC3DForm1::c3d_HSVBase_h_adj()
 	    for (int j = 0; j < TBL_SIZE; j++)
 		for (int k = 0; k < TBL_SIZE; k++) {
 		    if (c3d_lutH[i][j][k] != 0 || c3d_lutS[i][j][k] != 0)	//固定灰階
-			tmp_c3d_lutH[i][j][k] = fmod((tmp_c3d_lutH[i][j][k] + h_gain) + 360, 360);
+			tmp_c3d_lutH[i][j][k] =
+			    fmod((tmp_c3d_lutH[i][j][k] + h_gain) + 360,
+				 360);
 		}
 	return;
     }
@@ -3504,13 +3697,16 @@ void TC3DForm1::c3d_HSVBase_h_adj()
 		    if (dif_sv == 10)	//整個Hue page 一起動, diffusion在Hue方向作
 			ratio = 1 - ratio1;
 		    else {	//考慮Hue與Saturation與Value方向的diffusion
-			if (tmp_s < s + dif_sv / 10 && tmp_s > s - dif_sv / 10
-			    && tmp_v < v + dif_sv / 10 * 255 && tmp_v > v - dif_sv / 10 * 255) {
+			if (tmp_s < s + dif_sv / 10
+			    && tmp_s > s - dif_sv / 10
+			    && tmp_v < v + dif_sv / 10 * 255
+			    && tmp_v > v - dif_sv / 10 * 255) {
 			    ratio2 = fabs((tmp_s - s) / (dif_sv / 10));	//Saturation方向的diffusion ratio
 			    ratio3 = fabs((tmp_v - v) / (dif_sv / 10 * 255));	//value方向的diffusion ratio
 			    ratio =
-				1 - pow((pow(ratio1, 2) + pow(ratio2, 2) + pow(ratio3, 2)) / 3,
-					0.5);
+				1 -
+				pow((pow(ratio1, 2) + pow(ratio2, 2) +
+				     pow(ratio3, 2)) / 3, 0.5);
 			} else	//not gain
 			    ratio = 0;
 		    }
@@ -3613,13 +3809,16 @@ void TC3DForm1::c3d_HSVBase_s_adj()
 		    if (dif_sv == 10)	//整個Hue page 一起動, diffusion在Hue方向作
 			ratio = 1 - ratio1;
 		    else {	//考慮Hue與Saturation與Value方向的diffusion
-			if (tmp_s < s + dif_sv / 10 && tmp_s > s - dif_sv / 10
-			    && tmp_v < v + dif_sv / 10 * 255 && tmp_v > v - dif_sv / 10 * 255) {
+			if (tmp_s < s + dif_sv / 10
+			    && tmp_s > s - dif_sv / 10
+			    && tmp_v < v + dif_sv / 10 * 255
+			    && tmp_v > v - dif_sv / 10 * 255) {
 			    ratio2 = fabs((tmp_s - s) / (dif_sv / 10));	//Saturation方向的diffusion ratio
 			    ratio3 = fabs((tmp_v - v) / (dif_sv / 10 * 255));	//value方向的diffusion ratio
 			    ratio =
-				1 - pow((pow(ratio1, 2) + pow(ratio2, 2) + pow(ratio3, 2)) / 3,
-					0.5);
+				1 -
+				pow((pow(ratio1, 2) + pow(ratio2, 2) +
+				     pow(ratio3, 2)) / 3, 0.5);
 			} else	//not gain
 			    ratio = 0;
 		    }
@@ -3628,7 +3827,8 @@ void TC3DForm1::c3d_HSVBase_s_adj()
 			ShowMessage("S ratio >1");
 			return;
 		    }
-		    tmp_c3d_lutS[i][j][k] = (ratio * s_gain + 1) * c3d_lutS[i][j][k];
+		    tmp_c3d_lutS[i][j][k] =
+			(ratio * s_gain + 1) * c3d_lutS[i][j][k];
 		    if (tmp_c3d_lutS[i][j][k] > 1)
 			tmp_c3d_lutS[i][j][k] = 1;
 		    else if (tmp_c3d_lutS[i][j][k] < 0)
@@ -3719,18 +3919,22 @@ void TC3DForm1::c3d_HSVBase_v_adj()
 		    if (dif_sv == 10)	//整個Hue page 一起動, diffusion在Hue方向作
 			ratio = 1 - ratio1;
 		    else {	//考慮Hue與Saturation與Value方向的diffusion
-			if (tmp_s < s + dif_sv / 10 && tmp_s > s - dif_sv / 10
-			    && tmp_v < v + dif_sv / 10 * 255 && tmp_v > v - dif_sv / 10 * 255) {
+			if (tmp_s < s + dif_sv / 10
+			    && tmp_s > s - dif_sv / 10
+			    && tmp_v < v + dif_sv / 10 * 255
+			    && tmp_v > v - dif_sv / 10 * 255) {
 			    ratio2 = fabs((tmp_s - s) / (dif_sv / 10));	//Saturation方向的diffusion ratio
 			    ratio3 = fabs((tmp_v - v) / (dif_sv / 10 * 255));	//value方向的diffusion ratio
 			    ratio =
-				1 - pow(((pow(ratio1, 2) + pow(ratio2, 2) + pow(ratio3, 2)) / 3),
-					0.5);
+				1 -
+				pow(((pow(ratio1, 2) + pow(ratio2, 2) +
+				      pow(ratio3, 2)) / 3), 0.5);
 			} else	//not gain
 			    ratio = 0;
 		    }
 
-		    tmp_c3d_lutV[i][j][k] = (ratio * v_gain + 1) * c3d_lutV[i][j][k];
+		    tmp_c3d_lutV[i][j][k] =
+			(ratio * v_gain + 1) * c3d_lutV[i][j][k];
 		    if (tmp_c3d_lutV[i][j][k] >= 256)
 			tmp_c3d_lutV[i][j][k] = 256 - 1.0 / Ratio;
 		    else if (tmp_c3d_lutV[i][j][k] < 0)
@@ -3741,7 +3945,8 @@ void TC3DForm1::c3d_HSVBase_v_adj()
 		    }
 		} else
 		    tmp_c3d_lutV[i][j][k] = c3d_lutV[i][j][k];
-		fprintf(fptr, "%.2f\t%.2f\n", c3d_lutV[i][j][k], tmp_c3d_lutV[i][j][k]);
+		fprintf(fptr, "%.2f\t%.2f\n", c3d_lutV[i][j][k],
+			tmp_c3d_lutV[i][j][k]);
 	    }
     fclose(fptr);
 }
@@ -3788,7 +3993,8 @@ void __fastcall TC3DForm1::btn_c3d_writeClick(TObject * Sender)
 	//Point Color - RGB
 	sb_c3d_rgb_dis->Position = 0;
 	Reset_c3d_Point_RGB_Scroll();
-    } else if (pc_Adjust->TabIndex == 0 && pc_point_color_adj->TabIndex == 1)
+    } else if (pc_Adjust->TabIndex == 0
+	       && pc_point_color_adj->TabIndex == 1)
 	// Point Color - HSV Domain
 	Reset_c3d_Point_HSV_Scroll();
     btn_c3d_write->Enabled = true;
@@ -3809,7 +4015,9 @@ void __fastcall TC3DForm1::sb_c3d_rgb_disChange(TObject * Sender)
 void __fastcall TC3DForm1::sb_c3d_rgb_rChange(TObject * Sender)
 {
 //sb_c3d_rgb_r為做3D LUT的Point Color adjust時, 對選擇的顏色做紅色值的增減量
-    double r = floor((sb_c3d_rgb_r->Position - sb_c3d_rgb_r->Max / 2) / scrl_ratio);
+    double r =
+	floor((sb_c3d_rgb_r->Position -
+	       sb_c3d_rgb_r->Max / 2) / scrl_ratio);
     lb_c3d_rgb_r->Caption = r;
     double d = (sb_c3d_rgb_dis->Position) * cube_dis;	//實際的pixel數值差距為32
 
@@ -3834,7 +4042,9 @@ void __fastcall TC3DForm1::sb_c3d_rgb_rChange(TObject * Sender)
 void __fastcall TC3DForm1::sb_c3d_rgb_gChange(TObject * Sender)
 {
     //sb_c3d_rgb_g為做3D LUT的Point Color adjust時, 對選擇的顏色做綠色值的增減量
-    double g = double (sb_c3d_rgb_g->Position - sb_c3d_rgb_g->Max / 2) / scrl_ratio;
+    double g =
+	double (sb_c3d_rgb_g->Position -
+		sb_c3d_rgb_g->Max / 2) / scrl_ratio;
     lb_c3d_rgb_g->Caption = g;
     double d = (sb_c3d_rgb_dis->Position) * cube_dis;
 
@@ -3859,7 +4069,9 @@ void __fastcall TC3DForm1::sb_c3d_rgb_gChange(TObject * Sender)
 void __fastcall TC3DForm1::sb_c3d_rgb_bChange(TObject * Sender)
 {
     //sb_c3d_rgb_b為做3D LUT的Point Color adjust時, 對選擇的顏色做藍色值的增減量
-    double b = double (sb_c3d_rgb_b->Position - sb_c3d_rgb_b->Max / 2) / scrl_ratio;
+    double b =
+	double (sb_c3d_rgb_b->Position -
+		sb_c3d_rgb_b->Max / 2) / scrl_ratio;
     lb_c3d_rgb_b->Caption = b;
     double d = (sb_c3d_rgb_dis->Position) * cube_dis;
 
@@ -3902,11 +4114,16 @@ void __fastcall TC3DForm1::sb_c3d_hsv_Change(TObject * Sender)
 
     rgb2hsv(Tbl_r, Tbl_g, Tbl_b, &h, &s, &i, &v);
 
-    double h_gain = ((double) sb_c3d_hsv_h->Position - sb_c3d_hsv_h->Max / 2) / 2;
+    double h_gain =
+	((double) sb_c3d_hsv_h->Position - sb_c3d_hsv_h->Max / 2) / 2;
     double c = StrToFloat(edt_c3d_satC->Text);
-    double s_gain = ((double) sb_c3d_hsv_s->Position - sb_c3d_hsv_s->Max / 2) / 100 / c;
+    double s_gain =
+	((double) sb_c3d_hsv_s->Position -
+	 sb_c3d_hsv_s->Max / 2) / 100 / c;
     c = StrToFloat(edt_c3d_valC->Text);
-    double v_gain = ((double) sb_c3d_hsv_v->Position - sb_c3d_hsv_v->Max / 2) / 100 / c;
+    double v_gain =
+	((double) sb_c3d_hsv_v->Position -
+	 sb_c3d_hsv_v->Max / 2) / 100 / c;
     lb_c3d_hsv_h->Caption = h_gain;
     lb_c3d_hsv_s->Caption = floor(FloatToStr(s_gain * s) * 1000) / 1000;
     lb_c3d_hsv_v->Caption = v_gain * v;
@@ -4085,7 +4302,8 @@ struct Color_Val {
     double h, s, v;		//原始的移動軸的hsv值
 };
 
-void TC3DForm1::c3d_MixAdj_r(int type, double dif_p, double dif_n, double gain)
+void TC3DForm1::c3d_MixAdj_r(int type, double dif_p, double dif_n,
+			     double gain)
 {
     double h, s, v, in;
     double tmp_r, tmp_g, tmp_b;
@@ -4167,7 +4385,10 @@ void TC3DForm1::c3d_MixAdj_r(int type, double dif_p, double dif_n, double gain)
 		    break;
 		rgb2hsv(i * 32, j * 32, k * 32, &h, &s, &in, &v);
 		if (h < dif_p || h > 360 + dif_n) {
-		    ratio = (h < 180 ? 1 - h / dif_p : 1 - (360 - h) / dif_n * (-1));
+		    ratio =
+			(h <
+			 180 ? 1 - h / dif_p : 1 - (360 -
+						    h) / dif_n * (-1));
 		    //ratio = (h<180?h/dif_p:(h-360)/dif_n);
 		    if (h == 0)
 			ratio = 1;
@@ -4178,9 +4399,11 @@ void TC3DForm1::c3d_MixAdj_r(int type, double dif_p, double dif_n, double gain)
 		    for (int c = 0; c < idx; c++) {
 			if (v == 256)
 			    v--;
-			if (color_val[c].v < v + 1 && color_val[c].v > v - 1 &&
-			    (color_val[c].s < s + 0.01 && color_val[c].s >= s - 0.01
-			     && color_val[c].s != 0)) {
+			if (color_val[c].v < v + 1
+			    && color_val[c].v > v - 1
+			    && (color_val[c].s < s + 0.01
+				&& color_val[c].s >= s - 0.01
+				&& color_val[c].s != 0)) {
 			    r += color_val[c].d_r;
 			    g += color_val[c].d_g;
 			    b += color_val[c].d_b;
@@ -4220,12 +4443,13 @@ void TC3DForm1::c3d_MixAdj_v(bool flag)	//can't use
 	for (int i = 0; i < 9; i++)
 	    for (int j = 0; j < 9; j++)
 		for (int k = 0; k < 9; k++) {
-		    rgb2hsv(tmp_c3d_lutR[i][j][k], tmp_c3d_lutG[i][j][k], tmp_c3d_lutB[i][j][k], &h,
-			    &s, &in, &v);
+		    rgb2hsv(tmp_c3d_lutR[i][j][k], tmp_c3d_lutG[i][j][k],
+			    tmp_c3d_lutB[i][j][k], &h, &s, &in, &v);
 		    v += v * v_gain * s;
 		    v = (v < 0 ? 0 : v);
 		    v = (v >= 256 ? 256 - 1.0 / Ratio : v);
-		    hsv2rgb(h, s, v, &tmp_c3d_lutR[i][j][k], &tmp_c3d_lutG[i][j][k],
+		    hsv2rgb(h, s, v, &tmp_c3d_lutR[i][j][k],
+			    &tmp_c3d_lutG[i][j][k],
 			    &tmp_c3d_lutB[i][j][k]);
 		}
     } else {
@@ -4246,7 +4470,8 @@ void TC3DForm1::c3d_MixAdj_v(bool flag)	//can't use
     int idx_r = StrToInt(lb_c3d_tbl_ir->Caption);
     int idx_g = StrToInt(lb_c3d_tbl_ig->Caption);
     int idx_b = StrToInt(lb_c3d_tbl_ib->Caption);
-    Show_c3d_CorImg(tmp_c3d_lutR[idx_r][idx_g][idx_b], tmp_c3d_lutG[idx_r][idx_g][idx_b],
+    Show_c3d_CorImg(tmp_c3d_lutR[idx_r][idx_g][idx_b],
+		    tmp_c3d_lutG[idx_r][idx_g][idx_b],
 		    tmp_c3d_lutB[idx_r][idx_g][idx_b]);
 
     double r = StrToFloat(lb_c3d_selR->Caption);
@@ -4265,7 +4490,8 @@ void TC3DForm1::c3d_MixAdj_s(bool flag)	//can't use
     double dif_n = (double) Get_Point_H_NegDif();
     double dif_p = (double) Get_Point_H_PosDif();
 
-    double tmp_c3d_lutR[9][9][9], tmp_c3d_lutG[9][9][9], tmp_c3d_lutB[9][9][9];
+    double tmp_c3d_lutR[9][9][9], tmp_c3d_lutG[9][9][9],
+	tmp_c3d_lutB[9][9][9];
 
     for (int i = 0; i < 9; i++)
 	for (int j = 0; j < 9; j++)
@@ -4279,12 +4505,13 @@ void TC3DForm1::c3d_MixAdj_s(bool flag)	//can't use
 	for (int i = 0; i < 9; i++)
 	    for (int j = 0; j < 9; j++)
 		for (int k = 0; k < 9; k++) {
-		    rgb2hsv(tmp_c3d_lutR[i][j][k], tmp_c3d_lutG[i][j][k], tmp_c3d_lutB[i][j][k], &h,
-			    &s, &in, &v);
+		    rgb2hsv(tmp_c3d_lutR[i][j][k], tmp_c3d_lutG[i][j][k],
+			    tmp_c3d_lutB[i][j][k], &h, &s, &in, &v);
 		    s += s_gain * s;
 		    s = (s < 0 ? 0 : s);
 		    s = (s > 1 ? 1 : s);
-		    hsv2rgb(h, s, v, &tmp_c3d_lutR[i][j][k], &tmp_c3d_lutG[i][j][k],
+		    hsv2rgb(h, s, v, &tmp_c3d_lutR[i][j][k],
+			    &tmp_c3d_lutG[i][j][k],
 			    &tmp_c3d_lutB[i][j][k]);
 		}
     } else {
@@ -4305,7 +4532,8 @@ void TC3DForm1::c3d_MixAdj_s(bool flag)	//can't use
     int idx_r = StrToInt(lb_c3d_tbl_ir->Caption);
     int idx_g = StrToInt(lb_c3d_tbl_ig->Caption);
     int idx_b = StrToInt(lb_c3d_tbl_ib->Caption);
-    Show_c3d_CorImg(tmp_c3d_lutR[idx_r][idx_g][idx_b], tmp_c3d_lutG[idx_r][idx_g][idx_b],
+    Show_c3d_CorImg(tmp_c3d_lutR[idx_r][idx_g][idx_b],
+		    tmp_c3d_lutG[idx_r][idx_g][idx_b],
 		    tmp_c3d_lutB[idx_r][idx_g][idx_b]);
 
     double r = StrToFloat(lb_c3d_selR->Caption);
@@ -4320,8 +4548,12 @@ void TC3DForm1::c3d_MixAdj_s(bool flag)	//can't use
 //----------------------------------------------------------------------------
 void TC3DForm1::c3d_MixAdj_h(bool flag)
 {
-    double h_gain = double (sb_c3d_Manual39_h->Position - sb_c3d_Manual39_h->Max / 2) / 10;
-    double dif_n = double (sb_c3d_Point_HSV_hdn->Position - sb_c3d_Point_HSV_hdn->Max);
+    double h_gain =
+	double (sb_c3d_Manual39_h->Position -
+		sb_c3d_Manual39_h->Max / 2) / 10;
+    double dif_n =
+	double (sb_c3d_Point_HSV_hdn->Position -
+		sb_c3d_Point_HSV_hdn->Max);
     double dif_p = double (sb_c3d_Point_HSV_hdp->Position);
 
     for (int i = 0; i < 9; i++)
@@ -4340,7 +4572,8 @@ void TC3DForm1::c3d_MixAdj_h(bool flag)
 			    tmp_c3d_lutB[i][j][k], &h, &s, &in, &v);
 		    h += h_gain;
 		    h = fmod(h + 360, 360);
-		    hsv2rgb(h, s, v, &tmp_c3d_lutR[i][j][k], &tmp_c3d_lutG[i][j][k],
+		    hsv2rgb(h, s, v, &tmp_c3d_lutR[i][j][k],
+			    &tmp_c3d_lutG[i][j][k],
 			    &tmp_c3d_lutB[i][j][k]);
 		}
     } else {
@@ -4361,7 +4594,8 @@ void TC3DForm1::c3d_MixAdj_h(bool flag)
     int idx_r = StrToInt(lb_c3d_tbl_ir->Caption);
     int idx_g = StrToInt(lb_c3d_tbl_ig->Caption);
     int idx_b = StrToInt(lb_c3d_tbl_ib->Caption);
-    Show_c3d_CorImg(tmp_c3d_lutR[idx_r][idx_g][idx_b], tmp_c3d_lutG[idx_r][idx_g][idx_b],
+    Show_c3d_CorImg(tmp_c3d_lutR[idx_r][idx_g][idx_b],
+		    tmp_c3d_lutG[idx_r][idx_g][idx_b],
 		    tmp_c3d_lutB[idx_r][idx_g][idx_b]);
 
     double r = StrToFloat(lb_c3d_selR->Caption);
@@ -4374,7 +4608,9 @@ void TC3DForm1::c3d_MixAdj_h(bool flag)
 }
 
 //----------------------------------------------------------------------------
-void __fastcall TC3DForm1::Img_3DLUTMouseMove(TObject * Sender, TShiftState Shift, int X, int Y)
+void __fastcall TC3DForm1::Img_3DLUTMouseMove(TObject * Sender,
+					      TShiftState Shift, int X,
+					      int Y)
 {
     int color;
     double h, s, v, i, r, g, b;
@@ -4415,8 +4651,8 @@ void __fastcall TC3DForm1::Img_3DLUTMouseMove(TObject * Sender, TShiftState Shif
 
 
 //----------------------------------------------------------------------------
-void c3d_find_smallpoint(int tbl_l, int tbl_n, double r, double g, double b, int *idx_r, int *idx_g,
-			 int *idx_b)
+void c3d_find_smallpoint(int tbl_l, int tbl_n, double r, double g,
+			 double b, int *idx_r, int *idx_g, int *idx_b)
 {
     //找存在的那個block中最小的點
     for (int i = 0; i <= tbl_l - 2; i++) {
@@ -4440,7 +4676,9 @@ void c3d_find_smallpoint(int tbl_l, int tbl_n, double r, double g, double b, int
 }
 
 void __fastcall TC3DForm1::Img_3DLUTMouseDown(TObject * Sender,
-					      TMouseButton Button, TShiftState Shift, int X, int Y)
+					      TMouseButton Button,
+					      TShiftState Shift, int X,
+					      int Y)
 {
     if (pc_Adjust->TabIndex == 0 && pc_global_adj->TabIndex == 1)
 	return;
@@ -4595,9 +4833,12 @@ void __fastcall TC3DForm1::FormCreate(TObject * Sender)
      */
 
     colorPicker->setTInTargetForm(InTargetForm);
-    mouseListener = bptr < ColorMouseListener > (new ColorMouseListener(this));
+    mouseListener =
+	bptr < ColorMouseListener > (new ColorMouseListener(this));
     colorPicker->addMouseListener(mouseListener);
-    changeListener = bptr < ScrollBarChangeListener > (new ScrollBarChangeListener(this));
+    changeListener =
+	bptr < ScrollBarChangeListener >
+	(new ScrollBarChangeListener(this));
     //hsvAdjust->addChangeListener(changeListener);
 }
 
@@ -4753,18 +4994,28 @@ void __fastcall TC3DForm1::CheckBox_Click(TObject * Sender)
 void TC3DForm1::Refresh_Manual39_Point()
 {
     //Light 12
-    int rgb1[12][3] = { {192, 64, 64}, {192, 128, 64}, {192, 192, 64}, {128, 192, 64},
-    {64, 192, 64}, {64, 192, 128}, {64, 192, 192}, {64, 128, 192}, {64, 64, 192},
+    int rgb1[12][3] =
+	{ {192, 64, 64}, {192, 128, 64}, {192, 192, 64}, {128, 192, 64},
+    {64, 192, 64}, {64, 192, 128}, {64, 192, 192}, {64, 128, 192}, {64, 64,
+								    192},
     {128, 64, 192}, {192, 64, 192}, {192, 64, 128}
     };
     //Dark 12
-    int rgb2[12][3] = { {96, 32, 32}, {96, 64, 32}, {96, 96, 32}, {64, 96, 32}, {32, 96, 32},
-    {32, 96, 64}, {32, 96, 96}, {32, 64, 96}, {32, 32, 96}, {64, 32, 96}, {96, 32, 96}, {96, 32, 64}
+    int rgb2[12][3] =
+	{ {96, 32, 32}, {96, 64, 32}, {96, 96, 32}, {64, 96, 32}, {32, 96,
+								   32},
+    {32, 96, 64}, {32, 96, 96}, {32, 64, 96}, {32, 32, 96}, {64, 32, 96},
+    {96, 32, 96}, {96, 32, 64}
     };
     //Dark
-    int rgb3[6][3] = { {32, 0, 0}, {32, 32, 0}, {0, 32, 0}, {0, 32, 32}, {0, 0, 32}, {32, 0, 32} };
+    int rgb3[6][3] =
+	{ {32, 0, 0}, {32, 32, 0}, {0, 32, 0}, {0, 32, 32}, {0, 0, 32},
+    {32, 0, 32}
+    };
     //Gray
-    int rgb4[9][3] = { {0, 0, 0}, {32, 32, 32}, {64, 64, 64}, {96, 96, 96}, {128, 128, 128},
+    int rgb4[9][3] =
+	{ {0, 0, 0}, {32, 32, 32}, {64, 64, 64}, {96, 96, 96}, {128, 128,
+								128},
     {160, 160, 160}, {192, 192, 192}, {224, 224, 224}, {256, 256, 256}
     };
 
@@ -4776,7 +5027,8 @@ void TC3DForm1::Refresh_Manual39_Point()
 	x = rgb1[i][0] / cube_dis;
 	y = rgb1[i][1] / cube_dis;
 	z = rgb1[i][2] / cube_dis;
-	rgb2hsv(c3d_lutR[x][y][z], c3d_lutG[x][y][z], c3d_lutB[x][y][z], &h, &s, &in, &v);
+	rgb2hsv(c3d_lutR[x][y][z], c3d_lutG[x][y][z], c3d_lutB[x][y][z],
+		&h, &s, &in, &v);
 	sg_12color1->Cells[1][h_st / 30 + 1] = h;
 	sg_12color1->Cells[2][h_st / 30 + 1] = s;
 	sg_12color1->Cells[3][h_st / 30 + 1] = v;
@@ -4787,7 +5039,8 @@ void TC3DForm1::Refresh_Manual39_Point()
 	x = rgb2[i][0] / cube_dis;
 	y = rgb2[i][1] / cube_dis;
 	z = rgb2[i][2] / cube_dis;
-	rgb2hsv(c3d_lutR[x][y][z], c3d_lutG[x][y][z], c3d_lutB[x][y][z], &h, &s, &in, &v);
+	rgb2hsv(c3d_lutR[x][y][z], c3d_lutG[x][y][z], c3d_lutB[x][y][z],
+		&h, &s, &in, &v);
 	sg_12color2->Cells[1][h_st / 30 + 1] = h;
 	sg_12color2->Cells[2][h_st / 30 + 1] = s;
 	sg_12color2->Cells[3][h_st / 30 + 1] = v;
@@ -4798,7 +5051,8 @@ void TC3DForm1::Refresh_Manual39_Point()
 	x = rgb3[i][0] / cube_dis;
 	y = rgb3[i][1] / cube_dis;
 	z = rgb3[i][2] / cube_dis;
-	rgb2hsv(c3d_lutR[x][y][z], c3d_lutG[x][y][z], c3d_lutB[x][y][z], &h, &s, &in, &v);
+	rgb2hsv(c3d_lutR[x][y][z], c3d_lutG[x][y][z], c3d_lutB[x][y][z],
+		&h, &s, &in, &v);
 	sg_Dark->Cells[1][h_st / 60 + 1] = h;
 	sg_Dark->Cells[2][h_st / 60 + 1] = s;
 	sg_Dark->Cells[3][h_st / 60 + 1] = v;
@@ -4809,7 +5063,8 @@ void TC3DForm1::Refresh_Manual39_Point()
 	x = rgb4[i][0] / cube_dis;
 	y = rgb4[i][1] / cube_dis;
 	z = rgb4[i][2] / cube_dis;
-	rgb2hsv(c3d_lutR[x][y][z], c3d_lutG[x][y][z], c3d_lutB[x][y][z], &h, &s, &in, &v);
+	rgb2hsv(c3d_lutR[x][y][z], c3d_lutG[x][y][z], c3d_lutB[x][y][z],
+		&h, &s, &in, &v);
 	sg_Gray->Cells[1][v_st / 32 + 1] = h;
 	sg_Gray->Cells[2][v_st / 32 + 1] = s;
 	sg_Gray->Cells[3][v_st / 32 + 1] = v;
@@ -4865,7 +5120,8 @@ void TC3DForm1::Load_c3d_table(String Fpath)
 	}
 
 	if (c % 6 == 0) {
-	    idx_r = (int) ceil((double) StrToInt((AnsiString) pch) / cube_dis);
+	    idx_r =
+		(int) ceil((double) StrToInt((AnsiString) pch) / cube_dis);
 	    if (TBL_SIZE == 7) {
 		idx_r = tbl7[idx_r];
 		if (idx_r == -1) {
@@ -4874,7 +5130,8 @@ void TC3DForm1::Load_c3d_table(String Fpath)
 		}
 	    }
 	} else if (c % 6 == 1) {
-	    idx_g = (int) ceil((double) StrToInt((AnsiString) pch) / cube_dis);
+	    idx_g =
+		(int) ceil((double) StrToInt((AnsiString) pch) / cube_dis);
 	    if (TBL_SIZE == 7) {
 		idx_g = tbl7[idx_g];
 		if (idx_g == -1) {
@@ -4883,7 +5140,8 @@ void TC3DForm1::Load_c3d_table(String Fpath)
 		}
 	    }
 	} else if (c % 6 == 2) {
-	    idx_b = (int) ceil((double) StrToInt((AnsiString) pch) / cube_dis);
+	    idx_b =
+		(int) ceil((double) StrToInt((AnsiString) pch) / cube_dis);
 	    if (TBL_SIZE == 7) {
 		idx_b = tbl7[idx_b];
 		if (idx_b == -1) {
@@ -4892,11 +5150,14 @@ void TC3DForm1::Load_c3d_table(String Fpath)
 		}
 	    }
 	} else if (c % 6 == 3) {
-	    c3d_lutR[idx_r][idx_g][idx_b] = (double) StrToInt((AnsiString) pch) / Ratio;
+	    c3d_lutR[idx_r][idx_g][idx_b] =
+		(double) StrToInt((AnsiString) pch) / Ratio;
 	} else if (c % 6 == 4) {
-	    c3d_lutG[idx_r][idx_g][idx_b] = (double) StrToInt((AnsiString) pch) / Ratio;
+	    c3d_lutG[idx_r][idx_g][idx_b] =
+		(double) StrToInt((AnsiString) pch) / Ratio;
 	} else if (c % 6 == 5) {
-	    c3d_lutB[idx_r][idx_g][idx_b] = (double) StrToInt((AnsiString) pch) / Ratio;
+	    c3d_lutB[idx_r][idx_g][idx_b] =
+		(double) StrToInt((AnsiString) pch) / Ratio;
 	}
 	pch = strtok(NULL, "\n\t ");
 	c++;
@@ -4981,48 +5242,55 @@ void __fastcall TC3DForm1::btn_tbl_searchClick(TObject * Sender)
     //對角線
     fprintf(fptr, "cross1\n");
     for (int i = 0; i < 32; i++) {
-	C3Dsim((double) (192 + i), (double) (64 - i), (double) 0, &r_new, &g_new, &b_new);
-	fprintf(fptr, "%d\t%d\t%d\t%.2f\t%.2f\t%.2f\n", (int) (192 + i), (int) (64 - i), 0, r_new,
-		g_new, b_new);
+	C3Dsim((double) (192 + i), (double) (64 - i), (double) 0, &r_new,
+	       &g_new, &b_new);
+	fprintf(fptr, "%d\t%d\t%d\t%.2f\t%.2f\t%.2f\n", (int) (192 + i),
+		(int) (64 - i), 0, r_new, g_new, b_new);
     }
 
     fprintf(fptr, "cross2\n");
     for (int i = 0; i < 16; i++) {
-	C3Dsim((double) (192 + i), (double) (48 - i), (double) 0, &r_new, &g_new, &b_new);
-	fprintf(fptr, "%d\t%d\t%d\t%.2f\t%.2f\t%.2f\n", (int) (192 + i), (int) (48 - i), 0, r_new,
-		g_new, b_new);
+	C3Dsim((double) (192 + i), (double) (48 - i), (double) 0, &r_new,
+	       &g_new, &b_new);
+	fprintf(fptr, "%d\t%d\t%d\t%.2f\t%.2f\t%.2f\n", (int) (192 + i),
+		(int) (48 - i), 0, r_new, g_new, b_new);
     }
     fprintf(fptr, "cross3\n");
     for (int i = 0; i < 16; i++) {
-	C3Dsim((double) (208 + i), (double) (64 - i), (double) 0, &r_new, &g_new, &b_new);
-	fprintf(fptr, "%d\t%d\t%d\t%.2f\t%.2f\t%.2f\n", (int) (208 + i), (int) (64 - i), 0, r_new,
-		g_new, b_new);
+	C3Dsim((double) (208 + i), (double) (64 - i), (double) 0, &r_new,
+	       &g_new, &b_new);
+	fprintf(fptr, "%d\t%d\t%d\t%.2f\t%.2f\t%.2f\n", (int) (208 + i),
+		(int) (64 - i), 0, r_new, g_new, b_new);
     }
 
     fprintf(fptr, "cross4\n");
     for (int i = 0; i < 8; i++) {
-	C3Dsim((double) (200 - i), (double) (32 + i), (double) 0, &r_new, &g_new, &b_new);
-	fprintf(fptr, "%d\t%d\t%d\t%.2f\t%.2f\t%.2f\n", (int) (200 - i), (int) (32 + i), 0, r_new,
-		g_new, b_new);
+	C3Dsim((double) (200 - i), (double) (32 + i), (double) 0, &r_new,
+	       &g_new, &b_new);
+	fprintf(fptr, "%d\t%d\t%d\t%.2f\t%.2f\t%.2f\n", (int) (200 - i),
+		(int) (32 + i), 0, r_new, g_new, b_new);
     }
 
     fprintf(fptr, "cross5\n");
     for (int i = 0; i < 24; i++) {
-	C3Dsim((double) (216 - i), (double) (32 + i), (double) 0, &r_new, &g_new, &b_new);
-	fprintf(fptr, "%d\t%d\t%d\t%.2f\t%.2f\t%.2f\n", (int) (216 - i), (int) (32 + i), 0, r_new,
-		g_new, b_new);
+	C3Dsim((double) (216 - i), (double) (32 + i), (double) 0, &r_new,
+	       &g_new, &b_new);
+	fprintf(fptr, "%d\t%d\t%d\t%.2f\t%.2f\t%.2f\n", (int) (216 - i),
+		(int) (32 + i), 0, r_new, g_new, b_new);
     }
     fprintf(fptr, "cross6\n");
     for (int i = 0; i < 24; i++) {
-	C3Dsim((double) (224 - i), (double) (40 + i), (double) 0, &r_new, &g_new, &b_new);
-	fprintf(fptr, "%d\t%d\t%d\t%.2f\t%.2f\t%.2f\n", (int) (224 - i), (int) (40 + i), 0, r_new,
-		g_new, b_new);
+	C3Dsim((double) (224 - i), (double) (40 + i), (double) 0, &r_new,
+	       &g_new, &b_new);
+	fprintf(fptr, "%d\t%d\t%d\t%.2f\t%.2f\t%.2f\n", (int) (224 - i),
+		(int) (40 + i), 0, r_new, g_new, b_new);
     }
     fprintf(fptr, "cross7\n");
     for (int i = 0; i < 8; i++) {
-	C3Dsim((double) (224 - i), (double) (56 + i), (double) 0, &r_new, &g_new, &b_new);
-	fprintf(fptr, "%d\t%d\t%d\t%.2f\t%.2f\t%.2f\n", (int) (224 - i), (int) (56 + i), 0, r_new,
-		g_new, b_new);
+	C3Dsim((double) (224 - i), (double) (56 + i), (double) 0, &r_new,
+	       &g_new, &b_new);
+	fprintf(fptr, "%d\t%d\t%d\t%.2f\t%.2f\t%.2f\n", (int) (224 - i),
+		(int) (56 + i), 0, r_new, g_new, b_new);
     }
 
     /*
@@ -5038,8 +5306,10 @@ void __fastcall TC3DForm1::btn_tbl_searchClick(TObject * Sender)
     for (int r = 192; r <= 224; r++)
 	for (int g = 32; g <= 64; g++) {
 	    //for(int b = 32; b <= 64; b++){
-	    C3Dsim((double) r, (double) g, (double) b, &r_new, &g_new, &b_new);
-	    fprintf(fptr, "%d\t%d\t%d\t%.2f\t%.2f\t%.2f\n", r, g, b, r_new, g_new, b_new);
+	    C3Dsim((double) r, (double) g, (double) b, &r_new, &g_new,
+		   &b_new);
+	    fprintf(fptr, "%d\t%d\t%d\t%.2f\t%.2f\t%.2f\n", r, g, b, r_new,
+		    g_new, b_new);
 	}
     fclose(fptr);
     /*
@@ -5155,8 +5425,8 @@ void __fastcall TC3DForm1::btn_tbl_searchClick(TObject * Sender)
 }
 
 //---------------------------------------------------------------------------
-void TC3DForm1::Direct_sim(double r, double g, double b, double *r_new, double *g_new,
-			   double *b_new)
+void TC3DForm1::Direct_sim(double r, double g, double b, double *r_new,
+			   double *g_new, double *b_new)
 {
     //h_adj --- start
     double h, s, i, v;
@@ -5307,7 +5577,8 @@ void __fastcall TC3DForm1::btn_directly_simClick(TObject * Sender)
 	       b_new = 0;
 	       } */
 	    //Img_3DLUT->Canvas->Pixels[i][j] = (TColor)RGB(r_new,g_new,b_new);
-	    C3DSimualteForm->Image1->Canvas->Pixels[i][j] = (TColor) RGB(r_new, g_new, b_new);
+	    C3DSimualteForm->Image1->Canvas->Pixels[i][j] =
+		(TColor) RGB(r_new, g_new, b_new);
 	    //C3D_SimualteForm->Image2->Canvas->Pixels[i][j] = (TColor)RGB(((r-r_new)>0?(r-r_new)+20:0),0,0);
 	    //C3D_SimualteForm->Image3->Canvas->Pixels[i][j] = (TColor)RGB(0,((g-g_new)>0?(g-g_new)+20:0),0);
 	    //C3D_SimualteForm->Image4->Canvas->Pixels[i][j] = (TColor)RGB(0,0,((b_new-b)>0?(b_new-b)+20:0));
@@ -5342,7 +5613,9 @@ void __fastcall TC3DForm1::btn_directly_simClick(TObject * Sender)
 
 
 
-void __fastcall TC3DForm1::sg_table_stepKeyDown(TObject * Sender, WORD & Key, TShiftState Shift)
+void __fastcall TC3DForm1::sg_table_stepKeyDown(TObject * Sender,
+						WORD & Key,
+						TShiftState Shift)
 {
     for (int i = 0; i < 9; i++) {
 	tbl_val[0][i] = StrToInt(sg_table_step->Cells[i][1]);
@@ -5377,7 +5650,8 @@ void __fastcall TC3DForm1::BitBtn2Click(TObject * Sender)
     hsv2rgb(h, s, v, &r, &g, &b);
     for (int i = 0; i < x; i++)
 	for (int j = 0; j < y; j++)
-	    image3DLut->Canvas->Pixels[i][j] = (TColor) (r + 256 * g + 65536 * b);
+	    image3DLut->Canvas->Pixels[i][j] =
+		(TColor) (r + 256 * g + 65536 * b);
 
     edt_show_h->Visible = false;
 }
@@ -5511,7 +5785,8 @@ void __fastcall TC3DForm1::btn_key_in_RGBClick(TObject * Sender)
 	Show_c3d_SimImg(r_new, g_new, b_new);
 	Show_c3d_Img_sim();
     } else if (rg_PointNum->ItemIndex == 1) {	//4 color
-	if ((fmod(r, 32) == 0 || r == 255) && (fmod(g, 32) == 0 || g == 255)
+	if ((fmod(r, 32) == 0 || r == 255)
+	    && (fmod(g, 32) == 0 || g == 255)
 	    && (fmod(b, 32) == 0 || b == 255)) {
 	    Set_Adj_Color(r, g, b);
 	    C3Dsim_t(r, g, b, &r_new, &g_new, &b_new);
@@ -5520,7 +5795,8 @@ void __fastcall TC3DForm1::btn_key_in_RGBClick(TObject * Sender)
 	    return;
 	}
 
-	int r_t = floor(r / cube_dis) * cube_dis, g_t = floor(g / cube_dis) * cube_dis, b_t =
+	int r_t = floor(r / cube_dis) * cube_dis, g_t =
+	    floor(g / cube_dis) * cube_dis, b_t =
 	    floor(b / cube_dis) * cube_dis;
 	int r_t1 = (r_t + cube_dis > 255 ? 255 : r_t + cube_dis);
 	int g_t1 = (g_t + cube_dis > 255 ? 255 : g_t + cube_dis);
@@ -5533,12 +5809,14 @@ void __fastcall TC3DForm1::btn_key_in_RGBClick(TObject * Sender)
 
 	//small
 	TmpBitmap->Canvas->Brush->Color = (TColor) RGB(r_t, g_t, b_t);
-	TmpBitmap->Canvas->Rectangle(0, 0, TmpBitmap->Width, TmpBitmap->Height);
+	TmpBitmap->Canvas->Rectangle(0, 0, TmpBitmap->Width,
+				     TmpBitmap->Height);
 	imageColor->Canvas->Draw(0, 0, TmpBitmap);
 
 	//rgb
 	TmpBitmap->Canvas->Brush->Color = (TColor) RGB(r_t1, g_t1, b_t1);
-	TmpBitmap->Canvas->Rectangle(0, 0, TmpBitmap->Width, TmpBitmap->Height);
+	TmpBitmap->Canvas->Rectangle(0, 0, TmpBitmap->Width,
+				     TmpBitmap->Height);
 	imageColor->Canvas->Draw(x / 2, y / 2, TmpBitmap);
 
 	double d_x = fmod(r, cube_dis);
@@ -5566,7 +5844,8 @@ void __fastcall TC3DForm1::btn_key_in_RGBClick(TObject * Sender)
 	}
 
 	TmpBitmap->Canvas->Brush->Color = (TColor) RGB(r_u, g_u, b_u);
-	TmpBitmap->Canvas->Rectangle(0, 0, TmpBitmap->Width, TmpBitmap->Height);
+	TmpBitmap->Canvas->Rectangle(0, 0, TmpBitmap->Width,
+				     TmpBitmap->Height);
 	imageColor->Canvas->Draw(x / 2, 0, TmpBitmap);
 
 	if (d_mid == d_x)
@@ -5577,7 +5856,8 @@ void __fastcall TC3DForm1::btn_key_in_RGBClick(TObject * Sender)
 	    b_u = b_t1;
 
 	TmpBitmap->Canvas->Brush->Color = (TColor) RGB(r_u, g_u, b_u);
-	TmpBitmap->Canvas->Rectangle(0, 0, TmpBitmap->Width, TmpBitmap->Height);
+	TmpBitmap->Canvas->Rectangle(0, 0, TmpBitmap->Width,
+				     TmpBitmap->Height);
 	imageColor->Canvas->Draw(0, y / 2, TmpBitmap);
 	delete TmpBitmap;
 	Set_Adj_Color(r_t, g_t, b_t);
@@ -5596,10 +5876,14 @@ void __fastcall TC3DForm1::btn_key_in_RGBClick(TObject * Sender)
     colorPicker->ts_color->Show();
 
     if (colorPicker->pc_img->TabIndex == 0)
-	InTargetForm->img_in_target->Picture->Bitmap->Assign(colorPicker->Img_3DLUT->Picture->
+	InTargetForm->img_in_target->Picture->Bitmap->Assign(colorPicker->
+							     Img_3DLUT->
+							     Picture->
 							     Bitmap);
     else
-	InTargetForm->img_in_target->Picture->Bitmap->Assign(imageColor->Picture->Bitmap);
+	InTargetForm->img_in_target->Picture->Bitmap->Assign(imageColor->
+							     Picture->
+							     Bitmap);
 }
 
 //---------------------------------------------------------------------------
@@ -5617,7 +5901,8 @@ void __fastcall TC3DForm1::btn_key_in_HSVClick(TObject * Sender)
     int x = image3DLut->Width;
     int y = image3DLut->Height;
 
-    int r_t = floor(r / cube_dis) * cube_dis, g_t = floor(g / cube_dis) * cube_dis, b_t =
+    int r_t = floor(r / cube_dis) * cube_dis, g_t =
+	floor(g / cube_dis) * cube_dis, b_t =
 	floor(b / cube_dis) * cube_dis;
     int r_t1 = (r_t + cube_dis > 255 ? 255 : r_t + cube_dis);
     int g_t1 = (g_t + cube_dis > 255 ? 255 : g_t + cube_dis);
@@ -5630,12 +5915,14 @@ void __fastcall TC3DForm1::btn_key_in_HSVClick(TObject * Sender)
 
     //small
     TmpBitmap->Canvas->Brush->Color = (TColor) RGB(r_t, g_t, b_t);
-    TmpBitmap->Canvas->Rectangle(0, 0, TmpBitmap->Width, TmpBitmap->Height);
+    TmpBitmap->Canvas->Rectangle(0, 0, TmpBitmap->Width,
+				 TmpBitmap->Height);
     image3DLut->Canvas->Draw(0, 0, TmpBitmap);
 
     //rgb
     TmpBitmap->Canvas->Brush->Color = (TColor) RGB(r_t1, g_t1, b_t1);
-    TmpBitmap->Canvas->Rectangle(0, 0, TmpBitmap->Width, TmpBitmap->Height);
+    TmpBitmap->Canvas->Rectangle(0, 0, TmpBitmap->Width,
+				 TmpBitmap->Height);
     image3DLut->Canvas->Draw(x / 4 * 3, y / 2, TmpBitmap);
     double d_x = fmod(r, cube_dis);
     double d_y = fmod(g, cube_dis);
@@ -5659,7 +5946,8 @@ void __fastcall TC3DForm1::btn_key_in_HSVClick(TObject * Sender)
     }
 
     TmpBitmap->Canvas->Brush->Color = (TColor) RGB(r_u, g_u, b_u);
-    TmpBitmap->Canvas->Rectangle(0, 0, TmpBitmap->Width, TmpBitmap->Height);
+    TmpBitmap->Canvas->Rectangle(0, 0, TmpBitmap->Width,
+				 TmpBitmap->Height);
     image3DLut->Canvas->Draw(x / 2, 0, TmpBitmap);
 
     if (d_mid == d_x)
@@ -5670,7 +5958,8 @@ void __fastcall TC3DForm1::btn_key_in_HSVClick(TObject * Sender)
 	b_u = b_t1;
 
     TmpBitmap->Canvas->Brush->Color = (TColor) RGB(r_u, g_u, b_u);
-    TmpBitmap->Canvas->Rectangle(0, 0, TmpBitmap->Width, TmpBitmap->Height);
+    TmpBitmap->Canvas->Rectangle(0, 0, TmpBitmap->Width,
+				 TmpBitmap->Height);
     image3DLut->Canvas->Draw(0, y / 2, TmpBitmap);
 
     /*
@@ -5702,7 +5991,8 @@ void __fastcall TC3DForm1::btn_key_in_HSVClick(TObject * Sender)
 
     delete TmpBitmap;
     //C3D_SimualteForm = new TC3D_SimualteForm(this);
-    C3DSimualteForm->Image1->Canvas->Draw(0, 0, image3DLut->Picture->Bitmap);
+    C3DSimualteForm->Image1->Canvas->Draw(0, 0,
+					  image3DLut->Picture->Bitmap);
     C3DSimualteForm->Label4->Caption = "Figure";
     C3DSimualteForm->Label4->Visible = true;
     C3DSimualteForm->Show();
@@ -5711,7 +6001,8 @@ void __fastcall TC3DForm1::btn_key_in_HSVClick(TObject * Sender)
 //---------------------------------------------------------------------------
 
 
-void __fastcall TC3DForm1::FormClose(TObject * Sender, TCloseAction & Action)
+void __fastcall TC3DForm1::FormClose(TObject * Sender,
+				     TCloseAction & Action)
 {
     PColorThread1->Terminate();
 
@@ -5728,7 +6019,8 @@ void TC3DForm1::Refresh_PointColor_rgb(double r, double g, double b)
 
 //---------------------------------------------------------------------------
 // 點選HuePage的顏色, 顯示在介面上(Select RGB 與 Simulate RGB 與 Colors頁面上的影像)
-void TC3DForm1::ShowSelectCell(int ARow, double r, double g, double b, TStringGrid * sg)
+void TC3DForm1::ShowSelectCell(int ARow, double r, double g, double b,
+			       TStringGrid * sg)
 {
     Show_c3d_SelImg(r, g, b);
     ShowImageColor(colorPicker->img_color, r, g, b);
@@ -5746,7 +6038,9 @@ void TC3DForm1::ShowSelectCell(int ARow, double r, double g, double b, TStringGr
     Show_c3d_Img_sim();
     colorPicker->ts_color->Show();
     colorPicker->pc_img->TabIndex = 1;
-    InTargetForm->img_in_target->Picture->Bitmap->Assign(colorPicker->img_color->Picture->Bitmap);
+    InTargetForm->img_in_target->Picture->Bitmap->Assign(colorPicker->
+							 img_color->
+							 Picture->Bitmap);
 
     double h, s, v, in;
     rgb2hsv(r, g, b, &h, &s, &in, &v);
@@ -5756,9 +6050,12 @@ void TC3DForm1::ShowSelectCell(int ARow, double r, double g, double b, TStringGr
     c = StrToFloat(edt_c3d_valC->Text);
     double v_gain = ((v_use / v) - 1) * 100 * c;
 
-    sb_c3d_Manual39_h->Position = sb_c3d_Manual39_h->Max / 2 + (int) floor(h_gain + 0.5);
-    sb_c3d_Manual39_s->Position = sb_c3d_Manual39_s->Max / 2 + (int) floor(s_gain + 0.5);
-    sb_c3d_Manual39_v->Position = sb_c3d_Manual39_v->Max / 2 + (int) floor(v_gain + 0.5);
+    sb_c3d_Manual39_h->Position =
+	sb_c3d_Manual39_h->Max / 2 + (int) floor(h_gain + 0.5);
+    sb_c3d_Manual39_s->Position =
+	sb_c3d_Manual39_s->Max / 2 + (int) floor(s_gain + 0.5);
+    sb_c3d_Manual39_v->Position =
+	sb_c3d_Manual39_v->Max / 2 + (int) floor(v_gain + 0.5);
 
     /*
        double H = sb_c3d_Manual39_h->Position-sb_c3d_Manual39_h->Max/2;
@@ -5776,13 +6073,16 @@ void TC3DForm1::ShowSelectCell(int ARow, double r, double g, double b, TStringGr
        v *= (1+v_gain);   */
 }
 
-void __fastcall TC3DForm1::sg_GraySelectCell(TObject * Sender, int ACol, int ARow, bool & CanSelect)
+void __fastcall TC3DForm1::sg_GraySelectCell(TObject * Sender, int ACol,
+					     int ARow, bool & CanSelect)
 {
     Cell_move = false;
     if (ARow == 0)
 	return;
 
-    int rgb[9][3] = { {0, 0, 0}, {32, 32, 32}, {64, 64, 64}, {96, 96, 96}, {128, 128, 128},
+    int rgb[9][3] =
+	{ {0, 0, 0}, {32, 32, 32}, {64, 64, 64}, {96, 96, 96}, {128, 128,
+								128},
     {160, 160, 160}, {192, 192, 192}, {224, 224, 224}, {255, 255, 255}
     };
     double r = rgb[ARow - 1][0];
@@ -5794,13 +6094,17 @@ void __fastcall TC3DForm1::sg_GraySelectCell(TObject * Sender, int ACol, int ARo
 
 //---------------------------------------------------------------------------
 
-void __fastcall TC3DForm1::sg_DarkSelectCell(TObject * Sender, int ACol, int ARow, bool & CanSelect)
+void __fastcall TC3DForm1::sg_DarkSelectCell(TObject * Sender, int ACol,
+					     int ARow, bool & CanSelect)
 {
     Cell_move = false;
     if (ARow == 0)
 	return;
 
-    int rgb[6][3] = { {32, 0, 0}, {32, 32, 0}, {0, 32, 0}, {0, 32, 32}, {0, 0, 32}, {32, 0, 32} };
+    int rgb[6][3] =
+	{ {32, 0, 0}, {32, 32, 0}, {0, 32, 0}, {0, 32, 32}, {0, 0, 32},
+    {32, 0, 32}
+    };
     double r = rgb[ARow - 1][0];
     double g = rgb[ARow - 1][1];
     double b = rgb[ARow - 1][2];
@@ -5812,7 +6116,8 @@ void __fastcall TC3DForm1::sg_DarkSelectCell(TObject * Sender, int ACol, int ARo
 //---------------------------------------------------------------------------
 
 void __fastcall TC3DForm1::sg_12color2MouseDown(TObject * Sender,
-						TMouseButton Button, TShiftState Shift, int X,
+						TMouseButton Button,
+						TShiftState Shift, int X,
 						int Y)
 {
     Cell_move = false;
@@ -5821,8 +6126,11 @@ void __fastcall TC3DForm1::sg_12color2MouseDown(TObject * Sender,
     if (Row == 0)
 	return;
 
-    int rgb[12][3] = { {96, 32, 32}, {96, 64, 32}, {96, 96, 32}, {64, 96, 32}, {32, 96, 32},
-    {32, 96, 64}, {32, 96, 96}, {32, 64, 96}, {32, 32, 96}, {64, 32, 96}, {96, 32, 96}, {96, 32, 64}
+    int rgb[12][3] =
+	{ {96, 32, 32}, {96, 64, 32}, {96, 96, 32}, {64, 96, 32}, {32, 96,
+								   32},
+    {32, 96, 64}, {32, 96, 96}, {32, 64, 96}, {32, 32, 96}, {64, 32, 96},
+    {96, 32, 96}, {96, 32, 64}
     };
 
     double r = rgb[Row - 1][0];
@@ -5870,26 +6178,34 @@ bool Save_c3dXlsFile(String Fpath)
     const string & filename = (string &) Fpath;
     ExcelFileDB db(filename, Create);
 
-    string_vector_ptr fieldsNames = StringVector::fromCString(7, "LutNum", "Rin", "Gin", "Bin",
-							      "Rout", "Gout", "Bout");
+    string_vector_ptr fieldsNames =
+	StringVector::fromCString(7, "LutNum", "Rin", "Gin", "Bin",
+				  "Rout", "Gout", "Bout");
 
     db.createTable("9x9x9", fieldsNames);
     for (int i = 0; i < total_len; i++) {
 	db.insert(fieldsNames,
-		  StringVector::fromCString(7, IntToStr(i + 1), IntToStr(c3d_r[0][i]),
-					    IntToStr(c3d_g[0][i]), IntToStr(c3d_b[0][i]),
-					    IntToStr(c3d_r[1][i]), IntToStr(c3d_g[1][i]),
+		  StringVector::fromCString(7, IntToStr(i + 1),
+					    IntToStr(c3d_r[0][i]),
+					    IntToStr(c3d_g[0][i]),
+					    IntToStr(c3d_b[0][i]),
+					    IntToStr(c3d_r[1][i]),
+					    IntToStr(c3d_g[1][i]),
 					    IntToStr(c3d_b[1][i])));
     }
     db.createTable("7x7x7", fieldsNames);
     int idx = 1;
     for (int i = 0; i < 9 * 9 * 9; i++) {
-	if (c3d_r[0][i] != 96 && c3d_r[0][i] != 160 && c3d_g[0][i] != 96 && c3d_g[0][i] != 160
-	    && c3d_b[0][i] != 96 && c3d_b[0][i] != 160) {
+	if (c3d_r[0][i] != 96 && c3d_r[0][i] != 160 && c3d_g[0][i] != 96
+	    && c3d_g[0][i] != 160 && c3d_b[0][i] != 96
+	    && c3d_b[0][i] != 160) {
 	    db.insert(fieldsNames,
-		      StringVector::fromCString(7, IntToStr(idx), IntToStr(c3d_r[0][i]),
-						IntToStr(c3d_g[0][i]), IntToStr(c3d_b[0][i]),
-						IntToStr(c3d_r[1][i]), IntToStr(c3d_g[1][i]),
+		      StringVector::fromCString(7, IntToStr(idx),
+						IntToStr(c3d_r[0][i]),
+						IntToStr(c3d_g[0][i]),
+						IntToStr(c3d_b[0][i]),
+						IntToStr(c3d_r[1][i]),
+						IntToStr(c3d_g[1][i]),
 						IntToStr(c3d_b[1][i])));
 	    idx++;
 	}
@@ -5919,7 +6235,8 @@ void __fastcall TC3DForm1::btn_c3d_save_rgbClick(TObject * Sender)
 	//Point Color - RGB Diffusion
 	sb_c3d_rgb_dis->Position = 0;
 	Reset_c3d_Point_RGB_Scroll();
-    } else if (pc_Adjust->TabIndex == 1 && pc_point_color_adj->TabIndex == 1)
+    } else if (pc_Adjust->TabIndex == 1
+	       && pc_point_color_adj->TabIndex == 1)
 	//Point Color - HSV Diffusion
 	Reset_c3d_Point_HSV_Scroll();
 
@@ -5929,15 +6246,19 @@ void __fastcall TC3DForm1::btn_c3d_save_rgbClick(TObject * Sender)
 //---------------------------------------------------------------------------
 // Draw "Light 12" Color , H=n+30, S=0.6666, V=192
 void __fastcall TC3DForm1::sg_12color1DrawCell(TObject * Sender, int ACol,
-					       int ARow, TRect & Rect, TGridDrawState State)
+					       int ARow, TRect & Rect,
+					       TGridDrawState State)
 {
-    int rgb[12][3] = { {192, 64, 64}, {192, 128, 64}, {192, 192, 64}, {128, 192, 64},
-    {64, 192, 64}, {64, 192, 128}, {64, 192, 192}, {64, 128, 192}, {64, 64, 192},
+    int rgb[12][3] =
+	{ {192, 64, 64}, {192, 128, 64}, {192, 192, 64}, {128, 192, 64},
+    {64, 192, 64}, {64, 192, 128}, {64, 192, 192}, {64, 128, 192}, {64, 64,
+								    192},
     {128, 64, 192}, {192, 64, 192}, {192, 64, 128}
     };
     for (int row = 1; row <= 12; row++) {
-	sg_12color1->Canvas->Brush->Color = (TColor) rgb[row - 1][2] * 65536 +
-	    rgb[row - 1][1] * 256 + rgb[row - 1][0];
+	sg_12color1->Canvas->Brush->Color =
+	    (TColor) rgb[row - 1][2] * 65536 + rgb[row - 1][1] * 256 +
+	    rgb[row - 1][0];
 	sg_12color1->Canvas->Rectangle(0, 19 * row, 34, 19 * (row + 1));
 	sg_12color1->Canvas->Font->Color = clBlack;
 	sg_12color1->Canvas->TextOut(0 + 4, 19 * row + 4, (row - 1) * 30);
@@ -5948,14 +6269,19 @@ void __fastcall TC3DForm1::sg_12color1DrawCell(TObject * Sender, int ACol,
 
 // Draw "Dark 12" Color , H=n+30, S=0.6666, V=96
 void __fastcall TC3DForm1::sg_12color2DrawCell(TObject * Sender, int ACol,
-					       int ARow, TRect & Rect, TGridDrawState State)
+					       int ARow, TRect & Rect,
+					       TGridDrawState State)
 {
-    int rgb[12][3] = { {96, 32, 32}, {96, 64, 32}, {96, 96, 32}, {64, 96, 32}, {32, 96, 32},
-    {32, 96, 64}, {32, 96, 96}, {32, 64, 96}, {32, 32, 96}, {64, 32, 96}, {96, 32, 96}, {96, 32, 64}
+    int rgb[12][3] =
+	{ {96, 32, 32}, {96, 64, 32}, {96, 96, 32}, {64, 96, 32}, {32, 96,
+								   32},
+    {32, 96, 64}, {32, 96, 96}, {32, 64, 96}, {32, 32, 96}, {64, 32, 96},
+    {96, 32, 96}, {96, 32, 64}
     };
     for (int row = 1; row <= 12; row++) {
-	sg_12color2->Canvas->Brush->Color = (TColor) rgb[row - 1][2] * 65536 +
-	    rgb[row - 1][1] * 256 + rgb[row - 1][0];
+	sg_12color2->Canvas->Brush->Color =
+	    (TColor) rgb[row - 1][2] * 65536 + rgb[row - 1][1] * 256 +
+	    rgb[row - 1][0];
 	sg_12color2->Canvas->Rectangle(0, 19 * row, 34, 19 * (row + 1));
 	sg_12color2->Canvas->Font->Color = clBlack;
 	sg_12color2->Canvas->TextOut(0 + 4, 19 * row + 4, (row - 1) * 30);
@@ -5966,9 +6292,13 @@ void __fastcall TC3DForm1::sg_12color2DrawCell(TObject * Sender, int ACol,
 
 //Draw "Dark" color , value = 32
 void __fastcall TC3DForm1::sg_DarkDrawCell(TObject * Sender, int ACol,
-					   int ARow, TRect & Rect, TGridDrawState State)
+					   int ARow, TRect & Rect,
+					   TGridDrawState State)
 {
-    int rgb[6][3] = { {32, 0, 0}, {32, 32, 0}, {0, 32, 0}, {0, 32, 32}, {0, 0, 32}, {32, 0, 32} };
+    int rgb[6][3] =
+	{ {32, 0, 0}, {32, 32, 0}, {0, 32, 0}, {0, 32, 32}, {0, 0, 32},
+    {32, 0, 32}
+    };
     for (int row = 1; row <= 6; row++) {
 	sg_Dark->Canvas->Brush->Color = (TColor) rgb[row - 1][2] * 65536 +
 	    rgb[row - 1][1] * 256 + rgb[row - 1][0];
@@ -5981,9 +6311,12 @@ void __fastcall TC3DForm1::sg_DarkDrawCell(TObject * Sender, int ACol,
 //---------------------------------------------------------------------------
 // Draw "Gray" Color , 9 Gray Level (0,32,64,96,128,160,192,224,255)
 void __fastcall TC3DForm1::sg_GrayDrawCell(TObject * Sender, int ACol,
-					   int ARow, TRect & Rect, TGridDrawState State)
+					   int ARow, TRect & Rect,
+					   TGridDrawState State)
 {
-    int rgb[9][3] = { {0, 0, 0}, {32, 32, 32}, {64, 64, 64}, {96, 96, 96}, {128, 128, 128},
+    int rgb[9][3] =
+	{ {0, 0, 0}, {32, 32, 32}, {64, 64, 64}, {96, 96, 96}, {128, 128,
+								128},
     {160, 160, 160}, {192, 192, 192}, {224, 224, 224}, {255, 255, 255}
     };
     for (int row = 1; row <= 9; row++) {
@@ -6004,7 +6337,9 @@ void __fastcall TC3DForm1::sg_GrayDrawCell(TObject * Sender, int ACol,
 //---------------------------------------------------------------------------
 
 void __fastcall TC3DForm1::img_colorMouseDown(TObject * Sender,
-					      TMouseButton Button, TShiftState Shift, int X, int Y)
+					      TMouseButton Button,
+					      TShiftState Shift, int X,
+					      int Y)
 {
     rb_c3d_point->Checked = true;
     c3d_scrollbar_reset();
@@ -6048,7 +6383,9 @@ void __fastcall TC3DForm1::img_colorMouseDown(TObject * Sender,
 
 //---------------------------------------------------------------------------
 
-void __fastcall TC3DForm1::img_colorMouseMove(TObject * Sender, TShiftState Shift, int X, int Y)
+void __fastcall TC3DForm1::img_colorMouseMove(TObject * Sender,
+					      TShiftState Shift, int X,
+					      int Y)
 {
     int color;
     double h, s, v, i, r, g, b;
@@ -6100,7 +6437,8 @@ void Sort_Color_64(void)
 
     int idx = 0;
     for (int i = 0; i < Color_move_Nbr; i++) {
-	rgb2hsv(Color_move[i][0], Color_move[i][1], Color_move[i][2], &h, &s, &in, &v);
+	rgb2hsv(Color_move[i][0], Color_move[i][1], Color_move[i][2], &h,
+		&s, &in, &v);
 	if (v == 0) {
 	    idx = Sort_pack[0];
 	    Sort[0][idx][0] = Color_move[i][0];
@@ -6129,9 +6467,10 @@ void Sort_Color_64(void)
     for (int i = 1; i < 3; i++) {
 	for (int t1 = Sort_pack[i]; t1 > 0; t1--) {
 	    for (int t2 = 0; t2 < t1 - 1; t2++) {
-		rgb2hsv(Sort[i][t2][0], Sort[i][t2][1], Sort[i][t2][2], &h1, &s, &in, &v);
-		rgb2hsv(Sort[i][t2 + 1][0], Sort[i][t2 + 1][1], Sort[i][t2 + 1][2], &h2, &s, &in,
-			&v);
+		rgb2hsv(Sort[i][t2][0], Sort[i][t2][1], Sort[i][t2][2],
+			&h1, &s, &in, &v);
+		rgb2hsv(Sort[i][t2 + 1][0], Sort[i][t2 + 1][1],
+			Sort[i][t2 + 1][2], &h2, &s, &in, &v);
 		if (h1 > h2)
 		    swap(Sort[i][t2], Sort[i][t2 + 1], 3);
 	    }
@@ -6326,7 +6665,8 @@ void __fastcall TC3DForm1::btn_darkClick(TObject * Sender)
     TmpBitmap->Width = 433;
     TmpBitmap->Height = 301;
     TmpBitmap->Canvas->Brush->Color = (TColor) RGB(0, 0, 0);
-    TmpBitmap->Canvas->Rectangle(0, 0, TmpBitmap->Width, TmpBitmap->Height);
+    TmpBitmap->Canvas->Rectangle(0, 0, TmpBitmap->Width,
+				 TmpBitmap->Height);
 
     colorPicker->img_color->Canvas->Draw(0, 0, TmpBitmap);
 
@@ -6335,10 +6675,12 @@ void __fastcall TC3DForm1::btn_darkClick(TObject * Sender)
 	    if (i * 5 + j >= Color_move_Nbr)
 		break;
 	    TmpBitmap->Canvas->Brush->Color =
-		(TColor) RGB(Color_move[i * 5 + j][0], Color_move[i * 5 + j][1],
+		(TColor) RGB(Color_move[i * 5 + j][0],
+			     Color_move[i * 5 + j][1],
 			     Color_move[i * 5 + j][2]);
 	    TmpBitmap->Canvas->Rectangle(0, 0, 60, 60);
-	    colorPicker->img_color->Canvas->Draw(i * 60, j * 60, TmpBitmap);
+	    colorPicker->img_color->Canvas->Draw(i * 60, j * 60,
+						 TmpBitmap);
 	}
     }
     delete TmpBitmap;
@@ -6367,14 +6709,17 @@ void __fastcall TC3DForm1::lbe_sat_sigma_lightChange(TObject * Sender)
 //---------------------------------------------------------------------------
 // When StringGrid "sg_12color1" Select Change,
 // call function "sg_12color1MouseDown" to change select color
-void __fastcall TC3DForm1::sg_12color1SelectCell(TObject * Sender, int ACol,
-						 int ARow, bool & CanSelect)
+void __fastcall TC3DForm1::sg_12color1SelectCell(TObject * Sender,
+						 int ACol, int ARow,
+						 bool & CanSelect)
 {
     Cell_move = false;
     if (ARow == 0)
 	return;
-    int rgb[12][3] = { {192, 64, 64}, {192, 128, 64}, {192, 192, 64}, {128, 192, 64},
-    {64, 192, 64}, {64, 192, 128}, {64, 192, 192}, {64, 128, 192}, {64, 64, 192},
+    int rgb[12][3] =
+	{ {192, 64, 64}, {192, 128, 64}, {192, 192, 64}, {128, 192, 64},
+    {64, 192, 64}, {64, 192, 128}, {64, 192, 192}, {64, 128, 192}, {64, 64,
+								    192},
     {128, 64, 192}, {192, 64, 192}, {192, 64, 128}
     };
 
@@ -6389,8 +6734,9 @@ void __fastcall TC3DForm1::sg_12color1SelectCell(TObject * Sender, int ACol,
 //---------------------------------------------------------------------------
 // When StringGrid "sg_12color2" Select Change,
 // call function "sg_12color2MouseDown" to change select color
-void __fastcall TC3DForm1::sg_12color2SelectCell(TObject * Sender, int ACol,
-						 int ARow, bool & CanSelect)
+void __fastcall TC3DForm1::sg_12color2SelectCell(TObject * Sender,
+						 int ACol, int ARow,
+						 bool & CanSelect)
 {
     int X = ACol * sg_12color2->DefaultColWidth;
     int Y = ARow * (sg_12color2->DefaultRowHeight + 1);
@@ -6415,7 +6761,9 @@ void __fastcall TC3DForm1::btn_AddPointClick(TObject * Sender)
 	Rout = FloatToStr(PointColor_array[i][3]);
 	Gout = FloatToStr(PointColor_array[i][4]);
 	Bout = FloatToStr(PointColor_array[i][5]);
-	str = Rin + "," + Gin + "," + Bin + "   " + Rout + "," + Gout + "," + Bout;
+	str =
+	    Rin + "," + Gin + "," + Bin + "   " + Rout + "," + Gout + "," +
+	    Bout;
 	ListBox_PointColor->Items->Add(str);	//加入資料
     }
     PointColor_array_nbr = 0;
@@ -6464,7 +6812,8 @@ void __fastcall TC3DForm1::btn_SaveRecordClick(TObject * Sender)
 
 void __fastcall TC3DForm1::btn_LoadRecordClick(TObject * Sender)
 {
-    int ok = Application->MessageBox("Replace Colors?", "Warning", MB_OKCANCEL);
+    int ok =
+	Application->MessageBox("Replace Colors?", "Warning", MB_OKCANCEL);
     if (ok != 1)
 	return;			// do nothing
 
@@ -6533,8 +6882,10 @@ void __fastcall TC3DForm1::btn_LoadRecordClick(TObject * Sender)
 	c3d_lutR[Rin[i]][Gin[i]][Bin[i]] = Rout[i];
 	c3d_lutG[Rin[i]][Gin[i]][Bin[i]] = Gout[i];
 	c3d_lutB[Rin[i]][Gin[i]][Bin[i]] = Bout[i];
-	rgb2hsv(Rout[i], Gout[i], Bout[i], &c3d_lutH[Rin[i]][Gin[i]][Bin[i]],
-		&c3d_lutS[Rin[i]][Gin[i]][Bin[i]], &c3d_lutI[Rin[i]][Gin[i]][Bin[i]],
+	rgb2hsv(Rout[i], Gout[i], Bout[i],
+		&c3d_lutH[Rin[i]][Gin[i]][Bin[i]],
+		&c3d_lutS[Rin[i]][Gin[i]][Bin[i]],
+		&c3d_lutI[Rin[i]][Gin[i]][Bin[i]],
 		&c3d_lutV[Rin[i]][Gin[i]][Bin[i]]);
     }
     for (int i = 0; i < line_nbr + 1; i++)
@@ -6694,7 +7045,8 @@ void __fastcall TC3DForm1::c3d_Sim_Image_HSV_StepClick(TObject * Sender)
     double r, g, b, sim_r, sim_g, sim_b, h, s, in, v;
     double H_step = StrToFloat(HSVStepSimForm->lb_c3d_sim_H_step->Caption);
     double S_step = StrToFloat(HSVStepSimForm->lb_c3d_sim_S_step->Caption);
-    double V_step = StrToFloat(HSVStepSimForm->lb_c3d_sim_V_step->Caption) / 255;
+    double V_step =
+	StrToFloat(HSVStepSimForm->lb_c3d_sim_V_step->Caption) / 255;
     int color;
     TCanvas *pCanvas = HSVStepSimForm->Image1->Canvas;
     TCanvas *pCanvas2 = HSVStepSimForm->Image2->Canvas;
@@ -6718,22 +7070,31 @@ void __fastcall TC3DForm1::c3d_Sim_Image_HSV_StepClick(TObject * Sender)
 	    C3Dsim_t(r, g, b, &sim_r, &sim_g, &sim_b);
 	    rgb2hsv(sim_r, sim_g, sim_b, &h, &s, &in, &v);
 	    for (int j = 0; j < 5; j++) {
-		p_Img1 = (BYTE *) HSVStepSimForm->Image1->Picture->Bitmap->ScanLine[y + j * 80];
-		p_Img2 = (BYTE *) HSVStepSimForm->Image2->Picture->Bitmap->ScanLine[y + j * 80];
-		p_Img3 = (BYTE *) HSVStepSimForm->Image3->Picture->Bitmap->ScanLine[y + j * 80];
+		p_Img1 =
+		    (BYTE *) HSVStepSimForm->Image1->Picture->Bitmap->
+		    ScanLine[y + j * 80];
+		p_Img2 =
+		    (BYTE *) HSVStepSimForm->Image2->Picture->Bitmap->
+		    ScanLine[y + j * 80];
+		p_Img3 =
+		    (BYTE *) HSVStepSimForm->Image3->Picture->Bitmap->
+		    ScanLine[y + j * 80];
 		for (int i = 0; i < 5; i++) {
-		    hsv2rgb(h + (i - 2) * H_step, s * (1 + (j - 2) * (-1) * S_step), v, &r, &g, &b);
+		    hsv2rgb(h + (i - 2) * H_step,
+			    s * (1 + (j - 2) * (-1) * S_step), v, &r, &g,
+			    &b);
 		    p_Img1[(x + i * 80) * 3 + 2] = r;
 		    p_Img1[(x + i * 80) * 3 + 1] = g;
 		    p_Img1[(x + i * 80) * 3] = b;
 
-		    hsv2rgb(h + (i - 2) * H_step, s, v * (1 + (j - 2) * (-1) * V_step), &r, &g, &b);
+		    hsv2rgb(h + (i - 2) * H_step, s,
+			    v * (1 + (j - 2) * (-1) * V_step), &r, &g, &b);
 		    p_Img2[(x + i * 80) * 3 + 2] = r;
 		    p_Img2[(x + i * 80) * 3 + 1] = g;
 		    p_Img2[(x + i * 80) * 3] = b;
 
-		    hsv2rgb(h, s * (1 + (i - 2) * S_step), v * (1 + (j - 2) * (-1) * V_step), &r,
-			    &g, &b);
+		    hsv2rgb(h, s * (1 + (i - 2) * S_step),
+			    v * (1 + (j - 2) * (-1) * V_step), &r, &g, &b);
 		    p_Img3[(x + i * 80) * 3 + 2] = r;
 		    p_Img3[(x + i * 80) * 3 + 1] = g;
 		    p_Img3[(x + i * 80) * 3] = b;
@@ -6791,7 +7152,8 @@ void __fastcall TC3DForm1::c3d_Sim_Color_HSV_StepClick(TObject * Sender)
 
     double H_step = StrToFloat(HSVStepSimForm->lb_c3d_sim_H_step->Caption);
     double S_step = StrToFloat(HSVStepSimForm->lb_c3d_sim_S_step->Caption);
-    double V_step = StrToFloat(HSVStepSimForm->lb_c3d_sim_V_step->Caption) / 255;
+    double V_step =
+	StrToFloat(HSVStepSimForm->lb_c3d_sim_V_step->Caption) / 255;
     double r, g, b, h, s, v;
     h = StrToFloat(lb_c3d_simH->Caption);
     s = StrToFloat(lb_c3d_simS->Caption);
@@ -6803,27 +7165,33 @@ void __fastcall TC3DForm1::c3d_Sim_Color_HSV_StepClick(TObject * Sender)
     TCanvas *pCanvas = HSVStepSimForm->Image1->Canvas;
     for (int i = 0; i < 5; i++)
 	for (int j = 0; j < 5; j++) {
-	    hsv2rgb(h + (i - 2) * H_step, s * (1 + (j - 2) * (-1) * S_step), v, &r, &g, &b);
+	    hsv2rgb(h + (i - 2) * H_step,
+		    s * (1 + (j - 2) * (-1) * S_step), v, &r, &g, &b);
 	    pCanvas->Brush->Color = (TColor) (r + 256 * g + 65536 * b);
 	    pCanvas->Brush->Style = bsSolid;
-	    pCanvas->Rectangle(i * 80 + 0, j * 80 + 0, i * 80 + 80, j * 80 + 80);
+	    pCanvas->Rectangle(i * 80 + 0, j * 80 + 0, i * 80 + 80,
+			       j * 80 + 80);
 	}
     TCanvas *pCanvas2 = HSVStepSimForm->Image2->Canvas;
     for (int i = 0; i < 5; i++) {
 	for (int j = 0; j < 5; j++) {
-	    hsv2rgb(h + (i - 2) * H_step, s, v * (1 + (j - 2) * (-1) * V_step), &r, &g, &b);
+	    hsv2rgb(h + (i - 2) * H_step, s,
+		    v * (1 + (j - 2) * (-1) * V_step), &r, &g, &b);
 	    pCanvas2->Brush->Color = (TColor) (r + 256 * g + 65536 * b);
 	    pCanvas2->Brush->Style = bsSolid;
-	    pCanvas2->Rectangle(i * 80 + 0, j * 80 + 0, i * 80 + 80, j * 80 + 80);
+	    pCanvas2->Rectangle(i * 80 + 0, j * 80 + 0, i * 80 + 80,
+				j * 80 + 80);
 	}
     }
     TCanvas *pCanvas3 = HSVStepSimForm->Image3->Canvas;
     for (int i = 0; i < 5; i++) {
 	for (int j = 0; j < 5; j++) {
-	    hsv2rgb(h, s * (1 + (i - 2) * S_step), v * (1 + (j - 2) * (-1) * V_step), &r, &g, &b);
+	    hsv2rgb(h, s * (1 + (i - 2) * S_step),
+		    v * (1 + (j - 2) * (-1) * V_step), &r, &g, &b);
 	    pCanvas3->Brush->Color = (TColor) (r + 256 * g + 65536 * b);
 	    pCanvas3->Brush->Style = bsSolid;
-	    pCanvas3->Rectangle(i * 80 + 0, j * 80 + 0, i * 80 + 80, j * 80 + 80);
+	    pCanvas3->Rectangle(i * 80 + 0, j * 80 + 0, i * 80 + 80,
+				j * 80 + 80);
 	}
     }
     if (pc_Adjust->TabIndex == 0 && pc_global_adj->TabIndex == 1) {
@@ -7012,17 +7380,22 @@ void __fastcall TC3DForm1::cb_show_ref_imgClick(TObject * Sender)
 void __fastcall TC3DForm1::pc_imgChange(TObject * Sender)
 {
     if (colorPicker->pc_img->TabIndex == 0)
-	InTargetForm->img_in_target->Picture->Bitmap->Assign(colorPicker->Img_3DLUT->Picture->
+	InTargetForm->img_in_target->Picture->Bitmap->Assign(colorPicker->
+							     Img_3DLUT->
+							     Picture->
 							     Bitmap);
     else
-	InTargetForm->img_in_target->Picture->Bitmap->Assign(colorPicker->img_color->Picture->
+	InTargetForm->img_in_target->Picture->Bitmap->Assign(colorPicker->
+							     img_color->
+							     Picture->
 							     Bitmap);
 }
 
 //---------------------------------------------------------------------------
 
 
-bool Load_XlsFile(String fpath, String Sheet_N, double **Data, int W_max, int H_max)
+bool Load_XlsFile(String fpath, String Sheet_N, double **Data, int W_max,
+		  int H_max)
 {
     using namespace cms::colorformat;
     using namespace std;
@@ -7073,7 +7446,8 @@ void __fastcall TC3DForm1::btn_Auto_Src_LoadClick(TObject * Sender)
     for (int i = 0; i < WRGB_h; i++)
 	WRGB_meas[i] = new double[WRGB_w];
 
-    bool Load_ok = Load_XlsFile(Fpath, "Sheet1", WRGB_meas, WRGB_w, WRGB_h);
+    bool Load_ok =
+	Load_XlsFile(Fpath, "Sheet1", WRGB_meas, WRGB_w, WRGB_h);
     if (!Load_ok) {
 	ShowMessage("Fail to Load Source WRGB file.");
 	return;
@@ -7111,7 +7485,8 @@ void xyY2XYZ(double C_xyY[3], double C_XYZ[3])
     C_XYZ[2] = (1 - x - y) / y * Y;	// Z = (1-x-y)/y*Y
 }
 
-void Normal_XYZ(double C_XYZ[3], double W255_Y, double W0_XYZ[3], double NC_XYZ[3])
+void Normal_XYZ(double C_XYZ[3], double W255_Y, double W0_XYZ[3],
+		double NC_XYZ[3])
 {
     for (int i = 0; i < 3; i++)
 	NC_XYZ[i] = (C_XYZ[i] - W0_XYZ[i]) / W255_Y;
@@ -7151,7 +7526,8 @@ void Inverse_3matrix(double A[3][3], double B[3][3])
 }
 
 //---------------------------------------------------------------------------
-void Mtrx3_multiple(double multi1[3][3], double multi2[3][3], double result[3][3])
+void Mtrx3_multiple(double multi1[3][3], double multi2[3][3],
+		    double result[3][3])
 {
     for (int i = 0; i < 3; i++)
 	for (int j = 0; j < 3; j++)
@@ -7182,9 +7558,12 @@ void __fastcall TC3DForm1::btn_Auto_Src_CalcClick(TObject * Sender)
     // Normalize SR0_255_Y, SG0_255_Y, SB0_255_Y;
     for (int i = 0; i < 256; i++) {
 	// Use W0 & (R255 or G255 or B255) to Normalize R0~255, G0~255, B0~255
-	SR0_255_YN[i] = (SR0_255_Y[i] - W0_xyY[2]) / (R255_xyY[2] - W0_xyY[2]);
-	SG0_255_YN[i] = (SG0_255_Y[i] - W0_xyY[2]) / (G255_xyY[2] - W0_xyY[2]);
-	SB0_255_YN[i] = (SB0_255_Y[i] - W0_xyY[2]) / (B255_xyY[2] - W0_xyY[2]);
+	SR0_255_YN[i] =
+	    (SR0_255_Y[i] - W0_xyY[2]) / (R255_xyY[2] - W0_xyY[2]);
+	SG0_255_YN[i] =
+	    (SG0_255_Y[i] - W0_xyY[2]) / (G255_xyY[2] - W0_xyY[2]);
+	SB0_255_YN[i] =
+	    (SB0_255_Y[i] - W0_xyY[2]) / (B255_xyY[2] - W0_xyY[2]);
 	if (i != 0)
 	    P[i] = log10((double) i / 255);
 	if (SR0_255_YN[i] < 0.000001)
@@ -7226,7 +7605,8 @@ void __fastcall TC3DForm1::btn_Auto_Src_CalcClick(TObject * Sender)
     xyY2XYZ(W255_xyY, W255_XYZ);
     xyY2XYZ(W0_xyY, W0_XYZ);
 
-    double R255m0_XYZ[3], G255m0_XYZ[3], B255m0_XYZ[3], W255m0_XYZ[3], W0m0_XYZ[3];
+    double R255m0_XYZ[3], G255m0_XYZ[3], B255m0_XYZ[3], W255m0_XYZ[3],
+	W0m0_XYZ[3];
     Normal_XYZ(R255_XYZ, W255_xyY[2], W0_XYZ, R255m0_XYZ);
     Normal_XYZ(G255_XYZ, W255_xyY[2], W0_XYZ, G255m0_XYZ);
     Normal_XYZ(B255_XYZ, W255_xyY[2], W0_XYZ, B255m0_XYZ);
@@ -7302,7 +7682,8 @@ void __fastcall TC3DForm1::btn_Auto_Trg_LoadClick(TObject * Sender)
     for (int i = 0; i < T_tbl_col_h; i++)
 	T_tbl_col[i] = new double[T_tbl_col_w];
 
-    bool Load_ok = Load_XlsFile(Fpath, "Sheet1", T_tbl_col, T_tbl_col_w, T_tbl_col_h);
+    bool Load_ok =
+	Load_XlsFile(Fpath, "Sheet1", T_tbl_col, T_tbl_col_w, T_tbl_col_h);
     if (!Load_ok) {
 	ShowMessage("Load target data fail!");
 	return;
@@ -7455,8 +7836,9 @@ void __fastcall TC3DForm1::btn_c3d_load_rgbClick(TObject * Sender)
     for (int i = 0; i < TBL_SIZE; i++)
 	for (int j = 0; j < TBL_SIZE; j++)
 	    for (int k = 0; k < TBL_SIZE; k++) {
-		rgb2hsv(c3d_lutR[i][j][k], c3d_lutG[i][j][k], c3d_lutB[i][j][k],
-			&c3d_lutH[i][j][k], &c3d_lutS[i][j][k], &c3d_lutI[i][j][k],
+		rgb2hsv(c3d_lutR[i][j][k], c3d_lutG[i][j][k],
+			c3d_lutB[i][j][k], &c3d_lutH[i][j][k],
+			&c3d_lutS[i][j][k], &c3d_lutI[i][j][k],
 			&c3d_lutV[i][j][k]);
 
 		tmp_c3d_lutR[i][j][k] = c3d_lutR[i][j][k];
@@ -7534,7 +7916,8 @@ void __fastcall TC3DForm1::btn_Auto_Trg_BuildTblClick(TObject * Sender)
 
 	for (int j = 0; j < 3; j++) {
 	    Tbl_RGB[i][j] =
-		Mtrx_xyz2rgb[j][0] * T_tblm0_XYZ[i][0] + Mtrx_xyz2rgb[j][1] * T_tblm0_XYZ[i][1]
+		Mtrx_xyz2rgb[j][0] * T_tblm0_XYZ[i][0] +
+		Mtrx_xyz2rgb[j][1] * T_tblm0_XYZ[i][1]
 		+ Mtrx_xyz2rgb[j][2] * T_tblm0_XYZ[i][2];
 
 	    if (Tbl_RGB[i][j] < 0)
@@ -7585,7 +7968,8 @@ void __fastcall TC3DForm1::SaveDialog1TypeChange(TObject * Sender)
 //---------------------------------------------------------------------------
 
 
-void __fastcall TC3DForm1::TColorPickerFrame1cb_show_ref_imgClick(TObject * Sender)
+void __fastcall TC3DForm1::TColorPickerFrame1cb_show_ref_imgClick(TObject *
+								  Sender)
 {
     colorPicker->cb_show_ref_imgClick(Sender);
 
