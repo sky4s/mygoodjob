@@ -6,14 +6,14 @@
     <PROJECT value="workdir\Project1.exe"/>
     <OBJFILES value="build\Project1.obj build\Unit1.obj build\Vender1.obj build\CM1.obj 
       build\HueSatVal1.obj build\Sharpness1.obj build\TCON1.obj 
-      build\Function1.obj build\Vend_11307.obj build\TCON_11307.obj 
-      build\ImgProc_11307.obj build\Func_11307.obj build\Engineering.obj 
-      build\DCR1.obj build\DCR_12401.obj build\ContrastEnhance1.obj 
-      build\C3D1.obj build\SAT.obj build\SAT_11307.obj build\offset_11307.obj 
-      build\offset.obj build\HueSatVal2.obj build\ReadWriteFunc.obj 
-      build\USBHIDIOC.obj build\HWINTERFACELib_TLB.obj 
-      build\HWINTERFACELib_OCX.obj build\THSVForm3.obj 
-      build\TColorPickerFrame.obj build\THSVAdjustFrame.obj build\lang.obj"/>
+      build\Function1.obj build\Engineering.obj build\DCR1.obj 
+      build\ContrastEnhance1.obj build\C3D1.obj build\SAT.obj 
+      build\SAT_11307.obj build\offset_11307.obj build\offset.obj 
+      build\HueSatVal2.obj build\ReadWriteFunc.obj build\USBHIDIOC.obj 
+      build\HWINTERFACELib_TLB.obj build\HWINTERFACELib_OCX.obj 
+      build\THSVForm3.obj build\TColorPickerFrame.obj build\THSVAdjustFrame.obj 
+      build\lang.obj build\DCR_12401.obj build\Func_11307.obj 
+      build\ImgProc_11307.obj build\TCON_11307.obj build\Vend_11307.obj"/>
     <RESFILES value="Project1.res"/>
     <IDLFILES value=""/>
     <IDLGENFILES value=""/>
@@ -32,7 +32,7 @@
       inetdbbde.bpi inetdbxpress.bpi inetdb.bpi nmfast.bpi webdsnap.bpi 
       bcbie.bpi websnap.bpi soaprtl.bpi dclocx.bpi dbexpress.bpi dbxcds.bpi 
       indy.bpi bcb2kaxserver.bpi"/>
-    <PATHCPP value=".;11307\Vender;11307\TCON;11307\ImageProcess;11307\Function;11307\DCR;lib\i2c\core;lib\USB_i2c_lib;lib\LPT_lib;lib\LPT_lib;src\fpga\gui;src\gui\frame;src\gui\frame;lib\java"/>
+    <PATHCPP value=".;lib\i2c\core;lib\USB_i2c_lib;lib\LPT_lib;lib\LPT_lib;src\fpga\gui;src\gui\frame;src\gui\frame;lib\java;src\fpga\11307\DCR;src\fpga\11307\Function;src\fpga\11307\ImageProcess;src\fpga\11307\TCON;src\fpga\11307\Vender"/>
     <PATHPAS value=".;"/>
     <PATHRC value=".;"/>
     <PATHASM value=".;"/>
@@ -42,14 +42,16 @@
     <USERDEFINES value="_DEBUG"/>
     <SYSDEFINES value="NO_STRICT"/>
     <MAINSOURCE value="Project1.cpp"/>
-    <INCLUDEPATH value="lib\java;src\gui\frame;src\fpga\gui;lib\i2c\core;&quot;D:\Program Files\Borland\CBuilder6\Projects&quot;;11307\DCR;11307\Function;11307\ImageProcess;11307\TCON;11307\Vender;12401\ImageProcess;12401\Vender;12401\DCR;12401\TCON;12401\Function;$(BCB)\include;$(BCB)\include\vcl;lib;./;lib\LPT_lib;lib\USB_i2c_lib;src"/>
-    <LIBPATH value="lib\java;src\gui\frame;src\fpga\gui;&quot;D:\Program Files\Borland\CBuilder6\Projects&quot;;lib\i2c\core;11307\DCR;11307\Function;11307\ImageProcess;11307\TCON;11307\Vender;12401\ImageProcess;12401\Vender;12401\DCR;12401\TCON;12401\Function;$(BCB)\lib\obj;$(BCB)\lib;lib;lib\LPT_lib;lib\USB_i2c_lib;src"/>
+    <INCLUDEPATH value="src\fpga\11307\Vender;src\fpga\11307\TCON;src\fpga\11307\ImageProcess;src\fpga\11307\Function;src\fpga\11307\DCR;lib\java;src\gui\frame;src\fpga\gui;lib\i2c\core;&quot;D:\Program Files\Borland\CBuilder6\Projects&quot;;11307\DCR;11307\Function;11307\ImageProcess;11307\TCON;11307\Vender;12401\ImageProcess;12401\Vender;12401\DCR;12401\TCON;12401\Function;$(BCB)\include;$(BCB)\include\vcl;lib;./;lib\LPT_lib;lib\USB_i2c_lib;src"/>
+    <LIBPATH value="src\fpga\11307\Vender;src\fpga\11307\TCON;src\fpga\11307\ImageProcess;src\fpga\11307\Function;src\fpga\11307\DCR;lib\java;src\gui\frame;src\fpga\gui;&quot;D:\Program Files\Borland\CBuilder6\Projects&quot;;lib\i2c\core;11307\DCR;11307\Function;11307\ImageProcess;11307\TCON;11307\Vender;12401\ImageProcess;12401\Vender;12401\DCR;12401\TCON;12401\Function;$(BCB)\lib\obj;$(BCB)\lib;lib;lib\LPT_lib;lib\USB_i2c_lib;src"/>
     <WARNINGS value="-w-par"/>
     <OTHERFILES value=""/>
   </MACROS>
   <OPTIONS>
-    <IDLCFLAGS value="-Ilib\java -Isrc\gui\frame -Isrc\fpga\gui -Ilib\i2c\core 
-      -I&quot;D:\Program Files\Borland\CBuilder6\Projects&quot; -I11307\DCR 
+    <IDLCFLAGS value="-Isrc\fpga\11307\Vender -Isrc\fpga\11307\TCON 
+      -Isrc\fpga\11307\ImageProcess -Isrc\fpga\11307\Function 
+      -Isrc\fpga\11307\DCR -Ilib\java -Isrc\gui\frame -Isrc\fpga\gui 
+      -Ilib\i2c\core -I&quot;D:\Program Files\Borland\CBuilder6\Projects&quot; -I11307\DCR 
       -I11307\Function -I11307\ImageProcess -I11307\TCON -I11307\Vender 
       -I12401\ImageProcess -I12401\Vender -I12401\DCR -I12401\TCON 
       -I12401\Function -I$(BCB)\include -I$(BCB)\include\vcl -Ilib -I./ 
@@ -77,18 +79,12 @@
       <FILE FILENAME="HueSatVal1.cpp" FORMNAME="HSVForm1" UNITNAME="HueSatVal1" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Sharpness1.cpp" FORMNAME="SharpnessForm1" UNITNAME="Sharpness1" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="gui_class.h" FORMNAME="" UNITNAME="gui_class.h" CONTAINERID="" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="Address_type\Address_type.h" FORMNAME="" UNITNAME="Address_type.h" CONTAINERID="" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="TCON1.cpp" FORMNAME="TCONForm1" UNITNAME="TCON1" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Function1.cpp" FORMNAME="FunctionForm1" UNITNAME="Function1" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="11307\Vender\Vend_11307.cpp" FORMNAME="" UNITNAME="Vend_11307" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="11307\TCON\TCON_11307.cpp" FORMNAME="" UNITNAME="TCON_11307" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="11307\ImageProcess\ImgProc_11307.cpp" FORMNAME="" UNITNAME="ImgProc_11307" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="11307\Function\Func_11307.cpp" FORMNAME="" UNITNAME="Func_11307" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="auo_11307_address.h" FORMNAME="" UNITNAME="auo_11307_address.h" CONTAINERID="" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="table_type.h" FORMNAME="" UNITNAME="table_type.h" CONTAINERID="" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Engineering.cpp" FORMNAME="EngineerForm" UNITNAME="Engineering" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="DCR1.cpp" FORMNAME="DCRForm1" UNITNAME="DCR1" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="11307\DCR\DCR_12401.cpp" FORMNAME="" UNITNAME="DCR_12401" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="ContrastEnhance1.cpp" FORMNAME="ContrastEnhanceForm1" UNITNAME="ContrastEnhance1" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="C3D1.cpp" FORMNAME="C3DForm1" UNITNAME="C3D1" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="SAT.cpp" FORMNAME="SATForm" UNITNAME="SAT" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
@@ -106,6 +102,11 @@
       <FILE FILENAME="src\gui\frame\TColorPickerFrame.cpp" FORMNAME="ColorPickerFrame" UNITNAME="TColorPickerFrame" CONTAINERID="CCompiler" DESIGNCLASS="TFrame" LOCALCOMMAND=""/>
       <FILE FILENAME="src\gui\frame\THSVAdjustFrame.cpp" FORMNAME="HSVAdjustFrame" UNITNAME="THSVAdjustFrame" CONTAINERID="CCompiler" DESIGNCLASS="TFrame" LOCALCOMMAND=""/>
       <FILE FILENAME="lib\java\lang.cpp" FORMNAME="" UNITNAME="lang" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="src\fpga\11307\DCR\DCR_12401.cpp" FORMNAME="" UNITNAME="DCR_12401" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="src\fpga\11307\Function\Func_11307.cpp" FORMNAME="" UNITNAME="Func_11307" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="src\fpga\11307\ImageProcess\ImgProc_11307.cpp" FORMNAME="" UNITNAME="ImgProc_11307" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="src\fpga\11307\TCON\TCON_11307.cpp" FORMNAME="" UNITNAME="TCON_11307" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="src\fpga\11307\Vender\Vend_11307.cpp" FORMNAME="" UNITNAME="Vend_11307" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
   </FILELIST>
   <BUILDTOOLS>
   </BUILDTOOLS>

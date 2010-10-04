@@ -8,7 +8,7 @@ object C3DForm1: TC3DForm1
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
-  Font.Height = -11
+  Font.Height = -14
   Font.Name = 'MS Sans Serif'
   Font.Style = []
   FormStyle = fsMDIChild
@@ -19,29 +19,29 @@ object C3DForm1: TC3DForm1
   OnClose = FormClose
   OnCreate = FormCreate
   OnKeyDown = OnKeyDown
-  PixelsPerInch = 96
-  TextHeight = 13
+  PixelsPerInch = 120
+  TextHeight = 16
   object CheckBox1: TCheckBox
-    Left = 24
-    Top = 40
-    Width = 97
-    Height = 17
+    Left = 30
+    Top = 49
+    Width = 119
+    Height = 21
     Caption = 'CheckBox1'
     TabOrder = 0
   end
   object CheckBox2: TCheckBox
-    Left = 24
-    Top = 80
-    Width = 153
-    Height = 17
+    Left = 30
+    Top = 98
+    Width = 188
+    Height = 21
     Caption = 'CheckBox2'
     TabOrder = 1
   end
   object sg_C3D_table: TStringGrid
-    Left = 208
-    Top = 16
-    Width = 321
-    Height = 425
+    Left = 256
+    Top = 20
+    Width = 395
+    Height = 523
     ColCount = 7
     DefaultColWidth = 42
     DefaultRowHeight = 20
@@ -782,56 +782,56 @@ object C3DForm1: TC3DForm1
       20)
   end
   object btn_C3D_read: TButton
-    Left = 568
-    Top = 64
-    Width = 57
-    Height = 25
+    Left = 699
+    Top = 79
+    Width = 70
+    Height = 31
     Caption = 'Read'
     TabOrder = 3
     OnClick = btn_C3D_readClick
   end
   object btn_C3D_wrt: TButton
-    Left = 568
-    Top = 112
-    Width = 57
-    Height = 25
+    Left = 699
+    Top = 138
+    Width = 70
+    Height = 31
     Caption = 'Write'
     TabOrder = 4
     OnClick = btn_C3D_wrtClick
   end
   object btn_C3D_save: TButton
-    Left = 568
-    Top = 160
-    Width = 57
-    Height = 25
+    Left = 699
+    Top = 197
+    Width = 70
+    Height = 31
     Caption = 'Save'
     TabOrder = 5
     OnClick = btn_C3D_saveClick
   end
   object btn_C3D_load: TButton
-    Left = 568
-    Top = 208
-    Width = 57
-    Height = 25
+    Left = 699
+    Top = 256
+    Width = 70
+    Height = 31
     Caption = 'Load'
     TabOrder = 6
     OnClick = btn_C3D_loadClick
   end
   object Btn_C3D_reload: TBitBtn
-    Left = 568
-    Top = 256
-    Width = 73
-    Height = 25
+    Left = 699
+    Top = 315
+    Width = 90
+    Height = 31
     Caption = '&Reload'
     TabOrder = 7
     OnClick = Btn_C3D_reloadClick
     Kind = bkYes
   end
   object CheckBox3: TCheckBox
-    Left = 24
-    Top = 120
-    Width = 161
-    Height = 17
+    Left = 30
+    Top = 148
+    Width = 198
+    Height = 21
     Caption = 'CheckBox3'
     TabOrder = 8
   end

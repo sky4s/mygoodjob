@@ -5,7 +5,7 @@
 #ifndef TCON_12401H
 #define TCON_12401H
 //---------------------------------------------------------------------------
-#endif
+
 
 class TCON_12401:public AbstTCON
 {
@@ -336,3 +336,5 @@ bool SetAddr(TBit4* Addr, String str)   //Get TBit type Address
          val[8],  val[9], val[10], val[11], name);
         return 1;
 }
+
+#endif

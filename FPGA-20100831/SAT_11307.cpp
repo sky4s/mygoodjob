@@ -3,7 +3,7 @@
 
 #pragma hdrstop
 #include "Engineering.h"
-#include "TCON_11307.h"
+#include <fpga/11307/TCON/TCON_11307.h>
 #include "auo_11307_address.h"
 #include "SAT_11307.h"
 

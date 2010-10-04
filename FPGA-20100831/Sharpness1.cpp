@@ -5,7 +5,7 @@
 #pragma hdrstop
 #include <math.h>
 #include "Sharpness1.h"
-#include "ImgProc_11307.h"
+#include <fpga/11307/ImageProcess/ImgProc_11307.h>
 #include "Engineering.h"
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
