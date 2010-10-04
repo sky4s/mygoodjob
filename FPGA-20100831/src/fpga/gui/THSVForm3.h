@@ -65,7 +65,6 @@ class THSVForm3:public TForm {
     TEdit *ed_Hue_Custom;
     TBitBtn *Btn_HSV_reload;
     TLabeledEdit *le_ChAangle;
-    TStringGrid *sg_HSV;
     TCheckBox *CheckBox3;
     TCheckBox *CheckBox4;
     TButton *btn_Hue_Img_load;
@@ -95,6 +94,8 @@ class THSVForm3:public TForm {
     TButton *btn_reset;
     TButton *btn_set;
     THSVAdjustFrame *HSVAdjustFrame1;
+    TStringGrid *sg_HSV;
+    TStringGrid *StringGrid_HSV;
     void __fastcall cb_Hue_RedClick(TObject * Sender);
     void __fastcall cb_Hue_YellowClick(TObject * Sender);
     void __fastcall cb_Hue_GreenClick(TObject * Sender);
@@ -125,6 +126,7 @@ class THSVForm3:public TForm {
   private:			// User declarations
      bool HSV_IsChkSum;
     int tbl_step;
+    void initStringGrid_HSV();
   public:			// User declarations
      TBit * cb;
     _CHKB **ChkB;
