@@ -1,3 +1,6 @@
+#ifndef GUI_CLASSH
+#define GUI_CLASSH
+
 class _CHKB
 {
         public:
@@ -136,3 +139,5 @@ __fastcall _StaticText::~_StaticText()
         delete [] StTxt;
         //delete Addr.choice;
 }
+
+#endif
