@@ -3,7 +3,7 @@ object HSVForm3: THSVForm3
   Top = 58
   Width = 1115
   Height = 881
-  HorzScrollBar.Position = 163
+  HorzScrollBar.Position = 158
   Caption = 'HSV'
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
@@ -22,7 +22,7 @@ object HSVForm3: THSVForm3
   PixelsPerInch = 120
   TextHeight = 16
   object Hue_Img: TImage
-    Left = 627
+    Left = 632
     Top = 615
     Width = 287
     Height = 277
@@ -6237,7 +6237,7 @@ object HSVForm3: THSVForm3
     OnMouseMove = Hue_ImgMouseMove
   end
   object GroupBox28: TGroupBox
-    Left = -153
+    Left = -148
     Top = 647
     Width = 651
     Height = 284
@@ -6474,7 +6474,7 @@ object HSVForm3: THSVForm3
     end
   end
   object GroupBox1: TGroupBox
-    Left = -163
+    Left = -158
     Top = 0
     Width = 1081
     Height = 649
@@ -6819,17 +6819,43 @@ object HSVForm3: THSVForm3
       DefaultColWidth = 30
       DefaultRowHeight = 16
       RowCount = 25
-      Options = [goFixedVertLine, goFixedHorzLine, goVertLine, goHorzLine, goRangeSelect, goDrawFocusSelected, goEditing, goTabs]
+      Options = [goFixedVertLine, goFixedHorzLine, goVertLine, goHorzLine, goRangeSelect, goDrawFocusSelected, goEditing, goTabs, goRowSelect]
       TabOrder = 12
       ColWidths = (
+        40
         30
-        29
         30
         30)
+      RowHeights = (
+        16
+        16
+        16
+        16
+        16
+        16
+        16
+        16
+        16
+        16
+        16
+        16
+        16
+        16
+        16
+        16
+        16
+        16
+        16
+        16
+        16
+        16
+        16
+        16
+        16)
     end
   end
   object btn_Hue_Img_load: TButton
-    Left = 627
+    Left = 632
     Top = 596
     Width = 90
     Height = 21
@@ -6844,7 +6870,7 @@ object HSVForm3: THSVForm3
     OnClick = btn_Hue_Img_loadClick
   end
   object Hue_Img_Infor: TStaticText
-    Left = 627
+    Left = 632
     Top = 891
     Width = 215
     Height = 20
@@ -6856,7 +6882,7 @@ object HSVForm3: THSVForm3
     TabOrder = 2
   end
   object sg_HSV: TStringGrid
-    Left = 924
+    Left = 929
     Top = 13
     Width = 157
     Height = 527
