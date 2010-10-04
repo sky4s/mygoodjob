@@ -21,7 +21,8 @@
 #include <Grids.hpp>
 #include <jpeg.hpp>
 #include <Graphics.hpp>
-#include "ReadWriteFunc.h"
+#include <Dialogs.hpp>
+//#include <i2c/core/ReadWriteFunc.h>
 #include <math.h>
 #include <stdio.h>
 #include <stdlib.h>

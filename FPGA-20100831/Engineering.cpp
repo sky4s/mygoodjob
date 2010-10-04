@@ -2,7 +2,8 @@
 #include <vcl.h>
 #pragma hdrstop
 #include "Engineering.h"
-
+#include <i2c/core/ReadWriteFunc.h>
+#include <i2c/core/PrintPortI2C.h>
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
 #pragma resource "*.dfm"

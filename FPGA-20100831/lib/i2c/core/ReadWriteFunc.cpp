@@ -24,8 +24,7 @@ RW_Func::RW_Func()
 //--------------------------------------------------------------------------
 int RW_Func::LPT_Read_Byte_Skip_Ack(unsigned char dev_addr,
 				    unsigned char *data_addr,
-				    int data_addr_cnt,
-				    unsigned char *data_read)
+				    int data_addr_cnt, unsigned char *data_read)
 {
     //bool ok = true;                                             
     i2c_start();
@@ -46,8 +45,7 @@ int RW_Func::LPT_Read_Byte_Skip_Ack(unsigned char dev_addr,
 //---------------------------------------------------------------------------
 
 int RW_Func::LPT_Read_Byte(unsigned char dev_addr,
-			   unsigned char *data_addr, int data_addr_cnt,
-			   unsigned char *data_read)
+			   unsigned char *data_addr, int data_addr_cnt, unsigned char *data_read)
 {
     bool ok = true;
     i2c_start();
@@ -73,8 +71,7 @@ int RW_Func::LPT_Read_Byte(unsigned char dev_addr,
 //---------------------------------------------------------------------------
 
 int RW_Func::LPT_Read_seq(unsigned char dev_addr, unsigned char *data_addr,
-			  int data_addr_cnt, unsigned char *data_read,
-			  int data_cnt)
+			  int data_addr_cnt, unsigned char *data_read, int data_cnt)
 {
     bool ok = true;
     i2c_start();
@@ -187,8 +184,7 @@ int RW_Func::USB_connect(int pwr_i, int clck_i)
 //---------------------------------------------------------------------
 
 bool RW_Func::USB_read(unsigned char dev_addr, unsigned char *data_addr,
-		       int data_addr_cnt, unsigned char *data_read,
-		       int data_len)
+		       int data_addr_cnt, unsigned char *data_read, int data_len)
 {
     unsigned char *WriteBuffer = new unsigned char[65];
     unsigned char *ReadBuffer = new unsigned char[65];
@@ -228,8 +224,7 @@ bool RW_Func::USB_read(unsigned char dev_addr, unsigned char *data_addr,
 //---------------------------------------------------------------------------
 
 bool RW_Func::USB_write(unsigned char dev_addr, unsigned char *data_addr,
-			int data_addr_cnt, unsigned char *data_write,
-			int data_len)
+			int data_addr_cnt, unsigned char *data_write, int data_len)
 {
     //Write
     int buf_idx = 0;
@@ -264,8 +259,7 @@ bool RW_Func::USB_write(unsigned char dev_addr, unsigned char *data_addr,
 //==================================================================//
 bool RW_Func::USB_write_serial(unsigned char dev_addr,
 			       unsigned char *data_addr, int data_addr_cnt,
-			       unsigned char *data_write, int data_len,
-			       int flag)
+			       unsigned char *data_write, int data_len, int flag)
 {
     //Write
     int buf_idx = 0;
@@ -307,8 +301,7 @@ bool RW_Func::USB_write_serial(unsigned char dev_addr,
 
 //---------------------------------------------------------------------------
 int RW_Func::LPT_Write(unsigned char dev_addr, unsigned char *data_addr,
-		       int data_addr_cnt, unsigned char *data_write,
-		       int data_len)
+		       int data_addr_cnt, unsigned char *data_write, int data_len)
 {
     bool ok = true;
 
@@ -346,4 +339,195 @@ int RW_Func::LPT_Write(unsigned char dev_addr, unsigned char *data_addr,
 }
 
 //---------------------------------------------------------------------------
+bool RW_Func::USB_start()
+{
+    //Write
+    int buf_idx = 0;
+    unsigned char *WriteBuffer = new unsigned char[65];
+    unsigned char *ReadBuffer = new unsigned char[65];
+
+    WriteBuffer[buf_idx++] = I2C_START;	//Control Byte
+    WriteBuffer[buf_idx++] = 0;	//Output Data length
+    WriteBuffer[buf_idx++] = 0;	//DEVICE_ADDR
+    USB.WriteReport(WriteBuffer, 3);	//USB Output Packet
+    USB.ReadReportEx(ReadBuffer);	//USB Iutput Packet
+
+    int r_ok = ReadBuffer[0];	//status byte
+    delete[]WriteBuffer;
+    delete[]ReadBuffer;
+    return r_ok;
+}
+
+bool RW_Func::USB_stop()
+{
+    //Write
+    int buf_idx = 0;
+    unsigned char *WriteBuffer = new unsigned char[65];
+    unsigned char *ReadBuffer = new unsigned char[65];
+
+    WriteBuffer[buf_idx++] = I2C_STOP;	//Control Byte
+    WriteBuffer[buf_idx++] = 0;	//Output Data length
+    WriteBuffer[buf_idx++] = 0;	//DEVICE_ADDR
+    USB.WriteReport(WriteBuffer, 2);	//USB Output Packet
+    USB.ReadReportEx(ReadBuffer);	//USB Iutput Packet
+
+    int r_ok = ReadBuffer[0];	//status byte
+    delete[]WriteBuffer;
+    delete[]ReadBuffer;
+    return r_ok;
+}
+
+//--------------------------------------------------------------------------
+// 20100608 有I2C_START與Device Address, 以Overflag決定是否有I2C_STOP的i2c package
+bool RW_Func::USB_seq_write_P1(unsigned char dev_addr, unsigned char *data_addr, int data_addr_cnt,
+			       unsigned char *data_write, int data_len, bool overflag)
+{
+    //Write
+    int buf_idx = 0;
+    unsigned char *WriteBuffer = new unsigned char[65];
+    unsigned char *ReadBuffer = new unsigned char[65];
+
+    if (overflag == 1)
+	WriteBuffer[buf_idx++] = I2C_START | I2C_DEV_WRITE | I2C_STOP;	//Control Byte
+    else
+	WriteBuffer[buf_idx++] = I2C_START | I2C_DEV_WRITE;	//Control Byte
+
+    WriteBuffer[buf_idx++] = data_len + (1 + data_addr_cnt);	//Output Data length
+    WriteBuffer[buf_idx++] = (dev_addr >> 1);	//DEVICE_ADDR
+    int addr_cnt1 = data_addr_cnt;
+    while (addr_cnt1 > 0) {
+	WriteBuffer[buf_idx++] = data_addr[addr_cnt1];	//DATA_ADDR
+	addr_cnt1--;
+    }
+    WriteBuffer[buf_idx++] = data_addr[0];	//DATA_ADDR
+
+    for (int i = 0; i < data_len; i++) {
+	WriteBuffer[4 + data_addr_cnt + i] = data_write[i];	//Data Byte
+    }
+    USB.WriteReport(WriteBuffer, 3 + (1 + data_addr_cnt) + data_len);	//USB Output Packet
+    USB.ReadReportEx(ReadBuffer);	//USB Iutput Packet
+
+    int r_ok = ReadBuffer[0];	//status byte
+    delete[]WriteBuffer;
+    delete[]ReadBuffer;
+    return r_ok;
+}
+
+bool RW_Func::USB_Data_Package(unsigned char *data, int data_len, bool overflag)
+{
+    //Write
+    int buf_idx = 0;
+    unsigned char *WriteBuffer = new unsigned char[65];
+    unsigned char *ReadBuffer = new unsigned char[65];
+    if (overflag > 0)
+	WriteBuffer[buf_idx++] = I2C_STOP;	//Control Byte
+    else
+	WriteBuffer[buf_idx++] = 0;	//Control Byte
+    WriteBuffer[buf_idx++] = data_len;	//Output Data length
+    WriteBuffer[buf_idx++] = (data[0]);	//DEVICE_ADDR
+    for (int i = 1; i < data_len; i++) {
+	WriteBuffer[buf_idx++] = data[i];	//Data Byte
+    }
+    USB.WriteReport(WriteBuffer, 2 + data_len);	//USB Output Packet
+    USB.ReadReportEx(ReadBuffer);	//USB Iutput Packet
+
+    int r_ok = ReadBuffer[0];	//status byte
+    delete[]WriteBuffer;
+    delete[]ReadBuffer;
+    return r_ok;
+}
+
+
+//---------------------------------------------------------------------------
+// 20100608 有I2C_START與Device Address, 以Overflag決定是否有I2C_STOP的i2c package
+bool RW_Func::USB_seq_read_P1(unsigned char dev_addr, unsigned char *data_addr, int data_addr_cnt,
+			      unsigned char *data_read, int data_len, bool overflag)
+{
+    unsigned char *WriteBuffer = new unsigned char[65];
+    unsigned char *ReadBuffer = new unsigned char[65];
+    for (int i = 0; i < 65; i++) {
+	WriteBuffer[i] = 0;
+	ReadBuffer[i] = 0;
+    }
+    int buf_idx = 0;
+    //Read
+    WriteBuffer[buf_idx++] = I2C_START | I2C_DEV_WRITE;	//Control Byte
+    WriteBuffer[buf_idx++] = 1 + data_addr_cnt;	//Output Data length
+    WriteBuffer[buf_idx++] = (dev_addr >> 1);	//DEVICE_ADDR
+    int addr_cnt1 = data_addr_cnt;
+    while (addr_cnt1 > 0) {
+	WriteBuffer[buf_idx++] = data_addr[addr_cnt1];	//DATA_ADDR
+	addr_cnt1--;
+    }
+    WriteBuffer[buf_idx++] = data_addr[0];
+    USB.WriteReport(WriteBuffer, 3 + (1 + data_addr_cnt));	//USB Output Packet
+    USB.ReadReportEx(ReadBuffer);	//USB Iutput Packet
+
+    buf_idx = 0;
+    for (int i = 0; i < 65; i++) {
+	WriteBuffer[i] = 0;
+	ReadBuffer[i] = 0;
+    }
+    if (overflag == 0)
+	WriteBuffer[buf_idx++] = I2C_RESTART | I2C_DEV_READ;	//Control Byte
+    else
+	WriteBuffer[buf_idx++] = I2C_RESTART | I2C_DEV_READ | I2C_STOP;	//Control Byte
+
+    WriteBuffer[buf_idx++] = data_len;	//Output Data length
+    WriteBuffer[buf_idx++] = (dev_addr >> 1);	//DEVICE_ADDR;
+    USB.WriteReport(WriteBuffer, 3 + data_len);	//USB Output Packet
+    USB.ReadReportEx(ReadBuffer);	//USB Iutput Packet
+    for (int i = 0; i < data_len; i++) {	//1st byte is status byte
+	data_read[i] = ReadBuffer[i + 1];
+    }
+    int r_ok = ReadBuffer[0];	//status byte
+    delete[]WriteBuffer;
+    delete[]ReadBuffer;
+    return r_ok;
+}
+
+//---------------------------------------------------------------------------
+// 20100608 沒有I2C_START, 並以"overflag"選擇加上或不加上I2C_STOP的i2c package
+bool RW_Func::USB_r_Data_Package(unsigned char *data_read, int data_len, bool overflag)
+{
+    unsigned char *WriteBuffer = new unsigned char[65];
+    unsigned char *ReadBuffer = new unsigned char[65];
+    for (int i = 0; i < 65; i++) {
+	WriteBuffer[i] = 0;
+	ReadBuffer[i] = 0;
+    }
+    int buf_idx = 0;
+    if (overflag == 0) {
+	WriteBuffer[buf_idx++] = I2C_DEV_READ;	//Control Byte
+	WriteBuffer[buf_idx++] = data_len;	//Output Data length
+	WriteBuffer[buf_idx++] = (0x7d >> 1);	//DEVICE_ADDR;
+	USB.WriteReport(WriteBuffer, 3 + data_len - 1);	//USB Output Packet
+	//USB.WriteReport(WriteBuffer,3+data_len);      //USB Output Packet
+	USB.ReadReportEx(ReadBuffer);	//USB Iutput Packet
+
+	for (int i = 0; i < data_len; i++) {	//1st byte is status byte
+	    data_read[i] = ReadBuffer[i + 1];
+	}
+    } else {
+	if (data_len == 0)
+	    data_len = 1;
+	WriteBuffer[buf_idx++] = I2C_DEV_READ | I2C_STOP;	//Control Byte
+	//WriteBuffer[buf_idx++] = data_len+1;       //Output Data length
+	WriteBuffer[buf_idx++] = data_len;	//Output Data length
+	WriteBuffer[buf_idx++] = (0x7d >> 1);	//DEVICE_ADDR;
+	//USB.WriteReport(WriteBuffer,3+data_len+1);    //USB Output Packet
+	USB.WriteReport(WriteBuffer, 3 + data_len);	//USB Output Packet
+	USB.ReadReportEx(ReadBuffer);	//USB Iutput Packet
+
+	for (int i = 0; i < data_len; i++) {	//1st byte is status byte
+	    //data_read[i]=ReadBuffer[i+2];
+	    data_read[i] = ReadBuffer[i + 1];
+	}
+    }
+
+    int r_ok = ReadBuffer[0];	//status byte
+    delete[]WriteBuffer;
+    delete[]ReadBuffer;
+    return r_ok;
+}
 
