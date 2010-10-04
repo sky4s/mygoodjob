@@ -6,25 +6,29 @@
 //C++系統文件
 
 //vcl庫頭文件
-
+#include <vcl.h>
 //其他庫頭文件
 
 //本項目內頭文件
-#include "Address_type.h"
+#include <addresstype/Address_type.h>
 //本項目內gui頭文件
 
 
 class _CHKB {
   public:
-    __fastcall ~ _CHKB();
+    __fastcall ~ _CHKB() {
+	delete[]Chkb;
+	//delete Addr.choice;
+    };
     TCheckBox *Chkb;
     TBit Addr;
 };
-__fastcall _CHKB::~_CHKB()
+
+/*__fastcall _CHKB::~_CHKB()
 {
     delete[]Chkb;
     //delete Addr.choice;
-}
+}*/
 
 class _CBOB {
   public:

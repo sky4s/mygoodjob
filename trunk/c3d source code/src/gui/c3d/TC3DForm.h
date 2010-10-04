@@ -32,7 +32,7 @@
 //其他庫頭文件
 
 //本項目內頭文件
-#include <c3d/Address_type.h>
+#include <addresstype/Address_type.h>
 #include <c3d/core.h>
 #include <gui/event/listener.h>
 //本項目內gui頭文件
