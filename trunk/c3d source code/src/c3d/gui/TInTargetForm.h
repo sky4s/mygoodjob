@@ -1,7 +1,7 @@
 //---------------------------------------------------------------------------
 
-#ifndef TFormInTargetH
-#define TFormInTargetH
+#ifndef TInTargetFormH
+#define TInTargetFormH
 //---------------------------------------------------------------------------
 #include <Classes.hpp>
 #include <Controls.hpp>

@@ -6,22 +6,22 @@
     <PROJECT value="workdir\Project1.exe"/>
     <OBJFILES value="build\Project1.obj build\TC3DForm.obj build\c3d_12401.obj 
       build\c3d_auto_calculate.obj build\TC3D_SimualteForm.obj 
-      build\TInTargetForm.obj build\TEngineering.obj build\GetCursorColor.obj 
-      build\table_17.obj build\TMainForm.obj build\THSVStepSimForm.obj 
-      build\HWINTERFACELib_OCX.obj build\HWINTERFACELib_TLB.obj 
-      build\USBHIDIOC.obj build\TColorPickerFrame.obj build\TTestForm.obj 
-      build\TColorFrame.obj build\THSVAdjustFrame.obj build\ReadWriteFunc.obj 
-      build\excelfile.obj build\lang.obj build\util.obj build\binder.obj 
-      build\listener.obj"/>
+      build\TEngineering.obj build\GetCursorColor.obj build\table_17.obj 
+      build\TMainForm.obj build\THSVStepSimForm.obj build\HWINTERFACELib_OCX.obj 
+      build\HWINTERFACELib_TLB.obj build\USBHIDIOC.obj 
+      build\TColorPickerFrame.obj build\TTestForm.obj build\TColorFrame.obj 
+      build\THSVAdjustFrame.obj build\ReadWriteFunc.obj build\excelfile.obj 
+      build\lang.obj build\util.obj build\binder.obj build\listener.obj 
+      build\TInTargetForm.obj"/>
     <RESFILES value="Project1.res"/>
     <IDLFILES value=""/>
     <IDLGENFILES value=""/>
     <DEFFILE value=""/>
     <RESDEPEN value="$(RESFILES) src\gui\c3d\TC3DForm.dfm src\gui\c3d\TC3D_SimualteForm.dfm 
-      src\gui\c3d\TInTargetForm.dfm src\gui\c3d\TEngineering.dfm 
-      src\gui\c3d\TMainForm.dfm src\gui\c3d\THSVStepSimForm.dfm 
-      src\gui\frame\TColorPickerFrame.dfm src\gui\c3d\TTestForm.dfm 
-      src\gui\frame\TColorFrame.dfm src\gui\frame\THSVAdjustFrame.dfm"/>
+      src\gui\c3d\TEngineering.dfm src\gui\c3d\TMainForm.dfm 
+      src\gui\c3d\THSVStepSimForm.dfm src\gui\frame\TColorPickerFrame.dfm 
+      src\gui\c3d\TTestForm.dfm src\gui\frame\TColorFrame.dfm 
+      src\gui\frame\THSVAdjustFrame.dfm src\c3d\gui\TInTargetForm.dfm"/>
     <LIBFILES value="lib\USB_i2c_lib\hid.lib"/>
     <LIBRARIES value="adortl.lib dbrtl.lib rtl.lib vcl.lib"/>
     <SPARELIBS value="vcl.lib rtl.lib dbrtl.lib adortl.lib"/>
@@ -32,7 +32,7 @@
       inetdbbde.bpi inetdbxpress.bpi inetdb.bpi nmfast.bpi webdsnap.bpi 
       bcbie.bpi websnap.bpi soaprtl.bpi dclocx.bpi dbexpress.bpi dbxcds.bpi 
       indy.bpi bcb2kaxserver.bpi"/>
-    <PATHCPP value=".;src\gui\c3d;src\c3d;src\c3d;src\gui\c3d;src\gui\c3d;src\gui\c3d;src\c3d;src\c3d;src\gui\c3d;src\gui\c3d;lib\LPT_lib;lib\LPT_lib;lib\USB_i2c_lib;src\gui\frame;src\gui\c3d;src\gui\frame;src\gui\frame;lib\i2c\core;lib\cms\colorformat;lib\java;lib\cms\util;lib\gui\util;lib\gui\event"/>
+    <PATHCPP value=".;src\gui\c3d;src\c3d;src\c3d;src\gui\c3d;src\gui\c3d;src\c3d;src\c3d;src\gui\c3d;src\gui\c3d;lib\LPT_lib;lib\LPT_lib;lib\USB_i2c_lib;src\gui\frame;src\gui\c3d;src\gui\frame;src\gui\frame;lib\i2c\core;lib\cms\colorformat;lib\java;lib\cms\util;lib\gui\util;lib\gui\event;src\c3d\gui"/>
     <PATHPAS value=".;"/>
     <PATHRC value=".;"/>
     <PATHASM value=".;"/>
@@ -42,13 +42,13 @@
     <USERDEFINES value="_DEBUG"/>
     <SYSDEFINES value="NO_STRICT"/>
     <MAINSOURCE value="Project1.cpp"/>
-    <INCLUDEPATH value="lib\gui\event;lib\cms\util;lib\gui\util;lib\java;lib\cms\colorformat;lib\i2c\core;src\gui\c3d;src\gui\frame;src\c3d;lib\USB_i2c_lib;lib\LPT_lib;..;$(BCB)\include;$(BCB)\include\vcl;src;lib"/>
-    <LIBPATH value="lib\gui\event;lib\gui\util;lib\cms\util;lib\java;lib\cms\colorformat;lib\i2c\core;src\gui\c3d;src\gui\frame;lib\USB_i2c_lib;lib\LPT_lib;src\c3d;$(BCB)\lib\obj;$(BCB)\lib;lib;src"/>
+    <INCLUDEPATH value="src\c3d\gui;lib\gui\event;lib\cms\util;lib\gui\util;lib\java;lib\cms\colorformat;lib\i2c\core;src\gui\c3d;src\gui\frame;src\c3d;lib\USB_i2c_lib;lib\LPT_lib;..;$(BCB)\include;$(BCB)\include\vcl;src;lib"/>
+    <LIBPATH value="src\c3d\gui;lib\gui\event;lib\gui\util;lib\cms\util;lib\java;lib\cms\colorformat;lib\i2c\core;src\gui\c3d;src\gui\frame;lib\USB_i2c_lib;lib\LPT_lib;src\c3d;$(BCB)\lib\obj;$(BCB)\lib;lib;src"/>
     <WARNINGS value="-w-par"/>
     <OTHERFILES value=""/>
   </MACROS>
   <OPTIONS>
-    <IDLCFLAGS value="-Ilib\gui\event -Ilib\cms\util -Ilib\gui\util -Ilib\java 
+    <IDLCFLAGS value="-Isrc\c3d\gui -Ilib\gui\event -Ilib\cms\util -Ilib\gui\util -Ilib\java 
       -Ilib\cms\colorformat -Ilib\i2c\core -Isrc\gui\c3d -Isrc\gui\frame 
       -Isrc\c3d -Ilib\USB_i2c_lib -Ilib\LPT_lib -I.. -I$(BCB)\include 
       -I$(BCB)\include\vcl -Isrc -Ilib -src_suffix cpp -D_DEBUG -boa"/>
@@ -72,7 +72,6 @@
       <FILE FILENAME="src\c3d\c3d_12401.cpp" FORMNAME="" UNITNAME="c3d_12401.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="src\c3d\c3d_auto_calculate.cpp" FORMNAME="" UNITNAME="c3d_auto_calculate.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="src\gui\c3d\TC3D_SimualteForm.cpp" FORMNAME="C3DSimualteForm" UNITNAME="TC3D_SimualteForm" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="src\gui\c3d\TInTargetForm.cpp" FORMNAME="InTargetForm" UNITNAME="TInTargetForm" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="src\gui\c3d\TEngineering.cpp" FORMNAME="EngineerForm" UNITNAME="TEngineering" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="src\c3d\GetCursorColor.cpp" FORMNAME="" UNITNAME="GetCursorColor.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="src\c3d\table_17.cpp" FORMNAME="" UNITNAME="table_17.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
@@ -95,6 +94,7 @@
       <FILE FILENAME="lib\cms\util\util.cpp" FORMNAME="" UNITNAME="util" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="lib\gui\util\binder.cpp" FORMNAME="" UNITNAME="binder" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="lib\gui\event\listener.cpp" FORMNAME="" UNITNAME="listener" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="src\c3d\gui\TInTargetForm.cpp" FORMNAME="InTargetForm" UNITNAME="TInTargetForm" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
   </FILELIST>
   <BUILDTOOLS>
   </BUILDTOOLS>
