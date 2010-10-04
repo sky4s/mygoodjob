@@ -80,6 +80,8 @@ void __fastcall THSVForm3::FormCreate(TObject * Sender)
 	ShowMessage("Can't Get HSV enable index.");
     Initial_HSV_table();	// initial HSV table
     HSV_Chg = 1;
+
+    this->initStringGrid_HSV();
 }
 
 //---------------------------------------------------------------------------
@@ -854,4 +856,32 @@ void __fastcall THSVForm3::Hue_ImgMouseDown(TObject * Sender,
 }
 
 //---------------------------------------------------------------------------
+void THSVForm3::initStringGrid_HSV()
+{
+
+    //initial table setting
+    for (int i = 0; i < 24; i++) {
+	/*Hue_table[i] = i * 768 / 24;
+	Sat_table[i] = 32;
+	Val_table[i] = 0;
+	Hue_table_t[i] = i * 768 / 24;
+	Sat_table_t[i] = 32;
+	Val_table_t[i] = 0;*/
+
+	StringGrid_HSV->Cells[0][i + 1] = IntToStr(360 / 24 * i) + "¢X";	// Index as hue
+	StringGrid_HSV->Cells[1][i + 1] = IntToStr(360 / 24 * i);	// Hue default value
+	StringGrid_HSV->Cells[2][i + 1] = 1;	// Saturation default value
+	StringGrid_HSV->Cells[3][i + 1] = 0;	// Luminance default value
+    }
+
+    StringGrid_HSV->Cells[1][0] = "H";
+    StringGrid_HSV->Cells[2][0] = "S";
+    StringGrid_HSV->Cells[3][0] = "V";
+    StringGrid_HSV->Cells[0][1] = "R 0¢X";
+    StringGrid_HSV->Cells[0][5] = "Y 60¢X";
+    StringGrid_HSV->Cells[0][9] = "G120¢X";
+    StringGrid_HSV->Cells[0][13] = "C180¢X";
+    StringGrid_HSV->Cells[0][17] = "B240¢X";
+    StringGrid_HSV->Cells[0][21] = "M300¢X";
+};
 

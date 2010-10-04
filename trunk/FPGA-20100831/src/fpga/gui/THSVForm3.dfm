@@ -1,9 +1,9 @@
 object HSVForm3: THSVForm3
-  Left = 90
-  Top = 48
+  Left = 242
+  Top = 58
   Width = 1115
   Height = 881
-  VertScrollBar.Position = 54
+  HorzScrollBar.Position = 163
   Caption = 'HSV'
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
@@ -22,8 +22,8 @@ object HSVForm3: THSVForm3
   PixelsPerInch = 120
   TextHeight = 16
   object Hue_Img: TImage
-    Left = 790
-    Top = 561
+    Left = 627
+    Top = 615
     Width = 287
     Height = 277
     ParentShowHint = False
@@ -6237,8 +6237,8 @@ object HSVForm3: THSVForm3
     OnMouseMove = Hue_ImgMouseMove
   end
   object GroupBox28: TGroupBox
-    Left = 10
-    Top = 593
+    Left = -153
+    Top = 647
     Width = 651
     Height = 284
     Caption = 'Adjust HSV'
@@ -6474,8 +6474,8 @@ object HSVForm3: THSVForm3
     end
   end
   object GroupBox1: TGroupBox
-    Left = 0
-    Top = -54
+    Left = -163
+    Top = 0
     Width = 1081
     Height = 649
     TabOrder = 0
@@ -6779,8 +6779,38 @@ object HSVForm3: THSVForm3
       Text = '0'
       Visible = False
     end
-    object sg_HSV: TStringGrid
-      Left = 911
+    object CheckBox3: TCheckBox
+      Left = 207
+      Top = 69
+      Width = 139
+      Height = 21
+      Caption = 'CheckBox3'
+      TabOrder = 8
+    end
+    object CheckBox4: TCheckBox
+      Left = 207
+      Top = 98
+      Width = 119
+      Height = 21
+      Caption = 'CheckBox4'
+      TabOrder = 9
+    end
+    inline ColorPickerFrame1: TColorPickerFrame
+      Left = 352
+      Top = 16
+      Width = 552
+      Height = 420
+      TabOrder = 10
+    end
+    inline HSVAdjustFrame1: THSVAdjustFrame
+      Left = 360
+      Top = 440
+      Width = 395
+      Height = 201
+      TabOrder = 11
+    end
+    object StringGrid_HSV: TStringGrid
+      Left = 916
       Top = 13
       Width = 157
       Height = 527
@@ -6790,47 +6820,17 @@ object HSVForm3: THSVForm3
       DefaultRowHeight = 16
       RowCount = 25
       Options = [goFixedVertLine, goFixedHorzLine, goVertLine, goHorzLine, goRangeSelect, goDrawFocusSelected, goEditing, goTabs]
-      TabOrder = 8
+      TabOrder = 12
       ColWidths = (
         30
         29
         30
         30)
     end
-    object CheckBox3: TCheckBox
-      Left = 207
-      Top = 69
-      Width = 139
-      Height = 21
-      Caption = 'CheckBox3'
-      TabOrder = 9
-    end
-    object CheckBox4: TCheckBox
-      Left = 207
-      Top = 98
-      Width = 119
-      Height = 21
-      Caption = 'CheckBox4'
-      TabOrder = 10
-    end
-    inline ColorPickerFrame1: TColorPickerFrame
-      Left = 352
-      Top = 16
-      Width = 552
-      Height = 420
-      TabOrder = 11
-    end
-    inline HSVAdjustFrame1: THSVAdjustFrame
-      Left = 360
-      Top = 440
-      Width = 395
-      Height = 201
-      TabOrder = 12
-    end
   end
   object btn_Hue_Img_load: TButton
-    Left = 790
-    Top = 542
+    Left = 627
+    Top = 596
     Width = 90
     Height = 21
     Caption = 'Load Image'
@@ -6844,8 +6844,8 @@ object HSVForm3: THSVForm3
     OnClick = btn_Hue_Img_loadClick
   end
   object Hue_Img_Infor: TStaticText
-    Left = 790
-    Top = 837
+    Left = 627
+    Top = 891
     Width = 215
     Height = 20
     BevelKind = bkFlat
@@ -6855,12 +6855,56 @@ object HSVForm3: THSVForm3
     ParentColor = False
     TabOrder = 2
   end
+  object sg_HSV: TStringGrid
+    Left = 924
+    Top = 13
+    Width = 157
+    Height = 527
+    Cursor = crIBeam
+    ColCount = 4
+    DefaultColWidth = 30
+    DefaultRowHeight = 16
+    RowCount = 25
+    Options = [goFixedVertLine, goFixedHorzLine, goVertLine, goHorzLine, goRangeSelect, goDrawFocusSelected, goEditing, goTabs]
+    TabOrder = 4
+    ColWidths = (
+      30
+      29
+      30
+      30)
+    RowHeights = (
+      16
+      16
+      16
+      16
+      16
+      16
+      16
+      16
+      16
+      16
+      16
+      16
+      16
+      16
+      16
+      16
+      16
+      16
+      16
+      16
+      16
+      16
+      16
+      16
+      16)
+  end
   object OpenDialog1: TOpenDialog
-    Left = 1072
-    Top = 8
+    Left = 1048
+    Top = 616
   end
   object SaveDialog1: TSaveDialog
-    Left = 1048
-    Top = 8
+    Left = 1024
+    Top = 616
   end
 end
