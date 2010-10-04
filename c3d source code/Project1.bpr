@@ -86,7 +86,6 @@
       <FILE FILENAME="src\includeall.h" FORMNAME="" UNITNAME="includeall.h" CONTAINERID="" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="src\gui\frame\TColorPickerFrame.cpp" FORMNAME="ColorPickerFrame" UNITNAME="TColorPickerFrame" CONTAINERID="CCompiler" DESIGNCLASS="TFrame" LOCALCOMMAND=""/>
       <FILE FILENAME="src\c3d\core.h" FORMNAME="" UNITNAME="core.h" CONTAINERID="" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="src\c3d\Address_type.h" FORMNAME="" UNITNAME="Address_type.h" CONTAINERID="" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="src\gui\c3d\TTestForm.cpp" FORMNAME="TestForm2" UNITNAME="TTestForm" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="src\gui\frame\TColorFrame.cpp" FORMNAME="PointColorFrame" UNITNAME="TColorFrame" CONTAINERID="CCompiler" DESIGNCLASS="TFrame" LOCALCOMMAND=""/>
       <FILE FILENAME="src\gui\frame\THSVAdjustFrame.cpp" FORMNAME="HSVAdjustFrame" UNITNAME="THSVAdjustFrame" CONTAINERID="CCompiler" DESIGNCLASS="TFrame" LOCALCOMMAND=""/>
