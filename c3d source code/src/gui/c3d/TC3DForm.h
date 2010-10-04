@@ -338,9 +338,11 @@ class TC3DForm1:public TForm {
     void __fastcall sb_c3d_Point_HSV_hdpChange(TObject * Sender);
     void __fastcall sb_c3d_Manual39_sChange(TObject * Sender);
     void __fastcall sb_c3d_Manual39_vChange(TObject * Sender);
-    void __fastcall Img_3DLUTMouseMove(TObject * Sender, TShiftState Shift, int X, int Y);
+    void __fastcall Img_3DLUTMouseMove(TObject * Sender, TShiftState Shift,
+				       int X, int Y);
     void __fastcall Img_3DLUTMouseDown(TObject * Sender,
-				       TMouseButton Button, TShiftState Shift, int X, int Y);
+				       TMouseButton Button,
+				       TShiftState Shift, int X, int Y);
     void __fastcall FormCreate(TObject * Sender);
     void __fastcall BitBtn_c3d_undoClick(TObject * Sender);
     void __fastcall btn_c3d_checkClick(TObject * Sender);
@@ -349,7 +351,8 @@ class TC3DForm1:public TForm {
     void __fastcall btn_c3d_load_rgbClick(TObject * Sender);
     void __fastcall btn_tbl_searchClick(TObject * Sender);
     void __fastcall btn_directly_simClick(TObject * Sender);
-    void __fastcall sg_table_stepKeyDown(TObject * Sender, WORD & Key, TShiftState Shift);
+    void __fastcall sg_table_stepKeyDown(TObject * Sender, WORD & Key,
+					 TShiftState Shift);
     void __fastcall BitBtn1Click(TObject * Sender);
     void __fastcall BitBtn2Click(TObject * Sender);
     void __fastcall LabeledEdit1SubLabelClick(TObject * Sender);
@@ -359,29 +362,38 @@ class TC3DForm1:public TForm {
     void __fastcall btn_key_in_HSVClick(TObject * Sender);
     void __fastcall FormClose(TObject * Sender, TCloseAction & Action);
     void __fastcall sg_12color2MouseDown(TObject * Sender,
-					 TMouseButton Button, TShiftState Shift, int X, int Y);
+					 TMouseButton Button,
+					 TShiftState Shift, int X, int Y);
     void __fastcall btn_c3d_save_rgbClick(TObject * Sender);
     void __fastcall sg_12color1DrawCell(TObject * Sender, int ACol,
-					int ARow, TRect & Rect, TGridDrawState State);
+					int ARow, TRect & Rect,
+					TGridDrawState State);
     void __fastcall sg_12color2DrawCell(TObject * Sender, int ACol,
-					int ARow, TRect & Rect, TGridDrawState State);
+					int ARow, TRect & Rect,
+					TGridDrawState State);
     void __fastcall img_colorMouseDown(TObject * Sender,
-				       TMouseButton Button, TShiftState Shift, int X, int Y);
-    void __fastcall img_colorMouseMove(TObject * Sender, TShiftState Shift, int X, int Y);
+				       TMouseButton Button,
+				       TShiftState Shift, int X, int Y);
+    void __fastcall img_colorMouseMove(TObject * Sender, TShiftState Shift,
+				       int X, int Y);
     void __fastcall rg_PointNumClick(TObject * Sender);
     void __fastcall btn_img_nextClick(TObject * Sender);
     void __fastcall btn_img_prevClick(TObject * Sender);
     //void __fastcall btn_ColorSetClick(TObject *Sender);
     void __fastcall btn_darkClick(TObject * Sender);
     void __fastcall lbe_sat_sigma_lightChange(TObject * Sender);
-    void __fastcall sg_12color1SelectCell(TObject * Sender, int ACol, int ARow, bool & CanSelect);
-    void __fastcall sg_12color2SelectCell(TObject * Sender, int ACol, int ARow, bool & CanSelect);
-    void __fastcall sg_DarkDrawCell(TObject * Sender, int ACol,
-				    int ARow, TRect & Rect, TGridDrawState State);
-    void __fastcall sg_GrayDrawCell(TObject * Sender, int ACol,
-				    int ARow, TRect & Rect, TGridDrawState State);
-    void __fastcall sg_DarkSelectCell(TObject * Sender, int ACol, int ARow, bool & CanSelect);
-    void __fastcall sg_GraySelectCell(TObject * Sender, int ACol, int ARow, bool & CanSelect);
+    void __fastcall sg_12color1SelectCell(TObject * Sender, int ACol,
+					  int ARow, bool & CanSelect);
+    void __fastcall sg_12color2SelectCell(TObject * Sender, int ACol,
+					  int ARow, bool & CanSelect);
+    void __fastcall sg_DarkDrawCell(TObject * Sender, int ACol, int ARow,
+				    TRect & Rect, TGridDrawState State);
+    void __fastcall sg_GrayDrawCell(TObject * Sender, int ACol, int ARow,
+				    TRect & Rect, TGridDrawState State);
+    void __fastcall sg_DarkSelectCell(TObject * Sender, int ACol, int ARow,
+				      bool & CanSelect);
+    void __fastcall sg_GraySelectCell(TObject * Sender, int ACol, int ARow,
+				      bool & CanSelect);
     void __fastcall btn_AddPointClick(TObject * Sender);
     void __fastcall btn_DeletePointClick(TObject * Sender);
     void __fastcall btn_SaveRecordClick(TObject * Sender);
@@ -405,7 +417,8 @@ class TC3DForm1:public TForm {
     void __fastcall btn_Auto_Trg_LoadClick(TObject * Sender);
     void __fastcall btn_Auto_Trg_BuildTblClick(TObject * Sender);
     void __fastcall SaveDialog1TypeChange(TObject * Sender);
-    void __fastcall TColorPickerFrame1cb_show_ref_imgClick(TObject * Sender);
+    void __fastcall TColorPickerFrame1cb_show_ref_imgClick(TObject *
+							   Sender);
 
   private:			// User declarations
 
@@ -415,11 +428,13 @@ class TC3DForm1:public TForm {
 	 ColorMouseListener(TC3DForm1 * parent):parent(parent) {
 	};
 	virtual void mousePressed(TObject * Sender,
-				  TMouseButton Button, TShiftState Shift, int X, int Y) {
+				  TMouseButton Button, TShiftState Shift,
+				  int X, int Y) {
 	    parent->Img_3DLUTMouseDown(Sender, Button, Shift, X, Y);
 	};
 	virtual void mouseReleased(TObject * Sender,
-				   TMouseButton Button, TShiftState Shift, int X, int Y) {
+				   TMouseButton Button, TShiftState Shift,
+				   int X, int Y) {
 	};
     };
     bptr < ColorMouseListener > mouseListener;
@@ -448,8 +463,8 @@ class TC3DForm1:public TForm {
     __fastcall ~ TC3DForm1();
     double ***c3d_lutR, ***c3d_lutG, ***c3d_lutB;
     double ***c3d_lutH, ***c3d_lutS, ***c3d_lutV, ***c3d_lutI;
-    double ***tmp_c3d_lutR, ***tmp_c3d_lutG, ***tmp_c3d_lutB, ***tmp_c3d_lutH, ***tmp_c3d_lutS,
-	***tmp_c3d_lutV;
+    double ***tmp_c3d_lutR, ***tmp_c3d_lutG, ***tmp_c3d_lutB,
+	***tmp_c3d_lutH, ***tmp_c3d_lutS, ***tmp_c3d_lutV;
     double **PointColor_array;
     int PointColor_array_nbr;
     bool interpol;		//true: techehedral, false: trilinear
@@ -461,8 +476,10 @@ class TC3DForm1:public TForm {
     _CHKB en;
     bool C3D_Chg;
     void cal_c3d_rgb(bool flg_wri);
-    void C3Dsim(double r, double g, double b, double *r_new, double *g_new, double *b_new);
-    void C3Dsim_t(double r, double g, double b, double *r_new, double *g_new, double *b_new);
+    void C3Dsim(double r, double g, double b, double *r_new, double *g_new,
+		double *b_new);
+    void C3Dsim_t(double r, double g, double b, double *r_new,
+		  double *g_new, double *b_new);
     void Show_c3d_CorImg(double cor_r, double cor_g, double cor_b);
     void Show_c3d_SimImg(double sim_r, double sim_g, double sim_b);
     void refresh_6axis_grid(double r, double g, double b);
@@ -514,7 +531,8 @@ class TC3DForm1:public TForm {
     void c3d_MixAdj_h(bool flag);
     void c3d_MixAdj_s(bool flag);
     void c3d_MixAdj_v(bool flag);
-    void Direct_sim(double r, double g, double b, double *r_new, double *g_new, double *b_new);
+    void Direct_sim(double r, double g, double b, double *r_new,
+		    double *g_new, double *b_new);
     void c3d_MixAdj_r(int type, double dif_p, double dif_n, double gain);
     //method 4
     void c3d_hsv_FixGain_h(double tmp_c3d_lutH[9][9][9]);
@@ -523,10 +541,11 @@ class TC3DForm1:public TForm {
     void calculate_HSV_disc();
     void calculate_disc();
     void calculate_NCTU_dif();
-    void Caculate_dif_table(double ***c3d_dif_lutR, double ***c3d_dif_lutG, double ***c3d_dif_lutB,
-			    double ***c3d_dif, int modif);
-    void C3Dsim_dif(double r, double g, double b, double *r_new, double *g_new, double *b_new,
-		    double ***c3d_dif);
+    void Caculate_dif_table(double ***c3d_dif_lutR, double ***c3d_dif_lutG,
+			    double ***c3d_dif_lutB, double ***c3d_dif,
+			    int modif);
+    void C3Dsim_dif(double r, double g, double b, double *r_new,
+		    double *g_new, double *b_new, double ***c3d_dif);
 
     void Load_c3d_table(String Fpath);
     void Save_c3d_table(String Fpath);
@@ -534,7 +553,8 @@ class TC3DForm1:public TForm {
     void Set_Adj_Color(double r, double g, double b);
     void PointAdjust_1(int idx_r, int idx_g, int idx_b);
     void PointAdjust_4();
-    void Modif_Point(int color, double gain1, double gain2, double gain3, bool fl_ranh);
+    void Modif_Point(int color, double gain1, double gain2, double gain3,
+		     bool fl_ranh);
     void PointAdjust_m();
 
     void Manual39_color_adj(bool flg_wri);
@@ -542,14 +562,16 @@ class TC3DForm1:public TForm {
     void Manual39_dark(double h, double s, double v, double col[3]);
     void Manual39_mid(double h, double s, double v, double col[3]);
 
-    void ShowSelectCell(int ARow, double r, double g, double b, TStringGrid * sg);
+    void ShowSelectCell(int ARow, double r, double g, double b,
+			TStringGrid * sg);
     void ShowImageColor(TImage * img, double r, double g, double b);
     void Set_HuePageStringGrid(TStringGrid * sg);
     void set_c3d_color_grid(int grid_num, int c, int r, int g, int b);
 
     void SmoothValue_2Gray(double s, double v, double *col);
     void SmoothSaturation(double s, double gain, double *col);
-    void Record_Move(int i_r, int i_g, int i_b, double r, double g, double b);
+    void Record_Move(int i_r, int i_g, int i_b, double r, double g,
+		     double b);
 
     void ColorSet();
     void Point_HSV_Bar_Move();
