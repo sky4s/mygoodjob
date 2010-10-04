@@ -18,6 +18,8 @@ USEFORM("SAT.cpp", SATForm);
 USEFORM("offset.cpp", offsetForm);
 USEFORM("HueSatVal2.cpp", HSVForm2);
 USEFORM("src\fpga\gui\THSVForm3.cpp", HSVForm3);
+USEFORM("src\gui\frame\TColorPickerFrame.cpp", ColorPickerFrame); /* TFrame: File Type */
+USEFORM("src\gui\frame\THSVAdjustFrame.cpp", HSVAdjustFrame); /* TFrame: File Type */
 //---------------------------------------------------------------------------
 WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 {
