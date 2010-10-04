@@ -46,14 +46,18 @@ class THSVAdjustFrame:public TFrame {
     TEdit *Edit_c3d_Manual39_v_adj;
     TEdit *edt_c3d_valC;
     void __fastcall sb_c3d_Manual39_hChange(TObject * Sender);
+    void __fastcall sb_c3d_Manual39_sChange(TObject * Sender);
+    void __fastcall sb_c3d_Manual39_vChange(TObject * Sender);
   private:			// User declarations
      gui::util::MultiUIBinder binder;
     double h, s, v;
      bptr < HueSetter > hueSetter;
-     bptr < SaturationSetter > saturationSetter;
+     bptr < SaturationSetter > saturationSetter, valueSetter;
+     std::vector < bwptr < gui::event::ChangeListener > >changeListenerVector;
   public:			// User declarations
      __fastcall THSVAdjustFrame(TComponent * Owner);
     void setHSV(double h, double s, double v);
+    void addChangeListener(bptr < gui::event::ChangeListener > listener);
 };
 
 class HueSetter:public gui::util::Label2ScrollBarSetter {

@@ -26,15 +26,5 @@ object TestForm2: TTestForm2
     Width = 395
     Height = 201
     TabOrder = 1
-    inherited GroupBox41: TGroupBox
-      inherited sb_c3d_Manual39_s: TScrollBar
-        OnChange = nil
-      end
-    end
-    inherited GroupBox7: TGroupBox
-      inherited sb_c3d_Manual39_v: TScrollBar
-        OnChange = nil
-      end
-    end
   end
 end

@@ -312,11 +312,11 @@ class TC3DForm1:public TForm {
     TCheckBox *CheckBox1;
     TButton *btn_c3d_load_img;
     TColorPickerFrame *colorPicker;
-        TGroupBox *GroupBox7;
-        TLabel *lb_c3d_Manual39_v;
-        TScrollBar *sb_c3d_Manual39_v;
-        TEdit *Edit_c3d_Manual39_v_adj;
-        TLabel *Label25;
+    TGroupBox *GroupBox7;
+    TLabel *lb_c3d_Manual39_v;
+    TScrollBar *sb_c3d_Manual39_v;
+    TEdit *Edit_c3d_Manual39_v_adj;
+    TLabel *Label25;
     void __fastcall btn_c3d_load_imgClick(TObject * Sender);
     void __fastcall rg_c3d_interplClick(TObject * Sender);
     void __fastcall btn_c3d_simClick(TObject * Sender);

@@ -4044,7 +4044,10 @@ void TC3DForm1::SetV_Caption()
     double c = StrToFloat(edt_c3d_valC->Text);
     double v_gain = (double) GetV_val() / 100 / c;
     double V = StrToFloat(lb_c3d_selV->Caption);
+    //V = double (floor(V * v_gain * 1000)) / 1000;
+    //lb_c3d_Manual39_v->Caption = FloatToStr(V);
     lb_c3d_Manual39_v->Caption = FloatToStr(V * v_gain);
+
 }
 
 void __fastcall TC3DForm1::sb_c3d_Manual39_vChange(TObject * Sender)
@@ -7612,6 +7615,4 @@ void __fastcall TC3DForm1::TColorPickerFrame1cb_show_ref_imgClick(TObject * Send
 }
 
 //---------------------------------------------------------------------------
-
-
 
