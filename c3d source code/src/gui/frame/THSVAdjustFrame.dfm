@@ -86,6 +86,7 @@ object HSVAdjustFrame: THSVAdjustFrame
       PageSize = 0
       Position = 100
       TabOrder = 0
+      OnChange = sb_c3d_Manual39_sChange
     end
     object edt_c3d_satC: TEdit
       Left = 6
@@ -144,6 +145,7 @@ object HSVAdjustFrame: THSVAdjustFrame
       PageSize = 0
       Position = 100
       TabOrder = 0
+      OnChange = sb_c3d_Manual39_vChange
     end
     object Edit_c3d_Manual39_v_adj: TEdit
       Left = 89

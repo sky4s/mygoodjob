@@ -42,6 +42,11 @@ namespace gui {
 	  public:
 	    virtual void mouseMoved(TObject * Sender, TShiftState Shift, int X, int Y) = 0;
 	};
+
+	class ChangeListener {
+	  public:
+	    virtual void stateChanged(TObject * Sender);
+	};
     };
 };
 #endif
