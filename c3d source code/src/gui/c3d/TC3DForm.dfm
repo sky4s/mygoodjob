@@ -1,7 +1,7 @@
 object C3DForm1: TC3DForm1
-  Left = 268
-  Top = 3
-  Width = 971
+  Left = 191
+  Top = 28
+  Width = 1186
   Height = 859
   Align = alCustom
   Caption = 'C3D lookup table'

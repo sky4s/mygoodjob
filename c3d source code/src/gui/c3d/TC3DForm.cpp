@@ -29,6 +29,7 @@
 #pragma package(smart_init)
 #pragma link "TColorPickerFrame"
 #pragma link "TColorFrame"
+#pragma link "THSVAdjustFrame"
 #pragma resource "*.dfm"
 #pragma warn -pck
 TC3DForm1 *C3DForm1;
@@ -73,17 +74,17 @@ int **c3d_r, **c3d_g, **c3d_b;
 TPColorThread1 *PColorThread1;
 int X_site, Y_site;
 
-double pi = 3.1415926;
+//double pi = 3.1415926;
 
 // sigma_lgt is a value for Modulate Saturation value from 0.666 to 0
 // The value is for Gaussian distribution, used in function "Manual39_mid","Manual39_light","Manual39_dark"
 double sigma_lgt = 0.35;	//Saturation smooth 高飽和區的Gaussian參數, 參數越小越快趨近bypass curve
 double sigma_st = 0.45;
-bool Cell_move = true;		//避免在selectcell時, 發生manual39的hue label當中的值優先寫到grid裡, 而不是點選的Cell值
+//bool TC3DForm1::Cell_move = true;     //避免在selectcell時, 發生manual39的hue label當中的值優先寫到grid裡, 而不是點選的Cell值
 
 //---------------------------------------------------------------------------
 __fastcall TC3DForm1::TC3DForm1(TComponent * Owner)
-:TForm(Owner)
+:TForm(Owner), Cell_move(true)
 {
     new_array();
     interpol = true;
@@ -3951,6 +3952,7 @@ void TC3DForm1::Manual39_HSV_Bar_Move()
     double b = StrToFloat(lb_c3d_selB->Caption);
 
     //
+    //double_array hsvgain = hsvAdjust->getHSVGain();
     double h_gain = (double) GetH_val();
     double c = StrToFloat(edt_c3d_satC->Text);
     double s_gain = (double) GetS_val() / 100 / c;
@@ -3963,6 +3965,10 @@ void TC3DForm1::Manual39_HSV_Bar_Move()
     h += h_gain;
     s *= (1 + s_gain);
     v *= (1 + v_gain);
+    //h += hsvgain[0];
+    //s *= (1 + hsvgain[1]);
+    //v *= (1 + hsvgain[2]);
+    //hsvAdjust->setHSV(h, s, v);
     //轉回RGB
     hsv2rgb(h, s, v, &r, &g, &b);
     //顯示轉換完的RGB
@@ -4589,8 +4595,10 @@ void __fastcall TC3DForm1::FormCreate(TObject * Sender)
      */
 
     colorPicker->setTInTargetForm(InTargetForm);
-    colorMouseListener = bptr < ColorMouseListener > (new ColorMouseListener(this));
-    colorPicker->addMouseListener(colorMouseListener);
+    mouseListener = bptr < ColorMouseListener > (new ColorMouseListener(this));
+    colorPicker->addMouseListener(mouseListener);
+    changeListener = bptr < ScrollBarChangeListener > (new ScrollBarChangeListener(this));
+    //hsvAdjust->addChangeListener(changeListener);
 }
 
 //---------------------------------------------------------------------------
@@ -6652,6 +6660,7 @@ void __fastcall TC3DForm1::rg_manual_39_choiceClick(TObject * Sender)
 	sg_12color1SelectCell(Sender, ACol, ARow, CanS);
 	sb_c3d_Manual39_h->Enabled = true;
 	sb_c3d_Manual39_s->Enabled = true;
+	//hsvAdjust->setColorAdjustable(true);
     } else if (rg_manual_39_choice->ItemIndex == 1) {
 	//切換到Middle 12
 	pc_HuePage_Grid->TabIndex = 1;
@@ -6660,6 +6669,7 @@ void __fastcall TC3DForm1::rg_manual_39_choiceClick(TObject * Sender)
 	sg_12color2SelectCell(Sender, ACol, ARow, CanS);
 	sb_c3d_Manual39_h->Enabled = true;
 	sb_c3d_Manual39_s->Enabled = true;
+	//hsvAdjust->setColorAdjustable(true);
     } else if (rg_manual_39_choice->ItemIndex == 2) {
 	//切換到Dark 6
 	pc_HuePage_Grid->TabIndex = 2;
@@ -6668,6 +6678,7 @@ void __fastcall TC3DForm1::rg_manual_39_choiceClick(TObject * Sender)
 	sg_DarkSelectCell(Sender, ACol, ARow, CanS);
 	sb_c3d_Manual39_h->Enabled = false;
 	sb_c3d_Manual39_s->Enabled = false;
+	//hsvAdjust->setColorAdjustable(false);
     } else if (rg_manual_39_choice->ItemIndex == 3) {
 	//切換到Gray
 	pc_HuePage_Grid->TabIndex = 3;
@@ -6676,6 +6687,7 @@ void __fastcall TC3DForm1::rg_manual_39_choiceClick(TObject * Sender)
 	sg_GraySelectCell(Sender, ACol, ARow, CanS);
 	sb_c3d_Manual39_h->Enabled = false;
 	sb_c3d_Manual39_s->Enabled = false;
+	//hsvAdjust->setColorAdjustable(false);
     }
 }
 
@@ -7592,21 +7604,7 @@ void __fastcall TC3DForm1::SaveDialog1TypeChange(TObject * Sender)
 }
 
 //---------------------------------------------------------------------------
-TC3DForm1::ColorMouseListener::ColorMouseListener(TC3DForm1 * parent):parent(parent)
-{
-};
-void TC3DForm1::ColorMouseListener::mousePressed(TObject * Sender,
-						 TMouseButton Button, TShiftState Shift, int X,
-						 int Y)
-{
-    parent->Img_3DLUTMouseDown(Sender, Button, Shift, X, Y);
-};
-void TC3DForm1::ColorMouseListener::mouseReleased(TObject * Sender,
-						  TMouseButton Button, TShiftState Shift, int X,
-						  int Y)
-{
 
-};
 
 void __fastcall TC3DForm1::TColorPickerFrame1cb_show_ref_imgClick(TObject * Sender)
 {

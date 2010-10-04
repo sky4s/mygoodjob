@@ -45,7 +45,7 @@ namespace gui {
 
 	class ChangeListener {
 	  public:
-	    virtual void stateChanged(TObject * Sender);
+	    virtual void stateChanged(TObject * Sender) = 0;
 	};
     };
 };
