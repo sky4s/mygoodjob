@@ -2,7 +2,7 @@
 
 #include <vcl.h>
 #pragma hdrstop
-#include "TFormInTarget.h"
+#include "TInTargetForm.h"
 
 //C系統文件
 
