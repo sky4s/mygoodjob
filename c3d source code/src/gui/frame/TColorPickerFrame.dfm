@@ -12391,6 +12391,7 @@ object ColorPickerFrame: TColorPickerFrame
     Height = 20
     Caption = 'Show Compare &Figure'
     TabOrder = 2
+    Visible = False
     OnClick = cb_show_ref_imgClick
   end
   object OpenDialog_img: TOpenDialog
