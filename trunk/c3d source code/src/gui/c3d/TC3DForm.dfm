@@ -776,7 +776,6 @@ object C3DForm1: TC3DForm1
                 Options = [goFixedVertLine, goFixedHorzLine, goVertLine, goHorzLine, goRangeSelect, goEditing, goTabs, goRowSelect]
                 TabOrder = 0
                 OnDrawCell = sg_12color1DrawCell
-                OnMouseDown = sg_12color1MouseDown
                 OnSelectCell = sg_12color1SelectCell
                 ColWidths = (
                   34
