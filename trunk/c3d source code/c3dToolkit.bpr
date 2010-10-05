@@ -3,8 +3,8 @@
 <PROJECT>
   <MACROS>
     <VERSION value="BCB.06.00"/>
-    <PROJECT value="workdir\Project1.exe"/>
-    <OBJFILES value="build\Project1.obj build\c3d_12401.obj build\c3d_auto_calculate.obj 
+    <PROJECT value="workdir\c3dToolkit.exe"/>
+    <OBJFILES value="build\c3dToolkit.obj build\c3d_12401.obj build\c3d_auto_calculate.obj 
       build\TC3D_SimualteForm.obj build\TEngineering.obj 
       build\GetCursorColor.obj build\table_17.obj build\TMainForm.obj 
       build\THSVStepSimForm.obj build\HWINTERFACELib_OCX.obj 
@@ -13,7 +13,7 @@
       build\THSVAdjustFrame.obj build\ReadWriteFunc.obj build\excelfile.obj 
       build\lang.obj build\util.obj build\binder.obj build\listener.obj 
       build\TInTargetForm.obj build\TC3DForm.obj"/>
-    <RESFILES value="Project1.res"/>
+    <RESFILES value="c3dToolkit.res"/>
     <IDLFILES value=""/>
     <IDLGENFILES value=""/>
     <DEFFILE value=""/>
@@ -41,7 +41,7 @@
     <LINKER value="ilink32"/>
     <USERDEFINES value="_DEBUG"/>
     <SYSDEFINES value="NO_STRICT"/>
-    <MAINSOURCE value="Project1.cpp"/>
+    <MAINSOURCE value="c3dToolkit.cpp"/>
     <INCLUDEPATH value="src\c3d\gui;lib\gui\event;lib\cms\util;lib\gui\util;lib\java;lib\cms\colorformat;lib\i2c\core;src\gui\c3d;src\gui\frame;src\c3d;lib\USB_i2c_lib;lib\LPT_lib;..;$(BCB)\include;$(BCB)\include\vcl;src;lib"/>
     <LIBPATH value="src\c3d\gui;lib\gui\event;lib\gui\util;lib\cms\util;lib\java;lib\cms\colorformat;lib\i2c\core;src\gui\c3d;src\gui\frame;lib\USB_i2c_lib;lib\LPT_lib;src\c3d;$(BCB)\lib\obj;$(BCB)\lib;lib;src"/>
     <WARNINGS value="-w-par"/>
@@ -66,8 +66,8 @@
     <OTHERFILES value=""/>
   </LINKER>
   <FILELIST>
-      <FILE FILENAME="Project1.res" FORMNAME="" UNITNAME="Project1.res" CONTAINERID="ResTool" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="Project1.cpp" FORMNAME="" UNITNAME="Project1" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="c3dToolkit.res" FORMNAME="" UNITNAME="c3dToolkit.res" CONTAINERID="ResTool" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="c3dToolkit.cpp" FORMNAME="" UNITNAME="c3dToolkit" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="src\c3d\c3d_12401.cpp" FORMNAME="" UNITNAME="c3d_12401.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="src\c3d\c3d_auto_calculate.cpp" FORMNAME="" UNITNAME="c3d_auto_calculate.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="src\gui\c3d\TC3D_SimualteForm.cpp" FORMNAME="C3DSimualteForm" UNITNAME="TC3D_SimualteForm" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
