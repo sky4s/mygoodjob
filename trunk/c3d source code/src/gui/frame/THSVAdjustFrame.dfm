@@ -10,7 +10,7 @@ object HSVAdjustFrame: THSVAdjustFrame
     Width = 395
     Height = 80
     TabOrder = 0
-    object lb_c3d_Manual39_h: TLabel
+    object lb_Hue_gain: TLabel
       Left = 335
       Top = 39
       Width = 11
@@ -30,16 +30,16 @@ object HSVAdjustFrame: THSVAdjustFrame
       Font.Style = []
       ParentFont = False
     end
-    object sb_c3d_Manual39_h: TScrollBar
-      Left = 69
-      Top = 47
+    object sb_Hue_gain: TScrollBar
+      Left = 77
+      Top = 39
       Width = 247
       Height = 21
       Max = 120
       PageSize = 0
       Position = 60
       TabOrder = 0
-      OnChange = sb_c3d_Manual39_hChange
+      OnChange = sb_Hue_gainChange
     end
     object Edit_c3d_Manual39_h_adj: TEdit
       Left = 89
@@ -57,7 +57,7 @@ object HSVAdjustFrame: THSVAdjustFrame
     Width = 395
     Height = 76
     TabOrder = 1
-    object lb_c3d_Manual39_s: TLabel
+    object lb_Sat_gain: TLabel
       Left = 335
       Top = 39
       Width = 7
@@ -77,16 +77,16 @@ object HSVAdjustFrame: THSVAdjustFrame
       Font.Style = []
       ParentFont = False
     end
-    object sb_c3d_Manual39_s: TScrollBar
-      Left = 69
-      Top = 47
+    object sb_Sat_gain: TScrollBar
+      Left = 77
+      Top = 39
       Width = 247
       Height = 21
       Max = 200
       PageSize = 0
       Position = 100
       TabOrder = 0
-      OnChange = sb_c3d_Manual39_sChange
+      OnChange = sb_Sat_gainChange
     end
     object edt_c3d_satC: TEdit
       Left = 6
@@ -116,7 +116,7 @@ object HSVAdjustFrame: THSVAdjustFrame
     Width = 393
     Height = 73
     TabOrder = 2
-    object lb_c3d_Manual39_v: TLabel
+    object lb_Val_gain: TLabel
       Left = 335
       Top = 41
       Width = 7
@@ -136,16 +136,16 @@ object HSVAdjustFrame: THSVAdjustFrame
       Font.Style = []
       ParentFont = False
     end
-    object sb_c3d_Manual39_v: TScrollBar
-      Left = 69
-      Top = 52
+    object sb_Val_gain: TScrollBar
+      Left = 77
+      Top = 36
       Width = 247
       Height = 21
       Max = 200
       PageSize = 0
       Position = 100
       TabOrder = 0
-      OnChange = sb_c3d_Manual39_vChange
+      OnChange = sb_Val_gainChange
     end
     object Edit_c3d_Manual39_v_adj: TEdit
       Left = 89

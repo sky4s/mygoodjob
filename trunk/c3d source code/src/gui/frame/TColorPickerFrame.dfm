@@ -81,9 +81,9 @@ object ColorPickerFrame: TColorPickerFrame
     Top = 0
     Width = 551
     Height = 404
-    ActivePage = TabSheet3
+    ActivePage = ts_image
     MultiLine = True
-    TabIndex = 2
+    TabIndex = 0
     TabOrder = 0
     object ts_image: TTabSheet
       Caption = '&Image'

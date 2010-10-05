@@ -448,15 +448,17 @@ void TC3DForm1::Show_c3d_SimImg(double sim_r, double sim_g, double sim_b)
 // 將單一顏色r,g,b畫到img上
 void TC3DForm1::ShowImageColor(TImage * img, double r, double g, double b)
 {
-    Graphics::TBitmap * TmpBitmap;
-    TmpBitmap = new Graphics::TBitmap();
-    TmpBitmap->Width = img->Width;
-    TmpBitmap->Height = img->Height;
+    /*Graphics::TBitmap * TmpBitmap;
+       TmpBitmap = new Graphics::TBitmap();
+       TmpBitmap->Width = img->Width;
+       TmpBitmap->Height = img->Height;
 
-    TmpBitmap->Canvas->Brush->Color = (TColor) RGB(r, g, b);
-    TmpBitmap->Canvas->Rectangle(0, 0, TmpBitmap->Width, TmpBitmap->Height);
-    img->Canvas->Draw(0, 0, TmpBitmap);
-    delete TmpBitmap;
+       TmpBitmap->Canvas->Brush->Color = (TColor) RGB(r, g, b);
+       TmpBitmap->Canvas->Rectangle(0, 0, TmpBitmap->Width, TmpBitmap->Height);
+       img->Canvas->Draw(0, 0, TmpBitmap);
+       delete TmpBitmap; */
+    img->Canvas->Brush->Color = (TColor) RGB(r, g, b);
+    img->Canvas->Rectangle(0, 0, img->Width, img->Height);
 }
 
 void TC3DForm1::Show_c3d_Img_sim()
