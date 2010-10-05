@@ -133,29 +133,34 @@ class THSVForm3:public TForm {
     void __fastcall cb_Hue_BlueClick(TObject * Sender);
     void __fastcall cb_Hue_CyanClick(TObject * Sender);
     void __fastcall cb_Hue_MagClick(TObject * Sender);
-    void __fastcall ed_Hue_CustomChange(TObject * Sender);
     void __fastcall btn_hsv_loadClick(TObject * Sender);
     void __fastcall btn_hsv_saveClick(TObject * Sender);
     void __fastcall FormCreate(TObject * Sender);
     void __fastcall CheckBox_Click(TObject * Sender);
     void __fastcall FormClose(TObject * Sender, TCloseAction & Action);
-    void __fastcall Hue_ImgMouseMove(TObject * Sender, TShiftState Shift, int X, int Y);
+    void __fastcall Hue_ImgMouseMove(TObject * Sender, TShiftState Shift,
+				     int X, int Y);
     void __fastcall btn_resetClick(TObject * Sender);
-    void __fastcall sb_Hue_gainScroll(TObject * Sender, TScrollCode ScrollCode, int &ScrollPos);
+    void __fastcall sb_Hue_gainScroll(TObject * Sender,
+				      TScrollCode ScrollCode,
+				      int &ScrollPos);
 
     void __fastcall btn_Hue_Img_loadClick(TObject * Sender);
     void __fastcall rg_HSV_ModeClick(TObject * Sender);
     void __fastcall Btn_HSV_reloadClick(TObject * Sender);
-    void __fastcall FormKeyDown(TObject * Sender, WORD & Key, TShiftState Shift);
+    void __fastcall FormKeyDown(TObject * Sender, WORD & Key,
+				TShiftState Shift);
     void __fastcall sb_dif_nChange(TObject * Sender);
     void __fastcall sb_dif_pChange(TObject * Sender);
     void __fastcall btn_setClick(TObject * Sender);
     void __fastcall btn_hsv_writeClick(TObject * Sender);
     void __fastcall btn_hsv_readClick(TObject * Sender);
     void __fastcall Hue_ImgMouseDown(TObject * Sender,
-				     TMouseButton Button, TShiftState Shift, int X, int Y);
+				     TMouseButton Button,
+				     TShiftState Shift, int X, int Y);
     void __fastcall stringGrid_HSVDrawCell(TObject * Sender, int ACol,
-					   int ARow, TRect & Rect, TGridDrawState State);
+					   int ARow, TRect & Rect,
+					   TGridDrawState State);
     void __fastcall stringGrid_HSVSelectCell(TObject * Sender, int ACol,
 					     int ARow, bool & CanSelect);
     void __fastcall hsvAdjustsb_c3d_Manual39_hChange(TObject * Sender);
@@ -204,7 +209,6 @@ class THSVForm3:public TForm {
     void Get_Adj_tbl(int *tmp_H, int *tmp_S, int *tmp_V, int tbl_idx);
     void Set_Adj_tbl(int *tmp_H, int *tmp_S, int *tmp_V, int tbl_idx);
     bool CheckHueIncrease(int high, int low, int *tmp_H);
-    void Set_6HSV_grid();
 
     bool HSV_EN_State;		// ¬ö¿ýHSV table ªº Enableª¬ºA
     int HSVEN_idx;		// ¬ö¿ýHSV EnableªºCheckBoxªºindex
