@@ -28,12 +28,11 @@ __fastcall TColorPickerFrame::TColorPickerFrame(TComponent * Owner)
 }
 
 //---------------------------------------------------------------------------
-void __fastcall TColorPickerFrame::Img_3DLUTMouseMove(TObject * Sender,
-						      TShiftState Shift, int X, int Y)
+void __fastcall TColorPickerFrame::imageMouseMove(TObject * Sender, TShiftState Shift, int X, int Y)
 {
     int color;
     double h, s, v, i, r, g, b;
-    color = Img_3DLUT->Canvas->Pixels[X][Y];
+    color = image->Canvas->Pixels[X][Y];
     if (color == -1)
 	color = 0;
 
@@ -75,9 +74,9 @@ void TColorPickerFrame::addMouseListener(bptr < gui::event::MouseListener > list
     mouseListenerVector.push_back(wptr);
 };
 
-void __fastcall TColorPickerFrame::Img_3DLUTMouseDown(TObject * Sender,
-						      TMouseButton Button, TShiftState Shift, int X,
-						      int Y)
+void __fastcall TColorPickerFrame::imageMouseDown(TObject * Sender,
+						  TMouseButton Button, TShiftState Shift, int X,
+						  int Y)
 {
     using namespace gui::event;
     foreach(bwptr < MouseListener > listener, mouseListenerVector) {
@@ -90,9 +89,9 @@ void __fastcall TColorPickerFrame::Img_3DLUTMouseDown(TObject * Sender,
 
 //---------------------------------------------------------------------------
 
-void __fastcall TColorPickerFrame::Img_3DLUTMouseUp(TObject * Sender,
-						    TMouseButton Button, TShiftState Shift, int X,
-						    int Y)
+void __fastcall TColorPickerFrame::imageMouseUp(TObject * Sender,
+						TMouseButton Button, TShiftState Shift, int X,
+						int Y)
 {
     using namespace gui::event;
     foreach(bwptr < MouseListener > listener, mouseListenerVector) {
@@ -126,21 +125,21 @@ void __fastcall TColorPickerFrame::btn_c3d_load_imgClick(TObject * Sender)
 	    // bitmap->Height = JPEG->Height;
 	    // bitmap->Assign(JPEG);
 
-	    if (JPEG->Width > Img_3DLUT->Width * 4 + Img_3DLUT->Width * 2) {
+	    if (JPEG->Width > image->Width * 4 + image->Width * 2) {
 		JPEG->Scale = jsEighth;
-	    } else if (JPEG->Width > Img_3DLUT->Width * 2 + Img_3DLUT->Width) {
+	    } else if (JPEG->Width > image->Width * 2 + image->Width) {
 		JPEG->Scale = jsQuarter;
-	    } else if (JPEG->Width > Img_3DLUT->Width + Img_3DLUT->Width) {
+	    } else if (JPEG->Width > image->Width + image->Width) {
 		JPEG->Scale = jsHalf;
 	    } else {
 		JPEG->Scale = jsFullSize;
 	    }
-	    Img_3DLUT->Width = JPEG->Width;
-	    Img_3DLUT->Height = JPEG->Height;
-	    Img_3DLUT->Picture->Bitmap->Assign(JPEG);
+	    image->Width = JPEG->Width;
+	    image->Height = JPEG->Height;
+	    image->Picture->Bitmap->Assign(JPEG);
 
 	} else if (curExt == ".bmp" || curExt == ".BMP" || curExt == ".Bitmap") {
-	    Img_3DLUT->Picture->LoadFromFile(S1);
+	    image->Picture->LoadFromFile(S1);
 	    /* Graphics::TBitmap *pi = new Graphics::TBitmap();
 	       try{
 	       pi->LoadFromFile(S1);
@@ -155,9 +154,9 @@ void __fastcall TColorPickerFrame::btn_c3d_load_imgClick(TObject * Sender)
 	}
 	delete bitmap;
 	delete JPEG;
-	OrgBitmap->Assign(Img_3DLUT->Picture->Bitmap);
+	OrgBitmap->Assign(image->Picture->Bitmap);
 	if (pc_img->TabIndex == 0 && null != inTargetForm) {
-	    inTargetForm->img_in_target->Picture->Bitmap->Assign(Img_3DLUT->Picture->Bitmap);
+	    inTargetForm->img_in_target->Picture->Bitmap->Assign(image->Picture->Bitmap);
 	}
     }
     delete OrgBitmap;
@@ -186,4 +185,23 @@ void __fastcall TColorPickerFrame::cb_show_ref_imgClick(TObject * Sender)
 }
 
 //---------------------------------------------------------------------------
+void TColorPickerFrame::setColor(TImage * image, int r, int g, int b)
+{
+    bptr_ < Graphics::TBitmap > bitmap(new Graphics::TBitmap());
+    bitmap->Width = image->Width;
+    bitmap->Height = image->Height;
+
+    bitmap->Canvas->Brush->Color = (TColor) RGB(r, g, b);
+    bitmap->Canvas->Rectangle(0, 0, bitmap->Width, bitmap->Height);
+    image->Canvas->Draw(0, 0, bitmap.get());
+}
+void TColorPickerFrame::setOriginalColor(int r, int g, int b)
+{
+    setColor(originalColor, r, g, b);
+}
+
+void TColorPickerFrame::setSimulatedColor(int r, int g, int b)
+{
+    setColor(simulatedColor, r, g, b);
+}
 

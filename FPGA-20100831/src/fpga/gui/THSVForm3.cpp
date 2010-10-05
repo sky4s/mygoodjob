@@ -914,3 +914,13 @@ void __fastcall THSVForm3::StringGrid_HSVDrawCell(TObject * Sender,
 //---------------------------------------------------------------------------
 
 
+
+void __fastcall THSVForm3::StringGrid_HSVSelectCell(TObject * Sender,
+						    int ACol, int ARow, bool & CanSelect)
+{
+    //設定colorpicker
+    //設定hsvadjust         
+}
+
+//---------------------------------------------------------------------------
+

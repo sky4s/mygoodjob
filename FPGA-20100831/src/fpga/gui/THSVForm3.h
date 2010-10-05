@@ -70,7 +70,6 @@ class THSVForm3:public TForm {
     TButton *btn_Hue_Img_load;
     TImage *Hue_Img;
     TStaticText *Hue_Img_Infor;
-    TColorPickerFrame *ColorPickerFrame1;
     TGroupBox *GroupBox28;
     TLabel *Label1;
     TLabel *lb_Hue_gain;
@@ -96,6 +95,7 @@ class THSVForm3:public TForm {
     THSVAdjustFrame *HSVAdjustFrame1;
     TStringGrid *sg_HSV;
     TStringGrid *StringGrid_HSV;
+        TColorPickerFrame *ColorPickerFrame1;
     void __fastcall cb_Hue_RedClick(TObject * Sender);
     void __fastcall cb_Hue_YellowClick(TObject * Sender);
     void __fastcall cb_Hue_GreenClick(TObject * Sender);
@@ -125,6 +125,8 @@ class THSVForm3:public TForm {
 				     TMouseButton Button, TShiftState Shift, int X, int Y);
     void __fastcall StringGrid_HSVDrawCell(TObject * Sender, int ACol,
 					   int ARow, TRect & Rect, TGridDrawState State);
+    void __fastcall StringGrid_HSVSelectCell(TObject * Sender, int ACol,
+					     int ARow, bool & CanSelect);
   private:			// User declarations
      bool HSV_IsChkSum;
     int tbl_step;

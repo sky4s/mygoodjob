@@ -15,11 +15,12 @@
 #include <Controls.hpp>
 #include <StdCtrls.hpp>
 #include <Forms.hpp>
+#include <Grids.hpp>
 //其他庫頭文件
 
 //本項目內頭文件
 #include <gui/util/binder.h>
-
+#include <gui/event/listener.h>
 //本項目內gui頭文件
 //---------------------------------------------------------------------------
 
@@ -51,14 +52,27 @@ class THSVAdjustFrame:public TFrame {
   private:			// User declarations
     double h, s, v;
      std::vector < bwptr < gui::event::ChangeListener > >changeListenerVector;
-     std::vector < bwptr < gui::event::ListSelectionListener > > selectionListenerVector;
-   public:	// User declarations
+    //std::vector < bwptr < gui::event::ListSelectionListener > >selectionListenerVector;
+    TStringGrid *stringGrid;
+    double_array getHSVGain(double h, double s, double v, int row);
+  public:			// User declarations
      __fastcall THSVAdjustFrame(TComponent * Owner);
     void setHSV(double h, double s, double v);
     void addChangeListener(bptr < gui::event::ChangeListener > listener);
-    void addListSelectionListener(bptr < gui::event::ListSelectionListener > listener);
+    //void addListSelectionListener(bptr < gui::event::ListSelectionListener > listener);
     double_array getHSVGain();
     void setColorAdjustable(bool enable);
+    void setTStringGrid(TStringGrid * stringGrid);
+};
+
+class SelectionListener:public gui::event::ListSelectionListener {
+  private:
+    THSVAdjustFrame * parent;
+  public:
+    SelectionListener(THSVAdjustFrame * parent):parent(parent) {
+    };
+    virtual void valueChanged(TObject * Sender, int ACol, int ARow, bool & CanSelect) {
+    };
 };
 
 /*class HueSetter:public gui::util::Label2ScrollBarSetter {
@@ -95,9 +109,8 @@ class SaturationSetter:public gui::util::Label2ScrollBarSetter {
     void setBase(double base) {
 	this->base = base;
     }
-};*/
+}; */
 
-//---------------------------------------------------------------------------
 extern PACKAGE THSVAdjustFrame *HSVAdjustFrame;
 //---------------------------------------------------------------------------
 #endif
