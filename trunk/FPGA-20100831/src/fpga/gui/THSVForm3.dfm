@@ -18,6 +18,7 @@ object HSVForm3: THSVForm3
   OnClose = FormClose
   OnCreate = FormCreate
   OnKeyDown = FormKeyDown
+  OnShow = FormShow
   PixelsPerInch = 120
   TextHeight = 16
   object Hue_Img: TImage
@@ -6699,7 +6700,7 @@ object HSVForm3: THSVForm3
           Hint = '0'
           Caption = 'R 0'#176
           Checked = True
-          Color = clRed
+          Color = clBtnFace
           ParentColor = False
           TabOrder = 0
           TabStop = True
@@ -6712,7 +6713,7 @@ object HSVForm3: THSVForm3
           Height = 25
           Hint = '60'
           Caption = 'Y 60'#176
-          Color = clYellow
+          Color = clBtnFace
           ParentColor = False
           TabOrder = 1
           OnClick = RadioButton_deg60baseClick
@@ -6724,7 +6725,7 @@ object HSVForm3: THSVForm3
           Height = 25
           Hint = '120'
           Caption = 'G 120'#176
-          Color = clLime
+          Color = clBtnFace
           ParentColor = False
           TabOrder = 2
           OnClick = RadioButton_deg60baseClick
@@ -6736,7 +6737,7 @@ object HSVForm3: THSVForm3
           Height = 25
           Hint = '180'
           Caption = 'C 180'#176
-          Color = clAqua
+          Color = clBtnFace
           ParentColor = False
           TabOrder = 3
           OnClick = RadioButton_deg60baseClick
@@ -6748,7 +6749,7 @@ object HSVForm3: THSVForm3
           Height = 25
           Hint = '240'
           Caption = 'B 240'#176
-          Color = clBlue
+          Color = clBtnFace
           ParentColor = False
           TabOrder = 4
           OnClick = RadioButton_deg60baseClick
@@ -6760,7 +6761,7 @@ object HSVForm3: THSVForm3
           Height = 25
           Hint = '300'
           Caption = 'M 300'#176
-          Color = clFuchsia
+          Color = clBtnFace
           ParentColor = False
           TabOrder = 5
           OnClick = RadioButton_deg60baseClick

@@ -166,6 +166,7 @@ class THSVForm3:public TForm {
     void __fastcall hsvAdjustsb_c3d_Manual39_hChange(TObject * Sender);
     void __fastcall RadioButton_deg60baseClick(TObject * Sender);
     void __fastcall RadioButton_deg30baseClick(TObject * Sender);
+    void __fastcall FormShow(TObject * Sender);
   private:			// User declarations
     static const int HUE_COUNT = 24;	//­ì¥»¬O96, why?
     bool HSV_IsChkSum;
@@ -177,7 +178,7 @@ class THSVForm3:public TForm {
     void deg60baseClick(TObject * Sender);
     void deg30baseClick(TObject * Sender);
     void setGridSelectRow(int row);
-    void initGroupBox_30base();
+    void initGroupBoxBase(TGroupBox * groupBox_base);
     int hintToRow(int hint);
   public:			// User declarations
      TBit * cb;
