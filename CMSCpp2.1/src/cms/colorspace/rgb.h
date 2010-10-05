@@ -43,6 +43,7 @@ namespace cms {
 		double_array getHSVIValues();
 		static RGB_ptr fromHSVValues(double h, double s, double v);
 		static double_array HSV2RGBValues(double h, double s, double v);
+		TColor getColor();
 	      protected:
 		 double_array _getValues(double_array values);
 		void _setValues(double_array values);

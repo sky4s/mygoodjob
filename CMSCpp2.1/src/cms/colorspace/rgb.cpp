@@ -450,6 +450,14 @@ namespace cms {
 		return rgbValues;
 	    };
 
+	    TColor RGBColor::getColor() {
+		int r = (int) this->getValue(Channel::R, MaxValue::Int8Bit);
+		int g = (int) this->getValue(Channel::G, MaxValue::Int8Bit);
+		int b = (int) this->getValue(Channel::B, MaxValue::Int8Bit);
+		TColor color = (TColor) b * 65536 + g * 256 + r;
+		return color;
+	    };
+
 	};
     };
 };
