@@ -3,23 +3,23 @@
 #include <vcl.h>
 #pragma hdrstop
 //---------------------------------------------------------------------------
-USEFORM("Unit1.cpp", MainForm);
-USEFORM("Vender1.cpp", VenderForm1);
-USEFORM("CM1.cpp", CMForm1);
-USEFORM("HueSatVal1.cpp", HSVForm1);
-USEFORM("Sharpness1.cpp", SharpnessForm1);
-USEFORM("TCON1.cpp", TCONForm1);
-USEFORM("Function1.cpp", FunctionForm1);
-USEFORM("Engineering.cpp", EngineerForm);
-USEFORM("DCR1.cpp", DCRForm1);
-USEFORM("ContrastEnhance1.cpp", ContrastEnhanceForm1);
-USEFORM("C3D1.cpp", C3DForm1);
-USEFORM("SAT.cpp", SATForm);
-USEFORM("offset.cpp", offsetForm);
-USEFORM("HueSatVal2.cpp", HSVForm2);
 USEFORM("src\fpga\gui\THSVForm3.cpp", HSVForm3);
 USEFORM("src\gui\frame\TColorPickerFrame.cpp", ColorPickerFrame); /* TFrame: File Type */
 USEFORM("src\gui\frame\THSVAdjustFrame.cpp", HSVAdjustFrame); /* TFrame: File Type */
+USEFORM("src\fpga\gui\CM1.cpp", CMForm1);
+USEFORM("src\fpga\gui\Unit1.cpp", MainForm);
+USEFORM("src\fpga\gui\Vender1.cpp", VenderForm1);
+USEFORM("src\fpga\gui\HueSatVal1.cpp", HSVForm1);
+USEFORM("src\fpga\gui\HueSatVal2.cpp", HSVForm2);
+USEFORM("src\fpga\gui\Sharpness1.cpp", SharpnessForm1);
+USEFORM("src\fpga\gui\TCON1.cpp", TCONForm1);
+USEFORM("src\fpga\gui\Function1.cpp", FunctionForm1);
+USEFORM("src\fpga\gui\Engineering.cpp", EngineerForm);
+USEFORM("src\fpga\gui\DCR1.cpp", DCRForm1);
+USEFORM("src\fpga\gui\ContrastEnhance1.cpp", ContrastEnhanceForm1);
+USEFORM("src\fpga\gui\C3D1.cpp", C3DForm1);
+USEFORM("src\fpga\gui\SAT.cpp", SATForm);
+USEFORM("src\fpga\gui\offset.cpp", offsetForm);
 //---------------------------------------------------------------------------
 WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 {

@@ -84,20 +84,18 @@ void __fastcall THSVForm3::FormCreate(TObject * Sender)
 
     this->initStringGrid_HSV();
     //hsvAdjust->setHSV(0, 1, 0);
-    initGroupBox_30base();
+
 }
 
 
-void THSVForm3::initGroupBox_30base()
+void THSVForm3::initGroupBoxBase(TGroupBox * groupBox_base)
 {
-    int count = GroupBox_30base->ComponentCount;
+    int count = groupBox_base->ControlCount;
     for (int x = 0; x < count; x++) {
 	TRadioButton *b =
-	    dynamic_cast <
-	    TRadioButton * >(GroupBox_30base->Components[x]);
+	    dynamic_cast < TRadioButton * >(groupBox_base->Controls[x]);
 	if (null != b) {
-	    int angle = b->Hint.ToInt();
-	    int row = angle / 15 + 1;
+	    int row = hintToRow(b->Hint.ToInt()) - 1;
 	    b->Color = getHueRGB(row)->getColor();
 	}
     }
@@ -897,12 +895,13 @@ void __fastcall THSVForm3::stringGrid_HSVSelectCell(TObject * Sender,
 						    int ACol, int ARow,
 						    bool & CanSelect)
 {
-    this->Reset_HSVshow();
+    //this->Reset_HSVshow();
     RGB_ptr rgb = getHueRGB(ARow - 1);
     //設定colorpicker
     colorPicker->setOriginalColor(rgb->R, rgb->G, rgb->B);
     //設定hsvadjust
     double_array hsvAdjustValue = getHSVAdjustValue(ARow);
+    Reset_HSVshow();
 }
 
 //---------------------------------------------------------------------------
@@ -1021,6 +1020,14 @@ void __fastcall THSVForm3::RadioButton_deg30baseClick(TObject * Sender)
 	setGridSelectRow(hintToRow(button->Hint.ToInt()));
     }
 
+}
+
+//---------------------------------------------------------------------------
+
+void __fastcall THSVForm3::FormShow(TObject * Sender)
+{
+    initGroupBoxBase(GroupBox_30base);
+    initGroupBoxBase(GroupBox_60base);
 }
 
 //---------------------------------------------------------------------------

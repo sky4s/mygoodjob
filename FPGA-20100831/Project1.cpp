@@ -28,7 +28,7 @@ WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
                  Application->Initialize();
                  Application->Title = "FPGA Toolkit";
                  Application->CreateForm(__classid(TMainForm), &MainForm);
-                 Application->CreateForm(__classid(THSVForm2), &HSVForm2);
+                 Application->CreateForm(__classid(TEngineerForm), &EngineerForm);
                  Application->Run();
         }
         catch (Exception &exception)
