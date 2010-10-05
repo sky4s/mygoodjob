@@ -139,6 +139,9 @@ void THSVForm1::Initial_HSV_table()
 }
 
 //---------------------------------------------------------------------------
+/*
+  從角度換算成grid裡的index
+*/
 int Get_select_idx(double angle)
 {
     angle = fabs(angle);	//取絕對值, 型態為float

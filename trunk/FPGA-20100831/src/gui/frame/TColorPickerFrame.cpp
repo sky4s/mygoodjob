@@ -195,6 +195,10 @@ void TColorPickerFrame::setColor(TImage * image, int r, int g, int b)
     bitmap->Canvas->Rectangle(0, 0, bitmap->Width, bitmap->Height);
     image->Canvas->Draw(0, 0, bitmap.get());
 }
+
+void TColorPickerFrame::setColor(TImage * image, TColor color)
+{
+}
 void TColorPickerFrame::setOriginalColor(int r, int g, int b)
 {
     setColor(originalColor, r, g, b);
