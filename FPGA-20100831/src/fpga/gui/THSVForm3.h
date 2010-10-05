@@ -20,6 +20,7 @@
 #include <Grids.hpp>
 #include "TColorPickerFrame.h"
 #include "THSVAdjustFrame.h"
+#include <cms/cms.h>
 
 //---------------------------------------------------------------------------
 ///////// HSV Table Address Arrange /////////
@@ -50,21 +51,6 @@ class THSVForm3:public TForm {
     TRadioGroup *rg_HSV_Mode;
     TButton *btn_hsv_load;
     TButton *btn_hsv_save;
-    TGroupBox *GroupBox29;
-    TLabel *Label111;
-    TCheckBox *cb_Hue_Red;
-    TStringGrid *sg_6HSV;
-    TCheckBox *cb_Hue_Green;
-    TCheckBox *cb_Hue_Blue;
-    TCheckBox *cb_Hue_Mag;
-    TCheckBox *cb_Hue_Yellow;
-    TCheckBox *cb_Hue_Cyan;
-    TStaticText *StaticText31;
-    TStaticText *StaticText32;
-    TStaticText *StaticText33;
-    TEdit *ed_Hue_Custom;
-    TBitBtn *Btn_HSV_reload;
-    TLabeledEdit *le_ChAangle;
     TCheckBox *CheckBox3;
     TCheckBox *CheckBox4;
     TButton *btn_Hue_Img_load;
@@ -82,20 +68,65 @@ class THSVForm3:public TForm {
     TLabel *Label2;
     TLabel *Label3;
     TLabel *lb_Val_gain;
-    TCheckBox *cb_Hue_rotation;
     TScrollBar *sb_Hue_gain;
     TScrollBar *sb_dif_n;
     TScrollBar *sb_dif_p;
     TScrollBar *sb_Sat_gain;
     TScrollBar *sb_Val_gain;
+    TStringGrid *stringGrid_HSV;
+    TColorPickerFrame *colorPicker;
+    TGroupBox *GroupBox2;
+    THSVAdjustFrame *hsvAdjust;
+    TCheckBox *cb_Hue_rotation;
+    TButton *btn_set;
+    TButton *btn_reset;
     TButton *btn_hsv_write;
     TButton *btn_hsv_read;
-    TButton *btn_reset;
-    TButton *btn_set;
-    THSVAdjustFrame *HSVAdjustFrame1;
-    TStringGrid *sg_HSV;
-    TStringGrid *StringGrid_HSV;
-        TColorPickerFrame *ColorPickerFrame1;
+    TGroupBox *GroupBox29;
+    TLabel *Label111;
+    TCheckBox *cb_Hue_Red;
+    TStringGrid *sg_6HSV;
+    TCheckBox *cb_Hue_Green;
+    TCheckBox *cb_Hue_Blue;
+    TCheckBox *cb_Hue_Mag;
+    TCheckBox *cb_Hue_Yellow;
+    TCheckBox *cb_Hue_Cyan;
+    TStaticText *StaticText31;
+    TStaticText *StaticText32;
+    TStaticText *StaticText33;
+    TEdit *ed_Hue_Custom;
+    TLabeledEdit *le_ChAangle;
+    TGroupBox *GroupBox3;
+    TGroupBox *GroupBox_60base;
+    TRadioButton *RadioButton_deg0;
+    TRadioButton *RadioButton_deg60;
+    TRadioButton *RadioButton_deg120;
+    TRadioButton *RadioButton_deg180;
+    TRadioButton *RadioButton_deg240;
+    TRadioButton *RadioButton_deg300;
+    TGroupBox *GroupBox_30base;
+    TRadioButton *RadioButton_deg30;
+    TRadioButton *RadioButton_deg90;
+    TRadioButton *RadioButton_deg150;
+    TRadioButton *RadioButton_deg210;
+    TRadioButton *RadioButton_deg270;
+    TRadioButton *RadioButton_deg330;
+    TGroupBox *GroupBox6;
+    TRadioButton *RadioButton1;
+    TRadioButton *RadioButton2;
+    TRadioButton *RadioButton3;
+    TRadioButton *RadioButton4;
+    TRadioButton *RadioButton5;
+    TRadioButton *RadioButton6;
+    TButton *Button_InterpTo30base;
+    TButton *Button_InterpTo15base;
+    TRadioButton *RadioButton13;
+    TRadioButton *RadioButton14;
+    TRadioButton *RadioButton15;
+    TRadioButton *RadioButton16;
+    TRadioButton *RadioButton17;
+    TRadioButton *RadioButton18;
+    TBitBtn *Btn_HSV_reload;
     void __fastcall cb_Hue_RedClick(TObject * Sender);
     void __fastcall cb_Hue_YellowClick(TObject * Sender);
     void __fastcall cb_Hue_GreenClick(TObject * Sender);
@@ -123,15 +154,26 @@ class THSVForm3:public TForm {
     void __fastcall btn_hsv_readClick(TObject * Sender);
     void __fastcall Hue_ImgMouseDown(TObject * Sender,
 				     TMouseButton Button, TShiftState Shift, int X, int Y);
-    void __fastcall StringGrid_HSVDrawCell(TObject * Sender, int ACol,
+    void __fastcall stringGrid_HSVDrawCell(TObject * Sender, int ACol,
 					   int ARow, TRect & Rect, TGridDrawState State);
-    void __fastcall StringGrid_HSVSelectCell(TObject * Sender, int ACol,
+    void __fastcall stringGrid_HSVSelectCell(TObject * Sender, int ACol,
 					     int ARow, bool & CanSelect);
+    void __fastcall hsvAdjustsb_c3d_Manual39_hChange(TObject * Sender);
+    void __fastcall RadioButton_deg60baseClick(TObject * Sender);
+    void __fastcall RadioButton_deg30baseClick(TObject * Sender);
   private:			// User declarations
-     bool HSV_IsChkSum;
+    static const int HUE_COUNT = 24;	//原本是96, why?
+    bool HSV_IsChkSum;
     int tbl_step;
     void initStringGrid_HSV();
-    static const int HueRGBValues[24][3];
+    static const int HueRGBValues[HUE_COUNT][3];
+    static RGB_ptr getHueRGB(int row);
+    double_array getHSVAdjustValue(int row);
+    void deg60baseClick(TObject * Sender);
+    void deg30baseClick(TObject * Sender);
+    void setGridSelectRow(int row);
+    void initGroupBox_30base();
+    int hintToRow(int hint);
   public:			// User declarations
      TBit * cb;
     _CHKB **ChkB;
@@ -139,13 +181,15 @@ class THSVForm3:public TForm {
     _CHKB en;
 
     AbstHSV *OHSV;
-    int Hue_table[96];
-    int Sat_table[96];
-    int Val_table[96];
 
-    int Hue_table_t[96];
-    int Sat_table_t[96];
-    int Val_table_t[96];
+    int Hue_table[HUE_COUNT];
+    int Sat_table[HUE_COUNT];
+    int Val_table[HUE_COUNT];
+
+    int Hue_table_t[HUE_COUNT];
+    int Sat_table_t[HUE_COUNT];
+    int Val_table_t[HUE_COUNT];
+
 
     bool HSV_Chg;		// HSV_Chg = 0 為禁止寫入, HSV_Chg =1 為允許寫入, 以避免動作被中斷
 
@@ -168,7 +212,6 @@ class THSVForm3:public TForm {
     void HSV_LUT_RW_over();	// 回復enable狀態
     void HSV_LUT_FuncEnable(bool flag_en);	// 設定HSV lut button是否作用, flag =0 不作用, 反之,作用
 };
-
 //---------------------------------------------------------------------------
 extern PACKAGE THSVForm3 *HSVForm3;
 //---------------------------------------------------------------------------

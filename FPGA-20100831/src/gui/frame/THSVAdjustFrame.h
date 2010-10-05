@@ -30,36 +30,34 @@ class SaturationSetter;
 class THSVAdjustFrame:public TFrame {
     __published:		// IDE-managed Components
     TGroupBox * GroupBox40;
-    TLabel *lb_c3d_Manual39_h;
+        TLabel *lb_Hue_gain;
     TLabel *Label197;
-    TScrollBar *sb_c3d_Manual39_h;
+    TScrollBar *sb_Hue_gain;
     TEdit *Edit_c3d_Manual39_h_adj;
     TGroupBox *GroupBox41;
-    TLabel *lb_c3d_Manual39_s;
+        TLabel *lb_Sat_gain;
     TLabel *Label207;
-    TScrollBar *sb_c3d_Manual39_s;
+    TScrollBar *sb_Sat_gain;
     TEdit *edt_c3d_satC;
     TEdit *Edit_c3d_Manual39_s_adj;
     TGroupBox *GroupBox7;
-    TLabel *lb_c3d_Manual39_v;
+        TLabel *lb_Val_gain;
     TLabel *Label25;
-    TScrollBar *sb_c3d_Manual39_v;
+    TScrollBar *sb_Val_gain;
     TEdit *Edit_c3d_Manual39_v_adj;
     TEdit *edt_c3d_valC;
-    void __fastcall sb_c3d_Manual39_hChange(TObject * Sender);
-    void __fastcall sb_c3d_Manual39_sChange(TObject * Sender);
-    void __fastcall sb_c3d_Manual39_vChange(TObject * Sender);
+    void __fastcall sb_Hue_gainChange(TObject * Sender);
+    void __fastcall sb_Sat_gainChange(TObject * Sender);
+    void __fastcall sb_Val_gainChange(TObject * Sender);
   private:			// User declarations
     double h, s, v;
      std::vector < bwptr < gui::event::ChangeListener > >changeListenerVector;
-    //std::vector < bwptr < gui::event::ListSelectionListener > >selectionListenerVector;
     TStringGrid *stringGrid;
     double_array getHSVGain(double h, double s, double v, int row);
   public:			// User declarations
      __fastcall THSVAdjustFrame(TComponent * Owner);
     void setHSV(double h, double s, double v);
     void addChangeListener(bptr < gui::event::ChangeListener > listener);
-    //void addListSelectionListener(bptr < gui::event::ListSelectionListener > listener);
     double_array getHSVGain();
     void setColorAdjustable(bool enable);
     void setTStringGrid(TStringGrid * stringGrid);

@@ -6367,7 +6367,7 @@ object HSVForm1: THSVForm1
       end
       object cb_Hue_Green: TCheckBox
         Left = 10
-        Top = 89
+        Top = 97
         Width = 129
         Height = 27
         Caption = 'Green     120'#176

@@ -83,6 +83,22 @@ void __fastcall THSVForm3::FormCreate(TObject * Sender)
     HSV_Chg = 1;
 
     this->initStringGrid_HSV();
+    //hsvAdjust->setHSV(0, 1, 0);
+    initGroupBox_30base();
+}
+
+
+void THSVForm3::initGroupBox_30base()
+{
+    int count = GroupBox_30base->ComponentCount;
+    for (int x = 0; x < count; x++) {
+	TRadioButton *b = dynamic_cast < TRadioButton * >(GroupBox_30base->Components[x]);
+	if (null != b) {
+	    int angle = b->Hint.ToInt();
+	    int row = angle / 15 + 1;
+	    b->Color = getHueRGB(row)->getColor();
+	}
+    }
 }
 
 //---------------------------------------------------------------------------
@@ -111,34 +127,34 @@ void THSVForm3::Initial_HSV_table()
 	Sat_table_t[i] = 32;
 	Val_table_t[i] = 0;
 
-	sg_HSV->Cells[0][i + 1] = IntToStr(360 / 24 * i) + "°";	// Index as hue
-	sg_HSV->Cells[1][i + 1] = IntToStr(360 / 24 * i);	// Hue default value
-	sg_HSV->Cells[2][i + 1] = 1;	// Saturation default value
-	sg_HSV->Cells[3][i + 1] = 0;	// Luminance default value
+	stringGrid_HSV->Cells[0][i + 1] = IntToStr(360 / 24 * i) + "°";	// Index as hue
+	stringGrid_HSV->Cells[1][i + 1] = IntToStr(360 / 24 * i);	// Hue default value
+	stringGrid_HSV->Cells[2][i + 1] = 1;	// Saturation default value
+	stringGrid_HSV->Cells[3][i + 1] = 0;	// Luminance default value
     }
 
-    sg_HSV->Cells[1][0] = "Hue";
-    sg_HSV->Cells[2][0] = "Sat";
-    sg_HSV->Cells[3][0] = "Val";
-    sg_HSV->Cells[0][1] = "R 0°";
-    sg_HSV->Cells[0][5] = "Y 60°";
-    sg_HSV->Cells[0][9] = "G120°";
-    sg_HSV->Cells[0][13] = "C180°";
-    sg_HSV->Cells[0][17] = "B240°";
-    sg_HSV->Cells[0][21] = "M300°";
+    stringGrid_HSV->Cells[1][0] = "Hue";
+    stringGrid_HSV->Cells[2][0] = "Sat";
+    stringGrid_HSV->Cells[3][0] = "Val";
+    stringGrid_HSV->Cells[0][1] = "R 0°";
+    stringGrid_HSV->Cells[0][5] = "Y 60°";
+    stringGrid_HSV->Cells[0][9] = "G120°";
+    stringGrid_HSV->Cells[0][13] = "C180°";
+    stringGrid_HSV->Cells[0][17] = "B240°";
+    stringGrid_HSV->Cells[0][21] = "M300°";
 
-    for (int i = 0; i < 6; i++) {
-	sg_6HSV->Cells[0][i] = 360 / 6 * i;
-	sg_6HSV->Cells[1][i] = 1;
-	sg_6HSV->Cells[2][i] = 0;
-    }
-    sg_6HSV->Cells[0][6] = 0;
-    sg_6HSV->Cells[1][6] = 1;
-    sg_6HSV->Cells[2][6] = 0;
+    /*for (int i = 0; i < 6; i++) {
+       sg_6HSV->Cells[0][i] = 360 / 6 * i;
+       sg_6HSV->Cells[1][i] = 1;
+       sg_6HSV->Cells[2][i] = 0;
+       }
+       sg_6HSV->Cells[0][6] = 0;
+       sg_6HSV->Cells[1][6] = 1;
+       sg_6HSV->Cells[2][6] = 0; */
 
-    sb_Hue_gain->Position = 0;
-    sb_Sat_gain->Position = 32;
-    sb_Val_gain->Position = 0;
+    hsvAdjust->sb_Hue_gain->Position = 0;
+    hsvAdjust->sb_Sat_gain->Position = 32;
+    hsvAdjust->sb_Val_gain->Position = 0;
 }
 
 
@@ -146,27 +162,29 @@ void THSVForm3::Initial_HSV_table()
 
 void THSVForm3::Reset_HSVshow()
 {				// Set gain value relative to color choose
-    int tbl_idx = Get_select_idx(StrToInt(le_ChAangle->Text));
+    //int tbl_idx = Get_select_idx(StrToInt(le_ChAangle->Text));
+    int tbl_idx = stringGrid_HSV->Selection.Top - 1;
 
     //Hue gain
-    sb_Hue_gain->Position = 0;
-    lb_Hue_gain->Caption = 0;
+    hsvAdjust->sb_Hue_gain->Position = 0;
+    hsvAdjust->lb_Hue_gain->Caption = 0;
     // Saturation gain
-    sb_Sat_gain->Position = (int) floor(StrToFloat(sg_HSV->Cells[2][tbl_idx + 1]) * 32);
-    lb_Sat_gain->Caption = sg_HSV->Cells[2][tbl_idx + 1];
+    hsvAdjust->sb_Sat_gain->Position =
+	(int) floor(StrToFloat(stringGrid_HSV->Cells[2][tbl_idx + 1]) * 32);
+    hsvAdjust->lb_Sat_gain->Caption = stringGrid_HSV->Cells[2][tbl_idx + 1];
     // Value gain
-    sb_Val_gain->Position = StrToInt(sg_HSV->Cells[3][tbl_idx + 1]);
-    lb_Val_gain->Caption = sg_HSV->Cells[3][tbl_idx + 1];
+    hsvAdjust->sb_Val_gain->Position = StrToInt(stringGrid_HSV->Cells[3][tbl_idx + 1]);
+    hsvAdjust->lb_Val_gain->Caption = stringGrid_HSV->Cells[3][tbl_idx + 1];
 
-    for (int i = 0; i < 3; i++) {
-	sg_6HSV->Cells[i][0] = sg_HSV->Cells[i + 1][1];	//Red
-	sg_6HSV->Cells[i][1] = sg_HSV->Cells[i + 1][5];	//Yellow
-	sg_6HSV->Cells[i][2] = sg_HSV->Cells[i + 1][9];	//Green
-	sg_6HSV->Cells[i][3] = sg_HSV->Cells[i + 1][13];	//Cyan
-	sg_6HSV->Cells[i][4] = sg_HSV->Cells[i + 1][17];	//Blue
-	sg_6HSV->Cells[i][5] = sg_HSV->Cells[i + 1][21];	//Magenta
-	sg_6HSV->Cells[i][6] = sg_HSV->Cells[i + 1][tbl_idx + 1];
-    }
+    /*for (int i = 0; i < 3; i++) {
+       sg_6HSV->Cells[i][0] = stringGrid_HSV->Cells[i + 1][1];  //Red
+       sg_6HSV->Cells[i][1] = stringGrid_HSV->Cells[i + 1][5];  //Yellow
+       sg_6HSV->Cells[i][2] = stringGrid_HSV->Cells[i + 1][9];  //Green
+       sg_6HSV->Cells[i][3] = stringGrid_HSV->Cells[i + 1][13]; //Cyan
+       sg_6HSV->Cells[i][4] = stringGrid_HSV->Cells[i + 1][17]; //Blue
+       sg_6HSV->Cells[i][5] = stringGrid_HSV->Cells[i + 1][21]; //Magenta
+       sg_6HSV->Cells[i][6] = stringGrid_HSV->Cells[i + 1][tbl_idx + 1];
+       } */
 }
 
 //---------------------------------------------------------------------------
@@ -178,7 +196,7 @@ void __fastcall THSVForm3::cb_Hue_RedClick(TObject * Sender)
 	cb_Hue_Cyan->Checked = false;
 	cb_Hue_Mag->Checked = false;
 	cb_Hue_Yellow->Checked = false;
-	le_ChAangle->Text = 0;
+	//le_ChAangle->Text = 0;
 	ed_Hue_Custom->Text = 0;
 	Set_6HSV_grid();
     }
@@ -194,7 +212,7 @@ void __fastcall THSVForm3::cb_Hue_YellowClick(TObject * Sender)
 	cb_Hue_Blue->Checked = false;
 	cb_Hue_Cyan->Checked = false;
 	cb_Hue_Mag->Checked = false;
-	le_ChAangle->Text = 60;
+	//le_ChAangle->Text = 60;
 	ed_Hue_Custom->Text = 60;
 	Set_6HSV_grid();
     }
@@ -210,7 +228,7 @@ void __fastcall THSVForm3::cb_Hue_GreenClick(TObject * Sender)
 	cb_Hue_Cyan->Checked = false;
 	cb_Hue_Mag->Checked = false;
 	cb_Hue_Yellow->Checked = false;
-	le_ChAangle->Text = 120;
+	//le_ChAangle->Text = 120;
 	ed_Hue_Custom->Text = 120;
 	Set_6HSV_grid();
     }
@@ -226,7 +244,7 @@ void __fastcall THSVForm3::cb_Hue_BlueClick(TObject * Sender)
 	cb_Hue_Cyan->Checked = false;
 	cb_Hue_Mag->Checked = false;
 	cb_Hue_Yellow->Checked = false;
-	le_ChAangle->Text = 240;
+	//le_ChAangle->Text = 240;
 	ed_Hue_Custom->Text = 240;
 	Set_6HSV_grid();
     }
@@ -242,7 +260,7 @@ void __fastcall THSVForm3::cb_Hue_CyanClick(TObject * Sender)
 	cb_Hue_Blue->Checked = false;
 	cb_Hue_Mag->Checked = false;
 	cb_Hue_Yellow->Checked = false;
-	le_ChAangle->Text = 180;
+	//le_ChAangle->Text = 180;
 	ed_Hue_Custom->Text = 180;
 	Set_6HSV_grid();
     }
@@ -258,7 +276,7 @@ void __fastcall THSVForm3::cb_Hue_MagClick(TObject * Sender)
 	cb_Hue_Blue->Checked = false;
 	cb_Hue_Cyan->Checked = false;
 	cb_Hue_Yellow->Checked = false;
-	le_ChAangle->Text = 300;	//移動的角度為300
+	//le_ChAangle->Text = 300;      //移動的角度為300
 	ed_Hue_Custom->Text = 300;
 	Set_6HSV_grid();
     }
@@ -284,19 +302,19 @@ void THSVForm3::Set_6HSV_grid()
 	}
     }
 
-    if (type_ok == false) {	//輸入角度不合法
-	sg_6HSV->Cells[0][6] = "";
-	sg_6HSV->Cells[1][6] = "";
-	sg_6HSV->Cells[2][6] = "";
-	return;
-    }
+    /*if (type_ok == false) {   //輸入角度不合法
+       sg_6HSV->Cells[0][6] = "";
+       sg_6HSV->Cells[1][6] = "";
+       sg_6HSV->Cells[2][6] = "";
+       return;
+       } */
     //輸入角度合法
 
-    int tbl_idx = Get_select_idx(StrToFloat(le_ChAangle->Text));
+    //int tbl_idx = Get_select_idx(StrToFloat(le_ChAangle->Text));
     //選擇變動的HSV值
-    sg_6HSV->Cells[0][6] = sg_HSV->Cells[1][tbl_idx + 1];
-    sg_6HSV->Cells[1][6] = sg_HSV->Cells[2][tbl_idx + 1];
-    sg_6HSV->Cells[2][6] = sg_HSV->Cells[3][tbl_idx + 1];
+    /*sg_6HSV->Cells[0][6] = stringGrid_HSV->Cells[1][tbl_idx + 1];
+       sg_6HSV->Cells[1][6] = stringGrid_HSV->Cells[2][tbl_idx + 1];
+       sg_6HSV->Cells[2][6] = stringGrid_HSV->Cells[3][tbl_idx + 1]; */
     Reset_HSVshow();
 }
 
@@ -317,9 +335,9 @@ void THSVForm3::Hue_LUTWrite()
     }
 
     for (int i = 0; i < 24; i++) {
-	Hue_table[i] = (int) (StrToFloat(sg_HSV->Cells[1][i + 1]) / 360 * 768 + 0.5);
-	Sat_table[i] = (int) (StrToFloat(sg_HSV->Cells[2][i + 1]) * 32);
-	Val_table[i] = StrToInt(sg_HSV->Cells[3][i + 1]);
+	Hue_table[i] = (int) (StrToFloat(stringGrid_HSV->Cells[1][i + 1]) / 360 * 768 + 0.5);
+	Sat_table[i] = (int) (StrToFloat(stringGrid_HSV->Cells[2][i + 1]) * 32);
+	Val_table[i] = StrToInt(stringGrid_HSV->Cells[3][i + 1]);
     }
 
     int *HSV_lut = new int[24 * 3];
@@ -353,13 +371,10 @@ void __fastcall THSVForm3::btn_resetClick(TObject * Sender)
 void THSVForm3::show_gain(int h, int s, int v)
 {
     double h_show = ((double) h / 768) * 360;
-    char str[6];
-    sprintf(str, "%.2f", h_show);
-    lb_Hue_gain->Caption = str;
+    lb_Hue_gain->Caption = lb_Hue_gain->Caption.sprintf("%.2f", h_show);
 
     double s_show = (double) s / 32;
-    sprintf(str, "%.2f", s_show);
-    lb_Sat_gain->Caption = str;
+    lb_Sat_gain->Caption = lb_Sat_gain->Caption.sprintf("%.2f", s_show);
 
     lb_Val_gain->Caption = IntToStr(v);
 }
@@ -438,8 +453,10 @@ void __fastcall THSVForm3::sb_Hue_gainScroll(TObject * Sender,
     }
 
     //將使用者輸入的角度換成table表中的index
+    //le_ChAangle看不見, 就是目前選的角度
     int tbl_idx = Get_select_idx(StrToFloat(le_ChAangle->Text));
 
+    //更新
     show_gain(sb_Hue_gain->Position, sb_Sat_gain->Position, sb_Val_gain->Position);
     int gain_h = sb_Hue_gain->Position;	// Hue值為Gain
     int gain_s = sb_Sat_gain->Position - Sat_table[tbl_idx];	// 調整值與table數值的差異為gain
@@ -449,8 +466,10 @@ void __fastcall THSVForm3::sb_Hue_gainScroll(TObject * Sender,
     } else if (gain_h < (-1) * 768 / 2) {
 	gain_h += 768;
     }
+    //可以做set
     btn_set->Enabled = true;
     if (cb_Hue_rotation->Checked == false) {
+	//非全域調整
 	int tmp_H[9], tmp_S[9], tmp_V[9];
 	Get_Adj_tbl(tmp_H, tmp_S, tmp_V, tbl_idx);
 
@@ -501,6 +520,7 @@ void __fastcall THSVForm3::sb_Hue_gainScroll(TObject * Sender,
 	    return;
 	}
     } else {			//rotation
+	//全域調整
 	for (int i = 0; i < tbl_n; i++) {
 	    Hue_table_t[i] = (Hue_table[i] + gain_h + 768) % 768;
 	    Sat_table_t[i] = Sat_table[i] + gain_s;
@@ -508,20 +528,21 @@ void __fastcall THSVForm3::sb_Hue_gainScroll(TObject * Sender,
 	}
     }
 
+    //同步到grid
     for (int i = 0; i < tbl_n; i++) {
-	sg_HSV->Cells[1][i + 1] = FloatToStr((double) Hue_table_t[i] / 768 * 360);
-	sg_HSV->Cells[2][i + 1] = FloatToStr((double) (Sat_table_t[i]) / 32);
-	sg_HSV->Cells[3][i + 1] = Val_table_t[i];
+	stringGrid_HSV->Cells[1][i + 1] = FloatToStr((double) Hue_table_t[i] / 768 * 360);
+	stringGrid_HSV->Cells[2][i + 1] = FloatToStr((double) (Sat_table_t[i]) / 32);
+	stringGrid_HSV->Cells[3][i + 1] = Val_table_t[i];
     }
-    for (int i = 0; i < 3; i++) {
-	sg_6HSV->Cells[i][0] = sg_HSV->Cells[i + 1][1];	//Red
-	sg_6HSV->Cells[i][1] = sg_HSV->Cells[i + 1][5];	//Yellow
-	sg_6HSV->Cells[i][2] = sg_HSV->Cells[i + 1][9];	//Green
-	sg_6HSV->Cells[i][3] = sg_HSV->Cells[i + 1][13];	//Cyan
-	sg_6HSV->Cells[i][4] = sg_HSV->Cells[i + 1][17];	//Blue
-	sg_6HSV->Cells[i][5] = sg_HSV->Cells[i + 1][21];	//Magenta
-	sg_6HSV->Cells[i][6] = sg_HSV->Cells[i + 1][tbl_idx + 1];
-    }
+    /*for (int i = 0; i < 3; i++) {
+       sg_6HSV->Cells[i][0] = stringGrid_HSV->Cells[i + 1][1];  //Red
+       sg_6HSV->Cells[i][1] = stringGrid_HSV->Cells[i + 1][5];  //Yellow
+       sg_6HSV->Cells[i][2] = stringGrid_HSV->Cells[i + 1][9];  //Green
+       sg_6HSV->Cells[i][3] = stringGrid_HSV->Cells[i + 1][13]; //Cyan
+       sg_6HSV->Cells[i][4] = stringGrid_HSV->Cells[i + 1][17]; //Blue
+       sg_6HSV->Cells[i][5] = stringGrid_HSV->Cells[i + 1][21]; //Magenta
+       sg_6HSV->Cells[i][6] = stringGrid_HSV->Cells[i + 1][tbl_idx + 1];
+       } */
 }
 
 //---------------------------------------------------------------------------
@@ -546,7 +567,7 @@ bool THSVForm3::Load_HSV(String Fpath)
     char *buffer = Load_File(Fpath);
     if (buffer == NULL)
 	return 0;
-    for (int i = 0; i < 96; i++) {
+    for (int i = 0; i < HUE_COUNT; i++) {
 	Hue_table[i] = -1;
 	Sat_table[i] = -1;
 	Val_table[i] = 0;
@@ -576,9 +597,9 @@ bool THSVForm3::Load_HSV(String Fpath)
     delete[]buffer;
 
     for (int i = 0; i < 24; i++) {
-	sg_HSV->Cells[1][i + 1] = FloatToStr((double) Hue_table[i] / 768 * 360);
-	sg_HSV->Cells[2][i + 1] = FloatToStr((double) (Sat_table[i]) / 32);
-	sg_HSV->Cells[3][i + 1] = IntToStr(Val_table[i]);
+	stringGrid_HSV->Cells[1][i + 1] = FloatToStr((double) Hue_table[i] / 768 * 360);
+	stringGrid_HSV->Cells[2][i + 1] = FloatToStr((double) (Sat_table[i]) / 32);
+	stringGrid_HSV->Cells[3][i + 1] = IntToStr(Val_table[i]);
     }
 
     Set_6HSV_grid();
@@ -737,9 +758,9 @@ void __fastcall THSVForm3::btn_setClick(TObject * Sender)
 	Sat_table[i] = Sat_table_t[i];
 	Val_table[i] = Val_table_t[i];
 
-	sg_HSV->Cells[1][i + 1] = FloatToStr((double) Hue_table_t[i] / 768 * 360);
-	sg_HSV->Cells[2][i + 1] = FloatToStr((double) (Sat_table_t[i]) / 32);
-	sg_HSV->Cells[3][i + 1] = Val_table_t[i];
+	stringGrid_HSV->Cells[1][i + 1] = FloatToStr((double) Hue_table_t[i] / 768 * 360);
+	stringGrid_HSV->Cells[2][i + 1] = FloatToStr((double) (Sat_table_t[i]) / 32);
+	stringGrid_HSV->Cells[3][i + 1] = Val_table_t[i];
     }
     btn_set->Enabled = false;
 }
@@ -827,9 +848,9 @@ void __fastcall THSVForm3::btn_hsv_readClick(TObject * Sender)
 
 	Val_table[i] = Cmplmnt2sToSign(val_r, 128);
 
-	sg_HSV->Cells[1][i + 1] = FloatToStr((double) Hue_table[i] / 768 * 360);
-	sg_HSV->Cells[2][i + 1] = FloatToStr((double) (Sat_table[i]) / 32);
-	sg_HSV->Cells[3][i + 1] = IntToStr(Val_table[i]);
+	stringGrid_HSV->Cells[1][i + 1] = FloatToStr((double) Hue_table[i] / 768 * 360);
+	stringGrid_HSV->Cells[2][i + 1] = FloatToStr((double) (Sat_table[i]) / 32);
+	stringGrid_HSV->Cells[3][i + 1] = IntToStr(Val_table[i]);
     }
     Set_6HSV_grid();
     HSV_LUT_RW_over();		// Recover HSV enable
@@ -869,21 +890,21 @@ void THSVForm3::initStringGrid_HSV()
 	   Sat_table_t[i] = 32;
 	   Val_table_t[i] = 0; */
 
-	StringGrid_HSV->Cells[0][i + 1] = IntToStr(360 / 24 * i) + "°";	// Index as hue
-	StringGrid_HSV->Cells[1][i + 1] = IntToStr(360 / 24 * i);	// Hue default value
-	StringGrid_HSV->Cells[2][i + 1] = 1;	// Saturation default value
-	StringGrid_HSV->Cells[3][i + 1] = 0;	// Luminance default value
+	stringGrid_HSV->Cells[0][i + 1] = IntToStr(360 / 24 * i) + "°";	// Index as hue
+	stringGrid_HSV->Cells[1][i + 1] = IntToStr(360 / 24 * i);	// Hue default value
+	stringGrid_HSV->Cells[2][i + 1] = 1;	// Saturation default value
+	stringGrid_HSV->Cells[3][i + 1] = 0;	// Luminance default value
     }
 
-    StringGrid_HSV->Cells[1][0] = "H";
-    StringGrid_HSV->Cells[2][0] = "S";
-    StringGrid_HSV->Cells[3][0] = "V";
-    StringGrid_HSV->Cells[0][1] = "R 0°";
-    StringGrid_HSV->Cells[0][5] = "Y 60°";
-    StringGrid_HSV->Cells[0][9] = "G120°";
-    StringGrid_HSV->Cells[0][13] = "C180°";
-    StringGrid_HSV->Cells[0][17] = "B240°";
-    StringGrid_HSV->Cells[0][21] = "M300°";
+    stringGrid_HSV->Cells[1][0] = "H";
+    stringGrid_HSV->Cells[2][0] = "S";
+    stringGrid_HSV->Cells[3][0] = "V";
+    /*stringGrid_HSV->Cells[0][1] = "R 0°";
+       stringGrid_HSV->Cells[0][5] = "Y 60°";
+       stringGrid_HSV->Cells[0][9] = "G120°";
+       stringGrid_HSV->Cells[0][13] = "C180°";
+       stringGrid_HSV->Cells[0][17] = "B240°";
+       stringGrid_HSV->Cells[0][21] = "M300°"; */
 };
 
 const int THSVForm3::HueRGBValues[24][3] = {
@@ -894,20 +915,125 @@ const int THSVForm3::HueRGBValues[24][3] = {
     {255, 0, 255}, {255, 0, 191}, {255, 0, 128}, {255, 0, 64}
 };
 
-void __fastcall THSVForm3::StringGrid_HSVDrawCell(TObject * Sender,
+
+RGB_ptr THSVForm3::getHueRGB(int index)
+{
+    using namespace Dep;
+    RGB_ptr rgb(new
+		RGBColor(HueRGBValues[index][0], HueRGBValues[index][1], HueRGBValues[index][2]));
+    return rgb;
+}
+
+void __fastcall THSVForm3::stringGrid_HSVDrawCell(TObject * Sender,
 						  int ACol, int ARow, TRect & Rect,
 						  TGridDrawState State)
 {
     using namespace Dep;
-    for (int row = 1; row <= 24; row++) {
-	RGBColor rgb(HueRGBValues[row][0], HueRGBValues[row][1], HueRGBValues[row][2]);
-	StringGrid_HSV->Canvas->Brush->Color = rgb.getColor();
-	int height = StringGrid_HSV->DefaultRowHeight + 1;
-	int width = StringGrid_HSV->ColWidths[0];
-	StringGrid_HSV->Canvas->Rectangle(0, height * row, width, height * (row + 1));
-	StringGrid_HSV->Canvas->Font->Color = clBlack;
-	int hueAngle = (row - 1) * 15;
-	StringGrid_HSV->Canvas->TextOut(0 + 4, height * row + 1, hueAngle);
+
+    //int row = ARow;
+    if (ARow >= 1 && ARow <= 24 && ACol == 1) {
+	RGB_ptr rgb = getHueRGB(ARow - 1);
+	stringGrid_HSV->Canvas->Brush->Color = rgb->getColor();
+	int height = stringGrid_HSV->DefaultRowHeight + 1;
+	int width = stringGrid_HSV->ColWidths[0];
+	stringGrid_HSV->Canvas->Rectangle(0, height * ARow, width, height * (ARow + 1));
+	stringGrid_HSV->Canvas->Font->Color = clBlack;
+	int hueAngle = (ARow - 1) * 15;
+	stringGrid_HSV->Canvas->TextOut(0 + 4, height * ARow + 1, hueAngle);
+    }
+}
+
+//---------------------------------------------------------------------------
+
+double_array THSVForm3::getHSVAdjustValue(int row)
+{
+    double_array adjustValue(new double[3]);
+    adjustValue[0] = stringGrid_HSV->Cells[1][row].ToDouble();
+    adjustValue[1] = stringGrid_HSV->Cells[2][row].ToDouble();
+    adjustValue[2] = stringGrid_HSV->Cells[3][row].ToDouble();
+    return adjustValue;
+}
+
+void __fastcall THSVForm3::stringGrid_HSVSelectCell(TObject * Sender,
+						    int ACol, int ARow, bool & CanSelect)
+{
+    this->Reset_HSVshow();
+    RGB_ptr rgb = getHueRGB(ARow - 1);
+    //設定colorpicker
+    colorPicker->setOriginalColor(rgb->R, rgb->G, rgb->B);
+    //設定hsvadjust
+    double_array hsvAdjustValue = getHSVAdjustValue(ARow);
+}
+
+//---------------------------------------------------------------------------
+
+
+void __fastcall THSVForm3::hsvAdjustsb_c3d_Manual39_hChange(TObject * Sender)
+{
+
+    for (int i = 0; i < HUE_COUNT; i++) {
+	Hue_table_t[i] = Hue_table[i];
+	Sat_table_t[i] = Sat_table[i];
+	Val_table_t[i] = Val_table[i];
+    }
+
+    int tbl_idx = stringGrid_HSV->Selection.Top - 1;
+
+    //更新
+    //int h = sb_Hue_gain->Position;
+    //int s = sb_Sat_gain->Position;
+    //int v = sb_Val_gain->Position;
+    int h = hsvAdjust->sb_Hue_gain->Position;
+    int s = hsvAdjust->sb_Sat_gain->Position;
+    int v = hsvAdjust->sb_Val_gain->Position;
+    show_gain(h, s, v);
+    int gain_h = h;		// Hue值為Gain
+    int gain_s = s - Sat_table[tbl_idx];	// 調整值與table數值的差異為gain
+    int gain_v = v - Val_table[tbl_idx];
+    if (gain_h > 768 / 2) {
+	gain_h -= 768;
+    } else if (gain_h < (-1) * 768 / 2) {
+	gain_h += 768;
+    }
+    //可以做set
+    btn_set->Enabled = true;
+    if (cb_Hue_rotation->Checked == false) {
+	//非全域調整
+	int tmp_H[9], tmp_S[9], tmp_V[9];
+	Get_Adj_tbl(tmp_H, tmp_S, tmp_V, tbl_idx);
+
+	int low = (4 - sb_dif_n->Position);
+	int high = sb_dif_p->Position;
+
+	bool dif_ok = CheckDif(high, low, tmp_H, gain_h);
+	if (dif_ok == 0)
+	    return;
+	sb_dif_p->Position = high;
+	sb_dif_n->Position = 4 - low;
+
+	tmp_S[4] += gain_s;
+	tmp_V[4] += gain_v;
+
+	Set_Adj_tbl(tmp_H, tmp_S, tmp_V, tbl_idx);
+	if (!CheckHueIncrease(high, low, tmp_H)) {
+	    ShowMessage("Hue value has inverse.");
+	    btn_set->Enabled = false;
+	    return;
+	}
+    } else {			//rotation
+	//全域調整
+	for (int i = 0; i < HUE_COUNT; i++) {
+	    Hue_table_t[i] = (Hue_table[i] + gain_h + 768) % 768;
+	    Sat_table_t[i] = Sat_table[i] + gain_s;
+	    Val_table_t[i] = Val_table[i] + gain_v;
+	}
+    }
+
+    //同步到grid
+    for (int i = 0; i < HUE_COUNT; i++) {
+	stringGrid_HSV->Cells[1][i + 1] = FloatToStr((double) Hue_table_t[i] / 768 * 360);
+	stringGrid_HSV->Cells[2][i + 1] = FloatToStr((double) (Sat_table_t[i]) / 32);
+	stringGrid_HSV->Cells[3][i + 1] = Val_table_t[i];
     }
 }
 
@@ -915,11 +1041,64 @@ void __fastcall THSVForm3::StringGrid_HSVDrawCell(TObject * Sender,
 
 
 
-void __fastcall THSVForm3::StringGrid_HSVSelectCell(TObject * Sender,
-						    int ACol, int ARow, bool & CanSelect)
+
+
+
+void __fastcall THSVForm3::RadioButton_deg60baseClick(TObject * Sender)
 {
-    //設定colorpicker
-    //設定hsvadjust         
+    //deg60baseClick(Sender);
+    TRadioButton *button = dynamic_cast < TRadioButton * >(Sender);
+    if (null != button) {
+	setGridSelectRow(hintToRow(button->Hint.ToInt()));
+    }
+    //RadioButton_deg30->Checked = true;
+    //RadioButton_deg30->Checked = false;
+}
+
+int THSVForm3::hintToRow(int hint)
+{
+    return hint / 15 + 1;
+}
+
+void THSVForm3::setGridSelectRow(int row)
+{
+    TGridRect select = stringGrid_HSV->Selection;
+    select.Top = row;
+    select.Bottom = row;
+    stringGrid_HSV->Selection = select;
+    stringGrid_HSVSelectCell(null, -1, row, true);
+}
+
+//---------------------------------------------------------------------------
+
+
+/*void THSVForm3::deg60baseClick(TObject * Sender)
+{
+    TRadioButton *button = dynamic_cast < TRadioButton * >(Sender);
+    if (null != button) {
+	int row = button->Hint.ToInt() / 15;
+	setGridSelectRow(row);
+    }
+}
+void THSVForm3::deg30baseClick(TObject * Sender)
+{
+    TRadioButton *button = dynamic_cast < TRadioButton * >(Sender);
+    if (null != button) {
+	int row = button->Hint.ToInt() / 15;
+	setGridSelectRow(row);
+    }
+}*/
+
+//---------------------------------------------------------------------------
+
+void __fastcall THSVForm3::RadioButton_deg30baseClick(TObject * Sender)
+{
+    TRadioButton *button = dynamic_cast < TRadioButton * >(Sender);
+    if (null != button) {
+	setGridSelectRow(hintToRow(button->Hint.ToInt()));
+    }
+    //RadioButton_deg60->Checked = true;
+    //RadioButton_deg60->Checked = false;
 }
 
 //---------------------------------------------------------------------------
