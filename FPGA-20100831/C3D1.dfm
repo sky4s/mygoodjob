@@ -1,8 +1,8 @@
 object C3DForm1: TC3DForm1
-  Left = 415
-  Top = 259
-  Width = 682
-  Height = 480
+  Left = -4
+  Top = -4
+  Width = 1288
+  Height = 964
   Hint = '7'
   Caption = 'C3D'
   Color = clBtnFace

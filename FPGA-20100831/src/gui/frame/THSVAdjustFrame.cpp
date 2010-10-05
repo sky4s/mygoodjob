@@ -97,7 +97,11 @@ void THSVAdjustFrame::addChangeListener(bptr < gui::event::ChangeListener > list
     bwptr < gui::event::ChangeListener > wptr(listener);
     changeListenerVector.push_back(wptr);
 };
-
+void THSVAdjustFrame::addListSelectionListener(bptr < gui::event::ListSelectionListener > listener)
+{
+    bwptr < gui::event::ListSelectionListener > wptr(listener);
+    selectionListenerVector.push_back(wptr);
+};
 double_array THSVAdjustFrame::getHSVGain()
 {
     double h = sb_c3d_Manual39_h->Position - sb_c3d_Manual39_h->Max / 2;

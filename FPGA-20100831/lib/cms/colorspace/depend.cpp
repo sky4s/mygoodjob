@@ -158,21 +158,23 @@ namespace cms {
 		toXYZMatrix_ = double2D_ptr(new double2D(3, 3, toXYZMatrix));
 		toRGBMatrix_ = DoubleArray::inverse(toXYZMatrix_);
 	    };
-	    RGBColorSpace::RGBColorSpace(const CSType & type,
-					 const double gamma,
-					 const cms::
-					 Illuminant & referenceWhite,
-					 ...):type_(type),
-		referenceWhite(referenceWhite), gamma_(gamma) {
-		const int n = 9;
-		double array[n];
-		va_list num_list;
-		va_start(num_list, n);
 
-		for (int i = 0; i < n; i++) {
-		    const double d = va_arg(num_list, const double);
-		    array[i] = d;
-		} va_end(num_list);
+	    RGBColorSpace::RGBColorSpace(const CSType & type, const double gamma, const
+					 cms::Illuminant & referenceWhite, double m0,
+					 double m1, double m2, double m3, double m4, double m5,
+					 double m6, double m7, double m8):type_(type),
+		referenceWhite(referenceWhite), gamma_(gamma) {
+		double array[9];
+                array[0]=m0;
+                array[1]=m1;
+                array[2]=m2;
+                array[3]=m3;
+                array[4]=m4;
+                array[5]=m5;
+                array[6]=m6;
+                array[7]=m7;
+                array[8]=m8;
+
 		toXYZMatrix_ = double2D_ptr(new double2D(3, 3, array));
 		toRGBMatrix_ = DoubleArray::inverse(toXYZMatrix_);
 	    };

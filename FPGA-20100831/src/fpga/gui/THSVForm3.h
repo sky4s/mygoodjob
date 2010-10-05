@@ -123,10 +123,13 @@ class THSVForm3:public TForm {
     void __fastcall btn_hsv_readClick(TObject * Sender);
     void __fastcall Hue_ImgMouseDown(TObject * Sender,
 				     TMouseButton Button, TShiftState Shift, int X, int Y);
+    void __fastcall StringGrid_HSVDrawCell(TObject * Sender, int ACol,
+					   int ARow, TRect & Rect, TGridDrawState State);
   private:			// User declarations
      bool HSV_IsChkSum;
     int tbl_step;
     void initStringGrid_HSV();
+    static const int HueRGBValues[24][3];
   public:			// User declarations
      TBit * cb;
     _CHKB **ChkB;
