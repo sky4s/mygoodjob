@@ -97,11 +97,12 @@ void THSVAdjustFrame::addChangeListener(bptr < gui::event::ChangeListener > list
     bwptr < gui::event::ChangeListener > wptr(listener);
     changeListenerVector.push_back(wptr);
 };
-void THSVAdjustFrame::addListSelectionListener(bptr < gui::event::ListSelectionListener > listener)
+
+/*void THSVAdjustFrame::addListSelectionListener(bptr < gui::event::ListSelectionListener > listener)
 {
     bwptr < gui::event::ListSelectionListener > wptr(listener);
     selectionListenerVector.push_back(wptr);
-};
+};*/
 double_array THSVAdjustFrame::getHSVGain()
 {
     double h = sb_c3d_Manual39_h->Position - sb_c3d_Manual39_h->Max / 2;
@@ -121,4 +122,29 @@ void THSVAdjustFrame::setColorAdjustable(bool enable)
     sb_c3d_Manual39_h->Enabled = enable;
     sb_c3d_Manual39_s->Enabled = enable;
 };
+
+void THSVAdjustFrame::setTStringGrid(TStringGrid * stringGrid)
+{
+    this->stringGrid = stringGrid;
+}
+
+double_array THSVAdjustFrame::getHSVGain(double h, double s, double v, int row)
+{
+    if (null != stringGrid) {
+	double huse = stringGrid->Cells[1][row].ToDouble();
+	double suse = stringGrid->Cells[2][row].ToDouble();
+	double vuse = stringGrid->Cells[3][row].ToDouble();
+
+	double hgain = huse - h;
+	double sgain = ((suse / s) - 1) * 100 * edt_c3d_satC->Text.ToDouble();
+	double vgain = ((vuse / v) - 1) * 100 * edt_c3d_valC->Text.ToDouble();
+
+	double_array hsvgain(new double[3]);
+	hsvgain[0] = hgain;
+	hsvgain[1] = sgain;
+	hsvgain[2] = vgain;
+	return hsvgain;
+    }
+    return nil_double_array;
+}
 

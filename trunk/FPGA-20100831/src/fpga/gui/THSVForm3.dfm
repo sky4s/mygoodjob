@@ -1,8 +1,9 @@
 object HSVForm3: THSVForm3
-  Left = 242
-  Top = 58
+  Left = 83
+  Top = 42
   Width = 1115
   Height = 881
+  HorzScrollBar.Position = 163
   Caption = 'HSV'
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
@@ -21,7 +22,7 @@ object HSVForm3: THSVForm3
   PixelsPerInch = 120
   TextHeight = 16
   object Hue_Img: TImage
-    Left = 790
+    Left = 627
     Top = 615
     Width = 287
     Height = 277
@@ -6236,7 +6237,7 @@ object HSVForm3: THSVForm3
     OnMouseMove = Hue_ImgMouseMove
   end
   object GroupBox28: TGroupBox
-    Left = 10
+    Left = -153
     Top = 647
     Width = 651
     Height = 284
@@ -6473,7 +6474,7 @@ object HSVForm3: THSVForm3
     end
   end
   object GroupBox1: TGroupBox
-    Left = 0
+    Left = -163
     Top = 0
     Width = 1081
     Height = 649
@@ -6794,19 +6795,12 @@ object HSVForm3: THSVForm3
       Caption = 'CheckBox4'
       TabOrder = 9
     end
-    inline ColorPickerFrame1: TColorPickerFrame
-      Left = 352
-      Top = 16
-      Width = 552
-      Height = 420
-      TabOrder = 10
-    end
     inline HSVAdjustFrame1: THSVAdjustFrame
       Left = 360
       Top = 440
       Width = 395
       Height = 201
-      TabOrder = 11
+      TabOrder = 10
     end
     object StringGrid_HSV: TStringGrid
       Left = 916
@@ -6819,8 +6813,9 @@ object HSVForm3: THSVForm3
       DefaultRowHeight = 16
       RowCount = 25
       Options = [goFixedVertLine, goFixedHorzLine, goVertLine, goHorzLine, goRangeSelect, goDrawFocusSelected, goEditing, goTabs, goRowSelect]
-      TabOrder = 12
+      TabOrder = 11
       OnDrawCell = StringGrid_HSVDrawCell
+      OnSelectCell = StringGrid_HSVSelectCell
       ColWidths = (
         40
         30
@@ -6853,9 +6848,16 @@ object HSVForm3: THSVForm3
         16
         16)
     end
+    inline ColorPickerFrame1: TColorPickerFrame
+      Left = 360
+      Top = 16
+      Width = 552
+      Height = 420
+      TabOrder = 12
+    end
   end
   object btn_Hue_Img_load: TButton
-    Left = 790
+    Left = 627
     Top = 596
     Width = 90
     Height = 21
@@ -6870,7 +6872,7 @@ object HSVForm3: THSVForm3
     OnClick = btn_Hue_Img_loadClick
   end
   object Hue_Img_Infor: TStaticText
-    Left = 790
+    Left = 627
     Top = 891
     Width = 215
     Height = 20
@@ -6882,7 +6884,7 @@ object HSVForm3: THSVForm3
     TabOrder = 2
   end
   object sg_HSV: TStringGrid
-    Left = 1087
+    Left = 924
     Top = 13
     Width = 157
     Height = 527

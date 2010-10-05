@@ -3,8 +3,8 @@
 <PROJECT>
   <MACROS>
     <VERSION value="BCB.06.00"/>
-    <PROJECT value="workdir\Project1.exe"/>
-    <OBJFILES value="build\Project1.obj build\Unit1.obj build\Vender1.obj build\CM1.obj 
+    <PROJECT value="workdir\FPGAToolkit.exe"/>
+    <OBJFILES value="build\FPGAToolkit.obj build\Unit1.obj build\Vender1.obj build\CM1.obj 
       build\HueSatVal1.obj build\Sharpness1.obj build\TCON1.obj 
       build\Function1.obj build\Engineering.obj build\DCR1.obj 
       build\ContrastEnhance1.obj build\C3D1.obj build\SAT.obj 
@@ -16,7 +16,7 @@
       build\ImgProc_11307.obj build\TCON_11307.obj build\Vend_11307.obj 
       build\rgb.obj build\depend.obj build\core.obj build\colorspace.obj 
       build\doubleArray.obj"/>
-    <RESFILES value="Project1.res"/>
+    <RESFILES value="FPGAToolkit.res"/>
     <IDLFILES value=""/>
     <IDLGENFILES value=""/>
     <DEFFILE value=""/>
@@ -43,7 +43,7 @@
     <LINKER value="ilink32"/>
     <USERDEFINES value="_DEBUG"/>
     <SYSDEFINES value="NO_STRICT"/>
-    <MAINSOURCE value="Project1.cpp"/>
+    <MAINSOURCE value="FPGAToolkit.cpp"/>
     <INCLUDEPATH value="lib\gui\event;lib\math;lib\cms\colorspace;lib\cms;src\fpga\11307\Vender;src\fpga\11307\TCON;src\fpga\11307\ImageProcess;src\fpga\11307\Function;src\fpga\11307\DCR;lib\java;src\gui\frame;src\fpga\gui;lib\i2c\core;&quot;D:\Program Files\Borland\CBuilder6\Projects&quot;;11307\DCR;11307\Function;11307\ImageProcess;11307\TCON;11307\Vender;12401\ImageProcess;12401\Vender;12401\DCR;12401\TCON;12401\Function;$(BCB)\include;$(BCB)\include\vcl;lib;./;lib\LPT_lib;lib\USB_i2c_lib;src"/>
     <LIBPATH value="lib\gui\event;lib\math;lib\cms\colorspace;lib\cms;src\fpga\11307\Vender;src\fpga\11307\TCON;src\fpga\11307\ImageProcess;src\fpga\11307\Function;src\fpga\11307\DCR;lib\java;src\gui\frame;src\fpga\gui;&quot;D:\Program Files\Borland\CBuilder6\Projects&quot;;lib\i2c\core;11307\DCR;11307\Function;11307\ImageProcess;11307\TCON;11307\Vender;12401\ImageProcess;12401\Vender;12401\DCR;12401\TCON;12401\Function;$(BCB)\lib\obj;$(BCB)\lib;lib;lib\LPT_lib;lib\USB_i2c_lib;src"/>
     <WARNINGS value="-w-par"/>
@@ -74,8 +74,8 @@
     <OTHERFILES value=""/>
   </LINKER>
   <FILELIST>
-      <FILE FILENAME="Project1.res" FORMNAME="" UNITNAME="Project1.res" CONTAINERID="ResTool" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="Project1.cpp" FORMNAME="" UNITNAME="Project1" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="FPGAToolkit.res" FORMNAME="" UNITNAME="FPGAToolkit.res" CONTAINERID="ResTool" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="FPGAToolkit.cpp" FORMNAME="" UNITNAME="FPGAToolkit" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Unit1.cpp" FORMNAME="MainForm" UNITNAME="Unit1" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Vender1.cpp" FORMNAME="VenderForm1" UNITNAME="Vender1" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="CM1.cpp" FORMNAME="CMForm1" UNITNAME="CM1" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
