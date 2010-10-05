@@ -46,15 +46,15 @@ __fastcall THSVAdjustFrame::THSVAdjustFrame(TComponent * Owner)
 
 //---------------------------------------------------------------------------
 
-void __fastcall THSVAdjustFrame::sb_c3d_Manual39_hChange(TObject * Sender)
+void __fastcall THSVAdjustFrame::sb_Hue_gainChange(TObject * Sender)
 {
     using namespace gui::event;
     using namespace java::lang;
 
     double_array hsvgain = getHSVGain();
-    lb_c3d_Manual39_h->Caption = FloatToStr(hsvgain[0]) + "¢X";
-    lb_c3d_Manual39_s->Caption = FloatToStr(Math::floor(s * hsvgain[1] * 1000) / 1000);
-    lb_c3d_Manual39_v->Caption = FloatToStr(Math::floor(v * hsvgain[2] * 1000) / 1000);
+    lb_Hue_gain->Caption = FloatToStr(hsvgain[0]) + "¢X";
+    lb_Sat_gain->Caption = FloatToStr(Math::floor(s * hsvgain[1] * 1000) / 1000);
+    lb_Val_gain->Caption = FloatToStr(Math::floor(v * hsvgain[2] * 1000) / 1000);
 
     foreach(bwptr < ChangeListener > listener, changeListenerVector) {
 	bptr < ChangeListener > l = listener.lock();
@@ -77,18 +77,18 @@ void THSVAdjustFrame::setHSV(double h, double s, double v)
     //valueSetter->setBase(v);
 };
 
-void __fastcall THSVAdjustFrame::sb_c3d_Manual39_sChange(TObject * Sender)
+void __fastcall THSVAdjustFrame::sb_Sat_gainChange(TObject * Sender)
 {
-    sb_c3d_Manual39_hChange(Sender);
+    sb_Hue_gainChange(Sender);
     //binder.active(Sender);
 }
 
 //---------------------------------------------------------------------------
 
-void __fastcall THSVAdjustFrame::sb_c3d_Manual39_vChange(TObject * Sender)
+void __fastcall THSVAdjustFrame::sb_Val_gainChange(TObject * Sender)
 {
     //binder.active(Sender);
-    sb_c3d_Manual39_hChange(Sender);
+    sb_Hue_gainChange(Sender);
 }
 
 //---------------------------------------------------------------------------
@@ -105,10 +105,10 @@ void THSVAdjustFrame::addChangeListener(bptr < gui::event::ChangeListener > list
 };*/
 double_array THSVAdjustFrame::getHSVGain()
 {
-    double h = sb_c3d_Manual39_h->Position - sb_c3d_Manual39_h->Max / 2;
-    int spos = sb_c3d_Manual39_s->Position - sb_c3d_Manual39_s->Max / 2;
+    double h = sb_Hue_gain->Position - sb_Hue_gain->Max / 2;
+    int spos = sb_Sat_gain->Position - sb_Sat_gain->Max / 2;
     double s = (double) spos / 100. / edt_c3d_satC->Text.ToDouble();
-    int vpos = sb_c3d_Manual39_v->Position - sb_c3d_Manual39_v->Max / 2;
+    int vpos = sb_Val_gain->Position - sb_Val_gain->Max / 2;
     double v = (double) vpos / 100. / edt_c3d_valC->Text.ToDouble();
     double_array hsvgain(new double[3]);
     hsvgain[0] = h;
@@ -119,8 +119,8 @@ double_array THSVAdjustFrame::getHSVGain()
 
 void THSVAdjustFrame::setColorAdjustable(bool enable)
 {
-    sb_c3d_Manual39_h->Enabled = enable;
-    sb_c3d_Manual39_s->Enabled = enable;
+    sb_Hue_gain->Enabled = enable;
+    sb_Sat_gain->Enabled = enable;
 };
 
 void THSVAdjustFrame::setTStringGrid(TStringGrid * stringGrid)

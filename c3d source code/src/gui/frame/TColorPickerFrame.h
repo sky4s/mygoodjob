@@ -63,6 +63,7 @@ class TColorPickerFrame:public TFrame {
      std::vector < bwptr < gui::event::MouseListener > >mouseListenerVector;
     TInTargetForm *inTargetForm;
     void setColor(TImage * image, int r, int g, int b);
+    void setColor(TImage * image, TColor color);
   public:			// User declarations
      __fastcall TColorPickerFrame(TComponent * Owner);
     void addMouseMotionListener(bptr < gui::event::MouseMotionListener > listener);

@@ -1,8 +1,8 @@
 object C3DForm1: TC3DForm1
   Left = 58
   Top = 31
-  Width = 1186
-  Height = 859
+  Width = 968
+  Height = 858
   Align = alCustom
   Caption = 'C3D lookup table'
   Color = clBtnFace
@@ -544,8 +544,8 @@ object C3DForm1: TC3DForm1
         Top = 0
         Width = 592
         Height = 336
-        ActivePage = TabSheet8
-        TabIndex = 1
+        ActivePage = TabSheet7
+        TabIndex = 0
         TabOrder = 0
         OnChange = pc_global_adjChange
         object TabSheet7: TTabSheet
