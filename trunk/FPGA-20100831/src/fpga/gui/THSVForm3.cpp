@@ -144,16 +144,19 @@ void THSVForm3::Reset_HSVshow()
     int tbl_idx = stringGrid_HSV->Selection.Top;
 
     //Hue gain
-    hsvAdjust->sb_Hue_gain->Position = 0;
-    hsvAdjust->lb_Hue_gain->Caption = 0;
+    String hueStr = stringGrid_HSV->Cells[1][tbl_idx];
+    hsvAdjust->sb_Hue_gain->Position = hueStr.ToDouble();
+    hsvAdjust->lb_Hue_gain->Caption = hueStr;
+
     // Saturation gain
+    String saturationStr = stringGrid_HSV->Cells[2][tbl_idx];
     hsvAdjust->sb_Sat_gain->Position =
-	(int) floor(StrToFloat(stringGrid_HSV->Cells[2][tbl_idx]) * 32);
-    hsvAdjust->lb_Sat_gain->Caption = stringGrid_HSV->Cells[2][tbl_idx];
+	(int) floor(saturationStr.ToDouble() * 32);
+    hsvAdjust->lb_Sat_gain->Caption = saturationStr;
     // Value gain
-    hsvAdjust->sb_Val_gain->Position =
-	StrToInt(stringGrid_HSV->Cells[3][tbl_idx]);
-    hsvAdjust->lb_Val_gain->Caption = stringGrid_HSV->Cells[3][tbl_idx];
+    String valueStr = stringGrid_HSV->Cells[3][tbl_idx];
+    hsvAdjust->sb_Val_gain->Position = valueStr.ToInt();
+    hsvAdjust->lb_Val_gain->Caption = valueStr;
 
 }
 
