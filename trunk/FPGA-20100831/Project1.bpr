@@ -13,7 +13,9 @@
       build\HWINTERFACELib_TLB.obj build\HWINTERFACELib_OCX.obj 
       build\THSVForm3.obj build\TColorPickerFrame.obj build\THSVAdjustFrame.obj 
       build\lang.obj build\DCR_12401.obj build\Func_11307.obj 
-      build\ImgProc_11307.obj build\TCON_11307.obj build\Vend_11307.obj"/>
+      build\ImgProc_11307.obj build\TCON_11307.obj build\Vend_11307.obj 
+      build\rgb.obj build\depend.obj build\core.obj build\colorspace.obj 
+      build\doubleArray.obj"/>
     <RESFILES value="Project1.res"/>
     <IDLFILES value=""/>
     <IDLGENFILES value=""/>
@@ -32,7 +34,7 @@
       inetdbbde.bpi inetdbxpress.bpi inetdb.bpi nmfast.bpi webdsnap.bpi 
       bcbie.bpi websnap.bpi soaprtl.bpi dclocx.bpi dbexpress.bpi dbxcds.bpi 
       indy.bpi bcb2kaxserver.bpi"/>
-    <PATHCPP value=".;lib\i2c\core;lib\USB_i2c_lib;lib\LPT_lib;src\fpga\gui;src\gui\frame;lib\java;src\fpga\11307\DCR;src\fpga\11307\Function;src\fpga\11307\ImageProcess;src\fpga\11307\TCON;src\fpga\11307\Vender"/>
+    <PATHCPP value=".;lib\i2c\core;lib\USB_i2c_lib;lib\LPT_lib;lib\LPT_lib;src\fpga\gui;src\gui\frame;src\gui\frame;lib\java;src\fpga\11307\DCR;src\fpga\11307\Function;src\fpga\11307\ImageProcess;src\fpga\11307\TCON;src\fpga\11307\Vender;lib\cms\colorspace;lib\cms\colorspace;lib\cms;lib\cms\colorspace;lib\math"/>
     <PATHPAS value=".;"/>
     <PATHRC value=".;"/>
     <PATHASM value=".;"/>
@@ -42,13 +44,14 @@
     <USERDEFINES value="_DEBUG"/>
     <SYSDEFINES value="NO_STRICT"/>
     <MAINSOURCE value="Project1.cpp"/>
-    <INCLUDEPATH value="src\fpga\11307\Vender;src\fpga\11307\TCON;src\fpga\11307\ImageProcess;src\fpga\11307\Function;src\fpga\11307\DCR;lib\java;src\gui\frame;src\fpga\gui;lib\i2c\core;&quot;D:\Program Files\Borland\CBuilder6\Projects&quot;;11307\DCR;11307\Function;11307\ImageProcess;11307\TCON;11307\Vender;12401\ImageProcess;12401\Vender;12401\DCR;12401\TCON;12401\Function;$(BCB)\include;$(BCB)\include\vcl;lib;./;lib\LPT_lib;lib\USB_i2c_lib;src"/>
-    <LIBPATH value="src\fpga\11307\Vender;src\fpga\11307\TCON;src\fpga\11307\ImageProcess;src\fpga\11307\Function;src\fpga\11307\DCR;lib\java;src\gui\frame;src\fpga\gui;&quot;D:\Program Files\Borland\CBuilder6\Projects&quot;;lib\i2c\core;11307\DCR;11307\Function;11307\ImageProcess;11307\TCON;11307\Vender;12401\ImageProcess;12401\Vender;12401\DCR;12401\TCON;12401\Function;$(BCB)\lib\obj;$(BCB)\lib;lib;lib\LPT_lib;lib\USB_i2c_lib;src"/>
+    <INCLUDEPATH value="lib\gui\event;lib\math;lib\cms\colorspace;lib\cms;src\fpga\11307\Vender;src\fpga\11307\TCON;src\fpga\11307\ImageProcess;src\fpga\11307\Function;src\fpga\11307\DCR;lib\java;src\gui\frame;src\fpga\gui;lib\i2c\core;&quot;D:\Program Files\Borland\CBuilder6\Projects&quot;;11307\DCR;11307\Function;11307\ImageProcess;11307\TCON;11307\Vender;12401\ImageProcess;12401\Vender;12401\DCR;12401\TCON;12401\Function;$(BCB)\include;$(BCB)\include\vcl;lib;./;lib\LPT_lib;lib\USB_i2c_lib;src"/>
+    <LIBPATH value="lib\gui\event;lib\math;lib\cms\colorspace;lib\cms;src\fpga\11307\Vender;src\fpga\11307\TCON;src\fpga\11307\ImageProcess;src\fpga\11307\Function;src\fpga\11307\DCR;lib\java;src\gui\frame;src\fpga\gui;&quot;D:\Program Files\Borland\CBuilder6\Projects&quot;;lib\i2c\core;11307\DCR;11307\Function;11307\ImageProcess;11307\TCON;11307\Vender;12401\ImageProcess;12401\Vender;12401\DCR;12401\TCON;12401\Function;$(BCB)\lib\obj;$(BCB)\lib;lib;lib\LPT_lib;lib\USB_i2c_lib;src"/>
     <WARNINGS value="-w-par"/>
     <OTHERFILES value=""/>
   </MACROS>
   <OPTIONS>
-    <IDLCFLAGS value="-Isrc\fpga\11307\Vender -Isrc\fpga\11307\TCON 
+    <IDLCFLAGS value="-Ilib\gui\event -Ilib\math -Ilib\cms\colorspace -Ilib\cms 
+      -Isrc\fpga\11307\Vender -Isrc\fpga\11307\TCON 
       -Isrc\fpga\11307\ImageProcess -Isrc\fpga\11307\Function 
       -Isrc\fpga\11307\DCR -Ilib\java -Isrc\gui\frame -Isrc\fpga\gui 
       -Ilib\i2c\core -I&quot;D:\Program Files\Borland\CBuilder6\Projects&quot; -I11307\DCR 
@@ -107,6 +110,12 @@
       <FILE FILENAME="src\fpga\11307\ImageProcess\ImgProc_11307.cpp" FORMNAME="" UNITNAME="ImgProc_11307" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="src\fpga\11307\TCON\TCON_11307.cpp" FORMNAME="" UNITNAME="TCON_11307" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="src\fpga\11307\Vender\Vend_11307.cpp" FORMNAME="" UNITNAME="Vend_11307" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="lib\cms\cms.h" FORMNAME="" UNITNAME="cms.h" CONTAINERID="" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="lib\cms\colorspace\rgb.cpp" FORMNAME="" UNITNAME="rgb" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="lib\cms\colorspace\depend.cpp" FORMNAME="" UNITNAME="depend" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="lib\cms\core.cpp" FORMNAME="" UNITNAME="core" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="lib\cms\colorspace\colorspace.cpp" FORMNAME="" UNITNAME="colorspace" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="lib\math\doubleArray.cpp" FORMNAME="" UNITNAME="doubleArray" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
   </FILELIST>
   <BUILDTOOLS>
   </BUILDTOOLS>

@@ -8,11 +8,11 @@
 //////////////////////////////////////////////////////////////////////////////
 
 #include <vcl.h>
+#include <includeall.h>
 #pragma hdrstop
 
 #include "THSVForm3.h"
 #include <fpga/11307/ImageProcess/ImgProc_11307.h>
-
 #include "Engineering.h"
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
@@ -863,11 +863,11 @@ void THSVForm3::initStringGrid_HSV()
     //initial table setting
     for (int i = 0; i < 24; i++) {
 	/*Hue_table[i] = i * 768 / 24;
-	Sat_table[i] = 32;
-	Val_table[i] = 0;
-	Hue_table_t[i] = i * 768 / 24;
-	Sat_table_t[i] = 32;
-	Val_table_t[i] = 0;*/
+	   Sat_table[i] = 32;
+	   Val_table[i] = 0;
+	   Hue_table_t[i] = i * 768 / 24;
+	   Sat_table_t[i] = 32;
+	   Val_table_t[i] = 0; */
 
 	StringGrid_HSV->Cells[0][i + 1] = IntToStr(360 / 24 * i) + "¢X";	// Index as hue
 	StringGrid_HSV->Cells[1][i + 1] = IntToStr(360 / 24 * i);	// Hue default value
@@ -885,4 +885,32 @@ void THSVForm3::initStringGrid_HSV()
     StringGrid_HSV->Cells[0][17] = "B240¢X";
     StringGrid_HSV->Cells[0][21] = "M300¢X";
 };
+
+const int THSVForm3::HueRGBValues[24][3] = {
+    {255, 0, 0}, {255, 64, 0}, {255, 128, 0}, {255, 191, 0}, {255, 255, 0},
+    {191, 255, 0}, {128, 255, 0}, {64, 255, 0}, {0, 255, 0}, {0, 255, 64},
+    {0, 255, 128}, {0, 255, 191}, {0, 255, 255}, {0, 191, 255}, {0, 128, 255},
+    {0, 64, 255}, {0, 0, 255}, {64, 0, 255}, {128, 0, 255}, {191, 0, 255},
+    {255, 0, 255}, {255, 0, 191}, {255, 0, 128}, {255, 0, 64}
+};
+
+void __fastcall THSVForm3::StringGrid_HSVDrawCell(TObject * Sender,
+						  int ACol, int ARow, TRect & Rect,
+						  TGridDrawState State)
+{
+    using namespace Dep;
+    for (int row = 1; row <= 24; row++) {
+	RGBColor rgb(HueRGBValues[row][0], HueRGBValues[row][1], HueRGBValues[row][2]);
+	StringGrid_HSV->Canvas->Brush->Color = rgb.getColor();
+	int height = StringGrid_HSV->DefaultRowHeight + 1;
+	int width = StringGrid_HSV->ColWidths[0];
+	StringGrid_HSV->Canvas->Rectangle(0, height * row, width, height * (row + 1));
+	StringGrid_HSV->Canvas->Font->Color = clBlack;
+	int hueAngle = (row - 1) * 15;
+	StringGrid_HSV->Canvas->TextOut(0 + 4, height * row + 1, hueAngle);
+    }
+}
+
+//---------------------------------------------------------------------------
+
 

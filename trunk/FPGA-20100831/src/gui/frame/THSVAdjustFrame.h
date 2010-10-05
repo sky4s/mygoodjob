@@ -49,15 +49,14 @@ class THSVAdjustFrame:public TFrame {
     void __fastcall sb_c3d_Manual39_sChange(TObject * Sender);
     void __fastcall sb_c3d_Manual39_vChange(TObject * Sender);
   private:			// User declarations
-    //gui::util::MultiUIBinder binder;
     double h, s, v;
-    //bptr < HueSetter > hueSetter;
-    //bptr < SaturationSetter > saturationSetter, valueSetter;
      std::vector < bwptr < gui::event::ChangeListener > >changeListenerVector;
-  public:			// User declarations
+     std::vector < bwptr < gui::event::ListSelectionListener > > selectionListenerVector;
+   public:	// User declarations
      __fastcall THSVAdjustFrame(TComponent * Owner);
     void setHSV(double h, double s, double v);
     void addChangeListener(bptr < gui::event::ChangeListener > listener);
+    void addListSelectionListener(bptr < gui::event::ListSelectionListener > listener);
     double_array getHSVGain();
     void setColorAdjustable(bool enable);
 };

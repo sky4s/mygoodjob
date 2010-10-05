@@ -59,7 +59,9 @@ namespace cms {
 					      Illuminant & referenceWhite,
 					      double toXYZMatrix[9], const double gamma);
 		 RGBColorSpace::RGBColorSpace(const CSType & type, const double gamma, const
-					      cms::Illuminant & referenceWhite, ...);
+					      cms::Illuminant & referenceWhite, double m0,
+					      double m1, double m2, double m3, double m4, double m5,
+					      double m6, double m7, double m8);
 	      public:
 		static const RGBColorSpace & unknowRGB;
 		static const RGBColorSpace & sRGB;
