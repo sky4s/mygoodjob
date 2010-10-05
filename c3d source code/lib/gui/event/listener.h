@@ -47,6 +47,11 @@ namespace gui {
 	  public:
 	    virtual void stateChanged(TObject * Sender) = 0;
 	};
+
+	class ListSelectionListener {
+	  public:
+	    virtual void valueChanged(TObject * Sender, int ACol, int ARow, bool & CanSelect) = 0;
+	};
     };
 };
 #endif

@@ -114,7 +114,7 @@ void __fastcall TC3DSimualteForm::Image1MouseDown(TObject * Sender,
 						  TMouseButton Button, TShiftState Shift, int X,
 						  int Y)
 {
-    int color = C3DForm1->colorPicker->Img_3DLUT->Canvas->Pixels[X][Y];
+    int color = C3DForm1->colorPicker->image->Canvas->Pixels[X][Y];
     double r1, g1, b1;
     if (color == -1)
 	color = 0;

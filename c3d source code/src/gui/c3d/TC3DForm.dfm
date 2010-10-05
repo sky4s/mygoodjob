@@ -1,6 +1,6 @@
 object C3DForm1: TC3DForm1
-  Left = 191
-  Top = 28
+  Left = 58
+  Top = 31
   Width = 1186
   Height = 859
   Align = alCustom
@@ -2500,8 +2500,9 @@ object C3DForm1: TC3DForm1
     Width = 552
     Height = 420
     TabOrder = 28
-    inherited cb_show_ref_img: TCheckBox
-      OnClick = TColorPickerFrame1cb_show_ref_imgClick
+    inherited pc_img: TPageControl
+      ActivePage = colorPicker.ts_image
+      TabIndex = 0
     end
   end
   object OpenDialog1: TOpenDialog

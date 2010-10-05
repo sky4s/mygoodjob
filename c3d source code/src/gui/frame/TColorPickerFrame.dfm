@@ -81,9 +81,9 @@ object ColorPickerFrame: TColorPickerFrame
     Top = 0
     Width = 551
     Height = 404
-    ActivePage = ts_image
+    ActivePage = TabSheet3
     MultiLine = True
-    TabIndex = 0
+    TabIndex = 2
     TabOrder = 0
     object ts_image: TTabSheet
       Caption = '&Image'
@@ -93,7 +93,7 @@ object ColorPickerFrame: TColorPickerFrame
         Width = 543
         Height = 375
         TabOrder = 0
-        object Img_3DLUT: TImage
+        object image: TImage
           Left = 0
           Top = 0
           Width = 533
@@ -12330,16 +12330,16 @@ object ColorPickerFrame: TColorPickerFrame
             FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
             FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
             FFFFFFFFFF00}
-          OnMouseDown = Img_3DLUTMouseDown
-          OnMouseMove = Img_3DLUTMouseMove
-          OnMouseUp = Img_3DLUTMouseUp
+          OnMouseDown = imageMouseDown
+          OnMouseMove = imageMouseMove
+          OnMouseUp = imageMouseUp
         end
       end
     end
     object ts_color: TTabSheet
       Caption = 'Point &Color'
       ImageIndex = 1
-      object img_color: TImage
+      object originalColor: TImage
         Left = 0
         Top = 0
         Width = 533
@@ -12367,7 +12367,7 @@ object ColorPickerFrame: TColorPickerFrame
     object TabSheet3: TTabSheet
       Caption = 'Si&mulate Color'
       ImageIndex = 2
-      object img_sim: TImage
+      object simulatedColor: TImage
         Left = 0
         Top = 0
         Width = 533
