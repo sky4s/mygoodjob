@@ -3,7 +3,6 @@ object HSVForm3: THSVForm3
   Top = 78
   Width = 1042
   Height = 979
-  VertScrollBar.Position = 86
   Caption = 'HSV'
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
@@ -23,7 +22,7 @@ object HSVForm3: THSVForm3
   TextHeight = 16
   object Hue_Img: TImage
     Left = 1086
-    Top = 473
+    Top = 559
     Width = 287
     Height = 277
     ParentShowHint = False
@@ -6239,7 +6238,7 @@ object HSVForm3: THSVForm3
   end
   object GroupBox28: TGroupBox
     Left = 2
-    Top = 641
+    Top = 727
     Width = 651
     Height = 284
     Caption = 'Adjust HSV'
@@ -6408,7 +6407,7 @@ object HSVForm3: THSVForm3
   end
   object GroupBox1: TGroupBox
     Left = 8
-    Top = -86
+    Top = 0
     Width = 929
     Height = 729
     TabOrder = 0
@@ -7008,7 +7007,7 @@ object HSVForm3: THSVForm3
   end
   object btn_Hue_Img_load: TButton
     Left = 1086
-    Top = 454
+    Top = 540
     Width = 90
     Height = 21
     Caption = 'Load Image'
@@ -7024,7 +7023,7 @@ object HSVForm3: THSVForm3
   end
   object Hue_Img_Infor: TStaticText
     Left = 1086
-    Top = 749
+    Top = 835
     Width = 215
     Height = 20
     BevelKind = bkFlat
@@ -7037,7 +7036,7 @@ object HSVForm3: THSVForm3
   end
   object GroupBox29: TGroupBox
     Left = 658
-    Top = 637
+    Top = 723
     Width = 336
     Height = 228
     Caption = 'HSV Change'
@@ -7240,7 +7239,7 @@ object HSVForm3: THSVForm3
   end
   object le_ChAangle: TLabeledEdit
     Left = 1001
-    Top = 633
+    Top = 719
     Width = 60
     Height = 24
     EditLabel.Width = 85
