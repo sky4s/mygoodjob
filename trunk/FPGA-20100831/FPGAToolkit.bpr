@@ -37,7 +37,7 @@
       inetdbbde.bpi inetdbxpress.bpi inetdb.bpi nmfast.bpi webdsnap.bpi 
       bcbie.bpi websnap.bpi soaprtl.bpi dclocx.bpi dbexpress.bpi dbxcds.bpi 
       indy.bpi bcb2kaxserver.bpi"/>
-    <PATHCPP value=".;lib\i2c\core;lib\USB_i2c_lib;lib\LPT_lib;src\fpga\gui;src\gui\frame;lib\java;src\fpga\11307\DCR;src\fpga\11307\Function;src\fpga\11307\ImageProcess;src\fpga\11307\TCON;src\fpga\11307\Vender;lib\cms\colorspace;lib\cms;lib\math;src\fpga"/>
+    <PATHCPP value=".;lib\i2c\core;lib\USB_i2c_lib;lib\LPT_lib;lib\LPT_lib;src\fpga\gui;src\gui\frame;src\gui\frame;lib\java;src\fpga\11307\DCR;src\fpga\11307\Function;src\fpga\11307\ImageProcess;src\fpga\11307\TCON;src\fpga\11307\Vender;lib\cms\colorspace;lib\cms\colorspace;lib\cms;lib\cms\colorspace;lib\math;src\fpga\gui;src\fpga\gui;src\fpga\gui;src\fpga\gui;src\fpga\gui;src\fpga\gui;src\fpga\gui;src\fpga\gui;src\fpga\gui;src\fpga\gui;src\fpga\gui;src\fpga\gui;src\fpga\gui;src\fpga;src\fpga;src\fpga\gui"/>
     <PATHPAS value=".;"/>
     <PATHRC value=".;"/>
     <PATHASM value=".;"/>
