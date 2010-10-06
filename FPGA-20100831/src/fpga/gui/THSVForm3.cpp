@@ -14,6 +14,7 @@
 #include "THSVForm3.h"
 #include <fpga/11307/ImageProcess/ImgProc_11307.h>
 #include "Engineering.h"
+//#include <cms/core.h>
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
 #pragma link "TColorPickerFrame"
@@ -92,8 +93,7 @@ void THSVForm3::initGroupBoxBase(TGroupBox * groupBox_base)
 {
     int count = groupBox_base->ControlCount;
     for (int x = 0; x < count; x++) {
-	TRadioButton *b =
-	    dynamic_cast < TRadioButton * >(groupBox_base->Controls[x]);
+	TRadioButton *b = dynamic_cast < TRadioButton * >(groupBox_base->Controls[x]);
 	if (null != b) {
 	    int row = hintToRow(b->Hint.ToInt()) - 1;
 	    b->Color = getHueRGB(row)->getColor();
@@ -103,8 +103,7 @@ void THSVForm3::initGroupBoxBase(TGroupBox * groupBox_base)
 
 //---------------------------------------------------------------------------
 
-void __fastcall THSVForm3::FormClose(TObject * Sender,
-				     TCloseAction & Action)
+void __fastcall THSVForm3::FormClose(TObject * Sender, TCloseAction & Action)
 {
     delete[]OHSV;
     delete[]cb;
@@ -150,8 +149,7 @@ void THSVForm3::Reset_HSVshow()
 
     // Saturation gain
     String saturationStr = stringGrid_HSV->Cells[2][tbl_idx];
-    hsvAdjust->sb_Sat_gain->Position =
-	(int) floor(saturationStr.ToDouble() * 32);
+    hsvAdjust->sb_Sat_gain->Position = (int) floor(saturationStr.ToDouble() * 32);
     hsvAdjust->lb_Sat_gain->Caption = saturationStr;
     // Value gain
     String valueStr = stringGrid_HSV->Cells[3][tbl_idx];
@@ -263,11 +261,8 @@ void THSVForm3::Hue_LUTWrite()
     }
 
     for (int i = 0; i < 24; i++) {
-	Hue_table[i] =
-	    (int) (StrToFloat(stringGrid_HSV->Cells[1][i + 1]) / 360 *
-		   768 + 0.5);
-	Sat_table[i] =
-	    (int) (StrToFloat(stringGrid_HSV->Cells[2][i + 1]) * 32);
+	Hue_table[i] = (int) (StrToFloat(stringGrid_HSV->Cells[1][i + 1]) / 360 * 768 + 0.5);
+	Sat_table[i] = (int) (StrToFloat(stringGrid_HSV->Cells[2][i + 1]) * 32);
 	Val_table[i] = StrToInt(stringGrid_HSV->Cells[3][i + 1]);
     }
 
@@ -302,17 +297,14 @@ void __fastcall THSVForm3::btn_resetClick(TObject * Sender)
 void THSVForm3::show_gain(int h, int s, int v)
 {
     double h_show = ((double) h / 768) * 360;
-    hsvAdjust->lb_Hue_gain->Caption =
-	hsvAdjust->lb_Hue_gain->Caption.sprintf("%.2f", h_show);
+    hsvAdjust->lb_Hue_gain->Caption = hsvAdjust->lb_Hue_gain->Caption.sprintf("%.2f", h_show);
 
     double s_show = (double) s / 32;
-    hsvAdjust->lb_Sat_gain->Caption =
-	hsvAdjust->lb_Sat_gain->Caption.sprintf("%.2f", s_show);
+    hsvAdjust->lb_Sat_gain->Caption = hsvAdjust->lb_Sat_gain->Caption.sprintf("%.2f", s_show);
 
     hsvAdjust->lb_Val_gain->Caption = IntToStr(v);
 }
-void THSVForm3::Get_Adj_tbl(int *tmp_H, int *tmp_S, int *tmp_V,
-			    int tbl_idx)
+void THSVForm3::Get_Adj_tbl(int *tmp_H, int *tmp_S, int *tmp_V, int tbl_idx)
 {
     for (int i = -4; i <= 4; i++) {
 	tmp_H[i + 4] = Hue_table[(tbl_idx + i + 24) % 24];
@@ -322,8 +314,7 @@ void THSVForm3::Get_Adj_tbl(int *tmp_H, int *tmp_S, int *tmp_V,
 	tmp_V[i + 4] = Val_table[(tbl_idx + i + 24) % 24];
     }
 }
-void THSVForm3::Set_Adj_tbl(int *tmp_H, int *tmp_S, int *tmp_V,
-			    int tbl_idx)
+void THSVForm3::Set_Adj_tbl(int *tmp_H, int *tmp_S, int *tmp_V, int tbl_idx)
 {
     for (int i = -4; i <= 4; i++) {
 	Hue_table_t[(tbl_idx + i + 24) % 24] = tmp_H[i + 4] % 768;
@@ -360,8 +351,7 @@ bool THSVForm3::CheckHueIncrease(int high, int low, int *tmp_H)
 {
     bool ok = true;
     for (int i = ((-1) * low + 4) + 2; i < high + 4 - 1; i++) {
-	if (tmp_H[i - 1] - tmp_H[i] >= 0
-	    && tmp_H[i - 1] - tmp_H[i] < 768 / 2) {
+	if (tmp_H[i - 1] - tmp_H[i] >= 0 && tmp_H[i - 1] - tmp_H[i] < 768 / 2) {
 	    ok = false;
 	}
     }
@@ -375,8 +365,7 @@ double Gauss(int x, double sigma)
 
 //---------------------------------------------------------------------------
 void __fastcall THSVForm3::sb_Hue_gainScroll(TObject * Sender,
-					     TScrollCode ScrollCode,
-					     int &ScrollPos)
+					     TScrollCode ScrollCode, int &ScrollPos)
 {
     double sigma;
     if (ScrollCode != scEndScroll) {
@@ -394,8 +383,7 @@ void __fastcall THSVForm3::sb_Hue_gainScroll(TObject * Sender,
     int tbl_idx = Get_select_idx(StrToFloat(le_ChAangle->Text));
 
     //更新
-    show_gain(sb_Hue_gain->Position, sb_Sat_gain->Position,
-	      sb_Val_gain->Position);
+    show_gain(sb_Hue_gain->Position, sb_Sat_gain->Position, sb_Val_gain->Position);
     int gain_h = sb_Hue_gain->Position;	// Hue值為Gain
     int gain_s = sb_Sat_gain->Position - Sat_table[tbl_idx];	// 調整值與table數值的差異為gain
     int gain_v = sb_Val_gain->Position - Val_table[tbl_idx];
@@ -432,9 +420,7 @@ void __fastcall THSVForm3::sb_Hue_gainScroll(TObject * Sender,
 	    sigma = 0.6;
 
 	for (int i = 1; i < high; i++) {
-	    ratio =
-		pow(double (high - i) / high,
-		    2) + (double) i / high * Gauss(i, sigma);
+	    ratio = pow(double (high - i) / high, 2) + (double) i / high * Gauss(i, sigma);
 	    tmp_H[i + 4] = tmp_H[i + 4] + gain_h * ratio;
 	    tmp_S[i + 4] = tmp_S[i + 4] + gain_s * ratio;
 	    tmp_V[i + 4] = tmp_V[i + 4] + gain_v * ratio;
@@ -448,9 +434,7 @@ void __fastcall THSVForm3::sb_Hue_gainScroll(TObject * Sender,
 	    sigma = 0.6;
 
 	for (int i = 1; i < low; i++) {
-	    ratio =
-		pow(double (low - i) / low,
-		    2) + (double) i / low * Gauss(i, sigma);
+	    ratio = pow(double (low - i) / low, 2) + (double) i / low * Gauss(i, sigma);
 	    tmp_H[4 - i] = tmp_H[4 - i] + gain_h * ratio;
 	    tmp_S[4 - i] = tmp_S[4 - i] + gain_s * ratio;
 	    tmp_V[4 - i] = tmp_V[4 - i] + gain_v * ratio;
@@ -472,10 +456,8 @@ void __fastcall THSVForm3::sb_Hue_gainScroll(TObject * Sender,
 
     //同步到grid
     for (int i = 0; i < tbl_n; i++) {
-	stringGrid_HSV->Cells[1][i + 1] =
-	    FloatToStr((double) Hue_table_t[i] / 768 * 360);
-	stringGrid_HSV->Cells[2][i + 1] =
-	    FloatToStr((double) (Sat_table_t[i]) / 32);
+	stringGrid_HSV->Cells[1][i + 1] = FloatToStr((double) Hue_table_t[i] / 768 * 360);
+	stringGrid_HSV->Cells[2][i + 1] = FloatToStr((double) (Sat_table_t[i]) / 32);
 	stringGrid_HSV->Cells[3][i + 1] = Val_table_t[i];
     }
 
@@ -533,10 +515,8 @@ bool THSVForm3::Load_HSV(String Fpath)
     delete[]buffer;
 
     for (int i = 0; i < 24; i++) {
-	stringGrid_HSV->Cells[1][i + 1] =
-	    FloatToStr((double) Hue_table[i] / 768 * 360);
-	stringGrid_HSV->Cells[2][i + 1] =
-	    FloatToStr((double) (Sat_table[i]) / 32);
+	stringGrid_HSV->Cells[1][i + 1] = FloatToStr((double) Hue_table[i] / 768 * 360);
+	stringGrid_HSV->Cells[2][i + 1] = FloatToStr((double) (Sat_table[i]) / 32);
 	stringGrid_HSV->Cells[3][i + 1] = IntToStr(Val_table[i]);
     }
 
@@ -556,8 +536,7 @@ void __fastcall THSVForm3::btn_hsv_saveClick(TObject * Sender)
 
     //fprintf(fptr,"Hue_LUT\tSat_LUT\tBri_LUT\n");
     for (int i = 0; i < 24; i++) {
-	fprintf(fptr, "%d\t%d\t%d\n", Hue_table[i], Sat_table[i],
-		Val_table[i]);
+	fprintf(fptr, "%d\t%d\t%d\n", Hue_table[i], Sat_table[i], Val_table[i]);
     }
 
     fclose(fptr);
@@ -566,9 +545,7 @@ void __fastcall THSVForm3::btn_hsv_saveClick(TObject * Sender)
 //---------------------------------------------------------------------------
 
 
-void __fastcall THSVForm3::Hue_ImgMouseMove(TObject * Sender,
-					    TShiftState Shift, int X,
-					    int Y)
+void __fastcall THSVForm3::Hue_ImgMouseMove(TObject * Sender, TShiftState Shift, int X, int Y)
 {
     int color;
     double h, s, v, i, r, g, b;
@@ -650,8 +627,7 @@ void __fastcall THSVForm3::Btn_HSV_reloadClick(TObject * Sender)
 	    else if (read_val == 0)
 		ChkB[i]->Chkb->Checked = 0;
 	    else
-		ShowMessage("HSV CheckBox read error:" +
-			    IntToStr(read_val));
+		ShowMessage("HSV CheckBox read error:" + IntToStr(read_val));
 	}
     }
     btn_hsv_readClick(Sender);
@@ -661,8 +637,7 @@ void __fastcall THSVForm3::Btn_HSV_reloadClick(TObject * Sender)
 
 //---------------------------------------------------------------------------
 
-void __fastcall THSVForm3::FormKeyDown(TObject * Sender, WORD & Key,
-				       TShiftState Shift)
+void __fastcall THSVForm3::FormKeyDown(TObject * Sender, WORD & Key, TShiftState Shift)
 {
     if (Key == 0x40) {
 	Btn_HSV_reloadClick(Sender);
@@ -701,10 +676,8 @@ void __fastcall THSVForm3::btn_setClick(TObject * Sender)
 	Sat_table[i] = Sat_table_t[i];
 	Val_table[i] = Val_table_t[i];
 
-	stringGrid_HSV->Cells[1][i + 1] =
-	    FloatToStr((double) Hue_table_t[i] / 768 * 360);
-	stringGrid_HSV->Cells[2][i + 1] =
-	    FloatToStr((double) (Sat_table_t[i]) / 32);
+	stringGrid_HSV->Cells[1][i + 1] = FloatToStr((double) Hue_table_t[i] / 768 * 360);
+	stringGrid_HSV->Cells[2][i + 1] = FloatToStr((double) (Sat_table_t[i]) / 32);
 	stringGrid_HSV->Cells[3][i + 1] = Val_table_t[i];
     }
     btn_set->Enabled = false;
@@ -784,8 +757,7 @@ void __fastcall THSVForm3::btn_hsv_readClick(TObject * Sender)
     int val_r;
     for (int i = 0; i < 24; i++) {
 	Hue_table[i] = HSV_lut[i * 3] * 4 + (HSV_lut[i * 3 + 1] / 64) % 4;
-	Sat_table[i] =
-	    (HSV_lut[i * 3 + 1] % 64) * 2 + (HSV_lut[i * 3 + 2] / 128) % 2;
+	Sat_table[i] = (HSV_lut[i * 3 + 1] % 64) * 2 + (HSV_lut[i * 3 + 2] / 128) % 2;
 	val_r = HSV_lut[i * 3 + 2] % 128;
 	// Modified only for AUO11307
 	//Hue_table[i] = HSV_lut[i*3+2]*4 + (HSV_lut[i*3+1]/64)%4;
@@ -794,10 +766,8 @@ void __fastcall THSVForm3::btn_hsv_readClick(TObject * Sender)
 
 	Val_table[i] = Cmplmnt2sToSign(val_r, 128);
 
-	stringGrid_HSV->Cells[1][i + 1] =
-	    FloatToStr((double) Hue_table[i] / 768 * 360);
-	stringGrid_HSV->Cells[2][i + 1] =
-	    FloatToStr((double) (Sat_table[i]) / 32);
+	stringGrid_HSV->Cells[1][i + 1] = FloatToStr((double) Hue_table[i] / 768 * 360);
+	stringGrid_HSV->Cells[2][i + 1] = FloatToStr((double) (Sat_table[i]) / 32);
 	stringGrid_HSV->Cells[3][i + 1] = IntToStr(Val_table[i]);
     }
     HSV_LUT_RW_over();		// Recover HSV enable
@@ -809,9 +779,7 @@ void __fastcall THSVForm3::btn_hsv_readClick(TObject * Sender)
 
 
 void __fastcall THSVForm3::Hue_ImgMouseDown(TObject * Sender,
-					    TMouseButton Button,
-					    TShiftState Shift, int X,
-					    int Y)
+					    TMouseButton Button, TShiftState Shift, int X, int Y)
 {
     int color;
     double h, s, v, i, r, g, b;
@@ -856,15 +824,13 @@ RGB_ptr THSVForm3::getHueRGB(int index)
 {
     using namespace Dep;
     RGB_ptr rgb(new
-		RGBColor(HueRGBValues[index][0], HueRGBValues[index][1],
-			 HueRGBValues[index][2]));
+		RGBColor(HueRGBValues[index][0], HueRGBValues[index][1], HueRGBValues[index][2]));
     return rgb;
 }
 
 void __fastcall THSVForm3::stringGrid_HSVDrawCell(TObject * Sender,
 						  int ACol, int ARow,
-						  TRect & Rect,
-						  TGridDrawState State)
+						  TRect & Rect, TGridDrawState State)
 {
     using namespace Dep;
 
@@ -874,12 +840,10 @@ void __fastcall THSVForm3::stringGrid_HSVDrawCell(TObject * Sender,
 	stringGrid_HSV->Canvas->Brush->Color = rgb->getColor();
 	int height = stringGrid_HSV->DefaultRowHeight + 1;
 	int width = stringGrid_HSV->ColWidths[0];
-	stringGrid_HSV->Canvas->Rectangle(0, height * ARow, width,
-					  height * (ARow + 1));
+	stringGrid_HSV->Canvas->Rectangle(0, height * ARow, width, height * (ARow + 1));
 	stringGrid_HSV->Canvas->Font->Color = clBlack;
 	int hueAngle = (ARow - 1) * 15;
-	stringGrid_HSV->Canvas->TextOut(0 + 4, height * ARow + 1,
-					hueAngle);
+	stringGrid_HSV->Canvas->TextOut(0 + 4, height * ARow + 1, hueAngle);
     }
 }
 
@@ -895,8 +859,7 @@ double_array THSVForm3::getHSVAdjustValue(int row)
 }
 
 void __fastcall THSVForm3::stringGrid_HSVSelectCell(TObject * Sender,
-						    int ACol, int ARow,
-						    bool & CanSelect)
+						    int ACol, int ARow, bool & CanSelect)
 {
     //this->Reset_HSVshow();
     RGB_ptr rgb = getHueRGB(ARow - 1);
@@ -910,8 +873,7 @@ void __fastcall THSVForm3::stringGrid_HSVSelectCell(TObject * Sender,
 //---------------------------------------------------------------------------
 
 
-void __fastcall THSVForm3::hsvAdjustsb_c3d_Manual39_hChange(TObject *
-							    Sender)
+void __fastcall THSVForm3::hsvAdjustsb_c3d_Manual39_hChange(TObject * Sender)
 {
 
     for (int i = 0; i < HUE_COUNT; i++) {
@@ -974,10 +936,8 @@ void __fastcall THSVForm3::hsvAdjustsb_c3d_Manual39_hChange(TObject *
 
     //同步到grid
     for (int i = 0; i < HUE_COUNT; i++) {
-	stringGrid_HSV->Cells[1][i + 1] =
-	    FloatToStr((double) Hue_table_t[i] / 768 * 360);
-	stringGrid_HSV->Cells[2][i + 1] =
-	    FloatToStr((double) (Sat_table_t[i]) / 32);
+	stringGrid_HSV->Cells[1][i + 1] = FloatToStr((double) Hue_table_t[i] / 768 * 360);
+	stringGrid_HSV->Cells[2][i + 1] = FloatToStr((double) (Sat_table_t[i]) / 32);
 	stringGrid_HSV->Cells[3][i + 1] = Val_table_t[i];
     }
 }
