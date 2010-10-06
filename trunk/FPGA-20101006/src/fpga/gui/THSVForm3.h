@@ -131,6 +131,7 @@ class THSVForm3:public TForm {
     TRadioGroup *RadioGroup_Saturation;
     TRadioGroup *RadioGroup_Value;
     TCheckBox *CheckBox_AutoSet;
+    TEdit *Edit1;
     void __fastcall cb_Hue_RedClick(TObject * Sender);
     void __fastcall cb_Hue_YellowClick(TObject * Sender);
     void __fastcall cb_Hue_GreenClick(TObject * Sender);
@@ -142,44 +143,59 @@ class THSVForm3:public TForm {
     void __fastcall FormCreate(TObject * Sender);
     void __fastcall CheckBox_Click(TObject * Sender);
     void __fastcall FormClose(TObject * Sender, TCloseAction & Action);
-    void __fastcall Hue_ImgMouseMove(TObject * Sender, TShiftState Shift, int X, int Y);
+    void __fastcall Hue_ImgMouseMove(TObject * Sender, TShiftState Shift,
+				     int X, int Y);
     void __fastcall btn_resetClick(TObject * Sender);
 
     void __fastcall btn_Hue_Img_loadClick(TObject * Sender);
     void __fastcall rg_HSV_ModeClick(TObject * Sender);
     void __fastcall Btn_HSV_reloadClick(TObject * Sender);
-    void __fastcall FormKeyDown(TObject * Sender, WORD & Key, TShiftState Shift);
+    void __fastcall FormKeyDown(TObject * Sender, WORD & Key,
+				TShiftState Shift);
     void __fastcall sb_dif_nChange(TObject * Sender);
     void __fastcall sb_dif_pChange(TObject * Sender);
     void __fastcall btn_setClick(TObject * Sender);
     void __fastcall btn_hsv_writeClick(TObject * Sender);
     void __fastcall btn_hsv_readClick(TObject * Sender);
     void __fastcall Hue_ImgMouseDown(TObject * Sender,
-				     TMouseButton Button, TShiftState Shift, int X, int Y);
+				     TMouseButton Button,
+				     TShiftState Shift, int X, int Y);
     void __fastcall stringGrid_HSVDrawCell(TObject * Sender, int ACol,
-					   int ARow, TRect & Rect, TGridDrawState State);
+					   int ARow, TRect & Rect,
+					   TGridDrawState State);
     void __fastcall stringGrid_HSVSelectCell(TObject * Sender, int ACol,
 					     int ARow, bool & CanSelect);
     void __fastcall hsvAdjustsb_c3d_Manual39_hChange(TObject * Sender);
     void __fastcall RadioButton_deg60baseClick(TObject * Sender);
     void __fastcall RadioButton_deg30baseClick(TObject * Sender);
     void __fastcall FormShow(TObject * Sender);
+    void __fastcall RadioGroup_SaturationClick(TObject * Sender);
+    void __fastcall RadioGroup_ValueClick(TObject * Sender);
   private:			// User declarations
     static const int HUE_COUNT = 24;	//­ì¥»¬O96, why?
     static const int MAX_HUE_VALUE = 768;
     bool HSV_IsChkSum;
     int tbl_step;
     void initStringGrid_HSV();
-    static const int HueRGBValues[HUE_COUNT][3];
+    //static const int HueRGBValues[HUE_COUNT][3];
 
+    //=========================================================================
+    // hue
+    //=========================================================================
     static int getHueAngle(int index);
     static int hueAngleToValue(int hueAngle);
-    static RGB_ptr getHueRGB(int index, int s, int v);
-    static RGB_ptr getHueRGB(int index);
+    static RGB_ptr getHueRGB(int index, double s, int v);
+    RGB_ptr getHueRGB(int index);
     int_array getHSVAdjustValue(int row);
+    double getSaturation();
+    int getValue();
+    //=========================================================================
+
     void deg60baseClick(TObject * Sender);
     void deg30baseClick(TObject * Sender);
+    void drawStringGrid_HSVCell(TObject * Sender);
     void setGridSelectRow(int row);
+    int getGridSelectRow();
     void initGroupBoxBase(TGroupBox * groupBox_base);
     int hintToRow(int hint);
     void setGainCaption(int h, int s, int v);

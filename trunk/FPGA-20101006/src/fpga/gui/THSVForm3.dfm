@@ -7021,14 +7021,14 @@ object HSVForm3: THSVForm3
         Width = 89
         Height = 105
         Caption = 'Saturation'
-        ItemIndex = 1
+        ItemIndex = 3
         Items.Strings = (
           'Low '
           'Middle '
           'High '
           'Max')
         TabOrder = 2
-        Visible = False
+        OnClick = RadioGroup_SaturationClick
       end
       object RadioGroup_Value: TRadioGroup
         Left = 104
@@ -7036,14 +7036,22 @@ object HSVForm3: THSVForm3
         Width = 81
         Height = 105
         Caption = 'Value'
-        ItemIndex = 1
+        ItemIndex = 2
         Items.Strings = (
           'Low'
           'Middle'
           'High')
         TabOrder = 3
-        Visible = False
+        OnClick = RadioGroup_ValueClick
       end
+    end
+    object Edit1: TEdit
+      Left = 16
+      Top = 632
+      Width = 193
+      Height = 25
+      TabOrder = 11
+      Text = 'Edit1'
     end
   end
   object btn_Hue_Img_load: TButton
