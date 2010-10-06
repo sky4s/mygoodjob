@@ -138,29 +138,23 @@ class THSVForm3:public TForm {
     void __fastcall FormCreate(TObject * Sender);
     void __fastcall CheckBox_Click(TObject * Sender);
     void __fastcall FormClose(TObject * Sender, TCloseAction & Action);
-    void __fastcall Hue_ImgMouseMove(TObject * Sender, TShiftState Shift,
-				     int X, int Y);
+    void __fastcall Hue_ImgMouseMove(TObject * Sender, TShiftState Shift, int X, int Y);
     void __fastcall btn_resetClick(TObject * Sender);
-    void __fastcall sb_Hue_gainScroll(TObject * Sender,
-				      TScrollCode ScrollCode,
-				      int &ScrollPos);
+    void __fastcall sb_Hue_gainScroll(TObject * Sender, TScrollCode ScrollCode, int &ScrollPos);
 
     void __fastcall btn_Hue_Img_loadClick(TObject * Sender);
     void __fastcall rg_HSV_ModeClick(TObject * Sender);
     void __fastcall Btn_HSV_reloadClick(TObject * Sender);
-    void __fastcall FormKeyDown(TObject * Sender, WORD & Key,
-				TShiftState Shift);
+    void __fastcall FormKeyDown(TObject * Sender, WORD & Key, TShiftState Shift);
     void __fastcall sb_dif_nChange(TObject * Sender);
     void __fastcall sb_dif_pChange(TObject * Sender);
     void __fastcall btn_setClick(TObject * Sender);
     void __fastcall btn_hsv_writeClick(TObject * Sender);
     void __fastcall btn_hsv_readClick(TObject * Sender);
     void __fastcall Hue_ImgMouseDown(TObject * Sender,
-				     TMouseButton Button,
-				     TShiftState Shift, int X, int Y);
+				     TMouseButton Button, TShiftState Shift, int X, int Y);
     void __fastcall stringGrid_HSVDrawCell(TObject * Sender, int ACol,
-					   int ARow, TRect & Rect,
-					   TGridDrawState State);
+					   int ARow, TRect & Rect, TGridDrawState State);
     void __fastcall stringGrid_HSVSelectCell(TObject * Sender, int ACol,
 					     int ARow, bool & CanSelect);
     void __fastcall hsvAdjustsb_c3d_Manual39_hChange(TObject * Sender);
@@ -188,13 +182,13 @@ class THSVForm3:public TForm {
 
     AbstHSV *OHSV;
 
-    int Hue_table[HUE_COUNT];
-    int Sat_table[HUE_COUNT];
-    int Val_table[HUE_COUNT];
+    int hueTable[HUE_COUNT];
+    int satTable[HUE_COUNT];
+    int valTable[HUE_COUNT];
 
-    int Hue_table_t[HUE_COUNT];
-    int Sat_table_t[HUE_COUNT];
-    int Val_table_t[HUE_COUNT];
+    int hueTableTemp[HUE_COUNT];
+    int satTableTemp[HUE_COUNT];
+    int valTableTemp[HUE_COUNT];
 
 
     bool HSV_Chg;		// HSV_Chg = 0 為禁止寫入, HSV_Chg =1 為允許寫入, 以避免動作被中斷

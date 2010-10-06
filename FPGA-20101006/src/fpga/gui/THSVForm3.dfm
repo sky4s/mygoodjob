@@ -1,8 +1,8 @@
 object HSVForm3: THSVForm3
-  Left = 991
-  Top = 78
-  Width = 1042
-  Height = 979
+  Left = 216
+  Top = 61
+  Width = 951
+  Height = 764
   Caption = 'HSV'
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
@@ -6250,6 +6250,7 @@ object HSVForm3: THSVForm3
     Font.Style = []
     ParentFont = False
     TabOrder = 3
+    Visible = False
     object Label1: TLabel
       Left = 30
       Top = 118
@@ -7048,6 +7049,7 @@ object HSVForm3: THSVForm3
     Font.Style = [fsBold]
     ParentFont = False
     TabOrder = 4
+    Visible = False
     DesignSize = (
       336
       228)
@@ -7250,6 +7252,7 @@ object HSVForm3: THSVForm3
     LabelSpacing = 3
     TabOrder = 5
     Text = '0'
+    Visible = False
   end
   object OpenDialog1: TOpenDialog
     Left = 880
