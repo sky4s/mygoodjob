@@ -15,7 +15,7 @@
 #include <Grids.hpp>
 #include <ComCtrls.hpp>
 #include <Graphics.hpp>
-
+#include <fpga/includeall.h>
 //---------------------------------------------------------------------------
 //Abstract class of DCR
 class AbstDCR

@@ -1,6 +1,8 @@
 #ifndef GUI_CLASSH
 #define GUI_CLASSH
 
+#include <vcl.h>
+
 class _CHKB
 {
         public:
