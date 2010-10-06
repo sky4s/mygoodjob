@@ -97,20 +97,6 @@ class THSVForm3:public TForm {
     TEdit *ed_Hue_Custom;
     TLabeledEdit *le_ChAangle;
     TGroupBox *GroupBox3;
-    TGroupBox *GroupBox_60base;
-    TRadioButton *RadioButton_deg0;
-    TRadioButton *RadioButton_deg60;
-    TRadioButton *RadioButton_deg120;
-    TRadioButton *RadioButton_deg180;
-    TRadioButton *RadioButton_deg240;
-    TRadioButton *RadioButton_deg300;
-    TGroupBox *GroupBox_30base;
-    TRadioButton *RadioButton_deg30;
-    TRadioButton *RadioButton_deg90;
-    TRadioButton *RadioButton_deg150;
-    TRadioButton *RadioButton_deg210;
-    TRadioButton *RadioButton_deg270;
-    TRadioButton *RadioButton_deg330;
     TGroupBox *GroupBox6;
     TRadioButton *RadioButton1;
     TRadioButton *RadioButton2;
@@ -118,8 +104,6 @@ class THSVForm3:public TForm {
     TRadioButton *RadioButton4;
     TRadioButton *RadioButton5;
     TRadioButton *RadioButton6;
-    TButton *Button_InterpTo30base;
-    TButton *Button_InterpTo15base;
     TRadioButton *RadioButton13;
     TRadioButton *RadioButton14;
     TRadioButton *RadioButton15;
@@ -127,6 +111,26 @@ class THSVForm3:public TForm {
     TRadioButton *RadioButton17;
     TRadioButton *RadioButton18;
     TBitBtn *Btn_HSV_reload;
+    TGroupBox *GroupBox4;
+    TGroupBox *GroupBox_60base;
+    TRadioButton *RadioButton_deg0;
+    TRadioButton *RadioButton_deg60;
+    TRadioButton *RadioButton_deg120;
+    TRadioButton *RadioButton_deg180;
+    TRadioButton *RadioButton_deg240;
+    TRadioButton *RadioButton_deg300;
+    TButton *Button_InterpTo30base;
+    TGroupBox *GroupBox_30base;
+    TRadioButton *RadioButton_deg30;
+    TRadioButton *RadioButton_deg90;
+    TRadioButton *RadioButton_deg150;
+    TRadioButton *RadioButton_deg210;
+    TRadioButton *RadioButton_deg270;
+    TRadioButton *RadioButton_deg330;
+    TButton *Button_InterpTo15base;
+    TRadioGroup *RadioGroup_Saturation;
+    TRadioGroup *RadioGroup_Value;
+    TCheckBox *CheckBox_AutoSet;
     void __fastcall cb_Hue_RedClick(TObject * Sender);
     void __fastcall cb_Hue_YellowClick(TObject * Sender);
     void __fastcall cb_Hue_GreenClick(TObject * Sender);
@@ -140,7 +144,6 @@ class THSVForm3:public TForm {
     void __fastcall FormClose(TObject * Sender, TCloseAction & Action);
     void __fastcall Hue_ImgMouseMove(TObject * Sender, TShiftState Shift, int X, int Y);
     void __fastcall btn_resetClick(TObject * Sender);
-    void __fastcall sb_Hue_gainScroll(TObject * Sender, TScrollCode ScrollCode, int &ScrollPos);
 
     void __fastcall btn_Hue_Img_loadClick(TObject * Sender);
     void __fastcall rg_HSV_ModeClick(TObject * Sender);
@@ -163,17 +166,26 @@ class THSVForm3:public TForm {
     void __fastcall FormShow(TObject * Sender);
   private:			// User declarations
     static const int HUE_COUNT = 24;	//原本是96, why?
+    static const int MAX_HUE_VALUE = 768;
     bool HSV_IsChkSum;
     int tbl_step;
     void initStringGrid_HSV();
     static const int HueRGBValues[HUE_COUNT][3];
-    static RGB_ptr getHueRGB(int row);
-    double_array getHSVAdjustValue(int row);
+
+    static int getHueAngle(int index);
+    static int hueAngleToValue(int hueAngle);
+    static RGB_ptr getHueRGB(int index, int s, int v);
+    static RGB_ptr getHueRGB(int index);
+    int_array getHSVAdjustValue(int row);
     void deg60baseClick(TObject * Sender);
     void deg30baseClick(TObject * Sender);
     void setGridSelectRow(int row);
     void initGroupBoxBase(TGroupBox * groupBox_base);
     int hintToRow(int hint);
+    void setGainCaption(int h, int s, int v);
+    int lastStringGridSelectRow;
+    bool settingScrollBarPosition;
+
   public:			// User declarations
      TBit * cb;
     _CHKB **ChkB;
@@ -199,11 +211,7 @@ class THSVForm3:public TForm {
     void Hue_LUTWrite();
     void Initial_HSV_table();
     bool Load_HSV(String Fpath);
-    void show_gain(int h, int s, int v);
-    bool CheckDif(int &high, int &low, int *tmp_H, int tbl_n);
-    void Get_Adj_tbl(int *tmp_H, int *tmp_S, int *tmp_V, int tbl_idx);
-    void Set_Adj_tbl(int *tmp_H, int *tmp_S, int *tmp_V, int tbl_idx);
-    bool CheckHueIncrease(int high, int low, int *tmp_H);
+
 
     bool HSV_EN_State;		// 紀錄HSV table 的 Enable狀態
     int HSVEN_idx;		// 紀錄HSV Enable的CheckBox的index

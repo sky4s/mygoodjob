@@ -1,8 +1,8 @@
 object HSVForm3: THSVForm3
-  Left = 216
-  Top = 61
-  Width = 951
-  Height = 764
+  Left = 226
+  Top = 73
+  Width = 1001
+  Height = 905
   Caption = 'HSV'
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
@@ -6361,7 +6361,6 @@ object HSVForm3: THSVForm3
       Min = -96
       PageSize = 0
       TabOrder = 0
-      OnScroll = sb_Hue_gainScroll
     end
     object sb_dif_n: TScrollBar
       Left = 148
@@ -6393,7 +6392,6 @@ object HSVForm3: THSVForm3
       PageSize = 0
       Position = 32
       TabOrder = 3
-      OnScroll = sb_Hue_gainScroll
     end
     object sb_Val_gain: TScrollBar
       Left = 148
@@ -6404,13 +6402,12 @@ object HSVForm3: THSVForm3
       Min = -64
       PageSize = 0
       TabOrder = 4
-      OnScroll = sb_Hue_gainScroll
     end
   end
   object GroupBox1: TGroupBox
     Left = 8
     Top = 0
-    Width = 929
+    Width = 969
     Height = 729
     TabOrder = 0
     object CheckBox1: TCheckBox
@@ -6486,22 +6483,17 @@ object HSVForm3: THSVForm3
     object stringGrid_HSV: TStringGrid
       Left = 772
       Top = 45
-      Width = 149
+      Width = 173
       Height = 436
       Cursor = crIBeam
       ColCount = 4
-      DefaultColWidth = 30
+      DefaultColWidth = 40
       DefaultRowHeight = 16
       RowCount = 25
       Options = [goFixedVertLine, goFixedHorzLine, goVertLine, goHorzLine, goRangeSelect, goDrawFocusSelected, goEditing, goTabs, goRowSelect]
       TabOrder = 7
       OnDrawCell = stringGrid_HSVDrawCell
       OnSelectCell = stringGrid_HSVSelectCell
-      ColWidths = (
-        40
-        30
-        30
-        30)
       RowHeights = (
         16
         16
@@ -6678,211 +6670,31 @@ object HSVForm3: THSVForm3
           0000}
         NumGlyphs = 2
       end
+      object CheckBox_AutoSet: TCheckBox
+        Left = 464
+        Top = 16
+        Width = 81
+        Height = 17
+        Caption = 'Auto Set'
+        Checked = True
+        State = cbChecked
+        TabOrder = 7
+      end
     end
     object GroupBox3: TGroupBox
       Left = 8
       Top = 96
-      Width = 193
-      Height = 401
+      Width = 201
+      Height = 521
       Caption = 'HSV Change'
       TabOrder = 10
-      object GroupBox_60base: TGroupBox
-        Left = 8
-        Top = 24
-        Width = 81
-        Height = 193
-        Caption = '60'#176' Base'
-        TabOrder = 0
-        object RadioButton_deg0: TRadioButton
-          Left = 8
-          Top = 16
-          Width = 65
-          Height = 25
-          Hint = '0'
-          Caption = 'R 0'#176
-          Checked = True
-          Color = clBtnFace
-          ParentColor = False
-          TabOrder = 0
-          TabStop = True
-          OnClick = RadioButton_deg60baseClick
-        end
-        object RadioButton_deg60: TRadioButton
-          Left = 8
-          Top = 40
-          Width = 65
-          Height = 25
-          Hint = '60'
-          Caption = 'Y 60'#176
-          Color = clBtnFace
-          ParentColor = False
-          TabOrder = 1
-          OnClick = RadioButton_deg60baseClick
-        end
-        object RadioButton_deg120: TRadioButton
-          Left = 8
-          Top = 64
-          Width = 65
-          Height = 25
-          Hint = '120'
-          Caption = 'G 120'#176
-          Color = clBtnFace
-          ParentColor = False
-          TabOrder = 2
-          OnClick = RadioButton_deg60baseClick
-        end
-        object RadioButton_deg180: TRadioButton
-          Left = 8
-          Top = 88
-          Width = 65
-          Height = 25
-          Hint = '180'
-          Caption = 'C 180'#176
-          Color = clBtnFace
-          ParentColor = False
-          TabOrder = 3
-          OnClick = RadioButton_deg60baseClick
-        end
-        object RadioButton_deg240: TRadioButton
-          Left = 8
-          Top = 112
-          Width = 65
-          Height = 25
-          Hint = '240'
-          Caption = 'B 240'#176
-          Color = clBtnFace
-          ParentColor = False
-          TabOrder = 4
-          OnClick = RadioButton_deg60baseClick
-        end
-        object RadioButton_deg300: TRadioButton
-          Left = 8
-          Top = 136
-          Width = 65
-          Height = 25
-          Hint = '300'
-          Caption = 'M 300'#176
-          Color = clBtnFace
-          ParentColor = False
-          TabOrder = 5
-          OnClick = RadioButton_deg60baseClick
-        end
-        object Button_InterpTo30base: TButton
-          Left = 8
-          Top = 160
-          Width = 65
-          Height = 25
-          Caption = #8594'30'#176' '
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clWindowText
-          Font.Height = -13
-          Font.Name = 'MS Sans Serif'
-          Font.Style = []
-          ParentFont = False
-          TabOrder = 6
-        end
-      end
-      object GroupBox_30base: TGroupBox
-        Left = 96
-        Top = 24
-        Width = 89
-        Height = 193
-        Caption = '30'#176' Base'
-        TabOrder = 1
-        object RadioButton_deg30: TRadioButton
-          Left = 8
-          Top = 16
-          Width = 73
-          Height = 25
-          Hint = '30'
-          Caption = 'RY 30'#176
-          Color = clBtnFace
-          ParentColor = False
-          TabOrder = 0
-          OnClick = RadioButton_deg30baseClick
-        end
-        object RadioButton_deg90: TRadioButton
-          Left = 8
-          Top = 40
-          Width = 73
-          Height = 25
-          Hint = '90'
-          Caption = 'GY 90'#176
-          Color = clBtnFace
-          ParentColor = False
-          TabOrder = 1
-          OnClick = RadioButton_deg30baseClick
-        end
-        object RadioButton_deg150: TRadioButton
-          Left = 8
-          Top = 64
-          Width = 73
-          Height = 25
-          Hint = '150'
-          Caption = 'GC 150'#176
-          Color = clBtnFace
-          ParentColor = False
-          TabOrder = 2
-          OnClick = RadioButton_deg30baseClick
-        end
-        object RadioButton_deg210: TRadioButton
-          Left = 8
-          Top = 88
-          Width = 73
-          Height = 25
-          Hint = '210'
-          Caption = 'BC 210'#176
-          Color = clBtnFace
-          ParentColor = False
-          TabOrder = 3
-          OnClick = RadioButton_deg30baseClick
-        end
-        object RadioButton_deg270: TRadioButton
-          Left = 8
-          Top = 112
-          Width = 73
-          Height = 25
-          Hint = '270'
-          Caption = 'BM 270'#176
-          Color = clBtnFace
-          ParentColor = False
-          TabOrder = 4
-          OnClick = RadioButton_deg30baseClick
-        end
-        object RadioButton_deg330: TRadioButton
-          Left = 8
-          Top = 136
-          Width = 73
-          Height = 25
-          Hint = '330'
-          Caption = 'RM 330'#176
-          Color = clBtnFace
-          ParentColor = False
-          TabOrder = 5
-          OnClick = RadioButton_deg30baseClick
-        end
-        object Button_InterpTo15base: TButton
-          Left = 8
-          Top = 160
-          Width = 65
-          Height = 25
-          Caption = #8594'15'#176' '
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clWindowText
-          Font.Height = -13
-          Font.Name = 'MS Sans Serif'
-          Font.Style = []
-          ParentFont = False
-          TabOrder = 6
-        end
-      end
       object GroupBox6: TGroupBox
         Left = 8
-        Top = 224
+        Top = 344
         Width = 177
         Height = 169
         Caption = '15'#176' Base'
-        TabOrder = 2
+        TabOrder = 0
         Visible = False
         object RadioButton1: TRadioButton
           Left = 8
@@ -7004,6 +6816,233 @@ object HSVForm3: THSVForm3
           ParentColor = False
           TabOrder = 11
         end
+      end
+      object GroupBox4: TGroupBox
+        Left = 8
+        Top = 16
+        Width = 185
+        Height = 217
+        Caption = 'Hue'
+        TabOrder = 1
+        object GroupBox_60base: TGroupBox
+          Left = 8
+          Top = 16
+          Width = 81
+          Height = 193
+          Caption = '60'#176' Base'
+          TabOrder = 0
+          object RadioButton_deg0: TRadioButton
+            Left = 8
+            Top = 16
+            Width = 65
+            Height = 25
+            Hint = '0'
+            Caption = 'R 0'#176
+            Checked = True
+            Color = clBtnFace
+            ParentColor = False
+            TabOrder = 0
+            TabStop = True
+            OnClick = RadioButton_deg60baseClick
+          end
+          object RadioButton_deg60: TRadioButton
+            Left = 8
+            Top = 40
+            Width = 65
+            Height = 25
+            Hint = '60'
+            Caption = 'Y 60'#176
+            Color = clBtnFace
+            ParentColor = False
+            TabOrder = 1
+            OnClick = RadioButton_deg60baseClick
+          end
+          object RadioButton_deg120: TRadioButton
+            Left = 8
+            Top = 64
+            Width = 65
+            Height = 25
+            Hint = '120'
+            Caption = 'G 120'#176
+            Color = clBtnFace
+            ParentColor = False
+            TabOrder = 2
+            OnClick = RadioButton_deg60baseClick
+          end
+          object RadioButton_deg180: TRadioButton
+            Left = 8
+            Top = 88
+            Width = 65
+            Height = 25
+            Hint = '180'
+            Caption = 'C 180'#176
+            Color = clBtnFace
+            ParentColor = False
+            TabOrder = 3
+            OnClick = RadioButton_deg60baseClick
+          end
+          object RadioButton_deg240: TRadioButton
+            Left = 8
+            Top = 112
+            Width = 65
+            Height = 25
+            Hint = '240'
+            Caption = 'B 240'#176
+            Color = clBtnFace
+            ParentColor = False
+            TabOrder = 4
+            OnClick = RadioButton_deg60baseClick
+          end
+          object RadioButton_deg300: TRadioButton
+            Left = 8
+            Top = 136
+            Width = 65
+            Height = 25
+            Hint = '300'
+            Caption = 'M 300'#176
+            Color = clBtnFace
+            ParentColor = False
+            TabOrder = 5
+            OnClick = RadioButton_deg60baseClick
+          end
+          object Button_InterpTo30base: TButton
+            Left = 8
+            Top = 160
+            Width = 65
+            Height = 25
+            Caption = #8594'30'#176' '
+            Font.Charset = DEFAULT_CHARSET
+            Font.Color = clWindowText
+            Font.Height = -13
+            Font.Name = 'MS Sans Serif'
+            Font.Style = []
+            ParentFont = False
+            TabOrder = 6
+          end
+        end
+        object GroupBox_30base: TGroupBox
+          Left = 88
+          Top = 16
+          Width = 89
+          Height = 193
+          Caption = '30'#176' Base'
+          TabOrder = 1
+          object RadioButton_deg30: TRadioButton
+            Left = 8
+            Top = 16
+            Width = 73
+            Height = 25
+            Hint = '30'
+            Caption = 'RY 30'#176
+            Color = clBtnFace
+            ParentColor = False
+            TabOrder = 0
+            OnClick = RadioButton_deg30baseClick
+          end
+          object RadioButton_deg90: TRadioButton
+            Left = 8
+            Top = 40
+            Width = 73
+            Height = 25
+            Hint = '90'
+            Caption = 'GY 90'#176
+            Color = clBtnFace
+            ParentColor = False
+            TabOrder = 1
+            OnClick = RadioButton_deg30baseClick
+          end
+          object RadioButton_deg150: TRadioButton
+            Left = 8
+            Top = 64
+            Width = 73
+            Height = 25
+            Hint = '150'
+            Caption = 'GC 150'#176
+            Color = clBtnFace
+            ParentColor = False
+            TabOrder = 2
+            OnClick = RadioButton_deg30baseClick
+          end
+          object RadioButton_deg210: TRadioButton
+            Left = 8
+            Top = 88
+            Width = 73
+            Height = 25
+            Hint = '210'
+            Caption = 'BC 210'#176
+            Color = clBtnFace
+            ParentColor = False
+            TabOrder = 3
+            OnClick = RadioButton_deg30baseClick
+          end
+          object RadioButton_deg270: TRadioButton
+            Left = 8
+            Top = 112
+            Width = 73
+            Height = 25
+            Hint = '270'
+            Caption = 'BM 270'#176
+            Color = clBtnFace
+            ParentColor = False
+            TabOrder = 4
+            OnClick = RadioButton_deg30baseClick
+          end
+          object RadioButton_deg330: TRadioButton
+            Left = 8
+            Top = 136
+            Width = 73
+            Height = 25
+            Hint = '330'
+            Caption = 'RM 330'#176
+            Color = clBtnFace
+            ParentColor = False
+            TabOrder = 5
+            OnClick = RadioButton_deg30baseClick
+          end
+          object Button_InterpTo15base: TButton
+            Left = 8
+            Top = 160
+            Width = 65
+            Height = 25
+            Caption = #8594'15'#176' '
+            Font.Charset = DEFAULT_CHARSET
+            Font.Color = clWindowText
+            Font.Height = -13
+            Font.Name = 'MS Sans Serif'
+            Font.Style = []
+            ParentFont = False
+            TabOrder = 6
+          end
+        end
+      end
+      object RadioGroup_Saturation: TRadioGroup
+        Left = 8
+        Top = 232
+        Width = 89
+        Height = 105
+        Caption = 'Saturation'
+        ItemIndex = 1
+        Items.Strings = (
+          'Low '
+          'Middle '
+          'High '
+          'Max')
+        TabOrder = 2
+        Visible = False
+      end
+      object RadioGroup_Value: TRadioGroup
+        Left = 104
+        Top = 232
+        Width = 81
+        Height = 105
+        Caption = 'Value'
+        ItemIndex = 1
+        Items.Strings = (
+          'Low'
+          'Middle'
+          'High')
+        TabOrder = 3
+        Visible = False
       end
     end
   end
