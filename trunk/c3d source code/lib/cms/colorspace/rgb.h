@@ -16,17 +16,21 @@ namespace cms {
 		 RGBColor(const RGBColorSpace & rgbColorSpace,
 			  double_array rgb, const MaxValue & maxValue);
 		 RGBColor(int r, int g, int b);
-		 RGBColor(double r, double g, double b, const MaxValue & maxValue);
+		 RGBColor(double r, double g, double b,
+			  const MaxValue & maxValue);
 		 RGBColor(double r, double g, double b);
 		string_vector_ptr getBandNames();
 
-		void changeMaxValue(const MaxValue & type, bool integerRoundDown);
+		void changeMaxValue(const MaxValue & type,
+				    bool integerRoundDown);
 		void changeMaxValue(const MaxValue & type);
 		void addValue(const Channel & channel, double addvalue);
 		void addValue(double addvalue);
 		double getValue(const Channel & channel);
-		double getValue(const Channel & channel, const MaxValue & type);
-		double_array getValues(double_array values, const MaxValue & type);
+		double getValue(const Channel & channel,
+				const MaxValue & type);
+		double_array getValues(double_array values,
+				       const MaxValue & type);
 		double_array getValues();
 		double_array getValues(double_array values);
 		void setValue(const Channel & channel, double value);
@@ -36,13 +40,16 @@ namespace cms {
 		static const RGB_ptr White;
 		static const RGB_ptr Black;
 		void quantization(const MaxValue & maxValue);
-		void quantization(const MaxValue & maxValue, bool integerRoundDown);
+		void quantization(const MaxValue & maxValue,
+				  bool integerRoundDown);
 		const MaxValue & getMaxValue();
 		double_array getRGBRatio();
 		double getHue();
 		double_array getHSVIValues();
 		static RGB_ptr fromHSVValues(double h, double s, double v);
-		static double_array HSV2RGBValues(double h, double s, double v);
+		static double_array HSV2RGBValues(double h, double s,
+						  double v);
+		TColor getColor();
 	      protected:
 		 double_array _getValues(double_array values);
 		void _setValues(double_array values);
@@ -66,17 +73,22 @@ namespace cms {
 
 		static void changeMaxValue(double_array values,
 					   const MaxValue & srcType,
-					   const MaxValue & destType, bool integerRoundDown);
+					   const MaxValue & destType,
+					   bool integerRoundDown);
 		static double_array changeIntegerMaxValue(double_array
 							  integerValues,
 							  const MaxValue &
 							  srcType,
 							  const MaxValue &
-							  destType, bool roundDown);
+							  destType,
+							  bool roundDown);
 		static double_array changeMaxValue(double_array normal100,
-						   const MaxValue & type, bool integerRoundDown);
+						   const MaxValue & type,
+						   bool integerRoundDown);
 
-		static double_array normalizeTo100(double_array values, const MaxValue & maxValue);
+		static double_array normalizeTo100(double_array values,
+						   const MaxValue &
+						   maxValue);
 		int getNumberBands();
 	    };
 	};
