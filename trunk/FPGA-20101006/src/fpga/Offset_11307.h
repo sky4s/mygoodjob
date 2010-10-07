@@ -2,7 +2,7 @@
 
 #ifndef offset_11307H
 #define offset_11307H
-#include "offset.h"
+#include "Offset.h"
 //---------------------------------------------------------------------------
 class offsetForm_11307:public AbstoffsetForm
 {

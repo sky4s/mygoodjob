@@ -15,7 +15,7 @@
 #include <ComCtrls.hpp>
 
 //C系統文件
-
+#include <stdio.h>
 //C++系統文件
 
 //vcl庫頭文件

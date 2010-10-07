@@ -1,143 +1,153 @@
 #ifndef GUI_CLASSH
 #define GUI_CLASSH
 
-class _CHKB
-{
-        public:
-                __fastcall ~_CHKB();
-                TCheckBox* Chkb;
-                TBit Addr;
+#include <vcl.h>
+#include <addresstype/Address_type.h>
+
+class _CHKB {
+  public:
+    __fastcall ~ _CHKB();
+    TCheckBox *Chkb;
+    TBit Addr;
 };
 __fastcall _CHKB::~_CHKB()
 {
-        delete [] Chkb;
+    delete[]Chkb;
 }
 
-class _CBOB
-{
-        public:
-                __fastcall ~_CBOB();
-                TComboBox* Cbob;
-                TLabel* CbobL;
-                TBit Addr;
+class _CBOB {
+  public:
+    __fastcall ~ _CBOB();
+    TComboBox *Cbob;
+    TLabel *CbobL;
+    TBit Addr;
 };
 __fastcall _CBOB::~_CBOB()
 {
-        delete [] Cbob;
-        delete [] CbobL;
+    delete[]Cbob;
+    delete[]CbobL;
 }
 
-class _CBOB2     //Address 為 2Byte
+class _CBOB2			//Address 為 2Byte
 {
-        public:
-                __fastcall ~_CBOB2();
-                TComboBox* Cbob;
-                TLabel* CbobL;
-                TBit2 Addr;
+  public:
+    __fastcall ~ _CBOB2();
+    TComboBox *Cbob;
+    TLabel *CbobL;
+    TBit2 Addr;
 };
 __fastcall _CBOB2::~_CBOB2()
 {
-        delete [] Cbob;
-        delete [] CbobL;
-        //delete Addr.choice;
+    delete[]Cbob;
+    delete[]CbobL;
+    //delete Addr.choice;
 }
 
-class _LBLE4     //Address 為 4Byte
+class _LBLE4			//Address 為 4Byte
 {
-        public:
-                __fastcall ~_LBLE4();
-                TLabeledEdit* Lble;
-                TBit4 Addr;
+  public:
+    __fastcall ~ _LBLE4();
+    TLabeledEdit *Lble;
+    TBit4 Addr;
 };
 __fastcall _LBLE4::~_LBLE4()
 {
-        delete [] Lble;
-        //delete Addr.choice;
+    delete[]Lble;
+    //delete Addr.choice;
 }
 
-class _LBLE3     //Address 為 3Byte
+class _LBLE3			//Address 為 3Byte
 {
-        public:
-                __fastcall ~_LBLE3();
-                TLabeledEdit* Lble;
-                TBit3 Addr;
+  public:
+    __fastcall ~ _LBLE3();
+    TLabeledEdit *Lble;
+    TBit3 Addr;
 };
 __fastcall _LBLE3::~_LBLE3()
 {
-        delete [] Lble;
-        //delete Addr.choice;
+    delete[]Lble;
+    //delete Addr.choice;
 }
 
-class _LBLE2     //Address 為 2Byte
+class _LBLE2			//Address 為 2Byte
 {
-        public:
-                __fastcall ~_LBLE2();
-                TLabeledEdit* Lble;
-                TBit2 Addr;
+  public:
+    __fastcall ~ _LBLE2();
+    TLabeledEdit *Lble;
+    TBit2 Addr;
 };
 __fastcall _LBLE2::~_LBLE2()
 {
-        delete [] Lble;
-        //delete Addr.choice;
+    delete[]Lble;
+    //delete Addr.choice;
 }
 
-class _LBLE     //Address 為 1 byte
+class _LBLE			//Address 為 1 byte
 {
-        public:
-                __fastcall ~_LBLE();
-                TLabeledEdit* Lble;
-                TBit Addr;
+  public:
+    __fastcall ~ _LBLE();
+    TLabeledEdit *Lble;
+    TBit Addr;
 };
 __fastcall _LBLE::~_LBLE()
 {
-        delete [] Lble;
-        //delete Addr.choice;
+    delete[]Lble;
+    //delete Addr.choice;
 }
 
-class _ScrollBar2     //Address 為 2Byte
+class _ScrollBar2		//Address 為 2Byte
 {
-        public:
-                __fastcall ~_ScrollBar2();
-                TLabel* Lbl;
-                TScrollBar* ScrlB;
-                TStaticText* StTxt;
-                TBit2 Addr;
+  public:
+    __fastcall ~ _ScrollBar2();
+    TLabel *Lbl;
+    TScrollBar *ScrlB;
+    TStaticText *StTxt;
+    TBit2 Addr;
 };
 __fastcall _ScrollBar2::~_ScrollBar2()
 {
-        delete [] Lbl;
-        delete [] StTxt;
-        delete [] ScrlB;
-        //delete Addr.choice;
+    delete[]Lbl;
+    delete[]StTxt;
+    delete[]ScrlB;
+    //delete Addr.choice;
 }
 
-class _ScrollBar     //Address 為 1 byte
+class _ScrollBar		//Address 為 1 byte
 {
-        public:
-                __fastcall ~_ScrollBar();
-                TLabel* Lbl;
-                TScrollBar* ScrlB;
-                TStaticText* StTxt;
-                TBit Addr;
+  public:
+    __fastcall ~ _ScrollBar();
+    TLabel *Lbl;
+    TScrollBar *ScrlB;
+    TStaticText *StTxt;
+    TBit Addr;
 };
 __fastcall _ScrollBar::~_ScrollBar()
 {
-        delete [] Lbl;
-        delete [] StTxt;
-        delete [] ScrlB;
-        //delete Addr.choice;
+    delete[]Lbl;
+    delete[]StTxt;
+    delete[]ScrlB;
+    //delete Addr.choice;
 }
-class _StaticText     //Address 為 1 byte    //no more use
+
+class _StaticText		//Address 為 1 byte    //no more use
 {
-        public:
-                __fastcall ~_StaticText();
-                TStaticText* StTxt;
-                TBit Addr;
+  public:
+    __fastcall ~ _StaticText();
+    TStaticText *StTxt;
+    TBit Addr;
 };
 __fastcall _StaticText::~_StaticText()
 {
-        delete [] StTxt;
-        //delete Addr.choice;
+    delete[]StTxt;
+    //delete Addr.choice;
 }
+
+class AbstHSV {
+  public:
+    virtual TBit * SetChkBx() = 0;
+    virtual TLUT *SetLUT() = 0;
+    virtual String HSV_EN_Name() = 0;	// 20100608 return the name of HSV_EN register
+    int HSVChkBox_Nbr;
+};
 
 #endif

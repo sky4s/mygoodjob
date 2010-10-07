@@ -13,6 +13,7 @@
 
 //本項目內gui頭文件
 #include <fpga/gui/THSVForm3.h>
+
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
 #pragma resource "*.dfm"
