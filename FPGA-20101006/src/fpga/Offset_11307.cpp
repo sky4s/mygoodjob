@@ -3,7 +3,7 @@
 #include <fpga/includeall.h>
 #pragma hdrstop
 
-#include "offset_11307.h"
+#include "Offset_11307.h"
 
 //---------------------------------------------------------------------------
 
