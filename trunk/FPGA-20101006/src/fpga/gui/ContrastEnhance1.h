@@ -17,21 +17,9 @@
 #include <Buttons.hpp>
 
 #include "Unit1.h"
+#include <fpga/gui_class.h>
 
 
-class AbstCE {
-  public:
-    virtual TBit * SetChkBx() = 0;
-    virtual TBit *SetCboBx() = 0;
-    virtual TBit *SetScrollBar() = 0;
-    virtual TLUT *SetJNDlut() = 0;
-    virtual TLUT *SetSTlut() = 0;
-    virtual TLUT *SetMAXlut() = 0;
-    virtual TLUT *SetMINlut() = 0;
-    int CEChkBox_Nbr;
-    int CECboBox_Nbr;
-    int CEScrollBar_Nbr;
-};
 //---------------------------------------------------------------------------
 class TContrastEnhanceForm1:public TForm {
     __published:		// IDE-managed Components

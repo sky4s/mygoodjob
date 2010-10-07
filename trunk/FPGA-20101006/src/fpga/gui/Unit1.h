@@ -27,18 +27,18 @@
 #include "gui_class.h"
 
 //本項目內gui頭文件
-#include "Engineering.h"
-#include "TCON1.h"
+
+/*#include "TCON1.h"
 #include "Function1.h"
 #include "DCR1.h"
 #include "Vender1.h"
-#include "CM1.h"
+#include "CM1.h"*/
 #include "Sharpness1.h"
 #include "ContrastEnhance1.h"
-#include "HueSatVal1.h"
+/*#include "HueSatVal1.h"
 #include "C3D1.h"
 #include "SAT.h"
-#include "Offset.h"
+#include "Offset.h"*/
 
 //---------------------------------------------------------------------------
 class TMainForm:public TForm {
@@ -117,29 +117,7 @@ class TMainForm:public TForm {
     int addr_place;		//0:auo_12401_address.h   1:auo_12401_address.txt
 
 };
-char *Load_File(String Fpath)
-{
-    long lSize;
-    char *buffer;
-    FILE *fptr;
-    if ((fptr = fopen(Fpath.c_str(), "r")) == NULL)
-	return 0;
 
-    // obtain file size:
-    fseek(fptr, 0, SEEK_END);
-    lSize = ftell(fptr);
-    rewind(fptr);
-
-    // allocate memory to contain the whole file:
-    buffer = new char[lSize + 1];
-    if (buffer == NULL)
-	return 0;
-    // copy the file into the buffer:
-    fread(buffer, 1, lSize, fptr);
-    buffer[lSize] = '\0';
-    fclose(fptr);
-    return buffer;
-}
 
 //---------------------------------------------------------------------------
 extern PACKAGE TMainForm *MainForm;

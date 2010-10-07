@@ -22,53 +22,12 @@
 #include <ComCtrls.hpp>
 #include <ExtCtrls.hpp>
 //其他庫頭文件
-//#include "Unit1.h"
 #include "CSPIN.h"
 //本項目內頭文件
-
+#include <fpga/gui_class.h>
 //本項目內gui頭文件
 //---------------------------------------------------------------------------
-//Abstract class of TCON
-class AbstTCON {
-  public:
-    //device
-    virtual TBit * SetDevChkBx() = 0;
-    virtual TBit *SetDevCboBx() = 0;
-    virtual TBit2 *SetDevLblE2() = 0;
 
-    //status
-    virtual TBit *SetStaCboBx() = 0;
-    virtual TBit2 *SetStaLblE2() = 0;
-
-    //Input/Output
-    virtual TBit *SetIOChkBx() = 0;
-    virtual TBit *SetIOCboBx() = 0;
-    //Driving
-    virtual TBit *SetDrvChkBx() = 0;
-    virtual TBit *SetDrvCboBx() = 0;
-    virtual TBit2 *SetDrvLblE() = 0;
-    virtual TBit3 *SetDrvLblE3() = 0;	//Add by Michelle 20100625
-    //Timing
-    virtual TBit2 *SetTimLblE2() = 0;
-    virtual TBit3 *SetTimLblE3() = 0;
-
-    int DevChkBox_Nbr;		//Number of CheckBox in device page
-    int DevCboBox_Nbr;		//Number of ComboBox in device page
-    int DevLblE2_Nbr;
-
-    int IOChkBox_Nbr;		//Number of CheckBox in input/output page
-    int IOCboBox_Nbr;		//Number of ComboBox in input/output page
-
-    int DrvChkBox_Nbr;		//Number of CheckBox in Driving page
-    int DrvCboBox_Nbr;		//Number of ComboBox in Driving page
-    int DrvLblE2_Nbr;		//Number of LabeledEdit in Driving page
-    int DrvLblE3_Nbr;
-
-    int TimLblE2_Nbr;		//Number of LabeledEdit2 in Timing page
-    int TimLblE3_Nbr;
-    int StaCboBox_Nbr;
-    int StaLblE2_Nbr;
-};
 
 
 class TTCONForm1:public TForm {

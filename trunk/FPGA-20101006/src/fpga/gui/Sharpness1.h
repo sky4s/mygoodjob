@@ -8,7 +8,7 @@
 //---------------------------------------------------------------------------
 
 //C系統文件
-
+#include <stdio.h>
 //C++系統文件
 
 //vcl庫頭文件
@@ -22,30 +22,17 @@
 #include <Series.hpp>
 #include <TeEngine.hpp>
 #include <TeeProcs.hpp>
-
 #include <Dialogs.hpp>
+#include <Forms.hpp>
+#include <Menus.hpp>
+#include <ComCtrls.hpp>
+#include <vcl.h>
 //其他庫頭文件
-
+#include <windows.h>
 //本項目內頭文件
 #include <fpga/gui_class.h>
 #include <addresstype/Address_type.h>
 //本項目內gui頭文件
-//#include "Unit1.h"
-/*==========================================================================
-AbstSP為一自定的class, 具有可傳回IC中關於Sharpness address定義的函式
-===========================================================================*/
-
-class AbstSP {
-  public:
-    virtual TBit * SetChkBx() = 0;	//傳回CheckBox的address定義
-    virtual TBit *SetScrollBar() = 0;	//傳回ScrollBar的address定義
-    virtual TBit2 *SetLblE2() = 0;	// Add by Michelle 20100702
-    virtual TLUT *SetSPLUT() = 0;	//傳回sharpness lookup table的address定義
-
-    int SPChkBox_Nbr;
-    int SPLblE2_Nbr;		// Add by Michelle  20100702
-    int SPScrollBar_Nbr;
-};
 
 
 

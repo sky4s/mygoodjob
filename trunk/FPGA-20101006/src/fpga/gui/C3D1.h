@@ -18,16 +18,8 @@
 #include <Dialogs.hpp>
 #include <Buttons.hpp>
 
+#include <fpga/gui_class.h>
 //---------------------------------------------------------------------------
-class AbstC3D
-{
-        public:
-                virtual TBit* SetChkBx()=0;
-                virtual TLUT* SetLUT()=0;
-                virtual String C3D_EN_Name()=0;  // 20100608 return the name of C3D enable register
-                int C3DChkBox_Nbr;
-                int C3DLUT_Nbr;
-};
 
 
 class TC3DForm1 : public TForm

@@ -6,6 +6,7 @@
 
 #include "Offset_11307.h"
 #include "Offset.h"
+#include "include.h"
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
 #pragma resource "*.dfm"
