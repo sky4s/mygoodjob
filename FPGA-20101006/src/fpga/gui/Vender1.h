@@ -22,34 +22,7 @@
 #include <fpga/gui_class.h>
 #include <addresstype/Address_type.h>
 //本項目內gui頭文件
-//---------------------------------------------------------------------------
-//Abstract class of Vender
-class AbstVender {
-  public:
-    virtual TBit * SetChkBx() = 0;
-    virtual TBit *SetCboBx() = 0;
-    virtual TBit *SetScrollBar() = 0;
-    virtual TBit2 *SetScrollBar2() = 0;
 
-    virtual TBit *SetDebugChkBx() = 0;
-    virtual TBit *SetDebugCboBx() = 0;
-    virtual TBit2 *SetDebugLblE2() = 0;
-
-    virtual TBit *SetStaCboBx() = 0;
-    virtual TBit2 *SetStaLblE2() = 0;
-    virtual TBit2 *SetLblE2() = 0;
-
-    int VendChkBox_Nbr;
-    int VendCboBox_Nbr;
-    int VendScrollBar_Nbr;
-    int VendScrollBar2_Nbr;
-    int VendLblE2_Nbr;
-    int DebugChkBox_Nbr;
-    int DebugCboBox_Nbr;
-    int DebugLblE2_Nbr;
-    int VStaCboBox_Nbr;
-    int VStaLblE2_Nbr;
-};
 
 class TVenderForm1:public TForm {
     __published:		// IDE-managed Components

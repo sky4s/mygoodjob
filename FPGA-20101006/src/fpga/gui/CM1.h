@@ -36,29 +36,8 @@
 #include <fpga/gui_class.h>
 #include <addresstype/Address_type.h>
 //本項目內gui頭文件
-//#include "Unit1.h"
 #include "PERFGRAP.h"
 //---------------------------------------------------------------------------
-/*==========================================================================
-AbstCM為一自定的class, 具有可傳回IC中關於Color Matrix address定義的函式
-===========================================================================*/
-
-class AbstCM {
-  public:
-    //CM
-    virtual TBit * SetChkBx() = 0;	//傳回CheckBox的address定義
-    virtual TBit *SetCboBx() = 0;	//傳回ComboBox的address定義
-    virtual TLUT *Setval() = 0;	//傳回3組CM的address定義
-    virtual TLUT *Setofs() = 0;	//傳回3組offset的address定義
-    virtual int Setofs_type() = 0;
-
-    int CMChkBox_Nbr;
-    int CMCboBox_Nbr;
-    int CMval_Nbr;
-    int CMofs_Nbr;
-    //傳回offset address的type 1: offset range(-127.75,127.75)
-    //type 2:offset range(-63.875,63.875)
-};
 
 /*====================================================================
 TCMForm1為一繼承TForm形態的class, 為Color Matrix頁面的Interface

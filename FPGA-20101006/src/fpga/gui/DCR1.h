@@ -21,58 +21,10 @@
 //其他庫頭文件
 
 //本項目內頭文件
-
+#include <fpga/gui_class.h>
 //本項目內gui頭文件
-#include "Unit1.h"
-#include "Engineering.h"
 
 //---------------------------------------------------------------------------
-//Abstract class of DCR
-class AbstDCR {
-  public:
-    //DCR setting
-    virtual TBit * SetChkBx() = 0;
-    virtual TBit *SetCboBx() = 0;
-
-    virtual TBit *SetScrollBar() = 0;
-    virtual TBit2 *SetScrollBar2() = 0;
-
-    virtual TLUT *SetLUT() = 0;
-    virtual TBit3 *SetLblE3() = 0;
-
-    virtual TBit2 *SetDCRLblE2() = 0;
-
-    //ALS SMBUS
-    virtual TBit *SetALSChkBx() = 0;
-    virtual TBit *SetALSCboBx() = 0;
-    virtual TBit *SetALSScrollBar() = 0;
-    //HDR
-    virtual TBit *SetHDRCboBx() = 0;
-    virtual TBit *SetHDRScrollBar() = 0;
-    virtual TBit2 *SetHDRScrollBar2() = 0;
-    virtual TBit2 *SetHDRLblE2() = 0;
-
-    virtual String DCR_BL_EN_Name() = 0;	// 20100608 return the name of BL_EN register
-    virtual String DCR_GLT_EN_Name() = 0;	// 20100608 return the name of GLT_EN register
-
-    int DCRScrollBar_Nbr;
-    int DCRScrollBar2_Nbr;
-
-    int DCRCboBox_Nbr;
-    int DCRChkBox_Nbr;
-    int DCRLblE3_Nbr;
-    int DCRLblE2_Nbr;
-
-    int ALSScrollBar_Nbr;
-    int ALSChkBox_Nbr;
-    int ALSCboBox_Nbr;
-
-    int HDRCboBox_Nbr;
-    int HDRScrollBar_Nbr;
-    int HDRScrollBar2_Nbr;
-    int HDRLblE2_Nbr;
-    int DCRLUT_Nbr;		// 20100608 set number of DCR table
-};
 
 class TDCRForm1:public TForm {
     __published:		// IDE-managed Components

@@ -31,7 +31,6 @@
 #include <addresstype/Address_type.h>
 //本項目內gui頭文件
 
-//#include "Unit1.h"
 //---------------------------------------------------------------------------
 ///////// HSV Table Address Arrange /////////
 //
@@ -43,13 +42,6 @@
 //  Byte 5 :  SAT1 [0]    LUM1 [6:0]
 /////////////////////////////////////////////
 
-/*class AbstHSV {
-  public:
-    virtual TBit * SetChkBx() = 0;
-    virtual TLUT *SetLUT() = 0;
-    virtual String HSV_EN_Name() = 0;	// 20100608 return the name of HSV_EN register
-    int HSVChkBox_Nbr;
-};*/
 
 class THSVForm1:public TForm {
     __published:		// IDE-managed Components

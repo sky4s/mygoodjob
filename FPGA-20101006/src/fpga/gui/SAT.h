@@ -9,25 +9,9 @@
 
 #include "Unit1.h"
 #include <Buttons.hpp>
+#include <fpga/gui_class.h>
 //---------------------------------------------------------------------------
-//Abstract class of SATForm
-class AbstSATForm
-{
-        public:
-                virtual TBit* SetChkBx()=0;
-                virtual TBit* SetCboBx()=0;
-                virtual TBit* SetScrollBar()=0;
-                virtual TBit2* SetScrollBar2()=0;
-                virtual TBit3* SetLblE3()=0;
-                virtual TBit4* SetLblE4()=0;
 
-                int ScrollBar_Nbr;
-                int ScrollBar2_Nbr;
-                int CboBox_Nbr;
-                int ChkBox_Nbr;
-                int LblE3_Nbr;
-                int LblE4_Nbr;
-};
 
 class TSATForm : public TForm
 {

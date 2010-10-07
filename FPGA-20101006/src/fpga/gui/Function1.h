@@ -34,61 +34,9 @@
 #include <fpga/gui_class.h>
 #include <addresstype/Address_type.h>
 //本項目內gui頭文件
-//#include "Unit1.h"
 //---------------------------------------------------------------------------
 
-//Abstract class of FunctionForm
-class AbstFunc {
-  public:
-    //frc_dg
-    virtual TBit * SetFrcDgChkBx() = 0;
-    virtual TBit *SetFrcDgCboBx() = 0;
-    virtual TBit *SetFrcDgLblE() = 0;
-    virtual TLUT *SetDGLUT() = 0;
-    virtual String DG_EN_Name() = 0;
 
-    //P-state
-    virtual TBit *SetPstateChkBx() = 0;
-    virtual TBit *SetPstateCboBx() = 0;
-    virtual TBit2 *SetPstateLblE2() = 0;
-
-    //AGBS
-    virtual TBit *SetAGBSChkBx() = 0;
-    virtual TBit *SetAGBSCboBx() = 0;
-    virtual TBit2 *SetAGBSLblE2() = 0;
-
-    //OD
-    virtual TBit *SetODChkBx() = 0;
-    virtual TBit *SetODCboBx() = 0;
-    virtual TBit2 *SetODCboBx2() = 0;
-    virtual TBit *SetODScrollBar() = 0;
-    virtual TLUT *SetODLUT() = 0;
-    virtual String OD_EN_Name() = 0;
-    virtual int ODLUT_IP_Type() = 0;
-
-    // OD table Address Arrange
-    // ODLUT_IP_Type 1: AUO IP ,
-    // ODLUT_IP_Type 2: Vender IP
-
-    int PstateChkBox_Nbr;	//Number of CheckBox in Pstate page
-    int PstateCboBox_Nbr;	//Number of ComboBox in Pstate page
-    int PstateLblE2_Nbr;	//Number of LabeledEdit2 in Pstate page
-
-    int AGBSChkBox_Nbr;		//Number of CheckBox in AGBS page
-    int AGBSCboBox_Nbr;		//Number of ComboBox in AGBS page
-    int AGBSLblE2_Nbr;		//Number of LabeledEdit2 in AGBS page
-
-    int FrcDgChkBox_Nbr;	//Number of CheckBox in FrcDg page
-    int FrcDgCboBox_Nbr;	//Number of ComboBox in FrcDg page
-    int FrcDgLblE_Nbr;		//Number of LabeledEdit in FrcDg page
-    int DGLUT_Nbr;
-
-    int ODChkBox_Nbr;		//Number of CheckBox in OD page
-    int ODCboBox_Nbr;		//Number of ComboBox in OD page
-    int ODCboBox2_Nbr;		//Number of ComboBox2 in OD page
-    int ODScrollBar_Nbr;	//Number of ScrollBar in OD page
-
-};
 
 class TFunctionForm1:public TForm {
     __published:		// IDE-managed Components

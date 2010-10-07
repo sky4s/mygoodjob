@@ -6,6 +6,7 @@
 
 #include "SAT_11307.h"
 #include "SAT.h"
+#include "include.h"
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
 #pragma resource "*.dfm"
