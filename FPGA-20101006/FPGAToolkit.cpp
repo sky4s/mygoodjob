@@ -10,7 +10,6 @@ USEFORM("src\fpga\gui\CM1.cpp", CMForm1);
 USEFORM("src\fpga\gui\Unit1.cpp", MainForm);
 USEFORM("src\fpga\gui\Vender1.cpp", VenderForm1);
 USEFORM("src\fpga\gui\HueSatVal1.cpp", HSVForm1);
-USEFORM("src\fpga\gui\HueSatVal2.cpp", HSVForm2);
 USEFORM("src\fpga\gui\Sharpness1.cpp", SharpnessForm1);
 USEFORM("src\fpga\gui\TCON1.cpp", TCONForm1);
 USEFORM("src\fpga\gui\Function1.cpp", FunctionForm1);
