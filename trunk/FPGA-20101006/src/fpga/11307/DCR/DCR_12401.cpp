@@ -1,6 +1,6 @@
 //---------------------------------------------------------------------------
 
-#include <fpga/includeall.h>
+#include <fpga/includeallfpga.h>
 #pragma hdrstop
 
 #include "DCR_12401.h"

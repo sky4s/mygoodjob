@@ -14,6 +14,12 @@
 #ifndef CM1H
 #define CM1H
 //---------------------------------------------------------------------------
+
+//C系統文件
+
+//C++系統文件
+
+//vcl庫頭文件
 #include <Classes.hpp>
 #include <Controls.hpp>
 #include <StdCtrls.hpp>
@@ -21,12 +27,17 @@
 #include <ActnList.hpp>
 #include <ComCtrls.hpp>
 #include <ExtCtrls.hpp>
-#include "Unit1.h"
-#include <Dialogs.hpp>
-#include "PERFGRAP.h"
 #include <Menus.hpp>
 #include <Buttons.hpp>
+#include <Dialogs.hpp>
+//其他庫頭文件
 
+//本項目內頭文件
+#include <fpga/gui_class.h>
+#include <addresstype/Address_type.h>
+//本項目內gui頭文件
+//#include "Unit1.h"
+#include "PERFGRAP.h"
 //---------------------------------------------------------------------------
 /*==========================================================================
 AbstCM為一自定的class, 具有可傳回IC中關於Color Matrix address定義的函式

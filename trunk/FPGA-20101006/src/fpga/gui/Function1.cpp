@@ -3,7 +3,7 @@
 #include <vcl.h>
 #include <lib/includeall.h>
 #pragma hdrstop
-
+#include "Unit1.h"
 #include "Function1.h"
 #include  <fpga/11307/Function/Func_11307.h>
 //---------------------------------------------------------------------------

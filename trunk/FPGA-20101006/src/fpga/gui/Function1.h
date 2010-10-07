@@ -12,17 +12,29 @@
 #ifndef Function1H
 #define Function1H
 //---------------------------------------------------------------------------
+
+//C系統文件
+
+//C++系統文件
+
+//vcl庫頭文件
 #include <Classes.hpp>
 #include <Controls.hpp>
 #include <StdCtrls.hpp>
 #include <Forms.hpp>
 #include <ComCtrls.hpp>
 #include <ExtCtrls.hpp>
-#include "Unit1.h"
+
 #include <Grids.hpp>
 #include <Dialogs.hpp>
 #include <Buttons.hpp>
+//其他庫頭文件
 
+//本項目內頭文件
+#include <fpga/gui_class.h>
+#include <addresstype/Address_type.h>
+//本項目內gui頭文件
+//#include "Unit1.h"
 //---------------------------------------------------------------------------
 
 //Abstract class of FunctionForm

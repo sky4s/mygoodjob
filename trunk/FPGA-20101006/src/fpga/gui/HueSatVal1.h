@@ -8,17 +8,30 @@
 #ifndef HueSatVal1H
 #define HueSatVal1H
 //---------------------------------------------------------------------------
+
+//C系統文件
+
+//C++系統文件
+
+//vcl庫頭文件
 #include <Classes.hpp>
 #include <Controls.hpp>
 #include <StdCtrls.hpp>
 #include <Forms.hpp>
-#include "Unit1.h"
+
 #include <Buttons.hpp>
 #include <Dialogs.hpp>
 #include <ExtCtrls.hpp>
 #include <Graphics.hpp>
 #include <Grids.hpp>
+//其他庫頭文件
 
+//本項目內頭文件
+#include <fpga/gui_class.h>
+#include <addresstype/Address_type.h>
+//本項目內gui頭文件
+
+//#include "Unit1.h"
 //---------------------------------------------------------------------------
 ///////// HSV Table Address Arrange /////////
 //

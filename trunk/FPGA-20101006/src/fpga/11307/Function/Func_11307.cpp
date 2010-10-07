@@ -1,4 +1,4 @@
-#include <fpga/includeall.h>
+#include <fpga/includeallfpga.h>
 #pragma hdrstop
 
 #include "Func_11307.h"

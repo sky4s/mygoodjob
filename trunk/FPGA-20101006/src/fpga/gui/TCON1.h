@@ -5,20 +5,28 @@
 #ifndef TCON1H
 #define TCON1H
 //---------------------------------------------------------------------------
+
+//C系統文件
+#include <stdio.h>
+#include <stdlib.h>
+#include <ctype.h>
+#include <string.h>
+//C++系統文件
+
+//vcl庫頭文件
+#include <Buttons.hpp>
 #include <Classes.hpp>
 #include <Controls.hpp>
 #include <StdCtrls.hpp>
 #include <Forms.hpp>
 #include <ComCtrls.hpp>
 #include <ExtCtrls.hpp>
-#include <stdio.h>
-#include <stdlib.h>
-#include <ctype.h>
-#include <string.h>
-#include "Unit1.h"
-#include <Buttons.hpp>
+//其他庫頭文件
+//#include "Unit1.h"
 #include "CSPIN.h"
+//本項目內頭文件
 
+//本項目內gui頭文件
 //---------------------------------------------------------------------------
 //Abstract class of TCON
 class AbstTCON {
