@@ -156,8 +156,6 @@ typedef barray < int >int_array;
 #define foreach BOOST_FOREACH
 //==============================================================================
 
-
-
 //==============================================================================
 //簡化tnt使用上的巨集
 //==============================================================================
@@ -226,7 +224,6 @@ typedef bptr < float3D > float3D_ptr;
  所以一般是建議採用shared_ptr< vector<> >, 但是這種作法會讓indent(程式碼格式化器) 出錯!
  因為現在用的indent是c專屬的, 他看不懂template的<< >>...會當作shift運算子.
  幾經測試之下, 本來決定用define就可以避掉indent的問題!
-
  但是畢竟是指標...要一直不斷的用(*)[]去取值 (不能用->[] 這種怪語法..), 太麻煩了,
  所以回頭用shared_array.
 
@@ -257,10 +254,6 @@ typedef bptr < float3D > float3D_ptr;
              EnumerationEnd();
  可以 Enumeration::item1使用, 較好辨識.
 */
-
-namespace ca210api {
-    class CA210API;
-};
 
 namespace java {
     namespace lang {
