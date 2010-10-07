@@ -30,29 +30,34 @@ __fastcall TColorPickerFrame::TColorPickerFrame(TComponent * Owner)
 //---------------------------------------------------------------------------
 void __fastcall TColorPickerFrame::imageMouseMove(TObject * Sender, TShiftState Shift, int X, int Y)
 {
-    int color;
-    double h, s, v, i, r, g, b;
-    color = image->Canvas->Pixels[X][Y];
-    if (color == -1)
-	color = 0;
 
-    b = color / 65536;
-    g = color / 256 % 256;
-    r = color % 256;
-    rgb2hsv(r, g, b, &h, &s, &i, &v);
+    TImage *senderImage = dynamic_cast < TImage * >(Sender);
+    if (null != senderImage) {
+	int color;
+	double h, s, v, i, r, g, b;
+	color = senderImage->Canvas->Pixels[X][Y];
+	if (color == -1)
+	    color = 0;
 
-    i = (double (int (i * 10))) /10.0;
-    h = (double (int (h * 10))) /10.0;
-    s = (double (int (s * 1000))) /1000.0;
+	b = color / 65536;
+	g = color / 256 % 256;
+	r = color % 256;
+	rgb2hsv(r, g, b, &h, &s, &i, &v);
 
-    lb_c3d_showX->Caption = "X: " + IntToStr((int) X);
-    lb_c3d_showY->Caption = "Y: " + IntToStr((int) Y);
-    lb_c3d_showR->Caption = "R: " + IntToStr((int) r);
-    lb_c3d_showG->Caption = "G: " + IntToStr((int) g);
-    lb_c3d_showB->Caption = "B: " + IntToStr((int) b);
-    lb_c3d_showH->Caption = "H: " + IntToStr((int) h);
-    lb_c3d_showS->Caption = "S: " + FloatToStr((float) s);
-    lb_c3d_showV->Caption = "V: " + IntToStr((int) v);
+	i = (double (int (i * 10))) /10.0;
+	h = (double (int (h * 10))) /10.0;
+	s = (double (int (s * 1000))) /1000.0;
+
+	lb_c3d_showX->Caption = "X: " + IntToStr((int) X);
+	lb_c3d_showY->Caption = "Y: " + IntToStr((int) Y);
+	lb_c3d_showR->Caption = "R: " + IntToStr((int) r);
+	lb_c3d_showG->Caption = "G: " + IntToStr((int) g);
+	lb_c3d_showB->Caption = "B: " + IntToStr((int) b);
+	lb_c3d_showH->Caption = "H: " + IntToStr((int) h);
+	lb_c3d_showS->Caption = "S: " + FloatToStr((float) s);
+	lb_c3d_showV->Caption = "V: " + IntToStr((int) v);
+    }
+
     using namespace gui::event;
     foreach(bwptr < MouseMotionListener > listener, mouseMotionListenerVector) {
 	bptr < MouseMotionListener > l = listener.lock();
@@ -208,4 +213,5 @@ void TColorPickerFrame::setSimulatedColor(int r, int g, int b)
 {
     setColor(simulatedColor, r, g, b);
 }
+
 

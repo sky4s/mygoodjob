@@ -123,13 +123,14 @@ int THSVForm3::getValue()
 void THSVForm3::initGroupBoxBase(TGroupBox * groupBox_base)
 {
     int count = groupBox_base->ControlCount;
+    TColor fontColor = getValue() < 170 ? clWhite : clBlack;
     for (int x = 0; x < count; x++) {
 	TRadioButton *b = dynamic_cast < TRadioButton * >(groupBox_base->Controls[x]);
 	if (null != b) {
 	    int row = hintToRow(b->Hint.ToInt()) - 1;
 	    RGB_ptr rgb = getHueRGB(row);
 	    b->Color = rgb->getColor();
-
+	    b->Font->Color = fontColor;
 	}
     }
 }
@@ -732,7 +733,8 @@ void __fastcall THSVForm3::stringGrid_HSVDrawCell(TObject * Sender,
 	int height = stringGrid_HSV->DefaultRowHeight + 1;
 	int width = stringGrid_HSV->ColWidths[0];
 	stringGrid_HSV->Canvas->Rectangle(0, height * ARow, width, height * (ARow + 1));
-	stringGrid_HSV->Canvas->Font->Color = clBlack;
+	TColor fontColor = getValue() < 170 ? clWhite : clBlack;
+	stringGrid_HSV->Canvas->Font->Color = fontColor;
 	int hueAngle = index * 15;
 	stringGrid_HSV->Canvas->TextOut(0 + 4, height * ARow + 1, hueAngle);
     }
@@ -884,6 +886,7 @@ void __fastcall THSVForm3::RadioButton_deg60baseClick(TObject * Sender)
     if (null != button) {
 	setGridSelectRow(hintToRow(button->Hint.ToInt()));
     }
+    deChecked(GroupBox_30base);
 }
 
 int THSVForm3::hintToRow(int hint)
@@ -911,7 +914,18 @@ void __fastcall THSVForm3::RadioButton_deg30baseClick(TObject * Sender)
     if (null != button) {
 	setGridSelectRow(hintToRow(button->Hint.ToInt()));
     }
+    deChecked(GroupBox_60base);
+}
 
+void THSVForm3::deChecked(TGroupBox * groupBox_base)
+{
+    int count = groupBox_base->ControlCount;
+    for (int x = 0; x < count; x++) {
+	TRadioButton *b = dynamic_cast < TRadioButton * >(groupBox_base->Controls[x]);
+	if (null != b) {
+	    b->Checked = false;
+	}
+    }
 }
 
 //---------------------------------------------------------------------------

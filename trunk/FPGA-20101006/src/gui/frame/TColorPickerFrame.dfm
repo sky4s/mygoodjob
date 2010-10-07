@@ -12344,6 +12344,7 @@ object ColorPickerFrame: TColorPickerFrame
         Top = 0
         Width = 533
         Height = 370
+        OnMouseMove = imageMouseMove
       end
       object btn_img_next: TBitBtn
         Left = 492
@@ -12372,6 +12373,7 @@ object ColorPickerFrame: TColorPickerFrame
         Top = 0
         Width = 533
         Height = 370
+        OnMouseMove = imageMouseMove
       end
     end
   end

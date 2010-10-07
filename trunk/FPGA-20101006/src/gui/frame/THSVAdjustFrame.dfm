@@ -1,14 +1,14 @@
 object HSVAdjustFrame: THSVAdjustFrame
   Left = 0
   Top = 0
-  Width = 395
-  Height = 201
+  Width = 397
+  Height = 202
   TabOrder = 0
   object GroupBox40: TGroupBox
-    Left = 0
-    Top = -8
+    Left = 1
+    Top = -6
     Width = 395
-    Height = 80
+    Height = 70
     TabOrder = 0
     object lb_Hue_gain: TLabel
       Left = 335
@@ -42,7 +42,7 @@ object HSVAdjustFrame: THSVAdjustFrame
       OnChange = sb_Hue_gainChange
     end
     object Edit_c3d_Manual39_h_adj: TEdit
-      Left = 89
+      Left = 177
       Top = 10
       Width = 50
       Height = 24
@@ -52,10 +52,12 @@ object HSVAdjustFrame: THSVAdjustFrame
     end
   end
   object GroupBox41: TGroupBox
-    Left = 0
-    Top = 61
+    Left = 1
+    Top = 63
     Width = 395
-    Height = 76
+    Height = 70
+    Ctl3D = True
+    ParentCtl3D = False
     TabOrder = 1
     object lb_Sat_gain: TLabel
       Left = 335
@@ -101,7 +103,7 @@ object HSVAdjustFrame: THSVAdjustFrame
       Visible = False
     end
     object Edit_c3d_Manual39_s_adj: TEdit
-      Left = 89
+      Left = 177
       Top = 10
       Width = 50
       Height = 24
@@ -111,10 +113,10 @@ object HSVAdjustFrame: THSVAdjustFrame
     end
   end
   object GroupBox7: TGroupBox
-    Left = 0
-    Top = 128
-    Width = 393
-    Height = 73
+    Left = 1
+    Top = 132
+    Width = 395
+    Height = 70
     TabOrder = 2
     object lb_Val_gain: TLabel
       Left = 335
@@ -148,7 +150,7 @@ object HSVAdjustFrame: THSVAdjustFrame
       OnChange = sb_Val_gainChange
     end
     object Edit_c3d_Manual39_v_adj: TEdit
-      Left = 89
+      Left = 177
       Top = 9
       Width = 50
       Height = 24

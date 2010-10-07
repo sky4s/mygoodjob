@@ -405,7 +405,7 @@
 /*#define CM_EN   "CM_EN,40,0,1"
 #define CM_DEMO   "CM_DEMO,40,1,1"
 #define CM_DEMO_LEFT   "CM_DEMO_LEFT,40,2,1"
-#define CM_SEL   "CM_SEL,40,3,2"
+/*#define CM_SEL   "CM_SEL,40,3,2"
 #define CM1                "CM1,614,9,10,2"      //  
 #define CM2                "CM2,638,9,10,2"      // 
 #define CM3                "CM3,662,9,10,2"      //
@@ -414,19 +414,17 @@
 #define ofs3               "ofs3,656,3,10,2"     //*/
 
 //11307
-#define CM_EN           "CM_EN,59,4,1"
-#define CM_DEMO         "CM_DEMO,59,5,1"
-#define CM_DEMO_LEFT   "CM_DEMO_LEFT,40,2,1"
-#define CM_SEL          "CM_SEL,59,6,2"
-#define CM1             "CM1,310,9,10,2"
-#define CM2             "CM2,334,9,10,2"
-#define CM3             "CM3,358,9,10,2"
-#define ofs1            "ofs1,304,3,10,2"
-#define ofs2            "ofs2,328,3,10,2"
-#define ofs3            "ofs3,352,3,10,2"
+#define CM_EN              "CM_EN,39,0,1"        //
+#define CM_SEL             "CM_SEL,39,1,2"       //
+#define CM_DEMO         "CM_DEMO,39,3,1"   //
+#define CM_DEMO_LEFT       "CM_DEMO_LEFT,39,4,1" //
 
-#define CM_DEMO_EN         "CM_DEMO_EN,39,3,1"	//
-#define CM_DEMO_SIDE       "CM_DEMO_SIDE,39,4,1"	//
+#define CM1                "CM1,208,9,10,2"      //  
+#define CM2                "CM2,232,9,10,2"      // 
+#define CM3                "CM3,256,9,10,2"      //
+#define ofs1               "ofs1,226,3,10,2"     //
+#define ofs2               "ofs2,250,3,10,2"     //
+#define ofs3               "ofs3,274,3,10,2"     //
 
 ////////////////////////// Sharpness /////////////////////////////
 #define SP_EN   "SP_EN,116,0,1"
@@ -449,16 +447,17 @@
 ///////////////////////// HSV ////////////////////////////////
 /*#define HUE_EN   "HUE_EN,162,0,1"
 #define HUE_DEMO   "HUE_DEMO,162,1,1"*/
-#define HUE_DEMO_LEFT   "HUE_DEMO_LEFT,162,2,1"
-#define V_OFS_EN           "V_OFS_EN,162,3,1"	//
+//#define HUE_DEMO_LEFT   "HUE_DEMO_LEFT,162,2,1"
+//#define V_OFS_EN           "V_OFS_EN,162,3,1" //
 //#define HSVlut             "HSVlut,784,72,8,1"            //
 
 //11307
-#define HUE_EN          "HUE_EN,67,0,1"
-#define HUE_DEMO        "HUE_DEMO,67,1,1"
-#define HSVlut          "HSVlut,992,72,8,1"
+#define HUE_EN             "HUE_EN,39,5,1"	//
+#define HUE_DEMO        "HUE_DEMO,39,6,1"	//
+#define HUE_DEMO_LEFT      "HUE_DEMO_LEFT,40,6,1"	//
+#define V_OFS_EN           "V_OFS_EN,40,5,1"	//
 
-#define HUE_DEMO_EN        "HUE_DEMO_EN,39,6,1"	//
+#define HSVlut             "HSVlut,320,72,8,1"	//
 
 /////////////////////////Contrast Enhance/////////////////////////
 #define LC_EN   "LC_EN,137,0,1"
