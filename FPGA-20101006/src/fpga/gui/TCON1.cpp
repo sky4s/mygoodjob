@@ -1,7 +1,7 @@
 //---------------------------------------------------------------------------
 
 #include <vcl.h>
-#include <fpga/includeall.h>
+#include <fpga/includeallfpga.h>
 #pragma hdrstop
 #include "TCON1.h"
 

@@ -1,5 +1,5 @@
 //---------------------------------------------------------------------------
-#include <fpga/includeall.h>
+#include <fpga/includeallfpga.h>
 #pragma hdrstop
 
 #include "TCON_11307.h"
