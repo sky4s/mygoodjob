@@ -1,12 +1,9 @@
 //---------------------------------------------------------------------------
 
-
+#include <fpga/includeall.h>
 #pragma hdrstop
 
 #include "DCR_12401.h"
-#include "Engineering.h"
-#include "TCON_11307.h"
-#include "auo_11307_address.h"
 
 //---------------------------------------------------------------------------
 

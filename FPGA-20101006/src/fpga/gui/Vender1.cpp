@@ -3,11 +3,11 @@
 //---------------------------------------------------------------------------
 
 #include <vcl.h>
+#include <lib/includeall.h>
 #pragma hdrstop
 
 #include "Vender1.h"
 #include <fpga/11307/Vender/Vend_11307.h>
-#include "Engineering.h"
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
 #pragma resource "*.dfm"

@@ -13,10 +13,11 @@
 #include <ComCtrls.hpp>
 #include <ExtCtrls.hpp>
 #include <Grids.hpp>
-#include "Unit1.h"
-#include "Engineering.h"
 #include <Dialogs.hpp>
 #include <Buttons.hpp>
+
+#include "Unit1.h"
+
 
 class AbstCE {
   public:

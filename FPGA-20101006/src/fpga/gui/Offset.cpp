@@ -1,12 +1,11 @@
 //---------------------------------------------------------------------------
 
 #include <vcl.h>
+#include <lib/includeall.h>
 #pragma hdrstop
-#include <vcl.h>
-#pragma hdrstop
+
 #include "offset_11307.h"
-#include "Engineering.h"
-#include "offset.h"
+#include "Offset.h"
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
 #pragma resource "*.dfm"

@@ -1,10 +1,9 @@
 //---------------------------------------------------------------------------
 
 #include <vcl.h>
+#include <fpga/includeall.h>
 #pragma hdrstop
 #include "TCON1.h"
-#include <fpga/11307/TCON/TCON_11307.h>
-#include "Engineering.h"
 
 //---------------------------------------------------------------------------
 #pragma package(smart_init)

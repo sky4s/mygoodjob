@@ -1,11 +1,10 @@
 //---------------------------------------------------------------------------
 
 #include <vcl.h>
+#include <lib/includeall.h>
 #pragma hdrstop
-#include <vcl.h>
-#pragma hdrstop
+
 #include "SAT_11307.h"
-#include "Engineering.h"
 #include "SAT.h"
 //---------------------------------------------------------------------------
 #pragma package(smart_init)

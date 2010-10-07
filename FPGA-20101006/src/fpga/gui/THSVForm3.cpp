@@ -8,12 +8,11 @@
 //////////////////////////////////////////////////////////////////////////////
 
 #include <vcl.h>
-#include <includeall.h>
+#include <lib/includeall.h>
 #pragma hdrstop
 
 #include "THSVForm3.h"
 #include <fpga/11307/ImageProcess/ImgProc_11307.h>
-#include "Engineering.h"
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
 #pragma link "TColorPickerFrame"

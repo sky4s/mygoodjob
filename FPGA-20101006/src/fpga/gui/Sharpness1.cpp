@@ -2,11 +2,12 @@
 //---------------------------------------------------------------------------
 
 #include <vcl.h>
+#include <lib/includeall.h>
 #pragma hdrstop
+
 #include <math.h>
 #include "Sharpness1.h"
 #include <fpga/11307/ImageProcess/ImgProc_11307.h>
-#include "Engineering.h"
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
 #pragma resource "*.dfm"

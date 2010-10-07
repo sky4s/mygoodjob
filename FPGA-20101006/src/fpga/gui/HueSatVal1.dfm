@@ -1,8 +1,8 @@
 object HSVForm1: THSVForm1
-  Left = 366
-  Top = 149
-  Width = 917
-  Height = 669
+  Left = 156
+  Top = 45
+  Width = 891
+  Height = 721
   Caption = 'HSV'
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
