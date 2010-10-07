@@ -1,9 +1,8 @@
 //---------------------------------------------------------------------------
+#include <fpga/includeall.h>
 #pragma hdrstop
 
 #include "ImgProc_11307.h"
-#include "TCON_11307.h"
-#include "auo_11307_address.h"
 //---------------------------------------------------------------------------
 
 #pragma package(smart_init)

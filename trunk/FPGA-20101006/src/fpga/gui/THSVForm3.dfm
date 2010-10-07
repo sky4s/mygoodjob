@@ -1,8 +1,8 @@
 object HSVForm3: THSVForm3
-  Left = 226
-  Top = 73
-  Width = 1001
-  Height = 905
+  Left = 144
+  Top = 3
+  Width = 993
+  Height = 767
   Caption = 'HSV'
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
@@ -7049,7 +7049,7 @@ object HSVForm3: THSVForm3
       Left = 16
       Top = 632
       Width = 193
-      Height = 25
+      Height = 24
       TabOrder = 11
       Text = 'Edit1'
     end
@@ -7085,7 +7085,7 @@ object HSVForm3: THSVForm3
   end
   object GroupBox29: TGroupBox
     Left = 658
-    Top = 723
+    Top = 731
     Width = 336
     Height = 228
     Caption = 'HSV Change'

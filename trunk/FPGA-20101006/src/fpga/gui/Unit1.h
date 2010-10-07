@@ -25,6 +25,8 @@
 //本項目內頭文件
 #include <addresstype/Address_type.h>
 #include "gui_class.h"
+
+//本項目內gui頭文件
 #include "Engineering.h"
 #include "TCON1.h"
 #include "Function1.h"
@@ -36,8 +38,7 @@
 #include "HueSatVal1.h"
 #include "C3D1.h"
 #include "SAT.h"
-#include "offset.h"
-//本項目內gui頭文件
+#include "Offset.h"
 
 //---------------------------------------------------------------------------
 class TMainForm:public TForm {

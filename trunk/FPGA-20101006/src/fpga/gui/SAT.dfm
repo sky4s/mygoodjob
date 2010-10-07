@@ -8,7 +8,7 @@ object SATForm: TSATForm
   DefaultMonitor = dmDesktop
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
-  Font.Height = -11
+  Font.Height = -14
   Font.Name = 'MS Sans Serif'
   Font.Style = []
   FormStyle = fsMDIChild
@@ -18,20 +18,20 @@ object SATForm: TSATForm
   OnClose = FormClose
   OnCreate = FormCreate
   OnKeyDown = FormKeyDown
-  PixelsPerInch = 96
-  TextHeight = 13
+  PixelsPerInch = 120
+  TextHeight = 16
   object Label1: TLabel
-    Left = 40
-    Top = 72
-    Width = 73
-    Height = 13
+    Left = 49
+    Top = 89
+    Width = 41
+    Height = 16
     Caption = 'Label1'
   end
   object btn_reload: TBitBtn
-    Left = 8
-    Top = 412
-    Width = 73
-    Height = 25
+    Left = 10
+    Top = 507
+    Width = 90
+    Height = 31
     Caption = '&Reload'
     ModalResult = 6
     TabOrder = 0
@@ -56,42 +56,42 @@ object SATForm: TSATForm
     NumGlyphs = 2
   end
   object CheckBox1: TCheckBox
-    Left = 40
-    Top = 32
-    Width = 97
-    Height = 17
+    Left = 49
+    Top = 39
+    Width = 120
+    Height = 21
     Caption = 'CheckBox1'
     TabOrder = 1
   end
   object CheckBox2: TCheckBox
-    Left = 168
-    Top = 32
-    Width = 97
-    Height = 17
+    Left = 207
+    Top = 39
+    Width = 119
+    Height = 21
     Caption = 'CheckBox2'
     TabOrder = 2
   end
   object CheckBox3: TCheckBox
-    Left = 304
-    Top = 32
-    Width = 97
-    Height = 17
+    Left = 374
+    Top = 39
+    Width = 120
+    Height = 21
     Caption = 'CheckBox3'
     TabOrder = 3
   end
   object ScrollBar1: TScrollBar
-    Left = 112
-    Top = 72
-    Width = 121
-    Height = 17
+    Left = 138
+    Top = 89
+    Width = 149
+    Height = 21
     PageSize = 0
     TabOrder = 4
   end
   object StaticText1: TStaticText
-    Left = 240
-    Top = 72
-    Width = 58
-    Height = 17
+    Left = 295
+    Top = 89
+    Width = 70
+    Height = 20
     Caption = 'StaticText1'
     TabOrder = 5
   end
