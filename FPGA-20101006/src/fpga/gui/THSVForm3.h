@@ -124,7 +124,7 @@ class THSVForm3:public TForm {
     TRadioButton *RadioButton_deg180;
     TRadioButton *RadioButton_deg240;
     TRadioButton *RadioButton_deg300;
-    TButton *Button_InterpTo30base;
+    TButton *Button_60BaseInterp;
     TGroupBox *GroupBox_30base;
     TRadioButton *RadioButton_deg30;
     TRadioButton *RadioButton_deg90;
@@ -132,11 +132,10 @@ class THSVForm3:public TForm {
     TRadioButton *RadioButton_deg210;
     TRadioButton *RadioButton_deg270;
     TRadioButton *RadioButton_deg330;
-    TButton *Button_InterpTo15base;
+    TButton *Button_30BaseInterp;
     TRadioGroup *RadioGroup_Saturation;
     TRadioGroup *RadioGroup_Value;
     TCheckBox *CheckBox_AutoSet;
-    TEdit *Edit1;
     void __fastcall cb_Hue_RedClick(TObject * Sender);
     void __fastcall cb_Hue_YellowClick(TObject * Sender);
     void __fastcall cb_Hue_GreenClick(TObject * Sender);
@@ -194,10 +193,12 @@ class THSVForm3:public TForm {
 
     void deg60baseClick(TObject * Sender);
     void deg30baseClick(TObject * Sender);
+
     void drawStringGrid_HSVCell(TObject * Sender);
     void setGridSelectRow(int row);
     int getGridSelectRow();
     void initGroupBoxBase(TGroupBox * groupBox_base);
+    void deChecked(TGroupBox * groupBox_base);
     int hintToRow(int hint);
     void setGainCaption(int h, int s, int v);
     int lastStringGridSelectRow;

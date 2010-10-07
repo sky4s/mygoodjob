@@ -6483,11 +6483,11 @@ object HSVForm3: THSVForm3
     object stringGrid_HSV: TStringGrid
       Left = 772
       Top = 45
-      Width = 173
-      Height = 436
+      Width = 189
+      Height = 676
       Cursor = crIBeam
       ColCount = 4
-      DefaultColWidth = 40
+      DefaultColWidth = 38
       DefaultRowHeight = 16
       RowCount = 25
       Options = [goFixedVertLine, goFixedHorzLine, goVertLine, goHorzLine, goRangeSelect, goDrawFocusSelected, goEditing, goTabs, goRowSelect]
@@ -6537,9 +6537,9 @@ object HSVForm3: THSVForm3
       TabOrder = 9
       inline hsvAdjust: THSVAdjustFrame
         Left = 14
-        Top = 40
-        Width = 395
-        Height = 201
+        Top = 32
+        Width = 403
+        Height = 209
         TabOrder = 0
         inherited GroupBox40: TGroupBox
           inherited sb_Hue_gain: TScrollBar
@@ -6905,12 +6905,12 @@ object HSVForm3: THSVForm3
             TabOrder = 5
             OnClick = RadioButton_deg60baseClick
           end
-          object Button_InterpTo30base: TButton
+          object Button_60BaseInterp: TButton
             Left = 8
             Top = 160
             Width = 65
             Height = 25
-            Caption = #8594'30'#176' '
+            Caption = 'Interp.'
             Font.Charset = DEFAULT_CHARSET
             Font.Color = clWindowText
             Font.Height = -13
@@ -6999,12 +6999,12 @@ object HSVForm3: THSVForm3
             TabOrder = 5
             OnClick = RadioButton_deg30baseClick
           end
-          object Button_InterpTo15base: TButton
+          object Button_30BaseInterp: TButton
             Left = 8
             Top = 160
             Width = 65
             Height = 25
-            Caption = #8594'15'#176' '
+            Caption = 'Interp.'
             Font.Charset = DEFAULT_CHARSET
             Font.Color = clWindowText
             Font.Height = -13
@@ -7044,14 +7044,6 @@ object HSVForm3: THSVForm3
         TabOrder = 3
         OnClick = RadioGroup_ValueClick
       end
-    end
-    object Edit1: TEdit
-      Left = 16
-      Top = 632
-      Width = 193
-      Height = 24
-      TabOrder = 11
-      Text = 'Edit1'
     end
   end
   object btn_Hue_Img_load: TButton
@@ -7302,11 +7294,11 @@ object HSVForm3: THSVForm3
     Visible = False
   end
   object OpenDialog1: TOpenDialog
-    Left = 880
-    Top = 552
+    Left = 944
+    Top = 696
   end
   object SaveDialog1: TSaveDialog
-    Left = 856
-    Top = 552
+    Left = 920
+    Top = 696
   end
 end

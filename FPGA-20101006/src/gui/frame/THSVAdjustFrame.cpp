@@ -148,3 +148,4 @@ double_array THSVAdjustFrame::getHSVGain(double h, double s, double v, int row)
     return nil_double_array;
 }
 
+
