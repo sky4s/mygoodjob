@@ -1,13 +1,13 @@
 object HSVForm3: THSVForm3
-  Left = 144
-  Top = 3
+  Left = 287
+  Top = 0
   Width = 993
-  Height = 767
+  Height = 708
   Caption = 'HSV'
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
-  Font.Height = -14
+  Font.Height = -11
   Font.Name = 'MS Sans Serif'
   Font.Style = []
   FormStyle = fsMDIChild
@@ -19,13 +19,13 @@ object HSVForm3: THSVForm3
   OnCreate = FormCreate
   OnKeyDown = FormKeyDown
   OnShow = FormShow
-  PixelsPerInch = 120
-  TextHeight = 16
+  PixelsPerInch = 96
+  TextHeight = 13
   object Hue_Img: TImage
-    Left = 1086
-    Top = 559
-    Width = 287
-    Height = 277
+    Left = 882
+    Top = 454
+    Width = 234
+    Height = 225
     ParentShowHint = False
     Picture.Data = {
       07544269746D61703A070300424D3A0703000000000036000000280000000101
@@ -6239,134 +6239,134 @@ object HSVForm3: THSVForm3
   end
   object GroupBox28: TGroupBox
     Left = 2
-    Top = 727
-    Width = 651
-    Height = 284
+    Top = 591
+    Width = 529
+    Height = 230
     Caption = 'Adjust HSV'
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clWindowText
-    Font.Height = -15
+    Font.Height = -12
     Font.Name = 'MS Sans Serif'
     Font.Style = []
     ParentFont = False
     TabOrder = 3
     Visible = False
     object Label1: TLabel
-      Left = 30
-      Top = 118
-      Width = 42
-      Height = 16
+      Left = 24
+      Top = 96
+      Width = 37
+      Height = 13
       Caption = #9651'Hue'
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clWindowText
-      Font.Height = -15
+      Font.Height = -12
       Font.Name = 'MS Sans Serif'
       Font.Style = [fsBold]
       ParentFont = False
     end
     object lb_Hue_gain: TLabel
-      Left = 98
-      Top = 118
-      Width = 11
-      Height = 16
+      Left = 80
+      Top = 96
+      Width = 10
+      Height = 13
       Caption = '0'#176
     end
     object Label136: TLabel
-      Left = 30
-      Top = 69
-      Width = 61
-      Height = 16
+      Left = 24
+      Top = 56
+      Width = 51
+      Height = 13
       Caption = 'Diffusion'
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clWindowText
-      Font.Height = -15
+      Font.Height = -12
       Font.Name = 'MS Sans Serif'
       Font.Style = [fsBold]
       ParentFont = False
     end
     object lb_dif_n: TLabel
-      Left = 98
-      Top = 69
-      Width = 11
-      Height = 16
+      Left = 80
+      Top = 56
+      Width = 10
+      Height = 13
       Caption = '0'#176
     end
     object lb_dif_p: TLabel
-      Left = 542
-      Top = 69
-      Width = 11
-      Height = 16
+      Left = 440
+      Top = 56
+      Width = 10
+      Height = 13
       Caption = '0'#176
     end
     object Label192: TLabel
-      Left = 138
-      Top = 89
-      Width = 34
-      Height = 16
+      Left = 112
+      Top = 72
+      Width = 26
+      Height = 13
       Caption = '(Neg)'
     end
     object Label193: TLabel
-      Left = 502
-      Top = 89
-      Width = 32
-      Height = 16
+      Left = 408
+      Top = 72
+      Width = 24
+      Height = 13
       Caption = '(Pos)'
     end
     object lb_Sat_gain: TLabel
-      Left = 98
-      Top = 161
-      Width = 7
-      Height = 16
+      Left = 80
+      Top = 131
+      Width = 6
+      Height = 13
       Caption = '1'
     end
     object Label2: TLabel
-      Left = 10
-      Top = 161
-      Width = 71
-      Height = 16
+      Left = 8
+      Top = 131
+      Width = 59
+      Height = 13
       Caption = 'Saturation'
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clWindowText
-      Font.Height = -15
+      Font.Height = -12
       Font.Name = 'MS Sans Serif'
       Font.Style = [fsBold]
       ParentFont = False
     end
     object Label3: TLabel
-      Left = 10
-      Top = 207
-      Width = 75
-      Height = 16
+      Left = 8
+      Top = 168
+      Width = 62
+      Height = 13
       Caption = 'Luminance'
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clWindowText
-      Font.Height = -15
+      Font.Height = -12
       Font.Name = 'MS Sans Serif'
       Font.Style = [fsBold]
       ParentFont = False
     end
     object lb_Val_gain: TLabel
-      Left = 98
-      Top = 207
-      Width = 11
-      Height = 16
+      Left = 80
+      Top = 168
+      Width = 10
+      Height = 13
       Caption = '0'#176
     end
     object sb_Hue_gain: TScrollBar
-      Left = 148
-      Top = 118
-      Width = 375
-      Height = 21
+      Left = 120
+      Top = 96
+      Width = 305
+      Height = 17
       Max = 96
       Min = -96
       PageSize = 0
       TabOrder = 0
     end
     object sb_dif_n: TScrollBar
-      Left = 148
-      Top = 69
-      Width = 188
-      Height = 21
+      Left = 120
+      Top = 56
+      Width = 153
+      Height = 17
       Max = 4
       PageSize = 0
       Position = 4
@@ -6374,30 +6374,30 @@ object HSVForm3: THSVForm3
       OnChange = sb_dif_nChange
     end
     object sb_dif_p: TScrollBar
-      Left = 335
-      Top = 69
-      Width = 188
-      Height = 21
+      Left = 272
+      Top = 56
+      Width = 153
+      Height = 17
       Max = 4
       PageSize = 0
       TabOrder = 2
       OnChange = sb_dif_pChange
     end
     object sb_Sat_gain: TScrollBar
-      Left = 148
-      Top = 158
-      Width = 375
-      Height = 20
+      Left = 120
+      Top = 128
+      Width = 305
+      Height = 17
       Max = 127
       PageSize = 0
       Position = 32
       TabOrder = 3
     end
     object sb_Val_gain: TScrollBar
-      Left = 148
-      Top = 207
-      Width = 375
-      Height = 21
+      Left = 120
+      Top = 168
+      Width = 305
+      Height = 17
       Max = 63
       Min = -64
       PageSize = 0
@@ -6405,32 +6405,32 @@ object HSVForm3: THSVForm3
     end
   end
   object GroupBox1: TGroupBox
-    Left = 8
+    Left = 7
     Top = 0
-    Width = 969
-    Height = 729
+    Width = 787
+    Height = 592
     TabOrder = 0
     object CheckBox1: TCheckBox
-      Left = 159
-      Top = 10
-      Width = 106
-      Height = 21
+      Left = 129
+      Top = 8
+      Width = 86
+      Height = 17
       Caption = 'CheckBox1'
       TabOrder = 0
     end
     object CheckBox2: TCheckBox
-      Left = 255
-      Top = 10
-      Width = 106
-      Height = 21
+      Left = 207
+      Top = 8
+      Width = 86
+      Height = 17
       Caption = 'CheckBox2'
       TabOrder = 1
     end
     object rg_HSV_Mode: TRadioGroup
-      Left = 10
-      Top = 41
-      Width = 143
-      Height = 51
+      Left = 8
+      Top = 33
+      Width = 116
+      Height = 42
       Caption = 'HUE/Sat Mode'
       Columns = 3
       Items.Strings = (
@@ -6441,14 +6441,14 @@ object HSVForm3: THSVForm3
       OnClick = rg_HSV_ModeClick
     end
     object btn_hsv_load: TButton
-      Left = 12
-      Top = 10
-      Width = 70
-      Height = 31
+      Left = 10
+      Top = 8
+      Width = 57
+      Height = 25
       Caption = 'Load File'
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clWindowText
-      Font.Height = -10
+      Font.Height = -9
       Font.Name = 'MS Sans Serif'
       Font.Style = []
       ParentFont = False
@@ -6456,35 +6456,35 @@ object HSVForm3: THSVForm3
       OnClick = btn_hsv_loadClick
     end
     object btn_hsv_save: TButton
-      Left = 84
-      Top = 10
-      Width = 70
-      Height = 31
+      Left = 68
+      Top = 8
+      Width = 57
+      Height = 25
       Caption = 'Save File'
       TabOrder = 4
       OnClick = btn_hsv_saveClick
     end
     object CheckBox3: TCheckBox
-      Left = 359
-      Top = 10
-      Width = 106
-      Height = 21
+      Left = 292
+      Top = 8
+      Width = 86
+      Height = 17
       Caption = 'CheckBox3'
       TabOrder = 5
     end
     object CheckBox4: TCheckBox
-      Left = 463
-      Top = 10
-      Width = 106
-      Height = 21
+      Left = 376
+      Top = 8
+      Width = 86
+      Height = 17
       Caption = 'CheckBox4'
       TabOrder = 6
     end
     object stringGrid_HSV: TStringGrid
-      Left = 772
-      Top = 45
-      Width = 189
-      Height = 676
+      Left = 627
+      Top = 37
+      Width = 154
+      Height = 549
       Cursor = crIBeam
       ColCount = 4
       DefaultColWidth = 38
@@ -6522,75 +6522,235 @@ object HSVForm3: THSVForm3
         16)
     end
     inline colorPicker: TColorPickerFrame
-      Left = 216
-      Top = 40
-      Width = 552
-      Height = 420
+      Left = 176
+      Top = 33
+      Width = 448
+      Height = 341
       TabOrder = 8
+      inherited lb_c3d_showV: TLabel
+        Left = 320
+        Top = 328
+      end
+      inherited lb_c3d_showS: TLabel
+        Left = 272
+        Top = 328
+      end
+      inherited lb_c3d_showH: TLabel
+        Left = 232
+        Top = 328
+      end
+      inherited lb_c3d_showB: TLabel
+        Left = 184
+        Top = 328
+      end
+      inherited lb_c3d_showG: TLabel
+        Left = 144
+        Top = 328
+      end
+      inherited lb_c3d_showR: TLabel
+        Left = 106
+        Top = 328
+      end
+      inherited lb_c3d_showY: TLabel
+        Left = 56
+        Top = 328
+      end
+      inherited lb_c3d_showX: TLabel
+        Left = 18
+        Top = 328
+      end
+      inherited pc_img: TPageControl
+        Width = 448
+        Height = 328
+        inherited ts_image: TTabSheet
+          inherited ScrollBox1: TScrollBox
+            Width = 441
+            Height = 305
+            inherited image: TImage
+              Width = 433
+              Height = 301
+            end
+          end
+        end
+        inherited ts_color: TTabSheet
+          inherited originalColor: TImage
+            Width = 433
+            Height = 301
+          end
+          inherited btn_img_next: TBitBtn
+            Left = 400
+            Top = 264
+            Width = 25
+            Height = 25
+          end
+          inherited btn_img_prev: TBitBtn
+            Left = 368
+            Top = 264
+            Width = 25
+            Height = 25
+          end
+        end
+        inherited TabSheet3: TTabSheet
+          inherited simulatedColor: TImage
+            Width = 433
+            Height = 301
+          end
+        end
+      end
+      inherited btn_c3d_load_img: TButton
+        Left = 232
+        Top = 5
+        Width = 65
+        Height = 15
+      end
+      inherited cb_show_ref_img: TCheckBox
+        Left = 306
+        Top = 5
+        Width = 129
+        Height = 16
+      end
     end
     object GroupBox2: TGroupBox
-      Left = 216
-      Top = 472
-      Width = 553
-      Height = 249
+      Left = 176
+      Top = 384
+      Width = 449
+      Height = 202
       Caption = 'HSV Adjustment'
       TabOrder = 9
       inline hsvAdjust: THSVAdjustFrame
-        Left = 14
-        Top = 32
-        Width = 403
-        Height = 209
+        Left = 11
+        Top = 26
+        Width = 328
+        Height = 170
         TabOrder = 0
         inherited GroupBox40: TGroupBox
+          Top = -5
+          Width = 321
+          Height = 57
+          inherited lb_Hue_gain: TLabel
+            Left = 272
+            Top = 32
+          end
+          inherited Label197: TLabel
+            Left = 8
+            Top = 24
+            Width = 20
+            Height = 13
+            Font.Height = -12
+          end
           inherited sb_Hue_gain: TScrollBar
+            Left = 63
+            Top = 32
+            Width = 200
+            Height = 17
             Max = 96
             Min = -96
             Position = 0
             OnChange = hsvAdjustsb_c3d_Manual39_hChange
           end
           inherited Edit_c3d_Manual39_h_adj: TEdit
+            Left = 144
+            Top = 8
+            Width = 40
+            Height = 24
             Visible = False
           end
         end
         inherited GroupBox41: TGroupBox
+          Top = 51
+          Width = 321
+          Height = 57
+          inherited lb_Sat_gain: TLabel
+            Left = 272
+            Top = 32
+          end
+          inherited Label207: TLabel
+            Left = 8
+            Top = 24
+            Width = 45
+            Height = 13
+            Font.Height = -12
+          end
           inherited sb_Sat_gain: TScrollBar
+            Left = 63
+            Top = 32
+            Width = 200
+            Height = 17
             Max = 127
             Position = 32
             OnChange = hsvAdjustsb_c3d_Manual39_hChange
           end
+          inherited edt_c3d_satC: TEdit
+            Left = 5
+            Top = 6
+            Width = 24
+            Height = 24
+          end
           inherited Edit_c3d_Manual39_s_adj: TEdit
+            Left = 144
+            Top = 8
+            Width = 40
+            Height = 24
             Visible = False
           end
         end
         inherited GroupBox7: TGroupBox
+          Top = 107
+          Width = 321
+          Height = 57
+          inherited lb_Val_gain: TLabel
+            Left = 272
+            Top = 33
+          end
+          inherited Label25: TLabel
+            Left = 4
+            Top = 27
+            Width = 49
+            Height = 13
+            Font.Height = -12
+          end
           inherited sb_Val_gain: TScrollBar
+            Left = 63
+            Top = 29
+            Width = 200
+            Height = 17
             Max = 63
             Min = -64
             Position = 0
             OnChange = hsvAdjustsb_c3d_Manual39_hChange
           end
           inherited Edit_c3d_Manual39_v_adj: TEdit
+            Left = 144
+            Top = 7
+            Width = 40
+            Height = 24
             Visible = False
+          end
+          inherited edt_c3d_valC: TEdit
+            Left = 8
+            Top = 7
+            Width = 25
+            Height = 24
           end
         end
       end
       object cb_Hue_rotation: TCheckBox
-        Left = 14
-        Top = 14
-        Width = 89
-        Height = 20
+        Left = 11
+        Top = 11
+        Width = 73
+        Height = 17
         Caption = 'Global'
         TabOrder = 1
       end
       object btn_set: TButton
-        Left = 485
-        Top = 35
-        Width = 60
-        Height = 31
+        Left = 394
+        Top = 28
+        Width = 49
+        Height = 26
         Caption = 'Set'
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clWindowText
-        Font.Height = -15
+        Font.Height = -12
         Font.Name = 'MS Sans Serif'
         Font.Style = [fsBold]
         ParentFont = False
@@ -6598,14 +6758,14 @@ object HSVForm3: THSVForm3
         OnClick = btn_setClick
       end
       object btn_reset: TButton
-        Left = 485
-        Top = 68
-        Width = 60
-        Height = 31
+        Left = 394
+        Top = 55
+        Width = 49
+        Height = 25
         Caption = 'Reset'
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clWindowText
-        Font.Height = -15
+        Font.Height = -12
         Font.Name = 'MS Sans Serif'
         Font.Style = [fsBold]
         ParentFont = False
@@ -6613,14 +6773,14 @@ object HSVForm3: THSVForm3
         OnClick = btn_resetClick
       end
       object btn_hsv_write: TButton
-        Left = 485
-        Top = 102
-        Width = 60
-        Height = 30
+        Left = 394
+        Top = 83
+        Width = 49
+        Height = 24
         Caption = 'Write'
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clWindowText
-        Font.Height = -15
+        Font.Height = -12
         Font.Name = 'MS Sans Serif'
         Font.Style = [fsBold]
         ParentFont = False
@@ -6628,14 +6788,14 @@ object HSVForm3: THSVForm3
         OnClick = btn_hsv_writeClick
       end
       object btn_hsv_read: TButton
-        Left = 485
-        Top = 135
-        Width = 60
-        Height = 31
+        Left = 394
+        Top = 110
+        Width = 49
+        Height = 25
         Caption = 'Read'
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clWindowText
-        Font.Height = -15
+        Font.Height = -12
         Font.Name = 'MS Sans Serif'
         Font.Style = [fsBold]
         ParentFont = False
@@ -6643,10 +6803,10 @@ object HSVForm3: THSVForm3
         OnClick = btn_hsv_readClick
       end
       object Btn_HSV_reload: TBitBtn
-        Left = 456
-        Top = 170
-        Width = 89
-        Height = 31
+        Left = 371
+        Top = 138
+        Width = 72
+        Height = 25
         Caption = '&Reload'
         ModalResult = 6
         TabOrder = 6
@@ -6671,10 +6831,10 @@ object HSVForm3: THSVForm3
         NumGlyphs = 2
       end
       object CheckBox_AutoSet: TCheckBox
-        Left = 464
-        Top = 16
-        Width = 81
-        Height = 17
+        Left = 377
+        Top = 13
+        Width = 66
+        Height = 14
         Caption = 'Auto Set'
         Checked = True
         State = cbChecked
@@ -6682,135 +6842,135 @@ object HSVForm3: THSVForm3
       end
     end
     object GroupBox3: TGroupBox
-      Left = 8
-      Top = 96
-      Width = 201
-      Height = 521
+      Left = 7
+      Top = 78
+      Width = 163
+      Height = 423
       Caption = 'HSV Change'
       TabOrder = 10
       object GroupBox6: TGroupBox
-        Left = 8
-        Top = 344
-        Width = 177
-        Height = 169
+        Left = 7
+        Top = 280
+        Width = 143
+        Height = 137
         Caption = '15'#176' Base'
         TabOrder = 0
         Visible = False
         object RadioButton1: TRadioButton
-          Left = 8
-          Top = 16
-          Width = 65
-          Height = 25
+          Left = 7
+          Top = 13
+          Width = 52
+          Height = 20
           Caption = '15'#176
           Color = clBtnFace
           ParentColor = False
           TabOrder = 0
         end
         object RadioButton2: TRadioButton
-          Left = 8
-          Top = 136
-          Width = 65
-          Height = 25
+          Left = 7
+          Top = 111
+          Width = 52
+          Height = 20
           Caption = '165'#176
           Color = clBtnFace
           ParentColor = False
           TabOrder = 1
         end
         object RadioButton3: TRadioButton
-          Left = 8
-          Top = 40
-          Width = 65
-          Height = 25
+          Left = 7
+          Top = 33
+          Width = 52
+          Height = 20
           Caption = '45'#176
           Color = clBtnFace
           ParentColor = False
           TabOrder = 2
         end
         object RadioButton4: TRadioButton
-          Left = 8
-          Top = 64
-          Width = 65
-          Height = 25
+          Left = 7
+          Top = 52
+          Width = 52
+          Height = 20
           Caption = '75'#176
           Color = clBtnFace
           ParentColor = False
           TabOrder = 3
         end
         object RadioButton5: TRadioButton
-          Left = 8
-          Top = 88
-          Width = 65
-          Height = 25
+          Left = 7
+          Top = 72
+          Width = 52
+          Height = 20
           Caption = '105'#176
           Color = clBtnFace
           ParentColor = False
           TabOrder = 4
         end
         object RadioButton6: TRadioButton
-          Left = 8
-          Top = 112
-          Width = 65
-          Height = 25
+          Left = 7
+          Top = 91
+          Width = 52
+          Height = 20
           Caption = '135'#176
           Color = clBtnFace
           ParentColor = False
           TabOrder = 5
         end
         object RadioButton13: TRadioButton
-          Left = 96
-          Top = 16
-          Width = 65
-          Height = 25
+          Left = 78
+          Top = 13
+          Width = 53
+          Height = 20
           Caption = '195'#176
           Color = clBtnFace
           ParentColor = False
           TabOrder = 6
         end
         object RadioButton14: TRadioButton
-          Left = 96
-          Top = 40
-          Width = 65
-          Height = 25
+          Left = 78
+          Top = 33
+          Width = 53
+          Height = 20
           Caption = '225'#176
           Color = clBtnFace
           ParentColor = False
           TabOrder = 7
         end
         object RadioButton15: TRadioButton
-          Left = 96
-          Top = 64
-          Width = 65
-          Height = 25
+          Left = 78
+          Top = 52
+          Width = 53
+          Height = 20
           Caption = '255'#176
           Color = clBtnFace
           ParentColor = False
           TabOrder = 8
         end
         object RadioButton16: TRadioButton
-          Left = 96
-          Top = 88
-          Width = 65
-          Height = 25
+          Left = 78
+          Top = 72
+          Width = 53
+          Height = 20
           Caption = '285'#176
           Color = clBtnFace
           ParentColor = False
           TabOrder = 9
         end
         object RadioButton17: TRadioButton
-          Left = 96
-          Top = 112
-          Width = 65
-          Height = 25
+          Left = 78
+          Top = 91
+          Width = 53
+          Height = 20
           Caption = '315'#176
           Color = clBtnFace
           ParentColor = False
           TabOrder = 10
         end
         object RadioButton18: TRadioButton
-          Left = 96
-          Top = 136
-          Width = 65
-          Height = 25
+          Left = 78
+          Top = 111
+          Width = 53
+          Height = 20
           Caption = '345'#176
           Color = clBtnFace
           ParentColor = False
@@ -6818,24 +6978,24 @@ object HSVForm3: THSVForm3
         end
       end
       object GroupBox4: TGroupBox
-        Left = 8
-        Top = 16
-        Width = 185
-        Height = 217
+        Left = 7
+        Top = 13
+        Width = 150
+        Height = 176
         Caption = 'Hue'
         TabOrder = 1
         object GroupBox_60base: TGroupBox
-          Left = 8
-          Top = 16
-          Width = 81
-          Height = 193
+          Left = 7
+          Top = 13
+          Width = 65
+          Height = 157
           Caption = '60'#176' Base'
           TabOrder = 0
           object RadioButton_deg0: TRadioButton
-            Left = 8
-            Top = 16
-            Width = 65
-            Height = 25
+            Left = 7
+            Top = 13
+            Width = 52
+            Height = 20
             Hint = '0'
             Caption = 'R 0'#176
             Checked = True
@@ -6846,10 +7006,10 @@ object HSVForm3: THSVForm3
             OnClick = RadioButton_deg60baseClick
           end
           object RadioButton_deg60: TRadioButton
-            Left = 8
-            Top = 40
-            Width = 65
-            Height = 25
+            Left = 7
+            Top = 33
+            Width = 52
+            Height = 20
             Hint = '60'
             Caption = 'Y 60'#176
             Color = clBtnFace
@@ -6858,10 +7018,10 @@ object HSVForm3: THSVForm3
             OnClick = RadioButton_deg60baseClick
           end
           object RadioButton_deg120: TRadioButton
-            Left = 8
-            Top = 64
-            Width = 65
-            Height = 25
+            Left = 7
+            Top = 52
+            Width = 52
+            Height = 20
             Hint = '120'
             Caption = 'G 120'#176
             Color = clBtnFace
@@ -6870,10 +7030,10 @@ object HSVForm3: THSVForm3
             OnClick = RadioButton_deg60baseClick
           end
           object RadioButton_deg180: TRadioButton
-            Left = 8
-            Top = 88
-            Width = 65
-            Height = 25
+            Left = 7
+            Top = 72
+            Width = 52
+            Height = 20
             Hint = '180'
             Caption = 'C 180'#176
             Color = clBtnFace
@@ -6882,10 +7042,10 @@ object HSVForm3: THSVForm3
             OnClick = RadioButton_deg60baseClick
           end
           object RadioButton_deg240: TRadioButton
-            Left = 8
-            Top = 112
-            Width = 65
-            Height = 25
+            Left = 7
+            Top = 91
+            Width = 52
+            Height = 20
             Hint = '240'
             Caption = 'B 240'#176
             Color = clBtnFace
@@ -6894,10 +7054,10 @@ object HSVForm3: THSVForm3
             OnClick = RadioButton_deg60baseClick
           end
           object RadioButton_deg300: TRadioButton
-            Left = 8
-            Top = 136
-            Width = 65
-            Height = 25
+            Left = 7
+            Top = 111
+            Width = 52
+            Height = 20
             Hint = '300'
             Caption = 'M 300'#176
             Color = clBtnFace
@@ -6906,14 +7066,14 @@ object HSVForm3: THSVForm3
             OnClick = RadioButton_deg60baseClick
           end
           object Button_60BaseInterp: TButton
-            Left = 8
-            Top = 160
-            Width = 65
-            Height = 25
+            Left = 7
+            Top = 130
+            Width = 52
+            Height = 20
             Caption = 'Interp.'
             Font.Charset = DEFAULT_CHARSET
             Font.Color = clWindowText
-            Font.Height = -13
+            Font.Height = -11
             Font.Name = 'MS Sans Serif'
             Font.Style = []
             ParentFont = False
@@ -6921,17 +7081,17 @@ object HSVForm3: THSVForm3
           end
         end
         object GroupBox_30base: TGroupBox
-          Left = 88
-          Top = 16
-          Width = 89
-          Height = 193
+          Left = 72
+          Top = 13
+          Width = 72
+          Height = 157
           Caption = '30'#176' Base'
           TabOrder = 1
           object RadioButton_deg30: TRadioButton
-            Left = 8
-            Top = 16
-            Width = 73
-            Height = 25
+            Left = 7
+            Top = 13
+            Width = 59
+            Height = 20
             Hint = '30'
             Caption = 'RY 30'#176
             Color = clBtnFace
@@ -6940,10 +7100,10 @@ object HSVForm3: THSVForm3
             OnClick = RadioButton_deg30baseClick
           end
           object RadioButton_deg90: TRadioButton
-            Left = 8
-            Top = 40
-            Width = 73
-            Height = 25
+            Left = 7
+            Top = 33
+            Width = 59
+            Height = 20
             Hint = '90'
             Caption = 'GY 90'#176
             Color = clBtnFace
@@ -6952,10 +7112,10 @@ object HSVForm3: THSVForm3
             OnClick = RadioButton_deg30baseClick
           end
           object RadioButton_deg150: TRadioButton
-            Left = 8
-            Top = 64
-            Width = 73
-            Height = 25
+            Left = 7
+            Top = 52
+            Width = 59
+            Height = 20
             Hint = '150'
             Caption = 'GC 150'#176
             Color = clBtnFace
@@ -6964,10 +7124,10 @@ object HSVForm3: THSVForm3
             OnClick = RadioButton_deg30baseClick
           end
           object RadioButton_deg210: TRadioButton
-            Left = 8
-            Top = 88
-            Width = 73
-            Height = 25
+            Left = 7
+            Top = 72
+            Width = 59
+            Height = 20
             Hint = '210'
             Caption = 'BC 210'#176
             Color = clBtnFace
@@ -6976,10 +7136,10 @@ object HSVForm3: THSVForm3
             OnClick = RadioButton_deg30baseClick
           end
           object RadioButton_deg270: TRadioButton
-            Left = 8
-            Top = 112
-            Width = 73
-            Height = 25
+            Left = 7
+            Top = 91
+            Width = 59
+            Height = 20
             Hint = '270'
             Caption = 'BM 270'#176
             Color = clBtnFace
@@ -6988,10 +7148,10 @@ object HSVForm3: THSVForm3
             OnClick = RadioButton_deg30baseClick
           end
           object RadioButton_deg330: TRadioButton
-            Left = 8
-            Top = 136
-            Width = 73
-            Height = 25
+            Left = 7
+            Top = 111
+            Width = 59
+            Height = 20
             Hint = '330'
             Caption = 'RM 330'#176
             Color = clBtnFace
@@ -7000,14 +7160,14 @@ object HSVForm3: THSVForm3
             OnClick = RadioButton_deg30baseClick
           end
           object Button_30BaseInterp: TButton
-            Left = 8
-            Top = 160
-            Width = 65
-            Height = 25
+            Left = 7
+            Top = 130
+            Width = 52
+            Height = 20
             Caption = 'Interp.'
             Font.Charset = DEFAULT_CHARSET
             Font.Color = clWindowText
-            Font.Height = -13
+            Font.Height = -11
             Font.Name = 'MS Sans Serif'
             Font.Style = []
             ParentFont = False
@@ -7016,10 +7176,10 @@ object HSVForm3: THSVForm3
         end
       end
       object RadioGroup_Saturation: TRadioGroup
-        Left = 8
-        Top = 232
-        Width = 89
-        Height = 105
+        Left = 7
+        Top = 189
+        Width = 72
+        Height = 85
         Caption = 'Saturation'
         ItemIndex = 3
         Items.Strings = (
@@ -7031,10 +7191,10 @@ object HSVForm3: THSVForm3
         OnClick = RadioGroup_SaturationClick
       end
       object RadioGroup_Value: TRadioGroup
-        Left = 104
-        Top = 232
-        Width = 81
-        Height = 105
+        Left = 85
+        Top = 189
+        Width = 65
+        Height = 85
         Caption = 'Value'
         ItemIndex = 2
         Items.Strings = (
@@ -7047,14 +7207,14 @@ object HSVForm3: THSVForm3
     end
   end
   object btn_Hue_Img_load: TButton
-    Left = 1086
-    Top = 540
-    Width = 90
-    Height = 21
+    Left = 882
+    Top = 439
+    Width = 74
+    Height = 17
     Caption = 'Load Image'
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clWindowText
-    Font.Height = -15
+    Font.Height = -12
     Font.Name = 'MS Sans Serif'
     Font.Style = [fsBold]
     ParentFont = False
@@ -7063,10 +7223,10 @@ object HSVForm3: THSVForm3
     OnClick = btn_Hue_Img_loadClick
   end
   object Hue_Img_Infor: TStaticText
-    Left = 1086
-    Top = 835
-    Width = 215
-    Height = 20
+    Left = 882
+    Top = 678
+    Width = 181
+    Height = 17
     BevelKind = bkFlat
     BevelOuter = bvRaised
     Caption = 'Image Information R: G: B: H: S: V: I: '
@@ -7076,42 +7236,42 @@ object HSVForm3: THSVForm3
     Visible = False
   end
   object GroupBox29: TGroupBox
-    Left = 658
-    Top = 731
-    Width = 336
-    Height = 228
+    Left = 535
+    Top = 594
+    Width = 273
+    Height = 185
     Caption = 'HSV Change'
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clWindowText
-    Font.Height = -15
+    Font.Height = -12
     Font.Name = 'MS Sans Serif'
     Font.Style = [fsBold]
     ParentFont = False
     TabOrder = 4
     Visible = False
     DesignSize = (
-      336
-      228)
+      273
+      185)
     object Label111: TLabel
-      Left = 10
-      Top = 192
-      Width = 52
-      Height = 16
+      Left = 8
+      Top = 156
+      Width = 42
+      Height = 13
       Anchors = [akLeft, akBottom]
       Caption = 'Custom'
       Color = clWhite
       ParentColor = False
     end
     object cb_Hue_Red: TCheckBox
-      Left = 10
-      Top = 39
-      Width = 129
-      Height = 25
+      Left = 8
+      Top = 32
+      Width = 105
+      Height = 20
       Caption = 'Red         0'#176
       Color = clRed
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clWindow
-      Font.Height = -15
+      Font.Height = -12
       Font.Name = 'MS Sans Serif'
       Font.Style = [fsBold]
       ParentColor = False
@@ -7120,10 +7280,10 @@ object HSVForm3: THSVForm3
       OnClick = cb_Hue_RedClick
     end
     object sg_6HSV: TStringGrid
-      Left = 140
-      Top = 38
-      Width = 190
-      Height = 180
+      Left = 114
+      Top = 31
+      Width = 154
+      Height = 146
       Align = alCustom
       Anchors = [akLeft, akTop, akRight, akBottom]
       BiDiMode = bdRightToLeftNoAlign
@@ -7137,7 +7297,7 @@ object HSVForm3: THSVForm3
       FixedRows = 0
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clWindowText
-      Font.Height = -15
+      Font.Height = -12
       Font.Name = 'MS Sans Serif'
       Font.Style = [fsBold]
       ParentBiDiMode = False
@@ -7147,15 +7307,15 @@ object HSVForm3: THSVForm3
       TabOrder = 5
     end
     object cb_Hue_Green: TCheckBox
-      Left = 10
-      Top = 89
-      Width = 129
-      Height = 27
+      Left = 8
+      Top = 72
+      Width = 105
+      Height = 22
       Caption = 'Green     120'#176
       Color = clGreen
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clWindow
-      Font.Height = -15
+      Font.Height = -12
       Font.Name = 'MS Sans Serif'
       Font.Style = [fsBold]
       ParentColor = False
@@ -7164,15 +7324,15 @@ object HSVForm3: THSVForm3
       OnClick = cb_Hue_GreenClick
     end
     object cb_Hue_Blue: TCheckBox
-      Left = 10
-      Top = 140
-      Width = 129
-      Height = 26
+      Left = 8
+      Top = 114
+      Width = 105
+      Height = 21
       Caption = 'Blue       240'#176
       Color = clBlue
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clWindow
-      Font.Height = -15
+      Font.Height = -12
       Font.Name = 'MS Sans Serif'
       Font.Style = [fsBold]
       ParentColor = False
@@ -7181,15 +7341,15 @@ object HSVForm3: THSVForm3
       OnClick = cb_Hue_BlueClick
     end
     object cb_Hue_Mag: TCheckBox
-      Left = 10
-      Top = 166
-      Width = 129
-      Height = 26
+      Left = 8
+      Top = 135
+      Width = 105
+      Height = 21
       Caption = 'Magenta 300'#176
       Color = clFuchsia
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clWindowText
-      Font.Height = -15
+      Font.Height = -12
       Font.Name = 'MS Sans Serif'
       Font.Style = [fsBold]
       ParentColor = False
@@ -7198,15 +7358,15 @@ object HSVForm3: THSVForm3
       OnClick = cb_Hue_MagClick
     end
     object cb_Hue_Yellow: TCheckBox
-      Left = 10
-      Top = 64
-      Width = 129
-      Height = 25
+      Left = 8
+      Top = 52
+      Width = 105
+      Height = 20
       Caption = 'Yellow     60'#176
       Color = clYellow
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clWindowText
-      Font.Height = -15
+      Font.Height = -12
       Font.Name = 'MS Sans Serif'
       Font.Style = [fsBold]
       ParentColor = False
@@ -7215,15 +7375,15 @@ object HSVForm3: THSVForm3
       OnClick = cb_Hue_YellowClick
     end
     object cb_Hue_Cyan: TCheckBox
-      Left = 10
-      Top = 116
-      Width = 129
-      Height = 24
+      Left = 8
+      Top = 94
+      Width = 105
+      Height = 20
       Caption = 'Cyan      180'#176
       Color = clAqua
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clWindowText
-      Font.Height = -15
+      Font.Height = -12
       Font.Name = 'MS Sans Serif'
       Font.Style = [fsBold]
       ParentColor = False
@@ -7232,10 +7392,10 @@ object HSVForm3: THSVForm3
       OnClick = cb_Hue_CyanClick
     end
     object StaticText31: TStaticText
-      Left = 138
-      Top = 20
-      Width = 64
-      Height = 21
+      Left = 112
+      Top = 16
+      Width = 52
+      Height = 17
       Alignment = taCenter
       AutoSize = False
       BevelKind = bkFlat
@@ -7243,10 +7403,10 @@ object HSVForm3: THSVForm3
       TabOrder = 7
     end
     object StaticText32: TStaticText
-      Left = 201
-      Top = 20
-      Width = 64
-      Height = 21
+      Left = 163
+      Top = 16
+      Width = 52
+      Height = 17
       Alignment = taCenter
       AutoSize = False
       BevelKind = bkFlat
@@ -7254,10 +7414,10 @@ object HSVForm3: THSVForm3
       TabOrder = 8
     end
     object StaticText33: TStaticText
-      Left = 265
-      Top = 20
-      Width = 64
-      Height = 21
+      Left = 215
+      Top = 16
+      Width = 52
+      Height = 17
       Alignment = taCenter
       AutoSize = False
       BevelKind = bkFlat
@@ -7265,13 +7425,13 @@ object HSVForm3: THSVForm3
       TabOrder = 9
     end
     object ed_Hue_Custom: TEdit
-      Left = 69
-      Top = 192
-      Width = 70
+      Left = 56
+      Top = 156
+      Width = 57
       Height = 24
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clBlack
-      Font.Height = -15
+      Font.Height = -12
       Font.Name = 'MS Sans Serif'
       Font.Style = [fsBold]
       ParentFont = False
@@ -7280,12 +7440,12 @@ object HSVForm3: THSVForm3
     end
   end
   object le_ChAangle: TLabeledEdit
-    Left = 1001
-    Top = 719
-    Width = 60
+    Left = 813
+    Top = 584
+    Width = 49
     Height = 24
-    EditLabel.Width = 85
-    EditLabel.Height = 16
+    EditLabel.Width = 55
+    EditLabel.Height = 11
     EditLabel.Caption = 'Change Angle'
     LabelPosition = lpAbove
     LabelSpacing = 3

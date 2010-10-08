@@ -24,7 +24,7 @@
 
 //---------------------------------------------------------------------------
 __fastcall THSVForm3::THSVForm3(TComponent * Owner)
-:TForm(Owner), HSV_IsChkSum(0), tbl_step(360. / HUE_COUNT),
+:TForm(Owner), HSV_IsChkSum(true), tbl_step(360. / HUE_COUNT),
 lastStringGridSelectRow(-1), settingScrollBarPosition(false)
 {
     HSV_Chg = 0;
@@ -307,9 +307,15 @@ void THSVForm3::Hue_LUTWrite()
 	val_w = SignToCmplmnt2s(valTable[i], 128);
 	val_w = val_w % 128;	// 7 bit
 
-	HSV_lut[i * 3] = hueTable[i] / 4;
+	//fpga
+	/*HSV_lut[i * 3] = hueTable[i] / 4;
+	   HSV_lut[i * 3 + 1] = hueTable[i] % 4 * 64 + satTable[i] / 2;
+	   HSV_lut[i * 3 + 2] = satTable[i] % 2 * 128 + val_w; */
+
+	//11307
+	HSV_lut[i * 3 + 2] = hueTable[i] / 4;
 	HSV_lut[i * 3 + 1] = hueTable[i] % 4 * 64 + satTable[i] / 2;
-	HSV_lut[i * 3 + 2] = satTable[i] % 2 * 128 + val_w;
+	HSV_lut[i * 3] = satTable[i] % 2 * 128 + val_w;
 
     }
     EngineerForm->SetWrite_PG(lut_addr[0], HSV_lut, HSV_IsChkSum);
@@ -630,19 +636,22 @@ void __fastcall THSVForm3::btn_hsv_readClick(TObject * Sender)
 
     int val_r;
     for (int i = 0; i < HUE_COUNT; i++) {
-	hueTable[i] = HSV_lut[i * 3] * 4 + (HSV_lut[i * 3 + 1] / 64) % 4;
-	satTable[i] = (HSV_lut[i * 3 + 1] % 64) * 2 + (HSV_lut[i * 3 + 2] / 128) % 2;
-	val_r = HSV_lut[i * 3 + 2] % 128;
+	//fpga
+	/*hueTable[i] = HSV_lut[i * 3] * 4 + (HSV_lut[i * 3 + 1] / 64) % 4;
+	   satTable[i] = (HSV_lut[i * 3 + 1] % 64) * 2 + (HSV_lut[i * 3 + 2] / 128) % 2;
+	   val_r = HSV_lut[i * 3 + 2] % 128; */
 	// Modified only for AUO11307
-	//hueTable[i] = HSV_lut[i*3+2]*4 + (HSV_lut[i*3+1]/64)%4;
-	//satTable[i] = (HSV_lut[i*3+1]%64)*2 + (HSV_lut[i*3]/128)%2;
-	//val_r = HSV_lut[i*3]%128;
+	hueTable[i] = HSV_lut[i * 3 + 2] * 4 + (HSV_lut[i * 3 + 1] / 64) % 4;
+	satTable[i] = (HSV_lut[i * 3 + 1] % 64) * 2 + (HSV_lut[i * 3] / 128) % 2;
+	val_r = HSV_lut[i * 3] % 128;
 
 	valTable[i] = Cmplmnt2sToSign(val_r, 128);
 
-	stringGrid_HSV->Cells[1][i + 1] = FloatToStr((double) hueTable[i] / MAX_HUE_VALUE * 360);
-	stringGrid_HSV->Cells[2][i + 1] = FloatToStr((double) (satTable[i]) / 32);
-	stringGrid_HSV->Cells[3][i + 1] = IntToStr(valTable[i]);
+	//stringGrid_HSV->Cells[1][i + 1] = FloatToStr((double) hueTable[i] / MAX_HUE_VALUE * 360);
+	//stringGrid_HSV->Cells[2][i + 1] = FloatToStr((double) (satTable[i]) / 32);
+	stringGrid_HSV->Cells[1][i + 1] = ((double)hueTable[i]) / MAX_HUE_VALUE * 360;
+	stringGrid_HSV->Cells[2][i + 1] = satTable[i] / 32.;
+	stringGrid_HSV->Cells[3][i + 1] = valTable[i];
     }
     HSV_LUT_RW_over();		// Recover HSV enable
     HSV_LUT_FuncEnable(1);	// Table operation button enable

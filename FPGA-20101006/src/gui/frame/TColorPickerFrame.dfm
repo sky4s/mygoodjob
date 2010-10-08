@@ -7,8 +7,8 @@ object ColorPickerFrame: TColorPickerFrame
   object lb_c3d_showV: TLabel
     Left = 394
     Top = 404
-    Width = 18
-    Height = 16
+    Width = 16
+    Height = 13
     Caption = 'V:  '
     Color = clCream
     ParentColor = False
@@ -16,8 +16,8 @@ object ColorPickerFrame: TColorPickerFrame
   object lb_c3d_showS: TLabel
     Left = 335
     Top = 404
-    Width = 18
-    Height = 16
+    Width = 16
+    Height = 13
     Caption = 'S:  '
     Color = clCream
     ParentColor = False
@@ -25,8 +25,8 @@ object ColorPickerFrame: TColorPickerFrame
   object lb_c3d_showH: TLabel
     Left = 286
     Top = 404
-    Width = 19
-    Height = 16
+    Width = 17
+    Height = 13
     Caption = 'H:  '
     Color = clCream
     ParentColor = False
@@ -34,8 +34,8 @@ object ColorPickerFrame: TColorPickerFrame
   object lb_c3d_showB: TLabel
     Left = 226
     Top = 404
-    Width = 21
-    Height = 16
+    Width = 19
+    Height = 13
     Caption = 'B:   '
     Color = clCream
     ParentColor = False
@@ -43,8 +43,8 @@ object ColorPickerFrame: TColorPickerFrame
   object lb_c3d_showG: TLabel
     Left = 177
     Top = 404
-    Width = 22
-    Height = 16
+    Width = 20
+    Height = 13
     Caption = 'G:   '
     Color = clCream
     ParentColor = False
@@ -52,8 +52,8 @@ object ColorPickerFrame: TColorPickerFrame
   object lb_c3d_showR: TLabel
     Left = 130
     Top = 404
-    Width = 22
-    Height = 16
+    Width = 20
+    Height = 13
     Caption = 'R:   '
     Color = clCream
     ParentColor = False
@@ -61,8 +61,8 @@ object ColorPickerFrame: TColorPickerFrame
   object lb_c3d_showY: TLabel
     Left = 69
     Top = 404
-    Width = 21
-    Height = 16
+    Width = 19
+    Height = 13
     Caption = 'Y:   '
     Color = clCream
     ParentColor = False
@@ -70,8 +70,8 @@ object ColorPickerFrame: TColorPickerFrame
   object lb_c3d_showX: TLabel
     Left = 22
     Top = 404
-    Width = 20
-    Height = 16
+    Width = 19
+    Height = 13
     Caption = 'X:   '
     Color = clCream
     ParentColor = False
