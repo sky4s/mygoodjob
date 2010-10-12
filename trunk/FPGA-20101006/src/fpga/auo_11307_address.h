@@ -367,16 +367,22 @@
 #define TEST_LUX                "TEST_LUX,238,0,8"	//
 
 ////////////////////////// Function //////////////////////////////
-#define FRC_EN   "FRC_EN,46,0,1"
+//#define FRC_EN   "FRC_EN,46,0,1"
 #define FRC_DEMO_EN   "FRC_DEMO_EN,46,1,1"
 #define FRC_DEMO_LEFTEN   "FRC_DEMO_LEFTEN,46,2,1"
 #define SPECIAL_2LINE   "SPECIAL_2LINE,46,3,1"
-#define GAM_EN   "GAM_EN,49,0,1"
+//#define GAM_EN   "GAM_EN,49,0,1"
 #define OP6B   "OP6B,11,1,1"
 
-#define DG_LUTR         "DG_LUTR,1090,257,12,1"	//
-#define DG_LUTG         "DG_LUTG,1477,257,12,1"	//
-#define DG_LUTB         "DG_LUTB,1863,257,12,1"	//
+#define GAM_EN             "GAM_EN,40,0,1"                  // 
+#define FRC_EN             "FRC_EN,40,1,1"                  //
+
+//#define DG_LUTR         "DG_LUTR,1090,257,12,1"	//
+//#define DG_LUTG         "DG_LUTG,1477,257,12,1"	//
+//#define DG_LUTB         "DG_LUTB,1863,257,12,1"	//
+#define DG_LUTR         "DG_LUTR,784,256,10,3"              //
+#define DG_LUTG         "DG_LUTG,1104,256,10,3"             //
+#define DG_LUTB         "DG_LUTB,1424,256,10,3"             //
 
 #define PSTATE_EN          "PSTATE_EN,12,0,1"	//
 #define STOPFRM            "STOPFRM,12,2,2"	//
