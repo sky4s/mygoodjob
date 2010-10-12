@@ -148,8 +148,13 @@ namespace i2c {
     };
     bptr < ByteBuffer > TCONControl::getDGLut12BitByteBuffer(RGB_vector_ptr rgbVector) {
 	int size = rgbVector->size();
-	if (size != 257) {
-	    throw IllegalArgumentException("rgbVector->size() != 257");
+	if (257 != size) {
+	    if (size == 256) {
+		rgbVector->push_back((*rgbVector)[size - 1]);
+		size = rgbVector->size();
+	    } else {
+		throw IllegalArgumentException("rgbVector->size() != 257");
+	    }
 	}
 	int halfSize = size / 2;
 	int remainder = size % 2;
@@ -166,11 +171,11 @@ namespace i2c {
 		int_array d0lmh = getLMHData(d0);
 		int_array d1lmh = getLMHData(d1);
 		/*int e0 = d0lmh[0];
-		int e1 = d0lmh[1];
-		int e2 = d0lmh[2];
-		int e3 = d1lmh[0];
-		int e4 = d1lmh[1];
-		int e5 = d1lmh[2];*/
+		   int e1 = d0lmh[1];
+		   int e2 = d0lmh[2];
+		   int e3 = d1lmh[0];
+		   int e4 = d1lmh[1];
+		   int e5 = d1lmh[2]; */
 		int c0 = d0lmh[0] + (d0lmh[1] << 4);
 		int c1 = d0lmh[2] + (d1lmh[0] << 4);
 		int c2 = d1lmh[1] + (d1lmh[2] << 4);
