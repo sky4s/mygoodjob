@@ -198,6 +198,7 @@ class TMainForm:public TForm {
     String tconFilename;
     void initTCONFile();
     //bptr < gui::util::UIBinder > binder;
+    const static char* CUSTOM;
     //==========================================================================
   public:			// User declarations
     //==========================================================================

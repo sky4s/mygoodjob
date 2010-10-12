@@ -34,6 +34,7 @@ linkCA210(!FileExists(DEBUG_FILE)), newFunction(FileExists(DEBUG_NEWFUNC_FILE))
 
 //---------------------------------------------------------------------------
 
+
 void __fastcall TMainForm::About1Click(TObject * Sender)
 {
     if (AboutBox == null) {
@@ -84,7 +85,7 @@ void __fastcall TMainForm::FormCreate(TObject * Sender)
     initTCONFile();
     readTCONSections();
     readSetup();
-    ComboBox_TCONTypeChange(this);
+    //ComboBox_TCONTypeChange(this);
 
     if (newFunction) {
 	RadioButton_HStripe->Visible = true;
@@ -116,6 +117,10 @@ void TMainForm::initTCONFile()
 	ini->WriteInteger("11306", "DigitalGammaLUTType", 10);
 
 	ini->WriteBool("11306", "GammaTestFunc", false);
+
+	ini->WriteInteger("11306", "in", 6);
+	ini->WriteInteger("11306", "lut", 10);
+	ini->WriteInteger("11306", "out", 6);
 	//=========================================================================
 	// 12306
 	//=========================================================================
@@ -131,6 +136,10 @@ void TMainForm::initTCONFile()
 	ini->WriteInteger("12306", "GammaTestEnableBit", 0);
 	ini->WriteString("12306", "GammaTestAddress", "154");
 	ini->WriteBool("12306", "IndepRGB", true);
+
+	ini->WriteInteger("12306", "in", 8);
+	ini->WriteInteger("12306", "lut", 12);
+	ini->WriteInteger("12306", "out", 8);
 	//=========================================================================
 	// 12401
 	//=========================================================================
@@ -146,6 +155,10 @@ void TMainForm::initTCONFile()
 	ini->WriteInteger("12401", "GammaTestEnableBit", 1);
 	ini->WriteString("12401", "GammaTestAddress", "4A7");
 	ini->WriteBool("12401", "IndepRGB", true);
+
+	ini->WriteInteger("12401", "in", 8);
+	ini->WriteInteger("12401", "lut", 12);
+	ini->WriteInteger("12401", "out", 8);
 	//=========================================================================
     }
 }
@@ -160,7 +173,7 @@ void TMainForm::readTCONSections()
 	String section = (*tconSections)[x];
 	ComboBox_TCONType->AddItem(section, null);
     }
-    ComboBox_TCONType->AddItem("Custom", null);
+    ComboBox_TCONType->AddItem(CUSTOM, null);
     ComboBox_TCONType->ItemIndex = 0;
 }
 
@@ -188,28 +201,71 @@ void TMainForm::readTCONSetup(String filename, String section)
     this->Edit_DGEnableBit->Text = ini->ReadInteger(section, "DigitalGammaEnableBit", 0);
     this->Edit_DGLUTAddress->Text = ini->ReadString(section, "DigitalGammaLUTAddress", "302");
     this->ComboBox_DGLUTType->Text = ini->ReadInteger(section, "DigitalGammaLUTType", 10);
-}
 
+
+    int in = ini->ReadInteger(section, "in", 6);
+    int lut = ini->ReadInteger(section, "lut", 10);
+    int out = ini->ReadInteger(section, "out", 6);
+    switch (in) {
+    case 6:
+	RadioButton_In6->Checked = true;
+	break;
+    case 8:
+	RadioButton_In8->Checked = true;
+	break;
+    case 10:
+	RadioButton_In10->Checked = true;
+	break;
+    }
+    switch (lut) {
+    case 10:
+	RadioButton_Lut10->Checked = true;
+	break;
+    case 12:
+	RadioButton_Lut12->Checked = true;
+	break;
+    }
+    switch (out) {
+    case 6:
+	RadioButton_Out6->Checked = true;
+	break;
+    case 8:
+	RadioButton_Out8->Checked = true;
+	break;
+    case 10:
+	RadioButton_Out10->Checked = true;
+	break;
+    }
+
+}
+const char *TMainForm::CUSTOM = "Custom";
 void TMainForm::writeTCONCustomSetup()
 {
-    if (ComboBox_TCONType->Text == "Custom") {
+
+    if (ComboBox_TCONType->Text == CUSTOM) {
 	bptr_ < TIniFile > ini(new TIniFile(ExtractFilePath(Application->ExeName) + SETUPFILE));
 
-	ini->WriteString("Custom", "DigitalGammaEnableAddress", this->Edit_DGEnableAddress->Text);
-	ini->WriteInteger("Custom", "DigitalGammaEnableBit", this->Edit_DGEnableBit->Text.ToInt());
-	ini->WriteString("Custom", "DigitalGammaLUTAddress", this->Edit_DGLUTAddress->Text);
-	ini->WriteInteger("Custom", "DigitalGammaLUTType", ComboBox_DGLUTType->Text.ToInt());
+	ini->WriteString(CUSTOM, "DigitalGammaEnableAddress", this->Edit_DGEnableAddress->Text);
+	ini->WriteInteger(CUSTOM, "DigitalGammaEnableBit", this->Edit_DGEnableBit->Text.ToInt());
+	ini->WriteString(CUSTOM, "DigitalGammaLUTAddress", this->Edit_DGLUTAddress->Text);
+	ini->WriteInteger(CUSTOM, "DigitalGammaLUTType", ComboBox_DGLUTType->Text.ToInt());
 
 	bool gammaTest = CheckBox_GammaTest->Checked;
-	ini->WriteBool("Custom", "GammaTestFunc", gammaTest);
+	ini->WriteBool(CUSTOM, "GammaTestFunc", gammaTest);
 	if (gammaTest) {
-	    ini->WriteString("Custom", "GammaTestEnableAddress",
+	    ini->WriteString(CUSTOM, "GammaTestEnableAddress",
 			     this->Edit_GammaTestEnableAddress->Text);
-	    ini->WriteInteger("Custom", "GammaTestEnableBit",
+	    ini->WriteInteger(CUSTOM, "GammaTestEnableBit",
 			      this->Edit_GammaTestEnableBit->Text.ToInt());
-	    ini->WriteString("Custom", "GammaTestAddress", this->Edit_GammaTestAddress->Text);
-	    ini->WriteBool("Custom", "IndepRGB", this->CheckBox_GammaTestIndepRGB->Checked);
+	    ini->WriteString(CUSTOM, "GammaTestAddress", this->Edit_GammaTestAddress->Text);
+	    ini->WriteBool(CUSTOM, "IndepRGB", this->CheckBox_GammaTestIndepRGB->Checked);
 	}
+	int in = bitDepth->getInputMaxValue().bit;
+	int lut = bitDepth->getLutMaxValue().bit;
+	int out = bitDepth->getOutputMaxValue().bit;
+	ini->WriteInteger(CUSTOM, "in", in);
+	ini->WriteInteger(CUSTOM, "lut", lut);
+	ini->WriteInteger(CUSTOM, "out", out);
     }
 
 };
@@ -593,7 +649,7 @@ void __fastcall TMainForm::GammaAdj1Click(TObject * Sender)
 void __fastcall TMainForm::RadioButton_TCONClick(TObject * Sender)
 {
     this->Panel_TCON->Visible = true;
-    //this->bitDepth->setTCONInput(true);
+    ComboBox_TCONTypeChange(this);
     ShowMessage("Please Turn On DG and FRC for Measurement when T-CON Input Source is selected!!!");
 }
 
@@ -823,7 +879,7 @@ void __fastcall TMainForm::RadioButton_In8Click(TObject * Sender)
     using namespace cms::util;
     bitDepth->setInBit(8);
     // 設定lut/out bit depth checked
-    setBitDepthChecked(0, 1);
+    setBitDepthChecked(1, 1);
     // 設定enable
     setBitDepthEnable(true, true, true, true, false);
     setFRCAbility();
@@ -878,7 +934,7 @@ void __fastcall TMainForm::RadioButton_Out8Click(TObject * Sender)
 
 void __fastcall TMainForm::RadioButton_Out10Click(TObject * Sender)
 {
-    if (!bitDepth->isTCONInput()) {
+    if (!bitDepth->isTCONInput() && this->Visible) {
 	ShowMessage("Recommend using T-CON Input.");
     };
     bitDepth->setOutBit(10);
@@ -1103,6 +1159,7 @@ bptr < i2c::TCONControl > TMainForm::getTCONControl()
 void __fastcall TMainForm::RadioButton_PCTCONClick(TObject * Sender)
 {
     this->Panel_TCON->Visible = true;
+    ComboBox_TCONTypeChange(this);
     bitDepth->setTCONInput(false);
     MeasureWindow->setTCONControlOff();
 }
@@ -1116,5 +1173,4 @@ void __fastcall TMainForm::RadioButton_NinthClick(TObject * Sender)
 }
 
 //---------------------------------------------------------------------------
-
 
