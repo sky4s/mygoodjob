@@ -6652,7 +6652,6 @@ object HSVForm3: THSVForm3
             Left = 144
             Top = 8
             Width = 40
-            Height = 24
             Visible = False
           end
         end
@@ -6684,13 +6683,11 @@ object HSVForm3: THSVForm3
             Left = 5
             Top = 6
             Width = 24
-            Height = 24
           end
           inherited Edit_c3d_Manual39_s_adj: TEdit
             Left = 144
             Top = 8
             Width = 40
-            Height = 24
             Visible = False
           end
         end
@@ -6723,14 +6720,12 @@ object HSVForm3: THSVForm3
             Left = 144
             Top = 7
             Width = 40
-            Height = 24
             Visible = False
           end
           inherited edt_c3d_valC: TEdit
             Left = 8
             Top = 7
             Width = 25
-            Height = 24
           end
         end
       end
@@ -6744,7 +6739,7 @@ object HSVForm3: THSVForm3
       end
       object btn_set: TButton
         Left = 394
-        Top = 28
+        Top = 44
         Width = 49
         Height = 26
         Caption = 'Set'
@@ -6759,7 +6754,7 @@ object HSVForm3: THSVForm3
       end
       object btn_reset: TButton
         Left = 394
-        Top = 55
+        Top = 71
         Width = 49
         Height = 25
         Caption = 'Reset'
@@ -6774,7 +6769,7 @@ object HSVForm3: THSVForm3
       end
       object btn_hsv_write: TButton
         Left = 394
-        Top = 83
+        Top = 99
         Width = 49
         Height = 24
         Caption = 'Write'
@@ -6789,7 +6784,7 @@ object HSVForm3: THSVForm3
       end
       object btn_hsv_read: TButton
         Left = 394
-        Top = 110
+        Top = 126
         Width = 49
         Height = 25
         Caption = 'Read'
@@ -6804,7 +6799,7 @@ object HSVForm3: THSVForm3
       end
       object Btn_HSV_reload: TBitBtn
         Left = 371
-        Top = 138
+        Top = 154
         Width = 72
         Height = 25
         Caption = '&Reload'
@@ -6831,7 +6826,7 @@ object HSVForm3: THSVForm3
         NumGlyphs = 2
       end
       object CheckBox_AutoSet: TCheckBox
-        Left = 377
+        Left = 369
         Top = 13
         Width = 66
         Height = 14
@@ -6839,6 +6834,14 @@ object HSVForm3: THSVForm3
         Checked = True
         State = cbChecked
         TabOrder = 7
+      end
+      object CheckBox_AutoWrite: TCheckBox
+        Left = 369
+        Top = 29
+        Width = 72
+        Height = 14
+        Caption = 'Auto Write'
+        TabOrder = 8
       end
     end
     object GroupBox3: TGroupBox
@@ -7078,6 +7081,7 @@ object HSVForm3: THSVForm3
             Font.Style = []
             ParentFont = False
             TabOrder = 6
+            OnClick = Button_60BaseInterpClick
           end
         end
         object GroupBox_30base: TGroupBox
@@ -7172,6 +7176,7 @@ object HSVForm3: THSVForm3
             Font.Style = []
             ParentFont = False
             TabOrder = 6
+            OnClick = Button_30BaseInterpClick
           end
         end
       end
@@ -7428,7 +7433,7 @@ object HSVForm3: THSVForm3
       Left = 56
       Top = 156
       Width = 57
-      Height = 24
+      Height = 21
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clBlack
       Font.Height = -12
@@ -7443,9 +7448,9 @@ object HSVForm3: THSVForm3
     Left = 813
     Top = 584
     Width = 49
-    Height = 24
-    EditLabel.Width = 55
-    EditLabel.Height = 11
+    Height = 21
+    EditLabel.Width = 67
+    EditLabel.Height = 13
     EditLabel.Caption = 'Change Angle'
     LabelPosition = lpAbove
     LabelSpacing = 3

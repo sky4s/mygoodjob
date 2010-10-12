@@ -649,7 +649,7 @@ void __fastcall THSVForm3::btn_hsv_readClick(TObject * Sender)
 
 	//stringGrid_HSV->Cells[1][i + 1] = FloatToStr((double) hueTable[i] / MAX_HUE_VALUE * 360);
 	//stringGrid_HSV->Cells[2][i + 1] = FloatToStr((double) (satTable[i]) / 32);
-	stringGrid_HSV->Cells[1][i + 1] = ((double)hueTable[i]) / MAX_HUE_VALUE * 360;
+	stringGrid_HSV->Cells[1][i + 1] = ((double) hueTable[i]) / MAX_HUE_VALUE * 360;
 	stringGrid_HSV->Cells[2][i + 1] = satTable[i] / 32.;
 	stringGrid_HSV->Cells[3][i + 1] = valTable[i];
     }
@@ -872,13 +872,15 @@ void __fastcall THSVForm3::hsvAdjustsb_c3d_Manual39_hChange(TObject * Sender)
 
     //¦P¨B¨ìgrid
     for (int i = 0; i < HUE_COUNT; i++) {
-
 	stringGrid_HSV->Cells[1][i + 1] = (((double) hueTableTemp[i]) / MAX_HUE_VALUE) * 360;
 	stringGrid_HSV->Cells[2][i + 1] = satTableTemp[i] / 32.;
 	stringGrid_HSV->Cells[3][i + 1] = valTableTemp[i];
     }
     if (true == CheckBox_AutoSet->Checked) {
 	btn_setClick(Sender);
+    }
+    if (true == CheckBox_AutoWrite->Checked) {
+	btn_hsv_writeClick(Sender);
     }
 }
 
@@ -963,6 +965,20 @@ void __fastcall THSVForm3::RadioGroup_ValueClick(TObject * Sender)
     initGroupBoxBase(GroupBox_60base);
     drawStringGrid_HSVCell(Sender);
     setGridSelectRow(getGridSelectRow());
+}
+
+//---------------------------------------------------------------------------
+
+void __fastcall THSVForm3::Button_60BaseInterpClick(TObject * Sender)
+{
+    btn_setClick(Sender);
+}
+
+//---------------------------------------------------------------------------
+
+void __fastcall THSVForm3::Button_30BaseInterpClick(TObject * Sender)
+{
+    btn_setClick(Sender);
 }
 
 //---------------------------------------------------------------------------

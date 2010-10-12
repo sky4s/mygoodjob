@@ -136,6 +136,7 @@ class THSVForm3:public TForm {
     TRadioGroup *RadioGroup_Saturation;
     TRadioGroup *RadioGroup_Value;
     TCheckBox *CheckBox_AutoSet;
+    TCheckBox *CheckBox_AutoWrite;
     void __fastcall cb_Hue_RedClick(TObject * Sender);
     void __fastcall cb_Hue_YellowClick(TObject * Sender);
     void __fastcall cb_Hue_GreenClick(TObject * Sender);
@@ -171,6 +172,8 @@ class THSVForm3:public TForm {
     void __fastcall FormShow(TObject * Sender);
     void __fastcall RadioGroup_SaturationClick(TObject * Sender);
     void __fastcall RadioGroup_ValueClick(TObject * Sender);
+    void __fastcall Button_60BaseInterpClick(TObject * Sender);
+    void __fastcall Button_30BaseInterpClick(TObject * Sender);
   private:			// User declarations
     static const int HUE_COUNT = 24;	//­ì¥»¬O96, why?
     static const int MAX_HUE_VALUE = 768;
