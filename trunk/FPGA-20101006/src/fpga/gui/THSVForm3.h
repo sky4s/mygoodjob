@@ -206,6 +206,8 @@ class THSVForm3:public TForm {
     void setGainCaption(int h, int s, int v);
     int lastStringGridSelectRow;
     bool settingScrollBarPosition;
+    void interpolation(int angleBase, math::Interpolation1DLUT hlut, math::Interpolation1DLUT slut,
+			     math:: Interpolation1DLUT vlut);
 
   public:			// User declarations
      TBit * cb;

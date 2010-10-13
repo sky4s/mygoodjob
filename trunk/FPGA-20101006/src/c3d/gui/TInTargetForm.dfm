@@ -3,152 +3,31 @@ object InTargetForm: TInTargetForm
   Top = 140
   BorderStyle = bsSingle
   Caption = 'Compare Figure'
-  ClientHeight = 391
-  ClientWidth = 539
+  ClientHeight = 314
+  ClientWidth = 450
   Color = clBtnFace
   DockSite = True
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
-  Font.Height = -14
+  Font.Height = -11
   Font.Name = 'MS Sans Serif'
   Font.Style = []
   OldCreateOrder = False
   Visible = True
   WindowState = wsMinimized
-  PixelsPerInch = 120
-  TextHeight = 16
-  object GroupBox1: TGroupBox
-    Left = 551
-    Top = 10
-    Width = 395
-    Height = 375
-    Caption = 'RGB2HSV/HSV2RGB'
-    TabOrder = 0
-    object Label1: TLabel
-      Left = 20
-      Top = 30
-      Width = 64
-      Height = 16
-      Caption = 'RGB2HSV'
-    end
-    object Label3: TLabel
-      Left = 207
-      Top = 30
-      Width = 64
-      Height = 16
-      Caption = 'HSV2RGB'
-    end
-    object sg_rgb: TStringGrid
-      Left = 20
-      Top = 49
-      Width = 168
-      Height = 100
-      ColCount = 2
-      RowCount = 3
-      FixedRows = 0
-      Options = [goFixedVertLine, goFixedHorzLine, goVertLine, goHorzLine, goRangeSelect, goEditing]
-      TabOrder = 0
-      RowHeights = (
-        24
-        24
-        24)
-    end
-    object sg_hsv: TStringGrid
-      Left = 207
-      Top = 49
-      Width = 168
-      Height = 129
-      ColCount = 2
-      RowCount = 4
-      FixedRows = 0
-      Options = [goFixedVertLine, goFixedHorzLine, goVertLine, goHorzLine, goRangeSelect, goEditing]
-      TabOrder = 1
-      RowHeights = (
-        24
-        24
-        24
-        24)
-    end
-    object btn_rgb2hsv: TBitBtn
-      Left = 59
-      Top = 187
-      Width = 90
-      Height = 31
-      Caption = 'rgb2hsv go'
-      TabOrder = 2
-      OnClick = btn_rgb2hsvClick
-    end
-    object btn_hsv2rgb: TBitBtn
-      Left = 236
-      Top = 187
-      Width = 90
-      Height = 31
-      Caption = 'hsv2rgb go'
-      TabOrder = 3
-      OnClick = btn_hsv2rgbClick
-    end
-    object GroupBox2: TGroupBox
-      Left = 30
-      Top = 226
-      Width = 345
-      Height = 140
-      Caption = 'Bach RGB2HSV/ HSV2RGB'
-      TabOrder = 4
-      object Label2: TLabel
-        Left = 20
-        Top = 25
-        Width = 79
-        Height = 16
-        Caption = 'bach cal num'
-      end
-      object btn_rgb2hsv_bach: TButton
-        Left = 30
-        Top = 59
-        Width = 89
-        Height = 31
-        Caption = 'bach rgb2hsv'
-        TabOrder = 0
-        OnClick = btn_rgb2hsv_bachClick
-      end
-      object btn_hsv2rgb_bach: TButton
-        Left = 207
-        Top = 59
-        Width = 90
-        Height = 31
-        Caption = 'bach hsv2rgb'
-        TabOrder = 1
-        OnClick = btn_hsv2rgb_bachClick
-      end
-      object edt_num: TEdit
-        Left = 108
-        Top = 25
-        Width = 41
-        Height = 24
-        TabOrder = 2
-        Text = '0'
-      end
-      object btn_sim_color: TButton
-        Left = 30
-        Top = 98
-        Width = 119
-        Height = 31
-        Caption = 'Sim_color + Save'
-        TabOrder = 3
-        OnClick = btn_sim_colorClick
-      end
-    end
-  end
+  PixelsPerInch = 96
+  TextHeight = 13
   object ScrollBox1: TScrollBox
     Left = 0
     Top = 0
-    Width = 543
-    Height = 375
-    TabOrder = 1
+    Width = 441
+    Height = 305
+    TabOrder = 0
     object img_in_target: TImage
       Left = 0
       Top = 0
-      Width = 533
-      Height = 370
+      Width = 433
+      Height = 301
       Picture.Data = {
         07544269746D6170B2230800424DB2230800000000003600000028000000BB01
         00002D01000001002000000000007C2308000000000000000000000000000000
