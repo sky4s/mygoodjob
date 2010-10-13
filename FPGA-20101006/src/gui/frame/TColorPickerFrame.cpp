@@ -207,11 +207,11 @@ void TColorPickerFrame::setColor(TImage * image, TColor color)
 void TColorPickerFrame::setOriginalColor(int r, int g, int b)
 {
     setColor(originalColor, r, g, b);
+    inTargetForm->img_in_target->Picture->Bitmap->Assign(originalColor->Picture->Bitmap);
 }
 
 void TColorPickerFrame::setSimulatedColor(int r, int g, int b)
 {
     setColor(simulatedColor, r, g, b);
 }
-
 
