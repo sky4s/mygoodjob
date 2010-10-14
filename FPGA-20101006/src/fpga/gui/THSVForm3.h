@@ -148,22 +148,26 @@ class THSVForm3:public TForm {
     void __fastcall FormCreate(TObject * Sender);
     void __fastcall CheckBox_Click(TObject * Sender);
     void __fastcall FormClose(TObject * Sender, TCloseAction & Action);
-    void __fastcall Hue_ImgMouseMove(TObject * Sender, TShiftState Shift, int X, int Y);
+    void __fastcall Hue_ImgMouseMove(TObject * Sender, TShiftState Shift,
+				     int X, int Y);
     void __fastcall btn_resetClick(TObject * Sender);
 
     void __fastcall btn_Hue_Img_loadClick(TObject * Sender);
     void __fastcall rg_HSV_ModeClick(TObject * Sender);
     void __fastcall Btn_HSV_reloadClick(TObject * Sender);
-    void __fastcall FormKeyDown(TObject * Sender, WORD & Key, TShiftState Shift);
+    void __fastcall FormKeyDown(TObject * Sender, WORD & Key,
+				TShiftState Shift);
     void __fastcall sb_dif_nChange(TObject * Sender);
     void __fastcall sb_dif_pChange(TObject * Sender);
     void __fastcall btn_setClick(TObject * Sender);
     void __fastcall btn_hsv_writeClick(TObject * Sender);
     void __fastcall btn_hsv_readClick(TObject * Sender);
     void __fastcall Hue_ImgMouseDown(TObject * Sender,
-				     TMouseButton Button, TShiftState Shift, int X, int Y);
+				     TMouseButton Button,
+				     TShiftState Shift, int X, int Y);
     void __fastcall stringGrid_HSVDrawCell(TObject * Sender, int ACol,
-					   int ARow, TRect & Rect, TGridDrawState State);
+					   int ARow, TRect & Rect,
+					   TGridDrawState State);
     void __fastcall stringGrid_HSVSelectCell(TObject * Sender, int ACol,
 					     int ARow, bool & CanSelect);
     void __fastcall hsvAdjustsb_c3d_Manual39_hChange(TObject * Sender);
@@ -177,6 +181,7 @@ class THSVForm3:public TForm {
   private:			// User declarations
     static const int HUE_COUNT = 24;	//­ì¥»¬O96, why?
     static const int MAX_HUE_VALUE = 768;
+    static const int MAX_ADJUST_HUE_ANGLE = 45;
     bool HSV_IsChkSum;
     int tbl_step;
     void initStringGrid_HSV();
@@ -186,12 +191,14 @@ class THSVForm3:public TForm {
     // hue
     //=========================================================================
     static int getHueAngle(int index);
-    static int hueAngleToValue(int hueAngle);
+    static int hueAngleToValue(double hueAngle);
+    static double hueValueToAngle(int hueValue);
     static RGB_ptr getHueRGB(int index, double s, int v);
     RGB_ptr getHueRGB(int index);
     int_array getHSVAdjustValue(int row);
     double getSaturation();
     int getValue();
+    static int getSuggestLastHueValue(int firstHueValue);
     //=========================================================================
 
     void deg60baseClick(TObject * Sender);
@@ -206,8 +213,6 @@ class THSVForm3:public TForm {
     void setGainCaption(int h, int s, int v);
     int lastStringGridSelectRow;
     bool settingScrollBarPosition;
-    void interpolation(int angleBase, math::Interpolation1DLUT hlut, math::Interpolation1DLUT slut,
-		       math::Interpolation1DLUT vlut);
     void interpolation(int angleBase);
   public:			// User declarations
      TBit * cb;
