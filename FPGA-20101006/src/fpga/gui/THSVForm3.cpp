@@ -972,28 +972,29 @@ void __fastcall THSVForm3::RadioGroup_ValueClick(TObject * Sender)
 void __fastcall THSVForm3::Button_60BaseInterpClick(TObject * Sender)
 {
     //以60base內插
-    double_vector_ptr keys(new double_vector(7));
-    double_vector_ptr hvalues(new double_vector(7));
-    double_vector_ptr svalues(new double_vector(7));
-    double_vector_ptr vvalues(new double_vector(7));
-    for (int x = 0; x < 6; x++) {
-	int hue = 60 * x;
-	(*keys)[x] = hue;
-	int index = x * 4;
-	(*hvalues)[x] = hueTableTemp[index];
-	(*svalues)[x] = satTableTemp[index];
-	(*vvalues)[x] = valTableTemp[index];
-    }
-    (*keys)[6] = 360;
-    (*hvalues)[6] = 768;
-    (*svalues)[6] = satTableTemp[0];
-    (*vvalues)[6] = valTableTemp[0];
-    using namespace math;
-    Interpolation1DLUT hlut(keys, hvalues);
-    Interpolation1DLUT slut(keys, svalues);
-    Interpolation1DLUT vlut(keys, vvalues);
+    /*double_vector_ptr keys(new double_vector(7));
+       double_vector_ptr hvalues(new double_vector(7));
+       double_vector_ptr svalues(new double_vector(7));
+       double_vector_ptr vvalues(new double_vector(7));
+       for (int x = 0; x < 6; x++) {
+       int hue = 60 * x;
+       (*keys)[x] = hue;
+       int index = x * 4;
+       (*hvalues)[x] = hueTableTemp[index];
+       (*svalues)[x] = satTableTemp[index];
+       (*vvalues)[x] = valTableTemp[index];
+       }
+       (*keys)[6] = 360;
+       (*hvalues)[6] = 768;
+       (*svalues)[6] = satTableTemp[0];
+       (*vvalues)[6] = valTableTemp[0];
+       using namespace math;
+       Interpolation1DLUT hlut(keys, hvalues);
+       Interpolation1DLUT slut(keys, svalues);
+       Interpolation1DLUT vlut(keys, vvalues);
 
-    interpolation(60, hlut, slut, vlut);
+       interpolation(60, hlut, slut, vlut); */
+    interpolation(60);
 
     btn_setClick(Sender);
 }
@@ -1015,33 +1016,75 @@ void THSVForm3::interpolation(int angleBase, math::Interpolation1DLUT hlut,
     }
 }
 
-//---------------------------------------------------------------------------
-
-void __fastcall THSVForm3::Button_30BaseInterpClick(TObject * Sender)
+void THSVForm3::interpolation(int angleBase)
 {
-    //以60+30base內插
-    double_vector_ptr keys(new double_vector(13));
-    double_vector_ptr hvalues(new double_vector(13));
-    double_vector_ptr svalues(new double_vector(13));
-    double_vector_ptr vvalues(new double_vector(13));
-    for (int x = 0; x < 13; x++) {
-	int hue = 30 * x;
+    int keyCount = 360 / angleBase + 1;
+    int indexFactor = HUE_COUNT /( 360 / angleBase);
+
+
+    //以60base內插
+    double_vector_ptr keys(new double_vector(keyCount));
+    double_vector_ptr hvalues(new double_vector(keyCount));
+    double_vector_ptr svalues(new double_vector(keyCount));
+    double_vector_ptr vvalues(new double_vector(keyCount));
+    for (int x = 0; x < keyCount - 1; x++) {
+	int hue = angleBase * x;
 	(*keys)[x] = hue;
-	int index = x * 2;
+	int index = x * indexFactor;
 	(*hvalues)[x] = hueTableTemp[index];
 	(*svalues)[x] = satTableTemp[index];
 	(*vvalues)[x] = valTableTemp[index];
     }
-    (*keys)[12] = 360;
-    (*hvalues)[12] = 768;
-    (*svalues)[12] = satTableTemp[0];
-    (*vvalues)[12] = valTableTemp[0];
+    (*keys)[6] = 360;
+    (*hvalues)[6] = 768;
+    (*svalues)[6] = satTableTemp[0];
+    (*vvalues)[6] = valTableTemp[0];
     using namespace math;
     Interpolation1DLUT hlut(keys, hvalues);
     Interpolation1DLUT slut(keys, svalues);
     Interpolation1DLUT vlut(keys, vvalues);
 
-    interpolation(30, hlut, slut, vlut);
+    for (int x = 0; x < HUE_COUNT; x++) {
+	int hue = 360 / HUE_COUNT * x;
+	if (hue % angleBase != 0) {
+	    int h = hlut.getValue(hue);
+	    int s = slut.getValue(hue);
+	    int v = vlut.getValue(hue);
+	    hueTableTemp[x] = h;
+	    satTableTemp[x] = s;
+	    valTableTemp[x] = v;
+	}
+    }
+}
+
+//---------------------------------------------------------------------------
+
+void __fastcall THSVForm3::Button_30BaseInterpClick(TObject * Sender)
+{
+    //以60+30base內插
+    /*double_vector_ptr keys(new double_vector(13));
+       double_vector_ptr hvalues(new double_vector(13));
+       double_vector_ptr svalues(new double_vector(13));
+       double_vector_ptr vvalues(new double_vector(13));
+       for (int x = 0; x < 13; x++) {
+       int hue = 30 * x;
+       (*keys)[x] = hue;
+       int index = x * 2;
+       (*hvalues)[x] = hueTableTemp[index];
+       (*svalues)[x] = satTableTemp[index];
+       (*vvalues)[x] = valTableTemp[index];
+       }
+       (*keys)[12] = 360;
+       (*hvalues)[12] = 768;
+       (*svalues)[12] = satTableTemp[0];
+       (*vvalues)[12] = valTableTemp[0];
+       using namespace math;
+       Interpolation1DLUT hlut(keys, hvalues);
+       Interpolation1DLUT slut(keys, svalues);
+       Interpolation1DLUT vlut(keys, vvalues);
+
+       interpolation(30, hlut, slut, vlut); */
+    interpolation(30);
 
     btn_setClick(Sender);
 }
