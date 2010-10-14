@@ -13,8 +13,8 @@ object HSVAdjustFrame: THSVAdjustFrame
     object lb_Hue_gain: TLabel
       Left = 335
       Top = 39
-      Width = 10
-      Height = 13
+      Width = 11
+      Height = 16
       Caption = '0'#176
     end
     object Label197: TLabel
@@ -45,7 +45,7 @@ object HSVAdjustFrame: THSVAdjustFrame
       Left = 177
       Top = 10
       Width = 50
-      Height = 21
+      Height = 24
       ReadOnly = True
       TabOrder = 1
       Text = '0'
@@ -62,8 +62,8 @@ object HSVAdjustFrame: THSVAdjustFrame
     object lb_Sat_gain: TLabel
       Left = 335
       Top = 39
-      Width = 6
-      Height = 13
+      Width = 7
+      Height = 16
       Caption = '0'
     end
     object Label207: TLabel
@@ -94,7 +94,7 @@ object HSVAdjustFrame: THSVAdjustFrame
       Left = 6
       Top = 7
       Width = 30
-      Height = 21
+      Height = 24
       Hint = 'constant'
       ParentShowHint = False
       ShowHint = True
@@ -106,7 +106,7 @@ object HSVAdjustFrame: THSVAdjustFrame
       Left = 177
       Top = 10
       Width = 50
-      Height = 21
+      Height = 24
       ReadOnly = True
       TabOrder = 2
       Text = '0'
@@ -121,8 +121,8 @@ object HSVAdjustFrame: THSVAdjustFrame
     object lb_Val_gain: TLabel
       Left = 335
       Top = 41
-      Width = 6
-      Height = 13
+      Width = 7
+      Height = 16
       Caption = '0'
     end
     object Label25: TLabel
@@ -153,7 +153,7 @@ object HSVAdjustFrame: THSVAdjustFrame
       Left = 177
       Top = 9
       Width = 50
-      Height = 21
+      Height = 24
       ReadOnly = True
       TabOrder = 1
       Text = '0'
@@ -162,7 +162,7 @@ object HSVAdjustFrame: THSVAdjustFrame
       Left = 10
       Top = 9
       Width = 31
-      Height = 21
+      Height = 24
       Hint = 'constant'
       ParentShowHint = False
       ShowHint = True
