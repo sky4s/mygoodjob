@@ -4520,7 +4520,7 @@ bool IsC3Dshow = false;
 void __fastcall TC3DForm1::FormCreate(TObject * Sender)
 {
     // Create the thread objects
-    PColorThread1 = new TPColorThread1(true);
+    PColorThread1 = new TPColorThread1(true, Edit1);
 
     if (IsC3Dshow == false) {
 	C3Dini();
