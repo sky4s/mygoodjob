@@ -13,8 +13,8 @@
 //本項目內頭文件
 
 //本項目內gui頭文件
-#include <gui\c3d\TMainForm.h>
-#include <gui/c3d/TC3DForm.h>
+//#include <gui\c3d\TMainForm.h>
+//#include <gui/c3d/TC3DForm.h>
 
 #pragma package(smart_init)
 
@@ -32,57 +32,57 @@
 //      }
 //---------------------------------------------------------------------------
 
-__fastcall TPColorThread1::TPColorThread1(bool CreateSuspended)
-        : TThread(CreateSuspended)
+__fastcall TPColorThread1::TPColorThread1(bool CreateSuspended, TEdit * Edit)
+:TThread(CreateSuspended), Edit(Edit)
 {
 }
+
 //---------------------------------------------------------------------------
 void TPColorThread1::SetName()
 {
-        THREADNAME_INFO info;
-        info.dwType = 0x1000;
-        info.szName = "PColorThread1";
-        info.dwThreadID = -1;
-        info.dwFlags = 0;
+    THREADNAME_INFO info;
+    info.dwType = 0x1000;
+    info.szName = "PColorThread1";
+    info.dwThreadID = -1;
+    info.dwFlags = 0;
 
-        __try
-        {
-                 RaiseException( 0x406D1388, 0, sizeof(info)/sizeof(DWORD),(DWORD*)&info );
-        }
-        __except (EXCEPTION_CONTINUE_EXECUTION)
-        {
-        }
+    __try {
+	RaiseException(0x406D1388, 0, sizeof(info) / sizeof(DWORD), (DWORD *) & info);
+    }
+    __except(EXCEPTION_CONTINUE_EXECUTION) {
+    }
 }
+
 //---------------------------------------------------------------------------
 void __fastcall TPColorThread1::Execute()
 {
-        SetName();
-        //---- Place thread code here ----
-        while(! Terminated )
-        {
-          //Sleep(5);    // Delay program execution for 5 microseconds.
-                HDC TargethDC;
-	        HWND TargetHwnd;
-	        DWORD ColorR;
+    SetName();
+    //---- Place thread code here ----
+    while (!Terminated) {
+	//Sleep(5);    // Delay program execution for 5 microseconds.
+	HDC TargethDC;
+	HWND TargetHwnd;
+	DWORD ColorR;
 
-	        TargetHwnd = GetDesktopWindow();
-	        TargethDC = GetWindowDC(NULL);
+	TargetHwnd = GetDesktopWindow();
+	TargethDC = GetWindowDC(NULL);
 
-	        POINT lp;
-                POINT gMouse;
-                GetCursorPos(&lp);
+	POINT lp;
+	POINT gMouse;
+	GetCursorPos(&lp);
 
-	        //ClientToScreen(TargetHwnd, &lp);
-	        ColorR = GetPixel(TargethDC, lp.x, lp.y);
-	        ReleaseDC(TargetHwnd,TargethDC);
+	//ClientToScreen(TargetHwnd, &lp);
+	ColorR = GetPixel(TargethDC, lp.x, lp.y);
+	ReleaseDC(TargetHwnd, TargethDC);
 
-	        int r = GetRValue(ColorR);
-	        int g = GetGValue(ColorR);
-	        int b = GetBValue(ColorR);
-                C3DForm1->Edit1->Text = "R:"+IntToStr(r)+", G:"+IntToStr(g)+", B:"+IntToStr(b);
-                Sleep(50);
-        }
+	int r = GetRValue(ColorR);
+	int g = GetGValue(ColorR);
+	int b = GetBValue(ColorR);
+	Edit->Text = "R:" + IntToStr(r) + ", G:" + IntToStr(g) + ", B:" + IntToStr(b);
+	Sleep(50);
+    }
 }
+
 //---------------------------------------------------------------------------
 /*
 static HHOOK hHook,hMouseHook;
@@ -100,3 +100,4 @@ LRESULT CALLBACK MouseHook(int iCode, WPARAM wParam, LPARAM lParam)
     }    ;
     } return NULL;
 } */
+
