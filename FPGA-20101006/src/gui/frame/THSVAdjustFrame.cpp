@@ -17,6 +17,7 @@
 #include <gui/event/listener.h>
 #include <java/lang.h>
 //本項目內gui頭文件
+#include "THSVForm3.h"
 
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
@@ -24,24 +25,10 @@
 THSVAdjustFrame *HSVAdjustFrame;
 //---------------------------------------------------------------------------
 __fastcall THSVAdjustFrame::THSVAdjustFrame(TComponent * Owner)
-:TFrame(Owner)
+:TFrame(Owner), settingHSVPosition(false)
 {
     using namespace gui::util;
-
-    /*hueSetter = bptr < HueSetter > (new HueSetter(lb_c3d_Manual39_h, sb_c3d_Manual39_h));
-       binder.bind(lb_c3d_Manual39_h, sb_c3d_Manual39_h, hueSetter);
-
-       saturationSetter =
-       bptr < SaturationSetter >
-       (new
-       SaturationSetter(lb_c3d_Manual39_s, sb_c3d_Manual39_s, edt_c3d_satC->Text.ToDouble(), 1));
-       binder.bind(lb_c3d_Manual39_s, sb_c3d_Manual39_s, saturationSetter);
-       valueSetter =
-       bptr < SaturationSetter >
-       (new
-       SaturationSetter(lb_c3d_Manual39_v, sb_c3d_Manual39_v, edt_c3d_valC->Text.ToDouble(), 1));
-       binder.bind(lb_c3d_Manual39_v, sb_c3d_Manual39_v, valueSetter); */
-    setHSV(0, .666, 192);
+    setHSVEdit(0, .666, 192);
 }
 
 //---------------------------------------------------------------------------
@@ -50,11 +37,24 @@ void __fastcall THSVAdjustFrame::sb_Hue_gainChange(TObject * Sender)
 {
     using namespace gui::event;
     using namespace java::lang;
+    updateHSVCaption();
+    if (true == settingHSVPosition) {
+	return;
+    }
+    //double_array hsvgain = getHSVGain();
+    //lb_Hue_gain->Caption = FloatToStr(hsvgain[0]) + "°";
+    //lb_Sat_gain->Caption = FloatToStr(Math::floor(s * hsvgain[1] * 1000) / 1000);
+    //lb_Val_gain->Caption = FloatToStr(Math::floor(v * hsvgain[2] * 1000) / 1000);
 
-    double_array hsvgain = getHSVGain();
-    lb_Hue_gain->Caption = FloatToStr(hsvgain[0]) + "°";
-    lb_Sat_gain->Caption = FloatToStr(Math::floor(s * hsvgain[1] * 1000) / 1000);
-    lb_Val_gain->Caption = FloatToStr(Math::floor(v * hsvgain[2] * 1000) / 1000);
+    /*int_array hsvPosition = getHSVPosition();
+       int h = hsvPosition[0];
+       int s = hsvPosition[1];
+       int v = hsvPosition[2];
+       double h_show = ((double) h) / THSVForm3::MAX_HUE_VALUE * 360;
+       lb_Hue_gain->Caption = lb_Hue_gain->Caption.sprintf("%+.2f°", h_show);
+       double s_show = s / 32.;
+       lb_Sat_gain->Caption = lb_Sat_gain->Caption.sprintf("%.2f", s_show);
+       lb_Val_gain->Caption = IntToStr(v); */
 
     foreach(bwptr < ChangeListener > listener, changeListenerVector) {
 	bptr < ChangeListener > l = listener.lock();
@@ -64,51 +64,42 @@ void __fastcall THSVAdjustFrame::sb_Hue_gainChange(TObject * Sender)
     }
 }
 
-//---------------------------------------------------------------------------
-void THSVAdjustFrame::setHSV(double h, double s, double v)
+void THSVAdjustFrame::updateHSVCaption()
 {
-    this->h = h;
-    this->s = s;
-    this->v = v;
+    int_array hsvPosition = getHSVPosition();
+    int h = hsvPosition[0];
+    int s = hsvPosition[1];
+    int v = hsvPosition[2];
+    double h_show = ((double) h) / THSVForm3::MAX_HUE_VALUE * 360;
+    lb_Hue_gain->Caption = lb_Hue_gain->Caption.sprintf("%+.2f°", h_show);
+    double s_show = s / 32.;
+    lb_Sat_gain->Caption = lb_Sat_gain->Caption.sprintf("%.2f", s_show);
+    lb_Val_gain->Caption = IntToStr(v);
+}
+
+//---------------------------------------------------------------------------
+void THSVAdjustFrame::setHSVEdit(double h, double s, double v)
+{
     Edit_c3d_Manual39_h_adj->Text = h;
     Edit_c3d_Manual39_s_adj->Text = s;
     Edit_c3d_Manual39_v_adj->Text = v;
-    //saturationSetter->setBase(s);
-    //valueSetter->setBase(v);
 };
 
-void __fastcall THSVAdjustFrame::sb_Sat_gainChange(TObject * Sender)
-{
-    sb_Hue_gainChange(Sender);
-    //binder.active(Sender);
-}
 
-//---------------------------------------------------------------------------
-
-void __fastcall THSVAdjustFrame::sb_Val_gainChange(TObject * Sender)
-{
-    //binder.active(Sender);
-    sb_Hue_gainChange(Sender);
-}
-
-//---------------------------------------------------------------------------
 void THSVAdjustFrame::addChangeListener(bptr < gui::event::ChangeListener > listener)
 {
     bwptr < gui::event::ChangeListener > wptr(listener);
     changeListenerVector.push_back(wptr);
 };
 
-/*void THSVAdjustFrame::addListSelectionListener(bptr < gui::event::ListSelectionListener > listener)
-{
-    bwptr < gui::event::ListSelectionListener > wptr(listener);
-    selectionListenerVector.push_back(wptr);
-};*/
 double_array THSVAdjustFrame::getHSVGain()
 {
-    double h = sb_Hue_gain->Position - sb_Hue_gain->Max / 2;
-    int spos = sb_Sat_gain->Position - sb_Sat_gain->Max / 2;
+
+    int_array hsvPosition = getHSVPosition();
+    double h = hsvPosition[0] - sb_Hue_gain->Max / 2;
+    int spos = hsvPosition[1] - sb_Sat_gain->Max / 2;
     double s = (double) spos / 100. / edt_c3d_satC->Text.ToDouble();
-    int vpos = sb_Val_gain->Position - sb_Val_gain->Max / 2;
+    int vpos = hsvPosition[2] - sb_Val_gain->Max / 2;
     double v = (double) vpos / 100. / edt_c3d_valC->Text.ToDouble();
     double_array hsvgain(new double[3]);
     hsvgain[0] = h;
@@ -116,6 +107,23 @@ double_array THSVAdjustFrame::getHSVGain()
     hsvgain[2] = v;
     return hsvgain;
 };
+
+int_array THSVAdjustFrame::getHSVPosition()
+{
+    int_array hsv(new int[3]);
+    hsv[0] = sb_Hue_gain->Position;
+    hsv[1] = sb_Sat_gain->Position;
+    hsv[2] = sb_Val_gain->Position;
+    return hsv;
+}
+void THSVAdjustFrame::setHSVPostition(int h, int s, int v)
+{
+    settingHSVPosition = true;
+    sb_Hue_gain->Position = h;
+    sb_Sat_gain->Position = s;
+    sb_Val_gain->Position = v;
+    settingHSVPosition = false;
+}
 
 void THSVAdjustFrame::setColorAdjustable(bool enable)
 {
@@ -148,4 +156,32 @@ double_array THSVAdjustFrame::getHSVGain(double h, double s, double v, int row)
     return nil_double_array;
 }
 
+void THSVAdjustFrame::setDefaultHSVPosition(int h, int s, int v)
+{
+    defaultH = h;
+    defaultS = s;
+    defaultV = v;
+    setHSVPostition(defaultH, defaultS, defaultV);
+}
+
+void __fastcall THSVAdjustFrame::Button_HueResetClick(TObject * Sender)
+{
+    sb_Hue_gain->Position = defaultH;
+}
+
+//---------------------------------------------------------------------------
+
+void __fastcall THSVAdjustFrame::Button_SaturationResetClick(TObject * Sender)
+{
+    sb_Sat_gain->Position = defaultS;
+}
+
+//---------------------------------------------------------------------------
+
+void __fastcall THSVAdjustFrame::Button_BrightnessResetClick(TObject * Sender)
+{
+    sb_Val_gain->Position = defaultV;
+}
+
+//---------------------------------------------------------------------------
 

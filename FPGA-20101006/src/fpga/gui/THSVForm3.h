@@ -35,6 +35,7 @@
 //本項目內gui頭文件
 #include "TColorPickerFrame.h"
 #include "THSVAdjustFrame.h"
+#include <c3d/GetCursorColor.h>
 //---------------------------------------------------------------------------
 ///////// HSV Table Address Arrange /////////
 //
@@ -81,7 +82,7 @@ class THSVForm3:public TForm {
     TStringGrid *stringGrid_HSV;
     TColorPickerFrame *colorPicker;
     TGroupBox *GroupBox2;
-    THSVAdjustFrame *hsvAdjust;
+    //THSVAdjustFrame *hsvAdjust;
     TCheckBox *cb_Hue_rotation;
     TButton *btn_set;
     TButton *btn_reset;
@@ -137,6 +138,8 @@ class THSVForm3:public TForm {
     TRadioGroup *RadioGroup_Value;
     TCheckBox *CheckBox_AutoSet;
     TCheckBox *CheckBox_AutoWrite;
+    THSVAdjustFrame *hsvAdjust;
+    TEdit *Edit_CursorColor;
     void __fastcall cb_Hue_RedClick(TObject * Sender);
     void __fastcall cb_Hue_YellowClick(TObject * Sender);
     void __fastcall cb_Hue_GreenClick(TObject * Sender);
@@ -148,26 +151,22 @@ class THSVForm3:public TForm {
     void __fastcall FormCreate(TObject * Sender);
     void __fastcall CheckBox_Click(TObject * Sender);
     void __fastcall FormClose(TObject * Sender, TCloseAction & Action);
-    void __fastcall Hue_ImgMouseMove(TObject * Sender, TShiftState Shift,
-				     int X, int Y);
+    void __fastcall Hue_ImgMouseMove(TObject * Sender, TShiftState Shift, int X, int Y);
     void __fastcall btn_resetClick(TObject * Sender);
 
     void __fastcall btn_Hue_Img_loadClick(TObject * Sender);
     void __fastcall rg_HSV_ModeClick(TObject * Sender);
     void __fastcall Btn_HSV_reloadClick(TObject * Sender);
-    void __fastcall FormKeyDown(TObject * Sender, WORD & Key,
-				TShiftState Shift);
+    void __fastcall FormKeyDown(TObject * Sender, WORD & Key, TShiftState Shift);
     void __fastcall sb_dif_nChange(TObject * Sender);
     void __fastcall sb_dif_pChange(TObject * Sender);
     void __fastcall btn_setClick(TObject * Sender);
     void __fastcall btn_hsv_writeClick(TObject * Sender);
     void __fastcall btn_hsv_readClick(TObject * Sender);
     void __fastcall Hue_ImgMouseDown(TObject * Sender,
-				     TMouseButton Button,
-				     TShiftState Shift, int X, int Y);
+				     TMouseButton Button, TShiftState Shift, int X, int Y);
     void __fastcall stringGrid_HSVDrawCell(TObject * Sender, int ACol,
-					   int ARow, TRect & Rect,
-					   TGridDrawState State);
+					   int ARow, TRect & Rect, TGridDrawState State);
     void __fastcall stringGrid_HSVSelectCell(TObject * Sender, int ACol,
 					     int ARow, bool & CanSelect);
     void __fastcall hsvAdjustsb_c3d_Manual39_hChange(TObject * Sender);
@@ -182,10 +181,10 @@ class THSVForm3:public TForm {
     static const int HUE_COUNT = 24;	//原本是96, why?
     static const int MAX_HUE_VALUE = 768;
     static const int MAX_ADJUST_HUE_ANGLE = 45;
+    static const int WHOLE_HUE_ANGLE = 360;
     bool HSV_IsChkSum;
     int tbl_step;
     void initStringGrid_HSV();
-    //static const int HueRGBValues[HUE_COUNT][3];
 
     //=========================================================================
     // hue
@@ -210,12 +209,26 @@ class THSVForm3:public TForm {
     void initGroupBoxBase(TGroupBox * groupBox_base);
     void deChecked(TGroupBox * groupBox_base);
     int hintToRow(int hint);
-    void setGainCaption(int h, int s, int v);
     int lastStringGridSelectRow;
     bool settingScrollBarPosition;
     void interpolation(int angleBase);
+    bool isInverse(int *array, int size);
+    bool isInverse(double_vector_ptr vector, int size);
+
+    class HSVChangeListener:public gui::event::ChangeListener {
+      private:
+	THSVForm3 * parent;
+      public:
+	HSVChangeListener(THSVForm3 * parent):parent(parent) {
+	};
+	virtual void stateChanged(TObject * Sender) {
+	    parent->hsvAdjustsb_c3d_Manual39_hChange(Sender);
+	};
+    };
+    bptr < HSVChangeListener > listener;
+    bptr < TPColorThread1 > tpColorThread;
   public:			// User declarations
-     TBit * cb;
+    TBit * cb;
     _CHKB **ChkB;
     TLUT *lut_addr;
     _CHKB en;
@@ -235,7 +248,6 @@ class THSVForm3:public TForm {
 
     __fastcall THSVForm3(TComponent * Owner);
     void Reset_HSVshow();
-    //bool Load_HSIini(String Fpath);
     void Hue_LUTWrite();
     void Initial_HSV_table();
     bool Load_HSV(String Fpath);
@@ -247,6 +259,7 @@ class THSVForm3:public TForm {
     void HSV_LUT_RW_over();	// 回復enable狀態
     void HSV_LUT_FuncEnable(bool flag_en);	// 設定HSV lut button是否作用, flag =0 不作用, 反之,作用
 };
+
 //---------------------------------------------------------------------------
 extern PACKAGE THSVForm3 *HSVForm3;
 //---------------------------------------------------------------------------

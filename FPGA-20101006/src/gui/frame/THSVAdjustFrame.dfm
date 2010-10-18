@@ -1,24 +1,24 @@
 object HSVAdjustFrame: THSVAdjustFrame
   Left = 0
   Top = 0
-  Width = 397
-  Height = 202
+  Width = 361
+  Height = 163
   TabOrder = 0
   object GroupBox40: TGroupBox
     Left = 1
     Top = -6
-    Width = 395
-    Height = 70
+    Width = 360
+    Height = 63
     TabOrder = 0
     object lb_Hue_gain: TLabel
-      Left = 335
+      Left = 319
       Top = 39
-      Width = 11
-      Height = 16
+      Width = 10
+      Height = 13
       Caption = '0'#176
     end
     object Label197: TLabel
-      Left = 10
+      Left = 18
       Top = 30
       Width = 25
       Height = 16
@@ -31,9 +31,9 @@ object HSVAdjustFrame: THSVAdjustFrame
       ParentFont = False
     end
     object sb_Hue_gain: TScrollBar
-      Left = 77
-      Top = 39
-      Width = 247
+      Left = 69
+      Top = 32
+      Width = 244
       Height = 21
       Max = 120
       PageSize = 0
@@ -43,35 +43,44 @@ object HSVAdjustFrame: THSVAdjustFrame
     end
     object Edit_c3d_Manual39_h_adj: TEdit
       Left = 177
-      Top = 10
+      Top = 8
       Width = 50
-      Height = 24
+      Height = 21
       ReadOnly = True
       TabOrder = 1
       Text = '0'
     end
+    object Button_HueReset: TButton
+      Left = 232
+      Top = 8
+      Width = 49
+      Height = 17
+      Caption = 'Reset'
+      TabOrder = 2
+      OnClick = Button_HueResetClick
+    end
   end
   object GroupBox41: TGroupBox
     Left = 1
-    Top = 63
-    Width = 395
-    Height = 70
+    Top = 47
+    Width = 360
+    Height = 58
     Ctl3D = True
     ParentCtl3D = False
     TabOrder = 1
     object lb_Sat_gain: TLabel
-      Left = 335
+      Left = 319
       Top = 39
-      Width = 7
-      Height = 16
+      Width = 6
+      Height = 13
       Caption = '0'
     end
     object Label207: TLabel
-      Left = 10
+      Left = 5
       Top = 30
-      Width = 56
+      Width = 60
       Height = 16
-      Caption = 'Satuation'
+      Caption = 'Saturation'
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clWindowText
       Font.Height = -15
@@ -80,21 +89,21 @@ object HSVAdjustFrame: THSVAdjustFrame
       ParentFont = False
     end
     object sb_Sat_gain: TScrollBar
-      Left = 77
-      Top = 39
-      Width = 247
+      Left = 69
+      Top = 32
+      Width = 244
       Height = 21
       Max = 200
       PageSize = 0
       Position = 100
       TabOrder = 0
-      OnChange = sb_Sat_gainChange
+      OnChange = sb_Hue_gainChange
     end
     object edt_c3d_satC: TEdit
       Left = 6
       Top = 7
       Width = 30
-      Height = 24
+      Height = 21
       Hint = 'constant'
       ParentShowHint = False
       ShowHint = True
@@ -104,25 +113,34 @@ object HSVAdjustFrame: THSVAdjustFrame
     end
     object Edit_c3d_Manual39_s_adj: TEdit
       Left = 177
-      Top = 10
+      Top = 8
       Width = 50
-      Height = 24
+      Height = 21
       ReadOnly = True
       TabOrder = 2
       Text = '0'
     end
+    object Button_SaturationReset: TButton
+      Left = 232
+      Top = 8
+      Width = 49
+      Height = 17
+      Caption = 'Reset'
+      TabOrder = 3
+      OnClick = Button_SaturationResetClick
+    end
   end
   object GroupBox7: TGroupBox
     Left = 1
-    Top = 132
-    Width = 395
-    Height = 70
+    Top = 100
+    Width = 360
+    Height = 61
     TabOrder = 2
     object lb_Val_gain: TLabel
-      Left = 335
+      Left = 319
       Top = 41
-      Width = 7
-      Height = 16
+      Width = 6
+      Height = 13
       Caption = '0'
     end
     object Label25: TLabel
@@ -139,21 +157,21 @@ object HSVAdjustFrame: THSVAdjustFrame
       ParentFont = False
     end
     object sb_Val_gain: TScrollBar
-      Left = 77
-      Top = 36
-      Width = 247
+      Left = 69
+      Top = 32
+      Width = 244
       Height = 21
       Max = 200
       PageSize = 0
       Position = 100
       TabOrder = 0
-      OnChange = sb_Val_gainChange
+      OnChange = sb_Hue_gainChange
     end
     object Edit_c3d_Manual39_v_adj: TEdit
       Left = 177
-      Top = 9
+      Top = 8
       Width = 50
-      Height = 24
+      Height = 21
       ReadOnly = True
       TabOrder = 1
       Text = '0'
@@ -162,13 +180,22 @@ object HSVAdjustFrame: THSVAdjustFrame
       Left = 10
       Top = 9
       Width = 31
-      Height = 24
+      Height = 21
       Hint = 'constant'
       ParentShowHint = False
       ShowHint = True
       TabOrder = 2
       Text = '2'
       Visible = False
+    end
+    object Button_BrightnessReset: TButton
+      Left = 232
+      Top = 8
+      Width = 49
+      Height = 17
+      Caption = 'Reset'
+      TabOrder = 3
+      OnClick = Button_BrightnessResetClick
     end
   end
 end
