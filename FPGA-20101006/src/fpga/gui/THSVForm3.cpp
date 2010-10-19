@@ -573,8 +573,10 @@ bool THSVForm3::HSV_LUT_RW_start()
 	return 0;
     }
     HSV_EN_State = (set_val > 0 ? 1 : 0);
-    ChkB[HSVEN_idx]->Chkb->Checked = false;
-    EngineerForm->SetWrite_Byte(ChkB[HSVEN_idx]->Addr, 0);
+    if (CheckBox_OffWhenWrite->Checked) {
+	ChkB[HSVEN_idx]->Chkb->Checked = false;
+	EngineerForm->SetWrite_Byte(ChkB[HSVEN_idx]->Addr, 0);
+    }
     return 1;
 }
 
@@ -583,10 +585,12 @@ bool THSVForm3::HSV_LUT_RW_start()
 // Recover the state of HSV disable
 void THSVForm3::HSV_LUT_RW_over()
 {
-    // reload en state
-    int set_val = (HSV_EN_State == false ? 0 : 1);
-    ChkB[HSVEN_idx]->Chkb->Checked = HSV_EN_State;
-    EngineerForm->SetWrite_Byte(ChkB[HSVEN_idx]->Addr, set_val);
+    if (CheckBox_OffWhenWrite->Checked) {
+	// reload en state
+	int set_val = (HSV_EN_State == false ? 0 : 1);
+	ChkB[HSVEN_idx]->Chkb->Checked = HSV_EN_State;
+	EngineerForm->SetWrite_Byte(ChkB[HSVEN_idx]->Addr, set_val);
+    }
 }
 
 //---------------------------------------------------------------------------
@@ -1047,6 +1051,79 @@ void __fastcall THSVForm3::Button_30BaseInterpClick(TObject * Sender)
     interpolation(30);
     btn_setClick(Sender);
 }
+
+//---------------------------------------------------------------------------
+
+void __fastcall THSVForm3::FormKeyPress(TObject * Sender, char &Key)
+{
+    int_array hsvPos = hsvAdjust->getHSVPosition();
+    bool hsvAdjusting = false;
+    bool manualHsvAdjusting = false;
+
+    switch (Key) {
+    case 'e':
+    case 'E':
+	colorPicker->setOriginalColor(tpColorThread->r, tpColorThread->g, tpColorThread->b);
+	break;
+    case 'w':
+    case 'W':
+	hsvPos[0] += 1;
+	manualHsvAdjusting = true;
+	break;
+    case 'q':
+    case 'Q':
+	hsvPos[0] -= 1;
+	manualHsvAdjusting = true;
+	break;
+    case 's':
+    case 'S':
+	hsvPos[1] += 1;
+	manualHsvAdjusting = true;
+	break;
+    case 'a':
+    case 'A':
+	hsvPos[1] -= 1;
+	manualHsvAdjusting = true;
+	break;
+    case 'x':
+    case 'X':
+	hsvPos[2] += 1;
+	manualHsvAdjusting = true;
+	break;
+    case 'z':
+    case 'Z':
+	hsvPos[2] -= 1;
+	manualHsvAdjusting = true;
+	break;
+    case '1':
+    case 't':
+    case 'T':
+	hsvAdjust->Button_HueResetClick(Sender);
+	hsvAdjusting = true;
+	break;
+    case '2':
+    case 'g':
+    case 'G':
+	hsvAdjust->Button_SaturationResetClick(Sender);
+	hsvAdjusting = true;
+	break;
+    case '3':
+    case 'b':
+    case 'B':
+	hsvAdjust->Button_BrightnessResetClick(Sender);
+	hsvAdjusting = true;
+	break;
+    }
+
+    if (manualHsvAdjusting) {
+	hsvAdjust->setHSVPostition(hsvPos);
+	hsvAdjusting = true;
+    }
+    if (hsvAdjusting) {
+	hsvAdjust->sb_Hue_gainChange(Sender);
+    }
+}
+
 
 //---------------------------------------------------------------------------
 

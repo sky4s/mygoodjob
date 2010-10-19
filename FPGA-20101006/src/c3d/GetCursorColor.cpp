@@ -75,9 +75,9 @@ void __fastcall TPColorThread1::Execute()
 	ColorR = GetPixel(TargethDC, lp.x, lp.y);
 	ReleaseDC(TargetHwnd, TargethDC);
 
-	int r = GetRValue(ColorR);
-	int g = GetGValue(ColorR);
-	int b = GetBValue(ColorR);
+	r = GetRValue(ColorR);
+	g = GetGValue(ColorR);
+	b = GetBValue(ColorR);
 	Edit->Text = "R:" + IntToStr(r) + ", G:" + IntToStr(g) + ", B:" + IntToStr(b);
 	Sleep(50);
     }

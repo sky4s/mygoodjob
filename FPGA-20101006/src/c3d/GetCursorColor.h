@@ -20,6 +20,7 @@ class TPColorThread1:public TThread {
     void __fastcall Execute();
   public:
      __fastcall TPColorThread1(bool CreateSuspended, TEdit * Edit);
+    int r, g, b;
 };
 
 //---------------------------------------------------------------------------
