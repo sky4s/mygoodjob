@@ -140,6 +140,7 @@ class THSVForm3:public TForm {
     TCheckBox *CheckBox_AutoWrite;
     THSVAdjustFrame *hsvAdjust;
     TEdit *Edit_CursorColor;
+    TCheckBox *CheckBox_OffWhenWrite;
     void __fastcall cb_Hue_RedClick(TObject * Sender);
     void __fastcall cb_Hue_YellowClick(TObject * Sender);
     void __fastcall cb_Hue_GreenClick(TObject * Sender);
@@ -177,6 +178,7 @@ class THSVForm3:public TForm {
     void __fastcall RadioGroup_ValueClick(TObject * Sender);
     void __fastcall Button_60BaseInterpClick(TObject * Sender);
     void __fastcall Button_30BaseInterpClick(TObject * Sender);
+    void __fastcall FormKeyPress(TObject * Sender, char &Key);
   private:			// User declarations
     static const int HUE_COUNT = 24;	//­ì¥»¬O96, why?
     static const int MAX_HUE_VALUE = 768;

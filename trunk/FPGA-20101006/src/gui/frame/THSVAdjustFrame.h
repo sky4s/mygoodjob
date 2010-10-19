@@ -13,6 +13,7 @@
 //vcl®wÀY¤å¥ó
 #include <Classes.hpp>
 #include <Controls.hpp>
+#include <StdCtrls.hpp>~
 #include <StdCtrls.hpp>
 #include <Forms.hpp>
 #include <Grids.hpp>
@@ -68,6 +69,7 @@ class THSVAdjustFrame:public TFrame {
     double_array getHSVGain();
     int_array getHSVPosition();
     void setHSVPostition(int h, int s, int v);
+    void setHSVPostition(int_array hsvPostition);
     void setColorAdjustable(bool enable);
     void setTStringGrid(TStringGrid * stringGrid);
     void setDefaultHSVPosition(int h, int s, int v);

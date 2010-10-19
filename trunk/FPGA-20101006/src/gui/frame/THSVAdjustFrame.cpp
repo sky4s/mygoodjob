@@ -125,6 +125,11 @@ void THSVAdjustFrame::setHSVPostition(int h, int s, int v)
     settingHSVPosition = false;
 }
 
+void THSVAdjustFrame::setHSVPostition(int_array hsvPostition)
+{
+    setHSVPostition(hsvPostition[0], hsvPostition[1], hsvPostition[2]);
+}
+
 void THSVAdjustFrame::setColorAdjustable(bool enable)
 {
     sb_Hue_gain->Enabled = enable;

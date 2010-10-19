@@ -1,6 +1,6 @@
 object HSVForm3: THSVForm3
-  Left = 230
-  Top = 79
+  Left = 384
+  Top = 105
   Width = 811
   Height = 629
   Caption = 'HSV'
@@ -11,6 +11,7 @@ object HSVForm3: THSVForm3
   Font.Name = 'MS Sans Serif'
   Font.Style = []
   FormStyle = fsMDIChild
+  KeyPreview = True
   OldCreateOrder = False
   Position = poDefault
   Visible = True
@@ -18,6 +19,7 @@ object HSVForm3: THSVForm3
   OnClose = FormClose
   OnCreate = FormCreate
   OnKeyDown = FormKeyDown
+  OnKeyPress = FormKeyPress
   OnShow = FormShow
   PixelsPerInch = 96
   TextHeight = 13
@@ -6562,6 +6564,8 @@ object HSVForm3: THSVForm3
       inherited pc_img: TPageControl
         Width = 448
         Height = 328
+        ActivePage = colorPicker.ts_image
+        TabIndex = 0
         inherited ts_image: TTabSheet
           inherited ScrollBox1: TScrollBox
             Width = 441
@@ -6714,7 +6718,7 @@ object HSVForm3: THSVForm3
         NumGlyphs = 2
       end
       object CheckBox_AutoSet: TCheckBox
-        Left = 369
+        Left = 89
         Top = 13
         Width = 66
         Height = 14
@@ -6724,8 +6728,8 @@ object HSVForm3: THSVForm3
         TabOrder = 7
       end
       object CheckBox_AutoWrite: TCheckBox
-        Left = 369
-        Top = 29
+        Left = 153
+        Top = 13
         Width = 72
         Height = 14
         Caption = 'Auto Write'
@@ -6766,6 +6770,16 @@ object HSVForm3: THSVForm3
             Visible = False
           end
         end
+      end
+      object CheckBox_OffWhenWrite: TCheckBox
+        Left = 227
+        Top = 13
+        Width = 126
+        Height = 14
+        Caption = 'Off when Write'
+        Checked = True
+        State = cbChecked
+        TabOrder = 9
       end
     end
     object GroupBox3: TGroupBox
