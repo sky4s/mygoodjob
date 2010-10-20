@@ -50,10 +50,18 @@ class THSVAdjustFrame:public TFrame {
     TButton *Button_HueReset;
     TButton *Button_SaturationReset;
     TButton *Button_BrightnessReset;
+    TButton *Button_HueReturn;
+    TButton *Button_SaturationReturn;
+    TButton *Button_BrightnessReturn;
+
     void __fastcall sb_Hue_gainChange(TObject * Sender);
     void __fastcall Button_HueResetClick(TObject * Sender);
     void __fastcall Button_SaturationResetClick(TObject * Sender);
     void __fastcall Button_BrightnessResetClick(TObject * Sender);
+    void __fastcall sb_Sat_gainChange(TObject * Sender);
+    void __fastcall sb_Val_gainChange(TObject * Sender);
+    void __fastcall Button_HueReturnClick(TObject * Sender);
+
   private:			// User declarations
     //double h, s, v;
      std::vector < bwptr < gui::event::ChangeListener > >changeListenerVector;
@@ -62,8 +70,12 @@ class THSVAdjustFrame:public TFrame {
     bool settingHSVPosition;
     void updateHSVCaption();
     int defaultH, defaultS, defaultV;
+
+    bool hgainChange, sgainChange, vgainChange;
+    int lastDefault;
   public:			// User declarations
-     __fastcall THSVAdjustFrame(TComponent * Owner);
+    void sb_HSV_gainChange(TObject * Sender);
+    __fastcall THSVAdjustFrame(TComponent * Owner);
     void setHSVEdit(double h, double s, double v);
     void addChangeListener(bptr < gui::event::ChangeListener > listener);
     double_array getHSVGain();

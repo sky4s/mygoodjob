@@ -59,6 +59,15 @@ object HSVAdjustFrame: THSVAdjustFrame
       TabOrder = 2
       OnClick = Button_HueResetClick
     end
+    object Button_HueReturn: TButton
+      Left = 288
+      Top = 8
+      Width = 49
+      Height = 17
+      Caption = 'Return'
+      TabOrder = 3
+      OnClick = Button_HueReturnClick
+    end
   end
   object GroupBox41: TGroupBox
     Left = 1
@@ -97,7 +106,7 @@ object HSVAdjustFrame: THSVAdjustFrame
       PageSize = 0
       Position = 100
       TabOrder = 0
-      OnChange = sb_Hue_gainChange
+      OnChange = sb_Sat_gainChange
     end
     object edt_c3d_satC: TEdit
       Left = 6
@@ -128,6 +137,14 @@ object HSVAdjustFrame: THSVAdjustFrame
       Caption = 'Reset'
       TabOrder = 3
       OnClick = Button_SaturationResetClick
+    end
+    object Button_SaturationReturn: TButton
+      Left = 288
+      Top = 8
+      Width = 49
+      Height = 17
+      Caption = 'Return'
+      TabOrder = 4
     end
   end
   object GroupBox7: TGroupBox
@@ -165,7 +182,7 @@ object HSVAdjustFrame: THSVAdjustFrame
       PageSize = 0
       Position = 100
       TabOrder = 0
-      OnChange = sb_Hue_gainChange
+      OnChange = sb_Val_gainChange
     end
     object Edit_c3d_Manual39_v_adj: TEdit
       Left = 177
@@ -196,6 +213,14 @@ object HSVAdjustFrame: THSVAdjustFrame
       Caption = 'Reset'
       TabOrder = 3
       OnClick = Button_BrightnessResetClick
+    end
+    object Button_BrightnessReturn: TButton
+      Left = 288
+      Top = 8
+      Width = 49
+      Height = 17
+      Caption = 'Return'
+      TabOrder = 4
     end
   end
 end

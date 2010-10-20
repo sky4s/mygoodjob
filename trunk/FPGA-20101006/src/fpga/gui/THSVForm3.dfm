@@ -1,5 +1,5 @@
 object HSVForm3: THSVForm3
-  Left = 384
+  Left = 469
   Top = 105
   Width = 811
   Height = 629
@@ -6495,6 +6495,7 @@ object HSVForm3: THSVForm3
       Options = [goFixedVertLine, goFixedHorzLine, goVertLine, goHorzLine, goRangeSelect, goDrawFocusSelected, goEditing, goTabs, goRowSelect]
       TabOrder = 7
       OnDrawCell = stringGrid_HSVDrawCell
+      OnKeyDown = stringGrid_HSVKeyDown
       OnSelectCell = stringGrid_HSVSelectCell
       RowHeights = (
         16
@@ -6564,8 +6565,6 @@ object HSVForm3: THSVForm3
       inherited pc_img: TPageControl
         Width = 448
         Height = 328
-        ActivePage = colorPicker.ts_image
-        TabIndex = 0
         inherited ts_image: TTabSheet
           inherited ScrollBox1: TScrollBox
             Width = 441
@@ -6746,9 +6745,13 @@ object HSVForm3: THSVForm3
             Max = 96
             Min = -96
             Position = 0
+            OnChange = hsvAdjustsb_Hue_gainChange
           end
           inherited Edit_c3d_Manual39_h_adj: TEdit
             Visible = False
+          end
+          inherited Button_HueReset: TButton
+            OnClick = hsvAdjustButton_HueResetClick
           end
         end
         inherited GroupBox41: TGroupBox
@@ -6780,6 +6783,16 @@ object HSVForm3: THSVForm3
         Checked = True
         State = cbChecked
         TabOrder = 9
+      end
+      object Button_15BaseInterp: TButton
+        Left = 328
+        Top = 13
+        Width = 89
+        Height = 14
+        Caption = '15'#176' Base Interp.'
+        Enabled = False
+        TabOrder = 10
+        OnClick = Button_15BaseInterpClick
       end
     end
     object GroupBox3: TGroupBox

@@ -29,11 +29,12 @@ __fastcall THSVAdjustFrame::THSVAdjustFrame(TComponent * Owner)
 {
     using namespace gui::util;
     setHSVEdit(0, .666, 192);
+
 }
 
 //---------------------------------------------------------------------------
 
-void __fastcall THSVAdjustFrame::sb_Hue_gainChange(TObject * Sender)
+void THSVAdjustFrame::sb_HSV_gainChange(TObject * Sender)
 {
     using namespace gui::event;
     using namespace java::lang;
@@ -41,20 +42,6 @@ void __fastcall THSVAdjustFrame::sb_Hue_gainChange(TObject * Sender)
     if (true == settingHSVPosition) {
 	return;
     }
-    //double_array hsvgain = getHSVGain();
-    //lb_Hue_gain->Caption = FloatToStr(hsvgain[0]) + "°";
-    //lb_Sat_gain->Caption = FloatToStr(Math::floor(s * hsvgain[1] * 1000) / 1000);
-    //lb_Val_gain->Caption = FloatToStr(Math::floor(v * hsvgain[2] * 1000) / 1000);
-
-    /*int_array hsvPosition = getHSVPosition();
-       int h = hsvPosition[0];
-       int s = hsvPosition[1];
-       int v = hsvPosition[2];
-       double h_show = ((double) h) / THSVForm3::MAX_HUE_VALUE * 360;
-       lb_Hue_gain->Caption = lb_Hue_gain->Caption.sprintf("%+.2f°", h_show);
-       double s_show = s / 32.;
-       lb_Sat_gain->Caption = lb_Sat_gain->Caption.sprintf("%.2f", s_show);
-       lb_Val_gain->Caption = IntToStr(v); */
 
     foreach(bwptr < ChangeListener > listener, changeListenerVector) {
 	bptr < ChangeListener > l = listener.lock();
@@ -64,12 +51,25 @@ void __fastcall THSVAdjustFrame::sb_Hue_gainChange(TObject * Sender)
     }
 }
 
+void __fastcall THSVAdjustFrame::sb_Hue_gainChange(TObject * Sender)
+{
+    /*if (false == hgainChange) {
+       //如果沒改過, 就儲存default
+       lastDefault = sb_Hue_gain->Position;
+       hgainChange = true;
+       } */
+    sb_HSV_gainChange(Sender);
+}
+
 void THSVAdjustFrame::updateHSVCaption()
 {
+    //從scrollbar拉出pos
     int_array hsvPosition = getHSVPosition();
     int h = hsvPosition[0];
     int s = hsvPosition[1];
     int v = hsvPosition[2];
+
+    //從pos計算成實際值並且顯示
     double h_show = ((double) h) / THSVForm3::MAX_HUE_VALUE * 360;
     lb_Hue_gain->Caption = lb_Hue_gain->Caption.sprintf("%+.2f°", h_show);
     double s_show = s / 32.;
@@ -77,7 +77,7 @@ void THSVAdjustFrame::updateHSVCaption()
     lb_Val_gain->Caption = IntToStr(v);
 }
 
-//---------------------------------------------------------------------------
+       //---------------------------------------------------------------------------
 void THSVAdjustFrame::setHSVEdit(double h, double s, double v)
 {
     Edit_c3d_Manual39_h_adj->Text = h;
@@ -174,19 +174,43 @@ void __fastcall THSVAdjustFrame::Button_HueResetClick(TObject * Sender)
     sb_Hue_gain->Position = defaultH;
 }
 
-//---------------------------------------------------------------------------
+       //---------------------------------------------------------------------------
 
 void __fastcall THSVAdjustFrame::Button_SaturationResetClick(TObject * Sender)
 {
     sb_Sat_gain->Position = defaultS;
 }
 
-//---------------------------------------------------------------------------
+       //---------------------------------------------------------------------------
 
 void __fastcall THSVAdjustFrame::Button_BrightnessResetClick(TObject * Sender)
 {
     sb_Val_gain->Position = defaultV;
 }
 
-//---------------------------------------------------------------------------
+       //---------------------------------------------------------------------------
+
+void __fastcall THSVAdjustFrame::sb_Sat_gainChange(TObject * Sender)
+{
+    sb_HSV_gainChange(Sender);
+}
+
+       //---------------------------------------------------------------------------
+
+void __fastcall THSVAdjustFrame::sb_Val_gainChange(TObject * Sender)
+{
+    sb_HSV_gainChange(Sender);
+}
+
+       //---------------------------------------------------------------------------
+
+void __fastcall THSVAdjustFrame::Button_HueReturnClick(TObject * Sender)
+{
+    if (true == hgainChange) {
+	sb_Hue_gain->Position = lastDefault;
+	hgainChange = false;
+    }
+}
+
+       //---------------------------------------------------------------------------
 
