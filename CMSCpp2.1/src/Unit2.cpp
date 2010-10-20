@@ -966,8 +966,7 @@ class property {
     :name_(name), value_(value) {
     } std::string name() const {
 	return name_;
-    }
-    boost::any & value() {
+    } boost::any & value() {
 	return value_;
     }
     friend bool operator<(const property & lhs, const property & rhs) {
@@ -997,7 +996,7 @@ void propertyTest()
 void hsvTest()
 {
     using namespace Dep;
-    RGB_ptr rgb(new RGBColor(30, 40, 50));
+    RGB_ptr rgb(new RGBColor(192, 80, 80));
     cout << rgb->getHue() << endl;
     double_array hsvi = rgb->getHSVIValues();
     cout << *math::DoubleArray::toString(hsvi, 4) << endl;
@@ -1085,8 +1084,8 @@ int main(int argc, char *argv[])
     //domap();
     //anyTest();
     //propertyTest();
-    //hsvTest();
-    cout << IntToHex(10,2) << endl;
+    hsvTest();
+    //cout << IntToHex(10,2) << endl;
 
 
     //cout << 5 / 4 / 3. << endl;
