@@ -1,6 +1,6 @@
 object MainForm: TMainForm
-  Left = 108
-  Top = 367
+  Left = 255
+  Top = 371
   Width = 938
   Height = 425
   Caption = 'CCT Adjustment v3'
@@ -919,7 +919,7 @@ object MainForm: TMainForm
           Left = 46
           Top = 20
           Width = 46
-          Height = 24
+          Height = 21
           ImeName = #26085#25991#36664#20837#31995#32113' (MS-IME2002)'
           TabOrder = 0
           Text = '1366'
@@ -928,7 +928,7 @@ object MainForm: TMainForm
           Left = 46
           Top = 46
           Width = 46
-          Height = 24
+          Height = 21
           ImeName = #26085#25991#36664#20837#31995#32113' (MS-IME2002)'
           TabOrder = 1
           Text = '768'
@@ -952,7 +952,7 @@ object MainForm: TMainForm
           Left = 7
           Top = 20
           Width = 78
-          Height = 24
+          Height = 21
           ImeName = #26085#25991#36664#20837#31995#32113' (MS-IME2002)'
           TabOrder = 0
           Text = '750'
@@ -991,7 +991,7 @@ object MainForm: TMainForm
           Left = 79
           Top = 13
           Width = 39
-          Height = 24
+          Height = 21
           ImeName = #26085#25991#36664#20837#31995#32113' (MS-IME2002)'
           TabOrder = 0
           Text = '0'
@@ -1000,7 +1000,7 @@ object MainForm: TMainForm
           Left = 80
           Top = 39
           Width = 38
-          Height = 24
+          Height = 21
           Enabled = False
           ImeName = #26085#25991#36664#20837#31995#32113' (MS-IME2002)'
           TabOrder = 1
@@ -1010,7 +1010,7 @@ object MainForm: TMainForm
           Left = 80
           Top = 65
           Width = 83
-          Height = 24
+          Height = 21
           Enabled = False
           ImeName = #26085#25991#36664#20837#31995#32113' (MS-IME2002)'
           TabOrder = 2

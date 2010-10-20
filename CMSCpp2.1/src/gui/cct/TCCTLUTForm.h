@@ -97,6 +97,7 @@ class TCCTLUTForm:public TForm {
     TCheckBox *CheckBox_MemoryMeasure;
     TCheckBox *CheckBox_MaxYAdvAuto;
     TCheckBox *CheckBox_Accurate;
+    TCheckBox *CheckBox_ManualAccurate;
     void __fastcall RadioButton_P1P2Click(TObject * Sender);
     void __fastcall Button_MeaRunClick(TObject * Sender);
     void __fastcall FormCreate(TObject * Sender);

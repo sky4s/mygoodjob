@@ -122,6 +122,21 @@ void TMainForm::initTCONFile()
 	ini->WriteInteger("11306", "lut", 10);
 	ini->WriteInteger("11306", "out", 6);
 	//=========================================================================
+	// 11307
+	//=========================================================================
+	ini->WriteInteger("11307", "AddressingSize", 5);
+
+	ini->WriteString("11307", "DigitalGammaEnableAddress", "28");
+	ini->WriteInteger("11307", "DigitalGammaEnableBit", 0);
+	ini->WriteString("11307", "DigitalGammaLUTAddress", "310");
+	ini->WriteInteger("11307", "DigitalGammaLUTType", 10);
+
+	ini->WriteBool("11307", "GammaTestFunc", false);
+
+	ini->WriteInteger("11307", "in", 6);
+	ini->WriteInteger("11307", "lut", 10);
+	ini->WriteInteger("11307", "out", 6);
+	//=========================================================================
 	// 12306
 	//=========================================================================
 	ini->WriteInteger("12306", "AddressingSize", 5);

@@ -206,7 +206,7 @@ void __fastcall TI2CTestForm::Button_ReadClick(TObject * Sender)
     if (true == this->CheckBox_Connecting->Checked) {
 	int address = StrToInt("0x" + this->Edit_Address->Text);
 	const unsigned char data = control->readByte(address);
-	this->Edit_ReadData->Text = IntToStr(data);
+	this->Edit_ReadData->Text = IntToHex(data, 2);
     }
 }
 

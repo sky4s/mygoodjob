@@ -14,44 +14,44 @@ object CA210SettingFrame: TCA210SettingFrame
     object Label1: TLabel
       Left = 8
       Top = 24
-      Width = 68
-      Height = 16
+      Width = 54
+      Height = 13
       Caption = 'Sync Mode'
     end
     object Label2: TLabel
       Left = 8
       Top = 56
-      Width = 41
-      Height = 16
+      Width = 31
+      Height = 13
       Caption = 'Speed'
     end
     object Label3: TLabel
       Left = 8
       Top = 88
-      Width = 78
-      Height = 16
+      Width = 61
+      Height = 13
       Caption = 'Cal Standard'
     end
     object Label4: TLabel
       Left = 256
       Top = 24
-      Width = 16
-      Height = 16
+      Width = 13
+      Height = 13
       Caption = 'Hz'
     end
     object Label5: TLabel
       Left = 8
       Top = 120
-      Width = 84
-      Height = 16
+      Width = 64
+      Height = 13
       Caption = 'Display Mode'
     end
     object ComboBox_SyncMode: TComboBox
       Left = 96
       Top = 24
       Width = 97
-      Height = 24
-      ItemHeight = 16
+      Height = 21
+      ItemHeight = 13
       TabOrder = 0
       Text = 'NTSC'
       OnChange = ComboBox_SyncModeChange
@@ -65,9 +65,9 @@ object CA210SettingFrame: TCA210SettingFrame
       Left = 96
       Top = 56
       Width = 97
-      Height = 24
+      Height = 21
       Enabled = False
-      ItemHeight = 16
+      ItemHeight = 13
       ItemIndex = 0
       TabOrder = 1
       Text = 'AUTO'
@@ -78,8 +78,8 @@ object CA210SettingFrame: TCA210SettingFrame
       Left = 96
       Top = 88
       Width = 97
-      Height = 24
-      ItemHeight = 16
+      Height = 21
+      ItemHeight = 13
       ItemIndex = 1
       TabOrder = 2
       Text = '9300K'
@@ -92,7 +92,7 @@ object CA210SettingFrame: TCA210SettingFrame
       Left = 200
       Top = 24
       Width = 49
-      Height = 24
+      Height = 21
       Enabled = False
       TabOrder = 3
       Text = '60'
@@ -102,9 +102,9 @@ object CA210SettingFrame: TCA210SettingFrame
       Left = 96
       Top = 120
       Width = 97
-      Height = 24
+      Height = 21
       Enabled = False
-      ItemHeight = 16
+      ItemHeight = 13
       ItemIndex = 0
       TabOrder = 4
       Text = 'Lvxy'
