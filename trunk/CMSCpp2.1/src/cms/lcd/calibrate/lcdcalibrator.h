@@ -91,6 +91,7 @@ namespace cms {
 		// 2. 將面板白點修改為目標白點
 		//   修改面板特性讓面板白點為目標白點, 使求出來的白點正好就是目標
 		bool accurateMode;
+		bool manualAccurateMode;
 		bool remapped;
 		//==============================================================
 
@@ -163,6 +164,7 @@ namespace cms {
 		void setBTargetIntensity(double bTargetIntensity);
 		void setMultiGen(bool enable, int times);
 		void setAccurateMode(bool enable);
+		void setManualAccurateMode(bool enable);
 		//==============================================================
 
 		//==============================================================

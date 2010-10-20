@@ -966,7 +966,8 @@ class property {
     :name_(name), value_(value) {
     } std::string name() const {
 	return name_;
-    } boost::any & value() {
+    }
+    boost::any & value() {
 	return value_;
     }
     friend bool operator<(const property & lhs, const property & rhs) {
@@ -1084,8 +1085,8 @@ int main(int argc, char *argv[])
     //domap();
     //anyTest();
     //propertyTest();
-    hsvTest();
-
+    //hsvTest();
+    cout << IntToHex(10,2) << endl;
 
 
     //cout << 5 / 4 / 3. << endl;

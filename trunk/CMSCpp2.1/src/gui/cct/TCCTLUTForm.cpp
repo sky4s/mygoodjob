@@ -161,6 +161,7 @@ void __fastcall TCCTLUTForm::Button_MeaRunClick(TObject * Sender)
 	    calibrator.setBTargetIntensity(bTargetIntensity);
 	}
 	calibrator.setAccurateMode(this->CheckBox_Accurate->Checked);
+	calibrator.setManualAccurateMode(CheckBox_ManualAccurate->Checked);
 	//==========================================================================
 
 	//==========================================================================
@@ -332,6 +333,7 @@ void __fastcall TCCTLUTForm::FormShow(TObject * Sender)
     bool visible = null != tconctrl || false == MainForm->linkCA210;
     //avoid hook再考慮一下開啟方式
     CheckBox_AvoidHookNB->Visible = visible;
+    CheckBox_ManualAccurate->Visible = visible;
     /*Label18->Visible = visible;
        Label19->Visible = visible;
        Edit_BMax2Begin->Visible = visible;
@@ -612,5 +614,4 @@ void __fastcall TCCTLUTForm::CheckBox_MaxYAdvAutoClick(TObject * Sender)
 }
 
 //---------------------------------------------------------------------------
-
 

@@ -161,6 +161,7 @@ namespace cms {
 		multiGen = false;
 		accurateMode = false;
 		remapped = false;
+		manualAccurateMode = false;
 	    };
 
 	    Component_vector_ptr LCDCalibrator::fetchComponentVector() {
@@ -293,7 +294,9 @@ namespace cms {
 		    panelRegulator = bptr < PanelRegulator >
 			(new PanelRegulator(bitDepth, tconctrl, (int) rgb->R, (int) rgb->G,
 					    (int) rgb->B));
-		    panelRegulator->setEnable(true);
+		    if (false == this->manualAccurateMode) {
+			panelRegulator->setEnable(true);
+		    }
 		    remapped = true;
 		}
 
@@ -708,6 +711,9 @@ namespace cms {
 	    };
 	    void LCDCalibrator::setAccurateMode(bool enable) {
 		this->accurateMode = enable;
+	    };
+	    void LCDCalibrator::setManualAccurateMode(bool enable) {
+		this->manualAccurateMode = enable;
 	    };
 	};
     };
