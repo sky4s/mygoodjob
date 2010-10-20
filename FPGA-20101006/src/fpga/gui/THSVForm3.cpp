@@ -374,12 +374,13 @@ bool THSVForm3::Load_HSV(String Fpath)
 	    ShowMessage("Can't open Hue table file.");
 	    return 0;		//資料中的data缺少
 	}
+	int index = c / 3;
 	if (c % 3 == 0) {
-	    hueTable[c / 3] = StrToInt((AnsiString) pch);
+	    hueTable[index] = hueTableTemp[index] = StrToInt((AnsiString) pch);
 	} else if (c % 3 == 1) {
-	    satTable[c / 3] = StrToInt((AnsiString) pch);
+	    satTable[index] = satTableTemp[index] = StrToInt((AnsiString) pch);
 	} else {
-	    valTable[c / 3] = StrToInt((AnsiString) pch);
+	    valTable[index] = valTableTemp[index] = StrToInt((AnsiString) pch);
 	}
 	pch = strtok(NULL, "\n\t");
 	c++;
@@ -773,6 +774,11 @@ void __fastcall THSVForm3::stringGrid_HSVSelectCell(TObject * Sender,
        } */
     lastStringGridSelectRow = ARow;
     int index = ARow - 1;
+
+    //如果是15度的base
+    bool base15deg = index % 2 == 1;
+    Button_15BaseInterp->Enabled = base15deg;
+
     RGB_ptr rgb = getHueRGB(index);
     //設定colorpicker
     colorPicker->setOriginalColor(rgb->R, rgb->G, rgb->B);
@@ -1120,10 +1126,66 @@ void __fastcall THSVForm3::FormKeyPress(TObject * Sender, char &Key)
 	hsvAdjusting = true;
     }
     if (hsvAdjusting) {
-	hsvAdjust->sb_Hue_gainChange(Sender);
+	hsvAdjust->sb_HSV_gainChange(Sender);
     }
 }
 
+
+//---------------------------------------------------------------------------
+
+void __fastcall THSVForm3::hsvAdjustButton_HueResetClick(TObject * Sender)
+{
+    hsvAdjust->Button_HueResetClick(Sender);
+
+}
+
+//---------------------------------------------------------------------------
+
+
+
+
+void __fastcall THSVForm3::stringGrid_HSVKeyDown(TObject * Sender, WORD & Key, TShiftState Shift)
+{
+    FormKeyPress(Sender, Key);
+}
+
+//---------------------------------------------------------------------------
+
+void __fastcall THSVForm3::Button_15BaseInterpClick(TObject * Sender)
+{
+    int index = lastStringGridSelectRow - 1;
+    int index0 = (index - 1) % HUE_COUNT;
+    int index1 = (index + 1) % HUE_COUNT;
+
+    int_array hsv0 = getHSVAdjustValue(index0);
+    int_array hsv1 = getHSVAdjustValue(index1);
+    int h0 = index0 * 15;
+    int h1 = (index + 1) * 15;
+    int hsv00 = hsv0[0];
+    //int hsv10 = hsv1[0];
+    int hsv10 = (hsv1[0] < hsv00) ? hsv1[0] + MAX_HUE_VALUE : hsv1[0];
+
+    using namespace math;
+    int h = (int) Interpolation::linear(h0, h1, hsv00, hsv10, index * 15);
+    int s = (int) Interpolation::linear(h0, h1, hsv0[1], hsv1[1], index * 15);
+    int v = (int) Interpolation::linear(h0, h1, hsv0[2], hsv1[2], index * 15);
+
+    const int ADD_HUE_VALUE = MAX_HUE_VALUE;
+    hueTableTemp[index] = h % ADD_HUE_VALUE;
+    satTableTemp[index] = s;
+    valTableTemp[index] = v;
+
+    btn_setClick(Sender);
+    stringGrid_HSVSelectCell(Sender, 0, lastStringGridSelectRow, false);
+}
+
+//---------------------------------------------------------------------------
+
+void __fastcall THSVForm3::hsvAdjustsb_Hue_gainChange(TObject * Sender)
+{
+    hsvAdjust->sb_Hue_gainChange(Sender);
+
+}
 
 //---------------------------------------------------------------------------
 

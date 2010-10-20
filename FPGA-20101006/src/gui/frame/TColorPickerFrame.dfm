@@ -81,9 +81,9 @@ object ColorPickerFrame: TColorPickerFrame
     Top = 0
     Width = 551
     Height = 404
-    ActivePage = ts_color
+    ActivePage = ts_image
     MultiLine = True
-    TabIndex = 1
+    TabIndex = 0
     TabOrder = 0
     object ts_image: TTabSheet
       Caption = '&Image'
@@ -12382,7 +12382,7 @@ object ColorPickerFrame: TColorPickerFrame
     Top = 6
     Width = 80
     Height = 19
-    Caption = 'Loa&d Image'
+    Caption = 'Load Image'
     TabOrder = 1
     OnClick = btn_c3d_load_imgClick
   end
