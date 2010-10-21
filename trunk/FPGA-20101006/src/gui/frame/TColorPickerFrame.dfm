@@ -12337,7 +12337,7 @@ object ColorPickerFrame: TColorPickerFrame
       end
     end
     object ts_color: TTabSheet
-      Caption = 'Point &Color'
+      Caption = '&Point Color'
       ImageIndex = 1
       object originalColor: TImage
         Left = 0

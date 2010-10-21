@@ -1,6 +1,6 @@
 object HSVForm3: THSVForm3
   Left = 469
-  Top = 105
+  Top = 97
   Width = 811
   Height = 629
   Caption = 'HSV'
@@ -6787,10 +6787,9 @@ object HSVForm3: THSVForm3
       object Button_15BaseInterp: TButton
         Left = 328
         Top = 13
-        Width = 89
+        Width = 49
         Height = 14
-        Caption = '15'#176' Base Interp.'
-        Enabled = False
+        Caption = 'I&nterp.'
         TabOrder = 10
         OnClick = Button_15BaseInterpClick
       end
@@ -7166,8 +7165,16 @@ object HSVForm3: THSVForm3
       Left = 8
       Top = 368
       Width = 161
-      Height = 21
+      Height = 17
       TabOrder = 11
+      Text = 'Cursor Color'
+    end
+    object Edit_CursorColorHSV: TEdit
+      Left = 8
+      Top = 384
+      Width = 161
+      Height = 17
+      TabOrder = 12
       Text = 'Cursor Color'
     end
   end

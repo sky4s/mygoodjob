@@ -15,6 +15,7 @@
 //本項目內gui頭文件
 //#include <gui\c3d\TMainForm.h>
 //#include <gui/c3d/TC3DForm.h>
+#include <cms/colorspace/rgb.h>
 
 #pragma package(smart_init)
 
@@ -33,7 +34,12 @@
 //---------------------------------------------------------------------------
 
 __fastcall TPColorThread1::TPColorThread1(bool CreateSuspended, TEdit * Edit)
-:TThread(CreateSuspended), Edit(Edit)
+:TThread(CreateSuspended), Edit(Edit), Edit_HSV(null)
+{
+}
+
+__fastcall TPColorThread1::TPColorThread1(bool CreateSuspended, TEdit * Edit, TEdit * Edit_HSV)
+:TThread(CreateSuspended), Edit(Edit), Edit_HSV(Edit_HSV)
 {
 }
 
@@ -78,7 +84,21 @@ void __fastcall TPColorThread1::Execute()
 	r = GetRValue(ColorR);
 	g = GetGValue(ColorR);
 	b = GetBValue(ColorR);
-	Edit->Text = "R:" + IntToStr(r) + ", G:" + IntToStr(g) + ", B:" + IntToStr(b);
+
+	Edit->Text = "R" + IntToStr(r) + ", G" + IntToStr(g) + ", B" + IntToStr(b);
+
+	if (null != Edit_HSV) {
+	    using namespace Dep;
+	    RGBColor rgb(r, g, b);
+	    double_array hsviValues = rgb.getHSVIValues();
+
+	    Edit_HSV->Text =
+		"H" + IntToStr((int) hsviValues[0]) + ", S" +
+		Edit_HSV->Text.sprintf("%.3f",
+				       hsviValues[1]) + ", V" +
+		IntToStr((int) (hsviValues[2] * 255));
+	}
+
 	Sleep(50);
     }
 }

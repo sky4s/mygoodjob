@@ -142,6 +142,7 @@ class THSVForm3:public TForm {
     TEdit *Edit_CursorColor;
     TCheckBox *CheckBox_OffWhenWrite;
     TButton *Button_15BaseInterp;
+    TEdit *Edit_CursorColorHSV;
     void __fastcall cb_Hue_RedClick(TObject * Sender);
     void __fastcall cb_Hue_YellowClick(TObject * Sender);
     void __fastcall cb_Hue_GreenClick(TObject * Sender);
