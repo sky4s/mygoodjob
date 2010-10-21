@@ -33,7 +33,8 @@ lastStringGridSelectRow(-1), settingScrollBarPosition(false)
     HSVEN_idx = -1;
     listener = bptr < HSVChangeListener > (new HSVChangeListener(this));
     hsvAdjust->addChangeListener(listener);
-    tpColorThread = bptr < TPColorThread1 > (new TPColorThread1(true, Edit_CursorColor));
+    tpColorThread =
+	bptr < TPColorThread1 > (new TPColorThread1(true, Edit_CursorColor, Edit_CursorColorHSV));
 }
 
 //---------------------------------------------------------------------------
@@ -393,6 +394,8 @@ bool THSVForm3::Load_HSV(String Fpath)
 	stringGrid_HSV->Cells[3][i + 1] = valTable[i];
     }
 
+    stringGrid_HSVSelectCell(this, 0, lastStringGridSelectRow, false);
+
     //Hue_LUTWrite();
     return 1;
 }
@@ -633,11 +636,11 @@ void __fastcall THSVForm3::btn_hsv_readClick(TObject * Sender)
 	   satTable[i] = (HSV_lut[i * 3 + 1] % 64) * 2 + (HSV_lut[i * 3 + 2] / 128) % 2;
 	   val_r = HSV_lut[i * 3 + 2] % 128; */
 	// Modified only for AUO11307
-	hueTable[i] = HSV_lut[i * 3 + 2] * 4 + (HSV_lut[i * 3 + 1] / 64) % 4;
-	satTable[i] = (HSV_lut[i * 3 + 1] % 64) * 2 + (HSV_lut[i * 3] / 128) % 2;
-	val_r = HSV_lut[i * 3] % 128;
+	hueTable[i] = hueTableTemp[i] = HSV_lut[i * 3 + 2] * 4 + (HSV_lut[i * 3 + 1] / 64) % 4;
+	satTable[i] = satTableTemp[i] = (HSV_lut[i * 3 + 1] % 64) * 2 + (HSV_lut[i * 3] / 128) % 2;
 
-	valTable[i] = Cmplmnt2sToSign(val_r, 128);
+	val_r = HSV_lut[i * 3] % 128;
+	valTable[i] = valTableTemp[i] = Cmplmnt2sToSign(val_r, 128);
 
 	stringGrid_HSV->Cells[1][i + 1] = ((double) hueTable[i]) / MAX_HUE_VALUE * WHOLE_HUE_ANGLE;
 	stringGrid_HSV->Cells[2][i + 1] = satTable[i] / 32.;
@@ -776,8 +779,8 @@ void __fastcall THSVForm3::stringGrid_HSVSelectCell(TObject * Sender,
     int index = ARow - 1;
 
     //如果是15度的base
-    bool base15deg = index % 2 == 1;
-    Button_15BaseInterp->Enabled = base15deg;
+    //bool base15deg = index % 2 == 1;
+    //Button_15BaseInterp->Enabled = base15deg;
 
     RGB_ptr rgb = getHueRGB(index);
     //設定colorpicker
@@ -1067,8 +1070,8 @@ void __fastcall THSVForm3::FormKeyPress(TObject * Sender, char &Key)
     bool manualHsvAdjusting = false;
 
     switch (Key) {
-    case 'e':
-    case 'E':
+    case 'v':
+    case 'V':
 	colorPicker->setOriginalColor(tpColorThread->r, tpColorThread->g, tpColorThread->b);
 	break;
     case 'w':
@@ -1102,20 +1105,20 @@ void __fastcall THSVForm3::FormKeyPress(TObject * Sender, char &Key)
 	manualHsvAdjusting = true;
 	break;
     case '1':
-    case 't':
-    case 'T':
+    case 'e':
+    case 'E':
 	hsvAdjust->Button_HueResetClick(Sender);
 	hsvAdjusting = true;
 	break;
     case '2':
-    case 'g':
-    case 'G':
+    case 'd':
+    case 'D':
 	hsvAdjust->Button_SaturationResetClick(Sender);
 	hsvAdjusting = true;
 	break;
     case '3':
-    case 'b':
-    case 'B':
+    case 'c':
+    case 'C':
 	hsvAdjust->Button_BrightnessResetClick(Sender);
 	hsvAdjusting = true;
 	break;
@@ -1154,21 +1157,22 @@ void __fastcall THSVForm3::stringGrid_HSVKeyDown(TObject * Sender, WORD & Key, T
 void __fastcall THSVForm3::Button_15BaseInterpClick(TObject * Sender)
 {
     int index = lastStringGridSelectRow - 1;
-    int index0 = (index - 1) % HUE_COUNT;
+    bool firstIndex = (index == 0);
+    int index0 = firstIndex ? (HUE_COUNT - 1) : (index - 1) % HUE_COUNT;
     int index1 = (index + 1) % HUE_COUNT;
 
     int_array hsv0 = getHSVAdjustValue(index0);
     int_array hsv1 = getHSVAdjustValue(index1);
-    int h0 = index0 * 15;
-    int h1 = (index + 1) * 15;
+    //int h0 = index0 * 15;
+    //int h1 = (index + 1) * 15;
     int hsv00 = hsv0[0];
     //int hsv10 = hsv1[0];
     int hsv10 = (hsv1[0] < hsv00) ? hsv1[0] + MAX_HUE_VALUE : hsv1[0];
 
     using namespace math;
-    int h = (int) Interpolation::linear(h0, h1, hsv00, hsv10, index * 15);
-    int s = (int) Interpolation::linear(h0, h1, hsv0[1], hsv1[1], index * 15);
-    int v = (int) Interpolation::linear(h0, h1, hsv0[2], hsv1[2], index * 15);
+    int h = (int) Interpolation::linear(0, 2, hsv00, hsv10, 1);
+    int s = (int) Interpolation::linear(0, 2, hsv0[1], hsv1[1], 1);
+    int v = (int) Interpolation::linear(0, 2, hsv0[2], hsv1[2], 1);
 
     const int ADD_HUE_VALUE = MAX_HUE_VALUE;
     hueTableTemp[index] = h % ADD_HUE_VALUE;

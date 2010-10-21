@@ -16,10 +16,12 @@ class TPColorThread1:public TThread {
   private:
     void SetName();
     TEdit *Edit;
+    TEdit *Edit_HSV;
   protected:
     void __fastcall Execute();
   public:
      __fastcall TPColorThread1(bool CreateSuspended, TEdit * Edit);
+    __fastcall TPColorThread1(bool CreateSuspended, TEdit * Edit, TEdit * Edit_HSV);
     int r, g, b;
 };
 
