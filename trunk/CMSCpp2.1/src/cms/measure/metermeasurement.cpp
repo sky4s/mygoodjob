@@ -145,7 +145,6 @@ namespace cms {
 	    } else {
 		result = meter->triggerMeasurementInXYZ();
 	    }
-	    //double_array result = meter->triggerMeasurementInXYZ();
 
 	    XYZ_ptr XYZ(new Indep::CIEXYZ(result));
 	    Patch_ptr patch(new Patch(patchName, XYZ, XYZ, measureRGB));
