@@ -1,6 +1,6 @@
 object MainForm: TMainForm
-  Left = 531
-  Top = 160
+  Left = 566
+  Top = 120
   Width = 749
   Height = 588
   Caption = 'Toolkit'

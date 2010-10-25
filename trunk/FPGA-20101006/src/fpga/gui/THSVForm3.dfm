@@ -1,6 +1,6 @@
 object HSVForm3: THSVForm3
-  Left = 469
-  Top = 97
+  Left = 500
+  Top = 65
   Width = 811
   Height = 629
   Caption = 'HSV'
@@ -6630,9 +6630,9 @@ object HSVForm3: THSVForm3
       end
       object btn_set: TButton
         Left = 394
-        Top = 44
+        Top = 104
         Width = 49
-        Height = 26
+        Height = 15
         Caption = 'Set'
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clWindowText
@@ -6645,9 +6645,9 @@ object HSVForm3: THSVForm3
       end
       object btn_reset: TButton
         Left = 394
-        Top = 71
+        Top = 120
         Width = 49
-        Height = 25
+        Height = 15
         Caption = 'Reset'
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clWindowText
@@ -6660,9 +6660,9 @@ object HSVForm3: THSVForm3
       end
       object btn_hsv_write: TButton
         Left = 394
-        Top = 99
+        Top = 136
         Width = 49
-        Height = 24
+        Height = 15
         Caption = 'Write'
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clWindowText
@@ -6675,9 +6675,9 @@ object HSVForm3: THSVForm3
       end
       object btn_hsv_read: TButton
         Left = 394
-        Top = 126
+        Top = 152
         Width = 49
-        Height = 25
+        Height = 15
         Caption = 'Read'
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clWindowText
@@ -6690,7 +6690,7 @@ object HSVForm3: THSVForm3
       end
       object Btn_HSV_reload: TBitBtn
         Left = 371
-        Top = 154
+        Top = 168
         Width = 72
         Height = 25
         Caption = '&Reload'
@@ -6785,13 +6785,40 @@ object HSVForm3: THSVForm3
         TabOrder = 9
       end
       object Button_15BaseInterp: TButton
-        Left = 328
-        Top = 13
+        Left = 392
+        Top = 29
         Width = 49
         Height = 14
         Caption = 'I&nterp.'
         TabOrder = 10
         OnClick = Button_15BaseInterpClick
+      end
+      object Button_HInterp: TButton
+        Left = 392
+        Top = 45
+        Width = 49
+        Height = 14
+        Caption = 'H Interp.'
+        TabOrder = 11
+        OnClick = Button_HInterpClick
+      end
+      object Button_SInterp: TButton
+        Left = 392
+        Top = 61
+        Width = 49
+        Height = 14
+        Caption = 'S Interp.'
+        TabOrder = 12
+        OnClick = Button_SInterpClick
+      end
+      object Button_VInterp: TButton
+        Left = 392
+        Top = 77
+        Width = 49
+        Height = 14
+        Caption = 'V Interp.'
+        TabOrder = 13
+        OnClick = Button_VInterpClick
       end
     end
     object GroupBox3: TGroupBox
@@ -7165,7 +7192,7 @@ object HSVForm3: THSVForm3
       Left = 8
       Top = 368
       Width = 161
-      Height = 17
+      Height = 21
       TabOrder = 11
       Text = 'Cursor Color'
     end
@@ -7173,7 +7200,7 @@ object HSVForm3: THSVForm3
       Left = 8
       Top = 384
       Width = 161
-      Height = 17
+      Height = 21
       TabOrder = 12
       Text = 'Cursor Color'
     end
