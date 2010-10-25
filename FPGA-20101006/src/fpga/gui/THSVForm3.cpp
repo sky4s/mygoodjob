@@ -1156,6 +1156,35 @@ void __fastcall THSVForm3::stringGrid_HSVKeyDown(TObject * Sender, WORD & Key, T
 
 void __fastcall THSVForm3::Button_15BaseInterpClick(TObject * Sender)
 {
+
+    base15DegInterpClick(Sender, true, true, true);
+    /*int index = lastStringGridSelectRow - 1;
+       bool firstIndex = (index == 0);
+       int index0 = firstIndex ? (HUE_COUNT - 1) : (index - 1) % HUE_COUNT;
+       int index1 = (index + 1) % HUE_COUNT;
+
+       int_array hsv0 = getHSVAdjustValue(index0);
+       int_array hsv1 = getHSVAdjustValue(index1);
+       int hsv00 = hsv0[0];
+       int hsv10 = (hsv1[0] < hsv00) ? hsv1[0] + MAX_HUE_VALUE : hsv1[0];
+
+       using namespace math;
+       int h = (int) Interpolation::linear(0, 2, hsv00, hsv10, 1);
+       int s = (int) Interpolation::linear(0, 2, hsv0[1], hsv1[1], 1);
+       int v = (int) Interpolation::linear(0, 2, hsv0[2], hsv1[2], 1);
+
+       const int ADD_HUE_VALUE = MAX_HUE_VALUE;
+       hueTableTemp[index] = h % ADD_HUE_VALUE;
+       satTableTemp[index] = s;
+       valTableTemp[index] = v;
+
+       btn_setClick(Sender);
+       stringGrid_HSVSelectCell(Sender, 0, lastStringGridSelectRow, false); */
+
+}
+
+void THSVForm3::base15DegInterpClick(TObject * Sender, bool hInterp, bool sInterp, bool vInterp)
+{
     int index = lastStringGridSelectRow - 1;
     bool firstIndex = (index == 0);
     int index0 = firstIndex ? (HUE_COUNT - 1) : (index - 1) % HUE_COUNT;
@@ -1163,21 +1192,26 @@ void __fastcall THSVForm3::Button_15BaseInterpClick(TObject * Sender)
 
     int_array hsv0 = getHSVAdjustValue(index0);
     int_array hsv1 = getHSVAdjustValue(index1);
-    //int h0 = index0 * 15;
-    //int h1 = (index + 1) * 15;
     int hsv00 = hsv0[0];
-    //int hsv10 = hsv1[0];
     int hsv10 = (hsv1[0] < hsv00) ? hsv1[0] + MAX_HUE_VALUE : hsv1[0];
 
     using namespace math;
-    int h = (int) Interpolation::linear(0, 2, hsv00, hsv10, 1);
-    int s = (int) Interpolation::linear(0, 2, hsv0[1], hsv1[1], 1);
-    int v = (int) Interpolation::linear(0, 2, hsv0[2], hsv1[2], 1);
 
-    const int ADD_HUE_VALUE = MAX_HUE_VALUE;
-    hueTableTemp[index] = h % ADD_HUE_VALUE;
-    satTableTemp[index] = s;
-    valTableTemp[index] = v;
+    if (hInterp) {
+	const int ADD_HUE_VALUE = MAX_HUE_VALUE;
+	int h = (int) Interpolation::linear(0, 2, hsv00, hsv10, 1);
+	hueTableTemp[index] = h % ADD_HUE_VALUE;
+    }
+
+    if (sInterp) {
+	int s = (int) Interpolation::linear(0, 2, hsv0[1], hsv1[1], 1);
+	satTableTemp[index] = s;
+    }
+
+    if (vInterp) {
+	int v = (int) Interpolation::linear(0, 2, hsv0[2], hsv1[2], 1);
+	valTableTemp[index] = v;
+    }
 
     btn_setClick(Sender);
     stringGrid_HSVSelectCell(Sender, 0, lastStringGridSelectRow, false);
@@ -1189,6 +1223,27 @@ void __fastcall THSVForm3::hsvAdjustsb_Hue_gainChange(TObject * Sender)
 {
     hsvAdjust->sb_Hue_gainChange(Sender);
 
+}
+
+//---------------------------------------------------------------------------
+
+void __fastcall THSVForm3::Button_HInterpClick(TObject * Sender)
+{
+    base15DegInterpClick(Sender, true, false, false);
+}
+
+//---------------------------------------------------------------------------
+
+void __fastcall THSVForm3::Button_SInterpClick(TObject * Sender)
+{
+    base15DegInterpClick(Sender, false, true, false);
+}
+
+//---------------------------------------------------------------------------
+
+void __fastcall THSVForm3::Button_VInterpClick(TObject * Sender)
+{
+    base15DegInterpClick(Sender, false, false, true);
 }
 
 //---------------------------------------------------------------------------

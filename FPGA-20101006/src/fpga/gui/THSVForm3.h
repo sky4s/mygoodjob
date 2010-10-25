@@ -143,6 +143,9 @@ class THSVForm3:public TForm {
     TCheckBox *CheckBox_OffWhenWrite;
     TButton *Button_15BaseInterp;
     TEdit *Edit_CursorColorHSV;
+    TButton *Button_HInterp;
+    TButton *Button_SInterp;
+    TButton *Button_VInterp;
     void __fastcall cb_Hue_RedClick(TObject * Sender);
     void __fastcall cb_Hue_YellowClick(TObject * Sender);
     void __fastcall cb_Hue_GreenClick(TObject * Sender);
@@ -185,6 +188,9 @@ class THSVForm3:public TForm {
     void __fastcall stringGrid_HSVKeyDown(TObject * Sender, WORD & Key, TShiftState Shift);
     void __fastcall Button_15BaseInterpClick(TObject * Sender);
     void __fastcall hsvAdjustsb_Hue_gainChange(TObject * Sender);
+    void __fastcall Button_HInterpClick(TObject * Sender);
+    void __fastcall Button_SInterpClick(TObject * Sender);
+    void __fastcall Button_VInterpClick(TObject * Sender);
   private:			// User declarations
     static const int HUE_COUNT = 24;	//­ì¥»¬O96, why?
     static const int MAX_HUE_VALUE = 768;
@@ -222,6 +228,7 @@ class THSVForm3:public TForm {
     void interpolation(int angleBase);
     bool isInverse(int *array, int size);
     bool isInverse(double_vector_ptr vector, int size);
+    void base15DegInterpClick(TObject * Sender, bool hInterp, bool sInterp, bool vInterp);
 
     class HSVChangeListener:public gui::event::ChangeListener {
       private:
