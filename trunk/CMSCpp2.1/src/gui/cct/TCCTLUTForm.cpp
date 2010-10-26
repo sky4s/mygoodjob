@@ -360,7 +360,7 @@ void __fastcall TCCTLUTForm::RadioButton_GammaCurveClick(TObject * Sender)
 	const AnsiString & filename = OpenDialog1->FileName;
 	rgbGamma = RGBGamma::loadFromDesiredGamma(filename.c_str());
 	unsigned int n = bitDepth->getLevel();
-	if (rgbGamma != null && rgbGamma->w->size() == n) {
+	if (rgbGamma != null && n == rgbGamma->w->size()) {
 	    this->RadioButton_GammaCurve->Checked = true;
 	    this->CheckBox_GByPass->Visible = true;
 	    return;
