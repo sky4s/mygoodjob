@@ -7,7 +7,7 @@ object ThreeDMeasurementForm: TThreeDMeasurementForm
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
-  Font.Height = -13
+  Font.Height = -10
   Font.Name = 'MS Sans Serif'
   Font.Style = []
   Icon.Data = {
@@ -718,13 +718,13 @@ object ThreeDMeasurementForm: TThreeDMeasurementForm
   OldCreateOrder = False
   OnCreate = FormCreate
   OnKeyPress = FormKeyPress
-  PixelsPerInch = 120
-  TextHeight = 16
+  PixelsPerInch = 96
+  TextHeight = 13
   object Image1: TImage
-    Left = 9
-    Top = 305
-    Width = 112
-    Height = 41
+    Left = 7
+    Top = 248
+    Width = 91
+    Height = 33
     Picture.Data = {
       0A544A504547496D616765CC0B0000FFD8FFE100E645786966000049492A0008
       0000000500120103000100000001000000310102001C0000004A000000320102
@@ -823,181 +823,187 @@ object ThreeDMeasurementForm: TThreeDMeasurementForm
       8C30C1EEC7CF8107BD09F7630853E89B70F76338C245858C30FFD9}
   end
   object Label11: TLabel
-    Left = 127
-    Top = 329
-    Width = 349
-    Height = 16
+    Left = 103
+    Top = 267
+    Width = 281
+    Height = 13
     Caption = 'Copyright (C) 2010, AU Optronics Corp., All Right Reserved.'
   end
   object PageControl1: TPageControl
-    Left = 8
-    Top = 8
-    Width = 473
-    Height = 289
+    Left = 7
+    Top = 7
+    Width = 384
+    Height = 234
     ActivePage = TabSheet1
     TabIndex = 0
     TabOrder = 0
     object TabSheet1: TTabSheet
       Caption = 'Batch'
       object Button_Measure: TButton
-        Left = 322
-        Top = 136
-        Width = 74
-        Height = 25
+        Left = 262
+        Top = 111
+        Width = 60
+        Height = 20
         Caption = 'Measure'
         TabOrder = 0
         OnClick = Button_MeasureClick
       end
       inline OutputFileFrame1: TOutputFileFrame
-        Left = 9
-        Top = 161
-        Width = 392
-        Height = 96
+        Left = 7
+        Top = 131
+        Width = 319
+        Height = 78
         TabOrder = 1
         inherited GroupBox_OutputFile: TGroupBox
-          Width = 386
-          Height = 90
+          Width = 314
+          Height = 73
           inherited Label5: TLabel
-            Left = 9
-            Top = 25
+            Left = 7
+            Top = 20
           end
           inherited Label6: TLabel
-            Left = 9
-            Top = 57
+            Left = 7
+            Top = 46
           end
           inherited Edit_Prefix: TEdit
-            Top = 25
+            Left = 91
+            Top = 20
+            Width = 163
+            Height = 24
             Text = 'Measurement'
           end
           inherited Edit_Directory: TEdit
-            Top = 57
-            Width = 201
+            Left = 91
+            Top = 46
+            Width = 163
+            Height = 24
           end
           inherited Button_BrowseDir: TButton
-            Left = 320
-            Top = 57
-            Height = 24
+            Left = 260
+            Top = 46
+            Width = 46
+            Height = 20
           end
         end
       end
       object GroupBox1: TGroupBox
-        Left = 9
-        Top = 9
-        Width = 224
-        Height = 120
+        Left = 7
+        Top = 7
+        Width = 182
+        Height = 98
         Caption = 'Common Setup'
         TabOrder = 2
         object Label1: TLabel
-          Left = 9
-          Top = 25
-          Width = 50
-          Height = 16
+          Left = 7
+          Top = 20
+          Width = 38
+          Height = 13
           Caption = 'idle time'
         end
         object Label2: TLabel
-          Left = 9
-          Top = 57
-          Width = 79
-          Height = 16
+          Left = 7
+          Top = 46
+          Width = 61
+          Height = 13
           Caption = 'average time'
         end
         object Label3: TLabel
-          Left = 169
-          Top = 25
-          Width = 18
-          Height = 16
+          Left = 137
+          Top = 20
+          Width = 13
+          Height = 13
           Caption = 'ms'
         end
         object Label4: TLabel
-          Left = 169
-          Top = 57
-          Width = 32
-          Height = 16
+          Left = 137
+          Top = 46
+          Width = 24
+          Height = 13
           Caption = 'times'
         end
         object Edit_IdleTime: TEdit
-          Left = 96
-          Top = 25
-          Width = 65
+          Left = 78
+          Top = 20
+          Width = 53
           Height = 24
           TabOrder = 0
           Text = '200'
         end
         object Edit_AveTimes: TEdit
-          Left = 96
-          Top = 57
-          Width = 65
+          Left = 78
+          Top = 46
+          Width = 53
           Height = 24
           TabOrder = 1
           Text = '2'
         end
         object CheckBox_LeftRightChange: TCheckBox
-          Left = 8
-          Top = 88
-          Width = 177
-          Height = 25
+          Left = 7
+          Top = 72
+          Width = 143
+          Height = 20
           Caption = 'Left<->Right Change'
           TabOrder = 2
         end
       end
       object GroupBox3: TGroupBox
-        Left = 240
-        Top = 9
-        Width = 73
-        Height = 152
+        Left = 195
+        Top = 7
+        Width = 59
+        Height = 124
         Caption = 'Color'
         TabOrder = 3
         object CheckBox_W: TCheckBox
-          Left = 9
-          Top = 25
-          Width = 40
-          Height = 24
+          Left = 7
+          Top = 20
+          Width = 33
+          Height = 20
           Caption = 'W'
           Checked = True
           State = cbChecked
           TabOrder = 0
         end
         object CheckBox_R: TCheckBox
-          Left = 9
-          Top = 57
-          Width = 40
-          Height = 24
+          Left = 7
+          Top = 46
+          Width = 33
+          Height = 20
           Caption = 'R'
           TabOrder = 1
         end
         object CheckBox_G: TCheckBox
-          Left = 9
-          Top = 89
-          Width = 40
-          Height = 24
+          Left = 7
+          Top = 72
+          Width = 33
+          Height = 20
           Caption = 'G'
           TabOrder = 2
         end
         object CheckBox_B: TCheckBox
-          Left = 9
-          Top = 121
-          Width = 32
-          Height = 24
+          Left = 7
+          Top = 98
+          Width = 26
+          Height = 20
           Caption = 'B'
           TabOrder = 3
         end
       end
       object CheckBox_StableTest: TCheckBox
-        Left = 16
-        Top = 136
-        Width = 97
-        Height = 17
+        Left = 13
+        Top = 111
+        Width = 79
+        Height = 13
         Caption = 'Stable Test'
         TabOrder = 4
         OnClick = CheckBox_StableTestClick
       end
       object ComboBox_MeasureMode: TComboBox
-        Left = 120
-        Top = 136
-        Width = 89
-        Height = 24
+        Left = 98
+        Top = 111
+        Width = 72
+        Height = 21
         Enabled = False
-        ItemHeight = 16
+        ItemHeight = 13
         ItemIndex = 1
         TabOrder = 5
         Text = 'Fast'
@@ -1010,164 +1016,164 @@ object ThreeDMeasurementForm: TThreeDMeasurementForm
       Caption = 'Spot'
       ImageIndex = 1
       object Button_SpotMeasure: TButton
-        Left = 144
-        Top = 72
-        Width = 73
-        Height = 25
+        Left = 117
+        Top = 59
+        Width = 59
+        Height = 20
         Caption = 'Measure'
         TabOrder = 0
         OnClick = Button_SpotMeasureClick
       end
       object GroupBox4: TGroupBox
-        Left = 8
-        Top = 8
-        Width = 129
-        Height = 89
+        Left = 7
+        Top = 7
+        Width = 104
+        Height = 72
         Caption = 'Spot'
         TabOrder = 1
         object Label5: TLabel
-          Left = 8
-          Top = 24
-          Width = 27
-          Height = 16
+          Left = 7
+          Top = 20
+          Width = 22
+          Height = 13
           Caption = 'Start'
         end
         object Label6: TLabel
-          Left = 8
-          Top = 56
-          Width = 40
-          Height = 16
+          Left = 7
+          Top = 46
+          Width = 31
+          Height = 13
           Caption = 'Target'
         end
         object Edit_Start: TEdit
-          Left = 56
-          Top = 24
-          Width = 65
+          Left = 46
+          Top = 20
+          Width = 52
           Height = 24
           TabOrder = 0
           Text = '16'
         end
         object Edit_Target: TEdit
-          Left = 56
-          Top = 56
-          Width = 65
+          Left = 46
+          Top = 46
+          Width = 52
           Height = 24
           TabOrder = 1
           Text = '32'
         end
       end
       object GroupBox5: TGroupBox
-        Left = 8
-        Top = 104
-        Width = 369
-        Height = 153
+        Left = 7
+        Top = 85
+        Width = 299
+        Height = 124
         Caption = 'Result'
         TabOrder = 2
         object Label7: TLabel
-          Left = 320
-          Top = 56
-          Width = 12
-          Height = 16
+          Left = 260
+          Top = 46
+          Width = 8
+          Height = 13
           Caption = '%'
         end
         object Label8: TLabel
-          Left = 320
-          Top = 120
-          Width = 12
-          Height = 16
+          Left = 260
+          Top = 98
+          Width = 8
+          Height = 13
           Caption = '%'
           Visible = False
         end
         object Edit5: TEdit
-          Left = 8
-          Top = 24
-          Width = 41
+          Left = 7
+          Top = 20
+          Width = 33
           Height = 24
           Color = cl3DLight
           Enabled = False
           TabOrder = 0
         end
         object Edit6: TEdit
-          Left = 56
-          Top = 24
-          Width = 41
+          Left = 46
+          Top = 20
+          Width = 33
           Height = 24
           Color = cl3DLight
           Enabled = False
           TabOrder = 1
         end
         object Edit7: TEdit
-          Left = 8
-          Top = 56
-          Width = 41
+          Left = 7
+          Top = 46
+          Width = 33
           Height = 24
           Color = cl3DLight
           Enabled = False
           TabOrder = 2
         end
         object Edit8: TEdit
-          Left = 56
-          Top = 56
-          Width = 41
+          Left = 46
+          Top = 46
+          Width = 33
           Height = 24
           Color = cl3DLight
           Enabled = False
           TabOrder = 3
         end
         object Edit9: TEdit
-          Left = 8
-          Top = 88
-          Width = 41
+          Left = 7
+          Top = 72
+          Width = 33
           Height = 24
           Color = cl3DLight
           Enabled = False
           TabOrder = 4
         end
         object Edit10: TEdit
-          Left = 56
-          Top = 88
-          Width = 41
+          Left = 46
+          Top = 72
+          Width = 33
           Height = 24
           Color = cl3DLight
           Enabled = False
           TabOrder = 5
         end
         object Edit11: TEdit
-          Left = 112
-          Top = 24
-          Width = 89
+          Left = 91
+          Top = 20
+          Width = 72
           Height = 24
           TabOrder = 6
           Text = '0.0'
         end
         object Edit12: TEdit
-          Left = 112
-          Top = 56
-          Width = 89
+          Left = 91
+          Top = 46
+          Width = 72
           Height = 24
           TabOrder = 7
           Text = '0.0'
         end
         object Edit13: TEdit
-          Left = 112
-          Top = 88
-          Width = 89
+          Left = 91
+          Top = 72
+          Width = 72
           Height = 24
           TabOrder = 8
           Text = '0.0'
         end
         object Edit1: TEdit
-          Left = 224
-          Top = 56
-          Width = 89
+          Left = 182
+          Top = 46
+          Width = 72
           Height = 24
           TabOrder = 9
           Text = '0.0'
         end
         object Edit2: TEdit
-          Left = 8
-          Top = 120
-          Width = 41
+          Left = 7
+          Top = 98
+          Width = 33
           Height = 24
           Color = cl3DLight
           Enabled = False
@@ -1175,9 +1181,9 @@ object ThreeDMeasurementForm: TThreeDMeasurementForm
           Visible = False
         end
         object Edit3: TEdit
-          Left = 56
-          Top = 120
-          Width = 41
+          Left = 46
+          Top = 98
+          Width = 33
           Height = 24
           Color = cl3DLight
           Enabled = False
@@ -1185,18 +1191,18 @@ object ThreeDMeasurementForm: TThreeDMeasurementForm
           Visible = False
         end
         object Edit4: TEdit
-          Left = 112
-          Top = 120
-          Width = 89
+          Left = 91
+          Top = 98
+          Width = 72
           Height = 24
           TabOrder = 12
           Text = '0.0'
           Visible = False
         end
         object Edit14: TEdit
-          Left = 224
-          Top = 120
-          Width = 89
+          Left = 182
+          Top = 98
+          Width = 72
           Height = 24
           TabOrder = 13
           Text = '0.0'
@@ -1204,10 +1210,10 @@ object ThreeDMeasurementForm: TThreeDMeasurementForm
         end
       end
       object CheckBox_Extend: TCheckBox
-        Left = 144
-        Top = 40
-        Width = 89
-        Height = 25
+        Left = 117
+        Top = 33
+        Width = 72
+        Height = 20
         Caption = 'Extend'
         TabOrder = 3
         OnClick = CheckBox_ExtendClick
@@ -1217,57 +1223,57 @@ object ThreeDMeasurementForm: TThreeDMeasurementForm
       Caption = 'Dynamic'
       ImageIndex = 2
       object GroupBox2: TGroupBox
-        Left = 8
-        Top = 8
-        Width = 129
-        Height = 89
+        Left = 7
+        Top = 7
+        Width = 104
+        Height = 72
         Caption = 'Spot'
         TabOrder = 0
         object Label9: TLabel
-          Left = 8
-          Top = 24
-          Width = 27
-          Height = 16
+          Left = 7
+          Top = 20
+          Width = 22
+          Height = 13
           Caption = 'Start'
         end
         object Label10: TLabel
-          Left = 8
-          Top = 56
-          Width = 40
-          Height = 16
+          Left = 7
+          Top = 46
+          Width = 31
+          Height = 13
           Caption = 'Target'
         end
         object Edit_DStart: TEdit
-          Left = 56
-          Top = 24
-          Width = 65
+          Left = 46
+          Top = 20
+          Width = 52
           Height = 24
           TabOrder = 0
           Text = '16'
         end
         object Edit_DTarget: TEdit
-          Left = 56
-          Top = 56
-          Width = 65
+          Left = 46
+          Top = 46
+          Width = 52
           Height = 24
           TabOrder = 1
           Text = '32'
         end
       end
       object Button_DynamicMeasure: TButton
-        Left = 144
-        Top = 72
-        Width = 73
-        Height = 25
+        Left = 117
+        Top = 59
+        Width = 59
+        Height = 20
         Caption = 'Measure'
         TabOrder = 1
         OnClick = Button_DynamicMeasureClick
       end
       object CheckBox_AutoReleaseCA210: TCheckBox
-        Left = 144
-        Top = 48
-        Width = 177
-        Height = 17
+        Left = 117
+        Top = 39
+        Width = 144
+        Height = 14
         Caption = 'Auto Release CA-210'
         TabOrder = 2
       end
@@ -1277,20 +1283,20 @@ object ThreeDMeasurementForm: TThreeDMeasurementForm
       Enabled = False
       ImageIndex = 3
       object Button1: TButton
-        Left = 104
-        Top = 8
-        Width = 73
-        Height = 25
+        Left = 85
+        Top = 7
+        Width = 59
+        Height = 20
         Caption = 'Measure'
         TabOrder = 0
         OnClick = Button1Click
       end
       object ComboBox_MeasureMode2: TComboBox
-        Left = 8
-        Top = 8
-        Width = 89
-        Height = 24
-        ItemHeight = 16
+        Left = 7
+        Top = 7
+        Width = 72
+        Height = 21
+        ItemHeight = 13
         TabOrder = 1
         Text = 'Fast'
         Items.Strings = (
