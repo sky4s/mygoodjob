@@ -894,10 +894,10 @@ object MainForm: TMainForm
         end
       end
       object Resolution: TGroupBox
-        Left = 577
-        Top = 7
-        Width = 152
-        Height = 98
+        Left = 297
+        Top = 104
+        Width = 169
+        Height = 105
         Caption = 'Resolution'
         TabOrder = 1
         Visible = False
@@ -1018,12 +1018,13 @@ object MainForm: TMainForm
         end
       end
       object GroupBox3: TGroupBox
-        Left = 474
-        Top = 7
-        Width = 97
-        Height = 98
+        Left = 168
+        Top = 104
+        Width = 125
+        Height = 105
         Caption = 'Intensity source'
         TabOrder = 4
+        Visible = False
         object RadioButton_AnalyzerCA210: TRadioButton
           Left = 7
           Top = 20
@@ -1031,11 +1032,9 @@ object MainForm: TMainForm
           Height = 20
           Hint = 'Intensity from CA-210'
           Caption = 'CA-210'
-          Checked = True
           ParentShowHint = False
           ShowHint = True
           TabOrder = 0
-          TabStop = True
           OnClick = RadioButton_AnalyzerCA210Click
         end
         object RadioButton_AnalyzerMaxMatrix: TRadioButton
@@ -1045,9 +1044,11 @@ object MainForm: TMainForm
           Height = 19
           Hint = 'Intensity from software, more accuracy intensity'
           Caption = 'Max Matrix'
+          Checked = True
           ParentShowHint = False
           ShowHint = True
           TabOrder = 1
+          TabStop = True
           OnClick = RadioButton_AnalyzerMaxMatrixClick
         end
         object RadioButton_AnalyzerDebug: TRadioButton
@@ -1148,13 +1149,142 @@ object MainForm: TMainForm
           Visible = False
         end
       end
+      object GroupBox6: TGroupBox
+        Left = 472
+        Top = 7
+        Width = 163
+        Height = 202
+        Caption = 'Bit Depth'
+        TabOrder = 6
+        object Label10: TLabel
+          Left = 7
+          Top = 137
+          Width = 21
+          Height = 13
+          Caption = 'FRC'
+        end
+        object GroupBox8: TGroupBox
+          Left = 7
+          Top = 20
+          Width = 46
+          Height = 111
+          Caption = 'IN'
+          TabOrder = 0
+          object RadioButton_In6: TRadioButton
+            Left = 7
+            Top = 20
+            Width = 32
+            Height = 13
+            Caption = '6'
+            TabOrder = 0
+            OnClick = RadioButton_In6Click
+          end
+          object RadioButton_In8: TRadioButton
+            Left = 7
+            Top = 52
+            Width = 32
+            Height = 14
+            Caption = '8'
+            Checked = True
+            TabOrder = 1
+            TabStop = True
+            OnClick = RadioButton_In8Click
+          end
+          object RadioButton_In10: TRadioButton
+            Left = 7
+            Top = 85
+            Width = 32
+            Height = 13
+            Caption = '10'
+            TabOrder = 2
+            OnClick = RadioButton_In10Click
+          end
+        end
+        object GroupBox9: TGroupBox
+          Left = 59
+          Top = 20
+          Width = 46
+          Height = 111
+          Caption = 'LUT'
+          TabOrder = 1
+          object RadioButton_Lut10: TRadioButton
+            Left = 7
+            Top = 20
+            Width = 32
+            Height = 13
+            Caption = '10'
+            TabOrder = 0
+            OnClick = RadioButton_Lut10Click
+          end
+          object RadioButton_Lut12: TRadioButton
+            Left = 7
+            Top = 52
+            Width = 32
+            Height = 14
+            Caption = '12'
+            Checked = True
+            TabOrder = 1
+            TabStop = True
+            OnClick = RadioButton_Lut12Click
+          end
+        end
+        object GroupBox10: TGroupBox
+          Left = 111
+          Top = 20
+          Width = 46
+          Height = 111
+          Caption = 'OUT'
+          TabOrder = 2
+          object RadioButton_Out6: TRadioButton
+            Left = 7
+            Top = 20
+            Width = 32
+            Height = 13
+            Caption = '6'
+            TabOrder = 0
+            OnClick = RadioButton_Out6Click
+          end
+          object RadioButton_Out8: TRadioButton
+            Left = 7
+            Top = 52
+            Width = 32
+            Height = 14
+            Caption = '8'
+            Checked = True
+            TabOrder = 1
+            TabStop = True
+            OnClick = RadioButton_Out8Click
+          end
+          object RadioButton_Out10: TRadioButton
+            Left = 7
+            Top = 85
+            Width = 32
+            Height = 13
+            Caption = '10'
+            Enabled = False
+            TabOrder = 2
+            OnClick = RadioButton_Out10Click
+          end
+        end
+        object Edit_FRCAbility: TEdit
+          Left = 33
+          Top = 137
+          Width = 52
+          Height = 21
+          Color = cl3DLight
+          Enabled = False
+          ImeName = #26085#25991#36664#20837#31995#32113' (MS-IME2002)'
+          TabOrder = 3
+          Text = '8+2'
+        end
+      end
     end
     object TabSheet2: TTabSheet
       Caption = 'T-CON Setup'
       object Panel_TCON: TPanel
-        Left = 170
+        Left = 2
         Top = 1
-        Width = 572
+        Width = 719
         Height = 214
         BevelOuter = bvNone
         TabOrder = 0
@@ -1288,377 +1418,249 @@ object MainForm: TMainForm
               '512k')
           end
         end
-        object GroupBox_GammaTestAddress: TGroupBox
-          Left = 423
-          Top = 46
-          Width = 137
-          Height = 163
-          Caption = 'Gamma Test'
-          TabOrder = 2
-          object Label4: TLabel
-            Left = 7
-            Top = 85
-            Width = 70
-            Height = 13
-            Caption = 'GAM_DIRECT'
-          end
-          object Label11: TLabel
-            Left = 7
-            Top = 111
-            Width = 24
-            Height = 13
-            Caption = 'Type'
-          end
-          object Label17: TLabel
-            Left = 59
-            Top = 98
-            Width = 23
-            Height = 13
-            Caption = '(hex)'
-          end
-          object GroupBox5: TGroupBox
-            Left = 7
-            Top = 13
-            Width = 124
-            Height = 66
-            Caption = 'GAM_TEST'
-            TabOrder = 0
-            object Label2: TLabel
-              Left = 7
-              Top = 13
-              Width = 38
-              Height = 13
-              Caption = 'Address'
-            end
-            object Label3: TLabel
-              Left = 7
-              Top = 39
-              Width = 12
-              Height = 13
-              Caption = 'Bit'
-            end
-            object Label20: TLabel
-              Left = 26
-              Top = 27
-              Width = 23
-              Height = 13
-              Caption = '(hex)'
-            end
-            object Edit_GammaTestEnableAddress: TEdit
-              Left = 52
-              Top = 13
-              Width = 66
-              Height = 21
-              ImeName = #26085#25991#36664#20837#31995#32113' (MS-IME2002)'
-              TabOrder = 0
-              Text = '29'
-            end
-            object Edit_GammaTestEnableBit: TEdit
-              Left = 52
-              Top = 39
-              Width = 66
-              Height = 21
-              ImeName = #26085#25991#36664#20837#31995#32113' (MS-IME2002)'
-              TabOrder = 1
-              Text = '0'
-            end
-          end
-          object Edit_GammaTestAddress: TEdit
-            Left = 85
-            Top = 85
-            Width = 46
-            Height = 21
-            ImeName = #26085#25991#36664#20837#31995#32113' (MS-IME2002)'
-            TabOrder = 1
-            Text = '154'
-          end
-          object CheckBox_GammaTestIndepRGB: TCheckBox
-            Left = 20
-            Top = 131
-            Width = 104
-            Height = 19
-            Caption = 'Independent RGB'
-            Checked = True
-            Enabled = False
-            State = cbChecked
-            TabOrder = 2
-          end
-          object ComboBox_GammaTestType: TComboBox
-            Left = 39
-            Top = 111
-            Width = 92
-            Height = 21
-            ItemHeight = 13
-            ItemIndex = 0
-            TabOrder = 3
-            Text = '12401'
-            OnChange = ComboBox_GammaTestTypeChange
-            Items.Strings = (
-              '12401'
-              '12403')
-          end
-        end
         object Button_Connect: TButton
           Left = 13
           Top = 111
           Width = 66
           Height = 20
           Caption = 'Connect'
-          TabOrder = 3
+          TabOrder = 2
           OnClick = Button_ConnectClick
-        end
-        object GroupBox4: TGroupBox
-          Left = 280
-          Top = 46
-          Width = 137
-          Height = 163
-          Caption = 'Digital Gamma '
-          TabOrder = 4
-          object Label12: TLabel
-            Left = 7
-            Top = 85
-            Width = 62
-            Height = 13
-            Caption = 'LUT Address'
-          end
-          object Label15: TLabel
-            Left = 7
-            Top = 111
-            Width = 65
-            Height = 13
-            Caption = 'LUT Type(bit)'
-          end
-          object Label18: TLabel
-            Left = 52
-            Top = 98
-            Width = 23
-            Height = 13
-            Caption = '(hex)'
-          end
-          object Edit_DGLUTAddress: TEdit
-            Left = 78
-            Top = 85
-            Width = 53
-            Height = 21
-            ImeName = #20013#25991' ('#32321#39636') - '#26032#27880#38899
-            TabOrder = 0
-            Text = '302'
-          end
-          object GroupBox11: TGroupBox
-            Left = 7
-            Top = 13
-            Width = 124
-            Height = 66
-            Caption = 'GAM_EN'
-            TabOrder = 1
-            object Label13: TLabel
-              Left = 7
-              Top = 13
-              Width = 38
-              Height = 13
-              Caption = 'Address'
-            end
-            object Label14: TLabel
-              Left = 7
-              Top = 39
-              Width = 12
-              Height = 13
-              Caption = 'Bit'
-            end
-            object Label19: TLabel
-              Left = 26
-              Top = 27
-              Width = 23
-              Height = 13
-              Caption = '(hex)'
-            end
-            object Edit_DGEnableAddress: TEdit
-              Left = 52
-              Top = 13
-              Width = 66
-              Height = 21
-              ImeName = #26085#25991#36664#20837#31995#32113' (MS-IME2002)'
-              TabOrder = 0
-              Text = '28'
-            end
-            object Edit_DGEnableBit: TEdit
-              Left = 52
-              Top = 39
-              Width = 66
-              Height = 21
-              ImeName = #26085#25991#36664#20837#31995#32113' (MS-IME2002)'
-              TabOrder = 1
-              Text = '0'
-            end
-          end
-          object ComboBox_DGLUTType: TComboBox
-            Left = 78
-            Top = 111
-            Width = 53
-            Height = 21
-            ItemHeight = 13
-            ItemIndex = 0
-            TabOrder = 2
-            Text = '10'
-            Items.Strings = (
-              '10'
-              '12')
-          end
         end
         object GroupBox7: TGroupBox
           Left = 280
           Top = 7
-          Width = 280
-          Height = 39
+          Width = 297
+          Height = 202
           Caption = 'TCON Type'
-          TabOrder = 5
+          TabOrder = 3
           object ComboBox_TCONType: TComboBox
             Left = 7
             Top = 13
-            Width = 124
+            Width = 138
             Height = 21
             ItemHeight = 13
             TabOrder = 0
             OnChange = ComboBox_TCONTypeChange
           end
           object CheckBox_GammaTest: TCheckBox
-            Left = 143
+            Left = 151
             Top = 13
-            Width = 92
+            Width = 90
             Height = 20
             Caption = 'Gamma Test'
             TabOrder = 1
             OnClick = CheckBox_GammaTestClick
           end
-        end
-      end
-      object GroupBox6: TGroupBox
-        Left = 0
-        Top = 7
-        Width = 163
-        Height = 202
-        Caption = 'Bit Depth'
-        TabOrder = 1
-        object Label10: TLabel
-          Left = 7
-          Top = 137
-          Width = 21
-          Height = 13
-          Caption = 'FRC'
-        end
-        object GroupBox8: TGroupBox
-          Left = 7
-          Top = 20
-          Width = 46
-          Height = 111
-          Caption = 'IN'
-          TabOrder = 0
-          object RadioButton_In6: TRadioButton
-            Left = 7
-            Top = 20
-            Width = 32
-            Height = 13
-            Caption = '6'
-            TabOrder = 0
-            OnClick = RadioButton_In6Click
-          end
-          object RadioButton_In8: TRadioButton
-            Left = 7
-            Top = 52
-            Width = 32
-            Height = 14
-            Caption = '8'
-            Checked = True
-            TabOrder = 1
-            TabStop = True
-            OnClick = RadioButton_In8Click
-          end
-          object RadioButton_In10: TRadioButton
-            Left = 7
-            Top = 85
-            Width = 32
-            Height = 13
-            Caption = '10'
+          object GroupBox_DigitalGamma: TGroupBox
+            Left = 8
+            Top = 38
+            Width = 137
+            Height = 155
+            Caption = 'Digital Gamma '
             TabOrder = 2
-            OnClick = RadioButton_In10Click
+            object Label12: TLabel
+              Left = 7
+              Top = 85
+              Width = 62
+              Height = 13
+              Caption = 'LUT Address'
+            end
+            object Label15: TLabel
+              Left = 7
+              Top = 111
+              Width = 65
+              Height = 13
+              Caption = 'LUT Type(bit)'
+            end
+            object Label18: TLabel
+              Left = 52
+              Top = 98
+              Width = 23
+              Height = 13
+              Caption = '(hex)'
+            end
+            object Edit_DGLUTAddress: TEdit
+              Left = 78
+              Top = 85
+              Width = 53
+              Height = 21
+              ImeName = #20013#25991' ('#32321#39636') - '#26032#27880#38899
+              TabOrder = 0
+              Text = '302'
+            end
+            object GroupBox_GAM_EN: TGroupBox
+              Left = 7
+              Top = 13
+              Width = 124
+              Height = 66
+              Caption = 'GAM_EN'
+              TabOrder = 1
+              object Label13: TLabel
+                Left = 7
+                Top = 13
+                Width = 38
+                Height = 13
+                Caption = 'Address'
+              end
+              object Label14: TLabel
+                Left = 7
+                Top = 39
+                Width = 12
+                Height = 13
+                Caption = 'Bit'
+              end
+              object Label19: TLabel
+                Left = 26
+                Top = 27
+                Width = 23
+                Height = 13
+                Caption = '(hex)'
+              end
+              object Edit_DGEnableAddress: TEdit
+                Left = 52
+                Top = 13
+                Width = 66
+                Height = 21
+                ImeName = #26085#25991#36664#20837#31995#32113' (MS-IME2002)'
+                TabOrder = 0
+                Text = '28'
+              end
+              object Edit_DGEnableBit: TEdit
+                Left = 52
+                Top = 39
+                Width = 66
+                Height = 21
+                ImeName = #26085#25991#36664#20837#31995#32113' (MS-IME2002)'
+                TabOrder = 1
+                Text = '0'
+              end
+            end
+            object ComboBox_DGLUTType: TComboBox
+              Left = 78
+              Top = 111
+              Width = 53
+              Height = 21
+              ItemHeight = 13
+              ItemIndex = 0
+              TabOrder = 2
+              Text = '10'
+              OnChange = ComboBox_DGLUTTypeChange
+              Items.Strings = (
+                '10'
+                '12')
+            end
           end
-        end
-        object GroupBox9: TGroupBox
-          Left = 59
-          Top = 20
-          Width = 46
-          Height = 111
-          Caption = 'LUT'
-          TabOrder = 1
-          object RadioButton_Lut10: TRadioButton
-            Left = 7
-            Top = 20
-            Width = 32
-            Height = 13
-            Caption = '10'
-            TabOrder = 0
-            OnClick = RadioButton_Lut10Click
+          object GroupBox_GammaTestAddress: TGroupBox
+            Left = 152
+            Top = 38
+            Width = 137
+            Height = 155
+            Caption = 'Gamma Test'
+            TabOrder = 3
+            object Label4: TLabel
+              Left = 7
+              Top = 85
+              Width = 70
+              Height = 13
+              Caption = 'GAM_DIRECT'
+            end
+            object Label11: TLabel
+              Left = 7
+              Top = 111
+              Width = 24
+              Height = 13
+              Caption = 'Type'
+            end
+            object Label17: TLabel
+              Left = 59
+              Top = 98
+              Width = 23
+              Height = 13
+              Caption = '(hex)'
+            end
+            object GroupBox5: TGroupBox
+              Left = 7
+              Top = 13
+              Width = 124
+              Height = 66
+              Caption = 'GAM_TEST'
+              TabOrder = 0
+              object Label2: TLabel
+                Left = 7
+                Top = 13
+                Width = 38
+                Height = 13
+                Caption = 'Address'
+              end
+              object Label3: TLabel
+                Left = 7
+                Top = 39
+                Width = 12
+                Height = 13
+                Caption = 'Bit'
+              end
+              object Label20: TLabel
+                Left = 26
+                Top = 27
+                Width = 23
+                Height = 13
+                Caption = '(hex)'
+              end
+              object Edit_GammaTestEnableAddress: TEdit
+                Left = 52
+                Top = 13
+                Width = 66
+                Height = 21
+                ImeName = #26085#25991#36664#20837#31995#32113' (MS-IME2002)'
+                TabOrder = 0
+                Text = '29'
+              end
+              object Edit_GammaTestEnableBit: TEdit
+                Left = 52
+                Top = 39
+                Width = 66
+                Height = 21
+                ImeName = #26085#25991#36664#20837#31995#32113' (MS-IME2002)'
+                TabOrder = 1
+                Text = '0'
+              end
+            end
+            object Edit_GammaTestAddress: TEdit
+              Left = 85
+              Top = 85
+              Width = 46
+              Height = 21
+              ImeName = #26085#25991#36664#20837#31995#32113' (MS-IME2002)'
+              TabOrder = 1
+              Text = '154'
+            end
+            object CheckBox_GammaTestIndepRGB: TCheckBox
+              Left = 20
+              Top = 131
+              Width = 104
+              Height = 19
+              Caption = 'Independent RGB'
+              Checked = True
+              Enabled = False
+              State = cbChecked
+              TabOrder = 2
+            end
+            object ComboBox_GammaTestType: TComboBox
+              Left = 39
+              Top = 111
+              Width = 92
+              Height = 21
+              ItemHeight = 13
+              ItemIndex = 0
+              TabOrder = 3
+              Text = '12401'
+              OnChange = ComboBox_GammaTestTypeChange
+              Items.Strings = (
+                '12401'
+                '12403')
+            end
           end
-          object RadioButton_Lut12: TRadioButton
-            Left = 7
-            Top = 52
-            Width = 32
-            Height = 14
-            Caption = '12'
-            Checked = True
-            TabOrder = 1
-            TabStop = True
-            OnClick = RadioButton_Lut12Click
-          end
-        end
-        object GroupBox10: TGroupBox
-          Left = 111
-          Top = 20
-          Width = 46
-          Height = 111
-          Caption = 'OUT'
-          TabOrder = 2
-          object RadioButton_Out6: TRadioButton
-            Left = 7
-            Top = 20
-            Width = 32
-            Height = 13
-            Caption = '6'
-            TabOrder = 0
-            OnClick = RadioButton_Out6Click
-          end
-          object RadioButton_Out8: TRadioButton
-            Left = 7
-            Top = 52
-            Width = 32
-            Height = 14
-            Caption = '8'
-            Checked = True
-            TabOrder = 1
-            TabStop = True
-            OnClick = RadioButton_Out8Click
-          end
-          object RadioButton_Out10: TRadioButton
-            Left = 7
-            Top = 85
-            Width = 32
-            Height = 13
-            Caption = '10'
-            Enabled = False
-            TabOrder = 2
-            OnClick = RadioButton_Out10Click
-          end
-        end
-        object Edit_FRCAbility: TEdit
-          Left = 33
-          Top = 137
-          Width = 52
-          Height = 21
-          Color = cl3DLight
-          Enabled = False
-          ImeName = #26085#25991#36664#20837#31995#32113' (MS-IME2002)'
-          TabOrder = 3
-          Text = '8+2'
         end
       end
     end

@@ -75,33 +75,19 @@ class TMainForm:public TForm {
     TEdit *Edit_SourceCH;
     TEdit *Edit_TargetCH;
     TEdit *Edit_TargetID;
-    TGroupBox *GroupBox6;
-    TGroupBox *GroupBox8;
-    TRadioButton *RadioButton_In6;
-    TRadioButton *RadioButton_In8;
-    TRadioButton *RadioButton_In10;
-    TGroupBox *GroupBox9;
-    TRadioButton *RadioButton_Lut10;
-    TRadioButton *RadioButton_Lut12;
-    TGroupBox *GroupBox10;
-    TRadioButton *RadioButton_Out6;
-    TRadioButton *RadioButton_Out8;
-    TRadioButton *RadioButton_Out10;
     TRadioButton *RadioButton_AnalyzerCA210;
     TRadioButton *RadioButton_AnalyzerMaxMatrix;
     TRadioButton *RadioButton_AnalyzerDebug;
-    TLabel *Label10;
-    TEdit *Edit_FRCAbility;
     TComboBox *ComboBox_GammaTestType;
     TLabel *Label11;
     TButton *Button_I2CTest;
     TButton *Button_Connect;
-    TGroupBox *GroupBox4;
+    TGroupBox *GroupBox_DigitalGamma;
     TLabel *Label12;
     TEdit *Edit_DGLUTAddress;
     TGroupBox *GroupBox7;
     TComboBox *ComboBox_TCONType;
-    TGroupBox *GroupBox11;
+    TGroupBox *GroupBox_GAM_EN;
     TLabel *Label13;
     TLabel *Label14;
     TEdit *Edit_DGEnableAddress;
@@ -124,6 +110,20 @@ class TMainForm:public TForm {
     TLabel *Label20;
     TRadioButton *RadioButton_Ninth;
     TCheckBox *CheckBox_LineAdjoin;
+    TGroupBox *GroupBox6;
+    TLabel *Label10;
+    TGroupBox *GroupBox8;
+    TRadioButton *RadioButton_In6;
+    TRadioButton *RadioButton_In8;
+    TRadioButton *RadioButton_In10;
+    TGroupBox *GroupBox9;
+    TRadioButton *RadioButton_Lut10;
+    TRadioButton *RadioButton_Lut12;
+    TGroupBox *GroupBox10;
+    TRadioButton *RadioButton_Out6;
+    TRadioButton *RadioButton_Out8;
+    TRadioButton *RadioButton_Out10;
+    TEdit *Edit_FRCAbility;
     void __fastcall About1Click(TObject * Sender);
     void __fastcall Exit1Click(TObject * Sender);
     void __fastcall TargetWhite1Click(TObject * Sender);
@@ -164,6 +164,7 @@ class TMainForm:public TForm {
     void __fastcall CheckBox_GammaTestClick(TObject * Sender);
     void __fastcall RadioButton_PCTCONClick(TObject * Sender);
     void __fastcall RadioButton_NinthClick(TObject * Sender);
+    void __fastcall ComboBox_DGLUTTypeChange(TObject * Sender);
   private:			// User declarations
     //==========================================================================
     // meter
@@ -198,7 +199,7 @@ class TMainForm:public TForm {
     String tconFilename;
     void initTCONFile();
     //bptr < gui::util::UIBinder > binder;
-    const static char* CUSTOM;
+    const static char *CUSTOM;
     //==========================================================================
   public:			// User declarations
     //==========================================================================
