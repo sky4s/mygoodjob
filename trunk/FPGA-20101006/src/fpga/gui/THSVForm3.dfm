@@ -1,11 +1,6 @@
 object HSVForm3: THSVForm3
-<<<<<<< .mine
   Left = 469
   Top = 87
-=======
-  Left = 500
-  Top = 65
->>>>>>> .r647
   Width = 811
   Height = 629
   Caption = 'HSV'
