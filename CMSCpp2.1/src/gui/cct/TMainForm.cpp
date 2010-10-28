@@ -70,7 +70,7 @@ void __fastcall TMainForm::FormCreate(TObject * Sender)
     using namespace cms::lcd::calibrate;
     using namespace gui::util;
 
-    bitDepth = bptr < BitDepthProcessor > (new BitDepthProcessor(8, 10, 8, false));
+    bitDepth = bptr < BitDepthProcessor > (new BitDepthProcessor(8, 12, 8, false));
     if (true == linkCA210) {
 	initCA210Meter();
     } else {
@@ -119,7 +119,7 @@ void TMainForm::initTCONFile()
 	ini->WriteBool("11306", "GammaTestFunc", false);
 
 	ini->WriteInteger("11306", "in", 6);
-	ini->WriteInteger("11306", "lut", 10);
+	//ini->WriteInteger("11306", "lut", 10);
 	ini->WriteInteger("11306", "out", 6);
 	//=========================================================================
 	// 11307
@@ -134,7 +134,7 @@ void TMainForm::initTCONFile()
 	ini->WriteBool("11307", "GammaTestFunc", false);
 
 	ini->WriteInteger("11307", "in", 6);
-	ini->WriteInteger("11307", "lut", 10);
+	//ini->WriteInteger("11307", "lut", 10);
 	ini->WriteInteger("11307", "out", 6);
 	//=========================================================================
 	// 12306
@@ -153,7 +153,7 @@ void TMainForm::initTCONFile()
 	ini->WriteBool("12306", "IndepRGB", true);
 
 	ini->WriteInteger("12306", "in", 8);
-	ini->WriteInteger("12306", "lut", 12);
+	//ini->WriteInteger("12306", "lut", 12);
 	ini->WriteInteger("12306", "out", 8);
 	//=========================================================================
 	// 12401
@@ -172,7 +172,7 @@ void TMainForm::initTCONFile()
 	ini->WriteBool("12401", "IndepRGB", true);
 
 	ini->WriteInteger("12401", "in", 8);
-	ini->WriteInteger("12401", "lut", 12);
+	//ini->WriteInteger("12401", "lut", 12);
 	ini->WriteInteger("12401", "out", 8);
 	//=========================================================================
     }
@@ -215,11 +215,12 @@ void TMainForm::readTCONSetup(String filename, String section)
     this->Edit_DGEnableAddress->Text = ini->ReadString(section, "DigitalGammaEnableAddress", "28");
     this->Edit_DGEnableBit->Text = ini->ReadInteger(section, "DigitalGammaEnableBit", 0);
     this->Edit_DGLUTAddress->Text = ini->ReadString(section, "DigitalGammaLUTAddress", "302");
-    this->ComboBox_DGLUTType->Text = ini->ReadInteger(section, "DigitalGammaLUTType", 10);
+    int lut = ini->ReadInteger(section, "DigitalGammaLUTType", 10);
+    this->ComboBox_DGLUTType->Text = lut;
 
 
     int in = ini->ReadInteger(section, "in", 6);
-    int lut = ini->ReadInteger(section, "lut", 10);
+    //int lut = ini->ReadInteger(section, "lut", 10);
     int out = ini->ReadInteger(section, "out", 6);
     switch (in) {
     case 6:
@@ -276,10 +277,10 @@ void TMainForm::writeTCONCustomSetup()
 	    ini->WriteBool(CUSTOM, "IndepRGB", this->CheckBox_GammaTestIndepRGB->Checked);
 	}
 	int in = bitDepth->getInputMaxValue().bit;
-	int lut = bitDepth->getLutMaxValue().bit;
+	//int lut = bitDepth->getLutMaxValue().bit;
 	int out = bitDepth->getOutputMaxValue().bit;
 	ini->WriteInteger(CUSTOM, "in", in);
-	ini->WriteInteger(CUSTOM, "lut", lut);
+	//ini->WriteInteger(CUSTOM, "lut", lut);
 	ini->WriteInteger(CUSTOM, "out", out);
     }
 
@@ -1146,14 +1147,18 @@ void __fastcall TMainForm::ComboBox_TCONTypeChange(TObject * Sender)
     String section = this->ComboBox_TCONType->Text;
     if (section != null && section.Length() != 0 && section != "Custom") {
 	CheckBox_GammaTest->Visible = false;
-	//若為最後一個就是custom, 不用載入
 	if (Util::isFileExist(tconFilename.c_str())) {
 	    readTCONSetup(tconFilename, section);
+
+	    GroupBox_DigitalGamma->Enabled = false;
+	    GroupBox_GammaTestAddress->Enabled = false;
 	}
     } else {
 	readTCONSetup(ExtractFilePath(Application->ExeName) + SETUPFILE, "Custom");
 	CheckBox_GammaTest->Visible = true;
 	CheckBox_GammaTestClick(null);
+	GroupBox_DigitalGamma->Enabled = true;
+	GroupBox_GammaTestAddress->Enabled = true;
     }
 }
 
@@ -1185,6 +1190,21 @@ void __fastcall TMainForm::RadioButton_NinthClick(TObject * Sender)
 {
     MeasureWindow->setPattern(Ninth);
     this->CheckBox_LineAdjoin->Visible = false;
+}
+
+//---------------------------------------------------------------------------
+
+void __fastcall TMainForm::ComboBox_DGLUTTypeChange(TObject * Sender)
+{
+    int lut = ComboBox_DGLUTType->Text.ToInt();
+    switch (lut) {
+    case 10:
+	RadioButton_Lut10->Checked = true;
+	break;
+    case 12:
+	RadioButton_Lut12->Checked = true;
+	break;
+    }
 }
 
 //---------------------------------------------------------------------------

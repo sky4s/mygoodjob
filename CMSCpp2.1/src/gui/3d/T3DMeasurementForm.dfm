@@ -1,6 +1,6 @@
 object ThreeDMeasurementForm: TThreeDMeasurementForm
-  Left = 287
-  Top = 178
+  Left = 289
+  Top = 179
   Width = 496
   Height = 391
   Caption = '3D OD Measurement'
@@ -869,14 +869,12 @@ object ThreeDMeasurementForm: TThreeDMeasurementForm
             Left = 91
             Top = 20
             Width = 163
-            Height = 24
             Text = 'Measurement'
           end
           inherited Edit_Directory: TEdit
             Left = 91
             Top = 46
             Width = 163
-            Height = 24
           end
           inherited Button_BrowseDir: TButton
             Left = 260
@@ -925,7 +923,7 @@ object ThreeDMeasurementForm: TThreeDMeasurementForm
           Left = 78
           Top = 20
           Width = 53
-          Height = 24
+          Height = 21
           TabOrder = 0
           Text = '200'
         end
@@ -933,7 +931,7 @@ object ThreeDMeasurementForm: TThreeDMeasurementForm
           Left = 78
           Top = 46
           Width = 53
-          Height = 24
+          Height = 21
           TabOrder = 1
           Text = '2'
         end
@@ -1049,7 +1047,7 @@ object ThreeDMeasurementForm: TThreeDMeasurementForm
           Left = 46
           Top = 20
           Width = 52
-          Height = 24
+          Height = 21
           TabOrder = 0
           Text = '16'
         end
@@ -1057,7 +1055,7 @@ object ThreeDMeasurementForm: TThreeDMeasurementForm
           Left = 46
           Top = 46
           Width = 52
-          Height = 24
+          Height = 21
           TabOrder = 1
           Text = '32'
         end
@@ -1088,7 +1086,7 @@ object ThreeDMeasurementForm: TThreeDMeasurementForm
           Left = 7
           Top = 20
           Width = 33
-          Height = 24
+          Height = 21
           Color = cl3DLight
           Enabled = False
           TabOrder = 0
@@ -1097,7 +1095,7 @@ object ThreeDMeasurementForm: TThreeDMeasurementForm
           Left = 46
           Top = 20
           Width = 33
-          Height = 24
+          Height = 21
           Color = cl3DLight
           Enabled = False
           TabOrder = 1
@@ -1106,7 +1104,7 @@ object ThreeDMeasurementForm: TThreeDMeasurementForm
           Left = 7
           Top = 46
           Width = 33
-          Height = 24
+          Height = 21
           Color = cl3DLight
           Enabled = False
           TabOrder = 2
@@ -1115,7 +1113,7 @@ object ThreeDMeasurementForm: TThreeDMeasurementForm
           Left = 46
           Top = 46
           Width = 33
-          Height = 24
+          Height = 21
           Color = cl3DLight
           Enabled = False
           TabOrder = 3
@@ -1124,7 +1122,7 @@ object ThreeDMeasurementForm: TThreeDMeasurementForm
           Left = 7
           Top = 72
           Width = 33
-          Height = 24
+          Height = 21
           Color = cl3DLight
           Enabled = False
           TabOrder = 4
@@ -1133,7 +1131,7 @@ object ThreeDMeasurementForm: TThreeDMeasurementForm
           Left = 46
           Top = 72
           Width = 33
-          Height = 24
+          Height = 21
           Color = cl3DLight
           Enabled = False
           TabOrder = 5
@@ -1142,7 +1140,7 @@ object ThreeDMeasurementForm: TThreeDMeasurementForm
           Left = 91
           Top = 20
           Width = 72
-          Height = 24
+          Height = 21
           TabOrder = 6
           Text = '0.0'
         end
@@ -1150,7 +1148,7 @@ object ThreeDMeasurementForm: TThreeDMeasurementForm
           Left = 91
           Top = 46
           Width = 72
-          Height = 24
+          Height = 21
           TabOrder = 7
           Text = '0.0'
         end
@@ -1158,7 +1156,7 @@ object ThreeDMeasurementForm: TThreeDMeasurementForm
           Left = 91
           Top = 72
           Width = 72
-          Height = 24
+          Height = 21
           TabOrder = 8
           Text = '0.0'
         end
@@ -1166,7 +1164,7 @@ object ThreeDMeasurementForm: TThreeDMeasurementForm
           Left = 182
           Top = 46
           Width = 72
-          Height = 24
+          Height = 21
           TabOrder = 9
           Text = '0.0'
         end
@@ -1174,7 +1172,7 @@ object ThreeDMeasurementForm: TThreeDMeasurementForm
           Left = 7
           Top = 98
           Width = 33
-          Height = 24
+          Height = 21
           Color = cl3DLight
           Enabled = False
           TabOrder = 10
@@ -1184,7 +1182,7 @@ object ThreeDMeasurementForm: TThreeDMeasurementForm
           Left = 46
           Top = 98
           Width = 33
-          Height = 24
+          Height = 21
           Color = cl3DLight
           Enabled = False
           TabOrder = 11
@@ -1194,7 +1192,7 @@ object ThreeDMeasurementForm: TThreeDMeasurementForm
           Left = 91
           Top = 98
           Width = 72
-          Height = 24
+          Height = 21
           TabOrder = 12
           Text = '0.0'
           Visible = False
@@ -1203,7 +1201,7 @@ object ThreeDMeasurementForm: TThreeDMeasurementForm
           Left = 182
           Top = 98
           Width = 72
-          Height = 24
+          Height = 21
           TabOrder = 13
           Text = '0.0'
           Visible = False
@@ -1247,7 +1245,7 @@ object ThreeDMeasurementForm: TThreeDMeasurementForm
           Left = 46
           Top = 20
           Width = 52
-          Height = 24
+          Height = 21
           TabOrder = 0
           Text = '16'
         end
@@ -1255,7 +1253,7 @@ object ThreeDMeasurementForm: TThreeDMeasurementForm
           Left = 46
           Top = 46
           Width = 52
-          Height = 24
+          Height = 21
           TabOrder = 1
           Text = '32'
         end
