@@ -1,6 +1,6 @@
 object HSVForm3: THSVForm3
-  Left = 469
-  Top = 144
+  Left = 232
+  Top = 148
   Width = 811
   Height = 629
   Caption = 'HSV'
@@ -6732,6 +6732,8 @@ object HSVForm3: THSVForm3
         Width = 72
         Height = 14
         Caption = 'Auto Write'
+        Checked = True
+        State = cbChecked
         TabOrder = 6
       end
       inline hsvAdjust: THSVAdjustFrame
@@ -7204,13 +7206,30 @@ object HSVForm3: THSVForm3
       TabOrder = 12
       Text = 'Cursor Color'
     end
-    object CheckBox_ColorIPSwitch: TCheckBox
+    object GroupBox_OoG: TGroupBox
       Left = 8
       Top = 408
-      Width = 97
-      Height = 17
-      Caption = 'Color IP Switch'
+      Width = 161
+      Height = 41
+      Caption = 'Out of Gamut'
       TabOrder = 13
+      object CheckBox_OoG: TCheckBox
+        Left = 8
+        Top = 16
+        Width = 89
+        Height = 17
+        Caption = 'Out of Gamut'
+        Enabled = False
+        TabOrder = 0
+      end
+      object Button_OoGSetup: TButton
+        Left = 96
+        Top = 16
+        Width = 57
+        Height = 17
+        Caption = 'Setup'
+        TabOrder = 1
+      end
     end
   end
   object btn_Hue_Img_load: TButton

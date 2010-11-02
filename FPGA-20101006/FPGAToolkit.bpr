@@ -16,7 +16,7 @@
       build\ContrastEnhance1.obj build\C3D1.obj build\SAT.obj 
       build\SAT_11307.obj build\offset_11307.obj build\offset.obj 
       build\TInTargetForm.obj build\interpolation.obj build\searcher.obj 
-      build\GetCursorColor.obj"/>
+      build\GetCursorColor.obj build\TGamutForm.obj"/>
     <RESFILES value="FPGAToolkit.res"/>
     <IDLFILES value=""/>
     <IDLGENFILES value=""/>
@@ -28,7 +28,8 @@
       src\fpga\gui\TCON1.dfm src\fpga\gui\Function1.dfm 
       src\fpga\gui\Engineering.dfm src\fpga\gui\DCR1.dfm 
       src\fpga\gui\ContrastEnhance1.dfm src\fpga\gui\C3D1.dfm 
-      src\fpga\gui\SAT.dfm src\fpga\gui\offset.dfm src\c3d\gui\TInTargetForm.dfm"/>
+      src\fpga\gui\SAT.dfm src\fpga\gui\offset.dfm src\c3d\gui\TInTargetForm.dfm 
+      src\fpga\gui\TGamutForm.dfm"/>
     <LIBFILES value="lib\USB_i2c_lib\hid.lib"/>
     <LIBRARIES value="tee.lib vclx.lib bcbsmp.lib rtl.lib vcl.lib"/>
     <SPARELIBS value="vcl.lib rtl.lib bcbsmp.lib vclx.lib tee.lib"/>
@@ -39,7 +40,7 @@
       inetdbbde.bpi inetdbxpress.bpi inetdb.bpi nmfast.bpi webdsnap.bpi 
       bcbie.bpi websnap.bpi soaprtl.bpi dclocx.bpi dbexpress.bpi dbxcds.bpi 
       indy.bpi bcb2kaxserver.bpi"/>
-    <PATHCPP value=".;lib\i2c\core;lib\USB_i2c_lib;lib\LPT_lib;lib\LPT_lib;src\fpga\gui;src\gui\frame;src\gui\frame;lib\java;src\fpga\11307\DCR;src\fpga\11307\Function;src\fpga\11307\ImageProcess;src\fpga\11307\TCON;src\fpga\11307\Vender;lib\cms\colorspace;lib\cms\colorspace;lib\cms;lib\cms\colorspace;lib\math;src\fpga\gui;src\fpga\gui;src\fpga\gui;src\fpga\gui;src\fpga\gui;src\fpga\gui;src\fpga\gui;src\fpga\gui;src\fpga\gui;src\fpga\gui;src\fpga\gui;src\fpga\gui;src\fpga;src\fpga;src\fpga\gui;src\c3d\gui;lib\math;lib\math;src\c3d"/>
+    <PATHCPP value=".;lib\i2c\core;lib\USB_i2c_lib;lib\LPT_lib;lib\LPT_lib;src\fpga\gui;src\gui\frame;src\gui\frame;lib\java;src\fpga\11307\DCR;src\fpga\11307\Function;src\fpga\11307\ImageProcess;src\fpga\11307\TCON;src\fpga\11307\Vender;lib\cms\colorspace;lib\cms\colorspace;lib\cms;lib\cms\colorspace;lib\math;src\fpga\gui;src\fpga\gui;src\fpga\gui;src\fpga\gui;src\fpga\gui;src\fpga\gui;src\fpga\gui;src\fpga\gui;src\fpga\gui;src\fpga\gui;src\fpga\gui;src\fpga\gui;src\fpga;src\fpga;src\fpga\gui;src\c3d\gui;lib\math;lib\math;src\c3d;src\fpga\gui"/>
     <PATHPAS value=".;"/>
     <PATHRC value=".;"/>
     <PATHASM value=".;"/>
@@ -126,6 +127,7 @@
       <FILE FILENAME="lib\math\interpolation.cpp" FORMNAME="" UNITNAME="interpolation" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="lib\math\searcher.cpp" FORMNAME="" UNITNAME="searcher" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="src\c3d\GetCursorColor.cpp" FORMNAME="" UNITNAME="GetCursorColor" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="src\fpga\gui\TGamutForm.cpp" FORMNAME="TGamutSetupForm" UNITNAME="TGamutForm" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
   </FILELIST>
   <BUILDTOOLS>
   </BUILDTOOLS>
