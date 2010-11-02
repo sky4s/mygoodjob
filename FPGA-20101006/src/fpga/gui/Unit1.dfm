@@ -1,6 +1,6 @@
 object MainForm: TMainForm
-  Left = 566
-  Top = 120
+  Left = 531
+  Top = 160
   Width = 749
   Height = 588
   Caption = 'Toolkit'
@@ -49,6 +49,14 @@ object MainForm: TMainForm
     TabOrder = 1
     Visible = False
     OnClick = cb_address_txtClick
+  end
+  object CheckBox_ColorIPSwitch: TCheckBox
+    Left = 8
+    Top = 0
+    Width = 97
+    Height = 17
+    Caption = 'Color IP Switch'
+    TabOrder = 2
   end
   object MainMenu1: TMainMenu
     BiDiMode = bdLeftToRight
