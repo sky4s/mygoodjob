@@ -580,3 +580,4 @@ void __fastcall TMainForm::mn_offsetClick(TObject * Sender)
 
 //---------------------------------------------------------------------------
 
+

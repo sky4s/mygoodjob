@@ -12,6 +12,7 @@
 #pragma hdrstop
 
 #include "THSVForm3.h"
+#include "CM1.h"
 #include "include.h"
 #include <fpga/11307/ImageProcess/ImgProc_11307.h>
 //---------------------------------------------------------------------------
@@ -1247,4 +1248,5 @@ void __fastcall THSVForm3::Button_VInterpClick(TObject * Sender)
 }
 
 //---------------------------------------------------------------------------
+
 

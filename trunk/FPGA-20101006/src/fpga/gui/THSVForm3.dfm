@@ -1,6 +1,6 @@
 object HSVForm3: THSVForm3
   Left = 469
-  Top = 87
+  Top = 144
   Width = 811
   Height = 629
   Caption = 'HSV'
@@ -7203,6 +7203,14 @@ object HSVForm3: THSVForm3
       Height = 21
       TabOrder = 12
       Text = 'Cursor Color'
+    end
+    object CheckBox_ColorIPSwitch: TCheckBox
+      Left = 8
+      Top = 408
+      Width = 97
+      Height = 17
+      Caption = 'Color IP Switch'
+      TabOrder = 13
     end
   end
   object btn_Hue_Img_load: TButton

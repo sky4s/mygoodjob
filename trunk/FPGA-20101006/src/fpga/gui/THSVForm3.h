@@ -146,6 +146,7 @@ class THSVForm3:public TForm {
     TButton *Button_HInterp;
     TButton *Button_SInterp;
     TButton *Button_VInterp;
+    TCheckBox *CheckBox_ColorIPSwitch;
     void __fastcall cb_Hue_RedClick(TObject * Sender);
     void __fastcall cb_Hue_YellowClick(TObject * Sender);
     void __fastcall cb_Hue_GreenClick(TObject * Sender);

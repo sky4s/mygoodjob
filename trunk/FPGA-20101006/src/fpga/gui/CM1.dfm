@@ -1,6 +1,6 @@
 object CMForm1: TCMForm1
-  Left = 368
-  Top = 51
+  Left = 460
+  Top = 68
   Width = 709
   Height = 670
   Caption = 'Color Matrix'
@@ -79,8 +79,8 @@ object CMForm1: TCMForm1
       Top = 128
       Width = 665
       Height = 185
-      ActivePage = th_CM1
-      TabIndex = 0
+      ActivePage = th_CM2
+      TabIndex = 1
       TabOrder = 0
       TabWidth = 70
       OnChange = TS_CMChange
@@ -159,7 +159,7 @@ object CMForm1: TCMForm1
           Left = 24
           Top = 56
           Width = 41
-          Height = 24
+          Height = 21
           Color = clWhite
           TabOrder = 3
           Text = '1'
@@ -169,7 +169,7 @@ object CMForm1: TCMForm1
           Left = 64
           Top = 56
           Width = 41
-          Height = 24
+          Height = 21
           Color = clWhite
           TabOrder = 4
           Text = '0'
@@ -179,7 +179,7 @@ object CMForm1: TCMForm1
           Left = 104
           Top = 56
           Width = 41
-          Height = 24
+          Height = 21
           Color = clWhite
           TabOrder = 5
           Text = '0'
@@ -189,7 +189,7 @@ object CMForm1: TCMForm1
           Left = 24
           Top = 80
           Width = 41
-          Height = 24
+          Height = 21
           Color = clWhite
           TabOrder = 6
           Text = '0'
@@ -199,7 +199,7 @@ object CMForm1: TCMForm1
           Left = 64
           Top = 80
           Width = 41
-          Height = 24
+          Height = 21
           Color = clWhite
           TabOrder = 7
           Text = '1'
@@ -209,7 +209,7 @@ object CMForm1: TCMForm1
           Left = 104
           Top = 80
           Width = 41
-          Height = 24
+          Height = 21
           Color = clWhite
           TabOrder = 8
           Text = '0'
@@ -219,7 +219,7 @@ object CMForm1: TCMForm1
           Left = 24
           Top = 104
           Width = 41
-          Height = 24
+          Height = 21
           Color = clWhite
           TabOrder = 9
           Text = '0'
@@ -229,7 +229,7 @@ object CMForm1: TCMForm1
           Left = 64
           Top = 104
           Width = 41
-          Height = 24
+          Height = 21
           Color = clWhite
           TabOrder = 10
           Text = '0'
@@ -239,7 +239,7 @@ object CMForm1: TCMForm1
           Left = 104
           Top = 104
           Width = 41
-          Height = 24
+          Height = 21
           Color = clWhite
           TabOrder = 11
           Text = '1'
