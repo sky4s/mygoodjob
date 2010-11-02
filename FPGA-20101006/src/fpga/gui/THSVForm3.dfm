@@ -7211,7 +7211,7 @@ object HSVForm3: THSVForm3
       Top = 408
       Width = 161
       Height = 41
-      Caption = 'Out of Gamut'
+      Caption = 'Out of Gamut Indicator'
       TabOrder = 13
       object CheckBox_OoG: TCheckBox
         Left = 8
@@ -7229,6 +7229,7 @@ object HSVForm3: THSVForm3
         Height = 17
         Caption = 'Setup'
         TabOrder = 1
+        OnClick = Button_OoGSetupClick
       end
     end
   end

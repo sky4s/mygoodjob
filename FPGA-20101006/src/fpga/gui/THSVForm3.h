@@ -28,7 +28,9 @@
 #include "TColorPickerFrame.h"
 #include "THSVAdjustFrame.h"
 //其他庫頭文件
+#include <java/lang.h>
 #include <cms/cms.h>
+#include <cms/util/util.h>
 //本項目內頭文件
 #include <fpga/gui_class.h>
 #include <addresstype/Address_type.h>
@@ -36,6 +38,7 @@
 #include "TColorPickerFrame.h"
 #include "THSVAdjustFrame.h"
 #include <c3d/GetCursorColor.h>
+
 //---------------------------------------------------------------------------
 ///////// HSV Table Address Arrange /////////
 //
@@ -47,7 +50,11 @@
 //  Byte 5 :  SAT1 [0]    LUM1 [6:0]
 /////////////////////////////////////////////
 
-class THSVForm3:public TForm {
+/*class CallBackIF {
+  public:virtual void callback() = 0;
+};*/
+
+class THSVForm3:public TForm, cms::util::CallBackIF {
     __published:		// IDE-managed Components
     TOpenDialog * OpenDialog1;
     TSaveDialog *SaveDialog1;
@@ -146,9 +153,9 @@ class THSVForm3:public TForm {
     TButton *Button_HInterp;
     TButton *Button_SInterp;
     TButton *Button_VInterp;
-        TGroupBox *GroupBox_OoG;
-        TCheckBox *CheckBox_OoG;
-        TButton *Button_OoGSetup;
+    TGroupBox *GroupBox_OoG;
+    TCheckBox *CheckBox_OoG;
+    TButton *Button_OoGSetup;
     void __fastcall cb_Hue_RedClick(TObject * Sender);
     void __fastcall cb_Hue_YellowClick(TObject * Sender);
     void __fastcall cb_Hue_GreenClick(TObject * Sender);
@@ -194,6 +201,7 @@ class THSVForm3:public TForm {
     void __fastcall Button_HInterpClick(TObject * Sender);
     void __fastcall Button_SInterpClick(TObject * Sender);
     void __fastcall Button_VInterpClick(TObject * Sender);
+    void __fastcall Button_OoGSetupClick(TObject * Sender);
   private:			// User declarations
     static const int HUE_COUNT = 24;	//原本是96, why?
     static const int MAX_HUE_VALUE = 768;
@@ -276,7 +284,9 @@ class THSVForm3:public TForm {
     bool HSV_LUT_RW_start();	// 紀錄enable狀態
     void HSV_LUT_RW_over();	// 回復enable狀態
     void HSV_LUT_FuncEnable(bool flag_en);	// 設定HSV lut button是否作用, flag =0 不作用, 反之,作用
+    virtual void callback();
 };
+
 
 //---------------------------------------------------------------------------
 extern PACKAGE THSVForm3 *HSVForm3;

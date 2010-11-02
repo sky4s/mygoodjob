@@ -64,7 +64,6 @@ class TMainForm:public TForm {
     TMenuItem *mn_C3D_999;
     TMenuItem *mn_SAT;
     TMenuItem *mn_offset;
-    TCheckBox *CheckBox_ColorIPSwitch;
     void __fastcall mn_TCONClick(TObject * Sender);
     void __fastcall mn_EngineerClick(TObject * Sender);
     void __fastcall mn_FunctionClick(TObject * Sender);

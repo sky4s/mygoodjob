@@ -50,14 +50,6 @@ object MainForm: TMainForm
     Visible = False
     OnClick = cb_address_txtClick
   end
-  object CheckBox_ColorIPSwitch: TCheckBox
-    Left = 8
-    Top = 0
-    Width = 97
-    Height = 17
-    Caption = 'Color IP Switch'
-    TabOrder = 2
-  end
   object MainMenu1: TMainMenu
     BiDiMode = bdLeftToRight
     ParentBiDiMode = False
