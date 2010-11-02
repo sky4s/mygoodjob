@@ -13,6 +13,7 @@
 
 #include "THSVForm3.h"
 #include "CM1.h"
+#include "TGamutForm.h"
 #include "include.h"
 #include <fpga/11307/ImageProcess/ImgProc_11307.h>
 //---------------------------------------------------------------------------
@@ -1249,4 +1250,19 @@ void __fastcall THSVForm3::Button_VInterpClick(TObject * Sender)
 
 //---------------------------------------------------------------------------
 
+
+void __fastcall THSVForm3::Button_OoGSetupClick(TObject * Sender)
+{
+    if (null == GamutSetupForm) {
+	Application->CreateForm(__classid(TGamutSetupForm), &GamutSetupForm);
+	GamutSetupForm->callbackIF = this;
+    }
+    GamutSetupForm->Visible = true;
+}
+
+//---------------------------------------------------------------------------
+void THSVForm3::callback()
+{
+
+}
 
