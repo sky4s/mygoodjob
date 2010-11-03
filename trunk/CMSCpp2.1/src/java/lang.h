@@ -1,6 +1,8 @@
 #ifndef LANGH
 #define LANGH
 
+#include "config.h"
+
 //C系統文件
 
 //C++系統文件
@@ -19,7 +21,7 @@
 #include <boost/foreach.hpp>
 #include <boost/lexical_cast.hpp>
 
-#define TNT_LIB
+//#define TNT_LIB
 
 #ifdef TNT_LIB
 #include <tnt/tnt_array1d.h>
@@ -105,7 +107,6 @@ namespace gui {
 //==============================================================================
 //簡化java.lang使用上的巨集
 //==============================================================================
-//#define jObject java::lang::Object
 typedef java::lang::Object jObject;
 #define null NULL
 //==============================================================================
