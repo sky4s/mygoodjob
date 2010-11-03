@@ -667,6 +667,7 @@ void __fastcall TMainForm::RadioButton_TCONClick(TObject * Sender)
     this->Panel_TCON->Visible = true;
     ComboBox_TCONTypeChange(this);
     ShowMessage("Please Turn On DG and FRC for Measurement when T-CON Input Source is selected!!!");
+    PageControl1->ActivePageIndex = 1;
 }
 
 //---------------------------------------------------------------------------
@@ -1154,6 +1155,8 @@ void __fastcall TMainForm::ComboBox_TCONTypeChange(TObject * Sender)
 	    GroupBox_GammaTestAddress->Enabled = false;
 	}
     } else {
+	ShowMessage("Remember setting Bit Depth!");
+
 	readTCONSetup(ExtractFilePath(Application->ExeName) + SETUPFILE, "Custom");
 	CheckBox_GammaTest->Visible = true;
 	CheckBox_GammaTestClick(null);
@@ -1182,6 +1185,7 @@ void __fastcall TMainForm::RadioButton_PCTCONClick(TObject * Sender)
     ComboBox_TCONTypeChange(this);
     bitDepth->setTCONInput(false);
     MeasureWindow->setTCONControlOff();
+    PageControl1->ActivePageIndex = 1;
 }
 
 //---------------------------------------------------------------------------
@@ -1199,10 +1203,20 @@ void __fastcall TMainForm::ComboBox_DGLUTTypeChange(TObject * Sender)
     int lut = ComboBox_DGLUTType->Text.ToInt();
     switch (lut) {
     case 10:
-	RadioButton_Lut10->Checked = true;
+	if (RadioButton_Lut10->Enabled) {
+	    RadioButton_Lut10->Checked = true;
+	} else {
+	    ShowMessage("Cannot select 10Bit LUT in present Bit Depth setting");
+	    ComboBox_DGLUTType->ItemIndex = 1;
+	}
 	break;
     case 12:
-	RadioButton_Lut12->Checked = true;
+	if (RadioButton_Lut12->Enabled) {
+	    RadioButton_Lut12->Checked = true;
+	} else {
+	    ShowMessage("Cannot select 12Bit LUT in present Bit Depth setting");
+	    ComboBox_DGLUTType->ItemIndex = 0;
+	}
 	break;
     }
 }
