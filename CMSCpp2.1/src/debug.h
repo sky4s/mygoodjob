@@ -17,6 +17,7 @@
 //新方法的過程step debug功能開啟
 //#define DEBUG_CCTLUT_NEWMETHOD_STEP
 
+
 //find white過程的紀錄
 //#define DEBUG_FINDWHITE
 //Target White測試功能的開啟
