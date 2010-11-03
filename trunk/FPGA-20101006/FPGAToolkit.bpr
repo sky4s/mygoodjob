@@ -16,7 +16,7 @@
       build\TInTargetForm.obj build\GetCursorColor.obj build\TGamutForm.obj 
       build\core.obj build\lang.obj build\interpolation.obj build\searcher.obj 
       build\depend.obj build\doubleArray.obj build\ReadWriteFunc.obj 
-      build\rgb.obj build\colorspace.obj"/>
+      build\rgb.obj build\colorspace.obj build\independ.obj build\ciexyz.obj"/>
     <RESFILES value="FPGAToolkit.res"/>
     <IDLFILES value=""/>
     <IDLGENFILES value=""/>
@@ -40,7 +40,7 @@
       inetdbbde.bpi inetdbxpress.bpi inetdb.bpi nmfast.bpi webdsnap.bpi 
       bcbie.bpi websnap.bpi soaprtl.bpi dclocx.bpi dbexpress.bpi dbxcds.bpi 
       indy.bpi bcb2kaxserver.bpi"/>
-    <PATHCPP value=".;lib\USB_i2c_lib;lib\LPT_lib;lib\LPT_lib;src\fpga\gui;src\gui\frame;src\gui\frame;src\fpga\11307\DCR;src\fpga\11307\Function;src\fpga\11307\ImageProcess;src\fpga\11307\TCON;src\fpga\11307\Vender;src\fpga\gui;src\fpga\gui;src\fpga\gui;src\fpga\gui;src\fpga\gui;src\fpga\gui;src\fpga\gui;src\fpga\gui;src\fpga\gui;src\fpga\gui;src\fpga\gui;src\fpga\gui;src\fpga;src\fpga;src\fpga\gui;src\c3d\gui;src\c3d;src\fpga\gui;lib\CMSCpp2.1\cms;lib\CMSCpp2.1\java;lib\CMSCpp2.1\math;lib\CMSCpp2.1\math;lib\CMSCpp2.1\cms\colorspace;lib\CMSCpp2.1\math;lib\CMSCpp2.1\i2c\core;lib\CMSCpp2.1\cms\colorspace;lib\CMSCpp2.1\cms\colorspace"/>
+    <PATHCPP value=".;lib\USB_i2c_lib;lib\LPT_lib;lib\LPT_lib;src\fpga\gui;src\gui\frame;src\gui\frame;src\fpga\11307\DCR;src\fpga\11307\Function;src\fpga\11307\ImageProcess;src\fpga\11307\TCON;src\fpga\11307\Vender;src\fpga\gui;src\fpga\gui;src\fpga\gui;src\fpga\gui;src\fpga\gui;src\fpga\gui;src\fpga\gui;src\fpga\gui;src\fpga\gui;src\fpga\gui;src\fpga\gui;src\fpga\gui;src\fpga;src\fpga;src\fpga\gui;src\c3d\gui;src\c3d;src\fpga\gui;lib\CMSCpp2.1\cms;lib\CMSCpp2.1\java;lib\CMSCpp2.1\math;lib\CMSCpp2.1\math;lib\CMSCpp2.1\cms\colorspace;lib\CMSCpp2.1\math;lib\CMSCpp2.1\i2c\core;lib\CMSCpp2.1\cms\colorspace;lib\CMSCpp2.1\cms\colorspace;lib\CMSCpp2.1\cms\colorspace;lib\CMSCpp2.1\cms\colorspace"/>
     <PATHPAS value=".;"/>
     <PATHRC value=".;"/>
     <PATHASM value=".;"/>
@@ -128,6 +128,8 @@
       <FILE FILENAME="lib\CMSCpp2.1\i2c\core\ReadWriteFunc.cpp" FORMNAME="" UNITNAME="ReadWriteFunc" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="lib\CMSCpp2.1\cms\colorspace\rgb.cpp" FORMNAME="" UNITNAME="rgb" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="lib\CMSCpp2.1\cms\colorspace\colorspace.cpp" FORMNAME="" UNITNAME="colorspace" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="lib\CMSCpp2.1\cms\colorspace\independ.cpp" FORMNAME="" UNITNAME="independ" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="lib\CMSCpp2.1\cms\colorspace\ciexyz.cpp" FORMNAME="" UNITNAME="ciexyz" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
   </FILELIST>
   <BUILDTOOLS>
   </BUILDTOOLS>

@@ -1263,6 +1263,7 @@ void __fastcall THSVForm3::Button_OoGSetupClick(TObject * Sender)
 //---------------------------------------------------------------------------
 void THSVForm3::callback()
 {
-
+    double_array sourceRGBxyY = GamutSetupForm->getSourceRGBxyY();
+    double_array targetRGBxyY = GamutSetupForm->getTargetRGBxyY();
 }
 

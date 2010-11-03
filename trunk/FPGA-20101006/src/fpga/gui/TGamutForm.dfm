@@ -1,6 +1,6 @@
 object GamutSetupForm: TGamutSetupForm
-  Left = 192
-  Top = 118
+  Left = 710
+  Top = 263
   Width = 191
   Height = 355
   Caption = 'Gamut Setup'
