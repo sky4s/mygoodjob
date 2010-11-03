@@ -93,6 +93,10 @@ namespace cms {
 	    double getValue(double normalizeInput);
 	};
 
+	class CallBackIF {
+	  public:virtual void callback() = 0;
+	};
+
     };
 };
 #endif
