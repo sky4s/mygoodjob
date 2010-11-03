@@ -1,7 +1,7 @@
 //---------------------------------------------------------------------------
 
 #include <vcl.h>
-#include <lib/includeall.h>
+#include <lib/CMSCpp2.1/includeall.h>
 #pragma hdrstop
 
 #include "Offset_11307.h"

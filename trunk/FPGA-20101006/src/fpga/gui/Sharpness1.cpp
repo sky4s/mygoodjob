@@ -2,7 +2,7 @@
 //---------------------------------------------------------------------------
 
 #include <vcl.h>
-#include <lib/includeall.h>
+#include <lib/CMSCpp2.1/includeall.h>
 #pragma hdrstop
 #include "Sharpness1.h"
 #include <math.h>

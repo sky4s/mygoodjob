@@ -8,7 +8,7 @@ object offsetForm: ToffsetForm
   DefaultMonitor = dmDesktop
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
-  Font.Height = -14
+  Font.Height = -11
   Font.Name = 'MS Sans Serif'
   Font.Style = []
   FormStyle = fsMDIChild
@@ -18,20 +18,20 @@ object offsetForm: ToffsetForm
   OnClose = FormClose
   OnCreate = FormCreate
   OnKeyDown = FormKeyDown
-  PixelsPerInch = 120
-  TextHeight = 16
+  PixelsPerInch = 96
+  TextHeight = 13
   object Label1: TLabel
-    Left = 49
-    Top = 89
-    Width = 41
-    Height = 16
+    Left = 40
+    Top = 72
+    Width = 32
+    Height = 13
     Caption = 'Label1'
   end
   object btn_reload: TBitBtn
-    Left = 10
-    Top = 507
-    Width = 90
-    Height = 31
+    Left = 8
+    Top = 412
+    Width = 73
+    Height = 25
     Caption = '&Reload'
     ModalResult = 6
     TabOrder = 0
@@ -56,42 +56,42 @@ object offsetForm: ToffsetForm
     NumGlyphs = 2
   end
   object CheckBox1: TCheckBox
-    Left = 49
-    Top = 39
-    Width = 120
-    Height = 21
+    Left = 40
+    Top = 32
+    Width = 97
+    Height = 17
     Caption = 'CheckBox1'
     TabOrder = 1
   end
   object CheckBox2: TCheckBox
-    Left = 187
-    Top = 39
-    Width = 119
-    Height = 21
+    Left = 152
+    Top = 32
+    Width = 97
+    Height = 17
     Caption = 'CheckBox2'
     TabOrder = 2
   end
   object CheckBox3: TCheckBox
-    Left = 335
-    Top = 39
-    Width = 119
-    Height = 21
+    Left = 272
+    Top = 32
+    Width = 97
+    Height = 17
     Caption = 'CheckBox3'
     TabOrder = 3
   end
   object ScrollBar1: TScrollBar
-    Left = 167
-    Top = 89
-    Width = 149
-    Height = 21
+    Left = 136
+    Top = 72
+    Width = 121
+    Height = 17
     PageSize = 0
     TabOrder = 4
   end
   object StaticText1: TStaticText
-    Left = 325
-    Top = 89
-    Width = 70
-    Height = 20
+    Left = 264
+    Top = 72
+    Width = 58
+    Height = 17
     Caption = 'StaticText1'
     TabOrder = 5
   end
