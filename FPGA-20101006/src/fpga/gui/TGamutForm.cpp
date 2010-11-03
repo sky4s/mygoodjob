@@ -69,4 +69,33 @@ void __fastcall TGamutSetupForm::Button_SetupClick(TObject * Sender)
 }
 
 //---------------------------------------------------------------------------
+double_array TGamutSetupForm::getSourceRGBxyY()
+{
+    double_array result(new double[9]);
+    result[0] = Edit_SourceRx->Text.ToDouble();
+    result[1] = Edit_SourceRy->Text.ToDouble();
+    result[2] = Edit_SourceRLv->Text.ToDouble();
+    result[3] = Edit_SourceGx->Text.ToDouble();
+    result[4] = Edit_SourceGy->Text.ToDouble();
+    result[5] = Edit_SourceGLv->Text.ToDouble();
+    result[6] = Edit_SourceBx->Text.ToDouble();
+    result[7] = Edit_SourceBy->Text.ToDouble();
+    result[8] = Edit_SourceBLv->Text.ToDouble();
+    return result;
+}
+
+double_array TGamutSetupForm::getTargetRGBxyY()
+{
+    double_array result(new double[9]);
+    result[0] = Edit_TargetRx->Text.ToDouble();
+    result[1] = Edit_TargetRy->Text.ToDouble();
+    result[2] = Edit_TargetRLv->Text.ToDouble();
+    result[3] = Edit_TargetGx->Text.ToDouble();
+    result[4] = Edit_TargetGy->Text.ToDouble();
+    result[5] = Edit_TargetGLv->Text.ToDouble();
+    result[6] = Edit_TargetBx->Text.ToDouble();
+    result[7] = Edit_TargetBy->Text.ToDouble();
+    result[8] = Edit_TargetBLv->Text.ToDouble();
+    return result;
+}
 

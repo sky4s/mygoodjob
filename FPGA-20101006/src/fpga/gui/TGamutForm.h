@@ -60,6 +60,8 @@ class TGamutSetupForm:public TForm {
      __fastcall TGamutSetupForm(TComponent * Owner);
     //bool dataCollectOk;
      cms::util::CallBackIF * callbackIF;
+    double_array getSourceRGBxyY();
+    double_array getTargetRGBxyY();
 };
 //---------------------------------------------------------------------------
 extern PACKAGE TGamutSetupForm *GamutSetupForm;
