@@ -8,7 +8,7 @@
 //////////////////////////////////////////////////////////////////////////////
 
 #include <vcl.h>
-#include <lib/includeall.h>
+#include <lib/CMSCpp2.1/includeall.h>
 #pragma hdrstop
 
 #include "THSVForm3.h"
