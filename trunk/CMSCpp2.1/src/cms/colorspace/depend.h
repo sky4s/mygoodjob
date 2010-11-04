@@ -43,6 +43,7 @@ namespace cms {
 
 	    class RGBColorSpace {
 		friend class RGBBase;
+		friend class RGBColor;
 	      private:
 
 		const double gamma_;
@@ -51,34 +52,42 @@ namespace cms {
 		double2D_ptr toXYZMatrix_;
 		double2D_ptr toRGBMatrix_;
 
-		 RGBColorSpace::RGBColorSpace(const CSType & type,
-					      const cms::
-					      Illuminant & referenceWhite, const double gamma);
-		 RGBColorSpace::RGBColorSpace(const CSType & type,
-					      const cms::
-					      Illuminant & referenceWhite,
-					      double toXYZMatrix[9], const double gamma);
-		 RGBColorSpace::RGBColorSpace(const CSType & type, const double gamma, const
-					      cms::Illuminant & referenceWhite, double m0,
-					      double m1, double m2, double m3, double m4, double m5,
-					      double m6, double m7, double m8);
+		 RGBColorSpace(const CSType & type,
+			       const cms::Illuminant & referenceWhite, const double gamma);
+		 RGBColorSpace(const CSType & type, const cms::Illuminant & referenceWhite,
+			       double toXYZMatrix[9], const double gamma);
+
+		 RGBColorSpace(const CSType & type, const double gamma, const
+			       cms::Illuminant & referenceWhite, double m0,
+			       double m1, double m2, double m3, double m4, double m5,
+			       double m6, double m7, double m8);
 	      public:
 		static const RGBColorSpace & unknowRGB;
 		static const RGBColorSpace & sRGB;
 		static const RGBColorSpace & sRGB_gamma22;
-		//static const RGBColorSpace & NTSCRGB;
-
 
 		inline bool operator==(const RGBColorSpace & that) const {
 		    return type_ == that.type_;
 		};
+
+		 RGBColorSpace(const CSType & type, const cms::Illuminant & referenceWhite,
+			       double2D_ptr toXYZMatrix, const double gamma);
 	    };
 
 
 	    class RGBBase:public DeviceDependentSpace {
 	      public:
-		static double_array linearToRGBValues(double_array
-						      linearRGBValues, RGBColorSpace rgbColorSpace);
+		static double_array linearToRGBValues(double_array linearRGBValues,
+						      RGBColorSpace rgbColorSpace);
+		static double_array linearToRGBValues(double_array linearRGBValues, double gamma);
+
+		static double_array toLinearRGBValues(double_array RGBValues, double gamma);
+
+		static double2D_ptr calculateRGBXYZMatrix(xyY_ptr r, xyY_ptr g, xyY_ptr b,
+							  XYZ_ptr white);
+		static double2D_ptr calculateRGBXYZMatrix(double rx, double ry,
+							  double gx, double gy, double bx,
+							  double by, double_array whiteXYZValues);
 	    };
 
 	    enum Round {
@@ -90,31 +99,8 @@ namespace cms {
 		RoundDown
 	    };
 
-	    /*Enumeration(ChannelIndex)
-	       R, G, B, Y, M, C, W, EnumerationEnd(); */
 	     Enumeration(ChannelIndex)
 	     R = 1, G = 2, B = 3, Y = 4, M = 5, C = 6, W = 7, EnumerationEnd();
-
-	    /*struct ChannelIndex {
-	       enum __Enum {
-	       _R = 1, _G = 2, _B = 3, _Y = 4, _M = 5, _C = 6, _W = 7
-	       };
-	       __Enum _value;   // ªTÁ|­È
-
-	       ChannelIndex(int value = 0):_value((__Enum) value) {
-	       };
-	       ChannelIndex & operator=(int value) {
-	       this->_value = (__Enum) value;
-	       return *this;
-	       };
-	       operator  int () const {
-	       return this->_value;
-	       };
-	       }; */
-
-	    /*enum ChannelIndex {
-	       R_ = 1, G_ = 2, B_ = 3, Y_ = 4, M_ = 5, C_ = 6, W_ = 7
-	       }; */
 
 	    class Channel:public jObject {
 	      public:

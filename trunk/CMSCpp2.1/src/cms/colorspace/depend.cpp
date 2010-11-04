@@ -158,22 +158,29 @@ namespace cms {
 		toXYZMatrix_ = double2D_ptr(new double2D(3, 3, toXYZMatrix));
 		toRGBMatrix_ = DoubleArray::inverse(toXYZMatrix_);
 	    };
-
+	    RGBColorSpace::RGBColorSpace(const CSType & type,
+					 const cms::
+					 Illuminant & referenceWhite,
+					 double2D_ptr toXYZMatrix, const double gamma):type_(type),
+		referenceWhite(referenceWhite), gamma_(gamma) {
+		toXYZMatrix_ = toXYZMatrix;
+		toRGBMatrix_ = DoubleArray::inverse(toXYZMatrix_);
+	    };
 	    RGBColorSpace::RGBColorSpace(const CSType & type, const double gamma, const
 					 cms::Illuminant & referenceWhite, double m0,
 					 double m1, double m2, double m3, double m4, double m5,
 					 double m6, double m7, double m8):type_(type),
 		referenceWhite(referenceWhite), gamma_(gamma) {
 		double array[9];
-                array[0]=m0;
-                array[1]=m1;
-                array[2]=m2;
-                array[3]=m3;
-                array[4]=m4;
-                array[5]=m5;
-                array[6]=m6;
-                array[7]=m7;
-                array[8]=m8;
+		array[0] = m0;
+		array[1] = m1;
+		array[2] = m2;
+		array[3] = m3;
+		array[4] = m4;
+		array[5] = m5;
+		array[6] = m6;
+		array[7] = m7;
+		array[8] = m8;
 
 		toXYZMatrix_ = double2D_ptr(new double2D(3, 3, array));
 		toRGBMatrix_ = DoubleArray::inverse(toXYZMatrix_);
@@ -237,6 +244,79 @@ namespace cms {
 		};
 
 		return rgbValues;
+	    };
+
+	    double_array RGBBase::linearToRGBValues(double_array linearRGBValues, double gamma) {
+		double_array rgbValues(new double[3]);
+		boolean negative = false;
+
+		for (int x = 0; x < 3; x++) {
+		    negative = rgbValues[x] < 0;
+		    if (negative) {
+			rgbValues[x] = -rgbValues[x];
+		    }
+
+		    rgbValues[x] = Math::pow(rgbValues[x], 1. / gamma);
+
+		    if (negative) {
+			rgbValues[x] = -rgbValues[x];
+		    }
+		}
+
+
+		return rgbValues;
+	    };
+
+	    double_array RGBBase::toLinearRGBValues(double_array rgbValues, double gamma) {
+		double_array linearRGBValues = DoubleArray::arraycopy(rgbValues, 3);
+
+		boolean negative = false;
+
+		for (int x = 0; x < 3; x++) {
+		    negative = linearRGBValues[x] < 0;
+		    if (negative) {
+			linearRGBValues[x] = -linearRGBValues[x];
+		    }
+
+		    linearRGBValues[x] = Math::pow(linearRGBValues[x], gamma);
+
+		    if (negative) {
+			linearRGBValues[x] = -linearRGBValues[x];
+		    }
+		}
+
+		return linearRGBValues;
+	    };
+
+	    double2D_ptr RGBBase::calculateRGBXYZMatrix(xyY_ptr r, xyY_ptr g, xyY_ptr b,
+							XYZ_ptr white) {
+		return calculateRGBXYZMatrix(r->x, r->y, g->x, g->y, b->x, b->y,
+					     white->getValues());
+	    };
+	    double2D_ptr RGBBase::calculateRGBXYZMatrix(double rx, double ry,
+							double gx, double gy, double bx, double by,
+							double_array whiteXYZValues) {
+		double2D_ptr matrix(new double2D(3, 3));
+		(*matrix)[0][0] = rx / ry;
+		(*matrix)[0][1] = 1;
+		(*matrix)[0][2] = (1 - rx - ry) / ry;
+		(*matrix)[1][0] = gx / gy;
+		(*matrix)[1][1] = 1;
+		(*matrix)[1][2] = (1 - gx - gy) / gy;
+		(*matrix)[2][0] = bx / by;
+		(*matrix)[2][1] = 1;
+		(*matrix)[2][2] = (1 - bx - by) / by;
+		double2D_ptr inv = DoubleArray::inverse(matrix);
+		double2D_ptr S =
+		    DoubleArray::times(DoubleArray::toDouble2D(whiteXYZValues, 3), inv);
+
+		for (int x = 0; x < 3; x++) {
+		    double s = (*S)[0][x];
+		    (*matrix)[x][0] *= s;
+		    (*matrix)[x][1] *= s;
+		    (*matrix)[x][2] *= s;
+		}
+		return matrix;
 	    };
 	    //======================================================================
 

@@ -25,15 +25,13 @@ namespace cms {
 	    };
 	     RGBColor::RGBColor(const MaxValue &
 				maxValue):rgbColorSpace(&RGBColorSpace::
-							unknowRGB),
-		maxValue(&maxValue) {
+							unknowRGB), maxValue(&maxValue) {
 		setValues(0, 0, 0);
 	    };
 	     RGBColor::RGBColor(const RGBColorSpace & rgbColorSpace,
 				double_array rgb,
 				const MaxValue &
-				maxValue):rgbColorSpace(&rgbColorSpace),
-		maxValue(&maxValue) {
+				maxValue):rgbColorSpace(&rgbColorSpace), maxValue(&maxValue) {
 
 		if (rgb != null) {
 		    setValues(rgb);
@@ -41,21 +39,18 @@ namespace cms {
 	    };
 	    RGBColor::RGBColor(int r, int g,
 			       int b):rgbColorSpace(&RGBColorSpace::
-						    unknowRGB),
-		maxValue(&MaxValue::Int8Bit) {
+						    unknowRGB), maxValue(&MaxValue::Int8Bit) {
 		setValues(r, g, b);
 	    };
 	    RGBColor::RGBColor(double r, double g, double b,
 			       const MaxValue &
 			       maxValue):rgbColorSpace(&RGBColorSpace::
-						       unknowRGB),
-		maxValue(&maxValue) {
+						       unknowRGB), maxValue(&maxValue) {
 		setValues(r, g, b);
 	    };
 	    RGBColor::RGBColor(double r, double g,
 			       double b):rgbColorSpace(&RGBColorSpace::
-						       unknowRGB),
-		maxValue(&MaxValue::Double255) {
+						       unknowRGB), maxValue(&MaxValue::Double255) {
 		setValues(r, g, b);
 	    };
 
@@ -100,8 +95,7 @@ namespace cms {
 	       } */
 	    //======================================================================
 
-	    void RGBColor::changeMaxValue(const MaxValue & type,
-					  bool integerRoundDown) {
+	    void RGBColor::changeMaxValue(const MaxValue & type, bool integerRoundDown) {
 		// 類型一樣不需要轉換 || 無限制類型無法進行轉換
 		if (*this->maxValue == type ||
 		    *this->maxValue == MaxValue::DoubleUnlimited ||
@@ -110,8 +104,7 @@ namespace cms {
 		}
 
 		double_array values = this->getValues();
-		changeMaxValue(values, *this->maxValue, type,
-			       integerRoundDown);
+		changeMaxValue(values, *this->maxValue, type, integerRoundDown);
 
 		this->maxValue = &type;
 		this->setValues(values);
@@ -123,11 +116,9 @@ namespace cms {
 
 	    void RGBColor::changeMaxValue(double_array values,
 					  const MaxValue & srcType,
-					  const MaxValue & destType,
-					  bool integerRoundDown) {
+					  const MaxValue & destType, bool integerRoundDown) {
 		if (srcType.integer == true || destType.integer == true) {
-		    changeIntegerMaxValue(values, srcType, destType,
-					  integerRoundDown);
+		    changeIntegerMaxValue(values, srcType, destType, integerRoundDown);
 		} else {
 		    values = normalizeTo100(values, srcType);
 		    changeMaxValue(values, destType, integerRoundDown);
@@ -137,8 +128,7 @@ namespace cms {
 	    double_array RGBColor::
 		changeIntegerMaxValue(double_array integerValues,
 				      const MaxValue & srcType,
-				      const MaxValue & destType,
-				      bool roundDown) {
+				      const MaxValue & destType, bool roundDown) {
 		if (false == srcType.integer && false == destType.integer) {
 		    //既然是處理整數的轉換, 當然至少要有一個是整數啦~
 		    throw IllegalArgumentException
@@ -146,13 +136,11 @@ namespace cms {
 		}
 		double rate = -1;
 
-		if (true == srcType.integer && false == srcType.divisible
-		    && destType.max == 255) {
+		if (true == srcType.integer && false == srcType.divisible && destType.max == 255) {
 		    //處理小於8bit, 也就是沒辦法整除的部份
 		    rate = (destType.max + 1) / srcType.max;
 		} else if (true == destType.integer
-			   && false == destType.divisible
-			   && srcType.max == 255) {
+			   && false == destType.divisible && srcType.max == 255) {
 		    //處理小於8bit, 也就是沒辦法整除的部份
 		    rate = destType.max / (srcType.max + 1);
 		} else {
@@ -168,24 +156,21 @@ namespace cms {
 			 roundTo(integerValues[x])) : integerValues[x];
 		    //小於8bit的轉換, 會有超過max的狀況, 所以要作clip
 		    integerValues[x] =
-			(integerValues[x] >
-			 destType.max) ? destType.max : integerValues[x];
+			(integerValues[x] > destType.max) ? destType.max : integerValues[x];
 		}
 
 		return integerValues;
 	    };
 
 	    double_array RGBColor::changeMaxValue(double_array normal100,
-						  const MaxValue & type,
-						  bool integerRoundDown) {
+						  const MaxValue & type, bool integerRoundDown) {
 		int size = RGBNumberBands;
 
 		if (type.integer == true) {
 		    for (int x = 0; x < size; x++) {
 			normal100[x] /= (100. / type.max);
 			normal100[x] =
-			    integerRoundDown ? (int) normal100[x] : Math::
-			    roundTo(normal100[x]);
+			    integerRoundDown ? (int) normal100[x] : Math::roundTo(normal100[x]);
 		    }
 		} else {
 		    for (int x = 0; x < size; x++) {
@@ -197,9 +182,7 @@ namespace cms {
 	    };
 
 
-	    double_array RGBColor::normalizeTo100(double_array values,
-						  const MaxValue &
-						  maxValue) {
+	    double_array RGBColor::normalizeTo100(double_array values, const MaxValue & maxValue) {
 		double max = maxValue.max;
 		//int size = values.length;
 		int size = RGBNumberBands;
@@ -209,8 +192,7 @@ namespace cms {
 		return values;
 	    };
 
-	    void RGBColor::addValue(const Channel & channel,
-				    double addvalue) {
+	    void RGBColor::addValue(const Channel & channel, double addvalue) {
 		if (channel.isPrimaryColorChannel()) {
 		    double nowvalue = this->getValue(channel);
 		    this->setValue(channel, nowvalue + addvalue);
@@ -219,9 +201,8 @@ namespace cms {
 
 	    void RGBColor::addValue(double addvalue) {
 		double_array nowvalues = this->getValues();
-		double_array newvalues =
-		    DoubleArray::plus(nowvalues, addvalue,
-				      getNumberBands());
+		double_array newvalues = DoubleArray::plus(nowvalues, addvalue,
+							   getNumberBands());
 		this->setValues(newvalues);
 	    }
 
@@ -247,8 +228,7 @@ namespace cms {
 		throw IllegalArgumentException("");
 	    };
 
-	    double RGBColor::getValue(const Channel & channel,
-				      const MaxValue & type) {
+	    double RGBColor::getValue(const Channel & channel, const MaxValue & type) {
 		double_array values(new double[3]);
 		values = getValues(values, type);
 
@@ -273,8 +253,7 @@ namespace cms {
 		throw IllegalArgumentException("");
 	    };
 
-	    double_array RGBColor::getValues(double_array values,
-					     const MaxValue & type) {
+	    double_array RGBColor::getValues(double_array values, const MaxValue & type) {
 		getValues(values);
 		if (type != *maxValue) {
 		    changeMaxValue(values, *maxValue, type, false);
@@ -337,8 +316,7 @@ namespace cms {
 	    void RGBColor::quantization(const MaxValue & maxValue) {
 		quantization(maxValue, false);
 	    };
-	    void RGBColor::quantization(const MaxValue & maxValue,
-					bool integerRoundDown) {
+	    void RGBColor::quantization(const MaxValue & maxValue, bool integerRoundDown) {
 		const MaxValue & origin = *this->maxValue;
 		//先轉到目標domain
 		changeMaxValue(maxValue, integerRoundDown);
@@ -368,9 +346,8 @@ namespace cms {
 		double r = getValue(Channel::R, MaxValue::Double1);
 		double g = getValue(Channel::G, MaxValue::Double1);
 		double b = getValue(Channel::B, MaxValue::Double1);
-		double div =
-		    Math::pow(Math::pow(r - g, 2) + (r - b) * (g - b),
-			      0.5);
+		double div = Math::pow(Math::pow(r - g, 2) + (r - b) * (g - b),
+				       0.5);
 		div = (div <= 0 ? 0.00001 : div);
 
 		double tmp = 0.5 * ((r - g) + (r - b)) / div;
@@ -427,13 +404,10 @@ namespace cms {
 	    };
 	    RGB_ptr RGBColor::fromHSVValues(double h, double s, double v) {
 		double_array rgbValues = HSV2RGBValues(h, s, v);
-		RGB_ptr rgb(new
-			    RGBColor(RGBColorSpace::unknowRGB, rgbValues,
-				     MaxValue::Double255));
+		RGB_ptr rgb(new RGBColor(RGBColorSpace::unknowRGB, rgbValues, MaxValue::Double255));
 		return rgb;
 	    };
-	    double_array RGBColor::HSV2RGBValues(double h, double s,
-						 double v) {
+	    double_array RGBColor::HSV2RGBValues(double h, double s, double v) {
 		double r, g, b;
 		s = (s < 0 ? 0 : s);
 		s = (s > 1 ? 1 : s);
@@ -479,17 +453,26 @@ namespace cms {
 	    };
 
 	    TColor RGBColor::getColor() {
-		int r =
-		    (int) this->getValue(Channel::R, MaxValue::Int8Bit);
-		int g =
-		    (int) this->getValue(Channel::G, MaxValue::Int8Bit);
-		int b =
-		    (int) this->getValue(Channel::B, MaxValue::Int8Bit);
+		int r = (int) this->getValue(Channel::R, MaxValue::Int8Bit);
+		int g = (int) this->getValue(Channel::G, MaxValue::Int8Bit);
+		int b = (int) this->getValue(Channel::B, MaxValue::Int8Bit);
 		TColor color = (TColor) b * 65536 + g * 256 + r;
-		//TColor color = (TColor) r * 65536 + g * 256 + b;
 		return color;
 	    };
-
+	    XYZ_ptr RGBColor::toXYZ(RGB_ptr rgb, const RGBColorSpace & rgbColorSpace) {
+	    };
+	    double_array RGBColor::toXYZValues(double_array rgbValues,
+					       const RGBColorSpace & rgbColorSpace) {
+		double_array actualRGBValues = toLinearRGBValues(rgbValues, rgbColorSpace.gamma_);
+		//double_array XYZValues = linearToXYZValues(actualRGBValues, colorSpace);
+		//return XYZValues;
+	    };
+	    double_array RGBColor::linearToXYZValues(double_array rgbValues,
+						     const RGBColorSpace & rgbColorSpace) {
+		double2D_ptr XYZValues = DoubleArray::times(DoubleArray::toDouble2D(rgbValues, 3),
+							    rgbColorSpace.toXYZMatrix_);
+		//return XYZValues;
+	    };
 	};
     };
 };
