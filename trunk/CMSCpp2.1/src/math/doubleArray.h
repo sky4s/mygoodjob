@@ -126,6 +126,7 @@ namespace math {
     class IntArray {
       public:
 	static int max(int_array array, int n);
+	static double_array toDoubleArray(int_array array, int n);
     };
 
 
