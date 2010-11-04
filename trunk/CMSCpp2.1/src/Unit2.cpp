@@ -304,13 +304,14 @@ void rgbTry()
 void doubleArrayTry()
 {
     using namespace math;
-    double_array a = DoubleArray::toDoubleArray(3, 1.1, 2.1, 3.1);
-    cout << *DoubleArray::toString(a, 3) << endl;
-    double bb[] = {
-	4, 5, 6
-    };
-    double_array b = DoubleArray::toDoubleArray(bb, 3);
-    cout << *DoubleArray::toString(b, 3) << endl;
+    double2D_ptr array(new double2D(2, 2));
+    (*array)[0][0] = 1;
+    (*array)[0][1] = 2;
+    (*array)[1][0] = 3;
+    (*array)[1][1] = 4;
+
+    double_array result = DoubleArray::toDoubleArray(array);
+    cout << *DoubleArray::toString(result, 4);
 };
 
 
@@ -966,7 +967,8 @@ class property {
     :name_(name), value_(value) {
     } std::string name() const {
 	return name_;
-    } boost::any & value() {
+    }
+    boost::any & value() {
 	return value_;
     }
     friend bool operator<(const property & lhs, const property & rhs) {
@@ -1031,7 +1033,7 @@ int main(int argc, char *argv[])
 
     //rgbTry();
     //mathTry();
-    //doubleArrayTry();
+    doubleArrayTry();
     //rgbop();
     //templateTry();
     //forTry();
@@ -1084,7 +1086,7 @@ int main(int argc, char *argv[])
     //domap();
     //anyTest();
     //propertyTest();
-    hsvTest();
+    //hsvTest();
     //cout << IntToHex(10,2) << endl;
 
 
