@@ -54,7 +54,7 @@
   public:virtual void callback() = 0;
 };*/
 
-class THSVForm3:public TForm, cms::util::CallBackIF {
+class THSVForm3:public TForm, cms::util::CallBackIF, RGBInfoCallbackIF {
     __published:		// IDE-managed Components
     TOpenDialog * OpenDialog1;
     TSaveDialog *SaveDialog1;
@@ -149,13 +149,14 @@ class THSVForm3:public TForm, cms::util::CallBackIF {
     TEdit *Edit_CursorColor;
     TCheckBox *CheckBox_OffWhenWrite;
     TButton *Button_15BaseInterp;
-    TEdit *Edit_CursorColorHSV;
     TButton *Button_HInterp;
     TButton *Button_SInterp;
     TButton *Button_VInterp;
     TGroupBox *GroupBox_OoG;
     TCheckBox *CheckBox_OoG;
     TButton *Button_OoGSetup;
+    TEdit *Edit_CursorColorHSV;
+    TEdit *Edit_TargetCursorColor;
     void __fastcall cb_Hue_RedClick(TObject * Sender);
     void __fastcall cb_Hue_YellowClick(TObject * Sender);
     void __fastcall cb_Hue_GreenClick(TObject * Sender);
@@ -202,7 +203,6 @@ class THSVForm3:public TForm, cms::util::CallBackIF {
     void __fastcall Button_SInterpClick(TObject * Sender);
     void __fastcall Button_VInterpClick(TObject * Sender);
     void __fastcall Button_OoGSetupClick(TObject * Sender);
-    void __fastcall Edit_CursorColorChange(TObject * Sender);
   private:			// User declarations
     static const int HUE_COUNT = 24;	//原本是96, why?
     static const int MAX_HUE_VALUE = 768;
@@ -252,11 +252,28 @@ class THSVForm3:public TForm, cms::util::CallBackIF {
 	    parent->hsvAdjustsb_c3d_Manual39_hChange(Sender);
 	};
     };
-    bptr < HSVChangeListener > listener;
+
+
+    class MousePressedListener:public gui::event::MouseListener {
+      private:
+	THSVForm3 * parent;
+      public:
+	MousePressedListener(THSVForm3 * parent):parent(parent) {
+	};
+	virtual void mousePressed(TObject * Sender,
+				  TMouseButton Button, TShiftState Shift, int X, int Y) {
+	    parent->imageMousePressed(Sender, Button, Shift, X, Y);
+	}
+	virtual void mouseReleased(TObject * Sender,
+				   TMouseButton Button, TShiftState Shift, int X, int Y) {
+	};
+    };
+    bptr < HSVChangeListener > hsvListener;
+    bptr < MousePressedListener > mouseListener;
     bptr < TPColorThread1 > tpColorThread;
     static double_array toWhiteXYZValues(double_array rgbxyYValues);
     bptr < Dep::RGBColorSpace > sourceColorSpace, targetColorSpace;
-    double_array cursorRGBValues;
+    int_array cursorRGBValues;
   public:			// User declarations
     TBit * cb;
     _CHKB **ChkB;
@@ -289,6 +306,8 @@ class THSVForm3:public TForm, cms::util::CallBackIF {
     void HSV_LUT_RW_over();	// 回復enable狀態
     void HSV_LUT_FuncEnable(bool flag_en);	// 設定HSV lut button是否作用, flag =0 不作用, 反之,作用
     virtual void callback();
+    virtual void callback(int_array rgbValues);
+    void imageMousePressed(TObject * Sender, TMouseButton Button, TShiftState Shift, int X, int Y);
 };
 
 

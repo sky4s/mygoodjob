@@ -97,3 +97,18 @@ double_array TGamutSetupForm::getTargetRGBxyY()
     return result;
 }
 
+void __fastcall TGamutSetupForm::Button1Click(TObject * Sender)
+{
+    Edit_SourceRx->Text = 0.5794164995352137;
+    Edit_SourceRy->Text = 0.3452359396700706;
+    Edit_SourceRLv->Text = 42.60552215576172;
+    Edit_SourceGx->Text = 0.3200318457331593;
+    Edit_SourceGy->Text = 0.5670029311753376;
+    Edit_SourceGLv->Text = 112.3306121826172;
+    Edit_SourceBx->Text = 0.1473404603349543;
+    Edit_SourceBy->Text = 0.1087370563095248;
+    Edit_SourceBLv->Text = 26.0684814453125;
+}
+
+//---------------------------------------------------------------------------
+
