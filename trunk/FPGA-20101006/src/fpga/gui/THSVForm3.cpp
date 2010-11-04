@@ -705,6 +705,13 @@ int THSVForm3::getHueAngle(int index)
     return WHOLE_HUE_ANGLE / HUE_COUNT * index;
 }
 
+int THSVForm3::getHueIndex(double angle)
+{
+    using namespace java::lang;
+    double round = Math::round(angle / (WHOLE_HUE_ANGLE / HUE_COUNT));
+    return static_cast < int >(round) % 24;
+}
+
 int THSVForm3::hueAngleToValue(double hueAngle)
 {
     double value = hueAngle / WHOLE_HUE_ANGLE * MAX_HUE_VALUE;
@@ -1368,5 +1375,10 @@ void THSVForm3::callback(int_array rgbValues)
 void THSVForm3::imageMousePressed(TObject * Sender, TMouseButton Button, TShiftState Shift, int X,
 				  int Y)
 {
+    using namespace Dep;
+    RGBColor rgb(cursorRGBValues[0], cursorRGBValues[1], cursorRGBValues[2]);
+    double_array hsviValues = rgb.getHSVIValues();
+    int hueIndex = getHueIndex(hsviValues[0]);
+    setGridSelectRow(hueIndex + 1);
 }
 

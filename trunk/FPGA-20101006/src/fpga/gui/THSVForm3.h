@@ -157,6 +157,9 @@ class THSVForm3:public TForm, cms::util::CallBackIF, RGBInfoCallbackIF {
     TButton *Button_OoGSetup;
     TEdit *Edit_CursorColorHSV;
     TEdit *Edit_TargetCursorColor;
+        TRadioButton *RadioButton_SingleHue;
+        TRadioButton *RadioButton_DoubleHue;
+        TGroupBox *GroupBox5;
     void __fastcall cb_Hue_RedClick(TObject * Sender);
     void __fastcall cb_Hue_YellowClick(TObject * Sender);
     void __fastcall cb_Hue_GreenClick(TObject * Sender);
@@ -216,6 +219,7 @@ class THSVForm3:public TForm, cms::util::CallBackIF, RGBInfoCallbackIF {
     // hue
     //=========================================================================
     static int getHueAngle(int index);
+    static int getHueIndex(double angle);
     static int hueAngleToValue(double hueAngle);
     static double hueValueToAngle(int hueValue);
     static RGB_ptr getHueRGB(int index, double s, int v);

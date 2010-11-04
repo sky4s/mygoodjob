@@ -6484,9 +6484,9 @@ object HSVForm3: THSVForm3
     end
     object stringGrid_HSV: TStringGrid
       Left = 627
-      Top = 37
+      Top = 45
       Width = 166
-      Height = 549
+      Height = 540
       Cursor = crIBeam
       ColCount = 4
       DefaultColWidth = 38
@@ -7240,6 +7240,32 @@ object HSVForm3: THSVForm3
       Height = 21
       TabOrder = 13
       Text = 'Cursor Color'
+    end
+    object GroupBox5: TGroupBox
+      Left = 632
+      Top = 7
+      Width = 153
+      Height = 33
+      Caption = 'Hue Mode'
+      TabOrder = 14
+      object RadioButton_DoubleHue: TRadioButton
+        Left = 80
+        Top = 16
+        Width = 57
+        Height = 15
+        Caption = 'Double'
+        TabOrder = 0
+      end
+      object RadioButton_SingleHue: TRadioButton
+        Left = 16
+        Top = 16
+        Width = 57
+        Height = 15
+        Caption = 'Single'
+        Checked = True
+        TabOrder = 1
+        TabStop = True
+      end
     end
   end
   object btn_Hue_Img_load: TButton
