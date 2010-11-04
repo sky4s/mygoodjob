@@ -7197,6 +7197,7 @@ object HSVForm3: THSVForm3
       Height = 21
       TabOrder = 11
       Text = 'Cursor Color'
+      OnChange = Edit_CursorColorChange
     end
     object Edit_CursorColorHSV: TEdit
       Left = 8

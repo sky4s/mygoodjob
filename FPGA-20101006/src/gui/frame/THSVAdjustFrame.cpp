@@ -17,7 +17,7 @@
 #include <gui/event/listener.h>
 #include <java/lang.h>
 //本項目內gui頭文件
-#include "THSVForm3.h"
+//#include "THSVForm3.h"
 
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
@@ -29,7 +29,7 @@ __fastcall THSVAdjustFrame::THSVAdjustFrame(TComponent * Owner)
 {
     using namespace gui::util;
     setHSVEdit(0, .666, 192);
-
+    maxHueValue = 768;
 }
 
 //---------------------------------------------------------------------------
@@ -70,11 +70,16 @@ void THSVAdjustFrame::updateHSVCaption()
     int v = hsvPosition[2];
 
     //從pos計算成實際值並且顯示
-    double h_show = ((double) h) / THSVForm3::MAX_HUE_VALUE * 360;
+    double h_show = ((double) h) / maxHueValue * 360;
     lb_Hue_gain->Caption = lb_Hue_gain->Caption.sprintf("%+.2f°", h_show);
     double s_show = s / 32.;
     lb_Sat_gain->Caption = lb_Sat_gain->Caption.sprintf("%.2f", s_show);
     lb_Val_gain->Caption = IntToStr(v);
+}
+
+void THSVAdjustFrame::setMaxHueValue(int maxHueValue)
+{
+    this->maxHueValue = maxHueValue;
 }
 
        //---------------------------------------------------------------------------

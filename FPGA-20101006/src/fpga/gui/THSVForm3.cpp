@@ -29,14 +29,17 @@
 //---------------------------------------------------------------------------
 __fastcall THSVForm3::THSVForm3(TComponent * Owner)
 :TForm(Owner), HSV_IsChkSum(true), tbl_step(WHOLE_HUE_ANGLE / HUE_COUNT),
-lastStringGridSelectRow(-1), settingScrollBarPosition(false)
+lastStringGridSelectRow(-1), settingScrollBarPosition(false), cursorRGBValues(new double[3])
 {
     HSV_Chg = 0;
     HSVEN_idx = -1;
     listener = bptr < HSVChangeListener > (new HSVChangeListener(this));
     hsvAdjust->addChangeListener(listener);
     tpColorThread =
-	bptr < TPColorThread1 > (new TPColorThread1(true, Edit_CursorColor, Edit_CursorColorHSV));
+	bptr < TPColorThread1 >
+	(new TPColorThread1(true, Edit_CursorColor, Edit_CursorColorHSV, cursorRGBValues));
+    hsvAdjust->setMaxHueValue(MAX_HUE_VALUE);
+    //cursorRGBValues = double_array(new double[3]);
 }
 
 //---------------------------------------------------------------------------
@@ -1263,7 +1266,57 @@ void __fastcall THSVForm3::Button_OoGSetupClick(TObject * Sender)
 //---------------------------------------------------------------------------
 void THSVForm3::callback()
 {
+    using namespace Dep;
+    using namespace cms;
     double_array sourceRGBxyY = GamutSetupForm->getSourceRGBxyY();
     double_array targetRGBxyY = GamutSetupForm->getTargetRGBxyY();
+    double_array sourceWhiteXYZValues = toWhiteXYZValues(sourceRGBxyY);
+    double_array targetWhiteXYZValues = toWhiteXYZValues(targetRGBxyY);
+
+    double2D_ptr sourceToXYZMatrix =
+	RGBBase::calculateRGBXYZMatrix(sourceRGBxyY[0], sourceRGBxyY[1], sourceRGBxyY[3],
+				       sourceRGBxyY[4], sourceRGBxyY[6], sourceRGBxyY[7],
+				       sourceWhiteXYZValues);
+    double2D_ptr targetToXYZMatrix =
+	RGBBase::calculateRGBXYZMatrix(targetRGBxyY[0], targetRGBxyY[1], targetRGBxyY[3],
+				       targetRGBxyY[4], targetRGBxyY[6], targetRGBxyY[7],
+				       targetWhiteXYZValues);
+    double sourceGamma = GamutSetupForm->Edit_SourceGamma->Text.ToDouble();
+    double targetGamma = GamutSetupForm->Edit_TargetGamma->Text.ToDouble();
+
+    sourceColorSpace =
+	bptr < RGBColorSpace >
+	(new RGBColorSpace(CSType::Unknow, Illuminant::D65, sourceToXYZMatrix, sourceGamma));
+    targetColorSpace = bptr < RGBColorSpace >
+	(new RGBColorSpace(CSType::Unknow, Illuminant::D65, targetToXYZMatrix, targetGamma));
+    CheckBox_OoG->Enabled = true;
 }
+
+double_array THSVForm3::toWhiteXYZValues(double_array rgbxyYValues)
+{
+    using namespace Indep;
+    xyY_ptr rxyY(new CIExyY(rgbxyYValues[0], rgbxyYValues[1], rgbxyYValues[2]));
+    xyY_ptr gxyY(new CIExyY(rgbxyYValues[3], rgbxyYValues[4], rgbxyYValues[5]));
+    xyY_ptr bxyY(new CIExyY(rgbxyYValues[6], rgbxyYValues[7], rgbxyYValues[8]));
+    XYZ_ptr rXYZ = rxyY->toXYZ();
+    XYZ_ptr gXYZ = gxyY->toXYZ();
+    XYZ_ptr bXYZ = bxyY->toXYZ();
+    double_array whiteXYZValues(new double[3]);
+
+    whiteXYZValues[0] = rXYZ->X + gXYZ->X + bXYZ->X;
+    whiteXYZValues[1] = rXYZ->Y + gXYZ->Y + bXYZ->Y;
+    whiteXYZValues[2] = rXYZ->Z + gXYZ->Z + bXYZ->Z;
+
+    return whiteXYZValues;
+}
+
+
+void __fastcall THSVForm3::Edit_CursorColorChange(TObject * Sender)
+{
+    if (CheckBox_OoG->Enabled) {
+    
+    }
+}
+
+//---------------------------------------------------------------------------
 

@@ -33,13 +33,14 @@
 //      }
 //---------------------------------------------------------------------------
 
-__fastcall TPColorThread1::TPColorThread1(bool CreateSuspended, TEdit * Edit)
-:TThread(CreateSuspended), Edit(Edit), Edit_HSV(null)
+__fastcall TPColorThread1::TPColorThread1(bool CreateSuspended, TEdit * Edit_RGB)
+:TThread(CreateSuspended), Edit_RGB(Edit_RGB), Edit_HSV(null)
 {
 }
 
-__fastcall TPColorThread1::TPColorThread1(bool CreateSuspended, TEdit * Edit, TEdit * Edit_HSV)
-:TThread(CreateSuspended), Edit(Edit), Edit_HSV(Edit_HSV)
+__fastcall TPColorThread1::TPColorThread1(bool CreateSuspended, TEdit * Edit_RGB, TEdit * Edit_HSV,
+					  double_array cursorRGBValues)
+:TThread(CreateSuspended), Edit_RGB(Edit_RGB), Edit_HSV(Edit_HSV), cursorRGBValues(cursorRGBValues)
 {
 }
 
@@ -85,7 +86,7 @@ void __fastcall TPColorThread1::Execute()
 	g = GetGValue(ColorR);
 	b = GetBValue(ColorR);
 
-	Edit->Text = "R" + IntToStr(r) + ", G" + IntToStr(g) + ", B" + IntToStr(b);
+	Edit_RGB->Text = "R" + IntToStr(r) + ", G" + IntToStr(g) + ", B" + IntToStr(b);
 
 	if (null != Edit_HSV) {
 	    using namespace Dep;
@@ -97,6 +98,11 @@ void __fastcall TPColorThread1::Execute()
 		Edit_HSV->Text.sprintf("%.3f",
 				       hsviValues[1]) + ", V" +
 		IntToStr((int) (hsviValues[2] * 255));
+
+
+	    cursorRGBValues[0] = r;
+	    cursorRGBValues[1] = g;
+	    cursorRGBValues[2] = b;
 	}
 
 	Sleep(50);

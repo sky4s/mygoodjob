@@ -202,6 +202,7 @@ class THSVForm3:public TForm, cms::util::CallBackIF {
     void __fastcall Button_SInterpClick(TObject * Sender);
     void __fastcall Button_VInterpClick(TObject * Sender);
     void __fastcall Button_OoGSetupClick(TObject * Sender);
+    void __fastcall Edit_CursorColorChange(TObject * Sender);
   private:			// User declarations
     static const int HUE_COUNT = 24;	//­ì¥»¬O96, why?
     static const int MAX_HUE_VALUE = 768;
@@ -253,6 +254,9 @@ class THSVForm3:public TForm, cms::util::CallBackIF {
     };
     bptr < HSVChangeListener > listener;
     bptr < TPColorThread1 > tpColorThread;
+    static double_array toWhiteXYZValues(double_array rgbxyYValues);
+    bptr < Dep::RGBColorSpace > sourceColorSpace, targetColorSpace;
+    double_array cursorRGBValues;
   public:			// User declarations
     TBit * cb;
     _CHKB **ChkB;

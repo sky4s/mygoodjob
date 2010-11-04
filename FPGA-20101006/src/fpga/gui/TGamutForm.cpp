@@ -53,10 +53,8 @@ void __fastcall TGamutSetupForm::Button_SetupClick(TObject * Sender)
 
     bool allEditOk = true;
     int size = GroupBox1->ControlCount;
-    //int size = GroupBox1->ComponentCount;
     for (int x = 0; x < size; x++) {
 	TControl *c = GroupBox1->Controls[x];
-	//TComponent *c = GroupBox1->Components[x];
 	TEdit *edit = dynamic_cast < TEdit * >(c);
 	if (NULL != edit && edit->Text.Length() == 0) {
 	    allEditOk = false;
