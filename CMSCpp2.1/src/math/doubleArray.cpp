@@ -233,6 +233,12 @@ namespace math {
 	};
     };
 
+    double_array DoubleArray::arraycopy(double_array src, int length) {
+	double_array dest(new double[length]);
+	arraycopy(src, 0, dest, 0, length);
+	return dest;
+    }
+
     double2D_ptr DoubleArray::diagonal(double1D_ptr m) {
 	int size = m->dim();
 	double2D_ptr I(new double2D(size, size));
@@ -393,12 +399,17 @@ namespace math {
 	//return result;
     };
 
-    double2D_ptr DoubleArray::toDouble2D(int m, int n, double *array) {
+    double2D_ptr DoubleArray::toDouble2D(double *array, int m, int n) {
 	int count = m * n;
 	double *newarray = new double[count];
 	arraycopy(array, 0, newarray, 0, count);
 	double2D_ptr result(new double2D(m, n, newarray));
 	//double2D_ptr result(new double2D(m, n, array));
+	return result;
+    };
+
+    double2D_ptr DoubleArray::toDouble2D(double_array array, int length) {
+	double2D_ptr result(new double2D(1, length, array.get()));
 	return result;
     };
 
@@ -434,7 +445,18 @@ namespace math {
 	    result[x] = floatArray[x];
 	}
 	return result;
-    }
+    };
+    double_array DoubleArray::toDoubleArray(double2D_ptr array) {
+	int height = array->dim1();
+	int width = array->dim2();
+	double_array result(new double[height * width]);
+	for (int y = 0; y < height; y++) {
+	    for (int x = 0; x < width; x++) {
+		result[y * width + x] = (*array)[y][x];
+	    }
+	}
+	return result;
+    };
 #ifdef EXCEL_ACCESSIBLE
     void DoubleArray::storeToExcel(const string & filename, double_vector_ptr doubleVector) {
 	Util::deleteExist(filename);

@@ -31,10 +31,6 @@ namespace math {
 	static double getTolerance(int m, int n, double1D sv);
 	static double2D identity_(int m, int n);
       public:
-	static double_array plus(double_array v1, double v, int n);
-	static double_array minus(double_array v1, double_array v2, int n);
-	static double_vector_ptr minus(double_vector_ptr v1, double v);
-	static double_array times(double_array v1, double v, int n);
 
 	static string_ptr toString(double_array m, int n);
 	static string_ptr toString(double_vector_ptr m);
@@ -46,16 +42,20 @@ namespace math {
 	static string_ptr toString(const longdouble1D & m);
 
 
-	static double_vector_ptr getRangeCopy(double_vector_ptr M, int j1, int j2);
-	static double1D_ptr getRangeCopy(double1D_ptr M, int j1, int j2);
-
-	static double2D_ptr transpose(double1D_ptr a);
-	static double2D_ptr transpose(double2D_ptr M);
 
 	static void setDouble1D(double2D_ptr array2d, double1D_ptr array1d, int n);
 	static double1D_ptr getDouble1DCopy(double2D_ptr array2d, int n);
 	static double1D_ptr getDouble1D(double2D_ptr array2d, int n);
 	static double1D_ptr getDouble1D(double1D_ptr array1d, int n);
+
+	//=====================================================================
+	// copy
+	//=====================================================================
+	static double_vector_ptr getRangeCopy(double_vector_ptr M, int j1, int j2);
+	static double1D_ptr getRangeCopy(double1D_ptr M, int j1, int j2);
+
+	static double2D_ptr transpose(double1D_ptr a);
+	static double2D_ptr transpose(double2D_ptr M);
 
 	static void vectorcopy(double_vector_ptr src, int srcPos,
 			       double_vector_ptr dest, int destPos, int length);
@@ -64,6 +64,18 @@ namespace math {
 	static void arraycopy(double *src, int srcPos, double *dest, int destPos, int length);
 	static void arraycopy(double_array src, int srcPos,
 			      double_array dest, int destPos, int length);
+	static double_array arraycopy(double_array src, int length);
+	//=====================================================================
+
+
+	//=====================================================================
+	// linear algebra
+	//=====================================================================
+	static double_array plus(double_array v1, double v, int n);
+	static double_array minus(double_array v1, double_array v2, int n);
+	static double_vector_ptr minus(double_vector_ptr v1, double v);
+	static double_array times(double_array v1, double v, int n);
+
 
 	static double2D_ptr diagonal(double1D_ptr m);
 	static double2D_ptr times(double2D_ptr a, double2D_ptr b);
@@ -71,18 +83,28 @@ namespace math {
 	static double2D_ptr identity(int n);
 	static double2D_ptr identity(int m, int n);
 
+
 	static double2D_ptr solve(double2D_ptr a, double2D_ptr b);
 	static double2D solve(double2D a, double2D b);
 	static double2D_ptr inverse(double2D_ptr m);
 	static double2D inverse(double2D m);
 	static double2D_ptr pseudoInverse(double2D_ptr m);
+	//=====================================================================
+
+	//=====================================================================
+	// transform
+	//=====================================================================
 	static double2D_ptr toDouble2D(int width, int n, ...);
 	static void toDouble2D_(int x, int n, ...);
-	static double2D_ptr toDouble2D(int m, int n, double *array);
+	static double2D_ptr toDouble2D(double *array, int m, int n);
+	static double2D_ptr toDouble2D(double_array array, int length);
 
 	static double_array toDoubleArray(double array[], int n);
 	static double_array toDoubleArray(int n, ...);
 	static double_array toDoubleArray(float_array floatArray, int n);
+	static double_array toDoubleArray(double2D_ptr array);
+	//=====================================================================
+
 #ifdef EXCEL_ACCESSIBLE
 	static void storeToExcel(const std::string & filename, double_vector_ptr doubleVector);
 #endif
