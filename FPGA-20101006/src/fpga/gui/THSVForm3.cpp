@@ -29,17 +29,17 @@
 //---------------------------------------------------------------------------
 __fastcall THSVForm3::THSVForm3(TComponent * Owner)
 :TForm(Owner), HSV_IsChkSum(true), tbl_step(WHOLE_HUE_ANGLE / HUE_COUNT),
-lastStringGridSelectRow(-1), settingScrollBarPosition(false), cursorRGBValues(new double[3])
+lastStringGridSelectRow(-1), settingScrollBarPosition(false), cursorRGBValues(new int[3])
 {
     HSV_Chg = 0;
     HSVEN_idx = -1;
-    listener = bptr < HSVChangeListener > (new HSVChangeListener(this));
-    hsvAdjust->addChangeListener(listener);
-    tpColorThread =
-	bptr < TPColorThread1 >
-	(new TPColorThread1(true, Edit_CursorColor, Edit_CursorColorHSV, cursorRGBValues));
+    hsvListener = bptr < HSVChangeListener > (new HSVChangeListener(this));
+    hsvAdjust->addChangeListener(hsvListener);
+    mouseListener = bptr < MousePressedListener > (new MousePressedListener(this));
+    colorPicker->addMouseListener(mouseListener);
+
+    tpColorThread = bptr < TPColorThread1 > (new TPColorThread1(true, this));
     hsvAdjust->setMaxHueValue(MAX_HUE_VALUE);
-    //cursorRGBValues = double_array(new double[3]);
 }
 
 //---------------------------------------------------------------------------
@@ -1077,7 +1077,7 @@ void __fastcall THSVForm3::FormKeyPress(TObject * Sender, char &Key)
     switch (Key) {
     case 'v':
     case 'V':
-	colorPicker->setOriginalColor(tpColorThread->r, tpColorThread->g, tpColorThread->b);
+	colorPicker->setOriginalColor(cursorRGBValues[0], cursorRGBValues[1], cursorRGBValues[2]);
 	break;
     case 'w':
     case 'W':
@@ -1268,11 +1268,24 @@ void THSVForm3::callback()
 {
     using namespace Dep;
     using namespace cms;
+    using namespace math;
+    using namespace std;
+    //取出
     double_array sourceRGBxyY = GamutSetupForm->getSourceRGBxyY();
     double_array targetRGBxyY = GamutSetupForm->getTargetRGBxyY();
     double_array sourceWhiteXYZValues = toWhiteXYZValues(sourceRGBxyY);
     double_array targetWhiteXYZValues = toWhiteXYZValues(targetRGBxyY);
+    //正規化
+    double sourceNormalFactor = 1. / sourceWhiteXYZValues[1];
+    double targetNormalFactor = 1. / targetWhiteXYZValues[1];
+    sourceRGBxyY[2] *= sourceNormalFactor;
+    targetRGBxyY[2] *= targetNormalFactor;
+    for (int x = 0; x < 3; x++) {
+	sourceWhiteXYZValues[x] *= sourceNormalFactor;
+	targetWhiteXYZValues[x] *= targetNormalFactor;
+    }
 
+    //矩陣運算
     double2D_ptr sourceToXYZMatrix =
 	RGBBase::calculateRGBXYZMatrix(sourceRGBxyY[0], sourceRGBxyY[1], sourceRGBxyY[3],
 				       sourceRGBxyY[4], sourceRGBxyY[6], sourceRGBxyY[7],
@@ -1281,6 +1294,7 @@ void THSVForm3::callback()
 	RGBBase::calculateRGBXYZMatrix(targetRGBxyY[0], targetRGBxyY[1], targetRGBxyY[3],
 				       targetRGBxyY[4], targetRGBxyY[6], targetRGBxyY[7],
 				       targetWhiteXYZValues);
+    //取出gamma
     double sourceGamma = GamutSetupForm->Edit_SourceGamma->Text.ToDouble();
     double targetGamma = GamutSetupForm->Edit_TargetGamma->Text.ToDouble();
 
@@ -1311,12 +1325,48 @@ double_array THSVForm3::toWhiteXYZValues(double_array rgbxyYValues)
 }
 
 
-void __fastcall THSVForm3::Edit_CursorColorChange(TObject * Sender)
+void THSVForm3::callback(int_array rgbValues)
 {
+    cursorRGBValues = rgbValues;
+    Edit_CursorColor->Text =
+	"R" + IntToStr(rgbValues[0]) + ", G" + IntToStr(rgbValues[1]) + ", B" +
+	IntToStr(rgbValues[2]);
+
+    using namespace Dep;
+    RGBColor rgb(rgbValues[0], rgbValues[1], rgbValues[2]);
+    double_array hsviValues = rgb.getHSVIValues();
+
+    Edit_CursorColorHSV->Text =
+	"H" + IntToStr((int) hsviValues[0]) + ", S" +
+	Edit_CursorColorHSV->Text.sprintf("%.3f",
+					  hsviValues[1]) + ", V" +
+	IntToStr((int) (hsviValues[2] * 255));
+
+
     if (CheckBox_OoG->Enabled) {
-    
+	using namespace math;
+	double_array doubleRGBValues = IntArray::toDoubleArray(rgbValues, 3);
+
+	RGBColor rgb(*targetColorSpace, doubleRGBValues, MaxValue::Int8Bit);
+	XYZ_ptr XYZ = rgb.toXYZ();
+	RGBColor rgb2(*sourceColorSpace, XYZ);
+	bool isLegal = rgb2.isLegal();
+
+	if (isLegal) {
+	    CheckBox_OoG->Checked = false;
+	    CheckBox_OoG->Color = clBtnFace;
+	} else {
+	    CheckBox_OoG->Checked = true;
+	    CheckBox_OoG->Color = clRed;
+	}
+	double_array targetRGBValues(new double[3]);
+	rgb2.getValues(targetRGBValues, MaxValue::Int8Bit);
+	Edit_TargetCursorColor->Text = DoubleArray::toString(targetRGBValues, 3)->c_str();
     }
 }
 
-//---------------------------------------------------------------------------
+void THSVForm3::imageMousePressed(TObject * Sender, TMouseButton Button, TShiftState Shift, int X,
+				  int Y)
+{
+}
 

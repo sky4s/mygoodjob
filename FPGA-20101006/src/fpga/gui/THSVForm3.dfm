@@ -1,7 +1,7 @@
 object HSVForm3: THSVForm3
   Left = 232
   Top = 148
-  Width = 811
+  Width = 843
   Height = 629
   Caption = 'HSV'
   Color = clBtnFace
@@ -6409,7 +6409,7 @@ object HSVForm3: THSVForm3
   object GroupBox1: TGroupBox
     Left = 7
     Top = 0
-    Width = 787
+    Width = 802
     Height = 592
     TabOrder = 0
     object CheckBox1: TCheckBox
@@ -6485,7 +6485,7 @@ object HSVForm3: THSVForm3
     object stringGrid_HSV: TStringGrid
       Left = 627
       Top = 37
-      Width = 154
+      Width = 166
       Height = 549
       Cursor = crIBeam
       ColCount = 4
@@ -7197,30 +7197,23 @@ object HSVForm3: THSVForm3
       Height = 21
       TabOrder = 11
       Text = 'Cursor Color'
-      OnChange = Edit_CursorColorChange
-    end
-    object Edit_CursorColorHSV: TEdit
-      Left = 8
-      Top = 384
-      Width = 161
-      Height = 21
-      TabOrder = 12
-      Text = 'Cursor Color'
     end
     object GroupBox_OoG: TGroupBox
       Left = 8
       Top = 408
       Width = 161
-      Height = 41
+      Height = 65
       Caption = 'Out of Gamut Indicator'
-      TabOrder = 13
+      TabOrder = 12
       object CheckBox_OoG: TCheckBox
         Left = 8
         Top = 16
         Width = 89
         Height = 17
         Caption = 'Out of Gamut'
+        Color = clBtnFace
         Enabled = False
+        ParentColor = False
         TabOrder = 0
       end
       object Button_OoGSetup: TButton
@@ -7232,6 +7225,21 @@ object HSVForm3: THSVForm3
         TabOrder = 1
         OnClick = Button_OoGSetupClick
       end
+      object Edit_TargetCursorColor: TEdit
+        Left = 8
+        Top = 36
+        Width = 145
+        Height = 21
+        TabOrder = 2
+      end
+    end
+    object Edit_CursorColorHSV: TEdit
+      Left = 8
+      Top = 388
+      Width = 161
+      Height = 21
+      TabOrder = 13
+      Text = 'Cursor Color'
     end
   end
   object btn_Hue_Img_load: TButton

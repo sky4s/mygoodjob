@@ -140,6 +140,15 @@ object GamutSetupForm: TGamutSetupForm
       TabOrder = 9
       Text = '2.2'
     end
+    object Button1: TButton
+      Left = 104
+      Top = 104
+      Width = 33
+      Height = 17
+      Caption = 'Test'
+      TabOrder = 10
+      OnClick = Button1Click
+    end
   end
   object GroupBox2: TGroupBox
     Left = 8

@@ -33,7 +33,7 @@
 //      }
 //---------------------------------------------------------------------------
 
-__fastcall TPColorThread1::TPColorThread1(bool CreateSuspended, TEdit * Edit_RGB)
+/*__fastcall TPColorThread1::TPColorThread1(bool CreateSuspended, TEdit * Edit_RGB)
 :TThread(CreateSuspended), Edit_RGB(Edit_RGB), Edit_HSV(null)
 {
 }
@@ -42,6 +42,13 @@ __fastcall TPColorThread1::TPColorThread1(bool CreateSuspended, TEdit * Edit_RGB
 					  double_array cursorRGBValues)
 :TThread(CreateSuspended), Edit_RGB(Edit_RGB), Edit_HSV(Edit_HSV), cursorRGBValues(cursorRGBValues)
 {
+}*/
+
+__fastcall TPColorThread1::TPColorThread1(bool CreateSuspended,
+					  RGBInfoCallbackIF * callback):TThread(CreateSuspended),
+callback(callback)
+{
+
 }
 
 //---------------------------------------------------------------------------
@@ -82,28 +89,12 @@ void __fastcall TPColorThread1::Execute()
 	ColorR = GetPixel(TargethDC, lp.x, lp.y);
 	ReleaseDC(TargetHwnd, TargethDC);
 
-	r = GetRValue(ColorR);
-	g = GetGValue(ColorR);
-	b = GetBValue(ColorR);
 
-	Edit_RGB->Text = "R" + IntToStr(r) + ", G" + IntToStr(g) + ", B" + IntToStr(b);
-
-	if (null != Edit_HSV) {
-	    using namespace Dep;
-	    RGBColor rgb(r, g, b);
-	    double_array hsviValues = rgb.getHSVIValues();
-
-	    Edit_HSV->Text =
-		"H" + IntToStr((int) hsviValues[0]) + ", S" +
-		Edit_HSV->Text.sprintf("%.3f",
-				       hsviValues[1]) + ", V" +
-		IntToStr((int) (hsviValues[2] * 255));
-
-
-	    cursorRGBValues[0] = r;
-	    cursorRGBValues[1] = g;
-	    cursorRGBValues[2] = b;
-	}
+	int_array rgbValues(new int[3]);
+	rgbValues[0] = GetRValue(ColorR);
+	rgbValues[1] = GetGValue(ColorR);
+	rgbValues[2] = GetBValue(ColorR);
+	callback->callback(rgbValues);
 
 	Sleep(50);
     }
