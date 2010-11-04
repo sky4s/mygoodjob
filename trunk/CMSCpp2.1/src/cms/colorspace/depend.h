@@ -29,6 +29,10 @@ namespace cms {
 	    class DeviceDependentSpace:public ColorSpace {
 	      protected:
 		int getNumberBands();
+
+		static double_array XYZ2LinearRGBValues(double_array XYZValues,
+							const RGBColorSpace & colorSpace);
+		static RGB_ptr XYZ2LinearRGB(XYZ_ptr XYZ, const RGBColorSpace & colorSpace);
 	    };
 
 
@@ -46,11 +50,7 @@ namespace cms {
 		friend class RGBColor;
 	      private:
 
-		const double gamma_;
-		const CSType & type_;
-		const cms::Illuminant & referenceWhite;
-		double2D_ptr toXYZMatrix_;
-		double2D_ptr toRGBMatrix_;
+
 
 		 RGBColorSpace(const CSType & type,
 			       const cms::Illuminant & referenceWhite, const double gamma);
@@ -65,6 +65,11 @@ namespace cms {
 		static const RGBColorSpace & unknowRGB;
 		static const RGBColorSpace & sRGB;
 		static const RGBColorSpace & sRGB_gamma22;
+		const double gamma_;
+		const CSType & type_;
+		const cms::Illuminant & referenceWhite;
+		double2D_ptr toXYZMatrix_;
+		double2D_ptr toRGBMatrix_;
 
 		inline bool operator==(const RGBColorSpace & that) const {
 		    return type_ == that.type_;

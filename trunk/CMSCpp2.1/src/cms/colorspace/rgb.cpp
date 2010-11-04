@@ -8,6 +8,8 @@
 
 //本項目內頭文件
 #include <math/doublearray.h>
+#include <cms/colorspace/independ.h>
+#include <cms/colorspace/ciexyz.h>
 
 namespace cms {
     namespace colorspace {
@@ -53,7 +55,11 @@ namespace cms {
 						       unknowRGB), maxValue(&MaxValue::Double255) {
 		setValues(r, g, b);
 	    };
-
+	    RGBColor::RGBColor(const RGBColorSpace & rgbColorSpace,
+			       XYZ_ptr XYZ):rgbColorSpace(&rgbColorSpace),
+		maxValue(&MaxValue::Double1) {
+		this->setValues(fromXYZValues(XYZ->getValues(), rgbColorSpace));
+	    };
 	    /* TODO : RGBColor */
 	    /*RGBColor::RGBColor(const RGBColorSpace & rgbColorSpace,
 	       XYZ_ptr XYZ):rgbColorSpace(&rgbColorSpace),
@@ -460,19 +466,63 @@ namespace cms {
 		return color;
 	    };
 	    XYZ_ptr RGBColor::toXYZ(RGB_ptr rgb, const RGBColorSpace & rgbColorSpace) {
+		double_array rgbValues(new double[3]);
+		rgb->getValues(rgbValues, MaxValue::Double1);
+		double_array XYZValues = toXYZValues(rgbValues, rgbColorSpace);
+		XYZ_ptr result(new Indep::CIEXYZ(XYZValues));
+		return result;
 	    };
 	    double_array RGBColor::toXYZValues(double_array rgbValues,
 					       const RGBColorSpace & rgbColorSpace) {
 		double_array actualRGBValues = toLinearRGBValues(rgbValues, rgbColorSpace.gamma_);
-		//double_array XYZValues = linearToXYZValues(actualRGBValues, colorSpace);
-		//return XYZValues;
+		double_array XYZValues = linearToXYZValues(actualRGBValues, rgbColorSpace);
+		return XYZValues;
 	    };
 	    double_array RGBColor::linearToXYZValues(double_array rgbValues,
 						     const RGBColorSpace & rgbColorSpace) {
 		double2D_ptr XYZValues = DoubleArray::times(DoubleArray::toDouble2D(rgbValues, 3),
 							    rgbColorSpace.toXYZMatrix_);
-		//return XYZValues;
+		return DoubleArray::toDoubleArray(XYZValues);
 	    };
+
+	    XYZ_ptr RGBColor::toXYZ() {
+		double_array rgbValues(new double[3]);
+		this->getValues(rgbValues, MaxValue::Double1);
+		double_array XYZValues = toXYZValues(rgbValues, *rgbColorSpace);
+		XYZ_ptr XYZ(new Indep::CIEXYZ(XYZValues));
+		return XYZ;
+	    };
+
+	    RGB_ptr RGBColor::fromXYZ(XYZ_ptr XYZ, const RGBColorSpace & colorSpace) {
+		using namespace Indep;
+		double_array XYZValues(new double[3]);
+		if (XYZ->getNormalizeY() != Not) {
+		    XYZ->getValues(XYZValues, Normal1);
+		} else {
+		    XYZ->getValues(XYZValues);
+		}
+		double_array rgbValues = fromXYZValues(XYZValues, colorSpace);
+		RGB_ptr rgb(new RGBColor(colorSpace, rgbValues, MaxValue::Double1));
+		return rgb;
+	    };
+	    double_array RGBColor::fromXYZValues(double_array XYZValues,
+						 const RGBColorSpace & colorSpace) {
+		double_array linearRGBValues = XYZ2LinearRGBValues(XYZValues, colorSpace);
+		double_array rgbValues = linearToRGBValues(linearRGBValues, colorSpace);
+
+		return rgbValues;
+	    };
+
+	    boolean RGBColor::isLegal(double value, const MaxValue & maxValue) {
+		return value >= 0 && value <= maxValue.max;	// && !Double.isNaN(value);
+	    };
+	    boolean RGBColor::isLegal(double value) {
+		return isLegal(value, *maxValue);
+	    };
+	    boolean RGBColor::isLegal() {
+		return isLegal(R) && isLegal(G) && isLegal(B);
+	    };
+
 	};
     };
 };

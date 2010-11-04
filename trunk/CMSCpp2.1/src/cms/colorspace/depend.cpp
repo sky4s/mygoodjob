@@ -25,6 +25,21 @@ namespace cms {
 	    int DeviceDependentSpace::getNumberBands() {
 		return 3;
 	    };
+	    double_array DeviceDependentSpace::XYZ2LinearRGBValues(double_array XYZValues,
+								   const RGBColorSpace & colorSpace)
+	    {
+		double2D_ptr aM = colorSpace.toRGBMatrix_;
+		double2D_ptr rgbValues =
+		    DoubleArray::times(DoubleArray::toDouble2D(XYZValues, 3), aM);
+
+		 return DoubleArray::toDoubleArray(rgbValues);
+	    };
+	    RGB_ptr DeviceDependentSpace::XYZ2LinearRGB(XYZ_ptr XYZ,
+							const RGBColorSpace & colorSpace) {
+		double_array rgbValues = XYZ2LinearRGBValues(XYZ->getValues(), colorSpace);
+		RGB_ptr rgb(new RGBColor(colorSpace, rgbValues, MaxValue::Double1));
+		 return rgb;
+	    };
 	    //======================================================================
 
 	    //======================================================================
@@ -53,7 +68,7 @@ namespace cms {
 	       color(color), fullname(fullname) {
 
 	       }; */
-	     Channel::Channel(int index, const TColor & color, string fullname, const ChannelIndex chindex):	/*index(index), */
+	    Channel::Channel(int index, const TColor & color, string fullname, const ChannelIndex chindex):	/*index(index), */
 	     color(color), fullname(fullname), chindex(chindex) {
 		//std::cout << fullname << " " << chindex << std::endl;
 	    };
@@ -209,7 +224,7 @@ namespace cms {
 	    //======================================================================
 	    double_array RGBBase::
 		linearToRGBValues(double_array linearRGBValues, RGBColorSpace rgbColorSpace) {
-		double_array rgbValues;
+		double_array rgbValues = DoubleArray::arraycopy(linearRGBValues, 3);
 		boolean negative = false;
 
 		if (rgbColorSpace == RGBColorSpace::sRGB) {

@@ -44,37 +44,30 @@ namespace cms {
 		//===============================================================
 		double getCCT();
 
-		NormalizeY getNormalizeY();
+		const NormalizeY & getNormalizeY();
 		double getSaturation(CIEXYZ white);
 		double_array getuvPrimeValues();
 		double_array getuvValues();
 		double_array getValues(double_array values, NormalizeY normalizeY);
 
-
-
 		double_array getValues();
 		double_array getValues(double_array values);
 
-
 		double_array getWhitenessIndex();
 		double_array getxyValues() const;
-
 		double_array getxyzValues();
 
 		double getYellownessIndex();
 
 		bool isBlack();
-
 		bool isLegal();
 		bool isLegal(XYZ_ptr white);
+                
 		static bptr < CIEXYZ > minus(const XYZ_ptr XYZ1, const XYZ_ptr XYZ2);
-
 		static XYZ_ptr plus(const XYZ_ptr XYZ1, const XYZ_ptr XYZ2);
 
 		void normalize(XYZ_ptr normal);
-
 		void normalizeY();
-
 		void normalize(NormalizeY normalizeY);
 		void rationalize();
 		void rationalize(XYZ_ptr white);
