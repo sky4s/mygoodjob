@@ -573,6 +573,14 @@ namespace math {
 	}
 	return max;
     };
+
+    double_array IntArray::toDoubleArray(int_array array, int n) {
+	double_array result(new double[n]);
+	for (int x = 0; x < n; x++) {
+	    result[x] = array[x];
+	}
+	return result;
+    };
     //==========================================================================
 };
 
