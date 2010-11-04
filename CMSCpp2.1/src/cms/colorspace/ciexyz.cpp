@@ -34,7 +34,7 @@ namespace cms {
 		    xy2CCTByMcCamyFloat(xyY_ptr(new CIExyY(XYZ_ptr(this))));
 	    };
 
-	    NormalizeY CIEXYZ::getNormalizeY() {
+	    const NormalizeY & CIEXYZ::getNormalizeY() {
 		return normalizeY_;
 	    };
 	    double CIEXYZ::getSaturation(CIEXYZ white) {

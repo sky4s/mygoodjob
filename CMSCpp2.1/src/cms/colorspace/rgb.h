@@ -18,6 +18,7 @@ namespace cms {
 		 RGBColor(int r, int g, int b);
 		 RGBColor(double r, double g, double b, const MaxValue & maxValue);
 		 RGBColor(double r, double g, double b);
+		 RGBColor(const RGBColorSpace & rgbColorSpace, XYZ_ptr XYZ);
 		string_vector_ptr getBandNames();
 
 		void changeMaxValue(const MaxValue & type, bool integerRoundDown);
@@ -51,8 +52,16 @@ namespace cms {
 						const RGBColorSpace & rgbColorSpace);
 		static double_array linearToXYZValues(double_array rgbValues,
 						      const RGBColorSpace & rgbColorSpace);
+		XYZ_ptr toXYZ();
+		static RGB_ptr fromXYZ(XYZ_ptr XYZ, const RGBColorSpace & colorSpace);
+		static double_array fromXYZValues(double_array XYZValues,
+						  const RGBColorSpace & colorSpace);
+
+		static boolean isLegal(double value, const MaxValue & maxValue);
+		boolean isLegal();
 	      protected:
-		 double_array _getValues(double_array values);
+		 boolean isLegal(double value);
+		double_array _getValues(double_array values);
 		void _setValues(double_array values);
 		/*
 		   MaxValue和RGBColorSpace採用指標(為何不用smart_ptr)的原因:
