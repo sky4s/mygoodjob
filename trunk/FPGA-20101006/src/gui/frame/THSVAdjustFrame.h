@@ -73,6 +73,7 @@ class THSVAdjustFrame:public TFrame {
 
     bool hgainChange, sgainChange, vgainChange;
     int lastDefault;
+    int maxHueValue;
   public:			// User declarations
     void sb_HSV_gainChange(TObject * Sender);
     __fastcall THSVAdjustFrame(TComponent * Owner);
@@ -85,6 +86,8 @@ class THSVAdjustFrame:public TFrame {
     void setColorAdjustable(bool enable);
     void setTStringGrid(TStringGrid * stringGrid);
     void setDefaultHSVPosition(int h, int s, int v);
+    void setMaxHueValue(int maxHueValue);
+
 };
 
 class SelectionListener:public gui::event::ListSelectionListener {
