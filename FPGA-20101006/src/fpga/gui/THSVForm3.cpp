@@ -11,10 +11,21 @@
 #include <lib/CMSCpp2.1/includeall.h>
 #pragma hdrstop
 
+//C系統文件
+
+//C++系統文件
+
+//vcl庫頭文件
+
+//其他庫頭文件
+#include "include.h"
+//本項目內頭文件
+
+//本項目內gui頭文件
 #include "THSVForm3.h"
 #include "CM1.h"
 #include "TGamutForm.h"
-#include "include.h"
+#include "TPatternForm.h"
 #include <fpga/11307/ImageProcess/ImgProc_11307.h>
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
@@ -736,7 +747,9 @@ RGB_ptr THSVForm3::getHueRGB(int index, double s, int v)
     using namespace Dep;
     int hue = getHueAngle(index);
     //double hue256 = hue / 360. * 255;
-    RGB_ptr rgb = RGBColor::fromHSVValues(hue, s, v);
+    HSV_ptr hsv(new HSV(RGBColorSpace::sRGB, hue, s, v));
+
+    RGB_ptr rgb = hsv->toRGB();
     return rgb;
 }
 
@@ -787,6 +800,8 @@ void __fastcall THSVForm3::stringGrid_HSVSelectCell(TObject * Sender,
     /*if (lastStringGridSelectRow == ARow) {
        return;
        } */
+    //stringGrid_HSV->Selection.Bottom = stringGrid_HSV->Selection.Top + 1;
+
     lastStringGridSelectRow = ARow;
     int index = ARow - 1;
 
@@ -1340,8 +1355,9 @@ void THSVForm3::callback(int_array rgbValues)
 	IntToStr(rgbValues[2]);
 
     using namespace Dep;
-    RGBColor rgb(rgbValues[0], rgbValues[1], rgbValues[2]);
-    double_array hsviValues = rgb.getHSVIValues();
+    RGB_ptr rgb(new RGBColor(rgbValues[0], rgbValues[1], rgbValues[2]));
+    HSV hsv(rgb);
+    double_array hsviValues = hsv.getHSVIValues();
 
     Edit_CursorColorHSV->Text =
 	"H" + IntToStr((int) hsviValues[0]) + ", S" +
@@ -1376,9 +1392,31 @@ void THSVForm3::imageMousePressed(TObject * Sender, TMouseButton Button, TShiftS
 				  int Y)
 {
     using namespace Dep;
-    RGBColor rgb(cursorRGBValues[0], cursorRGBValues[1], cursorRGBValues[2]);
-    double_array hsviValues = rgb.getHSVIValues();
+    using namespace math;
+    //RGBColor rgb(cursorRGBValues[0], cursorRGBValues[1], cursorRGBValues[2]);
+    double_array hsviValues = HSV::getHSVIValues(IntArray::toDoubleArray(cursorRGBValues, 3));
+    //double_array hsviValues = rgb.getHSVIValues();
     int hueIndex = getHueIndex(hsviValues[0]);
     setGridSelectRow(hueIndex + 1);
 }
+
+void __fastcall THSVForm3::colorPickercb_show_ref_imgClick(TObject * Sender)
+{
+    colorPicker->cb_show_ref_imgClick(Sender);
+
+}
+
+//---------------------------------------------------------------------------
+
+
+void __fastcall THSVForm3::CheckBox_ShowPatternClick(TObject * Sender)
+{
+    if (true == CheckBox_ShowPattern->Checked) {
+	PatternForm->WindowState = wsNormal;
+    } else {
+	PatternForm->WindowState = wsMinimized;
+    }
+}
+
+//---------------------------------------------------------------------------
 

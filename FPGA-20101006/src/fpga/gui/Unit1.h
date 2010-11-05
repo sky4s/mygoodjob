@@ -88,6 +88,7 @@ class TMainForm:public TForm {
     void __fastcall mn_offsetClick(TObject * Sender);
 
   private:			// User declarations
+     String getFileVersionInfo();
   public:			// User declarations
      __fastcall TMainForm(TComponent * Owner);
     int C3D_type;
