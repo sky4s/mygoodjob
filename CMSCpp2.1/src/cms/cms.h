@@ -112,6 +112,8 @@ typedef bptr < RGB_vector > RGB_vector_ptr;
 
 typedef bptr < Dep::HSV > HSV_ptr;
 #define nil_HSV_ptr HSV_ptr( (Dep::HSV*) null)
+typedef std::vector < HSV_ptr > HSV_vector;
+typedef bptr < HSV_vector > HSV_vector_ptr;
 
 typedef bptr < Indep::CIExyY > xyY_ptr;
 typedef std::vector < xyY_ptr > xyY_vector;
