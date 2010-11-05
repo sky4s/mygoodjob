@@ -28,7 +28,7 @@ namespace cms {
 
 	    class DeviceDependentSpace:public ColorSpace {
 	      protected:
-		int getNumberBands();
+		virtual int getNumberBands();
 
 		static double_array XYZ2LinearRGBValues(double_array XYZValues,
 							const RGBColorSpace & colorSpace);
@@ -222,6 +222,53 @@ namespace cms {
 		const string_ptr toString() const;
 		static const MaxValue & valueOf(string_ptr stringValue);
 	    };
+
+
+	    class RGBBasis:public DeviceDependentSpace {
+	      public:
+		RGBBasis(const RGBColorSpace & colorSpace, double_array values);
+		 RGBBasis(RGB_ptr rgb);
+		const RGBColorSpace & getRGBColorSpace();
+		virtual RGB_ptr toRGB() = 0;
+	      protected:
+		const RGBColorSpace *rgbColorSpace;
+		virtual double_array _fromRGB(RGB_ptr rgb) = 0;
+	    };
+
+	    class ColorAppearanceBase:public RGBBasis {
+	      public:
+		ColorAppearanceBase(const RGBColorSpace & colorSpace, double_array values,
+				    int_array lshIndex);
+		 ColorAppearanceBase(RGB_ptr rgb, int_array lshIndex);
+		double_array getCartesianCoordinatesValues();
+		double_array getLSHValues();
+		void setLSHValues(double_array LSHValues);
+	      private:
+		 int_array lshIndex;
+	    };
+
+
+	    class HSV:public ColorAppearanceBase {
+	      public:
+		double H, S, V;
+		 HSV(const RGBColorSpace & colorSpace, double_array hsvValues);
+		 HSV(const RGBColorSpace & colorSpace, double h, double s, double v);
+		 HSV(RGB_ptr rgb);
+		static double_array fromRGBValues(double_array rgbValues);
+		virtual string_vector_ptr getBandNames();
+		virtual RGB_ptr toRGB();
+		static double_array toRGBValues(double_array hsvValues);
+		double_array getHSVIValues();
+		static double_array getHSVIValues(double_array rgbValues);
+	      protected:
+		 virtual double_array _fromRGB(RGB_ptr rgb);
+		double_array _getValues(double_array values);
+		void _setValues(double_array values);
+	      private:
+		static int_array lshIndex;
+		static int_array initLSHIndex();
+	    };
+
 	};
     };
 };

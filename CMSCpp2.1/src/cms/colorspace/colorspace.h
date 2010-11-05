@@ -29,6 +29,7 @@ namespace cms {
 	    virtual double_array _getValues(double_array values) = 0;
 	    virtual void _setValues(double_array values) = 0;
 	     ColorSpace();
+	    static double_array getValuesArray(double value1, double value2, double value3);
 	  public:
 	    static double_array cartesian2polarCoordinatesValues(double_array cartesianValues);
 	    static double_array cartesian2polarCoordinatesValues(double x, double y);

@@ -425,6 +425,198 @@ namespace cms {
 		}
 	    }
 	    //======================================================================
+
+	    RGBBasis::RGBBasis(const RGBColorSpace & colorSpace, double_array values) {
+	    };
+	    RGBBasis::RGBBasis(RGB_ptr rgb) {
+	    };
+	    const RGBColorSpace & RGBBasis::getRGBColorSpace() {
+		return *rgbColorSpace;
+	    };
+	    //======================================================================
+	  ColorAppearanceBase::ColorAppearanceBase(const RGBColorSpace & colorSpace, double_array values, int_array lshIndex):RGBBasis(colorSpace,
+		     values), lshIndex(lshIndex)
+	    {
+	    };
+	  ColorAppearanceBase::ColorAppearanceBase(RGB_ptr rgb, int_array lshIndex):RGBBasis(rgb),
+		lshIndex(lshIndex)
+	    {
+	    };
+	    double_array ColorAppearanceBase::getCartesianCoordinatesValues() {
+		return polar2cartesianCoordinatesValues(getLSHValues());
+	    };
+	    double_array ColorAppearanceBase::getLSHValues() {
+		double_array values = getValues();
+		double_array result(new double[3]);
+		result[0] = values[lshIndex[0]];
+		result[1] = values[lshIndex[1]];
+		result[2] = values[lshIndex[2]];
+
+		return result;
+	    };
+	    void ColorAppearanceBase::setLSHValues(double_array LSHValues) {
+		this->setValues(LSHValues[lshIndex[0]], LSHValues[lshIndex[1]],
+				LSHValues[lshIndex[2]]);
+
+	    };
+	    //======================================================================
+
+	    HSV::HSV(const RGBColorSpace & colorSpace,
+		     double_array hsvValues):ColorAppearanceBase(colorSpace, hsvValues, lshIndex) {
+	    };
+	    HSV::HSV(const RGBColorSpace & colorSpace, double h, double s,
+		     double v):ColorAppearanceBase(colorSpace, getValuesArray(h, s, v), lshIndex) {
+
+	    };
+	  HSV::HSV(RGB_ptr rgb):ColorAppearanceBase(rgb, lshIndex) {
+	    };
+	    double_array HSV::fromRGBValues(double_array rgbValues) {
+		double h, s, v;
+
+		double r = rgbValues[0];
+		double g = rgbValues[1];
+		double b = rgbValues[2];
+		//i = (r + g + b) / 3;
+		double max = Math::max(r, g);
+		max = Math::max(b, max);
+		v = max;
+		double min = Math::min(r, g);
+		min = Math::min(b, min);
+		double d = max - min;
+		s = d;
+		d = (d == 0 ? d + 256 : d);
+
+		if (max == 0) {
+		    s = 0;
+		} else {
+		    s = s / max;
+		}
+
+		if (s == 0) {
+		    h = 0;
+		} else {
+		    if (max == r)
+			h = 60 * (g - b) / d;
+		    else if (max == g)
+			h = 60 * (b - r) / d + 120;
+		    else if (max == b)
+			h = 60 * (r - g) / d + 240;
+		    h = Math::fmod(h + 360, 360);
+		}
+		double_array hsvValues(new double[3]);
+		hsvValues[0] = h;
+		hsvValues[1] = s;
+		hsvValues[2] = v;
+		//hsviValues[3] = i;
+		return hsvValues;
+	    };
+	    string_vector_ptr HSV::getBandNames() {
+		string_vector_ptr names(new string_vector(3));
+		(*names)[0] = "H";
+		(*names)[1] = "S";
+		(*names)[2] = "V";
+		return names;
+	    };
+	    RGB_ptr HSV::toRGB() {
+		double_array rgbValues = toRGBValues(getValues());
+		RGB_ptr rgb(new RGBColor(*rgbColorSpace, rgbValues, MaxValue::Double255));
+		return rgb;
+	    };
+	    double_array HSV::toRGBValues(double_array hsvValues) {
+
+
+		double h = hsvValues[0];
+		double s = hsvValues[1];
+		double v = hsvValues[2];
+
+		double r, g, b;
+		s = (s < 0 ? 0 : s);
+		s = (s > 1 ? 1 : s);
+		v = (v < 0 ? 0 : v);
+		v = (v > 255 ? 255 : v);
+		h = (h > 360 ? 360 : h);
+		h = (h < 0 ? h + 360 : h);
+		int hi = (int) (Math::floor(h / 60)) % 6;
+		double f = h / 60 - Math::floor(h / 60);
+		double p = v * (1 - s);
+		double q = v * (1 - f * s);
+		double t = v * (1 - (1 - f) * s);
+		if (hi == 0) {
+		    r = v;
+		    g = t;
+		    b = p;
+		} else if (hi == 1) {
+		    r = q;
+		    g = v;
+		    b = p;
+		} else if (hi == 2) {
+		    r = p;
+		    g = v;
+		    b = t;
+		} else if (hi == 3) {
+		    r = p;
+		    g = q;
+		    b = v;
+		} else if (hi == 4) {
+		    r = t;
+		    g = p;
+		    b = v;
+		} else if (hi == 5) {
+		    r = v;
+		    g = p;
+		    b = q;
+		}
+		double_array rgbValues(new double[3]);
+		rgbValues[0] = r;
+		rgbValues[1] = g;
+		rgbValues[2] = b;
+		return rgbValues;
+	    };
+
+
+	    int_array HSV::lshIndex = initLSHIndex();
+	    int_array HSV::initLSHIndex() {
+		int_array index(new int[3]);
+		index[0] = 2;
+		index[1] = 1;
+		index[2] = 0;
+		return index;
+	    };
+
+	    double_array HSV::getHSVIValues() {
+		double_array hsvValues = getValues();
+		double_array rgbValues = toRGBValues(getValues());
+		double_array hsviValues = getHSVIValues(rgbValues);
+
+		return hsviValues;
+	    };
+	    double_array HSV::getHSVIValues(double_array rgbValues) {
+		double_array hsvValues = fromRGBValues(rgbValues);
+		double_array hsviValues(new double[4]);
+		for (int x = 0; x < 3; x++) {
+		    hsviValues[x] = hsvValues[x];
+		}
+		hsviValues[3] = (rgbValues[0] + rgbValues[1] + rgbValues[2]) / 3.;
+		return hsviValues;
+	    };
+	    double_array HSV::_fromRGB(RGB_ptr rgb) {
+		double_array rgbValues(new double[3]);
+		rgb->getValues(rgbValues, MaxValue::Double1);
+
+		double_array hsvValues = fromRGBValues(rgbValues);
+		return hsvValues;
+	    };
+	    double_array HSV::_getValues(double_array values) {
+		values[0] = H;
+		values[1] = S;
+		values[2] = V;
+		return values;
+	    };
+	    void HSV::_setValues(double_array values) {
+		H = values[0];
+		S = values[1];
+		V = values[2];
+	    };
 	};
     };
 };

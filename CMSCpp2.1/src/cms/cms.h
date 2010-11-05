@@ -43,6 +43,7 @@ namespace cms {
 	class ColorSpace;
 	namespace depend {
 	    class RGBColor;
+	    class HSV;
 	    class Channel;
 	    class RGBColorSpace;
 	    class MaxValue;
@@ -102,11 +103,15 @@ namespace cms {
 #define Indep cms::colorspace::independ
 
 typedef bptr < cms::colorspace::ColorSpace > ColorSpace_ptr;
+
 typedef bptr < Dep::RGBColor > RGB_ptr;
 #define nil_RGB_ptr RGB_ptr( (Dep::RGBColor*) null)
 typedef barray < RGB_ptr > RGB_array;
 typedef std::vector < RGB_ptr > RGB_vector;
 typedef bptr < RGB_vector > RGB_vector_ptr;
+
+typedef bptr < Dep::HSV > HSV_ptr;
+#define nil_HSV_ptr HSV_ptr( (Dep::HSV*) null)
 
 typedef bptr < Indep::CIExyY > xyY_ptr;
 typedef std::vector < xyY_ptr > xyY_vector;
