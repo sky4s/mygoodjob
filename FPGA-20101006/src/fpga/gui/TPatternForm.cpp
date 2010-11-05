@@ -10,8 +10,8 @@
 #pragma resource "*.dfm"
 TPatternForm *PatternForm;
 //---------------------------------------------------------------------------
-__fastcall TPatternForm::TPatternForm(TComponent * Owner)
-:TForm(Owner)
+__fastcall TPatternForm::TPatternForm(TComponent * Owner):TForm(Owner),
+patchCols(1), gapPercent(.05)
 {
 
 }
@@ -20,18 +20,35 @@ __fastcall TPatternForm::TPatternForm(TComponent * Owner)
 
 void __fastcall TPatternForm::FormPaint(TObject * Sender)
 {
-    TCanvas *canvas = this->Canvas;
-    int h = this->ClientHeight;
-    int w = this->ClientWidth;
-    canvas->Brush->Color = clRed;
-    canvas->Rectangle(0, 0, w, h);
+  TCanvas *canvas = this->Canvas;
+  //int h = this->ClientHeight;
+  //int w = this->ClientWidth;
+  bool verticalBorder = patchCols > 1;
+  //hsvVector->
+  int size = hsvVector->size();
+  int patchPerCol = size / patchCols;
+
+  int h = this->ClientHeight / patchPerCol;
+  int w = this->ClientWidth / patchCols;
+
+  for (int i = 0; i < size; i++)
+  {
+    HSV_ptr hsv = (*hsvVector)[i];
+    RGB_ptr rgb = hsv->toRGB();
+    canvas->Brush->Color = rgb->getColor();
+    int x = i / size;
+    int y = i % patchPerCol;
+
+  }
+  /*canvas->Brush->Color = clRed;
+     canvas->Rectangle(0, 0, w, h); */
 }
 
 //---------------------------------------------------------------------------
 
 void __fastcall TPatternForm::FormResize(TObject * Sender)
 {
-    FormPaint(Sender);
+  FormPaint(Sender);
 }
 
 //---------------------------------------------------------------------------
@@ -61,4 +78,19 @@ void TPatternForm::setSaturationValue(int n, ...)
     }
     va_end(num_list);
 }*/
+
+void TPatternForm::setGapPercent(double gapPercent)
+{
+  this->gapPercent = gapPercent;
+}
+
+void TPatternForm::setHSVVector(HSV_vector_ptr hsvVector)
+{
+  this->hsvVector = hsvVector;
+}
+
+void TPatternForm::setPatchCols(int cols)
+{
+  this->patchCols = cols;
+}
 
