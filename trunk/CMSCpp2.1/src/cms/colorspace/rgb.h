@@ -41,9 +41,9 @@ namespace cms {
 		const MaxValue & getMaxValue();
 		double_array getRGBRatio();
 		double getHue();
-		double_array getHSVIValues();
-		static RGB_ptr fromHSVValues(double h, double s, double v);
-		static double_array HSV2RGBValues(double h, double s, double v);
+		//double_array getHSVIValues();
+		//static RGB_ptr fromHSVValues(double h, double s, double v);
+		//static double_array HSV2RGBValues(double h, double s, double v);
 		TColor getColor();
 
 		static XYZ_ptr toXYZ(RGB_ptr rgb, const RGBColorSpace & rgbColorSpace);

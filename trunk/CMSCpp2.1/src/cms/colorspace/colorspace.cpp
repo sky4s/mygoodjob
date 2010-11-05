@@ -19,7 +19,7 @@ namespace cms {
 	 ColorSpace::ColorSpace():setValuesLocked(false) {
 	};
 
-	 double_array ColorSpace::cartesian2polarCoordinatesValues(double_array cartesianValues) {
+	double_array ColorSpace::cartesian2polarCoordinatesValues(double_array cartesianValues) {
 
 	    double_array polarValues(new double[3]);
 
@@ -150,6 +150,14 @@ namespace cms {
 	    result[1] = _toDouble((*stringvector)[1]);
 	    result[2] = _toDouble((*stringvector)[2]);
 	    return result;
+	};
+
+	double_array ColorSpace::getValuesArray(double value1, double value2, double value3) {
+	    double_array values(new double[3]);
+	    values[0] = value1;
+	    values[1] = value2;
+	    values[2] = value3;
+	    return values;
 	};
     };
 };
