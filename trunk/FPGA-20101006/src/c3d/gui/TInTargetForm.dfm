@@ -1,6 +1,6 @@
 object InTargetForm: TInTargetForm
-  Left = 168
-  Top = 140
+  Left = 224
+  Top = 141
   BorderStyle = bsSingle
   Caption = 'Compare Figure'
   ClientHeight = 314

@@ -1,6 +1,6 @@
 object HSVForm3: THSVForm3
-  Left = 232
-  Top = 148
+  Left = 309
+  Top = 105
   Width = 843
   Height = 629
   Caption = 'HSV'
@@ -6492,7 +6492,7 @@ object HSVForm3: THSVForm3
       DefaultColWidth = 38
       DefaultRowHeight = 16
       RowCount = 25
-      Options = [goFixedVertLine, goFixedHorzLine, goVertLine, goHorzLine, goRangeSelect, goDrawFocusSelected, goEditing, goTabs, goRowSelect]
+      Options = [goFixedVertLine, goFixedHorzLine, goVertLine, goHorzLine, goRangeSelect, goDrawFocusSelected, goTabs, goRowSelect]
       TabOrder = 7
       OnDrawCell = stringGrid_HSVDrawCell
       OnKeyDown = stringGrid_HSVKeyDown
@@ -6611,6 +6611,7 @@ object HSVForm3: THSVForm3
         Top = 5
         Width = 129
         Height = 16
+        OnClick = colorPickercb_show_ref_imgClick
       end
     end
     object GroupBox2: TGroupBox
@@ -6821,6 +6822,15 @@ object HSVForm3: THSVForm3
         Caption = 'V Interp.'
         TabOrder = 13
         OnClick = Button_VInterpClick
+      end
+      object CheckBox_ShowPattern: TCheckBox
+        Left = 320
+        Top = 13
+        Width = 97
+        Height = 14
+        Caption = 'Show Pattern'
+        TabOrder = 14
+        OnClick = CheckBox_ShowPatternClick
       end
     end
     object GroupBox3: TGroupBox

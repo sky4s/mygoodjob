@@ -157,9 +157,10 @@ class THSVForm3:public TForm, cms::util::CallBackIF, RGBInfoCallbackIF {
     TButton *Button_OoGSetup;
     TEdit *Edit_CursorColorHSV;
     TEdit *Edit_TargetCursorColor;
-        TRadioButton *RadioButton_SingleHue;
-        TRadioButton *RadioButton_DoubleHue;
-        TGroupBox *GroupBox5;
+    TRadioButton *RadioButton_SingleHue;
+    TRadioButton *RadioButton_DoubleHue;
+    TGroupBox *GroupBox5;
+    TCheckBox *CheckBox_ShowPattern;
     void __fastcall cb_Hue_RedClick(TObject * Sender);
     void __fastcall cb_Hue_YellowClick(TObject * Sender);
     void __fastcall cb_Hue_GreenClick(TObject * Sender);
@@ -206,6 +207,8 @@ class THSVForm3:public TForm, cms::util::CallBackIF, RGBInfoCallbackIF {
     void __fastcall Button_SInterpClick(TObject * Sender);
     void __fastcall Button_VInterpClick(TObject * Sender);
     void __fastcall Button_OoGSetupClick(TObject * Sender);
+    void __fastcall colorPickercb_show_ref_imgClick(TObject * Sender);
+    void __fastcall CheckBox_ShowPatternClick(TObject * Sender);
   private:			// User declarations
     static const int HUE_COUNT = 24;	//­ì¥»¬O96, why?
     static const int MAX_HUE_VALUE = 768;

@@ -21,6 +21,7 @@ USEFORM("src\fpga\gui\SAT.cpp", SATForm);
 USEFORM("src\fpga\gui\offset.cpp", offsetForm);
 USEFORM("src\c3d\gui\TInTargetForm.cpp", InTargetForm);
 USEFORM("src\fpga\gui\TGamutForm.cpp", GamutSetupForm);
+USEFORM("src\fpga\gui\TPatternForm.cpp", PatternForm);
 //---------------------------------------------------------------------------
 WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 {
@@ -31,6 +32,7 @@ WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
                  Application->CreateForm(__classid(TMainForm), &MainForm);
                  Application->CreateForm(__classid(TEngineerForm), &EngineerForm);
                  Application->CreateForm(__classid(TInTargetForm), &InTargetForm);
+                 Application->CreateForm(__classid(TPatternForm), &PatternForm);
                  Application->Run();
         }
         catch (Exception &exception)

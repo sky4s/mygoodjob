@@ -351,6 +351,7 @@ void __fastcall TMainForm::AUO_12303Click(TObject * Sender)
 void __fastcall TMainForm::FormCreate(TObject * Sender)
 {
     TCON_DEV = "11307";		//default device
+    //String info = getFileVersionInfo();
     MainForm->Caption = "AUO 11307";
     mn_Function->Enabled = true;
     mn_TCON->Enabled = true;
@@ -579,5 +580,31 @@ void __fastcall TMainForm::mn_offsetClick(TObject * Sender)
 }
 
 //---------------------------------------------------------------------------
+String TMainForm::getFileVersionInfo()
+{
 
+    DWORD dwVerInfoSize = 0;
+    AnsiString szFile = Application->ExeName;
+    dwVerInfoSize = GetFileVersionInfoSize(szFile.c_str(), &dwVerInfoSize);
+    String caption;
+    if (dwVerInfoSize > 0) {
+	BYTE *bVerInfoBuf = new BYTE[dwVerInfoSize];
+	if (GetFileVersionInfo(szFile.c_str(), 0, dwVerInfoSize, bVerInfoBuf)) {
+	    VS_FIXEDFILEINFO *vsInfo;
+	    UINT vsInfoSize;
+	    if (VerQueryValue(bVerInfoBuf, "\\", (void **) &vsInfo, &vsInfoSize)) {
+		int iFileVerMajor = HIWORD(vsInfo->dwFileVersionMS);
+		int iFileVerMinor = LOWORD(vsInfo->dwFileVersionMS);
+		int iFileVerRelease = HIWORD(vsInfo->dwFileVersionLS);
+		int iFileVerBuild = LOWORD(vsInfo->dwFileVersionLS);
+		caption = IntToStr(iFileVerMajor) + "."
+		    + IntToStr(iFileVerMinor) + "."
+		    + IntToStr(iFileVerRelease) + "." + IntToStr(iFileVerBuild);
+
+	    }
+	}
+	delete bVerInfoBuf;
+    }
+    return caption;
+}
 
