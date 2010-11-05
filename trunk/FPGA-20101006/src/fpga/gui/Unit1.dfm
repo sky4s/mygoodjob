@@ -14,17 +14,17 @@ object MainForm: TMainForm
   OnClose = FormClose
   OnCreate = FormCreate
   OnMouseDown = FormMouseDown
-  PixelsPerInch = 96
-  TextHeight = 13
+  PixelsPerInch = 120
+  TextHeight = 16
   object StatusBar1: TStatusBar
     Left = 0
-    Top = 523
-    Width = 741
-    Height = 17
+    Top = 497
+    Width = 731
+    Height = 21
     Color = clYellow
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clWhite
-    Font.Height = -12
+    Font.Height = -15
     Font.Name = #26032#32048#26126#39636
     Font.Style = [fsBold]
     Panels = <
@@ -41,10 +41,10 @@ object MainForm: TMainForm
     OnDblClick = StatusBar1DblClick
   end
   object cb_address_txt: TCheckBox
-    Left = 640
-    Top = 520
-    Width = 97
-    Height = 17
+    Left = 788
+    Top = 640
+    Width = 119
+    Height = 21
     Caption = 'Address from txt file'
     TabOrder = 1
     Visible = False
