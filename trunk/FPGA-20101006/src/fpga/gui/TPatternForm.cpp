@@ -20,28 +20,58 @@ patchCols(1), gapPercent(.05)
 
 void __fastcall TPatternForm::FormPaint(TObject * Sender)
 {
-  TCanvas *canvas = this->Canvas;
-  //int h = this->ClientHeight;
-  //int w = this->ClientWidth;
-  bool verticalBorder = patchCols > 1;
-  //hsvVector->
-  int size = hsvVector->size();
-  int patchPerCol = size / patchCols;
+  if (null == hsvVector || 0 == hsvVector->size())
+  {
+    return;
+  }
 
+  int size = hsvVector->size();
+  TCanvas *canvas = this->Canvas;
+  canvas->Brush->Color = clBlack;
+  canvas->Rectangle(0, 0, this->ClientWidth, this->ClientHeight);
+
+  bool verticalBorder = patchCols > 1;
+  int patchPerCol = size / patchCols;
   int h = this->ClientHeight / patchPerCol;
   int w = this->ClientWidth / patchCols;
+
+
+  int hgap = h * gapPercent / 2.;
+  int wgap = w * gapPercent;
 
   for (int i = 0; i < size; i++)
   {
     HSV_ptr hsv = (*hsvVector)[i];
     RGB_ptr rgb = hsv->toRGB();
     canvas->Brush->Color = rgb->getColor();
-    int x = i / size;
+    int x = i / patchPerCol;
     int y = i % patchPerCol;
 
+    TRect rect(x * w + wgap, y * h + hgap, x * w + w - wgap,
+               y * h + h - hgap);
+    canvas->FillRect(rect);
+
   }
-  /*canvas->Brush->Color = clRed;
-     canvas->Rectangle(0, 0, w, h); */
+  if (null != blackIndexVector)
+  {
+    int blackSize = blackIndexVector->size();
+    canvas->Brush->Color = clBlack;
+
+    for (int i = 0; i < blackSize; i++)
+    {
+      int index = (*blackIndexVector)[i];
+      int x = index / size;
+      int y = index % patchPerCol;
+
+      TRect rect1(x * w + wgap, y * h + hgap, x * w + w - wgap,
+                  y * h + h - hgap);
+      TRect rect2(x * w + wgap + 1, y * h + hgap + 1, x * w + w - wgap - 1,
+                  y * h + h - hgap - 1);
+      canvas->FrameRect(rect1);
+      canvas->FrameRect(rect2);
+
+    }
+  }
 }
 
 //---------------------------------------------------------------------------
@@ -92,5 +122,45 @@ void TPatternForm::setHSVVector(HSV_vector_ptr hsvVector)
 void TPatternForm::setPatchCols(int cols)
 {
   this->patchCols = cols;
+}
+
+void TPatternForm::setBlackBoxIndexVector(int_vector_ptr indexVector)
+{
+  this->blackIndexVector = indexVector;
+}
+
+void __fastcall TPatternForm::Button_Show7p5DegClick(TObject * Sender)
+{
+  if (null != callback)
+  {
+    callback->show7p5DegBasePattern();
+  }
+}
+
+//---------------------------------------------------------------------------
+
+void __fastcall TPatternForm::Button_Show15DegClick(TObject * Sender)
+{
+  if (null != callback)
+  {
+    callback->show15DegBasePattern();
+  }
+}
+
+//---------------------------------------------------------------------------
+
+void __fastcall TPatternForm::Button_ShowSingleDegClick(TObject * Sender)
+{
+  if (null != callback)
+  {
+    callback->showSinglePattern();
+  }
+}
+
+//---------------------------------------------------------------------------
+
+void TPatternForm::setPatternCallbackIF(PatternCallbackIF * callback)
+{
+  this->callback = callback;
 }
 

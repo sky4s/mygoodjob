@@ -38,6 +38,7 @@
 #include "TColorPickerFrame.h"
 #include "THSVAdjustFrame.h"
 #include <c3d/GetCursorColor.h>
+#include "TPatternForm.h"
 
 //---------------------------------------------------------------------------
 ///////// HSV Table Address Arrange /////////
@@ -54,7 +55,9 @@
   public:virtual void callback() = 0;
 };*/
 
-class THSVForm3:public TForm, cms::util::CallBackIF, RGBInfoCallbackIF
+
+class THSVForm3:public TForm, cms::util::CallBackIF, RGBInfoCallbackIF,
+  PatternCallbackIF
 {
   __published:                  // IDE-managed Components
   TOpenDialog * OpenDialog1;
@@ -296,6 +299,20 @@ private:                       // User declarations
   static double_array toWhiteXYZValues(double_array rgbxyYValues);
   bptr < Dep::RGBColorSpace > sourceColorSpace, targetColorSpace;
   int_array cursorRGBValues;
+  int_array selectedRGBValues;
+  bool customPattern;
+
+
+  enum PatternMode
+  {
+    Single, Hue15, Hue7p5
+  };
+  PatternMode patternMode;
+
+  bool isOutOfGamut(int_array rgbValues);
+  RGB_ptr outOfGamutRGB;
+  void setupPatternForm();
+
 public:                        // User declarations
   TBit * cb;
   _CHKB **ChkB;
@@ -331,6 +348,10 @@ public:                        // User declarations
   virtual void callback(int_array rgbValues);
   void imageMousePressed(TObject * Sender, TMouseButton Button,
                          TShiftState Shift, int X, int Y);
+
+  virtual void show15DegBasePattern();
+  virtual void show7p5DegBasePattern();
+  virtual void showSinglePattern();
 };
 
 
