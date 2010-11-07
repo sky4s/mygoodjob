@@ -6694,7 +6694,6 @@ object HSVForm3: THSVForm3
             Left = 218
             Top = 10
             Width = 61
-            Height = 21
             Visible = False
           end
           inherited Button_HueReset: TButton
@@ -6738,13 +6737,11 @@ object HSVForm3: THSVForm3
             Left = 7
             Top = 9
             Width = 37
-            Height = 21
           end
           inherited Edit_c3d_Manual39_s_adj: TEdit
             Left = 218
             Top = 10
             Width = 61
-            Height = 21
             Visible = False
           end
           inherited Button_SaturationReset: TButton
@@ -6788,14 +6785,12 @@ object HSVForm3: THSVForm3
             Left = 218
             Top = 10
             Width = 61
-            Height = 21
             Visible = False
           end
           inherited edt_c3d_valC: TEdit
             Left = 12
             Top = 11
             Width = 38
-            Height = 21
           end
           inherited Button_BrightnessReset: TButton
             Left = 286
@@ -7238,7 +7233,7 @@ object HSVForm3: THSVForm3
       Left = 10
       Top = 453
       Width = 198
-      Height = 21
+      Height = 24
       TabOrder = 11
       Text = 'Cursor Color'
     end
@@ -7273,7 +7268,7 @@ object HSVForm3: THSVForm3
         Left = 10
         Top = 44
         Width = 178
-        Height = 21
+        Height = 24
         TabOrder = 2
       end
     end
@@ -7281,7 +7276,7 @@ object HSVForm3: THSVForm3
       Left = 10
       Top = 478
       Width = 198
-      Height = 21
+      Height = 24
       TabOrder = 13
       Text = 'Cursor Color'
     end
@@ -7534,7 +7529,7 @@ object HSVForm3: THSVForm3
       Left = 69
       Top = 192
       Width = 70
-      Height = 21
+      Height = 24
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clBlack
       Font.Height = -15
@@ -7549,9 +7544,9 @@ object HSVForm3: THSVForm3
     Left = 1001
     Top = 719
     Width = 60
-    Height = 21
-    EditLabel.Width = 104
-    EditLabel.Height = 20
+    Height = 24
+    EditLabel.Width = 85
+    EditLabel.Height = 16
     EditLabel.Caption = 'Change Angle'
     LabelPosition = lpAbove
     LabelSpacing = 3

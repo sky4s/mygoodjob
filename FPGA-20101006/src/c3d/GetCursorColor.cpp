@@ -45,7 +45,8 @@ __fastcall TPColorThread1::TPColorThread1(bool CreateSuspended, TEdit * Edit_RGB
 }*/
 
 __fastcall TPColorThread1::TPColorThread1(bool CreateSuspended,
-					  RGBInfoCallbackIF * callback):TThread(CreateSuspended),
+                                          RGBInfoCallbackIF *
+                                          callback):TThread(CreateSuspended),
 callback(callback)
 {
 
@@ -54,50 +55,54 @@ callback(callback)
 //---------------------------------------------------------------------------
 void TPColorThread1::SetName()
 {
-    THREADNAME_INFO info;
-    info.dwType = 0x1000;
-    info.szName = "PColorThread1";
-    info.dwThreadID = -1;
-    info.dwFlags = 0;
+  THREADNAME_INFO info;
+  info.dwType = 0x1000;
+  info.szName = "PColorThread1";
+  info.dwThreadID = -1;
+  info.dwFlags = 0;
 
-    __try {
-	RaiseException(0x406D1388, 0, sizeof(info) / sizeof(DWORD), (DWORD *) & info);
-    }
-    __except(EXCEPTION_CONTINUE_EXECUTION) {
-    }
+  __try
+  {
+    RaiseException(0x406D1388, 0, sizeof(info) / sizeof(DWORD),
+                   (DWORD *) & info);
+  }
+  __except(EXCEPTION_CONTINUE_EXECUTION)
+  {
+  }
 }
 
 //---------------------------------------------------------------------------
 void __fastcall TPColorThread1::Execute()
 {
-    SetName();
-    //---- Place thread code here ----
-    while (!Terminated) {
-	//Sleep(5);    // Delay program execution for 5 microseconds.
-	HDC TargethDC;
-	HWND TargetHwnd;
-	DWORD ColorR;
+  SetName();
+  //---- Place thread code here ----
+  while (!Terminated)
+  {
+    //Sleep(5);    // Delay program execution for 5 microseconds.
+    HDC TargethDC;
+    HWND TargetHwnd;
+    DWORD ColorR;
 
-	TargetHwnd = GetDesktopWindow();
-	TargethDC = GetWindowDC(NULL);
+    TargetHwnd = GetDesktopWindow();
+    TargethDC = GetWindowDC(NULL);
 
-	POINT lp;
-	POINT gMouse;
-	GetCursorPos(&lp);
+    POINT lp;
+    POINT gMouse;
+    GetCursorPos(&lp);
 
-	//ClientToScreen(TargetHwnd, &lp);
-	ColorR = GetPixel(TargethDC, lp.x, lp.y);
-	ReleaseDC(TargetHwnd, TargethDC);
+    //ClientToScreen(TargetHwnd, &lp);
+    ColorR = GetPixel(TargethDC, lp.x, lp.y);
+    ReleaseDC(TargetHwnd, TargethDC);
 
 
-	int_array rgbValues(new int[3]);
-	rgbValues[0] = GetRValue(ColorR);
-	rgbValues[1] = GetGValue(ColorR);
-	rgbValues[2] = GetBValue(ColorR);
-	callback->callback(rgbValues);
+    int_array rgbValues(new int[3]);
+    rgbValues[0] = GetRValue(ColorR);
+    rgbValues[1] = GetGValue(ColorR);
+    rgbValues[2] = GetBValue(ColorR);
+    callback->callback(rgbValues);
 
-	Sleep(50);
-    }
+    Sleep(50);
+  }
 }
 
 //---------------------------------------------------------------------------
