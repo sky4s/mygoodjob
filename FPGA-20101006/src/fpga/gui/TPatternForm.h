@@ -20,6 +20,9 @@ public:
   virtual void showSinglePattern() = 0;
 };
 
+Enumeration(PatternMode) Single, Hue15, Hue7p5, EnumerationEnd();
+
+
 class TPatternForm:public TForm
 {
   __published:                  // IDE-managed Components
@@ -36,13 +39,16 @@ private:                       // User declarations
   int patchCols;
   HSV_vector_ptr hsvVector;
   int_vector_ptr blackIndexVector;
+  int_vector_ptr whiteIndexVector;
   PatternCallbackIF *callback;
+  PatternMode mode;
 public:                        // User declarations
-   __fastcall TPatternForm(TComponent * Owner);
+  __fastcall TPatternForm(TComponent * Owner);
   void setPatternCallbackIF(PatternCallbackIF * callback);
   void setGapPercent(double gapPercent);
   void setHSVVector(HSV_vector_ptr hsvVector);
   void setBlackBoxIndexVector(int_vector_ptr indexVector);
+  void setWhiteBoxIndexVector(int_vector_ptr indexVector);
   void setPatchCols(int cols);
 };
 

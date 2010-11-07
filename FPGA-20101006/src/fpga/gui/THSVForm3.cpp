@@ -40,7 +40,7 @@
 __fastcall THSVForm3::THSVForm3(TComponent * Owner):TForm(Owner),
 HSV_IsChkSum(true), tbl_step(WHOLE_HUE_ANGLE / HUE_COUNT),
 lastStringGridSelectRow(-1), settingScrollBarPosition(false),
-cursorRGBValues(new int[3]), patternMode(Single),
+cursorRGBValues(new int[3]), patternMode(PatternMode::Single),
 selectedRGBValues(new int[3]), customPattern(false)
 {
   HSV_Chg = 0;
@@ -1571,7 +1571,7 @@ void THSVForm3::setupPatternForm()
 
   switch (patternMode)
   {
-  case Hue15:
+  case PatternMode::Hue15:
     {
       totalSize *= 3;
       int hueIndex = getHueIndex(hue);
@@ -1584,7 +1584,7 @@ void THSVForm3::setupPatternForm()
       PatternForm->setPatchCols(3);
       break;
     }
-  case Hue7p5:
+  case PatternMode::Hue7p5:
     {
       totalSize *= 5;
       int hueIndex = getHueIndex(hue);
@@ -1601,7 +1601,7 @@ void THSVForm3::setupPatternForm()
       PatternForm->setPatchCols(5);
       break;
     }
-  case Single:
+  case PatternMode::Single:
     hueVector.push_back(hue);
     PatternForm->setPatchCols(1);
     break;
@@ -1652,20 +1652,20 @@ void __fastcall THSVForm3::CheckBox_ShowPatternClick(TObject * Sender)
 //---------------------------------------------------------------------------
 void THSVForm3::show15DegBasePattern()
 {
-  patternMode = Hue15;
+  patternMode = PatternMode::Hue15;
   setupPatternForm();
 
 }
 
 void THSVForm3::show7p5DegBasePattern()
 {
-  patternMode = Hue7p5;
+  patternMode = PatternMode::Hue7p5;
   setupPatternForm();
 }
 
 void THSVForm3::showSinglePattern()
 {
-  patternMode = Single;
+  patternMode = PatternMode::Single;
   setupPatternForm();
 }
 

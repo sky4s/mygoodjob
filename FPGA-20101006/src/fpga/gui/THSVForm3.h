@@ -303,10 +303,10 @@ private:                       // User declarations
   bool customPattern;
 
 
-  enum PatternMode
-  {
-    Single, Hue15, Hue7p5
-  };
+  /*enum PatternMode
+     {
+     Single, Hue15, Hue7p5
+     }; */
   PatternMode patternMode;
 
   bool isOutOfGamut(int_array rgbValues);
