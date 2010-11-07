@@ -11,7 +11,7 @@
 TPatternForm *PatternForm;
 //---------------------------------------------------------------------------
 __fastcall TPatternForm::TPatternForm(TComponent * Owner):TForm(Owner),
-patchCols(1), gapPercent(.05)
+patchCols(1), gapPercent(.05), mode(PatternMode::Single)
 {
 
 }
@@ -52,26 +52,58 @@ void __fastcall TPatternForm::FormPaint(TObject * Sender)
     canvas->FillRect(rect);
 
   }
-  if (null != blackIndexVector)
+
+  int_vector_ptr boxVector[2] = { blackIndexVector, whiteIndexVector };
+  TColor boxColor[2] = { clBlack, clWhite };
+  for (int x = 0; x < 2; x++)
   {
-    int blackSize = blackIndexVector->size();
-    canvas->Brush->Color = clBlack;
-
-    for (int i = 0; i < blackSize; i++)
+    int_vector_ptr vector = boxVector[x];
+    if (null != vector)
     {
-      int index = (*blackIndexVector)[i];
-      int x = index / size;
-      int y = index % patchPerCol;
+      int vecSize = vector->size();
+      canvas->Brush->Color = boxColor[x];
 
-      TRect rect1(x * w + wgap, y * h + hgap, x * w + w - wgap,
-                  y * h + h - hgap);
-      TRect rect2(x * w + wgap + 1, y * h + hgap + 1, x * w + w - wgap - 1,
-                  y * h + h - hgap - 1);
-      canvas->FrameRect(rect1);
-      canvas->FrameRect(rect2);
+      for (int i = 0; i < vecSize; i++)
+      {
+        int index = (*vector)[i];
+        int x = index / size;
+        int y = index % patchPerCol;
 
+        TRect rect1(x * w + wgap, y * h + hgap, x * w + w - wgap,
+                    y * h + h - hgap);
+        TRect rect2(x * w + wgap + 1, y * h + hgap + 1, x * w + w - wgap - 1,
+                    y * h + h - hgap - 1);
+        canvas->FrameRect(rect1);
+        canvas->FrameRect(rect2);
+      }
     }
+
   }
+
+  foreach(int_vector_ptr vector, boxVector)
+  {
+    if (null != vector)
+    {
+      int blackSize = blackIndexVector->size();
+      canvas->Brush->Color = clBlack;
+
+      for (int i = 0; i < blackSize; i++)
+      {
+        int index = (*blackIndexVector)[i];
+        int x = index / size;
+        int y = index % patchPerCol;
+
+        TRect rect1(x * w + wgap, y * h + hgap, x * w + w - wgap,
+                    y * h + h - hgap);
+        TRect rect2(x * w + wgap + 1, y * h + hgap + 1, x * w + w - wgap - 1,
+                    y * h + h - hgap - 1);
+        canvas->FrameRect(rect1);
+        canvas->FrameRect(rect2);
+      }
+    }
+
+  }
+
 }
 
 //---------------------------------------------------------------------------
@@ -129,8 +161,22 @@ void TPatternForm::setBlackBoxIndexVector(int_vector_ptr indexVector)
   this->blackIndexVector = indexVector;
 }
 
+void TPatternForm::setWhiteBoxIndexVector(int_vector_ptr indexVector)
+{
+  this->whiteIndexVector = indexVector;
+}
 void __fastcall TPatternForm::Button_Show7p5DegClick(TObject * Sender)
 {
+  switch (mode)
+  {
+  case PatternMode::Hue15:
+    this->Width = this->Width / 3 * 5;
+    break;
+  case PatternMode::Single:
+    this->Width *= 5;
+    break;
+  }
+  mode = PatternMode::Hue7p5;
   if (null != callback)
   {
     callback->show7p5DegBasePattern();
@@ -141,6 +187,17 @@ void __fastcall TPatternForm::Button_Show7p5DegClick(TObject * Sender)
 
 void __fastcall TPatternForm::Button_Show15DegClick(TObject * Sender)
 {
+  switch (mode)
+  {
+  case PatternMode::Single:
+    this->Width *= 3;
+    break;
+  case PatternMode::Hue7p5:
+    this->Width = this->Width / 5 * 3;
+    break;
+  }
+
+  mode = PatternMode::Hue15;
   if (null != callback)
   {
     callback->show15DegBasePattern();
@@ -151,6 +208,17 @@ void __fastcall TPatternForm::Button_Show15DegClick(TObject * Sender)
 
 void __fastcall TPatternForm::Button_ShowSingleDegClick(TObject * Sender)
 {
+
+  switch (mode)
+  {
+  case PatternMode::Hue15:
+    this->Width /= 3;
+    break;
+  case PatternMode::Hue7p5:
+    this->Width /= 5;
+    break;
+  }
+  mode = PatternMode::Single;
   if (null != callback)
   {
     callback->showSinglePattern();
