@@ -4,8 +4,8 @@
 #pragma hdrstop
 //---------------------------------------------------------------------------
 USEFORM("src\fpga\gui\THSVForm3.cpp", HSVForm3);
-USEFORM("src\gui\frame\TColorPickerFrame.cpp", ColorPickerFrame); /* TFrame: File Type */
-USEFORM("src\gui\frame\THSVAdjustFrame.cpp", HSVAdjustFrame); /* TFrame: File Type */
+USEFORM("src\gui\frame\TColorPickerFrame.cpp", ColorPickerFrame);	/* TFrame: File Type */
+USEFORM("src\gui\frame\THSVAdjustFrame.cpp", HSVAdjustFrame);	/* TFrame: File Type */
 USEFORM("src\fpga\gui\CM1.cpp", CMForm1);
 USEFORM("src\fpga\gui\Unit1.cpp", MainForm);
 USEFORM("src\fpga\gui\Vender1.cpp", VenderForm1);
@@ -22,42 +22,33 @@ USEFORM("src\fpga\gui\offset.cpp", offsetForm);
 USEFORM("src\c3d\gui\TInTargetForm.cpp", InTargetForm);
 USEFORM("src\fpga\gui\TGamutForm.cpp", GamutSetupForm);
 USEFORM("src\fpga\gui\TPatternForm.cpp", PatternForm);
+USEFORM("src\fpga\gui\TPatternForm.cpp", PatternForm2);
 //---------------------------------------------------------------------------
 WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 {
-        try
-        {
-                 Application->Initialize();
-                 Application->Title = "FPGA Toolkit";
-                 Application->CreateForm(__classid(TMainForm), &MainForm);
-                 Application->CreateForm(__classid(TEngineerForm), &EngineerForm);
-                 Application->CreateForm(__classid(TInTargetForm), &InTargetForm);
-                 Application->CreateForm(__classid(TPatternForm), &PatternForm);
-                 Application->Run();
-        }
-        catch (Exception &exception)
-        {
-                 Application->ShowException(&exception);
-        }
-        catch (...)
-        {
-                 try
-                 {
-                         throw Exception("");
-                 }
-                 catch (Exception &exception)
-                 {
-                         Application->ShowException(&exception);
-                 }
-        }
-        return 0;
+    try {
+	Application->Initialize();
+	Application->Title = "FPGA Toolkit";
+	Application->CreateForm(__classid(TMainForm), &MainForm);
+	Application->CreateForm(__classid(TEngineerForm), &EngineerForm);
+	Application->CreateForm(__classid(TInTargetForm), &InTargetForm);
+	Application->CreateForm(__classid(TPatternForm), &PatternForm);
+	Application->CreateForm(__classid(TPatternForm), &PatternForm2);
+	Application->Run();
+    }
+    catch(Exception & exception) {
+	Application->ShowException(&exception);
+    }
+    catch(...) {
+	try {
+	    throw Exception("");
+	}
+	catch(Exception & exception) {
+	    Application->ShowException(&exception);
+	}
+    }
+    return 0;
 }
+
 //---------------------------------------------------------------------------
-
-
-
-
-
-
-
 
