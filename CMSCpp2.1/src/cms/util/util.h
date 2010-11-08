@@ -73,7 +73,7 @@ namespace cms {
 	class DoubleBufferedCanvas {
 	  private:
 	    TCanvas * canvas;
-	    const int width, height;
+	    int width, height;
 	     bptr < Graphics::TBitmap > bitmap;
 	    const bool doubleBuffered;
 	  public:
@@ -81,6 +81,7 @@ namespace cms {
 	    TCanvas *getDoubleBufferedCanvas();
 	    void excute();
 	    void clear();
+	    void setSize(int width, int height);
 	};
 	class SCurve {
 	  private:
