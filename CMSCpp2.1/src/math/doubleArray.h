@@ -127,6 +127,8 @@ namespace math {
       public:
 	static int max(int_array array, int n);
 	static double_array toDoubleArray(int_array array, int n);
+	static void arraycopy(int_array src, int_array dest, int length);
+	static int_array arraycopy(int_array src, int length);
     };
 
 

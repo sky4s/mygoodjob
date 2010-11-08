@@ -581,6 +581,17 @@ namespace math {
 	}
 	return result;
     };
+
+    void IntArray::arraycopy(int_array src, int_array dest, int length) {
+	for (int x = 0; x < length; x++) {
+	    dest[x] = src[x];
+	}
+    };
+    int_array IntArray::arraycopy(int_array src, int length) {
+	int_array dest(new int[length]);
+	arraycopy(src, dest, length);
+	return dest;
+    };
     //==========================================================================
 };
 
