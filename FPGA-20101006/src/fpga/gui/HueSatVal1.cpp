@@ -8,7 +8,7 @@
 //////////////////////////////////////////////////////////////////////////////
 
 #include <vcl.h>
-#include <lib/CMSCpp2.1/includeall.h>
+#include <lib/CMSCpp2.1/src/includeall.h>
 #pragma hdrstop
 
 #include "HueSatVal1.h"
