@@ -60,6 +60,7 @@ object MainForm: TMainForm
       ImageIndex = 0
       object AUO_11307: TMenuItem
         Caption = '&1.11307'
+        OnClick = AUO_11307Click
       end
       object AUO_12303: TMenuItem
         Caption = '&2.12303'
