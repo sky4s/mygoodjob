@@ -251,6 +251,12 @@ namespace cms {
 		canvas->FillRect(TRect(0, 0, width, height));
 	    }
 	};
+	void DoubleBufferedCanvas::setSize(int width, int height) {
+	    this->width = width;
+	    this->height = height;
+	    bitmap->Width = width;
+	    bitmap->Height = height;
+	};
 	//======================================================================
 
 	double SCurve::getAbsoluteInput(double normalizeInput) {
