@@ -40,6 +40,9 @@ bool GetAddr(TBit * Addr, String name)	//Get TBit type Address
 	return 0;
 
     char *buffer = Load_File("auo_11307_address.txt");
+    if (0 == buffer) {
+	return false;
+    }
     char tmp[40];		//string of error message
     char *pch, *tok, *ptr1;
     int idx;
@@ -125,6 +128,9 @@ bool GetAddr(TBit2 * Addr, String name)
 	return 0;
 
     char *buffer = Load_File("auo_11307_address.txt");
+    if (0 == buffer) {
+	return false;
+    }
 
     char tmp[40];		//string of error message
     char *pch, *tok, *ptr1;
@@ -213,6 +219,9 @@ bool GetAddr(TLUT * Addr, String name)
 	return 0;
 
     char *buffer = Load_File("auo_11307_address.txt");
+    if (0 == buffer) {
+	return false;
+    }
 
     char tmp[40];		//string of error message
     char *pch, *tok, *ptr1;
