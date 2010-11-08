@@ -1,6 +1,6 @@
 object PatternForm: TPatternForm
-  Left = 703
-  Top = 353
+  Left = 965
+  Top = 60
   Width = 273
   Height = 663
   Caption = 'PatternForm'

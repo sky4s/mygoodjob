@@ -100,8 +100,9 @@ void __fastcall THSVForm3::FormCreate(TObject * Sender)
 	ChkB[i]->Chkb->Hint = i;
 	ChkB[i]->Chkb->Caption = ChkB[i]->Addr.Name();
 	// find index for HSV enable
-	if (ChkB[i]->Addr.Name() == OHSV->HSV_EN_Name())	// 20100608 Find HSV enable index
+	if (ChkB[i]->Addr.Name() == OHSV->HSV_EN_Name()) {	// 20100608 Find HSV enable index
 	    HSVEN_idx = i;
+	}
     }
     // 20100608 check HSV enable index
     if (HSVEN_idx == -1) {
