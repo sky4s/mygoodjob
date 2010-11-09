@@ -93,8 +93,9 @@ void __fastcall TCMForm1::FormCreate(TObject * Sender)
 {
     CM_Chg = 0;
     int ic_choice;
-    if (MainForm->TCON_DEV == "11307")
+    if (MainForm->TCON_DEV == "11307") {
 	ic_choice = 0;
+    }
 
     switch (ic_choice) {
     case 0:

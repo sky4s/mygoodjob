@@ -40,9 +40,6 @@ bool GetAddr(TBit * Addr, String name)	//Get TBit type Address
 	return 0;
 
     char *buffer = Load_File("auo_11307_address.txt");
-    if (0 == buffer) {
-	return false;
-    }
     char tmp[40];		//string of error message
     char *pch, *tok, *ptr1;
     int idx;
@@ -66,11 +63,6 @@ bool GetAddr(TBit * Addr, String name)	//Get TBit type Address
 	    strncpy(str1, pch, ptr1 - pch);	//註解存在, 保留註解前字串在str1
 	    str1[ptr1 - pch + 1] = ' ';
 	}
-	/* idx = strcspn (str1,key);
-	   if(str2!=NULL)
-	   delete [] str2;
-	   str2 = new char [idx];
-	   strncpy(str2, str1, idx); */
 
 	name_ok = 1;
 	for (int i = 0; i < name.Length(); i++)	//逐一比較name與str1的字元
@@ -128,9 +120,6 @@ bool GetAddr(TBit2 * Addr, String name)
 	return 0;
 
     char *buffer = Load_File("auo_11307_address.txt");
-    if (0 == buffer) {
-	return false;
-    }
 
     char tmp[40];		//string of error message
     char *pch, *tok, *ptr1;
@@ -219,9 +208,6 @@ bool GetAddr(TLUT * Addr, String name)
 	return 0;
 
     char *buffer = Load_File("auo_11307_address.txt");
-    if (0 == buffer) {
-	return false;
-    }
 
     char tmp[40];		//string of error message
     char *pch, *tok, *ptr1;

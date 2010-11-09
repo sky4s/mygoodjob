@@ -17,7 +17,7 @@
 #include <gui/event/listener.h>
 #include <java/lang.h>
 //本項目內gui頭文件
-//#include "THSVForm3.h"
+//#includ"THSVForm3.h"
 
 //---------------------------------------------------------------------------
 #pragma package(smart_init)

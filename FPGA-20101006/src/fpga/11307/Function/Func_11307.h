@@ -10,36 +10,34 @@
 #define Func_11307H
 //---------------------------------------------------------------------------
 #endif
-class Func_11307:public AbstFunc
-{
-        public:
-                //frc_dg
-                virtual TBit* SetFrcDgChkBx();
-                virtual TBit* SetFrcDgCboBx();
-                virtual TBit* SetFrcDgLblE();
-                virtual String DG_EN_Name();
-                virtual TLUT* SetDGLUT();
+class Func_11307:public AbstFunc {
+  public:
+    //frc_dg
+    virtual TBit * SetFrcDgChkBx();
+    virtual TBit *SetFrcDgCboBx();
+    virtual TBit *SetFrcDgLblE();
+    virtual String DG_EN_Name();
+    virtual TLUT *SetDGLUT();
 
-                //P-state
-                virtual TBit* SetPstateChkBx();
-                virtual TBit* SetPstateCboBx();
-                virtual TBit2* SetPstateLblE2();
+    //P-state
+    virtual TBit *SetPstateChkBx();
+    virtual TBit *SetPstateCboBx();
+    virtual TBit2 *SetPstateLblE2();
 
-                //AGBS
-                virtual TBit* SetAGBSChkBx();
-                virtual TBit* SetAGBSCboBx();
-                virtual TBit2* SetAGBSLblE2();
-                
-                //OD
-                virtual TBit* SetODChkBx();
-                virtual TBit* SetODCboBx();
-                virtual TBit2* SetODCboBx2();
-                virtual TBit* SetODScrollBar();
-                virtual String OD_EN_Name();
-                virtual TLUT* SetODLUT();
-                virtual int ODLUT_IP_Type(); // OD IP TYPE  1: AUO IP , 2: Vender IP
-                  
-                Func_11307();
+    //AGBS
+    virtual TBit *SetAGBSChkBx();
+    virtual TBit *SetAGBSCboBx();
+    virtual TBit2 *SetAGBSLblE2();
+
+    //OD
+    virtual TBit *SetODChkBx();
+    virtual TBit *SetODCboBx();
+    virtual TBit2 *SetODCboBx2();
+    virtual TBit *SetODScrollBar();
+    virtual String OD_EN_Name();
+    virtual TLUT *SetODLUT();
+    virtual int ODLUT_IP_Type();	// OD IP TYPE  1: AUO IP , 2: Vender IP
+
+     Func_11307();
 };
-
 

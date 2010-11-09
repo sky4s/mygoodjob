@@ -14,6 +14,8 @@
 //本項目內gui頭文件
 #include <fpga/gui/THSVForm3.h>
 #include "include.h"
+#include <iostream>
+#include <fstream>
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
 #pragma resource "*.dfm"
@@ -36,7 +38,7 @@ __fastcall TMainForm::TMainForm(TComponent * Owner):TForm(Owner)
 {
     //Set Real-Time Priority of process
     SetPriorityClass(GetCurrentProcess(), REALTIME_PRIORITY_CLASS);
-    addr_place = 0;		//0:auo_12401_address.h   1:auo_12401_address.txt
+    addr_place = 1;		//0:auo_12401_address.h   1:auo_12401_address.txt
     C3D_type = 7;
 }
 
@@ -609,5 +611,51 @@ String TMainForm::getFileVersionInfo()
 	delete bVerInfoBuf;
     }
     return caption;
+}
+
+
+void __fastcall TMainForm::Header2Address1Click(TObject * Sender)
+{
+    using namespace std;
+    OpenDialog1->Filter = "Header Files(*.h)|*.h";
+    if (OpenDialog1->Execute()) {
+	const AnsiString & header = OpenDialog1->FileName;
+	SaveDialog1->Filter = "Address Files(*.txt)|*.txt";
+	if (SaveDialog1->Execute()) {
+	    const AnsiString & address = SaveDialog1->FileName;
+	    header2AddressFile(header, address);
+	    ShowMessage("Conversion done!");
+	}
+    };
+}
+
+//---------------------------------------------------------------------------
+void TMainForm::header2AddressFile(const AnsiString & header, const AnsiString & address)
+{
+    using namespace std;
+    using namespace cms::util;
+    ifstream infile(header.c_str());
+    ofstream outfile(address.c_str());
+
+    if (infile.is_open()&& outfile.is_open()) {
+	string line;
+	while (infile.good() && outfile.good()) {
+	    getline(infile, line);
+	    string_vector_ptr stringvector = StringVector::tokenize(line, " ");
+	    if (stringvector->size() == 3) {
+		string define = (*stringvector)[2];
+		string sub = define.substr(1, define.size() - 2);
+		size_t found = sub.find(",");
+		if (found != string::npos) {
+		    outfile << sub + '\n';
+		}
+	    }
+
+	}
+    }
+
+    outfile.flush();
+    outfile.close();
+    infile.close();
 }
 

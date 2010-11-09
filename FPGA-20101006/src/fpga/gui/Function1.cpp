@@ -325,8 +325,9 @@ void TFunctionForm1::Initial_DG_table()
 void __fastcall TFunctionForm1::FormCreate(TObject * Sender)
 {
     int ic_choice;
-    if (MainForm->TCON_DEV == "11307")
+    if (MainForm->TCON_DEV == "11307") {
 	ic_choice = 0;
+    }
 
     switch (ic_choice) {
     case 0:

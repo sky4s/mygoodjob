@@ -53,8 +53,6 @@ object MainForm: TMainForm
   object MainMenu1: TMainMenu
     BiDiMode = bdLeftToRight
     ParentBiDiMode = False
-    Left = 16
-    Top = 72
     object Device1: TMenuItem
       Caption = '&Device'
       ImageIndex = 0
@@ -66,6 +64,10 @@ object MainForm: TMainForm
         Caption = '&2.12303'
         Visible = False
         OnClick = AUO_12303Click
+      end
+      object Header2Address1: TMenuItem
+        Caption = 'Header to Address File'
+        OnClick = Header2Address1Click
       end
     end
     object mn_TCON: TMenuItem
@@ -139,8 +141,7 @@ object MainForm: TMainForm
   end
   object PopupMenu1: TPopupMenu
     OwnerDraw = True
-    Left = 88
-    Top = 64
+    Left = 32
     object popupmenu2: TMenuItem
       Caption = 'TCON'
       ImageIndex = 0
@@ -173,5 +174,11 @@ object MainForm: TMainForm
         Caption = 'C3D'
       end
     end
+  end
+  object OpenDialog1: TOpenDialog
+    Left = 64
+  end
+  object SaveDialog1: TSaveDialog
+    Left = 96
   end
 end

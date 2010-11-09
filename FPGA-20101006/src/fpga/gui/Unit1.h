@@ -22,6 +22,7 @@
 
 //其他庫頭文件
 #include <windows.h>
+#include <Dialogs.hpp>
 //本項目內頭文件
 #include <addresstype/Address_type.h>
 #include "gui_class.h"
@@ -64,6 +65,9 @@ class TMainForm:public TForm {
     TMenuItem *mn_C3D_999;
     TMenuItem *mn_SAT;
     TMenuItem *mn_offset;
+    TMenuItem *Header2Address1;
+    TOpenDialog *OpenDialog1;
+    TSaveDialog *SaveDialog1;
     void __fastcall mn_TCONClick(TObject * Sender);
     void __fastcall mn_EngineerClick(TObject * Sender);
     void __fastcall mn_FunctionClick(TObject * Sender);
@@ -86,9 +90,11 @@ class TMainForm:public TForm {
     void __fastcall mn_C3D_999Click(TObject * Sender);
     void __fastcall mn_SATClick(TObject * Sender);
     void __fastcall mn_offsetClick(TObject * Sender);
+    void __fastcall Header2Address1Click(TObject * Sender);
 
   private:			// User declarations
      String getFileVersionInfo();
+    void header2AddressFile(const AnsiString & header, const AnsiString & address);
   public:			// User declarations
      __fastcall TMainForm(TComponent * Owner);
     int C3D_type;
