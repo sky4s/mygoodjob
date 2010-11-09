@@ -7,7 +7,7 @@
 #include <math.h>
 #include <stdlib.h>
 
-class TLUT {
+class TLUT:public AbstractAddressType {
   private:
     bool en;
     int B_addr;
@@ -29,8 +29,24 @@ class TLUT {
 	Lut_num = 0;
 	b_num = 0;
 	name = "";
-    } ~TLUT() {;
-    }
+    };
+    ~TLUT() {
+    };
+
+    virtual void _set(int_vector_ptr vector, AnsiString name) {
+	using namespace java::lang;
+	switch (vector->size()) {
+	case 4:
+	    set((*vector)[0], (*vector)[1], (*vector)[2], (*vector)[3], name);
+	    break;
+	case 3:
+	    set((*vector)[0], (*vector)[1], (*vector)[2], name);
+	    break;
+	default:
+	    throw IllegalArgumentException();
+	}
+
+    };
 };
 
 //----------------------TLUT--------------------------------------
@@ -84,3 +100,4 @@ AnsiString TLUT::Name()
 }
 
 #endif
+

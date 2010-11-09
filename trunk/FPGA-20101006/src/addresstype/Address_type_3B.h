@@ -12,7 +12,7 @@
 //  class TBIT3
 //-----------------------------------------------------------------------------
 
-class TBit3 {
+class TBit3:public AbstractAddressType {
   private:
     bool en;
     int b_num;
@@ -42,8 +42,17 @@ class TBit3 {
 	en = false;
 	b_num = 0;
 	name = "";
-    } ~TBit3() {;
-    }
+    };
+    ~TBit3() {
+    };
+    virtual void _set(int_vector_ptr vector, AnsiString name) {
+	using namespace java::lang;
+	if (vector->size() != 9) {
+	    throw IllegalArgumentException();
+	}
+	set((*vector)[0], (*vector)[1], (*vector)[2], (*vector)[3], (*vector)[4], (*vector)[5],
+	    (*vector)[6], (*vector)[7], (*vector)[8], name);
+    };
 };
 
 //====================================================================================================
@@ -109,3 +118,4 @@ void TBit3::SetVal(int val)
     Byte3.SetVal(val3);
 }
 #endif
+

@@ -12,7 +12,7 @@
 //  class TBIT4
 //-----------------------------------------------------------------------------
 
-class TBit4 {
+class TBit4:public AbstractAddressType {
   private:
     bool en;
     int b_num;
@@ -44,8 +44,18 @@ class TBit4 {
 	en = false;
 	b_num = 0;
 	name = "";
-    } ~TBit4() {;
-    }
+    };
+    ~TBit4() {
+    };
+    virtual void _set(int_vector_ptr vector, AnsiString name) {
+	using namespace java::lang;
+	if (vector->size() != 12) {
+	    throw IllegalArgumentException();
+	}
+	set((*vector)[0], (*vector)[1], (*vector)[2], (*vector)[3], (*vector)[4], (*vector)[5],
+	    (*vector)[6], (*vector)[7], (*vector)[8], (*vector)[9], (*vector)[10], (*vector)[11],
+	    name);
+    };
 };
 
 //====================================================================================================
@@ -122,3 +132,4 @@ void TBit4::SetVal(int val)
     Byte4.SetVal(val4);
 }
 #endif
+
