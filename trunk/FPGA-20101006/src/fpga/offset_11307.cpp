@@ -19,16 +19,16 @@ offsetForm_11307::offsetForm_11307(){
 // CheckBox
 TBit* offsetForm_11307::SetChkBx(){
         TBit* ChkBox = new TBit [ChkBox_Nbr];
-        SetAddr(&ChkBox[0],OFFSET_EN);
-        SetAddr(&ChkBox[1],OFFSET_DEMO);
-        SetAddr(&ChkBox[2],OFFSET_DEMO_LEFT);
+        setAddress(&ChkBox[0],OFFSET_EN);
+        setAddress(&ChkBox[1],OFFSET_DEMO);
+        setAddress(&ChkBox[2],OFFSET_DEMO_LEFT);
         return ChkBox;
 }
 
 // ComboBox
 TBit* offsetForm_11307::SetCboBx(){
         TBit* CboBox = new TBit [CboBox_Nbr];
-        //SetAddr(&CboBox[0],PWM_MODE);
+        //setAddress(&CboBox[0],PWM_MODE);
 
         /*CboBox[0].choice_nbr = 2;
         CboBox[0].choice = new String [2];
@@ -53,14 +53,14 @@ TBit4* offsetForm_11307::SetLblE4(){
 // ScrollBar 1 byte
 TBit* offsetForm_11307::SetScrollBar(){
         TBit* ScrlB = new TBit [ScrollBar_Nbr];
-        SetAddr(&ScrlB[0],OFFSET_LEVEL);
+        setAddress(&ScrlB[0],OFFSET_LEVEL);
         return ScrlB;
 }
 
 // ScrollBar 2 byte
 TBit2* offsetForm_11307::SetScrollBar2(){
         TBit2* ScrlB = new TBit2 [ScrollBar2_Nbr];
-        //SetAddr(&ScrlB[0],PWM_COEFF_A);
+        //setAddress(&ScrlB[0],PWM_COEFF_A);
         return ScrlB;
 }
 

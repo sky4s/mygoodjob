@@ -21,9 +21,9 @@ TBit* CM_12401::SetChkBx()
         TBit* ChkBox = new TBit [CMChkBox_Nbr];
         //chb = new TBit [CMChkBox_Nbr];
         if(MainForm->addr_place == 0){
-                SetAddr(&ChkBox[0],CM_EN);
-                SetAddr(&ChkBox[1],CM_DEMO);
-               //SetAddr(&ChkBox[2],DEMO_LEFT);
+                setAddress(&ChkBox[0],CM_EN);
+                setAddress(&ChkBox[1],CM_DEMO);
+               //setAddress(&ChkBox[2],DEMO_LEFT);
         }else if(MainForm->addr_place == 1){
                 GetAddr(&ChkBox[0],"CM_EN");
                 GetAddr(&ChkBox[1],"CM_DEMO");
@@ -36,7 +36,7 @@ TBit* CM_12401::SetCboBx()
 {
         TBit* CboBox = new TBit [CMCboBox_Nbr];
         if(MainForm->addr_place == 0){
-                SetAddr(&CboBox[0],SEL_CM);
+                setAddress(&CboBox[0],SEL_CM);
         }else if(MainForm->addr_place == 1){
                 GetAddr(&CboBox[0],"SEL_CM");
         }
@@ -52,9 +52,9 @@ TLUT* CM_12401::Setval()
 {
         TLUT* LUT = new TLUT [CMval_Nbr];
         if(MainForm->addr_place == 0){
-                SetAddr(&LUT[0],CM1);
-                SetAddr(&LUT[1],CM2);
-                SetAddr(&LUT[2],CM3);
+                setAddress(&LUT[0],CM1);
+                setAddress(&LUT[1],CM2);
+                setAddress(&LUT[2],CM3);
         }else if(MainForm->addr_place == 1){
                 GetAddr(&LUT[0],"CM1");
                 GetAddr(&LUT[1],"CM2");
@@ -67,9 +67,9 @@ TLUT* CM_12401::Setofs()
 {
         TLUT* LUT = new TLUT [CMofs_Nbr];
         if(MainForm->addr_place == 0){
-                SetAddr(&LUT[0],ofs1);
-                SetAddr(&LUT[1],ofs2);
-                SetAddr(&LUT[2],ofs3);
+                setAddress(&LUT[0],ofs1);
+                setAddress(&LUT[1],ofs2);
+                setAddress(&LUT[2],ofs3);
         }else if(MainForm->addr_place == 1){
                 GetAddr(&LUT[0],"ofs1");
                 GetAddr(&LUT[1],"ofs2");
@@ -93,9 +93,9 @@ TBit* SP_12401::SetChkBx()
 {
         TBit* ChkBox = new TBit [SPChkBox_Nbr];
         if(MainForm->addr_place == 0){
-                SetAddr(&ChkBox[0],SP_EN);
-                SetAddr(&ChkBox[1],SP_DEMO);
-                SetAddr(&ChkBox[2],TEXT_DET);
+                setAddress(&ChkBox[0],SP_EN);
+                setAddress(&ChkBox[1],SP_DEMO);
+                setAddress(&ChkBox[2],TEXT_DET);
         }else if(MainForm->addr_place == 1){
                 GetAddr(&ChkBox[0],"SP_EN");
                 GetAddr(&ChkBox[1],"SP_DEMO");
@@ -107,9 +107,9 @@ TBit* SP_12401::SetScrollBar()
 {
         TBit* ScrlB = new TBit [SPScrollBar_Nbr];
         if(MainForm->addr_place == 0){
-                SetAddr(&ScrlB[0],HORZ_THR);
-                SetAddr(&ScrlB[1],VERT_THR);
-                SetAddr(&ScrlB[2],EDGE_THR);
+                setAddress(&ScrlB[0],HORZ_THR);
+                setAddress(&ScrlB[1],VERT_THR);
+                setAddress(&ScrlB[2],EDGE_THR);
         }else if(MainForm->addr_place == 1){
                 GetAddr(&ScrlB[0],"HORZ_THR");
                 GetAddr(&ScrlB[1],"VERT_THR");
@@ -121,7 +121,7 @@ TLUT* SP_12401::SetSPLUT()
 {
         TLUT* LUT = new TLUT [1];
         if(MainForm->addr_place == 0){
-                SetAddr(&LUT[0],SP_LUT);
+                setAddress(&LUT[0],SP_LUT);
         }else if(MainForm->addr_place == 1){
                 GetAddr(&LUT[0],"SP_LUT");
         }
@@ -142,14 +142,14 @@ TBit* CE_12401::SetChkBx()
 {
         TBit* ChkBox = new TBit [CEChkBox_Nbr];
         if(MainForm->addr_place == 0){
-                SetAddr(&ChkBox[0],LC_EN);
-                SetAddr(&ChkBox[1],LC_DEMO);
-                SetAddr(&ChkBox[2],PURITYWT_EN);
-                SetAddr(&ChkBox[3],FASTCHG_EN);
-                SetAddr(&ChkBox[4],SPRS_BLK1);
-                SetAddr(&ChkBox[5],SPRS_BLK0);
-                SetAddr(&ChkBox[6],GRAD_EN);
-                SetAddr(&ChkBox[7],MLC_EN);
+                setAddress(&ChkBox[0],LC_EN);
+                setAddress(&ChkBox[1],LC_DEMO);
+                setAddress(&ChkBox[2],PURITYWT_EN);
+                setAddress(&ChkBox[3],FASTCHG_EN);
+                setAddress(&ChkBox[4],SPRS_BLK1);
+                setAddress(&ChkBox[5],SPRS_BLK0);
+                setAddress(&ChkBox[6],GRAD_EN);
+                setAddress(&ChkBox[7],MLC_EN);
         }else if(MainForm->addr_place == 1){
                 GetAddr(&ChkBox[0],"LC_EN");
                 GetAddr(&ChkBox[1],"LC_DEMO");
@@ -166,11 +166,11 @@ TBit* CE_12401::SetCboBx()
 {
         TBit* CboBox = new TBit [CECboBox_Nbr];
         if(MainForm->addr_place == 0){
-                SetAddr(&CboBox[0],MAXLIMT_SEL);
-                SetAddr(&CboBox[1],PIXHIST_SEL);
-                SetAddr(&CboBox[2],LOWST_SEL);
-                SetAddr(&CboBox[3],JND_SEL);
-                SetAddr(&CboBox[4],ST_SEL);
+                setAddress(&CboBox[0],MAXLIMT_SEL);
+                setAddress(&CboBox[1],PIXHIST_SEL);
+                setAddress(&CboBox[2],LOWST_SEL);
+                setAddress(&CboBox[3],JND_SEL);
+                setAddress(&CboBox[4],ST_SEL);
         }else if(MainForm->addr_place == 1){
                 GetAddr(&CboBox[0],"MAXLIMT_SEL");
                 GetAddr(&CboBox[1],"PIXHIST_SEL");
@@ -210,20 +210,20 @@ TBit* CE_12401::SetScrollBar()
 {
         TBit* ScrlB = new TBit [CEScrollBar_Nbr];
         if(MainForm->addr_place == 0){
-                SetAddr(&ScrlB[0],PATDET_FRM_NUM);
-                SetAddr(&ScrlB[1],PATDET_LINE_NUM);
-                SetAddr(&ScrlB[2],GRAD_GMA_STEP);
-                SetAddr(&ScrlB[3],GRAD_FRM_STEP);
-                SetAddr(&ScrlB[4],GRAD_PIXDIFF_THR);
-                SetAddr(&ScrlB[5],EDG_DIFF_THR);
-                SetAddr(&ScrlB[6],PIX_DIFF_THR);
-                SetAddr(&ScrlB[7],STRENGTH_K);
-                SetAddr(&ScrlB[8],MIN_EDGE);
-                SetAddr(&ScrlB[9],MLC_THR);
-                SetAddr(&ScrlB[10],JND_MAX);
-                SetAddr(&ScrlB[11],JND_MIN);
-                SetAddr(&ScrlB[12],ST_MAX);
-                SetAddr(&ScrlB[13],ST_MIN);
+                setAddress(&ScrlB[0],PATDET_FRM_NUM);
+                setAddress(&ScrlB[1],PATDET_LINE_NUM);
+                setAddress(&ScrlB[2],GRAD_GMA_STEP);
+                setAddress(&ScrlB[3],GRAD_FRM_STEP);
+                setAddress(&ScrlB[4],GRAD_PIXDIFF_THR);
+                setAddress(&ScrlB[5],EDG_DIFF_THR);
+                setAddress(&ScrlB[6],PIX_DIFF_THR);
+                setAddress(&ScrlB[7],STRENGTH_K);
+                setAddress(&ScrlB[8],MIN_EDGE);
+                setAddress(&ScrlB[9],MLC_THR);
+                setAddress(&ScrlB[10],JND_MAX);
+                setAddress(&ScrlB[11],JND_MIN);
+                setAddress(&ScrlB[12],ST_MAX);
+                setAddress(&ScrlB[13],ST_MIN);
         }else if(MainForm->addr_place == 1){
                 GetAddr(&ScrlB[0],"PATDET_FRM_NUM");
                 GetAddr(&ScrlB[1],"PATDET_LINE_NUM");
@@ -246,7 +246,7 @@ TLUT* CE_12401::SetJNDlut()
 {
         TLUT* lut = new TLUT [1];
         if(MainForm->addr_place == 0){
-                SetAddr(&lut[0],JND_LUT);
+                setAddress(&lut[0],JND_LUT);
         }else if(MainForm->addr_place == 1){
                 GetAddr(&lut[0],"JND_LUT");
         }
@@ -256,7 +256,7 @@ TLUT* CE_12401::SetSTlut()
 {
         TLUT* lut = new TLUT [1];
         if(MainForm->addr_place == 0){
-                SetAddr(&lut[0],ST_LUT);
+                setAddress(&lut[0],ST_LUT);
         }else if(MainForm->addr_place == 1){
                 GetAddr(&lut[0],"ST_LUT");
         }
@@ -266,7 +266,7 @@ TLUT* CE_12401::SetMAXlut()
 {
         TLUT* lut = new TLUT [1];
         if(MainForm->addr_place == 0){
-                SetAddr(&lut[0],MAX_LUT);
+                setAddress(&lut[0],MAX_LUT);
         }else if(MainForm->addr_place == 1){
                 GetAddr(&lut[0],"MAX_LUT");
         }
@@ -276,7 +276,7 @@ TLUT* CE_12401::SetMINlut()
 {
         TLUT* lut = new TLUT [1];
         if(MainForm->addr_place == 0){
-                SetAddr(&lut[0],MIN_LUT);
+                setAddress(&lut[0],MIN_LUT);
         }else if(MainForm->addr_place == 1){
                 GetAddr(&lut[0],"MIN_LUT");
         }
@@ -294,8 +294,8 @@ TBit* HSV_12401::SetChkBx()
 {
         TBit* ChkBx = new TBit[HSVChkBox_Nbr];
         if(MainForm->addr_place == 0){
-                SetAddr(&ChkBx[0],HUE_EN);
-                SetAddr(&ChkBx[1],HUE_DEMO);
+                setAddress(&ChkBx[0],HUE_EN);
+                setAddress(&ChkBx[1],HUE_DEMO);
         }else if(MainForm->addr_place == 1){
                 GetAddr(&ChkBx[0],"HUE_EN");
                 GetAddr(&ChkBx[1],"HUE_DEMO");
@@ -306,7 +306,7 @@ TLUT* HSV_12401::SetLUT()
 {
         TLUT* lut = new TLUT[1];
         if(MainForm->addr_place == 0){
-                SetAddr(&lut[0],HSVlut);
+                setAddress(&lut[0],HSVlut);
         }else if(MainForm->addr_place == 1){
                 GetAddr(&lut[0],"HSVlut");
         }
@@ -327,8 +327,8 @@ TBit* C3D_12401::SetChkBx()
 {
         TBit* ChkBx = new TBit[C3DChkBox_Nbr];
         if(MainForm->addr_place == 0){
-                SetAddr(&ChkBx[0],C3D_EN);
-                SetAddr(&ChkBx[1],C3D_DEMO);
+                setAddress(&ChkBx[0],C3D_EN);
+                setAddress(&ChkBx[1],C3D_DEMO);
         }else if(MainForm->addr_place == 1){
                 GetAddr(&ChkBx[0],"C3D_EN");
                 GetAddr(&ChkBx[1],"C3D_DEMO");
@@ -339,10 +339,10 @@ TLUT* C3D_12401::SetLUT()
 {
         TLUT* lut = new TLUT[C3DLUT_Nbr];
         if(MainForm->addr_place == 0){
-                SetAddr(&lut[0],C3D_LUTR);
-                SetAddr(&lut[1],C3D_LUTG);
-                SetAddr(&lut[2],C3D_LUTB);
-               // SetAddr(&lut[3],C3D_LUTW);
+                setAddress(&lut[0],C3D_LUTR);
+                setAddress(&lut[1],C3D_LUTG);
+                setAddress(&lut[2],C3D_LUTB);
+               // setAddress(&lut[3],C3D_LUTW);
         }else if(MainForm->addr_place == 1){
                 GetAddr(&lut[0],"C3D_LUTR");
                 GetAddr(&lut[1],"C3D_LUTG");

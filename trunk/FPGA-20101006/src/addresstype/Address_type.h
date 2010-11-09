@@ -12,15 +12,15 @@ class AbstractAddressType {
   private:
     virtual void _set(int_vector_ptr vector, AnsiString name) = 0;
   public:
-    void set(int *values, int n, AnsiString name) {
+    void set(int *values, int n, std::string name) {
 	int_vector_ptr vector(new int_vector(n));
 	for (int x = 0; x < n; x++) {
 	    (*vector)[x] = values[x];
 	};
-	_set(vector, name);
+	_set(vector, name.c_str());
     };
-    void set(int_vector_ptr vector, AnsiString name) {
-	_set(vector, name);
+    void set(int_vector_ptr vector, std::string name) {
+	_set(vector, name.c_str());
     };
 };
 

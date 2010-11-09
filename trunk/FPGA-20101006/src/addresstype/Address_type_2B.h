@@ -42,9 +42,13 @@ class TBit2:public AbstractAddressType {
 
     virtual void _set(int_vector_ptr vector, AnsiString name) {
 	using namespace java::lang;
-	switch (vector->size()) {
+	int size = vector->size();
+	switch (size) {
 	case 2:
 	    set((*vector)[0], (*vector)[1], name);
+	    break;
+	case 3:
+	    set((*vector)[0], (*vector)[1], (*vector)[2], 0, 0, 0, name);
 	    break;
 	case 4:
 	    set((*vector)[0], (*vector)[1], (*vector)[2], (*vector)[3], name);

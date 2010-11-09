@@ -34,8 +34,8 @@ TBit4* DCR_12401::SetLblE4(){
 TLUT* DCR_12401::SetLUT(){
         TLUT* LUT = new TLUT[DCRLUT_Nbr];
         if(MainForm->addr_place == 0){
-                SetAddr(&LUT[0], BL);
-                SetAddr(&LUT[1], DIM);
+                setAddress(&LUT[0], BL);
+                setAddress(&LUT[1], DIM);
         }else if(MainForm->addr_place == 1){
                 GetAddr(&LUT[0], "BL");
                 GetAddr(&LUT[1], "DIM");
@@ -46,17 +46,17 @@ TLUT* DCR_12401::SetLUT(){
 TBit* DCR_12401::SetScrollBar(){
         TBit* ScrlB = new TBit [DCRScrollBar_Nbr];
         if(MainForm->addr_place == 0){
-                SetAddr(&ScrlB[0],PWM_BL_IDX);
-                SetAddr(&ScrlB[1],BL_FRM_INTV);
-                SetAddr(&ScrlB[2],BL_GRAD_STEP);
-                SetAddr(&ScrlB[3],IMG_DIFF);
-                SetAddr(&ScrlB[4],PWM_FREQ);
-                SetAddr(&ScrlB[5],SMBUS_DEV_ADDR);
-                SetAddr(&ScrlB[6],SMBUS_REG_ADDR);
-                SetAddr(&ScrlB[7],MIN_IDX_CUM_RATIO);
-                SetAddr(&ScrlB[8],MAX_IDX_CUM_RATIO);
-                SetAddr(&ScrlB[9],HIGH_DUTY_THRES);
-                SetAddr(&ScrlB[10],TOTAL_DUTY_THRES);
+                setAddress(&ScrlB[0],PWM_BL_IDX);
+                setAddress(&ScrlB[1],BL_FRM_INTV);
+                setAddress(&ScrlB[2],BL_GRAD_STEP);
+                setAddress(&ScrlB[3],IMG_DIFF);
+                setAddress(&ScrlB[4],PWM_FREQ);
+                setAddress(&ScrlB[5],SMBUS_DEV_ADDR);
+                setAddress(&ScrlB[6],SMBUS_REG_ADDR);
+                setAddress(&ScrlB[7],MIN_IDX_CUM_RATIO);
+                setAddress(&ScrlB[8],MAX_IDX_CUM_RATIO);
+                setAddress(&ScrlB[9],HIGH_DUTY_THRES);
+                setAddress(&ScrlB[10],TOTAL_DUTY_THRES);
         }else if(MainForm->addr_place == 1){
                 GetAddr(&ScrlB[0],"PWM_BL_IDX");
                 GetAddr(&ScrlB[1],"BL_FRM_INTV");
@@ -75,8 +75,8 @@ TBit* DCR_12401::SetScrollBar(){
 TBit2* DCR_12401::SetScrollBar2(){
         TBit2* ScrlB = new TBit2 [DCRScrollBar2_Nbr];
         if(MainForm->addr_place == 0){
-                SetAddr(&ScrlB[0],PWM_COEFF_A);
-                SetAddr(&ScrlB[1],PWM_COEFF_B);
+                setAddress(&ScrlB[0],PWM_COEFF_A);
+                setAddress(&ScrlB[1],PWM_COEFF_B);
         }else if(MainForm->addr_place == 1){
                 GetAddr(&ScrlB[0],"PWM_COEFF_A");
                 GetAddr(&ScrlB[1],"PWM_COEFF_B");
@@ -86,15 +86,15 @@ TBit2* DCR_12401::SetScrollBar2(){
 TBit* DCR_12401::SetChkBx(){
         TBit* ChkBox = new TBit [DCRChkBox_Nbr];
         if(MainForm->addr_place == 0){
-                SetAddr(&ChkBox[0],BL_EN);
-                SetAddr(&ChkBox[1],DYN_BL_EN);
-                SetAddr(&ChkBox[2],GLT_EN);
-                SetAddr(&ChkBox[3],GLT_DEMO);
-                SetAddr(&ChkBox[4],DUTY_DETECT_EN);
-                SetAddr(&ChkBox[5],BL_GRAD_EN);
-                SetAddr(&ChkBox[6],IMG_DIFF_EN);
-                SetAddr(&ChkBox[7],SMBUS_EN);
-                SetAddr(&ChkBox[8],PWM_COEFF_EN);
+                setAddress(&ChkBox[0],BL_EN);
+                setAddress(&ChkBox[1],DYN_BL_EN);
+                setAddress(&ChkBox[2],GLT_EN);
+                setAddress(&ChkBox[3],GLT_DEMO);
+                setAddress(&ChkBox[4],DUTY_DETECT_EN);
+                setAddress(&ChkBox[5],BL_GRAD_EN);
+                setAddress(&ChkBox[6],IMG_DIFF_EN);
+                setAddress(&ChkBox[7],SMBUS_EN);
+                setAddress(&ChkBox[8],PWM_COEFF_EN);
         }else if(MainForm->addr_place == 1){
                 GetAddr(&ChkBox[0],"BL_EN");
                 GetAddr(&ChkBox[1],"DYN_BL_EN");
@@ -111,10 +111,10 @@ TBit* DCR_12401::SetChkBx(){
 TBit* DCR_12401::SetCboBx(){
         TBit* CboBox = new TBit [DCRCboBox_Nbr];
         if(MainForm->addr_place == 0){
-                SetAddr(&CboBox[0],PWM_MODE);
-                SetAddr(&CboBox[1],BL_POL);
-                SetAddr(&CboBox[2],PWM_FL_MODE_SEL);
-                SetAddr(&CboBox[3],PWM_LINE_SYNC);
+                setAddress(&CboBox[0],PWM_MODE);
+                setAddress(&CboBox[1],BL_POL);
+                setAddress(&CboBox[2],PWM_FL_MODE_SEL);
+                setAddress(&CboBox[3],PWM_LINE_SYNC);
         }else if(MainForm->addr_place == 1){
                 GetAddr(&CboBox[0],"PWM_MODE");
                 GetAddr(&CboBox[1],"BL_POL");

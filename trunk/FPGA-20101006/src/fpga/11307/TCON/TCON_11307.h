@@ -93,7 +93,7 @@ bool GetAddr(TBit * Addr, String name)	//Get TBit type Address
 
 //----------------------------------------------------------------------------
 
-bool SetAddr(TBit * Addr, String str)	//Get TBit type Address
+/*bool SetAddr(TBit * Addr, String str)	//Get TBit type Address
 {
     if (str == "_NULL")
 	return 0;
@@ -111,7 +111,7 @@ bool SetAddr(TBit * Addr, String str)	//Get TBit type Address
     }
     Addr->set(val[0], val[1], val[2], (String) name);
     return 1;
-}
+}*/
 
 //--------------------------------------------------------------------------
 bool GetAddr(TBit2 * Addr, String name)
@@ -175,7 +175,7 @@ bool GetAddr(TBit2 * Addr, String name)
 }
 
 //---------------------------------------------------------------------------
-bool SetAddr(TBit2 * Addr, String str)	//Get TBit type Address
+/*bool SetAddr(TBit2 * Addr, String str)	//Get TBit type Address
 {
     if (str == "_NULL")
 	return 0;
@@ -199,7 +199,7 @@ bool SetAddr(TBit2 * Addr, String str)	//Get TBit type Address
     }
     Addr->set(val[0], val[1], val[2], val[3], val[4], val[5], name);
     return 1;
-}
+}*/
 
 //---------------------------------------------------------------------------
 bool GetAddr(TLUT * Addr, String name)
@@ -263,7 +263,7 @@ bool GetAddr(TLUT * Addr, String name)
 }
 
 //---------------------------------------------------------------------------
-bool SetAddr(TLUT * Addr, String str)	//Get TBit type Address
+/*bool SetAddr(TLUT * Addr, String str)	//Get TBit type Address
 {
     if (str == "_NULL")
 	return 0;
@@ -337,7 +337,7 @@ bool SetAddr(TBit4 * Addr, String str)	//Get TBit type Address
     Addr->set(val[0], val[1], val[2], val[3], val[4], val[5], val[6], val[7],
 	      val[8], val[9], val[10], val[11], name);
     return 1;
-}
+}*/
 
 //--------------------------------------------------------------------------
 #endif

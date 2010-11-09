@@ -3,6 +3,9 @@
 
 #include <vcl.h>
 #include <addresstype/Address_type.h>
+#include <lib/CMSCpp2.1/src/includeall.h>
+#include <iostream>
+#include <fstream>
 
 class _CHKB {
   public:
@@ -141,8 +144,53 @@ __fastcall _StaticText::~_StaticText()
     delete[]StTxt;
     //delete Addr.choice;
 }
+typedef std::map < const std::string, const std::string) StringMap;
+typedef bptr < StringMap > StringMap_ptr;
+class AbstractBase {
 
-class AbstHSV {
+  protected:
+    static bool setAddress(AbstractAddressType * address, std::string text);
+    static StringMap_ptr getStringMap(std::string filename);
+};
+
+bool AbstractBase::setAddress(AbstractAddressType * address, std::string text) {
+    if (text.length() == 0 || text == "_NULL") {
+	return false;
+    }
+    using namespace cms::util;
+    string_vector_ptr tokens = StringVector::tokenize(text, ",");
+    int size = tokens->size();
+    int_vector_ptr values(new int_vector(size - 1));
+    for (int x = 1; x < size; x++) {
+	string token = (*tokens)[x];
+	(*values)[x - 1] = _toInt(token);
+    }
+    address->set(values, (*tokens)[0]);
+    return true;
+};
+
+StringMap_ptr AbstractBase::getStringMap(std::string filename) {
+    using namespace std;
+    using namespace cms::util;
+
+    ifstream infile(filename.c_str());
+
+    if (infile.is_open()) {
+	string line;
+	StringMap_ptr map(new StringMap());
+	while (infile.good()) {
+	    getline(infile, line);
+	    string_vector_ptr stringvector = StringVector::tokenize(line, " ");
+	    //(*map)[(*stringvector)[0]] = line;
+	    map->insert(make_pair((*stringvector)[0], line));
+	}
+	infile.close();
+	return map;
+    }
+    return StringMap_ptr((StringMap *) NULL);
+}
+
+class AbstHSV:public AbstractBase {
   public:
     virtual TBit * SetChkBx() = 0;
     virtual TLUT *SetLUT() = 0;
@@ -152,8 +200,7 @@ class AbstHSV {
 
 #include <stdio.h>
 
-char *Load_File(String Fpath)
-{
+char *Load_File(String Fpath) {
     long lSize;
     char *buffer;
     FILE *fptr;
@@ -179,7 +226,7 @@ char *Load_File(String Fpath)
 /*==========================================================================
 AbstSP為一自定的class, 具有可傳回IC中關於Sharpness address定義的函式
 ===========================================================================*/
-class AbstSP {
+class AbstSP:public AbstractBase {
   public:
     virtual TBit * SetChkBx() = 0;	//傳回CheckBox的address定義
     virtual TBit *SetScrollBar() = 0;	//傳回ScrollBar的address定義
@@ -191,7 +238,7 @@ class AbstSP {
     int SPScrollBar_Nbr;
 };
 
-class AbstCE {
+class AbstCE:public AbstractBase {
   public:
     virtual TBit * SetChkBx() = 0;
     virtual TBit *SetCboBx() = 0;
@@ -209,7 +256,7 @@ class AbstCE {
 AbstCM為一自定的class, 具有可傳回IC中關於Color Matrix address定義的函式
 ===========================================================================*/
 
-class AbstCM {
+class AbstCM:public AbstractBase {
   public:
     //CM
     virtual TBit * SetChkBx() = 0;	//傳回CheckBox的address定義
@@ -225,9 +272,10 @@ class AbstCM {
     //傳回offset address的type 1: offset range(-127.75,127.75)
     //type 2:offset range(-63.875,63.875)
 };
+
 //---------------------------------------------------------------------------
 //Abstract class of Vender
-class AbstVender {
+class AbstVender:public AbstractBase {
   public:
     virtual TBit * SetChkBx() = 0;
     virtual TBit *SetCboBx() = 0;
@@ -255,7 +303,7 @@ class AbstVender {
 };
 
 //Abstract class of TCON
-class AbstTCON {
+class AbstTCON:public AbstractBase {
   public:
     //device
     virtual TBit * SetDevChkBx() = 0;
@@ -297,7 +345,7 @@ class AbstTCON {
 };
 
 //Abstract class of FunctionForm
-class AbstFunc {
+class AbstFunc:public AbstractBase {
   public:
     //frc_dg
     virtual TBit * SetFrcDgChkBx() = 0;
@@ -350,7 +398,7 @@ class AbstFunc {
 };
 
 //Abstract class of DCR
-class AbstDCR {
+class AbstDCR:public AbstractBase {
   public:
     //DCR setting
     virtual TBit * SetChkBx() = 0;
@@ -395,7 +443,7 @@ class AbstDCR {
     int HDRLblE2_Nbr;
     int DCRLUT_Nbr;		// 20100608 set number of DCR table
 };
-class AbstC3D {
+class AbstC3D:public AbstractBase {
   public:
     virtual TBit * SetChkBx() = 0;
     virtual TLUT *SetLUT() = 0;
@@ -403,8 +451,9 @@ class AbstC3D {
     int C3DChkBox_Nbr;
     int C3DLUT_Nbr;
 };
+
 //Abstract class of SATForm
-class AbstSATForm {
+class AbstSATForm:public AbstractBase {
   public:
     virtual TBit * SetChkBx() = 0;
     virtual TBit *SetCboBx() = 0;
@@ -422,7 +471,7 @@ class AbstSATForm {
 };
 
 //Abstract class of offsetForm
-class AbstoffsetForm {
+class AbstoffsetForm:public AbstractBase {
   public:
     virtual TBit * SetChkBx() = 0;
     virtual TBit *SetCboBx() = 0;
