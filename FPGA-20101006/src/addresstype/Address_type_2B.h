@@ -7,7 +7,7 @@
 #include <stdlib.h>
 #include "Address_type_1B.h"
 
-class TBit2 {
+class TBit2:public AbstractAddressType {
   private:
     bool en;
     int b_num;
@@ -36,8 +36,28 @@ class TBit2 {
 	b_num = 0;
 	name = "";
 	value = -1;
-    } ~TBit2() {;
-    }
+    };
+    ~TBit2() {
+    };
+
+    virtual void _set(int_vector_ptr vector, AnsiString name) {
+	using namespace java::lang;
+	switch (vector->size()) {
+	case 2:
+	    set((*vector)[0], (*vector)[1], name);
+	    break;
+	case 4:
+	    set((*vector)[0], (*vector)[1], (*vector)[2], (*vector)[3], name);
+	    break;
+	case 6:
+	    set((*vector)[0], (*vector)[1], (*vector)[2], (*vector)[3], (*vector)[4], (*vector)[5],
+		name);
+	    break;
+	default:
+	    throw IllegalArgumentException();
+	}
+
+    };
 };
 
 //====================================================================================================
@@ -172,3 +192,4 @@ void TBit2::SetVal(int val)
 }
 
 #endif
+

@@ -4,8 +4,8 @@
 #pragma hdrstop
 //---------------------------------------------------------------------------
 USEFORM("src\fpga\gui\THSVForm3.cpp", HSVForm3);
-USEFORM("src\gui\frame\TColorPickerFrame.cpp", ColorPickerFrame);	/* TFrame: File Type */
-USEFORM("src\gui\frame\THSVAdjustFrame.cpp", HSVAdjustFrame);	/* TFrame: File Type */
+USEFORM("src\gui\frame\TColorPickerFrame.cpp", ColorPickerFrame); /* TFrame: File Type */
+USEFORM("src\gui\frame\THSVAdjustFrame.cpp", HSVAdjustFrame); /* TFrame: File Type */
 USEFORM("src\fpga\gui\CM1.cpp", CMForm1);
 USEFORM("src\fpga\gui\Unit1.cpp", MainForm);
 USEFORM("src\fpga\gui\Vender1.cpp", VenderForm1);
@@ -30,11 +30,11 @@ WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	Application->Initialize();
 	Application->Title = "FPGA Toolkit";
 	Application->CreateForm(__classid(TMainForm), &MainForm);
-	Application->CreateForm(__classid(TEngineerForm), &EngineerForm);
-	Application->CreateForm(__classid(TInTargetForm), &InTargetForm);
-	Application->CreateForm(__classid(TPatternForm), &PatternForm);
-	Application->CreateForm(__classid(TPatternForm), &PatternForm2);
-	Application->Run();
+                 Application->CreateForm(__classid(TEngineerForm), &EngineerForm);
+                 Application->CreateForm(__classid(TInTargetForm), &InTargetForm);
+                 Application->CreateForm(__classid(TPatternForm), &PatternForm);
+                 Application->CreateForm(__classid(TPatternForm), &PatternForm2);
+                 Application->Run();
     }
     catch(Exception & exception) {
 	Application->ShowException(&exception);

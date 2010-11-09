@@ -23,9 +23,7 @@
 //本項目內頭文件
 #include <fpga/gui_class.h>
 //本項目內gui頭文件
-
 //---------------------------------------------------------------------------
-
 class TDCRForm1:public TForm {
     __published:		// IDE-managed Components
     TOpenDialog * OpenDialog1;
