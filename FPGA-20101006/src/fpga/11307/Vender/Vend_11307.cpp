@@ -31,10 +31,10 @@ TBit *Vend_11307::SetChkBx()
 {
     TBit *ChkBox = new TBit[VendChkBox_Nbr];
     if (MainForm->addr_place == 0) {
-	SetAddr(&ChkBox[0], SSC_VSYNC_EN);	//
-	SetAddr(&ChkBox[1], SSC_CLK_NG_EN);	//
-	SetAddr(&ChkBox[2], SSC_CLK_STOP_EN);	//
-	SetAddr(&ChkBox[3], PP_CHCD);	//
+	setAddress(&ChkBox[0], SSC_VSYNC_EN);	//
+	setAddress(&ChkBox[1], SSC_CLK_NG_EN);	//
+	setAddress(&ChkBox[2], SSC_CLK_STOP_EN);	//
+	setAddress(&ChkBox[3], PP_CHCD);	//
     } else if (MainForm->addr_place == 1) {
 	GetAddr(&ChkBox[0], "SSC_VSYNC_EN");
 	GetAddr(&ChkBox[1], "SSC_CLK_NG_EN");
@@ -49,13 +49,13 @@ TBit *Vend_11307::SetCboBx()
 {
     TBit *CboBox = new TBit[VendCboBox_Nbr];
     if (MainForm->addr_place == 0) {
-	SetAddr(&CboBox[0], VOCSEL);	//                
-	SetAddr(&CboBox[1], XDRV_CTL);	//
-	SetAddr(&CboBox[2], YDRV_CTL);	//
-	SetAddr(&CboBox[3], ML_SKEW_1);	//
-	SetAddr(&CboBox[4], ML_SKEW_2);	//
-	SetAddr(&CboBox[5], ML_SKEW_3);	//
-	SetAddr(&CboBox[6], ML_SKEW_4);	//
+	setAddress(&CboBox[0], VOCSEL);	//                
+	setAddress(&CboBox[1], XDRV_CTL);	//
+	setAddress(&CboBox[2], YDRV_CTL);	//
+	setAddress(&CboBox[3], ML_SKEW_1);	//
+	setAddress(&CboBox[4], ML_SKEW_2);	//
+	setAddress(&CboBox[5], ML_SKEW_3);	//
+	setAddress(&CboBox[6], ML_SKEW_4);	//
     } else if (MainForm->addr_place == 1) {
 	GetAddr(&CboBox[0], "VOCSEL");
 	GetAddr(&CboBox[1], "XDRV_CTL");
@@ -171,8 +171,8 @@ TBit *Vend_11307::SetScrollBar()
 {
     TBit *ScrlB = new TBit[VendScrollBar_Nbr];
     if (MainForm->addr_place == 0) {
-	//SetAddr(&ScrlB[0],_NULL);
-	//SetAddr(&ScrlB[1],_NULL);
+	//setAddress(&ScrlB[0],_NULL);
+	//setAddress(&ScrlB[1],_NULL);
     } else if (MainForm->addr_place == 1) {
 	//GetAddr(&ScrlB[0],"_NULL");
 	//GetAddr(&ScrlB[1],"_NULL");
@@ -185,7 +185,7 @@ TBit2 *Vend_11307::SetScrollBar2()
 {
     TBit2 *ScrlB = new TBit2[VendScrollBar2_Nbr];
     if (MainForm->addr_place == 0) {
-	//SetAddr(&ScrlB[0],_NULL);
+	//setAddress(&ScrlB[0],_NULL);
     } else if (MainForm->addr_place == 1) {
 	//GetAddr(&ScrlB[0],"_NULL");
     }
@@ -197,13 +197,13 @@ TBit *Vend_11307::SetDebugChkBx()
 {
     TBit *ChkBox = new TBit[DebugChkBox_Nbr];
     if (MainForm->addr_place == 0) {
-	SetAddr(&ChkBox[0], LUX_SEL);	// 
-	SetAddr(&ChkBox[1], DIRECT_DUTY_EN);	//
-	SetAddr(&ChkBox[2], HUE_TEST);	//
-	SetAddr(&ChkBox[3], GAM_TEST);	//  
-	SetAddr(&ChkBox[4], MGHSD_1ST_TDEF_EN);	//
-	SetAddr(&ChkBox[5], OE_AREA_CNT_MODE_EN);	//
-	SetAddr(&ChkBox[6], CM_TEST);	// 
+	setAddress(&ChkBox[0], LUX_SEL);	// 
+	setAddress(&ChkBox[1], DIRECT_DUTY_EN);	//
+	setAddress(&ChkBox[2], HUE_TEST);	//
+	setAddress(&ChkBox[3], GAM_TEST);	//  
+	setAddress(&ChkBox[4], MGHSD_1ST_TDEF_EN);	//
+	setAddress(&ChkBox[5], OE_AREA_CNT_MODE_EN);	//
+	setAddress(&ChkBox[6], CM_TEST);	// 
 
     } else if (MainForm->addr_place == 1) {
 	GetAddr(&ChkBox[0], "LUX_SEL");
@@ -222,13 +222,13 @@ TBit *Vend_11307::SetDebugCboBx()
     TBit *CboBox = new TBit[DebugCboBox_Nbr];
 
     if (MainForm->addr_place == 0) {
-	SetAddr(&CboBox[0], DEBUG_MODE);	//
-	SetAddr(&CboBox[1], ST_INI_EN);	//
-	SetAddr(&CboBox[2], OE_AREA_CNT_MODE);	//
-	SetAddr(&CboBox[3], SDR_POL_DE_SEL);	//
-	SetAddr(&CboBox[4], SDR_POL_CASE_SEL);	//
-	SetAddr(&CboBox[5], POL_VBK_TYPE);	//
-	SetAddr(&CboBox[6], YV1C_AREA_CNT_MODE);	//
+	setAddress(&CboBox[0], DEBUG_MODE);	//
+	setAddress(&CboBox[1], ST_INI_EN);	//
+	setAddress(&CboBox[2], OE_AREA_CNT_MODE);	//
+	setAddress(&CboBox[3], SDR_POL_DE_SEL);	//
+	setAddress(&CboBox[4], SDR_POL_CASE_SEL);	//
+	setAddress(&CboBox[5], POL_VBK_TYPE);	//
+	setAddress(&CboBox[6], YV1C_AREA_CNT_MODE);	//
     } else if (MainForm->addr_place == 1) {
 	GetAddr(&CboBox[0], "DEBUG_MODE");
 	GetAddr(&CboBox[1], "ST_INI_EN");
@@ -294,11 +294,11 @@ TBit *Vend_11307::SetStaCboBx()
     TBit *CboBox = new TBit[VStaCboBox_Nbr];
 
     if (MainForm->addr_place == 0) {
-	SetAddr(&CboBox[0], CLK_UNSTABLE);	//
-	SetAddr(&CboBox[1], CLK_STOP);	//
-	SetAddr(&CboBox[2], CLK_DET_REGION);	//
-	SetAddr(&CboBox[3], END_FRAME_MODI);	//
-	SetAddr(&CboBox[4], CORE_STATE);	//
+	setAddress(&CboBox[0], CLK_UNSTABLE);	//
+	setAddress(&CboBox[1], CLK_STOP);	//
+	setAddress(&CboBox[2], CLK_DET_REGION);	//
+	setAddress(&CboBox[3], END_FRAME_MODI);	//
+	setAddress(&CboBox[4], CORE_STATE);	//
 
     } else if (MainForm->addr_place == 1) {
 	GetAddr(&CboBox[0], "CLK_UNSTABLE");
@@ -357,13 +357,13 @@ TBit2 *Vend_11307::SetDebugLblE2()
     TBit2 *LEdt = new TBit2[DebugLblE2_Nbr];
 
     if (MainForm->addr_place == 0) {
-	SetAddr(&LEdt[0], DIRECT_DUTY);	// 
-	SetAddr(&LEdt[1], TEST_LUX);	//
-	SetAddr(&LEdt[2], GAM_DIRECT_R);	//
-	SetAddr(&LEdt[3], GAM_DIRECT_G);	//  
-	SetAddr(&LEdt[4], GAM_DIRECT_B);	//
-	SetAddr(&LEdt[5], ST_FRAME_NUM);	//
-	SetAddr(&LEdt[6], IN_DEB_HDR_BL_SECTION);	//
+	setAddress(&LEdt[0], DIRECT_DUTY);	// 
+	setAddress(&LEdt[1], TEST_LUX);	//
+	setAddress(&LEdt[2], GAM_DIRECT_R);	//
+	setAddress(&LEdt[3], GAM_DIRECT_G);	//  
+	setAddress(&LEdt[4], GAM_DIRECT_B);	//
+	setAddress(&LEdt[5], ST_FRAME_NUM);	//
+	setAddress(&LEdt[6], IN_DEB_HDR_BL_SECTION);	//
     } else if (MainForm->addr_place == 1) {
 	GetAddr(&LEdt[0], "DIRECT_DUTY");
 	GetAddr(&LEdt[1], "TEST_LUX");
@@ -382,20 +382,20 @@ TBit2 *Vend_11307::SetStaLblE2()
 {
     TBit2 *LEdt = new TBit2[VStaLblE2_Nbr];
     if (MainForm->addr_place == 0) {
-	SetAddr(&LEdt[0], OUT_BL_IDX);	//
-	SetAddr(&LEdt[1], OUT_DUTY_DETECT_VALUE);	// 
-	SetAddr(&LEdt[2], OUT_BL_LUT_RD_DATA);	//
-	SetAddr(&LEdt[3], OUT_DR_LUT_RD_DATA);	//
-	SetAddr(&LEdt[4], OTP_IDX);	//
-	SetAddr(&LEdt[5], OUT_GLT_EN_STATUS);	//
-	SetAddr(&LEdt[6], OUT_DCR_EN_STATUS);	// 
-	SetAddr(&LEdt[7], OUT_PWM_DUTY);	//
-	SetAddr(&LEdt[8], FRAME_CUM_RATIO);	//
-	//SetAddr(&LEdt[9],OUT_DCR_EN_STATUS);           //
-	//SetAddr(&LEdt[10],OUT_DCR_EN_STATUS);          //    
-	SetAddr(&LEdt[9], OUT_DEB_HDR_BL_DATA);	//
-	SetAddr(&LEdt[10], SLAVE_FSM);	//
-	SetAddr(&LEdt[11], CHKSUM_FSM);	//
+	setAddress(&LEdt[0], OUT_BL_IDX);	//
+	setAddress(&LEdt[1], OUT_DUTY_DETECT_VALUE);	// 
+	setAddress(&LEdt[2], OUT_BL_LUT_RD_DATA);	//
+	setAddress(&LEdt[3], OUT_DR_LUT_RD_DATA);	//
+	setAddress(&LEdt[4], OTP_IDX);	//
+	setAddress(&LEdt[5], OUT_GLT_EN_STATUS);	//
+	setAddress(&LEdt[6], OUT_DCR_EN_STATUS);	// 
+	setAddress(&LEdt[7], OUT_PWM_DUTY);	//
+	setAddress(&LEdt[8], FRAME_CUM_RATIO);	//
+	//setAddress(&LEdt[9],OUT_DCR_EN_STATUS);           //
+	//setAddress(&LEdt[10],OUT_DCR_EN_STATUS);          //    
+	setAddress(&LEdt[9], OUT_DEB_HDR_BL_DATA);	//
+	setAddress(&LEdt[10], SLAVE_FSM);	//
+	setAddress(&LEdt[11], CHKSUM_FSM);	//
     } else if (MainForm->addr_place == 1) {
 	GetAddr(&LEdt[0], "OUT_BL_IDX");
 	GetAddr(&LEdt[1], "OUT_DUTY_DETECT_VALUE");

@@ -38,8 +38,8 @@ class TBit:public AbstractAddressType {
 	choice_nbr = 0;
 	value = -1;
     };
-    ~TBit() {
-    };
+    /*~TBit() {
+    };*/
     virtual void _set(int_vector_ptr vector, AnsiString name) {
 	using namespace java::lang;
 	if (vector->size() != 3) {

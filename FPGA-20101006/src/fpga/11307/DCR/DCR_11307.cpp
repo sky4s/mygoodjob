@@ -29,23 +29,23 @@ TBit *DCR_11307::SetChkBx()
 {
     TBit *ChkBox = new TBit[DCRChkBox_Nbr];
     if (MainForm->addr_place == 0) {
-	SetAddr(&ChkBox[0], BL_EN);
-	SetAddr(&ChkBox[1], DYN_BL_EN);
-	SetAddr(&ChkBox[2], GLT_EN);
-	SetAddr(&ChkBox[6], DCR_HDR_DEMO);
+	setAddress(&ChkBox[0], BL_EN);
+	setAddress(&ChkBox[1], DYN_BL_EN);
+	setAddress(&ChkBox[2], GLT_EN);
+	setAddress(&ChkBox[6], DCR_HDR_DEMO);
 
-	SetAddr(&ChkBox[3], DUTY_DETECT_EN);
-	SetAddr(&ChkBox[4], BL_GRAD_EN);
-	SetAddr(&ChkBox[5], HIST_DIFF_RATIO_EN);
-	SetAddr(&ChkBox[7], PWM_COEFF_EN);
-	SetAddr(&ChkBox[8], GLT_255);
+	setAddress(&ChkBox[3], DUTY_DETECT_EN);
+	setAddress(&ChkBox[4], BL_GRAD_EN);
+	setAddress(&ChkBox[5], HIST_DIFF_RATIO_EN);
+	setAddress(&ChkBox[7], PWM_COEFF_EN);
+	setAddress(&ChkBox[8], GLT_255);
 
-	SetAddr(&ChkBox[9], SPECIAL_STR);
-	SetAddr(&ChkBox[10], DCREN_DYN_BL);
-	SetAddr(&ChkBox[11], DCREN_GLT);
-	SetAddr(&ChkBox[12], SW_DEMO);
-	SetAddr(&ChkBox[13], BSM_EN);
-	SetAddr(&ChkBox[14], DUTY_SMOOTH_EN);
+	setAddress(&ChkBox[9], SPECIAL_STR);
+	setAddress(&ChkBox[10], DCREN_DYN_BL);
+	setAddress(&ChkBox[11], DCREN_GLT);
+	setAddress(&ChkBox[12], SW_DEMO);
+	setAddress(&ChkBox[13], BSM_EN);
+	setAddress(&ChkBox[14], DUTY_SMOOTH_EN);
 
 
 
@@ -67,15 +67,15 @@ TBit *DCR_11307::SetCboBx()
 {
     TBit *CboBox = new TBit[DCRCboBox_Nbr];
     if (MainForm->addr_place == 0) {
-	SetAddr(&CboBox[1], BL_POL);
-	SetAddr(&CboBox[0], PWM_MODE);
-	SetAddr(&CboBox[3], PWM_LINE_SYNC);
-	SetAddr(&CboBox[2], PWM_FL_MODE_SEL);
-	SetAddr(&CboBox[5], IDX_MOD_SEL_SET);
-	SetAddr(&CboBox[4], DCR_HDR_SEL);
-	SetAddr(&CboBox[6], IDX_MOD_SEL_CUS);
-	SetAddr(&CboBox[7], IN_DEMO_SIDE);
-	SetAddr(&CboBox[8], PWM_BYPASS_SEL);
+	setAddress(&CboBox[1], BL_POL);
+	setAddress(&CboBox[0], PWM_MODE);
+	setAddress(&CboBox[3], PWM_LINE_SYNC);
+	setAddress(&CboBox[2], PWM_FL_MODE_SEL);
+	setAddress(&CboBox[5], IDX_MOD_SEL_SET);
+	setAddress(&CboBox[4], DCR_HDR_SEL);
+	setAddress(&CboBox[6], IDX_MOD_SEL_CUS);
+	setAddress(&CboBox[7], IN_DEMO_SIDE);
+	setAddress(&CboBox[8], PWM_BYPASS_SEL);
 
     } else if (MainForm->addr_place == 1) {
 	GetAddr(&CboBox[0], "PWM_MODE");
@@ -137,26 +137,26 @@ TBit *DCR_11307::SetScrollBar()
 {
     TBit *ScrlB = new TBit[DCRScrollBar_Nbr];
     if (MainForm->addr_place == 0) {
-	SetAddr(&ScrlB[0], GLT_SHARPNESS_RATIO);
-	SetAddr(&ScrlB[1], PWM_BL_IDX);
-	SetAddr(&ScrlB[2], PWM_FREQ);
-	SetAddr(&ScrlB[3], BL_SW_FRM);
-	SetAddr(&ScrlB[4], HIGH_DUTY_THRES);
-	SetAddr(&ScrlB[5], TOTAL_DUTY_THRES);
-	SetAddr(&ScrlB[6], THRES_MODULATION);
-	SetAddr(&ScrlB[7], LIGHT_PIXEL_NUMBER);
-	SetAddr(&ScrlB[8], NIZ_FILTER_NUM);
-	SetAddr(&ScrlB[9], DUTY_GRAD_STEP);
-	SetAddr(&ScrlB[10], DUTY_SW_FRM);
-	SetAddr(&ScrlB[11], SMOOTH_RATIO);
-	SetAddr(&ScrlB[12], MATRIX_WEIGHTING_A);
-	SetAddr(&ScrlB[13], MATRIX_WEIGHTING_B);
-	SetAddr(&ScrlB[14], MATRIX_WEIGHTING_C);
-	SetAddr(&ScrlB[15], MATRIX_WEIGHTING_D);
-	SetAddr(&ScrlB[16], MATRIX_WEIGHTING_E);
-	SetAddr(&ScrlB[17], MATRIX_WEIGHTING_F);
-	SetAddr(&ScrlB[18], MATRIX_WEIGHTING_EDGE);
-	SetAddr(&ScrlB[19], MATRIX_WEIGHTING_CORNER);
+	setAddress(&ScrlB[0], GLT_SHARPNESS_RATIO);
+	setAddress(&ScrlB[1], PWM_BL_IDX);
+	setAddress(&ScrlB[2], PWM_FREQ);
+	setAddress(&ScrlB[3], BL_SW_FRM);
+	setAddress(&ScrlB[4], HIGH_DUTY_THRES);
+	setAddress(&ScrlB[5], TOTAL_DUTY_THRES);
+	setAddress(&ScrlB[6], THRES_MODULATION);
+	setAddress(&ScrlB[7], LIGHT_PIXEL_NUMBER);
+	setAddress(&ScrlB[8], NIZ_FILTER_NUM);
+	setAddress(&ScrlB[9], DUTY_GRAD_STEP);
+	setAddress(&ScrlB[10], DUTY_SW_FRM);
+	setAddress(&ScrlB[11], SMOOTH_RATIO);
+	setAddress(&ScrlB[12], MATRIX_WEIGHTING_A);
+	setAddress(&ScrlB[13], MATRIX_WEIGHTING_B);
+	setAddress(&ScrlB[14], MATRIX_WEIGHTING_C);
+	setAddress(&ScrlB[15], MATRIX_WEIGHTING_D);
+	setAddress(&ScrlB[16], MATRIX_WEIGHTING_E);
+	setAddress(&ScrlB[17], MATRIX_WEIGHTING_F);
+	setAddress(&ScrlB[18], MATRIX_WEIGHTING_EDGE);
+	setAddress(&ScrlB[19], MATRIX_WEIGHTING_CORNER);
 
     } else if (MainForm->addr_place == 1) {
 	GetAddr(&ScrlB[0], "PWM_BL_IDX");
@@ -180,18 +180,18 @@ TBit2 *DCR_11307::SetScrollBar2()
 {
     TBit2 *ScrlB = new TBit2[DCRScrollBar2_Nbr];
     if (MainForm->addr_place == 0) {
-	SetAddr(&ScrlB[0], PWM_COEFF_A);
-	SetAddr(&ScrlB[1], PWM_COEFF_B);
-	SetAddr(&ScrlB[2], MIN_IDX_CUM_RATIO);
-	SetAddr(&ScrlB[3], MAX_IDX_CUM_RATIO);
-	SetAddr(&ScrlB[4], BSM_IDX);
-	SetAddr(&ScrlB[5], LIGHT_THRESHOLD);
-	SetAddr(&ScrlB[6], SW_DEMO_TIME);
-	SetAddr(&ScrlB[7], BL_GRAD_STEP_UP);
-	SetAddr(&ScrlB[8], BL_GRAD_STEP_DN);
-	SetAddr(&ScrlB[9], MIN_BL_IDX);
-	SetAddr(&ScrlB[10], GS_TIME);
-	SetAddr(&ScrlB[11], HIST_DIFF_RATIO);
+	setAddress(&ScrlB[0], PWM_COEFF_A);
+	setAddress(&ScrlB[1], PWM_COEFF_B);
+	setAddress(&ScrlB[2], MIN_IDX_CUM_RATIO);
+	setAddress(&ScrlB[3], MAX_IDX_CUM_RATIO);
+	setAddress(&ScrlB[4], BSM_IDX);
+	setAddress(&ScrlB[5], LIGHT_THRESHOLD);
+	setAddress(&ScrlB[6], SW_DEMO_TIME);
+	setAddress(&ScrlB[7], BL_GRAD_STEP_UP);
+	setAddress(&ScrlB[8], BL_GRAD_STEP_DN);
+	setAddress(&ScrlB[9], MIN_BL_IDX);
+	setAddress(&ScrlB[10], GS_TIME);
+	setAddress(&ScrlB[11], HIST_DIFF_RATIO);
 
 
     } else if (MainForm->addr_place == 1) {
@@ -207,14 +207,14 @@ TBit2 *DCR_11307::SetDCRLblE2()
     TBit2 *LEdt = new TBit2[DCRLblE2_Nbr];	//1
 
     if (MainForm->addr_place == 0) {
-	SetAddr(&LEdt[0], H_SECTION_NUM);
-	SetAddr(&LEdt[1], V_SECTION_NUM);
-	SetAddr(&LEdt[2], HORIZONTAL_DIVIDE_NUM);
-	SetAddr(&LEdt[3], VERTICAL_DIVIDE_NUM);
-	SetAddr(&LEdt[4], DE_LENGTH);
-	SetAddr(&LEdt[5], LINE_NUM);
-	SetAddr(&LEdt[6], H_INTP_COEFF);
-	SetAddr(&LEdt[7], V_INTP_COEFF);
+	setAddress(&LEdt[0], H_SECTION_NUM);
+	setAddress(&LEdt[1], V_SECTION_NUM);
+	setAddress(&LEdt[2], HORIZONTAL_DIVIDE_NUM);
+	setAddress(&LEdt[3], VERTICAL_DIVIDE_NUM);
+	setAddress(&LEdt[4], DE_LENGTH);
+	setAddress(&LEdt[5], LINE_NUM);
+	setAddress(&LEdt[6], H_INTP_COEFF);
+	setAddress(&LEdt[7], V_INTP_COEFF);
 
     } else if (MainForm->addr_place == 1) {
 	GetAddr(&LEdt[0], "SLOPE");
@@ -228,8 +228,8 @@ TBit3 *DCR_11307::SetLblE3()
     TBit3 *LblE = new TBit3[DCRLblE3_Nbr];
 
     if (MainForm->addr_place == 0) {
-	SetAddr(&LblE[0], SLOPE);
-	SetAddr(&LblE[1], GRAY_SCALE_UNIT);
+	setAddress(&LblE[0], SLOPE);
+	setAddress(&LblE[1], GRAY_SCALE_UNIT);
 
     } else if (MainForm->addr_place == 1) {
 	//GetAddr(&LblE[0],"SLOPE");
@@ -242,9 +242,9 @@ TLUT *DCR_11307::SetLUT()
 {
     TLUT *LUT = new TLUT[DCRLUT_Nbr];
     if (MainForm->addr_place == 0) {
-	SetAddr(&LUT[0], HM_LUT);
-	SetAddr(&LUT[1], BL_LUT);
-	SetAddr(&LUT[2], DIM_LUT);
+	setAddress(&LUT[0], HM_LUT);
+	setAddress(&LUT[1], BL_LUT);
+	setAddress(&LUT[2], DIM_LUT);
 
     } else if (MainForm->addr_place == 1) {
 	GetAddr(&LUT[0], "HM_LUT");
@@ -262,9 +262,9 @@ TBit *DCR_11307::SetALSChkBx()
 {
     TBit *ChkBox = new TBit[ALSChkBox_Nbr];
     if (MainForm->addr_place == 0) {
-	SetAddr(&ChkBox[0], SMBUS_EN);
-	SetAddr(&ChkBox[1], ALS_EN);
-	SetAddr(&ChkBox[2], ALS_COM_SEL);
+	setAddress(&ChkBox[0], SMBUS_EN);
+	setAddress(&ChkBox[1], ALS_EN);
+	setAddress(&ChkBox[2], ALS_COM_SEL);
 
     } else if (MainForm->addr_place == 1) {
 	GetAddr(&ChkBox[0], "BL_EN");
@@ -284,7 +284,7 @@ TBit *DCR_11307::SetALSCboBx()
 {
     TBit *CboBox = new TBit[ALSCboBox_Nbr];
     if (MainForm->addr_place == 0) {
-	SetAddr(&CboBox[0], IN_LUX_SEL);
+	setAddress(&CboBox[0], IN_LUX_SEL);
 
     } else if (MainForm->addr_place == 1) {
 	GetAddr(&CboBox[0], "PWM_MODE");
@@ -300,24 +300,24 @@ TBit *DCR_11307::SetALSScrollBar()
 {
     TBit *ScrlB = new TBit[ALSScrollBar_Nbr];
     if (MainForm->addr_place == 0) {
-	SetAddr(&ScrlB[0], SMBUS_DEV_ADDR);
-	SetAddr(&ScrlB[1], SMBUS_REG_ADDR);
-	SetAddr(&ScrlB[2], ALS_SEGM_COEF);
-	SetAddr(&ScrlB[3], ALS_SLOPE);
-	SetAddr(&ScrlB[4], ALS_SW_FRM);
-	SetAddr(&ScrlB[5], ALS_SAMP_FRM);
-	SetAddr(&ScrlB[6], STABLE_CNT_NUM);
-	SetAddr(&ScrlB[7], DIF_THRESHOLD);
-	SetAddr(&ScrlB[8], ALS_MAX_LUX);
-	SetAddr(&ScrlB[9], ALS_MIN_LUX);
-	SetAddr(&ScrlB[10], ALS_DEV_ADDR);
-	SetAddr(&ScrlB[11], ALS_COM_ADDR);
-	SetAddr(&ScrlB[12], ALS_COM_SET1);
-	SetAddr(&ScrlB[13], ALS_COM_SET2);
-	SetAddr(&ScrlB[14], ALS_DATA_ADDR1);
-	SetAddr(&ScrlB[15], ALS_DATA_ADDR2);
-	SetAddr(&ScrlB[16], BL_2_ALS_TH);
-	SetAddr(&ScrlB[17], TEST_LUX);
+	setAddress(&ScrlB[0], SMBUS_DEV_ADDR);
+	setAddress(&ScrlB[1], SMBUS_REG_ADDR);
+	setAddress(&ScrlB[2], ALS_SEGM_COEF);
+	setAddress(&ScrlB[3], ALS_SLOPE);
+	setAddress(&ScrlB[4], ALS_SW_FRM);
+	setAddress(&ScrlB[5], ALS_SAMP_FRM);
+	setAddress(&ScrlB[6], STABLE_CNT_NUM);
+	setAddress(&ScrlB[7], DIF_THRESHOLD);
+	setAddress(&ScrlB[8], ALS_MAX_LUX);
+	setAddress(&ScrlB[9], ALS_MIN_LUX);
+	setAddress(&ScrlB[10], ALS_DEV_ADDR);
+	setAddress(&ScrlB[11], ALS_COM_ADDR);
+	setAddress(&ScrlB[12], ALS_COM_SET1);
+	setAddress(&ScrlB[13], ALS_COM_SET2);
+	setAddress(&ScrlB[14], ALS_DATA_ADDR1);
+	setAddress(&ScrlB[15], ALS_DATA_ADDR2);
+	setAddress(&ScrlB[16], BL_2_ALS_TH);
+	setAddress(&ScrlB[17], TEST_LUX);
 
     } else if (MainForm->addr_place == 1) {
 	GetAddr(&ScrlB[0], "PWM_BL_IDX");
@@ -340,12 +340,12 @@ TBit *DCR_11307::SetHDRCboBx()
 {
     TBit *CboBox = new TBit[HDRCboBox_Nbr];
     if (MainForm->addr_place == 0) {
-	SetAddr(&CboBox[0], HSC_DRIVER_MULT);
-	SetAddr(&CboBox[1], HSC_DATA_ORD);
-	SetAddr(&CboBox[2], HSC_DATA_ORD_CHROW);
-	SetAddr(&CboBox[3], HSC_DEV_ADDR_ORD);
-	SetAddr(&CboBox[4], PWM_WAVEFORM);
-	SetAddr(&CboBox[5], HSC_PWM_FREQ);
+	setAddress(&CboBox[0], HSC_DRIVER_MULT);
+	setAddress(&CboBox[1], HSC_DATA_ORD);
+	setAddress(&CboBox[2], HSC_DATA_ORD_CHROW);
+	setAddress(&CboBox[3], HSC_DEV_ADDR_ORD);
+	setAddress(&CboBox[4], PWM_WAVEFORM);
+	setAddress(&CboBox[5], HSC_PWM_FREQ);
 
 
     } else if (MainForm->addr_place == 1) {
@@ -398,23 +398,23 @@ TBit *DCR_11307::SetHDRScrollBar()
 {
     TBit *ScrlB = new TBit[HDRScrollBar_Nbr];
     if (MainForm->addr_place == 0) {
-	/*        SetAddr(&ScrlB[0],fix_phase_shift);
-	   SetAddr(&ScrlB[1],scanning_offset_row_01);
-	   SetAddr(&ScrlB[2],scanning_offset_row_02);
-	   SetAddr(&ScrlB[3],scanning_offset_row_03);
-	   SetAddr(&ScrlB[4],scanning_offset_row_04);
-	   SetAddr(&ScrlB[5],scanning_offset_row_05);
-	   SetAddr(&ScrlB[6],scanning_offset_row_06);
-	   SetAddr(&ScrlB[7],scanning_offset_row_07);
-	   SetAddr(&ScrlB[8],scanning_offset_row_08);
-	   SetAddr(&ScrlB[9],scanning_offset_row_09);
-	   SetAddr(&ScrlB[10],scanning_offset_row_10);
-	   SetAddr(&ScrlB[11],scanning_offset_row_11);
-	   SetAddr(&ScrlB[12],scanning_offset_row_12);
-	   SetAddr(&ScrlB[13],scanning_offset_row_13);
-	   SetAddr(&ScrlB[14],scanning_offset_row_14);
-	   SetAddr(&ScrlB[15],scanning_offset_row_15);
-	   SetAddr(&ScrlB[16],scanning_offset_row_16);
+	/*        setAddress(&ScrlB[0],fix_phase_shift);
+	   setAddress(&ScrlB[1],scanning_offset_row_01);
+	   setAddress(&ScrlB[2],scanning_offset_row_02);
+	   setAddress(&ScrlB[3],scanning_offset_row_03);
+	   setAddress(&ScrlB[4],scanning_offset_row_04);
+	   setAddress(&ScrlB[5],scanning_offset_row_05);
+	   setAddress(&ScrlB[6],scanning_offset_row_06);
+	   setAddress(&ScrlB[7],scanning_offset_row_07);
+	   setAddress(&ScrlB[8],scanning_offset_row_08);
+	   setAddress(&ScrlB[9],scanning_offset_row_09);
+	   setAddress(&ScrlB[10],scanning_offset_row_10);
+	   setAddress(&ScrlB[11],scanning_offset_row_11);
+	   setAddress(&ScrlB[12],scanning_offset_row_12);
+	   setAddress(&ScrlB[13],scanning_offset_row_13);
+	   setAddress(&ScrlB[14],scanning_offset_row_14);
+	   setAddress(&ScrlB[15],scanning_offset_row_15);
+	   setAddress(&ScrlB[16],scanning_offset_row_16);
 
 	 */
     } else if (MainForm->addr_place == 1) {
@@ -437,23 +437,23 @@ TBit2 *DCR_11307::SetHDRScrollBar2()
 {
     TBit2 *ScrlB = new TBit2[HDRScrollBar2_Nbr];
     if (MainForm->addr_place == 0) {
-	SetAddr(&ScrlB[0], FIX_PHASE_SHIFT);
-	SetAddr(&ScrlB[1], SCANNING_OFFSET_ROW_01);
-	SetAddr(&ScrlB[2], SCANNING_OFFSET_ROW_02);
-	SetAddr(&ScrlB[3], SCANNING_OFFSET_ROW_03);
-	SetAddr(&ScrlB[4], SCANNING_OFFSET_ROW_04);
-	SetAddr(&ScrlB[5], SCANNING_OFFSET_ROW_05);
-	SetAddr(&ScrlB[6], SCANNING_OFFSET_ROW_06);
-	SetAddr(&ScrlB[7], SCANNING_OFFSET_ROW_07);
-	SetAddr(&ScrlB[8], SCANNING_OFFSET_ROW_08);
-	SetAddr(&ScrlB[9], SCANNING_OFFSET_ROW_09);
-	SetAddr(&ScrlB[10], SCANNING_OFFSET_ROW_10);
-	SetAddr(&ScrlB[11], SCANNING_OFFSET_ROW_11);
-	SetAddr(&ScrlB[12], SCANNING_OFFSET_ROW_12);
-	SetAddr(&ScrlB[13], SCANNING_OFFSET_ROW_13);
-	SetAddr(&ScrlB[14], SCANNING_OFFSET_ROW_14);
-	SetAddr(&ScrlB[15], SCANNING_OFFSET_ROW_15);
-	SetAddr(&ScrlB[16], SCANNING_OFFSET_ROW_16);
+	setAddress(&ScrlB[0], FIX_PHASE_SHIFT);
+	setAddress(&ScrlB[1], SCANNING_OFFSET_ROW_01);
+	setAddress(&ScrlB[2], SCANNING_OFFSET_ROW_02);
+	setAddress(&ScrlB[3], SCANNING_OFFSET_ROW_03);
+	setAddress(&ScrlB[4], SCANNING_OFFSET_ROW_04);
+	setAddress(&ScrlB[5], SCANNING_OFFSET_ROW_05);
+	setAddress(&ScrlB[6], SCANNING_OFFSET_ROW_06);
+	setAddress(&ScrlB[7], SCANNING_OFFSET_ROW_07);
+	setAddress(&ScrlB[8], SCANNING_OFFSET_ROW_08);
+	setAddress(&ScrlB[9], SCANNING_OFFSET_ROW_09);
+	setAddress(&ScrlB[10], SCANNING_OFFSET_ROW_10);
+	setAddress(&ScrlB[11], SCANNING_OFFSET_ROW_11);
+	setAddress(&ScrlB[12], SCANNING_OFFSET_ROW_12);
+	setAddress(&ScrlB[13], SCANNING_OFFSET_ROW_13);
+	setAddress(&ScrlB[14], SCANNING_OFFSET_ROW_14);
+	setAddress(&ScrlB[15], SCANNING_OFFSET_ROW_15);
+	setAddress(&ScrlB[16], SCANNING_OFFSET_ROW_16);
 
     } else if (MainForm->addr_place == 1) {
 	GetAddr(&ScrlB[0], "PWM_COEFF_A");
@@ -467,11 +467,11 @@ TBit2 *DCR_11307::SetHDRLblE2()
     TBit2 *LEdt = new TBit2[HDRLblE2_Nbr];	//1
 
     if (MainForm->addr_place == 0) {
-	SetAddr(&LEdt[0], HSC_ROW_DRIVER_NUM);
-	SetAddr(&LEdt[1], HSC_DRIVER_CH_1);
-	SetAddr(&LEdt[2], HSC_DRIVER_CH_2);
-	SetAddr(&LEdt[3], HSC_DRIVER_CH_3);
-	SetAddr(&LEdt[4], HSC_DRIVER_CH_4);
+	setAddress(&LEdt[0], HSC_ROW_DRIVER_NUM);
+	setAddress(&LEdt[1], HSC_DRIVER_CH_1);
+	setAddress(&LEdt[2], HSC_DRIVER_CH_2);
+	setAddress(&LEdt[3], HSC_DRIVER_CH_3);
+	setAddress(&LEdt[4], HSC_DRIVER_CH_4);
 
     } else if (MainForm->addr_place == 1) {
 	GetAddr(&LEdt[0], "SLOPE");

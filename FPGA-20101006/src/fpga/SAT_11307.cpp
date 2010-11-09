@@ -19,16 +19,16 @@ SATForm_11307::SATForm_11307(){
 // CheckBox
 TBit* SATForm_11307::SetChkBx(){
         TBit* ChkBox = new TBit [ChkBox_Nbr];
-        SetAddr(&ChkBox[0],SAT_EN);
-        SetAddr(&ChkBox[1],SAT_DEMO);
-        SetAddr(&ChkBox[2],SAT_DEMO_LEFT);
+        setAddress(&ChkBox[0],SAT_EN);
+        setAddress(&ChkBox[1],SAT_DEMO);
+        setAddress(&ChkBox[2],SAT_DEMO_LEFT);
         return ChkBox;
 }
 
 // ComboBox
 TBit* SATForm_11307::SetCboBx(){
         TBit* CboBox = new TBit [CboBox_Nbr];
-        //SetAddr(&CboBox[0],PWM_MODE);
+        //setAddress(&CboBox[0],PWM_MODE);
 
         /*CboBox[0].choice_nbr = 2;
         CboBox[0].choice = new String [2];
@@ -53,14 +53,14 @@ TBit4* SATForm_11307::SetLblE4(){
 // ScrollBar 1 byte
 TBit* SATForm_11307::SetScrollBar(){
         TBit* ScrlB = new TBit [ScrollBar_Nbr];
-        SetAddr(&ScrlB[0],SAT_LEVEL);
+        setAddress(&ScrlB[0],SAT_LEVEL);
         return ScrlB;
 }
 
 // ScrollBar 2 byte
 TBit2* SATForm_11307::SetScrollBar2(){
         TBit2* ScrlB = new TBit2 [ScrollBar2_Nbr];
-        //SetAddr(&ScrlB[0],PWM_COEFF_A);
+        //setAddress(&ScrlB[0],PWM_COEFF_A);
         return ScrlB;
 }
 

@@ -33,19 +33,19 @@ TBit *TCON_11307::SetDevChkBx()	//12
     //CheckBox數量等於TCON1.cpp裡的DevChkBox_Nbr數量, 必須大於index
     TBit *ChkBox = new TBit[DevChkBox_Nbr];
     if (MainForm->addr_place == 0) {
-	//SetAddr(&ChkBox[0],_NULL);
-	SetAddr(&ChkBox[0], SSCG_EN);	//20100624
-	SetAddr(&ChkBox[1], GAT_CLK_EN);	//
-	SetAddr(&ChkBox[2], IMGEN_HUE);	//
-	SetAddr(&ChkBox[3], IMGEN_SP);	//
-	SetAddr(&ChkBox[4], IMGEN_CM);	//
-	SetAddr(&ChkBox[5], DCREN_DYN_BL);	//
-	SetAddr(&ChkBox[6], DCREN_GLT);	//
-	SetAddr(&ChkBox[7], IMGEN_FRC);	//
-	SetAddr(&ChkBox[8], IMGEN_GAM);	//
-	SetAddr(&ChkBox[9], CLK_NG_AUO_EN);	//                                                                     
-	SetAddr(&ChkBox[10], CLK_STOP_EN);	//
-	SetAddr(&ChkBox[11], CLK_NG_VENDOR_EN);	//
+	//setAddress(&ChkBox[0],_NULL);
+	setAddress(&ChkBox[0], SSCG_EN);	//20100624
+	setAddress(&ChkBox[1], GAT_CLK_EN);	//
+	setAddress(&ChkBox[2], IMGEN_HUE);	//
+	setAddress(&ChkBox[3], IMGEN_SP);	//
+	setAddress(&ChkBox[4], IMGEN_CM);	//
+	setAddress(&ChkBox[5], DCREN_DYN_BL);	//
+	setAddress(&ChkBox[6], DCREN_GLT);	//
+	setAddress(&ChkBox[7], IMGEN_FRC);	//
+	setAddress(&ChkBox[8], IMGEN_GAM);	//
+	setAddress(&ChkBox[9], CLK_NG_AUO_EN);	//                                                                     
+	setAddress(&ChkBox[10], CLK_STOP_EN);	//
+	setAddress(&ChkBox[11], CLK_NG_VENDOR_EN);	//
 
     } else if (MainForm->addr_place == 1) {
 	GetAddr(&ChkBox[0], "SSCG_EN");	//20100624
@@ -70,8 +70,8 @@ TBit *TCON_11307::SetDevCboBx()	//2
     TBit *CboBox = new TBit[DevCboBox_Nbr];
 
     if (MainForm->addr_place == 0) {
-	SetAddr(&CboBox[0], SSCG_SEL);	//20100624                
-	SetAddr(&CboBox[1], OTP_PTM);	//
+	setAddress(&CboBox[0], SSCG_SEL);	//20100624                
+	setAddress(&CboBox[1], OTP_PTM);	//
 
     } else if (MainForm->addr_place == 1) {
 	GetAddr(&CboBox[0], "SSCG_SEL");	//20100624               
@@ -103,14 +103,14 @@ TBit2 *TCON_11307::SetDevLblE2()	//8
     TBit2 *LEdt = new TBit2[DevLblE2_Nbr];
 
     if (MainForm->addr_place == 0) {
-	SetAddr(&LEdt[0], PROG_1);	//
-	SetAddr(&LEdt[1], PROG_2);	//
-	SetAddr(&LEdt[2], CLK_NG_AUO_TIME);	//
-	SetAddr(&LEdt[3], CLK_NG_AUO_DETREG);	//
-	SetAddr(&LEdt[4], DEBUNCE_PERIOD);	//
-	SetAddr(&LEdt[5], CLK_NG_HFREQ_MARGIN);	//
-	SetAddr(&LEdt[6], CLK_NG_LFREQ_MARGIN);	//
-	SetAddr(&LEdt[7], CLK_STOP_DETREG);	//      
+	setAddress(&LEdt[0], PROG_1);	//
+	setAddress(&LEdt[1], PROG_2);	//
+	setAddress(&LEdt[2], CLK_NG_AUO_TIME);	//
+	setAddress(&LEdt[3], CLK_NG_AUO_DETREG);	//
+	setAddress(&LEdt[4], DEBUNCE_PERIOD);	//
+	setAddress(&LEdt[5], CLK_NG_HFREQ_MARGIN);	//
+	setAddress(&LEdt[6], CLK_NG_LFREQ_MARGIN);	//
+	setAddress(&LEdt[7], CLK_STOP_DETREG);	//      
 
     } else if (MainForm->addr_place == 1) {
 	GetAddr(&LEdt[0], "PROG_1(0~7)");	//
@@ -131,19 +131,19 @@ TBit *TCON_11307::SetIOChkBx()
 {
     TBit *ChkBox = new TBit[IOChkBox_Nbr];	//13
     if (MainForm->addr_place == 0) {
-	SetAddr(&ChkBox[0], IP8B);	//20100624
-	SetAddr(&ChkBox[1], LORD_INV);	//  
-	SetAddr(&ChkBox[2], CHPN);	//
-	SetAddr(&ChkBox[3], CHFB);	//
-	SetAddr(&ChkBox[4], CHWB);	//
-	SetAddr(&ChkBox[5], CHRB);	//
-	SetAddr(&ChkBox[6], CHML);	//
-	SetAddr(&ChkBox[7], OP3P);	//
-	SetAddr(&ChkBox[8], S2D_EN);	//          
-	SetAddr(&ChkBox[9], OP8B);	//
-	SetAddr(&ChkBox[10], FRVS);	//
-	SetAddr(&ChkBox[11], BRVS);	//                                
-	SetAddr(&ChkBox[12], PPFB_4P);	//       
+	setAddress(&ChkBox[0], IP8B);	//20100624
+	setAddress(&ChkBox[1], LORD_INV);	//  
+	setAddress(&ChkBox[2], CHPN);	//
+	setAddress(&ChkBox[3], CHFB);	//
+	setAddress(&ChkBox[4], CHWB);	//
+	setAddress(&ChkBox[5], CHRB);	//
+	setAddress(&ChkBox[6], CHML);	//
+	setAddress(&ChkBox[7], OP3P);	//
+	setAddress(&ChkBox[8], S2D_EN);	//          
+	setAddress(&ChkBox[9], OP8B);	//
+	setAddress(&ChkBox[10], FRVS);	//
+	setAddress(&ChkBox[11], BRVS);	//                                
+	setAddress(&ChkBox[12], PPFB_4P);	//       
 
     } else if (MainForm->addr_place == 1) {
 	GetAddr(&ChkBox[0], "IP8B");	//20100624
@@ -168,7 +168,7 @@ TBit *TCON_11307::SetIOCboBx()	//1
 {
     TBit *CboBox = new TBit[IOCboBox_Nbr];
     if (MainForm->addr_place == 0) {
-	SetAddr(&CboBox[0], RES);	//20100624
+	setAddress(&CboBox[0], RES);	//20100624
     } else if (MainForm->addr_place == 1) {
 	GetAddr(&CboBox[0], "RES");	//20100624
     }
@@ -200,24 +200,24 @@ TBit *TCON_11307::SetDrvChkBx()	//18
 {
     TBit *ChkBox = new TBit[DrvChkBox_Nbr];
     if (MainForm->addr_place == 0) {
-	SetAddr(&ChkBox[0], HSD_EN);	//
-	SetAddr(&ChkBox[1], FIX_GATE_ON_EN);	//                                      
-	SetAddr(&ChkBox[2], TDEF_EN);	//                
-	SetAddr(&ChkBox[3], OFF_YOE2_3);	//                
-	SetAddr(&ChkBox[4], PRE_GIC);	//                 
-	SetAddr(&ChkBox[5], SWAPM);	//              
-	SetAddr(&ChkBox[6], SWAPL);	// 
-	SetAddr(&ChkBox[7], OE_AREA_PART_EN);	//
-	SetAddr(&ChkBox[8], ONE_Y);	//
-	SetAddr(&ChkBox[9], MIRROR);	//
-	SetAddr(&ChkBox[10], PPML_EN);	//                
-	SetAddr(&ChkBox[11], POLEN_CTRL);	// 
-	SetAddr(&ChkBox[12], DYN_POL_EN);	//                                                          
-	SetAddr(&ChkBox[13], POL_THRES_DEF_EN);	//
-	SetAddr(&ChkBox[14], SDR_DYN_POL_EN);	//
-	SetAddr(&ChkBox[15], MGOA_REF_EN);	//
-	SetAddr(&ChkBox[16], VST_SNG);	//
-	SetAddr(&ChkBox[17], HSD_DUMMY_EN);	//
+	setAddress(&ChkBox[0], HSD_EN);	//
+	setAddress(&ChkBox[1], FIX_GATE_ON_EN);	//                                      
+	setAddress(&ChkBox[2], TDEF_EN);	//                
+	setAddress(&ChkBox[3], OFF_YOE2_3);	//                
+	setAddress(&ChkBox[4], PRE_GIC);	//                 
+	setAddress(&ChkBox[5], SWAPM);	//              
+	setAddress(&ChkBox[6], SWAPL);	// 
+	setAddress(&ChkBox[7], OE_AREA_PART_EN);	//
+	setAddress(&ChkBox[8], ONE_Y);	//
+	setAddress(&ChkBox[9], MIRROR);	//
+	setAddress(&ChkBox[10], PPML_EN);	//                
+	setAddress(&ChkBox[11], POLEN_CTRL);	// 
+	setAddress(&ChkBox[12], DYN_POL_EN);	//                                                          
+	setAddress(&ChkBox[13], POL_THRES_DEF_EN);	//
+	setAddress(&ChkBox[14], SDR_DYN_POL_EN);	//
+	setAddress(&ChkBox[15], MGOA_REF_EN);	//
+	setAddress(&ChkBox[16], VST_SNG);	//
+	setAddress(&ChkBox[17], HSD_DUMMY_EN);	//
 
     } else if (MainForm->addr_place == 1) {
 	GetAddr(&ChkBox[0], "HSD_EN");	//                
@@ -247,15 +247,15 @@ TBit *TCON_11307::SetDrvCboBx()	//9
     TBit *CboBox = new TBit[DrvCboBox_Nbr];
 
     if (MainForm->addr_place == 0) {
-	SetAddr(&CboBox[0], HSD_MODE);	//                                           
-	SetAddr(&CboBox[1], BGI);	//
-	SetAddr(&CboBox[2], TF_INV);	//
-	SetAddr(&CboBox[3], INV_SEL);	//
-	SetAddr(&CboBox[4], POL_FRAME_4N_SEL);	//     
-	SetAddr(&CboBox[5], MULTI_GOA_SEL);	//
-	SetAddr(&CboBox[6], MULTI_GOA_PRESEL);	//
-	SetAddr(&CboBox[7], TCON_POL_JUDGE_SEL);	//
-	SetAddr(&CboBox[8], VST_FALLING_EXT);	//
+	setAddress(&CboBox[0], HSD_MODE);	//                                           
+	setAddress(&CboBox[1], BGI);	//
+	setAddress(&CboBox[2], TF_INV);	//
+	setAddress(&CboBox[3], INV_SEL);	//
+	setAddress(&CboBox[4], POL_FRAME_4N_SEL);	//     
+	setAddress(&CboBox[5], MULTI_GOA_SEL);	//
+	setAddress(&CboBox[6], MULTI_GOA_PRESEL);	//
+	setAddress(&CboBox[7], TCON_POL_JUDGE_SEL);	//
+	setAddress(&CboBox[8], VST_FALLING_EXT);	//
     } else if (MainForm->addr_place == 1) {
 	GetAddr(&CboBox[0], "HSD_MODE");	//                
 	GetAddr(&CboBox[1], "BGI");	//
@@ -338,15 +338,15 @@ TBit2 *TCON_11307::SetDrvLblE()	//9
     TBit2 *LEdt = new TBit2[DrvLblE2_Nbr];
 
     if (MainForm->addr_place == 0) {
-	SetAddr(&LEdt[0], OE_AREA1);	//
-	SetAddr(&LEdt[1], OE_AREA2);	//
-	SetAddr(&LEdt[2], BGI_GRAY);	//
-	SetAddr(&LEdt[3], PP_PORT_NUM);	//
-	SetAddr(&LEdt[4], POL_LOW_THRES);	//
-	SetAddr(&LEdt[5], POL_HIGH_THRES);	//
-	SetAddr(&LEdt[6], SDR_POL_PIX_THRES);	//
-	SetAddr(&LEdt[7], DUMMY_CK_NUM);	//
-	SetAddr(&LEdt[8], HSD_DUMMY_DIV2);	//        
+	setAddress(&LEdt[0], OE_AREA1);	//
+	setAddress(&LEdt[1], OE_AREA2);	//
+	setAddress(&LEdt[2], BGI_GRAY);	//
+	setAddress(&LEdt[3], PP_PORT_NUM);	//
+	setAddress(&LEdt[4], POL_LOW_THRES);	//
+	setAddress(&LEdt[5], POL_HIGH_THRES);	//
+	setAddress(&LEdt[6], SDR_POL_PIX_THRES);	//
+	setAddress(&LEdt[7], DUMMY_CK_NUM);	//
+	setAddress(&LEdt[8], HSD_DUMMY_DIV2);	//        
 
     } else if (MainForm->addr_place == 1) {
 	GetAddr(&LEdt[0], "OE_AREA1(0~4095)");	//
@@ -367,7 +367,7 @@ TBit3 *TCON_11307::SetDrvLblE3()	//1
     TBit3 *LEdt = new TBit3[DrvLblE3_Nbr];
 
     if (MainForm->addr_place == 0) {
-	SetAddr(&LEdt[0], SDR_POL_ACCUM_THRES);	//
+	setAddress(&LEdt[0], SDR_POL_ACCUM_THRES);	//
 
     } else if (MainForm->addr_place == 1) {
 	//GetAddr(&LEdt[0],"SDR_POL_ACCUM_THRES(0~8388607)"); // Not support GetAddr(TBit3)
@@ -382,176 +382,176 @@ TBit2 *TCON_11307::SetTimLblE2()
     TBit2 *LEdt = new TBit2[TimLblE2_Nbr];	//152
 
     if (MainForm->addr_place == 0) {
-	SetAddr(&LEdt[0], TXSTBR_DEF);	//6
-	SetAddr(&LEdt[35], TXSTBR_DEF2);	//
-	SetAddr(&LEdt[1], PWXSTB_DEF);	//
-	SetAddr(&LEdt[36], PWXSTB_DEF2);	//
-	SetAddr(&LEdt[2], TXPOL_DEF);	//
-	SetAddr(&LEdt[3], PWXRST_DEF);	//
+	setAddress(&LEdt[0], TXSTBR_DEF);	//6
+	setAddress(&LEdt[35], TXSTBR_DEF2);	//
+	setAddress(&LEdt[1], PWXSTB_DEF);	//
+	setAddress(&LEdt[36], PWXSTB_DEF2);	//
+	setAddress(&LEdt[2], TXPOL_DEF);	//
+	setAddress(&LEdt[3], PWXRST_DEF);	//
 	//Normal
-	SetAddr(&LEdt[4], TYDIOR_DEF);	//4
-	SetAddr(&LEdt[5], PWYDIO_DEF);	//
-	SetAddr(&LEdt[6], TYCLKR_DEF);	//
-	SetAddr(&LEdt[7], PWYCLK_DEF);	// 
+	setAddress(&LEdt[4], TYDIOR_DEF);	//4
+	setAddress(&LEdt[5], PWYDIO_DEF);	//
+	setAddress(&LEdt[6], TYCLKR_DEF);	//
+	setAddress(&LEdt[7], PWYCLK_DEF);	// 
 	//Frame 60
-	SetAddr(&LEdt[8], TYOEF_DEF);	//8
-	SetAddr(&LEdt[37], TYOEF_DEF2);	//
-	SetAddr(&LEdt[9], PWYOE_DEF);	//
-	SetAddr(&LEdt[38], PWYOE_DEF2);	//
-	SetAddr(&LEdt[10], TYV1CF_DEF);	//
-	SetAddr(&LEdt[39], TYV1CF_DEF2);	//
-	SetAddr(&LEdt[11], PWYV1C_DEF);	//
-	SetAddr(&LEdt[40], PWYV1C_DEF2);	//
+	setAddress(&LEdt[8], TYOEF_DEF);	//8
+	setAddress(&LEdt[37], TYOEF_DEF2);	//
+	setAddress(&LEdt[9], PWYOE_DEF);	//
+	setAddress(&LEdt[38], PWYOE_DEF2);	//
+	setAddress(&LEdt[10], TYV1CF_DEF);	//
+	setAddress(&LEdt[39], TYV1CF_DEF2);	//
+	setAddress(&LEdt[11], PWYV1C_DEF);	//
+	setAddress(&LEdt[40], PWYV1C_DEF2);	//
 	//Frame 40
-	SetAddr(&LEdt[16], TYOEF_FR2_DEF);	//8
-	SetAddr(&LEdt[41], TYOEF_FR2_DEF2);	//
-	SetAddr(&LEdt[17], PWYOE_FR2_DEF);	// 
-	SetAddr(&LEdt[42], PWYOE_FR2_DEF2);	//
-	SetAddr(&LEdt[18], TYV1CF_FR2_DEF);	// 
-	SetAddr(&LEdt[43], TYV1CF_FR2_DEF2);	//
-	SetAddr(&LEdt[19], PWYV1C_FR2_DEF);	//
-	SetAddr(&LEdt[44], PWYV1C_FR2_DEF2);	//
+	setAddress(&LEdt[16], TYOEF_FR2_DEF);	//8
+	setAddress(&LEdt[41], TYOEF_FR2_DEF2);	//
+	setAddress(&LEdt[17], PWYOE_FR2_DEF);	// 
+	setAddress(&LEdt[42], PWYOE_FR2_DEF2);	//
+	setAddress(&LEdt[18], TYV1CF_FR2_DEF);	// 
+	setAddress(&LEdt[43], TYV1CF_FR2_DEF2);	//
+	setAddress(&LEdt[19], PWYV1C_FR2_DEF);	//
+	setAddress(&LEdt[44], PWYV1C_FR2_DEF2);	//
 	//Frame 60 Area2
-	SetAddr(&LEdt[72], TYOEF_AREA2_DEF);	//8
-	SetAddr(&LEdt[73], TYOEF_AREA2_DEF2);	//
-	SetAddr(&LEdt[74], PWYOE_AREA2_DEF);	//
-	SetAddr(&LEdt[75], PWYOE_AREA2_DEF2);	//
-	SetAddr(&LEdt[51], TYV1CF_AREA2_DEF);	//
-	SetAddr(&LEdt[64], TYV1CF_AREA2_DEF2);	//
-	SetAddr(&LEdt[65], PWYV1C_AREA2_DEF);	//  
-	SetAddr(&LEdt[71], PWYV1C_AREA2_DEF2);	// 
+	setAddress(&LEdt[72], TYOEF_AREA2_DEF);	//8
+	setAddress(&LEdt[73], TYOEF_AREA2_DEF2);	//
+	setAddress(&LEdt[74], PWYOE_AREA2_DEF);	//
+	setAddress(&LEdt[75], PWYOE_AREA2_DEF2);	//
+	setAddress(&LEdt[51], TYV1CF_AREA2_DEF);	//
+	setAddress(&LEdt[64], TYV1CF_AREA2_DEF2);	//
+	setAddress(&LEdt[65], PWYV1C_AREA2_DEF);	//  
+	setAddress(&LEdt[71], PWYV1C_AREA2_DEF2);	// 
 	//Frame 40 Area2
-	SetAddr(&LEdt[92], TYOEF_FR2_AREA2_DEF);	//8
-	SetAddr(&LEdt[93], TYOEF_FR2_AREA2_DEF2);	//
-	SetAddr(&LEdt[94], PWYOE_FR2_AREA2_DEF);	//
-	SetAddr(&LEdt[95], PWYOE_FR2_AREA2_DEF2);	// 
-	SetAddr(&LEdt[88], TYV1CF_FR2_AREA2_DEF);	//
-	SetAddr(&LEdt[89], TYV1CF_FR2_AREA2_DEF2);	//
-	SetAddr(&LEdt[90], PWYV1C_FR2_AREA2_DEF);	//  
-	SetAddr(&LEdt[91], PWYV1C_FR2_AREA2_DEF2);	//                                                              
+	setAddress(&LEdt[92], TYOEF_FR2_AREA2_DEF);	//8
+	setAddress(&LEdt[93], TYOEF_FR2_AREA2_DEF2);	//
+	setAddress(&LEdt[94], PWYOE_FR2_AREA2_DEF);	//
+	setAddress(&LEdt[95], PWYOE_FR2_AREA2_DEF2);	// 
+	setAddress(&LEdt[88], TYV1CF_FR2_AREA2_DEF);	//
+	setAddress(&LEdt[89], TYV1CF_FR2_AREA2_DEF2);	//
+	setAddress(&LEdt[90], PWYV1C_FR2_AREA2_DEF);	//  
+	setAddress(&LEdt[91], PWYV1C_FR2_AREA2_DEF2);	//                                                              
 	//Frame 60 Area3 
-	SetAddr(&LEdt[86], TYOEF_AREA3_DEF);	//
-	SetAddr(&LEdt[87], TYOEF_AREA3_DEF2);	//
-	SetAddr(&LEdt[46], PWYOE_AREA3_DEF);	//8
-	SetAddr(&LEdt[34], PWYOE_AREA3_DEF2);	//
-	SetAddr(&LEdt[76], TYV1CF_AREA3_DEF);	//
-	SetAddr(&LEdt[82], TYV1CF_AREA3_DEF2);	//
-	SetAddr(&LEdt[84], PWYV1C_AREA3_DEF);	//
-	SetAddr(&LEdt[85], PWYV1C_AREA3_DEF2);	//
+	setAddress(&LEdt[86], TYOEF_AREA3_DEF);	//
+	setAddress(&LEdt[87], TYOEF_AREA3_DEF2);	//
+	setAddress(&LEdt[46], PWYOE_AREA3_DEF);	//8
+	setAddress(&LEdt[34], PWYOE_AREA3_DEF2);	//
+	setAddress(&LEdt[76], TYV1CF_AREA3_DEF);	//
+	setAddress(&LEdt[82], TYV1CF_AREA3_DEF2);	//
+	setAddress(&LEdt[84], PWYV1C_AREA3_DEF);	//
+	setAddress(&LEdt[85], PWYV1C_AREA3_DEF2);	//
 	//Frame 40 Area3
-	SetAddr(&LEdt[100], TYOEF_FR2_AREA3_DEF);	//8
-	SetAddr(&LEdt[101], TYOEF_FR2_AREA3_DEF2);	//
-	SetAddr(&LEdt[102], PWYOE_FR2_AREA3_DEF);	//
-	SetAddr(&LEdt[103], PWYOE_FR2_AREA3_DEF2);	//
-	SetAddr(&LEdt[96], TYV1CF_FR2_AREA3_DEF);	//
-	SetAddr(&LEdt[97], TYV1CF_FR2_AREA3_DEF2);	//
-	SetAddr(&LEdt[98], PWYV1C_FR2_AREA3_DEF);	//
-	SetAddr(&LEdt[99], PWYV1C_FR2_AREA3_DEF2);	//                                                                
+	setAddress(&LEdt[100], TYOEF_FR2_AREA3_DEF);	//8
+	setAddress(&LEdt[101], TYOEF_FR2_AREA3_DEF2);	//
+	setAddress(&LEdt[102], PWYOE_FR2_AREA3_DEF);	//
+	setAddress(&LEdt[103], PWYOE_FR2_AREA3_DEF2);	//
+	setAddress(&LEdt[96], TYV1CF_FR2_AREA3_DEF);	//
+	setAddress(&LEdt[97], TYV1CF_FR2_AREA3_DEF2);	//
+	setAddress(&LEdt[98], PWYV1C_FR2_AREA3_DEF);	//
+	setAddress(&LEdt[99], PWYV1C_FR2_AREA3_DEF2);	//                                                                
 	//Fix Gate On 60
-	SetAddr(&LEdt[12], TXSTBR_YOER_FIX_DEF);	//8
-	SetAddr(&LEdt[151], TXSTBR_YOER_FIX_DEF2);	//
-	SetAddr(&LEdt[13], PWYOE_FIX_DEF);	//
-	SetAddr(&LEdt[122], PWYOE_FIX_DEF2);	//
-	SetAddr(&LEdt[14], TYOER_YV1CF_FIX_DEF);	//
-	SetAddr(&LEdt[123], TYOER_YV1CF_FIX_DEF2);	//
-	SetAddr(&LEdt[15], PWYV1C_FIX_DEF);	//
-	SetAddr(&LEdt[124], PWYV1C_FIX_DEF2);	//                                             
+	setAddress(&LEdt[12], TXSTBR_YOER_FIX_DEF);	//8
+	setAddress(&LEdt[151], TXSTBR_YOER_FIX_DEF2);	//
+	setAddress(&LEdt[13], PWYOE_FIX_DEF);	//
+	setAddress(&LEdt[122], PWYOE_FIX_DEF2);	//
+	setAddress(&LEdt[14], TYOER_YV1CF_FIX_DEF);	//
+	setAddress(&LEdt[123], TYOER_YV1CF_FIX_DEF2);	//
+	setAddress(&LEdt[15], PWYV1C_FIX_DEF);	//
+	setAddress(&LEdt[124], PWYV1C_FIX_DEF2);	//                                             
 	//Fix Gate On 40
-	SetAddr(&LEdt[20], TXSTBR_YOER_FR2_FIX_DEF);	//8
-	SetAddr(&LEdt[144], TXSTBR_YOER_FR2_FIX_DEF2);	//
-	SetAddr(&LEdt[21], PWYOE_FR2_FIX_DEF);	//
-	SetAddr(&LEdt[145], PWYOE_FR2_FIX_DEF2);	//
-	SetAddr(&LEdt[22], TYOER_YV1CF_FR2_FIX_DEF);	//
-	SetAddr(&LEdt[105], TYOER_YV1CF_FR2_FIX_DEF2);	//
-	SetAddr(&LEdt[23], PWYV1C_FR2_FIX_DEF);	//
-	SetAddr(&LEdt[146], PWYV1C_FR2_FIX_DEF2);	//
+	setAddress(&LEdt[20], TXSTBR_YOER_FR2_FIX_DEF);	//8
+	setAddress(&LEdt[144], TXSTBR_YOER_FR2_FIX_DEF2);	//
+	setAddress(&LEdt[21], PWYOE_FR2_FIX_DEF);	//
+	setAddress(&LEdt[145], PWYOE_FR2_FIX_DEF2);	//
+	setAddress(&LEdt[22], TYOER_YV1CF_FR2_FIX_DEF);	//
+	setAddress(&LEdt[105], TYOER_YV1CF_FR2_FIX_DEF2);	//
+	setAddress(&LEdt[23], PWYV1C_FR2_FIX_DEF);	//
+	setAddress(&LEdt[146], PWYV1C_FR2_FIX_DEF2);	//
 	//Fix Gate On 60 Area2
-	SetAddr(&LEdt[115], TXSTBR_YOER_FIX_DEF_AREA2);	//
-	SetAddr(&LEdt[150], TXSTBR_YOER_FIX_DEF2_AREA2);	//
-	SetAddr(&LEdt[104], PWYOE_FIX_DEF_AREA2);	//8
-	SetAddr(&LEdt[125], PWYOE_FIX_DEF2_AREA2);	//
-	SetAddr(&LEdt[116], TYOER_YV1CF_FIX_DEF_AREA2);	//
-	SetAddr(&LEdt[126], TYOER_YV1CF_FIX_DEF2_AREA2);	//
-	SetAddr(&LEdt[117], PWYV1C_FIX_DEF_AREA2);	//
-	SetAddr(&LEdt[127], PWYV1C_FIX_DEF2_AREA2);	//  
+	setAddress(&LEdt[115], TXSTBR_YOER_FIX_DEF_AREA2);	//
+	setAddress(&LEdt[150], TXSTBR_YOER_FIX_DEF2_AREA2);	//
+	setAddress(&LEdt[104], PWYOE_FIX_DEF_AREA2);	//8
+	setAddress(&LEdt[125], PWYOE_FIX_DEF2_AREA2);	//
+	setAddress(&LEdt[116], TYOER_YV1CF_FIX_DEF_AREA2);	//
+	setAddress(&LEdt[126], TYOER_YV1CF_FIX_DEF2_AREA2);	//
+	setAddress(&LEdt[117], PWYV1C_FIX_DEF_AREA2);	//
+	setAddress(&LEdt[127], PWYV1C_FIX_DEF2_AREA2);	//  
 	//Fix Gate On 40 Area2
-	SetAddr(&LEdt[136], TXSTBR_YOER_FR2_FIX_DEF_AREA2);	//8
-	SetAddr(&LEdt[147], TXSTBR_YOER_FR2_FIX_DEF2_AREA2);	//
-	SetAddr(&LEdt[137], PWYOE_FR2_FIX_DEF_AREA2);	//
-	SetAddr(&LEdt[148], PWYOE_FR2_FIX_DEF2_AREA2);	//
-	SetAddr(&LEdt[138], TYOER_YV1CF_FR2_FIX_DEF_AREA2);	//
-	SetAddr(&LEdt[27], TYOER_YV1CF_FR2_FIX_DEF2_AREA2);	//
-	SetAddr(&LEdt[139], PWYV1C_FR2_FIX_DEF_AREA2);	//
-	SetAddr(&LEdt[28], PWYV1C_FR2_FIX_DEF2_AREA2);	//
+	setAddress(&LEdt[136], TXSTBR_YOER_FR2_FIX_DEF_AREA2);	//8
+	setAddress(&LEdt[147], TXSTBR_YOER_FR2_FIX_DEF2_AREA2);	//
+	setAddress(&LEdt[137], PWYOE_FR2_FIX_DEF_AREA2);	//
+	setAddress(&LEdt[148], PWYOE_FR2_FIX_DEF2_AREA2);	//
+	setAddress(&LEdt[138], TYOER_YV1CF_FR2_FIX_DEF_AREA2);	//
+	setAddress(&LEdt[27], TYOER_YV1CF_FR2_FIX_DEF2_AREA2);	//
+	setAddress(&LEdt[139], PWYV1C_FR2_FIX_DEF_AREA2);	//
+	setAddress(&LEdt[28], PWYV1C_FR2_FIX_DEF2_AREA2);	//
 	//Fix Gate On 60 Area3
-	SetAddr(&LEdt[119], TXSTBR_YOER_FIX_DEF_AREA3);	//               
-	SetAddr(&LEdt[128], TXSTBR_YOER_FIX_DEF2_AREA3);	//
-	SetAddr(&LEdt[118], PWYOE_FIX_DEF_AREA3);	//8
-	SetAddr(&LEdt[129], PWYOE_FIX_DEF2_AREA3);	//
-	SetAddr(&LEdt[120], TYOER_YV1CF_FIX_DEF_AREA3);	//
-	SetAddr(&LEdt[130], TYOER_YV1CF_FIX_DEF2_AREA3);	//
-	SetAddr(&LEdt[121], PWYV1C_FIX_DEF_AREA3);	//
-	SetAddr(&LEdt[131], PWYV1C_FIX_DEF2_AREA3);	//              
+	setAddress(&LEdt[119], TXSTBR_YOER_FIX_DEF_AREA3);	//               
+	setAddress(&LEdt[128], TXSTBR_YOER_FIX_DEF2_AREA3);	//
+	setAddress(&LEdt[118], PWYOE_FIX_DEF_AREA3);	//8
+	setAddress(&LEdt[129], PWYOE_FIX_DEF2_AREA3);	//
+	setAddress(&LEdt[120], TYOER_YV1CF_FIX_DEF_AREA3);	//
+	setAddress(&LEdt[130], TYOER_YV1CF_FIX_DEF2_AREA3);	//
+	setAddress(&LEdt[121], PWYV1C_FIX_DEF_AREA3);	//
+	setAddress(&LEdt[131], PWYV1C_FIX_DEF2_AREA3);	//              
 	//Fix Gate On 40 Area3
-	SetAddr(&LEdt[140], TXSTBR_YOER_FR2_FIX_DEF_AREA3);	//8
-	SetAddr(&LEdt[30], TXSTBR_YOER_FR2_FIX_DEF2_AREA3);	//
-	SetAddr(&LEdt[141], PWYOE_FR2_FIX_DEF_AREA3);	//
-	SetAddr(&LEdt[32], PWYOE_FR2_FIX_DEF2_AREA3);	//
-	SetAddr(&LEdt[142], TYOER_YV1CF_FR2_FIX_DEF_AREA3);	//
-	SetAddr(&LEdt[33], TYOER_YV1CF_FR2_FIX_DEF2_AREA3);	//
-	SetAddr(&LEdt[143], PWYV1C_FR2_FIX_DEF_AREA3);	//
-	SetAddr(&LEdt[48], PWYV1C_FR2_FIX_DEF2_AREA3);	//
+	setAddress(&LEdt[140], TXSTBR_YOER_FR2_FIX_DEF_AREA3);	//8
+	setAddress(&LEdt[30], TXSTBR_YOER_FR2_FIX_DEF2_AREA3);	//
+	setAddress(&LEdt[141], PWYOE_FR2_FIX_DEF_AREA3);	//
+	setAddress(&LEdt[32], PWYOE_FR2_FIX_DEF2_AREA3);	//
+	setAddress(&LEdt[142], TYOER_YV1CF_FR2_FIX_DEF_AREA3);	//
+	setAddress(&LEdt[33], TYOER_YV1CF_FR2_FIX_DEF2_AREA3);	//
+	setAddress(&LEdt[143], PWYV1C_FR2_FIX_DEF_AREA3);	//
+	setAddress(&LEdt[48], PWYV1C_FR2_FIX_DEF2_AREA3);	//
 	//Pre-Cgarge
-	SetAddr(&LEdt[24], TYOEF_PRE_DEF);	//17
-	SetAddr(&LEdt[50], TYOEF_FR2_PRE_DEF);	//
-	SetAddr(&LEdt[25], PWYOE_PRE_DEF);	//
-	SetAddr(&LEdt[106], PWYOE_FR2_PRE_DEF);	//
-	SetAddr(&LEdt[26], TYCLKR_PRE_DEF);	//
-	SetAddr(&LEdt[60], YV1CF_PRE_DEF);	//
-	SetAddr(&LEdt[62], YV1CF_FR2_PRE_DEF);	//
-	SetAddr(&LEdt[61], PWYV1C_PRE_DEF);	//
-	SetAddr(&LEdt[63], PWYV1C_FR2_PRE_DEF);	//
-	SetAddr(&LEdt[111], TXSTBR_YOER_FIX_DEF_PRE_AREA);	//
-	SetAddr(&LEdt[132], TXSTBR_YOER_FR2_FIX_DEF_PRE_AREA);	//
-	SetAddr(&LEdt[112], PWYOE_FIX_DEF_PRE_AREA);	//
-	SetAddr(&LEdt[133], PWYOE_FR2_FIX_DEF_PRE_AREA);	//
-	SetAddr(&LEdt[113], TYOER_YV1CF_FIX_DEF_PRE_AREA);	//
-	SetAddr(&LEdt[134], TYOER_YV1CF_FR2_FIX_DEF_PRE_AREA);	//
-	SetAddr(&LEdt[114], PWYV1C_FIX_DEF_PRE_AREA);	//  
-	SetAddr(&LEdt[135], PWYV1C_FR2_FIX_DEF_PRE_AREA);	//                                                                
+	setAddress(&LEdt[24], TYOEF_PRE_DEF);	//17
+	setAddress(&LEdt[50], TYOEF_FR2_PRE_DEF);	//
+	setAddress(&LEdt[25], PWYOE_PRE_DEF);	//
+	setAddress(&LEdt[106], PWYOE_FR2_PRE_DEF);	//
+	setAddress(&LEdt[26], TYCLKR_PRE_DEF);	//
+	setAddress(&LEdt[60], YV1CF_PRE_DEF);	//
+	setAddress(&LEdt[62], YV1CF_FR2_PRE_DEF);	//
+	setAddress(&LEdt[61], PWYV1C_PRE_DEF);	//
+	setAddress(&LEdt[63], PWYV1C_FR2_PRE_DEF);	//
+	setAddress(&LEdt[111], TXSTBR_YOER_FIX_DEF_PRE_AREA);	//
+	setAddress(&LEdt[132], TXSTBR_YOER_FR2_FIX_DEF_PRE_AREA);	//
+	setAddress(&LEdt[112], PWYOE_FIX_DEF_PRE_AREA);	//
+	setAddress(&LEdt[133], PWYOE_FR2_FIX_DEF_PRE_AREA);	//
+	setAddress(&LEdt[113], TYOER_YV1CF_FIX_DEF_PRE_AREA);	//
+	setAddress(&LEdt[134], TYOER_YV1CF_FR2_FIX_DEF_PRE_AREA);	//
+	setAddress(&LEdt[114], PWYV1C_FIX_DEF_PRE_AREA);	//  
+	setAddress(&LEdt[135], PWYV1C_FR2_FIX_DEF_PRE_AREA);	//                                                                
 	// GOA
-	SetAddr(&LEdt[66], PWVDDA_DEF);	//2
-	SetAddr(&LEdt[108], PWLOW_REF_PRE12_DEF);	//  
+	setAddress(&LEdt[66], PWVDDA_DEF);	//2
+	setAddress(&LEdt[108], PWLOW_REF_PRE12_DEF);	//  
 	//GOA 60
-	SetAddr(&LEdt[77], TVCK_REF_PRE2_DEF);	//11 
-	SetAddr(&LEdt[52], TVCK_1ST_DEF);	//
-	SetAddr(&LEdt[107], TVCKR_DEF);	//                                                
-	SetAddr(&LEdt[29], TVCK_DEF);	//
-	SetAddr(&LEdt[45], TVCK_DEF2);	// Check use it?
-	SetAddr(&LEdt[31], PWVCS_DEF);	// 
-	SetAddr(&LEdt[47], PWVCS_DEF2);	//
-	SetAddr(&LEdt[109], PWVCS_DEF3);	//
-	SetAddr(&LEdt[67], PWVCK_DEF);	// 
-	SetAddr(&LEdt[69], PWVCK_DEF2);	// 
-	SetAddr(&LEdt[79], PWVCK_DEF3);	//                
+	setAddress(&LEdt[77], TVCK_REF_PRE2_DEF);	//11 
+	setAddress(&LEdt[52], TVCK_1ST_DEF);	//
+	setAddress(&LEdt[107], TVCKR_DEF);	//                                                
+	setAddress(&LEdt[29], TVCK_DEF);	//
+	setAddress(&LEdt[45], TVCK_DEF2);	// Check use it?
+	setAddress(&LEdt[31], PWVCS_DEF);	// 
+	setAddress(&LEdt[47], PWVCS_DEF2);	//
+	setAddress(&LEdt[109], PWVCS_DEF3);	//
+	setAddress(&LEdt[67], PWVCK_DEF);	// 
+	setAddress(&LEdt[69], PWVCK_DEF2);	// 
+	setAddress(&LEdt[79], PWVCK_DEF3);	//                
 	//GOA 40
-	SetAddr(&LEdt[78], TVCK_FR2_REF_PRE2_DEF);	//10
-	SetAddr(&LEdt[53], TVCK_FR2_1ST_DEF);	//
-	SetAddr(&LEdt[149], TVCKR_FR2_DEF);	//
-	SetAddr(&LEdt[81], TVCK_FR2_DEF);	//
-	SetAddr(&LEdt[83], PWVCS_FR2_DEF);	//
-	SetAddr(&LEdt[49], PWVCS_FR2_DEF2);	//
-	SetAddr(&LEdt[110], PWVCS_FR2_DEF3);	//
-	SetAddr(&LEdt[68], PWVCK_FR2_DEF);	//
-	SetAddr(&LEdt[70], PWVCK_FR2_DEF2);	//
-	SetAddr(&LEdt[80], PWVCK_FR2_DEF3);	//
+	setAddress(&LEdt[78], TVCK_FR2_REF_PRE2_DEF);	//10
+	setAddress(&LEdt[53], TVCK_FR2_1ST_DEF);	//
+	setAddress(&LEdt[149], TVCKR_FR2_DEF);	//
+	setAddress(&LEdt[81], TVCK_FR2_DEF);	//
+	setAddress(&LEdt[83], PWVCS_FR2_DEF);	//
+	setAddress(&LEdt[49], PWVCS_FR2_DEF2);	//
+	setAddress(&LEdt[110], PWVCS_FR2_DEF3);	//
+	setAddress(&LEdt[68], PWVCK_FR2_DEF);	//
+	setAddress(&LEdt[70], PWVCK_FR2_DEF2);	//
+	setAddress(&LEdt[80], PWVCK_FR2_DEF3);	//
 	//HSD_XSTB
-	SetAddr(&LEdt[54], HSD_PWXSTB_VAR_CNT1);	//6
-	SetAddr(&LEdt[55], HSD_PWXSTB_VAR_CNT2);	//
-	SetAddr(&LEdt[56], HSD_PWXSTB_VAR_CNT3);	//
-	SetAddr(&LEdt[57], HSD_PWXSTB_VAR_CNT4);	//
-	SetAddr(&LEdt[58], HSD_PWXSTB_VAR_CNT5);	//
-	SetAddr(&LEdt[59], HSD_PWXSTB_VAR_CNT6);	//
+	setAddress(&LEdt[54], HSD_PWXSTB_VAR_CNT1);	//6
+	setAddress(&LEdt[55], HSD_PWXSTB_VAR_CNT2);	//
+	setAddress(&LEdt[56], HSD_PWXSTB_VAR_CNT3);	//
+	setAddress(&LEdt[57], HSD_PWXSTB_VAR_CNT4);	//
+	setAddress(&LEdt[58], HSD_PWXSTB_VAR_CNT5);	//
+	setAddress(&LEdt[59], HSD_PWXSTB_VAR_CNT6);	//
 
     } else if (MainForm->addr_place == 1) {
 	GetAddr(&LEdt[0], "TXSTBR_DEF");	//
@@ -693,7 +693,7 @@ TBit2 *TCON_11307::SetTimLblE2()
 	GetAddr(&LEdt[135], "PWYV1C_FR2_FIX_DEF_PRE_AREA");	//
 	// GOA
 	GetAddr(&LEdt[66], "PWVDDA_DEF");	//2
-	SetAddr(&LEdt[108], "PWLOW_REF_PRE12_DEF");	// 
+	setAddress(&LEdt[108], "PWLOW_REF_PRE12_DEF");	// 
 	//GOA 60
 	GetAddr(&LEdt[77], "TVCK_REF_PRE2_DEF");	//11
 	GetAddr(&LEdt[52], "TVCK_1ST_DEF");	//

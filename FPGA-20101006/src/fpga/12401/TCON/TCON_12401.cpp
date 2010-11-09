@@ -38,17 +38,17 @@ TBit *TCON_12401::SetDevChkBx()
     //CheckBox數量等於TCON1.cpp裡的DevChkBox_Nbr數量, 必須大於index
     TBit *ChkBox = new TBit[DevChkBox_Nbr];
     if (MainForm->addr_place == 0) {
-	//SetAddr(&ChkBox[0],_NULL);
-	SetAddr(&ChkBox[0], DEMO_TYPE);
-	SetAddr(&ChkBox[1], AGING_SRC);
-	SetAddr(&ChkBox[2], GATECLK_EN);
-	SetAddr(&ChkBox[3], CLKDET_EN);
-	SetAddr(&ChkBox[4], ODLUT_TYPE);
-	SetAddr(&ChkBox[5], Sync_EN);
-	SetAddr(&ChkBox[6], VOC_SEL);
-	SetAddr(&ChkBox[7], EEPROM64);
-	SetAddr(&ChkBox[8], Master_SEL);
-	SetAddr(&ChkBox[9], SSCG_EN);
+	//setAddress(&ChkBox[0],_NULL);
+	setAddress(&ChkBox[0], DEMO_TYPE);
+	setAddress(&ChkBox[1], AGING_SRC);
+	setAddress(&ChkBox[2], GATECLK_EN);
+	setAddress(&ChkBox[3], CLKDET_EN);
+	setAddress(&ChkBox[4], ODLUT_TYPE);
+	setAddress(&ChkBox[5], Sync_EN);
+	setAddress(&ChkBox[6], VOC_SEL);
+	setAddress(&ChkBox[7], EEPROM64);
+	setAddress(&ChkBox[8], Master_SEL);
+	setAddress(&ChkBox[9], SSCG_EN);
     } else if (MainForm->addr_place == 1) {
 	GetAddr(&ChkBox[0], "DEMO_TYPE");
 	GetAddr(&ChkBox[1], "AGING_SRC");
@@ -69,9 +69,9 @@ TBit *TCON_12401::SetDevCboBx()
     TBit *CboBox = new TBit[DevCboBox_Nbr];
 
     if (MainForm->addr_place == 0) {
-	SetAddr(&CboBox[0], MASTER_SYNC_DLY);
-	SetAddr(&CboBox[1], SLAVER_SYNC_DLY);
-	SetAddr(&CboBox[2], SSCG_SEL);
+	setAddress(&CboBox[0], MASTER_SYNC_DLY);
+	setAddress(&CboBox[1], SLAVER_SYNC_DLY);
+	setAddress(&CboBox[2], SSCG_SEL);
 
     } else if (MainForm->addr_place == 1) {
 	GetAddr(&CboBox[0], "MASTER_SYNC_DLY");
@@ -113,24 +113,24 @@ TBit *TCON_12401::SetIOChkBx()
 {
     TBit *ChkBox = new TBit[IOChkBox_Nbr];
     if (MainForm->addr_place == 0) {
-	SetAddr(&ChkBox[0], IP10B);
-	SetAddr(&ChkBox[1], S2D_EN);
-	SetAddr(&ChkBox[2], LORD_INV);
-	SetAddr(&ChkBox[3], OP6B);
-	SetAddr(&ChkBox[4], OP10B);
-	SetAddr(&ChkBox[5], OP6B3P);
-	SetAddr(&ChkBox[6], CHPN);
-	SetAddr(&ChkBox[7], CHPXB);
-	SetAddr(&ChkBox[8], CHPXF);
-	SetAddr(&ChkBox[9], CHML);
+	setAddress(&ChkBox[0], IP10B);
+	setAddress(&ChkBox[1], S2D_EN);
+	setAddress(&ChkBox[2], LORD_INV);
+	setAddress(&ChkBox[3], OP6B);
+	setAddress(&ChkBox[4], OP10B);
+	setAddress(&ChkBox[5], OP6B3P);
+	setAddress(&ChkBox[6], CHPN);
+	setAddress(&ChkBox[7], CHPXB);
+	setAddress(&ChkBox[8], CHPXF);
+	setAddress(&ChkBox[9], CHML);
 
-	SetAddr(&ChkBox[11], CHWB);
-	SetAddr(&ChkBox[10], CHRB);
-	SetAddr(&ChkBox[12], CHFB);
-	SetAddr(&ChkBox[13], BRVS_1);
-	SetAddr(&ChkBox[14], BRVS_2);
-	SetAddr(&ChkBox[15], FRVS_1);
-	SetAddr(&ChkBox[16], FRVS_2);
+	setAddress(&ChkBox[11], CHWB);
+	setAddress(&ChkBox[10], CHRB);
+	setAddress(&ChkBox[12], CHFB);
+	setAddress(&ChkBox[13], BRVS_1);
+	setAddress(&ChkBox[14], BRVS_2);
+	setAddress(&ChkBox[15], FRVS_1);
+	setAddress(&ChkBox[16], FRVS_2);
     } else if (MainForm->addr_place == 1) {
 	GetAddr(&ChkBox[0], "IP10B");
 	GetAddr(&ChkBox[1], "S2D_EN");
@@ -158,7 +158,7 @@ TBit *TCON_12401::SetIOCboBx()
 {
     TBit *CboBox = new TBit[IOCboBox_Nbr];
     if (MainForm->addr_place == 0) {
-	SetAddr(&CboBox[0], Resolution);
+	setAddress(&CboBox[0], Resolution);
     } else if (MainForm->addr_place == 1) {
 	GetAddr(&CboBox[0], "Resolution");
     }
@@ -190,17 +190,17 @@ TBit *TCON_12401::SetDrvChkBx()
 {
     TBit *ChkBox = new TBit[DrvChkBox_Nbr];
     if (MainForm->addr_place == 0) {
-	SetAddr(&ChkBox[0], TDEF_EN);
-	SetAddr(&ChkBox[1], FIX_GATE);
-	SetAddr(&ChkBox[2], P2G1D_EN);
-	SetAddr(&ChkBox[3], DGPS_EN);
-	SetAddr(&ChkBox[4], ANTI_MYDIO_EN);
-	SetAddr(&ChkBox[5], MSHD_EN);
-	SetAddr(&ChkBox[6], X2D1D_EN);
-	SetAddr(&ChkBox[7], PRE_CHR_EN);
-	SetAddr(&ChkBox[8], ONE_Y);
-	SetAddr(&ChkBox[9], PIXSFT_EN);
-	SetAddr(&ChkBox[10], MODE41);
+	setAddress(&ChkBox[0], TDEF_EN);
+	setAddress(&ChkBox[1], FIX_GATE);
+	setAddress(&ChkBox[2], P2G1D_EN);
+	setAddress(&ChkBox[3], DGPS_EN);
+	setAddress(&ChkBox[4], ANTI_MYDIO_EN);
+	setAddress(&ChkBox[5], MSHD_EN);
+	setAddress(&ChkBox[6], X2D1D_EN);
+	setAddress(&ChkBox[7], PRE_CHR_EN);
+	setAddress(&ChkBox[8], ONE_Y);
+	setAddress(&ChkBox[9], PIXSFT_EN);
+	setAddress(&ChkBox[10], MODE41);
     } else if (MainForm->addr_place == 1) {
 	GetAddr(&ChkBox[0], "TDEF_EN");
 	GetAddr(&ChkBox[1], "FIX_GATE");
@@ -235,12 +235,12 @@ TBit *TCON_12401::SetDrvCboBx()
        CboBox[0].choice[7] = "7";
      */
     if (MainForm->addr_place == 0) {
-	SetAddr(&CboBox[1], BGI);
-	SetAddr(&CboBox[2], TF_INV);
-	SetAddr(&CboBox[3], INV_SEL);
-	SetAddr(&CboBox[4], DATA_SEL);
-	SetAddr(&CboBox[5], SFT_SEL);
-	SetAddr(&CboBox[6], GOA_MNT_EN);
+	setAddress(&CboBox[1], BGI);
+	setAddress(&CboBox[2], TF_INV);
+	setAddress(&CboBox[3], INV_SEL);
+	setAddress(&CboBox[4], DATA_SEL);
+	setAddress(&CboBox[5], SFT_SEL);
+	setAddress(&CboBox[6], GOA_MNT_EN);
     } else if (MainForm->addr_place == 1) {
 	GetAddr(&CboBox[1], "BGI");
 	GetAddr(&CboBox[2], "TF_INV");
@@ -297,10 +297,10 @@ TBit2 *TCON_12401::SetDrvLblE()
     TBit2 *LEdt = new TBit2[DrvLblE2_Nbr];
 
     if (MainForm->addr_place == 0) {
-	SetAddr(&LEdt[0], GAM_2G1D_RISING);
-	SetAddr(&LEdt[1], GAM_2G1D_FALLING);
-	SetAddr(&LEdt[2], BGI_GRAY);
-	SetAddr(&LEdt[3], BGI_GRAY2);
+	setAddress(&LEdt[0], GAM_2G1D_RISING);
+	setAddress(&LEdt[1], GAM_2G1D_FALLING);
+	setAddress(&LEdt[2], BGI_GRAY);
+	setAddress(&LEdt[3], BGI_GRAY2);
     } else if (MainForm->addr_place == 1) {
 	GetAddr(&LEdt[0], "GAM_2G1D_RISING(0~2048)");
 	GetAddr(&LEdt[1], "GAM_2G1D_FALLING(0~2048)");
@@ -317,57 +317,57 @@ TBit2 *TCON_12401::SetTimLblE2()
     TBit2 *LEdt = new TBit2[TimLblE2_Nbr];	//37
 
     if (MainForm->addr_place == 0) {
-	SetAddr(&LEdt[0], TXSTBR_DEF);
-	SetAddr(&LEdt[1], PWXSTB_DEF);
-	SetAddr(&LEdt[2], TXPOL_DEF);
-	SetAddr(&LEdt[3], PWXRST_DEF);
+	setAddress(&LEdt[0], TXSTBR_DEF);
+	setAddress(&LEdt[1], PWXSTB_DEF);
+	setAddress(&LEdt[2], TXPOL_DEF);
+	setAddress(&LEdt[3], PWXRST_DEF);
 	//Normal
-	SetAddr(&LEdt[4], TYDIOR_DEF);
-	SetAddr(&LEdt[5], PWYDIO_DEF);
-	SetAddr(&LEdt[6], TYCLKR_DEF);
-	SetAddr(&LEdt[7], PWYCLK_DEF);
+	setAddress(&LEdt[4], TYDIOR_DEF);
+	setAddress(&LEdt[5], PWYDIO_DEF);
+	setAddress(&LEdt[6], TYCLKR_DEF);
+	setAddress(&LEdt[7], PWYCLK_DEF);
 	//Normal 60
-	SetAddr(&LEdt[8], TYOEF_DEF);
-	SetAddr(&LEdt[9], PWYOE_DEF);
-	SetAddr(&LEdt[10], TYV1CF_DEF);
-	SetAddr(&LEdt[11], PWYV1C_DEF);
+	setAddress(&LEdt[8], TYOEF_DEF);
+	setAddress(&LEdt[9], PWYOE_DEF);
+	setAddress(&LEdt[10], TYV1CF_DEF);
+	setAddress(&LEdt[11], PWYV1C_DEF);
 
 	//Fix Gate On
-	SetAddr(&LEdt[12], TXSTBR_YOER_FIX_DEF);
-	SetAddr(&LEdt[13], PWYOE_FIX_DEF);
-	SetAddr(&LEdt[14], TYOER_YV1CDF_FIX_DEF);
-	SetAddr(&LEdt[15], PWYV1C_FIX_DEF);
+	setAddress(&LEdt[12], TXSTBR_YOER_FIX_DEF);
+	setAddress(&LEdt[13], PWYOE_FIX_DEF);
+	setAddress(&LEdt[14], TYOER_YV1CDF_FIX_DEF);
+	setAddress(&LEdt[15], PWYV1C_FIX_DEF);
 
 	//Pstate ( Frame 40)
-	SetAddr(&LEdt[16], TYOEF_FR2_DEF);
-	SetAddr(&LEdt[17], PWYOE_FR2_DEF);
-	SetAddr(&LEdt[18], TYV1CF_FR2_DEF);
-	SetAddr(&LEdt[19], PWYV1C_FR2_DEF);
+	setAddress(&LEdt[16], TYOEF_FR2_DEF);
+	setAddress(&LEdt[17], PWYOE_FR2_DEF);
+	setAddress(&LEdt[18], TYV1CF_FR2_DEF);
+	setAddress(&LEdt[19], PWYV1C_FR2_DEF);
 
 	//Fix Gate On
-	SetAddr(&LEdt[20], TXSTBR_YOER_FR2_FIX_DEF);
-	SetAddr(&LEdt[21], PWYOE_FR2_FIX_DEF);
-	SetAddr(&LEdt[22], TYOER_YV1CF_FR2_FIX_DEF);
-	SetAddr(&LEdt[23], PWYV1C_FR2_FIX_DEF);
+	setAddress(&LEdt[20], TXSTBR_YOER_FR2_FIX_DEF);
+	setAddress(&LEdt[21], PWYOE_FR2_FIX_DEF);
+	setAddress(&LEdt[22], TYOER_YV1CF_FR2_FIX_DEF);
+	setAddress(&LEdt[23], PWYV1C_FR2_FIX_DEF);
 
 	//Pre-Cgarge
-	SetAddr(&LEdt[24], TYOER_PC_DEF);
-	SetAddr(&LEdt[25], PWYOE_PC_DEF);
-	SetAddr(&LEdt[26], TYCLKR_PC_DEF);
+	setAddress(&LEdt[24], TYOER_PC_DEF);
+	setAddress(&LEdt[25], PWYOE_PC_DEF);
+	setAddress(&LEdt[26], TYCLKR_PC_DEF);
 
 	//GOA
-	SetAddr(&LEdt[27], TVSTR_DEF);
-	SetAddr(&LEdt[28], PWVST_DEF);
-	SetAddr(&LEdt[29], TVCK_DEF);
-	SetAddr(&LEdt[30], TVCSF_DEF);
-	SetAddr(&LEdt[31], PWVCS_DEF);
-	SetAddr(&LEdt[32], TYV1CF_GOA_DEF);
-	SetAddr(&LEdt[33], PWYV1C_GOA_DEF);
+	setAddress(&LEdt[27], TVSTR_DEF);
+	setAddress(&LEdt[28], PWVST_DEF);
+	setAddress(&LEdt[29], TVCK_DEF);
+	setAddress(&LEdt[30], TVCSF_DEF);
+	setAddress(&LEdt[31], PWVCS_DEF);
+	setAddress(&LEdt[32], TYV1CF_GOA_DEF);
+	setAddress(&LEdt[33], PWYV1C_GOA_DEF);
 
 	//2G1D
-	SetAddr(&LEdt[34], TYDIO2R_DEF);
-	SetAddr(&LEdt[35], PWYDIO2_DEF);
-	SetAddr(&LEdt[36], TYCLK2R_DEF);
+	setAddress(&LEdt[34], TYDIO2R_DEF);
+	setAddress(&LEdt[35], PWYDIO2_DEF);
+	setAddress(&LEdt[36], TYCLK2R_DEF);
     } else if (MainForm->addr_place == 1) {
 	GetAddr(&LEdt[0], "TXSTBR_DEF");
 	GetAddr(&LEdt[1], "PWXSTB_DEF");
