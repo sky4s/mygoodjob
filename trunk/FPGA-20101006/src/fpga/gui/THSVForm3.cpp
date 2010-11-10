@@ -41,7 +41,7 @@ __fastcall THSVForm3::THSVForm3(TComponent * Owner):TForm(Owner),
 HSV_IsChkSum(true), tbl_step(WHOLE_HUE_ANGLE / HUE_COUNT),
 lastStringGridSelectRow(-1), settingScrollBarPosition(false),
 cursorRGBValues(new int[3]), patternMode(PatternMode::Single),
-selectedRGBValues(new int[3]), customPattern(false), patternValue(192)
+selectedRGBValues(new int[3]), customPattern(false), patternValue(192), isInversePattern(false)
 {
     HSV_Chg = 0;
     HSVEN_idx = -1;
@@ -1486,9 +1486,11 @@ void THSVForm3::setupPatternForm()
 	    HSV_ptr hsv(new HSV(RGBColorSpace::sRGB, hsvValues));
 	    hsvVector->push_back(hsv);
 	}
+
 	for (int y = 0; y < stdSize; y++) {
+	    int index = isInversePattern ? stdSize - 1 - y : y;
 	    hsvValues[0] = h;
-	    hsvValues[1] = saturationArray[y];
+	    hsvValues[1] = saturationArray[index];
 	    //hsvValues[2] = valueArray[y];
 	    hsvValues[2] = patternValue;
 	    HSV_ptr hsv(new HSV(RGBColorSpace::sRGB, hsvValues));
@@ -1557,6 +1559,12 @@ void THSVForm3::adjustValue(bool minus)
     }
     patternValue = patternValue < 64 ? 64 : patternValue;
     patternValue = patternValue > 255 ? 255 : patternValue;
+    setupPatternForm();
+}
+
+void THSVForm3::inversePattern(bool inverse)
+{
+    isInversePattern = inverse;
     setupPatternForm();
 }
 

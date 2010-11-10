@@ -19,11 +19,23 @@ class PatternCallbackIF {
     virtual void show7p5DegBasePattern() = 0;
     virtual void showSinglePattern() = 0;
     virtual void adjustValue(bool minus) = 0;
+    virtual void inversePattern(bool inverse) = 0;
 };
 
 Enumeration(PatternMode) Single, Hue15, Hue7p5, EnumerationEnd();
 
-
+/*class PatchManager {
+  private:
+    int width;
+    int height;
+    double gapPercent;
+  public:
+    PatchManager(int width, int height, double gapPercent);
+    void setDimension(int width, int height);
+    void setPatchSize(int size);
+    void setGapPercent(double gapPercent);
+    int_array getPatchCoordinate(int index);
+};*/
 class TPatternForm:public TForm {
     __published:		// IDE-managed Components
     TButton * Button_Show7p5Deg;
@@ -39,6 +51,10 @@ class TPatternForm:public TForm {
 				       TShiftState Shift, TPoint & MousePos, bool & Handled);
     void __fastcall FormMouseWheelUp(TObject * Sender,
 				     TShiftState Shift, TPoint & MousePos, bool & Handled);
+    void __fastcall FormMouseDown(TObject * Sender, TMouseButton Button,
+				  TShiftState Shift, int X, int Y);
+    void __fastcall FormMouseUp(TObject * Sender, TMouseButton Button,
+				TShiftState Shift, int X, int Y);
   private:			// User declarations
     double gapPercent;
     int patchCols;
@@ -49,6 +65,18 @@ class TPatternForm:public TForm {
     PatternMode mode;
     bptr < cms::util::DoubleBufferedCanvas > doubleBufferedCanvas;
     void setTPatternForm(TPatternForm * copy);
+    bool inversePattern;
+    bool mouseLeftDown;
+    //TCanvas* canvasCopy;
+    bptr < Graphics::TBitmap > canvasCopy;
+    int getPatchIndex(int x, int y);
+    int_array distanceToPatchOriginal(int x, int y);
+    int_array getPatchDimension();
+    int size, patchPerCol, h, w, hgap, wgap;
+
+    int_array mouseDownStart;
+    int_array mouseDownDistance;
+    int mouseDownPatchIndex;
   public:			// User declarations
     __fastcall TPatternForm(TComponent * Owner);
     void setPatternCallbackIF(PatternCallbackIF * callback);

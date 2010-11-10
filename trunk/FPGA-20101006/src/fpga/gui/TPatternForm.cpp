@@ -11,8 +11,27 @@
 TPatternForm *PatternForm;
 TPatternForm *PatternForm2;
 //---------------------------------------------------------------------------
+
+/*PatchManager::PatchManager(int width, int height, double gapPercent)
+{
+}
+void PatchManager::setDimension(int width, int height)
+{
+}
+void PatchManager::setPatchSize(int size)
+{
+}
+void PatchManager::setGapPercent(double gapPercent)
+{
+}
+int_array PatchManager::getPatchCoordinate(int index)
+{
+}*/
+
+
 __fastcall TPatternForm::TPatternForm(TComponent * Owner):TForm(Owner),
-patchCols(1), gapPercent(.05), mode(PatternMode::Single)
+patchCols(1), gapPercent(.05), mode(PatternMode::Single), inversePattern(false),
+mouseLeftDown(false), mouseDownStart(new int[2])
 {
 }
 
@@ -28,9 +47,53 @@ void TPatternForm::setTPatternForm(TPatternForm * copy)
     Button_Show7p5Deg->Visible = false;
     Button_Show15Deg->Visible = false;
     Button_ShowSingleDeg->Visible = false;
+
+    size = copy->size;
+    patchPerCol = copy->patchPerCol;
+    h = copy->h;
+    w = copy->w;
+    hgap = copy->hgap;
+    wgap = copy->wgap;
 }
 
 //---------------------------------------------------------------------------
+
+int TPatternForm::getPatchIndex(int x, int y)
+{
+    if (null == hsvVector || 0 == hsvVector->size()) {
+	return -1;
+    }
+
+    int x0 = x / w;
+    int y0 = y / h;
+    int index = x0 * patchPerCol + y0;
+    return index;
+}
+
+int_array TPatternForm::distanceToPatchOriginal(int x, int y)
+{
+    mouseDownPatchIndex = getPatchIndex(x, y);
+
+    int x0 = mouseDownPatchIndex / patchPerCol;
+    int y0 = mouseDownPatchIndex % patchPerCol;
+
+    int_array result(new int[2]);
+    result[0] = x - x0 * w - wgap;
+    result[1] = y - y0 * h - hgap;
+    return result;
+}
+
+int_array TPatternForm::getPatchDimension()
+{
+    if (null == hsvVector || 0 == hsvVector->size()) {
+	return nil_int_array;
+    }
+
+    int_array dimension(new int[2]);
+    dimension[0] = w - wgap * 2;
+    dimension[1] = h - hgap * 2;
+    return dimension;
+}
 
 void __fastcall TPatternForm::FormPaint(TObject * Sender)
 {
@@ -38,36 +101,43 @@ void __fastcall TPatternForm::FormPaint(TObject * Sender)
 	return;
     }
 
-
-    int size = hsvVector->size();
-
     using namespace cms::util;
     if (null == doubleBufferedCanvas) {
 	doubleBufferedCanvas =
 	    bptr < DoubleBufferedCanvas >
 	    (new DoubleBufferedCanvas(this->Canvas, this->ClientWidth, this->ClientHeight));
     }
+    //重新設定大小
     doubleBufferedCanvas->setSize(this->ClientWidth, this->ClientHeight);
-    TCanvas *canvas = doubleBufferedCanvas->getDoubleBufferedCanvas();
+    //取出doublebuffered
+    TCanvas *dcanvas = doubleBufferedCanvas->getDoubleBufferedCanvas();
 
-    canvas->Brush->Color = clBlack;
-    canvas->Rectangle(0, 0, this->ClientWidth, this->ClientHeight);
-    bool verticalBorder = patchCols > 1;
-    int patchPerCol = size / patchCols;
-    int h = this->ClientHeight / patchPerCol;
-    int w = this->ClientWidth / patchCols;
-    int hgap = h * gapPercent / 2.;
-    int wgap = w * gapPercent;
+    //塗黑
+    dcanvas->Brush->Color = clBlack;
+    dcanvas->Rectangle(0, 0, this->ClientWidth, this->ClientHeight);
+
+    //超過一行的話
+    //bool verticalBorder = patchCols > 1;
+
+    int_array patchDimension = getPatchDimension();
+    int patchw = patchDimension[0];
+    int patchh = patchDimension[1];
+
+    int size = hsvVector->size();
     for (int i = 0; i < size; i++) {
 	HSV_ptr hsv = (*hsvVector)[i];
 	RGB_ptr rgb = hsv->toRGB();
-	canvas->Brush->Color = rgb->getColor();
+	dcanvas->Brush->Color = rgb->getColor();
 	int x = i / patchPerCol;
 	int y = i % patchPerCol;
-	TRect rect(x * w + wgap, y * h + hgap, x * w + w - wgap, y * h + h - hgap);
-	canvas->FillRect(rect);
+	//TRect rect(x * w + wgap, y * h + hgap, x * w + w - wgap, y * h + h - hgap);
+	TRect rect(x * w + wgap, y * h + hgap, x * w + wgap + patchw, y * h + hgap + patchh);
+	dcanvas->FillRect(rect);
     }
 
+    //=========================================================================
+    //黑白框顯示
+    //=========================================================================
     int_vector_ptr boxVector[2] = {
 	blackIndexVector,
 	whiteIndexVector
@@ -75,11 +145,12 @@ void __fastcall TPatternForm::FormPaint(TObject * Sender)
     TColor boxColor[2] = {
 	clBlack, clWhite
     };
+
     for (int x = 0; x < 2; x++) {
 	int_vector_ptr vector = boxVector[x];
 	if (null != vector) {
 	    int vecSize = vector->size();
-	    canvas->Brush->Color = boxColor[x];
+	    dcanvas->Brush->Color = boxColor[x];
 	    for (int i = 0; i < vecSize; i++) {
 		int index = (*vector)[i];
 		int x = index / patchPerCol;
@@ -87,12 +158,13 @@ void __fastcall TPatternForm::FormPaint(TObject * Sender)
 		TRect rect1(x * w + wgap, y * h + hgap, x * w + w - wgap, y * h + h - hgap);
 		TRect rect2(x * w + wgap + 1,
 			    y * h + hgap + 1, x * w + w - wgap - 1, y * h + h - hgap - 1);
-		canvas->FrameRect(rect1);
-		canvas->FrameRect(rect2);
+		dcanvas->FrameRect(rect1);
+		dcanvas->FrameRect(rect2);
 	    }
 	}
 
     }
+    //=========================================================================
 
     doubleBufferedCanvas->excute();
 
@@ -116,6 +188,14 @@ void TPatternForm::setGapPercent(double gapPercent)
 void TPatternForm::setHSVVector(HSV_vector_ptr hsvVector)
 {
     this->hsvVector = hsvVector;
+
+    size = hsvVector->size();
+    patchPerCol = size / patchCols;
+    h = this->ClientHeight / patchPerCol;
+    w = this->ClientWidth / patchCols;
+    hgap = h * gapPercent / 2.;
+    wgap = w * gapPercent;
+
     if (wsNormal == PatternForm2->WindowState) {
 	PatternForm2->setTPatternForm(this);
 	PatternForm2->Refresh();
@@ -224,7 +304,26 @@ void __fastcall TPatternForm::FormMouseMove(TObject * Sender, TShiftState Shift,
 
     if (Shift.Contains(ssLeft)) {
 	//按下左鍵
+	//int_array distance = distanceToPatchOriginal(X, Y);
+	int_array patchDimension = getPatchDimension();
+	int x0 = X - mouseDownDistance[0];
+	int y0 = Y - mouseDownDistance[1];
+	int x1 = x0 + patchDimension[0];
+	int y1 = y0 + patchDimension[1];
 
+
+	TRect rect(x0, y0, x1, y1);
+	HSV_ptr hsv = (*hsvVector)[mouseDownPatchIndex];
+	RGB_ptr rgb = hsv->toRGB();
+	Canvas->Brush->Color = rgb->getColor();
+
+	Canvas->FillRect(rect);
+	//this->Canvas->f
+	/*using namespace cms::util;
+	   canvasCopy =
+	   DoubleBufferedCanvas::getTBitmap(this->Canvas, this->ClientHeight, this->ClientWidth);
+	   DoubleBufferedCanvas doubleBuffered(this->Canvas, this->ClientHeight, this->ClientWidth);
+	   TCanvas *doubleBufferedCanvas = doubleBuffered.getDoubleBufferedCanvas(); */
     }
 }
 
@@ -243,6 +342,34 @@ void __fastcall TPatternForm::FormMouseWheelUp(TObject * Sender,
 					       TShiftState Shift, TPoint & MousePos, bool & Handled)
 {
     callback->adjustValue(true);
+}
+
+//---------------------------------------------------------------------------
+
+void __fastcall TPatternForm::FormMouseDown(TObject * Sender,
+					    TMouseButton Button, TShiftState Shift, int X, int Y)
+{
+    if (Shift.Contains(ssMiddle)) {
+	//按下中鍵
+	inversePattern = !inversePattern;
+	callback->inversePattern(inversePattern);
+    }
+    if (Shift.Contains(ssLeft)) {
+	//按下左鍵
+	mouseDownStart[0] = X;
+	mouseDownStart[1] = Y;
+	mouseDownDistance = distanceToPatchOriginal(X, Y);
+    }
+    //mouseLeftDown = Shift.Contains(ssLeft);
+
+}
+
+//---------------------------------------------------------------------------
+
+void __fastcall TPatternForm::FormMouseUp(TObject * Sender,
+					  TMouseButton Button, TShiftState Shift, int X, int Y)
+{
+    //mouseLeftDown = false;
 }
 
 //---------------------------------------------------------------------------
