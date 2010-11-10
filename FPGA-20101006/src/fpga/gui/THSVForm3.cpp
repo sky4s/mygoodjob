@@ -1193,28 +1193,6 @@ void __fastcall THSVForm3::Button_15BaseInterpClick(TObject * Sender)
 {
 
     base15DegInterpClick(Sender, true, true, true);
-    /*int index = lastStringGridSelectRow - 1;
-       bool firstIndex = (index == 0);
-       int index0 = firstIndex ? (HUE_COUNT - 1) : (index - 1) % HUE_COUNT;
-       int index1 = (index + 1) % HUE_COUNT;
-
-       int_array hsv0 = getHSVAdjustValue(index0);
-       int_array hsv1 = getHSVAdjustValue(index1);
-       int hsv00 = hsv0[0];
-       int hsv10 = (hsv1[0] < hsv00) ? hsv1[0] + MAX_HUE_VALUE : hsv1[0];
-
-       using namespace math;
-       int h = (int) Interpolation::linear(0, 2, hsv00, hsv10, 1);
-       int s = (int) Interpolation::linear(0, 2, hsv0[1], hsv1[1], 1);
-       int v = (int) Interpolation::linear(0, 2, hsv0[2], hsv1[2], 1);
-
-       const int ADD_HUE_VALUE = MAX_HUE_VALUE;
-       hueTableTemp[index] = h % ADD_HUE_VALUE;
-       satTableTemp[index] = s;
-       valTableTemp[index] = v;
-
-       btn_setClick(Sender);
-       stringGrid_HSVSelectCell(Sender, 0, lastStringGridSelectRow, false); */
 
 }
 
@@ -1419,9 +1397,12 @@ void THSVForm3::imageMousePressed(TObject * Sender, TMouseButton Button,
     double_array hsviValues = HSV::getHSVIValues(IntArray::toDoubleArray(cursorRGBValues, 3));
     int hueIndex = getHueIndex(hsviValues[0]);
     setGridSelectRow(hueIndex + 1);
-    IntArray::arraycopy(cursorRGBValues, selectedRGBValues, 3);
+
     customPattern = true;
+    IntArray::arraycopy(cursorRGBValues, selectedRGBValues, 3);
     colorPicker->setOriginalColor(cursorRGBValues[0], cursorRGBValues[1], cursorRGBValues[2]);
+    setupPatternForm();
+
 }
 
 void __fastcall THSVForm3::colorPickercb_show_ref_imgClick(TObject * Sender)

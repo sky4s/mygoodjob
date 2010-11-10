@@ -219,7 +219,7 @@ void __fastcall TPatternForm::FormMouseMove(TObject * Sender, TShiftState Shift,
 
     this->Hint =
 	"rgb(" + FloatToStr(rgbValues[0]) + ", " + FloatToStr(rgbValues[1]) + ", " +
-	FloatToStr(rgbValues[2]) + ") hsv(" + FloatToStr(hsviValues[0]) + ", " +
+	FloatToStr(rgbValues[2]) + ") hsv(" + astr.sprintf("%.1f", hsviValues[0]) + ", " +
 	astr.sprintf("%.3f", hsviValues[1]) + ", " + FloatToStr(hsviValues[2]) + ")";
 }
 
