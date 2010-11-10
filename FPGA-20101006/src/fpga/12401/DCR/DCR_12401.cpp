@@ -37,8 +37,8 @@ TLUT* DCR_12401::SetLUT(){
                 setAddress(&LUT[0], BL);
                 setAddress(&LUT[1], DIM);
         }else if(MainForm->addr_place == 1){
-                GetAddr(&LUT[0], "BL");
-                GetAddr(&LUT[1], "DIM");
+                setAddressFromFile(&LUT[0], "BL");
+                setAddressFromFile(&LUT[1], "DIM");
         }
         return LUT;
 }
@@ -58,17 +58,17 @@ TBit* DCR_12401::SetScrollBar(){
                 setAddress(&ScrlB[9],HIGH_DUTY_THRES);
                 setAddress(&ScrlB[10],TOTAL_DUTY_THRES);
         }else if(MainForm->addr_place == 1){
-                GetAddr(&ScrlB[0],"PWM_BL_IDX");
-                GetAddr(&ScrlB[1],"BL_FRM_INTV");
-                GetAddr(&ScrlB[2],"BL_GRAD_STEP");
-                GetAddr(&ScrlB[3],"IMG_DIFF");
-                GetAddr(&ScrlB[4],"PWM_FREQ");
-                GetAddr(&ScrlB[5],"SMBUS_DEV_ADDR");
-                GetAddr(&ScrlB[6],"SMBUS_REG_ADDR");
-                GetAddr(&ScrlB[7],"MIN_IDX_CUM_RATIO");
-                GetAddr(&ScrlB[8],"MAX_IDX_CUM_RATIO");
-                GetAddr(&ScrlB[9],"HIGH_DUTY_THRES");
-                GetAddr(&ScrlB[10],"TOTAL_DUTY_THRES");
+                setAddressFromFile(&ScrlB[0],"PWM_BL_IDX");
+                setAddressFromFile(&ScrlB[1],"BL_FRM_INTV");
+                setAddressFromFile(&ScrlB[2],"BL_GRAD_STEP");
+                setAddressFromFile(&ScrlB[3],"IMG_DIFF");
+                setAddressFromFile(&ScrlB[4],"PWM_FREQ");
+                setAddressFromFile(&ScrlB[5],"SMBUS_DEV_ADDR");
+                setAddressFromFile(&ScrlB[6],"SMBUS_REG_ADDR");
+                setAddressFromFile(&ScrlB[7],"MIN_IDX_CUM_RATIO");
+                setAddressFromFile(&ScrlB[8],"MAX_IDX_CUM_RATIO");
+                setAddressFromFile(&ScrlB[9],"HIGH_DUTY_THRES");
+                setAddressFromFile(&ScrlB[10],"TOTAL_DUTY_THRES");
         }
         return ScrlB;
 }
@@ -78,8 +78,8 @@ TBit2* DCR_12401::SetScrollBar2(){
                 setAddress(&ScrlB[0],PWM_COEFF_A);
                 setAddress(&ScrlB[1],PWM_COEFF_B);
         }else if(MainForm->addr_place == 1){
-                GetAddr(&ScrlB[0],"PWM_COEFF_A");
-                GetAddr(&ScrlB[1],"PWM_COEFF_B");
+                setAddressFromFile(&ScrlB[0],"PWM_COEFF_A");
+                setAddressFromFile(&ScrlB[1],"PWM_COEFF_B");
         }
         return ScrlB;
 }
@@ -96,15 +96,15 @@ TBit* DCR_12401::SetChkBx(){
                 setAddress(&ChkBox[7],SMBUS_EN);
                 setAddress(&ChkBox[8],PWM_COEFF_EN);
         }else if(MainForm->addr_place == 1){
-                GetAddr(&ChkBox[0],"BL_EN");
-                GetAddr(&ChkBox[1],"DYN_BL_EN");
-                GetAddr(&ChkBox[2],"GLT_EN");
-                GetAddr(&ChkBox[3],"GLT_DEMO");
-                GetAddr(&ChkBox[4],"DUTY_DETECT_EN");
-                GetAddr(&ChkBox[5],"BL_GRAD_EN");
-                GetAddr(&ChkBox[6],"IMG_DIFF_EN");
-                GetAddr(&ChkBox[7],"SMBUS_EN");
-                GetAddr(&ChkBox[8],"PWM_COEFF_EN");
+                setAddressFromFile(&ChkBox[0],"BL_EN");
+                setAddressFromFile(&ChkBox[1],"DYN_BL_EN");
+                setAddressFromFile(&ChkBox[2],"GLT_EN");
+                setAddressFromFile(&ChkBox[3],"GLT_DEMO");
+                setAddressFromFile(&ChkBox[4],"DUTY_DETECT_EN");
+                setAddressFromFile(&ChkBox[5],"BL_GRAD_EN");
+                setAddressFromFile(&ChkBox[6],"IMG_DIFF_EN");
+                setAddressFromFile(&ChkBox[7],"SMBUS_EN");
+                setAddressFromFile(&ChkBox[8],"PWM_COEFF_EN");
         }
         return ChkBox;
 }
@@ -116,10 +116,10 @@ TBit* DCR_12401::SetCboBx(){
                 setAddress(&CboBox[2],PWM_FL_MODE_SEL);
                 setAddress(&CboBox[3],PWM_LINE_SYNC);
         }else if(MainForm->addr_place == 1){
-                GetAddr(&CboBox[0],"PWM_MODE");
-                GetAddr(&CboBox[1],"BL_POL");
-                GetAddr(&CboBox[2],"PWM_FL_MODE_SEL");
-                GetAddr(&CboBox[3],"PWM_LINE_SYNC");
+                setAddressFromFile(&CboBox[0],"PWM_MODE");
+                setAddressFromFile(&CboBox[1],"BL_POL");
+                setAddressFromFile(&CboBox[2],"PWM_FL_MODE_SEL");
+                setAddressFromFile(&CboBox[3],"PWM_LINE_SYNC");
         }
         CboBox[0].choice_nbr = 2;
         CboBox[0].choice = new String [2];

@@ -36,10 +36,10 @@ TBit *Vend_11307::SetChkBx()
 	setAddress(&ChkBox[2], SSC_CLK_STOP_EN);	//
 	setAddress(&ChkBox[3], PP_CHCD);	//
     } else if (MainForm->addr_place == 1) {
-	GetAddr(&ChkBox[0], "SSC_VSYNC_EN");
-	GetAddr(&ChkBox[1], "SSC_CLK_NG_EN");
-	GetAddr(&ChkBox[2], "SSC_CLK_STOP_EN");
-	GetAddr(&ChkBox[3], "PP_CHCD");
+	setAddressFromFile(&ChkBox[0], "SSC_VSYNC_EN");
+	setAddressFromFile(&ChkBox[1], "SSC_CLK_NG_EN");
+	setAddressFromFile(&ChkBox[2], "SSC_CLK_STOP_EN");
+	setAddressFromFile(&ChkBox[3], "PP_CHCD");
     }
     return ChkBox;
 }
@@ -57,13 +57,13 @@ TBit *Vend_11307::SetCboBx()
 	setAddress(&CboBox[5], ML_SKEW_3);	//
 	setAddress(&CboBox[6], ML_SKEW_4);	//
     } else if (MainForm->addr_place == 1) {
-	GetAddr(&CboBox[0], "VOCSEL");
-	GetAddr(&CboBox[1], "XDRV_CTL");
-	GetAddr(&CboBox[2], "YDRV_CTL");
-	GetAddr(&CboBox[3], "ML_SKEW_1");
-	GetAddr(&CboBox[4], "ML_SKEW_2");
-	GetAddr(&CboBox[5], "ML_SKEW_3");
-	GetAddr(&CboBox[6], "ML_SKEW_4");
+	setAddressFromFile(&CboBox[0], "VOCSEL");
+	setAddressFromFile(&CboBox[1], "XDRV_CTL");
+	setAddressFromFile(&CboBox[2], "YDRV_CTL");
+	setAddressFromFile(&CboBox[3], "ML_SKEW_1");
+	setAddressFromFile(&CboBox[4], "ML_SKEW_2");
+	setAddressFromFile(&CboBox[5], "ML_SKEW_3");
+	setAddressFromFile(&CboBox[6], "ML_SKEW_4");
     }
 
     CboBox[0].choice_nbr = 2;	//
@@ -174,8 +174,8 @@ TBit *Vend_11307::SetScrollBar()
 	//setAddress(&ScrlB[0],_NULL);
 	//setAddress(&ScrlB[1],_NULL);
     } else if (MainForm->addr_place == 1) {
-	//GetAddr(&ScrlB[0],"_NULL");
-	//GetAddr(&ScrlB[1],"_NULL");
+	//setAddressFromFile(&ScrlB[0],"_NULL");
+	//setAddressFromFile(&ScrlB[1],"_NULL");
     }
     return ScrlB;
 }
@@ -187,7 +187,7 @@ TBit2 *Vend_11307::SetScrollBar2()
     if (MainForm->addr_place == 0) {
 	//setAddress(&ScrlB[0],_NULL);
     } else if (MainForm->addr_place == 1) {
-	//GetAddr(&ScrlB[0],"_NULL");
+	//setAddressFromFile(&ScrlB[0],"_NULL");
     }
     return ScrlB;
 }
@@ -206,13 +206,13 @@ TBit *Vend_11307::SetDebugChkBx()
 	setAddress(&ChkBox[6], CM_TEST);	// 
 
     } else if (MainForm->addr_place == 1) {
-	GetAddr(&ChkBox[0], "LUX_SEL");
-	GetAddr(&ChkBox[1], "DIRECT_DUTY_EN");
-	GetAddr(&ChkBox[2], "HUE_TEST");
-	GetAddr(&ChkBox[3], "GAM_TEST");
-	GetAddr(&ChkBox[4], "MGHSD_1ST_TDEF_EN");
-	GetAddr(&ChkBox[5], "OE_AREA_CNT_MODE_EN");
-	GetAddr(&ChkBox[6], "CM_TEST");
+	setAddressFromFile(&ChkBox[0], "LUX_SEL");
+	setAddressFromFile(&ChkBox[1], "DIRECT_DUTY_EN");
+	setAddressFromFile(&ChkBox[2], "HUE_TEST");
+	setAddressFromFile(&ChkBox[3], "GAM_TEST");
+	setAddressFromFile(&ChkBox[4], "MGHSD_1ST_TDEF_EN");
+	setAddressFromFile(&ChkBox[5], "OE_AREA_CNT_MODE_EN");
+	setAddressFromFile(&ChkBox[6], "CM_TEST");
     }
     return ChkBox;
 }
@@ -230,13 +230,13 @@ TBit *Vend_11307::SetDebugCboBx()
 	setAddress(&CboBox[5], POL_VBK_TYPE);	//
 	setAddress(&CboBox[6], YV1C_AREA_CNT_MODE);	//
     } else if (MainForm->addr_place == 1) {
-	GetAddr(&CboBox[0], "DEBUG_MODE");
-	GetAddr(&CboBox[1], "ST_INI_EN");
-	GetAddr(&CboBox[2], "OE_AREA_CNT_MODE");
-	GetAddr(&CboBox[3], "SDR_POL_DE_SEL");
-	GetAddr(&CboBox[4], "SDR_POL_CASE_SEL");
-	GetAddr(&CboBox[5], "POL_VBK_TYPE");
-	GetAddr(&CboBox[6], "YV1C_AREA_CNT_MODE");
+	setAddressFromFile(&CboBox[0], "DEBUG_MODE");
+	setAddressFromFile(&CboBox[1], "ST_INI_EN");
+	setAddressFromFile(&CboBox[2], "OE_AREA_CNT_MODE");
+	setAddressFromFile(&CboBox[3], "SDR_POL_DE_SEL");
+	setAddressFromFile(&CboBox[4], "SDR_POL_CASE_SEL");
+	setAddressFromFile(&CboBox[5], "POL_VBK_TYPE");
+	setAddressFromFile(&CboBox[6], "YV1C_AREA_CNT_MODE");
     }
 
     CboBox[0].choice_nbr = 8;
@@ -301,11 +301,11 @@ TBit *Vend_11307::SetStaCboBx()
 	setAddress(&CboBox[4], CORE_STATE);	//
 
     } else if (MainForm->addr_place == 1) {
-	GetAddr(&CboBox[0], "CLK_UNSTABLE");
-	GetAddr(&CboBox[1], "CLK_STOP");
-	GetAddr(&CboBox[2], "CLK_DET_REGION");
-	GetAddr(&CboBox[3], "END_FRAME_MODI");
-	GetAddr(&CboBox[4], "CORE_STATE");
+	setAddressFromFile(&CboBox[0], "CLK_UNSTABLE");
+	setAddressFromFile(&CboBox[1], "CLK_STOP");
+	setAddressFromFile(&CboBox[2], "CLK_DET_REGION");
+	setAddressFromFile(&CboBox[3], "END_FRAME_MODI");
+	setAddressFromFile(&CboBox[4], "CORE_STATE");
 
     }
 
@@ -365,13 +365,13 @@ TBit2 *Vend_11307::SetDebugLblE2()
 	setAddress(&LEdt[5], ST_FRAME_NUM);	//
 	setAddress(&LEdt[6], IN_DEB_HDR_BL_SECTION);	//
     } else if (MainForm->addr_place == 1) {
-	GetAddr(&LEdt[0], "DIRECT_DUTY");
-	GetAddr(&LEdt[1], "TEST_LUX");
-	GetAddr(&LEdt[2], "GAM_DIRECT_R");
-	GetAddr(&LEdt[3], "GAM_DIRECT_G");
-	GetAddr(&LEdt[4], "GAM_DIRECT_B");
-	GetAddr(&LEdt[5], "ST_FRAME_NUM");
-	GetAddr(&LEdt[6], "IN_DEB_HDR_BL_SECTION");
+	setAddressFromFile(&LEdt[0], "DIRECT_DUTY");
+	setAddressFromFile(&LEdt[1], "TEST_LUX");
+	setAddressFromFile(&LEdt[2], "GAM_DIRECT_R");
+	setAddressFromFile(&LEdt[3], "GAM_DIRECT_G");
+	setAddressFromFile(&LEdt[4], "GAM_DIRECT_B");
+	setAddressFromFile(&LEdt[5], "ST_FRAME_NUM");
+	setAddressFromFile(&LEdt[6], "IN_DEB_HDR_BL_SECTION");
     }
     return LEdt;
 }
@@ -397,20 +397,20 @@ TBit2 *Vend_11307::SetStaLblE2()
 	setAddress(&LEdt[10], SLAVE_FSM);	//
 	setAddress(&LEdt[11], CHKSUM_FSM);	//
     } else if (MainForm->addr_place == 1) {
-	GetAddr(&LEdt[0], "OUT_BL_IDX");
-	GetAddr(&LEdt[1], "OUT_DUTY_DETECT_VALUE");
-	GetAddr(&LEdt[2], "OUT_BL_LUT_RD_DATA");
-	GetAddr(&LEdt[3], "OUT_DR_LUT_RD_DATA");
-	GetAddr(&LEdt[4], "OTP_IDX");
-	GetAddr(&LEdt[5], "OUT_GLT_EN_STATUS");
-	GetAddr(&LEdt[6], "OUT_DCR_EN_STATUS");
-	GetAddr(&LEdt[7], "OUT_PWM_DUTY");
-	GetAddr(&LEdt[8], "FRAME_CUM_RATIO");
-	//GetAddr(&LEdt[9],"OUT_DCR_EN_STATUS"); 
-	//GetAddr(&LEdt[10],"OUT_DCR_EN_STATUS"); 
-	GetAddr(&LEdt[9], "OUT_DEB_HDR_BL_DATA");
-	GetAddr(&LEdt[10], "SLAVE_FSM");
-	GetAddr(&LEdt[11], "CHKSUM_FSM");
+	setAddressFromFile(&LEdt[0], "OUT_BL_IDX");
+	setAddressFromFile(&LEdt[1], "OUT_DUTY_DETECT_VALUE");
+	setAddressFromFile(&LEdt[2], "OUT_BL_LUT_RD_DATA");
+	setAddressFromFile(&LEdt[3], "OUT_DR_LUT_RD_DATA");
+	setAddressFromFile(&LEdt[4], "OTP_IDX");
+	setAddressFromFile(&LEdt[5], "OUT_GLT_EN_STATUS");
+	setAddressFromFile(&LEdt[6], "OUT_DCR_EN_STATUS");
+	setAddressFromFile(&LEdt[7], "OUT_PWM_DUTY");
+	setAddressFromFile(&LEdt[8], "FRAME_CUM_RATIO");
+	//setAddressFromFile(&LEdt[9],"OUT_DCR_EN_STATUS"); 
+	//setAddressFromFile(&LEdt[10],"OUT_DCR_EN_STATUS"); 
+	setAddressFromFile(&LEdt[9], "OUT_DEB_HDR_BL_DATA");
+	setAddressFromFile(&LEdt[10], "SLAVE_FSM");
+	setAddressFromFile(&LEdt[11], "CHKSUM_FSM");
     }
     return LEdt;
 }

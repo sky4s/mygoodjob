@@ -65,6 +65,10 @@ object MainForm: TMainForm
         Visible = False
         OnClick = AUO_12303Click
       end
+      object addressFromFile: TMenuItem
+        Caption = 'Read Address from File'
+        Enabled = False
+      end
       object Header2Address1: TMenuItem
         Caption = 'Header to Address File'
         OnClick = Header2Address1Click

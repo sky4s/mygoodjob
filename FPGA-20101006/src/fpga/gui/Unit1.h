@@ -68,6 +68,7 @@ class TMainForm:public TForm {
     TMenuItem *Header2Address1;
     TOpenDialog *OpenDialog1;
     TSaveDialog *SaveDialog1;
+    TMenuItem *addressFromFile;
     void __fastcall mn_TCONClick(TObject * Sender);
     void __fastcall mn_EngineerClick(TObject * Sender);
     void __fastcall mn_FunctionClick(TObject * Sender);

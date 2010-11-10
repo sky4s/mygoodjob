@@ -37,10 +37,10 @@ TBit *Vend_12401::SetChkBx()
 	setAddress(&ChkBox[2], SSCG_FIFO_RST_EN);
 	setAddress(&ChkBox[3], CLKUS_EN);
     } else if (MainForm->addr_place == 1) {
-	GetAddr(&ChkBox[0], "FIFO_SYNC_RST_EN");
-	GetAddr(&ChkBox[1], "SDRAM_INITIAL_EN");
-	GetAddr(&ChkBox[2], "SSCG_FIFO_RST_EN");
-	GetAddr(&ChkBox[3], "CLKUS_EN");
+	setAddressFromFile(&ChkBox[0], "FIFO_SYNC_RST_EN");
+	setAddressFromFile(&ChkBox[1], "SDRAM_INITIAL_EN");
+	setAddressFromFile(&ChkBox[2], "SSCG_FIFO_RST_EN");
+	setAddressFromFile(&ChkBox[3], "CLKUS_EN");
     }
     return ChkBox;
 }
@@ -58,13 +58,13 @@ TBit *Vend_12401::SetCboBx()
 	setAddress(&CboBox[5], CLKUS_WINDOW);
 	setAddress(&CboBox[6], CLKUS_THR);
     } else if (MainForm->addr_place == 1) {
-	GetAddr(&CboBox[0], "FIFO_EN");
-	GetAddr(&CboBox[1], "DIGITAL_FILTER_EN");
-	GetAddr(&CboBox[2], "XDRV_CTL");
-	GetAddr(&CboBox[3], "YDRV_CTL");
-	GetAddr(&CboBox[4], "MINILVDS_SKEW");
-	GetAddr(&CboBox[5], "CLKUS_WINDOW");
-	GetAddr(&CboBox[6], "CLKUS_THR");
+	setAddressFromFile(&CboBox[0], "FIFO_EN");
+	setAddressFromFile(&CboBox[1], "DIGITAL_FILTER_EN");
+	setAddressFromFile(&CboBox[2], "XDRV_CTL");
+	setAddressFromFile(&CboBox[3], "YDRV_CTL");
+	setAddressFromFile(&CboBox[4], "MINILVDS_SKEW");
+	setAddressFromFile(&CboBox[5], "CLKUS_WINDOW");
+	setAddressFromFile(&CboBox[6], "CLKUS_THR");
     }
 
     CboBox[0].choice_nbr = 2;
@@ -133,8 +133,8 @@ TBit *Vend_12401::SetScrollBar()
 	setAddress(&ScrlB[0], KME_SDRAM_REG);
 	setAddress(&ScrlB[1], KME_REG);
     } else if (MainForm->addr_place == 1) {
-	GetAddr(&ScrlB[0], "KME_SDRAM_REG");
-	GetAddr(&ScrlB[1], "KME_REG");
+	setAddressFromFile(&ScrlB[0], "KME_SDRAM_REG");
+	setAddressFromFile(&ScrlB[1], "KME_REG");
     }
     return ScrlB;
 }
@@ -146,7 +146,7 @@ TBit2 *Vend_12401::SetScrollBar2()
     if (MainForm->addr_place == 0) {
 	setAddress(&ScrlB[0], HFRQ_VAL);
     } else if (MainForm->addr_place == 1) {
-	GetAddr(&ScrlB[0], "HFRQ_VAL");
+	setAddressFromFile(&ScrlB[0], "HFRQ_VAL");
     }
     return ScrlB;
 }
@@ -160,10 +160,10 @@ TBit *Vend_12401::SetDebugChkBx()
 	setAddress(&ChkBox[2], DUTY_DETECT_TEST_EN);
 	setAddress(&ChkBox[3], GAM_TEST);
     } else if (MainForm->addr_place == 1) {
-	GetAddr(&ChkBox[0], "MEM_TEST");
-	GetAddr(&ChkBox[1], "DIRECT_DUTY_EN");
-	GetAddr(&ChkBox[2], "DUTY_DETECT_TEST_EN");
-	GetAddr(&ChkBox[3], "GAM_TEST");
+	setAddressFromFile(&ChkBox[0], "MEM_TEST");
+	setAddressFromFile(&ChkBox[1], "DIRECT_DUTY_EN");
+	setAddressFromFile(&ChkBox[2], "DUTY_DETECT_TEST_EN");
+	setAddressFromFile(&ChkBox[3], "GAM_TEST");
     }
     return ChkBox;
 }
@@ -175,7 +175,7 @@ TBit *Vend_12401::SetDebugCboBx()
     if (MainForm->addr_place == 0) {
 	setAddress(&CboBox[0], DEBUG_MODE);
     } else if (MainForm->addr_place == 1) {
-	GetAddr(&CboBox[0], "DEBUG_MODE");
+	setAddressFromFile(&CboBox[0], "DEBUG_MODE");
     }
 
     CboBox[0].choice_nbr = 8;
@@ -204,11 +204,11 @@ TBit *Vend_12401::SetStaCboBx()
 	setAddress(&CboBox[4], CORE_STATE);
 
     } else if (MainForm->addr_place == 1) {
-	GetAddr(&CboBox[0], "CLK_UNSTABLE");
-	GetAddr(&CboBox[1], "CLK_STOP");
-	GetAddr(&CboBox[2], "CLK_DET_REGION");
-	GetAddr(&CboBox[3], "END_FRAME_MODI");
-	GetAddr(&CboBox[4], "CORE_STATE");
+	setAddressFromFile(&CboBox[0], "CLK_UNSTABLE");
+	setAddressFromFile(&CboBox[1], "CLK_STOP");
+	setAddressFromFile(&CboBox[2], "CLK_DET_REGION");
+	setAddressFromFile(&CboBox[3], "END_FRAME_MODI");
+	setAddressFromFile(&CboBox[4], "CORE_STATE");
     }
 
     CboBox[0].choice_nbr = 2;
@@ -264,11 +264,11 @@ TBit2 *Vend_12401::SetDebugLblE2()
 	setAddress(&LEdt[3], GAM_DIRECT_G);
 	setAddress(&LEdt[4], GAM_DIRECT_B);
     } else if (MainForm->addr_place == 1) {
-	GetAddr(&LEdt[0], "DIRECT_DUTY");
-	GetAddr(&LEdt[1], "FRAME_CUM_RATIO");
-	GetAddr(&LEdt[2], "GAM_DIRECT_R");
-	GetAddr(&LEdt[3], "GAM_DIRECT_G");
-	GetAddr(&LEdt[4], "GAM_DIRECT_B");
+	setAddressFromFile(&LEdt[0], "DIRECT_DUTY");
+	setAddressFromFile(&LEdt[1], "FRAME_CUM_RATIO");
+	setAddressFromFile(&LEdt[2], "GAM_DIRECT_R");
+	setAddressFromFile(&LEdt[3], "GAM_DIRECT_G");
+	setAddressFromFile(&LEdt[4], "GAM_DIRECT_B");
     }
     return LEdt;
 }
@@ -284,10 +284,10 @@ TBit2 *Vend_12401::SetStaLblE2()
 	setAddress(&LEdt[2], BL_LUT_RD_DATA);
 	setAddress(&LEdt[3], DR_LUT_RD_DATA);
     } else if (MainForm->addr_place == 1) {
-	GetAddr(&LEdt[0], "BL_IDX");
-	GetAddr(&LEdt[1], "OUT_DUTY_DETECT_VALUE");
-	GetAddr(&LEdt[2], "BL_LUT_RD_DATA");
-	GetAddr(&LEdt[3], "DR_LUT_RD_DATA");
+	setAddressFromFile(&LEdt[0], "BL_IDX");
+	setAddressFromFile(&LEdt[1], "OUT_DUTY_DETECT_VALUE");
+	setAddressFromFile(&LEdt[2], "BL_LUT_RD_DATA");
+	setAddressFromFile(&LEdt[3], "DR_LUT_RD_DATA");
     }
     return LEdt;
 }
