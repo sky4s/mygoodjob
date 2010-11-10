@@ -15,6 +15,8 @@ object PatternForm: TPatternForm
   Visible = True
   WindowState = wsMinimized
   OnMouseMove = FormMouseMove
+  OnMouseWheelDown = FormMouseWheelDown
+  OnMouseWheelUp = FormMouseWheelUp
   OnPaint = FormPaint
   OnResize = FormResize
   PixelsPerInch = 96

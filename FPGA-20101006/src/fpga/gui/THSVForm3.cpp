@@ -41,7 +41,7 @@ __fastcall THSVForm3::THSVForm3(TComponent * Owner):TForm(Owner),
 HSV_IsChkSum(true), tbl_step(WHOLE_HUE_ANGLE / HUE_COUNT),
 lastStringGridSelectRow(-1), settingScrollBarPosition(false),
 cursorRGBValues(new int[3]), patternMode(PatternMode::Single),
-selectedRGBValues(new int[3]), customPattern(false)
+selectedRGBValues(new int[3]), customPattern(false), patternValue(192)
 {
     HSV_Chg = 0;
     HSVEN_idx = -1;
@@ -1421,9 +1421,9 @@ void THSVForm3::setupPatternForm()
     HSV_vector_ptr hsvVector(new HSV_vector());
 
     const int stdSize = 5;
-    int valueArray[stdSize] = { 192, 192, 192, 192, 192 };
+    int valueArray[stdSize] = { 192, 192, 192, 192, 192 /*, 128, 255, 255 */  };
     double saturationArray[stdSize] =
-	{ .33333333333333336, .5, .58333333333333336, .6666666666666667, .75 };
+	{ .33333333333333336, .5, .58333333333333336, .6666666666666667, .75 /*, 1, .5, 1 */  };
     double_array hsvValues(new double[3]);
 
     int totalSize = customPattern ? stdSize + 1 : stdSize;
@@ -1489,7 +1489,8 @@ void THSVForm3::setupPatternForm()
 	for (int y = 0; y < stdSize; y++) {
 	    hsvValues[0] = h;
 	    hsvValues[1] = saturationArray[y];
-	    hsvValues[2] = valueArray[y];
+	    //hsvValues[2] = valueArray[y];
+	    hsvValues[2] = patternValue;
 	    HSV_ptr hsv(new HSV(RGBColorSpace::sRGB, hsvValues));
 	    hsvVector->push_back(hsv);
 	}
@@ -1544,6 +1545,18 @@ void THSVForm3::show7p5DegBasePattern()
 void THSVForm3::showSinglePattern()
 {
     patternMode = PatternMode::Single;
+    setupPatternForm();
+}
+
+void THSVForm3::adjustValue(bool minus)
+{
+    if (minus) {
+	patternValue -= 32;
+    } else {
+	patternValue += 32;
+    }
+    patternValue = patternValue < 64 ? 64 : patternValue;
+    patternValue = patternValue > 255 ? 255 : patternValue;
     setupPatternForm();
 }
 

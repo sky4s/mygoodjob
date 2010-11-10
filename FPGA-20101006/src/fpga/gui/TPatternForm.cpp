@@ -221,6 +221,28 @@ void __fastcall TPatternForm::FormMouseMove(TObject * Sender, TShiftState Shift,
 	"rgb(" + FloatToStr(rgbValues[0]) + ", " + FloatToStr(rgbValues[1]) + ", " +
 	FloatToStr(rgbValues[2]) + ") hsv(" + astr.sprintf("%.1f", hsviValues[0]) + ", " +
 	astr.sprintf("%.3f", hsviValues[1]) + ", " + FloatToStr(hsviValues[2]) + ")";
+
+    if (Shift.Contains(ssLeft)) {
+	//«ö¤U¥ªÁä
+
+    }
+}
+
+//---------------------------------------------------------------------------
+
+void __fastcall TPatternForm::FormMouseWheelDown(TObject * Sender,
+						 TShiftState Shift, TPoint & MousePos,
+						 bool & Handled)
+{
+    callback->adjustValue(false);
+}
+
+//---------------------------------------------------------------------------
+
+void __fastcall TPatternForm::FormMouseWheelUp(TObject * Sender,
+					       TShiftState Shift, TPoint & MousePos, bool & Handled)
+{
+    callback->adjustValue(true);
 }
 
 //---------------------------------------------------------------------------
