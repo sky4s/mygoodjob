@@ -10,7 +10,7 @@
 //其他庫頭文件
 
 //本項目內頭文件
-
+#include <addresstype/Address_type.h>
 //本項目內gui頭文件
 #include <fpga/gui/THSVForm3.h>
 #include "include.h"
@@ -40,6 +40,11 @@ __fastcall TMainForm::TMainForm(TComponent * Owner):TForm(Owner)
     SetPriorityClass(GetCurrentProcess(), REALTIME_PRIORITY_CLASS);
     addr_place = 0;		//0:auo_12401_address.h   1:auo_12401_address.txt
     C3D_type = 7;
+    using namespace cms::util;
+    if (Util::isFileExist(ADDRESS_FILE)) {
+	addr_place = 1;
+	addressFromFile->Checked = true;
+    }
 }
 
 //---------------------------------------------------------------------------
@@ -54,10 +59,7 @@ void __fastcall TMainForm::mn_TCONClick(TObject * Sender)
 	    TCONForm = new TTCONForm1(this);
 	    TCONForm->Show();
 	}
-	/*else if(TCON_DEV=="12303"){
-	   TCONForm = new TTCONForm2(this);
-	   TCONForm->Show();
-	   } */
+
     }
 }
 
@@ -78,10 +80,7 @@ void __fastcall TMainForm::mn_FunctionClick(TObject * Sender)
 	if (TCON_DEV == "11307") {
 	    FunctionForm = new TFunctionForm1(this);
 	    FunctionForm->Show();
-	}			/*else if(TCON_DEV=="12303"){
-				   FunctionForm = new TFunctionForm2(this);
-				   FunctionForm->Show();
-				   } */
+	}
     }
 
 }
@@ -97,10 +96,7 @@ void __fastcall TMainForm::mn_DCRClick(TObject * Sender)
 	    DCRForm = new TDCRForm1(this);
 	    DCRForm->Show();
 	}
-	/*else if(TCON_DEV=="12303"){
-	   DCRForm = new TDCRForm2(this);
-	   DCRForm->Show();
-	   } */
+
     }
 }
 
@@ -114,10 +110,7 @@ void __fastcall TMainForm::mn_VenderClick(TObject * Sender)
 	    VenderForm = new TVenderForm1(this);
 	    VenderForm->Show();
 	}
-	/*else if(TCON_DEV=="12303"){
-	   VenderForm = new TVenderForm2(this);
-	   VenderForm->Show();
-	   } */
+
     }
 }
 
@@ -355,6 +348,7 @@ void __fastcall TMainForm::AUO_12303Click(TObject * Sender)
 
 void __fastcall TMainForm::FormCreate(TObject * Sender)
 {
+
     TCON_DEV = "11307";		//default device
     //String info = getFileVersionInfo();
     MainForm->Caption = "AUO 11307";
@@ -413,11 +407,7 @@ void __fastcall TMainForm::mn_CMClick(TObject * Sender)
 	    CMForm = new TCMForm1(this);
 	    CMForm->Show();
 	}
-	/*else if(TCON_DEV=="12303"){
-	   CMForm = new TCMForm2(this);
-	   CMForm->Show();
 
-	   } */
     }
 }
 
@@ -431,11 +421,7 @@ void __fastcall TMainForm::mn_SharpnessClick(TObject * Sender)
 	    SharpnessForm = new TSharpnessForm1(this);
 	    SharpnessForm->Show();
 	}
-	/*else if(TCON_DEV=="12303"){
-	   SharpnessForm = new TSharpnessForm2(this);
-	   SharpnessForm->Show();
 
-	   } */
     }
 }
 
@@ -637,12 +623,30 @@ void TMainForm::header2AddressFile(const AnsiString & header, const AnsiString &
     ifstream infile(header.c_str());
     ofstream outfile(address.c_str());
 
-    if (infile.is_open()&& outfile.is_open()) {
+    if (infile.is_open() && outfile.is_open()) {
 	string line;
+	bool comment = false;
 	while (infile.good() && outfile.good()) {
 	    getline(infile, line);
-	    string_vector_ptr stringvector = StringVector::tokenize(line, " ");
-	    if (stringvector->size() == 3) {
+
+	    if (comment || line.size() == 0) {
+		if (-1 != line.find("*/", 0)) {
+		    comment = false;
+		}
+		continue;
+	    }
+	    if (!comment && -1 != line.find("/*", 0)) {
+		comment = true;
+		continue;
+	    }
+	    string_vector_ptr stringvector = StringVector::tokenize(line, " \t");
+	    int size = stringvector->size();
+	    if (size == 0) {
+		continue;
+	    }
+	    string first = (*stringvector)[0];
+
+	    if ((size == 3 || size == 4) && first.find("#define") == 0) {
 		string define = (*stringvector)[2];
 		string sub = define.substr(1, define.size() - 2);
 		size_t found = sub.find(",");

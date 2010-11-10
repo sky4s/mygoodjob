@@ -5,6 +5,7 @@
 #ifdef NEW_ADDRESS_TYPE
 
 #define Num_ASIC 4
+#define ADDRESS_FILE "tcon.txt"
 
 #include <lib/CMSCpp2.1/src/includeall.h>
 

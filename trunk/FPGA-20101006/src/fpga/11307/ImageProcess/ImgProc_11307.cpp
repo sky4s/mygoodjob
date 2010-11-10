@@ -26,9 +26,9 @@ TBit *CM_11307::SetChkBx()
 	setAddress(&ChkBox[1], CM_DEMO);	//
 	setAddress(&ChkBox[2], CM_DEMO_LEFT);	//
     } else if (MainForm->addr_place == 1) {
-	GetAddr(&ChkBox[0], "CM_EN");
-	GetAddr(&ChkBox[1], "CM_DEMO");
-	GetAddr(&ChkBox[2], "CM_DEMO_LEFT");
+	setAddressFromFile(&ChkBox[0], "CM_EN");
+	setAddressFromFile(&ChkBox[1], "CM_DEMO");
+	setAddressFromFile(&ChkBox[2], "CM_DEMO_LEFT");
     }
     return ChkBox;
 
@@ -40,7 +40,7 @@ TBit *CM_11307::SetCboBx()
     if (MainForm->addr_place == 0) {
 	setAddress(&CboBox[0], CM_SEL);	//
     } else if (MainForm->addr_place == 1) {
-	GetAddr(&CboBox[0], "CM_SEL");
+	setAddressFromFile(&CboBox[0], "CM_SEL");
     }
     CboBox[0].choice_nbr = 4;
     CboBox[0].choice = new String[4];
@@ -59,9 +59,9 @@ TLUT *CM_11307::Setval()
 	setAddress(&LUT[1], CM2);
 	setAddress(&LUT[2], CM3);
     } else if (MainForm->addr_place == 1) {
-	GetAddr(&LUT[0], "CM1");
-	GetAddr(&LUT[1], "CM2");
-	GetAddr(&LUT[2], "CM3");
+	setAddressFromFile(&LUT[0], "CM1");
+	setAddressFromFile(&LUT[1], "CM2");
+	setAddressFromFile(&LUT[2], "CM3");
     }
     return LUT;
 }
@@ -74,9 +74,9 @@ TLUT *CM_11307::Setofs()
 	setAddress(&LUT[1], ofs2);
 	setAddress(&LUT[2], ofs3);
     } else if (MainForm->addr_place == 1) {
-	GetAddr(&LUT[0], "ofs1");
-	GetAddr(&LUT[1], "ofs2");
-	GetAddr(&LUT[2], "ofs3");
+	setAddressFromFile(&LUT[0], "ofs1");
+	setAddressFromFile(&LUT[1], "ofs2");
+	setAddressFromFile(&LUT[2], "ofs3");
     }
     return LUT;
 }
@@ -107,12 +107,12 @@ TBit *SP_11307::SetChkBx()
 	setAddress(&ChkBox[4], SP_DEB);	//
 	setAddress(&ChkBox[5], SP_MASK_EN);	//
     } else if (MainForm->addr_place == 1) {
-	GetAddr(&ChkBox[0], "SP_EN");
-	GetAddr(&ChkBox[1], "SP_DEMO");
-	GetAddr(&ChkBox[2], "TEXT_DET");
-	GetAddr(&ChkBox[3], "SP_DEMO_LEFT");
-	GetAddr(&ChkBox[4], "SP_DEB");
-	GetAddr(&ChkBox[5], "SP_MASK_EN");
+	setAddressFromFile(&ChkBox[0], "SP_EN");
+	setAddressFromFile(&ChkBox[1], "SP_DEMO");
+	setAddressFromFile(&ChkBox[2], "TEXT_DET");
+	setAddressFromFile(&ChkBox[3], "SP_DEMO_LEFT");
+	setAddressFromFile(&ChkBox[4], "SP_DEB");
+	setAddressFromFile(&ChkBox[5], "SP_MASK_EN");
     }
     return ChkBox;
 }
@@ -126,10 +126,10 @@ TBit *SP_11307::SetScrollBar()
 	setAddress(&ScrlB[2], SP_EDGE_THRESHOLD);	//
 	setAddress(&ScrlB[3], GLB_STR);	//
     } else if (MainForm->addr_place == 1) {
-	GetAddr(&ScrlB[0], "SP_HORZ_THRESHOLD");
-	GetAddr(&ScrlB[1], "SP_VERT_THRESHOLD");
-	GetAddr(&ScrlB[2], "SP_EDGE_THRESHOLD");
-	GetAddr(&ScrlB[3], "GLB_STR");
+	setAddressFromFile(&ScrlB[0], "SP_HORZ_THRESHOLD");
+	setAddressFromFile(&ScrlB[1], "SP_VERT_THRESHOLD");
+	setAddressFromFile(&ScrlB[2], "SP_EDGE_THRESHOLD");
+	setAddressFromFile(&ScrlB[3], "GLB_STR");
     }
     return ScrlB;
 }
@@ -142,7 +142,7 @@ TBit2 *SP_11307::SetLblE2()	//Add by Michelle 20100702
 	//       setAddress(&LEdt[0],SP_VACTIVE);                     //
 
     } else if (MainForm->addr_place == 1) {
-	//       GetAddr(&LEdt[0],"SP_VACTIVE(0~4095)");           
+	//       setAddressFromFile(&LEdt[0],"SP_VACTIVE(0~4095)");           
 
     }
     return LEdt;
@@ -154,7 +154,7 @@ TLUT *SP_11307::SetSPLUT()
     if (MainForm->addr_place == 0) {
 	setAddress(&LUT[0], SP_LUT);
     } else if (MainForm->addr_place == 1) {
-	GetAddr(&LUT[0], "SP_LUT");
+	setAddressFromFile(&LUT[0], "SP_LUT");
     }
     return LUT;
 }
@@ -184,15 +184,15 @@ TBit *CE_11307::SetChkBx()
 	setAddress(&ChkBox[7], MLC_EN);
 	setAddress(&ChkBox[8], LC_DEMO_LEFT);
     } else if (MainForm->addr_place == 1) {
-	GetAddr(&ChkBox[0], "LC_EN");
-	GetAddr(&ChkBox[1], "LC_DEMO");
-	GetAddr(&ChkBox[2], "PURITYWT_EN");
-	GetAddr(&ChkBox[3], "FASTCHG_EN");
-	GetAddr(&ChkBox[4], "SPRS_BLK1");
-	GetAddr(&ChkBox[5], "SPRS_BLK0");
-	GetAddr(&ChkBox[6], "GRAD_EN");
-	GetAddr(&ChkBox[7], "MLC_EN");
-	GetAddr(&ChkBox[8], "LC_DEMO_LEFT");
+	setAddressFromFile(&ChkBox[0], "LC_EN");
+	setAddressFromFile(&ChkBox[1], "LC_DEMO");
+	setAddressFromFile(&ChkBox[2], "PURITYWT_EN");
+	setAddressFromFile(&ChkBox[3], "FASTCHG_EN");
+	setAddressFromFile(&ChkBox[4], "SPRS_BLK1");
+	setAddressFromFile(&ChkBox[5], "SPRS_BLK0");
+	setAddressFromFile(&ChkBox[6], "GRAD_EN");
+	setAddressFromFile(&ChkBox[7], "MLC_EN");
+	setAddressFromFile(&ChkBox[8], "LC_DEMO_LEFT");
     }
     return ChkBox;
 }
@@ -207,11 +207,11 @@ TBit *CE_11307::SetCboBx()
 	setAddress(&CboBox[3], JND_SEL);
 	setAddress(&CboBox[4], ST_SEL);
     } else if (MainForm->addr_place == 1) {
-	GetAddr(&CboBox[0], "MAXLIMT_SEL");
-	GetAddr(&CboBox[1], "PIXHIST_SEL");
-	GetAddr(&CboBox[2], "LOWST_SEL");
-	GetAddr(&CboBox[3], "JND_SEL");
-	GetAddr(&CboBox[4], "ST_SEL");
+	setAddressFromFile(&CboBox[0], "MAXLIMT_SEL");
+	setAddressFromFile(&CboBox[1], "PIXHIST_SEL");
+	setAddressFromFile(&CboBox[2], "LOWST_SEL");
+	setAddressFromFile(&CboBox[3], "JND_SEL");
+	setAddressFromFile(&CboBox[4], "ST_SEL");
     }
     CboBox[0].choice_nbr = 2;
     CboBox[0].choice = new String[2];
@@ -261,20 +261,20 @@ TBit *CE_11307::SetScrollBar()
 	setAddress(&ScrlB[12], ST_MAX);
 	setAddress(&ScrlB[13], ST_MIN);
     } else if (MainForm->addr_place == 1) {
-	GetAddr(&ScrlB[0], "PATDET_FRM_NUM");
-	GetAddr(&ScrlB[1], "PATDET_LINE_NUM");
-	GetAddr(&ScrlB[2], "GRAD_GMA_STEP");
-	GetAddr(&ScrlB[3], "GRAD_FRM_STEP");
-	GetAddr(&ScrlB[4], "GRAD_PIXDIFF_THR");
-	GetAddr(&ScrlB[5], "EDG_DIFF_THR");
-	GetAddr(&ScrlB[6], "PIX_DIFF_THR");
-	GetAddr(&ScrlB[7], "STRENGTH_K");
-	GetAddr(&ScrlB[8], "MIN_EDGE");
-	GetAddr(&ScrlB[9], "MLC_THR");
-	GetAddr(&ScrlB[10], "JND_MAX");
-	GetAddr(&ScrlB[11], "JND_MIN");
-	GetAddr(&ScrlB[12], "ST_MAX");
-	GetAddr(&ScrlB[13], "ST_MIN");
+	setAddressFromFile(&ScrlB[0], "PATDET_FRM_NUM");
+	setAddressFromFile(&ScrlB[1], "PATDET_LINE_NUM");
+	setAddressFromFile(&ScrlB[2], "GRAD_GMA_STEP");
+	setAddressFromFile(&ScrlB[3], "GRAD_FRM_STEP");
+	setAddressFromFile(&ScrlB[4], "GRAD_PIXDIFF_THR");
+	setAddressFromFile(&ScrlB[5], "EDG_DIFF_THR");
+	setAddressFromFile(&ScrlB[6], "PIX_DIFF_THR");
+	setAddressFromFile(&ScrlB[7], "STRENGTH_K");
+	setAddressFromFile(&ScrlB[8], "MIN_EDGE");
+	setAddressFromFile(&ScrlB[9], "MLC_THR");
+	setAddressFromFile(&ScrlB[10], "JND_MAX");
+	setAddressFromFile(&ScrlB[11], "JND_MIN");
+	setAddressFromFile(&ScrlB[12], "ST_MAX");
+	setAddressFromFile(&ScrlB[13], "ST_MIN");
     }
     return ScrlB;
 }
@@ -285,7 +285,7 @@ TLUT *CE_11307::SetJNDlut()
     if (MainForm->addr_place == 0) {
 	setAddress(&lut[0], JND_LUT);
     } else if (MainForm->addr_place == 1) {
-	GetAddr(&lut[0], "JND_LUT");
+	setAddressFromFile(&lut[0], "JND_LUT");
     }
     return lut;
 }
@@ -296,7 +296,7 @@ TLUT *CE_11307::SetSTlut()
     if (MainForm->addr_place == 0) {
 	setAddress(&lut[0], ST_LUT);
     } else if (MainForm->addr_place == 1) {
-	GetAddr(&lut[0], "ST_LUT");
+	setAddressFromFile(&lut[0], "ST_LUT");
     }
     return lut;
 }
@@ -307,7 +307,7 @@ TLUT *CE_11307::SetMAXlut()
     if (MainForm->addr_place == 0) {
 	setAddress(&lut[0], MAX_LUT);
     } else if (MainForm->addr_place == 1) {
-	GetAddr(&lut[0], "MAX_LUT");
+	setAddressFromFile(&lut[0], "MAX_LUT");
     }
     return lut;
 }
@@ -318,7 +318,7 @@ TLUT *CE_11307::SetMINlut()
     if (MainForm->addr_place == 0) {
 	setAddress(&lut[0], MIN_LUT);
     } else if (MainForm->addr_place == 1) {
-	GetAddr(&lut[0], "MIN_LUT");
+	setAddressFromFile(&lut[0], "MIN_LUT");
     }
     return lut;
 }
@@ -340,10 +340,10 @@ TBit *HSV_11307::SetChkBx()
 	setAddress(&ChkBx[2], HUE_DEMO_LEFT);	//
 	setAddress(&ChkBx[3], V_OFS_EN);
     } else if (MainForm->addr_place == 1) {
-	GetAddr(&ChkBx[0], "HUE_EN");
-	GetAddr(&ChkBx[1], "HUE_DEMO");
-	GetAddr(&ChkBx[2], "HUE_DEMO_LEFT");
-	GetAddr(&ChkBx[3], "V_OFS_EN");
+	setAddressFromFile(&ChkBx[0], "HUE_EN");
+	setAddressFromFile(&ChkBx[1], "HUE_DEMO");
+	setAddressFromFile(&ChkBx[2], "HUE_DEMO_LEFT");
+	setAddressFromFile(&ChkBx[3], "V_OFS_EN");
     }
     return ChkBx;
 }
@@ -354,7 +354,7 @@ TLUT *HSV_11307::SetLUT()
     if (MainForm->addr_place == 0) {
 	setAddress(&lut[0], HSVlut);	//
     } else if (MainForm->addr_place == 1) {
-	GetAddr(&lut[0], "HSVlut");
+	setAddressFromFile(&lut[0], "HSVlut");
     }
     return lut;
 }
@@ -383,9 +383,9 @@ TBit *C3D_11307_777::SetChkBx()
 	setAddress(&ChkBx[1], C3D_777_DEMO);
 	setAddress(&ChkBx[2], C3D_777_DEMO_LEFT);
     } else if (MainForm->addr_place == 1) {
-	GetAddr(&ChkBx[0], "C3D_777_EN");
-	GetAddr(&ChkBx[1], "C3D_777_DEMO");
-	GetAddr(&ChkBx[2], "C3D_777_DEMO_LEFT");
+	setAddressFromFile(&ChkBx[0], "C3D_777_EN");
+	setAddressFromFile(&ChkBx[1], "C3D_777_DEMO");
+	setAddressFromFile(&ChkBx[2], "C3D_777_DEMO_LEFT");
     }
     return ChkBx;
 }
@@ -399,10 +399,10 @@ TLUT *C3D_11307_777::SetLUT()
 	setAddress(&lut[2], C3D_777_LUTB);
 	// setAddress(&lut[3],C3D_LUTW);
     } else if (MainForm->addr_place == 1) {
-	GetAddr(&lut[0], "C3D_777_LUTR");
-	GetAddr(&lut[1], "C3D_777_LUTG");
-	GetAddr(&lut[2], "C3D_777_LUTB");
-	//GetAddr(&lut[3],"C3D_LUTW");
+	setAddressFromFile(&lut[0], "C3D_777_LUTR");
+	setAddressFromFile(&lut[1], "C3D_777_LUTG");
+	setAddressFromFile(&lut[2], "C3D_777_LUTB");
+	//setAddressFromFile(&lut[3],"C3D_LUTW");
     }
     return lut;
 }
@@ -429,9 +429,9 @@ TBit *C3D_11307_999::SetChkBx()
 	setAddress(&ChkBx[1], C3D_999_DEMO);
 	setAddress(&ChkBx[2], C3D_999_DEMO_LEFT);
     } else if (MainForm->addr_place == 1) {
-	GetAddr(&ChkBx[0], "C3D_999_EN");
-	GetAddr(&ChkBx[1], "C3D_999_DEMO");
-	GetAddr(&ChkBx[2], "C3D_999_DEMO_LEFT");
+	setAddressFromFile(&ChkBx[0], "C3D_999_EN");
+	setAddressFromFile(&ChkBx[1], "C3D_999_DEMO");
+	setAddressFromFile(&ChkBx[2], "C3D_999_DEMO_LEFT");
     }
     return ChkBx;
 }
@@ -445,10 +445,10 @@ TLUT *C3D_11307_999::SetLUT()
 	setAddress(&lut[2], C3D_999_LUTB);
 	// setAddress(&lut[3],C3D_LUTW);
     } else if (MainForm->addr_place == 1) {
-	GetAddr(&lut[0], "C3D_999_LUTR");
-	GetAddr(&lut[1], "C3D_999_LUTG");
-	GetAddr(&lut[2], "C3D_999_LUTB");
-	//GetAddr(&lut[3],"C3D_LUTW");
+	setAddressFromFile(&lut[0], "C3D_999_LUTR");
+	setAddressFromFile(&lut[1], "C3D_999_LUTG");
+	setAddressFromFile(&lut[2], "C3D_999_LUTB");
+	//setAddressFromFile(&lut[3],"C3D_LUTW");
     }
     return lut;
 }

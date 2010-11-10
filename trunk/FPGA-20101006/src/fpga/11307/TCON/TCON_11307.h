@@ -34,7 +34,7 @@ class TCON_11307:public AbstTCON {
 };
 
 //--------------------------------------------------------------------------
-bool GetAddr(TBit * Addr, String name)	//Get TBit type Address
+/*bool GetAddr(TBit * Addr, String name)	//Get TBit type Address
 {
     if (name == "_NULL")
 	return 0;
@@ -49,13 +49,13 @@ bool GetAddr(TBit * Addr, String name)	//Get TBit type Address
     char *str = name.c_str();
 
     pch = strtok(buffer, "\n\0");	//讀入一行文字
-    if (pch == NULL) {		//沒有資料  return
-	StrCopy(tmp, "Can't find String ");
-	StrCat(tmp, name.c_str());
-	MessageBox(NULL, tmp, "Error", MB_OK);
-	return 0;
-    }
     do {
+	if (pch == NULL) {	//沒有資料  return
+	    StrCopy(tmp, "Can't find String ");
+	    StrCat(tmp, name.c_str());
+	    MessageBox(NULL, tmp, "Error", MB_OK);
+	    return 0;
+	}
 	ptr1 = strchr(pch, slash);	//註解前的字串複製到ptr1
 	if (ptr1 == NULL)
 	    strcpy(str1, pch);	//註解不存在, 保留完整字串在str1
@@ -89,7 +89,7 @@ bool GetAddr(TBit * Addr, String name)	//Get TBit type Address
     Addr->set(val[0], val[1], val[2], name);
     delete[]buffer;
     return 1;
-}
+}*/
 
 //----------------------------------------------------------------------------
 
@@ -114,7 +114,7 @@ bool GetAddr(TBit * Addr, String name)	//Get TBit type Address
 }*/
 
 //--------------------------------------------------------------------------
-bool GetAddr(TBit2 * Addr, String name)
+/*bool GetAddr(TBit2 * Addr, String name)
 {
     if (name == "_NULL")
 	return 0;
@@ -172,7 +172,7 @@ bool GetAddr(TBit2 * Addr, String name)
     Addr->set(val[0], val[1], val[2], val[3], val[4], val[5], (String) name);
     delete[]buffer;
     return 1;
-}
+}*/
 
 //---------------------------------------------------------------------------
 /*bool SetAddr(TBit2 * Addr, String str)	//Get TBit type Address
@@ -202,7 +202,7 @@ bool GetAddr(TBit2 * Addr, String name)
 }*/
 
 //---------------------------------------------------------------------------
-bool GetAddr(TLUT * Addr, String name)
+/*bool GetAddr(TLUT * Addr, String name)
 {
     if (name == "_NULL")
 	return 0;
@@ -218,14 +218,16 @@ bool GetAddr(TLUT * Addr, String name)
     char *str = name.c_str();
 
     pch = strtok(buffer, "\n\0");	//讀入一行文字
-    if (pch == NULL) {		//沒有資料  return
-	StrCopy(tmp, "Can't find String ");
-	StrCat(tmp, name.c_str());
-	MessageBox(NULL, tmp, "Error", MB_OK);
-	return 0;
-    }
+
 
     do {
+	if (pch == NULL) {	//沒有資料  return
+	    StrCopy(tmp, "Can't find String ");
+	    StrCat(tmp, name.c_str());
+	    MessageBox(NULL, tmp, "Error", MB_OK);
+	    return 0;
+	}
+        
 	ptr1 = strchr(pch, slash);	//註解前的字串複製到ptr1
 	if (ptr1 == NULL)
 	    strcpy(str1, pch);	//註解不存在, 保留完整字串在str1
@@ -260,7 +262,7 @@ bool GetAddr(TLUT * Addr, String name)
     Addr->set(val[0], val[1], val[2], val[3], name);
     delete[]buffer;
     return 1;
-}
+}*/
 
 //---------------------------------------------------------------------------
 /*bool SetAddr(TLUT * Addr, String str)	//Get TBit type Address

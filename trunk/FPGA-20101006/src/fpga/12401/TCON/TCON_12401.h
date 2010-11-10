@@ -33,7 +33,7 @@ class TCON_12401:public AbstTCON {
 };
 
 //--------------------------------------------------------------------------
-bool GetAddr(TBit * Addr, String name)	//Get TBit type Address
+/*bool GetAddr(TBit * Addr, String name)	//Get TBit type Address
 {
     if (name == "_NULL")
 	return 0;
@@ -62,11 +62,7 @@ bool GetAddr(TBit * Addr, String name)	//Get TBit type Address
 	    strncpy(str1, pch, ptr1 - pch);	//註解存在, 保留註解前字串在str1
 	    str1[ptr1 - pch + 1] = ' ';
 	}
-	/* idx = strcspn (str1,key);
-	   if(str2!=NULL)
-	   delete [] str2;
-	   str2 = new char [idx];
-	   strncpy(str2, str1, idx); */
+
 
 	name_ok = 1;
 	for (int i = 0; i < name.Length(); i++)	//逐一比較name與str1的字元
@@ -93,7 +89,7 @@ bool GetAddr(TBit * Addr, String name)	//Get TBit type Address
     Addr->set(val[0], val[1], val[2], name);
 
     return 1;
-}
+}*/
 
 //----------------------------------------------------------------------------
 
@@ -118,7 +114,7 @@ bool GetAddr(TBit * Addr, String name)	//Get TBit type Address
 }*/
 
 //--------------------------------------------------------------------------
-bool GetAddr(TBit2 * Addr, String name)
+/*bool GetAddr(TBit2 * Addr, String name)
 {
     if (name == "_NULL")
 	return 0;
@@ -175,7 +171,7 @@ bool GetAddr(TBit2 * Addr, String name)
     }
     Addr->set(val[0], val[1], val[2], val[3], val[4], val[5], (String) name);
     return 1;
-}
+}*/
 
 //---------------------------------------------------------------------------
 /*bool SetAddr(TBit2 * Addr, String str)	//Get TBit type Address
@@ -205,7 +201,7 @@ bool GetAddr(TBit2 * Addr, String name)
 }*/
 
 //---------------------------------------------------------------------------
-bool GetAddr(TLUT * Addr, String name)
+/*bool GetAddr(TLUT * Addr, String name)
 {
     if (name == "_NULL")
 	return 0;
@@ -262,7 +258,7 @@ bool GetAddr(TLUT * Addr, String name)
     }
     Addr->set(val[0], val[1], val[2], val[3], name);
     return 1;
-}
+}*/
 
 //---------------------------------------------------------------------------
 /*bool SetAddr(TLUT * Addr, String str)	//Get TBit type Address

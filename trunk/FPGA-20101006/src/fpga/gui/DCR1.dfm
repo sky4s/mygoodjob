@@ -25,8 +25,8 @@ object DCRForm1: TDCRForm1
     Top = 0
     Width = 738
     Height = 490
-    ActivePage = TabSheet5
-    TabIndex = 4
+    ActivePage = TabSheet1
+    TabIndex = 0
     TabOrder = 0
     object TabSheet1: TTabSheet
       Caption = 'DCR Setting'
@@ -294,7 +294,7 @@ object DCRForm1: TDCRForm1
             Top = 16
             Width = 122
             Height = 21
-            ItemHeight = 0
+            ItemHeight = 13
             TabOrder = 0
             Text = 'ComboBox1'
           end
@@ -385,7 +385,7 @@ object DCRForm1: TDCRForm1
           Top = 20
           Width = 209
           Height = 21
-          ItemHeight = 0
+          ItemHeight = 13
           TabOrder = 6
           Text = 'ComboBox13'
         end
@@ -448,7 +448,7 @@ object DCRForm1: TDCRForm1
             Top = 12
             Width = 201
             Height = 21
-            ItemHeight = 0
+            ItemHeight = 13
             TabOrder = 2
             Text = 'ComboBox12'
           end
@@ -731,7 +731,7 @@ object DCRForm1: TDCRForm1
           Top = 7
           Width = 208
           Height = 21
-          ItemHeight = 0
+          ItemHeight = 13
           TabOrder = 0
           Text = 'ComboBox16'
         end
@@ -827,7 +827,7 @@ object DCRForm1: TDCRForm1
           Top = 29
           Width = 337
           Height = 21
-          ItemHeight = 0
+          ItemHeight = 13
           TabOrder = 1
           Text = 'ComboBox15'
         end

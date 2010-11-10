@@ -50,16 +50,16 @@ TBit *TCON_12401::SetDevChkBx()
 	setAddress(&ChkBox[8], Master_SEL);
 	setAddress(&ChkBox[9], SSCG_EN);
     } else if (MainForm->addr_place == 1) {
-	GetAddr(&ChkBox[0], "DEMO_TYPE");
-	GetAddr(&ChkBox[1], "AGING_SRC");
-	GetAddr(&ChkBox[2], "GATECLK_EN");
-	GetAddr(&ChkBox[3], "CLKDET_EN");
-	GetAddr(&ChkBox[4], "ODLUT_TYPE");
-	GetAddr(&ChkBox[5], "Sync_EN");
-	GetAddr(&ChkBox[6], "VOC_SEL");
-	GetAddr(&ChkBox[7], "EEPROM64");
-	GetAddr(&ChkBox[8], "Master_SEL");
-	GetAddr(&ChkBox[9], "SSCG_EN");
+	setAddressFromFile(&ChkBox[0], "DEMO_TYPE");
+	setAddressFromFile(&ChkBox[1], "AGING_SRC");
+	setAddressFromFile(&ChkBox[2], "GATECLK_EN");
+	setAddressFromFile(&ChkBox[3], "CLKDET_EN");
+	setAddressFromFile(&ChkBox[4], "ODLUT_TYPE");
+	setAddressFromFile(&ChkBox[5], "Sync_EN");
+	setAddressFromFile(&ChkBox[6], "VOC_SEL");
+	setAddressFromFile(&ChkBox[7], "EEPROM64");
+	setAddressFromFile(&ChkBox[8], "Master_SEL");
+	setAddressFromFile(&ChkBox[9], "SSCG_EN");
     }
     return ChkBox;
 }
@@ -74,10 +74,10 @@ TBit *TCON_12401::SetDevCboBx()
 	setAddress(&CboBox[2], SSCG_SEL);
 
     } else if (MainForm->addr_place == 1) {
-	GetAddr(&CboBox[0], "MASTER_SYNC_DLY");
-	GetAddr(&CboBox[1], "SLAVER_SYNC_DLY");
-	GetAddr(&CboBox[2], "SSCG_SEL");
-	GetAddr(&CboBox[3], "DEBUG_MODE");
+	setAddressFromFile(&CboBox[0], "MASTER_SYNC_DLY");
+	setAddressFromFile(&CboBox[1], "SLAVER_SYNC_DLY");
+	setAddressFromFile(&CboBox[2], "SSCG_SEL");
+	setAddressFromFile(&CboBox[3], "DEBUG_MODE");
     }
     CboBox[0].choice_nbr = 4;
     CboBox[0].choice = new String[4];
@@ -132,24 +132,24 @@ TBit *TCON_12401::SetIOChkBx()
 	setAddress(&ChkBox[15], FRVS_1);
 	setAddress(&ChkBox[16], FRVS_2);
     } else if (MainForm->addr_place == 1) {
-	GetAddr(&ChkBox[0], "IP10B");
-	GetAddr(&ChkBox[1], "S2D_EN");
-	GetAddr(&ChkBox[2], "LORD_INV");
-	GetAddr(&ChkBox[3], "OP6B");
-	GetAddr(&ChkBox[4], "OP10B");
-	GetAddr(&ChkBox[5], "OP6B3P");
-	GetAddr(&ChkBox[6], "CHPN");
-	GetAddr(&ChkBox[7], "CHPXB");
-	GetAddr(&ChkBox[8], "CHPXF");
-	GetAddr(&ChkBox[9], "CHML");
+	setAddressFromFile(&ChkBox[0], "IP10B");
+	setAddressFromFile(&ChkBox[1], "S2D_EN");
+	setAddressFromFile(&ChkBox[2], "LORD_INV");
+	setAddressFromFile(&ChkBox[3], "OP6B");
+	setAddressFromFile(&ChkBox[4], "OP10B");
+	setAddressFromFile(&ChkBox[5], "OP6B3P");
+	setAddressFromFile(&ChkBox[6], "CHPN");
+	setAddressFromFile(&ChkBox[7], "CHPXB");
+	setAddressFromFile(&ChkBox[8], "CHPXF");
+	setAddressFromFile(&ChkBox[9], "CHML");
 
-	GetAddr(&ChkBox[10], "CHRB");
-	GetAddr(&ChkBox[11], "CHWB");
-	GetAddr(&ChkBox[12], "CHFB");
-	GetAddr(&ChkBox[13], "BRVS_1");
-	GetAddr(&ChkBox[14], "BRVS_2");
-	GetAddr(&ChkBox[15], "FRVS_1");
-	GetAddr(&ChkBox[16], "FRVS_2");
+	setAddressFromFile(&ChkBox[10], "CHRB");
+	setAddressFromFile(&ChkBox[11], "CHWB");
+	setAddressFromFile(&ChkBox[12], "CHFB");
+	setAddressFromFile(&ChkBox[13], "BRVS_1");
+	setAddressFromFile(&ChkBox[14], "BRVS_2");
+	setAddressFromFile(&ChkBox[15], "FRVS_1");
+	setAddressFromFile(&ChkBox[16], "FRVS_2");
     }
     return ChkBox;
 }
@@ -160,7 +160,7 @@ TBit *TCON_12401::SetIOCboBx()
     if (MainForm->addr_place == 0) {
 	setAddress(&CboBox[0], Resolution);
     } else if (MainForm->addr_place == 1) {
-	GetAddr(&CboBox[0], "Resolution");
+	setAddressFromFile(&CboBox[0], "Resolution");
     }
     CboBox[0].choice_nbr = 16;
     CboBox[0].choice = new String[16];
@@ -202,17 +202,17 @@ TBit *TCON_12401::SetDrvChkBx()
 	setAddress(&ChkBox[9], PIXSFT_EN);
 	setAddress(&ChkBox[10], MODE41);
     } else if (MainForm->addr_place == 1) {
-	GetAddr(&ChkBox[0], "TDEF_EN");
-	GetAddr(&ChkBox[1], "FIX_GATE");
-	GetAddr(&ChkBox[2], "P2G1D_EN");
-	GetAddr(&ChkBox[3], "DGPS_EN");
-	GetAddr(&ChkBox[4], "ANTI_MYDIO_EN");
-	GetAddr(&ChkBox[5], "MSHD_EN");
-	GetAddr(&ChkBox[6], "X2D1D_EN");
-	GetAddr(&ChkBox[7], "PRE_CHR_EN");
-	GetAddr(&ChkBox[8], "ONE_Y");
-	GetAddr(&ChkBox[9], "PIXSFT_EN");
-	GetAddr(&ChkBox[10], "MODE41");
+	setAddressFromFile(&ChkBox[0], "TDEF_EN");
+	setAddressFromFile(&ChkBox[1], "FIX_GATE");
+	setAddressFromFile(&ChkBox[2], "P2G1D_EN");
+	setAddressFromFile(&ChkBox[3], "DGPS_EN");
+	setAddressFromFile(&ChkBox[4], "ANTI_MYDIO_EN");
+	setAddressFromFile(&ChkBox[5], "MSHD_EN");
+	setAddressFromFile(&ChkBox[6], "X2D1D_EN");
+	setAddressFromFile(&ChkBox[7], "PRE_CHR_EN");
+	setAddressFromFile(&ChkBox[8], "ONE_Y");
+	setAddressFromFile(&ChkBox[9], "PIXSFT_EN");
+	setAddressFromFile(&ChkBox[10], "MODE41");
     }
     return ChkBox;
 }
@@ -221,7 +221,7 @@ TBit *TCON_12401::SetDrvCboBx()
 {
     TBit *CboBox = new TBit[DrvCboBox_Nbr];
     /*
-       GetAddr(&Cb  oBox[0],"YDIOB_NUM");
+       setAddressFromFile(&Cb  oBox[0],"YDIOB_NUM");
        //CboBox[0].set(22,4,3,"YDIOB_NUM");
        CboBox[0].choice_nbr = 8;
        CboBox[0].choice = new String [8];
@@ -242,12 +242,12 @@ TBit *TCON_12401::SetDrvCboBx()
 	setAddress(&CboBox[5], SFT_SEL);
 	setAddress(&CboBox[6], GOA_MNT_EN);
     } else if (MainForm->addr_place == 1) {
-	GetAddr(&CboBox[1], "BGI");
-	GetAddr(&CboBox[2], "TF_INV");
-	GetAddr(&CboBox[3], "INV_SEL");
-	GetAddr(&CboBox[4], "DATA_SEL");
-	GetAddr(&CboBox[5], "SFT_SEL");
-	GetAddr(&CboBox[6], "GOA_MNT_EN");
+	setAddressFromFile(&CboBox[1], "BGI");
+	setAddressFromFile(&CboBox[2], "TF_INV");
+	setAddressFromFile(&CboBox[3], "INV_SEL");
+	setAddressFromFile(&CboBox[4], "DATA_SEL");
+	setAddressFromFile(&CboBox[5], "SFT_SEL");
+	setAddressFromFile(&CboBox[6], "GOA_MNT_EN");
     }
 
     CboBox[1].choice_nbr = 4;
@@ -302,10 +302,10 @@ TBit2 *TCON_12401::SetDrvLblE()
 	setAddress(&LEdt[2], BGI_GRAY);
 	setAddress(&LEdt[3], BGI_GRAY2);
     } else if (MainForm->addr_place == 1) {
-	GetAddr(&LEdt[0], "GAM_2G1D_RISING(0~2048)");
-	GetAddr(&LEdt[1], "GAM_2G1D_FALLING(0~2048)");
-	GetAddr(&LEdt[2], "BGI_GRAY(0~1024)");
-	GetAddr(&LEdt[3], "BGI_GRAY2(0~1024)");
+	setAddressFromFile(&LEdt[0], "GAM_2G1D_RISING(0~2048)");
+	setAddressFromFile(&LEdt[1], "GAM_2G1D_FALLING(0~2048)");
+	setAddressFromFile(&LEdt[2], "BGI_GRAY(0~1024)");
+	setAddressFromFile(&LEdt[3], "BGI_GRAY2(0~1024)");
     }
     return LEdt;
 }
@@ -369,57 +369,57 @@ TBit2 *TCON_12401::SetTimLblE2()
 	setAddress(&LEdt[35], PWYDIO2_DEF);
 	setAddress(&LEdt[36], TYCLK2R_DEF);
     } else if (MainForm->addr_place == 1) {
-	GetAddr(&LEdt[0], "TXSTBR_DEF");
-	GetAddr(&LEdt[1], "PWXSTB_DEF");
-	GetAddr(&LEdt[2], "TXPOL_DEF");
-	GetAddr(&LEdt[3], "PWXRST_DEF");
+	setAddressFromFile(&LEdt[0], "TXSTBR_DEF");
+	setAddressFromFile(&LEdt[1], "PWXSTB_DEF");
+	setAddressFromFile(&LEdt[2], "TXPOL_DEF");
+	setAddressFromFile(&LEdt[3], "PWXRST_DEF");
 	//Normal
-	GetAddr(&LEdt[4], "TYDIOR_DEF");
-	GetAddr(&LEdt[5], "PWYDIO_DEF");
-	GetAddr(&LEdt[6], "TYCLKR_DEF");
-	GetAddr(&LEdt[7], "PWYCLK_DEF");
+	setAddressFromFile(&LEdt[4], "TYDIOR_DEF");
+	setAddressFromFile(&LEdt[5], "PWYDIO_DEF");
+	setAddressFromFile(&LEdt[6], "TYCLKR_DEF");
+	setAddressFromFile(&LEdt[7], "PWYCLK_DEF");
 	//Normal 60
-	GetAddr(&LEdt[8], "TYOEF_DEF");
-	GetAddr(&LEdt[9], "PWYOE_DEF");
-	GetAddr(&LEdt[10], "TYV1CF_DEF");
-	GetAddr(&LEdt[11], "PWYV1C_DEF");
+	setAddressFromFile(&LEdt[8], "TYOEF_DEF");
+	setAddressFromFile(&LEdt[9], "PWYOE_DEF");
+	setAddressFromFile(&LEdt[10], "TYV1CF_DEF");
+	setAddressFromFile(&LEdt[11], "PWYV1C_DEF");
 
 	//Fix Gate On
-	GetAddr(&LEdt[12], "TXSTBR_YOER_FIX_DEF");
-	GetAddr(&LEdt[13], "PWYOE_FIX_DEF");
-	GetAddr(&LEdt[14], "TYOER_YV1CDF_FIX_DEF");
-	GetAddr(&LEdt[15], "PWYV1C_FIX_DEF");
+	setAddressFromFile(&LEdt[12], "TXSTBR_YOER_FIX_DEF");
+	setAddressFromFile(&LEdt[13], "PWYOE_FIX_DEF");
+	setAddressFromFile(&LEdt[14], "TYOER_YV1CDF_FIX_DEF");
+	setAddressFromFile(&LEdt[15], "PWYV1C_FIX_DEF");
 
 	//Pstate ( Frame 40)
-	GetAddr(&LEdt[16], "TYOEF_FR2_DEF");
-	GetAddr(&LEdt[17], "PWYOE_FR2_DEF");
-	GetAddr(&LEdt[18], "TYV1CF_FR2_DEF");
-	GetAddr(&LEdt[19], "PWYV1C_FR2_DEF");
+	setAddressFromFile(&LEdt[16], "TYOEF_FR2_DEF");
+	setAddressFromFile(&LEdt[17], "PWYOE_FR2_DEF");
+	setAddressFromFile(&LEdt[18], "TYV1CF_FR2_DEF");
+	setAddressFromFile(&LEdt[19], "PWYV1C_FR2_DEF");
 
 	//Fix Gate On
-	GetAddr(&LEdt[20], "TXSTBR_YOER_FR2_FIX_DEF");
-	GetAddr(&LEdt[21], "PWYOE_FR2_FIX_DEF");
-	GetAddr(&LEdt[22], "TYOER_YV1CF_FR2_FIX_DEF");
-	GetAddr(&LEdt[23], "PWYV1C_FR2_FIX_DEF");
+	setAddressFromFile(&LEdt[20], "TXSTBR_YOER_FR2_FIX_DEF");
+	setAddressFromFile(&LEdt[21], "PWYOE_FR2_FIX_DEF");
+	setAddressFromFile(&LEdt[22], "TYOER_YV1CF_FR2_FIX_DEF");
+	setAddressFromFile(&LEdt[23], "PWYV1C_FR2_FIX_DEF");
 
 	//Pre-Cgarge
-	GetAddr(&LEdt[24], "TYOER_PC_DEF");
-	GetAddr(&LEdt[25], "PWYOE_PC_DEF");
-	GetAddr(&LEdt[26], "TYCLKR_PC_DEF");
+	setAddressFromFile(&LEdt[24], "TYOER_PC_DEF");
+	setAddressFromFile(&LEdt[25], "PWYOE_PC_DEF");
+	setAddressFromFile(&LEdt[26], "TYCLKR_PC_DEF");
 
 	//GOA
-	GetAddr(&LEdt[27], "TVSTR_DEF");
-	GetAddr(&LEdt[28], "PWVST_DEF");
-	GetAddr(&LEdt[29], "TVCK_DEF");
-	GetAddr(&LEdt[30], "TVCSF_DEF");
-	GetAddr(&LEdt[31], "PWVCS_DEF");
-	GetAddr(&LEdt[32], "TYV1CF_GOA_DEF");
-	GetAddr(&LEdt[33], "PWYV1C_GOA_DEF");
+	setAddressFromFile(&LEdt[27], "TVSTR_DEF");
+	setAddressFromFile(&LEdt[28], "PWVST_DEF");
+	setAddressFromFile(&LEdt[29], "TVCK_DEF");
+	setAddressFromFile(&LEdt[30], "TVCSF_DEF");
+	setAddressFromFile(&LEdt[31], "PWVCS_DEF");
+	setAddressFromFile(&LEdt[32], "TYV1CF_GOA_DEF");
+	setAddressFromFile(&LEdt[33], "PWYV1C_GOA_DEF");
 
 	//2G1D
-	GetAddr(&LEdt[34], "TYDIO2R_DEF");
-	GetAddr(&LEdt[35], "PWYDIO2_DEF");
-	GetAddr(&LEdt[36], "TYCLK2R_DEF");
+	setAddressFromFile(&LEdt[34], "TYDIO2R_DEF");
+	setAddressFromFile(&LEdt[35], "PWYDIO2_DEF");
+	setAddressFromFile(&LEdt[36], "TYCLK2R_DEF");
     }
     return LEdt;
 }

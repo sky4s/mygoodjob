@@ -50,15 +50,15 @@ TBit *DCR_11307::SetChkBx()
 
 
     } else if (MainForm->addr_place == 1) {
-	GetAddr(&ChkBox[0], "BL_EN");
-	GetAddr(&ChkBox[1], "DYN_BL_EN");
-	GetAddr(&ChkBox[2], "GLT_EN");
-	GetAddr(&ChkBox[3], "GLT_DEMO");
-	GetAddr(&ChkBox[4], "DUTY_DETECT_EN");
-	GetAddr(&ChkBox[5], "BL_GRAD_EN");
-	GetAddr(&ChkBox[6], "IMG_DIFF_EN");
-	GetAddr(&ChkBox[7], "SMBUS_EN");
-	GetAddr(&ChkBox[8], "PWM_COEFF_EN");
+	setAddressFromFile(&ChkBox[0], "BL_EN");
+	setAddressFromFile(&ChkBox[1], "DYN_BL_EN");
+	setAddressFromFile(&ChkBox[2], "GLT_EN");
+	setAddressFromFile(&ChkBox[3], "GLT_DEMO");
+	setAddressFromFile(&ChkBox[4], "DUTY_DETECT_EN");
+	setAddressFromFile(&ChkBox[5], "BL_GRAD_EN");
+	setAddressFromFile(&ChkBox[6], "IMG_DIFF_EN");
+	setAddressFromFile(&ChkBox[7], "SMBUS_EN");
+	setAddressFromFile(&ChkBox[8], "PWM_COEFF_EN");
     }
     return ChkBox;
 }
@@ -78,10 +78,10 @@ TBit *DCR_11307::SetCboBx()
 	setAddress(&CboBox[8], PWM_BYPASS_SEL);
 
     } else if (MainForm->addr_place == 1) {
-	GetAddr(&CboBox[0], "PWM_MODE");
-	GetAddr(&CboBox[1], "BL_POL");
-	GetAddr(&CboBox[2], "PWM_FL_MODE_SEL");
-	GetAddr(&CboBox[3], "PWM_LINE_SYNC");
+	setAddressFromFile(&CboBox[0], "PWM_MODE");
+	setAddressFromFile(&CboBox[1], "BL_POL");
+	setAddressFromFile(&CboBox[2], "PWM_FL_MODE_SEL");
+	setAddressFromFile(&CboBox[3], "PWM_LINE_SYNC");
     }
     CboBox[0].choice_nbr = 2;
     CboBox[0].choice = new String[2];
@@ -159,17 +159,17 @@ TBit *DCR_11307::SetScrollBar()
 	setAddress(&ScrlB[19], MATRIX_WEIGHTING_CORNER);
 
     } else if (MainForm->addr_place == 1) {
-	GetAddr(&ScrlB[0], "PWM_BL_IDX");
-	GetAddr(&ScrlB[1], "BL_FRM_INTV");
-	GetAddr(&ScrlB[2], "BL_GRAD_STEP");
-	GetAddr(&ScrlB[3], "IMG_DIFF");
-	GetAddr(&ScrlB[4], "PWM_FREQ");
-	GetAddr(&ScrlB[5], "SMBUS_DEV_ADDR");
-	GetAddr(&ScrlB[6], "SMBUS_REG_ADDR");
-	GetAddr(&ScrlB[7], "MIN_IDX_CUM_RATIO");
-	GetAddr(&ScrlB[8], "MAX_IDX_CUM_RATIO");
-	GetAddr(&ScrlB[9], "HIGH_DUTY_THRES");
-	GetAddr(&ScrlB[10], "TOTAL_DUTY_THRES");
+	setAddressFromFile(&ScrlB[0], "PWM_BL_IDX");
+	setAddressFromFile(&ScrlB[1], "BL_FRM_INTV");
+	setAddressFromFile(&ScrlB[2], "BL_GRAD_STEP");
+	setAddressFromFile(&ScrlB[3], "IMG_DIFF");
+	setAddressFromFile(&ScrlB[4], "PWM_FREQ");
+	setAddressFromFile(&ScrlB[5], "SMBUS_DEV_ADDR");
+	setAddressFromFile(&ScrlB[6], "SMBUS_REG_ADDR");
+	setAddressFromFile(&ScrlB[7], "MIN_IDX_CUM_RATIO");
+	setAddressFromFile(&ScrlB[8], "MAX_IDX_CUM_RATIO");
+	setAddressFromFile(&ScrlB[9], "HIGH_DUTY_THRES");
+	setAddressFromFile(&ScrlB[10], "TOTAL_DUTY_THRES");
     }
 
     return ScrlB;
@@ -195,8 +195,8 @@ TBit2 *DCR_11307::SetScrollBar2()
 
 
     } else if (MainForm->addr_place == 1) {
-	GetAddr(&ScrlB[0], "PWM_COEFF_A");
-	GetAddr(&ScrlB[1], "PWM_COEFF_B");
+	setAddressFromFile(&ScrlB[0], "PWM_COEFF_A");
+	setAddressFromFile(&ScrlB[1], "PWM_COEFF_B");
     }
     return ScrlB;
 }
@@ -217,7 +217,7 @@ TBit2 *DCR_11307::SetDCRLblE2()
 	setAddress(&LEdt[7], V_INTP_COEFF);
 
     } else if (MainForm->addr_place == 1) {
-	GetAddr(&LEdt[0], "SLOPE");
+	setAddressFromFile(&LEdt[0], "SLOPE");
     }
     return LEdt;
 }
@@ -232,7 +232,7 @@ TBit3 *DCR_11307::SetLblE3()
 	setAddress(&LblE[1], GRAY_SCALE_UNIT);
 
     } else if (MainForm->addr_place == 1) {
-	//GetAddr(&LblE[0],"SLOPE");
+	//setAddressFromFile(&LblE[0],"SLOPE");
     }
     return LblE;
 }
@@ -247,9 +247,9 @@ TLUT *DCR_11307::SetLUT()
 	setAddress(&LUT[2], DIM_LUT);
 
     } else if (MainForm->addr_place == 1) {
-	GetAddr(&LUT[0], "HM_LUT");
-	GetAddr(&LUT[1], "BL_LUT");
-	GetAddr(&LUT[2], "DIM_LUT");
+	setAddressFromFile(&LUT[0], "HM_LUT");
+	setAddressFromFile(&LUT[1], "BL_LUT");
+	setAddressFromFile(&LUT[2], "DIM_LUT");
     }
 
     return LUT;
@@ -267,15 +267,15 @@ TBit *DCR_11307::SetALSChkBx()
 	setAddress(&ChkBox[2], ALS_COM_SEL);
 
     } else if (MainForm->addr_place == 1) {
-	GetAddr(&ChkBox[0], "BL_EN");
-	GetAddr(&ChkBox[1], "DYN_BL_EN");
-	GetAddr(&ChkBox[2], "GLT_EN");
-	GetAddr(&ChkBox[3], "GLT_DEMO");
-	GetAddr(&ChkBox[4], "DUTY_DETECT_EN");
-	GetAddr(&ChkBox[5], "BL_GRAD_EN");
-	GetAddr(&ChkBox[6], "IMG_DIFF_EN");
-	GetAddr(&ChkBox[7], "SMBUS_EN");
-	GetAddr(&ChkBox[8], "PWM_COEFF_EN");
+	setAddressFromFile(&ChkBox[0], "BL_EN");
+	setAddressFromFile(&ChkBox[1], "DYN_BL_EN");
+	setAddressFromFile(&ChkBox[2], "GLT_EN");
+	setAddressFromFile(&ChkBox[3], "GLT_DEMO");
+	setAddressFromFile(&ChkBox[4], "DUTY_DETECT_EN");
+	setAddressFromFile(&ChkBox[5], "BL_GRAD_EN");
+	setAddressFromFile(&ChkBox[6], "IMG_DIFF_EN");
+	setAddressFromFile(&ChkBox[7], "SMBUS_EN");
+	setAddressFromFile(&ChkBox[8], "PWM_COEFF_EN");
     }
     return ChkBox;
 }
@@ -287,7 +287,7 @@ TBit *DCR_11307::SetALSCboBx()
 	setAddress(&CboBox[0], IN_LUX_SEL);
 
     } else if (MainForm->addr_place == 1) {
-	GetAddr(&CboBox[0], "PWM_MODE");
+	setAddressFromFile(&CboBox[0], "PWM_MODE");
     }
     CboBox[0].choice_nbr = 2;
     CboBox[0].choice = new String[2];
@@ -320,17 +320,17 @@ TBit *DCR_11307::SetALSScrollBar()
 	setAddress(&ScrlB[17], TEST_LUX);
 
     } else if (MainForm->addr_place == 1) {
-	GetAddr(&ScrlB[0], "PWM_BL_IDX");
-	GetAddr(&ScrlB[1], "BL_FRM_INTV");
-	GetAddr(&ScrlB[2], "BL_GRAD_STEP");
-	GetAddr(&ScrlB[3], "IMG_DIFF");
-	GetAddr(&ScrlB[4], "PWM_FREQ");
-	GetAddr(&ScrlB[5], "SMBUS_DEV_ADDR");
-	GetAddr(&ScrlB[6], "SMBUS_REG_ADDR");
-	GetAddr(&ScrlB[7], "MIN_IDX_CUM_RATIO");
-	GetAddr(&ScrlB[8], "MAX_IDX_CUM_RATIO");
-	GetAddr(&ScrlB[9], "HIGH_DUTY_THRES");
-	GetAddr(&ScrlB[10], "TOTAL_DUTY_THRES");
+	setAddressFromFile(&ScrlB[0], "PWM_BL_IDX");
+	setAddressFromFile(&ScrlB[1], "BL_FRM_INTV");
+	setAddressFromFile(&ScrlB[2], "BL_GRAD_STEP");
+	setAddressFromFile(&ScrlB[3], "IMG_DIFF");
+	setAddressFromFile(&ScrlB[4], "PWM_FREQ");
+	setAddressFromFile(&ScrlB[5], "SMBUS_DEV_ADDR");
+	setAddressFromFile(&ScrlB[6], "SMBUS_REG_ADDR");
+	setAddressFromFile(&ScrlB[7], "MIN_IDX_CUM_RATIO");
+	setAddressFromFile(&ScrlB[8], "MAX_IDX_CUM_RATIO");
+	setAddressFromFile(&ScrlB[9], "HIGH_DUTY_THRES");
+	setAddressFromFile(&ScrlB[10], "TOTAL_DUTY_THRES");
     }
     return ScrlB;
 }
@@ -349,10 +349,10 @@ TBit *DCR_11307::SetHDRCboBx()
 
 
     } else if (MainForm->addr_place == 1) {
-	GetAddr(&CboBox[0], "PWM_MODE");
-	GetAddr(&CboBox[1], "BL_POL");
-	GetAddr(&CboBox[2], "PWM_FL_MODE_SEL");
-	GetAddr(&CboBox[3], "PWM_LINE_SYNC");
+	setAddressFromFile(&CboBox[0], "PWM_MODE");
+	setAddressFromFile(&CboBox[1], "BL_POL");
+	setAddressFromFile(&CboBox[2], "PWM_FL_MODE_SEL");
+	setAddressFromFile(&CboBox[3], "PWM_LINE_SYNC");
     }
     CboBox[0].choice_nbr = 4;
     CboBox[0].choice = new String[4];
@@ -418,17 +418,17 @@ TBit *DCR_11307::SetHDRScrollBar()
 
 	 */
     } else if (MainForm->addr_place == 1) {
-	GetAddr(&ScrlB[0], "PWM_BL_IDX");
-	GetAddr(&ScrlB[1], "BL_FRM_INTV");
-	GetAddr(&ScrlB[2], "BL_GRAD_STEP");
-	GetAddr(&ScrlB[3], "IMG_DIFF");
-	GetAddr(&ScrlB[4], "PWM_FREQ");
-	GetAddr(&ScrlB[5], "SMBUS_DEV_ADDR");
-	GetAddr(&ScrlB[6], "SMBUS_REG_ADDR");
-	GetAddr(&ScrlB[7], "MIN_IDX_CUM_RATIO");
-	GetAddr(&ScrlB[8], "MAX_IDX_CUM_RATIO");
-	GetAddr(&ScrlB[9], "HIGH_DUTY_THRES");
-	GetAddr(&ScrlB[10], "TOTAL_DUTY_THRES");
+	setAddressFromFile(&ScrlB[0], "PWM_BL_IDX");
+	setAddressFromFile(&ScrlB[1], "BL_FRM_INTV");
+	setAddressFromFile(&ScrlB[2], "BL_GRAD_STEP");
+	setAddressFromFile(&ScrlB[3], "IMG_DIFF");
+	setAddressFromFile(&ScrlB[4], "PWM_FREQ");
+	setAddressFromFile(&ScrlB[5], "SMBUS_DEV_ADDR");
+	setAddressFromFile(&ScrlB[6], "SMBUS_REG_ADDR");
+	setAddressFromFile(&ScrlB[7], "MIN_IDX_CUM_RATIO");
+	setAddressFromFile(&ScrlB[8], "MAX_IDX_CUM_RATIO");
+	setAddressFromFile(&ScrlB[9], "HIGH_DUTY_THRES");
+	setAddressFromFile(&ScrlB[10], "TOTAL_DUTY_THRES");
     }
     return ScrlB;
 }
@@ -456,8 +456,8 @@ TBit2 *DCR_11307::SetHDRScrollBar2()
 	setAddress(&ScrlB[16], SCANNING_OFFSET_ROW_16);
 
     } else if (MainForm->addr_place == 1) {
-	GetAddr(&ScrlB[0], "PWM_COEFF_A");
-	GetAddr(&ScrlB[1], "PWM_COEFF_B");
+	setAddressFromFile(&ScrlB[0], "PWM_COEFF_A");
+	setAddressFromFile(&ScrlB[1], "PWM_COEFF_B");
     }
     return ScrlB;
 }
@@ -474,7 +474,7 @@ TBit2 *DCR_11307::SetHDRLblE2()
 	setAddress(&LEdt[4], HSC_DRIVER_CH_4);
 
     } else if (MainForm->addr_place == 1) {
-	GetAddr(&LEdt[0], "SLOPE");
+	setAddressFromFile(&LEdt[0], "SLOPE");
     }
     return LEdt;
 }

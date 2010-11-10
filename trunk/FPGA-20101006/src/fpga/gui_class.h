@@ -4,8 +4,7 @@
 #include <vcl.h>
 #include <addresstype/Address_type.h>
 #include <lib/CMSCpp2.1/src/includeall.h>
-#include <iostream>
-#include <fstream>
+
 
 class _CHKB {
   public:
@@ -144,51 +143,21 @@ __fastcall _StaticText::~_StaticText()
     delete[]StTxt;
     //delete Addr.choice;
 }
+
 typedef std::map < const std::string, const std::string) StringMap;
 typedef bptr < StringMap > StringMap_ptr;
-class AbstractBase {
+#define nil_StringMap_ptr StringMap_ptr((StringMap *) NULL)
 
+class AbstractBase {
+  private:
+    static StringMap_ptr map;
   protected:
     static bool setAddress(AbstractAddressType * address, std::string text);
+    static bool setAddressFromFile(AbstractAddressType * address, std::string tag);
+    //static AbstractAddressType *getAddress(AbstractAddressType * address, std::string text);
     static StringMap_ptr getStringMap(std::string filename);
 };
 
-bool AbstractBase::setAddress(AbstractAddressType * address, std::string text) {
-    if (text.length() == 0 || text == "_NULL") {
-	return false;
-    }
-    using namespace cms::util;
-    string_vector_ptr tokens = StringVector::tokenize(text, ",");
-    int size = tokens->size();
-    int_vector_ptr values(new int_vector(size - 1));
-    for (int x = 1; x < size; x++) {
-	string token = (*tokens)[x];
-	(*values)[x - 1] = _toInt(token);
-    }
-    address->set(values, (*tokens)[0]);
-    return true;
-};
-
-StringMap_ptr AbstractBase::getStringMap(std::string filename) {
-    using namespace std;
-    using namespace cms::util;
-
-    ifstream infile(filename.c_str());
-
-    if (infile.is_open()) {
-	string line;
-	StringMap_ptr map(new StringMap());
-	while (infile.good()) {
-	    getline(infile, line);
-	    string_vector_ptr stringvector = StringVector::tokenize(line, " ");
-	    //(*map)[(*stringvector)[0]] = line;
-	    map->insert(make_pair((*stringvector)[0], line));
-	}
-	infile.close();
-	return map;
-    }
-    return StringMap_ptr((StringMap *) NULL);
-}
 
 class AbstHSV:public AbstractBase {
   public:
