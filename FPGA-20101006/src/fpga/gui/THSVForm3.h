@@ -297,6 +297,7 @@ class THSVForm3:public TForm, cms::util::CallBackIF, RGBInfoCallbackIF, PatternC
     RGB_ptr outOfGamutRGB;
     void setupPatternForm();
     int patternValue;
+    bool isInversePattern;
 
   public:			// User declarations
     TBit * cb;
@@ -337,6 +338,7 @@ class THSVForm3:public TForm, cms::util::CallBackIF, RGBInfoCallbackIF, PatternC
     virtual void show7p5DegBasePattern();
     virtual void showSinglePattern();
     virtual void adjustValue(bool minus);
+    virtual void inversePattern(bool inverse);
 };
 
 
