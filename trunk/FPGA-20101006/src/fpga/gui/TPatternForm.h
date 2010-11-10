@@ -18,6 +18,7 @@ class PatternCallbackIF {
     virtual void show15DegBasePattern() = 0;
     virtual void show7p5DegBasePattern() = 0;
     virtual void showSinglePattern() = 0;
+    virtual void adjustValue(bool minus) = 0;
 };
 
 Enumeration(PatternMode) Single, Hue15, Hue7p5, EnumerationEnd();
@@ -34,6 +35,10 @@ class TPatternForm:public TForm {
     void __fastcall Button_Show15DegClick(TObject * Sender);
     void __fastcall Button_ShowSingleDegClick(TObject * Sender);
     void __fastcall FormMouseMove(TObject * Sender, TShiftState Shift, int X, int Y);
+    void __fastcall FormMouseWheelDown(TObject * Sender,
+				       TShiftState Shift, TPoint & MousePos, bool & Handled);
+    void __fastcall FormMouseWheelUp(TObject * Sender,
+				     TShiftState Shift, TPoint & MousePos, bool & Handled);
   private:			// User declarations
     double gapPercent;
     int patchCols;

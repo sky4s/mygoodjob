@@ -296,6 +296,7 @@ class THSVForm3:public TForm, cms::util::CallBackIF, RGBInfoCallbackIF, PatternC
     bool isOutOfGamut(int_array rgbValues);
     RGB_ptr outOfGamutRGB;
     void setupPatternForm();
+    int patternValue;
 
   public:			// User declarations
     TBit * cb;
@@ -335,6 +336,7 @@ class THSVForm3:public TForm, cms::util::CallBackIF, RGBInfoCallbackIF, PatternC
     virtual void show15DegBasePattern();
     virtual void show7p5DegBasePattern();
     virtual void showSinglePattern();
+    virtual void adjustValue(bool minus);
 };
 
 
