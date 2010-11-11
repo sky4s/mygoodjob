@@ -10,10 +10,13 @@ object PatternForm: TPatternForm
   Font.Height = -11
   Font.Name = 'MS Sans Serif'
   Font.Style = []
+  KeyPreview = True
   OldCreateOrder = False
   ShowHint = True
   Visible = True
   WindowState = wsMinimized
+  OnDblClick = FormDblClick
+  OnKeyPress = FormKeyPress
   OnMouseDown = FormMouseDown
   OnMouseMove = FormMouseMove
   OnMouseUp = FormMouseUp

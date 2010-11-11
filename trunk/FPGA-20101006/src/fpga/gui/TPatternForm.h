@@ -7,6 +7,7 @@
 #include <Controls.hpp>
 #include <StdCtrls.hpp>
 #include <Forms.hpp>
+#include <AppEvnts.hpp>
 #include <cms/util/util.h>
 //---------------------------------------------------------------------------
 class PatternCallbackIF {
@@ -20,6 +21,7 @@ class PatternCallbackIF {
     virtual void showSinglePattern() = 0;
     virtual void adjustValue(bool minus) = 0;
     virtual void inversePattern(bool inverse) = 0;
+    virtual void keyPress(char &Key) = 0;
 };
 
 Enumeration(PatternMode) Single, Hue15, Hue7p5, EnumerationEnd();
@@ -41,7 +43,6 @@ class TPatternForm:public TForm {
     TButton * Button_Show7p5Deg;
     TButton *Button_Show15Deg;
     TButton *Button_ShowSingleDeg;
-    void __fastcall FormPaint(TObject * Sender);
     void __fastcall FormResize(TObject * Sender);
     void __fastcall Button_Show7p5DegClick(TObject * Sender);
     void __fastcall Button_Show15DegClick(TObject * Sender);
@@ -55,6 +56,9 @@ class TPatternForm:public TForm {
 				  TShiftState Shift, int X, int Y);
     void __fastcall FormMouseUp(TObject * Sender, TMouseButton Button,
 				TShiftState Shift, int X, int Y);
+    void __fastcall FormKeyPress(TObject * Sender, char &Key);
+    void __fastcall FormPaint(TObject * Sender);
+    void __fastcall FormDblClick(TObject * Sender);
   private:			// User declarations
     double gapPercent;
     int patchCols;
@@ -68,7 +72,7 @@ class TPatternForm:public TForm {
     bool inversePattern;
     bool mouseLeftDown;
     //TCanvas* canvasCopy;
-    bptr < Graphics::TBitmap > canvasCopy;
+    //bptr < Graphics::TBitmap > canvasCopy;
     int getPatchIndex(int x, int y);
     int_array distanceToPatchOriginal(int x, int y);
     int_array getPatchDimension();
@@ -78,6 +82,9 @@ class TPatternForm:public TForm {
     int_array mouseDownStart;
     int_array mouseDownDistance;
     int mouseDownPatchIndex;
+    TColor cursorColor;
+    TColor patchColor;
+    bool showSinglePatch;
   public:			// User declarations
     __fastcall TPatternForm(TComponent * Owner);
     void setPatternCallbackIF(PatternCallbackIF * callback);

@@ -340,6 +340,7 @@ class THSVForm3:public TForm, cms::util::CallBackIF, RGBInfoCallbackIF, PatternC
     virtual void showSinglePattern();
     virtual void adjustValue(bool minus);
     virtual void inversePattern(bool inverse);
+    virtual void keyPress(char &Key);
 };
 
 
