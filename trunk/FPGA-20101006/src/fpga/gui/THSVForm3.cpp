@@ -1097,17 +1097,29 @@ void __fastcall THSVForm3::Button_30BaseInterpClick(TObject * Sender)
 void __fastcall THSVForm3::FormKeyPress(TObject * Sender, char &Key)
 {
     using namespace math;
+    using namespace Dep;
     int_array hsvPos = hsvAdjust->getHSVPosition();
     bool hsvAdjusting = false;
-    bool manualHsvAdjusting = false;
+    bool manualHvsvAdjusting = false;
 
     switch (Key) {
     case 'v':
     case 'V':
-	IntArray::arraycopy(cursorRGBValues, selectedRGBValues, 3);
-	customPattern = true;
-	colorPicker->setOriginalColor(cursorRGBValues[0], cursorRGBValues[1], cursorRGBValues[2]);
-	setupPatternForm();
+	/*{
+	   double_array hsviValues =
+	   HSV::getHSVIValues(IntArray::toDoubleArray(cursorRGBValues, 3));
+	   int hueIndex = getHueIndex(hsviValues[0]);
+	   setGridSelectRow(hueIndex + 1);
+
+	   customPattern = true;
+	   IntArray::arraycopy(cursorRGBValues, selectedRGBValues, 3);
+	   colorPicker->setOriginalColor(cursorRGBValues[0], cursorRGBValues[1],
+	   cursorRGBValues[2]);
+	   setupPatternForm();
+
+	   break;
+	   } */
+	selectColor();
 	break;
     case 'w':
     case 'W':
@@ -1389,8 +1401,7 @@ void THSVForm3::callback(int_array rgbValues)
     }
 }
 
-void THSVForm3::imageMousePressed(TObject * Sender, TMouseButton Button,
-				  TShiftState Shift, int X, int Y)
+void THSVForm3::selectColor()
 {
     using namespace Dep;
     using namespace math;
@@ -1402,6 +1413,22 @@ void THSVForm3::imageMousePressed(TObject * Sender, TMouseButton Button,
     IntArray::arraycopy(cursorRGBValues, selectedRGBValues, 3);
     colorPicker->setOriginalColor(cursorRGBValues[0], cursorRGBValues[1], cursorRGBValues[2]);
     setupPatternForm();
+}
+
+void THSVForm3::imageMousePressed(TObject * Sender, TMouseButton Button,
+				  TShiftState Shift, int X, int Y)
+{
+    /*using namespace Dep;
+       using namespace math;
+       double_array hsviValues = HSV::getHSVIValues(IntArray::toDoubleArray(cursorRGBValues, 3));
+       int hueIndex = getHueIndex(hsviValues[0]);
+       setGridSelectRow(hueIndex + 1);
+
+       customPattern = true;
+       IntArray::arraycopy(cursorRGBValues, selectedRGBValues, 3);
+       colorPicker->setOriginalColor(cursorRGBValues[0], cursorRGBValues[1], cursorRGBValues[2]);
+       setupPatternForm(); */
+    selectColor();
 
 }
 

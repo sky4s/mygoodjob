@@ -54,6 +54,8 @@ void TPatternForm::setTPatternForm(TPatternForm * copy)
     w = copy->w;
     hgap = copy->hgap;
     wgap = copy->wgap;
+    this->recalculatePatchinfo();
+
 }
 
 //---------------------------------------------------------------------------
@@ -174,6 +176,7 @@ void __fastcall TPatternForm::FormPaint(TObject * Sender)
 
 void __fastcall TPatternForm::FormResize(TObject * Sender)
 {
+    recalculatePatchinfo();
     FormPaint(Sender);
 }
 
@@ -185,16 +188,20 @@ void TPatternForm::setGapPercent(double gapPercent)
     this->gapPercent = gapPercent;
 }
 
-void TPatternForm::setHSVVector(HSV_vector_ptr hsvVector)
+void TPatternForm::recalculatePatchinfo()
 {
-    this->hsvVector = hsvVector;
-
     size = hsvVector->size();
     patchPerCol = size / patchCols;
     h = this->ClientHeight / patchPerCol;
     w = this->ClientWidth / patchCols;
     hgap = h * gapPercent / 2.;
     wgap = w * gapPercent;
+}
+
+void TPatternForm::setHSVVector(HSV_vector_ptr hsvVector)
+{
+    this->hsvVector = hsvVector;
+    recalculatePatchinfo();
 
     if (wsNormal == PatternForm2->WindowState) {
 	PatternForm2->setTPatternForm(this);

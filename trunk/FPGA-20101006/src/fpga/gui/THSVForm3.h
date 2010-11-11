@@ -298,6 +298,7 @@ class THSVForm3:public TForm, cms::util::CallBackIF, RGBInfoCallbackIF, PatternC
     void setupPatternForm();
     int patternValue;
     bool isInversePattern;
+    void selectColor();
 
   public:			// User declarations
     TBit * cb;

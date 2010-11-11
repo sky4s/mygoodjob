@@ -9,25 +9,25 @@
 
 class TBit:public AbstractAddressType {
   private:
-    bool en;
+    //bool en;
     int B_addr;
     int b_addr;
-    int b_num;
+    //int b_num;
     int value;
-    AnsiString name;
+    //AnsiString name;
   public:
      String * choice;
     int choice_nbr;
     int set(int, int, int, AnsiString);	//set address,
     //return val:1=>bit address range fault, 2=>number of bits fault, 3=>1&2 fault
-    bool FuncEn();		//function enable or not
+    //bool FuncEn();		//function enable or not
     int Addr();
     int ShiftBit();		//number of bits the stored value shift
     int StbBit();		//stable bit value
-    int BitNum();
+    //int BitNum();
     int GetVal();
     void SetVal(int);
-    AnsiString Name();
+    //AnsiString Name();
      TBit() {
 	en = false;
 	B_addr = 0;
@@ -79,7 +79,7 @@ void TBit::SetVal(int val)
 {
     value = val;
 };
-int TBit::BitNum()
+/*int TBit::BitNum()
 {
     return b_num;
 }
@@ -87,7 +87,7 @@ int TBit::BitNum()
 bool TBit::FuncEn()
 {
     return (en);
-}
+}*/
 
 int TBit::Addr()
 {
@@ -99,10 +99,10 @@ int TBit::ShiftBit()
     return (b_addr);
 }
 
-AnsiString TBit::Name()
+/*AnsiString TBit::Name()
 {
     return name;
-}
+}*/
 
 int TBit::StbBit()
 {

@@ -12,6 +12,10 @@
 class AbstractAddressType {
   private:
     virtual void _set(int_vector_ptr vector, AnsiString name) = 0;
+  protected:
+     bool en;
+    int b_num;
+    AnsiString name;
   public:
     void set(int *values, int n, std::string name) {
 	int_vector_ptr vector(new int_vector(n));
@@ -23,6 +27,16 @@ class AbstractAddressType {
     void set(int_vector_ptr vector, std::string name) {
 	_set(vector, name.c_str());
     };
+
+    bool FuncEn() {
+	return en;
+    }
+    int BitNum() {
+	return b_num;
+    }
+    AnsiString Name() {
+	return name;
+    }
 };
 
 
