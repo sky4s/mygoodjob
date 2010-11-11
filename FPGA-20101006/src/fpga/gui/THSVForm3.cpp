@@ -1100,7 +1100,7 @@ void __fastcall THSVForm3::FormKeyPress(TObject * Sender, char &Key)
     using namespace Dep;
     int_array hsvPos = hsvAdjust->getHSVPosition();
     bool hsvAdjusting = false;
-    bool manualHvsvAdjusting = false;
+    bool manualHsvAdjusting = false;
 
     switch (Key) {
     case 'v':
@@ -1517,8 +1517,9 @@ void THSVForm3::setupPatternForm()
 	for (int y = 0; y < stdSize; y++) {
 	    int index = isInversePattern ? stdSize - 1 - y : y;
 	    hsvValues[0] = h;
-	    hsvValues[1] = saturationArray[index];
-	    //hsvValues[2] = valueArray[y];
+	    double saturation = customPattern ? hsviValues[1] : saturationArray[index];
+            hsvValues[1] = saturation;
+	    //hsvValues[1] = saturationArray[index];
 	    hsvValues[2] = patternValue;
 	    HSV_ptr hsv(new HSV(RGBColorSpace::sRGB, hsvValues));
 	    hsvVector->push_back(hsv);
@@ -1554,6 +1555,7 @@ void __fastcall THSVForm3::CheckBox_ShowPatternClick(TObject * Sender)
 	PatternForm->WindowState = wsNormal;
     } else {
 	PatternForm->WindowState = wsMinimized;
+	PatternForm2->WindowState = wsMinimized;
     }
 }
 
@@ -1594,4 +1596,10 @@ void THSVForm3::inversePattern(bool inverse)
     isInversePattern = inverse;
     setupPatternForm();
 }
+
+void THSVForm3::keyPress(char &Key)
+{
+    FormKeyPress(this, Key);
+}
+
 
