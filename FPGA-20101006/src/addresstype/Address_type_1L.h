@@ -9,18 +9,18 @@
 
 class TLUT:public AbstractAddressType {
   private:
-    bool en;
+    //bool en;
     int B_addr;
     int Lut_num;
-    int b_num;
+    //int b_num;
     int type;
-    AnsiString name;
+    //AnsiString name;
   public:
     int Addr();
     int LutNum();
     int Type();
-    int BitNum();
-    AnsiString Name();
+    //int BitNum();
+    //AnsiString Name();
     int set(int _B_addr, int _Lut_num, int _b_num, int _type, AnsiString _name);
     int set(int _B_addr, int _Lut_num, int _b_num, AnsiString _name);
      TLUT() {
@@ -39,9 +39,9 @@ class TLUT:public AbstractAddressType {
 	case 4:
 	    set((*vector)[0], (*vector)[1], (*vector)[2], (*vector)[3], name);
 	    break;
-	case 3:
+	/*case 3:
 	    set((*vector)[0], (*vector)[1], (*vector)[2], name);
-	    break;
+	    break;*/
 	default:
 	    throw IllegalArgumentException();
 	}
@@ -89,7 +89,7 @@ int TLUT::Type()
     return type;
 }
 
-int TLUT::BitNum()
+/*int TLUT::BitNum()
 {
     return b_num;
 }
@@ -97,7 +97,7 @@ int TLUT::BitNum()
 AnsiString TLUT::Name()
 {
     return name;
-}
+}*/
 
 #endif
 

@@ -73,6 +73,7 @@ class TPatternForm:public TForm {
     int_array distanceToPatchOriginal(int x, int y);
     int_array getPatchDimension();
     int size, patchPerCol, h, w, hgap, wgap;
+    void recalculatePatchinfo();
 
     int_array mouseDownStart;
     int_array mouseDownDistance;

@@ -9,10 +9,10 @@
 
 class TBit2:public AbstractAddressType {
   private:
-    bool en;
-    int b_num;
+    //bool en;
+    //int b_num;
     int type;
-    AnsiString name;
+    //AnsiString name;
     int divide;
     int value;
   public:
@@ -21,8 +21,8 @@ class TBit2:public AbstractAddressType {
     TBit Byte1;
     TBit Byte2;
     int Divide();
-    bool FuncEn();		//function enable or not
-    int BitNum();
+    //bool FuncEn();		//function enable or not
+    //int BitNum();
     int GetVal();
     void SetVal(int);
     int set(int _B_addr, int _b_num, AnsiString _name);
@@ -30,7 +30,7 @@ class TBit2:public AbstractAddressType {
     int set(AnsiString _name);
     int set(int _B1_addr, int _b1_addr, int _b1_num, int _B2_addr, int _b2_addr, int _b2_num,
 	    AnsiString _name);
-    AnsiString Name();
+    //AnsiString Name();
      TBit2() {
 	en = false;
 	b_num = 0;
@@ -44,15 +44,15 @@ class TBit2:public AbstractAddressType {
 	using namespace java::lang;
 	int size = vector->size();
 	switch (size) {
-	case 2:
+	/*case 2:
 	    set((*vector)[0], (*vector)[1], name);
-	    break;
+	    break;*/
 	case 3:
 	    set((*vector)[0], (*vector)[1], (*vector)[2], 0, 0, 0, name);
 	    break;
-	case 4:
+	/*case 4:
 	    set((*vector)[0], (*vector)[1], (*vector)[2], (*vector)[3], name);
-	    break;
+	    break;*/
 	case 6:
 	    set((*vector)[0], (*vector)[1], (*vector)[2], (*vector)[3], (*vector)[4], (*vector)[5],
 		name);
@@ -158,17 +158,17 @@ int TBit2::set(int _B_addr, int _b_num, AnsiString _name)
     return 1;
 }
 
-int TBit2::BitNum()
+/*int TBit2::BitNum()
 {
     return b_num;
-}
+}*/
 
 int TBit2::Divide()
 {
     return divide;
 }
 
-bool TBit2::FuncEn()
+/*bool TBit2::FuncEn()
 {
     return (en);
 }
@@ -176,7 +176,7 @@ bool TBit2::FuncEn()
 AnsiString TBit2::Name()
 {
     return name;
-}
+}*/
 
 int TBit2::GetVal()
 {

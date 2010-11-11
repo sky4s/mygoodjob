@@ -338,7 +338,7 @@ void __fastcall TSATForm::FormClose(TObject *Sender, TCloseAction &Action)
         delete [] CboB;
 
         delete [] scrlb;
-        delete [] scrlb;
+        //delete [] scrlb;
 
         delete [] scrlb2;
         delete [] ScrlB2;
