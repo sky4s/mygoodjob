@@ -314,5 +314,34 @@ namespace cms {
     };
 #endif
     //==========================================================================
+    RGBPatchMap Target::processPatchMap(Patch_vector_ptr patchList) {
+	RGBPatchMap patchMap;
+	foreach(Patch_ptr p, *patchList) {
+	    RGB_ptr rgb = p->getRGB();
+	    patchMap.insert(make_pair(rgb, p));
+	}
+	return patchMap;
+    };
+  Target::Target(Patch_vector_ptr patchList):patchList(patchList) {
+
+    };
+    string_ptr Target::getFilename() {
+	return filename;
+    };
+
+    Patch_ptr Target::getPatch(double r, double g, double b) {
+	if (keyRGB == null) {
+	    keyRGB = getKeyRGB();
+	}
+	keyRGB->setValues(r, g, b);
+	return getPatch(keyRGB);
+    };
+    Patch_ptr Target::getPatch(RGB_ptr rgb) {
+	return patchMap[rgb];
+    };
+    RGB_ptr Target::getKeyRGB() {
+	RGB_ptr clone = (*patchList)[0]->getRGB()->clone();
+	return clone;
+    };
 };
 

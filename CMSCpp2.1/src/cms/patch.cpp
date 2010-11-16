@@ -16,8 +16,7 @@ namespace cms {
     using namespace Dep;
      Patch::Patch(string_ptr name, XYZ_ptr XYZ,
 		  XYZ_ptr normalizedXYZ,
-		  RGB_ptr rgb):name(name), XYZ(XYZ),
-	normalizedXYZ(normalizedXYZ), rgb(rgb) {
+		  RGB_ptr rgb):name(name), XYZ(XYZ), normalizedXYZ(normalizedXYZ), rgb(rgb) {
     };
   Patch::Patch(string_ptr name, XYZ_ptr XYZ, XYZ_ptr normalizedXYZ, RGB_ptr rgb, RGB_ptr intensity):name(name), XYZ(XYZ),
 	normalizedXYZ(normalizedXYZ), rgb(rgb),
@@ -39,6 +38,19 @@ namespace cms {
 
     RGB_ptr Patch::getIntensity() {
 	return intensity;
+    };
+    Lab_ptr Patch::getLab() {
+	return _Lab;
+    };
+    Patch_vector_ptr Patch::Produce::LabPatches(Patch_vector_ptr XYZPatchList, XYZ_ptr white) {
+	Patch_ptr firstPatch = (*XYZPatchList)[0];
+
+	foreach(Patch_ptr p, *XYZPatchList) {
+	    XYZ_ptr XYZ = p->getXYZ();
+	    Lab_ptr Lab = CIELab::fromXYZ(XYZ, white);
+	    p->_Lab = Lab;
+	}
+	return XYZPatchList;
     };
 };
 

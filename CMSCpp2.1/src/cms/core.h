@@ -12,6 +12,7 @@
 #ifdef __BORLANDC__
 # pragma pack(pop)
 #endif
+#include <map>
 //其他庫頭文件
 
 //本項目內頭文件
@@ -123,8 +124,29 @@ namespace cms {
     };
 #endif
 
+    typedef std::map < RGB_ptr, Patch_ptr) RGBPatchMap;
 
     class Target:public jObject {
+      private:
+	static RGBPatchMap processPatchMap(Patch_vector_ptr patchList);
+      protected:
+	//XYZ_ptr luminance;
+	//const MaxValue *maxValue;
+	 RGBPatchMap patchMap;
+	Patch_vector_ptr patchList;
+	string_ptr filename;
+	RGB_ptr keyRGB;
+	 Target(Patch_vector_ptr patchList);
+
+      public:
+	 string_ptr getFilename();
+	virtual Patch_vector_ptr getLabPatchList() = 0;
+	//XYZ_ptr getLuminance();
+	//const MaxValue getMaxValue();
+	Patch_ptr getPatch(double r, double g, double b);
+	Patch_ptr getPatch(int index);
+	Patch_ptr getPatch(RGB_ptr rgb);
+	RGB_ptr getKeyRGB();
     };
 
     class ValuePropertyIF {

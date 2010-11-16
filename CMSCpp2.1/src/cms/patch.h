@@ -17,6 +17,7 @@ namespace cms {
 	bptr < std::string > name;
 	//CIELab _Lab = null;
 	XYZ_ptr XYZ;
+	Lab_ptr _Lab;
 	XYZ_ptr normalizedXYZ;
 	RGB_ptr rgb;
 	RGB_ptr intensity;
@@ -24,16 +25,19 @@ namespace cms {
 	 bptr < Spectra > spectra;
 	 bptr < Spectra > reflectSpectra;
       public:
-	 Patch(bptr < std::string > name,
-	       XYZ_ptr XYZ, XYZ_ptr normalizedXYZ, RGB_ptr rgb);
-	 Patch(bptr < std::string > name,
-	       XYZ_ptr XYZ,
-	       XYZ_ptr normalizedXYZ, RGB_ptr rgb, RGB_ptr intensity);
+	 Patch(string_ptr name, XYZ_ptr XYZ, XYZ_ptr normalizedXYZ, RGB_ptr rgb);
+	 Patch(string_ptr name, XYZ_ptr XYZ, XYZ_ptr normalizedXYZ, RGB_ptr rgb, RGB_ptr intensity);
 	 bptr < std::string > getName();
 	XYZ_ptr getXYZ();
 	XYZ_ptr getNormalizedXYZ();
 	RGB_ptr getRGB();
 	RGB_ptr getIntensity();
+	Lab_ptr getLab();
+	class Produce {
+	  public:
+	    static Patch_vector_ptr LabPatches(Patch_vector_ptr XYZPatchList, XYZ_ptr white);
+	};
+	friend class Produce;
     };
 
 };

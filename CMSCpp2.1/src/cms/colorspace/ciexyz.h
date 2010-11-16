@@ -62,7 +62,7 @@ namespace cms {
 		bool isBlack();
 		bool isLegal();
 		bool isLegal(XYZ_ptr white);
-                
+
 		static bptr < CIEXYZ > minus(const XYZ_ptr XYZ1, const XYZ_ptr XYZ2);
 		static XYZ_ptr plus(const XYZ_ptr XYZ1, const XYZ_ptr XYZ2);
 
@@ -153,9 +153,10 @@ namespace cms {
 		double_array _getValues(double_array values);
 		void _setValues(double_array values);
 		XYZ_ptr white;
-	      public:
 		static const double epsilon;
 		static const double kappa;
+	      public:
+
 		double L, a, b;
 		//===============================================================
 		// constructor
@@ -177,6 +178,8 @@ namespace cms {
 		//===============================================================
 		//Lab_ptr CIELab::fromXYZ(const XYZ_ptr XYZ, const XYZ_ptr whitePoint);
 		Lab_ptr getLabAdaptedToD65();
+		static double_array fromXYZValues(double_array XYZValues, double_array whitePoint);
+		static Lab_ptr fromXYZ(XYZ_ptr XYZ, XYZ_ptr whitePoint);
 	    };
 	};
     };

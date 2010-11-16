@@ -523,6 +523,35 @@ namespace cms {
 		return Lab_ptr(this);
 	    };
 
+	    double_array CIELab::fromXYZValues(double_array XYZValues, double_array whitePoint) {
+		double_array r(new double[3]);
+		r[0] = XYZValues[0] / whitePoint[0];
+		r[1] = XYZValues[1] / whitePoint[1];
+		r[2] = XYZValues[2] / whitePoint[2];
+
+		double_array f(new double[3]);
+
+		for (int i = 0; i < 3; i++) {
+		    if (r[i] > epsilon) {
+			f[i] = Math::cubeRoot(r[i]);	// more precisse than return pow(t, 1.0/3.0);
+		    } else {
+			f[i] = (kappa * r[i] + 16) / 116;
+		    }
+		}
+
+		double_array LabValues(new double[3]);
+		LabValues[0] = 116.0 * f[1] - 16;
+		LabValues[1] = 500.0 * (f[0] - f[1]);
+		LabValues[2] = 200.0 * (f[1] - f[2]);
+		return LabValues;
+	    }
+	    Lab_ptr CIELab::fromXYZ(XYZ_ptr XYZ, XYZ_ptr whitePoint) {
+		double_array XYZValues = XYZ->getValues();
+		double_array whiteXYZValues = whitePoint->getValues();
+		double_array LabValues = fromXYZValues(XYZValues, whiteXYZValues);
+		Lab_ptr Lab(new CIELab(LabValues, whitePoint));
+		return Lab;
+	    };
 	};
 
     };
