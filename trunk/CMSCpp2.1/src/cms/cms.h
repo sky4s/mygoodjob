@@ -56,6 +56,7 @@ namespace cms {
     };
 #endif
     namespace lcd {
+	class LCDTarget;
 	namespace calibrate {
 	    class BitDepthProcessor;
 	    class MeasureCondition;
@@ -122,6 +123,7 @@ typedef std::vector < xyY_ptr > xyY_vector;
 typedef bptr < xyY_vector > xyY_vector_ptr;
 
 typedef bptr < Indep::CIEXYZ > XYZ_ptr;
+#define nil_XYZ_ptr XYZ_ptr( (Indep::CIEXYZ*) null)
 typedef std::vector < XYZ_ptr > XYZ_vector;
 typedef bptr < XYZ_vector > XYZ_vector_ptr;
 
@@ -137,6 +139,7 @@ typedef bptr < cms::Patch > Patch_ptr;
 typedef std::vector < Patch_ptr > Patch_vector;
 typedef bptr < Patch_vector > Patch_vector_ptr;
 #define nil_Patch_vector_ptr Patch_vector_ptr( (Patch_vector*) null)
+
 
 typedef bptr < cms::Spectra > Spectra_ptr;
 typedef std::vector < Spectra_ptr > Spectra_vector;
