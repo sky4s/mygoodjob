@@ -14,14 +14,12 @@ namespace cms {
     class Patch:public jObject, cms::util::NameIF {
 
       protected:
-	bptr < std::string > name;
-	//CIELab _Lab = null;
+	string_ptr name;
 	XYZ_ptr XYZ;
 	Lab_ptr _Lab;
 	XYZ_ptr normalizedXYZ;
 	RGB_ptr rgb;
 	RGB_ptr intensity;
-	//shared_ptr < RGBColor > originalRGB = null;
 	 bptr < Spectra > spectra;
 	 bptr < Spectra > reflectSpectra;
       public:
@@ -33,6 +31,7 @@ namespace cms {
 	RGB_ptr getRGB();
 	RGB_ptr getIntensity();
 	Lab_ptr getLab();
+	const string_ptr toString() const;
 	class Produce {
 	  public:
 	    static Patch_vector_ptr LabPatches(Patch_vector_ptr XYZPatchList, XYZ_ptr white);

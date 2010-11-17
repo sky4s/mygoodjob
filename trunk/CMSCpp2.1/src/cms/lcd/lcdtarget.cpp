@@ -5,6 +5,7 @@
 //C系統文件
 
 //C++系統文件
+#include <algorithm>
 
 //vcl庫頭文件
 
@@ -93,11 +94,15 @@ namespace cms {
 	};
 
 
-	LCDTarget LCDTarget::Instance::getFromAUORampXLS(string_ptr filename) {
+	LCDTarget_ptr LCDTarget::Instance::getFromAUORampXLS(string_ptr filename) {
 
 	    SimpleExcelAccess xls(*filename);
 	    bptr < DBQuery > query = xls.retrieve();
 	    Patch_vector_ptr patchList(new Patch_vector());
+
+	    Patch_vector_ptr rPatchList(new Patch_vector());
+	    Patch_vector_ptr gPatchList(new Patch_vector());
+	    Patch_vector_ptr bPatchList(new Patch_vector());
 
 	    while (query->hasNext()) {
 		string_vector_ptr result = query->nextResult();
@@ -109,7 +114,6 @@ namespace cms {
 		double wr = (*values)[6];
 		double wg = (*values)[7];
 		double wb = (*values)[8];
-
 
 		double rx = (*values)[9];
 		double ry = (*values)[10];
@@ -144,12 +148,31 @@ namespace cms {
 		Patch_ptr bPatch(new Patch(b->toString(), bXYZ, nil_XYZ_ptr, b));
 
 		patchList->push_back(wPatch);
-		patchList->push_back(rPatch);
-		patchList->push_back(gPatch);
-		patchList->push_back(bPatch);
+		rPatchList->push_back(rPatch);
+		gPatchList->push_back(gPatch);
+		bPatchList->push_back(bPatch);
 	    }
-	    LCDTarget target(patchList);
+	    reverse(patchList->begin(), patchList->end());
+
+	    patchList->reserve(patchList->size() * 4);
+	    patchList->insert(patchList->end(), rPatchList->rbegin(), rPatchList->rend());
+	    patchList->insert(patchList->end(), gPatchList->rbegin(), gPatchList->rend());
+	    patchList->insert(patchList->end(), bPatchList->rbegin(), bPatchList->rend());
+	    LCDTarget_ptr target(new LCDTarget(patchList));
 	    return target;
+	};
+
+	//==========================================================================================
+	Interpolator::Interpolator(double_vector_ptr input, double_vector_ptr outputu,
+				   double_vector_ptr outputv, double_vector_ptr outputY) {
+	};
+	double_array Interpolator::interpolate(double x) {
+	};
+
+
+	//==========================================================================================
+      LCDTargetInterpolator::LCDTargetInterpolator(LCDTarget_ptr lcdTarget):lcdTarget(lcdTarget)
+	{
 	};
     };
 };

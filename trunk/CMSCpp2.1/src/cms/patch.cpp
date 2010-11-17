@@ -52,5 +52,13 @@ namespace cms {
 	}
 	return XYZPatchList;
     };
+    const string_ptr Patch::toString() const {
+	string_ptr str(new string());
+	*str = "Name" + *name + " XYZ" + *XYZ->toString() + " RGB" + *rgb->toString();
+	if (null != intensity) {
+	    *str = *str + " Intensity" + *intensity->toString();
+	}
+	return str;
+    };
 };
 

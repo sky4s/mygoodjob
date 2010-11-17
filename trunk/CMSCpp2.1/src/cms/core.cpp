@@ -336,12 +336,18 @@ namespace cms {
 	keyRGB->setValues(r, g, b);
 	return getPatch(keyRGB);
     };
+    Patch_ptr Target::getPatch(int index) {
+	return (*patchList)[index];
+    };
     Patch_ptr Target::getPatch(RGB_ptr rgb) {
 	return patchMap[rgb];
     };
     RGB_ptr Target::getKeyRGB() {
 	RGB_ptr clone = (*patchList)[0]->getRGB()->clone();
 	return clone;
+    };
+    int Target::size() {
+	return patchList->size();
     };
 };
 
