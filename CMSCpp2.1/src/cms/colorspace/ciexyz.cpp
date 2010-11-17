@@ -234,7 +234,7 @@ namespace cms {
 		Z *= factor;
 	    };
 
-	    CIEXYZ::CIEXYZ() {
+	  CIEXYZ::CIEXYZ():X(0), Y(0), Z(0) {
 	    };
 	  CIEXYZ::CIEXYZ(double_array XYZValues, NormalizeY normalizeY):normalizeY_(normalizeY)
 	    {
@@ -257,7 +257,7 @@ namespace cms {
 	    //======================================================================
 	    // CIExyY
 	    //======================================================================
-	    CIExyY::CIExyY() {
+	  CIExyY::CIExyY():x(0), y(0), Y(0) {
 	    };
 
 	  CIExyY::CIExyY(XYZ_ptr XYZ):normalizeY_(XYZ->normalizeY_) {
@@ -474,6 +474,8 @@ namespace cms {
 		L = values[0];
 		a = values[1];
 		b = values[2];
+	    };
+	  CIELab::CIELab():L(0), a(0), b(0) {
 	    };
 
 	    CIELab::CIELab(XYZ_ptr XYZ, XYZ_ptr white) {

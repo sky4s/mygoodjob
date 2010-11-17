@@ -147,6 +147,7 @@ namespace cms {
 	Patch_ptr getPatch(int index);
 	Patch_ptr getPatch(RGB_ptr rgb);
 	RGB_ptr getKeyRGB();
+	int size();
     };
 
     class ValuePropertyIF {

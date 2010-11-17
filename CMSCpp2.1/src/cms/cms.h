@@ -147,6 +147,8 @@ typedef bptr < Spectra_vector > Spectra_vector_ptr;
 
 typedef bptr < cms::ColorMatchingFunction > CMF_ptr;
 
+typedef bptr < cms::lcd::LCDTarget > LCDTarget_ptr;
+
 typedef bptr < cms::lcd::calibrate::Component > Component_ptr;
 typedef std::vector < Component_ptr > Component_vector;
 typedef bptr < Component_vector > Component_vector_ptr;

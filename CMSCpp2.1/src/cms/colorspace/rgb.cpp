@@ -22,13 +22,13 @@ namespace cms {
 	    // RGBColor
 	    //======================================================================
 	     RGBColor::RGBColor():rgbColorSpace(&RGBColorSpace::unknowRGB),
-		maxValue(&MaxValue::Double1) {
-		setValues(0, 0, 0);
+		maxValue(&MaxValue::Double1), R(0), G(0), B(0) {
+		//setValues(0, 0, 0);
 	    };
 	     RGBColor::RGBColor(const MaxValue &
 				maxValue):rgbColorSpace(&RGBColorSpace::
-							unknowRGB), maxValue(&maxValue) {
-		setValues(0, 0, 0);
+							unknowRGB), maxValue(&maxValue), R(0), G(0),
+		B(0) {
 	    };
 	     RGBColor::RGBColor(const RGBColorSpace & rgbColorSpace,
 				double_array rgb,
