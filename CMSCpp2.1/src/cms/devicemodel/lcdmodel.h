@@ -27,10 +27,18 @@ namespace cms {
 	};
 
 	class MultiMatrixModel:public LCDModel {
+	  private:
+	    cms::lcd::LCDTargetInterpolator interpolator;
+	    XYZ_ptr recoverAbsoluteOrRelative(XYZ_ptr rXYZ, XYZ_ptr gXYZ,
+					      XYZ_ptr bXYZ, boolean relativeXYZ);
+	    static XYZ_ptr recover(XYZ_ptr rXYZ, XYZ_ptr gXYZ, XYZ_ptr bXYZ, XYZ_ptr black);
 	  public:
-	    MultiMatrixModel(LCDTarget_ptr lcdTarget);
+	     MultiMatrixModel(LCDTarget_ptr lcdTarget);
 	    virtual XYZ_ptr getXYZ(RGB_ptr rgb, boolean relativeXYZ);
 	    virtual RGB_ptr getRGB(XYZ_ptr XYZ, boolean relativeXYZ);
+	  protected:
+	     XYZ_ptr getXYZ(double r, double g, double b);
+	    XYZ_ptr getXYZ(double r, double g, double b, boolean relativeXYZ);
 	};
     };
 };

@@ -63,7 +63,7 @@ namespace cms {
 		bool isLegal();
 		bool isLegal(XYZ_ptr white);
 
-		static bptr < CIEXYZ > minus(const XYZ_ptr XYZ1, const XYZ_ptr XYZ2);
+		static XYZ_ptr minus(const XYZ_ptr XYZ1, const XYZ_ptr XYZ2);
 		static XYZ_ptr plus(const XYZ_ptr XYZ1, const XYZ_ptr XYZ2);
 
 		void normalize(XYZ_ptr normal);
