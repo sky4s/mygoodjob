@@ -26,11 +26,23 @@ namespace cms {
 	    virtual Patch_vector_ptr getLabPatchList();
 	    Patch_vector_ptr getLabPatchList(XYZ_ptr whitePoint);
 	    Patch_ptr getWhitePatch();
+
 	    class Instance {
 	      public:
 		static LCDTarget_ptr getFromAUORampXLS(string_ptr filename);
 	    };
+	    class Filter {
+	      private:
+		LCDTarget_ptr lcdTarget;
+	      public:
+		Filter(LCDTarget_ptr lcdTarget);
+		Patch_vector_ptr grayPatch();
+		Patch_vector_ptr grayPatch(bool withBlack);
+		Patch_vector_ptr oneValueChannel(const Dep::Channel & ch);
+		Patch_vector_ptr grayScalePatch(const Dep::Channel & ch, bool withBlack);
+	    };
 	    friend class Instance;
+	    Filter filter;
 	  protected:
 	     LCDTarget(Patch_vector_ptr patchList);
 	};
@@ -39,7 +51,7 @@ namespace cms {
 	class Interpolator {
 	    friend class LCDTargetInterpolator;
 	  private:
-	     bptr < Interpolation > u, v, Y;
+	     bptr < math::Interpolation > u, v, Y;
 	     Interpolator(double_vector_ptr input, double_vector_ptr outputu,
 			  double_vector_ptr outputv, double_vector_ptr outputY);
 	    double_array interpolate(double x);
@@ -47,10 +59,16 @@ namespace cms {
 
 	class LCDTargetInterpolator {
 	  private:
+	    bptr < Interpolator > r, g, b, w;
 	    LCDTarget_ptr lcdTarget;
-	    LCDTargetInterpolator(LCDTarget_ptr lcdTarget);
+	     LCDTargetInterpolator(LCDTarget_ptr lcdTarget);
+	    void init(LCDTarget_ptr lcdTarget);
+	    static bptr < Interpolator > initInterpolator(Patch_vector_ptr patchVector);
+	  protected:
+	     double_array getValues(const Dep::Channel & ch, double code);
+	    static int getArrayIndex(const Dep::Channel & ch);
 	  public:
-	    Patch_ptr getPatch(const Dep::Channel & ch, double value);
+	     Patch_ptr getPatch(const Dep::Channel & ch, double value);
 	};
     };
 };

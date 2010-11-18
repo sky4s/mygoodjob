@@ -141,6 +141,7 @@ namespace cms {
       public:
 	 string_ptr getFilename();
 	virtual Patch_vector_ptr getLabPatchList() = 0;
+	Patch_vector_ptr getPatchList();
 	//XYZ_ptr getLuminance();
 	//const MaxValue getMaxValue();
 	Patch_ptr getPatch(double r, double g, double b);

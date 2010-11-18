@@ -64,6 +64,7 @@ namespace cms {
 		boolean isAtMaxValue();
 		boolean isWhite();
 		boolean isGray();
+		boolean isPrimaryChannel();
 	      protected:
 		 boolean isLegal(double value);
 		double_array _getValues(double_array values);
