@@ -40,18 +40,15 @@ namespace math {
 	return -1;
     };
 
-    int_vector_ptr
-	Searcher::leftNearSequentialSearchAll(double_vector_ptr a,
-					      double key) {
-	int_vector_ptr result(new int_vector);
-	int search = leftNearSequentialSearch(a, key);
-	result->push_back(leftNearSequentialSearch0(a->size(), search));
-	result->push_back(search);
+    int_vector_ptr Searcher::leftNearSequentialSearchAll(double_vector_ptr a, double key) {
+	int_vector_ptr result(new int_vector(2));
+	int search = sequentialSearch(a, key);
+	(*result)[0] = leftNearSequentialSearch0(a->size(), search);
+	(*result)[1] = search;
 
 	return result;
     };
-    int Searcher::leftNearSequentialSearch0(int arrayLength,
-					    int binarySearchResult) {
+    int Searcher::leftNearSequentialSearch0(int arrayLength, int binarySearchResult) {
 	int result = binarySearchResult;
 	if (result < -1) {
 	    //interstionªº³õ¦X
