@@ -300,7 +300,13 @@ namespace cms {
 		    break;
 		}
 	    };
-
+	    void RGBColor::setValues(double_array values, const MaxValue & type) {
+		if (type != *maxValue) {
+		    //values = DoubleArray.copy(values);
+		    changeMaxValue(values, type, *maxValue, false);
+		}
+		setValues(values);
+	    };
 	    const Channel & RGBColor::getMinChannel() {
 		double_array rgbValues = getValues();
 		int minIndex = Math::minIndex(rgbValues, getNumberBands());
@@ -310,6 +316,7 @@ namespace cms {
 	    const Channel & RGBColor::getMaxChannel() {
 		double_array rgbValues = getValues();
 		int maxIndex = Math::maxIndex(rgbValues, getNumberBands());
+		maxIndex = (maxIndex == -1) ? 0 : maxIndex;
 		return Channel::getChannelByArrayIndex(maxIndex);
 	    };
 	    RGB_ptr RGBColor::clone() {
@@ -485,6 +492,16 @@ namespace cms {
 		int b = (int) this->getValue(Channel::B, MaxValue::Int8Bit);
 		TColor color = (TColor) b * 65536 + g * 256 + r;
 		return color;
+	    };
+	    void RGBColor::setColor(TColor color) {
+		double_array rgbValues(new double[3]);
+		rgbValues[0] = GetRValue(color);
+		rgbValues[1] = GetGValue(color);
+		rgbValues[2] = GetBValue(color);
+		this->setValues(rgbValues, MaxValue::Int8Bit);
+	    };
+	    void RGBColor::setColorBlack() {
+		setColor(clBlack);
 	    };
 	    XYZ_ptr RGBColor::toXYZ(RGB_ptr rgb, const RGBColorSpace & rgbColorSpace) {
 		double_array rgbValues(new double[3]);

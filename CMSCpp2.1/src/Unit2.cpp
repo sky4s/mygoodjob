@@ -966,8 +966,7 @@ class property {
     property(const std::string & name, const boost::any & value):name_(name), value_(value) {
     } std::string name() const {
 	return name_;
-    }
-    boost::any & value() {
+    } boost::any & value() {
 	return value_;
     }
     friend bool operator<(const property & lhs, const property & rhs) {
@@ -1029,13 +1028,27 @@ void virtualTry()
 void lcdTargetTry()
 {
     using namespace cms::lcd;
+    using namespace Dep;
     string_ptr filename(new string("Measurement00.xls"));
     LCDTarget_ptr target = LCDTarget::Instance::getFromAUORampXLS(filename);
-    for (int x = 0; x < target->size(); x++) {
-	Patch_ptr p = target->getPatch(x);
-	cout << *p->toString() << endl;
-    }
+    /*for (int x = 0; x < target->size(); x++) {
+       Patch_ptr p = target->getPatch(x);
+       cout << *p->toString() << endl;
+       } */
+    LCDTargetInterpolator interpolator(target);
+    Patch_ptr p = interpolator.getPatch(Channel::W, 250);
+    cout << *p->toString() << endl;
 
+    using namespace math;
+    double_vector a(4);
+    a[0] = 1;
+    a[1] = 3;
+    a[2] = 5;
+    a[3] = 6;
+    double_vector_ptr aa(&a);
+    int_vector_ptr result = Searcher::leftNearSequentialSearchAll(aa, 5);
+    cout << (*result)[0] << endl;
+    cout << (*result)[1] << endl;
 }
 
 #pragma argsused

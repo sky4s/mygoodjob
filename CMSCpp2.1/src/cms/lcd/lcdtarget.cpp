@@ -192,7 +192,7 @@ namespace cms {
 		singleChannelPatch->push_back(blackPatch);
 	    }
 	    Patch_vector_ptr oneValueChannelPatch = oneValueChannel(ch);
-	    singleChannelPatch->insert(singleChannelPatch->begin(), oneValueChannelPatch->begin(),
+	    singleChannelPatch->insert(singleChannelPatch->end(), oneValueChannelPatch->begin(),
 				       oneValueChannelPatch->end());
 	    return singleChannelPatch;
 
@@ -220,20 +220,37 @@ namespace cms {
 	    init(lcdTarget);
 	};
 	void LCDTargetInterpolator::init(LCDTarget_ptr lcdTarget) {
-
-	    //int size = lcdTarget->size() / 4;
-	    //LCDTarget::Filter::double_vector_ptr input(new double_vector(size));
-	    Patch_vector_ptr grayPatchs = lcdTarget->filter.grayPatch(true);
-	    Patch_ptr blackPatch = lcdTarget->getBlackPatch();
-	    Patch_vector_ptr rPatchs = lcdTarget->filter.oneValueChannel(Channel::R);
-	    Patch_vector_ptr gPatchs = lcdTarget->filter.oneValueChannel(Channel::G);
-	    Patch_vector_ptr bPatchs = lcdTarget->filter.oneValueChannel(Channel::B);
-	    rPatchs->insert(rPatchs->begin(), blackPatch);
-	    //RGB_ptr keyRGB = lcdTarget->getKeyRGB();
-
-	    //double_vector_ptr codeVector(new double_vector(size));
+	    Patch_vector_ptr grayPatchVector = lcdTarget->filter.grayScalePatch(Channel::W, true);
+	    Patch_vector_ptr rPatchVector = lcdTarget->filter.grayScalePatch(Channel::R, true);
+	    Patch_vector_ptr gPatchVector = lcdTarget->filter.grayScalePatch(Channel::G, true);
+	    Patch_vector_ptr bPatchVector = lcdTarget->filter.grayScalePatch(Channel::B, true);
+	    /*foreach(Patch_ptr p, *grayPatchVector) {
+		cout << *p->toString() << endl;
+	    }*/
+	    w = initInterpolator(grayPatchVector);
+	    r = initInterpolator(rPatchVector);
+	    g = initInterpolator(gPatchVector);
+	    b = initInterpolator(bPatchVector);
 	};
 	bptr < Interpolator > LCDTargetInterpolator::initInterpolator(Patch_vector_ptr patchVector) {
+	    int size = patchVector->size();
+	    double_vector_ptr input(new double_vector(size)), outputu(new double_vector(size)),
+		outputv(new double_vector(size)), outputY(new double_vector(size));
+	    for (int x = 0; x < size; x++) {
+		Patch_ptr p = (*patchVector)[x];
+		RGB_ptr rgb = p->getRGB();
+		Channel maxch = rgb->getMaxChannel();
+		double value = rgb->getValue(maxch);
+		XYZ_ptr XYZ = p->getXYZ();
+		double_array uvpValues = XYZ->getuvPrimeValues();
+		(*input)[x] = value;
+		(*outputu)[x] = uvpValues[0];
+		(*outputv)[x] = uvpValues[1];
+		(*outputY)[x] = XYZ->Y;
+	    }
+
+	    bptr < Interpolator > interpolator(new Interpolator(input, outputu, outputv, outputY));
+	    return interpolator;
 	};
 	double_array LCDTargetInterpolator::getValues(const Dep::Channel & ch, double code) {
 	    int index = getArrayIndex(ch);
@@ -254,6 +271,26 @@ namespace cms {
 	    return ch == Channel::W ? 3 : ch.getArrayIndex();
 	};
 	Patch_ptr LCDTargetInterpolator::getPatch(const Dep::Channel & ch, double value) {
+	    double_array values = getValues(ch, value);
+	    RGB_ptr rgb = lcdTarget->getKeyRGB();
+	    rgb->setColorBlack();
+	    rgb->setValue(ch, value);
+
+	    //Patch_ptr wp = lcdTarget->getWhitePatch();
+	    Patch_ptr wp = lcdTarget->getBrightestPatch();
+	    XYZ_ptr white = wp->getXYZ();
+	    XYZ_ptr XYZ = getXYZFromDomainValues(values);
+	    //Lab_ptr Lab = CIELab::fromXYZ(XYZ, white);
+
+	    //Patch p = new Patch("Interp", XYZ, Lab, rgb);
+	    string_ptr name(new string("Interp"));
+	    Patch_ptr p(new Patch(name, XYZ, XYZ, rgb));
+	    return p;
+	};
+	XYZ_ptr LCDTargetInterpolator::getXYZFromDomainValues(double_array values) {
+	    CIExyY xyY;
+	    xyY.setuvPrimeYValues(values);
+	    return xyY.toXYZ();
 	};
     };
 };

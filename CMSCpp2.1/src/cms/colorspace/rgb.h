@@ -31,6 +31,8 @@ namespace cms {
 		double_array getValues();
 		double_array getValues(double_array values);
 		void setValue(const Channel & channel, double value);
+		using RGBBase::setValues;
+		void setValues(double_array values, const MaxValue & type);
 		const Channel & getMinChannel();
 		const Channel & getMaxChannel();
 		RGB_ptr clone();
@@ -45,6 +47,8 @@ namespace cms {
 		//static RGB_ptr fromHSVValues(double h, double s, double v);
 		//static double_array HSV2RGBValues(double h, double s, double v);
 		TColor getColor();
+		void setColor(TColor color);
+		void setColorBlack();
 
 		static XYZ_ptr toXYZ(RGB_ptr rgb, const RGBColorSpace & rgbColorSpace);
 

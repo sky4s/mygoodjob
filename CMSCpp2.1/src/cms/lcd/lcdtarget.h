@@ -61,14 +61,16 @@ namespace cms {
 	  private:
 	    bptr < Interpolator > r, g, b, w;
 	    LCDTarget_ptr lcdTarget;
-	     LCDTargetInterpolator(LCDTarget_ptr lcdTarget);
+
 	    void init(LCDTarget_ptr lcdTarget);
 	    static bptr < Interpolator > initInterpolator(Patch_vector_ptr patchVector);
 	  protected:
 	     double_array getValues(const Dep::Channel & ch, double code);
 	    static int getArrayIndex(const Dep::Channel & ch);
+	    XYZ_ptr getXYZFromDomainValues(double_array values);
 	  public:
 	     Patch_ptr getPatch(const Dep::Channel & ch, double value);
+	     LCDTargetInterpolator(LCDTarget_ptr lcdTarget);
 	};
     };
 };

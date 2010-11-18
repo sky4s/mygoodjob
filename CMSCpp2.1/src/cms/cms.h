@@ -94,6 +94,9 @@ namespace cms {
 	class ByteBuffer;
     };
 
+    namespace devicemodel {
+	class MultiMatrixModel;
+    };
 };
 
 //==============================================================================
