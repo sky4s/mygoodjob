@@ -569,6 +569,19 @@ namespace cms {
 	    boolean RGBColor::isGray() {
 		return R == G && G == B;
 	    };
+
+	    boolean RGBColor::isPrimaryChannel() {
+		int hasValueCount = 0;
+		double_array rgbValues = getValues();
+		for (int x = 0; x < this->getNumberBands(); x++) {
+		    double d = rgbValues[x];
+		    if (d != 0) {
+			hasValueCount++;
+		    }
+		}
+		return hasValueCount == 1;
+	    };
+
 	};
     };
 };

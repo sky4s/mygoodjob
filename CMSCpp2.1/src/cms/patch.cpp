@@ -60,5 +60,30 @@ namespace cms {
 	}
 	return str;
     };
-};
+
+    void Patch::Filter::grayPatch(Patch_vector_ptr patchList, Patch_vector_ptr filtered) {
+	foreach(Patch_ptr p, *patchList) {
+	    RGB_ptr rgb = p->getRGB();
+	    if (rgb->isGray() && !rgb->isBlack()) {
+		filtered->push_back(p);
+	    }
+	}
+    };
+    void Patch::Filter::oneValueChannel(Patch_vector_ptr
+					patchList, Patch_vector_ptr filtered,
+					const Dep::Channel & channel) {
+	foreach(Patch_ptr p, *patchList) {
+	    RGB_ptr rgb = p->getRGB();
+
+	    if (Patch::hasOnlyOneValue(p) && rgb->getValue(channel) != 0) {
+		filtered->push_back(p);
+	    }
+	}
+    };
+
+    boolean Patch::hasOnlyOneValue(Patch_ptr patch) {
+	RGB_ptr rgb = patch->getRGB();
+	return rgb->isPrimaryChannel();
+    };
+}
 

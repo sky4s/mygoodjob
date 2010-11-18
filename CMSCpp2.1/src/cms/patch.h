@@ -37,6 +37,15 @@ namespace cms {
 	    static Patch_vector_ptr LabPatches(Patch_vector_ptr XYZPatchList, XYZ_ptr white);
 	};
 	friend class Produce;
+
+	class Filter {
+	  public:
+	    static void grayPatch(Patch_vector_ptr patchList, Patch_vector_ptr filtered);
+	    static void oneValueChannel(Patch_vector_ptr
+					patchList, Patch_vector_ptr filtered,
+					const Dep::Channel & channel);
+	};
+	static boolean hasOnlyOneValue(Patch_ptr patch);
     };
 
 };

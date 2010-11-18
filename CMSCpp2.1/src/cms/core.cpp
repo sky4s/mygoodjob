@@ -328,6 +328,9 @@ namespace cms {
     string_ptr Target::getFilename() {
 	return filename;
     };
+    Patch_vector_ptr Target::getPatchList() {
+	return patchList;
+    };
 
     Patch_ptr Target::getPatch(double r, double g, double b) {
 	if (keyRGB == null) {
