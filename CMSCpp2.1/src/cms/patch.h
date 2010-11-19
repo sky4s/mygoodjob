@@ -46,6 +46,7 @@ namespace cms {
 					const Dep::Channel & channel);
 	};
 	static boolean hasOnlyOneValue(Patch_ptr patch);
+	//Patch_ptr clone();
     };
 
 };

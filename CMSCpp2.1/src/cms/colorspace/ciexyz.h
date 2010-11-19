@@ -45,7 +45,7 @@ namespace cms {
 		double getCCT();
 
 		const NormalizeY & getNormalizeY();
-		double getSaturation(CIEXYZ white);
+		double getSaturation(XYZ_ptr white);
 		double_array getuvPrimeValues();
 		double_array getuvValues();
 		double_array getValues(double_array values, NormalizeY normalizeY);
@@ -152,7 +152,7 @@ namespace cms {
 	      protected:
 		double_array _getValues(double_array values);
 		void _setValues(double_array values);
-		XYZ_ptr white;
+		//XYZ_ptr white;
 		static const double epsilon;
 		static const double kappa;
 	      public:
@@ -180,6 +180,35 @@ namespace cms {
 		Lab_ptr getLabAdaptedToD65();
 		static double_array fromXYZValues(double_array XYZValues, double_array whitePoint);
 		static Lab_ptr fromXYZ(XYZ_ptr XYZ, XYZ_ptr whitePoint);
+	    };
+
+
+
+	    class CIELCh:public DeviceIndependentSpace {
+	      public:
+		Enumeration(Style)
+		Lab, Luv, IPT, CIECAM02, Unknow EnumerationEnd()
+
+		double L, C, h;
+		//===============================================================
+		// constructor
+		//===============================================================
+		 CIELCh(Lab_ptr Lab);
+		//===============================================================
+		// ColorSpace
+		//===============================================================
+		string_vector_ptr getBandNames();
+		//===============================================================
+		//===============================================================
+		// DeviceIndependentSpace
+		//===============================================================
+		XYZ_ptr toXYZ();
+		//===============================================================
+		static double_array fromLabValues(double_array labValues);
+	      protected:
+		 double_array _getValues(double_array values);
+		void _setValues(double_array values);
+		Style style;
 	    };
 	};
     };

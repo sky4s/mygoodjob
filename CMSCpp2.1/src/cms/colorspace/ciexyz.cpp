@@ -37,7 +37,7 @@ namespace cms {
 	    const NormalizeY & CIEXYZ::getNormalizeY() {
 		return normalizeY_;
 	    };
-	    double CIEXYZ::getSaturation(CIEXYZ white) {
+	    double CIEXYZ::getSaturation(XYZ_ptr white) {
 		/*double[] uv = this.getuvPrimeValues();
 		   double[] uvn = white.getuvPrimeValues();
 		   return 13 * Math.sqrt(Maths.sqr(uv[0] - uvn[0]) +
@@ -478,7 +478,7 @@ namespace cms {
 	  CIELab::CIELab():L(0), a(0), b(0) {
 	    };
 
-	    CIELab::CIELab(XYZ_ptr XYZ, XYZ_ptr white) {
+	  CIELab::CIELab(XYZ_ptr XYZ, XYZ_ptr white):DeviceIndependentSpace(white) {
 		double_array r(new double[3]);
 		r[0] = XYZ->X / white->X;
 		r[1] = XYZ->Y / white->Y;
@@ -500,7 +500,6 @@ namespace cms {
 		LabValues[2] = 200.0 * (f[1] - f[2]);
 
 		setValues(LabValues);
-		this->white = white;
 	    };
 
 	    CIELab::CIELab(double_array LabValues, XYZ_ptr white) {
@@ -553,6 +552,26 @@ namespace cms {
 		double_array LabValues = fromXYZValues(XYZValues, whiteXYZValues);
 		Lab_ptr Lab(new CIELab(LabValues, whitePoint));
 		return Lab;
+	    };
+	    //======================================================================
+	    // CIELCh
+	    //===================================================================
+	  CIELCh::CIELCh(Lab_ptr Lab):DeviceIndependentSpace(Lab->getWhite()) {
+		this->setValues(fromLabValues(Lab->getValues()));
+		this->style = Style::Lab;
+	    };
+	    double_array CIELCh::fromLabValues(double_array labValues) {
+		return cartesian2polarCoordinatesValues(labValues);
+	    };
+	    double_array CIELCh::_getValues(double_array values) {
+		values[0] = L;
+		values[1] = C;
+		values[2] = h;
+	    };
+	    void CIELCh::_setValues(double_array values) {
+		L = values[0];
+		C = values[1];
+		h = values[2];
 	    };
 	};
 
