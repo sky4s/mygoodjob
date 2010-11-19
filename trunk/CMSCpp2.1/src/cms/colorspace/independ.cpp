@@ -9,19 +9,23 @@ namespace cms {
 	    const double DeviceIndependentSpace::ACTUAL_EPSILON = 0.008856;
 	    const double DeviceIndependentSpace::ACTUAL_KAPPA = 903.3;
 
-	    const double DeviceIndependentSpace::INTENT_EPSILON =
-		216.0 / 24389.0;
-	    const double DeviceIndependentSpace::INTENT_KAPPA =
-		24389.0 / 27.0;
+	    const double DeviceIndependentSpace::INTENT_EPSILON = 216.0 / 24389.0;
+	    const double DeviceIndependentSpace::INTENT_KAPPA = 24389.0 / 27.0;
 
 	    double DeviceIndependentSpace::epsilon = INTENT_EPSILON;
 	    double DeviceIndependentSpace::kappa = INTENT_KAPPA;
 
-	     DeviceIndependentSpace::DeviceIndependentSpace():degree_(Two) {
+	     DeviceIndependentSpace::DeviceIndependentSpace():degree_(Two), adaptedToD65(false) {
 
 	    };
 
+	     DeviceIndependentSpace::DeviceIndependentSpace(XYZ_ptr white):degree_(Two),
+		white(white), adaptedToD65(false) {
 
+	    };
+	    boolean DeviceIndependentSpace::isAdaptedToD65() {
+		return adaptedToD65;
+	    };
 	    int DeviceIndependentSpace::getNumberBands() {
 		return 3;
 	    };
@@ -32,8 +36,7 @@ namespace cms {
 	    void DeviceIndependentSpace::setDegree(Degree degree) {
 		degree_ = degree;
 	    };
-	    void DeviceIndependentSpace::
-		setCIEStandard(CIEStandard standard) {
+	    void DeviceIndependentSpace::setCIEStandard(CIEStandard standard) {
 		if (standard == ActualStandard) {
 		    epsilon = ACTUAL_EPSILON;
 		    kappa = ACTUAL_KAPPA;
@@ -42,6 +45,9 @@ namespace cms {
 		    kappa = INTENT_KAPPA;
 		}
 	    }
+	    XYZ_ptr DeviceIndependentSpace::getWhite() {
+		return white;
+	    };
 	    //======================================================================
 
 	    //======================================================================

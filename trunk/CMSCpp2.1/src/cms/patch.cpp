@@ -85,5 +85,10 @@ namespace cms {
 	RGB_ptr rgb = patch->getRGB();
 	return rgb->isPrimaryChannel();
     };
+
+    /*Patch_ptr Patch::clone() {
+	Patch_ptr p(new Patch(name, XYZ, normalizedXYZ, rgb, intensity));
+	return p;
+    };*/
 }
 

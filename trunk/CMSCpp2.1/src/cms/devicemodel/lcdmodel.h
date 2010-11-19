@@ -15,15 +15,32 @@
 
 namespace cms {
     namespace devicemodel {
+	typedef bptr < DeltaE > DeltaE_ptr;
+	typedef std::vector < DeltaE_ptr > DeltaE_vector;
+	typedef bptr < DeltaE_vector > DeltaE_vector_ptr;
+
+	class DeltaEReport {
+	  private:
+	    DeltaE_vector_ptr deltaEVector;
+	    Patch_vector_ptr patchList1, patchList2;
+	     DeltaEReport();
+	  public:
+	    static bptr < DeltaEReport > getDeltaEReport(Patch_vector_ptr patchList1,
+							 Patch_vector_ptr patchList2);
+	    void storeToExcel(const std::string & filename);
+	};
 	class DeviceCharacterizationModel {
 	  public:
 	    virtual XYZ_ptr getXYZ(RGB_ptr rgb, boolean relativeXYZ) = 0;
 	    virtual RGB_ptr getRGB(XYZ_ptr XYZ, boolean relativeXYZ) = 0;
+	     bptr < DeltaEReport > testForwardModel(Patch_vector_ptr targetLabPatchList);
+	    Patch_vector_ptr produceForwardModelPatchList(Patch_vector_ptr rgbPatchList);
 	};
 	class LCDModel:public DeviceCharacterizationModel {
 	  protected:
 	    LCDTarget_ptr lcdTarget;
 	    LCDModel(LCDTarget_ptr lcdTarget);
+	  public:
 	};
 
 	class MultiMatrixModel:public LCDModel {

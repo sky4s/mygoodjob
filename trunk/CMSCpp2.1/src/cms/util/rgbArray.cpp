@@ -79,7 +79,8 @@ namespace cms {
 		    StringVector::fromDouble(4, static_cast < double >(x), rgb->R, rgb->G,
 					     rgb->B);
 		excel.insert(values);
-	}};
+	    };
+	};
 	void RGBVector::storeToText(const std::string & filename, RGB_vector_ptr rgbVector) {
 
 	    bptr_ < TStringList > list(new TStringList);

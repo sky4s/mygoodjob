@@ -34,10 +34,16 @@ namespace cms {
 		Degree degree_;
 		static double epsilon;
 		static double kappa;
-		 DeviceIndependentSpace();
 		int getNumberBands();
+		XYZ_ptr white;
+		XYZ_ptr originalWhite;
+		boolean adaptedToD65;
+
+		 DeviceIndependentSpace();
+		 DeviceIndependentSpace(XYZ_ptr white);
 	      public:
-		 Degree getDegree();
+		 boolean isAdaptedToD65();
+		Degree getDegree();
 		void setDegree(Degree degree);
 		static void setCIEStandard(CIEStandard standard);
 		static const double ACTUAL_EPSILON;
@@ -46,6 +52,7 @@ namespace cms {
 		static const double INTENT_EPSILON;
 		static const double INTENT_KAPPA;
 		virtual XYZ_ptr toXYZ() = 0;
+		XYZ_ptr getWhite();
 	    };
 
 	    class NormalizeYOperator {

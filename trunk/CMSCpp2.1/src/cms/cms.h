@@ -52,6 +52,7 @@ namespace cms {
 	    class CIExyY;
 	    class CIEXYZ;
 	    class CIELab;
+            class CIELCh;
 	};
     };
 #endif
@@ -133,6 +134,9 @@ typedef bptr < XYZ_vector > XYZ_vector_ptr;
 typedef bptr < Indep::CIELab > Lab_ptr;
 typedef std::vector < Lab_ptr > Lab_vector;
 typedef bptr < XYZ_vector > Lab_vector_ptr;
+typedef bptr < Indep::CIELCh > LCh_ptr;
+typedef std::vector < LCh_ptr > LCh_vector;
+typedef bptr < LCh_vector > LCh_vector_ptr;
 
 typedef std::vector < Dep::Channel > Channel_vector;
 typedef bptr < Channel_vector > Channel_vector_ptr;

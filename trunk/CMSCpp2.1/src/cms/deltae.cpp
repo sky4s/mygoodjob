@@ -14,18 +14,18 @@
 namespace cms {
     using namespace java::lang;
     using namespace math;
+    using namespace Indep;
 
      DeltaE::DeltaE(const Lab_ptr Lab1, const Lab_ptr Lab2):Lab1(Lab1),
-	Lab2(Lab2), adaptedToD65(false) {
-	cie2000DeltaE = -1;
-	cieDeltaE = -1;
+	Lab2(Lab2), adaptedToD65(false), cie2000DeltaE(-1), cieDeltaE(-1), cie94DeltaE(-1) {
+
     };
     DeltaE::DeltaE(const Lab_ptr Lab1, const Lab_ptr Lab2,
 		   bool adaptedToD65):Lab1(adaptedToD65 ? Lab1->
 					   getLabAdaptedToD65() : Lab1),
-	Lab2(adaptedToD65 ? Lab2->getLabAdaptedToD65() : Lab2), adaptedToD65(false) {
-	cie2000DeltaE = -1;
-	cieDeltaE = -1;
+	Lab2(adaptedToD65 ? Lab2->getLabAdaptedToD65() : Lab2), adaptedToD65(false),
+	cie2000DeltaE(-1), cieDeltaE(-1), cie94DeltaE(-1) {
+
     }
 
     double DeltaE::CIE2000DeltaE(const Lab_ptr Lab1, const Lab_ptr Lab2,
@@ -65,6 +65,42 @@ namespace cms {
 	return Math::pow(dL * dL + da * da + db * db, 0.5);
     }
 
+    double DeltaE::CIE94DeltaE(const Lab_ptr Lab1, const Lab_ptr Lab2) {
+	return CIE94DeltaE(Lab1, Lab2, GraphicArts);
+    };
+    double DeltaE::CIE94DeltaE(const Lab_ptr Lab1, const Lab_ptr Lab2, Material material) {
+	double KL = 0, KC = 1, KH = 1, K1 = 0, K2 = 0;
+	switch (material) {
+	case GraphicArts:
+	    KL = 1;
+	    K1 = 0.045;
+	    K2 = 0.015;
+	    break;
+	case Textiles:
+	    KL = 2;
+	    K1 = 0.048;
+	    K2 = 0.014;
+	    break;
+	}
+	double da = Lab1->a - Lab2->a;
+	double db = Lab1->b - Lab2->b;
+	CIELCh LCh1(Lab1);
+	CIELCh LCh2(Lab2);
+
+
+	double dL = LCh1.L - LCh2.L;
+	double dC = LCh1.C - LCh2.C;
+	double abc = Math::sqr(da) + Math::sqr(db) - Math::sqr(dC);
+	abc = abc < 0 ? 0 : abc;
+	double dH = Math::sqrt(abc);
+	double SL = 1;
+	double SC = 1 + K1 * LCh1.C;
+	double SH = 1 + K2 * LCh1.C;
+	double deltaE = Math::sqrt(Math::sqr(dL / (KL * SL)) +
+				   Math::sqr(dC / (KC * SC)) + Math::sqr(dH / (KH * SH)));
+	return deltaE;
+    };
+
     double DeltaE::getCIE2000Deltaab() {
 	getCIE2000DeltaE();
 	double dC = CIE2000Parameters[1];
@@ -97,6 +133,12 @@ namespace cms {
 	    cieDeltaE = CIEDeltaE(Lab1, Lab2);
 	}
 	return cieDeltaE;
+    }
+    double DeltaE::getCIE94DeltaE() {
+	if (cie94DeltaE == -1) {
+	    cie94DeltaE = CIEDeltaE(Lab1, Lab2);
+	}
+	return cie94DeltaE;
     }
 
     double DeltaE::RADIANES(double deg) {
