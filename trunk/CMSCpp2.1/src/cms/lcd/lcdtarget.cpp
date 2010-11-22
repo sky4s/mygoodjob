@@ -88,14 +88,16 @@ namespace cms {
 	    }
 	    return (*patchList)[whitePatchIndex];
 	};
-
+	void LCDTarget::calculatePatchLab(XYZ_ptr whitePoint) {
+	    Patch::Produce::LabPatches(patchList, whitePoint);
+	};
       LCDTarget::LCDTarget(Patch_vector_ptr patchList):Target(patchList), blackPatchIndex(-1), whitePatchIndex(-1), darkestPatchIndex(-1),
 	    brightestPatchIndex(-1),
-	    filter(LCDTarget_ptr(this)) {
+	    filter(this) {
 
 	};
 
-
+	//==========================================================================================
 	LCDTarget_ptr LCDTarget::Instance::getFromAUORampXLS(string_ptr filename) {
 
 	    SimpleExcelAccess xls(*filename);
@@ -163,7 +165,34 @@ namespace cms {
 	    LCDTarget_ptr target(new LCDTarget(patchList));
 	    return target;
 	};
-      LCDTarget::Filter::Filter(LCDTarget_ptr lcdTarget):lcdTarget(lcdTarget) {
+	LCDTarget_ptr LCDTarget::Instance::getFromAlteredLogoXLS(string_ptr filename) {
+	    SimpleExcelAccess xls(*filename);
+	    bptr < DBQuery > query = xls.retrieve();
+	    Patch_vector_ptr patchList(new Patch_vector());
+
+	    while (query->hasNext()) {
+		string_vector_ptr result = query->nextResult();
+		double_vector_ptr values = DBQuery::toDoubleVector(result);
+		int r = (int) (*values)[1];
+		int g = (int) (*values)[2];
+		int b = (int) (*values)[3];
+		double X = (*values)[4];
+		double Y = (*values)[5];
+		double Z = (*values)[6];
+		RGB_ptr rgb(new RGBColor(r, g, b));
+		XYZ_ptr XYZ(new CIEXYZ(X, Y, Z));
+
+		string_ptr name(new string((*result)[0]));
+
+		Patch_ptr patch(new Patch(name, XYZ, XYZ, rgb));
+		//Patch_ptr patch(new Patch());
+		patchList->push_back(patch);
+	    }
+	    LCDTarget_ptr target(new LCDTarget(patchList));
+	    return target;
+	};
+	//==========================================================================================
+      LCDTarget::Filter::Filter(LCDTarget * lcdTarget):lcdTarget(lcdTarget) {
 	};
 	Patch_vector_ptr LCDTarget::Filter::grayPatch() {
 	    return grayPatch(false);
@@ -225,8 +254,8 @@ namespace cms {
 	    Patch_vector_ptr gPatchVector = lcdTarget->filter.grayScalePatch(Channel::G, true);
 	    Patch_vector_ptr bPatchVector = lcdTarget->filter.grayScalePatch(Channel::B, true);
 	    /*foreach(Patch_ptr p, *grayPatchVector) {
-		cout << *p->toString() << endl;
-	    }*/
+	       cout << *p->toString() << endl;
+	       } */
 	    w = initInterpolator(grayPatchVector);
 	    r = initInterpolator(rPatchVector);
 	    g = initInterpolator(gPatchVector);

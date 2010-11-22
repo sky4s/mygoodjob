@@ -36,7 +36,7 @@ namespace cms {
 	    for (int x = 0; x < size; x++) {
 		Lab_ptr Lab1 = (*patchList1)[x]->getLab();
 		Lab_ptr Lab2 = (*patchList2)[x]->getLab();
-		DeltaE_ptr deltaE(new DeltaE(Lab1, Lab2, true));
+		DeltaE_ptr deltaE(new DeltaE(Lab1, Lab2, false));
 		deltaE->getCIEDeltaE();
 		deltaE->getCIE94DeltaE();
 		deltaE->getCIE2000DeltaE();
@@ -53,8 +53,8 @@ namespace cms {
 
 	    Util::deleteExist(filename);
 	    SimpleExcelAccess excel(filename, Create,
-				    StringVector::fromCString(12, "R", "G", "B", "L", "a", "b",
-							      "L'", "a'", "b'", "dE", "dE94",
+				    StringVector::fromCString(12, "R", "G", "B", "L", "a", "_b",
+							      "L'", "a'", "_b'", "dE", "dE94",
 							      "dE00"));
 	    int size = patchList1->size();
 	    for (int x = 0; x != size; x++) {
@@ -86,14 +86,22 @@ namespace cms {
 	    produceForwardModelPatchList(Patch_vector_ptr rgbPatchList) {
 	    int size = rgbPatchList->size();
 	    Patch_vector_ptr modelPatchList(new Patch_vector(size));
+
+
 	    for (int x = 0; x < size; x++) {
 		Patch_ptr p = (*rgbPatchList)[x];
 		RGB_ptr rgb = p->getRGB();
 		XYZ_ptr XYZ = getXYZ(rgb, false);
-		Patch_ptr newp(new Patch(p->getName(), XYZ, nil_XYZ_ptr, rgb));
+		Lab_ptr Lab(new CIELab(XYZ, targetWhitePoint));
+
+		//Patch_ptr newp(new Patch(p->getName(), XYZ, nil_XYZ_ptr, rgb));
+		Patch_ptr newp(new Patch(p->getName(), XYZ, Lab, rgb));
 		(*modelPatchList)[x] = newp;
 	    }
 	    return modelPatchList;
+	};
+	void DeviceCharacterizationModel::setTargetWhitePoint(XYZ_ptr targetWhitePoint) {
+	    this->targetWhitePoint = targetWhitePoint;
 	};
 	//=========================================================================================
       LCDModel::LCDModel(LCDTarget_ptr lcdTarget):lcdTarget(lcdTarget) {
@@ -122,7 +130,7 @@ namespace cms {
 	{
 	};
 	XYZ_ptr MultiMatrixModel::getXYZ(RGB_ptr rgb, boolean relativeXYZ) {
-	    XYZ_ptr XYZ = getXYZ(rgb->R, rgb->G, rgb->B);
+	    XYZ_ptr XYZ = getXYZ(rgb->R, rgb->G, rgb->B, relativeXYZ);
 	    return XYZ;
 	};
 	RGB_ptr MultiMatrixModel::getRGB(XYZ_ptr XYZ, boolean relativeXYZ) {

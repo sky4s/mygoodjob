@@ -14,14 +14,18 @@ namespace cms {
     using namespace std;
     using namespace Indep;
     using namespace Dep;
-     Patch::Patch(string_ptr name, XYZ_ptr XYZ,
-		  XYZ_ptr normalizedXYZ,
-		  RGB_ptr rgb):name(name), XYZ(XYZ), normalizedXYZ(normalizedXYZ), rgb(rgb) {
+     Patch::Patch(string_ptr name, XYZ_ptr XYZ, XYZ_ptr normalizedXYZ, RGB_ptr rgb)
+    :name(name), XYZ(XYZ), normalizedXYZ(normalizedXYZ), rgb(rgb) {
     };
   Patch::Patch(string_ptr name, XYZ_ptr XYZ, XYZ_ptr normalizedXYZ, RGB_ptr rgb, RGB_ptr intensity):name(name), XYZ(XYZ),
 	normalizedXYZ(normalizedXYZ), rgb(rgb),
 	intensity(intensity) {
     };
+  Patch::Patch(string_ptr name, XYZ_ptr XYZ, Lab_ptr Lab, RGB_ptr rgb):name(name), XYZ(XYZ), _Lab(Lab), rgb(rgb)
+    {
+    };
+    /*Patch::Patch() {
+    };*/
     string_ptr Patch::getName() {
 	return name;
     };
@@ -87,8 +91,8 @@ namespace cms {
     };
 
     /*Patch_ptr Patch::clone() {
-	Patch_ptr p(new Patch(name, XYZ, normalizedXYZ, rgb, intensity));
-	return p;
-    };*/
+       Patch_ptr p(new Patch(name, XYZ, normalizedXYZ, rgb, intensity));
+       return p;
+       }; */
 }
 
