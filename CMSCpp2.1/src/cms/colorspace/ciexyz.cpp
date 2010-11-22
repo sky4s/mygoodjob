@@ -563,6 +563,15 @@ namespace cms {
 	    double_array CIELCh::fromLabValues(double_array labValues) {
 		return cartesian2polarCoordinatesValues(labValues);
 	    };
+	    string_vector_ptr CIELCh::getBandNames() {
+		string_vector_ptr names(new string_vector(3));
+		(*names)[0] = "L";
+		(*names)[1] = "C";
+		(*names)[2] = "h";
+		return names;
+	    };
+	    XYZ_ptr CIELCh::toXYZ() {
+	    };
 	    double_array CIELCh::_getValues(double_array values) {
 		values[0] = L;
 		values[1] = C;

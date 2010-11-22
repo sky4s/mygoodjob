@@ -30,11 +30,14 @@ namespace cms {
 	    void storeToExcel(const std::string & filename);
 	};
 	class DeviceCharacterizationModel {
+	  protected:
+	    XYZ_ptr targetWhitePoint;
 	  public:
 	    virtual XYZ_ptr getXYZ(RGB_ptr rgb, boolean relativeXYZ) = 0;
 	    virtual RGB_ptr getRGB(XYZ_ptr XYZ, boolean relativeXYZ) = 0;
 	     bptr < DeltaEReport > testForwardModel(Patch_vector_ptr targetLabPatchList);
 	    Patch_vector_ptr produceForwardModelPatchList(Patch_vector_ptr rgbPatchList);
+	    void setTargetWhitePoint(XYZ_ptr targetWhitePoint);
 	};
 	class LCDModel:public DeviceCharacterizationModel {
 	  protected:

@@ -1029,26 +1029,42 @@ void lcdTargetTry()
 {
     using namespace cms::lcd;
     using namespace Dep;
-    string_ptr filename(new string("Measurement00.xls"));
+    string_ptr filename(new string("ramp257(6bit).xls"));
     LCDTarget_ptr target = LCDTarget::Instance::getFromAUORampXLS(filename);
     /*for (int x = 0; x < target->size(); x++) {
        Patch_ptr p = target->getPatch(x);
        cout << *p->toString() << endl;
        } */
     LCDTargetInterpolator interpolator(target);
-    Patch_ptr p = interpolator.getPatch(Channel::W, 250);
+    Patch_ptr p = interpolator.getPatch(Channel::W, 253);
     cout << *p->toString() << endl;
 
-    using namespace math;
-    double_vector a(4);
-    a[0] = 1;
-    a[1] = 3;
-    a[2] = 5;
-    a[3] = 6;
-    double_vector_ptr aa(&a);
-    int_vector_ptr result = Searcher::leftNearSequentialSearchAll(aa, 5);
-    cout << (*result)[0] << endl;
-    cout << (*result)[1] << endl;
+
+}
+
+void lcdModelTry()
+{
+    using namespace cms::lcd;
+    using namespace Dep;
+    using namespace cms::devicemodel;
+
+    string_ptr rampfilename(new string("ramp257(6bit).xls"));
+    //string_ptr rampfilename(new string("ramp257(6bit)_cal.xls"));
+    LCDTarget_ptr ramp = LCDTarget::Instance::getFromAUORampXLS(rampfilename);
+    Patch_ptr whitePatch = ramp->getBrightestPatch();
+    XYZ_ptr whitePoint = whitePatch->getXYZ();
+    ramp->calculatePatchLab(whitePoint);
+
+    string_ptr auo729(new string("auo-729.xls"));
+    //string_ptr auo729(new string("auo-729_cal.xls"));
+    LCDTarget_ptr target729 = LCDTarget::Instance::getFromAlteredLogoXLS(auo729);
+    target729->calculatePatchLab(whitePoint);
+    Patch_vector_ptr patchList = target729->getPatchList();
+
+    MultiMatrixModel model(ramp);
+    model.setTargetWhitePoint(whitePoint);
+    bptr < DeltaEReport > report = model.testForwardModel(patchList);
+    report->storeToExcel("report.xls");
 }
 
 #pragma argsused
@@ -1134,7 +1150,9 @@ int main(int argc, char *argv[])
     //hsvTest();
     //cout << IntToHex(10,2) << endl;
     //virtualTry();
-    lcdTargetTry();
+    //lcdTargetTry();
+    lcdModelTry();
+
     //cout << 5 / 4 / 3. << endl;
     //cout << _toString("123") << endl;
     cout << "end" << endl;

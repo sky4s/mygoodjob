@@ -136,7 +136,7 @@ namespace cms {
     }
     double DeltaE::getCIE94DeltaE() {
 	if (cie94DeltaE == -1) {
-	    cie94DeltaE = CIEDeltaE(Lab1, Lab2);
+	    cie94DeltaE = CIE94DeltaE(Lab1, Lab2);
 	}
 	return cie94DeltaE;
     }

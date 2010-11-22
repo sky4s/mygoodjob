@@ -314,7 +314,11 @@ namespace cms {
 	    int size = result->size();
 	    double_vector_ptr doublevec(new double_vector(size));
 	    for (int x = 0; x != size; x++) {
-		(*doublevec)[x] = _toDouble((*result)[x]);
+		try {
+		    (*doublevec)[x] = _toDouble((*result)[x]);
+		} catch(boost::bad_lexical_cast e) {
+		    (*doublevec)[x] = -1;
+		}
 	    }
 
 	    return doublevec;

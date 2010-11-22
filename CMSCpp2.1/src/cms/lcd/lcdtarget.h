@@ -26,16 +26,21 @@ namespace cms {
 	    virtual Patch_vector_ptr getLabPatchList();
 	    Patch_vector_ptr getLabPatchList(XYZ_ptr whitePoint);
 	    Patch_ptr getWhitePatch();
+	    void calculatePatchLab(XYZ_ptr whitePoint);
 
 	    class Instance {
 	      public:
 		static LCDTarget_ptr getFromAUORampXLS(string_ptr filename);
+		static LCDTarget_ptr getFromAlteredLogoXLS(string_ptr filename);
 	    };
+
 	    class Filter {
 	      private:
-		LCDTarget_ptr lcdTarget;
+		//LCDTarget_ptr lcdTarget;
+		LCDTarget * lcdTarget;
 	      public:
-		Filter(LCDTarget_ptr lcdTarget);
+		//Filter(LCDTarget_ptr lcdTarget);
+		Filter(LCDTarget * lcdTarget);
 		Patch_vector_ptr grayPatch();
 		Patch_vector_ptr grayPatch(bool withBlack);
 		Patch_vector_ptr oneValueChannel(const Dep::Channel & ch);

@@ -25,6 +25,8 @@ namespace cms {
       public:
 	 Patch(string_ptr name, XYZ_ptr XYZ, XYZ_ptr normalizedXYZ, RGB_ptr rgb);
 	 Patch(string_ptr name, XYZ_ptr XYZ, XYZ_ptr normalizedXYZ, RGB_ptr rgb, RGB_ptr intensity);
+	 Patch(string_ptr name, XYZ_ptr XYZ, Lab_ptr Lab, RGB_ptr rgb);
+	 //Patch();
 	 bptr < std::string > getName();
 	XYZ_ptr getXYZ();
 	XYZ_ptr getNormalizedXYZ();
