@@ -836,8 +836,8 @@ object MainForm: TMainForm
     Top = 13
     Width = 741
     Height = 241
-    ActivePage = TabSheet2
-    TabIndex = 1
+    ActivePage = TabSheet1
+    TabIndex = 0
     TabOrder = 0
     object TabSheet1: TTabSheet
       Caption = 'Measure Setup'
@@ -895,7 +895,7 @@ object MainForm: TMainForm
         end
       end
       object Resolution: TGroupBox
-        Left = 297
+        Left = 466
         Top = 104
         Width = 169
         Height = 105
@@ -961,7 +961,7 @@ object MainForm: TMainForm
         end
       end
       object GroupBox_CHSetting: TGroupBox
-        Left = 298
+        Left = 466
         Top = 7
         Width = 169
         Height = 98
@@ -1151,7 +1151,7 @@ object MainForm: TMainForm
         end
       end
       object GroupBox6: TGroupBox
-        Left = 472
+        Left = 298
         Top = 7
         Width = 163
         Height = 202
@@ -1450,6 +1450,8 @@ object MainForm: TMainForm
             Width = 90
             Height = 20
             Caption = 'Gamma Test'
+            Checked = True
+            State = cbChecked
             TabOrder = 1
             Visible = False
             OnClick = CheckBox_GammaTestClick
