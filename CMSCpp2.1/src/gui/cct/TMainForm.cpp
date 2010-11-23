@@ -205,7 +205,7 @@ void TMainForm::readTCONSetup(String filename, String section)
     //=========================================================================
     bptr_ < TIniFile > ini(new TIniFile(filename));
     this->ComboBox_AddressingSize->ItemIndex = ini->ReadInteger(section, "AddressingSize", 5);
-    bool gammaTestFunc = ini->ReadBool(section, "GammaTestFunc", false);
+    bool gammaTestFunc = ini->ReadBool(section, "GammaTestFunc", true);
 
     //this->CheckBox_GammaTest->Checked = gammaTestFunc;
 
