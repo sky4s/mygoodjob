@@ -40,7 +40,8 @@
 //#include <boost/lexical_cast.hpp>
 //#include "gui/3d/T3DMeasurementForm.h"
 //#include <boost/tokenizer.hpp>
-
+# include <algo/asa047.H>
+#include <iomanip>
 
 using namespace std;
 
@@ -1067,6 +1068,281 @@ void lcdModelTry()
     report->storeToExcel("report.xls");
 }
 
+double rosenbrock(double x[2])
+//****************************************************************************80
+//
+//  Purpose:
+//
+//    ROSENBROCK evaluates the Rosenbrock parabolic value function.
+//
+//  Modified:
+//
+//    27 February 2008
+//
+//  Author:
+//
+//    John Burkardt
+//
+//  Reference:
+//
+//    R ONeill,
+//    Algorithm AS 47:
+//    Function Minimization Using a Simplex Procedure,
+//    Applied Statistics,
+//    Volume 20, Number 3, 1971, pages 338-345.
+//
+//  Parameters:
+//
+//    Input, double X[2], the argument.
+//
+//    Output, double ROSENBROCK, the value of the function.
+//
+{
+    double fx;
+    double fx1;
+    double fx2;
+
+    fx1 = x[1] - x[0] * x[0];
+    fx2 = 1.0 - x[0];
+
+    fx = 100.0 * fx1 * fx1 + fx2 * fx2;
+
+    return fx;
+}
+
+void test01()
+//****************************************************************************80
+//
+//  Purpose:
+//
+//    TEST01 demonstrates the use of NELMIN on ROSENBROCK.
+//
+//  Modified:
+//
+//    27 February 2008
+//
+//  Author:
+//
+//    John Burkardt
+//
+{
+    using namespace std;
+    int i;
+    int icount;
+    int ifault;
+    int kcount;
+    int konvge;
+    int n;
+    int numres;
+    double reqmin;
+    double *start;
+    double *step;
+    double *xmin;
+    double ynewlo;
+
+    n = 2;
+
+    start = new double[n];
+    step = new double[n];
+    xmin = new double[n];
+
+    cout << "\n";
+    cout << "TEST01\n";
+    cout << "  Apply NELMIN to ROSENBROCK function.\n";
+
+    start[0] = -1.2;
+    start[1] = 1.0;
+
+    reqmin = 1.0E-08;
+
+    step[0] = 1.0;
+    step[1] = 1.0;
+
+    konvge = 10;
+    kcount = 500;
+
+    cout << "\n";
+    cout << "  Starting point X:\n";
+    cout << "\n";
+    for (i = 0; i < n; i++) {
+	cout << "  " << setw(14) << start[i] << "\n";
+    }
+
+    ynewlo = rosenbrock(start);
+
+    cout << "\n";
+    cout << "  F(X) = " << ynewlo << "\n";
+
+    nelmin(rosenbrock, n, start, xmin, &ynewlo, reqmin, step,
+	   konvge, kcount, &icount, &numres, &ifault);
+
+    cout << "\n";
+    cout << "  Return code IFAULT = " << ifault << "\n";
+    cout << "\n";
+    cout << "  Estimate of minimizing value X*:\n";
+    cout << "\n";
+    for (i = 0; i < n; i++) {
+	cout << "  " << setw(14) << xmin[i] << "\n";
+    }
+
+    cout << "\n";
+    cout << "  F(X*) = " << ynewlo << "\n";
+
+    cout << "\n";
+    cout << "  Number of iterations = " << icount << "\n";
+    cout << "  Number of restarts =   " << numres << "\n";
+
+    delete[]start;
+    delete[]step;
+    delete[]xmin;
+
+    return;
+}
+
+class Rosenbrock:public algo::MinimisationFunction {
+  public:
+    double function(double_vector_ptr x) {
+
+	double fx;
+	double fx1;
+	double fx2;
+
+	fx1 = (*x)[1] - (*x)[0] * (*x)[0];
+	fx2 = 1.0 - (*x)[0];
+
+	fx = 100.0 * fx1 * fx1 + fx2 * fx2;
+
+	return fx;
+
+    };
+};
+
+void test01_()
+{
+    using namespace std;
+    using namespace algo;
+    int i;
+    //int icount;
+    //int ifault;
+    int kcount;
+    int konvge;
+    int n;
+    //int numres;
+    double reqmin;
+    //double *start;
+    //double *step;
+    //double *xmin;
+    double ynewlo;
+
+    n = 2;
+
+    //start = new double[n];
+    //step = new double[n];
+    //xmin = new double[n];
+    double_vector_ptr start(new double_vector(n));
+    double_vector_ptr step(new double_vector(n));
+
+    Minimisation mini;
+    Rosenbrock rosenbrockfunc;
+
+
+    cout << "\n";
+    cout << "TEST01\n";
+    cout << "  Apply NELMIN to ROSENBROCK function.\n";
+
+    (*start)[0] = -1.2;
+    (*start)[1] = 1.0;
+
+    reqmin = 1.0E-08;
+
+    (*step)[0] = 1.0;
+    (*step)[1] = 1.0;
+
+    konvge = 10;
+    kcount = 500;
+
+    cout << "\n";
+    cout << "  Starting point X:\n";
+    cout << "\n";
+    for (i = 0; i < n; i++) {
+	cout << "  " << setw(14) << (*start)[i] << "\n";
+    }
+
+    //ynewlo = rosenbrock(start);
+    ynewlo = rosenbrockfunc.function(start);
+
+    cout << "\n";
+    cout << "  F(X) = " << ynewlo << "\n";
+
+    bptr < MinimisationFunction > minifun(&rosenbrockfunc);
+    mini.setNrestartsMax(10);
+    mini.nelderMead(minifun, start, step, reqmin, kcount);
+
+    /*nelmin(rosenbrock, n, start, xmin, &ynewlo, reqmin, step,
+       konvge, kcount, &icount, &numres, &ifault); */
+
+    cout << "\n";
+    algo::Error err = mini.getError();
+    cout << "  Return code IFAULT = " << err << "\n";
+    cout << "\n";
+    cout << "  Estimate of minimizing value X*:\n";
+    cout << "\n";
+    double_vector_ptr xmin = mini.getParamValues();
+    for (i = 0; i < n; i++) {
+	cout << "  " << setw(14) << (*xmin)[i] << "\n";
+    }
+
+    cout << "\n";
+    ynewlo = mini.getMinimum();
+    cout << "  F(X*) = " << ynewlo << "\n";
+
+    cout << "\n";
+
+    cout << "  Number of iterations = " << mini.getNiter() << "\n";
+    cout << "  Number of restarts =   " << mini.getNmax() << "\n";
+
+    //delete[]start;
+    //delete[]step;
+    //delete[]xmin;
+    return;
+}
+
+void vectorop(double_vector v)
+{
+    v[0]++;
+}
+
+
+void vectorop2(double_vector_ptr v)
+{
+    (*v)[0]++;
+}
+
+void vectorTest()
+{
+    double_vector vec(5);
+    cout << sizeof(vec) << endl;
+    double_vector vec2(10);
+    cout << sizeof(vec2) << endl;
+
+    double_vector_ptr vecp(new double_vector(5));
+    cout << sizeof(vecp) << endl;
+    cout << sizeof(*vecp) << endl;
+
+    vec[0] = 10;
+    cout << vec[0] << endl;
+    vectorop(vec);
+    cout << vec[0] << endl;
+
+    (*vecp)[0] = 10;
+    cout << (*vecp)[0] << endl;
+    vectorop2(vecp);
+    cout << (*vecp)[0] << endl;
+}
+
+
+
+
 #pragma argsused
 int main(int argc, char *argv[])
 {
@@ -1151,7 +1427,10 @@ int main(int argc, char *argv[])
     //cout << IntToHex(10,2) << endl;
     //virtualTry();
     //lcdTargetTry();
-    lcdModelTry();
+    //lcdModelTry();
+    test01();
+    test01_();
+    //vectorTest();
 
     //cout << 5 / 4 / 3. << endl;
     //cout << _toString("123") << endl;

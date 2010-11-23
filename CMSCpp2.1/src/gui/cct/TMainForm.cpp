@@ -116,7 +116,11 @@ void TMainForm::initTCONFile()
 	ini->WriteString("11306", "DigitalGammaLUTAddress", "3C0");
 	ini->WriteInteger("11306", "DigitalGammaLUTType", 10);
 
-	ini->WriteBool("11306", "GammaTestFunc", false);
+	ini->WriteBool("11306", "GammaTestFunc", true);
+	ini->WriteString("11306", "GammaTestEnableAddress", "381");
+	ini->WriteInteger("11306", "GammaTestEnableBit", 1);
+	ini->WriteString("11306", "GammaTestAddress", "387");
+	ini->WriteBool("11306", "IndepRGB", true);
 
 	ini->WriteInteger("11306", "in", 6);
 	//ini->WriteInteger("11306", "lut", 10);
@@ -131,7 +135,11 @@ void TMainForm::initTCONFile()
 	ini->WriteString("11307", "DigitalGammaLUTAddress", "310");
 	ini->WriteInteger("11307", "DigitalGammaLUTType", 10);
 
-	ini->WriteBool("11307", "GammaTestFunc", false);
+	ini->WriteBool("11307", "GammaTestFunc", true);
+	ini->WriteString("11307", "GammaTestEnableAddress", "2F1");
+	ini->WriteInteger("11307", "GammaTestEnableBit", 1);
+	ini->WriteString("11307", "GammaTestAddress", "2F3");
+	ini->WriteBool("11307", "IndepRGB", true);
 
 	ini->WriteInteger("11307", "in", 6);
 	//ini->WriteInteger("11307", "lut", 10);
@@ -199,7 +207,7 @@ void TMainForm::readTCONSetup(String filename, String section)
     this->ComboBox_AddressingSize->ItemIndex = ini->ReadInteger(section, "AddressingSize", 5);
     bool gammaTestFunc = ini->ReadBool(section, "GammaTestFunc", false);
 
-    this->CheckBox_GammaTest->Checked = gammaTestFunc;
+    //this->CheckBox_GammaTest->Checked = gammaTestFunc;
 
     if (gammaTestFunc) {
 	GroupBox_GammaTestAddress->Visible = true;
@@ -266,7 +274,8 @@ void TMainForm::writeTCONCustomSetup()
 	ini->WriteString(CUSTOM, "DigitalGammaLUTAddress", this->Edit_DGLUTAddress->Text);
 	ini->WriteInteger(CUSTOM, "DigitalGammaLUTType", ComboBox_DGLUTType->Text.ToInt());
 
-	bool gammaTest = CheckBox_GammaTest->Checked;
+	//bool gammaTest = CheckBox_GammaTest->Checked;
+	bool gammaTest = true;
 	ini->WriteBool(CUSTOM, "GammaTestFunc", gammaTest);
 	if (gammaTest) {
 	    ini->WriteString(CUSTOM, "GammaTestEnableAddress",
@@ -732,7 +741,8 @@ void __fastcall TMainForm::Button_ConnectClick(TObject * Sender)
 	//=====================================================================
 	// gamma test
 	//=====================================================================
-	bool gammaTest = CheckBox_GammaTest->Checked;
+	//bool gammaTest = CheckBox_GammaTest->Checked;
+	bool gammaTest = true;
 	if (gammaTest) {
 	    int gammaTestAddress = StrToInt("0x" + this->Edit_GammaTestEnableAddress->Text);
 	    int gammaTestBit = this->Edit_GammaTestEnableBit->Text.ToInt();
@@ -1158,7 +1168,7 @@ void __fastcall TMainForm::ComboBox_TCONTypeChange(TObject * Sender)
 	ShowMessage("Remember setting Bit Depth!");
 
 	readTCONSetup(ExtractFilePath(Application->ExeName) + SETUPFILE, "Custom");
-	CheckBox_GammaTest->Visible = true;
+	//CheckBox_GammaTest->Visible = true;
 	CheckBox_GammaTestClick(null);
 	GroupBox_DigitalGamma->Enabled = true;
 	GroupBox_GammaTestAddress->Enabled = true;
@@ -1169,8 +1179,8 @@ void __fastcall TMainForm::ComboBox_TCONTypeChange(TObject * Sender)
 
 void __fastcall TMainForm::CheckBox_GammaTestClick(TObject * Sender)
 {
-    bool gammaTest = this->CheckBox_GammaTest->Checked;
-    GroupBox_GammaTestAddress->Visible = gammaTest;
+    //bool gammaTest = this->CheckBox_GammaTest->Checked;
+    //GroupBox_GammaTestAddress->Visible = gammaTest;
 }
 
 //---------------------------------------------------------------------------

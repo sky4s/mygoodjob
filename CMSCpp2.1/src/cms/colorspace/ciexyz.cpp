@@ -576,6 +576,7 @@ namespace cms {
 		values[0] = L;
 		values[1] = C;
 		values[2] = h;
+		return values;
 	    };
 	    void CIELCh::_setValues(double_array values) {
 		L = values[0];

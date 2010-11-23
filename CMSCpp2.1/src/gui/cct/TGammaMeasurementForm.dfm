@@ -7,79 +7,79 @@ object GammaMeasurementForm: TGammaMeasurementForm
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
-  Font.Height = -13
+  Font.Height = -10
   Font.Name = 'MS Sans Serif'
   Font.Style = []
   KeyPreview = True
   OldCreateOrder = False
   OnKeyPress = FormKeyPress
   OnShow = FormShow
-  PixelsPerInch = 120
-  TextHeight = 16
+  PixelsPerInch = 96
+  TextHeight = 13
   object Copyright: TLabel
-    Left = 42
-    Top = 410
-    Width = 349
-    Height = 16
+    Left = 34
+    Top = 333
+    Width = 281
+    Height = 13
     Caption = 'Copyright (C) 2010, AU Optronics Corp., All Right Reserved.'
     IsControl = True
   end
   object Panel1: TPanel
-    Left = 9
-    Top = 16
-    Width = 304
-    Height = 297
+    Left = 7
+    Top = 13
+    Width = 247
+    Height = 241
     Caption = 'Panel1'
     TabOrder = 0
     object GroupBox1: TGroupBox
-      Left = 9
-      Top = 9
-      Width = 288
-      Height = 280
+      Left = 7
+      Top = 7
+      Width = 234
+      Height = 228
       Caption = 'Gamma Measurement (PC Input)'
       TabOrder = 0
       object GroupBox2: TGroupBox
-        Left = 9
-        Top = 25
-        Width = 192
-        Height = 120
+        Left = 7
+        Top = 20
+        Width = 156
+        Height = 98
         Caption = 'Gray Level Option'
         TabOrder = 0
         object Label1: TLabel
-          Left = 9
-          Top = 25
-          Width = 63
-          Height = 16
+          Left = 7
+          Top = 20
+          Width = 51
+          Height = 13
           Caption = 'Start Level'
         end
         object Label2: TLabel
-          Left = 9
-          Top = 57
-          Width = 60
-          Height = 16
+          Left = 7
+          Top = 46
+          Width = 48
+          Height = 13
           Caption = 'End Level'
         end
         object Label3: TLabel
-          Left = 9
-          Top = 89
-          Width = 64
-          Height = 16
+          Left = 7
+          Top = 72
+          Width = 51
+          Height = 13
           Caption = 'Level Step'
         end
         object Edit_StartLevel: TEdit
-          Left = 80
-          Top = 25
-          Width = 105
-          Height = 24
+          Left = 65
+          Top = 20
+          Width = 85
+          Height = 21
           TabOrder = 0
           Text = '255'
         end
         object ComboBox_LevelStep: TComboBox
-          Left = 80
-          Top = 89
-          Width = 105
-          Height = 24
-          ItemHeight = 16
+          Left = 65
+          Top = 72
+          Width = 85
+          Height = 21
+          ItemHeight = 13
           TabOrder = 1
           Text = '1'
           Items.Strings = (
@@ -93,19 +93,19 @@ object GammaMeasurementForm: TGammaMeasurementForm
             '34')
         end
         object Edit_EndLevel: TEdit
-          Left = 80
-          Top = 57
-          Width = 105
-          Height = 24
+          Left = 65
+          Top = 46
+          Width = 85
+          Height = 21
           TabOrder = 2
           Text = '0'
         end
       end
       object CheckBox_FlickerFMA: TCheckBox
-        Left = 9
-        Top = 153
-        Width = 96
-        Height = 16
+        Left = 7
+        Top = 124
+        Width = 78
+        Height = 13
         Caption = 'FlickerFMA'
         TabOrder = 1
         Visible = False
@@ -113,59 +113,59 @@ object GammaMeasurementForm: TGammaMeasurementForm
     end
   end
   object Panel2: TPanel
-    Left = 9
-    Top = 16
-    Width = 304
-    Height = 297
+    Left = 7
+    Top = 13
+    Width = 247
+    Height = 241
     Caption = 'Panel2'
     TabOrder = 1
     Visible = False
     object GroupBox5: TGroupBox
-      Left = 9
-      Top = 9
-      Width = 288
-      Height = 280
+      Left = 7
+      Top = 7
+      Width = 234
+      Height = 228
       Caption = 'Direct Pattern Measurement (T-CON Input)'
       TabOrder = 0
       object Table: TGroupBox
-        Left = 9
-        Top = 17
-        Width = 272
-        Height = 80
+        Left = 7
+        Top = 14
+        Width = 221
+        Height = 65
         Caption = 'Table'
         TabOrder = 0
         object RadioButton_10Bit: TRadioButton
-          Left = 9
-          Top = 17
-          Width = 72
-          Height = 24
+          Left = 7
+          Top = 14
+          Width = 59
+          Height = 19
           Caption = '10bit'
           Checked = True
           TabOrder = 0
           TabStop = True
         end
         object RadioButton_12Bit: TRadioButton
-          Left = 73
-          Top = 17
-          Width = 80
-          Height = 25
+          Left = 59
+          Top = 14
+          Width = 65
+          Height = 20
           Caption = '12bit'
           TabOrder = 1
         end
         object Button2: TButton
-          Left = 9
-          Top = 48
-          Width = 80
-          Height = 25
+          Left = 7
+          Top = 39
+          Width = 65
+          Height = 20
           Caption = 'Load Table'
           TabOrder = 2
           OnClick = Button2Click
         end
         object CheckBox_Loaded: TCheckBox
-          Left = 96
-          Top = 48
-          Width = 97
-          Height = 25
+          Left = 78
+          Top = 39
+          Width = 79
+          Height = 20
           Caption = 'Loaded'
           Enabled = False
           TabOrder = 3
@@ -175,85 +175,89 @@ object GammaMeasurementForm: TGammaMeasurementForm
     end
   end
   inline TOutputFileFrame1: TOutputFileFrame
-    Left = 9
-    Top = 320
-    Width = 392
-    Height = 89
+    Left = 7
+    Top = 260
+    Width = 319
+    Height = 72
     TabOrder = 2
     inherited GroupBox_OutputFile: TGroupBox
-      Width = 386
-      Height = 90
+      Width = 314
+      Height = 73
       inherited Label5: TLabel
-        Left = 9
-        Top = 25
+        Left = 7
+        Top = 20
       end
       inherited Label6: TLabel
-        Left = 9
-        Top = 57
+        Left = 7
+        Top = 46
       end
       inherited Edit_Prefix: TEdit
-        Top = 25
+        Left = 91
+        Top = 20
+        Width = 163
         Text = 'Measurement'
       end
       inherited Edit_Directory: TEdit
-        Top = 57
-        Width = 201
+        Left = 91
+        Top = 46
+        Width = 163
       end
       inherited Button_BrowseDir: TButton
-        Left = 320
-        Top = 57
-        Height = 24
+        Left = 260
+        Top = 46
+        Width = 46
+        Height = 20
         OnClick = TOutputFileFrame1Button_BrowseDirClick
       end
     end
   end
   object GroupBox3: TGroupBox
-    Left = 320
-    Top = 16
-    Width = 73
-    Height = 265
+    Left = 260
+    Top = 13
+    Width = 59
+    Height = 215
     Caption = 'Color'
     TabOrder = 3
     object CheckBox_W: TCheckBox
-      Left = 9
-      Top = 25
-      Width = 40
-      Height = 24
+      Left = 7
+      Top = 20
+      Width = 33
+      Height = 20
       Caption = 'W'
       Checked = True
       State = cbChecked
       TabOrder = 0
     end
     object CheckBox_R: TCheckBox
-      Left = 9
-      Top = 57
-      Width = 40
-      Height = 24
+      Left = 7
+      Top = 46
+      Width = 33
+      Height = 20
       Caption = 'R'
       TabOrder = 1
     end
     object CheckBox_G: TCheckBox
-      Left = 9
-      Top = 89
-      Width = 40
-      Height = 24
+      Left = 7
+      Top = 72
+      Width = 33
+      Height = 20
       Caption = 'G'
       TabOrder = 2
     end
     object CheckBox_B: TCheckBox
-      Left = 9
-      Top = 121
-      Width = 32
-      Height = 24
+      Left = 7
+      Top = 98
+      Width = 26
+      Height = 20
       Caption = 'B'
       TabOrder = 3
     end
   end
   object Button_Measure: TButton
-    Left = 320
-    Top = 288
-    Width = 73
-    Height = 25
+    Left = 260
+    Top = 234
+    Width = 59
+    Height = 20
     Caption = 'Measure'
     TabOrder = 4
     OnClick = Button_MeasureClick
