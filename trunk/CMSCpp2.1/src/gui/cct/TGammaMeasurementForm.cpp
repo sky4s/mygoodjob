@@ -39,9 +39,9 @@ void __fastcall TGammaMeasurementForm::Button_MeasureClick(TObject * Sender)
        return;
        }
        } */
-    if (false == checkMeasureable()) {
+    /*if (false == checkMeasureable()) {
 	return;
-    }
+    }*/
     MainForm->setMeterMeasurementWaitTimes();
 
     bool_vector_ptr rgbw(new bool_vector(4));
@@ -125,24 +125,26 @@ bool TGammaMeasurementForm::measure(bool_vector_ptr rgbw,
     using namespace cms::util;
 
     RampMeasureFile measureFile(filename, Create);
-    Patch_vector_ptr vectors[3];
+    Patch_vector_ptr vectors[4];
     mt = bptr < MeasureTool > (new MeasureTool(mm));
     MeasureWindow->addWindowListener(mt);
-    Component_vector_ptr componentVector;
+    //Component_vector_ptr componentVector;
 
     run = true;
     try {
-	componentVector =
-	    (true == (*rgbw)[3]) ?
-	    (flicker ? mt->flickerMeasure(measureCondition) : fetcher->
-	     fetchComponent(measureCondition)) : nil_Component_vector_ptr;
-	if (true == (*rgbw)[3] && null == componentVector) {
-	    //代表被阻斷量測
-	    return false;
-	}
+	/*componentVector =
+	   (true == (*rgbw)[3]) ?
+	   (flicker ? mt->flickerMeasure(measureCondition) : fetcher->
+	   fetchComponent(measureCondition)) : nil_Component_vector_ptr;
+	   if (true == (*rgbw)[3] && null == componentVector) {
+	   //代表被阻斷量測
+	   return false;
+	   } */
 
-	foreach(const Channel & ch, *Channel::RGBChannel) {
+	//foreach(const Channel & ch, *Channel::RGBChannel) {
+	foreach(const Channel & ch, *Channel::RGBWChannel) {
 	    int index = ch.getArrayIndex();
+	    index = (Channel::W == ch) ? 3 : index;
 	    if (true == (*rgbw)[index]) {
 		vectors[index] = mt->rampMeasure(ch, measureCondition);
 		if (null == vectors[index]) {
@@ -157,8 +159,8 @@ bool TGammaMeasurementForm::measure(bool_vector_ptr rgbw,
 	run = false;
     }
 
-    measureFile.setMeasureData(componentVector, vectors[0], vectors[1], vectors[2], false);
-    measureFile.setMeasureData(componentVector, vectors[0], vectors[1], vectors[2], true);
+    measureFile.setMeasureData(vectors[3], vectors[0], vectors[1], vectors[2], false);
+    measureFile.setMeasureData(vectors[3], vectors[0], vectors[1], vectors[2], true);
     return true;
 };
 
@@ -175,9 +177,9 @@ void TGammaMeasurementForm::tconMeasure(bool_vector_ptr rgbw, int start,
 
 void __fastcall TGammaMeasurementForm::FormShow(TObject * Sender)
 {
-    if (false == checkMeasureable()) {
+    /*if (false == checkMeasureable()) {
 	return;
-    }
+    }*/
 
 
     bool tconInput = bitDepth->isTCONInput();

@@ -22,7 +22,13 @@ namespace cms {
 	    int getMaximumSize(Component_vector_ptr wMeasureData,
 			       Patch_vector_ptr rMeasureData,
 			       Patch_vector_ptr gMeasureData, Patch_vector_ptr bMeasureData);
+	    int getMaximumSize(Patch_vector_ptr wMeasureData,
+			       Patch_vector_ptr rMeasureData,
+			       Patch_vector_ptr gMeasureData, Patch_vector_ptr bMeasureData);
 	    double_array getValues(XYZ_ptr XYZ, bool XYZMode);
+	    void setMeasureData(Component_vector_ptr wMeasureData, Patch_vector_ptr wMeasureData2,
+				Patch_vector_ptr rMeasureData, Patch_vector_ptr gMeasureData,
+				Patch_vector_ptr bMeasureData, bool XYZMode);
 	  public:
 	     RampMeasureFile(const std::string & fileName, const Mode mode);
 	     RampMeasureFile(const string_ptr fileName, const Mode mode);
@@ -30,6 +36,9 @@ namespace cms {
 				Patch_vector_ptr rMeasureData, Patch_vector_ptr gMeasureData,
 				Patch_vector_ptr bMeasureData);
 	    void setMeasureData(Component_vector_ptr wMeasureData,
+				Patch_vector_ptr rMeasureData, Patch_vector_ptr gMeasureData,
+				Patch_vector_ptr bMeasureData, bool XYZMode);
+	    void setMeasureData(Patch_vector_ptr wMeasureData,
 				Patch_vector_ptr rMeasureData, Patch_vector_ptr gMeasureData,
 				Patch_vector_ptr bMeasureData, bool XYZMode);
 

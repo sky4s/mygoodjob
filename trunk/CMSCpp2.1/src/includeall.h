@@ -1,4 +1,3 @@
-
 #include <math/include.h>
 #include <cms/include.h>
 #include <cms/util/include.h>
@@ -14,6 +13,7 @@
 #include <debug.h>
 #include <gui/util/binder.h>
 #include <gui/event/listener.h>
+#include <algo/minimisation.h>
 
 
  

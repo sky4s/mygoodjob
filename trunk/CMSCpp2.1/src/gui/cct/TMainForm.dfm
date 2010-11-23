@@ -836,8 +836,8 @@ object MainForm: TMainForm
     Top = 13
     Width = 741
     Height = 241
-    ActivePage = TabSheet1
-    TabIndex = 0
+    ActivePage = TabSheet2
+    TabIndex = 1
     TabOrder = 0
     object TabSheet1: TTabSheet
       Caption = 'Measure Setup'
@@ -890,6 +890,7 @@ object MainForm: TMainForm
           ParentShowHint = False
           ShowHint = True
           TabOrder = 2
+          Visible = False
           OnClick = RadioButton_PCTCONClick
         end
       end
@@ -1430,7 +1431,7 @@ object MainForm: TMainForm
         object GroupBox7: TGroupBox
           Left = 280
           Top = 7
-          Width = 297
+          Width = 177
           Height = 202
           Caption = 'TCON Type'
           TabOrder = 3
@@ -1450,15 +1451,17 @@ object MainForm: TMainForm
             Height = 20
             Caption = 'Gamma Test'
             TabOrder = 1
+            Visible = False
             OnClick = CheckBox_GammaTestClick
           end
           object GroupBox_DigitalGamma: TGroupBox
-            Left = 8
+            Left = 152
             Top = 38
             Width = 137
             Height = 155
             Caption = 'Digital Gamma '
             TabOrder = 2
+            Visible = False
             object Label12: TLabel
               Left = 7
               Top = 85
@@ -1552,7 +1555,7 @@ object MainForm: TMainForm
             end
           end
           object GroupBox_GammaTestAddress: TGroupBox
-            Left = 152
+            Left = 8
             Top = 38
             Width = 137
             Height = 155

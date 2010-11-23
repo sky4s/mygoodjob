@@ -615,3 +615,5 @@ void __fastcall TCCTLUTForm::CheckBox_MaxYAdvAutoClick(TObject * Sender)
 
 //---------------------------------------------------------------------------
 
+
+

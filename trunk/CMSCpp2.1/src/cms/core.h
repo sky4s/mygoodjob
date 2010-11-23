@@ -5,14 +5,18 @@
 
 //C++系統文件
 #include <vcl.h>
+
 #ifdef __BORLANDC__
 # pragma pack(push, 8)
 #endif
+
 #include <vector>
+#include <map>
+
 #ifdef __BORLANDC__
 # pragma pack(pop)
 #endif
-#include <map>
+
 //其他庫頭文件
 
 //本項目內頭文件
