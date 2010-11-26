@@ -66,6 +66,20 @@ namespace cms {
 	    }
 	    return result;
 	};
+	RGB_vector_ptr RGBVector::getLinearRGBVector(RGB_vector_ptr rgbVector, double rgain,
+						     double ggain, double bgain) {
+	    int size = rgbVector->size();
+	    RGB_vector_ptr result(new RGB_vector(size));
+	    for (int x = 0; x < size; x++) {
+		RGB_ptr rgb = (*rgbVector)[x];
+		RGB_ptr clone = rgb->clone();
+		clone->R *= rgain;
+		clone->G *= ggain;
+		clone->B *= bgain;
+		(*result)[x] = clone;
+	    }
+	    return result;
+	};
 	void RGBVector::storeToExcel(const string & filename, RGB_vector_ptr rgbVector) {
 
 

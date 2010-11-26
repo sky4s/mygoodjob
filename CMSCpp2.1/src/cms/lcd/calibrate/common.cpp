@@ -28,7 +28,7 @@ namespace cms {
 	     MeasureCondition::MeasureCondition(bptr < cms::lcd::calibrate::BitDepthProcessor >
 						bitDepth):start(bitDepth->getMeasureStart()),
 		end(bitDepth->getMeasureEnd()), firstStep(bitDepth->getMeasureFirstStep()),
-		step(bitDepth->getMeasureStep()), type(Normal) {
+		step(bitDepth->getMeasureStep()), type(Normal), remapping(false) {
 		this->rgbMeasureCode =
 		    getRGBMeasureCode(getMeasureCode(start, end, firstStep, step), Channel::W,
 				      bitDepth->getMeasureMaxValue());
@@ -36,7 +36,7 @@ namespace cms {
 	     MeasureCondition::MeasureCondition(const int start, const int end, const int firstStep,
 						const int step,
 						const Dep::MaxValue & maxValue):start(start),
-		end(end), firstStep(firstStep), step(step), type(Normal) {
+		end(end), firstStep(firstStep), step(step), type(Normal), remapping(false) {
 		this->rgbMeasureCode =
 		    getRGBMeasureCode(getMeasureCode(start, end, firstStep, step), Channel::W,
 				      maxValue);
@@ -50,25 +50,36 @@ namespace cms {
 						MaxValue &
 						maxValue):lowStart
 		(lowStart), lowEnd(lowEnd), lowStep(lowStep),
-		highStart(highStart), highEnd(highEnd), highStep(highStep), type(Extend) {
+		highStart(highStart), highEnd(highEnd), highStep(highStep), type(Extend),
+		remapping(false) {
 		this->rgbMeasureCode =
 		    getRGBMeasureCode(getMeasureCode
-				      (lowStart, lowEnd, lowStep,
-				       highStart, highEnd, highStep), Channel::W, maxValue);
+				      (lowStart, lowEnd, lowStep, highStart, highEnd, highStep),
+				      Channel::W, maxValue);
 	    };
 
-	  MeasureCondition::MeasureCondition(RGB_vector_ptr rgbMeasureCode):type(Normal)
+	  MeasureCondition::MeasureCondition(RGB_vector_ptr rgbMeasureCode):type(Normal), remapping(false)
 	    {
 		this->rgbMeasureCode = rgbMeasureCode;
 	    };
 
 	    RGB_vector_ptr MeasureCondition::getRGBMeasureCode() {
-		return rgbMeasureCode;
-	    };
+		if (remapping) {
+		    return remappingRGBMeasureCode;
+		} else {
+		    return rgbMeasureCode;
+		}
+	    }
 
+	    void MeasureCondition::setRemappingRGBMeasureCode(RGB_vector_ptr rgbMeasureCode) {
+		this->remappingRGBMeasureCode = rgbMeasureCode;
+	    };
+	    void MeasureCondition::setRemappingMode(bool remap) {
+		this->remapping = remap;
+	    };
 	    int_vector_ptr MeasureCondition::
-		getMeasureCode(const int start, const int end,
-			       const int firstStep, const int step) {
+		getMeasureCode(const int start, const int end, const int firstStep,
+			       const int step) {
 		int_vector_ptr measureCode(new int_vector());
 		int measureStep = firstStep;
 		bool first = true;
@@ -170,6 +181,29 @@ namespace cms {
 		return mappingRGBVector;
 	    };
 	    //==================================================================
+
+	    /*GammaTestPanelRegulator::GammaTestPanelRegulator(bptr < cms::lcd::calibrate::BitDepthProcessor > bitDepth, bptr < i2c::TCONControl > tconctrl, double rgain, double ggain, double bgain):PanelRegulator(bitDepth, tconctrl, rgain, ggain,
+	       bgain)
+	       {
+	       }; */
+	  GammaTestPanelRegulator::GammaTestPanelRegulator(bptr < cms::lcd::calibrate::BitDepthProcessor > bitDepth, bptr < i2c::TCONControl > tconctrl, int maxR, int maxG, int maxB, bptr < MeasureCondition > measureCondition):PanelRegulator(bitDepth,
+			   tconctrl, maxR, maxG,
+			   maxB), measureCondition(measureCondition) {
+	    };
+	    void GammaTestPanelRegulator::setEnable(bool enable) {
+		setRemappingMode(enable);
+	    };
+
+	    void GammaTestPanelRegulator::setRemappingMode(bool remap) {
+		if (null == measureCondition->remappingRGBMeasureCode) {
+		    RGB_vector_ptr remapping =
+			RGBVector::getLinearRGBVector(measureCondition->rgbMeasureCode, rgain,
+						      ggain, bgain);
+		    measureCondition->remappingRGBMeasureCode = remapping;
+		}
+
+		measureCondition->setRemappingMode(remap);
+	    };
 	};
     };
 };

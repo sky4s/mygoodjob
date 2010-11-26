@@ -13,14 +13,18 @@ namespace cms {
 	    Enumeration(Correct)
 	    P1P2, RBInterpolation, None, DefinedDim, EnumerationEnd()
 
-		/*
-		   用來記載量測的條件, 方便做參數傳遞
-		 */
+	    class PanelRegulator;
+	    /*
+	       用來記載量測的條件, 方便做參數傳遞
+	     */
 	    class MeasureCondition {
 		friend class cms::colorformat::DGLutProperty;
+		friend class GammaTestPanelRegulator;
 	      private:
 		//int_vector_ptr measureCode;
-		 RGB_vector_ptr rgbMeasureCode;
+		 bool remapping;
+		RGB_vector_ptr rgbMeasureCode;
+		RGB_vector_ptr remappingRGBMeasureCode;
 		int start;
 		int end;
 		int step;
@@ -48,10 +52,9 @@ namespace cms {
 				  const Dep::MaxValue & maxValue);
 		 MeasureCondition(RGB_vector_ptr rgbMeasureCode);
 		RGB_vector_ptr getRGBMeasureCode();
-
-		//bool isRGBType();
-
 	      private:
+		void setRemappingRGBMeasureCode(RGB_vector_ptr rgbMeasureCode);
+		void setRemappingMode(bool remap);
 		static int_vector_ptr getMeasureCode(const int start,
 						     const int end,
 						     const int firstStep, const int step);
@@ -80,7 +83,7 @@ namespace cms {
 	       4. 視需要setEnable(false)恢復面板特性
 	     */
 	    class PanelRegulator {
-	      private:
+	      protected:
 		bptr < cms::lcd::calibrate::BitDepthProcessor > bitDepth;
 		bptr < i2c::TCONControl > tconctrl;
 		double rgain, ggain, bgain;
@@ -94,6 +97,20 @@ namespace cms {
 		void setEnable(bool enable);
 		RGB_vector_ptr remapping(RGB_vector_ptr dglut);
 		RGB_vector_ptr getMappingRGBVector();
+	    };
+
+	    class GammaTestPanelRegulator:public PanelRegulator {
+	      private:
+		bptr < MeasureCondition > measureCondition;
+	      public:
+		/*GammaTestPanelRegulator(bptr < cms::lcd::calibrate::BitDepthProcessor > bitDepth,
+		   bptr < i2c::TCONControl > tconctrl, double rgain,
+		   double ggain, double bgain); */
+		GammaTestPanelRegulator(bptr < cms::lcd::calibrate::BitDepthProcessor > bitDepth,
+					bptr < i2c::TCONControl > tconctrl, int maxR, int maxG,
+					int maxB, bptr < MeasureCondition > measureCondition);
+		void setEnable(bool enable);
+		void setRemappingMode(bool remap);
 	    };
 	};
     };

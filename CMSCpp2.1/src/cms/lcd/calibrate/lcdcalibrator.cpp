@@ -288,12 +288,13 @@ namespace cms {
 		bool doAccurate = (true == accurateMode) && (null != tconctrl);
 		bptr < PanelRegulator > panelRegulator;
 		if (doAccurate) {
-		    //以target white的rgb為最大值, 調整面板並重新量測
+		    //原先: 以target white的rgb為最大值, 調整面板並重新量測
+		    //改良: 以direct gamma(gamma test)直接改變打出的pattern, 達到相同效果
 		    bptr < cms::measure::IntensityAnalyzerIF > analyzer = fetcher->getAnalyzer();
 		    RGB_ptr rgb = analyzer->getReferenceRGB();
 		    panelRegulator = bptr < PanelRegulator >
-			(new PanelRegulator(bitDepth, tconctrl, (int) rgb->R, (int) rgb->G,
-					    (int) rgb->B));
+			(new GammaTestPanelRegulator(bitDepth, tconctrl, (int) rgb->R, (int) rgb->G,
+						     (int) rgb->B, measureCondition));
 		    if (false == this->manualAccurateMode) {
 			panelRegulator->setEnable(true);
 		    }
@@ -380,7 +381,9 @@ namespace cms {
 			    //若要skipInverseB, 就應該調整面板特性重新量測
 			    int max = bitDepth->getMaxDigitalCount();
 			    panelRegulator2 = bptr < PanelRegulator >
-				(new PanelRegulator(bitDepth, tconctrl, max, max, maxZDGCode));
+				(new
+				 GammaTestPanelRegulator(bitDepth, tconctrl, max, max, maxZDGCode,
+							 measureCondition));
 			    panelRegulator2->setEnable(true);
 			    componentVector2 = fetchComponentVector();
 			    STORE_COMPONENT("o_fetch2.xls", componentVector2);
