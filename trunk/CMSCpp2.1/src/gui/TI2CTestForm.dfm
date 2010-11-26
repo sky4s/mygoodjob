@@ -1,5 +1,5 @@
 object I2CTestForm: TI2CTestForm
-  Left = 846
+  Left = 738
   Top = 284
   Width = 434
   Height = 495
