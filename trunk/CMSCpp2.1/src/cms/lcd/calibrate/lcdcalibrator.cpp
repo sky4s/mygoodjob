@@ -162,6 +162,7 @@ namespace cms {
 		accurateMode = false;
 		remapped = false;
 		manualAccurateMode = false;
+		middleCCTRatio = -1;
 	    };
 
 	    Component_vector_ptr LCDCalibrator::fetchComponentVector() {
@@ -416,6 +417,7 @@ namespace cms {
 			bptr < AdvancedDGLutGenerator >
 			(new AdvancedDGLutGenerator(componentVector, fetcher, bitDepth));
 		    luminanceGammaCurve = generator.getLuminanceGammaCurve(gammaCurve);
+		    keepMaxLumiOver = bitDepth->getEffectiveLevel();
 
 		}
 		STORE_DOUBLE_VECTOR("1_lumigammacurve.xls", luminanceGammaCurve);
@@ -428,20 +430,26 @@ namespace cms {
 		    dimgammaParameter = dimGamma;
 		    underParameter = under;
 		}
-
+		//=================================================================================
+		// advgenerator options
+		//=================================================================================
 		if (this->bTargetIntensity != -1) {
 		    advgenerator->setBTargetIntensity(bTargetIntensity);
 		}
-
 		if (multiGen) {
 		    advgenerator->setMultiGen(multiGen, multiGenTimes);
 		}
+		if (middleCCTRatio != -1) {
+		    advgenerator->setMiddleCCTRatio(middleCCTRatio);
+		}
+		//=================================================================================
 		//外部迴圈針對是否疊階來決定起始位置
 		int overParameter = keepMaxLumiOver;
 		int startCheckPos = 50;
 		int minOverParameter = (useNewMethod
 					&& autoKeepMaxLumiParameter) ? startCheckPos :
 		    keepMaxLumiOver;
+		//int minOverParameter = startCheckPos;
 		advgenerator->setPanelRegulator(panelRegulator);
 		int step = 4;
 
@@ -717,6 +725,9 @@ namespace cms {
 	    };
 	    void LCDCalibrator::setManualAccurateMode(bool enable) {
 		this->manualAccurateMode = enable;
+	    };
+	    void LCDCalibrator::setMiddleCCTRatio(double ratio) {
+		this->middleCCTRatio = ratio;
 	    };
 	};
     };

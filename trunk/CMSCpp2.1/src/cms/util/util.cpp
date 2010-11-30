@@ -95,6 +95,10 @@ namespace cms {
 	    int size = XYZVector->size();
 	    for (int x = 0; x != size; x++) {
 		XYZ_ptr XYZ = (*XYZVector)[x];
+		if (null == XYZ) {
+		    int a = 1;
+		    int b = a;
+		}
 		Indep::CIExyY xyY(XYZ);
 		string_vector_ptr values = StringVector::fromDouble
 		    (6, static_cast < double >(x), XYZ->X, XYZ->Y,

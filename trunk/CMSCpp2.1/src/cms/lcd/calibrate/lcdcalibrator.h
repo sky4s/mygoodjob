@@ -93,6 +93,7 @@ namespace cms {
 		bool accurateMode;
 		bool manualAccurateMode;
 		bool remapped;
+		double middleCCTRatio;
 		//==============================================================
 
 		//==============================================================
@@ -165,6 +166,7 @@ namespace cms {
 		void setMultiGen(bool enable, int times);
 		void setAccurateMode(bool enable);
 		void setManualAccurateMode(bool enable);
+		void setMiddleCCTRatio(double ratio);
 		//==============================================================
 
 		//==============================================================

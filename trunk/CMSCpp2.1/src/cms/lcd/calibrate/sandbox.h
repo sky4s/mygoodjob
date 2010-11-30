@@ -41,6 +41,7 @@ namespace cms {
 		int autoBrightTurn;
 		int autoBrightWidth;
 		int brightTurn;
+		double middleCCTRatio;
 
 		Component_vector_ptr componentVector2;
 		 bptr < PanelRegulator > panelRegulator1;
@@ -61,6 +62,10 @@ namespace cms {
 					  double_vector_ptr luminanceGammaCurve, int dimTurn,
 					  int brightTurn, double dimGamma, double brightGamma,
 					  int brightWidth);
+		XYZ_vector_ptr getTarget0(XYZ_ptr startXYZ, XYZ_ptr targetXYZ, XYZ_ptr endXYZ,
+					  double_vector_ptr luminanceGammaCurve, int dimTurn,
+					  int brightTurn, double dimGamma, double brightGamma,
+					  int brightWidth, double middleCCTRatio);
 
 		void setUseMaxTargetBIntensity(bool useMaxTargetBIntensity);
 		void setBTargetIntensity(double bTargetIntensity);
@@ -89,7 +94,7 @@ namespace cms {
 					 int brightTurn, int brightWidth,
 					 bptr < BitDepthProcessor > bitDepth);
 		static XYZ_ptr getTargetXYZ(double v1, double v2, double v3, Domain domain);
-		static XYZ_ptr getTargetXYZ(double v1, double v2, double v3);
+		static XYZ_ptr getTargetXYZ(double x, double y, double Y);
 		static bool isDuplicateBlue100(Component_vector_ptr componentVector);
 		RGB_vector_ptr produceDGLutMulti(XYZ_vector_ptr
 						 targetXYZVector,
@@ -101,6 +106,7 @@ namespace cms {
 
 		bool checkTargetXYZVector(XYZ_vector_ptr targetXYZVector, int start, int end,
 					  double deltaabThreshold);
+		XYZ_ptr getMiddleXYZ(int middleIndex, double middleCCTRatio, XYZ_ptr targetXYZ);
 	      public:
 		static RGB_vector_ptr smooth(RGB_vector_ptr result1,
 					     RGB_vector_ptr result2,
@@ -111,6 +117,7 @@ namespace cms {
 		void setComponentVector2(Component_vector_ptr componentVector2,
 					 bptr < PanelRegulator > panelRegulator2);
 		void setPanelRegulator(bptr < PanelRegulator > panelRegulator);
+		void setMiddleCCTRatio(double ratio);
 	    };
 
 
