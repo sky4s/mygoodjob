@@ -98,6 +98,10 @@ class TCCTLUTForm:public TForm {
     TCheckBox *CheckBox_MaxYAdvAuto;
     TCheckBox *CheckBox_Accurate;
     TCheckBox *CheckBox_ManualAccurate;
+    TGroupBox *GroupBox8;
+    TLabel *Label15;
+    TEdit *Edit_MiddleRatio;
+    TCheckBox *CheckBox_MiddleCCT;
     void __fastcall RadioButton_P1P2Click(TObject * Sender);
     void __fastcall Button_MeaRunClick(TObject * Sender);
     void __fastcall FormCreate(TObject * Sender);
@@ -120,6 +124,7 @@ class TCCTLUTForm:public TForm {
     void __fastcall CheckBox_AvoidHookNBClick(TObject * Sender);
     void __fastcall Edit_MaxYAdvOverChange(TObject * Sender);
     void __fastcall CheckBox_MaxYAdvAutoClick(TObject * Sender);
+    void __fastcall CheckBox_MiddleCCTClick(TObject * Sender);
   private:			// User declarations
     void setMeasureInfo();
     int serialid;

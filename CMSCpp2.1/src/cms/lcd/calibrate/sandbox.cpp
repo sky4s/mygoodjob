@@ -35,7 +35,7 @@ namespace cms {
 				       bitDepth):DimDGLutGenerator(componentVector, analyzer1),
 		fetcher(fetcher), useMaxTargetBIntensity(false), bTargetIntensity(-1),
 		stopMeasure(false), multiGen(false), analyzer2(analyzer2), bitDepth(bitDepth),
-		smoothMode(true) {
+		smoothMode(true), middleCCTRatio(-1) {
 	    };
 
 	     AdvancedDGLutGenerator::
@@ -48,8 +48,17 @@ namespace cms {
 		(componentVector, fetcher->getAnalyzer()),
 		fetcher(fetcher), useMaxTargetBIntensity(false),
 		bTargetIntensity(-1), stopMeasure(false), multiGen(false),
-		bitDepth(bitDepth), smoothMode(false) {
+		bitDepth(bitDepth), smoothMode(false), middleCCTRatio(-1) {
 	    };
+	    /*
+	       targetWhite: 目標白點
+	       luminanceGammaCurve: 目標gamma curve
+	       dimTurn: 低灰階的轉折點
+	       brightTurn: 高灰階的轉折點
+	       dimGamma: 低灰階的色溫曲線gamma變化
+	       brightGamma: 高灰階的色溫曲線gamma變化
+	       brightWidth: 高灰階
+	     */
 	    XYZ_vector_ptr AdvancedDGLutGenerator::getTargetXYZVector(XYZ_ptr targetWhite,
 								      double_vector_ptr
 								      luminanceGammaCurve,
@@ -95,9 +104,17 @@ namespace cms {
 		    this->autoBrightTurn = turn;
 		    this->autoBrightWidth = width;
 		} else {
-		    targetXYZVector =
-			getTarget0(blackXYZ, targetWhite, nativeWhite, luminanceGammaCurve, dimTurn,
-				   brightTurn, dimGamma, brightGamma, brightWidth);
+
+		    if (-1 != middleCCTRatio) {
+			targetXYZVector =
+			    getTarget0(blackXYZ, targetWhite, nativeWhite, luminanceGammaCurve,
+				       dimTurn, brightTurn, dimGamma, brightGamma, brightWidth,
+				       middleCCTRatio);
+		    } else {
+			targetXYZVector =
+			    getTarget0(blackXYZ, targetWhite, nativeWhite, luminanceGammaCurve,
+				       dimTurn, brightTurn, dimGamma, brightGamma, brightWidth);
+		    }
 		}
 		return targetXYZVector;
 	    }
@@ -371,6 +388,81 @@ namespace cms {
 		return result;
 	    };
 
+	    XYZ_ptr AdvancedDGLutGenerator::getMiddleXYZ(int middleIndex, double middleCCTRatio,
+							 XYZ_ptr targetXYZ) {
+		XYZ_ptr middleBaseXYZ =
+		    (*componentVector)[componentVector->size() - 1 - middleIndex]->XYZ;
+		xyY_ptr middleBasexyY(new CIExyY(middleBaseXYZ));
+		xyY_ptr targetxyY(new CIExyY(targetXYZ));
+		double middleBaseCCT =
+		    CorrelatedColorTemperature::xy2CCTByMcCamyFloat(middleBasexyY);
+		double targetCCT = CorrelatedColorTemperature::xy2CCTByMcCamyFloat(targetxyY);
+		double cctDiff = Math::abs(middleBaseCCT - targetCCT);
+		double cct = cctDiff * middleCCTRatio;
+		double middleCCT =
+		    (targetCCT < middleCCT) ? (targetCCT + cct) : (middleBaseCCT + cct);
+		xyY_ptr middlexyY = CorrelatedColorTemperature::CCT2DIlluminantxyY(middleCCT);
+		return middlexyY->toXYZ();
+	    }
+
+	    XYZ_vector_ptr AdvancedDGLutGenerator::
+		getTarget0(XYZ_ptr startXYZ, XYZ_ptr targetXYZ, XYZ_ptr endXYZ,
+			   double_vector_ptr luminanceGammaCurve, int dimTurn, int brightTurn,
+			   double dimGamma, double brightGamma, int brightWidth,
+			   double middleCCTRatio) {
+		int size = luminanceGammaCurve->size();
+
+
+		XYZ_vector_ptr result(new XYZ_vector(size));
+		XYZ_ptr middleXYZ = getMiddleXYZ(dimTurn, middleCCTRatio, targetXYZ);
+		double_array dimendValues = middleXYZ->getxyValues();
+		double_array brightstartValues = targetXYZ->getxyValues();
+		//==============================================================
+		// dim區段
+		//==============================================================
+		XYZ_vector_ptr dimResult = getDimGammaTarget(luminanceGammaCurve,
+							     startXYZ,
+							     middleXYZ, dimGamma,
+							     dimTurn);
+		int dimSize = dimResult->size();
+		for (int x = 0; x < dimSize; x++) {
+		    (*result)[x] = (*dimResult)[x];
+		}
+		//==============================================================
+
+		//==============================================================
+		// 中間區段
+		//==============================================================
+		for (int x = dimTurn; x < brightTurn; x++) {
+		    //僅Y有變化
+		    double Y = (*luminanceGammaCurve)[x];
+		    double ratio = ((double) (x - dimTurn)) / (brightTurn - dimTurn);
+		    double v1 = Interpolation::linear(0, 1, dimendValues[0], brightstartValues[0],
+						      ratio);
+		    double v2 = Interpolation::linear(0, 1, dimendValues[1], brightstartValues[1],
+						      ratio);
+		    XYZ_ptr XYZ = getTargetXYZ(v1, v2, Y);;
+		    (*result)[x] = XYZ;
+		    //(*result)[x] = getTargetXYZ(v1, v2, Y);
+		    //(*result)[x] = getTargetXYZ(dimendValues[0], dimendValues[1], Y);
+		}
+		//==============================================================
+
+		//==============================================================
+		// bright區段
+		//==============================================================
+		XYZ_vector_ptr brightResult =
+		    getBrightGammaTarget(luminanceGammaCurve, targetXYZ, endXYZ,
+					 brightGamma, brightTurn, brightWidth,
+					 bitDepth);
+		int brightSize = brightResult->size();
+		for (int x = 0; x < brightSize; x++) {
+		    XYZ_ptr XYZ = (*brightResult)[x];
+		    (*result)[x + brightTurn] = XYZ;
+		}
+		//==============================================================
+		return result;
+	    };
 	    XYZ_vector_ptr AdvancedDGLutGenerator::
 		getDimGammaTarget(double_vector_ptr
 				  luminanceGammaCurve,
@@ -382,7 +474,6 @@ namespace cms {
 		double_array dimstartValues = startXYZ->getxyValues();
 		double_array dimendValues = endXYZ->getxyValues();
 		double dimbase = dimTurn - 1;
-
 		for (int x = 0; x < dimTurn; x++) {
 		    double normal = ((double) x) / dimbase;
 		    double gamma = Math::pow(normal, dimGamma) * dimbase;
@@ -397,14 +488,20 @@ namespace cms {
 						     gamma);
 		    int index = dimbase - x;
 		    double Y = (*luminanceGammaCurve)[index];
-
 		    (*result)[index] = getTargetXYZ(u, v, Y);
 		}
 		//==============================================================
 		return result;
 	    };
-
-
+	    /*
+	       luminanceGammaCurve: 目標gamma curve
+	       startXYZ: 起始XYZ
+	       endXYZ: 結束XYZ
+	       brightGamma: 色溫曲線的gamma變化
+	       brightTurn: 色溫的轉折點
+	       brightWidth: 色溫變化的寬度區間
+	       bitDepth: 面板的色深資訊
+	     */
 	    XYZ_vector_ptr
 		AdvancedDGLutGenerator::
 		getBrightGammaTarget(double_vector_ptr
@@ -423,7 +520,6 @@ namespace cms {
 		double_array brightstartValues = startXYZ->getxyValues();
 		double_array brightendValues = endXYZ->getxyValues();
 		double brightbase = brightEnd - 1 - brightTurn;
-
 		for (int x = brightTurn; x < brightEnd; x++) {
 		    double normal = ((double) x - brightTurn) / brightbase;
 		    double gamma = Math::pow(normal, brightGamma) * brightbase + brightTurn;
@@ -437,17 +533,16 @@ namespace cms {
 						     brightendValues[1],
 						     gamma);
 		    double Y = (*luminanceGammaCurve)[x];
-
 		    (*result)[x - brightTurn] = getTargetXYZ(u, v, Y);
 		}
-		XYZ_ptr XYZ = (*result)[brightEnd - 1 - brightTurn];
+		int endIndex = brightEnd - 1 - brightTurn;
+		XYZ_ptr XYZ = (-1 == endIndex) ? endXYZ : (*result)[endIndex];
 		for (int x = brightEnd; x < size; x++) {
 		    (*result)[x - brightTurn] = XYZ;
 		}
 		return result;
 		//==============================================================
 	    };
-
 	    void AdvancedDGLutGenerator::setUseMaxTargetBIntensity(bool useMaxTargetBIntensity) {
 		this->useMaxTargetBIntensity = useMaxTargetBIntensity;
 	    };
@@ -467,13 +562,12 @@ namespace cms {
 	    XYZ_vector_ptr AdvancedDGLutGenerator::getTargetXYZVector() {
 		return targetXYZVector;
 	    };
-	    XYZ_ptr AdvancedDGLutGenerator::getTargetXYZ(double v1, double v2, double v3,
-							 Domain domain) {
+	    XYZ_ptr AdvancedDGLutGenerator::getTargetXYZ(double v1,
+							 double v2, double v3, Domain domain) {
 		double_array targetValues(new double[3]);
 		targetValues[0] = v1;
 		targetValues[1] = v2;
 		targetValues[2] = v3;
-
 		CIExyY targetxyY;
 		switch (domain) {
 		case CIExy:
@@ -485,12 +579,13 @@ namespace cms {
 		};
 		return targetxyY.toXYZ();
 	    };
-	    XYZ_ptr AdvancedDGLutGenerator::getTargetXYZ(double v1, double v2, double v3) {
+	    XYZ_ptr AdvancedDGLutGenerator::getTargetXYZ(double x, double y, double Y) {
 		CIExyY targetxyY;
-		targetxyY.x = v1;
-		targetxyY.y = v2;
-		targetxyY.Y = v3;
-		return targetxyY.toXYZ();
+		targetxyY.x = x;
+		targetxyY.y = y;
+		targetxyY.Y = Y;
+		XYZ_ptr XYZ = targetxyY.toXYZ();
+		return XYZ;
 	    };
 	    bool AdvancedDGLutGenerator::isDuplicateBlue100(Component_vector_ptr componentVector) {
 		int size = componentVector->size();
@@ -498,9 +593,8 @@ namespace cms {
 		for (int x = size - 1; x > 0; x--) {
 		    Component_ptr c0 = (*componentVector)[x];
 		    Component_ptr c1 = (*componentVector)[x - 1];
-		    if (c0->intensity->B > 100
-			&& c1->intensity->B < 100 || c0->intensity->B < 100
-			&& c1->intensity->B > 100 ||
+		    if (c0->intensity->B > 100 && c1->intensity->B < 100
+			|| c0->intensity->B < 100 && c1->intensity->B > 100 ||
 			//剛好等於100, 應該很難
 			c0->intensity->B == 100 ||
 			//最後一個逼近100, 也視為100
@@ -513,14 +607,13 @@ namespace cms {
 	    void AdvancedDGLutGenerator::setAutoParameter(bool autoParameter) {
 		this->autoParameter = autoParameter;
 	    };
-	    bool AdvancedDGLutGenerator::checkTargetXYZVector(XYZ_vector_ptr targetXYZVector,
-							      int start, int end,
-							      double deltaabThreshold) {
+	    bool AdvancedDGLutGenerator::
+		checkTargetXYZVector(XYZ_vector_ptr targetXYZVector,
+				     int start, int end, double deltaabThreshold) {
 		int size = targetXYZVector->size();
 		XYZ_ptr white = (*targetXYZVector)[size - 1];
 		int checkSize = end - start;
 		double_vector_ptr checkResult(new double_vector(checkSize));
-
 		for (int x = start + 1; x < end; x++) {
 		    XYZ_ptr x0 = (*targetXYZVector)[x - 1];
 		    XYZ_ptr x1 = (*targetXYZVector)[x];
@@ -543,9 +636,9 @@ namespace cms {
 	       此第二組componentVector2和panelRegulator2, 是用在target white != native white,
 	       但是又想 smooth過去時使用
 	     */
-	    void AdvancedDGLutGenerator::setComponentVector2(Component_vector_ptr componentVector2,
-							     bptr < PanelRegulator >
-							     panelRegulator2) {
+	    void AdvancedDGLutGenerator::
+		setComponentVector2(Component_vector_ptr componentVector2,
+				    bptr < PanelRegulator > panelRegulator2) {
 		this->componentVector2 = componentVector2;
 		this->panelRegulator2 = panelRegulator2;
 	    };
@@ -556,8 +649,10 @@ namespace cms {
 	    void AdvancedDGLutGenerator::setPanelRegulator(bptr < PanelRegulator > panelRegulator) {
 		this->panelRegulator1 = panelRegulator;
 	    };
+	    void AdvancedDGLutGenerator::setMiddleCCTRatio(double ratio) {
+		this->middleCCTRatio = ratio;
+	    };
 	    //==================================================================
-
 	    //==================================================================
 	    // DimTargetGenerator
 	    //==================================================================
@@ -584,9 +679,10 @@ namespace cms {
 		for (int x = 0; x < size; x++) {
 		    //在uv'上線性變化
 		    double u = Interpolation::linear(0, size - 1,
-						     startuvValues[0], enduvValues[0], x);
-		    double v = Interpolation::linear(0, size - 1,
-						     startuvValues[1], enduvValues[1], x);
+						     startuvValues[0],
+						     enduvValues[0], x);
+		    double v = Interpolation::linear(0, size - 1, startuvValues[1],
+						     enduvValues[1], x);
 		    double Y = (*luminanceGammaCurve)[x];
 		    double_array targetValues(new double[3]);
 		    targetValues[0] = u;

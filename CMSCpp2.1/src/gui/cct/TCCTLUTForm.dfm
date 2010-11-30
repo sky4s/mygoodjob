@@ -1,7 +1,7 @@
 object CCTLUTForm: TCCTLUTForm
   Left = 223
   Top = 215
-  Width = 846
+  Width = 832
   Height = 492
   Caption = 'CCT LUT'
   Color = clBtnFace
@@ -818,6 +818,40 @@ object CCTLUTForm: TCCTLUTForm
     Caption = 'Memory Measure'
     TabOrder = 12
     Visible = False
+  end
+  object GroupBox8: TGroupBox
+    Left = 672
+    Top = 7
+    Width = 145
+    Height = 260
+    Caption = 'Test Function'
+    TabOrder = 13
+    object Label15: TLabel
+      Left = 18
+      Top = 35
+      Width = 59
+      Height = 13
+      Caption = 'Middle Ratio'
+    end
+    object Edit_MiddleRatio: TEdit
+      Left = 86
+      Top = 35
+      Width = 51
+      Height = 21
+      Enabled = False
+      ImeName = #26085#25991#36664#20837#31995#32113' (MS-IME2002)'
+      TabOrder = 0
+      Text = '0.5'
+    end
+    object CheckBox_MiddleCCT: TCheckBox
+      Left = 7
+      Top = 16
+      Width = 104
+      Height = 19
+      Caption = 'Middle CCT'
+      TabOrder = 1
+      OnClick = CheckBox_MiddleCCTClick
+    end
   end
   object OpenDialog1: TOpenDialog
     Filter = 'DGCode Files(*.xls)|*.xls'

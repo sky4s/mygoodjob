@@ -162,6 +162,10 @@ void __fastcall TCCTLUTForm::Button_MeaRunClick(TObject * Sender)
 	}
 	calibrator.setAccurateMode(this->CheckBox_Accurate->Checked);
 	calibrator.setManualAccurateMode(CheckBox_ManualAccurate->Checked);
+	if (true == Edit_MiddleRatio->Enabled) {
+	    double middleRatio = Edit_MiddleRatio->Text.ToDouble();
+	    calibrator.setMiddleCCTRatio(middleRatio);
+	}
 	//==========================================================================
 
 	//==========================================================================
@@ -486,6 +490,7 @@ void __fastcall TCCTLUTForm::CheckBox_NewMethodClick(TObject * Sender)
     CheckBox_BTargetIntensity->Enabled = newMethod;
     CheckBox_MultiGen->Enabled = newMethod;
     Edit_MultiGenTimes->Enabled = newMethod;
+    CheckBox_MiddleCCT->Enabled = newMethod;
 
     if (newMethod) {
 	if (RadioButton_P1P2->Checked) {
@@ -501,7 +506,7 @@ void __fastcall TCCTLUTForm::CheckBox_NewMethodClick(TObject * Sender)
     RadioButton_MaxYNativeAdv->Checked = newMethod;
     RadioButton_MaxYTarget->Checked = !newMethod;
     RadioButton_MaxYTarget->Enabled = !newMethod;
-    RadioButton_MaxYNative->Enabled = !newMethod;
+    //RadioButton_MaxYNative->Enabled = !newMethod;
     CheckBox_Accurate->Enabled = newMethod;
 }
 
@@ -615,6 +620,11 @@ void __fastcall TCCTLUTForm::CheckBox_MaxYAdvAutoClick(TObject * Sender)
 
 //---------------------------------------------------------------------------
 
+void __fastcall TCCTLUTForm::CheckBox_MiddleCCTClick(TObject * Sender)
+{
+    bool checked = CheckBox_MiddleCCT->Checked;
+    Edit_MiddleRatio->Enabled = checked;
+}
 
-
+//---------------------------------------------------------------------------
 
