@@ -66,9 +66,10 @@ void __fastcall TGammaAdjustmentForm::Button3Click(TObject * Sender)
 	if (rgbGamma != null && rgbGamma->w->size() == n) {
 	    this->CheckBox_LoadingGamma->Checked = true;
 	    this->CheckBox_LoadingGamma->Enabled = true;
-	    return;
 	} else {
 	    ShowMessage("Desired Gamma File Format is wrong!");
+	    this->CheckBox_LoadingGamma->Checked = false;
+	    this->CheckBox_LoadingGamma->Enabled = false;
 	}
     }
 }
@@ -109,19 +110,30 @@ void TGammaAdjustmentForm::gammaAdjust(bool rgbGammaAdjust)
     //==========================================================================
     // gamma的處理
     //==========================================================================
-    if (this->CheckBox_LoadingGamma->Checked) {
-	//載入gamma
-	double_vector_ptr gammaCurve = rgbGamma->w;
-	calibrator->setGammaCurve(gammaCurve);
-    } else if (rgbGammaAdjust) {
-	//rgb gamma分開設定
-	double rgamma = this->ComboBox_RGamma->Text.ToDouble();
-	double ggamma = this->ComboBox_GGamma->Text.ToDouble();
-	double bgamma = this->ComboBox_BGamma->Text.ToDouble();
-	calibrator->setGamma(rgamma, ggamma, bgamma);
+    if (rgbGammaAdjust) {
+	if (this->CheckBox_LoadingGamma->Checked) {
+	    //載入gamma
+	    double_vector_ptr rgammaCurve = rgbGamma->r;
+	    double_vector_ptr ggammaCurve = rgbGamma->g;
+	    double_vector_ptr bgammaCurve = rgbGamma->b;
+	    calibrator->setGammaCurve(rgammaCurve, ggammaCurve, bgammaCurve);
+	} else {
+	    //rgb gamma分開設定
+	    double rgamma = this->ComboBox_RGamma->Text.ToDouble();
+	    double ggamma = this->ComboBox_GGamma->Text.ToDouble();
+	    double bgamma = this->ComboBox_BGamma->Text.ToDouble();
+	    calibrator->setGamma(rgamma, ggamma, bgamma);
+	}
+
     } else {
-	double gamma = this->ComboBox_GrayGamma->Text.ToDouble();
-	calibrator->setGamma(gamma);
+	if (this->CheckBox_LoadingGamma->Checked) {
+	    //載入gamma
+	    double_vector_ptr gammaCurve = rgbGamma->w;
+	    calibrator->setGammaCurve(gammaCurve);
+	} else {
+	    double gamma = this->ComboBox_GrayGamma->Text.ToDouble();
+	    calibrator->setGamma(gamma);
+	}
     }
     //==========================================================================
     calibrator->setAvoidFRCNoise(this->CheckBox_AvoidNoise->Checked);
