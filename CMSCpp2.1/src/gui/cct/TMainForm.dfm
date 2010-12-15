@@ -1002,6 +1002,7 @@ object MainForm: TMainForm
           Top = 39
           Width = 38
           Height = 21
+          Color = cl3DLight
           Enabled = False
           ImeName = #26085#25991#36664#20837#31995#32113' (MS-IME2002)'
           TabOrder = 1
@@ -1012,6 +1013,7 @@ object MainForm: TMainForm
           Top = 65
           Width = 83
           Height = 21
+          Color = cl3DLight
           Enabled = False
           ImeName = #26085#25991#36664#20837#31995#32113' (MS-IME2002)'
           TabOrder = 2
@@ -1440,7 +1442,7 @@ object MainForm: TMainForm
             Top = 13
             Width = 138
             Height = 21
-            ItemHeight = 13
+            ItemHeight = 0
             TabOrder = 0
             OnChange = ComboBox_TCONTypeChange
           end

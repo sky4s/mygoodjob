@@ -1,8 +1,8 @@
 object GammaAdjustmentForm: TGammaAdjustmentForm
   Left = 500
   Top = 282
-  Width = 467
-  Height = 426
+  Width = 384
+  Height = 341
   Caption = 'Gamma Adjustment'
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
@@ -16,7 +16,7 @@ object GammaAdjustmentForm: TGammaAdjustmentForm
   TextHeight = 13
   object Label9: TLabel
     Left = 78
-    Top = 299
+    Top = 291
     Width = 281
     Height = 13
     Caption = 'Copyright (C) 2010, AU Optronics Corp., All Right Reserved.'
@@ -49,14 +49,14 @@ object GammaAdjustmentForm: TGammaAdjustmentForm
     Left = 189
     Top = 13
     Width = 176
-    Height = 202
+    Height = 196
     Caption = 'Gamma'
     TabOrder = 1
     object GroupBox4: TGroupBox
       Left = 7
       Top = 20
       Width = 163
-      Height = 78
+      Height = 45
       Caption = 'Gray'
       TabOrder = 0
       object Label1: TLabel
@@ -97,11 +97,10 @@ object GammaAdjustmentForm: TGammaAdjustmentForm
     end
     object GroupBox5: TGroupBox
       Left = 7
-      Top = 98
+      Top = 66
       Width = 163
       Height = 98
       Caption = 'RGB'
-      Enabled = False
       TabOrder = 1
       object Label2: TLabel
         Left = 13
@@ -130,7 +129,6 @@ object GammaAdjustmentForm: TGammaAdjustmentForm
         Width = 40
         Height = 20
         Caption = 'Run'
-        Enabled = False
         TabOrder = 0
         OnClick = Button_RGBGammaClick
       end
@@ -194,7 +192,7 @@ object GammaAdjustmentForm: TGammaAdjustmentForm
     end
     object Button3: TButton
       Left = 20
-      Top = 66
+      Top = 170
       Width = 78
       Height = 19
       Caption = 'Load Gamma'
@@ -203,7 +201,7 @@ object GammaAdjustmentForm: TGammaAdjustmentForm
     end
     object CheckBox_LoadingGamma: TCheckBox
       Left = 105
-      Top = 66
+      Top = 170
       Width = 58
       Height = 19
       Caption = 'Loading'
@@ -216,7 +214,7 @@ object GammaAdjustmentForm: TGammaAdjustmentForm
     Left = 7
     Top = 65
     Width = 176
-    Height = 150
+    Height = 144
     Caption = 'Options'
     TabOrder = 2
     object CheckBox_AvoidNoise: TCheckBox
@@ -238,7 +236,7 @@ object GammaAdjustmentForm: TGammaAdjustmentForm
   end
   inline TOutputFileFrame1: TOutputFileFrame
     Left = 7
-    Top = 221
+    Top = 213
     Width = 364
     Height = 72
     TabOrder = 3
@@ -257,13 +255,11 @@ object GammaAdjustmentForm: TGammaAdjustmentForm
         Left = 91
         Top = 20
         Width = 163
-        Height = 24
       end
       inherited Edit_Directory: TEdit
         Left = 91
         Top = 46
         Width = 209
-        Height = 24
       end
       inherited Button_BrowseDir: TButton
         Left = 306
