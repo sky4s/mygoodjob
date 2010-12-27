@@ -42,6 +42,7 @@ __fastcall TMainForm::TMainForm(TComponent * Owner):TForm(Owner)
     C3D_type = 7;
     using namespace cms::util;
     if (Util::isFileExist(ADDRESS_FILE)) {
+	//如果address檔案存在, 當然就從檔案去讀
 	addr_place = 1;
 	addressFromFile->Checked = true;
     }

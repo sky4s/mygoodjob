@@ -1,6 +1,6 @@
 object CMForm1: TCMForm1
-  Left = 460
-  Top = 68
+  Left = 495
+  Top = 290
   Width = 709
   Height = 670
   Caption = 'Color Matrix'
