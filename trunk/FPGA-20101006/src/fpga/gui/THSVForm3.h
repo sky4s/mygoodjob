@@ -51,11 +51,6 @@
 //  Byte 5 :  SAT1 [0]    LUM1 [6:0]
 /////////////////////////////////////////////
 
-/*class CallBackIF {
-  public:virtual void callback() = 0;
-};*/
-
-
 class THSVForm3:public TForm, cms::util::CallBackIF, RGBInfoCallbackIF, PatternCallbackIF {
     __published:		// IDE-managed Components
     TOpenDialog * OpenDialog1;

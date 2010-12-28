@@ -43,9 +43,6 @@ class TBit:public AbstractAddressType {
     virtual void _set(int_vector_ptr vector, AnsiString name) {
 	using namespace java::lang;
 	int size = vector->size();
-	/*if (size != 3) {
-	    throw IllegalArgumentException();
-	}*/
 	set((*vector)[0], (*vector)[1], (*vector)[2], name);
     };
 };
