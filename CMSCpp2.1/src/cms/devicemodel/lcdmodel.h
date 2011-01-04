@@ -29,7 +29,7 @@ namespace cms {
 							 Patch_vector_ptr patchList2);
 	    void storeToExcel(const std::string & filename);
 	};
-	class DeeviceCharacterizationModel {
+	class DeviceCharacterizationModel {
 	  protected:
 	    XYZ_ptr targetWhitePoint;
 	  public:
