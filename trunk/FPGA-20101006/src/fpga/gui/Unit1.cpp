@@ -40,11 +40,15 @@ __fastcall TMainForm::TMainForm(TComponent * Owner):TForm(Owner)
     SetPriorityClass(GetCurrentProcess(), REALTIME_PRIORITY_CLASS);
     addr_place = 0;		//0:auo_12401_address.h   1:auo_12401_address.txt
     C3D_type = 7;
+    /*using namespace cms::util;
+       if (Util::isFileExist(ADDRESS_FILE)) {
+       //如果address檔案存在, 當然就從檔案去讀
+       addr_place = 1;
+       addressFromFile->Checked = true;
+       } */
     using namespace cms::util;
-    if (Util::isFileExist(ADDRESS_FILE)) {
-	//如果address檔案存在, 當然就從檔案去讀
-	addr_place = 1;
-	addressFromFile->Checked = true;
+    if (Util::isFileExist("debug.txt")) {
+	Header2Address1->Visible = true;
     }
 }
 
@@ -232,6 +236,49 @@ void __fastcall TMainForm::FormClose(TObject * Sender, TCloseAction & Action)
 }
 
 //---------------------------------------------------------------------------
+void TMainForm::closeAllForms()
+{
+    if (TCONForm != NULL) {
+	TCONForm->Close();
+	TCONForm = NULL;
+    }
+    if (FunctionForm != NULL) {
+	FunctionForm->Close();
+	FunctionForm = NULL;
+    }
+    if (DCRForm != NULL) {
+	DCRForm->Close();
+	DCRForm = NULL;
+    }
+    if (VenderForm != NULL) {
+	VenderForm->Close();
+	VenderForm = NULL;
+    }
+    if (CMForm != NULL) {
+	CMForm->Close();
+	CMForm = NULL;
+    }
+    if (SharpnessForm != NULL) {
+	SharpnessForm->Close();
+	SharpnessForm = NULL;
+    }
+    if (HSVForm != NULL) {
+	HSVForm->Close();
+	HSVForm = NULL;
+    }
+    if (C3DForm != NULL) {
+	C3DForm->Close();
+	C3DForm = NULL;
+    }
+    if (SATForm != NULL) {
+	SATForm->Close();
+	SATForm = NULL;
+    }
+    if (offsetForm != NULL) {
+	offsetForm->Close();
+	offsetForm = NULL;
+    }
+}
 
 void __fastcall TMainForm::AUO_11307Click(TObject * Sender)
 {
@@ -352,7 +399,8 @@ void __fastcall TMainForm::FormCreate(TObject * Sender)
 
     TCON_DEV = "11307";		//default device
     //String info = getFileVersionInfo();
-    MainForm->Caption = "AUO 11307";
+    //MainForm->Caption = "AUO 11307";
+    MainForm->Caption = "Color Engine Toolkit";
     mn_Function->Enabled = true;
     mn_TCON->Enabled = true;
     mn_DCR->Enabled = true;
@@ -663,4 +711,28 @@ void TMainForm::header2AddressFile(const AnsiString & header, const AnsiString &
     outfile.close();
     infile.close();
 }
+
+void __fastcall TMainForm::addressFromFileClick(TObject * Sender)
+{
+    using namespace std;
+    OpenDialog1->Filter = "T-CON Address Files(*.*)|*.*";
+    if (OpenDialog1->Execute()) {
+	const AnsiString & header = OpenDialog1->FileName;
+	AddressFile = header;
+	MainForm->Caption = ExtractFileName(header);
+	addr_place = 1;
+	addressFromFile->Checked = true;
+	AbstractBase::resetAddressMap();
+	closeAllForms();
+	/*SaveDialog1->Filter = "Address Files(*.txt)|*.txt";
+	   if (SaveDialog1->Execute()) {
+	   const AnsiString & address = SaveDialog1->FileName;
+	   header2AddressFile(header, address);
+	   ShowMessage("Conversion done!");
+	   } */
+    };
+}
+
+AnsiString TMainForm::AddressFile;
+//---------------------------------------------------------------------------
 

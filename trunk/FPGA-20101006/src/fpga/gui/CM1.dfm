@@ -1,6 +1,6 @@
 object CMForm1: TCMForm1
   Left = 495
-  Top = 290
+  Top = 294
   Width = 709
   Height = 670
   Caption = 'Color Matrix'
@@ -79,8 +79,8 @@ object CMForm1: TCMForm1
       Top = 128
       Width = 665
       Height = 185
-      ActivePage = th_CM2
-      TabIndex = 1
+      ActivePage = th_CM1
+      TabIndex = 0
       TabOrder = 0
       TabWidth = 70
       OnChange = TS_CMChange
