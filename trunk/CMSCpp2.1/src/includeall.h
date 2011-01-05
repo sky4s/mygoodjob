@@ -1,10 +1,15 @@
+#include "config.h"
 #include <math/include.h>
 #include <cms/include.h>
 #include <cms/util/include.h>
 #include <cms/measure/include.h>
-#include <cms/lcd/calibrate/include.h>
-#include <cms/lcd/include.h>
+
+#ifdef LCD_DEVICE
 #include <cms/devicemodel/include.h>
+#include <cms/lcd/include.h>
+#include <cms/lcd/calibrate/include.h>
+#endif
+
 #include <cms/colorspace/include.h>
 #include <cms/colorformat/include.h>
 #include <i2c/include.h>

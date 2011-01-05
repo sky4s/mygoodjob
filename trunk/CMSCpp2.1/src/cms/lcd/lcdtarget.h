@@ -11,12 +11,12 @@
 
 //本項目內頭文件
 //#include "../cms.h"
-#include <cms/core.h>
+//#include <cms/core.h>
 
 //本項目內gui頭文件
 
 namespace cms {
-    class Target;
+    //class Target;
     namespace lcd {
 	class LCDTarget:public Target {
 
