@@ -153,8 +153,8 @@ namespace cms {
 		double_array _getValues(double_array values);
 		void _setValues(double_array values);
 		//XYZ_ptr white;
-		static const double epsilon;
-		static const double kappa;
+		//static const double epsilon;
+		//static const double kappa;
 	      public:
 
 		double L, a, b;

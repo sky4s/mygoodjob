@@ -77,6 +77,8 @@ namespace cms {
 	     bptr < Graphics::TBitmap > bitmap;
 	    const bool doubleBuffered;
 	  public:
+	    static void copy(TCanvas * source, TCanvas * dest, int width, int height);
+	    static bptr < Graphics::TBitmap > getTBitmap(TCanvas * canvas, int width, int height);
 	     DoubleBufferedCanvas(TCanvas * canvas, int width, int height);
 	    TCanvas *getDoubleBufferedCanvas();
 	    void excute();

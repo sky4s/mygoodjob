@@ -230,11 +230,21 @@ namespace cms {
 	    doubleBuffered(true)
 	{
 	    if (doubleBuffered) {
-		bitmap = bptr < Graphics::TBitmap > (new Graphics::TBitmap());
-		bitmap->Canvas->Handle = CreateCompatibleDC(canvas->Handle);
-		bitmap->Width = width;
-		bitmap->Height = height;
+		bitmap = getTBitmap(canvas, width, height);
+		/*bitmap = bptr < Graphics::TBitmap > (new Graphics::TBitmap());
+		   bitmap->Canvas->Handle = CreateCompatibleDC(canvas->Handle);
+		   bitmap->Width = width;
+		   bitmap->Height = height; */
 	    }
+	};
+
+	bptr < Graphics::TBitmap > DoubleBufferedCanvas::getTBitmap(TCanvas * canvas, int width,
+								    int height) {
+	    bptr < Graphics::TBitmap > bitmap(new Graphics::TBitmap());
+	    bitmap->Canvas->Handle = CreateCompatibleDC(canvas->Handle);
+	    bitmap->Width = width;
+	    bitmap->Height = height;
+	    return bitmap;
 	};
 	TCanvas *DoubleBufferedCanvas::getDoubleBufferedCanvas() {
 	    if (doubleBuffered) {
@@ -243,9 +253,13 @@ namespace cms {
 		return canvas;
 	    }
 	};
+	void DoubleBufferedCanvas::copy(TCanvas * source, TCanvas * dest, int width, int height) {
+	    BitBlt(dest->Handle, 0, 0, width, height, source->Handle, 0, 0, SRCCOPY);
+	}
 	void DoubleBufferedCanvas::excute() {
 	    if (doubleBuffered) {
-		BitBlt(canvas->Handle, 0, 0, width, height, bitmap->Canvas->Handle, 0, 0, SRCCOPY);
+		copy(bitmap->Canvas, canvas, width, height);
+		//BitBlt(canvas->Handle, 0, 0, width, height, bitmap->Canvas->Handle, 0, 0, SRCCOPY);
 	    }
 	};
 	void DoubleBufferedCanvas::clear() {

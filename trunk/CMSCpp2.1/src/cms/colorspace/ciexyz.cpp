@@ -461,8 +461,8 @@ namespace cms {
 	    //======================================================================
 	    // CIELab
 	    //===================================================================
-	    const double CIELab::epsilon = 216.0 / 24389.0;
-	    const double CIELab::kappa = 24389.0 / 27.0;
+	    //const double CIELab::epsilon = 216.0 / 24389.0;
+	    //const double CIELab::kappa = 24389.0 / 27.0;
 
 	    double_array CIELab::_getValues(double_array values) {
 		values[0] = L;
