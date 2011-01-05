@@ -1,7 +1,7 @@
 #ifndef LANGH
 #define LANGH
 
-#include "config.h"
+#include "java_config.h"
 
 //C系統文件
 
