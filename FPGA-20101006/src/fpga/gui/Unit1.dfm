@@ -1,6 +1,6 @@
 object MainForm: TMainForm
   Left = 531
-  Top = 160
+  Top = 193
   Width = 749
   Height = 588
   Caption = 'Toolkit'
@@ -58,6 +58,7 @@ object MainForm: TMainForm
       ImageIndex = 0
       object AUO_11307: TMenuItem
         Caption = '&1.11307'
+        Visible = False
         OnClick = AUO_11307Click
       end
       object AUO_12303: TMenuItem
@@ -66,11 +67,12 @@ object MainForm: TMainForm
         OnClick = AUO_12303Click
       end
       object addressFromFile: TMenuItem
-        Caption = 'Read Address from File'
-        Enabled = False
+        Caption = 'Load T-CON Address File'
+        OnClick = addressFromFileClick
       end
       object Header2Address1: TMenuItem
         Caption = 'Header to Address File'
+        Visible = False
         OnClick = Header2Address1Click
       end
     end
@@ -88,6 +90,7 @@ object MainForm: TMainForm
     object mn_DCR: TMenuItem
       Caption = 'D&CR'
       ImageIndex = 3
+      Visible = False
       OnClick = mn_DCRClick
     end
     object mn_Vender: TMenuItem

@@ -1,6 +1,6 @@
 object SATForm: TSATForm
   Left = 396
-  Top = 202
+  Top = 243
   Width = 696
   Height = 480
   Caption = 'SAT'

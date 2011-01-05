@@ -92,10 +92,12 @@ class TMainForm:public TForm {
     void __fastcall mn_SATClick(TObject * Sender);
     void __fastcall mn_offsetClick(TObject * Sender);
     void __fastcall Header2Address1Click(TObject * Sender);
+    void __fastcall addressFromFileClick(TObject * Sender);
 
   private:			// User declarations
      String getFileVersionInfo();
     void header2AddressFile(const AnsiString & header, const AnsiString & address);
+    void closeAllForms();
   public:			// User declarations
      __fastcall TMainForm(TComponent * Owner);
     int C3D_type;
@@ -113,6 +115,7 @@ class TMainForm:public TForm {
     void offsetFormNULL();
     String TCON_DEV;
     int addr_place;		//0:auo_12401_address.h   1:auo_12401_address.txt
+    static AnsiString AddressFile;
 
 };
 

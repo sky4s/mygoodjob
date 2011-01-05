@@ -1,6 +1,6 @@
 object HSVForm3: THSVForm3
   Left = 411
-  Top = 105
+  Top = 127
   Width = 843
   Height = 629
   Caption = 'HSV'
