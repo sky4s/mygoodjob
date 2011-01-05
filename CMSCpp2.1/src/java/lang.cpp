@@ -147,7 +147,7 @@ namespace java {
 	};
 #ifdef TNT_LIB
 	double Math::max(double1D_ptr values) {
-	    double max = std::numeric_limits < double >::infinity();
+	    double max = std::numeric_limits < double >::min();
 	    for (int x = 0; x < values->dim1(); x++) {
 		double d = (*values)[x];
 		max = Math::max(max, d);

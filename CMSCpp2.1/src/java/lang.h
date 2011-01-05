@@ -12,6 +12,7 @@
 #include <string>
 #include <vector>
 #include <exception>
+#include <map>
 
 //其他庫頭文件
 #include <boost/shared_array.hpp>
@@ -126,6 +127,8 @@ typedef bptr < std::string > string_ptr;
 typedef bptr < AnsiString > String_ptr;
 #define nil_string_ptr string_ptr ((std::string*)NULL)
 
+#define nil_int_vector_ptr int_vector_ptr ((int_vector*)NULL)
+#define nil_int_vector nil_int_vector_ptr
 typedef std::vector < int >int_vector;
 typedef bptr < int_vector > int_vector_ptr;
 
@@ -199,6 +202,18 @@ typedef bptr < float3D > float3D_ptr;
 #define _toDouble boost::lexical_cast < double >
 #define _toAnsiString(s)\
         AnsiString(s.c_str())
+//==============================================================================
+
+//==============================================================================
+// 簡化stl使用上的巨集
+//==============================================================================
+typedef std::map < const std::string, const std::string) StringMap;
+typedef bptr < StringMap > StringMap_ptr;
+#define nil_StringMap_ptr StringMap_ptr((StringMap *) NULL)
+
+typedef std::map < const std::string, string_vector_ptr) StringVecMap;
+typedef bptr < StringVecMap > StringVecMap_ptr;
+#define nil_StringVecMap_ptr StringVecMap_ptr((StringVecMap *) NULL)
 //==============================================================================
 
 /*
