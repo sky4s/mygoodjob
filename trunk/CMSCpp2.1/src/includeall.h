@@ -1,3 +1,5 @@
+//#define LCD_DEVICE
+
 #include "config.h"
 #include <math/include.h>
 #include <cms/include.h>
@@ -5,8 +7,8 @@
 #include <cms/measure/include.h>
 
 #ifdef LCD_DEVICE
-#include <cms/devicemodel/include.h>
 #include <cms/lcd/include.h>
+#include <cms/devicemodel/include.h>
 #include <cms/lcd/calibrate/include.h>
 #endif
 
