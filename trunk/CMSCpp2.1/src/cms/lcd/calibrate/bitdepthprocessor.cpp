@@ -90,7 +90,7 @@ namespace cms {
 		case b8_8:
 		    return tconInput ? 16 : 1;
 		case b8_6:
-		    return tconInput ? 16 : 1;
+		    //return tconInput ? 16 : 1;
 		case b6_6:
 		    return tconInput ? 16 : 4;
 		default:
@@ -106,7 +106,7 @@ namespace cms {
 		case b8_8:
 		    return tconInput ? 16 : 1;
 		case b8_6:
-		    return tconInput ? 16 : 1;
+		    //return tconInput ? 16 : 1;
 		case b6_6:
 		    return tconInput ? 16 : 4;
 		default:
@@ -124,6 +124,7 @@ namespace cms {
 		case b8_8:
 		    return 255;
 		case b8_6:
+		    return 255;
 		case b6_6:
 		    return 252;
 		default:
