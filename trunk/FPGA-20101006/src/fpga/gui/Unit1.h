@@ -115,6 +115,7 @@ class TMainForm:public TForm {
     void offsetFormNULL();
     String TCON_DEV;
     int addr_place;		//0:auo_12401_address.h   1:auo_12401_address.txt
+
     static AnsiString AddressFile;
 
 };

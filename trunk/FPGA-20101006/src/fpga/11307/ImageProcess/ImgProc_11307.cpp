@@ -87,7 +87,11 @@ int CM_11307::Setofs_type()
 	return 1;
     } else if (MainForm->addr_place == 1) {
 	int_vector_ptr values = getValuesFromFile("OFS_TYPE");
-	return (*values)[0];
+	if (null != values) {
+	    return (*values)[0];
+	} else {
+	    return -1;
+	}
     }
 
 }
