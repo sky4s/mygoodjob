@@ -40,16 +40,13 @@ __fastcall TMainForm::TMainForm(TComponent * Owner):TForm(Owner)
     SetPriorityClass(GetCurrentProcess(), REALTIME_PRIORITY_CLASS);
     addr_place = 0;		//0:auo_12401_address.h   1:auo_12401_address.txt
     C3D_type = 7;
-    /*using namespace cms::util;
-       if (Util::isFileExist(ADDRESS_FILE)) {
-       //如果address檔案存在, 當然就從檔案去讀
-       addr_place = 1;
-       addressFromFile->Checked = true;
-       } */
+
     using namespace cms::util;
     if (Util::isFileExist("debug.txt")) {
 	Header2Address1->Visible = true;
     }
+
+
 }
 
 //---------------------------------------------------------------------------
@@ -684,10 +681,17 @@ void TMainForm::header2AddressFile(const AnsiString & header, const AnsiString &
 		}
 		continue;
 	    }
-	    if (!comment && -1 != line.find("/*", 0)) {
+	    int beginCommentIndex = line.find("/*", 0);
+	    int doubleSlashIndex = line.find("//", 1);
+	    if (!comment && -1 != beginCommentIndex && -1 == doubleSlashIndex) {
 		comment = true;
 		continue;
 	    }
+
+	    if (-1 != doubleSlashIndex) {
+		line = line.substr(0, doubleSlashIndex - 1);
+	    }
+
 	    string_vector_ptr stringvector = StringVector::tokenize(line, " \t");
 	    int size = stringvector->size();
 	    if (size == 0) {
@@ -697,6 +701,7 @@ void TMainForm::header2AddressFile(const AnsiString & header, const AnsiString &
 
 	    if ((size == 3 || size == 4) && first.find("#define") == 0) {
 		string define = (*stringvector)[2];
+
 		string sub = define.substr(1, define.size() - 2);
 		size_t found = sub.find(",");
 		if (found != string::npos) {
@@ -719,20 +724,22 @@ void __fastcall TMainForm::addressFromFileClick(TObject * Sender)
     if (OpenDialog1->Execute()) {
 	const AnsiString & header = OpenDialog1->FileName;
 	AddressFile = header;
-	MainForm->Caption = ExtractFileName(header);
+	AnsiString caption = ExtractFileName(header);
+	//caption.
+	int dotIndex = caption.Pos(".");
+	if (0 != dotIndex) {
+	    caption = caption.SubString(1, dotIndex - 1);
+	}
+	MainForm->Caption = caption;
 	addr_place = 1;
 	addressFromFile->Checked = true;
 	AbstractBase::resetAddressMap();
 	closeAllForms();
-	/*SaveDialog1->Filter = "Address Files(*.txt)|*.txt";
-	   if (SaveDialog1->Execute()) {
-	   const AnsiString & address = SaveDialog1->FileName;
-	   header2AddressFile(header, address);
-	   ShowMessage("Conversion done!");
-	   } */
     };
 }
 
 AnsiString TMainForm::AddressFile;
+
+
 //---------------------------------------------------------------------------
 

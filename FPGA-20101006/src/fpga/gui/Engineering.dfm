@@ -1,6 +1,6 @@
 object EngineerForm: TEngineerForm
-  Left = 525
-  Top = 141
+  Left = 555
+  Top = 232
   Width = 725
   Height = 534
   Caption = 'Engineering'
@@ -10160,7 +10160,7 @@ object EngineerForm: TEngineerForm
           Left = 336
           Top = 56
           Width = 33
-          Height = 24
+          Height = 21
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clBlack
           Font.Height = -12
@@ -10202,7 +10202,7 @@ object EngineerForm: TEngineerForm
           Left = 400
           Top = 88
           Width = 33
-          Height = 24
+          Height = 21
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clBlack
           Font.Height = -12
@@ -10217,7 +10217,7 @@ object EngineerForm: TEngineerForm
           Left = 440
           Top = 88
           Width = 33
-          Height = 24
+          Height = 21
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clBlack
           Font.Height = -12
@@ -10232,7 +10232,7 @@ object EngineerForm: TEngineerForm
           Left = 320
           Top = 112
           Width = 33
-          Height = 24
+          Height = 21
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clBlack
           Font.Height = -12
@@ -10438,7 +10438,7 @@ object EngineerForm: TEngineerForm
           Left = 296
           Top = 144
           Width = 33
-          Height = 24
+          Height = 21
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clBlack
           Font.Height = -12

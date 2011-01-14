@@ -370,13 +370,13 @@ void __fastcall TPatternForm::FormPaint(TObject * Sender)
     for (int x = 0; x < 2; x++) {
 	int_vector_ptr vector = boxVector[x];
 	if (null != vector) {
-	    if (this == PatternForm2) {
+	    /*if (this == PatternForm2) {
 		int x = 1;
 		int y = x;
 	    } else {
 		int x = 1;
 		int y = x;
-	    }
+	    }*/
 
 	    int vecSize = vector->size();
 	    dcanvas->Brush->Color = boxColor[x];
