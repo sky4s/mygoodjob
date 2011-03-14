@@ -6758,10 +6758,6 @@ object HSVForm3: THSVForm3
           end
         end
         inherited GroupBox41: TGroupBox
-          inherited sb_Sat_gain: TScrollBar
-            Max = 127
-            Position = 32
-          end
           inherited Edit_c3d_Manual39_s_adj: TEdit
             Visible = False
           end
