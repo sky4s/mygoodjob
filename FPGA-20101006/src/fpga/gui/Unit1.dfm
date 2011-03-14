@@ -118,6 +118,9 @@ object MainForm: TMainForm
         Caption = '&Hue/Saturation/Value'
         OnClick = mn_HSVClick
       end
+      object HueSaturationValue21: TMenuItem
+        Caption = '&Hue/Saturation/Value2'
+      end
       object mn_C3D: TMenuItem
         Caption = 'C3D'
         Visible = False

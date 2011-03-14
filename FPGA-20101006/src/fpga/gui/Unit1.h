@@ -69,6 +69,7 @@ class TMainForm:public TForm {
     TOpenDialog *OpenDialog1;
     TSaveDialog *SaveDialog1;
     TMenuItem *addressFromFile;
+        TMenuItem *HueSaturationValue21;
     void __fastcall mn_TCONClick(TObject * Sender);
     void __fastcall mn_EngineerClick(TObject * Sender);
     void __fastcall mn_FunctionClick(TObject * Sender);
