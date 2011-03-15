@@ -72,9 +72,19 @@ void THSVAdjustFrame::updateHSVCaption()
     //從pos計算成實際值並且顯示
     double h_show = ((double) h) / maxHueValue * 360;
     lb_Hue_gain->Caption = lb_Hue_gain->Caption.sprintf("%+.2f°", h_show);
-    double s_show = s / 32.;
-    lb_Sat_gain->Caption = lb_Sat_gain->Caption.sprintf("%.2f", s_show);
+    if (captionIF == null) {
+	double s_show = s / 32.;
+	lb_Sat_gain->Caption = lb_Sat_gain->Caption.sprintf("%.2f", s_show);
+    } else {
+	lb_Sat_gain->Caption = captionIF->getSaturationCaption(s);
+    }
+
     lb_Val_gain->Caption = IntToStr(v);
+}
+
+void THSVAdjustFrame::setCaptionIF(bptr < CaptionIF > caption)
+{
+    this->captionIF = caption;
 }
 
 void THSVAdjustFrame::setMaxHueValue(int maxHueValue)
@@ -82,7 +92,7 @@ void THSVAdjustFrame::setMaxHueValue(int maxHueValue)
     this->maxHueValue = maxHueValue;
 }
 
-       //---------------------------------------------------------------------------
+    //---------------------------------------------------------------------------
 void THSVAdjustFrame::setHSVEdit(double h, double s, double v)
 {
     Edit_c3d_Manual39_h_adj->Text = h;
@@ -106,7 +116,7 @@ double_array THSVAdjustFrame::getHSVGain()
     double s = (double) spos / 100. / edt_c3d_satC->Text.ToDouble();
     int vpos = hsvPosition[2] - sb_Val_gain->Max / 2;
     double v = (double) vpos / 100. / edt_c3d_valC->Text.ToDouble();
-    
+
     double_array hsvgain(new double[3]);
     hsvgain[0] = h;
     hsvgain[1] = s;
@@ -126,7 +136,11 @@ void THSVAdjustFrame::setHSVPostition(int h, int s, int v)
 {
     settingHSVPosition = true;
     sb_Hue_gain->Position = h;
-    sb_Sat_gain->Position = s;
+    if (captionIF == null) {
+	sb_Sat_gain->Position = s;
+    } else {
+	sb_Sat_gain->Position = s;
+    }
     sb_Val_gain->Position = v;
     settingHSVPosition = false;
 }
@@ -180,35 +194,35 @@ void __fastcall THSVAdjustFrame::Button_HueResetClick(TObject * Sender)
     sb_Hue_gain->Position = defaultH;
 }
 
-       //---------------------------------------------------------------------------
+    //---------------------------------------------------------------------------
 
 void __fastcall THSVAdjustFrame::Button_SaturationResetClick(TObject * Sender)
 {
     sb_Sat_gain->Position = defaultS;
 }
 
-       //---------------------------------------------------------------------------
+    //---------------------------------------------------------------------------
 
 void __fastcall THSVAdjustFrame::Button_BrightnessResetClick(TObject * Sender)
 {
     sb_Val_gain->Position = defaultV;
 }
 
-       //---------------------------------------------------------------------------
+    //---------------------------------------------------------------------------
 
 void __fastcall THSVAdjustFrame::sb_Sat_gainChange(TObject * Sender)
 {
     sb_HSV_gainChange(Sender);
 }
 
-       //---------------------------------------------------------------------------
+    //---------------------------------------------------------------------------
 
 void __fastcall THSVAdjustFrame::sb_Val_gainChange(TObject * Sender)
 {
     sb_HSV_gainChange(Sender);
 }
 
-       //---------------------------------------------------------------------------
+    //---------------------------------------------------------------------------
 
 void __fastcall THSVAdjustFrame::Button_HueReturnClick(TObject * Sender)
 {
@@ -218,5 +232,5 @@ void __fastcall THSVAdjustFrame::Button_HueReturnClick(TObject * Sender)
     }
 }
 
-       //---------------------------------------------------------------------------
+    //---------------------------------------------------------------------------
 

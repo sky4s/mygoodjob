@@ -28,6 +28,11 @@
 class HueSetter;
 class SaturationSetter;
 
+class CaptionIF {
+  public:
+    virtual String getSaturationCaption(int saturationPos) = 0;
+};
+
 class THSVAdjustFrame:public TFrame {
     __published:		// IDE-managed Components
     TGroupBox * GroupBox40;
@@ -68,13 +73,15 @@ class THSVAdjustFrame:public TFrame {
     TStringGrid *stringGrid;
     double_array getHSVGain(double h, double s, double v, int row);
     bool settingHSVPosition;
-    void updateHSVCaption();
+
     int defaultH, defaultS, defaultV;
 
     bool hgainChange, sgainChange, vgainChange;
     int lastDefault;
     int maxHueValue;
+     bptr < CaptionIF > captionIF;
   public:			// User declarations
+    void updateHSVCaption();
     void sb_HSV_gainChange(TObject * Sender);
     __fastcall THSVAdjustFrame(TComponent * Owner);
     void setHSVEdit(double h, double s, double v);
@@ -87,7 +94,7 @@ class THSVAdjustFrame:public TFrame {
     void setTStringGrid(TStringGrid * stringGrid);
     void setDefaultHSVPosition(int h, int s, int v);
     void setMaxHueValue(int maxHueValue);
-
+    void setCaptionIF(bptr < CaptionIF > captionIF);
 };
 
 class SelectionListener:public gui::event::ListSelectionListener {
