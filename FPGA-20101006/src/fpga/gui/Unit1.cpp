@@ -15,7 +15,7 @@
 #include <fpga/gui/THSVForm3.h>
 #include <fpga/gui/THSVForm2nd.h>
 //#include <fpga/gui/THSVForm2.h>
-#include <fpga/gui/THSVForm4.h>
+//#include <fpga/gui/THSVForm4.h>
 #include "include.h"
 #include <iostream>
 #include <fstream>
@@ -754,7 +754,7 @@ void __fastcall TMainForm::mn_HSV2Click(TObject *Sender)
     else {
 	//if (TCON_DEV == "11307") {
 	    //HSVForm = new THSVForm1(this);
-	    HSVForm = new THSVForm2G(this);
+	    HSVForm = new THSVForm2nd(this);
 	    HSVForm->Show();
 	//}
     }

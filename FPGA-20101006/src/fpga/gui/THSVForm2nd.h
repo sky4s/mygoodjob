@@ -1,14 +1,8 @@
 //---------------------------------------------------------------------------
-//
-//    20100608 revise HSV H:10,S:7,V:7 by lynne
-//    table讀寫使用 TEngineerForm::SetRead_PG 與 TEngineerForm::SetWrite_PG
-//
-//---------------------------------------------------------------------------
 
-#ifndef THSVForm3H
-#define THSVForm3H
+#ifndef THSVForm2ndH
+#define THSVForm2ndH
 //---------------------------------------------------------------------------
-
 
 
 //C系統文件
@@ -51,7 +45,7 @@
 //  Byte 5 :  SAT1 [0]    LUM1 [6:0]
 /////////////////////////////////////////////
 
-class THSVFormNew:public TForm, cms::util::CallBackIF, RGBInfoCallbackIF, PatternCallbackIF {
+class THSVForm2nd:public TForm, cms::util::CallBackIF, RGBInfoCallbackIF, PatternCallbackIF {
     __published:		// IDE-managed Components
     TOpenDialog * OpenDialog1;
     TSaveDialog *SaveDialog1;
@@ -206,14 +200,15 @@ class THSVFormNew:public TForm, cms::util::CallBackIF, RGBInfoCallbackIF, Patter
     void __fastcall Button_OoGSetupClick(TObject * Sender);
     void __fastcall colorPickercb_show_ref_imgClick(TObject * Sender);
     void __fastcall CheckBox_ShowPatternClick(TObject * Sender);
-  protected:
-    bool settingScrollBarPosition;
+    void __fastcall hsvAdjustsb_Sat_gainChange(TObject * Sender);
+  private:			// User declarations
     static const int HUE_COUNT = 24;	//原本是96, why?
     static const int MAX_HUE_VALUE = 768;
     static const int MAX_ADJUST_HUE_ANGLE = 45;
     static const int WHOLE_HUE_ANGLE = 360;
-
-    int getGridSelectRow();
+    bool HSV_IsChkSum;
+    int tbl_step;
+    void initStringGrid_HSV();
 
     //=========================================================================
     // hue
@@ -230,26 +225,17 @@ class THSVFormNew:public TForm, cms::util::CallBackIF, RGBInfoCallbackIF, Patter
     static int getSuggestLastHueValue(int firstHueValue);
     //=========================================================================
 
-    virtual void hsvAdjustsb_hChange(TObject * Sender);
-  private:			// User declarations
-
-    bool HSV_IsChkSum;
-    int tbl_step;
-    void initStringGrid_HSV();
-
-
-
     void deg60baseClick(TObject * Sender);
     void deg30baseClick(TObject * Sender);
 
     void drawStringGrid_HSVCell(TObject * Sender);
     void setGridSelectRow(int row);
-
+    int getGridSelectRow();
     void initGroupBoxBase(TGroupBox * groupBox_base);
     void deChecked(TGroupBox * groupBox_base);
     int hintToRow(int hint);
     int lastStringGridSelectRow;
-
+    bool settingScrollBarPosition;
     void interpolation(int angleBase);
     bool isInverse(int *array, int size);
     bool isInverse(double_vector_ptr vector, int size);
@@ -257,9 +243,9 @@ class THSVFormNew:public TForm, cms::util::CallBackIF, RGBInfoCallbackIF, Patter
 
     class HSVChangeListener:public gui::event::ChangeListener {
       private:
-	THSVFormNew * parent;
+	THSVForm2nd * parent;
       public:
-	HSVChangeListener(THSVFormNew * parent):parent(parent) {
+	HSVChangeListener(THSVForm2nd * parent):parent(parent) {
 	};
 	virtual void stateChanged(TObject * Sender) {
 	    parent->hsvAdjustsb_c3d_Manual39_hChange(Sender);
@@ -269,9 +255,9 @@ class THSVFormNew:public TForm, cms::util::CallBackIF, RGBInfoCallbackIF, Patter
 
     class MousePressedListener:public gui::event::MouseListener {
       private:
-	THSVFormNew * parent;
+	THSVForm2nd * parent;
       public:
-	MousePressedListener(THSVFormNew * parent):parent(parent) {
+	MousePressedListener(THSVForm2nd * parent):parent(parent) {
 	};
 	virtual void mousePressed(TObject * Sender,
 				  TMouseButton Button, TShiftState Shift, int X, int Y) {
@@ -281,20 +267,31 @@ class THSVFormNew:public TForm, cms::util::CallBackIF, RGBInfoCallbackIF, Patter
 				   TMouseButton Button, TShiftState Shift, int X, int Y) {
 	};
     };
+
+    class CaptionIFListener:public CaptionIF {
+      private:
+	AnsiString astr;
+      public:
+	virtual String getSaturationCaption(int saturationPos) {
+	    //double s_show = saturationPos / 32.;
+	    //String result = astr.sprintf("%.2f", s_show);
+	    String result = (saturationPos - 64);
+	    return result;
+	};
+
+    };
+
     bptr < HSVChangeListener > hsvListener;
     bptr < MousePressedListener > mouseListener;
     bptr < TPColorThread1 > tpColorThread;
+    bptr < CaptionIFListener > captionIFListener;
+
     static double_array toWhiteXYZValues(double_array rgbxyYValues);
     bptr < Dep::RGBColorSpace > sourceColorSpace, targetColorSpace;
     int_array cursorRGBValues;
     int_array selectedRGBValues;
     bool customPattern;
 
-
-    /*enum PatternMode
-       {
-       Single, Hue15, Hue7p5
-       }; */
     PatternMode patternMode;
 
     bool isOutOfGamut(int_array rgbValues);
@@ -323,10 +320,10 @@ class THSVFormNew:public TForm, cms::util::CallBackIF, RGBInfoCallbackIF, Patter
 
     bool HSV_Chg;		// HSV_Chg = 0 為禁止寫入, HSV_Chg =1 為允許寫入, 以避免動作被中斷
 
-    __fastcall THSVFormNew(TComponent * Owner);
+    __fastcall THSVForm2nd(TComponent * Owner);
     void Reset_HSVshow();
     void Hue_LUTWrite();
-    virtual void Initial_HSV_table();
+    void Initial_HSV_table();
     bool Load_HSV(String Fpath);
 
 
@@ -349,7 +346,7 @@ class THSVFormNew:public TForm, cms::util::CallBackIF, RGBInfoCallbackIF, Patter
 
 
 //---------------------------------------------------------------------------
-extern PACKAGE THSVFormNew *HSVFormNew;
+
 //---------------------------------------------------------------------------
 #endif
 

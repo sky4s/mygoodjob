@@ -1,9 +1,9 @@
-object HSVFormNew: THSVFormNew
+object HSVForm2nd: THSVForm2nd
   Left = 411
   Top = 127
   Width = 843
   Height = 629
-  Caption = 'HSV'
+  Caption = 'HSV2'
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -6748,7 +6748,6 @@ object HSVFormNew: THSVFormNew
             Max = 96
             Min = -96
             Position = 0
-            OnChange = hsvAdjustsb_Hue_gainChange
           end
           inherited Edit_c3d_Manual39_h_adj: TEdit
             Visible = False
@@ -6758,6 +6757,11 @@ object HSVFormNew: THSVFormNew
           end
         end
         inherited GroupBox41: TGroupBox
+          inherited sb_Sat_gain: TScrollBar
+            Min = 1
+            Position = 64
+            OnChange = hsvAdjustsb_Sat_gainChange
+          end
           inherited Edit_c3d_Manual39_s_adj: TEdit
             Visible = False
           end
