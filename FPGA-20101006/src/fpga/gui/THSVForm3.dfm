@@ -1,4 +1,4 @@
-object HSVForm3: THSVForm3
+object HSVFormNew: THSVFormNew
   Left = 411
   Top = 127
   Width = 843

@@ -37,7 +37,7 @@
 
 //const double THSVForm3::WHOLE_HUE_ANGLE = 360;
 //---------------------------------------------------------------------------
-__fastcall THSVForm3::THSVForm3(TComponent * Owner):TForm(Owner),
+__fastcall THSVFormNew::THSVFormNew(TComponent * Owner):TForm(Owner),
 HSV_IsChkSum(true), tbl_step(WHOLE_HUE_ANGLE / HUE_COUNT),
 lastStringGridSelectRow(-1), settingScrollBarPosition(false),
 cursorRGBValues(new int[3]), patternMode(PatternMode::Single),
@@ -56,7 +56,7 @@ selectedRGBValues(new int[3]), customPattern(false), patternValue(192), isInvers
 }
 
 //---------------------------------------------------------------------------
-void __fastcall THSVForm3::CheckBox_Click(TObject * Sender)
+void __fastcall THSVFormNew::CheckBox_Click(TObject * Sender)
 {
     if (HSV_Chg == 0)
 	return;
@@ -68,7 +68,7 @@ void __fastcall THSVForm3::CheckBox_Click(TObject * Sender)
 
 //---------------------------------------------------------------------------
 
-void __fastcall THSVForm3::FormCreate(TObject * Sender)
+void __fastcall THSVFormNew::FormCreate(TObject * Sender)
 {
     HSV_Chg = 0;
     int ic_choice;
@@ -118,7 +118,7 @@ void __fastcall THSVForm3::FormCreate(TObject * Sender)
 }
 
 
-double THSVForm3::getSaturation()
+double THSVFormNew::getSaturation()
 {
     int index = RadioGroup_Saturation->ItemIndex;
     switch (index) {
@@ -133,7 +133,7 @@ double THSVForm3::getSaturation()
     }
 }
 
-int THSVForm3::getValue()
+int THSVFormNew::getValue()
 {
     int index = RadioGroup_Value->ItemIndex;
     switch (index) {
@@ -148,7 +148,7 @@ int THSVForm3::getValue()
     }
 }
 
-void THSVForm3::initGroupBoxBase(TGroupBox * groupBox_base)
+void THSVFormNew::initGroupBoxBase(TGroupBox * groupBox_base)
 {
     int count = groupBox_base->ControlCount;
     TColor fontColor = getValue() < 170 ? clWhite : clBlack;
@@ -165,7 +165,7 @@ void THSVForm3::initGroupBoxBase(TGroupBox * groupBox_base)
 
 //---------------------------------------------------------------------------
 
-void __fastcall THSVForm3::FormClose(TObject * Sender, TCloseAction & Action)
+void __fastcall THSVFormNew::FormClose(TObject * Sender, TCloseAction & Action)
 {
     delete[]OHSV;
     delete[]cb;
@@ -179,7 +179,7 @@ void __fastcall THSVForm3::FormClose(TObject * Sender, TCloseAction & Action)
 
 //---------------------------------------------------------------------------
 
-void THSVForm3::Initial_HSV_table()
+void THSVFormNew::Initial_HSV_table()
 {
     //initial table setting
     for (int i = 0; i < HUE_COUNT; i++) {
@@ -195,7 +195,7 @@ void THSVForm3::Initial_HSV_table()
 
 //---------------------------------------------------------------------------
 
-void THSVForm3::Reset_HSVshow()
+void THSVFormNew::Reset_HSVshow()
 {				// Set gain value relative to color choose
     int tbl_idx = getGridSelectRow();
 
@@ -208,7 +208,7 @@ void THSVForm3::Reset_HSVshow()
 }
 
 //---------------------------------------------------------------------------
-void __fastcall THSVForm3::cb_Hue_RedClick(TObject * Sender)
+void __fastcall THSVFormNew::cb_Hue_RedClick(TObject * Sender)
 {				// 6 Color Adjust : Red
     if (cb_Hue_Red->Checked == true) {
 	cb_Hue_Green->Checked = false;
@@ -223,7 +223,7 @@ void __fastcall THSVForm3::cb_Hue_RedClick(TObject * Sender)
 
 //---------------------------------------------------------------------------
 
-void __fastcall THSVForm3::cb_Hue_YellowClick(TObject * Sender)
+void __fastcall THSVFormNew::cb_Hue_YellowClick(TObject * Sender)
 {				// 6 Color Adjust : Yellow
     if (cb_Hue_Yellow->Checked == true) {
 	cb_Hue_Red->Checked = false;
@@ -238,7 +238,7 @@ void __fastcall THSVForm3::cb_Hue_YellowClick(TObject * Sender)
 
 //---------------------------------------------------------------------------
 
-void __fastcall THSVForm3::cb_Hue_GreenClick(TObject * Sender)
+void __fastcall THSVFormNew::cb_Hue_GreenClick(TObject * Sender)
 {				// 6 Color Adjust : Green
     if (cb_Hue_Green->Checked == true) {
 	cb_Hue_Red->Checked = false;
@@ -253,7 +253,7 @@ void __fastcall THSVForm3::cb_Hue_GreenClick(TObject * Sender)
 
 //---------------------------------------------------------------------------
 
-void __fastcall THSVForm3::cb_Hue_BlueClick(TObject * Sender)
+void __fastcall THSVFormNew::cb_Hue_BlueClick(TObject * Sender)
 {				// 6 Color Adjust : Blue
     if (cb_Hue_Blue->Checked == true) {
 	cb_Hue_Red->Checked = false;
@@ -268,7 +268,7 @@ void __fastcall THSVForm3::cb_Hue_BlueClick(TObject * Sender)
 
 //---------------------------------------------------------------------------
 
-void __fastcall THSVForm3::cb_Hue_CyanClick(TObject * Sender)
+void __fastcall THSVFormNew::cb_Hue_CyanClick(TObject * Sender)
 {				// 6 Color Adjust : Cyan
     if (cb_Hue_Cyan->Checked == true) {
 	cb_Hue_Red->Checked = false;
@@ -283,7 +283,7 @@ void __fastcall THSVForm3::cb_Hue_CyanClick(TObject * Sender)
 
 //---------------------------------------------------------------------------
 
-void __fastcall THSVForm3::cb_Hue_MagClick(TObject * Sender)
+void __fastcall THSVFormNew::cb_Hue_MagClick(TObject * Sender)
 {				// 6 Color Adjust : Magenta
     if (cb_Hue_Mag->Checked == true) {
 	cb_Hue_Red->Checked = false;
@@ -300,7 +300,7 @@ void __fastcall THSVForm3::cb_Hue_MagClick(TObject * Sender)
 
 //---------------------------------------------------------------------------
 
-void THSVForm3::Hue_LUTWrite()
+void THSVFormNew::Hue_LUTWrite()
 {
     HSV_LUT_FuncEnable(0);	// Table operation button disable
     bool ok = HSV_LUT_RW_start();	// Record the state of HSV enable
@@ -346,7 +346,7 @@ void THSVForm3::Hue_LUTWrite()
 
 //--------------------------------------------------------------------------
 
-void __fastcall THSVForm3::btn_resetClick(TObject * Sender)
+void __fastcall THSVFormNew::btn_resetClick(TObject * Sender)
 {
     Initial_HSV_table();
     initStringGrid_HSV();
@@ -358,7 +358,7 @@ void __fastcall THSVForm3::btn_resetClick(TObject * Sender)
 //---------------------------------------------------------------------------
 
 
-void __fastcall THSVForm3::btn_hsv_loadClick(TObject * Sender)
+void __fastcall THSVFormNew::btn_hsv_loadClick(TObject * Sender)
 {
     if (!OpenDialog1->Execute())
 	return;
@@ -370,7 +370,7 @@ void __fastcall THSVForm3::btn_hsv_loadClick(TObject * Sender)
 
 //---------------------------------------------------------------------------
 
-bool THSVForm3::Load_HSV(String Fpath)
+bool THSVFormNew::Load_HSV(String Fpath)
 {
     if (Fpath == NULL)
 	return 0;
@@ -423,7 +423,7 @@ bool THSVForm3::Load_HSV(String Fpath)
 
 //---------------------------------------------------------------------------
 
-void __fastcall THSVForm3::btn_hsv_saveClick(TObject * Sender)
+void __fastcall THSVFormNew::btn_hsv_saveClick(TObject * Sender)
 {
     if (!SaveDialog1->Execute())
 	return;
@@ -441,7 +441,7 @@ void __fastcall THSVForm3::btn_hsv_saveClick(TObject * Sender)
 //---------------------------------------------------------------------------
 
 
-void __fastcall THSVForm3::Hue_ImgMouseMove(TObject * Sender, TShiftState Shift, int X, int Y)
+void __fastcall THSVFormNew::Hue_ImgMouseMove(TObject * Sender, TShiftState Shift, int X, int Y)
 {
     int color;
     double h, s, v, i, r, g, b;
@@ -463,7 +463,7 @@ void __fastcall THSVForm3::Hue_ImgMouseMove(TObject * Sender, TShiftState Shift,
 
 //---------------------------------------------------------------------------
 
-void __fastcall THSVForm3::btn_Hue_Img_loadClick(TObject * Sender)
+void __fastcall THSVFormNew::btn_Hue_Img_loadClick(TObject * Sender)
 {
     if (!OpenDialog1->Execute())
 	return;
@@ -486,7 +486,7 @@ void __fastcall THSVForm3::btn_Hue_Img_loadClick(TObject * Sender)
 
 //---------------------------------------------------------------------------
 
-void __fastcall THSVForm3::rg_HSV_ModeClick(TObject * Sender)
+void __fastcall THSVFormNew::rg_HSV_ModeClick(TObject * Sender)
 {
     String Fpath;
 
@@ -510,7 +510,7 @@ void __fastcall THSVForm3::rg_HSV_ModeClick(TObject * Sender)
 
 //---------------------------------------------------------------------------
 
-void __fastcall THSVForm3::Btn_HSV_reloadClick(TObject * Sender)
+void __fastcall THSVFormNew::Btn_HSV_reloadClick(TObject * Sender)
 {
     Btn_HSV_reload->Enabled = false;
     HSV_LUT_FuncEnable(0);
@@ -533,7 +533,7 @@ void __fastcall THSVForm3::Btn_HSV_reloadClick(TObject * Sender)
 
 //---------------------------------------------------------------------------
 
-void __fastcall THSVForm3::FormKeyDown(TObject * Sender, WORD & Key, TShiftState Shift)
+void __fastcall THSVFormNew::FormKeyDown(TObject * Sender, WORD & Key, TShiftState Shift)
 {
     if (Key == 0x40) {
 	Btn_HSV_reloadClick(Sender);
@@ -543,14 +543,14 @@ void __fastcall THSVForm3::FormKeyDown(TObject * Sender, WORD & Key, TShiftState
 //---------------------------------------------------------------------------
 
 
-void __fastcall THSVForm3::sb_dif_nChange(TObject * Sender)
+void __fastcall THSVFormNew::sb_dif_nChange(TObject * Sender)
 {
     lb_dif_n->Caption = (4 - sb_dif_n->Position) * 15;
 }
 
 //---------------------------------------------------------------------------
 
-void __fastcall THSVForm3::sb_dif_pChange(TObject * Sender)
+void __fastcall THSVFormNew::sb_dif_pChange(TObject * Sender)
 {
     lb_dif_p->Caption = sb_dif_p->Position * 15;
 }
@@ -559,7 +559,7 @@ void __fastcall THSVForm3::sb_dif_pChange(TObject * Sender)
 
 
 
-void __fastcall THSVForm3::btn_setClick(TObject * Sender)
+void __fastcall THSVFormNew::btn_setClick(TObject * Sender)
 {
     for (int i = 0; i < HUE_COUNT; i++) {
 	hueTable[i] = hueTableTemp[i];
@@ -576,14 +576,14 @@ void __fastcall THSVForm3::btn_setClick(TObject * Sender)
 
 //---------------------------------------------------------------------------
 
-void __fastcall THSVForm3::btn_hsv_writeClick(TObject * Sender)
+void __fastcall THSVFormNew::btn_hsv_writeClick(TObject * Sender)
 {
     Hue_LUTWrite();
 }
 
 //---------------------------------------------------------------------------
 // Recover the state of HSV enable
-bool THSVForm3::HSV_LUT_RW_start()
+bool THSVFormNew::HSV_LUT_RW_start()
 {
     if (HSVEN_idx == -1) {
 	ShowMessage("Unknown HSV enabled index.");
@@ -607,7 +607,7 @@ bool THSVForm3::HSV_LUT_RW_start()
 //---------------------------------------------------------------------------
 
 // Recover the state of HSV disable
-void THSVForm3::HSV_LUT_RW_over()
+void THSVFormNew::HSV_LUT_RW_over()
 {
     if (CheckBox_OffWhenWrite->Checked) {
 	// reload en state
@@ -618,7 +618,7 @@ void THSVForm3::HSV_LUT_RW_over()
 }
 
 //---------------------------------------------------------------------------
-void THSVForm3::HSV_LUT_FuncEnable(bool flag_en)
+void THSVFormNew::HSV_LUT_FuncEnable(bool flag_en)
 {
     if (flag_en == true) {	// Table operation button enable
 	btn_hsv_read->Enabled = true;
@@ -633,7 +633,7 @@ void THSVForm3::HSV_LUT_FuncEnable(bool flag_en)
     }
 }
 
-void __fastcall THSVForm3::btn_hsv_readClick(TObject * Sender)
+void __fastcall THSVFormNew::btn_hsv_readClick(TObject * Sender)
 {
     HSV_LUT_FuncEnable(0);	// Table operation button disable
     bool ok = HSV_LUT_RW_start();	// Record the state of HSV enable
@@ -674,7 +674,7 @@ void __fastcall THSVForm3::btn_hsv_readClick(TObject * Sender)
 
 
 
-void __fastcall THSVForm3::Hue_ImgMouseDown(TObject * Sender,
+void __fastcall THSVFormNew::Hue_ImgMouseDown(TObject * Sender,
 					    TMouseButton Button, TShiftState Shift, int X, int Y)
 {
     int color;
@@ -690,7 +690,7 @@ void __fastcall THSVForm3::Hue_ImgMouseDown(TObject * Sender,
 }
 
 //---------------------------------------------------------------------------
-void THSVForm3::initStringGrid_HSV()
+void THSVFormNew::initStringGrid_HSV()
 {
 
     //initial table setting
@@ -715,38 +715,38 @@ void THSVForm3::initStringGrid_HSV()
     {255, 0, 255}, {255, 0, 191}, {255, 0, 128}, {255, 0, 64}
 };*/
 
-int THSVForm3::getHueAngle(int index)
+int THSVFormNew::getHueAngle(int index)
 {
     return WHOLE_HUE_ANGLE / HUE_COUNT * index;
 }
 
-int THSVForm3::getHueIndex(double angle)
+int THSVFormNew::getHueIndex(double angle)
 {
     using namespace java::lang;
     double round = Math::round(angle / (WHOLE_HUE_ANGLE / HUE_COUNT));
     return static_cast < int >(round) % 24;
 }
 
-int THSVForm3::hueAngleToValue(double hueAngle)
+int THSVFormNew::hueAngleToValue(double hueAngle)
 {
     double value = hueAngle / WHOLE_HUE_ANGLE * MAX_HUE_VALUE;
     return static_cast < int >(value);
 }
 
-double THSVForm3::hueValueToAngle(int hueValue)
+double THSVFormNew::hueValueToAngle(int hueValue)
 {
     double angle = ((double) hueValue) / MAX_HUE_VALUE * WHOLE_HUE_ANGLE;
     return angle;
     //return static_cast < int >(angle);
 }
 
-RGB_ptr THSVForm3::getHueRGB(int index)
+RGB_ptr THSVFormNew::getHueRGB(int index)
 {
     RGB_ptr rgb = getHueRGB(index, getSaturation(), getValue());
     return rgb;
 }
 
-RGB_ptr THSVForm3::getHueRGB(int index, double s, int v)
+RGB_ptr THSVFormNew::getHueRGB(int index, double s, int v)
 {
     using namespace Dep;
     int hue = getHueAngle(index);
@@ -756,7 +756,7 @@ RGB_ptr THSVForm3::getHueRGB(int index, double s, int v)
     return rgb;
 }
 
-void __fastcall THSVForm3::stringGrid_HSVDrawCell(TObject * Sender,
+void __fastcall THSVFormNew::stringGrid_HSVDrawCell(TObject * Sender,
 						  int ACol, int ARow,
 						  TRect & Rect, TGridDrawState State)
 {
@@ -777,7 +777,7 @@ void __fastcall THSVForm3::stringGrid_HSVDrawCell(TObject * Sender,
     }
 }
 
-void THSVForm3::drawStringGrid_HSVCell(TObject * Sender)
+void THSVFormNew::drawStringGrid_HSVCell(TObject * Sender)
 {
     TRect r;
     TGridDrawState g;
@@ -788,7 +788,7 @@ void THSVForm3::drawStringGrid_HSVCell(TObject * Sender)
 
 //---------------------------------------------------------------------------
 
-int_array THSVForm3::getHSVAdjustValue(int index)
+int_array THSVFormNew::getHSVAdjustValue(int index)
 {
     int_array adjustValue(new int[3]);
     adjustValue[0] = hueTableTemp[index];
@@ -797,7 +797,7 @@ int_array THSVForm3::getHSVAdjustValue(int index)
     return adjustValue;
 }
 
-void __fastcall THSVForm3::stringGrid_HSVSelectCell(TObject * Sender,
+void __fastcall THSVFormNew::stringGrid_HSVSelectCell(TObject * Sender,
 						    int ACol, int ARow, bool & CanSelect)
 {
     lastStringGridSelectRow = ARow;
@@ -846,8 +846,13 @@ void __fastcall THSVForm3::stringGrid_HSVSelectCell(TObject * Sender,
 
 //---------------------------------------------------------------------------
 
+void __fastcall THSVFormNew::hsvAdjustsb_c3d_Manual39_hChange(TObject * Sender)
+{
+    hsvAdjustsb_hChange(Sender);
+}
 
-void __fastcall THSVForm3::hsvAdjustsb_c3d_Manual39_hChange(TObject * Sender)
+
+void THSVFormNew::hsvAdjustsb_hChange(TObject * Sender)
 {
     if (true == settingScrollBarPosition) {
 	//return;
@@ -907,7 +912,7 @@ void __fastcall THSVForm3::hsvAdjustsb_c3d_Manual39_hChange(TObject * Sender)
 
 
 
-void __fastcall THSVForm3::RadioButton_deg60baseClick(TObject * Sender)
+void __fastcall THSVFormNew::RadioButton_deg60baseClick(TObject * Sender)
 {
     TRadioButton *button = dynamic_cast < TRadioButton * >(Sender);
     if (null != button) {
@@ -916,11 +921,11 @@ void __fastcall THSVForm3::RadioButton_deg60baseClick(TObject * Sender)
     deChecked(GroupBox_30base);
 }
 
-int THSVForm3::hintToRow(int hint)
+int THSVFormNew::hintToRow(int hint)
 {
     return hint / 15 + 1;
 }
-void THSVForm3::setGridSelectRow(int row)
+void THSVFormNew::setGridSelectRow(int row)
 {
     TGridRect select = stringGrid_HSV->Selection;
     select.Top = row;
@@ -929,13 +934,13 @@ void THSVForm3::setGridSelectRow(int row)
     stringGrid_HSVSelectCell(null, -1, row, true);
 }
 
-int THSVForm3::getGridSelectRow()
+int THSVFormNew::getGridSelectRow()
 {
     return stringGrid_HSV->Selection.Top;
 }
 
 //---------------------------------------------------------------------------//---------------------------------------------------------------------------
-void __fastcall THSVForm3::RadioButton_deg30baseClick(TObject * Sender)
+void __fastcall THSVFormNew::RadioButton_deg30baseClick(TObject * Sender)
 {
     TRadioButton *button = dynamic_cast < TRadioButton * >(Sender);
     if (null != button) {
@@ -944,7 +949,7 @@ void __fastcall THSVForm3::RadioButton_deg30baseClick(TObject * Sender)
     deChecked(GroupBox_60base);
 }
 
-void THSVForm3::deChecked(TGroupBox * groupBox_base)
+void THSVFormNew::deChecked(TGroupBox * groupBox_base)
 {
     int count = groupBox_base->ControlCount;
     for (int x = 0; x < count; x++) {
@@ -957,7 +962,7 @@ void THSVForm3::deChecked(TGroupBox * groupBox_base)
 
 //---------------------------------------------------------------------------
 
-void __fastcall THSVForm3::FormShow(TObject * Sender)
+void __fastcall THSVFormNew::FormShow(TObject * Sender)
 {
     initGroupBoxBase(GroupBox_30base);
     initGroupBoxBase(GroupBox_60base);
@@ -965,17 +970,7 @@ void __fastcall THSVForm3::FormShow(TObject * Sender)
 
 //---------------------------------------------------------------------------
 
-void __fastcall THSVForm3::RadioGroup_SaturationClick(TObject * Sender)
-{
-    initGroupBoxBase(GroupBox_30base);
-    initGroupBoxBase(GroupBox_60base);
-    drawStringGrid_HSVCell(Sender);
-    setGridSelectRow(getGridSelectRow());
-}
-
-//---------------------------------------------------------------------------
-
-void __fastcall THSVForm3::RadioGroup_ValueClick(TObject * Sender)
+void __fastcall THSVFormNew::RadioGroup_SaturationClick(TObject * Sender)
 {
     initGroupBoxBase(GroupBox_30base);
     initGroupBoxBase(GroupBox_60base);
@@ -985,7 +980,17 @@ void __fastcall THSVForm3::RadioGroup_ValueClick(TObject * Sender)
 
 //---------------------------------------------------------------------------
 
-void __fastcall THSVForm3::Button_60BaseInterpClick(TObject * Sender)
+void __fastcall THSVFormNew::RadioGroup_ValueClick(TObject * Sender)
+{
+    initGroupBoxBase(GroupBox_30base);
+    initGroupBoxBase(GroupBox_60base);
+    drawStringGrid_HSVCell(Sender);
+    setGridSelectRow(getGridSelectRow());
+}
+
+//---------------------------------------------------------------------------
+
+void __fastcall THSVFormNew::Button_60BaseInterpClick(TObject * Sender)
 {
     //以60base內插
     interpolation(60);
@@ -993,7 +998,7 @@ void __fastcall THSVForm3::Button_60BaseInterpClick(TObject * Sender)
 }
 
 
-int THSVForm3::getSuggestLastHueValue(int firstHueValue)
+int THSVFormNew::getSuggestLastHueValue(int firstHueValue)
 {
     double firsthueAngle = hueValueToAngle(firstHueValue);
     int suggestHueValue = (firsthueAngle >= 0 && firsthueAngle <=
@@ -1002,7 +1007,7 @@ int THSVForm3::getSuggestLastHueValue(int firstHueValue)
     return suggestHueValue;
 }
 
-bool THSVForm3::isInverse(int *array, int size)
+bool THSVFormNew::isInverse(int *array, int size)
 {
     int pre = array[0];
     for (int x = 1; x < size; x++) {
@@ -1015,7 +1020,7 @@ bool THSVForm3::isInverse(int *array, int size)
     return false;
 }
 
-bool THSVForm3::isInverse(double_vector_ptr vector, int size)
+bool THSVFormNew::isInverse(double_vector_ptr vector, int size)
 {
     int pre = (*vector)[0];
     for (int x = 1; x < size; x++) {
@@ -1027,7 +1032,7 @@ bool THSVForm3::isInverse(double_vector_ptr vector, int size)
     }
     return false;
 }
-void THSVForm3::interpolation(int angleBase)
+void THSVFormNew::interpolation(int angleBase)
 {
     //內插的key數量
     int keyCount = WHOLE_HUE_ANGLE / angleBase + 1;
@@ -1085,7 +1090,7 @@ void THSVForm3::interpolation(int angleBase)
 
 //---------------------------------------------------------------------------
 
-void __fastcall THSVForm3::Button_30BaseInterpClick(TObject * Sender)
+void __fastcall THSVFormNew::Button_30BaseInterpClick(TObject * Sender)
 {
     //以60+30base內插
     interpolation(30);
@@ -1094,7 +1099,7 @@ void __fastcall THSVForm3::Button_30BaseInterpClick(TObject * Sender)
 
 //---------------------------------------------------------------------------
 
-void __fastcall THSVForm3::FormKeyPress(TObject * Sender, char &Key)
+void __fastcall THSVFormNew::FormKeyPress(TObject * Sender, char &Key)
 {
     using namespace math;
     using namespace Dep;
@@ -1183,7 +1188,7 @@ void __fastcall THSVForm3::FormKeyPress(TObject * Sender, char &Key)
 
 //---------------------------------------------------------------------------
 
-void __fastcall THSVForm3::hsvAdjustButton_HueResetClick(TObject * Sender)
+void __fastcall THSVFormNew::hsvAdjustButton_HueResetClick(TObject * Sender)
 {
     hsvAdjust->Button_HueResetClick(Sender);
 
@@ -1194,21 +1199,21 @@ void __fastcall THSVForm3::hsvAdjustButton_HueResetClick(TObject * Sender)
 
 
 
-void __fastcall THSVForm3::stringGrid_HSVKeyDown(TObject * Sender, WORD & Key, TShiftState Shift)
+void __fastcall THSVFormNew::stringGrid_HSVKeyDown(TObject * Sender, WORD & Key, TShiftState Shift)
 {
     FormKeyPress(Sender, Key);
 }
 
 //---------------------------------------------------------------------------
 
-void __fastcall THSVForm3::Button_15BaseInterpClick(TObject * Sender)
+void __fastcall THSVFormNew::Button_15BaseInterpClick(TObject * Sender)
 {
 
     base15DegInterpClick(Sender, true, true, true);
 
 }
 
-void THSVForm3::base15DegInterpClick(TObject * Sender, bool hInterp, bool sInterp, bool vInterp)
+void THSVFormNew::base15DegInterpClick(TObject * Sender, bool hInterp, bool sInterp, bool vInterp)
 {
     int index = lastStringGridSelectRow - 1;
     bool firstIndex = (index == 0);
@@ -1244,7 +1249,7 @@ void THSVForm3::base15DegInterpClick(TObject * Sender, bool hInterp, bool sInter
 
 //---------------------------------------------------------------------------
 
-void __fastcall THSVForm3::hsvAdjustsb_Hue_gainChange(TObject * Sender)
+void __fastcall THSVFormNew::hsvAdjustsb_Hue_gainChange(TObject * Sender)
 {
     hsvAdjust->sb_Hue_gainChange(Sender);
 
@@ -1252,21 +1257,21 @@ void __fastcall THSVForm3::hsvAdjustsb_Hue_gainChange(TObject * Sender)
 
 //---------------------------------------------------------------------------
 
-void __fastcall THSVForm3::Button_HInterpClick(TObject * Sender)
+void __fastcall THSVFormNew::Button_HInterpClick(TObject * Sender)
 {
     base15DegInterpClick(Sender, true, false, false);
 }
 
 //---------------------------------------------------------------------------
 
-void __fastcall THSVForm3::Button_SInterpClick(TObject * Sender)
+void __fastcall THSVFormNew::Button_SInterpClick(TObject * Sender)
 {
     base15DegInterpClick(Sender, false, true, false);
 }
 
 //---------------------------------------------------------------------------
 
-void __fastcall THSVForm3::Button_VInterpClick(TObject * Sender)
+void __fastcall THSVFormNew::Button_VInterpClick(TObject * Sender)
 {
     base15DegInterpClick(Sender, false, false, true);
 }
@@ -1274,7 +1279,7 @@ void __fastcall THSVForm3::Button_VInterpClick(TObject * Sender)
 //---------------------------------------------------------------------------
 
 
-void __fastcall THSVForm3::Button_OoGSetupClick(TObject * Sender)
+void __fastcall THSVFormNew::Button_OoGSetupClick(TObject * Sender)
 {
     if (null == GamutSetupForm) {
 	Application->CreateForm(__classid(TGamutSetupForm), &GamutSetupForm);
@@ -1284,7 +1289,7 @@ void __fastcall THSVForm3::Button_OoGSetupClick(TObject * Sender)
 }
 
 //---------------------------------------------------------------------------
-void THSVForm3::callback()
+void THSVFormNew::callback()
 {
     using namespace Dep;
     using namespace cms;
@@ -1332,7 +1337,7 @@ void THSVForm3::callback()
     setupPatternForm();
 }
 
-double_array THSVForm3::toWhiteXYZValues(double_array rgbxyYValues)
+double_array THSVFormNew::toWhiteXYZValues(double_array rgbxyYValues)
 {
     using namespace Indep;
     xyY_ptr rxyY(new CIExyY(rgbxyYValues[0], rgbxyYValues[1], rgbxyYValues[2]));
@@ -1350,7 +1355,7 @@ double_array THSVForm3::toWhiteXYZValues(double_array rgbxyYValues)
     return whiteXYZValues;
 }
 
-bool THSVForm3::isOutOfGamut(int_array rgbValues)
+bool THSVFormNew::isOutOfGamut(int_array rgbValues)
 {
     using namespace math;
     using namespace Dep;
@@ -1364,7 +1369,7 @@ bool THSVForm3::isOutOfGamut(int_array rgbValues)
     return !isLegal;
 }
 
-void THSVForm3::callback(int_array rgbValues)
+void THSVFormNew::callback(int_array rgbValues)
 {
 
     cursorRGBValues = rgbValues;
@@ -1401,7 +1406,7 @@ void THSVForm3::callback(int_array rgbValues)
     }
 }
 
-void THSVForm3::selectColor()
+void THSVFormNew::selectColor()
 {
     using namespace Dep;
     using namespace math;
@@ -1415,7 +1420,7 @@ void THSVForm3::selectColor()
     setupPatternForm();
 }
 
-void THSVForm3::imageMousePressed(TObject * Sender, TMouseButton Button,
+void THSVFormNew::imageMousePressed(TObject * Sender, TMouseButton Button,
 				  TShiftState Shift, int X, int Y)
 {
     /*using namespace Dep;
@@ -1432,7 +1437,7 @@ void THSVForm3::imageMousePressed(TObject * Sender, TMouseButton Button,
 
 }
 
-void __fastcall THSVForm3::colorPickercb_show_ref_imgClick(TObject * Sender)
+void __fastcall THSVFormNew::colorPickercb_show_ref_imgClick(TObject * Sender)
 {
     colorPicker->cb_show_ref_imgClick(Sender);
 
@@ -1440,7 +1445,7 @@ void __fastcall THSVForm3::colorPickercb_show_ref_imgClick(TObject * Sender)
 
 //---------------------------------------------------------------------------
 
-void THSVForm3::setupPatternForm()
+void THSVFormNew::setupPatternForm()
 {
 
     using namespace Dep;
@@ -1518,7 +1523,7 @@ void THSVForm3::setupPatternForm()
 	    int index = isInversePattern ? stdSize - 1 - y : y;
 	    hsvValues[0] = h;
 	    double saturation = customPattern ? hsviValues[1] : saturationArray[index];
-            hsvValues[1] = saturation;
+	    hsvValues[1] = saturation;
 	    //hsvValues[1] = saturationArray[index];
 	    hsvValues[2] = patternValue;
 	    HSV_ptr hsv(new HSV(RGBColorSpace::sRGB, hsvValues));
@@ -1547,7 +1552,7 @@ void THSVForm3::setupPatternForm()
     PatternForm->Refresh();
 }
 
-void __fastcall THSVForm3::CheckBox_ShowPatternClick(TObject * Sender)
+void __fastcall THSVFormNew::CheckBox_ShowPatternClick(TObject * Sender)
 {
 
     if (true == CheckBox_ShowPattern->Checked) {
@@ -1560,26 +1565,26 @@ void __fastcall THSVForm3::CheckBox_ShowPatternClick(TObject * Sender)
 }
 
 //---------------------------------------------------------------------------
-void THSVForm3::show15DegBasePattern()
+void THSVFormNew::show15DegBasePattern()
 {
     patternMode = PatternMode::Hue15;
     setupPatternForm();
 
 }
 
-void THSVForm3::show7p5DegBasePattern()
+void THSVFormNew::show7p5DegBasePattern()
 {
     patternMode = PatternMode::Hue7p5;
     setupPatternForm();
 }
 
-void THSVForm3::showSinglePattern()
+void THSVFormNew::showSinglePattern()
 {
     patternMode = PatternMode::Single;
     setupPatternForm();
 }
 
-void THSVForm3::adjustValue(bool minus)
+void THSVFormNew::adjustValue(bool minus)
 {
     if (minus) {
 	patternValue -= 32;
@@ -1591,16 +1596,14 @@ void THSVForm3::adjustValue(bool minus)
     setupPatternForm();
 }
 
-void THSVForm3::inversePattern(bool inverse)
+void THSVFormNew::inversePattern(bool inverse)
 {
     isInversePattern = inverse;
     setupPatternForm();
 }
 
-void THSVForm3::keyPress(char &Key)
+void THSVFormNew::keyPress(char &Key)
 {
     FormKeyPress(this, Key);
 }
-
-
 

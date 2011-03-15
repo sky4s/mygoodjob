@@ -106,6 +106,7 @@ double_array THSVAdjustFrame::getHSVGain()
     double s = (double) spos / 100. / edt_c3d_satC->Text.ToDouble();
     int vpos = hsvPosition[2] - sb_Val_gain->Max / 2;
     double v = (double) vpos / 100. / edt_c3d_valC->Text.ToDouble();
+    
     double_array hsvgain(new double[3]);
     hsvgain[0] = h;
     hsvgain[1] = s;
