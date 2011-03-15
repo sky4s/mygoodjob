@@ -43,7 +43,7 @@
 /////////////////////////////////////////////
 
 
-class THSVForm1:public TForm {
+class THSVFormOrg:public TForm {
     __published:		// IDE-managed Components
     TOpenDialog * OpenDialog1;
     TSaveDialog *SaveDialog1;
@@ -141,7 +141,7 @@ class THSVForm1:public TForm {
 
     bool HSV_Chg;		// HSV_Chg = 0 為禁止寫入, HSV_Chg =1 為允許寫入, 以避免動作被中斷
 
-    __fastcall THSVForm1(TComponent * Owner);
+    __fastcall THSVFormOrg(TComponent * Owner);
     void Reset_HSVshow();
     //bool Load_HSIini(String Fpath);
     void Hue_LUTWrite();
@@ -208,7 +208,7 @@ int Cmplmnt2sToSign(int value, int Range)
 }
 int Get_select_idx(double angle);
 //---------------------------------------------------------------------------
-extern PACKAGE THSVForm1 *HSVForm1;
+extern PACKAGE THSVFormOrg *HSVFormOrg;
 //---------------------------------------------------------------------------
 #endif
 

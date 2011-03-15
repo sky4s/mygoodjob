@@ -1,4 +1,4 @@
-object HSVForm1: THSVForm1
+object HSVFormOrg: THSVFormOrg
   Left = 389
   Top = 0
   Width = 891
@@ -6752,8 +6752,8 @@ object HSVForm1: THSVForm1
       end
     end
     object Btn_HSV_reload: TBitBtn
-      Left = 24
-      Top = 472
+      Left = 16
+      Top = 488
       Width = 73
       Height = 25
       Caption = '&Reload'

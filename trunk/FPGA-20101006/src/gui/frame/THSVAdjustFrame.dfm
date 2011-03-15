@@ -178,9 +178,9 @@ object HSVAdjustFrame: THSVAdjustFrame
       Top = 32
       Width = 244
       Height = 21
-      Max = 200
+      Max = 63
+      Min = -64
       PageSize = 0
-      Position = 100
       TabOrder = 0
       OnChange = sb_Val_gainChange
     end

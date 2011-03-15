@@ -13,6 +13,9 @@
 #include <addresstype/Address_type.h>
 //本項目內gui頭文件
 #include <fpga/gui/THSVForm3.h>
+#include <fpga/gui/THSVForm2nd.h>
+//#include <fpga/gui/THSVForm2.h>
+#include <fpga/gui/THSVForm4.h>
 #include "include.h"
 #include <iostream>
 #include <fstream>
@@ -509,7 +512,7 @@ void __fastcall TMainForm::mn_HSVClick(TObject * Sender)
     else {
 	if (TCON_DEV == "11307") {
 	    //HSVForm = new THSVForm1(this);
-	    HSVForm = new THSVForm3(this);
+	    HSVForm = new THSVFormNew(this);
 	    HSVForm->Show();
 	}
     }
@@ -743,4 +746,18 @@ AnsiString TMainForm::AddressFile;
 
 //---------------------------------------------------------------------------
 
+
+void __fastcall TMainForm::mn_HSV2Click(TObject *Sender)
+{
+    if (HSVForm != NULL)
+	HSVForm->Show();
+    else {
+	//if (TCON_DEV == "11307") {
+	    //HSVForm = new THSVForm1(this);
+	    HSVForm = new THSVForm2G(this);
+	    HSVForm->Show();
+	//}
+    }
+}
+//---------------------------------------------------------------------------
 

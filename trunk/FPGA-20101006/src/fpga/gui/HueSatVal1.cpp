@@ -21,7 +21,7 @@
 bool HSV_IsChkSum = 0;
 int tbl_step = 360 / 24;
 //---------------------------------------------------------------------------
-__fastcall THSVForm1::THSVForm1(TComponent * Owner)
+__fastcall THSVFormOrg::THSVFormOrg(TComponent * Owner)
 :TForm(Owner)
 {
     HSV_Chg = 0;
@@ -29,7 +29,7 @@ __fastcall THSVForm1::THSVForm1(TComponent * Owner)
 }
 
 //---------------------------------------------------------------------------
-void __fastcall THSVForm1::CheckBox_Click(TObject * Sender)
+void __fastcall THSVFormOrg::CheckBox_Click(TObject * Sender)
 {
     if (HSV_Chg == 0)
 	return;
@@ -41,7 +41,7 @@ void __fastcall THSVForm1::CheckBox_Click(TObject * Sender)
 
 //---------------------------------------------------------------------------
 
-void __fastcall THSVForm1::FormCreate(TObject * Sender)
+void __fastcall THSVFormOrg::FormCreate(TObject * Sender)
 {
     HSV_Chg = 0;
     int ic_choice;
@@ -85,7 +85,7 @@ void __fastcall THSVForm1::FormCreate(TObject * Sender)
 
 //---------------------------------------------------------------------------
 
-void __fastcall THSVForm1::FormClose(TObject * Sender, TCloseAction & Action)
+void __fastcall THSVFormOrg::FormClose(TObject * Sender, TCloseAction & Action)
 {
     delete[]OHSV;
     delete[]cb;
@@ -98,7 +98,7 @@ void __fastcall THSVForm1::FormClose(TObject * Sender, TCloseAction & Action)
 
 //---------------------------------------------------------------------------
 
-void THSVForm1::Initial_HSV_table()
+void THSVFormOrg::Initial_HSV_table()
 {
     //initial table setting
     for (int i = 0; i < 24; i++) {
@@ -158,7 +158,7 @@ int Get_select_idx(double angle)
 
 //---------------------------------------------------------------------------
 
-void THSVForm1::Reset_HSVshow()
+void THSVFormOrg::Reset_HSVshow()
 {				// Set gain value relative to color choose
     int tbl_idx = Get_select_idx(StrToInt(le_ChAangle->Text));
 
@@ -184,7 +184,7 @@ void THSVForm1::Reset_HSVshow()
 }
 
 //---------------------------------------------------------------------------
-void __fastcall THSVForm1::cb_Hue_RedClick(TObject * Sender)
+void __fastcall THSVFormOrg::cb_Hue_RedClick(TObject * Sender)
 {				// 6 Color Adjust : Red
     if (cb_Hue_Red->Checked == true) {
 	cb_Hue_Green->Checked = false;
@@ -200,7 +200,7 @@ void __fastcall THSVForm1::cb_Hue_RedClick(TObject * Sender)
 
 //---------------------------------------------------------------------------
 
-void __fastcall THSVForm1::cb_Hue_YellowClick(TObject * Sender)
+void __fastcall THSVFormOrg::cb_Hue_YellowClick(TObject * Sender)
 {				// 6 Color Adjust : Yellow
     if (cb_Hue_Yellow->Checked == true) {
 	cb_Hue_Red->Checked = false;
@@ -216,7 +216,7 @@ void __fastcall THSVForm1::cb_Hue_YellowClick(TObject * Sender)
 
 //---------------------------------------------------------------------------
 
-void __fastcall THSVForm1::cb_Hue_GreenClick(TObject * Sender)
+void __fastcall THSVFormOrg::cb_Hue_GreenClick(TObject * Sender)
 {				// 6 Color Adjust : Green
     if (cb_Hue_Green->Checked == true) {
 	cb_Hue_Red->Checked = false;
@@ -232,7 +232,7 @@ void __fastcall THSVForm1::cb_Hue_GreenClick(TObject * Sender)
 
 //---------------------------------------------------------------------------
 
-void __fastcall THSVForm1::cb_Hue_BlueClick(TObject * Sender)
+void __fastcall THSVFormOrg::cb_Hue_BlueClick(TObject * Sender)
 {				// 6 Color Adjust : Blue
     if (cb_Hue_Blue->Checked == true) {
 	cb_Hue_Red->Checked = false;
@@ -248,7 +248,7 @@ void __fastcall THSVForm1::cb_Hue_BlueClick(TObject * Sender)
 
 //---------------------------------------------------------------------------
 
-void __fastcall THSVForm1::cb_Hue_CyanClick(TObject * Sender)
+void __fastcall THSVFormOrg::cb_Hue_CyanClick(TObject * Sender)
 {				// 6 Color Adjust : Cyan
     if (cb_Hue_Cyan->Checked == true) {
 	cb_Hue_Red->Checked = false;
@@ -264,7 +264,7 @@ void __fastcall THSVForm1::cb_Hue_CyanClick(TObject * Sender)
 
 //---------------------------------------------------------------------------
 
-void __fastcall THSVForm1::cb_Hue_MagClick(TObject * Sender)
+void __fastcall THSVFormOrg::cb_Hue_MagClick(TObject * Sender)
 {				// 6 Color Adjust : Magenta
     if (cb_Hue_Mag->Checked == true) {
 	cb_Hue_Red->Checked = false;
@@ -279,7 +279,7 @@ void __fastcall THSVForm1::cb_Hue_MagClick(TObject * Sender)
 }
 
 //---------------------------------------------------------------------------
-void THSVForm1::Set_6HSV_grid()
+void THSVFormOrg::Set_6HSV_grid()
 {
     le_ChAangle->Text = ed_Hue_Custom->Text;	//移動的角度
     String str = ed_Hue_Custom->Text;
@@ -314,14 +314,14 @@ void THSVForm1::Set_6HSV_grid()
     Reset_HSVshow();
 }
 
-void __fastcall THSVForm1::ed_Hue_CustomChange(TObject * Sender)
+void __fastcall THSVFormOrg::ed_Hue_CustomChange(TObject * Sender)
 {
     Set_6HSV_grid();
 }
 
 //---------------------------------------------------------------------------
 
-void THSVForm1::Hue_LUTWrite()
+void THSVFormOrg::Hue_LUTWrite()
 {
     HSV_LUT_FuncEnable(0);	// Table operation button disable
     bool ok = HSV_LUT_RW_start();	// Record the state of HSV enable
@@ -362,12 +362,12 @@ void THSVForm1::Hue_LUTWrite()
 
 //--------------------------------------------------------------------------
 
-void __fastcall THSVForm1::btn_resetClick(TObject * Sender)
+void __fastcall THSVFormOrg::btn_resetClick(TObject * Sender)
 {
     Initial_HSV_table();
 }
 
-void THSVForm1::show_gain(int h, int s, int v)
+void THSVFormOrg::show_gain(int h, int s, int v)
 {
     double h_show = ((double) h / 768) * 360;
     char str[6];
@@ -380,7 +380,7 @@ void THSVForm1::show_gain(int h, int s, int v)
 
     lb_Val_gain->Caption = IntToStr(v);
 }
-void THSVForm1::Get_Adj_tbl(int *tmp_H, int *tmp_S, int *tmp_V, int tbl_idx)
+void THSVFormOrg::Get_Adj_tbl(int *tmp_H, int *tmp_S, int *tmp_V, int tbl_idx)
 {
     for (int i = -4; i <= 4; i++) {
 	tmp_H[i + 4] = Hue_table[(tbl_idx + i + 24) % 24];
@@ -390,7 +390,7 @@ void THSVForm1::Get_Adj_tbl(int *tmp_H, int *tmp_S, int *tmp_V, int tbl_idx)
 	tmp_V[i + 4] = Val_table[(tbl_idx + i + 24) % 24];
     }
 }
-void THSVForm1::Set_Adj_tbl(int *tmp_H, int *tmp_S, int *tmp_V, int tbl_idx)
+void THSVFormOrg::Set_Adj_tbl(int *tmp_H, int *tmp_S, int *tmp_V, int tbl_idx)
 {
     for (int i = -4; i <= 4; i++) {
 	Hue_table_t[(tbl_idx + i + 24) % 24] = tmp_H[i + 4] % 768;
@@ -399,7 +399,7 @@ void THSVForm1::Set_Adj_tbl(int *tmp_H, int *tmp_S, int *tmp_V, int tbl_idx)
     }
 }
 
-bool THSVForm1::CheckDif(int &high, int &low, int *tmp_H, int gain)
+bool THSVFormOrg::CheckDif(int &high, int &low, int *tmp_H, int gain)
 {
     //據給予的gain值找出適合的diffusion邊界值
     tmp_H[4] += gain;		// 調整值在index = 3
@@ -424,7 +424,7 @@ bool THSVForm1::CheckDif(int &high, int &low, int *tmp_H, int gain)
     return 1;
 }
 
-bool THSVForm1::CheckHueIncrease(int high, int low, int *tmp_H)
+bool THSVFormOrg::CheckHueIncrease(int high, int low, int *tmp_H)
 {
     bool ok = true;
     for (int i = ((-1) * low + 4) + 2; i < high + 4 - 1; i++) {
@@ -441,7 +441,7 @@ double Gauss(int x, double sigma)
 }
 
 //---------------------------------------------------------------------------
-void __fastcall THSVForm1::sb_Hue_gainScroll(TObject * Sender,
+void __fastcall THSVFormOrg::sb_Hue_gainScroll(TObject * Sender,
 					     TScrollCode ScrollCode, int &ScrollPos)
 {
     double sigma;
@@ -545,7 +545,7 @@ void __fastcall THSVForm1::sb_Hue_gainScroll(TObject * Sender,
 //---------------------------------------------------------------------------
 
 
-void __fastcall THSVForm1::btn_hsv_loadClick(TObject * Sender)
+void __fastcall THSVFormOrg::btn_hsv_loadClick(TObject * Sender)
 {
     if (!OpenDialog1->Execute())
 	return;
@@ -557,7 +557,7 @@ void __fastcall THSVForm1::btn_hsv_loadClick(TObject * Sender)
 
 //---------------------------------------------------------------------------
 
-bool THSVForm1::Load_HSV(String Fpath)
+bool THSVFormOrg::Load_HSV(String Fpath)
 {
     if (Fpath == NULL)
 	return 0;
@@ -622,7 +622,7 @@ bool THSVForm1::Load_HSV(String Fpath)
 
 //---------------------------------------------------------------------------
 
-void __fastcall THSVForm1::btn_hsv_saveClick(TObject * Sender)
+void __fastcall THSVFormOrg::btn_hsv_saveClick(TObject * Sender)
 {
     if (!SaveDialog1->Execute())
 	return;
@@ -640,7 +640,7 @@ void __fastcall THSVForm1::btn_hsv_saveClick(TObject * Sender)
 //---------------------------------------------------------------------------
 
 
-void __fastcall THSVForm1::Hue_ImgMouseMove(TObject * Sender, TShiftState Shift, int X, int Y)
+void __fastcall THSVFormOrg::Hue_ImgMouseMove(TObject * Sender, TShiftState Shift, int X, int Y)
 {
     int color;
     double h, s, v, i, r, g, b;
@@ -661,7 +661,7 @@ void __fastcall THSVForm1::Hue_ImgMouseMove(TObject * Sender, TShiftState Shift,
 
 //---------------------------------------------------------------------------
 
-void __fastcall THSVForm1::btn_Hue_Img_loadClick(TObject * Sender)
+void __fastcall THSVFormOrg::btn_Hue_Img_loadClick(TObject * Sender)
 {
     if (!OpenDialog1->Execute())
 	return;
@@ -684,7 +684,7 @@ void __fastcall THSVForm1::btn_Hue_Img_loadClick(TObject * Sender)
 
 //---------------------------------------------------------------------------
 
-void __fastcall THSVForm1::rg_HSV_ModeClick(TObject * Sender)
+void __fastcall THSVFormOrg::rg_HSV_ModeClick(TObject * Sender)
 {
     String Fpath;
 
@@ -708,7 +708,7 @@ void __fastcall THSVForm1::rg_HSV_ModeClick(TObject * Sender)
 
 //---------------------------------------------------------------------------
 
-void __fastcall THSVForm1::Btn_HSV_reloadClick(TObject * Sender)
+void __fastcall THSVFormOrg::Btn_HSV_reloadClick(TObject * Sender)
 {
     Btn_HSV_reload->Enabled = false;
     HSV_LUT_FuncEnable(0);
@@ -731,7 +731,7 @@ void __fastcall THSVForm1::Btn_HSV_reloadClick(TObject * Sender)
 
 //---------------------------------------------------------------------------
 
-void __fastcall THSVForm1::FormKeyDown(TObject * Sender, WORD & Key, TShiftState Shift)
+void __fastcall THSVFormOrg::FormKeyDown(TObject * Sender, WORD & Key, TShiftState Shift)
 {
     if (Key == 0x40) {
 	Btn_HSV_reloadClick(Sender);
@@ -747,14 +747,14 @@ void __fastcall THSVForm1::FormKeyDown(TObject * Sender, WORD & Key, TShiftState
 //---------------------------------------------------------------------------
 
 
-void __fastcall THSVForm1::sb_dif_nChange(TObject * Sender)
+void __fastcall THSVFormOrg::sb_dif_nChange(TObject * Sender)
 {
     lb_dif_n->Caption = (4 - sb_dif_n->Position) * 15;
 }
 
 //---------------------------------------------------------------------------
 
-void __fastcall THSVForm1::sb_dif_pChange(TObject * Sender)
+void __fastcall THSVFormOrg::sb_dif_pChange(TObject * Sender)
 {
     lb_dif_p->Caption = sb_dif_p->Position * 15;
 }
@@ -763,7 +763,7 @@ void __fastcall THSVForm1::sb_dif_pChange(TObject * Sender)
 
 
 
-void __fastcall THSVForm1::btn_setClick(TObject * Sender)
+void __fastcall THSVFormOrg::btn_setClick(TObject * Sender)
 {
     for (int i = 0; i < 24; i++) {
 	Hue_table[i] = Hue_table_t[i];
@@ -779,14 +779,14 @@ void __fastcall THSVForm1::btn_setClick(TObject * Sender)
 
 //---------------------------------------------------------------------------
 
-void __fastcall THSVForm1::btn_hsv_writeClick(TObject * Sender)
+void __fastcall THSVFormOrg::btn_hsv_writeClick(TObject * Sender)
 {
     Hue_LUTWrite();
 }
 
 //---------------------------------------------------------------------------
 // Recover the state of HSV enable
-bool THSVForm1::HSV_LUT_RW_start()
+bool THSVFormOrg::HSV_LUT_RW_start()
 {
     if (HSVEN_idx == -1) {
 	ShowMessage("Unknown HSV enabled index.");
@@ -808,7 +808,7 @@ bool THSVForm1::HSV_LUT_RW_start()
 //---------------------------------------------------------------------------
 
 // Recover the state of HSV disable
-void THSVForm1::HSV_LUT_RW_over()
+void THSVFormOrg::HSV_LUT_RW_over()
 {
     // reload en state
     int set_val = (HSV_EN_State == false ? 0 : 1);
@@ -817,7 +817,7 @@ void THSVForm1::HSV_LUT_RW_over()
 }
 
 //---------------------------------------------------------------------------
-void THSVForm1::HSV_LUT_FuncEnable(bool flag_en)
+void THSVFormOrg::HSV_LUT_FuncEnable(bool flag_en)
 {
     if (flag_en == true) {	// Table operation button enable
 	btn_hsv_read->Enabled = true;
@@ -832,7 +832,7 @@ void THSVForm1::HSV_LUT_FuncEnable(bool flag_en)
     }
 }
 
-void __fastcall THSVForm1::btn_hsv_readClick(TObject * Sender)
+void __fastcall THSVFormOrg::btn_hsv_readClick(TObject * Sender)
 {
     HSV_LUT_FuncEnable(0);	// Table operation button disable
     bool ok = HSV_LUT_RW_start();	// Record the state of HSV enable
@@ -873,7 +873,7 @@ void __fastcall THSVForm1::btn_hsv_readClick(TObject * Sender)
 
 
 
-void __fastcall THSVForm1::Hue_ImgMouseDown(TObject * Sender,
+void __fastcall THSVFormOrg::Hue_ImgMouseDown(TObject * Sender,
 					    TMouseButton Button, TShiftState Shift, int X, int Y)
 {
     int color;
