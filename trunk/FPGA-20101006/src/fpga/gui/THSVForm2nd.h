@@ -152,6 +152,9 @@ class THSVForm2nd:public TForm, cms::util::CallBackIF, RGBInfoCallbackIF, Patter
     TRadioButton *RadioButton_DoubleHue;
     TGroupBox *GroupBox5;
     TCheckBox *CheckBox_ShowPattern;
+        TGroupBox *GroupBox7;
+        TScrollBar *ScrollBar_TurnPoint;
+        TLabel *Label_TurnPoint;
     void __fastcall cb_Hue_RedClick(TObject * Sender);
     void __fastcall cb_Hue_YellowClick(TObject * Sender);
     void __fastcall cb_Hue_GreenClick(TObject * Sender);
