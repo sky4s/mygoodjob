@@ -2,7 +2,7 @@ object HSVForm2nd: THSVForm2nd
   Left = 411
   Top = 127
   Width = 843
-  Height = 629
+  Height = 628
   Caption = 'HSV2'
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
@@ -7271,6 +7271,31 @@ object HSVForm2nd: THSVForm2nd
         Checked = True
         TabOrder = 1
         TabStop = True
+      end
+    end
+    object GroupBox7: TGroupBox
+      Left = 8
+      Top = 480
+      Width = 161
+      Height = 41
+      Caption = 'Turn Point'
+      TabOrder = 15
+      object Label_TurnPoint: TLabel
+        Left = 136
+        Top = 16
+        Width = 17
+        Height = 13
+        Caption = '0'
+      end
+      object ScrollBar_TurnPoint: TScrollBar
+        Left = 8
+        Top = 16
+        Width = 121
+        Height = 17
+        Max = 7
+        PageSize = 0
+        Position = 5
+        TabOrder = 0
       end
     end
   end
