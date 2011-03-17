@@ -442,7 +442,7 @@ double Gauss(int x, double sigma)
 
 //---------------------------------------------------------------------------
 void __fastcall THSVFormOrg::sb_Hue_gainScroll(TObject * Sender,
-					     TScrollCode ScrollCode, int &ScrollPos)
+					       TScrollCode ScrollCode, int &ScrollPos)
 {
     double sigma;
     if (ScrollCode != scEndScroll) {
@@ -834,18 +834,26 @@ void THSVFormOrg::HSV_LUT_FuncEnable(bool flag_en)
 
 void __fastcall THSVFormOrg::btn_hsv_readClick(TObject * Sender)
 {
-    HSV_LUT_FuncEnable(0);	// Table operation button disable
+
     bool ok = HSV_LUT_RW_start();	// Record the state of HSV enable
     if (ok == 0) {		// Fail to record the state
 	HSV_LUT_FuncEnable(1);	// Table operation button enable
 	return;
     }
+    HSV_LUT_FuncEnable(0);	// Table operation button disable
 
+    int HSV_lut_tmp[24 * 3 + 2];	//add
     int HSV_lut[24 * 3];
-    if (!EngineerForm->SetRead_PG(lut_addr[0], HSV_lut, HSV_IsChkSum)) {
+
+    if (!EngineerForm->SetRead_PG(lut_addr[0], HSV_lut_tmp, HSV_IsChkSum)) {
 	ShowMessage("Hue page read fail.");
 	return;
     }
+
+    for (int i = 0; i < 24 * 3; i++) {	//add
+	HSV_lut[i] = HSV_lut_tmp[i];	//add
+    }
+
     EngineerForm->SetWrite_Byte(en.Addr, HSV_EN_State);
 
     int val_r;
@@ -874,7 +882,7 @@ void __fastcall THSVFormOrg::btn_hsv_readClick(TObject * Sender)
 
 
 void __fastcall THSVFormOrg::Hue_ImgMouseDown(TObject * Sender,
-					    TMouseButton Button, TShiftState Shift, int X, int Y)
+					      TMouseButton Button, TShiftState Shift, int X, int Y)
 {
     int color;
     double h, s, v, i, r, g, b;

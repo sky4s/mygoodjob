@@ -25,6 +25,7 @@
 #include <java/lang.h>
 #include <cms/cms.h>
 #include <cms/util/util.h>
+#include <gui/util/binder.h>
 //本項目內頭文件
 #include <fpga/gui_class.h>
 #include <addresstype/Address_type.h>
@@ -152,9 +153,9 @@ class THSVForm2nd:public TForm, cms::util::CallBackIF, RGBInfoCallbackIF, Patter
     TRadioButton *RadioButton_DoubleHue;
     TGroupBox *GroupBox5;
     TCheckBox *CheckBox_ShowPattern;
-        TGroupBox *GroupBox7;
-        TScrollBar *ScrollBar_TurnPoint;
-        TLabel *Label_TurnPoint;
+    TGroupBox *GroupBox7;
+    TScrollBar *ScrollBar_TurnPoint;
+    TLabel *Label_TurnPoint;
     void __fastcall cb_Hue_RedClick(TObject * Sender);
     void __fastcall cb_Hue_YellowClick(TObject * Sender);
     void __fastcall cb_Hue_GreenClick(TObject * Sender);
@@ -204,6 +205,7 @@ class THSVForm2nd:public TForm, cms::util::CallBackIF, RGBInfoCallbackIF, Patter
     void __fastcall colorPickercb_show_ref_imgClick(TObject * Sender);
     void __fastcall CheckBox_ShowPatternClick(TObject * Sender);
     void __fastcall hsvAdjustsb_Sat_gainChange(TObject * Sender);
+    void __fastcall ScrollBar_TurnPointChange(TObject * Sender);
   private:			// User declarations
     static const int HUE_COUNT = 24;	//原本是96, why?
     static const int MAX_HUE_VALUE = 768;
@@ -303,6 +305,8 @@ class THSVForm2nd:public TForm, cms::util::CallBackIF, RGBInfoCallbackIF, Patter
     int patternValue;
     bool isInversePattern;
     void selectColor();
+    bool isFPGA();
+    //gui::util::Label2ScrollBarSetter turnPointSetter; //(Label_TurnPoint, ScrollBar_TurnPoint);
 
   public:			// User declarations
     TBit * cb;
