@@ -333,7 +333,7 @@ void THSVForm2nd::Hue_LUTWrite()
 	hueTable[i] =
 	    (int) (StrToFloat(stringGrid_HSV->Cells[1][i + 1]) / WHOLE_HUE_ANGLE *
 		   MAX_HUE_VALUE + 0.5);
-	satTable[i] = StrToInt(stringGrid_HSV->Cells[2][i + 1]) ;
+	satTable[i] = StrToInt(stringGrid_HSV->Cells[2][i + 1]);
 	valTable[i] = StrToInt(stringGrid_HSV->Cells[3][i + 1]);
     }
 
@@ -353,9 +353,9 @@ void THSVForm2nd::Hue_LUTWrite()
 	    HSV_lut[i * 3 + 2] = satTable[i] % 2 * 128 + val_w;
 	} else {
 	    //11307
-	    /*HSV_lut[i * 3 + 2] = hueTable[i] / 4;
-	       HSV_lut[i * 3 + 1] = hueTable[i] % 4 * 64 + satTable[i] / 2;
-	       HSV_lut[i * 3] = satTable[i] % 2 * 128 + val_w; */
+	    HSV_lut[i * 3 + 2] = hueTable[i] / 4;
+	    HSV_lut[i * 3 + 1] = hueTable[i] % 4 * 64 + satTable[i] / 2;
+	    HSV_lut[i * 3] = satTable[i] % 2 * 128 + val_w;
 	}
 
     }
@@ -433,7 +433,7 @@ bool THSVForm2nd::Load_HSV(String Fpath)
 
     for (int i = 0; i < HUE_COUNT; i++) {
 	stringGrid_HSV->Cells[1][i + 1] = ((double) hueTable[i]) / MAX_HUE_VALUE * WHOLE_HUE_ANGLE;
-	stringGrid_HSV->Cells[2][i + 1] = satTable[i] ;
+	stringGrid_HSV->Cells[2][i + 1] = satTable[i];
 	stringGrid_HSV->Cells[3][i + 1] = valTable[i];
     }
 
@@ -591,7 +591,7 @@ void __fastcall THSVForm2nd::btn_setClick(TObject * Sender)
 
 	stringGrid_HSV->Cells[1][i + 1] =
 	    FloatToStr((double) hueTableTemp[i] / MAX_HUE_VALUE * WHOLE_HUE_ANGLE);
-	stringGrid_HSV->Cells[2][i + 1] = satTableTemp[i] ;
+	stringGrid_HSV->Cells[2][i + 1] = satTableTemp[i];
 	stringGrid_HSV->Cells[3][i + 1] = valTableTemp[i];
     }
     btn_set->Enabled = false;
@@ -700,7 +700,7 @@ void __fastcall THSVForm2nd::btn_hsv_readClick(TObject * Sender)
 
 	double hue = ((double) hueTable[i]) / MAX_HUE_VALUE * WHOLE_HUE_ANGLE;
 	stringGrid_HSV->Cells[1][i + 1] = hue;
-	stringGrid_HSV->Cells[2][i + 1] = (_toString(satTable[i])+"%").c_str();
+	stringGrid_HSV->Cells[2][i + 1] = (_toString(satTable[i]) + "%").c_str();
 	stringGrid_HSV->Cells[3][i + 1] = valTable[i];
     }
     HSV_LUT_RW_over();		// Recover HSV enable
@@ -926,7 +926,7 @@ void __fastcall THSVForm2nd::hsvAdjustsb_c3d_Manual39_hChange(TObject * Sender)
     for (int i = 0; i < HUE_COUNT; i++) {
 	stringGrid_HSV->Cells[1][i + 1] =
 	    (((double) hueTableTemp[i]) / MAX_HUE_VALUE) * WHOLE_HUE_ANGLE;
-	stringGrid_HSV->Cells[2][i + 1] = satTableTemp[i] ;
+	stringGrid_HSV->Cells[2][i + 1] = satTableTemp[i];
 	stringGrid_HSV->Cells[3][i + 1] = valTableTemp[i];
     }
     if (true == CheckBox_AutoSet->Checked) {
@@ -1661,5 +1661,4 @@ void __fastcall THSVForm2nd::ScrollBar_TurnPointChange(TObject * Sender)
 }
 
 //---------------------------------------------------------------------------
-
 
