@@ -114,6 +114,10 @@ object MainForm: TMainForm
         Caption = '&Contrast Enhancement'
         OnClick = mn_CEClick
       end
+      object HSV1: TMenuItem
+        Caption = 'HSV'
+        OnClick = HSV1Click
+      end
       object mn_HSV: TMenuItem
         Caption = '&Hue/Saturation/Value'
         OnClick = mn_HSVClick

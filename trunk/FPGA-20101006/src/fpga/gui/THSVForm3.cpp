@@ -633,6 +633,7 @@ void THSVFormNew::HSV_LUT_FuncEnable(bool flag_en)
     }
 }
 
+
 void __fastcall THSVFormNew::btn_hsv_readClick(TObject * Sender)
 {
     HSV_LUT_FuncEnable(0);	// Table operation button disable

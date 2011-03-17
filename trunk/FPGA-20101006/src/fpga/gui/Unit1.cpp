@@ -45,6 +45,9 @@ __fastcall TMainForm::TMainForm(TComponent * Owner):TForm(Owner)
     C3D_type = 7;
 
     using namespace cms::util;
+    if (Util::isFileExist("tcon.txt")) {
+	setAddressFile("tcon.txt");
+    }
     if (Util::isFileExist("debug.txt")) {
 	Header2Address1->Visible = true;
     }
@@ -726,19 +729,33 @@ void __fastcall TMainForm::addressFromFileClick(TObject * Sender)
     OpenDialog1->Filter = "T-CON Address Files(*.*)|*.*";
     if (OpenDialog1->Execute()) {
 	const AnsiString & header = OpenDialog1->FileName;
-	AddressFile = header;
-	AnsiString caption = ExtractFileName(header);
-	//caption.
-	int dotIndex = caption.Pos(".");
-	if (0 != dotIndex) {
-	    caption = caption.SubString(1, dotIndex - 1);
-	}
-	MainForm->Caption = caption;
-	addr_place = 1;
-	addressFromFile->Checked = true;
-	AbstractBase::resetAddressMap();
-	closeAllForms();
+	/*AddressFile = header;
+	   AnsiString caption = ExtractFileName(header);
+	   int dotIndex = caption.Pos(".");
+	   if (0 != dotIndex) {
+	   caption = caption.SubString(1, dotIndex - 1);
+	   }
+	   MainForm->Caption = caption;
+	   addr_place = 1;
+	   addressFromFile->Checked = true;
+	   AbstractBase::resetAddressMap(); */
+	setAddressFile(header);
     };
+}
+
+void TMainForm::setAddressFile(AnsiString filename)
+{
+    AddressFile = filename;
+    AnsiString caption = ExtractFileName(filename);
+    int dotIndex = caption.Pos(".");
+    if (0 != dotIndex) {
+	caption = caption.SubString(1, dotIndex - 1);
+    }
+    MainForm->Caption = caption;
+    addr_place = 1;
+    addressFromFile->Checked = true;
+    AbstractBase::resetAddressMap();
+    closeAllForms();
 }
 
 AnsiString TMainForm::AddressFile;
@@ -747,17 +764,33 @@ AnsiString TMainForm::AddressFile;
 //---------------------------------------------------------------------------
 
 
-void __fastcall TMainForm::mn_HSV2Click(TObject *Sender)
+void __fastcall TMainForm::mn_HSV2Click(TObject * Sender)
 {
     if (HSVForm != NULL)
 	HSVForm->Show();
     else {
 	//if (TCON_DEV == "11307") {
-	    //HSVForm = new THSVForm1(this);
-	    HSVForm = new THSVForm2nd(this);
-	    HSVForm->Show();
+	//HSVForm = new THSVForm1(this);
+	HSVForm = new THSVForm2nd(this);
+	HSVForm->Show();
 	//}
     }
 }
+
+//---------------------------------------------------------------------------
+
+void __fastcall TMainForm::HSV1Click(TObject * Sender)
+{
+    if (HSVForm != NULL)
+	HSVForm->Show();
+    else {
+	if (TCON_DEV == "11307") {
+	    HSVForm = new THSVFormOrg(this);
+	    //HSVForm = new THSVFormNew(this);
+	    HSVForm->Show();
+	}
+    }
+}
+
 //---------------------------------------------------------------------------
 

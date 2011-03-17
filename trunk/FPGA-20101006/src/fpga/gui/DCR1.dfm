@@ -25,8 +25,8 @@ object DCRForm1: TDCRForm1
     Top = 0
     Width = 738
     Height = 490
-    ActivePage = TabSheet1
-    TabIndex = 0
+    ActivePage = TabSheet5
+    TabIndex = 4
     TabOrder = 0
     object TabSheet1: TTabSheet
       Caption = 'DCR Setting'

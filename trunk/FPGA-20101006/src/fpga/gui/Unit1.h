@@ -69,7 +69,8 @@ class TMainForm:public TForm {
     TOpenDialog *OpenDialog1;
     TSaveDialog *SaveDialog1;
     TMenuItem *addressFromFile;
-        TMenuItem *mn_HSV2;
+    TMenuItem *mn_HSV2;
+    TMenuItem *HSV1;
     void __fastcall mn_TCONClick(TObject * Sender);
     void __fastcall mn_EngineerClick(TObject * Sender);
     void __fastcall mn_FunctionClick(TObject * Sender);
@@ -94,12 +95,14 @@ class TMainForm:public TForm {
     void __fastcall mn_offsetClick(TObject * Sender);
     void __fastcall Header2Address1Click(TObject * Sender);
     void __fastcall addressFromFileClick(TObject * Sender);
-        void __fastcall mn_HSV2Click(TObject *Sender);
+    void __fastcall mn_HSV2Click(TObject * Sender);
+    void __fastcall HSV1Click(TObject * Sender);
 
   private:			// User declarations
      String getFileVersionInfo();
     void header2AddressFile(const AnsiString & header, const AnsiString & address);
     void closeAllForms();
+    void setAddressFile(AnsiString filename);
   public:			// User declarations
      __fastcall TMainForm(TComponent * Owner);
     int C3D_type;

@@ -32,6 +32,8 @@
 #pragma link "THSVAdjustFrame"
 #pragma link "TColorPickerFrame"
 #pragma link "THSVAdjustFrame"
+#pragma link "TColorPickerFrame"
+#pragma link "THSVAdjustFrame"
 #pragma resource "*.dfm"
 
 
@@ -59,6 +61,7 @@ selectedRGBValues(new int[3]), customPattern(false), patternValue(192), isInvers
     tpColorThread = bptr < TPColorThread1 > (new TPColorThread1(true, this));
 
     PatternForm->setPatternCallbackIF(this);
+    ScrollBar_TurnPointChange(null);
 }
 
 //---------------------------------------------------------------------------
@@ -306,6 +309,16 @@ void __fastcall THSVForm2nd::cb_Hue_MagClick(TObject * Sender)
 
 
 //---------------------------------------------------------------------------
+bool THSVForm2nd::isFPGA()
+{
+    int_vector_ptr values = AbstractBase::getValuesFromFile("FPGA");
+    if (null != values) {
+	int result = (*values)[0];
+	return 1 == result;
+    } else {
+	return false;
+    }
+}
 
 void THSVForm2nd::Hue_LUTWrite()
 {
@@ -320,10 +333,11 @@ void THSVForm2nd::Hue_LUTWrite()
 	hueTable[i] =
 	    (int) (StrToFloat(stringGrid_HSV->Cells[1][i + 1]) / WHOLE_HUE_ANGLE *
 		   MAX_HUE_VALUE + 0.5);
-	satTable[i] = StrToInt(stringGrid_HSV->Cells[2][i + 1]) + 64;
+	satTable[i] = StrToInt(stringGrid_HSV->Cells[2][i + 1]) ;
 	valTable[i] = StrToInt(stringGrid_HSV->Cells[3][i + 1]);
     }
 
+    bool fpga = isFPGA();
     int *HSV_lut = new int[HUE_COUNT * 3];
     int val_w;
     for (int i = 0; i < HUE_COUNT; i++) {
@@ -332,15 +346,17 @@ void THSVForm2nd::Hue_LUTWrite()
 	val_w = SignToCmplmnt2s(valTable[i], 128);
 	val_w = val_w % 128;	// 7 bit
 
-	//fpga
-	/*HSV_lut[i * 3] = hueTable[i] / 4;
-	   HSV_lut[i * 3 + 1] = hueTable[i] % 4 * 64 + satTable[i] / 2;
-	   HSV_lut[i * 3 + 2] = satTable[i] % 2 * 128 + val_w; */
-
-	//11307
-	HSV_lut[i * 3 + 2] = hueTable[i] / 4;
-	HSV_lut[i * 3 + 1] = hueTable[i] % 4 * 64 + satTable[i] / 2;
-	HSV_lut[i * 3] = satTable[i] % 2 * 128 + val_w;
+	if (fpga) {
+	    //fpga
+	    HSV_lut[i * 3] = hueTable[i] / 4;
+	    HSV_lut[i * 3 + 1] = hueTable[i] % 4 * 64 + satTable[i] / 2;
+	    HSV_lut[i * 3 + 2] = satTable[i] % 2 * 128 + val_w;
+	} else {
+	    //11307
+	    /*HSV_lut[i * 3 + 2] = hueTable[i] / 4;
+	       HSV_lut[i * 3 + 1] = hueTable[i] % 4 * 64 + satTable[i] / 2;
+	       HSV_lut[i * 3] = satTable[i] % 2 * 128 + val_w; */
+	}
 
     }
     EngineerForm->SetWrite_PG(lut_addr[0], HSV_lut, HSV_IsChkSum);
@@ -417,7 +433,7 @@ bool THSVForm2nd::Load_HSV(String Fpath)
 
     for (int i = 0; i < HUE_COUNT; i++) {
 	stringGrid_HSV->Cells[1][i + 1] = ((double) hueTable[i]) / MAX_HUE_VALUE * WHOLE_HUE_ANGLE;
-	stringGrid_HSV->Cells[2][i + 1] = satTable[i] - 64;
+	stringGrid_HSV->Cells[2][i + 1] = satTable[i] ;
 	stringGrid_HSV->Cells[3][i + 1] = valTable[i];
     }
 
@@ -575,7 +591,7 @@ void __fastcall THSVForm2nd::btn_setClick(TObject * Sender)
 
 	stringGrid_HSV->Cells[1][i + 1] =
 	    FloatToStr((double) hueTableTemp[i] / MAX_HUE_VALUE * WHOLE_HUE_ANGLE);
-	stringGrid_HSV->Cells[2][i + 1] = satTableTemp[i] - 64;
+	stringGrid_HSV->Cells[2][i + 1] = satTableTemp[i] ;
 	stringGrid_HSV->Cells[3][i + 1] = valTableTemp[i];
     }
     btn_set->Enabled = false;
@@ -650,27 +666,41 @@ void __fastcall THSVForm2nd::btn_hsv_readClick(TObject * Sender)
     }
 
     int HSV_lut[HUE_COUNT * 3];
+
     if (!EngineerForm->SetRead_PG(lut_addr[0], HSV_lut, HSV_IsChkSum)) {
 	ShowMessage("Hue page read fail.");
 	return;
     }
+
+    /*int HSV_lut[HUE_COUNT * 3];
+       for(int x=0;x<HUE_COUNT * 3;x++) {
+       HSV_lut[x]= HSV_lutTemp[x];
+       } */
+
+
     EngineerForm->SetWrite_Byte(en.Addr, HSV_EN_State);
+    bool fpga = isFPGA();
 
     int val_r;
     for (int i = 0; i < HUE_COUNT; i++) {
 	//fpga
-	/*hueTable[i] = HSV_lut[i * 3] * 4 + (HSV_lut[i * 3 + 1] / 64) % 4;
-	   satTable[i] = (HSV_lut[i * 3 + 1] % 64) * 2 + (HSV_lut[i * 3 + 2] / 128) % 2;
-	   val_r = HSV_lut[i * 3 + 2] % 128; */
-	// Modified only for AUO11307
-	hueTable[i] = hueTableTemp[i] = HSV_lut[i * 3 + 2] * 4 + (HSV_lut[i * 3 + 1] / 64) % 4;
-	satTable[i] = satTableTemp[i] = (HSV_lut[i * 3 + 1] % 64) * 2 + (HSV_lut[i * 3] / 128) % 2;
+	if (fpga) {
+	    hueTable[i] = HSV_lut[i * 3] * 4 + (HSV_lut[i * 3 + 1] / 64) % 4;
+	    satTable[i] = (HSV_lut[i * 3 + 1] % 64) * 2 + (HSV_lut[i * 3 + 2] / 128) % 2;
+	    val_r = HSV_lut[i * 3 + 2] % 128;
+	} else {
+	    // Modified only for AUO11307
+	    hueTable[i] = hueTableTemp[i] = HSV_lut[i * 3 + 2] * 4 + (HSV_lut[i * 3 + 1] / 64) % 4;
+	    satTable[i] = satTableTemp[i] =
+		(HSV_lut[i * 3 + 1] % 64) * 2 + (HSV_lut[i * 3] / 128) % 2;
+	    val_r = HSV_lut[i * 3] % 128;
+	}
 
-	val_r = HSV_lut[i * 3] % 128;
 	valTable[i] = valTableTemp[i] = Cmplmnt2sToSign(val_r, 128);
 
-	stringGrid_HSV->Cells[1][i + 1] = ((double) hueTable[i]) / MAX_HUE_VALUE * WHOLE_HUE_ANGLE;
-	stringGrid_HSV->Cells[2][i + 1] = satTable[i] - 64;
+	double hue = ((double) hueTable[i]) / MAX_HUE_VALUE * WHOLE_HUE_ANGLE;
+	stringGrid_HSV->Cells[1][i + 1] = hue;
+	stringGrid_HSV->Cells[2][i + 1] = (_toString(satTable[i])+"%").c_str();
 	stringGrid_HSV->Cells[3][i + 1] = valTable[i];
     }
     HSV_LUT_RW_over();		// Recover HSV enable
@@ -896,7 +926,7 @@ void __fastcall THSVForm2nd::hsvAdjustsb_c3d_Manual39_hChange(TObject * Sender)
     for (int i = 0; i < HUE_COUNT; i++) {
 	stringGrid_HSV->Cells[1][i + 1] =
 	    (((double) hueTableTemp[i]) / MAX_HUE_VALUE) * WHOLE_HUE_ANGLE;
-	stringGrid_HSV->Cells[2][i + 1] = satTableTemp[i] - 64;
+	stringGrid_HSV->Cells[2][i + 1] = satTableTemp[i] ;
 	stringGrid_HSV->Cells[3][i + 1] = valTableTemp[i];
     }
     if (true == CheckBox_AutoSet->Checked) {
@@ -1618,4 +1648,18 @@ void __fastcall THSVForm2nd::hsvAdjustsb_Sat_gainChange(TObject * Sender)
 }
 
 //---------------------------------------------------------------------------
+
+
+//---------------------------------------------------------------------------
+
+void __fastcall THSVForm2nd::ScrollBar_TurnPointChange(TObject * Sender)
+{
+    using namespace std;
+    int pos = ScrollBar_TurnPoint->Position;
+    string str = _toString(100. / 8 * (pos + 1));
+    Label_TurnPoint->Caption = (_toString(pos) + " (" + str + "%)").c_str();
+}
+
+//---------------------------------------------------------------------------
+
 

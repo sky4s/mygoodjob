@@ -2,7 +2,7 @@ object HSVFormOrg: THSVFormOrg
   Left = 389
   Top = 0
   Width = 891
-  Height = 708
+  Height = 711
   Caption = 'HSV'
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET

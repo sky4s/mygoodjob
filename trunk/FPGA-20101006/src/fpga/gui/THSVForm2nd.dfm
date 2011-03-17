@@ -6469,13 +6469,13 @@ object HSVForm2nd: THSVForm2nd
     object CheckBox3: TCheckBox
       Left = 292
       Top = 8
-      Width = 86
+      Width = 117
       Height = 17
       Caption = 'CheckBox3'
       TabOrder = 5
     end
     object CheckBox4: TCheckBox
-      Left = 376
+      Left = 408
       Top = 8
       Width = 86
       Height = 17
@@ -6758,7 +6758,6 @@ object HSVForm2nd: THSVForm2nd
         end
         inherited GroupBox41: TGroupBox
           inherited sb_Sat_gain: TScrollBar
-            Min = 1
             Position = 64
             OnChange = hsvAdjustsb_Sat_gainChange
           end
@@ -7281,21 +7280,22 @@ object HSVForm2nd: THSVForm2nd
       Caption = 'Turn Point'
       TabOrder = 15
       object Label_TurnPoint: TLabel
-        Left = 136
+        Left = 113
         Top = 16
-        Width = 17
+        Width = 6
         Height = 13
         Caption = '0'
       end
       object ScrollBar_TurnPoint: TScrollBar
-        Left = 8
+        Left = 4
         Top = 16
-        Width = 121
+        Width = 105
         Height = 17
         Max = 7
         PageSize = 0
         Position = 5
         TabOrder = 0
+        OnChange = ScrollBar_TurnPointChange
       end
     end
   end
