@@ -1656,7 +1656,7 @@ void __fastcall THSVForm2nd::ScrollBar_TurnPointChange(TObject * Sender)
 {
     using namespace std;
     int pos = ScrollBar_TurnPoint->Position;
-    string str = _toString(100. / 8 * (pos + 1));
+    string str = _toString(100. / 16 * (pos + 1));
     Label_TurnPoint->Caption = (_toString(pos) + " (" + str + "%)").c_str();
 }
 

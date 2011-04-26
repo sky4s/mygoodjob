@@ -6748,6 +6748,7 @@ object HSVForm2nd: THSVForm2nd
             Max = 96
             Min = -96
             Position = 0
+            OnChange = hsvAdjustsb_Hue_gainChange
           end
           inherited Edit_c3d_Manual39_h_adj: TEdit
             Visible = False
@@ -7291,9 +7292,9 @@ object HSVForm2nd: THSVForm2nd
         Top = 16
         Width = 105
         Height = 17
-        Max = 7
+        Max = 15
         PageSize = 0
-        Position = 5
+        Position = 7
         TabOrder = 0
         OnChange = ScrollBar_TurnPointChange
       end
