@@ -20,25 +20,22 @@
 #pragma resource "*.dfm"
 TThreeDMeasurementForm *ThreeDMeasurementForm;
 //---------------------------------------------------------------------------
-__fastcall TThreeDMeasurementForm::TThreeDMeasurementForm(TComponent *
-							  Owner)
-:TForm(Owner), linkCA210(!FileExists(DEBUG_FILE)), stop(false),
-dynamicMode(false), whiteFont(false)
+__fastcall TThreeDMeasurementForm::TThreeDMeasurementForm(TComponent * Owner)
+:TForm(Owner), linkCA210(!FileExists(DEBUG_FILE)), stop(false), dynamicMode(false),
+whiteFont(false), talkABreak(false)
 {
     using namespace cms::util;
     fieldNames =
 	StringVector::fromCString(18, "Target", "0", "16", "32", "48",
 				  "64", "80", "96", "112", "128", "144",
-				  "160", "176", "192", "208", "224", "240",
-				  "255");
+				  "160", "176", "192", "208", "224", "240", "255");
 }
 
 //---------------------------------------------------------------------------
 
 
 
-void __fastcall TThreeDMeasurementForm::Button_MeasureClick(TObject *
-							    Sender)
+void __fastcall TThreeDMeasurementForm::Button_MeasureClick(TObject * Sender)
 {
     using namespace Dep;
     using namespace cms::util;
@@ -86,9 +83,8 @@ void __fastcall TThreeDMeasurementForm::Button_MeasureClick(TObject *
 
     foreach(const Channel & ch, *Channel::RGBWChannel) {
 	if (true == (*rgbw)[ch.getArrayIndex()]) {
-	    double2D_ptr result =
-		ODMeasure(ch, idleTime, aveTimes, leftrightChange,
-			  stableTest);
+	    double2D_ptr result = ODMeasure(ch, idleTime, aveTimes, leftrightChange,
+					    stableTest);
 	    if (null == result) {
 		return;
 	    }
@@ -109,11 +105,9 @@ void __fastcall TThreeDMeasurementForm::Button_MeasureClick(TObject *
 
 //---------------------------------------------------------------------------
 double TThreeDMeasurementForm::patternMeasure(RGB_ptr left, RGB_ptr right,
-					      int idleTime, int aveTimes,
-					      bool leftrightChange)
+					      int idleTime, int aveTimes, bool leftrightChange)
 {
-    double_vector_ptr result =
-	patternMeasure0(left, right, idleTime, aveTimes, leftrightChange);
+    double_vector_ptr result = patternMeasure0(left, right, idleTime, aveTimes, leftrightChange);
     if (null != result) {
 	return getMeanLuminance(result);
     } else {
@@ -124,9 +118,7 @@ double TThreeDMeasurementForm::patternMeasure(RGB_ptr left, RGB_ptr right,
 double_vector_ptr TThreeDMeasurementForm::patternMeasure0(RGB_ptr left,
 							  RGB_ptr right,
 							  int idleTime,
-							  int aveTimes,
-							  bool
-							  leftrightChange)
+							  int aveTimes, bool leftrightChange)
 {
     if (!leftrightChange) {
 	ThreeDMeasureWindow->setLeftRGB(left);
@@ -164,13 +156,12 @@ double_vector_ptr TThreeDMeasurementForm::patternMeasure0(RGB_ptr left,
     __finally {
 	stop = false;
     }
+    return nil_double_vector_ptr;
 };
 
 double2D_ptr TThreeDMeasurementForm::ODMeasure(const Dep::Channel & ch,
 					       int idleTime,
-					       int aveTimes,
-					       bool leftrightChange,
-					       bool stableTest)
+					       int aveTimes, bool leftrightChange, bool stableTest)
 {
     using namespace Dep;
     using namespace math;
@@ -179,18 +170,16 @@ double2D_ptr TThreeDMeasurementForm::ODMeasure(const Dep::Channel & ch,
 
     double2D_ptr result(new double2D(17, 17));
     bptr < ExcelAccessBase > excel;
-    string_vector_ptr fieldNames =
-	StringVector::fromCString(18, "number", "0", "16", "32", "48",
-				  "64", "80", "96", "112", "128", "144",
-				  "160", "176", "192", "208", "224", "240",
-				  "255");
+    string_vector_ptr fieldNames = StringVector::fromCString(18, "number", "0", "16", "32", "48",
+							     "64", "80", "96", "112", "128", "144",
+							     "160", "176", "192", "208", "224",
+							     "240",
+							     "255");
 
     if (true == stableTest) {
 	string filename = *ch.toString() + "_stableTest.xls";
 	Util::deleteExist(filename);
-	excel =
-	    bptr < ExcelAccessBase >
-	    (new ExcelAccessBase(filename, Create));
+	excel = bptr < ExcelAccessBase > (new ExcelAccessBase(filename, Create));
     }
     stop = false;
     try {
@@ -209,9 +198,8 @@ double2D_ptr TThreeDMeasurementForm::ODMeasure(const Dep::Channel & ch,
 		rrgb->setValue(ch, r);
 		lrgb->setValue(ch, l);
 		//==================================================================
-		double_vector_ptr measureResult =
-		    patternMeasure0(lrgb, rrgb, idleTime, aveTimes,
-				    leftrightChange);
+		double_vector_ptr measureResult = patternMeasure0(lrgb, rrgb, idleTime, aveTimes,
+								  leftrightChange);
 		if (true == stableTest) {
 		    vec.push_back(measureResult);
 		}
@@ -263,8 +251,7 @@ double TThreeDMeasurementForm::getMeanLuminance(double_vector_ptr result)
 };
 void TThreeDMeasurementForm::
 storeResult(const string & sheetName,
-	    double2D_ptr result,
-	    bptr < cms::colorformat::ExcelAccessBase > excel)
+	    double2D_ptr result, bptr < cms::colorformat::ExcelAccessBase > excel)
 {
     using namespace cms::util;
     int height = result->dim1();
@@ -277,8 +264,7 @@ storeResult(const string & sheetName,
     for (int y = 0; y < height; y++) {
 	int v = y * 16;
 	v = v > 255 ? 255 : v;
-	string_vector_ptr measure =
-	    StringVector::fromDoubleArray(result, y);
+	string_vector_ptr measure = StringVector::fromDoubleArray(result, y);
 	string_vector_ptr data(new string_vector());
 	data->push_back(_toString(v));
 	data->insert(data->end(), measure->begin(), measure->end());
@@ -292,9 +278,7 @@ double2D_ptr TThreeDMeasurementForm::crosstalk(double2D_ptr meaureResult)
     int height = meaureResult->dim1();
     int weight = meaureResult->dim2();
     if (height != 17 || weight != 17) {
-	throw
-	    IllegalArgumentException
-	    ("meaureResult->dim1() != 17 || meaureResult->dim1() != 17");
+	throw IllegalArgumentException("meaureResult->dim1() != 17 || meaureResult->dim1() != 17");
     }
 
     double2D_ptr result(new double2D(17, 17));
@@ -357,8 +341,7 @@ void __fastcall TThreeDMeasurementForm::FormCreate(TObject * Sender)
 //---------------------------------------------------------------------------
 
 
-void __fastcall TThreeDMeasurementForm::
-Button_SpotMeasureClick(TObject * Sender)
+void __fastcall TThreeDMeasurementForm::Button_SpotMeasureClick(TObject * Sender)
 {
     using namespace Dep;
     int start = this->Edit_Start->Text.ToInt();
@@ -414,8 +397,7 @@ Button_SpotMeasureClick(TObject * Sender)
 
 //---------------------------------------------------------------------------
 
-void __fastcall TThreeDMeasurementForm::
-CheckBox_StableTestClick(TObject * Sender)
+void __fastcall TThreeDMeasurementForm::CheckBox_StableTestClick(TObject * Sender)
 {
     bool test = this->CheckBox_StableTest->Checked;
     ComboBox_MeasureMode->Enabled = test;
@@ -431,8 +413,7 @@ CheckBox_StableTestClick(TObject * Sender)
 
 //---------------------------------------------------------------------------
 
-void __fastcall TThreeDMeasurementForm::CheckBox_ExtendClick(TObject *
-							     Sender)
+void __fastcall TThreeDMeasurementForm::CheckBox_ExtendClick(TObject * Sender)
 {
     bool extend = this->CheckBox_Extend->Checked;
     Edit2->Visible = extend;
@@ -444,53 +425,113 @@ void __fastcall TThreeDMeasurementForm::CheckBox_ExtendClick(TObject *
 
 //---------------------------------------------------------------------------
 
-void TThreeDMeasurementForm::dynamicMeasure(int start, int target,
-					    int adjustStart,
-					    int adjustTarget)
+void TThreeDMeasurementForm::patternGenerate()
 {
+    using namespace Dep;
+    int idleTime = this->Edit_IdleTime->Text.ToInt();
+
+
+    ThreeDMeasureWindow->Visible = true;
+    stop = false;
+    while (!stop) {
+	if (talkABreak) {
+	    Application->ProcessMessages();
+	    continue;
+	}
+	RGB_ptr lrgb(new
+		     RGBColor(patGenR ? startAdj : 0, patGenG ? startAdj : 0,
+			      patGenB ? startAdj : 0));
+	RGB_ptr rrgb(new
+		     RGBColor(patGenR ? targetAdj : 0, patGenG ? targetAdj : 0,
+			      patGenB ? targetAdj : 0));
+
+	ThreeDMeasureWindow->setLeftRGB(lrgb);
+	ThreeDMeasureWindow->setRightRGB(lrgb);
+	Application->ProcessMessages();
+	Sleep(idleTime);
+	ThreeDMeasureWindow->setLeftRGB(rrgb);
+	ThreeDMeasureWindow->setRightRGB(rrgb);
+	Application->ProcessMessages();
+	Sleep(idleTime);
+    }
+}
+
+void TThreeDMeasurementForm::dynamicMeasure(int start, int target,
+					    int adjustStart, int adjustTarget)
+{
+    //=========================================================================
+    // for gino
+    //=========================================================================
+    if (this->CheckBox_PatternGenOnly->Checked) {
+	patGenR = this->CheckBox_PatternGenR->Checked;
+	patGenG = this->CheckBox_PatternGenG->Checked;
+	patGenB = this->CheckBox_PatternGenB->Checked;
+	ThreeDMeasureWindow->patternGenMode = true;
+	ThreeDMeasureWindow->FormPaint(this);
+	patternGenerate();
+	this->CheckBox_PatternGenR->Checked = patGenR;
+	this->CheckBox_PatternGenG->Checked = patGenG;
+	this->CheckBox_PatternGenB->Checked = patGenB;
+	return;
+    }
+    //=========================================================================
+
+    //=========================================================================
+    // 訊息設定
+    //=========================================================================
+    ThreeDMeasureWindow->patternGenMode = false;
+    ThreeDMeasureWindow->FormPaint(this);
     ThreeDMeasureWindow->Label_StartBase->Caption =
-	(_toString(start) + "->" + _toString(start) +
-	 " measuring...").c_str();
+	(_toString(start) + "->" + _toString(start) + " measuring...").c_str();
     ThreeDMeasureWindow->Label_TargetBase->Caption =
-	(_toString(target) + "->" + _toString(target) +
-	 " measuring...").c_str();
+	(_toString(target) + "->" + _toString(target) + " measuring...").c_str();
     ThreeDMeasureWindow->Label_StartTarget->Caption =
-	(_toString(adjustStart) + "->" + _toString(adjustTarget) +
-	 " measuring...").c_str();
+	(_toString(adjustStart) + "->" + _toString(adjustTarget) + " measuring...").c_str();
     ThreeDMeasureWindow->Label_TargetStart->Caption =
-	(_toString(adjustTarget) + "->" + _toString(adjustStart) +
-	 " measuring...").c_str();
+	(_toString(adjustTarget) + "->" + _toString(adjustStart) + " measuring...").c_str();
 
     ThreeDMeasureWindow->Label_WXtalk->Caption = "w xtalk measuring...";
     ThreeDMeasureWindow->Label_BXtalk->Caption = "b xtalk measuring...";
+    //=========================================================================
 
+    //=========================================================================
+    // 設定CA210
+    //=========================================================================
     bool release = CheckBox_AutoReleaseCA210->Checked;
     if (true == linkCA210 && release) {
 	ca210->getCA210API()->setRemoteMode(ca210api::Locked);
     }
+    //=========================================================================
 
+
+    //=========================================================================
+    // 量測
+    //=========================================================================
     double v1 = measure(start, start);
     double v2 = measure(target, target);
     double v3 = measure(adjustTarget, adjustStart);
     double v0 = measure(adjustStart, adjustTarget);
+    //=========================================================================
 
     if (true == linkCA210 && release) {
 	ca210->getCA210API()->setRemoteMode(ca210api::Off);
     }
-
+    //=========================================================================
+    // 訊息設定
+    //=========================================================================
     ThreeDMeasureWindow->Label_StartBase->Caption =
-	(_toString(start) + "->" + _toString(start) + " " +
-	 _toString(v1)).c_str();
+	(_toString(start) + "->" + _toString(start) + " " + _toString(v1)).c_str();
     ThreeDMeasureWindow->Label_TargetBase->Caption =
-	(_toString(target) + "->" + _toString(target) + " " +
-	 _toString(v2)).c_str();
+	(_toString(target) + "->" + _toString(target) + " " + _toString(v2)).c_str();
     ThreeDMeasureWindow->Label_StartTarget->Caption =
-	(_toString(adjustStart) + "->" + _toString(adjustTarget) + " " +
-	 _toString(v0)).c_str();
+	(_toString(adjustStart) + "->" + _toString(adjustTarget) + " " + _toString(v0)).c_str();
     ThreeDMeasureWindow->Label_TargetStart->Caption =
-	(_toString(adjustTarget) + "->" + _toString(adjustStart) + " " +
-	 _toString(v3)).c_str();
+	(_toString(adjustTarget) + "->" + _toString(adjustStart) + " " + _toString(v3)).c_str();
+    //=========================================================================
 
+    //=========================================================================
+    // xtalk計算
+    //=========================================================================
     double bb = start > target ? v2 : v1;
     double ww = start > target ? v1 : v2;
     double bw = start > target ? v3 : v0;
@@ -498,10 +539,10 @@ void TThreeDMeasurementForm::dynamicMeasure(int start, int target,
 
     double wxtalk = whiteXTalk(bb, bw, ww);
     double bxtalk = whiteXTalk(bb, wb, ww);
-    ThreeDMeasureWindow->Label_WXtalk->Caption =
-	("w xtalk " + _toString(wxtalk)).c_str();
-    ThreeDMeasureWindow->Label_BXtalk->Caption =
-	("b xtalk " + _toString(bxtalk)).c_str();
+    //=========================================================================
+    ThreeDMeasureWindow->Label_WXtalk->Caption = ("w xtalk " + _toString(wxtalk)).c_str();
+    ThreeDMeasureWindow->Label_BXtalk->Caption = ("b xtalk " + _toString(bxtalk)).c_str();
+
     updateAdjust();
 }
 
@@ -510,19 +551,20 @@ void TThreeDMeasurementForm::updateAdjust()
     using namespace Dep;
     startAdj = startAdj > 255 ? 255 : startAdj < 0 ? 0 : startAdj;
     targetAdj = targetAdj > 255 ? 255 : targetAdj < 0 ? 0 : targetAdj;
-    ThreeDMeasureWindow->Label_StartAdj->Caption =
-	("(Left) start: " + _toString(startAdj)).c_str();
+    ThreeDMeasureWindow->Label_StartAdj->Caption = ("(Left) start: " + _toString(startAdj)).c_str();
     ThreeDMeasureWindow->Label_TargetAdj2->Caption =
 	("(Right) target: " + _toString(targetAdj)).c_str();
+    ThreeDMeasureWindow->Label_TargetAdj->Caption = ThreeDMeasureWindow->Label_TargetAdj2->Caption;
 
-    RGB_ptr lrgb(new RGBColor(startAdj, startAdj, startAdj));
-    RGB_ptr rrgb(new RGBColor(targetAdj, targetAdj, targetAdj));
-    ThreeDMeasureWindow->setLeftRGB(lrgb);
-    ThreeDMeasureWindow->setRightRGB(rrgb);
+    if (!ThreeDMeasureWindow->patternGenMode) {
+	RGB_ptr lrgb(new RGBColor(startAdj, startAdj, startAdj));
+	RGB_ptr rrgb(new RGBColor(targetAdj, targetAdj, targetAdj));
+	ThreeDMeasureWindow->setLeftRGB(lrgb);
+	ThreeDMeasureWindow->setRightRGB(rrgb);
+    }
 }
 
-void __fastcall TThreeDMeasurementForm::
-Button_DynamicMeasureClick(TObject * Sender)
+void __fastcall TThreeDMeasurementForm::Button_DynamicMeasureClick(TObject * Sender)
 {
 
     dynamicMode = true;
@@ -562,8 +604,7 @@ void TThreeDMeasurementForm::keyPress(TObject * Sender, char &Key)
 };
 
 
-void __fastcall TThreeDMeasurementForm::FormKeyPress(TObject * Sender,
-						     char &Key)
+void __fastcall TThreeDMeasurementForm::FormKeyPress(TObject * Sender, char &Key)
 {
 
     switch (Key) {
@@ -574,25 +615,43 @@ void __fastcall TThreeDMeasurementForm::FormKeyPress(TObject * Sender,
 	break;
     case 87:			//W
     case 119:
+	talkABreak = true;
 	startAdj++;
 	updateAdjust();
+	talkABreak = false;
 	break;
     case 83:			//s
     case 115:
+	talkABreak = true;
 	startAdj--;
 	updateAdjust();
+	talkABreak = false;
 	break;
-    case 65:			//a
-    case 97:
+    case 65:
+	talkABreak = true;
 	targetAdj--;
 	updateAdjust();
+	talkABreak = false;
 	break;
     case 68:			//d
     case 100:
+	talkABreak = true;
 	targetAdj++;
 	updateAdjust();
+	talkABreak = false;
 	break;
 
+    case 'r':
+    case 'R':
+	patGenR = !patGenR;
+	break;
+    case 'g':
+	patGenG = !patGenG;
+	break;
+    case 'b':
+    case 'B':
+	patGenB = !patGenB;
+	break;
     case 88:			//x for swap
     case 120:
 	{
@@ -619,6 +678,7 @@ void __fastcall TThreeDMeasurementForm::FormKeyPress(TObject * Sender,
 	    ThreeDMeasureWindow->Label_TargetStart->Font->Color = c;
 	    ThreeDMeasureWindow->Label_WXtalk->Font->Color = c;
 	    ThreeDMeasureWindow->Label_BXtalk->Font->Color = c;
+	    ThreeDMeasureWindow->Label_TargetAdj->Font->Color = c;
 	    break;
 	}
 
@@ -656,8 +716,7 @@ void __fastcall TThreeDMeasurementForm::Button1Click(TObject * Sender)
 	string filename = "W_stableTest.xls";
 	Util::deleteExist(filename);
 	bptr < ExcelAccessBase > excel =
-	    bptr < ExcelAccessBase >
-	    (new ExcelAccessBase(filename, Create));
+	    bptr < ExcelAccessBase > (new ExcelAccessBase(filename, Create));
 
 	int idleTime = this->Edit_IdleTime->Text.ToInt();
 	int aveTimes = this->Edit_AveTimes->Text.ToInt();
@@ -674,9 +733,8 @@ void __fastcall TThreeDMeasurementForm::Button1Click(TObject * Sender)
 		RGB_ptr rrgb(new RGBColor(MaxValue::Double255));
 		rrgb->setValue(Channel::W, r);
 		//==================================================================
-		double_vector_ptr measureResult =
-		    patternMeasure0(rrgb, rrgb, idleTime, aveTimes,
-				    leftrightChange);
+		double_vector_ptr measureResult = patternMeasure0(rrgb, rrgb, idleTime, aveTimes,
+								  leftrightChange);
 		if (true == stableTest) {
 		    vec.push_back(measureResult);
 		}
@@ -706,5 +764,4 @@ void __fastcall TThreeDMeasurementForm::Button1Click(TObject * Sender)
 }
 
 //---------------------------------------------------------------------------
-
 
