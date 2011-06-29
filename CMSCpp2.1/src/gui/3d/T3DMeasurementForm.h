@@ -83,6 +83,11 @@ class TThreeDMeasurementForm:public TForm, KeyPressListener {
     TLabel *Label11;
     TCheckBox *CheckBox_StableTest;
     TComboBox *ComboBox_MeasureMode;
+    TCheckBox *CheckBox_PatternGenOnly;
+    TGroupBox *GroupBox6;
+    TCheckBox *CheckBox_PatternGenR;
+    TCheckBox *CheckBox_PatternGenG;
+    TCheckBox *CheckBox_PatternGenB;
     void __fastcall Button_MeasureClick(TObject * Sender);
     void __fastcall FormCreate(TObject * Sender);
     void __fastcall Button_SpotMeasureClick(TObject * Sender);
@@ -97,13 +102,12 @@ class TThreeDMeasurementForm:public TForm, KeyPressListener {
      bptr < cms::measure::meter::CA210 > ca210;
     double patternMeasure(RGB_ptr left, RGB_ptr right, int idleTime,
 			  int aveTimes, bool leftrightChange);
+    void patternGenerate();
     double_vector_ptr patternMeasure0(RGB_ptr left, RGB_ptr right,
-				      int idleTime, int aveTimes,
-				      bool leftrightChange);
+				      int idleTime, int aveTimes, bool leftrightChange);
     double getMeanLuminance(double_vector_ptr result);
     double2D_ptr ODMeasure(const Dep::Channel & ch, int idleTime,
-			   int aveTimes, bool leftrightChange,
-			   bool stableTest);
+			   int aveTimes, bool leftrightChange, bool stableTest);
     void storeResult(const string & sheetName, double2D_ptr result,
 		     bptr < cms::colorformat::ExcelAccessBase > excel);
     string_vector_ptr fieldNames;
@@ -113,9 +117,10 @@ class TThreeDMeasurementForm:public TForm, KeyPressListener {
     double measure(int start, int target);
     bool whiteFont;
     int startAdj, targetAdj, start, target;
-    void dynamicMeasure(int start, int target, int adjustStart,
-			int adjustTarget);
+    void dynamicMeasure(int start, int target, int adjustStart, int adjustTarget);
     void updateAdjust();
+    bool patGenR, patGenG, patGenB;
+    bool talkABreak;
   public:			// User declarations
     static double whiteXTalk(double BB, double BW, double WW);
     static double blackXTalk(double BB, double WB, double WW);

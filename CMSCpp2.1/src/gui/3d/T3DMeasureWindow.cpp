@@ -18,20 +18,16 @@
 TThreeDMeasureWindow *ThreeDMeasureWindow;
 //---------------------------------------------------------------------------
 __fastcall TThreeDMeasureWindow::TThreeDMeasureWindow(TComponent * Owner)
-:TForm(Owner)
+:TForm(Owner), patternGenMode(false)
 {
 }
 
 //---------------------------------------------------------------------------
-void __fastcall TThreeDMeasureWindow::FormKeyPress(TObject * Sender,
-						   char &Key)
+void __fastcall TThreeDMeasureWindow::FormKeyPress(TObject * Sender, char &Key)
 {
     if (null != keyPressListener) {
 	keyPressListener->keyPress(Sender, Key);
     }
- 
-
-
 }
 
 //---------------------------------------------------------------------------
@@ -70,6 +66,11 @@ void TThreeDMeasureWindow::setRightRGB(RGB_ptr rgb)
 }
 
 //---------------------------------------------------------------------------
+void TThreeDMeasureWindow::setRGB(RGB_ptr rgb)
+{
+    setLeftRGB(rgb);
+    setRightRGB(rgb);
+}
 
 
 void __fastcall TThreeDMeasureWindow::FormPaint(TObject * Sender)
@@ -85,6 +86,16 @@ void __fastcall TThreeDMeasureWindow::FormPaint(TObject * Sender)
     this->Panel2->Top = 0;
     this->Panel2->Width = halfWidth;
     this->Panel2->Height = height;
+
+    Label_TargetAdj2->Visible = !patternGenMode;
+    Label_TargetAdj->Visible = patternGenMode;
+
+    Label_StartBase->Visible = !patternGenMode;
+    Label_TargetBase->Visible = !patternGenMode;
+    Label_StartTarget->Visible = !patternGenMode;
+    Label_TargetStart->Visible = !patternGenMode;
+    Label_WXtalk->Visible = !patternGenMode;
+    Label_BXtalk->Visible = !patternGenMode;
 }
 
 //---------------------------------------------------------------------------

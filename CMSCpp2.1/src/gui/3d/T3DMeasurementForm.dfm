@@ -834,8 +834,8 @@ object ThreeDMeasurementForm: TThreeDMeasurementForm
     Top = 7
     Width = 384
     Height = 234
-    ActivePage = TabSheet1
-    TabIndex = 0
+    ActivePage = TabSheet3
+    TabIndex = 2
     TabOrder = 0
     object TabSheet1: TTabSheet
       Caption = 'Batch'
@@ -1220,6 +1220,44 @@ object ThreeDMeasurementForm: TThreeDMeasurementForm
     object TabSheet3: TTabSheet
       Caption = 'Dynamic'
       ImageIndex = 2
+      object GroupBox6: TGroupBox
+        Left = 8
+        Top = 88
+        Width = 129
+        Height = 113
+        Caption = 'Pattern Gen'
+        TabOrder = 4
+        object CheckBox_PatternGenR: TCheckBox
+          Left = 13
+          Top = 38
+          Width = 33
+          Height = 20
+          Caption = 'R'
+          Checked = True
+          State = cbChecked
+          TabOrder = 0
+        end
+        object CheckBox_PatternGenG: TCheckBox
+          Left = 13
+          Top = 64
+          Width = 33
+          Height = 20
+          Caption = 'G'
+          Checked = True
+          State = cbChecked
+          TabOrder = 1
+        end
+        object CheckBox_PatternGenB: TCheckBox
+          Left = 13
+          Top = 85
+          Width = 26
+          Height = 20
+          Caption = 'B'
+          Checked = True
+          State = cbChecked
+          TabOrder = 2
+        end
+      end
       object GroupBox2: TGroupBox
         Left = 7
         Top = 7
@@ -1274,6 +1312,14 @@ object ThreeDMeasurementForm: TThreeDMeasurementForm
         Height = 14
         Caption = 'Auto Release CA-210'
         TabOrder = 2
+      end
+      object CheckBox_PatternGenOnly: TCheckBox
+        Left = 21
+        Top = 104
+        Width = 108
+        Height = 17
+        Caption = 'Pattern Gen Only'
+        TabOrder = 3
       end
     end
     object TabSheet4: TTabSheet
