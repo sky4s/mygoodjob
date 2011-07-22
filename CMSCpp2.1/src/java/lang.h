@@ -191,6 +191,13 @@ typedef TNT::Array3D < float >float3D;
 typedef bptr < float1D > float1D_ptr;
 typedef bptr < float2D > float2D_ptr;
 typedef bptr < float3D > float3D_ptr;
+
+typedef TNT::Array1D < int >int1D;
+typedef TNT::Array2D < int >int2D;
+typedef TNT::Array3D < int >int3D;
+typedef bptr < int1D > int1D_ptr;
+typedef bptr < int2D > int2D_ptr;
+typedef bptr < int3D > int3D_ptr;
 #endif
 //==============================================================================
 

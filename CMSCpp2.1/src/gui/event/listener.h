@@ -27,9 +27,9 @@ namespace gui {
 
 	class WindowAdapter:public WindowListener {
 	  public:
-	    void windowClosing(TObject * Sender, TCloseAction & Action);
-	    void windowActivated(TObject * Sender, TCloseAction & Action);
-	    void windowDeactivated(TObject * Sender, TCloseAction & Action);
+	    virtual void windowClosing(TObject * Sender, TCloseAction & Action);
+	    virtual void windowActivated(TObject * Sender, TCloseAction & Action);
+	    virtual void windowDeactivated(TObject * Sender, TCloseAction & Action);
 	};
 	class MouseListener {
 	  public:
