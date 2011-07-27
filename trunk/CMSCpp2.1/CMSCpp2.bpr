@@ -20,7 +20,7 @@
       build\TOutputFileFrame.obj build\T3DMeasureWindow.obj 
       build\T3DMeasurementForm.obj build\bitdepthprocessor.obj build\deltae.obj 
       build\rgbgammaop.obj build\lcdtarget.obj build\lcdmodel.obj 
-      build\minimisation.obj"/>
+      build\minimisation.obj build\asa047.obj build\hsvip.obj"/>
     <RESFILES value="CMSCpp2.res"/>
     <IDLFILES value=""/>
     <IDLGENFILES value=""/>
@@ -37,7 +37,7 @@
       inetdbbde.bpi inetdbxpress.bpi inetdb.bpi nmfast.bpi webdsnap.bpi 
       bcbie.bpi websnap.bpi soaprtl.bpi dclocx.bpi dbexpress.bpi dbxcds.bpi 
       indy.bpi bcb2kaxserver.bpi bcbindent.bpi"/>
-    <PATHCPP value=".;src;src\ca210api;src\cms;src\cms;src\cms\colorformat;src\cms\colorformat;src\cms\colorspace;src\cms\colorspace;src\cms\colorspace;src\cms\colorspace;src\cms\colorspace;src\cms\lcd\calibrate;src\cms\lcd\calibrate;src\cms\lcd\calibrate;src\cms\lcd\calibrate;src\cms\lcd\calibrate;src\cms\lcd\calibrate;src\cms\measure;src\cms\measure;src\cms\measure;src\cms\util;src\gui;src\cms\measure;src\cms\colorformat;src\cms\colorformat;src\cms\util;src\java;src\math;src\math;src\math;src\math;src\math;lib\CA200SRVRLib;lib\CA200SRVRLib;lib\LPT_lib;lib\LPT_lib;src\i2c;src\i2c;src\i2c;src\i2c\core;src\cms\colorformat;src\cms\lcd\calibrate;src\cms\lcd\calibrate;src\gui;src\gui\3d;src\gui\3d;src\cms\lcd\calibrate;src\cms;src\cms\lcd\calibrate;src\cms\lcd;src\cms\devicemodel;src\algo"/>
+    <PATHCPP value=".;src;src\ca210api;src\cms;src\cms;src\cms\colorformat;src\cms\colorformat;src\cms\colorspace;src\cms\colorspace;src\cms\colorspace;src\cms\colorspace;src\cms\colorspace;src\cms\lcd\calibrate;src\cms\lcd\calibrate;src\cms\lcd\calibrate;src\cms\lcd\calibrate;src\cms\lcd\calibrate;src\cms\lcd\calibrate;src\cms\measure;src\cms\measure;src\cms\measure;src\cms\util;src\gui;src\cms\measure;src\cms\colorformat;src\cms\colorformat;src\cms\util;src\java;src\math;src\math;src\math;src\math;src\math;lib\CA200SRVRLib;lib\CA200SRVRLib;lib\LPT_lib;lib\LPT_lib;src\i2c;src\i2c;src\i2c;src\i2c\core;src\cms\colorformat;src\cms\lcd\calibrate;src\cms\lcd\calibrate;src\gui;src\gui\3d;src\gui\3d;src\cms\lcd\calibrate;src\cms;src\cms\lcd\calibrate;src\cms\lcd;src\cms\devicemodel;src\algo;src\algo;src\cms\hsv"/>
     <PATHPAS value=".;"/>
     <PATHRC value=".;"/>
     <PATHASM value=".;"/>
@@ -47,13 +47,13 @@
     <USERDEFINES value="_DEBUG"/>
     <SYSDEFINES value="NO_STRICT"/>
     <MAINSOURCE value="CMSCpp2.bpf"/>
-    <INCLUDEPATH value="src\algo;src\cms\devicemodel;&quot;D:\Program Files\Borland\CBuilder6\Projects&quot;;src\cms\lcd;src\gui\3d;src\i2c\core;src\i2c;lib\LPT_lib;lib\CA200SRVRLib;imports\LPT_lib;imports\CA200SRVRLib;src\math;src\java;src\static\math;src\static\java;src\cms\i2c\core;src\cms\i2c;src\gui;src\cms\util;src\cms\measure;src\cms\lcd\calibrate;src\cms\colorspace;src\cms\colorformat;src\cms;src\ca210api;src;$(BCB)\include;$(BCB)\include\vcl;lib"/>
-    <LIBPATH value="src\algo;src\cms\devicemodel;&quot;D:\Program Files\Borland\CBuilder6\Projects&quot;;src\cms\lcd;src\gui\3d;d:\PRO;src\i2c\core;src\i2c;lib\LPT_lib;lib\CA200SRVRLib;imports\LPT_lib;imports\CA200SRVRLib;src\math;src\java;src\static\math;src\static\java;src\cms\i2c\core;src\cms\i2c;src\gui;$(BCB)\Projects\Lib;src\cms\util;src\cms\measure;src\cms\lcd\calibrate;src\cms\colorspace;src\cms\colorformat;src\cms;src\ca210api;src;$(BCB)\lib\obj;$(BCB)\lib;lib"/>
+    <INCLUDEPATH value="src\cms\hsv;..\ool;src\algo;src\cms\devicemodel;&quot;D:\Program Files\Borland\CBuilder6\Projects&quot;;src\cms\lcd;src\gui\3d;src\i2c\core;src\i2c;lib\LPT_lib;lib\CA200SRVRLib;imports\LPT_lib;imports\CA200SRVRLib;src\math;src\java;src\static\math;src\static\java;src\cms\i2c\core;src\cms\i2c;src\gui;src\cms\util;src\cms\measure;src\cms\lcd\calibrate;src\cms\colorspace;src\cms\colorformat;src\cms;src\ca210api;src;$(BCB)\include;$(BCB)\include\vcl;lib"/>
+    <LIBPATH value="src\cms\hsv;..\ool;src\algo;src\cms\devicemodel;&quot;D:\Program Files\Borland\CBuilder6\Projects&quot;;src\cms\lcd;src\gui\3d;d:\PRO;src\i2c\core;src\i2c;lib\LPT_lib;lib\CA200SRVRLib;imports\LPT_lib;imports\CA200SRVRLib;src\math;src\java;src\static\math;src\static\java;src\cms\i2c\core;src\cms\i2c;src\gui;$(BCB)\Projects\Lib;src\cms\util;src\cms\measure;src\cms\lcd\calibrate;src\cms\colorspace;src\cms\colorformat;src\cms;src\ca210api;src;$(BCB)\lib\obj;$(BCB)\lib;lib"/>
     <WARNINGS value="-w-par"/>
     <OTHERFILES value=""/>
   </MACROS>
   <OPTIONS>
-    <IDLCFLAGS value="-Isrc\algo -Isrc\cms\devicemodel 
+    <IDLCFLAGS value="-Isrc\cms\hsv -I..\ool -Isrc\algo -Isrc\cms\devicemodel 
       -I&quot;D:\Program Files\Borland\CBuilder6\Projects&quot; -Isrc\cms\lcd -Isrc\gui\3d 
       -Isrc\i2c\core -Isrc\i2c -Ilib\LPT_lib -Ilib\CA200SRVRLib 
       -Iimports\LPT_lib -Iimports\CA200SRVRLib -Isrc\math -Isrc\java 
@@ -132,6 +132,9 @@
       <FILE FILENAME="src\cms\cms.h" FORMNAME="" UNITNAME="cms.h" CONTAINERID="" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="src\cms\devicemodel\lcdmodel.cpp" FORMNAME="" UNITNAME="lcdmodel" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="src\algo\minimisation.cpp" FORMNAME="" UNITNAME="minimisation" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="src\algo\asa047.H" FORMNAME="" UNITNAME="asa047.H" CONTAINERID="" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="src\algo\asa047.cpp" FORMNAME="" UNITNAME="asa047" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="src\cms\hsv\hsvip.cpp" FORMNAME="" UNITNAME="hsvip" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
   </FILELIST>
   <BUILDTOOLS>
   </BUILDTOOLS>

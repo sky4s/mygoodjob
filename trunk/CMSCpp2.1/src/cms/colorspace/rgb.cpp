@@ -520,6 +520,9 @@ namespace cms {
 						     const RGBColorSpace & rgbColorSpace) {
 		double2D_ptr XYZValues = DoubleArray::times(DoubleArray::toDouble2D(rgbValues, 3),
 							    rgbColorSpace.toXYZMatrix_);
+		/*double a1 = (*rgbColorSpace.toXYZMatrix_)[0][0];
+		double a2 = (*rgbColorSpace.toXYZMatrix_)[0][1];
+		double a3 = (*rgbColorSpace.toXYZMatrix_)[0][2];*/
 		return DoubleArray::toDoubleArray(XYZValues);
 	    };
 
@@ -599,6 +602,15 @@ namespace cms {
 		return hasValueCount == 1;
 	    };
 
+	    const short_array RGBColor::get10BitValues() {
+		double_array values(new double[3]);
+		getValues(values, MaxValue::Int10Bit);
+		short_array values10Bit(new short[3]);
+		values10Bit[0] = (short) values[0];
+		values10Bit[1] = (short) values[1];
+		values10Bit[2] = (short) values[2];
+		return values10Bit;
+	    };
 	};
     };
 };

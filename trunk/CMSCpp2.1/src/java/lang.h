@@ -22,7 +22,7 @@
 #include <boost/foreach.hpp>
 #include <boost/lexical_cast.hpp>
 
-//#define TNT_LIB
+#define TNT_LIB
 
 #ifdef TNT_LIB
 #include <tnt/tnt_array1d.h>
@@ -156,6 +156,8 @@ typedef barray < float >float_array;
 #define nil_float_array float_array ((float*)NULL)
 typedef barray < int >int_array;
 #define nil_int_array int_array ((int*)NULL)
+typedef barray < short >short_array;
+#define nil_short_array short_array ((short*)NULL)
 
 //boost提供的foreach, 若要對vector<int> ivec做foreach, 語法為: foreach(const int & i, ivec) { ... }
 #define foreach BOOST_FOREACH
@@ -291,8 +293,8 @@ namespace java {
 	    Object & object;
 	    Class(Object & object);
 	  public:
-	    const string_ptr getSimpleName() const;
-	    const string_ptr getName() const;
+	    const string_ptr getSimpleName()const;
+	    const string_ptr getName()const;
 	};
 
 	class Object /*:public TObject */  {
@@ -305,9 +307,9 @@ namespace java {
 	    const Class c;
 	  public:
 	    const bool equals(Object_ptr obj);
-	    const Class & getClass() const;
+	    const Class & getClass()const;
 	    const int hashCode();
-	    const string_ptr toString() const;
+	    const string_ptr toString()const;
 	    const bool isNull();
 	    Object(bool null_);
 	    Object();
@@ -342,12 +344,21 @@ namespace java {
 	    static double max(double1D_ptr values);
 #endif
 
+	    static int maxIndex(short_array values, int n);
+	    static short max(short_array values, int n);
+	    static int minIndex(short_array values, int n);
+	    static short min(short_array values, int n);
+
 	    static int maxIndex(double_array values, int n);
+	    static double max(double_array values, int n);
 	    static int minIndex(double_array values, int n);
+	    static double min(double_array values, int n);
 	    static int maxIndex(double_vector_ptr values);
 	    static int minIndex(double_vector_ptr values);
 	    static double max(double_vector_ptr values);
 	    static double min(double_vector_ptr values);
+
+
 
 	    static double_vector_ptr normalize(double_vector_ptr original, double normal);
 	    static double cubeRoot(double x);
@@ -444,7 +455,7 @@ template < typename Container, typename ValueType, int nPropType > class Propert
 	Get = NULL;
     }
 //-- This to set a pointer to the class that contain the//   property --
-	void setContainer(Container * cObject) {
+    void setContainer(Container * cObject) {
 	m_cObject = cObject;
     }
 //-- Set the set member function that will change the value --
@@ -471,7 +482,7 @@ template < typename Container, typename ValueType, int nPropType > class Propert
     }
 //-- To make possible to cast the property class to the
 //   internal type --
-    operator                                          ValueType() {
+    operator                                                   ValueType() {
 	assert(m_cObject != NULL);
 	assert(Get != NULL);
 	return (m_cObject->*Get) ();

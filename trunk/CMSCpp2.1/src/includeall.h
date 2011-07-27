@@ -14,6 +14,7 @@
 
 #include <cms/colorspace/include.h>
 #include <cms/colorformat/include.h>
+#include <cms/hsv/include.h>
 #include <i2c/include.h>
 #include <java/lang.h>
 #include <vcl.h>

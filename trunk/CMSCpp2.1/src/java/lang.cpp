@@ -115,6 +115,40 @@ namespace java {
 	double Math::fmod(double x, double y) {
 	    return std::fmod(x, y);
 	};
+
+	int Math::minIndex(short_array values, int n) {
+	    short minValue = std::numeric_limits < short >::max();
+	    int minIndex = -1;
+	    for (int x = 0; x < n; x++) {
+		short v = values[x];
+		if (v < minValue) {
+		    minValue = v;
+		    minIndex = x;
+		};
+	    };
+	    return minIndex;
+	};
+	SHORT Math::min(short_array values, int n) {
+	    int index = minIndex(values, n);
+	    return values[index];
+	};
+	int Math::maxIndex(short_array values, int n) {
+	    short maxValue = std::numeric_limits < short >::min();
+	    int maxIndex = -1;
+	    for (int x = 0; x < n; x++) {
+		short v = values[x];
+		if (v > maxValue) {
+		    maxValue = v;
+		    maxIndex = x;
+		};
+	    };
+	    return maxIndex;
+	};
+	short Math::max(short_array values, int n) {
+	    int index = maxIndex(values, n);
+	    return values[index];
+	};
+
 	int Math::minIndex(double_array values, int n) {
 	    double minValue = std::numeric_limits < double >::max();
 	    int minIndex = -1;
@@ -127,6 +161,10 @@ namespace java {
 	    };
 	    return minIndex;
 	};
+	double Math::min(double_array values, int n) {
+	    int index = minIndex(values, n);
+	    return values[index];
+	};
 	int Math::maxIndex(double_array values, int n) {
 	    double maxValue = std::numeric_limits < double >::min();
 	    int maxIndex = -1;
@@ -138,6 +176,10 @@ namespace java {
 		};
 	    };
 	    return maxIndex;
+	};
+	double Math::max(double_array values, int n) {
+	    int index = maxIndex(values, n);
+	    return values[index];
 	};
 	double Math::min(double a, double b) {
 	    return std::min(a, b);

@@ -967,7 +967,8 @@ class property {
     property(const std::string & name, const boost::any & value):name_(name), value_(value) {
     } std::string name() const {
 	return name_;
-    } boost::any & value() {
+    }
+    boost::any & value() {
 	return value_;
     }
     friend bool operator<(const property & lhs, const property & rhs) {
@@ -1098,19 +1099,13 @@ double rosenbrock(double x[2])
 //    Output, double ROSENBROCK, the value of the function.
 //
 {
-    double fx;
-    double fx1;
-    double fx2;
 
-    fx1 = x[1] - x[0] * x[0];
-    fx2 = 1.0 - x[0];
+    double result = 5 + x[0] * x[0] + 3.0 * pow(x[1], 4);
 
-    fx = 100.0 * fx1 * fx1 + fx2 * fx2;
-
-    return fx;
+    return result;
 }
 
- 
+
 void vectorop(double_vector v)
 {
     v[0]++;
@@ -1144,8 +1139,162 @@ void vectorTest()
     cout << (*vecp)[0] << endl;
 }
 
+void test01()
+//****************************************************************************80
+//
+//  Purpose:
+//
+//    TEST01 demonstrates the use of NELMIN on ROSENBROCK.
+//
+//  Licensing:
+//
+//    This code is distributed under the GNU LGPL license. 
+//
+//  Modified:
+//
+//    27 February 2008
+//
+//  Author:
+//
+//    John Burkardt
+//
+{
+    int i;
+    int icount;
+    int ifault;
+    int kcount;
+    int konvge;
+    int n;
+    int numres;
+    double reqmin;
+    double *start;
+    double *step;
+    double *xmin;
+    double ynewlo;
 
+    n = 2;
 
+    start = new double[n];
+    step = new double[n];
+    xmin = new double[n];
+
+    cout << "\n";
+    cout << "TEST01\n";
+    //cout << "  Apply NELMIN to ROSENBROCK function.\n";
+
+    start[0] = 1.0;
+    start[1] = 3.0;
+
+    reqmin = 1.0E-15;
+
+    step[0] = 0.2;
+    step[1] = 0.6;
+
+    konvge = 3;
+    kcount = 3000;
+
+    cout << "\n";
+    cout << "  Starting point X:\n";
+    cout << "\n";
+    for (i = 0; i < n; i++) {
+	cout << "  " << setw(14) << start[i] << "\n";
+    }
+
+    ynewlo = rosenbrock(start);
+
+    cout << "\n";
+    cout << "  F(X) = " << ynewlo << "\n";
+
+    nelmin(rosenbrock, n, start, xmin, &ynewlo, reqmin, step,
+	   konvge, kcount, &icount, &numres, &ifault);
+
+    cout << "\n";
+    cout << "  Return code IFAULT = " << ifault << "\n";
+    cout << "\n";
+    cout << "  Estimate of minimizing value X*:\n";
+    cout << "\n";
+    for (i = 0; i < n; i++) {
+	cout << "  " << setw(14) << xmin[i] << "\n";
+    }
+
+    cout << "\n";
+    cout << "  F(X*) = " << ynewlo << "\n";
+
+    cout << "\n";
+    cout << "  Number of iterations = " << icount << "\n";
+    cout << "  Number of restarts =   " << numres << "\n";
+
+    delete[]start;
+    delete[]step;
+    delete[]xmin;
+
+    return;
+}
+
+//****************************************************************************80
+
+class MinFunction:public algo::MinimisationFunction {
+    double function(double_vector_ptr param) {
+	double params[2];
+	params[0] = (*param)[0];
+	params[1] = (*param)[1];
+	return rosenbrock(params);
+    };
+};
+
+void nelminTry()
+{
+
+    test01();
+    using namespace algo;
+    bptr < MinimisationFunction > mf(new MinFunction());
+    Minimisation min;
+    double_vector_ptr start(new double_vector(2));
+    double_vector_ptr step(new double_vector(2));
+    (*start)[0] = 1;
+    (*start)[1] = 3;
+    (*step)[0] = 0.2;
+    (*step)[1] = 0.6;
+    //min.nelderMead(mf, start, step);
+    min.nelderMead(mf, start, step, 1.0E-15, 3000);
+    cout << min.getMinimum() << endl;
+    double_vector_ptr params = min.getParamValues();
+    cout << (*params)[0] << " " << (*params)[1] << endl;
+}
+
+void auohsvTry()
+{
+    using namespace Dep;
+    using namespace cms::hsvip;
+    for (int x = 0; x < 360; x += 15) {
+	HSV hsv(RGBColorSpace::sRGB, x, 50, 50);
+	RGB_ptr rgb = hsv.toRGB();
+	cout << *rgb->toString() << endl;
+	AUOHSV auohsv(rgb);
+	cout << hsv.H << " " << auohsv.getHueInDegree() << " " << auohsv.getHue() << endl;
+    }
+    IntegerSaturationFormula isf((byte) 7, 3);
+    /*RGB_ptr rgb(new RGBColor(100, 200, 100));
+       AUOHSV auo(rgb);
+       short_array adjustValue(new short[3]);
+       adjustValue[0] = 30;
+       adjustValue[1] = 10;
+       adjustValue[2] = 5;
+       short_array result = IntegerHSVIP::getHSVValues(auo, adjustValue, isf, false);
+       cout << result[0] << " " << result[1] << " " << result[2] << endl;
+       using namespace cms;
+       XYZ_ptr XYZ = Illuminant::getXYZ(Illuminant::D50);
+       cout << *XYZ->toString() << endl; */
+
+    const RGBColorSpace & cs = RGBColorSpace::getsRGBGamma22();
+    //RGBColorSpace cs2 = RGBColorSpace::sRGB_gamma22;
+    ChromaEnhance ce(cs, isf);
+    SingleHueAdjustValue shv(0, 0, 0);
+    double dl = ce.calculateDeltaL(shv);
+    cout << dl << endl;
+    //const RGBColorSpace & colorspace2 = RGBColorSpace::sRGB_gamma22;
+    //int a = 1;
+};
 
 #pragma argsused
 int main(int argc, char *argv[])
@@ -1238,6 +1387,8 @@ int main(int argc, char *argv[])
 
     //cout << 5 / 4 / 3. << endl;
     //cout << _toString("123") << endl;
+    //nelminTry();
+    auohsvTry();
     cout << "end" << endl;
     getch();
 }
