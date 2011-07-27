@@ -157,11 +157,29 @@ namespace cms {
 	    //======================================================================
 	    // RGBColorSpace
 	    //======================================================================
-	    RGBColorSpace::RGBColorSpace(const CSType & type,
-					 const cms::
-					 Illuminant & referenceWhite,
-					 const double gamma):type_(type),
-		referenceWhite(referenceWhite), gamma_(gamma) {
+
+	    const RGBColorSpace & RGBColorSpace::unknowRGB =
+		RGBColorSpace(CSType::Unknow, Illuminant::D50, 2.2);
+	    const RGBColorSpace & RGBColorSpace::sRGB =
+		RGBColorSpace(CSType::sRGB, 2.2, Illuminant::D65,
+			      0.412424, 0.212656, 0.0193324,
+			      0.357579, 0.715158, 0.119193, 0.180464, 0.0721856, 0.950444);
+	    const RGBColorSpace RGBColorSpace::sRGB_gamma22 =
+		RGBColorSpace(CSType::sRGB_gamma22, 2.2, Illuminant::D65,
+			      0.412424, 0.212656, 0.0193324,
+			      0.357579, 0.715158, 0.119193, 0.180464, 0.0721856, 0.950444);
+
+	    const RGBColorSpace RGBColorSpace::getsRGBGamma22() {
+		const RGBColorSpace sRGB_gamma22 =
+		    RGBColorSpace(CSType::sRGB_gamma22, 2.2, Illuminant::D65,
+				  0.412424, 0.212656, 0.0193324,
+				  0.357579, 0.715158, 0.119193, 0.180464, 0.0721856, 0.950444);
+		return sRGB_gamma22;
+	    }
+
+	  RGBColorSpace::RGBColorSpace(const CSType & type, const cms::Illuminant & referenceWhite, const double gamma):type_(type),
+		referenceWhite(referenceWhite),
+		gamma_(gamma) {
 	    };
 	    RGBColorSpace::RGBColorSpace(const CSType & type,
 					 const cms::
@@ -199,26 +217,18 @@ namespace cms {
 		array[7] = m7;
 		array[8] = m8;
 
-		toXYZMatrix_ = double2D_ptr(new double2D(3, 3, array));
-		toRGBMatrix_ = DoubleArray::inverse(toXYZMatrix_);
+		this->toXYZMatrix_ = double2D_ptr(new double2D(3, 3, array));
+		this->toRGBMatrix_ = DoubleArray::inverse(toXYZMatrix_);
 	    };
-	    const RGBColorSpace & RGBColorSpace::unknowRGB =
-		RGBColorSpace(CSType::Unknow, Illuminant::D50, 2.2);
-	    const RGBColorSpace & RGBColorSpace::sRGB =
-		RGBColorSpace(CSType::sRGB, 2.2, Illuminant::D65,
-			      0.412424, 0.212656, 0.0193324,
-			      0.357579, 0.715158, 0.119193,
-			      0.180464, 0.0721856, 0.950444);
-	    const RGBColorSpace & RGBColorSpace::sRGB_gamma22 =
-		RGBColorSpace(CSType::sRGB_gamma22, 2.2, Illuminant::D65,
-			      0.412424, 0.212656, 0.0193324,
-			      0.357579, 0.715158, 0.119193,
-			      0.180464, 0.0721856, 0.950444);
+
 	    /*const RGBColorSpace & RGBColorSpace::NTSCRGB =
 	       RGBColorSpace(CSType::NTSCRGB, 2.2, Illuminant::C,
 	       0.606734, 0.298839, 0.000000,
 	       0.173564, 0.586811, 0.0661196,
 	       0.200112, 0.114350, 1.11491); */
+	    XYZ_ptr RGBColorSpace::getReferenceWhiteXYZ() {
+		return referenceWhiteXYZ;
+	    };
 	    //======================================================================
 
 	    //======================================================================
@@ -466,6 +476,10 @@ namespace cms {
 	    };
 	    //======================================================================
 
+
+	    //======================================================================
+	    // HSV
+	    //======================================================================
 	    HSV::HSV(const RGBColorSpace & colorSpace,
 		     double_array hsvValues):ColorAppearanceBase(colorSpace, lshIndex) {
 		this->setValues(hsvValues);
@@ -474,6 +488,7 @@ namespace cms {
 		     double v):ColorAppearanceBase(colorSpace, lshIndex) {
 		this->setValues(h, s, v);
 	    };
+
 	  HSV::HSV(RGB_ptr rgb):ColorAppearanceBase(rgb, lshIndex) {
 		this->setValues(this->_fromRGB(rgb));
 	    };
@@ -533,8 +548,8 @@ namespace cms {
 
 
 		double h = hsvValues[0];
-		double s = hsvValues[1];
-		double v = hsvValues[2];
+		double s = hsvValues[1] / 100;
+		double v = hsvValues[2] / 100 * 255;
 
 		double r, g, b;
 		s = (s < 0 ? 0 : s);
@@ -624,7 +639,10 @@ namespace cms {
 		S = values[1];
 		V = values[2];
 	    };
+	    //======================================================================
 	};
+
     };
+
 };
 

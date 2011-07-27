@@ -198,15 +198,29 @@ namespace cms {
     const Illuminant & Illuminant::D50 = Illuminant();
     const Illuminant & Illuminant::D65 = Illuminant();
     const Illuminant & Illuminant::C = Illuminant();
+    XYZ_ptr Illuminant::getXYZ() {
+	XYZ_ptr XYZ = getXYZ(*this);
+	return XYZ;
+    };
+
+    XYZ_ptr Illuminant::getXYZ(const Illuminant & illuminant) {
+	using namespace Indep;
+
+	XYZ_ptr XYZ;
+	if (&illuminant == &Illuminant::D50) {
+	    XYZ = XYZ_ptr(new CIEXYZ(0.964221, 1, 0.825210, Normal1));
+	} else if (&illuminant == &Illuminant::D65) {
+	    XYZ = XYZ_ptr(new CIEXYZ(0.950471, 1, 1.088830, Normal1));
+	} else if (&illuminant == &Illuminant::C) {
+	    XYZ = XYZ_ptr(new CIEXYZ(0.980741, 1, 1.182320, Normal1));
+	}
+	return XYZ;
+    };
     //==========================================================================
 #ifdef TNT_LIB
-    Spectra::Spectra(const std::
-		     string & name,
-		     int start,
-		     int end,
-		     int interval,
-		     double1D_ptr
-		     data):name(name), start(start), end(end), interval(interval), data(data) {
+  Spectra::Spectra(const std::string & name, int start, int end, int interval, double1D_ptr data):name(name), start(start), end(end), interval(interval),
+	data(data)
+    {
 
     }
     XYZ_ptr Spectra::getXYZ() {

@@ -52,7 +52,7 @@ namespace cms {
 	    class CIExyY;
 	    class CIEXYZ;
 	    class CIELab;
-            class CIELCh;
+	    class CIELCh;
 	};
     };
 #endif
@@ -97,6 +97,16 @@ namespace cms {
 
     namespace devicemodel {
 	class MultiMatrixModel;
+    };
+    namespace hsvip {
+	class SingleHueAdjustValue;
+	class TuneParameter;
+	class ValuePrecisionEvaluator;
+	class SaturationPrecisionEvaluator;
+	class IntegerSaturationFormula;
+	class IntegerHSVIP;
+	class AUOHSV;
+	class HSVLUT;
     };
 };
 

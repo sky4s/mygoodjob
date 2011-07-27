@@ -49,9 +49,6 @@ namespace cms {
 		friend class RGBBase;
 		friend class RGBColor;
 	      private:
-
-
-
 		 RGBColorSpace(const CSType & type,
 			       const cms::Illuminant & referenceWhite, const double gamma);
 		 RGBColorSpace(const CSType & type,
@@ -62,10 +59,13 @@ namespace cms {
 			       cms::Illuminant & referenceWhite, double m0,
 			       double m1, double m2, double m3, double m4, double m5,
 			       double m6, double m7, double m8);
+		XYZ_ptr referenceWhiteXYZ;
 	      public:
 		static const RGBColorSpace & unknowRGB;
 		static const RGBColorSpace & sRGB;
-		static const RGBColorSpace & sRGB_gamma22;
+		static const RGBColorSpace sRGB_gamma22;
+
+		static const RGBColorSpace getsRGBGamma22();
 		const double gamma_;
 		const CSType & type_;
 		const cms::Illuminant & referenceWhite;
@@ -79,6 +79,7 @@ namespace cms {
 		 RGBColorSpace(const CSType & type,
 			       const cms::Illuminant & referenceWhite,
 			       double2D_ptr toXYZMatrix, const double gamma);
+		XYZ_ptr getReferenceWhiteXYZ();
 	    };
 
 
@@ -242,7 +243,7 @@ namespace cms {
 
 	    class ColorAppearanceBase:public RGBBasis {
 	      public:
-		ColorAppearanceBase(const RGBColorSpace & colorSpace ,int_array lshIndex);
+		ColorAppearanceBase(const RGBColorSpace & colorSpace, int_array lshIndex);
 		 ColorAppearanceBase(RGB_ptr rgb, int_array lshIndex);
 		double_array getCartesianCoordinatesValues();
 		double_array getLSHValues();
@@ -257,6 +258,7 @@ namespace cms {
 		double H, S, V;
 		 HSV(const RGBColorSpace & colorSpace, double_array hsvValues);
 		 HSV(const RGBColorSpace & colorSpace, double h, double s, double v);
+
 		 HSV(RGB_ptr rgb);
 		static double_array fromRGBValues(double_array rgbValues);
 		virtual string_vector_ptr getBandNames();
@@ -273,9 +275,13 @@ namespace cms {
 		static int_array initLSHIndex();
 	    };
 
+
+
+
+
+
 	};
     };
 };
-
 #endif
 

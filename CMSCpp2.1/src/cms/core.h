@@ -97,6 +97,8 @@ namespace cms {
 	static const Illuminant & D50;
 	static const Illuminant & D65;
 	static const Illuminant & C;
+	static XYZ_ptr getXYZ(const Illuminant & illuminant);
+	XYZ_ptr getXYZ();
     };
 #ifdef TNT_LIB
     class Spectra:public jObject, SpectraIF /*, util::NameIF */  {
