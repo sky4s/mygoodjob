@@ -156,6 +156,15 @@ class THSVForm2nd:public TForm, cms::util::CallBackIF, RGBInfoCallbackIF, Patter
     TGroupBox *GroupBox7;
     TScrollBar *ScrollBar_TurnPoint;
     TLabel *Label_TurnPoint;
+    TCheckBox *CheckBox_SAT_CLIP_EN;
+    TGroupBox *GroupBox8;
+    TRadioButton *RadioButton_CSkin;
+    TRadioButton *RadioButton_OSkin;
+    TRadioButton *RadioButton_Orange;
+    TRadioButton *RadioButton_GreenGrass;
+    TRadioButton *RadioButton_DFoliage;
+    TRadioButton *RadioButton_BlueSky;
+    TCheckBox *CheckBox_MemoryColor;
     void __fastcall cb_Hue_RedClick(TObject * Sender);
     void __fastcall cb_Hue_YellowClick(TObject * Sender);
     void __fastcall cb_Hue_GreenClick(TObject * Sender);
@@ -206,6 +215,12 @@ class THSVForm2nd:public TForm, cms::util::CallBackIF, RGBInfoCallbackIF, Patter
     void __fastcall CheckBox_ShowPatternClick(TObject * Sender);
     void __fastcall hsvAdjustsb_Sat_gainChange(TObject * Sender);
     void __fastcall ScrollBar_TurnPointChange(TObject * Sender);
+    void __fastcall CheckBox_SAT_CLIP_ENClick(TObject * Sender);
+    void __fastcall RadioButton_MemoryColorClick(TObject * Sender);
+    void __fastcall cb_Hue_rotationClick(TObject * Sender);
+    void __fastcall RadioButton_MemoryColorMouseDown(TObject * Sender,
+						     TMouseButton Button, TShiftState Shift, int X,
+						     int Y);
   private:			// User declarations
     static const int HUE_COUNT = 24;	//­ì¥»¬O96, why?
     static const int MAX_HUE_VALUE = 768;
@@ -280,7 +295,7 @@ class THSVForm2nd:public TForm, cms::util::CallBackIF, RGBInfoCallbackIF, Patter
 	virtual String getSaturationCaption(int saturationPos) {
 	    //double s_show = saturationPos / 32.;
 	    //String result = astr.sprintf("%.2f", s_show);
-	    String result = (saturationPos - 64);
+	    String result = (saturationPos);
 	    return result;
 	};
 
@@ -307,6 +322,8 @@ class THSVForm2nd:public TForm, cms::util::CallBackIF, RGBInfoCallbackIF, Patter
     void selectColor();
     bool isFPGA();
     //gui::util::Label2ScrollBarSetter turnPointSetter; //(Label_TurnPoint, ScrollBar_TurnPoint);
+
+    //void setMemoryColor(int hueIndex1,int hueIndex2,
 
   public:			// User declarations
     TBit * cb;
