@@ -37,7 +37,7 @@ namespace cms {
 
 
 	     Enumeration(CSType)
-	     AdobeRGB, CIERGB, sRGB, sRGB_gamma22, sRGB_gamma18,
+	     Null, AdobeRGB, CIERGB, sRGB, sRGB_gamma22, sRGB_gamma18,
 		ProPhotoRGB, WideGamutRGB, BetaRGB, BruceRGB, ECIRGB,
 		LStarRGB, AppleRGB, BestRGB, skyRGB, NTSCRGB,
 		EktaSpacePS5RGB, Unknow, AdobeRGBD50, AdobeRGB1998, SMPTE_C, EnumerationEnd();
@@ -55,25 +55,28 @@ namespace cms {
 			       const cms::Illuminant & referenceWhite,
 			       double toXYZMatrix[9], const double gamma);
 
-		 RGBColorSpace(const CSType & type, const double gamma, const
-			       cms::Illuminant & referenceWhite, double m0,
-			       double m1, double m2, double m3, double m4, double m5,
-			       double m6, double m7, double m8);
+		 RGBColorSpace(const CSType & type, const cms::Illuminant & referenceWhite,
+			       const double gamma, double m0, double m1, double m2, double m3,
+			       double m4, double m5, double m6, double m7, double m8);
+		 RGBColorSpace(const CSType & type, const cms::Illuminant & referenceWhite,
+			       const double gamma, double rx, double ry, double gx, double gy,
+			       double bx, double by);
 		XYZ_ptr referenceWhiteXYZ;
 	      public:
-		static const RGBColorSpace & unknowRGB;
-		static const RGBColorSpace & sRGB;
+		static const RGBColorSpace unknowRGB;
+		static const RGBColorSpace sRGB;
 		static const RGBColorSpace sRGB_gamma22;
 
-		static const RGBColorSpace getsRGBGamma22();
-		const double gamma_;
-		const CSType & type_;
+		//static const RGBColorSpace getsRGBGamma22();
+		const double gamma;
+		const CSType type;
 		const cms::Illuminant & referenceWhite;
-		double2D_ptr toXYZMatrix_;
-		double2D_ptr toRGBMatrix_;
+		double2D_ptr toXYZMatrix;
+		double2D_ptr toRGBMatrix;
+		double rx, ry, gx, gy, bx, by;
 
 		inline bool operator==(const RGBColorSpace & that) const {
-		    return type_ == that.type_;
+		    return type == that.type;
 		};
 
 		 RGBColorSpace(const CSType & type,

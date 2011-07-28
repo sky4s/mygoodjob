@@ -517,7 +517,8 @@ namespace cms {
 		    XYZ_ptr XYZ = RGBColor::toXYZ(rgb, colorspace);
 		    CIELab Lab(XYZ, white);
 		    RGB_ptr rgb0 = hsv->toRGB();
-		    XYZ_ptr XYZ0 = rgb0->toXYZ();
+		    XYZ_ptr XYZ0 = RGBColor::toXYZ(rgb0, colorspace);
+		    //XYZ_ptr XYZ0 = rgb0->toXYZ();
 		    CIELab Lab0(XYZ0, white);
 		    double deltaL = Math::abs(Lab.L - Lab0.L);
 		    totalDeltaL += deltaL;

@@ -506,23 +506,26 @@ namespace cms {
 	    XYZ_ptr RGBColor::toXYZ(RGB_ptr rgb, const RGBColorSpace & rgbColorSpace) {
 		double_array rgbValues(new double[3]);
 		rgb->getValues(rgbValues, MaxValue::Double1);
+		//double r = rgbValues[0];
+		//double g = rgbValues[1];
+		//double b = rgbValues[2];
 		double_array XYZValues = toXYZValues(rgbValues, rgbColorSpace);
 		XYZ_ptr result(new Indep::CIEXYZ(XYZValues));
 		return result;
 	    };
 	    double_array RGBColor::toXYZValues(double_array rgbValues,
 					       const RGBColorSpace & rgbColorSpace) {
-		double_array actualRGBValues = toLinearRGBValues(rgbValues, rgbColorSpace.gamma_);
+		double_array actualRGBValues = toLinearRGBValues(rgbValues, rgbColorSpace.gamma);
 		double_array XYZValues = linearToXYZValues(actualRGBValues, rgbColorSpace);
 		return XYZValues;
 	    };
 	    double_array RGBColor::linearToXYZValues(double_array rgbValues,
 						     const RGBColorSpace & rgbColorSpace) {
 		double2D_ptr XYZValues = DoubleArray::times(DoubleArray::toDouble2D(rgbValues, 3),
-							    rgbColorSpace.toXYZMatrix_);
+							    rgbColorSpace.toXYZMatrix);
 		/*double a1 = (*rgbColorSpace.toXYZMatrix_)[0][0];
-		double a2 = (*rgbColorSpace.toXYZMatrix_)[0][1];
-		double a3 = (*rgbColorSpace.toXYZMatrix_)[0][2];*/
+		   double a2 = (*rgbColorSpace.toXYZMatrix_)[0][1];
+		   double a3 = (*rgbColorSpace.toXYZMatrix_)[0][2]; */
 		return DoubleArray::toDoubleArray(XYZValues);
 	    };
 

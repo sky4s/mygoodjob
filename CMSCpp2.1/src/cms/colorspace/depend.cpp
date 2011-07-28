@@ -27,7 +27,7 @@ namespace cms {
 	    };
 	    double_array DeviceDependentSpace::
 		XYZ2LinearRGBValues(double_array XYZValues, const RGBColorSpace & colorSpace) {
-		double2D_ptr aM = colorSpace.toRGBMatrix_;
+		double2D_ptr aM = colorSpace.toRGBMatrix;
 		double2D_ptr rgbValues =
 		    DoubleArray::times(DoubleArray::toDouble2D(XYZValues, 3), aM);
 
@@ -158,54 +158,49 @@ namespace cms {
 	    // RGBColorSpace
 	    //======================================================================
 
-	    const RGBColorSpace & RGBColorSpace::unknowRGB =
+	    const RGBColorSpace RGBColorSpace::unknowRGB =
 		RGBColorSpace(CSType::Unknow, Illuminant::D50, 2.2);
-	    const RGBColorSpace & RGBColorSpace::sRGB =
-		RGBColorSpace(CSType::sRGB, 2.2, Illuminant::D65,
-			      0.412424, 0.212656, 0.0193324,
-			      0.357579, 0.715158, 0.119193, 0.180464, 0.0721856, 0.950444);
+	    const RGBColorSpace RGBColorSpace::sRGB =
+		RGBColorSpace(CSType::sRGB, Illuminant::D65, 2.2, 0.64, 0.33, 0.30, 0.60, 0.15,
+			      0.06);
 	    const RGBColorSpace RGBColorSpace::sRGB_gamma22 =
-		RGBColorSpace(CSType::sRGB_gamma22, 2.2, Illuminant::D65,
-			      0.412424, 0.212656, 0.0193324,
-			      0.357579, 0.715158, 0.119193, 0.180464, 0.0721856, 0.950444);
-
-	    const RGBColorSpace RGBColorSpace::getsRGBGamma22() {
-		const RGBColorSpace sRGB_gamma22 =
-		    RGBColorSpace(CSType::sRGB_gamma22, 2.2, Illuminant::D65,
-				  0.412424, 0.212656, 0.0193324,
-				  0.357579, 0.715158, 0.119193, 0.180464, 0.0721856, 0.950444);
-		return sRGB_gamma22;
-	    }
-
-	  RGBColorSpace::RGBColorSpace(const CSType & type, const cms::Illuminant & referenceWhite, const double gamma):type_(type),
-		referenceWhite(referenceWhite),
-		gamma_(gamma) {
+		RGBColorSpace(CSType::sRGB_gamma22, Illuminant::D65, 2.2,
+			      0.64, 0.33, 0.30, 0.60, 0.15, 0.06);
+	    /*const RGBColorSpace RGBColorSpace::getsRGBGamma22() {
+	       const RGBColorSpace sRGB_gamma22(CSType::sRGB_gamma22, Illuminant::D65, 2.2,
+	       0.64, 0.33, 0.30, 0.60, 0.15, 0.06);
+	       return sRGB_gamma22;
+	       }; */
+	    RGBColorSpace::RGBColorSpace(const CSType & _type,
+					 const cms::Illuminant & _referenceWhite,
+					 const double _gamma):type(_type),
+		referenceWhite(_referenceWhite), gamma(_gamma) {
 	    };
-	    RGBColorSpace::RGBColorSpace(const CSType & type,
+	    RGBColorSpace::RGBColorSpace(const CSType & _type,
 					 const cms::
-					 Illuminant & referenceWhite,
-					 double toXYZMatrix[9],
-					 const double gamma):type_(type),
-		referenceWhite(referenceWhite), gamma_(gamma) {
+					 Illuminant & _referenceWhite,
+					 double _toXYZMatrix[9],
+					 const double _gamma):type(_type),
+		referenceWhite(_referenceWhite), gamma(_gamma) {
 
-		toXYZMatrix_ = double2D_ptr(new double2D(3, 3, toXYZMatrix));
-		toRGBMatrix_ = DoubleArray::inverse(toXYZMatrix_);
+		toXYZMatrix = double2D_ptr(new double2D(3, 3, _toXYZMatrix));
+		toRGBMatrix = DoubleArray::inverse(toXYZMatrix);
 	    };
-	    RGBColorSpace::RGBColorSpace(const CSType & type,
+	    RGBColorSpace::RGBColorSpace(const CSType & _type,
 					 const cms::
-					 Illuminant & referenceWhite,
-					 double2D_ptr toXYZMatrix,
-					 const double gamma):type_(type),
-		referenceWhite(referenceWhite), gamma_(gamma) {
-		toXYZMatrix_ = toXYZMatrix;
-		toRGBMatrix_ = DoubleArray::inverse(toXYZMatrix_);
+					 Illuminant & _referenceWhite,
+					 double2D_ptr _toXYZMatrix,
+					 const double _gamma):type(_type),
+		referenceWhite(_referenceWhite), gamma(_gamma) {
+		toXYZMatrix = _toXYZMatrix;
+		toRGBMatrix = DoubleArray::inverse(toXYZMatrix);
 	    };
-	    RGBColorSpace::RGBColorSpace(const CSType & type, const double gamma,
-					 const cms::Illuminant & referenceWhite,
-					 double m0, double m1, double m2, double m3,
-					 double m4, double m5, double m6, double m7,
-					 double m8):type_(type),
-		referenceWhite(referenceWhite), gamma_(gamma) {
+	    RGBColorSpace::RGBColorSpace(const CSType & _type,
+					 const cms::Illuminant & _referenceWhite,
+					 const double _gamma, double m0, double m1, double m2,
+					 double m3, double m4, double m5, double m6, double m7,
+					 double m8):type(_type), referenceWhite(_referenceWhite),
+		gamma(_gamma) {
 		double array[9];
 		array[0] = m0;
 		array[1] = m1;
@@ -217,10 +212,23 @@ namespace cms {
 		array[7] = m7;
 		array[8] = m8;
 
-		this->toXYZMatrix_ = double2D_ptr(new double2D(3, 3, array));
-		this->toRGBMatrix_ = DoubleArray::inverse(toXYZMatrix_);
+		this->toXYZMatrix = double2D_ptr(new double2D(3, 3, array));
+		this->toRGBMatrix = DoubleArray::inverse(toXYZMatrix);
 	    };
-
+	    RGBColorSpace::RGBColorSpace(const CSType & _type,
+					 const cms::Illuminant & _referenceWhite,
+					 const double _gamma, double _rx, double _ry, double _gx,
+					 double _gy, double _bx, double _by):rx(_rx), ry(_ry),
+		gx(_gx), gy(_gy), bx(_bx), by(_by), type(_type), referenceWhite(_referenceWhite),
+		gamma(_gamma) {
+		this->referenceWhiteXYZ = referenceWhite.getXYZ();
+		double_array whiteXYZValues = referenceWhiteXYZ->getValues();
+		this->toXYZMatrix =
+		    RGBBase::calculateRGBXYZMatrix(rx, ry, gx, gy, bx, by, whiteXYZValues);
+		if (toXYZMatrix != null) {
+		    this->toRGBMatrix = DoubleArray::inverse(toXYZMatrix);
+		}
+	    };
 	    /*const RGBColorSpace & RGBColorSpace::NTSCRGB =
 	       RGBColorSpace(CSType::NTSCRGB, 2.2, Illuminant::C,
 	       0.606734, 0.298839, 0.000000,
@@ -230,15 +238,14 @@ namespace cms {
 		return referenceWhiteXYZ;
 	    };
 	    //======================================================================
-
 	    //======================================================================
 	    // RGBBase
 	    //======================================================================
 	    double_array RGBBase::
 		linearToRGBValues(double_array linearRGBValues, RGBColorSpace rgbColorSpace) {
-		double_array rgbValues = DoubleArray::arraycopy(linearRGBValues, 3);
+		double_array rgbValues = DoubleArray::arraycopy(linearRGBValues,
+								3);
 		boolean negative = false;
-
 		if (rgbColorSpace == RGBColorSpace::sRGB) {
 		    for (int x = 0; x < 3; x++) {
 			negative = rgbValues[x] < 0;
@@ -262,21 +269,17 @@ namespace cms {
 			    rgbValues[x] = -rgbValues[x];
 			}
 
-			rgbValues[x] = Math::pow(rgbValues[x], 1. / rgbColorSpace.gamma_);
-
+			rgbValues[x] = Math::pow(rgbValues[x], 1. / rgbColorSpace.gamma);
 			if (negative) {
 			    rgbValues[x] = -rgbValues[x];
 			}
 		    }
 		};
-
 		return rgbValues;
 	    };
-
 	    double_array RGBBase::linearToRGBValues(double_array linearRGBValues, double gamma) {
 		double_array rgbValues(new double[3]);
 		boolean negative = false;
-
 		for (int x = 0; x < 3; x++) {
 		    negative = rgbValues[x] < 0;
 		    if (negative) {
@@ -284,7 +287,6 @@ namespace cms {
 		    }
 
 		    rgbValues[x] = Math::pow(rgbValues[x], 1. / gamma);
-
 		    if (negative) {
 			rgbValues[x] = -rgbValues[x];
 		    }
@@ -293,12 +295,9 @@ namespace cms {
 
 		return rgbValues;
 	    };
-
 	    double_array RGBBase::toLinearRGBValues(double_array rgbValues, double gamma) {
 		double_array linearRGBValues = DoubleArray::arraycopy(rgbValues, 3);
-
 		boolean negative = false;
-
 		for (int x = 0; x < 3; x++) {
 		    negative = linearRGBValues[x] < 0;
 		    if (negative) {
@@ -306,7 +305,6 @@ namespace cms {
 		    }
 
 		    linearRGBValues[x] = Math::pow(linearRGBValues[x], gamma);
-
 		    if (negative) {
 			linearRGBValues[x] = -linearRGBValues[x];
 		    }
@@ -314,16 +312,17 @@ namespace cms {
 
 		return linearRGBValues;
 	    };
-
-	    double2D_ptr RGBBase::calculateRGBXYZMatrix(xyY_ptr r, xyY_ptr g,
-							xyY_ptr b, XYZ_ptr white) {
-		return calculateRGBXYZMatrix(r->x, r->y, g->x, g->y, b->x, b->y,
-					     white->getValues());
+	    double2D_ptr RGBBase::
+		calculateRGBXYZMatrix(xyY_ptr r, xyY_ptr g, xyY_ptr b, XYZ_ptr white) {
+		return calculateRGBXYZMatrix(r->x, r->y,
+					     g->x, g->y, b->x, b->y, white->getValues());
 	    };
-	    double2D_ptr RGBBase::calculateRGBXYZMatrix(double rx, double ry,
-							double gx, double gy,
-							double bx, double by,
-							double_array whiteXYZValues) {
+	    double2D_ptr RGBBase::
+		calculateRGBXYZMatrix(double rx,
+				      double ry,
+				      double gx,
+				      double gy,
+				      double bx, double by, double_array whiteXYZValues) {
 		double2D_ptr matrix(new double2D(3, 3));
 		(*matrix)[0][0] = rx / ry;
 		(*matrix)[0][1] = 1;
@@ -335,9 +334,8 @@ namespace cms {
 		(*matrix)[2][1] = 1;
 		(*matrix)[2][2] = (1 - bx - by) / by;
 		double2D_ptr inv = DoubleArray::inverse(matrix);
-		double2D_ptr S =
-		    DoubleArray::times(DoubleArray::toDouble2D(whiteXYZValues, 3), inv);
-
+		double2D_ptr S = DoubleArray::times(DoubleArray::toDouble2D(whiteXYZValues, 3),
+						    inv);
 		for (int x = 0; x < 3; x++) {
 		    double s = (*S)[0][x];
 		    (*matrix)[x][0] *= s;
@@ -347,16 +345,13 @@ namespace cms {
 		return matrix;
 	    };
 	    //======================================================================
-
 	    //======================================================================
 	    // MaxValue
 	    //======================================================================
-
 	    bptr < MaxValue_vector > MaxValue::make(int count,...) {
 		bptr < MaxValue_vector > result(new MaxValue_vector());
 		va_list num_list;
 		va_start(num_list, count);
-
 		for (int i = 0; i < count; i++) {
 		    const MaxValue & m = va_arg(num_list, const MaxValue);
 		    result->push_back(m);
@@ -364,7 +359,6 @@ namespace cms {
 		va_end(num_list);
 		return result;
 	    };
-
 	    const MaxValue & MaxValue::Double1 = MaxValue(1.);	//正規化
 	    const MaxValue & MaxValue::Double100 = MaxValue(100.);	//正規化
 	    const MaxValue & MaxValue::Int5Bit = MaxValue(31., true, false, 5);	//5bit
@@ -388,13 +382,14 @@ namespace cms {
 	    const MaxValue & MaxValue::Int24Bit = MaxValue(16711680, true, true, 24);	//24bit
 	    const MaxValue & MaxValue::Int31Bit = MaxValue(2139095040, true, true, 31);	//31bit
 	    const MaxValue & MaxValue::DoubleUnlimited = MaxValue(std::numeric_limits < double >::max());	//無限制
-
-	    const bptr < MaxValue_vector > MaxValue::MaxValueVector =
-		MaxValue::make(15, Int5Bit, Int6Bit, Int7Bit, Int8Bit,
-			       Int9Bit, Int10Bit, RealInt10Bit, Int11Bit,
-			       Int12Bit, Int13Bit, Int14Bit, Int15Bit,
-			       Int16Bit, Int20Bit, Int24Bit);
-
+	    const bptr < MaxValue_vector >
+		MaxValue::MaxValueVector = MaxValue::make(15, Int5Bit, Int6Bit,
+							  Int7Bit, Int8Bit, Int9Bit,
+							  Int10Bit, RealInt10Bit,
+							  Int11Bit, Int12Bit,
+							  Int13Bit, Int14Bit,
+							  Int15Bit, Int16Bit,
+							  Int20Bit, Int24Bit);
 	    MaxValue MaxValue::getIntegerMaxValueByLevel(int level) {
 		/* TODO : getIntegerMaxValueByLevel */
 	    };
@@ -404,7 +399,6 @@ namespace cms {
 	    double MaxValue::getStepIn255() {
 		return 255. / max;
 	    };
-
 	    const MaxValue & MaxValue::getByIntegerBit(int bit) {
 		foreach(const MaxValue & m, *MaxValueVector) {
 		    if (true == m.integer && m.bit == bit) {
@@ -466,17 +460,13 @@ namespace cms {
 		result[0] = values[lshIndex[0]];
 		result[1] = values[lshIndex[1]];
 		result[2] = values[lshIndex[2]];
-
 		return result;
 	    };
 	    void ColorAppearanceBase::setLSHValues(double_array LSHValues) {
-		this->setValues(LSHValues[lshIndex[0]], LSHValues[lshIndex[1]],
-				LSHValues[lshIndex[2]]);
-
+		this->setValues(LSHValues[lshIndex[0]],
+				LSHValues[lshIndex[1]], LSHValues[lshIndex[2]]);
 	    };
 	    //======================================================================
-
-
 	    //======================================================================
 	    // HSV
 	    //======================================================================
@@ -484,17 +474,15 @@ namespace cms {
 		     double_array hsvValues):ColorAppearanceBase(colorSpace, lshIndex) {
 		this->setValues(hsvValues);
 	    };
-	    HSV::HSV(const RGBColorSpace & colorSpace, double h, double s,
-		     double v):ColorAppearanceBase(colorSpace, lshIndex) {
+	    HSV::HSV(const RGBColorSpace & colorSpace, double h, double s, double
+		     v):ColorAppearanceBase(colorSpace, lshIndex) {
 		this->setValues(h, s, v);
 	    };
-
 	  HSV::HSV(RGB_ptr rgb):ColorAppearanceBase(rgb, lshIndex) {
 		this->setValues(this->_fromRGB(rgb));
 	    };
 	    double_array HSV::fromRGBValues(double_array rgbValues) {
 		double h, s, v;
-
 		double r = rgbValues[0];
 		double g = rgbValues[1];
 		double b = rgbValues[2];
@@ -507,7 +495,6 @@ namespace cms {
 		double d = max - min;
 		s = d;
 		d = (d == 0 ? d + 256 : d);
-
 		if (max == 0) {
 		    s = 0;
 		} else {
@@ -547,10 +534,9 @@ namespace cms {
 	    double_array HSV::toRGBValues(double_array hsvValues) {
 
 
-		double h = hsvValues[0];
-		double s = hsvValues[1] / 100;
-		double v = hsvValues[2] / 100 * 255;
-
+		double h = hsvValues[0];	//eat 0~360
+		double s = hsvValues[1] / 100;	//eat 0~1
+		double v = hsvValues[2] / 100 * 255;	//eat 0~255
 		double r, g, b;
 		s = (s < 0 ? 0 : s);
 		s = (s > 1 ? 1 : s);
@@ -594,8 +580,6 @@ namespace cms {
 		rgbValues[2] = b;
 		return rgbValues;
 	    };
-
-
 	    int_array HSV::lshIndex = initLSHIndex();
 	    int_array HSV::initLSHIndex() {
 		int_array index(new int[3]);
@@ -604,12 +588,10 @@ namespace cms {
 		index[2] = 0;
 		return index;
 	    };
-
 	    double_array HSV::getHSVIValues() {
 		double_array hsvValues = getValues();
 		double_array rgbValues = toRGBValues(getValues());
 		double_array hsviValues = getHSVIValues(rgbValues);
-
 		return hsviValues;
 	    };
 	    double_array HSV::getHSVIValues(double_array rgbValues) {
@@ -624,7 +606,6 @@ namespace cms {
 	    double_array HSV::_fromRGB(RGB_ptr rgb) {
 		double_array rgbValues(new double[3]);
 		rgb->getValues(rgbValues, MaxValue::Double1);
-
 		double_array hsvValues = fromRGBValues(rgbValues);
 		return hsvValues;
 	    };
@@ -641,8 +622,6 @@ namespace cms {
 	    };
 	    //======================================================================
 	};
-
     };
-
 };
 

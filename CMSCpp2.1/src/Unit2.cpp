@@ -1286,14 +1286,15 @@ void auohsvTry()
        XYZ_ptr XYZ = Illuminant::getXYZ(Illuminant::D50);
        cout << *XYZ->toString() << endl; */
 
-    const RGBColorSpace & cs = RGBColorSpace::getsRGBGamma22();
+    //const RGBColorSpace & cs = RGBColorSpace::getsRGBGamma22();
+    RGBColorSpace cs = RGBColorSpace::sRGB_gamma22;
     //RGBColorSpace cs2 = RGBColorSpace::sRGB_gamma22;
+    //boolean a = (cs == cs2);
     ChromaEnhance ce(cs, isf);
-    SingleHueAdjustValue shv(0, 0, 0);
+    SingleHueAdjustValue shv(0, 1, 0);
     double dl = ce.calculateDeltaL(shv);
     cout << dl << endl;
-    //const RGBColorSpace & colorspace2 = RGBColorSpace::sRGB_gamma22;
-    //int a = 1;
+
 };
 
 #pragma argsused
