@@ -1,8 +1,8 @@
 object HSVForm2nd: THSVForm2nd
-  Left = 411
-  Top = 127
-  Width = 843
-  Height = 628
+  Left = 390
+  Top = 53
+  Width = 820
+  Height = 673
   Caption = 'HSV2'
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
@@ -6240,8 +6240,8 @@ object HSVForm2nd: THSVForm2nd
     OnMouseMove = Hue_ImgMouseMove
   end
   object GroupBox28: TGroupBox
-    Left = 2
-    Top = 591
+    Left = 186
+    Top = 599
     Width = 529
     Height = 230
     Caption = 'Adjust HSV'
@@ -6410,7 +6410,7 @@ object HSVForm2nd: THSVForm2nd
     Left = 7
     Top = 0
     Width = 802
-    Height = 592
+    Height = 641
     TabOrder = 0
     object CheckBox1: TCheckBox
       Left = 129
@@ -6628,6 +6628,7 @@ object HSVForm2nd: THSVForm2nd
         Height = 17
         Caption = 'Global'
         TabOrder = 0
+        OnClick = cb_Hue_rotationClick
       end
       object btn_set: TButton
         Left = 394
@@ -6759,7 +6760,9 @@ object HSVForm2nd: THSVForm2nd
         end
         inherited GroupBox41: TGroupBox
           inherited sb_Sat_gain: TScrollBar
-            Position = 64
+            Max = 63
+            Min = -64
+            Position = 0
             OnChange = hsvAdjustsb_Sat_gainChange
           end
           inherited Edit_c3d_Manual39_s_adj: TEdit
@@ -7201,13 +7204,13 @@ object HSVForm2nd: THSVForm2nd
       Width = 161
       Height = 21
       TabOrder = 11
-      Text = 'Cursor Color'
+      Text = 'RGB Cursor Color'
     end
     object GroupBox_OoG: TGroupBox
       Left = 8
-      Top = 408
+      Top = 536
       Width = 161
-      Height = 65
+      Height = 97
       Caption = 'Out of Gamut Indicator'
       TabOrder = 12
       object CheckBox_OoG: TCheckBox
@@ -7244,7 +7247,7 @@ object HSVForm2nd: THSVForm2nd
       Width = 161
       Height = 21
       TabOrder = 13
-      Text = 'Cursor Color'
+      Text = 'HSV Cursor Color'
     end
     object GroupBox5: TGroupBox
       Left = 632
@@ -7274,9 +7277,9 @@ object HSVForm2nd: THSVForm2nd
       end
     end
     object GroupBox7: TGroupBox
-      Left = 8
-      Top = 480
-      Width = 161
+      Left = 176
+      Top = 592
+      Width = 153
       Height = 41
       Caption = 'Turn Point'
       TabOrder = 15
@@ -7297,6 +7300,98 @@ object HSVForm2nd: THSVForm2nd
         Position = 7
         TabOrder = 0
         OnChange = ScrollBar_TurnPointChange
+      end
+    end
+    object CheckBox_SAT_CLIP_EN: TCheckBox
+      Left = 488
+      Top = 8
+      Width = 89
+      Height = 17
+      Caption = 'SAT_CLIP_EN'
+      TabOrder = 16
+      OnClick = CheckBox_SAT_CLIP_ENClick
+    end
+    object GroupBox8: TGroupBox
+      Left = 8
+      Top = 416
+      Width = 161
+      Height = 121
+      Caption = 'Memory Color'
+      TabOrder = 17
+      object RadioButton_CSkin: TRadioButton
+        Left = 8
+        Top = 16
+        Width = 113
+        Height = 17
+        Hint = '0'
+        Caption = 'Caucasian Skin'
+        TabOrder = 0
+        OnClick = RadioButton_MemoryColorClick
+        OnMouseDown = RadioButton_MemoryColorMouseDown
+      end
+      object RadioButton_OSkin: TRadioButton
+        Left = 8
+        Top = 32
+        Width = 113
+        Height = 17
+        Hint = '15'
+        Caption = 'Oriental Skin'
+        TabOrder = 1
+        OnClick = RadioButton_MemoryColorClick
+        OnMouseDown = RadioButton_MemoryColorMouseDown
+      end
+      object RadioButton_Orange: TRadioButton
+        Left = 8
+        Top = 48
+        Width = 113
+        Height = 17
+        Hint = '30'
+        Caption = 'Orange'
+        TabOrder = 2
+        OnClick = RadioButton_MemoryColorClick
+        OnMouseDown = RadioButton_MemoryColorMouseDown
+      end
+      object RadioButton_GreenGrass: TRadioButton
+        Left = 8
+        Top = 64
+        Width = 113
+        Height = 17
+        Hint = '120'
+        Caption = 'Green Grass'
+        TabOrder = 3
+        OnClick = RadioButton_MemoryColorClick
+        OnMouseDown = RadioButton_MemoryColorMouseDown
+      end
+      object RadioButton_DFoliage: TRadioButton
+        Left = 8
+        Top = 80
+        Width = 113
+        Height = 17
+        Hint = '135'
+        Caption = 'Deciduous Foliage'
+        TabOrder = 4
+        OnClick = RadioButton_MemoryColorClick
+        OnMouseDown = RadioButton_MemoryColorMouseDown
+      end
+      object RadioButton_BlueSky: TRadioButton
+        Left = 8
+        Top = 96
+        Width = 113
+        Height = 17
+        Hint = '195'
+        Caption = 'Blue Sky'
+        TabOrder = 5
+        OnClick = RadioButton_MemoryColorClick
+        OnMouseDown = RadioButton_MemoryColorMouseDown
+      end
+      object CheckBox_MemoryColor: TCheckBox
+        Left = 80
+        Top = -1
+        Width = 57
+        Height = 17
+        Caption = 'Check'
+        TabOrder = 6
+        Visible = False
       end
     end
   end

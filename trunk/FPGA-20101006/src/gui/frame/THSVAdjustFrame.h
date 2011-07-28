@@ -13,7 +13,7 @@
 //vcl®wÀY¤å¥ó
 #include <Classes.hpp>
 #include <Controls.hpp>
-#include <StdCtrls.hpp>~
+#include <StdCtrls.hpp>
 #include <StdCtrls.hpp>
 #include <Forms.hpp>
 #include <Grids.hpp>

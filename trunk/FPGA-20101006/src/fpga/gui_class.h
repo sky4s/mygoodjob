@@ -139,6 +139,7 @@ class AbstractBase {
     static StringMap_ptr getStringMap(std::string filename);
     static StringMap_ptr getStringMap(AnsiString filename);
   public:
+    static bptr < AbstractAddressType > getAddress(std::string text);
     static int_vector_ptr getValuesFromFile(std::string tag);
     static void resetAddressMap();
 };
