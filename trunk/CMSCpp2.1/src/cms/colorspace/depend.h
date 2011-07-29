@@ -43,7 +43,6 @@ namespace cms {
 		EktaSpacePS5RGB, Unknow, AdobeRGBD50, AdobeRGB1998, SMPTE_C, EnumerationEnd();
 
 	    class RGBBase;
-	    //using cms::Illuminant;
 
 	    class RGBColorSpace {
 		friend class RGBBase;
