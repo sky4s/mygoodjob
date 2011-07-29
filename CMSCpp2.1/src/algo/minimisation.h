@@ -38,6 +38,9 @@ namespace algo {
 	double ynewlo;
 	int konvge, kcount;
 	double_vector_ptr paramValues;
+	double *cstart;
+	double *cstep;
+	double *xmin;
       public:
 	 Minimisation();
 	void nelderMead(bptr < MinimisationFunction > mf, double_vector_ptr start,

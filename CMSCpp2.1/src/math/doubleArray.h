@@ -104,7 +104,8 @@ namespace math {
 	static double_array toDoubleArray(float_array floatArray, int n);
 	static double_array toDoubleArray(double2D_ptr array);
 	static double_vector_ptr toDoubleVector(double array[], int n);
-	static double* toCDoubleArray(double_vector_ptr doubleVector);
+	static double *toCDoubleArray(double_vector_ptr doubleVector);
+	static void toCDoubleArray(double_vector_ptr doubleVector, double *cDoubleArray);
 	//=====================================================================
 
 #ifdef EXCEL_ACCESSIBLE
