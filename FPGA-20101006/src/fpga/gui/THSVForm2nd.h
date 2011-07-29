@@ -360,6 +360,9 @@ class THSVForm2nd:public TForm, cms::util::CallBackIF, RGBInfoCallbackIF, Patter
 
     //void setMemoryColor(int hueIndex1,int hueIndex2,
 
+    Dep::RGBColorSpace colorspace;	// = RGBColorSpace::sRGB_gamma22;
+    cms::hsvip::IntegerSaturationFormula isf;	//((byte) 7, 3);
+
   public:			// User declarations
     TBit * cb;
     _CHKB **ChkB;

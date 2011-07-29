@@ -6833,53 +6833,6 @@ object HSVForm2nd: THSVForm2nd
         TabOrder = 14
         OnClick = CheckBox_ShowPatternClick
       end
-      object GroupBox9: TGroupBox
-        Left = 5
-        Top = 188
-        Width = 360
-        Height = 61
-        TabOrder = 15
-        object Label25: TLabel
-          Left = 5
-          Top = 33
-          Width = 47
-          Height = 16
-          Caption = 'Chroma'
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clWindowText
-          Font.Height = -15
-          Font.Name = 'MS Sans Serif'
-          Font.Style = []
-          ParentFont = False
-        end
-        object Label_Chroma: TLabel
-          Left = 319
-          Top = 41
-          Width = 6
-          Height = 13
-          Caption = '0'
-        end
-        object ScrollBar_Chroma: TScrollBar
-          Left = 69
-          Top = 32
-          Width = 244
-          Height = 21
-          Max = 63
-          Min = -64
-          PageSize = 0
-          TabOrder = 0
-          OnChange = ScrollBar_ChromaChange
-        end
-        object Button_ChromaReset: TButton
-          Left = 232
-          Top = 8
-          Width = 49
-          Height = 17
-          Caption = 'Reset'
-          TabOrder = 1
-          OnClick = Button_ChromaResetClick
-        end
-      end
     end
     object GroupBox3: TGroupBox
       Left = 7
@@ -7451,6 +7404,53 @@ object HSVForm2nd: THSVForm2nd
       Height = 21
       TabOrder = 18
       Text = 'Edit1'
+    end
+    object GroupBox9: TGroupBox
+      Left = 181
+      Top = 580
+      Width = 360
+      Height = 61
+      TabOrder = 19
+      object Label25: TLabel
+        Left = 5
+        Top = 33
+        Width = 47
+        Height = 16
+        Caption = 'Chroma'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -15
+        Font.Name = 'MS Sans Serif'
+        Font.Style = []
+        ParentFont = False
+      end
+      object Label_Chroma: TLabel
+        Left = 319
+        Top = 41
+        Width = 6
+        Height = 13
+        Caption = '0'
+      end
+      object ScrollBar_Chroma: TScrollBar
+        Left = 69
+        Top = 32
+        Width = 244
+        Height = 21
+        Max = 63
+        Min = -64
+        PageSize = 0
+        TabOrder = 0
+        OnChange = ScrollBar_ChromaChange
+      end
+      object Button_ChromaReset: TButton
+        Left = 232
+        Top = 8
+        Width = 49
+        Height = 17
+        Caption = 'Reset'
+        TabOrder = 1
+        OnClick = Button_ChromaResetClick
+      end
     end
   end
   object btn_Hue_Img_load: TButton
