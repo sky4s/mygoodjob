@@ -43,7 +43,8 @@ __fastcall THSVForm2nd::THSVForm2nd(TComponent * Owner):TForm(Owner),
 HSV_IsChkSum(true), tbl_step(WHOLE_HUE_ANGLE / HUE_COUNT),
 lastStringGridSelectRow(-1), settingScrollBarPosition(false),
 cursorRGBValues(new int[3]), patternMode(PatternMode::Single),
-selectedRGBValues(new int[3]), customPattern(false), patternValue(192), isInversePattern(false)
+selectedRGBValues(new int[3]), customPattern(false), patternValue(192), isInversePattern(false),
+colorspace(Dep::RGBColorSpace::sRGB_gamma22), isf(cms::hsvip::IntegerSaturationFormula((byte) 7, 3))
 {
     HSV_Chg = 0;
     HSVEN_idx = -1;
@@ -485,7 +486,6 @@ void __fastcall THSVForm2nd::Hue_ImgMouseMove(TObject * Sender, TShiftState Shif
 }
 
 //---------------------------------------------------------------------------
-
 void __fastcall THSVForm2nd::btn_Hue_Img_loadClick(TObject * Sender)
 {
     if (!OpenDialog1->Execute())
@@ -742,21 +742,16 @@ int THSVForm2nd::getHueAngle(int index)
 {
     return WHOLE_HUE_ANGLE / HUE_COUNT * index;
 }
-
 int THSVForm2nd::getHueIndex(double angle)
 {
     using namespace java::lang;
     double round = Math::round(angle / (WHOLE_HUE_ANGLE / HUE_COUNT));
     return static_cast < int >(round) % 24;
-}
-
-int THSVForm2nd::hueAngleToValue(double hueAngle)
+} int THSVForm2nd::hueAngleToValue(double hueAngle)
 {
     double value = hueAngle / WHOLE_HUE_ANGLE * MAX_HUE_VALUE;
     return static_cast < int >(value);
-}
-
-double THSVForm2nd::hueValueToAngle(int hueValue)
+} double THSVForm2nd::hueValueToAngle(int hueValue)
 {
     double angle = ((double) hueValue) / MAX_HUE_VALUE * WHOLE_HUE_ANGLE;
     return angle;
@@ -798,9 +793,7 @@ void __fastcall THSVForm2nd::stringGrid_HSVDrawCell(TObject * Sender,
 	int hueAngle = index * 15;
 	stringGrid_HSV->Canvas->TextOut(0 + 4, height * ARow + 1, hueAngle);
     }
-}
-
-void THSVForm2nd::drawStringGrid_HSVCell(TObject * Sender)
+} void THSVForm2nd::drawStringGrid_HSVCell(TObject * Sender)
 {
     TRect r;
     TGridDrawState g;
@@ -819,7 +812,6 @@ int_array THSVForm2nd::getHSVAdjustValue(int index)
     adjustValue[2] = valTableTemp[index];
     return adjustValue;
 }
-
 void __fastcall THSVForm2nd::stringGrid_HSVSelectCell(TObject * Sender,
 						      int ACol, int ARow, bool & CanSelect)
 {
@@ -984,9 +976,7 @@ void THSVForm2nd::setGridSelectRow(int row)
     select.Bottom = row;
     stringGrid_HSV->Selection = select;
     stringGrid_HSVSelectCell(null, -1, row, true);
-}
-
-int THSVForm2nd::getGridSelectRow()
+} int THSVForm2nd::getGridSelectRow()
 {
     return stringGrid_HSV->Selection.Top;
 }
@@ -1231,7 +1221,6 @@ void __fastcall THSVForm2nd::FormKeyPress(TObject * Sender, char &Key)
 	hsvAdjusting = true;
 	break;
     }
-
     if (manualHsvAdjusting) {
 	hsvAdjust->setHSVPostition(hsvPos);
 	hsvAdjusting = true;
@@ -1371,14 +1360,12 @@ void THSVForm2nd::callback()
 	RGBBase::calculateRGBXYZMatrix(sourceRGBxyY[0], sourceRGBxyY[1],
 				       sourceRGBxyY[3],
 				       sourceRGBxyY[4], sourceRGBxyY[6],
-				       sourceRGBxyY[7],
-				       sourceWhiteXYZValues);
+				       sourceRGBxyY[7], sourceWhiteXYZValues);
     double2D_ptr targetToXYZMatrix =
 	RGBBase::calculateRGBXYZMatrix(targetRGBxyY[0], targetRGBxyY[1],
 				       targetRGBxyY[3],
 				       targetRGBxyY[4], targetRGBxyY[6],
-				       targetRGBxyY[7],
-				       targetWhiteXYZValues);
+				       targetRGBxyY[7], targetWhiteXYZValues);
     //¨ú¥Xgamma
     double sourceGamma = GamutSetupForm->Edit_SourceGamma->Text.ToDouble();
     double targetGamma = GamutSetupForm->Edit_TargetGamma->Text.ToDouble();
@@ -1481,9 +1468,7 @@ void THSVForm2nd::imageMousePressed(TObject * Sender, TMouseButton Button,
 {
     selectColor();
 
-}
-
-void __fastcall THSVForm2nd::colorPickercb_show_ref_imgClick(TObject * Sender)
+} void __fastcall THSVForm2nd::colorPickercb_show_ref_imgClick(TObject * Sender)
 {
     colorPicker->cb_show_ref_imgClick(Sender);
 
@@ -1499,9 +1484,12 @@ void THSVForm2nd::setupPatternForm()
     HSV_vector_ptr hsvVector(new HSV_vector());
 
     const int stdSize = 5;
-    int valueArray[stdSize] = { 192, 192, 192, 192, 192 /*, 128, 255, 255 */  };
-    double saturationArray[stdSize] =
-	{ .33333333333333336, .5, .58333333333333336, .6666666666666667, .75 /*, 1, .5, 1 */  };
+    int valueArray[stdSize] = {
+	192, 192, 192, 192, 192	/*, 128, 255, 255 */
+    };
+    double saturationArray[stdSize] = {
+	.33333333333333336, .5, .58333333333333336, .6666666666666667, .75	/*, 1, .5, 1 */
+    };
     double_array hsvValues(new double[3]);
 
     int totalSize = customPattern ? stdSize + 1 : stdSize;
@@ -1651,10 +1639,7 @@ void THSVForm2nd::inversePattern(bool inverse)
 void THSVForm2nd::keyPress(char &Key)
 {
     FormKeyPress(this, Key);
-}
-
-
-
+};
 void __fastcall THSVForm2nd::hsvAdjustsb_Sat_gainChange(TObject * Sender)
 {
     hsvAdjust->sb_Sat_gainChange(Sender);
@@ -1752,7 +1737,6 @@ void __fastcall THSVForm2nd::RadioButton_MemoryColorMouseDown(TObject * Sender,
 }
 
 //---------------------------------------------------------------------------
-
 void __fastcall THSVForm2nd::Button_ChromaResetClick(TObject * Sender)
 {
     ScrollBar_Chroma->Position = 0;
@@ -1782,11 +1766,11 @@ void __fastcall THSVForm2nd::ScrollBar_ChromaChange(TObject * Sender)
     //double finalHueAngle = hueValueToAngle(finalHueValue);
 
     using namespace cms::hsvip;
-    using namespace Dep;
+    //using namespace Dep;
     using namespace algo;
 
-    RGBColorSpace & colorspace = RGBColorSpace::sRGB_gamma22;
-    IntegerSaturationFormula isf((byte) 7, 3);
+    //RGBColorSpace & colorspace = RGBColorSpace::sRGB_gamma22;
+    //IntegerSaturationFormula isf((byte) 7, 3);
     ChromaEnhance ce(colorspace, isf);
 
     bptr < MinimisationFunction > mf(new MinFunction((short) finalHueValue, (short) chromaValue,
@@ -1806,6 +1790,8 @@ void __fastcall THSVForm2nd::ScrollBar_ChromaChange(TObject * Sender)
     hsvPos[2] = value;
 
     hsvAdjust->setHSVPostition(hsvPos);
+    //hsvAdjust->updateHSVCaption();
+    hsvAdjustsb_c3d_Manual39_hChange(Sender);
 };
 
 //---------------------------------------------------------------------------
