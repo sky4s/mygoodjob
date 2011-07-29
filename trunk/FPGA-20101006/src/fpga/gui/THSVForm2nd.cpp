@@ -768,7 +768,7 @@ RGB_ptr THSVForm2nd::getHueRGB(int index, double s, int v)
 {
     using namespace Dep;
     int hue = getHueAngle(index);
-    HSV_ptr hsv(new HSV(RGBColorSpace::sRGB, hue, s * 100, v));
+    HSV_ptr hsv(new HSV(RGBColorSpace::sRGB, hue, s * 100, v / 255. * 100));
 
     RGB_ptr rgb = hsv->toRGB();
     return rgb;
@@ -1780,7 +1780,7 @@ void __fastcall THSVForm2nd::ScrollBar_ChromaChange(TObject * Sender)
     (*start)[0] = 0;
     (*step)[0] = 1;
 
-    Minimisation min;
+    static Minimisation min;
     min.nelderMead(mf, start, step);
     double_vector_ptr paramValues = min.getParamValues();
     short value = (short) (*paramValues)[0];
