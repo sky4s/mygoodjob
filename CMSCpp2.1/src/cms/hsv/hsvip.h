@@ -139,7 +139,7 @@ namespace cms {
 	    void setHSVClip(boolean clip);
 	    ChromaEnhance(const Dep::RGBColorSpace & colorspace,
 			  const IntegerSaturationFormula & isf);
-	    double calculateDeltaL(SingleHueAdjustValue & singleHueAdjustValue);
+	    double calculateDeltaL(const SingleHueAdjustValue & singleHueAdjustValue);
 	    static double calculateDeltaL(const SingleHueAdjustValue & singleHueAdjustValue,
 					  const Dep::RGBColorSpace & colorspace,
 					  const IntegerSaturationFormula & isf, boolean hsvClip);
