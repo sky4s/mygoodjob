@@ -89,6 +89,9 @@ namespace cms {
 	    hsvIntpol[0] = getHueIntpol(auoHSV, v.hueAdjustValue, v.hueAdjustValue);
 	    hsvIntpol[1] = getSatIntpol(auoHSV, v.saturationAdjustValue, v.saturationAdjustValue);
 	    hsvIntpol[2] = getLumIntpol(auoHSV, v.valueAdjustValue, v.valueAdjustValue);
+	    //double hh = hsvIntpol[0];
+	    //double ss = hsvIntpol[1];
+	    //double vv = hsvIntpol[2];
 	    return hsvIntpol;
 	};
 	short HSVLUT::getHueIntpol(AUOHSV & auoHSV, int down, int up) {
@@ -125,7 +128,7 @@ namespace cms {
 	//======================================================================
 
 	short ValuePrecisionEvaluator::getV(short max, short min, short offset) {
-	    boolean interpolateOffset = false;
+	    boolean interpolateOffset = true;
 	    short v = (short) getV(max, min, offset, (short) 1023, 1, 8, 10,
 				   interpolateOffset);
 	    return v;
@@ -293,6 +296,10 @@ namespace cms {
 
 	    short offset = (short) (hsvIntpol[2] / Math::pow(2, 4));
 	    hsvValues[2] = ValuePrecisionEvaluator::getV(hsv.value, hsv.min, offset);
+
+	    short h0 = hsvValues[0];
+	    short h1 = hsvValues[1];
+	    short h2 = hsvValues[2];
 
 	    if (hsvClip) {
 		hsvValues[1] = hsvValues[1] > 1023 ? 1023 : hsvValues[1];
@@ -512,6 +519,11 @@ namespace cms {
 		    AUOHSV auohsv(hsv);
 		    short_array auohsvValues =
 			IntegerHSVIP::getHSVValues(auohsv, adjustValue, isf, hsvClip);
+
+		    short hh = auohsvValues[0];
+		    short ss = auohsvValues[1];
+		    short vv = auohsvValues[2];
+
 		    AUOHSV_ptr hsv2 = AUOHSV::fromHSVValues3(auohsvValues);
 		    RGB_ptr rgb = hsv2->toRGB();
 		    XYZ_ptr XYZ = RGBColor::toXYZ(rgb, colorspace);

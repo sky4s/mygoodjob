@@ -1291,7 +1291,7 @@ void auohsvTry()
     //RGBColorSpace cs2 = RGBColorSpace::sRGB_gamma22;
     //boolean a = (cs == cs2);
     ChromaEnhance ce(cs, isf);
-    SingleHueAdjustValue shv(0, 1, 0);
+    SingleHueAdjustValue shv(0, 14, 3);
     double dl = ce.calculateDeltaL(shv);
     cout << dl << endl;
 
