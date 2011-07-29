@@ -526,7 +526,7 @@ namespace cms {
 		};
 	    };
 	    double averageDeltaL = totalDeltaL / index;
-	    return Math::abs(averageDeltaL);
+	    return averageDeltaL;
 	};
 	//======================================================================
     };

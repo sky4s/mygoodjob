@@ -22,7 +22,8 @@ namespace algo {
 
     double minimisationFunction(double x[]) {
 	double_vector_ptr params = DoubleArray::toDoubleVector(x, Minimisation::minimisation_n);
-	 return Minimisation::mf_ptr->function(params);
+	 bptr < MinimisationFunction > mf = Minimisation::mf_ptr;
+	 return mf->function(params);
     };
   Minimisation::Minimisation():konvge(3) {
     };
@@ -44,6 +45,9 @@ namespace algo {
 	double *cstart = DoubleArray::toCDoubleArray(start);
 	double *cstep = DoubleArray::toCDoubleArray(step);
 	double *xmin = new double[n];
+	for (int x = 0; x < n; x++) {
+	    xmin[n] = 0;
+	}
 
 	nelmin(minimisationFunction, n, cstart, xmin, &ynewlo, ftol, cstep, konvge, kcount,
 	       &icount, &numres, &ifault);

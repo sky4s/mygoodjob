@@ -590,7 +590,7 @@ namespace cms {
 	    };
 	    double_array HSV::getHSVIValues() {
 		double_array hsvValues = getValues();
-		double_array rgbValues = toRGBValues(getValues());
+		double_array rgbValues = toRGBValues(hsvValues);
 		double_array hsviValues = getHSVIValues(rgbValues);
 		return hsviValues;
 	    };

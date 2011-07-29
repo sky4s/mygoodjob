@@ -90,13 +90,17 @@ namespace cms {
 #ifdef TNT_LIB
 	 double1D_ptr getData();
 #endif
+	 Illuminant();
 	int getEnd() const;
 	int getInterval() const;
 	int getStart() const;
 
-	static const Illuminant & D50;
-	static const Illuminant & D65;
-	static const Illuminant & C;
+	static const Illuminant D50;
+	static const Illuminant D65;
+	static const Illuminant C;
+	//static Illuminant D50;
+	//static Illuminant D65;
+	//static Illuminant C;
 	static XYZ_ptr getXYZ(const Illuminant & illuminant);
 	XYZ_ptr getXYZ();
     };

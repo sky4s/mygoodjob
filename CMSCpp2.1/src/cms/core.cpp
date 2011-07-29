@@ -186,6 +186,8 @@ namespace cms {
 	return data;
     };
 #endif
+    Illuminant::Illuminant() {
+    };
     int Illuminant::getEnd() const {
 	return end;
     };
@@ -195,9 +197,9 @@ namespace cms {
     int Illuminant::getStart() const {
 	return start;
     };
-    const Illuminant & Illuminant::D50 = Illuminant();
-    const Illuminant & Illuminant::D65 = Illuminant();
-    const Illuminant & Illuminant::C = Illuminant();
+    const Illuminant Illuminant::D50;	// = Illuminant();
+    const Illuminant Illuminant::D65;	// = Illuminant();
+    const Illuminant Illuminant::C;	// = Illuminant();
     XYZ_ptr Illuminant::getXYZ() {
 	XYZ_ptr XYZ = getXYZ(*this);
 	return XYZ;
@@ -205,9 +207,11 @@ namespace cms {
 
     XYZ_ptr Illuminant::getXYZ(const Illuminant & illuminant) {
 	using namespace Indep;
-
+	//D50();                        // Illuminant();
 	XYZ_ptr XYZ;
-	if (&illuminant == &Illuminant::D50) {
+	if (&illuminant == null) {
+
+	} else if (&illuminant == &Illuminant::D50) {
 	    XYZ = XYZ_ptr(new CIEXYZ(0.964221, 1, 0.825210, Normal1));
 	} else if (&illuminant == &Illuminant::D65) {
 	    XYZ = XYZ_ptr(new CIEXYZ(0.950471, 1, 1.088830, Normal1));
