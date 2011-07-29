@@ -472,6 +472,12 @@ namespace math {
 	}
 	return result;
     };
+    void DoubleArray::toCDoubleArray(double_vector_ptr doubleVector, double *cDoubleArray) {
+	int size = doubleVector->size();
+	for (int x = 0; x < size; x++) {
+	    cDoubleArray[x] = (*doubleVector)[x];
+	}
+    };
 #ifdef EXCEL_ACCESSIBLE
     void DoubleArray::storeToExcel(const string & filename, double_vector_ptr doubleVector) {
 	Util::deleteExist(filename);

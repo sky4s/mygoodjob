@@ -38,26 +38,30 @@ namespace algo {
 	    throw IllegalArgumentException("start->size() != step->size()");
 	}
 	mf_ptr = mf;
-	minimisation_n = start->size();
+        
+	if (this->n != start->size()) {
+	    if (xmin != null) {
+		delete[]xmin;
+		delete[]cstep;
+		delete[]cstart;
+	    }
+	    cstart = new double[n];
+	    cstep = new double[n];
+	    xmin = new double[n];
+	}
+
 	this->n = start->size();
+	minimisation_n = start->size();
 	this->kcount = nmax;
 
-	double *cstart = DoubleArray::toCDoubleArray(start);
-	double *cstep = DoubleArray::toCDoubleArray(step);
-	double *xmin = new double[n];
-	for (int x = 0; x < n; x++) {
-	    xmin[n] = 0;
-	}
+	DoubleArray::toCDoubleArray(start, cstart);
+	DoubleArray::toCDoubleArray(step, cstep);
 
 	nelmin(minimisationFunction, n, cstart, xmin, &ynewlo, ftol, cstep, konvge, kcount,
 	       &icount, &numres, &ifault);
 
 	paramValues = DoubleArray::toDoubleVector(xmin, n);
-	step = DoubleArray::toDoubleVector(cstep, n);
 
-	delete[]xmin;
-	delete[]cstep;
-	delete[]cstart;
     };
     int Minimisation::getNiter() {
 	return icount;
