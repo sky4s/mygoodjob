@@ -2,7 +2,7 @@ object HSVForm2nd: THSVForm2nd
   Left = 390
   Top = 53
   Width = 820
-  Height = 673
+  Height = 772
   Caption = 'HSV2'
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
@@ -6410,7 +6410,7 @@ object HSVForm2nd: THSVForm2nd
     Left = 7
     Top = 0
     Width = 802
-    Height = 641
+    Height = 681
     TabOrder = 0
     object CheckBox1: TCheckBox
       Left = 129
@@ -6618,7 +6618,7 @@ object HSVForm2nd: THSVForm2nd
       Left = 176
       Top = 384
       Width = 449
-      Height = 202
+      Height = 265
       Caption = 'HSV Adjustment'
       TabOrder = 9
       object cb_Hue_rotation: TCheckBox
@@ -6770,6 +6770,9 @@ object HSVForm2nd: THSVForm2nd
           end
         end
         inherited GroupBox7: TGroupBox
+          inherited sb_Val_gain: TScrollBar
+            OnChange = hsvAdjustsb_Val_gainChange
+          end
           inherited Edit_c3d_Manual39_v_adj: TEdit
             Visible = False
           end
@@ -6829,6 +6832,53 @@ object HSVForm2nd: THSVForm2nd
         Caption = 'Show Pattern'
         TabOrder = 14
         OnClick = CheckBox_ShowPatternClick
+      end
+      object GroupBox9: TGroupBox
+        Left = 5
+        Top = 188
+        Width = 360
+        Height = 61
+        TabOrder = 15
+        object Label25: TLabel
+          Left = 5
+          Top = 33
+          Width = 47
+          Height = 16
+          Caption = 'Chroma'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -15
+          Font.Name = 'MS Sans Serif'
+          Font.Style = []
+          ParentFont = False
+        end
+        object Label_Chroma: TLabel
+          Left = 319
+          Top = 41
+          Width = 6
+          Height = 13
+          Caption = '0'
+        end
+        object ScrollBar_Chroma: TScrollBar
+          Left = 69
+          Top = 32
+          Width = 244
+          Height = 21
+          Max = 63
+          Min = -64
+          PageSize = 0
+          TabOrder = 0
+          OnChange = ScrollBar_ChromaChange
+        end
+        object Button_ChromaReset: TButton
+          Left = 232
+          Top = 8
+          Width = 49
+          Height = 17
+          Caption = 'Reset'
+          TabOrder = 1
+          OnClick = Button_ChromaResetClick
+        end
       end
     end
     object GroupBox3: TGroupBox
@@ -7210,7 +7260,7 @@ object HSVForm2nd: THSVForm2nd
       Left = 8
       Top = 536
       Width = 161
-      Height = 97
+      Height = 73
       Caption = 'Out of Gamut Indicator'
       TabOrder = 12
       object CheckBox_OoG: TCheckBox
@@ -7277,9 +7327,9 @@ object HSVForm2nd: THSVForm2nd
       end
     end
     object GroupBox7: TGroupBox
-      Left = 176
-      Top = 592
-      Width = 153
+      Left = 8
+      Top = 608
+      Width = 161
       Height = 41
       Caption = 'Turn Point'
       TabOrder = 15
@@ -7393,6 +7443,14 @@ object HSVForm2nd: THSVForm2nd
         TabOrder = 6
         Visible = False
       end
+    end
+    object Edit1: TEdit
+      Left = 176
+      Top = 656
+      Width = 73
+      Height = 21
+      TabOrder = 18
+      Text = 'Edit1'
     end
   end
   object btn_Hue_Img_load: TButton

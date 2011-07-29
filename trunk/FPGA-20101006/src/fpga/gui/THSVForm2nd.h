@@ -165,6 +165,12 @@ class THSVForm2nd:public TForm, cms::util::CallBackIF, RGBInfoCallbackIF, Patter
     TRadioButton *RadioButton_DFoliage;
     TRadioButton *RadioButton_BlueSky;
     TCheckBox *CheckBox_MemoryColor;
+    TGroupBox *GroupBox9;
+    TLabel *Label25;
+    TScrollBar *ScrollBar_Chroma;
+    TLabel *Label_Chroma;
+    TButton *Button_ChromaReset;
+    TEdit *Edit1;
     void __fastcall cb_Hue_RedClick(TObject * Sender);
     void __fastcall cb_Hue_YellowClick(TObject * Sender);
     void __fastcall cb_Hue_GreenClick(TObject * Sender);
@@ -221,6 +227,9 @@ class THSVForm2nd:public TForm, cms::util::CallBackIF, RGBInfoCallbackIF, Patter
     void __fastcall RadioButton_MemoryColorMouseDown(TObject * Sender,
 						     TMouseButton Button, TShiftState Shift, int X,
 						     int Y);
+    void __fastcall Button_ChromaResetClick(TObject * Sender);
+    void __fastcall hsvAdjustsb_Val_gainChange(TObject * Sender);
+    void __fastcall ScrollBar_ChromaChange(TObject * Sender);
   private:			// User declarations
     static const int HUE_COUNT = 24;	//­ì¥»¬O96, why?
     static const int MAX_HUE_VALUE = 768;
@@ -293,10 +302,36 @@ class THSVForm2nd:public TForm, cms::util::CallBackIF, RGBInfoCallbackIF, Patter
 	AnsiString astr;
       public:
 	virtual String getSaturationCaption(int saturationPos) {
-	    //double s_show = saturationPos / 32.;
-	    //String result = astr.sprintf("%.2f", s_show);
 	    String result = (saturationPos);
 	    return result;
+	};
+
+    };
+
+    class MinFunction:public algo::MinimisationFunction {
+      private:
+	//const Dep::RGBColorSpace colorspace;  // = Dep::RGBColorSpace::sRGB_gamma22;
+	//cms::hsvip::IntegerSaturationFormula isf;     // isf((byte) 7, 3);
+	cms::hsvip::ChromaEnhance & ce;	// ce(colorspace, isf);
+	short hue, saturation;
+      public:
+	/*MinFunction(short _hue, short _saturation):colorspace(Dep::RGBColorSpace::sRGB_gamma22),
+	   isf(cms::hsvip::IntegerSaturationFormula((byte) 7, 3)),
+	   ce(cms::hsvip::ChromaEnhance(colorspace, isf)) {
+	   setHueAndSaturation(_hue, _saturation);
+	   }; */
+	MinFunction(short _hue, short _saturation, cms::hsvip::ChromaEnhance & _ce):ce(_ce) {
+	    setHueAndSaturation(_hue, _saturation);
+	};
+	double function(double_vector_ptr param) {
+	    short value = (short) (*param)[0];
+	    const cms::hsvip::SingleHueAdjustValue shav(hue, saturation, value);
+	    double deltaL = ce.calculateDeltaL(shav);
+	    return deltaL;
+	};
+	void setHueAndSaturation(short _hue, short _saturation) {
+	    hue = _hue;
+	    saturation = _saturation;
 	};
 
     };
