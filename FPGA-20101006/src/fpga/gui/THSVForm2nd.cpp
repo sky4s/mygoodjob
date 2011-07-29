@@ -773,7 +773,7 @@ RGB_ptr THSVForm2nd::getHueRGB(int index, double s, int v)
 {
     using namespace Dep;
     int hue = getHueAngle(index);
-    HSV_ptr hsv(new HSV(RGBColorSpace::sRGB, hue, s, v));
+    HSV_ptr hsv(new HSV(RGBColorSpace::sRGB, hue, s * 100, v));
 
     RGB_ptr rgb = hsv->toRGB();
     return rgb;
@@ -1750,6 +1750,63 @@ void __fastcall THSVForm2nd::RadioButton_MemoryColorMouseDown(TObject * Sender,
 {
     RadioButton_MemoryColorClick(Sender);
 }
+
+//---------------------------------------------------------------------------
+
+void __fastcall THSVForm2nd::Button_ChromaResetClick(TObject * Sender)
+{
+    ScrollBar_Chroma->Position = 0;
+}
+
+//---------------------------------------------------------------------------
+
+void __fastcall THSVForm2nd::hsvAdjustsb_Val_gainChange(TObject * Sender)
+{
+    hsvAdjust->sb_Val_gainChange(Sender);
+
+}
+
+//---------------------------------------------------------------------------
+
+void __fastcall THSVForm2nd::ScrollBar_ChromaChange(TObject * Sender)
+{
+    int chromaValue = this->ScrollBar_Chroma->Position;
+    Label_Chroma->Caption = chromaValue;
+
+    int row = getGridSelectRow();
+    double hueAngle = getHueAngle(row - 1);
+    int hueValue = hueAngleToValue(hueAngle);
+    int_array hsvPos = hsvAdjust->getHSVPosition();
+    int huePos = hsvPos[0];
+    int finalHueValue = hueValue + huePos;
+    //double finalHueAngle = hueValueToAngle(finalHueValue);
+
+    using namespace cms::hsvip;
+    using namespace Dep;
+    using namespace algo;
+
+    RGBColorSpace & colorspace = RGBColorSpace::sRGB_gamma22;
+    IntegerSaturationFormula isf((byte) 7, 3);
+    ChromaEnhance ce(colorspace, isf);
+
+    bptr < MinimisationFunction > mf(new MinFunction((short) finalHueValue, (short) chromaValue,
+						     ce));
+    double_vector_ptr start(new double_vector(1));
+    double_vector_ptr step(new double_vector(1));
+    (*start)[0] = 0;
+    (*step)[0] = 1;
+
+    Minimisation min;
+    min.nelderMead(mf, start, step);
+    double_vector_ptr paramValues = min.getParamValues();
+    short value = (short) (*paramValues)[0];
+    Edit1->Text = value;
+
+    hsvPos[1] = chromaValue;
+    hsvPos[2] = value;
+
+    hsvAdjust->setHSVPostition(hsvPos);
+};
 
 //---------------------------------------------------------------------------
 

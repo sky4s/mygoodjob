@@ -66,6 +66,7 @@ object HSVAdjustFrame: THSVAdjustFrame
       Height = 17
       Caption = 'Return'
       TabOrder = 3
+      Visible = False
       OnClick = Button_HueReturnClick
     end
   end
@@ -145,6 +146,7 @@ object HSVAdjustFrame: THSVAdjustFrame
       Height = 17
       Caption = 'Return'
       TabOrder = 4
+      Visible = False
     end
   end
   object GroupBox7: TGroupBox
@@ -221,6 +223,7 @@ object HSVAdjustFrame: THSVAdjustFrame
       Height = 17
       Caption = 'Return'
       TabOrder = 4
+      Visible = False
     end
   end
 end
