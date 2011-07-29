@@ -489,7 +489,7 @@ namespace cms {
       ChromaEnhance::ChromaEnhance(const RGBColorSpace & _colorspace, const IntegerSaturationFormula & _isf):colorspace(_colorspace), isf(_isf), hsvClip(false)
 	{
 	};
-	double ChromaEnhance::calculateDeltaL(SingleHueAdjustValue & adjustValue) {
+	double ChromaEnhance::calculateDeltaL(const SingleHueAdjustValue & adjustValue) {
 	    return calculateDeltaL(adjustValue, colorspace, isf, hsvClip);
 	};
 	void ChromaEnhance::setHSVClip(boolean clip) {
