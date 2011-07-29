@@ -27,6 +27,35 @@ namespace algo {
 	virtual double function(double_vector_ptr param) = 0;
     };
 
+    double minimisationFunction(double x[]);
+
+     Enumeration(Error) NoErrors, IllegalValue, IterationTerminate, Unknow EnumerationEnd();
+
+    class Minimisation {
+      private:
+	int icount, numres, ifault;
+	int n;
+	double ynewlo;
+	int konvge, kcount;
+	double_vector_ptr paramValues;
+      public:
+	 Minimisation();
+	void nelderMead(bptr < MinimisationFunction > mf, double_vector_ptr start,
+			double_vector_ptr step, double ftol, int nmax);
+	void nelderMead(bptr < MinimisationFunction > mf, double_vector_ptr start,
+			double_vector_ptr step);
+	int getNiter();
+	int getNmax();
+	double getMinimum();
+	void setNrestartsMax(int nrm);
+	int getNrestartMax();
+
+	double_vector_ptr getParamValues();
+	Error getError();
+	static int minimisation_n;
+	static bptr < MinimisationFunction > mf_ptr;
+    };
+
     class mObject {
       protected:
 	virtual ~ mObject() {
@@ -126,40 +155,7 @@ namespace algo {
        void nelderMead(mObject_ptr g, double_vector_ptr start, double_vector_ptr step, double fTol,
        int nMax);
        }; */
-    double minimisationFunction(double x[]);
 
-
-    /*class MinimisationFunction {
-       public:
-       virtual double function(double_vector_ptr param) = 0;
-       }; */
-
-    Enumeration(Error) NoErrors, IllegalValue, IterationTerminate, Unknow EnumerationEnd();
-
-    class Minimisation {
-      private:
-	int icount, numres, ifault;
-	int n;
-	double ynewlo;
-	int konvge, kcount;
-	double_vector_ptr paramValues;
-      public:
-	 Minimisation();
-	void nelderMead(bptr < MinimisationFunction > mf, double_vector_ptr start,
-			double_vector_ptr step, double ftol, int nmax);
-	void nelderMead(bptr < MinimisationFunction > mf, double_vector_ptr start,
-			double_vector_ptr step);
-	int getNiter();
-	int getNmax();
-	double getMinimum();
-	void setNrestartsMax(int nrm);
-	int getNrestartMax();
-
-	double_vector_ptr getParamValues();
-	Error getError();
-	static int minimisation_n;
-	static bptr < MinimisationFunction > mf_ptr;
-    };
 };
 #endif
 
