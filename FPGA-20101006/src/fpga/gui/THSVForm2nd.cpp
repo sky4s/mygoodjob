@@ -39,12 +39,12 @@
 
 //const double THSVForm2nd::WHOLE_HUE_ANGLE = 360;
 //---------------------------------------------------------------------------
-__fastcall THSVForm2nd::THSVForm2nd(TComponent * Owner):TForm(Owner),
-HSV_IsChkSum(true), tbl_step(WHOLE_HUE_ANGLE / HUE_COUNT),
-lastStringGridSelectRow(-1), settingScrollBarPosition(false),
-cursorRGBValues(new int[3]), patternMode(PatternMode::Single),
-selectedRGBValues(new int[3]), customPattern(false), patternValue(192), isInversePattern(false),
-colorspace(Dep::RGBColorSpace::sRGB_gamma22), isf(cms::hsvip::IntegerSaturationFormula((byte) 7, 3))
+__fastcall THSVForm2nd::THSVForm2nd(TComponent * Owner):TForm(Owner), HSV_IsChkSum(true),
+tbl_step(WHOLE_HUE_ANGLE / HUE_COUNT), lastStringGridSelectRow(-1), settingScrollBarPosition(false),
+cursorRGBValues(new int[3]), patternMode(PatternMode::Single), selectedRGBValues(new int[3]),
+customPattern(false), patternValue(192), isInversePattern(false),
+isf(cms::hsvip::IntegerSaturationFormula((byte) 7, 3))
+//, colorspace(Dep::RGBColorSpace::sRGB_gamma22)
 {
     HSV_Chg = 0;
     HSVEN_idx = -1;
@@ -63,6 +63,14 @@ colorspace(Dep::RGBColorSpace::sRGB_gamma22), isf(cms::hsvip::IntegerSaturationF
 
     PatternForm->setPatternCallbackIF(this);
     ScrollBar_TurnPointChange(null);
+
+    using namespace Dep;
+    using namespace cms;
+    colorspace =
+	bptr < Dep::RGBColorSpace >
+	(new RGBColorSpace(CSType::sRGB_gamma22, Illuminant::D65, 2.2, 0.64, 0.33, 0.30, 0.60, 0.15,
+			   0.06));
+    //this->colorspace = Dep::RGBColorSpace::sRGB_gamma22;
 }
 
 //---------------------------------------------------------------------------
@@ -80,6 +88,7 @@ void __fastcall THSVForm2nd::CheckBox_Click(TObject * Sender)
 
 void __fastcall THSVForm2nd::FormCreate(TObject * Sender)
 {
+    //bool fpga = isFPGA();
     HSV_Chg = 0;
     int ic_choice;
     if (MainForm->TCON_DEV == "11307")
@@ -116,7 +125,7 @@ void __fastcall THSVForm2nd::FormCreate(TObject * Sender)
     }
     // 20100608 check HSV enable index
     if (HSVEN_idx == -1) {
-	ShowMessage("Can't Get HSV enable index.");
+	ShowMessage("Can' t Get HSV enable index.");
     }
     Initial_HSV_table();	// initial HSV table
     HSV_Chg = 1;
@@ -412,11 +421,11 @@ bool THSVForm2nd::Load_HSV(String Fpath)
     //取出檔案中的數值
     int c = 0;
     char *pch;
-    pch = strtok(buffer, "\n\t");
+    pch = strtok(buffer, " \ n \ t ");
     int Length = lut_addr[0].LutNum();
     while (c < Length && pch != NULL) {
 	if (pch == NULL) {
-	    ShowMessage("Can't open Hue table file.");
+	    ShowMessage(" Can 't open Hue table file.");
 	    return 0;		//資料中的data缺少
 	}
 	int index = c / 3;
@@ -909,24 +918,6 @@ void __fastcall THSVForm2nd::hsvAdjustsb_c3d_Manual39_hChange(TObject * Sender)
 	valTableTemp[index] = v;
     }
 
-    /*if (CheckBox_MemoryColor->Checked == true) {
-
-       } else if (cb_Hue_rotation->Checked == false) {
-       //非全域調整
-       int standardHueValue = hueAngleToValue(getHueAngle(index));
-       hueTableTemp[index] = (standardHueValue + h + MAX_HUE_VALUE) % MAX_HUE_VALUE;
-       satTableTemp[index] = s;
-       valTableTemp[index] = v;
-       } else {                 //rotation
-       //全域調整
-       for (int i = 0; i < HUE_COUNT; i++) {
-       int standardHueValue = hueAngleToValue(getHueAngle(i));
-
-       hueTableTemp[i] = (standardHueValue + h + MAX_HUE_VALUE) % MAX_HUE_VALUE;
-       satTableTemp[i] = s;
-       valTableTemp[i] = v;
-       }
-       } */
 
     //同步到grid
     for (int i = 0; i < HUE_COUNT; i++) {
@@ -976,7 +967,8 @@ void THSVForm2nd::setGridSelectRow(int row)
     select.Bottom = row;
     stringGrid_HSV->Selection = select;
     stringGrid_HSVSelectCell(null, -1, row, true);
-} int THSVForm2nd::getGridSelectRow()
+};
+int THSVForm2nd::getGridSelectRow()
 {
     return stringGrid_HSV->Selection.Top;
 }
@@ -1154,8 +1146,8 @@ void __fastcall THSVForm2nd::FormKeyPress(TObject * Sender, char &Key)
     bool manualHsvAdjusting = false;
 
     switch (Key) {
-    case 'v':
-    case 'V':
+    case ' v ':
+    case ' V ':
 	/*{
 	   double_array hsviValues =
 	   HSV::getHSVIValues(IntArray::toDoubleArray(cursorRGBValues, 3));
@@ -1172,51 +1164,51 @@ void __fastcall THSVForm2nd::FormKeyPress(TObject * Sender, char &Key)
 	   } */
 	selectColor();
 	break;
-    case 'w':
-    case 'W':
+    case ' w ':
+    case ' W ':
 	hsvPos[0] += 1;
 	manualHsvAdjusting = true;
 	break;
-    case 'q':
-    case 'Q':
+    case ' q ':
+    case ' Q ':
 	hsvPos[0] -= 1;
 	manualHsvAdjusting = true;
 	break;
-    case 's':
-    case 'S':
+    case ' s ':
+    case ' S ':
 	hsvPos[1] += 1;
 	manualHsvAdjusting = true;
 	break;
-    case 'a':
-    case 'A':
+    case ' a ':
+    case ' A ':
 	hsvPos[1] -= 1;
 	manualHsvAdjusting = true;
 	break;
-    case 'x':
-    case 'X':
+    case ' x ':
+    case ' X ':
 	hsvPos[2] += 1;
 	manualHsvAdjusting = true;
 	break;
-    case 'z':
-    case 'Z':
+    case ' z ':
+    case ' Z ':
 	hsvPos[2] -= 1;
 	manualHsvAdjusting = true;
 	break;
-    case '1':
-    case 'e':
-    case 'E':
+    case ' 1 ':
+    case ' e ':
+    case ' E ':
 	hsvAdjust->Button_HueResetClick(Sender);
 	hsvAdjusting = true;
 	break;
-    case '2':
-    case 'd':
-    case 'D':
+    case ' 2 ':
+    case ' d ':
+    case ' D ':
 	hsvAdjust->Button_SaturationResetClick(Sender);
 	hsvAdjusting = true;
 	break;
-    case '3':
-    case 'c':
-    case 'C':
+    case ' 3 ':
+    case ' c ':
+    case ' C ':
 	hsvAdjust->Button_BrightnessResetClick(Sender);
 	hsvAdjusting = true;
 	break;
@@ -1373,12 +1365,17 @@ void THSVForm2nd::callback()
     sourceColorSpace =
 	bptr < RGBColorSpace >
 	(new RGBColorSpace(CSType::Unknow, Illuminant::D65, sourceToXYZMatrix, sourceGamma));
+    this->colorspace =
+	bptr < RGBColorSpace >
+	(new RGBColorSpace(CSType::Unknow, Illuminant::D65, sourceToXYZMatrix, sourceGamma));
     targetColorSpace =
 	bptr < RGBColorSpace >
 	(new RGBColorSpace(CSType::Unknow, Illuminant::D65, targetToXYZMatrix, targetGamma));
     CheckBox_OoG->Enabled = true;
     setupPatternForm();
 }
+
+
 
 double_array THSVForm2nd::toWhiteXYZValues(double_array rgbxyYValues)
 {
@@ -1414,7 +1411,7 @@ bool THSVForm2nd::isOutOfGamut(int_array rgbValues)
 
 void THSVForm2nd::callback(int_array rgbValues)
 {
-
+    using namespace java::lang;
     cursorRGBValues = rgbValues;
     Edit_CursorColor->Text =
 	"R" + IntToStr(rgbValues[0]) + ", G" + IntToStr(rgbValues[1]) + ", B" +
@@ -1425,12 +1422,13 @@ void THSVForm2nd::callback(int_array rgbValues)
     RGB_ptr rgb(new RGBColor(rgbValues[0], rgbValues[1], rgbValues[2]));
     HSV hsv(rgb);
     double_array hsviValues = hsv.getHSVIValues();
+    double vv = hsviValues[2];
+    double ii = hsviValues[3];
+    double showVale = vv * 2.55;
 
     Edit_CursorColorHSV->Text =
 	"H" + IntToStr((int) hsviValues[0]) + ", S" +
-	Edit_CursorColorHSV->Text.sprintf("%.3f",
-					  hsviValues[1]) + ", V" +
-	IntToStr((int) (hsviValues[2] * 255));
+	Edit_CursorColorHSV->Text.sprintf("%.3f", hsviValues[1]) + ", V" + showVale;
 
 
     if (CheckBox_OoG->Enabled) {
@@ -1468,7 +1466,8 @@ void THSVForm2nd::imageMousePressed(TObject * Sender, TMouseButton Button,
 {
     selectColor();
 
-} void __fastcall THSVForm2nd::colorPickercb_show_ref_imgClick(TObject * Sender)
+};
+void __fastcall THSVForm2nd::colorPickercb_show_ref_imgClick(TObject * Sender)
 {
     colorPicker->cb_show_ref_imgClick(Sender);
 
@@ -1488,7 +1487,7 @@ void THSVForm2nd::setupPatternForm()
 	192, 192, 192, 192, 192	/*, 128, 255, 255 */
     };
     double saturationArray[stdSize] = {
-	.33333333333333336, .5, .58333333333333336, .6666666666666667, .75	/*, 1, .5, 1 */
+	33.333333333333336, 50, 58.333333333333336, 66.66666666666667, 75	/*, 1, .5, 1 */
     };
     double_array hsvValues(new double[3]);
 
@@ -1556,10 +1555,10 @@ void THSVForm2nd::setupPatternForm()
 	for (int y = 0; y < stdSize; y++) {
 	    int index = isInversePattern ? stdSize - 1 - y : y;
 	    hsvValues[0] = h;
-	    double saturation = customPattern ? hsviValues[1] : saturationArray[index];
+	    double saturation = /*customPattern ? hsviValues[1] : */ saturationArray[index];
 	    hsvValues[1] = saturation;
 	    //hsvValues[1] = saturationArray[index];
-	    hsvValues[2] = patternValue;
+	    hsvValues[2] = patternValue / 255. * 100;
 	    HSV_ptr hsv(new HSV(RGBColorSpace::sRGB, hsvValues));
 	    hsvVector->push_back(hsv);
 	}
@@ -1657,6 +1656,10 @@ void __fastcall THSVForm2nd::ScrollBar_TurnPointChange(TObject * Sender)
     int pos = ScrollBar_TurnPoint->Position;
     string str = _toString(100. / 16 * (pos + 1));
     Label_TurnPoint->Caption = (_toString(pos) + " (" + str + "%)").c_str();
+
+    int slope1 = (int) (2047. / (pos + 1));
+    int slope2 = ((16 - pos - 1) == 0) ? 0 : (int) (2047. / (16 - pos - 1));
+    //cout << endl;
 }
 
 //---------------------------------------------------------------------------
@@ -1763,16 +1766,15 @@ void __fastcall THSVForm2nd::ScrollBar_ChromaChange(TObject * Sender)
     int_array hsvPos = hsvAdjust->getHSVPosition();
     int huePos = hsvPos[0];
     int finalHueValue = hueValue + huePos;
-    //double finalHueAngle = hueValueToAngle(finalHueValue);
 
     using namespace cms::hsvip;
-    //using namespace Dep;
     using namespace algo;
 
-    //RGBColorSpace & colorspace = RGBColorSpace::sRGB_gamma22;
-    //IntegerSaturationFormula isf((byte) 7, 3);
     ChromaEnhance ce(colorspace, isf);
 
+    //==============================================================================================
+    //最小值求解
+    //==============================================================================================
     bptr < MinimisationFunction > mf(new MinFunction((short) finalHueValue, (short) chromaValue,
 						     ce));
     double_vector_ptr start(new double_vector(1));
@@ -1780,17 +1782,18 @@ void __fastcall THSVForm2nd::ScrollBar_ChromaChange(TObject * Sender)
     (*start)[0] = 0;
     (*step)[0] = 1;
 
-    static Minimisation min;
+    static Minimisation min;	//設static避免不斷重複產生
     min.nelderMead(mf, start, step);
     double_vector_ptr paramValues = min.getParamValues();
+    //結果
     short value = (short) (*paramValues)[0];
-    Edit1->Text = value;
+    //==============================================================================================
 
     hsvPos[1] = chromaValue;
     hsvPos[2] = value;
 
     hsvAdjust->setHSVPostition(hsvPos);
-    //hsvAdjust->updateHSVCaption();
+    //更新到grid去
     hsvAdjustsb_c3d_Manual39_hChange(Sender);
 };
 

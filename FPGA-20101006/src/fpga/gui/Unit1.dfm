@@ -120,6 +120,7 @@ object MainForm: TMainForm
       end
       object mn_HSV: TMenuItem
         Caption = '&Hue/Saturation/Value'
+        Visible = False
         OnClick = mn_HSVClick
       end
       object mn_HSV2: TMenuItem

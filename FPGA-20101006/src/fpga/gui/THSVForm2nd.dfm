@@ -2,7 +2,7 @@ object HSVForm2nd: THSVForm2nd
   Left = 390
   Top = 53
   Width = 820
-  Height = 772
+  Height = 718
   Caption = 'HSV2'
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
@@ -7397,20 +7397,12 @@ object HSVForm2nd: THSVForm2nd
         Visible = False
       end
     end
-    object Edit1: TEdit
-      Left = 176
-      Top = 656
-      Width = 73
-      Height = 21
-      TabOrder = 18
-      Text = 'Edit1'
-    end
     object GroupBox9: TGroupBox
       Left = 181
       Top = 580
       Width = 360
       Height = 61
-      TabOrder = 19
+      TabOrder = 18
       object Label25: TLabel
         Left = 5
         Top = 33
