@@ -61,6 +61,15 @@ void __fastcall TGamutSetupForm::Button_SetupClick(TObject * Sender)
 	    break;
 	}
     }
+    size = GroupBox2->ControlCount;
+    for (int x = 0; x < size; x++) {
+	TControl *c = GroupBox2->Controls[x];
+	TEdit *edit = dynamic_cast < TEdit * >(c);
+	if (NULL != edit && edit->Text.Length() == 0) {
+	    allEditOk = false;
+	    break;
+	}
+    }
     if (allEditOk) {
 	callbackIF->callback();
     }

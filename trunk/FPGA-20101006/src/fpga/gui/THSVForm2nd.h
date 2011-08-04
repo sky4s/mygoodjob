@@ -170,7 +170,6 @@ class THSVForm2nd:public TForm, cms::util::CallBackIF, RGBInfoCallbackIF, Patter
     TScrollBar *ScrollBar_Chroma;
     TLabel *Label_Chroma;
     TButton *Button_ChromaReset;
-    TEdit *Edit1;
     void __fastcall cb_Hue_RedClick(TObject * Sender);
     void __fastcall cb_Hue_YellowClick(TObject * Sender);
     void __fastcall cb_Hue_GreenClick(TObject * Sender);
@@ -310,16 +309,9 @@ class THSVForm2nd:public TForm, cms::util::CallBackIF, RGBInfoCallbackIF, Patter
 
     class MinFunction:public algo::MinimisationFunction {
       private:
-	//const Dep::RGBColorSpace colorspace;  // = Dep::RGBColorSpace::sRGB_gamma22;
-	//cms::hsvip::IntegerSaturationFormula isf;     // isf((byte) 7, 3);
-	cms::hsvip::ChromaEnhance & ce;	// ce(colorspace, isf);
+	cms::hsvip::ChromaEnhance & ce;
 	short hue, saturation;
       public:
-	/*MinFunction(short _hue, short _saturation):colorspace(Dep::RGBColorSpace::sRGB_gamma22),
-	   isf(cms::hsvip::IntegerSaturationFormula((byte) 7, 3)),
-	   ce(cms::hsvip::ChromaEnhance(colorspace, isf)) {
-	   setHueAndSaturation(_hue, _saturation);
-	   }; */
 	MinFunction(short _hue, short _saturation, cms::hsvip::ChromaEnhance & _ce):ce(_ce) {
 	    setHueAndSaturation(_hue, _saturation);
 	};
@@ -356,11 +348,8 @@ class THSVForm2nd:public TForm, cms::util::CallBackIF, RGBInfoCallbackIF, Patter
     bool isInversePattern;
     void selectColor();
     bool isFPGA();
-    //gui::util::Label2ScrollBarSetter turnPointSetter; //(Label_TurnPoint, ScrollBar_TurnPoint);
 
-    //void setMemoryColor(int hueIndex1,int hueIndex2,
-
-    Dep::RGBColorSpace colorspace;	// = RGBColorSpace::sRGB_gamma22;
+    bptr < Dep::RGBColorSpace > colorspace;	// = RGBColorSpace::sRGB_gamma22;
     cms::hsvip::IntegerSaturationFormula isf;	//((byte) 7, 3);
 
   public:			// User declarations
