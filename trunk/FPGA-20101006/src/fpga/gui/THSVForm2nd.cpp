@@ -36,6 +36,9 @@
 #pragma link "THSVAdjustFrame"
 #pragma resource "*.dfm"
 
+#define sRGBColorSpace bptr < Dep::RGBColorSpace >(new \
+	    Dep::RGBColorSpace(Dep::CSType::sRGB_gamma22, cms::Illuminant::D65, 2.2, 0.64, 0.33, \
+			       0.30, 0.60, 0.15, 0.06))
 
 //const double THSVForm2nd::WHOLE_HUE_ANGLE = 360;
 //---------------------------------------------------------------------------
@@ -43,9 +46,9 @@ __fastcall THSVForm2nd::THSVForm2nd(TComponent * Owner):TForm(Owner), HSV_IsChkS
 tbl_step(WHOLE_HUE_ANGLE / HUE_COUNT), lastStringGridSelectRow(-1), settingScrollBarPosition(false),
 cursorRGBValues(new int[3]), patternMode(PatternMode::Single), selectedRGBValues(new int[3]),
 customPattern(false), patternValue(192), isInversePattern(false),
-isf(cms::hsvip::IntegerSaturationFormula((byte) 7, 3))
-//, colorspace(Dep::RGBColorSpace::sRGB_gamma22)
+isf(cms::hsvip::IntegerSaturationFormula((byte) 7, 3)), colorspace(sRGBColorSpace)
 {
+    //因為colorspace在建構式才初始化, 所以此處的ce是個temp, 為了通過編譯
     HSV_Chg = 0;
     HSVEN_idx = -1;
     hsvListener = bptr < HSVChangeListener > (new HSVChangeListener(this));
@@ -64,13 +67,14 @@ isf(cms::hsvip::IntegerSaturationFormula((byte) 7, 3))
     PatternForm->setPatternCallbackIF(this);
     ScrollBar_TurnPointChange(null);
 
-    using namespace Dep;
-    using namespace cms;
-    colorspace =
-	bptr < Dep::RGBColorSpace >
-	(new RGBColorSpace(CSType::sRGB_gamma22, Illuminant::D65, 2.2, 0.64, 0.33, 0.30, 0.60, 0.15,
-			   0.06));
-    //this->colorspace = Dep::RGBColorSpace::sRGB_gamma22;
+    using namespace cms::hsvip;
+    ce = bptr < ChromaEnhance > (new ChromaEnhance(colorspace, isf));
+    /*using namespace Dep;
+       using namespace cms;
+       colorspace =
+       bptr < Dep::RGBColorSpace >
+       (new RGBColorSpace(CSType::sRGB_gamma22, Illuminant::D65, 2.2, 0.64, 0.33, 0.30, 0.60, 0.15,
+       0.06)); */
 }
 
 //---------------------------------------------------------------------------
@@ -894,14 +898,29 @@ void __fastcall THSVForm2nd::hsvAdjustsb_c3d_Manual39_hChange(TObject * Sender)
     btn_set->Enabled = true;
 
     if (cb_Hue_rotation->Checked == true) {
+
+
 	//全域調整
 	for (int i = 0; i < HUE_COUNT; i++) {
-	    int standardHueValue = hueAngleToValue(getHueAngle(i));
+	    double hueAngle = getHueAngle(i);
+	    int standardHueValue = hueAngleToValue(hueAngle);
 
 	    hueTableTemp[i] = (standardHueValue + h + MAX_HUE_VALUE) % MAX_HUE_VALUE;
 	    satTableTemp[i] = s;
-	    valTableTemp[i] = v;
+	    if (ScrollBar_Chroma == Sender) {
+		//chroma的global adjust
+		valTableTemp[i] = getValueFromChromaEnhance(standardHueValue, s);
+		if (valTableTemp[i] > 63 || valTableTemp[i] < -64) {
+		    valTableTemp[i] = (valTableTemp[i] > 63) ? 63 : valTableTemp[i];
+		    valTableTemp[i] = (valTableTemp[i] < -64) ? -64 : valTableTemp[i];
+		    ShowMessage("Brightness adjustment of Hue(" + FloatToStr(hueAngle)  +
+				") out of range!");
+		}
+	    } else {
+		valTableTemp[i] = v;
+	    }
 	}
+
     } else if (CheckBox_MemoryColor->Checked == true) {
 	//喜好色調整
 	int standardHueValue = hueAngleToValue(getHueAngle(index));
@@ -918,14 +937,17 @@ void __fastcall THSVForm2nd::hsvAdjustsb_c3d_Manual39_hChange(TObject * Sender)
 	valTableTemp[index] = v;
     }
 
-
+    //=========================================================================
     //同步到grid
+    //=========================================================================
     for (int i = 0; i < HUE_COUNT; i++) {
 	stringGrid_HSV->Cells[1][i + 1] =
 	    (((double) hueTableTemp[i]) / MAX_HUE_VALUE) * WHOLE_HUE_ANGLE;
 	stringGrid_HSV->Cells[2][i + 1] = satTableTemp[i];
 	stringGrid_HSV->Cells[3][i + 1] = valTableTemp[i];
     }
+    //=========================================================================
+
     if (true == CheckBox_AutoSet->Checked) {
 	btn_setClick(Sender);
     }
@@ -1365,14 +1387,23 @@ void THSVForm2nd::callback()
     sourceColorSpace =
 	bptr < RGBColorSpace >
 	(new RGBColorSpace(CSType::Unknow, Illuminant::D65, sourceToXYZMatrix, sourceGamma));
-    this->colorspace =
-	bptr < RGBColorSpace >
-	(new RGBColorSpace(CSType::Unknow, Illuminant::D65, sourceToXYZMatrix, sourceGamma));
+
     targetColorSpace =
 	bptr < RGBColorSpace >
 	(new RGBColorSpace(CSType::Unknow, Illuminant::D65, targetToXYZMatrix, targetGamma));
     CheckBox_OoG->Enabled = true;
     setupPatternForm();
+
+    //=========================================================================
+    // chroma enhance的設定
+    //=========================================================================
+    this->colorspace =
+	bptr < RGBColorSpace >
+	(new RGBColorSpace(CSType::Unknow, Illuminant::D65, sourceToXYZMatrix, sourceGamma));
+    using namespace cms::hsvip;
+    ce.reset();
+    ce = bptr < ChromaEnhance > (new ChromaEnhance(colorspace, isf));
+    //=========================================================================
 }
 
 
@@ -1659,7 +1690,10 @@ void __fastcall THSVForm2nd::ScrollBar_TurnPointChange(TObject * Sender)
 
     int slope1 = (int) (2047. / (pos + 1));
     int slope2 = ((16 - pos - 1) == 0) ? 0 : (int) (2047. / (16 - pos - 1));
-    //cout << endl;
+    using namespace cms::hsvip;
+    isf = IntegerSaturationFormula((byte) pos, 3);
+    ce.reset();
+    ce = bptr < ChromaEnhance > (new ChromaEnhance(colorspace, isf));
 }
 
 //---------------------------------------------------------------------------
@@ -1754,29 +1788,15 @@ void __fastcall THSVForm2nd::hsvAdjustsb_Val_gainChange(TObject * Sender)
 }
 
 //---------------------------------------------------------------------------
-
-void __fastcall THSVForm2nd::ScrollBar_ChromaChange(TObject * Sender)
+short THSVForm2nd::getValueFromChromaEnhance(short hue, short chroma)
 {
-    int chromaValue = this->ScrollBar_Chroma->Position;
-    Label_Chroma->Caption = chromaValue;
-
-    int row = getGridSelectRow();
-    double hueAngle = getHueAngle(row - 1);
-    int hueValue = hueAngleToValue(hueAngle);
-    int_array hsvPos = hsvAdjust->getHSVPosition();
-    int huePos = hsvPos[0];
-    int finalHueValue = hueValue + huePos;
-
     using namespace cms::hsvip;
     using namespace algo;
-
-    ChromaEnhance ce(colorspace, isf);
 
     //==============================================================================================
     //最小值求解
     //==============================================================================================
-    bptr < MinimisationFunction > mf(new MinFunction((short) finalHueValue, (short) chromaValue,
-						     ce));
+    bptr < MinimisationFunction > mf(new MinFunction(hue, chroma, ce));
     double_vector_ptr start(new double_vector(1));
     double_vector_ptr step(new double_vector(1));
     (*start)[0] = 0;
@@ -1788,11 +1808,44 @@ void __fastcall THSVForm2nd::ScrollBar_ChromaChange(TObject * Sender)
     //結果
     short value = (short) (*paramValues)[0];
     //==============================================================================================
+    return value;
+}
 
-    hsvPos[1] = chromaValue;
-    hsvPos[2] = value;
+void __fastcall THSVForm2nd::ScrollBar_ChromaChange(TObject * Sender)
+{
+    //取出現有的chroma值
+    int chromaValue = this->ScrollBar_Chroma->Position;
+    //更新到label去
+    Label_Chroma->Caption = chromaValue;
+    int_array hsvPos = hsvAdjust->getHSVPosition();
 
+
+    if (cb_Hue_rotation->Checked) {
+	//global adjust
+	hsvPos[1] = chromaValue;
+
+
+    } else {
+	//single hue
+	//目前grid裡面選擇到的hue row
+	int row = getGridSelectRow();
+	//轉成hue角度
+	double hueAngle = getHueAngle(row - 1);
+	//轉成hue value(硬體裡面採用的數值)
+	int hueValue = hueAngleToValue(hueAngle);
+	//int_array hsvPos = hsvAdjust->getHSVPosition();
+	int huePos = hsvPos[0];
+	int finalHueValue = hueValue + huePos;
+
+	hsvPos[1] = chromaValue;
+	hsvPos[2] = getValueFromChromaEnhance((short) finalHueValue, (short) chromaValue);
+
+	//hsvAdjust->setHSVPostition(hsvPos);
+    }
     hsvAdjust->setHSVPostition(hsvPos);
+
+
+
     //更新到grid去
     hsvAdjustsb_c3d_Manual39_hChange(Sender);
 };
