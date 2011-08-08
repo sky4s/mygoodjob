@@ -51,7 +51,7 @@
 //  Byte 5 :  SAT1 [0]    LUM1 [6:0]
 /////////////////////////////////////////////
 
-class THSVFormNew:public TForm, cms::util::CallBackIF, RGBInfoCallbackIF, PatternCallbackIF {
+class THSVFormNew_:public TForm, cms::util::CallBackIF, RGBInfoCallbackIF, PatternCallbackIF {
     __published:		// IDE-managed Components
     TOpenDialog * OpenDialog1;
     TSaveDialog *SaveDialog1;
@@ -257,9 +257,9 @@ class THSVFormNew:public TForm, cms::util::CallBackIF, RGBInfoCallbackIF, Patter
 
     class HSVChangeListener:public gui::event::ChangeListener {
       private:
-	THSVFormNew * parent;
+	THSVFormNew_ * parent;
       public:
-	HSVChangeListener(THSVFormNew * parent):parent(parent) {
+	HSVChangeListener(THSVFormNew_ * parent):parent(parent) {
 	};
 	virtual void stateChanged(TObject * Sender) {
 	    parent->hsvAdjustsb_c3d_Manual39_hChange(Sender);
@@ -269,9 +269,9 @@ class THSVFormNew:public TForm, cms::util::CallBackIF, RGBInfoCallbackIF, Patter
 
     class MousePressedListener:public gui::event::MouseListener {
       private:
-	THSVFormNew * parent;
+	THSVFormNew_ * parent;
       public:
-	MousePressedListener(THSVFormNew * parent):parent(parent) {
+	MousePressedListener(THSVFormNew_ * parent):parent(parent) {
 	};
 	virtual void mousePressed(TObject * Sender,
 				  TMouseButton Button, TShiftState Shift, int X, int Y) {
@@ -324,7 +324,7 @@ class THSVFormNew:public TForm, cms::util::CallBackIF, RGBInfoCallbackIF, Patter
 
     bool HSV_Chg;		// HSV_Chg = 0 為禁止寫入, HSV_Chg =1 為允許寫入, 以避免動作被中斷
 
-    __fastcall THSVFormNew(TComponent * Owner);
+    __fastcall THSVFormNew_(TComponent * Owner);
     void Reset_HSVshow();
     void Hue_LUTWrite();
     virtual void Initial_HSV_table();
@@ -350,7 +350,7 @@ class THSVFormNew:public TForm, cms::util::CallBackIF, RGBInfoCallbackIF, Patter
 
 
 //---------------------------------------------------------------------------
-extern PACKAGE THSVFormNew *HSVFormNew;
+extern PACKAGE THSVFormNew_ *HSVFormNew_;
 //---------------------------------------------------------------------------
 #endif
 

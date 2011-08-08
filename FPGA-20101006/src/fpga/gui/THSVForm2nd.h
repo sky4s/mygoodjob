@@ -309,16 +309,16 @@ class THSVForm2nd:public TForm, cms::util::CallBackIF, RGBInfoCallbackIF, Patter
 
     class MinFunction:public algo::MinimisationFunction {
       private:
-	cms::hsvip::ChromaEnhance & ce;
+	bptr < cms::hsvip::ChromaEnhance > ce;
 	short hue, saturation;
       public:
-	MinFunction(short _hue, short _saturation, cms::hsvip::ChromaEnhance & _ce):ce(_ce) {
+	MinFunction(short _hue, short _saturation, bptr < cms::hsvip::ChromaEnhance > _ce):ce(_ce) {
 	    setHueAndSaturation(_hue, _saturation);
 	};
 	double function(double_vector_ptr param) {
 	    short value = (short) (*param)[0];
 	    const cms::hsvip::SingleHueAdjustValue shav(hue, saturation, value);
-	    double deltaL = ce.calculateDeltaL(shav);
+	    double deltaL = ce->calculateDeltaL(shav);
 	    return deltaL;
 	};
 	void setHueAndSaturation(short _hue, short _saturation) {
@@ -351,6 +351,9 @@ class THSVForm2nd:public TForm, cms::util::CallBackIF, RGBInfoCallbackIF, Patter
 
     bptr < Dep::RGBColorSpace > colorspace;	// = RGBColorSpace::sRGB_gamma22;
     cms::hsvip::IntegerSaturationFormula isf;	//((byte) 7, 3);
+    //cms::hsvip::ChromaEnhance ce;
+    bptr < cms::hsvip::ChromaEnhance > ce;
+    short getValueFromChromaEnhance(short hue, short chroma);
 
   public:			// User declarations
     TBit * cb;
