@@ -425,7 +425,7 @@ bool THSVForm2nd::Load_HSV(String Fpath)
     //取出檔案中的數值
     int c = 0;
     char *pch;
-    pch = strtok(buffer, " \ n \ t ");
+    pch = strtok(buffer, "\n\t");
     int Length = lut_addr[0].LutNum();
     while (c < Length && pch != NULL) {
 	if (pch == NULL) {
@@ -913,7 +913,7 @@ void __fastcall THSVForm2nd::hsvAdjustsb_c3d_Manual39_hChange(TObject * Sender)
 		if (valTableTemp[i] > 63 || valTableTemp[i] < -64) {
 		    valTableTemp[i] = (valTableTemp[i] > 63) ? 63 : valTableTemp[i];
 		    valTableTemp[i] = (valTableTemp[i] < -64) ? -64 : valTableTemp[i];
-		    ShowMessage("Brightness adjustment of Hue(" + FloatToStr(hueAngle)  +
+		    ShowMessage("Brightness adjustment of Hue(" + FloatToStr(hueAngle) +
 				") out of range!");
 		}
 	    } else {
