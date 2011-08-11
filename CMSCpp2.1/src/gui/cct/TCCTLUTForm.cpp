@@ -186,7 +186,9 @@ void __fastcall TCCTLUTForm::Button_MeaRunClick(TObject * Sender)
 	}
 	//==========================================================================
 
-
+	//=================================================================
+	// 設定結束, 進入主流程開始處理
+	//=================================================================
 	try {
 	    if (this->TOutputFileFrame1->createDir() == false) {
 		return;
@@ -235,6 +237,7 @@ void __fastcall TCCTLUTForm::Button_MeaRunClick(TObject * Sender)
 	catch(java::lang::IllegalStateException & ex) {
 	    ShowMessage(ex.toString().c_str());
 	}
+	//=================================================================
     }
     __finally {
 	run = false;
