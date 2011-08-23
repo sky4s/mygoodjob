@@ -705,7 +705,7 @@ object CCTLUTForm: TCCTLUTForm
       Top = 14
       Width = 52
       Height = 20
-      Caption = 'None'
+      Caption = 'N/A'
       TabOrder = 2
       Visible = False
     end
