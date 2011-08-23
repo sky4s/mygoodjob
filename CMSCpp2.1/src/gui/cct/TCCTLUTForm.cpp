@@ -506,10 +506,12 @@ void __fastcall TCCTLUTForm::CheckBox_NewMethodClick(TObject * Sender)
 	}
 
     }
+
     RadioButton_MaxYNativeAdv->Checked = newMethod;
     RadioButton_MaxYTarget->Checked = !newMethod;
     RadioButton_MaxYTarget->Enabled = !newMethod;
     //RadioButton_MaxYNative->Enabled = !newMethod;
+
     CheckBox_Accurate->Enabled = newMethod;
 }
 
