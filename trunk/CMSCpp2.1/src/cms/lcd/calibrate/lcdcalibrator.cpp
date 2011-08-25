@@ -291,6 +291,7 @@ namespace cms {
 		if (doAccurate) {
 		    //原先: 以target white的rgb為最大值, 調整面板並重新量測
 		    //改良: 以direct gamma(gamma test)直接改變打出的pattern, 達到相同效果
+                    
 		    bptr < cms::measure::IntensityAnalyzerIF > analyzer = fetcher->getAnalyzer();
 		    RGB_ptr rgb = analyzer->getReferenceRGB();
 		    panelRegulator = bptr < PanelRegulator >
@@ -488,6 +489,7 @@ namespace cms {
 			}
 		    }
 		}
+                
 		keepMaxLumiOver = autoKeepMaxLumiParameter ? overParameter + step : keepMaxLumiOver;
 		STORE_RGBVECTOR("3_dgcode.xls", dglut);
 		return dglut;

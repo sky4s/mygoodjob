@@ -100,7 +100,7 @@ namespace cms {
 	Patch_ptr
 	    MeterMeasurement::measure0(RGB_ptr measureRGB,
 				       string_ptr patchName,
-				       string_ptr titleNote, string_ptr timeNote, bool flicker) {
+				       string_ptr titleNote, string_ptr timeNote, bool flickerMeasure) {
 	    setMeasureWindowsVisible(true);
 	    //量測的顏色, 量測的顏色可能與導具的顏色不同, 所以特別獨立出此變數
 
@@ -131,7 +131,7 @@ namespace cms {
 		return Patch_ptr((Patch *) NULL);
 	    }
 	    double_array result;
-	    if (flicker) {
+	    if (flickerMeasure) {
 		float flickerValue = -1;
 		CA210 *ca210 = dynamic_cast < CA210 * >(meter.get());
 		if (null != ca210) {
