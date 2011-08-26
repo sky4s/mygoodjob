@@ -291,7 +291,7 @@ namespace cms {
 		if (doAccurate) {
 		    //原先: 以target white的rgb為最大值, 調整面板並重新量測
 		    //改良: 以direct gamma(gamma test)直接改變打出的pattern, 達到相同效果
-                    
+
 		    bptr < cms::measure::IntensityAnalyzerIF > analyzer = fetcher->getAnalyzer();
 		    RGB_ptr rgb = analyzer->getReferenceRGB();
 		    panelRegulator = bptr < PanelRegulator >
@@ -325,8 +325,10 @@ namespace cms {
 		const MaxValue & quantizationBit = bitDepth->getLutMaxValue();
 
 		if (true == useNewMethod) {
+		    //新方法完全基於色度上的處理
 		    dglut = newMethod(generator, panelRegulator);
 		} else {
+		    //舊方法融合色度以及DG Code的處理
 		    dglut = oldMethod(generator, panelRegulator, quantizationBit);
 		}
 
@@ -371,7 +373,11 @@ namespace cms {
 		bptr < AdvancedDGLutGenerator > advgenerator;
 		double_vector_ptr luminanceGammaCurve;
 
+		//=============================================================
+		// 產生 luminance gamma curve
+		//=============================================================
 		if (keepMaxLuminance == KeepMaxLuminance::NativeWhiteAdvanced) {
+		    //NativeWhiteAdvanced是為了兼顧Hook和最大亮度的折衷產物
 		    bptr < PanelRegulator > panelRegulator2;
 		    Component_vector_ptr componentVector2;
 		    bool doAccurate = (true == accurateMode) && (true == skipInverseB)
@@ -421,6 +427,7 @@ namespace cms {
 		    keepMaxLumiOver = bitDepth->getEffectiveLevel();
 
 		}
+		//=============================================================
 		STORE_DOUBLE_VECTOR("1_lumigammacurve.xls", luminanceGammaCurve);
 
 
@@ -444,6 +451,7 @@ namespace cms {
 		    advgenerator->setMiddleCCTRatio(middleCCTRatio);
 		}
 		//=================================================================================
+                
 		//外部迴圈針對是否疊階來決定起始位置
 		int overParameter = keepMaxLumiOver;
 		int startCheckPos = 50;
@@ -489,7 +497,7 @@ namespace cms {
 			}
 		    }
 		}
-                
+
 		keepMaxLumiOver = autoKeepMaxLumiParameter ? overParameter + step : keepMaxLumiOver;
 		STORE_RGBVECTOR("3_dgcode.xls", dglut);
 		return dglut;

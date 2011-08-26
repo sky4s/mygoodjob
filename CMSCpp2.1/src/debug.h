@@ -11,11 +11,16 @@
 //=============================================================================
 
 //CCT功能的debug功能開啟
+
 #define DEBUG_CCTLUT
 //新方法的過程debug功能開啟
 //#define DEBUG_CCTLUT_NEWMETHOD
+
 //新方法的過程step debug功能開啟
 //#define DEBUG_CCTLUT_NEWMETHOD_STEP
+
+//解析Intensity
+#define DEBUG_INTENISITY
 
 
 //find white過程的紀錄
