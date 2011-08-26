@@ -161,6 +161,7 @@ namespace cms {
 			//將兩個結果銜接起來
 			return smooth(result1, result2, bitDepth, brightTurn);
 		    } else {
+			//大部分都是在此case
 			RGB_vector_ptr result =
 			    produceDGLut(targetXYZVector, componentVector, analyzer,
 					 panelRegulator1);
@@ -217,6 +218,8 @@ namespace cms {
 		STORE_RGBVECTOR("MultiGen_0.xls", result);
 
 		for (int t = 0; t < multiGenTimes; t++) {
+		    RGBVector::changeMaxValue(result, bitDepth->getFRCAbilityBit());
+
 		    bptr < MeasureCondition >
 			measureCondition(new MeasureCondition(RGBVector::reverse(result)));
 		    Component_vector_ptr componentVectorPrime =
@@ -233,11 +236,22 @@ namespace cms {
 
 
 
+	    /*
+	       產生DG LUT的演算法核心部份
+	     */
 	    RGB_vector_ptr AdvancedDGLutGenerator::
 		produceDGLut(XYZ_vector_ptr targetXYZVector,
 			     Component_vector_ptr componentVector,
 			     bptr < cms::measure::IntensityAnalyzerIF > analyzer,
 			     bptr < PanelRegulator > panelRegulator) {
+		/*
+		   運算方式簡述:
+		   1.利用不斷變化的target XYZ, 代表會有很多組Target White.
+		   2.每個灰階各有一組Target White, 所以每個灰階都利用該Target White,
+		   計算出一組Intensity,
+		   3.那DG Lut要取的就是每一組Intensity裡面, R=G=B=100處,
+		   因為代表該Intensity對應的DG, 剛好就是Target White.
+		 */
 
 		int size = targetXYZVector->size();
 		RGB_vector_ptr result(new RGB_vector(size));
@@ -250,9 +264,16 @@ namespace cms {
 #ifdef DEBUG_CCTLUT_NEWMETHOD
 		Component_vector_ptr maxComponentVector(new Component_vector());
 #endif				//DEBUG_CCTLUT_NEWMETHOD
+
+#ifdef DEBUG_INTENISITY
+		Component_vector_ptr debugComponentVector(new Component_vector());
+#endif
+
+
 		for (int x = size - 1; x != -1; x--) {
 		    XYZ_ptr targetXYZ = (*targetXYZVector)[x];
 
+		    //不斷產生Analyzer, 因為Target White一直變化, 所以利用新的Analyzer, 計算出Intensity
 		    bptr < MaxMatrixIntensityAnayzer > ma(new MaxMatrixIntensityAnayzer());
 		    ma->setupComponent(Channel::R, rXYZ);
 		    ma->setupComponent(Channel::G, gXYZ);
@@ -260,19 +281,24 @@ namespace cms {
 		    ma->setupComponent(Channel::W, targetXYZ);
 		    ma->enter();
 
+		    //利用新的analyzer算出新的component(就是intensity)
 		    Component_vector_ptr newcomponentVector =
 			fetchNewComponent(ma, componentVector);
 
+		    {		// debug scope
 #ifdef DEBUG_CCTLUT_NEWMETHOD
 #ifdef DEBUG_CCTLUT_NEWMETHOD_STEP
-		    STORE_COMPONENT(_toString(x) + ".xls", newcomponentVector);
+			STORE_COMPONENT(_toString(x) + ".xls", newcomponentVector);
 #endif				//DEBUG_CCTLUT_NEWMETHOD_STEP
-		    //把第一個存起來, 第一個往往是最大的
-		    RGB_ptr grayLevel(new RGBColor(x, x, x));
-		    Component_ptr c(new Component(grayLevel,
-						  (*newcomponentVector)[0]->intensity, targetXYZ));
-		    maxComponentVector->push_back(c);
+			//把第一個存起來, 第一個往往是最大的
+			RGB_ptr grayLevel(new RGBColor(x, x, x));
+			Component_ptr c(new Component(grayLevel,
+						      (*newcomponentVector)[0]->intensity,
+						      targetXYZ));
+			maxComponentVector->push_back(c);
 #endif				//DEBUG_CCTLUT_NEWMETHOD
+		    }
+
 		    DGLutGenerator lutgen(newcomponentVector);
 		    //B採100嗎?
 		    if (bTargetIntensity == -1) {
@@ -281,15 +307,34 @@ namespace cms {
 		    RGB_ptr rgb = lutgen.getDGCode(100, 100,
 						   bTargetIntensity);
 		    (*result)[x] = rgb;
+
+#ifdef DEBUG_INTENISITY
+		    //debug scope
+		    RGB_ptr clone = rgb->clone();
+		    clone->quantization(Dep::MaxValue::Int12Bit);
+		    RGB_ptr intensity = lutgen.getIntensity(clone);
+
+		    RGB_ptr grayLevel(new RGBColor(x, x, x));
+		    Component_ptr c(new Component(grayLevel, intensity));
+		    debugComponentVector->push_back(c);
+#endif
+		}
+
+		if (null != panelRegulator) {
+		    //若有panelRegulator, 進行remapping (遇到hook才需要)
+		    result = panelRegulator->remapping(result);
 		}
 #ifdef DEBUG_CCTLUT_NEWMETHOD
 		STORE_COMPONENT("maxIntensity.xls", maxComponentVector);
 #endif
-		if (null != panelRegulator) {
-		    result = panelRegulator->remapping(result);
-		}
+
+#ifdef DEBUG_INTENISITY
+		STORE_COMPONENT("debugIntensity.xls", debugComponentVector);
+#endif
+
 		return result;
 	    };
+
 	    bool AdvancedDGLutGenerator::isAvoidHook(XYZ_ptr targetXYZ, double offsetK) {
 		XYZ_ptr XYZOffset = getXYZ(targetXYZ, offsetK);
 		return isDuplicateBlue100(XYZOffset);
@@ -390,14 +435,19 @@ namespace cms {
 
 	    XYZ_ptr AdvancedDGLutGenerator::getMiddleXYZ(int middleIndex, double middleCCTRatio,
 							 XYZ_ptr targetXYZ) {
+		//翻出middle的XYZ
 		XYZ_ptr middleBaseXYZ =
 		    (*componentVector)[componentVector->size() - 1 - middleIndex]->XYZ;
 		xyY_ptr middleBasexyY(new CIExyY(middleBaseXYZ));
-		xyY_ptr targetxyY(new CIExyY(targetXYZ));
 		double middleBaseCCT =
 		    CorrelatedColorTemperature::xy2CCTByMcCamyFloat(middleBasexyY);
+
+		xyY_ptr targetxyY(new CIExyY(targetXYZ));
 		double targetCCT = CorrelatedColorTemperature::xy2CCTByMcCamyFloat(targetxyY);
+
+		//算出兩個CCT的差異
 		double cctDiff = Math::abs(middleBaseCCT - targetCCT);
+		//再乘上ratio(?)
 		double cct = cctDiff * middleCCTRatio;
 		double middleCCT =
 		    (targetCCT < middleCCT) ? (targetCCT + cct) : (middleBaseCCT + cct);

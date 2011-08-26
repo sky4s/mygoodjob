@@ -26,8 +26,7 @@ namespace cms {
 		 Mode mode;
 		Component_vector_ptr componentVector;
 		double_vector_ptr luminanceVector;
-		double_vector_ptr rLuminanceVector, gLuminanceVector,
-		    bLuminanceVector;
+		double_vector_ptr rLuminanceVector, gLuminanceVector, bLuminanceVector;
 		double minLuminance, maxLuminance;
 		 bptr < ComponentLUT > lut;
 		 bptr < ComponentRelationIF > componentRelation;
@@ -40,30 +39,24 @@ namespace cms {
 		 DGLutGenerator(Component_vector_ptr componentVector,
 				KeepMaxLuminance keepMaxLuminance);
 		 DGLutGenerator(double_vector_ptr luminanceVector);
-		RGB_ptr getDGCode(double rIntensity, double gIntensity,
-				  double bIntensity);
+		RGB_ptr getDGCode(double rIntensity, double gIntensity, double bIntensity);
 		RGB_ptr getDGCode(double rIntensity, double gIntensity,
 				  double bIntensity, bool correctInRange);
-		RGB_vector_ptr getCCTDGLut(RGBGamma_ptr
-					   normalRGBGammaCurve);
-		RGB_vector_ptr getGammaDGLut(double_vector_ptr
-					     normalGammaCurve);
+		RGB_vector_ptr getCCTDGLut(RGBGamma_ptr normalRGBGammaCurve);
+		RGB_vector_ptr getGammaDGLut(double_vector_ptr normalGammaCurve);
 
 		//¥Ñgamma curveÂàrgb intensity
-		RGBGamma_ptr getRGBGamma(double_vector_ptr
-					 normalGammaCurve);
-		double_vector_ptr getLuminanceGammaCurve(double_vector_ptr
-							 normalGammaCurve);
+		RGBGamma_ptr getRGBGamma(double_vector_ptr normalGammaCurve);
+		double_vector_ptr getLuminanceGammaCurve(double_vector_ptr normalGammaCurve);
 		static double_vector_ptr
 		    getLuminanceGammaCurve(double_vector_ptr
 					   normalGammaCurve,
-					   double maxLuminance,
-					   double minLuminance);
+					   double maxLuminance, double minLuminance);
 		double getMaxBIntensity();
 		double_vector_ptr getIntensityVector(const Dep::
-						     Channel & ch,
-						     RGB_vector_ptr
-						     rgbVector);
+						     Channel & ch, RGB_vector_ptr rgbVector);
+		RGB_ptr getIntensity(RGB_ptr dgcode);
+
 	    };
 	};
     };

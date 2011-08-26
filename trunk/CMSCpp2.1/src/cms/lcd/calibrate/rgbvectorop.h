@@ -39,7 +39,6 @@ namespace cms {
 	      protected:
 		 RGB_vector_ptr getRendering(RGB_vector_ptr source);
 	      public:
-		//P1P2DGOp(double p1, double p2, const Dep::MaxValue & maxValue);
 		 P1P2DGOp(double p1, double p2);
 	    };
 
@@ -52,22 +51,6 @@ namespace cms {
 		 RBInterpolationOp(double under);
 	    };
 
-	    /*class NewOp:public DGLutOp {
-	       private:
-	       int p1, p2;
-	       protected:
-	       RGB_vector_ptr getRendering(RGB_vector_ptr source);
-	       RGB_vector_ptr getRendering6_(RGB_vector_ptr source);
-	       RGB_vector_ptr getRendering7_(RGB_vector_ptr source);
-	       RGB_vector_ptr getRendering8_(RGB_vector_ptr source);
-	       int getBBiggerThanG(RGB_vector_ptr rgbVector);
-	       static double getBCode(double rRatio, double gRatio,
-	       double GCode);
-	       static double getRCode(double rRatio, double GCode,
-	       double BCode);
-	       public:
-	       NewOp(int p1, int p2);
-	       }; */
 
 	    class BMaxOp:public DGLutOp {
 	      private:
@@ -110,6 +93,10 @@ namespace cms {
 		FrcNROp(bptr < BitDepthProcessor > bitDepth);
 	    };
 
+
+	    /*
+	       純粹將EffectiveLevel以後的值全部設成最大值
+	     */
 	    class KeepNativeWhiteOp:public DGLutOp {
 	      private:
 		bptr < BitDepthProcessor > bitDepth;

@@ -107,13 +107,20 @@ namespace cms {
 		Component_ptr c = (*componentVector)[x];
 		int w = static_cast < int >(c->rgb->getValue(Channel::W));
 		(*values)[0] = _toString(w);
-		xyY_ptr xyY(new CIExyY(c->XYZ));
-		(*values)
-		    [1] = _toString(xyY->x);
-		(*values)
-		    [2] = _toString(xyY->y);
-		(*values)
-		    [3] = _toString(xyY->Y);
+
+		if (null != c->XYZ) {
+		    xyY_ptr xyY(new CIExyY(c->XYZ));
+		    (*values)
+			[1] = _toString(xyY->x);
+		    (*values)
+			[2] = _toString(xyY->y);
+		    (*values)
+			[3] = _toString(xyY->Y);
+		} else {
+		    StringVector::setContent(values, "0", 3, 1, 2, 3);
+		}
+
+
 		RGB_ptr intensity = c->intensity;
 		(*values)
 		    [4] = _toString(intensity->R);
@@ -356,6 +363,10 @@ namespace cms {
 	    // others
 	    //==================================================================
 	    dgfile.addProperty("New Method", c->useNewMethod ? On : Off);
+	    if (c->useNewMethod && c->multiGen) {
+		dgfile.addProperty("Multi-Gen", c->multiGenTimes);
+	    }
+
 	    bptr < BitDepthProcessor > bitDepth = c->bitDepth;
 	    dgfile.addProperty("in", *bitDepth->getInputMaxValue().toString());
 	    dgfile.addProperty("lut", *bitDepth->getLutMaxValue().toString());

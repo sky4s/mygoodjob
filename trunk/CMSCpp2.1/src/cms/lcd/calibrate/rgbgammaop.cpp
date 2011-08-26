@@ -76,15 +76,23 @@ namespace cms {
 
 		double_vector & r = (*source->r);
 		double_vector & b = (*source->b);
-                //此處的分母若為零, 會有除零的錯誤
-		r[p1] = r[indexR] + (r[indexR + 1] - r[indexR]) *	//跟下一個gamma的差異
-		    (rgbp1->G - (*dglut)[indexR]->R) /
-		    ((*dglut)[indexR + 1]->R - (*dglut)[indexR]->R);
-		b[p1] =
-		    b[indexB] +
-		    (b[indexB + 1] - b[indexB]) *
-		    (rgbp1->G - (*dglut)[indexB]->B) /
-		    ((*dglut)[indexB + 1]->B - (*dglut)[indexB]->B);
+
+		////若相鄰是相同的, 分母就會為0
+		double rdenominator = (*dglut)[indexR + 1]->R - (*dglut)[indexR]->R;
+		double bdenominator = (*dglut)[indexB + 1]->B - (*dglut)[indexB]->B;
+
+		//跟下一個gamma的差異
+		double rnumerator = r[indexR] + (r[indexR + 1] - r[indexR]) *
+		    (rgbp1->G - (*dglut)[indexR]->R);
+		double brnumerator = b[indexB] + (b[indexB + 1] - b[indexB]) *
+		    (rgbp1->G - (*dglut)[indexB]->B);
+
+		if (0 == rdenominator || 0 == bdenominator) {
+		    //int x = 1;
+		}
+		//此處的分母若為零, 會有除零的錯誤
+		r[p1] = rnumerator / rdenominator;
+		b[p1] = brnumerator / bdenominator;
 
 		return source;
 	    };
