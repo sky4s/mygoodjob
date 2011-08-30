@@ -215,20 +215,24 @@ namespace cms {
 		if (null == fetcher) {
 		    throw new IllegalStateException("null == fetcher");
 		}
-		STORE_RGBVECTOR("MultiGen_0.xls", result);
+		//STORE_RGBVECTOR("MultiGen_0.xls", result);
+		STORE_RGBVECTOR("MultiGen_DG_0.xls", result);
 
 		for (int t = 0; t < multiGenTimes; t++) {
 		    RGBVector::changeMaxValue(result, bitDepth->getFRCAbilityBit());
 
 		    bptr < MeasureCondition >
 			measureCondition(new MeasureCondition(RGBVector::reverse(result)));
+
 		    Component_vector_ptr componentVectorPrime =
 			fetcher->fetchComponent(measureCondition);
+		    STORE_COMPONENT("MultiGen_Component_" + _toString(t + 1) + ".xls",
+				    componentVectorPrime);
 
 		    result =
 			produceDGLut(targetXYZVector, componentVectorPrime, analyzer,
 				     bptr < PanelRegulator > ((PanelRegulator *) null));
-		    STORE_RGBVECTOR("MultiGen_" + _toString(t + 1) + ".xls", result);
+		    STORE_RGBVECTOR("MultiGen_DG_" + _toString(t + 1) + ".xls", result);
 		}
 
 		return result;

@@ -273,38 +273,26 @@ void __fastcall TTargetWhiteForm2::Button_RunClick(TObject * Sender)
 	analyzer->setWaitTimes(5000);
 	stopMeasure = false;
 	analyzer->beginAnalyze();
+	if (true == stopMeasure || false == MeasureWindow->Visible) {
+	    return;
+	}
 	analyzer->setupComponent(Channel::R, r);
-	if (true == stopMeasure
-#ifdef DEBUG_STOP_TCONINPUT
-	    || false == MeasureWindow->Visible
-#endif
-	    ) {
+	if (true == stopMeasure || false == MeasureWindow->Visible) {
 	    return;
 	}
 	analyzer->setupComponent(Channel::G, g);
-	if (true == stopMeasure
-#ifdef DEBUG_STOP_TCONINPUT
-	    || false == MeasureWindow->Visible
-#endif
-	    ) {
+	if (true == stopMeasure || false == MeasureWindow->Visible) {
 	    return;
 	}
 	analyzer->setupComponent(Channel::B, b);
-	if (true == stopMeasure
-#ifdef DEBUG_STOP_TCONINPUT
-	    || false == MeasureWindow->Visible
-#endif
-	    ) {
+	if (true == stopMeasure || false == MeasureWindow->Visible) {
 	    return;
 	}
 	analyzer->setupComponent(Channel::W, rgb);
-	if (true == stopMeasure
-#ifdef DEBUG_STOP_TCONINPUT
-	    || false == MeasureWindow->Visible
-#endif
-	    ) {
+	if (true == stopMeasure || false == MeasureWindow->Visible) {
 	    return;
 	}
+
 	if (MainForm->isCA210Analyzer()) {
 	    MainForm->setAnalyzerToTargetChannel();
 	}
@@ -516,6 +504,7 @@ void __fastcall TTargetWhiteForm2::Button3Click(TObject * Sender)
 	this->Button4->Enabled = true;
 	this->Button3->Enabled = false;
 	this->Button_Run->Enabled = true;
+	Button_ContinueMeasure->Enabled = true;
     }
 }
 
@@ -525,10 +514,13 @@ void __fastcall TTargetWhiteForm2::Button4Click(TObject * Sender)
 {
     //MainForm->getAnalyzer();
     if (MainForm->linkCA210) {
+
 	MainForm->disconnectMeter();
 	this->Button4->Enabled = false;
 	this->Button3->Enabled = true;
 	this->Button_Run->Enabled = false;
+	Button_ContinueMeasure->Enabled = false;
+
     }
 }
 
@@ -553,7 +545,39 @@ void __fastcall TTargetWhiteForm2::Edit_InverseBClick(TObject * Sender)
 
 //---------------------------------------------------------------------------
 
+void __fastcall TTargetWhiteForm2::Button_ContinueMeasureClick(TObject * Sender)
+{
 
+    if (true == continueMeasure) {
+	continueMeasure = false;
+	GroupBox7->Caption = "Reference Color";
+	Button_ContinueMeasure->Caption = "Continue Measure";
+    } else {
+	GroupBox7->Caption = "Measure Color";
+	Button_ContinueMeasure->Caption = "Stop Measure";
 
+	using namespace cms::measure;
+	using namespace Indep;
+	bptr < IntensityAnalyzerIF > analyzer = MainForm->getAnalyzer();
+	bptr < MeterMeasurement > mm = analyzer->getMeterMeasurement();
+	bptr < cms::measure::meter::Meter > meter = mm->getMeter();
 
+	String str;
+	continueMeasure = true;
+
+	while (continueMeasure) {
+	    Application->ProcessMessages();
+	    double_array XYZValues = meter->triggerMeasurementInXYZ();
+	    Application->ProcessMessages();
+	    XYZ_ptr XYZ(new Indep::CIEXYZ(XYZValues));
+	    xyY_ptr xyY(new CIExyY(XYZ));
+
+	    this->Edit_refLuminance->Text = str.sprintf("%.4f", xyY->Y);
+	    this->Edit_refx->Text = str.sprintf("%.4f", xyY->x);
+	    this->Edit_refy->Text = str.sprintf("%.4f", xyY->y);
+	}
+    }
+}
+
+//---------------------------------------------------------------------------
 

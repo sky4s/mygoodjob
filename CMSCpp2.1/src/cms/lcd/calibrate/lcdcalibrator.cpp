@@ -451,19 +451,19 @@ namespace cms {
 		    advgenerator->setMiddleCCTRatio(middleCCTRatio);
 		}
 		//=================================================================================
-                
+
 		//外部迴圈針對是否疊階來決定起始位置
 		int overParameter = keepMaxLumiOver;
 		int startCheckPos = 50;
-		int minOverParameter = (useNewMethod
-					&& autoKeepMaxLumiParameter) ? startCheckPos :
-		    keepMaxLumiOver;
+		int minOverParameter = (useNewMethod && autoKeepMaxLumiParameter) ?
+		    startCheckPos : keepMaxLumiOver;
 		//int minOverParameter = startCheckPos;
 		advgenerator->setPanelRegulator(panelRegulator);
 		int step = 4;
 
 		bptr < IntensityAnalyzerIF > analyzer = fetcher->getAnalyzer();
 		//analyzer若沒有設定過target color, 會使此步驟失效
+		//因為analyzer->getReferenceColor()會是null
 		XYZ_ptr targetWhite = analyzer->getReferenceColor()->toXYZ();
 		XYZ_ptr nativeWhite = (*componentVector)[0]->XYZ;
 		if (null != nativeWhiteAnalyzer) {

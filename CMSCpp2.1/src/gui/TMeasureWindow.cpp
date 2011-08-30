@@ -11,6 +11,7 @@
 //其他庫頭文件
 
 //本項目內頭文件
+#include "TTargetWhiteForm2.h"
 #include "TMeasureWindow.h"
 //運用若參考指標去儲存WindowListener
 #define WEAK_PTR
@@ -39,7 +40,10 @@ void __fastcall TMeasureWindow::FormKeyPress(TObject * Sender, char &Key)
 	if (tconinput) {
 	    tconcontrol->setGammaTest(false);
 	}
+	this->Visible = false;
+	TargetWhiteForm2->stopMeasure = true;
 	this->Close();
+
 	break;
     case 32:			//space
 	this->Button1->Visible = true;

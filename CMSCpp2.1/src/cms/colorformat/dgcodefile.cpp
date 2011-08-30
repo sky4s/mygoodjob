@@ -355,6 +355,10 @@ namespace cms {
 		dgfile.addProperty(lowLevelCorrect, "DefinedDim");
 		dgfile.addProperty("defined dim under", c->under);
 		dgfile.addProperty("defined dim gamma", c->dimGamma);
+
+		XYZ_ptr blackXYZ = (*c->componentVector)[c->componentVector->size() - 1]->XYZ;
+		xyY_ptr blackxyY(new CIExyY(blackXYZ));
+		dgfile.addProperty("defined dim black", *blackxyY->toString());
 		break;
 	    }
 	    //==================================================================
