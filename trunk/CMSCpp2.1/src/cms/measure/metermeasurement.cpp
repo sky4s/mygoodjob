@@ -97,10 +97,18 @@ namespace cms {
 	Patch_ptr MeterMeasurement::measureFlicker(RGB_ptr rgb, const string_ptr patchName) {
 	    return measure0(rgb, patchName, nil_string_ptr, nil_string_ptr, true);
 	};
+	void MeterMeasurement::sleep(int waitTimes) {
+	    int count = waitTimes / 100;
+	    for (int x = 0; x < count; x++) {
+		Sleep(100);
+		Application->ProcessMessages();
+	    }
+	};
 	Patch_ptr
 	    MeterMeasurement::measure0(RGB_ptr measureRGB,
 				       string_ptr patchName,
-				       string_ptr titleNote, string_ptr timeNote, bool flickerMeasure) {
+				       string_ptr titleNote, string_ptr timeNote,
+				       bool flickerMeasure) {
 	    setMeasureWindowsVisible(true);
 	    //量測的顏色, 量測的顏色可能與導具的顏色不同, 所以特別獨立出此變數
 
@@ -122,7 +130,8 @@ namespace cms {
 		Application->ProcessMessages();
 		measureWindow->setRGB(measureRGB);
 		Application->ProcessMessages();
-		Sleep(waitTimes);
+		//Sleep(waitTimes);
+		sleep(waitTimes);
 	    }
 	    //==========================================================================
 

@@ -87,13 +87,14 @@ class TTargetWhiteForm2:public TForm, gui::event::WindowListener {
     TCheckBox *CheckBox_AvoidHookTV;
     TEdit *Edit_InverseB;
     TButton *Button_FindInverseB;
-        TGroupBox *GroupBox7;
-        TLabel *Label4;
-        TEdit *Edit_refx;
-        TLabel *Label7;
-        TEdit *Edit_refy;
-        TLabel *Label8;
-        TEdit *Edit_refLuminance;
+    TGroupBox *GroupBox7;
+    TLabel *Label4;
+    TEdit *Edit_refx;
+    TLabel *Label7;
+    TEdit *Edit_refy;
+    TLabel *Label8;
+    TEdit *Edit_refLuminance;
+    TButton *Button_ContinueMeasure;
     void __fastcall RadioButton_MaxRGBClick(TObject * Sender);
     void __fastcall ScrollBar_RChange(TObject * Sender);
     void __fastcall ScrollBar_GChange(TObject * Sender);
@@ -114,20 +115,23 @@ class TTargetWhiteForm2:public TForm, gui::event::WindowListener {
     void __fastcall Button4Click(TObject * Sender);
     void __fastcall Button_FindInverseBClick(TObject * Sender);
     void __fastcall Edit_InverseBClick(TObject * Sender);
+    void __fastcall Button_ContinueMeasureClick(TObject * Sender);
   private:			// User declarations
     void setColorimetricValues(double x, double y, double up, double vp);
     void scrollBar_Change();
     int calculateCCT(double x, double y);
     bool colorimetricChanging;
-    bool stopMeasure;
+
     bptr < cms::lcd::calibrate::BitDepthProcessor > bitDepth;
     void setRGBRatio(int r, int g, int b);
     int maxZDGCode;
     mbinder_ptr binder;
+    bool continueMeasure;
   public:			// User declarations
     __fastcall TTargetWhiteForm2(TComponent * Owner);
     void windowClosing();
     void setBitDepthProcessor(bptr < cms::lcd::calibrate::BitDepthProcessor > bitDepth);
+    bool stopMeasure;
 
 };
 //---------------------------------------------------------------------------

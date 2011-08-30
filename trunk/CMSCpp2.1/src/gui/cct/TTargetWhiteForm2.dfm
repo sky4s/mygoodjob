@@ -239,14 +239,14 @@ object TargetWhiteForm2: TTargetWhiteForm2
         end
         object GroupBox3: TGroupBox
           Left = 7
-          Top = 320
+          Top = 312
           Width = 182
-          Height = 49
+          Height = 60
           Caption = 'CA-210'
           TabOrder = 6
           object Button3: TButton
             Left = 26
-            Top = 20
+            Top = 12
             Width = 59
             Height = 20
             Caption = 'Connect'
@@ -256,7 +256,7 @@ object TargetWhiteForm2: TTargetWhiteForm2
           end
           object Button4: TButton
             Left = 91
-            Top = 20
+            Top = 12
             Width = 72
             Height = 20
             Caption = 'Disconnect'
@@ -289,7 +289,7 @@ object TargetWhiteForm2: TTargetWhiteForm2
         end
         object GroupBox7: TGroupBox
           Left = 7
-          Top = 272
+          Top = 264
           Width = 182
           Height = 49
           Caption = 'Reference Color'
@@ -342,6 +342,15 @@ object TargetWhiteForm2: TTargetWhiteForm2
             TabOrder = 2
             Text = '0.0'
           end
+        end
+        object Button_ContinueMeasure: TButton
+          Left = 48
+          Top = 346
+          Width = 113
+          Height = 20
+          Caption = 'Continue Measure'
+          TabOrder = 10
+          OnClick = Button_ContinueMeasureClick
         end
       end
       object GroupBox5: TGroupBox
