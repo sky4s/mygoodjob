@@ -300,6 +300,11 @@ namespace cms {
 		    break;
 		}
 	    };
+	    void RGBColor::reserveValue(const Channel & channel) {
+		double val = getValue(channel);
+		setColorBlack();
+		setValue(channel, val);
+	    };
 	    void RGBColor::setValues(double_array values, const MaxValue & type) {
 		if (type != *maxValue) {
 		    //values = DoubleArray.copy(values);

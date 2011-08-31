@@ -127,6 +127,7 @@ class TTargetWhiteForm2:public TForm, gui::event::WindowListener {
     int maxZDGCode;
     mbinder_ptr binder;
     bool continueMeasure;
+    bool measuring;
   public:			// User declarations
     __fastcall TTargetWhiteForm2(TComponent * Owner);
     void windowClosing();

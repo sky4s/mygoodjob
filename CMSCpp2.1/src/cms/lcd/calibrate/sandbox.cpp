@@ -165,10 +165,67 @@ namespace cms {
 			RGB_vector_ptr result =
 			    produceDGLut(targetXYZVector, componentVector, analyzer,
 					 panelRegulator1);
+
+			//==========================================================================
+			// η顶タdebug
+			//==========================================================================
+			if (true) {
+			    int turncode = 50;
+
+			    RGB_ptr dg50 = (*result)[turncode];
+			    RGB_ptr dg50R = dg50->clone();
+			    RGB_ptr dg50G = dg50->clone();
+			    RGB_ptr dg50B = dg50->clone();
+			    dg50R->reserveValue(Channel::R);
+			    dg50G->reserveValue(Channel::G);
+			    dg50B->reserveValue(Channel::B);
+
+			    RGB_vector_ptr measureVector(new RGB_vector());
+			    measureVector->push_back(dg50R);
+			    measureVector->push_back(dg50G);
+			    measureVector->push_back(dg50B);
+			    measureVector->push_back(dg50);
+
+			    bptr < MeasureCondition >
+				measureCondition(new MeasureCondition(measureVector));
+
+			    Component_vector_ptr componentVectorPrime =
+				fetcher->fetchComponent(measureCondition);
+			    XYZ_ptr rXYZ = (*componentVectorPrime)[0]->XYZ;
+			    XYZ_ptr gXYZ = (*componentVectorPrime)[1]->XYZ;
+			    XYZ_ptr bXYZ = (*componentVectorPrime)[2]->XYZ;
+			    XYZ_ptr wXYZ = (*componentVectorPrime)[3]->XYZ;
+
+			    bptr < MaxMatrixIntensityAnayzer > ma(new MaxMatrixIntensityAnayzer());
+			    ma->setupComponent(Channel::R, rXYZ);
+			    ma->setupComponent(Channel::G, gXYZ);
+			    ma->setupComponent(Channel::B, bXYZ);
+			    ma->setupComponent(Channel::W, wXYZ);
+			    ma->enter();
+
+			    Component_vector_ptr newcomponentVector =
+				fetchNewComponent(ma, componentVector);
+
+#ifdef DEBUG_INTENISITY
+			    Component_vector_ptr debugComponentVector(new Component_vector());
+
+			    for (int x = turncode; x >= 0; x--) {
+				RGB_ptr rgb = (*result)[x];
+				Component_ptr c =
+				    getFRCAbilityComponent(x, rgb, ma, newcomponentVector);
+				debugComponentVector->push_back(c);
+			    }
+			    STORE_COMPONENT("debugIntensity2.xls", newcomponentVector);
+			    STORE_COMPONENT("debugIntensity3.xls", debugComponentVector);
+#endif
+			}
+			//==========================================================================
 			return result;
 		    }
 		}
 	    }
+
+
 
 	    RGB_vector_ptr AdvancedDGLutGenerator::
 		smooth(RGB_vector_ptr result1, RGB_vector_ptr result2,
@@ -317,29 +374,31 @@ namespace cms {
 #ifdef DEBUG_INTENISITY
 		    {
 			//debug scope
-			RGB_ptr clone = rgb->clone();
-			//锣FRC瞷bit计
-			clone->quantization(bitDepth->getFRCAbilityBit());
-			//眖FRC bit计は琩intensity
-			//RGB_ptr intensity = lutgen.getIntensity(clone);
+			/*RGB_ptr clone = rgb->clone();
+			   //锣FRC瞷bit计
+			   clone->quantization(bitDepth->getFRCAbilityBit());
+			   //眖FRC bit计は琩intensity
+			   //RGB_ptr intensity = lutgen.getIntensity(clone);
 
-			DGLutGenerator lutgen2(componentVector);
-			RGB_ptr intensity2 = lutgen2.getIntensity(clone);
+			   DGLutGenerator lutgen2(componentVector);
+			   RGB_ptr intensity2 = lutgen2.getIntensity(clone);
 
-			double_array rXYZValues = rXYZ->getValues();
-			double_array gXYZValues = gXYZ->getValues();
-			double_array bXYZValues = bXYZ->getValues();
-			rXYZValues = DoubleArray::times(rXYZValues, intensity2->R / 100., 3);
-			gXYZValues = DoubleArray::times(gXYZValues, intensity2->G / 100., 3);
-			bXYZValues = DoubleArray::times(bXYZValues, intensity2->B / 100., 3);
-			XYZ_ptr rXYZ2(new Indep::CIEXYZ(rXYZValues));
-			XYZ_ptr gXYZ2(new Indep::CIEXYZ(gXYZValues));
-			XYZ_ptr bXYZ2(new Indep::CIEXYZ(bXYZValues));
-			XYZ_ptr rgXYZ2 = CIEXYZ::plus(rXYZ2, gXYZ2);
-			XYZ_ptr rgbXYZ2 = CIEXYZ::plus(rgXYZ2, bXYZ2);
+			   double_array rXYZValues = rXYZ->getValues();
+			   double_array gXYZValues = gXYZ->getValues();
+			   double_array bXYZValues = bXYZ->getValues();
+			   //ノ癸target primaryintensity崩代CIEXYZ
+			   rXYZValues = DoubleArray::times(rXYZValues, intensity2->R / 100., 3);
+			   gXYZValues = DoubleArray::times(gXYZValues, intensity2->G / 100., 3);
+			   bXYZValues = DoubleArray::times(bXYZValues, intensity2->B / 100., 3);
+			   XYZ_ptr rXYZ2(new Indep::CIEXYZ(rXYZValues));
+			   XYZ_ptr gXYZ2(new Indep::CIEXYZ(gXYZValues));
+			   XYZ_ptr bXYZ2(new Indep::CIEXYZ(bXYZValues));
+			   XYZ_ptr rgXYZ2 = CIEXYZ::plus(rXYZ2, gXYZ2);
+			   XYZ_ptr rgbXYZ2 = CIEXYZ::plus(rgXYZ2, bXYZ2);
 
-			RGB_ptr grayLevel(new RGBColor(x, x, x));
-			Component_ptr c(new Component(grayLevel, intensity2, rgbXYZ2));
+			   RGB_ptr grayLevel(new RGBColor(x, x, x));
+			   Component_ptr c(new Component(grayLevel, intensity2, rgbXYZ2)); */
+			Component_ptr c = getFRCAbilityComponent(x, rgb, analyzer, componentVector);
 			debugComponentVector->push_back(c);
 		    }
 #endif
@@ -362,6 +421,46 @@ namespace cms {
 
 		return result;
 	    };
+
+	    Component_ptr AdvancedDGLutGenerator::getFRCAbilityComponent(int grayLevel, RGB_ptr rgb,
+									 bptr <
+									 cms::measure::
+									 IntensityAnalyzerIF >
+									 analyzer,
+									 Component_vector_ptr
+									 componentVector) {
+		XYZ_ptr rXYZ = analyzer->getPrimaryColor(Channel::R)->toXYZ();
+		XYZ_ptr gXYZ = analyzer->getPrimaryColor(Channel::G)->toXYZ();
+		XYZ_ptr bXYZ = analyzer->getPrimaryColor(Channel::B)->toXYZ();
+
+		//debug scope
+		RGB_ptr clone = rgb->clone();
+		//锣FRC瞷bit计
+		clone->quantization(bitDepth->getFRCAbilityBit());
+		//眖FRC bit计は琩intensity
+		//RGB_ptr intensity = lutgen.getIntensity(clone);
+
+		DGLutGenerator lutgen2(componentVector);
+		RGB_ptr intensity2 = lutgen2.getIntensity(clone);
+
+		double_array rXYZValues = rXYZ->getValues();
+		double_array gXYZValues = gXYZ->getValues();
+		double_array bXYZValues = bXYZ->getValues();
+		//ノ癸target primaryintensity崩代CIEXYZ
+		rXYZValues = DoubleArray::times(rXYZValues, intensity2->R / 100., 3);
+		gXYZValues = DoubleArray::times(gXYZValues, intensity2->G / 100., 3);
+		bXYZValues = DoubleArray::times(bXYZValues, intensity2->B / 100., 3);
+		XYZ_ptr rXYZ2(new Indep::CIEXYZ(rXYZValues));
+		XYZ_ptr gXYZ2(new Indep::CIEXYZ(gXYZValues));
+		XYZ_ptr bXYZ2(new Indep::CIEXYZ(bXYZValues));
+		XYZ_ptr rgXYZ2 = CIEXYZ::plus(rXYZ2, gXYZ2);
+		XYZ_ptr rgbXYZ2 = CIEXYZ::plus(rgXYZ2, bXYZ2);
+
+		RGB_ptr w(new RGBColor(grayLevel, grayLevel, grayLevel));
+		Component_ptr c(new Component(w, intensity2, rgbXYZ2));
+		return c;
+	    };
+
 
 	    bool AdvancedDGLutGenerator::isAvoidHook(XYZ_ptr targetXYZ, double offsetK) {
 		XYZ_ptr XYZOffset = getXYZ(targetXYZ, offsetK);
