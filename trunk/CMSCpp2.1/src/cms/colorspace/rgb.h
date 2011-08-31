@@ -31,6 +31,7 @@ namespace cms {
 		double_array getValues();
 		double_array getValues(double_array values);
 		void setValue(const Channel & channel, double value);
+		void reserveValue(const Channel & channel);
 		using RGBBase::setValues;
 		void setValues(double_array values, const MaxValue & type);
 		const Channel & getMinChannel();
@@ -70,6 +71,7 @@ namespace cms {
 		boolean isGray();
 		boolean isPrimaryChannel();
 		const short_array get10BitValues();
+
 	      protected:
 		 boolean isLegal(double value);
 		double_array _getValues(double_array values);

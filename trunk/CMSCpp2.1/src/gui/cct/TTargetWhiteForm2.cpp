@@ -20,7 +20,7 @@
 TTargetWhiteForm2 *TargetWhiteForm2;
 //---------------------------------------------------------------------------
 __fastcall TTargetWhiteForm2::TTargetWhiteForm2(TComponent * Owner)
-:TForm(Owner), stopMeasure(false), maxZDGCode(-1)
+:TForm(Owner), stopMeasure(false), maxZDGCode(-1), measuring(false)
 {
 }
 
@@ -269,27 +269,37 @@ void __fastcall TTargetWhiteForm2::Button_RunClick(TObject * Sender)
     //==========================================================================
     // 設定到ca-210去
     //==========================================================================
+
+    bool tconinput = MainForm->RadioButton_TCON->Checked;
     try {
 	analyzer->setWaitTimes(5000);
 	stopMeasure = false;
+	measuring = true;
 	analyzer->beginAnalyze();
-	if (true == stopMeasure || false == MeasureWindow->Visible) {
+	//當在Direct Gamma下, false == MeasureWindow->Visibl會一直成立
+	//如此將無法進行量測
+	if (true == stopMeasure || (!tconinput && false == MeasureWindow->Visible)) {
+	    measuring = false;
 	    return;
 	}
 	analyzer->setupComponent(Channel::R, r);
-	if (true == stopMeasure || false == MeasureWindow->Visible) {
+	if (true == stopMeasure || (!tconinput && false == MeasureWindow->Visible)) {
+	    measuring = false;
 	    return;
 	}
 	analyzer->setupComponent(Channel::G, g);
-	if (true == stopMeasure || false == MeasureWindow->Visible) {
+	if (true == stopMeasure || (!tconinput && false == MeasureWindow->Visible)) {
+	    measuring = false;
 	    return;
 	}
 	analyzer->setupComponent(Channel::B, b);
-	if (true == stopMeasure || false == MeasureWindow->Visible) {
+	if (true == stopMeasure || (!tconinput && false == MeasureWindow->Visible)) {
+	    measuring = false;
 	    return;
 	}
 	analyzer->setupComponent(Channel::W, rgb);
-	if (true == stopMeasure || false == MeasureWindow->Visible) {
+	if (true == stopMeasure || (!tconinput && false == MeasureWindow->Visible)) {
+	    measuring = false;
 	    return;
 	}
 
@@ -492,7 +502,11 @@ void __fastcall TTargetWhiteForm2::Button_setMaxMatrixClick(TObject * Sender)
 void __fastcall TTargetWhiteForm2::FormKeyPress(TObject * Sender, char &Key)
 {
     if (Key == 27) {		//esc
-	this->Close();
+	if (true == measuring) {
+	    stopMeasure = true;
+	} else {
+	    this->Close();
+	}
     }
 }
 

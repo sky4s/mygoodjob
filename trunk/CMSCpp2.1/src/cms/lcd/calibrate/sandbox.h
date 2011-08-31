@@ -58,6 +58,7 @@ namespace cms {
 					bptr < BitDepthProcessor > bitDepth);
 
 		RGB_vector_ptr produce(XYZ_vector_ptr targetXYZVector);
+
 		XYZ_vector_ptr getTarget0(XYZ_ptr startXYZ, XYZ_ptr targetXYZ, XYZ_ptr endXYZ,
 					  double_vector_ptr luminanceGammaCurve, int dimTurn,
 					  int brightTurn, double dimGamma, double brightGamma,
@@ -103,10 +104,15 @@ namespace cms {
 					    Component_vector_ptr componentVector,
 					    bptr < cms::measure::IntensityAnalyzerIF > analyzer,
 					    bptr < PanelRegulator > panelRegulator);
+		Component_ptr getFRCAbilityComponent(int grayLevel, RGB_ptr rgb,
+						     bptr < cms::measure::IntensityAnalyzerIF >
+						     analyzer,
+						     Component_vector_ptr componentVector);
 
 		bool checkTargetXYZVector(XYZ_vector_ptr targetXYZVector, int start, int end,
 					  double deltaabThreshold);
 		XYZ_ptr getMiddleXYZ(int middleIndex, double middleCCTRatio, XYZ_ptr targetXYZ);
+
 	      public:
 		static RGB_vector_ptr smooth(RGB_vector_ptr result1,
 					     RGB_vector_ptr result2,
