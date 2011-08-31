@@ -273,7 +273,9 @@ namespace cms {
 		Component_vector_ptr debugComponentVector(new Component_vector());
 #endif
 
-
+		//=============================================================
+		// 迴圈開始
+		//=============================================================
 		for (int x = size - 1; x != -1; x--) {
 		    XYZ_ptr targetXYZ = (*targetXYZVector)[x];
 
@@ -313,16 +315,38 @@ namespace cms {
 		    (*result)[x] = rgb;
 
 #ifdef DEBUG_INTENISITY
-		    //debug scope
-		    RGB_ptr clone = rgb->clone();
-		    clone->quantization(Dep::MaxValue::Int12Bit);
-		    RGB_ptr intensity = lutgen.getIntensity(clone);
+		    {
+			//debug scope
+			RGB_ptr clone = rgb->clone();
+			//轉到FRC可以呈現的bit數
+			clone->quantization(bitDepth->getFRCAbilityBit());
+			//從FRC bit數反查intensity
+			//RGB_ptr intensity = lutgen.getIntensity(clone);
 
-		    RGB_ptr grayLevel(new RGBColor(x, x, x));
-		    Component_ptr c(new Component(grayLevel, intensity));
-		    debugComponentVector->push_back(c);
+			DGLutGenerator lutgen2(componentVector);
+			RGB_ptr intensity2 = lutgen2.getIntensity(clone);
+
+			double_array rXYZValues = rXYZ->getValues();
+			double_array gXYZValues = gXYZ->getValues();
+			double_array bXYZValues = bXYZ->getValues();
+			rXYZValues = DoubleArray::times(rXYZValues, intensity2->R / 100., 3);
+			gXYZValues = DoubleArray::times(gXYZValues, intensity2->G / 100., 3);
+			bXYZValues = DoubleArray::times(bXYZValues, intensity2->B / 100., 3);
+			XYZ_ptr rXYZ2(new Indep::CIEXYZ(rXYZValues));
+			XYZ_ptr gXYZ2(new Indep::CIEXYZ(gXYZValues));
+			XYZ_ptr bXYZ2(new Indep::CIEXYZ(bXYZValues));
+			XYZ_ptr rgXYZ2 = CIEXYZ::plus(rXYZ2, gXYZ2);
+			XYZ_ptr rgbXYZ2 = CIEXYZ::plus(rgXYZ2, bXYZ2);
+
+			RGB_ptr grayLevel(new RGBColor(x, x, x));
+			Component_ptr c(new Component(grayLevel, intensity2, rgbXYZ2));
+			debugComponentVector->push_back(c);
+		    }
 #endif
 		}
+		//=============================================================
+		// 迴圈結束
+		//=============================================================
 
 		if (null != panelRegulator) {
 		    //若有panelRegulator, 進行remapping (遇到hook才需要)
