@@ -280,26 +280,31 @@ void __fastcall TTargetWhiteForm2::Button_RunClick(TObject * Sender)
 	//如此將無法進行量測
 	if (true == stopMeasure || (!tconinput && false == MeasureWindow->Visible)) {
 	    measuring = false;
+	    analyzer->endAnalyze();
 	    return;
 	}
 	analyzer->setupComponent(Channel::R, r);
 	if (true == stopMeasure || (!tconinput && false == MeasureWindow->Visible)) {
 	    measuring = false;
+	    analyzer->endAnalyze();
 	    return;
 	}
 	analyzer->setupComponent(Channel::G, g);
 	if (true == stopMeasure || (!tconinput && false == MeasureWindow->Visible)) {
 	    measuring = false;
+	    analyzer->endAnalyze();
 	    return;
 	}
 	analyzer->setupComponent(Channel::B, b);
 	if (true == stopMeasure || (!tconinput && false == MeasureWindow->Visible)) {
 	    measuring = false;
+	    analyzer->endAnalyze();
 	    return;
 	}
 	analyzer->setupComponent(Channel::W, rgb);
 	if (true == stopMeasure || (!tconinput && false == MeasureWindow->Visible)) {
 	    measuring = false;
+	    analyzer->endAnalyze();
 	    return;
 	}
 

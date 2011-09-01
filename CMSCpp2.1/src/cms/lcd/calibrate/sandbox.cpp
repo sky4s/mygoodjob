@@ -30,11 +30,11 @@ namespace cms {
 				       componentVector,
 				       bptr < cms::lcd::calibrate::ComponentFetcher > fetcher,
 				       bptr < IntensityAnalyzerIF > analyzer1,
-				       bptr < IntensityAnalyzerIF > analyzer2,
+				       bptr < IntensityAnalyzerIF > analyzer2nd,
 				       bptr < BitDepthProcessor >
 				       bitDepth):DimDGLutGenerator(componentVector, analyzer1),
 		fetcher(fetcher), useMaxTargetBIntensity(false), bTargetIntensity(-1),
-		stopMeasure(false), multiGen(false), analyzer2(analyzer2), bitDepth(bitDepth),
+		stopMeasure(false), multiGen(false), analyzer2nd(analyzer2nd), bitDepth(bitDepth),
 		smoothMode(true), middleCCTRatio(-1) {
 	    };
 
@@ -150,11 +150,11 @@ namespace cms {
 			RGB_vector_ptr result2;
 			if (componentVector2 != null) {
 			    result2 =
-				produceDGLut(targetXYZVector, componentVector2, analyzer2,
+				produceDGLut(targetXYZVector, componentVector2, analyzer2nd,
 					     panelRegulator2);
 			} else {
 			    result2 =
-				produceDGLut(targetXYZVector, componentVector, analyzer2,
+				produceDGLut(targetXYZVector, componentVector, analyzer2nd,
 					     panelRegulator1);
 			}
 
@@ -169,7 +169,8 @@ namespace cms {
 			//==========================================================================
 			// 低灰階修正debug
 			//==========================================================================
-			if (true) {
+#ifdef DEBUG_INTENISITY
+			if (false) {
 			    int turncode = 50;
 
 			    RGB_ptr dg50 = (*result)[turncode];
@@ -189,6 +190,7 @@ namespace cms {
 			    bptr < MeasureCondition >
 				measureCondition(new MeasureCondition(measureVector));
 
+			    //重新量測得到DG 50的primary color
 			    Component_vector_ptr componentVectorPrime =
 				fetcher->fetchComponent(measureCondition);
 			    XYZ_ptr rXYZ = (*componentVectorPrime)[0]->XYZ;
@@ -203,10 +205,11 @@ namespace cms {
 			    ma->setupComponent(Channel::W, wXYZ);
 			    ma->enter();
 
+			    //DG 50推出的新primary color
 			    Component_vector_ptr newcomponentVector =
 				fetchNewComponent(ma, componentVector);
 
-#ifdef DEBUG_INTENISITY
+
 			    Component_vector_ptr debugComponentVector(new Component_vector());
 
 			    for (int x = turncode; x >= 0; x--) {
@@ -215,10 +218,13 @@ namespace cms {
 				    getFRCAbilityComponent(x, rgb, ma, newcomponentVector);
 				debugComponentVector->push_back(c);
 			    }
+			    //量測DG 50的primary color, 重新得到intensity
 			    STORE_COMPONENT("debugIntensity2.xls", newcomponentVector);
+			    //降成FRC ability, 由DG 反查intensity, 並且推算出CIExy
 			    STORE_COMPONENT("debugIntensity3.xls", debugComponentVector);
-#endif
+
 			}
+#endif
 			//==========================================================================
 			return result;
 		    }
@@ -373,32 +379,9 @@ namespace cms {
 
 #ifdef DEBUG_INTENISITY
 		    {
-			//debug scope
-			/*RGB_ptr clone = rgb->clone();
-			   //轉到FRC可以呈現的bit數
-			   clone->quantization(bitDepth->getFRCAbilityBit());
-			   //從FRC bit數反查intensity
-			   //RGB_ptr intensity = lutgen.getIntensity(clone);
-
-			   DGLutGenerator lutgen2(componentVector);
-			   RGB_ptr intensity2 = lutgen2.getIntensity(clone);
-
-			   double_array rXYZValues = rXYZ->getValues();
-			   double_array gXYZValues = gXYZ->getValues();
-			   double_array bXYZValues = bXYZ->getValues();
-			   //用對上target primary的intensity推測CIEXYZ
-			   rXYZValues = DoubleArray::times(rXYZValues, intensity2->R / 100., 3);
-			   gXYZValues = DoubleArray::times(gXYZValues, intensity2->G / 100., 3);
-			   bXYZValues = DoubleArray::times(bXYZValues, intensity2->B / 100., 3);
-			   XYZ_ptr rXYZ2(new Indep::CIEXYZ(rXYZValues));
-			   XYZ_ptr gXYZ2(new Indep::CIEXYZ(gXYZValues));
-			   XYZ_ptr bXYZ2(new Indep::CIEXYZ(bXYZValues));
-			   XYZ_ptr rgXYZ2 = CIEXYZ::plus(rXYZ2, gXYZ2);
-			   XYZ_ptr rgbXYZ2 = CIEXYZ::plus(rgXYZ2, bXYZ2);
-
-			   RGB_ptr grayLevel(new RGBColor(x, x, x));
-			   Component_ptr c(new Component(grayLevel, intensity2, rgbXYZ2)); */
-			Component_ptr c = getFRCAbilityComponent(x, rgb, analyzer, componentVector);
+			//Component_ptr c = getFRCAbilityComponent(x, rgb, analyzer, componentVector);
+			Component_ptr c =
+			    getFRCAbilityComponent(x, rgb, analyzer, newcomponentVector);
 			debugComponentVector->push_back(c);
 		    }
 #endif
@@ -416,6 +399,7 @@ namespace cms {
 #endif
 
 #ifdef DEBUG_INTENISITY
+		//利用DG回推Intenisty和white point的primart color預測CIE xy
 		STORE_COMPONENT("debugIntensity.xls", debugComponentVector);
 #endif
 
@@ -437,8 +421,6 @@ namespace cms {
 		RGB_ptr clone = rgb->clone();
 		//轉到FRC可以呈現的bit數
 		clone->quantization(bitDepth->getFRCAbilityBit());
-		//從FRC bit數反查intensity
-		//RGB_ptr intensity = lutgen.getIntensity(clone);
 
 		DGLutGenerator lutgen2(componentVector);
 		RGB_ptr intensity2 = lutgen2.getIntensity(clone);
