@@ -34,7 +34,7 @@ namespace cms {
 		//multigen的時候會用到fetcher(因為要不斷重新量測)
 		 bptr < cms::lcd::calibrate::ComponentFetcher > fetcher;
 		 bptr < BitDepthProcessor > bitDepth;
-		 bptr < cms::measure::IntensityAnalyzerIF > analyzer2;
+		 bptr < cms::measure::IntensityAnalyzerIF > analyzer2nd;
 		const bool smoothMode;
 		XYZ_vector_ptr targetXYZVector;
 		bool autoParameter;
@@ -50,7 +50,7 @@ namespace cms {
 		 AdvancedDGLutGenerator(Component_vector_ptr componentVector,
 					bptr < cms::lcd::calibrate::ComponentFetcher > fetcher,
 					bptr < cms::measure::IntensityAnalyzerIF > analyzer1,
-					bptr < cms::measure::IntensityAnalyzerIF > analyzer2,
+					bptr < cms::measure::IntensityAnalyzerIF > analyzer2nd,
 					bptr < BitDepthProcessor > bitDepth);
 
 		 AdvancedDGLutGenerator(Component_vector_ptr componentVector,
