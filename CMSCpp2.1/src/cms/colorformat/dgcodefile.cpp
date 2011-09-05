@@ -458,6 +458,15 @@ namespace cms {
 	    if (null != refRGB) {
 		dgfile.addProperty(prestring + " reference white RGB", *refRGB->toString());
 	    }
+
+	    MaxMatrixIntensityAnalyzer *ma =
+		dynamic_cast < MaxMatrixIntensityAnalyzer * >(analyzer.get());
+	    if (null != ma) {
+		double2D_ptr ratio = ma->getTargetRatio();
+		dgfile.addProperty("Target Ratio", *DoubleArray::toString(ratio));
+		//ShowMessage("Set \"Target White \"first.");
+                  	    }
+
 	};
 	void DGLutProperty::addProperty(const std::string key, string_ptr value) {
 	    propertyMap.insert(make_pair(key, value));
@@ -498,9 +507,10 @@ namespace cms {
 	// 擷取app的檔案資訊, 很難寫, 所以尚未完成, 還不能用   
 	//=====================================================================
 	void DGLutProperty::fetchVersionInfo() {
-	    const AnsiString InfoStr[10] =
-		{ "CompanyName", "FileDescription", "FileVersion", "InternalName", "LegalCopyright",
-		"LegalTradeMarks", "OriginalFileName", "ProductName", "ProductVersion", "Comments"
+	    const AnsiString InfoStr[10] = {
+		"CompanyName", "FileDescription", "FileVersion", "InternalName", "LegalCopyright",
+		"LegalTradeMarks", "OriginalFileName", "ProductName", "ProductVersion",
+		"Comments"
 	    };
 	    char *ExeName = Application->ExeName.c_str();
 	    DWORD n = GetFileVersionInfoSize(ExeName, null);
@@ -522,6 +532,7 @@ namespace cms {
 		free(pBuf);
 	    }
 	};
+	//=====================================================================
       DGLutProperty::DGLutProperty(bptr < DGLutFile > d):c((LCDCalibrator *) null), d(d) {
 	    if (false == initProperty(d)) {
 		throw IllegalStateException(" init Property failed.");

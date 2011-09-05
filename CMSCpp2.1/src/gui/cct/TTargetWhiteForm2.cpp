@@ -470,8 +470,8 @@ void __fastcall TTargetWhiteForm2::Button_setMaxMatrixClick(TObject * Sender)
     using namespace cms::measure;
     using namespace Dep;
     bptr < IntensityAnalyzerIF > analyzer = MainForm->getAnalyzer();
-    bptr < MaxMatrixIntensityAnayzer >
-	maxmatrix(dynamic_cast < MaxMatrixIntensityAnayzer * >(analyzer.get()));
+    bptr < MaxMatrixIntensityAnalyzer >
+	maxmatrix(dynamic_cast < MaxMatrixIntensityAnalyzer * >(analyzer.get()));
 
     double rX = this->Edit_RX->Text.ToDouble();
     double rY = this->Edit_RY->Text.ToDouble();

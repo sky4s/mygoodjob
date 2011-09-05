@@ -31,7 +31,7 @@ namespace cms {
 	      public:
 		 Component_vector_ptr fetchNewComponent(bptr <
 							cms::measure::
-							MaxMatrixIntensityAnayzer
+							MaxMatrixIntensityAnalyzer
 							> analyzer,
 							Component_vector_ptr componentVector);
 		 DimDGLutGenerator(Component_vector_ptr componentVector,

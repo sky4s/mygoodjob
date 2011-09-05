@@ -117,7 +117,7 @@ namespace cms {
 		//==============================================================
 		 bptr < i2c::TCONControl > tconctrl;
 		 bptr < ComponentFetcher > fetcher;
-		 bptr < cms::measure::MaxMatrixIntensityAnayzer > nativeWhiteAnalyzer;
+		 bptr < cms::measure::MaxMatrixIntensityAnalyzer > nativeWhiteAnalyzer;
 		//==============================================================
 
 		//==============================================================
@@ -187,9 +187,9 @@ namespace cms {
 		    storeDGLutFile(const std::string & filename, RGB_vector_ptr dglut);
 		void storeDGLutFile(RGB_vector_ptr dglut,
 				    bptr < cms::colorformat::DGLutFile > dglutFile);
-		 bptr < cms::measure::MaxMatrixIntensityAnayzer > getNativeWhiteAnalyzer();
+		 bptr < cms::measure::MaxMatrixIntensityAnalyzer > getNativeWhiteAnalyzer();
 		void setNativeWhiteAnalyzer(bptr <
-					    cms::measure::MaxMatrixIntensityAnayzer > analyzer);
+					    cms::measure::MaxMatrixIntensityAnalyzer > analyzer);
 		void setTCONControl(bptr < i2c::TCONControl > tconctrl);
 		//==============================================================
 

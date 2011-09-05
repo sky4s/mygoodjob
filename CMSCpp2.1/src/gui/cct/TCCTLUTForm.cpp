@@ -360,7 +360,7 @@ void __fastcall TCCTLUTForm::FormShow(TObject * Sender)
     /*if (null != MainForm->getNativeWhiteAnalyzer()) {
        nativeWhiteAnalyzer =} else {
        nativeWhiteAnalyzer =
-       bptr < MaxMatrixIntensityAnayzer > ((MaxMatrixIntensityAnayzer *) null);
+       bptr < MaxMatrixIntensityAnalyzer > ((MaxMatrixIntensityAnalyzer *) null);
        } */
 }
 
