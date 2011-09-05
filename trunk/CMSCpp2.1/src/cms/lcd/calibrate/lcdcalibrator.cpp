@@ -245,7 +245,7 @@ namespace cms {
 		bptr < cms::measure::IntensityAnalyzerIF > analyzer = fetcher->getAnalyzer();
 		bptr < MeterMeasurement > mm = analyzer->getMeterMeasurement();
 		nativeWhiteAnalyzer =
-		    bptr < MaxMatrixIntensityAnayzer > (new MaxMatrixIntensityAnayzer(mm));
+		    bptr < MaxMatrixIntensityAnalyzer > (new MaxMatrixIntensityAnalyzer(mm));
 
 		int max = bitDepth->getMaxDigitalCount();
 		int blueMax = max;
@@ -719,12 +719,12 @@ namespace cms {
 		this->multiGenTimes = times;
 	    };
 	    //==================================================================
-	    bptr < cms::measure::MaxMatrixIntensityAnayzer > LCDCalibrator::getNativeWhiteAnalyzer() {
+	    bptr < cms::measure::MaxMatrixIntensityAnalyzer > LCDCalibrator::getNativeWhiteAnalyzer() {
 		return nativeWhiteAnalyzer;
 	    }
 	    void LCDCalibrator::setNativeWhiteAnalyzer(bptr <
 						       cms::measure::
-						       MaxMatrixIntensityAnayzer > analyzer) {
+						       MaxMatrixIntensityAnalyzer > analyzer) {
 		this->nativeWhiteAnalyzer = analyzer;
 	    };
 	    void LCDCalibrator::setTCONControl(bptr < i2c::TCONControl > tconctrl) {

@@ -383,7 +383,7 @@ bptr < cms::measure::IntensityAnalyzerIF > TMainForm::getAnalyzer()
 	    ca210Analyzer = bptr < CA210IntensityAnalyzer > (new CA210IntensityAnalyzer(ca210, mm));
 	}
 	//產生max matrix
-	bptr < MaxMatrixIntensityAnayzer > ma(new MaxMatrixIntensityAnayzer(mm));
+	bptr < MaxMatrixIntensityAnalyzer > ma(new MaxMatrixIntensityAnalyzer(mm));
 
 
 	if (true == this->RadioButton_AnalyzerCA210->Checked) {
@@ -398,7 +398,7 @@ bptr < cms::measure::IntensityAnalyzerIF > TMainForm::getAnalyzer()
     return analyzer;
 }
 
-bptr < cms::measure::MaxMatrixIntensityAnayzer > TMainForm::getNativeWhiteAnalyzer()
+bptr < cms::measure::MaxMatrixIntensityAnalyzer > TMainForm::getNativeWhiteAnalyzer()
 {
     return nativeWhiteAnalyzer;
 };
@@ -486,7 +486,7 @@ void TMainForm::setDummyMeterFile(bptr < cms::colorformat::DGLutFile > dglutFile
     bptr < DGLutProperty > property = dglutFile->getProperty();
     if (null != property) {
 	//若有property則為新版
-	bptr < MaxMatrixIntensityAnayzer > matrixAnalyzer(new MaxMatrixIntensityAnayzer(mm));
+	bptr < MaxMatrixIntensityAnalyzer > matrixAnalyzer(new MaxMatrixIntensityAnalyzer(mm));
 	analyzer = matrixAnalyzer;
 
 	//=====================================================================
@@ -518,7 +518,7 @@ void TMainForm::setDummyMeterFile(bptr < cms::colorformat::DGLutFile > dglutFile
 	//=====================================================================
 	xyY_ptr nativewxyY = property->getNativeReferenceColor(Channel::W);
 	if (null != nativewxyY) {
-	    bptr < MaxMatrixIntensityAnayzer > matrixAnalyzer2(new MaxMatrixIntensityAnayzer(mm));
+	    bptr < MaxMatrixIntensityAnalyzer > matrixAnalyzer2(new MaxMatrixIntensityAnalyzer(mm));
 	    nativeWhiteAnalyzer = matrixAnalyzer2;
 	    xyY_ptr rxyY = property->getNativeReferenceColor(Channel::R);
 	    xyY_ptr gxyY = property->getNativeReferenceColor(Channel::G);
@@ -645,8 +645,8 @@ void __fastcall TMainForm::CCTLUT1Click(TObject * Sender)
     }
 
     if (true == this->RadioButton_AnalyzerMaxMatrix->Checked) {
-	MaxMatrixIntensityAnayzer *ma =
-	    dynamic_cast < MaxMatrixIntensityAnayzer * >(analyzer.get());
+	MaxMatrixIntensityAnalyzer *ma =
+	    dynamic_cast < MaxMatrixIntensityAnalyzer * >(analyzer.get());
 	if (null == ma || ma->isInverseMatrixNull()) {
 	    ShowMessage("Set \"Target White \"first.");
 	    return;

@@ -622,9 +622,9 @@ void hookTester()
     bptr < MeterMeasurement > mm = bptr < MeterMeasurement > (new MeterMeasurement(meter, false));
     mm->setFakeMeasure(true);
 
-    bptr < MaxMatrixIntensityAnayzer > matrixAnalyzer(new MaxMatrixIntensityAnayzer(mm));
+    bptr < MaxMatrixIntensityAnalyzer > matrixAnalyzer(new MaxMatrixIntensityAnalyzer(mm));
 
-    bptr < MaxMatrixIntensityAnayzer > analyzer = matrixAnalyzer;
+    bptr < MaxMatrixIntensityAnalyzer > analyzer = matrixAnalyzer;
     //fetcher = bptr < ComponentFetcher > ((ComponentFetcher *) null);
 
     bptr < DGLutProperty > property = dgcode->getProperty();

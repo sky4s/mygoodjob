@@ -132,7 +132,7 @@ class TCCTLUTForm:public TForm {
     RGBGamma_ptr rgbGamma;
      bptr < cms::lcd::calibrate::MeasureCondition > getMeasureCondition();
     bool run;
-     bptr < cms::measure::MaxMatrixIntensityAnayzer > nativeWhiteAnalyzer;
+     bptr < cms::measure::MaxMatrixIntensityAnalyzer > nativeWhiteAnalyzer;
   public:			// User declarations
      __fastcall TCCTLUTForm(TComponent * Owner);
     void setBitDepthProcessor(bptr < cms::lcd::calibrate::BitDepthProcessor > bitDepth);

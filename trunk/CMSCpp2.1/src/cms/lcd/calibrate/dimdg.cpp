@@ -20,7 +20,7 @@ namespace cms {
 	       將componentVector以analyzer重新計算Component
 	     */
 	    Component_vector_ptr DimDGLutGenerator::fetchNewComponent(bptr <
-								      MaxMatrixIntensityAnayzer
+								      MaxMatrixIntensityAnalyzer
 								      >
 								      analyzer,
 								      Component_vector_ptr
@@ -85,7 +85,7 @@ namespace cms {
 		xyY_ptr bxyY = analyzer->getPrimaryColor(Channel::B);
 
 		foreach(const XYZ_ptr targetXYZ, *targetXYZVector) {
-		    bptr < MaxMatrixIntensityAnayzer > analyzer(new MaxMatrixIntensityAnayzer());
+		    bptr < MaxMatrixIntensityAnalyzer > analyzer(new MaxMatrixIntensityAnalyzer());
 		    analyzer->setupComponent(Channel::R, rxyY->toXYZ());
 		    analyzer->setupComponent(Channel::G, gxyY->toXYZ());
 		    analyzer->setupComponent(Channel::B, bxyY->toXYZ());

@@ -198,7 +198,7 @@ namespace cms {
 			    XYZ_ptr bXYZ = (*componentVectorPrime)[2]->XYZ;
 			    XYZ_ptr wXYZ = (*componentVectorPrime)[3]->XYZ;
 
-			    bptr < MaxMatrixIntensityAnayzer > ma(new MaxMatrixIntensityAnayzer());
+			    bptr < MaxMatrixIntensityAnalyzer > ma(new MaxMatrixIntensityAnalyzer());
 			    ma->setupComponent(Channel::R, rXYZ);
 			    ma->setupComponent(Channel::G, gXYZ);
 			    ma->setupComponent(Channel::B, bXYZ);
@@ -343,7 +343,7 @@ namespace cms {
 		    XYZ_ptr targetXYZ = (*targetXYZVector)[x];
 
 		    //不斷產生Analyzer, 因為Target White一直變化, 所以利用新的Analyzer, 計算出Intensity
-		    bptr < MaxMatrixIntensityAnayzer > ma(new MaxMatrixIntensityAnayzer());
+		    bptr < MaxMatrixIntensityAnalyzer > ma(new MaxMatrixIntensityAnalyzer());
 		    ma->setupComponent(Channel::R, rXYZ);
 		    ma->setupComponent(Channel::G, gXYZ);
 		    ma->setupComponent(Channel::B, bXYZ);
@@ -476,7 +476,7 @@ namespace cms {
 		xyY_ptr gxyY = analyzer->getPrimaryColor(Channel::G);
 		xyY_ptr bxyY = analyzer->getPrimaryColor(Channel::B);
 
-		bptr < MaxMatrixIntensityAnayzer > mmia(new MaxMatrixIntensityAnayzer());
+		bptr < MaxMatrixIntensityAnalyzer > mmia(new MaxMatrixIntensityAnalyzer());
 		mmia->setupComponent(Channel::R, rxyY->toXYZ());
 		mmia->setupComponent(Channel::G, gxyY->toXYZ());
 		mmia->setupComponent(Channel::B, bxyY->toXYZ());
