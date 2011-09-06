@@ -1852,3 +1852,4 @@ void __fastcall THSVForm2nd::ScrollBar_ChromaChange(TObject * Sender)
 
 //---------------------------------------------------------------------------
 
+
