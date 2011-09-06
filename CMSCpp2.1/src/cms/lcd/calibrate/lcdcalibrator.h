@@ -34,6 +34,8 @@ namespace cms {
 		int under;
 		double dimGamma;
 		bool averageDimDG;
+		int dimFixEnd;
+		bool dimFix;
 		//==============================================================
 
 		//==============================================================
@@ -135,6 +137,8 @@ namespace cms {
 					 const Dep::MaxValue & quantizationBit);
 		RGB_vector_ptr newMethod(DGLutGenerator & generator,
 					 bptr < PanelRegulator > panelRegulato);
+		double2D_ptr getDeltaxyValues(Component_vector_ptr componentVector);
+		RGB_vector_ptr dimDGLutFix(RGB_vector_ptr original);
 		//==============================================================
 	      public:
 		static double_vector_ptr getGammaCurveVector(double gamma, int n, int
@@ -146,6 +150,8 @@ namespace cms {
 		void setRBInterpolation(int under);
 		void setNonDimCorrect();
 		void setDefinedDim(int under, double gamma, bool averageDimDG);
+		void setDimFixEnd(int end);
+		void setDimFix(bool dimFix);
 		void setGamma(double gamma);
 		void setGamma(double rgamma, double ggamma, double bgamma);
 		void setGammaCurve(double_vector_ptr gammaCurve);

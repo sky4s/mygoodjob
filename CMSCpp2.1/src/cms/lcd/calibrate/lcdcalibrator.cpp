@@ -56,6 +56,12 @@ namespace cms {
 		this->dimGamma = gamma;
 		this->averageDimDG = averageDimDG;
 	    };
+	    void LCDCalibrator::setDimFixEnd(int fixEnd) {
+		this->dimFixEnd = fixEnd;
+	    };
+	    void LCDCalibrator::setDimFix(bool dimFix) {
+		this->dimFix = dimFix;
+	    };
 	    void LCDCalibrator::setGamma(double gamma) {
 		this->gamma = gamma;
 		int n = bitDepth->getLevel();
@@ -163,6 +169,8 @@ namespace cms {
 		remapped = false;
 		manualAccurateMode = false;
 		middleCCTRatio = -1;
+		dimFixEnd = 50;
+		dimFix = false;
 	    };
 
 	    Component_vector_ptr LCDCalibrator::fetchComponentVector() {
@@ -295,8 +303,9 @@ namespace cms {
 		    bptr < cms::measure::IntensityAnalyzerIF > analyzer = fetcher->getAnalyzer();
 		    RGB_ptr rgb = analyzer->getReferenceRGB();
 		    panelRegulator = bptr < PanelRegulator >
-			(new GammaTestPanelRegulator(bitDepth, tconctrl, (int) rgb->R, (int) rgb->G,
-						     (int) rgb->B, measureCondition));
+			(new
+			 GammaTestPanelRegulator(bitDepth, tconctrl, (int) rgb->R, (int) rgb->G,
+						 (int) rgb->B, measureCondition));
 		    if (false == this->manualAccurateMode) {
 			panelRegulator->setEnable(true);
 		    }
@@ -333,12 +342,15 @@ namespace cms {
 		}
 
 
+
 		//==============================================================
 		// DG Code Op block
 		//==============================================================
 		//量化
 		RGB_vector_ptr result = getDGLutOpResult(dglut, generator);
 		//==============================================================
+
+
 
 		//==============================================================
 		// intensity的影響計算
@@ -358,9 +370,98 @@ namespace cms {
 		STORE_RGBVECTOR("6.9_dgcode_final.xls", result);
 		RGBVector::changeMaxValue(result, bitDepth->getLutMaxValue());
 		//==============================================================
+		//已產生出DG, 可在此處量測
+		if (dimFix) {
+		    //STORE_RGBVECTOR("7.1_before_dimFix.xls", result);
+		    result = dimDGLutFix(result);
+		    //STORE_RGBVECTOR("7.2_after_dimFix.xls", result);
+		}
 
-		STORE_RGBVECTOR("7_dgcode_final.xls", result);
+
+		STORE_RGBVECTOR("8_dgcode_final.xls", result);
 		this->dglut = result;
+		return result;
+	    };
+
+	    double2D_ptr LCDCalibrator::getDeltaxyValues(Component_vector_ptr componentVector) {
+		using namespace Indep;
+		int size = componentVector->size();
+		xyY_vector_ptr xyYVector(new xyY_vector());
+
+		for (int x = 0; x < size; x++) {
+		    Component_ptr c = (*componentVector)[x];
+		    XYZ_ptr XYZ = c->XYZ;
+		    xyY_ptr xyY(new CIExyY(XYZ));
+		    xyYVector->push_back(xyY);
+		}
+
+		double2D_ptr deltaxyValues(new double2D(size - 1, 2));
+
+		for (int x = 0; x < (size - 1); x++) {
+		    xyY_ptr xyY0 = (*xyYVector)[x];
+		    xyY_ptr xyY1 = (*xyYVector)[x + 1];
+		    double_array xy0Values = xyY0->getxyValues();
+		    double_array xy1Values = xyY1->getxyValues();
+		    double_array delta = DoubleArray::minus(xy0Values, xy1Values, 2);
+		    (*deltaxyValues)[x][0] = delta[0];
+		    (*deltaxyValues)[x][1] = delta[1];
+		}
+		return deltaxyValues;
+	    };
+
+	    RGB_vector_ptr LCDCalibrator::dimDGLutFix(RGB_vector_ptr original) {
+
+		STORE_RGBVECTOR("7.1_before_fix.xls", original);
+		RGB_vector_ptr result = RGBVector::deepClone(original);
+		RGBVector::quantization(result, bitDepth->getFRCAbilityBit(), true);
+		STORE_RGBVECTOR("7.2_quant2FRC.xls", result);
+		RGBVector::changeMaxValue(result, bitDepth->getFRCAbilityBit());
+		STORE_RGBVECTOR("7.3_change2FRC.xls", result);
+		//result = RGBVector::reverse(result);
+
+		RGB_vector_ptr measureCode = RGBVector::copyRange(original, 0, 50);
+		//50量到0
+		measureCode = RGBVector::reverse(measureCode);
+		bptr < MeasureCondition > measureCondition(new MeasureCondition(measureCode));
+		/*RGB_vector_ptr v = measureCondition->getRGBMeasureCode();
+		   foreach(RGB_ptr rgb,*v) {
+		   RGB_ptr a=rgb;
+		   int b=1;
+		   } */
+
+
+		Component_vector_ptr componentVector = fetcher->fetchComponent(measureCondition);
+		STORE_COMPONENT("7.4_dimComponent.xls", componentVector);
+		double2D_ptr deltaxyValues = getDeltaxyValues(componentVector);
+		int size = deltaxyValues->dim1();
+
+
+		for (int x = 1; x < size; x++) {
+		    int grayLevel = 50 - x;
+		    double dx = (*deltaxyValues)[x][0];
+		    double dy = (*deltaxyValues)[x][1];
+		    if (dx < 0 && dy < 0) {
+
+		    } else if (dx < 0) {
+			//dx <0
+		    } else if (dy < 0) {
+			//dy <0
+			double predy = (*deltaxyValues)[x - 1][1];
+			double nextdy = (*deltaxyValues)[x + 1][1];
+			if (predy > 0 && nextdy > 0) {
+			    double pre2dy = dy + predy;
+			    if (pre2dy < 0.0009) {
+				//太擠
+				(*result)[grayLevel - 1]->G -= 1;
+			    } else {
+				(*result)[grayLevel]->G += 1;
+			    }
+			}
+		    }
+		}
+		STORE_RGBVECTOR("7.5_afterFix.xls", result);
+		RGBVector::changeMaxValue(result, bitDepth->getLutMaxValue());
+		STORE_RGBVECTOR("7.6_change2LUT.xls", result);
 		return result;
 	    };
 
@@ -390,8 +491,8 @@ namespace cms {
 			    int max = bitDepth->getMaxDigitalCount();
 			    panelRegulator2 = bptr < PanelRegulator >
 				(new
-				 GammaTestPanelRegulator(bitDepth, tconctrl, max, max, maxZDGCode,
-							 measureCondition));
+				 GammaTestPanelRegulator(bitDepth, tconctrl, max, max,
+							 maxZDGCode, measureCondition));
 			    panelRegulator2->setEnable(true);
 			    componentVector2 = fetchComponentVector();
 			    STORE_COMPONENT("o_fetch2.xls", componentVector2);
@@ -719,7 +820,8 @@ namespace cms {
 		this->multiGenTimes = times;
 	    };
 	    //==================================================================
-	    bptr < cms::measure::MaxMatrixIntensityAnalyzer > LCDCalibrator::getNativeWhiteAnalyzer() {
+	    bptr < cms::measure::MaxMatrixIntensityAnalyzer >
+		LCDCalibrator::getNativeWhiteAnalyzer() {
 		return nativeWhiteAnalyzer;
 	    }
 	    void LCDCalibrator::setNativeWhiteAnalyzer(bptr <

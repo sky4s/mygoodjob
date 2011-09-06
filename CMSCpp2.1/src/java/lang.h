@@ -158,6 +158,7 @@ typedef barray < int >int_array;
 #define nil_int_array int_array ((int*)NULL)
 typedef barray < short >short_array;
 #define nil_short_array short_array ((short*)NULL)
+typedef barray < bool > bool_array;
 
 //boost提供的foreach, 若要對vector<int> ivec做foreach, 語法為: foreach(const int & i, ivec) { ... }
 #define foreach BOOST_FOREACH
@@ -482,7 +483,7 @@ template < typename Container, typename ValueType, int nPropType > class Propert
     }
 //-- To make possible to cast the property class to the
 //   internal type --
-    operator                                                   ValueType() {
+    operator                                                    ValueType() {
 	assert(m_cObject != NULL);
 	assert(Get != NULL);
 	return (m_cObject->*Get) ();
