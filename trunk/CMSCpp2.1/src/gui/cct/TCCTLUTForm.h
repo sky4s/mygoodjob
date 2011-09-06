@@ -102,6 +102,7 @@ class TCCTLUTForm:public TForm {
     TLabel *Label15;
     TEdit *Edit_MiddleRatio;
     TCheckBox *CheckBox_MiddleCCT;
+    TCheckBox *CheckBox_DimFix;
     void __fastcall RadioButton_P1P2Click(TObject * Sender);
     void __fastcall Button_MeaRunClick(TObject * Sender);
     void __fastcall FormCreate(TObject * Sender);

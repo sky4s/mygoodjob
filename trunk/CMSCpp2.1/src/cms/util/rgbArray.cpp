@@ -123,7 +123,14 @@ namespace cms {
 	void RGBVector::quantization(RGB_vector_ptr vector, const MaxValue & maxValue) {
 	    foreach(RGB_ptr rgb, *vector) {
 		rgb->quantization(maxValue);
-	}};
+	    }
+	};
+	void RGBVector::quantization(RGB_vector_ptr vector, const MaxValue & maxValue,
+				     bool integerRoundDown) {
+	    foreach(RGB_ptr rgb, *vector) {
+		rgb->quantization(maxValue, integerRoundDown);
+	    }
+	};
 	RGB_vector_ptr RGBVector::reverse(RGB_vector_ptr rgbVector) {
 	    RGB_vector_ptr result(new RGB_vector(rgbVector->rbegin(), rgbVector->rend()));
 	    return result;
@@ -145,6 +152,16 @@ namespace cms {
 	    }
 	    return true;
 	}
+	RGB_vector_ptr RGBVector::copyRange(RGB_vector_ptr rgbVector, int start, int end) {
+	    int size = rgbVector->size();
+	    RGB_vector_ptr result(new RGB_vector());
+	    for (int x = start; x <= end; x++) {
+		result->push_back((*rgbVector)[x]);
+	    }
+
+	    return result;
+	};
+
 	//==================================================================
 
 	//==================================================================

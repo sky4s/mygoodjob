@@ -87,7 +87,7 @@ void __fastcall TCCTLUTForm::Button_MeaRunClick(TObject * Sender)
 	bptr < ComponentFetcher > fetcher = MainForm->getComponentFetcher();
 	LCDCalibrator calibrator(fetcher, bitDepth);
 
-        //以下都是選項的設定
+	//以下都是選項的設定
 
 	//==========================================================================
 	// P1P2和RBInterp的選擇
@@ -154,7 +154,7 @@ void __fastcall TCCTLUTForm::Button_MeaRunClick(TObject * Sender)
 	//==========================================================================
 	calibrator.setAvoidFRCNoise(this->CheckBox_AvoidNoise->Checked);
 
-        //新方法
+	//新方法
 	calibrator.setNewMethod(this->CheckBox_NewMethod->Checked);
 	calibrator.setMultiGen(this->CheckBox_MultiGen->Checked,
 			       this->Edit_MultiGenTimes->Text.ToInt());
@@ -169,6 +169,7 @@ void __fastcall TCCTLUTForm::Button_MeaRunClick(TObject * Sender)
 	    double middleRatio = Edit_MiddleRatio->Text.ToDouble();
 	    calibrator.setMiddleCCTRatio(middleRatio);
 	}
+	calibrator.setDimFix(CheckBox_DimFix->Checked);
 	//==========================================================================
 
 	//==========================================================================
@@ -189,7 +190,7 @@ void __fastcall TCCTLUTForm::Button_MeaRunClick(TObject * Sender)
 	}
 	//==========================================================================
 
-        //以上都是選項的設定
+	//以上都是選項的設定
 
 	//=================================================================
 	// 設定結束, 進入主流程開始處理

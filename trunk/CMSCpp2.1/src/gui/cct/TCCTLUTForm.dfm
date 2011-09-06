@@ -1,7 +1,7 @@
 object CCTLUTForm: TCCTLUTForm
   Left = 249
   Top = 258
-  Width = 832
+  Width = 844
   Height = 492
   Caption = 'CCT LUT'
   Color = clBtnFace
@@ -179,7 +179,7 @@ object CCTLUTForm: TCCTLUTForm
     Left = 345
     Top = 7
     Width = 156
-    Height = 195
+    Height = 258
     Caption = 'Low Level Correction'
     TabOrder = 2
     object Label4: TLabel
@@ -308,12 +308,20 @@ object CCTLUTForm: TCCTLUTForm
       TabOrder = 9
       Text = '2.2'
     end
+    object CheckBox_DimFix: TCheckBox
+      Left = 26
+      Top = 184
+      Width = 71
+      Height = 17
+      Caption = 'Dim Fix'
+      TabOrder = 10
+    end
   end
   object GroupBox4: TGroupBox
-    Left = 345
+    Left = 672
     Top = 202
     Width = 156
-    Height = 65
+    Height = 64
     Caption = 'Blue Correction'
     TabOrder = 3
     object CheckBox_BGain: TCheckBox
@@ -645,7 +653,7 @@ object CCTLUTForm: TCCTLUTForm
     Left = 507
     Top = 7
     Width = 157
-    Height = 260
+    Height = 258
     Caption = 'Keep Max Luminance'
     TabOrder = 11
     object Label20: TLabel
@@ -822,8 +830,8 @@ object CCTLUTForm: TCCTLUTForm
   object GroupBox8: TGroupBox
     Left = 672
     Top = 7
-    Width = 145
-    Height = 260
+    Width = 156
+    Height = 194
     Caption = 'Test Function'
     TabOrder = 13
     object Label15: TLabel

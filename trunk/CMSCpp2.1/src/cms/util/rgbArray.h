@@ -21,16 +21,19 @@ namespace cms {
 	    static RGB_vector_ptr getLinearRGBVector(bptr < cms::lcd::calibrate::BitDepthProcessor >
 						     bitDepth, double rgain, double ggain,
 						     double bgain);
-	    static RGB_vector_ptr getLinearRGBVector(RGB_vector_ptr rgbVector, double rgain, double ggain,
-						     double bgain);
+	    static RGB_vector_ptr getLinearRGBVector(RGB_vector_ptr rgbVector, double rgain,
+						     double ggain, double bgain);
 	    static void storeToExcel(const std::string & filename, RGB_vector_ptr rgbVector);
 	    static void storeToText(const std::string & filename, RGB_vector_ptr rgbVector);
 	    static RGB_vector_ptr deepClone(RGB_vector_ptr vector);
 	    static void changeMaxValue(RGB_vector_ptr vector, const Dep::MaxValue & type);
 	    static void quantization(RGB_vector_ptr vector, const Dep::MaxValue & maxValue);
+	    static void quantization(RGB_vector_ptr vector, const Dep::MaxValue & maxValue,
+				     bool integerRoundDown);
 	    static RGB_vector_ptr reverse(RGB_vector_ptr rgbVector);
 	    static bool isAscend(RGB_vector_ptr rgbVector);
 	    static bool isAscend(RGB_vector_ptr rgbVector, int start, int end);
+	    static RGB_vector_ptr copyRange(RGB_vector_ptr rgbVector, int start, int end);
 	};
 
 	enum RGBType {
