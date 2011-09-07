@@ -68,7 +68,7 @@ void __fastcall TCCTLUTForm::Button_MeaRunClick(TObject * Sender)
     using namespace i2c;
     using namespace java::lang;
 
-
+    MainForm->showProgress(ProgressBar1);
     if (Button_Run->Enabled) {
 	MainForm->initCA210Meter();
 	MainForm->setAnalyzerNull();
@@ -231,6 +231,7 @@ void __fastcall TCCTLUTForm::Button_MeaRunClick(TObject * Sender)
 	    //=================================================================
 	    RGB_vector_ptr checkResult = RGBVector::deepClone(dglut);
 	    RGBVector::changeMaxValue(checkResult, bitDepth->getFRCAbilityBit());
+	    MainForm->stopProgress(ProgressBar1);
 	    if (RGBVector::isAscend(checkResult, 0, bitDepth->getMaxDigitalCount())) {
 		//檢查是否遞增且無疊階
 		ShowMessage("Ok!");
@@ -496,6 +497,7 @@ void __fastcall TCCTLUTForm::CheckBox_NewMethodClick(TObject * Sender)
     RadioButton_P1P2->Enabled = !newMethod;
     RadioButton_DefinedDim->Enabled = newMethod;
     RadioButton_MaxYNativeAdv->Enabled = newMethod;
+    //RadioButton_MaxYNative->Enabled = newMethod;
     CheckBox_BTargetIntensity->Enabled = newMethod;
     CheckBox_MultiGen->Enabled = newMethod;
     Edit_MultiGenTimes->Enabled = newMethod;
@@ -513,7 +515,8 @@ void __fastcall TCCTLUTForm::CheckBox_NewMethodClick(TObject * Sender)
 
     }
 
-    RadioButton_MaxYNativeAdv->Checked = newMethod;
+    //RadioButton_MaxYNativeAdv->Checked = newMethod;
+    RadioButton_MaxYNative->Checked = newMethod;
     RadioButton_MaxYTarget->Checked = !newMethod;
     RadioButton_MaxYTarget->Enabled = !newMethod;
     //RadioButton_MaxYNative->Enabled = !newMethod;
@@ -638,4 +641,5 @@ void __fastcall TCCTLUTForm::CheckBox_MiddleCCTClick(TObject * Sender)
 }
 
 //---------------------------------------------------------------------------
+
 

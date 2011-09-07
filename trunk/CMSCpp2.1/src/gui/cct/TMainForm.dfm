@@ -1,6 +1,6 @@
 object MainForm: TMainForm
-  Left = 255
-  Top = 371
+  Left = 205
+  Top = 353
   Width = 938
   Height = 425
   Caption = 'CCT Adjustment v3'
@@ -716,6 +716,7 @@ object MainForm: TMainForm
     FFFFFFFF0000FFFFFFFFFFFF0000FFFFFFFFFFFF0000}
   Menu = MainMenu1
   OldCreateOrder = False
+  OnActivate = FormActivate
   OnCreate = FormCreate
   OnDestroy = FormDestroy
   PixelsPerInch = 96
@@ -1442,7 +1443,7 @@ object MainForm: TMainForm
             Top = 13
             Width = 138
             Height = 21
-            ItemHeight = 0
+            ItemHeight = 13
             TabOrder = 0
             OnChange = ComboBox_TCONTypeChange
           end
@@ -1671,6 +1672,16 @@ object MainForm: TMainForm
         end
       end
     end
+  end
+  object ProgressBar1: TProgressBar
+    Left = 128
+    Top = 272
+    Width = 201
+    Height = 25
+    Min = 0
+    Max = 100
+    TabOrder = 1
+    Visible = False
   end
   object MainMenu1: TMainMenu
     object MatrixCalibration1: TMenuItem

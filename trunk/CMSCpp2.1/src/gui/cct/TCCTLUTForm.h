@@ -10,6 +10,7 @@
 #include <ExtCtrls.hpp>
 #include <Dialogs.hpp>
 #include "TOutputFileFrame.h"
+#include <ComCtrls.hpp>
 #include <cms/lcd/calibrate/lcdcalibrator.h>
 //---------------------------------------------------------------------------
 class TCCTLUTForm:public TForm {
@@ -103,6 +104,7 @@ class TCCTLUTForm:public TForm {
     TEdit *Edit_MiddleRatio;
     TCheckBox *CheckBox_MiddleCCT;
     TCheckBox *CheckBox_DimFix;
+    TProgressBar *ProgressBar1;
     void __fastcall RadioButton_P1P2Click(TObject * Sender);
     void __fastcall Button_MeaRunClick(TObject * Sender);
     void __fastcall FormCreate(TObject * Sender);

@@ -71,16 +71,15 @@ void __fastcall TMainForm::FormCreate(TObject * Sender)
     using namespace gui::util;
 
     bitDepth = bptr < BitDepthProcessor > (new BitDepthProcessor(8, 12, 8, false));
-    if (true == linkCA210) {
-	initCA210Meter();
-    } else {
-	if (FileExists(METER_FILE)) {
-	    setDummyMeterFilename(METER_FILE);
-	}
-	this->Caption = this->Caption + " (debug mode)";
-	this->GroupBox_CHSetting->Visible = false;
-	//this->Button_I2CTest->Visible = true;
-    }
+    /*if (true == linkCA210) {
+       initCA210Meter();
+       } else {
+       if (FileExists(METER_FILE)) {
+       setDummyMeterFilename(METER_FILE);
+       }
+       this->Caption = this->Caption + " (debug mode)";
+       this->GroupBox_CHSetting->Visible = false;
+       } */
 
     initTCONFile();
     readTCONSections();
@@ -1228,6 +1227,101 @@ void __fastcall TMainForm::ComboBox_DGLUTTypeChange(TObject * Sender)
 	    ComboBox_DGLUTType->ItemIndex = 0;
 	}
 	break;
+    }
+}
+
+//---------------------------------------------------------------------------
+
+
+
+void TMainForm::showProgress(TProgressBar * progress)
+{
+    if (null != thread) {
+	thread->Terminate();
+	delete thread;
+
+    }
+    //thread->Terminate();
+    progress->Visible = true;
+    thread = new ProgressThread(false, progress);
+    thread->Resume();
+};
+void TMainForm::stopProgress(TProgressBar * progress)
+{
+
+    if (null != thread) {
+	thread->Terminate();
+	progress->Visible = false;
+	delete thread;
+	thread = null;
+    }
+};
+
+
+//---------------------------------------------------------------------------
+
+//   Important: Methods and properties of objects in VCL can only be
+//   used in a method called using Synchronize, for example:
+//
+//      Synchronize(UpdateCaption);
+//
+//   where UpdateCaption could look like:
+//
+//      void __fastcall ProgressThread::UpdateCaption()
+//      {
+//        Form1->Caption = "Updated in a thread";
+//      }
+//---------------------------------------------------------------------------
+
+__fastcall ProgressThread::ProgressThread(bool CreateSuspended, TProgressBar * progress)
+:TThread(CreateSuspended), progress(progress)
+{
+}
+
+//---------------------------------------------------------------------------
+void __fastcall ProgressThread::Execute()
+{
+    //---- Place thread code here ----
+    while (!this->Terminated) {
+	Application->ProcessMessages();
+	Sleep(50);
+	progress->StepIt();
+    }
+}
+
+//-
+
+void __fastcall TMainForm::FormActivate(TObject * Sender)
+{
+    if (true == linkCA210) {
+ 
+	class CA210Thread:public TThread {
+	  protected:
+	    void __fastcall Execute() {
+		MainForm->initCA210Meter();
+		MainForm->stopProgress(MainForm->ProgressBar1);
+		MainForm->Enabled = true;
+	    };
+	  public:
+	  __fastcall CA210Thread(bool CreateSuspended):TThread(CreateSuspended) {
+	    };
+	};
+
+
+	showProgress(ProgressBar1);
+	//memory leakage...but..懶的鳥他, 反正程式關閉的時候,heap就一併清掉
+	CA210Thread *thread = new CA210Thread(false);
+	MainForm->Enabled = false;
+	//改用thread去啟動ca-210, 這樣可以正常更新progress bar!
+	thread->Resume();
+	//initCA210Meter();
+	//stopProgress(ProgressBar1);
+    } else {
+	if (FileExists(METER_FILE)) {
+	    setDummyMeterFilename(METER_FILE);
+	}
+	this->Caption = this->Caption + " (debug mode)";
+	this->GroupBox_CHSetting->Visible = false;
     }
 }
 

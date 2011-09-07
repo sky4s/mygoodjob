@@ -108,6 +108,14 @@ namespace cms {
 
 	};
 #endif
+
+	void Util::sleep(int waitTimes) {
+	    int count = waitTimes / 100;
+	    for (int x = 0; x < count; x++) {
+		Sleep(100);
+		Application->ProcessMessages();
+	    }
+	};
 	//==========================================================================
 
 	string_vector_ptr StringVector::fromCString(int count, ...) {

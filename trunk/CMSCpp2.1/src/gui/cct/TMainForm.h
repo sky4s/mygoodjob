@@ -19,7 +19,7 @@
 //本項目內頭文件
 #include <i2c/i2ccontrol.h>
 //---------------------------------------------------------------------------
-
+class ProgressThread;
 class TMainForm:public TForm {
     __published:		// IDE-managed Components
     TMainMenu * MainMenu1;
@@ -124,6 +124,7 @@ class TMainForm:public TForm {
     TRadioButton *RadioButton_Out8;
     TRadioButton *RadioButton_Out10;
     TEdit *Edit_FRCAbility;
+    TProgressBar *ProgressBar1;
     void __fastcall About1Click(TObject * Sender);
     void __fastcall Exit1Click(TObject * Sender);
     void __fastcall TargetWhite1Click(TObject * Sender);
@@ -165,6 +166,7 @@ class TMainForm:public TForm {
     void __fastcall RadioButton_PCTCONClick(TObject * Sender);
     void __fastcall RadioButton_NinthClick(TObject * Sender);
     void __fastcall ComboBox_DGLUTTypeChange(TObject * Sender);
+    void __fastcall FormActivate(TObject * Sender);
   private:			// User declarations
     //==========================================================================
     // meter
@@ -201,6 +203,9 @@ class TMainForm:public TForm {
     //bptr < gui::util::UIBinder > binder;
     const static char *CUSTOM;
     //==========================================================================
+
+    ProgressThread *thread;
+
   public:			// User declarations
     //==========================================================================
     // meter
@@ -241,8 +246,18 @@ class TMainForm:public TForm {
     const bool newFunction;
     //==========================================================================
     __fastcall TMainForm(TComponent * Owner);
+    void showProgress(TProgressBar * progress);
+    void stopProgress(TProgressBar * progress);
 
+};
 
+class ProgressThread:public TThread {
+  private:
+    TProgressBar * progress;
+  protected:
+    void __fastcall Execute();
+  public:
+     __fastcall ProgressThread(bool CreateSuspended, TProgressBar * progress);
 };
 //---------------------------------------------------------------------------
 extern PACKAGE TMainForm *MainForm;
