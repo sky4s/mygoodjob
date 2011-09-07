@@ -35,7 +35,7 @@ namespace cms {
 	    bool titleTouched;
 	    bool fakeMeasure;
 	     bptr < cms::measure::meter::DGLutFileMeter > dgc;
-	    void sleep(int waitTimes);
+	    //void sleep(int waitTimes);
 	  protected:
 	     bptr < cms::measure::meter::Meter > meter;
 	    TMeasureWindow *measureWindow;

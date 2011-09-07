@@ -34,6 +34,8 @@ namespace cms {
 	    static void storeXYZxyVector(const std::string & filename,
 					 XYZ_vector_ptr XYZVector, const std::string firstColumn);
 #endif
+
+	    static void sleep(int waitTimes);
 	};
 
 	class StringVector {

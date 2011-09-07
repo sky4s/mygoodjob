@@ -1,6 +1,6 @@
 object CCTLUTForm: TCCTLUTForm
-  Left = 249
-  Top = 258
+  Left = 311
+  Top = 272
   Width = 844
   Height = 492
   Caption = 'CCT LUT'
@@ -19,7 +19,7 @@ object CCTLUTForm: TCCTLUTForm
   PixelsPerInch = 96
   TextHeight = 13
   object Label9: TLabel
-    Left = 391
+    Left = 551
     Top = 352
     Width = 281
     Height = 13
@@ -306,7 +306,7 @@ object CCTLUTForm: TCCTLUTForm
       Height = 21
       ImeName = #26085#25991#36664#20837#31995#32113' (MS-IME2002)'
       TabOrder = 9
-      Text = '2.2'
+      Text = '1.0'
     end
     object CheckBox_DimFix: TCheckBox
       Left = 26
@@ -860,6 +860,15 @@ object CCTLUTForm: TCCTLUTForm
       TabOrder = 1
       OnClick = CheckBox_MiddleCCTClick
     end
+  end
+  object ProgressBar1: TProgressBar
+    Left = 600
+    Top = 304
+    Width = 225
+    Height = 17
+    Min = 0
+    Max = 100
+    TabOrder = 14
   end
   object OpenDialog1: TOpenDialog
     Filter = 'DGCode Files(*.xls)|*.xls'

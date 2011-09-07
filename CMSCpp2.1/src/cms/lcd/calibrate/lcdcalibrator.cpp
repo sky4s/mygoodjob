@@ -417,24 +417,19 @@ namespace cms {
 		STORE_RGBVECTOR("7.2_quant2FRC.xls", result);
 		RGBVector::changeMaxValue(result, bitDepth->getFRCAbilityBit());
 		STORE_RGBVECTOR("7.3_change2FRC.xls", result);
-		//result = RGBVector::reverse(result);
 
 		RGB_vector_ptr measureCode = RGBVector::copyRange(original, 0, 50);
 		//50¶q¨ì0
 		measureCode = RGBVector::reverse(measureCode);
 		bptr < MeasureCondition > measureCondition(new MeasureCondition(measureCode));
-		/*RGB_vector_ptr v = measureCondition->getRGBMeasureCode();
-		   foreach(RGB_ptr rgb,*v) {
-		   RGB_ptr a=rgb;
-		   int b=1;
-		   } */
-
 
 		Component_vector_ptr componentVector = fetcher->fetchComponent(measureCondition);
 		STORE_COMPONENT("7.4_dimComponent.xls", componentVector);
 		double2D_ptr deltaxyValues = getDeltaxyValues(componentVector);
 		int size = deltaxyValues->dim1();
 
+		const double Tiny = 0.0001;
+		const double SuitGap = 0.0009;
 
 		for (int x = 1; x < size; x++) {
 		    int grayLevel = 50 - x;
@@ -442,9 +437,9 @@ namespace cms {
 		    double dy = (*deltaxyValues)[x][1];
 		    if (dx < 0 && dy < 0) {
 
-		    } else if (dx < 0) {
+		    } else if (dx < 0.0001) {
 			//dx <0
-		    } else if (dy < 0) {
+		    } else if (dy < 0.0001) {
 			//dy <0
 			double predy = (*deltaxyValues)[x - 1][1];
 			double nextdy = (*deltaxyValues)[x + 1][1];
