@@ -139,6 +139,7 @@ namespace cms {
 					 bptr < PanelRegulator > panelRegulato);
 		double2D_ptr getDeltaxyValues(Component_vector_ptr componentVector);
 		RGB_vector_ptr dimDGLutFix(RGB_vector_ptr original);
+		bool_array getDefectArray(double2D_ptr deltaxyValues, double threshold);
 		//==============================================================
 	      public:
 		static double_vector_ptr getGammaCurveVector(double gamma, int n, int

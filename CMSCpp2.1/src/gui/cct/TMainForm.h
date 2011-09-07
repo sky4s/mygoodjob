@@ -125,6 +125,7 @@ class TMainForm:public TForm {
     TRadioButton *RadioButton_Out10;
     TEdit *Edit_FRCAbility;
     TProgressBar *ProgressBar1;
+    TStatusBar *StatusBar1;
     void __fastcall About1Click(TObject * Sender);
     void __fastcall Exit1Click(TObject * Sender);
     void __fastcall TargetWhite1Click(TObject * Sender);

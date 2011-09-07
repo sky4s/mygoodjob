@@ -409,6 +409,21 @@ namespace cms {
 		return deltaxyValues;
 	    };
 
+	    bool_array LCDCalibrator::getDefectArray(double2D_ptr deltaxyValues, double threshold) {
+		int size = deltaxyValues->dim1();
+		bool_array defectArray(new bool[size]);
+		for (int x = 1; x < size; x++) {
+		    double dx = (*deltaxyValues)[x][0];
+		    double dy = (*deltaxyValues)[x][1];
+		    if (dx < threshold || dy < threshold) {
+			defectArray[x] = true;
+		    }
+		}
+		return defectArray;
+	    }
+
+
+
 	    RGB_vector_ptr LCDCalibrator::dimDGLutFix(RGB_vector_ptr original) {
 
 		STORE_RGBVECTOR("7.1_before_fix.xls", original);
@@ -428,29 +443,52 @@ namespace cms {
 		double2D_ptr deltaxyValues = getDeltaxyValues(componentVector);
 		int size = deltaxyValues->dim1();
 
+		const double Normal = 0.0000;
 		const double Tiny = 0.0001;
+		double threshold = Normal;
+
 		const double SuitGap = 0.0009;
+		bool_array defectArray = getDefectArray(deltaxyValues, threshold);
+
 
 		for (int x = 1; x < size; x++) {
-		    int grayLevel = 50 - x;
-		    double dx = (*deltaxyValues)[x][0];
-		    double dy = (*deltaxyValues)[x][1];
-		    if (dx < 0 && dy < 0) {
+		    bool defect = defectArray[x];
+		    bool predefect = defectArray[x - 1];
+		    bool nextdefect = defectArray[x + 1];
+		    //目前要是相鄰有defect就先不動, 因為太複雜!
+		    bool doDefectErase = defect && !predefect && !nextdefect;
 
-		    } else if (dx < 0.0001) {
-			//dx <0
-		    } else if (dy < 0.0001) {
-			//dy <0
-			double predy = (*deltaxyValues)[x - 1][1];
-			double nextdy = (*deltaxyValues)[x + 1][1];
-			if (predy > 0 && nextdy > 0) {
+
+		    if (doDefectErase) {
+			//確定要消除defect
+			int grayLevel = 50 - x;
+			double dx = (*deltaxyValues)[x][0];
+			double dy = (*deltaxyValues)[x][1];
+			//三種defect, 從delta確認是哪一種
+			if (dx < threshold && dy < threshold) {
+
+			} else if (dx < threshold) {
+			    //dx <0
+			    double predx = (*deltaxyValues)[x - 1][0];
+			    double pre2dx = dx + predx;
+			    if (pre2dx < SuitGap) {
+				//太擠
+				(*result)[grayLevel - 1]->R -= 1;
+			    } else {
+				(*result)[grayLevel]->R += 1;
+			    }
+			} else if (dy < threshold) {
+			    //dy <0
+			    double predy = (*deltaxyValues)[x - 1][1];
+			    //double nextdy = (*deltaxyValues)[x + 1][1];
 			    double pre2dy = dy + predy;
-			    if (pre2dy < 0.0009) {
+			    if (pre2dy < SuitGap) {
 				//太擠
 				(*result)[grayLevel - 1]->G -= 1;
 			    } else {
 				(*result)[grayLevel]->G += 1;
 			    }
+
 			}
 		    }
 		}

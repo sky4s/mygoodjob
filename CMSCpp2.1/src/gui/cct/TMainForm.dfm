@@ -1443,7 +1443,7 @@ object MainForm: TMainForm
             Top = 13
             Width = 138
             Height = 21
-            ItemHeight = 13
+            ItemHeight = 0
             TabOrder = 0
             OnChange = ComboBox_TCONTypeChange
           end
@@ -1682,6 +1682,14 @@ object MainForm: TMainForm
     Max = 100
     TabOrder = 1
     Visible = False
+  end
+  object StatusBar1: TStatusBar
+    Left = 0
+    Top = 358
+    Width = 930
+    Height = 19
+    Panels = <>
+    SimplePanel = False
   end
   object MainMenu1: TMainMenu
     object MatrixCalibration1: TMenuItem
