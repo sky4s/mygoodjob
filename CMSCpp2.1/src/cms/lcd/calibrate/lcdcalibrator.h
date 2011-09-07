@@ -36,6 +36,7 @@ namespace cms {
 		bool averageDimDG;
 		int dimFixEnd;
 		bool dimFix;
+		double dimFixThreshold;
 		//==============================================================
 
 		//==============================================================
@@ -153,6 +154,7 @@ namespace cms {
 		void setDefinedDim(int under, double gamma, bool averageDimDG);
 		void setDimFixEnd(int end);
 		void setDimFix(bool dimFix);
+		void setDimFixThreshold(double threshold);
 		void setGamma(double gamma);
 		void setGamma(double rgamma, double ggamma, double bgamma);
 		void setGammaCurve(double_vector_ptr gammaCurve);

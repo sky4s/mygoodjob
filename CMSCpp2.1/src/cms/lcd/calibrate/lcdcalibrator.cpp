@@ -63,6 +63,9 @@ namespace cms {
 	    void LCDCalibrator::setDimFix(bool dimFix) {
 		this->dimFix = dimFix;
 	    };
+	    void LCDCalibrator::setDimFixThreshold(double threshold) {
+		this->dimFixThreshold = threshold;
+	    }
 	    void LCDCalibrator::setGamma(double gamma) {
 		this->gamma = gamma;
 		int n = bitDepth->getLevel();
@@ -172,6 +175,7 @@ namespace cms {
 		middleCCTRatio = -1;
 		dimFixEnd = 50;
 		dimFix = false;
+		dimFixThreshold = 0.0000;
 	    };
 
 	    Component_vector_ptr LCDCalibrator::fetchComponentVector() {
@@ -455,9 +459,9 @@ namespace cms {
 		double2D_ptr deltaxyValues = getDeltaxyValues(componentVector);
 		int size = deltaxyValues->dim1();
 
-		const double Normal = 0.0000;
-		const double Tiny = 0.0001;
-		double threshold = Normal;
+		//const double Normal = 0.0000;
+		//const double Tiny = 0.0001;
+		double threshold = dimFixThreshold;
 
 		const double SuitGap = 0.0009;
 		bool_array defectArray = getDefectArray(deltaxyValues, threshold);
