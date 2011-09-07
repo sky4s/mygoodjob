@@ -314,7 +314,17 @@ object CCTLUTForm: TCCTLUTForm
       Width = 71
       Height = 17
       Caption = 'Dim Fix'
+      Checked = True
+      State = cbChecked
       TabOrder = 10
+    end
+    object Edit_DimFixThreshold: TEdit
+      Left = 80
+      Top = 184
+      Width = 65
+      Height = 21
+      TabOrder = 11
+      Text = '0.0000'
     end
   end
   object GroupBox4: TGroupBox
