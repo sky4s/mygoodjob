@@ -1,7 +1,8 @@
 #include <includeall.h>
 #pragma hdrstop
 #include "lcdcalibrator.h"
-
+#include <gui/cct/TMainForm.h>
+//#include <cms/colorformat/excelfile.h>
 //C系統文件
 
 //C++系統文件
@@ -417,6 +418,8 @@ namespace cms {
 		    double dy = (*deltaxyValues)[x][1];
 		    if (dx < threshold || dy < threshold) {
 			defectArray[x] = true;
+		    } else {
+			defectArray[x] = false;
 		    }
 		}
 		return defectArray;
@@ -438,7 +441,16 @@ namespace cms {
 		measureCode = RGBVector::reverse(measureCode);
 		bptr < MeasureCondition > measureCondition(new MeasureCondition(measureCode));
 
-		Component_vector_ptr componentVector = fetcher->fetchComponent(measureCondition);
+
+		Component_vector_ptr componentVector;	// = fetcher->fetchComponent(measureCondition);
+		if (true == MainForm->linkCA210) {
+		    componentVector = fetcher->fetchComponent(measureCondition);
+		} else {
+		    DGLutFile dglut("7.4_dimComponent.xls", ReadOnly);
+		    componentVector = dglut.getComponentVector();
+		}
+
+
 		STORE_COMPONENT("7.4_dimComponent.xls", componentVector);
 		double2D_ptr deltaxyValues = getDeltaxyValues(componentVector);
 		int size = deltaxyValues->dim1();
