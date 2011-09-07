@@ -29,7 +29,7 @@ TMainForm *MainForm;
 __fastcall TMainForm::TMainForm(TComponent * Owner):TForm(Owner),
 linkCA210(!FileExists(DEBUG_FILE)), newFunction(FileExists(DEBUG_NEWFUNC_FILE))
 {
-
+    StatusBar1->SimplePanel = true;
 }
 
 //---------------------------------------------------------------------------
@@ -1294,13 +1294,16 @@ void __fastcall ProgressThread::Execute()
 void __fastcall TMainForm::FormActivate(TObject * Sender)
 {
     if (true == linkCA210) {
- 
+
 	class CA210Thread:public TThread {
 	  protected:
 	    void __fastcall Execute() {
+		MainForm->StatusBar1->SimpleText = "CA-210 Connecting...";
+		MainForm->Enabled = false;
 		MainForm->initCA210Meter();
 		MainForm->stopProgress(MainForm->ProgressBar1);
 		MainForm->Enabled = true;
+		MainForm->StatusBar1->SimpleText = "CA-210 Connected!";
 	    };
 	  public:
 	  __fastcall CA210Thread(bool CreateSuspended):TThread(CreateSuspended) {
@@ -1311,16 +1314,14 @@ void __fastcall TMainForm::FormActivate(TObject * Sender)
 	showProgress(ProgressBar1);
 	//memory leakage...but..懶的鳥他, 反正程式關閉的時候,heap就一併清掉
 	CA210Thread *thread = new CA210Thread(false);
-	MainForm->Enabled = false;
 	//改用thread去啟動ca-210, 這樣可以正常更新progress bar!
 	thread->Resume();
-	//initCA210Meter();
-	//stopProgress(ProgressBar1);
     } else {
 	if (FileExists(METER_FILE)) {
 	    setDummyMeterFilename(METER_FILE);
 	}
-	this->Caption = this->Caption + " (debug mode)";
+	//this->Caption = this->Caption + " (debug mode)";
+	this->StatusBar1->SimpleText = "Debug mode";
 	this->GroupBox_CHSetting->Visible = false;
     }
 }

@@ -242,11 +242,13 @@ void __fastcall TCCTLUTForm::Button_MeaRunClick(TObject * Sender)
 	    Util::shellExecute(filename);
 	}
 	catch(java::lang::IllegalStateException & ex) {
+	    MainForm->stopProgress(ProgressBar1);
 	    ShowMessage(ex.toString().c_str());
 	}
 	//=================================================================
     }
     __finally {
+	MainForm->stopProgress(ProgressBar1);
 	run = false;
 	//this->Button_MeaRun->Enabled = true;
     }
@@ -641,5 +643,4 @@ void __fastcall TCCTLUTForm::CheckBox_MiddleCCTClick(TObject * Sender)
 }
 
 //---------------------------------------------------------------------------
-
 
