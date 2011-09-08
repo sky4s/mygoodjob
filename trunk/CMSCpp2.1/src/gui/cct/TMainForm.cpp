@@ -29,7 +29,7 @@ TMainForm *MainForm;
 __fastcall TMainForm::TMainForm(TComponent * Owner):TForm(Owner),
 linkCA210(!FileExists(DEBUG_FILE)), newFunction(FileExists(DEBUG_NEWFUNC_FILE))
 {
-    StatusBar1->SimplePanel = true;
+    //StatusBar1->SimplePanel = true;
 }
 
 //---------------------------------------------------------------------------
@@ -773,6 +773,7 @@ void __fastcall TMainForm::Button_ConnectClick(TObject * Sender)
 	    control = bptr < TCONControl > (new TCONControl(parameter, i2c1st, i2c2nd));
 	}
 	this->Button_Connect->Enabled = false;
+	this->StatusBar1->Panels->Items[2]->Text = "T-CON Connected";
 	if (!this->RadioButton_PCTCON->Checked) {
 	    MeasureWindow->setTCONControl(control);
 	    this->bitDepth->setTCONInput(true);
@@ -1298,12 +1299,15 @@ void __fastcall TMainForm::FormActivate(TObject * Sender)
 	class CA210Thread:public TThread {
 	  protected:
 	    void __fastcall Execute() {
-		MainForm->StatusBar1->SimpleText = "CA-210 Connecting...";
+		//MainForm->StatusBar1->SimpleText = "CA-210 Connecting...";
+		MainForm->StatusBar1->Panels->Items[1]->Text = "CA-210 Connecting...";
+
 		MainForm->Enabled = false;
 		MainForm->initCA210Meter();
 		MainForm->stopProgress(MainForm->ProgressBar1);
 		MainForm->Enabled = true;
-		MainForm->StatusBar1->SimpleText = "CA-210 Connected!";
+		//MainForm->StatusBar1->SimpleText = "CA-210 Connected!";
+		MainForm->StatusBar1->Panels->Items[1]->Text = "CA-210 Connected!";
 	    };
 	  public:
 	  __fastcall CA210Thread(bool CreateSuspended):TThread(CreateSuspended) {
@@ -1321,8 +1325,19 @@ void __fastcall TMainForm::FormActivate(TObject * Sender)
 	    setDummyMeterFilename(METER_FILE);
 	}
 	//this->Caption = this->Caption + " (debug mode)";
-	this->StatusBar1->SimpleText = "Debug mode";
+	//this->StatusBar1->SimpleText = "Debug mode";
+	MainForm->StatusBar1->Panels->Items[1]->Text = "Debug mode";
 	this->GroupBox_CHSetting->Visible = false;
+    }
+}
+
+//---------------------------------------------------------------------------
+
+
+void __fastcall TMainForm::TabSheet2Exit(TObject * Sender)
+{
+    if (true == Button_Connect->Enabled) {
+	RadioButton_PC->Checked = true;
     }
 }
 

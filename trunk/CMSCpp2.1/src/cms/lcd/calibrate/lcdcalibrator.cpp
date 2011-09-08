@@ -417,19 +417,59 @@ namespace cms {
 	    bool_array LCDCalibrator::getDefectArray(double2D_ptr deltaxyValues, double threshold) {
 		int size = deltaxyValues->dim1();
 		bool_array defectArray(new bool[size]);
+		for (int x = 0; x < size; x++) {
+		    defectArray[x] = false;
+		}
+
 		for (int x = 1; x < size; x++) {
 		    double dx = (*deltaxyValues)[x][0];
 		    double dy = (*deltaxyValues)[x][1];
 		    if (dx < threshold || dy < threshold) {
 			defectArray[x] = true;
-		    } else {
-			defectArray[x] = false;
 		    }
 		}
 		return defectArray;
 	    }
+	    int getDefectType(bool dxdefect, bool dydefect) {
+		if (dxdefect && dydefect) {
+		    return 3;
+		} else if (dxdefect) {
+		    return 1;
+		} else if (dydefect) {
+		    return 2;
+		} else {
+		    return -1;
+		}
+	    };
+	    bool_array LCDCalibrator::getContinueDefectArray(double2D_ptr deltaxyValues,
+							     double threshold) {
+		int size = deltaxyValues->dim1();
+		bool_array defectArray(new bool[size]);
+		for (int x = 0; x < size; x++) {
+		    defectArray[x] = false;
+		}
+		// dx = 1
+		// dy = 2
+		// dx + dy =3
+		int defectType = -1;
 
+		for (int x = 1; x < size - 1; x++) {
+		    bool dx = (*deltaxyValues)[x][0] < threshold;
+		    bool dy = (*deltaxyValues)[x][1] < threshold;
+		    bool nextdx = (*deltaxyValues)[x + 1][0] < threshold;
+		    bool nextdy = (*deltaxyValues)[x + 1][1] < threshold;
+		    int thisDefectType = getDefectType(dx, dy);
+		    int nextDefectType = getDefectType(nextdx, nextdy);
 
+		    if (defectType == -1 && thisDefectType != -1) {
+			if (thisDefectType == nextDefectType) {
+			    defectArray[x] = true;
+			    defectArray[x + 1] = true;
+			}
+		    }
+		}
+		return defectArray;
+	    }
 
 	    RGB_vector_ptr LCDCalibrator::dimDGLutFix(RGB_vector_ptr original) {
 
@@ -465,6 +505,7 @@ namespace cms {
 
 		const double SuitGap = 0.0009;
 		bool_array defectArray = getDefectArray(deltaxyValues, threshold);
+		bool_array continueDefectArray = getContinueDefectArray(deltaxyValues, threshold);
 
 
 		for (int x = 1; x < size; x++) {
@@ -480,13 +521,25 @@ namespace cms {
 			int grayLevel = 50 - x;
 			double dx = (*deltaxyValues)[x][0];
 			double dy = (*deltaxyValues)[x][1];
+
+			double predx = (*deltaxyValues)[x - 1][0];
+			double pre2dx = dx + predx;
+			double predy = (*deltaxyValues)[x - 1][1];
+			double pre2dy = dy + predy;
+
 			//三種defect, 從delta確認是哪一種
 			if (dx < threshold && dy < threshold) {
+			    if (pre2dx < SuitGap) {
+				//太擠
+				(*result)[grayLevel - 1]->B += 1;
+			    } else {
+				(*result)[grayLevel]->B -= 1;
+			    }
 
 			} else if (dx < threshold) {
 			    //dx <0
-			    double predx = (*deltaxyValues)[x - 1][0];
-			    double pre2dx = dx + predx;
+			    //double predx = (*deltaxyValues)[x - 1][0];
+			    //double pre2dx = dx + predx;
 			    if (pre2dx < SuitGap) {
 				//太擠
 				(*result)[grayLevel - 1]->R -= 1;
@@ -495,9 +548,8 @@ namespace cms {
 			    }
 			} else if (dy < threshold) {
 			    //dy <0
-			    double predy = (*deltaxyValues)[x - 1][1];
-			    //double nextdy = (*deltaxyValues)[x + 1][1];
-			    double pre2dy = dy + predy;
+			    //double predy = (*deltaxyValues)[x - 1][1];
+			    //double pre2dy = dy + predy;
 			    if (pre2dy < SuitGap) {
 				//太擠
 				(*result)[grayLevel - 1]->G -= 1;
