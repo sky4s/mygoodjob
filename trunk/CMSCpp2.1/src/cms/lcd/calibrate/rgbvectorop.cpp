@@ -416,6 +416,12 @@ namespace cms {
 		}
 		return defectArray;
 	    }
+
+	    RGB_vector_ptr DimDGLutFixOp::getRendering(RGB_vector_ptr source) {
+	    };
+	  DimDGLutFixOp::DimDGLutFixOp(bptr < BitDepthProcessor > bitDepth, double dimFixThreshold, Component_vector_ptr componentVector):bitDepth(bitDepth), dimFixThreshold(dimFixThreshold), componentVector(componentVector)
+	    {
+	    };
 	    //==================================================================
 	};
     };

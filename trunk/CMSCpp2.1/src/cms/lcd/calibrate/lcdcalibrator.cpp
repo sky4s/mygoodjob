@@ -472,14 +472,6 @@ namespace cms {
 	    }
 
 	    RGB_vector_ptr LCDCalibrator::dimDGLutFix(RGB_vector_ptr original) {
-
-		STORE_RGBVECTOR("7.1_before_fix.xls", original);
-		RGB_vector_ptr result = RGBVector::deepClone(original);
-		RGBVector::quantization(result, bitDepth->getFRCAbilityBit(), true);
-		STORE_RGBVECTOR("7.2_quant2FRC.xls", result);
-		RGBVector::changeMaxValue(result, bitDepth->getFRCAbilityBit());
-		STORE_RGBVECTOR("7.3_change2FRC.xls", result);
-
 		RGB_vector_ptr measureCode = RGBVector::copyRange(original, 0, 50);
 		//50量到0
 		measureCode = RGBVector::reverse(measureCode);
@@ -493,6 +485,16 @@ namespace cms {
 		    DGLutFile dglut("7.4_dimComponent.xls", ReadOnly);
 		    componentVector = dglut.getComponentVector();
 		}
+
+
+		STORE_RGBVECTOR("7.1_before_fix.xls", original);
+		RGB_vector_ptr result = RGBVector::deepClone(original);
+		RGBVector::quantization(result, bitDepth->getFRCAbilityBit(), true);
+		STORE_RGBVECTOR("7.2_quant2FRC.xls", result);
+		RGBVector::changeMaxValue(result, bitDepth->getFRCAbilityBit());
+		STORE_RGBVECTOR("7.3_change2FRC.xls", result);
+
+
 
 
 		STORE_COMPONENT("7.4_dimComponent.xls", componentVector);
@@ -906,6 +908,35 @@ namespace cms {
 		    bptr < DGLutOp > bmax2(new BMax2Op(bitDepth, bMax2Begin, bMax2Gamma));
 		    dgop.addOp(bmax2);
 		}
+		//==============================================================
+		// dim修正, 在xy domain上進行
+		//==============================================================
+
+		if (dimFix) {
+		    //STORE_RGBVECTOR("7.1_before_dimFix.xls", result);
+		    //result = dimDGLutFix(result);
+		    //STORE_RGBVECTOR("7.2_after_dimFix.xls", result);
+		    RGB_vector_ptr measureCode = RGBVector::copyRange(dglut, 0, dimFixEnd);
+		    //50量到0
+		    measureCode = RGBVector::reverse(measureCode);
+		    bptr < MeasureCondition > measureCondition(new MeasureCondition(measureCode));
+
+
+		    Component_vector_ptr componentVector;	// = fetcher->fetchComponent(measureCondition);
+		    if (true == MainForm->linkCA210) {
+			componentVector = fetcher->fetchComponent(measureCondition);
+		    } else {
+			DGLutFile dglut("dimComponent.xls", ReadOnly);
+			componentVector = dglut.getComponentVector();
+		    }
+		    STORE_COMPONENT("dimComponent.xls", componentVector);
+
+
+		    bptr < DGLutOp >
+			dimfix(new DimDGLutFixOp(bitDepth, dimFixThreshold, componentVector));
+		    dgop.addOp(dimfix);
+		}
+		//==============================================================
 
 		RGB_vector_ptr result = dgop.createInstance();
 		return result;
