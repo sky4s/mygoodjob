@@ -312,6 +312,7 @@ void __fastcall TTargetWhiteForm2::Button_RunClick(TObject * Sender)
 	    MainForm->setAnalyzerToTargetChannel();
 	}
 	analyzer->enter();
+	MainForm->StatusBar1->Panels->Items[0]->Text = "Target White: Set";
 
 	//==========================================================================
 

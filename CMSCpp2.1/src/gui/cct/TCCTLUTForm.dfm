@@ -2,7 +2,7 @@ object CCTLUTForm: TCCTLUTForm
   Left = 311
   Top = 272
   Width = 844
-  Height = 492
+  Height = 422
   Caption = 'CCT LUT'
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
@@ -20,7 +20,7 @@ object CCTLUTForm: TCCTLUTForm
   TextHeight = 13
   object Label9: TLabel
     Left = 551
-    Top = 352
+    Top = 368
     Width = 281
     Height = 13
     Caption = 'Copyright (C) 2010, AU Optronics Corp., All Right Reserved.'
@@ -872,8 +872,8 @@ object CCTLUTForm: TCCTLUTForm
     end
   end
   object ProgressBar1: TProgressBar
-    Left = 600
-    Top = 304
+    Left = 8
+    Top = 368
     Width = 225
     Height = 17
     Min = 0

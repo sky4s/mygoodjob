@@ -168,6 +168,7 @@ class TMainForm:public TForm {
     void __fastcall RadioButton_NinthClick(TObject * Sender);
     void __fastcall ComboBox_DGLUTTypeChange(TObject * Sender);
     void __fastcall FormActivate(TObject * Sender);
+    void __fastcall TabSheet2Exit(TObject * Sender);
   private:			// User declarations
     //==========================================================================
     // meter

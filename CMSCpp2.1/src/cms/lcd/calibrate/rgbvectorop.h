@@ -119,6 +119,17 @@ namespace cms {
 					   bool compensationR);
 	    };
 
+	    class DimDGLutFixOp:public DGLutOp {
+	      private:
+		static bool_array getDefectArray(double2D_ptr deltaxyValues,
+								double threshold);
+		static bool_array getContinueDefectArray(double2D_ptr deltaxyValues,
+									double threshold);
+		static int getDefectType(bool dxdefect, bool dydefect);
+	      public:
+		 DimDGLutFixOp(bptr < BitDepthProcessor > bitDepth, double dimFixThreshold,
+			       Component_vector_ptr componentVector);
+	    };
 	};
     };
 }

@@ -360,7 +360,63 @@ namespace cms {
 
 	    };
 	    //==================================================================
+	    bool_array DimDGLutFixOp::getDefectArray(double2D_ptr deltaxyValues, double threshold) {
+		int size = deltaxyValues->dim1();
+		bool_array defectArray(new bool[size]);
+		for (int x = 0; x < size; x++) {
+		    defectArray[x] = false;
+		}
 
+		for (int x = 1; x < size; x++) {
+		    double dx = (*deltaxyValues)[x][0];
+		    double dy = (*deltaxyValues)[x][1];
+		    if (dx < threshold || dy < threshold) {
+			defectArray[x] = true;
+		    }
+		}
+		return defectArray;
+	    }
+	    int DimDGLutFixOp::getDefectType(bool dxdefect, bool dydefect) {
+		if (dxdefect && dydefect) {
+		    return 3;
+		} else if (dxdefect) {
+		    return 1;
+		} else if (dydefect) {
+		    return 2;
+		} else {
+		    return -1;
+		}
+	    };
+	    bool_array DimDGLutFixOp::getContinueDefectArray(double2D_ptr deltaxyValues,
+							     double threshold) {
+		int size = deltaxyValues->dim1();
+		bool_array defectArray(new bool[size]);
+		for (int x = 0; x < size; x++) {
+		    defectArray[x] = false;
+		}
+		// dx = 1
+		// dy = 2
+		// dx + dy =3
+		int defectType = -1;
+
+		for (int x = 1; x < size - 1; x++) {
+		    bool dx = (*deltaxyValues)[x][0] < threshold;
+		    bool dy = (*deltaxyValues)[x][1] < threshold;
+		    bool nextdx = (*deltaxyValues)[x + 1][0] < threshold;
+		    bool nextdy = (*deltaxyValues)[x + 1][1] < threshold;
+		    int thisDefectType = getDefectType(dx, dy);
+		    int nextDefectType = getDefectType(nextdx, nextdy);
+
+		    if (defectType == -1 && thisDefectType != -1) {
+			if (thisDefectType == nextDefectType) {
+			    defectArray[x] = true;
+			    defectArray[x + 1] = true;
+			}
+		    }
+		}
+		return defectArray;
+	    }
+	    //==================================================================
 	};
     };
 };

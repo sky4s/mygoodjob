@@ -1,8 +1,8 @@
 object MainForm: TMainForm
   Left = 205
   Top = 353
-  Width = 938
-  Height = 425
+  Width = 769
+  Height = 374
   Caption = 'CCT Adjustment v3'
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
@@ -722,8 +722,8 @@ object MainForm: TMainForm
   PixelsPerInch = 96
   TextHeight = 13
   object Label6: TLabel
-    Left = 462
-    Top = 280
+    Left = 470
+    Top = 288
     Width = 281
     Height = 13
     Caption = 'Copyright (C) 2010, AU Optronics Corp., All Right Reserved.'
@@ -1285,6 +1285,7 @@ object MainForm: TMainForm
     end
     object TabSheet2: TTabSheet
       Caption = 'T-CON Setup'
+      OnExit = TabSheet2Exit
       object Panel_TCON: TPanel
         Left = 2
         Top = 1
@@ -1443,7 +1444,7 @@ object MainForm: TMainForm
             Top = 13
             Width = 138
             Height = 21
-            ItemHeight = 0
+            ItemHeight = 13
             TabOrder = 0
             OnChange = ComboBox_TCONTypeChange
           end
@@ -1675,9 +1676,9 @@ object MainForm: TMainForm
   end
   object ProgressBar1: TProgressBar
     Left = 128
-    Top = 272
+    Top = 288
     Width = 201
-    Height = 25
+    Height = 17
     Min = 0
     Max = 100
     TabOrder = 1
@@ -1685,10 +1686,21 @@ object MainForm: TMainForm
   end
   object StatusBar1: TStatusBar
     Left = 0
-    Top = 358
-    Width = 930
+    Top = 307
+    Width = 761
     Height = 19
-    Panels = <>
+    Panels = <
+      item
+        Text = 'Target White: N/A'
+        Width = 140
+      end
+      item
+        Width = 200
+      end
+      item
+        Text = 'T-CON Disconnected'
+        Width = 50
+      end>
     SimplePanel = False
   end
   object MainMenu1: TMainMenu

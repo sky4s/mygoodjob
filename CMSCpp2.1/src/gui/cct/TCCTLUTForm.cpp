@@ -197,6 +197,7 @@ void __fastcall TCCTLUTForm::Button_MeaRunClick(TObject * Sender)
 	//=================================================================
 	try {
 	    if (this->TOutputFileFrame1->createDir() == false) {
+		MainForm->stopProgress(ProgressBar1);
 		return;
 	    }
 	    Util::deleteExist(filename);
@@ -209,6 +210,7 @@ void __fastcall TCCTLUTForm::Button_MeaRunClick(TObject * Sender)
 	    nativeWhiteAnalyzer = calibrator.getNativeWhiteAnalyzer();
 	    if (dglut == null) {
 		//被中斷就直接return
+		MainForm->stopProgress(ProgressBar1);
 		return;
 	    };
 
