@@ -57,15 +57,15 @@ namespace cms {
 		this->dimGamma = gamma;
 		this->averageDimDG = averageDimDG;
 	    };
-	    void LCDCalibrator::setDimFixEnd(int fixEnd) {
-		this->dimFixEnd = fixEnd;
-	    };
-	    void LCDCalibrator::setDimFix(bool dimFix) {
-		this->dimFix = dimFix;
-	    };
-	    void LCDCalibrator::setDimFixThreshold(double threshold) {
-		this->dimFixThreshold = threshold;
-	    }
+	    /*void LCDCalibrator::setDimFixEnd(int fixEnd) {
+	       this->dimFixEnd = fixEnd;
+	       };
+	       void LCDCalibrator::setDimFix(bool dimFix) {
+	       this->dimFix = dimFix;
+	       };
+	       void LCDCalibrator::setDimFixThreshold(double threshold) {
+	       this->dimFixThreshold = threshold;
+	       } */
 	    void LCDCalibrator::setGamma(double gamma) {
 		this->gamma = gamma;
 		int n = bitDepth->getLevel();
@@ -111,23 +111,23 @@ namespace cms {
 	    void LCDCalibrator::setOriginalGamma() {
 		this->originalGamma = true;
 	    };
-	    void LCDCalibrator::setGByPass(bool byPass) {
-		this->gByPass = byPass;
-	    };
-	    void LCDCalibrator::setBIntensityGain(double gain) {
-		this->bIntensityGain = gain;
-	    };
-	    void LCDCalibrator::setBMax(bool bMax) {
-		this->bMax = bMax;
-	    };
+	    /*void LCDCalibrator::setGByPass(bool byPass) {
+	       this->gByPass = byPass;
+	       };
+	       void LCDCalibrator::setBIntensityGain(double gain) {
+	       this->bIntensityGain = gain;
+	       };
+	       void LCDCalibrator::setBMax(bool bMax) {
+	       this->bMax = bMax;
+	       }; */
 	    void LCDCalibrator::setBMax2(bool bMax2, int begin, double gamma) {
 		this->bMax2 = bMax2;
 		bMax2Begin = begin;
 		bMax2Gamma = gamma;
 	    };
-	    void LCDCalibrator::setAvoidFRCNoise(bool avoid) {
-		this->avoidFRCNoise = avoid;
-	    };
+	    /*void LCDCalibrator::setAvoidFRCNoise(bool avoid) {
+	       this->avoidFRCNoise = avoid;
+	       }; */
 	    void LCDCalibrator::setKeepMaxLuminance(KeepMaxLuminance keepMaxLuminance) {
 		if (keepMaxLuminance == KeepMaxLuminance::NativeWhiteAdvanced) {
 		    throw
@@ -143,12 +143,12 @@ namespace cms {
 		this->keepMaxLumiGamma = gamma;
 		this->autoKeepMaxLumiParameter = autoParameter;
 	    };
-	    void LCDCalibrator::setNewMethod(bool enable) {
-		this->useNewMethod = enable;
-	    };
-	    void LCDCalibrator::setSkipInverseB(bool skip) {
-		this->skipInverseB = skip;
-	    };
+	    /*void LCDCalibrator::setNewMethod(bool enable) {
+	       this->useNewMethod = enable;
+	       };
+	       void LCDCalibrator::setSkipInverseB(bool skip) {
+	       this->skipInverseB = skip;
+	       }; */
 	  LCDCalibrator::LCDCalibrator(bptr < ComponentFetcher > fetcher, bptr < BitDepthProcessor > bitDepth):bitDepth(bitDepth)
 	    {
 		rgbIndepGamma = false;
@@ -372,15 +372,15 @@ namespace cms {
 		//==============================================================
 		//調整max value, 調整到LUT真正的max value
 		//==============================================================
-		STORE_RGBVECTOR("6.9_dgcode_final.xls", result);
+		STORE_RGBVECTOR("7.9_dgcode_final.xls", result);
 		RGBVector::changeMaxValue(result, bitDepth->getLutMaxValue());
 		//==============================================================
 		//已產生出DG, 可在此處量測
-		if (dimFix) {
-		    //STORE_RGBVECTOR("7.1_before_dimFix.xls", result);
-		    result = dimDGLutFix(result);
-		    //STORE_RGBVECTOR("7.2_after_dimFix.xls", result);
-		}
+		/*if (dimFix) {
+		   //STORE_RGBVECTOR("7.1_before_dimFix.xls", result);
+		   result = dimDGLutFix(result);
+		   //STORE_RGBVECTOR("7.2_after_dimFix.xls", result);
+		   } */
 
 
 		STORE_RGBVECTOR("8_dgcode_final.xls", result);
@@ -388,33 +388,9 @@ namespace cms {
 		return result;
 	    };
 
-	    double2D_ptr LCDCalibrator::getDeltaxyValues(Component_vector_ptr componentVector) {
-		using namespace Indep;
-		int size = componentVector->size();
-		xyY_vector_ptr xyYVector(new xyY_vector());
 
-		for (int x = 0; x < size; x++) {
-		    Component_ptr c = (*componentVector)[x];
-		    XYZ_ptr XYZ = c->XYZ;
-		    xyY_ptr xyY(new CIExyY(XYZ));
-		    xyYVector->push_back(xyY);
-		}
 
-		double2D_ptr deltaxyValues(new double2D(size - 1, 2));
-
-		for (int x = 0; x < (size - 1); x++) {
-		    xyY_ptr xyY0 = (*xyYVector)[x];
-		    xyY_ptr xyY1 = (*xyYVector)[x + 1];
-		    double_array xy0Values = xyY0->getxyValues();
-		    double_array xy1Values = xyY1->getxyValues();
-		    double_array delta = DoubleArray::minus(xy0Values, xy1Values, 2);
-		    (*deltaxyValues)[x][0] = delta[0];
-		    (*deltaxyValues)[x][1] = delta[1];
-		}
-		return deltaxyValues;
-	    };
-
-	    bool_array LCDCalibrator::getDefectArray(double2D_ptr deltaxyValues, double threshold) {
+	    /*bool_array LCDCalibrator::getDefectArray(double2D_ptr deltaxyValues, double threshold) {
 		int size = deltaxyValues->dim1();
 		bool_array defectArray(new bool[size]);
 		for (int x = 0; x < size; x++) {
@@ -469,9 +445,9 @@ namespace cms {
 		    }
 		}
 		return defectArray;
-	    }
+	    }*/
 
-	    RGB_vector_ptr LCDCalibrator::dimDGLutFix(RGB_vector_ptr original) {
+	    /*RGB_vector_ptr LCDCalibrator::dimDGLutFix(RGB_vector_ptr original) {
 		RGB_vector_ptr measureCode = RGBVector::copyRange(original, 0, 50);
 		//50量到0
 		measureCode = RGBVector::reverse(measureCode);
@@ -566,7 +542,7 @@ namespace cms {
 		RGBVector::changeMaxValue(result, bitDepth->getLutMaxValue());
 		STORE_RGBVECTOR("7.6_change2LUT.xls", result);
 		return result;
-	    };
+	    };*/
 
 	    RGB_vector_ptr LCDCalibrator::newMethod(DGLutGenerator & generator,
 						    bptr < PanelRegulator > panelRegulator) {
@@ -657,6 +633,8 @@ namespace cms {
 		//=================================================================================
 
 		//外部迴圈針對是否疊階來決定起始位置
+		//這邊的思維是: 如果轉折點設定不當(太小太接近0), 就可能造成疊階
+		//所以逐漸調整轉折點來讓疊階消失
 		int overParameter = keepMaxLumiOver;
 		int startCheckPos = 50;
 		int minOverParameter = (useNewMethod && autoKeepMaxLumiParameter) ?
@@ -721,6 +699,7 @@ namespace cms {
 
 
 		/* TODO : bIntensityGain要確認 */
+		//老實講調intensity我覺得是很爛的作法
 		if (bIntensityGain != 1.0) {
 		    //重新產生目標gamma curve
 		    bptr < BIntensityGainOp >
@@ -758,14 +737,14 @@ namespace cms {
 
 		    //產生修正後的gamma2(若沒有p1p2,則為原封不動)
 		    rgbgamma = gammaop.createInstance();
-		    STORE_RGBGAMMA("4_rgbgamma_p1p2.xls", rgbgamma);
+		    STORE_RGBGAMMA("4.0_rgbgamma_p1p2.xls", rgbgamma);
 
 		    //從目標gamma curve產生dg code, 此處是傳入normal gammaCurve
 		    dglut = generator.getCCTDGLut(rgbgamma);
 		    //量化
-		    STORE_RGBVECTOR("4.9_dgcode_p1p2g.xls", dglut);
+		    STORE_RGBVECTOR("4.1_dgcode_p1p2g.xls", dglut);
 		    RGBVector::quantization(dglut, quantizationBit);
-		    STORE_RGBVECTOR("5_dgcode_p1p2g.xls", dglut);
+		    STORE_RGBVECTOR("4.2_dgcode_p1p2g.xls", dglut);
 		    //==========================================================
 
 
@@ -778,7 +757,7 @@ namespace cms {
 		    dgop.addOp(op);
 		    dglut = dgop.createInstance();
 		    //量化
-		    STORE_RGBVECTOR("6_dgcode_p1p2dg.xls", dglut);
+		    STORE_RGBVECTOR("4.3_dgcode_p1p2dg.xls", dglut);
 		    //==========================================================
 		}
 		finalRGBGamma = rgbgamma;
@@ -924,16 +903,18 @@ namespace cms {
 
 		    Component_vector_ptr componentVector;	// = fetcher->fetchComponent(measureCondition);
 		    if (true == MainForm->linkCA210) {
+			//有連上ca210就量測取得
 			componentVector = fetcher->fetchComponent(measureCondition);
 		    } else {
-			DGLutFile dglut("dimComponent.xls", ReadOnly);
+			//否則就挖之前的檔案來當量測數據
+			DGLutFile dglut("5.0_dimComponent.xls", ReadOnly);
 			componentVector = dglut.getComponentVector();
 		    }
-		    STORE_COMPONENT("dimComponent.xls", componentVector);
+		    STORE_COMPONENT("5.0_dimComponent.xls", componentVector);
 
-
-		    bptr < DGLutOp >
-			dimfix(new DimDGLutFixOp(bitDepth, dimFixThreshold, componentVector));
+		    const double SuitGap = 0.0009;
+		    bptr < DGLutOp > dimfix(new DimDGLutFixOp(bitDepth, dimFixThreshold, SuitGap,
+							      componentVector));
 		    dgop.addOp(dimfix);
 		}
 		//==============================================================
@@ -943,36 +924,36 @@ namespace cms {
 		//==============================================================
 	    };
 
-	    void LCDCalibrator::setBTargetIntensity(double bTargetIntensity) {
-		this->bTargetIntensity = bTargetIntensity;
-	    };
+	    /*void LCDCalibrator::setBTargetIntensity(double bTargetIntensity) {
+	       this->bTargetIntensity = bTargetIntensity;
+	       }; */
 
 	    void LCDCalibrator::setMultiGen(bool enable, int times) {
 		this->multiGen = enable;
 		this->multiGenTimes = times;
 	    };
 	    //==================================================================
-	    bptr < cms::measure::MaxMatrixIntensityAnalyzer >
-		LCDCalibrator::getNativeWhiteAnalyzer() {
-		return nativeWhiteAnalyzer;
-	    }
-	    void LCDCalibrator::setNativeWhiteAnalyzer(bptr <
-						       cms::measure::
-						       MaxMatrixIntensityAnalyzer > analyzer) {
-		this->nativeWhiteAnalyzer = analyzer;
-	    };
-	    void LCDCalibrator::setTCONControl(bptr < i2c::TCONControl > tconctrl) {
-		this->tconctrl = tconctrl;
-	    };
-	    void LCDCalibrator::setAccurateMode(bool enable) {
-		this->accurateMode = enable;
-	    };
-	    void LCDCalibrator::setManualAccurateMode(bool enable) {
-		this->manualAccurateMode = enable;
-	    };
-	    void LCDCalibrator::setMiddleCCTRatio(double ratio) {
-		this->middleCCTRatio = ratio;
-	    };
+	    /*bptr < cms::measure::MaxMatrixIntensityAnalyzer >
+	       LCDCalibrator::getNativeWhiteAnalyzer() {
+	       return nativeWhiteAnalyzer;
+	       }
+	       void LCDCalibrator::setNativeWhiteAnalyzer(bptr <
+	       cms::measure::
+	       MaxMatrixIntensityAnalyzer > analyzer) {
+	       this->nativeWhiteAnalyzer = analyzer;
+	       }; */
+	    /*void LCDCalibrator::setTCONControl(bptr < i2c::TCONControl > tconctrl) {
+	       this->tconctrl = tconctrl;
+	       }; */
+	    /*void LCDCalibrator::setAccurateMode(bool enable) {
+	       this->accurateMode = enable;
+	       };
+	       void LCDCalibrator::setManualAccurateMode(bool enable) {
+	       this->manualAccurateMode = enable;
+	       };
+	       void LCDCalibrator::setMiddleCCTRatio(double ratio) {
+	       this->middleCCTRatio = ratio;
+	       }; */
 	};
     };
 };

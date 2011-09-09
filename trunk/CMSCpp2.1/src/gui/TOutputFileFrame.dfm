@@ -12,11 +12,17 @@ object OutputFileFrame: TOutputFileFrame
     Caption = 'Output File'
     TabOrder = 0
     object Label5: TLabel
-      Left = 8
+      Left = 6
       Top = 24
       Width = 71
       Height = 13
       Caption = 'Filename Prefix'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clBlack
+      Font.Height = -11
+      Font.Name = 'MS Sans Serif'
+      Font.Style = []
+      ParentFont = False
     end
     object Label6: TLabel
       Left = 8
@@ -25,6 +31,18 @@ object OutputFileFrame: TOutputFileFrame
       Height = 13
       Caption = 'Output Directory'
     end
+    object Label_Warning: TLabel
+      Left = 320
+      Top = 24
+      Width = 3
+      Height = 13
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clLime
+      Font.Height = -11
+      Font.Name = 'MS Sans Serif'
+      Font.Style = []
+      ParentFont = False
+    end
     object Edit_Prefix: TEdit
       Left = 112
       Top = 24
@@ -32,6 +50,7 @@ object OutputFileFrame: TOutputFileFrame
       Height = 21
       TabOrder = 0
       Text = 'Calib00_Table'
+      OnChange = Edit_PrefixChange
     end
     object Edit_Directory: TEdit
       Left = 112
@@ -40,6 +59,7 @@ object OutputFileFrame: TOutputFileFrame
       Height = 21
       TabOrder = 1
       Text = 'D:\Gamma Table\'
+      OnChange = Edit_DirectoryChange
     end
     object Button_BrowseDir: TButton
       Left = 488

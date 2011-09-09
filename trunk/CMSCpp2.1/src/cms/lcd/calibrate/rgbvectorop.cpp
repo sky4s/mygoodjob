@@ -417,9 +417,109 @@ namespace cms {
 		return defectArray;
 	    }
 
-	    RGB_vector_ptr DimDGLutFixOp::getRendering(RGB_vector_ptr source) {
+	    double2D_ptr DimDGLutFixOp::getDeltaxyValues(Component_vector_ptr componentVector) {
+		using namespace Indep;
+		int size = componentVector->size();
+		xyY_vector_ptr xyYVector(new xyY_vector());
+
+		for (int x = 0; x < size; x++) {
+		    Component_ptr c = (*componentVector)[x];
+		    XYZ_ptr XYZ = c->XYZ;
+		    xyY_ptr xyY(new CIExyY(XYZ));
+		    xyYVector->push_back(xyY);
+		}
+
+		double2D_ptr deltaxyValues(new double2D(size - 1, 2));
+
+		for (int x = 0; x < (size - 1); x++) {
+		    xyY_ptr xyY0 = (*xyYVector)[x];
+		    xyY_ptr xyY1 = (*xyYVector)[x + 1];
+		    double_array xy0Values = xyY0->getxyValues();
+		    double_array xy1Values = xyY1->getxyValues();
+		    double_array delta = DoubleArray::minus(xy0Values, xy1Values, 2);
+		    (*deltaxyValues)[x][0] = delta[0];
+		    (*deltaxyValues)[x][1] = delta[1];
+		}
+		return deltaxyValues;
 	    };
-	  DimDGLutFixOp::DimDGLutFixOp(bptr < BitDepthProcessor > bitDepth, double dimFixThreshold, Component_vector_ptr componentVector):bitDepth(bitDepth), dimFixThreshold(dimFixThreshold), componentVector(componentVector)
+
+	    RGB_vector_ptr DimDGLutFixOp::getRendering(RGB_vector_ptr source) {
+		//source是0~255, 要先轉成frc
+		STORE_RGBVECTOR("5.1_before_fix.xls", source);
+		RGB_vector_ptr result = RGBVector::deepClone(source);
+		RGBVector::changeMaxValue(result, bitDepth->getFRCAbilityBit());
+		STORE_RGBVECTOR("5.2_change2FRC.xls", result);
+
+		double2D_ptr deltaxyValues = getDeltaxyValues(componentVector);
+		int size = deltaxyValues->dim1();
+
+		double threshold = dimFixThreshold;
+
+		bool_array defectArray = getDefectArray(deltaxyValues, threshold);
+		bool_array continueDefectArray = getContinueDefectArray(deltaxyValues, threshold);
+
+
+		for (int x = 1; x < size; x++) {
+		    bool defect = defectArray[x];
+		    bool predefect = defectArray[x - 1];
+		    bool nextdefect = defectArray[x + 1];
+		    //目前要是相鄰有defect就先不動, 因為太複雜!
+		    bool doDefectErase = defect && !predefect && !nextdefect;
+
+
+		    if (doDefectErase) {
+			//確定要消除defect
+			int grayLevel = 50 - x;
+			double dx = (*deltaxyValues)[x][0];
+			double dy = (*deltaxyValues)[x][1];
+
+			double predx = (*deltaxyValues)[x - 1][0];
+			double pre2dx = dx + predx;
+			double predy = (*deltaxyValues)[x - 1][1];
+			double pre2dy = dy + predy;
+
+			//三種defect, 從delta確認是哪一種
+			if (dx < threshold && dy < threshold) {
+			    if (pre2dx < suitGap) {
+				//太擠
+				(*result)[grayLevel - 1]->B += 1;
+			    } else {
+				(*result)[grayLevel]->B -= 1;
+			    }
+
+			} else if (dx < threshold) {
+			    //dx <0
+			    //double predx = (*deltaxyValues)[x - 1][0];
+			    //double pre2dx = dx + predx;
+			    if (pre2dx < suitGap) {
+				//太擠
+				(*result)[grayLevel - 1]->R -= 1;
+			    } else {
+				(*result)[grayLevel]->R += 1;
+			    }
+			} else if (dy < threshold) {
+			    //dy <0
+			    //double predy = (*deltaxyValues)[x - 1][1];
+			    //double pre2dy = dy + predy;
+			    if (pre2dy < suitGap) {
+				//太擠
+				(*result)[grayLevel - 1]->G -= 1;
+			    } else {
+				(*result)[grayLevel]->G += 1;
+			    }
+
+			}
+		    }
+		}
+		STORE_RGBVECTOR("5.3_afterFix.xls", result);
+		//RGBVector::changeMaxValue(result, bitDepth->getLutMaxValue());
+		//STORE_RGBVECTOR("5.4_change2LUT.xls", result);
+		return result;
+
+
+	    };
+	  DimDGLutFixOp::DimDGLutFixOp(bptr < BitDepthProcessor > bitDepth, double dimFixThreshold, double suitGap, Component_vector_ptr componentVector):bitDepth(bitDepth), dimFixThreshold(dimFixThreshold), suitGap(suitGap),
+		componentVector(componentVector)
 	    {
 	    };
 	    //==================================================================

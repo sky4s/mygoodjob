@@ -1,6 +1,6 @@
 object CCTLUTForm: TCCTLUTForm
-  Left = 311
-  Top = 272
+  Left = 347
+  Top = 327
   Width = 844
   Height = 422
   Caption = 'CCT LUT'
@@ -475,11 +475,17 @@ object CCTLUTForm: TCCTLUTForm
       Height = 73
       inherited Label5: TLabel
         Left = 7
-        Top = 20
+        Top = 23
+        Font.Height = -10
       end
       inherited Label6: TLabel
         Left = 7
         Top = 46
+      end
+      inherited Label_Warning: TLabel
+        Left = 256
+        Width = 200
+        Font.Height = -10
       end
       inherited Edit_Prefix: TEdit
         Left = 91
@@ -839,7 +845,7 @@ object CCTLUTForm: TCCTLUTForm
   end
   object GroupBox8: TGroupBox
     Left = 672
-    Top = 7
+    Top = 15
     Width = 156
     Height = 194
     Caption = 'Test Function'

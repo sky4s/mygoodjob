@@ -136,7 +136,7 @@ void TGammaAdjustmentForm::gammaAdjust(bool rgbGammaAdjust)
 	}
     }
     //==========================================================================
-    calibrator->setAvoidFRCNoise(this->CheckBox_AvoidNoise->Checked);
+    calibrator->AvoidFRCNoise = this->CheckBox_AvoidNoise->Checked;
     calibrator->setKeepMaxLuminance(this->CheckBox_KeepMax->Checked);
 
     if (this->TOutputFileFrame1->createDir() == false) {

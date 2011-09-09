@@ -14,6 +14,22 @@
 #include "dg.h"
 #include "common.h"
 
+/*
+ UI與內部Object聯結的思維
+
+ UI上的選項設定後, 必定需要傳送到內部Object, 設定為Object內的property(特徵)
+ 因此UI必定會呼叫Object的setXXX(), 把這些參數傳送到Object
+ 所以每多一項參數, UI就要呼叫Object, Object也得開相對映的setXXX() method, 才可以完成這項工作.
+ 老實講很瑣碎=.=
+
+ 有沒有辦法可以自動化甚至半自動化完成這件事情呢?
+ 或許只能透過setProperty(propertyName, propertyValue); 這樣的函式吧!
+
+ __property這關鍵字還算不錯的東西! 只要在header宣告就好! 免去.cpp定義setXXX的麻煩!
+ 也好!
+*/
+
+
 namespace cms {
     namespace lcd {
 	namespace calibrate {
@@ -99,10 +115,50 @@ namespace cms {
 		double middleCCTRatio;
 		//==============================================================
 
+	      public:
+		//==============================================================
+		// options
+		//==============================================================
+		void setP1P2(int p1, int p2);
+		void setRBInterpolation(int under);
+		void setNonDimCorrect();
+		void setDefinedDim(int under, double gamma, bool averageDimDG);
+
+		void setGamma(double gamma);
+		void setGamma(double rgamma, double ggamma, double bgamma);
+		void setGammaCurve(double_vector_ptr gammaCurve);
+		void setGammaCurve(double_vector_ptr rgammaCurve,
+				   double_vector_ptr ggammaCurve, double_vector_ptr bgammaCurve);
+		void setOriginalGamma();
+
+		void setBMax2(bool bMax2, int begin, double gamma);
+
+		void setKeepMaxLuminance(KeepMaxLuminance keepMaxLuminance);
+		void setKeepMaxLuminanceNativeWhiteAdvanced(int over,
+							    double gamma, bool autoParameter);
+
+		void setMultiGen(bool enable, int times);
+		__property int DimFixEnd = { write = dimFixEnd };
+		__property bool DimFix = { write = dimFix };
+		__property double DimFixThreshold = { write = dimFixThreshold };
+		__property bool GByPass = { write = gByPass };
+		__property double BIntensityGain = { write = bIntensityGain };
+		__property bool BMax = { write = bMax };
+		__property bool AvoidFRCNoise = { write = avoidFRCNoise };
+		__property bool NewMethod = { write = useNewMethod };
+		__property bool SkipInverseB = { write = skipInverseB };
+		__property double BTargetIntensity = { write = bTargetIntensity };
+		__property bool AccurateMode = { write = accurateMode };
+		__property bool ManualAccurateMode = { write = manualAccurateMode };
+		__property double MiddleCCTRatio = { write = middleCCTRatio };
+		//==============================================================
+
+
+	      private:
 		//==============================================================
 		// store
 		//==============================================================
-		RGB_vector_ptr dglut;
+		 RGB_vector_ptr dglut;
 		Component_vector_ptr componentVector;
 		double_vector_ptr luminanceVector;
 		RGBGamma_ptr finalRGBGamma;
@@ -138,46 +194,15 @@ namespace cms {
 					 const Dep::MaxValue & quantizationBit);
 		RGB_vector_ptr newMethod(DGLutGenerator & generator,
 					 bptr < PanelRegulator > panelRegulato);
-		double2D_ptr getDeltaxyValues(Component_vector_ptr componentVector);
-		RGB_vector_ptr dimDGLutFix(RGB_vector_ptr original);
+		
+		/*RGB_vector_ptr dimDGLutFix(RGB_vector_ptr original);
 		bool_array getDefectArray(double2D_ptr deltaxyValues, double threshold);
-		bool_array getContinueDefectArray(double2D_ptr deltaxyValues, double threshold);
+		bool_array getContinueDefectArray(double2D_ptr deltaxyValues, double threshold);*/
 		//==============================================================
 	      public:
 		static double_vector_ptr getGammaCurveVector(double gamma, int n, int
 							     effectiven);
-		//==============================================================
-		// options
-		//==============================================================
-		void setP1P2(int p1, int p2);
-		void setRBInterpolation(int under);
-		void setNonDimCorrect();
-		void setDefinedDim(int under, double gamma, bool averageDimDG);
-		void setDimFixEnd(int end);
-		void setDimFix(bool dimFix);
-		void setDimFixThreshold(double threshold);
-		void setGamma(double gamma);
-		void setGamma(double rgamma, double ggamma, double bgamma);
-		void setGammaCurve(double_vector_ptr gammaCurve);
-		void setGammaCurve(double_vector_ptr rgammaCurve,
-				   double_vector_ptr ggammaCurve, double_vector_ptr bgammaCurve);
-		void setOriginalGamma();
-		void setGByPass(bool byPass);
-		void setBIntensityGain(double gain);
-		void setBMax(bool bMax);
-		void setBMax2(bool bMax2, int begin, double gamma);
-		void setAvoidFRCNoise(bool avoid);
-		void setKeepMaxLuminance(KeepMaxLuminance keepMaxLuminance);
-		void setKeepMaxLuminanceNativeWhiteAdvanced(int over,
-							    double gamma, bool autoParameter);
-		void setNewMethod(bool enable);
-		void setSkipInverseB(bool skip);
-		void setBTargetIntensity(double bTargetIntensity);
-		void setMultiGen(bool enable, int times);
-		void setAccurateMode(bool enable);
-		void setManualAccurateMode(bool enable);
-		void setMiddleCCTRatio(double ratio);
-		//==============================================================
+
 
 		//==============================================================
 		// constructor
@@ -197,10 +222,14 @@ namespace cms {
 		    storeDGLutFile(const std::string & filename, RGB_vector_ptr dglut);
 		void storeDGLutFile(RGB_vector_ptr dglut,
 				    bptr < cms::colorformat::DGLutFile > dglutFile);
-		 bptr < cms::measure::MaxMatrixIntensityAnalyzer > getNativeWhiteAnalyzer();
-		void setNativeWhiteAnalyzer(bptr <
-					    cms::measure::MaxMatrixIntensityAnalyzer > analyzer);
-		void setTCONControl(bptr < i2c::TCONControl > tconctrl);
+		//bptr < cms::measure::MaxMatrixIntensityAnalyzer > getNativeWhiteAnalyzer();
+		/*void setNativeWhiteAnalyzer(bptr <
+		   cms::measure::MaxMatrixIntensityAnalyzer > analyzer); */
+		__property bptr < cms::measure::MaxMatrixIntensityAnalyzer >
+		    NativeWhiteAnalyzer = { read = nativeWhiteAnalyzer, write = nativeWhiteAnalyzer
+		};
+		//void setTCONControl(bptr < i2c::TCONControl > tconctrl);
+		__property bptr < i2c::TCONControl > TCONControl = { write = tconctrl };
 		//==============================================================
 
 

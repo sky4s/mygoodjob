@@ -20,6 +20,11 @@ TOutputFileFrame *OutputFileFrame;
 __fastcall TOutputFileFrame::TOutputFileFrame(TComponent * Owner)
 :TFrame(Owner), serialid(0)
 {
+    /*String_ptr filename = getOutputFilename();
+       if (FileExists(*filename)) {
+       String onlyfilename = ExtractFileName(*filename);
+       this->Label_Warning->Caption = onlyfilename + " exists!";
+       } */
 }
 
 //---------------------------------------------------------------------------
@@ -47,18 +52,61 @@ bool TOutputFileFrame::createDir()
 //---------------------------------------------------------------------------
 String_ptr TOutputFileFrame::getFullPrefix()
 {
-    String_ptr
-	prefix(new AnsiString(this->Edit_Directory->Text + "\\" +
-			      this->Edit_Prefix->Text));
+    String_ptr prefix(new AnsiString(this->Edit_Directory->Text + "\\" + this->Edit_Prefix->Text));
     return prefix;
 }
 
 //---------------------------------------------------------------------------
 String_ptr TOutputFileFrame::getOutputFilename()
 {
-    String_ptr output(new
-		      String(*getFullPrefix() +
-			     FormatFloat("00", serialid++) + ".xls"));
+    serialid++;
+    return _getOutputFilename();
+};
+String_ptr TOutputFileFrame::_getOutputFilename()
+{
+    String_ptr output(new String(*getFullPrefix() + FormatFloat("00", serialid) + ".xls"));
     return output;
 };
+void TOutputFileFrame::updateWarning()
+{
+    String_ptr filename = _getOutputFilename();
+    String s = *filename;
+
+    if (FileExists(*filename)) {
+	String onlyfilename = ExtractFileName(*filename);
+
+	int handle = FileOpen(*filename, fmOpenWrite);
+	bool lock = (-1 == handle);
+	if (lock) {
+	    this->Label_Warning->Font->Color = clRed;
+	    this->Label_Warning->Caption = onlyfilename + " locked!";
+
+	} else {
+	    FileClose(handle);
+	    this->Label_Warning->Font->Color = clGreen;
+	    this->Label_Warning->Caption = onlyfilename + " exists!";
+	}
+
+
+    } else {
+	this->Label_Warning->Caption = "";
+    }
+
+};
+
+//---------------------------------------------------------------------------
+
+void __fastcall TOutputFileFrame::Edit_PrefixChange(TObject * Sender)
+{
+    updateWarning();
+}
+
+//---------------------------------------------------------------------------
+
+void __fastcall TOutputFileFrame::Edit_DirectoryChange(TObject * Sender)
+{
+    updateWarning();
+}
+
+//---------------------------------------------------------------------------
 

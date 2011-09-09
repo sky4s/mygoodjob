@@ -813,7 +813,7 @@ namespace cms {
 	    };
 	    //==================================================================
 	    //==================================================================
-	    // DimTargetGenerator
+	    // DimTargetGenerator.
 	    //==================================================================
 	    XYZ_vector_ptr DimTargetGenerator::
 		getLinearTarget(XYZ_ptr startXYZ, XYZ_ptr endXYZ,
