@@ -18,7 +18,7 @@ object GammaMeasurementForm: TGammaMeasurementForm
   TextHeight = 13
   object Copyright: TLabel
     Left = 34
-    Top = 333
+    Top = 357
     Width = 281
     Height = 13
     Caption = 'Copyright (C) 2010, AU Optronics Corp., All Right Reserved.'
@@ -177,19 +177,26 @@ object GammaMeasurementForm: TGammaMeasurementForm
   inline TOutputFileFrame1: TOutputFileFrame
     Left = 7
     Top = 260
-    Width = 319
-    Height = 72
+    Width = 314
+    Height = 93
     TabOrder = 2
     inherited GroupBox_OutputFile: TGroupBox
       Width = 314
-      Height = 73
+      Height = 90
+      OnClick = Button_MeasureClick
       inherited Label5: TLabel
         Left = 7
         Top = 20
       end
       inherited Label6: TLabel
         Left = 7
-        Top = 46
+        Top = 62
+      end
+      inherited Label_Warning: TLabel
+        Left = 96
+        Top = 40
+        Width = 169
+        Height = 17
       end
       inherited Edit_Prefix: TEdit
         Left = 91
@@ -199,12 +206,12 @@ object GammaMeasurementForm: TGammaMeasurementForm
       end
       inherited Edit_Directory: TEdit
         Left = 91
-        Top = 46
+        Top = 62
         Width = 163
       end
       inherited Button_BrowseDir: TButton
         Left = 260
-        Top = 46
+        Top = 62
         Width = 46
         Height = 20
         OnClick = TOutputFileFrame1Button_BrowseDirClick

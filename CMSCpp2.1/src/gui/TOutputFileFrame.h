@@ -25,9 +25,14 @@ class TOutputFileFrame:public TFrame {
     TEdit *Edit_Prefix;
     TEdit *Edit_Directory;
     TButton *Button_BrowseDir;
+    TLabel *Label_Warning;
     void __fastcall Button_BrowseDirClick(TObject * Sender);
+    void __fastcall Edit_PrefixChange(TObject * Sender);
+    void __fastcall Edit_DirectoryChange(TObject * Sender);
   private:			// User declarations
     int serialid;
+    void updateWarning();
+    String_ptr _getOutputFilename();
   public:			// User declarations
      __fastcall TOutputFileFrame(TComponent * Owner);
     bool createDir();

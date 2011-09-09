@@ -107,6 +107,7 @@ void __fastcall TCCTLUTForm::Button_MeaRunClick(TObject * Sender)
 	    bool averageDim = this->CheckBox_AverageDimDG->Checked;
 	    double gamma = this->Edit_DimGamma->Text.ToDouble();
 	    calibrator.setDefinedDim(under, gamma, averageDim);
+	    calibrator.DimFix = CheckBox_DimFix->Checked;
 	} else if (this->RadioButton_NoneLowLevelCorrect->Checked) {
 	    calibrator.setNonDimCorrect();
 	}
@@ -121,10 +122,10 @@ void __fastcall TCCTLUTForm::Button_MeaRunClick(TObject * Sender)
 	} else if (this->RadioButton_GammaCurve->Checked || this->RadioButton_GammaValue->Checked) {
 	    double_vector_ptr gammaCurve = rgbGamma->w;
 	    calibrator.setGammaCurve(gammaCurve);
-	    calibrator.setGByPass(this->CheckBox_GByPass->Checked);
+	    calibrator.GByPass = this->CheckBox_GByPass->Checked;
 	} else if (this->RadioButton_OriginalGamma->Checked) {
 	    calibrator.setOriginalGamma();
-	    calibrator.setGByPass(true);
+	    calibrator.GByPass = true;
 	}
 	//==========================================================================
 
@@ -133,7 +134,7 @@ void __fastcall TCCTLUTForm::Button_MeaRunClick(TObject * Sender)
 	//==========================================================================
 	if (this->CheckBox_BGain->Checked) {
 	    double gain = this->Edit_BGain->Text.ToDouble();
-	    calibrator.setBIntensityGain(gain);
+	    calibrator.BIntensityGain = gain;
 	}
 
 	bool bMax = this->CheckBox_BMax->Checked;
@@ -144,7 +145,8 @@ void __fastcall TCCTLUTForm::Button_MeaRunClick(TObject * Sender)
 		double gamma = Edit_BMax2Gamma->Text.ToDouble();
 		calibrator.setBMax2(CheckBox_BMax2->Checked, begin, gamma);
 	    } else {
-		calibrator.setBMax(this->CheckBox_BMax->Checked);
+		//calibrator.setBMax(this->CheckBox_BMax->Checked);
+		calibrator.BMax = this->CheckBox_BMax->Checked;
 	    }
 	}
 	//==========================================================================
@@ -152,24 +154,25 @@ void __fastcall TCCTLUTForm::Button_MeaRunClick(TObject * Sender)
 	//==========================================================================
 	// others
 	//==========================================================================
-	calibrator.setAvoidFRCNoise(this->CheckBox_AvoidNoise->Checked);
+	//calibrator.setAvoidFRCNoise(this->CheckBox_AvoidNoise->Checked);
+	calibrator.AvoidFRCNoise = this->CheckBox_AvoidNoise->Checked;
 
 	//新方法
-	calibrator.setNewMethod(this->CheckBox_NewMethod->Checked);
+	calibrator.NewMethod = this->CheckBox_NewMethod->Checked;
 	calibrator.setMultiGen(this->CheckBox_MultiGen->Checked,
 			       this->Edit_MultiGenTimes->Text.ToInt());
 
 	if (CheckBox_BTargetIntensity->Checked) {
 	    double bTargetIntensity = Edit_BTargetIntensity->Text.ToDouble();
-	    calibrator.setBTargetIntensity(bTargetIntensity);
+	    //calibrator.setBTargetIntensity(bTargetIntensity);
+	    calibrator.BTargetIntensity = bTargetIntensity;
 	}
-	calibrator.setAccurateMode(this->CheckBox_Accurate->Checked);
-	calibrator.setManualAccurateMode(CheckBox_ManualAccurate->Checked);
+	calibrator.AccurateMode = this->CheckBox_Accurate->Checked;
+	calibrator.ManualAccurateMode = CheckBox_ManualAccurate->Checked;
 	if (true == Edit_MiddleRatio->Enabled) {
 	    double middleRatio = Edit_MiddleRatio->Text.ToDouble();
-	    calibrator.setMiddleCCTRatio(middleRatio);
+	    calibrator.MiddleCCTRatio = middleRatio;
 	}
-	calibrator.setDimFix(CheckBox_DimFix->Checked);
 	//==========================================================================
 
 	//==========================================================================
@@ -185,7 +188,7 @@ void __fastcall TCCTLUTForm::Button_MeaRunClick(TObject * Sender)
 	    int over = this->Edit_MaxYAdvOver->Text.ToInt();
 	    double gamma = this->Edit_MaxYAdvGamma->Text.ToDouble();
 	    bool autoParameter = CheckBox_MaxYAdvAuto->Checked;
-	    calibrator.setSkipInverseB(this->CheckBox_SkipInverseB->Checked);
+	    calibrator.SkipInverseB = this->CheckBox_SkipInverseB->Checked;
 	    calibrator.setKeepMaxLuminanceNativeWhiteAdvanced(over, gamma, autoParameter);
 	}
 	//==========================================================================
@@ -204,10 +207,10 @@ void __fastcall TCCTLUTForm::Button_MeaRunClick(TObject * Sender)
 	    bptr < DGLutFile > dgLutFile(new DGLutFile(filename, Create));
 
 	    bptr < TCONControl > tconctrl = MainForm->getTCONControl();
-	    calibrator.setTCONControl(tconctrl);
-	    calibrator.setNativeWhiteAnalyzer(nativeWhiteAnalyzer);
+	    calibrator.TCONControl = tconctrl;
+	    calibrator.NativeWhiteAnalyzer = nativeWhiteAnalyzer;
 	    RGB_vector_ptr dglut = calibrator.getCCTDGLut(getMeasureCondition());
-	    nativeWhiteAnalyzer = calibrator.getNativeWhiteAnalyzer();
+	    nativeWhiteAnalyzer = calibrator.NativeWhiteAnalyzer;
 	    if (dglut == null) {
 		//被中斷就直接return
 		MainForm->stopProgress(ProgressBar1);
@@ -645,4 +648,5 @@ void __fastcall TCCTLUTForm::CheckBox_MiddleCCTClick(TObject * Sender)
 }
 
 //---------------------------------------------------------------------------
+
 
