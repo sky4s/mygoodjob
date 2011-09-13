@@ -30,6 +30,7 @@ namespace cms {
 		 CIEXYZ(double_array XYZValues);
 		 CIEXYZ(double X, double Y, double Z, NormalizeY normalizeY);
 		 CIEXYZ(double X, double Y, double Z);
+
 		//===============================================================
 
 		//===============================================================
@@ -75,7 +76,7 @@ namespace cms {
 		void scaleY(XYZ_ptr scale);
 		void scaleY(double scaleY);
 		void times(double factor);
-
+		XYZ_ptr clone();
 
 	    };
 

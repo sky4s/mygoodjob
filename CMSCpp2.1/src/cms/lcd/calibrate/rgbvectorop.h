@@ -123,18 +123,26 @@ namespace cms {
 	      private:
 		bptr < BitDepthProcessor > bitDepth;
 		double dimFixThreshold;
-		double suitGap;
+		//double suitGap;
+		double suitGapx, suitGapy;
 		Component_vector_ptr componentVector;
+		 bptr < ChromaticityAdjustEstimator > adjustEstimator;
+
 		static bool_array getDefectArray(double2D_ptr deltaxyValues, double threshold);
 		static bool_array getContinueDefectArray(double2D_ptr deltaxyValues,
 							 double threshold);
 		static int getDefectType(bool dxdefect, bool dydefect);
+		static int_array getDefectTypeArray(double2D_ptr deltaxyValues, double thresholdx,
+						    double thresholdy);
 		static double2D_ptr getDeltaxyValues(Component_vector_ptr componentVector);
 	      protected:
 		 RGB_vector_ptr getRendering(RGB_vector_ptr source);
 	      public:
+		/*DimDGLutFixOp(bptr < BitDepthProcessor > bitDepth, double dimFixThreshold,
+		   double suitGap, Component_vector_ptr componentVector); */
 		 DimDGLutFixOp(bptr < BitDepthProcessor > bitDepth, double dimFixThreshold,
-			       double suitGap, Component_vector_ptr componentVector);
+			       Component_vector_ptr componentVector,
+			       bptr < ChromaticityAdjustEstimator > adjustEstimator);
 	    };
 	};
     };

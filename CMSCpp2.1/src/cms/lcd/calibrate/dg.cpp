@@ -231,6 +231,9 @@ namespace cms {
 		return lut->getMaxBIntensity();
 	    };
 
+	    /*
+	       取出 rgbVector中, 所有ch channel下對應的intensity
+	     */
 	    double_vector_ptr DGLutGenerator::
 		getIntensityVector(const Dep::Channel & ch, RGB_vector_ptr rgbVector) {
 		double_vector_ptr vector(new double_vector());

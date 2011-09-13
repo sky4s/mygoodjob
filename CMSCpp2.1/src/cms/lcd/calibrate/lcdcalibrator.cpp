@@ -17,6 +17,7 @@ namespace cms {
 	namespace calibrate {
 	    using namespace cms::measure;
 	    using namespace Dep;
+	    using namespace Indep;
 	    using namespace java::lang;
 	    using namespace cms::colorformat;
 	    using namespace cms::util;
@@ -391,158 +392,158 @@ namespace cms {
 
 
 	    /*bool_array LCDCalibrator::getDefectArray(double2D_ptr deltaxyValues, double threshold) {
-		int size = deltaxyValues->dim1();
-		bool_array defectArray(new bool[size]);
-		for (int x = 0; x < size; x++) {
-		    defectArray[x] = false;
-		}
+	       int size = deltaxyValues->dim1();
+	       bool_array defectArray(new bool[size]);
+	       for (int x = 0; x < size; x++) {
+	       defectArray[x] = false;
+	       }
 
-		for (int x = 1; x < size; x++) {
-		    double dx = (*deltaxyValues)[x][0];
-		    double dy = (*deltaxyValues)[x][1];
-		    if (dx < threshold || dy < threshold) {
-			defectArray[x] = true;
-		    }
-		}
-		return defectArray;
-	    }
-	    int getDefectType(bool dxdefect, bool dydefect) {
-		if (dxdefect && dydefect) {
-		    return 3;
-		} else if (dxdefect) {
-		    return 1;
-		} else if (dydefect) {
-		    return 2;
-		} else {
-		    return -1;
-		}
-	    };
-	    bool_array LCDCalibrator::getContinueDefectArray(double2D_ptr deltaxyValues,
-							     double threshold) {
-		int size = deltaxyValues->dim1();
-		bool_array defectArray(new bool[size]);
-		for (int x = 0; x < size; x++) {
-		    defectArray[x] = false;
-		}
-		// dx = 1
-		// dy = 2
-		// dx + dy =3
-		int defectType = -1;
+	       for (int x = 1; x < size; x++) {
+	       double dx = (*deltaxyValues)[x][0];
+	       double dy = (*deltaxyValues)[x][1];
+	       if (dx < threshold || dy < threshold) {
+	       defectArray[x] = true;
+	       }
+	       }
+	       return defectArray;
+	       }
+	       int getDefectType(bool dxdefect, bool dydefect) {
+	       if (dxdefect && dydefect) {
+	       return 3;
+	       } else if (dxdefect) {
+	       return 1;
+	       } else if (dydefect) {
+	       return 2;
+	       } else {
+	       return -1;
+	       }
+	       };
+	       bool_array LCDCalibrator::getContinueDefectArray(double2D_ptr deltaxyValues,
+	       double threshold) {
+	       int size = deltaxyValues->dim1();
+	       bool_array defectArray(new bool[size]);
+	       for (int x = 0; x < size; x++) {
+	       defectArray[x] = false;
+	       }
+	       // dx = 1
+	       // dy = 2
+	       // dx + dy =3
+	       int defectType = -1;
 
-		for (int x = 1; x < size - 1; x++) {
-		    bool dx = (*deltaxyValues)[x][0] < threshold;
-		    bool dy = (*deltaxyValues)[x][1] < threshold;
-		    bool nextdx = (*deltaxyValues)[x + 1][0] < threshold;
-		    bool nextdy = (*deltaxyValues)[x + 1][1] < threshold;
-		    int thisDefectType = getDefectType(dx, dy);
-		    int nextDefectType = getDefectType(nextdx, nextdy);
+	       for (int x = 1; x < size - 1; x++) {
+	       bool dx = (*deltaxyValues)[x][0] < threshold;
+	       bool dy = (*deltaxyValues)[x][1] < threshold;
+	       bool nextdx = (*deltaxyValues)[x + 1][0] < threshold;
+	       bool nextdy = (*deltaxyValues)[x + 1][1] < threshold;
+	       int thisDefectType = getDefectType(dx, dy);
+	       int nextDefectType = getDefectType(nextdx, nextdy);
 
-		    if (defectType == -1 && thisDefectType != -1) {
-			if (thisDefectType == nextDefectType) {
-			    defectArray[x] = true;
-			    defectArray[x + 1] = true;
-			}
-		    }
-		}
-		return defectArray;
-	    }*/
+	       if (defectType == -1 && thisDefectType != -1) {
+	       if (thisDefectType == nextDefectType) {
+	       defectArray[x] = true;
+	       defectArray[x + 1] = true;
+	       }
+	       }
+	       }
+	       return defectArray;
+	       } */
 
 	    /*RGB_vector_ptr LCDCalibrator::dimDGLutFix(RGB_vector_ptr original) {
-		RGB_vector_ptr measureCode = RGBVector::copyRange(original, 0, 50);
-		//50量到0
-		measureCode = RGBVector::reverse(measureCode);
-		bptr < MeasureCondition > measureCondition(new MeasureCondition(measureCode));
+	       RGB_vector_ptr measureCode = RGBVector::copyRange(original, 0, 50);
+	       //50量到0
+	       measureCode = RGBVector::reverse(measureCode);
+	       bptr < MeasureCondition > measureCondition(new MeasureCondition(measureCode));
 
 
-		Component_vector_ptr componentVector;	// = fetcher->fetchComponent(measureCondition);
-		if (true == MainForm->linkCA210) {
-		    componentVector = fetcher->fetchComponent(measureCondition);
-		} else {
-		    DGLutFile dglut("7.4_dimComponent.xls", ReadOnly);
-		    componentVector = dglut.getComponentVector();
-		}
+	       Component_vector_ptr componentVector;    // = fetcher->fetchComponent(measureCondition);
+	       if (true == MainForm->linkCA210) {
+	       componentVector = fetcher->fetchComponent(measureCondition);
+	       } else {
+	       DGLutFile dglut("7.4_dimComponent.xls", ReadOnly);
+	       componentVector = dglut.getComponentVector();
+	       }
 
 
-		STORE_RGBVECTOR("7.1_before_fix.xls", original);
-		RGB_vector_ptr result = RGBVector::deepClone(original);
-		RGBVector::quantization(result, bitDepth->getFRCAbilityBit(), true);
-		STORE_RGBVECTOR("7.2_quant2FRC.xls", result);
-		RGBVector::changeMaxValue(result, bitDepth->getFRCAbilityBit());
-		STORE_RGBVECTOR("7.3_change2FRC.xls", result);
+	       STORE_RGBVECTOR("7.1_before_fix.xls", original);
+	       RGB_vector_ptr result = RGBVector::deepClone(original);
+	       RGBVector::quantization(result, bitDepth->getFRCAbilityBit(), true);
+	       STORE_RGBVECTOR("7.2_quant2FRC.xls", result);
+	       RGBVector::changeMaxValue(result, bitDepth->getFRCAbilityBit());
+	       STORE_RGBVECTOR("7.3_change2FRC.xls", result);
 
 
 
 
-		STORE_COMPONENT("7.4_dimComponent.xls", componentVector);
-		double2D_ptr deltaxyValues = getDeltaxyValues(componentVector);
-		int size = deltaxyValues->dim1();
+	       STORE_COMPONENT("7.4_dimComponent.xls", componentVector);
+	       double2D_ptr deltaxyValues = getDeltaxyValues(componentVector);
+	       int size = deltaxyValues->dim1();
 
-		//const double Normal = 0.0000;
-		//const double Tiny = 0.0001;
-		double threshold = dimFixThreshold;
+	       //const double Normal = 0.0000;
+	       //const double Tiny = 0.0001;
+	       double threshold = dimFixThreshold;
 
-		const double SuitGap = 0.0009;
-		bool_array defectArray = getDefectArray(deltaxyValues, threshold);
-		bool_array continueDefectArray = getContinueDefectArray(deltaxyValues, threshold);
-
-
-		for (int x = 1; x < size; x++) {
-		    bool defect = defectArray[x];
-		    bool predefect = defectArray[x - 1];
-		    bool nextdefect = defectArray[x + 1];
-		    //目前要是相鄰有defect就先不動, 因為太複雜!
-		    bool doDefectErase = defect && !predefect && !nextdefect;
+	       const double SuitGap = 0.0009;
+	       bool_array defectArray = getDefectArray(deltaxyValues, threshold);
+	       bool_array continueDefectArray = getContinueDefectArray(deltaxyValues, threshold);
 
 
-		    if (doDefectErase) {
-			//確定要消除defect
-			int grayLevel = 50 - x;
-			double dx = (*deltaxyValues)[x][0];
-			double dy = (*deltaxyValues)[x][1];
+	       for (int x = 1; x < size; x++) {
+	       bool defect = defectArray[x];
+	       bool predefect = defectArray[x - 1];
+	       bool nextdefect = defectArray[x + 1];
+	       //目前要是相鄰有defect就先不動, 因為太複雜!
+	       bool doDefectErase = defect && !predefect && !nextdefect;
 
-			double predx = (*deltaxyValues)[x - 1][0];
-			double pre2dx = dx + predx;
-			double predy = (*deltaxyValues)[x - 1][1];
-			double pre2dy = dy + predy;
 
-			//三種defect, 從delta確認是哪一種
-			if (dx < threshold && dy < threshold) {
-			    if (pre2dx < SuitGap) {
-				//太擠
-				(*result)[grayLevel - 1]->B += 1;
-			    } else {
-				(*result)[grayLevel]->B -= 1;
-			    }
+	       if (doDefectErase) {
+	       //確定要消除defect
+	       int grayLevel = 50 - x;
+	       double dx = (*deltaxyValues)[x][0];
+	       double dy = (*deltaxyValues)[x][1];
 
-			} else if (dx < threshold) {
-			    //dx <0
-			    //double predx = (*deltaxyValues)[x - 1][0];
-			    //double pre2dx = dx + predx;
-			    if (pre2dx < SuitGap) {
-				//太擠
-				(*result)[grayLevel - 1]->R -= 1;
-			    } else {
-				(*result)[grayLevel]->R += 1;
-			    }
-			} else if (dy < threshold) {
-			    //dy <0
-			    //double predy = (*deltaxyValues)[x - 1][1];
-			    //double pre2dy = dy + predy;
-			    if (pre2dy < SuitGap) {
-				//太擠
-				(*result)[grayLevel - 1]->G -= 1;
-			    } else {
-				(*result)[grayLevel]->G += 1;
-			    }
+	       double predx = (*deltaxyValues)[x - 1][0];
+	       double pre2dx = dx + predx;
+	       double predy = (*deltaxyValues)[x - 1][1];
+	       double pre2dy = dy + predy;
 
-			}
-		    }
-		}
-		STORE_RGBVECTOR("7.5_afterFix.xls", result);
-		RGBVector::changeMaxValue(result, bitDepth->getLutMaxValue());
-		STORE_RGBVECTOR("7.6_change2LUT.xls", result);
-		return result;
-	    };*/
+	       //三種defect, 從delta確認是哪一種
+	       if (dx < threshold && dy < threshold) {
+	       if (pre2dx < SuitGap) {
+	       //太擠
+	       (*result)[grayLevel - 1]->B += 1;
+	       } else {
+	       (*result)[grayLevel]->B -= 1;
+	       }
+
+	       } else if (dx < threshold) {
+	       //dx <0
+	       //double predx = (*deltaxyValues)[x - 1][0];
+	       //double pre2dx = dx + predx;
+	       if (pre2dx < SuitGap) {
+	       //太擠
+	       (*result)[grayLevel - 1]->R -= 1;
+	       } else {
+	       (*result)[grayLevel]->R += 1;
+	       }
+	       } else if (dy < threshold) {
+	       //dy <0
+	       //double predy = (*deltaxyValues)[x - 1][1];
+	       //double pre2dy = dy + predy;
+	       if (pre2dy < SuitGap) {
+	       //太擠
+	       (*result)[grayLevel - 1]->G -= 1;
+	       } else {
+	       (*result)[grayLevel]->G += 1;
+	       }
+
+	       }
+	       }
+	       }
+	       STORE_RGBVECTOR("7.5_afterFix.xls", result);
+	       RGBVector::changeMaxValue(result, bitDepth->getLutMaxValue());
+	       STORE_RGBVECTOR("7.6_change2LUT.xls", result);
+	       return result;
+	       }; */
 
 	    RGB_vector_ptr LCDCalibrator::newMethod(DGLutGenerator & generator,
 						    bptr < PanelRegulator > panelRegulator) {
@@ -909,12 +910,45 @@ namespace cms {
 			//否則就挖之前的檔案來當量測數據
 			DGLutFile dglut("5.0_dimComponent.xls", ReadOnly);
 			componentVector = dglut.getComponentVector();
+			int size = componentVector->size();
+			for (int x = 0; x < size; x++) {
+			    RGB_ptr rgb = (*measureCode)[x];
+			    Component_ptr c = (*componentVector)[x];
+			    c->rgb = rgb;
+			}
+
 		    }
 		    STORE_COMPONENT("5.0_dimComponent.xls", componentVector);
 
-		    const double SuitGap = 0.0009;
-		    bptr < DGLutOp > dimfix(new DimDGLutFixOp(bitDepth, dimFixThreshold, SuitGap,
-							      componentVector));
+		    //預測調整幅度, 丟進來的componentVector應該是lut bit depth
+		    bptr < ChromaticityAdjustEstimator >
+			chromaticityEstimator(new
+					      ChromaticityAdjustEstimator(componentVector,
+									  fetcher->getAnalyzer(),
+									  bitDepth));
+
+
+		    for (int x = 49; x >= 0; x -= 25) {
+			double_array dxdy = chromaticityEstimator->getdxdy(Channel::R, x);
+			double dx = dxdy[0];
+			double dy = dxdy[1];
+
+			dxdy = chromaticityEstimator->getdxdy(Channel::G, x);
+			dx = dxdy[0];
+			dy = dxdy[1];
+
+			dxdy = chromaticityEstimator->getdxdy(Channel::B, x);
+			dx = dxdy[0];
+			dy = dxdy[1];
+
+			int y = x;
+		    }
+
+		    //const double SuitGap = 0.0009;
+		    bptr < DGLutOp >
+			dimfix(new
+			       DimDGLutFixOp(bitDepth, dimFixThreshold, componentVector,
+					     chromaticityEstimator));
 		    dgop.addOp(dimfix);
 		}
 		//==============================================================
@@ -954,6 +988,63 @@ namespace cms {
 	       void LCDCalibrator::setMiddleCCTRatio(double ratio) {
 	       this->middleCCTRatio = ratio;
 	       }; */
+
+	    xyY_ptr ChromaticityAdjustEstimator::getxyY(RGB_ptr intensity) {
+		XYZ_ptr rXYZ2 = rXYZ->clone();
+		XYZ_ptr gXYZ2 = gXYZ->clone();
+		XYZ_ptr bXYZ2 = bXYZ->clone();
+		rXYZ2->times(intensity->R / 100.);
+		gXYZ2->times(intensity->G / 100.);
+		bXYZ2->times(intensity->B / 100.);
+		XYZ_ptr rgXYZ = CIEXYZ::plus(rXYZ2, gXYZ2);
+		XYZ_ptr XYZ = CIEXYZ::plus(rgXYZ, bXYZ2);
+		xyY_ptr xyY(new CIExyY(XYZ));
+		return xyY;
+	    };
+	  ChromaticityAdjustEstimator::ChromaticityAdjustEstimator(Component_vector_ptr componentVector, bptr < cms::measure::IntensityAnalyzerIF > analyzer, bptr < BitDepthProcessor > bitDepth):componentVector(componentVector), analyzer(analyzer),
+		bitDepth(bitDepth),
+		dgLutGenerator(bptr < DGLutGenerator > (new DGLutGenerator(componentVector))) {
+		xyY_ptr xyYR = analyzer->getPrimaryColor(Channel::R);
+		xyY_ptr xyYG = analyzer->getPrimaryColor(Channel::G);
+		xyY_ptr xyYB = analyzer->getPrimaryColor(Channel::B);
+		rXYZ = xyYR->toXYZ();
+		gXYZ = xyYG->toXYZ();
+		bXYZ = xyYB->toXYZ();
+		//dgLutGenerator = DGLutGenerator(componentVector);
+	    };
+
+	    double_array ChromaticityAdjustEstimator::getdxdy(const Dep::Channel & ch,
+							      int grayLevel) {
+		int size = componentVector->size();
+		int index = size - grayLevel - 1;
+
+		Component_ptr c = (*componentVector)[index];
+		//RGB_ptr orgrgb = c->rgb;
+		const Dep::MaxValue & lutMaxValue = bitDepth->getLutMaxValue();
+
+		/*RGB_ptr rgb(new
+		   RGBColor(orgrgb->getRGBColorSpace(), orgrgb->getValues(), maxValue));
+		   rgb->changeMaxValue(MaxValue::Double255); */
+		RGB_ptr rgb = c->rgb->clone();
+		RGB_ptr intensity = dgLutGenerator->getIntensity(rgb);
+
+		rgb->changeMaxValue(lutMaxValue);
+		rgb->addValue(ch, 1);
+		rgb->changeMaxValue(MaxValue::Double255);
+		RGB_ptr intensity2 = dgLutGenerator->getIntensity(rgb);
+
+		xyY_ptr xyY = getxyY(intensity);
+		xyY_ptr xyY2 = getxyY(intensity2);
+		double dx = xyY->x - xyY2->x;
+		double_array dxdy = DoubleArray::minus(xyY->getxyValues(), xyY2->getxyValues(), 2);
+		return dxdy;
+		//dgLutGenerator.
+		/*RGB_ptr rgb(new RGBColor(grayLevelIn255, grayLevelIn255, grayLevelIn255));
+		   RGB_ptr intensity = dgLutGenerator.getIntensity(rgb);
+		   //getXYZ( intensity);
+		   rgb->addValue(ch, step);
+		   RGB_ptr intensity2 = dgLutGenerator.getIntensity(rgb); */
+	    };
 	};
     };
 };
