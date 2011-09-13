@@ -250,7 +250,9 @@ namespace cms {
 	    CIEXYZ::CIEXYZ(double X, double Y, double Z) {
 		setValues(X, Y, Z);
 	    };
-
+	    XYZ_ptr CIEXYZ::clone() {
+		return XYZ_ptr(new CIEXYZ(*this));
+	    };
 	    //======================================================================
 
 
@@ -271,8 +273,8 @@ namespace cms {
 	    CIExyY::CIExyY(double_array xyValues) {
 		setValues(xyValues);
 	    };
-	    CIExyY::CIExyY(double x, double y, double Y,
-			   NormalizeY normalizeY):normalizeY_(normalizeY) {
+	  CIExyY::CIExyY(double x, double y, double Y, NormalizeY normalizeY):normalizeY_(normalizeY)
+	    {
 		setValues(x, y, Y);
 	    };
 	    CIExyY::CIExyY(double x, double y, double Y) {

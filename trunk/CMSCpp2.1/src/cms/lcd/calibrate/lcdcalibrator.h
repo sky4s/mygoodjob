@@ -194,10 +194,10 @@ namespace cms {
 					 const Dep::MaxValue & quantizationBit);
 		RGB_vector_ptr newMethod(DGLutGenerator & generator,
 					 bptr < PanelRegulator > panelRegulato);
-		
+
 		/*RGB_vector_ptr dimDGLutFix(RGB_vector_ptr original);
-		bool_array getDefectArray(double2D_ptr deltaxyValues, double threshold);
-		bool_array getContinueDefectArray(double2D_ptr deltaxyValues, double threshold);*/
+		   bool_array getDefectArray(double2D_ptr deltaxyValues, double threshold);
+		   bool_array getContinueDefectArray(double2D_ptr deltaxyValues, double threshold); */
 		//==============================================================
 	      public:
 		static double_vector_ptr getGammaCurveVector(double gamma, int n, int
@@ -234,6 +234,24 @@ namespace cms {
 
 
 
+	    };
+
+	    /*
+	       色度調整幅度的預測, 透過intensity
+	     */
+	    class ChromaticityAdjustEstimator {
+	      private:
+		Component_vector_ptr componentVector;
+		bptr < DGLutGenerator > dgLutGenerator;
+		bptr < cms::measure::IntensityAnalyzerIF > analyzer;
+		XYZ_ptr rXYZ, gXYZ, bXYZ;
+		xyY_ptr getxyY(RGB_ptr intensity);
+		 bptr < BitDepthProcessor > bitDepth;
+	      public:
+		 ChromaticityAdjustEstimator(Component_vector_ptr componentVector,
+					     bptr < cms::measure::IntensityAnalyzerIF > analyzer,
+					     bptr < BitDepthProcessor > bitDepth);
+		double_array getdxdy(const Dep::Channel & ch, int grayLevel);
 	    };
 	};
     };
