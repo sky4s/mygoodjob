@@ -2,7 +2,7 @@ object CCTLUTForm: TCCTLUTForm
   Left = 347
   Top = 327
   Width = 844
-  Height = 422
+  Height = 404
   Caption = 'CCT LUT'
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
@@ -20,7 +20,7 @@ object CCTLUTForm: TCCTLUTForm
   TextHeight = 13
   object Label9: TLabel
     Left = 551
-    Top = 368
+    Top = 360
     Width = 281
     Height = 13
     Caption = 'Copyright (C) 2010, AU Optronics Corp., All Right Reserved.'
@@ -484,7 +484,6 @@ object CCTLUTForm: TCCTLUTForm
       end
       inherited Label_Warning: TLabel
         Left = 256
-        Width = 200
         Font.Height = -10
       end
       inherited Edit_Prefix: TEdit
@@ -845,7 +844,7 @@ object CCTLUTForm: TCCTLUTForm
   end
   object GroupBox8: TGroupBox
     Left = 672
-    Top = 15
+    Top = 7
     Width = 156
     Height = 194
     Caption = 'Test Function'
@@ -879,7 +878,7 @@ object CCTLUTForm: TCCTLUTForm
   end
   object ProgressBar1: TProgressBar
     Left = 8
-    Top = 368
+    Top = 352
     Width = 225
     Height = 17
     Min = 0

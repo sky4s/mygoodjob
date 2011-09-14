@@ -687,6 +687,7 @@ void __fastcall TMainForm::RadioButton_PCClick(TObject * Sender)
     MeasureWindow->setTCONControlOff();
     control.reset();
     Button_Connect->Enabled = true;
+    this->StatusBar1->Panels->Items[2]->Text = "T-CON Disconnected";
 }
 
 //---------------------------------------------------------------------------

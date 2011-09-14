@@ -650,3 +650,5 @@ void __fastcall TCCTLUTForm::CheckBox_MiddleCCTClick(TObject * Sender)
 //---------------------------------------------------------------------------
 
 
+
+

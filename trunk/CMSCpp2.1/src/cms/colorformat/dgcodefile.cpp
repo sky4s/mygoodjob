@@ -102,6 +102,7 @@ namespace cms {
 	    //==================================================================
 	    // 迴圈處理
 	    //==================================================================
+	    //設定前半部量測的data
 	    for (int x = 0; x != part1Size; x++) {
 		int n = part2Size - 1 - x;
 		Component_ptr c = (*componentVector)[x];
@@ -149,6 +150,7 @@ namespace cms {
 		this->insertData(RawData, values, false);
 	    }
 
+	    //設定後半部gamma的data
 	    for (int x = part1Size; x != part2Size; x++) {
 		int n = part2Size - 1 - x;
 		StringVector::setContent(values, "-1", 7, 0, 1, 2, 3, 4, 5, 6);
@@ -240,6 +242,10 @@ namespace cms {
 	    Component_vector_ptr vector(new Component_vector());
 	    db->setTableName(RawData);
 	    bptr < DBQuery > query = db->selectAll();
+
+	    RGB_vector_ptr gammaTable = RGBVector::reverse(getGammaTable());
+	    int index = 0;
+
 	    while (query->hasNext()) {
 		string_vector_ptr result = query->nextResult();
 		int gray = _toInt((*result)[0]);
@@ -255,7 +261,16 @@ namespace cms {
 		double r = _toDouble((*result)[7]);
 		double g = _toDouble((*result)[8]);
 		double b = _toDouble((*result)[9]);
-		RGB_ptr rgb(new RGBColor(gray, gray, gray));
+
+		RGB_ptr rgb;
+		if (gammaTable->size() != 0) {
+		    RGB_ptr gamma = (*gammaTable)[index++];
+		    rgb = gamma;
+		} else {
+		    rgb = RGB_ptr(new RGBColor(gray, gray, gray));
+		}
+
+		//RGB_ptr rgb(new RGBColor(gray, gray, gray));
 		RGB_ptr intensity(new RGBColor(R, G, B));
 		xyY_ptr xyY(new CIExyY(x, y, Y));
 		XYZ_ptr XYZ(xyY->toXYZ());
@@ -274,9 +289,9 @@ namespace cms {
 	    bptr < DBQuery > query = db->selectAll();
 	    while (query->hasNext()) {
 		string_vector_ptr result = query->nextResult();
-		int R = _toInt((*result)[1]);
-		int G = _toInt((*result)[2]);
-		int B = _toInt((*result)[3]);
+		double R = _toDouble((*result)[1]);
+		double G = _toDouble((*result)[2]);
+		double B = _toDouble((*result)[3]);
 
 		RGB_ptr rgb(new RGBColor(R, G, B, maxValue));
 		vector->push_back(rgb);
@@ -465,7 +480,7 @@ namespace cms {
 		double2D_ptr ratio = ma->getTargetRatio();
 		dgfile.addProperty("Target Ratio", *DoubleArray::toString(ratio));
 		//ShowMessage("Set \"Target White \"first.");
-                  	    }
+	    }
 
 	};
 	void DGLutProperty::addProperty(const std::string key, string_ptr value) {

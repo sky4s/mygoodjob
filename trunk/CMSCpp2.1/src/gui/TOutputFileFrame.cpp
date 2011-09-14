@@ -59,8 +59,11 @@ String_ptr TOutputFileFrame::getFullPrefix()
 //---------------------------------------------------------------------------
 String_ptr TOutputFileFrame::getOutputFilename()
 {
+
+    String_ptr filename = _getOutputFilename();
     serialid++;
-    return _getOutputFilename();
+    updateWarning();
+    return filename;
 };
 String_ptr TOutputFileFrame::_getOutputFilename()
 {
@@ -109,4 +112,5 @@ void __fastcall TOutputFileFrame::Edit_DirectoryChange(TObject * Sender)
 }
 
 //---------------------------------------------------------------------------
+
 
