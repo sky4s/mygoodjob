@@ -122,12 +122,24 @@ namespace cms {
 		Util::deleteExist(filename);
 		DGLutFile dglut(filename, Create);
 		dglut.setRawData(componentVector, nil_RGBGamma, nil_RGBGamma);
+		RGB_vector_ptr rgbVector = getRGBVector(componentVector);
+		rgbVector = RGBVector::reverse(rgbVector);
+		dglut.setGammaTable(rgbVector);
 	    };
 	    void ComponentFetcher::windowClosing(TObject * Sender, TCloseAction & Action) {
 		stop = true;
 	    };
 	    bptr < IntensityAnalyzerIF > ComponentFetcher::getAnalyzer() {
 		return analyzer;
+	    };
+	    RGB_vector_ptr ComponentFetcher::getRGBVector(Component_vector_ptr componentVector) {
+		int size = componentVector->size();
+		RGB_vector_ptr rgbVector(new RGB_vector(size));
+		for (int x = 0; x < size; x++) {
+		    Component_ptr c = (*componentVector)[x];
+		    (*rgbVector)[x] = c->rgb;
+		}
+		return rgbVector;
 	    };
 	    //==================================================================
 

@@ -42,6 +42,7 @@ namespace cms {
 					 Component_vector_ptr componentVector);
 		virtual void windowClosing(TObject * Sender, TCloseAction & Action);
 		 bptr < cms::measure::IntensityAnalyzerIF > getAnalyzer();
+		static RGB_vector_ptr getRGBVector(Component_vector_ptr componentVector);
 	    };
 
 	    /*

@@ -389,162 +389,6 @@ namespace cms {
 		return result;
 	    };
 
-
-
-	    /*bool_array LCDCalibrator::getDefectArray(double2D_ptr deltaxyValues, double threshold) {
-	       int size = deltaxyValues->dim1();
-	       bool_array defectArray(new bool[size]);
-	       for (int x = 0; x < size; x++) {
-	       defectArray[x] = false;
-	       }
-
-	       for (int x = 1; x < size; x++) {
-	       double dx = (*deltaxyValues)[x][0];
-	       double dy = (*deltaxyValues)[x][1];
-	       if (dx < threshold || dy < threshold) {
-	       defectArray[x] = true;
-	       }
-	       }
-	       return defectArray;
-	       }
-	       int getDefectType(bool dxdefect, bool dydefect) {
-	       if (dxdefect && dydefect) {
-	       return 3;
-	       } else if (dxdefect) {
-	       return 1;
-	       } else if (dydefect) {
-	       return 2;
-	       } else {
-	       return -1;
-	       }
-	       };
-	       bool_array LCDCalibrator::getContinueDefectArray(double2D_ptr deltaxyValues,
-	       double threshold) {
-	       int size = deltaxyValues->dim1();
-	       bool_array defectArray(new bool[size]);
-	       for (int x = 0; x < size; x++) {
-	       defectArray[x] = false;
-	       }
-	       // dx = 1
-	       // dy = 2
-	       // dx + dy =3
-	       int defectType = -1;
-
-	       for (int x = 1; x < size - 1; x++) {
-	       bool dx = (*deltaxyValues)[x][0] < threshold;
-	       bool dy = (*deltaxyValues)[x][1] < threshold;
-	       bool nextdx = (*deltaxyValues)[x + 1][0] < threshold;
-	       bool nextdy = (*deltaxyValues)[x + 1][1] < threshold;
-	       int thisDefectType = getDefectType(dx, dy);
-	       int nextDefectType = getDefectType(nextdx, nextdy);
-
-	       if (defectType == -1 && thisDefectType != -1) {
-	       if (thisDefectType == nextDefectType) {
-	       defectArray[x] = true;
-	       defectArray[x + 1] = true;
-	       }
-	       }
-	       }
-	       return defectArray;
-	       } */
-
-	    /*RGB_vector_ptr LCDCalibrator::dimDGLutFix(RGB_vector_ptr original) {
-	       RGB_vector_ptr measureCode = RGBVector::copyRange(original, 0, 50);
-	       //50量到0
-	       measureCode = RGBVector::reverse(measureCode);
-	       bptr < MeasureCondition > measureCondition(new MeasureCondition(measureCode));
-
-
-	       Component_vector_ptr componentVector;    // = fetcher->fetchComponent(measureCondition);
-	       if (true == MainForm->linkCA210) {
-	       componentVector = fetcher->fetchComponent(measureCondition);
-	       } else {
-	       DGLutFile dglut("7.4_dimComponent.xls", ReadOnly);
-	       componentVector = dglut.getComponentVector();
-	       }
-
-
-	       STORE_RGBVECTOR("7.1_before_fix.xls", original);
-	       RGB_vector_ptr result = RGBVector::deepClone(original);
-	       RGBVector::quantization(result, bitDepth->getFRCAbilityBit(), true);
-	       STORE_RGBVECTOR("7.2_quant2FRC.xls", result);
-	       RGBVector::changeMaxValue(result, bitDepth->getFRCAbilityBit());
-	       STORE_RGBVECTOR("7.3_change2FRC.xls", result);
-
-
-
-
-	       STORE_COMPONENT("7.4_dimComponent.xls", componentVector);
-	       double2D_ptr deltaxyValues = getDeltaxyValues(componentVector);
-	       int size = deltaxyValues->dim1();
-
-	       //const double Normal = 0.0000;
-	       //const double Tiny = 0.0001;
-	       double threshold = dimFixThreshold;
-
-	       const double SuitGap = 0.0009;
-	       bool_array defectArray = getDefectArray(deltaxyValues, threshold);
-	       bool_array continueDefectArray = getContinueDefectArray(deltaxyValues, threshold);
-
-
-	       for (int x = 1; x < size; x++) {
-	       bool defect = defectArray[x];
-	       bool predefect = defectArray[x - 1];
-	       bool nextdefect = defectArray[x + 1];
-	       //目前要是相鄰有defect就先不動, 因為太複雜!
-	       bool doDefectErase = defect && !predefect && !nextdefect;
-
-
-	       if (doDefectErase) {
-	       //確定要消除defect
-	       int grayLevel = 50 - x;
-	       double dx = (*deltaxyValues)[x][0];
-	       double dy = (*deltaxyValues)[x][1];
-
-	       double predx = (*deltaxyValues)[x - 1][0];
-	       double pre2dx = dx + predx;
-	       double predy = (*deltaxyValues)[x - 1][1];
-	       double pre2dy = dy + predy;
-
-	       //三種defect, 從delta確認是哪一種
-	       if (dx < threshold && dy < threshold) {
-	       if (pre2dx < SuitGap) {
-	       //太擠
-	       (*result)[grayLevel - 1]->B += 1;
-	       } else {
-	       (*result)[grayLevel]->B -= 1;
-	       }
-
-	       } else if (dx < threshold) {
-	       //dx <0
-	       //double predx = (*deltaxyValues)[x - 1][0];
-	       //double pre2dx = dx + predx;
-	       if (pre2dx < SuitGap) {
-	       //太擠
-	       (*result)[grayLevel - 1]->R -= 1;
-	       } else {
-	       (*result)[grayLevel]->R += 1;
-	       }
-	       } else if (dy < threshold) {
-	       //dy <0
-	       //double predy = (*deltaxyValues)[x - 1][1];
-	       //double pre2dy = dy + predy;
-	       if (pre2dy < SuitGap) {
-	       //太擠
-	       (*result)[grayLevel - 1]->G -= 1;
-	       } else {
-	       (*result)[grayLevel]->G += 1;
-	       }
-
-	       }
-	       }
-	       }
-	       STORE_RGBVECTOR("7.5_afterFix.xls", result);
-	       RGBVector::changeMaxValue(result, bitDepth->getLutMaxValue());
-	       STORE_RGBVECTOR("7.6_change2LUT.xls", result);
-	       return result;
-	       }; */
-
 	    RGB_vector_ptr LCDCalibrator::newMethod(DGLutGenerator & generator,
 						    bptr < PanelRegulator > panelRegulator) {
 		double brightgammaParameter = 1;
@@ -899,6 +743,8 @@ namespace cms {
 		    RGB_vector_ptr measureCode = RGBVector::copyRange(dglut, 0, dimFixEnd);
 		    //50量到0
 		    measureCode = RGBVector::reverse(measureCode);
+                    RGBVector::quantization(measureCode, bitDepth->getFRCAbilityBit() );
+
 		    bptr < MeasureCondition > measureCondition(new MeasureCondition(measureCode));
 
 
@@ -910,12 +756,14 @@ namespace cms {
 			//否則就挖之前的檔案來當量測數據
 			DGLutFile dglut("5.0_dimComponent.xls", ReadOnly);
 			componentVector = dglut.getComponentVector();
-			int size = componentVector->size();
+			/*int size = componentVector->size();
 			for (int x = 0; x < size; x++) {
+			    //用量測的rgb替換掉, 因為load出來的rgb都是錯誤的
+                            //因為STORE_COMPONENT的時候儲存的gray level只取最小值, 沒辦法存到r g b
 			    RGB_ptr rgb = (*measureCode)[x];
 			    Component_ptr c = (*componentVector)[x];
 			    c->rgb = rgb;
-			}
+			}*/
 
 		    }
 		    STORE_COMPONENT("5.0_dimComponent.xls", componentVector);

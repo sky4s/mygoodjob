@@ -473,7 +473,7 @@ namespace cms {
 
 		double threshold = dimFixThreshold;
 
-		bool_array defectArray = getDefectArray(deltaxyValues, threshold);
+		//bool_array defectArray = getDefectArray(deltaxyValues, threshold);
 		//bool_array continueDefectArray = getContinueDefectArray(deltaxyValues, threshold);
 		int_array defectTypeArray = getDefectTypeArray(deltaxyValues, threshold, threshold);
 
@@ -514,28 +514,31 @@ namespace cms {
 				} else {
 				    (*result)[grayLevel]->B -= 1;
 				}
+				break;
 			    }
 			case 1:{
 
 				double_array dxdy = adjustEstimator->getdxdy(Channel::R, grayLevel);
 				//dx <0
-				if (pre2dx < suitGapx || pre2dx < dxdy[0]) {
+				if (pre2dx < suitGapx /*|| pre2dx < dxdy[0]*/) {
 				    //¤ÓÀ½
 				    (*result)[grayLevel - 1]->R -= 1;
 				} else {
 				    (*result)[grayLevel]->R += 1;
 				}
+				break;
 			    }
 			case 2:{
 
 				double_array dxdy = adjustEstimator->getdxdy(Channel::G, grayLevel);
 				//dy <0
-				if (pre2dy < suitGapy || pre2dy < dxdy[1]) {
+				if (pre2dy < suitGapy /*|| pre2dy < dxdy[1]*/) {
 				    //¤ÓÀ½
 				    (*result)[grayLevel - 1]->G -= 1;
 				} else {
 				    (*result)[grayLevel]->G += 1;
 				}
+				break;
 			    }
 			}
 
