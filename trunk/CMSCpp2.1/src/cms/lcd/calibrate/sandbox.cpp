@@ -198,7 +198,8 @@ namespace cms {
 			    XYZ_ptr bXYZ = (*componentVectorPrime)[2]->XYZ;
 			    XYZ_ptr wXYZ = (*componentVectorPrime)[3]->XYZ;
 
-			    bptr < MaxMatrixIntensityAnalyzer > ma(new MaxMatrixIntensityAnalyzer());
+			    bptr < MaxMatrixIntensityAnalyzer >
+				ma(new MaxMatrixIntensityAnalyzer());
 			    ma->setupComponent(Channel::R, rXYZ);
 			    ma->setupComponent(Channel::G, gXYZ);
 			    ma->setupComponent(Channel::B, bXYZ);
@@ -636,7 +637,7 @@ namespace cms {
 		for (int x = 0; x < dimTurn; x++) {
 		    double normal = ((double) x) / dimbase;
 		    double gamma = Math::pow(normal, dimGamma) * dimbase;
-		    //在uv'上線性變化
+		    //在CIEuv'上線性變化
 		    double u = Interpolation::linear(0, dimbase,
 						     dimendValues[0],
 						     dimstartValues[0],
@@ -815,10 +816,11 @@ namespace cms {
 	    //==================================================================
 	    // DimTargetGenerator.
 	    //==================================================================
+	    const Domain DimTargetGenerator::UsageColorSpace = CIEuvPrime;
 	    XYZ_vector_ptr DimTargetGenerator::
 		getLinearTarget(XYZ_ptr startXYZ, XYZ_ptr endXYZ,
 				double_vector_ptr luminanceGammaCurve) {
-		return getLinearTarget(startXYZ, endXYZ, luminanceGammaCurve, CIEuvPrime);
+		return getLinearTarget(startXYZ, endXYZ, luminanceGammaCurve, UsageColorSpace);
 	    };
 	    XYZ_vector_ptr DimTargetGenerator::
 		getLinearTarget(XYZ_ptr startXYZ, XYZ_ptr endXYZ,

@@ -130,7 +130,7 @@ namespace cms {
 
 	    class DimTargetGenerator {
 	      public:
-
+		const static Domain UsageColorSpace;
 		static XYZ_vector_ptr getLinearTarget(XYZ_ptr startXYZ,
 						      XYZ_ptr endXYZ,
 						      double_vector_ptr luminanceGammaCurve);

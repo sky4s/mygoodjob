@@ -108,6 +108,7 @@ void __fastcall TCCTLUTForm::Button_MeaRunClick(TObject * Sender)
 	    double gamma = this->Edit_DimGamma->Text.ToDouble();
 	    calibrator.setDefinedDim(under, gamma, averageDim);
 	    calibrator.DimFix = CheckBox_DimFix->Checked;
+	    calibrator.DimFixThreshold = Edit_DimFixThreshold->Text.ToDouble();
 	} else if (this->RadioButton_NoneLowLevelCorrect->Checked) {
 	    calibrator.setNonDimCorrect();
 	}
@@ -611,10 +612,7 @@ void __fastcall TCCTLUTForm::CheckBox_BMax2Click(TObject * Sender)
 void __fastcall TCCTLUTForm::CheckBox_AvoidHookNBClick(TObject * Sender)
 {
     bool checked = this->CheckBox_AvoidHookNB->Checked;
-    //CheckBox_BMax2->Checked = checked;
     CheckBox_Accurate->Checked = checked;
-    //CheckBox_BMax->Checked = false;
-    //CheckBox_BMax->Enabled = !checked;
 }
 
 //---------------------------------------------------------------------------
@@ -648,7 +646,4 @@ void __fastcall TCCTLUTForm::CheckBox_MiddleCCTClick(TObject * Sender)
 }
 
 //---------------------------------------------------------------------------
-
-
-
 
