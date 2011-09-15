@@ -126,7 +126,7 @@ namespace cms {
 		//double suitGap;
 		double suitGapx, suitGapy;
 		Component_vector_ptr componentVector;
-		 bptr < ChromaticityAdjustEstimator > adjustEstimator;
+		 bptr < ChromaticityAdjustEstimatorIF > adjustEstimator;
 
 		static bool_array getDefectArray(double2D_ptr deltaxyValues, double threshold);
 		static bool_array getContinueDefectArray(double2D_ptr deltaxyValues,
@@ -142,7 +142,7 @@ namespace cms {
 		   double suitGap, Component_vector_ptr componentVector); */
 		 DimDGLutFixOp(bptr < BitDepthProcessor > bitDepth, double dimFixThreshold,
 			       Component_vector_ptr componentVector,
-			       bptr < ChromaticityAdjustEstimator > adjustEstimator);
+			       bptr < ChromaticityAdjustEstimatorIF > adjustEstimator);
 	    };
 	};
     };

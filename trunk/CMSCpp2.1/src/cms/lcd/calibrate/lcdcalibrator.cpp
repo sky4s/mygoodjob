@@ -743,7 +743,7 @@ namespace cms {
 		    RGB_vector_ptr measureCode = RGBVector::copyRange(dglut, 0, dimFixEnd);
 		    //50秖0
 		    measureCode = RGBVector::reverse(measureCode);
-                    RGBVector::quantization(measureCode, bitDepth->getFRCAbilityBit() );
+		    RGBVector::quantization(measureCode, bitDepth->getFRCAbilityBit());
 
 		    bptr < MeasureCondition > measureCondition(new MeasureCondition(measureCode));
 
@@ -757,40 +757,41 @@ namespace cms {
 			DGLutFile dglut("5.0_dimComponent.xls", ReadOnly);
 			componentVector = dglut.getComponentVector();
 			/*int size = componentVector->size();
-			for (int x = 0; x < size; x++) {
-			    //ノ秖代rgb蠢传奔, loadㄓrgb常琌岿粇
-                            //STORE_COMPONENT纗gray level程, ⊿快猭r g b
-			    RGB_ptr rgb = (*measureCode)[x];
-			    Component_ptr c = (*componentVector)[x];
-			    c->rgb = rgb;
-			}*/
+			   for (int x = 0; x < size; x++) {
+			   //ノ秖代rgb蠢传奔, loadㄓrgb常琌岿粇
+			   //STORE_COMPONENT纗gray level程, ⊿快猭r g b
+			   RGB_ptr rgb = (*measureCode)[x];
+			   Component_ptr c = (*componentVector)[x];
+			   c->rgb = rgb;
+			   } */
 
 		    }
 		    STORE_COMPONENT("5.0_dimComponent.xls", componentVector);
 
+		    bptr < cms::measure::IntensityAnalyzerIF > analyzer = fetcher->getAnalyzer();
+		    bptr < MeterMeasurement > mm = analyzer->getMeterMeasurement();
+		    bptr < ChromaticityAdjustEstimatorIF >
+			chromaticityEstimator(new IntensityEstimator
+					      (componentVector, fetcher->getAnalyzer(), bitDepth));
 		    //箇代秸俱碩, メ秈ㄓcomponentVector莱赣琌lut bit depth
-		    bptr < ChromaticityAdjustEstimator >
-			chromaticityEstimator(new
-					      ChromaticityAdjustEstimator(componentVector,
-									  fetcher->getAnalyzer(),
-									  bitDepth));
 
 
-		    for (int x = 49; x >= 0; x -= 25) {
-			double_array dxdy = chromaticityEstimator->getdxdy(Channel::R, x);
-			double dx = dxdy[0];
-			double dy = dxdy[1];
 
-			dxdy = chromaticityEstimator->getdxdy(Channel::G, x);
-			dx = dxdy[0];
-			dy = dxdy[1];
+		    /*for (int x = 49; x >= 0; x -= 25) {
+		       double_array dxdy = chromaticityEstimator->getdxdy(Channel::R, x);
+		       double dx = dxdy[0];
+		       double dy = dxdy[1];
 
-			dxdy = chromaticityEstimator->getdxdy(Channel::B, x);
-			dx = dxdy[0];
-			dy = dxdy[1];
+		       dxdy = chromaticityEstimator->getdxdy(Channel::G, x);
+		       dx = dxdy[0];
+		       dy = dxdy[1];
 
-			int y = x;
-		    }
+		       dxdy = chromaticityEstimator->getdxdy(Channel::B, x);
+		       dx = dxdy[0];
+		       dy = dxdy[1];
+
+		       int y = x;
+		       } */
 
 		    //const double SuitGap = 0.0009;
 		    bptr < DGLutOp >
@@ -837,7 +838,7 @@ namespace cms {
 	       this->middleCCTRatio = ratio;
 	       }; */
 
-	    xyY_ptr ChromaticityAdjustEstimator::getxyY(RGB_ptr intensity) {
+	    xyY_ptr IntensityEstimator::getxyY(RGB_ptr intensity) {
 		XYZ_ptr rXYZ2 = rXYZ->clone();
 		XYZ_ptr gXYZ2 = gXYZ->clone();
 		XYZ_ptr bXYZ2 = bXYZ->clone();
@@ -849,7 +850,7 @@ namespace cms {
 		xyY_ptr xyY(new CIExyY(XYZ));
 		return xyY;
 	    };
-	  ChromaticityAdjustEstimator::ChromaticityAdjustEstimator(Component_vector_ptr componentVector, bptr < cms::measure::IntensityAnalyzerIF > analyzer, bptr < BitDepthProcessor > bitDepth):componentVector(componentVector), analyzer(analyzer),
+	  IntensityEstimator::IntensityEstimator(Component_vector_ptr componentVector, bptr < cms::measure::IntensityAnalyzerIF > analyzer, bptr < BitDepthProcessor > bitDepth):componentVector(componentVector), analyzer(analyzer),
 		bitDepth(bitDepth),
 		dgLutGenerator(bptr < DGLutGenerator > (new DGLutGenerator(componentVector))) {
 		xyY_ptr xyYR = analyzer->getPrimaryColor(Channel::R);
@@ -861,8 +862,7 @@ namespace cms {
 		//dgLutGenerator = DGLutGenerator(componentVector);
 	    };
 
-	    double_array ChromaticityAdjustEstimator::getdxdy(const Dep::Channel & ch,
-							      int grayLevel) {
+	    double_array IntensityEstimator::getdxdy(const Dep::Channel & ch, int grayLevel) {
 		int size = componentVector->size();
 		int index = size - grayLevel - 1;
 
@@ -893,6 +893,19 @@ namespace cms {
 		   rgb->addValue(ch, step);
 		   RGB_ptr intensity2 = dgLutGenerator.getIntensity(rgb); */
 	    };
+	    //=================================================================
+	    // MeasureEstimator
+	    //=================================================================
+	    void MeasureEstimator::init() {
+	    };
+	    MeasureEstimator::MeasureEstimator(Component_vector_ptr componentVector,
+					       bptr < cms::measure::MeterMeasurement > mm,
+					       int step):componentVector(componentVector), mm(mm),
+		step(step) {
+	    };
+	    double_array MeasureEstimator::getdxdy(const Dep::Channel & ch, int grayLevel) {
+	    };
+	    //=================================================================
 	};
     };
 };
