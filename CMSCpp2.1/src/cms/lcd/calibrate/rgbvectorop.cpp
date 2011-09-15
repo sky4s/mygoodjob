@@ -523,7 +523,6 @@ namespace cms {
 				break;
 			    }
 			case 1:{
-
 				double_array dxdy = adjustEstimator->getdxdy(Channel::R, grayLevel);
 				//dx <0
 				if (pre2dx < suitGapx /*|| pre2dx < dxdy[0] */ ) {
@@ -535,7 +534,6 @@ namespace cms {
 				break;
 			    }
 			case 2:{
-
 				double_array dxdy = adjustEstimator->getdxdy(Channel::G, grayLevel);
 				//dy <0
 				if (pre2dy < suitGapy /*|| pre2dy < dxdy[1] */ ) {
