@@ -559,7 +559,7 @@ namespace cms {
 	       componentVector(componentVector)
 	       {
 	       }; */
-	  DimDGLutFixOp::DimDGLutFixOp(bptr < BitDepthProcessor > bitDepth, double dimFixThreshold, Component_vector_ptr componentVector, bptr < ChromaticityAdjustEstimator > adjustEstimator):bitDepth(bitDepth), dimFixThreshold(dimFixThreshold), componentVector(componentVector),
+	  DimDGLutFixOp::DimDGLutFixOp(bptr < BitDepthProcessor > bitDepth, double dimFixThreshold, Component_vector_ptr componentVector, bptr < ChromaticityAdjustEstimatorIF > adjustEstimator):bitDepth(bitDepth), dimFixThreshold(dimFixThreshold), componentVector(componentVector),
 		suitGapx(0.0004), suitGapy(0.0008),
 		adjustEstimator(adjustEstimator) {
 	    };

@@ -236,10 +236,15 @@ namespace cms {
 
 	    };
 
+	    class ChromaticityAdjustEstimatorIF {
+	      public:
+		virtual double_array getdxdy(const Dep::Channel & ch, int grayLevel) = 0;
+	    };
+
 	    /*
 	       色度調整幅度的預測, 透過intensity
 	     */
-	    class ChromaticityAdjustEstimator {
+	    class IntensityEstimator:public ChromaticityAdjustEstimatorIF {
 	      private:
 		Component_vector_ptr componentVector;
 		bptr < DGLutGenerator > dgLutGenerator;
@@ -248,10 +253,25 @@ namespace cms {
 		xyY_ptr getxyY(RGB_ptr intensity);
 		 bptr < BitDepthProcessor > bitDepth;
 	      public:
-		 ChromaticityAdjustEstimator(Component_vector_ptr componentVector,
-					     bptr < cms::measure::IntensityAnalyzerIF > analyzer,
-					     bptr < BitDepthProcessor > bitDepth);
-		double_array getdxdy(const Dep::Channel & ch, int grayLevel);
+		 IntensityEstimator(Component_vector_ptr componentVector,
+				    bptr < cms::measure::IntensityAnalyzerIF > analyzer,
+				    bptr < BitDepthProcessor > bitDepth);
+		virtual double_array getdxdy(const Dep::Channel & ch, int grayLevel);
+	    };
+
+	    /*
+	       色度調整幅度的預測, 透過量測
+	     */
+	    class MeasureEstimator:public ChromaticityAdjustEstimatorIF {
+	      private:
+		bptr < cms::measure::MeterMeasurement > mm;
+		Component_vector_ptr componentVector;
+		const int step;
+		void init();
+	      public:
+		 MeasureEstimator(Component_vector_ptr componentVector,
+				  bptr < cms::measure::MeterMeasurement > mm, int step);
+		virtual double_array getdxdy(const Dep::Channel & ch, int grayLevel);
 	    };
 	};
     };
