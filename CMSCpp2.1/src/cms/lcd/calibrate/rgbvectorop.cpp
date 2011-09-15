@@ -507,12 +507,18 @@ namespace cms {
 			switch (defect) {
 			case 3:{
 				double_array dxdy = adjustEstimator->getdxdy(Channel::B, grayLevel);
+				double xdividey = dy / dx;
+				bool adjustB = true;	//xdividey > 1.71 && xdividey < 2.28;
 				// dx + dy
 				if (pre2dx < suitGapx) {
 				    //¤ÓÀ½
-				    (*result)[grayLevel - 1]->B += 1;
+				    if (adjustB) {
+					(*result)[grayLevel - 1]->B += 1;
+				    }
 				} else {
-				    (*result)[grayLevel]->B -= 1;
+				    if (adjustB) {
+					(*result)[grayLevel]->B -= 1;
+				    }
 				}
 				break;
 			    }
@@ -520,7 +526,7 @@ namespace cms {
 
 				double_array dxdy = adjustEstimator->getdxdy(Channel::R, grayLevel);
 				//dx <0
-				if (pre2dx < suitGapx /*|| pre2dx < dxdy[0]*/) {
+				if (pre2dx < suitGapx /*|| pre2dx < dxdy[0] */ ) {
 				    //¤ÓÀ½
 				    (*result)[grayLevel - 1]->R -= 1;
 				} else {
@@ -532,7 +538,7 @@ namespace cms {
 
 				double_array dxdy = adjustEstimator->getdxdy(Channel::G, grayLevel);
 				//dy <0
-				if (pre2dy < suitGapy /*|| pre2dy < dxdy[1]*/) {
+				if (pre2dy < suitGapy /*|| pre2dy < dxdy[1] */ ) {
 				    //¤ÓÀ½
 				    (*result)[grayLevel - 1]->G -= 1;
 				} else {

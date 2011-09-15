@@ -324,7 +324,7 @@ object CCTLUTForm: TCCTLUTForm
       Width = 65
       Height = 21
       TabOrder = 11
-      Text = '0.0000'
+      Text = '0.0002'
     end
   end
   object GroupBox4: TGroupBox
