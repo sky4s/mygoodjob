@@ -124,25 +124,30 @@ namespace cms {
 		bptr < BitDepthProcessor > bitDepth;
 		double dimFixThreshold;
 		//double suitGap;
-		double suitGapx, suitGapy;
+		const double suitGapx, suitGapy;
+		double targetGapx, targetGapy;
 		Component_vector_ptr componentVector;
 		 bptr < ChromaticityAdjustEstimatorIF > adjustEstimator;
 
-		static bool_array getDefectArray(double2D_ptr deltaxyValues, double threshold);
-		static bool_array getContinueDefectArray(double2D_ptr deltaxyValues,
-							 double threshold);
+		/*static bool_array getDefectArray(double2D_ptr deltaxyValues, double threshold);
+		   static bool_array getContinueDefectArray(double2D_ptr deltaxyValues,
+		   double threshold); */
 		static int getDefectType(bool dxdefect, bool dydefect);
 		static int_array getDefectTypeArray(double2D_ptr deltaxyValues, double thresholdx,
 						    double thresholdy);
 		static double2D_ptr getDeltaxyValues(Component_vector_ptr componentVector);
+		double_array getCoordinatorArray(int grayLevel, bool getCoordinatorX);
+		bool isSuitGap(double_array coordinatorArray);
 	      protected:
 		 RGB_vector_ptr getRendering(RGB_vector_ptr source);
 	      public:
-		/*DimDGLutFixOp(bptr < BitDepthProcessor > bitDepth, double dimFixThreshold,
-		   double suitGap, Component_vector_ptr componentVector); */
+
 		 DimDGLutFixOp(bptr < BitDepthProcessor > bitDepth, double dimFixThreshold,
 			       Component_vector_ptr componentVector,
 			       bptr < ChromaticityAdjustEstimatorIF > adjustEstimator);
+		enum DefectType {
+		    None, Type0, Type1, Type2, Type12, Type21, Type3, Type4
+		};
 	    };
 	};
     };

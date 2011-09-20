@@ -34,30 +34,11 @@ namespace cms {
 		};
 		 return result;
 	    };
-	    XYZ_vector_ptr DimDGLutGenerator::getTarget(XYZ_ptr startXYZ,
-							XYZ_ptr endXYZ,
-							double_vector_ptr luminanceGammaCurve) {
-		XYZ_vector_ptr targetXYZVector =
-		    DimTargetGenerator::getLinearTarget(startXYZ, endXYZ, luminanceGammaCurve);
-		 return targetXYZVector;
-	    };
-	    XYZ_vector_ptr DimDGLutGenerator::getTarget(XYZ_ptr startXYZ,
-							XYZ_ptr endXYZ,
-							double_vector_ptr
-							luminanceGammaCurve, double gamma) {
-		XYZ_vector_ptr targetXYZVector =
-		    DimTargetGenerator::getGammaTarget(startXYZ, endXYZ,
-						       luminanceGammaCurve,
-						       gamma);
-		return targetXYZVector;
-	    };
-	  DimDGLutGenerator::DimDGLutGenerator(Component_vector_ptr componentVector, bptr < IntensityAnalyzerIF > analyzer):componentVector(componentVector),
-		analyzer(analyzer)
-	    {
-	    };
-	    RGB_vector_ptr DimDGLutGenerator::
-		produce(XYZ_ptr targetWhite, double_vector_ptr luminanceGammaCurve, int under) {
-		return produce(targetWhite, luminanceGammaCurve, -1);
+
+	     DimDGLutGenerator::DimDGLutGenerator(Component_vector_ptr componentVector,
+						  bptr < IntensityAnalyzerIF >
+						  analyzer):componentVector(componentVector),
+		analyzer(analyzer) {
 	    };
 
 	    RGB_vector_ptr DimDGLutGenerator::
@@ -72,10 +53,10 @@ namespace cms {
 		int size = under - 1;
 		double_vector_ptr partGammaCurve = DoubleArray::getRangeCopy(luminanceGammaCurve,
 									     0, size);
-		//求目標值曲線
-		XYZ_vector_ptr targetXYZVector = gamma != -1 ?
-		    getTarget(blackXYZ, targetWhite, partGammaCurve, gamma)
-		    : getTarget(blackXYZ, targetWhite, partGammaCurve);
+		//求目標值曲線, 僅有dim部分
+		XYZ_vector_ptr targetXYZVector = (gamma != -1) ?
+		    DimTargetGenerator::getGammaTarget(blackXYZ, targetWhite, partGammaCurve, gamma)
+		    : DimTargetGenerator::getLinearTarget(blackXYZ, targetWhite, partGammaCurve);
 		STORE_XYZXY_VECTOE("target.xls", targetXYZVector);
 		//==============================================================
 		RGB_vector_ptr result(new RGB_vector());

@@ -15,9 +15,6 @@
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
 #pragma link "TOutputFileFrame"
-#pragma link "TOutputFileFrame"
-#pragma link "TOutputFileFrame"
-#pragma link "TOutputFileFrame"
 #pragma resource "*.dfm"
 TCCTLUTForm *CCTLUTForm;
 //---------------------------------------------------------------------------
