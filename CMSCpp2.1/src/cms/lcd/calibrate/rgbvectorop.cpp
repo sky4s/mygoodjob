@@ -634,23 +634,16 @@ namespace cms {
 		double x1 = coordinatorArray[1];
 		double x2 = coordinatorArray[2];
 		bool increase = x0 > x1 && x1 > x2;
-		bool x01gapOk = (x0 - x1) > suitGapx;
-		bool x12gapOk = (x1 - x2) > suitGapy;
+                //儘管可以符合suit gap很令人開心..但這卻很難
+		/*bool x01gapOk = (x0 - x1) > suitGapx;
+		   bool x12gapOk = (x1 - x2) > suitGapy; */
+		return increase;
 	    };
 	    /*DimDGLutFixOp::DimDGLutFixOp(bptr < BitDepthProcessor > bitDepth, double dimFixThreshold, double suitGap, Component_vector_ptr componentVector):bitDepth(bitDepth), dimFixThreshold(dimFixThreshold), suitGap(suitGap),
 	       componentVector(componentVector)
 	       {
 	       }; */
-	    DimDGLutFixOp::DimDGLutFixOp(bptr <
-					 BitDepthProcessor >
-					 bitDepth,
-					 double dimFixThreshold,
-					 Component_vector_ptr
-					 componentVector,
-					 bptr <
-					 ChromaticityAdjustEstimatorIF
-					 >
-					 adjustEstimator):bitDepth
+	  DimDGLutFixOp::DimDGLutFixOp(bptr < BitDepthProcessor > bitDepth, double dimFixThreshold, Component_vector_ptr componentVector, bptr < ChromaticityAdjustEstimatorIF > adjustEstimator):bitDepth
 		(bitDepth), dimFixThreshold(dimFixThreshold),
 		componentVector(componentVector), suitGapx(0.0004),
 		suitGapy(0.0008), adjustEstimator(adjustEstimator) {
