@@ -19,6 +19,8 @@ namespace cms {
 	    enum Domain {
 		CIExy, CIEuv, CIEuvPrime
 	    };
+	    static XYZ_ptr getTargetXYZ(double v1, double v2, double v3, Domain domain);
+	    static XYZ_ptr getTargetXYZ(double x, double y, double Y);
 
 	    class AdvancedDGLutGenerator:private DimDGLutGenerator, gui::event::WindowAdapter {
 	      private:
@@ -83,19 +85,18 @@ namespace cms {
 						  double brightGamma, int brightWidth);
 	      private:
 
-		static XYZ_vector_ptr getDimGammaTarget(double_vector_ptr
-							luminanceGammaCurve,
-							XYZ_ptr startXYZ,
-							XYZ_ptr endXYZ,
-							double dimGamma, int dimTurn);
+		/*static XYZ_vector_ptr getDimGammaTarget(double_vector_ptr
+		   luminanceGammaCurve,
+		   XYZ_ptr startXYZ,
+		   XYZ_ptr endXYZ,
+		   double dimGamma, int dimTurn); */
 
 		static XYZ_vector_ptr
 		    getBrightGammaTarget(double_vector_ptr luminanceGammaCurve,
 					 XYZ_ptr startXYZ, XYZ_ptr endXYZ, double brightGamma,
 					 int brightTurn, int brightWidth,
 					 bptr < BitDepthProcessor > bitDepth);
-		static XYZ_ptr getTargetXYZ(double v1, double v2, double v3, Domain domain);
-		static XYZ_ptr getTargetXYZ(double x, double y, double Y);
+
 		static bool isDuplicateBlue100(Component_vector_ptr componentVector);
 		RGB_vector_ptr produceDGLutMulti(XYZ_vector_ptr
 						 targetXYZVector,
@@ -138,10 +139,13 @@ namespace cms {
 						      XYZ_ptr endXYZ,
 						      double_vector_ptr
 						      luminanceGammaCurve, Domain domain);
-		static XYZ_vector_ptr getGammaTarget(XYZ_ptr startXYZ,
-						     XYZ_ptr endXYZ,
-						     double_vector_ptr
-						     luminanceGammaCurve, double gamma);
+
+		static XYZ_vector_ptr getTarget(XYZ_ptr startXYZ, XYZ_ptr endXYZ,
+						double_vector_ptr luminanceGammaCurve,
+						Domain domain, double gamma);
+		static XYZ_vector_ptr getTarget(XYZ_ptr startXYZ, XYZ_ptr endXYZ,
+						double_vector_ptr luminanceGammaCurve,
+						double gamma);
 	    };
 	};
     };

@@ -123,12 +123,17 @@ namespace cms {
 
 
 		RGB_ptr intensity = c->intensity;
+                if (null != intensity) {
 		(*values)
 		    [4] = _toString(intensity->R);
 		(*values)
 		    [5] = _toString(intensity->G);
 		(*values)
 		    [6] = _toString(intensity->B);
+                }
+                else {
+                  StringVector::setContent(values, "0", 3, 4, 5, 6);
+                }
 
 		//gamma 0~100
 		if (null != initialRGBGamma) {
