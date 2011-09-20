@@ -123,17 +123,16 @@ namespace cms {
 
 
 		RGB_ptr intensity = c->intensity;
-                if (null != intensity) {
-		(*values)
-		    [4] = _toString(intensity->R);
-		(*values)
-		    [5] = _toString(intensity->G);
-		(*values)
-		    [6] = _toString(intensity->B);
-                }
-                else {
-                  StringVector::setContent(values, "0", 3, 4, 5, 6);
-                }
+		if (null != intensity) {
+		    (*values)
+			[4] = _toString(intensity->R);
+		    (*values)
+			[5] = _toString(intensity->G);
+		    (*values)
+			[6] = _toString(intensity->B);
+		} else {
+		    StringVector::setContent(values, "0", 3, 4, 5, 6);
+		}
 
 		//gamma 0~100
 		if (null != initialRGBGamma) {
@@ -294,12 +293,16 @@ namespace cms {
 	    bptr < DBQuery > query = db->selectAll();
 	    while (query->hasNext()) {
 		string_vector_ptr result = query->nextResult();
-		double R = _toDouble((*result)[1]);
-		double G = _toDouble((*result)[2]);
-		double B = _toDouble((*result)[3]);
+		if (result->size() > 3 && (*result)[1].size() != 0) {
+		    double R = _toDouble((*result)[1]);
+		    double G = _toDouble((*result)[2]);
+		    double B = _toDouble((*result)[3]);
 
-		RGB_ptr rgb(new RGBColor(R, G, B, maxValue));
-		vector->push_back(rgb);
+		    RGB_ptr rgb(new RGBColor(R, G, B, maxValue));
+		    vector->push_back(rgb);
+		} else {
+		    break;
+		}
 	    };
 	    return vector;
 	};
