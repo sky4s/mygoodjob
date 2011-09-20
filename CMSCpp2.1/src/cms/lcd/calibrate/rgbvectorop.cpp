@@ -378,11 +378,11 @@ namespace cms {
 	       } */
 	    int DimDGLutFixOp::getDefectType(bool dxdefect, bool dydefect) {
 		if (dxdefect && dydefect) {
-		    return Type3;
-		} else if (dxdefect) {
-		    return Type1;
-		} else if (dydefect) {
 		    return Type2;
+		} else if (dxdefect) {
+		    return Type1x;
+		} else if (dydefect) {
+		    return Type1y;
 		} else {
 		    return None;
 		}
@@ -398,7 +398,7 @@ namespace cms {
 		// dy = 2
 		// dx + dy =3
 		for (int x = 1; x < size - 1; x++) {
-		    //辨識Type 1/2
+		    //辨識Type 1x/1y/2
 		    bool dx = (*deltaxyValues)[x][0] < thresholdx;
 		    bool dy = (*deltaxyValues)[x][1] < thresholdy;
 		    defectTypeArray[x] = getDefectType(dx, dy);
@@ -409,16 +409,24 @@ namespace cms {
 		    int thisType = defectTypeArray[x];
 		    int nextType = defectTypeArray[x + 1];
 		    int next2Type = defectTypeArray[x + 2];
-		    if (Type1 == thisType && Type2 == nextType && None == next2Type) {
+		    if ((Type1x == thisType || Type1y == thisType) && Type2 == nextType
+			&& None == next2Type) {
+			//12
 			defectTypeArray[x] = Type12;
 			defectTypeArray[x + 1] = None;
-		    } else if (Type2 == thisType && Type1 == nextType && None == next2Type) {
+		    } else if (Type2 == thisType && (Type1x == nextType || Type1y == nextType)
+			       && None == next2Type) {
+			//21
 			defectTypeArray[x] = Type21;
 			defectTypeArray[x + 1] = None;
-		    } else if (Type1 == thisType && Type1 == nextType && None == next2Type) {
+		    } else if ((Type1x == thisType || Type1y == thisType)
+			       && (Type1x == nextType || Type1y == nextType)
+			       && None == next2Type) {
+			//3
 			defectTypeArray[x] = Type3;
 			defectTypeArray[x + 1] = None;
 		    } else if (Type2 == thisType && Type2 == nextType && None == next2Type) {
+			//4
 			defectTypeArray[x] = Type4;
 			defectTypeArray[x + 1] = None;
 		    }
@@ -503,10 +511,10 @@ namespace cms {
 		    int nextdefect = defectTypeArray[x + 1];
 
 		    bool doDefectErase = false;
-		    if (Type1 == defect || Type2 == defect) {
+		    if (Type1x == defect || Type1y == defect) {
 			//若是x或y的defect, 相鄰不同type就進行處理
 			doDefectErase = defect != predefect && defect != nextdefect;
-		    } else if (Type3 == defect) {
+		    } else if (Type2 == defect) {
 			//若是x y皆須進行處理的type, 相鄰必須無defect
 			doDefectErase = (-1 == predefect) && (-1 == nextdefect);
 		    }
@@ -514,7 +522,7 @@ namespace cms {
 
 		    if (doDefectErase) {
 			//確定要消除defect
-			int grayLevel = size - x;
+			int grayLevel = size - x - 1;
 
 			double dx = (*deltaxyValues)[x][0];
 			double dy = (*deltaxyValues)[x][1];
@@ -526,10 +534,10 @@ namespace cms {
 
 
 			switch (defect) {
-			case Type3:{
+			case Type2:{
 				//type II
-				double_array dxdy = adjustEstimator->getdxdy(Channel::B, grayLevel);
-				double xdividey = dy / dx;
+				double_array dxdyofB = adjustEstimator->getdxdy(Channel::B, x);
+				//double xdividey = dy / dx;
 				bool adjustB = true;	//xdividey > 1.71 && xdividey < 2.28;
 				// dx + dy
 				if (pre2dx < suitGapx) {
@@ -544,11 +552,12 @@ namespace cms {
 				}
 				break;
 			    }
-			case Type1:{
+			case Type1x:{
 				//type I, dx
-				double_array dxdy = adjustEstimator->getdxdy(Channel::R, grayLevel);
+				double_array dxdy = adjustEstimator->getdxdy(Channel::R, x);
 				double_array coordinatorArray =
 				    getCoordinatorArray(grayLevel, true);
+				double dxOfR = dxdy[0];
 				//dx <0
 				if (pre2dx < suitGapx /*|| pre2dx < dxdy[0] */ ) {
 				    //太擠
@@ -558,11 +567,21 @@ namespace cms {
 				}
 				break;
 			    }
-			case Type2:{
+			case Type1y:{
 				//type I, dy
-				//double_array dxdy = adjustEstimator->getdxdy(Channel::G, grayLevel);
+				double_array dxdy = adjustEstimator->getdxdy(Channel::G, x);
+				double dyOfG = dxdy[1];
 				double_array coordinatorArray =
 				    getCoordinatorArray(grayLevel, false);
+				int suitAdjustGrayLevel =
+				    getSuitAdjustGrayLevel(grayLevel, dyOfG, coordinatorArray);
+
+				if (suitAdjustGrayLevel == grayLevel) {
+
+				} else {
+
+				}
+
 				//dy <0
 				if (pre2dy < suitGapy /*|| pre2dy < dxdy[1] */ ) {
 				    //太擠
@@ -580,6 +599,14 @@ namespace cms {
 		}
 		STORE_RGBVECTOR("5.3_afterFix.xls", result);
 		return result;
+	    };
+
+	    int DimDGLutFixOp::getSuitAdjustGrayLevel(int middleGrayLevel, double delta,
+						      double_array coordinatorArray) {
+		double_array case1 = DoubleArray::arraycopy(coordinatorArray, 3);
+		case1[1] += delta;
+		double_array case2 = DoubleArray::arraycopy(coordinatorArray, 3);
+		case2[2] -= delta;
 	    };
 	    double_array DimDGLutFixOp::getCoordinatorArray(int grayLevel, bool getCoordinatorX) {
 		int size = componentVector->size();

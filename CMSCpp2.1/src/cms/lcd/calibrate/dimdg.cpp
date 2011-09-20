@@ -55,7 +55,7 @@ namespace cms {
 									     0, size);
 		//求目標值曲線, 僅有dim部分
 		XYZ_vector_ptr targetXYZVector = (gamma != -1) ?
-		    DimTargetGenerator::getGammaTarget(blackXYZ, targetWhite, partGammaCurve, gamma)
+		    DimTargetGenerator::getTarget(blackXYZ, targetWhite, partGammaCurve, gamma)
 		    : DimTargetGenerator::getLinearTarget(blackXYZ, targetWhite, partGammaCurve);
 		STORE_XYZXY_VECTOE("target.xls", targetXYZVector);
 		//==============================================================

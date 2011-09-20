@@ -23,7 +23,7 @@ namespace cms {
 
 	Patch_ptr LCDTarget::getBlackPatch() {
 	    if (blackPatchIndex == -1) {
-		for (int x = 0; x < patchList->size(); x++) {
+		for (unsigned int x = 0; x < patchList->size(); x++) {
 		    Patch_ptr p = (*patchList)[x];
 		    RGB_ptr rgb = p->getRGB();
 		    if (rgb->isBlack()) {
@@ -38,7 +38,7 @@ namespace cms {
 	Patch_ptr LCDTarget::getBrightestPatch() {
 	    if (brightestPatchIndex == -1) {
 		double brightestY = 0;
-		for (int x = 0; x < patchList->size(); x++) {
+		for (unsigned int x = 0; x < patchList->size(); x++) {
 		    Patch_ptr p = (*patchList)[x];
 		    double Y = p->getXYZ()->Y;
 		    if (Y > brightestY) {
@@ -53,7 +53,7 @@ namespace cms {
 	Patch_ptr LCDTarget::getDarkestPatch() {
 	    if (darkestPatchIndex == -1) {
 		double darkestY = std::numeric_limits < double >::max();
-		for (int x = 0; x < patchList->size(); x++) {
+		for (unsigned int x = 0; x < patchList->size(); x++) {
 		    Patch_ptr p = (*patchList)[x];
 		    double Y = p->getXYZ()->Y;
 		    if (Y < darkestY) {
@@ -76,7 +76,7 @@ namespace cms {
 	};
 	Patch_ptr LCDTarget::getWhitePatch() {
 	    if (whitePatchIndex == -1) {
-		for (int x = 0; x < patchList->size(); x++) {
+		for (unsigned int x = 0; x < patchList->size(); x++) {
 		    Patch_ptr p = (*patchList)[x];
 		    RGB_ptr rgb = p->getRGB();
 		    if (rgb->isWhite()) {

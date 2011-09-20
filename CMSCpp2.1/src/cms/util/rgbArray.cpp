@@ -153,7 +153,7 @@ namespace cms {
 	    return true;
 	}
 	RGB_vector_ptr RGBVector::copyRange(RGB_vector_ptr rgbVector, int start, int end) {
-	    int size = rgbVector->size();
+	    //int size = rgbVector->size();
 	    RGB_vector_ptr result(new RGB_vector());
 	    for (int x = start; x <= end; x++) {
 		result->push_back((*rgbVector)[x]);

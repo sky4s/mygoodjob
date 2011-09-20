@@ -737,9 +737,6 @@ namespace cms {
 		//==============================================================
 
 		if (dimFix) {
-		    //STORE_RGBVECTOR("7.1_before_dimFix.xls", result);
-		    //result = dimDGLutFix(result);
-		    //STORE_RGBVECTOR("7.2_after_dimFix.xls", result);
 		    RGB_vector_ptr measureCode = RGBVector::copyRange(dglut, 0, dimFixEnd);
 		    //50¶q¨ì0
 		    measureCode = RGBVector::reverse(measureCode);
@@ -863,7 +860,7 @@ namespace cms {
 
 		xyY_ptr xyY = getxyY(intensity);
 		xyY_ptr xyY2 = getxyY(intensity2);
-		double dx = xyY->x - xyY2->x;
+		//double dx = xyY->x - xyY2->x;
 		double_array dxdy = DoubleArray::minus(xyY->getxyValues(), xyY2->getxyValues(), 2);
 		return dxdy;
 		//dgLutGenerator.
@@ -878,31 +875,35 @@ namespace cms {
 	    //=================================================================
 	    void MeasureEstimator::init() {
 		if (true == MainForm->linkCA210) {
-		    componentVector = Component_vector_ptr(new Component_vector());
+		    storeComponentVector = Component_vector_ptr(new Component_vector());
 		} else {
 		    DGLutFile dglut("MeasureEstimator.xls", ReadOnly);
-		    componentVector = dglut.getComponentVector();
+		    storeComponentVector = dglut.getComponentVector();
 		    index = 0;
 		}
 	    };
 	  MeasureEstimator::MeasureEstimator(Component_vector_ptr componentVector, bptr < cms::measure::MeterMeasurement > mm, bptr < BitDepthProcessor > bitDepth):componentVector(componentVector), mm(mm),
-		bitDepth(bitDepth)
+		bitDepth(bitDepth), size(componentVector->size())
 	    {
 		init();
 	    };
 	  MeasureEstimator::MeasureEstimator(Component_vector_ptr componentVector, bptr < cms::measure::IntensityAnalyzerIF > analyzer, bptr < BitDepthProcessor > bitDepth):componentVector(componentVector), mm(analyzer->getMeterMeasurement()),
-		bitDepth(bitDepth)
+		bitDepth(bitDepth), size(componentVector->size())
 	    {
 		init();
 	    };
-	    double_array MeasureEstimator::getdxdy(const Dep::Channel & ch, int grayLevel) {
+	    double_array MeasureEstimator::getdxdy(const Dep::Channel & ch, int componentIndex) {
 		if (true == MainForm->linkCA210) {
-		    Component_ptr c = (*componentVector)[grayLevel];
+		    //int x = size - grayLevel;
+                    //int grayLevel = size - x - 1;
+
+		    Component_ptr c = (*componentVector)[componentIndex];
 		    RGB_ptr dg0 = c->rgb->clone();
+		    dg0->changeMaxValue(bitDepth->getFRCAbilityBit());
 		    Patch_ptr p0 = mm->measure(dg0, nil_string_ptr);
 
 		    RGB_ptr dg1 = dg0->clone();
-		    dg1->changeMaxValue(bitDepth->getFRCAbilityBit());
+		    //dg1->changeMaxValue(bitDepth->getFRCAbilityBit());
 		    dg1->addValue(ch, 1);
 		    Patch_ptr p1 = mm->measure(dg1, nil_string_ptr);
 
@@ -912,13 +913,13 @@ namespace cms {
 
 		    Component_ptr c0(new Component(dg0, nil_RGB_ptr, XYZ0));
 		    Component_ptr c1(new Component(dg1, nil_RGB_ptr, XYZ1));
-		    componentVector->push_back(c0);
-		    componentVector->push_back(c1);
+		    storeComponentVector->push_back(c0);
+		    storeComponentVector->push_back(c1);
 
 		    return delta;
 		} else {
-		    Component_ptr c0 = (*componentVector)[index++];
-		    Component_ptr c1 = (*componentVector)[index++];
+		    Component_ptr c0 = (*storeComponentVector)[index++];
+		    Component_ptr c1 = (*storeComponentVector)[index++];
 		    XYZ_ptr XYZ0 = c0->XYZ;
 		    XYZ_ptr XYZ1 = c1->XYZ;
 		    double_array delta = getdxdy(XYZ0, XYZ1);
@@ -934,7 +935,8 @@ namespace cms {
 	    };
 
 	    MeasureEstimator::~MeasureEstimator() {
-		STORE_COMPONENT("MeasureEstimator.xls", componentVector);
+		STORE_COMPONENT("MeasureEstimator.xls", storeComponentVector);
+		mm->close();
 	    };
 	    //=================================================================
 	};

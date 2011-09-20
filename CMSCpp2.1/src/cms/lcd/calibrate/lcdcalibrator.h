@@ -266,10 +266,12 @@ namespace cms {
 	      private:
 		bptr < cms::measure::MeterMeasurement > mm;
 		Component_vector_ptr componentVector;
+		Component_vector_ptr storeComponentVector;
 		 bptr < BitDepthProcessor > bitDepth;
 		void init();
 		int index;
 		double_array getdxdy(XYZ_ptr XYZ0, XYZ_ptr XYZ1);
+		const int size;
 	      public:
 		 MeasureEstimator(Component_vector_ptr componentVector,
 				  bptr < cms::measure::MeterMeasurement > mm,
@@ -277,7 +279,7 @@ namespace cms {
 		 MeasureEstimator(Component_vector_ptr componentVector,
 				  bptr < cms::measure::IntensityAnalyzerIF > analyzer,
 				  bptr < BitDepthProcessor > bitDepth);
-		virtual double_array getdxdy(const Dep::Channel & ch, int grayLevel);
+		virtual double_array getdxdy(const Dep::Channel & ch, int componentIndex);
 		~MeasureEstimator();
 	    };
 	};

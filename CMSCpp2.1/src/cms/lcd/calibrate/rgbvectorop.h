@@ -136,6 +136,8 @@ namespace cms {
 		static int_array getDefectTypeArray(double2D_ptr deltaxyValues, double thresholdx,
 						    double thresholdy);
 		static double2D_ptr getDeltaxyValues(Component_vector_ptr componentVector);
+		int getSuitAdjustGrayLevel(int middleGrayLevel, double delta,
+					   double_array coordinatorArray);
 		double_array getCoordinatorArray(int grayLevel, bool getCoordinatorX);
 		bool isSuitGap(double_array coordinatorArray);
 	      protected:
@@ -146,7 +148,7 @@ namespace cms {
 			       Component_vector_ptr componentVector,
 			       bptr < ChromaticityAdjustEstimatorIF > adjustEstimator);
 		enum DefectType {
-		    None, Type0, Type1, Type2, Type12, Type21, Type3, Type4
+		    None, Type0, Type1x, Type1y, Type2, Type12, Type21, Type3, Type4
 		};
 	    };
 	};

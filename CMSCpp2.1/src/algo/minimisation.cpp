@@ -38,8 +38,8 @@ namespace algo {
 	    throw IllegalArgumentException("start->size() != step->size()");
 	}
 	mf_ptr = mf;
-        
-	if (this->n != start->size()) {
+
+	if (this->n != (int) start->size()) {
 	    if (xmin != null) {
 		delete[]xmin;
 		delete[]cstep;
