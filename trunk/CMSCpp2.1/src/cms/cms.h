@@ -69,7 +69,7 @@ namespace cms {
 	    class ComponentPLRelation;
 
 	    class DimDGLutGenerator;
-	    class DimTargetGenerator;
+	    //class DimTargetGenerator;
 	    namespace algo {
 		class ChromaticAroundAlgorithm;
 		class CIEuv1960NearestAlgorithm;

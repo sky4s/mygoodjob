@@ -507,10 +507,16 @@ namespace cms {
 		//==============================================================
 		// dim區段
 		//==============================================================
-		XYZ_vector_ptr dimResult = getDimGammaTarget(luminanceGammaCurve,
-							     startXYZ,
-							     targetXYZ, dimGamma,
-							     dimTurn);
+		double_vector_ptr dimGammaCurve =
+		    DoubleArray::getRangeCopy(luminanceGammaCurve, 0, dimTurn - 1);
+		XYZ_vector_ptr dimResult =
+		    DimTargetGenerator::getLinearTarget(startXYZ, targetXYZ, dimGammaCurve);
+		/*XYZ_vector_ptr dimResult = getDimGammaTarget(luminanceGammaCurve,
+		   startXYZ,
+		   targetXYZ, dimGamma,
+		   dimTurn); */
+		STORE_XYZXY_VECTOE("target_dim.xls", dimResult);
+		//STORE_XYZXY_VECTOE("target_dim2.xls", dimResult2);
 		int dimSize = dimResult->size();
 		for (int x = 0; x < dimSize; x++) {
 		    (*result)[x] = (*dimResult)[x];
@@ -588,6 +594,7 @@ namespace cms {
 		for (int x = 0; x < dimSize; x++) {
 		    (*result)[x] = (*dimResult)[x];
 		}
+		//DimTargetGenerator::getLinearTarget(startXYZ,middleXYZ,
 		//==============================================================
 
 		//==============================================================
@@ -603,8 +610,7 @@ namespace cms {
 						      ratio);
 		    XYZ_ptr XYZ = getTargetXYZ(v1, v2, Y);;
 		    (*result)[x] = XYZ;
-		    //(*result)[x] = getTargetXYZ(v1, v2, Y);
-		    //(*result)[x] = getTargetXYZ(dimendValues[0], dimendValues[1], Y);
+
 		}
 		//==============================================================
 
@@ -637,7 +643,7 @@ namespace cms {
 		for (int x = 0; x < dimTurn; x++) {
 		    double normal = ((double) x) / dimbase;
 		    double gamma = Math::pow(normal, dimGamma) * dimbase;
-		    //在CIEuv'上線性變化
+		    //在CIExy上線性變化
 		    double u = Interpolation::linear(0, dimbase,
 						     dimendValues[0],
 						     dimstartValues[0],
@@ -732,10 +738,13 @@ namespace cms {
 		switch (domain) {
 		case CIExy:
 		    targetxyY.setValues(targetValues);
+		    break;
 		case CIEuv:
 		    targetxyY.setuvYValues(targetValues);
+		    break;
 		case CIEuvPrime:
 		    targetxyY.setuvPrimeYValues(targetValues);
+		    break;
 		};
 		return targetxyY.toXYZ();
 	    };
@@ -816,7 +825,7 @@ namespace cms {
 	    //==================================================================
 	    // DimTargetGenerator.
 	    //==================================================================
-	    const Domain DimTargetGenerator::UsageColorSpace = CIEuvPrime;
+	    const Domain DimTargetGenerator::UsageColorSpace = CIExy;
 	    XYZ_vector_ptr DimTargetGenerator::
 		getLinearTarget(XYZ_ptr startXYZ, XYZ_ptr endXYZ,
 				double_vector_ptr luminanceGammaCurve) {
@@ -829,12 +838,18 @@ namespace cms {
 		double_array startuvValues;
 		double_array enduvValues;
 		switch (domain) {
+		case CIExy:
+		    startuvValues = startXYZ->getxyValues();
+		    enduvValues = endXYZ->getxyValues();
+		    break;
 		case CIEuv:
 		    startuvValues = startXYZ->getuvValues();
 		    enduvValues = endXYZ->getuvValues();
+		    break;
 		case CIEuvPrime:
 		    startuvValues = startXYZ->getuvPrimeValues();
 		    enduvValues = endXYZ->getuvPrimeValues();
+		    break;
 		};
 		XYZ_vector_ptr result(new XYZ_vector(size));
 		for (int x = 0; x < size; x++) {
@@ -851,10 +866,15 @@ namespace cms {
 		    targetValues[2] = Y;
 		    xyY_ptr targetxyY(new CIExyY());
 		    switch (domain) {
+		    case CIExy:
+			targetxyY->setValues(targetValues);
+			break;
 		    case CIEuv:
 			targetxyY->setuvYValues(targetValues);
+			break;
 		    case CIEuvPrime:
 			targetxyY->setuvPrimeYValues(targetValues);
+			break;
 		    };
 		    (*result)[x] = targetxyY->toXYZ();
 		};
@@ -864,7 +884,7 @@ namespace cms {
 	    XYZ_vector_ptr DimTargetGenerator::
 		getGammaTarget(XYZ_ptr startXYZ, XYZ_ptr endXYZ,
 			       double_vector_ptr luminanceGammaCurve, double gamma) {
-		/* TODO : getGammaTarget */
+		throw new UnsupportedOperationException();
 	    };
 	    //==================================================================
 	};

@@ -486,7 +486,7 @@ namespace cms {
 		    startCheckPos : keepMaxLumiOver;
 		//int minOverParameter = startCheckPos;
 		advgenerator->setPanelRegulator(panelRegulator);
-		int step = 4;
+		const int step = 4;
 
 		bptr < IntensityAnalyzerIF > analyzer = fetcher->getAnalyzer();
 		//analyzer若沒有設定過target color, 會使此步驟失效
@@ -768,32 +768,12 @@ namespace cms {
 		    }
 		    STORE_COMPONENT("5.0_dimComponent.xls", componentVector);
 
-		    bptr < cms::measure::IntensityAnalyzerIF > analyzer = fetcher->getAnalyzer();
-		    bptr < MeterMeasurement > mm = analyzer->getMeterMeasurement();
 		    bptr < ChromaticityAdjustEstimatorIF >
-			chromaticityEstimator(new IntensityEstimator
-					      (componentVector, fetcher->getAnalyzer(), bitDepth));
-		    //預測調整幅度, 丟進來的componentVector應該是lut bit depth
-
-
-
-		    /*for (int x = 49; x >= 0; x -= 25) {
-		       double_array dxdy = chromaticityEstimator->getdxdy(Channel::R, x);
-		       double dx = dxdy[0];
-		       double dy = dxdy[1];
-
-		       dxdy = chromaticityEstimator->getdxdy(Channel::G, x);
-		       dx = dxdy[0];
-		       dy = dxdy[1];
-
-		       dxdy = chromaticityEstimator->getdxdy(Channel::B, x);
-		       dx = dxdy[0];
-		       dy = dxdy[1];
-
-		       int y = x;
-		       } */
-
-		    //const double SuitGap = 0.0009;
+			/*chromaticityEstimator(new IntensityEstimator
+			   (componentVector, fetcher->getAnalyzer(), bitDepth)); */
+			chromaticityEstimator(new
+					      MeasureEstimator(componentVector,
+							       fetcher->getAnalyzer(), bitDepth));
 		    bptr < DGLutOp >
 			dimfix(new
 			       DimDGLutFixOp(bitDepth, dimFixThreshold, componentVector,
@@ -897,13 +877,64 @@ namespace cms {
 	    // MeasureEstimator
 	    //=================================================================
 	    void MeasureEstimator::init() {
+		if (true == MainForm->linkCA210) {
+		    componentVector = Component_vector_ptr(new Component_vector());
+		} else {
+		    DGLutFile dglut("MeasureEstimator.xls", ReadOnly);
+		    componentVector = dglut.getComponentVector();
+		    index = 0;
+		}
 	    };
-	    MeasureEstimator::MeasureEstimator(Component_vector_ptr componentVector,
-					       bptr < cms::measure::MeterMeasurement > mm,
-					       int step):componentVector(componentVector), mm(mm),
-		step(step) {
+	  MeasureEstimator::MeasureEstimator(Component_vector_ptr componentVector, bptr < cms::measure::MeterMeasurement > mm, bptr < BitDepthProcessor > bitDepth):componentVector(componentVector), mm(mm),
+		bitDepth(bitDepth)
+	    {
+		init();
+	    };
+	  MeasureEstimator::MeasureEstimator(Component_vector_ptr componentVector, bptr < cms::measure::IntensityAnalyzerIF > analyzer, bptr < BitDepthProcessor > bitDepth):componentVector(componentVector), mm(analyzer->getMeterMeasurement()),
+		bitDepth(bitDepth)
+	    {
+		init();
 	    };
 	    double_array MeasureEstimator::getdxdy(const Dep::Channel & ch, int grayLevel) {
+		if (true == MainForm->linkCA210) {
+		    Component_ptr c = (*componentVector)[grayLevel];
+		    RGB_ptr dg0 = c->rgb->clone();
+		    Patch_ptr p0 = mm->measure(dg0, nil_string_ptr);
+
+		    RGB_ptr dg1 = dg0->clone();
+		    dg1->changeMaxValue(bitDepth->getFRCAbilityBit());
+		    dg1->addValue(ch, 1);
+		    Patch_ptr p1 = mm->measure(dg1, nil_string_ptr);
+
+		    XYZ_ptr XYZ0 = p0->getXYZ();
+		    XYZ_ptr XYZ1 = p1->getXYZ();
+		    double_array delta = getdxdy(XYZ0, XYZ1);
+
+		    Component_ptr c0(new Component(dg0, nil_RGB_ptr, XYZ0));
+		    Component_ptr c1(new Component(dg1, nil_RGB_ptr, XYZ1));
+		    componentVector->push_back(c0);
+		    componentVector->push_back(c1);
+
+		    return delta;
+		} else {
+		    Component_ptr c0 = (*componentVector)[index++];
+		    Component_ptr c1 = (*componentVector)[index++];
+		    XYZ_ptr XYZ0 = c0->XYZ;
+		    XYZ_ptr XYZ1 = c1->XYZ;
+		    double_array delta = getdxdy(XYZ0, XYZ1);
+		    return delta;
+		}
+	    };
+
+	    double_array MeasureEstimator::getdxdy(XYZ_ptr XYZ0, XYZ_ptr XYZ1) {
+		double_array xy0Values = XYZ0->getxyValues();
+		double_array xy1Values = XYZ1->getxyValues();
+		double_array delta = DoubleArray::minus(xy1Values, xy0Values, 2);
+		return delta;
+	    };
+
+	    MeasureEstimator::~MeasureEstimator() {
+		STORE_COMPONENT("MeasureEstimator.xls", componentVector);
 	    };
 	    //=================================================================
 	};
