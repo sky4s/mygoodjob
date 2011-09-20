@@ -33,8 +33,6 @@ namespace cms {
 		case CIExy:
 		    targetxyY.setValues(targetValues);
 		    break;
-
-
 		    case CIEuv:targetxyY.setuvYValues(targetValues);
 		    break;
 
@@ -43,6 +41,7 @@ namespace cms {
 		};
 		 return targetxyY.toXYZ();
 	    };
+
 	    XYZ_ptr getTargetXYZ(double x, double y, double Y) {
 		CIExyY targetxyY;
 		 targetxyY.x = x;
@@ -51,6 +50,7 @@ namespace cms {
 		XYZ_ptr XYZ = targetxyY.toXYZ();
 		 return XYZ;
 	    };
+
 	    //==================================================================
 	    // AdvancedDGLutGenerator
 	    //==================================================================
@@ -423,13 +423,10 @@ namespace cms {
 		return result;
 	    };
 
-	    Component_ptr AdvancedDGLutGenerator::getFRCAbilityComponent(int grayLevel, RGB_ptr rgb,
-									 bptr <
-									 cms::measure::
-									 IntensityAnalyzerIF >
-									 analyzer,
-									 Component_vector_ptr
-									 componentVector) {
+	    Component_ptr AdvancedDGLutGenerator::
+		getFRCAbilityComponent(int grayLevel, RGB_ptr rgb,
+				       bptr < cms::measure::IntensityAnalyzerIF > analyzer,
+				       Component_vector_ptr componentVector) {
 		XYZ_ptr rXYZ = analyzer->getPrimaryColor(Channel::R)->toXYZ();
 		XYZ_ptr gXYZ = analyzer->getPrimaryColor(Channel::G)->toXYZ();
 		XYZ_ptr bXYZ = analyzer->getPrimaryColor(Channel::B)->toXYZ();
