@@ -104,6 +104,8 @@ namespace cms {
 
 		//求目標值曲線
 		if (true == autoParameter) {
+		    //auto目前沒有人使用...我也忘記用意了=.=
+		    //試驗性質吧...當作沒這東西..
 		    int turn = brightTurn;
 		    int width = -1;
 		    for (; turn >= 100; turn--) {
@@ -766,6 +768,9 @@ namespace cms {
 	    void AdvancedDGLutGenerator::setAutoParameter(bool autoParameter) {
 		this->autoParameter = autoParameter;
 	    };
+	    /*
+	       試驗性質
+	     */
 	    bool AdvancedDGLutGenerator::
 		checkTargetXYZVector(XYZ_vector_ptr targetXYZVector,
 				     int start, int end, double deltaabThreshold) {

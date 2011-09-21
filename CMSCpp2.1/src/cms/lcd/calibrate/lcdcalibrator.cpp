@@ -445,6 +445,8 @@ namespace cms {
 			generator.getLuminanceGammaCurve(gammaCurve, maxLuminance, minLuminance);
 		    //==============================================================================
 		} else {
+		    //以最大亮度為Target White的進入點
+		    //componentVector是事先量好的(呼叫此function之前)
 		    advgenerator =
 			bptr < AdvancedDGLutGenerator >
 			(new AdvancedDGLutGenerator(componentVector, fetcher, bitDepth));
@@ -499,6 +501,7 @@ namespace cms {
 
 		for (; overParameter >= minOverParameter; overParameter -= step) {
 		    int width = bitDepth->getEffectiveLevel() - overParameter;
+		    //計算得到目標值
 		    targetXYZVector =
 			advgenerator->getTargetXYZVector(targetWhite, nativeWhite,
 							 luminanceGammaCurve,
@@ -506,7 +509,18 @@ namespace cms {
 							 overParameter,
 							 dimgammaParameter,
 							 brightgammaParameter, width);
+		    //從目標值算出DGLut
 		    dglut = advgenerator->produce(targetXYZVector);
+
+		    //先從DGLut算出灰階的dx dy
+		    //再從這樣的結果微調目標值
+		    Component_vector_ptr dimComponentVector = getDimComponentVector(dglut);
+
+		    bptr < ChromaticityAdjustEstimatorIF >
+			chromaticityEstimator(new
+					      MeasureEstimator(dimComponentVector,
+							       fetcher->getAnalyzer(), bitDepth));
+		    //double_array dxdyofB = chromaticityEstimator->getdxdy(Channel::B, x);
 
 		    if (autoKeepMaxLumiParameter) {
 			//檢查的時候, 還是需要將整個流程跑完才做檢查.
@@ -676,6 +690,25 @@ namespace cms {
 		}
 	    };
 
+	    Component_vector_ptr LCDCalibrator::getDimComponentVector(RGB_vector_ptr dglut) {
+		RGB_vector_ptr measureCode = RGBVector::copyRange(dglut, 0, dimFixEnd);
+		//50量到0
+		measureCode = RGBVector::reverse(measureCode);
+		RGBVector::quantization(measureCode, bitDepth->getFRCAbilityBit());
+
+		bptr < MeasureCondition > measureCondition(new MeasureCondition(measureCode));
+		Component_vector_ptr componentVector;	// = fetcher->fetchComponent(measureCondition);
+		if (true == MainForm->linkCA210) {
+		    //有連上ca210就量測取得
+		    componentVector = fetcher->fetchComponent(measureCondition);
+		} else {
+		    //否則就挖之前的檔案來當量測數據
+		    DGLutFile dglut("5.0_dimComponent.xls", ReadOnly);
+		    componentVector = dglut.getComponentVector();
+		}
+		STORE_COMPONENT("5.0_dimComponent.xls", componentVector);
+		return componentVector;
+	    };
 	    RGB_vector_ptr LCDCalibrator::getDGLutOpResult(RGB_vector_ptr dglut,
 							   DGLutGenerator & generator) {
 		//==============================================================
@@ -737,37 +770,10 @@ namespace cms {
 		//==============================================================
 
 		if (dimFix) {
-		    RGB_vector_ptr measureCode = RGBVector::copyRange(dglut, 0, dimFixEnd);
 		    //50量到0
-		    measureCode = RGBVector::reverse(measureCode);
-		    RGBVector::quantization(measureCode, bitDepth->getFRCAbilityBit());
-
-		    bptr < MeasureCondition > measureCondition(new MeasureCondition(measureCode));
-
-
-		    Component_vector_ptr componentVector;	// = fetcher->fetchComponent(measureCondition);
-		    if (true == MainForm->linkCA210) {
-			//有連上ca210就量測取得
-			componentVector = fetcher->fetchComponent(measureCondition);
-		    } else {
-			//否則就挖之前的檔案來當量測數據
-			DGLutFile dglut("5.0_dimComponent.xls", ReadOnly);
-			componentVector = dglut.getComponentVector();
-			/*int size = componentVector->size();
-			   for (int x = 0; x < size; x++) {
-			   //用量測的rgb替換掉, 因為load出來的rgb都是錯誤的
-			   //因為STORE_COMPONENT的時候儲存的gray level只取最小值, 沒辦法存到r g b
-			   RGB_ptr rgb = (*measureCode)[x];
-			   Component_ptr c = (*componentVector)[x];
-			   c->rgb = rgb;
-			   } */
-
-		    }
-		    STORE_COMPONENT("5.0_dimComponent.xls", componentVector);
+		    Component_vector_ptr componentVector = getDimComponentVector(dglut);
 
 		    bptr < ChromaticityAdjustEstimatorIF >
-			/*chromaticityEstimator(new IntensityEstimator
-			   (componentVector, fetcher->getAnalyzer(), bitDepth)); */
 			chromaticityEstimator(new
 					      MeasureEstimator(componentVector,
 							       fetcher->getAnalyzer(), bitDepth));
@@ -895,7 +901,7 @@ namespace cms {
 	    double_array MeasureEstimator::getdxdy(const Dep::Channel & ch, int componentIndex) {
 		if (true == MainForm->linkCA210) {
 		    //int x = size - grayLevel;
-                    //int grayLevel = size - x - 1;
+		    //int grayLevel = size - x - 1;
 
 		    Component_ptr c = (*componentVector)[componentIndex];
 		    RGB_ptr dg0 = c->rgb->clone();

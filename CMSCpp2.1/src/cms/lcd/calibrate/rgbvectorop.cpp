@@ -392,7 +392,7 @@ namespace cms {
 		int size = deltaxyValues->dim1();
 		int_array defectTypeArray(new int[size]);
 		for (int x = 0; x < size; x++) {
-		    defectTypeArray[x] = -1;
+		    defectTypeArray[x] = None;
 		}
 		// dx = 1
 		// dy = 2
@@ -419,9 +419,7 @@ namespace cms {
 			//21
 			defectTypeArray[x] = Type21;
 			defectTypeArray[x + 1] = None;
-		    } else if ((Type1x == thisType || Type1y == thisType)
-			       && (Type1x == nextType || Type1y == nextType)
-			       && None == next2Type) {
+		    } else if ((thisType == nextType) && (Type1x == thisType || Type1y == thisType)) {
 			//3
 			defectTypeArray[x] = Type3;
 			defectTypeArray[x + 1] = None;
@@ -516,7 +514,7 @@ namespace cms {
 			doDefectErase = defect != predefect && defect != nextdefect;
 		    } else if (Type2 == defect) {
 			//若是x y皆須進行處理的type, 相鄰必須無defect
-			doDefectErase = (-1 == predefect) && (-1 == nextdefect);
+			doDefectErase = (None == predefect) && (None == nextdefect);
 		    }
 
 
@@ -537,33 +535,81 @@ namespace cms {
 			case Type2:{
 				//type II
 				double_array dxdyofB = adjustEstimator->getdxdy(Channel::B, x);
-				//double xdividey = dy / dx;
-				bool adjustB = true;	//xdividey > 1.71 && xdividey < 2.28;
-				// dx + dy
-				if (pre2dx < suitGapx) {
-				    //太擠
-				    if (adjustB) {
-					(*result)[grayLevel - 1]->B += 1;
+				double dxofB = -dxdyofB[0];
+				double dyofB = -dxdyofB[1];
+				double_array xCoordinatorArray =
+				    getCoordinatorArray(grayLevel, true);
+				double_array yCoordinatorArray =
+				    getCoordinatorArray(grayLevel, false);
+
+				int suitAdjustGrayLevel_1 = getSuitAdjustGrayLevel(grayLevel, dxofB,
+										   xCoordinatorArray);
+				int suitAdjustGrayLevel_2 = getSuitAdjustGrayLevel(grayLevel, dyofB,
+										   yCoordinatorArray);
+
+
+				if (suitAdjustGrayLevel_1 == suitAdjustGrayLevel_2
+				    && -1 != suitAdjustGrayLevel_1) {
+				    //調整方向相同的case, B就可以解決
+				    if (suitAdjustGrayLevel_1 == grayLevel) {
+					(*result)[grayLevel]->B -= 1;	//1
+				    } else if (suitAdjustGrayLevel_1 == (grayLevel - 1)) {
+					(*result)[grayLevel - 1]->B += 1;	//3
 				    }
 				} else {
-				    if (adjustB) {
-					(*result)[grayLevel]->B -= 1;
+				    double_array dxdyR = adjustEstimator->getdxdy(Channel::R, x);
+				    double_array dxdyG = adjustEstimator->getdxdy(Channel::G, x);
+
+				    int suitAdjustGrayLevel_3R =
+					getSuitAdjustGrayLevel(grayLevel, dxdyR[0],
+							       xCoordinatorArray);
+				    int suitAdjustGrayLevel_3G =
+					getSuitAdjustGrayLevel(grayLevel, dxdyG[1],
+							       yCoordinatorArray);
+
+				    if (suitAdjustGrayLevel_3R == grayLevel) {
+					(*result)[grayLevel]->R += 1;	//4
+				    } else if (suitAdjustGrayLevel_3R == (grayLevel - 1)) {
+					(*result)[grayLevel - 1]->R -= 1;	//2
+				    }
+
+				    if (suitAdjustGrayLevel_3G == grayLevel) {
+					(*result)[grayLevel]->G += 1;	//2
+				    } else if (suitAdjustGrayLevel_3G == (grayLevel - 1)) {
+					(*result)[grayLevel - 1]->G -= 1;	//4
 				    }
 				}
+
+				//double xdividey = dy / dx;
+				/*bool adjustB = true;  //xdividey > 1.71 && xdividey < 2.28;
+				   // dx + dy
+				   if (pre2dx < suitGapx) {
+				   //太擠
+				   if (adjustB) {
+				   (*result)[grayLevel - 1]->B += 1;
+				   }
+				   } else {
+				   if (adjustB) {
+				   (*result)[grayLevel]->B -= 1;
+				   }
+				   } */
 				break;
 			    }
 			case Type1x:{
 				//type I, dx
 				double_array dxdy = adjustEstimator->getdxdy(Channel::R, x);
+				double dxOfR = dxdy[0];
 				double_array coordinatorArray =
 				    getCoordinatorArray(grayLevel, true);
-				double dxOfR = dxdy[0];
-				//dx <0
-				if (pre2dx < suitGapx /*|| pre2dx < dxdy[0] */ ) {
-				    //太擠
-				    (*result)[grayLevel - 1]->R -= 1;
-				} else {
+				int suitAdjustGrayLevel =
+				    getSuitAdjustGrayLevel(grayLevel, dxOfR, coordinatorArray);
+
+				if (suitAdjustGrayLevel == grayLevel) {
 				    (*result)[grayLevel]->R += 1;
+				} else if (suitAdjustGrayLevel == (grayLevel - 1)) {
+				    (*result)[grayLevel - 1]->R -= 1;
+				} else if (-1 == suitAdjustGrayLevel) {
+				    //沒輒=.=
 				}
 				break;
 			    }
@@ -577,17 +623,12 @@ namespace cms {
 				    getSuitAdjustGrayLevel(grayLevel, dyOfG, coordinatorArray);
 
 				if (suitAdjustGrayLevel == grayLevel) {
-
-				} else {
-
-				}
-
-				//dy <0
-				if (pre2dy < suitGapy /*|| pre2dy < dxdy[1] */ ) {
-				    //太擠
-				    (*result)[grayLevel - 1]->G -= 1;
-				} else {
 				    (*result)[grayLevel]->G += 1;
+
+				} else if (suitAdjustGrayLevel == (grayLevel - 1)) {
+				    (*result)[grayLevel - 1]->G -= 1;
+				} else if (-1 == suitAdjustGrayLevel) {
+				    //沒輒=.=
 				}
 				break;
 			    }
@@ -605,12 +646,42 @@ namespace cms {
 						      double_array coordinatorArray) {
 		double_array case1 = DoubleArray::arraycopy(coordinatorArray, 3);
 		case1[1] += delta;
+
 		double_array case2 = DoubleArray::arraycopy(coordinatorArray, 3);
 		case2[2] -= delta;
+
+		double c10 = case1[0];
+		double c11 = case1[1];
+		double c12 = case1[2];
+		double c20 = case2[0];
+		double c21 = case2[1];
+		double c22 = case2[2];
+
+		if (isSuitGap(case1)) {
+		    return middleGrayLevel;
+		} else if (isSuitGap(case2)) {
+		    return middleGrayLevel - 1;
+		} else {
+		    return -1;
+		}
+	    };
+
+	    /*
+	       coordinatorArray為遞減的 N -> N-1 -> N-2
+	     */
+	    bool DimDGLutFixOp::isSuitGap(double_array coordinatorArray) {
+		double x0 = coordinatorArray[0];
+		double x1 = coordinatorArray[1];
+		double x2 = coordinatorArray[2];
+		bool increase = x0 > x1 && x1 > x2;
+		//儘管可以符合suit gap很令人開心..但這卻很難
+		/*bool x01gapOk = (x0 - x1) > suitGapx;
+		   bool x12gapOk = (x1 - x2) > suitGapy; */
+		return increase;
 	    };
 	    double_array DimDGLutFixOp::getCoordinatorArray(int grayLevel, bool getCoordinatorX) {
 		int size = componentVector->size();
-		int x = size - grayLevel;
+		int x = size - grayLevel - 1;
 		Component_ptr p0 = (*componentVector)[x - 1];	//亮的
 		Component_ptr p1 = (*componentVector)[x];
 		Component_ptr p2 = (*componentVector)[x + 1];
@@ -626,27 +697,56 @@ namespace cms {
 		return coordinatorArray;
 	    };
 
-	    /*
-	       coordinatorArray為遞減的 N -> N-1 -> N-2
-	     */
-	    bool DimDGLutFixOp::isSuitGap(double_array coordinatorArray) {
-		double x0 = coordinatorArray[0];
-		double x1 = coordinatorArray[1];
-		double x2 = coordinatorArray[2];
-		bool increase = x0 > x1 && x1 > x2;
-                //儘管可以符合suit gap很令人開心..但這卻很難
-		/*bool x01gapOk = (x0 - x1) > suitGapx;
-		   bool x12gapOk = (x1 - x2) > suitGapy; */
-		return increase;
-	    };
+
 	    /*DimDGLutFixOp::DimDGLutFixOp(bptr < BitDepthProcessor > bitDepth, double dimFixThreshold, double suitGap, Component_vector_ptr componentVector):bitDepth(bitDepth), dimFixThreshold(dimFixThreshold), suitGap(suitGap),
 	       componentVector(componentVector)
 	       {
 	       }; */
 	  DimDGLutFixOp::DimDGLutFixOp(bptr < BitDepthProcessor > bitDepth, double dimFixThreshold, Component_vector_ptr componentVector, bptr < ChromaticityAdjustEstimatorIF > adjustEstimator):bitDepth
 		(bitDepth), dimFixThreshold(dimFixThreshold),
-		componentVector(componentVector), suitGapx(0.0004),
-		suitGapy(0.0008), adjustEstimator(adjustEstimator) {
+		componentVector(componentVector), adjustEstimator(adjustEstimator) {
+	    };
+	    //==================================================================
+	    DimDGLutFixOp2::DimDGLutFixOp2(bptr < BitDepthProcessor > bitDepth,
+					   double dimFixThreshold,
+					   Component_vector_ptr componentVector,
+					   bptr < ChromaticityAdjustEstimatorIF >
+					   adjustEstimator):DimDGLutFixOp(bitDepth, dimFixThreshold,
+									  componentVector,
+									  adjustEstimator) {
+	    };
+
+
+	    RGB_vector_ptr DimDGLutFixOp2::getRendering(RGB_vector_ptr source) {
+		//source是0~255, 要先轉成frc
+		STORE_RGBVECTOR("5.1_before_fix.xls", source);
+		RGB_vector_ptr result = RGBVector::deepClone(source);
+		RGBVector::changeMaxValue(result, bitDepth->getFRCAbilityBit());
+		STORE_RGBVECTOR("5.2_change2FRC.xls", result);
+
+		double2D_ptr deltaxyValues = getDeltaxyValues(componentVector);
+		int size = componentVector->size();
+
+		double threshold = dimFixThreshold;
+		bool_array xDefectArray = getDefectArray(deltaxyValues, threshold, 0);
+		bool_array yDefectArray = getDefectArray(deltaxyValues, threshold, 1);
+
+		return result;
+	    };
+
+	    bool_array DimDGLutFixOp2::getDefectArray(double2D_ptr deltaxyValues, double threshold,
+						      int index) {
+		int size = deltaxyValues->dim1();
+		bool_array defectArray(new bool[size]);
+		for (int x = 0; x < size; x++) {
+		    defectArray[x] = false;
+		}
+
+		for (int x = 0; x < size; x++) {
+		    defectArray[x] = (*deltaxyValues)[x][index] < threshold;
+		}
+
+		return defectArray;
 	    };
 	    //==================================================================
 	};

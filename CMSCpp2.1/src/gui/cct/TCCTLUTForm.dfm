@@ -288,7 +288,7 @@ object CCTLUTForm: TCCTLUTForm
       Height = 21
       ImeName = #26085#25991#36664#20837#31995#32113' (MS-IME2002)'
       TabOrder = 7
-      Text = '51'
+      Text = '50'
     end
     object CheckBox_AverageDimDG: TCheckBox
       Left = 26
@@ -324,7 +324,7 @@ object CCTLUTForm: TCCTLUTForm
       Width = 65
       Height = 21
       TabOrder = 11
-      Text = '0.0002'
+      Text = '0.0001'
     end
   end
   object GroupBox4: TGroupBox
