@@ -118,20 +118,16 @@ namespace cms {
 		 KeepNativeWhiteAdvancedOp(bptr < BitDepthProcessor > bitDepth, int over,
 					   bool compensationR);
 	    };
-
+	    //=================================================================
 	    class DimDGLutFixOp:public DGLutOp {
-	      private:
+	      protected:
 		bptr < BitDepthProcessor > bitDepth;
 		double dimFixThreshold;
-		//double suitGap;
-		const double suitGapx, suitGapy;
-		double targetGapx, targetGapy;
+		//const double suitGapx, suitGapy;
+		//double targetGapx, targetGapy;
 		Component_vector_ptr componentVector;
 		 bptr < ChromaticityAdjustEstimatorIF > adjustEstimator;
 
-		/*static bool_array getDefectArray(double2D_ptr deltaxyValues, double threshold);
-		   static bool_array getContinueDefectArray(double2D_ptr deltaxyValues,
-		   double threshold); */
 		static int getDefectType(bool dxdefect, bool dydefect);
 		static int_array getDefectTypeArray(double2D_ptr deltaxyValues, double thresholdx,
 						    double thresholdy);
@@ -140,10 +136,9 @@ namespace cms {
 					   double_array coordinatorArray);
 		double_array getCoordinatorArray(int grayLevel, bool getCoordinatorX);
 		bool isSuitGap(double_array coordinatorArray);
-	      protected:
-		 RGB_vector_ptr getRendering(RGB_vector_ptr source);
-	      public:
 
+		RGB_vector_ptr getRendering(RGB_vector_ptr source);
+	      public:
 		 DimDGLutFixOp(bptr < BitDepthProcessor > bitDepth, double dimFixThreshold,
 			       Component_vector_ptr componentVector,
 			       bptr < ChromaticityAdjustEstimatorIF > adjustEstimator);
@@ -151,6 +146,17 @@ namespace cms {
 		    None, Type0, Type1x, Type1y, Type2, Type12, Type21, Type3, Type4
 		};
 	    };
+	    //=================================================================
+	    class DimDGLutFixOp2:public DimDGLutFixOp {
+	      protected:
+		RGB_vector_ptr getRendering(RGB_vector_ptr source);
+		bool_array getDefectArray(double2D_ptr deltaxyValues, double threshold, int index);
+	      public:
+		 DimDGLutFixOp2(bptr < BitDepthProcessor > bitDepth, double dimFixThreshold,
+				Component_vector_ptr componentVector,
+				bptr < ChromaticityAdjustEstimatorIF > adjustEstimator);
+	    };
+	    //=================================================================
 	};
     };
 }
