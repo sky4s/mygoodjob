@@ -29,6 +29,7 @@ TMainForm *MainForm;
 __fastcall TMainForm::TMainForm(TComponent * Owner):TForm(Owner),
 linkCA210(!FileExists(DEBUG_FILE)), newFunction(FileExists(DEBUG_NEWFUNC_FILE))
 {
+    connectCA210ByThread = true;
     //StatusBar1->SimplePanel = true;
 }
 
@@ -358,10 +359,20 @@ void TMainForm::initCA210Meter()
 	meter = bptr < Meter > (new CA210());
 	mm = bptr < MeterMeasurement > (new MeterMeasurement(meter, false));
 	mm->setWaitTimes(this->getInterval());
+
+	if (connectCA210ByThread) {
+	    stopProgress(MainForm->ProgressBar1);
+	    Enabled = true;
+	    ca210Thread->Terminate();
+	    delete ca210Thread;
+	    ca210Thread = null;
+	}
+
+	StatusBar1->Panels->Items[1]->Text = "CA-210 Connected!";
     }
     catch(EOleException & ex) {
 	ShowMessage
-	    ("CA210 cannot be linked or unsupported version of CA-SDK (CA-SDK v4.10 needed).");
+	    ("CA210 cannot be linked or unsupported version of CA-SDK (CA-SDK v4.10 up needed).");
     }
 };
 
@@ -1189,6 +1200,10 @@ bptr < i2c::TCONControl > TMainForm::getTCONControl()
 {
     return control;
 };
+bool TMainForm::isTCONInput()
+{
+    return RadioButton_TCON->Checked;
+};
 
 void __fastcall TMainForm::RadioButton_PCTCONClick(TObject * Sender)
 {
@@ -1238,24 +1253,23 @@ void __fastcall TMainForm::ComboBox_DGLUTTypeChange(TObject * Sender)
 
 void TMainForm::showProgress(TProgressBar * progress)
 {
-    if (null != thread) {
-	thread->Terminate();
-	delete thread;
+    if (null != progressThread) {
+	progressThread->Terminate();
+	delete progressThread;
 
     }
-    //thread->Terminate();
     progress->Visible = true;
-    thread = new ProgressThread(false, progress);
-    thread->Resume();
+    progressThread = new ProgressThread(false, progress);
+    progressThread->Resume();
 };
 void TMainForm::stopProgress(TProgressBar * progress)
 {
 
-    if (null != thread) {
-	thread->Terminate();
+    if (null != progressThread) {
+	progressThread->Terminate();
 	progress->Visible = false;
-	delete thread;
-	thread = null;
+	delete progressThread;
+	progressThread = null;
     }
 };
 
@@ -1296,31 +1310,32 @@ void __fastcall ProgressThread::Execute()
 void __fastcall TMainForm::FormActivate(TObject * Sender)
 {
     if (true == linkCA210) {
+	if (connectCA210ByThread) {
+	    class CA210Thread:public TThread {
+	      protected:
+		void __fastcall Execute() {
+		    MainForm->StatusBar1->Panels->Items[1]->Text = "CA-210 Connecting...";
 
-	class CA210Thread:public TThread {
-	  protected:
-	    void __fastcall Execute() {
-		//MainForm->StatusBar1->SimpleText = "CA-210 Connecting...";
-		MainForm->StatusBar1->Panels->Items[1]->Text = "CA-210 Connecting...";
-
-		MainForm->Enabled = false;
-		MainForm->initCA210Meter();
-		MainForm->stopProgress(MainForm->ProgressBar1);
-		MainForm->Enabled = true;
-		//MainForm->StatusBar1->SimpleText = "CA-210 Connected!";
-		MainForm->StatusBar1->Panels->Items[1]->Text = "CA-210 Connected!";
+		    MainForm->Enabled = false;
+		    MainForm->initCA210Meter();
+		    /*MainForm->stopProgress(MainForm->ProgressBar1);
+		       MainForm->Enabled = true;
+		       MainForm->StatusBar1->Panels->Items[1]->Text = "CA-210 Connected!"; */
+		};
+	      public:
+	      __fastcall CA210Thread(bool CreateSuspended):TThread(CreateSuspended) {
+		};
 	    };
-	  public:
-	  __fastcall CA210Thread(bool CreateSuspended):TThread(CreateSuspended) {
-	    };
-	};
 
 
-	showProgress(ProgressBar1);
-	//memory leakage...but..懶的鳥他, 反正程式關閉的時候,heap就一併清掉
-	CA210Thread *thread = new CA210Thread(false);
-	//改用thread去啟動ca-210, 這樣可以正常更新progress bar!
-	thread->Resume();
+	    showProgress(ProgressBar1);
+	    //memory leakage...but..懶的鳥他, 反正程式關閉的時候,heap就一併清掉
+	    ca210Thread = new CA210Thread(false);
+	    //改用thread去啟動ca-210, 這樣可以正常更新progress bar!
+	    ca210Thread->Resume();
+	} else {
+	    initCA210Meter();
+	}
     } else {
 	if (FileExists(METER_FILE)) {
 	    setDummyMeterFilename(METER_FILE);

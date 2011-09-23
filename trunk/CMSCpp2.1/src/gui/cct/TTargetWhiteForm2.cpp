@@ -195,83 +195,86 @@ void __fastcall TTargetWhiteForm2::Button_RunClick(TObject * Sender)
     RGB_ptr rgb(new RGBColor(rvalue, gvalue, bvalue, MaxValue::Int8Bit));
 
     bptr < IntensityAnalyzerIF > analyzer = MainForm->getAnalyzer();
-
-    MainForm->setMeterMeasurementWaitTimes();
-    MainForm->setAnalyzerToSourceChannel();
-
-    bool usemaxRGB = this->RadioButton_MaxRGB->Checked;
-    bool useRGBRatio = this->RadioButton_RGBRatio->Checked;
-    bool usexy = this->RadioButton_Targetxy->Checked;
-    bool moreAccurate = this->CheckBox_MoreAccurate->Checked;
-    bool avoidHookTV = true == usexy && this->CheckBox_AvoidHookTV->Checked;
-
-    if (avoidHookTV) {
-	//tv下的avoid hook
-	//1. 量測最大亮度點色度座標
-	//2. 找到反轉點
-	//3. 設定B為反轉點, 且保持不變
-	//4. 找到對應色度的RGB
-	if (maxZDGCode == -1) {
-	    //this->maxZDGCode = MeasureTool::getMaxZDGCode(MainForm->mm, bitDepth);
-	    Button_FindInverseB->Click();
-	}
-	rgb->B = maxZDGCode;
-    }
-
-    if (usemaxRGB) {
-	analyzer->setReferenceColorComment("Max RGB");
-    } else if (useRGBRatio) {
-	analyzer->setReferenceColorComment("RGB Ratio");
-    } else if (usexy) {
-	string comment = "Target x,y(" + string(Edit_CT->Text.c_str()) + "k)";
-	/*if (avoidHookTV) {
-	   comment = "Target x,y(Max RGB) with avoid Hook TV";
-	   } else {
-	   comment = "Target x,y(" + string(Edit_CT->Text.c_str()) + "k)";
-	   } */
-
-	analyzer->setReferenceColorComment(comment);
-	double targetx = this->Edit_targetx->Text.ToDouble();
-	double targety = this->Edit_targety->Text.ToDouble();
-	xyY_ptr xyY(new CIExyY(targetx, targety, 1));
-	bptr < WhitePointFinder > finder;
-	double maxCount = bitDepth->getMaxDigitalCount();
-	//已知xy, 求rgb
-	if (true == moreAccurate) {
-	    finder =
-		bptr < WhitePointFinder > (new WhitePointFinder(MainForm->mm, bitDepth, maxCount));
-	    MeasureWindow->addWindowListener(finder);
-	    rgb = finder->findRGB(xyY);
-	} else {
-	    finder =
-		bptr < StocktonWhitePointFinder > (new
-						   StocktonWhitePointFinder
-						   (MainForm->mm, bitDepth, rgb, maxCount, false));
-	    MeasureWindow->addWindowListener(finder);
-	    rgb = finder->findRGB(xyY);
-	}
-
-	if (null == rgb) {
-	    return;
-	}
-    }
-    //==========================================================================
-    // primary color的設定
-    //==========================================================================
-    RGB_ptr r(new RGBColor(MaxValue::Int8Bit));
-    RGB_ptr g(new RGBColor(MaxValue::Int8Bit));
-    RGB_ptr b(new RGBColor(MaxValue::Int8Bit));
-    r->R = rgb->R;
-    g->G = rgb->G;
-    b->B = rgb->B;
-    //==========================================================================
-
-    //==========================================================================
-    // 設定到ca-210去
-    //==========================================================================
-
-    bool tconinput = MainForm->RadioButton_TCON->Checked;
     try {
+
+	MainForm->setMeterMeasurementWaitTimes();
+	MainForm->setAnalyzerToSourceChannel();
+
+	bool usemaxRGB = this->RadioButton_MaxRGB->Checked;
+	bool useRGBRatio = this->RadioButton_RGBRatio->Checked;
+	bool usexy = this->RadioButton_Targetxy->Checked;
+	bool moreAccurate = this->CheckBox_MoreAccurate->Checked;
+	bool avoidHookTV = true == usexy && this->CheckBox_AvoidHookTV->Checked;
+
+	if (avoidHookTV) {
+	    //tv下的avoid hook
+	    //1. 量測最大亮度點色度座標
+	    //2. 找到反轉點
+	    //3. 設定B為反轉點, 且保持不變
+	    //4. 找到對應色度的RGB
+	    if (maxZDGCode == -1) {
+		//this->maxZDGCode = MeasureTool::getMaxZDGCode(MainForm->mm, bitDepth);
+		Button_FindInverseB->Click();
+	    }
+	    rgb->B = maxZDGCode;
+	}
+
+	if (usemaxRGB) {
+	    analyzer->setReferenceColorComment("Max RGB");
+	} else if (useRGBRatio) {
+	    analyzer->setReferenceColorComment("RGB Ratio");
+	} else if (usexy) {
+	    string comment = "Target x,y(" + string(Edit_CT->Text.c_str()) + "k)";
+	    /*if (avoidHookTV) {
+	       comment = "Target x,y(Max RGB) with avoid Hook TV";
+	       } else {
+	       comment = "Target x,y(" + string(Edit_CT->Text.c_str()) + "k)";
+	       } */
+
+	    analyzer->setReferenceColorComment(comment);
+	    double targetx = this->Edit_targetx->Text.ToDouble();
+	    double targety = this->Edit_targety->Text.ToDouble();
+	    xyY_ptr xyY(new CIExyY(targetx, targety, 1));
+	    bptr < WhitePointFinder > finder;
+	    double maxCount = bitDepth->getMaxDigitalCount();
+	    //已知xy, 求rgb
+	    if (true == moreAccurate) {
+		finder =
+		    bptr < WhitePointFinder >
+		    (new WhitePointFinder(MainForm->mm, bitDepth, maxCount));
+		MeasureWindow->addWindowListener(finder);
+		rgb = finder->findRGB(xyY);
+	    } else {
+		finder =
+		    bptr < StocktonWhitePointFinder > (new
+						       StocktonWhitePointFinder
+						       (MainForm->mm, bitDepth, rgb, maxCount,
+							false));
+		MeasureWindow->addWindowListener(finder);
+		rgb = finder->findRGB(xyY);
+	    }
+
+	    if (null == rgb) {
+		return;
+	    }
+	}
+	//==========================================================================
+	// primary color的設定
+	//==========================================================================
+	RGB_ptr r(new RGBColor(MaxValue::Int8Bit));
+	RGB_ptr g(new RGBColor(MaxValue::Int8Bit));
+	RGB_ptr b(new RGBColor(MaxValue::Int8Bit));
+	r->R = rgb->R;
+	g->G = rgb->G;
+	b->B = rgb->B;
+	//==========================================================================
+
+	//==========================================================================
+	// 設定到ca-210去
+	//==========================================================================
+
+	bool tconinput = MainForm->isTCONInput();
+
 	analyzer->setWaitTimes(5000);
 	stopMeasure = false;
 	measuring = true;
@@ -350,6 +353,7 @@ void __fastcall TTargetWhiteForm2::Button_RunClick(TObject * Sender)
     __finally {
 	stopMeasure = false;
 	MainForm->setMeterMeasurementWaitTimes();
+	analyzer.reset();
     }
 }
 
@@ -517,12 +521,12 @@ void __fastcall TTargetWhiteForm2::FormKeyPress(TObject * Sender, char &Key)
 }
 
 //---------------------------------------------------------------------------
-void __fastcall TTargetWhiteForm2::Button3Click(TObject * Sender)
+void __fastcall TTargetWhiteForm2::Button_ConnectClick(TObject * Sender)
 {
     if (MainForm->linkCA210) {
 	MainForm->connectMeter();
-	this->Button4->Enabled = true;
-	this->Button3->Enabled = false;
+	this->Button_Disconnect->Enabled = true;
+	this->Button_Connect->Enabled = false;
 	this->Button_Run->Enabled = true;
 	Button_ContinueMeasure->Enabled = true;
     }
@@ -530,14 +534,13 @@ void __fastcall TTargetWhiteForm2::Button3Click(TObject * Sender)
 
 //---------------------------------------------------------------------------
 
-void __fastcall TTargetWhiteForm2::Button4Click(TObject * Sender)
+void __fastcall TTargetWhiteForm2::Button_DisconnectClick(TObject * Sender)
 {
-    //MainForm->getAnalyzer();
     if (MainForm->linkCA210) {
 
 	MainForm->disconnectMeter();
-	this->Button4->Enabled = false;
-	this->Button3->Enabled = true;
+	this->Button_Disconnect->Enabled = false;
+	this->Button_Connect->Enabled = true;
 	this->Button_Run->Enabled = false;
 	Button_ContinueMeasure->Enabled = false;
 
