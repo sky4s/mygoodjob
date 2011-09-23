@@ -81,8 +81,8 @@ class TTargetWhiteForm2:public TForm, gui::event::WindowListener {
     TLabel *Label9;
     TLabel *Label16;
     TButton *Button_setMaxMatrix;
-    TButton *Button3;
-    TButton *Button4;
+    TButton *Button_Connect;
+    TButton *Button_Disconnect;
     TCheckBox *CheckBox_Lock;
     TCheckBox *CheckBox_AvoidHookTV;
     TEdit *Edit_InverseB;
@@ -111,8 +111,8 @@ class TTargetWhiteForm2:public TForm, gui::event::WindowListener {
     void __fastcall FormShow(TObject * Sender);
     void __fastcall Button_setMaxMatrixClick(TObject * Sender);
     void __fastcall FormKeyPress(TObject * Sender, char &Key);
-    void __fastcall Button3Click(TObject * Sender);
-    void __fastcall Button4Click(TObject * Sender);
+    void __fastcall Button_ConnectClick(TObject * Sender);
+    void __fastcall Button_DisconnectClick(TObject * Sender);
     void __fastcall Button_FindInverseBClick(TObject * Sender);
     void __fastcall Edit_InverseBClick(TObject * Sender);
     void __fastcall Button_ContinueMeasureClick(TObject * Sender);

@@ -523,7 +523,7 @@ namespace cms {
 		// dim°Ï¬q
 		//==============================================================
 		double_vector_ptr dimGammaCurve =
-		    DoubleArray::getRangeCopy(luminanceGammaCurve, 0, dimTurn - 1);
+		    DoubleArray::getRangeCopy(luminanceGammaCurve, 0, dimTurn);
 		XYZ_vector_ptr dimResult =
 		    DimTargetGenerator::getTarget(startXYZ, targetXYZ, dimGammaCurve, dimGamma);
 

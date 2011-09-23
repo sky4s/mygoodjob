@@ -113,6 +113,7 @@ namespace cms {
 		bool manualAccurateMode;
 		bool remapped;
 		double middleCCTRatio;
+		bool modifiedTarget;
 		//==============================================================
 
 	      public:
@@ -269,16 +270,22 @@ namespace cms {
 		bptr < cms::measure::MeterMeasurement > mm;
 		Component_vector_ptr componentVector;
 		Component_vector_ptr storeComponentVector;
+		RGB_vector_ptr dglut;
 		 bptr < BitDepthProcessor > bitDepth;
 		void init();
-		int index;
+		int storeIndex;
 		double_array getdxdy(XYZ_ptr XYZ0, XYZ_ptr XYZ1);
 		const int size;
+		RGB_ptr getMeasureBaseRGB(int index);
+		bool useComponentVector;
 	      public:
 		 MeasureEstimator(Component_vector_ptr componentVector,
 				  bptr < cms::measure::MeterMeasurement > mm,
 				  bptr < BitDepthProcessor > bitDepth);
 		 MeasureEstimator(Component_vector_ptr componentVector,
+				  bptr < cms::measure::IntensityAnalyzerIF > analyzer,
+				  bptr < BitDepthProcessor > bitDepth);
+		 MeasureEstimator(RGB_vector_ptr dglut,
 				  bptr < cms::measure::IntensityAnalyzerIF > analyzer,
 				  bptr < BitDepthProcessor > bitDepth);
 		virtual double_array getdxdy(const Dep::Channel & ch, int componentIndex);

@@ -206,8 +206,9 @@ class TMainForm:public TForm {
     const static char *CUSTOM;
     //==========================================================================
 
-    ProgressThread *thread;
-
+    ProgressThread *progressThread;
+    TThread *ca210Thread;
+    bool connectCA210ByThread;
   public:			// User declarations
     //==========================================================================
     // meter
@@ -239,6 +240,7 @@ class TMainForm:public TForm {
     // T-CON
     //==========================================================================
      bptr < i2c::TCONControl > getTCONControl();
+    bool isTCONInput();
     //==========================================================================
 
     //==========================================================================

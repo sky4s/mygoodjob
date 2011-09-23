@@ -1,6 +1,6 @@
 object TargetWhiteForm2: TTargetWhiteForm2
-  Left = 0
-  Top = 109
+  Left = 219
+  Top = 138
   Width = 929
   Height = 618
   Caption = 'TargetWhiteForm'
@@ -244,7 +244,7 @@ object TargetWhiteForm2: TTargetWhiteForm2
           Height = 60
           Caption = 'CA-210'
           TabOrder = 6
-          object Button3: TButton
+          object Button_Connect: TButton
             Left = 26
             Top = 12
             Width = 59
@@ -252,16 +252,16 @@ object TargetWhiteForm2: TTargetWhiteForm2
             Caption = 'Connect'
             Enabled = False
             TabOrder = 0
-            OnClick = Button3Click
+            OnClick = Button_ConnectClick
           end
-          object Button4: TButton
+          object Button_Disconnect: TButton
             Left = 91
             Top = 12
             Width = 72
             Height = 20
             Caption = 'Disconnect'
             TabOrder = 1
-            OnClick = Button4Click
+            OnClick = Button_DisconnectClick
           end
         end
         object Edit_InverseB: TEdit
