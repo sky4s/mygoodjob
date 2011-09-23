@@ -967,8 +967,7 @@ class property {
     property(const std::string & name, const boost::any & value):name_(name), value_(value) {
     } std::string name() const {
 	return name_;
-    }
-    boost::any & value() {
+    } boost::any & value() {
 	return value_;
     }
     friend bool operator<(const property & lhs, const property & rhs) {
@@ -1008,18 +1007,33 @@ void hsvTest()
 
 class AA {
   public:
-    virtual a() = 0;
+    double aa;
+    virtual a() {
+	cout << "a()" << endl;
+    };
+    AA(double aa):aa(aa) {
+    };
     AA() {
 	//a();
-}};
+    };
+    ~AA() {
+	cout << "~AA" << endl;
+    };
+};
 
 class BB:public AA {
   public:
+    BB(double aa):AA(aa * 2) {
+    };
     BB() {
 	a();
-    } virtual a() {
-	cout << "a()" << endl;
+    };
+    virtual a() {
+	cout << "b()" << endl;
     }
+    ~BB() {
+	cout << "~BB" << endl;
+    };
 };
 
 void virtualTry()
@@ -1297,6 +1311,21 @@ void auohsvTry()
 
 };
 
+void getAA(bptr < AA > aa)
+{
+//bptr < BB > bb(bptr < BB > (dynamic_cast < BB * >(aa.get()));
+    //AA *aa_ = aa.get();
+    BB *bb_ = dynamic_cast < BB * >(aa.get());
+    //bptr_ < BB > bb(bptr_ < BB > (bb_));
+    //BB *bb_ = dynamic_cast < BB * >(aa.get());
+    //bptr < BB > bb(bptr < BB > (bb_));
+    //bptr < BB > bb(bptr < BB > (dynamic_cast < BB * >(aa.get())));
+    //bptr_ < BB > bb(bptr_ < BB > (bb_));
+    bptr_ < BB > bb1(bb_);
+    bptr_ < BB > bb2(bptr_ < BB > (bb_));
+    //bptr_ < BB > bb2(new BB(4));
+}
+
 #pragma argsused
 int main(int argc, char *argv[])
 {
@@ -1389,7 +1418,9 @@ int main(int argc, char *argv[])
     //cout << 5 / 4 / 3. << endl;
     //cout << _toString("123") << endl;
     //nelminTry();
-    auohsvTry();
+    //auohsvTry();
+    bptr < BB > aa(new BB(3));
+    getAA(aa);
     cout << "end" << endl;
     getch();
 }

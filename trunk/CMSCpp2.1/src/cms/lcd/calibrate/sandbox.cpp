@@ -343,6 +343,8 @@ namespace cms {
 		RGB_vector_ptr result(new RGB_vector(size));
 		//==============================================================
 		//primary color¥u¯à¥Îtarget white~
+		MaxMatrixIntensityAnalyzer *aa = (MaxMatrixIntensityAnalyzer *) analyzer.get();
+		//xyY_ptr rxyY = analyzer->getPrimaryColor(Channel::R);
 		XYZ_ptr rXYZ = analyzer->getPrimaryColor(Channel::R)->toXYZ();
 		XYZ_ptr gXYZ = analyzer->getPrimaryColor(Channel::G)->toXYZ();
 		XYZ_ptr bXYZ = analyzer->getPrimaryColor(Channel::B)->toXYZ();
