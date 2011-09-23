@@ -38,6 +38,20 @@ namespace cms {
 		intensity(intensity), XYZ(XYZ), gamma(gamma) {
 
 	    };
+	    Component::Component(Component_ptr c) {
+		if (null != c->rgb) {
+		    this->rgb = c->rgb->clone();
+		}
+		if (null != c->intensity) {
+		    this->intensity = c->intensity->clone();
+		}
+		if (null != c->XYZ) {
+		    this->XYZ = c->XYZ->clone();
+		}
+		if (null != c->gamma) {
+		    this->gamma = c->gamma->clone();
+		}
+	    };
 	    //==================================================================
 
 

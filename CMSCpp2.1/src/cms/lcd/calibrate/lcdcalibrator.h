@@ -196,11 +196,9 @@ namespace cms {
 		RGB_vector_ptr newMethod(DGLutGenerator & generator,
 					 bptr < PanelRegulator > panelRegulato);
 
-		/*RGB_vector_ptr dimDGLutFix(RGB_vector_ptr original);
-		   bool_array getDefectArray(double2D_ptr deltaxyValues, double threshold);
-		   bool_array getContinueDefectArray(double2D_ptr deltaxyValues, double threshold); */
 
 		Component_vector_ptr getDimComponentVector(RGB_vector_ptr dglut);
+		void smoothDimComponentVector(Component_vector_ptr componentVector);
 		//==============================================================
 	      public:
 		static double_vector_ptr getGammaCurveVector(double gamma, int n, int

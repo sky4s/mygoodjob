@@ -36,6 +36,7 @@ namespace cms {
 #endif
 
 	    static void sleep(int waitTimes);
+	    static Component_vector_ptr copy(Component_vector_ptr src);
 	};
 
 	class StringVector {

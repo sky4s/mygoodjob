@@ -113,6 +113,19 @@ namespace cms {
 		Application->ProcessMessages();
 	    }
 	};
+
+	Component_vector_ptr Util::copy(Component_vector_ptr src) {
+	    using namespace cms::lcd::calibrate;
+	    int size = src->size();
+	    Component_vector_ptr result(new Component_vector(size));
+	    for (int x = 0; x < size; x++) {
+		Component_ptr c = (*src)[x];
+		Component_ptr newc(new Component(c));
+		(*result)[x] = newc;
+	    }
+
+	    return result;
+	};
 	//==========================================================================
 
 	string_vector_ptr StringVector::fromCString(int count, ...) {
