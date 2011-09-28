@@ -448,7 +448,7 @@ object CCTLUTForm: TCCTLUTForm
     Width = 84
     Height = 20
     Hint = 'Measure panel characteristic and produce CCT DG LUT.'
-    Caption = 'Measue&&Run'
+    Caption = 'Measure&&Run'
     ParentShowHint = False
     ShowHint = True
     TabOrder = 5

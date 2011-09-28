@@ -153,6 +153,9 @@ namespace math {
 	vectorcopy(M, j1, copy, 0, j2 - j1 + 1);
 	return copy;
     };
+    double_vector_ptr DoubleArray::copy(double_vector_ptr M) {
+	return getRangeCopy(M, 0, M->size() - 1);
+    };
 
     double1D_ptr DoubleArray::getRangeCopy(double1D_ptr M, int j1, int j2) {
 
@@ -489,6 +492,21 @@ namespace math {
 	    string_vector_ptr values = StringVector::fromString(1, v);
 	    excel->insert(values);
 	}
+    };
+
+    double_vector_ptr DoubleArray::loadFromExcel(const std::string & filename) {
+	SimpleExcelAccess xls(filename);
+	bptr < DBQuery > query = xls.retrieve();
+	double_vector_ptr result(new double_vector());
+
+	while (query->hasNext()) {
+	    string_vector_ptr strresult = query->nextResult();
+	    double_vector_ptr values = DBQuery::toDoubleVector(strresult);
+	    double v = (*values)[0];
+	    result->push_back(v);
+	}
+	return result;
+
     };
 #endif
 

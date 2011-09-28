@@ -502,27 +502,61 @@ namespace cms {
 							 brightgammaParameter, width);
 		    //從目標值算出DGLut
 		    dglut = advgenerator->produce(targetXYZVector);
-		    modifiedTarget = false;
-		    if (true == modifiedTarget && MainForm->isTCONInput()) {
+		    STORE_RGBVECTOR("3.1_org_dgcode.xls", dglut);
+		    modifiedTarget = true;
+		    //if (true == modifiedTarget && MainForm->isTCONInput()) {      4
+		    if (true == modifiedTarget
+			&& (true != MainForm->linkCA210 || MainForm->isTCONInput())) {
 			//先從DGLut算出灰階的dx dy
 			//再從這樣的結果微調目標值
 			//Component_vector_ptr dimComponentVector = getDimComponentVector(dglut);
 			RGB_vector_ptr measureCode = RGBVector::copyRange(dglut, 0, dimFixEnd);
 
-			bptr < ChromaticityAdjustEstimatorIF >
-			    chromaticityEstimator(new MeasureEstimator(measureCode,
-								       fetcher->getAnalyzer(),
-								       bitDepth));
-			double_vector_ptr dxofRVector(new double_vector());
-			double_vector_ptr dyofGVector(new double_vector());
-			for (int x = 1; x < dimFixEnd; x++) {
-			    double_array dxdyofR = chromaticityEstimator->getdxdy(Channel::R, x);
-			    double_array dxdyofG = chromaticityEstimator->getdxdy(Channel::G, x);
-			    dxofRVector->push_back(dxdyofR[0]);
-			    dyofGVector->push_back(dxdyofG[1]);
+			bool debug = false;
+			double_vector_ptr dxofBase, dyofBase, dxofR, dyofG;
+			if (!debug) {
+			    bptr < MeasureEstimator >
+				chromaticityEstimator(new MeasureEstimator(measureCode,
+									   fetcher->getAnalyzer(),
+									   bitDepth));
+			    chromaticityEstimator->measure(0, dimFixEnd);
+
+			    /*double_vector_ptr dxofBase = chromaticityEstimator->dxofBase;
+			       double_vector_ptr dyofBase = chromaticityEstimator->dyofBase;
+			       double_vector_ptr dxofR = chromaticityEstimator->dxofRVector;
+			       double_vector_ptr dyofG = chromaticityEstimator->dyofGVector; */
+			    dxofR = chromaticityEstimator->dxofRVector;
+			    dyofG = chromaticityEstimator->dyofGVector;
+			    dxofBase = chromaticityEstimator->dxofBase;
+			    dyofBase = chromaticityEstimator->dyofBase;
+
+			    STORE_DOUBLE_VECTOR("dxofR.xls", dxofR);
+			    STORE_DOUBLE_VECTOR("dyofG.xls", dyofG);
+			    STORE_DOUBLE_VECTOR("dxofBase.xls", dxofBase);
+			    STORE_DOUBLE_VECTOR("dyofBase.xls", dyofBase);
+			} else {
+			    dxofR = DoubleArray::loadFromExcel(DEBUG_DIR + _s("dxofR.xls"));
+			    dyofG = DoubleArray::loadFromExcel(DEBUG_DIR + _s("dyofG.xls"));
+			    dxofBase = DoubleArray::loadFromExcel(DEBUG_DIR + _s("dxofBase.xls"));
+			    dyofBase = DoubleArray::loadFromExcel(DEBUG_DIR + _s("dyofBase.xls"));
+
 			}
-			DoubleArray::storeToExcel("dxofR.xls", dxofRVector);
-			DoubleArray::storeToExcel("dyofG.xls", dyofGVector);
+
+			double_vector_ptr dxofBaseCopy = DoubleArray::copy(dxofBase);
+			double_vector_ptr dyofBaseCopy = DoubleArray::copy(dyofBase);
+
+			RGB_vector_ptr clone = RGBVector::deepClone(dglut);
+			RGBVector::changeMaxValue(clone, bitDepth->getLutMaxValue());
+			STORE_RGBVECTOR("3.2_lut_dgcode.xls", clone);
+			RGBVector::storeToText("3.2_lut_dgcode.txt", clone);
+
+			RGBVector::changeMaxValue(clone, bitDepth->getFRCAbilityBit());
+			STORE_RGBVECTOR("3.3_frc_dgcode.xls", clone);
+			fixReverse(dxofBaseCopy, dxofR, clone, Channel::R);
+			STORE_RGBVECTOR("3.4_r_reverse_fix_dgcode.xls", clone);
+			fixReverse(dyofBaseCopy, dyofG, clone, Channel::G);
+			STORE_RGBVECTOR("3.5_g_reverse_fix_dgcode.xls", clone);
+			dglut = clone;
 		    }
 
 		    if (autoKeepMaxLumiParameter) {
@@ -543,30 +577,59 @@ namespace cms {
 		}
 
 		keepMaxLumiOver = autoKeepMaxLumiParameter ? overParameter + step : keepMaxLumiOver;
-		STORE_RGBVECTOR("3_dgcode.xls", dglut);
+		RGBVector::changeMaxValue(dglut, MaxValue::Double255);
+		STORE_RGBVECTOR("3.9_dgcode.xls", dglut);
 		return dglut;
 		//==========================================================
 	    };
+	    void LCDCalibrator::fixReverse(double_vector_ptr deltaVector,
+					   double_vector_ptr deltaOfChVector,
+					   RGB_vector_ptr dglut, Dep::Channel ch) {
+		int size = deltaVector->size();
+		for (int x = 1; x < size - 1; x++) {
+		    double delta = (*deltaVector)[x];
+		    if (delta < 0) {
+			//有反轉, 就把反轉處之前全部-1
+			int a = 1;
+			for (int y = 1; y <= x; y++) {
+			    double delta = (*deltaVector)[y];
+			    double deltaOfCh = (*deltaOfChVector)[y];
+			    if ((delta - deltaOfCh) >= 0) {
+				RGB_ptr rgb = (*dglut)[y];
+				double value = rgb->getValue(ch);
+				value--;
+				rgb->setValue(ch, value);
+
+				delta -= deltaOfCh;	//減完有可能變負號! 要避免!
+				(*deltaVector)[y] = delta;
+
+				double nextdelta = (*deltaVector)[y + 1];
+				nextdelta += deltaOfCh;
+				(*deltaVector)[y + 1] = nextdelta;
+			    }
+			}
+			fixReverse(deltaVector, deltaOfChVector, dglut, ch);
+			return;
+		    }
+		}
+	    }
 
 	    RGB_vector_ptr LCDCalibrator::
-		oldMethod(DGLutGenerator & generator, bptr < PanelRegulator > panelRegulator,
+		oldMethod(DGLutGenerator & generator,
+			  bptr < PanelRegulator > panelRegulator,
 			  const MaxValue & quantizationBit) {
 		//==========================================================
 		// 老方法
 		//==========================================================
 		RGBGamma_ptr rgbgamma = generator.getRGBGamma(gammaCurve);
 		initialRGBGamma = rgbgamma->clone();
-
 		STORE_RGBGAMMA("1_rgbgamma_org.xls", rgbgamma);
-
-
 		/* TODO : bIntensityGain要確認 */
 		//老實講調intensity我覺得是很爛的作法
 		if (bIntensityGain != 1.0) {
 		    //重新產生目標gamma curve
 		    bptr < BIntensityGainOp >
 			bgain(new BIntensityGainOp(bIntensityGain, 236, bitDepth));
-
 		    RGBGammaOp gammaop;
 		    gammaop.setSource(rgbgamma);
 		    gammaop.addOp(bgain);
@@ -587,7 +650,6 @@ namespace cms {
 		}
 		RGBVector::quantization(dglut, quantizationBit);
 		//==============================================================
-
 		if (correct == Correct::P1P2) {
 		    //==========================================================
 		    //p1p2第一階段, 對gamma做調整
@@ -596,11 +658,9 @@ namespace cms {
 		    RGBGammaOp gammaop;
 		    gammaop.setSource(rgbgamma);
 		    gammaop.addOp(p1p2);
-
 		    //產生修正後的gamma2(若沒有p1p2,則為原封不動)
 		    rgbgamma = gammaop.createInstance();
 		    STORE_RGBGAMMA("4.0_rgbgamma_p1p2.xls", rgbgamma);
-
 		    //從目標gamma curve產生dg code, 此處是傳入normal gammaCurve
 		    dglut = generator.getCCTDGLut(rgbgamma);
 		    //量化
@@ -608,8 +668,6 @@ namespace cms {
 		    RGBVector::quantization(dglut, quantizationBit);
 		    STORE_RGBVECTOR("4.2_dgcode_p1p2g.xls", dglut);
 		    //==========================================================
-
-
 		    //==========================================================
 		    //p1p2第二階段, 對dg code調整
 		    //==========================================================
@@ -626,14 +684,13 @@ namespace cms {
 		return dglut;
 		//==========================================================
 	    };
-
 	    RGB_vector_ptr LCDCalibrator::getGammaDGLut(bptr < MeasureCondition > measureCondition) {
 		this->measureCondition = measureCondition;
-
 		if (false == rgbIndepGamma && null == gammaCurve) {
 		    throw new IllegalStateException("null == gammaCurve");
-		} else if (true == rgbIndepGamma
-			   && (null == rgammaCurve || null == ggammaCurve || null == bgammaCurve)) {
+		} else
+		    if (true == rgbIndepGamma
+			&& (null == rgammaCurve || null == ggammaCurve || null == bgammaCurve)) {
 		    throw new
 			IllegalStateException
 			("null == rgammaCurve || null == ggammaCurve || null == bgammaCurve");
@@ -648,25 +705,21 @@ namespace cms {
 		} else {
 		    double_vector_ptr luminanceVector = fetchLuminanceVector();
 		    STORE_DOUBLE_VECTOR("o_fetch.xls", luminanceVector);
-
 		    if (luminanceVector == null) {
 			return RGB_vector_ptr((RGB_vector *) null);
 		    }
 
 		    DGLutGenerator generator(luminanceVector);
 		    dglut = generator.getGammaDGLut(gammaCurve);
-
 		}
 		//量化
 		MaxValue quantizationBit = bitDepth->getLutMaxValue();
 		RGBVector::quantization(dglut, quantizationBit);
 		//調整max value
 		RGBVector::changeMaxValue(dglut, bitDepth->getLutMaxValue());
-
 		this->dglut = dglut;
 		return dglut;
 	    };
-
 	    bptr < DGLutFile >
 		LCDCalibrator::storeDGLutFile(const std::string & filename, RGB_vector_ptr dglut) {
 		//砍掉已存在的
@@ -676,7 +729,6 @@ namespace cms {
 		storeDGLutFile(dglut, file);
 		return file;
 	    };
-
 	    void LCDCalibrator::storeDGLutFile(RGB_vector_ptr dglut,
 					       bptr < cms::colorformat::DGLutFile > dglutFile) {
 		DGLutProperty property(this);
@@ -692,13 +744,11 @@ namespace cms {
 		    dglutFile->setTargetXYZVector(targetXYZVector);
 		}
 	    };
-
 	    Component_vector_ptr LCDCalibrator::getDimComponentVector(RGB_vector_ptr dglut) {
 		RGB_vector_ptr measureCode = RGBVector::copyRange(dglut, 0, dimFixEnd);
 		//50量到0
 		measureCode = RGBVector::reverse(measureCode);
 		RGBVector::quantization(measureCode, bitDepth->getFRCAbilityBit());
-
 		bptr < MeasureCondition > measureCondition(new MeasureCondition(measureCode));
 		Component_vector_ptr componentVector;	// = fetcher->fetchComponent(measureCondition);
 		if (true == MainForm->linkCA210) {
@@ -712,7 +762,6 @@ namespace cms {
 		STORE_COMPONENT("5.0_dimComponent.xls", componentVector);
 		return componentVector;
 	    };
-
 	    void LCDCalibrator::smoothDimComponentVector(Component_vector_ptr componentVector) {
 		bptr < cms::measure::IntensityAnalyzerIF > analyzer = fetcher->getAnalyzer();
 		/*bptr < cms::measure::MaxMatrixIntensityAnalyzer > mmanalyzer =
@@ -721,21 +770,16 @@ namespace cms {
 		MaxMatrixIntensityAnalyzer *manalyzer =
 		    dynamic_cast < MaxMatrixIntensityAnalyzer * >(analyzer.get());
 		int size = componentVector->size();
-
 		if (null != manalyzer) {
 		    for (int gl = 1; gl < dimFixEnd; gl++) {
 			int x = size - 1 - gl;
-
 			//for (int x = 1; x < dimFixEnd - 1; x++) {
-
 			Component_ptr c0 = (*componentVector)[x + 1];
 			Component_ptr c1 = (*componentVector)[x];
 			Component_ptr c2 = (*componentVector)[x - 1];
-
 			XYZ_ptr XYZ0 = c0->XYZ;
 			XYZ_ptr XYZ1 = c1->XYZ;
 			XYZ_ptr XYZ2 = c2->XYZ;
-
 			xyY_ptr xyY0(new CIExyY(XYZ0));
 			xyY_ptr xyY1(new CIExyY(XYZ1));
 			xyY_ptr xyY2(new CIExyY(XYZ2));
@@ -747,8 +791,8 @@ namespace cms {
 		    }
 		}
 	    };
-	    RGB_vector_ptr LCDCalibrator::getDGLutOpResult(RGB_vector_ptr dglut,
-							   DGLutGenerator & generator) {
+	    RGB_vector_ptr LCDCalibrator::
+		getDGLutOpResult(RGB_vector_ptr dglut, DGLutGenerator & generator) {
 		//==============================================================
 		// DG Code Op block
 		//==============================================================
@@ -786,8 +830,8 @@ namespace cms {
 			//最後還是要對DG做一次smooth
 			bptr < DGLutOp >
 			    nativeWhiteAdv(new
-					   KeepNativeWhiteAdvancedOp(bitDepth, keepMaxLumiOver,
-								     false));
+					   KeepNativeWhiteAdvancedOp(bitDepth,
+								     keepMaxLumiOver, false));
 			dgop.addOp(nativeWhiteAdv);
 		    }
 		    break;
@@ -873,6 +917,8 @@ namespace cms {
 		double_array dxdy = DoubleArray::minus(xyY->getxyValues(), xyY2->getxyValues(), 2);
 		return dxdy;
 	    };
+	    double_array IntensityEstimator::getRdxGdy(int componentIndex) {
+	    }
 	    //=================================================================
 	    // MeasureEstimator
 	    //=================================================================
@@ -890,13 +936,13 @@ namespace cms {
 		useComponentVector(true) {
 		init();
 	    };
-	  MeasureEstimator::MeasureEstimator(Component_vector_ptr componentVector, bptr < cms::measure::IntensityAnalyzerIF > analyzer, bptr < BitDepthProcessor > bitDepth):componentVector(componentVector), mm(analyzer->getMeterMeasurement()),
-		bitDepth(bitDepth), size(componentVector->size()),
-		useComponentVector(true) {
+	  MeasureEstimator::MeasureEstimator(Component_vector_ptr componentVector, bptr < cms::measure::IntensityAnalyzerIF > analyzer, bptr < BitDepthProcessor > bitDepth):componentVector(componentVector),
+		mm(analyzer->getMeterMeasurement()), bitDepth(bitDepth),
+		size(componentVector->size()), useComponentVector(true) {
 		init();
 	    };
-	  MeasureEstimator::MeasureEstimator(RGB_vector_ptr dglut, bptr < cms::measure::IntensityAnalyzerIF > analyzer, bptr < BitDepthProcessor > bitDepth):dglut(dglut), mm(analyzer->getMeterMeasurement()), bitDepth(bitDepth),
-		size(dglut->size()),
+	  MeasureEstimator::MeasureEstimator(RGB_vector_ptr dglut, bptr < cms::measure::IntensityAnalyzerIF > analyzer, bptr < BitDepthProcessor > bitDepth):dglut(dglut), mm(analyzer->getMeterMeasurement()),
+		bitDepth(bitDepth), size(dglut->size()),
 		useComponentVector(false) {
 		init();
 	    };
@@ -925,6 +971,48 @@ namespace cms {
 		    return delta;
 		}
 	    };
+	    double_array MeasureEstimator::getRdxGdy(int componentIndex) {
+		if (true == MainForm->linkCA210) {
+		    RGB_ptr dg0 = getMeasureBaseRGB(componentIndex);
+		    dg0->changeMaxValue(bitDepth->getFRCAbilityBit());
+		    RGB_ptr dg1 = dg0->clone();
+		    dg1->addValue(Channel::R, 1);
+		    RGB_ptr dg2 = dg0->clone();
+		    dg2->addValue(Channel::G, 1);
+		    Patch_ptr p0 = mm->measure(dg0, nil_string_ptr);
+		    Patch_ptr p1 = mm->measure(dg1, nil_string_ptr);
+		    Patch_ptr p2 = mm->measure(dg2, nil_string_ptr);
+		    XYZ_ptr XYZ0 = p0->getXYZ();
+		    XYZ_ptr XYZ1 = p1->getXYZ();
+		    XYZ_ptr XYZ2 = p2->getXYZ();
+		    baseXYZ = XYZ0;
+		    double_array delta1 = getdxdy(XYZ0, XYZ1);
+		    double_array delta2 = getdxdy(XYZ0, XYZ2);
+		    double_array delta(new double[2]);
+		    delta[0] = delta1[0];
+		    delta[1] = delta2[1];
+		    Component_ptr c0(new Component(dg0, nil_RGB_ptr, XYZ0));
+		    Component_ptr c1(new Component(dg1, nil_RGB_ptr, XYZ1));
+		    Component_ptr c2(new Component(dg2, nil_RGB_ptr, XYZ2));
+		    storeComponentVector->push_back(c0);
+		    storeComponentVector->push_back(c1);
+		    storeComponentVector->push_back(c2);
+		    return delta;
+		} else {
+		    Component_ptr c0 = (*storeComponentVector)[storeIndex++];
+		    Component_ptr c1 = (*storeComponentVector)[storeIndex++];
+		    Component_ptr c2 = (*storeComponentVector)[storeIndex++];
+		    XYZ_ptr XYZ0 = c0->XYZ;
+		    XYZ_ptr XYZ1 = c1->XYZ;
+		    XYZ_ptr XYZ2 = c2->XYZ;
+		    double_array delta1 = getdxdy(XYZ0, XYZ1);
+		    double_array delta2 = getdxdy(XYZ0, XYZ2);
+		    double_array delta(new double[2]);
+		    delta[0] = delta1[0];
+		    delta[1] = delta2[1];
+		    return delta;
+		}
+	    };
 	    RGB_ptr MeasureEstimator::getMeasureBaseRGB(int index) {
 		if (useComponentVector) {
 		    Component_ptr c = (*componentVector)[index];
@@ -944,6 +1032,39 @@ namespace cms {
 	    MeasureEstimator::~MeasureEstimator() {
 		STORE_COMPONENT("MeasureEstimator.xls", storeComponentVector);
 		mm->close();
+	    };
+	    void MeasureEstimator::measure(int startIndex, int endIndex) {
+		resetMeasure();
+		RGB_ptr dg0 = getMeasureBaseRGB(startIndex);
+		if (true == MainForm->linkCA210) {
+		    Patch_ptr p0 = mm->measure(dg0, nil_string_ptr);
+		    baseXYZ = p0->getXYZ();
+		    Component_ptr c0(new Component(dg0, nil_RGB_ptr, baseXYZ));
+		    storeComponentVector->push_back(c0);
+		} else {
+		    Component_ptr c0 = (*storeComponentVector)[storeIndex++];
+		    baseXYZ = c0->XYZ;
+		}
+
+
+		for (int x = startIndex; x <= endIndex; x++) {
+		    XYZ_ptr lastXYZ = baseXYZ;
+		    double_array RdxGdy = getRdxGdy(x);
+		    XYZ_ptr thisXYZ = baseXYZ;
+		    xyY_ptr lastxyY(new CIExyY(lastXYZ));
+		    xyY_ptr thisxyY(new CIExyY(thisXYZ));
+		    double_array dxdy = thisxyY->getDeltaxy(lastxyY);
+		    dxofBase->push_back(dxdy[0]);
+		    dyofBase->push_back(dxdy[1]);
+		    dxofRVector->push_back(RdxGdy[0]);
+		    dyofGVector->push_back(RdxGdy[1]);
+		}
+	    };
+	    void MeasureEstimator::resetMeasure() {
+		dxofRVector = double_vector_ptr(new double_vector());
+		dyofGVector = double_vector_ptr(new double_vector());
+		dxofBase = double_vector_ptr(new double_vector());
+		dyofBase = double_vector_ptr(new double_vector());
 	    };
 	    //=================================================================
 	};
