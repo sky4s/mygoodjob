@@ -52,6 +52,7 @@ namespace math {
 	// copy
 	//=====================================================================
 	static double_vector_ptr getRangeCopy(double_vector_ptr M, int j1, int j2);
+	static double_vector_ptr copy(double_vector_ptr M);
 	static double1D_ptr getRangeCopy(double1D_ptr M, int j1, int j2);
 
 	static double2D_ptr transpose(double1D_ptr a);
@@ -110,6 +111,7 @@ namespace math {
 
 #ifdef EXCEL_ACCESSIBLE
 	static void storeToExcel(const std::string & filename, double_vector_ptr doubleVector);
+	static double_vector_ptr loadFromExcel(const std::string & filename);
 #endif
 
 	static double_vector_ptr getReverse(double_vector_ptr vec);

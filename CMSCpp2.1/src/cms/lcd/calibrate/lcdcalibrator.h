@@ -196,7 +196,9 @@ namespace cms {
 		RGB_vector_ptr newMethod(DGLutGenerator & generator,
 					 bptr < PanelRegulator > panelRegulato);
 
-
+		void fixReverse(double_vector_ptr deltaVector,
+				double_vector_ptr deltaOfChVector, RGB_vector_ptr dglut,
+				Dep::Channel ch);
 		Component_vector_ptr getDimComponentVector(RGB_vector_ptr dglut);
 		void smoothDimComponentVector(Component_vector_ptr componentVector);
 		//==============================================================
@@ -240,6 +242,7 @@ namespace cms {
 	    class ChromaticityAdjustEstimatorIF {
 	      public:
 		virtual double_array getdxdy(const Dep::Channel & ch, int grayLevel) = 0;
+		virtual double_array getRdxGdy(int componentIndex) = 0;
 	    };
 
 	    /*
@@ -258,6 +261,7 @@ namespace cms {
 				    bptr < cms::measure::IntensityAnalyzerIF > analyzer,
 				    bptr < BitDepthProcessor > bitDepth);
 		virtual double_array getdxdy(const Dep::Channel & ch, int grayLevel);
+		virtual double_array getRdxGdy(int componentIndex);
 	    };
 
 	    /*
@@ -276,6 +280,8 @@ namespace cms {
 		const int size;
 		RGB_ptr getMeasureBaseRGB(int index);
 		bool useComponentVector;
+
+		XYZ_ptr baseXYZ;
 	      public:
 		 MeasureEstimator(Component_vector_ptr componentVector,
 				  bptr < cms::measure::MeterMeasurement > mm,
@@ -287,7 +293,14 @@ namespace cms {
 				  bptr < cms::measure::IntensityAnalyzerIF > analyzer,
 				  bptr < BitDepthProcessor > bitDepth);
 		virtual double_array getdxdy(const Dep::Channel & ch, int componentIndex);
+		virtual double_array getRdxGdy(int componentIndex);
 		~MeasureEstimator();
+		void measure(int startIndex, int endIndex);
+		void resetMeasure();
+		double_vector_ptr dxofRVector;
+		double_vector_ptr dyofGVector;
+		double_vector_ptr dxofBase;
+		double_vector_ptr dyofBase;
 	    };
 	};
     };
