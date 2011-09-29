@@ -280,8 +280,8 @@ namespace cms {
 		const int size;
 		RGB_ptr getMeasureBaseRGB(int index);
 		bool useComponentVector;
-
 		XYZ_ptr baseXYZ;
+		XYZ_ptr measure(RGB_ptr rgb);
 	      public:
 		 MeasureEstimator(Component_vector_ptr componentVector,
 				  bptr < cms::measure::MeterMeasurement > mm,
@@ -296,7 +296,9 @@ namespace cms {
 		virtual double_array getRdxGdy(int componentIndex);
 		~MeasureEstimator();
 		void measure(int startIndex, int endIndex);
+		void measure0(int startIndex, int endIndex);
 		void resetMeasure();
+
 		double_vector_ptr dxofRVector;
 		double_vector_ptr dyofGVector;
 		double_vector_ptr dxofBase;

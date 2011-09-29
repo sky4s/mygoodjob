@@ -950,17 +950,15 @@ namespace cms {
 		if (true == MainForm->linkCA210) {
 		    RGB_ptr dg0 = getMeasureBaseRGB(componentIndex);
 		    dg0->changeMaxValue(bitDepth->getFRCAbilityBit());
-		    Patch_ptr p0 = mm->measure(dg0, nil_string_ptr);
+		    XYZ_ptr XYZ0 = measure(dg0);
 		    RGB_ptr dg1 = dg0->clone();
 		    dg1->addValue(ch, 1);
-		    Patch_ptr p1 = mm->measure(dg1, nil_string_ptr);
-		    XYZ_ptr XYZ0 = p0->getXYZ();
-		    XYZ_ptr XYZ1 = p1->getXYZ();
+		    XYZ_ptr XYZ1 = measure(dg1);
 		    double_array delta = getdxdy(XYZ0, XYZ1);
-		    Component_ptr c0(new Component(dg0, nil_RGB_ptr, XYZ0));
+		    /*Component_ptr c0(new Component(dg0, nil_RGB_ptr, XYZ0));
 		    Component_ptr c1(new Component(dg1, nil_RGB_ptr, XYZ1));
 		    storeComponentVector->push_back(c0);
-		    storeComponentVector->push_back(c1);
+		    storeComponentVector->push_back(c1);*/
 		    return delta;
 		} else {
 		    Component_ptr c0 = (*storeComponentVector)[storeIndex++];
@@ -979,24 +977,21 @@ namespace cms {
 		    dg1->addValue(Channel::R, 1);
 		    RGB_ptr dg2 = dg0->clone();
 		    dg2->addValue(Channel::G, 1);
-		    Patch_ptr p0 = mm->measure(dg0, nil_string_ptr);
-		    Patch_ptr p1 = mm->measure(dg1, nil_string_ptr);
-		    Patch_ptr p2 = mm->measure(dg2, nil_string_ptr);
-		    XYZ_ptr XYZ0 = p0->getXYZ();
-		    XYZ_ptr XYZ1 = p1->getXYZ();
-		    XYZ_ptr XYZ2 = p2->getXYZ();
+		    XYZ_ptr XYZ0 = measure(dg0);
+		    XYZ_ptr XYZ1 = measure(dg1);
+		    XYZ_ptr XYZ2 = measure(dg2);
 		    baseXYZ = XYZ0;
 		    double_array delta1 = getdxdy(XYZ0, XYZ1);
 		    double_array delta2 = getdxdy(XYZ0, XYZ2);
 		    double_array delta(new double[2]);
 		    delta[0] = delta1[0];
 		    delta[1] = delta2[1];
-		    Component_ptr c0(new Component(dg0, nil_RGB_ptr, XYZ0));
+		    /*Component_ptr c0(new Component(dg0, nil_RGB_ptr, XYZ0));
 		    Component_ptr c1(new Component(dg1, nil_RGB_ptr, XYZ1));
 		    Component_ptr c2(new Component(dg2, nil_RGB_ptr, XYZ2));
 		    storeComponentVector->push_back(c0);
 		    storeComponentVector->push_back(c1);
-		    storeComponentVector->push_back(c2);
+		    storeComponentVector->push_back(c2);*/
 		    return delta;
 		} else {
 		    Component_ptr c0 = (*storeComponentVector)[storeIndex++];
@@ -1034,13 +1029,16 @@ namespace cms {
 		mm->close();
 	    };
 	    void MeasureEstimator::measure(int startIndex, int endIndex) {
+		if (true) {
+		    measure0(startIndex, endIndex);
+		    return;
+		}
 		resetMeasure();
 		RGB_ptr dg0 = getMeasureBaseRGB(startIndex);
 		if (true == MainForm->linkCA210) {
-		    Patch_ptr p0 = mm->measure(dg0, nil_string_ptr);
-		    baseXYZ = p0->getXYZ();
-		    Component_ptr c0(new Component(dg0, nil_RGB_ptr, baseXYZ));
-		    storeComponentVector->push_back(c0);
+		    baseXYZ = measure(dg0);
+		    //Component_ptr c0(new Component(dg0, nil_RGB_ptr, baseXYZ));
+		    //storeComponentVector->push_back(c0);
 		} else {
 		    Component_ptr c0 = (*storeComponentVector)[storeIndex++];
 		    baseXYZ = c0->XYZ;
@@ -1059,6 +1057,89 @@ namespace cms {
 		    dxofRVector->push_back(RdxGdy[0]);
 		    dyofGVector->push_back(RdxGdy[1]);
 		}
+	    };
+	    void MeasureEstimator::measure0(int startIndex, int endIndex) {
+		resetMeasure();
+		const Dep::MaxValue & frcBit = bitDepth->getFRCAbilityBit();
+		XYZ_vector_ptr baseXYZVec(new XYZ_vector());
+		//XYZ_vector_ptr rXYZVec(new XYZ_vector());
+		//XYZ_vector_ptr gXYZVec(new XYZ_vector());
+
+		//先量base
+		//for (int x = startIndex; x <= endIndex; x++) {
+		for (int x = endIndex; x >= startIndex; x--) {
+		    RGB_ptr rgb = getMeasureBaseRGB(x);
+		    XYZ_ptr XYZ = measure(rgb);
+		    baseXYZVec->push_back(XYZ);
+		}
+		//量完再來做處裡
+		int size = baseXYZVec->size();
+		//為了讓base和r/g可以對齊, 所以多塞一個0
+		dxofBase->push_back(0);
+		dyofBase->push_back(0);
+		for (int x = size - 2; x >= 0; x--) {
+		    XYZ_ptr XYZ0 = (*baseXYZVec)[x + 1];
+		    XYZ_ptr XYZ1 = (*baseXYZVec)[x];
+		    double_array dxy = getdxdy(XYZ0, XYZ1);
+		    dxofBase->push_back(dxy[0]);
+		    dyofBase->push_back(dxy[1]);
+		};
+
+		//再量RG是邊量邊處理, 而且又多量了一次Base
+		/*for (int x = startIndex; x <= endIndex; x++) {
+		    RGB_ptr rgb = getMeasureBaseRGB(x);
+		    RGB_ptr rgbR = getMeasureBaseRGB(x);
+		    RGB_ptr rgbG = getMeasureBaseRGB(x);
+
+		    rgbR->changeMaxValue(frcBit);
+		    rgbR->addValue(Channel::R, 1);
+		    rgbG->changeMaxValue(frcBit);
+		    rgbG->addValue(Channel::G, 1);
+
+		    XYZ_ptr XYZ0 = measure(rgb);	//base
+		    XYZ_ptr XYZR = measure(rgbR);	//R
+		    XYZ_ptr XYZG = measure(rgbG);	//G
+
+		    double_array dxyR = getdxdy(XYZ0, XYZR);
+		    double_array dxyG = getdxdy(XYZ0, XYZG);
+		    dxofRVector->push_back(dxyR[0]);
+		    dyofGVector->push_back(dxyG[1]);
+
+                    getRdxGdy(x);
+		}*/
+
+		for (int x = startIndex; x <= endIndex; x++) {
+		    double_array RdxGdy = getRdxGdy(x);
+		    dxofRVector->push_back(RdxGdy[0]);
+		    dyofGVector->push_back(RdxGdy[1]);
+		}
+
+		//再量G
+		/*for (int x = endIndex; x >= startIndex; x--) {
+		   RGB_ptr rgb = getMeasureBaseRGB(x);
+		   rgb->changeMaxValue(frcBit);
+		   rgb->addValue(Channel::G, 1);
+		   XYZ_ptr XYZ = measure(rgb);
+		   gXYZVec->push_back(XYZ);
+		   } */
+
+		/*for (int x = size - 1; x >= 0; x--) {
+		   XYZ_ptr XYZ0 = (*baseXYZVec)[x];
+		   XYZ_ptr XYZR = (*rXYZVec)[x];
+		   XYZ_ptr XYZG = (*gXYZVec)[x];
+		   double_array dxyR = getdxdy(XYZ0, XYZR);
+		   double_array dxyG = getdxdy(XYZ0, XYZG);
+		   dxofRVector->push_back(dxyR[0]);
+		   dyofGVector->push_back(dxyG[0]);
+		   } */
+	    }
+
+	    XYZ_ptr MeasureEstimator::measure(RGB_ptr rgb) {
+		Patch_ptr p = mm->measure(rgb, nil_string_ptr);
+		XYZ_ptr XYZ = p->getXYZ();
+		Component_ptr c(new Component(rgb, nil_RGB_ptr, XYZ));
+		storeComponentVector->push_back(c);
+		return XYZ;
 	    };
 	    void MeasureEstimator::resetMeasure() {
 		dxofRVector = double_vector_ptr(new double_vector());
