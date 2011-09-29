@@ -199,6 +199,7 @@ void __fastcall TTargetWhiteForm2::Button_RunClick(TObject * Sender)
 
 	MainForm->setMeterMeasurementWaitTimes();
 	MainForm->setAnalyzerToSourceChannel();
+        Button_Run->Enabled = false;
 
 	bool usemaxRGB = this->RadioButton_MaxRGB->Checked;
 	bool useRGBRatio = this->RadioButton_RGBRatio->Checked;
@@ -282,32 +283,32 @@ void __fastcall TTargetWhiteForm2::Button_RunClick(TObject * Sender)
 	//當在Direct Gamma下, false == MeasureWindow->Visibl會一直成立
 	//如此將無法進行量測
 	if (true == stopMeasure || (!tconinput && false == MeasureWindow->Visible)) {
-	    measuring = false;
-	    analyzer->endAnalyze();
+	    //measuring = false;
+	    //analyzer->endAnalyze();
 	    return;
 	}
 	analyzer->setupComponent(Channel::R, r);
 	if (true == stopMeasure || (!tconinput && false == MeasureWindow->Visible)) {
-	    measuring = false;
-	    analyzer->endAnalyze();
+	    //measuring = false;
+	    //analyzer->endAnalyze();
 	    return;
 	}
 	analyzer->setupComponent(Channel::G, g);
 	if (true == stopMeasure || (!tconinput && false == MeasureWindow->Visible)) {
-	    measuring = false;
-	    analyzer->endAnalyze();
+	    //measuring = false;
+	    //analyzer->endAnalyze();
 	    return;
 	}
 	analyzer->setupComponent(Channel::B, b);
 	if (true == stopMeasure || (!tconinput && false == MeasureWindow->Visible)) {
-	    measuring = false;
-	    analyzer->endAnalyze();
+	    //measuring = false;
+	    //analyzer->endAnalyze();
 	    return;
 	}
 	analyzer->setupComponent(Channel::W, rgb);
 	if (true == stopMeasure || (!tconinput && false == MeasureWindow->Visible)) {
-	    measuring = false;
-	    analyzer->endAnalyze();
+	    //measuring = false;
+	    //analyzer->endAnalyze();
 	    return;
 	}
 
@@ -351,9 +352,12 @@ void __fastcall TTargetWhiteForm2::Button_RunClick(TObject * Sender)
 	//==========================================================================
     }
     __finally {
+        measuring = false;
 	stopMeasure = false;
 	MainForm->setMeterMeasurementWaitTimes();
-	analyzer.reset();
+        analyzer->endAnalyze();
+	//analyzer.reset();
+        Button_Run->Enabled = true;
     }
 }
 
@@ -514,9 +518,9 @@ void __fastcall TTargetWhiteForm2::FormKeyPress(TObject * Sender, char &Key)
     if (Key == 27) {		//esc
 	if (true == measuring) {
 	    stopMeasure = true;
-	} else {
+	} /*else {
 	    this->Close();
-	}
+	}*/
     }
 }
 

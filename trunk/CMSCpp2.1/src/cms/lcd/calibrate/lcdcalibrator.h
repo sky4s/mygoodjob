@@ -152,6 +152,7 @@ namespace cms {
 		__property bool AccurateMode = { write = accurateMode };
 		__property bool ManualAccurateMode = { write = manualAccurateMode };
 		__property double MiddleCCTRatio = { write = middleCCTRatio };
+                __property bool ModifiedTarget = { write = modifiedTarget };
 		//==============================================================
 
 
