@@ -106,6 +106,7 @@ void __fastcall TCCTLUTForm::Button_MeaRunClick(TObject * Sender)
 	    calibrator.setDefinedDim(under, gamma, averageDim);
 	    calibrator.DimFix = CheckBox_DimFix->Checked;
 	    calibrator.DimFixThreshold = Edit_DimFixThreshold->Text.ToDouble();
+            calibrator.ModifiedTarget = CheckBox_ModifiedTarget->Checked;
 	} else if (this->RadioButton_NoneLowLevelCorrect->Checked) {
 	    calibrator.setNonDimCorrect();
 	}

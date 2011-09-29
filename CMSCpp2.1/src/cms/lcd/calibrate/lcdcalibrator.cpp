@@ -155,7 +155,7 @@ namespace cms {
 		dimFixEnd = 50;
 		dimFix = false;
 		dimFixThreshold = 0.0000;
-		modifiedTarget = true;
+		modifiedTarget = false;
 	    };
 
 	    Component_vector_ptr LCDCalibrator::fetchComponentVector() {
@@ -503,7 +503,7 @@ namespace cms {
 		    //從目標值算出DGLut
 		    dglut = advgenerator->produce(targetXYZVector);
 		    STORE_RGBVECTOR("3.1_org_dgcode.xls", dglut);
-		    modifiedTarget = true;
+		    //modifiedTarget = true;
 		    //if (true == modifiedTarget && MainForm->isTCONInput()) {      4
 		    if (true == modifiedTarget
 			&& (true != MainForm->linkCA210 || MainForm->isTCONInput())) {
@@ -512,7 +512,7 @@ namespace cms {
 			//Component_vector_ptr dimComponentVector = getDimComponentVector(dglut);
 			RGB_vector_ptr measureCode = RGBVector::copyRange(dglut, 0, dimFixEnd);
 
-			bool debug = false;
+			bool debug = !MainForm->linkCA210;
 			double_vector_ptr dxofBase, dyofBase, dxofR, dyofG;
 			if (!debug) {
 			    bptr < MeasureEstimator >
@@ -589,7 +589,7 @@ namespace cms {
 		for (int x = 1; x < size - 1; x++) {
 		    double delta = (*deltaVector)[x];
 		    if (delta < 0) {
-			//有反轉, 就把反轉處之前全部-1
+			//有反轉, 就把反轉處之前(包含反轉)全部-1
 			int a = 1;
 			for (int y = 1; y <= x; y++) {
 			    double delta = (*deltaVector)[y];
@@ -977,9 +977,12 @@ namespace cms {
 		    dg1->addValue(Channel::R, 1);
 		    RGB_ptr dg2 = dg0->clone();
 		    dg2->addValue(Channel::G, 1);
-		    XYZ_ptr XYZ0 = measure(dg0);
+
+                    XYZ_ptr XYZ2 = measure(dg2);
 		    XYZ_ptr XYZ1 = measure(dg1);
-		    XYZ_ptr XYZ2 = measure(dg2);
+		    XYZ_ptr XYZ0 = measure(dg0);
+
+
 		    baseXYZ = XYZ0;
 		    double_array delta1 = getdxdy(XYZ0, XYZ1);
 		    double_array delta2 = getdxdy(XYZ0, XYZ2);
@@ -1062,11 +1065,8 @@ namespace cms {
 		resetMeasure();
 		const Dep::MaxValue & frcBit = bitDepth->getFRCAbilityBit();
 		XYZ_vector_ptr baseXYZVec(new XYZ_vector());
-		//XYZ_vector_ptr rXYZVec(new XYZ_vector());
-		//XYZ_vector_ptr gXYZVec(new XYZ_vector());
 
 		//先量base
-		//for (int x = startIndex; x <= endIndex; x++) {
 		for (int x = endIndex; x >= startIndex; x--) {
 		    RGB_ptr rgb = getMeasureBaseRGB(x);
 		    XYZ_ptr XYZ = measure(rgb);
@@ -1085,53 +1085,20 @@ namespace cms {
 		    dyofBase->push_back(dxy[1]);
 		};
 
-		//再量RG是邊量邊處理, 而且又多量了一次Base
+
 		/*for (int x = startIndex; x <= endIndex; x++) {
-		    RGB_ptr rgb = getMeasureBaseRGB(x);
-		    RGB_ptr rgbR = getMeasureBaseRGB(x);
-		    RGB_ptr rgbG = getMeasureBaseRGB(x);
-
-		    rgbR->changeMaxValue(frcBit);
-		    rgbR->addValue(Channel::R, 1);
-		    rgbG->changeMaxValue(frcBit);
-		    rgbG->addValue(Channel::G, 1);
-
-		    XYZ_ptr XYZ0 = measure(rgb);	//base
-		    XYZ_ptr XYZR = measure(rgbR);	//R
-		    XYZ_ptr XYZG = measure(rgbG);	//G
-
-		    double_array dxyR = getdxdy(XYZ0, XYZR);
-		    double_array dxyG = getdxdy(XYZ0, XYZG);
-		    dxofRVector->push_back(dxyR[0]);
-		    dyofGVector->push_back(dxyG[1]);
-
-                    getRdxGdy(x);
+		    double_array RdxGdy = getRdxGdy(x);
+		    dxofRVector->push_back(RdxGdy[0]);
+		    dyofGVector->push_back(RdxGdy[1]);
 		}*/
-
-		for (int x = startIndex; x <= endIndex; x++) {
+		for (int x = endIndex; x >= startIndex; x--) {
 		    double_array RdxGdy = getRdxGdy(x);
 		    dxofRVector->push_back(RdxGdy[0]);
 		    dyofGVector->push_back(RdxGdy[1]);
 		}
+                dxofRVector = DoubleArray::getReverse(dxofRVector);
+                dyofGVector = DoubleArray::getReverse(dyofGVector);
 
-		//再量G
-		/*for (int x = endIndex; x >= startIndex; x--) {
-		   RGB_ptr rgb = getMeasureBaseRGB(x);
-		   rgb->changeMaxValue(frcBit);
-		   rgb->addValue(Channel::G, 1);
-		   XYZ_ptr XYZ = measure(rgb);
-		   gXYZVec->push_back(XYZ);
-		   } */
-
-		/*for (int x = size - 1; x >= 0; x--) {
-		   XYZ_ptr XYZ0 = (*baseXYZVec)[x];
-		   XYZ_ptr XYZR = (*rXYZVec)[x];
-		   XYZ_ptr XYZG = (*gXYZVec)[x];
-		   double_array dxyR = getdxdy(XYZ0, XYZR);
-		   double_array dxyG = getdxdy(XYZ0, XYZG);
-		   dxofRVector->push_back(dxyR[0]);
-		   dyofGVector->push_back(dxyG[0]);
-		   } */
 	    }
 
 	    XYZ_ptr MeasureEstimator::measure(RGB_ptr rgb) {
