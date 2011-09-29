@@ -624,7 +624,6 @@ namespace cms {
 
 				if (suitAdjustGrayLevel == grayLevel) {
 				    (*result)[grayLevel]->G += 1;
-
 				} else if (suitAdjustGrayLevel == (grayLevel - 1)) {
 				    (*result)[grayLevel - 1]->G -= 1;
 				} else if (-1 == suitAdjustGrayLevel) {
