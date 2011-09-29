@@ -152,7 +152,7 @@ namespace cms {
 		__property bool AccurateMode = { write = accurateMode };
 		__property bool ManualAccurateMode = { write = manualAccurateMode };
 		__property double MiddleCCTRatio = { write = middleCCTRatio };
-                __property bool ModifiedTarget = { write = modifiedTarget };
+		__property bool ModifiedTarget = { write = modifiedTarget };
 		//==============================================================
 
 
@@ -200,6 +200,7 @@ namespace cms {
 		void fixReverse(double_vector_ptr deltaVector,
 				double_vector_ptr deltaOfChVector, RGB_vector_ptr dglut,
 				Dep::Channel ch);
+
 		Component_vector_ptr getDimComponentVector(RGB_vector_ptr dglut);
 		void smoothDimComponentVector(Component_vector_ptr componentVector);
 		//==============================================================

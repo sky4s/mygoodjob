@@ -591,7 +591,7 @@ namespace cms {
 		    if (delta < 0) {
 			//有反轉, 就把反轉處之前(包含反轉)全部-1
 			int a = 1;
-			for (int y = 1; y <= x; y++) {
+			for (int y = x; y <= x; y++) {
 			    double delta = (*deltaVector)[y];
 			    double deltaOfCh = (*deltaOfChVector)[y];
 			    if ((delta - deltaOfCh) >= 0) {
@@ -613,6 +613,8 @@ namespace cms {
 		    }
 		}
 	    }
+
+
 
 	    RGB_vector_ptr LCDCalibrator::
 		oldMethod(DGLutGenerator & generator,
@@ -956,9 +958,9 @@ namespace cms {
 		    XYZ_ptr XYZ1 = measure(dg1);
 		    double_array delta = getdxdy(XYZ0, XYZ1);
 		    /*Component_ptr c0(new Component(dg0, nil_RGB_ptr, XYZ0));
-		    Component_ptr c1(new Component(dg1, nil_RGB_ptr, XYZ1));
-		    storeComponentVector->push_back(c0);
-		    storeComponentVector->push_back(c1);*/
+		       Component_ptr c1(new Component(dg1, nil_RGB_ptr, XYZ1));
+		       storeComponentVector->push_back(c0);
+		       storeComponentVector->push_back(c1); */
 		    return delta;
 		} else {
 		    Component_ptr c0 = (*storeComponentVector)[storeIndex++];
@@ -978,7 +980,7 @@ namespace cms {
 		    RGB_ptr dg2 = dg0->clone();
 		    dg2->addValue(Channel::G, 1);
 
-                    XYZ_ptr XYZ2 = measure(dg2);
+		    XYZ_ptr XYZ2 = measure(dg2);
 		    XYZ_ptr XYZ1 = measure(dg1);
 		    XYZ_ptr XYZ0 = measure(dg0);
 
@@ -990,11 +992,11 @@ namespace cms {
 		    delta[0] = delta1[0];
 		    delta[1] = delta2[1];
 		    /*Component_ptr c0(new Component(dg0, nil_RGB_ptr, XYZ0));
-		    Component_ptr c1(new Component(dg1, nil_RGB_ptr, XYZ1));
-		    Component_ptr c2(new Component(dg2, nil_RGB_ptr, XYZ2));
-		    storeComponentVector->push_back(c0);
-		    storeComponentVector->push_back(c1);
-		    storeComponentVector->push_back(c2);*/
+		       Component_ptr c1(new Component(dg1, nil_RGB_ptr, XYZ1));
+		       Component_ptr c2(new Component(dg2, nil_RGB_ptr, XYZ2));
+		       storeComponentVector->push_back(c0);
+		       storeComponentVector->push_back(c1);
+		       storeComponentVector->push_back(c2); */
 		    return delta;
 		} else {
 		    Component_ptr c0 = (*storeComponentVector)[storeIndex++];
@@ -1087,17 +1089,17 @@ namespace cms {
 
 
 		/*for (int x = startIndex; x <= endIndex; x++) {
-		    double_array RdxGdy = getRdxGdy(x);
-		    dxofRVector->push_back(RdxGdy[0]);
-		    dyofGVector->push_back(RdxGdy[1]);
-		}*/
+		   double_array RdxGdy = getRdxGdy(x);
+		   dxofRVector->push_back(RdxGdy[0]);
+		   dyofGVector->push_back(RdxGdy[1]);
+		   } */
 		for (int x = endIndex; x >= startIndex; x--) {
 		    double_array RdxGdy = getRdxGdy(x);
 		    dxofRVector->push_back(RdxGdy[0]);
 		    dyofGVector->push_back(RdxGdy[1]);
 		}
-                dxofRVector = DoubleArray::getReverse(dxofRVector);
-                dyofGVector = DoubleArray::getReverse(dyofGVector);
+		dxofRVector = DoubleArray::getReverse(dxofRVector);
+		dyofGVector = DoubleArray::getReverse(dyofGVector);
 
 	    }
 
