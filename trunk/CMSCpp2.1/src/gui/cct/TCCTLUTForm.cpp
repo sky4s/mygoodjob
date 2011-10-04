@@ -100,13 +100,13 @@ void __fastcall TCCTLUTForm::Button_MeaRunClick(TObject * Sender)
 	    calibrator.setRBInterpolation(rbunder);
 	} else if (this->RadioButton_DefinedDim->Checked) {
 	    //新低灰階修正方法
-	    int under = this->Edit_DefinedDimUnder->Text.ToInt();// + 1;
+	    int under = this->Edit_DefinedDimUnder->Text.ToInt();	// + 1;
 	    bool averageDim = this->CheckBox_AverageDimDG->Checked;
 	    double gamma = this->Edit_DimGamma->Text.ToDouble();
 	    calibrator.setDefinedDim(under, gamma, averageDim);
 	    calibrator.DimFix = CheckBox_DimFix->Checked;
 	    calibrator.DimFixThreshold = Edit_DimFixThreshold->Text.ToDouble();
-            calibrator.ModifiedTarget = CheckBox_ModifiedTarget->Checked;
+	    calibrator.ModifiedTarget = CheckBox_ModifiedTarget->Checked;
 	} else if (this->RadioButton_NoneLowLevelCorrect->Checked) {
 	    calibrator.setNonDimCorrect();
 	}
@@ -221,7 +221,7 @@ void __fastcall TCCTLUTForm::Button_MeaRunClick(TObject * Sender)
 	    //=================================================================
 	    calibrator.storeDGLutFile(dglut, dgLutFile);
 
-	    if (true == CheckBox_MemoryMeasure->Checked && false == MainForm->mm->isFakeMeasure()) {
+	    if (true == CheckBox_MemoryMeasure->Checked && false == MainForm->mm->FakeMeasure) {
 		//提供memory功能
 		//dummy
 		MainForm->setDummyMeterFile(dgLutFile);

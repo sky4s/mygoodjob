@@ -57,10 +57,8 @@ class TMatrixCalibrationForm:public TForm {
     TButton *Button_LoadFromFile;
     TCA210SettingFrame *TCA210SettingFrame1;
     TLabel *Label13;
-    void __fastcall TCA210SettingFrame1Button_ConnectClick(TObject *
-							   Sender);
-    void __fastcall TCA210SettingFrame1ComboBox_SyncModeChange(TObject *
-							       Sender);
+    void __fastcall TCA210SettingFrame1Button_ConnectClick(TObject * Sender);
+    void __fastcall TCA210SettingFrame1ComboBox_SyncModeChange(TObject * Sender);
     void __fastcall Button_MatrixCalibrateClick(TObject * Sender);
     void __fastcall FormKeyPress(TObject * Sender, char &Key);
   private:			// User declarations
@@ -69,8 +67,7 @@ class TMatrixCalibrationForm:public TForm {
      bptr < cms::measure::MeterMeasurement > mm;
   public:			// User declarations
      __fastcall TMatrixCalibrationForm(TComponent * Owner);
-    bool setMeter(bptr < ca210api::CA210API > ca210API,
-		  bptr < cms::measure::MeterMeasurement > mm);
+    bool setMeter(bptr < ca210api::CA210API > ca210API, bptr < cms::measure::MeterMeasurement > mm);
 };
 //---------------------------------------------------------------------------
 extern PACKAGE TMatrixCalibrationForm *MatrixCalibrationForm;

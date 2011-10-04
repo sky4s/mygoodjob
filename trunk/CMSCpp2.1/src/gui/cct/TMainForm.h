@@ -126,6 +126,8 @@ class TMainForm:public TForm {
     TEdit *Edit_FRCAbility;
     TProgressBar *ProgressBar1;
     TStatusBar *StatusBar1;
+    TLabel *Label21;
+    TEdit *Edit_AverageTimes;
     void __fastcall About1Click(TObject * Sender);
     void __fastcall Exit1Click(TObject * Sender);
     void __fastcall TargetWhite1Click(TObject * Sender);
@@ -169,6 +171,7 @@ class TMainForm:public TForm {
     void __fastcall ComboBox_DGLUTTypeChange(TObject * Sender);
     void __fastcall FormActivate(TObject * Sender);
     void __fastcall TabSheet2Exit(TObject * Sender);
+    void __fastcall Edit_AverageTimesChange(TObject * Sender);
   private:			// User declarations
     //==========================================================================
     // meter

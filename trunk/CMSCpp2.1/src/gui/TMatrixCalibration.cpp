@@ -18,16 +18,14 @@
 #pragma resource "*.dfm"
 TMatrixCalibrationForm *MatrixCalibrationForm;
 //---------------------------------------------------------------------------
-__fastcall TMatrixCalibrationForm::TMatrixCalibrationForm(TComponent *
-							  Owner)
+__fastcall TMatrixCalibrationForm::TMatrixCalibrationForm(TComponent * Owner)
 :TForm(Owner)
 {
 }
 
 //---------------------------------------------------------------------------
 bool TMatrixCalibrationForm::setMeter(bptr < ca210api::CA210API > ca210API,
-				      bptr <
-				      cms::measure::MeterMeasurement > mm)
+				      bptr < cms::measure::MeterMeasurement > mm)
 {
     //this->ca210 = ca210;
     if (ca210API != null) {
@@ -43,8 +41,7 @@ bool TMatrixCalibrationForm::setMeter(bptr < ca210api::CA210API > ca210API,
 
 //---------------------------------------------------------------------------
 
-void __fastcall TMatrixCalibrationForm::
-TCA210SettingFrame1Button_ConnectClick(TObject * Sender)
+void __fastcall TMatrixCalibrationForm:: TCA210SettingFrame1Button_ConnectClick(TObject * Sender)
 {
     TCA210SettingFrame1->Button_ConnectClick(Sender);
 
@@ -63,8 +60,7 @@ TCA210SettingFrame1ComboBox_SyncModeChange(TObject * Sender)
 
 
 
-void __fastcall TMatrixCalibrationForm::
-Button_MatrixCalibrateClick(TObject * Sender)
+void __fastcall TMatrixCalibrationForm:: Button_MatrixCalibrateClick(TObject * Sender)
 {
     using namespace Dep;
     using namespace Indep;
@@ -109,8 +105,8 @@ Button_MatrixCalibrateClick(TObject * Sender)
     RGB_ptr w(new RGBColor(rValue, gValue, bValue));
 
     ca210API->setLvxyCalMode();
-    int waitTimes = mm->getWaitTimes();
-    mm->setWaitTimes(10000);
+    int waitTimes = mm->WaitTimes;
+    mm->WaitTimes = 10000;
 
     Patch_ptr rp = mm->measure(r, r->toString());
     ca210API->setLvxyCalData(Red, rx, ry, rY);
@@ -125,15 +121,14 @@ Button_MatrixCalibrateClick(TObject * Sender)
     ca210API->setLvxyCalData(White, wx, wy, wY);
 
     ca210API->enter();
-    mm->setWaitTimes(waitTimes);
+    mm->WaitTimes = waitTimes;
     ShowMessage("Matrix Calibration is Success!");
 }
 
 //---------------------------------------------------------------------------
 
 
-void __fastcall TMatrixCalibrationForm::FormKeyPress(TObject * Sender,
-						     char &Key)
+void __fastcall TMatrixCalibrationForm::FormKeyPress(TObject * Sender, char &Key)
 {
     if (Key == 27) {		//esc
 	this->Close();

@@ -36,6 +36,7 @@ namespace cms {
 	    bool fakeMeasure;
 	     bptr < cms::measure::meter::DGLutFileMeter > dgc;
 	    //void sleep(int waitTimes);
+	    int averageTimes;
 	  protected:
 	     bptr < cms::measure::meter::Meter > meter;
 	    TMeasureWindow *measureWindow;
@@ -55,11 +56,16 @@ namespace cms {
 	    Patch_ptr measure(int r, int g, int b, const std::string & patchName);
 	    Patch_ptr measureFlicker(RGB_ptr rgb, const string_ptr patchName);
 
-	    void setBlankTimes(int blankTimes);
-	    void setWaitTimes(int waitTimes);
-	    int getWaitTimes();
-	    void setFakeMeasure(bool fake);
-	    bool isFakeMeasure();
+	    //void setBlankTimes(int blankTimes);
+	    //void setWaitTimes(int waitTimes);
+	    //int getWaitTimes();
+	    //void setFakeMeasure(bool fake);
+	    //bool isFakeMeasure();
+
+	    __property int WaitTimes = { read = waitTimes, write = waitTimes };
+	    __property int BlankTimes = { write = blankTimes };
+	    __property bool FakeMeasure = { read = fakeMeasure, write = fakeMeasure };
+	    __property int AverageTimes = { write = averageTimes };
 
 	     bptr < cms::measure::meter::Meter > getMeter();
 

@@ -30,7 +30,7 @@ namespace cms {
 	};
       MeterMeasurement::MeterMeasurement(shared_ptr < Meter > meter, bool calibration):meter(meter), waitTimes(meter->getSuggestedWaitTimes()),
 	    measureWindowClosing(false), titleTouched(false),
-	    fakeMeasure(false) {
+	    fakeMeasure(false), averageTimes(1) {
 	    init(calibration);
 	};
 
@@ -69,24 +69,21 @@ namespace cms {
 	    return measure(rgb, str);
 	};
 
-	void MeterMeasurement::setBlankTimes(int blankTimes) {
-	    this->blankTimes = blankTimes;
-	};
-	void MeterMeasurement::setWaitTimes(int waitTimes) {
-	    this->waitTimes = waitTimes;
-	    /*if (waitTimes == 0) {
-	       int x = 1;
-	       } */
-	};
-	int MeterMeasurement::getWaitTimes() {
-	    return waitTimes;
-	};
-	void MeterMeasurement::setFakeMeasure(bool fake) {
-	    this->fakeMeasure = fake;
-	};
-	bool MeterMeasurement::isFakeMeasure() {
-	    return fakeMeasure;
-	};
+	/*void MeterMeasurement::setBlankTimes(int blankTimes) {
+	   this->blankTimes = blankTimes;
+	   };
+	   void MeterMeasurement::setWaitTimes(int waitTimes) {
+	   this->waitTimes = waitTimes;
+	   };
+	   int MeterMeasurement::getWaitTimes() {
+	   return waitTimes;
+	   };
+	   void MeterMeasurement::setFakeMeasure(bool fake) {
+	   this->fakeMeasure = fake;
+	   };
+	   bool MeterMeasurement::isFakeMeasure() {
+	   return fakeMeasure;
+	   }; */
 
 	bptr < cms::measure::meter::Meter > MeterMeasurement::getMeter() {
 	    return meter;
@@ -153,7 +150,21 @@ namespace cms {
 		result[1] = flickerValue;
 		result[2] = 0;
 	    } else {
-		result = meter->triggerMeasurementInXYZ();
+		if (averageTimes == 1) {
+		    result = meter->triggerMeasurementInXYZ();
+		} else {
+		    result = double_array(new double[3]);
+		    result[0] = result[1] = result[2] = 0;
+		    for (int x = 0; x < averageTimes; x++) {
+			double_array thisresult = meter->triggerMeasurementInXYZ();
+			result[0] += thisresult[0];
+			result[1] += thisresult[1];
+			result[2] += thisresult[2];
+		    }
+		    result[0] /= averageTimes;
+		    result[1] /= averageTimes;
+		    result[2] /= averageTimes;
+		}
 	    }
 
 	    XYZ_ptr XYZ(new Indep::CIEXYZ(result));
@@ -299,7 +310,7 @@ namespace cms {
 
 	int MeasureTool::getMaxZDGCode(bptr < MeterMeasurement > mm,
 				       bptr < BitDepthProcessor > bitDepth) {
-	    if (mm->isFakeMeasure()) {
+	    if (mm->FakeMeasure) {
 		throw IllegalStateException("mm->isFakeMeasure(), cannot do real measure.");
 	    }
 	    bptr < MeasureTool > mt(new MeasureTool(mm));

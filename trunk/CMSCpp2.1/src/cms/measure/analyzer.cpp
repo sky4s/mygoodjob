@@ -153,11 +153,11 @@ namespace cms {
 	    mm->setMeasureWindowsVisible(false);
 	};
 	void CA210IntensityAnalyzer::setWaitTimes(int waitTimes) {
-	    mm->setWaitTimes(waitTimes);
+	    mm->WaitTimes = waitTimes;
 	};
 
 	int CA210IntensityAnalyzer::getWaitTimes() {
-	    return mm->getWaitTimes();
+	    return mm->WaitTimes;
 	};
 	xyY_ptr CA210IntensityAnalyzer::getReferenceColor() {
 	    if (null != wp) {

@@ -358,7 +358,7 @@ void TMainForm::initCA210Meter()
     try {
 	meter = bptr < Meter > (new CA210());
 	mm = bptr < MeterMeasurement > (new MeterMeasurement(meter, false));
-	mm->setWaitTimes(this->getInterval());
+	mm->WaitTimes = this->getInterval();
 
 	if (connectCA210ByThread) {
 	    stopProgress(MainForm->ProgressBar1);
@@ -489,7 +489,7 @@ void TMainForm::setDummyMeterFile(bptr < cms::colorformat::DGLutFile > dglutFile
 
     meter = bptr < Meter > (new DGLutFileMeter(dglutFile));
     mm = bptr < MeterMeasurement > (new MeterMeasurement(meter, false));
-    mm->setFakeMeasure(true);
+    mm->FakeMeasure = true;
 
     fetcher = bptr < ComponentFetcher > ((ComponentFetcher *) null);
 
@@ -1004,14 +1004,14 @@ void __fastcall TMainForm::Button1Click(TObject * Sender)
 
 void __fastcall TMainForm::Edit_IntervalChange(TObject * Sender)
 {
-    mm->setWaitTimes(this->getInterval());
+    setMeterMeasurementWaitTimes();
 }
 
 //---------------------------------------------------------------------------
 
 void TMainForm::setMeterMeasurementWaitTimes()
 {
-    this->mm->setWaitTimes(this->getInterval());
+    this->mm->WaitTimes = this->getInterval();
 };
 void __fastcall TMainForm::Button_I2CTestClick(TObject * Sender)
 {
@@ -1355,6 +1355,14 @@ void __fastcall TMainForm::TabSheet2Exit(TObject * Sender)
     if (true == Button_Connect->Enabled) {
 	RadioButton_PC->Checked = true;
     }
+}
+
+//---------------------------------------------------------------------------
+
+
+void __fastcall TMainForm::Edit_AverageTimesChange(TObject * Sender)
+{
+    mm->AverageTimes = this->Edit_AverageTimes->Text.ToInt();
 }
 
 //---------------------------------------------------------------------------
