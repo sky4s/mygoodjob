@@ -950,6 +950,13 @@ object MainForm: TMainForm
           Height = 13
           Caption = 'msec'
         end
+        object Label21: TLabel
+          Left = 8
+          Top = 48
+          Width = 40
+          Height = 13
+          Caption = 'Average'
+        end
         object Edit_Interval: TEdit
           Left = 7
           Top = 20
@@ -959,6 +966,15 @@ object MainForm: TMainForm
           TabOrder = 0
           Text = '750'
           OnChange = Edit_IntervalChange
+        end
+        object Edit_AverageTimes: TEdit
+          Left = 56
+          Top = 48
+          Width = 33
+          Height = 21
+          TabOrder = 1
+          Text = '1'
+          OnChange = Edit_AverageTimesChange
         end
       end
       object GroupBox_CHSetting: TGroupBox
@@ -1444,7 +1460,7 @@ object MainForm: TMainForm
             Top = 13
             Width = 138
             Height = 21
-            ItemHeight = 0
+            ItemHeight = 13
             TabOrder = 0
             OnChange = ComboBox_TCONTypeChange
           end
