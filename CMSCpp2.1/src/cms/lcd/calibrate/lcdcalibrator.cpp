@@ -590,7 +590,7 @@ namespace cms {
 		    double delta = (*deltaVector)[x];
 		    if (delta < 0) {
 			//有反轉, 就把反轉處之前(包含反轉)全部-1
-			int a = 1;
+			//int a = 1;
 			for (int y = x; y <= x; y++) {
 			    double delta = (*deltaVector)[y];
 			    double deltaOfCh = (*deltaOfChVector)[y];
