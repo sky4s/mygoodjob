@@ -124,6 +124,7 @@ namespace cms {
 	    const std::string & filename;
 	    const Mode mode;
 	     std::map < const std::string, string_vector_ptr) headerNamesMap;
+	    static const std::string & DeltaData;
 	  protected:
 	     bptr < ExcelFileDB > db;
 	    string_vector_ptr getHeaderNames(const std::string & sheetname);
@@ -147,6 +148,8 @@ namespace cms {
 	     addProperty(const std::string & key, const double value);
 	    static const std::string & Properties;
 	     bptr < DBQuery > retrieve(const std::string & sheetname);
+	    void setDeltaData(Component_vector_ptr componentVector);
+	    void setDeltaData(Patch_vector_ptr patchVector);
 
 	};
 	class SimpleExcelAccess:protected ExcelAccessBase {

@@ -23,7 +23,7 @@ object CCTLUTForm: TCCTLUTForm
     Top = 360
     Width = 281
     Height = 13
-    Caption = 'Copyright (C) 2010, AU Optronics Corp., All Right Reserved.'
+    Caption = 'Copyright (C) 2012, AU Optronics Corp., All Right Reserved.'
   end
   object GroupBox1: TGroupBox
     Left = 7

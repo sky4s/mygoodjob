@@ -3,58 +3,58 @@ object AboutBox: TAboutBox
   Top = 396
   BorderStyle = bsDialog
   Caption = 'About'
-  ClientHeight = 265
-  ClientWidth = 444
+  ClientHeight = 215
+  ClientWidth = 361
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
-  Font.Height = -14
+  Font.Height = -11
   Font.Name = 'MS Sans Serif'
   Font.Style = []
   KeyPreview = True
   OldCreateOrder = True
   Position = poScreenCenter
   OnKeyPress = FormKeyPress
-  PixelsPerInch = 120
-  TextHeight = 16
+  PixelsPerInch = 96
+  TextHeight = 13
   object Panel1: TPanel
-    Left = 10
-    Top = 10
-    Width = 423
-    Height = 247
+    Left = 8
+    Top = 8
+    Width = 344
+    Height = 201
     BevelInner = bvRaised
     BevelOuter = bvLowered
     ParentColor = True
     TabOrder = 0
     object ProductName: TLabel
-      Left = 156
-      Top = 20
-      Width = 113
-      Height = 16
+      Left = 127
+      Top = 16
+      Width = 91
+      Height = 13
       Caption = 'CCT Adjustment v3'
       IsControl = True
     end
     object Version: TLabel
-      Left = 156
-      Top = 49
-      Width = 66
-      Height = 16
+      Left = 127
+      Top = 40
+      Width = 53
+      Height = 13
       Caption = 'Version 3.2'
       IsControl = True
     end
     object Copyright: TLabel
-      Left = 10
-      Top = 90
-      Width = 349
-      Height = 16
-      Caption = 'Copyright (C) 2010, AU Optronics Corp., All Right Reserved.'
+      Left = 8
+      Top = 73
+      Width = 281
+      Height = 13
+      Caption = 'Copyright (C) 2012, AU Optronics Corp., All Right Reserved.'
       IsControl = True
     end
     object Comments: TLabel
-      Left = 402
-      Top = 8
-      Width = 404
-      Height = 64
+      Left = 327
+      Top = 7
+      Width = 321
+      Height = 52
       Caption = 
         'Warning: this computer program is protected by copyright law and' +
         ' international treaties. Unauthorized reproduction or distributi' +
@@ -65,10 +65,10 @@ object AboutBox: TAboutBox
       IsControl = True
     end
     object Image1: TImage
-      Left = 16
-      Top = 24
-      Width = 113
-      Height = 42
+      Left = 13
+      Top = 20
+      Width = 92
+      Height = 34
       Picture.Data = {
         0A544A504547496D616765CC0B0000FFD8FFE100E645786966000049492A0008
         0000000500120103000100000001000000310102001C0000004A000000320102
@@ -167,10 +167,10 @@ object AboutBox: TAboutBox
         8C30C1EEC7CF8107BD09F7630853E89B70F76338C245858C30FFD9}
     end
     object Memo1: TMemo
-      Left = 8
-      Top = 112
-      Width = 409
-      Height = 89
+      Left = 7
+      Top = 91
+      Width = 332
+      Height = 72
       Lines.Strings = (
         
           'Warning: this computer program is protected by copyright law and' +
@@ -189,10 +189,10 @@ object AboutBox: TAboutBox
     end
   end
   object OKButton: TButton
-    Left = 177
-    Top = 214
-    Width = 92
-    Height = 30
+    Left = 144
+    Top = 174
+    Width = 75
+    Height = 24
     Caption = 'OK'
     Default = True
     ModalResult = 1
