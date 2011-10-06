@@ -449,7 +449,7 @@ namespace cms {
 		STORE_DOUBLE_VECTOR("1_lumigammacurve.xls", luminanceGammaCurve);
 
 
-		double dimgammaParameter = 3.5;
+		double dimgammaParameter = 1;
 		int underParameter = 50;
 
 		if (correct == Correct::DefinedDim) {
@@ -503,8 +503,6 @@ namespace cms {
 		    //從目標值算出DGLut
 		    dglut = advgenerator->produce(targetXYZVector);
 		    STORE_RGBVECTOR("3.1_org_dgcode.xls", dglut);
-		    //modifiedTarget = true;
-		    //if (true == modifiedTarget && MainForm->isTCONInput()) {      4
 		    if (true == modifiedTarget
 			&& (true != MainForm->linkCA210 || MainForm->isTCONInput())) {
 			//先從DGLut算出灰階的dx dy

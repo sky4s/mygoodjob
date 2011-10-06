@@ -21,6 +21,7 @@ namespace cms {
 		Component(RGB_ptr rgb, RGB_ptr intensity, XYZ_ptr XYZ);
 		Component(RGB_ptr rgb, RGB_ptr intensity, XYZ_ptr XYZ, RGB_ptr gamma);
 		Component(Component_ptr c);
+		Component(Patch_ptr p);
 		RGB_ptr rgb;
 		RGB_ptr intensity;
 		XYZ_ptr XYZ;

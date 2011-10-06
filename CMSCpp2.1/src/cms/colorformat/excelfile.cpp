@@ -343,6 +343,7 @@ namespace cms {
 	//======================================================================
 	// ExcelAccessBase
 	//======================================================================
+	const string & ExcelAccessBase::DeltaData = "Delta_Data";
 	string_vector_ptr ExcelAccessBase::getHeaderNames(const std::string & sheetname) {
 	    return headerNamesMap[sheetname];
 	};
@@ -423,6 +424,77 @@ namespace cms {
 	    db->setTableName(sheetname);
 	    return db->selectAll();
 	};
+
+	void ExcelAccessBase::setDeltaData(Patch_vector_ptr patchVector) {
+	    using namespace cms::lcd::calibrate;
+	    int size = patchVector->size();
+	    Component_vector_ptr componentVector(new Component_vector(size));
+	    for (int x = 0; x < size; x++) {
+		Patch_ptr p = (*patchVector)[x];
+		//p->getRGB()
+		Component_ptr c(new Component(p));
+		(*componentVector)[x] = c;
+	    }
+	    setDeltaData(componentVector);
+	}
+
+	void ExcelAccessBase::setDeltaData(Component_vector_ptr componentVector) {
+	    //==================================================================
+	    // 初始資料設定
+	    //==================================================================
+	    const int headerCount = 8;
+	    initSheet(DeltaData, headerCount, "Gray Level", "W_x", "W_y", "Y (nit)", "dx", "dy",
+		      "ave_x", "ave_y");
+
+	    int size = componentVector->size();
+	    //const int headerCount = getHeaderCount(MeasureData);
+	    string_vector_ptr values(new string_vector(headerCount));
+	    //==================================================================
+
+	    xyY_ptr xyY0(new CIExyY((*componentVector)[0]->XYZ));
+	    xyY_ptr xyY1(new CIExyY((*componentVector)[size - 1]->XYZ));
+	    string ave_x = _toString((xyY0->x - xyY1->x) / size);
+	    string ave_y = _toString((xyY0->y - xyY1->y) / size);
+
+	    //==================================================================
+	    // 迴圈處理
+	    //==================================================================
+	    for (int x = 0; x != size; x++) {
+		Component_ptr c = (*componentVector)[x];
+		int w = static_cast < int >(c->rgb->getValue(Channel::W));
+		(*values)[0] = _toString(w);
+		xyY_ptr xyY(new CIExyY(c->XYZ));
+
+
+		//xyY_ptr xyY(new CIExyY(c->XYZ));
+		(*values)
+		    [1] = _toString(xyY->x);
+		(*values)
+		    [2] = _toString(xyY->y);
+		(*values)
+		    [3] = _toString(xyY->Y);
+
+		(*values)
+		    [6] = ave_x;
+		(*values)
+		    [7] = ave_y;
+
+		if (x < (size - 1)) {
+		    //dx dy只算到倒數第二個
+		    Component_ptr c2 = (*componentVector)[x + 1];
+		    xyY_ptr xyY2(new CIExyY(c2->XYZ));
+		    (*values)
+			[4] = _toString(xyY->x - xyY2->x);
+		    (*values)
+			[5] = _toString(xyY->y - xyY2->y);
+		} else {
+		    StringVector::setContent(values, "-1", 2, 4, 5);
+		}
+
+		this->insertData(DeltaData, values, false);
+	    }
+	};
+
 	//======================================================================
 
 	//======================================================================

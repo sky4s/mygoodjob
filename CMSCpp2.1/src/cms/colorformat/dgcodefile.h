@@ -24,6 +24,7 @@ namespace cms {
 	    static const std::string & GammaTable;
 	    static const std::string & RawData;
 	    static const std::string & Target;
+	    //static const std::string & DeltaData;
 	    const Dep::MaxValue & maxValue;
 
 	  public:
@@ -37,10 +38,12 @@ namespace cms {
 
 	    void setRawData(Component_vector_ptr componentVector,
 			    RGBGamma_ptr initialRGBGamma, RGBGamma_ptr finalRGBGamma);
+
 	    void setGammaTable(RGB_vector_ptr dglut);
 	    void setTargetXYZVector(XYZ_vector_ptr targetXYZVector);
 	    Component_vector_ptr getComponentVector();
 	    RGB_vector_ptr getGammaTable();
+	    //void setDeltaData(Component_vector_ptr componentVector);
 
 	    /*
 	       量測的資料不見得是0~255全量, 但是產生的gamma一定是全部

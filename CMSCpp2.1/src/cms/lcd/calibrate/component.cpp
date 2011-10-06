@@ -52,6 +52,21 @@ namespace cms {
 		    this->gamma = c->gamma->clone();
 		}
 	    };
+
+	    Component::Component(Patch_ptr p) {
+
+		if (null != p->getRGB()) {
+		    this->rgb = p->getRGB()->clone();
+		}
+
+		if (null != p->getIntensity()) {
+		    this->intensity = p->getIntensity()->clone();
+		}
+
+		if (null != p->getXYZ()) {
+		    this->XYZ = p->getXYZ()->clone();
+		}
+	    };
 	    //==================================================================
 
 
@@ -136,9 +151,12 @@ namespace cms {
 		Util::deleteExist(filename);
 		DGLutFile dglut(filename, Create);
 		dglut.setRawData(componentVector, nil_RGBGamma, nil_RGBGamma);
+
 		RGB_vector_ptr rgbVector = getRGBVector(componentVector);
 		rgbVector = RGBVector::reverse(rgbVector);
 		dglut.setGammaTable(rgbVector);
+
+		dglut.setDeltaData(componentVector);
 	    };
 	    void ComponentFetcher::windowClosing(TObject * Sender, TCloseAction & Action) {
 		stop = true;

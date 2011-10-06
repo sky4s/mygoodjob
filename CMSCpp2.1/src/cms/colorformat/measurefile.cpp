@@ -15,8 +15,9 @@ namespace cms {
 	using namespace Indep;
 	using namespace java::lang;
 	using namespace cms::util;
-	const std::string & RampMeasureFile::Sheet1 = "Sheet1";
-	const std::string & RampMeasureFile::Sheet2 = "Sheet2";
+	const std::string & RampMeasureFile::Sheet1 = "xyY";
+	const std::string & RampMeasureFile::Sheet2 = "XYZ";
+	//const std::string & RampMeasureFile::Deltaxy = "dxdy";
 
 	 RampMeasureFile::RampMeasureFile(const std::string & fileName,
 					  const Mode mode):ExcelAccessBase(fileName, mode) {
@@ -66,9 +67,9 @@ namespace cms {
 	    // 檢查來源資料
 	    //==================================================================
 	    /*if ((null == wMeasureData && null == wMeasureData2)
-		|| (null != wMeasureData && null != wMeasureData2)) {
-		throw IllegalArgumentException();
-	    }*/
+	       || (null != wMeasureData && null != wMeasureData2)) {
+	       throw IllegalArgumentException();
+	       } */
 	    int size = -1;
 	    if (null != wMeasureData) {
 		size = getMaximumSize(wMeasureData, rMeasureData, gMeasureData, bMeasureData);
@@ -177,81 +178,6 @@ namespace cms {
 			   bool XYZMode) {
 	    return setMeasureData(wMeasureData, nil_Patch_vector_ptr, rMeasureData, gMeasureData,
 				  bMeasureData, XYZMode);
-	    /*//==================================================================
-	       // 檢查來源資料
-	       //==================================================================
-	       int size = getMaximumSize(wMeasureData, rMeasureData,
-	       gMeasureData, bMeasureData);
-	       //==================================================================
-	       //==================================================================
-	       // 初始資料設定
-	       //==================================================================
-	       string_vector_ptr values(new string_vector(18));
-	       //==================================================================
-	       //==================================================================
-	       // 迴圈處理
-	       //==================================================================
-	       for (int x = 0; x < size; x++) {
-	       if (wMeasureData != null) {
-	       Component_ptr c = (*wMeasureData)[x];
-	       int w = static_cast < int >(c->rgb->getValue(Channel::W));
-	       (*values)[0] = _toString(w);
-	       double_array XYZValues = getValues(c->XYZ, XYZMode);
-	       (*values)[1] = _toString(XYZValues[0]);
-	       (*values)[2] = _toString(XYZValues[1]);
-	       (*values)[3] = _toString(XYZValues[2]);
-	       xyY_ptr xyY(new CIExyY(c->XYZ));
-	       double cct = CorrelatedColorTemperature::xy2CCTByMcCamyFloat(xyY);
-	       //計算出來的cct是否有意義
-
-	       cct = (cct > 30000 || cct < 0) ? -1 : cct;
-	       (*values)[4] = _toString(static_cast < int >(cct));
-
-	       double duv = CorrelatedColorTemperature::getduvWithDIlluminant(c->XYZ);
-	       (*values)[5] = _toString(duv);
-
-	       RGB_ptr intensity = c->intensity;
-	       if (null != intensity) {
-	       (*values)[6] = _toString(intensity->R);
-	       (*values)[7] = _toString(intensity->G);
-	       (*values)[8] = _toString(intensity->B);
-	       } else {
-	       StringVector::setContent(values, "-1", 3, 6, 7, 8);
-	       }
-	       } else {
-	       StringVector::setContent(values, "0", 9, 0, 1, 2, 3, 4, 5, 6, 7, 8);
-	       }
-
-	       if (rMeasureData != null) {
-	       Patch_ptr p = (*rMeasureData)[x];
-	       double_array XYZValues = getValues(p->getXYZ(), XYZMode);
-	       (*values)[9] = _toString(XYZValues[0]);
-	       (*values)[10] = _toString(XYZValues[1]);
-	       (*values)[11] = _toString(XYZValues[2]);
-	       } else {
-	       StringVector::setContent(values, "0", 3, 9, 10, 11);
-	       }
-	       if (gMeasureData != null) {
-	       Patch_ptr p = (*gMeasureData)[x];
-	       double_array XYZValues = getValues(p->getXYZ(), XYZMode);
-	       (*values)[12] = _toString(XYZValues[0]);
-	       (*values)[13] = _toString(XYZValues[1]);
-	       (*values)[14] = _toString(XYZValues[2]);
-	       } else {
-	       StringVector::setContent(values, "0", 3, 12, 13, 14);
-	       }
-	       if (bMeasureData != null) {
-	       Patch_ptr p = (*bMeasureData)[x];
-	       double_array XYZValues = getValues(p->getXYZ(), XYZMode);
-	       (*values)[15] = _toString(XYZValues[0]);
-	       (*values)[16] = _toString(XYZValues[1]);
-	       (*values)[17] = _toString(XYZValues[2]);
-	       } else {
-	       StringVector::setContent(values, "0", 3, 15, 16, 17);
-	       }
-
-	       this->insertData(XYZMode ? Sheet2 : Sheet1, values, false);
-	       } */
 	}
 
 	void RampMeasureFile::

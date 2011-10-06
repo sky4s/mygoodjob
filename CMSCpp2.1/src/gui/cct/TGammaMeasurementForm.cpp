@@ -161,6 +161,7 @@ bool TGammaMeasurementForm::measure(bool_vector_ptr rgbw,
 
     measureFile.setMeasureData(vectors[3], vectors[0], vectors[1], vectors[2], false);
     measureFile.setMeasureData(vectors[3], vectors[0], vectors[1], vectors[2], true);
+    measureFile.setDeltaData(vectors[3]);
     return true;
 };
 
