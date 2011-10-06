@@ -928,7 +928,7 @@ namespace cms {
 		if (true == MainForm->linkCA210) {
 		    storeComponentVector = Component_vector_ptr(new Component_vector());
 		} else {
-		    DGLutFile dglut("MeasureEstimator.xls", ReadOnly);
+		    DGLutFile dglut(DEBUG_DIR + _s("MeasureEstimator.xls"), ReadOnly);
 		    storeComponentVector = dglut.getComponentVector();
 		    storeIndex = 0;
 		}
