@@ -515,7 +515,7 @@ namespace cms {
 			RGBVector::changeMaxValue(clone, bitDepth->getFRCAbilityBit());
 			STORE_RGBVECTOR("3.3_frc_dgcode.xls", clone);
 
-			fixReverse(dglut);
+			fixReverse(clone);
 			dglut = clone;
 
 			//Component_vector_ptr dimComponentVector = getDimComponentVector(dglut);
@@ -599,6 +599,8 @@ namespace cms {
 		//double_vector_ptr dyofG = chromaticityEstimator->dyofGVector;
 		double_vector_ptr dxofBase = chromaticityEstimator->dxofBase;
 		double_vector_ptr dyofBase = chromaticityEstimator->dyofBase;
+                STORE_DOUBLE_VECTOR("dxofBase.xls", dxofBase);
+		STORE_DOUBLE_VECTOR("dyofBase.xls", dyofBase);
 
 		while ((reverseIndex = checkReverse(dxofBase, 1, dimFixEnd - 1)) != -1) {
 		    int y = reverseIndex;
@@ -612,6 +614,8 @@ namespace cms {
 		    chromaticityEstimator->measure(0, dimFixEnd);
 		    dxofBase = chromaticityEstimator->dxofBase;
 		    dyofBase = chromaticityEstimator->dyofBase;
+                    STORE_DOUBLE_VECTOR("dxofBase.xls", dxofBase);
+		    STORE_DOUBLE_VECTOR("dyofBase.xls", dyofBase);
 		}
 		STORE_RGBVECTOR("3.4_r_reverse_fix_dgcode.xls", dglut);
 
@@ -627,6 +631,8 @@ namespace cms {
 		    chromaticityEstimator->measure(0, dimFixEnd);
 		    dxofBase = chromaticityEstimator->dxofBase;
 		    dyofBase = chromaticityEstimator->dyofBase;
+                    STORE_DOUBLE_VECTOR("dxofBase.xls", dxofBase);
+		    STORE_DOUBLE_VECTOR("dyofBase.xls", dyofBase);
 		}
 		STORE_RGBVECTOR("3.5_g_reverse_fix_dgcode.xls", dglut);
 	    };
