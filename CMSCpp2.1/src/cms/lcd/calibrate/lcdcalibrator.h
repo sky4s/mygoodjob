@@ -200,6 +200,9 @@ namespace cms {
 		void fixReverse(double_vector_ptr deltaVector,
 				double_vector_ptr deltaOfChVector, RGB_vector_ptr dglut,
 				Dep::Channel ch);
+		void fixReverse(RGB_vector_ptr dglut);
+		int checkReverse(double_vector_ptr deltaVector);
+		int checkReverse(double_vector_ptr deltaVector, int start, int end);
 
 		Component_vector_ptr getDimComponentVector(RGB_vector_ptr dglut);
 		void smoothDimComponentVector(Component_vector_ptr componentVector);
@@ -284,6 +287,8 @@ namespace cms {
 		bool useComponentVector;
 		XYZ_ptr baseXYZ;
 		XYZ_ptr measure(RGB_ptr rgb);
+		void measure0(int startIndex, int endIndex);
+		bool measureRdxGdy;
 	      public:
 		 MeasureEstimator(Component_vector_ptr componentVector,
 				  bptr < cms::measure::MeterMeasurement > mm,
@@ -298,13 +303,14 @@ namespace cms {
 		virtual double_array getRdxGdy(int componentIndex);
 		~MeasureEstimator();
 		void measure(int startIndex, int endIndex);
-		void measure0(int startIndex, int endIndex);
+
 		void resetMeasure();
 
 		double_vector_ptr dxofRVector;
 		double_vector_ptr dyofGVector;
 		double_vector_ptr dxofBase;
 		double_vector_ptr dyofBase;
+		__property bool MeasureRdxGdy = { write = measureRdxGdy };
 	    };
 	};
     };
