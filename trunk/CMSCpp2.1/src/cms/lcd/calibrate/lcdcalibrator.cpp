@@ -507,54 +507,61 @@ namespace cms {
 			&& (true != MainForm->linkCA210 || MainForm->isTCONInput())) {
 			//先從DGLut算出灰階的dx dy
 			//再從這樣的結果微調目標值
-			//Component_vector_ptr dimComponentVector = getDimComponentVector(dglut);
-			RGB_vector_ptr measureCode = RGBVector::copyRange(dglut, 0, dimFixEnd);
-
-			bool debug = !MainForm->linkCA210;
-			double_vector_ptr dxofBase, dyofBase, dxofR, dyofG;
-			if (!debug) {
-			    bptr < MeasureEstimator >
-				chromaticityEstimator(new MeasureEstimator(measureCode,
-									   fetcher->getAnalyzer(),
-									   bitDepth));
-			    chromaticityEstimator->measure(0, dimFixEnd);
-
-			    /*double_vector_ptr dxofBase = chromaticityEstimator->dxofBase;
-			       double_vector_ptr dyofBase = chromaticityEstimator->dyofBase;
-			       double_vector_ptr dxofR = chromaticityEstimator->dxofRVector;
-			       double_vector_ptr dyofG = chromaticityEstimator->dyofGVector; */
-			    dxofR = chromaticityEstimator->dxofRVector;
-			    dyofG = chromaticityEstimator->dyofGVector;
-			    dxofBase = chromaticityEstimator->dxofBase;
-			    dyofBase = chromaticityEstimator->dyofBase;
-
-			    STORE_DOUBLE_VECTOR("dxofR.xls", dxofR);
-			    STORE_DOUBLE_VECTOR("dyofG.xls", dyofG);
-			    STORE_DOUBLE_VECTOR("dxofBase.xls", dxofBase);
-			    STORE_DOUBLE_VECTOR("dyofBase.xls", dyofBase);
-			} else {
-			    dxofR = DoubleArray::loadFromExcel(DEBUG_DIR + _s("dxofR.xls"));
-			    dyofG = DoubleArray::loadFromExcel(DEBUG_DIR + _s("dyofG.xls"));
-			    dxofBase = DoubleArray::loadFromExcel(DEBUG_DIR + _s("dxofBase.xls"));
-			    dyofBase = DoubleArray::loadFromExcel(DEBUG_DIR + _s("dyofBase.xls"));
-
-			}
-
-			double_vector_ptr dxofBaseCopy = DoubleArray::copy(dxofBase);
-			double_vector_ptr dyofBaseCopy = DoubleArray::copy(dyofBase);
 
 			RGB_vector_ptr clone = RGBVector::deepClone(dglut);
 			RGBVector::changeMaxValue(clone, bitDepth->getLutMaxValue());
 			STORE_RGBVECTOR("3.2_lut_dgcode.xls", clone);
 			RGBVector::storeToText("3.2_lut_dgcode.txt", clone);
-
 			RGBVector::changeMaxValue(clone, bitDepth->getFRCAbilityBit());
 			STORE_RGBVECTOR("3.3_frc_dgcode.xls", clone);
-			fixReverse(dxofBaseCopy, dxofR, clone, Channel::R);
-			STORE_RGBVECTOR("3.4_r_reverse_fix_dgcode.xls", clone);
-			fixReverse(dyofBaseCopy, dyofG, clone, Channel::G);
-			STORE_RGBVECTOR("3.5_g_reverse_fix_dgcode.xls", clone);
+
+			fixReverse(dglut);
 			dglut = clone;
+
+			//Component_vector_ptr dimComponentVector = getDimComponentVector(dglut);
+			/*RGB_vector_ptr measureCode = RGBVector::copyRange(dglut, 0, dimFixEnd);
+
+			   bool debug = !MainForm->linkCA210;
+			   double_vector_ptr dxofBase, dyofBase, dxofR, dyofG;
+			   if (!debug) {
+			   bptr < MeasureEstimator >
+			   chromaticityEstimator(new MeasureEstimator(measureCode,
+			   fetcher->getAnalyzer(),
+			   bitDepth));
+			   chromaticityEstimator->measure(0, dimFixEnd);
+
+			   dxofR = chromaticityEstimator->dxofRVector;
+			   dyofG = chromaticityEstimator->dyofGVector;
+			   dxofBase = chromaticityEstimator->dxofBase;
+			   dyofBase = chromaticityEstimator->dyofBase;
+
+			   STORE_DOUBLE_VECTOR("dxofR.xls", dxofR);
+			   STORE_DOUBLE_VECTOR("dyofG.xls", dyofG);
+			   STORE_DOUBLE_VECTOR("dxofBase.xls", dxofBase);
+			   STORE_DOUBLE_VECTOR("dyofBase.xls", dyofBase);
+			   } else {
+			   dxofR = DoubleArray::loadFromExcel(DEBUG_DIR + _s("dxofR.xls"));
+			   dyofG = DoubleArray::loadFromExcel(DEBUG_DIR + _s("dyofG.xls"));
+			   dxofBase = DoubleArray::loadFromExcel(DEBUG_DIR + _s("dxofBase.xls"));
+			   dyofBase = DoubleArray::loadFromExcel(DEBUG_DIR + _s("dyofBase.xls"));
+
+			   }
+
+			   double_vector_ptr dxofBaseCopy = DoubleArray::copy(dxofBase);
+			   double_vector_ptr dyofBaseCopy = DoubleArray::copy(dyofBase);
+
+			   RGB_vector_ptr clone = RGBVector::deepClone(dglut);
+			   RGBVector::changeMaxValue(clone, bitDepth->getLutMaxValue());
+			   STORE_RGBVECTOR("3.2_lut_dgcode.xls", clone);
+			   RGBVector::storeToText("3.2_lut_dgcode.txt", clone);
+
+			   RGBVector::changeMaxValue(clone, bitDepth->getFRCAbilityBit());
+			   STORE_RGBVECTOR("3.3_frc_dgcode.xls", clone);
+			   fixReverse(dxofBaseCopy, dxofR, clone, Channel::R);
+			   STORE_RGBVECTOR("3.4_r_reverse_fix_dgcode.xls", clone);
+			   fixReverse(dyofBaseCopy, dyofG, clone, Channel::G);
+			   STORE_RGBVECTOR("3.5_g_reverse_fix_dgcode.xls", clone);
+			   dglut = clone; */
 		    }
 
 		    if (autoKeepMaxLumiParameter) {
@@ -580,36 +587,123 @@ namespace cms {
 		return dglut;
 		//==========================================================
 	    };
+
+	    void LCDCalibrator::fixReverse(RGB_vector_ptr dglut) {
+		int reverseIndex = -1;
+		bptr < MeasureEstimator >
+		    chromaticityEstimator(new MeasureEstimator(dglut,
+							       fetcher->getAnalyzer(), bitDepth));
+		chromaticityEstimator->MeasureRdxGdy = false;
+		chromaticityEstimator->measure(0, dimFixEnd);
+		//double_vector_ptr dxofR = chromaticityEstimator->dxofRVector;
+		//double_vector_ptr dyofG = chromaticityEstimator->dyofGVector;
+		double_vector_ptr dxofBase = chromaticityEstimator->dxofBase;
+		double_vector_ptr dyofBase = chromaticityEstimator->dyofBase;
+
+		while ((reverseIndex = checkReverse(dxofBase, 1, dimFixEnd - 1)) != -1) {
+		    int y = reverseIndex;
+		    double delta = (*dxofBase)[y];
+		    RGB_ptr rgb = (*dglut)[y];
+		    double value = rgb->getValue(Channel::R);
+		    value++;
+		    rgb->setValue(Channel::R, value);
+		    STORE_RGBVECTOR("3.4_r_reverse_fix_dgcode.xls", dglut);
+
+		    chromaticityEstimator->measure(0, dimFixEnd);
+		    dxofBase = chromaticityEstimator->dxofBase;
+		    dyofBase = chromaticityEstimator->dyofBase;
+		}
+		STORE_RGBVECTOR("3.4_r_reverse_fix_dgcode.xls", dglut);
+
+		while ((reverseIndex = checkReverse(dyofBase, 1, dimFixEnd - 1)) != -1) {
+		    int y = reverseIndex;
+		    double delta = (*dyofBase)[y];
+		    RGB_ptr rgb = (*dglut)[y];
+		    double value = rgb->getValue(Channel::G);
+		    value++;
+		    rgb->setValue(Channel::G, value);
+		    STORE_RGBVECTOR("3.5_g_reverse_fix_dgcode.xls", dglut);
+
+		    chromaticityEstimator->measure(0, dimFixEnd);
+		    dxofBase = chromaticityEstimator->dxofBase;
+		    dyofBase = chromaticityEstimator->dyofBase;
+		}
+		STORE_RGBVECTOR("3.5_g_reverse_fix_dgcode.xls", dglut);
+	    };
 	    void LCDCalibrator::fixReverse(double_vector_ptr deltaVector,
 					   double_vector_ptr deltaOfChVector,
 					   RGB_vector_ptr dglut, Dep::Channel ch) {
+		int reverseIndex = -1;
+		while ((reverseIndex = checkReverse(deltaVector)) != -1) {
+		    int y = reverseIndex;
+		    double delta = (*deltaVector)[y];
+		    double deltaOfCh = (*deltaOfChVector)[y];
+		    double modifiedDelta = delta + deltaOfCh;
+		    if (modifiedDelta >= 0) {
+			RGB_ptr rgb = (*dglut)[y];
+			double value = rgb->getValue(ch);
+			value++;
+			rgb->setValue(ch, value);
+
+			delta += deltaOfCh;
+			(*deltaVector)[y] = delta;
+
+			double nextdelta = (*deltaVector)[y + 1];
+			nextdelta -= deltaOfCh;
+			(*deltaVector)[y + 1] = nextdelta;
+		    }
+		}
+
+		/*int size = deltaVector->size();
+		   for (int x = 1; x < size - 1; x++) {
+		   double delta = (*deltaVector)[x];
+		   if (delta < 0) {
+		   //有反轉, 就把反轉處之前(包含反轉)全部-1
+		   //int a = 1;
+		   for (int y = x; y <= x; y++) {
+		   double delta = (*deltaVector)[y];
+		   double deltaOfCh = (*deltaOfChVector)[y];
+		   double modifiedDelta = delta + deltaOfCh;
+		   if (modifiedDelta >= 0) {
+		   RGB_ptr rgb = (*dglut)[y];
+		   double value = rgb->getValue(ch);
+		   value++;
+		   rgb->setValue(ch, value);
+
+		   delta += deltaOfCh;
+		   (*deltaVector)[y] = delta;
+
+		   double nextdelta = (*deltaVector)[y + 1];
+		   nextdelta -= deltaOfCh;
+		   (*deltaVector)[y + 1] = nextdelta;
+		   }
+		   }
+		   fixReverse(deltaVector, deltaOfChVector, dglut, ch);
+		   return;
+		   }
+		   } */
+	    }
+
+	    int LCDCalibrator::checkReverse(double_vector_ptr deltaVector) {
 		int size = deltaVector->size();
 		for (int x = 1; x < size - 1; x++) {
 		    double delta = (*deltaVector)[x];
 		    if (delta < 0) {
-			//有反轉, 就把反轉處之前(包含反轉)全部-1
-			//int a = 1;
-			for (int y = x; y <= x; y++) {
-			    double delta = (*deltaVector)[y];
-			    double deltaOfCh = (*deltaOfChVector)[y];
-			    if ((delta - deltaOfCh) >= 0) {
-				RGB_ptr rgb = (*dglut)[y];
-				double value = rgb->getValue(ch);
-				value--;
-				rgb->setValue(ch, value);
-
-				delta -= deltaOfCh;	//減完有可能變負號! 要避免!
-				(*deltaVector)[y] = delta;
-
-				double nextdelta = (*deltaVector)[y + 1];
-				nextdelta += deltaOfCh;
-				(*deltaVector)[y + 1] = nextdelta;
-			    }
-			}
-			fixReverse(deltaVector, deltaOfChVector, dglut, ch);
-			return;
+			return x;
 		    }
 		}
+		return -1;
+	    }
+
+	    int LCDCalibrator::checkReverse(double_vector_ptr deltaVector, int start, int end) {
+		//int size = deltaVector->size();
+		for (int x = start; x < end; x++) {
+		    double delta = (*deltaVector)[x];
+		    if (delta < 0) {
+			return x;
+		    }
+		}
+		return -1;
 	    }
 
 
@@ -933,17 +1027,17 @@ namespace cms {
 	    };
 	  MeasureEstimator::MeasureEstimator(Component_vector_ptr componentVector, bptr < cms::measure::MeterMeasurement > mm, bptr < BitDepthProcessor > bitDepth):componentVector(componentVector), mm(mm),
 		bitDepth(bitDepth), size(componentVector->size()),
-		useComponentVector(true) {
+		useComponentVector(true), measureRdxGdy(true) {
 		init();
 	    };
 	  MeasureEstimator::MeasureEstimator(Component_vector_ptr componentVector, bptr < cms::measure::IntensityAnalyzerIF > analyzer, bptr < BitDepthProcessor > bitDepth):componentVector(componentVector),
 		mm(analyzer->getMeterMeasurement()), bitDepth(bitDepth),
-		size(componentVector->size()), useComponentVector(true) {
+		size(componentVector->size()), useComponentVector(true), measureRdxGdy(true) {
 		init();
 	    };
 	  MeasureEstimator::MeasureEstimator(RGB_vector_ptr dglut, bptr < cms::measure::IntensityAnalyzerIF > analyzer, bptr < BitDepthProcessor > bitDepth):dglut(dglut), mm(analyzer->getMeterMeasurement()),
 		bitDepth(bitDepth), size(dglut->size()),
-		useComponentVector(false) {
+		useComponentVector(false), measureRdxGdy(true) {
 		init();
 	    };
 	    double_array MeasureEstimator::getdxdy(const Dep::Channel & ch, int componentIndex) {
@@ -1032,34 +1126,34 @@ namespace cms {
 		mm->close();
 	    };
 	    void MeasureEstimator::measure(int startIndex, int endIndex) {
-		if (true) {
-		    measure0(startIndex, endIndex);
-		    return;
-		}
-		resetMeasure();
-		RGB_ptr dg0 = getMeasureBaseRGB(startIndex);
-		if (true == MainForm->linkCA210) {
-		    baseXYZ = measure(dg0);
-		    //Component_ptr c0(new Component(dg0, nil_RGB_ptr, baseXYZ));
-		    //storeComponentVector->push_back(c0);
-		} else {
-		    Component_ptr c0 = (*storeComponentVector)[storeIndex++];
-		    baseXYZ = c0->XYZ;
-		}
+		//if (true) {
+		measure0(startIndex, endIndex);
+		//return;
+		//}
+		/*resetMeasure();
+		   RGB_ptr dg0 = getMeasureBaseRGB(startIndex);
+		   if (true == MainForm->linkCA210) {
+		   baseXYZ = measure(dg0);
+		   //Component_ptr c0(new Component(dg0, nil_RGB_ptr, baseXYZ));
+		   //storeComponentVector->push_back(c0);
+		   } else {
+		   Component_ptr c0 = (*storeComponentVector)[storeIndex++];
+		   baseXYZ = c0->XYZ;
+		   }
 
 
-		for (int x = startIndex; x <= endIndex; x++) {
-		    XYZ_ptr lastXYZ = baseXYZ;
-		    double_array RdxGdy = getRdxGdy(x);
-		    XYZ_ptr thisXYZ = baseXYZ;
-		    xyY_ptr lastxyY(new CIExyY(lastXYZ));
-		    xyY_ptr thisxyY(new CIExyY(thisXYZ));
-		    double_array dxdy = thisxyY->getDeltaxy(lastxyY);
-		    dxofBase->push_back(dxdy[0]);
-		    dyofBase->push_back(dxdy[1]);
-		    dxofRVector->push_back(RdxGdy[0]);
-		    dyofGVector->push_back(RdxGdy[1]);
-		}
+		   for (int x = startIndex; x <= endIndex; x++) {
+		   XYZ_ptr lastXYZ = baseXYZ;
+		   double_array RdxGdy = getRdxGdy(x);
+		   XYZ_ptr thisXYZ = baseXYZ;
+		   xyY_ptr lastxyY(new CIExyY(lastXYZ));
+		   xyY_ptr thisxyY(new CIExyY(thisXYZ));
+		   double_array dxdy = thisxyY->getDeltaxy(lastxyY);
+		   dxofBase->push_back(dxdy[0]);
+		   dyofBase->push_back(dxdy[1]);
+		   dxofRVector->push_back(RdxGdy[0]);
+		   dyofGVector->push_back(RdxGdy[1]);
+		   } */
 	    };
 	    void MeasureEstimator::measure0(int startIndex, int endIndex) {
 		resetMeasure();
@@ -1085,19 +1179,15 @@ namespace cms {
 		    dyofBase->push_back(dxy[1]);
 		};
 
-
-		/*for (int x = startIndex; x <= endIndex; x++) {
-		   double_array RdxGdy = getRdxGdy(x);
-		   dxofRVector->push_back(RdxGdy[0]);
-		   dyofGVector->push_back(RdxGdy[1]);
-		   } */
-		for (int x = endIndex; x >= startIndex; x--) {
-		    double_array RdxGdy = getRdxGdy(x);
-		    dxofRVector->push_back(RdxGdy[0]);
-		    dyofGVector->push_back(RdxGdy[1]);
+		if (measureRdxGdy) {
+		    for (int x = endIndex; x >= startIndex; x--) {
+			double_array RdxGdy = getRdxGdy(x);
+			dxofRVector->push_back(RdxGdy[0]);
+			dyofGVector->push_back(RdxGdy[1]);
+		    }
+		    dxofRVector = DoubleArray::getReverse(dxofRVector);
+		    dyofGVector = DoubleArray::getReverse(dyofGVector);
 		}
-		dxofRVector = DoubleArray::getReverse(dxofRVector);
-		dyofGVector = DoubleArray::getReverse(dyofGVector);
 
 	    }
 
