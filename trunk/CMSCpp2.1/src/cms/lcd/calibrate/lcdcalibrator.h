@@ -204,11 +204,17 @@ namespace cms {
 		void fixReverse2(RGB_vector_ptr dglut);
 		int checkReverse(double_vector_ptr deltaVector);
 		int checkReverse(double_vector_ptr deltaVector, int start, int end);
+		int_vector_ptr getReverseIndexVector(double_vector_ptr deltaVector,
+						     int start, int end);
+		int_vector_ptr getReverseZoneIndexVector(double_vector_ptr dxofBase,
+							 double_vector_ptr dyofBase, int start,
+							 int end);
 		double_vector_ptr selectDelta(double_vector_ptr dxofBase,
 					      double_vector_ptr dyofBase, Dep::Channel & ch);
 
 		Component_vector_ptr getDimComponentVector(RGB_vector_ptr dglut);
 		void smoothDimComponentVector(Component_vector_ptr componentVector);
+		//static const double ReverseDefine;
 		//==============================================================
 	      public:
 		static double_vector_ptr getGammaCurveVector(double gamma, int n, int
@@ -292,6 +298,7 @@ namespace cms {
 		XYZ_ptr measure(RGB_ptr rgb);
 		void measure0(int startIndex, int endIndex);
 		bool measureRdxGdy;
+		int_vector_ptr constrained;
 	      public:
 		 MeasureEstimator(Component_vector_ptr componentVector,
 				  bptr < cms::measure::MeterMeasurement > mm,
@@ -314,6 +321,7 @@ namespace cms {
 		double_vector_ptr dxofBase;
 		double_vector_ptr dyofBase;
 		__property bool MeasureRdxGdy = { write = measureRdxGdy };
+		__property int_vector_ptr Constrained = { write = constrained };
 	    };
 	};
     };
