@@ -6,6 +6,7 @@
 //C系統文件
 
 //C++系統文件
+#include <algorithm>
 
 //其他庫頭文件
 
@@ -515,7 +516,7 @@ namespace cms {
 			RGBVector::changeMaxValue(clone, bitDepth->getFRCAbilityBit());
 			STORE_RGBVECTOR("3.3_frc_dgcode.xls", clone);
 
-			fixReverse(clone);
+			fixReverse2(clone);
 			dglut = clone;
 
 			//Component_vector_ptr dimComponentVector = getDimComponentVector(dglut);
@@ -588,6 +589,9 @@ namespace cms {
 		//==========================================================
 	    };
 
+	    /*
+	       原始的修正方法, 經測試, 有效產生無defect的DG
+	     */
 	    void LCDCalibrator::fixReverse(RGB_vector_ptr dglut) {
 		int reverseIndex = -1;
 		bptr < MeasureEstimator >
@@ -634,6 +638,10 @@ namespace cms {
 		}
 		STORE_RGBVECTOR("3.5_g_reverse_fix_dgcode.xls", dglut);
 	    };
+
+	    /*
+	       從ch來挑選delta資料
+	     */
 	    double_vector_ptr LCDCalibrator::selectDelta(double_vector_ptr dxofBase,
 							 double_vector_ptr dyofBase, Channel & ch) {
 		if (ch == Channel::R) {
@@ -643,106 +651,172 @@ namespace cms {
 		}
 	    }
 	    void LCDCalibrator::fixReverse2(RGB_vector_ptr dglut) {
-		int reverseIndex = -1;
+
 		bptr < MeasureEstimator >
 		    chromaticityEstimator(new MeasureEstimator(dglut,
 							       fetcher->getAnalyzer(), bitDepth));
 		chromaticityEstimator->MeasureRdxGdy = false;
+		//量好dx dy
 		chromaticityEstimator->measure(0, dimFixEnd);
 		double_vector_ptr dxofBase = chromaticityEstimator->dxofBase;
 		double_vector_ptr dyofBase = chromaticityEstimator->dyofBase;
 		STORE_DOUBLE_VECTOR("dxofBase.xls", dxofBase);
 		STORE_DOUBLE_VECTOR("dyofBase.xls", dyofBase);
+
+
 		int checkEnd = dimFixEnd - 1;
+		//int reverseIndex = -1;
+		const int MaxTestCount = 3;
+		bool useOld = false;
+		//取出reverse zone的用意是, 界定出哪些地方有 reverse, 往後只要去量有reverse的地方即可, 不用全部都量
+		int_vector_ptr reverseZone =
+		    getReverseZoneIndexVector(dxofBase, dyofBase, 1, checkEnd);
+		//chromaticityEstimator->Constrained = reverseZone;
 
-		for (int x = 1; x <= 2; x++) {
-		    Channel ch = Channel::getChannel(x);
-		    double_vector_ptr deltaOfBase = selectDelta(dxofBase, dyofBase, ch);
+		if (!useOld) {
+		    int_vector_ptr reverseIndexes;
 
-		    //外層全量
-		    while ((reverseIndex = checkReverse(dxofBase, 1, checkEnd)) != -1) {
-
-			do {
-			    //進入內層代表遇到defect
-			    int y = reverseIndex;
-			    double delta = (*deltaOfBase)[y];
-			    RGB_ptr rgb = (*dglut)[y];
-			    double value = rgb->getValue(ch);
-			    value++;
-			    rgb->setValue(ch, value);
-			    if (ch == Channel::R) {
-				STORE_RGBVECTOR("3.4_r_reverse_fix_dgcode.xls", dglut);
-			    } else if (ch == Channel::G) {
-				STORE_RGBVECTOR("3.5_g_reverse_fix_dgcode.xls", dglut);
-			    }
-			    //調整完之後只量測有被調整的那區域(也就是3個GL)
-			    //若該區域都ok, 調整結束, 改量全部, 繼續檢查是否有反轉
-			    int localStart = y - 1;
-			    int localEnd = y + 1;
-
-			    chromaticityEstimator->measure(localStart, localEnd);
-			    dxofBase = chromaticityEstimator->dxofBase;
-			    dyofBase = chromaticityEstimator->dyofBase;
-
-			    deltaOfBase = selectDelta(dxofBase, dyofBase, ch);
-			} while (checkReverse(deltaOfBase, 1, 2) != -1);
-			//因為量測結果會多墊一個0, 所以checkReverse從1開始做檢查
+		    while (getReverseIndexVector(dxofBase, 1, checkEnd)->size() != 0
+			   || getReverseIndexVector(dyofBase, 1, checkEnd)->size() != 0) {
+			//修正至沒有反轉為止
 
 
+			//新的量測方式, 希望可以減少時間
+			for (int x = 1; x <= 2; x++) {
+			    //1 for R, 2 for G
+			    Channel ch = Channel::getChannel(x);
+			    //從ch來決定要處理dx or dy
+			    double_vector_ptr deltaOfBase = selectDelta(dxofBase, dyofBase, ch);
+			    reverseIndexes = getReverseIndexVector(deltaOfBase, 1, checkEnd);
+			    double_vector_ptr deltaOfBase0;
+
+			    foreach(int index, *reverseIndexes) {
+
+				int test = 0;	//最多測試三次
+				do {
+				    //進入內層代表遇到defect
+				    int y = index;
+				    double delta = (*deltaOfBase)[y];
+				    double deltaU1 = (*deltaOfBase)[y + 1];
+				    double deltaD1 = (*deltaOfBase)[y - 1];
+
+				    RGB_ptr rgb;
+				    double value = -1;
+				    if (deltaU1 > deltaD1) {
+					//若上方的delta比較大, 代表比較大的調整空間, 所以往上調
+					rgb = (*dglut)[y];
+					value = rgb->getValue(ch) + 1;
+				    } else {
+					//反之, 就是往下調
+					rgb = (*dglut)[y - 1];
+					value = rgb->getValue(ch) - 1;
+				    }
+				    rgb->setValue(ch, value);
+
+
+				    if (ch == Channel::R) {
+					STORE_RGBVECTOR("3.4_r_reverse_fix_dgcode.xls", dglut);
+				    } else if (ch == Channel::G) {
+					STORE_RGBVECTOR("3.5_g_reverse_fix_dgcode.xls", dglut);
+				    }
+				    //調整完之後只量測有被調整的那區域(也就是3個GL)
+				    //若該區域都ok, 換下一個反轉
+				    int localStart = y - 1;
+				    int localEnd = y + 1;
+
+				    chromaticityEstimator->measure(localStart, localEnd);
+				    double_vector_ptr dxofBase0 = chromaticityEstimator->dxofBase;
+				    double_vector_ptr dyofBase0 = chromaticityEstimator->dyofBase;
+				    deltaOfBase0 = selectDelta(dxofBase0, dyofBase0, ch);
+
+				    test++;
+				} while (checkReverse(deltaOfBase0, 1, 2) != -1
+					 && test < MaxTestCount);
+				//因為量測結果會多墊一個0, 所以checkReverse從1開始做檢查
+
+			    }	//foreach loop
+
+			}	//for ch loop
+			//只有在量全部的時候才會下constrained
+			chromaticityEstimator->Constrained = reverseZone;
+			chromaticityEstimator->measure(0, dimFixEnd);
+			chromaticityEstimator->Constrained = nil_int_vector_ptr;
+			dxofBase = chromaticityEstimator->dxofBase;
+			dyofBase = chromaticityEstimator->dyofBase;
+			STORE_DOUBLE_VECTOR("dxofBase.xls", dxofBase);
+			STORE_DOUBLE_VECTOR("dyofBase.xls", dyofBase);
+		    }		//out while
+		    STORE_RGBVECTOR("3.5_reverse_fix_dgcode.xls", dglut);
+		} else {
+		    int_vector_ptr reverseIndexes;
+
+		    while (getReverseIndexVector(dxofBase, 1, checkEnd)->size() != 0
+			   || getReverseIndexVector(dyofBase, 1, checkEnd)->size() != 0) {
+			//修正至沒有反轉為止
+
+
+			//新的量測方式, 希望可以減少時間
+			for (int x = 1; x <= 2; x++) {
+			    //1 for R, 2 for G
+			    Channel ch = Channel::getChannel(x);
+			    //從ch來決定要處理dx or dy
+			    double_vector_ptr deltaOfBase = selectDelta(dxofBase, dyofBase, ch);
+			    reverseIndexes = getReverseIndexVector(deltaOfBase, 1, checkEnd);
+			    double_vector_ptr deltaOfBase0;
+
+			    foreach(int index, *reverseIndexes) {
+
+				int test = 0;	//最多測試三次
+				do {
+				    //進入內層代表遇到defect
+				    int y = index;
+				    double delta = (*deltaOfBase)[y];
+				    double deltaU1 = (*deltaOfBase)[y + 1];
+				    double deltaD1 = (*deltaOfBase)[y - 1];
+
+				    RGB_ptr rgb;
+				    double value = -1;
+				    if (deltaU1 > deltaD1) {
+					//若上方的delta比較大, 代表比較大的調整空間, 所以往上調
+					rgb = (*dglut)[y];
+					value = rgb->getValue(ch) + 1;
+				    } else {
+					//反之, 就是往下調
+					rgb = (*dglut)[y - 1];
+					value = rgb->getValue(ch) - 1;
+				    }
+				    rgb->setValue(ch, value);
+
+
+				    if (ch == Channel::R) {
+					STORE_RGBVECTOR("3.4_r_reverse_fix_dgcode.xls", dglut);
+				    } else if (ch == Channel::G) {
+					STORE_RGBVECTOR("3.5_g_reverse_fix_dgcode.xls", dglut);
+				    }
+				    //調整完之後只量測有被調整的那區域(也就是3個GL)
+				    //若該區域都ok, 換下一個反轉
+				    int localStart = y - 1;
+				    int localEnd = y + 1;
+
+				    chromaticityEstimator->measure(localStart, localEnd);
+				    double_vector_ptr dxofBase0 = chromaticityEstimator->dxofBase;
+				    double_vector_ptr dyofBase0 = chromaticityEstimator->dyofBase;
+				    deltaOfBase0 = selectDelta(dxofBase0, dyofBase0, ch);
+
+				    test++;
+				} while (checkReverse(deltaOfBase0, 1, 2) != -1
+					 && test < MaxTestCount);
+				//因為量測結果會多墊一個0, 所以checkReverse從1開始做檢查
+
+			    }	//foreach loop
+
+			}	//for ch loop
 			chromaticityEstimator->measure(0, dimFixEnd);
 			dxofBase = chromaticityEstimator->dxofBase;
 			dyofBase = chromaticityEstimator->dyofBase;
-
-
-			STORE_DOUBLE_VECTOR("dxofBase.xls", dxofBase);
-			STORE_DOUBLE_VECTOR("dyofBase.xls", dyofBase);
-		    }
-
-		    if (ch == Channel::R) {
-			STORE_RGBVECTOR("3.4_r_reverse_fix_dgcode.xls", dglut);
-		    } else if (ch == Channel::G) {
-			STORE_RGBVECTOR("3.5_g_reverse_fix_dgcode.xls", dglut);
-		    }
-		}
-
-
-		//外層全量
-		/*while ((reverseIndex = checkReverse(dxofBase, 1, dimFixEnd - 1)) != -1) {
-		   //進入內層代表遇到defect
-		   int y = reverseIndex;
-		   double delta = (*dxofBase)[y];
-		   RGB_ptr rgb = (*dglut)[y];
-		   double value = rgb->getValue(Channel::R);
-		   value++;
-		   rgb->setValue(Channel::R, value);
-		   STORE_RGBVECTOR("3.4_r_reverse_fix_dgcode.xls", dglut);
-
-		   //調整完之後只量測有被調整的那區域(也就是3個GL)
-		   //若該區域都ok, 調整結束, 改量全部, 繼續檢查是否有反轉
-		   chromaticityEstimator->measure(0, dimFixEnd);
-		   dxofBase = chromaticityEstimator->dxofBase;
-		   dyofBase = chromaticityEstimator->dyofBase;
-		   STORE_DOUBLE_VECTOR("dxofBase.xls", dxofBase);
-		   STORE_DOUBLE_VECTOR("dyofBase.xls", dyofBase);
-		   }
-		   STORE_RGBVECTOR("3.4_r_reverse_fix_dgcode.xls", dglut);
-
-		   while ((reverseIndex = checkReverse(dyofBase, 1, dimFixEnd - 1)) != -1) {
-		   int y = reverseIndex;
-		   double delta = (*dyofBase)[y];
-		   RGB_ptr rgb = (*dglut)[y];
-		   double value = rgb->getValue(Channel::G);
-		   value++;
-		   rgb->setValue(Channel::G, value);
-		   STORE_RGBVECTOR("3.5_g_reverse_fix_dgcode.xls", dglut);
-
-		   chromaticityEstimator->measure(0, dimFixEnd);
-		   dxofBase = chromaticityEstimator->dxofBase;
-		   dyofBase = chromaticityEstimator->dyofBase;
-		   STORE_DOUBLE_VECTOR("dxofBase.xls", dxofBase);
-		   STORE_DOUBLE_VECTOR("dyofBase.xls", dyofBase);
-		   }
-		   STORE_RGBVECTOR("3.5_g_reverse_fix_dgcode.xls", dglut); */
+		    }		//out while
+		    STORE_RGBVECTOR("3.5_reverse_fix_dgcode.xls", dglut);
+		}		//end if
 	    };
 
 	    void LCDCalibrator::fixReverse(double_vector_ptr deltaVector,
@@ -770,22 +844,58 @@ namespace cms {
 		}
 	    }
 
+	    //const double LCDCalibrator::ReverseDefine = 0.0001;
 	    int LCDCalibrator::checkReverse(double_vector_ptr deltaVector) {
 		int size = deltaVector->size();
 		for (int x = 1; x < size - 1; x++) {
 		    double delta = (*deltaVector)[x];
-		    if (delta < 0) {
+		    if (delta < dimFixThreshold) {
 			return x;
 		    }
 		}
 		return -1;
 	    }
 
+	    int_vector_ptr LCDCalibrator::getReverseIndexVector(double_vector_ptr deltaVector,
+								int start, int end) {
+		int_vector_ptr result(new int_vector());
+		int preReverseIndex = -1;
+		for (int x = start; x < end; x++) {
+		    double delta = (*deltaVector)[x];
+		    if (delta < dimFixThreshold
+			&& ((preReverseIndex != -1) ? (x - preReverseIndex) >= 3 : true)) {
+			//return x;
+			preReverseIndex = x;
+			result->push_back(x);
+		    }
+		}
+
+		return result;
+	    }
+
+	    int_vector_ptr LCDCalibrator::getReverseZoneIndexVector(double_vector_ptr dxofBase,
+								    double_vector_ptr dyofBase,
+								    int start, int end) {
+		int_vector_ptr result(new int_vector());
+		for (int x = start; x < end; x++) {
+		    double dx = (*dxofBase)[x];
+		    double dy = (*dyofBase)[x];
+		    if (dx < dimFixThreshold || dy < dimFixThreshold) {
+			result->push_back(x - 1);
+			result->push_back(x);
+			result->push_back(x + 1);
+			x = x + 3;
+		    }
+		}
+
+		return result;
+	    }
+
 	    int LCDCalibrator::checkReverse(double_vector_ptr deltaVector, int start, int end) {
 		//int size = deltaVector->size();
 		for (int x = start; x < end; x++) {
 		    double delta = (*deltaVector)[x];
-		    if (delta < 0) {
+		    if (delta < dimFixThreshold) {
 			return x;
 		    }
 		}
@@ -1010,8 +1120,8 @@ namespace cms {
 			//最後還是要對DG做一次smooth
 			bptr < DGLutOp >
 			    nativeWhiteAdv(new
-					   KeepNativeWhiteAdvancedOp(bitDepth,
-								     keepMaxLumiOver, false));
+					   KeepNativeWhiteAdvancedOp(bitDepth, keepMaxLumiOver,
+								     false));
 			dgop.addOp(nativeWhiteAdv);
 		    }
 		    break;
@@ -1246,10 +1356,25 @@ namespace cms {
 		const Dep::MaxValue & frcBit = bitDepth->getFRCAbilityBit();
 		XYZ_vector_ptr baseXYZVec(new XYZ_vector());
 
+		XYZ_ptr XYZ;
 		//先量base
 		for (int x = endIndex; x >= startIndex; x--) {
-		    RGB_ptr rgb = getMeasureBaseRGB(x);
-		    XYZ_ptr XYZ = measure(rgb);
+
+		    if (null != constrained) {
+			//constrained->
+			bool search = binary_search(constrained->begin(), constrained->end(), x);
+			if (search) {
+			    RGB_ptr rgb = getMeasureBaseRGB(x);
+			    XYZ = measure(rgb);
+			} else {
+			    XYZ = XYZ_ptr(new CIEXYZ());
+			}
+		    } else {
+			RGB_ptr rgb = getMeasureBaseRGB(x);
+			XYZ = measure(rgb);
+		    }
+
+
 		    baseXYZVec->push_back(XYZ);
 		}
 		//量完再來做處裡

@@ -366,13 +366,21 @@ void TMainForm::initCA210Meter()
 	    ca210Thread->Terminate();
 	    delete ca210Thread;
 	    ca210Thread = null;
-	}
 
+	}
 	StatusBar1->Panels->Items[1]->Text = "CA-210 Connected!";
+
     }
     catch(EOleException & ex) {
+	if (connectCA210ByThread) {
+	    stopProgress(MainForm->ProgressBar1);
+	    Enabled = true;
+	}
+
 	ShowMessage
 	    ("CA210 cannot be linked or unsupported version of CA-SDK (CA-SDK v4.10 up needed).");
+	//this->Close();
+
     }
 };
 
@@ -1321,6 +1329,8 @@ void __fastcall TMainForm::FormActivate(TObject * Sender)
 		    /*MainForm->stopProgress(MainForm->ProgressBar1);
 		       MainForm->Enabled = true;
 		       MainForm->StatusBar1->Panels->Items[1]->Text = "CA-210 Connected!"; */
+		    //MainForm->Enabled = true;
+		    //MainForm->StatusBar1->Panels->Items[1]->Text = "CA-210 Connected!";
 		};
 	      public:
 	      __fastcall CA210Thread(bool CreateSuspended):TThread(CreateSuspended) {
