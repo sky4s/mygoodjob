@@ -660,17 +660,17 @@ namespace cms {
 		chromaticityEstimator->measure(0, dimFixEnd);
 		double_vector_ptr dxofBase = chromaticityEstimator->dxofBase;
 		double_vector_ptr dyofBase = chromaticityEstimator->dyofBase;
-		STORE_DOUBLE_VECTOR("dxofBase.xls", dxofBase);
-		STORE_DOUBLE_VECTOR("dyofBase.xls", dyofBase);
+		STORE_DOUBLE_VECTOR("o_dxofBase.xls", dxofBase);
+		STORE_DOUBLE_VECTOR("o_dyofBase.xls", dyofBase);
 
 
 		int checkEnd = dimFixEnd - 1;
 		//int reverseIndex = -1;
-		const int MaxTestCount = 3;
+		const int MaxTestCount = 4;
 		bool useOld = false;
 		//取出reverse zone的用意是, 界定出哪些地方有 reverse, 往後只要去量有reverse的地方即可, 不用全部都量
-		int_vector_ptr reverseZone =
-		    getReverseZoneIndexVector(dxofBase, dyofBase, 1, checkEnd);
+		int_vector_ptr mustZone =
+		    getMustMeasureZoneIndexVector(dxofBase, dyofBase, 1, checkEnd);
 		//chromaticityEstimator->Constrained = reverseZone;
 
 		if (!useOld) {
@@ -692,7 +692,7 @@ namespace cms {
 
 			    foreach(int index, *reverseIndexes) {
 
-				int test = 0;	//最多測試三次
+				int test = 0;
 				do {
 				    //進入內層代表遇到defect
 				    int y = index;
@@ -738,7 +738,7 @@ namespace cms {
 
 			}	//for ch loop
 			//只有在量全部的時候才會下constrained
-			chromaticityEstimator->Constrained = reverseZone;
+			chromaticityEstimator->Constrained = mustZone;
 			chromaticityEstimator->measure(0, dimFixEnd);
 			chromaticityEstimator->Constrained = nil_int_vector_ptr;
 			dxofBase = chromaticityEstimator->dxofBase;
@@ -873,7 +873,7 @@ namespace cms {
 		return result;
 	    }
 
-	    int_vector_ptr LCDCalibrator::getReverseZoneIndexVector(double_vector_ptr dxofBase,
+	    int_vector_ptr LCDCalibrator::getMustMeasureZoneIndexVector(double_vector_ptr dxofBase,
 								    double_vector_ptr dyofBase,
 								    int start, int end) {
 		int_vector_ptr result(new int_vector());
@@ -881,10 +881,12 @@ namespace cms {
 		    double dx = (*dxofBase)[x];
 		    double dy = (*dyofBase)[x];
 		    if (dx < dimFixThreshold || dy < dimFixThreshold) {
+			result->push_back(x - 2);
 			result->push_back(x - 1);
 			result->push_back(x);
 			result->push_back(x + 1);
-			x = x + 3;
+			result->push_back(x + 2);
+			x = x + 5;
 		    }
 		}
 
@@ -1321,37 +1323,8 @@ namespace cms {
 		STORE_COMPONENT("MeasureEstimator.xls", storeComponentVector);
 		mm->close();
 	    };
+
 	    void MeasureEstimator::measure(int startIndex, int endIndex) {
-		//if (true) {
-		measure0(startIndex, endIndex);
-		//return;
-		//}
-		/*resetMeasure();
-		   RGB_ptr dg0 = getMeasureBaseRGB(startIndex);
-		   if (true == MainForm->linkCA210) {
-		   baseXYZ = measure(dg0);
-		   //Component_ptr c0(new Component(dg0, nil_RGB_ptr, baseXYZ));
-		   //storeComponentVector->push_back(c0);
-		   } else {
-		   Component_ptr c0 = (*storeComponentVector)[storeIndex++];
-		   baseXYZ = c0->XYZ;
-		   }
-
-
-		   for (int x = startIndex; x <= endIndex; x++) {
-		   XYZ_ptr lastXYZ = baseXYZ;
-		   double_array RdxGdy = getRdxGdy(x);
-		   XYZ_ptr thisXYZ = baseXYZ;
-		   xyY_ptr lastxyY(new CIExyY(lastXYZ));
-		   xyY_ptr thisxyY(new CIExyY(thisXYZ));
-		   double_array dxdy = thisxyY->getDeltaxy(lastxyY);
-		   dxofBase->push_back(dxdy[0]);
-		   dyofBase->push_back(dxdy[1]);
-		   dxofRVector->push_back(RdxGdy[0]);
-		   dyofGVector->push_back(RdxGdy[1]);
-		   } */
-	    };
-	    void MeasureEstimator::measure0(int startIndex, int endIndex) {
 		resetMeasure();
 		const Dep::MaxValue & frcBit = bitDepth->getFRCAbilityBit();
 		XYZ_vector_ptr baseXYZVec(new XYZ_vector());
@@ -1361,33 +1334,41 @@ namespace cms {
 		for (int x = endIndex; x >= startIndex; x--) {
 
 		    if (null != constrained) {
-			//constrained->
+			//如果有下constraind
 			bool search = binary_search(constrained->begin(), constrained->end(), x);
 			if (search) {
+			    //如果是constraind裡面有的, 才量
 			    RGB_ptr rgb = getMeasureBaseRGB(x);
 			    XYZ = measure(rgb);
 			} else {
+			    //constraind沒有就給0
 			    XYZ = XYZ_ptr(new CIEXYZ());
 			}
 		    } else {
 			RGB_ptr rgb = getMeasureBaseRGB(x);
 			XYZ = measure(rgb);
 		    }
-
-
 		    baseXYZVec->push_back(XYZ);
 		}
+
 		//量完再來做處裡
 		int size = baseXYZVec->size();
 		//為了讓base和r/g可以對齊, 所以多塞一個0
 		dxofBase->push_back(0);
 		dyofBase->push_back(0);
 		for (int x = size - 2; x >= 0; x--) {
+		    //因為是反過來量, 所以從後面開始算(最小的在後面)
 		    XYZ_ptr XYZ0 = (*baseXYZVec)[x + 1];
 		    XYZ_ptr XYZ1 = (*baseXYZVec)[x];
-		    double_array dxy = getdxdy(XYZ0, XYZ1);
-		    dxofBase->push_back(dxy[0]);
-		    dyofBase->push_back(dxy[1]);
+		    if (0 == XYZ0->Y || 0 == XYZ1->Y) {
+			//若亮度是0, 代表遇到constained, 就要略過直接給delta為1
+			dxofBase->push_back(1);
+			dyofBase->push_back(1);
+		    } else {
+			double_array dxy = getdxdy(XYZ0, XYZ1);
+			dxofBase->push_back(dxy[0]);
+			dyofBase->push_back(dxy[1]);
+		    }
 		};
 
 		if (measureRdxGdy) {
