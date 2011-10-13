@@ -206,7 +206,7 @@ namespace cms {
 		int checkReverse(double_vector_ptr deltaVector, int start, int end);
 		int_vector_ptr getReverseIndexVector(double_vector_ptr deltaVector,
 						     int start, int end);
-		int_vector_ptr getReverseZoneIndexVector(double_vector_ptr dxofBase,
+		int_vector_ptr getMustMeasureZoneIndexVector(double_vector_ptr dxofBase,
 							 double_vector_ptr dyofBase, int start,
 							 int end);
 		double_vector_ptr selectDelta(double_vector_ptr dxofBase,
@@ -296,7 +296,6 @@ namespace cms {
 		bool useComponentVector;
 		XYZ_ptr baseXYZ;
 		XYZ_ptr measure(RGB_ptr rgb);
-		void measure0(int startIndex, int endIndex);
 		bool measureRdxGdy;
 		int_vector_ptr constrained;
 	      public:
