@@ -442,8 +442,8 @@ namespace cms {
 		    dgfile.addProperty("defined dim - fix", On);
 		    dgfile.addProperty("defined dim - fix threshold", c->dimFixThreshold);
 		}
-		if (true == c->modifiedTarget) {
-		    dgfile.addProperty("defined dim - modified target", On);
+		if (true == c->feedbackFix) {
+		    dgfile.addProperty("defined dim - feedback fix", On);
 		}
 
 		XYZ_ptr blackXYZ = (*c->componentVector)[c->componentVector->size() - 1]->XYZ;

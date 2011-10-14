@@ -69,7 +69,7 @@ class TCCTLUTForm:public TForm {
     TLabel *Label17;
     TEdit *Edit_DefinedDimUnder;
     TButton *Button_Run;
-    TCheckBox *CheckBox_AverageDimDG;
+    TCheckBox *CheckBox_Smoothing;
     TLabel *Label14;
     TEdit *Edit_DimGamma;
     TCheckBox *CheckBox_NewMethod;
@@ -106,7 +106,7 @@ class TCCTLUTForm:public TForm {
     TCheckBox *CheckBox_DimFix;
     TProgressBar *ProgressBar1;
     TEdit *Edit_DimFixThreshold;
-    TCheckBox *CheckBox_ModifiedTarget;
+        TCheckBox *CheckBox_Feedback;
     void __fastcall RadioButton_P1P2Click(TObject * Sender);
     void __fastcall Button_MeaRunClick(TObject * Sender);
     void __fastcall FormCreate(TObject * Sender);

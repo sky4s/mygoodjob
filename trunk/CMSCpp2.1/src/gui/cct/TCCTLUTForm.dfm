@@ -290,12 +290,12 @@ object CCTLUTForm: TCCTLUTForm
       TabOrder = 7
       Text = '50'
     end
-    object CheckBox_AverageDimDG: TCheckBox
+    object CheckBox_Smoothing: TCheckBox
       Left = 26
-      Top = 163
+      Top = 211
       Width = 111
       Height = 20
-      Caption = 'Average Dim DG'
+      Caption = 'Smooth Data'
       TabOrder = 8
       Visible = False
     end
@@ -310,7 +310,7 @@ object CCTLUTForm: TCCTLUTForm
     end
     object CheckBox_DimFix: TCheckBox
       Left = 26
-      Top = 184
+      Top = 168
       Width = 71
       Height = 20
       Caption = 'Dim Fix'
@@ -318,18 +318,18 @@ object CCTLUTForm: TCCTLUTForm
     end
     object Edit_DimFixThreshold: TEdit
       Left = 80
-      Top = 184
+      Top = 168
       Width = 65
       Height = 21
       TabOrder = 11
       Text = '0.0000'
     end
-    object CheckBox_ModifiedTarget: TCheckBox
+    object CheckBox_Feedback: TCheckBox
       Left = 26
-      Top = 205
+      Top = 189
       Width = 119
       Height = 20
-      Caption = 'Modified Target'
+      Caption = 'Feedback'
       TabOrder = 12
     end
   end

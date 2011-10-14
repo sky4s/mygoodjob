@@ -101,12 +101,12 @@ void __fastcall TCCTLUTForm::Button_MeaRunClick(TObject * Sender)
 	} else if (this->RadioButton_DefinedDim->Checked) {
 	    //新低灰階修正方法
 	    int under = this->Edit_DefinedDimUnder->Text.ToInt();	// + 1;
-	    bool averageDim = this->CheckBox_AverageDimDG->Checked;
 	    double gamma = this->Edit_DimGamma->Text.ToDouble();
-	    calibrator.setDefinedDim(under, gamma, averageDim);
+	    calibrator.setDefinedDim(under, gamma);
 	    calibrator.DimFix = CheckBox_DimFix->Checked;
 	    calibrator.DimFixThreshold = Edit_DimFixThreshold->Text.ToDouble();
-	    calibrator.ModifiedTarget = CheckBox_ModifiedTarget->Checked;
+	    calibrator.FeedbackFix = CheckBox_Feedback->Checked;
+	    calibrator.SmoothComponent = CheckBox_Smoothing->Checked;
 	} else if (this->RadioButton_NoneLowLevelCorrect->Checked) {
 	    calibrator.setNonDimCorrect();
 	}
