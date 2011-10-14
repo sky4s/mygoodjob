@@ -49,7 +49,6 @@ namespace cms {
 		int p1, p2;
 		int under;
 		double dimGamma;
-		bool averageDimDG;
 		int dimFixEnd;
 		bool dimFix;
 		double dimFixThreshold;
@@ -113,7 +112,8 @@ namespace cms {
 		bool manualAccurateMode;
 		bool remapped;
 		double middleCCTRatio;
-		bool modifiedTarget;
+		bool feedbackFix;
+		bool smoothComponent;
 		//==============================================================
 
 	      public:
@@ -123,7 +123,7 @@ namespace cms {
 		void setP1P2(int p1, int p2);
 		void setRBInterpolation(int under);
 		void setNonDimCorrect();
-		void setDefinedDim(int under, double gamma, bool averageDimDG);
+		void setDefinedDim(int under, double gamma);
 
 		void setGamma(double gamma);
 		void setGamma(double rgamma, double ggamma, double bgamma);
@@ -152,7 +152,8 @@ namespace cms {
 		__property bool AccurateMode = { write = accurateMode };
 		__property bool ManualAccurateMode = { write = manualAccurateMode };
 		__property double MiddleCCTRatio = { write = middleCCTRatio };
-		__property bool ModifiedTarget = { write = modifiedTarget };
+		__property bool FeedbackFix = { write = feedbackFix };
+		__property bool SmoothComponent = { write = smoothComponent };
 		//==============================================================
 
 
@@ -161,6 +162,7 @@ namespace cms {
 		// store
 		//==============================================================
 		 RGB_vector_ptr dglut;
+		Component_vector_ptr originalComponentVector;
 		Component_vector_ptr componentVector;
 		double_vector_ptr luminanceVector;
 		RGBGamma_ptr finalRGBGamma;
@@ -207,14 +209,14 @@ namespace cms {
 		int_vector_ptr getReverseIndexVector(double_vector_ptr deltaVector,
 						     int start, int end);
 		int_vector_ptr getMustMeasureZoneIndexVector(double_vector_ptr dxofBase,
-							 double_vector_ptr dyofBase, int start,
-							 int end);
+							     double_vector_ptr dyofBase, int start,
+							     int end);
 		double_vector_ptr selectDelta(double_vector_ptr dxofBase,
 					      double_vector_ptr dyofBase, Dep::Channel & ch);
 
 		Component_vector_ptr getDimComponentVector(RGB_vector_ptr dglut);
 		void smoothDimComponentVector(Component_vector_ptr componentVector);
-		//static const double ReverseDefine;
+		void smoothComponentVector(Component_vector_ptr componentVector);
 		//==============================================================
 	      public:
 		static double_vector_ptr getGammaCurveVector(double gamma, int n, int

@@ -53,12 +53,12 @@ namespace cms {
 		this->correct = Correct::None;
 	    };
 
-	    void LCDCalibrator::setDefinedDim(int under, double gamma, bool averageDimDG) {
+	    void LCDCalibrator::setDefinedDim(int under, double gamma) {
 		this->correct = Correct::DefinedDim;
 		this->under = under;
 		this->dimFixEnd = under;
 		this->dimGamma = gamma;
-		this->averageDimDG = averageDimDG;
+
 	    };
 
 	    void LCDCalibrator::setGamma(double gamma) {
@@ -138,7 +138,6 @@ namespace cms {
 		p1 = p2 = 0;
 		gamma = rgamma = ggamma = bgamma = -1;
 		this->fetcher = fetcher;
-		averageDimDG = false;
 		useNewMethod = false;
 		bMax = bMax2 = false;
 		bTargetIntensity = -1;
@@ -156,7 +155,8 @@ namespace cms {
 		dimFixEnd = 50;
 		dimFix = false;
 		dimFixThreshold = 0.0000;
-		modifiedTarget = false;
+		feedbackFix = false;
+		smoothComponent = false;
 	    };
 
 	    Component_vector_ptr LCDCalibrator::fetchComponentVector() {
@@ -298,7 +298,18 @@ namespace cms {
 		    remapped = true;
 		}
 
-		this->componentVector = fetchComponentVector();
+		this->originalComponentVector = fetchComponentVector();
+		STORE_COMPONENT("o_fetch.xls", originalComponentVector);
+
+		//試著smooth componentVector, 得到更smooth 的dg lut
+		this->componentVector = Util::copy(originalComponentVector);
+		if (smoothComponent) {
+		    smoothComponentVector(componentVector);
+		    STORE_COMPONENT("o_fetch_smooth.xls", componentVector);
+		}
+
+
+		this->componentVector = this->originalComponentVector;
 		if (doAccurate) {
 		    panelRegulator->setEnable(false);
 		}
@@ -313,7 +324,7 @@ namespace cms {
 		    setGammaCurve(gammaCurve);
 		}
 
-		STORE_COMPONENT("o_fetch.xls", componentVector);
+
 		STORE_DOUBLE_VECTOR("0_gammacurve.xls", gammaCurve);
 
 		DGLutGenerator generator(componentVector, keepMaxLuminance);
@@ -431,17 +442,16 @@ namespace cms {
 		    //以最大亮度為Target White的進入點
 		    //componentVector是事先量好的(呼叫此function之前)
 
-		    bool smoothDim = true;
-		    //試著smooth componentVector, 得到更smooth 的dg lut
-		    Component_vector_ptr copy = componentVector;
-		    if (smoothDim) {
-			Component_vector_ptr copy = Util::copy(componentVector);
-			smoothDimComponentVector(copy);
-			STORE_COMPONENT("o_fetch_smooth.xls", copy);
-		    }
+		    /*bool smoothDim = true;
+		       //試著smooth componentVector, 得到更smooth 的dg lut
+		       Component_vector_ptr copy = Util::copy(componentVector);
+		       if (smoothDim) {
+		       smoothDimComponentVector(copy);
+		       STORE_COMPONENT("o_fetch_smooth.xls", copy);
+		       } */
 		    advgenerator =
 			bptr < AdvancedDGLutGenerator >
-			(new AdvancedDGLutGenerator(copy, fetcher, bitDepth));
+			(new AdvancedDGLutGenerator(componentVector, fetcher, bitDepth));
 		    luminanceGammaCurve = generator.getLuminanceGammaCurve(gammaCurve);
 		    keepMaxLumiOver = bitDepth->getEffectiveLevel();
 
@@ -504,7 +514,7 @@ namespace cms {
 		    //從目標值算出DGLut
 		    dglut = advgenerator->produce(targetXYZVector);
 		    STORE_RGBVECTOR("3.1_org_dgcode.xls", dglut);
-		    if (true == modifiedTarget
+		    if (true == feedbackFix
 			&& (true != MainForm->linkCA210 || MainForm->isTCONInput())) {
 			//先從DGLut算出灰階的dx dy
 			//再從這樣的結果微調目標值
@@ -874,8 +884,8 @@ namespace cms {
 	    }
 
 	    int_vector_ptr LCDCalibrator::getMustMeasureZoneIndexVector(double_vector_ptr dxofBase,
-								    double_vector_ptr dyofBase,
-								    int start, int end) {
+									double_vector_ptr dyofBase,
+									int start, int end) {
 		int_vector_ptr result(new int_vector());
 		for (int x = start; x < end; x++) {
 		    double dx = (*dxofBase)[x];
@@ -1056,16 +1066,12 @@ namespace cms {
 	    };
 	    void LCDCalibrator::smoothDimComponentVector(Component_vector_ptr componentVector) {
 		bptr < cms::measure::IntensityAnalyzerIF > analyzer = fetcher->getAnalyzer();
-		/*bptr < cms::measure::MaxMatrixIntensityAnalyzer > mmanalyzer =
-		   bptr < cms::measure::MaxMatrixIntensityAnalyzer >
-		   (dynamic_cast < MaxMatrixIntensityAnalyzer * >(analyzer.get())); */
 		MaxMatrixIntensityAnalyzer *manalyzer =
 		    dynamic_cast < MaxMatrixIntensityAnalyzer * >(analyzer.get());
 		int size = componentVector->size();
 		if (null != manalyzer) {
 		    for (int gl = 1; gl < dimFixEnd; gl++) {
 			int x = size - 1 - gl;
-			//for (int x = 1; x < dimFixEnd - 1; x++) {
 			Component_ptr c0 = (*componentVector)[x + 1];
 			Component_ptr c1 = (*componentVector)[x];
 			Component_ptr c2 = (*componentVector)[x - 1];
@@ -1078,6 +1084,44 @@ namespace cms {
 			xyY1->x = Interpolation::linear(0, 1, xyY0->x, xyY2->x, 0.5);
 			xyY1->y = Interpolation::linear(0, 1, xyY0->y, xyY2->y, 0.5);
 			c1->XYZ = xyY1->toXYZ();
+			RGB_ptr intensity = manalyzer->getIntensity(c1->XYZ);
+			c1->intensity = intensity;
+		    }
+		}
+	    };
+	    void LCDCalibrator::smoothComponentVector(Component_vector_ptr componentVector) {
+		bptr < cms::measure::IntensityAnalyzerIF > analyzer = fetcher->getAnalyzer();
+		MaxMatrixIntensityAnalyzer *manalyzer =
+		    dynamic_cast < MaxMatrixIntensityAnalyzer * >(analyzer.get());
+		int size = componentVector->size();
+		if (null != manalyzer) {
+		    bool smoothAtXYZ = false;
+		    for (int gl = 1; gl < size - 1; gl++) {
+			int x = size - 1 - gl;
+			Component_ptr c0 = (*componentVector)[x + 1];
+			Component_ptr c1 = (*componentVector)[x];
+			Component_ptr c2 = (*componentVector)[x - 1];
+			XYZ_ptr XYZ0 = c0->XYZ;
+			XYZ_ptr XYZ1 = c1->XYZ;
+			XYZ_ptr XYZ2 = c2->XYZ;
+
+			XYZ_ptr XYZ;
+			if (smoothAtXYZ) {
+			    XYZ1->X = Interpolation::linear(0, 1, XYZ0->X, XYZ2->X, 0.5);
+			    XYZ1->Y = Interpolation::linear(0, 1, XYZ0->Y, XYZ2->Y, 0.5);
+			    XYZ1->Z = Interpolation::linear(0, 1, XYZ0->Z, XYZ2->Z, 0.5);
+			    XYZ = XYZ1;
+			} else {
+			    xyY_ptr xyY0(new CIExyY(XYZ0));
+			    xyY_ptr xyY1(new CIExyY(XYZ1));
+			    xyY_ptr xyY2(new CIExyY(XYZ2));
+			    xyY1->x = Interpolation::linear(0, 1, xyY0->x, xyY2->x, 0.5);
+			    xyY1->y = Interpolation::linear(0, 1, xyY0->y, xyY2->y, 0.5);
+			    //xyY1->Y = Interpolation::linear(0, 1, xyY0->Y, xyY2->Y, 0.5);
+			    XYZ = xyY1->toXYZ();
+			}
+
+			c1->XYZ = XYZ;
 			RGB_ptr intensity = manalyzer->getIntensity(c1->XYZ);
 			c1->intensity = intensity;
 		    }
