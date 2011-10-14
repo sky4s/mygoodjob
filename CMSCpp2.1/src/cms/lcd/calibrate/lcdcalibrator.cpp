@@ -581,12 +581,10 @@ namespace cms {
 
 
 		int checkEnd = dimFixEnd - 1;
-		//int reverseIndex = -1;
 		const int MaxTestCount = 4;
-		//reverse zoneノ種琌, ﹚ㄇよΤ reverse, ┕璶秖Τreverseよ, ぃノ场常秖
+		//mustZoneノ種琌, ﹚ㄇよΤ reverse, ┕璶秖Τreverseよ, ぃノ场常秖
 		int_vector_ptr mustZone =
 		    getMustMeasureZoneIndexVector(dxofBase, dyofBase, 1, checkEnd);
-		//chromaticityEstimator->Constrained = reverseZone;
 
 		int_vector_ptr reverseIndexes;
 
