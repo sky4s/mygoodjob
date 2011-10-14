@@ -199,11 +199,7 @@ namespace cms {
 		RGB_vector_ptr newMethod(DGLutGenerator & generator,
 					 bptr < PanelRegulator > panelRegulato);
 
-		void fixReverse(double_vector_ptr deltaVector,
-				double_vector_ptr deltaOfChVector, RGB_vector_ptr dglut,
-				Dep::Channel ch);
-		void fixReverse(RGB_vector_ptr dglut);
-		void fixReverse2(RGB_vector_ptr dglut);
+		void fixReverseByFeedback(RGB_vector_ptr dglut);
 		int checkReverse(double_vector_ptr deltaVector);
 		int checkReverse(double_vector_ptr deltaVector, int start, int end);
 		int_vector_ptr getReverseIndexVector(double_vector_ptr deltaVector,
