@@ -29,6 +29,7 @@
 
 //本項目內gui頭文件
 #include "Sharpness1.h"
+#include "Sharpness12307.h"
 #include "ContrastEnhance1.h"
 
 //---------------------------------------------------------------------------
@@ -71,6 +72,7 @@ class TMainForm:public TForm {
     TMenuItem *addressFromFile;
     TMenuItem *mn_HSV2;
     TMenuItem *HSV1;
+        TMenuItem *mn_Sharpness12307;
     void __fastcall mn_TCONClick(TObject * Sender);
     void __fastcall mn_EngineerClick(TObject * Sender);
     void __fastcall mn_FunctionClick(TObject * Sender);
@@ -97,6 +99,7 @@ class TMainForm:public TForm {
     void __fastcall addressFromFileClick(TObject * Sender);
     void __fastcall mn_HSV2Click(TObject * Sender);
     void __fastcall HSV1Click(TObject * Sender);
+        void __fastcall mn_Sharpness12307Click(TObject *Sender);
 
   private:			// User declarations
      String getFileVersionInfo();

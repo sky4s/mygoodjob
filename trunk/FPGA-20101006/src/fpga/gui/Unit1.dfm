@@ -1,6 +1,6 @@
 object MainForm: TMainForm
-  Left = 275
-  Top = 120
+  Left = 361
+  Top = 163
   Width = 749
   Height = 588
   Caption = 'Toolkit'
@@ -18,7 +18,7 @@ object MainForm: TMainForm
   TextHeight = 13
   object StatusBar1: TStatusBar
     Left = 0
-    Top = 523
+    Top = 517
     Width = 741
     Height = 17
     Color = clYellow
@@ -109,6 +109,10 @@ object MainForm: TMainForm
       object mn_Sharpness: TMenuItem
         Caption = '&Sharpness'
         OnClick = mn_SharpnessClick
+      end
+      object mn_Sharpness12307: TMenuItem
+        Caption = '&Sharpness_12307'
+        OnClick = mn_Sharpness12307Click
       end
       object mn_CE: TMenuItem
         Caption = '&Contrast Enhancement'

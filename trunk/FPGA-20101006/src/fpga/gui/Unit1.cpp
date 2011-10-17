@@ -14,6 +14,7 @@
 //本項目內gui頭文件
 #include <fpga/gui/THSVForm3.h>
 #include <fpga/gui/THSVForm2nd.h>
+#include <fpga/gui/CM1.h>
 //#include <fpga/gui/THSVForm2.h>
 //#include <fpga/gui/THSVForm4.h>
 #include "include.h"
@@ -30,6 +31,7 @@ TForm *DCRForm;
 TForm *VenderForm;
 TForm *CMForm;
 TForm *SharpnessForm;
+TForm *Sharpness12307Form;
 TForm *ContrastEnhanceForm;
 TForm *HSVForm;
 TForm *C3DForm;
@@ -211,6 +213,11 @@ void __fastcall TMainForm::FormClose(TObject * Sender, TCloseAction & Action)
 	SharpnessForm = NULL;
 	delete SharpnessForm;
     }
+    if (Sharpness12307Form != NULL) {
+	Sharpness12307Form->Close();
+	Sharpness12307Form = NULL;
+	delete Sharpness12307Form;
+    }
     if (ContrastEnhanceForm != NULL) {
 	ContrastEnhanceForm->Close();	// mask by Michelle 20100716
 	ContrastEnhanceForm = NULL;
@@ -264,6 +271,10 @@ void TMainForm::closeAllForms()
     if (SharpnessForm != NULL) {
 	SharpnessForm->Close();
 	SharpnessForm = NULL;
+    }
+    if (Sharpness12307Form != NULL) {
+	Sharpness12307Form->Close();
+	Sharpness12307Form = NULL;
     }
     if (HSVForm != NULL) {
 	HSVForm->Close();
@@ -367,6 +378,10 @@ void __fastcall TMainForm::AUO_12303Click(TObject * Sender)
 	SharpnessForm->Close();
 	SharpnessForm = NULL;
     }
+    if (Sharpness12307Form != NULL) {
+	Sharpness12307Form->Close();
+	Sharpness12307Form = NULL;
+    }
     if (C3DForm != NULL) {
 	C3DForm->Close();
 	C3DForm = NULL;
@@ -388,6 +403,7 @@ void __fastcall TMainForm::AUO_12303Click(TObject * Sender)
     mn_ImageProc->Enabled = true;
     mn_CM->Enabled = true;
     mn_Sharpness->Enabled = true;
+    mn_Sharpness12307->Enabled = true;
     mn_CE->Enabled = true;
     mn_HSV->Enabled = true;
     mn_C3D->Enabled = true;
@@ -411,6 +427,7 @@ void __fastcall TMainForm::FormCreate(TObject * Sender)
     mn_ImageProc->Enabled = true;
     mn_CM->Enabled = true;
     mn_Sharpness->Enabled = true;
+    mn_Sharpness12307->Enabled = true;
     mn_CE->Enabled = true;	// mask by Michelle 20100716
     mn_HSV->Enabled = true;
     mn_C3D->Enabled = true;
@@ -427,6 +444,7 @@ void TMainForm::reload_all(TObject * Sender)
     mn_VenderClick(Sender);
     mn_CMClick(Sender);
     mn_SharpnessClick(Sender);
+    mn_Sharpness12307Click(Sender);
     mn_CEClick(Sender);
     mn_HSVClick(Sender);
     mn_C3DClick(Sender);
@@ -440,6 +458,7 @@ void TMainForm::reload_all(TObject * Sender)
     VenderForm->OnKeyDown(Sender, Key, Shift);
     CMForm->OnKeyDown(Sender, Key, Shift);
     SharpnessForm->OnKeyDown(Sender, Key, Shift);
+    Sharpness12307Form->OnKeyDown(Sender, Key, Shift);
     ContrastEnhanceForm->OnKeyDown(Sender, Key, Shift);	//mssk by Michelle 20100716
     HSVForm->OnKeyDown(Sender, Key, Shift);
     C3DForm->OnKeyDown(Sender, Key, Shift);	// mask by Michelle 20100716
@@ -794,4 +813,18 @@ void __fastcall TMainForm::HSV1Click(TObject * Sender)
 
 //---------------------------------------------------------------------------
 
+
+void __fastcall TMainForm::mn_Sharpness12307Click(TObject *Sender)
+{
+    if (Sharpness12307Form != NULL)
+	Sharpness12307Form->Show();
+    else {
+	if (TCON_DEV == "11307") {
+	    Sharpness12307Form = new TSharpnessForm12307(this);
+	    Sharpness12307Form->Show();
+	}
+
+    }
+}
+//---------------------------------------------------------------------------
 
