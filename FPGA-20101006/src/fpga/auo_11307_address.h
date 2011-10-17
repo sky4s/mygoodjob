@@ -433,22 +433,57 @@
 #define ofs3               "ofs3,274,3,10,2"     //
 
 ////////////////////////// Sharpness /////////////////////////////
-#define SP_EN   "SP_EN,116,0,1"
-#define SP_DEMO   "SP_DEMO,116,1,1"
-#define SP_DEMO_LEFT   "SP_DEMO_LEFT,116,2,1"
-#define TEXT_DET   "TEXT_DET,116,3,1"
+//#define SP_EN   "SP_EN,116,0,1"
+#define SP_DEMO   "SP_DEMO,185,2,1"
+//#define SP_DEMO_LEFT   "SP_DEMO_LEFT,116,2,1"
+//#define TEXT_DET   "TEXT_DET,116,3,1"
 #define SP_MASK_EN   "SP_MASK_EN,116,4,1"
 #define SP_DEB   "SP_DEB,116,5,1"
 #define SP_EDGE_THRESHOLD   "SP_EDGE_THRESHOLD,117,0,8"
 #define SP_HORZ_THRESHOLD   "SP_HORZ_THRESHOLD,118,0,8"
 #define SP_VERT_THRESHOLD   "SP_VERT_THRESHOLD,119,0,8"
-#define GLB_STR   "GLB_STR,120,0,4"
-#define SP_LUT             "SP_LUT,688,32,8,1"	//
-
-
+//#define GLB_STR   "GLB_STR,120,0,4"
+//#define SP_LUT             "SP_LUT,688,32,8,1"	//
 #define SP_VACTIVE         "SP_VACTIVE,192,0,8,196,4,4"	//
-#define SP_DEMO_SIDE       "SP_DEMO_SIDE,193,2,1"	//
-#define DEB_EN             "DEB_EN,193,5,1"	//
+//#define SP_DEMO_SIDE       "SP_DEMO_SIDE,193,2,1"	//
+//#define DEB_EN             "DEB_EN,193,5,1"	//
+////////////////////////// SP ///////////////////////////////////
+#define SP_EN   "SP_EN,185,0,1"
+#define SP_DEMO_EN   "SP_DEMO_EN,185,2,1"
+#define SP_DEMO_LEFT   "SP_DEMO_LEFT,185,3,1"
+#define GLB_STR   "GLB_STR,187,0,4"
+#define SPIKE_TH   "SPIKE_TH,186,0,4"
+#define EDGE_TH   "EDGE_TH,186,4,4"
+#define FILTER_TH   "FILTER_TH,187,4,4"
+#define FILTER_OFF   "FILTER_OFF,189,7,1"
+#define TEXT_DET   "TEXT_DET,185,4,1"
+#define MAG_TH   "MAG_TH,189,0,7"
+#define TAN_TH   "TAN_TH,188,0,8"
+#define STR_TP1   "STR_TP1,190,2,2"
+#define STR_TP2   "STR_TP2,190,0,2"
+#define DEB_EN   "DEB_EN,185,5,1"
+#define I3D_EDGE_EN   "I3D_EDGE_EN,185,6,1"
+#define CE_EN   "CE_EN,190,4,1"
+#define CE_DEMO_EN   "CE_DEMO_EN,190,5,1"
+#define CE_DEMO_LEFT   "CE_DEMO_LEFT,190,6,1"
+#define PIX_FILTER   "PIX_FILTER,191,7,1"
+#define SMOOTH_EN   "SMOOTH_EN,194,6,1"
+#define VMASK_SEL   "VMASK_SEL,191,2,2"
+#define HMASK_SEL   "HMASK_SEL,191,0,2"
+#define LUM_MEDIAN   "LUM_MEDIAN,192,0,8"
+#define CONTRAST_STR   "CONTRAST_STR,191,4,3"
+#define BRIGHT_MAX_ADJ   "BRIGHT_MAX_ADJ,193,0,6"
+#define DARK_MAX_ADJ   "DARK_MAX_ADJ,194,0,6"
+#define STEP_GAIN   "STEP_GAIN,195,4,4"
+#define VARIANT_THR   "VARIANT_THR,195,0,4"
+#define ACT_PIX_NUM   "ACT_PIX_NUM,196,0,7,197,0,8,198,0,8"
+#define DARK_TP   "DARK_TP,199,6,1"
+#define BRIGHT_TP   "BRIGHT_TP,200,6,1"
+#define DARK_OFS   "DARK_OFS,199,0,6"
+#define BRIGHT_OFS   "BRIGHT_OFS,200,0,6"
+#define DARK_DR   "DARK_DR,201,4,4"
+#define BRIGHT_DR   "BRIGHT_DR,201,0,4"
+#define SP_LUT   "SP_LUT,608,32,5,1"
 
 ///////////////////////// HSV ////////////////////////////////
 /*#define HUE_EN   "HUE_EN,162,0,1"

@@ -184,13 +184,18 @@ AbstSP¬°¤@¦Û©wªºclass, ¨ã¦³¥i¶Ç¦^IC¤¤Ãö©óSharpness address©w¸qªº¨ç¦¡
 ===========================================================================*/
 class AbstSP:public AbstractBase {
   public:
-    virtual TBit * SetChkBx() = 0;	//¶Ç¦^CheckBoxªºaddress©w¸q
+    virtual TBit *SetChkBx() = 0;	//¶Ç¦^CheckBoxªºaddress©w¸q
+    virtual TBit *SetCboBx() = 0;
     virtual TBit *SetScrollBar() = 0;	//¶Ç¦^ScrollBarªºaddress©w¸q
     virtual TBit2 *SetLblE2() = 0;	// Add by Michelle 20100702
+    virtual TBit3 *SetLblE3() = 0;	// Add by Michelle 20100702
     virtual TLUT *SetSPLUT() = 0;	//¶Ç¦^sharpness lookup tableªºaddress©w¸q
 
     int SPChkBox_Nbr;
+    int SPCboBox_Nbr;
+    int SPScrollBar;
     int SPLblE2_Nbr;		// Add by Michelle  20100702
+    int SPLblE3_Nbr;
     int SPScrollBar_Nbr;
 };
 
