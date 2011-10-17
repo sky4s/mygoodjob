@@ -17,7 +17,6 @@
 class CM_11307:public AbstCM {
   public:
     //CM
-//                virtual TBit* SetChkBx();
     virtual TBit * SetChkBx();
     virtual TBit *SetCboBx();
     virtual TLUT *Setval();
@@ -33,8 +32,22 @@ class SP_11307:public AbstSP {
     virtual TBit *SetScrollBar();
     virtual TBit2 *SetLblE2();	//Add by Michelle 20100702
     virtual TLUT *SetSPLUT();
+    virtual TBit *SetCboBx();
+    virtual TBit3 *SetLblE3();
 
      SP_11307();
+};
+
+class SP_12307:public AbstSP {
+  public:
+    virtual TBit *SetChkBx();
+    virtual TBit *SetCboBx();
+    virtual TBit *SetScrollBar();
+    virtual TBit3 *SetLblE3();
+    virtual TLUT *SetSPLUT();
+    virtual TBit2 *SetLblE2();
+
+     SP_12307();
 };
 
 class CE_11307:public AbstCE {
