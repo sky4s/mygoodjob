@@ -115,6 +115,7 @@ void __fastcall THSVForm2nd::FormCreate(TObject * Sender)
     ChkB[1]->Chkb = CheckBox2;
     ChkB[2]->Chkb = CheckBox3;
     ChkB[3]->Chkb = CheckBox4;
+    ChkB[4]->Chkb = CheckBox_SAT_CLIP_EN;
 
     for (int i = 0; i < OHSV->HSVChkBox_Nbr; i++) {
 	ChkB[i]->Addr = cb[i];

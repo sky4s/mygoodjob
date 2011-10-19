@@ -120,6 +120,7 @@ void __fastcall TCMForm1::FormCreate(TObject * Sender)
     CMChkB[0]->Chkb = CheckBox1;
     CMChkB[1]->Chkb = CheckBox2;
     CMChkB[2]->Chkb = CheckBox3;
+    CMChkB[3]->Chkb = CheckBox4;
 
     for (int i = 0; i < OCM->CMChkBox_Nbr; i++) {
 	CMChkB[i]->Addr = cm_cb[i];
@@ -479,7 +480,12 @@ void __fastcall TCMForm1::btn_CM1_WriteClick(TObject * Sender)
     ofs[1] = ofs[0];
     ofs[2] = ofs[0];
     EngineerForm->SetWrite_PG(ofs_addr[0], ofs, CM_IsChkSum);
-
+    // add by AUO12307 //
+    int set_val = ofs[2]/256*16+CM[0]/256*16;
+    TBit CM_J;
+    CM_J.set(289,0,8,"");
+    EngineerForm->SetWrite_Byte(CM_J ,set_val);
+    // ============== //
     btn_CM1_Write->Enabled = true;
 }
 

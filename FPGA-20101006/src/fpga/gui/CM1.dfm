@@ -1,6 +1,6 @@
 object CMForm1: TCMForm1
-  Left = 315
-  Top = 38
+  Left = 360
+  Top = 155
   Width = 709
   Height = 670
   Caption = 'Color Matrix'
@@ -1137,6 +1137,14 @@ object CMForm1: TCMForm1
           OnClick = btn_CM3_ReadClick
         end
       end
+    end
+    object CheckBox4: TCheckBox
+      Left = 288
+      Top = 80
+      Width = 97
+      Height = 17
+      Caption = 'CheckBox4'
+      TabOrder = 6
     end
   end
   object OpenDialog1: TOpenDialog

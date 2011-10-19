@@ -157,6 +157,7 @@ class TCMForm1:public TForm {
     TButton *btn_CM2_Read;
     TButton *btn_CM3_Read;
     TScrollBar *sb_ofs1;
+        TCheckBox *CheckBox4;
     void __fastcall CM_CheckBox_Click(TObject * Sender);
     void __fastcall CM_ComboBox_Click(TObject * Sender);
     void __fastcall btn_CM1_WriteClick(TObject * Sender);
