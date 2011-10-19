@@ -78,64 +78,6 @@ namespace cms {
 	const string & DGLutFile::GammaTable = "Gamma_Table";
 	const string & DGLutFile::RawData = "Raw_Data";
 	const string & DGLutFile::Target = "Target";
-	//const string & DGLutFile::DeltaData = "Delta_Data";
-
-	/*void DGLutFile::setDeltaData(Component_vector_ptr componentVector) {
-	    //==================================================================
-	    // 初始資料設定
-	    //==================================================================
-	    const int headerCount = 8;
-	    initSheet(DeltaData, headerCount, "Gray Level", "W_x", "W_y", "Y (nit)", "dx", "dy",
-		      "ave_x", "ave_y");
-
-	    int size = componentVector->size();
-	    //const int headerCount = getHeaderCount(MeasureData);
-	    string_vector_ptr values(new string_vector(headerCount));
-	    //==================================================================
-
-	    xyY_ptr xyY0(new CIExyY((*componentVector)[0]->XYZ));
-	    xyY_ptr xyY1(new CIExyY((*componentVector)[size - 1]->XYZ));
-	    string ave_x =_toString( (xyY0->x - xyY1->x) / size);
-	    string ave_y = _toString((xyY0->y - xyY1->y) / size);
-
-	    //==================================================================
-	    // 迴圈處理
-	    //==================================================================
-	    for (int x = 0; x != size; x++) {
-		Component_ptr c = (*componentVector)[x];
-		int w = static_cast < int >(c->rgb->getValue(Channel::W));
-		(*values)[0] = _toString(w);
-		xyY_ptr xyY(new CIExyY(c->XYZ));
-
-
-		//xyY_ptr xyY(new CIExyY(c->XYZ));
-		(*values)
-		    [1] = _toString(xyY->x);
-		(*values)
-		    [2] = _toString(xyY->y);
-		(*values)
-		    [3] = _toString(xyY->Y);
-
-		(*values)
-		    [6] = ave_x;
-		(*values)
-		    [7] = ave_y;
-
-		if (x < (size - 1)) {
-		    //dx dy只算到倒數第二個
-		    Component_ptr c2 = (*componentVector)[x + 1];
-		    xyY_ptr xyY2(new CIExyY(c->XYZ));
-		    (*values)
-			[4] = _toString(xyY->x - xyY2->x);
-		    (*values)
-			[5] = _toString(xyY->y - xyY2->y);
-		} else {
-		    StringVector::setContent(values, "", 2, 4, 5);
-		}
-
-		this->insertData(DeltaData, values, false);
-	    }
-	};*/
 
 	void DGLutFile::setRawData(Component_vector_ptr componentVector,
 				   RGBGamma_ptr initialRGBGamma, RGBGamma_ptr finalRGBGamma) {
@@ -449,6 +391,9 @@ namespace cms {
 		XYZ_ptr blackXYZ = (*c->componentVector)[c->componentVector->size() - 1]->XYZ;
 		xyY_ptr blackxyY(new CIExyY(blackXYZ));
 		dgfile.addProperty("defined dim black", *blackxyY->toString());
+		if (true == c->SmoothComponent) {
+		    dgfile.addProperty("defined dim - smooth", On);
+		}
 		break;
 	    }
 	    //==================================================================
@@ -478,6 +423,12 @@ namespace cms {
 	    dgfile.addProperty("avoid FRC noise", c->avoidFRCNoise ? On : Off);
 	    if (c->remapped) {
 		dgfile.addProperty("panel regulator remapping", On);
+	    }
+	    bptr < IntensityAnalyzerIF > analyzer = c->fetcher->getAnalyzer();
+	    if (null != analyzer) {
+		bptr < MeterMeasurement > mm = analyzer->getMeterMeasurement();
+		int averageTimes = mm->AverageTimes;
+		dgfile.addProperty("average times", averageTimes);
 	    }
 	    //==================================================================
 
@@ -516,7 +467,6 @@ namespace cms {
 	    //==================================================================
 	    // analyzer
 	    //==================================================================
-	    bptr < IntensityAnalyzerIF > analyzer = c->fetcher->getAnalyzer();
 	    if (null != analyzer) {
 		storeAnalyzer(dgfile, analyzer, Target);
 	    }

@@ -65,7 +65,7 @@ namespace cms {
 	    __property int WaitTimes = { read = waitTimes, write = waitTimes };
 	    __property int BlankTimes = { write = blankTimes };
 	    __property bool FakeMeasure = { read = fakeMeasure, write = fakeMeasure };
-	    __property int AverageTimes = { write = averageTimes };
+	    __property int AverageTimes = { read = averageTimes, write = averageTimes };
 
 	     bptr < cms::measure::meter::Meter > getMeter();
 

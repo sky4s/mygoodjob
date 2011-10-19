@@ -518,6 +518,13 @@ namespace math {
 	}
 	return result;
     };
+    double DoubleArray::sum(double_array array, int length) {
+	double sum = 0;
+	for (int x = 0; x != length; x++) {
+	    sum += array[x];
+	}
+	return sum;
+    };
     //==========================================================================
     float2D_ptr FloatArray::toFloat2D(int width, int n, ...) {
 	float *array = new float[n];
@@ -609,8 +616,7 @@ namespace math {
 	for (int x = 0; x != n; x++) {
 	    const int &v = array[x];
 	    max = v > max ? v : max;
-	}
-	return max;
+	} return max;
     };
 
     double_array IntArray::toDoubleArray(int_array array, int n) {
@@ -624,8 +630,7 @@ namespace math {
     void IntArray::arraycopy(int_array src, int_array dest, int length) {
 	for (int x = 0; x < length; x++) {
 	    dest[x] = src[x];
-	}
-    };
+    }};
     int_array IntArray::arraycopy(int_array src, int length) {
 	int_array dest(new int[length]);
 	arraycopy(src, dest, length);

@@ -304,7 +304,8 @@ namespace cms {
 		//試著smooth componentVector, 得到更smooth 的dg lut
 		this->componentVector = Util::copy(originalComponentVector);
 		if (smoothComponent) {
-		    smoothComponentVector(componentVector);
+		    //smoothComponentVector(componentVector);
+		    smoothComponentVector2(componentVector);
 		    STORE_COMPONENT("o_fetch_smooth.xls", componentVector);
 		}
 
@@ -872,31 +873,7 @@ namespace cms {
 		STORE_COMPONENT("5.0_dimComponent.xls", componentVector);
 		return componentVector;
 	    };
-	    void LCDCalibrator::smoothDimComponentVector(Component_vector_ptr componentVector) {
-		bptr < cms::measure::IntensityAnalyzerIF > analyzer = fetcher->getAnalyzer();
-		MaxMatrixIntensityAnalyzer *manalyzer =
-		    dynamic_cast < MaxMatrixIntensityAnalyzer * >(analyzer.get());
-		int size = componentVector->size();
-		if (null != manalyzer) {
-		    for (int gl = 1; gl < dimFixEnd; gl++) {
-			int x = size - 1 - gl;
-			Component_ptr c0 = (*componentVector)[x + 1];
-			Component_ptr c1 = (*componentVector)[x];
-			Component_ptr c2 = (*componentVector)[x - 1];
-			XYZ_ptr XYZ0 = c0->XYZ;
-			XYZ_ptr XYZ1 = c1->XYZ;
-			XYZ_ptr XYZ2 = c2->XYZ;
-			xyY_ptr xyY0(new CIExyY(XYZ0));
-			xyY_ptr xyY1(new CIExyY(XYZ1));
-			xyY_ptr xyY2(new CIExyY(XYZ2));
-			xyY1->x = Interpolation::linear(0, 1, xyY0->x, xyY2->x, 0.5);
-			xyY1->y = Interpolation::linear(0, 1, xyY0->y, xyY2->y, 0.5);
-			c1->XYZ = xyY1->toXYZ();
-			RGB_ptr intensity = manalyzer->getIntensity(c1->XYZ);
-			c1->intensity = intensity;
-		    }
-		}
-	    };
+
 	    void LCDCalibrator::smoothComponentVector(Component_vector_ptr componentVector) {
 		bptr < cms::measure::IntensityAnalyzerIF > analyzer = fetcher->getAnalyzer();
 		MaxMatrixIntensityAnalyzer *manalyzer =
@@ -935,6 +912,89 @@ namespace cms {
 		    }
 		}
 	    };
+
+	    void LCDCalibrator::smoothComponentVector2(Component_vector_ptr componentVector) {
+		bptr < cms::measure::IntensityAnalyzerIF > analyzer = fetcher->getAnalyzer();
+		MaxMatrixIntensityAnalyzer *manalyzer =
+		    dynamic_cast < MaxMatrixIntensityAnalyzer * >(analyzer.get());
+		int size = componentVector->size();
+		const int smoothTimes = 3;
+
+		if (null != manalyzer) {
+
+		    double_array outputx(new double[size]);
+		    double_array outputy(new double[size]);
+		    double_array outputY(new double[size]);
+		    double_array outputdx(new double[size]);
+		    double_array outputdy(new double[size]);
+		    double_array outputdY(new double[size]);
+
+		    outputdx[0] = outputdy[0] = outputdY[0] = 0;
+		    xyY_ptr prexyY;
+		    for (int gl = 0; gl < size; gl++) {
+			Component_ptr c = (*componentVector)[gl];
+			XYZ_ptr XYZ = c->XYZ;
+			xyY_ptr xyY(new CIExyY(XYZ));
+
+			outputx[gl] = xyY->x;
+			outputy[gl] = xyY->y;
+			outputY[gl] = xyY->Y;
+			if (null != prexyY) {
+			    outputdx[gl] = xyY->x - prexyY->x;
+			    outputdy[gl] = xyY->y - prexyY->y;
+			    outputdY[gl] = xyY->Y - prexyY->Y;
+			}
+
+			prexyY = xyY;
+		    }
+
+		    smooth(outputdx, size, smoothTimes);
+		    smooth(outputdy, size, smoothTimes);
+		    smooth(outputdY, size, smoothTimes);
+		    outputx = getSmoothCurve(outputx, outputdx, size);
+		    outputy = getSmoothCurve(outputy, outputdy, size);
+		    outputY = getSmoothCurve(outputY, outputdY, size);
+
+		    for (int gl = 0; gl < size; gl++) {
+			Component_ptr c = (*componentVector)[gl];
+			double x = outputx[gl];
+			double y = outputy[gl];
+			double Y = outputY[gl];
+			xyY_ptr xyY(new CIExyY(x, y, Y));
+
+			c->XYZ = xyY->toXYZ();
+			RGB_ptr intensity = manalyzer->getIntensity(c->XYZ);
+			c->intensity = intensity;
+		    }
+
+
+		}
+	    };
+
+	    void LCDCalibrator::smooth(double_array curve, int size, int times) {
+		//int size = curve.length;
+		for (int t = 0; t < times; t++) {
+		    for (int x = 1; x < size - 1; x++) {
+			curve[x] = (curve[x - 1] + curve[x + 1]) / 2;
+		    }
+		}
+	    };
+
+	    double_array LCDCalibrator::getSmoothCurve(double_array originalCurve,
+						       double_array deltaCurve, int size) {
+		double delta = originalCurve[size - 1] - originalCurve[0];
+		double sumOfDelta = DoubleArray::sum(deltaCurve, size);
+		double factor = delta / sumOfDelta;
+
+		double_array smoothCurve(new double[size]);
+		smoothCurve[0] = originalCurve[0];
+		for (int x = 1; x < size; x++) {
+		    smoothCurve[x] = smoothCurve[x - 1] + deltaCurve[x] * factor;
+		}
+
+		return smoothCurve;
+	    };
+
 	    RGB_vector_ptr LCDCalibrator::
 		getDGLutOpResult(RGB_vector_ptr dglut, DGLutGenerator & generator) {
 		//==============================================================

@@ -153,7 +153,8 @@ namespace cms {
 		__property bool ManualAccurateMode = { write = manualAccurateMode };
 		__property double MiddleCCTRatio = { write = middleCCTRatio };
 		__property bool FeedbackFix = { write = feedbackFix };
-		__property bool SmoothComponent = { write = smoothComponent };
+		__property bool SmoothComponent = { read = smoothComponent, write =
+			smoothComponent };
 		//==============================================================
 
 
@@ -211,8 +212,17 @@ namespace cms {
 					      double_vector_ptr dyofBase, Dep::Channel & ch);
 
 		Component_vector_ptr getDimComponentVector(RGB_vector_ptr dglut);
-		void smoothDimComponentVector(Component_vector_ptr componentVector);
+
+		//==============================================================
+
+		//==============================================================
+		// smooth
+		//==============================================================
 		void smoothComponentVector(Component_vector_ptr componentVector);
+		void smoothComponentVector2(Component_vector_ptr componentVector);
+		static void smooth(double_array curve, int size, int times);
+		static double_array getSmoothCurve(double_array originalCurve,
+						   double_array deltaCurve, int size);
 		//==============================================================
 	      public:
 		static double_vector_ptr getGammaCurveVector(double gamma, int n, int

@@ -235,6 +235,7 @@ class TMainForm:public TForm {
     void disconnectMeter();
     void connectMeter();
     void initCA210Meter();
+    int getAverageTimes();
 
      bptr < cms::lcd::calibrate::ComponentFetcher > getComponentFetcher();
     //==========================================================================
