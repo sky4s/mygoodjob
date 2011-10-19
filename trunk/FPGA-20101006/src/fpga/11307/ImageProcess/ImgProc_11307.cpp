@@ -11,7 +11,7 @@
 
 CM_11307::CM_11307()
 {
-    CMChkBox_Nbr = 3;
+    CMChkBox_Nbr = 4;
     CMCboBox_Nbr = 1;
     CMval_Nbr = 3;
     CMofs_Nbr = 3;
@@ -25,10 +25,12 @@ TBit *CM_11307::SetChkBx()
 	setAddress(&ChkBox[0], CM_EN);	//
 	setAddress(&ChkBox[1], CM_DEMO);	//
 	setAddress(&ChkBox[2], CM_DEMO_LEFT);	//
+        setAddress(&ChkBox[3], CM_FIRST);	//
     } else if (MainForm->addr_place == 1) {
 	setAddressFromFile(&ChkBox[0], "CM_EN");
 	setAddressFromFile(&ChkBox[1], "CM_DEMO");
 	setAddressFromFile(&ChkBox[2], "CM_DEMO_LEFT");
+        setAddressFromFile(&ChkBox[3], "CM_FIRST");
     }
     return ChkBox;
 
@@ -95,96 +97,6 @@ int CM_11307::Setofs_type()
     }
 
 }
-/*
-CM_12307::CM_12307()
-{
-    CMChkBox_Nbr = 3;
-    CMCboBox_Nbr = 1;
-    CMval_Nbr = 3;
-    CMofs_Nbr = 3;
-}
-
-TBit *CM_12307::SetChkBx()
-{
-    TBit *ChkBox = new TBit[CMChkBox_Nbr];
-    //chb = new TBit [CMChkBox_Nbr];
-    if (MainForm->addr_place == 0) {
-	setAddress(&ChkBox[0], CM_EN);	//
-	setAddress(&ChkBox[1], CM_DEMO);	//
-	setAddress(&ChkBox[2], CM_DEMO_LEFT);	//
-        setAddress(&ChkBox[3], CM_FIRST);
-    } else if (MainForm->addr_place == 1) {
-	setAddressFromFile(&ChkBox[0], "CM_EN");
-	setAddressFromFile(&ChkBox[1], "CM_DEMO");
-	setAddressFromFile(&ChkBox[2], "CM_DEMO_LEFT");
-        setAddressFromFile(&ChkBox[3], "CM_FIRST");
-    }
-    return ChkBox;
-
-}
-
-TBit *CM_12307::SetCboBx()
-{
-    TBit *CboBox = new TBit[CMCboBox_Nbr];
-    if (MainForm->addr_place == 0) {
-	//setAddress(&CboBox[0], CM_SEL);	//
-    } else if (MainForm->addr_place == 1) {
-	//setAddressFromFile(&CboBox[0], "CM_SEL");
-    }
-    //CboBox[0].choice_nbr = 4;
-    //CboBox[0].choice = new String[4];
-    //CboBox[0].choice[0] = "by pass";
-    //CboBox[0].choice[1] = "CM1";
-    //CboBox[0].choice[2] = "CM2";
-    //CboBox[0].choice[3] = "CM3";
-    return CboBox;
-}
-
-TLUT *CM_12307::Setval()
-{
-    TLUT *LUT = new TLUT[CMval_Nbr];
-    if (MainForm->addr_place == 0) {
-	setAddress(&LUT[0], CM1);
-	setAddress(&LUT[1], CM2);
-	setAddress(&LUT[2], CM3);
-    } else if (MainForm->addr_place == 1) {
-	setAddressFromFile(&LUT[0], "CM1");
-	setAddressFromFile(&LUT[1], "CM2");
-	setAddressFromFile(&LUT[2], "CM3");
-    }
-    return LUT;
-}
-
-TLUT *CM_12307::Setofs()
-{
-    TLUT *LUT = new TLUT[CMofs_Nbr];
-    if (MainForm->addr_place == 0) {
-	setAddress(&LUT[0], ofs1);
-	setAddress(&LUT[1], ofs2);
-	setAddress(&LUT[2], ofs3);
-    } else if (MainForm->addr_place == 1) {
-	setAddressFromFile(&LUT[0], "ofs1");
-	setAddressFromFile(&LUT[1], "ofs2");
-	setAddressFromFile(&LUT[2], "ofs3");
-    }
-    return LUT;
-}
-
-int CM_12307::Setofs_type()
-{
-    if (MainForm->addr_place == 0) {
-	return 1;
-    } else if (MainForm->addr_place == 1) {
-	int_vector_ptr values = getValuesFromFile("OFS_TYPE");
-	if (null != values) {
-	    return (*values)[0];
-	} else {
-	    return -1;
-	}
-    }
-
-}
-*/
 
 //-------------------------------------------------------------------------//
 //              Sharpness                                                  //
@@ -598,7 +510,7 @@ TLUT *CE_11307::SetMINlut()
 //--------------------------------------------------------------------------
 HSV_11307::HSV_11307()
 {
-    HSVChkBox_Nbr = 4;
+    HSVChkBox_Nbr = 5;
 }
 
 TBit *HSV_11307::SetChkBx()
@@ -609,11 +521,13 @@ TBit *HSV_11307::SetChkBx()
 	setAddress(&ChkBx[1], HUE_DEMO);	//
 	setAddress(&ChkBx[2], HUE_DEMO_LEFT);	//
 	setAddress(&ChkBx[3], V_OFS_EN);
+        setAddress(&ChkBx[4], CLIP_SEL);
     } else if (MainForm->addr_place == 1) {
 	setAddressFromFile(&ChkBx[0], "HUE_EN");
 	setAddressFromFile(&ChkBx[1], "HUE_DEMO");
 	setAddressFromFile(&ChkBx[2], "HUE_DEMO_LEFT");
 	setAddressFromFile(&ChkBx[3], "V_OFS_EN");
+        setAddressFromFile(&ChkBx[4], "CLIP_SEL");
     }
     return ChkBx;
 }

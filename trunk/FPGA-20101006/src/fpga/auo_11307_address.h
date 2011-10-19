@@ -420,15 +420,20 @@
 #define ofs3               "ofs3,656,3,10,2"     //*/
 
 //11307
-#define CM_EN              "CM_EN,39,0,1"        //
 #define CM_SEL             "CM_SEL,39,1,2"       //
-#define CM_DEMO         "CM_DEMO,39,3,1"   //
-#define CM_DEMO_LEFT       "CM_DEMO_LEFT,39,4,1" //
+#define CM_EN   "CM_EN,207,0,1"
+#define CM_DEMO   "CM_DEMO_EN,207,2,1"
+#define CM_DEMO_LEFT   "CM_DEMO_LEFT,207,3,1"
+#define CM_FIRST   "CM_FIRST,207,4,1"
 
-#define CM1                "CM1,208,9,10,2"      //  
+
+#define ofs1   "ofs1,286,3,10,5"
+#define CM1   "CM1,289,9,10,6"
+
+//#define CM1                "CM1,208,9,10,2"      //  
 #define CM2                "CM2,232,9,10,2"      // 
 #define CM3                "CM3,256,9,10,2"      //
-#define ofs1               "ofs1,226,3,10,2"     //
+//#define ofs1               "ofs1,226,3,10,2"     //
 #define ofs2               "ofs2,250,3,10,2"     //
 #define ofs3               "ofs3,274,3,10,2"     //
 
@@ -496,7 +501,8 @@
 #define HUE_EN             "HUE_EN,39,5,1"	//
 #define HUE_DEMO        "HUE_DEMO,39,6,1"	//
 #define HUE_DEMO_LEFT      "HUE_DEMO_LEFT,40,6,1"	//
-#define V_OFS_EN           "V_OFS_EN,40,5,1"	//
+#define V_OFS_EN           "VALUE_MODE,40,5,1"	//
+#define CLIP_SEL   "CLIP_SEL,209,3,1"
 
 #define HSVlut             "HSVlut,320,72,8,1"	//
 

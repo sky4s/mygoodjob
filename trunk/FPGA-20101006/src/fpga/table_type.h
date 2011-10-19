@@ -159,6 +159,22 @@ bool ReadWrite_LUT::Read_LUT10(IntTbl& Out, ByteTbl In, int type)
                                 }
                         }
                 }
+        }else if(type == 5){    // AUO12307 CM offset
+                for(int i = 0; i < Out.Len; i++)
+                {
+                        if(Out.Len%2==0)
+                                Out.Tbl[i] = In.Tbl[3*i]/16*256+In.Tbl[3*i+1];
+                        else
+                                Out.Tbl[i] = In.Tbl[3*i]%16*256+In.Tbl[3*i+2];
+                }
+        }else if(type == 6){    // AUO12307 CM set
+                for(int i = 0; i < Out.Len; i++)
+                {
+                        if(Out.Len%2==1)
+                                Out.Tbl[i] = In.Tbl[3*i]/16*256+In.Tbl[3*i+1];
+                        else
+                                Out.Tbl[i] = In.Tbl[3*i]%16*256+In.Tbl[3*i+2];
+                }
         }
         return 1;
 }
