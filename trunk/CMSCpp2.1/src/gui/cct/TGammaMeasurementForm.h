@@ -45,6 +45,12 @@ class TGammaMeasurementForm:public TForm {
     TOpenDialog *OpenDialog1;
     TCheckBox *CheckBox_Loaded;
     TCheckBox *CheckBox_FlickerFMA;
+        TLabel *Label4;
+        TLabel *Label5;
+        TLabel *Label6;
+        TEdit *Edit_StartLevelT;
+        TEdit *Edit_EndLevelT;
+        TEdit *Edit1;
     void __fastcall Button_MeasureClick(TObject * Sender);
     void __fastcall FormShow(TObject * Sender);
     void __fastcall TOutputFileFrame1Button_BrowseDirClick(TObject * Sender);
