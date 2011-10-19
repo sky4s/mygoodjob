@@ -131,9 +131,30 @@ object GammaMeasurementForm: TGammaMeasurementForm
         Left = 7
         Top = 14
         Width = 221
-        Height = 65
+        Height = 139
         Caption = 'Table'
         TabOrder = 0
+        object Label4: TLabel
+          Left = 8
+          Top = 64
+          Width = 28
+          Height = 13
+          Caption = 'Count'
+        end
+        object Label5: TLabel
+          Left = 8
+          Top = 88
+          Width = 51
+          Height = 13
+          Caption = 'Start Level'
+        end
+        object Label6: TLabel
+          Left = 8
+          Top = 112
+          Width = 48
+          Height = 13
+          Caption = 'End Level'
+        end
         object RadioButton_10Bit: TRadioButton
           Left = 7
           Top = 14
@@ -164,12 +185,37 @@ object GammaMeasurementForm: TGammaMeasurementForm
         object CheckBox_Loaded: TCheckBox
           Left = 78
           Top = 39
-          Width = 79
+          Width = 59
           Height = 20
           Caption = 'Loaded'
           Enabled = False
           TabOrder = 3
           OnClick = CheckBox_LoadedClick
+        end
+        object Edit_StartLevelT: TEdit
+          Left = 72
+          Top = 88
+          Width = 65
+          Height = 21
+          TabOrder = 4
+          Text = '0'
+        end
+        object Edit_EndLevelT: TEdit
+          Left = 72
+          Top = 112
+          Width = 65
+          Height = 21
+          TabOrder = 5
+          Text = '0'
+        end
+        object Edit1: TEdit
+          Left = 72
+          Top = 64
+          Width = 65
+          Height = 21
+          Enabled = False
+          TabOrder = 6
+          Text = '0'
         end
       end
     end
