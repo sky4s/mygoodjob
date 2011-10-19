@@ -384,6 +384,11 @@ void TMainForm::initCA210Meter()
     }
 };
 
+int TMainForm::getAverageTimes()
+{
+    return Edit_AverageTimes->Text.ToInt();
+};
+
 //---------------------------------------------------------------------------
 bptr < cms::measure::IntensityAnalyzerIF > TMainForm::getAnalyzer()
 {

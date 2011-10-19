@@ -106,7 +106,7 @@ class TCCTLUTForm:public TForm {
     TCheckBox *CheckBox_DimFix;
     TProgressBar *ProgressBar1;
     TEdit *Edit_DimFixThreshold;
-        TCheckBox *CheckBox_Feedback;
+    TCheckBox *CheckBox_Feedback;
     void __fastcall RadioButton_P1P2Click(TObject * Sender);
     void __fastcall Button_MeaRunClick(TObject * Sender);
     void __fastcall FormCreate(TObject * Sender);

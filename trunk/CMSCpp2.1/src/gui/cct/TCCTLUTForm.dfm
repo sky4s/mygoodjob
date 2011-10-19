@@ -297,7 +297,6 @@ object CCTLUTForm: TCCTLUTForm
       Height = 20
       Caption = 'Smooth Data'
       TabOrder = 8
-      Visible = False
     end
     object Edit_DimGamma: TEdit
       Left = 72

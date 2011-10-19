@@ -307,6 +307,8 @@ void __fastcall TCCTLUTForm::FormCreate(TObject * Sender)
 	CheckBox_MemoryMeasure->Visible = true;
 	//CheckBox_NewMethod->Visible = true;
     }
+
+    this->CheckBox_NewMethod->Checked = true;
 }
 
 //---------------------------------------------------------------------------
