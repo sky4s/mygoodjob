@@ -76,6 +76,7 @@ namespace cms {
 	};
 
 	const string & DGLutFile::GammaTable = "Gamma_Table";
+	const string & DGLutFile::OldGammaTable = "Gamma Table";
 	const string & DGLutFile::RawData = "Raw_Data";
 	const string & DGLutFile::Target = "Target";
 
@@ -288,7 +289,12 @@ namespace cms {
 	};
 
 	RGB_vector_ptr DGLutFile::getGammaTable() {
-	    db->setTableName(GammaTable);
+	    if (db->isTableExist(GammaTable)) {
+		db->setTableName(GammaTable);
+	    } else {
+		db->setTableName(OldGammaTable);
+	    }
+
 	    RGB_vector_ptr vector(new RGB_vector());
 
 	    bptr < DBQuery > query = db->selectAll();
@@ -378,7 +384,7 @@ namespace cms {
 	    case Correct::DefinedDim:
 		dgfile.addProperty(lowLevelCorrect, "DefinedDim");
 		dgfile.addProperty("defined dim under", c->under);
-		dgfile.addProperty("defined dim gamma", c->dimGamma);
+		dgfile.addProperty("defined dim strength", c->dimStrength);
 
 		if (true == c->dimFix) {
 		    dgfile.addProperty("defined dim - fix", On);
@@ -412,6 +418,10 @@ namespace cms {
 	    dgfile.addProperty("out", *bitDepth->getOutputMaxValue().toString());
 	    dgfile.addProperty("gamma",
 			       c->originalGamma ? "Original Gamma" : _toString(c->gamma).c_str());
+	    if (-1 != c->dimGamma) {
+		dgfile.addProperty("dim gamma", _toString(c->dimGamma));
+		dgfile.addProperty("dim gamma end", _toString(c->dimGammaEnd));
+	    }
 	    dgfile.addProperty("gamma curve", c->useGammaCurve ? On : Off);
 	    dgfile.addProperty("g bypass", c->gByPass ? On : Off);
 	    dgfile.addProperty("b gain", c->bIntensityGain);

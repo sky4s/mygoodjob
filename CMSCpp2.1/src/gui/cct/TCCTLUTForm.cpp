@@ -125,6 +125,11 @@ void __fastcall TCCTLUTForm::Button_MeaRunClick(TObject * Sender)
 	} else if (this->RadioButton_OriginalGamma->Checked) {
 	    calibrator.setOriginalGamma();
 	    calibrator.GByPass = true;
+	} else if (this->RadioButton_2Gamma->Checked) {
+	    double gammaDim = this->ComboBox_DimGamma->Text.ToDouble();
+	    double gammaBright = this->ComboBox_BrightGamma->Text.ToDouble();
+	    int dimGammaEnd = Edit_DimGammaEnd->Text.ToInt();
+	    calibrator.setGamma(gammaDim, dimGammaEnd, gammaBright);
 	}
 	//==========================================================================
 
@@ -166,8 +171,8 @@ void __fastcall TCCTLUTForm::Button_MeaRunClick(TObject * Sender)
 	    //calibrator.setBTargetIntensity(bTargetIntensity);
 	    calibrator.BTargetIntensity = bTargetIntensity;
 	}
-	calibrator.AccurateMode = this->CheckBox_Accurate->Checked;
-	calibrator.ManualAccurateMode = CheckBox_ManualAccurate->Checked;
+	//calibrator.AccurateMode = this->CheckBox_Accurate->Checked;
+	//calibrator.ManualAccurateMode = CheckBox_ManualAccurate->Checked;
 	if (true == Edit_MiddleRatio->Enabled) {
 	    double middleRatio = Edit_MiddleRatio->Text.ToDouble();
 	    calibrator.MiddleCCTRatio = middleRatio;
@@ -355,7 +360,7 @@ void __fastcall TCCTLUTForm::FormShow(TObject * Sender)
     bool visible = null != tconctrl || false == MainForm->linkCA210;
     //avoid hook再考慮一下開啟方式
     CheckBox_AvoidHookNB->Visible = visible;
-    CheckBox_ManualAccurate->Visible = visible;
+    //CheckBox_ManualAccurate->Visible = visible;
     /*Label18->Visible = visible;
        Label19->Visible = visible;
        Edit_BMax2Begin->Visible = visible;
@@ -529,7 +534,7 @@ void __fastcall TCCTLUTForm::CheckBox_NewMethodClick(TObject * Sender)
     RadioButton_MaxYTarget->Enabled = !newMethod;
     //RadioButton_MaxYNative->Enabled = !newMethod;
 
-    CheckBox_Accurate->Enabled = newMethod;
+    //CheckBox_Accurate->Enabled = newMethod;
 }
 
 //---------------------------------------------------------------------------
@@ -612,7 +617,7 @@ void __fastcall TCCTLUTForm::CheckBox_BMax2Click(TObject * Sender)
 void __fastcall TCCTLUTForm::CheckBox_AvoidHookNBClick(TObject * Sender)
 {
     bool checked = this->CheckBox_AvoidHookNB->Checked;
-    CheckBox_Accurate->Checked = checked;
+    //CheckBox_Accurate->Checked = checked;
 }
 
 //---------------------------------------------------------------------------
@@ -643,6 +648,34 @@ void __fastcall TCCTLUTForm::CheckBox_MiddleCCTClick(TObject * Sender)
 {
     bool checked = CheckBox_MiddleCCT->Checked;
     Edit_MiddleRatio->Enabled = checked;
+}
+
+//---------------------------------------------------------------------------
+
+void __fastcall TCCTLUTForm::CheckBox_DimFixClick(TObject * Sender)
+{
+    if (true == CheckBox_DimFix->Checked) {
+	CheckBox_Feedback->Checked = false;
+    }
+}
+
+//---------------------------------------------------------------------------
+
+void __fastcall TCCTLUTForm::CheckBox_FeedbackClick(TObject * Sender)
+{
+    if (true == CheckBox_Feedback->Checked) {
+	CheckBox_DimFix->Checked = false;
+    }
+}
+
+//---------------------------------------------------------------------------
+
+void __fastcall TCCTLUTForm::Edit_DimGammaEndChange(TObject * Sender)
+{
+    int dimEnd = Edit_DimGammaEnd->Text.ToInt();
+    int brightStart = dimEnd + 1;
+    string text = _toString(brightStart) + "-255";
+    Label_BrightZone->Caption = text.c_str();
 }
 
 //---------------------------------------------------------------------------

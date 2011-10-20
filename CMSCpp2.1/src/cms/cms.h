@@ -124,6 +124,7 @@ typedef bptr < Dep::RGBColor > RGB_ptr;
 typedef barray < RGB_ptr > RGB_array;
 typedef std::vector < RGB_ptr > RGB_vector;
 typedef bptr < RGB_vector > RGB_vector_ptr;
+#define nil_RGB_vector_ptr RGB_vector_ptr( (RGB_vector*) null)
 
 typedef bptr < Dep::HSV > HSV_ptr;
 #define nil_HSV_ptr HSV_ptr( (Dep::HSV*) null)

@@ -27,16 +27,16 @@ object AboutBox: TAboutBox
     ParentColor = True
     TabOrder = 0
     object ProductName: TLabel
-      Left = 127
-      Top = 16
+      Left = 135
+      Top = 24
       Width = 91
       Height = 13
       Caption = 'CCT Adjustment v3'
       IsControl = True
     end
     object Version: TLabel
-      Left = 127
-      Top = 40
+      Left = 135
+      Top = 48
       Width = 53
       Height = 13
       Caption = 'Version 3.2'
@@ -67,8 +67,8 @@ object AboutBox: TAboutBox
     object Image1: TImage
       Left = 13
       Top = 20
-      Width = 92
-      Height = 34
+      Width = 116
+      Height = 45
       Picture.Data = {
         0A544A504547496D616765CC0B0000FFD8FFE100E645786966000049492A0008
         0000000500120103000100000001000000310102001C0000004A000000320102

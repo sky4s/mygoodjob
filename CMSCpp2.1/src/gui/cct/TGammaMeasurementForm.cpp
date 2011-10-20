@@ -30,18 +30,7 @@ void __fastcall TGammaMeasurementForm::Button_MeasureClick(TObject * Sender)
 {
     using namespace std;
     using namespace cms::util;
-    /*bptr < cms::measure::IntensityAnalyzerIF > analyzer = MainForm->getAnalyzer();
-       if (MainForm->isCA210Analyzer()) {
-       MainForm->setAnalyzerToTargetChannel();
-       } else {
-       if (null == analyzer->getReferenceColor()) {
-       ShowMessage("Set \"Target White\" first or use CA-210 Intensity Analyzer");
-       return;
-       }
-       } */
-    /*if (false == checkMeasureable()) {
-	return;
-    }*/
+
     MainForm->setMeterMeasurementWaitTimes();
 
     bool_vector_ptr rgbw(new bool_vector(4));
@@ -76,18 +65,28 @@ bptr < cms::lcd::calibrate::MeasureCondition > TGammaMeasurementForm::getMeasure
     int end = this->Edit_EndLevel->Text.ToInt();
     int step = this->ComboBox_LevelStep->Text.ToInt();
 
-    if (bitDepth->isTCONInput()) {
-	start = bitDepth->getMeasureStart();
-	end = bitDepth->getMeasureEnd();
-	step = bitDepth->getMeasureStep();
-    }
+
     bptr < MeasureCondition > condition;
     if (null == dgcodeTable) {
+	if (bitDepth->isTCONInput()) {
+	    start = bitDepth->getMeasureStart();
+	    end = bitDepth->getMeasureEnd();
+	    step = bitDepth->getMeasureStep();
+	}
+
 	condition =
 	    bptr < MeasureCondition >
 	    (new MeasureCondition(start, end, step, step, bitDepth->getMeasureMaxValue()));
     } else {
-	condition = bptr < MeasureCondition > (new MeasureCondition(dgcodeTable));
+	int start = this->Edit_StartLevelT->Text.ToInt();
+	int end = this->Edit_EndLevelT->Text.ToInt();
+	RGB_vector_ptr measureTable(new RGB_vector());
+	for (int x = start; x <= end; x++) {
+	    measureTable->push_back((*dgcodeTable)[x]);
+	}
+
+	measureTable = RGBVector::reverse(measureTable);
+	condition = bptr < MeasureCondition > (new MeasureCondition(measureTable));
     }
     return condition;
 };
@@ -128,20 +127,10 @@ bool TGammaMeasurementForm::measure(bool_vector_ptr rgbw,
     Patch_vector_ptr vectors[4];
     mt = bptr < MeasureTool > (new MeasureTool(mm));
     MeasureWindow->addWindowListener(mt);
-    //Component_vector_ptr componentVector;
 
     run = true;
     try {
-	/*componentVector =
-	   (true == (*rgbw)[3]) ?
-	   (flicker ? mt->flickerMeasure(measureCondition) : fetcher->
-	   fetchComponent(measureCondition)) : nil_Component_vector_ptr;
-	   if (true == (*rgbw)[3] && null == componentVector) {
-	   //代表被阻斷量測
-	   return false;
-	   } */
 
-	//foreach(const Channel & ch, *Channel::RGBChannel) {
 	foreach(const Channel & ch, *Channel::RGBWChannel) {
 	    int index = ch.getArrayIndex();
 	    index = (Channel::W == ch) ? 3 : index;
@@ -179,8 +168,8 @@ void TGammaMeasurementForm::tconMeasure(bool_vector_ptr rgbw, int start,
 void __fastcall TGammaMeasurementForm::FormShow(TObject * Sender)
 {
     /*if (false == checkMeasureable()) {
-	return;
-    }*/
+       return;
+       } */
 
 
     bool tconInput = bitDepth->isTCONInput();
@@ -236,9 +225,14 @@ void __fastcall TGammaMeasurementForm::Button2Click(TObject * Sender)
 	const MaxValue & maxValue =
 	    RadioButton_12Bit->Checked ? MaxValue::Int12Bit : MaxValue::Int10Bit;
 	DGLutFile dgcode(filename.c_str(), ReadOnly, maxValue);
-	dgcodeTable = RGBVector::reverse(dgcode.getGammaTable());
+	//dgcodeTable = RGBVector::reverse(dgcode.getGammaTable());
+	dgcodeTable = dgcode.getGammaTable();
 	this->CheckBox_Loaded->Checked = true;
 	this->CheckBox_Loaded->Enabled = true;
+
+	int size = dgcodeTable->size();
+	Edit_Count->Text = size;
+	Edit_EndLevelT->Text = size - 1;
     }
 }
 

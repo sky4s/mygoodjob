@@ -104,12 +104,26 @@ object CCTLUTForm: TCCTLUTForm
     Left = 170
     Top = 7
     Width = 169
-    Height = 117
+    Height = 162
     Caption = 'Gamma'
     TabOrder = 1
+    object Label16: TLabel
+      Left = 72
+      Top = 40
+      Width = 9
+      Height = 13
+      Caption = '0-'
+    end
+    object Label_BrightZone: TLabel
+      Left = 72
+      Top = 64
+      Width = 33
+      Height = 13
+      Caption = '51-255'
+    end
     object RadioButton_GammaCurve: TRadioButton
       Left = 7
-      Top = 33
+      Top = 81
       Width = 91
       Height = 20
       Caption = 'Gamma Curve'
@@ -118,7 +132,7 @@ object CCTLUTForm: TCCTLUTForm
     end
     object CheckBox_GByPass: TCheckBox
       Left = 27
-      Top = 52
+      Top = 100
       Width = 78
       Height = 20
       Caption = 'G ByPass'
@@ -139,7 +153,7 @@ object CCTLUTForm: TCCTLUTForm
     object ComboBox_Gamma: TComboBox
       Left = 72
       Top = 13
-      Width = 78
+      Width = 49
       Height = 21
       ImeName = #20013#25991' ('#32321#39636') - '#26032#27880#38899
       ItemHeight = 13
@@ -158,7 +172,7 @@ object CCTLUTForm: TCCTLUTForm
     end
     object RadioButton_GammaValue: TRadioButton
       Left = 7
-      Top = 92
+      Top = 140
       Width = 112
       Height = 13
       Caption = 'Gamma Value'
@@ -168,11 +182,68 @@ object CCTLUTForm: TCCTLUTForm
     end
     object RadioButton_OriginalGamma: TRadioButton
       Left = 7
-      Top = 72
+      Top = 120
       Width = 111
       Height = 13
       Caption = 'Original Gamma'
       TabOrder = 5
+    end
+    object RadioButton_2Gamma: TRadioButton
+      Left = 7
+      Top = 48
+      Width = 65
+      Height = 17
+      Caption = '2 Gamma'
+      TabOrder = 6
+    end
+    object ComboBox_DimGamma: TComboBox
+      Left = 112
+      Top = 37
+      Width = 49
+      Height = 21
+      ImeName = #20013#25991' ('#32321#39636') - '#26032#27880#38899
+      ItemHeight = 13
+      TabOrder = 7
+      Text = '2.4'
+      OnChange = ComboBox_GammaChange
+      Items.Strings = (
+        '1.8'
+        '1.9'
+        '2.0'
+        '2.1'
+        '2.2'
+        '2.3'
+        '2.4'
+        '2.5')
+    end
+    object ComboBox_BrightGamma: TComboBox
+      Left = 112
+      Top = 61
+      Width = 49
+      Height = 21
+      ImeName = #20013#25991' ('#32321#39636') - '#26032#27880#38899
+      ItemHeight = 13
+      TabOrder = 8
+      Text = '2.2'
+      OnChange = ComboBox_GammaChange
+      Items.Strings = (
+        '1.8'
+        '1.9'
+        '2.0'
+        '2.1'
+        '2.2'
+        '2.3'
+        '2.4'
+        '2.5')
+    end
+    object Edit_DimGammaEnd: TEdit
+      Left = 83
+      Top = 37
+      Width = 25
+      Height = 21
+      TabOrder = 9
+      Text = '50'
+      OnChange = Edit_DimGammaEndChange
     end
   end
   object GroupBox3: TGroupBox
@@ -297,6 +368,7 @@ object CCTLUTForm: TCCTLUTForm
       Height = 20
       Caption = 'Smooth Data'
       TabOrder = 8
+      Visible = False
     end
     object Edit_DimGamma: TEdit
       Left = 72
@@ -309,34 +381,38 @@ object CCTLUTForm: TCCTLUTForm
     end
     object CheckBox_DimFix: TCheckBox
       Left = 26
-      Top = 168
+      Top = 192
       Width = 71
       Height = 20
       Caption = 'Dim Fix'
       TabOrder = 10
+      OnClick = CheckBox_DimFixClick
     end
     object Edit_DimFixThreshold: TEdit
-      Left = 80
+      Left = 104
       Top = 168
-      Width = 65
+      Width = 49
       Height = 21
       TabOrder = 11
       Text = '0.0000'
     end
     object CheckBox_Feedback: TCheckBox
       Left = 26
-      Top = 189
-      Width = 119
+      Top = 168
+      Width = 71
       Height = 20
       Caption = 'Feedback'
+      Checked = True
+      State = cbChecked
       TabOrder = 12
+      OnClick = CheckBox_FeedbackClick
     end
   end
   object GroupBox4: TGroupBox
     Left = 672
-    Top = 202
+    Top = 7
     Width = 156
-    Height = 64
+    Height = 58
     Caption = 'Blue Correction'
     TabOrder = 3
     object CheckBox_BGain: TCheckBox
@@ -367,9 +443,9 @@ object CCTLUTForm: TCCTLUTForm
   end
   object GroupBox5: TGroupBox
     Left = 170
-    Top = 124
+    Top = 168
     Width = 169
-    Height = 143
+    Height = 99
     Caption = 'Options'
     TabOrder = 4
     object CheckBox_AvoidNoise: TCheckBox
@@ -411,7 +487,7 @@ object CCTLUTForm: TCCTLUTForm
     end
     object CheckBox_BTargetIntensity: TCheckBox
       Left = 7
-      Top = 112
+      Top = 72
       Width = 111
       Height = 19
       Caption = 'B Target intensity'
@@ -420,31 +496,12 @@ object CCTLUTForm: TCCTLUTForm
     end
     object Edit_BTargetIntensity: TEdit
       Left = 117
-      Top = 112
+      Top = 72
       Width = 33
       Height = 21
       Enabled = False
       TabOrder = 5
       Text = '100'
-    end
-    object CheckBox_Accurate: TCheckBox
-      Left = 143
-      Top = 72
-      Width = 121
-      Height = 15
-      Caption = 'Accurate Mode'
-      Enabled = False
-      TabOrder = 6
-      Visible = False
-    end
-    object CheckBox_ManualAccurate: TCheckBox
-      Left = 7
-      Top = 91
-      Width = 138
-      Height = 17
-      Caption = 'Manual Accurate Mode'
-      TabOrder = 7
-      Visible = False
     end
   end
   object Button_MeaRun: TButton
@@ -781,7 +838,7 @@ object CCTLUTForm: TCCTLUTForm
       OnClick = CheckBox_AvoidHookNBClick
     end
     object CheckBox_BMax2: TCheckBox
-      Left = 92
+      Left = 84
       Top = 144
       Width = 97
       Height = 19
@@ -849,7 +906,7 @@ object CCTLUTForm: TCCTLUTForm
   end
   object GroupBox8: TGroupBox
     Left = 672
-    Top = 7
+    Top = 71
     Width = 156
     Height = 194
     Caption = 'Test Function'

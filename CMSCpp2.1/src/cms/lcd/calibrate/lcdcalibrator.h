@@ -48,7 +48,7 @@ namespace cms {
 		//==============================================================
 		int p1, p2;
 		int under;
-		double dimGamma;
+		double dimStrength;
 		int dimFixEnd;
 		bool dimFix;
 		double dimFixThreshold;
@@ -69,7 +69,8 @@ namespace cms {
 		//gamma
 		//==============================================================
 		bool rgbIndepGamma;
-		double gamma, rgamma, ggamma, bgamma;
+		double gamma, rgamma, ggamma, bgamma, dimGamma;
+		int dimGammaEnd;
 		bool useGammaCurve;
 		double_vector_ptr gammaCurve;
 		double_vector_ptr rgammaCurve;
@@ -123,9 +124,10 @@ namespace cms {
 		void setP1P2(int p1, int p2);
 		void setRBInterpolation(int under);
 		void setNonDimCorrect();
-		void setDefinedDim(int under, double gamma);
+		void setDefinedDim(int under, double strength);
 
 		void setGamma(double gamma);
+		void setGamma(double dimGamma, int dimGammaEnd, double brightGamma);
 		void setGamma(double rgamma, double ggamma, double bgamma);
 		void setGammaCurve(double_vector_ptr gammaCurve);
 		void setGammaCurve(double_vector_ptr rgammaCurve,
@@ -153,8 +155,8 @@ namespace cms {
 		__property bool ManualAccurateMode = { write = manualAccurateMode };
 		__property double MiddleCCTRatio = { write = middleCCTRatio };
 		__property bool FeedbackFix = { write = feedbackFix };
-		__property bool SmoothComponent = { read = smoothComponent, write =
-			smoothComponent };
+		__property bool SmoothComponent = { read = smoothComponent, write = smoothComponent
+		};
 		//==============================================================
 
 
@@ -208,6 +210,7 @@ namespace cms {
 		int_vector_ptr getMustMeasureZoneIndexVector(double_vector_ptr dxofBase,
 							     double_vector_ptr dyofBase, int start,
 							     int end);
+		void pushBackNumber(int_vector_ptr result, int number);
 		double_vector_ptr selectDelta(double_vector_ptr dxofBase,
 					      double_vector_ptr dyofBase, Dep::Channel & ch);
 
@@ -227,6 +230,9 @@ namespace cms {
 	      public:
 		static double_vector_ptr getGammaCurveVector(double gamma, int n, int
 							     effectiven);
+		static double_vector_ptr getGammaCurveVector(double dimGamma, int dimGammaEnd,
+							     double brightGamma, int n,
+							     int effectiven);
 
 
 		//==============================================================

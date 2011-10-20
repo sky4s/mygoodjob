@@ -40,6 +40,30 @@ namespace cms {
 		    (*result)[x] = 1;
 		} return result;
 	    };
+
+	    double_vector_ptr
+		LCDCalibrator::getGammaCurveVector(double dimGamma, int dimGammaEnd,
+						   double brightGamma, int n, int effectiven) {
+		double_vector_ptr result(new double_vector(n));
+
+		for (int x = 0; x <= dimGammaEnd; x++) {
+		    double normal = static_cast < double >(x) / (effectiven - 1);
+		    double v = Math::pow(normal, dimGamma);
+		    (*result)[x] = v;
+		}
+		int brightGammaStart = dimGammaEnd + 1;
+		for (int x = brightGammaStart; x < effectiven; x++) {
+		    double normal = static_cast < double >(x) / (effectiven - 1);
+		    double gamma = Interpolation::linear(dimGammaEnd, effectiven - 1, dimGamma,
+							 brightGamma, x);
+		    double v = Math::pow(normal, gamma);
+		    (*result)[x] = v;
+		};
+		for (int x = effectiven; x < n; x++) {
+		    (*result)[x] = 1;
+		} return result;
+	    };
+
 	    void LCDCalibrator::setP1P2(int p1, int p2) {
 		this->p1 = p1;
 		this->p2 = p2;
@@ -53,11 +77,11 @@ namespace cms {
 		this->correct = Correct::None;
 	    };
 
-	    void LCDCalibrator::setDefinedDim(int under, double gamma) {
+	    void LCDCalibrator::setDefinedDim(int under, double strength) {
 		this->correct = Correct::DefinedDim;
 		this->under = under;
 		this->dimFixEnd = under;
-		this->dimGamma = gamma;
+		this->dimStrength = strength;
 
 	    };
 
@@ -66,6 +90,17 @@ namespace cms {
 		int n = bitDepth->getLevel();
 		int effectiven = bitDepth->getEffectiveLevel();
 		setGammaCurve0(getGammaCurveVector(gamma, n, effectiven));
+		useGammaCurve = false;
+		rgbIndepGamma = false;
+	    };
+	    void LCDCalibrator::setGamma(double dimGamma, int dimGammaEnd, double brightGamma) {
+		this->gamma = brightGamma;
+		this->dimGamma = dimGamma;
+		this->dimGammaEnd = dimGammaEnd;
+
+		int n = bitDepth->getLevel();
+		int effectiven = bitDepth->getEffectiveLevel();
+		setGammaCurve0(getGammaCurveVector(dimGamma, dimGammaEnd, gamma, n, effectiven));
 		useGammaCurve = false;
 		rgbIndepGamma = false;
 	    };
@@ -136,7 +171,8 @@ namespace cms {
 		bIntensityGain = 1;
 		under = 50;
 		p1 = p2 = 0;
-		gamma = rgamma = ggamma = bgamma = -1;
+		gamma = rgamma = ggamma = bgamma = dimGamma = -1;
+		dimGammaEnd = 50;
 		this->fetcher = fetcher;
 		useNewMethod = false;
 		bMax = bMax2 = false;
@@ -299,6 +335,9 @@ namespace cms {
 		}
 
 		this->originalComponentVector = fetchComponentVector();
+		if (null == originalComponentVector) {
+		    return nil_RGB_vector_ptr;
+		}
 		STORE_COMPONENT("o_fetch.xls", originalComponentVector);
 
 		//試著smooth componentVector, 得到更smooth 的dg lut
@@ -461,11 +500,11 @@ namespace cms {
 		STORE_DOUBLE_VECTOR("1_lumigammacurve.xls", luminanceGammaCurve);
 
 
-		double dimgammaParameter = 1;
+		double dimStrengthParameter = 1;
 		int underParameter = 50;
 
 		if (correct == Correct::DefinedDim) {
-		    dimgammaParameter = dimGamma;
+		    dimStrengthParameter = dimStrength;
 		    underParameter = under;
 		}
 		//=================================================================================
@@ -510,7 +549,7 @@ namespace cms {
 							 luminanceGammaCurve,
 							 underParameter,
 							 overParameter,
-							 dimgammaParameter,
+							 dimStrengthParameter,
 							 brightgammaParameter, width);
 		    //從目標值算出DGLut
 		    dglut = advgenerator->produce(targetXYZVector);
@@ -700,17 +739,29 @@ namespace cms {
 		    double dx = (*dxofBase)[x];
 		    double dy = (*dyofBase)[x];
 		    if (dx < dimFixThreshold || dy < dimFixThreshold) {
-			result->push_back(x - 2);
-			result->push_back(x - 1);
-			result->push_back(x);
-			result->push_back(x + 1);
-			result->push_back(x + 2);
-			x = x + 5;
+			pushBackNumber(result, x - 2);
+			pushBackNumber(result, x - 1);
+			pushBackNumber(result, x);
+			pushBackNumber(result, x + 1);
+			pushBackNumber(result, x + 2);
+			/*result->push_back(x - 2);
+			   result->push_back(x - 1);
+			   result->push_back(x);
+			   result->push_back(x + 1);
+			   result->push_back(x + 2); */
+			x = x + 3;
 		    }
 		}
 
 		return result;
 	    }
+
+	    void LCDCalibrator::pushBackNumber(int_vector_ptr result, int number) {
+		bool findIt = find(result->begin(), result->end(), number) != result->end();
+		if (!findIt) {
+		    result->push_back(number);
+		}
+	    };
 
 	    int LCDCalibrator::checkReverse(double_vector_ptr deltaVector, int start, int end) {
 		//int size = deltaVector->size();

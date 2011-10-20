@@ -63,6 +63,15 @@ namespace cms {
 		this->rgbMeasureCode = rgbMeasureCode;
 	    };
 
+	    MeasureCondition::MeasureCondition(RGB_vector_ptr rgbMeasureCode, const int start,
+					       const int end) {
+		RGB_vector_ptr result(new RGB_vector());
+		for (int x = start; x <= end; x++) {
+		    result->push_back((*rgbMeasureCode)[x]);
+		}
+		this->rgbMeasureCode = result;
+	    };
+
 	    RGB_vector_ptr MeasureCondition::getRGBMeasureCode() {
 		if (remapping) {
 		    return remappingRGBMeasureCode;
