@@ -22,6 +22,7 @@ namespace cms {
 	    string_vector_ptr makeValues(int n,
 					 Component_ptr c, RGB_ptr rgbGamma, RGB_ptr rgbGammaFix);
 	    static const std::string & GammaTable;
+	    static const std::string & OldGammaTable;
 	    static const std::string & RawData;
 	    static const std::string & Target;
 	    //static const std::string & DeltaData;

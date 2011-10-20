@@ -97,8 +97,6 @@ class TCCTLUTForm:public TForm {
     TCheckBox *CheckBox_SkipInverseB;
     TCheckBox *CheckBox_MemoryMeasure;
     TCheckBox *CheckBox_MaxYAdvAuto;
-    TCheckBox *CheckBox_Accurate;
-    TCheckBox *CheckBox_ManualAccurate;
     TGroupBox *GroupBox8;
     TLabel *Label15;
     TEdit *Edit_MiddleRatio;
@@ -107,6 +105,12 @@ class TCCTLUTForm:public TForm {
     TProgressBar *ProgressBar1;
     TEdit *Edit_DimFixThreshold;
     TCheckBox *CheckBox_Feedback;
+    TRadioButton *RadioButton_2Gamma;
+    TComboBox *ComboBox_DimGamma;
+    TComboBox *ComboBox_BrightGamma;
+    TLabel *Label16;
+    TLabel *Label_BrightZone;
+    TEdit *Edit_DimGammaEnd;
     void __fastcall RadioButton_P1P2Click(TObject * Sender);
     void __fastcall Button_MeaRunClick(TObject * Sender);
     void __fastcall FormCreate(TObject * Sender);
@@ -130,6 +134,9 @@ class TCCTLUTForm:public TForm {
     void __fastcall Edit_MaxYAdvOverChange(TObject * Sender);
     void __fastcall CheckBox_MaxYAdvAutoClick(TObject * Sender);
     void __fastcall CheckBox_MiddleCCTClick(TObject * Sender);
+    void __fastcall CheckBox_DimFixClick(TObject * Sender);
+    void __fastcall CheckBox_FeedbackClick(TObject * Sender);
+    void __fastcall Edit_DimGammaEndChange(TObject * Sender);
   private:			// User declarations
     void setMeasureInfo();
     int serialid;

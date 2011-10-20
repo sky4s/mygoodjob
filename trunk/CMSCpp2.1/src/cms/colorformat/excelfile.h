@@ -64,9 +64,10 @@ namespace cms {
 				      const std::string & keyValue, bool textValues);
 	     bptr < TADODataSet > selectDataSet(const std::string & sql);
 	    static string_vector_ptr getResult(bptr < TADODataSet > dataSet);
+
 	  public:
+	     bool isTableExist(const std::string & tableName);
 	    void execute(const std::string & sql);
-	  public:
 	     ExcelFileDB(const std::string & fileName, const Mode mode);
 	    ~ExcelFileDB();
 	    void createTable(const std::string & tableName, string_vector_ptr fieldNames);

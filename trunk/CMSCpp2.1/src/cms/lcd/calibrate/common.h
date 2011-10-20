@@ -51,6 +51,7 @@ namespace cms {
 				  const int highEnd, const int highStep,
 				  const Dep::MaxValue & maxValue);
 		 MeasureCondition(RGB_vector_ptr rgbMeasureCode);
+		 MeasureCondition(RGB_vector_ptr rgbMeasureCode, const int start, const int end);
 		RGB_vector_ptr getRGBMeasureCode();
 	      private:
 		void setRemappingRGBMeasureCode(RGB_vector_ptr rgbMeasureCode);

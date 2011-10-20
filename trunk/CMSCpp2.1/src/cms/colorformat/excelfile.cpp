@@ -245,6 +245,23 @@ namespace cms {
 	    return result;
 	};
 
+	bool ExcelFileDB::isTableExist(const std::string & tableName) {
+	    TStringList *list = new TStringList;	// declare the list
+
+	    try {
+		connection->GetTableNames(list, false);
+		if (list->IndexOf(_toAnsiString(tableName)) > -1) {
+		    return true;
+		} else {
+		    return false;
+		}
+	    }
+	    __finally {
+		delete list;	// destroy the list object
+	    }
+
+	};
+
 	string_vector_ptr ExcelFileDB::select(const std::string & keyField, const int keyValue) {
 	    return select0(keyField, _toString(keyValue), false);
 	};

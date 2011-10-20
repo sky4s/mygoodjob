@@ -1,8 +1,8 @@
 object GammaMeasurementForm: TGammaMeasurementForm
   Left = 270
   Top = 266
-  Width = 418
-  Height = 468
+  Width = 341
+  Height = 409
   Caption = 'Gamma Measurement'
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
@@ -175,17 +175,17 @@ object GammaMeasurementForm: TGammaMeasurementForm
         end
         object Button2: TButton
           Left = 7
-          Top = 39
-          Width = 65
-          Height = 20
+          Top = 40
+          Width = 74
+          Height = 19
           Caption = 'Load Table'
           TabOrder = 2
           OnClick = Button2Click
         end
         object CheckBox_Loaded: TCheckBox
-          Left = 78
+          Left = 86
           Top = 39
-          Width = 59
+          Width = 67
           Height = 20
           Caption = 'Loaded'
           Enabled = False
@@ -208,7 +208,7 @@ object GammaMeasurementForm: TGammaMeasurementForm
           TabOrder = 5
           Text = '0'
         end
-        object Edit1: TEdit
+        object Edit_Count: TEdit
           Left = 72
           Top = 64
           Width = 65
