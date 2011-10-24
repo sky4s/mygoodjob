@@ -3,9 +3,9 @@
 #include <vcl.h>
 #pragma hdrstop
 //---------------------------------------------------------------------------
-USEFORM("src\fpga\gui\THSVForm3.cpp", HSVFormNew_);
 USEFORM("src\gui\frame\TColorPickerFrame.cpp", ColorPickerFrame); /* TFrame: File Type */
 USEFORM("src\gui\frame\THSVAdjustFrame.cpp", HSVAdjustFrame); /* TFrame: File Type */
+USEFORM("src\fpga\gui\CM1.cpp", CMForm1);
 USEFORM("src\fpga\gui\Unit1.cpp", MainForm);
 USEFORM("src\fpga\gui\Vender1.cpp", VenderForm1);
 USEFORM("src\fpga\gui\HueSatVal1.cpp", HSVFormOrg);
@@ -23,8 +23,6 @@ USEFORM("src\fpga\gui\TGamutForm.cpp", GamutSetupForm);
 USEFORM("src\fpga\gui\TPatternForm.cpp", PatternForm);
 USEFORM("src\fpga\gui\TPatternForm.cpp", PatternForm2);
 USEFORM("src\fpga\gui\THSVForm2nd.cpp", HSVForm2nd);
-USEFORM("src\fpga\gui\Sharpness12307.cpp", SharpnessForm12307);
-USEFORM("src\fpga\gui\CM1.cpp", CMForm1);
 //---------------------------------------------------------------------------
 WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 {
