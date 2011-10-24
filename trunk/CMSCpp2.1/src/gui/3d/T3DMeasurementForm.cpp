@@ -64,6 +64,7 @@ void __fastcall TThreeDMeasurementForm::Button_MeasureClick(TObject * Sender)
     int aveTimes = this->Edit_AveTimes->Text.ToInt();
     bool stableTest = this->CheckBox_StableTest->Checked;
 
+
     if (true == stableTest && true == linkCA210) {
 	int index = this->ComboBox_MeasureMode->ItemIndex;
 	bptr < ca210api::CA210API > ca210api = ca210->getCA210API();
@@ -507,6 +508,7 @@ void TThreeDMeasurementForm::dynamicMeasure(int start, int target,
     //=========================================================================
     // ¶q´ú
     //=========================================================================
+    stop = false;
     double v1 = measure(start, start);
     double v2 = measure(target, target);
     double v3 = measure(adjustTarget, adjustStart);
@@ -572,6 +574,7 @@ void __fastcall TThreeDMeasurementForm::Button_DynamicMeasureClick(TObject * Sen
     target = this->Edit_DTarget->Text.ToInt();
     startAdj = start;
     targetAdj = target;
+    stop = false;
 
     try {
 	updateAdjust();
@@ -611,30 +614,31 @@ void __fastcall TThreeDMeasurementForm::FormKeyPress(TObject * Sender, char &Key
     case 27:			//esc
 	this->stop = true;
 	ThreeDMeasureWindow->Visible = false;
-
+	//this->stop = false;
 	break;
-    case 87:			//W
-    case 119:
+    case 'w':			//W
+    case 'W':
 	talkABreak = true;
 	startAdj++;
 	updateAdjust();
 	talkABreak = false;
 	break;
-    case 83:			//s
-    case 115:
+    case 's':			//s
+    case 'S':
 	talkABreak = true;
 	startAdj--;
 	updateAdjust();
 	talkABreak = false;
 	break;
-    case 65:
+    case 'a':
+    case 'A':
 	talkABreak = true;
 	targetAdj--;
 	updateAdjust();
 	talkABreak = false;
 	break;
-    case 68:			//d
-    case 100:
+    case 'd':			//d
+    case 'D':
 	talkABreak = true;
 	targetAdj++;
 	updateAdjust();
@@ -761,6 +765,16 @@ void __fastcall TThreeDMeasurementForm::Button1Click(TObject * Sender)
 	}
 	ThreeDMeasureWindow->Visible = false;
     }
+}
+
+//---------------------------------------------------------------------------
+
+
+
+void __fastcall TThreeDMeasurementForm::CheckBox_TopBottomModeClick(TObject * Sender)
+{
+    bool topBottomMode = this->CheckBox_TopBottomMode->Checked;
+    ThreeDMeasureWindow->topBottomMode = topBottomMode;
 }
 
 //---------------------------------------------------------------------------

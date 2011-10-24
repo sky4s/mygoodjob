@@ -88,6 +88,7 @@ class TThreeDMeasurementForm:public TForm, KeyPressListener {
     TCheckBox *CheckBox_PatternGenR;
     TCheckBox *CheckBox_PatternGenG;
     TCheckBox *CheckBox_PatternGenB;
+    TCheckBox *CheckBox_TopBottomMode;
     void __fastcall Button_MeasureClick(TObject * Sender);
     void __fastcall FormCreate(TObject * Sender);
     void __fastcall Button_SpotMeasureClick(TObject * Sender);
@@ -96,6 +97,7 @@ class TThreeDMeasurementForm:public TForm, KeyPressListener {
     void __fastcall Button_DynamicMeasureClick(TObject * Sender);
     void __fastcall FormKeyPress(TObject * Sender, char &Key);
     void __fastcall Button1Click(TObject * Sender);
+    void __fastcall CheckBox_TopBottomModeClick(TObject * Sender);
     //void __fastcall CheckBox_ExtendClick(TObject *Sender);
 
   private:			// User declarations

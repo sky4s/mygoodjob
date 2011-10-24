@@ -84,8 +84,9 @@ namespace cms {
 		bool waitingStable = true;
 		int waitTimes = analyzer->getWaitTimes();
 		analyzer->setWaitTimes(10000);
-
 		analyzer->beginAnalyze();
+		stop = false;
+
 		foreach(const RGB_ptr & rgb, *rgbMeasureCode) {
 		    RGB_ptr intensity = analyzer->getIntensity(rgb);
 		    XYZ_ptr XYZ = analyzer->getCIEXYZ();

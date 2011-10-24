@@ -37,6 +37,7 @@ namespace cms {
 
 	    static void sleep(int waitTimes);
 	    static Component_vector_ptr copy(Component_vector_ptr src);
+	    static string getCurrentDirectory();
 	};
 
 	class StringVector {
@@ -53,6 +54,8 @@ namespace cms {
 				   const std::string & content, int n, ...);
 	    static string_vector_ptr tokenize(const std::string & content,
 					      const std::string & delim);
+
+
 	};
 	class NameIF {
 	  public:

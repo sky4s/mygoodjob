@@ -620,7 +620,7 @@ void hookTester()
     bptr < DGLutFile > dgcode(new DGLutFile(filename, ReadOnly));
     bptr < Meter > meter = bptr < Meter > (new DGLutFileMeter(dgcode));
     bptr < MeterMeasurement > mm = bptr < MeterMeasurement > (new MeterMeasurement(meter, false));
-    mm->setFakeMeasure(true);
+    //mm->setFakeMeasure(true);
 
     bptr < MaxMatrixIntensityAnalyzer > matrixAnalyzer(new MaxMatrixIntensityAnalyzer(mm));
 
@@ -967,7 +967,8 @@ class property {
     property(const std::string & name, const boost::any & value):name_(name), value_(value) {
     } std::string name() const {
 	return name_;
-    } boost::any & value() {
+    }
+    boost::any & value() {
 	return value_;
     }
     friend bool operator<(const property & lhs, const property & rhs) {
@@ -1326,6 +1327,24 @@ void getAA(bptr < AA > aa)
     //bptr_ < BB > bb2(new BB(4));
 }
 
+void pushBackNumber(int_vector_ptr result, int number)
+{
+    bool findIt = find(result->begin(), result->end(), number) != result->end();
+    if (!findIt) {
+	result->push_back(number);
+    }
+};
+
+void putTest()
+{
+    int_vector_ptr v(new int_vector());
+    pushBackNumber(v, 1);
+    pushBackNumber(v, 1);
+    pushBackNumber(v, 2);
+    pushBackNumber(v, 2);
+
+};
+
 #pragma argsused
 int main(int argc, char *argv[])
 {
@@ -1419,8 +1438,9 @@ int main(int argc, char *argv[])
     //cout << _toString("123") << endl;
     //nelminTry();
     //auohsvTry();
-    bptr < BB > aa(new BB(3));
-    getAA(aa);
+    //bptr < BB > aa(new BB(3));
+    //getAA(aa);
+    putTest();
     cout << "end" << endl;
     getch();
 }

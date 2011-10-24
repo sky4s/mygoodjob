@@ -562,9 +562,11 @@ namespace cms {
 			RGB_vector_ptr clone = RGBVector::deepClone(dglut);
 			RGBVector::changeMaxValue(clone, bitDepth->getLutMaxValue());
 			STORE_RGBVECTOR("3.2_lut_dgcode.xls", clone);
-			RGBVector::storeToText("3.2_lut_dgcode.txt", clone);
+			RGBVector::storeToText("3.2_lut_dgcode(beforeFeedback).txt", clone);
+
 			RGBVector::changeMaxValue(clone, bitDepth->getFRCAbilityBit());
 			STORE_RGBVECTOR("3.3_frc_dgcode.xls", clone);
+			//RGBVector::storeToText("3.3_frc_dgcode(beforeFeedback).txt", clone);
 
 			fixReverseByFeedback(clone);
 			dglut = clone;
@@ -722,7 +724,6 @@ namespace cms {
 		    double delta = (*deltaVector)[x];
 		    if (delta < dimFixThreshold
 			&& ((preReverseIndex != -1) ? (x - preReverseIndex) >= 3 : true)) {
-			//return x;
 			preReverseIndex = x;
 			result->push_back(x);
 		    }
@@ -744,12 +745,15 @@ namespace cms {
 			pushBackNumber(result, x);
 			pushBackNumber(result, x + 1);
 			pushBackNumber(result, x + 2);
+			//x = x + 3;
 			/*result->push_back(x - 2);
 			   result->push_back(x - 1);
 			   result->push_back(x);
 			   result->push_back(x + 1);
-			   result->push_back(x + 2); */
-			x = x + 3;
+			   result->push_back(x + 2);
+			   x = x + 5; */
+
+
 		    }
 		}
 

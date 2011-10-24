@@ -39,6 +39,7 @@ class TThreeDMeasureWindow:public TForm {
   private:			// User declarations
      KeyPressListener * keyPressListener;
     char test;
+
   public:			// User declarations
      __fastcall TThreeDMeasureWindow(TComponent * Owner);
     void setLeftRGB(int r, int g, int b);
@@ -48,6 +49,7 @@ class TThreeDMeasureWindow:public TForm {
     void setRGB(RGB_ptr rgb);
     void setKeyPressListener(KeyPressListener * listener);
     bool patternGenMode;
+    bool topBottomMode;
 };
 //---------------------------------------------------------------------------
 extern PACKAGE TThreeDMeasureWindow *ThreeDMeasureWindow;

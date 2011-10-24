@@ -722,9 +722,9 @@ object ThreeDMeasurementForm: TThreeDMeasurementForm
   TextHeight = 13
   object Image1: TImage
     Left = 7
-    Top = 248
-    Width = 91
-    Height = 33
+    Top = 272
+    Width = 114
+    Height = 41
     Picture.Data = {
       0A544A504547496D616765CC0B0000FFD8FFE100E645786966000049492A0008
       0000000500120103000100000001000000310102001C0000004A000000320102
@@ -823,8 +823,8 @@ object ThreeDMeasurementForm: TThreeDMeasurementForm
       8C30C1EEC7CF8107BD09F7630853E89B70F76338C245858C30FFD9}
   end
   object Label11: TLabel
-    Left = 103
-    Top = 267
+    Left = 127
+    Top = 275
     Width = 281
     Height = 13
     Caption = 'Copyright (C) 2010, AU Optronics Corp., All Right Reserved.'
@@ -832,8 +832,8 @@ object ThreeDMeasurementForm: TThreeDMeasurementForm
   object PageControl1: TPageControl
     Left = 7
     Top = 7
-    Width = 384
-    Height = 234
+    Width = 410
+    Height = 258
     ActivePage = TabSheet3
     TabIndex = 2
     TabOrder = 0
@@ -850,7 +850,7 @@ object ThreeDMeasurementForm: TThreeDMeasurementForm
       end
       inline OutputFileFrame1: TOutputFileFrame
         Left = 7
-        Top = 131
+        Top = 147
         Width = 319
         Height = 78
         TabOrder = 1
@@ -888,7 +888,7 @@ object ThreeDMeasurementForm: TThreeDMeasurementForm
         Left = 7
         Top = 7
         Width = 182
-        Height = 98
+        Height = 114
         Caption = 'Common Setup'
         TabOrder = 2
         object Label1: TLabel
@@ -937,11 +937,20 @@ object ThreeDMeasurementForm: TThreeDMeasurementForm
         end
         object CheckBox_LeftRightChange: TCheckBox
           Left = 7
-          Top = 72
+          Top = 64
           Width = 143
           Height = 20
           Caption = 'Left<->Right Change'
           TabOrder = 2
+        end
+        object CheckBox_TopBottomMode: TCheckBox
+          Left = 7
+          Top = 88
+          Width = 143
+          Height = 20
+          Caption = 'Top Bottom Mode'
+          TabOrder = 3
+          OnClick = CheckBox_TopBottomModeClick
         end
       end
       object GroupBox3: TGroupBox
@@ -988,7 +997,7 @@ object ThreeDMeasurementForm: TThreeDMeasurementForm
       end
       object CheckBox_StableTest: TCheckBox
         Left = 13
-        Top = 111
+        Top = 127
         Width = 79
         Height = 13
         Caption = 'Stable Test'
@@ -997,7 +1006,7 @@ object ThreeDMeasurementForm: TThreeDMeasurementForm
       end
       object ComboBox_MeasureMode: TComboBox
         Left = 98
-        Top = 111
+        Top = 127
         Width = 72
         Height = 21
         Enabled = False
