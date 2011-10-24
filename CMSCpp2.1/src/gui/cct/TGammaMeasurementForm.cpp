@@ -4,10 +4,11 @@
 #pragma hdrstop
 
 //C系統文件
-
+#include <dir.h>
 //C++系統文件
 
 //其他庫頭文件
+
 
 //本項目內頭文件
 #include "TGammaMeasurementForm.h"
@@ -220,6 +221,9 @@ void __fastcall TGammaMeasurementForm::Button2Click(TObject * Sender)
     using namespace cms::util;
     using namespace Dep;
     OpenDialog1->Filter = "Gamma Table Files(*.xls)|*.xls";
+    string currDir = Util::getCurrentDirectory();
+
+    //OpenDialog1->InitialDir = currDir;
     if (OpenDialog1->Execute()) {
 	const AnsiString & filename = OpenDialog1->FileName;
 	const MaxValue & maxValue =
@@ -233,6 +237,8 @@ void __fastcall TGammaMeasurementForm::Button2Click(TObject * Sender)
 	int size = dgcodeTable->size();
 	Edit_Count->Text = size;
 	Edit_EndLevelT->Text = size - 1;
+
+	chdir(currDir.c_str());
     }
 }
 

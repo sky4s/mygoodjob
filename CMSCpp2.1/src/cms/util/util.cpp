@@ -4,10 +4,12 @@
 
 //C系統文件
 #include <cstdarg>
+#include <dir.h>
 //C++系統文件
 
 //其他庫頭文件
 #include <boost/tokenizer.hpp>
+
 //本項目內頭文件
 //#include <debug.h>
 
@@ -126,6 +128,15 @@ namespace cms {
 
 	    return result;
 	};
+	string Util::getCurrentDirectory() {
+	    char curdir[MAXPATH];
+
+	    strcpy(curdir, "X:\\");	/* fill string with form of response: X:\ */
+	    curdir[0] = 'A' + getdisk();	/* replace X with current drive letter */
+	    getcurdir(0, curdir + 3);	/* fill rest of string with current directory */
+	    return (curdir);
+
+	};
 	//==========================================================================
 
 	string_vector_ptr StringVector::fromCString(int count, ...) {
@@ -216,6 +227,7 @@ namespace cms {
 	    }
 	    return result;
 	};
+
 	//======================================================================
 
 	//======================================================================

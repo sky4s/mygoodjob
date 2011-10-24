@@ -18,7 +18,7 @@
 TThreeDMeasureWindow *ThreeDMeasureWindow;
 //---------------------------------------------------------------------------
 __fastcall TThreeDMeasureWindow::TThreeDMeasureWindow(TComponent * Owner)
-:TForm(Owner), patternGenMode(false)
+:TForm(Owner), patternGenMode(false), topBottomMode(false)
 {
 }
 
@@ -78,14 +78,28 @@ void __fastcall TThreeDMeasureWindow::FormPaint(TObject * Sender)
     int width = this->Width;
     int height = this->Height;
     int halfWidth = width / 2;
-    this->Panel1->Left = 0;
-    this->Panel1->Top = 0;
-    this->Panel1->Width = halfWidth;
-    this->Panel1->Height = height;
-    this->Panel2->Left = halfWidth;
-    this->Panel2->Top = 0;
-    this->Panel2->Width = halfWidth;
-    this->Panel2->Height = height;
+    int halfHeight = height / 2;
+
+    if (topBottomMode) {
+	this->Panel1->Left = 0;
+	this->Panel1->Top = 0;
+	this->Panel1->Width = width;
+	this->Panel1->Height = halfHeight;
+	this->Panel2->Left = 0;
+	this->Panel2->Top = halfHeight;
+	this->Panel2->Width = width;
+	this->Panel2->Height = halfHeight;
+
+    } else {
+	this->Panel1->Left = 0;
+	this->Panel1->Top = 0;
+	this->Panel1->Width = halfWidth;
+	this->Panel1->Height = height;
+	this->Panel2->Left = halfWidth;
+	this->Panel2->Top = 0;
+	this->Panel2->Width = halfWidth;
+	this->Panel2->Height = height;
+    }
 
     Label_TargetAdj2->Visible = !patternGenMode;
     Label_TargetAdj->Visible = patternGenMode;
