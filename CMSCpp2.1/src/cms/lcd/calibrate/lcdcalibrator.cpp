@@ -222,7 +222,8 @@ namespace cms {
 		}
 	    };
 
-	    double_vector_ptr LCDCalibrator::getGammaCurve(Component_vector_ptr componentVector) {
+	    double_vector_ptr LCDCalibrator::
+		getOriginalGammaCurve(Component_vector_ptr componentVector) {
 		double_vector_ptr keys(new double_vector());
 		double_vector_ptr values(new double_vector());
 		int size = componentVector->size();
@@ -232,7 +233,7 @@ namespace cms {
 		double maxLuminance = white->XYZ->Y;
 		double minLuminance = black->XYZ->Y;
 		//double max = white->rgb->getMaxValue().max;
-		double max = bitDepth->getMaxDigitalCount();
+		double max = bitDepth->getOutputMaxDigitalCount();
 
 		for (int x = size - 1; x != -1; x--) {
 		    Component_ptr c = (*componentVector)[x];
@@ -246,7 +247,7 @@ namespace cms {
 		}
 
 		int n = bitDepth->getLevel();
-		int effectiven = bitDepth->getEffectiveLevel();
+		int effectiven = max + 1;	//bitDepth->getEffectiveLevel();
 		Interpolation1DLUT lut(keys, values);
 		double_vector_ptr gammaCurve(new double_vector());
 
@@ -277,7 +278,7 @@ namespace cms {
 		nativeWhiteAnalyzer =
 		    bptr < MaxMatrixIntensityAnalyzer > (new MaxMatrixIntensityAnalyzer(mm));
 
-		int max = bitDepth->getMaxDigitalCount();
+		int max = bitDepth->getOutputMaxDigitalCount();
 		int blueMax = max;
 
 		if (keepMaxLuminance ==
@@ -360,7 +361,7 @@ namespace cms {
 
 		if (true == originalGamma) {
 		    //若要採用original gamma, 從量測結果拉出gamma, 當作目標gamma curve
-		    double_vector_ptr gammaCurve = getGammaCurve(componentVector);
+		    double_vector_ptr gammaCurve = getOriginalGammaCurve(componentVector);
 		    setGammaCurve(gammaCurve);
 		}
 
@@ -446,7 +447,7 @@ namespace cms {
 
 			if (doAccurate) {
 			    //若要skipInverseB, 就應該調整面板特性重新量測
-			    int max = bitDepth->getMaxDigitalCount();
+			    int max = bitDepth->getInputMaxDigitalCount();
 			    panelRegulator2 = bptr < PanelRegulator >
 				(new
 				 GammaTestPanelRegulator(bitDepth, tconctrl, max, max,
@@ -582,7 +583,8 @@ namespace cms {
 			RGBVector::changeMaxValue(checkResult, bitDepth->getFRCAbilityBit());
 			//檢查
 			if (RGBVector::
-			    isAscend(checkResult, startCheckPos, bitDepth->getMaxDigitalCount())) {
+			    isAscend(checkResult, startCheckPos,
+				     bitDepth->getOutputMaxDigitalCount())) {
 			    //STORE_RGBVECTOR("checkResult.xls", checkResult);
 			    break;
 			}

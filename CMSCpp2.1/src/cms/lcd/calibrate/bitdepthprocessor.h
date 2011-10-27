@@ -43,9 +43,19 @@ namespace cms {
 		 */
 		int getMeasureFirstStep();
 		/*
-		   最大的DG值
+		   最大的DG值(廢棄)
 		 */
 		double getMaxDigitalCount();
+
+		/*
+		   輸入端最大的DG(訊號)
+		 */
+		double getInputMaxDigitalCount();
+		/*
+		   輸出端最大的DG(to Panel)
+		 */
+		double getOutputMaxDigitalCount();
+
 		/*
 		   DG的總階數 (一律是257:0~256)
 		 */

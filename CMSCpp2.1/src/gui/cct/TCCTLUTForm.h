@@ -111,6 +111,7 @@ class TCCTLUTForm:public TForm {
     TLabel *Label16;
     TLabel *Label_BrightZone;
     TEdit *Edit_DimGammaEnd;
+    TRadioGroup *RadioGroup_NormalCase;
     void __fastcall RadioButton_P1P2Click(TObject * Sender);
     void __fastcall Button_MeaRunClick(TObject * Sender);
     void __fastcall FormCreate(TObject * Sender);
@@ -137,6 +138,7 @@ class TCCTLUTForm:public TForm {
     void __fastcall CheckBox_DimFixClick(TObject * Sender);
     void __fastcall CheckBox_FeedbackClick(TObject * Sender);
     void __fastcall Edit_DimGammaEndChange(TObject * Sender);
+    void __fastcall RadioGroup_NormalCaseClick(TObject * Sender);
   private:			// User declarations
     void setMeasureInfo();
     int serialid;

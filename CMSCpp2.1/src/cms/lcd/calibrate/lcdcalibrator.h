@@ -246,7 +246,7 @@ namespace cms {
 		//==============================================================
 		// functions call from outside
 		//==============================================================
-		double_vector_ptr getGammaCurve(Component_vector_ptr componentVector);
+		double_vector_ptr getOriginalGammaCurve(Component_vector_ptr componentVector);
 		RGB_vector_ptr getCCTDGLut(bptr < MeasureCondition > measureCondition);
 		RGB_vector_ptr getGammaDGLut(bptr < MeasureCondition > measureCondition);
 		 bptr < cms::colorformat::DGLutFile >

@@ -908,7 +908,7 @@ object CCTLUTForm: TCCTLUTForm
     Left = 672
     Top = 71
     Width = 156
-    Height = 194
+    Height = 146
     Caption = 'Test Function'
     TabOrder = 13
     object Label15: TLabel
@@ -946,6 +946,19 @@ object CCTLUTForm: TCCTLUTForm
     Min = 0
     Max = 100
     TabOrder = 14
+  end
+  object RadioGroup_NormalCase: TRadioGroup
+    Left = 672
+    Top = 216
+    Width = 153
+    Height = 49
+    Caption = 'Normal Case'
+    Items.Strings = (
+      'NB'
+      'TV')
+    TabOrder = 15
+    Visible = False
+    OnClick = RadioGroup_NormalCaseClick
   end
   object OpenDialog1: TOpenDialog
     Filter = 'DGCode Files(*.xls)|*.xls'
