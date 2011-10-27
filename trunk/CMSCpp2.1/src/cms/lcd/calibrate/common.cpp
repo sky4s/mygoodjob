@@ -159,7 +159,7 @@ namespace cms {
 	    PanelRegulator::PanelRegulator(bptr < cms::lcd::calibrate::BitDepthProcessor > bitDepth,
 					   bptr < i2c::TCONControl > tconctrl, int maxR, int maxG,
 					   int maxB):bitDepth(bitDepth), tconctrl(tconctrl) {
-		int max = bitDepth->getMaxDigitalCount();
+		int max = bitDepth->getOutputMaxDigitalCount();
 		rgain = ((double) maxR) / max;
 		ggain = ((double) maxG) / max;
 		bgain = ((double) maxB) / max;

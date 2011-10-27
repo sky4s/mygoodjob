@@ -46,10 +46,11 @@ namespace cms {
 						     bitDepth, double rgain, double ggain,
 						     double bgain) {
 	    int n = bitDepth->getEffectiveLevel();
-	    double maxdc = bitDepth->getMaxDigitalCount();	//得到8bit下最大值
+	    double maxdc = bitDepth->getInputMaxDigitalCount();	//得到8bit下最大值
 	    const MaxValue & maxValue = bitDepth->getLutMaxValue();	//lut的maxvalue
 	    double factor = maxValue.max / 255.;
 	    RGB_vector_ptr result(new RGB_vector());
+            
 	    for (int x = 0; x < n; x++) {
 		double v = maxdc * factor / (n - 1) * x;
 		double r = v * rgain;

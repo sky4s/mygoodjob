@@ -119,7 +119,7 @@ namespace cms {
 		int effectiven = (bitDepth->getEffectiveLevel() - 1);
 		for (int x = n; x >= effectiven; x--) {
 		    RGB_ptr rgb = (*result)[x];
-		    rgb->B = bitDepth->getMaxDigitalCount();
+		    rgb->B = bitDepth->getOutputMaxDigitalCount();
 		}
 		//==============================================================
 
@@ -157,7 +157,7 @@ namespace cms {
 		int effectiven = bitDepth->getEffectiveLevel();
 		for (int x = effectiven; x != bitDepth->getLevel(); x++) {
 		    RGB_ptr rgb = (*result)[x];
-		    rgb->B = bitDepth->getMaxDigitalCount();
+		    rgb->B = bitDepth->getOutputMaxDigitalCount();
 		}
 		//==============================================================
 		RGB_ptr rgb0 = (*result)[begin];
@@ -198,17 +198,7 @@ namespace cms {
 		RGB_vector_ptr result = RGBVector::deepClone(source);
 		//8/6 0~244,245~250,251~255
 		//6/6 0~251,252~255
-		/*if (bitDepth->is10in8Out() || bitDepth->is8in8Out()) {
 
-		   int effectiveLevel = bitDepth->getEffectiveLevel();
-		   int level = bitDepth->getLevel();
-		   for (int x = 0; x != effectiveLevel; x++) {
-		   (*result)[x]->G = x;
-		   }
-		   for (int x = effectiveLevel; x != level; x++) {
-		   (*result)[x]->G = bitDepth->getMaxDigitalCount();
-		   }
-		   } else */
 		if (bitDepth->is8in6Out()) {
 		    for (int x = 0; x != 245; x++) {
 			(*result)[x]->G = x;
@@ -226,7 +216,7 @@ namespace cms {
 			(*result)[x]->G = x;
 		    }
 		    for (int x = effectiveLevel; x != level; x++) {
-			(*result)[x]->G = bitDepth->getMaxDigitalCount();
+			(*result)[x]->G = bitDepth->getOutputMaxDigitalCount();
 		    }
 		}
 		/*else if (bitDepth->is6in6Out()) {
@@ -305,7 +295,7 @@ namespace cms {
 	    RGB_vector_ptr KeepNativeWhiteOp::getRendering(RGB_vector_ptr source) {
 		//int size = source->size();
 		RGB_vector_ptr result = RGBVector::deepClone(source);
-		double max = bitDepth->getMaxDigitalCount();
+		double max = bitDepth->getOutputMaxDigitalCount();
 		int effectiven = bitDepth->getEffectiveLevel();
 
 		for (int x = effectiven; x != bitDepth->getLevel(); x++) {
@@ -326,7 +316,7 @@ namespace cms {
 		int size = result->size();
 		RGB_ptr lastRGB = (*result)[size - 1];
 		RGB_ptr beginRGB = (*result)[over];
-		double max = bitDepth->getMaxDigitalCount();
+		double max = bitDepth->getOutputMaxDigitalCount();
 		int effectiven = bitDepth->getEffectiveLevel();
 		//把rgb都推到最大值
 		double rGain = max / lastRGB->R;

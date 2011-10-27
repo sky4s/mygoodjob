@@ -241,7 +241,7 @@ void __fastcall TCCTLUTForm::Button_MeaRunClick(TObject * Sender)
 	    RGB_vector_ptr checkResult = RGBVector::deepClone(dglut);
 	    RGBVector::changeMaxValue(checkResult, bitDepth->getFRCAbilityBit());
 	    MainForm->stopProgress(ProgressBar1);
-	    if (RGBVector::isAscend(checkResult, 0, bitDepth->getMaxDigitalCount())) {
+	    if (RGBVector::isAscend(checkResult, 0, bitDepth->getOutputMaxDigitalCount())) {
 		//檢查是否遞增且無疊階
 		ShowMessage("Ok!");
 	    } else {
@@ -311,6 +311,8 @@ void __fastcall TCCTLUTForm::FormCreate(TObject * Sender)
 	//CheckBox_NewMethod->Visible = true;
 	CheckBox_MemoryMeasure->Visible = true;
 	//CheckBox_NewMethod->Visible = true;
+
+	RadioGroup_NormalCase->Visible = true;
     }
 
     this->CheckBox_NewMethod->Checked = true;
@@ -625,9 +627,9 @@ void __fastcall TCCTLUTForm::CheckBox_AvoidHookNBClick(TObject * Sender)
 void __fastcall TCCTLUTForm::Edit_MaxYAdvOverChange(TObject * Sender)
 {
     int over = Edit_MaxYAdvOver->Text.ToInt();
-    if (over >= bitDepth->getMaxDigitalCount()) {
-	ShowMessage(("Must < " + _toString(bitDepth->getMaxDigitalCount())).c_str());
-	Edit_MaxYAdvOver->Text = bitDepth->getMaxDigitalCount() - 1;
+    if (over >= bitDepth->getOutputMaxDigitalCount()) {
+	ShowMessage(("Must < " + _toString(bitDepth->getOutputMaxDigitalCount())).c_str());
+	Edit_MaxYAdvOver->Text = bitDepth->getOutputMaxDigitalCount() - 1;
     } else {
 	Edit_BMax2Begin->Text = Edit_MaxYAdvOver->Text;
     }
@@ -676,6 +678,25 @@ void __fastcall TCCTLUTForm::Edit_DimGammaEndChange(TObject * Sender)
     int brightStart = dimEnd + 1;
     string text = _toString(brightStart) + "-255";
     Label_BrightZone->Caption = text.c_str();
+}
+
+//---------------------------------------------------------------------------
+
+
+void __fastcall TCCTLUTForm::RadioGroup_NormalCaseClick(TObject * Sender)
+{
+    switch (RadioGroup_NormalCase->ItemIndex) {
+    case 0:
+	RadioButton_OriginalGamma->Checked = true;
+	CheckBox_AvoidNoise->Checked = true;
+	RadioButton_RBInterp->Checked = true;
+	RadioButton_MaxYNative->Checked = true;
+	CheckBox_BMax->Checked = true;
+	break;
+    case 1:
+	break;
+
+    }
 }
 
 //---------------------------------------------------------------------------

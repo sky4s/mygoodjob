@@ -117,6 +117,37 @@ namespace cms {
 	       DG Lut³Ì¤j­È(in 8Bit)
 	     */
 	    double BitDepthProcessor::getMaxDigitalCount() {
+		throw IllegalStateException("Deprecated");
+		/*switch (bitDepth) {
+		   case b10_10:
+		   return 256;
+		   case b10_8:
+		   case b8_8:
+		   return 255;
+		   case b8_6:
+		   return 255;
+		   case b6_6:
+		   return 252;
+		   default:
+		   throw IllegalStateException("Unsupported bitDepth: " + bitDepth);
+		   } */
+	    };
+
+	    double BitDepthProcessor::getInputMaxDigitalCount() {
+		switch (bitDepth) {
+		case b10_10:
+		    return 256;
+		case b10_8:
+		case b8_8:
+		case b8_6:
+		    return 255;
+		case b6_6:
+		    return 252;
+		default:
+		    throw IllegalStateException("Unsupported bitDepth: " + bitDepth);
+		}
+	    };
+	    double BitDepthProcessor::getOutputMaxDigitalCount() {
 		switch (bitDepth) {
 		case b10_10:
 		    return 256;
@@ -124,7 +155,6 @@ namespace cms {
 		case b8_8:
 		    return 255;
 		case b8_6:
-		    return 255;
 		case b6_6:
 		    return 252;
 		default:
@@ -149,7 +179,7 @@ namespace cms {
 		}
 	    };
 	    int BitDepthProcessor::getEffectiveLevel() {
-		return getMaxDigitalCount() + 1;
+		return getInputMaxDigitalCount() + 1;
 	    };
 	    bool BitDepthProcessor::is8in8Out() {
 		return bitDepth == b8_8;

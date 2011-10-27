@@ -27,7 +27,7 @@ __fastcall TTargetWhiteForm2::TTargetWhiteForm2(TComponent * Owner)
 //---------------------------------------------------------------------------
 void __fastcall TTargetWhiteForm2::RadioButton_MaxRGBClick(TObject * Sender)
 {
-    int max = bitDepth->getMaxDigitalCount();
+    int max = bitDepth->getInputMaxDigitalCount();
     setRGBRatio(max, max, max);
     this->RadioButton_MaxRGB->Checked = true;
 }
@@ -237,7 +237,7 @@ void __fastcall TTargetWhiteForm2::Button_RunClick(TObject * Sender)
 	    double targety = this->Edit_targety->Text.ToDouble();
 	    xyY_ptr xyY(new CIExyY(targetx, targety, 1));
 	    bptr < WhitePointFinder > finder;
-	    double maxCount = bitDepth->getMaxDigitalCount();
+	    double maxCount = bitDepth->getInputMaxDigitalCount();
 	    //¤wª¾xy, ¨Drgb
 	    if (true == moreAccurate) {
 		finder =
@@ -424,7 +424,7 @@ void TTargetWhiteForm2::setBitDepthProcessor(bptr <
 {
     this->bitDepth = bitDepth;
     if (Edit_R->Text.ToInt() == 0) {
-	int maxCount = (int) bitDepth->getMaxDigitalCount();
+	int maxCount = (int) bitDepth->getInputMaxDigitalCount();
 	setRGBRatio(maxCount, maxCount, maxCount);
 	this->RadioButton_MaxRGB->Checked = true;
 	ScrollBar_R->Max = maxCount;
