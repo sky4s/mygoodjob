@@ -116,8 +116,8 @@ int InBufferLen;
 CUsbhidioc  USB;
 /////////////////////////////////////////////////////////////////////////////
 // CUsbhidiocDlg message handlers
-	unsigned int VendorID=0x04b4;// = 0x0e8f;    // Uses Microchip's Vendor ID.
-	unsigned int ProductID=0xf232;// = 0x0003;   // PICkit 2 Flash Starter Kit
+	unsigned short VendorID=0x04b4;// = 0x0e8f;    // Uses Microchip's Vendor ID.
+	unsigned short ProductID=0xf232;// = 0x0003;   // PICkit 2 Flash Starter Kit
     AnsiString ErrorName;
 
 CUsbhidioc::~CUsbhidioc(void)

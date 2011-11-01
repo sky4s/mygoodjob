@@ -187,63 +187,7 @@ namespace cms {
 			//==========================================================================
 			// 低灰階修正debug
 			//==========================================================================
-#ifdef DEBUG_INTENISITY
-			if (false) {
-			    int turncode = 50;
 
-			    RGB_ptr dg50 = (*result)[turncode];
-			    RGB_ptr dg50R = dg50->clone();
-			    RGB_ptr dg50G = dg50->clone();
-			    RGB_ptr dg50B = dg50->clone();
-			    dg50R->reserveValue(Channel::R);
-			    dg50G->reserveValue(Channel::G);
-			    dg50B->reserveValue(Channel::B);
-
-			    RGB_vector_ptr measureVector(new RGB_vector());
-			    measureVector->push_back(dg50R);
-			    measureVector->push_back(dg50G);
-			    measureVector->push_back(dg50B);
-			    measureVector->push_back(dg50);
-
-			    bptr < MeasureCondition >
-				measureCondition(new MeasureCondition(measureVector));
-
-			    //重新量測得到DG 50的primary color
-			    Component_vector_ptr componentVectorPrime =
-				fetcher->fetchComponent(measureCondition);
-			    XYZ_ptr rXYZ = (*componentVectorPrime)[0]->XYZ;
-			    XYZ_ptr gXYZ = (*componentVectorPrime)[1]->XYZ;
-			    XYZ_ptr bXYZ = (*componentVectorPrime)[2]->XYZ;
-			    XYZ_ptr wXYZ = (*componentVectorPrime)[3]->XYZ;
-
-			    bptr < MaxMatrixIntensityAnalyzer >
-				ma(new MaxMatrixIntensityAnalyzer());
-			    ma->setupComponent(Channel::R, rXYZ);
-			    ma->setupComponent(Channel::G, gXYZ);
-			    ma->setupComponent(Channel::B, bXYZ);
-			    ma->setupComponent(Channel::W, wXYZ);
-			    ma->enter();
-
-			    //DG 50推出的新primary color
-			    Component_vector_ptr newcomponentVector =
-				fetchNewComponent(ma, componentVector);
-
-
-			    Component_vector_ptr debugComponentVector(new Component_vector());
-
-			    for (int x = turncode; x >= 0; x--) {
-				RGB_ptr rgb = (*result)[x];
-				Component_ptr c =
-				    getFRCAbilityComponent(x, rgb, ma, newcomponentVector);
-				debugComponentVector->push_back(c);
-			    }
-			    //量測DG 50的primary color, 重新得到intensity
-			    STORE_COMPONENT("debugIntensity2.xls", newcomponentVector);
-			    //降成FRC ability, 由DG 反查intensity, 並且推算出CIExy
-			    STORE_COMPONENT("debugIntensity3.xls", debugComponentVector);
-
-			}
-#endif
 			//==========================================================================
 			return result;
 		    }
@@ -343,7 +287,7 @@ namespace cms {
 		RGB_vector_ptr result(new RGB_vector(size));
 		//==============================================================
 		//primary color只能用target white~
-		MaxMatrixIntensityAnalyzer *aa = (MaxMatrixIntensityAnalyzer *) analyzer.get();
+		//MaxMatrixIntensityAnalyzer *aa = (MaxMatrixIntensityAnalyzer *) analyzer.get();
 		//xyY_ptr rxyY = analyzer->getPrimaryColor(Channel::R);
 		XYZ_ptr rXYZ = analyzer->getPrimaryColor(Channel::R)->toXYZ();
 		XYZ_ptr gXYZ = analyzer->getPrimaryColor(Channel::G)->toXYZ();

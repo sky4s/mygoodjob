@@ -56,9 +56,11 @@ namespace math {
     };
     double Regression::getRMSD() {
 	/* TODO : getRMSD */
+        return -1;
     };
     double Regression::getrSquare() {
 	/* TODO : getrSquare */
+        return -1;
     };
     void Regression::regress() {
 	SVDLib svdLib(inputCoefs);
