@@ -618,7 +618,7 @@ void __fastcall TCCTLUTForm::CheckBox_BMax2Click(TObject * Sender)
 
 void __fastcall TCCTLUTForm::CheckBox_AvoidHookNBClick(TObject * Sender)
 {
-    bool checked = this->CheckBox_AvoidHookNB->Checked;
+    //bool checked = this->CheckBox_AvoidHookNB->Checked;
     //CheckBox_Accurate->Checked = checked;
 }
 

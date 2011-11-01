@@ -101,7 +101,7 @@ namespace cms {
 	//static Illuminant D50;
 	//static Illuminant D65;
 	//static Illuminant C;
-	static XYZ_ptr getXYZ(const Illuminant & illuminant);
+	static const XYZ_ptr getXYZ(const Illuminant & illuminant) ;
 	XYZ_ptr getXYZ();
     };
 #ifdef TNT_LIB

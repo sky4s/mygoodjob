@@ -392,9 +392,11 @@ namespace cms {
 							  Int20Bit, Int24Bit);
 	    MaxValue MaxValue::getIntegerMaxValueByLevel(int level) {
 		/* TODO : getIntegerMaxValueByLevel */
+                return null;
 	    };
 	    MaxValue MaxValue::getIntegerMaxValueByMax(int max) {
 		/* TODO : getIntegerMaxValueByMax */
+                 return null;
 	    };
 	    double MaxValue::getStepIn255() {
 		return 255. / max;

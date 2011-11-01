@@ -43,6 +43,7 @@ namespace cms {
 		   return 13 * Math.sqrt(Maths.sqr(uv[0] - uvn[0]) +
 		   Maths.sqr(uv[1] - uvn[1])); */
 		/* TODO : getSaturation */
+                return -1;
 	    };
 	    double_array CIEXYZ::getuvPrimeValues() {
 		CIExyY xyY(XYZ_ptr(new CIEXYZ(*this)));
@@ -521,6 +522,7 @@ namespace cms {
 		return names;
 	    };
 	    XYZ_ptr CIELab::toXYZ() {
+            return XYZ_ptr((CIEXYZ*)null);
 	    };
 	    Lab_ptr CIELab::getLabAdaptedToD65() {
 		return Lab_ptr(this);
@@ -573,6 +575,7 @@ namespace cms {
 		return names;
 	    };
 	    XYZ_ptr CIELCh::toXYZ() {
+                        return XYZ_ptr((CIEXYZ*)null);
 	    };
 	    double_array CIELCh::_getValues(double_array values) {
 		values[0] = L;

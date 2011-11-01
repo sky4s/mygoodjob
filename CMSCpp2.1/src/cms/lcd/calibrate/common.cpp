@@ -64,7 +64,7 @@ namespace cms {
 	    };
 
 	    MeasureCondition::MeasureCondition(RGB_vector_ptr rgbMeasureCode, const int start,
-					       const int end) {
+					       const int end):type(Normal) {
 		RGB_vector_ptr result(new RGB_vector());
 		for (int x = start; x <= end; x++) {
 		    result->push_back((*rgbMeasureCode)[x]);

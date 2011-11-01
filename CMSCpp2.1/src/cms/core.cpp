@@ -205,7 +205,7 @@ namespace cms {
 	return XYZ;
     };
 
-    XYZ_ptr Illuminant::getXYZ(const Illuminant & illuminant) {
+    const XYZ_ptr Illuminant::getXYZ(const Illuminant & illuminant){
 	using namespace Indep;
 	//D50();                        // Illuminant();
 	XYZ_ptr XYZ;

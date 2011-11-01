@@ -468,13 +468,13 @@ namespace cms {
 			//確定要消除defect
 			int grayLevel = size - x - 1;
 
-			double dx = (*deltaxyValues)[x][0];
-			double dy = (*deltaxyValues)[x][1];
+			//double dx = (*deltaxyValues)[x][0];
+			//double dy = (*deltaxyValues)[x][1];
 
-			double predx = (*deltaxyValues)[x - 1][0];
-			double pre2dx = dx + predx;
-			double predy = (*deltaxyValues)[x - 1][1];
-			double pre2dy = dy + predy;
+			//double predx = (*deltaxyValues)[x - 1][0];
+			//double pre2dx = dx + predx;
+			//double predy = (*deltaxyValues)[x - 1][1];
+			//double pre2dy = dy + predy;
 
 
 			switch (defect) {
@@ -595,12 +595,12 @@ namespace cms {
 		double_array case2 = DoubleArray::arraycopy(coordinatorArray, 3);
 		case2[2] -= delta;
 
-		double c10 = case1[0];
+		/*double c10 = case1[0];
 		double c11 = case1[1];
 		double c12 = case1[2];
 		double c20 = case2[0];
 		double c21 = case2[1];
-		double c22 = case2[2];
+		double c22 = case2[2];*/
 
 		if (isSuitGap(case1)) {
 		    return middleGrayLevel;
@@ -665,7 +665,7 @@ namespace cms {
 		STORE_RGBVECTOR("5.2_change2FRC.xls", result);
 
 		double2D_ptr deltaxyValues = getDeltaxyValues(componentVector);
-		int size = componentVector->size();
+		//int size = componentVector->size();
 
 		double threshold = dimFixThreshold;
 		bool_array xDefectArray = getDefectArray(deltaxyValues, threshold, 0);

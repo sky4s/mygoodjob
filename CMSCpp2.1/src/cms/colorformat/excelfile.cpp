@@ -259,6 +259,7 @@ namespace cms {
 	    __finally {
 		delete list;	// destroy the list object
 	    }
+            return false;
 
 	};
 

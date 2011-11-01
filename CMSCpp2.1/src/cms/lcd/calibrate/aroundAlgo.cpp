@@ -67,6 +67,7 @@ namespace cms {
 							  double_array
 							  delta) {
 		    /* TODO : checkAdjustable */
+                    return false;
 		};
 		bool StepAroundAlgorithm::ChromaticSkipByDelta = true;
 	      StepAroundAlgorithm::StepAroundAlgorithm():maxCode(255)

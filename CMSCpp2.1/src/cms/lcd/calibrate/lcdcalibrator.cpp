@@ -609,6 +609,7 @@ namespace cms {
 		} else if (ch == Channel::G) {
 		    return dyofBase;
 		}
+                return double_vector_ptr((double_vector*)null);
 	    }
 	    void LCDCalibrator::fixReverseByFeedback(RGB_vector_ptr dglut) {
 
@@ -652,7 +653,7 @@ namespace cms {
 			    do {
 				//進入內層代表遇到defect
 				int y = index;
-				double delta = (*deltaOfBase)[y];
+				//double delta = (*deltaOfBase)[y];
 				double deltaU1 = (*deltaOfBase)[y + 1];
 				double deltaD1 = (*deltaOfBase)[y - 1];
 
@@ -1179,6 +1180,7 @@ namespace cms {
 		return dxdy;
 	    };
 	    double_array IntensityEstimator::getRdxGdy(int componentIndex) {
+            return nil_double_array;
 	    }
 	    //=================================================================
 	    // MeasureEstimator
@@ -1295,7 +1297,7 @@ namespace cms {
 
 	    void MeasureEstimator::measure(int startIndex, int endIndex) {
 		resetMeasure();
-		const Dep::MaxValue & frcBit = bitDepth->getFRCAbilityBit();
+		//const Dep::MaxValue & frcBit = bitDepth->getFRCAbilityBit();
 		XYZ_vector_ptr baseXYZVec(new XYZ_vector());
 
 		XYZ_ptr XYZ;

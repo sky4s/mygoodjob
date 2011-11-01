@@ -370,6 +370,7 @@ namespace math {
 	svd.getSingularValues(sv);
 	svd.getV(v);
 	/* TODO : pseudoInverse */
+        return double2D_ptr((double2D*)null);
     };
 
 
@@ -419,7 +420,7 @@ namespace math {
     const double DoubleArray::e = Math::pow(2, -53);
     double DoubleArray::getTolerance(int m, int n, double1D sv) {
 	/* TODO : getTolerance */
-
+             return -1;
     };
 
     double_array DoubleArray::toDoubleArray(double array[], int n) {
