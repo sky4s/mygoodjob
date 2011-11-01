@@ -3,6 +3,7 @@
 #include <vcl.h>
 #pragma hdrstop
 //---------------------------------------------------------------------------
+USEFORM("src\fpga\gui\THSVForm3.cpp", HSVFormNew_);
 USEFORM("src\gui\frame\TColorPickerFrame.cpp", ColorPickerFrame); /* TFrame: File Type */
 USEFORM("src\gui\frame\THSVAdjustFrame.cpp", HSVAdjustFrame); /* TFrame: File Type */
 USEFORM("src\fpga\gui\CM1.cpp", CMForm1);
