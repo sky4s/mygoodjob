@@ -12,6 +12,7 @@
 //本項目內頭文件
 //#include "../cms.h"
 //#include <cms/core.h>
+//#include <lib/CMSCpp2.1/src/includeall.h>
 
 //本項目內gui頭文件
 
