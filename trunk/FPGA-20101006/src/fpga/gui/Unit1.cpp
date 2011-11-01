@@ -534,11 +534,7 @@ void __fastcall TMainForm::mn_HSVClick(TObject * Sender)
     else {
 	if (TCON_DEV == "11307") {
 	    //HSVForm = new THSVForm1(this);
-<<<<<<< .mine
 	    HSVForm = new THSVForm2nd(this);
-=======
-	    HSVForm = new THSVFormOrg(this);
->>>>>>> .r841
 	    HSVForm->Show();
 	}
     }
