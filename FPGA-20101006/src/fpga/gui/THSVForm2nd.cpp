@@ -1695,6 +1695,11 @@ void __fastcall THSVForm2nd::ScrollBar_TurnPointChange(TObject * Sender)
     isf = IntegerSaturationFormula((byte) pos, 3);
     ce.reset();
     ce = bptr < ChromaEnhance > (new ChromaEnhance(colorspace, isf));
+
+    /*int_vector_ptr values = AbstractBase::getValuesFromFile("SAT_TP");
+    if (null != values) {
+
+    }*/
 }
 
 //---------------------------------------------------------------------------

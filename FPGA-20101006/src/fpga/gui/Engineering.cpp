@@ -467,16 +467,20 @@ bool TEngineerForm::SetRead_DG(TLUT * Addr_LUT, int **DG_table, int LUT_Nbr, boo
     // 璸衡table╊ΘByte, Addr_LUT.LutNum()琌table讽い计计
     int *Byte_len = new int[LUT_Nbr];
     for (int i = 0; i < LUT_Nbr; i++) {	// 璸衡ぃbit计table, ┮Τbyte计
-	if (Addr_LUT[i].BitNum() == 8)
+        int tableBit=Addr_LUT[i].BitNum();
+	if ( tableBit == 8) {
 	    Byte_len[i] = (int) ceil((double) Addr_LUT[i].LutNum());
-	else if (Addr_LUT[i].BitNum() == 10 && (Addr_LUT[i].Type() == 3 || Addr_LUT[i].Type() == 4))
+	} else if (tableBit == 10
+		   && (Addr_LUT[i].Type() == 3 || Addr_LUT[i].Type() == 4)) {
 	    Byte_len[i] = (int) ceil((double) Addr_LUT[i].LutNum() * 5 / 4);
-	else if (Addr_LUT[i].BitNum() == 12)
+	} else if (tableBit == 12) {
 	    Byte_len[i] = (int) ceil((double) Addr_LUT[i].LutNum() * 3 / 2);
-	else if (Addr_LUT[i].BitNum() == 16)
+	} else if (tableBit == 16) {
 	    Byte_len[i] = (int) ceil((double) Addr_LUT[i].LutNum() * 2);
-	else
+	} else {
 	    ShowMessage("Table Bit Error");
+            return false;
+	}
 
 	read_len += Byte_len[i];
     }
@@ -530,8 +534,8 @@ bool TEngineerForm::SetRead_DG(TLUT * Addr_LUT, int **DG_table, int LUT_Nbr, boo
     delete[]read_data_C;
 
     if (ok == 0)
-	return 0;
-    return 1;
+	return false;
+    return true;
 }
 
 //---------------------------------------------------------------------------
@@ -675,75 +679,7 @@ bool TEngineerForm::SetWrite_PG(TLUT Addr_LUT, int *write_table, bool IsChkSum, 
 // 20100608 revise,  Write_LUT 锣传 data  Byte, 糶chksum Byte
 bool TEngineerForm::SetWrite_DG(TLUT * Addr_LUT, int **lut, int LUT_Nbr, bool IsChkSum)
 {				// IsChkSum: 1 璶checksum, 0 ぃノchecksum
-    int chk_len;
-    if (IsChkSum) {		// 箇痙Checksum
-	chk_len = 2;
-    } else {
-	chk_len = 0;
-    }
-
-    // 璸衡table╊ΘByte, Addr_LUT.LutNum()琌table讽い计计
-    int *data_len = new int[LUT_Nbr];
-    for (int i = 0; i < LUT_Nbr; i++) {	// 璸衡ぃbit计table, ┮Τbyte计
-	if (Addr_LUT[i].BitNum() == 8)
-	    data_len[i] = (int) ceil((double) Addr_LUT[i].LutNum());
-	else if (Addr_LUT[i].BitNum() == 10 && (Addr_LUT[i].Type() == 3 || Addr_LUT[i].Type() == 4))
-	    data_len[i] = (int) ceil((double) Addr_LUT[i].LutNum() * 5 / 4);
-	else if (Addr_LUT[i].BitNum() == 12)
-	    data_len[i] = (int) ceil((double) Addr_LUT[i].LutNum() * 3 / 2);
-	else if (Addr_LUT[i].BitNum() == 16)
-	    data_len[i] = (int) ceil((double) Addr_LUT[i].LutNum() * 2);
-	else
-	    ShowMessage("Table Bit Error");
-    }
-
-    ByteTbl *Out = new ByteTbl[LUT_Nbr];	// in/ out package
-    IntTbl *In = new IntTbl[LUT_Nbr];
-    for (int i = 0; i < LUT_Nbr; i++) {
-	In[i].Len = Addr_LUT[i].LutNum();
-	In[i].Tbl = lut[i];
-	Out[i].Len = data_len[i];
-	Out[i].Tbl = new unsigned char[data_len[i]];
-    }
-    for (int i = 0; i < LUT_Nbr; i++) {	// // 盢table计锣ΘByte逼
-	Write_LUT(Addr_LUT[i], Out[i], In[i]);
-    }
-
-    ByteTbl Out_tmp;
-    Out_tmp.Len = chk_len;
-    for (int i = 0; i < LUT_Nbr; i++)
-	Out_tmp.Len += Out[i].Len;
-    Out_tmp.Tbl = new unsigned char[Out_tmp.Len];
-
-    // 璸衡checksum
-    int chksum = 0;
-    int ci = chk_len;		// combine index
-    for (int lut_n = 0; lut_n < LUT_Nbr; lut_n++) {
-	for (int i = 0; i < Out[lut_n].Len; i++, ci++) {
-	    Out_tmp.Tbl[ci] = Out[lut_n].Tbl[i];
-	    chksum += int (Out_tmp.Tbl[ci]);
-	}
-    }
-    if (IsChkSum) {
-	Out_tmp.Tbl[0] = (int) floor((double) chksum / 256) % 256;
-	Out_tmp.Tbl[1] = chksum % 256;
-    }
-    // 盢糶计陪ボざ
-    Set_seq_data(Out_tmp.Tbl, Out_tmp.Len, Addr_LUT[0].Addr() - chk_len);
-
-    for (int i = 0; i < LUT_Nbr; i++)
-	delete[]Out[i].Tbl;
-    delete[]Out;
-    delete[]In;
-    delete[]Out_tmp.Tbl;
-
-    if (pg_write()) {		// 糶table计device
-	Sleep(10);		// write buffer time
-	return 1;
-    } else {
-	Sleep(10);
-	return 0;
-    }
+    return SetWrite_DG(Addr_LUT, lut, LUT_Nbr, IsChkSum, true);
 }
 
 //---------------------------------------------------------------------------
@@ -761,16 +697,18 @@ bool TEngineerForm::SetWrite_DG(TLUT * Addr_LUT, int **lut, int LUT_Nbr, bool Is
     // 璸衡table╊ΘByte, Addr_LUT.LutNum()琌table讽い计计
     int *data_len = new int[LUT_Nbr];
     for (int i = 0; i < LUT_Nbr; i++) {	// 璸衡ぃbit计table, ┮Τbyte计
-	if (Addr_LUT[i].BitNum() == 8)
+	if (Addr_LUT[i].BitNum() == 8) {
 	    data_len[i] = (int) ceil((double) Addr_LUT[i].LutNum());
-	else if (Addr_LUT[i].BitNum() == 10 && (Addr_LUT[i].Type() == 3 || Addr_LUT[i].Type() == 4))
+	} else if (Addr_LUT[i].BitNum() == 10
+		   && (Addr_LUT[i].Type() == 3 || Addr_LUT[i].Type() == 4)) {
 	    data_len[i] = (int) ceil((double) Addr_LUT[i].LutNum() * 5 / 4);
-	else if (Addr_LUT[i].BitNum() == 12)
+	} else if (Addr_LUT[i].BitNum() == 12) {
 	    data_len[i] = (int) ceil((double) Addr_LUT[i].LutNum() * 3 / 2);
-	else if (Addr_LUT[i].BitNum() == 16)
+	} else if (Addr_LUT[i].BitNum() == 16) {
 	    data_len[i] = (int) ceil((double) Addr_LUT[i].LutNum() * 2);
-	else
+	} else {
 	    ShowMessage("Table Bit Error");
+	}
     }
 
     ByteTbl *Out = new ByteTbl[LUT_Nbr];	// in/ out package
@@ -2069,8 +2007,9 @@ String *TEngineerForm::Load_file(String Fpath, int Lut_no)
 	LUT[i] = (AnsiString) pch;
 	pch = strtok(NULL, "\n\t");
 	i++;
-	if (i >= Lut_no)
+	if (i >= Lut_no)  {
 	    break;
+        }
     }
     if (i < Lut_no) {
 	return NULL;

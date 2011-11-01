@@ -35,13 +35,14 @@ class TLUT:public AbstractAddressType {
 
     virtual void _set(int_vector_ptr vector, AnsiString name) {
 	using namespace java::lang;
-	switch (vector->size()) {
+        int size = vector->size();
+	switch (size) {
 	case 4:
 	    set((*vector)[0], (*vector)[1], (*vector)[2], (*vector)[3], name);
 	    break;
-	/*case 3:
+	case 3:
 	    set((*vector)[0], (*vector)[1], (*vector)[2], name);
-	    break;*/
+	    break;
 	default:
 	    throw IllegalArgumentException();
 	}

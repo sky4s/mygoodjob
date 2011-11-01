@@ -1,5 +1,5 @@
 object HSVFormOrg: THSVFormOrg
-  Left = 389
+  Left = 486
   Top = 0
   Width = 891
   Height = 711
