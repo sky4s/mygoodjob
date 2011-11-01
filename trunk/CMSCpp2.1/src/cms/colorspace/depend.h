@@ -57,9 +57,7 @@ namespace cms {
 		 RGBColorSpace(const CSType & type, const cms::Illuminant & referenceWhite,
 			       const double gamma, double m0, double m1, double m2, double m3,
 			       double m4, double m5, double m6, double m7, double m8);
-		 RGBColorSpace(const CSType & type, const cms::Illuminant & referenceWhite,
-			       const double gamma, double rx, double ry, double gx, double gy,
-			       double bx, double by);
+
 		XYZ_ptr referenceWhiteXYZ;
 	      public:
 		static const RGBColorSpace unknowRGB;
@@ -78,6 +76,9 @@ namespace cms {
 		    return type == that.type;
 		};
 
+     RGBColorSpace(const CSType & type, const cms::Illuminant & referenceWhite,
+			       const double gamma, double rx, double ry, double gx, double gy,
+			       double bx, double by); 
 		 RGBColorSpace(const CSType & type,
 			       const cms::Illuminant & referenceWhite,
 			       double2D_ptr toXYZMatrix, const double gamma);
