@@ -1,6 +1,6 @@
 object EngineerForm: TEngineerForm
-  Left = 555
-  Top = 232
+  Left = 694
+  Top = 205
   Width = 725
   Height = 534
   Caption = 'Engineering'
@@ -10798,7 +10798,7 @@ object EngineerForm: TEngineerForm
   end
   object stb_page_operat: TStatusBar
     Left = 0
-    Top = 488
+    Top = 490
     Width = 717
     Height = 17
     Color = clSkyBlue

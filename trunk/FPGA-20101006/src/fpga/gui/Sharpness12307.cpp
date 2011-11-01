@@ -14,7 +14,7 @@
 #pragma package(smart_init)
 #pragma resource "*.dfm"
 //TSharpnessForm12307 *SharpnessForm;       //使用動態宣告,不需作實體宣告
-bool SP_IsChkSum = 0;
+static bool SP_IsChkSum = false;
 //---------------------------------------------------------------------------
 __fastcall TSharpnessForm12307::TSharpnessForm12307(TComponent * Owner)
 :TForm(Owner)

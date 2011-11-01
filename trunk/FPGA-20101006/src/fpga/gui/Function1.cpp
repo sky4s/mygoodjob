@@ -784,14 +784,16 @@ void __fastcall TFunctionForm1::btn_dg_readClick(TObject * Sender)
 // 20100608 Add table operation Enable/ Disable
 void __fastcall TFunctionForm1::btn_dg_loadClick(TObject * Sender)
 {
-    DG_LUT_FuncEnable(0);
+    DG_LUT_FuncEnable(false);
     String Fpath;
     if (LoadDialog->Execute()) {
 	Fpath = LoadDialog->FileName;
 	String *DG_LUT = NULL;
-	DG_LUT = EngineerForm->Load_file(Fpath, Addr_DgLUT[0].LutNum() * OFunc->DGLUT_Nbr);
+        int lutNum = Addr_DgLUT[0].LutNum();
+	DG_LUT = EngineerForm->Load_file(Fpath, lutNum * OFunc->DGLUT_Nbr);
 	if (DG_LUT == NULL) {
 	    ShowMessage("Load file fail!");
+             DG_LUT_FuncEnable(true);
 	    return;
 	}
 
@@ -802,7 +804,7 @@ void __fastcall TFunctionForm1::btn_dg_loadClick(TObject * Sender)
 	}
 	delete[]DG_LUT;
     }
-    DG_LUT_FuncEnable(1);
+    DG_LUT_FuncEnable(true);
 
 }
 

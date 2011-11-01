@@ -10,8 +10,7 @@ class _CHKB {
   public:
     __fastcall ~ _CHKB() {
 	delete[]Chkb;
-    }
-    TCheckBox *Chkb;
+    } TCheckBox *Chkb;
     TBit Addr;
 };
 
@@ -21,8 +20,7 @@ class _CBOB {
     __fastcall ~ _CBOB() {
 	delete[]Cbob;
 	delete[] CbobL;
-    }
-    TComboBox *Cbob;
+    } TComboBox *Cbob;
     TLabel *CbobL;
     TBit Addr;
 };
@@ -35,8 +33,7 @@ class _CBOB2			//Address ¬° 2Byte
 	delete[]Cbob;
 	delete[] CbobL;
 	//delete Addr.choice;
-    }
-    TComboBox *Cbob;
+    } TComboBox *Cbob;
     TLabel *CbobL;
     TBit2 Addr;
 };
@@ -48,8 +45,7 @@ class _LBLE4			//Address ¬° 4Byte
     __fastcall ~ _LBLE4() {
 	delete[]Lble;
 	//delete Addr.choice;
-    }
-    TLabeledEdit *Lble;
+    } TLabeledEdit *Lble;
     TBit4 Addr;
 };
 
@@ -59,8 +55,7 @@ class _LBLE3			//Address ¬° 3Byte
     __fastcall ~ _LBLE3() {
 	delete[]Lble;
 	//delete Addr.choice;
-    }
-    TLabeledEdit *Lble;
+    } TLabeledEdit *Lble;
     TBit3 Addr;
 };
 
@@ -71,7 +66,8 @@ class _LBLE2			//Address ¬° 2Byte
     __fastcall ~ _LBLE2() {
 	delete[]Lble;
 	//delete Addr.choice;
-    } TLabeledEdit *Lble;
+    }
+    TLabeledEdit *Lble;
     TBit2 Addr;
 };
 
@@ -81,7 +77,8 @@ class _LBLE			//Address ¬° 1 byte
     __fastcall ~ _LBLE() {
 	delete[]Lble;
 	//delete Addr.choice;
-    } TLabeledEdit *Lble;
+    }
+    TLabeledEdit *Lble;
     TBit Addr;
 };
 
@@ -94,7 +91,8 @@ class _ScrollBar2		//Address ¬° 2Byte
 	delete[] StTxt;
 	delete[] ScrlB;
 	//delete Addr.choice;
-    } TLabel *Lbl;
+    }
+    TLabel *Lbl;
     TScrollBar *ScrlB;
     TStaticText *StTxt;
     TBit2 Addr;
@@ -108,7 +106,8 @@ class _ScrollBar		//Address ¬° 1 byte
 	delete[] StTxt;
 	delete[] ScrlB;
 	//delete Addr.choice;
-    } TLabel *Lbl;
+    }
+    TLabel *Lbl;
     TScrollBar *ScrlB;
     TStaticText *StTxt;
     TBit Addr;
@@ -121,7 +120,8 @@ class _StaticText		//Address ¬° 1 byte    //no more use
     __fastcall ~ _StaticText() {
 	delete[]StTxt;
 	//delete Addr.choice;
-    } TStaticText *StTxt;
+    }
+    TStaticText *StTxt;
     TBit Addr;
 };
 
@@ -184,7 +184,7 @@ AbstSP¬°¤@¦Û©wªºclass, ¨ã¦³¥i¶Ç¦^IC¤¤Ãö©óSharpness address©w¸qªº¨ç¦¡
 ===========================================================================*/
 class AbstSP:public AbstractBase {
   public:
-    virtual TBit *SetChkBx() = 0;	//¶Ç¦^CheckBoxªºaddress©w¸q
+    virtual TBit * SetChkBx() = 0;	//¶Ç¦^CheckBoxªºaddress©w¸q
     virtual TBit *SetCboBx() = 0;
     virtual TBit *SetScrollBar() = 0;	//¶Ç¦^ScrollBarªºaddress©w¸q
     virtual TBit2 *SetLblE2() = 0;	// Add by Michelle 20100702
