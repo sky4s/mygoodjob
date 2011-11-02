@@ -516,8 +516,8 @@ namespace cms {
 		}
 		double_array hsvValues(new double[3]);
 		hsvValues[0] = h;
-		hsvValues[1] = s;
-		hsvValues[2] = v;
+		hsvValues[1] = s * 100;
+		hsvValues[2] = v / 255. * 100;
 		//hsviValues[3] = i;
 		return hsvValues;
 	    };
@@ -533,12 +533,18 @@ namespace cms {
 		RGB_ptr rgb(new RGBColor(*rgbColorSpace, rgbValues, MaxValue::Double255));
 		return rgb;
 	    };
+	    /*
+	       hue = hsvValues[0] = 0~360
+	       saturation = hsvValues[1] = 0~100
+	       value = hsvValues[2] = 0~100
+	     */
 	    double_array HSV::toRGBValues(double_array hsvValues) {
-
+		double s0 = hsvValues[1];
+		double v0 = hsvValues[2];
 
 		double h = hsvValues[0];	//eat 0~360
-		double s = hsvValues[1] / 100;	//eat 0~1
-		double v = hsvValues[2] / 100 * 255;	//eat 0~255
+		double s = hsvValues[1] / 100;	//eat 0~100 to 0~1
+		double v = hsvValues[2] / 100 * 255;	//eat 0~100 to 0~255
 		double r, g, b;
 		s = (s < 0 ? 0 : s);
 		s = (s > 1 ? 1 : s);
@@ -591,23 +597,27 @@ namespace cms {
 		return index;
 	    };
 	    double_array HSV::getHSVIValues() {
-		double_array hsvValues = getValues();
-		double_array rgbValues = toRGBValues(hsvValues);
+		double_array rgbValues = toRGBValues(getValues());
 		double_array hsviValues = getHSVIValues(rgbValues);
+		/*double_array hsviValues(new double[4]);
+		   hsviValues[0] = this->H;
+		   hsviValues[1] = S;
+		   hsviValues[2] = V;
+		   hsviValues[3] = (rgbValues[0] + rgbValues[1] + rgbValues[2]) / 3.; */
 		return hsviValues;
 	    };
 	    double_array HSV::getHSVIValues(double_array rgbValues) {
 		double_array hsvValues = fromRGBValues(rgbValues);
 		double_array hsviValues(new double[4]);
-		for (int x = 0; x < 3; x++) {
-		    hsviValues[x] = hsvValues[x];
-		}
+		hsviValues[0] = hsvValues[0];
+		hsviValues[1] = hsvValues[1];
+		hsviValues[2] = hsvValues[2];
 		hsviValues[3] = (rgbValues[0] + rgbValues[1] + rgbValues[2]) / 3.;
 		return hsviValues;
 	    };
 	    double_array HSV::_fromRGB(RGB_ptr rgb) {
 		double_array rgbValues(new double[3]);
-		rgb->getValues(rgbValues, MaxValue::Double1);
+		rgb->getValues(rgbValues, MaxValue::Double255);
 		double_array hsvValues = fromRGBValues(rgbValues);
 		return hsvValues;
 	    };
