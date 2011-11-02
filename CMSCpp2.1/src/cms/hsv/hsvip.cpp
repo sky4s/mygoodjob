@@ -493,7 +493,9 @@ namespace cms {
 	//
 	//======================================================================
 	//IntegerSaturationFormula ChromaEnhance::isf = IntegerSaturationFormula(7, 3);
-      ChromaEnhance::ChromaEnhance(const RGBColorSpace & _colorspace, const IntegerSaturationFormula & _isf):colorspace(_colorspace), isf(_isf), hsvClip(false)
+
+      ChromaEnhance::ChromaEnhance(bptr < Dep::RGBColorSpace > _colorspace, const IntegerSaturationFormula & _isf):colorspace(_colorspace), isf(_isf),
+	    hsvClip(false)
 	{
 	};
 	double ChromaEnhance::calculateDeltaL(const SingleHueAdjustValue & adjustValue) {
@@ -504,33 +506,28 @@ namespace cms {
 	};
 	double ChromaEnhance::
 	    calculateDeltaL(const SingleHueAdjustValue & adjustValue,
-			    const RGBColorSpace & colorspace,
+			    bptr < RGBColorSpace > colorspace,
 			    const IntegerSaturationFormula & isf, boolean hsvClip) {
 	    using namespace Dep;
 	    using namespace Indep;
 	    double h = adjustValue.getDoubleHueAdjustValue();
 	    double totalDeltaL = 0;
-	    XYZ_ptr white = colorspace.referenceWhite.getXYZ();
+	    XYZ_ptr white = colorspace->referenceWhite.getXYZ();
 	    int index = 0;
 
 	    for (int s = 10; s <= 90; s += 10) {
 		for (int v = 30; v <= 90; v += 10) {
-		    HSV_ptr hsv(new HSV(colorspace, h, s, v));
+		    HSV_ptr hsv(new HSV(*colorspace, h, s, v));
 		    AUOHSV auohsv(hsv);
 		    short_array auohsvValues =
 			IntegerHSVIP::getHSVValues(auohsv, adjustValue, isf, hsvClip);
 
-		    short hh = auohsvValues[0];
-		    short ss = auohsvValues[1];
-		    short vv = auohsvValues[2];
-
 		    AUOHSV_ptr hsv2 = AUOHSV::fromHSVValues3(auohsvValues);
 		    RGB_ptr rgb = hsv2->toRGB();
-		    XYZ_ptr XYZ = RGBColor::toXYZ(rgb, colorspace);
+		    XYZ_ptr XYZ = RGBColor::toXYZ(rgb, *colorspace);
 		    CIELab Lab(XYZ, white);
 		    RGB_ptr rgb0 = hsv->toRGB();
-		    XYZ_ptr XYZ0 = RGBColor::toXYZ(rgb0, colorspace);
-		    //XYZ_ptr XYZ0 = rgb0->toXYZ();
+		    XYZ_ptr XYZ0 = RGBColor::toXYZ(rgb0, *colorspace);
 		    CIELab Lab0(XYZ0, white);
 		    double deltaL = Math::abs(Lab.L - Lab0.L);
 		    totalDeltaL += deltaL;

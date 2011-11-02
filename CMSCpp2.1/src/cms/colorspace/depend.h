@@ -75,6 +75,9 @@ namespace cms {
 		inline bool operator==(const RGBColorSpace & that) const {
 		    return type == that.type;
 		};
+		/*RGBColorSpace & operator=(const RGBColorSpace & rhs) {
+		   this->type = rhs.type;
+		   }; */
 
      RGBColorSpace(const CSType & type, const cms::Illuminant & referenceWhite,
 			       const double gamma, double rx, double ry, double gx, double gy,
@@ -82,6 +85,9 @@ namespace cms {
 		 RGBColorSpace(const CSType & type,
 			       const cms::Illuminant & referenceWhite,
 			       double2D_ptr toXYZMatrix, const double gamma);
+		 RGBColorSpace(const CSType & type, const cms::Illuminant & referenceWhite,
+			       const double gamma, double rx, double ry, double gx, double gy,
+			       double bx, double by);
 		XYZ_ptr getReferenceWhiteXYZ();
 	    };
 
