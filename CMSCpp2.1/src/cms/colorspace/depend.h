@@ -79,15 +79,12 @@ namespace cms {
 		   this->type = rhs.type;
 		   }; */
 
-     RGBColorSpace(const CSType & type, const cms::Illuminant & referenceWhite,
-			       const double gamma, double rx, double ry, double gx, double gy,
-			       double bx, double by); 
-		 RGBColorSpace(const CSType & type,
-			       const cms::Illuminant & referenceWhite,
-			       double2D_ptr toXYZMatrix, const double gamma);
 		 RGBColorSpace(const CSType & type, const cms::Illuminant & referenceWhite,
 			       const double gamma, double rx, double ry, double gx, double gy,
 			       double bx, double by);
+		 RGBColorSpace(const CSType & type,
+			       const cms::Illuminant & referenceWhite,
+			       double2D_ptr toXYZMatrix, const double gamma);
 		XYZ_ptr getReferenceWhiteXYZ();
 	    };
 
