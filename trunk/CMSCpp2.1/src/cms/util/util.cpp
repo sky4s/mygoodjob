@@ -115,7 +115,7 @@ namespace cms {
 		Application->ProcessMessages();
 	    }
 	};
-
+#if defined(LCD_DEVICE)
 	Component_vector_ptr Util::copy(Component_vector_ptr src) {
 	    using namespace cms::lcd::calibrate;
 	    int size = src->size();
@@ -128,6 +128,7 @@ namespace cms {
 
 	    return result;
 	};
+#endif
 	string Util::getCurrentDirectory() {
 	    char curdir[MAXPATH];
 

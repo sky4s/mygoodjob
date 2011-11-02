@@ -15,7 +15,6 @@ namespace cms {
     namespace util {
 	using namespace std;
 	using namespace boost;
-
 	class Util {
 	  public:
 	    static string_ptr toString(wchar_t * wc);
@@ -30,17 +29,17 @@ namespace cms {
 	    static bool isFileExist(const std::string & filename);
 	    static bptr < WideString > toWideString(const std::string & s);
 	    static void shellExecute(const std::string & filename);
-
-	    static void sleep(int waitTimes);
-	    static Component_vector_ptr copy(Component_vector_ptr src);
-	    static string getCurrentDirectory();
-
 #if defined(EXCEL_ACCESSIBLE) && defined(COLORSPACE)
 	    static void storeXYZxyVector(const std::string & filename, XYZ_vector_ptr XYZVector);
 	    static void storeXYZxyVector(const std::string & filename,
 					 XYZ_vector_ptr XYZVector, const std::string firstColumn);
 #endif
 
+	    static void sleep(int waitTimes);
+#if defined(LCD_DEVICE)
+	    static Component_vector_ptr copy(Component_vector_ptr src);
+#endif
+	    static string getCurrentDirectory();
 	};
 
 	class StringVector {
@@ -106,8 +105,7 @@ namespace cms {
 	};
 
 	class CallBackIF {
-	  public:
-	    virtual void callback() = 0;
+	  public:virtual void callback() = 0;
 	};
 
     };
