@@ -694,6 +694,10 @@ void __fastcall TCCTLUTForm::RadioGroup_NormalCaseClick(TObject * Sender)
 	CheckBox_BMax->Checked = true;
 	break;
     case 1:
+        RadioButton_2Gamma->Checked=true;
+        RadioButton_DefinedDim->Checked=true;
+        CheckBox_Feedback->Checked=true;
+        RadioButton_MaxYNative->Checked=true;
 	break;
 
     }
