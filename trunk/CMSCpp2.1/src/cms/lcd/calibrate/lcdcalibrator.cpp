@@ -609,7 +609,7 @@ namespace cms {
 		} else if (ch == Channel::G) {
 		    return dyofBase;
 		}
-                return double_vector_ptr((double_vector*)null);
+		return double_vector_ptr((double_vector *) null);
 	    }
 	    void LCDCalibrator::fixReverseByFeedback(RGB_vector_ptr dglut) {
 
@@ -703,7 +703,8 @@ namespace cms {
 		    STORE_DOUBLE_VECTOR("dyofBase.xls", dyofBase);
 		}		//out while
 		STORE_RGBVECTOR("3.5_reverse_fix_dgcode.xls", dglut);
-		//end if
+		this->feedbackFixCount = chromaticityEstimator->getMeasureCount();
+		this->maxMeasureError = chromaticityEstimator->getMaxMeasureError();
 	    };
 
 
@@ -1180,7 +1181,7 @@ namespace cms {
 		return dxdy;
 	    };
 	    double_array IntensityEstimator::getRdxGdy(int componentIndex) {
-            return nil_double_array;
+		return nil_double_array;
 	    }
 	    //=================================================================
 	    // MeasureEstimator
@@ -1367,7 +1368,51 @@ namespace cms {
 		dxofBase = double_vector_ptr(new double_vector());
 		dyofBase = double_vector_ptr(new double_vector());
 	    };
-	    //=================================================================
+	    int MeasureEstimator::getMeasureCount() {
+		return storeComponentVector->size();
+	    };
+	    double_array MeasureEstimator::getMaxMeasureError() {
+		int size = storeComponentVector->size();
+		double_array maxError(new double[2]);
+		maxError[0] = 0;
+		maxError[1] = 0;
+
+		for (int x = 0; x < size - 1; x++) {
+		    Component_ptr c = (*storeComponentVector)[x];
+		    RGB_ptr rgb = c->rgb;
+		    Component_vector_ptr tmp(new Component_vector());
+
+		    for (int y = x + 1; y < size; y++) {
+			Component_ptr c2 = (*storeComponentVector)[y];
+			RGB_ptr rgb2 = c2->rgb;
+			if (rgb->equals(rgb2)) {
+			    tmp->push_back(c2);
+			}
+		    }
+		    int sameRGBCount = tmp->size();
+		    if (0 != sameRGBCount) {
+			double_array meanxy(new double[2]);
+			foreach(Component_ptr c2, *tmp) {
+			    XYZ_ptr XYZ = c2->XYZ;
+			    xyY_ptr xyY(new CIExyY(XYZ));
+			    meanxy[0] += xyY->x;
+			    meanxy[1] += xyY->y;
+			}
+			meanxy[0] /= sameRGBCount;
+			meanxy[1] /= sameRGBCount;
+
+			foreach(Component_ptr c2, *tmp) {
+			    XYZ_ptr XYZ = c2->XYZ;
+			    xyY_ptr xyY(new CIExyY(XYZ));
+			    double dx = Math::abs(xyY->x - meanxy[0]);
+			    double dy = Math::abs(xyY->y - meanxy[1]);
+			    maxError[0] = (dx > maxError[0]) ? dx : maxError[0];
+			    maxError[1] = (dy > maxError[1]) ? dy : maxError[1];
+			}
+		    }
+		};
+		return maxError;
+	    };
 	};
     };
 };

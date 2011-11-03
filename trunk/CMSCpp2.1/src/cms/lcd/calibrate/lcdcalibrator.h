@@ -114,7 +114,9 @@ namespace cms {
 		bool remapped;
 		double middleCCTRatio;
 		bool feedbackFix;
+		int feedbackFixCount;
 		bool smoothComponent;
+		double_array maxMeasureError;
 		//==============================================================
 
 	      public:
@@ -328,6 +330,7 @@ namespace cms {
 		void measure(int startIndex, int endIndex);
 
 		void resetMeasure();
+		int getMeasureCount();
 
 		double_vector_ptr dxofRVector;
 		double_vector_ptr dyofGVector;
@@ -335,6 +338,7 @@ namespace cms {
 		double_vector_ptr dyofBase;
 		__property bool MeasureRdxGdy = { write = measureRdxGdy };
 		__property int_vector_ptr Constrained = { write = constrained };
+		double_array getMaxMeasureError();
 	    };
 	};
     };
