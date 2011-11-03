@@ -179,7 +179,11 @@ ProductVersion=1.0.0.0
 Comments=
 
 [Excluded Packages]
-c:\program files\borland\cbuilder6\Bin\dclite60.bpl=Borland Integrated Translation Environment
+d:\program files\borland\cbuilder6\Bin\dclbde60.bpl=Borland BDE DB Components
+d:\program files\borland\cbuilder6\Bin\dcltee60.bpl=TeeChart Components
+d:\program files\borland\cbuilder6\Bin\dcldss60.bpl=Borland Decision Cube Components
+d:\program files\borland\cbuilder6\Bin\dcltqr60.bpl=TeeChart for QuickReport Components
+d:\program files\borland\cbuilder6\Bin\DBWEBXPRT.BPL=Borland Web Wizard Package
 
 [HistoryLists\hlIncludePath]
 Count=30
@@ -288,5 +292,10 @@ LinkCGLIB=0
 AddServerUnit=1
 AddClientUnit=1
 PrecompiledHeaders=1
+
+[Language]
+ActiveLang=
+ProjectLang=
+RootDir=
   </IDEOPTIONS>
 </PROJECT>
