@@ -47,7 +47,7 @@ namespace cms {
 					patchList, Patch_vector_ptr filtered,
 					const Dep::Channel & channel);
 	};
-	static boolean hasOnlyOneValue(Patch_ptr patch);
+	static bool hasOnlyOneValue(Patch_ptr patch);
 	//Patch_ptr clone();
     };
 

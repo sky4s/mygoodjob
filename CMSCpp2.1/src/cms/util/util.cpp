@@ -136,7 +136,8 @@ namespace cms {
 	    curdir[0] = 'A' + getdisk();	/* replace X with current drive letter */
 	    getcurdir(0, curdir + 3);	/* fill rest of string with current directory */
 	    //return curdir;
-            return null;
+	    //string result(curdir);
+	    return curdir;
 
 	};
 	//==========================================================================
