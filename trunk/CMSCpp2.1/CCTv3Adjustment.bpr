@@ -25,7 +25,8 @@
       build\TTargetWhiteForm2.obj build\TAboutBox.obj build\TCCTLUTForm.obj 
       build\component.obj build\dg.obj build\deltae.obj build\common.obj 
       build\rgbgammaop.obj build\binder.obj build\listener.obj 
-      build\lcdtarget.obj build\minimisation.obj build\maxmatrixanalyzer.obj"/>
+      build\lcdtarget.obj build\minimisation.obj build\maxmatrixanalyzer.obj 
+      build\feedback.obj"/>
     <RESFILES value="CCTv3Adjustment.res"/>
     <IDLFILES value=""/>
     <IDLGENFILES value=""/>
@@ -47,7 +48,7 @@
       inetdbbde.bpi inetdbxpress.bpi inetdb.bpi nmfast.bpi webdsnap.bpi 
       bcbie.bpi websnap.bpi soaprtl.bpi dclocx.bpi dbexpress.bpi dbxcds.bpi 
       indy.bpi bcb2kaxserver.bpi bcbindent.bpi"/>
-    <PATHCPP value=".;lib\LPT_lib;lib\LPT_lib;lib\USB_i2c_lib;src\java;lib\CA200SRVRLib;lib\CA200SRVRLib;src\ca210api;src\cms\util;src\cms\util;src\cms\colorspace;src\cms\colorspace;src\cms\colorspace;src\cms\colorspace;src\cms\colorspace;src\cms;src\cms;src\cms\colorformat;src\cms\colorformat;src\cms\colorformat;src\cms\colorformat;src\math;src\math;src\math;src\math;src\math;src\cms\lcd\calibrate;src\cms\lcd\calibrate;src\cms\lcd\calibrate;src\cms\lcd\calibrate;src\cms\lcd\calibrate;src\cms\lcd\calibrate;src\cms\lcd\calibrate;src\cms\measure;src\cms\measure;src\cms\measure;src\cms\measure;src\gui;src\gui;src\gui;src\gui;src\gui;src\gui;src\gui;src\i2c;src\i2c;src\i2c;src\i2c\core;src\math;src\cms\lcd\calibrate;src\cms\lcd\calibrate;src\cms\colorformat;src\math;src\gui\cct;src\gui\cct;src\gui\cct;src\gui\cct;src\gui\cct;src\gui\cct;src\cms\lcd\calibrate;src\cms\lcd\calibrate;src\cms;src\cms\lcd\calibrate;src\cms\lcd\calibrate;src\gui\util;src\gui\event;src\cms\lcd;src\algo;src\cms\measure"/>
+    <PATHCPP value=".;lib\LPT_lib;lib\LPT_lib;lib\USB_i2c_lib;src\java;lib\CA200SRVRLib;lib\CA200SRVRLib;src\ca210api;src\cms\util;src\cms\util;src\cms\colorspace;src\cms\colorspace;src\cms\colorspace;src\cms\colorspace;src\cms\colorspace;src\cms;src\cms;src\cms\colorformat;src\cms\colorformat;src\cms\colorformat;src\cms\colorformat;src\math;src\math;src\math;src\math;src\math;src\cms\lcd\calibrate;src\cms\lcd\calibrate;src\cms\lcd\calibrate;src\cms\lcd\calibrate;src\cms\lcd\calibrate;src\cms\lcd\calibrate;src\cms\lcd\calibrate;src\cms\measure;src\cms\measure;src\cms\measure;src\cms\measure;src\gui;src\gui;src\gui;src\gui;src\gui;src\gui;src\gui;src\i2c;src\i2c;src\i2c;src\i2c\core;src\math;src\cms\lcd\calibrate;src\cms\lcd\calibrate;src\cms\colorformat;src\math;src\gui\cct;src\gui\cct;src\gui\cct;src\gui\cct;src\gui\cct;src\gui\cct;src\cms\lcd\calibrate;src\cms\lcd\calibrate;src\cms;src\cms\lcd\calibrate;src\cms\lcd\calibrate;src\gui\util;src\gui\event;src\cms\lcd;src\algo;src\cms\measure;src\cms\lcd\calibrate"/>
     <PATHPAS value=".;"/>
     <PATHRC value=".;"/>
     <PATHASM value=".;"/>
@@ -55,7 +56,7 @@
     <RELEASELIBPATH value="$(BCB)\lib\release"/>
     <LINKER value="ilink32"/>
     <USERDEFINES value="_DEBUG"/>
-    <SYSDEFINES value="NO_STRICT"/>
+    <SYSDEFINES value="NO_STRICT;_RTLDLL"/>
     <MAINSOURCE value="CCTv3Adjustment.cpp"/>
     <INCLUDEPATH value="src\algo;src\cms\lcd;src\gui\event;src\gui\util;&quot;C:\Program Files\Borland\CBuilder6\Projects&quot;;src\gui\cct;src\i2c\core;src\i2c;&quot;D:\Program Files\Borland\CBuilder6\Projects&quot;;src\math;src\gui;src\cms;src\cms\util;src\cms\measure;src\cms\lcd\calibrate;src\cms\colorspace;src\cms\colorformat;src\ca210api;lib\CA200SRVRLib;src\java;src\cms\i2c;src\cms\i2c\core;lib\USB_i2c_lib;lib\LPT_lib;src;$(BCB)\include;$(BCB)\include\vcl;lib"/>
     <LIBPATH value="src\algo;src\cms\lcd;src\gui\event;src\gui\util;src\gui\cct;&quot;C:\Program Files\Borland\CBuilder6\Projects&quot;;src\i2c\core;src\i2c;&quot;D:\Program Files\Borland\CBuilder6\Projects&quot;;src\math;src\gui;src\cms;src\cms\util;src\cms\measure;src\cms\lcd\calibrate;src\cms\colorspace;src\cms\colorformat;src\ca210api;lib\CA200SRVRLib;src\java;src\cms\i2c;src\cms\i2c\core;lib\USB_i2c_lib;lib\LPT_lib;src;$(BCB)\Projects\Lib;$(BCB)\lib\obj;$(BCB)\lib;lib"/>
@@ -76,13 +77,13 @@
     <PFLAGS value="-N2build -N0build -$Y+ -$W -$O- -$A8 -v -JPHNE -M"/>
     <RFLAGS value=""/>
     <AFLAGS value="/mx /w2 /zi"/>
-    <LFLAGS value="-llib -Ibuild -D&quot;&quot; -aa -Tpe -x -Gn -v"/>
+    <LFLAGS value="-llib -Ibuild -D&quot;&quot; -aa -Tpe -x -Gn -w -v"/>
     <OTHERFILES value=""/>
   </OPTIONS>
   <LINKER>
-    <ALLOBJ value="c0w32.obj sysinit.obj $(OBJFILES)"/>
+    <ALLOBJ value="c0w32.obj Memmgr.Lib sysinit.obj $(OBJFILES)"/>
     <ALLRES value="$(RESFILES)"/>
-    <ALLLIB value="$(LIBFILES) $(LIBRARIES) import32.lib cp32mt.lib"/>
+    <ALLLIB value="$(LIBFILES) $(LIBRARIES) import32.lib cp32mti.lib"/>
     <OTHERFILES value=""/>
   </LINKER>
   <FILELIST>
@@ -161,6 +162,7 @@
       <FILE FILENAME="src\cms\lcd\lcdtarget.cpp" FORMNAME="" UNITNAME="lcdtarget" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="src\algo\minimisation.cpp" FORMNAME="" UNITNAME="minimisation" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="src\cms\measure\maxmatrixanalyzer.cpp" FORMNAME="" UNITNAME="maxmatrixanalyzer" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="src\cms\lcd\calibrate\feedback.cpp" FORMNAME="" UNITNAME="feedback" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
   </FILELIST>
   <BUILDTOOLS>
   </BUILDTOOLS>
@@ -172,7 +174,7 @@ AutoIncBuild=1
 MajorVer=3
 MinorVer=2
 Release=2
-Build=418
+Build=442
 Debug=1
 PreRelease=0
 Special=0
@@ -184,7 +186,7 @@ CodePage=950
 [Version Info Keys]
 CompanyName=AUO
 FileDescription=CCT Adjustment v3
-FileVersion=3.2.2.418
+FileVersion=3.2.2.442
 InternalName=
 LegalCopyright=Algorithm by StocktonTsai &amp; skyforce, Implement by skyforce
 LegalTrademarks=
@@ -272,7 +274,7 @@ RemoteDebug=0
 
 [Compiler]
 ShowInfoMsgs=0
-LinkDebugVcl=0
+LinkDebugVcl=1
 LinkCGLIB=0
 
 [CORBA]

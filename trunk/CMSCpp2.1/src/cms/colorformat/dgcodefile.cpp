@@ -215,8 +215,9 @@ namespace cms {
 	    //==================================================================
 	    // 初始資料設定
 	    //==================================================================
-	    const int headerCount = 6;
-	    initSheet(Target, headerCount, "Gray Level", "X", "Y (nit)", "Z", "_x", "_y");
+	    const int headerCount = 8;
+	    initSheet(Target, headerCount, "Gray Level", "X", "Y (nit)", "Z", "_x", "_y", "dx",
+		      "dy");
 
 	    int size = targetXYZVector->size();
 	    //const int headerCount = getHeaderCount(Target);
@@ -241,6 +242,22 @@ namespace cms {
 		(*values)
 		    [5] = _toString(xyY->y);
 
+		if (x == 0) {
+		    StringVector::setContent(values, "0", 2, 6, 7);
+		} else {
+		    XYZ_ptr XYZ0 = (*targetXYZVector)[x - 1];
+		    xyY_ptr xyY0(new CIExyY(XYZ0));
+		    double dx = xyY->x - xyY0->x;
+		    double dy = xyY->y - xyY0->y;
+		    if (Math::abs(dx) < 0.00001 || Math::abs(dy) < 0.00001) {
+			StringVector::setContent(values, "0", 2, 6, 7);
+		    } else {
+			(*values)[6] = _toString(dx);
+			(*values)[7] = _toString(dy);
+		    }
+
+		}
+
 		this->insertData(Target, values, false);
 	    }
 	};
@@ -248,10 +265,8 @@ namespace cms {
 	    Component_vector_ptr vector(new Component_vector());
 	    db->setTableName(RawData);
 	    bptr < DBQuery > query = db->selectAll();
-
 	    RGB_vector_ptr gammaTable = RGBVector::reverse(getGammaTable());
 	    int index = 0;
-
 	    while (query->hasNext()) {
 		string_vector_ptr result = query->nextResult();
 		int gray = _toInt((*result)[0]);
@@ -267,7 +282,6 @@ namespace cms {
 		double r = _toDouble((*result)[7]);
 		double g = _toDouble((*result)[8]);
 		double b = _toDouble((*result)[9]);
-
 		RGB_ptr rgb;
 		if (gammaTable->size() != 0) {
 		    RGB_ptr gamma = (*gammaTable)[index++];
@@ -282,12 +296,10 @@ namespace cms {
 		XYZ_ptr XYZ(xyY->toXYZ());
 		RGB_ptr gamma(new RGBColor(r, g, b));
 		bptr < Component > component(new Component(rgb, intensity, XYZ, gamma));
-
 		vector->push_back(component);
 	    };
 	    return vector;
 	};
-
 	RGB_vector_ptr DGLutFile::getGammaTable() {
 	    if (db->isTableExist(GammaTable)) {
 		db->setTableName(GammaTable);
@@ -296,7 +308,6 @@ namespace cms {
 	    }
 
 	    RGB_vector_ptr vector(new RGB_vector());
-
 	    bptr < DBQuery > query = db->selectAll();
 	    while (query->hasNext()) {
 		string_vector_ptr result = query->nextResult();
@@ -304,7 +315,6 @@ namespace cms {
 		    double R = _toDouble((*result)[1]);
 		    double G = _toDouble((*result)[2]);
 		    double B = _toDouble((*result)[3]);
-
 		    RGB_ptr rgb(new RGBColor(R, G, B, maxValue));
 		    vector->push_back(rgb);
 		} else {
@@ -313,9 +323,8 @@ namespace cms {
 	    };
 	    return vector;
 	};
-	void
-	 DGLutFile::setProperty(const
-				DGLutProperty & property) {
+	void DGLutFile::setProperty(const
+				    DGLutProperty & property) {
 	    property.store(*this);
 	};
 	bptr < DGLutProperty > DGLutFile::getProperty() {
@@ -328,7 +337,6 @@ namespace cms {
 	    }
 	};
 	//======================================================================
-
 	//======================================================================
 	// DGLutProperty
 	//======================================================================
@@ -336,10 +344,8 @@ namespace cms {
 	const string DGLutProperty::Off = "Off";
 	const string DGLutProperty::Native = "native";
 	const string DGLutProperty::Target = "target";
-	void
-	 DGLutProperty::store(DGLutFile & dgfile) const {
+	void DGLutProperty::store(DGLutFile & dgfile) const {
 	    dgfile.addProperty("cct product version", "3.2");
-
 	    //==================================================================
 	    // MeasureCondition
 	    //==================================================================
@@ -363,7 +369,6 @@ namespace cms {
 		//case MeasureCondition::Plain:break;
 	    };
 	    //==================================================================
-
 	    //==================================================================
 	    //low level correct
 	    //==================================================================
@@ -385,7 +390,6 @@ namespace cms {
 		dgfile.addProperty(lowLevelCorrect, "DefinedDim");
 		dgfile.addProperty("defined dim under", c->under);
 		dgfile.addProperty("defined dim strength", c->dimStrength);
-
 		if (true == c->dimFix) {
 		    dgfile.addProperty("defined dim - fix", On);
 		}
@@ -563,17 +567,15 @@ namespace cms {
 	//=====================================================================
 	void DGLutProperty::fetchVersionInfo() {
 	    const AnsiString InfoStr[10] = {
-		"CompanyName", "FileDescription", "FileVersion", "InternalName", "LegalCopyright",
-		"LegalTradeMarks", "OriginalFileName", "ProductName", "ProductVersion",
-		"Comments"
+		"CompanyName", "FileDescription", "FileVersion", "InternalName",
+		"LegalCopyright", "LegalTradeMarks", "OriginalFileName", "ProductName",
+		"ProductVersion", "Comments"
 	    };
 	    char *ExeName = Application->ExeName.c_str();
 	    DWORD n = GetFileVersionInfoSize(ExeName, null);
-
 	    if (n > 0) {
 		char *pBuf = (char *) malloc(n);
 		AnsiString temp = "VersionInfoSize = ";
-
 		GetFileVersionInfo(ExeName, 0, n, pBuf);
 		for (int i = 0; i < 10; i++) {
 		    char *pValue;
@@ -644,21 +646,18 @@ namespace cms {
 	xyY_ptr DGLutProperty::getNativeReferenceColor(const Dep::Channel & ch) {
 	    return getReferenceColor(Native, ch);
 	};
-
 	RGB_ptr DGLutProperty::getReferenceRGB(const string & prestring) {
 	    string_ptr value = getProperty(prestring + " reference white RGB");
 	    double_array rgbValues = ColorSpace::getValuesFromString(value);
 	    RGB_ptr rgb(new RGBColor(rgbValues[0], rgbValues[1], rgbValues[2]));
 	    return rgb;
 	};
-
 	RGB_ptr DGLutProperty::getTargetReferenceRGB() {
 	    return getReferenceRGB(Target);
 	};
 	RGB_ptr DGLutProperty::getNativeReferenceRGB() {
 	    return getReferenceRGB(Native);
 	};
-
 	bptr < BitDepthProcessor > DGLutProperty::getBitDepthProcessor() {
 	    const MaxValue & in = MaxValue::valueOf(getProperty("in"));
 	    const MaxValue & lut = MaxValue::valueOf(getProperty("lut"));

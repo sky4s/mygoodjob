@@ -299,6 +299,293 @@ namespace cms {
 		};
 		return maxError;
 	    };
+
+	    //=================================================================
+	    // FeedbackFixer
+	    //=================================================================
+
+	  FeedbackFixer::FeedbackFixer(int dimFixEnd, double dimFixThreshold, bptr < cms::measure::IntensityAnalyzerIF > analyzer, bptr < BitDepthProcessor > bitDepth):dimFixEnd(dimFixEnd),
+		dimFixThreshold(dimFixThreshold), analyzer(analyzer), bitDepth(bitDepth),
+		averageDistance(-1) {
+
+	    };
+	    /*
+	       從ch來挑選delta資料
+	     */
+	    double_vector_ptr FeedbackFixer::selectDelta(double_vector_ptr dxofBase,
+							 double_vector_ptr dyofBase, Channel & ch) {
+		if (ch == Channel::R) {
+		    return dxofBase;
+		} else if (ch == Channel::G) {
+		    return dyofBase;
+		}
+		return double_vector_ptr((double_vector *) null);
+	    }
+	    void FeedbackFixer::fixReverseByFeedback(RGB_vector_ptr dglut) {
+
+		bptr < MeasureEstimator >
+		    chromaticityEstimator(new MeasureEstimator(dglut, analyzer, bitDepth));
+		chromaticityEstimator->MeasureRdxGdy = false;
+		//量好dx dy
+		chromaticityEstimator->measure(0, dimFixEnd);
+		double_vector_ptr dxofBase = chromaticityEstimator->dxofBase;
+		double_vector_ptr dyofBase = chromaticityEstimator->dyofBase;
+		STORE_DOUBLE_VECTOR("o_dxofBase.xls", dxofBase);
+		STORE_DOUBLE_VECTOR("o_dyofBase.xls", dyofBase);
+
+
+		int checkEnd = dimFixEnd - 1;
+		const int MaxTestCount = 4;
+		//取出mustZone的用意是, 界定出哪些地方有 reverse, 往後只要去量有reverse的地方即可, 不用全部都量
+		int_vector_ptr mustZone =
+		    getMustMeasureZoneIndexVector(dxofBase, dyofBase, 1, checkEnd);
+
+		int_vector_ptr reverseIndexes, looseIndexes;
+
+		while (getReverseIndexVector(dxofBase, 1, checkEnd)->size() != 0 ||
+		       getReverseIndexVector(dyofBase, 1, checkEnd)->size() != 0
+		       || (-1 != averageDistance ?
+			   (getLooseIndexVector(dxofBase, 1, checkEnd)->size() != 0 ||
+			    getLooseIndexVector(dyofBase, 1, checkEnd)->size() != 0) : false)) {
+		    //修正至沒有反轉為止
+
+
+		    //新的量測方式, 希望可以減少時間
+		    for (int x = 1; x <= 2; x++) {
+			//1 for R, 2 for G
+			Channel ch = Channel::getChannel(x);
+			//從ch來決定要處理dx or dy
+			double_vector_ptr deltaOfBase = selectDelta(dxofBase, dyofBase, ch);
+			reverseIndexes = getReverseIndexVector(deltaOfBase, 1, checkEnd);
+			double_vector_ptr deltaOfBase0;
+
+			foreach(int index, *reverseIndexes) {
+
+			    int test = 0;
+			    do {
+				//進入內層代表遇到defect
+				int y = index;
+				double deltaU1 = (*deltaOfBase)[y + 1];
+				double deltaD1 = (*deltaOfBase)[y - 1];
+
+				RGB_ptr rgb;
+				double value = -1;
+				if (deltaU1 > deltaD1) {
+				    //若上方的delta比較大, 代表比較大的調整空間, 所以往上調
+				    rgb = (*dglut)[y];
+				    value = rgb->getValue(ch) + 1;
+				} else {
+				    //反之, 就是往下調
+				    rgb = (*dglut)[y - 1];
+				    value = rgb->getValue(ch) - 1;
+				}
+				rgb->setValue(ch, value);
+
+
+				if (ch == Channel::R) {
+				    STORE_RGBVECTOR("3.4_r_reverse_fix_dgcode.xls", dglut);
+				} else if (ch == Channel::G) {
+				    STORE_RGBVECTOR("3.5_g_reverse_fix_dgcode.xls", dglut);
+				}
+				//調整完之後只量測有被調整的那區域(也就是3個GL)
+				//若該區域都ok, 換下一個反轉
+				int localStart = y - 1;
+				int localEnd = y + 1;
+
+				chromaticityEstimator->measure(localStart, localEnd);
+				double_vector_ptr dxofBase0 = chromaticityEstimator->dxofBase;
+				double_vector_ptr dyofBase0 = chromaticityEstimator->dyofBase;
+				deltaOfBase0 = selectDelta(dxofBase0, dyofBase0, ch);
+
+				test++;
+				if (null != feedbackListener) {
+				    int feedbackFixCount = chromaticityEstimator->getMeasureCount();
+				    int reverseCount = reverseIndexes->size();
+				    feedbackListener->doFeedback(reverseCount, feedbackFixCount);
+				}
+			    } while (checkReverse(deltaOfBase0, 1, 2) != -1 && test < MaxTestCount);
+			    //因為量測結果會多墊一個0, 所以checkReverse從1開始做檢查
+
+			}	//foreach loop
+			//==========================================================================
+			if (-1 != averageDistance) {
+			    looseIndexes = getLooseIndexVector(deltaOfBase, 1, checkEnd);
+			    double_vector_ptr deltaOfBase0;
+
+			    foreach(int index, *looseIndexes) {
+
+				int test = 0;
+				do {
+				    //進入內層代表遇到defect
+				    int y = index;
+				    double deltaU1 = (*deltaOfBase)[y + 1];
+				    double deltaD1 = (*deltaOfBase)[y - 1];
+
+				    RGB_ptr rgb;
+				    double value = -1;
+				    //TODO
+				    if (deltaU1 > deltaD1) {
+					//若上方的delta比較大, 代表比較大的調整空間, 所以往上調
+					rgb = (*dglut)[y];
+					value = rgb->getValue(ch) + 1;
+				    } else {
+					//反之, 就是往下調
+					rgb = (*dglut)[y - 1];
+					value = rgb->getValue(ch) - 1;
+				    }
+				    rgb->setValue(ch, value);
+
+
+				    if (ch == Channel::R) {
+					STORE_RGBVECTOR("3.6_r_loose_fix_dgcode.xls", dglut);
+				    } else if (ch == Channel::G) {
+					STORE_RGBVECTOR("3.7_g_loose_fix_dgcode.xls", dglut);
+				    }
+				    //調整完之後只量測有被調整的那區域(也就是3個GL)
+				    //若該區域都ok, 換下一個反轉
+				    int localStart = y - 1;
+				    int localEnd = y + 1;
+
+				    chromaticityEstimator->measure(localStart, localEnd);
+				    double_vector_ptr dxofBase0 = chromaticityEstimator->dxofBase;
+				    double_vector_ptr dyofBase0 = chromaticityEstimator->dyofBase;
+				    deltaOfBase0 = selectDelta(dxofBase0, dyofBase0, ch);
+
+				    test++;
+				    if (null != feedbackListener) {
+					int feedbackFixCount =
+					    chromaticityEstimator->getMeasureCount();
+					int looseCount = looseIndexes->size();
+					feedbackListener->doFeedback(looseCount, feedbackFixCount);
+				    }
+				} while (checkReverse(deltaOfBase0, 1, 2) != -1
+					 && test < MaxTestCount);
+				//因為量測結果會多墊一個0, 所以checkReverse從1開始做檢查
+
+			    }	//foreach loop
+			}	// end if loop
+
+
+		    }		//for ch loop
+		    //只有在量全部的時候才會下constrained
+		    chromaticityEstimator->Constrained = mustZone;
+		    chromaticityEstimator->measure(0, dimFixEnd);
+		    chromaticityEstimator->Constrained = nil_int_vector_ptr;
+		    dxofBase = chromaticityEstimator->dxofBase;
+		    dyofBase = chromaticityEstimator->dyofBase;
+		    STORE_DOUBLE_VECTOR("dxofBase.xls", dxofBase);
+		    STORE_DOUBLE_VECTOR("dyofBase.xls", dyofBase);
+		}		//out while
+		STORE_RGBVECTOR("3.8_reverse_fix_dgcode.xls", dglut);
+		this->feedbackFixCount = chromaticityEstimator->getMeasureCount();
+		this->maxMeasureError = chromaticityEstimator->getMaxMeasureError();
+	    };
+
+
+	    //const double LCDCalibrator::ReverseDefine = 0.0001;
+	    int FeedbackFixer::checkReverse(double_vector_ptr deltaVector) {
+		int size = deltaVector->size();
+		for (int x = 1; x < size - 1; x++) {
+		    double delta = (*deltaVector)[x];
+		    if (delta < dimFixThreshold) {
+			return x;
+		    }
+		}
+		return -1;
+	    }
+	    int FeedbackFixer::checkLoose(double_vector_ptr deltaVector) {
+		int size = deltaVector->size();
+		for (int x = 1; x < size - 1; x++) {
+		    double delta = (*deltaVector)[x];
+		    if (delta > (averageDistance + dimFixThreshold)) {
+			return x;
+		    }
+		}
+		return -1;
+	    }
+
+	    int_vector_ptr FeedbackFixer::getReverseIndexVector(double_vector_ptr deltaVector,
+								int start, int end) {
+		int_vector_ptr result(new int_vector());
+		int preReverseIndex = -1;
+		for (int x = start; x < end; x++) {
+		    double delta = (*deltaVector)[x];
+		    if (delta < dimFixThreshold
+			&& ((preReverseIndex != -1) ? (x - preReverseIndex) >= 3 : true)) {
+			preReverseIndex = x;
+			result->push_back(x);
+		    }
+		}
+
+		return result;
+	    }
+
+	    int_vector_ptr FeedbackFixer::getLooseIndexVector(double_vector_ptr deltaVector,
+							      int start, int end) {
+
+		int_vector_ptr result(new int_vector());
+		int preLooseIndex = -1;
+		for (int x = start; x < end; x++) {
+		    double delta = (*deltaVector)[x];
+		    if (delta > (dimFixThreshold + averageDistance)
+			&& ((preLooseIndex != -1) ? (x - preLooseIndex) >= 3 : true)) {
+			preLooseIndex = x;
+			result->push_back(x);
+		    }
+		}
+
+		return result;
+	    }
+
+	    int_vector_ptr FeedbackFixer::getMustMeasureZoneIndexVector(double_vector_ptr dxofBase,
+									double_vector_ptr dyofBase,
+									int start, int end) {
+		int_vector_ptr result(new int_vector());
+		for (int x = start; x < end; x++) {
+		    double dx = (*dxofBase)[x];
+		    double dy = (*dyofBase)[x];
+		    if (dx < dimFixThreshold || dy < dimFixThreshold
+			|| (-1 != averageDistance ?
+			    dx > averageDistance + dimFixThreshold ||
+			    dy > averageDistance + dimFixThreshold : false)) {
+			pushBackNumber(result, x - 2);
+			pushBackNumber(result, x - 1);
+			pushBackNumber(result, x);
+			pushBackNumber(result, x + 1);
+			pushBackNumber(result, x + 2);
+		    }
+		}
+
+		return result;
+	    }
+
+	    void FeedbackFixer::pushBackNumber(int_vector_ptr result, int number) {
+		bool findIt = find(result->begin(), result->end(), number) != result->end();
+		if (!findIt) {
+		    result->push_back(number);
+		}
+	    };
+
+	    int FeedbackFixer::checkReverse(double_vector_ptr deltaVector, int start, int end) {
+		for (int x = start; x < end; x++) {
+		    double delta = (*deltaVector)[x];
+		    if (delta < dimFixThreshold) {
+			return x;
+		    }
+		}
+		return -1;
+	    }
+	    int FeedbackFixer::checkLoose(double_vector_ptr deltaVector, int start, int end) {
+		for (int x = start; x < end; x++) {
+		    double delta = (*deltaVector)[x];
+		    if (delta > (dimFixThreshold + averageDistance)) {
+			return x;
+		    }
+		}
+		return -1;
+	    }
+
+	    //=================================================================
 	};
     };
 };

@@ -8,12 +8,10 @@
 //其他庫頭文件
 
 //本項目內頭文件
-
+#include "component.h"
 namespace cms {
     namespace lcd {
 	namespace calibrate {
-
-
 	    class ChromaticityAdjustEstimatorIF {
 	      public:
 		virtual double_array getdxdy(const Dep::Channel & ch, int grayLevel) = 0;
@@ -89,6 +87,48 @@ namespace cms {
 	    class FeedbackListener {
 	      public:
 		virtual void doFeedback(int defectCount, int feedbackCount) = 0;
+	    };
+	    class FeedbackFixer {
+	      public:
+		FeedbackFixer(int dimFixEnd, double dimFixThreshold,
+			      bptr < cms::measure::IntensityAnalyzerIF > analyzer,
+			      bptr < BitDepthProcessor > bitDepth);
+		void fixReverseByFeedback(RGB_vector_ptr dglut);
+
+		__property int FeedbackFixCount = { read = feedbackFixCount };
+		__property bptr < FeedbackListener > Listener = { write = feedbackListener
+		};
+		__property double AverageDistance = { write = averageDistance };
+		double_array getMaxMeasureError() {
+		    return maxMeasureError;
+		};
+
+	      private:
+		int checkReverse(double_vector_ptr deltaVector);
+		int checkLoose(double_vector_ptr deltaVector);
+		int checkReverse(double_vector_ptr deltaVector, int start, int end);
+		int checkLoose(double_vector_ptr deltaVector, int start, int end);
+		int_vector_ptr getReverseIndexVector(double_vector_ptr deltaVector,
+						     int start, int end);
+
+		int_vector_ptr getMustMeasureZoneIndexVector(double_vector_ptr dxofBase,
+							     double_vector_ptr dyofBase, int start,
+							     int end);
+		int_vector_ptr getLooseIndexVector(double_vector_ptr deltaVector,
+						   int start, int end);
+		void pushBackNumber(int_vector_ptr result, int number);
+		double_vector_ptr selectDelta(double_vector_ptr dxofBase,
+					      double_vector_ptr dyofBase, Dep::Channel & ch);
+
+		int feedbackFixCount;
+		int dimFixEnd;
+		double dimFixThreshold;
+		double averageDistance;
+		double_array maxMeasureError;
+		 bptr < cms::measure::IntensityAnalyzerIF > analyzer;
+		 bptr < BitDepthProcessor > bitDepth;
+		 bptr < FeedbackListener > feedbackListener;
+
 	    };
 
 	};
