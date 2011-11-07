@@ -75,6 +75,7 @@ namespace cms {
 		class CIEuv1960NearestAlgorithm;
 		class CIEuv1960NearestAlgorithm_;
 	    };
+	    class FeedbackListener;
 	};
     };
     namespace measure {
