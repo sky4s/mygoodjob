@@ -261,7 +261,7 @@ namespace cms {
 		    NativeWhiteAnalyzer = { read = nativeWhiteAnalyzer, write = nativeWhiteAnalyzer
 		};
 		__property bptr < i2c::TCONControl > TCONControl = { write = tconctrl };
-		void addFeedbackListener(bptr < FeedbackListener > listener);
+		void setFeedbackListener(bptr < FeedbackListener > listener);
 		//==============================================================
 
 
