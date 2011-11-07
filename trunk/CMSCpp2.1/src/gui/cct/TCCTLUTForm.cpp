@@ -259,6 +259,7 @@ void __fastcall TCCTLUTForm::Button_MeaRunClick(TObject * Sender)
     __finally {
 	MainForm->stopProgress(ProgressBar1);
 	run = false;
+	Edit_FeedbackMsg->Visible = false;
 	//this->Button_MeaRun->Enabled = true;
     }
 }
@@ -267,58 +268,6 @@ void __fastcall TCCTLUTForm::Button_MeaRunClick(TObject * Sender)
 
 
 
-void __fastcall TCCTLUTForm::FormCreate(TObject * Sender)
-{
-    using namespace cms::lcd::calibrate;
-
-    if (true == MainForm->newFunction) {
-	//=========================================================================
-	this->Button_Debug->Visible = true;
-	this->Button_Reset->Visible = true;
-	//=========================================================================
-
-	//this->GroupBox_KeepMaxLuminance->Visible = true;
-	this->Button_Run->Visible = true;
-
-	//=========================================================================
-	// dim correct
-	//=========================================================================
-	RadioButton_NoneLowLevelCorrect->Visible = true;
-	/*RadioButton_DefinedDim->Visible = true;
-	   CheckBox_AverageDimDG->Visible = true;
-	   Label14->Visible = true;
-	   Label17->Visible = true;
-	   Edit_DefinedDimUnder->Visible = true;
-	   Edit_DimGamma->Visible = true; */
-	//=========================================================================
-
-	//=========================================================================
-	// smooth bmax
-	//=========================================================================
-	/*Label18->Visible = true;
-	   Label19->Visible = true;
-	   CheckBox_BMax2->Visible = true;
-	   Edit_BMax2Begin->Visible = true;
-	   Edit_BMax2Gamma->Visible = true; */
-	//=========================================================================
-
-	//=========================================================================
-	// multi gen
-	//=========================================================================
-	CheckBox_MultiGen->Visible = true;
-	Edit_MultiGenTimes->Visible = true;
-	//=========================================================================
-	//CheckBox_NewMethod->Visible = true;
-	CheckBox_MemoryMeasure->Visible = true;
-	//CheckBox_NewMethod->Visible = true;
-
-	RadioGroup_NormalCase->Visible = true;
-    }
-
-    this->CheckBox_NewMethod->Checked = true;
-}
-
-//---------------------------------------------------------------------------
 
 
 
@@ -346,6 +295,35 @@ void __fastcall TCCTLUTForm::FormShow(TObject * Sender)
     using namespace cms::lcd::calibrate;
     using namespace i2c;
     using namespace cms::measure;
+    using namespace cms::lcd::calibrate;
+
+    if (true == MainForm->newFunction) {
+	//=========================================================================
+	this->Button_Debug->Visible = true;
+	this->Button_Reset->Visible = true;
+	//=========================================================================
+
+	this->Button_Run->Visible = true;
+
+	//=========================================================================
+	// dim correct
+	//=========================================================================
+	RadioButton_NoneLowLevelCorrect->Visible = true;
+	//=========================================================================
+
+	//=========================================================================
+	// multi gen
+	//=========================================================================
+	CheckBox_MultiGen->Visible = true;
+	Edit_MultiGenTimes->Visible = true;
+	//=========================================================================
+	CheckBox_MemoryMeasure->Visible = true;
+
+	RadioGroup_NormalCase->Visible = true;
+    }
+
+    this->CheckBox_NewMethod->Checked = true;
+
 
     const MaxValue & input = bitDepth->getInputMaxValue();
     bool avoidNoise = (input == MaxValue::Int6Bit || input == MaxValue::Int8Bit);
@@ -357,11 +335,16 @@ void __fastcall TCCTLUTForm::FormShow(TObject * Sender)
     //=========================================================================
     // tcon relative
     //=========================================================================
-    bptr < TCONControl > tconctrl = MainForm->getTCONControl();
+    //bptr < TCONControl > tconctrl = MainForm->getTCONControl();
 
-    bool visible = null != tconctrl || false == MainForm->linkCA210;
+    bool useTConCtrl = true == tconInput;	// || false == MainForm->linkCA210;
     //avoid hook再考慮一下開啟方式
-    CheckBox_AvoidHookNB->Visible = visible;
+    CheckBox_AvoidHookNB->Visible = useTConCtrl;
+    CheckBox_Feedback->Visible = useTConCtrl;
+    if (true == CheckBox_Feedback->Checked) {
+	CheckBox_Feedback->Checked = useTConCtrl;
+    }
+    Edit_DimFixThreshold->Visible = useTConCtrl;
     //CheckBox_ManualAccurate->Visible = visible;
     /*Label18->Visible = visible;
        Label19->Visible = visible;
@@ -694,14 +677,22 @@ void __fastcall TCCTLUTForm::RadioGroup_NormalCaseClick(TObject * Sender)
 	CheckBox_BMax->Checked = true;
 	break;
     case 1:
-        RadioButton_2Gamma->Checked=true;
-        RadioButton_DefinedDim->Checked=true;
-        CheckBox_Feedback->Checked=true;
-        RadioButton_MaxYNative->Checked=true;
+	RadioButton_2Gamma->Checked = true;
+	RadioButton_DefinedDim->Checked = true;
+	CheckBox_Feedback->Checked = true;
+	RadioButton_MaxYNative->Checked = true;
 	break;
 
     }
 }
+
+void TCCTLUTForm::doFeedback(int defectCount, int feedbackCount)
+{
+    Edit_FeedbackMsg->Visible = true;
+    String msg = "Defect/Total FeedBack: ";
+    msg = msg + defectCount + "/" + feedbackCount;
+    Edit_FeedbackMsg->Text = msg;
+};
 
 //---------------------------------------------------------------------------
 

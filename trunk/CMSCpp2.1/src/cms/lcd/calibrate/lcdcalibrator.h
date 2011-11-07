@@ -176,6 +176,7 @@ namespace cms {
 
 		 bptr < MeasureCondition > measureCondition;
 		 bptr < BitDepthProcessor > bitDepth;
+		 bptr < FeedbackListener > feedbackListener;
 		//==============================================================
 
 		//==============================================================
@@ -255,91 +256,19 @@ namespace cms {
 		    storeDGLutFile(const std::string & filename, RGB_vector_ptr dglut);
 		void storeDGLutFile(RGB_vector_ptr dglut,
 				    bptr < cms::colorformat::DGLutFile > dglutFile);
-		//bptr < cms::measure::MaxMatrixIntensityAnalyzer > getNativeWhiteAnalyzer();
-		/*void setNativeWhiteAnalyzer(bptr <
-		   cms::measure::MaxMatrixIntensityAnalyzer > analyzer); */
+
 		__property bptr < cms::measure::MaxMatrixIntensityAnalyzer >
 		    NativeWhiteAnalyzer = { read = nativeWhiteAnalyzer, write = nativeWhiteAnalyzer
 		};
-		//void setTCONControl(bptr < i2c::TCONControl > tconctrl);
 		__property bptr < i2c::TCONControl > TCONControl = { write = tconctrl };
+		void addFeedbackListener(bptr < FeedbackListener > listener);
 		//==============================================================
 
 
 
 	    };
 
-	    class ChromaticityAdjustEstimatorIF {
-	      public:
-		virtual double_array getdxdy(const Dep::Channel & ch, int grayLevel) = 0;
-		virtual double_array getRdxGdy(int componentIndex) = 0;
-	    };
 
-	    /*
-	       色度調整幅度的預測, 透過intensity
-	     */
-	    class IntensityEstimator:public ChromaticityAdjustEstimatorIF {
-	      private:
-		Component_vector_ptr componentVector;
-		bptr < DGLutGenerator > dgLutGenerator;
-		bptr < cms::measure::IntensityAnalyzerIF > analyzer;
-		XYZ_ptr rXYZ, gXYZ, bXYZ;
-		xyY_ptr getxyY(RGB_ptr intensity);
-		 bptr < BitDepthProcessor > bitDepth;
-	      public:
-		 IntensityEstimator(Component_vector_ptr componentVector,
-				    bptr < cms::measure::IntensityAnalyzerIF > analyzer,
-				    bptr < BitDepthProcessor > bitDepth);
-		virtual double_array getdxdy(const Dep::Channel & ch, int grayLevel);
-		virtual double_array getRdxGdy(int componentIndex);
-	    };
-
-	    /*
-	       色度調整幅度的預測, 透過量測
-	     */
-	    class MeasureEstimator:public ChromaticityAdjustEstimatorIF {
-	      private:
-		bptr < cms::measure::MeterMeasurement > mm;
-		Component_vector_ptr componentVector;
-		Component_vector_ptr storeComponentVector;
-		RGB_vector_ptr dglut;
-		 bptr < BitDepthProcessor > bitDepth;
-		void init();
-		int storeIndex;
-		double_array getdxdy(XYZ_ptr XYZ0, XYZ_ptr XYZ1);
-		const int size;
-		RGB_ptr getMeasureBaseRGB(int index);
-		bool useComponentVector;
-		XYZ_ptr baseXYZ;
-		XYZ_ptr measure(RGB_ptr rgb);
-		bool measureRdxGdy;
-		int_vector_ptr constrained;
-	      public:
-		 MeasureEstimator(Component_vector_ptr componentVector,
-				  bptr < cms::measure::MeterMeasurement > mm,
-				  bptr < BitDepthProcessor > bitDepth);
-		 MeasureEstimator(Component_vector_ptr componentVector,
-				  bptr < cms::measure::IntensityAnalyzerIF > analyzer,
-				  bptr < BitDepthProcessor > bitDepth);
-		 MeasureEstimator(RGB_vector_ptr dglut,
-				  bptr < cms::measure::IntensityAnalyzerIF > analyzer,
-				  bptr < BitDepthProcessor > bitDepth);
-		virtual double_array getdxdy(const Dep::Channel & ch, int componentIndex);
-		virtual double_array getRdxGdy(int componentIndex);
-		~MeasureEstimator();
-		void measure(int startIndex, int endIndex);
-
-		void resetMeasure();
-		int getMeasureCount();
-
-		double_vector_ptr dxofRVector;
-		double_vector_ptr dyofGVector;
-		double_vector_ptr dxofBase;
-		double_vector_ptr dyofBase;
-		__property bool MeasureRdxGdy = { write = measureRdxGdy };
-		__property int_vector_ptr Constrained = { write = constrained };
-		double_array getMaxMeasureError();
-	    };
 	};
     };
 };

@@ -13,7 +13,7 @@
 #include <ComCtrls.hpp>
 #include <cms/lcd/calibrate/lcdcalibrator.h>
 //---------------------------------------------------------------------------
-class TCCTLUTForm:public TForm {
+class TCCTLUTForm:public TForm, cms::lcd::calibrate::FeedbackListener {
     __published:		// IDE-managed Components
     TGroupBox * GroupBox1;
     TLabel *Label1;
@@ -112,9 +112,9 @@ class TCCTLUTForm:public TForm {
     TLabel *Label_BrightZone;
     TEdit *Edit_DimGammaEnd;
     TRadioGroup *RadioGroup_NormalCase;
+    TEdit *Edit_FeedbackMsg;
     void __fastcall RadioButton_P1P2Click(TObject * Sender);
     void __fastcall Button_MeaRunClick(TObject * Sender);
-    void __fastcall FormCreate(TObject * Sender);
     void __fastcall Button_DebugClick(TObject * Sender);
     void __fastcall FormShow(TObject * Sender);
     void __fastcall RadioButton_GammaCurveClick(TObject * Sender);
@@ -142,14 +142,15 @@ class TCCTLUTForm:public TForm {
   private:			// User declarations
     void setMeasureInfo();
     int serialid;
-     bptr < cms::lcd::calibrate::BitDepthProcessor > bitDepth;
+    bptr < cms::lcd::calibrate::BitDepthProcessor > bitDepth;
     RGBGamma_ptr rgbGamma;
-     bptr < cms::lcd::calibrate::MeasureCondition > getMeasureCondition();
+    bptr < cms::lcd::calibrate::MeasureCondition > getMeasureCondition();
     bool run;
-     bptr < cms::measure::MaxMatrixIntensityAnalyzer > nativeWhiteAnalyzer;
+    bptr < cms::measure::MaxMatrixIntensityAnalyzer > nativeWhiteAnalyzer;
   public:			// User declarations
-     __fastcall TCCTLUTForm(TComponent * Owner);
+    __fastcall TCCTLUTForm(TComponent * Owner);
     void setBitDepthProcessor(bptr < cms::lcd::calibrate::BitDepthProcessor > bitDepth);
+    void doFeedback(int defectCount, int feedbackCount);
 };
 //---------------------------------------------------------------------------
 extern PACKAGE TCCTLUTForm *CCTLUTForm;

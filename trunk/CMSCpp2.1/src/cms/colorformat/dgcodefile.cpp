@@ -388,13 +388,15 @@ namespace cms {
 
 		if (true == c->dimFix) {
 		    dgfile.addProperty("defined dim - fix", On);
-		    dgfile.addProperty("defined dim - fix threshold", c->dimFixThreshold);
 		}
 		if (true == c->feedbackFix) {
 		    dgfile.addProperty("defined dim - feedback fix", On);
 		    dgfile.addProperty("defined dim - feedback fix count", c->feedbackFixCount);
 		    dgfile.addProperty("max measure dx", c->maxMeasureError[0]);
 		    dgfile.addProperty("max measure dy", c->maxMeasureError[1]);
+		}
+		if (true == c->dimFix || true == c->feedbackFix) {
+		    dgfile.addProperty("defined dim - fix threshold", c->dimFixThreshold);
 		}
 
 		XYZ_ptr blackXYZ = (*c->componentVector)[c->componentVector->size() - 1]->XYZ;

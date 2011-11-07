@@ -9,6 +9,7 @@
 //本項目內頭文件
 #include "rgbop.h"
 #include "lcdcalibrator.h"
+#include "feedback.h"
 
 namespace cms {
     namespace lcd {
