@@ -45,7 +45,7 @@ namespace cms {
 	RGB_vector_ptr RGBVector::getLinearRGBVector(bptr < cms::lcd::calibrate::BitDepthProcessor >
 						     bitDepth, double rgain, double ggain,
 						     double bgain) {
-	    int n = bitDepth->getEffectiveLevel();
+	    int n = bitDepth->getEffectiveInputLevel();
 	    double maxdc = bitDepth->getInputMaxDigitalCount();	//得到8bit下最大值
 	    const MaxValue & maxValue = bitDepth->getLutMaxValue();	//lut的maxvalue
 	    double factor = maxValue.max / 255.;

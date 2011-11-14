@@ -116,7 +116,7 @@ namespace cms {
 		//==============================================================
 		//рゼノ跋办场矪瞶Θ程
 		int n = bitDepth->getLevel() - 1;
-		int effectiven = (bitDepth->getEffectiveLevel() - 1);
+		int effectiven = (bitDepth->getEffectiveInputLevel() - 1);
 		for (int x = n; x >= effectiven; x--) {
 		    RGB_ptr rgb = (*result)[x];
 		    rgb->B = bitDepth->getOutputMaxDigitalCount();
@@ -154,7 +154,7 @@ namespace cms {
 		RGB_vector_ptr result = RGBVector::deepClone(source);
 		//==============================================================
 		//рゼノ跋办场矪瞶Θ程
-		int effectiven = bitDepth->getEffectiveLevel();
+		int effectiven = bitDepth->getEffectiveInputLevel();
 		for (int x = effectiven; x != bitDepth->getLevel(); x++) {
 		    RGB_ptr rgb = (*result)[x];
 		    rgb->B = bitDepth->getOutputMaxDigitalCount();
@@ -210,7 +210,7 @@ namespace cms {
 			(*result)[x]->G = (*result)[x - 1]->G + 1;
 		    };
 		} else {
-		    int effectiveLevel = bitDepth->getEffectiveLevel();
+		    int effectiveLevel = bitDepth->getEffectiveInputLevel();
 		    int level = bitDepth->getLevel();
 		    for (int x = 0; x != effectiveLevel; x++) {
 			(*result)[x]->G = x;
@@ -296,9 +296,9 @@ namespace cms {
 		//int size = source->size();
 		RGB_vector_ptr result = RGBVector::deepClone(source);
 		double max = bitDepth->getOutputMaxDigitalCount();
-		int effectiven = bitDepth->getEffectiveLevel();
+		int level = bitDepth->getLevelInTCon();
 
-		for (int x = effectiven; x != bitDepth->getLevel(); x++) {
+		for (int x = level - 1; x != bitDepth->getLevel(); x++) {
 		    RGB_ptr rgb = (*result)[x];
 		    rgb->setValues(max, max, max);
 		}
@@ -317,7 +317,7 @@ namespace cms {
 		RGB_ptr lastRGB = (*result)[size - 1];
 		RGB_ptr beginRGB = (*result)[over];
 		double max = bitDepth->getOutputMaxDigitalCount();
-		int effectiven = bitDepth->getEffectiveLevel();
+		int effectiven = bitDepth->getEffectiveInputLevel();
 		//рrgb常崩程
 		double rGain = max / lastRGB->R;
 		double gGain = max / lastRGB->G;
@@ -406,7 +406,7 @@ namespace cms {
 		}
 		return defectTypeArray;
 	    };
- 
+
 	    double2D_ptr DimDGLutFixOp::getDeltaxyValues(Component_vector_ptr componentVector) {
 		using namespace Indep;
 		int size = componentVector->size();
@@ -596,11 +596,11 @@ namespace cms {
 		case2[2] -= delta;
 
 		/*double c10 = case1[0];
-		double c11 = case1[1];
-		double c12 = case1[2];
-		double c20 = case2[0];
-		double c21 = case2[1];
-		double c22 = case2[2];*/
+		   double c11 = case1[1];
+		   double c12 = case1[2];
+		   double c20 = case2[0];
+		   double c21 = case2[1];
+		   double c22 = case2[2]; */
 
 		if (isSuitGap(case1)) {
 		    return middleGrayLevel;
@@ -641,7 +641,7 @@ namespace cms {
 		coordinatorArray[2] = p2xyValues[xyindex];
 		return coordinatorArray;
 	    };
- 
+
 	  DimDGLutFixOp::DimDGLutFixOp(bptr < BitDepthProcessor > bitDepth, double dimFixThreshold, Component_vector_ptr componentVector, bptr < ChromaticityAdjustEstimatorIF > adjustEstimator):bitDepth
 		(bitDepth), dimFixThreshold(dimFixThreshold),
 		componentVector(componentVector), adjustEstimator(adjustEstimator) {

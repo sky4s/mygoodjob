@@ -275,14 +275,14 @@ object CCTLUTForm: TCCTLUTForm
     end
     object Label17: TLabel
       Left = 26
-      Top = 124
+      Top = 116
       Width = 29
       Height = 13
       Caption = 'Under'
     end
     object Label14: TLabel
       Left = 26
-      Top = 144
+      Top = 136
       Width = 40
       Height = 13
       Caption = 'Strength'
@@ -335,7 +335,7 @@ object CCTLUTForm: TCCTLUTForm
     end
     object RadioButton_NoneLowLevelCorrect: TRadioButton
       Left = 7
-      Top = 88
+      Top = 192
       Width = 59
       Height = 20
       Caption = 'None'
@@ -344,7 +344,7 @@ object CCTLUTForm: TCCTLUTForm
     end
     object RadioButton_DefinedDim: TRadioButton
       Left = 7
-      Top = 105
+      Top = 97
       Width = 98
       Height = 19
       Caption = 'Defined Dim'
@@ -353,58 +353,49 @@ object CCTLUTForm: TCCTLUTForm
     end
     object Edit_DefinedDimUnder: TEdit
       Left = 72
-      Top = 124
+      Top = 116
       Width = 59
       Height = 21
       ImeName = #26085#25991#36664#20837#31995#32113' (MS-IME2002)'
       TabOrder = 7
       Text = '50'
     end
-    object CheckBox_Smoothing: TCheckBox
-      Left = 26
-      Top = 211
-      Width = 111
-      Height = 20
-      Caption = 'Smooth Data'
-      TabOrder = 8
-      Visible = False
-    end
     object Edit_DimGamma: TEdit
       Left = 72
-      Top = 144
+      Top = 136
       Width = 59
       Height = 21
       ImeName = #26085#25991#36664#20837#31995#32113' (MS-IME2002)'
-      TabOrder = 9
+      TabOrder = 8
       Text = '1.0'
     end
     object CheckBox_DimFix: TCheckBox
       Left = 26
-      Top = 192
+      Top = 176
       Width = 71
       Height = 20
       Caption = 'Dim Fix'
-      TabOrder = 10
+      TabOrder = 9
       Visible = False
       OnClick = CheckBox_DimFixClick
     end
     object Edit_DimFixThreshold: TEdit
       Left = 104
-      Top = 168
+      Top = 160
       Width = 49
       Height = 21
-      TabOrder = 11
+      TabOrder = 10
       Text = '0.0000'
     end
     object CheckBox_Feedback: TCheckBox
       Left = 26
-      Top = 168
+      Top = 160
       Width = 71
       Height = 20
       Caption = 'Feedback'
       Checked = True
       State = cbChecked
-      TabOrder = 12
+      TabOrder = 11
       OnClick = CheckBox_FeedbackClick
     end
   end
@@ -785,15 +776,6 @@ object CCTLUTForm: TCCTLUTForm
       Caption = 'Native White'
       TabOrder = 1
     end
-    object RadioButton_MaxYNone: TRadioButton
-      Left = 98
-      Top = 14
-      Width = 52
-      Height = 20
-      Caption = 'N/A'
-      TabOrder = 2
-      Visible = False
-    end
     object RadioButton_MaxYNativeAdv: TRadioButton
       Left = 7
       Top = 53
@@ -801,7 +783,7 @@ object CCTLUTForm: TCCTLUTForm
       Height = 19
       Caption = 'Native White (Smooth)'
       Enabled = False
-      TabOrder = 3
+      TabOrder = 2
       OnClick = RadioButton_MaxYNativeAdvClick
     end
     object Edit_MaxYAdvOver: TEdit
@@ -811,7 +793,7 @@ object CCTLUTForm: TCCTLUTForm
       Height = 21
       Enabled = False
       ImeName = #26085#25991#36664#20837#31995#32113' (MS-IME2002)'
-      TabOrder = 4
+      TabOrder = 3
       Text = '235'
       Visible = False
       OnChange = Edit_MaxYAdvOverChange
@@ -823,7 +805,7 @@ object CCTLUTForm: TCCTLUTForm
       Height = 21
       Enabled = False
       ImeName = #26085#25991#36664#20837#31995#32113' (MS-IME2002)'
-      TabOrder = 5
+      TabOrder = 4
       Text = '1'
       Visible = False
     end
@@ -833,7 +815,7 @@ object CCTLUTForm: TCCTLUTForm
       Width = 104
       Height = 19
       Caption = 'Avoid Hook'
-      TabOrder = 6
+      TabOrder = 5
       Visible = False
       OnClick = CheckBox_AvoidHookNBClick
     end
@@ -843,7 +825,7 @@ object CCTLUTForm: TCCTLUTForm
       Width = 97
       Height = 19
       Caption = 'B Max (Smooth)'
-      TabOrder = 7
+      TabOrder = 6
       Visible = False
       OnClick = CheckBox_BMax2Click
     end
@@ -854,7 +836,7 @@ object CCTLUTForm: TCCTLUTForm
       Height = 21
       Enabled = False
       ImeName = #26085#25991#36664#20837#31995#32113' (MS-IME2002)'
-      TabOrder = 8
+      TabOrder = 7
       Text = '235'
       Visible = False
     end
@@ -865,7 +847,7 @@ object CCTLUTForm: TCCTLUTForm
       Height = 21
       Enabled = False
       ImeName = #26085#25991#36664#20837#31995#32113' (MS-IME2002)'
-      TabOrder = 9
+      TabOrder = 8
       Text = '2.2'
       Visible = False
     end
@@ -878,7 +860,7 @@ object CCTLUTForm: TCCTLUTForm
       Checked = True
       Enabled = False
       State = cbChecked
-      TabOrder = 10
+      TabOrder = 9
       Visible = False
     end
     object CheckBox_MaxYAdvAuto: TCheckBox
@@ -890,7 +872,7 @@ object CCTLUTForm: TCCTLUTForm
       Checked = True
       Enabled = False
       State = cbChecked
-      TabOrder = 11
+      TabOrder = 10
       Visible = False
       OnClick = CheckBox_MaxYAdvAutoClick
     end
