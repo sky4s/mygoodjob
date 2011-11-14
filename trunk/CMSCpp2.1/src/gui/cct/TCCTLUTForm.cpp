@@ -106,7 +106,7 @@ void __fastcall TCCTLUTForm::Button_MeaRunClick(TObject * Sender)
 	    calibrator.DimFix = CheckBox_DimFix->Checked;
 	    calibrator.DimFixThreshold = Edit_DimFixThreshold->Text.ToDouble();
 	    calibrator.FeedbackFix = CheckBox_Feedback->Checked;
-	    calibrator.SmoothComponent = CheckBox_Smoothing->Checked;
+	    //calibrator.SmoothComponent = CheckBox_Smoothing->Checked;
 	} else if (this->RadioButton_NoneLowLevelCorrect->Checked) {
 	    calibrator.setNonDimCorrect();
 	}
@@ -182,9 +182,10 @@ void __fastcall TCCTLUTForm::Button_MeaRunClick(TObject * Sender)
 	//==========================================================================
 	// Keep Max Luminance
 	//==========================================================================
-	if (true == RadioButton_MaxYNone->Checked) {
-	    calibrator.setKeepMaxLuminance(KeepMaxLuminance::None);
-	} else if (true == RadioButton_MaxYTarget->Checked) {
+	/*if (true == RadioButton_MaxYNone->Checked) {
+	   calibrator.setKeepMaxLuminance(KeepMaxLuminance::None);
+	   } else */
+	if (true == RadioButton_MaxYTarget->Checked) {
 	    calibrator.setKeepMaxLuminance(KeepMaxLuminance::TargetWhite);
 	} else if (true == RadioButton_MaxYNative->Checked) {
 	    calibrator.setKeepMaxLuminance(KeepMaxLuminance::NativeWhite);
@@ -318,12 +319,10 @@ void __fastcall TCCTLUTForm::FormShow(TObject * Sender)
 	Edit_MultiGenTimes->Visible = true;
 	//=========================================================================
 	CheckBox_MemoryMeasure->Visible = true;
-
 	RadioGroup_NormalCase->Visible = true;
     }
 
     this->CheckBox_NewMethod->Checked = true;
-
 
     const MaxValue & input = bitDepth->getInputMaxValue();
     bool avoidNoise = (input == MaxValue::Int6Bit || input == MaxValue::Int8Bit);
@@ -335,9 +334,8 @@ void __fastcall TCCTLUTForm::FormShow(TObject * Sender)
     //=========================================================================
     // tcon relative
     //=========================================================================
-    //bptr < TCONControl > tconctrl = MainForm->getTCONControl();
 
-    bool useTConCtrl = true == tconInput;	// || false == MainForm->linkCA210;
+    bool useTConCtrl = true == tconInput;
     //avoid hook再考慮一下開啟方式
     CheckBox_AvoidHookNB->Visible = useTConCtrl;
     CheckBox_Feedback->Visible = useTConCtrl;
@@ -345,11 +343,6 @@ void __fastcall TCCTLUTForm::FormShow(TObject * Sender)
 	CheckBox_Feedback->Checked = useTConCtrl;
     }
     Edit_DimFixThreshold->Visible = useTConCtrl;
-    //CheckBox_ManualAccurate->Visible = visible;
-    /*Label18->Visible = visible;
-       Label19->Visible = visible;
-       Edit_BMax2Begin->Visible = visible;
-       Edit_BMax2Gamma->Visible = visible; */
 
     //accurate太複雜...要重新思考
     //CheckBox_Accurate->Visible = visible;
@@ -357,11 +350,14 @@ void __fastcall TCCTLUTForm::FormShow(TObject * Sender)
 
     setMeasureInfo();
     nativeWhiteAnalyzer = MainForm->getNativeWhiteAnalyzer();
-    /*if (null != MainForm->getNativeWhiteAnalyzer()) {
-       nativeWhiteAnalyzer =} else {
-       nativeWhiteAnalyzer =
-       bptr < MaxMatrixIntensityAnalyzer > ((MaxMatrixIntensityAnalyzer *) null);
-       } */
+
+    RGB_ptr refRGB = MainForm->getAnalyzer()->getReferenceRGB();
+    bool useNativeWhite = refRGB->isWhite();
+    if (useNativeWhite) {
+	RadioButton_MaxYNative->Checked = true;
+    } else {
+	RadioButton_MaxYTarget->Checked = true;
+    }
 }
 
 void __fastcall TCCTLUTForm::RadioButton_GammaCurveClick(TObject * Sender)
@@ -495,7 +491,6 @@ void __fastcall TCCTLUTForm::CheckBox_NewMethodClick(TObject * Sender)
     RadioButton_P1P2->Enabled = !newMethod;
     RadioButton_DefinedDim->Enabled = newMethod;
     RadioButton_MaxYNativeAdv->Enabled = newMethod;
-    //RadioButton_MaxYNative->Enabled = newMethod;
     CheckBox_BTargetIntensity->Enabled = newMethod;
     CheckBox_MultiGen->Enabled = newMethod;
     Edit_MultiGenTimes->Enabled = newMethod;
@@ -513,13 +508,8 @@ void __fastcall TCCTLUTForm::CheckBox_NewMethodClick(TObject * Sender)
 
     }
 
-    //RadioButton_MaxYNativeAdv->Checked = newMethod;
     RadioButton_MaxYNative->Checked = newMethod;
     RadioButton_MaxYTarget->Checked = !newMethod;
-    RadioButton_MaxYTarget->Enabled = !newMethod;
-    //RadioButton_MaxYNative->Enabled = !newMethod;
-
-    //CheckBox_Accurate->Enabled = newMethod;
 }
 
 //---------------------------------------------------------------------------

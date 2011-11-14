@@ -28,14 +28,6 @@ namespace cms {
 	     */
 	    double_vector_ptr DGLutGenerator::
 		getLuminanceGammaCurve(double_vector_ptr normalGammaCurve) {
-		/*int size = normalGammaCurve->size();
-		   double_vector_ptr luminanceGammaCurve(new double_vector(size));
-		   double differ = maxLuminance - minLuminance;
-		   for (int x = 0; x != size; x++) {
-		   double v = differ * (*normalGammaCurve)[x] + minLuminance;
-		   (*luminanceGammaCurve)[x] = v;
-		   };
-		   return luminanceGammaCurve; */
 		return getLuminanceGammaCurve(normalGammaCurve, maxLuminance, minLuminance);
 	    };
 	    double_vector_ptr DGLutGenerator::

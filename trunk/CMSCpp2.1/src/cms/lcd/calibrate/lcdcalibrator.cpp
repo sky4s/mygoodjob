@@ -88,7 +88,7 @@ namespace cms {
 	    void LCDCalibrator::setGamma(double gamma) {
 		this->gamma = gamma;
 		int n = bitDepth->getLevel();
-		int effectiven = bitDepth->getEffectiveLevel();
+		int effectiven = bitDepth->getEffectiveInputLevel();
 		setGammaCurve0(getGammaCurveVector(gamma, n, effectiven));
 		useGammaCurve = false;
 		rgbIndepGamma = false;
@@ -99,7 +99,7 @@ namespace cms {
 		this->dimGammaEnd = dimGammaEnd;
 
 		int n = bitDepth->getLevel();
-		int effectiven = bitDepth->getEffectiveLevel();
+		int effectiven = bitDepth->getEffectiveInputLevel();
 		setGammaCurve0(getGammaCurveVector(dimGamma, dimGammaEnd, gamma, n, effectiven));
 		useGammaCurve = false;
 		rgbIndepGamma = false;
@@ -109,7 +109,7 @@ namespace cms {
 		this->ggamma = ggamma;
 		this->bgamma = bgamma;
 		int n = bitDepth->getLevel();
-		int effectiven = bitDepth->getEffectiveLevel();
+		int effectiven = bitDepth->getEffectiveInputLevel();
 		setGammaCurve0(getGammaCurveVector(rgamma, n, effectiven),
 			       getGammaCurveVector(ggamma, n, effectiven),
 			       getGammaCurveVector(bgamma, n, effectiven));
@@ -494,7 +494,8 @@ namespace cms {
 			bptr < AdvancedDGLutGenerator >
 			(new AdvancedDGLutGenerator(componentVector, fetcher, bitDepth));
 		    luminanceGammaCurve = generator.getLuminanceGammaCurve(gammaCurve);
-		    keepMaxLumiOver = bitDepth->getEffectiveLevel();
+		    //keepMaxLumiOver = bitDepth->getInputMaxDigitalCount();
+		    keepMaxLumiOver = bitDepth->getEffectiveInputLevel();
 
 		}
 		//=============================================================
@@ -541,9 +542,16 @@ namespace cms {
 		if (null != nativeWhiteAnalyzer) {
 		    //nativeWhite = nativeWhiteAnalyzer->getReferenceColor()->toXYZ();
 		}
+		if (KeepMaxLuminance::TargetWhite == keepMaxLuminance) {
+		    nativeWhite = targetWhite->clone();
+		    nativeWhite->normalizeY();
+		    double maxLuminance = (*luminanceGammaCurve)[luminanceGammaCurve->size() - 1];
+		    nativeWhite->times(maxLuminance);
+		}
 
 		for (; overParameter >= minOverParameter; overParameter -= step) {
-		    int width = bitDepth->getEffectiveLevel() - overParameter;
+		    int width = bitDepth->getEffectiveInputLevel() - overParameter;
+		    //int width = bitDepth->getLevel() - overParameter;
 		    //計算得到目標值
 		    targetXYZVector =
 			advgenerator->getTargetXYZVector(targetWhite, nativeWhite,

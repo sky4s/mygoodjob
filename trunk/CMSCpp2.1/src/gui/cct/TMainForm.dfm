@@ -984,6 +984,7 @@ object MainForm: TMainForm
         Height = 98
         Caption = 'CH Setting'
         TabOrder = 3
+        Visible = False
         object Label7: TLabel
           Left = 7
           Top = 20

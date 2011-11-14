@@ -136,8 +136,8 @@ namespace cms {
 	    double BitDepthProcessor::getInputMaxDigitalCount() {
 		switch (bitDepth) {
 		case b10_10:
-		    return 256;
 		case b10_8:
+		    return 256;
 		case b8_8:
 		case b8_6:
 		    return 255;
@@ -178,7 +178,7 @@ namespace cms {
 		    throw IllegalStateException("Unsupported bitDepth: " + bitDepth);
 		}
 	    };
-	    int BitDepthProcessor::getEffectiveLevel() {
+	    int BitDepthProcessor::getEffectiveInputLevel() {
 		return getInputMaxDigitalCount() + 1;
 	    };
 	    bool BitDepthProcessor::is8in8Out() {

@@ -57,14 +57,14 @@ namespace cms {
 	  AdvancedDGLutGenerator::AdvancedDGLutGenerator(Component_vector_ptr componentVector, bptr < cms::lcd::calibrate::ComponentFetcher > fetcher, bptr < IntensityAnalyzerIF > analyzer1, bptr < IntensityAnalyzerIF > analyzer2nd, bptr < BitDepthProcessor > bitDepth):DimDGLutGenerator(componentVector, analyzer1),
 		fetcher(fetcher), useMaxTargetBIntensity(false), bTargetIntensity(-1),
 		stopMeasure(false), multiGen(false), analyzer2nd(analyzer2nd), bitDepth(bitDepth),
-		smoothMode(true), middleCCTRatio(-1) {
+		smoothMode(true), middleCCTRatio(-1), autoParameter(false) {
 	    };
 
 	  AdvancedDGLutGenerator::AdvancedDGLutGenerator(Component_vector_ptr componentVector, bptr < ComponentFetcher > fetcher, bptr < BitDepthProcessor > bitDepth):DimDGLutGenerator
 		(componentVector, fetcher->getAnalyzer()),
 		fetcher(fetcher), useMaxTargetBIntensity(false),
 		bTargetIntensity(-1), stopMeasure(false), multiGen(false),
-		bitDepth(bitDepth), smoothMode(false), middleCCTRatio(-1) {
+		bitDepth(bitDepth), smoothMode(false), middleCCTRatio(-1), autoParameter(false) {
 	    };
 	    /*
 	       targetWhite: 目標白點
@@ -109,7 +109,7 @@ namespace cms {
 		    int turn = brightTurn;
 		    int width = -1;
 		    for (; turn >= 100; turn--) {
-			width = bitDepth->getEffectiveLevel() - turn;
+			width = bitDepth->getEffectiveInputLevel() - turn;
 			targetXYZVector =
 			    getTarget0(blackXYZ, targetWhite, nativeWhite, luminanceGammaCurve,
 				       dimTurn, turn, dimGamma, brightGamma, width);
@@ -305,6 +305,7 @@ namespace cms {
 		// 迴圈開始
 		//=============================================================
 		for (int x = size - 1; x != -1; x--) {
+		    //x = 0;
 		    XYZ_ptr targetXYZ = (*targetXYZVector)[x];
 
 		    //不斷產生Analyzer, 因為Target White一直變化, 所以利用新的Analyzer, 計算出Intensity

@@ -23,7 +23,7 @@ namespace cms {
 	    //==================================================================
 	    RGBGamma_ptr BIntensityGainOp::getRendering(RGBGamma_ptr source) {
 		double_vector_ptr b(new double_vector(*source->b));
-		int effectiveLevel = bitDepth->getEffectiveLevel();
+		int effectiveLevel = bitDepth->getEffectiveInputLevel();
 		//從effectiveLevel推算真正的起始點
 		int realstart = effectiveLevel - (255 - start);
 

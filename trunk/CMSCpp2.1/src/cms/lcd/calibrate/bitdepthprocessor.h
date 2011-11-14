@@ -67,7 +67,7 @@ namespace cms {
 		/*
 		   可呈現出差異的階數
 		 */
-		int getEffectiveLevel();
+		int getEffectiveInputLevel();
 
 		bool is8in8Out();
 		bool is8in6Out();
