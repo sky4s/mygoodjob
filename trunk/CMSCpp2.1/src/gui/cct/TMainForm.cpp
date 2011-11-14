@@ -800,7 +800,7 @@ void __fastcall TMainForm::Button_ConnectClick(TObject * Sender)
 	this->Button_Connect->Enabled = false;
 	this->StatusBar1->Panels->Items[2]->Text = "T-CON Connected";
 	if (!this->RadioButton_PCTCON->Checked) {
-	    MeasureWindow->setTCONControl(control);
+	    MeasureWindow->setTCONInput(control);
 	    this->bitDepth->setTCONInput(true);
 	}
     } else {

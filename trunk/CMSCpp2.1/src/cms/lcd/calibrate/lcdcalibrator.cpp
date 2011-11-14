@@ -408,13 +408,6 @@ namespace cms {
 		STORE_RGBVECTOR("7.9_dgcode_final.xls", result);
 		RGBVector::changeMaxValue(result, bitDepth->getLutMaxValue());
 		//==============================================================
-		//已產生出DG, 可在此處量測
-		/*if (dimFix) {
-		   //STORE_RGBVECTOR("7.1_before_dimFix.xls", result);
-		   result = dimDGLutFix(result);
-		   //STORE_RGBVECTOR("7.2_after_dimFix.xls", result);
-		   } */
-
 
 		STORE_RGBVECTOR("8_dgcode_final.xls", result);
 		this->dglut = result;
@@ -576,6 +569,15 @@ namespace cms {
 			RGBVector::changeMaxValue(clone, bitDepth->getFRCAbilityBit());
 			STORE_RGBVECTOR("3.3_frc_dgcode.xls", clone);
 			//RGBVector::storeToText("3.3_frc_dgcode(beforeFeedback).txt", clone);
+
+			//==============================================================
+			RGB_vector_ptr lut = RGBVector::deepClone(clone);
+			RGBVector::changeMaxValue(lut, bitDepth->getLutMaxValue());
+			bptr < DGLutFile >
+			    dgLutFile(new DGLutFile("debug/3.4_lut_dgcode.xls", Create));
+			storeDGLutFile(lut, dgLutFile);
+			//==============================================================
+
 
 			fixReverseByFeedback(clone);
 			dglut = clone;

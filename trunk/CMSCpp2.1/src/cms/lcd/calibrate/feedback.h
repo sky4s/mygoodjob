@@ -98,16 +98,16 @@ namespace cms {
 		__property int FeedbackFixCount = { read = feedbackFixCount };
 		__property bptr < FeedbackListener > Listener = { write = feedbackListener
 		};
-		__property double AverageDistance = { write = averageDistance };
+		__property double_array AverageDistance = { write = averageDistance };
 		double_array getMaxMeasureError() {
 		    return maxMeasureError;
 		};
 
 	      private:
 		int checkReverse(double_vector_ptr deltaVector);
-		int checkLoose(double_vector_ptr deltaVector);
+		int checkLoose(double_vector_ptr deltaVector, double average);
 		int checkReverse(double_vector_ptr deltaVector, int start, int end);
-		int checkLoose(double_vector_ptr deltaVector, int start, int end);
+		int checkLoose(double_vector_ptr deltaVector, int start, int end, double average);
 		int_vector_ptr getReverseIndexVector(double_vector_ptr deltaVector,
 						     int start, int end);
 
@@ -115,7 +115,7 @@ namespace cms {
 							     double_vector_ptr dyofBase, int start,
 							     int end);
 		int_vector_ptr getLooseIndexVector(double_vector_ptr deltaVector,
-						   int start, int end);
+						   int start, int end, double average);
 		void pushBackNumber(int_vector_ptr result, int number);
 		double_vector_ptr selectDelta(double_vector_ptr dxofBase,
 					      double_vector_ptr dyofBase, Dep::Channel & ch);
@@ -123,7 +123,7 @@ namespace cms {
 		int feedbackFixCount;
 		int dimFixEnd;
 		double dimFixThreshold;
-		double averageDistance;
+		double_array averageDistance;
 		double_array maxMeasureError;
 		 bptr < cms::measure::IntensityAnalyzerIF > analyzer;
 		 bptr < BitDepthProcessor > bitDepth;
