@@ -36,6 +36,9 @@
 enum Pattern {
     Normal, HStripe, Indepedent, HSD, FlickrPixel, FlickrSubPixel, Ninth
 };
+enum PatternSource {
+    PC, TCON, DGLUT
+};
 class TMeasureWindow:public TForm {
     __published:		// IDE-managed Components
     TButton * Button1;
@@ -47,7 +50,8 @@ class TMeasureWindow:public TForm {
     void __fastcall FormShow(TObject * Sender);
     void __fastcall Button2Click(TObject * Sender);
   private:			// User declarations
-     bool tconinput;
+     PatternSource source;
+    //bool tconinput;
     bool lineAdjoin;
      bptr < i2c::TCONControl > tconcontrol;
      std::vector < bptr < gui::event::WindowListener > >listenerVector;
@@ -59,7 +63,8 @@ class TMeasureWindow:public TForm {
      __fastcall TMeasureWindow(TComponent * Owner);
     void setRGB(int r, int g, int b);
     void setRGB(RGB_ptr rgb);
-    void setTCONControl(bptr < i2c::TCONControl > tconcontrl);
+    void setTCONInput(bptr < i2c::TCONControl > tconcontrl);
+    void setDGLUTInput(bptr < i2c::TCONControl > tconcontrl);
     void setTCONControlOff();
     void setVisible(bool visible);
     void addWindowListener(bptr < gui::event::WindowListener > listener);

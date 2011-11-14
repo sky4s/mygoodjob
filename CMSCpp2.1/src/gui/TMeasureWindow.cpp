@@ -28,8 +28,8 @@ __fastcall TMeasureWindow::TMeasureWindow(TComponent * Owner)
     DoubleBuffered = true;
     this->Button1->OnClick = Button1Click;
     pattern = Normal;
-    tconinput = false;
     lineAdjoin = false;
+    source = PC;
 }
 
 //---------------------------------------------------------------------------
@@ -37,7 +37,7 @@ void __fastcall TMeasureWindow::FormKeyPress(TObject * Sender, char &Key)
 {
     switch (Key) {
     case 27:			//esc
-	if (tconinput) {
+	if (TCON == source) {
 	    tconcontrol->setGammaTest(false);
 	}
 	this->Visible = false;
@@ -68,13 +68,16 @@ void TMeasureWindow::setRGB(int r, int g, int b)
     using namespace cms::util;
     this->Update();
 
-    if (true == tconinput) {
+
+    if (TCON == source) {
 	if (tconcontrol->isGammaTestEnable()) {
 	    tconcontrol->setGammaTestRGB(r, g, b);
 	} else {
 	    throw java::lang::UnsupportedOperationException("");
 	}
-    } else {
+    } else if (DGLUT == source) {
+	this->Color = clBlack;
+    } else if (PC == source) {
 	TColor color = (TColor) ((b << 16) + (g << 8) + r);
 	switch (pattern) {
 	case HStripe:{
@@ -242,8 +245,7 @@ void TMeasureWindow::setRGB(bptr < Dep::RGBColor > rgb)
 {
     double_array values(new double[3]);
     using namespace Dep;
-    //bool tconinput = false;
-    const MaxValue & maxValue = tconinput ? MaxValue::Int12Bit : MaxValue::Int8Bit;
+    const MaxValue & maxValue = (TCON == source) ? MaxValue::Int12Bit : MaxValue::Int8Bit;
     rgb->getValues(values, maxValue);
 
     int r = static_cast < int >(values[0]);
@@ -269,23 +271,28 @@ void __fastcall TMeasureWindow::Button1Click(TObject * Sender)
 }
 
 //---------------------------------------------------------------------------
-void TMeasureWindow::setTCONControl(bptr < i2c::TCONControl > tconcontrol)
+void TMeasureWindow::setTCONInput(bptr < i2c::TCONControl > tconcontrol)
 {
     this->tconcontrol = tconcontrol;
-    tconinput = true;
+    source = TCON;
+};
+void TMeasureWindow::setDGLUTInput(bptr < i2c::TCONControl > tconcontrol)
+{
+    this->tconcontrol = tconcontrol;
+    source = DGLUT;
 };
 
 //---------------------------------------------------------------------------
 void TMeasureWindow::setTCONControlOff()
 {
-    tconinput = false;
+    source = PC;
 };
 
 //---------------------------------------------------------------------------
 void TMeasureWindow::setVisible(bool visible)
 {
 #ifdef DEBUG_STOP_TCONINPUT
-    if (tconinput) {
+    if (TCON == source) {
 	tconcontrol->setGammaTest(visible);
     }
     this->Visible = visible;
@@ -293,7 +300,7 @@ void TMeasureWindow::setVisible(bool visible)
 	this->BringToFront();
     }
 #else
-    if (tconinput) {
+    if (TCON == source) {
 	tconcontrol->setGammaTest(visible);
     } else {
 	this->Visible = visible;
