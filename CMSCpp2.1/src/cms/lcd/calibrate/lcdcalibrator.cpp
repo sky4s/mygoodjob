@@ -561,20 +561,28 @@ namespace cms {
 			//先從DGLut算出灰階的dx dy
 			//再從這樣的結果微調目標值
 
+			//==============================================================
 			RGB_vector_ptr clone = RGBVector::deepClone(dglut);
+
 			RGBVector::changeMaxValue(clone, bitDepth->getLutMaxValue());
 			STORE_RGBVECTOR("3.2_lut_dgcode.xls", clone);
 			RGBVector::storeToText("3.2_lut_dgcode(beforeFeedback).txt", clone);
 
 			RGBVector::changeMaxValue(clone, bitDepth->getFRCAbilityBit());
 			STORE_RGBVECTOR("3.3_frc_dgcode.xls", clone);
-			//RGBVector::storeToText("3.3_frc_dgcode(beforeFeedback).txt", clone);
+			//==============================================================
+			RGB_vector_ptr clone2 = RGBVector::deepClone(dglut);
 
+			int frcBit = bitDepth->getFRCAbilityBit().bit;
+			int domainBit = frcBit + 2;
+			const MaxValue & domainMaxValue = MaxValue::getByIntegerBit(domainBit);
+			RGBVector::changeMaxValue(clone2, domainMaxValue);
+			STORE_RGBVECTOR("3.4_domain_dgcode.xls", clone2);
 			//==============================================================
 			RGB_vector_ptr lut = RGBVector::deepClone(clone);
 			RGBVector::changeMaxValue(lut, bitDepth->getLutMaxValue());
 			bptr < DGLutFile >
-			    dgLutFile(new DGLutFile("debug/3.4_lut_dgcode.xls", Create));
+			    dgLutFile(new DGLutFile("debug/3.6_lut_dgcode.xls", Create));
 			storeDGLutFile(lut, dgLutFile);
 			//==============================================================
 
