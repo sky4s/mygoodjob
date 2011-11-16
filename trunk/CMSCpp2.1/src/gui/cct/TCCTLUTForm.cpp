@@ -640,6 +640,9 @@ void __fastcall TCCTLUTForm::CheckBox_FeedbackClick(TObject * Sender)
 {
     if (true == CheckBox_Feedback->Checked) {
 	CheckBox_DimFix->Checked = false;
+	if (1 == MainForm->Edit_AverageTimes->Text) {
+	    MainForm->Edit_AverageTimes->Text = 3;
+	}
     }
 }
 

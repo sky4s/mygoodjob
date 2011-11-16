@@ -145,7 +145,7 @@ namespace cms {
 	       4.若精準度要更高,就重複做到滿意為止
 	     */
 	    RGB_vector_ptr AdvancedDGLutGenerator::produce(XYZ_vector_ptr targetXYZVector) {
-		STORE_XYZXY_VECTOE("target.xls", targetXYZVector);
+		STORE_XYZXY_VECTOE("1.2_target.xls", targetXYZVector);
 		//==============================================================
 		/*
 		   若做了smooth target(基本上adv dg lut也只有smooth target的功能)
@@ -361,12 +361,12 @@ namespace cms {
 		    result = panelRegulator->remapping(result);
 		}
 #ifdef DEBUG_CCTLUT_NEWMETHOD
-		STORE_COMPONENT("maxIntensity.xls", maxComponentVector);
+		STORE_COMPONENT("1.3_maxIntensity.xls", maxComponentVector);
 #endif
 
 #ifdef DEBUG_INTENISITY
 		//利用DG回推Intenisty和white point的primart color預測CIE xy
-		STORE_COMPONENT("debugIntensity.xls", debugComponentVector);
+		STORE_COMPONENT("1.3_debugIntensity.xls", debugComponentVector);
 #endif
 
 		return result;
@@ -474,7 +474,7 @@ namespace cms {
 		XYZ_vector_ptr dimResult =
 		    DimTargetGenerator::getTarget(startXYZ, targetXYZ, dimGammaCurve, dimGamma);
 
-		STORE_XYZXY_VECTOE("target_dim.xls", dimResult);
+		STORE_XYZXY_VECTOE("1.1_target_dim.xls", dimResult);
 		int dimSize = dimResult->size();
 		for (int x = 0; x < dimSize; x++) {
 		    (*result)[x] = (*dimResult)[x];

@@ -102,8 +102,7 @@ class TMainForm:public TForm {
     TRadioButton *RadioButton_HSD;
     TRadioButton *RadioButton_FlickrPixel;
     TRadioButton *RadioButton_FlickrSubPixel;
-    TRadioButton *RadioButton_PCTCON;
-    TLabel *Label16;
+    TRadioButton *RadioButton_PCTCON_NB;
     TLabel *Label17;
     TLabel *Label18;
     TLabel *Label19;
@@ -128,6 +127,7 @@ class TMainForm:public TForm {
     TStatusBar *StatusBar1;
     TLabel *Label21;
     TEdit *Edit_AverageTimes;
+    TRadioButton *RadioButton_PCTCON_TV;
     void __fastcall About1Click(TObject * Sender);
     void __fastcall Exit1Click(TObject * Sender);
     void __fastcall TargetWhite1Click(TObject * Sender);
@@ -166,12 +166,13 @@ class TMainForm:public TForm {
     void __fastcall RadioButton_LPTSmallClick(TObject * Sender);
     void __fastcall ComboBox_TCONTypeChange(TObject * Sender);
     void __fastcall CheckBox_GammaTestClick(TObject * Sender);
-    void __fastcall RadioButton_PCTCONClick(TObject * Sender);
+    void __fastcall RadioButton_PCTCON_NBClick(TObject * Sender);
     void __fastcall RadioButton_NinthClick(TObject * Sender);
     void __fastcall ComboBox_DGLUTTypeChange(TObject * Sender);
     void __fastcall FormActivate(TObject * Sender);
     void __fastcall TabSheet2Exit(TObject * Sender);
     void __fastcall Edit_AverageTimesChange(TObject * Sender);
+    void __fastcall RadioButton_PCTCON_TVClick(TObject * Sender);
   private:			// User declarations
     //==========================================================================
     // meter
@@ -245,6 +246,7 @@ class TMainForm:public TForm {
     //==========================================================================
      bptr < i2c::TCONControl > getTCONControl();
     bool isTCONInput();
+    bool isPCwithTCONInput();
     //==========================================================================
 
     //==========================================================================

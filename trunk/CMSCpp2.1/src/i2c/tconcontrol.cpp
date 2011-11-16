@@ -118,6 +118,9 @@ namespace i2c {
     };
 
     bptr < ByteBuffer > TCONControl::getDGLut10BitByteBuffer(RGB_vector_ptr rgbVector) {
+	if (true) {
+	    return getDGLut10BitByteBufferType2(rgbVector);
+	}
 	//int size = rgbVector->size();
 	int processSize = 256;
 	int quarterSize = processSize / 4;
@@ -135,6 +138,13 @@ namespace i2c {
 		    static_cast < int >((*rgbVector)[x * 4 + 2]->getValue(ch, MaxValue::Int10Bit));
 		int d3 =
 		    static_cast < int >((*rgbVector)[x * 4 + 3]->getValue(ch, MaxValue::Int10Bit));
+
+		int b0 = d0 >> 2;
+		int b1 = ((d0 & 3) << 8) + d1 >> 4;
+		int b2 = (*data)[index++] = ((d1 & 15) << 4) + d2 >> 6;
+		int b3 = (*data)[index++] = ((d2 & 63) << 2) + d3 >> 8;
+		int b4 = (*data)[index++] = d3 & 255;
+
 		(*data)[index++] = d0 >> 2;
 		(*data)[index++] = ((d0 & 3) << 8) + d1 >> 4;
 		(*data)[index++] = ((d1 & 15) << 4) + d2 >> 6;
@@ -146,6 +156,38 @@ namespace i2c {
 
 	return data;
     };
+
+    bptr < ByteBuffer > TCONControl::getDGLut10BitByteBufferType2(RGB_vector_ptr rgbVector) {
+	//int size = rgbVector->size();
+	int processSize = 256;
+	int quarterSize = processSize / 4;
+	int singleChannelDataSize = quarterSize * 5;
+	int totalDataSize = singleChannelDataSize * 3;
+	bptr < ByteBuffer > data(new ByteBuffer(totalDataSize));
+	int index = 0;
+
+	foreach(const Channel & ch, *Channel::RGBChannel) {
+	    for (int x = 0; x < quarterSize; x++) {
+		int d0 = static_cast < int >((*rgbVector)[x * 4]->getValue(ch, MaxValue::Int10Bit));
+		int d1 =
+		    static_cast < int >((*rgbVector)[x * 4 + 1]->getValue(ch, MaxValue::Int10Bit));
+		int d2 =
+		    static_cast < int >((*rgbVector)[x * 4 + 2]->getValue(ch, MaxValue::Int10Bit));
+		int d3 =
+		    static_cast < int >((*rgbVector)[x * 4 + 3]->getValue(ch, MaxValue::Int10Bit));
+
+		(*data)[index++] = d0 >> 2;
+		(*data)[index++] = ((d0 & 3) << 8) + (d1 >> 4);
+		(*data)[index++] = ((d1 & 15) << 4) + (d2 >> 6);
+		(*data)[index++] = ((d2 & 63) << 2) + (d3 >> 8);
+		(*data)[index++] = d3 & 255;
+	    }
+	}
+
+
+	return data;
+    };
+
     bptr < ByteBuffer > TCONControl::getDGLut12BitByteBuffer(RGB_vector_ptr rgbVector) {
 	int size = rgbVector->size();
 	if (257 != size) {
@@ -207,6 +249,9 @@ namespace i2c {
 	}
 	write(parameter->DGLutAddress, data);
     }
+    RGB_vector_ptr TCONControl::getDGLut() {
+	throw new UnsupportedOperationException("");
+    };
 
     int_array TCONControl::getLMHData(int data) {
 	int_array result(new int[3]);
@@ -219,6 +264,9 @@ namespace i2c {
     void TCONControl::setDG(bool enable) {
 	setBitData(parameter->DGAddress, parameter->DGBit, enable);
     };
+    bool TCONControl::isDG() {
+	return getBitData(parameter->DGAddress, parameter->DGBit);
+    };
     void TCONControl::setBitData(int dataAddress, unsigned char bit, bool data) {
 	unsigned char bytedata = readByte(dataAddress);
 	//製作遮罩
@@ -228,6 +276,13 @@ namespace i2c {
 	//產生要填的data
 	bytedata = bytedata | data << bit;
 	writeByte(dataAddress, bytedata);
+    };
+
+    bool TCONControl::getBitData(int dataAddress, unsigned char bit) {
+	unsigned char bytedata = readByte(dataAddress);
+	bytedata = bytedata >> bit;
+	bytedata = bytedata & 1;
+	return (1 == bytedata);
     };
 };
 

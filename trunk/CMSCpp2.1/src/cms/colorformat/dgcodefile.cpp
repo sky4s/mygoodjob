@@ -303,8 +303,10 @@ namespace cms {
 	RGB_vector_ptr DGLutFile::getGammaTable() {
 	    if (db->isTableExist(GammaTable)) {
 		db->setTableName(GammaTable);
-	    } else {
+	    } else if (db->isTableExist(OldGammaTable)) {
 		db->setTableName(OldGammaTable);
+	    } else {
+		db->setTableName(Sheet1);
 	    }
 
 	    RGB_vector_ptr vector(new RGB_vector());

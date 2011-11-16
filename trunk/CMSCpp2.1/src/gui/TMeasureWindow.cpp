@@ -76,6 +76,18 @@ void TMeasureWindow::setRGB(int r, int g, int b)
 	    throw java::lang::UnsupportedOperationException("");
 	}
     } else if (DGLUT == source) {
+	//8bit
+	RGB_vector_ptr rgbVector = RGBVector::getLinearRGBVector(bitDepth->getLevelInTCon());
+	const Dep::MaxValue & lutBit = tconcontrol->getLUTBit();
+	RGB_ptr rgb0 = (*rgbVector)[0];
+	rgb0->changeMaxValue(lutBit);
+	rgb0->R = r;
+	rgb0->G = g;
+	rgb0->B = b;
+        //tconcontrol->setDG(false);
+	tconcontrol->setDGLut(rgbVector);
+        //tconcontrol->setDG(true);
+
 	this->Color = clBlack;
     } else if (PC == source) {
 	TColor color = (TColor) ((b << 16) + (g << 8) + r);
@@ -245,7 +257,8 @@ void TMeasureWindow::setRGB(bptr < Dep::RGBColor > rgb)
 {
     double_array values(new double[3]);
     using namespace Dep;
-    const MaxValue & maxValue = (TCON == source) ? MaxValue::Int12Bit : MaxValue::Int8Bit;
+
+    const MaxValue & maxValue = (TCON == source) ? MaxValue::Int12Bit :  (DGLUT ==source)?     bitDepth->getLutMaxValue()  :  MaxValue::Int8Bit;
     rgb->getValues(values, maxValue);
 
     int r = static_cast < int >(values[0]);
@@ -276,10 +289,12 @@ void TMeasureWindow::setTCONInput(bptr < i2c::TCONControl > tconcontrol)
     this->tconcontrol = tconcontrol;
     source = TCON;
 };
-void TMeasureWindow::setDGLUTInput(bptr < i2c::TCONControl > tconcontrol)
+void TMeasureWindow::setDGLUTInput(bptr < i2c::TCONControl > tconcontrol,
+				   bptr < cms::lcd::calibrate::BitDepthProcessor > bitDepth)
 {
     this->tconcontrol = tconcontrol;
     source = DGLUT;
+    this->bitDepth = bitDepth;
 };
 
 //---------------------------------------------------------------------------
@@ -307,6 +322,9 @@ void TMeasureWindow::setVisible(bool visible)
 	if (visible) {
 	    this->BringToFront();
 	}
+        if(DGLUT==source) {
+          tconcontrol->setDG(visible);
+        }
     }
 #endif
 

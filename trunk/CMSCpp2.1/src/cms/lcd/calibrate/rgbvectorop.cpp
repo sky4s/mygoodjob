@@ -435,10 +435,10 @@ namespace cms {
 
 	    RGB_vector_ptr DimDGLutFixOp::getRendering(RGB_vector_ptr source) {
 		//source是0~255, 要先轉成frc
-		STORE_RGBVECTOR("5.1_before_fix.xls", source);
+		STORE_RGBVECTOR("6.1_before_fix.xls", source);
 		RGB_vector_ptr result = RGBVector::deepClone(source);
 		RGBVector::changeMaxValue(result, bitDepth->getFRCAbilityBit());
-		STORE_RGBVECTOR("5.2_change2FRC.xls", result);
+		STORE_RGBVECTOR("6.2_change2FRC.xls", result);
 
 		double2D_ptr deltaxyValues = getDeltaxyValues(componentVector);
 		int size = componentVector->size();
@@ -583,7 +583,7 @@ namespace cms {
 
 		    }
 		}
-		STORE_RGBVECTOR("5.3_afterFix.xls", result);
+		STORE_RGBVECTOR("6.3_afterFix.xls", result);
 		return result;
 	    };
 
@@ -659,10 +659,10 @@ namespace cms {
 
 	    RGB_vector_ptr DimDGLutFixOp2::getRendering(RGB_vector_ptr source) {
 		//source是0~255, 要先轉成frc
-		STORE_RGBVECTOR("5.1_before_fix.xls", source);
+		STORE_RGBVECTOR("6.1_before_fix.xls", source);
 		RGB_vector_ptr result = RGBVector::deepClone(source);
 		RGBVector::changeMaxValue(result, bitDepth->getFRCAbilityBit());
-		STORE_RGBVECTOR("5.2_change2FRC.xls", result);
+		STORE_RGBVECTOR("6.2_change2FRC.xls", result);
 
 		double2D_ptr deltaxyValues = getDeltaxyValues(componentVector);
 		//int size = componentVector->size();

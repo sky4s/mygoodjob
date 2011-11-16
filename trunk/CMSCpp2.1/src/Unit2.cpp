@@ -967,8 +967,7 @@ class property {
     property(const std::string & name, const boost::any & value):name_(name), value_(value) {
     } std::string name() const {
 	return name_;
-    }
-    boost::any & value() {
+    } boost::any & value() {
 	return value_;
     }
     friend bool operator<(const property & lhs, const property & rhs) {
@@ -1305,10 +1304,10 @@ void auohsvTry()
     RGBColorSpace cs = RGBColorSpace::sRGB_gamma22;
     //RGBColorSpace cs2 = RGBColorSpace::sRGB_gamma22;
     //boolean a = (cs == cs2);
-    ChromaEnhance ce(cs, isf);
-    SingleHueAdjustValue shv(0, 14, 3);
-    double dl = ce.calculateDeltaL(shv);
-    cout << dl << endl;
+    /*ChromaEnhance ce(cs, isf);
+       SingleHueAdjustValue shv(0, 14, 3);
+       double dl = ce.calculateDeltaL(shv);
+       cout << dl << endl; */
 
 };
 
@@ -1344,6 +1343,16 @@ void putTest()
     pushBackNumber(v, 2);
 
 };
+
+void rgbVectorTest()
+{
+    using namespace cms::util;
+    using namespace i2c;
+    RGB_vector_ptr rgbVector = RGBVector::getLinearRGBVector(256);
+    rgbVector = RGBVector::reverse(rgbVector);
+    TCONControl::getDGLut10BitByteBufferType2(rgbVector);
+}
+
 
 #pragma argsused
 int main(int argc, char *argv[])
@@ -1440,7 +1449,8 @@ int main(int argc, char *argv[])
     //auohsvTry();
     //bptr < BB > aa(new BB(3));
     //getAA(aa);
-    putTest();
+    //putTest();
+    rgbVectorTest();
     cout << "end" << endl;
     getch();
 }

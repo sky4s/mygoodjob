@@ -845,18 +845,10 @@ object MainForm: TMainForm
       object GroupBox2: TGroupBox
         Left = 0
         Top = 7
-        Width = 163
-        Height = 98
+        Width = 193
+        Height = 122
         Caption = 'Input Source'
         TabOrder = 0
-        object Label16: TLabel
-          Left = 20
-          Top = 59
-          Width = 80
-          Height = 13
-          Caption = '(Avoid Hook NB)'
-          Visible = False
-        end
         object RadioButton_PC: TRadioButton
           Left = 7
           Top = 20
@@ -870,7 +862,7 @@ object MainForm: TMainForm
         end
         object RadioButton_TCON: TRadioButton
           Left = 7
-          Top = 72
+          Top = 40
           Width = 65
           Height = 20
           Hint = 'For Direct Gamma Use'
@@ -881,22 +873,34 @@ object MainForm: TMainForm
           TabOrder = 1
           OnClick = RadioButton_TCONClick
         end
-        object RadioButton_PCTCON: TRadioButton
+        object RadioButton_PCTCON_NB: TRadioButton
           Left = 7
-          Top = 40
-          Width = 124
+          Top = 80
+          Width = 186
           Height = 19
           Hint = 'For De-Hook with NB Panel Use'
-          Caption = 'PC(with T-CON)'
+          Caption = 'PC w/T-CON (Avoid Hook /NB)'
           ParentShowHint = False
           ShowHint = True
           TabOrder = 2
           Visible = False
-          OnClick = RadioButton_PCTCONClick
+          OnClick = RadioButton_PCTCON_NBClick
+        end
+        object RadioButton_PCTCON_TV: TRadioButton
+          Left = 7
+          Top = 60
+          Width = 178
+          Height = 19
+          Hint = 'For De-Hook with NB Panel Use'
+          Caption = 'PC w/T-CON (Feedback /TV)'
+          ParentShowHint = False
+          ShowHint = True
+          TabOrder = 3
+          OnClick = RadioButton_PCTCON_TVClick
         end
       end
       object Resolution: TGroupBox
-        Left = 466
+        Left = 554
         Top = 104
         Width = 169
         Height = 105
@@ -937,10 +941,10 @@ object MainForm: TMainForm
         end
       end
       object GroupBox1: TGroupBox
-        Left = 168
-        Top = 7
-        Width = 125
-        Height = 98
+        Left = 0
+        Top = 128
+        Width = 193
+        Height = 81
         Caption = 'Pattern Display Interval'
         TabOrder = 2
         object Label1: TLabel
@@ -978,7 +982,7 @@ object MainForm: TMainForm
         end
       end
       object GroupBox_CHSetting: TGroupBox
-        Left = 466
+        Left = 554
         Top = 7
         Width = 169
         Height = 98
@@ -1039,10 +1043,10 @@ object MainForm: TMainForm
         end
       end
       object GroupBox3: TGroupBox
-        Left = 168
-        Top = 104
-        Width = 125
-        Height = 105
+        Left = 376
+        Top = 112
+        Width = 169
+        Height = 97
         Caption = 'Intensity source'
         TabOrder = 4
         Visible = False
@@ -1084,9 +1088,9 @@ object MainForm: TMainForm
         end
       end
       object GroupBox_Pattern: TGroupBox
-        Left = 0
-        Top = 104
-        Width = 163
+        Left = 376
+        Top = 7
+        Width = 169
         Height = 105
         Caption = 'Pattern'
         TabOrder = 5
@@ -1171,7 +1175,7 @@ object MainForm: TMainForm
         end
       end
       object GroupBox6: TGroupBox
-        Left = 298
+        Left = 202
         Top = 7
         Width = 163
         Height = 202
@@ -1296,7 +1300,7 @@ object MainForm: TMainForm
           Enabled = False
           ImeName = #26085#25991#36664#20837#31995#32113' (MS-IME2002)'
           TabOrder = 3
-          Text = '8+2'
+          Text = '8+3'
         end
       end
     end
@@ -1452,7 +1456,7 @@ object MainForm: TMainForm
         object GroupBox7: TGroupBox
           Left = 280
           Top = 7
-          Width = 177
+          Width = 297
           Height = 202
           Caption = 'TCON Type'
           TabOrder = 3
@@ -1474,17 +1478,15 @@ object MainForm: TMainForm
             Checked = True
             State = cbChecked
             TabOrder = 1
-            Visible = False
             OnClick = CheckBox_GammaTestClick
           end
           object GroupBox_DigitalGamma: TGroupBox
-            Left = 152
+            Left = 8
             Top = 38
             Width = 137
             Height = 155
             Caption = 'Digital Gamma '
             TabOrder = 2
-            Visible = False
             object Label12: TLabel
               Left = 7
               Top = 85
@@ -1578,7 +1580,7 @@ object MainForm: TMainForm
             end
           end
           object GroupBox_GammaTestAddress: TGroupBox
-            Left = 8
+            Left = 152
             Top = 38
             Width = 137
             Height = 155
@@ -1703,7 +1705,7 @@ object MainForm: TMainForm
   end
   object StatusBar1: TStatusBar
     Left = 0
-    Top = 307
+    Top = 309
     Width = 761
     Height = 19
     Panels = <

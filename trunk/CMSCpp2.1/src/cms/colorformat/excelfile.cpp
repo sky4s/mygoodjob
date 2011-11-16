@@ -259,7 +259,7 @@ namespace cms {
 	    __finally {
 		delete list;	// destroy the list object
 	    }
-            return false;
+	    return false;
 
 	};
 
@@ -362,6 +362,7 @@ namespace cms {
 	// ExcelAccessBase
 	//======================================================================
 	const string & ExcelAccessBase::DeltaData = "Delta_Data";
+	const std::string & ExcelAccessBase::Sheet1 = "Sheet1";
 	string_vector_ptr ExcelAccessBase::getHeaderNames(const std::string & sheetname) {
 	    return headerNamesMap[sheetname];
 	};
@@ -518,7 +519,7 @@ namespace cms {
 	//======================================================================
 	// SimpleExcelAccess
 	//======================================================================
-	const std::string & SimpleExcelAccess::Sheet1 = "Sheet1";
+
 	SimpleExcelAccess::SimpleExcelAccess(const std::string & filename, Mode mode):ExcelAccessBase(filename, mode) {	/*, headerNames(headerNames) */
 
 	};

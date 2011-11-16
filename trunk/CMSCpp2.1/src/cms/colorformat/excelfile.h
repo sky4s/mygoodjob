@@ -133,7 +133,7 @@ namespace cms {
 
 	    void initPropertySheet();
 	    void initBegin();
-
+	    const static std::string & Sheet1;
 	    //virtual void init() = 0;
 	  public:
 	    void initSheet(const std::string & sheetname, int headerCount, ...);
@@ -155,12 +155,12 @@ namespace cms {
 	};
 	class SimpleExcelAccess:protected ExcelAccessBase {
 	  private:
-	    const static std::string & Sheet1;
+
 	  protected:
 	    //string_vector_ptr headerNames;
 	    //void init();
 	  public:
-	     SimpleExcelAccess(const std::string & filename, Mode mode);
+	    SimpleExcelAccess(const std::string & filename, Mode mode);
 	     SimpleExcelAccess(const std::string & filename, Mode mode,
 			       string_vector_ptr headerNames);
 	     SimpleExcelAccess(const std::string & filename, Mode mode,
