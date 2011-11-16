@@ -57,7 +57,7 @@ namespace cms {
 		XYZ_vector_ptr targetXYZVector = (gamma != -1) ?
 		    DimTargetGenerator::getTarget(blackXYZ, targetWhite, partGammaCurve, gamma)
 		    : DimTargetGenerator::getLinearTarget(blackXYZ, targetWhite, partGammaCurve);
-		STORE_XYZXY_VECTOE("target.xls", targetXYZVector);
+		STORE_XYZXY_VECTOE("1.2_target.xls", targetXYZVector);
 		//==============================================================
 		RGB_vector_ptr result(new RGB_vector());
 		//primary color¥u¯à¥Îtarget white~

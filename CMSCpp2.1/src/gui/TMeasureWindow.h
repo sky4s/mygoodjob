@@ -59,12 +59,14 @@ class TMeasureWindow:public TForm {
     Pattern pattern;
      bptr < cms::util::DoubleBufferedCanvas > doubleBuffered;
      bptr < cms::util::DoubleBufferedCanvas > getDoubleBufferedCanvas();
+     bptr < cms::lcd::calibrate::BitDepthProcessor > bitDepth;
   public:			// User declarations
      __fastcall TMeasureWindow(TComponent * Owner);
     void setRGB(int r, int g, int b);
     void setRGB(RGB_ptr rgb);
     void setTCONInput(bptr < i2c::TCONControl > tconcontrl);
-    void setDGLUTInput(bptr < i2c::TCONControl > tconcontrl);
+    void setDGLUTInput(bptr < i2c::TCONControl > tconcontrl,
+		       bptr < cms::lcd::calibrate::BitDepthProcessor > bitDepth);
     void setTCONControlOff();
     void setVisible(bool visible);
     void addWindowListener(bptr < gui::event::WindowListener > listener);

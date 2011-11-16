@@ -330,8 +330,8 @@ namespace cms {
 		chromaticityEstimator->measure(0, dimFixEnd);
 		double_vector_ptr dxofBase = chromaticityEstimator->dxofBase;
 		double_vector_ptr dyofBase = chromaticityEstimator->dyofBase;
-		STORE_DOUBLE_VECTOR("o_dxofBase.xls", dxofBase);
-		STORE_DOUBLE_VECTOR("o_dyofBase.xls", dyofBase);
+		STORE_DOUBLE_VECTOR("4.0_o_dxofBase.xls", dxofBase);
+		STORE_DOUBLE_VECTOR("4.0_o_dyofBase.xls", dyofBase);
 
 
 		int checkEnd = dimFixEnd - 1;
@@ -342,8 +342,8 @@ namespace cms {
 		    getMustMeasureZoneIndexVector(dxofBase, dyofBase, 1, checkEnd);
 
 		int_vector_ptr reverseIndexes, looseIndexes;
-		double averagex = averageDistance[0];
-		double averagey = averageDistance[1];
+		double averagex =(nil_double_array != averageDistance)? averageDistance[0]:-1;
+		double averagey =(nil_double_array != averageDistance)? averageDistance[1]:-1;
 
 		while (getReverseIndexVector(dxofBase, 1, checkEnd)->size() != 0 ||
 		       getReverseIndexVector(dyofBase, 1, checkEnd)->size() != 0
@@ -389,9 +389,9 @@ namespace cms {
 
 
 				if (ch == Channel::R) {
-				    STORE_RGBVECTOR("3.4_r_reverse_fix_dgcode.xls", dglut);
+				    STORE_RGBVECTOR("4.1_r_reverse_fix_dgcode.xls", dglut);
 				} else if (ch == Channel::G) {
-				    STORE_RGBVECTOR("3.5_g_reverse_fix_dgcode.xls", dglut);
+				    STORE_RGBVECTOR("4.2_g_reverse_fix_dgcode.xls", dglut);
 				}
 				//調整完之後只量測有被調整的那區域(也就是3個GL)
 				//若該區域都ok, 換下一個反轉
@@ -415,64 +415,6 @@ namespace cms {
 			}	//foreach loop
 			//==========================================================================
 
-			//==========================================================================
-			/*if (nil_double_array != averageDistance) {
-			   looseIndexes = getLooseIndexVector(deltaOfBase, 1, checkEnd);
-			   double_vector_ptr deltaOfBase0;
-
-			   foreach(int index, *looseIndexes) {
-
-			   int test = 0;
-			   do {
-			   //進入內層代表遇到defect
-			   int y = index;
-			   double deltaU1 = (*deltaOfBase)[y + 1];
-			   double deltaD1 = (*deltaOfBase)[y - 1];
-
-			   RGB_ptr rgb;
-			   double value = -1;
-			   //TODO
-			   if (deltaU1 > deltaD1) {
-			   //若上方的delta比較大, 代表比較大的調整空間, 所以往上調
-			   rgb = (*dglut)[y];
-			   value = rgb->getValue(ch) + 1;
-			   } else {
-			   //反之, 就是往下調
-			   rgb = (*dglut)[y - 1];
-			   value = rgb->getValue(ch) - 1;
-			   }
-			   rgb->setValue(ch, value);
-
-
-			   if (ch == Channel::R) {
-			   STORE_RGBVECTOR("3.6_r_loose_fix_dgcode.xls", dglut);
-			   } else if (ch == Channel::G) {
-			   STORE_RGBVECTOR("3.7_g_loose_fix_dgcode.xls", dglut);
-			   }
-			   //調整完之後只量測有被調整的那區域(也就是3個GL)
-			   //若該區域都ok, 換下一個反轉
-			   int localStart = y - 1;
-			   int localEnd = y + 1;
-
-			   chromaticityEstimator->measure(localStart, localEnd);
-			   double_vector_ptr dxofBase0 = chromaticityEstimator->dxofBase;
-			   double_vector_ptr dyofBase0 = chromaticityEstimator->dyofBase;
-			   deltaOfBase0 = selectDelta(dxofBase0, dyofBase0, ch);
-
-			   test++;
-			   if (null != feedbackListener) {
-			   int feedbackFixCount =
-			   chromaticityEstimator->getMeasureCount();
-			   int looseCount = looseIndexes->size();
-			   feedbackListener->doFeedback(looseCount, feedbackFixCount);
-			   }
-			   } while (checkReverse(deltaOfBase0, 1, 2) != -1
-			   && test < MaxTestCount);
-			   //因為量測結果會多墊一個0, 所以checkReverse從1開始做檢查
-
-			   }    //foreach loop
-			   } */// end if loop
-
 
 		    }		//for ch loop
 		    //只有在量全部的時候才會下constrained
@@ -481,10 +423,10 @@ namespace cms {
 		    chromaticityEstimator->Constrained = nil_int_vector_ptr;
 		    dxofBase = chromaticityEstimator->dxofBase;
 		    dyofBase = chromaticityEstimator->dyofBase;
-		    STORE_DOUBLE_VECTOR("dxofBase.xls", dxofBase);
-		    STORE_DOUBLE_VECTOR("dyofBase.xls", dyofBase);
+		    STORE_DOUBLE_VECTOR("4.3_dxofBase.xls", dxofBase);
+		    STORE_DOUBLE_VECTOR("4.3_dyofBase.xls", dyofBase);
 		}		//out while
-		STORE_RGBVECTOR("3.8_reverse_fix_dgcode.xls", dglut);
+		STORE_RGBVECTOR("4.9_reverse_fix_dgcode.xls", dglut);
 		this->feedbackFixCount = chromaticityEstimator->getMeasureCount();
 		this->maxMeasureError = chromaticityEstimator->getMaxMeasureError();
 	    };
@@ -549,8 +491,8 @@ namespace cms {
 									double_vector_ptr dyofBase,
 									int start, int end) {
 		int_vector_ptr result(new int_vector());
-		double averagex = averageDistance[0];
-		double averagey = averageDistance[1];
+		double averagex =(nil_double_array != averageDistance)? averageDistance[0]:-1;
+		double averagey =(nil_double_array != averageDistance)? averageDistance[1]:-1;
 
 		for (int x = start; x < end; x++) {
 		    double dx = (*dxofBase)[x];

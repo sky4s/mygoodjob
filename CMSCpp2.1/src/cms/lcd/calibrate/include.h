@@ -12,4 +12,5 @@
 #include "dimdg.h";
 #include "dg.h"; 
 #include "common.h";
-#include "feedback.h"; 
+#include "feedback.h";
+#include "quantizer.h";

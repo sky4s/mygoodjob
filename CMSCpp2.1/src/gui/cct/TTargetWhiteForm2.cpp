@@ -199,7 +199,7 @@ void __fastcall TTargetWhiteForm2::Button_RunClick(TObject * Sender)
 
 	MainForm->setMeterMeasurementWaitTimes();
 	MainForm->setAnalyzerToSourceChannel();
-        Button_Run->Enabled = false;
+	Button_Run->Enabled = false;
 
 	bool usemaxRGB = this->RadioButton_MaxRGB->Checked;
 	bool useRGBRatio = this->RadioButton_RGBRatio->Checked;
@@ -273,7 +273,6 @@ void __fastcall TTargetWhiteForm2::Button_RunClick(TObject * Sender)
 	//==========================================================================
 	// 設定到ca-210去
 	//==========================================================================
-
 	bool tconinput = MainForm->isTCONInput();
 
 	analyzer->setWaitTimes(5000);
@@ -352,12 +351,12 @@ void __fastcall TTargetWhiteForm2::Button_RunClick(TObject * Sender)
 	//==========================================================================
     }
     __finally {
-        measuring = false;
+	measuring = false;
 	stopMeasure = false;
 	MainForm->setMeterMeasurementWaitTimes();
-        analyzer->endAnalyze();
+	analyzer->endAnalyze();
 	//analyzer.reset();
-        Button_Run->Enabled = true;
+	Button_Run->Enabled = true;
     }
 }
 
@@ -518,9 +517,9 @@ void __fastcall TTargetWhiteForm2::FormKeyPress(TObject * Sender, char &Key)
     if (Key == 27) {		//esc
 	if (true == measuring) {
 	    stopMeasure = true;
-	} /*else {
-	    this->Close();
-	}*/
+	}			/*else {
+				   this->Close();
+				   } */
     }
 }
 

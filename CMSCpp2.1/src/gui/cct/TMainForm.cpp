@@ -106,6 +106,21 @@ void TMainForm::initTCONFile()
 	// produce tcon ini file
 	//=========================================================================================
 	bptr_ < TIniFile > ini(new TIniFile(tconFilename));
+
+	//=========================================================================
+	// 11303
+	//=========================================================================
+	ini->WriteInteger("11303", "AddressingSize", 5);
+
+	ini->WriteString("11303", "DigitalGammaEnableAddress", "4");
+	ini->WriteInteger("11303", "DigitalGammaEnableBit", 1);
+	ini->WriteString("11303", "DigitalGammaLUTAddress", "302");
+	ini->WriteInteger("11303", "DigitalGammaLUTType", 10);
+
+	ini->WriteBool("11303", "GammaTestFunc", false);
+
+	ini->WriteInteger("11303", "in", 8);
+	ini->WriteInteger("11303", "out", 8);
 	//=========================================================================
 	// 11306
 	//=========================================================================
@@ -180,7 +195,6 @@ void TMainForm::initTCONFile()
 	ini->WriteBool("12401", "IndepRGB", true);
 
 	ini->WriteInteger("12401", "in", 8);
-	//ini->WriteInteger("12401", "lut", 12);
 	ini->WriteInteger("12401", "out", 8);
 	//=========================================================================
     }
@@ -207,8 +221,6 @@ void TMainForm::readTCONSetup(String filename, String section)
     this->ComboBox_AddressingSize->ItemIndex = ini->ReadInteger(section, "AddressingSize", 5);
     bool gammaTestFunc = ini->ReadBool(section, "GammaTestFunc", true);
 
-    //this->CheckBox_GammaTest->Checked = gammaTestFunc;
-
     if (gammaTestFunc) {
 	GroupBox_GammaTestAddress->Visible = true;
 	this->Edit_GammaTestEnableAddress->Text =
@@ -218,7 +230,8 @@ void TMainForm::readTCONSetup(String filename, String section)
 	this->ComboBox_GammaTestType->ItemIndex = ini->ReadBool(section, "IndepRGB", true) ? 0 : 1;
 	ComboBox_GammaTestTypeChange(this);
     } else {
-	GroupBox_GammaTestAddress->Visible = false;
+	CheckBox_GammaTest->Checked = false;
+	//GroupBox_GammaTestAddress->Visible = false;
     }
     this->Edit_DGEnableAddress->Text = ini->ReadString(section, "DigitalGammaEnableAddress", "28");
     this->Edit_DGEnableBit->Text = ini->ReadInteger(section, "DigitalGammaEnableBit", 0);
@@ -274,8 +287,8 @@ void TMainForm::writeTCONCustomSetup()
 	ini->WriteString(CUSTOM, "DigitalGammaLUTAddress", this->Edit_DGLUTAddress->Text);
 	ini->WriteInteger(CUSTOM, "DigitalGammaLUTType", ComboBox_DGLUTType->Text.ToInt());
 
-	//bool gammaTest = CheckBox_GammaTest->Checked;
-	bool gammaTest = true;
+	bool gammaTest = CheckBox_GammaTest->Checked;
+	//bool gammaTest = true;
 	ini->WriteBool(CUSTOM, "GammaTestFunc", gammaTest);
 	if (gammaTest) {
 	    ini->WriteString(CUSTOM, "GammaTestEnableAddress",
@@ -359,6 +372,7 @@ void TMainForm::initCA210Meter()
 	meter = bptr < Meter > (new CA210());
 	mm = bptr < MeterMeasurement > (new MeterMeasurement(meter, false));
 	mm->WaitTimes = this->getInterval();
+	StatusBar1->Panels->Items[1]->Text = "CA-210 Connected!";
 
 	if (connectCA210ByThread) {
 	    stopProgress(MainForm->ProgressBar1);
@@ -368,8 +382,6 @@ void TMainForm::initCA210Meter()
 	    ca210Thread = null;
 
 	}
-	StatusBar1->Panels->Items[1]->Text = "CA-210 Connected!";
-
     }
     catch(EOleException & ex) {
 	if (connectCA210ByThread) {
@@ -765,8 +777,8 @@ void __fastcall TMainForm::Button_ConnectClick(TObject * Sender)
 	//=====================================================================
 	// gamma test
 	//=====================================================================
-	//bool gammaTest = CheckBox_GammaTest->Checked;
-	bool gammaTest = true;
+	bool gammaTest = CheckBox_GammaTest->Checked;
+	//bool gammaTest = true;
 	if (gammaTest) {
 	    int gammaTestAddress = StrToInt("0x" + this->Edit_GammaTestEnableAddress->Text);
 	    int gammaTestBit = this->Edit_GammaTestEnableBit->Text.ToInt();
@@ -799,10 +811,19 @@ void __fastcall TMainForm::Button_ConnectClick(TObject * Sender)
 	}
 	this->Button_Connect->Enabled = false;
 	this->StatusBar1->Panels->Items[2]->Text = "T-CON Connected";
-	if (!this->RadioButton_PCTCON->Checked) {
-	    MeasureWindow->setTCONInput(control);
-	    this->bitDepth->setTCONInput(true);
+	if (!this->RadioButton_PCTCON_NB->Checked) {
+
+	    if (this->RadioButton_PCTCON_TV->Checked) {
+		MeasureWindow->setDGLUTInput(control, bitDepth);
+		this->bitDepth->setTCONInput(true);
+	    } else {
+
+		MeasureWindow->setTCONInput(control);
+		this->bitDepth->setTCONInput(true);
+	    }
 	}
+
+
     } else {
 	MeasureWindow->setTCONControlOff();
     }
@@ -1187,15 +1208,17 @@ void __fastcall TMainForm::ComboBox_TCONTypeChange(TObject * Sender)
 	    readTCONSetup(tconFilename, section);
 
 	    GroupBox_DigitalGamma->Enabled = false;
+	    //GroupBox_DigitalGamma->Visible = false;
 	    GroupBox_GammaTestAddress->Enabled = false;
 	}
     } else {
 	ShowMessage("Remember setting Bit Depth!");
 
 	readTCONSetup(ExtractFilePath(Application->ExeName) + SETUPFILE, "Custom");
-	//CheckBox_GammaTest->Visible = true;
+	CheckBox_GammaTest->Visible = true;
 	CheckBox_GammaTestClick(null);
 	GroupBox_DigitalGamma->Enabled = true;
+	//GroupBox_DigitalGamma->Visible = true;
 	GroupBox_GammaTestAddress->Enabled = true;
     }
 }
@@ -1204,8 +1227,8 @@ void __fastcall TMainForm::ComboBox_TCONTypeChange(TObject * Sender)
 
 void __fastcall TMainForm::CheckBox_GammaTestClick(TObject * Sender)
 {
-    //bool gammaTest = this->CheckBox_GammaTest->Checked;
-    //GroupBox_GammaTestAddress->Visible = gammaTest;
+    bool gammaTest = this->CheckBox_GammaTest->Checked;
+    GroupBox_GammaTestAddress->Visible = gammaTest;
 }
 
 //---------------------------------------------------------------------------
@@ -1215,10 +1238,15 @@ bptr < i2c::TCONControl > TMainForm::getTCONControl()
 };
 bool TMainForm::isTCONInput()
 {
-    return RadioButton_TCON->Checked;
+    return true == RadioButton_TCON->Checked ;
 };
 
-void __fastcall TMainForm::RadioButton_PCTCONClick(TObject * Sender)
+bool TMainForm::isPCwithTCONInput()
+{
+    return true == RadioButton_PCTCON_TV->Checked ||true == RadioButton_PCTCON_NB->Checked;
+};
+
+void __fastcall TMainForm::RadioButton_PCTCON_NBClick(TObject * Sender)
 {
     this->Panel_TCON->Visible = true;
     ComboBox_TCONTypeChange(this);
@@ -1378,6 +1406,17 @@ void __fastcall TMainForm::TabSheet2Exit(TObject * Sender)
 void __fastcall TMainForm::Edit_AverageTimesChange(TObject * Sender)
 {
     mm->AverageTimes = this->Edit_AverageTimes->Text.ToInt();
+}
+
+//---------------------------------------------------------------------------
+
+void __fastcall TMainForm::RadioButton_PCTCON_TVClick(TObject * Sender)
+{
+    this->Panel_TCON->Visible = true;
+    ComboBox_TCONTypeChange(this);
+    bitDepth->setTCONInput(false);
+    MeasureWindow->setTCONControlOff();
+    PageControl1->ActivePageIndex = 1;
 }
 
 //---------------------------------------------------------------------------

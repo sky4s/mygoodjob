@@ -13,7 +13,7 @@
 #include "component.h"
 #include "dg.h"
 #include "common.h"
-
+#include "quantizer.h"
 /*
  UI與內部Object聯結的思維
 
@@ -117,6 +117,8 @@ namespace cms {
 		int feedbackFixCount;
 		bool smoothComponent;
 		double_array maxMeasureError;
+		bool colorimetricQuanti;
+		QuantiType quantiType;
 		//==============================================================
 
 	      public:
@@ -218,9 +220,14 @@ namespace cms {
 					      double_vector_ptr dyofBase, Dep::Channel & ch);
 
 		Component_vector_ptr getDimComponentVector(RGB_vector_ptr dglut);
-
 		//==============================================================
-
+		// 量化
+		//==============================================================
+		static RGB_vector_ptr colorimetricQuantization(RGB_vector_ptr dglut, int quadrant);
+		/*static int_array getBestRGB(int r, int g, int b, int quadrant);
+		   static double_array getxy(int r, int g, int b);
+		   static int getQuadrant(double x, double y); */
+		//==============================================================
 		//==============================================================
 		// smooth
 		//==============================================================

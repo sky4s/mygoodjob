@@ -29,7 +29,9 @@ namespace i2c {
 
 	const Dep::MaxValue & getLUTBit();
 	void setDGLut(RGB_vector_ptr rgbVector);
+	RGB_vector_ptr getDGLut();
 	void setDG(bool enable);
+	bool isDG();
 	unsigned char readByte(int dataAddress);
 	void writeByte(int dataAddress, unsigned char data);
 	bool isGammaTestEnable();
@@ -37,10 +39,14 @@ namespace i2c {
 
 	void write(int dataAddress, bptr < cms::util::ByteBuffer > data);
 	static int_array getLMHData(int data);
-	 bptr < cms::util::ByteBuffer > getDGLut10BitByteBuffer(RGB_vector_ptr rgbVector);
-	 bptr < cms::util::ByteBuffer > getDGLut12BitByteBuffer(RGB_vector_ptr rgbVector);
-	void setBitData(int dataAddress, unsigned char bit, bool data);
 
+	void setBitData(int dataAddress, unsigned char bit, bool data);
+	bool getBitData(int dataAddress, unsigned char bit);
+      public:
+	static bptr < cms::util::ByteBuffer > getDGLut10BitByteBuffer(RGB_vector_ptr rgbVector);
+	static bptr < cms::util::ByteBuffer >
+	    getDGLut10BitByteBufferType2(RGB_vector_ptr rgbVector);
+	static bptr < cms::util::ByteBuffer > getDGLut12BitByteBuffer(RGB_vector_ptr rgbVector);
     };
 };
 
