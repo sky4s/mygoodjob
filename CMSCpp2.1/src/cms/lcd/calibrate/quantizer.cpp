@@ -57,6 +57,7 @@ namespace cms {
 		double_array minxy = nil_double_array;
 		int_array bestRGB = nil_int_array;
 		double_array averagexy(new double[2]);
+		//理想目標之間的色度差距 單位為 萬分之一=0.0001
 		averagexy[0] = 5, averagexy[1] = 8;
 
 		for (int rr = 0; rr < (r != 0 ? 2 : 1); rr++) {
@@ -67,6 +68,7 @@ namespace cms {
 			    int bbb = b != 0 ? b * 2 - 1 + bb : 0;
 			    double_array xy = getxyPrecise(rrr, ggg, bbb);
 			    int nowQuadrant = getQuadrant(xy[0], xy[1]);
+                            //以理想色度差距作為加權
 			    double dist = Math::sqrt(Math::sqr(averagexy[0] * xy[0]) +
 						     Math::sqr(averagexy[1] * xy[1]));
 			    if ((nowQuadrant == quadrant && 0 != nowQuadrant &&
