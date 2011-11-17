@@ -393,8 +393,6 @@ object CCTLUTForm: TCCTLUTForm
       Width = 71
       Height = 20
       Caption = 'Feedback'
-      Checked = True
-      State = cbChecked
       TabOrder = 11
       OnClick = CheckBox_FeedbackClick
     end

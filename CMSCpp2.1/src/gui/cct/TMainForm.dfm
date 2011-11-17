@@ -1366,8 +1366,8 @@ object MainForm: TMainForm
         object GroupBox_DeviceAddress: TGroupBox
           Left = 98
           Top = 7
-          Width = 176
-          Height = 202
+          Width = 207
+          Height = 98
           Caption = 'Device Address'
           TabOrder = 1
           object Label5: TLabel
@@ -1454,7 +1454,7 @@ object MainForm: TMainForm
           OnClick = Button_ConnectClick
         end
         object GroupBox7: TGroupBox
-          Left = 280
+          Left = 312
           Top = 7
           Width = 297
           Height = 202
@@ -1465,7 +1465,7 @@ object MainForm: TMainForm
             Top = 13
             Width = 138
             Height = 21
-            ItemHeight = 0
+            ItemHeight = 13
             TabOrder = 0
             OnChange = ComboBox_TCONTypeChange
           end
@@ -1690,6 +1690,42 @@ object MainForm: TMainForm
             end
           end
         end
+        object GroupBox_USBSetting: TGroupBox
+          Left = 98
+          Top = 104
+          Width = 207
+          Height = 105
+          Caption = 'USB Setting'
+          TabOrder = 4
+          object RadioGroup_USBPower: TRadioGroup
+            Left = 8
+            Top = 16
+            Width = 193
+            Height = 41
+            Caption = 'Power'
+            Columns = 3
+            ItemIndex = 2
+            Items.Strings = (
+              'External'
+              '+5V'
+              '+3.3V')
+            TabOrder = 0
+          end
+          object RadioGroup_Speed: TRadioGroup
+            Left = 8
+            Top = 56
+            Width = 193
+            Height = 41
+            Caption = 'Speed'
+            Columns = 3
+            ItemIndex = 2
+            Items.Strings = (
+              '50KHz'
+              '100KHz'
+              '400KHz')
+            TabOrder = 1
+          end
+        end
       end
     end
   end
@@ -1705,7 +1741,7 @@ object MainForm: TMainForm
   end
   object StatusBar1: TStatusBar
     Left = 0
-    Top = 309
+    Top = 307
     Width = 761
     Height = 19
     Panels = <
