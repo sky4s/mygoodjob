@@ -128,6 +128,9 @@ class TMainForm:public TForm {
     TLabel *Label21;
     TEdit *Edit_AverageTimes;
     TRadioButton *RadioButton_PCTCON_TV;
+    TGroupBox *GroupBox_USBSetting;
+    TRadioGroup *RadioGroup_USBPower;
+    TRadioGroup *RadioGroup_Speed;
     void __fastcall About1Click(TObject * Sender);
     void __fastcall Exit1Click(TObject * Sender);
     void __fastcall TargetWhite1Click(TObject * Sender);

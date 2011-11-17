@@ -76,6 +76,7 @@ void __fastcall TI2CTestForm::Button1Click(TObject * Sender)
     AddressingSize addressingSize = getAddressingSize();
 
     if (this->RadioButton_USB->Checked) {
+    
 	i2c1st = i2cControl::getUSBInstance(first, addressingSize, _3_3V, _400KHz);
 	if (dual) {
 	    i2c2nd = i2cControl::getUSBInstance(second, addressingSize, _3_3V, _400KHz);

@@ -748,9 +748,12 @@ void __fastcall TMainForm::Button_ConnectClick(TObject * Sender)
     }
     AddressingSize addressingSize = getAddressingSize();
     if (this->RadioButton_USB->Checked) {
-	i2c1st = i2cControl::getUSBInstance(first, addressingSize, _3_3V, _400KHz);
+	USBPower power = RadioGroup_USBPower->ItemIndex;
+	USBSpeed speed = RadioGroup_Speed->ItemIndex;
+
+	i2c1st = i2cControl::getUSBInstance(first, addressingSize, power, speed);
 	if (dual) {
-	    i2c2nd = i2cControl::getUSBInstance(second, addressingSize, _3_3V, _400KHz);
+	    i2c2nd = i2cControl::getUSBInstance(second, addressingSize, power, speed);
 	};
     } else {
 
@@ -1180,6 +1183,7 @@ void __fastcall TMainForm::FormDestroy(TObject * Sender)
 void __fastcall TMainForm::RadioButton_USBClick(TObject * Sender)
 {
     Button_Connect->Enabled = true;
+    GroupBox_USBSetting->Visible = true;
 }
 
 //---------------------------------------------------------------------------
@@ -1187,6 +1191,7 @@ void __fastcall TMainForm::RadioButton_USBClick(TObject * Sender)
 void __fastcall TMainForm::RadioButton_LPTLargeClick(TObject * Sender)
 {
     Button_Connect->Enabled = true;
+    GroupBox_USBSetting->Visible = false;
 }
 
 //---------------------------------------------------------------------------
@@ -1194,6 +1199,7 @@ void __fastcall TMainForm::RadioButton_LPTLargeClick(TObject * Sender)
 void __fastcall TMainForm::RadioButton_LPTSmallClick(TObject * Sender)
 {
     Button_Connect->Enabled = true;
+    GroupBox_USBSetting->Visible = false;
 }
 
 //---------------------------------------------------------------------------
@@ -1238,12 +1244,12 @@ bptr < i2c::TCONControl > TMainForm::getTCONControl()
 };
 bool TMainForm::isTCONInput()
 {
-    return true == RadioButton_TCON->Checked ;
+    return true == RadioButton_TCON->Checked;
 };
 
 bool TMainForm::isPCwithTCONInput()
 {
-    return true == RadioButton_PCTCON_TV->Checked ||true == RadioButton_PCTCON_NB->Checked;
+    return true == RadioButton_PCTCON_TV->Checked || true == RadioButton_PCTCON_NB->Checked;
 };
 
 void __fastcall TMainForm::RadioButton_PCTCON_NBClick(TObject * Sender)

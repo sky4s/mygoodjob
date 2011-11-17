@@ -834,8 +834,8 @@ object ThreeDMeasurementForm: TThreeDMeasurementForm
     Top = 7
     Width = 410
     Height = 258
-    ActivePage = TabSheet3
-    TabIndex = 2
+    ActivePage = TabSheet1
+    TabIndex = 0
     TabOrder = 0
     object TabSheet1: TTabSheet
       Caption = 'Batch'
