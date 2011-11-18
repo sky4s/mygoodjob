@@ -51,9 +51,16 @@ void __fastcall TGammaMeasurementForm::Button_MeasureClick(TObject * Sender)
     string stlfilename = filename->c_str();
     Util::deleteExist(stlfilename);
 
-    if (measure(rgbw, getMeasureCondition(), flicker, stlfilename)) {
-	ShowMessage("Ok!");
-	Util::shellExecute(stlfilename);
+
+    try {
+	MainForm->showProgress(ProgressBar1);
+	if (measure(rgbw, getMeasureCondition(), flicker, stlfilename)) {
+	    ShowMessage("Ok!");
+	    Util::shellExecute(stlfilename);
+	}
+    }
+    __finally {
+	MainForm->stopProgress(ProgressBar1);
     }
 }
 

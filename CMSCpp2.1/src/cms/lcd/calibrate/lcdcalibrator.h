@@ -14,6 +14,7 @@
 #include "dg.h"
 #include "common.h"
 #include "quantizer.h"
+//#include "feedback.h"
 /*
  UI與內部Object聯結的思維
 
@@ -112,13 +113,21 @@ namespace cms {
 		bool accurateMode;
 		bool manualAccurateMode;
 		bool remapped;
+		//dprecated
 		double middleCCTRatio;
+
+		//for feedback
 		bool feedbackFix;
 		int feedbackFixCount;
-		bool smoothComponent;
+		int initDefectCount;
 		double_array maxMeasureError;
 		bool colorimetricQuanti;
 		QuantiType quantiType;
+		 bptr < cms::lcd::calibrate::FeedbackFixer > feedbackFixer;
+
+		//dprecated
+		bool smoothComponent;
+
 		//==============================================================
 
 	      public:
@@ -178,7 +187,8 @@ namespace cms {
 
 		 bptr < MeasureCondition > measureCondition;
 		 bptr < BitDepthProcessor > bitDepth;
-		 bptr < FeedbackListener > feedbackListener;
+		//bptr < FeedbackListener > feedbackListener;
+		FeedbackListener *feedbackListener;
 		//==============================================================
 
 		//==============================================================
@@ -224,9 +234,6 @@ namespace cms {
 		// 量化
 		//==============================================================
 		static RGB_vector_ptr colorimetricQuantization(RGB_vector_ptr dglut, int quadrant);
-		/*static int_array getBestRGB(int r, int g, int b, int quadrant);
-		   static double_array getxy(int r, int g, int b);
-		   static int getQuadrant(double x, double y); */
 		//==============================================================
 		//==============================================================
 		// smooth
@@ -268,7 +275,7 @@ namespace cms {
 		    NativeWhiteAnalyzer = { read = nativeWhiteAnalyzer, write = nativeWhiteAnalyzer
 		};
 		__property bptr < i2c::TCONControl > TCONControl = { write = tconctrl };
-		void setFeedbackListener(bptr < FeedbackListener > listener);
+		void setFeedbackListener(FeedbackListener * listener);
 		//==============================================================
 
 

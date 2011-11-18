@@ -385,7 +385,7 @@ object CCTLUTForm: TCCTLUTForm
       Width = 49
       Height = 21
       TabOrder = 10
-      Text = '0.0000'
+      Text = '0.0001'
     end
     object CheckBox_Feedback: TCheckBox
       Left = 26
@@ -943,8 +943,8 @@ object CCTLUTForm: TCCTLUTForm
   object Edit_FeedbackMsg: TEdit
     Left = 240
     Top = 352
-    Width = 100
-    Height = 21
+    Width = 305
+    Height = 17
     TabOrder = 16
     Visible = False
   end

@@ -229,10 +229,9 @@ void TMainForm::readTCONSetup(String filename, String section)
 	this->Edit_GammaTestAddress->Text = ini->ReadString(section, "GammaTestAddress", "154");
 	this->ComboBox_GammaTestType->ItemIndex = ini->ReadBool(section, "IndepRGB", true) ? 0 : 1;
 	ComboBox_GammaTestTypeChange(this);
-    } else {
-	CheckBox_GammaTest->Checked = false;
-	//GroupBox_GammaTestAddress->Visible = false;
-    }
+    } 
+    CheckBox_GammaTest->Checked = gammaTestFunc;
+
     this->Edit_DGEnableAddress->Text = ini->ReadString(section, "DigitalGammaEnableAddress", "28");
     this->Edit_DGEnableBit->Text = ini->ReadInteger(section, "DigitalGammaEnableBit", 0);
     this->Edit_DGLUTAddress->Text = ini->ReadString(section, "DigitalGammaLUTAddress", "302");
@@ -288,6 +287,7 @@ void TMainForm::writeTCONCustomSetup()
 	ini->WriteInteger(CUSTOM, "DigitalGammaLUTType", ComboBox_DGLUTType->Text.ToInt());
 
 	bool gammaTest = CheckBox_GammaTest->Checked;
+        //CheckBox_GammaTest->Checked = gammaTest;
 	//bool gammaTest = true;
 	ini->WriteBool(CUSTOM, "GammaTestFunc", gammaTest);
 	if (gammaTest) {
@@ -748,8 +748,8 @@ void __fastcall TMainForm::Button_ConnectClick(TObject * Sender)
     }
     AddressingSize addressingSize = getAddressingSize();
     if (this->RadioButton_USB->Checked) {
-	USBPower power = RadioGroup_USBPower->ItemIndex;
-	USBSpeed speed = RadioGroup_Speed->ItemIndex;
+	USBPower power = (USBPower) RadioGroup_USBPower->ItemIndex;
+	USBSpeed speed = (USBSpeed) RadioGroup_Speed->ItemIndex;
 
 	i2c1st = i2cControl::getUSBInstance(first, addressingSize, power, speed);
 	if (dual) {

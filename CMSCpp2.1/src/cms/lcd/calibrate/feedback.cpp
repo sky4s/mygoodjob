@@ -92,8 +92,7 @@ namespace cms {
 		init();
 	    };
 	  MeasureEstimator::MeasureEstimator(RGB_vector_ptr dglut, bptr < cms::measure::IntensityAnalyzerIF > analyzer, bptr < BitDepthProcessor > bitDepth):dglut(dglut), mm(analyzer->getMeterMeasurement()),
-		bitDepth(bitDepth), size(dglut->size()),
-		useComponentVector(false), measureRdxGdy(true) {
+		bitDepth(bitDepth), size(dglut->size()), useComponentVector(false), measureRdxGdy(true) {
 		init();
 	    };
 	    double_array MeasureEstimator::getdxdy(const Dep::Channel & ch, int componentIndex) {
@@ -182,7 +181,8 @@ namespace cms {
 		mm->close();
 	    };
 
-	    void MeasureEstimator::measure(int startIndex, int endIndex) {
+	    bool MeasureEstimator::measure(int startIndex, int endIndex) {
+		//success = false;
 		resetMeasure();
 		//const Dep::MaxValue & frcBit = bitDepth->getFRCAbilityBit();
 		XYZ_vector_ptr baseXYZVec(new XYZ_vector());
@@ -205,6 +205,9 @@ namespace cms {
 		    } else {
 			RGB_ptr rgb = getMeasureBaseRGB(x);
 			XYZ = measure(rgb);
+		    }
+		    if (null == XYZ) {
+			return false;
 		    }
 		    baseXYZVec->push_back(XYZ);
 		}
@@ -238,11 +241,15 @@ namespace cms {
 		    dxofRVector = DoubleArray::getReverse(dxofRVector);
 		    dyofGVector = DoubleArray::getReverse(dyofGVector);
 		}
-
+		//success = true;
+		return true;
 	    }
 
 	    XYZ_ptr MeasureEstimator::measure(RGB_ptr rgb) {
 		Patch_ptr p = mm->measure(rgb, nil_string_ptr);
+		if (null == p) {
+		    return nil_XYZ_ptr;
+		}
 		XYZ_ptr XYZ = p->getXYZ();
 		Component_ptr c(new Component(rgb, nil_RGB_ptr, XYZ));
 		storeComponentVector->push_back(c);
@@ -327,14 +334,21 @@ namespace cms {
 		    chromaticityEstimator(new MeasureEstimator(dglut, analyzer, bitDepth));
 		chromaticityEstimator->MeasureRdxGdy = false;
 		//秖dx dy
-		chromaticityEstimator->measure(0, dimFixEnd);
+		if (!chromaticityEstimator->measure(0, dimFixEnd)) {
+		    return;
+		}
 		double_vector_ptr dxofBase = chromaticityEstimator->dxofBase;
 		double_vector_ptr dyofBase = chromaticityEstimator->dyofBase;
 		STORE_DOUBLE_VECTOR("4.0_o_dxofBase.xls", dxofBase);
 		STORE_DOUBLE_VECTOR("4.0_o_dyofBase.xls", dyofBase);
 
-
 		int checkEnd = dimFixEnd - 1;
+		initDefectCount =
+		    getReverseIndexVector(dxofBase, 1, checkEnd)->size() +
+		    getReverseIndexVector(dyofBase, 1, checkEnd)->size();
+
+
+
 		const int MaxTestCount = 4;
 		//mustZoneノ種琌, ﹚ㄇよΤ reverse,
 		//┕璶秖Τreverseよ, ぃノ场常秖
@@ -342,8 +356,8 @@ namespace cms {
 		    getMustMeasureZoneIndexVector(dxofBase, dyofBase, 1, checkEnd);
 
 		int_vector_ptr reverseIndexes, looseIndexes;
-		double averagex =(nil_double_array != averageDistance)? averageDistance[0]:-1;
-		double averagey =(nil_double_array != averageDistance)? averageDistance[1]:-1;
+		double averagex = (nil_double_array != averageDistance) ? averageDistance[0] : -1;
+		double averagey = (nil_double_array != averageDistance) ? averageDistance[1] : -1;
 
 		while (getReverseIndexVector(dxofBase, 1, checkEnd)->size() != 0 ||
 		       getReverseIndexVector(dyofBase, 1, checkEnd)->size() != 0
@@ -398,7 +412,9 @@ namespace cms {
 				int localStart = y - 1;
 				int localEnd = y + 1;
 
-				chromaticityEstimator->measure(localStart, localEnd);
+				if (!chromaticityEstimator->measure(localStart, localEnd)) {
+				    return;
+				}
 				double_vector_ptr dxofBase0 = chromaticityEstimator->dxofBase;
 				double_vector_ptr dyofBase0 = chromaticityEstimator->dyofBase;
 				deltaOfBase0 = selectDelta(dxofBase0, dyofBase0, ch);
@@ -408,6 +424,10 @@ namespace cms {
 				    int feedbackFixCount = chromaticityEstimator->getMeasureCount();
 				    int reverseCount = reverseIndexes->size();
 				    feedbackListener->doFeedback(reverseCount, feedbackFixCount);
+				}
+				//stop here
+				if (true == stop) {
+				    return;
 				}
 			    } while (checkReverse(deltaOfBase0, 1, 2) != -1 && test < MaxTestCount);
 			    //秖代挡狦穦乖0, ┮checkReverse眖1秨﹍暗浪琩
@@ -419,7 +439,9 @@ namespace cms {
 		    }		//for ch loop
 		    //Τ秖场穦constrained
 		    chromaticityEstimator->Constrained = mustZone;
-		    chromaticityEstimator->measure(0, dimFixEnd);
+		    if (!chromaticityEstimator->measure(0, dimFixEnd)) {
+			return;
+		    }
 		    chromaticityEstimator->Constrained = nil_int_vector_ptr;
 		    dxofBase = chromaticityEstimator->dxofBase;
 		    dyofBase = chromaticityEstimator->dyofBase;
@@ -487,12 +509,12 @@ namespace cms {
 		return result;
 	    }
 
-	    int_vector_ptr FeedbackFixer::getMustMeasureZoneIndexVector(double_vector_ptr dxofBase,
-									double_vector_ptr dyofBase,
-									int start, int end) {
+	    int_vector_ptr FeedbackFixer::
+		getMustMeasureZoneIndexVector(double_vector_ptr dxofBase,
+					      double_vector_ptr dyofBase, int start, int end) {
 		int_vector_ptr result(new int_vector());
-		double averagex =(nil_double_array != averageDistance)? averageDistance[0]:-1;
-		double averagey =(nil_double_array != averageDistance)? averageDistance[1]:-1;
+		double averagex = (nil_double_array != averageDistance) ? averageDistance[0] : -1;
+		double averagey = (nil_double_array != averageDistance) ? averageDistance[1] : -1;
 
 		for (int x = start; x < end; x++) {
 		    double dx = (*dxofBase)[x];

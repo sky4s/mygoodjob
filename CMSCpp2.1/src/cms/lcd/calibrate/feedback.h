@@ -57,6 +57,7 @@ namespace cms {
 		XYZ_ptr measure(RGB_ptr rgb);
 		bool measureRdxGdy;
 		int_vector_ptr constrained;
+		//bool success;
 	      public:
 		 MeasureEstimator(Component_vector_ptr componentVector,
 				  bptr < cms::measure::MeterMeasurement > mm,
@@ -70,7 +71,7 @@ namespace cms {
 		virtual double_array getdxdy(const Dep::Channel & ch, int componentIndex);
 		virtual double_array getRdxGdy(int componentIndex);
 		~MeasureEstimator();
-		void measure(int startIndex, int endIndex);
+		bool measure(int startIndex, int endIndex);
 
 		void resetMeasure();
 		int getMeasureCount();
@@ -82,6 +83,7 @@ namespace cms {
 		__property bool MeasureRdxGdy = { write = measureRdxGdy };
 		__property int_vector_ptr Constrained = { write = constrained };
 		double_array getMaxMeasureError();
+		//__property bool Success = { read = success };
 	    };
 
 	    class FeedbackListener {
@@ -96,9 +98,11 @@ namespace cms {
 		void fixReverseByFeedback(RGB_vector_ptr dglut);
 
 		__property int FeedbackFixCount = { read = feedbackFixCount };
-		__property bptr < FeedbackListener > Listener = { write = feedbackListener
+		__property int InitDefectCount = { read = initDefectCount };
+		__property FeedbackListener *Listener = { write = feedbackListener
 		};
 		__property double_array AverageDistance = { write = averageDistance };
+		__property bool Stop = { write = stop };
 		double_array getMaxMeasureError() {
 		    return maxMeasureError;
 		};
@@ -121,13 +125,15 @@ namespace cms {
 					      double_vector_ptr dyofBase, Dep::Channel & ch);
 
 		int feedbackFixCount;
+		int initDefectCount;
 		int dimFixEnd;
 		double dimFixThreshold;
 		double_array averageDistance;
 		double_array maxMeasureError;
 		 bptr < cms::measure::IntensityAnalyzerIF > analyzer;
 		 bptr < BitDepthProcessor > bitDepth;
-		 bptr < FeedbackListener > feedbackListener;
+		FeedbackListener *feedbackListener;
+		bool stop;
 
 	    };
 

@@ -1741,7 +1741,7 @@ object MainForm: TMainForm
   end
   object StatusBar1: TStatusBar
     Left = 0
-    Top = 307
+    Top = 309
     Width = 761
     Height = 19
     Panels = <

@@ -2,7 +2,7 @@ object GammaMeasurementForm: TGammaMeasurementForm
   Left = 270
   Top = 266
   Width = 341
-  Height = 409
+  Height = 421
   Caption = 'Gamma Measurement'
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
@@ -18,7 +18,7 @@ object GammaMeasurementForm: TGammaMeasurementForm
   TextHeight = 13
   object Copyright: TLabel
     Left = 34
-    Top = 357
+    Top = 373
     Width = 281
     Height = 13
     Caption = 'Copyright (C) 2012, AU Optronics Corp., All Right Reserved.'
@@ -312,6 +312,15 @@ object GammaMeasurementForm: TGammaMeasurementForm
     Caption = 'Measure'
     TabOrder = 4
     OnClick = Button_MeasureClick
+  end
+  object ProgressBar1: TProgressBar
+    Left = 8
+    Top = 352
+    Width = 225
+    Height = 17
+    Min = 0
+    Max = 100
+    TabOrder = 5
   end
   object OpenDialog1: TOpenDialog
   end
