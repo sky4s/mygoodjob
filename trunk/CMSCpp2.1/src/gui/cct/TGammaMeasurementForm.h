@@ -15,6 +15,7 @@
 #include <ExtCtrls.hpp>
 #include "TOutputFileFrame.h"
 #include <Dialogs.hpp>
+#include <ComCtrls.hpp>
 //本項目內頭文件
 //---------------------------------------------------------------------------
 class TGammaMeasurementForm:public TForm {
@@ -51,6 +52,7 @@ class TGammaMeasurementForm:public TForm {
     TEdit *Edit_StartLevelT;
     TEdit *Edit_EndLevelT;
     TEdit *Edit_Count;
+    TProgressBar *ProgressBar1;
     void __fastcall Button_MeasureClick(TObject * Sender);
     void __fastcall FormShow(TObject * Sender);
     void __fastcall TOutputFileFrame1Button_BrowseDirClick(TObject * Sender);

@@ -646,4 +646,13 @@ object TargetWhiteForm2: TTargetWhiteForm2
       end
     end
   end
+  object ProgressBar1: TProgressBar
+    Left = 8
+    Top = 456
+    Width = 225
+    Height = 17
+    Min = 0
+    Max = 100
+    TabOrder = 1
+  end
 end

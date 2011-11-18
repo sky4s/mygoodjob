@@ -197,6 +197,7 @@ void __fastcall TTargetWhiteForm2::Button_RunClick(TObject * Sender)
     bptr < IntensityAnalyzerIF > analyzer = MainForm->getAnalyzer();
     try {
 
+	MainForm->showProgress(ProgressBar1);
 	MainForm->setMeterMeasurementWaitTimes();
 	MainForm->setAnalyzerToSourceChannel();
 	Button_Run->Enabled = false;
@@ -357,6 +358,7 @@ void __fastcall TTargetWhiteForm2::Button_RunClick(TObject * Sender)
 	analyzer->endAnalyze();
 	//analyzer.reset();
 	Button_Run->Enabled = true;
+	MainForm->stopProgress(ProgressBar1);
     }
 }
 

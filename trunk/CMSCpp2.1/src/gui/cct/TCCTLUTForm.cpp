@@ -65,7 +65,7 @@ void __fastcall TCCTLUTForm::Button_MeaRunClick(TObject * Sender)
     using namespace i2c;
     using namespace java::lang;
 
-    MainForm->showProgress(ProgressBar1);
+
     if (Button_Run->Enabled) {
 	MainForm->initCA210Meter();
 	MainForm->setAnalyzerNull();
@@ -73,6 +73,7 @@ void __fastcall TCCTLUTForm::Button_MeaRunClick(TObject * Sender)
 
     run = true;
     try {			//為了對應__finally使用的try
+	MainForm->showProgress(ProgressBar1);
 	String_ptr astr = this->TOutputFileFrame1->getOutputFilename();
 	string filename = astr->c_str();
 
@@ -214,6 +215,12 @@ void __fastcall TCCTLUTForm::Button_MeaRunClick(TObject * Sender)
 	    bptr < TCONControl > tconctrl = MainForm->getTCONControl();
 	    calibrator.TCONControl = tconctrl;
 	    calibrator.NativeWhiteAnalyzer = nativeWhiteAnalyzer;
+	    //bptr < cms::lcd::calibrate::FeedbackListener > listener(this);
+	    //cms::lcd::calibrate::FeedbackListener * listener = this;
+	    calibrator.setFeedbackListener(this);
+
+
+	    //開始量測及計算
 	    RGB_vector_ptr dglut = calibrator.getCCTDGLut(getMeasureCondition());
 	    nativeWhiteAnalyzer = calibrator.NativeWhiteAnalyzer;
 	    if (dglut == null) {
@@ -399,7 +406,9 @@ void __fastcall TCCTLUTForm::FormKeyPress(TObject * Sender, char &Key)
 	if (true == run) {
 	    ShowMessage("Interrupt!");
 	    if (false == MeasureWindow->Visible) {
+		//觸發fetcher的window closing, 可以停止量測
 		MainForm->getComponentFetcher()->windowClosing(Sender, caNone);
+		MainForm->mm->setMeasureWindowsVisible(false);
 	    }
 	    run = false;
 	} else {
@@ -641,7 +650,7 @@ void __fastcall TCCTLUTForm::CheckBox_FeedbackClick(TObject * Sender)
     if (true == CheckBox_Feedback->Checked) {
 	CheckBox_DimFix->Checked = false;
 	if (1 == MainForm->Edit_AverageTimes->Text) {
-	    MainForm->Edit_AverageTimes->Text = 3;
+	    //MainForm->Edit_AverageTimes->Text = 3;
 	}
     }
 }

@@ -95,6 +95,7 @@ class TTargetWhiteForm2:public TForm, gui::event::WindowListener {
     TLabel *Label8;
     TEdit *Edit_refLuminance;
     TButton *Button_ContinueMeasure;
+    TProgressBar *ProgressBar1;
     void __fastcall RadioButton_MaxRGBClick(TObject * Sender);
     void __fastcall ScrollBar_RChange(TObject * Sender);
     void __fastcall ScrollBar_GChange(TObject * Sender);

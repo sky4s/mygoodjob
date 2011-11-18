@@ -397,6 +397,7 @@ namespace cms {
 		}
 		if (true == c->feedbackFix) {
 		    dgfile.addProperty("defined dim - feedback fix", On);
+		    dgfile.addProperty("defined dim - feedback fix init defect", c->initDefectCount );
 		    dgfile.addProperty("defined dim - feedback fix count", c->feedbackFixCount);
 		    dgfile.addProperty("max measure dx", c->maxMeasureError[0]);
 		    dgfile.addProperty("max measure dy", c->maxMeasureError[1]);
