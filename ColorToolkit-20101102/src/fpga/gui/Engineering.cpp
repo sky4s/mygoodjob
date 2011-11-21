@@ -45,8 +45,9 @@ bool Read_LUT(TLUT Addr_LUT, IntTbl & Out, ByteTbl In)
 	RW_LUT.Read_LUT12(Out, In, Addr_LUT.Type());
     } else if (Addr_LUT.BitNum() == 16) {
 	RW_LUT.Read_LUT16(Out, In, Addr_LUT.Type());
-    } else
+    } else {
 	Out.Tbl = NULL;
+    }
     return 1;
 }
 
@@ -66,8 +67,9 @@ bool Write_LUT(TLUT Addr_LUT, ByteTbl & Out, IntTbl In)
 	RW_LUT.Write_LUT12(Out, In, Addr_LUT.Type());
     } else if (Addr_LUT.BitNum() == 16) {
 	RW_LUT.Write_LUT16(Out, In, Addr_LUT.Type());
-    } else
+    } else {
 	Out.Tbl = NULL;
+    }
     return 1;
 }
 
@@ -394,20 +396,27 @@ bool TEngineerForm::SetRead_PG(TLUT Addr_LUT, int *Read_table, bool IsChkSum)
     }
     int data_len;
     // 計算table拆成Byte後的長度, Addr_LUT.LutNum()是table當中的數值個數
-    if (Addr_LUT.BitNum() == 4 && Addr_LUT.Type() == 1)
+    if (Addr_LUT.BitNum() == 4 && Addr_LUT.Type() == 1) {
 	data_len = ceil(Addr_LUT.LutNum() / 2);
-    else if (Addr_LUT.BitNum() == 4 && Addr_LUT.Type() == 2)
+    }
+    else if (Addr_LUT.BitNum() == 4 && Addr_LUT.Type() == 2) {
 	data_len = Addr_LUT.LutNum();
-    else if (Addr_LUT.BitNum() == 8 || Addr_LUT.BitNum() == 6 || Addr_LUT.BitNum() == 5)
+    }
+    else if (Addr_LUT.BitNum() == 8 || Addr_LUT.BitNum() == 6 || Addr_LUT.BitNum() == 5) {
 	data_len = Addr_LUT.LutNum();	// 201007
-    else if (Addr_LUT.BitNum() == 12)
+    }
+    else if (Addr_LUT.BitNum() == 12) {
 	data_len = ceil((double) Addr_LUT.LutNum() * 3 / 2);
-    else if (Addr_LUT.BitNum() == 10 && (Addr_LUT.Type() == 1 || Addr_LUT.Type() == 2))
+    }
+    else if (Addr_LUT.BitNum() == 10 && (Addr_LUT.Type() == 1 || Addr_LUT.Type() == 2)) {
 	data_len = Addr_LUT.LutNum() * 2;
-    else if (Addr_LUT.BitNum() == 10 && (Addr_LUT.Type() == 3 || Addr_LUT.Type() == 4))
+    }
+    else if (Addr_LUT.BitNum() == 10 && (Addr_LUT.Type() == 3 || Addr_LUT.Type() == 4)) {
 	data_len = ceil((double) Addr_LUT.LutNum() * 5 / 4);
-    else if (Addr_LUT.BitNum() == 16)
+    }
+    else if (Addr_LUT.BitNum() == 16) {
 	data_len = Addr_LUT.LutNum() * 2;
+    }
 
     // Set Table Start Address & length (in Bytes)to Interface
     String Addr_str;
@@ -421,11 +430,13 @@ bool TEngineerForm::SetRead_PG(TLUT Addr_LUT, int *Read_table, bool IsChkSum)
     // return value = false means read fail, otherwise read success,
     // when IsShow is true, it means value will show in table of Engineer->Configuration
 
-    for (int i = 0; i < Addr_LUT.LutNum(); i++)
+    for (int i = 0; i < Addr_LUT.LutNum(); i++) {
 	Read_table[i] = 0;
+    }
     if (chk_len > 0) {
-	for (int i = 0; i < data_len; i++)
+	for (int i = 0; i < data_len; i++) {
 	    read_data[i] = read_data[i + chk_len];
+        }
     }
     IntTbl Out;
     Out.Tbl = Read_table;
@@ -440,8 +451,9 @@ bool TEngineerForm::SetRead_PG(TLUT Addr_LUT, int *Read_table, bool IsChkSum)
     ok = ok && ok1;
 
     delete[]read_data;
-    if (ok == 0 | Read_table == NULL)
+    if (ok == 0 | Read_table == NULL) {
 	return 0;
+    }
     return 1;
 }
 

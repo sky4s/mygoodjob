@@ -371,7 +371,7 @@ class THSVForm2nd:public TForm, cms::util::CallBackIF, RGBInfoCallbackIF, Patter
     int valTableTemp[HUE_COUNT];
 
 
-    bool HSV_Chg;		// HSV_Chg = 0 為禁止寫入, HSV_Chg =1 為允許寫入, 以避免動作被中斷
+    bool hsvInitialized;        // hsvInitialized = F 為禁止寫入, hsvInitialized = T 為允許寫入, 以避免動作被中斷
 
     __fastcall THSVForm2nd(TComponent * Owner);
     void Reset_HSVshow();

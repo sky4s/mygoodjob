@@ -6,13 +6,20 @@
 #include <lib/CMSCpp2.1/src/includeall.h>
 #include <stdio.h>
 
+/*
+  check box: 1bit
+  combo box: 1/2bit
+  label : 1/2/3/4bit
+  scroll bar: 1/2bit
+*/
+
 class _CHKB {
   public:
     __fastcall ~ _CHKB() {
-	delete[]Chkb;
+	delete[]Chkb; //多此一舉? bcb應該自己會關掉vcl
     };
     TCheckBox *Chkb;
-    TBit Addr;
+    TBit Addr; //應該一個新的形態, 直接包了_CHKB和TBbit, 或者說, 僅揭露_CHKB對外
 };
 
 
@@ -119,16 +126,7 @@ class _ScrollBar		//Address 為 1 byte
 };
 
 
-class _StaticText		//Address 為 1 byte    //no more use
-{
-  public:
-    __fastcall ~ _StaticText() {
-	delete[]StTxt;
-	//delete Addr.choice;
-    };
-    TStaticText *StTxt;
-    TBit Addr;
-};
+ 
 
 class AbstractBase {
   private:

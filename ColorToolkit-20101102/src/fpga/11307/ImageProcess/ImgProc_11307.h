@@ -61,6 +61,7 @@ class CE_11307:public AbstCE {
     virtual TLUT *SetMINlut();
      CE_11307();
 };
+
 class HSV_11307:public AbstHSV {
   public:
     virtual TBit * SetChkBx();

@@ -12,11 +12,8 @@
 //本項目內頭文件
 #include <addresstype/Address_type.h>
 //本項目內gui頭文件
-#//include <fpga/gui/THSVForm3.h>
 #include <fpga/gui/THSVForm2nd.h>
 #include <fpga/gui/CM1.h>
-//#include <fpga/gui/THSVForm2.h>
-//#include <fpga/gui/THSVForm4.h>
 #include "include.h"
 #include <iostream>
 #include <fstream>

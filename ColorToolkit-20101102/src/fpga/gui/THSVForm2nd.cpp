@@ -48,8 +48,8 @@ cursorRGBValues(new int[3]), patternMode(PatternMode::Single), selectedRGBValues
 customPattern(false), patternValue(192), isInversePattern(false),
 isf(cms::hsvip::IntegerSaturationFormula((byte) 7, 3)), colorspace(sRGBColorSpace)
 {
-    //因為colorspace在建構式才初始化, 所以此處的ce是個temp, 為了通過編譯
-    HSV_Chg = 0;
+
+    hsvInitialized = false;
     HSVEN_idx = -1;
     hsvListener = bptr < HSVChangeListener > (new HSVChangeListener(this));
     hsvAdjust->addChangeListener(hsvListener);
@@ -68,20 +68,16 @@ isf(cms::hsvip::IntegerSaturationFormula((byte) 7, 3)), colorspace(sRGBColorSpac
     ScrollBar_TurnPointChange(null);
 
     using namespace cms::hsvip;
+    //因為colorspace在建構式才初始化, 所以此處的ce是個temp, 為了通過編譯
     ce = bptr < ChromaEnhance > (new ChromaEnhance(colorspace, isf));
-    /*using namespace Dep;
-       using namespace cms;
-       colorspace =
-       bptr < Dep::RGBColorSpace >
-       (new RGBColorSpace(CSType::sRGB_gamma22, Illuminant::D65, 2.2, 0.64, 0.33, 0.30, 0.60, 0.15,
-       0.06)); */
 }
 
 //---------------------------------------------------------------------------
 void __fastcall THSVForm2nd::CheckBox_Click(TObject * Sender)
 {
-    if (HSV_Chg == 0)
+    if (false == hsvInitialized) {
 	return;
+    }
     TCheckBox *c = (TCheckBox *) Sender;
     int idx = StrToInt(c->Hint);
     int set_val = (ChkB[idx]->Chkb->Checked ? 1 : 0);
@@ -93,10 +89,11 @@ void __fastcall THSVForm2nd::CheckBox_Click(TObject * Sender)
 void __fastcall THSVForm2nd::FormCreate(TObject * Sender)
 {
     //bool fpga = isFPGA();
-    HSV_Chg = 0;
+    hsvInitialized = false;
     int ic_choice;
-    if (MainForm->TCON_DEV == "11307")
+    if (MainForm->TCON_DEV == "11307") {
 	ic_choice = 0;
+    }
 
     switch (ic_choice) {
     case 0:
@@ -137,7 +134,7 @@ void __fastcall THSVForm2nd::FormCreate(TObject * Sender)
 	ShowMessage("Can' t Get HSV enable index.");
     }
     Initial_HSV_table();	// initial HSV table
-    HSV_Chg = 1;
+    hsvInitialized = true;
 
     this->initStringGrid_HSV();
     colorPicker->setTInTargetForm(InTargetForm);
@@ -559,12 +556,15 @@ void __fastcall THSVForm2nd::Btn_HSV_reloadClick(TObject * Sender)
     for (int i = 0; i < OHSV->HSVChkBox_Nbr; i++) {
 	if (ChkB[i]->Chkb->Visible == true) {
 	    EngineerForm->SetRead_Byte(ChkB[i]->Addr, &read_val);
-	    if (read_val == 1)
+	    if (read_val == 1) {
 		ChkB[i]->Chkb->Checked = 1;
-	    else if (read_val == 0)
+            }
+	    else if (read_val == 0) {
 		ChkB[i]->Chkb->Checked = 0;
-	    else
+            }
+	    else {
 		ShowMessage("HSV CheckBox read error:" + IntToStr(read_val));
+            }
 	}
     }
     btn_hsv_readClick(Sender);

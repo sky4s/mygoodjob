@@ -13,7 +13,7 @@ class AbstractAddressType {
   private:
     virtual void _set(int_vector_ptr vector, AnsiString name) = 0;
   protected:
-     bool en;
+     bool en; //若被設定則會en == true
     int b_num;
     AnsiString name;
   public:

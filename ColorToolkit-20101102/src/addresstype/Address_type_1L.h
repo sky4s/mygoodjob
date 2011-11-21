@@ -46,9 +46,17 @@ class TLUT:public AbstractAddressType {
 
 //----------------------TLUT--------------------------------------
 
+/*
+  SP_LUT,608,32,5
+  ^^^^^^1^^^2^^3^4
+  1. _name
+  2. _B_addr : address
+  3. _Lut_num  : length(size)?
+  4. _b_num
+*/
 int TLUT::set(int _B_addr, int _Lut_num, int _b_num, AnsiString _name)
 {
-    int rtn_val = 0;
+    int rtn_val = 0; //¤£­«­n
     en = true;
     B_addr = _B_addr;
     Lut_num = _Lut_num;

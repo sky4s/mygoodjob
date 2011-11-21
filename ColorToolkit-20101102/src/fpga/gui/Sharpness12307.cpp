@@ -320,8 +320,9 @@ void TSharpnessForm12307::SP_LUT_FuncEnable(bool flag_en)
 void TSharpnessForm12307::Clear_LUT(bool type)
 {
     if (type == true) {
-	for (int i = 0; i < 32; i++)
+	for (int i = 0; i < 32; i++) {
 	    SP_lut[i] = -1;
+        }
     }
     Graphics::TBitmap * LUT_Graph;
     LUT_Graph = new Graphics::TBitmap();
