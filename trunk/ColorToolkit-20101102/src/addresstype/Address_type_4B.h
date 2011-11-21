@@ -14,10 +14,7 @@
 
 class TBit4:public AbstractAddressType {
   private:
-    //bool en;
-    //int b_num;
     int type;
-    //AnsiString name;
     int divide1, divide2, divide3;
     int value;
   public:
@@ -30,15 +27,12 @@ class TBit4:public AbstractAddressType {
     int Divide1();
     int Divide2();
     int Divide3();
-    //bool FuncEn();		//function enable or not
-    //int BitNum();
     int GetVal();
     void SetVal(int);
     int set(int _B1_addr, int _b1_addr, int _b1_num,
 	    int _B2_addr, int _b2_addr, int _b2_num,
 	    int _B3_addr, int _b3_addr, int _b3_num,
 	    int _B4_addr, int _b4_addr, int _b4_num, AnsiString _name);
-    //AnsiString Name();
      TBit4() {
 	value = -1;
 	en = false;

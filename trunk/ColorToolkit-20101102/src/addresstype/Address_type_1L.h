@@ -9,18 +9,13 @@
 
 class TLUT:public AbstractAddressType {
   private:
-    //bool en;
     int B_addr;
     int Lut_num;
-    //int b_num;
     int type;
-    //AnsiString name;
   public:
     int Addr();
     int LutNum();
     int Type();
-    //int BitNum();
-    //AnsiString Name();
     int set(int _B_addr, int _Lut_num, int _b_num, int _type, AnsiString _name);
     int set(int _B_addr, int _Lut_num, int _b_num, AnsiString _name);
      TLUT() {
