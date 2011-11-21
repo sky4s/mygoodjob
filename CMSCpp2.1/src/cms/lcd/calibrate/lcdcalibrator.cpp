@@ -41,6 +41,15 @@ namespace cms {
 		} return result;
 	    };
 
+	    double_vector_ptr LCDCalibrator::getAbsoluteGammaCurveVector(double gamma, int n, int
+									 effectiven,
+									 Component_vector_ptr
+									 componentVector) {
+		double maxLuminance = (*componentVector)[0]->XYZ->Y;
+		double minLuminance = (*componentVector)[componentVector->size() - 1]->XYZ->Y;
+
+	    };
+
 	    double_vector_ptr
 		LCDCalibrator::getGammaCurveVector(double dimGamma, int dimGammaEnd,
 						   double brightGamma, int n, int effectiven) {
@@ -366,6 +375,10 @@ namespace cms {
 		    //若要採用original gamma, 從量測結果拉出gamma, 當作目標gamma curve
 		    double_vector_ptr gammaCurve = getOriginalGammaCurve(componentVector);
 		    setGammaCurve(gammaCurve);
+		}
+
+		if (true == absoluteGamma) {
+		    //setGammaCurve0(gammaCurve);
 		}
 
 
