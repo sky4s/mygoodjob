@@ -111,6 +111,7 @@ class TCCTLUTForm:public TForm, cms::lcd::calibrate::FeedbackListener {
     TEdit *Edit_DimGammaEnd;
     TRadioGroup *RadioGroup_NormalCase;
     TEdit *Edit_FeedbackMsg;
+    TCheckBox *CheckBox_AbsoluteGamma;
     void __fastcall RadioButton_P1P2Click(TObject * Sender);
     void __fastcall Button_MeaRunClick(TObject * Sender);
     void __fastcall Button_DebugClick(TObject * Sender);

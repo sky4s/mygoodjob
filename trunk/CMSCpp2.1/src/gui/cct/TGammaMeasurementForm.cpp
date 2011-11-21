@@ -55,6 +55,7 @@ void __fastcall TGammaMeasurementForm::Button_MeasureClick(TObject * Sender)
     try {
 	MainForm->showProgress(ProgressBar1);
 	if (measure(rgbw, getMeasureCondition(), flicker, stlfilename)) {
+	    MainForm->stopProgress(ProgressBar1);
 	    ShowMessage("Ok!");
 	    Util::shellExecute(stlfilename);
 	}

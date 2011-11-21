@@ -116,6 +116,7 @@ void __fastcall TCCTLUTForm::Button_MeaRunClick(TObject * Sender)
 	//==========================================================================
 	// gammaªº³B²z
 	//==========================================================================
+	bool absGamma = CheckBox_AbsoluteGamma->Checked;
 	if (this->RadioButton_Gamma->Checked) {
 	    double gamma = this->ComboBox_Gamma->Text.ToDouble();
 	    calibrator.setGamma(gamma);

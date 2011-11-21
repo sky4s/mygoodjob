@@ -79,6 +79,7 @@ namespace cms {
 		double_vector_ptr bgammaCurve;
 		bool gByPass;
 		bool originalGamma;
+		bool absoluteGamma;
 		//==============================================================
 
 		//==============================================================
@@ -168,8 +169,11 @@ namespace cms {
 		__property bool ManualAccurateMode = { write = manualAccurateMode };
 		__property double MiddleCCTRatio = { write = middleCCTRatio };
 		__property bool FeedbackFix = { write = feedbackFix };
-		__property bool SmoothComponent = { read = smoothComponent, write = smoothComponent
+		__property bool SmoothComponent = { read = smoothComponent,
+		    write = smoothComponent
 		};
+		__property bool AbsoluteGamma = { write = absoluteGamma };
+
 		//==============================================================
 
 
@@ -220,8 +224,8 @@ namespace cms {
 		void fixReverseByFeedback(RGB_vector_ptr dglut);
 		int checkReverse(double_vector_ptr deltaVector);
 		int checkReverse(double_vector_ptr deltaVector, int start, int end);
-		int_vector_ptr getReverseIndexVector(double_vector_ptr deltaVector,
-						     int start, int end);
+		int_vector_ptr getReverseIndexVector(double_vector_ptr deltaVector, int start,
+						     int end);
 		int_vector_ptr getMustMeasureZoneIndexVector(double_vector_ptr dxofBase,
 							     double_vector_ptr dyofBase, int start,
 							     int end);
@@ -247,6 +251,10 @@ namespace cms {
 	      public:
 		static double_vector_ptr getGammaCurveVector(double gamma, int n, int
 							     effectiven);
+		static double_vector_ptr getAbsoluteGammaCurveVector(double gamma, int n, int
+								     effectiven,
+								     Component_vector_ptr
+								     componentVector);
 		static double_vector_ptr getGammaCurveVector(double dimGamma, int dimGammaEnd,
 							     double brightGamma, int n,
 							     int effectiven);
