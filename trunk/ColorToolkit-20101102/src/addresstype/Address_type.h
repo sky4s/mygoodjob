@@ -1,7 +1,7 @@
 #ifndef ADDRESS_TYPEH
 #define ADDRESS_TYPEH
 
-#define NEW_ADDRESS_TYPE
+#define NEW_ADDRESS_TYPE	//新的address type宣告方式, 去除冗餘宣告
 #ifdef NEW_ADDRESS_TYPE
 
 #define Num_ASIC 4
@@ -46,7 +46,7 @@ class AbstractAddressType {
 #include "Address_type_3B.h"
 #include "Address_type_4B.h"
 
-#else
+#else				//NEW_ADDRESS_TYPE
 
 
 

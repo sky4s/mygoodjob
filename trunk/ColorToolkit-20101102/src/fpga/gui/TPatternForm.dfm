@@ -1,17 +1,21 @@
 object PatternForm: TPatternForm
   Left = 965
   Top = 60
-  Width = 273
-  Height = 663
+  BorderIcons = []
+  BorderStyle = bsSingle
   Caption = 'PatternForm'
+  ClientHeight = 634
+  ClientWidth = 265
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
   Font.Height = -11
   Font.Name = 'MS Sans Serif'
   Font.Style = []
+  FormStyle = fsMDIForm
   KeyPreview = True
   OldCreateOrder = False
+  Position = poDefault
   ShowHint = True
   Visible = True
   WindowState = wsMinimized

@@ -798,3 +798,5 @@ void __fastcall TSharpnessForm12307::FormKeyDown(TObject * Sender, WORD & Key, T
 
 //---------------------------------------------------------------------------
 
+
+

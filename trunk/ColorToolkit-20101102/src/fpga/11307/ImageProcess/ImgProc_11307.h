@@ -40,7 +40,7 @@ class SP_11307:public AbstSP {
 
 class SP_12307:public AbstSP {
   public:
-    virtual TBit *SetChkBx();
+    virtual TBit * SetChkBx();
     virtual TBit *SetCboBx();
     virtual TBit *SetScrollBar();
     virtual TBit3 *SetLblE3();
@@ -66,6 +66,7 @@ class HSV_11307:public AbstHSV {
     virtual TBit * SetChkBx();
     virtual TLUT *SetLUT();
     virtual String HSV_EN_Name();	// return the name of HSV_EN register
+    //virtual TBit *SetScrollBar();
      HSV_11307();
 };
 

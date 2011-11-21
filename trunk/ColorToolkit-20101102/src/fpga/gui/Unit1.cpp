@@ -12,7 +12,7 @@
 //本項目內頭文件
 #include <addresstype/Address_type.h>
 //本項目內gui頭文件
-#include <fpga/gui/THSVForm3.h>
+#//include <fpga/gui/THSVForm3.h>
 #include <fpga/gui/THSVForm2nd.h>
 #include <fpga/gui/CM1.h>
 //#include <fpga/gui/THSVForm2.h>
@@ -533,8 +533,8 @@ void __fastcall TMainForm::mn_HSVClick(TObject * Sender)
 	HSVForm->Show();
     else {
 	if (TCON_DEV == "11307") {
-	    //HSVForm = new THSVForm1(this);
-	    HSVForm = new THSVFormNew_(this);
+	    HSVForm = new THSVFormOrg(this);
+	    //HSVForm = new THSVFormNew_(this);
 	    HSVForm->Show();
 	}
     }

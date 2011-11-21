@@ -25,12 +25,12 @@ TBit *CM_11307::SetChkBx()
 	setAddress(&ChkBox[0], CM_EN);	//
 	setAddress(&ChkBox[1], CM_DEMO);	//
 	setAddress(&ChkBox[2], CM_DEMO_LEFT);	//
-        setAddress(&ChkBox[3], CM_FIRST);	//
+	setAddress(&ChkBox[3], CM_FIRST);	//
     } else if (MainForm->addr_place == 1) {
 	setAddressFromFile(&ChkBox[0], "CM_EN");
 	setAddressFromFile(&ChkBox[1], "CM_DEMO");
 	setAddressFromFile(&ChkBox[2], "CM_DEMO_LEFT");
-        setAddressFromFile(&ChkBox[3], "CM_FIRST");
+	setAddressFromFile(&ChkBox[3], "CM_FIRST");
     }
     return ChkBox;
 
@@ -129,8 +129,9 @@ TBit *SP_11307::SetChkBx()
     return ChkBox;
 }
 
-TBit *SP_11307::SetCboBx(){
-      return 0;
+TBit *SP_11307::SetCboBx()
+{
+    return 0;
 }
 
 TBit *SP_11307::SetScrollBar()
@@ -175,172 +176,183 @@ TLUT *SP_11307::SetSPLUT()
     return LUT;
 }
 
- TBit3 *SP_11307::SetLblE3(){
-        return 0;
+TBit3 *SP_11307::SetLblE3()
+{
+    return 0;
 }
+
 //-------------------------------------------------------------------------//
 //              Sharpness 12307                                            //
 //-------------------------------------------------------------------------//
 SP_12307::SP_12307()
 {
-        SPChkBox_Nbr = 12;
-        SPCboBox_Nbr = 6;
-        SPScrollBar_Nbr = 16;
-        SPLblE3_Nbr = 1;
+    SPChkBox_Nbr = 12;
+    SPCboBox_Nbr = 6;
+    SPScrollBar_Nbr = 16;
+    SPLblE3_Nbr = 1;
 }
-TBit* SP_12307::SetChkBx()
+
+TBit *SP_12307::SetChkBx()
 {
-        TBit* ChkBox = new TBit [SPChkBox_Nbr];
-        if(MainForm->addr_place == 0){
-                setAddress(&ChkBox[0],SP_EN);
-                setAddress(&ChkBox[1],SP_DEMO_EN);
-                setAddress(&ChkBox[2],SP_DEMO_LEFT);
-                setAddress(&ChkBox[3],FILTER_OFF);
-                setAddress(&ChkBox[4],TEXT_DET);
-                setAddress(&ChkBox[5],DEB_EN);
-                setAddress(&ChkBox[6],I3D_EDGE_EN);
-                setAddress(&ChkBox[7],CE_EN);
-                setAddress(&ChkBox[8],CE_DEMO_EN);
-                setAddress(&ChkBox[9],CE_DEMO_LEFT);
-                setAddress(&ChkBox[10],PIX_FILTER);
-                setAddress(&ChkBox[11],SMOOTH_EN);
-        }else if(MainForm->addr_place == 1){
-                setAddressFromFile(&ChkBox[0],"SP_EN");
-                setAddressFromFile(&ChkBox[1],"SP_DEMO");
-                setAddressFromFile(&ChkBox[2],"SP_DEMO_LEFT");
-                setAddressFromFile(&ChkBox[3],"FILTER_OFF");
-                setAddressFromFile(&ChkBox[4],"TEXT_DET");
-                setAddressFromFile(&ChkBox[5],"DEB_EN");
-                setAddressFromFile(&ChkBox[6],"I3D_EDGE_EN");
-                setAddressFromFile(&ChkBox[7],"CE_EN");
-                setAddressFromFile(&ChkBox[8],"CE_DEMO_EN");
-                setAddressFromFile(&ChkBox[9],"CE_DEMO_LEFT");
-                setAddressFromFile(&ChkBox[10],"PIX_FILTER");
-                setAddressFromFile(&ChkBox[11],"SMOOTH_EN");
-        }
-        return ChkBox;
+    TBit *ChkBox = new TBit[SPChkBox_Nbr];
+    if (MainForm->addr_place == 0) {
+	setAddress(&ChkBox[0], SP_EN);
+	setAddress(&ChkBox[1], SP_DEMO_EN);
+	setAddress(&ChkBox[2], SP_DEMO_LEFT);
+	setAddress(&ChkBox[3], FILTER_OFF);
+	setAddress(&ChkBox[4], TEXT_DET);
+	setAddress(&ChkBox[5], DEB_EN);
+	setAddress(&ChkBox[6], I3D_EDGE_EN);
+	setAddress(&ChkBox[7], CE_EN);
+	setAddress(&ChkBox[8], CE_DEMO_EN);
+	setAddress(&ChkBox[9], CE_DEMO_LEFT);
+	setAddress(&ChkBox[10], PIX_FILTER);
+	setAddress(&ChkBox[11], SMOOTH_EN);
+    } else if (MainForm->addr_place == 1) {
+	setAddressFromFile(&ChkBox[0], "SP_EN");
+	setAddressFromFile(&ChkBox[1], "SP_DEMO");
+	setAddressFromFile(&ChkBox[2], "SP_DEMO_LEFT");
+	setAddressFromFile(&ChkBox[3], "FILTER_OFF");
+	setAddressFromFile(&ChkBox[4], "TEXT_DET");
+	setAddressFromFile(&ChkBox[5], "DEB_EN");
+	setAddressFromFile(&ChkBox[6], "I3D_EDGE_EN");
+	setAddressFromFile(&ChkBox[7], "CE_EN");
+	setAddressFromFile(&ChkBox[8], "CE_DEMO_EN");
+	setAddressFromFile(&ChkBox[9], "CE_DEMO_LEFT");
+	setAddressFromFile(&ChkBox[10], "PIX_FILTER");
+	setAddressFromFile(&ChkBox[11], "SMOOTH_EN");
+    }
+    return ChkBox;
 }
-TBit* SP_12307::SetCboBx()
+
+TBit *SP_12307::SetCboBx()
 {
-        TBit* CboBox = new TBit [SPCboBox_Nbr];
-        if(MainForm->addr_place == 0){
-                setAddress(&CboBox[0],STR_TP1);
-                setAddress(&CboBox[1],STR_TP2);
-                setAddress(&CboBox[2],VMASK_SEL);
-                setAddress(&CboBox[3],HMASK_SEL);
-                setAddress(&CboBox[4],DARK_TP);
-                setAddress(&CboBox[5],BRIGHT_TP);
-        }else if(MainForm->addr_place == 1){
-                setAddressFromFile(&CboBox[0],"STR_TP1");
-                setAddressFromFile(&CboBox[1],"STR_TP2");
-                setAddressFromFile(&CboBox[2],"VMASK_SEL");
-                setAddressFromFile(&CboBox[3],"HMASK_SEL");
-                setAddressFromFile(&CboBox[4],"DARK_TP");
-                setAddressFromFile(&CboBox[5],"BRIGHT_TP");
-        }
+    TBit *CboBox = new TBit[SPCboBox_Nbr];
+    if (MainForm->addr_place == 0) {
+	setAddress(&CboBox[0], STR_TP1);
+	setAddress(&CboBox[1], STR_TP2);
+	setAddress(&CboBox[2], VMASK_SEL);
+	setAddress(&CboBox[3], HMASK_SEL);
+	setAddress(&CboBox[4], DARK_TP);
+	setAddress(&CboBox[5], BRIGHT_TP);
+    } else if (MainForm->addr_place == 1) {
+	setAddressFromFile(&CboBox[0], "STR_TP1");
+	setAddressFromFile(&CboBox[1], "STR_TP2");
+	setAddressFromFile(&CboBox[2], "VMASK_SEL");
+	setAddressFromFile(&CboBox[3], "HMASK_SEL");
+	setAddressFromFile(&CboBox[4], "DARK_TP");
+	setAddressFromFile(&CboBox[5], "BRIGHT_TP");
+    }
 
-        CboBox[0].choice_nbr = 4;
-        CboBox[0].choice = new String [4];
-        CboBox[0].choice[0] = " 0: 64";
-        CboBox[0].choice[1] = " 1: 128";
-        CboBox[0].choice[2] = " 2: 192";
-        CboBox[0].choice[3] = " 3: str_tp1 & str_tp2 = 2'b11 output keep 255";
+    CboBox[0].choice_nbr = 4;
+    CboBox[0].choice = new String[4];
+    CboBox[0].choice[0] = " 0: 64";
+    CboBox[0].choice[1] = " 1: 128";
+    CboBox[0].choice[2] = " 2: 192";
+    CboBox[0].choice[3] = " 3: str_tp1 & str_tp2 = 2'b11 output keep 255";
 
-        CboBox[1].choice_nbr = 4;
-        CboBox[1].choice = new String [4];
-        CboBox[1].choice[0] = " 0: 64";
-        CboBox[1].choice[1] = " 1: 128";
-        CboBox[1].choice[2] = " 2: 192";
-        CboBox[1].choice[3] = " 3: str_tp1 & str_tp2 = 2'b11 output keep 255";
+    CboBox[1].choice_nbr = 4;
+    CboBox[1].choice = new String[4];
+    CboBox[1].choice[0] = " 0: 64";
+    CboBox[1].choice[1] = " 1: 128";
+    CboBox[1].choice[2] = " 2: 192";
+    CboBox[1].choice[3] = " 3: str_tp1 & str_tp2 = 2'b11 output keep 255";
 
-        CboBox[2].choice_nbr = 4;
-        CboBox[2].choice = new String [4];
-        CboBox[2].choice[0] = " 0: no mask";
-        CboBox[2].choice[1] = " 1: mask 1/16 Vactive up/down";
-        CboBox[2].choice[2] = " 2: mask 1/8 Vactive up/dow";
-        CboBox[2].choice[3] = " 3: mask 1/4 Vactive up/down";
+    CboBox[2].choice_nbr = 4;
+    CboBox[2].choice = new String[4];
+    CboBox[2].choice[0] = " 0: no mask";
+    CboBox[2].choice[1] = " 1: mask 1/16 Vactive up/down";
+    CboBox[2].choice[2] = " 2: mask 1/8 Vactive up/dow";
+    CboBox[2].choice[3] = " 3: mask 1/4 Vactive up/down";
 
-        CboBox[3].choice_nbr = 4;
-        CboBox[3].choice = new String [4];
-        CboBox[3].choice[0] = " 0: no mask";
-        CboBox[3].choice[1] = " 1: mask 1/16 Hactive up/down";
-        CboBox[3].choice[2] = " 2: mask 1/8 Hactive up/dow";
-        CboBox[3].choice[3] = " 3: mask 1/4 Hactive up/down";
+    CboBox[3].choice_nbr = 4;
+    CboBox[3].choice = new String[4];
+    CboBox[3].choice[0] = " 0: no mask";
+    CboBox[3].choice[1] = " 1: mask 1/16 Hactive up/down";
+    CboBox[3].choice[2] = " 2: mask 1/8 Hactive up/dow";
+    CboBox[3].choice[3] = " 3: mask 1/4 Hactive up/down";
 
-        CboBox[4].choice_nbr = 2;
-        CboBox[4].choice = new String [2];
-        CboBox[4].choice[0] = " 0: turn point at Y32";
-        CboBox[4].choice[1] = " 1: turn point at Y64";
+    CboBox[4].choice_nbr = 2;
+    CboBox[4].choice = new String[2];
+    CboBox[4].choice[0] = " 0: turn point at Y32";
+    CboBox[4].choice[1] = " 1: turn point at Y64";
 
-        CboBox[5].choice_nbr = 2;
-        CboBox[5].choice = new String [2];
-        CboBox[5].choice[0] = " 0: turn point at Y192";
-        CboBox[5].choice[1] = " 1: turn point at Y224";
+    CboBox[5].choice_nbr = 2;
+    CboBox[5].choice = new String[2];
+    CboBox[5].choice[0] = " 0: turn point at Y192";
+    CboBox[5].choice[1] = " 1: turn point at Y224";
 
-        return CboBox;
+    return CboBox;
 }
-TBit* SP_12307::SetScrollBar()
+
+TBit *SP_12307::SetScrollBar()
 {
-        TBit* ScrlB = new TBit [SPScrollBar_Nbr];
-        if(MainForm->addr_place == 0){
-                setAddress(&ScrlB[0],GLB_STR);
-                setAddress(&ScrlB[1],SPIKE_TH);
-                setAddress(&ScrlB[2],EDGE_TH);
-                setAddress(&ScrlB[3],FILTER_TH);
-                setAddress(&ScrlB[4],MAG_TH);
-                setAddress(&ScrlB[5],TAN_TH);
-                setAddress(&ScrlB[6],LUM_MEDIAN);
-                setAddress(&ScrlB[7],CONTRAST_STR);
-                setAddress(&ScrlB[8],BRIGHT_MAX_ADJ);
-                setAddress(&ScrlB[9],DARK_MAX_ADJ);
-                setAddress(&ScrlB[10],STEP_GAIN);
-                setAddress(&ScrlB[11],VARIANT_THR);
-                setAddress(&ScrlB[12],DARK_OFS);
-                setAddress(&ScrlB[13],BRIGHT_OFS);
-                setAddress(&ScrlB[14],DARK_DR);
-                setAddress(&ScrlB[15],BRIGHT_DR);
-        }else if(MainForm->addr_place == 1){
-                setAddressFromFile(&ScrlB[0],"GLB_STR");
-                setAddressFromFile(&ScrlB[1],"SPIKE_TH");
-                setAddressFromFile(&ScrlB[2],"EDGE_TH");
-                setAddressFromFile(&ScrlB[3],"FILTER_TH");
-                setAddressFromFile(&ScrlB[4],"MAG_TH");
-                setAddressFromFile(&ScrlB[5],"TAN_TH");
-                setAddressFromFile(&ScrlB[6],"LUM_MEDIAN");
-                setAddressFromFile(&ScrlB[7],"CONTRAST_STR");
-                setAddressFromFile(&ScrlB[8],"BRIGHT_MAX_ADJ");
-                setAddressFromFile(&ScrlB[9],"DARK_MAX_ADJ");
-                setAddressFromFile(&ScrlB[10],"STEP_GAIN");
-                setAddressFromFile(&ScrlB[11],"VARIANT_THR");
-                setAddressFromFile(&ScrlB[12],"DARK_OFS");
-                setAddressFromFile(&ScrlB[13],"BRIGHT_OFS");
-                setAddressFromFile(&ScrlB[14],"DARK_DR");
-                setAddressFromFile(&ScrlB[15],"BRIGHT_DR");
-        }
-        return ScrlB;
+    TBit *ScrlB = new TBit[SPScrollBar_Nbr];
+    if (MainForm->addr_place == 0) {
+	setAddress(&ScrlB[0], GLB_STR);
+	setAddress(&ScrlB[1], SPIKE_TH);
+	setAddress(&ScrlB[2], EDGE_TH);
+	setAddress(&ScrlB[3], FILTER_TH);
+	setAddress(&ScrlB[4], MAG_TH);
+	setAddress(&ScrlB[5], TAN_TH);
+	setAddress(&ScrlB[6], LUM_MEDIAN);
+	setAddress(&ScrlB[7], CONTRAST_STR);
+	setAddress(&ScrlB[8], BRIGHT_MAX_ADJ);
+	setAddress(&ScrlB[9], DARK_MAX_ADJ);
+	setAddress(&ScrlB[10], STEP_GAIN);
+	setAddress(&ScrlB[11], VARIANT_THR);
+	setAddress(&ScrlB[12], DARK_OFS);
+	setAddress(&ScrlB[13], BRIGHT_OFS);
+	setAddress(&ScrlB[14], DARK_DR);
+	setAddress(&ScrlB[15], BRIGHT_DR);
+    } else if (MainForm->addr_place == 1) {
+	setAddressFromFile(&ScrlB[0], "GLB_STR");
+	setAddressFromFile(&ScrlB[1], "SPIKE_TH");
+	setAddressFromFile(&ScrlB[2], "EDGE_TH");
+	setAddressFromFile(&ScrlB[3], "FILTER_TH");
+	setAddressFromFile(&ScrlB[4], "MAG_TH");
+	setAddressFromFile(&ScrlB[5], "TAN_TH");
+	setAddressFromFile(&ScrlB[6], "LUM_MEDIAN");
+	setAddressFromFile(&ScrlB[7], "CONTRAST_STR");
+	setAddressFromFile(&ScrlB[8], "BRIGHT_MAX_ADJ");
+	setAddressFromFile(&ScrlB[9], "DARK_MAX_ADJ");
+	setAddressFromFile(&ScrlB[10], "STEP_GAIN");
+	setAddressFromFile(&ScrlB[11], "VARIANT_THR");
+	setAddressFromFile(&ScrlB[12], "DARK_OFS");
+	setAddressFromFile(&ScrlB[13], "BRIGHT_OFS");
+	setAddressFromFile(&ScrlB[14], "DARK_DR");
+	setAddressFromFile(&ScrlB[15], "BRIGHT_DR");
+    }
+    return ScrlB;
 }
-TBit3* SP_12307::SetLblE3(){
-        TBit3* LEdt = new TBit3 [SPLblE3_Nbr];
-         if(MainForm->addr_place == 0){
-                setAddress(&LEdt[0],ACT_PIX_NUM);
-        }else if(MainForm->addr_place == 1){
-                setAddressFromFile(&LEdt[0],"ACT_PIX_NUM");
-        }
-        return LEdt;
-}
-TLUT* SP_12307::SetSPLUT()
+
+TBit3 *SP_12307::SetLblE3()
 {
-        TLUT* LUT = new TLUT [1];
-        if(MainForm->addr_place == 0){
-                setAddress(&LUT[0],SP_LUT);
-        }else if(MainForm->addr_place == 1){
-                setAddressFromFile(&LUT[0],"SP_LUT");
-        }
-        return LUT;
+    TBit3 *LEdt = new TBit3[SPLblE3_Nbr];
+    if (MainForm->addr_place == 0) {
+	setAddress(&LEdt[0], ACT_PIX_NUM);
+    } else if (MainForm->addr_place == 1) {
+	setAddressFromFile(&LEdt[0], "ACT_PIX_NUM");
+    }
+    return LEdt;
 }
-      TBit2 *SP_12307::SetLblE2(){
-         return 0;
-      }
+
+TLUT *SP_12307::SetSPLUT()
+{
+    TLUT *LUT = new TLUT[1];
+    if (MainForm->addr_place == 0) {
+	setAddress(&LUT[0], SP_LUT);
+    } else if (MainForm->addr_place == 1) {
+	setAddressFromFile(&LUT[0], "SP_LUT");
+    }
+    return LUT;
+}
+
+TBit2 *SP_12307::SetLblE2()
+{
+    return 0;
+}
+
 //-------------------------------------------------------------------------//
 //      Contrast Enhancement                                               //
 //-------------------------------------------------------------------------//
@@ -516,18 +528,21 @@ HSV_11307::HSV_11307()
 TBit *HSV_11307::SetChkBx()
 {
     TBit *ChkBx = new TBit[HSVChkBox_Nbr];
+    //TBit從define或者txt檔案撈出相關資訊
     if (MainForm->addr_place == 0) {
+	//from define, 也就是macro
 	setAddress(&ChkBx[0], HUE_EN);	//
 	setAddress(&ChkBx[1], HUE_DEMO);	//
 	setAddress(&ChkBx[2], HUE_DEMO_LEFT);	//
 	setAddress(&ChkBx[3], V_OFS_EN);
-        setAddress(&ChkBx[4], CLIP_SEL);
+	setAddress(&ChkBx[4], CLIP_SEL);
     } else if (MainForm->addr_place == 1) {
+	//from text file, 也就是設定檔
 	setAddressFromFile(&ChkBx[0], "HUE_EN");
 	setAddressFromFile(&ChkBx[1], "HUE_DEMO");
 	setAddressFromFile(&ChkBx[2], "HUE_DEMO_LEFT");
 	setAddressFromFile(&ChkBx[3], "V_OFS_EN");
-        setAddressFromFile(&ChkBx[4], "CLIP_SEL");
+	setAddressFromFile(&ChkBx[4], "CLIP_SEL");
     }
     return ChkBx;
 }
