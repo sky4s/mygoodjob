@@ -5,27 +5,26 @@
     <VERSION value="BCB.06.00"/>
     <PROJECT value="workdir\ColorToolkit.exe"/>
     <OBJFILES value="build\ColorToolkit.obj build\USBHIDIOC.obj build\HWINTERFACELib_TLB.obj 
-      build\HWINTERFACELib_OCX.obj build\THSVForm3.obj 
-      build\TColorPickerFrame.obj build\THSVAdjustFrame.obj build\Func_11307.obj 
-      build\ImgProc_11307.obj build\TCON_11307.obj build\Vend_11307.obj 
-      build\Unit1.obj build\Vender1.obj build\HueSatVal1.obj 
-      build\Sharpness1.obj build\TCON1.obj build\Function1.obj 
-      build\Engineering.obj build\DCR1.obj build\ContrastEnhance1.obj 
-      build\C3D1.obj build\SAT.obj build\SAT_11307.obj build\offset_11307.obj 
-      build\offset.obj build\TInTargetForm.obj build\GetCursorColor.obj 
-      build\TGamutForm.obj build\TPatternForm.obj build\ReadWriteFunc.obj 
-      build\doubleArray.obj build\depend.obj build\rgb.obj build\lang.obj 
-      build\core.obj build\colorspace.obj build\searcher.obj 
-      build\interpolation.obj build\ciexyz.obj build\independ.obj build\util.obj 
-      build\DCR_11307.obj build\gui_class.obj build\lcdtarget.obj 
-      build\THSVForm2nd.obj build\binder.obj build\hsvip.obj 
-      build\minimisation.obj build\asa047.obj build\Sharpness12307.obj 
-      build\CM1.obj"/>
+      build\HWINTERFACELib_OCX.obj build\TColorPickerFrame.obj 
+      build\THSVAdjustFrame.obj build\Func_11307.obj build\ImgProc_11307.obj 
+      build\TCON_11307.obj build\Vend_11307.obj build\Unit1.obj 
+      build\Vender1.obj build\HueSatVal1.obj build\Sharpness1.obj build\TCON1.obj 
+      build\Function1.obj build\Engineering.obj build\DCR1.obj 
+      build\ContrastEnhance1.obj build\C3D1.obj build\SAT.obj 
+      build\SAT_11307.obj build\offset_11307.obj build\offset.obj 
+      build\TInTargetForm.obj build\GetCursorColor.obj build\TGamutForm.obj 
+      build\TPatternForm.obj build\ReadWriteFunc.obj build\doubleArray.obj 
+      build\depend.obj build\rgb.obj build\lang.obj build\core.obj 
+      build\colorspace.obj build\searcher.obj build\interpolation.obj 
+      build\ciexyz.obj build\independ.obj build\util.obj build\DCR_11307.obj 
+      build\gui_class.obj build\lcdtarget.obj build\THSVForm2nd.obj 
+      build\binder.obj build\hsvip.obj build\minimisation.obj build\asa047.obj 
+      build\Sharpness12307.obj build\CM1.obj"/>
     <RESFILES value="ColorToolkit.res"/>
     <IDLFILES value=""/>
     <IDLGENFILES value=""/>
     <DEFFILE value=""/>
-    <RESDEPEN value="$(RESFILES) src\fpga\gui\THSVForm3.dfm src\gui\frame\TColorPickerFrame.dfm 
+    <RESDEPEN value="$(RESFILES) src\gui\frame\TColorPickerFrame.dfm 
       src\gui\frame\THSVAdjustFrame.dfm src\fpga\gui\Unit1.dfm 
       src\fpga\gui\Vender1.dfm src\fpga\gui\HueSatVal1.dfm 
       src\fpga\gui\Sharpness1.dfm src\fpga\gui\TCON1.dfm 
@@ -45,7 +44,7 @@
       inetdbbde.bpi inetdbxpress.bpi inetdb.bpi nmfast.bpi webdsnap.bpi 
       bcbie.bpi websnap.bpi soaprtl.bpi dclocx.bpi dbexpress.bpi dbxcds.bpi 
       indy.bpi bcb2kaxserver.bpi"/>
-    <PATHCPP value=".;lib\USB_i2c_lib;lib\LPT_lib;lib\LPT_lib;src\fpga\gui;src\gui\frame;src\gui\frame;src\fpga\11307\Function;src\fpga\11307\ImageProcess;src\fpga\11307\TCON;src\fpga\11307\Vender;src\fpga\gui;src\fpga\gui;src\fpga\gui;src\fpga\gui;src\fpga\gui;src\fpga\gui;src\fpga\gui;src\fpga\gui;src\fpga\gui;src\fpga\gui;src\fpga\gui;src\fpga;src\fpga;src\fpga\gui;src\c3d\gui;src\c3d;src\fpga\gui;src\fpga\gui;lib\CMSCpp2.1\src\i2c\core;lib\CMSCpp2.1\src\math;lib\CMSCpp2.1\src\cms\colorspace;lib\CMSCpp2.1\src\cms\colorspace;lib\CMSCpp2.1\src\java;lib\CMSCpp2.1\src\cms;lib\CMSCpp2.1\src\cms\colorspace;lib\CMSCpp2.1\src\math;lib\CMSCpp2.1\src\math;lib\CMSCpp2.1\src\cms\colorspace;lib\CMSCpp2.1\src\cms\colorspace;lib\CMSCpp2.1\src\cms\util;src\fpga\11307\DCR;src\fpga;lib\CMSCpp2.1\src\cms\lcd;src\fpga\gui;lib\CMSCpp2.1\src\gui\util;lib\CMSCpp2.1\src\cms\hsv;lib\CMSCpp2.1\src\algo;lib\CMSCpp2.1\src\algo;src\fpga\gui;src\fpga\gui"/>
+    <PATHCPP value=".;lib\USB_i2c_lib;lib\LPT_lib;lib\LPT_lib;src\gui\frame;src\gui\frame;src\fpga\11307\Function;src\fpga\11307\ImageProcess;src\fpga\11307\TCON;src\fpga\11307\Vender;src\fpga\gui;src\fpga\gui;src\fpga\gui;src\fpga\gui;src\fpga\gui;src\fpga\gui;src\fpga\gui;src\fpga\gui;src\fpga\gui;src\fpga\gui;src\fpga\gui;src\fpga;src\fpga;src\fpga\gui;src\c3d\gui;src\c3d;src\fpga\gui;src\fpga\gui;lib\CMSCpp2.1\src\i2c\core;lib\CMSCpp2.1\src\math;lib\CMSCpp2.1\src\cms\colorspace;lib\CMSCpp2.1\src\cms\colorspace;lib\CMSCpp2.1\src\java;lib\CMSCpp2.1\src\cms;lib\CMSCpp2.1\src\cms\colorspace;lib\CMSCpp2.1\src\math;lib\CMSCpp2.1\src\math;lib\CMSCpp2.1\src\cms\colorspace;lib\CMSCpp2.1\src\cms\colorspace;lib\CMSCpp2.1\src\cms\util;src\fpga\11307\DCR;src\fpga;lib\CMSCpp2.1\src\cms\lcd;src\fpga\gui;lib\CMSCpp2.1\src\gui\util;lib\CMSCpp2.1\src\cms\hsv;lib\CMSCpp2.1\src\algo;lib\CMSCpp2.1\src\algo;src\fpga\gui;src\fpga\gui"/>
     <PATHPAS value=".;"/>
     <PATHRC value=".;"/>
     <PATHASM value=".;"/>
@@ -95,7 +94,6 @@
       <FILE FILENAME="lib\USB_i2c_lib\hid.lib" FORMNAME="" UNITNAME="hid.lib" CONTAINERID="LibTool" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="lib\LPT_lib\HWINTERFACELib_TLB.cpp" FORMNAME="" UNITNAME="HWINTERFACELib_TLB.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="lib\LPT_lib\HWINTERFACELib_OCX.cpp" FORMNAME="" UNITNAME="HWINTERFACELib_OCX.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="src\fpga\gui\THSVForm3.cpp" FORMNAME="HSVFormNew_" UNITNAME="THSVForm3" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="src\gui\frame\TColorPickerFrame.cpp" FORMNAME="ColorPickerFrame" UNITNAME="TColorPickerFrame" CONTAINERID="CCompiler" DESIGNCLASS="TFrame" LOCALCOMMAND=""/>
       <FILE FILENAME="src\gui\frame\THSVAdjustFrame.cpp" FORMNAME="HSVAdjustFrame" UNITNAME="THSVAdjustFrame" CONTAINERID="CCompiler" DESIGNCLASS="TFrame" LOCALCOMMAND=""/>
       <FILE FILENAME="src\fpga\11307\Function\Func_11307.cpp" FORMNAME="" UNITNAME="Func_11307" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>

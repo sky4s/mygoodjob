@@ -1,8 +1,8 @@
 object HSVForm2nd: THSVForm2nd
   Left = 390
   Top = 53
-  Width = 820
-  Height = 718
+  Width = 877
+  Height = 878
   Caption = 'HSV2'
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
@@ -6239,6 +6239,210 @@ object HSVForm2nd: THSVForm2nd
     OnMouseDown = Hue_ImgMouseDown
     OnMouseMove = Hue_ImgMouseMove
   end
+  object GroupBox29: TGroupBox
+    Left = 719
+    Top = 650
+    Width = 273
+    Height = 185
+    Caption = 'HSV Change'
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -12
+    Font.Name = 'MS Sans Serif'
+    Font.Style = [fsBold]
+    ParentFont = False
+    TabOrder = 4
+    Visible = False
+    DesignSize = (
+      273
+      185)
+    object Label111: TLabel
+      Left = 8
+      Top = 156
+      Width = 42
+      Height = 13
+      Anchors = [akLeft, akBottom]
+      Caption = 'Custom'
+      Color = clWhite
+      ParentColor = False
+    end
+    object cb_Hue_Red: TCheckBox
+      Left = 8
+      Top = 32
+      Width = 105
+      Height = 20
+      Caption = 'Red         0'#176
+      Color = clRed
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindow
+      Font.Height = -12
+      Font.Name = 'MS Sans Serif'
+      Font.Style = [fsBold]
+      ParentColor = False
+      ParentFont = False
+      TabOrder = 0
+      OnClick = cb_Hue_RedClick
+    end
+    object sg_6HSV: TStringGrid
+      Left = 114
+      Top = 31
+      Width = 154
+      Height = 146
+      Align = alCustom
+      Anchors = [akLeft, akTop, akRight, akBottom]
+      BiDiMode = bdRightToLeftNoAlign
+      BorderStyle = bsNone
+      ColCount = 3
+      Ctl3D = False
+      DefaultColWidth = 50
+      DefaultRowHeight = 20
+      FixedCols = 0
+      RowCount = 7
+      FixedRows = 0
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -12
+      Font.Name = 'MS Sans Serif'
+      Font.Style = [fsBold]
+      ParentBiDiMode = False
+      ParentCtl3D = False
+      ParentFont = False
+      ScrollBars = ssNone
+      TabOrder = 5
+    end
+    object cb_Hue_Green: TCheckBox
+      Left = 8
+      Top = 72
+      Width = 105
+      Height = 22
+      Caption = 'Green     120'#176
+      Color = clGreen
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindow
+      Font.Height = -12
+      Font.Name = 'MS Sans Serif'
+      Font.Style = [fsBold]
+      ParentColor = False
+      ParentFont = False
+      TabOrder = 3
+      OnClick = cb_Hue_GreenClick
+    end
+    object cb_Hue_Blue: TCheckBox
+      Left = 8
+      Top = 114
+      Width = 105
+      Height = 21
+      Caption = 'Blue       240'#176
+      Color = clBlue
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindow
+      Font.Height = -12
+      Font.Name = 'MS Sans Serif'
+      Font.Style = [fsBold]
+      ParentColor = False
+      ParentFont = False
+      TabOrder = 2
+      OnClick = cb_Hue_BlueClick
+    end
+    object cb_Hue_Mag: TCheckBox
+      Left = 8
+      Top = 135
+      Width = 105
+      Height = 21
+      Caption = 'Magenta 300'#176
+      Color = clFuchsia
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -12
+      Font.Name = 'MS Sans Serif'
+      Font.Style = [fsBold]
+      ParentColor = False
+      ParentFont = False
+      TabOrder = 1
+      OnClick = cb_Hue_MagClick
+    end
+    object cb_Hue_Yellow: TCheckBox
+      Left = 8
+      Top = 52
+      Width = 105
+      Height = 20
+      Caption = 'Yellow     60'#176
+      Color = clYellow
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -12
+      Font.Name = 'MS Sans Serif'
+      Font.Style = [fsBold]
+      ParentColor = False
+      ParentFont = False
+      TabOrder = 4
+      OnClick = cb_Hue_YellowClick
+    end
+    object cb_Hue_Cyan: TCheckBox
+      Left = 8
+      Top = 94
+      Width = 105
+      Height = 20
+      Caption = 'Cyan      180'#176
+      Color = clAqua
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -12
+      Font.Name = 'MS Sans Serif'
+      Font.Style = [fsBold]
+      ParentColor = False
+      ParentFont = False
+      TabOrder = 6
+      OnClick = cb_Hue_CyanClick
+    end
+    object StaticText31: TStaticText
+      Left = 112
+      Top = 16
+      Width = 52
+      Height = 17
+      Alignment = taCenter
+      AutoSize = False
+      BevelKind = bkFlat
+      Caption = 'Hue'
+      TabOrder = 7
+    end
+    object StaticText32: TStaticText
+      Left = 163
+      Top = 16
+      Width = 52
+      Height = 17
+      Alignment = taCenter
+      AutoSize = False
+      BevelKind = bkFlat
+      Caption = 'Saturate'
+      TabOrder = 8
+    end
+    object StaticText33: TStaticText
+      Left = 215
+      Top = 16
+      Width = 52
+      Height = 17
+      Alignment = taCenter
+      AutoSize = False
+      BevelKind = bkFlat
+      Caption = 'Bright'
+      TabOrder = 9
+    end
+    object ed_Hue_Custom: TEdit
+      Left = 56
+      Top = 156
+      Width = 57
+      Height = 21
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clBlack
+      Font.Height = -12
+      Font.Name = 'MS Sans Serif'
+      Font.Style = [fsBold]
+      ParentFont = False
+      TabOrder = 10
+      Text = '0'
+    end
+  end
   object GroupBox28: TGroupBox
     Left = 186
     Top = 599
@@ -6477,7 +6681,7 @@ object HSVForm2nd: THSVForm2nd
     object CheckBox4: TCheckBox
       Left = 408
       Top = 8
-      Width = 86
+      Width = 105
       Height = 17
       Caption = 'CheckBox4'
       TabOrder = 6
@@ -6616,9 +6820,9 @@ object HSVForm2nd: THSVForm2nd
     end
     object GroupBox2: TGroupBox
       Left = 176
-      Top = 384
+      Top = 400
       Width = 449
-      Height = 265
+      Height = 273
       Caption = 'HSV Adjustment'
       TabOrder = 9
       object cb_Hue_rotation: TCheckBox
@@ -6643,6 +6847,7 @@ object HSVForm2nd: THSVForm2nd
         Font.Style = [fsBold]
         ParentFont = False
         TabOrder = 1
+        Visible = False
         OnClick = btn_setClick
       end
       object btn_reset: TButton
@@ -6719,7 +6924,7 @@ object HSVForm2nd: THSVForm2nd
         NumGlyphs = 2
       end
       object CheckBox_AutoSet: TCheckBox
-        Left = 89
+        Left = 161
         Top = 13
         Width = 66
         Height = 14
@@ -6727,9 +6932,10 @@ object HSVForm2nd: THSVForm2nd
         Checked = True
         State = cbChecked
         TabOrder = 7
+        Visible = False
       end
       object CheckBox_AutoWrite: TCheckBox
-        Left = 153
+        Left = 65
         Top = 13
         Width = 72
         Height = 14
@@ -6742,7 +6948,7 @@ object HSVForm2nd: THSVForm2nd
         Left = 4
         Top = 31
         Width = 361
-        Height = 163
+        Height = 178
         TabOrder = 8
         inherited GroupBox40: TGroupBox
           inherited sb_Hue_gain: TScrollBar
@@ -6759,6 +6965,7 @@ object HSVForm2nd: THSVForm2nd
           end
         end
         inherited GroupBox41: TGroupBox
+          Top = 55
           inherited sb_Sat_gain: TScrollBar
             Max = 63
             Min = -64
@@ -6770,7 +6977,9 @@ object HSVForm2nd: THSVForm2nd
           end
         end
         inherited GroupBox7: TGroupBox
+          Top = 108
           inherited sb_Val_gain: TScrollBar
+            Left = 61
             OnChange = hsvAdjustsb_Val_gainChange
           end
           inherited Edit_c3d_Manual39_v_adj: TEdit
@@ -6787,6 +6996,7 @@ object HSVForm2nd: THSVForm2nd
         Checked = True
         State = cbChecked
         TabOrder = 9
+        Visible = False
       end
       object Button_15BaseInterp: TButton
         Left = 392
@@ -6825,8 +7035,8 @@ object HSVForm2nd: THSVForm2nd
         OnClick = Button_VInterpClick
       end
       object CheckBox_ShowPattern: TCheckBox
-        Left = 320
-        Top = 13
+        Left = 344
+        Top = 11
         Width = 97
         Height = 14
         Caption = 'Show Pattern'
@@ -7306,13 +7516,12 @@ object HSVForm2nd: THSVForm2nd
       end
     end
     object CheckBox_SAT_CLIP_EN: TCheckBox
-      Left = 488
+      Left = 504
       Top = 8
       Width = 89
       Height = 17
       Caption = 'SAT_CLIP_EN'
       TabOrder = 16
-      OnClick = CheckBox_SAT_CLIP_ENClick
     end
     object GroupBox8: TGroupBox
       Left = 8
@@ -7399,7 +7608,7 @@ object HSVForm2nd: THSVForm2nd
     end
     object GroupBox9: TGroupBox
       Left = 181
-      Top = 580
+      Top = 604
       Width = 360
       Height = 61
       TabOrder = 18
@@ -7473,210 +7682,6 @@ object HSVForm2nd: THSVForm2nd
     ParentColor = False
     TabOrder = 2
     Visible = False
-  end
-  object GroupBox29: TGroupBox
-    Left = 535
-    Top = 594
-    Width = 273
-    Height = 185
-    Caption = 'HSV Change'
-    Font.Charset = DEFAULT_CHARSET
-    Font.Color = clWindowText
-    Font.Height = -12
-    Font.Name = 'MS Sans Serif'
-    Font.Style = [fsBold]
-    ParentFont = False
-    TabOrder = 4
-    Visible = False
-    DesignSize = (
-      273
-      185)
-    object Label111: TLabel
-      Left = 8
-      Top = 156
-      Width = 42
-      Height = 13
-      Anchors = [akLeft, akBottom]
-      Caption = 'Custom'
-      Color = clWhite
-      ParentColor = False
-    end
-    object cb_Hue_Red: TCheckBox
-      Left = 8
-      Top = 32
-      Width = 105
-      Height = 20
-      Caption = 'Red         0'#176
-      Color = clRed
-      Font.Charset = DEFAULT_CHARSET
-      Font.Color = clWindow
-      Font.Height = -12
-      Font.Name = 'MS Sans Serif'
-      Font.Style = [fsBold]
-      ParentColor = False
-      ParentFont = False
-      TabOrder = 0
-      OnClick = cb_Hue_RedClick
-    end
-    object sg_6HSV: TStringGrid
-      Left = 114
-      Top = 31
-      Width = 154
-      Height = 146
-      Align = alCustom
-      Anchors = [akLeft, akTop, akRight, akBottom]
-      BiDiMode = bdRightToLeftNoAlign
-      BorderStyle = bsNone
-      ColCount = 3
-      Ctl3D = False
-      DefaultColWidth = 50
-      DefaultRowHeight = 20
-      FixedCols = 0
-      RowCount = 7
-      FixedRows = 0
-      Font.Charset = DEFAULT_CHARSET
-      Font.Color = clWindowText
-      Font.Height = -12
-      Font.Name = 'MS Sans Serif'
-      Font.Style = [fsBold]
-      ParentBiDiMode = False
-      ParentCtl3D = False
-      ParentFont = False
-      ScrollBars = ssNone
-      TabOrder = 5
-    end
-    object cb_Hue_Green: TCheckBox
-      Left = 8
-      Top = 72
-      Width = 105
-      Height = 22
-      Caption = 'Green     120'#176
-      Color = clGreen
-      Font.Charset = DEFAULT_CHARSET
-      Font.Color = clWindow
-      Font.Height = -12
-      Font.Name = 'MS Sans Serif'
-      Font.Style = [fsBold]
-      ParentColor = False
-      ParentFont = False
-      TabOrder = 3
-      OnClick = cb_Hue_GreenClick
-    end
-    object cb_Hue_Blue: TCheckBox
-      Left = 8
-      Top = 114
-      Width = 105
-      Height = 21
-      Caption = 'Blue       240'#176
-      Color = clBlue
-      Font.Charset = DEFAULT_CHARSET
-      Font.Color = clWindow
-      Font.Height = -12
-      Font.Name = 'MS Sans Serif'
-      Font.Style = [fsBold]
-      ParentColor = False
-      ParentFont = False
-      TabOrder = 2
-      OnClick = cb_Hue_BlueClick
-    end
-    object cb_Hue_Mag: TCheckBox
-      Left = 8
-      Top = 135
-      Width = 105
-      Height = 21
-      Caption = 'Magenta 300'#176
-      Color = clFuchsia
-      Font.Charset = DEFAULT_CHARSET
-      Font.Color = clWindowText
-      Font.Height = -12
-      Font.Name = 'MS Sans Serif'
-      Font.Style = [fsBold]
-      ParentColor = False
-      ParentFont = False
-      TabOrder = 1
-      OnClick = cb_Hue_MagClick
-    end
-    object cb_Hue_Yellow: TCheckBox
-      Left = 8
-      Top = 52
-      Width = 105
-      Height = 20
-      Caption = 'Yellow     60'#176
-      Color = clYellow
-      Font.Charset = DEFAULT_CHARSET
-      Font.Color = clWindowText
-      Font.Height = -12
-      Font.Name = 'MS Sans Serif'
-      Font.Style = [fsBold]
-      ParentColor = False
-      ParentFont = False
-      TabOrder = 4
-      OnClick = cb_Hue_YellowClick
-    end
-    object cb_Hue_Cyan: TCheckBox
-      Left = 8
-      Top = 94
-      Width = 105
-      Height = 20
-      Caption = 'Cyan      180'#176
-      Color = clAqua
-      Font.Charset = DEFAULT_CHARSET
-      Font.Color = clWindowText
-      Font.Height = -12
-      Font.Name = 'MS Sans Serif'
-      Font.Style = [fsBold]
-      ParentColor = False
-      ParentFont = False
-      TabOrder = 6
-      OnClick = cb_Hue_CyanClick
-    end
-    object StaticText31: TStaticText
-      Left = 112
-      Top = 16
-      Width = 52
-      Height = 17
-      Alignment = taCenter
-      AutoSize = False
-      BevelKind = bkFlat
-      Caption = 'Hue'
-      TabOrder = 7
-    end
-    object StaticText32: TStaticText
-      Left = 163
-      Top = 16
-      Width = 52
-      Height = 17
-      Alignment = taCenter
-      AutoSize = False
-      BevelKind = bkFlat
-      Caption = 'Saturate'
-      TabOrder = 8
-    end
-    object StaticText33: TStaticText
-      Left = 215
-      Top = 16
-      Width = 52
-      Height = 17
-      Alignment = taCenter
-      AutoSize = False
-      BevelKind = bkFlat
-      Caption = 'Bright'
-      TabOrder = 9
-    end
-    object ed_Hue_Custom: TEdit
-      Left = 56
-      Top = 156
-      Width = 57
-      Height = 21
-      Font.Charset = DEFAULT_CHARSET
-      Font.Color = clBlack
-      Font.Height = -12
-      Font.Name = 'MS Sans Serif'
-      Font.Style = [fsBold]
-      ParentFont = False
-      TabOrder = 10
-      Text = '0'
-    end
   end
   object le_ChAangle: TLabeledEdit
     Left = 813

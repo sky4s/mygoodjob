@@ -106,17 +106,21 @@ void __fastcall THSVForm2nd::FormCreate(TObject * Sender)
 
     lut_addr = OHSV->SetLUT();
 
+    //HSV_11307生出  TBit
     cb = OHSV->SetChkBx();
+    //從HSV_11307生出這些資訊
     ChkB = new _CHKB *[OHSV->HSVChkBox_Nbr];
-    for (int i = 0; i < OHSV->HSVChkBox_Nbr; i++)
+    for (int i = 0; i < OHSV->HSVChkBox_Nbr; i++) {
 	ChkB[i] = new _CHKB;
-
+    }
+    //將HSV_11307跟GUI產生連結
     ChkB[0]->Chkb = CheckBox1;
     ChkB[1]->Chkb = CheckBox2;
     ChkB[2]->Chkb = CheckBox3;
     ChkB[3]->Chkb = CheckBox4;
     ChkB[4]->Chkb = CheckBox_SAT_CLIP_EN;
 
+    //設定GUI的屬性
     for (int i = 0; i < OHSV->HSVChkBox_Nbr; i++) {
 	ChkB[i]->Addr = cb[i];
 	ChkB[i]->Chkb->Visible = ChkB[i]->Addr.FuncEn();
@@ -1699,15 +1703,6 @@ void __fastcall THSVForm2nd::ScrollBar_TurnPointChange(TObject * Sender)
 
 //---------------------------------------------------------------------------
 
-void __fastcall THSVForm2nd::CheckBox_SAT_CLIP_ENClick(TObject * Sender)
-{
-    int_vector_ptr values = AbstractBase::getValuesFromFile("SAT_CLIP_EN");
-    if (null != values) {
-
-    }
-}
-
-//---------------------------------------------------------------------------
 
 void __fastcall THSVForm2nd::RadioButton_MemoryColorClick(TObject * Sender)
 {
@@ -1852,5 +1847,4 @@ void __fastcall THSVForm2nd::ScrollBar_ChromaChange(TObject * Sender)
 };
 
 //---------------------------------------------------------------------------
-
 

@@ -9,25 +9,19 @@
 
 class TBit:public AbstractAddressType {
   private:
-    //bool en;
     int B_addr;
     int b_addr;
-    //int b_num;
     int value;
-    //AnsiString name;
   public:
      String * choice;
     int choice_nbr;
     int set(int, int, int, AnsiString);	//set address,
     //return val:1=>bit address range fault, 2=>number of bits fault, 3=>1&2 fault
-    //bool FuncEn();		//function enable or not
     int Addr();
     int ShiftBit();		//number of bits the stored value shift
     int StbBit();		//stable bit value
-    //int BitNum();
     int GetVal();
     void SetVal(int);
-    //AnsiString Name();
      TBit() {
 	en = false;
 	B_addr = 0;
@@ -38,8 +32,6 @@ class TBit:public AbstractAddressType {
 	choice_nbr = 0;
 	value = -1;
     };
-    /*~TBit() {
-       }; */
     virtual void _set(int_vector_ptr vector, AnsiString name) {
 	//using namespace java::lang;
 	int size = vector->size();
@@ -76,15 +68,6 @@ void TBit::SetVal(int val)
 {
     value = val;
 };
-/*int TBit::BitNum()
-{
-    return b_num;
-}
-
-bool TBit::FuncEn()
-{
-    return (en);
-}*/
 
 int TBit::Addr()
 {
@@ -96,10 +79,6 @@ int TBit::ShiftBit()
     return (b_addr);
 }
 
-/*AnsiString TBit::Name()
-{
-    return name;
-}*/
 
 int TBit::StbBit()
 {
