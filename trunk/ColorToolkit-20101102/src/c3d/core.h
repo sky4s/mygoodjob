@@ -114,20 +114,7 @@ __fastcall _ScrollBar::~_ScrollBar()
     delete[]ScrlB;
     //delete Addr.choice;
 }
-
-class _StaticText		//Address ¬° 1 byte
-{
-  public:
-    __fastcall ~ _StaticText();
-    TStaticText *StTxt;
-    TBit Addr;
-};
-__fastcall _StaticText::~_StaticText()
-{
-    delete[]StTxt;
-    //delete Addr.choice;
-}
-
+ 
 class AbstC3D {
   public:
     virtual TBit SetEn() = 0;

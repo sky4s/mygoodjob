@@ -15,7 +15,7 @@ class TBit:public AbstractAddressType {
   public:
      String * choice;
     int choice_nbr;
-    int set(int, int, int, AnsiString);	//set address,
+    int set(int _B_addr, int _b_addr, int _b_num, AnsiString _name);	//set address,
     //return val:1=>bit address range fault, 2=>number of bits fault, 3=>1&2 fault
     int Addr();
     int ShiftBit();		//number of bits the stored value shift
@@ -41,6 +41,16 @@ class TBit:public AbstractAddressType {
 
 //---------------------------------TBit_Ctrl--------------------------------
 
+/*
+  HSV_EN,208,0,1
+  ^^^^^^1^^^2^3^4
+  1. _name
+  2. _B_addr
+  3. _b_addr
+  4. _b_num
+
+  return val:1=>bit address range fault, 2=>number of bits fault, 3=>1&2 fault
+*/
 int TBit::set(int _B_addr, int _b_addr, int _b_num, AnsiString _name)
 {
     int rtn_val = 0;
@@ -50,6 +60,7 @@ int TBit::set(int _B_addr, int _b_addr, int _b_num, AnsiString _name)
     if (_b_addr <= 7 && _b_addr >= 0) {
 	b_addr = _b_addr;
     } else {
+    //error??
 	rtn_val += 1;		//bit address out of range(0~7), return value
     }
     if (_b_num <= 8 && _b_num >= 0) {
@@ -82,12 +93,15 @@ int TBit::ShiftBit()
 
 int TBit::StbBit()
 {
-    if (b_num == 1)
+    if (b_num == 1)  {
 	return (0xff - pow(2, b_addr));
-    else if (b_num == 8)
+    }
+    else if (b_num == 8) {
 	return 0;
-    else
+    }
+    else {
 	return (255 - pow(2, b_addr + b_num) + pow(2, b_addr));
+    }
 }
 
 #endif

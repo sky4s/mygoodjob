@@ -85,8 +85,9 @@ void __fastcall THSVFormNew_::FormCreate(TObject * Sender)
 
     cb = OHSV->SetChkBx();
     ChkB = new _CHKB *[OHSV->HSVChkBox_Nbr];
-    for (int i = 0; i < OHSV->HSVChkBox_Nbr; i++)
+    for (int i = 0; i < OHSV->HSVChkBox_Nbr; i++) {
 	ChkB[i] = new _CHKB;
+    }
 
     ChkB[0]->Chkb = CheckBox1;
     ChkB[1]->Chkb = CheckBox2;
