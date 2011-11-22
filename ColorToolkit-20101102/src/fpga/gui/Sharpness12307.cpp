@@ -114,7 +114,8 @@ void __fastcall TSharpnessForm12307::LblE3_KeyPress(TObject * Sender,
 
     unsigned char val1, val2, val3;
     //add for Max hint
-    if (set_val >= pow(2, LblE3[idx]->Addr.BitNum())) {
+    int limit = pow(2, LblE3[idx]->Addr.BitNum());
+    if (set_val >= limit ) {
 	AnsiString max =
 	    "Max value:" +
 	    IntToStr((int) pow(2, LblE3[idx]->Addr.BitNum()) - 1);

@@ -6,7 +6,7 @@
 
 #include <i2c/core/ReadWriteFunc.h>
 #include <i2c/core/PrintPortI2C.h>
-#include "table_type.h"
+
 #include "Unit1.h"
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
@@ -15,67 +15,20 @@
 
 
 TEngineerForm *EngineerForm;
-RW_Func RW;
-bool connect = false;
-String Connect_Msg = "";
 
-char *Err_Msg_Card = "Card Connect Fail!";
-char *Err_Msg_BAddr = "Please enter Byte Address.";
-char *Err_Msg_Dev = "Please choose a Device Address.";
-char *Err_Msg_WByte = "Please enter DATA to write";
-char *Err_Msg_R = "Read Fail!";
-char *Err_Msg_W = "Write Fail!";
 
-// 20100608 ·s¼W, ¸Ô²Ó¤º®e¼g¦b'table_type.h'
-ReadWrite_LUT RW_LUT;
-// decode / encode data in difference Table type, Defined in table_type.h
-bool Read_LUT(TLUT Addr_LUT, IntTbl & Out, ByteTbl In)
-{
-    if (Addr_LUT.BitNum() == 8) {
-	RW_LUT.Read_LUT8(Out, In, Addr_LUT.Type());
-    } else if (Addr_LUT.BitNum() == 4) {
-	RW_LUT.Read_LUT4(Out, In, Addr_LUT.Type());
-    } else if (Addr_LUT.BitNum() == 5) {	// 201007
-	RW_LUT.Read_LUT5(Out, In, Addr_LUT.Type());
-    } else if (Addr_LUT.BitNum() == 6) {
-	RW_LUT.Read_LUT6(Out, In, Addr_LUT.Type());
-    } else if (Addr_LUT.BitNum() == 10) {
-	RW_LUT.Read_LUT10(Out, In, Addr_LUT.Type());
-    } else if (Addr_LUT.BitNum() == 12) {
-	RW_LUT.Read_LUT12(Out, In, Addr_LUT.Type());
-    } else if (Addr_LUT.BitNum() == 16) {
-	RW_LUT.Read_LUT16(Out, In, Addr_LUT.Type());
-    } else {
-	Out.Tbl = NULL;
-    }
-    return 1;
-}
 
-bool Write_LUT(TLUT Addr_LUT, ByteTbl & Out, IntTbl In)
-{
-    if (Addr_LUT.BitNum() == 8) {
-	RW_LUT.Write_LUT8(Out, In, Addr_LUT.Type());
-    } else if (Addr_LUT.BitNum() == 4) {
-	RW_LUT.Write_LUT4(Out, In, Addr_LUT.Type());
-    } else if (Addr_LUT.BitNum() == 5) {	// 201007
-	RW_LUT.Write_LUT5(Out, In, Addr_LUT.Type());
-    } else if (Addr_LUT.BitNum() == 6) {
-	RW_LUT.Write_LUT6(Out, In, Addr_LUT.Type());
-    } else if (Addr_LUT.BitNum() == 10) {
-	RW_LUT.Write_LUT10(Out, In, Addr_LUT.Type());
-    } else if (Addr_LUT.BitNum() == 12) {
-	RW_LUT.Write_LUT12(Out, In, Addr_LUT.Type());
-    } else if (Addr_LUT.BitNum() == 16) {
-	RW_LUT.Write_LUT16(Out, In, Addr_LUT.Type());
-    } else {
-	Out.Tbl = NULL;
-    }
-    return 1;
-}
+static   char *Err_Msg_Card = "Card Connect Fail!";
+static   char *Err_Msg_BAddr = "Please enter Byte Address.";
+static   char *Err_Msg_Dev = "Please choose a Device Address.";
+static   char *Err_Msg_WByte = "Please enter DATA to write";
+static   char *Err_Msg_R = "Read Fail!";
+static   char *Err_Msg_W = "Write Fail!";
+
 
 //---------------------------------------------------------------------------
 __fastcall TEngineerForm::TEngineerForm(TComponent * Owner)
-:TForm(Owner)
+:TForm(Owner),connect(false),Connect_Msg("")
 {
 
 }
@@ -269,29 +222,24 @@ bool TEngineerForm::B_read(unsigned char &data_read, unsigned char dev_addr)	//±
     SetDeviceAddr(dev_addr, &dev_addr_tmp, data_addr, data_addr_cnt);
     if (rg_i2c_card_sel->ItemIndex == 0) {	// USB
 	int cnnct_ok = RW.USB_connect(rg_power->ItemIndex, rg_speed->ItemIndex);	//201007 for Vdd drop
-	if (!cnnct_ok)
+	if (!cnnct_ok){
 	    return 0;
+        }
 	ok = RW.USB_seq_read_P1(dev_addr_tmp, data_addr, data_addr_cnt,
 				&data_read, 1, 1);
 	connect = ok;
     } else {			// LPT
 	ok = RW.LPT_Read_Byte(dev_addr_tmp, data_addr, data_addr_cnt,
 			      &data_read);
-	if (ok != 1)		//¶Ç°e¥¢±Ñ, ¦A¶Ç¤@¦¸
+	if (ok != 1) {		//¶Ç°e¥¢±Ñ, ¦A¶Ç¤@¦¸
 	    ok = RW.LPT_Read_Byte(dev_addr_tmp, data_addr, data_addr_cnt,
 				  &data_read);
+        }
 	if (ok != 1) {
-	    /*if(connect){
-	       if(ok==-1)
-	       ShowMessage("Device address Send fail!");
-	       else if(ok==-2)
-	       ShowMessage("Data address Send fail!");
-	       else if(ok==0)
-	       ShowMessage("Data Send fail!");
-	       } */
 	    return 0;
-	} else
-	    connect = 1;
+	} else {
+	    connect = true;
+        }
     }
     return ok;
 }
@@ -358,7 +306,7 @@ unsigned char TEngineerForm::readByte(TBit & Addr_Bit)
 	return NULL;
     }
     unsigned char *data_read = new unsigned char[dev_addr_cnt];
-    bool dif = 0;
+    bool dif = false;
     for (int i = 0; i < dev_addr_cnt; i++) {	//¹ï¨C­Ódevice address°Ê§@
 	bool ok = 0;
 	int cnt = 0;
@@ -374,13 +322,13 @@ unsigned char TEngineerForm::readByte(TBit & Addr_Bit)
 
 	if (i >= 1) {
 	    if (data_read[i] != data_read[i - 1]) {
-		dif = 1;
+		dif = true;
 	    }
 	}
     }
     unsigned char result = data_read[0];
     Addr_Bit.SetVal(data_read[0]);
-    if (dif == 1) {
+    if (true == dif ) {
 	ShowMessage(Addr_Bit.Name() + "has difference value.");
     }
     delete[]data_read;
@@ -1854,15 +1802,18 @@ void __fastcall TEngineerForm::rg_device_addr_selClick(TObject * Sender)
     if (rg_device_addr_sel->ItemIndex == 2) {	//EEPROM
 	MainForm->StatusBar1->Panels->Items[1]->Text =
 	    "Device Address: " + edt_addr_EEP->Text;
-	if (cbo_mem_addr_size->ItemIndex == 0)	//2k
+	if (cbo_mem_addr_size->ItemIndex == 0){	//2k
 	    rg_w_page->ItemIndex = 1;
+        }
 	else if (cbo_mem_addr_size->ItemIndex == 1
 		 || cbo_mem_addr_size->ItemIndex == 2
 		 || cbo_mem_addr_size->ItemIndex == 3)
 	    //4k, 8k, 16k
+            {
 	    rg_w_page->ItemIndex = 2;
-	else			//32k or more
+	}else{			//32k or more
 	    rg_w_page->ItemIndex = 3;
+        }
 	rg_w_cycl_t->ItemIndex = 1;
     } else {			//TCON or OTP
 	rg_w_cycl_t->ItemIndex = 2;
@@ -2052,12 +2003,15 @@ void __fastcall TEngineerForm::btn_seq_loadClick(TObject * Sender)
 	    return;
 	}
 
-	if (idx == 256)
+	if (idx == 256) {
 	    cbo_mem_addr_size->ItemIndex = 0;
-	else if (idx == 4096)
+        }
+	else if (idx == 4096) {
 	    cbo_mem_addr_size->ItemIndex = 4;
-	else if (idx == 8192)
+        }
+	else if (idx == 8192) {
 	    cbo_mem_addr_size->ItemIndex = 5;
+        }
     }
     Set_seq_data(data, idx, 0);
     //delete [] pch;
@@ -2076,8 +2030,9 @@ void __fastcall TEngineerForm::btn_seq_loadClick(TObject * Sender)
 void __fastcall TEngineerForm::btn_seq_saveClick(TObject * Sender)
 {
 
-    if (!SaveDialog_txt_hex->Execute())
+    if (!SaveDialog_txt_hex->Execute()) {
 	return;
+    }
     String Fpath = SaveDialog_txt_hex->FileName;
     FILE *fptr = fopen(Fpath.c_str(), "w");
     if (fptr == NULL) {
@@ -2339,10 +2294,12 @@ void __fastcall TEngineerForm::btn_LPT_spdClick(TObject * Sender)
     sprintf(str, "%3.2f kHz", freq);
     st_lpt_speed->Caption = str;
     int ID_OK;
-    if (freq > 70)
+    if (freq > 70) {
 	ID_OK =
 	    MessageBox(NULL, "Lower LPT frequency?!", "Confirm",
 		       MB_OKCANCEL);
+
+    }
     if (ID_OK == 1) {
 	cb_low_freq->Checked = true;
 	SetHalfFreq();
@@ -2353,10 +2310,12 @@ void __fastcall TEngineerForm::btn_LPT_spdClick(TObject * Sender)
 // if "Half Frequency" Checked, Set PrintPort signal to half frequency
 void __fastcall TEngineerForm::cb_low_freqClick(TObject * Sender)
 {
-    if (cb_low_freq->Checked)
+    if (cb_low_freq->Checked) {
 	SetHalfFreq();
-    else
+    }
+    else {
 	SetOrigFreq();
+    }
 }
 
 //---------------------------------------------------------------------------
@@ -2418,4 +2377,109 @@ void __fastcall TEngineerForm::SaveDialog_txt_hexSelectionChange(TObject *
 }
 
 //---------------------------------------------------------------------------
+        bool  TEngineerForm::Hex2Dec(AnsiString str, int *val)
+{
+    char *dataByte = str.c_str();	//take input string into char* array
+    *val = 0;
+    int len = str.Length();
+    if (len == 0) {
+	return false;
+        }
+    for (int i = 0; i < len; i++) {
+	if (dataByte[i] >= '0' && dataByte[i] <= '9') {
+	    *val = *val * 16 + (unsigned int) (dataByte[i] - '0');
+	} else {
+	    if (dataByte[i] >= 'a' && dataByte[i] <= 'f') {
+		*val = *val * 16 + (unsigned int) (dataByte[i] - 'a' + 10);
+            }
+	    else if (dataByte[i] >= 'A' && dataByte[i] <= 'F') {
+		*val = *val * 16 + (unsigned int) (dataByte[i] - 'A' + 10);
+            }
+	    else if (dataByte[i] != NULL && dataByte[i] != ' ') {
+		return false;
+            }
+	}
+    }
 
+    return true;
+}
+
+bool  TEngineerForm::Dec2Hex(int val, AnsiString * str)
+{
+    char string[4];
+    sprintf(string, "%02X", val);
+    *str = (AnsiString) string;
+    return true;
+}
+
+//---------------------------------------------------------------------------
+
+char * TEngineerForm::LoadFile(String Fpath, int *len)
+{
+    unsigned long lSize;
+    char *buffer;
+    FILE *fptr;
+    if ((fptr = fopen(Fpath.c_str(), "r")) == NULL) {
+	return NULL;
+    }
+
+    // obtain file size:
+    fseek(fptr, 0, SEEK_END);
+    lSize = ftell(fptr);
+    rewind(fptr);
+
+    // allocate memory to contain the whole file:
+    buffer = new char[lSize];
+    int n = 0;
+    while (!feof(fptr)) {
+	buffer[n] = fgetc(fptr);
+	n++;
+    }
+    fclose(fptr);
+    *len = n;
+    return buffer;
+}
+
+bool TEngineerForm::Read_LUT(TLUT Addr_LUT, IntTbl & Out, ByteTbl In)
+{
+    if (Addr_LUT.BitNum() == 8) {
+	RW_LUT.Read_LUT8(Out, In, Addr_LUT.Type());
+    } else if (Addr_LUT.BitNum() == 4) {
+	RW_LUT.Read_LUT4(Out, In, Addr_LUT.Type());
+    } else if (Addr_LUT.BitNum() == 5) {	// 201007
+	RW_LUT.Read_LUT5(Out, In, Addr_LUT.Type());
+    } else if (Addr_LUT.BitNum() == 6) {
+	RW_LUT.Read_LUT6(Out, In, Addr_LUT.Type());
+    } else if (Addr_LUT.BitNum() == 10) {
+	RW_LUT.Read_LUT10(Out, In, Addr_LUT.Type());
+    } else if (Addr_LUT.BitNum() == 12) {
+	RW_LUT.Read_LUT12(Out, In, Addr_LUT.Type());
+    } else if (Addr_LUT.BitNum() == 16) {
+	RW_LUT.Read_LUT16(Out, In, Addr_LUT.Type());
+    } else {
+	Out.Tbl = NULL;
+    }
+    return true;
+}
+
+bool TEngineerForm::Write_LUT(TLUT Addr_LUT, ByteTbl & Out, IntTbl In)
+{
+    if (Addr_LUT.BitNum() == 8) {
+	RW_LUT.Write_LUT8(Out, In, Addr_LUT.Type());
+    } else if (Addr_LUT.BitNum() == 4) {
+	RW_LUT.Write_LUT4(Out, In, Addr_LUT.Type());
+    } else if (Addr_LUT.BitNum() == 5) {	// 201007
+	RW_LUT.Write_LUT5(Out, In, Addr_LUT.Type());
+    } else if (Addr_LUT.BitNum() == 6) {
+	RW_LUT.Write_LUT6(Out, In, Addr_LUT.Type());
+    } else if (Addr_LUT.BitNum() == 10) {
+	RW_LUT.Write_LUT10(Out, In, Addr_LUT.Type());
+    } else if (Addr_LUT.BitNum() == 12) {
+	RW_LUT.Write_LUT12(Out, In, Addr_LUT.Type());
+    } else if (Addr_LUT.BitNum() == 16) {
+	RW_LUT.Write_LUT16(Out, In, Addr_LUT.Type());
+    } else {
+	Out.Tbl = NULL;
+    }
+    return true;
+}

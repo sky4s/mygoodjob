@@ -3,8 +3,8 @@
 #include <vcl.h>
 #pragma hdrstop
 //---------------------------------------------------------------------------
-USEFORM("src\gui\frame\TColorPickerFrame.cpp", ColorPickerFrame);	/* TFrame: File Type */
-USEFORM("src\gui\frame\THSVAdjustFrame.cpp", HSVAdjustFrame);	/* TFrame: File Type */
+USEFORM("src\gui\frame\TColorPickerFrame.cpp", ColorPickerFrame); /* TFrame: File Type */
+USEFORM("src\gui\frame\THSVAdjustFrame.cpp", HSVAdjustFrame); /* TFrame: File Type */
 USEFORM("src\fpga\gui\Unit1.cpp", MainForm);
 USEFORM("src\fpga\gui\Vender1.cpp", VenderForm1);
 USEFORM("src\fpga\gui\HueSatVal1.cpp", HSVFormOrg);
@@ -31,11 +31,11 @@ WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	Application->Initialize();
 	Application->Title = "Color Engine Toolkit";
 	Application->CreateForm(__classid(TMainForm), &MainForm);
-	Application->CreateForm(__classid(TEngineerForm), &EngineerForm);
-	Application->CreateForm(__classid(TInTargetForm), &InTargetForm);
-	Application->CreateForm(__classid(TPatternForm), &PatternForm);
-	Application->CreateForm(__classid(TPatternForm), &PatternForm2);
-	Application->Run();
+                 Application->CreateForm(__classid(TEngineerForm), &EngineerForm);
+                 Application->CreateForm(__classid(TInTargetForm), &InTargetForm);
+                 Application->CreateForm(__classid(TPatternForm), &PatternForm);
+                 Application->CreateForm(__classid(TPatternForm), &PatternForm2);
+                 Application->Run();
     }
     catch(Exception & exception) {
 	Application->ShowException(&exception);

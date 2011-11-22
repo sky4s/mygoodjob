@@ -22,7 +22,6 @@
 #include <jpeg.hpp>
 #include <Graphics.hpp>
 #include <Dialogs.hpp>
-//#include <i2c/core/ReadWriteFunc.h>
 #include <math.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -32,6 +31,7 @@
 #include <time.h>
 #include "Unit1.h"
 #include <fpga/gui_class.h>
+#include "table_type.h"
 
 //---------------------------------------------------------------------------
 /*=========================================================================
@@ -133,17 +133,29 @@ class TEngineerForm:public TForm {
     void __fastcall SaveDialog_txt_hexSelectionChange(TObject * Sender);
 
   private:			// User declarations
-  public:			// User declarations
-     __fastcall TEngineerForm(TComponent * Owner);
-     __fastcall ~ TEngineerForm(void);
+  char * LoadFile(String Fpath, int *len) ;
+  bool  Dec2Hex(int val, AnsiString * str);
+   bool  Hex2Dec(AnsiString str, int *val);
+   bool connect;
+   String Connect_Msg;
+                         RW_Func RW;
+// 20100608 新增, 詳細內容寫在'table_type.h'
+ReadWrite_LUT RW_LUT;
+// decode / encode data in difference Table type, Defined in table_type.h
+bool Read_LUT(TLUT Addr_LUT, IntTbl & Out, ByteTbl In);
+
+bool Write_LUT(TLUT Addr_LUT, ByteTbl & Out, IntTbl In);
+
+
     bool Get_byte_addr(unsigned char *data_addr, int *data_addr_cnt);
     bool Get_device_addr(unsigned char *dev, int *dev_addr_cnt);
     bool Get_device_addr(int *dev_ad);
-    bool Get_write_data(unsigned char *write_data);
-    bool Get_seq_addr(unsigned char *data_addr, int *data_addr_cnt);
-    void Get_seq_write_data(unsigned char *data, int data_len);
+        bool Get_write_data(unsigned char *write_data);
+            bool Get_seq_addr(unsigned char *data_addr, int *data_addr_cnt);
+                void Get_seq_write_data(unsigned char *data, int data_len);
     bool Set_seq_data(unsigned char *data_read, int data_len,
 		      int data_addr_val);
+
     bool SetDeviceAddr(unsigned char dev_ad, unsigned char *dev_ad_new,
 		       unsigned char *data_ad, int data_ad_c);
     void dev_addr_change(TObject * Sender);
@@ -161,19 +173,33 @@ class TEngineerForm:public TForm {
 		      int data_addr_cnt, unsigned char *data_write,
 		      int data_len, int pck_size, int wait_t);
     bool B_read(unsigned char &data_read, unsigned char dev_addr);
-    //bool B_read(unsigned char& data_read);
-    //bool B_write();
     bool B_write(unsigned char dev_addr);
     bool pg_read(unsigned char *read, bool IsShow);
     bool pg_write();
+    void wait(long milli);
 
-    bool SetWrite_Byte(TBit Addr_Bit, int set_val);
+    void Clear_sg_seq_data();
+    bool Msg_USB_RW(int read_sucess, int read_count, int package_cnt);
+    void Send_WarningMsg(int pck);
+
+    bool btn_byte_readClick();
+
+
+
+
+  public:			// User declarations
+     __fastcall TEngineerForm(TComponent * Owner);
+     __fastcall ~ TEngineerForm(void);
+
+     bool SetWrite_Byte(TBit Addr_Bit, int set_val);
     bool SetRead_Byte(TBit Addr_Bit, unsigned char *read_val);
     unsigned char readByte(TBit & Addr_Bit);
+
     bool SetWrite_PG(TLUT Addr_LUT, int *write_table, bool IsChkSum);
     bool SetWrite_PG(TLUT Addr_LUT, int *write_table, bool IsChkSum,
 		     bool MSB_first);
     bool SetRead_PG(TLUT Addr_LUT, int *table, bool IsChkSum);
+    
     bool SetRead_DG(TLUT * Addr_LUT, int **DG_table, int LUT_Nbr,
 		    bool IsChkSum);
     bool SetWrite_DG(TLUT * Addr_LUT, int **lut, int LUT_Nbr,
@@ -182,75 +208,13 @@ class TEngineerForm:public TForm {
 		     bool IsChkSum);
 
     String *Load_file(String Fpath, int Lut_no);
-    void wait(long milli);
-    void Clear_sg_seq_data();
-    bool Msg_USB_RW(int read_sucess, int read_count, int package_cnt);
-    void Send_WarningMsg(int pck);
 
-    bool btn_byte_readClick();
+
 };
 //---------------------------------------------------------------------------
 extern PACKAGE TEngineerForm *EngineerForm;
 
 //---------------------------------------------------------------------------
-bool Hex2Dec(AnsiString str, int *val)
-{
-    char *dataByte = str.c_str();	//take input string into char* array
-    *val = 0;
-    int len = str.Length();
-    if (len == 0)
-	return 0;
-    for (int i = 0; i < len; i++) {
-	if (dataByte[i] >= '0' && dataByte[i] <= '9') {
-	    *val = *val * 16 + (unsigned int) (dataByte[i] - '0');
-	} else {
-	    if (dataByte[i] >= 'a' && dataByte[i] <= 'f')
-		*val = *val * 16 + (unsigned int) (dataByte[i] - 'a' + 10);
-	    else if (dataByte[i] >= 'A' && dataByte[i] <= 'F')
-		*val = *val * 16 + (unsigned int) (dataByte[i] - 'A' + 10);
-	    else if (dataByte[i] != NULL && dataByte[i] != ' ')
-		return 0;
-	}
-    }
-
-    //delete [] dataByte;
-    return 1;
-}
-
-bool Dec2Hex(int val, AnsiString * str)
-{
-    char string[4];
-    sprintf(string, "%02X", val);
-    *str = (AnsiString) string;
-    return 1;
-}
-
-//---------------------------------------------------------------------------
-
-char *LoadFile(String Fpath, int *len)
-{
-    unsigned long lSize;
-    char *buffer;
-    FILE *fptr;
-    if ((fptr = fopen(Fpath.c_str(), "r")) == NULL)
-	return NULL;
-
-    // obtain file size:
-    fseek(fptr, 0, SEEK_END);
-    lSize = ftell(fptr);
-    rewind(fptr);
-
-    // allocate memory to contain the whole file:
-    buffer = new char[lSize];
-    int n = 0;
-    while (!feof(fptr)) {
-	buffer[n] = fgetc(fptr);
-	n++;
-    }
-    fclose(fptr);
-    *len = n;
-    return buffer;
-}
 
 //--------------------------------------------------------------------------
 
