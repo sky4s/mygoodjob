@@ -553,6 +553,8 @@ void __fastcall THSVForm2nd::Btn_HSV_reloadClick(TObject * Sender)
     Btn_HSV_reload->Enabled = false;
     HSV_LUT_FuncEnable(0);
     unsigned char read_val;
+
+    //read check box
     for (int i = 0; i < OHSV->HSVChkBox_Nbr; i++) {
 	if (ChkB[i]->Chkb->Visible == true) {
 	    EngineerForm->SetRead_Byte(ChkB[i]->Addr, &read_val);
@@ -565,7 +567,9 @@ void __fastcall THSVForm2nd::Btn_HSV_reloadClick(TObject * Sender)
 	    }
 	}
     }
+    //read lut
     btn_hsv_readClick(Sender);
+
     HSV_LUT_FuncEnable(1);
     Btn_HSV_reload->Enabled = true;
 }
@@ -1171,69 +1175,56 @@ void __fastcall THSVForm2nd::FormKeyPress(TObject * Sender, char &Key)
     bool manualHsvAdjusting = false;
 
     switch (Key) {
-    case ' v ':
-    case ' V ':
-	/*{
-	   double_array hsviValues =
-	   HSV::getHSVIValues(IntArray::toDoubleArray(cursorRGBValues, 3));
-	   int hueIndex = getHueIndex(hsviValues[0]);
-	   setGridSelectRow(hueIndex + 1);
+    case 'v':
+    case 'V':
 
-	   customPattern = true;
-	   IntArray::arraycopy(cursorRGBValues, selectedRGBValues, 3);
-	   colorPicker->setOriginalColor(cursorRGBValues[0], cursorRGBValues[1],
-	   cursorRGBValues[2]);
-	   setupPatternForm();
-
-	   break;
-	   } */
 	selectColor();
 	break;
-    case ' w ':
-    case ' W ':
+    case 'w':
+    case 'W':
 	hsvPos[0] += 1;
 	manualHsvAdjusting = true;
 	break;
-    case ' q ':
-    case ' Q ':
+    case 'q':
+    case 'Q':
 	hsvPos[0] -= 1;
 	manualHsvAdjusting = true;
 	break;
-    case ' s ':
-    case ' S ':
+    case 's':
+    case 'S':
 	hsvPos[1] += 1;
 	manualHsvAdjusting = true;
 	break;
-    case ' a ':
-    case ' A ':
+    case 'a':
+    case 'A':
 	hsvPos[1] -= 1;
 	manualHsvAdjusting = true;
 	break;
-    case ' x ':
-    case ' X ':
+    case 'x':
+    case 'X':
 	hsvPos[2] += 1;
 	manualHsvAdjusting = true;
 	break;
-    case ' z ':
-    case ' Z ':
+    case 'z':
+    case 'Z':
 	hsvPos[2] -= 1;
 	manualHsvAdjusting = true;
 	break;
-    case ' 1 ':
-    case ' e ':
-    case ' E ':
+    case '1':
+    case 'e':
+    case 'E':
 	hsvAdjust->Button_HueResetClick(Sender);
 	hsvAdjusting = true;
 	break;
-    case ' 2 ':
-    case ' d ':
-    case ' D ':
+    case '2':
+    case 'd':
+    case 'D':
 	hsvAdjust->Button_SaturationResetClick(Sender);
 	hsvAdjusting = true;
 	break;
-    case ' 3 ':
-    case ' c ':
-    case ' C ':
+    case '3':
+    case 'c':
+    case 'C':
 	hsvAdjust->Button_BrightnessResetClick(Sender);
 	hsvAdjusting = true;
 	break;

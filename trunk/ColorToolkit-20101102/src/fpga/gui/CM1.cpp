@@ -11,28 +11,9 @@
 #pragma package(smart_init)
 #pragma link "PERFGRAP"
 #pragma resource "*.dfm"
-//TCMForm1 *CMForm1;
-bool CM_IsChkSum = 0;
-AbstCM *OCM;
-
-TBit *cm_cb;
-_CHKB **CMChkB;
-
-TBit *cm_cbo;
-_CBOB **CMCboB;
-
-TLUT *CM_addr, *ofs_addr;
-
-int CMofs_type;
-int Convert_type;
-bool CM_Chg = 0;
-
-float CM1[3][3];
-float CM2[3][3];
-float CM3[3][3];
 
 
-void CM_val_initial()
+void TCMForm1::CM_val_initial()
 {
     for (int i = 0; i < 3; i++) {
 	for (int j = 0; j < 3; j++) {
@@ -48,15 +29,16 @@ void CM_val_initial()
 
 //---------------------------------------------------------------------------
 __fastcall TCMForm1::TCMForm1(TComponent * Owner)
-:TForm(Owner)
+:TForm(Owner), CM_IsChkSum(false), CMInitialized(false)
 {
 }
 
 //---------------------------------------------------------------------------
 void __fastcall TCMForm1::CM_CheckBox_Click(TObject * Sender)
 {
-    if (CM_Chg == 0)
+    if (false == CMInitialized) {
 	return;
+    }
     TCheckBox *c = (TCheckBox *) Sender;
     int idx = StrToInt(c->Hint);
     int set_val = (CMChkB[idx]->Chkb->Checked ? 1 : 0);
@@ -66,8 +48,9 @@ void __fastcall TCMForm1::CM_CheckBox_Click(TObject * Sender)
 //---------------------------------------------------------------------------
 void __fastcall TCMForm1::CM_ComboBox_Click(TObject * Sender)
 {
-    if (CM_Chg == 0)
+    if (false == CMInitialized) {
 	return;
+    }
     TComboBox *c = (TComboBox *) Sender;
     int idx = StrToInt(c->Hint);
     int set_val = (CMCboB[idx]->Cbob->ItemIndex);
@@ -91,7 +74,7 @@ void __fastcall TCMForm1::CM_ComboBox_Click(TObject * Sender)
 //---------------------------------------------------------------------------
 void __fastcall TCMForm1::FormCreate(TObject * Sender)
 {
-    CM_Chg = 0;
+    CMInitialized = false;
     int ic_choice;
     if (MainForm->TCON_DEV == "11307") {
 	ic_choice = 0;
@@ -109,13 +92,15 @@ void __fastcall TCMForm1::FormCreate(TObject * Sender)
     //                                                                  //
     //******************************************************************//
 
+    //=========================================================================
     //CheckBox
-    //cm_cb = OCM->SetChkBx(cm_cb);
+    //=========================================================================
     cm_cb = OCM->SetChkBx();
 
     CMChkB = new _CHKB *[OCM->CMChkBox_Nbr];
-    for (int i = 0; i < OCM->CMChkBox_Nbr; i++)
+    for (int i = 0; i < OCM->CMChkBox_Nbr; i++) {
 	CMChkB[i] = new _CHKB;
+    }
 
     CMChkB[0]->Chkb = CheckBox1;
     CMChkB[1]->Chkb = CheckBox2;
@@ -129,13 +114,16 @@ void __fastcall TCMForm1::FormCreate(TObject * Sender)
 	CMChkB[i]->Chkb->Hint = i;
 	CMChkB[i]->Chkb->Caption = CMChkB[i]->Addr.Name();
     }
-
+    //=========================================================================
+    //=========================================================================
     //Combobox
+    //=========================================================================
     cm_cbo = OCM->SetCboBx();
 
     CMCboB = new _CBOB *[OCM->CMCboBox_Nbr];
-    for (int i = 0; i < OCM->CMCboBox_Nbr; i++)
+    for (int i = 0; i < OCM->CMCboBox_Nbr; i++) {
 	CMCboB[i] = new _CBOB;
+    }
 
     CMCboB[0]->Cbob = ComboBox1;
     CMCboB[0]->CbobL = Label4;
@@ -148,10 +136,14 @@ void __fastcall TCMForm1::FormCreate(TObject * Sender)
 	CMCboB[i]->Cbob->Hint = i;
 	CMCboB[i]->CbobL->Caption = CMCboB[i]->Addr.Name();
 	CMCboB[i]->Cbob->Text = "";
-	if (CMCboB[i]->Addr.FuncEn())
-	    for (int j = 0; j < CMCboB[i]->Addr.choice_nbr; j++)	//ComboBox choice
+	if (CMCboB[i]->Addr.FuncEn()) {
+	    for (int j = 0; j < CMCboB[i]->Addr.choice_nbr; j++) {	//ComboBox choice
 		CMCboB[i]->Cbob->Items->Add(CMCboB[i]->Addr.choice[j]);
+	    }
+
+	}
     }
+    //=========================================================================
 
     //CM value
     CM_addr = OCM->Setval();
@@ -177,7 +169,7 @@ void __fastcall TCMForm1::FormCreate(TObject * Sender)
 	Convert_type = 2;
     }				// highest bit is sign bit
 
-    CM_Chg = 1;
+    CMInitialized = true;
 
 }
 
@@ -185,7 +177,7 @@ void __fastcall TCMForm1::FormCreate(TObject * Sender)
 void __fastcall TCMForm1::Btn_CM_reloadClick(TObject * Sender)
 {
     Btn_CM_reload->Enabled = false;
-    CM_Chg = 0;
+    CMInitialized = false;
     unsigned char read_val;
     for (int i = 0; i < OCM->CMChkBox_Nbr; i++) {
 	if (CMChkB[i]->Chkb->Visible == true) {
@@ -207,12 +199,12 @@ void __fastcall TCMForm1::Btn_CM_reloadClick(TObject * Sender)
     btn_CM1_ReadClick(Sender);
     btn_CM2_ReadClick(Sender);
     btn_CM3_ReadClick(Sender);
-    CM_Chg = 1;
+    CMInitialized = true;
     Btn_CM_reload->Enabled = true;
 }
 
 //---------------------------------------------------------------------------
-int FloatToMemForm(int temp)	//CM 10bit value to sign value
+int TCMForm1::FloatToMemForm(int temp)	//CM 10bit value to sign value
 {
     if (temp > 511)
 	temp = 511;
@@ -225,7 +217,7 @@ int FloatToMemForm(int temp)	//CM 10bit value to sign value
 }
 
 //-----------------------------------------------------------------------------
-int MemToFloatForm(int mem)	//CM 10bit from sign value to 10bit value
+int TCMForm1::MemToFloatForm(int mem)	//CM 10bit from sign value to 10bit value
 {
     if (mem > 512)
 	mem = 512 - mem;
@@ -234,7 +226,7 @@ int MemToFloatForm(int mem)	//CM 10bit from sign value to 10bit value
 
 //---------------------------------------------------------------------------
 //CM offset 10bit from 10bit value to 2's complement value
-int FloatToMemOfsForm(int ofs)
+int TCMForm1::FloatToMemOfsForm(int ofs)
 {
     ofs -= 512;			// Position 512 => value 0
     if (ofs < 0) {
@@ -248,7 +240,7 @@ int FloatToMemOfsForm(int ofs)
 
 //-----------------------------------------------------------------------------
 //CM offset 10bit from 2's complement value to 10 bit value
-int MemToFloatOfsForm(int ofs)
+int TCMForm1::MemToFloatOfsForm(int ofs)
 {
     if (ofs > 512) {
 	if (Convert_type == 2)
@@ -481,10 +473,10 @@ void __fastcall TCMForm1::btn_CM1_WriteClick(TObject * Sender)
     ofs[2] = ofs[0];
     EngineerForm->SetWrite_PG(ofs_addr[0], ofs, CM_IsChkSum);
     // add by AUO12307 //
-    int set_val = ofs[2]/256*16+CM[0]/256*16;
+    int set_val = ofs[2] / 256 * 16 + CM[0] / 256 * 16;
     TBit CM_J;
-    CM_J.set(289,0,8,"");
-    EngineerForm->SetWrite_Byte(CM_J ,set_val);
+    CM_J.set(289, 0, 8, "");
+    EngineerForm->SetWrite_Byte(CM_J, set_val);
     // ============== //
     btn_CM1_Write->Enabled = true;
 }
@@ -1604,5 +1596,4 @@ void __fastcall TCMForm1::FormClose(TObject * Sender, TCloseAction & Action)
 }
 
 //---------------------------------------------------------------------------
-
 

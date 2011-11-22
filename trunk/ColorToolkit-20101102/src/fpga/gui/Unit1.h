@@ -72,7 +72,7 @@ class TMainForm:public TForm {
     TMenuItem *addressFromFile;
     TMenuItem *mn_HSV2;
     TMenuItem *HSV1;
-        TMenuItem *mn_Sharpness12307;
+    TMenuItem *mn_Sharpness12307;
     void __fastcall mn_TCONClick(TObject * Sender);
     void __fastcall mn_EngineerClick(TObject * Sender);
     void __fastcall mn_FunctionClick(TObject * Sender);
@@ -99,7 +99,7 @@ class TMainForm:public TForm {
     void __fastcall addressFromFileClick(TObject * Sender);
     void __fastcall mn_HSV2Click(TObject * Sender);
     void __fastcall HSV1Click(TObject * Sender);
-        void __fastcall mn_Sharpness12307Click(TObject *Sender);
+    void __fastcall mn_Sharpness12307Click(TObject * Sender);
 
   private:			// User declarations
      String getFileVersionInfo();
@@ -121,8 +121,13 @@ class TMainForm:public TForm {
     void C3DFormNULL();
     void SATFormNULL();
     void offsetFormNULL();
+
+    //=========================================================================
+    //¹w­p­n®³±¼
+    //=========================================================================
     String TCON_DEV;
     int addr_place;		//0:auo_12401_address.h   1:auo_12401_address.txt
+    //=========================================================================
 
     static AnsiString AddressFile;
 

@@ -92,15 +92,7 @@ int TLUT::Type()
     return type;
 }
 
-/*int TLUT::BitNum()
-{
-    return b_num;
-}
-
-AnsiString TLUT::Name()
-{
-    return name;
-}*/
+ 
 
 #endif
 

@@ -39,15 +39,11 @@ class TBit2:public AbstractAddressType {
 	using namespace java::lang;
 	int size = vector->size();
 	switch (size) {
-	/*case 2:
-	    set((*vector)[0], (*vector)[1], name);
-	    break;*/
+
 	case 3:
 	    set((*vector)[0], (*vector)[1], (*vector)[2], 0, 0, 0, name);
 	    break;
-	/*case 4:
-	    set((*vector)[0], (*vector)[1], (*vector)[2], (*vector)[3], name);
-	    break;*/
+
 	case 6:
 	    set((*vector)[0], (*vector)[1], (*vector)[2], (*vector)[3], (*vector)[4], (*vector)[5],
 		name);
@@ -153,25 +149,12 @@ int TBit2::set(int _B_addr, int _b_num, AnsiString _name)
     return 1;
 }
 
-/*int TBit2::BitNum()
-{
-    return b_num;
-}*/
 
 int TBit2::Divide()
 {
     return divide;
 }
-
-/*bool TBit2::FuncEn()
-{
-    return (en);
-}
-
-AnsiString TBit2::Name()
-{
-    return name;
-}*/
+ 
 
 int TBit2::GetVal()
 {

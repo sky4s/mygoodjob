@@ -811,7 +811,7 @@ void __fastcall TMainForm::HSV1Click(TObject * Sender)
 //---------------------------------------------------------------------------
 
 
-void __fastcall TMainForm::mn_Sharpness12307Click(TObject *Sender)
+void __fastcall TMainForm::mn_Sharpness12307Click(TObject * Sender)
 {
     if (Sharpness12307Form != NULL)
 	Sharpness12307Form->Show();
@@ -823,5 +823,6 @@ void __fastcall TMainForm::mn_Sharpness12307Click(TObject *Sender)
 
     }
 }
+
 //---------------------------------------------------------------------------
 
