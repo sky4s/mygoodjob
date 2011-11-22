@@ -859,12 +859,13 @@ void __fastcall TTCONForm1::Btn_TCON_dev_reloadClick(TObject * Sender)
     for (int i = 0; i < OTCON->DevChkBox_Nbr; i++) {
 	if (DevChkB[i]->Chkb->Visible == true) {
 	    EngineerForm->SetRead_Byte(DevChkB[i]->Addr, &read_val);
-	    if (read_val == 1)
+	    if (read_val == 1) {
 		DevChkB[i]->Chkb->Checked = 1;
-	    else if (read_val == 0)
+	    } else if (read_val == 0) {
 		DevChkB[i]->Chkb->Checked = 0;
-	    else
+	    } else {
 		ShowMessage("device CheckBox read error:" + IntToStr(read_val));
+	    }
 	}
     }
     for (int i = 0; i < OTCON->DevCboBox_Nbr; i++) {

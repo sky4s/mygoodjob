@@ -13,6 +13,7 @@ object InTargetForm: TInTargetForm
   Font.Name = 'MS Sans Serif'
   Font.Style = []
   OldCreateOrder = False
+  Position = poDefault
   Visible = True
   WindowState = wsMinimized
   PixelsPerInch = 96

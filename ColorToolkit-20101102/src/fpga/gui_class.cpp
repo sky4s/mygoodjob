@@ -97,70 +97,50 @@ StringMap_ptr AbstractBase::getStringMap(AnsiString filename)
     return getStringMap(std::string(filename.c_str()));
 }
 
-/*StringVecMap_ptr AbstractBase::getStringVecMap(std::string filename)
-{
-    using namespace std;
-    using namespace cms::util;
-
-
-    if (Util::isFileExist(filename)) {
-	ifstream infile(filename.c_str());
-
-	if (infile.is_open()) {
-	    string line;
-	    StringVecMap_ptr map(new StringVecMap());
-	    while (infile.good()) {
-		getline(infile, line);
-		if (line.length() != 0) {
-		    string_vector_ptr stringvector = StringVector::tokenize(line, ",");
-		    string key = (*stringvector)[0];
-		    map->insert(make_pair(key, stringvector));
-		}
-	    }
-	    infile.close();
-	    return map;
-	}
-    }
-    return nil_StringVecMap_ptr;
-}*/
-
+ 
 
 void AbstractBase::resetAddressMap()
 {
     map = nil_StringMap_ptr;
 }
 
+
 void AbstractBase::initAliasNameMap()
 {
     if (nil_StringMap_ptr == aliasNameMap) {
 	using namespace std;
 	aliasNameMap = StringMap_ptr(new StringMap());
-	for (int x = 0; x < ALIAS_NAMES_COUNT; x++) {
-	    char *key = ALIAS_NAMES[x][0];
-	    char *value = ALIAS_NAMES[x][1];
+
+	string ALIAS_NAMES[] = {
+	    "CM_DEMO_EN", "CM_DEMO",
+	    "CM_DEMO_SIDE", "CM_DEMO_LEFT",
+	    "SP_DEMO_EN", "SP_DEMO",
+	    "SP_DEMO_SIDE", "SP_DEMO_LEFT",
+	    "HUE_DEMO_EN", "HUE_DEMO",
+	    "OFS1", "ofs1",
+	    "OFS2", "ofs2",
+	    "OFS3", "ofs3",
+	    "SP_GLB_STR", "GLB_STR",
+	    "SP_DEB_EN", "DEB_EN",
+	    "EDGE_THR", "SP_EDGE_THRESHOLD",
+	    "HORZ_THR", "SP_HORZ_THRESHOLD",
+	    "VERT_THR", "SP_VERT_THRESHOLD",
+	    "CM_DEMO_EN", "CM_DEMO",
+	    "HSV_EN", "HUE_EN",
+	    "HUE_DEMO_EN", "HUE_DEMO",
+	};
+	//string *ALIAS_NAMES = getAliasNameArray();
+	int size = (sizeof(ALIAS_NAMES) / sizeof(ALIAS_NAMES[0])) / 2;
+
+	for (int x = 0; x < size; x++) {
+	    string key = ALIAS_NAMES[x * 2];
+	    string value = ALIAS_NAMES[x * 2 + 1];
+
 	    aliasNameMap->insert(make_pair(key, value));
 	}
     }
 }
 
-char *AbstractBase::ALIAS_NAMES[][2] = {
-    "CM_DEMO_EN", "CM_DEMO",
-    "CM_DEMO_SIDE", "CM_DEMO_LEFT",
-    "SP_DEMO_EN", "SP_DEMO",
-    "SP_DEMO_SIDE", "SP_DEMO_LEFT",
-    "HUE_DEMO_EN", "HUE_DEMO",
-    "OFS1", "ofs1",
-    "OFS2", "ofs2",
-    "OFS3", "ofs3",
-    "SP_GLB_STR", "GLB_STR",
-    "SP_DEB_EN", "DEB_EN",
-    "EDGE_THR", "SP_EDGE_THRESHOLD",
-    "HORZ_THR", "SP_HORZ_THRESHOLD",
-    "VERT_THR", "SP_VERT_THRESHOLD",
-    "CM_DEMO_EN", "CM_DEMO",
-    "HSV_EN", "HUE_EN",
-    "HUE_DEMO_EN", "HUE_DEMO"
-};
-int AbstractBase::ALIAS_NAMES_COUNT = 16;
+
 StringMap_ptr AbstractBase::aliasNameMap = nil_StringMap_ptr;
 
