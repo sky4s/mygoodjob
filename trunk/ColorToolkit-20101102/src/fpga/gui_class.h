@@ -16,10 +16,10 @@
 class _CHKB {
   public:
     __fastcall ~ _CHKB() {
-	delete[]Chkb; //多此一舉? bcb應該自己會關掉vcl
+	delete[]Chkb;		//多此一舉? bcb應該自己會關掉vcl
     };
     TCheckBox *Chkb;
-    TBit Addr; //應該一個新的形態, 直接包了_CHKB和TBbit, 或者說, 僅揭露_CHKB對外
+    TBit Addr;			//應該一個新的形態, 直接包了_CHKB和TBbit, 或者說, 僅揭露_CHKB對外
 };
 
 
@@ -126,13 +126,11 @@ class _ScrollBar		//Address 為 1 byte
 };
 
 
- 
+
 
 class AbstractBase {
   private:
     static StringMap_ptr map;
-    static char *ALIAS_NAMES[][2];
-    static int ALIAS_NAMES_COUNT;
     static StringMap_ptr aliasNameMap;
     static void initAliasNameMap();
   protected:

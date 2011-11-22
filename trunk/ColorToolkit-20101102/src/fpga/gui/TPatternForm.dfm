@@ -12,7 +12,6 @@ object PatternForm: TPatternForm
   Font.Height = -11
   Font.Name = 'MS Sans Serif'
   Font.Style = []
-  FormStyle = fsMDIForm
   KeyPreview = True
   OldCreateOrder = False
   Position = poDefault

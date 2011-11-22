@@ -354,6 +354,7 @@ class THSVForm2nd:public TForm, cms::util::CallBackIF, RGBInfoCallbackIF, Patter
     bptr < cms::hsvip::ChromaEnhance > ce;
     short getValueFromChromaEnhance(short hue, short chroma);
 
+
   public:			// User declarations
     TBit * cb;
     _CHKB **ChkB;
@@ -361,7 +362,6 @@ class THSVForm2nd:public TForm, cms::util::CallBackIF, RGBInfoCallbackIF, Patter
     _CHKB en;
 
     AbstHSV *OHSV;
-
     int hueTable[HUE_COUNT];
     int satTable[HUE_COUNT];
     int valTable[HUE_COUNT];
@@ -371,7 +371,7 @@ class THSVForm2nd:public TForm, cms::util::CallBackIF, RGBInfoCallbackIF, Patter
     int valTableTemp[HUE_COUNT];
 
 
-    bool hsvInitialized;        // hsvInitialized = F 為禁止寫入, hsvInitialized = T 為允許寫入, 以避免動作被中斷
+    bool hsvInitialized;	// hsvInitialized = F 為禁止寫入, hsvInitialized = T 為允許寫入, 以避免動作被中斷
 
     __fastcall THSVForm2nd(TComponent * Owner);
     void Reset_HSVshow();

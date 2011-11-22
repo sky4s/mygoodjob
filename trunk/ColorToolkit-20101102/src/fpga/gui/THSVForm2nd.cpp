@@ -558,13 +558,11 @@ void __fastcall THSVForm2nd::Btn_HSV_reloadClick(TObject * Sender)
 	    EngineerForm->SetRead_Byte(ChkB[i]->Addr, &read_val);
 	    if (read_val == 1) {
 		ChkB[i]->Chkb->Checked = 1;
-            }
-	    else if (read_val == 0) {
+	    } else if (read_val == 0) {
 		ChkB[i]->Chkb->Checked = 0;
-            }
-	    else {
+	    } else {
 		ShowMessage("HSV CheckBox read error:" + IntToStr(read_val));
-            }
+	    }
 	}
     }
     btn_hsv_readClick(Sender);
