@@ -157,7 +157,7 @@ class TCMForm1:public TForm {
     TButton *btn_CM2_Read;
     TButton *btn_CM3_Read;
     TScrollBar *sb_ofs1;
-        TCheckBox *CheckBox4;
+    TCheckBox *CheckBox4;
     void __fastcall CM_CheckBox_Click(TObject * Sender);
     void __fastcall CM_ComboBox_Click(TObject * Sender);
     void __fastcall btn_CM1_WriteClick(TObject * Sender);
@@ -196,6 +196,28 @@ class TCMForm1:public TForm {
     void __fastcall FormKeyDown(TObject * Sender, WORD & Key, TShiftState Shift);
     void __fastcall FormClose(TObject * Sender, TCloseAction & Action);
   private:			// User declarations
+    void CM_val_initial();
+    int FloatToMemForm(int temp);
+    int MemToFloatForm(int mem);
+    int FloatToMemOfsForm(int ofs);
+    int MemToFloatOfsForm(int ofs);
+
+    bool CM_IsChkSum;
+    AbstCM *OCM;
+    TBit *cm_cb;
+    _CHKB **CMChkB;
+    TBit *cm_cbo;
+    _CBOB **CMCboB;
+    TLUT *CM_addr, *ofs_addr;
+
+    int CMofs_type;
+    int Convert_type;
+    bool CMInitialized;
+
+    float CM1[3][3];
+    float CM2[3][3];
+    float CM3[3][3];
+
   public:			// User declarations
      __fastcall TCMForm1(TComponent * Owner);
     void CM1Load(String Fpath);

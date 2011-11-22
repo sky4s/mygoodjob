@@ -6432,7 +6432,7 @@ object HSVForm2nd: THSVForm2nd
       Left = 56
       Top = 156
       Width = 57
-      Height = 24
+      Height = 21
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clBlack
       Font.Height = -12
@@ -6622,6 +6622,8 @@ object HSVForm2nd: THSVForm2nd
       Width = 86
       Height = 17
       Caption = 'CheckBox1'
+      ParentShowHint = False
+      ShowHint = False
       TabOrder = 0
     end
     object CheckBox2: TCheckBox
@@ -6958,7 +6960,6 @@ object HSVForm2nd: THSVForm2nd
             OnChange = hsvAdjustsb_Hue_gainChange
           end
           inherited Edit_c3d_Manual39_h_adj: TEdit
-            Height = 24
             Visible = False
           end
           inherited Button_HueReset: TButton
@@ -6973,11 +6974,7 @@ object HSVForm2nd: THSVForm2nd
             Position = 0
             OnChange = hsvAdjustsb_Sat_gainChange
           end
-          inherited edt_c3d_satC: TEdit
-            Height = 24
-          end
           inherited Edit_c3d_Manual39_s_adj: TEdit
-            Height = 24
             Visible = False
           end
         end
@@ -6988,11 +6985,7 @@ object HSVForm2nd: THSVForm2nd
             OnChange = hsvAdjustsb_Val_gainChange
           end
           inherited Edit_c3d_Manual39_v_adj: TEdit
-            Height = 24
             Visible = False
-          end
-          inherited edt_c3d_valC: TEdit
-            Height = 24
           end
         end
       end
@@ -7424,7 +7417,7 @@ object HSVForm2nd: THSVForm2nd
       Left = 8
       Top = 368
       Width = 161
-      Height = 24
+      Height = 21
       TabOrder = 11
       Text = 'RGB Cursor Color'
     end
@@ -7459,7 +7452,7 @@ object HSVForm2nd: THSVForm2nd
         Left = 8
         Top = 36
         Width = 145
-        Height = 24
+        Height = 21
         TabOrder = 2
       end
     end
@@ -7467,7 +7460,7 @@ object HSVForm2nd: THSVForm2nd
       Left = 8
       Top = 388
       Width = 161
-      Height = 24
+      Height = 21
       TabOrder = 13
       Text = 'HSV Cursor Color'
     end
@@ -7696,9 +7689,9 @@ object HSVForm2nd: THSVForm2nd
     Left = 813
     Top = 584
     Width = 49
-    Height = 24
-    EditLabel.Width = 55
-    EditLabel.Height = 11
+    Height = 21
+    EditLabel.Width = 67
+    EditLabel.Height = 13
     EditLabel.Caption = 'Change Angle'
     LabelPosition = lpAbove
     LabelSpacing = 3

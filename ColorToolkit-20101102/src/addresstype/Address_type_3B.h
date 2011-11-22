@@ -67,10 +67,6 @@ int TBit3::set(int _B1_addr, int _b1_addr, int _b1_num, int _B2_addr,
     return 1;
 }
 
-/*int TBit3::BitNum()
-{
-    return b_num;
-}*/
 
 int TBit3::Divide1()
 {
@@ -81,17 +77,7 @@ int TBit3::Divide2()
 {
     return divide2;
 }
-
-/*bool TBit3::FuncEn()
-{
-    return (en);
-}
-
-AnsiString TBit3::Name()
-{
-    return name;
-}*/
-
+ 
 
 int TBit3::GetVal()
 {

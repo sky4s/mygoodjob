@@ -354,14 +354,20 @@ class THSVForm2nd:public TForm, cms::util::CallBackIF, RGBInfoCallbackIF, Patter
     bptr < cms::hsvip::ChromaEnhance > ce;
     short getValueFromChromaEnhance(short hue, short chroma);
 
-
-  public:			// User declarations
-    TBit * cb;
+    //=========================================================================
+    // bind ui and setting
+    //=========================================================================
+    TBit *cb;
     _CHKB **ChkB;
     TLUT *lut_addr;
-    _CHKB en;
+
+    _CHKB en;			//¥Î³~¤£©ú?
 
     AbstHSV *OHSV;
+    //=========================================================================
+
+  public:			// User declarations
+
     int hueTable[HUE_COUNT];
     int satTable[HUE_COUNT];
     int valTable[HUE_COUNT];

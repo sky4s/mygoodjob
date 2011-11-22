@@ -5,11 +5,6 @@
 
 #ifndef ImgProc_11307H
 #define ImgProc_11307H
-/*#include "CM1.h"
-#include "Sharpness1.h"
-#include "ContrastEnhance1.h"
-#include "HueSatVal1.h"
-#include "C3D1.h"*/
 #include <fpga/gui_class.h>
 //---------------------------------------------------------------------------
 

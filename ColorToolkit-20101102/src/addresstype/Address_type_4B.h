@@ -88,20 +88,7 @@ int TBit4::Divide3()
     return divide3;
 }
 
-/*AnsiString TBit4::Name()
-{
-    return name;
-}
-
-bool TBit4::FuncEn()
-{
-    return (en);
-}
-
-int TBit4::BitNum()
-{
-    return b_num;
-}*/
+ 
 
 int TBit4::GetVal()
 {
