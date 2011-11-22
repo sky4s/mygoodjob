@@ -967,7 +967,8 @@ class property {
     property(const std::string & name, const boost::any & value):name_(name), value_(value) {
     } std::string name() const {
 	return name_;
-    } boost::any & value() {
+    }
+    boost::any & value() {
 	return value_;
     }
     friend bool operator<(const property & lhs, const property & rhs) {
@@ -1451,6 +1452,11 @@ int main(int argc, char *argv[])
     //getAA(aa);
     //putTest();
     rgbVectorTest();
+
+    int iarr[] = { 1, 2, 3, 4, 5, 6 };
+    cout << "Arrayªø«×¡G" << (sizeof(iarr) / sizeof(iarr[0]))
+	<< endl;
+
     cout << "end" << endl;
     getch();
 }
