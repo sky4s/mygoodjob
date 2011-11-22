@@ -14,33 +14,23 @@
 
 class TBit4:public AbstractAddressType {
   private:
-    int type;
     int divide1, divide2, divide3;
-    int value;
+    int set(int _B1_addr, int _b1_addr, int _b1_num,
+	    int _B2_addr, int _b2_addr, int _b2_num,
+	    int _B3_addr, int _b3_addr, int _b3_num,
+	    int _B4_addr, int _b4_addr, int _b4_num, AnsiString _name);
   public:
-     String * choice;
-    int choice_nbr;
-    TBit Byte1;
+     TBit Byte1;
     TBit Byte2;
     TBit Byte3;
     TBit Byte4;
     int Divide1();
     int Divide2();
     int Divide3();
-    int GetVal();
-    void SetVal(int);
-    int set(int _B1_addr, int _b1_addr, int _b1_num,
-	    int _B2_addr, int _b2_addr, int _b2_num,
-	    int _B3_addr, int _b3_addr, int _b3_num,
-	    int _B4_addr, int _b4_addr, int _b4_num, AnsiString _name);
-     TBit4() {
-	value = -1;
-	en = false;
-	b_num = 0;
-	name = "";
-    };
-    ~TBit4() {
-    };
+    //int GetVal();
+    //void SetVal(int);
+
+
     virtual void _set(int_vector_ptr vector, AnsiString name) {
 	using namespace java::lang;
 	if (vector->size() != 12) {
@@ -88,29 +78,35 @@ int TBit4::Divide3()
     return divide3;
 }
 
- 
 
-int TBit4::GetVal()
+/*
+            LblE4[idx]->Lble->Text = (int)val1*LblE4[idx]->Addr.Divide1()
+                   +(int)val2*LblE4[idx]->Addr.Divide2()
+                   +(int)val3*LblE4[idx]->Addr.Divide3()+(int)val4;
+*/
+/*int TBit4::GetVal()
 {
+    int value = -1;
     if (Byte1.GetVal() == -1 || Byte2.GetVal() == -1 || Byte3.GetVal() == -1
-	|| Byte4.GetVal() == -1)
+	|| Byte4.GetVal() == -1) {
 	value = -1;
-    else
+    } else {
 	value = Byte1.GetVal() * divide1 + Byte2.GetVal() * divide2
 	    + Byte3.GetVal() * divide3 + Byte4.GetVal();
+    }
     return value;
 }
 void TBit4::SetVal(int val)
 {
-    value = val;
-    int val1 = floor((double) value / divide1);
-    int val2 = floor((double) (value - val1 * divide1) / divide2);
-    int val3 = floor((double) (value - val1 * divide1 - val2 * divide2) / divide3);
-    int val4 = value % divide3;
+    //value = val;
+    int val1 = floor((double) val / divide1);
+    int val2 = floor((double) (val - val1 * divide1) / divide2);
+    int val3 = floor((double) (val - val1 * divide1 - val2 * divide2) / divide3);
+    int val4 = val % divide3;
     Byte1.SetVal(val1);
     Byte2.SetVal(val2);
     Byte3.SetVal(val3);
     Byte4.SetVal(val4);
-}
+}*/
 #endif
 

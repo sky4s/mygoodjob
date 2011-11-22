@@ -224,7 +224,7 @@ void __fastcall TDCRForm1::FormCreate(TObject * Sender)
     switch (ic_choice) {
     case 0:
 	//ODCR = new DCR_12401();
-        ODCR = new DCR_11307();
+	ODCR = new DCR_11307();
 	break;
 
     }

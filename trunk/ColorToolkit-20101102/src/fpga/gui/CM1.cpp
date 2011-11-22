@@ -243,10 +243,11 @@ int TCMForm1::FloatToMemOfsForm(int ofs)
 int TCMForm1::MemToFloatOfsForm(int ofs)
 {
     if (ofs > 512) {
-	if (Convert_type == 2)
+	if (Convert_type == 2) {
 	    ofs = 512 - ofs;
-	else if (Convert_type == 1)	//2's completement
+	} else if (Convert_type == 1) {	//2's completement
 	    ofs = ofs - 1024;
+	}
     }
     ofs += 512;			// Position 512 => value 0
     return ofs;
@@ -283,8 +284,9 @@ void __fastcall TCMForm1::btn_CM1_ReadClick(TObject * Sender)
     //EngineerForm->SetRead_CMofs(ofs_addr[0], ofs, ofs_addr[0].LutNum());
     int *ofs = new int[ofs_addr[0].LutNum()];
     EngineerForm->SetRead_PG(ofs_addr[0], ofs, CM_IsChkSum);
-    if (ofs[0] != ofs[1] || ofs[1] != ofs[2])
+    if (ofs[0] != ofs[1] || ofs[1] != ofs[2]) {
 	ShowMessage("The 3 Offset values are different.");
+    }
 
     int sb_position;
     sb_position = MemToFloatOfsForm(ofs[0]);

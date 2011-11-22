@@ -14,13 +14,14 @@
 #pragma package(smart_init)
 #pragma resource "*.dfm"
 //TSharpnessForm12307 *SharpnessForm;       //使用動態宣告,不需作實體宣告
-bool SP_IsChkSum = 0;
+
 //---------------------------------------------------------------------------
 __fastcall TSharpnessForm12307::TSharpnessForm12307(TComponent * Owner)
 :TForm(Owner)
 {
     SP_Chg = 0;
     gain_flag = false;
+    SP_IsChkSum = false;
 }
 
 //---------------------------------------------------------------------------
@@ -30,8 +31,8 @@ void __fastcall TSharpnessForm12307::FormClose(TObject * Sender, TCloseAction & 
     delete[]cb;
     delete[]ChkB;
 
-    delete [] cbo;
-    delete [] CboB;
+    delete[]cbo;
+    delete[]CboB;
 
     delete[]lble3;		//Add by Michelle 20100702
     delete[]LblE3;
@@ -74,59 +75,66 @@ void __fastcall TSharpnessForm12307::CheckBox_Click(TObject * Sender)
     int set_val = (ChkB[idx]->Chkb->Checked ? 1 : 0);
     EngineerForm->SetWrite_Byte(ChkB[idx]->Addr, set_val);
 }
+
 //---------------------------------------------------------------------------
-void __fastcall TSharpnessForm12307::ComboBox_Click(TObject *Sender)
+void __fastcall TSharpnessForm12307::ComboBox_Click(TObject * Sender)
 {
-        if(SP_Chg==0)
-                return;
-        TComboBox *c = (TComboBox *)Sender;
-        int idx = StrToInt(c->Hint);
-        int set_val = (CboB[idx]->Cbob->ItemIndex);
-        EngineerForm->SetWrite_Byte(CboB[idx]->Addr ,set_val);
+    if (SP_Chg == 0)
+	return;
+    TComboBox *c = (TComboBox *) Sender;
+    int idx = StrToInt(c->Hint);
+    int set_val = (CboB[idx]->Cbob->ItemIndex);
+    EngineerForm->SetWrite_Byte(CboB[idx]->Addr, set_val);
 }
+
 //---------------------------------------------------------------------------
-void __fastcall TSharpnessForm12307::LblE3_KeyPress(TObject *Sender, char &Key)
+void __fastcall TSharpnessForm12307::LblE3_KeyPress(TObject * Sender, char &Key)
 {
-        TLabeledEdit *c = (TLabeledEdit *)Sender;
-        int idx = StrToInt(c->Hint);
+    TLabeledEdit *c = (TLabeledEdit *) Sender;
+    int idx = StrToInt(c->Hint);
 
-        if(Key!=13){
-                LblE3[idx]->Lble->Font->Color = cl3DDkShadow;
-                return;
-        }
-        //Key = 13, 按下Enter
-        String tmp_v = LblE3[idx]->Lble->Text;
-        if(tmp_v==""){
-                tmp_v = "0";
-        }
-        int set_val = StrToInt(tmp_v);
+    if (Key != 13) {
+	LblE3[idx]->Lble->Font->Color = cl3DDkShadow;
+	return;
+    }
+    //Key = 13, 按下Enter
+    String tmp_v = LblE3[idx]->Lble->Text;
+    if (tmp_v == "") {
+	tmp_v = "0";
+    }
+    int set_val = StrToInt(tmp_v);
 
-        if(SP_Chg==0)
-                return;
+    if (SP_Chg == 0) {
+	return;
+    }
 
-        unsigned char val1, val2, val3;
-        //add for Max hint
-        if(set_val>=pow(2,LblE3[idx]->Addr.BitNum())){
-                AnsiString max = "Max value:"+IntToStr((int)pow(2,LblE3[idx]->Addr.BitNum())-1);
-                ShowMessage(max);
-                //read value
-                EngineerForm->SetRead_Byte(LblE3[idx]->Addr.Byte1, &val1);
-                EngineerForm->SetRead_Byte(LblE3[idx]->Addr.Byte2, &val2);
-                EngineerForm->SetRead_Byte(LblE3[idx]->Addr.Byte3, &val3);
-                LblE3[idx]->Lble->Text = (int)val1*LblE3[idx]->Addr.Divide1()
-                   +(int)val2*LblE3[idx]->Addr.Divide2()+(int)val3;
-        }else{
-                val1 = set_val/LblE3[idx]->Addr.Divide1();
-                val2 = (set_val/LblE3[idx]->Addr.Divide2())%(int)pow(2,LblE3[idx]->Addr.Byte2.BitNum());
-                val3 = set_val%LblE3[idx]->Addr.Divide2();
-                EngineerForm->SetWrite_Byte(LblE3[idx]->Addr.Byte1 ,val1);
-                if(LblE3[idx]->Addr.Byte2.BitNum()!=0)
-                        EngineerForm->SetWrite_Byte(LblE3[idx]->Addr.Byte2 ,val2);
-                if(LblE3[idx]->Addr.Byte3.BitNum()!=0)
-                        EngineerForm->SetWrite_Byte(LblE3[idx]->Addr.Byte3 ,val3);
-                LblE3[idx]->Lble->Font->Color = clWindowText;
-        }
+    unsigned char val1, val2, val3;
+    //add for Max hint
+    if (set_val >= pow(2, LblE3[idx]->Addr.BitNum())) {
+	AnsiString max = "Max value:" + IntToStr((int) pow(2, LblE3[idx]->Addr.BitNum()) - 1);
+	ShowMessage(max);
+	//read value
+	EngineerForm->SetRead_Byte(LblE3[idx]->Addr.Byte1, &val1);
+	EngineerForm->SetRead_Byte(LblE3[idx]->Addr.Byte2, &val2);
+	EngineerForm->SetRead_Byte(LblE3[idx]->Addr.Byte3, &val3);
+	LblE3[idx]->Lble->Text = (int) val1 *LblE3[idx]->Addr.Divide1()
+	+ (int) val2 *LblE3[idx]->Addr.Divide2() + (int) val3;
+    } else {
+	val1 = set_val / LblE3[idx]->Addr.Divide1();
+	val2 =
+	    (set_val / LblE3[idx]->Addr.Divide2()) % (int) pow(2, LblE3[idx]->Addr.Byte2.BitNum());
+	val3 = set_val % LblE3[idx]->Addr.Divide2();
+	EngineerForm->SetWrite_Byte(LblE3[idx]->Addr.Byte1, val1);
+	if (LblE3[idx]->Addr.Byte2.BitNum() != 0) {
+	    EngineerForm->SetWrite_Byte(LblE3[idx]->Addr.Byte2, val2);
+	}
+	if (LblE3[idx]->Addr.Byte3.BitNum() != 0) {
+	    EngineerForm->SetWrite_Byte(LblE3[idx]->Addr.Byte3, val3);
+	}
+	LblE3[idx]->Lble->Font->Color = clWindowText;
+    }
 }
+
 //---------------------------------------------------------------------------
 void __fastcall TSharpnessForm12307::FormCreate(TObject * Sender)
 {
@@ -150,8 +158,9 @@ void __fastcall TSharpnessForm12307::FormCreate(TObject * Sender)
     cb = OSP->SetChkBx();
 
     ChkB = new _CHKB *[OSP->SPChkBox_Nbr];
-    for (int i = 0; i < OSP->SPChkBox_Nbr; i++)
+    for (int i = 0; i < OSP->SPChkBox_Nbr; i++) {
 	ChkB[i] = new _CHKB;
+    }
 
     ChkB[0]->Chkb = CheckBox1;
     ChkB[1]->Chkb = CheckBox2;
@@ -177,59 +186,62 @@ void __fastcall TSharpnessForm12307::FormCreate(TObject * Sender)
     //ComboBox
     cbo = OSP->SetCboBx();
 
-    CboB = new _CBOB* [OSP->SPCboBox_Nbr];
-    for(int i = 0; i < OSP->SPCboBox_Nbr; i++)
-        CboB[i] = new _CBOB;
+    CboB = new _CBOB *[OSP->SPCboBox_Nbr];
+    for (int i = 0; i < OSP->SPCboBox_Nbr; i++) {
+	CboB[i] = new _CBOB;
+    }
 
     CboB[0]->Cbob = ComboBox1;
-    CboB[0]->CbobL= Label7;
+    CboB[0]->CbobL = Label7;
     CboB[1]->Cbob = ComboBox2;
-    CboB[1]->CbobL= Label8;
+    CboB[1]->CbobL = Label8;
     CboB[2]->Cbob = ComboBox3;
-    CboB[2]->CbobL= Label9;
+    CboB[2]->CbobL = Label9;
     CboB[3]->Cbob = ComboBox4;
-    CboB[3]->CbobL= Label10;
+    CboB[3]->CbobL = Label10;
     CboB[4]->Cbob = ComboBox5;
-    CboB[4]->CbobL= Label17;
+    CboB[4]->CbobL = Label17;
     CboB[5]->Cbob = ComboBox6;
-    CboB[5]->CbobL= Label18;
+    CboB[5]->CbobL = Label18;
 
-    for(int i = 0; i < OSP->SPCboBox_Nbr; i++){
-        CboB[i]->Addr = cbo[i];
-        CboB[i]->Cbob->Visible = CboB[i]->Addr.FuncEn();
-        CboB[i]->Cbob->OnClick = ComboBox_Click;
-        CboB[i]->Cbob->Hint = i;
-        CboB[i]->CbobL->Caption = CboB[i]->Addr.Name();
-        CboB[i]->Cbob->Text = "";
-        if(CboB[i]->Addr.FuncEn())
-                for(int j = 0; j< CboB[i]->Addr.choice_nbr; j++)     //ComboBox choice
-                        CboB[i]->Cbob->Items->Add(CboB[i]->Addr.choice[j]);
+    for (int i = 0; i < OSP->SPCboBox_Nbr; i++) {
+	CboB[i]->Addr = cbo[i];
+	CboB[i]->Cbob->Visible = CboB[i]->Addr.FuncEn();
+	CboB[i]->Cbob->OnClick = ComboBox_Click;
+	CboB[i]->Cbob->Hint = i;
+	CboB[i]->CbobL->Caption = CboB[i]->Addr.Name();
+	CboB[i]->Cbob->Text = "";
+	if (CboB[i]->Addr.FuncEn())
+	    for (int j = 0; j < CboB[i]->Addr.choice_nbr; j++)	//ComboBox choice
+		CboB[i]->Cbob->Items->Add(CboB[i]->Addr.choice[j]);
     }
 
     //LabeledEdit3
     lble3 = OSP->SetLblE3();
 
-    LblE3 = new _LBLE3* [OSP->SPLblE3_Nbr];
-    for(int i = 0; i < OSP->SPLblE3_Nbr; i++)
-        LblE3[i] = new _LBLE3;
+    LblE3 = new _LBLE3 *[OSP->SPLblE3_Nbr];
+    for (int i = 0; i < OSP->SPLblE3_Nbr; i++) {
+	LblE3[i] = new _LBLE3;
+    }
 
     LblE3[0]->Lble = LabeledEdit1;
 
-    for(int i = 0; i < OSP->SPLblE3_Nbr; i++){
-        LblE3[i]->Addr = lble3[i];
-        LblE3[i]->Lble->Visible = LblE3[i]->Addr.FuncEn();
-        LblE3[i]->Lble->Hint = i;
-        LblE3[i]->Lble->EditLabel->Caption = LblE3[i]->Addr.Name();
-        LblE3[i]->Lble->OnKeyPress = LblE3_KeyPress;
-        LblE3[i]->Lble->Text = 0;
+    for (int i = 0; i < OSP->SPLblE3_Nbr; i++) {
+	LblE3[i]->Addr = lble3[i];
+	LblE3[i]->Lble->Visible = LblE3[i]->Addr.FuncEn();
+	LblE3[i]->Lble->Hint = i;
+	LblE3[i]->Lble->EditLabel->Caption = LblE3[i]->Addr.Name();
+	LblE3[i]->Lble->OnKeyPress = LblE3_KeyPress;
+	LblE3[i]->Lble->Text = 0;
     }
 
     //ScrollBar
     scrlb = OSP->SetScrollBar();
 
     ScrlB = new _ScrollBar *[OSP->SPScrollBar_Nbr];
-    for (int i = 0; i < OSP->SPScrollBar_Nbr; i++)
+    for (int i = 0; i < OSP->SPScrollBar_Nbr; i++) {
 	ScrlB[i] = new _ScrollBar;
+    }
 
     ScrlB[0]->Lbl = Label1;
     ScrlB[0]->StTxt = StaticText1;
@@ -322,7 +334,7 @@ void TSharpnessForm12307::Clear_LUT(bool type)
     if (type == true) {
 	for (int i = 0; i < 32; i++) {
 	    SP_lut[i] = -1;
-        }
+	}
     }
     Graphics::TBitmap * LUT_Graph;
     LUT_Graph = new Graphics::TBitmap();
@@ -382,8 +394,8 @@ void TSharpnessForm12307::Clear_LUT(bool type)
 //--------------------------------------------------------------------------
 
 void __fastcall TSharpnessForm12307::SP_LUTMouseDown(TObject * Sender,
-						 TMouseButton Button, TShiftState Shift, int X,
-						 int Y)
+						     TMouseButton Button, TShiftState Shift, int X,
+						     int Y)
 {
     if (X >= (30 - 5) && X <= (340 + 5) && Y <= (264) && Y >= (12)) {
 	int tmp_y;
@@ -599,11 +611,11 @@ void __fastcall TSharpnessForm12307::Btn_SP_reloadClick(TObject * Sender)
 		ShowMessage("SP CheckBox read error:" + IntToStr(read_val));
 	}
     }
-    for(int i = 0; i < OSP->SPCboBox_Nbr; i++){
-        if(CboB[i]->Cbob->Visible==true){
-                EngineerForm->SetRead_Byte(CboB[i]->Addr, &read_val);
-                CboB[i]->Cbob->ItemIndex = read_val;
-        }
+    for (int i = 0; i < OSP->SPCboBox_Nbr; i++) {
+	if (CboB[i]->Cbob->Visible == true) {
+	    EngineerForm->SetRead_Byte(CboB[i]->Addr, &read_val);
+	    CboB[i]->Cbob->ItemIndex = read_val;
+	}
     }
     for (int i = 0; i < OSP->SPScrollBar_Nbr; i++) {
 	if (ScrlB[i]->ScrlB->Visible == true) {
@@ -613,15 +625,15 @@ void __fastcall TSharpnessForm12307::Btn_SP_reloadClick(TObject * Sender)
 	}
     }
 
-    unsigned char read_val1, read_val2,read_val3;
-    for(int i = 0; i < OSP->SPLblE3_Nbr; i++){
-        if(LblE3[i]->Lble->Visible==true){
-                EngineerForm->SetRead_Byte(LblE3[i]->Addr.Byte1, &read_val1);
-                EngineerForm->SetRead_Byte(LblE3[i]->Addr.Byte2, &read_val2);
-                EngineerForm->SetRead_Byte(LblE3[i]->Addr.Byte3, &read_val3);
-                LblE3[i]->Lble->Text = (int)read_val1*LblE3[i]->Addr.Divide1()
-                +(int)read_val2*LblE3[i]->Addr.Divide2()+(int)read_val3;
-        }
+    unsigned char read_val1, read_val2, read_val3;
+    for (int i = 0; i < OSP->SPLblE3_Nbr; i++) {
+	if (LblE3[i]->Lble->Visible == true) {
+	    EngineerForm->SetRead_Byte(LblE3[i]->Addr.Byte1, &read_val1);
+	    EngineerForm->SetRead_Byte(LblE3[i]->Addr.Byte2, &read_val2);
+	    EngineerForm->SetRead_Byte(LblE3[i]->Addr.Byte3, &read_val3);
+	    LblE3[i]->Lble->Text = (int) read_val1 *LblE3[i]->Addr.Divide1()
+	    + (int) read_val2 *LblE3[i]->Addr.Divide2() + (int) read_val3;
+	}
     }
 
     btn_sp_lut_readClick(Sender);
@@ -798,6 +810,4 @@ void __fastcall TSharpnessForm12307::FormKeyDown(TObject * Sender, WORD & Key, T
 }
 
 //---------------------------------------------------------------------------
-
-
 

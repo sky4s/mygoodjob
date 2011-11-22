@@ -25,10 +25,10 @@ class SP_11307:public AbstSP {
   public:
     virtual TBit * SetChkBx();
     virtual TBit *SetScrollBar();
-    virtual TBit2 *SetLblE2();	//Add by Michelle 20100702
     virtual TLUT *SetSPLUT();
-    virtual TBit *SetCboBx();
+    virtual TBit2 *SetLblE2();	//Add by Michelle 20100702
     virtual TBit3 *SetLblE3();
+    virtual TBit *SetCboBx();
 
      SP_11307();
 };
@@ -36,11 +36,11 @@ class SP_11307:public AbstSP {
 class SP_12307:public AbstSP {
   public:
     virtual TBit * SetChkBx();
-    virtual TBit *SetCboBx();
     virtual TBit *SetScrollBar();
-    virtual TBit3 *SetLblE3();
     virtual TLUT *SetSPLUT();
     virtual TBit2 *SetLblE2();
+    virtual TBit3 *SetLblE3();
+    virtual TBit *SetCboBx();
 
      SP_12307();
 };

@@ -411,11 +411,14 @@ void __fastcall THSVForm2nd::btn_hsv_loadClick(TObject * Sender)
 
 bool THSVForm2nd::Load_HSV(String Fpath)
 {
-    if (Fpath == NULL)
+    if (Fpath == NULL)  {
 	return 0;
+        }
     char *buffer = Load_File(Fpath);
-    if (buffer == NULL)
+    if (buffer == NULL){
+
 	return 0;
+        }
     for (int i = 0; i < HUE_COUNT; i++) {
 	hueTable[i] = -1;
 	satTable[i] = -1;

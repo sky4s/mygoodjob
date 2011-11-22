@@ -394,30 +394,26 @@ bool TEngineerForm::SetRead_PG(TLUT Addr_LUT, int *Read_table, bool IsChkSum)
     } else {
 	chk_len = 0;
     }
-    int data_len;
+    int data_len = 0;
     // 璸衡table╊ΘByte, Addr_LUT.LutNum()琌table讽い计计
     if (Addr_LUT.BitNum() == 4 && Addr_LUT.Type() == 1) {
 	data_len = ceil(Addr_LUT.LutNum() / 2);
-    }
-    else if (Addr_LUT.BitNum() == 4 && Addr_LUT.Type() == 2) {
+    } else if (Addr_LUT.BitNum() == 4 && Addr_LUT.Type() == 2) {
 	data_len = Addr_LUT.LutNum();
-    }
-    else if (Addr_LUT.BitNum() == 8 || Addr_LUT.BitNum() == 6 || Addr_LUT.BitNum() == 5) {
+    } else if (Addr_LUT.BitNum() == 8 || Addr_LUT.BitNum() == 6 || Addr_LUT.BitNum() == 5) {
 	data_len = Addr_LUT.LutNum();	// 201007
-    }
-    else if (Addr_LUT.BitNum() == 12) {
+    } else if (Addr_LUT.BitNum() == 12) {
 	data_len = ceil((double) Addr_LUT.LutNum() * 3 / 2);
-    }
-    else if (Addr_LUT.BitNum() == 10 && (Addr_LUT.Type() == 1 || Addr_LUT.Type() == 2)) {
+    } else if (Addr_LUT.BitNum() == 10 && (Addr_LUT.Type() == 1 || Addr_LUT.Type() == 2)) {
 	data_len = Addr_LUT.LutNum() * 2;
-    }
-    else if (Addr_LUT.BitNum() == 10 && (Addr_LUT.Type() == 3 || Addr_LUT.Type() == 4)) {
+    } else if (Addr_LUT.BitNum() == 10 && (Addr_LUT.Type() == 3 || Addr_LUT.Type() == 4)) {
 	data_len = ceil((double) Addr_LUT.LutNum() * 5 / 4);
-    }
-    else if (Addr_LUT.BitNum() == 16) {
+    } else if (Addr_LUT.BitNum() == 10 && (Addr_LUT.Type() == 6)) {
+	//data_len = ceil((double) Addr_LUT.LutNum() * 3 / 2);
+	data_len = 15;
+    } else if (Addr_LUT.BitNum() == 16) {
 	data_len = Addr_LUT.LutNum() * 2;
     }
-
     // Set Table Start Address & length (in Bytes)to Interface
     String Addr_str;
     Dec2Hex(Addr_LUT.Addr() - chk_len, &Addr_str);
@@ -436,7 +432,7 @@ bool TEngineerForm::SetRead_PG(TLUT Addr_LUT, int *Read_table, bool IsChkSum)
     if (chk_len > 0) {
 	for (int i = 0; i < data_len; i++) {
 	    read_data[i] = read_data[i + chk_len];
-        }
+	}
     }
     IntTbl Out;
     Out.Tbl = Read_table;
@@ -559,22 +555,26 @@ bool TEngineerForm::SetWrite_PG(TLUT Addr_LUT, int *write_table, bool IsChkSum)
 	chk_len = 0;
     }
 
-    int data_len;
+    int data_len = 0;
     // 璸衡table╊ΘByte, Addr_LUT.LutNum()琌table讽い计计
-    if (Addr_LUT.BitNum() == 4 && Addr_LUT.Type() == 1)
+    if (Addr_LUT.BitNum() == 4 && Addr_LUT.Type() == 1) {
 	data_len = ceil(Addr_LUT.LutNum() / 2);
-    else if (Addr_LUT.BitNum() == 4 && Addr_LUT.Type() == 2)
+    } else if (Addr_LUT.BitNum() == 4 && Addr_LUT.Type() == 2) {
 	data_len = Addr_LUT.LutNum();
-    else if (Addr_LUT.BitNum() == 8 || Addr_LUT.BitNum() == 6 || Addr_LUT.BitNum() == 5)
+    } else if (Addr_LUT.BitNum() == 8 || Addr_LUT.BitNum() == 6 || Addr_LUT.BitNum() == 5) {
 	data_len = Addr_LUT.LutNum();	// 201007
-    else if (Addr_LUT.BitNum() == 12)
+    } else if (Addr_LUT.BitNum() == 12) {
 	data_len = ceil((double) Addr_LUT.LutNum() * 3 / 2);
-    else if (Addr_LUT.BitNum() == 10 && (Addr_LUT.Type() == 1 || Addr_LUT.Type() == 2))
+    } else if (Addr_LUT.BitNum() == 10 && (Addr_LUT.Type() == 1 || Addr_LUT.Type() == 2)) {
 	data_len = Addr_LUT.LutNum() * 2;
-    else if (Addr_LUT.BitNum() == 10 && (Addr_LUT.Type() == 3 || Addr_LUT.Type() == 4))
+    } else if (Addr_LUT.BitNum() == 10 && (Addr_LUT.Type() == 3 || Addr_LUT.Type() == 4)) {
 	data_len = ceil((double) Addr_LUT.LutNum() * 5 / 4);
-    else if (Addr_LUT.BitNum() == 16)
+    } else if (Addr_LUT.BitNum() == 10 && (Addr_LUT.Type() == 5)) {
+	//data_len = ceil((double) Addr_LUT.LutNum() * 3 / 2);
+	data_len = 15;
+    } else if (Addr_LUT.BitNum() == 16) {
 	data_len = Addr_LUT.LutNum() * 2;
+    }
 
     unsigned char *write_data = new unsigned char[data_len];
     ByteTbl Out;

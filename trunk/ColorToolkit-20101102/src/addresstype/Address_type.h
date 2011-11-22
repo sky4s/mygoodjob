@@ -13,10 +13,20 @@ class AbstractAddressType {
   private:
     virtual void _set(int_vector_ptr vector, AnsiString name) = 0;
   protected:
-     bool en;			//若被設定則會en == true
+     bool en;			//若被設定過則會en == true
     int b_num;
     AnsiString name;
+     AbstractAddressType() {
+	en = false;
+	b_num = 0;
+	name = "";
+	choice = NULL;
+	choice_nbr = 0;
+    };
   public:
+    String * choice;
+    int choice_nbr;
+
     void set(int *values, int n, std::string name) {
 	int_vector_ptr vector(new int_vector(n));
 	for (int x = 0; x < n; x++) {
