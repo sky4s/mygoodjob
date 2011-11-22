@@ -191,8 +191,9 @@ void __fastcall TSharpnessForm1::FormCreate(TObject * Sender)
     //LabeledEdit2   //Add by Michelle 20100702
     lble2 = OSP->SetLblE2();
     LblE2 = new _LBLE2 *[OSP->SPLblE2_Nbr];
-    for (int i = 0; i < OSP->SPLblE2_Nbr; i++)
+    for (int i = 0; i < OSP->SPLblE2_Nbr; i++) {
 	LblE2[i] = new _LBLE2;
+    }
 
     //LblE2[0]->Lble = LabeledEdit1;
 

@@ -108,7 +108,8 @@ void __fastcall TEngineerForm::FormCreate(TObject * Sender)
 
 //---------------------------------------------------------------------------
 
-void __fastcall TEngineerForm::FormClose(TObject * Sender, TCloseAction & Action)
+void __fastcall TEngineerForm::FormClose(TObject * Sender,
+					 TCloseAction & Action)
 {
     Action = caFree;
     RW.USB_disconnect();
@@ -120,7 +121,8 @@ void __fastcall TEngineerForm::FormClose(TObject * Sender, TCloseAction & Action
 // ¨ú±o¤¶­±¤¤Byte Read/WriteªºAddressªÅ®æªº­È
 // ¿é¥X«¬¦¡¬°unsigned char* (1 or 2 Byte)
 // data_addr_cnt¬°¬ö¿ýAddressªºªø«×, 1 or 2 byte
-bool TEngineerForm::Get_byte_addr(unsigned char *data_addr, int *data_addr_cnt)
+bool TEngineerForm::Get_byte_addr(unsigned char *data_addr,
+				  int *data_addr_cnt)
 {
     AnsiString dataString = edt_byte_addr->Text;
     if (dataString.Length() > 4 || dataString.Length() == 0) {
@@ -148,7 +150,8 @@ bool TEngineerForm::Get_byte_addr(unsigned char *data_addr, int *data_addr_cnt)
 // ¨ú±o¤¶­±¤¤Sequential Read/WriteªºAddressªÅ®æªº­È,
 // §Ydata_addr¿é¥X«¬¦¡¬°unsigned char* (1 or 2 Byte)
 // data_addr_cnt¬°¬ö¿ýAddressªºªø«×, 1 or 2 byte
-bool TEngineerForm::Get_seq_addr(unsigned char *data_addr, int *data_addr_cnt)
+bool TEngineerForm::Get_seq_addr(unsigned char *data_addr,
+				 int *data_addr_cnt)
 {
     AnsiString dataString = edt_seq_addr->Text;
     if (dataString.Length() > 4 || dataString.Length() == 0) {
@@ -228,11 +231,14 @@ bool TEngineerForm::B_write(unsigned char dev_addr)	//±N¤¶­±¤WªºByte¼Æ­È¼g¤J
 	int cnnct_ok = RW.USB_connect(rg_power->ItemIndex, rg_speed->ItemIndex);	//201007 for Vdd drop
 	if (!cnnct_ok)
 	    return 0;
-	RW.USB_write(dev_addr_tmp, data_addr, data_addr_cnt, &write_data, 1);
+	RW.USB_write(dev_addr_tmp, data_addr, data_addr_cnt, &write_data,
+		     1);
     } else {			//LPT
-	ok = RW.LPT_Write(dev_addr_tmp, data_addr, data_addr_cnt, &write_data, 1);
+	ok = RW.LPT_Write(dev_addr_tmp, data_addr, data_addr_cnt,
+			  &write_data, 1);
 	if (ok != 1)		//¶Ç°e¥¢±Ñ, ¦A¶Ç¤@¦¸
-	    ok = RW.LPT_Write(dev_addr_tmp, data_addr, data_addr_cnt, &write_data, 1);
+	    ok = RW.LPT_Write(dev_addr_tmp, data_addr, data_addr_cnt,
+			      &write_data, 1);
 	if (ok != 1) {
 	    if (ok == -1)
 		ShowMessage("Device address Send fail!");
@@ -265,12 +271,15 @@ bool TEngineerForm::B_read(unsigned char &data_read, unsigned char dev_addr)	//±
 	int cnnct_ok = RW.USB_connect(rg_power->ItemIndex, rg_speed->ItemIndex);	//201007 for Vdd drop
 	if (!cnnct_ok)
 	    return 0;
-	ok = RW.USB_seq_read_P1(dev_addr_tmp, data_addr, data_addr_cnt, &data_read, 1, 1);
+	ok = RW.USB_seq_read_P1(dev_addr_tmp, data_addr, data_addr_cnt,
+				&data_read, 1, 1);
 	connect = ok;
     } else {			// LPT
-	ok = RW.LPT_Read_Byte(dev_addr_tmp, data_addr, data_addr_cnt, &data_read);
+	ok = RW.LPT_Read_Byte(dev_addr_tmp, data_addr, data_addr_cnt,
+			      &data_read);
 	if (ok != 1)		//¶Ç°e¥¢±Ñ, ¦A¶Ç¤@¦¸
-	    ok = RW.LPT_Read_Byte(dev_addr_tmp, data_addr, data_addr_cnt, &data_read);
+	    ok = RW.LPT_Read_Byte(dev_addr_tmp, data_addr, data_addr_cnt,
+				  &data_read);
 	if (ok != 1) {
 	    /*if(connect){
 	       if(ok==-1)
@@ -319,16 +328,65 @@ bool TEngineerForm::SetRead_Byte(TBit Addr_Bit, unsigned char *read_val)
 	data_read[i] = data_read[i] & ~(Addr_Bit.StbBit());
 	data_read[i] = data_read[i] >> Addr_Bit.ShiftBit();
 
-	if (i >= 1)
-	    if (data_read[i] != data_read[i - 1])
+	if (i >= 1) {
+	    if (data_read[i] != data_read[i - 1]) {
 		dif = 1;
+	    }
+	}
     }
     *read_val = data_read[0];
-    if (dif == 1)
+    Addr_Bit.SetVal(data_read[0]);
+    if (dif == 1) {
 	ShowMessage(Addr_Bit.Name() + "has difference value.");
+    }
     delete[]data_read;
     return 1;
 }
+
+unsigned char TEngineerForm::readByte(TBit & Addr_Bit)
+{
+    // ±N­nÅª¨úªºdata AddressÅã¥Ü¨ì¤¶­±¤W
+    AnsiString str_addr;
+    Dec2Hex(Addr_Bit.Addr(), &str_addr);
+    edt_byte_addr->Text = str_addr;
+
+    unsigned char dev_addr[4];
+    //device read/write address, extend to 4 devices set at a time
+    int dev_addr_cnt;		//number of device
+    if (Get_device_addr(dev_addr, &dev_addr_cnt) == 0) {	//¨ú±o¤¶­±¤Wdevice address
+	ShowMessage(Err_Msg_Dev);
+	return NULL;
+    }
+    unsigned char *data_read = new unsigned char[dev_addr_cnt];
+    bool dif = 0;
+    for (int i = 0; i < dev_addr_cnt; i++) {	//¹ï¨C­Ódevice address°Ê§@
+	bool ok = 0;
+	int cnt = 0;
+	while (ok == 0 && cnt < 3) {
+	    ok = B_read(data_read[i], dev_addr[i]);	// Åª¨úByte
+	    cnt++;
+	}
+	//if(ok==0){ delete [] data_read; return 0;}
+
+	// ±N±o¨ìªºByte¼Æ­È°µ­×¥¿, (®Ú¾Ú°Ñ¼Æ±Æ¦b¨º¨Çbit°µ­×¥¿)
+	data_read[i] = data_read[i] & ~(Addr_Bit.StbBit());
+	data_read[i] = data_read[i] >> Addr_Bit.ShiftBit();
+
+	if (i >= 1) {
+	    if (data_read[i] != data_read[i - 1]) {
+		dif = 1;
+	    }
+	}
+    }
+    unsigned char result = data_read[0];
+    Addr_Bit.SetVal(data_read[0]);
+    if (dif == 1) {
+	ShowMessage(Addr_Bit.Name() + "has difference value.");
+    }
+    delete[]data_read;
+    return result;
+}
+
 
 //--------------------------------------------------------------------------
 
@@ -385,7 +443,8 @@ bool TEngineerForm::SetWrite_Byte(TBit Addr_Bit, int set_val)
 
 // ³sÄòÅª¨údata©ÎÅª¨úTable
 // 20100608 revise, ¥H Read_LUT Âà´« Byte ¬° Data, ¨Ã¥B¥i¥H¼gchksum Byte
-bool TEngineerForm::SetRead_PG(TLUT Addr_LUT, int *Read_table, bool IsChkSum)
+bool TEngineerForm::SetRead_PG(TLUT Addr_LUT, int *Read_table,
+			       bool IsChkSum)
 {				// IsChkSum: 1 ­n¥[checksum, 0 ¤£¥Î¥[checksum
 
     int chk_len;		// ¹w¯dªºChecksumªø«×
@@ -400,13 +459,16 @@ bool TEngineerForm::SetRead_PG(TLUT Addr_LUT, int *Read_table, bool IsChkSum)
 	data_len = ceil(Addr_LUT.LutNum() / 2);
     } else if (Addr_LUT.BitNum() == 4 && Addr_LUT.Type() == 2) {
 	data_len = Addr_LUT.LutNum();
-    } else if (Addr_LUT.BitNum() == 8 || Addr_LUT.BitNum() == 6 || Addr_LUT.BitNum() == 5) {
+    } else if (Addr_LUT.BitNum() == 8 || Addr_LUT.BitNum() == 6
+	       || Addr_LUT.BitNum() == 5) {
 	data_len = Addr_LUT.LutNum();	// 201007
     } else if (Addr_LUT.BitNum() == 12) {
 	data_len = ceil((double) Addr_LUT.LutNum() * 3 / 2);
-    } else if (Addr_LUT.BitNum() == 10 && (Addr_LUT.Type() == 1 || Addr_LUT.Type() == 2)) {
+    } else if (Addr_LUT.BitNum() == 10
+	       && (Addr_LUT.Type() == 1 || Addr_LUT.Type() == 2)) {
 	data_len = Addr_LUT.LutNum() * 2;
-    } else if (Addr_LUT.BitNum() == 10 && (Addr_LUT.Type() == 3 || Addr_LUT.Type() == 4)) {
+    } else if (Addr_LUT.BitNum() == 10
+	       && (Addr_LUT.Type() == 3 || Addr_LUT.Type() == 4)) {
 	data_len = ceil((double) Addr_LUT.LutNum() * 5 / 4);
     } else if (Addr_LUT.BitNum() == 10 && (Addr_LUT.Type() == 6)) {
 	//data_len = ceil((double) Addr_LUT.LutNum() * 3 / 2);
@@ -456,7 +518,8 @@ bool TEngineerForm::SetRead_PG(TLUT Addr_LUT, int *Read_table, bool IsChkSum)
 //---------------------------------------------------------------------------
 // DG or C3d read
 // 20100608 revise, ¥H Read_LUT Âà´« byte ¬° data, ¨Ã¥B¥i¥H¼gchksum Byte
-bool TEngineerForm::SetRead_DG(TLUT * Addr_LUT, int **DG_table, int LUT_Nbr, bool IsChkSum)
+bool TEngineerForm::SetRead_DG(TLUT * Addr_LUT, int **DG_table,
+			       int LUT_Nbr, bool IsChkSum)
 {				// IsChkSum: 1 ­n¥[checksum, 0 ¤£¥Î¥[checksum
     // Addr_LUT[0]: DG_R Address,  Addr_LUT[1]: DG_G Address,
     // Addr_LUT[2]: DG_B Address,  Addr_LUT[3]: DG_W Address,
@@ -477,10 +540,13 @@ bool TEngineerForm::SetRead_DG(TLUT * Addr_LUT, int **DG_table, int LUT_Nbr, boo
     for (int i = 0; i < LUT_Nbr; i++) {	// ­pºâ¤£¦Pbit¼Æªºtable, ©Ò¦³ªºbyte¼Æ
 	if (Addr_LUT[i].BitNum() == 8)
 	    Byte_len[i] = (int) ceil((double) Addr_LUT[i].LutNum());
-	else if (Addr_LUT[i].BitNum() == 10 && (Addr_LUT[i].Type() == 3 || Addr_LUT[i].Type() == 4))
-	    Byte_len[i] = (int) ceil((double) Addr_LUT[i].LutNum() * 5 / 4);
+	else if (Addr_LUT[i].BitNum() == 10
+		 && (Addr_LUT[i].Type() == 3 || Addr_LUT[i].Type() == 4))
+	    Byte_len[i] =
+		(int) ceil((double) Addr_LUT[i].LutNum() * 5 / 4);
 	else if (Addr_LUT[i].BitNum() == 12)
-	    Byte_len[i] = (int) ceil((double) Addr_LUT[i].LutNum() * 3 / 2);
+	    Byte_len[i] =
+		(int) ceil((double) Addr_LUT[i].LutNum() * 3 / 2);
 	else if (Addr_LUT[i].BitNum() == 16)
 	    Byte_len[i] = (int) ceil((double) Addr_LUT[i].LutNum() * 2);
 	else
@@ -546,7 +612,8 @@ bool TEngineerForm::SetRead_DG(TLUT * Addr_LUT, int **DG_table, int LUT_Nbr, boo
 
 // ³sÄò¼g¤Jdata©Î¼g¤JTable
 // 20100608 revise, ¥H Write_LUT Âà´« data ¬° Byte, ¨Ã¥B¥i¥H¼gchksum Byte
-bool TEngineerForm::SetWrite_PG(TLUT Addr_LUT, int *write_table, bool IsChkSum)
+bool TEngineerForm::SetWrite_PG(TLUT Addr_LUT, int *write_table,
+				bool IsChkSum)
 {				// IsChkSum: 1 ­n¥[checksum, 0 ¤£¥Î¥[checksum
     int chk_len;
     if (IsChkSum) {		// ¹w¯dªºChecksumªø«×
@@ -561,13 +628,16 @@ bool TEngineerForm::SetWrite_PG(TLUT Addr_LUT, int *write_table, bool IsChkSum)
 	data_len = ceil(Addr_LUT.LutNum() / 2);
     } else if (Addr_LUT.BitNum() == 4 && Addr_LUT.Type() == 2) {
 	data_len = Addr_LUT.LutNum();
-    } else if (Addr_LUT.BitNum() == 8 || Addr_LUT.BitNum() == 6 || Addr_LUT.BitNum() == 5) {
+    } else if (Addr_LUT.BitNum() == 8 || Addr_LUT.BitNum() == 6
+	       || Addr_LUT.BitNum() == 5) {
 	data_len = Addr_LUT.LutNum();	// 201007
     } else if (Addr_LUT.BitNum() == 12) {
 	data_len = ceil((double) Addr_LUT.LutNum() * 3 / 2);
-    } else if (Addr_LUT.BitNum() == 10 && (Addr_LUT.Type() == 1 || Addr_LUT.Type() == 2)) {
+    } else if (Addr_LUT.BitNum() == 10
+	       && (Addr_LUT.Type() == 1 || Addr_LUT.Type() == 2)) {
 	data_len = Addr_LUT.LutNum() * 2;
-    } else if (Addr_LUT.BitNum() == 10 && (Addr_LUT.Type() == 3 || Addr_LUT.Type() == 4)) {
+    } else if (Addr_LUT.BitNum() == 10
+	       && (Addr_LUT.Type() == 3 || Addr_LUT.Type() == 4)) {
 	data_len = ceil((double) Addr_LUT.LutNum() * 5 / 4);
     } else if (Addr_LUT.BitNum() == 10 && (Addr_LUT.Type() == 5)) {
 	//data_len = ceil((double) Addr_LUT.LutNum() * 3 / 2);
@@ -614,7 +684,8 @@ bool TEngineerForm::SetWrite_PG(TLUT Addr_LUT, int *write_table, bool IsChkSum)
     }
 }
 
-bool TEngineerForm::SetWrite_PG(TLUT Addr_LUT, int *write_table, bool IsChkSum, bool MSB_first)
+bool TEngineerForm::SetWrite_PG(TLUT Addr_LUT, int *write_table,
+				bool IsChkSum, bool MSB_first)
 {				// IsChkSum: 1 ­n¥[checksum, 0 ¤£¥Î¥[checksum
     int chk_len;
     if (IsChkSum) {		// ¹w¯dªºChecksumªø«×
@@ -629,13 +700,16 @@ bool TEngineerForm::SetWrite_PG(TLUT Addr_LUT, int *write_table, bool IsChkSum, 
 	data_len = ceil(Addr_LUT.LutNum() / 2);
     else if (Addr_LUT.BitNum() == 4 && Addr_LUT.Type() == 2)
 	data_len = Addr_LUT.LutNum();
-    else if (Addr_LUT.BitNum() == 8 || Addr_LUT.BitNum() == 6 || Addr_LUT.BitNum() == 5)
+    else if (Addr_LUT.BitNum() == 8 || Addr_LUT.BitNum() == 6
+	     || Addr_LUT.BitNum() == 5)
 	data_len = Addr_LUT.LutNum();	// 201007
     else if (Addr_LUT.BitNum() == 12)
 	data_len = ceil((double) Addr_LUT.LutNum() * 3 / 2);
-    else if (Addr_LUT.BitNum() == 10 && (Addr_LUT.Type() == 1 || Addr_LUT.Type() == 2))
+    else if (Addr_LUT.BitNum() == 10
+	     && (Addr_LUT.Type() == 1 || Addr_LUT.Type() == 2))
 	data_len = Addr_LUT.LutNum() * 2;
-    else if (Addr_LUT.BitNum() == 10 && (Addr_LUT.Type() == 3 || Addr_LUT.Type() == 4))
+    else if (Addr_LUT.BitNum() == 10
+	     && (Addr_LUT.Type() == 3 || Addr_LUT.Type() == 4))
 	data_len = ceil((double) Addr_LUT.LutNum() * 5 / 4);
     else if (Addr_LUT.BitNum() == 16)
 	data_len = Addr_LUT.LutNum() * 2;
@@ -685,7 +759,8 @@ bool TEngineerForm::SetWrite_PG(TLUT Addr_LUT, int *write_table, bool IsChkSum, 
 
 // DG»PC3D table ¨Ï¥Î, ¤ÀRGB or RGBW³sÄò¼g¤J (DG or C3D use)
 // 20100608 revise, ¥H Write_LUT Âà´« data ¬° Byte, ¨Ã¥B¥i¥H¼gchksum Byte
-bool TEngineerForm::SetWrite_DG(TLUT * Addr_LUT, int **lut, int LUT_Nbr, bool IsChkSum)
+bool TEngineerForm::SetWrite_DG(TLUT * Addr_LUT, int **lut, int LUT_Nbr,
+				bool IsChkSum)
 {				// IsChkSum: 1 ­n¥[checksum, 0 ¤£¥Î¥[checksum
     int chk_len;
     if (IsChkSum) {		// ¹w¯dªºChecksumªø«×
@@ -699,10 +774,13 @@ bool TEngineerForm::SetWrite_DG(TLUT * Addr_LUT, int **lut, int LUT_Nbr, bool Is
     for (int i = 0; i < LUT_Nbr; i++) {	// ­pºâ¤£¦Pbit¼Æªºtable, ©Ò¦³ªºbyte¼Æ
 	if (Addr_LUT[i].BitNum() == 8)
 	    data_len[i] = (int) ceil((double) Addr_LUT[i].LutNum());
-	else if (Addr_LUT[i].BitNum() == 10 && (Addr_LUT[i].Type() == 3 || Addr_LUT[i].Type() == 4))
-	    data_len[i] = (int) ceil((double) Addr_LUT[i].LutNum() * 5 / 4);
+	else if (Addr_LUT[i].BitNum() == 10
+		 && (Addr_LUT[i].Type() == 3 || Addr_LUT[i].Type() == 4))
+	    data_len[i] =
+		(int) ceil((double) Addr_LUT[i].LutNum() * 5 / 4);
 	else if (Addr_LUT[i].BitNum() == 12)
-	    data_len[i] = (int) ceil((double) Addr_LUT[i].LutNum() * 3 / 2);
+	    data_len[i] =
+		(int) ceil((double) Addr_LUT[i].LutNum() * 3 / 2);
 	else if (Addr_LUT[i].BitNum() == 16)
 	    data_len[i] = (int) ceil((double) Addr_LUT[i].LutNum() * 2);
 	else
@@ -760,8 +838,8 @@ bool TEngineerForm::SetWrite_DG(TLUT * Addr_LUT, int **lut, int LUT_Nbr, bool Is
 
 //---------------------------------------------------------------------------
 // 201007 revise, checksum MSB,LSB 2 kinds arrange
-bool TEngineerForm::SetWrite_DG(TLUT * Addr_LUT, int **lut, int LUT_Nbr, bool IsChkSum,
-				bool MSB_first)
+bool TEngineerForm::SetWrite_DG(TLUT * Addr_LUT, int **lut, int LUT_Nbr,
+				bool IsChkSum, bool MSB_first)
 {				// IsChkSum: 1 ­n¥[checksum, 0 ¤£¥Î¥[checksum
     int chk_len;
     if (IsChkSum) {		// ¹w¯dªºChecksumªø«×
@@ -775,10 +853,13 @@ bool TEngineerForm::SetWrite_DG(TLUT * Addr_LUT, int **lut, int LUT_Nbr, bool Is
     for (int i = 0; i < LUT_Nbr; i++) {	// ­pºâ¤£¦Pbit¼Æªºtable, ©Ò¦³ªºbyte¼Æ
 	if (Addr_LUT[i].BitNum() == 8)
 	    data_len[i] = (int) ceil((double) Addr_LUT[i].LutNum());
-	else if (Addr_LUT[i].BitNum() == 10 && (Addr_LUT[i].Type() == 3 || Addr_LUT[i].Type() == 4))
-	    data_len[i] = (int) ceil((double) Addr_LUT[i].LutNum() * 5 / 4);
+	else if (Addr_LUT[i].BitNum() == 10
+		 && (Addr_LUT[i].Type() == 3 || Addr_LUT[i].Type() == 4))
+	    data_len[i] =
+		(int) ceil((double) Addr_LUT[i].LutNum() * 5 / 4);
 	else if (Addr_LUT[i].BitNum() == 12)
-	    data_len[i] = (int) ceil((double) Addr_LUT[i].LutNum() * 3 / 2);
+	    data_len[i] =
+		(int) ceil((double) Addr_LUT[i].LutNum() * 3 / 2);
 	else if (Addr_LUT[i].BitNum() == 16)
 	    data_len[i] = (int) ceil((double) Addr_LUT[i].LutNum() * 2);
 	else
@@ -872,7 +953,8 @@ bool TEngineerForm::btn_byte_readClick()
     }
     if (str[0] != '\0') {
 	Connect_Msg = (String) str + " Fail!";
-	MainForm->StatusBar1->Panels->Items[0]->Text = "Connection: " + Connect_Msg;
+	MainForm->StatusBar1->Panels->Items[0]->Text =
+	    "Connection: " + Connect_Msg;
 	return 0;
     }
     char R_string[15];
@@ -880,10 +962,11 @@ bool TEngineerForm::btn_byte_readClick()
 	if (dev_addr_cnt == 2)
 	    sprintf(R_string, "%X,%X", data_read[0], data_read[1]);
 	else if (dev_addr_cnt == 3)
-	    sprintf(R_string, "%X,%X,%X", data_read[0], data_read[1], data_read[2]);
+	    sprintf(R_string, "%X,%X,%X", data_read[0], data_read[1],
+		    data_read[2]);
 	else if (dev_addr_cnt == 4)
-	    sprintf(R_string, "%X,%X,%X,%X", data_read[0], data_read[1], data_read[2],
-		    data_read[3]);
+	    sprintf(R_string, "%X,%X,%X,%X", data_read[0], data_read[1],
+		    data_read[2], data_read[3]);
     } else {
 	sprintf(R_string, "%X", data_read[0]);
     }
@@ -911,7 +994,8 @@ void __fastcall TEngineerForm::btn_byte_readClick(TObject * Sender)
 
 //---------------------------------------------------------------------------
 // ­pºâ¤U¦¸¨Ï¥Îªºdata address
-void Add_val2_data_ad(unsigned char *data_addr, int data_addr_cnt, int add_num)
+void Add_val2_data_ad(unsigned char *data_addr, int data_addr_cnt,
+		      int add_num)
 {
     int addr_val = 0;
 
@@ -928,7 +1012,8 @@ void Add_val2_data_ad(unsigned char *data_addr, int data_addr_cnt, int add_num)
 
 //---------------------------------------------------------------------------
 // Compose part of read data
-void Set2data_read(unsigned char *data_read, unsigned char *data_read_tmp, int pck_cnt, int num)
+void Set2data_read(unsigned char *data_read, unsigned char *data_read_tmp,
+		   int pck_cnt, int num)
 {
     for (int i = 0; i < num; i++)
 	data_read[pck_cnt * PAC_SIZE + i] = data_read_tmp[i];
@@ -936,7 +1021,8 @@ void Set2data_read(unsigned char *data_read, unsigned char *data_read_tmp, int p
 
 //---------------------------------------------------------------------------
 // set write buffer
-void Set_write_buf(unsigned char *data_write, unsigned char *data_write_tmp, int drop, int num)
+void Set_write_buf(unsigned char *data_write,
+		   unsigned char *data_write_tmp, int drop, int num)
 {
     for (int i = 0; i < num; i++)
 	data_write_tmp[i] = data_write[drop + i];
@@ -992,14 +1078,16 @@ bool TEngineerForm::pg_read(unsigned char *data_read, bool IsShow)
 	for (int i = 0; i <= data_addr_cnt; i++)
 	    data_addr_tmp[i] = data_addr[i];
 	// ±NDevice Address»PData Address¦X¦¨Device Address Byte
-	SetDeviceAddr(dev_addr[i], &dev_addr_tmp, data_addr_tmp, data_addr_cnt);
+	SetDeviceAddr(dev_addr[i], &dev_addr_tmp, data_addr_tmp,
+		      data_addr_cnt);
 	if (rg_i2c_card_sel->ItemIndex == 0) {	//USB
 	    int cnnct_ok = RW.USB_connect(rg_power->ItemIndex, rg_speed->ItemIndex);	//201007 for Vdd drop
 	    if (!cnnct_ok)
 		return 0;
 	    if (tmp_len < PAC_SIZE) {	// ¤@­Ó«Ê¥]¥iÅª§¹
 		ok = RW.USB_seq_read_P1(dev_addr_tmp, data_addr_tmp,
-					data_addr_cnt, data_read, tmp_len, 1);
+					data_addr_cnt, data_read, tmp_len,
+					1);
 		// 1st package, defined in ReadWriteFunc.cpp
 		if (ok == 0) {
 		    ShowMessage(Err_Msg_R);
@@ -1010,7 +1098,8 @@ bool TEngineerForm::pg_read(unsigned char *data_read, bool IsShow)
 	    } else {		// ¤À¦¨¦h­Ó«Ê¥]Åª¨ú
 		// 1st package 'USB_seq_read_P1', defined in ReadWriteFunc.cpp
 		ok = RW.USB_seq_read_P1(dev_addr_tmp, data_addr_tmp,
-					data_addr_cnt, data_read_tmp, PAC_SIZE, 0);
+					data_addr_cnt, data_read_tmp,
+					PAC_SIZE, 0);
 
 		if (ok == 0) {
 		    ShowMessage(Err_Msg_R);
@@ -1027,7 +1116,8 @@ bool TEngineerForm::pg_read(unsigned char *data_read, bool IsShow)
 		    ok = RW.USB_r_Data_Package(data_read_tmp, PAC_SIZE, 0);
 
 		    // ±NÅª¨úªºdata©ñ¨ì'data_read'
-		    Set2data_read(data_read, data_read_tmp, pck_cnt, PAC_SIZE);
+		    Set2data_read(data_read, data_read_tmp, pck_cnt,
+				  PAC_SIZE);
 		    tmp_len -= PAC_SIZE;
 		    pck_cnt++;
 		    /*if(ok==0){
@@ -1050,7 +1140,8 @@ bool TEngineerForm::pg_read(unsigned char *data_read, bool IsShow)
 	    }
 	} else {
 	    //LPT
-	    ok = RW.LPT_Read_seq(dev_addr_tmp, data_addr, data_addr_cnt, data_read, data_len);
+	    ok = RW.LPT_Read_seq(dev_addr_tmp, data_addr, data_addr_cnt,
+				 data_read, data_len);
 	    if (ok != 1) {
 		if (ok == -1)
 		    ShowMessage("Device address Send fail!");
@@ -1106,7 +1197,8 @@ void __fastcall TEngineerForm::btn_seq_readClick(TObject * Sender)
 
 //---------------------------------------------------------------------------
 
-bool TEngineerForm::Set_seq_data(unsigned char *data_read, int data_len, int data_addr_val)
+bool TEngineerForm::Set_seq_data(unsigned char *data_read, int data_len,
+				 int data_addr_val)
 {
     String Addr_str;
     Dec2Hex(data_addr_val, &Addr_str);
@@ -1157,7 +1249,8 @@ bool TEngineerForm::Get_read_data(unsigned char *read_data)
 }
 
 //-----------------------------------------------------------------------------
-bool TEngineerForm::SetDeviceAddr(unsigned char dev_ad, unsigned char *dev_ad_new,
+bool TEngineerForm::SetDeviceAddr(unsigned char dev_ad,
+				  unsigned char *dev_ad_new,
 				  unsigned char *data_ad, int data_ad_c)
 {
     if (cbo_mem_addr_size->ItemIndex == 1) {
@@ -1241,13 +1334,15 @@ void __fastcall TEngineerForm::btn_connect_cardClick(TObject * Sender)
     connect = false;
     //USB connect
     if (rg_i2c_card_sel->ItemIndex == 0) {
-	cnnct_ok = RW.USB_connect(rg_power->ItemIndex, rg_speed->ItemIndex);
+	cnnct_ok =
+	    RW.USB_connect(rg_power->ItemIndex, rg_speed->ItemIndex);
 	if (cnnct_ok == true)
 	    btn_byte_readClick();	// read a byte to check if connect
 	else
 	    Connect_Msg = "USB Connect Fail!";
 	//LPT connect
-    } else if (rg_i2c_card_sel->ItemIndex == 1 || rg_i2c_card_sel->ItemIndex == 2) {
+    } else if (rg_i2c_card_sel->ItemIndex == 1
+	       || rg_i2c_card_sel->ItemIndex == 2) {
 	RW.USB_disconnect();
 	cnnct_ok = RW.LPT_connect();
 	if (cnnct_ok == 0) {
@@ -1265,13 +1360,15 @@ void __fastcall TEngineerForm::btn_connect_cardClick(TObject * Sender)
 	MainForm->StatusBar1->Panels->Items[0]->Text = "Connection: OK!";
     } else {
 	btn_connect_card->Enabled = true;
-	MainForm->StatusBar1->Panels->Items[0]->Text = "Connection: " + Connect_Msg;
+	MainForm->StatusBar1->Panels->Items[0]->Text =
+	    "Connection: " + Connect_Msg;
     }
 }
 
 //---------------------------------------------------------------------------
 // Get sequential write data from interfae
-void TEngineerForm::Get_seq_write_data(unsigned char *write_data, int data_len)
+void TEngineerForm::Get_seq_write_data(unsigned char *write_data,
+				       int data_len)
 {
     int row = floor((double) data_len / 16);
     int remain = data_len - row * 16;
@@ -1296,9 +1393,12 @@ void TEngineerForm::Get_seq_write_data(unsigned char *write_data, int data_len)
 //---------------------------------------------------------------------------
 
 // 20100608 USB Sequential Write, used in TCON write & OTP write, 1 start 1 stop
-bool TEngineerForm::USB_seq_pg_write(unsigned char dev_ad, unsigned char *data_addr,
-				     int data_addr_cnt, unsigned char *data_write, int data_len,
-				     int pck_size, int wait_t)
+bool TEngineerForm::USB_seq_pg_write(unsigned char dev_ad,
+				     unsigned char *data_addr,
+				     int data_addr_cnt,
+				     unsigned char *data_write,
+				     int data_len, int pck_size,
+				     int wait_t)
 {
     int tmp_len = data_len;	//data length remain after data transmit
     unsigned char data_addr_tmp[2] = { 0 };
@@ -1326,14 +1426,14 @@ bool TEngineerForm::USB_seq_pg_write(unsigned char dev_ad, unsigned char *data_a
 	overflag = 1;
 	Set_write_buf(data_write, data_w_tmp, 0, tmp_len);
 	//Get Write data from interface
-	ok = RW.USB_seq_write_P1(dev_ad_tmp, data_addr_tmp, data_addr_cnt, data_w_tmp, tmp_len,
-				 overflag);
+	ok = RW.USB_seq_write_P1(dev_ad_tmp, data_addr_tmp, data_addr_cnt,
+				 data_w_tmp, tmp_len, overflag);
     } else {
 	overflag = 0;
 	Set_write_buf(data_write, data_w_tmp, 0, pck_size);
 	//Get Write data from interface
-	ok = RW.USB_seq_write_P1(dev_ad_tmp, data_addr_tmp, data_addr_cnt, data_w_tmp, pck_size,
-				 overflag);
+	ok = RW.USB_seq_write_P1(dev_ad_tmp, data_addr_tmp, data_addr_cnt,
+				 data_w_tmp, pck_size, overflag);
     }
 
     pck_cnt++;
@@ -1362,8 +1462,11 @@ bool TEngineerForm::USB_seq_pg_write(unsigned char dev_ad, unsigned char *data_a
 }
 
 // 20100608 USB Package Write, used in EEPROM write, each package has 1 start 1 stop
-bool TEngineerForm::USB_pg_write(unsigned char dev_ad, unsigned char *data_addr, int data_addr_cnt,
-				 unsigned char *data_write, int data_len, int pck_size, int wait_t)
+bool TEngineerForm::USB_pg_write(unsigned char dev_ad,
+				 unsigned char *data_addr,
+				 int data_addr_cnt,
+				 unsigned char *data_write, int data_len,
+				 int pck_size, int wait_t)
 {				// EEPROM write package size = 8, and start counting address is 8 multiplier
 
     int tmp_len = data_len;	//data length remain after data transmit
@@ -1392,7 +1495,8 @@ bool TEngineerForm::USB_pg_write(unsigned char dev_ad, unsigned char *data_addr,
 	ok = 0;
 	rd_cnt = 0;		//fail read count
 	while (ok == 0 && rd_cnt < 2) {	//if fail read exceed 3, give up rework
-	    ok = RW.USB_write(dev_ad_tmp, data_addr_tmp, data_addr_cnt, data_w_tmp, front);
+	    ok = RW.USB_write(dev_ad_tmp, data_addr_tmp, data_addr_cnt,
+			      data_w_tmp, front);
 	    rd_cnt++;
 	    Sleep(wait_t);
 	}
@@ -1403,14 +1507,16 @@ bool TEngineerForm::USB_pg_write(unsigned char dev_ad, unsigned char *data_addr,
     }
     /////////////////////////////////////////////////
     while (tmp_len > pck_size) {	//need to send more packages
-	Set_write_buf(data_write, data_w_tmp, front + pck_cnt * pck_size, pck_size);
+	Set_write_buf(data_write, data_w_tmp, front + pck_cnt * pck_size,
+		      pck_size);
 	//Get Write data from interface
 	SetDeviceAddr(dev_ad, &dev_ad_tmp, data_addr_tmp, data_addr_cnt);
 	//Set the 1st Byte of device address
 	ok = 0;
 	rd_cnt = 0;
 	while (ok == 0 && rd_cnt < 2) {	//if fail read exceed 3, give up rework
-	    ok = RW.USB_write(dev_ad_tmp, data_addr_tmp, data_addr_cnt, data_w_tmp, pck_size);
+	    ok = RW.USB_write(dev_ad_tmp, data_addr_tmp, data_addr_cnt,
+			      data_w_tmp, pck_size);
 	    rd_cnt++;
 	    Sleep(wait_t);
 	}
@@ -1420,12 +1526,14 @@ bool TEngineerForm::USB_pg_write(unsigned char dev_ad, unsigned char *data_addr,
 	pck_cnt++;
 	tmp_len -= pck_size;
     }
-    Set_write_buf(data_write, data_w_tmp, front + pck_cnt * pck_size, tmp_len);
+    Set_write_buf(data_write, data_w_tmp, front + pck_cnt * pck_size,
+		  tmp_len);
     SetDeviceAddr(dev_ad, &dev_ad_tmp, data_addr_tmp, data_addr_cnt);
     ok = 0;
     rd_cnt = 0;
     while (ok == 0 && rd_cnt < 2) {	//if fail read exceed 3, give up rework
-	ok = RW.USB_write(dev_ad_tmp, data_addr_tmp, data_addr_cnt, data_w_tmp, tmp_len);
+	ok = RW.USB_write(dev_ad_tmp, data_addr_tmp, data_addr_cnt,
+			  data_w_tmp, tmp_len);
 	rd_cnt++;
     }
     if (ok == 0)
@@ -1437,8 +1545,11 @@ bool TEngineerForm::USB_pg_write(unsigned char dev_ad, unsigned char *data_addr,
 
 //---------------------------------------------------------------------------
 // PrintPort package write, for EEPROM using package size (pck_size) set to 8
-bool TEngineerForm::LPT_pg_write(unsigned char dev_ad, unsigned char *data_addr, int data_addr_cnt,
-				 unsigned char *data_write, int data_len, int pck_size, int wait_t)
+bool TEngineerForm::LPT_pg_write(unsigned char dev_ad,
+				 unsigned char *data_addr,
+				 int data_addr_cnt,
+				 unsigned char *data_write, int data_len,
+				 int pck_size, int wait_t)
 {				// EEPROM write package size = 8, and start counting address is 8 multiplier
 
     int tmp_len = data_len;	//data length remain after data transmit
@@ -1463,9 +1574,11 @@ bool TEngineerForm::LPT_pg_write(unsigned char dev_ad, unsigned char *data_addr,
 	    front = 8 - data_ad % 8;	// 1st package data length
 	    Set_write_buf(data_write, data_w_tmp, 0, front);
 	    // temperary record writing char to "data_w_tmp"
-	    SetDeviceAddr(dev_ad, &dev_ad_tmp, data_addr_tmp, data_addr_cnt);
+	    SetDeviceAddr(dev_ad, &dev_ad_tmp, data_addr_tmp,
+			  data_addr_cnt);
 	    // composite Dvice Address and Data Address as Device Byte
-	    RW.LPT_Write(dev_ad_tmp, data_addr_tmp, data_addr_cnt, data_w_tmp, front);
+	    RW.LPT_Write(dev_ad_tmp, data_addr_tmp, data_addr_cnt,
+			 data_w_tmp, front);
 	    // write "data_w_tmp" to device
 	    Add_val2_data_ad(data_addr_tmp, data_addr_cnt, front);
 	    // Set address for next write
@@ -1475,7 +1588,8 @@ bool TEngineerForm::LPT_pg_write(unsigned char dev_ad, unsigned char *data_addr,
 	while (tmp_len > pck_size) {	//need to send more packages
 	    Set_write_buf(data_write, data_w_tmp, front + pck_cnt * pck_size, pck_size);	//Get Write data from interface
 	    SetDeviceAddr(dev_ad, &dev_ad_tmp, data_addr_tmp, data_addr_cnt);	//Set the 1st Byte of device address
-	    RW.LPT_Write(dev_ad_tmp, data_addr_tmp, data_addr_cnt, data_w_tmp, pck_size);
+	    RW.LPT_Write(dev_ad_tmp, data_addr_tmp, data_addr_cnt,
+			 data_w_tmp, pck_size);
 	    Add_val2_data_ad(data_addr_tmp, data_addr_cnt, pck_size);
 	    pck_cnt++;
 	    tmp_len -= pck_size;
@@ -1483,9 +1597,11 @@ bool TEngineerForm::LPT_pg_write(unsigned char dev_ad, unsigned char *data_addr,
 	}
     }
     // last package for EEPROM write, but 1st and only package in TCON
-    Set_write_buf(data_write, data_w_tmp, front + pck_cnt * pck_size, tmp_len);
+    Set_write_buf(data_write, data_w_tmp, front + pck_cnt * pck_size,
+		  tmp_len);
     SetDeviceAddr(dev_ad, &dev_ad_tmp, data_addr_tmp, data_addr_cnt);
-    RW.LPT_Write(dev_ad_tmp, data_addr_tmp, data_addr_cnt, data_w_tmp, tmp_len);
+    RW.LPT_Write(dev_ad_tmp, data_addr_tmp, data_addr_cnt, data_w_tmp,
+		 tmp_len);
     Sleep(wait_t);		// write cycle time for EEPROM
     if (data_w_tmp != NULL)
 	delete[]data_w_tmp;
@@ -1563,20 +1679,21 @@ bool TEngineerForm::pg_write()
 		return 0;
 	    // original PAC_SIZE byte per package
 	    if (rg_device_addr_sel->ItemIndex == 2) {
-		ok = USB_pg_write(dev_addr[i], data_addr, data_addr_cnt, data_write, data_len,
-				  pck_size, wait_t);
+		ok = USB_pg_write(dev_addr[i], data_addr, data_addr_cnt,
+				  data_write, data_len, pck_size, wait_t);
 		if (ok == 0)
 		    ShowMessage(Err_Msg_W);
 	    } else {
 		// no seperate
-		ok = USB_seq_pg_write(dev_addr[i], data_addr, data_addr_cnt, data_write, data_len,
+		ok = USB_seq_pg_write(dev_addr[i], data_addr,
+				      data_addr_cnt, data_write, data_len,
 				      pck_size, wait_t);
 		if (ok == 0)
 		    ShowMessage(Err_Msg_W);
 	    }
 	} else {		// Use Printport to transfer
-	    ok = LPT_pg_write(dev_addr[i], data_addr, data_addr_cnt, data_write, data_len, pck_size,
-			      wait_t);
+	    ok = LPT_pg_write(dev_addr[i], data_addr, data_addr_cnt,
+			      data_write, data_len, pck_size, wait_t);
 	    if (ok != 1) {
 		if (ok == -1)
 		    ShowMessage("Device address Send fail!");
@@ -1735,10 +1852,12 @@ void __fastcall TEngineerForm::rg_device_addr_selClick(TObject * Sender)
     btn_en_ftm->Enabled = true;
 
     if (rg_device_addr_sel->ItemIndex == 2) {	//EEPROM
-	MainForm->StatusBar1->Panels->Items[1]->Text = "Device Address: " + edt_addr_EEP->Text;
+	MainForm->StatusBar1->Panels->Items[1]->Text =
+	    "Device Address: " + edt_addr_EEP->Text;
 	if (cbo_mem_addr_size->ItemIndex == 0)	//2k
 	    rg_w_page->ItemIndex = 1;
-	else if (cbo_mem_addr_size->ItemIndex == 1 || cbo_mem_addr_size->ItemIndex == 2
+	else if (cbo_mem_addr_size->ItemIndex == 1
+		 || cbo_mem_addr_size->ItemIndex == 2
 		 || cbo_mem_addr_size->ItemIndex == 3)
 	    //4k, 8k, 16k
 	    rg_w_page->ItemIndex = 2;
@@ -1753,9 +1872,11 @@ void __fastcall TEngineerForm::rg_device_addr_selClick(TObject * Sender)
 		"Device Address: " + edt_addr_tcon_s->Text;
 	} else if (rg_device_addr_sel->ItemIndex == 1) {
 	    MainForm->StatusBar1->Panels->Items[1]->Text =
-		"Device Address: " + edt_addr_tcon_dm->Text + edt_addr_tcon_ds->Text;
+		"Device Address: " + edt_addr_tcon_dm->Text +
+		edt_addr_tcon_ds->Text;
 	} else if (rg_device_addr_sel->ItemIndex == 3) {
-	    MainForm->StatusBar1->Panels->Items[1]->Text = "Device Address: " + edt_addr_OTP->Text;
+	    MainForm->StatusBar1->Panels->Items[1]->Text =
+		"Device Address: " + edt_addr_OTP->Text;
 	    /*if(rg_i2c_card_sel->ItemIndex == 0){
 	       rg_i2c_card_sel->ItemIndex = -1;
 	       ShowMessage("USB signal will be transmitted in package, Please choose one of LPT");
@@ -1876,15 +1997,18 @@ void __fastcall TEngineerForm::btn_seq_loadClick(TObject * Sender)
 		//         Hex2Dec((AnsiString)pch, &val);
 		//ShowMessage("Intel Addr: "+(AnsiString)addr);
 
-		Hex2Dec((AnsiString) (str.SubString(10 + 8 * 2, 2)), &checksum);
+		Hex2Dec((AnsiString) (str.SubString(10 + 8 * 2, 2)),
+			&checksum);
 		Chksum_line = 0;
 		for (int i = 0; i <= 7; i++) {	//¤Á¥Xdata¼Æ­È
-		    Hex2Dec((AnsiString) str.SubString(10 + i * 2, 2), &val);
+		    Hex2Dec((AnsiString) str.SubString(10 + i * 2, 2),
+			    &val);
 		    data[idx] = (unsigned char) val;
 		    idx++;
 		    Chksum_line += val;
 		}
-		if ((Chksum_line + checksum + addr / 256 + addr % 256 + 8) % 256 != 0)
+		if ((Chksum_line + checksum + addr / 256 + addr % 256 +
+		     8) % 256 != 0)
 		    ShowMessage("Line fail.");
 		fileChksum += Chksum_line;
 		pch = strtok(NULL, "\n\t");
@@ -1903,15 +2027,18 @@ void __fastcall TEngineerForm::btn_seq_loadClick(TObject * Sender)
 		//ShowMessage("Intel Addr: "+(AnsiString)addr);
 
 		//int checksum;  //¨C¤@¦æªºchecksum
-		Hex2Dec((AnsiString) (str.SubString(10 + 16 * 2, 2)), &checksum);
+		Hex2Dec((AnsiString) (str.SubString(10 + 16 * 2, 2)),
+			&checksum);
 		Chksum_line = 0;
 		for (int i = 0; i <= 15; i++) {	//¤Á¥Xdata¼Æ­È
-		    Hex2Dec((AnsiString) str.SubString(10 + i * 2, 2), &val);
+		    Hex2Dec((AnsiString) str.SubString(10 + i * 2, 2),
+			    &val);
 		    data[idx] = (unsigned char) val;
 		    idx++;
 		    Chksum_line += val;
 		}
-		if ((Chksum_line + checksum + (addr / 256) + addr % 256 + 16) % 256 != 0)
+		if ((Chksum_line + checksum + (addr / 256) + addr % 256 +
+		     16) % 256 != 0)
 		    ShowMessage("Line fail.");
 		fileChksum += Chksum_line;
 
@@ -1983,8 +2110,10 @@ void __fastcall TEngineerForm::btn_seq_saveClick(TObject * Sender)
 		    fprintf(fptr, "%02X", data[i * 8 + j]);	//¼gdata, ¤@¦æ16µ§
 		    sum += data[i * 8 + j];	//§â¦P¤@¦æªºdata­Èsum°_¨Ó
 		    if (j == 7) {	//¼g¤Jchecksum
-			checksum = floor(addr / 256) + (addr) % 256 + sum + 8;
-			fprintf(fptr, "%02X\n", (256 - checksum % 256) % 256);
+			checksum =
+			    floor(addr / 256) + (addr) % 256 + sum + 8;
+			fprintf(fptr, "%02X\n",
+				(256 - checksum % 256) % 256);
 		    }
 		}
 		addr += 8;
@@ -1998,8 +2127,10 @@ void __fastcall TEngineerForm::btn_seq_saveClick(TObject * Sender)
 		    fprintf(fptr, "%02X", data[i * 16 + j]);	//¼gdata, ¤@¦æ16µ§
 		    sum += data[i * 16 + j];	//§â¦P¤@¦æªºdata­Èsum°_¨Ó
 		    if (j == 15) {	//¼g¤Jchecksum
-			checksum = floor(addr / 256) + (addr) % 256 + sum + 16;
-			fprintf(fptr, "%02X\n", (256 - checksum % 256) % 256);
+			checksum =
+			    floor(addr / 256) + (addr) % 256 + sum + 16;
+			fprintf(fptr, "%02X\n",
+				(256 - checksum % 256) % 256);
 		    }
 
 		}
@@ -2020,7 +2151,8 @@ void __fastcall TEngineerForm::btn_en_ftmClick(TObject * Sender)
     btn_en_ftm->Enabled = false;
     edt_byte_addr->Text = 2;
 
-    if (rg_device_addr_sel->ItemIndex == 2 || rg_device_addr_sel->ItemIndex == 1) {
+    if (rg_device_addr_sel->ItemIndex == 2
+	|| rg_device_addr_sel->ItemIndex == 1) {
 	rg_device_addr_sel->ItemIndex = 0;
 	btn_connect_cardClick(Sender);
 	if (!connect)
@@ -2104,7 +2236,8 @@ void __fastcall TEngineerForm::btn_reloadClick(TObject * Sender)
 void __fastcall TEngineerForm::rg_powerClick(TObject * Sender)
 {
     RW.USB_disconnect();
-    bool cnnct_ok = RW.USB_connect(rg_power->ItemIndex, rg_speed->ItemIndex);
+    bool cnnct_ok =
+	RW.USB_connect(rg_power->ItemIndex, rg_speed->ItemIndex);
     if (cnnct_ok == false) {
 	MessageBox(NULL, "USB connect fail.", "Error", MB_OK);
 	rg_power->ItemIndex = -1;
@@ -2121,7 +2254,8 @@ void __fastcall TEngineerForm::rg_powerClick(TObject * Sender)
 void __fastcall TEngineerForm::rg_speedClick(TObject * Sender)
 {
     RW.USB_disconnect();
-    bool cnnct_ok = RW.USB_connect(rg_power->ItemIndex, rg_speed->ItemIndex);
+    bool cnnct_ok =
+	RW.USB_connect(rg_power->ItemIndex, rg_speed->ItemIndex);
     if (cnnct_ok == false) {
 	MessageBox(NULL, "USB connect fail.", "Error", MB_OK);
 	rg_speed->ItemIndex = -1;
@@ -2206,7 +2340,9 @@ void __fastcall TEngineerForm::btn_LPT_spdClick(TObject * Sender)
     st_lpt_speed->Caption = str;
     int ID_OK;
     if (freq > 70)
-	ID_OK = MessageBox(NULL, "Lower LPT frequency?!", "Confirm", MB_OKCANCEL);
+	ID_OK =
+	    MessageBox(NULL, "Lower LPT frequency?!", "Confirm",
+		       MB_OKCANCEL);
     if (ID_OK == 1) {
 	cb_low_freq->Checked = true;
 	SetHalfFreq();
@@ -2245,11 +2381,13 @@ void __fastcall TEngineerForm::btn_byte_read_no_ackClick(TObject * Sender)
     int ok = 1;
     unsigned char dev_addr_tmp;
     for (int i = 0; i < dev_addr_cnt; i++) {
-	SetDeviceAddr(dev_addr[i], &dev_addr_tmp, data_addr, data_addr_cnt);
+	SetDeviceAddr(dev_addr[i], &dev_addr_tmp, data_addr,
+		      data_addr_cnt);
 	//if(rg_i2c_card_sel->ItemIndex == 0)
 	//        connect = RW.USB_read(dev_addr_tmp, data_addr, data_addr_cnt, &data_read, 1);
 	//else{
-	ok = RW.LPT_Read_Byte_Skip_Ack(dev_addr_tmp, data_addr, data_addr_cnt, &data_read);
+	ok = RW.LPT_Read_Byte_Skip_Ack(dev_addr_tmp, data_addr,
+				       data_addr_cnt, &data_read);
 	//}
     }
     char string[20];
@@ -2263,7 +2401,8 @@ void __fastcall TEngineerForm::btn_byte_read_no_ackClick(TObject * Sender)
 
 
 // Save Dialog
-void __fastcall TEngineerForm::SaveDialog_txt_hexSelectionChange(TObject * Sender)
+void __fastcall TEngineerForm::SaveDialog_txt_hexSelectionChange(TObject *
+								 Sender)
 {
     if (OpenDialog_txt_hex->FilterIndex == 1) {	//Text File
 	OpenDialog_txt_hex->DefaultExt = String(".txt");

@@ -142,20 +142,24 @@ class TEngineerForm:public TForm {
     bool Get_write_data(unsigned char *write_data);
     bool Get_seq_addr(unsigned char *data_addr, int *data_addr_cnt);
     void Get_seq_write_data(unsigned char *data, int data_len);
-    bool Set_seq_data(unsigned char *data_read, int data_len, int data_addr_val);
-    bool SetDeviceAddr(unsigned char dev_ad, unsigned char *dev_ad_new, unsigned char *data_ad,
-		       int data_ad_c);
+    bool Set_seq_data(unsigned char *data_read, int data_len,
+		      int data_addr_val);
+    bool SetDeviceAddr(unsigned char dev_ad, unsigned char *dev_ad_new,
+		       unsigned char *data_ad, int data_ad_c);
     void dev_addr_change(TObject * Sender);
     bool Get_read_data(unsigned char *read_data);
 
-    bool USB_pg_write(unsigned char dev_ad, unsigned char *data_addr, int data_addr_cnt,
-		      unsigned char *data_write, int data_len, int pck_size, int wait_t);
+    bool USB_pg_write(unsigned char dev_ad, unsigned char *data_addr,
+		      int data_addr_cnt, unsigned char *data_write,
+		      int data_len, int pck_size, int wait_t);
     //USB Page Write, Split to package (for EEPROM)
-    bool USB_seq_pg_write(unsigned char dev_ad, unsigned char *data_addr, int data_addr_cnt,
-			  unsigned char *data_write, int data_len, int pck_size, int wait_t);
+    bool USB_seq_pg_write(unsigned char dev_ad, unsigned char *data_addr,
+			  int data_addr_cnt, unsigned char *data_write,
+			  int data_len, int pck_size, int wait_t);
     //USB Sequential, no split to packages
-    bool LPT_pg_write(unsigned char dev_ad, unsigned char *data_addr, int data_addr_cnt,
-		      unsigned char *data_write, int data_len, int pck_size, int wait_t);
+    bool LPT_pg_write(unsigned char dev_ad, unsigned char *data_addr,
+		      int data_addr_cnt, unsigned char *data_write,
+		      int data_len, int pck_size, int wait_t);
     bool B_read(unsigned char &data_read, unsigned char dev_addr);
     //bool B_read(unsigned char& data_read);
     //bool B_write();
@@ -165,12 +169,17 @@ class TEngineerForm:public TForm {
 
     bool SetWrite_Byte(TBit Addr_Bit, int set_val);
     bool SetRead_Byte(TBit Addr_Bit, unsigned char *read_val);
+    unsigned char readByte(TBit & Addr_Bit);
     bool SetWrite_PG(TLUT Addr_LUT, int *write_table, bool IsChkSum);
-    bool SetWrite_PG(TLUT Addr_LUT, int *write_table, bool IsChkSum, bool MSB_first);
+    bool SetWrite_PG(TLUT Addr_LUT, int *write_table, bool IsChkSum,
+		     bool MSB_first);
     bool SetRead_PG(TLUT Addr_LUT, int *table, bool IsChkSum);
-    bool SetRead_DG(TLUT * Addr_LUT, int **DG_table, int LUT_Nbr, bool IsChkSum);
-    bool SetWrite_DG(TLUT * Addr_LUT, int **lut, int LUT_Nbr, bool IsChkSum, bool MSB_first);
-    bool SetWrite_DG(TLUT * Addr_LUT, int **lut, int LUT_Nbr, bool IsChkSum);
+    bool SetRead_DG(TLUT * Addr_LUT, int **DG_table, int LUT_Nbr,
+		    bool IsChkSum);
+    bool SetWrite_DG(TLUT * Addr_LUT, int **lut, int LUT_Nbr,
+		     bool IsChkSum, bool MSB_first);
+    bool SetWrite_DG(TLUT * Addr_LUT, int **lut, int LUT_Nbr,
+		     bool IsChkSum);
 
     String *Load_file(String Fpath, int Lut_no);
     void wait(long milli);

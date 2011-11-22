@@ -433,8 +433,9 @@ void __fastcall TDCRForm1::FormCreate(TObject * Sender)
     ScrlB2 = ODCR->SetScrollBar2();
 
     DCRScrlB2 = new _ScrollBar2 *[ODCR->DCRScrollBar2_Nbr];
-    for (int i = 0; i < ODCR->DCRScrollBar2_Nbr; i++)
+    for (int i = 0; i < ODCR->DCRScrollBar2_Nbr; i++) {
 	DCRScrlB2[i] = new _ScrollBar2;
+    }
 
     DCRScrlB2[0]->Lbl = Label12;
     DCRScrlB2[0]->StTxt = StaticText12;
@@ -824,8 +825,9 @@ void __fastcall TDCRForm1::FormCreate(TObject * Sender)
     hdrScrlB2 = ODCR->SetHDRScrollBar2();
 
     HDRScrlB2 = new _ScrollBar2 *[ODCR->HDRScrollBar2_Nbr];
-    for (int i = 0; i < ODCR->HDRScrollBar2_Nbr; i++)
+    for (int i = 0; i < ODCR->HDRScrollBar2_Nbr; i++){
 	HDRScrlB2[i] = new _ScrollBar2;
+        }
 
     HDRScrlB2[0]->Lbl = Label55;
     HDRScrlB2[0]->StTxt = StaticText50;
