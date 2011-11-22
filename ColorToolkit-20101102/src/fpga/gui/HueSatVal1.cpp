@@ -559,8 +559,9 @@ void __fastcall THSVFormOrg::btn_hsv_loadClick(TObject * Sender)
 
 bool THSVFormOrg::Load_HSV(String Fpath)
 {
-    if (Fpath == NULL)
+    if (Fpath == NULL) {
 	return 0;
+    }
     char *buffer = Load_File(Fpath);
     if (buffer == NULL)
 	return 0;

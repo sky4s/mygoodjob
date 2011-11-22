@@ -96,6 +96,7 @@ class TSharpnessForm1:public TForm {
     void __fastcall Btn_SP_reloadClick(TObject * Sender);
     void __fastcall FormKeyDown(TObject * Sender, WORD & Key, TShiftState Shift);
   private:			// User declarations
+     bool SP_IsChkSum;
   public:			// User declarations
      __fastcall TSharpnessForm1(TComponent * Owner);
     /*

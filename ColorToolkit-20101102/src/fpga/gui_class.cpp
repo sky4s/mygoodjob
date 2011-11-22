@@ -97,7 +97,7 @@ StringMap_ptr AbstractBase::getStringMap(AnsiString filename)
     return getStringMap(std::string(filename.c_str()));
 }
 
- 
+
 
 void AbstractBase::resetAddressMap()
 {

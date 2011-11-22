@@ -7,6 +7,7 @@
 #include <stdio.h>
 
 /*
+  對應不同的TBit
   check box: 1bit
   combo box: 1/2bit
   label : 1/2/3/4bit
@@ -161,9 +162,9 @@ char *Load_File(String Fpath)
     long lSize;
     char *buffer;
     FILE *fptr;
-    if ((fptr = fopen(Fpath.c_str(), "r")) == NULL)
+    if ((fptr = fopen(Fpath.c_str(), "r")) == NULL) {
 	return 0;
-
+    }
     // obtain file size:
     fseek(fptr, 0, SEEK_END);
     lSize = ftell(fptr);
@@ -171,8 +172,9 @@ char *Load_File(String Fpath)
 
     // allocate memory to contain the whole file:
     buffer = new char[lSize + 1];
-    if (buffer == NULL)
+    if (buffer == NULL) {
 	return 0;
+    }
     // copy the file into the buffer:
     fread(buffer, 1, lSize, fptr);
     buffer[lSize] = '\0';

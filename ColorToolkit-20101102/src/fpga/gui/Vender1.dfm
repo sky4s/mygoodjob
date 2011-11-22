@@ -1,6 +1,6 @@
 object VenderForm1: TVenderForm1
-  Left = 329
-  Top = 233
+  Left = 366
+  Top = 280
   Width = 717
   Height = 497
   Caption = 'Vender'

@@ -373,11 +373,13 @@ void __fastcall THSVFormNew_::btn_hsv_loadClick(TObject * Sender)
 
 bool THSVFormNew_::Load_HSV(String Fpath)
 {
-    if (Fpath == NULL)
+    if (Fpath == NULL) {
 	return 0;
+    }
     char *buffer = Load_File(Fpath);
-    if (buffer == NULL)
+    if (buffer == NULL) {
 	return 0;
+    }
     for (int i = 0; i < HUE_COUNT; i++) {
 	hueTable[i] = -1;
 	satTable[i] = -1;
@@ -677,7 +679,7 @@ void __fastcall THSVFormNew_::btn_hsv_readClick(TObject * Sender)
 
 
 void __fastcall THSVFormNew_::Hue_ImgMouseDown(TObject * Sender,
-					      TMouseButton Button, TShiftState Shift, int X, int Y)
+					       TMouseButton Button, TShiftState Shift, int X, int Y)
 {
     int color;
     double h, s, v, i, r, g, b;
@@ -759,8 +761,8 @@ RGB_ptr THSVFormNew_::getHueRGB(int index, double s, int v)
 }
 
 void __fastcall THSVFormNew_::stringGrid_HSVDrawCell(TObject * Sender,
-						    int ACol, int ARow,
-						    TRect & Rect, TGridDrawState State)
+						     int ACol, int ARow,
+						     TRect & Rect, TGridDrawState State)
 {
     using namespace Dep;
 
@@ -800,7 +802,7 @@ int_array THSVFormNew_::getHSVAdjustValue(int index)
 }
 
 void __fastcall THSVFormNew_::stringGrid_HSVSelectCell(TObject * Sender,
-						      int ACol, int ARow, bool & CanSelect)
+						       int ACol, int ARow, bool & CanSelect)
 {
     lastStringGridSelectRow = ARow;
     int index = ARow - 1;
@@ -1423,7 +1425,7 @@ void THSVFormNew_::selectColor()
 }
 
 void THSVFormNew_::imageMousePressed(TObject * Sender, TMouseButton Button,
-				    TShiftState Shift, int X, int Y)
+				     TShiftState Shift, int X, int Y)
 {
     /*using namespace Dep;
        using namespace math;

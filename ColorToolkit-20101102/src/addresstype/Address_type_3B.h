@@ -14,31 +14,22 @@
 
 class TBit3:public AbstractAddressType {
   private:
-    int type;
     int divide1, divide2;
-    int value;
-
+    int set(int _B1_addr, int _b1_addr, int _b1_num,
+	    int _B2_addr, int _b2_addr, int _b2_num, int _B3_addr,
+	    int _b3_addr, int _b3_num, AnsiString _name);
   public:
-     String * choice;
-    int choice_nbr;
-    TBit Byte1;
+    //String * choice;
+    //int choice_nbr;
+     TBit Byte1;
     TBit Byte2;
     TBit Byte3;
     int Divide1();
     int Divide2();
-    int GetVal();
-    void SetVal(int);
-    int set(int _B1_addr, int _b1_addr, int _b1_num,
-	    int _B2_addr, int _b2_addr, int _b2_num, int _B3_addr,
-	    int _b3_addr, int _b3_num, AnsiString _name);
-     TBit3() {
-	value = -1;
-	en = false;
-	b_num = 0;
-	name = "";
-    };
-    ~TBit3() {
-    };
+    //int GetVal();
+   //void SetVal(int);
+
+
     virtual void _set(int_vector_ptr vector, AnsiString name) {
 	using namespace java::lang;
 	if (vector->size() != 9) {
@@ -77,25 +68,27 @@ int TBit3::Divide2()
 {
     return divide2;
 }
- 
 
-int TBit3::GetVal()
+
+/*int TBit3::GetVal()
 {
-    if (Byte1.GetVal() == -1 || Byte2.GetVal() == -1 || Byte3.GetVal() == -1)
+    int value = -1;
+    if (Byte1.GetVal() == -1 || Byte2.GetVal() == -1 || Byte3.GetVal() == -1) {
 	value = -1;
-    else
+    } else {
 	value = Byte1.GetVal() * divide1 + Byte2.GetVal() * divide2 + Byte3.GetVal();
+    }
     return value;
 }
 void TBit3::SetVal(int val)
 {
-    value = val;
-    int val1 = floor((double) value / divide1);
-    int val2 = floor((double) (value - val1 * divide1) / divide2);
-    int val3 = value % divide2;
+    //value = val;
+    int val1 = floor((double) val / divide1);
+    int val2 = floor((double) (val - val1 * divide1) / divide2);
+    int val3 = val % divide2;
     Byte1.SetVal(val1);
     Byte2.SetVal(val2);
     Byte3.SetVal(val3);
-}
+}*/
 #endif
 

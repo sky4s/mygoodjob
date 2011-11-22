@@ -9,31 +9,21 @@
 
 class TBit2:public AbstractAddressType {
   private:
-    int type;
     int divide;
-    int value;
-  public:
-     String * choice;
-    int choice_nbr;
-    TBit Byte1;
-    TBit Byte2;
-    int Divide();
-    int GetVal();
-    void SetVal(int);
     int set(int _B_addr, int _b_num, AnsiString _name);
     int set(int _B_addr1, int _B_addr2, int _b_num, int _b1_addr, AnsiString _name);
     int set(AnsiString _name);
     int set(int _B1_addr, int _b1_addr, int _b1_num, int _B2_addr, int _b2_addr, int _b2_num,
 	    AnsiString _name);
-    //AnsiString Name();
-     TBit2() {
-	en = false;
-	b_num = 0;
-	name = "";
-	value = -1;
-    };
-    ~TBit2() {
-    };
+  public:
+     TBit Byte1;
+    TBit Byte2;
+    int Divide();
+    //int GetVal();
+    //void SetVal(int);
+
+
+
 
     virtual void _set(int_vector_ptr vector, AnsiString name) {
 	using namespace java::lang;
@@ -44,15 +34,11 @@ class TBit2:public AbstractAddressType {
 	    set((*vector)[0], (*vector)[1], (*vector)[2], 0, 0, 0, name);
 	    break;
 
-	case 6:
-	    set((*vector)[0], (*vector)[1], (*vector)[2], (*vector)[3], (*vector)[4], (*vector)[5],
-		name);
+	    case 6:set((*vector)[0], (*vector)[1], (*vector)[2], (*vector)[3], (*vector)[4],
+		       (*vector)[5], name);
 	    break;
-	default:
-	    throw IllegalArgumentException();
-	}
-
-    };
+	    default:throw IllegalArgumentException();
+    }};
 };
 
 //====================================================================================================
@@ -118,7 +104,7 @@ int TBit2::set(int _B_addr1, int _B_addr2, int _b_num, int _b1_addr, AnsiString 
 int TBit2::set(int _B_addr, int _b_num, AnsiString _name)
 {
     en = true;
-    type = 1;
+    //type = 1;
     divide = 256;
     name = _name;
     b_num = _b_num;
@@ -154,24 +140,26 @@ int TBit2::Divide()
 {
     return divide;
 }
- 
 
-int TBit2::GetVal()
+
+/*int TBit2::GetVal()
 {
-    if (Byte1.GetVal() == -1 || Byte2.GetVal() == -1)
+    int value = -1;
+    if (Byte1.GetVal() == -1 || Byte2.GetVal() == -1) {
 	value = -1;
-    else
+    } else {
 	value = Byte1.GetVal() * divide + Byte2.GetVal();
+    }
     return value;
 }
 void TBit2::SetVal(int val)
 {
-    value = val;
-    int val1 = floor((double) value / divide);
-    int val2 = value % divide;
+    //value = val;
+    int val1 = floor((double) val / divide);
+    int val2 = val % divide;
     Byte1.SetVal(val1);
     Byte2.SetVal(val2);
-}
+} */
 
 #endif
 

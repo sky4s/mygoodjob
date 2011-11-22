@@ -1,6 +1,6 @@
 object TCONForm1: TTCONForm1
-  Left = 165
-  Top = 142
+  Left = 184
+  Top = 171
   Width = 746
   Height = 493
   Align = alCustom
@@ -243,7 +243,7 @@ object TCONForm1: TTCONForm1
           Left = 16
           Top = 212
           Width = 89
-          Height = 24
+          Height = 21
           EditLabel.Width = 68
           EditLabel.Height = 13
           EditLabel.Caption = 'LabeledEdit45'
@@ -267,7 +267,7 @@ object TCONForm1: TTCONForm1
           Left = 176
           Top = 260
           Width = 89
-          Height = 24
+          Height = 21
           EditLabel.Width = 68
           EditLabel.Height = 13
           EditLabel.Caption = 'LabeledEdit50'
@@ -291,7 +291,7 @@ object TCONForm1: TTCONForm1
           Left = 176
           Top = 212
           Width = 89
-          Height = 24
+          Height = 21
           EditLabel.Width = 68
           EditLabel.Height = 13
           EditLabel.Caption = 'LabeledEdit49'
@@ -315,7 +315,7 @@ object TCONForm1: TTCONForm1
           Left = 176
           Top = 168
           Width = 89
-          Height = 24
+          Height = 21
           EditLabel.Width = 68
           EditLabel.Height = 13
           EditLabel.Caption = 'LabeledEdit48'
@@ -339,7 +339,7 @@ object TCONForm1: TTCONForm1
           Left = 176
           Top = 120
           Width = 89
-          Height = 24
+          Height = 21
           EditLabel.Width = 68
           EditLabel.Height = 13
           EditLabel.Caption = 'LabeledEdit47'
@@ -363,7 +363,7 @@ object TCONForm1: TTCONForm1
           Left = 16
           Top = 260
           Width = 89
-          Height = 24
+          Height = 21
           EditLabel.Width = 68
           EditLabel.Height = 13
           EditLabel.Caption = 'LabeledEdit46'
@@ -387,7 +387,7 @@ object TCONForm1: TTCONForm1
           Left = 16
           Top = 168
           Width = 89
-          Height = 24
+          Height = 21
           EditLabel.Width = 68
           EditLabel.Height = 13
           EditLabel.Caption = 'LabeledEdit44'
@@ -411,7 +411,7 @@ object TCONForm1: TTCONForm1
           Left = 16
           Top = 120
           Width = 89
-          Height = 24
+          Height = 21
           EditLabel.Width = 68
           EditLabel.Height = 13
           EditLabel.Caption = 'LabeledEdit43'
