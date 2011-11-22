@@ -119,10 +119,12 @@ void __fastcall TDCRForm1::DCRLblE3_KeyPress(TObject * Sender, char &Key)
 								  BitNum());
 	val3 = set_val % DCRLblE3[idx]->Addr.Divide2();
 	EngineerForm->SetWrite_Byte(DCRLblE3[idx]->Addr.Byte1, val1);
-	if (DCRLblE3[idx]->Addr.Byte2.BitNum() != 0)
+	if (DCRLblE3[idx]->Addr.Byte2.BitNum() != 0) {
 	    EngineerForm->SetWrite_Byte(DCRLblE3[idx]->Addr.Byte2, val2);
-	if (DCRLblE3[idx]->Addr.Byte3.BitNum() != 0)
+        }
+	if (DCRLblE3[idx]->Addr.Byte3.BitNum() != 0) {
 	    EngineerForm->SetWrite_Byte(DCRLblE3[idx]->Addr.Byte3, val3);
+        }
 	DCRLblE3[idx]->Lble->Font->Color = clWindowText;
     }
 }
