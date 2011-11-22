@@ -9,9 +9,9 @@
 /*
   對應不同的TBit
   check box: 1bit
-  combo box: 1/2bit
+  combo box: 1/2bit  + TLabel(for name)
   label : 1/2/3/4bit
-  scroll bar: 1/2bit
+  scroll bar: 1/2bit + TLabel(for name) + TStaticText
 */
 
 class _CHKB {

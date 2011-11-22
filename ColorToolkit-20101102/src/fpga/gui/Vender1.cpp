@@ -286,8 +286,9 @@ void __fastcall TVenderForm1::FormCreate(TObject * Sender)
     vend_scrlb2 = OVender->SetScrollBar2();
 
     VendScrlB2 = new _ScrollBar2 *[OVender->VendScrollBar2_Nbr];
-    for (int i = 0; i < OVender->VendScrollBar2_Nbr; i++)
+    for (int i = 0; i < OVender->VendScrollBar2_Nbr; i++) {
 	VendScrlB2[i] = new _ScrollBar2;
+    }
 
     for (int i = 0; i < OVender->VendScrollBar2_Nbr; i++) {
 	VendScrlB2[i]->Addr = vend_scrlb2[i];

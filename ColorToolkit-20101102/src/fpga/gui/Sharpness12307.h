@@ -140,7 +140,8 @@ class TSharpnessForm12307:public TForm {
     void __fastcall LblE3_KeyPress(TObject * Sender, char &Key);
     void __fastcall ScrollBar_Change(TObject * Sender);
     void __fastcall SP_LUTMouseDown(TObject * Sender,
-				    TMouseButton Button, TShiftState Shift, int X, int Y);
+				    TMouseButton Button, TShiftState Shift,
+				    int X, int Y);
     void __fastcall SP_LUTDblClick(TObject * Sender);
     void __fastcall btn_sp_lut_SetClick(TObject * Sender);
     void __fastcall sb_softgainChange(TObject * Sender);
@@ -151,7 +152,8 @@ class TSharpnessForm12307:public TForm {
     void __fastcall LUT_typeClick(TObject * Sender);
     void __fastcall btn_sp_lut_readClick(TObject * Sender);
     void __fastcall Btn_SP_reloadClick(TObject * Sender);
-    void __fastcall FormKeyDown(TObject * Sender, WORD & Key, TShiftState Shift);
+    void __fastcall FormKeyDown(TObject * Sender, WORD & Key,
+				TShiftState Shift);
   private:			// User declarations
      bool SP_IsChkSum;
   public:			// User declarations

@@ -26,8 +26,8 @@ class TBit3:public AbstractAddressType {
     TBit Byte3;
     int Divide1();
     int Divide2();
-    //int GetVal();
-   //void SetVal(int);
+    int GetVal();
+    void SetVal(int);
 
 
     virtual void _set(int_vector_ptr vector, AnsiString name) {
@@ -69,8 +69,11 @@ int TBit3::Divide2()
     return divide2;
 }
 
-
-/*int TBit3::GetVal()
+   /*
+      LblE3[i]->Lble->Text = (int) read_val1 *LblE3[i]->Addr.Divide1()
+      + (int) read_val2 *LblE3[i]->Addr.Divide2() + (int) read_val3;
+    */
+int TBit3::GetVal()
 {
     int value = -1;
     if (Byte1.GetVal() == -1 || Byte2.GetVal() == -1 || Byte3.GetVal() == -1) {
@@ -89,6 +92,6 @@ void TBit3::SetVal(int val)
     Byte1.SetVal(val1);
     Byte2.SetVal(val2);
     Byte3.SetVal(val3);
-}*/
+}
 #endif
 
