@@ -6838,7 +6838,7 @@ object HSVForm2nd: THSVForm2nd
       end
       object btn_set: TButton
         Left = 394
-        Top = 104
+        Top = 256
         Width = 49
         Height = 15
         Caption = 'Set'
@@ -6926,8 +6926,8 @@ object HSVForm2nd: THSVForm2nd
         NumGlyphs = 2
       end
       object CheckBox_AutoSet: TCheckBox
-        Left = 161
-        Top = 13
+        Left = 377
+        Top = 229
         Width = 66
         Height = 14
         Caption = 'Auto Set'
@@ -6970,7 +6970,7 @@ object HSVForm2nd: THSVForm2nd
           Top = 55
           inherited sb_Sat_gain: TScrollBar
             Max = 63
-            Min = -64
+            Min = -63
             Position = 0
             OnChange = hsvAdjustsb_Sat_gainChange
           end
@@ -6982,6 +6982,7 @@ object HSVForm2nd: THSVForm2nd
           Top = 108
           inherited sb_Val_gain: TScrollBar
             Left = 61
+            Min = -63
             OnChange = hsvAdjustsb_Val_gainChange
           end
           inherited Edit_c3d_Manual39_v_adj: TEdit
@@ -6990,8 +6991,8 @@ object HSVForm2nd: THSVForm2nd
         end
       end
       object CheckBox_OffWhenWrite: TCheckBox
-        Left = 227
-        Top = 13
+        Left = 379
+        Top = 245
         Width = 126
         Height = 14
         Caption = 'Off when Write'
@@ -7640,7 +7641,7 @@ object HSVForm2nd: THSVForm2nd
         Width = 244
         Height = 21
         Max = 63
-        Min = -64
+        Min = -63
         PageSize = 0
         TabOrder = 0
         OnChange = ScrollBar_ChromaChange
