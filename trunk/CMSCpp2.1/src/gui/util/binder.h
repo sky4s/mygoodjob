@@ -85,6 +85,9 @@ namespace gui {
 	    void bind(TLabel * label, TScrollBar * scrollBar);
 	    void bind(TStaticText * text, TScrollBar * scrollBar);
 
+	    /*
+	       提供custom的Setter定義
+	     */
 	    void bind(TControl * ctrl1, TControl * ctrl2, uiset_ptr setter);
 
 	    /*void bind(TEdit * edit, TScrollBar * scrollBaruiset_ptr, uiset_ptr setter);
