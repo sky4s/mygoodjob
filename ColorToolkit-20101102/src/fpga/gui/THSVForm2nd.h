@@ -372,9 +372,9 @@ class THSVForm2nd:public TForm, cms::util::CallBackIF, RGBInfoCallbackIF, Patter
     int satTable[HUE_COUNT];
     int valTable[HUE_COUNT];
 
-    int hueTableTemp[HUE_COUNT];
-    int satTableTemp[HUE_COUNT];
-    int valTableTemp[HUE_COUNT];
+    //int hueTableTemp[HUE_COUNT];
+    //int satTableTemp[HUE_COUNT];
+    //int valTableTemp[HUE_COUNT];
 
 
     bool hsvInitialized;	// hsvInitialized = F 為禁止寫入, hsvInitialized = T 為允許寫入, 以避免動作被中斷

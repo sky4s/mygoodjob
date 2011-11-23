@@ -208,9 +208,12 @@ void THSVForm2nd::Initial_HSV_table()
 {
     //initial table setting
     for (int i = 0; i < HUE_COUNT; i++) {
-	hueTableTemp[i] = hueTable[i] = ((double) i) * MAX_HUE_VALUE / HUE_COUNT;
-	satTableTemp[i] = satTable[i] = 0;
-	valTableTemp[i] = valTable[i] = 0;
+	//hueTableTemp[i] = hueTable[i] = ((double) i) * MAX_HUE_VALUE / HUE_COUNT;
+	//satTableTemp[i] = satTable[i] = 0;
+	//valTableTemp[i] = valTable[i] = 0;
+	hueTable[i] = ((double) i) * MAX_HUE_VALUE / HUE_COUNT;
+	satTable[i] = 0;
+	valTable[i] = 0;
     }
 
     //hsvAdjust->setHSVPostition(0, 32, 0);
@@ -439,11 +442,14 @@ bool THSVForm2nd::Load_HSV(String Fpath)
 	}
 	int index = c / 3;
 	if (c % 3 == 0) {
-	    hueTable[index] = hueTableTemp[index] = StrToInt((AnsiString) pch);
+	    //hueTable[index] = hueTableTemp[index] = StrToInt((AnsiString) pch);
+	    hueTable[index] = StrToInt((AnsiString) pch);
 	} else if (c % 3 == 1) {
-	    satTable[index] = satTableTemp[index] = StrToInt((AnsiString) pch);
+	    //satTable[index] = satTableTemp[index] = StrToInt((AnsiString) pch);
+	    satTable[index] = StrToInt((AnsiString) pch);
 	} else {
-	    valTable[index] = valTableTemp[index] = StrToInt((AnsiString) pch);
+	    //valTable[index] = valTableTemp[index] = StrToInt((AnsiString) pch);
+	    valTable[index] = StrToInt((AnsiString) pch);
 	}
 	pch = strtok(NULL, "\n\t");
 	c++;
@@ -608,14 +614,18 @@ void __fastcall THSVForm2nd::sb_dif_pChange(TObject * Sender)
 void __fastcall THSVForm2nd::btn_setClick(TObject * Sender)
 {
     for (int i = 0; i < HUE_COUNT; i++) {
-	hueTable[i] = hueTableTemp[i];
-	satTable[i] = satTableTemp[i];
-	valTable[i] = valTableTemp[i];
+	//hueTable[i] = hueTableTemp[i];
+	//satTable[i] = satTableTemp[i];
+	//valTable[i] = valTableTemp[i];
 
+	/*stringGrid_HSV->Cells[1][i + 1] =
+	   FloatToStr((double) hueTableTemp[i] / MAX_HUE_VALUE * WHOLE_HUE_ANGLE);
+	   stringGrid_HSV->Cells[2][i + 1] = satTableTemp[i];
+	   stringGrid_HSV->Cells[3][i + 1] = valTableTemp[i]; */
 	stringGrid_HSV->Cells[1][i + 1] =
-	    FloatToStr((double) hueTableTemp[i] / MAX_HUE_VALUE * WHOLE_HUE_ANGLE);
-	stringGrid_HSV->Cells[2][i + 1] = satTableTemp[i];
-	stringGrid_HSV->Cells[3][i + 1] = valTableTemp[i];
+	    FloatToStr((double) hueTable[i] / MAX_HUE_VALUE * WHOLE_HUE_ANGLE);
+	stringGrid_HSV->Cells[2][i + 1] = satTable[i];
+	stringGrid_HSV->Cells[3][i + 1] = valTable[i];
     }
     btn_set->Enabled = false;
 }
@@ -703,19 +713,24 @@ void __fastcall THSVForm2nd::btn_hsv_readClick(TObject * Sender)
     for (int i = 0; i < HUE_COUNT; i++) {
 	//fpga
 	if (fpga) {
-	    hueTable[i] = hueTableTemp[i] = HSV_lut[i * 3] * 4 + (HSV_lut[i * 3 + 1] / 64) % 4;
-	    satTable[i] = satTableTemp[i] =
-		(HSV_lut[i * 3 + 1] % 64) * 2 + (HSV_lut[i * 3 + 2] / 128) % 2;
+	    /*hueTable[i] = hueTableTemp[i] = HSV_lut[i * 3] * 4 + (HSV_lut[i * 3 + 1] / 64) % 4;
+	       satTable[i] = satTableTemp[i] =
+	       (HSV_lut[i * 3 + 1] % 64) * 2 + (HSV_lut[i * 3 + 2] / 128) % 2; */
+	    hueTable[i] = HSV_lut[i * 3] * 4 + (HSV_lut[i * 3 + 1] / 64) % 4;
+	    satTable[i] = (HSV_lut[i * 3 + 1] % 64) * 2 + (HSV_lut[i * 3 + 2] / 128) % 2;
 	    val_r = HSV_lut[i * 3 + 2] % 128;
 	} else {
 	    // Modified only for AUO11307
-	    hueTable[i] = hueTableTemp[i] = HSV_lut[i * 3 + 2] * 4 + (HSV_lut[i * 3 + 1] / 64) % 4;
-	    satTable[i] = satTableTemp[i] =
-		(HSV_lut[i * 3 + 1] % 64) * 2 + (HSV_lut[i * 3] / 128) % 2;
+	    /*hueTable[i] = hueTableTemp[i] = HSV_lut[i * 3 + 2] * 4 + (HSV_lut[i * 3 + 1] / 64) % 4;
+	       satTable[i] = satTableTemp[i] =
+	       (HSV_lut[i * 3 + 1] % 64) * 2 + (HSV_lut[i * 3] / 128) % 2; */
+	    hueTable[i] = HSV_lut[i * 3 + 2] * 4 + (HSV_lut[i * 3 + 1] / 64) % 4;
+	    satTable[i] = (HSV_lut[i * 3 + 1] % 64) * 2 + (HSV_lut[i * 3] / 128) % 2;
 	    val_r = HSV_lut[i * 3] % 128;
 	}
 
-	valTable[i] = valTableTemp[i] = Cmplmnt2sToSign(val_r, 128);
+	//valTable[i] = valTableTemp[i] = Cmplmnt2sToSign(val_r, 128);
+	valTable[i] = Cmplmnt2sToSign(val_r, 128);
 
 	double hue = ((double) hueTable[i]) / MAX_HUE_VALUE * WHOLE_HUE_ANGLE;
 	stringGrid_HSV->Cells[1][i + 1] = hue;
@@ -831,9 +846,9 @@ void __fastcall THSVForm2nd::stringGrid_HSVDrawCell(TObject * Sender,
 int_array THSVForm2nd::getHSVAdjustValue(int index)
 {
     int_array adjustValue(new int[3]);
-    adjustValue[0] = hueTableTemp[index];
-    adjustValue[1] = satTableTemp[index];
-    adjustValue[2] = valTableTemp[index];
+    adjustValue[0] = hueTable[index];
+    adjustValue[1] = satTable[index];
+    adjustValue[2] = valTable[index];
     return adjustValue;
 }
 void __fastcall THSVForm2nd::stringGrid_HSVSelectCell(TObject * Sender,
@@ -891,11 +906,11 @@ void __fastcall THSVForm2nd::hsvAdjustsb_c3d_Manual39_hChange(TObject * Sender)
     if (true == settingScrollBarPosition) {
 	//return;
     }
-    for (int i = 0; i < HUE_COUNT; i++) {
-	hueTableTemp[i] = hueTable[i];
-	satTableTemp[i] = satTable[i];
-	valTableTemp[i] = valTable[i];
-    }
+    /*for (int i = 0; i < HUE_COUNT; i++) {
+       hueTableTemp[i] = hueTable[i];
+       satTableTemp[i] = satTable[i];
+       valTableTemp[i] = valTable[i];
+       } */
 
     int index = getGridSelectRow() - 1;
 
@@ -917,21 +932,21 @@ void __fastcall THSVForm2nd::hsvAdjustsb_c3d_Manual39_hChange(TObject * Sender)
 	    int standardHueValue = hueAngleToValue(hueAngle);
 
 	    if (hsvAdjust->sb_Hue_gain == Sender) {
-		hueTableTemp[i] = (standardHueValue + h + MAX_HUE_VALUE) % MAX_HUE_VALUE;
+		hueTable[i] = (standardHueValue + h + MAX_HUE_VALUE) % MAX_HUE_VALUE;
 	    }
 	    if (hsvAdjust->sb_Sat_gain == Sender) {
-		satTableTemp[i] = s;
+		satTable[i] = s;
 	    }
 	    if (hsvAdjust->sb_Val_gain == Sender) {
-		valTableTemp[i] = v;
+		valTable[i] = v;
 	    }
 	    if (ScrollBar_Chroma == Sender) {
 		//chroma的global adjust
-		satTableTemp[i] = s;
-		valTableTemp[i] = getValueFromChromaEnhance(standardHueValue, s);
-		if (valTableTemp[i] > 63 || valTableTemp[i] < -64) {
-		    valTableTemp[i] = (valTableTemp[i] > 63) ? 63 : valTableTemp[i];
-		    valTableTemp[i] = (valTableTemp[i] < -64) ? -64 : valTableTemp[i];
+		satTable[i] = s;
+		valTable[i] = getValueFromChromaEnhance(standardHueValue, s);
+		if (valTable[i] > 63 || valTable[i] < -64) {
+		    valTable[i] = (valTable[i] > 63) ? 63 : valTable[i];
+		    valTable[i] = (valTable[i] < -64) ? -64 : valTable[i];
 		    ShowMessage("Brightness adjustment of Hue(" + FloatToStr(hueAngle) +
 				") out of range!");
 		}
@@ -941,17 +956,17 @@ void __fastcall THSVForm2nd::hsvAdjustsb_c3d_Manual39_hChange(TObject * Sender)
     } else if (CheckBox_MemoryColor->Checked == true) {
 	//喜好色調整
 	int standardHueValue = hueAngleToValue(getHueAngle(index));
-	hueTableTemp[index] = (standardHueValue + h + MAX_HUE_VALUE) % MAX_HUE_VALUE;
-	satTableTemp[index] = s;
-	valTableTemp[index] = v;
+	hueTable[index] = (standardHueValue + h + MAX_HUE_VALUE) % MAX_HUE_VALUE;
+	satTable[index] = s;
+	valTable[index] = v;
 
     } else {
 
 	//非全域調整
 	int standardHueValue = hueAngleToValue(getHueAngle(index));
-	hueTableTemp[index] = (standardHueValue + h + MAX_HUE_VALUE) % MAX_HUE_VALUE;
-	satTableTemp[index] = s;
-	valTableTemp[index] = v;
+	hueTable[index] = (standardHueValue + h + MAX_HUE_VALUE) % MAX_HUE_VALUE;
+	satTable[index] = s;
+	valTable[index] = v;
     }
 
     //=========================================================================
@@ -959,9 +974,9 @@ void __fastcall THSVForm2nd::hsvAdjustsb_c3d_Manual39_hChange(TObject * Sender)
     //=========================================================================
     for (int i = 0; i < HUE_COUNT; i++) {
 	stringGrid_HSV->Cells[1][i + 1] =
-	    (((double) hueTableTemp[i]) / MAX_HUE_VALUE) * WHOLE_HUE_ANGLE;
-	stringGrid_HSV->Cells[2][i + 1] = satTableTemp[i];
-	stringGrid_HSV->Cells[3][i + 1] = valTableTemp[i];
+	    (((double) hueTable[i]) / MAX_HUE_VALUE) * WHOLE_HUE_ANGLE;
+	stringGrid_HSV->Cells[2][i + 1] = satTable[i];
+	stringGrid_HSV->Cells[3][i + 1] = valTable[i];
     }
     //=========================================================================
 
@@ -1130,15 +1145,15 @@ void THSVForm2nd::interpolation(int angleBase)
 	int hue = angleBase * x;
 	(*keys)[x] = hue;
 	int index = (x * indexFactor) % HUE_COUNT;
-	int hueValue = hueTableTemp[index];
+	int hueValue = hueTable[index];
 	if (-1 == preHueValue) {
 	    preHueValue = hueValue;
 	}
 	bool inverse = preHueValue > hueValue;
 
 	(*hvalues)[x] = inverse ? hueValue + ADD_HUE_VALUE : hueValue;
-	(*svalues)[x] = satTableTemp[index];
-	(*vvalues)[x] = valTableTemp[index];
+	(*svalues)[x] = satTable[index];
+	(*vvalues)[x] = valTable[index];
     }
     (*hvalues)[keyCount - 1] = (*hvalues)[0] + ADD_HUE_VALUE;
 
@@ -1158,9 +1173,9 @@ void THSVForm2nd::interpolation(int angleBase)
 	    int h = hlut.getValue(hue);
 	    int s = slut.getValue(hue);
 	    int v = vlut.getValue(hue);
-	    hueTableTemp[x] = h % ADD_HUE_VALUE;
-	    satTableTemp[x] = s;
-	    valTableTemp[x] = v;
+	    hueTable[x] = h % ADD_HUE_VALUE;
+	    satTable[x] = s;
+	    valTable[x] = v;
 	}
     }
 }
@@ -1293,17 +1308,17 @@ void THSVForm2nd::base15DegInterpClick(TObject * Sender, bool hInterp, bool sInt
     if (hInterp) {
 	const int ADD_HUE_VALUE = MAX_HUE_VALUE;
 	int h = (int) Interpolation::linear(0, 2, hsv00, hsv10, 1);
-	hueTableTemp[index] = h % ADD_HUE_VALUE;
+	hueTable[index] = h % ADD_HUE_VALUE;
     }
 
     if (sInterp) {
 	int s = (int) Interpolation::linear(0, 2, hsv0[1], hsv1[1], 1);
-	satTableTemp[index] = s;
+	satTable[index] = s;
     }
 
     if (vInterp) {
 	int v = (int) Interpolation::linear(0, 2, hsv0[2], hsv1[2], 1);
-	valTableTemp[index] = v;
+	valTable[index] = v;
     }
 
     btn_setClick(Sender);
@@ -1692,6 +1707,7 @@ void __fastcall THSVForm2nd::ScrollBar_TurnPointChange(TObject * Sender)
     string str = _toString(100. / 16 * (pos + 1));
     Label_TurnPoint->Caption = (_toString(pos) + " (" + str + "%)").c_str();
 
+    //得把斜率寫到tcon: SAT_TP,SLOPE_COEF1,SLOPE_COEF2 
     int slope1 = (int) (2047. / (pos + 1));
     int slope2 = ((16 - pos - 1) == 0) ? 0 : (int) (2047. / (16 - pos - 1));
     using namespace cms::hsvip;
