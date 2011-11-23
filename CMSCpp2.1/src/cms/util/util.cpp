@@ -231,6 +231,22 @@ namespace cms {
 	    return result;
 	};
 
+	string_vector_ptr StringVector::fromTextFile(const std::string & filename) {
+	    string_vector_ptr result(new string_vector());
+	    bptr < TStringList > list = getTStringListFromTextFile(filename);
+	    for (int i = 0; i < list->Count; i++) {
+		String str = list->Strings[i];
+		result->push_back(str.c_str());
+	    }
+	    return result;
+	};
+
+	bptr < TStringList > StringVector::getTStringListFromTextFile(const std::string & filename) {
+	    bptr < TStringList > list(new TStringList());
+	    list->LoadFromFile(filename.c_str());
+	    return list;
+	};
+
 	//======================================================================
 
 	//======================================================================

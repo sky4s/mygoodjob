@@ -967,8 +967,7 @@ class property {
     property(const std::string & name, const boost::any & value):name_(name), value_(value) {
     } std::string name() const {
 	return name_;
-    }
-    boost::any & value() {
+    } boost::any & value() {
 	return value_;
     }
     friend bool operator<(const property & lhs, const property & rhs) {
@@ -1354,6 +1353,18 @@ void rgbVectorTest()
     TCONControl::getDGLut10BitByteBufferType2(rgbVector);
 }
 
+void textLoad()
+{
+    TStringList *list = new TStringList();
+    String fileName = "tcon.ini";
+    list->LoadFromFile(fileName);
+    for (int i = 0; i < list->Count; i++) {
+	cout << list->Strings[i] << endl;
+    }
+
+
+}
+
 
 #pragma argsused
 int main(int argc, char *argv[])
@@ -1451,11 +1462,9 @@ int main(int argc, char *argv[])
     //bptr < BB > aa(new BB(3));
     //getAA(aa);
     //putTest();
-    rgbVectorTest();
+    //rgbVectorTest();
+    textLoad();
 
-    int iarr[] = { 1, 2, 3, 4, 5, 6 };
-    cout << "Arrayªø«×¡G" << (sizeof(iarr) / sizeof(iarr[0]))
-	<< endl;
 
     cout << "end" << endl;
     getch();
