@@ -19,8 +19,8 @@ class TBit2:public AbstractAddressType {
      TBit Byte1;
     TBit Byte2;
     int Divide();
-     int GetVal();
-     void SetVal(int);
+    int GetVal();
+    void SetVal(int);
 
 
 
@@ -38,7 +38,8 @@ class TBit2:public AbstractAddressType {
 		       (*vector)[5], name);
 	    break;
 	    default:throw IllegalArgumentException();
-    }};
+	}
+    };
 };
 
 //====================================================================================================
@@ -142,7 +143,7 @@ int TBit2::Divide()
 }
 
 
- int TBit2::GetVal()
+int TBit2::GetVal()
 {
     int value = -1;
     if (Byte1.GetVal() == -1 || Byte2.GetVal() == -1) {
@@ -159,7 +160,7 @@ void TBit2::SetVal(int val)
     int val2 = val % divide;
     Byte1.SetVal(val1);
     Byte2.SetVal(val2);
-} 
+}
 
 #endif
 

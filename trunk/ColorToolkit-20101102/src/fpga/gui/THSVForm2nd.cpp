@@ -411,14 +411,14 @@ void __fastcall THSVForm2nd::btn_hsv_loadClick(TObject * Sender)
 
 bool THSVForm2nd::Load_HSV(String Fpath)
 {
-    if (Fpath == NULL)  {
+    if (Fpath == NULL) {
 	return 0;
-        }
+    }
     char *buffer = Load_File(Fpath);
-    if (buffer == NULL){
+    if (buffer == NULL) {
 
 	return 0;
-        }
+    }
     for (int i = 0; i < HUE_COUNT; i++) {
 	hueTable[i] = -1;
 	satTable[i] = -1;
@@ -703,8 +703,9 @@ void __fastcall THSVForm2nd::btn_hsv_readClick(TObject * Sender)
     for (int i = 0; i < HUE_COUNT; i++) {
 	//fpga
 	if (fpga) {
-	    hueTable[i] = HSV_lut[i * 3] * 4 + (HSV_lut[i * 3 + 1] / 64) % 4;
-	    satTable[i] = (HSV_lut[i * 3 + 1] % 64) * 2 + (HSV_lut[i * 3 + 2] / 128) % 2;
+	    hueTable[i] = hueTableTemp[i] = HSV_lut[i * 3] * 4 + (HSV_lut[i * 3 + 1] / 64) % 4;
+	    satTable[i] = satTableTemp[i] =
+		(HSV_lut[i * 3 + 1] % 64) * 2 + (HSV_lut[i * 3 + 2] / 128) % 2;
 	    val_r = HSV_lut[i * 3 + 2] % 128;
 	} else {
 	    // Modified only for AUO11307
@@ -915,10 +916,18 @@ void __fastcall THSVForm2nd::hsvAdjustsb_c3d_Manual39_hChange(TObject * Sender)
 	    double hueAngle = getHueAngle(i);
 	    int standardHueValue = hueAngleToValue(hueAngle);
 
-	    hueTableTemp[i] = (standardHueValue + h + MAX_HUE_VALUE) % MAX_HUE_VALUE;
-	    satTableTemp[i] = s;
+	    if (hsvAdjust->sb_Hue_gain == Sender) {
+		hueTableTemp[i] = (standardHueValue + h + MAX_HUE_VALUE) % MAX_HUE_VALUE;
+	    }
+	    if (hsvAdjust->sb_Sat_gain == Sender) {
+		satTableTemp[i] = s;
+	    }
+	    if (hsvAdjust->sb_Val_gain == Sender) {
+		valTableTemp[i] = v;
+	    }
 	    if (ScrollBar_Chroma == Sender) {
 		//chromaªºglobal adjust
+		satTableTemp[i] = s;
 		valTableTemp[i] = getValueFromChromaEnhance(standardHueValue, s);
 		if (valTableTemp[i] > 63 || valTableTemp[i] < -64) {
 		    valTableTemp[i] = (valTableTemp[i] > 63) ? 63 : valTableTemp[i];
@@ -926,8 +935,6 @@ void __fastcall THSVForm2nd::hsvAdjustsb_c3d_Manual39_hChange(TObject * Sender)
 		    ShowMessage("Brightness adjustment of Hue(" + FloatToStr(hueAngle) +
 				") out of range!");
 		}
-	    } else {
-		valTableTemp[i] = v;
 	    }
 	}
 

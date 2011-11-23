@@ -1,8 +1,8 @@
 object HSVForm2nd: THSVForm2nd
-  Left = 403
-  Top = 64
+  Left = 184
+  Top = 0
   Width = 877
-  Height = 878
+  Height = 708
   Caption = 'HSV2'
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET

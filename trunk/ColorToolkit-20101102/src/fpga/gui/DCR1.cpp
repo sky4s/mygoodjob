@@ -47,10 +47,12 @@ void __fastcall TDCRForm1::DCR_ScrollBar2_Scroll(TObject * Sender, TScrollCode S
 
     if (ScrollCode == scEndScroll) {
 	//滑鼠放開, 或鍵盤操作放開
-	if (DCR_Chg == 0)
+	if (DCR_Chg == 0) {
 	    return;
+	}
 	int val1 = set_val / DCRScrlB2[idx]->Addr.Divide();
 	int val2 = set_val % DCRScrlB2[idx]->Addr.Divide();
+	//DCRScrlB2[idx]->Addr.SetVal(set_val);
 	EngineerForm->SetWrite_Byte(DCRScrlB2[idx]->Addr.Byte1, val1);
 	EngineerForm->SetWrite_Byte(DCRScrlB2[idx]->Addr.Byte2, val2);
     }
@@ -102,8 +104,9 @@ void __fastcall TDCRForm1::DCRLblE3_KeyPress(TObject * Sender, char &Key)
 
     unsigned char val1, val2, val3;
     //add for Max hint
-    if (set_val >= pow(2, DCRLblE3[idx]->Addr.BitNum())) {
-	AnsiString max = "Max value:" + IntToStr((int) pow(2, DCRLblE3[idx]->Addr.BitNum()) - 1);	//DY0205(-1)->( )-1
+    const int limit = pow(2, DCRLblE3[idx]->Addr.BitNum());
+    if (set_val >= limit) {
+	AnsiString max = "Max value:" + IntToStr((int) limit - 1);	//DY0205(-1)->( )-1
 	ShowMessage(max);
 	//read value
 	EngineerForm->SetRead_Byte(DCRLblE3[idx]->Addr.Byte1, &val1);
@@ -121,10 +124,10 @@ void __fastcall TDCRForm1::DCRLblE3_KeyPress(TObject * Sender, char &Key)
 	EngineerForm->SetWrite_Byte(DCRLblE3[idx]->Addr.Byte1, val1);
 	if (DCRLblE3[idx]->Addr.Byte2.BitNum() != 0) {
 	    EngineerForm->SetWrite_Byte(DCRLblE3[idx]->Addr.Byte2, val2);
-        }
+	}
 	if (DCRLblE3[idx]->Addr.Byte3.BitNum() != 0) {
 	    EngineerForm->SetWrite_Byte(DCRLblE3[idx]->Addr.Byte3, val3);
-        }
+	}
 	DCRLblE3[idx]->Lble->Font->Color = clWindowText;
     }
 }
@@ -827,9 +830,9 @@ void __fastcall TDCRForm1::FormCreate(TObject * Sender)
     hdrScrlB2 = ODCR->SetHDRScrollBar2();
 
     HDRScrlB2 = new _ScrollBar2 *[ODCR->HDRScrollBar2_Nbr];
-    for (int i = 0; i < ODCR->HDRScrollBar2_Nbr; i++){
+    for (int i = 0; i < ODCR->HDRScrollBar2_Nbr; i++) {
 	HDRScrlB2[i] = new _ScrollBar2;
-        }
+    }
 
     HDRScrlB2[0]->Lbl = Label55;
     HDRScrlB2[0]->StTxt = StaticText50;
