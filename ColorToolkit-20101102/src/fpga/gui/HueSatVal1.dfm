@@ -1,8 +1,8 @@
 object HSVFormOrg: THSVFormOrg
-  Left = 389
+  Left = 166
   Top = 0
   Width = 891
-  Height = 711
+  Height = 708
   Caption = 'HSV'
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
@@ -6487,7 +6487,7 @@ object HSVFormOrg: THSVFormOrg
         Left = 56
         Top = 156
         Width = 57
-        Height = 24
+        Height = 21
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
         Font.Height = -12
@@ -6795,9 +6795,9 @@ object HSVFormOrg: THSVFormOrg
       Left = 488
       Top = 16
       Width = 49
-      Height = 24
-      EditLabel.Width = 55
-      EditLabel.Height = 11
+      Height = 21
+      EditLabel.Width = 67
+      EditLabel.Height = 13
       EditLabel.Caption = 'Change Angle'
       LabelPosition = lpAbove
       LabelSpacing = 3

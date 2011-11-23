@@ -11,8 +11,8 @@
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
 #pragma resource "*.dfm"
-bool DG_IsChkSum = 1;
-bool OD_IsChkSum = 1;
+static bool DG_IsChkSum = true;
+static bool OD_IsChkSum = true;
 //extern String TCON_DEV;
 //---------------------------------------------------------------------------
 __fastcall TFunctionForm1::TFunctionForm1(TComponent * Owner)
@@ -304,6 +304,7 @@ void TFunctionForm1::Initial_DG_table()
     sg_dg->Cells[3][0] = "B";
 
     if (OFunc->DGLUT_Nbr == 4) {
+	//額外的一欄for white
 	sg_dg->ColCount = 5;
 	sg_dg->Width = 273;
 	sg_dg->Cells[3][0] = "W";
@@ -311,8 +312,9 @@ void TFunctionForm1::Initial_DG_table()
     int max_val = pow(2, Addr_DgLUT[0].BitNum());
     for (int j = 1; j <= 256; j++) {
 	sg_dg->Cells[0][j] = IntToStr(j - 1);	//index on the left of table
-	for (int i = 1; i <= OFunc->DGLUT_Nbr; i++)
-	    sg_dg->Cells[i][j] = IntToStr(max_val / 256 * (j - 1));
+	for (int i = 1; i <= OFunc->DGLUT_Nbr; i++) {
+	    sg_dg->Cells[i][j] = IntToStr(max_val / 256 * (j - 1));	//給予預設值
+	}
     }
     if (Addr_DgLUT[0].LutNum() == 257) {
 	sg_dg->RowCount = 258;
@@ -547,7 +549,7 @@ void __fastcall TFunctionForm1::FormCreate(TObject * Sender)
 }
 
 //---------------------------------------------------------------------------
- 
+
 // 20100608 Record the state of DG enable
 bool TFunctionForm1::DG_LUT_RW_start()
 {
@@ -608,13 +610,15 @@ void __fastcall TFunctionForm1::btn_dg_wrtClick(TObject * Sender)
     for (int i = 0; i < OFunc->DGLUT_Nbr; i++) {
 	lut[i] = new int[Addr_DgLUT[i].LutNum()];
 	for (int j = 0; j < Addr_DgLUT[i].LutNum(); j++) {
+	    //從UI撈回資料
 	    lut[i][j] = StrToInt(sg_dg->Cells[i + 1][j + 1]);
 	}
     }
 
     EngineerForm->SetWrite_DG(Addr_DgLUT, lut, OFunc->DGLUT_Nbr, DG_IsChkSum, 0);	//Add by Michelle : checksum type 20100716 
-    for (int i = 0; i < OFunc->DGLUT_Nbr; i++)
+    for (int i = 0; i < OFunc->DGLUT_Nbr; i++) {
 	delete[]lut[i];
+    }
     delete[]lut;
     DG_LUT_RW_over();		// Recover DG enable
     DG_LUT_FuncEnable(1);	// Table operation button enable
@@ -664,6 +668,7 @@ void __fastcall TFunctionForm1::btn_dg_loadClick(TObject * Sender)
     if (LoadDialog->Execute()) {
 	Fpath = LoadDialog->FileName;
 	String *DG_LUT = NULL;
+        //從檔案讀進來, 跟EngineerForm何關?
 	DG_LUT = EngineerForm->Load_file(Fpath, Addr_DgLUT[0].LutNum() * OFunc->DGLUT_Nbr);
 	if (DG_LUT == NULL) {
 	    ShowMessage("Load file fail!");
@@ -672,6 +677,7 @@ void __fastcall TFunctionForm1::btn_dg_loadClick(TObject * Sender)
 
 	for (int c = 0; c < OFunc->DGLUT_Nbr; c++) {
 	    for (int r = 0; r < Addr_DgLUT[0].LutNum(); r++) {
+            //轉到UI去
 		sg_dg->Cells[c + 1][r + 1] = StrToInt(DG_LUT[r * OFunc->DGLUT_Nbr + c]);
 	    }
 	}
