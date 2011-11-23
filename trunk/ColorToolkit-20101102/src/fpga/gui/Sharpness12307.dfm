@@ -715,7 +715,7 @@ object SharpnessForm12307: TSharpnessForm12307
         Left = 404
         Top = 39
         Width = 149
-        Height = 21
+        Height = 24
         EditLabel.Width = 98
         EditLabel.Height = 20
         EditLabel.Caption = 'LabeledEdit1'

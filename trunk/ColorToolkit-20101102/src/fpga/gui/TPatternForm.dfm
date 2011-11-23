@@ -4,12 +4,12 @@ object PatternForm: TPatternForm
   BorderIcons = []
   BorderStyle = bsSingle
   Caption = 'PatternForm'
-  ClientHeight = 634
-  ClientWidth = 265
+  ClientHeight = 780
+  ClientWidth = 326
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
-  Font.Height = -11
+  Font.Height = -14
   Font.Name = 'MS Sans Serif'
   Font.Style = []
   KeyPreview = True
@@ -27,13 +27,13 @@ object PatternForm: TPatternForm
   OnMouseWheelUp = FormMouseWheelUp
   OnPaint = FormPaint
   OnResize = FormResize
-  PixelsPerInch = 96
-  TextHeight = 13
+  PixelsPerInch = 120
+  TextHeight = 16
   object Button_Show7p5Deg: TButton
     Left = 0
     Top = 0
-    Width = 20
-    Height = 14
+    Width = 25
+    Height = 17
     Hint = '15'#176'+7.5'#176' extend'
     Caption = '<<'
     ParentShowHint = False
@@ -42,10 +42,10 @@ object PatternForm: TPatternForm
     OnClick = Button_Show7p5DegClick
   end
   object Button_Show15Deg: TButton
-    Left = 20
+    Left = 25
     Top = 0
-    Width = 20
-    Height = 14
+    Width = 24
+    Height = 17
     Hint = '15'#176' extend'
     Caption = '<'
     ParentShowHint = False
@@ -54,10 +54,10 @@ object PatternForm: TPatternForm
     OnClick = Button_Show15DegClick
   end
   object Button_ShowSingleDeg: TButton
-    Left = 39
+    Left = 48
     Top = 0
-    Width = 20
-    Height = 14
+    Width = 25
+    Height = 17
     Hint = 'Single Hue'
     Caption = '||'
     ParentShowHint = False
