@@ -103,10 +103,7 @@ namespace cms {
 		list->Add((_toString(rgb->R) + "\t" + _toString(rgb->G) +
 			   "\t" + _toString(rgb->B)).c_str());
 	    }
-	    //list->Add("");
 	    list->SaveToFile(filename.c_str());
-	    //Save the list
-
 	};
 
 	RGB_vector_ptr RGBVector::deepClone(RGB_vector_ptr vector) {

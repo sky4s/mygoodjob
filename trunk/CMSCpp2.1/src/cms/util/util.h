@@ -56,7 +56,8 @@ namespace cms {
 				   const std::string & content, int n, ...);
 	    static string_vector_ptr tokenize(const std::string & content,
 					      const std::string & delim);
-
+	    static string_vector_ptr fromTextFile(const std::string & filename);
+	    static bptr < TStringList > getTStringListFromTextFile(const std::string & filename);
 
 	};
 	class NameIF {
