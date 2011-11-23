@@ -12,6 +12,8 @@
   combo box: 1/2bit  + TLabel(for name)
   label : 1/2/3/4bit
   scroll bar: 1/2bit + TLabel(for name) + TStaticText
+
+  附屬項中, TLabel會為定值, 僅顯示name; TStaticText則被動顯示ScrollBar的結果
 */
 
 class _CHKB {
