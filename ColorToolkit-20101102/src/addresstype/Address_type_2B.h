@@ -7,39 +7,43 @@
 #include <stdlib.h>
 #include "Address_type_1B.h"
 
-class TBit2:public AbstractAddressType {
-  private:
-    int divide;
-    int set(int _B_addr, int _b_num, AnsiString _name);
-    int set(int _B_addr1, int _B_addr2, int _b_num, int _b1_addr, AnsiString _name);
-    int set(AnsiString _name);
-    int set(int _B1_addr, int _b1_addr, int _b1_num, int _B2_addr, int _b2_addr, int _b2_num,
-	    AnsiString _name);
-  public:
-     TBit Byte1;
-    TBit Byte2;
-    int Divide();
-    int GetVal();
-    void SetVal(int);
+class TBit2:public AbstractAddressType
+{
+private:
+  int divide;
+  //int set(int _B_addr, int _b_num, AnsiString _name);
+  //int set(int _B_addr1, int _B_addr2, int _b_num, int _b1_addr,
+          //AnsiString _name);
+  //int set(AnsiString _name);
+  int set(int _B1_addr, int _b1_addr, int _b1_num, int _B2_addr, int _b2_addr,
+          int _b2_num, AnsiString _name);
+public:
+   TBit Byte1;
+  TBit Byte2;
+  int Divide();
+  int GetVal();
+  void SetVal(int);
 
 
 
 
-    virtual void _set(int_vector_ptr vector, AnsiString name) {
-	using namespace java::lang;
-	int size = vector->size();
-	switch (size) {
+  virtual void _set(int_vector_ptr vector, AnsiString name)
+  {
+    using namespace java::lang;
+    int size = vector->size();
+    switch (size)
+    {
 
-	case 3:
-	    set((*vector)[0], (*vector)[1], (*vector)[2], 0, 0, 0, name);
-	    break;
+    case 3:
+      set((*vector)[0], (*vector)[1], (*vector)[2], 0, 0, 0, name);
+      break;
 
-	    case 6:set((*vector)[0], (*vector)[1], (*vector)[2], (*vector)[3], (*vector)[4],
-		       (*vector)[5], name);
-	    break;
-	    default:throw IllegalArgumentException();
-	}
-    };
+      case 6:set((*vector)[0], (*vector)[1], (*vector)[2], (*vector)[3],
+                 (*vector)[4], (*vector)[5], name);
+      break;
+      default:throw IllegalArgumentException();
+    }
+  };
 };
 
 //====================================================================================================
@@ -56,110 +60,134 @@ class TBit2:public AbstractAddressType {
 //    3.非連續的兩byte, 也不一定有一個byte為8bit
 //      int set(AnsiString _name) , 另外再由Byte1.set與Byte2.set去設定address
 //====================================================================================================
-int TBit2::set(int _B1_addr, int _b1_addr, int _b1_num, int _B2_addr, int _b2_addr, int _b2_num,
-	       AnsiString _name)
+int TBit2::set(int _B1_addr, int _b1_addr, int _b1_num, int _B2_addr,
+               int _b2_addr, int _b2_num, AnsiString _name)
 {
-    en = true;
-    Byte1.set(_B1_addr, _b1_addr, _b1_num, "");	//high bit
-    Byte2.set(_B2_addr, _b2_addr, _b2_num, "");	//low bit
-    b_num = Byte1.BitNum() + Byte2.BitNum();
-    divide = pow(2, Byte2.BitNum());
-    name = _name;
-    return 1;
+  en = true;
+  Byte1.set(_B1_addr, _b1_addr, _b1_num, "");   //high bit
+  Byte2.set(_B2_addr, _b2_addr, _b2_num, "");   //low bit
+  b_num = Byte1.BitNum() + Byte2.BitNum();
+  divide = pow(2, Byte2.BitNum());
+  name = _name;
+  return 1;
 }
 
-int TBit2::set(AnsiString _name)
+/*int TBit2::set(AnsiString _name)
 {
-    en = true;
-    b_num = Byte1.BitNum() + Byte2.BitNum();
-    divide = pow(2, Byte2.BitNum());
-    name = _name;
-    return 1;
+  en = true;
+  b_num = Byte1.BitNum() + Byte2.BitNum();
+  divide = pow(2, Byte2.BitNum());
+  name = _name;
+  return 1;
 }
 
-int TBit2::set(int _B_addr1, int _B_addr2, int _b_num, int _b1_addr, AnsiString _name)
+int TBit2::set(int _B_addr1, int _B_addr2, int _b_num, int _b1_addr,
+               AnsiString _name)
 {
-    en = true;
-    name = _name;
-    b_num = _b_num;
+  en = true;
+  name = _name;
+  b_num = _b_num;
 
-    if (_b_num == 9) {
-	Byte1.set(_B_addr1, _b1_addr, 1, "");	//high bit
-	Byte2.set(_B_addr2, 0, 8, "");	//low bit
-	divide = 256;
-    } else if (_b_num == 10) {
-	Byte1.set(_B_addr1, _b1_addr, 2, "");	//high bit
-	Byte2.set(_B_addr2, 0, 8, "");	//low bit
-	divide = 256;
-    } else if (_b_num == 11) {
-	Byte1.set(_B_addr1, _b1_addr, 3, "");	//high bit
-	Byte2.set(_B_addr2, 0, 8, "");	//low bit
-	divide = 256;
-    } else if (_b_num == 12) {
-	Byte1.set(_B_addr1, _b1_addr, 4, "");	//high bit
-	Byte2.set(_B_addr2, 0, 8, "");	//low bit
-	divide = 256;
-    }
-    return 1;
+  if (_b_num == 9)
+  {
+    Byte1.set(_B_addr1, _b1_addr, 1, "");       //high bit
+    Byte2.set(_B_addr2, 0, 8, "");      //low bit
+    divide = 256;
+  }
+  else if (_b_num == 10)
+  {
+    Byte1.set(_B_addr1, _b1_addr, 2, "");       //high bit
+    Byte2.set(_B_addr2, 0, 8, "");      //low bit
+    divide = 256;
+  }
+  else if (_b_num == 11)
+  {
+    Byte1.set(_B_addr1, _b1_addr, 3, "");       //high bit
+    Byte2.set(_B_addr2, 0, 8, "");      //low bit
+    divide = 256;
+  }
+  else if (_b_num == 12)
+  {
+    Byte1.set(_B_addr1, _b1_addr, 4, "");       //high bit
+    Byte2.set(_B_addr2, 0, 8, "");      //low bit
+    divide = 256;
+  }
+  return 1;
 }
 int TBit2::set(int _B_addr, int _b_num, AnsiString _name)
 {
-    en = true;
-    //type = 1;
-    divide = 256;
-    name = _name;
-    b_num = _b_num;
-    if (_b_num == 7) {
-	divide = 1;
-	Byte1.set(_B_addr, 0, 7, "");
-	Byte2.set(_B_addr + 1, 0, 0, "");
-    } else if (_b_num == 8) {
-	divide = 1;
-	Byte1.set(_B_addr, 0, 8, "");
-	Byte2.set(_B_addr + 1, 0, 0, "");
-    } else if (_b_num == 9) {
-	Byte1.set(_B_addr, 0, 1, "");
-	Byte2.set(_B_addr + 1, 0, 8, "");
-    } else if (_b_num == 10) {
-	Byte1.set(_B_addr, 0, 2, "");
-	Byte2.set(_B_addr + 1, 0, 8, "");
-    } else if (_b_num == 11) {
-	Byte1.set(_B_addr, 0, 3, "");
-	Byte2.set(_B_addr + 1, 0, 8, "");
-    } else if (_b_num == 12) {
-	Byte1.set(_B_addr, 0, 4, "");
-	Byte2.set(_B_addr + 1, 0, 8, "");
-    } else if (_b_num == 16) {
-	Byte1.set(_B_addr, 0, 8, "");
-	Byte2.set(_B_addr + 1, 0, 8, "");
-    }
-    return 1;
-}
+  en = true;
+  //type = 1;
+  divide = 256;
+  name = _name;
+  b_num = _b_num;
+  if (_b_num == 7)
+  {
+    divide = 1;
+    Byte1.set(_B_addr, 0, 7, "");
+    Byte2.set(_B_addr + 1, 0, 0, "");
+  }
+  else if (_b_num == 8)
+  {
+    divide = 1;
+    Byte1.set(_B_addr, 0, 8, "");
+    Byte2.set(_B_addr + 1, 0, 0, "");
+  }
+  else if (_b_num == 9)
+  {
+    Byte1.set(_B_addr, 0, 1, "");
+    Byte2.set(_B_addr + 1, 0, 8, "");
+  }
+  else if (_b_num == 10)
+  {
+    Byte1.set(_B_addr, 0, 2, "");
+    Byte2.set(_B_addr + 1, 0, 8, "");
+  }
+  else if (_b_num == 11)
+  {
+    Byte1.set(_B_addr, 0, 3, "");
+    Byte2.set(_B_addr + 1, 0, 8, "");
+  }
+  else if (_b_num == 12)
+  {
+    Byte1.set(_B_addr, 0, 4, "");
+    Byte2.set(_B_addr + 1, 0, 8, "");
+  }
+  else if (_b_num == 16)
+  {
+    Byte1.set(_B_addr, 0, 8, "");
+    Byte2.set(_B_addr + 1, 0, 8, "");
+  }
+  return 1;
+}*/
 
 
 int TBit2::Divide()
 {
-    return divide;
+  return divide;
 }
 
 
 int TBit2::GetVal()
 {
-    int value = -1;
-    if (Byte1.GetVal() == -1 || Byte2.GetVal() == -1) {
-	value = -1;
-    } else {
-	value = Byte1.GetVal() * divide + Byte2.GetVal();
-    }
-    return value;
+  int value = -1;
+  if (Byte1.GetVal() == -1 || Byte2.GetVal() == -1)
+  {
+    value = -1;
+  }
+  else
+  {
+    value = Byte1.GetVal() * divide + Byte2.GetVal();
+  }
+  return value;
 }
 void TBit2::SetVal(int val)
 {
-    //value = val;
-    int val1 = floor((double) val / divide);
-    int val2 = val % divide;
-    Byte1.SetVal(val1);
-    Byte2.SetVal(val2);
+  //value = val;
+  int val1 = floor((double)val / divide);
+  int val2 = val % divide;
+  Byte1.SetVal(val1);
+  Byte2.SetVal(val2);
 }
 
 #endif

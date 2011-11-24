@@ -386,8 +386,8 @@ void __fastcall TSharpnessForm12307::FormCreate(TObject * Sender)
   SP_addr = OSP->SetSPLUT();
   SP_Chg = 1;
 
-  DebugForm->Visible = true;
-  childScan(this);
+  //DebugForm->Visible = true;
+  //childScan(this);
   /*int count = this->ControlCount;
      for (int x = 0; x < count; x++)
      {
