@@ -58,9 +58,15 @@ void __fastcall THSVFormOrg::FormCreate(TObject * Sender)
 
     cb = OHSV->SetChkBx();
     ChkB = new _CHKB *[OHSV->HSVChkBox_Nbr];
-    for (int i = 0; i < OHSV->HSVChkBox_Nbr; i++)
+    for (int i = 0; i < OHSV->HSVChkBox_Nbr; i++) {
 	ChkB[i] = new _CHKB;
+    }
 
+    /*
+       此處會有新舊版不同的問題
+       也就是說, 新的TCON已經有5個CheckBox
+       但是這裡只有對應到4個, 所以第五個沒有繫結到
+     */
     ChkB[0]->Chkb = CheckBox1;
     ChkB[1]->Chkb = CheckBox2;
     ChkB[2]->Chkb = CheckBox3;
@@ -73,12 +79,14 @@ void __fastcall THSVFormOrg::FormCreate(TObject * Sender)
 	ChkB[i]->Chkb->Hint = i;
 	ChkB[i]->Chkb->Caption = ChkB[i]->Addr.Name();
 	// find index for HSV enable
-	if (ChkB[i]->Addr.Name() == OHSV->HSV_EN_Name())	// 20100608 Find HSV enable index
+	if (ChkB[i]->Addr.Name() == OHSV->HSV_EN_Name()) {	// 20100608 Find HSV enable index
 	    HSVEN_idx = i;
+	}
     }
     // 20100608 check HSV enable index
-    if (HSVEN_idx == -1)
+    if (HSVEN_idx == -1) {
 	ShowMessage("Can't Get HSV enable index.");
+    }
     Initial_HSV_table();	// initial HSV table
     HSV_Chg = 1;
 }
