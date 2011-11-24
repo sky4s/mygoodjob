@@ -10,10 +10,19 @@
   對應不同的TBit
   check box: 1bit
   combo box: 1/2bit  + TLabel(for name)
-  label : 1/2/3/4bit
+  label edit : 1/2/3/4bit
   scroll bar: 1/2bit + TLabel(for name) + TStaticText
 
   附屬項中, TLabel會為定值, 僅顯示name; TStaticText則被動顯示ScrollBar的結果
+
+  目前的想法為:
+  一個RegisterFramework的Class統整 RegisterType和UI的繫結
+  RegisterType包括BitRegister和LUTRegister
+  只要透過 RegisterFramework.bind("reg name",CheckBox)
+  和RegisterFramework.bind("reg name",ComboBox,"option1","option2"...)
+  兩隻函式就可以繫結 register<=>UI
+
+  
 */
 
 class _CHKB {
