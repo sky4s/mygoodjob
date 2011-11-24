@@ -281,7 +281,7 @@ TBit *SP_12307::SetCboBx()
     CboBox[5].choice = new String[2];
     CboBox[5].choice[0] = " 0: turn point at Y192";
     CboBox[5].choice[1] = " 1: turn point at Y224";
-
+ 
     return CboBox;
 }
 

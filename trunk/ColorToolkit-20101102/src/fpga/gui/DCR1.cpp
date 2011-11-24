@@ -315,15 +315,17 @@ void __fastcall TDCRForm1::FormCreate(TObject * Sender)
 
     for (int i = 0; i < ODCR->DCRCboBox_Nbr; i++) {
 	DCRCboB[i]->Addr = DCR_cbo[i];
-	DCRCboB[i]->Cbob->Visible = DCRCboB[i]->Addr.FuncEn();
-	DCRCboB[i]->CbobL->Visible = DCRCboB[i]->Addr.FuncEn();
-	DCRCboB[i]->Cbob->OnClick = DCR_ComboBox_Click;
-	DCRCboB[i]->Cbob->Hint = i;
-	DCRCboB[i]->CbobL->Caption = DCRCboB[i]->Addr.Name();
+	DCRCboB[i]->Cbob->Visible = DCRCboB[i]->Addr.FuncEn();	//從TBit撈
+	DCRCboB[i]->CbobL->Visible = DCRCboB[i]->Addr.FuncEn();	//從TBit撈
+	DCRCboB[i]->Cbob->OnClick = DCR_ComboBox_Click;	//UI本地函式
+	DCRCboB[i]->Cbob->Hint = i;	//作為索引用
+	DCRCboB[i]->CbobL->Caption = DCRCboB[i]->Addr.Name();	//從TBit撈
 	DCRCboB[i]->Cbob->Text = "";
-	if (DCRCboB[i]->Addr.FuncEn() == true)
-	    for (int j = 0; j < DCRCboB[i]->Addr.choice_nbr; j++)	//ComboBox choice
+	if (DCRCboB[i]->Addr.FuncEn() == true) {
+	    for (int j = 0; j < DCRCboB[i]->Addr.choice_nbr; j++) {	//ComboBox choice
 		DCRCboB[i]->Cbob->Items->Add(DCRCboB[i]->Addr.choice[j]);
+	    }
+	}
     }
 
 	/*****************************************************************

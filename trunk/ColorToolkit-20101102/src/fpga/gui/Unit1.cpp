@@ -745,16 +745,6 @@ void __fastcall TMainForm::addressFromFileClick(TObject * Sender)
     OpenDialog1->Filter = "T-CON Address Files(*.*)|*.*";
     if (OpenDialog1->Execute()) {
 	const AnsiString & header = OpenDialog1->FileName;
-	/*AddressFile = header;
-	   AnsiString caption = ExtractFileName(header);
-	   int dotIndex = caption.Pos(".");
-	   if (0 != dotIndex) {
-	   caption = caption.SubString(1, dotIndex - 1);
-	   }
-	   MainForm->Caption = caption;
-	   addr_place = 1;
-	   addressFromFile->Checked = true;
-	   AbstractBase::resetAddressMap(); */
 	setAddressFile(header);
     };
 }
