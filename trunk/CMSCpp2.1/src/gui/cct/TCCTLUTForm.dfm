@@ -484,7 +484,7 @@ object CCTLUTForm: TCCTLUTForm
     end
     object CheckBox_BTargetIntensity: TCheckBox
       Left = 7
-      Top = 72
+      Top = 96
       Width = 111
       Height = 19
       Caption = 'B Target intensity'
@@ -492,12 +492,30 @@ object CCTLUTForm: TCCTLUTForm
       OnClick = CheckBox_BTargetIntensityClick
     end
     object Edit_BTargetIntensity: TEdit
-      Left = 117
-      Top = 72
+      Left = 115
+      Top = 96
       Width = 33
       Height = 21
       Enabled = False
       TabOrder = 5
+      Text = '100'
+    end
+    object CheckBox_RTargetIntensity: TCheckBox
+      Left = 7
+      Top = 72
+      Width = 111
+      Height = 19
+      Caption = 'R Target intensity'
+      TabOrder = 6
+      OnClick = CheckBox_RTargetIntensityClick
+    end
+    object Edit_RTargetIntensity: TEdit
+      Left = 115
+      Top = 72
+      Width = 33
+      Height = 21
+      Enabled = False
+      TabOrder = 7
       Text = '100'
     end
   end

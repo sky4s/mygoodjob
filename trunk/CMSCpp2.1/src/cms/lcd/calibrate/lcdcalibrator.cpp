@@ -185,6 +185,7 @@ namespace cms {
 		this->fetcher = fetcher;
 		useNewMethod = false;
 		bMax = bMax2 = false;
+		rTargetIntensity = -1;
 		bTargetIntensity = -1;
 		originalGamma = false;
 		skipInverseB = false;
@@ -521,6 +522,9 @@ namespace cms {
 		//=================================================================================
 		// advgenerator options
 		//=================================================================================
+		if (this->rTargetIntensity != -1) {
+		    advgenerator->setRTargetIntensity(rTargetIntensity);
+		}
 		if (this->bTargetIntensity != -1) {
 		    advgenerator->setBTargetIntensity(bTargetIntensity);
 		}
@@ -1094,9 +1098,7 @@ namespace cms {
 		return result;
 		//==============================================================
 	    };
-	    /*void LCDCalibrator::setBTargetIntensity(double bTargetIntensity) {
-	       this->bTargetIntensity = bTargetIntensity;
-	       }; */
+
 	    void LCDCalibrator::setMultiGen(bool enable, int times) {
 		this->multiGen = enable;
 		this->multiGenTimes = times;

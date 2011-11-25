@@ -101,6 +101,7 @@ namespace cms {
 		//==============================================================
 		// others
 		//==============================================================
+		double rTargetIntensity;
 		double bTargetIntensity;
 		double bIntensityGain;
 		bool avoidFRCNoise;
@@ -164,6 +165,7 @@ namespace cms {
 		__property bool AvoidFRCNoise = { write = avoidFRCNoise };
 		__property bool NewMethod = { write = useNewMethod };
 		__property bool SkipInverseB = { write = skipInverseB };
+		__property double RTargetIntensity = { write = rTargetIntensity };
 		__property double BTargetIntensity = { write = bTargetIntensity };
 		__property bool AccurateMode = { write = accurateMode };
 		__property bool ManualAccurateMode = { write = manualAccurateMode };

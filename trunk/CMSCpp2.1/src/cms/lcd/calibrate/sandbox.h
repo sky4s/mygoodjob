@@ -29,6 +29,8 @@ namespace cms {
 		bool isAvoidHook(XYZ_ptr targetXYZ, double offsetK);
 		XYZ_ptr getXYZ(XYZ_ptr XYZ, double offsetK);
 		bool isDuplicateBlue100(XYZ_ptr targetXYZ);
+		double rTargetIntensity;
+		double gTargetIntensity;
 		double bTargetIntensity;
 		bool stopMeasure;
 		bool multiGen;
@@ -71,6 +73,8 @@ namespace cms {
 					  int brightWidth, double middleCCTRatio);
 
 		void setUseMaxTargetBIntensity(bool useMaxTargetBIntensity);
+		void setRTargetIntensity(double rTargetIntensity);
+		void setGTargetIntensity(double gTargetIntensity);
 		void setBTargetIntensity(double bTargetIntensity);
 		virtual void windowClosing(TObject * Sender, TCloseAction & Action);
 		void setMultiGen(bool enable, int times);

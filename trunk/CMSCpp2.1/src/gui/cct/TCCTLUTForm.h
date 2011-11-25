@@ -112,6 +112,8 @@ class TCCTLUTForm:public TForm, cms::lcd::calibrate::FeedbackListener {
     TRadioGroup *RadioGroup_NormalCase;
     TEdit *Edit_FeedbackMsg;
     TCheckBox *CheckBox_AbsoluteGamma;
+    TCheckBox *CheckBox_RTargetIntensity;
+    TEdit *Edit_RTargetIntensity;
     void __fastcall RadioButton_P1P2Click(TObject * Sender);
     void __fastcall Button_MeaRunClick(TObject * Sender);
     void __fastcall Button_DebugClick(TObject * Sender);
@@ -138,6 +140,7 @@ class TCCTLUTForm:public TForm, cms::lcd::calibrate::FeedbackListener {
     void __fastcall CheckBox_FeedbackClick(TObject * Sender);
     void __fastcall Edit_DimGammaEndChange(TObject * Sender);
     void __fastcall RadioGroup_NormalCaseClick(TObject * Sender);
+    void __fastcall CheckBox_RTargetIntensityClick(TObject * Sender);
   private:			// User declarations
     void setMeasureInfo();
     int serialid;
