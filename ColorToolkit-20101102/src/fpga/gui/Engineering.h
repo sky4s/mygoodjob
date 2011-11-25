@@ -133,28 +133,27 @@ class TEngineerForm:public TForm {
     void __fastcall SaveDialog_txt_hexSelectionChange(TObject * Sender);
 
   private:			// User declarations
-  char * LoadFile(String Fpath, int *len) ;
-  bool  Dec2Hex(int val, AnsiString * str);
-   bool  Hex2Dec(AnsiString str, int *val);
-   bool connect;
-   String Connect_Msg;
-                         RW_Func RW;
+    char *LoadFile(String Fpath, int *len);
+    bool Dec2Hex(int val, AnsiString * str);
+    bool Hex2Dec(AnsiString str, int *val);
+    bool connect;
+    String Connect_Msg;
+    RW_Func RW;
 // 20100608 新增, 詳細內容寫在'table_type.h'
-ReadWrite_LUT RW_LUT;
+    ReadWrite_LUT RW_LUT;
 // decode / encode data in difference Table type, Defined in table_type.h
-bool Read_LUT(TLUT Addr_LUT, IntTbl & Out, ByteTbl In);
+    bool Read_LUT(TLUT Addr_LUT, IntTbl & Out, ByteTbl In);
 
-bool Write_LUT(TLUT Addr_LUT, ByteTbl & Out, IntTbl In);
+    bool Write_LUT(TLUT Addr_LUT, ByteTbl & Out, IntTbl In);
 
 
     bool Get_byte_addr(unsigned char *data_addr, int *data_addr_cnt);
     bool Get_device_addr(unsigned char *dev, int *dev_addr_cnt);
     bool Get_device_addr(int *dev_ad);
-        bool Get_write_data(unsigned char *write_data);
-            bool Get_seq_addr(unsigned char *data_addr, int *data_addr_cnt);
-                void Get_seq_write_data(unsigned char *data, int data_len);
-    bool Set_seq_data(unsigned char *data_read, int data_len,
-		      int data_addr_val);
+    bool Get_write_data(unsigned char *write_data);
+    bool Get_seq_addr(unsigned char *data_addr, int *data_addr_cnt);
+    void Get_seq_write_data(unsigned char *data, int data_len);
+    bool Set_seq_data(unsigned char *data_read, int data_len, int data_addr_val);
 
     bool SetDeviceAddr(unsigned char dev_ad, unsigned char *dev_ad_new,
 		       unsigned char *data_ad, int data_ad_c);
@@ -191,21 +190,17 @@ bool Write_LUT(TLUT Addr_LUT, ByteTbl & Out, IntTbl In);
      __fastcall TEngineerForm(TComponent * Owner);
      __fastcall ~ TEngineerForm(void);
 
-     bool SetWrite_Byte(TBit Addr_Bit, int set_val);
+    bool SetWrite_Byte(TBit Addr_Bit, int set_val);
     bool SetRead_Byte(TBit Addr_Bit, unsigned char *read_val);
     unsigned char readByte(TBit & Addr_Bit);
 
     bool SetWrite_PG(TLUT Addr_LUT, int *write_table, bool IsChkSum);
-    bool SetWrite_PG(TLUT Addr_LUT, int *write_table, bool IsChkSum,
-		     bool MSB_first);
+    bool SetWrite_PG(TLUT Addr_LUT, int *write_table, bool IsChkSum, bool MSB_first);
     bool SetRead_PG(TLUT Addr_LUT, int *table, bool IsChkSum);
-    
-    bool SetRead_DG(TLUT * Addr_LUT, int **DG_table, int LUT_Nbr,
-		    bool IsChkSum);
-    bool SetWrite_DG(TLUT * Addr_LUT, int **lut, int LUT_Nbr,
-		     bool IsChkSum, bool MSB_first);
-    bool SetWrite_DG(TLUT * Addr_LUT, int **lut, int LUT_Nbr,
-		     bool IsChkSum);
+
+    bool SetRead_DG(TLUT * Addr_LUT, int **DG_table, int LUT_Nbr, bool IsChkSum);
+    bool SetWrite_DG(TLUT * Addr_LUT, int **lut, int LUT_Nbr, bool IsChkSum, bool MSB_first);
+    bool SetWrite_DG(TLUT * Addr_LUT, int **lut, int LUT_Nbr, bool IsChkSum);
 
     String *Load_file(String Fpath, int Lut_no);
 
