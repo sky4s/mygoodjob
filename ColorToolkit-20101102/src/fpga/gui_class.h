@@ -147,14 +147,17 @@ class AbstractBase {
     static void initAliasNameMap();
   protected:
 
-    static bool setAddress(AbstractAddressType * address, std::string text);
-    static bool setAddressFromFile(AbstractAddressType * address, std::string tag);
-    static StringMap_ptr getStringMap(std::string filename);
-    static StringMap_ptr getStringMap(AnsiString filename);
+    static bool setAddress(AbstractAddressType * address,
+			   std::string text);
+    static bool setAddressFromFile(AbstractAddressType * address,
+				   std::string tag);
+
   public:
     static bptr < AbstractAddressType > getAddress(std::string text);
     static int_vector_ptr getValuesFromFile(std::string tag);
     static void resetAddressMap();
+    static StringMap_ptr getStringMap(std::string filename);
+    static StringMap_ptr getStringMap(AnsiString filename);
 };
 
 
