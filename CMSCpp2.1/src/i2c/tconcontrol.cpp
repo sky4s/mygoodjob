@@ -34,6 +34,8 @@ namespace i2c {
     };
     bptr < ByteBuffer > TCONControl::getRGBByteBuffer(int r, int g, int b,
 						      const TestRGBBit & testRGBBit) {
+        // C B A 9 8 7 6 5 4 3 2 1
+        // ^^^^^^^H^^^^^^^^^^^^^^^L
 	int rLow = r & 255;
 	int rHigh = (r >> 8) & 15;
 	int gLow = g & 255;

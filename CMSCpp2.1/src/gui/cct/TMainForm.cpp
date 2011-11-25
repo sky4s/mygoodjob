@@ -72,15 +72,7 @@ void __fastcall TMainForm::FormCreate(TObject * Sender)
     using namespace gui::util;
 
     bitDepth = bptr < BitDepthProcessor > (new BitDepthProcessor(8, 12, 8, false));
-    /*if (true == linkCA210) {
-       initCA210Meter();
-       } else {
-       if (FileExists(METER_FILE)) {
-       setDummyMeterFilename(METER_FILE);
-       }
-       this->Caption = this->Caption + " (debug mode)";
-       this->GroupBox_CHSetting->Visible = false;
-       } */
+
 
     initTCONFile();
     readTCONSections();
@@ -454,6 +446,9 @@ bptr < cms::measure::MaxMatrixIntensityAnalyzer > TMainForm::getNativeWhiteAnaly
 };
 
 //---------------------------------------------------------------------------
+/*
+  dprecated
+*/
 void TMainForm::setAnalyzerToTargetChannel()
 {
     using namespace std;
@@ -464,13 +459,13 @@ void TMainForm::setAnalyzerToTargetChannel()
 	    throw java::lang::IllegalStateException("call getAnalyzer()first !");
 	}
 	//撈出channel no和id
-	int channel = this->Edit_TargetCH->Text.ToInt();
-	string targetid = Edit_TargetID->Text.c_str();
-	//若沒有值強制指定為空白字元的字串
-	targetid = targetid.empty()? string("") : targetid;
-	string_ptr id(new string(targetid));
-	//設定在ca210
-	ca210Analyzer->setChannel(channel, id);
+	/*int channel = this->Edit_TargetCH->Text.ToInt();
+	   string targetid = Edit_TargetID->Text.c_str();
+	   //若沒有值強制指定為空白字元的字串
+	   targetid = targetid.empty()? string("") : targetid;
+	   string_ptr id(new string(targetid));
+	   //設定在ca210
+	   ca210Analyzer->setChannel(channel, id); */
 
     }
 };

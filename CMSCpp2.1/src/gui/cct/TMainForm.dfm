@@ -1002,6 +1002,7 @@ object MainForm: TMainForm
           Width = 63
           Height = 13
           Caption = 'Target W CH'
+          Visible = False
         end
         object Label9: TLabel
           Left = 7
@@ -1009,6 +1010,7 @@ object MainForm: TMainForm
           Width = 59
           Height = 13
           Caption = 'Target W ID'
+          Visible = False
         end
         object Edit_SourceCH: TEdit
           Left = 79
@@ -1029,6 +1031,7 @@ object MainForm: TMainForm
           ImeName = #26085#25991#36664#20837#31995#32113' (MS-IME2002)'
           TabOrder = 1
           Text = '2'
+          Visible = False
         end
         object Edit_TargetID: TEdit
           Left = 80
@@ -1040,6 +1043,7 @@ object MainForm: TMainForm
           ImeName = #26085#25991#36664#20837#31995#32113' (MS-IME2002)'
           TabOrder = 2
           Text = ' '
+          Visible = False
         end
       end
       object GroupBox3: TGroupBox
