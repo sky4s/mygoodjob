@@ -41,7 +41,7 @@ __fastcall TMainForm::TMainForm(TComponent * Owner):TForm(Owner)
     //Set Real-Time Priority of process
     SetPriorityClass(GetCurrentProcess(), REALTIME_PRIORITY_CLASS);
     addr_place = 0;		//0:auo_12401_address.h   1:auo_12401_address.txt
-    C3D_type = 7;
+    C3D_type = 7;  
 
     using namespace cms::util;
     if (Util::isFileExist("tcon.txt")) {
