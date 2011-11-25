@@ -19,7 +19,8 @@
       build\ciexyz.obj build\independ.obj build\util.obj build\DCR_11307.obj 
       build\gui_class.obj build\lcdtarget.obj build\THSVForm2nd.obj 
       build\binder.obj build\hsvip.obj build\minimisation.obj build\asa047.obj 
-      build\Sharpness12307.obj build\CM1.obj build\TDebugForm.obj"/>
+      build\Sharpness12307.obj build\CM1.obj build\TDebugForm.obj 
+      build\RegisterFramework.obj"/>
     <RESFILES value="ColorToolkit.res"/>
     <IDLFILES value=""/>
     <IDLGENFILES value=""/>
@@ -44,7 +45,7 @@
       inetdbbde.bpi inetdbxpress.bpi inetdb.bpi nmfast.bpi webdsnap.bpi 
       bcbie.bpi websnap.bpi soaprtl.bpi dclocx.bpi dbexpress.bpi dbxcds.bpi 
       indy.bpi bcb2kaxserver.bpi"/>
-    <PATHCPP value=".;lib\USB_i2c_lib;lib\LPT_lib;lib\LPT_lib;src\gui\frame;src\gui\frame;src\fpga\11307\Function;src\fpga\11307\ImageProcess;src\fpga\11307\TCON;src\fpga\11307\Vender;src\fpga\gui;src\fpga\gui;src\fpga\gui;src\fpga\gui;src\fpga\gui;src\fpga\gui;src\fpga\gui;src\fpga\gui;src\fpga\gui;src\fpga\gui;src\fpga\gui;src\fpga;src\fpga;src\fpga\gui;src\c3d\gui;src\c3d;src\fpga\gui;src\fpga\gui;lib\CMSCpp2.1\src\i2c\core;lib\CMSCpp2.1\src\math;lib\CMSCpp2.1\src\cms\colorspace;lib\CMSCpp2.1\src\cms\colorspace;lib\CMSCpp2.1\src\java;lib\CMSCpp2.1\src\cms;lib\CMSCpp2.1\src\cms\colorspace;lib\CMSCpp2.1\src\math;lib\CMSCpp2.1\src\math;lib\CMSCpp2.1\src\cms\colorspace;lib\CMSCpp2.1\src\cms\colorspace;lib\CMSCpp2.1\src\cms\util;src\fpga\11307\DCR;src\fpga;lib\CMSCpp2.1\src\cms\lcd;src\fpga\gui;lib\CMSCpp2.1\src\gui\util;lib\CMSCpp2.1\src\cms\hsv;lib\CMSCpp2.1\src\algo;lib\CMSCpp2.1\src\algo;src\fpga\gui;src\fpga\gui;src\gui"/>
+    <PATHCPP value=".;lib\USB_i2c_lib;lib\LPT_lib;src\gui\frame;src\fpga\11307\Function;src\fpga\11307\ImageProcess;src\fpga\11307\TCON;src\fpga\11307\Vender;src\fpga\gui;src\fpga;src\c3d\gui;src\c3d;lib\CMSCpp2.1\src\i2c\core;lib\CMSCpp2.1\src\math;lib\CMSCpp2.1\src\cms\colorspace;lib\CMSCpp2.1\src\java;lib\CMSCpp2.1\src\cms;lib\CMSCpp2.1\src\cms\util;src\fpga\11307\DCR;lib\CMSCpp2.1\src\cms\lcd;lib\CMSCpp2.1\src\gui\util;lib\CMSCpp2.1\src\cms\hsv;lib\CMSCpp2.1\src\algo;src\gui;src\gui\framework"/>
     <PATHPAS value=".;"/>
     <PATHRC value=".;"/>
     <PATHASM value=".;"/>
@@ -54,13 +55,14 @@
     <USERDEFINES value="_DEBUG"/>
     <SYSDEFINES value="NO_STRICT"/>
     <MAINSOURCE value="ColorToolkit.cpp"/>
-    <INCLUDEPATH value="src\gui;lib\CMSCpp2.1\src\algo;lib\CMSCpp2.1\src\cms\hsv;..\..\CMSCpp2.1\src\cms\hsv;lib\CMSCpp2.1\src\gui\util;lib\CMSCpp2.1\src\cms\lcd;lib\CMSCpp2.1\src\cms\util;lib\CMSCpp2.1\src\cms;lib\CMSCpp2.1\src\java;lib\CMSCpp2.1\src\cms\colorspace;lib\CMSCpp2.1\src\math;lib\CMSCpp2.1\src\i2c\core;src\c3d;src\c3d\gui;src\fpga;src\fpga\11307\Vender;src\fpga\11307\TCON;src\fpga\11307\ImageProcess;src\fpga\11307\Function;src\fpga\11307\DCR;src\gui\frame;src\fpga\gui;&quot;D:\Program Files\Borland\CBuilder6\Projects&quot;;$(BCB)\include;$(BCB)\include\vcl;lib;./;lib\LPT_lib;lib\USB_i2c_lib;src;lib\CMSCpp2.1\src"/>
-    <LIBPATH value="src\gui;lib\CMSCpp2.1\src\algo;lib\CMSCpp2.1\src\cms\hsv;..\..\CMSCpp2.1\src\cms\hsv;lib\CMSCpp2.1\src\gui\util;lib\CMSCpp2.1\src\cms\lcd;lib\CMSCpp2.1\src\cms\util;lib\CMSCpp2.1\src\cms;lib\CMSCpp2.1\src\java;lib\CMSCpp2.1\src\cms\colorspace;lib\CMSCpp2.1\src\math;lib\CMSCpp2.1\src\i2c\core;src\c3d;src\c3d\gui;src\fpga;src\fpga\11307\Vender;src\fpga\11307\TCON;src\fpga\11307\ImageProcess;src\fpga\11307\Function;src\fpga\11307\DCR;lib\java;src\gui\frame;src\fpga\gui;&quot;D:\Program Files\Borland\CBuilder6\Projects&quot;;$(BCB)\lib\obj;$(BCB)\lib;lib;lib\LPT_lib;lib\USB_i2c_lib;src;lib\CMSCpp2.1\src"/>
+    <INCLUDEPATH value="src\gui\framework;&quot;C:\Program Files\Borland\CBuilder6\Projects&quot;;src\gui;lib\CMSCpp2.1\src\algo;lib\CMSCpp2.1\src\cms\hsv;..\..\CMSCpp2.1\src\cms\hsv;lib\CMSCpp2.1\src\gui\util;lib\CMSCpp2.1\src\cms\lcd;lib\CMSCpp2.1\src\cms\util;lib\CMSCpp2.1\src\cms;lib\CMSCpp2.1\src\java;lib\CMSCpp2.1\src\cms\colorspace;lib\CMSCpp2.1\src\math;lib\CMSCpp2.1\src\i2c\core;src\c3d;src\c3d\gui;src\fpga;src\fpga\11307\Vender;src\fpga\11307\TCON;src\fpga\11307\ImageProcess;src\fpga\11307\Function;src\fpga\11307\DCR;src\gui\frame;src\fpga\gui;&quot;D:\Program Files\Borland\CBuilder6\Projects&quot;;$(BCB)\include;$(BCB)\include\vcl;lib;./;lib\LPT_lib;lib\USB_i2c_lib;src;lib\CMSCpp2.1\src"/>
+    <LIBPATH value="src\gui\framework;&quot;C:\Program Files\Borland\CBuilder6\Projects&quot;;src\gui;lib\CMSCpp2.1\src\algo;lib\CMSCpp2.1\src\cms\hsv;..\..\CMSCpp2.1\src\cms\hsv;lib\CMSCpp2.1\src\gui\util;lib\CMSCpp2.1\src\cms\lcd;lib\CMSCpp2.1\src\cms\util;lib\CMSCpp2.1\src\cms;lib\CMSCpp2.1\src\java;lib\CMSCpp2.1\src\cms\colorspace;lib\CMSCpp2.1\src\math;lib\CMSCpp2.1\src\i2c\core;src\c3d;src\c3d\gui;src\fpga;src\fpga\11307\Vender;src\fpga\11307\TCON;src\fpga\11307\ImageProcess;src\fpga\11307\Function;src\fpga\11307\DCR;lib\java;src\gui\frame;src\fpga\gui;&quot;D:\Program Files\Borland\CBuilder6\Projects&quot;;$(BCB)\lib\obj;$(BCB)\lib;lib;lib\LPT_lib;lib\USB_i2c_lib;src;lib\CMSCpp2.1\src"/>
     <WARNINGS value="-w-par"/>
     <OTHERFILES value=""/>
   </MACROS>
   <OPTIONS>
-    <IDLCFLAGS value="-Isrc\gui -Ilib\CMSCpp2.1\src\algo -Ilib\CMSCpp2.1\src\cms\hsv 
+    <IDLCFLAGS value="-Isrc\gui\framework -I&quot;C:\Program Files\Borland\CBuilder6\Projects&quot; 
+      -Isrc\gui -Ilib\CMSCpp2.1\src\algo -Ilib\CMSCpp2.1\src\cms\hsv 
       -I..\..\CMSCpp2.1\src\cms\hsv -Ilib\CMSCpp2.1\src\gui\util 
       -Ilib\CMSCpp2.1\src\cms\lcd -Ilib\CMSCpp2.1\src\cms\util 
       -Ilib\CMSCpp2.1\src\cms -Ilib\CMSCpp2.1\src\java 
@@ -145,6 +147,7 @@
       <FILE FILENAME="src\fpga\gui\Sharpness12307.cpp" FORMNAME="SharpnessForm12307" UNITNAME="Sharpness12307" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="src\fpga\gui\CM1.cpp" FORMNAME="CMForm1" UNITNAME="CM1" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="src\gui\TDebugForm.cpp" FORMNAME="DebugForm" UNITNAME="TDebugForm" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="src\gui\framework\RegisterFramework.cpp" FORMNAME="" UNITNAME="RegisterFramework" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
   </FILELIST>
   <BUILDTOOLS>
   </BUILDTOOLS>
