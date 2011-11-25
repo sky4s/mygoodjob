@@ -26,9 +26,12 @@ namespace gui {
 	    int count = ctrl->ControlCount;
 	    for (int x = 0; x < count; x++) {
 		TControl *child = ctrl->Controls[x];
+		String name = child->Name;
+
 		TWinControl *wctrl = dynamic_cast < TWinControl * >(child);
 		if (null != wctrl) {
 		    childScan(wctrl);
+		    continue;
 		}
 	    }
 	}
