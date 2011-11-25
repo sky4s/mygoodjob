@@ -55,20 +55,19 @@
     <USERDEFINES value="_DEBUG"/>
     <SYSDEFINES value="NO_STRICT"/>
     <MAINSOURCE value="ColorToolkit.cpp"/>
-    <INCLUDEPATH value="src\gui\framework;&quot;C:\Program Files\Borland\CBuilder6\Projects&quot;;src\gui;lib\CMSCpp2.1\src\algo;lib\CMSCpp2.1\src\cms\hsv;..\..\CMSCpp2.1\src\cms\hsv;lib\CMSCpp2.1\src\gui\util;lib\CMSCpp2.1\src\cms\lcd;lib\CMSCpp2.1\src\cms\util;lib\CMSCpp2.1\src\cms;lib\CMSCpp2.1\src\java;lib\CMSCpp2.1\src\cms\colorspace;lib\CMSCpp2.1\src\math;lib\CMSCpp2.1\src\i2c\core;src\c3d;src\c3d\gui;src\fpga;src\fpga\11307\Vender;src\fpga\11307\TCON;src\fpga\11307\ImageProcess;src\fpga\11307\Function;src\fpga\11307\DCR;src\gui\frame;src\fpga\gui;&quot;D:\Program Files\Borland\CBuilder6\Projects&quot;;$(BCB)\include;$(BCB)\include\vcl;lib;./;lib\LPT_lib;lib\USB_i2c_lib;src;lib\CMSCpp2.1\src"/>
-    <LIBPATH value="src\gui\framework;&quot;C:\Program Files\Borland\CBuilder6\Projects&quot;;src\gui;lib\CMSCpp2.1\src\algo;lib\CMSCpp2.1\src\cms\hsv;..\..\CMSCpp2.1\src\cms\hsv;lib\CMSCpp2.1\src\gui\util;lib\CMSCpp2.1\src\cms\lcd;lib\CMSCpp2.1\src\cms\util;lib\CMSCpp2.1\src\cms;lib\CMSCpp2.1\src\java;lib\CMSCpp2.1\src\cms\colorspace;lib\CMSCpp2.1\src\math;lib\CMSCpp2.1\src\i2c\core;src\c3d;src\c3d\gui;src\fpga;src\fpga\11307\Vender;src\fpga\11307\TCON;src\fpga\11307\ImageProcess;src\fpga\11307\Function;src\fpga\11307\DCR;lib\java;src\gui\frame;src\fpga\gui;&quot;D:\Program Files\Borland\CBuilder6\Projects&quot;;$(BCB)\lib\obj;$(BCB)\lib;lib;lib\LPT_lib;lib\USB_i2c_lib;src;lib\CMSCpp2.1\src"/>
+    <INCLUDEPATH value="src\gui\framework;src\gui;lib\CMSCpp2.1\src\algo;lib\CMSCpp2.1\src\cms\hsv;..\..\CMSCpp2.1\src\cms\hsv;lib\CMSCpp2.1\src\gui\util;lib\CMSCpp2.1\src\cms\lcd;lib\CMSCpp2.1\src\cms\util;lib\CMSCpp2.1\src\cms;lib\CMSCpp2.1\src\java;lib\CMSCpp2.1\src\cms\colorspace;lib\CMSCpp2.1\src\math;lib\CMSCpp2.1\src\i2c\core;src\c3d;src\c3d\gui;src\fpga;src\fpga\11307\Vender;src\fpga\11307\TCON;src\fpga\11307\ImageProcess;src\fpga\11307\Function;src\fpga\11307\DCR;src\gui\frame;src\fpga\gui;&quot;D:\Program Files\Borland\CBuilder6\Projects&quot;;$(BCB)\include;$(BCB)\include\vcl;lib;./;lib\LPT_lib;lib\USB_i2c_lib;src;lib\CMSCpp2.1\src"/>
+    <LIBPATH value="src\gui\framework;src\gui;lib\CMSCpp2.1\src\algo;lib\CMSCpp2.1\src\cms\hsv;..\..\CMSCpp2.1\src\cms\hsv;lib\CMSCpp2.1\src\gui\util;lib\CMSCpp2.1\src\cms\lcd;lib\CMSCpp2.1\src\cms\util;lib\CMSCpp2.1\src\cms;lib\CMSCpp2.1\src\java;lib\CMSCpp2.1\src\cms\colorspace;lib\CMSCpp2.1\src\math;lib\CMSCpp2.1\src\i2c\core;src\c3d;src\c3d\gui;src\fpga;src\fpga\11307\Vender;src\fpga\11307\TCON;src\fpga\11307\ImageProcess;src\fpga\11307\Function;src\fpga\11307\DCR;lib\java;src\gui\frame;src\fpga\gui;&quot;D:\Program Files\Borland\CBuilder6\Projects&quot;;$(BCB)\lib\obj;$(BCB)\lib;lib;lib\LPT_lib;lib\USB_i2c_lib;src;lib\CMSCpp2.1\src"/>
     <WARNINGS value="-w-par"/>
     <OTHERFILES value=""/>
   </MACROS>
   <OPTIONS>
-    <IDLCFLAGS value="-Isrc\gui\framework -I&quot;C:\Program Files\Borland\CBuilder6\Projects&quot; 
-      -Isrc\gui -Ilib\CMSCpp2.1\src\algo -Ilib\CMSCpp2.1\src\cms\hsv 
-      -I..\..\CMSCpp2.1\src\cms\hsv -Ilib\CMSCpp2.1\src\gui\util 
-      -Ilib\CMSCpp2.1\src\cms\lcd -Ilib\CMSCpp2.1\src\cms\util 
-      -Ilib\CMSCpp2.1\src\cms -Ilib\CMSCpp2.1\src\java 
-      -Ilib\CMSCpp2.1\src\cms\colorspace -Ilib\CMSCpp2.1\src\math 
-      -Ilib\CMSCpp2.1\src\i2c\core -Isrc\c3d -Isrc\c3d\gui -Isrc\fpga 
-      -Isrc\fpga\11307\Vender -Isrc\fpga\11307\TCON 
+    <IDLCFLAGS value="-Isrc\gui\framework -Isrc\gui -Ilib\CMSCpp2.1\src\algo 
+      -Ilib\CMSCpp2.1\src\cms\hsv -I..\..\CMSCpp2.1\src\cms\hsv 
+      -Ilib\CMSCpp2.1\src\gui\util -Ilib\CMSCpp2.1\src\cms\lcd 
+      -Ilib\CMSCpp2.1\src\cms\util -Ilib\CMSCpp2.1\src\cms 
+      -Ilib\CMSCpp2.1\src\java -Ilib\CMSCpp2.1\src\cms\colorspace 
+      -Ilib\CMSCpp2.1\src\math -Ilib\CMSCpp2.1\src\i2c\core -Isrc\c3d 
+      -Isrc\c3d\gui -Isrc\fpga -Isrc\fpga\11307\Vender -Isrc\fpga\11307\TCON 
       -Isrc\fpga\11307\ImageProcess -Isrc\fpga\11307\Function 
       -Isrc\fpga\11307\DCR -Isrc\gui\frame -Isrc\fpga\gui 
       -I&quot;D:\Program Files\Borland\CBuilder6\Projects&quot; -I$(BCB)\include 
