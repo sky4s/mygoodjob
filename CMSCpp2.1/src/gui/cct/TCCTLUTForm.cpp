@@ -167,10 +167,12 @@ void __fastcall TCCTLUTForm::Button_MeaRunClick(TObject * Sender)
 	calibrator.NewMethod = this->CheckBox_NewMethod->Checked;
 	calibrator.setMultiGen(this->CheckBox_MultiGen->Checked,
 			       this->Edit_MultiGenTimes->Text.ToInt());
-
+	if (CheckBox_RTargetIntensity->Checked) {
+	    double rTargetIntensity = Edit_RTargetIntensity->Text.ToDouble();
+	    calibrator.RTargetIntensity = rTargetIntensity;
+	}
 	if (CheckBox_BTargetIntensity->Checked) {
 	    double bTargetIntensity = Edit_BTargetIntensity->Text.ToDouble();
-	    //calibrator.setBTargetIntensity(bTargetIntensity);
 	    calibrator.BTargetIntensity = bTargetIntensity;
 	}
 	//calibrator.AccurateMode = this->CheckBox_Accurate->Checked;
@@ -696,6 +698,14 @@ void TCCTLUTForm::doFeedback(int defectCount, int feedbackCount)
     msg = msg + defectCount + "/" + feedbackCount;
     Edit_FeedbackMsg->Text = msg;
 };
+
+//---------------------------------------------------------------------------
+
+void __fastcall TCCTLUTForm::CheckBox_RTargetIntensityClick(TObject * Sender)
+{
+    bool check = this->CheckBox_RTargetIntensity->Checked;
+    this->Edit_RTargetIntensity->Enabled = check;
+}
 
 //---------------------------------------------------------------------------
 

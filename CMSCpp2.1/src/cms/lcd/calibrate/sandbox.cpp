@@ -55,16 +55,18 @@ namespace cms {
 	    // AdvancedDGLutGenerator
 	    //==================================================================
 	  AdvancedDGLutGenerator::AdvancedDGLutGenerator(Component_vector_ptr componentVector, bptr < cms::lcd::calibrate::ComponentFetcher > fetcher, bptr < IntensityAnalyzerIF > analyzer1, bptr < IntensityAnalyzerIF > analyzer2nd, bptr < BitDepthProcessor > bitDepth):DimDGLutGenerator(componentVector, analyzer1),
-		fetcher(fetcher), useMaxTargetBIntensity(false), bTargetIntensity(-1),
-		stopMeasure(false), multiGen(false), analyzer2nd(analyzer2nd), bitDepth(bitDepth),
-		smoothMode(true), middleCCTRatio(-1), autoParameter(false) {
+		fetcher(fetcher), useMaxTargetBIntensity(false), rTargetIntensity(-1),
+		gTargetIntensity(-1), bTargetIntensity(-1), stopMeasure(false), multiGen(false),
+		analyzer2nd(analyzer2nd), bitDepth(bitDepth), smoothMode(true), middleCCTRatio(-1),
+		autoParameter(false) {
 	    };
 
 	  AdvancedDGLutGenerator::AdvancedDGLutGenerator(Component_vector_ptr componentVector, bptr < ComponentFetcher > fetcher, bptr < BitDepthProcessor > bitDepth):DimDGLutGenerator
 		(componentVector, fetcher->getAnalyzer()),
 		fetcher(fetcher), useMaxTargetBIntensity(false),
-		bTargetIntensity(-1), stopMeasure(false), multiGen(false),
-		bitDepth(bitDepth), smoothMode(false), middleCCTRatio(-1), autoParameter(false) {
+		rTargetIntensity(-1), gTargetIntensity(-1), bTargetIntensity(-1),
+		stopMeasure(false), multiGen(false), bitDepth(bitDepth), smoothMode(false),
+		middleCCTRatio(-1), autoParameter(false) {
 	    };
 	    /*
 	       targetWhite: 目標白點
@@ -335,12 +337,18 @@ namespace cms {
 		    }
 
 		    DGLutGenerator lutgen(newcomponentVector);
+		    if (rTargetIntensity == -1) {
+			rTargetIntensity = 100;
+		    };
+		    if (gTargetIntensity == -1) {
+			gTargetIntensity = 100;
+		    };
 		    //B採100嗎?
 		    if (bTargetIntensity == -1) {
 			bTargetIntensity = useMaxTargetBIntensity ? lutgen.getMaxBIntensity() : 100;
 		    };
-		    RGB_ptr rgb = lutgen.getDGCode(100, 100,
-						   bTargetIntensity);
+		    RGB_ptr rgb =
+			lutgen.getDGCode(rTargetIntensity, gTargetIntensity, bTargetIntensity);
 		    (*result)[x] = rgb;
 
 #ifdef DEBUG_INTENISITY
@@ -678,6 +686,12 @@ namespace cms {
 	    void AdvancedDGLutGenerator::setUseMaxTargetBIntensity(bool useMaxTargetBIntensity) {
 		this->useMaxTargetBIntensity = useMaxTargetBIntensity;
 	    };
+	    void AdvancedDGLutGenerator::setRTargetIntensity(double rTargetIntensity) {
+		this->rTargetIntensity = rTargetIntensity;
+	    }
+	    void AdvancedDGLutGenerator::setGTargetIntensity(double gTargetIntensity) {
+		this->gTargetIntensity = gTargetIntensity;
+	    }
 	    void AdvancedDGLutGenerator::setBTargetIntensity(double bTargetIntensity) {
 		this->bTargetIntensity = bTargetIntensity;
 	    }
