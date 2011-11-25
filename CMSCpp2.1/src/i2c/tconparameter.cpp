@@ -53,7 +53,8 @@ namespace i2c {
 	return gammaTest;
     };
 
-    //12401
+    //12401  RL RH GL GH BL BG
+    //
     const TestRGBBit TestRGBBit::IndependentInstance(8, 0, 24, 16, 40, 32, 6);
     //12403
     const TestRGBBit TestRGBBit::DependentInstance(0, 8, 16, 12, 24, 32, 5);

@@ -138,7 +138,6 @@ void TMainForm::initTCONFile()
 	ini->WriteBool("11306", "IndepRGB", true);
 
 	ini->WriteInteger("11306", "in", 6);
-	//ini->WriteInteger("11306", "lut", 10);
 	ini->WriteInteger("11306", "out", 6);
 	//=========================================================================
 	// 11307
@@ -157,7 +156,6 @@ void TMainForm::initTCONFile()
 	ini->WriteBool("11307", "IndepRGB", true);
 
 	ini->WriteInteger("11307", "in", 6);
-	//ini->WriteInteger("11307", "lut", 10);
 	ini->WriteInteger("11307", "out", 6);
 	//=========================================================================
 	// 12306
@@ -176,7 +174,6 @@ void TMainForm::initTCONFile()
 	ini->WriteBool("12306", "IndepRGB", true);
 
 	ini->WriteInteger("12306", "in", 8);
-	//ini->WriteInteger("12306", "lut", 12);
 	ini->WriteInteger("12306", "out", 8);
 	//=========================================================================
 	// 12401
@@ -196,6 +193,24 @@ void TMainForm::initTCONFile()
 
 	ini->WriteInteger("12401", "in", 8);
 	ini->WriteInteger("12401", "out", 8);
+	//=========================================================================
+	// 12407
+	//=========================================================================
+	ini->WriteInteger("12407", "AddressingSize", 5);
+
+	ini->WriteString("12407", "DigitalGammaEnableAddress", "29");
+	ini->WriteInteger("12407", "DigitalGammaEnableBit", 0);
+	ini->WriteString("12407", "DigitalGammaLUTAddress", "106D");
+	ini->WriteInteger("12407", "DigitalGammaLUTType", 12);
+
+	ini->WriteBool("12407", "GammaTestFunc", true);
+	ini->WriteString("12407", "GammaTestEnableAddress", "1FEB");
+	ini->WriteInteger("12407", "GammaTestEnableBit", 4);
+	ini->WriteString("12407", "GammaTestAddress", "1FEC");
+	ini->WriteBool("12407", "IndepRGB", false);
+
+	ini->WriteInteger("12407", "in", 8);
+	ini->WriteInteger("12407", "out", 8);
 	//=========================================================================
     }
 }
@@ -229,7 +244,7 @@ void TMainForm::readTCONSetup(String filename, String section)
 	this->Edit_GammaTestAddress->Text = ini->ReadString(section, "GammaTestAddress", "154");
 	this->ComboBox_GammaTestType->ItemIndex = ini->ReadBool(section, "IndepRGB", true) ? 0 : 1;
 	ComboBox_GammaTestTypeChange(this);
-    } 
+    }
     CheckBox_GammaTest->Checked = gammaTestFunc;
 
     this->Edit_DGEnableAddress->Text = ini->ReadString(section, "DigitalGammaEnableAddress", "28");
@@ -287,7 +302,7 @@ void TMainForm::writeTCONCustomSetup()
 	ini->WriteInteger(CUSTOM, "DigitalGammaLUTType", ComboBox_DGLUTType->Text.ToInt());
 
 	bool gammaTest = CheckBox_GammaTest->Checked;
-        //CheckBox_GammaTest->Checked = gammaTest;
+	//CheckBox_GammaTest->Checked = gammaTest;
 	//bool gammaTest = true;
 	ini->WriteBool(CUSTOM, "GammaTestFunc", gammaTest);
 	if (gammaTest) {
