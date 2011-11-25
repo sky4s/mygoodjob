@@ -7,6 +7,7 @@ namespace gui {
     namespace framework {
 	RegisterMap::RegisterMap(std::string filename) {
 	    map = AbstractBase::getStringMap(filename);
+
 	};
 
 	void RegisterMap::reset() {
@@ -18,8 +19,13 @@ namespace gui {
 
 	//=====================================================================
 
+	RegisterFramework::RegisterFramework() {
+	    childmap = TControlVecMap_ptr(new TControlVecMap());
+	};
+
 	void RegisterFramework::scanUI(TForm * form) {
 	    childScan(form);
+
 	};
 
 	void RegisterFramework::childScan(TWinControl * ctrl) {
@@ -27,6 +33,14 @@ namespace gui {
 	    for (int x = 0; x < count; x++) {
 		TControl *child = ctrl->Controls[x];
 		String name = child->Name;
+		TWinControl *parent = child->Parent;
+
+		TControl_vector_ptr ctrlvec = (*childmap)[parent];
+		if (nil_TControlVecMap_ptr == ctrlvec) {
+		    ctrlvec = TControl_vector_ptr(new TControl_vector());
+		}
+		ctrlvec->push_back(child);
+		(*childmap)[parent] = ctrlvec;
 
 		TWinControl *wctrl = dynamic_cast < TWinControl * >(child);
 		if (null != wctrl) {

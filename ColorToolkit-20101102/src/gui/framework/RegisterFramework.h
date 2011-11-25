@@ -29,6 +29,7 @@ namespace gui {
 	};
 
 
+
 	class RegisterMap {
 	  private:
 	    StringMap_ptr map;
@@ -40,15 +41,22 @@ namespace gui {
 	};
 
 
+	typedef std::vector < TControl * >TControl_vector;
+	typedef bptr < TControl_vector > TControl_vector_ptr;
+	typedef std::map < TWinControl *,
+	    TControl_vector_ptr > TControlVecMap;
+	typedef bptr < TControlVecMap > TControlVecMap_ptr;
+#define nil_TControlVecMap_ptr TControlVecMap_ptr((TControlVecMap *) NULL)
 
 	class RegisterFramework {
-
 	  private:
+	    TControlVecMap_ptr childmap;
 	    void bind(const string & regname, TControl * control);
 	    void childScan(TWinControl * ctrl);
 	  public:
 	    void bind(const string & regname, ...);
 	    void scanUI(TForm * form);
+	     RegisterFramework();
 	};
 
 
