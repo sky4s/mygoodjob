@@ -1,27 +1,38 @@
 #include <includeall.h>
 #pragma hdrstop
 #include "RegisterFramework.h"
+#include <fpga/gui_class.h>
 
 namespace gui {
     namespace framework {
-	using namespace std;
-	class RegisterFramework {
-
-	  private:
-	    void bind(const string & regname, TControl * control);
-	  public:
-	    void bind(const string & regname, ...);
-	    void scanUI(TForm * form);
+	RegisterMap::RegisterMap(std::string filename) {
+	    map = AbstractBase::getStringMap(filename);
 	};
 
-	class RegisterType {
-
+	void RegisterMap::reset() {
+	    map = nil_StringMap_ptr;
 	};
 
-	class BitRegister:public RegisterType {
+	bptr < RegisterType > RegisterMap::getRegister(std::string regname) {
 	};
-	class LUTRegister:public RegisterType {
+
+	//=====================================================================
+
+	void RegisterFramework::scanUI(TForm * form) {
+	    childScan(form);
 	};
+
+	void RegisterFramework::childScan(TWinControl * ctrl) {
+	    int count = ctrl->ControlCount;
+	    for (int x = 0; x < count; x++) {
+		TControl *child = ctrl->Controls[x];
+		TWinControl *wctrl = dynamic_cast < TWinControl * >(child);
+		if (null != wctrl) {
+		    childScan(wctrl);
+		}
+	    }
+	}
+
     };
 
 };

@@ -15,7 +15,7 @@
 #pragma package(smart_init)
 #pragma resource "*.dfm"
 //TSharpnessForm12307 *SharpnessForm;       //使用動態宣告,不需作實體宣告
-TDebugForm *DebugForm;
+//TDebugForm *DebugForm;
 
 //---------------------------------------------------------------------------
 __fastcall TSharpnessForm12307::TSharpnessForm12307(TComponent *

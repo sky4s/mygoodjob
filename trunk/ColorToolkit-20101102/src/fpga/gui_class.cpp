@@ -28,7 +28,8 @@ int_vector_ptr AbstractBase::getValuesFromFile(std::string tag)
     return values;
 };
 
-bool AbstractBase::setAddress(AbstractAddressType * address, std::string text)
+bool AbstractBase::setAddress(AbstractAddressType * address,
+			      std::string text)
 {
     if (text.length() == 0 || text == "_NULL") {
 	return false;
@@ -45,7 +46,8 @@ bool AbstractBase::setAddress(AbstractAddressType * address, std::string text)
     return true;
 };
 
-bool AbstractBase::setAddressFromFile(AbstractAddressType * address, std::string tag)
+bool AbstractBase::setAddressFromFile(AbstractAddressType * address,
+				      std::string tag)
 {
     if (nil_StringMap_ptr == map) {
 	map = getStringMap(TMainForm::AddressFile);
@@ -73,7 +75,8 @@ StringMap_ptr AbstractBase::getStringMap(std::string filename)
 	    while (infile.good()) {
 		getline(infile, line);
 		if (line.length() != 0) {
-		    string_vector_ptr stringvector = StringVector::tokenize(line, ",");
+		    string_vector_ptr stringvector =
+			StringVector::tokenize(line, ",");
 		    string key = (*stringvector)[0];
 		    const std::string aliasName = (*aliasNameMap)[key];
 		    if (aliasName.length() != 0) {
