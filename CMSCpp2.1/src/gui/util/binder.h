@@ -81,7 +81,7 @@ namespace gui {
 	    std::multimap < TControl *, uiset_ptr > setterMap;
 	  public:
 	    MultiUIBinder();
-	    void active(TObject * sender);
+	    void __fastcall active(TObject * sender);
 	    void bind(TEdit * edit, TScrollBar * scrollBar);
 	    void bind(TEdit * edit1, TEdit * edit2);
 	    void bind(TScrollBar * scrollBar1, TScrollBar * scrollBar2);
