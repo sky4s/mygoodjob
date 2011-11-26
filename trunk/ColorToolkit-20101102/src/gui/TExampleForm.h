@@ -30,7 +30,8 @@ class TExampleForm:public TForm {
     TLabel *Label2;
     TScrollBar *ScrollBar1;
     TStaticText *StaticText1;
-    void __fastcall FormCreate(TObject * Sender);
+    void __fastcall ScrollBar1Change(TObject * Sender);
+    void __fastcall FormActivate(TObject * Sender);
   private:			// User declarations
      gui::framework::RegisterFramework regframework;
   public:			// User declarations

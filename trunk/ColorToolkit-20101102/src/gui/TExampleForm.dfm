@@ -11,7 +11,7 @@ object ExampleForm: TExampleForm
   Font.Name = 'MS Sans Serif'
   Font.Style = []
   OldCreateOrder = False
-  OnCreate = FormCreate
+  OnActivate = FormActivate
   PixelsPerInch = 120
   TextHeight = 16
   object GroupBox1: TGroupBox
@@ -59,6 +59,7 @@ object ExampleForm: TExampleForm
       Height = 21
       PageSize = 0
       TabOrder = 2
+      OnChange = ScrollBar1Change
     end
     object StaticText1: TStaticText
       Left = 208

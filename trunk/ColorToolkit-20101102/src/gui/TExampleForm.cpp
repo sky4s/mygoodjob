@@ -16,7 +16,15 @@ __fastcall TExampleForm::TExampleForm(TComponent * Owner)
 
 //---------------------------------------------------------------------------
 
-void __fastcall TExampleForm::FormCreate(TObject * Sender)
+
+void __fastcall TExampleForm::ScrollBar1Change(TObject * Sender)
+{
+    regframework.active(Sender);
+}
+
+//---------------------------------------------------------------------------
+
+void __fastcall TExampleForm::FormActivate(TObject * Sender)
 {
     regframework.scanUI(this);
 }
