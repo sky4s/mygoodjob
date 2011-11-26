@@ -50,10 +50,12 @@ namespace java {
 	const bool Object::isNull() {
 	    return null_;
 	};
-      Object::Object(bool null_):null_(null_), c(*this), objectID(globalID++) {
+      Object::Object(bool null_):null_(null_), c(*this),
+	    objectID(globalID++) {
 
 	};
-      Object::Object():null_(false), c(*this), objectID(globalID++) {
+      Object::Object():null_(false), c(*this),
+	    objectID(globalID++) {
 
 	};
 
@@ -231,7 +233,8 @@ namespace java {
 	    int index = minIndex(values);
 	    return (*values)[index];
 	};
-	double_vector_ptr Math::normalize(double_vector_ptr original, double normal) {
+	double_vector_ptr Math::normalize(double_vector_ptr original,
+					  double normal) {
 	    for (unsigned int x = 0; x < original->size(); x++) {
 		(*original)[x] /= normal;
 	    }
@@ -263,7 +266,8 @@ namespace java {
 	    fr = (((((45.2548339756803022511987494 * fr +
 		      192.2798368355061050458134625) * fr +
 		     119.1654824285581628956914143) * fr +
-		    13.43250139086239872172837314) * fr + 0.1636161226585754240958355063)
+		    13.43250139086239872172837314) * fr +
+		   0.1636161226585754240958355063)
 		  /
 		  ((((14.80884093219134573786480845 * fr +
 		      151.9714051044435648658557668) * fr +
@@ -312,7 +316,8 @@ namespace java {
 
 	RuntimeException::RuntimeException() {
 	};
-      RuntimeException::RuntimeException(string message):Exception(message) {
+      RuntimeException::RuntimeException(string message):Exception(message)
+	{
 
 	};
 

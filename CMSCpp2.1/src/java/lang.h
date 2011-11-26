@@ -217,13 +217,25 @@ typedef bptr < int3D > int3D_ptr;
 //==============================================================================
 // 簡化stl使用上的巨集
 //==============================================================================
-typedef std::map < const std::string, const std::string> StringMap;
+typedef std::map < const std::string, const std::string > StringMap;
 typedef bptr < StringMap > StringMap_ptr;
 #define nil_StringMap_ptr StringMap_ptr((StringMap *) NULL)
 
-typedef std::map < const std::string, string_vector_ptr> StringVecMap;
+typedef std::map < const std::string, string_vector_ptr > StringVecMap;
 typedef bptr < StringVecMap > StringVecMap_ptr;
 #define nil_StringVecMap_ptr StringVecMap_ptr((StringVecMap *) NULL)
+//==============================================================================
+
+//==============================================================================
+// 簡化VCL使用上的巨集
+//==============================================================================
+typedef std::vector < TControl * >TControl_vector;
+typedef bptr < TControl_vector > TControl_vector_ptr;
+typedef std::map < TWinControl *, TControl_vector_ptr > TControlVecMap;
+typedef bptr < TControlVecMap > TControlVecMap_ptr;
+#define nil_TControlVecMap_ptr TControlVecMap_ptr((TControlVecMap *) NULL)
+typedef std::vector < TLabel * >TLabel_vector;
+typedef bptr < TLabel_vector > TLabel_vector_ptr;
 //==============================================================================
 
 /*
@@ -294,8 +306,8 @@ namespace java {
 	    Object & object;
 	    Class(Object & object);
 	  public:
-	    const string_ptr getSimpleName()const;
-	    const string_ptr getName()const;
+	    const string_ptr getSimpleName() const;
+	    const string_ptr getName() const;
 	};
 
 	class Object /*:public TObject */  {
@@ -308,9 +320,9 @@ namespace java {
 	    const Class c;
 	  public:
 	    const bool equals(Object_ptr obj);
-	    const Class & getClass()const;
+	    const Class & getClass() const;
 	    const int hashCode();
-	    const string_ptr toString()const;
+	    const string_ptr toString() const;
 	    const bool isNull();
 	    Object(bool null_);
 	    Object();
@@ -361,7 +373,8 @@ namespace java {
 
 
 
-	    static double_vector_ptr normalize(double_vector_ptr original, double normal);
+	    static double_vector_ptr normalize(double_vector_ptr original,
+					       double normal);
 	    static double cubeRoot(double x);
 	    static double exp(double x);
 	    static double atan2deg(double b, double a);
@@ -448,7 +461,8 @@ private: \
 #define WRITE_ONLY 2
 #define READ_WRITE 3
 
-template < typename Container, typename ValueType, int nPropType > class Property {
+template < typename Container, typename ValueType,
+    int nPropType > class Property {
   public:
     Property() {
 	m_cObject = NULL;
@@ -456,7 +470,7 @@ template < typename Container, typename ValueType, int nPropType > class Propert
 	Get = NULL;
     }
 //-- This to set a pointer to the class that contain the//   property --
-    void setContainer(Container * cObject) {
+	void setContainer(Container * cObject) {
 	m_cObject = cObject;
     }
 //-- Set the set member function that will change the value --
@@ -483,7 +497,8 @@ template < typename Container, typename ValueType, int nPropType > class Propert
     }
 //-- To make possible to cast the property class to the
 //   internal type --
-    operator                                                    ValueType() {
+    operator                                                    
+	ValueType() {
 	assert(m_cObject != NULL);
 	assert(Get != NULL);
 	return (m_cObject->*Get) ();
