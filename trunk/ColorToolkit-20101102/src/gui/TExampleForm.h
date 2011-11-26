@@ -14,6 +14,7 @@
 #include <Controls.hpp>
 #include <StdCtrls.hpp>
 #include <Forms.hpp>
+#include <ExtCtrls.hpp>
 //其他庫頭文件
 
 //本項目內頭文件
@@ -30,8 +31,9 @@ class TExampleForm:public TForm {
     TLabel *Label2;
     TScrollBar *ScrollBar1;
     TStaticText *StaticText1;
-    void __fastcall ScrollBar1Change(TObject * Sender);
+        TLabeledEdit *LabeledEdit1;
     void __fastcall FormActivate(TObject * Sender);
+    void __fastcall FormCreate(TObject * Sender);
   private:			// User declarations
      gui::framework::RegisterFramework regframework;
   public:			// User declarations

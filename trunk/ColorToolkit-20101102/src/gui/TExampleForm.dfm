@@ -12,13 +12,14 @@ object ExampleForm: TExampleForm
   Font.Style = []
   OldCreateOrder = False
   OnActivate = FormActivate
+  OnCreate = FormCreate
   PixelsPerInch = 120
   TextHeight = 16
   object GroupBox1: TGroupBox
     Left = 8
     Top = 8
     Width = 313
-    Height = 209
+    Height = 161
     Caption = 'GroupBox1'
     TabOrder = 0
     object Label1: TLabel
@@ -59,7 +60,6 @@ object ExampleForm: TExampleForm
       Height = 21
       PageSize = 0
       TabOrder = 2
-      OnChange = ScrollBar1Change
     end
     object StaticText1: TStaticText
       Left = 208
@@ -68,6 +68,18 @@ object ExampleForm: TExampleForm
       Height = 20
       Caption = 'StaticText1'
       TabOrder = 3
+    end
+    object LabeledEdit1: TLabeledEdit
+      Left = 8
+      Top = 128
+      Width = 121
+      Height = 24
+      EditLabel.Width = 80
+      EditLabel.Height = 16
+      EditLabel.Caption = 'LabeledEdit1'
+      LabelPosition = lpAbove
+      LabelSpacing = 3
+      TabOrder = 4
     end
   end
 end

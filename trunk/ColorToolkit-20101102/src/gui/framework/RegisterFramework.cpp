@@ -69,11 +69,22 @@ namespace gui {
 	    return regData[n * 3 + 2];
 	}
 	//=====================================================================
-
-	RegisterFramework::RegisterFramework() {
+	void RegisterFramework::init() {
 	    childmap = TControlVecMap_ptr(new TControlVecMap());
-	    labelvector = TLabel_vector_ptr(new TLabel_vector());
+	    labelVector = TControl_vector_ptr(new TControl_vector());
 	    statictextVector = TControl_vector_ptr(new TControl_vector());
+	    checkVector = TControl_vector_ptr(new TControl_vector());
+	    editVector = TControl_vector_ptr(new TControl_vector());
+	};
+	RegisterFramework::RegisterFramework() {
+	    setRegisterFilename("tcon.txt");
+	    init();
+
+	};
+
+	RegisterFramework::RegisterFramework(std::string filename) {
+	    setRegisterFilename(filename);
+	    init();
 	};
 
 	/*
@@ -84,8 +95,9 @@ namespace gui {
 	 */
 	void RegisterFramework::scanUI(TForm * form) {
 	    childScan(form);
-	    processLabel();
 	    processStaticText();	//繫結
+	    processLabel();
+
 	};
 
 	void RegisterFramework::childScan(TWinControl * ctrl) {
@@ -112,7 +124,20 @@ namespace gui {
 
 		TLabel *label = dynamic_cast < TLabel * >(child);
 		if (null != label) {
-		    labelvector->push_back(label);
+		    labelVector->push_back(label);
+		    continue;
+		}
+
+		TCheckBox *check = dynamic_cast < TCheckBox * >(child);
+		if (null != check) {
+		    checkVector->push_back(check);
+		    continue;
+		}
+
+		TLabeledEdit *edit =
+		    dynamic_cast < TLabeledEdit * >(child);
+		if (null != edit) {
+		    editVector->push_back(edit);
 		    continue;
 		}
 
@@ -129,8 +154,11 @@ namespace gui {
 
 	}
 
+	/*
+	   將Label跟ScrollBar或者TComboBox結合
+	 */
 	void RegisterFramework::processLabel() {
-	    foreach(TLabel * label, *labelvector) {
+	    foreach(TControl * label, *labelVector) {
 		TWinControl *parent = label->Parent;
 		TControl_vector_ptr ctrlvec = (*childmap)[parent];
 		TControl_vector_ptr sameTop = findSameTop(ctrlvec, label);
@@ -153,6 +181,9 @@ namespace gui {
 	};
 
 
+	/*
+	   繫結StaticText前面的ScrollBar
+	 */
 	void RegisterFramework::processStaticText() {
 	    foreach(TControl * ctrl, *statictextVector) {
 		TStaticText *text = dynamic_cast < TStaticText * >(ctrl);
@@ -171,6 +202,12 @@ namespace gui {
 			}
 		    }
 		}
+	    }
+	};
+
+	void RegisterFramework::processTControl(TControl_vector_ptr vector) {
+	    foreach(TControl * ctrl, *vector) {
+
 	    }
 	};
 
@@ -193,6 +230,14 @@ namespace gui {
 
 	void RegisterFramework::active(TObject * sender) {
 	    binder.active(sender);
+	};
+
+	void RegisterFramework::setRegisterFilename(std::string filename) {
+	    registerMap = bptr < RegisterMap > (new RegisterMap(filename));
+	};
+
+	void RegisterFramework::resetRegisterMap() {
+	    registerMap->reset();
 	};
     };
 
