@@ -217,11 +217,11 @@ typedef bptr < int3D > int3D_ptr;
 //==============================================================================
 // 簡化stl使用上的巨集
 //==============================================================================
-typedef std::map < const std::string, const std::string) StringMap;
+typedef std::map < const std::string, const std::string> StringMap;
 typedef bptr < StringMap > StringMap_ptr;
 #define nil_StringMap_ptr StringMap_ptr((StringMap *) NULL)
 
-typedef std::map < const std::string, string_vector_ptr) StringVecMap;
+typedef std::map < const std::string, string_vector_ptr> StringVecMap;
 typedef bptr < StringVecMap > StringVecMap_ptr;
 #define nil_StringVecMap_ptr StringVecMap_ptr((StringVecMap *) NULL)
 //==============================================================================
