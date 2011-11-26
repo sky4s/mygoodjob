@@ -1,6 +1,18 @@
 #include <includeall.h>
 #pragma hdrstop
 #include "RegisterFramework.h"
+
+//C系統文件
+#include <cstdarg>
+//C++系統文件
+
+//vcl庫頭文件
+
+//其他庫頭文件
+
+//本項目內頭文件
+
+//本項目內gui頭文件
 #include <fpga/gui_class.h>
 
 namespace gui {
@@ -16,7 +28,46 @@ namespace gui {
 
 	bptr < RegisterType > RegisterMap::getRegister(std::string regname) {
 	};
+	//=====================================================================
 
+	BitRegister::BitRegister(int n, ...) {
+	    if (n % 3 != 0) {
+		throw new java::lang::IllegalArgumentException();
+	    }
+
+	    va_list num_list;
+	    va_start(num_list, n);
+	    regData = int_array(new int[n]);
+	    byteCount = n / 3;
+
+	    for (int i = 0; i < n; i++) {
+		const int d = va_arg(num_list, const int);
+		regData[i] = d;
+		/*const string & str = _toString(d);
+		   result->push_back(str); */
+	    } va_end(num_list);
+	};
+
+
+	int BitRegister::getAddress(int n) {
+	    if (n > byteCount) {
+		throw new java::lang::IllegalArgumentException();
+	    }
+	    return regData[n * 3];
+	}
+	int BitRegister::getBit(int n) {
+	    if (n > byteCount) {
+		throw new java::lang::IllegalArgumentException();
+	    }
+	    return regData[n * 3 + 1];
+	}
+
+	int BitRegister::getLength(int n) {
+	    if (n > byteCount) {
+		throw new java::lang::IllegalArgumentException();
+	    }
+	    return regData[n * 3 + 2];
+	}
 	//=====================================================================
 
 	RegisterFramework::RegisterFramework() {
@@ -33,7 +84,8 @@ namespace gui {
 	 */
 	void RegisterFramework::scanUI(TForm * form) {
 	    childScan(form);
-
+	    processLabel();
+	    processStaticText();	//繫結
 	};
 
 	void RegisterFramework::childScan(TWinControl * ctrl) {
@@ -50,22 +102,29 @@ namespace gui {
 		ctrlvec->push_back(child);
 		(*childmap)[parent] = ctrlvec;
 
-		TWinControl *wctrl = dynamic_cast < TWinControl * >(child);
-		if (null != wctrl) {
-		    childScan(wctrl);
+
+		TStaticText *staticText =
+		    dynamic_cast < TStaticText * >(child);
+		if (null != staticText) {
+		    statictextVector->push_back(staticText);
 		    continue;
 		}
 
 		TLabel *label = dynamic_cast < TLabel * >(child);
 		if (null != label) {
 		    labelvector->push_back(label);
+		    continue;
 		}
 
-		TStaticText *staticText =
-		    dynamic_cast < TStaticText * >(child);
-		if (null != staticText) {
-		    statictextVector->push_back(staticText);
+		TWinControl *wctrl = dynamic_cast < TWinControl * >(child);
+		if (null != wctrl) {
+		    childScan(wctrl);
+		    continue;
 		}
+
+
+
+
 	    }
 
 	}
@@ -124,6 +183,16 @@ namespace gui {
 		}
 	    }
 	    return result;
+	};
+	void RegisterFramework::bindComboBox(const string & regname, ...) {
+	};
+
+	void RegisterFramework::bind(const string & regname,
+				     TControl * control) {
+	};
+
+	void RegisterFramework::active(TObject * sender) {
+	    binder.active(sender);
 	};
     };
 

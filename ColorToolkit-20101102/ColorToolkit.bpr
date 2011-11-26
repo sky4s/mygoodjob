@@ -20,7 +20,7 @@
       build\gui_class.obj build\lcdtarget.obj build\THSVForm2nd.obj 
       build\binder.obj build\hsvip.obj build\minimisation.obj build\asa047.obj 
       build\Sharpness12307.obj build\CM1.obj build\TDebugForm.obj 
-      build\RegisterFramework.obj"/>
+      build\RegisterFramework.obj build\TExampleForm.obj"/>
     <RESFILES value="ColorToolkit.res"/>
     <IDLFILES value=""/>
     <IDLGENFILES value=""/>
@@ -34,7 +34,8 @@
       src\fpga\gui\C3D1.dfm src\fpga\gui\SAT.dfm src\fpga\gui\offset.dfm 
       src\c3d\gui\TInTargetForm.dfm src\fpga\gui\TGamutForm.dfm 
       src\fpga\gui\TPatternForm.dfm src\fpga\gui\THSVForm2nd.dfm 
-      src\fpga\gui\Sharpness12307.dfm src\fpga\gui\CM1.dfm src\gui\TDebugForm.dfm"/>
+      src\fpga\gui\Sharpness12307.dfm src\fpga\gui\CM1.dfm 
+      src\gui\TDebugForm.dfm src\gui\TExampleForm.dfm"/>
     <LIBFILES value="lib\USB_i2c_lib\hid.lib"/>
     <LIBRARIES value="tee.lib vclx.lib bcbsmp.lib rtl.lib vcl.lib"/>
     <SPARELIBS value="vcl.lib rtl.lib bcbsmp.lib vclx.lib tee.lib"/>
@@ -147,6 +148,7 @@
       <FILE FILENAME="src\fpga\gui\CM1.cpp" FORMNAME="CMForm1" UNITNAME="CM1" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="src\gui\TDebugForm.cpp" FORMNAME="DebugForm" UNITNAME="TDebugForm" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="src\gui\framework\RegisterFramework.cpp" FORMNAME="" UNITNAME="RegisterFramework" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="src\gui\TExampleForm.cpp" FORMNAME="ExampleForm" UNITNAME="TExampleForm" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
   </FILELIST>
   <BUILDTOOLS>
   </BUILDTOOLS>

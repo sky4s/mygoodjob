@@ -25,6 +25,7 @@ USEFORM("src\fpga\gui\THSVForm2nd.cpp", HSVForm2nd);
 USEFORM("src\fpga\gui\Sharpness12307.cpp", SharpnessForm12307);
 USEFORM("src\fpga\gui\CM1.cpp", CMForm1);
 USEFORM("src\gui\TDebugForm.cpp", DebugForm);
+USEFORM("src\gui\TExampleForm.cpp", ExampleForm);
 //---------------------------------------------------------------------------
 WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 {
@@ -37,6 +38,7 @@ WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
                  Application->CreateForm(__classid(TPatternForm), &PatternForm);
                  Application->CreateForm(__classid(TPatternForm), &PatternForm2);
                  Application->CreateForm(__classid(TDebugForm), &DebugForm);
+                 Application->CreateForm(__classid(TExampleForm), &ExampleForm);
                  Application->Run();
     }
     catch(Exception & exception) {

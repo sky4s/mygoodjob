@@ -24,7 +24,13 @@ namespace gui {
 
 	class BitRegister:public RegisterType {
 	  private:
-
+	    int byteCount;
+	    int_array regData;
+	  public:
+	     BitRegister(n, ...);
+	    int getAddress(int n);
+	    int getBit(int n);
+	    int getLength(int n);
 
 	};
 	class LUTRegister:public RegisterType {
@@ -49,6 +55,7 @@ namespace gui {
 	    TControlVecMap_ptr childmap;
 	    TLabel_vector_ptr labelvector;
 	    TControl_vector_ptr statictextVector;
+
 	    void bind(const string & regname, TControl * control);
 	    void childScan(TWinControl * ctrl);
 	    void processLabel();
@@ -58,9 +65,11 @@ namespace gui {
 						   TControl * find);
 	     gui::util::MultiUIBinder binder;
 	  public:
-	    void bind(const string & regname, ...);
+	    void bindComboBox(const string & regname, ...);
+	    //void bind(const string & regname, ...);
 	    void scanUI(TForm * form);
 	     RegisterFramework();
+	    void active(TObject * sender);
 	};
 
 
