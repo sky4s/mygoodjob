@@ -10,6 +10,8 @@
 //其他庫頭文件
 
 //本項目內頭文件
+#include <java/lang.h>
+#include <gui/util/binder.h>
 
 //本項目內gui頭文件
 
@@ -41,18 +43,20 @@ namespace gui {
 	};
 
 
-	typedef std::vector < TControl * >TControl_vector;
-	typedef bptr < TControl_vector > TControl_vector_ptr;
-	typedef std::map < TWinControl *,
-	    TControl_vector_ptr > TControlVecMap;
-	typedef bptr < TControlVecMap > TControlVecMap_ptr;
-#define nil_TControlVecMap_ptr TControlVecMap_ptr((TControlVecMap *) NULL)
 
 	class RegisterFramework {
 	  private:
 	    TControlVecMap_ptr childmap;
+	    TLabel_vector_ptr labelvector;
+	    TControl_vector_ptr statictextVector;
 	    void bind(const string & regname, TControl * control);
 	    void childScan(TWinControl * ctrl);
+	    void processLabel();
+	    void processStaticText();
+	    static TControl_vector_ptr findSameTop(TControl_vector_ptr
+						   vector,
+						   TControl * find);
+	     gui::util::MultiUIBinder binder;
 	  public:
 	    void bind(const string & regname, ...);
 	    void scanUI(TForm * form);
