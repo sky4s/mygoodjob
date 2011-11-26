@@ -19,7 +19,8 @@
 //本項目內頭文件
 #include <java/lang.h>
 
-typedef std::multimap < TControl *, uiset_ptr >::const_iterator SetterIterator;
+typedef std::multimap < TControl *,
+    uiset_ptr >::const_iterator SetterIterator;
 typedef std::pair < SetterIterator, SetterIterator > Range;
 
 namespace gui {
@@ -52,7 +53,8 @@ namespace gui {
 	    TStaticText * text;
 	    TScrollBar *scrollBar;
 	  public:
-	    StaticText2ScrollBarSetter(TStaticText * text, TScrollBar * scrollBar);
+	    StaticText2ScrollBarSetter(TStaticText * text,
+				       TScrollBar * scrollBar);
 	    virtual void set(TObject * sender);
 	};
 
@@ -60,7 +62,8 @@ namespace gui {
 	  protected:
 	    TScrollBar * scrollBar1, *scrollBar2;
 	  public:
-	    ScrollBar2ScrollBarSetter(TScrollBar * scrollBar1, TScrollBar * scrollBar2);
+	    ScrollBar2ScrollBarSetter(TScrollBar * scrollBar1,
+				      TScrollBar * scrollBar2);
 	    virtual void set(TObject * sender);
 	};
 
@@ -88,7 +91,8 @@ namespace gui {
 	    /*
 	       提供custom的Setter定義
 	     */
-	    void bind(TControl * ctrl1, TControl * ctrl2, uiset_ptr setter);
+	    void bind(TControl * ctrl1, TControl * ctrl2,
+		      uiset_ptr setter);
 
 	    /*void bind(TEdit * edit, TScrollBar * scrollBaruiset_ptr, uiset_ptr setter);
 	       void bind(TEdit * edit1, TEdit * edit2, uiset_ptr setter);
