@@ -116,7 +116,7 @@ class TSharpnessForm12307:public TForm {
     TStaticText *StaticText10;
     TStaticText *StaticText11;
     TStaticText *StaticText12;
-    TLabeledEdit *LabeledEdit1;
+        TLabeledEdit *LabeledEdit1;
     TLabel *Label17;
     TLabel *Label18;
     TComboBox *ComboBox5;

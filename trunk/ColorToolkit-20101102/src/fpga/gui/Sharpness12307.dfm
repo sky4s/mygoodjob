@@ -463,7 +463,7 @@ object SharpnessForm12307: TSharpnessForm12307
         Left = 10
         Top = 98
         Width = 41
-        Height = 16
+        Height = 24
         Caption = 'Label9'
       end
       object Label10: TLabel
@@ -716,8 +716,8 @@ object SharpnessForm12307: TSharpnessForm12307
         Top = 39
         Width = 149
         Height = 24
-        EditLabel.Width = 98
-        EditLabel.Height = 20
+        EditLabel.Width = 80
+        EditLabel.Height = 16
         EditLabel.Caption = 'LabeledEdit1'
         LabelPosition = lpAbove
         LabelSpacing = 3

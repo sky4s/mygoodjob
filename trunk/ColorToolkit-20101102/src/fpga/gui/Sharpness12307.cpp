@@ -10,7 +10,7 @@
 #include <fpga/11307/ImageProcess/ImgProc_11307.h>
 #include <fpga/gui/Unit1.h>
 #include <fpga/gui/Engineering.h>
-#include <gui/framework/RegisterFramework.h>
+//#include <gui/framework/RegisterFramework.h>
 #include "TDebugForm.h"
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
@@ -187,8 +187,8 @@ void childScan(TWinControl * ctrl)
 void __fastcall TSharpnessForm12307::FormCreate(TObject * Sender)
 {
 
-    gui::framework::RegisterFramework regframework;
-    regframework.scanUI(this);
+    //gui::framework::RegisterFramework regframework;
+    //regframework.scanUI(this);
 
     SP_Chg = 0;
     int ic_choice = -1;
@@ -245,7 +245,7 @@ void __fastcall TSharpnessForm12307::FormCreate(TObject * Sender)
     }
 
     CboB[0]->Cbob = ComboBox1;
-    CboB[0]->CbobL = Label7;
+    CboB[0]->CbobL = Label7 ;
     CboB[1]->Cbob = ComboBox2;
     CboB[1]->CbobL = Label8;
     CboB[2]->Cbob = ComboBox3;
@@ -900,4 +900,6 @@ void __fastcall TSharpnessForm12307::FormKeyDown(TObject * Sender,
 }
 
 //---------------------------------------------------------------------------
+
+
 
