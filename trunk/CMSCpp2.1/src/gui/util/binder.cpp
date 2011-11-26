@@ -97,7 +97,7 @@ namespace gui {
 	//=====================================================================
 	MultiUIBinder::MultiUIBinder() {
 	};
-	void MultiUIBinder::active(TObject * sender) {
+	void __fastcall MultiUIBinder::active(TObject * sender) {
 	    TControl *ctrl = dynamic_cast < TControl * >(sender);
 	    if (null != ctrl) {
 		Range range = setterMap.equal_range(ctrl);
@@ -111,6 +111,7 @@ namespace gui {
 	void MultiUIBinder::bind(TEdit * edit, TScrollBar * scrollBar) {
 	    uiset_ptr setter(new Edit2ScrollBarSetter(edit, scrollBar));
 	    bind(edit, scrollBar, setter);
+	    //scrollBar->OnChange = active;
 	    //setterMap.insert(make_pair(edit, setter));
 	    //setterMap.insert(make_pair(scrollBar, setter));
 	};
@@ -144,6 +145,7 @@ namespace gui {
 	    uiset_ptr setter(new
 			     StaticText2ScrollBarSetter(text, scrollBar));
 	    setter->set(scrollBar);
+	    scrollBar->OnChange = active;
 	    bind(text, scrollBar, setter);
 	    //setterMap.insert(make_pair(text, setter));
 	    //setterMap.insert(make_pair(scrollBar, setter));
