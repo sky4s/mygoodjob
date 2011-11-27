@@ -90,7 +90,6 @@ namespace gui {
 	class RegisterFramework {
 	  private:
 	    TControlVecMap_ptr childmap;
-	    //TLabel_vector_ptr labelvector;
 	    TControl_vector_ptr labelVector;
 	    TControl_vector_ptr statictextVector;
 	    TControl_vector_ptr checkVector;
