@@ -192,13 +192,13 @@ void TMainForm::initTCONFile()
 
 	ini->WriteString("12407", "DigitalGammaEnableAddress", "29");
 	ini->WriteInteger("12407", "DigitalGammaEnableBit", 0);
-	ini->WriteString("12407", "DigitalGammaLUTAddress", "106D");
+	ini->WriteString("12407", "DigitalGammaLUTAddress", "110D");
 	ini->WriteInteger("12407", "DigitalGammaLUTType", 12);
 
 	ini->WriteBool("12407", "GammaTestFunc", true);
-	ini->WriteString("12407", "GammaTestEnableAddress", "1FEB");
-	ini->WriteInteger("12407", "GammaTestEnableBit", 4);
-	ini->WriteString("12407", "GammaTestAddress", "1FEC");
+	ini->WriteString("12407", "GammaTestEnableAddress", "3F1B");
+	ini->WriteInteger("12407", "GammaTestEnableBit", 3);
+	ini->WriteString("12407", "GammaTestAddress", "3F1C");
 	ini->WriteBool("12407", "IndepRGB", false);
 
 	ini->WriteInteger("12407", "in", 8);
@@ -244,22 +244,6 @@ void TMainForm::readTCONSetup(String filename, String section)
     this->Edit_DGLUTAddress->Text = ini->ReadString(section, "DigitalGammaLUTAddress", "302");
     int lut = ini->ReadInteger(section, "DigitalGammaLUTType", 10);
     this->ComboBox_DGLUTType->Text = lut;
-
-
-    int in = ini->ReadInteger(section, "in", 6);
-    //int lut = ini->ReadInteger(section, "lut", 10);
-    int out = ini->ReadInteger(section, "out", 6);
-    switch (in) {
-    case 6:
-	RadioButton_In6->Checked = true;
-	break;
-    case 8:
-	RadioButton_In8->Checked = true;
-	break;
-    case 10:
-	RadioButton_In10->Checked = true;
-	break;
-    }
     switch (lut) {
     case 10:
 	RadioButton_Lut10->Checked = true;
@@ -268,16 +252,34 @@ void TMainForm::readTCONSetup(String filename, String section)
 	RadioButton_Lut12->Checked = true;
 	break;
     }
-    switch (out) {
-    case 6:
-	RadioButton_Out6->Checked = true;
-	break;
-    case 8:
-	RadioButton_Out8->Checked = true;
-	break;
-    case 10:
-	RadioButton_Out10->Checked = true;
-	break;
+
+    if (section != "Custom") {
+
+	int in = ini->ReadInteger(section, "in", 6);
+	int out = ini->ReadInteger(section, "out", 6);
+	switch (in) {
+	case 6:
+	    RadioButton_In6->Checked = true;
+	    break;
+	case 8:
+	    RadioButton_In8->Checked = true;
+	    break;
+	case 10:
+	    RadioButton_In10->Checked = true;
+	    break;
+	}
+
+	switch (out) {
+	case 6:
+	    RadioButton_Out6->Checked = true;
+	    break;
+	case 8:
+	    RadioButton_Out8->Checked = true;
+	    break;
+	case 10:
+	    RadioButton_Out10->Checked = true;
+	    break;
+	}
     }
 
 }
@@ -306,10 +308,8 @@ void TMainForm::writeTCONCustomSetup()
 	    ini->WriteBool(CUSTOM, "IndepRGB", this->CheckBox_GammaTestIndepRGB->Checked);
 	}
 	int in = bitDepth->getInputMaxValue().bit;
-	//int lut = bitDepth->getLutMaxValue().bit;
 	int out = bitDepth->getOutputMaxValue().bit;
 	ini->WriteInteger(CUSTOM, "in", in);
-	//ini->WriteInteger(CUSTOM, "lut", lut);
 	ini->WriteInteger(CUSTOM, "out", out);
     }
 
@@ -381,14 +381,22 @@ void TMainForm::initCA210Meter()
 	mm->WaitTimes = this->getInterval();
 	StatusBar1->Panels->Items[1]->Text = "CA-210 Connected!";
 
+	bptr < ca210api::CA210API > ca210api = getCA210()->getCA210API();
+	long ch = ca210api->getChannelNO();
+	Edit_SourceCH->Text = ch;
+	//GroupBox_CHSetting->Visible = true;
+	GroupBox_CHSetting->Enabled = true;
+	getAnalyzer();
+
+
 	if (connectCA210ByThread) {
 	    stopProgress(MainForm->ProgressBar1);
 	    Enabled = true;
 	    ca210Thread->Terminate();
 	    delete ca210Thread;
 	    ca210Thread = null;
-
 	}
+
     }
     catch(EOleException & ex) {
 	if (connectCA210ByThread) {
@@ -484,6 +492,7 @@ void TMainForm::setAnalyzerToSourceChannel()
 	string_ptr id(new string(""));
 	//³]©w¦bca210
 	ca210Analyzer->setChannel(channel, id);
+
 
     }
 };
@@ -639,6 +648,7 @@ void TMainForm::setAnalyzerNull()
 }
 
 //---------------------------------------------------------------------------
+
 bptr < cms::lcd::calibrate::ComponentFetcher > TMainForm::getComponentFetcher()
 {
     using namespace cms::lcd::calibrate;
@@ -1083,7 +1093,7 @@ void __fastcall TMainForm::Button_I2CTestClick(TObject * Sender)
 
 void TMainForm::disconnectMeter()
 {
-    getCA210();
+    bptr < cms::measure::meter::CA210 > ca210 = getCA210();
     if (null != ca210) {
 	ca210->getCA210API()->setRemoteMode(ca210api::Off);
     }
@@ -1091,7 +1101,7 @@ void TMainForm::disconnectMeter()
 void TMainForm::connectMeter()
 {
 
-    getCA210();
+    bptr < cms::measure::meter::CA210 > ca210 = getCA210();
     if (null != ca210) {
 	ca210->getCA210API()->setRemoteMode(ca210api::Locked);
     }
@@ -1362,7 +1372,23 @@ void __fastcall ProgressThread::Execute()
     }
 }
 
-//-
+/*
+CA-X10 init procedure
+  FormActive
+  ->connectCA210ByThread
+        true:
+                showProgress
+                CA210Thread->Resume
+                        initCA210Meter();
+                        	meter = bptr < Meter > (new CA210());
+	                        mm = bptr < MeterMeasurement > (new MeterMeasurement(meter, false));
+	                        StatusBar1->Panels->Items[1]->Text = "CA-210 Connected!";
+
+	                        if (connectCA210ByThread) {
+
+        false:
+                initCA210Meter();
+*/
 
 void __fastcall TMainForm::FormActivate(TObject * Sender)
 {
@@ -1375,11 +1401,6 @@ void __fastcall TMainForm::FormActivate(TObject * Sender)
 
 		    MainForm->Enabled = false;
 		    MainForm->initCA210Meter();
-		    /*MainForm->stopProgress(MainForm->ProgressBar1);
-		       MainForm->Enabled = true;
-		       MainForm->StatusBar1->Panels->Items[1]->Text = "CA-210 Connected!"; */
-		    //MainForm->Enabled = true;
-		    //MainForm->StatusBar1->Panels->Items[1]->Text = "CA-210 Connected!";
 		};
 	      public:
 	      __fastcall CA210Thread(bool CreateSuspended):TThread(CreateSuspended) {
@@ -1433,6 +1454,21 @@ void __fastcall TMainForm::RadioButton_PCTCON_TVClick(TObject * Sender)
     bitDepth->setTCONInput(false);
     MeasureWindow->setTCONControlOff();
     PageControl1->ActivePageIndex = 1;
+}
+
+//---------------------------------------------------------------------------
+
+
+void __fastcall TMainForm::Edit_SourceCHKeyPress(TObject * Sender, char &Key)
+{
+    if ('\r' == Key && null != ca210Analyzer) {
+	TEdit *edit = dynamic_cast < TEdit * >(Sender);
+	int ch = edit->Text.ToInt();
+	if (ch >= 0 && ch <= 99) {
+	    string_ptr id(new string());
+	    ca210Analyzer->setChannel(ch, id);
+	}
+    }
 }
 
 //---------------------------------------------------------------------------
