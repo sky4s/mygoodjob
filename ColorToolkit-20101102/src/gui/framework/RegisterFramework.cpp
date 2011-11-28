@@ -17,7 +17,11 @@
 
 namespace gui {
     namespace framework {
-	RegisterMap::RegisterMap(std::string filename) {
+	RegisterType::RegisterType(std::string regname):regname(regname) {
+
+	};
+	//=====================================================================
+	 RegisterMap::RegisterMap(std::string filename) {
 	    tconMap = AbstractBase::getStringMap(filename);
 	    registerMap = RegisterTypeMap_ptr(new RegisterTypeMap());
 	};
@@ -77,7 +81,8 @@ namespace gui {
 	};
 	//=====================================================================
 
-	BitRegister::BitRegister(int n,...) {
+      BitRegister::BitRegister(std::string regname, int n,...):RegisterType(regname)
+	{
 	    if (n % 3 != 0) {
 		throw new java::lang::IllegalArgumentException();
 	    }
@@ -93,6 +98,15 @@ namespace gui {
 		/*const string & str = _toString(d);
 		   result->push_back(str); */
 	    } va_end(num_list);
+	};
+
+      BitRegister::BitRegister(std::string regname, int_vector_ptr intVector):RegisterType(regname)
+	{
+	    int size = intVector->size();
+	    regData = int_array(new int[size]);
+	    for (int x = 0; x < size; x++) {
+		regData[x] = (*intVector)[x];
+	    }
 	};
 
 
