@@ -31,6 +31,35 @@ void TCMForm1::CM_val_initial()
 __fastcall TCMForm1::TCMForm1(TComponent * Owner)
 :TForm(Owner), CM_IsChkSum(false), CMInitialized(false)
 {
+    CM1EditArray[0] = CM1_11;
+    CM1EditArray[1] = CM1_12;
+    CM1EditArray[2] = CM1_13;
+    CM1EditArray[3] = CM1_21;
+    CM1EditArray[4] = CM1_22;
+    CM1EditArray[5] = CM1_23;
+    CM1EditArray[6] = CM1_31;
+    CM1EditArray[7] = CM1_32;
+    CM1EditArray[8] = CM1_33;
+
+    CM2EditArray[0] = CM2_11;
+    CM2EditArray[1] = CM2_12;
+    CM2EditArray[2] = CM2_13;
+    CM2EditArray[3] = CM2_21;
+    CM2EditArray[4] = CM2_22;
+    CM2EditArray[5] = CM2_23;
+    CM2EditArray[6] = CM2_31;
+    CM2EditArray[7] = CM2_32;
+    CM2EditArray[8] = CM2_33;
+
+    CM3EditArray[0] = CM3_11;
+    CM3EditArray[1] = CM3_12;
+    CM3EditArray[2] = CM3_13;
+    CM3EditArray[3] = CM3_21;
+    CM3EditArray[4] = CM3_22;
+    CM3EditArray[5] = CM3_23;
+    CM3EditArray[6] = CM3_31;
+    CM3EditArray[7] = CM3_32;
+    CM3EditArray[8] = CM3_33;
 }
 
 //---------------------------------------------------------------------------
@@ -161,15 +190,16 @@ void __fastcall TCMForm1::FormCreate(TObject * Sender)
     st_ofs1->Caption = 0;
     st_ofs2->Caption = 0;
     st_ofs3->Caption = 0;
-    CMofs_type = OCM->Setofs_type();
-    if (CMofs_type == 3 || CMofs_type == 1 || CMofs_type == 4) {
+    offsetType = (OffsetType) OCM->Setofs_type();
+    if (_128 == offsetType || _257 == offsetType || _511 == offsetType) {
 	Convert_type = 1;
     }				// 2's completement
-    else if (CMofs_type == 2) {
+    else if (_64 == offsetType) {
 	Convert_type = 2;
     }				// highest bit is sign bit
 
     CMInitialized = true;
+
 
 }
 
@@ -230,10 +260,11 @@ int TCMForm1::FloatToMemOfsForm(int ofs)
 {
     ofs -= 512;			// Position 512 => value 0
     if (ofs < 0) {
-	if (Convert_type == 2)
+	if (Convert_type == 2) {
 	    ofs = 512 - ofs;
-	else if (Convert_type == 1)	//2's completement
+	} else if (Convert_type == 1) {	//2's completement
 	    ofs = 1024 + ofs;
+	}
     }
     return ofs;
 }
@@ -254,36 +285,36 @@ int TCMForm1::MemToFloatOfsForm(int ofs)
 }
 
 //---------------------------------------------------------------------------
-
-void __fastcall TCMForm1::btn_CM1_ReadClick(TObject * Sender)
+void TCMForm1::loadCMFromTCON(int index, TEdit * e[9], TStaticText * offset)
 {
-    btn_CM1_Read->Enabled = false;
 
     //Write CM
-    if (CM_addr[0].LutNum() != 9) {	//Check CM1 table number
-	ShowMessage("CM1 LUT number defined in AddressCM.cpp is wrong.");
+    if (CM_addr[index].LutNum() != 9) {	//Check CM1 table number
+	String msg = "CM";
+	msg += (index + 1);
+	msg += " LUT number defined in AddressCM.cpp is wrong.";
+	ShowMessage(msg);
 	return;
     }
-    int *CM = new int[CM_addr[0].LutNum()];
-    //EngineerForm->SetRead_CM(CM_addr[0], CM, CM_addr[0].LutNum());
-    EngineerForm->SetRead_PG(CM_addr[0], CM, CM_IsChkSum);
-    float *CM_f = new float[CM_addr[0].LutNum()];
-    for (int i = 0; i < CM_addr[0].LutNum(); i++) {
+    int lutLum = CM_addr[index].LutNum();
+    int *CM = new int[lutLum];
+    EngineerForm->SetRead_PG(CM_addr[index], CM, CM_IsChkSum);
+    float *CM_f = new float[lutLum];
+    for (int i = 0; i < lutLum; i++) {
 	CM_f[i] = (double) (MemToFloatForm(CM[i])) / 256;
     }
-    CM1_11->Text = FloatToStr(CM_f[0]);
-    CM1_12->Text = FloatToStr(CM_f[1]);
-    CM1_13->Text = FloatToStr(CM_f[2]);
-    CM1_21->Text = FloatToStr(CM_f[3]);
-    CM1_22->Text = FloatToStr(CM_f[4]);
-    CM1_23->Text = FloatToStr(CM_f[5]);
-    CM1_31->Text = FloatToStr(CM_f[6]);
-    CM1_32->Text = FloatToStr(CM_f[7]);
-    CM1_33->Text = FloatToStr(CM_f[8]);
+    e[0]->Text = FloatToStr(CM_f[0]);
+    e[1]->Text = FloatToStr(CM_f[1]);
+    e[2]->Text = FloatToStr(CM_f[2]);
+    e[3]->Text = FloatToStr(CM_f[3]);
+    e[4]->Text = FloatToStr(CM_f[4]);
+    e[5]->Text = FloatToStr(CM_f[5]);
+    e[6]->Text = FloatToStr(CM_f[6]);
+    e[7]->Text = FloatToStr(CM_f[7]);
+    e[8]->Text = FloatToStr(CM_f[8]);
 
-    //EngineerForm->SetRead_CMofs(ofs_addr[0], ofs, ofs_addr[0].LutNum());
-    int *ofs = new int[ofs_addr[0].LutNum()];
-    EngineerForm->SetRead_PG(ofs_addr[0], ofs, CM_IsChkSum);
+    int *ofs = new int[ofs_addr[index].LutNum()];
+    EngineerForm->SetRead_PG(ofs_addr[index], ofs, CM_IsChkSum);
     if (ofs[0] != ofs[1] || ofs[1] != ofs[2]) {
 	ShowMessage("The 3 Offset values are different.");
     }
@@ -293,11 +324,11 @@ void __fastcall TCMForm1::btn_CM1_ReadClick(TObject * Sender)
     sb_ofs1->Position = sb_position;
 
     float s = sb_position - 512;
-    if (CMofs_type == 3) {
+    if (_257 == offsetType) {
 	s = s / 2;		//-256.5~256.5
-    } else if (CMofs_type == 2) {
+    } else if (_64 == offsetType) {
 	s = s / 8;		//-63.875~63.875
-    } else if (CMofs_type == 1) {
+    } else if (_128 == offsetType) {
 	s = s / 4;		//-127.75~127.75
     }
     //else if(CMofs_type==4){ s = s;}   //-511~511
@@ -306,8 +337,13 @@ void __fastcall TCMForm1::btn_CM1_ReadClick(TObject * Sender)
     delete[]CM_f;
     char buf[6];
     sprintf(buf, "%3.2f", s);
-    st_ofs1->Caption = (AnsiString) buf;
+    offset->Caption = (AnsiString) buf;
+};
 
+void __fastcall TCMForm1::btn_CM1_ReadClick(TObject * Sender)
+{
+    btn_CM1_Read->Enabled = false;
+    loadCMFromTCON(0, CM1EditArray, st_ofs1);
     btn_CM1_Read->Enabled = true;
 }
 
@@ -315,55 +351,7 @@ void __fastcall TCMForm1::btn_CM1_ReadClick(TObject * Sender)
 void __fastcall TCMForm1::btn_CM2_ReadClick(TObject * Sender)
 {
     btn_CM2_Read->Enabled = false;
-
-    //Write CM
-    if (CM_addr[1].LutNum() != 9) {	//Check CM1 table number
-	ShowMessage("CM2 LUT number defined in AddressCM.cpp is wrong.");
-	return;
-    }
-    int *CM = new int[CM_addr[1].LutNum()];
-    //EngineerForm->SetRead_CM(CM_addr[1], CM, CM_addr[1].LutNum());
-    EngineerForm->SetRead_PG(CM_addr[1], CM, CM_IsChkSum);
-    float *CM_f = new float[CM_addr[1].LutNum()];
-    for (int i = 0; i < CM_addr[1].LutNum(); i++) {
-	CM_f[i] = (double) (MemToFloatForm(CM[i])) / 256;
-    }
-    CM2_11->Text = FloatToStr(CM_f[0]);
-    CM2_12->Text = FloatToStr(CM_f[1]);
-    CM2_13->Text = FloatToStr(CM_f[2]);
-    CM2_21->Text = FloatToStr(CM_f[3]);
-    CM2_22->Text = FloatToStr(CM_f[4]);
-    CM2_23->Text = FloatToStr(CM_f[5]);
-    CM2_31->Text = FloatToStr(CM_f[6]);
-    CM2_32->Text = FloatToStr(CM_f[7]);
-    CM2_33->Text = FloatToStr(CM_f[8]);
-
-    //EngineerForm->SetRead_CMofs(ofs_addr[1], ofs, ofs_addr[1].LutNum());
-    int *ofs = new int[ofs_addr[1].LutNum()];
-    EngineerForm->SetRead_PG(ofs_addr[1], ofs, CM_IsChkSum);
-    if (ofs[0] != ofs[1] || ofs[1] != ofs[2])
-	ShowMessage("The 3 Offset values are different.");
-
-    int sb_position;
-    sb_position = MemToFloatOfsForm(ofs[0]);
-    sb_ofs2->Position = sb_position;
-
-    float s = sb_position - 512;
-    if (CMofs_type == 3) {
-	s = s / 2;
-    } else if (CMofs_type == 2) {
-	s = s / 8;		//-63.875~63.875
-    } else if (CMofs_type == 1) {
-	s = s / 4;		//-127.75~127.75
-    }
-    //else if(CMofs_type==4){ s=s; }//-511~511
-    delete[]CM;
-    delete[]ofs;
-    delete[]CM_f;
-    char buf[6];
-    sprintf(buf, "%3.2f", s);
-    st_ofs2->Caption = (AnsiString) buf;
-
+    loadCMFromTCON(1, CM2EditArray, st_ofs2);
     btn_CM2_Read->Enabled = true;
 }
 
@@ -372,114 +360,73 @@ void __fastcall TCMForm1::btn_CM2_ReadClick(TObject * Sender)
 void __fastcall TCMForm1::btn_CM3_ReadClick(TObject * Sender)
 {
     btn_CM3_Read->Enabled = false;
-
-    //Write CM
-    if (CM_addr[2].LutNum() != 9) {	//Check CM1 table number
-	ShowMessage("CM1 LUT number defined in AddressCM.cpp is wrong.");
-	return;
-    }
-    int *CM = new int[CM_addr[2].LutNum()];
-    //EngineerForm->SetRead_CM(CM_addr[2], CM, CM_addr[2].LutNum());
-    EngineerForm->SetRead_PG(CM_addr[2], CM, CM_IsChkSum);
-    float *CM_f = new float[CM_addr[2].LutNum()];
-    for (int i = 0; i < CM_addr[2].LutNum(); i++) {
-	CM_f[i] = (double) (MemToFloatForm(CM[i])) / 256;
-    }
-    CM3_11->Text = FloatToStr(CM_f[0]);
-    CM3_12->Text = FloatToStr(CM_f[1]);
-    CM3_13->Text = FloatToStr(CM_f[2]);
-    CM3_21->Text = FloatToStr(CM_f[3]);
-    CM3_22->Text = FloatToStr(CM_f[4]);
-    CM3_23->Text = FloatToStr(CM_f[5]);
-    CM3_31->Text = FloatToStr(CM_f[6]);
-    CM3_32->Text = FloatToStr(CM_f[7]);
-    CM3_33->Text = FloatToStr(CM_f[8]);
-
-    int *ofs = new int[ofs_addr[2].LutNum()];
-    //EngineerForm->SetRead_CMofs(ofs_addr[2], ofs, ofs_addr[2].LutNum());
-    EngineerForm->SetRead_PG(ofs_addr[2], ofs, CM_IsChkSum);
-    if (ofs[0] != ofs[1] || ofs[1] != ofs[2])
-	ShowMessage("The 3 Offset values are different.");
-
-    int sb_position;
-    sb_position = MemToFloatOfsForm(ofs[0]);
-    sb_ofs3->Position = sb_position;
-
-    float s = sb_position - 512;
-    if (CMofs_type == 3) {
-	s = s / 2;		//-256.5~256.5
-    } else if (CMofs_type == 2) {
-	s = s / 8;		//-63.875~63.875
-    } else if (CMofs_type == 1) {
-	s = s / 4;		//-127.75~127.75
-    }
-    //else if(CMofs_type==4){ s = s;}   //-511~511
-    delete[]CM;
-    delete[]ofs;
-    delete[]CM_f;
-
-    char buf[6];
-    sprintf(buf, "%3.2f", s);
-    st_ofs3->Caption = (AnsiString) buf;
+    loadCMFromTCON(2, CM3EditArray, st_ofs3);
     btn_CM3_Read->Enabled = true;
 }
 
 //---------------------------------------------------------------------------
 
-
-
-void __fastcall TCMForm1::btn_CM1_WriteClick(TObject * Sender)
+void TCMForm1::storeCMToTCON(const int index, TEdit * e[9], TScrollBar * offset)
 {
-    btn_CM1_Write->Enabled = false;
-
     //Write CM
-    if (CM_addr[0].LutNum() != 9) {	//Check CM1 table number
-	ShowMessage("CM1 LUT number defined in AddressCM.cpp is wrong.");
+    if (CM_addr[index].LutNum() != 9) {	//Check CM1 table number
+	String msg = "CM";
+	msg += index;
+	msg += " LUT number defined in AddressCM.cpp is wrong.";
+
+	ShowMessage(msg);
 	return;
     }
 
     int CM[9];
-    CM[0] = StrToFloat(CM1_11->Text) * 256;
+    CM[0] = StrToFloat(e[0]->Text) * 256;
     CM[0] = FloatToMemForm(CM[0]);
-    CM[1] = StrToFloat(CM1_12->Text) * 256;
+    CM[1] = StrToFloat(e[1]->Text) * 256;
     CM[1] = FloatToMemForm(CM[1]);
-    CM[2] = StrToFloat(CM1_13->Text) * 256;
+    CM[2] = StrToFloat(e[2]->Text) * 256;
     CM[2] = FloatToMemForm(CM[2]);
 
-    CM[3] = StrToFloat(CM1_21->Text) * 256;
+    CM[3] = StrToFloat(e[3]->Text) * 256;
     CM[3] = FloatToMemForm(CM[3]);
-    CM[4] = StrToFloat(CM1_22->Text) * 256;
+    CM[4] = StrToFloat(e[4]->Text) * 256;
     CM[4] = FloatToMemForm(CM[4]);
-    CM[5] = StrToFloat(CM1_23->Text) * 256;
+    CM[5] = StrToFloat(e[5]->Text) * 256;
     CM[5] = FloatToMemForm(CM[5]);
 
-    CM[6] = StrToFloat(CM1_31->Text) * 256;
+    CM[6] = StrToFloat(e[6]->Text) * 256;
     CM[6] = FloatToMemForm(CM[6]);
-    CM[7] = StrToFloat(CM1_32->Text) * 256;
+    CM[7] = StrToFloat(e[7]->Text) * 256;
     CM[7] = FloatToMemForm(CM[7]);
-    CM[8] = StrToFloat(CM1_33->Text) * 256;
+    CM[8] = StrToFloat(e[8]->Text) * 256;
     CM[8] = FloatToMemForm(CM[8]);
 
-    EngineerForm->SetWrite_PG(CM_addr[0], CM, CM_IsChkSum);
+    EngineerForm->SetWrite_PG(CM_addr[index], CM, CM_IsChkSum);
     //Write Offset
-    if (ofs_addr[0].LutNum() != 3) {	//check offset table number
+    if (ofs_addr[index].LutNum() != 3) {	//check offset table number
 	ShowMessage("CM1 offset LUT number defined in AddressCM.cpp is wrong.");
 	return;
     }
 
     int ofs[3];
-    int tmp = sb_ofs1->Position;
+    int tmp = offset->Position;
     ofs[0] = FloatToMemOfsForm(tmp);
 
     ofs[1] = ofs[0];
     ofs[2] = ofs[0];
-    EngineerForm->SetWrite_PG(ofs_addr[0], ofs, CM_IsChkSum);
-    // add by AUO12307 //
-    int set_val = ofs[2] / 256 * 16 + CM[0] / 256 * 16;
-    TBit CM_J;
-    CM_J.set(289, 0, 8, "");
-    EngineerForm->SetWrite_Byte(CM_J, set_val);
-    // ============== //
+    EngineerForm->SetWrite_PG(ofs_addr[index], ofs, CM_IsChkSum);
+    if (1 == index) {
+	// add by AUO12307 //
+	int set_val = ofs[2] / 256 * 16 + CM[0] / 256 * 16;
+	TBit CM_J;
+	CM_J.set(289, 0, 8, "");
+	EngineerForm->SetWrite_Byte(CM_J, set_val);
+    }
+};
+
+void __fastcall TCMForm1::btn_CM1_WriteClick(TObject * Sender)
+{
+    btn_CM1_Write->Enabled = false;
+    storeCMToTCON(0, CM1EditArray, sb_ofs1);
     btn_CM1_Write->Enabled = true;
 }
 
@@ -487,49 +434,7 @@ void __fastcall TCMForm1::btn_CM1_WriteClick(TObject * Sender)
 void __fastcall TCMForm1::btn_CM2_WriteClick(TObject * Sender)
 {
     btn_CM2_Write->Enabled = false;
-
-    //write CM
-    if (CM_addr[1].LutNum() != 9) {	//check CM2 table number
-	ShowMessage("CM2 LUT number defined in AddressCM.cpp is wrong.");
-	return;
-    }
-
-    int CM[9];
-    CM[0] = StrToFloat(CM2_11->Text) * 256;
-    CM[0] = FloatToMemForm(CM[0]);
-    CM[1] = StrToFloat(CM2_12->Text) * 256;
-    CM[1] = FloatToMemForm(CM[1]);
-    CM[2] = StrToFloat(CM2_13->Text) * 256;
-    CM[2] = FloatToMemForm(CM[2]);
-
-    CM[3] = StrToFloat(CM2_21->Text) * 256;
-    CM[3] = FloatToMemForm(CM[3]);
-    CM[4] = StrToFloat(CM2_22->Text) * 256;
-    CM[4] = FloatToMemForm(CM[4]);
-    CM[5] = StrToFloat(CM2_23->Text) * 256;
-    CM[5] = FloatToMemForm(CM[5]);
-
-    CM[6] = StrToFloat(CM2_31->Text) * 256;
-    CM[6] = FloatToMemForm(CM[6]);
-    CM[7] = StrToFloat(CM2_32->Text) * 256;
-    CM[7] = FloatToMemForm(CM[7]);
-    CM[8] = StrToFloat(CM2_33->Text) * 256;
-    CM[8] = FloatToMemForm(CM[8]);
-
-    EngineerForm->SetWrite_PG(CM_addr[1], CM, CM_IsChkSum);
-
-    //write offset
-    if (ofs_addr[1].LutNum() != 3) {	//check offset table number
-	ShowMessage("CM2 offset LUT number defined in AddressCM.cpp is wrong.");
-	return;
-    }
-    int ofs[3];
-    int tmp = sb_ofs2->Position;
-    ofs[0] = FloatToMemOfsForm(tmp);
-    ofs[1] = ofs[0];
-    ofs[2] = ofs[0];
-    EngineerForm->SetWrite_PG(ofs_addr[1], ofs, CM_IsChkSum);
-
+    storeCMToTCON(1, CM2EditArray, sb_ofs2);
     btn_CM2_Write->Enabled = true;
 }
 
@@ -538,49 +443,7 @@ void __fastcall TCMForm1::btn_CM2_WriteClick(TObject * Sender)
 void __fastcall TCMForm1::btn_CM3_WriteClick(TObject * Sender)
 {
     btn_CM3_Write->Enabled = false;
-
-    //write CM
-    if (CM_addr[2].LutNum() != 9) {	//check CM3 table number
-	ShowMessage("CM3 LUT number defined in AddressCM.cpp is wrong.");
-	return;
-    }
-
-    int CM[9];
-    CM[0] = StrToFloat(CM3_11->Text) * 256;
-    CM[0] = FloatToMemForm(CM[0]);
-    CM[1] = StrToFloat(CM3_12->Text) * 256;
-    CM[1] = FloatToMemForm(CM[1]);
-    CM[2] = StrToFloat(CM3_13->Text) * 256;
-    CM[2] = FloatToMemForm(CM[2]);
-
-    CM[3] = StrToFloat(CM3_21->Text) * 256;
-    CM[3] = FloatToMemForm(CM[3]);
-    CM[4] = StrToFloat(CM3_22->Text) * 256;
-    CM[4] = FloatToMemForm(CM[4]);
-    CM[5] = StrToFloat(CM3_23->Text) * 256;
-    CM[5] = FloatToMemForm(CM[5]);
-
-    CM[6] = StrToFloat(CM3_31->Text) * 256;
-    CM[6] = FloatToMemForm(CM[6]);
-    CM[7] = StrToFloat(CM3_32->Text) * 256;
-    CM[7] = FloatToMemForm(CM[7]);
-    CM[8] = StrToFloat(CM3_33->Text) * 256;
-    CM[8] = FloatToMemForm(CM[8]);
-
-    EngineerForm->SetWrite_PG(CM_addr[2], CM, CM_IsChkSum);
-
-    //write offset
-    if (ofs_addr[2].LutNum() != 3) {	//check offset table number
-	ShowMessage("CM3 offset LUT number defined in AddressCM.cpp is wrong.");
-	return;
-    }
-    int ofs[3];
-    int tmp = sb_ofs3->Position;
-    ofs[0] = FloatToMemOfsForm(tmp);
-    ofs[1] = ofs[0];
-    ofs[2] = ofs[0];
-    EngineerForm->SetWrite_PG(ofs_addr[2], ofs, CM_IsChkSum);
-
+    storeCMToTCON(2, CM3EditArray, sb_ofs3);
     btn_CM3_Write->Enabled = true;
 }
 
@@ -604,6 +467,8 @@ void CM_GainFunc(double *d_ratio, float var1, float var2)
 }
 
 //---------------------------------------------------------------------------
+
+
 
 void __fastcall TCMForm1::sb_cm11Change(TObject * Sender)
 {
@@ -862,37 +727,40 @@ void __fastcall TCMForm1::sb_cm33Change(TObject * Sender)
 
 void __fastcall TCMForm1::rg_CM1_modeClick(TObject * Sender)
 {
-    char c = '0';
-    if (rg_CM1_mode->ItemIndex == 1) {	//White Balance
-	CM1_11->Text = 1;
-	CM1_12->Text = 0;
-	CM1_13->Text = 0;
-
-	CM1_21->Text = 0;
-	CM1_22->Text = 1;
-	CM1_23->Text = 0;
-
-	CM1_31->Text = 0;
-	CM1_32->Text = 0;
-	CM1_33->Text = 1;
-	CM1_keyPress(Sender, c);	//refesh memory
-    } else if (rg_CM1_mode->ItemIndex == 2) {	//vivid mode
-	CM1_11->Text = 1.04;
-	CM1_12->Text = -0.02;
-	CM1_13->Text = -0.02;
-
-	CM1_21->Text = -0.02;
-	CM1_22->Text = 1.04;
-	CM1_23->Text = -0.02;
-
-	CM1_31->Text = -0.02;
-	CM1_32->Text = -0.02;
-	CM1_33->Text = 1.04;
-	CM1_keyPress(Sender, c);	//refesh memory
-    }
+    selectMode(rg_CM1_mode->ItemIndex, CM1EditArray);
+    CM1_keyPress(Sender, '0');	//refesh memory
 }
 
 //---------------------------------------------------------------------------
+
+void TCMForm1::selectMode(int mode, TEdit * e[9])
+{
+    if (WhiteBalance == mode) {
+	e[0]->Text = 1;
+	e[1]->Text = 0;
+	e[2]->Text = 0;
+
+	e[3]->Text = 0;
+	e[4]->Text = 1;
+	e[5]->Text = 0;
+
+	e[6]->Text = 0;
+	e[7]->Text = 0;
+	e[8]->Text = 1;
+    } else if (Vivid == mode) {
+	e[0]->Text = 1.04;
+	e[1]->Text = -0.02;
+	e[2]->Text = -0.02;
+
+	e[3]->Text = -0.02;
+	e[4]->Text = 1.04;
+	e[5]->Text = -0.02;
+
+	e[6]->Text = -0.02;
+	e[7]->Text = -0.02;
+	e[8]->Text = 1.04;
+    }
+}
 
 void __fastcall TCMForm1::rg_CM2_modeClick(TObject * Sender)
 {
@@ -1026,107 +894,52 @@ void __fastcall TCMForm1::CM3_keyPress(TObject * Sender, char &Key)
 //---------------------------------------------------------------------------
 void __fastcall TCMForm1::sb_ofs1Change(TObject * Sender)
 {
-    float s = (float) sb_ofs1->Position - 512;
-    if (CMofs_type == 3) {
-	s = s / 2;
-    }				//-256.5~256.5
-    else if (CMofs_type == 2) {
-	s = s / 8;
-    }				//-63.875~63.875
-    else if (CMofs_type == 1) {
-	s = s / 4;
-    }				//-127.75~127.75
-    //else if(CMofs_type==4){ s = s;}   //-511~511
-
-    char buf[6];
-    sprintf(buf, "%3.2f", s);
-    st_ofs1->Caption = (AnsiString) buf;
-
-    int ofs[3];
-    int tmp = sb_ofs1->Position;
-    //FloatToMemOfsForm(data);
-    ofs[0] = FloatToMemOfsForm(tmp);
-    ofs[1] = ofs[0];
-    ofs[2] = ofs[0];
-
-    EngineerForm->SetWrite_PG(ofs_addr[0], ofs, CM_IsChkSum);
-
-    if (cb_CM1_W255->Checked == true) {
-	double CM12 = StrToFloat(CM1_12->Text);
-	double CM13 = StrToFloat(CM1_13->Text);
-	double CM11 = (255 - ((CM12 + CM13) * 255 + s)) / 255;
-	CM1_11->Text = FloatToStr(CM11);
-
-	double CM21 = StrToFloat(CM1_21->Text);
-	double CM23 = StrToFloat(CM1_23->Text);
-	double CM22 = (255 - ((CM21 + CM23) * 255 + s)) / 255;
-	CM1_22->Text = FloatToStr(CM22);
-
-	double CM31 = StrToFloat(CM1_31->Text);
-	double CM32 = StrToFloat(CM1_32->Text);
-	double CM33 = (255 - ((CM31 + CM32) * 255 + s)) / 255;
-	CM1_33->Text = FloatToStr(CM33);
-
-	int CM[9];
-	CM[0] = FloatToMemForm(CM11 * 256);
-	CM[1] = FloatToMemForm(CM12 * 256);
-	CM[2] = FloatToMemForm(CM13 * 256);
-
-	CM[3] = FloatToMemForm(CM21 * 256);
-	CM[4] = FloatToMemForm(CM22 * 256);
-	CM[5] = FloatToMemForm(CM23 * 256);
-
-	CM[6] = FloatToMemForm(CM31 * 256);
-	CM[7] = FloatToMemForm(CM32 * 256);
-	CM[8] = FloatToMemForm(CM33 * 256);
-
-	EngineerForm->SetWrite_PG(CM_addr[0], CM, CM_IsChkSum);
-    }
+    scrollBarOffsetChange(0, cb_CM1_W255->Checked, CM1EditArray, sb_ofs1, st_ofs1);
 }
 
 //---------------------------------------------------------------------------
-
-void __fastcall TCMForm1::sb_ofs2Change(TObject * Sender)
+void TCMForm1::scrollBarOffsetChange(int index, bool w255Fix, TEdit * e[9], TScrollBar * scroll,
+				     TStaticText * text)
 {
-    float s = (float) sb_ofs2->Position - 512;
-    if (CMofs_type == 3) {
-	s = s / 2;
-    }				//-256.5~256.5
-    else if (CMofs_type == 2) {
-	s = s / 8;
-    }				//-63.875~63.875
-    else if (CMofs_type == 1) {
-	s = s / 4;
+
+    float s = (float) scroll->Position - 512;
+    if (_257 == offsetType) {
+	s = s / 2;		//-256.5~256.5
+    } else if (_64 == offsetType) {
+	s = s / 8;		//-63.875~63.875
+    } else if (_128 == offsetType) {
+	s = s / 4;		//-127.75~127.75
     }				//-127.75~127.75
     //else if(CMofs_type==4){ s = s;}   //-511~511
 
     char buf[6];
     sprintf(buf, "%3.2f", s);
-    st_ofs2->Caption = (AnsiString) buf;
+    text->Caption = (AnsiString) buf;
 
     int ofs[3];
-    int tmp = sb_ofs2->Position;
+    int tmp = scroll->Position;
     //FloatToMemOfsForm(data);
     ofs[0] = FloatToMemOfsForm(tmp);
     ofs[1] = ofs[0];
     ofs[2] = ofs[0];
-    EngineerForm->SetWrite_PG(ofs_addr[1], ofs, CM_IsChkSum);
+    EngineerForm->SetWrite_PG(ofs_addr[index], ofs, CM_IsChkSum);
 
-    if (cb_CM2_W255->Checked == true) {
-	double CM12 = StrToFloat(CM2_12->Text);
-	double CM13 = StrToFloat(CM2_13->Text);
+    if (true == w255Fix) {
+
+	double CM12 = StrToFloat(e[1]->Text);	//1,2
+	double CM13 = StrToFloat(e[2]->Text);
 	double CM11 = (255 - ((CM12 + CM13) * 255 + s)) / 255;
-	CM2_11->Text = FloatToStr(CM11);
+	e[0]->Text = FloatToStr(CM11);
 
-	double CM21 = StrToFloat(CM2_21->Text);
-	double CM23 = StrToFloat(CM2_23->Text);
+	double CM21 = StrToFloat(e[3]->Text);	//3,4
+	double CM23 = StrToFloat(e[5]->Text);
 	double CM22 = (255 - ((CM21 + CM23) * 255 + s)) / 255;
-	CM2_22->Text = FloatToStr(CM22);
+	e[4]->Text = FloatToStr(CM22);
 
-	double CM31 = StrToFloat(CM2_31->Text);
-	double CM32 = StrToFloat(CM2_32->Text);
+	double CM31 = StrToFloat(e[6]->Text);	//5,6
+	double CM32 = StrToFloat(e[7]->Text);
 	double CM33 = (255 - ((CM31 + CM32) * 255 + s)) / 255;
-	CM2_33->Text = FloatToStr(CM33);
+	e[8]->Text = FloatToStr(CM33);
 
 	int CM[9];
 	CM[0] = FloatToMemForm(CM11 * 256);
@@ -1141,69 +954,22 @@ void __fastcall TCMForm1::sb_ofs2Change(TObject * Sender)
 	CM[7] = FloatToMemForm(CM32 * 256);
 	CM[8] = FloatToMemForm(CM33 * 256);
 
-	EngineerForm->SetWrite_PG(CM_addr[1], CM, CM_IsChkSum);
+	EngineerForm->SetWrite_PG(CM_addr[index], CM, CM_IsChkSum);
     }
+}
+
+void __fastcall TCMForm1::sb_ofs2Change(TObject * Sender)
+{
+
+    scrollBarOffsetChange(1, cb_CM2_W255->Checked, CM2EditArray, sb_ofs2, st_ofs2);
+
 }
 
 //---------------------------------------------------------------------------
 
 void __fastcall TCMForm1::sb_ofs3Change(TObject * Sender)
 {
-    float s = (float) sb_ofs3->Position - 512;
-    if (CMofs_type == 3) {
-	s = s / 2;
-    }				//-256.5~256.5
-    else if (CMofs_type == 2) {
-	s = s / 8;
-    }				//-63.875~63.875
-    else if (CMofs_type == 1) {
-	s = s / 4;
-    }				//-127.75~127.75
-    //else if(CMofs_type==4){ s = s;}   //-511~511
-
-    char buf[6];
-    sprintf(buf, "%3.2f", s);
-    st_ofs3->Caption = (AnsiString) buf;
-
-    int ofs[3];
-    int tmp = sb_ofs3->Position;
-    //FloatToMemOfsForm(data);
-    ofs[0] = FloatToMemOfsForm(tmp);
-    ofs[1] = ofs[0];
-    ofs[2] = ofs[0];
-    EngineerForm->SetWrite_PG(ofs_addr[2], ofs, CM_IsChkSum);
-
-    if (cb_CM3_W255->Checked == true) {
-	double CM12 = StrToFloat(CM3_12->Text);
-	double CM13 = StrToFloat(CM3_13->Text);
-	double CM11 = (255 - ((CM12 + CM13) * 255 + s)) / 255;
-	CM3_11->Text = FloatToStr(CM11);
-
-	double CM21 = StrToFloat(CM3_21->Text);
-	double CM23 = StrToFloat(CM3_23->Text);
-	double CM22 = (255 - ((CM21 + CM23) * 255 + s)) / 255;
-	CM3_22->Text = FloatToStr(CM22);
-
-	double CM31 = StrToFloat(CM3_31->Text);
-	double CM32 = StrToFloat(CM3_32->Text);
-	double CM33 = (255 - ((CM31 + CM32) * 255 + s)) / 255;
-	CM3_33->Text = FloatToStr(CM33);
-
-	int CM[9];
-	CM[0] = FloatToMemForm(CM11 * 256);
-	CM[1] = FloatToMemForm(CM12 * 256);
-	CM[2] = FloatToMemForm(CM13 * 256);
-
-	CM[3] = FloatToMemForm(CM21 * 256);
-	CM[4] = FloatToMemForm(CM22 * 256);
-	CM[5] = FloatToMemForm(CM23 * 256);
-
-	CM[6] = FloatToMemForm(CM31 * 256);
-	CM[7] = FloatToMemForm(CM32 * 256);
-	CM[8] = FloatToMemForm(CM33 * 256);
-
-	EngineerForm->SetWrite_PG(CM_addr[2], CM, CM_IsChkSum);
-    }
+    scrollBarOffsetChange(2, cb_CM3_W255->Checked, CM3EditArray, sb_ofs3, st_ofs3);
 }
 
 //---------------------------------------------------------------------------
@@ -1223,28 +989,8 @@ void __fastcall TCMForm1::bn_CM1SaveClick(TObject * Sender)
     if (!SaveDialog1->Execute())
 	return;
     String Fpath = SaveDialog1->FileName /*+".txt" */ ;
-    FILE *fptr = fopen(Fpath.c_str(), "w");
-    fprintf(fptr, "CM\n");
-    float CM[9];
-    CM[0] = StrToFloat(CM1_11->Text);
-    CM[1] = StrToFloat(CM1_12->Text);
-    CM[2] = StrToFloat(CM1_13->Text);
 
-    CM[3] = StrToFloat(CM1_21->Text);
-    CM[4] = StrToFloat(CM1_22->Text);
-    CM[5] = StrToFloat(CM1_23->Text);
-
-    CM[6] = StrToFloat(CM1_31->Text);
-    CM[7] = StrToFloat(CM1_32->Text);
-    CM[8] = StrToFloat(CM1_33->Text);
-    for (int i = 0; i < 3; i++) {
-	fprintf(fptr, "%f\t%f\t%f\n", CM[0 + i * 3], CM[1 + i * 3], CM[2 + i * 3]);
-    }
-    float CMofs;
-    CMofs = StrToFloat(st_ofs1->Caption);
-
-    fprintf(fptr, "%f\n", CMofs);
-    fclose(fptr);
+    storeCMToFile(Fpath, CM1EditArray, st_ofs1);
 }
 
 //---------------------------------------------------------------------------
@@ -1254,28 +1000,8 @@ void __fastcall TCMForm1::bn_CM2SaveClick(TObject * Sender)
     if (!SaveDialog1->Execute())
 	return;
     String Fpath = SaveDialog1->FileName;
-    FILE *fptr = fopen(Fpath.c_str(), "w");
-    fprintf(fptr, "CM\n");
-    float CM[9];
-    CM[0] = StrToFloat(CM2_11->Text);
-    CM[1] = StrToFloat(CM2_12->Text);
-    CM[2] = StrToFloat(CM2_13->Text);
 
-    CM[3] = StrToFloat(CM2_21->Text);
-    CM[4] = StrToFloat(CM2_22->Text);
-    CM[5] = StrToFloat(CM2_23->Text);
-
-    CM[6] = StrToFloat(CM2_31->Text);
-    CM[7] = StrToFloat(CM2_32->Text);
-    CM[8] = StrToFloat(CM2_33->Text);
-    for (int i = 0; i < 3; i++) {
-	fprintf(fptr, "%f\t%f\t%f\n", CM[0 + i * 3], CM[1 + i * 3], CM[2 + i * 3]);
-    }
-    float CMofs;
-    CMofs = StrToFloat(st_ofs2->Caption);
-
-    fprintf(fptr, "%f\n", CMofs);
-    fclose(fptr);
+    storeCMToFile(Fpath, CM2EditArray, st_ofs2);
 }
 
 //---------------------------------------------------------------------------
@@ -1285,41 +1011,52 @@ void __fastcall TCMForm1::bn_CM3SaveClick(TObject * Sender)
     if (!SaveDialog1->Execute())
 	return;
     String Fpath = SaveDialog1->FileName;
-    FILE *fptr = fopen(Fpath.c_str(), "w");
+
+    storeCMToFile(Fpath, CM3EditArray, st_ofs3);
+
+}
+
+void TCMForm1::storeCMToFile(String filename, TEdit * e[9], TStaticText * offset)
+{
+    FILE *fptr = fopen(filename.c_str(), "w");
     fprintf(fptr, "CM\n");
     float CM[9];
-    CM[0] = StrToFloat(CM3_11->Text);
-    CM[1] = StrToFloat(CM3_12->Text);
-    CM[2] = StrToFloat(CM3_13->Text);
+    CM[0] = StrToFloat(e[0]->Text);
+    CM[1] = StrToFloat(e[1]->Text);
+    CM[2] = StrToFloat(e[2]->Text);
 
-    CM[3] = StrToFloat(CM3_21->Text);
-    CM[4] = StrToFloat(CM3_22->Text);
-    CM[5] = StrToFloat(CM3_23->Text);
+    CM[3] = StrToFloat(e[3]->Text);
+    CM[4] = StrToFloat(e[4]->Text);
+    CM[5] = StrToFloat(e[5]->Text);
 
-    CM[6] = StrToFloat(CM3_31->Text);
-    CM[7] = StrToFloat(CM3_32->Text);
-    CM[8] = StrToFloat(CM3_33->Text);
+    CM[6] = StrToFloat(e[6]->Text);
+    CM[7] = StrToFloat(e[7]->Text);
+    CM[8] = StrToFloat(e[8]->Text);
     for (int i = 0; i < 3; i++) {
 	fprintf(fptr, "%f\t%f\t%f\n", CM[0 + i * 3], CM[1 + i * 3], CM[2 + i * 3]);
     }
     float CMofs;
-    CMofs = StrToFloat(st_ofs3->Caption);
+    CMofs = StrToFloat(offset->Caption);
     fprintf(fptr, "%f\n", CMofs);
     fclose(fptr);
-}
+};
+
 
 //-----------------------------------------------------------------------
-void TCMForm1::CM1Load(String Fpath)
+
+void TCMForm1::loadCMFromFile(String filename, OffsetType offsetType, float CM[3][3],
+			      TEdit * e[9], TScrollBar * gain[3], TScrollBar * offset)
 {
-    char *buffer = Load_File(Fpath);
+    char *buffer = Load_File(filename);
 
     char *pch;
     pch = strtok(buffer, "\n\t");
     String tmp;
     if ((AnsiString) pch != "CM") {
 	while (pch != "CM") {
-	    if (pch == NULL)
+	    if (pch == NULL) {
 		return;		//資料中沒有cm
+	    }
 	    pch = strtok(NULL, "\n\t");
 	}
     }
@@ -1327,246 +1064,115 @@ void TCMForm1::CM1Load(String Fpath)
     int c = 0;
     pch = strtok(NULL, "\n\t");
     while (c < 9 && pch != NULL) {
-	if (pch == NULL)
+	if (pch == NULL) {
 	    return;		//資料中的data缺少
-	CM1[c / 3][c % 3] = StrToFloat((AnsiString) pch);
+	}
+	CM[c / 3][c % 3] = StrToFloat((AnsiString) pch);
 	pch = strtok(NULL, "\n\t");
 	c++;
     }
 
     // Load CM offset
     float CMofs;
-    if (pch == NULL)
+    if (pch == NULL) {
 	return;			//資料中的data缺少
+    }
     CMofs = StrToFloat((AnsiString) pch);
 
     // Set to CM Interface
+
     // CM1
     char cm_buf[5];
-    sprintf(cm_buf, "%f", CM1[0][0]);
-    CM1_11->Text = (AnsiString) cm_buf;
-    sprintf(cm_buf, "%f", CM1[0][1]);
-    CM1_12->Text = (AnsiString) cm_buf;
-    sprintf(cm_buf, "%f", CM1[0][2]);
-    CM1_13->Text = (AnsiString) cm_buf;
+    sprintf(cm_buf, "%f", CM[0][0]);
+    e[0]->Text = (AnsiString) cm_buf;
+    sprintf(cm_buf, "%f", CM[0][1]);
+    e[1]->Text = (AnsiString) cm_buf;
+    sprintf(cm_buf, "%f", CM[0][2]);
+    e[2]->Text = (AnsiString) cm_buf;
     // CM2
-    sprintf(cm_buf, "%f", CM1[1][0]);
-    CM1_21->Text = (AnsiString) cm_buf;
-    sprintf(cm_buf, "%f", CM1[1][1]);
-    CM1_22->Text = (AnsiString) cm_buf;
-    sprintf(cm_buf, "%f", CM1[1][2]);
-    CM1_23->Text = (AnsiString) cm_buf;
+    sprintf(cm_buf, "%f", CM[1][0]);
+    e[3]->Text = (AnsiString) cm_buf;
+    sprintf(cm_buf, "%f", CM[1][1]);
+    e[4]->Text = (AnsiString) cm_buf;
+    sprintf(cm_buf, "%f", CM[1][2]);
+    e[5]->Text = (AnsiString) cm_buf;
     // CM3
-    sprintf(cm_buf, "%f", CM1[2][0]);
-    CM1_31->Text = (AnsiString) cm_buf;
-    sprintf(cm_buf, "%f", CM1[2][1]);
-    CM1_32->Text = (AnsiString) cm_buf;
-    sprintf(cm_buf, "%f", CM1[2][2]);
-    CM1_33->Text = (AnsiString) cm_buf;
+    sprintf(cm_buf, "%f", CM[2][0]);
+    e[6]->Text = (AnsiString) cm_buf;
+    sprintf(cm_buf, "%f", CM[2][1]);
+    e[7]->Text = (AnsiString) cm_buf;
+    sprintf(cm_buf, "%f", CM[2][2]);
+    e[8]->Text = (AnsiString) cm_buf;
 
     // Reset CM gain ScrollBar
-    sb_cm11->Position = 100;
-    sb_cm12->Position = 100;
-    sb_cm13->Position = 100;
+    gain[0]->Position = 100;
+    gain[1]->Position = 100;
+    gain[2]->Position = 100;
 
     // Set to CM offset Interface
     int CMofs_power;
-    if (CMofs_type == 3) {
+    if (_257 == offsetType) {
 	CMofs_power = 2;
     }				//-256.5~256.5
-    else if (CMofs_type == 2) {
+    else if (_64 == offsetType) {
 	CMofs_power = 8;
     }				//-63.875~63.875
-    else if (CMofs_type == 1) {
+    else if (_128 == offsetType) {
 	CMofs_power = 4;
     }				//-127.75~127.75
-    else if (CMofs_type == 4) {
+    else if (_511 == offsetType) {
 	CMofs_power = 1;
     }				//-511~511
-    sb_ofs1->Position = CMofs * CMofs_power + 512;
+    offset->Position = CMofs * CMofs_power + 512;
     delete[]buffer;
 }
+
 
 //------------------------------------------------------------------------
 void __fastcall TCMForm1::bn_CM1LoadClick(TObject * Sender)
 {
-    if (!OpenDialog1->Execute())
+    if (!OpenDialog1->Execute()) {
 	return;
+    }
     String Fpath = OpenDialog1->FileName;
-    CM1Load(Fpath);
+
+    TScrollBar *gainArray[3] = { sb_cm11, sb_cm12, sb_cm13 };
+    loadCMFromFile(Fpath, offsetType, CM1, CM1EditArray, gainArray, sb_ofs1);
+
     btn_CM1_WriteClick(Sender);
 }
 
 //---------------------------------------------------------------------------
-void TCMForm1::CM2Load(String Fpath)
-{
-    char *buffer = Load_File(Fpath);
 
-    char *pch;
-    pch = strtok(buffer, "\n\t");
-    String tmp;
-    if ((AnsiString) pch != "CM") {
-	while (pch != "CM") {
-	    if (pch == NULL)
-		return;		//資料中沒有cm
-	    pch = strtok(NULL, "\n\t");
-	}
-    }
-    // Load CM
-    int c = 0;
-    pch = strtok(NULL, "\n\t");
-    while (c < 9 && pch != NULL) {
-	if (pch == NULL)
-	    return;		//資料中的data缺少
-	CM2[c / 3][c % 3] = StrToFloat((AnsiString) pch);
-	pch = strtok(NULL, "\n\t");
-	c++;
-    }
-    // Load CM Offset
-    float CMofs;
-    if (pch == NULL)
-	return;			//資料中的data缺少
-    CMofs = StrToFloat((AnsiString) pch);
-
-    // Set to CM Interface
-    // CM1
-    char cm_buf[5];
-    sprintf(cm_buf, "%f", CM2[0][0]);
-    CM2_11->Text = (AnsiString) cm_buf;
-    sprintf(cm_buf, "%f", CM2[0][1]);
-    CM2_12->Text = (AnsiString) cm_buf;
-    sprintf(cm_buf, "%f", CM2[0][2]);
-    CM2_13->Text = (AnsiString) cm_buf;
-    // CM2
-    sprintf(cm_buf, "%f", CM2[1][0]);
-    CM2_21->Text = (AnsiString) cm_buf;
-    sprintf(cm_buf, "%f", CM2[1][1]);
-    CM2_22->Text = (AnsiString) cm_buf;
-    sprintf(cm_buf, "%f", CM2[1][2]);
-    CM2_23->Text = (AnsiString) cm_buf;
-    // CM3
-    sprintf(cm_buf, "%f", CM2[2][0]);
-    CM2_31->Text = (AnsiString) cm_buf;
-    sprintf(cm_buf, "%f", CM2[2][1]);
-    CM2_32->Text = (AnsiString) cm_buf;
-    sprintf(cm_buf, "%f", CM2[2][2]);
-    CM2_33->Text = (AnsiString) cm_buf;
-    // Reset CM gain ScrollBar
-    sb_cm21->Position = 100;
-    sb_cm22->Position = 100;
-    sb_cm23->Position = 100;
-
-    // Set to CM offset Interface
-    int CMofs_power;
-    if (CMofs_type == 3) {
-	CMofs_power = 2;
-    }				//-256.5~256.5
-    else if (CMofs_type == 2) {
-	CMofs_power = 8;
-    }				//-63.875~63.875
-    else if (CMofs_type == 1) {
-	CMofs_power = 4;
-    }				//-127.75~127.75
-    else if (CMofs_type == 4) {
-	CMofs_power = 1;
-    }				//-511~511
-    sb_ofs2->Position = CMofs * CMofs_power + 512;
-    delete[]buffer;
-}
 
 //---------------------------------------------------------------------------
 void __fastcall TCMForm1::bn_CM2LoadClick(TObject * Sender)
 {
-    if (!OpenDialog1->Execute())
+    if (!OpenDialog1->Execute()) {
 	return;
+    }
     String Fpath = OpenDialog1->FileName;
-    CM2Load(Fpath);
+
+    TScrollBar *gainArray[3] = { sb_cm21, sb_cm22, sb_cm23 };
+    loadCMFromFile(Fpath, offsetType, CM2, CM2EditArray, gainArray, sb_ofs2);
+
     btn_CM2_WriteClick(Sender);
 }
 
 //---------------------------------------------------------------------------
-void TCMForm1::CM3Load(String Fpath)
-{
-    char *buffer = Load_File(Fpath);
 
-    char *pch;
-    pch = strtok(buffer, "\n\t");
-    String tmp;
-    if ((AnsiString) pch != "CM") {
-	while (pch != "CM") {
-	    if (pch == NULL)
-		return;		//資料中沒有cm
-	    pch = strtok(NULL, "\n\t");
-	}
-    }
-    // Load CM
-    int c = 0;
-    pch = strtok(NULL, "\n\t");
-    while (c < 9 && pch != NULL) {
-	if (pch == NULL)
-	    return;		//資料中的data缺少
-	CM3[c / 3][c % 3] = StrToFloat((AnsiString) pch);
-	pch = strtok(NULL, "\n\t");
-	c++;
-    }
-    // Load CM Offset
-    float CMofs;
-    if (pch == NULL)
-	return;			//資料中的data缺少
-    CMofs = StrToFloat((AnsiString) pch);
-    // Set to CM Interface
-    //CM1
-    char cm_buf[5];
-    sprintf(cm_buf, "%f", CM3[0][0]);
-    CM3_11->Text = (AnsiString) cm_buf;
-    sprintf(cm_buf, "%f", CM3[0][1]);
-    CM3_12->Text = (AnsiString) cm_buf;
-    sprintf(cm_buf, "%f", CM3[0][2]);
-    CM3_13->Text = (AnsiString) cm_buf;
-    //CM2
-    sprintf(cm_buf, "%f", CM3[1][0]);
-    CM3_21->Text = (AnsiString) cm_buf;
-    sprintf(cm_buf, "%f", CM3[1][1]);
-    CM3_22->Text = (AnsiString) cm_buf;
-    sprintf(cm_buf, "%f", CM3[1][2]);
-    CM3_23->Text = (AnsiString) cm_buf;
-    //CM3
-    sprintf(cm_buf, "%f", CM3[2][0]);
-    CM3_31->Text = (AnsiString) cm_buf;
-    sprintf(cm_buf, "%f", CM3[2][1]);
-    CM3_32->Text = (AnsiString) cm_buf;
-    sprintf(cm_buf, "%f", CM3[2][2]);
-    CM3_33->Text = (AnsiString) cm_buf;
-    // Reset CM gain ScrollBar
-    sb_cm31->Position = 100;
-    sb_cm32->Position = 100;
-    sb_cm33->Position = 100;
-
-    // Set to CM offset Interface
-    int CMofs_power;
-    if (CMofs_type == 3) {
-	CMofs_power = 2;
-    }				//-256.5~256.5
-    else if (CMofs_type == 2) {
-	CMofs_power = 8;
-    }				//-63.875~63.875
-    else if (CMofs_type == 1) {
-	CMofs_power = 4;
-    }				//-127.75~127.75
-    else if (CMofs_type == 4) {
-	CMofs_power = 1;
-    }				//-511~511
-    sb_ofs3->Position = CMofs * CMofs_power + 512;
-    delete[]buffer;
-}
 
 //---------------------------------------------------------------------------
 void __fastcall TCMForm1::bn_CM3LoadClick(TObject * Sender)
 {
-    if (!OpenDialog1->Execute())
+    if (!OpenDialog1->Execute()) {
 	return;
+    }
     String Fpath = OpenDialog1->FileName;
-    CM3Load(Fpath);
+
+    TScrollBar *gainArray[3] = { sb_cm31, sb_cm32, sb_cm33 };
+    loadCMFromFile(Fpath, offsetType, CM3, CM3EditArray, gainArray, sb_ofs3);
+
     btn_CM3_WriteClick(Sender);
 }
 
@@ -1588,10 +1194,8 @@ void __fastcall TCMForm1::FormClose(TObject * Sender, TCloseAction & Action)
 {
     delete[]cm_cb;
     delete[]CMChkB;
-
     delete[]cm_cbo;
     delete[]CMCboB;
-
     delete[]CM_addr;
     delete[]ofs_addr;
     delete[]OCM;

@@ -1,8 +1,8 @@
 object CMForm1: TCMForm1
   Left = 360
   Top = 155
-  Width = 709
-  Height = 670
+  Width = 739
+  Height = 455
   Caption = 'Color Matrix'
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
