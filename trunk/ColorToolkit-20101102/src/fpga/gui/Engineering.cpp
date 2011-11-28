@@ -386,12 +386,7 @@ bool TEngineerForm::SetWrite_Byte(TBit Addr_Bit, int set_val)
 bool TEngineerForm::SetRead_PG(TLUT Addr_LUT, int *Read_table, bool IsChkSum)
 {				// IsChkSum: 1 要加checksum, 0 不用加checksum
 
-    int chk_len;		// 預留的Checksum長度
-    if (IsChkSum == true) {
-	chk_len = 2;
-    } else {
-	chk_len = 0;
-    }
+    const int chk_len = (IsChkSum == true) ? 2 : 0;	// 預留的Checksum長度
     int data_len = 0;
     // 計算table拆成Byte後的長度, Addr_LUT.LutNum()是table當中的數值個數
     if (Addr_LUT.BitNum() == 4 && Addr_LUT.Type() == 1) {
@@ -416,10 +411,11 @@ bool TEngineerForm::SetRead_PG(TLUT Addr_LUT, int *Read_table, bool IsChkSum)
     String Addr_str;
     Dec2Hex(Addr_LUT.Addr() - chk_len, &Addr_str);
     edt_seq_addr->Text = Addr_str;
-    edt_seq_len->Text = IntToStr(data_len + chk_len);
+    const int totalLenth = data_len + chk_len;
+    edt_seq_len->Text = IntToStr(totalLenth);
 
-    unsigned char *read_data = new unsigned char[data_len + chk_len];
-    bool ok = pg_read(read_data, 1);	// Read Bytes of data
+    unsigned char *read_data = new unsigned char[totalLenth];
+    bool ok = pg_read(read_data, true);	// Read Bytes of data
     // bool pg_read(unsigned char *data_read, bool IsShow),
     // return value = false means read fail, otherwise read success,
     // when IsShow is true, it means value will show in table of Engineer->Configuration
@@ -502,7 +498,7 @@ bool TEngineerForm::SetRead_DG(TLUT * Addr_LUT, int **DG_table, int LUT_Nbr, boo
     Dec2Hex(start_addr, &Addr_str);
     edt_seq_addr->Text = Addr_str;
     edt_seq_len->Text = IntToStr(read_len);
-    bool ok = pg_read(read_data, 1);	// Read Bytes of data
+    bool ok = pg_read(read_data, true);	// Read Bytes of data
     bool ok1 = true;
     int read_data_idx = chk_len;
     for (int i = 0; i < LUT_Nbr; i++) {	// DG 分R,G,B,W部份計算, C3D 分R,G,B,W 計算, DCR 分BL,DIM,Histo
@@ -572,7 +568,7 @@ bool TEngineerForm::SetWrite_PG(TLUT Addr_LUT, int *write_table, bool IsChkSum, 
 	data_len = Addr_LUT.LutNum() * 2;
     } else if (Addr_LUT.BitNum() == 10 && (Addr_LUT.Type() == 3 || Addr_LUT.Type() == 4)) {
 	data_len = ceil((double) Addr_LUT.LutNum() * 5 / 4);
-    } else if (Addr_LUT.BitNum() == 10 && (Addr_LUT.Type() == 5)) {
+    } else if (Addr_LUT.BitNum() == 10 && (Addr_LUT.Type() == 6)) {
 	//data_len = ceil((double) Addr_LUT.LutNum() * 3 / 2);
 	data_len = 15;
     } else if (Addr_LUT.BitNum() == 16) {
@@ -1005,8 +1001,9 @@ bool TEngineerForm::pg_read(unsigned char *data_read, bool IsShow)
 
     // 在Engineering 介面上顯示checksum
     int readChksum = 0;
-    for (int i = 0; i < data_len; i++)
+    for (int i = 0; i < data_len; i++) {
 	readChksum += (int) data_read[i];
+    }
     char string[10];
     sprintf(string, "%X", readChksum);
     AnsiString str = (AnsiString) string;
@@ -1017,8 +1014,9 @@ bool TEngineerForm::pg_read(unsigned char *data_read, bool IsShow)
 	data_addr_val = data_addr[0] + data_addr[1] * 256;
 	Set_seq_data(data_read, data_len, data_addr_val);
     }
-    if (data_read_tmp != NULL)
+    if (data_read_tmp != NULL) {
 	delete[]data_read_tmp;
+    }
     return 1;
 }
 
@@ -1034,11 +1032,13 @@ void __fastcall TEngineerForm::btn_seq_readClick(TObject * Sender)
     btn_seq_read->Enabled = false;
     int len = StrToInt(edt_seq_len->Text);
     unsigned char *data_read = new unsigned char[len];
-    for (int i = 0; i < len; i++)
+    for (int i = 0; i < len; i++) {
 	data_read[i] = 0;
-    pg_read(data_read, 1);
-    if (data_read != NULL)
+    }
+    pg_read(data_read, true);
+    if (data_read != NULL) {
 	delete[]data_read;
+    }
 
     btn_seq_read->Enabled = true;
 }

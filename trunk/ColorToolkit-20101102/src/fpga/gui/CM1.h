@@ -49,6 +49,13 @@
 TCMForm1為一繼承TForm形態的class, 為Color Matrix頁面的Interface
 ======================================================================*/
 
+enum OffsetType {
+    Unknow, _128, _64, _257, _511
+};
+
+enum Mode {
+    Manual, WhiteBalance, Vivid
+};
 class TCMForm1:public TForm {
     __published:		// IDE-managed Components
     TOpenDialog * OpenDialog1;
@@ -197,8 +204,8 @@ class TCMForm1:public TForm {
     void __fastcall FormClose(TObject * Sender, TCloseAction & Action);
   private:			// User declarations
     void CM_val_initial();
-    int FloatToMemForm(int temp);
-    int MemToFloatForm(int mem);
+    static int FloatToMemForm(int temp);
+    static int MemToFloatForm(int mem);
     int FloatToMemOfsForm(int ofs);
     int MemToFloatOfsForm(int ofs);
 
@@ -210,19 +217,29 @@ class TCMForm1:public TForm {
     _CBOB **CMCboB;
     TLUT *CM_addr, *ofs_addr;
 
-    int CMofs_type;
+    //int CMofs_type;
+    OffsetType offsetType;
     int Convert_type;
     bool CMInitialized;
 
     float CM1[3][3];
     float CM2[3][3];
     float CM3[3][3];
+    TEdit *CM1EditArray[9];
+    TEdit *CM2EditArray[9];
+    TEdit *CM3EditArray[9];
 
+    void selectMode(int mode, TEdit * e[9]);
+    void scrollBarOffsetChange(int index, bool w255Fix, TEdit * e[9], TScrollBar * scroll,
+			       TStaticText * text);
+    void storeCMToTCON(int index, TEdit * e[9], TScrollBar * offset);
+    void loadCMFromTCON(int index, TEdit * e[9], TStaticText * offset);
+    void storeCMToFile(String filename, TEdit * e[9], TStaticText * offset);
+    void loadCMFromFile(String filename, OffsetType offsetType, float CM[3][3],
+			TEdit * CMEditArray[9], TScrollBar * gain[3], TScrollBar * offset);
   public:			// User declarations
      __fastcall TCMForm1(TComponent * Owner);
-    void CM1Load(String Fpath);
-    void CM2Load(String Fpath);
-    void CM3Load(String Fpath);
+
 };
 //---------------------------------------------------------------------------
 extern PACKAGE TCMForm1 *CMForm1;

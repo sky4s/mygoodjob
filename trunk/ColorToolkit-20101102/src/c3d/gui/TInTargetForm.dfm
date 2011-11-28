@@ -1,6 +1,7 @@
 object InTargetForm: TInTargetForm
   Left = 224
   Top = 141
+  Anchors = [akLeft, akBottom]
   BorderStyle = bsSingle
   Caption = 'Compare Figure'
   ClientHeight = 314
@@ -13,7 +14,7 @@ object InTargetForm: TInTargetForm
   Font.Name = 'MS Sans Serif'
   Font.Style = []
   OldCreateOrder = False
-  Position = poDefault
+  Position = poDefaultSizeOnly
   Visible = True
   WindowState = wsMinimized
   PixelsPerInch = 96
