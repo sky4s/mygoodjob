@@ -173,18 +173,32 @@ bool ReadWrite_LUT::Read_LUT10(IntTbl & Out, ByteTbl In, int type)
 	}
     } else if (type == 5) {	// AUO12307 CM offset
 	for (int i = 0; i < Out.Len; i++) {
-	    if (Out.Len % 2 == 0) {
-		Out.Tbl[i] = In.Tbl[3 * i] / 16 * 256 + In.Tbl[3 * i + 1];
+	    if (i % 2 == 0) {
+		//R&B,0&2
+                int index = i/2*3;
+		int v=  ((In.Tbl[index] & 48) << 4) + In.Tbl[index + 1];
+                Out.Tbl[i]=v;
 	    } else {
-		Out.Tbl[i] = In.Tbl[3 * i] % 16 * 256 + In.Tbl[3 * i + 2];
+		//G,1
+		int v=  ((In.Tbl[0] & 3) << 8) + In.Tbl[2];
+                Out.Tbl[i]=v;
 	    }
 	}
     } else if (type == 6) {	// AUO12307 CM set
 	for (int i = 0; i < Out.Len; i++) {
-	    if (Out.Len % 2 == 1) {
-		Out.Tbl[i] = In.Tbl[3 * i] / 16 * 256 + In.Tbl[3 * i + 1];
-	    } else {
-		Out.Tbl[i] = In.Tbl[3 * i] % 16 * 256 + In.Tbl[3 * i + 2];
+	    /*if (i % 2 == 1) { //1,3,5,7
+	       Out.Tbl[i] = In.Tbl[3 * i] / 16 * 256 + In.Tbl[3 * i + 1];
+	       } else {         //0,2,4,6,8
+	       Out.Tbl[i] = In.Tbl[3 * i] % 16 * 256 + In.Tbl[3 * i + 2];
+	       } */
+	    if (i % 2 == 1) {	//1,3,5,7
+                int index = 3*((i-1)/2+1);
+                int v=((In.Tbl[index] & 48) << 4) + In.Tbl[index + 1];
+		Out.Tbl[i] =v;
+	    } else {		//0,2,4,6,8
+            int index = 3*(i/2);
+                int v=((In.Tbl[index] & 3) << 8) + In.Tbl[index+2];
+		Out.Tbl[i] =                                     v;
 	    }
 	}
     }
@@ -384,3 +398,4 @@ bool ReadWrite_LUT::Write_LUT16(ByteTbl & Out, IntTbl In, int type)
 
 
 #endif
+
