@@ -987,8 +987,8 @@ object MainForm: TMainForm
         Width = 169
         Height = 98
         Caption = 'CH Setting'
+        Enabled = False
         TabOrder = 3
-        Visible = False
         object Label7: TLabel
           Left = 7
           Top = 20
@@ -1020,6 +1020,7 @@ object MainForm: TMainForm
           ImeName = #26085#25991#36664#20837#31995#32113' (MS-IME2002)'
           TabOrder = 0
           Text = '0'
+          OnKeyPress = Edit_SourceCHKeyPress
         end
         object Edit_TargetCH: TEdit
           Left = 80
@@ -1469,7 +1470,7 @@ object MainForm: TMainForm
             Top = 13
             Width = 138
             Height = 21
-            ItemHeight = 0
+            ItemHeight = 13
             TabOrder = 0
             OnChange = ComboBox_TCONTypeChange
           end

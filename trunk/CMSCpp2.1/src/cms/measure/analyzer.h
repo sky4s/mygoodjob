@@ -84,6 +84,7 @@ namespace cms {
 	    void setupComponent(const Dep::Channel & ch, RGB_ptr rgb);
 	    void enter();
 	    void setChannel(int no, string_ptr id);
+	    int getChannelNO();
 	    void beginAnalyze();
 	    void endAnalyze();
 	    void setWaitTimes(int waitTimes);
