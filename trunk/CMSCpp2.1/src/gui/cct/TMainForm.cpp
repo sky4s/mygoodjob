@@ -48,6 +48,7 @@ void __fastcall TMainForm::About1Click(TObject * Sender)
 
 void __fastcall TMainForm::Exit1Click(TObject * Sender)
 {
+    disconnectMeter();
     this->Close();
 }
 
@@ -186,6 +187,25 @@ void TMainForm::initTCONFile()
 	ini->WriteInteger("12401", "in", 8);
 	ini->WriteInteger("12401", "out", 8);
 	//=========================================================================
+	// 12405
+	//=========================================================================
+	ini->WriteInteger("12405", "AddressingSize", 5);
+
+	ini->WriteString("12405", "DigitalGammaEnableAddress", "29");
+	ini->WriteInteger("12405", "DigitalGammaEnableBit", 0);
+	ini->WriteString("12405", "DigitalGammaLUTAddress", "106D");
+	ini->WriteInteger("12405", "DigitalGammaLUTType", 12);
+
+	ini->WriteBool("12405", "GammaTestFunc", true);
+	ini->WriteString("12405", "GammaTestEnableAddress", "1FEB");
+	ini->WriteInteger("12405", "GammaTestEnableBit", 4);
+	ini->WriteString("12405", "GammaTestAddress", "1FEC");
+	ini->WriteBool("12405", "IndepRGB", false);
+
+	ini->WriteInteger("12405", "in", 8);
+	ini->WriteInteger("12405", "out", 8);
+	//=========================================================================
+	//=========================================================================
 	// 12407
 	//=========================================================================
 	ini->WriteInteger("12407", "AddressingSize", 5);
@@ -196,9 +216,9 @@ void TMainForm::initTCONFile()
 	ini->WriteInteger("12407", "DigitalGammaLUTType", 12);
 
 	ini->WriteBool("12407", "GammaTestFunc", true);
-	ini->WriteString("12407", "GammaTestEnableAddress", "3F1B");
-	ini->WriteInteger("12407", "GammaTestEnableBit", 3);
-	ini->WriteString("12407", "GammaTestAddress", "3F1C");
+	ini->WriteString("12407", "GammaTestEnableAddress", "3FEB");
+	ini->WriteInteger("12407", "GammaTestEnableBit", 4);
+	ini->WriteString("12407", "GammaTestAddress", "3FEC");
 	ini->WriteBool("12407", "IndepRGB", false);
 
 	ini->WriteInteger("12407", "in", 8);
