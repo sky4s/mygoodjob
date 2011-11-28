@@ -56,20 +56,26 @@ namespace gui {
     namespace framework {
 	using namespace std;
 	class RegisterType {
-
+	  protected:
+	    std::string regname;
+	    RegisterType(std::string regname);
 	};
+
+
 
 	class BitRegister:public RegisterType {
 	  private:
 	    int byteCount;
 	    int_array regData;
 	  public:
-	     BitRegister(n, ...);
+	     BitRegister(std::string regname, int n, ...);
+	     BitRegister(std::string regname, int_vector_ptr intVector);
 	    int getAddress(int n);
 	    int getBit(int n);
 	    int getLength(int n);
 
 	};
+	typedef bptr < BitRegister > BitRegister_ptr;
 	class LUTRegister:public RegisterType {
 	};
 
