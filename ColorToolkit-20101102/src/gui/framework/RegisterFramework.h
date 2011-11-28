@@ -73,16 +73,25 @@ namespace gui {
 	class LUTRegister:public RegisterType {
 	};
 
-
+	typedef bptr < RegisterType > RegisterType_ptr;
+#define nil_RegisterType_ptr RegisterType_ptr((RegisterType *) NULL)
+	typedef std::map < const std::string,
+	    RegisterType_ptr > RegisterTypeMap;
+	typedef bptr < RegisterTypeMap > RegisterTypeMap_ptr;
+#define nil_RegisterTypeMap_ptr RegisterTypeMap_ptr((RegisterTypeMap *) NULL)
 
 	class RegisterMap {
 	  private:
-	    StringMap_ptr map;
+	    StringMap_ptr tconMap;
+	    RegisterTypeMap_ptr registerMap;
 	    void initAliasNameMap();
+	    int_vector_ptr getIntVector(std::string text);
+	    RegisterType_ptr getRegister(std::string regname,
+					 int_vector_ptr intVector);
 	  public:
 	     RegisterMap(std::string filename);
-	    void reset();
-	     bptr < RegisterType > getRegister(std::string regname);
+	    //void reset();
+	    RegisterType_ptr getRegister(std::string regname);
 	};
 
 
@@ -116,7 +125,7 @@ namespace gui {
 	     RegisterFramework();
 	     RegisterFramework(std::string filename);
 	    void active(TObject * sender);
-	    void resetRegisterMap();
+	    //void resetRegisterMap();
 	    void setRegisterFilename(std::string filename);
 	};
 

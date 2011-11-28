@@ -18,19 +18,66 @@
 namespace gui {
     namespace framework {
 	RegisterMap::RegisterMap(std::string filename) {
-	    map = AbstractBase::getStringMap(filename);
-
+	    tconMap = AbstractBase::getStringMap(filename);
+	    registerMap = RegisterTypeMap_ptr(new RegisterTypeMap());
 	};
 
-	void RegisterMap::reset() {
-	    map = nil_StringMap_ptr;
+	/*void RegisterMap::reset() {
+	   tconMap = nil_StringMap_ptr;
+	   registerMap = nil_RegisterTypeMap_ptr;
+	   }; */
+
+	int_vector_ptr RegisterMap::getIntVector(std::string text) {
+	    if (text.length() == 0 || text == "_NULL") {
+		return nil_int_vector_ptr;
+	    }
+	    using namespace cms::util;
+	    string_vector_ptr tokens = StringVector::tokenize(text, ",");
+	    int size = tokens->size();
+	    int_vector_ptr values(new int_vector(size - 1));
+	    for (int x = 1; x < size; x++) {
+		string token = (*tokens)[x];
+		(*values)[x - 1] = _toInt(token);
+	    }
+	    return values;
 	};
 
-	bptr < RegisterType > RegisterMap::getRegister(std::string regname) {
+	RegisterType_ptr RegisterMap::getRegister(std::string regname,
+						  int_vector_ptr intVector)
+	{
+	    int size = intVector->size();
+	    switch (size) {
+	    case 3:		//TBit1
+		break;
+	    case 4:		//TLUT
+		break;
+	    case 6:		//TBit2
+		break;
+	    case 9:		//TBit3
+		break;
+	    case 12:		//TBit4
+		break;
+	    };
+	};
+
+	RegisterType_ptr RegisterMap::getRegister(std::string regname) {
+
+	    if (0 == regname.length() || "_NULL" == regname) {
+		return nil_RegisterType_ptr;
+	    }
+
+	    RegisterType_ptr reg = (*registerMap)[regname];
+	    if (null == reg) {
+		//沒有=>代表沒有生成RegisterType, 即刻生成
+		const std::string text = (*tconMap)[regname];
+		int_vector_ptr intVector = getIntVector(text);
+		reg = getRegister(regname, intVector);
+	    }
+	    return reg;
 	};
 	//=====================================================================
 
-	BitRegister::BitRegister(int n, ...) {
+	BitRegister::BitRegister(int n,...) {
 	    if (n % 3 != 0) {
 		throw new java::lang::IllegalArgumentException();
 	    }
@@ -236,9 +283,9 @@ namespace gui {
 	    registerMap = bptr < RegisterMap > (new RegisterMap(filename));
 	};
 
-	void RegisterFramework::resetRegisterMap() {
-	    registerMap->reset();
-	};
+	/*void RegisterFramework::resetRegisterMap() {
+	   registerMap->reset();
+	   }; */
     };
 
 };
