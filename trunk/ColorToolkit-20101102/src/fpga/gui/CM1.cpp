@@ -217,8 +217,7 @@ void __fastcall TCMForm1::Btn_CM_reloadClick(TObject * Sender)
 	    else if (read_val == 0)
 		CMChkB[i]->Chkb->Checked = 0;
 	    else
-		ShowMessage("CM CheckBox read error:" +
-			    IntToStr(read_val));
+		ShowMessage("CM CheckBox read error:" + IntToStr(read_val));
 	}
     }
     for (int i = 0; i < OCM->CMCboBox_Nbr; i++) {
@@ -282,8 +281,7 @@ int TCMForm1::MemToFloatOfsForm(int ofs)
 }
 
 //---------------------------------------------------------------------------
-void TCMForm1::loadCMFromTCON(int index, TEdit * e[9],
-			      TStaticText * offset)
+void TCMForm1::loadCMFromTCON(int index, TEdit * e[9], TStaticText * offset)
 {
 
     if (CM_addr[index].LutNum() != 9) {	//Check CM1 table number
@@ -357,8 +355,7 @@ void __fastcall TCMForm1::btn_CM3_ReadClick(TObject * Sender)
 
 //---------------------------------------------------------------------------
 
-void TCMForm1::storeCMToTCON(const int index, TEdit * e[9],
-			     TScrollBar * offset)
+void TCMForm1::storeCMToTCON(const int index, TEdit * e[9], TScrollBar * offset)
 {
     //Write CM
     if (CM_addr[index].LutNum() != 9) {	//Check CM1 table number
@@ -396,26 +393,11 @@ void TCMForm1::storeCMToTCON(const int index, TEdit * e[9],
 
     //Write Offset
     if (ofs_addr[index].LutNum() != 3) {	//check offset table number
-	ShowMessage
-	    ("CM1 offset LUT number defined in AddressCM.cpp is wrong.");
+	ShowMessage("CM1 offset LUT number defined in AddressCM.cpp is wrong.");
 	return;
     }
 
     writeOffset(ofs_addr[index], offset->Position);
-    /*int ofs[3];
-       int tmp = offset->Position;
-       ofs[0] = FloatToMemOfsForm(tmp);
-
-       ofs[1] = ofs[0];
-       ofs[2] = ofs[0];
-       EngineerForm->SetWrite_PG(ofs_addr[index], ofs, CM_IsChkSum); */
-    /*if (0 == index) {
-       // add by AUO12307 //
-       int set_val = ofs[2] / 256 * 16 + CM[0] / 256 * 16;
-       TBit CM_J;
-       CM_J.set(289, 0, 8, "");
-       EngineerForm->SetWrite_Byte(CM_J, set_val);
-       } */
 };
 
 void __fastcall TCMForm1::btn_CM1_WriteClick(TObject * Sender)
@@ -759,68 +741,16 @@ void TCMForm1::selectMode(int mode, TEdit * e[9])
 
 void __fastcall TCMForm1::rg_CM2_modeClick(TObject * Sender)
 {
-    char c = '0';
-    if (rg_CM2_mode->ItemIndex == 1) {	//White Balance
-	CM2_11->Text = 1;
-	CM2_12->Text = 0;
-	CM2_13->Text = 0;
-
-	CM2_21->Text = 0;
-	CM2_22->Text = 1;
-	CM2_23->Text = 0;
-
-	CM2_31->Text = 0;
-	CM2_32->Text = 0;
-	CM2_33->Text = 1;
-	CM2_keyPress(Sender, c);	//refesh memory
-    } else if (rg_CM2_mode->ItemIndex == 2) {	//vivid mode
-	CM2_11->Text = 1.04;
-	CM2_12->Text = -0.02;
-	CM2_13->Text = -0.02;
-
-	CM2_21->Text = -0.02;
-	CM2_22->Text = 1.04;
-	CM2_23->Text = -0.02;
-
-	CM2_31->Text = -0.02;
-	CM2_32->Text = -0.02;
-	CM2_33->Text = 1.04;
-	CM2_keyPress(Sender, c);	//refesh memory
-    }
+    selectMode(rg_CM2_mode->ItemIndex, CM2EditArray);
+    CM2_keyPress(Sender, '0');	//refesh memory
 }
 
 //---------------------------------------------------------------------------
 
 void __fastcall TCMForm1::rg_CM3_modeClick(TObject * Sender)
 {
-    char c = '0';
-    if (rg_CM3_mode->ItemIndex == 1) {	//White Balance
-	CM3_11->Text = 1;
-	CM3_12->Text = 0;
-	CM3_13->Text = 0;
-
-	CM3_21->Text = 0;
-	CM3_22->Text = 1;
-	CM3_23->Text = 0;
-
-	CM3_31->Text = 0;
-	CM3_32->Text = 0;
-	CM3_33->Text = 1;
-	CM3_keyPress(Sender, c);	//refesh memory
-    } else if (rg_CM3_mode->ItemIndex == 2) {	//vivid mode
-	CM3_11->Text = 1.04;
-	CM3_12->Text = -0.02;
-	CM3_13->Text = -0.02;
-
-	CM3_21->Text = -0.02;
-	CM3_22->Text = 1.04;
-	CM3_23->Text = -0.02;
-
-	CM3_31->Text = -0.02;
-	CM3_32->Text = -0.02;
-	CM3_33->Text = 1.04;
-	CM3_keyPress(Sender, c);	//refesh memory
-    }
+    selectMode(rg_CM3_mode->ItemIndex, CM3EditArray);
+    CM3_keyPress(Sender, '0');	//refesh memory
 }
 
 //---------------------------------------------------------------------------
@@ -889,8 +819,7 @@ void __fastcall TCMForm1::CM3_keyPress(TObject * Sender, char &Key)
 //---------------------------------------------------------------------------
 void __fastcall TCMForm1::sb_ofs1Change(TObject * Sender)
 {
-    scrollBarOffsetChange(0, cb_CM1_W255->Checked, CM1EditArray, sb_ofs1,
-			  st_ofs1);
+    scrollBarOffsetChange(0, cb_CM1_W255->Checked, CM1EditArray, sb_ofs1, st_ofs1);
 }
 
 float TCMForm1::parsePosition(float originalPosition)
@@ -933,10 +862,6 @@ void TCMForm1::writeOffset(TLUT offsetAddress, int position)
 	int_array rValues = tBitR.getValues(ofs[0]);
 	int_array gValues = tBitG.getValues(ofs[0]);
 	int_array bValues = tBitB.getValues(ofs[0]);
-	int r0 = rValues[0];
-	int r1 = rValues[1];
-	int g0 = gValues[0];
-	int g1 = gValues[1];
 
 	EngineerForm->SetWrite_Byte(tBitR.Byte1, rValues[0]);
 	EngineerForm->SetWrite_Byte(tBitR.Byte2, rValues[1]);
@@ -951,8 +876,7 @@ void TCMForm1::writeOffset(TLUT offsetAddress, int position)
 
 //---------------------------------------------------------------------------
 void TCMForm1::scrollBarOffsetChange(int index, bool w255Fix, TEdit * e[9],
-				     TScrollBar * scroll,
-				     TStaticText * text)
+				     TScrollBar * scroll, TStaticText * text)
 {
 
     float s = parsePosition(scroll->Position);
@@ -961,12 +885,6 @@ void TCMForm1::scrollBarOffsetChange(int index, bool w255Fix, TEdit * e[9],
     sprintf(buf, "%3.2f", s);
     text->Caption = (AnsiString) buf;
 
-    /*int ofs[3];
-       int tmp = scroll->Position;
-       ofs[0] = FloatToMemOfsForm(tmp);
-       ofs[1] = ofs[0];
-       ofs[2] = ofs[0];
-       EngineerForm->SetWrite_PG(ofs_addr[index], ofs, CM_IsChkSum); */
     writeOffset(ofs_addr[index], scroll->Position);
 
     if (true == w255Fix) {
@@ -1006,8 +924,7 @@ void TCMForm1::scrollBarOffsetChange(int index, bool w255Fix, TEdit * e[9],
 void __fastcall TCMForm1::sb_ofs2Change(TObject * Sender)
 {
 
-    scrollBarOffsetChange(1, cb_CM2_W255->Checked, CM2EditArray, sb_ofs2,
-			  st_ofs2);
+    scrollBarOffsetChange(1, cb_CM2_W255->Checked, CM2EditArray, sb_ofs2, st_ofs2);
 
 }
 
@@ -1015,8 +932,7 @@ void __fastcall TCMForm1::sb_ofs2Change(TObject * Sender)
 
 void __fastcall TCMForm1::sb_ofs3Change(TObject * Sender)
 {
-    scrollBarOffsetChange(2, cb_CM3_W255->Checked, CM3EditArray, sb_ofs3,
-			  st_ofs3);
+    scrollBarOffsetChange(2, cb_CM3_W255->Checked, CM3EditArray, sb_ofs3, st_ofs3);
 }
 
 //---------------------------------------------------------------------------
@@ -1060,8 +976,7 @@ void __fastcall TCMForm1::bn_CM3SaveClick(TObject * Sender)
 
 }
 
-void TCMForm1::storeCMToFile(String filename, TEdit * e[9],
-			     TStaticText * offset)
+void TCMForm1::storeCMToFile(String filename, TEdit * e[9], TStaticText * offset)
 {
     FILE *fptr = fopen(filename.c_str(), "w");
     fprintf(fptr, "CM\n");
@@ -1078,8 +993,7 @@ void TCMForm1::storeCMToFile(String filename, TEdit * e[9],
     CM[7] = StrToFloat(e[7]->Text);
     CM[8] = StrToFloat(e[8]->Text);
     for (int i = 0; i < 3; i++) {
-	fprintf(fptr, "%f\t%f\t%f\n", CM[0 + i * 3], CM[1 + i * 3],
-		CM[2 + i * 3]);
+	fprintf(fptr, "%f\t%f\t%f\n", CM[0 + i * 3], CM[1 + i * 3], CM[2 + i * 3]);
     }
     float CMofs;
     CMofs = StrToFloat(offset->Caption);
@@ -1186,8 +1100,7 @@ void __fastcall TCMForm1::bn_CM1LoadClick(TObject * Sender)
     String Fpath = OpenDialog1->FileName;
 
     TScrollBar *gainArray[3] = { sb_cm11, sb_cm12, sb_cm13 };
-    loadCMFromFile(Fpath, offsetType, CM1, CM1EditArray, gainArray,
-		   sb_ofs1);
+    loadCMFromFile(Fpath, offsetType, CM1, CM1EditArray, gainArray, sb_ofs1);
 
     btn_CM1_WriteClick(Sender);
 }
@@ -1204,8 +1117,7 @@ void __fastcall TCMForm1::bn_CM2LoadClick(TObject * Sender)
     String Fpath = OpenDialog1->FileName;
 
     TScrollBar *gainArray[3] = { sb_cm21, sb_cm22, sb_cm23 };
-    loadCMFromFile(Fpath, offsetType, CM2, CM2EditArray, gainArray,
-		   sb_ofs2);
+    loadCMFromFile(Fpath, offsetType, CM2, CM2EditArray, gainArray, sb_ofs2);
 
     btn_CM2_WriteClick(Sender);
 }
@@ -1222,8 +1134,7 @@ void __fastcall TCMForm1::bn_CM3LoadClick(TObject * Sender)
     String Fpath = OpenDialog1->FileName;
 
     TScrollBar *gainArray[3] = { sb_cm31, sb_cm32, sb_cm33 };
-    loadCMFromFile(Fpath, offsetType, CM3, CM3EditArray, gainArray,
-		   sb_ofs3);
+    loadCMFromFile(Fpath, offsetType, CM3, CM3EditArray, gainArray, sb_ofs3);
 
     btn_CM3_WriteClick(Sender);
 }
@@ -1232,8 +1143,7 @@ void __fastcall TCMForm1::bn_CM3LoadClick(TObject * Sender)
 
 
 
-void __fastcall TCMForm1::FormKeyDown(TObject * Sender, WORD & Key,
-				      TShiftState Shift)
+void __fastcall TCMForm1::FormKeyDown(TObject * Sender, WORD & Key, TShiftState Shift)
 {
     if (Key == 0x40)
 	Btn_CM_reloadClick(Sender);
@@ -1243,8 +1153,7 @@ void __fastcall TCMForm1::FormKeyDown(TObject * Sender, WORD & Key,
 
 
 
-void __fastcall TCMForm1::FormClose(TObject * Sender,
-				    TCloseAction & Action)
+void __fastcall TCMForm1::FormClose(TObject * Sender, TCloseAction & Action)
 {
     delete[]cm_cb;
     delete[]CMChkB;

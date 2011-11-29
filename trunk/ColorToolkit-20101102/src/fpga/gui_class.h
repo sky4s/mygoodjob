@@ -139,22 +139,21 @@ class _ScrollBar		//Address ¬° 1 byte
 
 
 
-
 class AbstractBase {
   private:
     static StringMap_ptr map;
     static StringMap_ptr aliasNameMap;
     static void initAliasNameMap();
+    static int_vector_ptr getRegisterIntVector(string_vector_ptr registerTokens);
   protected:
 
-    static bool setAddress(AbstractAddressType * address,
-			   std::string text);
-    static bool setAddressFromFile(AbstractAddressType * address,
-				   std::string tag);
+    static bool setAddress(AbstractAddressType * address, std::string text);
+    static bool setAddressFromFile(AbstractAddressType * address, std::string tag);
 
   public:
 
-    static bptr < AbstractAddressType > getAddress(std::string text);
+    static AbstractAddress_ptr getAddress(std::string tag);
+    static AbstractAddressType* getAddress2(std::string tag);
     static int_vector_ptr getValuesFromFile(std::string tag);
     static void resetAddressMap();
     static StringMap_ptr getStringMap(std::string filename);

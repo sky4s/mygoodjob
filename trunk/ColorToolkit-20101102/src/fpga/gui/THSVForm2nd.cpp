@@ -67,9 +67,9 @@ isf(cms::hsvip::IntegerSaturationFormula((byte) 7, 3)), colorspace(sRGBColorSpac
     PatternForm->setPatternCallbackIF(this);
     ScrollBar_TurnPointChange(null);
 
-    using namespace cms::hsvip;
+    //using namespace cms::hsvip;
     //因為colorspace在建構式才初始化, 所以此處的ce是個temp, 為了通過編譯
-    ce = bptr < ChromaEnhance > (new ChromaEnhance(colorspace, isf));
+    //ce = bptr < ChromaEnhance > (new ChromaEnhance(colorspace, isf));
 }
 
 //---------------------------------------------------------------------------
@@ -85,10 +85,15 @@ void __fastcall THSVForm2nd::CheckBox_Click(TObject * Sender)
 }
 
 //---------------------------------------------------------------------------
-
+String turnPointFilter(const int value)
+{
+    using namespace std;
+    string str = _toString(value) + " (" + _toString(100. / 16 * (value + 1)) + "%)";
+    return str.c_str();
+};
 void __fastcall THSVForm2nd::FormCreate(TObject * Sender)
 {
-    //bool fpga = isFPGA();
+    //=========================================================================
     hsvInitialized = false;
     int ic_choice;
     if (MainForm->TCON_DEV == "11307") {
@@ -134,13 +139,25 @@ void __fastcall THSVForm2nd::FormCreate(TObject * Sender)
 	ShowMessage("Can' t Get HSV enable index.");
     }
     Initial_HSV_table();	// initial HSV table
-    hsvInitialized = true;
+
+    //=========================================================================
 
     this->initStringGrid_HSV();
     colorPicker->setTInTargetForm(InTargetForm);
     tpColorThread->Resume();
     RadioButton_deg60baseClick(RadioButton_deg0);
+
+    //==========================================================================
+    // bind
+    //==========================================================================
+    //binder.bind(turnPointFilter, Label_TurnPoint, ScrollBar_TurnPoint);
+    //==========================================================================
+    ScrollBar_TurnPoint->Position = 7;
+    hsvInitialized = true;
+
 }
+
+
 
 
 double THSVForm2nd::getSaturation()
@@ -578,6 +595,14 @@ void __fastcall THSVForm2nd::Btn_HSV_reloadClick(TObject * Sender)
     }
     //read lut
     btn_hsv_readClick(Sender);
+    //read turn point
+    hsvInitialized = false;
+    AbstractAddress_ptr turnPointAbAds = AbstractBase::getAddress("SAT_TP");
+    TBit *turnPointAddress = (TBit *) turnPointAbAds.get();
+    EngineerForm->SetRead_Byte(*turnPointAddress, &read_val);
+    ScrollBar_TurnPoint->Position = read_val;
+    hsvInitialized = true;
+
 
     HSV_LUT_FuncEnable(1);
     Btn_HSV_reload->Enabled = true;
@@ -713,23 +738,16 @@ void __fastcall THSVForm2nd::btn_hsv_readClick(TObject * Sender)
     for (int i = 0; i < HUE_COUNT; i++) {
 	//fpga
 	if (fpga) {
-	    /*hueTable[i] = hueTableTemp[i] = HSV_lut[i * 3] * 4 + (HSV_lut[i * 3 + 1] / 64) % 4;
-	       satTable[i] = satTableTemp[i] =
-	       (HSV_lut[i * 3 + 1] % 64) * 2 + (HSV_lut[i * 3 + 2] / 128) % 2; */
 	    hueTable[i] = HSV_lut[i * 3] * 4 + (HSV_lut[i * 3 + 1] / 64) % 4;
 	    satTable[i] = (HSV_lut[i * 3 + 1] % 64) * 2 + (HSV_lut[i * 3 + 2] / 128) % 2;
 	    val_r = HSV_lut[i * 3 + 2] % 128;
 	} else {
 	    // Modified only for AUO11307
-	    /*hueTable[i] = hueTableTemp[i] = HSV_lut[i * 3 + 2] * 4 + (HSV_lut[i * 3 + 1] / 64) % 4;
-	       satTable[i] = satTableTemp[i] =
-	       (HSV_lut[i * 3 + 1] % 64) * 2 + (HSV_lut[i * 3] / 128) % 2; */
 	    hueTable[i] = HSV_lut[i * 3 + 2] * 4 + (HSV_lut[i * 3 + 1] / 64) % 4;
 	    satTable[i] = (HSV_lut[i * 3 + 1] % 64) * 2 + (HSV_lut[i * 3] / 128) % 2;
 	    val_r = HSV_lut[i * 3] % 128;
 	}
 
-	//valTable[i] = valTableTemp[i] = Cmplmnt2sToSign(val_r, 128);
 	valTable[i] = Cmplmnt2sToSign(val_r, 128);
 
 	double hue = ((double) hueTable[i]) / MAX_HUE_VALUE * WHOLE_HUE_ANGLE;
@@ -1702,18 +1720,39 @@ void __fastcall THSVForm2nd::hsvAdjustsb_Sat_gainChange(TObject * Sender)
 
 void __fastcall THSVForm2nd::ScrollBar_TurnPointChange(TObject * Sender)
 {
-    using namespace std;
     int pos = ScrollBar_TurnPoint->Position;
-    string str = _toString(100. / 16 * (pos + 1));
-    Label_TurnPoint->Caption = (_toString(pos) + " (" + str + "%)").c_str();
+    Label_TurnPoint->Caption = turnPointFilter(pos);
 
-    //得把斜率寫到tcon: SAT_TP,SLOPE_COEF1,SLOPE_COEF2 
+    if (false == hsvInitialized) {
+	return;
+    }
+    using namespace std;
+
+    //得把斜率寫到tcon: SAT_TP,SLOPE_COEF1,SLOPE_COEF2
     int slope1 = (int) (2047. / (pos + 1));
     int slope2 = ((16 - pos - 1) == 0) ? 0 : (int) (2047. / (16 - pos - 1));
     using namespace cms::hsvip;
     isf = IntegerSaturationFormula((byte) pos, 3);
     ce.reset();
     ce = bptr < ChromaEnhance > (new ChromaEnhance(colorspace, isf));
+
+    AbstractAddress_ptr turnPointAbAds = AbstractBase::getAddress("SAT_TP");
+    AbstractAddress_ptr slope1AbAds = AbstractBase::getAddress("SLOPE_COEF1");
+    AbstractAddress_ptr slope2AbAds = AbstractBase::getAddress("SLOPE_COEF2");
+
+    TBit *turnPointAddress = (TBit *) turnPointAbAds.get();
+    TBit2 *slope1Address = (TBit2 *) slope1AbAds.get();
+    TBit2 *slope2Address = (TBit2 *) slope2AbAds.get();
+
+    int_array slope1Values = slope1Address->getValues(slope1);
+    int_array slope2Values = slope2Address->getValues(slope2);
+
+    EngineerForm->SetWrite_Byte(*turnPointAddress, pos);
+    EngineerForm->SetWrite_Byte(slope1Address->Byte1, slope1Values[0]);
+    EngineerForm->SetWrite_Byte(slope1Address->Byte2, slope1Values[1]);
+    EngineerForm->SetWrite_Byte(slope2Address->Byte1, slope2Values[0]);
+    EngineerForm->SetWrite_Byte(slope2Address->Byte2, slope2Values[1]);
+
 }
 
 //---------------------------------------------------------------------------
@@ -1850,8 +1889,6 @@ void __fastcall THSVForm2nd::ScrollBar_ChromaChange(TObject * Sender)
 
 	hsvPos[1] = chromaValue;
 	hsvPos[2] = getValueFromChromaEnhance((short) finalHueValue, (short) chromaValue);
-
-	//hsvAdjust->setHSVPostition(hsvPos);
     }
     hsvAdjust->setHSVPostition(hsvPos);
 

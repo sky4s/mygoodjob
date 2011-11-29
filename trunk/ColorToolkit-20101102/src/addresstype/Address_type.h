@@ -9,6 +9,10 @@
 
 #include <lib/CMSCpp2.1/src/includeall.h>
 
+class AbstractAddressType;
+typedef bptr < AbstractAddressType > AbstractAddress_ptr;
+#define nil_AbstractAddress_ptr  AbstractAddress_ptr((AbstractAddressType*)null);
+
 class AbstractAddressType {
   private:
     virtual void _set(int_vector_ptr vector, AnsiString name) = 0;

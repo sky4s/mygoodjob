@@ -350,7 +350,6 @@ class THSVForm2nd:public TForm, cms::util::CallBackIF, RGBInfoCallbackIF, Patter
 
     bptr < Dep::RGBColorSpace > colorspace;	// = RGBColorSpace::sRGB_gamma22;
     cms::hsvip::IntegerSaturationFormula isf;	//((byte) 7, 3);
-    //cms::hsvip::ChromaEnhance ce;
     bptr < cms::hsvip::ChromaEnhance > ce;
     short getValueFromChromaEnhance(short hue, short chroma);
 

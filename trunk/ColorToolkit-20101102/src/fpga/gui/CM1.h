@@ -200,8 +200,7 @@ class TCMForm1:public TForm {
     void __fastcall btn_CM3_ReadClick(TObject * Sender);
     void __fastcall rg_CM2_modeClick(TObject * Sender);
     void __fastcall rg_CM3_modeClick(TObject * Sender);
-    void __fastcall FormKeyDown(TObject * Sender, WORD & Key,
-				TShiftState Shift);
+    void __fastcall FormKeyDown(TObject * Sender, WORD & Key, TShiftState Shift);
     void __fastcall FormClose(TObject * Sender, TCloseAction & Action);
   private:			// User declarations
     void CM_val_initial();
@@ -237,8 +236,7 @@ class TCMForm1:public TForm {
 			       TScrollBar * scroll, TStaticText * text);
     void storeCMToTCON(int index, TEdit * e[9], TScrollBar * offset);
     void loadCMFromTCON(int index, TEdit * e[9], TStaticText * offset);
-    void storeCMToFile(String filename, TEdit * e[9],
-		       TStaticText * offset);
+    void storeCMToFile(String filename, TEdit * e[9], TStaticText * offset);
     void loadCMFromFile(String filename, OffsetType offsetType,
 			float CM[3][3], TEdit * CMEditArray[9],
 			TScrollBar * gain[3], TScrollBar * offset);
