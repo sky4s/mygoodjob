@@ -14,23 +14,37 @@
 namespace gui {
     namespace util {
 	using namespace std;
+	void UIValueSetter::setFilter(TextFilterIF_ptr filter) {
+	    this->filter = filter;
+	};
+	void UIValueSetter::setFilterFunction(FilterFunction func) {
+	    this->filterFunction = func;
+	};
+	String UIValueSetter::getString(int value) {
+	    if (null != filterFunction) {
+		return filterFunction(value);
+	    } else if (null != filter) {
+		return filter->filter(value);
+	    } else {
+		return value;
+	    }
 
+	};
 	//=====================================================================
 	// setter group
 	//=====================================================================
-	 Edit2ScrollBarSetter::Edit2ScrollBarSetter(TEdit * edit,
-						    TScrollBar *
-						    scrollBar):edit(edit),
-	    scrollBar(scrollBar) {
+      Edit2ScrollBarSetter::Edit2ScrollBarSetter(TEdit * edit, TScrollBar * scrollBar):edit(edit),
+	    scrollBar(scrollBar)
+	{
 	};
 
 	void Edit2ScrollBarSetter::set(TObject * sender) {
 	    if (edit == sender) {
 		int value = edit->Text.ToInt();
-		 scrollBar->Position = value;
+		scrollBar->Position = value;
 	    } else if (scrollBar == sender) {
 		int value = scrollBar->Position;
-		edit->Text = value;
+		edit->Text = getString(value);
 	    }
 	};
 
@@ -40,12 +54,13 @@ namespace gui {
 	};
 
 	void Label2ScrollBarSetter::set(TObject * sender) {
-	    if (label == sender) {
-		int value = label->Caption.ToInt();
-		scrollBar->Position = value;
-	    } else if (scrollBar == sender) {
+	    /*if (label == sender) {
+	       int value = label->Caption.ToInt();
+	       scrollBar->Position = value;
+	       } else */
+	    if (scrollBar == sender) {
 		int value = scrollBar->Position;
-		label->Caption = value;
+		label->Caption = getString(value);
 	    }
 	};
 
@@ -56,13 +71,9 @@ namespace gui {
 	};
 
 	void StaticText2ScrollBarSetter::set(TObject * sender) {
-	    /*if (text == sender) {
-	       int value = text->Caption.ToInt();
-	       scrollBar->Position = value;
-	       } else */
 	    if (scrollBar == sender) {
 		int value = scrollBar->Position;
-		text->Caption = value;
+		text->Caption = getString(value);
 	    }
 	};
 
@@ -101,8 +112,7 @@ namespace gui {
 	    TControl *ctrl = dynamic_cast < TControl * >(sender);
 	    if (null != ctrl) {
 		Range range = setterMap.equal_range(ctrl);
-		for (SetterIterator i = range.first; i != range.second;
-		     ++i) {
+		for (SetterIterator i = range.first; i != range.second; ++i) {
 		    uiset_ptr setter = i->second;
 		    setter->set(ctrl);
 		}
@@ -111,49 +121,72 @@ namespace gui {
 	void MultiUIBinder::bind(TEdit * edit, TScrollBar * scrollBar) {
 	    uiset_ptr setter(new Edit2ScrollBarSetter(edit, scrollBar));
 	    bind(edit, scrollBar, setter);
-	    //scrollBar->OnChange = active;
-	    //setterMap.insert(make_pair(edit, setter));
-	    //setterMap.insert(make_pair(scrollBar, setter));
 	};
 	void MultiUIBinder::bind(TEdit * edit1, TEdit * edit2) {
 	    using namespace std;
 	    uiset_ptr setter(new Edit2EditSetter(edit1, edit2));
 	    bind(edit1, edit2, setter);
-	    //setterMap.insert(make_pair(edit1, setter));
-	    //setterMap.insert(make_pair(edit2, setter));
 	};
-	void MultiUIBinder::bind(TScrollBar * scrollBar1,
-				 TScrollBar * scrollBar2) {
+	void MultiUIBinder::bind(TScrollBar * scrollBar1, TScrollBar * scrollBar2) {
 	    using namespace std;
-	    uiset_ptr setter(new
-			     ScrollBar2ScrollBarSetter(scrollBar1,
-						       scrollBar2));
+	    uiset_ptr setter(new ScrollBar2ScrollBarSetter(scrollBar1, scrollBar2));
 	    bind(scrollBar1, scrollBar2, setter);
-	    //setterMap.insert(make_pair(scrollBar1, setter));
-	    //setterMap.insert(make_pair(scrollBar2, setter));
 	};
 	void MultiUIBinder::bind(TLabel * label, TScrollBar * scrollBar) {
+	    bind(nil_TextFilterIF_ptr, label, scrollBar);
+	};
+	void MultiUIBinder::bind(TextFilterIF_ptr filter, TLabel * label, TScrollBar * scrollBar) {
 	    using namespace std;
 	    uiset_ptr setter(new Label2ScrollBarSetter(label, scrollBar));
+	    setter->setFilter(filter);
+	    setter->set(scrollBar);
+	    scrollBar->OnChange = active;
 	    bind(label, scrollBar, setter);
-	    //setterMap.insert(make_pair(label, setter));
-	    //setterMap.insert(make_pair(scrollBar, setter));
 	};
-	void MultiUIBinder::bind(TStaticText * text,
+
+	void MultiUIBinder::bind(FilterFunction filterFunction, TLabel * label,
 				 TScrollBar * scrollBar) {
 	    using namespace std;
-	    uiset_ptr setter(new
-			     StaticText2ScrollBarSetter(text, scrollBar));
+	    uiset_ptr setter(new Label2ScrollBarSetter(label, scrollBar));
+	    setter->setFilterFunction(filterFunction);
+	    setter->set(scrollBar);
+	    scrollBar->OnChange = active;
+	    bind(label, scrollBar, setter);
+	};
+
+	void MultiUIBinder::bind(TStaticText * text, TScrollBar * scrollBar) {
+	    bind(nil_TextFilterIF_ptr, text, scrollBar);
+	};
+	void MultiUIBinder::bind(TextFilterIF_ptr filter, TStaticText * text,
+				 TScrollBar * scrollBar) {
+	    using namespace std;
+	    uiset_ptr setter(new StaticText2ScrollBarSetter(text, scrollBar));
+	    setter->setFilter(filter);
 	    setter->set(scrollBar);
 	    scrollBar->OnChange = active;
 	    bind(text, scrollBar, setter);
-	    //setterMap.insert(make_pair(text, setter));
-	    //setterMap.insert(make_pair(scrollBar, setter));
 	};
-	void MultiUIBinder::bind(TControl * ctrl1, TControl * ctrl2,
-				 uiset_ptr setter) {
+
+	void MultiUIBinder::bind(FilterFunction filterFunction, TStaticText * text,
+				 TScrollBar * scrollBar) {
+	    using namespace std;
+	    uiset_ptr setter(new StaticText2ScrollBarSetter(text, scrollBar));
+	    setter->setFilterFunction(filterFunction);
+	    setter->set(scrollBar);
+	    scrollBar->OnChange = active;
+	    bind(text, scrollBar, setter);
+	};
+
+	void MultiUIBinder::bind(TControl * ctrl1, TControl * ctrl2, uiset_ptr setter) {
 	    setterMap.insert(make_pair(ctrl1, setter));
 	    setterMap.insert(make_pair(ctrl2, setter));
+	};
+	int MultiUIBinder::loose(TControl * ctrl) {
+	    int eraseCount = -1;
+	    if (null != ctrl) {
+		eraseCount = setterMap.erase(ctrl);
+	    }
+	    return eraseCount;
 	};
 
 	//=====================================================================
