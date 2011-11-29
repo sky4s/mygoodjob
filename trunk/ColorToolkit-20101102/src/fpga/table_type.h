@@ -175,30 +175,25 @@ bool ReadWrite_LUT::Read_LUT10(IntTbl & Out, ByteTbl In, int type)
 	for (int i = 0; i < Out.Len; i++) {
 	    if (i % 2 == 0) {
 		//R&B,0&2
-                int index = i/2*3;
-		int v=  ((In.Tbl[index] & 48) << 4) + In.Tbl[index + 1];
-                Out.Tbl[i]=v;
+		int index = i / 2 * 3;
+		int v = ((In.Tbl[index] & 48) << 4) + In.Tbl[index + 1];
+		Out.Tbl[i] = v;
 	    } else {
 		//G,1
-		int v=  ((In.Tbl[0] & 3) << 8) + In.Tbl[2];
-                Out.Tbl[i]=v;
+		int v = ((In.Tbl[0] & 3) << 8) + In.Tbl[2];
+		Out.Tbl[i] = v;
 	    }
 	}
     } else if (type == 6) {	// AUO12307 CM set
 	for (int i = 0; i < Out.Len; i++) {
-	    /*if (i % 2 == 1) { //1,3,5,7
-	       Out.Tbl[i] = In.Tbl[3 * i] / 16 * 256 + In.Tbl[3 * i + 1];
-	       } else {         //0,2,4,6,8
-	       Out.Tbl[i] = In.Tbl[3 * i] % 16 * 256 + In.Tbl[3 * i + 2];
-	       } */
 	    if (i % 2 == 1) {	//1,3,5,7
-                int index = 3*((i-1)/2+1);
-                int v=((In.Tbl[index] & 48) << 4) + In.Tbl[index + 1];
-		Out.Tbl[i] =v;
+		int index = 3 * ((i - 1) / 2 + 1);
+		int v = ((In.Tbl[index] & 48) << 4) + In.Tbl[index + 1];
+		Out.Tbl[i] = v;
 	    } else {		//0,2,4,6,8
-            int index = 3*(i/2);
-                int v=((In.Tbl[index] & 3) << 8) + In.Tbl[index+2];
-		Out.Tbl[i] =                                     v;
+		int index = 3 * (i / 2);
+		int v = ((In.Tbl[index] & 3) << 8) + In.Tbl[index + 2];
+		Out.Tbl[i] = v;
 	    }
 	}
     }
@@ -275,6 +270,26 @@ bool ReadWrite_LUT::Write_LUT10(ByteTbl & Out, IntTbl In, int type)
 	    Out.Tbl[idx + 2] = In.Tbl[InCycleLen + 1] / 64 + In.Tbl[InCycleLen + 2] % 16 * 16;
 	    Out.Tbl[idx + 3] = In.Tbl[InCycleLen + 2] / 16;
 	}
+    } else if (5 == type) {	//12307 CM Offset
+	//佔不處理, 因為若寫offset, 會把matrix的值蓋掉
+
+    } else if (6 == type) {	//12307 CM Matrix
+
+	Out.Tbl[0] = (In.Tbl[0] >> 8) & 3;
+	Out.Tbl[1] = 0;
+	Out.Tbl[2] = In.Tbl[0] & 255;
+	Out.Tbl[3] = (In.Tbl[1] >> 4) & 48 | (In.Tbl[2] >> 8) & 3;
+	Out.Tbl[4] = In.Tbl[1] & 255;
+	Out.Tbl[5] = In.Tbl[2] & 255;
+	Out.Tbl[6] = (In.Tbl[3] >> 4) & 48 | (In.Tbl[4] >> 8) & 3;
+	Out.Tbl[7] = In.Tbl[3] & 255;
+	Out.Tbl[8] = In.Tbl[4] & 255;
+	Out.Tbl[9] = (In.Tbl[5] >> 4) & 48 | (In.Tbl[6] >> 8) & 3;
+	Out.Tbl[10] = In.Tbl[5] & 255;
+	Out.Tbl[11] = In.Tbl[6] & 255;
+	Out.Tbl[12] = (In.Tbl[7] >> 4) & 48 | (In.Tbl[8] >> 8) & 3;
+	Out.Tbl[13] = In.Tbl[7] & 255;
+	Out.Tbl[14] = In.Tbl[8] & 255;
     }
     return 1;
 }

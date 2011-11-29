@@ -91,11 +91,15 @@ int TBit::ShiftBit()
 
 int TBit::StbBit()
 {
-    if (b_num == 1) {
+    if (b_num == 1) {		//只佔一個bit
+	//255 - 2^bit
 	return (0xff - pow(2, b_addr));
-    } else if (b_num == 8) {
+    } else if (b_num == 8) {	//8個bit全佔
 	return 0;
     } else {
+	//255 - 2^( b_addr + b_num) + 2^b_addr
+        //76543210
+        //    ^^ => b_addr 2, b_num 2 => 255- 2^4+2^2 =243 =11110011
 	return (255 - pow(2, b_addr + b_num) + pow(2, b_addr));
     }
 }

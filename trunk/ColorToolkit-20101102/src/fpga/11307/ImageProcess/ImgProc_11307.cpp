@@ -90,7 +90,8 @@ int CM_11307::Setofs_type()
     } else if (MainForm->addr_place == 1) {
 	int_vector_ptr values = getValuesFromFile("OFS_TYPE");
 	if (null != values) {
-	    return (*values)[0];
+	    int v = (*values)[0];
+	    return v;
 	} else {
 	    return -1;
 	}
@@ -281,7 +282,7 @@ TBit *SP_12307::SetCboBx()
     CboBox[5].choice = new String[2];
     CboBox[5].choice[0] = " 0: turn point at Y192";
     CboBox[5].choice[1] = " 1: turn point at Y224";
- 
+
     return CboBox;
 }
 

@@ -200,7 +200,8 @@ class TCMForm1:public TForm {
     void __fastcall btn_CM3_ReadClick(TObject * Sender);
     void __fastcall rg_CM2_modeClick(TObject * Sender);
     void __fastcall rg_CM3_modeClick(TObject * Sender);
-    void __fastcall FormKeyDown(TObject * Sender, WORD & Key, TShiftState Shift);
+    void __fastcall FormKeyDown(TObject * Sender, WORD & Key,
+				TShiftState Shift);
     void __fastcall FormClose(TObject * Sender, TCloseAction & Action);
   private:			// User declarations
     void CM_val_initial();
@@ -208,6 +209,8 @@ class TCMForm1:public TForm {
     static int MemToFloatForm(int mem);
     int FloatToMemOfsForm(int ofs);
     int MemToFloatOfsForm(int ofs);
+    float parsePosition(float originalPosition);
+    void writeOffset(TLUT offsetAddress, int position);
 
     bool CM_IsChkSum;
     AbstCM *OCM;
@@ -230,13 +233,15 @@ class TCMForm1:public TForm {
     TEdit *CM3EditArray[9];
 
     void selectMode(int mode, TEdit * e[9]);
-    void scrollBarOffsetChange(int index, bool w255Fix, TEdit * e[9], TScrollBar * scroll,
-			       TStaticText * text);
+    void scrollBarOffsetChange(int index, bool w255Fix, TEdit * e[9],
+			       TScrollBar * scroll, TStaticText * text);
     void storeCMToTCON(int index, TEdit * e[9], TScrollBar * offset);
     void loadCMFromTCON(int index, TEdit * e[9], TStaticText * offset);
-    void storeCMToFile(String filename, TEdit * e[9], TStaticText * offset);
-    void loadCMFromFile(String filename, OffsetType offsetType, float CM[3][3],
-			TEdit * CMEditArray[9], TScrollBar * gain[3], TScrollBar * offset);
+    void storeCMToFile(String filename, TEdit * e[9],
+		       TStaticText * offset);
+    void loadCMFromFile(String filename, OffsetType offsetType,
+			float CM[3][3], TEdit * CMEditArray[9],
+			TScrollBar * gain[3], TScrollBar * offset);
   public:			// User declarations
      __fastcall TCMForm1(TComponent * Owner);
 
