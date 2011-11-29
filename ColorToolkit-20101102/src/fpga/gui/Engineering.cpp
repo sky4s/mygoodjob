@@ -306,7 +306,6 @@ unsigned char TEngineerForm::readByte(TBit & Addr_Bit)
 	    ok = B_read(data_read[i], dev_addr[i]);	// 讀取Byte
 	    cnt++;
 	}
-	//if(ok==0){ delete [] data_read; return 0;}
 
 	// 將得到的Byte數值做修正, (根據參數排在那些bit做修正)
 	data_read[i] = data_read[i] & ~(Addr_Bit.StbBit());
@@ -347,18 +346,18 @@ bool TEngineerForm::SetWrite_Byte(TBit Addr_Bit, int set_val)
     int dev_addr_cnt;
     if (Get_device_addr(dev_addr, &dev_addr_cnt) == 0) {	//取得介面上device address
 	ShowMessage(Err_Msg_Dev);
-	return 0;
+	return false;
     }
     for (int i = 0; i < dev_addr_cnt; i++) {	//對每個device address動作
-	bool ok = 0;
+	bool ok = false;
 	int cnt = 0;
-	while (ok == 0 && cnt < 3) {
+	while (ok == false && cnt < 3) {
 	    ok = B_read(t_data, dev_addr[i]);	//讀取Byte
 	    cnt++;
 	}
-	if (ok == 0) {
+	if (ok == false) {
 	    ShowMessage("Fail to retrieve data in device, cannot write!");
-	    return 0;
+	    return false;
 	}
 	// 將得到的Byte數值做修正, (根據data排在那些bit做修正)
 	t_data = t_data & Addr_Bit.StbBit();
@@ -373,10 +372,11 @@ bool TEngineerForm::SetWrite_Byte(TBit Addr_Bit, int set_val)
 	ok_w = ok_w || ok_t;
     }
 
-    if (ok_w)
-	return 1;
-    else
-	return 0;
+    if (ok_w) {
+	return true;
+    } else {
+	return false;
+    }
 }
 
 //---------------------------------------------------------------------------
@@ -571,7 +571,7 @@ bool TEngineerForm::SetWrite_PG(TLUT Addr_LUT, int *write_table, bool IsChkSum, 
 	data_len = ceil((double) Addr_LUT.LutNum() * 5 / 4);
     } else if (Addr_LUT.BitNum() == 10 && (Addr_LUT.Type() == 5)) {
 	data_len = 5;
-    }  else if (Addr_LUT.BitNum() == 10 && (Addr_LUT.Type() == 6)) {
+    } else if (Addr_LUT.BitNum() == 10 && (Addr_LUT.Type() == 6)) {
 	data_len = 15;
     } else if (Addr_LUT.BitNum() == 16) {
 	data_len = Addr_LUT.LutNum() * 2;
@@ -585,6 +585,7 @@ bool TEngineerForm::SetWrite_PG(TLUT Addr_LUT, int *write_table, bool IsChkSum, 
     IntTbl In;
     In.Tbl = write_table;
     In.Len = Addr_LUT.LutNum();
+
 
     Write_LUT(Addr_LUT, Out, In);
     ByteTbl Out_tmp;
