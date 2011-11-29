@@ -37,6 +37,7 @@ WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
                  Application->CreateForm(__classid(TInTargetForm), &InTargetForm);
                  Application->CreateForm(__classid(TPatternForm), &PatternForm);
                  Application->CreateForm(__classid(TPatternForm), &PatternForm2);
+                 Application->CreateForm(__classid(TExampleForm), &ExampleForm);
                  Application->Run();
     }
     catch(Exception & exception) {
