@@ -245,6 +245,7 @@ typedef bptr < gui::util::MultiUIBinder > mbinder_ptr;
 typedef bptr < gui::util::TextFilterIF > TextFilterIF_ptr;
 #define nil_TextFilterIF_ptr TextFilterIF_ptr((TextFilterIF *) NULL)
 typedef String(*FilterFunction) (const int value);
+typedef void __fastcall(__closure * OnChangeFunction) (TObject * sender);
 //==============================================================================
 /*
  java->C++Âà´«­ì«h
@@ -381,7 +382,8 @@ namespace java {
 
 
 
-	    static double_vector_ptr normalize(double_vector_ptr original, double normal);
+	    static double_vector_ptr normalize(double_vector_ptr original,
+					       double normal);
 	    static double cubeRoot(double x);
 	    static double exp(double x);
 	    static double atan2deg(double b, double a);
@@ -468,7 +470,8 @@ private: \
 #define WRITE_ONLY 2
 #define READ_WRITE 3
 
-template < typename Container, typename ValueType, int nPropType > class Property {
+template < typename Container, typename ValueType,
+    int nPropType > class Property {
   public:
     Property() {
 	m_cObject = NULL;
@@ -503,7 +506,8 @@ template < typename Container, typename ValueType, int nPropType > class Propert
     }
 //-- To make possible to cast the property class to the
 //   internal type --
-    operator                                                          ValueType() {
+    operator                                                          
+	ValueType() {
 	assert(m_cObject != NULL);
 	assert(Get != NULL);
 	return (m_cObject->*Get) ();
