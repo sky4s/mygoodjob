@@ -19,15 +19,27 @@
 //本項目內頭文件
 #include <java/lang.h>
 
-typedef std::multimap < TControl *,
-    uiset_ptr >::const_iterator SetterIterator;
+typedef std::multimap < TControl *, uiset_ptr >::const_iterator SetterIterator;
 typedef std::pair < SetterIterator, SetterIterator > Range;
 
 namespace gui {
     namespace util {
+
+	class TextFilterIF {
+	  public:
+	    virtual String filter(const int value) = 0;
+	};
+
 	class UIValueSetter {
+	  private:
+	    TextFilterIF_ptr filter;
+	    FilterFunction filterFunction;
 	  public:
 	    virtual void set(TObject * sender) = 0;
+	    void setFilter(TextFilterIF_ptr filter);
+	    void setFilterFunction(FilterFunction func);
+	    String getString(int value);
+
 	};
 
 	class Edit2ScrollBarSetter:public UIValueSetter {
@@ -53,8 +65,7 @@ namespace gui {
 	    TStaticText * text;
 	    TScrollBar *scrollBar;
 	  public:
-	    StaticText2ScrollBarSetter(TStaticText * text,
-				       TScrollBar * scrollBar);
+	    StaticText2ScrollBarSetter(TStaticText * text, TScrollBar * scrollBar);
 	    virtual void set(TObject * sender);
 	};
 
@@ -62,8 +73,7 @@ namespace gui {
 	  protected:
 	    TScrollBar * scrollBar1, *scrollBar2;
 	  public:
-	    ScrollBar2ScrollBarSetter(TScrollBar * scrollBar1,
-				      TScrollBar * scrollBar2);
+	    ScrollBar2ScrollBarSetter(TScrollBar * scrollBar1, TScrollBar * scrollBar2);
 	    virtual void set(TObject * sender);
 	};
 
@@ -85,14 +95,22 @@ namespace gui {
 	    void bind(TEdit * edit, TScrollBar * scrollBar);
 	    void bind(TEdit * edit1, TEdit * edit2);
 	    void bind(TScrollBar * scrollBar1, TScrollBar * scrollBar2);
+
 	    void bind(TLabel * label, TScrollBar * scrollBar);
+	    void bind(TextFilterIF_ptr filter, TLabel * label, TScrollBar * scrollBar);
+	    //void bind(TLabel * label, TScrollBar * scrollBar, TextFilterIF_ptr filter);
+	    void bind(FilterFunction filterFunction, TLabel * label, TScrollBar * scrollBar);
+
 	    void bind(TStaticText * text, TScrollBar * scrollBar);
+	    void bind(TextFilterIF_ptr filter, TStaticText * text, TScrollBar * scrollBar);
+	    void bind(FilterFunction filterFunction, TStaticText * text, TScrollBar * scrollBar);
 
 	    /*
 	       提供custom的Setter定義
 	     */
-	    void bind(TControl * ctrl1, TControl * ctrl2,
-		      uiset_ptr setter);
+	    void bind(TControl * ctrl1, TControl * ctrl2, uiset_ptr setter);
+	    int loose(TControl * ctrl);
+
 
 	    /*void bind(TEdit * edit, TScrollBar * scrollBaruiset_ptr, uiset_ptr setter);
 	       void bind(TEdit * edit1, TEdit * edit2, uiset_ptr setter);

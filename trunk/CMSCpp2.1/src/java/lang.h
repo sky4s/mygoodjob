@@ -94,6 +94,7 @@ namespace gui {
     namespace util {
 	class UIValueSetter;
 	class MultiUIBinder;
+	class TextFilterIF;
     };
     namespace event {
 	class EventListener;
@@ -147,8 +148,6 @@ typedef bptr < stringp_vector > stringp_vector_ptr;
 typedef std::vector < string_vector_ptr > string_doublevector;
 typedef bptr < string_doublevector > string_doublevector_ptr;
 
-typedef bptr < gui::util::UIValueSetter > uiset_ptr;
-typedef bptr < gui::util::MultiUIBinder > mbinder_ptr;
 
 typedef barray < double >double_array;
 #define nil_double_array double_array ((double*)NULL)
@@ -238,6 +237,15 @@ typedef std::vector < TLabel * >TLabel_vector;
 typedef bptr < TLabel_vector > TLabel_vector_ptr;
 //==============================================================================
 
+//==============================================================================
+// 簡化binder使用上的巨集
+//==============================================================================
+typedef bptr < gui::util::UIValueSetter > uiset_ptr;
+typedef bptr < gui::util::MultiUIBinder > mbinder_ptr;
+typedef bptr < gui::util::TextFilterIF > TextFilterIF_ptr;
+#define nil_TextFilterIF_ptr TextFilterIF_ptr((TextFilterIF *) NULL)
+typedef String(*FilterFunction) (const int value);
+//==============================================================================
 /*
  java->C++轉換原則
 
@@ -373,8 +381,7 @@ namespace java {
 
 
 
-	    static double_vector_ptr normalize(double_vector_ptr original,
-					       double normal);
+	    static double_vector_ptr normalize(double_vector_ptr original, double normal);
 	    static double cubeRoot(double x);
 	    static double exp(double x);
 	    static double atan2deg(double b, double a);
@@ -461,8 +468,7 @@ private: \
 #define WRITE_ONLY 2
 #define READ_WRITE 3
 
-template < typename Container, typename ValueType,
-    int nPropType > class Property {
+template < typename Container, typename ValueType, int nPropType > class Property {
   public:
     Property() {
 	m_cObject = NULL;
@@ -497,8 +503,7 @@ template < typename Container, typename ValueType,
     }
 //-- To make possible to cast the property class to the
 //   internal type --
-    operator                                                    
-	ValueType() {
+    operator                                                          ValueType() {
 	assert(m_cObject != NULL);
 	assert(Get != NULL);
 	return (m_cObject->*Get) ();
