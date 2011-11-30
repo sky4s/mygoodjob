@@ -25,9 +25,9 @@ object ExampleForm: TExampleForm
     object Label1: TLabel
       Left = 8
       Top = 48
-      Width = 41
+      Width = 36
       Height = 16
-      Caption = 'Label1'
+      Caption = 'FPGA'
     end
     object Label2: TLabel
       Left = 8
@@ -41,7 +41,7 @@ object ExampleForm: TExampleForm
       Top = 24
       Width = 97
       Height = 17
-      Caption = 'CheckBox1'
+      Caption = 'HUE_EN'
       TabOrder = 0
     end
     object ComboBox1: TComboBox
