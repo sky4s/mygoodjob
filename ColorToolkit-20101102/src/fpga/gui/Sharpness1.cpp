@@ -104,8 +104,9 @@ void __fastcall TSharpnessForm1::LblEdit2_KeyPress(TObject * Sender, char &Key)	
 	val1 = set_val / LblE2[idx]->Addr.Divide();
 	val2 = set_val % LblE2[idx]->Addr.Divide();
 	EngineerForm->SetWrite_Byte(LblE2[idx]->Addr.Byte1, val1);
-	if (LblE2[idx]->Addr.Byte2.BitNum() != 0)
+	if (LblE2[idx]->Addr.Byte2.BitNum() != 0) {
 	    EngineerForm->SetWrite_Byte(LblE2[idx]->Addr.Byte2, val2);
+	}
 	LblE2[idx]->Lble->Font->Color = clWindowText;
     }
 }
@@ -502,12 +503,13 @@ void __fastcall TSharpnessForm1::Btn_SP_reloadClick(TObject * Sender)
     for (int i = 0; i < OSP->SPChkBox_Nbr; i++) {
 	if (ChkB[i]->Chkb->Visible == true) {
 	    EngineerForm->SetRead_Byte(ChkB[i]->Addr, &read_val);
-	    if (read_val == 1)
+	    if (read_val == 1) {
 		ChkB[i]->Chkb->Checked = 1;
-	    else if (read_val == 0)
+	    } else if (read_val == 0) {
 		ChkB[i]->Chkb->Checked = 0;
-	    else
+	    } else {
 		ShowMessage("SP CheckBox read error:" + IntToStr(read_val));
+	    }
 	}
     }
     for (int i = 0; i < OSP->SPScrollBar_Nbr; i++) {

@@ -9,14 +9,26 @@
 struct IntTbl {
     int *Tbl;
     int Len;
+     IntTbl(int *Tbl, int Len) {
+	this->Tbl = Tbl;
+	this->Len = Len;
+    };
+  IntTbl():Tbl(null), Len(0) {
+    };
 };
 struct ByteTbl {
     unsigned char *Tbl;
     int Len;
+     ByteTbl(unsigned char *Tbl, int Len) {
+	this->Tbl = Tbl;
+	this->Len = Len;
+    };
+  ByteTbl():Tbl(null), Len(0) {
+    };
 };
 
 class ReadWrite_LUT {
-  public:
+  private:
     bool Read_LUT4(IntTbl & Out, ByteTbl In, int type);
     bool Read_LUT5(IntTbl & Out, ByteTbl In, int type);	// 201007
     bool Read_LUT6(IntTbl & Out, ByteTbl In, int type);
@@ -32,7 +44,58 @@ class ReadWrite_LUT {
     bool Write_LUT10(ByteTbl & Out, IntTbl In, int type);
     bool Write_LUT12(ByteTbl & Out, IntTbl In, int type);
     bool Write_LUT16(ByteTbl & Out, IntTbl In, int type);
+  public:
+     bool Read_LUT(TLUT Addr_LUT, IntTbl & Out, ByteTbl In);
+    bool Write_LUT(TLUT Addr_LUT, ByteTbl & Out, IntTbl In);
 };
+
+bool ReadWrite_LUT::Read_LUT(TLUT Addr_LUT, IntTbl & Out, ByteTbl In)
+{
+    bool result = false;
+    if (Addr_LUT.BitNum() == 8) {
+	result = Read_LUT8(Out, In, Addr_LUT.Type());
+    } else if (Addr_LUT.BitNum() == 4) {
+	result = Read_LUT4(Out, In, Addr_LUT.Type());
+    } else if (Addr_LUT.BitNum() == 5) {	// 201007
+	result = Read_LUT5(Out, In, Addr_LUT.Type());
+    } else if (Addr_LUT.BitNum() == 6) {
+	result = Read_LUT6(Out, In, Addr_LUT.Type());
+    } else if (Addr_LUT.BitNum() == 10) {
+	result = Read_LUT10(Out, In, Addr_LUT.Type());
+    } else if (Addr_LUT.BitNum() == 12) {
+	result = Read_LUT12(Out, In, Addr_LUT.Type());
+    } else if (Addr_LUT.BitNum() == 16) {
+	result = Read_LUT16(Out, In, Addr_LUT.Type());
+    } else {
+	Out.Tbl = NULL;
+	return false;
+    }
+    return result;
+}
+
+bool ReadWrite_LUT::Write_LUT(TLUT Addr_LUT, ByteTbl & Out, IntTbl In)
+{
+    bool result = false;
+    if (Addr_LUT.BitNum() == 8) {
+	result = Write_LUT8(Out, In, Addr_LUT.Type());
+    } else if (Addr_LUT.BitNum() == 4) {
+	result = Write_LUT4(Out, In, Addr_LUT.Type());
+    } else if (Addr_LUT.BitNum() == 5) {	// 201007
+	result = Write_LUT5(Out, In, Addr_LUT.Type());
+    } else if (Addr_LUT.BitNum() == 6) {
+	result = Write_LUT6(Out, In, Addr_LUT.Type());
+    } else if (Addr_LUT.BitNum() == 10) {
+	result = Write_LUT10(Out, In, Addr_LUT.Type());
+    } else if (Addr_LUT.BitNum() == 12) {
+	result = Write_LUT12(Out, In, Addr_LUT.Type());
+    } else if (Addr_LUT.BitNum() == 16) {
+	result = Write_LUT16(Out, In, Addr_LUT.Type());
+    } else {
+	Out.Tbl = NULL;
+	return false;
+    }
+    return result;
+}
 
 //==========================================================//
 //         4 Bit                                            //
@@ -48,8 +111,10 @@ bool ReadWrite_LUT::Read_LUT4(IntTbl & Out, ByteTbl In, int type)
 	for (int i = 0; i < In.Len; i++) {
 	    Out.Tbl[i] = In.Tbl[i] % 16;
 	}
+    } else {
+	return false;
     }
-    return 1;
+    return true;
 }
 
 bool ReadWrite_LUT::Write_LUT4(ByteTbl & Out, IntTbl In, int type)
@@ -62,8 +127,10 @@ bool ReadWrite_LUT::Write_LUT4(ByteTbl & Out, IntTbl In, int type)
 	for (int i = 0; i < Out.Len; i++) {
 	    Out.Tbl[i] = In.Tbl[i] % 16;
 	}
+    } else {
+	return false;
     }
-    return 1;
+    return true;
 }
 
 //==========================================================//
@@ -75,7 +142,7 @@ bool ReadWrite_LUT::Read_LUT5(IntTbl & Out, ByteTbl In, int type)
     for (int i = 0; i < In.Len; i++) {	//SP_LUT
 	Out.Tbl[i] = In.Tbl[i] % 32;
     }
-    return 1;
+    return true;
 }
 
 // 201007
@@ -84,7 +151,7 @@ bool ReadWrite_LUT::Write_LUT5(ByteTbl & Out, IntTbl In, int type)
     for (int i = 0; i < Out.Len; i++) {
 	Out.Tbl[i] = In.Tbl[i] % 32;
     }
-    return 1;
+    return true;
 }
 
 //==========================================================//
@@ -96,7 +163,7 @@ bool ReadWrite_LUT::Read_LUT6(IntTbl & Out, ByteTbl In, int type)
     for (int i = 0; i < In.Len; i++) {
 	Out.Tbl[i] = In.Tbl[i] % 64;
     }
-    return 1;
+    return true;
 }
 
 bool ReadWrite_LUT::Write_LUT6(ByteTbl & Out, IntTbl In, int type)
@@ -105,8 +172,10 @@ bool ReadWrite_LUT::Write_LUT6(ByteTbl & Out, IntTbl In, int type)
 	for (int i = 0; i < Out.Len; i++) {
 	    Out.Tbl[i] = In.Tbl[i] % 64;
 	}
+    } else {
+	return false;
     }
-    return 1;
+    return true;
 }
 
 //==========================================================//
@@ -117,7 +186,7 @@ bool ReadWrite_LUT::Read_LUT8(IntTbl & Out, ByteTbl In, int type)
     for (int i = 0; i < In.Len; i++) {
 	Out.Tbl[i] = In.Tbl[i];
     }
-    return 1;
+    return true;
 }
 
 bool ReadWrite_LUT::Write_LUT8(ByteTbl & Out, IntTbl In, int type)
@@ -125,7 +194,7 @@ bool ReadWrite_LUT::Write_LUT8(ByteTbl & Out, IntTbl In, int type)
     for (int i = 0; i < Out.Len; i++) {
 	Out.Tbl[i] = In.Tbl[i];
     }
-    return 1;
+    return true;
 }
 
 //==========================================================//
@@ -196,8 +265,10 @@ bool ReadWrite_LUT::Read_LUT10(IntTbl & Out, ByteTbl In, int type)
 		Out.Tbl[i] = v;
 	    }
 	}
+    } else {
+	return false;
     }
-    return 1;
+    return true;
 }
 
 bool ReadWrite_LUT::Write_LUT10(ByteTbl & Out, IntTbl In, int type)
@@ -271,7 +342,7 @@ bool ReadWrite_LUT::Write_LUT10(ByteTbl & Out, IntTbl In, int type)
 	    Out.Tbl[idx + 3] = In.Tbl[InCycleLen + 2] / 16;
 	}
     } else if (5 == type) {	//12307 CM Offset
-	//佔不處理, 因為若寫offset, 會把matrix的值蓋掉
+	//暫不處理, 因為若寫offset, 會把matrix的值蓋掉
 
     } else if (6 == type) {	//12307 CM Matrix
 
@@ -290,8 +361,11 @@ bool ReadWrite_LUT::Write_LUT10(ByteTbl & Out, IntTbl In, int type)
 	Out.Tbl[12] = (In.Tbl[7] >> 4) & 48 | (In.Tbl[8] >> 8) & 3;
 	Out.Tbl[13] = In.Tbl[7] & 255;
 	Out.Tbl[14] = In.Tbl[8] & 255;
+    } else {
+	return false;
     }
-    return 1;
+
+    return true;
 }
 
 //==========================================================//
@@ -331,8 +405,10 @@ bool ReadWrite_LUT::Read_LUT12(IntTbl & Out, ByteTbl In, int type)
 		Out.Tbl[n_idx + 1] += In.Tbl[i + 2];
 	    }
 	}
+    } else {
+	return false;
     }
-    return 1;
+    return true;
 }
 
 bool ReadWrite_LUT::Write_LUT12(ByteTbl & Out, IntTbl In, int type)
@@ -373,8 +449,10 @@ bool ReadWrite_LUT::Write_LUT12(ByteTbl & Out, IntTbl In, int type)
 	    Out.Tbl[Out.Len - 2] = In.Tbl[InCycleLen] / 16;
 	    Out.Tbl[Out.Len - 1] = In.Tbl[InCycleLen] % 16 * 16;
 	}
+    } else {
+	return false;
     }
-    return 1;
+    return true;
 }
 
 //==========================================================//
@@ -391,8 +469,10 @@ bool ReadWrite_LUT::Read_LUT16(IntTbl & Out, ByteTbl In, int type)
 	for (int i = 0; i < Out.Len; i++) {
 	    Out.Tbl[i] = In.Tbl[i * 2] + In.Tbl[i * 2 + 1] * 256;
 	}
+    } else {
+	return false;
     }
-    return 1;
+    return true;
 }
 
 bool ReadWrite_LUT::Write_LUT16(ByteTbl & Out, IntTbl In, int type)
@@ -407,8 +487,10 @@ bool ReadWrite_LUT::Write_LUT16(ByteTbl & Out, IntTbl In, int type)
 	    Out.Tbl[i * 2 + 1] = In.Tbl[i] / 256;
 	    Out.Tbl[i * 2] = In.Tbl[i] % 256;
 	}
+    } else {
+	return false;
     }
-    return 1;
+    return true;
 }
 
 

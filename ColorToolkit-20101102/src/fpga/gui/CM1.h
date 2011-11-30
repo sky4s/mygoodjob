@@ -221,6 +221,7 @@ class TCMForm1:public TForm {
 
     //int CMofs_type;
     OffsetType offsetType;
+    static int getBaseNumber(OffsetType offsetType);
     int Convert_type;
     bool CMInitialized;
 

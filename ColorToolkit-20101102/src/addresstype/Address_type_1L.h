@@ -16,6 +16,7 @@ class TLUT:public AbstractAddressType {
     int Addr();
     int LutNum();
     int Type();
+    int getDataLength();
     int set(int _B_addr, int _Lut_num, int _b_num, int _type, AnsiString _name);
      TLUT() {
 	B_addr = 0;
@@ -38,6 +39,32 @@ class TLUT:public AbstractAddressType {
 	}
 
     };
+};
+
+int TLUT::getDataLength()
+{
+    int data_len = -1;
+    // 計算table拆成Byte後的長度, Addr_LUT.LutNum()是table當中的數值個數
+    if (BitNum() == 4 && Type() == 1) {
+	data_len = ceil(LutNum() / 2);
+    } else if (BitNum() == 4 && Type() == 2) {
+	data_len = LutNum();
+    } else if (BitNum() == 8 || BitNum() == 6 || BitNum() == 5) {
+	data_len = LutNum();	// 201007
+    } else if (BitNum() == 12) {
+	data_len = ceil((double) LutNum() * 3 / 2);
+    } else if (BitNum() == 10 && (Type() == 1 || Type() == 2)) {
+	data_len = LutNum() * 2;
+    } else if (BitNum() == 10 && (Type() == 3 || Type() == 4)) {
+	data_len = ceil((double) LutNum() * 5 / 4);
+    } else if (BitNum() == 10 && (Type() == 5)) {
+	data_len = 5;
+    } else if (BitNum() == 10 && (Type() == 6)) {
+	data_len = 15;
+    } else if (BitNum() == 16) {
+	data_len = LutNum() * 2;
+    }
+    return data_len;
 };
 
 //----------------------TLUT--------------------------------------
