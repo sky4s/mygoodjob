@@ -2,7 +2,7 @@ object GamutSetupForm: TGamutSetupForm
   Left = 946
   Top = 264
   Width = 191
-  Height = 355
+  Height = 410
   Caption = 'Gamut Setup'
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
@@ -17,7 +17,7 @@ object GamutSetupForm: TGamutSetupForm
     Left = 8
     Top = 8
     Width = 169
-    Height = 129
+    Height = 161
     Caption = 'Source Panel'
     TabOrder = 0
     object Label1: TLabel
@@ -68,6 +68,13 @@ object GamutSetupForm: TGamutSetupForm
       Width = 7
       Height = 13
       Caption = 'Y'
+    end
+    object Label15: TLabel
+      Left = 8
+      Top = 128
+      Width = 59
+      Height = 13
+      Caption = 'Panel Model'
     end
     object Edit_SourceRx: TEdit
       Left = 24
@@ -140,19 +147,25 @@ object GamutSetupForm: TGamutSetupForm
       TabOrder = 9
       Text = '2.2'
     end
-    object Button1: TButton
-      Left = 104
-      Top = 104
-      Width = 33
-      Height = 17
-      Caption = 'Test'
+    object ComboBox1: TComboBox
+      Left = 80
+      Top = 128
+      Width = 73
+      Height = 21
+      ItemHeight = 13
+      ItemIndex = 0
       TabOrder = 10
-      OnClick = Button1Click
+      Text = 'N/A'
+      OnChange = ComboBox1Change
+      Items.Strings = (
+        'N/A'
+        '11307'
+        '12307')
     end
   end
   object GroupBox2: TGroupBox
     Left = 8
-    Top = 144
+    Top = 168
     Width = 169
     Height = 145
     Caption = 'Target Panel'
@@ -289,7 +302,7 @@ object GamutSetupForm: TGamutSetupForm
   end
   object Button_Setup: TButton
     Left = 56
-    Top = 296
+    Top = 320
     Width = 65
     Height = 25
     Caption = 'Setup'

@@ -46,8 +46,7 @@
 //  Byte 5 :  SAT1 [0]    LUM1 [6:0]
 /////////////////////////////////////////////
 
-class THSVForm2nd:public TForm, cms::util::CallBackIF, RGBInfoCallbackIF,
-    PatternCallbackIF {
+class THSVForm2nd:public TForm, cms::util::CallBackIF, RGBInfoCallbackIF, PatternCallbackIF {
     __published:		// IDE-managed Components
     TOpenDialog * OpenDialog1;
     TSaveDialog *SaveDialog1;
@@ -182,26 +181,22 @@ class THSVForm2nd:public TForm, cms::util::CallBackIF, RGBInfoCallbackIF,
     void __fastcall FormCreate(TObject * Sender);
     void __fastcall CheckBox_Click(TObject * Sender);
     void __fastcall FormClose(TObject * Sender, TCloseAction & Action);
-    void __fastcall Hue_ImgMouseMove(TObject * Sender, TShiftState Shift,
-				     int X, int Y);
+    void __fastcall Hue_ImgMouseMove(TObject * Sender, TShiftState Shift, int X, int Y);
     void __fastcall btn_resetClick(TObject * Sender);
 
     void __fastcall btn_Hue_Img_loadClick(TObject * Sender);
     void __fastcall rg_HSV_ModeClick(TObject * Sender);
     void __fastcall Btn_HSV_reloadClick(TObject * Sender);
-    void __fastcall FormKeyDown(TObject * Sender, WORD & Key,
-				TShiftState Shift);
+    void __fastcall FormKeyDown(TObject * Sender, WORD & Key, TShiftState Shift);
     void __fastcall sb_dif_nChange(TObject * Sender);
     void __fastcall sb_dif_pChange(TObject * Sender);
     void __fastcall btn_setClick(TObject * Sender);
     void __fastcall btn_hsv_writeClick(TObject * Sender);
     void __fastcall btn_hsv_readClick(TObject * Sender);
     void __fastcall Hue_ImgMouseDown(TObject * Sender,
-				     TMouseButton Button,
-				     TShiftState Shift, int X, int Y);
+				     TMouseButton Button, TShiftState Shift, int X, int Y);
     void __fastcall stringGrid_HSVDrawCell(TObject * Sender, int ACol,
-					   int ARow, TRect & Rect,
-					   TGridDrawState State);
+					   int ARow, TRect & Rect, TGridDrawState State);
     void __fastcall stringGrid_HSVSelectCell(TObject * Sender, int ACol,
 					     int ARow, bool & CanSelect);
     void __fastcall hsvAdjustsb_c3d_Manual39_hChange(TObject * Sender);
@@ -214,8 +209,7 @@ class THSVForm2nd:public TForm, cms::util::CallBackIF, RGBInfoCallbackIF,
     void __fastcall Button_30BaseInterpClick(TObject * Sender);
     void __fastcall FormKeyPress(TObject * Sender, char &Key);
     void __fastcall hsvAdjustButton_HueResetClick(TObject * Sender);
-    void __fastcall stringGrid_HSVKeyDown(TObject * Sender, WORD & Key,
-					  TShiftState Shift);
+    void __fastcall stringGrid_HSVKeyDown(TObject * Sender, WORD & Key, TShiftState Shift);
     void __fastcall Button_15BaseInterpClick(TObject * Sender);
     void __fastcall hsvAdjustsb_Hue_gainChange(TObject * Sender);
     void __fastcall Button_HInterpClick(TObject * Sender);
@@ -230,8 +224,7 @@ class THSVForm2nd:public TForm, cms::util::CallBackIF, RGBInfoCallbackIF,
     void __fastcall cb_Hue_rotationClick(TObject * Sender);
     void __fastcall RadioButton_MemoryColorMouseDown(TObject * Sender,
 						     TMouseButton Button,
-						     TShiftState Shift,
-						     int X, int Y);
+						     TShiftState Shift, int X, int Y);
     void __fastcall Button_ChromaResetClick(TObject * Sender);
     void __fastcall hsvAdjustsb_Val_gainChange(TObject * Sender);
     void __fastcall ScrollBar_ChromaChange(TObject * Sender);
@@ -241,7 +234,7 @@ class THSVForm2nd:public TForm, cms::util::CallBackIF, RGBInfoCallbackIF,
     static const int MAX_ADJUST_HUE_ANGLE = 45;
     static const int WHOLE_HUE_ANGLE = 360;
     bool HSV_IsChkSum;
-    int tbl_step;
+    const int EachHueStep;
     void initStringGrid_HSV();
 
     //=========================================================================
@@ -249,6 +242,7 @@ class THSVForm2nd:public TForm, cms::util::CallBackIF, RGBInfoCallbackIF,
     //=========================================================================
     static int getHueAngle(int index);
     static int getHueIndex(double angle);
+    static int getBaseHueIndex(double angle);
     static int hueAngleToValue(double hueAngle);
     static double hueValueToAngle(int hueValue);
     static RGB_ptr getHueRGB(int index, double s, int v);
@@ -257,24 +251,32 @@ class THSVForm2nd:public TForm, cms::util::CallBackIF, RGBInfoCallbackIF,
     double getSaturation();
     int getValue();
     static int getSuggestLastHueValue(int firstHueValue);
+    bool doubleHueSelected;
     //=========================================================================
 
+    //=========================================================================
+    // UI
+    //=========================================================================
     void deg60baseClick(TObject * Sender);
     void deg30baseClick(TObject * Sender);
 
     void drawStringGrid_HSVCell(TObject * Sender);
     void setGridSelectRow(int row);
+    void setGridSelectRow(int startRow, int endRow);
     int getGridSelectRow();
     void initGroupBoxBase(TGroupBox * groupBox_base);
     void deChecked(TGroupBox * groupBox_base);
     int hintToRow(int hint);
     int lastStringGridSelectRow;
     bool settingScrollBarPosition;
+    void base15DegInterpClick(TObject * Sender, bool hInterp, bool sInterp, bool vInterp);
+    bool hsvInitialized;	// hsvInitialized = F 為禁止寫入, hsvInitialized = T 為允許寫入, 以避免動作被中斷
+    //=========================================================================
+
     void interpolation(int angleBase);
     bool isInverse(int *array, int size);
     bool isInverse(double_vector_ptr vector, int size);
-    void base15DegInterpClick(TObject * Sender, bool hInterp, bool sInterp,
-			      bool vInterp);
+
 
     class HSVChangeListener:public gui::event::ChangeListener {
       private:
@@ -295,13 +297,11 @@ class THSVForm2nd:public TForm, cms::util::CallBackIF, RGBInfoCallbackIF,
 	MousePressedListener(THSVForm2nd * parent):parent(parent) {
 	};
 	virtual void mousePressed(TObject * Sender,
-				  TMouseButton Button, TShiftState Shift,
-				  int X, int Y) {
+				  TMouseButton Button, TShiftState Shift, int X, int Y) {
 	    parent->imageMousePressed(Sender, Button, Shift, X, Y);
 	}
 	virtual void mouseReleased(TObject * Sender,
-				   TMouseButton Button, TShiftState Shift,
-				   int X, int Y) {
+				   TMouseButton Button, TShiftState Shift, int X, int Y) {
 	};
     };
 
@@ -321,14 +321,12 @@ class THSVForm2nd:public TForm, cms::util::CallBackIF, RGBInfoCallbackIF,
 	bptr < cms::hsvip::ChromaEnhance > ce;
 	short hue, saturation;
       public:
-	MinFunction(short _hue, short _saturation,
-		    bptr < cms::hsvip::ChromaEnhance > _ce):ce(_ce) {
+	MinFunction(short _hue, short _saturation, bptr < cms::hsvip::ChromaEnhance > _ce):ce(_ce) {
 	    setHueAndSaturation(_hue, _saturation);
 	};
 	double function(double_vector_ptr param) {
 	    short value = (short) (*param)[0];
-	    const cms::hsvip::SingleHueAdjustValue shav(hue, saturation,
-							value);
+	    const cms::hsvip::SingleHueAdjustValue shav(hue, saturation, value);
 	    double deltaL = ce->calculateDeltaL(shav);
 	    return deltaL;
 	};
@@ -344,7 +342,7 @@ class THSVForm2nd:public TForm, cms::util::CallBackIF, RGBInfoCallbackIF,
     bptr < TPColorThread1 > tpColorThread;
     bptr < CaptionIFListener > captionIFListener;
 
-    static double_array toWhiteXYZValues(double_array rgbxyYValues);
+
     bptr < Dep::RGBColorSpace > sourceColorSpace, targetColorSpace;
     int_array cursorRGBValues;
     int_array selectedRGBValues;
@@ -352,18 +350,29 @@ class THSVForm2nd:public TForm, cms::util::CallBackIF, RGBInfoCallbackIF,
 
     PatternMode patternMode;
 
+    //=========================================================================
+    // out of gamut
+    //=========================================================================
+    static double_array toWhiteXYZValues(double_array rgbxyYValues);
     bool isOutOfGamut(int_array rgbValues);
     RGB_ptr outOfGamutRGB;
+    bptr < Dep::RGBColorSpace > colorspace;	// = RGBColorSpace::sRGB_gamma22;
+    //=========================================================================
+
     void setupPatternForm();
     int patternValue;
     bool isInversePattern;
     void selectColor();
     bool isFPGA();
 
-    bptr < Dep::RGBColorSpace > colorspace;	// = RGBColorSpace::sRGB_gamma22;
+
+    //=========================================================================
+    // chroma
+    //=========================================================================
     cms::hsvip::IntegerSaturationFormula isf;	//((byte) 7, 3);
     bptr < cms::hsvip::ChromaEnhance > ce;
     short getValueFromChromaEnhance(short hue, short chroma);
+    //=========================================================================
 
     //=========================================================================
     // bind ui and setting
@@ -390,7 +399,7 @@ class THSVForm2nd:public TForm, cms::util::CallBackIF, RGBInfoCallbackIF,
     //int valTableTemp[HUE_COUNT];
 
 
-    bool hsvInitialized;	// hsvInitialized = F 為禁止寫入, hsvInitialized = T 為允許寫入, 以避免動作被中斷
+
 
     __fastcall THSVForm2nd(TComponent * Owner);
     void Reset_HSVshow();
@@ -406,8 +415,7 @@ class THSVForm2nd:public TForm, cms::util::CallBackIF, RGBInfoCallbackIF,
     void HSV_LUT_FuncEnable(bool flag_en);	// 設定HSV lut button是否作用, flag =0 不作用, 反之,作用
     virtual void callback();
     virtual void callback(int_array rgbValues);
-    void imageMousePressed(TObject * Sender, TMouseButton Button,
-			   TShiftState Shift, int X, int Y);
+    void imageMousePressed(TObject * Sender, TMouseButton Button, TShiftState Shift, int X, int Y);
 
     virtual void show15DegBasePattern();
     virtual void show7p5DegBasePattern();

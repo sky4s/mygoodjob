@@ -321,12 +321,13 @@ void TCMForm1::loadCMFromTCON(int index, TEdit * e[9], TStaticText * offset)
 
     float s = parsePosition(sb_position);
 
-    delete[]CM;
-    delete[]ofs;
-    delete[]CM_f;
     char buf[6];
     sprintf(buf, "%3.2f", s);
     offset->Caption = (AnsiString) buf;
+
+    delete[]CM;
+    delete[]ofs;
+    delete[]CM_f;
 };
 
 void __fastcall TCMForm1::btn_CM1_ReadClick(TObject * Sender)
@@ -822,23 +823,25 @@ void __fastcall TCMForm1::sb_ofs1Change(TObject * Sender)
     scrollBarOffsetChange(0, cb_CM1_W255->Checked, CM1EditArray, sb_ofs1, st_ofs1);
 }
 
-float TCMForm1::parsePosition(float originalPosition)
+int TCMForm1::getBaseNumber(OffsetType offsetType)
 {
-    //_128, _64, _257, _511
-    float s = (float) originalPosition - 512;
     switch (offsetType) {
     case _128:
-	s = s / 4;		//-127.75~127.75
-	break;
+	return 4;
     case _64:
-	s = s / 8;		//-63.875~63.875
-	break;
+	return 8;
     case _257:
-	s = s / 2;		//-256.5~256.5
-	break;
+	return 2;
     case _511:			//-511~511
-	break;
+	return 1;
+    default:
+	return -1;
     };
+}
+float TCMForm1::parsePosition(float originalPosition)
+{
+    float s = (float) originalPosition - 512;
+    s /= getBaseNumber(offsetType);
     return s;
 };
 
@@ -1071,21 +1074,7 @@ void TCMForm1::loadCMFromFile(String filename, OffsetType offsetType,
     gain[2]->Position = 100;
 
     // Set to CM offset Interface
-    int CMofs_power = -1;
-    switch (offsetType) {
-    case _257:			//-256.5~256.5
-	CMofs_power = 2;
-	break;
-    case _64:			//-63.875~63.875
-	CMofs_power = 8;
-	break;
-    case _128:			//-127.75~127.75
-	CMofs_power = 4;
-	break;
-    case _511:			//-511~511
-	CMofs_power = 1;
-	break;
-    };
+    int CMofs_power = getBaseNumber(offsetType);
     offset->Position = CMofs * CMofs_power + 512;
     delete[]buffer;
 }

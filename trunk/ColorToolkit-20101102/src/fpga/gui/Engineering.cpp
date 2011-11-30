@@ -66,8 +66,9 @@ void __fastcall TEngineerForm::FormClose(TObject * Sender, TCloseAction & Action
 {
     Action = caFree;
     RW.USB_disconnect();
-    if (hLib != NULL)
+    if (hLib != NULL) {
 	LPT_disconnect();
+    }
 }
 
 //--------------------------------------------------------------------------
@@ -82,20 +83,22 @@ bool TEngineerForm::Get_byte_addr(unsigned char *data_addr, int *data_addr_cnt)
     } else {
 	unsigned short dataVal;
 	int val;
-	if (Hex2Dec(dataString, &val) == 0)
-	    return 0;
+	if (Hex2Dec(dataString, &val) == false) {
+	    return false;
+	}
 	dataVal = val;
 	data_addr[1] = dataVal / 256;	//high bit
 	data_addr[0] = dataVal % 256;	//low bit
 	int data_addr_len;
-	if (cbo_mem_addr_size->ItemIndex <= 3)
+	if (cbo_mem_addr_size->ItemIndex <= 3) {
 	    data_addr_len = 1;
-	else if (cbo_mem_addr_size->ItemIndex <= 8)
+	} else if (cbo_mem_addr_size->ItemIndex <= 8) {
 	    data_addr_len = 2;
+	}
 	*data_addr_cnt = data_addr_len - 1;
     }
 
-    return 1;
+    return true;
 }
 
 //---------------------------------------------------------------------------------
@@ -254,7 +257,7 @@ bool TEngineerForm::SetRead_Byte(TBit Addr_Bit, unsigned char *read_val)
 	return NULL;
     }
     unsigned char *data_read = new unsigned char[dev_addr_cnt];
-    bool dif = 0;
+    bool dif = false;
     for (int i = 0; i < dev_addr_cnt; i++) {	//對每個device address動作
 	bool ok = 0;
 	int cnt = 0;
@@ -270,17 +273,17 @@ bool TEngineerForm::SetRead_Byte(TBit Addr_Bit, unsigned char *read_val)
 
 	if (i >= 1) {
 	    if (data_read[i] != data_read[i - 1]) {
-		dif = 1;
+		dif = true;
 	    }
 	}
     }
     *read_val = data_read[0];
-    Addr_Bit.SetVal(data_read[0]);
-    if (dif == 1) {
+    //Addr_Bit.SetVal(data_read[0]);
+    if (dif == true) {
 	ShowMessage(Addr_Bit.Name() + "has difference value.");
     }
     delete[]data_read;
-    return 1;
+    return true;
 }
 
 unsigned char TEngineerForm::readByte(TBit & Addr_Bit)
@@ -386,66 +389,58 @@ bool TEngineerForm::SetWrite_Byte(TBit Addr_Bit, int set_val)
 bool TEngineerForm::SetRead_PG(TLUT Addr_LUT, int *Read_table, bool IsChkSum)
 {				// IsChkSum: 1 要加checksum, 0 不用加checksum
 
-    const int chk_len = (IsChkSum == true) ? 2 : 0;	// 預留的Checksum長度
-    int data_len = 0;
-    // 計算table拆成Byte後的長度, Addr_LUT.LutNum()是table當中的數值個數
-    if (Addr_LUT.BitNum() == 4 && Addr_LUT.Type() == 1) {
-	data_len = ceil(Addr_LUT.LutNum() / 2);
-    } else if (Addr_LUT.BitNum() == 4 && Addr_LUT.Type() == 2) {
-	data_len = Addr_LUT.LutNum();
-    } else if (Addr_LUT.BitNum() == 8 || Addr_LUT.BitNum() == 6 || Addr_LUT.BitNum() == 5) {
-	data_len = Addr_LUT.LutNum();	// 201007
-    } else if (Addr_LUT.BitNum() == 12) {
-	data_len = ceil((double) Addr_LUT.LutNum() * 3 / 2);
-    } else if (Addr_LUT.BitNum() == 10 && (Addr_LUT.Type() == 1 || Addr_LUT.Type() == 2)) {
-	data_len = Addr_LUT.LutNum() * 2;
-    } else if (Addr_LUT.BitNum() == 10 && (Addr_LUT.Type() == 3 || Addr_LUT.Type() == 4)) {
-	data_len = ceil((double) Addr_LUT.LutNum() * 5 / 4);
-    } else if (Addr_LUT.BitNum() == 10 && (Addr_LUT.Type() == 5)) {
-	data_len = 5;
-    } else if (Addr_LUT.BitNum() == 10 && (Addr_LUT.Type() == 6)) {
-	data_len = 15;
-    } else if (Addr_LUT.BitNum() == 16) {
-	data_len = Addr_LUT.LutNum() * 2;
+    if (Read_table == NULL) {
+	return false;
     }
+
+    const int chk_len = (IsChkSum == true) ? 2 : 0;	// 預留的Checksum長度
+    int data_len = Addr_LUT.getDataLength();
+
+    //=========================================================================
+    // display on UI
+    //=========================================================================
     // Set Table Start Address & length (in Bytes)to Interface
     String Addr_str;
     Dec2Hex(Addr_LUT.Addr() - chk_len, &Addr_str);
     edt_seq_addr->Text = Addr_str;
     const int totalLenth = data_len + chk_len;
     edt_seq_len->Text = IntToStr(totalLenth);
+    //=========================================================================
 
     unsigned char *read_data = new unsigned char[totalLenth];
     bool ok = pg_read(read_data, true);	// Read Bytes of data
     // bool pg_read(unsigned char *data_read, bool IsShow),
     // return value = false means read fail, otherwise read success,
     // when IsShow is true, it means value will show in table of Engineer->Configuration
-
-    for (int i = 0; i < Addr_LUT.LutNum(); i++) {
-	Read_table[i] = 0;
+    if (ok == false) {
+	return false;
     }
+    //format
     if (chk_len > 0) {
 	for (int i = 0; i < data_len; i++) {
 	    read_data[i] = read_data[i + chk_len];
 	}
     }
-    IntTbl Out;
-    Out.Tbl = Read_table;
-    Out.Len = Addr_LUT.LutNum();
+    //=========================================================================
+    // io
+    //=========================================================================
+    for (int i = 0; i < Addr_LUT.LutNum(); i++) {
+	Read_table[i] = 0;
+    }
 
-    ByteTbl In;
-    In.Tbl = read_data;
-    In.Len = data_len;
+    IntTbl Out(Read_table, Addr_LUT.LutNum());
+    ByteTbl In(read_data, data_len);
 
     // 由Byte排列成原本的數值範圍
-    bool ok1 = Read_LUT(Addr_LUT, Out, In);
+    bool ok1 = RW_LUT.Read_LUT(Addr_LUT, Out, In);
+    //=========================================================================
     ok = ok && ok1;
 
     delete[]read_data;
-    if (ok == 0 | Read_table == NULL) {
-	return 0;
+    if (ok == false) {
+	return false;
     }
-    return 1;
+    return true;
 }
 
 //---------------------------------------------------------------------------
@@ -470,16 +465,10 @@ bool TEngineerForm::SetRead_DG(TLUT * Addr_LUT, int **DG_table, int LUT_Nbr, boo
     // 計算table拆成Byte後的長度, Addr_LUT.LutNum()是table當中的數值個數
     int *Byte_len = new int[LUT_Nbr];
     for (int i = 0; i < LUT_Nbr; i++) {	// 計算不同bit數的table, 所有的byte數
-	if (Addr_LUT[i].BitNum() == 8)
-	    Byte_len[i] = (int) ceil((double) Addr_LUT[i].LutNum());
-	else if (Addr_LUT[i].BitNum() == 10 && (Addr_LUT[i].Type() == 3 || Addr_LUT[i].Type() == 4))
-	    Byte_len[i] = (int) ceil((double) Addr_LUT[i].LutNum() * 5 / 4);
-	else if (Addr_LUT[i].BitNum() == 12)
-	    Byte_len[i] = (int) ceil((double) Addr_LUT[i].LutNum() * 3 / 2);
-	else if (Addr_LUT[i].BitNum() == 16)
-	    Byte_len[i] = (int) ceil((double) Addr_LUT[i].LutNum() * 2);
-	else
+	Byte_len[i] = Addr_LUT[i].getDataLength();
+	if (-1 == Byte_len[i]) {
 	    ShowMessage("Table Bit Error");
+	}
 
 	read_len += Byte_len[i];
     }
@@ -513,16 +502,12 @@ bool TEngineerForm::SetRead_DG(TLUT * Addr_LUT, int **DG_table, int LUT_Nbr, boo
 	read_data_idx += Byte_len[i];
 
 	// 轉換12 bit=>10 bit 開始
-	IntTbl Out;
-	Out.Tbl = DG_table[i];
-	Out.Len = Addr_LUT[i].LutNum();
+	IntTbl Out(DG_table[i], Addr_LUT[i].LutNum());
+	ByteTbl In(read_data_C[i], Byte_len[i]);
 
-	ByteTbl In;
-	In.Tbl = read_data_C[i];
-	In.Len = Byte_len[i];
 
 	// 由Byte排列成原本的數值範圍
-	ok1 = Read_LUT(Addr_LUT[i], Out, In);
+	ok1 = RW_LUT.Read_LUT(Addr_LUT[i], Out, In);
 	ok = ok & ok1;
     }
 
@@ -555,39 +540,12 @@ bool TEngineerForm::SetWrite_PG(TLUT Addr_LUT, int *write_table, bool IsChkSum, 
 	chk_len = 0;
     }
 
-    int data_len = 0;
-    // 計算table拆成Byte後的長度, Addr_LUT.LutNum()是table當中的數值個數
-    if (Addr_LUT.BitNum() == 4 && Addr_LUT.Type() == 1) {
-	data_len = ceil(Addr_LUT.LutNum() / 2);
-    } else if (Addr_LUT.BitNum() == 4 && Addr_LUT.Type() == 2) {
-	data_len = Addr_LUT.LutNum();
-    } else if (Addr_LUT.BitNum() == 8 || Addr_LUT.BitNum() == 6 || Addr_LUT.BitNum() == 5) {
-	data_len = Addr_LUT.LutNum();	// 201007
-    } else if (Addr_LUT.BitNum() == 12) {
-	data_len = ceil((double) Addr_LUT.LutNum() * 3 / 2);
-    } else if (Addr_LUT.BitNum() == 10 && (Addr_LUT.Type() == 1 || Addr_LUT.Type() == 2)) {
-	data_len = Addr_LUT.LutNum() * 2;
-    } else if (Addr_LUT.BitNum() == 10 && (Addr_LUT.Type() == 3 || Addr_LUT.Type() == 4)) {
-	data_len = ceil((double) Addr_LUT.LutNum() * 5 / 4);
-    } else if (Addr_LUT.BitNum() == 10 && (Addr_LUT.Type() == 5)) {
-	data_len = 5;
-    } else if (Addr_LUT.BitNum() == 10 && (Addr_LUT.Type() == 6)) {
-	data_len = 15;
-    } else if (Addr_LUT.BitNum() == 16) {
-	data_len = Addr_LUT.LutNum() * 2;
-    }
-
+    int data_len = Addr_LUT.getDataLength();
     unsigned char *write_data = new unsigned char[data_len];
-    ByteTbl Out;
-    Out.Tbl = write_data;
-    Out.Len = data_len;
+    ByteTbl Out(write_data, data_len);
+    IntTbl In(write_table, Addr_LUT.LutNum());
 
-    IntTbl In;
-    In.Tbl = write_table;
-    In.Len = Addr_LUT.LutNum();
-
-
-    Write_LUT(Addr_LUT, Out, In);
+    RW_LUT.Write_LUT(Addr_LUT, Out, In);
     ByteTbl Out_tmp;
     if (IsChkSum) {		// 需要計算checksum
 	int chksum = 0;
@@ -635,16 +593,10 @@ bool TEngineerForm::SetWrite_DG(TLUT * Addr_LUT, int **lut, int LUT_Nbr, bool Is
     // 計算table拆成Byte後的長度, Addr_LUT.LutNum()是table當中的數值個數
     int *data_len = new int[LUT_Nbr];
     for (int i = 0; i < LUT_Nbr; i++) {	// 計算不同bit數的table, 所有的byte數
-	if (Addr_LUT[i].BitNum() == 8)
-	    data_len[i] = (int) ceil((double) Addr_LUT[i].LutNum());
-	else if (Addr_LUT[i].BitNum() == 10 && (Addr_LUT[i].Type() == 3 || Addr_LUT[i].Type() == 4))
-	    data_len[i] = (int) ceil((double) Addr_LUT[i].LutNum() * 5 / 4);
-	else if (Addr_LUT[i].BitNum() == 12)
-	    data_len[i] = (int) ceil((double) Addr_LUT[i].LutNum() * 3 / 2);
-	else if (Addr_LUT[i].BitNum() == 16)
-	    data_len[i] = (int) ceil((double) Addr_LUT[i].LutNum() * 2);
-	else
+	data_len[i] = Addr_LUT[i].getDataLength();
+	if (-1 == data_len[i]) {
 	    ShowMessage("Table Bit Error");
+	}
     }
 
     ByteTbl *Out = new ByteTbl[LUT_Nbr];	// in/ out package
@@ -656,7 +608,7 @@ bool TEngineerForm::SetWrite_DG(TLUT * Addr_LUT, int **lut, int LUT_Nbr, bool Is
 	Out[i].Tbl = new unsigned char[data_len[i]];
     }
     for (int i = 0; i < LUT_Nbr; i++) {	// // 將table的數值轉成Byte排列
-	Write_LUT(Addr_LUT[i], Out[i], In[i]);
+	RW_LUT.Write_LUT(Addr_LUT[i], Out[i], In[i]);
     }
 
     ByteTbl Out_tmp;
@@ -711,16 +663,10 @@ bool TEngineerForm::SetWrite_DG(TLUT * Addr_LUT, int **lut, int LUT_Nbr,
     // 計算table拆成Byte後的長度, Addr_LUT.LutNum()是table當中的數值個數
     int *data_len = new int[LUT_Nbr];
     for (int i = 0; i < LUT_Nbr; i++) {	// 計算不同bit數的table, 所有的byte數
-	if (Addr_LUT[i].BitNum() == 8)
-	    data_len[i] = (int) ceil((double) Addr_LUT[i].LutNum());
-	else if (Addr_LUT[i].BitNum() == 10 && (Addr_LUT[i].Type() == 3 || Addr_LUT[i].Type() == 4))
-	    data_len[i] = (int) ceil((double) Addr_LUT[i].LutNum() * 5 / 4);
-	else if (Addr_LUT[i].BitNum() == 12)
-	    data_len[i] = (int) ceil((double) Addr_LUT[i].LutNum() * 3 / 2);
-	else if (Addr_LUT[i].BitNum() == 16)
-	    data_len[i] = (int) ceil((double) Addr_LUT[i].LutNum() * 2);
-	else
+	data_len[i] = Addr_LUT[i].getDataLength();
+	if (-1 == data_len[i]) {
 	    ShowMessage("Table Bit Error");
+	}
     }
 
     ByteTbl *Out = new ByteTbl[LUT_Nbr];	// in/ out package
@@ -732,13 +678,14 @@ bool TEngineerForm::SetWrite_DG(TLUT * Addr_LUT, int **lut, int LUT_Nbr,
 	Out[i].Tbl = new unsigned char[data_len[i]];
     }
     for (int i = 0; i < LUT_Nbr; i++) {	// // 將table的數值轉成Byte排列
-	Write_LUT(Addr_LUT[i], Out[i], In[i]);
+	RW_LUT.Write_LUT(Addr_LUT[i], Out[i], In[i]);
     }
 
     ByteTbl Out_tmp;
     Out_tmp.Len = chk_len;
-    for (int i = 0; i < LUT_Nbr; i++)
+    for (int i = 0; i < LUT_Nbr; i++) {
 	Out_tmp.Len += Out[i].Len;
+    }
     Out_tmp.Tbl = new unsigned char[Out_tmp.Len];
 
     // 計算checksum
@@ -763,18 +710,19 @@ bool TEngineerForm::SetWrite_DG(TLUT * Addr_LUT, int **lut, int LUT_Nbr,
     // 將寫入數值顯示到介面上
     Set_seq_data(Out_tmp.Tbl, Out_tmp.Len, Addr_LUT[0].Addr() - chk_len);
 
-    for (int i = 0; i < LUT_Nbr; i++)
+    for (int i = 0; i < LUT_Nbr; i++) {
 	delete[]Out[i].Tbl;
+    }
     delete[]Out;
     delete[]In;
     delete[]Out_tmp.Tbl;
 
     if (pg_write()) {		// 寫入table數值到device
 	Sleep(10);		// write buffer time
-	return 1;
+	return true;
     } else {
 	Sleep(10);
-	return 0;
+	return false;
     }
 }
 
@@ -786,7 +734,7 @@ bool TEngineerForm::btn_byte_readClick()
     int dev_addr_cnt;		//number of device
     if (Get_device_addr(dev_addr, &dev_addr_cnt) == 0) {	//取得介面上device address
 	ShowMessage(Err_Msg_Dev);
-	return NULL;
+	return false;
     }
     unsigned char *data_read = new unsigned char[dev_addr_cnt];
 
@@ -811,7 +759,7 @@ bool TEngineerForm::btn_byte_readClick()
     if (str[0] != '\0') {
 	Connect_Msg = (String) str + " Fail!";
 	MainForm->StatusBar1->Panels->Items[0]->Text = "Connection: " + Connect_Msg;
-	return 0;
+	return false;
     }
     char R_string[15];
     if (dif) {
@@ -828,7 +776,7 @@ bool TEngineerForm::btn_byte_readClick()
     AnsiString Rstr = (AnsiString) R_string;
     edt_byte_rdata->Text = Rstr;
     delete[]data_read;
-    return 1;
+    return true;
 }
 
 void __fastcall TEngineerForm::btn_byte_readClick(TObject * Sender)
@@ -883,9 +831,11 @@ void Set_write_buf(unsigned char *data_write, unsigned char *data_write_tmp, int
 //---------------------------------------------------------------------------
 void TEngineerForm::Clear_sg_seq_data()
 {
-    for (int i = 1; i < (sg_seq_data->ColCount); i++)
-	for (int j = 1; j < (sg_seq_data->RowCount); j++)
+    for (int i = 1; i < (sg_seq_data->ColCount); i++) {
+	for (int j = 1; j < (sg_seq_data->RowCount); j++) {
 	    sg_seq_data->Cells[i][j] = "";
+	}
+    }
 }
 
 //---------------------------------------------------------------------------
@@ -968,20 +918,9 @@ bool TEngineerForm::pg_read(unsigned char *data_read, bool IsShow)
 		    Set2data_read(data_read, data_read_tmp, pck_cnt, PAC_SIZE);
 		    tmp_len -= PAC_SIZE;
 		    pck_cnt++;
-		    /*if(ok==0){
-		       ShowMessage(Err_Msg_R);
-		       delete [] data_read_tmp;
-		       return 0;
-		       } */
-
 		}
 		// 最後一個data封包
 		ok = RW.USB_r_Data_Package(data_read_tmp, tmp_len, 1);
-		/* if(ok==0){ //最後一個package收不到正確的status
-		   ShowMessage(Err_Msg_R);
-		   delete [] data_read_tmp;
-		   return 0;
-		   } */
 
 		// 將讀取的data放到'data_read'
 		Set2data_read(data_read, data_read_tmp, pck_cnt, tmp_len);
@@ -1081,10 +1020,11 @@ bool TEngineerForm::Get_write_data(unsigned char *write_data)
 {
     AnsiString str = edt_byte_wdata->Text;
     int val;
-    if (Hex2Dec(str, &val) == 0)
-	return 0;
+    if (Hex2Dec(str, &val) == 0) {
+	return false;
+    }
     *write_data = (unsigned char) val;
-    return 1;
+    return true;
 }
 
 //---------------------------------------------------------------------------
@@ -1092,10 +1032,11 @@ bool TEngineerForm::Get_read_data(unsigned char *read_data)
 {
     AnsiString str = edt_byte_rdata->Text;
     int val;
-    if (Hex2Dec(str, &val) == 0)
-	return 0;
+    if (Hex2Dec(str, &val) == 0) {
+	return false;
+    }
     *read_data = (unsigned char) val;
-    return 1;
+    return true;
 }
 
 //-----------------------------------------------------------------------------
@@ -1483,18 +1424,6 @@ bool TEngineerForm::pg_write()
     } else
 	rg_w_cycl_t->ItemIndex = 2;	//no need cycle time
 
-    /*
-       if(rg_w_page->ItemIndex == 0){
-       pck_size = 2;
-       }else if(rg_w_page->ItemIndex == 1){
-       pck_size = 8;
-       }else if(rg_w_page->ItemIndex == 2){
-       pck_size = 16;
-       }else if(rg_w_page->ItemIndex == 3){
-       pck_size = 32;
-       }
-     */
-
     int wait_t = 0;
     if (rg_w_cycl_t->ItemIndex == 0)
 	wait_t = 6;
@@ -1706,11 +1635,7 @@ void __fastcall TEngineerForm::rg_device_addr_selClick(TObject * Sender)
 		"Device Address: " + edt_addr_tcon_dm->Text + edt_addr_tcon_ds->Text;
 	} else if (rg_device_addr_sel->ItemIndex == 3) {
 	    MainForm->StatusBar1->Panels->Items[1]->Text = "Device Address: " + edt_addr_OTP->Text;
-	    /*if(rg_i2c_card_sel->ItemIndex == 0){
-	       rg_i2c_card_sel->ItemIndex = -1;
-	       ShowMessage("USB signal will be transmitted in package, Please choose one of LPT");
-	       return;
-	       } */
+
 	}
     }
     btn_connect_card->Enabled = true;
@@ -1884,7 +1809,6 @@ void __fastcall TEngineerForm::btn_seq_loadClick(TObject * Sender)
 	}
     }
     Set_seq_data(data, idx, 0);
-    //delete [] pch;
     delete[]data;
 
     char string[10];
@@ -1914,12 +1838,6 @@ void __fastcall TEngineerForm::btn_seq_saveClick(TObject * Sender)
     Get_seq_write_data(data, data_len);
     if (SaveDialog_txt_hex->FilterIndex == 1) {	//Text File
 	for (int i = 0; i < data_len; i++) {
-	    /*fprintf(fptr,"%02X", data[i]);
-	       if(i%16!=15)
-	       fprintf(fptr,"\t");
-	       else
-	       fprintf(fptr,"\n");
-	     */
 	    fprintf(fptr, "%02X\n", data[i]);
 	}
     } else if (SaveDialog_txt_hex->FilterIndex == 2) {	//Intel Hex File
@@ -2004,7 +1922,6 @@ String *TEngineerForm::Load_file(String Fpath, int Lut_no)
     char *buffer;
     FILE *fptr;
     if ((fptr = fopen(Fpath.c_str(), "r")) == NULL) {
-	//ShowMessage("Can't Open File.");
 	return NULL;
     }
     // obtain file size:
@@ -2015,7 +1932,6 @@ String *TEngineerForm::Load_file(String Fpath, int Lut_no)
     // allocate memory to contain the whole file:
     buffer = (char *) malloc(sizeof(char) * lSize + 1);
     if (buffer == NULL) {
-	//ShowMessage("Can't Allocate Memory.");
 	return NULL;
     }
     // copy the file into the buffer:
@@ -2159,7 +2075,6 @@ void __fastcall TEngineerForm::btn_LPT_spdClick(TObject * Sender)
     int ID_OK;
     if (freq > 70) {
 	ID_OK = MessageBox(NULL, "Lower LPT frequency?!", "Confirm", MB_OKCANCEL);
-
     }
     if (ID_OK == 1) {
 	cb_low_freq->Checked = true;
@@ -2201,11 +2116,7 @@ void __fastcall TEngineerForm::btn_byte_read_no_ackClick(TObject * Sender)
     unsigned char dev_addr_tmp;
     for (int i = 0; i < dev_addr_cnt; i++) {
 	SetDeviceAddr(dev_addr[i], &dev_addr_tmp, data_addr, data_addr_cnt);
-	//if(rg_i2c_card_sel->ItemIndex == 0)
-	//        connect = RW.USB_read(dev_addr_tmp, data_addr, data_addr_cnt, &data_read, 1);
-	//else{
 	ok = RW.LPT_Read_Byte_Skip_Ack(dev_addr_tmp, data_addr, data_addr_cnt, &data_read);
-	//}
     }
     char string[20];
     sprintf(string, "Read Data: %X", data_read);
@@ -2223,13 +2134,9 @@ void __fastcall TEngineerForm::SaveDialog_txt_hexSelectionChange(TObject * Sende
     if (OpenDialog_txt_hex->FilterIndex == 1) {	//Text File
 	OpenDialog_txt_hex->DefaultExt = String(".txt");
 	OpenDialog_txt_hex->FileName = "*.txt";
-	//if (OpenDialog_txt_hex->FileName.AnsiPos(".")<1)　　
-	//        OpenDialog_txt_hex->FileName=OpenDialog_txt_hex->FileName+".txt";
     } else if (OpenDialog_txt_hex->FilterIndex == 2) {	//Intel Hex File
 	OpenDialog_txt_hex->DefaultExt = String(".hex");
 	OpenDialog_txt_hex->FileName = "*.hex";
-	///if (OpenDialog_txt_hex->FileName.AnsiPos(".")<1)　　
-	//        OpenDialog_txt_hex->FileName=OpenDialog_txt_hex->FileName+".hex;
     }
 }
 
@@ -2292,49 +2199,5 @@ char *TEngineerForm::LoadFile(String Fpath, int *len)
     fclose(fptr);
     *len = n;
     return buffer;
-}
-
-bool TEngineerForm::Read_LUT(TLUT Addr_LUT, IntTbl & Out, ByteTbl In)
-{
-    if (Addr_LUT.BitNum() == 8) {
-	RW_LUT.Read_LUT8(Out, In, Addr_LUT.Type());
-    } else if (Addr_LUT.BitNum() == 4) {
-	RW_LUT.Read_LUT4(Out, In, Addr_LUT.Type());
-    } else if (Addr_LUT.BitNum() == 5) {	// 201007
-	RW_LUT.Read_LUT5(Out, In, Addr_LUT.Type());
-    } else if (Addr_LUT.BitNum() == 6) {
-	RW_LUT.Read_LUT6(Out, In, Addr_LUT.Type());
-    } else if (Addr_LUT.BitNum() == 10) {
-	RW_LUT.Read_LUT10(Out, In, Addr_LUT.Type());
-    } else if (Addr_LUT.BitNum() == 12) {
-	RW_LUT.Read_LUT12(Out, In, Addr_LUT.Type());
-    } else if (Addr_LUT.BitNum() == 16) {
-	RW_LUT.Read_LUT16(Out, In, Addr_LUT.Type());
-    } else {
-	Out.Tbl = NULL;
-    }
-    return true;
-}
-
-bool TEngineerForm::Write_LUT(TLUT Addr_LUT, ByteTbl & Out, IntTbl In)
-{
-    if (Addr_LUT.BitNum() == 8) {
-	RW_LUT.Write_LUT8(Out, In, Addr_LUT.Type());
-    } else if (Addr_LUT.BitNum() == 4) {
-	RW_LUT.Write_LUT4(Out, In, Addr_LUT.Type());
-    } else if (Addr_LUT.BitNum() == 5) {	// 201007
-	RW_LUT.Write_LUT5(Out, In, Addr_LUT.Type());
-    } else if (Addr_LUT.BitNum() == 6) {
-	RW_LUT.Write_LUT6(Out, In, Addr_LUT.Type());
-    } else if (Addr_LUT.BitNum() == 10) {
-	RW_LUT.Write_LUT10(Out, In, Addr_LUT.Type());
-    } else if (Addr_LUT.BitNum() == 12) {
-	RW_LUT.Write_LUT12(Out, In, Addr_LUT.Type());
-    } else if (Addr_LUT.BitNum() == 16) {
-	RW_LUT.Write_LUT16(Out, In, Addr_LUT.Type());
-    } else {
-	Out.Tbl = NULL;
-    }
-    return true;
 }
 

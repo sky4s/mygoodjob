@@ -142,11 +142,12 @@ class TEngineerForm:public TForm {
 // 20100608 新增, 詳細內容寫在'table_type.h'
     ReadWrite_LUT RW_LUT;
 // decode / encode data in difference Table type, Defined in table_type.h
-    bool Read_LUT(TLUT Addr_LUT, IntTbl & Out, ByteTbl In);
+    //bool Read_LUT(TLUT Addr_LUT, IntTbl & Out, ByteTbl In);
+    //bool Write_LUT(TLUT Addr_LUT, ByteTbl & Out, IntTbl In);
 
-    bool Write_LUT(TLUT Addr_LUT, ByteTbl & Out, IntTbl In);
-
-
+    //=========================================================================
+    // basic io function
+    //=========================================================================
     bool Get_byte_addr(unsigned char *data_addr, int *data_addr_cnt);
     bool Get_device_addr(unsigned char *dev, int *dev_addr_cnt);
     bool Get_device_addr(int *dev_ad);
@@ -159,7 +160,13 @@ class TEngineerForm:public TForm {
 		       unsigned char *data_ad, int data_ad_c);
     void dev_addr_change(TObject * Sender);
     bool Get_read_data(unsigned char *read_data);
+    bool B_read(unsigned char &data_read, unsigned char dev_addr);
+    bool B_write(unsigned char dev_addr);
+    //=========================================================================
 
+    //=========================================================================
+    // pg write function
+    //=========================================================================
     bool USB_pg_write(unsigned char dev_ad, unsigned char *data_addr,
 		      int data_addr_cnt, unsigned char *data_write,
 		      int data_len, int pck_size, int wait_t);
@@ -171,16 +178,11 @@ class TEngineerForm:public TForm {
     bool LPT_pg_write(unsigned char dev_ad, unsigned char *data_addr,
 		      int data_addr_cnt, unsigned char *data_write,
 		      int data_len, int pck_size, int wait_t);
-    bool B_read(unsigned char &data_read, unsigned char dev_addr);
-    bool B_write(unsigned char dev_addr);
     bool pg_read(unsigned char *read, bool IsShow);
     bool pg_write();
-    void wait(long milli);
+    //=========================================================================
 
     void Clear_sg_seq_data();
-    bool Msg_USB_RW(int read_sucess, int read_count, int package_cnt);
-    void Send_WarningMsg(int pck);
-
     bool btn_byte_readClick();
 
 
@@ -190,10 +192,15 @@ class TEngineerForm:public TForm {
      __fastcall TEngineerForm(TComponent * Owner);
      __fastcall ~ TEngineerForm(void);
 
+    //=========================================================================
+    // public io function
+    //=========================================================================
+    //for byte
     bool SetWrite_Byte(TBit Addr_Bit, int set_val);
     bool SetRead_Byte(TBit Addr_Bit, unsigned char *read_val);
     unsigned char readByte(TBit & Addr_Bit);
 
+    //for lut
     bool SetWrite_PG(TLUT Addr_LUT, int *write_table, bool IsChkSum);
     bool SetWrite_PG(TLUT Addr_LUT, int *write_table, bool IsChkSum, bool MSB_first);
     bool SetRead_PG(TLUT Addr_LUT, int *table, bool IsChkSum);
@@ -201,8 +208,9 @@ class TEngineerForm:public TForm {
     bool SetRead_DG(TLUT * Addr_LUT, int **DG_table, int LUT_Nbr, bool IsChkSum);
     bool SetWrite_DG(TLUT * Addr_LUT, int **lut, int LUT_Nbr, bool IsChkSum, bool MSB_first);
     bool SetWrite_DG(TLUT * Addr_LUT, int **lut, int LUT_Nbr, bool IsChkSum);
+    //=========================================================================]
 
-    String *Load_file(String Fpath, int Lut_no);
+    static String *Load_file(String Fpath, int Lut_no);
 
 
 };
