@@ -31,7 +31,7 @@ class TExampleForm:public TForm {
     TLabel *Label2;
     TScrollBar *ScrollBar1;
     TStaticText *StaticText1;
-        TLabeledEdit *LabeledEdit1;
+    TLabeledEdit *LabeledEdit1;
     void __fastcall FormActivate(TObject * Sender);
     void __fastcall FormCreate(TObject * Sender);
   private:			// User declarations

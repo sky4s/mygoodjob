@@ -56,9 +56,13 @@ namespace gui {
     namespace framework {
 	using namespace std;
 	class RegisterType {
+	    friend class RegisterFramework;
 	  protected:
-	    std::string regname;
-	    RegisterType(std::string regname);
+	     std::string regname;
+
+	    TControl *control;
+	  public:
+	     RegisterType(std::string regname);
 	};
 
 
@@ -76,6 +80,7 @@ namespace gui {
 
 	};
 	typedef bptr < BitRegister > BitRegister_ptr;
+
 	class LUTRegister:public RegisterType {
 	};
 
@@ -86,6 +91,9 @@ namespace gui {
 	typedef bptr < RegisterTypeMap > RegisterTypeMap_ptr;
 #define nil_RegisterTypeMap_ptr RegisterTypeMap_ptr((RegisterTypeMap *) NULL)
 
+	/*
+	   regname->Register
+	 */
 	class RegisterMap {
 	  private:
 	    StringMap_ptr tconMap;
@@ -96,11 +104,10 @@ namespace gui {
 					 int_vector_ptr intVector);
 	  public:
 	     RegisterMap(std::string filename);
-	    //void reset();
 	    RegisterType_ptr getRegister(std::string regname);
 	};
 
-
+	typedef bptr < RegisterMap > RegisterMap_ptr;
 
 	class RegisterFramework {
 	  private:
@@ -109,23 +116,23 @@ namespace gui {
 	    TControl_vector_ptr statictextVector;
 	    TControl_vector_ptr checkVector;
 	    TControl_vector_ptr editVector;
-	     bptr < RegisterMap > registerMap;
+	    RegisterMap_ptr registerMap;
 	     gui::util::MultiUIBinder binder;
 
-	    void childScan(TWinControl * ctrl);
-	    void processLabel();
-	    void processStaticText();
-	    void processTControl(TControl_vector_ptr vector);
+	    void scanChild(TWinControl * ctrl);
+	    void processLabel(TControl_vector_ptr labelVector);
+	    void processStaticText(TControl_vector_ptr statictextVector);
+	    void processSingleTControl(TControl_vector_ptr vector);
 	    void init();
 	    static TControl_vector_ptr findSameTop(TControl_vector_ptr
 						   vector,
 						   TControl * find);
 
-	    void __fastcall onClick(TObject * Sender);
-	    void __fastcall onKeyPress(TObject * Sender, char &Key);
-	    void __fastcall onChange(TObject * Sender);
+	    void __fastcall onClick(TObject * Sender);	//check/combo
+	    void __fastcall onKeyPress(TObject * Sender, char &Key);	//edit label
+	    void __fastcall onChange(TObject * Sender);	//scroll bar
 	  public:
-	    void bindComboBox(const string & regname, ...);
+	    void bindComboBox(const string & regname, int n, ...);
 	    void bind(const string & regname, TControl * control);
 	    void scanUI(TForm * form);
 	     RegisterFramework();

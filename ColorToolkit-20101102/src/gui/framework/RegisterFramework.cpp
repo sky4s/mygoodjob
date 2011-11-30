@@ -26,11 +26,6 @@ namespace gui {
 	    registerMap = RegisterTypeMap_ptr(new RegisterTypeMap());
 	};
 
-	/*void RegisterMap::reset() {
-	   tconMap = nil_StringMap_ptr;
-	   registerMap = nil_RegisterTypeMap_ptr;
-	   }; */
-
 	int_vector_ptr RegisterMap::getIntVector(std::string text) {
 	    if (text.length() == 0 || text == "_NULL") {
 		return nil_int_vector_ptr;
@@ -46,9 +41,16 @@ namespace gui {
 	    return values;
 	};
 
+	/*
+	   ToDo
+	 */
 	RegisterType_ptr RegisterMap::getRegister(std::string regname,
 						  int_vector_ptr intVector)
 	{
+	    if (true) {
+		RegisterType_ptr result(new RegisterType(regname));
+		return result;
+	    }
 	    int size = intVector->size();
 	    switch (size) {
 	    case 3:		//TBit1
@@ -74,8 +76,13 @@ namespace gui {
 	    if (null == reg) {
 		//沒有=>代表沒有生成RegisterType, 即刻生成
 		const std::string text = (*tconMap)[regname];
-		int_vector_ptr intVector = getIntVector(text);
-		reg = getRegister(regname, intVector);
+		if ("" != text) {
+		    int_vector_ptr intVector = getIntVector(text);
+		    reg = getRegister(regname, intVector);
+		    (*registerMap)[regname] = reg;
+		} else {
+		    return nil_RegisterType_ptr;
+		}
 	    }
 	    return reg;
 	};
@@ -95,8 +102,6 @@ namespace gui {
 	    for (int i = 0; i < n; i++) {
 		const int d = va_arg(num_list, const int);
 		regData[i] = d;
-		/*const string & str = _toString(d);
-		   result->push_back(str); */
 	    } va_end(num_list);
 	};
 
@@ -151,17 +156,18 @@ namespace gui {
 	/*
 	   scanUI要做的事情
 	   1.依照parent分類
-	   2.繫結: Scroll跟StaticText,
-	   3.歸類: Label跟ComboBox, Label跟Scroll 
+	   2.繫結: Scroll跟StaticText, 僅bind UI
+	   3.歸類: Label跟ComboBox, Label跟Scroll, 利用Label去取得reg 
 	 */
 	void RegisterFramework::scanUI(TForm * form) {
-	    childScan(form);
-	    processStaticText();	//繫結
-	    processLabel();
-
+	    scanChild(form);
+	    processStaticText(statictextVector);	//繫結 scroll 和 static text
+	    processLabel(labelVector);	//歸類
+	    processSingleTControl(checkVector);	//TCheckBox
+	    processSingleTControl(editVector);	//TLabeledEdit
 	};
 
-	void RegisterFramework::childScan(TWinControl * ctrl) {
+	void RegisterFramework::scanChild(TWinControl * ctrl) {
 	    int count = ctrl->ControlCount;
 	    for (int x = 0; x < count; x++) {
 		TControl *child = ctrl->Controls[x];
@@ -204,13 +210,9 @@ namespace gui {
 
 		TWinControl *wctrl = dynamic_cast < TWinControl * >(child);
 		if (null != wctrl) {
-		    childScan(wctrl);
+		    scanChild(wctrl);
 		    continue;
 		}
-
-
-
-
 	    }
 
 	}
@@ -218,24 +220,29 @@ namespace gui {
 	/*
 	   將Label跟ScrollBar或者TComboBox結合
 	 */
-	void RegisterFramework::processLabel() {
-	    foreach(TControl * label, *labelVector) {
-		TWinControl *parent = label->Parent;
+	void RegisterFramework::
+	    processLabel(TControl_vector_ptr labelVector) {
+	    foreach(TControl * ctrl, *labelVector) {
+		TWinControl *parent = ctrl->Parent;
 		TControl_vector_ptr ctrlvec = (*childmap)[parent];
-		TControl_vector_ptr sameTop = findSameTop(ctrlvec, label);
+		TControl_vector_ptr sameTop = findSameTop(ctrlvec, ctrl);
+		TLabel *label = dynamic_cast < TLabel * >(ctrl);
+		String caption = label->Caption;
+		char *cArrayCaption = caption.c_str();
 
 		foreach(TControl * ctrl, *sameTop) {
+		    RegisterType_ptr registerType =
+			registerMap->getRegister(cArrayCaption);
+
 		    TScrollBar *scroll =
 			dynamic_cast < TScrollBar * >(ctrl);
-		    if (null != scroll) {
-
-		    }
-
 		    TComboBox *combobox =
 			dynamic_cast < TComboBox * >(ctrl);
-		    if (null != combobox) {
-
+		    if (nil_RegisterType_ptr != registerType
+			&& (null != scroll || null != combobox)) {
+			registerType->control = ctrl;
 		    }
+
 		}
 
 	    }
@@ -245,12 +252,15 @@ namespace gui {
 	/*
 	   繫結StaticText前面的ScrollBar
 	 */
-	void RegisterFramework::processStaticText() {
+	void RegisterFramework::
+	    processStaticText(TControl_vector_ptr statictextVector) {
 	    foreach(TControl * ctrl, *statictextVector) {
 		TStaticText *text = dynamic_cast < TStaticText * >(ctrl);
 		if (null != text) {
 		    TWinControl *parent = text->Parent;
+		    //找到兄弟姊妹
 		    TControl_vector_ptr ctrlvec = (*childmap)[parent];
+		    //找到top一樣高的
 		    TControl_vector_ptr sameTop =
 			findSameTop(ctrlvec, text);
 		    foreach(TControl * ctrl, *sameTop) {
@@ -259,6 +269,7 @@ namespace gui {
 			if (null != scroll
 			    && (scroll->Left + scroll->Width) <
 			    text->Left) {
+			    //只要符合上述條件, 就bind在一起
 			    binder.bind(text, scroll);
 			}
 		    }
@@ -266,10 +277,29 @@ namespace gui {
 	    }
 	};
 
-	void RegisterFramework::processTControl(TControl_vector_ptr vector) {
+	void RegisterFramework::
+	    processSingleTControl(TControl_vector_ptr vector) {
 	    foreach(TControl * ctrl, *vector) {
+		String caption = null;
+		TCheckBox *checkBox = dynamic_cast < TCheckBox * >(ctrl);
+		if (null != checkBox) {
+		    caption = checkBox->Caption;
+		}
+		TLabeledEdit *labeledEdit =
+		    dynamic_cast < TLabeledEdit * >(ctrl);
+		if (null != labeledEdit) {
+		    caption = labeledEdit->EditLabel->Caption;
+		}
+		if (caption != null) {
+		    RegisterType_ptr reg =
+			registerMap->getRegister(caption.c_str());
+		    if (null != reg) {
+			reg->control = checkBox;
+		    }
+		}
 
 	    }
+
 	};
 
 	TControl_vector_ptr RegisterFramework::
@@ -282,11 +312,36 @@ namespace gui {
 	    }
 	    return result;
 	};
-	void RegisterFramework::bindComboBox(const string & regname, ...) {
+	/*
+	 */
+	void RegisterFramework::bindComboBox(const string & regname, int n,
+					     ...) {
+	    RegisterType_ptr reg = registerMap->getRegister(regname);
+	    TControl *ctrl = reg->control;
+	    if (null == ctrl) {
+		return;
+	    }
+	    TComboBox *comboxBox = dynamic_cast < TComboBox * >(ctrl);
+	    if (null != comboxBox) {
+		va_list num_list;
+		va_start(num_list, n);
+
+		for (int i = 0; i < n; i++) {
+		    char *str = va_arg(num_list, char *);
+		    comboxBox->Items->Add(str);
+		} va_end(num_list);
+		comboxBox->ItemIndex = 0;
+	    }
 	};
 
+	/*
+	 */
 	void RegisterFramework::bind(const string & regname,
 				     TControl * control) {
+	    RegisterType_ptr reg = registerMap->getRegister(regname);
+	    if (null != reg) {
+		reg->control = control;
+	    }
 	};
 
 	void RegisterFramework::active(TObject * sender) {
@@ -294,12 +349,9 @@ namespace gui {
 	};
 
 	void RegisterFramework::setRegisterFilename(std::string filename) {
-	    registerMap = bptr < RegisterMap > (new RegisterMap(filename));
+	    registerMap = RegisterMap_ptr(new RegisterMap(filename));
 	};
 
-	/*void RegisterFramework::resetRegisterMap() {
-	   registerMap->reset();
-	   }; */
     };
 
 };
