@@ -1,6 +1,6 @@
 object HSVForm2nd: THSVForm2nd
-  Left = 53
-  Top = 10
+  Left = 308
+  Top = 61
   Width = 827
   Height = 722
   Caption = 'HSV2'
@@ -235,14 +235,14 @@ object HSVForm2nd: THSVForm2nd
     end
     object GroupBox2: TGroupBox
       Left = 176
-      Top = 400
+      Top = 384
       Width = 449
-      Height = 273
+      Height = 289
       Caption = 'HSV Adjustment'
       TabOrder = 9
       object cb_Hue_rotation: TCheckBox
-        Left = 211
-        Top = 9
+        Left = 323
+        Top = 33
         Width = 62
         Height = 17
         Caption = 'Global'
@@ -361,7 +361,7 @@ object HSVForm2nd: THSVForm2nd
       end
       inline hsvAdjust: THSVAdjustFrame
         Left = 4
-        Top = 41
+        Top = 57
         Width = 361
         Height = 178
         TabOrder = 8
@@ -480,33 +480,41 @@ object HSVForm2nd: THSVForm2nd
         TabOrder = 14
         OnClick = CheckBox_ShowPatternClick
       end
-      object RadioButton_Single: TRadioButton
-        Left = 8
-        Top = 19
-        Width = 57
-        Height = 17
-        Caption = 'Single'
-        Checked = True
+      object GroupBox5: TGroupBox
+        Left = 4
+        Top = 14
+        Width = 185
+        Height = 41
+        Caption = 'Select Mode'
         TabOrder = 15
-        TabStop = True
-      end
-      object RadioButton_Local: TRadioButton
-        Left = 64
-        Top = 19
-        Width = 57
-        Height = 17
-        Caption = 'Local'
-        Enabled = False
-        TabOrder = 16
-      end
-      object RadioButton_Global: TRadioButton
-        Left = 120
-        Top = 19
-        Width = 57
-        Height = 17
-        Caption = 'Global'
-        TabOrder = 17
-        OnClick = RadioButton_GlobalClick
+        object RadioButton_Global: TRadioButton
+          Left = 120
+          Top = 16
+          Width = 57
+          Height = 17
+          Caption = 'Global'
+          TabOrder = 0
+          OnClick = RadioButton_GlobalClick
+        end
+        object RadioButton_Local: TRadioButton
+          Left = 64
+          Top = 16
+          Width = 57
+          Height = 17
+          Caption = 'Local'
+          Enabled = False
+          TabOrder = 1
+        end
+        object RadioButton_Single: TRadioButton
+          Left = 8
+          Top = 16
+          Width = 57
+          Height = 17
+          Caption = 'Single'
+          Checked = True
+          TabOrder = 2
+          TabStop = True
+        end
       end
     end
     object GroupBox3: TGroupBox
