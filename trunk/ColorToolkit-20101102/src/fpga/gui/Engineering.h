@@ -208,6 +208,12 @@ class TEngineerForm:public TForm {
     bool SetRead_DG(TLUT * Addr_LUT, int **DG_table, int LUT_Nbr, bool IsChkSum);
     bool SetWrite_DG(TLUT * Addr_LUT, int **lut, int LUT_Nbr, bool IsChkSum, bool MSB_first);
     bool SetWrite_DG(TLUT * Addr_LUT, int **lut, int LUT_Nbr, bool IsChkSum);
+
+    //new io
+    int_array readRegister();
+    void writeRegister();
+    int_array readLUT();
+    void writeLUT();
     //=========================================================================]
 
     static String *Load_file(String Fpath, int Lut_no);

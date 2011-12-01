@@ -430,8 +430,9 @@ void __fastcall TSharpnessForm1::sb_softgainChange(TObject * Sender)
 	    SP_LUT->Canvas->LineTo(x, y);
 	}
 
-    } else
+    } else {
 	sb_softgain->Position = 10;
+    }
 
 }
 

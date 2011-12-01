@@ -1,85 +1,116 @@
 object ExampleForm: TExampleForm
   Left = 352
   Top = 143
-  Width = 353
-  Height = 750
+  Width = 282
+  Height = 272
   Caption = 'ExampleForm'
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
-  Font.Height = -13
+  Font.Height = -10
   Font.Name = 'MS Sans Serif'
   Font.Style = []
   OldCreateOrder = False
   OnActivate = FormActivate
   OnCreate = FormCreate
-  PixelsPerInch = 120
-  TextHeight = 16
+  PixelsPerInch = 96
+  TextHeight = 13
   object GroupBox1: TGroupBox
-    Left = 8
-    Top = 8
-    Width = 313
-    Height = 161
+    Left = 7
+    Top = 7
+    Width = 254
+    Height = 226
     Caption = 'GroupBox1'
     TabOrder = 0
     object Label1: TLabel
-      Left = 8
-      Top = 48
-      Width = 36
-      Height = 16
+      Left = 7
+      Top = 39
+      Width = 28
+      Height = 13
       Caption = 'FPGA'
     end
     object Label2: TLabel
-      Left = 8
-      Top = 80
-      Width = 41
-      Height = 16
+      Left = 7
+      Top = 121
+      Width = 32
+      Height = 13
       Caption = 'Label2'
     end
+    object Label3: TLabel
+      Left = 7
+      Top = 71
+      Width = 21
+      Height = 13
+      Caption = 'FPG'
+    end
+    object Label4: TLabel
+      Left = 7
+      Top = 191
+      Width = 21
+      Height = 13
+      Caption = 'FPG'
+    end
     object CheckBox1: TCheckBox
-      Left = 8
-      Top = 24
-      Width = 97
-      Height = 17
+      Left = 7
+      Top = 20
+      Width = 78
+      Height = 13
       Caption = 'HUE_EN'
       TabOrder = 0
     end
     object ComboBox1: TComboBox
-      Left = 72
-      Top = 48
-      Width = 145
-      Height = 24
-      ItemHeight = 16
+      Left = 59
+      Top = 39
+      Width = 117
+      Height = 21
+      ItemHeight = 13
       TabOrder = 1
       Text = 'ComboBox1'
     end
     object ScrollBar1: TScrollBar
-      Left = 72
-      Top = 80
-      Width = 121
-      Height = 21
+      Left = 59
+      Top = 121
+      Width = 98
+      Height = 17
       PageSize = 0
       TabOrder = 2
     end
     object StaticText1: TStaticText
-      Left = 208
-      Top = 80
-      Width = 70
-      Height = 20
+      Left = 169
+      Top = 121
+      Width = 58
+      Height = 17
       Caption = 'StaticText1'
       TabOrder = 3
     end
     object LabeledEdit1: TLabeledEdit
-      Left = 8
-      Top = 128
-      Width = 121
+      Left = 7
+      Top = 160
+      Width = 98
       Height = 24
-      EditLabel.Width = 80
-      EditLabel.Height = 16
+      EditLabel.Width = 50
+      EditLabel.Height = 11
       EditLabel.Caption = 'LabeledEdit1'
       LabelPosition = lpAbove
       LabelSpacing = 3
       TabOrder = 4
+    end
+    object CheckBox2: TCheckBox
+      Left = 103
+      Top = 20
+      Width = 78
+      Height = 13
+      Caption = 'HSV_EN'
+      TabOrder = 5
+    end
+    object ComboBox2: TComboBox
+      Left = 59
+      Top = 71
+      Width = 117
+      Height = 21
+      ItemHeight = 13
+      TabOrder = 6
+      Text = 'ComboBox1'
     end
   end
 end

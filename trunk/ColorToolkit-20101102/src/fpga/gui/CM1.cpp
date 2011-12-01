@@ -287,7 +287,7 @@ void TCMForm1::loadCMFromTCON(int index, TEdit * e[9], TStaticText * offset)
     if (CM_addr[index].LutNum() != 9) {	//Check CM1 table number
 	String msg = "CM";
 	msg += (index + 1);
-	msg += " LUT number defined in AddressCM.cpp is wrong.";
+	msg += " LUT number defined is wrong.";
 	ShowMessage(msg);
 	return;
     }
