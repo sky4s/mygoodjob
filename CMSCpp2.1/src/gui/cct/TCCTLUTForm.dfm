@@ -917,6 +917,7 @@ object CCTLUTForm: TCCTLUTForm
     Height = 58
     Caption = 'Test Function'
     TabOrder = 13
+    Visible = False
     object Label15: TLabel
       Left = 18
       Top = 35
