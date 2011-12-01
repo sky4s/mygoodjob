@@ -137,6 +137,7 @@ class THSVForm2nd:public TForm, cms::util::CallBackIF, RGBInfoCallbackIF, Patter
     TRadioButton *RadioButton_Single;
     TRadioButton *RadioButton_Local;
     TRadioButton *RadioButton_Global;
+    TGroupBox *GroupBox5;
 
     void __fastcall btn_hsv_loadClick(TObject * Sender);
     void __fastcall btn_hsv_saveClick(TObject * Sender);
@@ -184,7 +185,7 @@ class THSVForm2nd:public TForm, cms::util::CallBackIF, RGBInfoCallbackIF, Patter
     void __fastcall hsvAdjustsb_Val_gainChange(TObject * Sender);
     void __fastcall ScrollBar_ChromaChange(TObject * Sender);
     void __fastcall RadioButton_GlobalClick(TObject * Sender);
-        void __fastcall colorPickerbtn_c3d_load_imgClick(TObject *Sender);
+    void __fastcall colorPickerbtn_c3d_load_imgClick(TObject * Sender);
   private:			// User declarations
     static const int HUE_COUNT = 24;	//­ì¥»¬O96, why?
     static const int MAX_HUE_VALUE = 768;

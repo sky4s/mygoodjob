@@ -895,9 +895,11 @@ void THSVForm2nd::setGridSelectRow(int startRow, int endRow)
     if (startRow == endRow) {
 	RadioButton_Single->Checked = true;
 	doubleHueSelected = false;
-    } else {
+    } else if ((startRow + 1) == endRow) {
 	RadioButton_Local->Checked = true;
 	doubleHueSelected = true;
+    } else {
+
     }
 };
 int THSVForm2nd::getGridSelectRow()
@@ -1806,15 +1808,16 @@ void __fastcall THSVForm2nd::ScrollBar_ChromaChange(TObject * Sender)
 void __fastcall THSVForm2nd::RadioButton_GlobalClick(TObject * Sender)
 {
     CheckBox_MemoryColor->Checked = false;
+    setGridSelectRow(1, 24);
 }
 
 //---------------------------------------------------------------------------
 
-void __fastcall THSVForm2nd::colorPickerbtn_c3d_load_imgClick(
-      TObject *Sender)
+void __fastcall THSVForm2nd::colorPickerbtn_c3d_load_imgClick(TObject * Sender)
 {
-  colorPicker->btn_c3d_load_imgClick(Sender);
+    colorPicker->btn_c3d_load_imgClick(Sender);
 
 }
+
 //---------------------------------------------------------------------------
 
