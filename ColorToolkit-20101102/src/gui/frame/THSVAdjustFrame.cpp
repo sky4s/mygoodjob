@@ -136,11 +136,11 @@ void THSVAdjustFrame::setHSVPostition(int h, int s, int v)
 {
     settingHSVPosition = true;
     sb_Hue_gain->Position = h;
-    if (captionIF == null) {
-	sb_Sat_gain->Position = s;
-    } else {
-	sb_Sat_gain->Position = s;
-    }
+    /*if (captionIF == null) {
+       sb_Sat_gain->Position = s;
+       } else { */
+    sb_Sat_gain->Position = s;
+    //}
     sb_Val_gain->Position = v;
     settingHSVPosition = false;
 }

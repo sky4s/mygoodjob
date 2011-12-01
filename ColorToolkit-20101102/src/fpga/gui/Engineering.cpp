@@ -533,12 +533,7 @@ bool TEngineerForm::SetWrite_PG(TLUT Addr_LUT, int *write_table, bool IsChkSum)
 
 bool TEngineerForm::SetWrite_PG(TLUT Addr_LUT, int *write_table, bool IsChkSum, bool MSB_first)
 {				// IsChkSum: 1 璶checksum, 0 ぃノchecksum
-    int chk_len;
-    if (IsChkSum) {		// 箇痙Checksum
-	chk_len = 2;
-    } else {
-	chk_len = 0;
-    }
+    int chk_len = IsChkSum ? 2 : 0;
 
     int data_len = Addr_LUT.getDataLength();
     unsigned char *write_data = new unsigned char[data_len];
@@ -565,16 +560,18 @@ bool TEngineerForm::SetWrite_PG(TLUT Addr_LUT, int *write_table, bool IsChkSum, 
 	// 盢糶计陪ボざ
 	Set_seq_data(Out_tmp.Tbl, Out_tmp.Len, Addr_LUT.Addr() - chk_len);
 	delete[]Out_tmp.Tbl;
-    } else
+    } else {
 	// 盢糶计陪ボざ
 	Set_seq_data(Out.Tbl, Out.Len, Addr_LUT.Addr());
+    }
     delete Out.Tbl;
+
     if (pg_write()) {		// 糶table计device
 	Sleep(10);		// write buffer time
-	return 1;
+	return true;
     } else {
 	Sleep(10);
-	return 0;
+	return false;
     }
 }
 
@@ -583,12 +580,7 @@ bool TEngineerForm::SetWrite_PG(TLUT Addr_LUT, int *write_table, bool IsChkSum, 
 // 20100608 revise,  Write_LUT 锣传 data  Byte, 糶chksum Byte
 bool TEngineerForm::SetWrite_DG(TLUT * Addr_LUT, int **lut, int LUT_Nbr, bool IsChkSum)
 {				// IsChkSum: 1 璶checksum, 0 ぃノchecksum
-    int chk_len;
-    if (IsChkSum) {		// 箇痙Checksum
-	chk_len = 2;
-    } else {
-	chk_len = 0;
-    }
+    int chk_len = IsChkSum ? 2 : 0;
 
     // 璸衡table╊ΘByte, Addr_LUT.LutNum()琌table讽い计计
     int *data_len = new int[LUT_Nbr];
@@ -608,13 +600,15 @@ bool TEngineerForm::SetWrite_DG(TLUT * Addr_LUT, int **lut, int LUT_Nbr, bool Is
 	Out[i].Tbl = new unsigned char[data_len[i]];
     }
     for (int i = 0; i < LUT_Nbr; i++) {	// // 盢table计锣ΘByte逼
+	//рIn峨Out
 	RW_LUT.Write_LUT(Addr_LUT[i], Out[i], In[i]);
     }
 
     ByteTbl Out_tmp;
     Out_tmp.Len = chk_len;
-    for (int i = 0; i < LUT_Nbr; i++)
+    for (int i = 0; i < LUT_Nbr; i++) {
 	Out_tmp.Len += Out[i].Len;
+    }
     Out_tmp.Tbl = new unsigned char[Out_tmp.Len];
 
     // 璸衡checksum
@@ -633,18 +627,19 @@ bool TEngineerForm::SetWrite_DG(TLUT * Addr_LUT, int **lut, int LUT_Nbr, bool Is
     // 盢糶计陪ボざ
     Set_seq_data(Out_tmp.Tbl, Out_tmp.Len, Addr_LUT[0].Addr() - chk_len);
 
-    for (int i = 0; i < LUT_Nbr; i++)
+    for (int i = 0; i < LUT_Nbr; i++) {
 	delete[]Out[i].Tbl;
+    }
     delete[]Out;
     delete[]In;
     delete[]Out_tmp.Tbl;
 
     if (pg_write()) {		// 糶table计device
 	Sleep(10);		// write buffer time
-	return 1;
+	return true;
     } else {
 	Sleep(10);
-	return 0;
+	return false;
     }
 }
 

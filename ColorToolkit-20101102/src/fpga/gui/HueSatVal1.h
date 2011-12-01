@@ -202,8 +202,9 @@ int SignToCmplmnt2s(int value, int Range)
 int Cmplmnt2sToSign(int value, int Range)
 {
     int max = floor(Range / 2 + 0.5) - 1;
-    if (value > max)
+    if (value > max) {
 	value -= Range;
+    }
     return value;
 }
 int Get_select_idx(double angle);

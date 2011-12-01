@@ -44,9 +44,7 @@ namespace gui {
 	/*
 	   ToDo
 	 */
-	RegisterType_ptr RegisterMap::getRegister(std::string regname,
-						  int_vector_ptr intVector)
-	{
+	RegisterType_ptr RegisterMap::getRegister(std::string regname, int_vector_ptr intVector) {
 	    if (true) {
 		RegisterType_ptr result(new RegisterType(regname));
 		return result;
@@ -88,8 +86,7 @@ namespace gui {
 	};
 	//=====================================================================
 
-      BitRegister::BitRegister(std::string regname, int n,...):RegisterType(regname)
-	{
+      BitRegister::BitRegister(std::string regname, int n,...):RegisterType(regname) {
 	    if (n % 3 != 0) {
 		throw new java::lang::IllegalArgumentException();
 	    }
@@ -156,15 +153,15 @@ namespace gui {
 	/*
 	   scanUI要做的事情
 	   1.依照parent分類
-	   2.繫結: Scroll跟StaticText, 僅bind UI
-	   3.歸類: Label跟ComboBox, Label跟Scroll, 利用Label去取得reg 
+	   2.歸類: Label跟ComboBox, Label跟Scroll, 利用Label去取得reg
+	   3.繫結: Scroll跟StaticText, 僅bind UI
 	 */
 	void RegisterFramework::scanUI(TForm * form) {
 	    scanChild(form);
-	    processStaticText(statictextVector);	//繫結 scroll 和 static text
 	    processLabel(labelVector);	//歸類
 	    processSingleTControl(checkVector);	//TCheckBox
 	    processSingleTControl(editVector);	//TLabeledEdit
+	    processStaticText(statictextVector);	//繫結 scroll 和 static text
 	};
 
 	void RegisterFramework::scanChild(TWinControl * ctrl) {
@@ -182,8 +179,7 @@ namespace gui {
 		(*childmap)[parent] = ctrlvec;
 
 
-		TStaticText *staticText =
-		    dynamic_cast < TStaticText * >(child);
+		TStaticText *staticText = dynamic_cast < TStaticText * >(child);
 		if (null != staticText) {
 		    statictextVector->push_back(staticText);
 		    continue;
@@ -201,8 +197,7 @@ namespace gui {
 		    continue;
 		}
 
-		TLabeledEdit *edit =
-		    dynamic_cast < TLabeledEdit * >(child);
+		TLabeledEdit *edit = dynamic_cast < TLabeledEdit * >(child);
 		if (null != edit) {
 		    editVector->push_back(edit);
 		    continue;
@@ -220,30 +215,42 @@ namespace gui {
 	/*
 	   將Label跟ScrollBar或者TComboBox結合
 	 */
-	void RegisterFramework::
-	    processLabel(TControl_vector_ptr labelVector) {
+	void RegisterFramework::processLabel(TControl_vector_ptr labelVector) {
 	    foreach(TControl * ctrl, *labelVector) {
 		TWinControl *parent = ctrl->Parent;
 		TControl_vector_ptr ctrlvec = (*childmap)[parent];
 		TControl_vector_ptr sameTop = findSameTop(ctrlvec, ctrl);
+
 		TLabel *label = dynamic_cast < TLabel * >(ctrl);
+		if (0 == sameTop->size()) {
+		    label->Caption = "Non-bind";
+		    return;
+		}
+
 		String caption = label->Caption;
 		char *cArrayCaption = caption.c_str();
 
-		foreach(TControl * ctrl, *sameTop) {
-		    RegisterType_ptr registerType =
-			registerMap->getRegister(cArrayCaption);
+		foreach(TControl * ctrl2, *sameTop) {
+		    RegisterType_ptr registerType = registerMap->getRegister(cArrayCaption);
 
-		    TScrollBar *scroll =
-			dynamic_cast < TScrollBar * >(ctrl);
-		    TComboBox *combobox =
-			dynamic_cast < TComboBox * >(ctrl);
-		    if (nil_RegisterType_ptr != registerType
-			&& (null != scroll || null != combobox)) {
-			registerType->control = ctrl;
+		    TScrollBar *scroll = dynamic_cast < TScrollBar * >(ctrl2);
+		    TComboBox *combobox = dynamic_cast < TComboBox * >(ctrl2);
+		    bool canProcess = null != scroll || null != combobox;
+		    if (nil_RegisterType_ptr != registerType && canProcess) {
+			registerType->control = ctrl2;
+		    } else {
+			if (canProcess) {
+			    //沒有對應的reg, 全hide
+			    ctrl->Visible = false;
+			    ctrl2->Visible = false;
+			} else {
+			    //除了沒對應的reg, 也沒可結合的UI, 僅hide label
+			   label->Caption = "Non-bind";
+			}
 		    }
 
 		}
+
 
 	    }
 	};
@@ -252,8 +259,7 @@ namespace gui {
 	/*
 	   繫結StaticText前面的ScrollBar
 	 */
-	void RegisterFramework::
-	    processStaticText(TControl_vector_ptr statictextVector) {
+	void RegisterFramework::processStaticText(TControl_vector_ptr statictextVector) {
 	    foreach(TControl * ctrl, *statictextVector) {
 		TStaticText *text = dynamic_cast < TStaticText * >(ctrl);
 		if (null != text) {
@@ -261,40 +267,39 @@ namespace gui {
 		    //找到兄弟姊妹
 		    TControl_vector_ptr ctrlvec = (*childmap)[parent];
 		    //找到top一樣高的
-		    TControl_vector_ptr sameTop =
-			findSameTop(ctrlvec, text);
+		    TControl_vector_ptr sameTop = findSameTop(ctrlvec, text);
 		    foreach(TControl * ctrl, *sameTop) {
-			TScrollBar *scroll =
-			    dynamic_cast < TScrollBar * >(ctrl);
-			if (null != scroll
-			    && (scroll->Left + scroll->Width) <
-			    text->Left) {
-			    //只要符合上述條件, 就bind在一起
-			    binder.bind(text, scroll);
+			TScrollBar *scroll = dynamic_cast < TScrollBar * >(ctrl);
+			if (null != scroll && (scroll->Left + scroll->Width) < text->Left) {
+			    if (true == scroll->Visible) {
+				//只要符合上述條件, 就bind在一起
+				binder.bind(text, scroll);
+			    } else {
+				text->Visible = false;
+			    }
 			}
 		    }
 		}
 	    }
 	};
 
-	void RegisterFramework::
-	    processSingleTControl(TControl_vector_ptr vector) {
+	void RegisterFramework::processSingleTControl(TControl_vector_ptr vector) {
 	    foreach(TControl * ctrl, *vector) {
 		String caption = null;
 		TCheckBox *checkBox = dynamic_cast < TCheckBox * >(ctrl);
 		if (null != checkBox) {
 		    caption = checkBox->Caption;
 		}
-		TLabeledEdit *labeledEdit =
-		    dynamic_cast < TLabeledEdit * >(ctrl);
+		TLabeledEdit *labeledEdit = dynamic_cast < TLabeledEdit * >(ctrl);
 		if (null != labeledEdit) {
 		    caption = labeledEdit->EditLabel->Caption;
 		}
 		if (caption != null) {
-		    RegisterType_ptr reg =
-			registerMap->getRegister(caption.c_str());
+		    RegisterType_ptr reg = registerMap->getRegister(caption.c_str());
 		    if (null != reg) {
-			reg->control = checkBox;
+			reg->control = ctrl;
+		    } else {
+			ctrl->Visible = false;
 		    }
 		}
 
@@ -314,8 +319,7 @@ namespace gui {
 	};
 	/*
 	 */
-	void RegisterFramework::bindComboBox(const string & regname, int n,
-					     ...) {
+	void RegisterFramework::bindComboBox(const string & regname, int n, ...) {
 	    RegisterType_ptr reg = registerMap->getRegister(regname);
 	    TControl *ctrl = reg->control;
 	    if (null == ctrl) {
@@ -336,8 +340,7 @@ namespace gui {
 
 	/*
 	 */
-	void RegisterFramework::bind(const string & regname,
-				     TControl * control) {
+	void RegisterFramework::bind(const string & regname, TControl * control) {
 	    RegisterType_ptr reg = registerMap->getRegister(regname);
 	    if (null != reg) {
 		reg->control = control;
@@ -355,4 +358,4 @@ namespace gui {
     };
 
 };
-
+ 

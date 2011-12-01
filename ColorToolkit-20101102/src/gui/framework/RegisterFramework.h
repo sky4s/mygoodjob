@@ -41,9 +41,10 @@
   目前的想法為:
   一個RegisterFramework的Class統整 RegisterType和UI的繫結
   RegisterType包括BitRegister和LUTRegister
-  只要透過 RegisterFramework.bind("reg name",CheckBox) <=這個程式"大部分"可以自動做掉
-  和RegisterFramework.bindComboBox("reg name","option1","option2"...)
-  兩隻函式就可以繫結 register<=>UI
+  只要透過 RegisterFramework.bind("reg name",CheckBox) <=透過RegisterFramework"大部分"可以自動做掉
+  和 RegisterFramework.bindComboBox("reg name","option1","option2"...)
+  兩隻函式就可以繫結 register<=>UI.
+  但是為了更快的處理, RegisterFramework.scanUI(TForm * form)是最好的
 
   事件處理:
   CheckBox: OnClick
@@ -59,7 +60,6 @@ namespace gui {
 	    friend class RegisterFramework;
 	  protected:
 	     std::string regname;
-
 	    TControl *control;
 	  public:
 	     RegisterType(std::string regname);
@@ -79,15 +79,17 @@ namespace gui {
 	    int getLength(int n);
 
 	};
-	typedef bptr < BitRegister > BitRegister_ptr;
+
 
 	class LUTRegister:public RegisterType {
 	};
 
 	typedef bptr < RegisterType > RegisterType_ptr;
 #define nil_RegisterType_ptr RegisterType_ptr((RegisterType *) NULL)
-	typedef std::map < const std::string,
-	    RegisterType_ptr > RegisterTypeMap;
+	typedef bptr < BitRegister > BitRegister_ptr;
+	typedef bptr < LUTRegister > LUTRegister_ptr;
+
+	typedef std::map < const std::string, RegisterType_ptr > RegisterTypeMap;
 	typedef bptr < RegisterTypeMap > RegisterTypeMap_ptr;
 #define nil_RegisterTypeMap_ptr RegisterTypeMap_ptr((RegisterTypeMap *) NULL)
 
@@ -100,8 +102,7 @@ namespace gui {
 	    RegisterTypeMap_ptr registerMap;
 	    void initAliasNameMap();
 	    int_vector_ptr getIntVector(std::string text);
-	    RegisterType_ptr getRegister(std::string regname,
-					 int_vector_ptr intVector);
+	    RegisterType_ptr getRegister(std::string regname, int_vector_ptr intVector);
 	  public:
 	     RegisterMap(std::string filename);
 	    RegisterType_ptr getRegister(std::string regname);
@@ -124,9 +125,7 @@ namespace gui {
 	    void processStaticText(TControl_vector_ptr statictextVector);
 	    void processSingleTControl(TControl_vector_ptr vector);
 	    void init();
-	    static TControl_vector_ptr findSameTop(TControl_vector_ptr
-						   vector,
-						   TControl * find);
+	    static TControl_vector_ptr findSameTop(TControl_vector_ptr vector, TControl * find);
 
 	    void __fastcall onClick(TObject * Sender);	//check/combo
 	    void __fastcall onKeyPress(TObject * Sender, char &Key);	//edit label

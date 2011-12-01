@@ -19,8 +19,7 @@
 //TDebugForm *DebugForm;
 
 //---------------------------------------------------------------------------
-__fastcall TSharpnessForm12307::TSharpnessForm12307(TComponent *
-						    Owner):TForm(Owner)
+__fastcall TSharpnessForm12307::TSharpnessForm12307(TComponent * Owner):TForm(Owner)
 {
     SP_Chg = 0;
     gain_flag = false;
@@ -28,8 +27,7 @@ __fastcall TSharpnessForm12307::TSharpnessForm12307(TComponent *
 }
 
 //---------------------------------------------------------------------------
-void __fastcall TSharpnessForm12307::FormClose(TObject * Sender,
-					       TCloseAction & Action)
+void __fastcall TSharpnessForm12307::FormClose(TObject * Sender, TCloseAction & Action)
 {
     delete[]OSP;
     delete[]cb;
@@ -94,8 +92,7 @@ void __fastcall TSharpnessForm12307::ComboBox_Click(TObject * Sender)
 }
 
 //---------------------------------------------------------------------------
-void __fastcall TSharpnessForm12307::LblE3_KeyPress(TObject * Sender,
-						    char &Key)
+void __fastcall TSharpnessForm12307::LblE3_KeyPress(TObject * Sender, char &Key)
 {
     TLabeledEdit *c = (TLabeledEdit *) Sender;
     int idx = StrToInt(c->Hint);
@@ -119,9 +116,7 @@ void __fastcall TSharpnessForm12307::LblE3_KeyPress(TObject * Sender,
     //add for Max hint
     int limit = pow(2, LblE3[idx]->Addr.BitNum());
     if (set_val >= limit) {
-	AnsiString max =
-	    "Max value:" +
-	    IntToStr((int) pow(2, LblE3[idx]->Addr.BitNum()) - 1);
+	AnsiString max = "Max value:" + IntToStr((int) pow(2, LblE3[idx]->Addr.BitNum()) - 1);
 	ShowMessage(max);
 	//read value
 	//EngineerForm->SetRead_Byte(LblE3[idx]->Addr.Byte1, &val1);
@@ -137,10 +132,7 @@ void __fastcall TSharpnessForm12307::LblE3_KeyPress(TObject * Sender,
     } else {
 	val1 = set_val / LblE3[idx]->Addr.Divide1();
 	val2 =
-	    (set_val / LblE3[idx]->Addr.Divide2()) % (int) pow(2,
-							       LblE3[idx]->
-							       Addr.Byte2.
-							       BitNum());
+	    (set_val / LblE3[idx]->Addr.Divide2()) % (int) pow(2, LblE3[idx]->Addr.Byte2.BitNum());
 	val3 = set_val % LblE3[idx]->Addr.Divide2();
 
 	int _val1 = floor((double) set_val / LblE3[idx]->Addr.Divide1());
@@ -245,7 +237,7 @@ void __fastcall TSharpnessForm12307::FormCreate(TObject * Sender)
     }
 
     CboB[0]->Cbob = ComboBox1;
-    CboB[0]->CbobL = Label7 ;
+    CboB[0]->CbobL = Label7;
     CboB[1]->Cbob = ComboBox2;
     CboB[1]->CbobL = Label8;
     CboB[2]->Cbob = ComboBox3;
@@ -354,8 +346,7 @@ void __fastcall TSharpnessForm12307::FormCreate(TObject * Sender)
 	ScrlB[i]->ScrlB->Visible = ScrlB[i]->Addr.FuncEn();
 	if (ScrlB[i]->Addr.FuncEn()) {
 	    ScrlB[i]->ScrlB->Min = 0;
-	    ScrlB[i]->ScrlB->Max =
-		(int) pow(2, ScrlB[i]->Addr.BitNum()) - 1;
+	    ScrlB[i]->ScrlB->Max = (int) pow(2, ScrlB[i]->Addr.BitNum()) - 1;
 	    ScrlB[i]->ScrlB->OnChange = ScrollBar_Change;
 	    ScrlB[i]->ScrlB->Hint = i;
 	    ScrlB[i]->StTxt->Caption = 0;
@@ -465,8 +456,7 @@ void TSharpnessForm12307::Clear_LUT(bool type)
 
 void __fastcall TSharpnessForm12307::SP_LUTMouseDown(TObject * Sender,
 						     TMouseButton Button,
-						     TShiftState Shift,
-						     int X, int Y)
+						     TShiftState Shift, int X, int Y)
 {
     if (X >= (30 - 5) && X <= (340 + 5) && Y <= (264) && Y >= (12)) {
 	int tmp_y;
@@ -485,8 +475,7 @@ void __fastcall TSharpnessForm12307::SP_LUTMouseDown(TObject * Sender,
 	if (SP_lut[dif] == -1) {	//沒被點過的值
 	    SP_lut[dif] = weight;
 	    SP_LUT->Canvas->Brush->Color = clMaroon;
-	    SP_LUT->Canvas->Ellipse(tmp_x - 5, tmp_y, tmp_x + 5,
-				    tmp_y + 4);
+	    SP_LUT->Canvas->Ellipse(tmp_x - 5, tmp_y, tmp_x + 5, tmp_y + 4);
 	} else {		//被點過的值,重繪圖形
 	    Clear_LUT(false);
 	    SP_lut[dif] = weight;
@@ -540,9 +529,7 @@ void __fastcall TSharpnessForm12307::SP_LUTDblClick(TObject * Sender)
 		} else {
 		    int b = i + s;
 		    for (t = i; t < i + s; t++) {
-			SP_lut[t] =
-			    SP_lut[a] + (SP_lut[b] - SP_lut[a]) * (t - i +
-								   1) / s;
+			SP_lut[t] = SP_lut[a] + (SP_lut[b] - SP_lut[a]) * (t - i + 1) / s;
 		    }
 		}
 		i = t;
@@ -579,7 +566,7 @@ void __fastcall TSharpnessForm12307::sb_softgainChange(TObject * Sender)
 	float gain = (float) sb_softgain->Position / 10;
 
 	char buf[4];
-	sprintf(buf, " % 2.1f ", gain);
+	sprintf(buf, "%2.1f", gain);
 	st_softgain->Caption = (AnsiString) buf;
 
 	for (int i = 0; i < 32; i++)
@@ -604,8 +591,9 @@ void __fastcall TSharpnessForm12307::sb_softgainChange(TObject * Sender)
 	    SP_LUT->Canvas->LineTo(x, y);
 	}
 
-    } else
+    } else {
 	sb_softgain->Position = 10;
+    }
 
 }
 
@@ -628,8 +616,9 @@ void __fastcall TSharpnessForm12307::btn_GainSetClick(TObject * Sender)
 {
     if (SP_lut[0] != -1) {
 	gain_flag = false;
-	for (int i = 0; i < 32; i++)
+	for (int i = 0; i < 32; i++) {
 	    SP_lut[i] = LUT_g[i];
+	}
 	sb_softgain->Position = 10;
 	st_softgain->Caption = 1;
 	SP_LUTDblClick(Sender);
@@ -638,8 +627,7 @@ void __fastcall TSharpnessForm12307::btn_GainSetClick(TObject * Sender)
 
 //---------------------------------------------------------------------------
 
-void __fastcall TSharpnessForm12307::btn_sp_lut_writeClick(TObject *
-							   Sender)
+void __fastcall TSharpnessForm12307::btn_sp_lut_writeClick(TObject * Sender)
 {
     SP_Chg = 0;
     if (SP_addr[0].LutNum() != 32) {
@@ -683,8 +671,7 @@ void __fastcall TSharpnessForm12307::Btn_SP_reloadClick(TObject * Sender)
 	    } else if (read_val == 0) {
 		ChkB[i]->Chkb->Checked = false;
 	    } else {
-		ShowMessage(" SP CheckBox read error:" +
-			    IntToStr(read_val));
+		ShowMessage(" SP CheckBox read error:" + IntToStr(read_val));
 	    }
 	}
     }
@@ -737,8 +724,7 @@ void __fastcall TSharpnessForm12307::btn_sp_LoadClick(TObject * Sender)
     SP_LUT_FuncEnable(0);
     String Fpath = OpenDialog1->FileName;
     if (!Load_SP(Fpath))
-	Application->MessageBox(" Open Sharpness File Failed.",
-				" Error Message ", 0);
+	Application->MessageBox(" Open Sharpness File Failed.", " Error Message ", 0);
 
     sb_softgainChange(Sender);
     SP_LUTDblClick(Sender);
@@ -772,8 +758,7 @@ bool TSharpnessForm12307::Load_SP(String Fpath)
 	if (c == 0) {		//TD
 	    for (int i = 0; i < OSP->SPChkBox_Nbr; i++) {
 		if (SameText(ChkB[i]->Addr.Name(), str[0])) {
-		    ChkB[i]->Chkb->Checked =
-			(StrToInt((AnsiString) pch) > 0 ? 1 : 0);
+		    ChkB[i]->Chkb->Checked = (StrToInt((AnsiString) pch) > 0 ? 1 : 0);
 		    ChkB[i]->Chkb->OnClick;
 		    break;
 		}
@@ -781,8 +766,7 @@ bool TSharpnessForm12307::Load_SP(String Fpath)
 	} else if (c >= 1 && c <= 3) {	//HORZ_THR, VERT_THR, EDGE_THR
 	    for (int i = 0; i < OSP->SPScrollBar_Nbr; i++) {
 		if (SameText(ScrlB[i]->Addr.Name(), str[c])) {
-		    ScrlB[i]->ScrlB->Position =
-			(StrToInt((AnsiString) pch));
+		    ScrlB[i]->ScrlB->Position = (StrToInt((AnsiString) pch));
 		    ScrlB[i]->ScrlB->OnChange;
 		    break;
 		}
@@ -854,8 +838,7 @@ void __fastcall TSharpnessForm12307::btn_sp_SaveClick(TObject * Sender)
     float input_str5 = StrToFloat(sb_softgain->Position) / 10;
 
     fprintf(fptr, " % s \ t % s \ t % s \ t % s \ t % s \ t % f \ n ",
-	    input_str[0], input_str[1], input_str[2], input_str[3],
-	    input_str[4], input_str5);
+	    input_str[0], input_str[1], input_str[2], input_str[3], input_str[4], input_str5);
 
     for (int i = 0; i < 32; i++) {
 	fprintf(fptr, " % d \ n ", SP_lut[i]);
@@ -891,15 +874,11 @@ void __fastcall TSharpnessForm12307::LUT_typeClick(TObject * Sender)
 
 
 
-void __fastcall TSharpnessForm12307::FormKeyDown(TObject * Sender,
-						 WORD & Key,
-						 TShiftState Shift)
+void __fastcall TSharpnessForm12307::FormKeyDown(TObject * Sender, WORD & Key, TShiftState Shift)
 {
     if (Key == 0x40)
 	Btn_SP_reloadClick(Sender);
 }
 
 //---------------------------------------------------------------------------
-
-
 

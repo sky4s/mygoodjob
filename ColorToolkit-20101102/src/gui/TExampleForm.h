@@ -32,6 +32,10 @@ class TExampleForm:public TForm {
     TScrollBar *ScrollBar1;
     TStaticText *StaticText1;
     TLabeledEdit *LabeledEdit1;
+        TCheckBox *CheckBox2;
+        TLabel *Label3;
+        TComboBox *ComboBox2;
+        TLabel *Label4;
     void __fastcall FormActivate(TObject * Sender);
     void __fastcall FormCreate(TObject * Sender);
   private:			// User declarations
