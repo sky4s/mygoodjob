@@ -89,6 +89,10 @@ void __fastcall TSharpnessForm12307::ComboBox_Click(TObject * Sender)
     int idx = StrToInt(c->Hint);
     int set_val = (CboB[idx]->Cbob->ItemIndex);
     EngineerForm->SetWrite_Byte(CboB[idx]->Addr, set_val);
+
+    if (Sender == ComboBox3 || Sender == ComboBox4) {
+	Edit_ResolutionHKeyPress(Sender, ' ');
+    }
 }
 
 //---------------------------------------------------------------------------
@@ -153,27 +157,6 @@ void __fastcall TSharpnessForm12307::LblE3_KeyPress(TObject * Sender, char &Key)
     }
 }
 
-/*
-   可以將整個UI掃過一遍
-   可以利用hint或者caption
-*/
-void childScan(TWinControl * ctrl)
-{
-    int count = ctrl->ControlCount;
-    for (int x = 0; x < count; x++) {
-	TControl *child = ctrl->Controls[x];
-	TWinControl *parent = child->Parent;
-	String text = DebugForm->Memo1->Text;
-	//TStrings *strs = DebugForm->Memo1->Lines;
-	text = text + "\r\n" + child->Name + " (" + parent->Name + ")";
-	DebugForm->Memo1->Text = text;
-	//childScan(child);
-	TWinControl *wctrl = dynamic_cast < TWinControl * >(child);
-	if (null != wctrl) {
-	    childScan(wctrl);
-	}
-    }
-}
 
 //---------------------------------------------------------------------------
 void __fastcall TSharpnessForm12307::FormCreate(TObject * Sender)
@@ -358,17 +341,6 @@ void __fastcall TSharpnessForm12307::FormCreate(TObject * Sender)
     SP_addr = OSP->SetSPLUT();
     SP_Chg = 1;
 
-    //DebugForm->Visible = true;
-    //childScan(this);
-    /*int count = this->ControlCount;
-       for (int x = 0; x < count; x++)
-       {
-       TControl *ctrl = this->Controls[x];
-       String text = DebugForm->Memo1->Text;
-       text = text + ctrl->Name + '\n';
-       DebugForm->Memo1->Text = text;
-       if(TWin
-       } */
 }
 
 
@@ -706,6 +678,8 @@ void __fastcall TSharpnessForm12307::Btn_SP_reloadClick(TObject * Sender)
 	}
     }
 
+
+    //Edit_ResolutionHKeyPress(Sender, ' ');
     btn_sp_lut_readClick(Sender);
     SP_Chg = 1;
     Btn_SP_reload->Enabled = true;
@@ -878,6 +852,29 @@ void __fastcall TSharpnessForm12307::FormKeyDown(TObject * Sender, WORD & Key, T
 {
     if (Key == 0x40)
 	Btn_SP_reloadClick(Sender);
+}
+
+//---------------------------------------------------------------------------
+
+void __fastcall TSharpnessForm12307::Edit_ResolutionHKeyPress(TObject * Sender, char &Key)
+{
+    int h = Edit_ResolutionH->Text.ToInt();
+    int v = Edit_ResolutionV->Text.ToInt();
+    //0 16 8 4; index= 1 2 3; vmask-1= 0 1 2;
+    //2^(vmask-1)=1 2 4; 16/2^(vmask-1) = 16 8 4;
+    int vmask = ComboBox3->ItemIndex;
+    int hmask = ComboBox4->ItemIndex;
+    using namespace java::lang;
+    double voffset = (vmask != 0) ? 2. / (16 / Math::pow(2, vmask - 1)) : 0;
+    double hoffset = (hmask != 0) ? 2. / (16 / Math::pow(2, hmask - 1)) : 0;
+    double vgain = 1 - voffset;
+    double hgain = 1 - hoffset;
+    double result = h * hgain * v * vgain * 1023. / 256;
+    int intResult = (int) result;
+    LabeledEdit1->Text = intResult;
+    if (SP_Chg) {
+	LblE3_KeyPress(LabeledEdit1, 13);
+    }
 }
 
 //---------------------------------------------------------------------------

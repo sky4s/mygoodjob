@@ -58,26 +58,6 @@ class THSVForm2nd:public TForm, cms::util::CallBackIF, RGBInfoCallbackIF, Patter
     TButton *btn_hsv_save;
     TCheckBox *CheckBox3;
     TCheckBox *CheckBox4;
-    TButton *btn_Hue_Img_load;
-    TImage *Hue_Img;
-    TStaticText *Hue_Img_Infor;
-    TGroupBox *GroupBox28;
-    TLabel *Label1;
-    TLabel *lb_Hue_gain;
-    TLabel *Label136;
-    TLabel *lb_dif_n;
-    TLabel *lb_dif_p;
-    TLabel *Label192;
-    TLabel *Label193;
-    TLabel *lb_Sat_gain;
-    TLabel *Label2;
-    TLabel *Label3;
-    TLabel *lb_Val_gain;
-    TScrollBar *sb_Hue_gain;
-    TScrollBar *sb_dif_n;
-    TScrollBar *sb_dif_p;
-    TScrollBar *sb_Sat_gain;
-    TScrollBar *sb_Val_gain;
     TStringGrid *stringGrid_HSV;
     TColorPickerFrame *colorPicker;
     TGroupBox *GroupBox2;
@@ -87,20 +67,6 @@ class THSVForm2nd:public TForm, cms::util::CallBackIF, RGBInfoCallbackIF, Patter
     TButton *btn_reset;
     TButton *btn_hsv_write;
     TButton *btn_hsv_read;
-    TGroupBox *GroupBox29;
-    TLabel *Label111;
-    TCheckBox *cb_Hue_Red;
-    TStringGrid *sg_6HSV;
-    TCheckBox *cb_Hue_Green;
-    TCheckBox *cb_Hue_Blue;
-    TCheckBox *cb_Hue_Mag;
-    TCheckBox *cb_Hue_Yellow;
-    TCheckBox *cb_Hue_Cyan;
-    TStaticText *StaticText31;
-    TStaticText *StaticText32;
-    TStaticText *StaticText33;
-    TEdit *ed_Hue_Custom;
-    TLabeledEdit *le_ChAangle;
     TGroupBox *GroupBox3;
     TGroupBox *GroupBox6;
     TRadioButton *RadioButton1;
@@ -149,9 +115,6 @@ class THSVForm2nd:public TForm, cms::util::CallBackIF, RGBInfoCallbackIF, Patter
     TButton *Button_OoGSetup;
     TEdit *Edit_CursorColorHSV;
     TEdit *Edit_TargetCursorColor;
-    TRadioButton *RadioButton_SingleHue;
-    TRadioButton *RadioButton_DoubleHue;
-    TGroupBox *GroupBox5;
     TGroupBox *GroupBox7;
     TScrollBar *ScrollBar_TurnPoint;
     TLabel *Label_TurnPoint;
@@ -174,31 +137,20 @@ class THSVForm2nd:public TForm, cms::util::CallBackIF, RGBInfoCallbackIF, Patter
     TRadioButton *RadioButton_Single;
     TRadioButton *RadioButton_Local;
     TRadioButton *RadioButton_Global;
-    void __fastcall cb_Hue_RedClick(TObject * Sender);
-    void __fastcall cb_Hue_YellowClick(TObject * Sender);
-    void __fastcall cb_Hue_GreenClick(TObject * Sender);
-    void __fastcall cb_Hue_BlueClick(TObject * Sender);
-    void __fastcall cb_Hue_CyanClick(TObject * Sender);
-    void __fastcall cb_Hue_MagClick(TObject * Sender);
+
     void __fastcall btn_hsv_loadClick(TObject * Sender);
     void __fastcall btn_hsv_saveClick(TObject * Sender);
     void __fastcall FormCreate(TObject * Sender);
     void __fastcall CheckBox_Click(TObject * Sender);
     void __fastcall FormClose(TObject * Sender, TCloseAction & Action);
-    void __fastcall Hue_ImgMouseMove(TObject * Sender, TShiftState Shift, int X, int Y);
     void __fastcall btn_resetClick(TObject * Sender);
 
-    void __fastcall btn_Hue_Img_loadClick(TObject * Sender);
     void __fastcall rg_HSV_ModeClick(TObject * Sender);
     void __fastcall Btn_HSV_reloadClick(TObject * Sender);
     void __fastcall FormKeyDown(TObject * Sender, WORD & Key, TShiftState Shift);
-    void __fastcall sb_dif_nChange(TObject * Sender);
-    void __fastcall sb_dif_pChange(TObject * Sender);
     void __fastcall btn_setClick(TObject * Sender);
     void __fastcall btn_hsv_writeClick(TObject * Sender);
     void __fastcall btn_hsv_readClick(TObject * Sender);
-    void __fastcall Hue_ImgMouseDown(TObject * Sender,
-				     TMouseButton Button, TShiftState Shift, int X, int Y);
     void __fastcall stringGrid_HSVDrawCell(TObject * Sender, int ACol,
 					   int ARow, TRect & Rect, TGridDrawState State);
     void __fastcall stringGrid_HSVSelectCell(TObject * Sender, int ACol,
@@ -232,6 +184,7 @@ class THSVForm2nd:public TForm, cms::util::CallBackIF, RGBInfoCallbackIF, Patter
     void __fastcall hsvAdjustsb_Val_gainChange(TObject * Sender);
     void __fastcall ScrollBar_ChromaChange(TObject * Sender);
     void __fastcall RadioButton_GlobalClick(TObject * Sender);
+        void __fastcall colorPickerbtn_c3d_load_imgClick(TObject *Sender);
   private:			// User declarations
     static const int HUE_COUNT = 24;	//­ì¥»¬O96, why?
     static const int MAX_HUE_VALUE = 768;

@@ -111,7 +111,7 @@ object MainForm: TMainForm
         OnClick = mn_SharpnessClick
       end
       object mn_Sharpness12307: TMenuItem
-        Caption = '&Sharpness_12307'
+        Caption = 'Sharpness 12307'
         OnClick = mn_Sharpness12307Click
       end
       object mn_CE: TMenuItem
@@ -122,13 +122,8 @@ object MainForm: TMainForm
         Caption = 'HSV'
         OnClick = HSV1Click
       end
-      object mn_HSV: TMenuItem
-        Caption = '&Hue/Saturation/Value'
-        Visible = False
-        OnClick = mn_HSVClick
-      end
       object mn_HSV2: TMenuItem
-        Caption = '&Hue/Saturation/Value2'
+        Caption = 'HSV2'
         OnClick = mn_HSV2Click
       end
       object mn_C3D: TMenuItem

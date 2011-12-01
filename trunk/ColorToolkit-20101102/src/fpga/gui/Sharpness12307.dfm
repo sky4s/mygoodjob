@@ -1,6 +1,6 @@
 object SharpnessForm12307: TSharpnessForm12307
-  Left = 276
-  Top = 87
+  Left = 279
+  Top = 131
   Width = 821
   Height = 755
   Caption = 'Sharpness'
@@ -557,6 +557,20 @@ object SharpnessForm12307: TSharpnessForm12307
         Height = 13
         Caption = 'Label22'
       end
+      object Label23: TLabel
+        Left = 536
+        Top = 40
+        Width = 5
+        Height = 13
+        Caption = 'x'
+      end
+      object Label24: TLabel
+        Left = 456
+        Top = 40
+        Width = 12
+        Height = 13
+        Caption = '<='
+      end
       object CheckBox8: TCheckBox
         Left = 72
         Top = 0
@@ -715,7 +729,7 @@ object SharpnessForm12307: TSharpnessForm12307
         Left = 328
         Top = 32
         Width = 121
-        Height = 24
+        Height = 21
         EditLabel.Width = 51
         EditLabel.Height = 10
         EditLabel.Caption = 'LabeledEdit1'
@@ -804,6 +818,24 @@ object SharpnessForm12307: TSharpnessForm12307
         Height = 17
         Caption = 'StaticText16'
         TabOrder = 29
+      end
+      object Edit_ResolutionH: TEdit
+        Left = 472
+        Top = 32
+        Width = 57
+        Height = 21
+        TabOrder = 30
+        Text = '1920'
+        OnKeyPress = Edit_ResolutionHKeyPress
+      end
+      object Edit_ResolutionV: TEdit
+        Left = 544
+        Top = 32
+        Width = 57
+        Height = 21
+        TabOrder = 31
+        Text = '1080'
+        OnKeyPress = Edit_ResolutionHKeyPress
       end
     end
   end
