@@ -86,8 +86,8 @@ object ExampleForm: TExampleForm
     object LabeledEdit1: TLabeledEdit
       Left = 7
       Top = 160
-      Width = 98
-      Height = 24
+      Width = 130
+      Height = 21
       EditLabel.Width = 50
       EditLabel.Height = 11
       EditLabel.Caption = 'LabeledEdit1'

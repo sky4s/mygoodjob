@@ -256,95 +256,6 @@ void THSVForm2nd::Reset_HSVshow()
     hsvAdjust->setHSVPostition(hueStr.ToInt(), saturationStr.ToInt() + 64, valueStr.ToInt());
 }
 
-//---------------------------------------------------------------------------
-void __fastcall THSVForm2nd::cb_Hue_RedClick(TObject * Sender)
-{				// 6 Color Adjust : Red
-    if (cb_Hue_Red->Checked == true) {
-	cb_Hue_Green->Checked = false;
-	cb_Hue_Blue->Checked = false;
-	cb_Hue_Cyan->Checked = false;
-	cb_Hue_Mag->Checked = false;
-	cb_Hue_Yellow->Checked = false;
-	//le_ChAangle->Text = 0;
-	ed_Hue_Custom->Text = 0;
-    }
-}
-
-//---------------------------------------------------------------------------
-
-void __fastcall THSVForm2nd::cb_Hue_YellowClick(TObject * Sender)
-{				// 6 Color Adjust : Yellow
-    if (cb_Hue_Yellow->Checked == true) {
-	cb_Hue_Red->Checked = false;
-	cb_Hue_Green->Checked = false;
-	cb_Hue_Blue->Checked = false;
-	cb_Hue_Cyan->Checked = false;
-	cb_Hue_Mag->Checked = false;
-	//le_ChAangle->Text = 60;
-	ed_Hue_Custom->Text = 60;
-    }
-}
-
-//---------------------------------------------------------------------------
-
-void __fastcall THSVForm2nd::cb_Hue_GreenClick(TObject * Sender)
-{				// 6 Color Adjust : Green
-    if (cb_Hue_Green->Checked == true) {
-	cb_Hue_Red->Checked = false;
-	cb_Hue_Blue->Checked = false;
-	cb_Hue_Cyan->Checked = false;
-	cb_Hue_Mag->Checked = false;
-	cb_Hue_Yellow->Checked = false;
-	//le_ChAangle->Text = 120;
-	ed_Hue_Custom->Text = 120;
-    }
-}
-
-//---------------------------------------------------------------------------
-
-void __fastcall THSVForm2nd::cb_Hue_BlueClick(TObject * Sender)
-{				// 6 Color Adjust : Blue
-    if (cb_Hue_Blue->Checked == true) {
-	cb_Hue_Red->Checked = false;
-	cb_Hue_Green->Checked = false;
-	cb_Hue_Cyan->Checked = false;
-	cb_Hue_Mag->Checked = false;
-	cb_Hue_Yellow->Checked = false;
-	//le_ChAangle->Text = 240;
-	ed_Hue_Custom->Text = 240;
-    }
-}
-
-//---------------------------------------------------------------------------
-
-void __fastcall THSVForm2nd::cb_Hue_CyanClick(TObject * Sender)
-{				// 6 Color Adjust : Cyan
-    if (cb_Hue_Cyan->Checked == true) {
-	cb_Hue_Red->Checked = false;
-	cb_Hue_Green->Checked = false;
-	cb_Hue_Blue->Checked = false;
-	cb_Hue_Mag->Checked = false;
-	cb_Hue_Yellow->Checked = false;
-	//le_ChAangle->Text = 180;
-	ed_Hue_Custom->Text = 180;
-    }
-}
-
-//---------------------------------------------------------------------------
-
-void __fastcall THSVForm2nd::cb_Hue_MagClick(TObject * Sender)
-{				// 6 Color Adjust : Magenta
-    if (cb_Hue_Mag->Checked == true) {
-	cb_Hue_Red->Checked = false;
-	cb_Hue_Green->Checked = false;
-	cb_Hue_Blue->Checked = false;
-	cb_Hue_Cyan->Checked = false;
-	cb_Hue_Yellow->Checked = false;
-	//le_ChAangle->Text = 300;      //移動的角度為300
-	ed_Hue_Custom->Text = 300;
-    }
-}
-
 
 
 //---------------------------------------------------------------------------
@@ -499,47 +410,8 @@ void __fastcall THSVForm2nd::btn_hsv_saveClick(TObject * Sender)
 //---------------------------------------------------------------------------
 
 
-void __fastcall THSVForm2nd::Hue_ImgMouseMove(TObject * Sender, TShiftState Shift, int X, int Y)
-{
-    int color;
-    double h, s, v, i, r, g, b;
-    color = Hue_Img->Canvas->Pixels[X][Y];
 
-    b = color / 65536;
-    g = color / 256 % 256;
-    r = color % 256;
 
-    rgb2hsv(r, g, b, &h, &s, &i, &v);
-    i = (double) (int (i * 10)) /10.0;
-    h = (double) (int (h * 10)) /10.0;
-    s = (double) (int (s * 100)) /100.0;
-    Hue_Img_Infor->Caption =
-	"B:" + IntToStr((int) b) + " G:" + IntToStr((int) g) + " R:" +
-	IntToStr((int) r) + " H:" + FloatToStr(h) + " S:" + FloatToStr(s) +
-	" V:" + FloatToStr(v) + " I:" + FloatToStr(i);
-}
-
-//---------------------------------------------------------------------------
-void __fastcall THSVForm2nd::btn_Hue_Img_loadClick(TObject * Sender)
-{
-    if (!OpenDialog1->Execute())
-	return;
-    String Fpath;
-    //Hue_Img->Picture->LoadFromFile(Fpath);
-
-    Fpath = OpenDialog1->FileName;
-    Graphics::TBitmap * Bitmap;
-
-    Graphics::TBitmap * RefGraph;
-    RefGraph = new Graphics::TBitmap();
-    RefGraph->Height = Hue_Img->Height;
-    RefGraph->Width = Hue_Img->Width;
-    RefGraph->LoadFromFile(Fpath);
-    Hue_Img->Picture->Graphic = RefGraph;
-//        Hue_Img->Canvas->Draw(0,0,RefGraph);
-    delete RefGraph;
-
-}
 
 //---------------------------------------------------------------------------
 
@@ -611,19 +483,6 @@ void __fastcall THSVForm2nd::FormKeyDown(TObject * Sender, WORD & Key, TShiftSta
 }
 
 //---------------------------------------------------------------------------
-
-
-void __fastcall THSVForm2nd::sb_dif_nChange(TObject * Sender)
-{
-    lb_dif_n->Caption = (4 - sb_dif_n->Position) * 15;
-}
-
-//---------------------------------------------------------------------------
-
-void __fastcall THSVForm2nd::sb_dif_pChange(TObject * Sender)
-{
-    lb_dif_p->Caption = sb_dif_p->Position * 15;
-}
 
 //---------------------------------------------------------------------------
 
@@ -760,20 +619,6 @@ void __fastcall THSVForm2nd::btn_hsv_readClick(TObject * Sender)
 
 
 
-void __fastcall THSVForm2nd::Hue_ImgMouseDown(TObject * Sender,
-					      TMouseButton Button, TShiftState Shift, int X, int Y)
-{
-    int color;
-    double h, s, v, i, r, g, b;
-    color = Hue_Img->Canvas->Pixels[X][Y];
-
-    b = color / 65536;
-    g = color / 256 % 256;
-    r = color % 256;
-
-    rgb2hsv(r, g, b, &h, &s, &i, &v);
-    ed_Hue_Custom->Text = FloatToStr(h);
-}
 
 //---------------------------------------------------------------------------
 void THSVForm2nd::initStringGrid_HSV()
@@ -854,7 +699,8 @@ void __fastcall THSVForm2nd::stringGrid_HSVDrawCell(TObject * Sender,
 	int hueAngle = index * 15;
 	stringGrid_HSV->Canvas->TextOut(0 + 4, height * ARow + 1, hueAngle);
     }
-} void THSVForm2nd::drawStringGrid_HSVCell(TObject * Sender)
+};
+void THSVForm2nd::drawStringGrid_HSVCell(TObject * Sender)
 {
     TRect r;
     TGridDrawState g;
@@ -1962,5 +1808,13 @@ void __fastcall THSVForm2nd::RadioButton_GlobalClick(TObject * Sender)
     CheckBox_MemoryColor->Checked = false;
 }
 
+//---------------------------------------------------------------------------
+
+void __fastcall THSVForm2nd::colorPickerbtn_c3d_load_imgClick(
+      TObject *Sender)
+{
+  colorPicker->btn_c3d_load_imgClick(Sender);
+
+}
 //---------------------------------------------------------------------------
 

@@ -46,7 +46,6 @@ class TMainForm:public TForm {
     TMenuItem *mn_CM;
     TMenuItem *mn_Sharpness;
     TMenuItem *mn_CE;
-    TMenuItem *mn_HSV;
     TPopupMenu *PopupMenu1;
     TMenuItem *popupmenu2;
     TMenuItem *Function1;

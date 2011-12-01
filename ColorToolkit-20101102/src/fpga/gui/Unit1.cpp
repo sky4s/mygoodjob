@@ -345,7 +345,7 @@ void __fastcall TMainForm::AUO_11307Click(TObject * Sender)
     mn_Vender->Enabled = true;
     mn_ImageProc->Enabled = true;
     mn_CE->Enabled = true;
-    mn_HSV->Enabled = true;
+    //mn_HSV->Enabled = true;
     mn_C3D->Enabled = true;
     mn_SAT->Enabled = true;
     mn_offset->Enabled = true;
@@ -405,7 +405,7 @@ void __fastcall TMainForm::AUO_12303Click(TObject * Sender)
     mn_Sharpness->Enabled = true;
     mn_Sharpness12307->Enabled = true;
     mn_CE->Enabled = true;
-    mn_HSV->Enabled = true;
+    //mn_HSV->Enabled = true;
     mn_C3D->Enabled = true;
     mn_SAT->Enabled = true;
     mn_offset->Enabled = true;
@@ -429,7 +429,7 @@ void __fastcall TMainForm::FormCreate(TObject * Sender)
     mn_Sharpness->Enabled = true;
     mn_Sharpness12307->Enabled = true;
     mn_CE->Enabled = true;	// mask by Michelle 20100716
-    mn_HSV->Enabled = true;
+    mn_HSV2->Enabled = true;
     mn_C3D->Enabled = true;
     mn_SAT->Enabled = true;
     mn_offset->Enabled = true;

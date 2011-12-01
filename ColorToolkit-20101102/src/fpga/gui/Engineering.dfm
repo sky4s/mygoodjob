@@ -1,5 +1,5 @@
 object EngineerForm: TEngineerForm
-  Left = 494
+  Left = 364
   Top = 264
   Width = 916
   Height = 672

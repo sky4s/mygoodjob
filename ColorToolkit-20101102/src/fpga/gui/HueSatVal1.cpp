@@ -74,10 +74,12 @@ void __fastcall THSVFormOrg::FormCreate(TObject * Sender)
 
     for (int i = 0; i < OHSV->HSVChkBox_Nbr; i++) {
 	ChkB[i]->Addr = cb[i];
-	ChkB[i]->Chkb->Visible = ChkB[i]->Addr.FuncEn();
-	ChkB[i]->Chkb->OnClick = CheckBox_Click;
-	ChkB[i]->Chkb->Hint = i;
-	ChkB[i]->Chkb->Caption = ChkB[i]->Addr.Name();
+	if (null != ChkB[i]->Chkb) {
+	    ChkB[i]->Chkb->Visible = ChkB[i]->Addr.FuncEn();
+	    ChkB[i]->Chkb->OnClick = CheckBox_Click;
+	    ChkB[i]->Chkb->Hint = i;
+	    ChkB[i]->Chkb->Caption = ChkB[i]->Addr.Name();
+	}
 	// find index for HSV enable
 	if (ChkB[i]->Addr.Name() == OHSV->HSV_EN_Name()) {	// 20100608 Find HSV enable index
 	    HSVEN_idx = i;
