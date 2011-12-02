@@ -20,12 +20,12 @@ USEFORM("src\fpga\gui\offset.cpp", offsetForm);
 USEFORM("src\c3d\gui\TInTargetForm.cpp", InTargetForm);
 USEFORM("src\fpga\gui\TGamutForm.cpp", GamutSetupForm);
 USEFORM("src\fpga\gui\TPatternForm.cpp", PatternForm);
-USEFORM("src\fpga\gui\TPatternForm.cpp", PatternForm2);
 USEFORM("src\fpga\gui\THSVForm2nd.cpp", HSVForm2nd);
 USEFORM("src\fpga\gui\Sharpness12307.cpp", SharpnessForm12307);
 USEFORM("src\fpga\gui\CM1.cpp", CMForm1);
 USEFORM("src\gui\TDebugForm.cpp", DebugForm);
 USEFORM("src\gui\TExampleForm.cpp", ExampleForm);
+USEFORM("src\fpga\gui\TSharpnessForm12307_2.cpp", SharpnessForm12307_2);
 //---------------------------------------------------------------------------
 WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 {
@@ -34,10 +34,6 @@ WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	Application->Title = "Color Engine Toolkit";
 	Application->CreateForm(__classid(TMainForm), &MainForm);
                  Application->CreateForm(__classid(TEngineerForm), &EngineerForm);
-                 Application->CreateForm(__classid(TInTargetForm), &InTargetForm);
-                 Application->CreateForm(__classid(TPatternForm), &PatternForm);
-                 Application->CreateForm(__classid(TPatternForm), &PatternForm2);
-                 Application->CreateForm(__classid(TExampleForm), &ExampleForm);
                  Application->Run();
     }
     catch(Exception & exception) {

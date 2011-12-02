@@ -371,12 +371,12 @@ void __fastcall TPatternForm::FormPaint(TObject * Sender)
 	int_vector_ptr vector = boxVector[x];
 	if (null != vector) {
 	    /*if (this == PatternForm2) {
-		int x = 1;
-		int y = x;
-	    } else {
-		int x = 1;
-		int y = x;
-	    }*/
+	       int x = 1;
+	       int y = x;
+	       } else {
+	       int x = 1;
+	       int y = x;
+	       } */
 
 	    int vecSize = vector->size();
 	    dcanvas->Brush->Color = boxColor[x];
@@ -405,6 +405,13 @@ void __fastcall TPatternForm::FormDblClick(TObject * Sender)
     showSinglePatch = !showSinglePatch;
     //patchColor = cursorColor;
     this->Refresh();
+}
+
+//---------------------------------------------------------------------------
+
+void __fastcall TPatternForm::FormClose(TObject * Sender, TCloseAction & Action)
+{
+    int x = 1;
 }
 
 //---------------------------------------------------------------------------

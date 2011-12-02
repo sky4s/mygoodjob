@@ -36,6 +36,7 @@ class TExampleForm:public TForm {
         TLabel *Label3;
         TComboBox *ComboBox2;
         TLabel *Label4;
+        TComboBox *ComboBox3;
     void __fastcall FormActivate(TObject * Sender);
     void __fastcall FormCreate(TObject * Sender);
   private:			// User declarations

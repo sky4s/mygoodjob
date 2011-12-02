@@ -20,7 +20,8 @@
       build\gui_class.obj build\lcdtarget.obj build\THSVForm2nd.obj 
       build\binder.obj build\hsvip.obj build\minimisation.obj build\asa047.obj 
       build\Sharpness12307.obj build\CM1.obj build\TDebugForm.obj 
-      build\RegisterFramework.obj build\TExampleForm.obj"/>
+      build\RegisterFramework.obj build\TExampleForm.obj 
+      build\TSharpnessForm12307_2.obj"/>
     <RESFILES value="ColorToolkit.res"/>
     <IDLFILES value=""/>
     <IDLGENFILES value=""/>
@@ -35,7 +36,8 @@
       src\c3d\gui\TInTargetForm.dfm src\fpga\gui\TGamutForm.dfm 
       src\fpga\gui\TPatternForm.dfm src\fpga\gui\THSVForm2nd.dfm 
       src\fpga\gui\Sharpness12307.dfm src\fpga\gui\CM1.dfm 
-      src\gui\TDebugForm.dfm src\gui\TExampleForm.dfm"/>
+      src\gui\TDebugForm.dfm src\gui\TExampleForm.dfm 
+      src\fpga\gui\TSharpnessForm12307_2.dfm"/>
     <LIBFILES value="lib\USB_i2c_lib\hid.lib"/>
     <LIBRARIES value="tee.lib vclx.lib bcbsmp.lib rtl.lib vcl.lib"/>
     <SPARELIBS value="vcl.lib rtl.lib bcbsmp.lib vclx.lib tee.lib"/>
@@ -46,7 +48,7 @@
       inetdbbde.bpi inetdbxpress.bpi inetdb.bpi nmfast.bpi webdsnap.bpi 
       bcbie.bpi websnap.bpi soaprtl.bpi dclocx.bpi dbexpress.bpi dbxcds.bpi 
       indy.bpi bcb2kaxserver.bpi"/>
-    <PATHCPP value=".;lib\USB_i2c_lib;lib\LPT_lib;lib\LPT_lib;src\gui\frame;src\gui\frame;src\fpga\11307\Function;src\fpga\11307\ImageProcess;src\fpga\11307\TCON;src\fpga\11307\Vender;src\fpga\gui;src\fpga\gui;src\fpga\gui;src\fpga\gui;src\fpga\gui;src\fpga\gui;src\fpga\gui;src\fpga\gui;src\fpga\gui;src\fpga\gui;src\fpga\gui;src\fpga;src\fpga;src\fpga\gui;src\c3d\gui;src\c3d;src\fpga\gui;src\fpga\gui;lib\CMSCpp2.1\src\i2c\core;lib\CMSCpp2.1\src\math;lib\CMSCpp2.1\src\cms\colorspace;lib\CMSCpp2.1\src\cms\colorspace;lib\CMSCpp2.1\src\java;lib\CMSCpp2.1\src\cms;lib\CMSCpp2.1\src\cms\colorspace;lib\CMSCpp2.1\src\math;lib\CMSCpp2.1\src\math;lib\CMSCpp2.1\src\cms\colorspace;lib\CMSCpp2.1\src\cms\colorspace;lib\CMSCpp2.1\src\cms\util;src\fpga\11307\DCR;src\fpga;lib\CMSCpp2.1\src\cms\lcd;src\fpga\gui;lib\CMSCpp2.1\src\gui\util;lib\CMSCpp2.1\src\cms\hsv;lib\CMSCpp2.1\src\algo;lib\CMSCpp2.1\src\algo;src\fpga\gui;src\fpga\gui;src\gui;src\gui\framework;src\gui"/>
+    <PATHCPP value=".;lib\USB_i2c_lib;lib\LPT_lib;lib\LPT_lib;src\gui\frame;src\gui\frame;src\fpga\11307\Function;src\fpga\11307\ImageProcess;src\fpga\11307\TCON;src\fpga\11307\Vender;src\fpga\gui;src\fpga\gui;src\fpga\gui;src\fpga\gui;src\fpga\gui;src\fpga\gui;src\fpga\gui;src\fpga\gui;src\fpga\gui;src\fpga\gui;src\fpga\gui;src\fpga;src\fpga;src\fpga\gui;src\c3d\gui;src\c3d;src\fpga\gui;src\fpga\gui;lib\CMSCpp2.1\src\i2c\core;lib\CMSCpp2.1\src\math;lib\CMSCpp2.1\src\cms\colorspace;lib\CMSCpp2.1\src\cms\colorspace;lib\CMSCpp2.1\src\java;lib\CMSCpp2.1\src\cms;lib\CMSCpp2.1\src\cms\colorspace;lib\CMSCpp2.1\src\math;lib\CMSCpp2.1\src\math;lib\CMSCpp2.1\src\cms\colorspace;lib\CMSCpp2.1\src\cms\colorspace;lib\CMSCpp2.1\src\cms\util;src\fpga\11307\DCR;src\fpga;lib\CMSCpp2.1\src\cms\lcd;src\fpga\gui;lib\CMSCpp2.1\src\gui\util;lib\CMSCpp2.1\src\cms\hsv;lib\CMSCpp2.1\src\algo;lib\CMSCpp2.1\src\algo;src\fpga\gui;src\fpga\gui;src\gui;src\gui\framework;src\gui;src\fpga\gui"/>
     <PATHPAS value=".;"/>
     <PATHRC value=".;"/>
     <PATHASM value=".;"/>
@@ -149,6 +151,7 @@
       <FILE FILENAME="src\gui\TDebugForm.cpp" FORMNAME="DebugForm" UNITNAME="TDebugForm" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="src\gui\framework\RegisterFramework.cpp" FORMNAME="" UNITNAME="RegisterFramework" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="src\gui\TExampleForm.cpp" FORMNAME="ExampleForm" UNITNAME="TExampleForm" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="src\fpga\gui\TSharpnessForm12307_2.cpp" FORMNAME="SharpnessForm12307_2" UNITNAME="TSharpnessForm12307_2" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
   </FILELIST>
   <BUILDTOOLS>
   </BUILDTOOLS>
@@ -180,6 +183,13 @@ OriginalFilename=
 ProductName=
 ProductVersion=1.0.0.0
 Comments=
+
+[Excluded Packages]
+d:\program files\borland\cbuilder6\Bin\dclbde60.bpl=Borland BDE DB Components
+d:\program files\borland\cbuilder6\Bin\dcltee60.bpl=TeeChart Components
+d:\program files\borland\cbuilder6\Bin\dcldss60.bpl=Borland Decision Cube Components
+d:\program files\borland\cbuilder6\Bin\dcltqr60.bpl=TeeChart for QuickReport Components
+d:\program files\borland\cbuilder6\Bin\DBWEBXPRT.BPL=Borland Web Wizard Package
 
 [HistoryLists\hlIncludePath]
 Count=30

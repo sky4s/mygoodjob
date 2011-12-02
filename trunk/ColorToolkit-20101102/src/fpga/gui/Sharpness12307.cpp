@@ -50,8 +50,9 @@ void __fastcall TSharpnessForm12307::FormClose(TObject * Sender, TCloseAction & 
 
 void __fastcall TSharpnessForm12307::ScrollBar_Change(TObject * Sender)
 {
-    if (SP_Chg == 0)
+    if (SP_Chg == 0) {
 	return;
+    }
     TCheckBox *c = (TCheckBox *) Sender;
     int idx = StrToInt(c->Hint);
     if (ScrlB[idx]->Addr.Name().AnsiCompare("GLT_STR") == 0) {
@@ -369,12 +370,9 @@ void TSharpnessForm12307::Clear_LUT(bool type)
 	    SP_lut[i] = -1;
 	}
     }
-    Graphics::TBitmap * LUT_Graph;
-    LUT_Graph = new Graphics::TBitmap();
-    LUT_Graph->Height = SP_LUT->Height;
-    LUT_Graph->Width = SP_LUT->Width;
-    SP_LUT->Canvas->Draw(0, 0, LUT_Graph);
-    delete LUT_Graph;
+
+    SP_LUT->Canvas->Brush->Color = clWhite;
+    SP_LUT->Canvas->FillRect(TRect(0, 0, SP_LUT->Width, SP_LUT->Height));
 
     SP_LUT->Canvas->Pen->Color = clBlack;
     SP_LUT->Canvas->Pen->Style = psSolid;
@@ -384,13 +382,12 @@ void TSharpnessForm12307::Clear_LUT(bool type)
     SP_LUT->Canvas->Pen->Style = psSolid;
     SP_LUT->Canvas->Brush->Color = clWhite;
     SP_LUT->Canvas->Pen->Color = clSilver;
-    //SP_LUT->Canvas->Pen->Style = psDashDot;
+
     for (int i = 1; i <= 63; i++) {
 	SP_LUT->Canvas->MoveTo(30, 266 - 4 * i);
 	SP_LUT->Canvas->LineTo(340, 266 - 4 * i);
     }
     SP_LUT->Canvas->Pen->Color = clGray;
-    //SP_LUT->Canvas->Pen->Style = psDashDot;
     for (int i = 5; i <= 63; i += 5) {
 	SP_LUT->Canvas->MoveTo(30, 266 - 4 * i);
 	SP_LUT->Canvas->LineTo(340, 266 - 4 * i);
@@ -432,15 +429,17 @@ void __fastcall TSharpnessForm12307::SP_LUTMouseDown(TObject * Sender,
 {
     if (X >= (30 - 5) && X <= (340 + 5) && Y <= (264) && Y >= (12)) {
 	int tmp_y;
-	if (Y % 4 >= 2)
+	if (Y % 4 >= 2) {
 	    tmp_y = (floor((double) Y / 4) + 1) * 4;
-	else
+	} else {
 	    tmp_y = (floor((double) Y / 4)) * 4;
+	}
 	int tmp_x;
-	if (X % 10 >= 5)
+	if (X % 10 >= 5) {
 	    tmp_x = (floor((double) X / 10) + 1) * 10;
-	else
+	} else {
 	    tmp_x = (floor((double) X / 10)) * 10;
+	}
 
 	int dif = 31 - (340 - tmp_x) / 10;
 	int weight = (266 - tmp_y) / 4;

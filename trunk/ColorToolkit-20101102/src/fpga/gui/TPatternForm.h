@@ -59,6 +59,7 @@ class TPatternForm:public TForm {
     void __fastcall FormKeyPress(TObject * Sender, char &Key);
     void __fastcall FormPaint(TObject * Sender);
     void __fastcall FormDblClick(TObject * Sender);
+    void __fastcall FormClose(TObject * Sender, TCloseAction & Action);
   private:			// User declarations
     double gapPercent;
     int patchCols;

@@ -1,6 +1,6 @@
 object InTargetForm: TInTargetForm
-  Left = 224
-  Top = 141
+  Left = 257
+  Top = 146
   Anchors = [akLeft, akBottom]
   BorderStyle = bsSingle
   Caption = 'Compare Figure'

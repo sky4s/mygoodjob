@@ -1,6 +1,6 @@
 object ExampleForm: TExampleForm
-  Left = 352
-  Top = 143
+  Left = 403
+  Top = 148
   Width = 282
   Height = 272
   Caption = 'ExampleForm'
@@ -20,7 +20,7 @@ object ExampleForm: TExampleForm
     Top = 7
     Width = 254
     Height = 226
-    Caption = 'GroupBox1'
+    Caption = 'Test'
     TabOrder = 0
     object Label1: TLabel
       Left = 7
@@ -32,9 +32,9 @@ object ExampleForm: TExampleForm
     object Label2: TLabel
       Left = 7
       Top = 121
-      Width = 32
+      Width = 45
       Height = 13
-      Caption = 'Label2'
+      Caption = 'GAM_EN'
     end
     object Label3: TLabel
       Left = 7
@@ -110,6 +110,15 @@ object ExampleForm: TExampleForm
       Height = 21
       ItemHeight = 13
       TabOrder = 6
+      Text = 'ComboBox1'
+    end
+    object ComboBox3: TComboBox
+      Left = 59
+      Top = 95
+      Width = 117
+      Height = 21
+      ItemHeight = 13
+      TabOrder = 7
       Text = 'ComboBox1'
     end
   end
