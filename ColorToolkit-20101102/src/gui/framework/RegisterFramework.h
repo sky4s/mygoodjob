@@ -139,6 +139,7 @@ namespace gui {
 	    void active(TObject * sender);
 	    //void resetRegisterMap();
 	    void setRegisterFilename(std::string filename);
+	    static String NON_BIND;
 	};
 
 

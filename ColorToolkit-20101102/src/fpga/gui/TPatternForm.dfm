@@ -1,6 +1,6 @@
 object PatternForm: TPatternForm
-  Left = 965
-  Top = 60
+  Left = 1007
+  Top = 62
   Anchors = [akLeft, akBottom]
   BorderIcons = []
   BorderStyle = bsSingle
@@ -19,6 +19,7 @@ object PatternForm: TPatternForm
   ShowHint = True
   Visible = True
   WindowState = wsMinimized
+  OnClose = FormClose
   OnDblClick = FormDblClick
   OnKeyPress = FormKeyPress
   OnMouseDown = FormMouseDown

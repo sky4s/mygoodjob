@@ -132,6 +132,7 @@ namespace gui {
 	    return regData[n * 3 + 2];
 	}
 	//=====================================================================
+	String RegisterFramework::NON_BIND = "Non-Bind";
 	void RegisterFramework::init() {
 	    childmap = TControlVecMap_ptr(new TControlVecMap());
 	    labelVector = TControl_vector_ptr(new TControl_vector());
@@ -181,9 +182,18 @@ namespace gui {
 
 		TStaticText *staticText = dynamic_cast < TStaticText * >(child);
 		if (null != staticText) {
+		    staticText->Caption = NON_BIND;
 		    statictextVector->push_back(staticText);
 		    continue;
 		}
+
+		TComboBox *comboBox = dynamic_cast < TComboBox * >(child);
+		if (null != comboBox) {
+		    //comboBox->Caption = NON_BIND;
+		    comboBox->Text = NON_BIND;
+		    continue;
+		}
+
 
 		TLabel *label = dynamic_cast < TLabel * >(child);
 		if (null != label) {
@@ -203,6 +213,8 @@ namespace gui {
 		    continue;
 		}
 
+
+
 		TWinControl *wctrl = dynamic_cast < TWinControl * >(child);
 		if (null != wctrl) {
 		    scanChild(wctrl);
@@ -213,7 +225,9 @@ namespace gui {
 	}
 
 	/*
-	   將Label跟ScrollBar或者TComboBox結合
+	   將Label跟ScrollBar或者ComboBox結合
+
+	   ScrollBar跟TComboBox可能遇到沒有對到Label的情形, 這時候要顯示Non-Bind
 	 */
 	void RegisterFramework::processLabel(TControl_vector_ptr labelVector) {
 	    foreach(TControl * ctrl, *labelVector) {
@@ -223,29 +237,36 @@ namespace gui {
 
 		TLabel *label = dynamic_cast < TLabel * >(ctrl);
 		if (0 == sameTop->size()) {
-		    label->Caption = "Non-bind";
-		    return;
+		    label->Caption = NON_BIND;
+		    continue;
 		}
 
 		String caption = label->Caption;
 		char *cArrayCaption = caption.c_str();
+		RegisterType_ptr registerType = registerMap->getRegister(cArrayCaption);
+		if (nil_RegisterType_ptr == registerType) {
+		    label->Visible = false;
+		}
 
 		foreach(TControl * ctrl2, *sameTop) {
-		    RegisterType_ptr registerType = registerMap->getRegister(cArrayCaption);
-
 		    TScrollBar *scroll = dynamic_cast < TScrollBar * >(ctrl2);
 		    TComboBox *combobox = dynamic_cast < TComboBox * >(ctrl2);
-		    bool canProcess = null != scroll || null != combobox;
-		    if (nil_RegisterType_ptr != registerType && canProcess) {
+		    TStaticText *text = dynamic_cast < TStaticText * >(ctrl2);
+		    if (null != text) {
+			//StaticText不在這裡處理
+			continue;
+		    }
+
+		    bool canBind = null != scroll || null != combobox;
+		    if (nil_RegisterType_ptr != registerType && canBind) {
 			registerType->control = ctrl2;
 		    } else {
-			if (canProcess) {
+			if (canBind) {
 			    //沒有對應的reg, 全hide
-			    ctrl->Visible = false;
 			    ctrl2->Visible = false;
 			} else {
 			    //除了沒對應的reg, 也沒可結合的UI, 僅hide label
-			   label->Caption = "Non-bind";
+			    label->Caption = NON_BIND;
 			}
 		    }
 
@@ -271,6 +292,7 @@ namespace gui {
 		    foreach(TControl * ctrl, *sameTop) {
 			TScrollBar *scroll = dynamic_cast < TScrollBar * >(ctrl);
 			if (null != scroll && (scroll->Left + scroll->Width) < text->Left) {
+			    //找到是Scroll且位置合理就進行下列判斷
 			    if (true == scroll->Visible) {
 				//只要符合上述條件, 就bind在一起
 				binder.bind(text, scroll);
@@ -358,4 +380,4 @@ namespace gui {
     };
 
 };
- 
+

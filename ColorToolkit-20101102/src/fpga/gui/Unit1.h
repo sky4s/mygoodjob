@@ -72,7 +72,9 @@ class TMainForm:public TForm {
     TMenuItem *mn_HSV2;
     TMenuItem *HSV1;
     TMenuItem *mn_Sharpness12307;
-    TMenuItem *Example1;
+    TMenuItem *Test1;
+    TMenuItem *Example2;
+    TMenuItem *Sharpness2;
     void __fastcall mn_TCONClick(TObject * Sender);
     void __fastcall mn_EngineerClick(TObject * Sender);
     void __fastcall mn_FunctionClick(TObject * Sender);
@@ -100,12 +102,12 @@ class TMainForm:public TForm {
     void __fastcall mn_HSV2Click(TObject * Sender);
     void __fastcall HSV1Click(TObject * Sender);
     void __fastcall mn_Sharpness12307Click(TObject * Sender);
-    void __fastcall Example1Click(TObject * Sender);
+    void __fastcall Sharpness2Click(TObject * Sender);
+    void __fastcall Example2Click(TObject * Sender);
 
   private:			// User declarations
      String getFileVersionInfo();
-    void header2AddressFile(const AnsiString & header,
-			    const AnsiString & address);
+    void header2AddressFile(const AnsiString & header, const AnsiString & address);
     void closeAllForms();
     void setAddressFile(AnsiString filename);
   public:			// User declarations

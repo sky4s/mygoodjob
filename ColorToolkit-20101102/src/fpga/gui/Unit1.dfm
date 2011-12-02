@@ -1,8 +1,8 @@
 object MainForm: TMainForm
-  Left = 383
-  Top = 192
-  Width = 749
-  Height = 588
+  Left = 439
+  Top = 199
+  Width = 808
+  Height = 648
   Caption = 'Toolkit'
   Color = clBtnFace
   ParentFont = True
@@ -18,8 +18,8 @@ object MainForm: TMainForm
   TextHeight = 13
   object StatusBar1: TStatusBar
     Left = 0
-    Top = 523
-    Width = 741
+    Top = 583
+    Width = 800
     Height = 17
     Color = clYellow
     Font.Charset = DEFAULT_CHARSET
@@ -147,15 +147,22 @@ object MainForm: TMainForm
         Caption = 'OFFSET'
         OnClick = mn_offsetClick
       end
-      object Example1: TMenuItem
-        Caption = 'Example'
-        OnClick = Example1Click
-      end
     end
     object mn_Engineer: TMenuItem
       Caption = '&Engineer'
       ImageIndex = 6
       OnClick = mn_EngineerClick
+    end
+    object Test1: TMenuItem
+      Caption = 'Test'
+      object Example2: TMenuItem
+        Caption = 'Example'
+        OnClick = Example2Click
+      end
+      object Sharpness2: TMenuItem
+        Caption = 'Sharpness'
+        OnClick = Sharpness2Click
+      end
     end
   end
   object PopupMenu1: TPopupMenu

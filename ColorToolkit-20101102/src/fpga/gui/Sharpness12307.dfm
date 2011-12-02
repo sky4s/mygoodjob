@@ -1,6 +1,6 @@
 object SharpnessForm12307: TSharpnessForm12307
-  Left = 279
-  Top = 131
+  Left = 320
+  Top = 136
   Width = 821
   Height = 755
   Caption = 'Sharpness'
@@ -489,14 +489,14 @@ object SharpnessForm12307: TSharpnessForm12307
       end
       object Label13: TLabel
         Left = 8
-        Top = 176
+        Top = 200
         Width = 38
         Height = 13
         Caption = 'Label13'
       end
       object Label14: TLabel
         Left = 8
-        Top = 200
+        Top = 176
         Width = 38
         Height = 13
         Caption = 'Label14'
@@ -647,7 +647,7 @@ object SharpnessForm12307: TSharpnessForm12307
       end
       object ScrollBar9: TScrollBar
         Left = 112
-        Top = 176
+        Top = 200
         Width = 121
         Height = 17
         PageSize = 0
@@ -655,7 +655,7 @@ object SharpnessForm12307: TSharpnessForm12307
       end
       object ScrollBar10: TScrollBar
         Left = 112
-        Top = 200
+        Top = 176
         Width = 121
         Height = 17
         PageSize = 0
@@ -695,7 +695,7 @@ object SharpnessForm12307: TSharpnessForm12307
       end
       object StaticText9: TStaticText
         Left = 240
-        Top = 176
+        Top = 200
         Width = 58
         Height = 17
         Caption = 'StaticText9'
@@ -703,7 +703,7 @@ object SharpnessForm12307: TSharpnessForm12307
       end
       object StaticText10: TStaticText
         Left = 240
-        Top = 200
+        Top = 176
         Width = 64
         Height = 17
         Caption = 'StaticText10'

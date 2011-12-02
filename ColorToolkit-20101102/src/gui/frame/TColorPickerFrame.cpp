@@ -25,6 +25,8 @@ TColorPickerFrame *ColorPickerFrame;
 __fastcall TColorPickerFrame::TColorPickerFrame(TComponent * Owner)
 :TFrame(Owner)
 {
+    inTargetForm = new TInTargetForm(this);
+    setTInTargetForm(inTargetForm);
 }
 
 //---------------------------------------------------------------------------

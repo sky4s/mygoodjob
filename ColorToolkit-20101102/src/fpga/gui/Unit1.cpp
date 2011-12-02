@@ -15,6 +15,7 @@
 #include <fpga/gui/THSVForm2nd.h>
 #include <fpga/gui/CM1.h>
 #include <gui/TExampleForm.h>
+#include <fpga/gui/TSharpnessForm12307_2.h>
 #include "include.h"
 #include <iostream>
 #include <fstream>
@@ -178,8 +179,7 @@ void TMainForm::offsetFormNULL()
 {
     offsetForm = NULL;
 }
-void __fastcall TMainForm::FormClose(TObject * Sender,
-				     TCloseAction & Action)
+void __fastcall TMainForm::FormClose(TObject * Sender, TCloseAction & Action)
 {
     EngineerForm->FormClose(Sender, Action);
 
@@ -500,8 +500,7 @@ void __fastcall TMainForm::mn_SharpnessClick(TObject * Sender)
 
 
 void __fastcall TMainForm::FormMouseDown(TObject * Sender,
-					 TMouseButton Button,
-					 TShiftState Shift, int X, int Y)
+					 TMouseButton Button, TShiftState Shift, int X, int Y)
 {
     if (Button == mbRight) {
 	TPoint pt = MainForm->ClientToScreen(Point(X, Y));
@@ -652,20 +651,17 @@ String TMainForm::getFileVersionInfo()
     String caption;
     if (dwVerInfoSize > 0) {
 	BYTE *bVerInfoBuf = new BYTE[dwVerInfoSize];
-	if (GetFileVersionInfo
-	    (szFile.c_str(), 0, dwVerInfoSize, bVerInfoBuf)) {
+	if (GetFileVersionInfo(szFile.c_str(), 0, dwVerInfoSize, bVerInfoBuf)) {
 	    VS_FIXEDFILEINFO *vsInfo;
 	    UINT vsInfoSize;
-	    if (VerQueryValue
-		(bVerInfoBuf, "\\", (void **) &vsInfo, &vsInfoSize)) {
+	    if (VerQueryValue(bVerInfoBuf, "\\", (void **) &vsInfo, &vsInfoSize)) {
 		int iFileVerMajor = HIWORD(vsInfo->dwFileVersionMS);
 		int iFileVerMinor = LOWORD(vsInfo->dwFileVersionMS);
 		int iFileVerRelease = HIWORD(vsInfo->dwFileVersionLS);
 		int iFileVerBuild = LOWORD(vsInfo->dwFileVersionLS);
 		caption = IntToStr(iFileVerMajor) + "."
 		    + IntToStr(iFileVerMinor) + "."
-		    + IntToStr(iFileVerRelease) + "." +
-		    IntToStr(iFileVerBuild);
+		    + IntToStr(iFileVerRelease) + "." + IntToStr(iFileVerBuild);
 
 	    }
 	}
@@ -691,8 +687,7 @@ void __fastcall TMainForm::Header2Address1Click(TObject * Sender)
 }
 
 //---------------------------------------------------------------------------
-void TMainForm::header2AddressFile(const AnsiString & header,
-				   const AnsiString & address)
+void TMainForm::header2AddressFile(const AnsiString & header, const AnsiString & address)
 {
     using namespace std;
     using namespace cms::util;
@@ -713,8 +708,7 @@ void TMainForm::header2AddressFile(const AnsiString & header,
 	    }
 	    int beginCommentIndex = line.find("/*", 0);
 	    int doubleSlashIndex = line.find("//", 1);
-	    if (!comment && -1 != beginCommentIndex
-		&& -1 == doubleSlashIndex) {
+	    if (!comment && -1 != beginCommentIndex && -1 == doubleSlashIndex) {
 		comment = true;
 		continue;
 	    }
@@ -723,8 +717,7 @@ void TMainForm::header2AddressFile(const AnsiString & header,
 		line = line.substr(0, doubleSlashIndex - 1);
 	    }
 
-	    string_vector_ptr stringvector =
-		StringVector::tokenize(line, " \t");
+	    string_vector_ptr stringvector = StringVector::tokenize(line, " \t");
 	    int size = stringvector->size();
 	    if (size == 0) {
 		continue;
@@ -813,9 +806,9 @@ void __fastcall TMainForm::HSV1Click(TObject * Sender)
 
 void __fastcall TMainForm::mn_Sharpness12307Click(TObject * Sender)
 {
-    if (Sharpness12307Form != NULL)
+    if (Sharpness12307Form != NULL) {
 	Sharpness12307Form->Show();
-    else {
+    } else {
 	if (TCON_DEV == "11307") {
 	    Sharpness12307Form = new TSharpnessForm12307(this);
 	    Sharpness12307Form->Show();
@@ -826,8 +819,23 @@ void __fastcall TMainForm::mn_Sharpness12307Click(TObject * Sender)
 
 //---------------------------------------------------------------------------
 
-void __fastcall TMainForm::Example1Click(TObject * Sender)
+
+
+void __fastcall TMainForm::Sharpness2Click(TObject * Sender)
 {
+    if (null == SharpnessForm12307_2) {
+	SharpnessForm12307_2 = new TSharpnessForm12307_2(this);
+    }
+    SharpnessForm12307_2->Show();
+}
+
+//---------------------------------------------------------------------------
+
+void __fastcall TMainForm::Example2Click(TObject * Sender)
+{
+    if (null == ExampleForm) {
+	ExampleForm = new TExampleForm(this);
+    }
     ExampleForm->Show();
 }
 
