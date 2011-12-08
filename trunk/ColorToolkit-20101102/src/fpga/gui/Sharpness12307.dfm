@@ -2,7 +2,7 @@ object SharpnessForm12307: TSharpnessForm12307
   Left = 482
   Top = 161
   Width = 821
-  Height = 755
+  Height = 741
   Caption = 'Sharpness'
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
@@ -11,19 +11,21 @@ object SharpnessForm12307: TSharpnessForm12307
   Font.Name = 'MS Sans Serif'
   Font.Style = []
   FormStyle = fsMDIChild
+  KeyPreview = True
   OldCreateOrder = False
   Position = poDefault
   Visible = True
   OnClose = FormClose
   OnCreate = FormCreate
   OnKeyDown = FormKeyDown
+  OnKeyPress = FormKeyPress
   PixelsPerInch = 96
   TextHeight = 13
   object GroupBox3: TGroupBox
     Left = 8
     Top = 0
     Width = 769
-    Height = 689
+    Height = 705
     TabOrder = 0
     object GroupBox2: TGroupBox
       Left = 272
@@ -456,7 +458,7 @@ object SharpnessForm12307: TSharpnessForm12307
       Left = 8
       Top = 408
       Width = 673
-      Height = 273
+      Height = 289
       Caption = 'Contrast'
       TabOrder = 6
       object Label9: TLabel
@@ -487,86 +489,30 @@ object SharpnessForm12307: TSharpnessForm12307
         Height = 13
         Caption = 'Label12'
       end
-      object Label13: TLabel
-        Left = 8
-        Top = 200
-        Width = 38
-        Height = 13
-        Caption = 'Label13'
-      end
-      object Label14: TLabel
-        Left = 8
-        Top = 176
-        Width = 38
-        Height = 13
-        Caption = 'Label14'
-      end
       object Label15: TLabel
         Left = 8
-        Top = 224
+        Top = 176
         Width = 38
         Height = 13
         Caption = 'Label15'
       end
       object Label16: TLabel
         Left = 8
-        Top = 248
+        Top = 200
         Width = 38
         Height = 13
         Caption = 'Label16'
       end
-      object Label17: TLabel
-        Left = 328
-        Top = 72
-        Width = 38
-        Height = 13
-        Caption = 'Label17'
-      end
-      object Label18: TLabel
-        Left = 328
-        Top = 96
-        Width = 38
-        Height = 13
-        Caption = 'Label18'
-      end
-      object Label19: TLabel
-        Left = 328
-        Top = 128
-        Width = 38
-        Height = 13
-        Caption = 'Label19'
-      end
-      object Label20: TLabel
-        Left = 328
-        Top = 152
-        Width = 38
-        Height = 13
-        Caption = 'Label20'
-      end
-      object Label21: TLabel
-        Left = 328
-        Top = 176
-        Width = 38
-        Height = 13
-        Caption = 'Label21'
-      end
-      object Label22: TLabel
-        Left = 328
-        Top = 200
-        Width = 38
-        Height = 13
-        Caption = 'Label22'
-      end
       object Label23: TLabel
-        Left = 536
-        Top = 40
+        Left = 216
+        Top = 248
         Width = 5
         Height = 13
         Caption = 'x'
       end
       object Label24: TLabel
-        Left = 456
-        Top = 40
+        Left = 136
+        Top = 248
         Width = 12
         Height = 13
         Caption = '<='
@@ -645,37 +591,21 @@ object SharpnessForm12307: TSharpnessForm12307
         PageSize = 0
         TabOrder = 8
       end
-      object ScrollBar9: TScrollBar
-        Left = 112
-        Top = 200
-        Width = 121
-        Height = 17
-        PageSize = 0
-        TabOrder = 9
-      end
-      object ScrollBar10: TScrollBar
+      object ScrollBar11: TScrollBar
         Left = 112
         Top = 176
         Width = 121
         Height = 17
         PageSize = 0
-        TabOrder = 10
-      end
-      object ScrollBar11: TScrollBar
-        Left = 112
-        Top = 224
-        Width = 121
-        Height = 17
-        PageSize = 0
-        TabOrder = 11
+        TabOrder = 9
       end
       object ScrollBar12: TScrollBar
         Left = 112
-        Top = 248
+        Top = 200
         Width = 121
         Height = 17
         PageSize = 0
-        TabOrder = 12
+        TabOrder = 10
       end
       object StaticText7: TStaticText
         Left = 240
@@ -683,7 +613,7 @@ object SharpnessForm12307: TSharpnessForm12307
         Width = 58
         Height = 17
         Caption = 'StaticText7'
-        TabOrder = 13
+        TabOrder = 11
       end
       object StaticText8: TStaticText
         Left = 240
@@ -691,43 +621,27 @@ object SharpnessForm12307: TSharpnessForm12307
         Width = 58
         Height = 17
         Caption = 'StaticText8'
-        TabOrder = 14
+        TabOrder = 12
       end
-      object StaticText9: TStaticText
-        Left = 240
-        Top = 200
-        Width = 58
-        Height = 17
-        Caption = 'StaticText9'
-        TabOrder = 15
-      end
-      object StaticText10: TStaticText
+      object StaticText11: TStaticText
         Left = 240
         Top = 176
         Width = 64
         Height = 17
-        Caption = 'StaticText10'
-        TabOrder = 16
-      end
-      object StaticText11: TStaticText
-        Left = 240
-        Top = 224
-        Width = 64
-        Height = 17
         Caption = 'StaticText11'
-        TabOrder = 17
+        TabOrder = 13
       end
       object StaticText12: TStaticText
         Left = 240
-        Top = 248
+        Top = 200
         Width = 64
         Height = 17
         Caption = 'StaticText12'
-        TabOrder = 18
+        TabOrder = 14
       end
       object LabeledEdit1: TLabeledEdit
-        Left = 328
-        Top = 32
+        Left = 8
+        Top = 240
         Width = 121
         Height = 21
         EditLabel.Width = 51
@@ -735,107 +649,219 @@ object SharpnessForm12307: TSharpnessForm12307
         EditLabel.Caption = 'LabeledEdit1'
         LabelPosition = lpAbove
         LabelSpacing = 3
-        TabOrder = 19
-      end
-      object ComboBox5: TComboBox
-        Left = 424
-        Top = 64
-        Width = 145
-        Height = 21
-        ItemHeight = 13
-        TabOrder = 20
-        Text = 'ComboBox5'
-      end
-      object ComboBox6: TComboBox
-        Left = 424
-        Top = 88
-        Width = 145
-        Height = 21
-        ItemHeight = 13
-        TabOrder = 21
-        Text = 'ComboBox6'
-      end
-      object ScrollBar13: TScrollBar
-        Left = 424
-        Top = 128
-        Width = 121
-        Height = 17
-        PageSize = 0
-        TabOrder = 22
-      end
-      object ScrollBar14: TScrollBar
-        Left = 424
-        Top = 152
-        Width = 121
-        Height = 17
-        PageSize = 0
-        TabOrder = 23
-      end
-      object ScrollBar15: TScrollBar
-        Left = 424
-        Top = 176
-        Width = 121
-        Height = 17
-        PageSize = 0
-        TabOrder = 24
-      end
-      object ScrollBar16: TScrollBar
-        Left = 424
-        Top = 200
-        Width = 121
-        Height = 17
-        PageSize = 0
-        TabOrder = 25
-      end
-      object StaticText13: TStaticText
-        Left = 552
-        Top = 128
-        Width = 64
-        Height = 17
-        Caption = 'StaticText13'
-        TabOrder = 26
-      end
-      object StaticText14: TStaticText
-        Left = 552
-        Top = 152
-        Width = 64
-        Height = 17
-        Caption = 'StaticText14'
-        TabOrder = 27
-      end
-      object StaticText15: TStaticText
-        Left = 552
-        Top = 176
-        Width = 64
-        Height = 17
-        Caption = 'StaticText15'
-        TabOrder = 28
-      end
-      object StaticText16: TStaticText
-        Left = 552
-        Top = 200
-        Width = 64
-        Height = 17
-        Caption = 'StaticText16'
-        TabOrder = 29
+        TabOrder = 15
       end
       object Edit_ResolutionH: TEdit
-        Left = 472
-        Top = 32
+        Left = 152
+        Top = 240
         Width = 57
         Height = 21
-        TabOrder = 30
+        TabOrder = 16
         Text = '1920'
         OnKeyPress = Edit_ResolutionHKeyPress
       end
       object Edit_ResolutionV: TEdit
-        Left = 544
-        Top = 32
+        Left = 224
+        Top = 240
         Width = 57
         Height = 21
-        TabOrder = 31
+        TabOrder = 17
         Text = '1080'
         OnKeyPress = Edit_ResolutionHKeyPress
+      end
+      object GroupBox_BrightScene: TGroupBox
+        Left = 336
+        Top = 208
+        Width = 321
+        Height = 73
+        Caption = 'Bright Scene'
+        TabOrder = 18
+        object Label13: TLabel
+          Left = 11
+          Top = 24
+          Width = 38
+          Height = 13
+          Caption = 'Label13'
+        end
+        object Label22: TLabel
+          Left = 11
+          Top = 48
+          Width = 38
+          Height = 13
+          Caption = 'Label22'
+        end
+        object ScrollBar9: TScrollBar
+          Left = 112
+          Top = 24
+          Width = 121
+          Height = 17
+          PageSize = 0
+          TabOrder = 0
+        end
+        object StaticText9: TStaticText
+          Left = 239
+          Top = 24
+          Width = 58
+          Height = 17
+          Caption = 'StaticText9'
+          TabOrder = 1
+        end
+        object ScrollBar16: TScrollBar
+          Left = 112
+          Top = 48
+          Width = 121
+          Height = 17
+          PageSize = 0
+          TabOrder = 2
+        end
+        object StaticText16: TStaticText
+          Left = 241
+          Top = 48
+          Width = 64
+          Height = 17
+          Caption = 'StaticText16'
+          TabOrder = 3
+        end
+      end
+      object GroupBox_DarkScene: TGroupBox
+        Left = 336
+        Top = 136
+        Width = 321
+        Height = 73
+        Caption = 'Dark Scene'
+        TabOrder = 19
+        object Label14: TLabel
+          Left = 8
+          Top = 20
+          Width = 38
+          Height = 13
+          Caption = 'Label14'
+        end
+        object Label21: TLabel
+          Left = 8
+          Top = 40
+          Width = 38
+          Height = 13
+          Caption = 'Label21'
+        end
+        object ScrollBar10: TScrollBar
+          Left = 104
+          Top = 16
+          Width = 121
+          Height = 17
+          PageSize = 0
+          TabOrder = 0
+        end
+        object StaticText10: TStaticText
+          Left = 232
+          Top = 16
+          Width = 64
+          Height = 17
+          Caption = 'StaticText10'
+          TabOrder = 1
+        end
+        object ScrollBar15: TScrollBar
+          Left = 104
+          Top = 40
+          Width = 121
+          Height = 17
+          PageSize = 0
+          TabOrder = 2
+        end
+        object StaticText15: TStaticText
+          Left = 233
+          Top = 40
+          Width = 64
+          Height = 17
+          Caption = 'StaticText15'
+          TabOrder = 3
+        end
+      end
+      object GroupBox_TurnPoint: TGroupBox
+        Left = 336
+        Top = 8
+        Width = 321
+        Height = 129
+        Caption = 'Turn Point'
+        TabOrder = 20
+        object Label17: TLabel
+          Left = 11
+          Top = 20
+          Width = 38
+          Height = 13
+          Caption = 'Label17'
+        end
+        object Label19: TLabel
+          Left = 11
+          Top = 44
+          Width = 38
+          Height = 13
+          Caption = 'Label19'
+        end
+        object Label18: TLabel
+          Left = 11
+          Top = 72
+          Width = 38
+          Height = 13
+          Caption = 'Label18'
+        end
+        object Label20: TLabel
+          Left = 11
+          Top = 100
+          Width = 38
+          Height = 13
+          Caption = 'Label20'
+        end
+        object ComboBox5: TComboBox
+          Left = 112
+          Top = 12
+          Width = 145
+          Height = 21
+          ItemHeight = 13
+          TabOrder = 0
+          Text = 'ComboBox5'
+        end
+        object ScrollBar13: TScrollBar
+          Left = 112
+          Top = 40
+          Width = 121
+          Height = 17
+          PageSize = 0
+          TabOrder = 1
+        end
+        object StaticText13: TStaticText
+          Left = 241
+          Top = 48
+          Width = 64
+          Height = 17
+          Caption = 'StaticText13'
+          TabOrder = 2
+        end
+        object ComboBox6: TComboBox
+          Left = 112
+          Top = 64
+          Width = 145
+          Height = 21
+          ItemHeight = 13
+          TabOrder = 3
+          Text = 'ComboBox6'
+        end
+        object ScrollBar14: TScrollBar
+          Left = 112
+          Top = 96
+          Width = 121
+          Height = 17
+          PageSize = 0
+          TabOrder = 4
+        end
+        object StaticText14: TStaticText
+          Left = 241
+          Top = 96
+          Width = 64
+          Height = 17
+          Caption = 'StaticText14'
+          TabOrder = 5
+        end
       end
     end
   end

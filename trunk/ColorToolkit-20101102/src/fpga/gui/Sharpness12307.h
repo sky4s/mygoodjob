@@ -137,6 +137,9 @@ class TSharpnessForm12307:public TForm {
     TLabel *Label23;
     TEdit *Edit_ResolutionV;
     TLabel *Label24;
+    TGroupBox *GroupBox_BrightScene;
+    TGroupBox *GroupBox_DarkScene;
+    TGroupBox *GroupBox_TurnPoint;
     void __fastcall FormClose(TObject * Sender, TCloseAction & Action);
     void __fastcall FormCreate(TObject * Sender);
     void __fastcall CheckBox_Click(TObject * Sender);
@@ -157,6 +160,7 @@ class TSharpnessForm12307:public TForm {
     void __fastcall Btn_SP_reloadClick(TObject * Sender);
     void __fastcall FormKeyDown(TObject * Sender, WORD & Key, TShiftState Shift);
     void __fastcall Edit_ResolutionHKeyPress(TObject * Sender, char &Key);
+    void __fastcall FormKeyPress(TObject * Sender, char &Key);
   private:			// User declarations
      bool SP_IsChkSum;
   public:			// User declarations

@@ -11,6 +11,7 @@
 #include <fpga/gui/Unit1.h>
 #include <fpga/gui/Engineering.h>
 //#include <gui/framework/RegisterFramework.h>
+#include <gui/GUIUtil.h>
 #include "TDebugForm.h"
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
@@ -696,8 +697,9 @@ void __fastcall TSharpnessForm12307::btn_sp_LoadClick(TObject * Sender)
     }
     SP_LUT_FuncEnable(0);
     String Fpath = OpenDialog1->FileName;
-    if (!Load_SP(Fpath))
+    if (!Load_SP(Fpath)) {
 	Application->MessageBox(" Open Sharpness File Failed.", " Error Message ", 0);
+    }
 
     sb_softgainChange(Sender);
     SP_LUTDblClick(Sender);
@@ -709,114 +711,211 @@ void __fastcall TSharpnessForm12307::btn_sp_LoadClick(TObject * Sender)
 //---------------------------------------------------------------------------
 bool TSharpnessForm12307::Load_SP(String Fpath)
 {
-    char *buffer = Load_File(Fpath);
-    char *pch;
-    pch = strtok(buffer, " \ n \ t ");
-    int c = 0;
 
-    AnsiString str[5];
-    str[0] = " TEXT_DET ";
-    str[1] = " HORZ_THR ";
-    str[2] = " VERT_THR ";
-    str[3] = " EDGE_THR ";
-    str[4] = " GLT_STR ";	//hardwre gain
-    while (c < 38 && pch != NULL) {
-	if (pch == NULL) {
-	    ShowMessage(" Data Missing.");
-	    delete[]buffer;
-	    return 0;
-	    //資料中的data缺少
-	}
-
-	if (c == 0) {		//TD
-	    for (int i = 0; i < OSP->SPChkBox_Nbr; i++) {
-		if (SameText(ChkB[i]->Addr.Name(), str[0])) {
-		    ChkB[i]->Chkb->Checked = (StrToInt((AnsiString) pch) > 0 ? 1 : 0);
-		    ChkB[i]->Chkb->OnClick;
-		    break;
-		}
-	    }
-	} else if (c >= 1 && c <= 3) {	//HORZ_THR, VERT_THR, EDGE_THR
-	    for (int i = 0; i < OSP->SPScrollBar_Nbr; i++) {
-		if (SameText(ScrlB[i]->Addr.Name(), str[c])) {
-		    ScrlB[i]->ScrlB->Position = (StrToInt((AnsiString) pch));
-		    ScrlB[i]->ScrlB->OnChange;
-		    break;
-		}
-	    }
-	} else if (c == 4) {	//hardware gain
-	    for (int i = 0; i < OSP->SPScrollBar_Nbr; i++) {
-		if (SameText(ScrlB[i]->Addr.Name(), str[c])) {
-		    float tmp = (StrToFloat((AnsiString) pch));
-		    ScrlB[i]->ScrlB->Position = int (tmp * 4);
-		    ScrlB[i]->ScrlB->OnChange;
-		    break;
-		}
-	    }
-	} else if (c == 5) {	//swg
-	    sb_softgain->Position = StrToFloat((AnsiString) pch) * 10;
-
-	} else {		//tbl
-	    SP_lut[c - 6] = StrToInt((AnsiString) pch);
-	}
-	pch = strtok(NULL, " \ n \ t ");
-	c++;
-	if (c >= 38)
-	    break;
+    if (!cms::util::Util::isFileExist(Fpath.c_str())) {
+	return false;
     }
-    delete[]buffer;
-    return 1;
+    //=========================================================================
+    //new
+    //=========================================================================
+    using namespace math;
+    gui::IniFileUtil ini(Fpath);
+    ini.setCallEventHandlerWhenReading(true);
+
+    String SP = "Sharpness";
+    String spLutString = ini.ini->ReadString(SP, "SP_LUT", "");
+    if (spLutString.Length() == 0) {
+	return false;
+    }
+    int_array spLutArray = IntArray::fromString(spLutString.c_str());
+    IntArray::arraycopy(spLutArray, SP_lut, 32);
+
+    ini.readScrollBar(SP, "GLB_STR", ScrollBar1);
+    ini.readScrollBar(SP, "SPIKE_TH", ScrollBar2);
+    ini.readScrollBar(SP, "EDGE_TH", ScrollBar3);
+    ini.readScrollBar(SP, "FILTER_TH", ScrollBar4);
+    ini.readCheckBox(SP, CheckBox4);
+    ini.readCheckBox(SP, CheckBox5);
+    ini.readScrollBar(SP, "MAG_TH", ScrollBar5);
+    ini.readScrollBar(SP, "TAN_TH", ScrollBar6);
+    ini.readComboBox(SP, "STR_TP1", ComboBox1);
+    ini.readComboBox(SP, "STR_TP2", ComboBox2);
+
+
+    String CE = "Contrast";
+    ini.readCheckBox(CE, CheckBox11);
+    ini.readCheckBox(CE, CheckBox12);
+    ini.readComboBox(CE, "VMASK_SEL", ComboBox3);
+    ini.readComboBox(CE, "HMASK_SEL", ComboBox4);
+    ini.readScrollBar(CE, "LUM_MEDIAN", ScrollBar7);
+    ini.readScrollBar(CE, "CONTRAST_STR", ScrollBar8);
+    ini.readScrollBar(CE, "STEP_GAIN", ScrollBar11);
+    ini.readScrollBar(CE, "VARIANT_THR", ScrollBar12);
+    ini.readLabeledEdit(CE, LabeledEdit1);
+
+    ini.readComboBox(CE, "DARK_TP", ComboBox5);
+    ini.readScrollBar(CE, "DARK_OFS", ScrollBar13);
+    ini.readComboBox(CE, "BRIGHT_TP", ComboBox6);
+    ini.readScrollBar(CE, "BRIGHT_OFS", ScrollBar14);
+
+    ini.readScrollBar(CE, "DARK_MAX_ADJ", ScrollBar10);
+    ini.readScrollBar(CE, "DARK_DR", ScrollBar15);
+    ini.readScrollBar(CE, "BRIGHT_MAX_ADJ", ScrollBar9);
+    ini.readScrollBar(CE, "BRIGHT_DR", ScrollBar16);
+    //=========================================================================
+    //old
+    //=========================================================================
+    if (false) {
+	char *buffer = Load_File(Fpath);
+	char *pch;
+	pch = strtok(buffer, "\n\t");
+	int c = 0;
+
+	AnsiString str[5];
+	str[0] = "TEXT_DET";
+	str[1] = "HORZ_THR";
+	str[2] = "VERT_THR";
+	str[3] = "EDGE_THR";
+	str[4] = "GLT_STR";	//hardwre gain
+	while (c < 38 && pch != NULL) {
+	    if (pch == NULL) {
+		ShowMessage("Data Missing.");
+		delete[]buffer;
+		return 0;
+		//資料中的data缺少
+	    }
+
+	    if (c == 0) {	//TD
+		for (int i = 0; i < OSP->SPChkBox_Nbr; i++) {
+		    if (SameText(ChkB[i]->Addr.Name(), str[0])) {
+			ChkB[i]->Chkb->Checked = (StrToInt((AnsiString) pch) > 0 ? 1 : 0);
+			ChkB[i]->Chkb->OnClick;
+			break;
+		    }
+		}
+	    } else if (c >= 1 && c <= 3) {	//HORZ_THR, VERT_THR, EDGE_THR
+		for (int i = 0; i < OSP->SPScrollBar_Nbr; i++) {
+		    if (SameText(ScrlB[i]->Addr.Name(), str[c])) {
+			ScrlB[i]->ScrlB->Position = (StrToInt((AnsiString) pch));
+			ScrlB[i]->ScrlB->OnChange;
+			break;
+		    }
+		}
+	    } else if (c == 4) {	//hardware gain
+		for (int i = 0; i < OSP->SPScrollBar_Nbr; i++) {
+		    if (SameText(ScrlB[i]->Addr.Name(), str[c])) {
+			float tmp = (StrToFloat((AnsiString) pch));
+			ScrlB[i]->ScrlB->Position = int (tmp * 4);
+			ScrlB[i]->ScrlB->OnChange;
+			break;
+		    }
+		}
+	    } else if (c == 5) {	//swg
+		sb_softgain->Position = StrToFloat((AnsiString) pch) * 10;
+
+	    } else {		//tbl
+		SP_lut[c - 6] = StrToInt((AnsiString) pch);
+	    }
+	    pch = strtok(NULL, "\n\t");
+	    c++;
+	    if (c >= 38)
+		break;
+	}
+	delete[]buffer;
+    }
+    return true;
 }
 
+String SP = "Sharpness";
+String CE = "Contrast";
 void __fastcall TSharpnessForm12307::btn_sp_SaveClick(TObject * Sender)
 {
-    if (!SaveDialog1->Execute())
+    if (!SaveDialog1->Execute()) {
 	return;
+    }
     SP_LUT_FuncEnable(0);
     String Fpath = SaveDialog1->FileName;
-    FILE *fptr = fopen(Fpath.c_str(), " w ");
+    //=========================================================================
+    // new
+    //=========================================================================
+    using namespace math;
+    gui::IniFileUtil ini(Fpath);
 
-    AnsiString str[5];
-    str[0] = " TEXT_DET ";
-    str[1] = " HORZ_THR ";
-    str[2] = " VERT_THR ";
-    str[3] = " EDGE_THR ";
-    str[4] = " GLT_STR ";	//hardwre gain
+    ini.writeScrollBar(SP, "GLB_STR", ScrollBar1);
+    ini.writeScrollBar(SP, "SPIKE_TH", ScrollBar2);
+    ini.writeScrollBar(SP, "EDGE_TH", ScrollBar3);
+    ini.writeScrollBar(SP, "FILTER_TH", ScrollBar4);
+    ini.writeCheckBox(SP, CheckBox4);
+    ini.writeCheckBox(SP, CheckBox5);
+    ini.writeScrollBar(SP, "MAG_TH", ScrollBar5);
+    ini.writeScrollBar(SP, "TAN_TH", ScrollBar6);
+    ini.writeComboBox(SP, "STR_TP1", ComboBox1);
+    ini.writeComboBox(SP, "STR_TP2", ComboBox2);
+    ini.ini->WriteString(SP, "SP_LUT", IntArray::toString(SP_lut, 32).c_str());
 
-    AnsiString input_str[5];
-    for (int i = 0; i <= 3; i++)
-	input_str[i] = " 0 ";
-    input_str[4] = " 1 ";
-
-    for (int i = 0; i < OSP->SPChkBox_Nbr; i++) {
-	if (SameText(ChkB[i]->Addr.Name(), str[0])) {
-	    input_str[0] = (ChkB[i]->Chkb->Checked ? " 1 " : " 0 ");
-	    break;
+    ini.writeCheckBox(CE, CheckBox11);
+    ini.writeCheckBox(CE, CheckBox12);
+    ini.writeComboBox(CE, "VMASK_SEL", ComboBox3);
+    ini.writeComboBox(CE, "HMASK_SEL", ComboBox4);
+    ini.writeScrollBar(CE, "LUM_MEDIAN", ScrollBar7);
+    ini.writeScrollBar(CE, "CONTRAST_STR", ScrollBar8);
+    ini.writeScrollBar(CE, "STEP_GAIN", ScrollBar11);
+    ini.writeScrollBar(CE, "VARIANT_THR", ScrollBar12);
+    ini.writeLabeledEdit(CE, LabeledEdit1);
+    ini.writeComboBox(CE, "DARK_TP", ComboBox5);
+    ini.writeScrollBar(CE, "DARK_OFS", ScrollBar13);
+    ini.writeComboBox(CE, "BRIGHT_TP", ComboBox6);
+    ini.writeScrollBar(CE, "BRIGHT_OFS", ScrollBar14);
+    ini.writeScrollBar(CE, "DARK_MAX_ADJ", ScrollBar10);
+    ini.writeScrollBar(CE, "DARK_DR", ScrollBar15);
+    ini.writeScrollBar(CE, "BRIGHT_MAX_ADJ", ScrollBar9);
+    ini.writeScrollBar(CE, "BRIGHT_DR", ScrollBar16);
+    ini.ini->UpdateFile();
+    //=========================================================================
+    // old
+    //=========================================================================
+    if (false) {
+	FILE *fptr = fopen(Fpath.c_str(), "w");
+	AnsiString str[5];
+	str[0] = "TEXT_DET";
+	str[1] = "HORZ_THR";
+	str[2] = "VERT_THR";
+	str[3] = "EDGE_THR";
+	str[4] = "GLT_STR";	//hardwre gain
+	AnsiString input_str[5];
+	for (int i = 0; i <= 3; i++) {
+	    input_str[i] = "0";
 	}
-    }
-    for (int j = 0; j <= 3; j++)
-	for (int i = 0; i < OSP->SPScrollBar_Nbr; i++) {
-	    if (SameText(ScrlB[i]->Addr.Name(), str[j])) {
-		input_str[j] = ScrlB[i]->ScrlB->Position;
+	input_str[4] = "1";
+	for (int i = 0; i < OSP->SPChkBox_Nbr; i++) {
+	    if (SameText(ChkB[i]->Addr.Name(), str[0])) {
+		input_str[0] = (ChkB[i]->Chkb->Checked ? "1" : "0");
 		break;
 	    }
 	}
-    for (int i = 0; i < OSP->SPScrollBar_Nbr; i++) {
-	if (SameText(ScrlB[i]->Addr.Name(), str[4])) {
-	    float val = (float) ScrlB[i]->ScrlB->Position * 4;
-	    input_str[4] = FloatToStr(val);
-	    break;
+	for (int j = 0; j <= 3; j++)
+	    for (int i = 0; i < OSP->SPScrollBar_Nbr; i++) {
+		if (SameText(ScrlB[i]->Addr.Name(), str[j])) {
+		    input_str[j] = ScrlB[i]->ScrlB->Position;
+		    break;
+		}
+	    }
+	for (int i = 0; i < OSP->SPScrollBar_Nbr; i++) {
+	    if (SameText(ScrlB[i]->Addr.Name(), str[4])) {
+		float val = (float) ScrlB[i]->ScrlB->Position * 4;
+		input_str[4] = FloatToStr(val);
+		break;
+	    }
 	}
+	float input_str5 = StrToFloat(sb_softgain->Position) / 10;
+	fprintf(fptr, "%s\t%s\t%s\t%s\t%s\t%f\n",
+		input_str[0], input_str[1], input_str[2], input_str[3], input_str[4], input_str5);
+	for (int i = 0; i < 32; i++) {
+	    fprintf(fptr, "%d\n", SP_lut[i]);
+	}
+	fclose(fptr);
     }
-    float input_str5 = StrToFloat(sb_softgain->Position) / 10;
-
-    fprintf(fptr, " % s \ t % s \ t % s \ t % s \ t % s \ t % f \ n ",
-	    input_str[0], input_str[1], input_str[2], input_str[3], input_str[4], input_str5);
-
-    for (int i = 0; i < 32; i++) {
-	fprintf(fptr, " % d \ n ", SP_lut[i]);
-    }
-    fclose(fptr);
+    //=========================================================================
     SP_LUT_FuncEnable(1);
 }
 
@@ -826,20 +925,28 @@ void __fastcall TSharpnessForm12307::LUT_typeClick(TObject * Sender)
 {
     String Fpath;
     if (LUT_type->ItemIndex == 0) {
-	Fpath = " SP_default1.txt ";
+	Fpath = "SP_default1.txt";
     } else if (LUT_type->ItemIndex == 1) {
-	Fpath = " SP_default2.txt ";
+	Fpath = "SP_default2.txt";
     } else if (LUT_type->ItemIndex == 2) {
-	Fpath = " SP_default3.txt ";
+	Fpath = "SP_default3.txt";
+    }
+    if (!cms::util::Util::isFileExist(Fpath.c_str())) {
+	ShowMessage(Fpath + " is no exist!");
+	return;
     }
     Clear_LUT(true);
-    Load_SP(Fpath);
+    SP_LUT_FuncEnable(0);
+    Fpath = "./" + Fpath;
+    if (!Load_SP(Fpath)) {
+	Application->MessageBox(" Open Sharpness File Failed.", " Error Message ", 0);
+    }
 
     sb_softgainChange(Sender);
     SP_LUTDblClick(Sender);
     btn_GainSetClick(Sender);
+    SP_LUT_FuncEnable(1);
     btn_sp_lut_writeClick(Sender);
-
 }
 
 //---------------------------------------------------------------------------
@@ -849,8 +956,9 @@ void __fastcall TSharpnessForm12307::LUT_typeClick(TObject * Sender)
 
 void __fastcall TSharpnessForm12307::FormKeyDown(TObject * Sender, WORD & Key, TShiftState Shift)
 {
-    if (Key == 0x40)
+    if (Key == 0x40) {
 	Btn_SP_reloadClick(Sender);
+    }
 }
 
 //---------------------------------------------------------------------------
@@ -873,6 +981,17 @@ void __fastcall TSharpnessForm12307::Edit_ResolutionHKeyPress(TObject * Sender, 
     LabeledEdit1->Text = intResult;
     if (SP_Chg) {
 	LblE3_KeyPress(LabeledEdit1, 13);
+    }
+}
+
+//---------------------------------------------------------------------------
+
+void __fastcall TSharpnessForm12307::FormKeyPress(TObject * Sender, char &Key)
+{
+
+    if ('1' <= Key && Key <= '3') {
+	LUT_type->ItemIndex = Key - '1';
+	LUT_typeClick(Sender);
     }
 }
 
