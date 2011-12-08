@@ -139,9 +139,9 @@ object SharpnessForm12307: TSharpnessForm12307
     end
     object LUT_type: TRadioGroup
       Left = 8
-      Top = 336
-      Width = 193
-      Height = 49
+      Top = 8
+      Width = 121
+      Height = 33
       Caption = 'Sharpness Mode'
       Columns = 3
       Font.Charset = DEFAULT_CHARSET
@@ -158,8 +158,8 @@ object SharpnessForm12307: TSharpnessForm12307
       OnClick = LUT_typeClick
     end
     object btn_sp_Load: TButton
-      Left = 208
-      Top = 336
+      Left = 136
+      Top = 16
       Width = 49
       Height = 25
       Caption = 'Load'
@@ -175,8 +175,8 @@ object SharpnessForm12307: TSharpnessForm12307
       OnClick = btn_sp_LoadClick
     end
     object btn_sp_Save: TButton
-      Left = 208
-      Top = 360
+      Left = 192
+      Top = 16
       Width = 49
       Height = 25
       Hint = 'Save SP Table'
@@ -222,9 +222,9 @@ object SharpnessForm12307: TSharpnessForm12307
     end
     object Sharpness: TGroupBox
       Left = 8
-      Top = 16
+      Top = 48
       Width = 257
-      Height = 297
+      Height = 353
       Caption = 'Sharpness'
       TabOrder = 5
       object Label1: TLabel
