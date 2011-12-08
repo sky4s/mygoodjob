@@ -135,6 +135,9 @@ namespace math {
 	static double_array toDoubleArray(int_array array, int n);
 	static void arraycopy(int_array src, int_array dest, int length);
 	static int_array arraycopy(int_array src, int length);
+	static std::string toString(int *array, int n);
+	static int_array fromString(std::string str);
+	static void arraycopy(int_array src, int *dest, int length);
     };
 
 

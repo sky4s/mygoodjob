@@ -370,7 +370,7 @@ namespace math {
 	svd.getSingularValues(sv);
 	svd.getV(v);
 	/* TODO : pseudoInverse */
-        return double2D_ptr((double2D*)null);
+	return double2D_ptr((double2D *) null);
     };
 
 
@@ -420,7 +420,7 @@ namespace math {
     const double DoubleArray::e = Math::pow(2, -53);
     double DoubleArray::getTolerance(int m, int n, double1D sv) {
 	/* TODO : getTolerance */
-             return -1;
+	return -1;
     };
 
     double_array DoubleArray::toDoubleArray(double array[], int n) {
@@ -636,6 +636,27 @@ namespace math {
 	int_array dest(new int[length]);
 	arraycopy(src, dest, length);
 	return dest;
+    };
+    std::string IntArray::toString(int *array, int n) {
+	std::string result;
+	for (int x = 0; x < n; x++) {
+	    result += _toString(array[x]) + ",";
+	}
+	return result;
+    };
+    int_array IntArray::fromString(std::string str) {
+	string_vector_ptr stringVec = StringVector::tokenize(str, ",");
+	int size = stringVec->size();
+	int_array result(new int[size]);
+	for (int x = 0; x < size; x++) {
+	    result[x] = _toInt((*stringVec)[x]);
+	}
+	return result;
+    };
+    void IntArray::arraycopy(int_array src, int *dest, int length) {
+	for (int x = 0; x < length; x++) {
+ 	    dest[x] = src[x];
+	}
     };
     //==========================================================================
 };
