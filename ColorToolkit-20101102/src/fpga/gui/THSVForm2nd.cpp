@@ -26,6 +26,7 @@
 #include "CM1.h"
 #include "TGamutForm.h"
 #include <fpga/11307/ImageProcess/ImgProc_11307.h>
+#include <gui/GUIUtil.h>
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
 #pragma link "TColorPickerFrame"
@@ -39,7 +40,7 @@
 #define sRGBColorSpace bptr < Dep::RGBColorSpace >(new \
 	    Dep::RGBColorSpace(Dep::CSType::sRGB_gamma22, cms::Illuminant::D65, 2.2, 0.64, 0.33, \
 			       0.30, 0.60, 0.15, 0.06))
-
+static String HSV = "HSV";
 //const double THSVForm2nd::WHOLE_HUE_ANGLE = 360;
 //---------------------------------------------------------------------------
 __fastcall THSVForm2nd::THSVForm2nd(TComponent * Owner):TForm(Owner),
@@ -333,11 +334,10 @@ void __fastcall THSVForm2nd::btn_resetClick(TObject * Sender)
 
 void __fastcall THSVForm2nd::btn_hsv_loadClick(TObject * Sender)
 {
-    if (!OpenDialog1->Execute())
+    if (!OpenDialog1->Execute()) {
 	return;
-    String Fpath;
-    Fpath = OpenDialog1->FileName;
-
+    }
+    String Fpath = OpenDialog1->FileName;
     Load_HSV(Fpath);
 }
 
@@ -346,46 +346,76 @@ void __fastcall THSVForm2nd::btn_hsv_loadClick(TObject * Sender)
 bool THSVForm2nd::Load_HSV(String Fpath)
 {
     if (Fpath == NULL) {
-	return 0;
+	return false;
     }
-    char *buffer = Load_File(Fpath);
-    if (buffer == NULL) {
+    //=========================================================================
+    // new
+    //=========================================================================
+    using namespace math;
+    gui::IniFileUtil ini(Fpath);
+    ini.setCallEventHandlerWhenReading(true);
+    ini.Section = HSV;
 
-	return 0;
-    }
-    for (int i = 0; i < HUE_COUNT; i++) {
-	hueTable[i] = -1;
-	satTable[i] = -1;
-	valTable[i] = 0;
-    }
+    ini.readCheckBox(CheckBox4);
+    ini.readCheckBox(CheckBox_SAT_CLIP_EN);
+    ini.readScrollBar("SAT_TP", ScrollBar_TurnPoint);
+    ini.readIntArray("H", hueTable, HUE_COUNT);
+    ini.readIntArray("S", satTable, HUE_COUNT);
+    ini.readIntArray("V", valTable, HUE_COUNT);
+
+    /*String spLutString = ini.iniFile->ReadString("H", "");
+       if (spLutString.Length() == 0) {
+       return false;
+       }
+       int_array spLutArray = IntArray::fromString(spLutString.c_str());
+       IntArray::arraycopy(spLutArray, SP_lut, 32); */
 
 
+    //=========================================================================
+    // old 
+    //=========================================================================
+    if (false) {
+	char *buffer = Load_File(Fpath);
+	if (buffer == NULL) {
 
-    //取出檔案中的數值
-    int c = 0;
-    char *pch;
-    pch = strtok(buffer, "\n\t");
-    int Length = lut_addr[0].LutNum();
-    while (c < Length && pch != NULL) {
-	if (pch == NULL) {
-	    ShowMessage(" Can 't open Hue table file.");
-	    return 0;		//資料中的data缺少
+	    return 0;
 	}
-	int index = c / 3;
-	if (c % 3 == 0) {
-	    //hueTable[index] = hueTableTemp[index] = StrToInt((AnsiString) pch);
-	    hueTable[index] = StrToInt((AnsiString) pch);
-	} else if (c % 3 == 1) {
-	    //satTable[index] = satTableTemp[index] = StrToInt((AnsiString) pch);
-	    satTable[index] = StrToInt((AnsiString) pch);
-	} else {
-	    //valTable[index] = valTableTemp[index] = StrToInt((AnsiString) pch);
-	    valTable[index] = StrToInt((AnsiString) pch);
+	for (int i = 0; i < HUE_COUNT; i++) {
+	    hueTable[i] = -1;
+	    satTable[i] = -1;
+	    valTable[i] = 0;
 	}
-	pch = strtok(NULL, "\n\t");
-	c++;
+
+
+
+	//取出檔案中的數值
+	int c = 0;
+	char *pch;
+	pch = strtok(buffer, "\n\t");
+	int Length = lut_addr[0].LutNum();
+	while (c < Length && pch != NULL) {
+	    if (pch == NULL) {
+		ShowMessage(" Can 't open Hue table file.");
+		return 0;	//資料中的data缺少
+	    }
+	    int index = c / 3;
+	    if (c % 3 == 0) {
+		//hueTable[index] = hueTableTemp[index] = StrToInt((AnsiString) pch);
+		hueTable[index] = StrToInt((AnsiString) pch);
+	    } else if (c % 3 == 1) {
+		//satTable[index] = satTableTemp[index] = StrToInt((AnsiString) pch);
+		satTable[index] = StrToInt((AnsiString) pch);
+	    } else {
+		//valTable[index] = valTableTemp[index] = StrToInt((AnsiString) pch);
+		valTable[index] = StrToInt((AnsiString) pch);
+	    }
+	    pch = strtok(NULL, "\n\t");
+	    c++;
+	}
+	delete[]buffer;
     }
-    delete[]buffer;
+    //=========================================================================
+
 
     for (int i = 0; i < HUE_COUNT; i++) {
 	stringGrid_HSV->Cells[1][i + 1] = ((double) hueTable[i]) / MAX_HUE_VALUE * WHOLE_HUE_ANGLE;
@@ -396,7 +426,7 @@ bool THSVForm2nd::Load_HSV(String Fpath)
     stringGrid_HSVSelectCell(this, 0, lastStringGridSelectRow, false);
 
     //Hue_LUTWrite();
-    return 1;
+    return true;
 }
 
 
@@ -404,17 +434,35 @@ bool THSVForm2nd::Load_HSV(String Fpath)
 
 void __fastcall THSVForm2nd::btn_hsv_saveClick(TObject * Sender)
 {
-    if (!SaveDialog1->Execute())
+    if (!SaveDialog1->Execute()) {
 	return;
-    String Fpath = SaveDialog1->FileName /*+".txt" */ ;
-    FILE *fptr = fopen(Fpath.c_str(), "w");
-
-    //fprintf(fptr,"Hue_LUT\tSat_LUT\tBri_LUT\n");
-    for (int i = 0; i < HUE_COUNT; i++) {
-	fprintf(fptr, "%d\t%d\t%d\n", hueTable[i], satTable[i], valTable[i]);
     }
+    String Fpath = SaveDialog1->FileName /*+".txt" */ ;
 
-    fclose(fptr);
+    //=========================================================================
+    // new
+    //=========================================================================
+    using namespace math;
+    gui::IniFileUtil ini(Fpath);
+    ini.Section = HSV;
+
+    ini.writeCheckBox(CheckBox4);
+    ini.writeCheckBox(CheckBox_SAT_CLIP_EN);
+    ini.writeScrollBar("SAT_TP", ScrollBar_TurnPoint);
+    ini.writeIntArray("H", hueTable, HUE_COUNT);
+    ini.writeIntArray("S", satTable, HUE_COUNT);
+    ini.writeIntArray("V", valTable, HUE_COUNT);
+    //=========================================================================
+    // old
+    //=========================================================================
+    if (false) {
+	FILE *fptr = fopen(Fpath.c_str(), "w");
+	for (int i = 0; i < HUE_COUNT; i++) {
+	    fprintf(fptr, "%d\t%d\t%d\n", hueTable[i], satTable[i], valTable[i]);
+	}
+	fclose(fptr);
+    }
+    //=========================================================================
 }
 
 //---------------------------------------------------------------------------
@@ -430,16 +478,21 @@ void __fastcall THSVForm2nd::rg_HSV_ModeClick(TObject * Sender)
     String Fpath;
 
     if (rg_HSV_Mode->ItemIndex == 0) {
-	Fpath = "\HSV_default1.txt";
+	Fpath = "HSV_default1.txt";
     } else if (rg_HSV_Mode->ItemIndex == 1) {
-	Fpath = "\HSV_default2.txt";
+	Fpath = "HSV_default2.txt";
     } else if (rg_HSV_Mode->ItemIndex == 2) {
-	Fpath = "\HSV_default3.txt";
+	Fpath = "HSV_default3.txt";
+    }
+    if (!cms::util::Util::isFileExist(Fpath.c_str())) {
+	ShowMessage(Fpath + " is no exist!");
+	return;
     }
 
     btn_hsv_load->Enabled = false;
     btn_hsv_save->Enabled = false;
     rg_HSV_Mode->Enabled = false;
+    Fpath = "./" + Fpath;
     if (!Load_HSV(Fpath)) {
 	ShowMessage("Load File fail.");
     }
@@ -685,7 +738,7 @@ RGB_ptr THSVForm2nd::getHueRGB(int index, double s, int v)
 {
     using namespace Dep;
     int hue = getHueAngle(index);
-    HSV_ptr hsv(new HSV(RGBColorSpace::sRGB, hue, s * 100, v / 255. * 100));
+    HSV_ptr hsv(new Dep::HSV(RGBColorSpace::sRGB, hue, s * 100, v / 255. * 100));
 
     RGB_ptr rgb = hsv->toRGB();
     return rgb;
@@ -1430,7 +1483,7 @@ void THSVForm2nd::callback(int_array rgbValues)
     using namespace math;
     using namespace Dep;
     RGB_ptr rgb(new RGBColor(rgbValues[0], rgbValues[1], rgbValues[2]));
-    HSV hsv(rgb);
+    Dep::HSV hsv(rgb);
     double_array hsviValues = hsv.getHSVIValues();
     double vv = hsviValues[2];
     double ii = hsviValues[3];
@@ -1458,7 +1511,7 @@ void THSVForm2nd::callback(int_array rgbValues)
 	    ", G" + IntToStr(g) + ", B" + IntToStr(b);
 
 	RGB_ptr rgb(new RGBColor(r, g, b));
-	HSV hsv(rgb);
+	Dep::HSV hsv(rgb);
 	double_array hsviValues = hsv.getHSVIValues();
 	double vv = hsviValues[2];
 	double ii = hsviValues[3];
@@ -1580,7 +1633,7 @@ void THSVForm2nd::setupPatternForm()
 	    hsvValues[0] = h;
 	    hsvValues[1] = hsviValues[1];
 	    hsvValues[2] = hsviValues[2];
-	    HSV_ptr hsv(new HSV(RGBColorSpace::sRGB, hsvValues));
+	    HSV_ptr hsv(new Dep::HSV(RGBColorSpace::sRGB, hsvValues));
 	    hsvVector->push_back(hsv);
 	}
 
@@ -1593,7 +1646,7 @@ void THSVForm2nd::setupPatternForm()
 	    hsvValues[1] = saturation;
 	    //hsvValues[1] = saturationArray[index];
 	    hsvValues[2] = patternValue / 255. * 100;
-	    HSV_ptr hsv(new HSV(RGBColorSpace::sRGB, hsvValues));
+	    HSV_ptr hsv(new Dep::HSV(RGBColorSpace::sRGB, hsvValues));
 	    hsvVector->push_back(hsv);
 	}
     }

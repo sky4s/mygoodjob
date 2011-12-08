@@ -18,7 +18,8 @@
 #pragma resource "*.dfm"
 //TSharpnessForm12307 *SharpnessForm;       //使用動態宣告,不需作實體宣告
 //TDebugForm *DebugForm;
-
+static String SP = "Sharpness";
+static String CE = "Contrast";
 //---------------------------------------------------------------------------
 __fastcall TSharpnessForm12307::TSharpnessForm12307(TComponent * Owner):TForm(Owner)
 {
@@ -722,13 +723,13 @@ bool TSharpnessForm12307::Load_SP(String Fpath)
     gui::IniFileUtil ini(Fpath);
     ini.setCallEventHandlerWhenReading(true);
 
-    String SP = "Sharpness";
-    String spLutString = ini.ini->ReadString(SP, "SP_LUT", "");
-    if (spLutString.Length() == 0) {
-	return false;
-    }
-    int_array spLutArray = IntArray::fromString(spLutString.c_str());
-    IntArray::arraycopy(spLutArray, SP_lut, 32);
+    /*String spLutString = ini.iniFile->ReadString(SP, "SP_LUT", "");
+       if (spLutString.Length() == 0) {
+       return false;
+       }
+       int_array spLutArray = IntArray::fromString(spLutString.c_str());
+       IntArray::arraycopy(spLutArray, SP_lut, 32); */
+    ini.readIntArray(SP, "SP_LUT", SP_lut, 32);
 
     ini.readScrollBar(SP, "GLB_STR", ScrollBar1);
     ini.readScrollBar(SP, "SPIKE_TH", ScrollBar2);
@@ -826,8 +827,7 @@ bool TSharpnessForm12307::Load_SP(String Fpath)
     return true;
 }
 
-String SP = "Sharpness";
-String CE = "Contrast";
+
 void __fastcall TSharpnessForm12307::btn_sp_SaveClick(TObject * Sender)
 {
     if (!SaveDialog1->Execute()) {
@@ -851,7 +851,8 @@ void __fastcall TSharpnessForm12307::btn_sp_SaveClick(TObject * Sender)
     ini.writeScrollBar(SP, "TAN_TH", ScrollBar6);
     ini.writeComboBox(SP, "STR_TP1", ComboBox1);
     ini.writeComboBox(SP, "STR_TP2", ComboBox2);
-    ini.ini->WriteString(SP, "SP_LUT", IntArray::toString(SP_lut, 32).c_str());
+    //ini.writeString(SP, "SP_LUT", IntArray::toString(SP_lut, 32).c_str());
+    ini.writeIntArray(SP, "SP_LUT", SP_lut, 32);
 
     ini.writeCheckBox(CE, CheckBox11);
     ini.writeCheckBox(CE, CheckBox12);
@@ -870,7 +871,7 @@ void __fastcall TSharpnessForm12307::btn_sp_SaveClick(TObject * Sender)
     ini.writeScrollBar(CE, "DARK_DR", ScrollBar15);
     ini.writeScrollBar(CE, "BRIGHT_MAX_ADJ", ScrollBar9);
     ini.writeScrollBar(CE, "BRIGHT_DR", ScrollBar16);
-    ini.ini->UpdateFile();
+    ini.iniFile->UpdateFile();
     //=========================================================================
     // old
     //=========================================================================
@@ -991,7 +992,7 @@ void __fastcall TSharpnessForm12307::FormKeyPress(TObject * Sender, char &Key)
 
     if ('1' <= Key && Key <= '3') {
 	LUT_type->ItemIndex = Key - '1';
-	LUT_typeClick(Sender);
+	//LUT_typeClick(Sender);
     }
 }
 
