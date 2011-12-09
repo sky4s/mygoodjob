@@ -1117,7 +1117,6 @@ object MainForm: TMainForm
           Height = 15
           Caption = 'H Stripe'
           TabOrder = 1
-          Visible = False
           OnClick = RadioButton_HStripeClick
         end
         object RadioButton_Indep: TRadioButton
@@ -1127,7 +1126,6 @@ object MainForm: TMainForm
           Height = 15
           Caption = 'Indep'
           TabOrder = 2
-          Visible = False
           OnClick = RadioButton_IndepClick
         end
         object RadioButton_HSD: TRadioButton
@@ -1137,7 +1135,6 @@ object MainForm: TMainForm
           Height = 15
           Caption = 'HSD'
           TabOrder = 3
-          Visible = False
           OnClick = RadioButton_HSDClick
         end
         object RadioButton_FlickrPixel: TRadioButton
@@ -1147,7 +1144,6 @@ object MainForm: TMainForm
           Height = 15
           Caption = 'FlickrPixel'
           TabOrder = 4
-          Visible = False
           OnClick = RadioButton_FlickrPixelClick
         end
         object RadioButton_FlickrSubPixel: TRadioButton
@@ -1157,7 +1153,6 @@ object MainForm: TMainForm
           Height = 15
           Caption = 'FlickrSubPixel'
           TabOrder = 5
-          Visible = False
           OnClick = RadioButton_FlickrSubPixelClick
         end
         object RadioButton_Ninth: TRadioButton

@@ -348,7 +348,6 @@ object CCTLUTForm: TCCTLUTForm
       Height = 20
       Caption = 'None'
       TabOrder = 5
-      Visible = False
     end
     object RadioButton_DefinedDim: TRadioButton
       Left = 7
@@ -470,7 +469,6 @@ object CCTLUTForm: TCCTLUTForm
       Caption = 'Multi Generate'
       Enabled = False
       TabOrder = 2
-      Visible = False
     end
     object Edit_MultiGenTimes: TEdit
       Left = 117
@@ -480,7 +478,6 @@ object CCTLUTForm: TCCTLUTForm
       Enabled = False
       TabOrder = 3
       Text = '1'
-      Visible = False
     end
     object CheckBox_BTargetIntensity: TCheckBox
       Left = 7

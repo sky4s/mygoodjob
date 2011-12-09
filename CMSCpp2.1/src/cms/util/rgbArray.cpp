@@ -50,7 +50,7 @@ namespace cms {
 	    const MaxValue & maxValue = bitDepth->getLutMaxValue();	//lutªºmaxvalue
 	    double factor = maxValue.max / 255.;
 	    RGB_vector_ptr result(new RGB_vector());
-            
+
 	    for (int x = 0; x < n; x++) {
 		double v = maxdc * factor / (n - 1) * x;
 		double r = v * rgain;
@@ -182,6 +182,21 @@ namespace cms {
 			   const double max, const RGBType type):r(r),
 	    g(g), b(b), w(w), max(max), type(type) {
 	};
+
+	RGBGamma::RGBGamma(RGB_vector_ptr rgbVector, const double max, const RGBType type):max(max),
+	    type(type) {
+	    double_vector_ptr r(new double_vector());
+	    double_vector_ptr g(new double_vector());
+	    double_vector_ptr b(new double_vector());
+	    foreach(RGB_ptr rgb, *rgbVector) {
+		r->push_back(rgb->R);
+		g->push_back(rgb->G);
+		b->push_back(rgb->B);
+	    }
+	    this->r = r;
+	    this->g = g;
+	    this->b = b;
+	};
 	void RGBGamma::storeToExcel(const std::string & filename, RGBGamma_ptr rgbgamma) {
 
 
@@ -277,6 +292,26 @@ namespace cms {
 	    };
 
 	};
+	RGBGamma_ptr RGBGamma::getReverse(RGBGamma_ptr rgbGamma) {
+	    using namespace math;
+	    double_vector_ptr r, g, b, w;
+
+	    if (null != rgbGamma->r) {
+		r = DoubleArray::getReverse(rgbGamma->r);
+	    }
+	    if (null != rgbGamma->g) {
+		g = DoubleArray::getReverse(rgbGamma->g);
+	    }
+	    if (null != rgbGamma->b) {
+		b = DoubleArray::getReverse(rgbGamma->b);
+	    }
+	    if (null != rgbGamma->w) {
+		w = DoubleArray::getReverse(rgbGamma->w);
+	    }
+	    RGBGamma_ptr result(new RGBGamma(r, g, b, w, rgbGamma->max, rgbGamma->type));
+	    return result;
+	};
+
 	//==================================================================
 
     };

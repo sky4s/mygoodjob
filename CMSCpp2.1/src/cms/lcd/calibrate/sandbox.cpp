@@ -58,7 +58,7 @@ namespace cms {
 		fetcher(fetcher), useMaxTargetBIntensity(false), rTargetIntensity(-1),
 		gTargetIntensity(-1), bTargetIntensity(-1), stopMeasure(false), multiGen(false),
 		analyzer2nd(analyzer2nd), bitDepth(bitDepth), smoothMode(true), middleCCTRatio(-1),
-		autoParameter(false) {
+		autoParameter(false), rgbGenerateResult(nil_RGBGamma) {
 	    };
 
 	  AdvancedDGLutGenerator::AdvancedDGLutGenerator(Component_vector_ptr componentVector, bptr < ComponentFetcher > fetcher, bptr < BitDepthProcessor > bitDepth):DimDGLutGenerator
@@ -66,7 +66,7 @@ namespace cms {
 		fetcher(fetcher), useMaxTargetBIntensity(false),
 		rTargetIntensity(-1), gTargetIntensity(-1), bTargetIntensity(-1),
 		stopMeasure(false), multiGen(false), bitDepth(bitDepth), smoothMode(false),
-		middleCCTRatio(-1), autoParameter(false) {
+		middleCCTRatio(-1), autoParameter(false), rgbGenerateResult(nil_RGBGamma) {
 	    };
 	    /*
 	       targetWhite: 目標白點
@@ -302,7 +302,7 @@ namespace cms {
 #ifdef DEBUG_INTENISITY
 		Component_vector_ptr debugComponentVector(new Component_vector());
 #endif
-
+		RGB_vector_ptr rgbGenResultVector(new RGB_vector());
 		//=============================================================
 		// 迴圈開始
 		//=============================================================
@@ -349,15 +349,26 @@ namespace cms {
 		    };
 		    RGB_ptr rgb =
 			lutgen.getDGCode(rTargetIntensity, gTargetIntensity, bTargetIntensity);
+		    bool_array isCorrect = lutgen.isCorrectIntensityInRange();
 		    (*result)[x] = rgb;
+
+		    //紀錄產生的過程是否有問題
+		    RGB_ptr genResult(new RGBColor());
+		    genResult->R = (true == isCorrect[0]) ? -1 : 0;
+		    genResult->G = (true == isCorrect[1]) ? -1 : 0;
+		    genResult->B = (true == isCorrect[2]) ? -1 : 0;
+		    rgbGenResultVector->push_back(genResult);
 
 #ifdef DEBUG_INTENISITY
 		    {
 			Component_ptr c = getFRCAbilityComponent(x, rgb, ma, newcomponentVector);
+			c->gamma = genResult;
 			debugComponentVector->push_back(c);
 		    }
 #endif
 		}
+		rgbGenerateResult =
+		    RGBGamma::getReverse(RGBGamma_ptr(new RGBGamma(rgbGenResultVector, 0, Unknow)));
 		//=============================================================
 		// 迴圈結束
 		//=============================================================

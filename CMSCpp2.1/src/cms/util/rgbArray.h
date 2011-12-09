@@ -37,7 +37,7 @@ namespace cms {
 	};
 
 	enum RGBType {
-	    Intensity, Gamma
+	    Intensity, Gamma, Unknow
 	};
 	class RGBGamma:public jObject {
 	  private:
@@ -56,10 +56,12 @@ namespace cms {
 	     RGBGamma(double_vector_ptr r, double_vector_ptr g,
 		      double_vector_ptr b, double_vector_ptr w, const double max,
 		      const RGBType type);
+	     RGBGamma(RGB_vector_ptr rgbVector, const double max, const RGBType type);
 	    static void storeToExcel(const std::string & filename, RGBGamma_ptr rgbgamma);
 	    static void storeToDesiredGamma(const std::string & filename, RGBGamma_ptr rgbgamma);
 	    static RGBGamma_ptr loadFromDesiredGamma(const std::string & filename);
 	    static RGBGamma_ptr loadFromDesiredGammaValue(const std::string & filename);
+	    static RGBGamma_ptr getReverse(RGBGamma_ptr rgbGamma);
 	    RGBGamma_ptr clone();
 
 	};

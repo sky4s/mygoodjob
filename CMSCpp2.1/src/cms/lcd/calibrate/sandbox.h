@@ -50,6 +50,8 @@ namespace cms {
 		Component_vector_ptr componentVector2;
 		 bptr < PanelRegulator > panelRegulator1;
 		 bptr < PanelRegulator > panelRegulator2;
+
+		RGBGamma_ptr rgbGenerateResult;
 	      public:
 		 AdvancedDGLutGenerator(Component_vector_ptr componentVector,
 					bptr < cms::lcd::calibrate::ComponentFetcher > fetcher,
@@ -129,6 +131,7 @@ namespace cms {
 					 bptr < PanelRegulator > panelRegulator2);
 		void setPanelRegulator(bptr < PanelRegulator > panelRegulator);
 		void setMiddleCCTRatio(double ratio);
+		__property RGBGamma_ptr RGBGenerateResult = { read = rgbGenerateResult };
 	    };
 
 
