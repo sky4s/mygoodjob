@@ -319,14 +319,13 @@ void __fastcall TCCTLUTForm::FormShow(TObject * Sender)
 	//=========================================================================
 	// dim correct
 	//=========================================================================
-	RadioButton_NoneLowLevelCorrect->Visible = true;
 	//=========================================================================
 
 	//=========================================================================
 	// multi gen
 	//=========================================================================
-	CheckBox_MultiGen->Visible = true;
-	Edit_MultiGenTimes->Visible = true;
+	//CheckBox_MultiGen->Visible = true;
+	//Edit_MultiGenTimes->Visible = true;
 	//=========================================================================
 	CheckBox_MemoryMeasure->Visible = true;
 	RadioGroup_NormalCase->Visible = true;
@@ -674,7 +673,7 @@ void __fastcall TCCTLUTForm::Edit_DimGammaEndChange(TObject * Sender)
 void __fastcall TCCTLUTForm::RadioGroup_NormalCaseClick(TObject * Sender)
 {
     switch (RadioGroup_NormalCase->ItemIndex) {
-    case 0:
+    case 0:			//NB
 	RadioButton_OriginalGamma->Checked = true;
 	CheckBox_AvoidNoise->Checked = true;
 	RadioButton_RBInterp->Checked = true;
@@ -683,9 +682,11 @@ void __fastcall TCCTLUTForm::RadioGroup_NormalCaseClick(TObject * Sender)
 	break;
     case 1:
 	RadioButton_2Gamma->Checked = true;
+	CheckBox_AvoidNoise->Checked = false;
 	RadioButton_DefinedDim->Checked = true;
 	CheckBox_Feedback->Checked = true;
 	RadioButton_MaxYNative->Checked = true;
+	CheckBox_BMax->Checked = false;
 	break;
 
     }

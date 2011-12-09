@@ -576,6 +576,7 @@ namespace cms {
 		    //從目標值算出DGLut
 		    dglut = advgenerator->produce(targetXYZVector);
 		    STORE_RGBVECTOR("3.1_org_dgcode.xls", dglut);
+		    initialRGBGamma = advgenerator->RGBGenerateResult;
 
 
 
@@ -884,6 +885,9 @@ namespace cms {
 		dglutFile->setProperty(property);
 		//寫入dgcode
 		dglutFile->setGammaTable(dglut);
+
+
+
 		if (null != componentVector) {
 		    //寫入raw data
 		    dglutFile->setRawData(componentVector, initialRGBGamma, finalRGBGamma);

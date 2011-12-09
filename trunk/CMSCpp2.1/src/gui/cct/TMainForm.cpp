@@ -78,16 +78,7 @@ void __fastcall TMainForm::FormCreate(TObject * Sender)
     initTCONFile();
     readTCONSections();
     readSetup();
-    //ComboBox_TCONTypeChange(this);
 
-    if (newFunction) {
-	RadioButton_HStripe->Visible = true;
-	RadioButton_Indep->Visible = true;
-	RadioButton_HSD->Visible = true;
-	RadioButton_FlickrPixel->Visible = true;
-	RadioButton_FlickrSubPixel->Visible = true;
-    }
-    //binder = bptr < UIBinder > (new UIBinder(Edit1, ScrollBar1));
 }
 
 void TMainForm::initTCONFile()
@@ -798,10 +789,16 @@ void __fastcall TMainForm::Button_ConnectClick(TObject * Sender)
     } else {
 
 	const LPTCard card = this->RadioButton_LPTLarge->Checked ? Large : Small;
-	i2c1st = i2cControl::getLPTInstance(first, addressingSize, card);
-	if (dual) {
-	    i2c2nd = i2cControl::getLPTInstance(second, addressingSize, card);
-	};
+	try {
+	    i2c1st = i2cControl::getLPTInstance(first, addressingSize, card);
+	    if (dual) {
+		i2c2nd = i2cControl::getLPTInstance(second, addressingSize, card);
+	    };
+	}
+	catch(java::lang::IllegalStateException & ex) {
+	    ShowMessage(ex.toString().c_str());
+	    return;
+	}
     };
     bool connect = i2c1st->connect();
     if (dual) {

@@ -148,10 +148,31 @@ namespace cms {
 	    void ComponentFetcher::storeToExcel(const string & filename,
 						Component_vector_ptr componentVector) {
 
-		//int n = componentVector->size();
 		Util::deleteExist(filename);
 		DGLutFile dglut(filename, Create);
-		dglut.setRawData(componentVector, nil_RGBGamma, nil_RGBGamma);
+		RGBGamma_ptr rgbp = nil_RGBGamma;
+
+
+		//如果 gamma有東西, 就寫到檔案裡
+		if (null != (*componentVector)[0]->gamma) {
+		    double_vector_ptr r(new double_vector());
+		    double_vector_ptr g(new double_vector());
+		    double_vector_ptr b(new double_vector());
+		    foreach(Component_ptr c, *componentVector) {
+			RGB_ptr gamma = c->gamma;
+			r->push_back(gamma->R);
+			g->push_back(gamma->G);
+			b->push_back(gamma->B);
+		    }
+		    r = DoubleArray::getReverse(r);
+		    g = DoubleArray::getReverse(g);
+		    b = DoubleArray::getReverse(b);
+
+		    rgbp = RGBGamma_ptr(new RGBGamma(r, g, b));
+		}
+
+
+		dglut.setRawData(componentVector, rgbp, nil_RGBGamma);
 
 		RGB_vector_ptr rgbVector = getRGBVector(componentVector);
 		rgbVector = RGBVector::reverse(rgbVector);
@@ -336,7 +357,6 @@ namespace cms {
 		default:
 		    throw IllegalArgumentException("Unsupported Channel:" + *ch.toString());
 		}
-
 	    };
 
 	    double ComponentLUT::getMaxBIntensity() {
