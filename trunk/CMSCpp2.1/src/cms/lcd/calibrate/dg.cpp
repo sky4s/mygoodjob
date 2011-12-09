@@ -122,10 +122,14 @@ namespace cms {
 	    RGB_ptr DGLutGenerator::getDGCode(double rIntensity,
 					      double gIntensity,
 					      double bIntensity, bool correctInRange) {
+
 		if (true == correctInRange) {
 		    rIntensity = lut->correctIntensityInRange(Channel::R, rIntensity);
+		    rCorrect = lut->hasCorrectedInRange(Channel::R);
 		    gIntensity = lut->correctIntensityInRange(Channel::G, gIntensity);
+		    gCorrect = lut->hasCorrectedInRange(Channel::G);
 		    bIntensity = lut->correctIntensityInRange(Channel::B, bIntensity);
+		    bCorrect = lut->hasCorrectedInRange(Channel::B);
 		}
 
 		double r = lut->getCode(Channel::R, rIntensity);
@@ -134,6 +138,14 @@ namespace cms {
 
 		RGB_ptr rgb(new RGBColor(r, g, b));
 		return rgb;
+	    };
+
+	    bool_array DGLutGenerator::isCorrectIntensityInRange() {
+		bool_array result(new bool[3]);
+		result[0] = rCorrect;
+		result[1] = gCorrect;
+		result[2] = bCorrect;
+		return result;
 	    };
 
 	    RGB_ptr DGLutGenerator::

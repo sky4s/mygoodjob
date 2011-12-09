@@ -22,6 +22,7 @@ namespace cms {
 		    Component, WLumi, RGBLumi,
 		};
 		KeepMaxLuminance keepMaxLuminance;
+		bool rCorrect, gCorrect, bCorrect;
 	      protected:
 		 Mode mode;
 		Component_vector_ptr componentVector;
@@ -56,7 +57,7 @@ namespace cms {
 		double_vector_ptr getIntensityVector(const Dep::
 						     Channel & ch, RGB_vector_ptr rgbVector);
 		RGB_ptr getIntensity(RGB_ptr dgcode);
-
+		bool_array isCorrectIntensityInRange();
 	    };
 	};
     };
