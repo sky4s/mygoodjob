@@ -353,9 +353,7 @@ namespace cms {
 
 #ifdef DEBUG_INTENISITY
 		    {
-			//Component_ptr c = getFRCAbilityComponent(x, rgb, analyzer, componentVector);
-			Component_ptr c =
-			    getFRCAbilityComponent(x, rgb, analyzer, newcomponentVector);
+			Component_ptr c = getFRCAbilityComponent(x, rgb, ma, newcomponentVector);
 			debugComponentVector->push_back(c);
 		    }
 #endif
@@ -384,6 +382,7 @@ namespace cms {
 		getFRCAbilityComponent(int grayLevel, RGB_ptr rgb,
 				       bptr < cms::measure::IntensityAnalyzerIF > analyzer,
 				       Component_vector_ptr componentVector) {
+		//這三樣不管什麼analyzer都是依樣的, 會變的是targetXYZ
 		XYZ_ptr rXYZ = analyzer->getPrimaryColor(Channel::R)->toXYZ();
 		XYZ_ptr gXYZ = analyzer->getPrimaryColor(Channel::G)->toXYZ();
 		XYZ_ptr bXYZ = analyzer->getPrimaryColor(Channel::B)->toXYZ();
