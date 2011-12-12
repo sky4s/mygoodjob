@@ -242,7 +242,7 @@ bool TEngineerForm::B_read(unsigned char &data_read, unsigned char dev_addr)	//±
 //--------------------------------------------------------------------------
 
 // Åª¨úByte
-bool TEngineerForm::SetRead_Byte(TBit Addr_Bit, unsigned char *read_val)
+bool TEngineerForm::SetRead_Byte(TBit & Addr_Bit, unsigned char *read_val)
 {
     // ±N­nÅª¨úªºdata AddressÅã¥Ü¨ì¤¶­±¤W
     AnsiString str_addr;
@@ -278,7 +278,6 @@ bool TEngineerForm::SetRead_Byte(TBit Addr_Bit, unsigned char *read_val)
 	}
     }
     *read_val = data_read[0];
-    //Addr_Bit.SetVal(data_read[0]);
     if (dif == true) {
 	ShowMessage(Addr_Bit.Name() + "has difference value.");
     }
@@ -333,7 +332,7 @@ unsigned char TEngineerForm::readByte(TBit & Addr_Bit)
 //--------------------------------------------------------------------------
 
 // ¼g¤JByte, Addr_Bit¬°Address¸ê°T, set_val¬°¼g¤Jªº¸ê®Æ
-bool TEngineerForm::SetWrite_Byte(TBit Addr_Bit, int set_val)
+bool TEngineerForm::SetWrite_Byte(TBit & Addr_Bit, int set_val)
 {
     // ¼g¤Jdata¥HByte¬°³æ¦ì, ¥Ñ©ó¥i¯à¼g¤J¬Y´X­Óbit,
     // ¦]¦¹»Ý­n¥ýÅª¨úByte, ¦A¥[¤W¼g¤Jdata¦X¦¨¥i¼g¤JªºByte
@@ -517,8 +516,9 @@ bool TEngineerForm::SetRead_DG(TLUT * Addr_LUT, int **DG_table, int LUT_Nbr, boo
     }
     delete[]read_data_C;
 
-    if (ok == 0)
+    if (ok == 0) {
 	return 0;
+    }
     return 1;
 }
 

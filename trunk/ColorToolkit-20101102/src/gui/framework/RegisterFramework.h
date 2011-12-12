@@ -31,7 +31,8 @@
   但其中ComboBox/ScrollBar需要透過Label得到Reg Name
   Checkbox和LabelEdit自帶Reg Name
 
-  原本的想法是從ComboBox/ScrollBar從Label取得Reg Name後就直接繫結事件處理就好
+  原本的想法:
+  從ComboBox/ScrollBar從Label取得Reg Name後就直接繫結事件處理就好
   但是沒有address如何繫結...
   繫結的方法分為兩種 1.產生新類別把RegisterType跟UI綁再一起
   2.利用Map把兩者綁在一起~
@@ -39,12 +40,19 @@
   那就直接去跟Map問候就好啦!
 
   目前的想法為:
-  一個RegisterFramework的Class統整 RegisterType和UI的繫結
+  一個RegisterFramework的Class統整
+  1.UI和Regname的繫結
+  2.Regname和RegisterType的繫結
+  3.事件的處理
   RegisterType包括BitRegister和LUTRegister
-  只要透過 RegisterFramework.bind("reg name",CheckBox) <=透過RegisterFramework"大部分"可以自動做掉
-  和 RegisterFramework.bindComboBox("reg name","option1","option2"...)
+  手動繫結透過 RegisterFramework.bind("reg name",CheckBox) <=其實透過RegisterFramework"大部分"可以自動做掉
+  和 RegisterFramework.bindComboBox("reg name","option1","option2"...) <=建議在UI Designer上處理比較快
   兩隻函式就可以繫結 register<=>UI.
   但是為了更快的處理, RegisterFramework.scanUI(TForm * form)是最好的
+
+  1212想法更新:
+  UI->Register Name
+  Rigister Name->Register Type
 
   事件處理:
   CheckBox: OnClick
@@ -52,17 +60,57 @@
   LabeledEdit: OnKeyPress
   ScrollBar: OnChange
 
+
 */
 namespace gui {
     namespace framework {
+	class RegisterType;
+	class BitRegister;
+	class LUTRegister;
+	class RegisterType;
+    };
+};
+
+	//=====================================================================
+	// 為了方便使用的巨集及typedef
+	//=====================================================================
+typedef bptr < gui::framework::RegisterType > RegisterType_ptr;
+#define nil_RegisterType_ptr RegisterType_ptr((RegisterType *) NULL)
+typedef bptr < gui::framework::BitRegister > BitRegister_ptr;
+typedef bptr < gui::framework::LUTRegister > LUTRegister_ptr;
+
+typedef std::map < const std::string, RegisterType_ptr > RegisterTypeMap;
+typedef bptr < RegisterTypeMap > RegisterTypeMap_ptr;
+#define nil_RegisterTypeMap_ptr RegisterTypeMap_ptr((RegisterTypeMap *) NULL)
+	//=====================================================================
+
+namespace gui {
+    namespace framework {
 	using namespace std;
+
+	enum TypeID {
+	    Bit, Lut
+	};
+
+	/*
+	   所有Register Type的老爹
+	 */
 	class RegisterType {
 	    friend class RegisterFramework;
+	  private:
+	    RegisterType();
+	    OnChangeFunction originalOnChangeFunc;
+	    OnKeyPressFunction originalOnKeyPressFunc;
 	  protected:
-	     std::string regname;
+	    std::string regname;
 	    TControl *control;
+	    TypeID typeID;
+	    RegisterType(std::string regname, TypeID typeID);
 	  public:
-	     RegisterType(std::string regname);
+	    RegisterType(std::string regname);
+	    //__property OnChangeFunction OriginalOnChangeFunc = { write = originalOnChangeFunc };
+	    //__property OnKeyPressFunction OriginalOnKeyPressFunc = { write = originalOnKeyPressFunc
+	    //};
 	};
 
 
@@ -72,8 +120,8 @@ namespace gui {
 	    int byteCount;
 	    int_array regData;
 	  public:
-	     BitRegister(std::string regname, int n, ...);
-	     BitRegister(std::string regname, int_vector_ptr intVector);
+	    BitRegister(std::string regname, int n, ...);
+	    BitRegister(std::string regname, int_vector_ptr intVector);
 	    int getAddress(int n);
 	    int getBit(int n);
 	    int getLength(int n);
@@ -82,19 +130,15 @@ namespace gui {
 
 
 	class LUTRegister:public RegisterType {
+	  public:
+	    LUTRegister(std::string regname, int_vector_ptr intVector);
 	};
 
-	typedef bptr < RegisterType > RegisterType_ptr;
-#define nil_RegisterType_ptr RegisterType_ptr((RegisterType *) NULL)
-	typedef bptr < BitRegister > BitRegister_ptr;
-	typedef bptr < LUTRegister > LUTRegister_ptr;
 
-	typedef std::map < const std::string, RegisterType_ptr > RegisterTypeMap;
-	typedef bptr < RegisterTypeMap > RegisterTypeMap_ptr;
-#define nil_RegisterTypeMap_ptr RegisterTypeMap_ptr((RegisterTypeMap *) NULL)
 
 	/*
 	   regname->Register
+	   此物件建立Register Type和tcon.ini的關係
 	 */
 	class RegisterMap {
 	  private:
@@ -104,47 +148,68 @@ namespace gui {
 	    int_vector_ptr getIntVector(std::string text);
 	    RegisterType_ptr getRegister(std::string regname, int_vector_ptr intVector);
 	  public:
-	     RegisterMap(std::string filename);
+	    RegisterMap(std::string filename);
 	    RegisterType_ptr getRegister(std::string regname);
 	};
 
 	typedef bptr < RegisterMap > RegisterMap_ptr;
+	typedef std::map < TControl *, std::string > TControl2RegNameMap;
+#define   TCtrl2RegNameMap_ptr bptr<TControl2RegNameMap>
 
 	class RegisterFramework {
 	  private:
-	    TControlVecMap_ptr childmap;
+	    TControlVecMap childmap;	//parent->child
+	    TControl2RegNameMap ctrl2nameMap;	//TControl->Register Name
+	    RegisterMap_ptr registerMap;
+
 	    TControl_vector_ptr labelVector;
 	    TControl_vector_ptr statictextVector;
 	    TControl_vector_ptr checkVector;
 	    TControl_vector_ptr editVector;
-	    RegisterMap_ptr registerMap;
-	     gui::util::MultiUIBinder binder;
+
+	    gui::util::MultiUIBinder binder;
 
 	    void scanChild(TWinControl * ctrl);
+	    //=================================================================
+	    // process TControl(s)
+	    //=================================================================
 	    void processLabel(TControl_vector_ptr labelVector);
 	    void processStaticText(TControl_vector_ptr statictextVector);
 	    void processSingleTControl(TControl_vector_ptr vector);
+	    //=================================================================
 	    void init();
 	    static TControl_vector_ptr findSameTop(TControl_vector_ptr vector, TControl * find);
-
+	    static TControl_vector_ptr findSameTop(TControl_vector_ptr vector, TControl * find,
+						   bool loose);
+	    //=================================================================
+	    //event handler
+	    //=================================================================
 	    void __fastcall onClick(TObject * Sender);	//check/combo
 	    void __fastcall onKeyPress(TObject * Sender, char &Key);	//edit label
 	    void __fastcall onChange(TObject * Sender);	//scroll bar
+	    void processOnChange(TScrollBar * scrollBar, RegisterType_ptr reg);
+	    void processOnClick(TCheckBox * checkBox, RegisterType_ptr reg);
+	    void processOnClick(TComboBox * comboBox, RegisterType_ptr reg);
+	    void simpleEventHandler(std::string regname, TObject * sender, char &ke);
+	    //=================================================================
 	  public:
 	    void bindComboBox(const string & regname, int n, ...);
 	    void bind(const string & regname, TControl * control);
 	    void scanUI(TForm * form);
-	     RegisterFramework();
-	     RegisterFramework(std::string filename);
+	    RegisterFramework();
+	    RegisterFramework(std::string filename);
 	    void active(TObject * sender);
-	    //void resetRegisterMap();
 	    void setRegisterFilename(std::string filename);
 	    static String NON_BIND;
 	};
 
+	class IOInterface {
 
+	};
     };
 };
+
+
 
 #endif
 
