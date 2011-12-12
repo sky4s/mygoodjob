@@ -58,7 +58,7 @@ int TBit4::set(int _B1_addr, int _b1_addr, int _b1_num,
     b_num = Byte1.BitNum() + Byte2.BitNum() + Byte3.BitNum() + Byte4.BitNum();
     divide1 = pow(2, Byte2.BitNum() + Byte3.BitNum() + Byte4.BitNum());
     divide2 = pow(2, Byte3.BitNum() + Byte4.BitNum());
-    divide2 = pow(2, Byte4.BitNum());
+    divide3 = pow(2, Byte4.BitNum());
     name = _name;
     return 1;
 }
