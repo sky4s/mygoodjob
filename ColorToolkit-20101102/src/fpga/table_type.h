@@ -52,20 +52,22 @@ class ReadWrite_LUT {
 bool ReadWrite_LUT::Read_LUT(TLUT Addr_LUT, IntTbl & Out, ByteTbl In)
 {
     bool result = false;
-    if (Addr_LUT.BitNum() == 8) {
-	result = Read_LUT8(Out, In, Addr_LUT.Type());
-    } else if (Addr_LUT.BitNum() == 4) {
-	result = Read_LUT4(Out, In, Addr_LUT.Type());
-    } else if (Addr_LUT.BitNum() == 5) {	// 201007
-	result = Read_LUT5(Out, In, Addr_LUT.Type());
-    } else if (Addr_LUT.BitNum() == 6) {
-	result = Read_LUT6(Out, In, Addr_LUT.Type());
-    } else if (Addr_LUT.BitNum() == 10) {
-	result = Read_LUT10(Out, In, Addr_LUT.Type());
-    } else if (Addr_LUT.BitNum() == 12) {
-	result = Read_LUT12(Out, In, Addr_LUT.Type());
-    } else if (Addr_LUT.BitNum() == 16) {
-	result = Read_LUT16(Out, In, Addr_LUT.Type());
+    int bitNum = Addr_LUT.BitNum();
+    int type = Addr_LUT.Type();
+    if (bitNum == 8) {
+	result = Read_LUT8(Out, In, type);
+    } else if (bitNum == 4) {
+	result = Read_LUT4(Out, In, type);
+    } else if (bitNum == 5) {	// 201007
+	result = Read_LUT5(Out, In, type);
+    } else if (bitNum == 6) {
+	result = Read_LUT6(Out, In, type);
+    } else if (bitNum == 10) {
+	result = Read_LUT10(Out, In, type);
+    } else if (bitNum == 12) {
+	result = Read_LUT12(Out, In, type);
+    } else if (bitNum == 16) {
+	result = Read_LUT16(Out, In, type);
     } else {
 	Out.Tbl = NULL;
 	return false;
@@ -76,20 +78,22 @@ bool ReadWrite_LUT::Read_LUT(TLUT Addr_LUT, IntTbl & Out, ByteTbl In)
 bool ReadWrite_LUT::Write_LUT(TLUT Addr_LUT, ByteTbl & Out, IntTbl In)
 {
     bool result = false;
-    if (Addr_LUT.BitNum() == 8) {
-	result = Write_LUT8(Out, In, Addr_LUT.Type());
-    } else if (Addr_LUT.BitNum() == 4) {
-	result = Write_LUT4(Out, In, Addr_LUT.Type());
-    } else if (Addr_LUT.BitNum() == 5) {	// 201007
-	result = Write_LUT5(Out, In, Addr_LUT.Type());
-    } else if (Addr_LUT.BitNum() == 6) {
-	result = Write_LUT6(Out, In, Addr_LUT.Type());
-    } else if (Addr_LUT.BitNum() == 10) {
-	result = Write_LUT10(Out, In, Addr_LUT.Type());
-    } else if (Addr_LUT.BitNum() == 12) {
-	result = Write_LUT12(Out, In, Addr_LUT.Type());
-    } else if (Addr_LUT.BitNum() == 16) {
-	result = Write_LUT16(Out, In, Addr_LUT.Type());
+    int bitNum = Addr_LUT.BitNum();
+    int type = Addr_LUT.Type();
+    if (bitNum == 8) {
+	result = Write_LUT8(Out, In, type);
+    } else if (bitNum == 4) {
+	result = Write_LUT4(Out, In, type);
+    } else if (bitNum == 5) {	// 201007
+	result = Write_LUT5(Out, In, type);
+    } else if (bitNum == 6) {
+	result = Write_LUT6(Out, In, type);
+    } else if (bitNum == 10) {
+	result = Write_LUT10(Out, In, type);
+    } else if (bitNum == 12) {
+	result = Write_LUT12(Out, In, type);
+    } else if (bitNum == 16) {
+	result = Write_LUT16(Out, In, type);
     } else {
 	Out.Tbl = NULL;
 	return false;

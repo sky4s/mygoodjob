@@ -11,6 +11,20 @@
 #ifndef EngineeringH
 #define EngineeringH
 //---------------------------------------------------------------------------
+
+
+
+
+#include "Unit1.h"
+
+//C系統文件
+#include <math.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
+//C++系統文件
+
+//vcl庫頭文件
 #include <Classes.hpp>
 #include <Controls.hpp>
 #include <StdCtrls.hpp>
@@ -22,17 +36,17 @@
 #include <jpeg.hpp>
 #include <Graphics.hpp>
 #include <Dialogs.hpp>
-#include <math.h>
-#include <stdio.h>
-#include <stdlib.h>
 #include <String.h>
 #include <Dialogs.hpp>
 #include <windows.h>
-#include <time.h>
-#include "Unit1.h"
+//其他庫頭文件
+
+//本項目內頭文件
+
+//本項目內gui頭文件
+#include <gui/framework/RegisterFramework.h>
 #include <fpga/gui_class.h>
 #include "table_type.h"
-
 //---------------------------------------------------------------------------
 /*=========================================================================
 //   DCR table reverse at 20090804 by lynnelin
@@ -195,23 +209,27 @@ class TEngineerForm:public TForm {
     //=========================================================================
     // public io function
     //=========================================================================
-    //for byte
-    bool SetWrite_Byte(TBit Addr_Bit, int set_val);
-    bool SetRead_Byte(TBit Addr_Bit, unsigned char *read_val);
+    //for byte, 只有TBit, 其他type需要手動拆回TBit才能進行rw
+    bool SetWrite_Byte(TBit & Addr_Bit, int set_val);
+    bool SetRead_Byte(TBit & Addr_Bit, unsigned char *read_val);
+    //modified by skyforce
     unsigned char readByte(TBit & Addr_Bit);
 
     //for lut
+    //write只有用到TLUT撈meta, 實際寫入的資料是write table
     bool SetWrite_PG(TLUT Addr_LUT, int *write_table, bool IsChkSum);
     bool SetWrite_PG(TLUT Addr_LUT, int *write_table, bool IsChkSum, bool MSB_first);
+    //read到table去
     bool SetRead_PG(TLUT Addr_LUT, int *table, bool IsChkSum);
 
+    //
     bool SetRead_DG(TLUT * Addr_LUT, int **DG_table, int LUT_Nbr, bool IsChkSum);
     bool SetWrite_DG(TLUT * Addr_LUT, int **lut, int LUT_Nbr, bool IsChkSum, bool MSB_first);
     bool SetWrite_DG(TLUT * Addr_LUT, int **lut, int LUT_Nbr, bool IsChkSum);
 
     //new io
-    int_array readRegister();
-    void writeRegister();
+    int_array readRegister(BitRegister_ptr reg);
+    //void writeRegister(BitRegister_ptr reg);
     int_array readLUT();
     void writeLUT();
     //=========================================================================]
