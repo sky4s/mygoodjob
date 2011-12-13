@@ -1212,8 +1212,8 @@ void __fastcall TMainForm::FormDestroy(TObject * Sender)
 {
     writeSetup();
     writeTCONCustomSetup();
-    if( null !=ca210) {
-        ca210->close();
+    if (null != ca210) {
+	ca210->close();
     }
 }
 
@@ -1491,6 +1491,15 @@ void __fastcall TMainForm::Edit_SourceCHKeyPress(TObject * Sender, char &Key)
 	    ca210Analyzer->setChannel(ch, id);
 	}
     }
+}
+
+//---------------------------------------------------------------------------
+
+
+
+void __fastcall TMainForm::TabSheet2Enter(TObject * Sender)
+{
+    Button_Connect->Enabled = true;
 }
 
 //---------------------------------------------------------------------------

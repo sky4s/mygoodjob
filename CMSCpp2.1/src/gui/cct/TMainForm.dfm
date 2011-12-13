@@ -1,6 +1,6 @@
 object MainForm: TMainForm
-  Left = 205
-  Top = 353
+  Left = 138
+  Top = 302
   Width = 769
   Height = 374
   Caption = 'CCT Adjustment v3'
@@ -865,7 +865,7 @@ object MainForm: TMainForm
           Top = 40
           Width = 65
           Height = 20
-          Hint = 'For Direct Gamma Use'
+          Hint = 'For "Direct Gamma" use'
           HelpType = htKeyword
           Caption = 'T-CON'
           ParentShowHint = False
@@ -878,7 +878,7 @@ object MainForm: TMainForm
           Top = 80
           Width = 186
           Height = 19
-          Hint = 'For De-Hook with NB Panel Use'
+          Hint = 'For De-Hook with NB panel use'
           Caption = 'PC w/T-CON (Avoid Hook /NB)'
           ParentShowHint = False
           ShowHint = True
@@ -891,11 +891,12 @@ object MainForm: TMainForm
           Top = 60
           Width = 178
           Height = 19
-          Hint = 'For De-Hook with NB Panel Use'
+          Hint = 'For feedback with no "Direct Gamma" use'
           Caption = 'PC w/T-CON (Feedback /TV)'
           ParentShowHint = False
           ShowHint = True
           TabOrder = 3
+          Visible = False
           OnClick = RadioButton_PCTCON_TVClick
         end
       end
@@ -1306,6 +1307,7 @@ object MainForm: TMainForm
     end
     object TabSheet2: TTabSheet
       Caption = 'T-CON Setup'
+      OnEnter = TabSheet2Enter
       OnExit = TabSheet2Exit
       object Panel_TCON: TPanel
         Left = 2
@@ -1465,7 +1467,7 @@ object MainForm: TMainForm
             Top = 13
             Width = 138
             Height = 21
-            ItemHeight = 0
+            ItemHeight = 13
             TabOrder = 0
             OnChange = ComboBox_TCONTypeChange
           end

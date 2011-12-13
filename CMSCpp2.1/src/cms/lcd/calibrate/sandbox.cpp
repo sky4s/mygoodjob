@@ -610,39 +610,7 @@ namespace cms {
 		//==============================================================
 		return result;
 	    };
-	    /*
-	       廢棄不用, 改採用DimTargetGenerator::getLinearTarget()
-	     */
-	    /*XYZ_vector_ptr AdvancedDGLutGenerator::
-	       getDimGammaTarget(double_vector_ptr
-	       luminanceGammaCurve,
-	       XYZ_ptr startXYZ, XYZ_ptr endXYZ, double dimGamma, int dimTurn) {
-	       //==============================================================
-	       // dim區段
-	       //==============================================================
-	       XYZ_vector_ptr result(new XYZ_vector(dimTurn));
-	       double_array dimstartValues = startXYZ->getxyValues();
-	       double_array dimendValues = endXYZ->getxyValues();
-	       double dimbase = dimTurn - 1;
-	       for (int x = 0; x < dimTurn; x++) {
-	       double normal = ((double) x) / dimbase;
-	       double gamma = Math::pow(normal, dimGamma) * dimbase;
-	       //在CIExy上線性變化
-	       double u = Interpolation::linear(0, dimbase,
-	       dimendValues[0],
-	       dimstartValues[0],
-	       gamma);
-	       double v = Interpolation::linear(0, dimbase,
-	       dimendValues[1],
-	       dimstartValues[1],
-	       gamma);
-	       int index = dimbase - x;
-	       double Y = (*luminanceGammaCurve)[index];
-	       (*result)[index] = getTargetXYZ(u, v, Y);
-	       }
-	       //==============================================================
-	       return result;
-	       }; */
+
 	    /*
 	       luminanceGammaCurve: 目標gamma curve
 	       startXYZ: 起始XYZ
@@ -801,37 +769,6 @@ namespace cms {
 		getLinearTarget(XYZ_ptr startXYZ, XYZ_ptr endXYZ,
 				double_vector_ptr luminanceGammaCurve, Domain domain) {
 		return getTarget(startXYZ, endXYZ, luminanceGammaCurve, domain, 1);
-		/*int size = luminanceGammaCurve->size();
-		   double_array startuvValues;
-		   double_array enduvValues;
-		   switch (domain) {
-		   case CIExy:
-		   startuvValues = startXYZ->getxyValues();
-		   enduvValues = endXYZ->getxyValues();
-		   break;
-		   case CIEuv:
-		   startuvValues = startXYZ->getuvValues();
-		   enduvValues = endXYZ->getuvValues();
-		   break;
-		   case CIEuvPrime:
-		   startuvValues = startXYZ->getuvPrimeValues();
-		   enduvValues = endXYZ->getuvPrimeValues();
-		   break;
-		   };
-		   XYZ_vector_ptr result(new XYZ_vector(size));
-		   for (int x = 0; x < size; x++) {
-		   //在uv'上線性變化
-		   double u = Interpolation::linear(0, size - 1,
-		   startuvValues[0],
-		   enduvValues[0], x);
-		   double v = Interpolation::linear(0, size - 1, startuvValues[1],
-		   enduvValues[1], x);
-		   double Y = (*luminanceGammaCurve)[x];
-
-		   (*result)[x] = getTargetXYZ(u, v, Y);
-
-		   };
-		   return result; */
 	    }
 	    XYZ_vector_ptr DimTargetGenerator::getTarget(XYZ_ptr startXYZ, XYZ_ptr endXYZ,
 							 double_vector_ptr luminanceGammaCurve,

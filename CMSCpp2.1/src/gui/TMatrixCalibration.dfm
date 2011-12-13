@@ -1,6 +1,6 @@
 object MatrixCalibrationForm: TMatrixCalibrationForm
-  Left = 300
-  Top = 300
+  Left = 301
+  Top = 335
   Width = 538
   Height = 482
   Caption = 'Matrix Calibration'
@@ -103,7 +103,7 @@ object MatrixCalibrationForm: TMatrixCalibrationForm
       Left = 7
       Top = 39
       Width = 39
-      Height = 24
+      Height = 21
       ImeName = #26085#25991#36664#20837#31995#32113' (MS-IME2002)'
       TabOrder = 0
       Text = '255'
@@ -112,7 +112,7 @@ object MatrixCalibrationForm: TMatrixCalibrationForm
       Left = 7
       Top = 65
       Width = 39
-      Height = 24
+      Height = 21
       ImeName = #26085#25991#36664#20837#31995#32113' (MS-IME2002)'
       TabOrder = 1
       Text = '255'
@@ -121,7 +121,7 @@ object MatrixCalibrationForm: TMatrixCalibrationForm
       Left = 7
       Top = 91
       Width = 39
-      Height = 24
+      Height = 21
       ImeName = #26085#25991#36664#20837#31995#32113' (MS-IME2002)'
       TabOrder = 2
       Text = '255'
@@ -130,7 +130,7 @@ object MatrixCalibrationForm: TMatrixCalibrationForm
       Left = 78
       Top = 39
       Width = 40
-      Height = 24
+      Height = 21
       ImeName = #26085#25991#36664#20837#31995#32113' (MS-IME2002)'
       TabOrder = 3
       Text = '0'
@@ -139,7 +139,7 @@ object MatrixCalibrationForm: TMatrixCalibrationForm
       Left = 78
       Top = 65
       Width = 40
-      Height = 24
+      Height = 21
       ImeName = #26085#25991#36664#20837#31995#32113' (MS-IME2002)'
       TabOrder = 4
       Text = '0'
@@ -148,7 +148,7 @@ object MatrixCalibrationForm: TMatrixCalibrationForm
       Left = 78
       Top = 117
       Width = 40
-      Height = 24
+      Height = 21
       ImeName = #26085#25991#36664#20837#31995#32113' (MS-IME2002)'
       TabOrder = 5
       Text = '0'
@@ -157,7 +157,7 @@ object MatrixCalibrationForm: TMatrixCalibrationForm
       Left = 78
       Top = 91
       Width = 40
-      Height = 24
+      Height = 21
       ImeName = #26085#25991#36664#20837#31995#32113' (MS-IME2002)'
       TabOrder = 6
       Text = '0'
@@ -166,7 +166,7 @@ object MatrixCalibrationForm: TMatrixCalibrationForm
       Left = 124
       Top = 39
       Width = 39
-      Height = 24
+      Height = 21
       ImeName = #26085#25991#36664#20837#31995#32113' (MS-IME2002)'
       TabOrder = 7
       Text = '0'
@@ -175,7 +175,7 @@ object MatrixCalibrationForm: TMatrixCalibrationForm
       Left = 124
       Top = 65
       Width = 39
-      Height = 24
+      Height = 21
       ImeName = #26085#25991#36664#20837#31995#32113' (MS-IME2002)'
       TabOrder = 8
       Text = '0'
@@ -184,7 +184,7 @@ object MatrixCalibrationForm: TMatrixCalibrationForm
       Left = 124
       Top = 91
       Width = 39
-      Height = 24
+      Height = 21
       ImeName = #26085#25991#36664#20837#31995#32113' (MS-IME2002)'
       TabOrder = 9
       Text = '0'
@@ -193,7 +193,7 @@ object MatrixCalibrationForm: TMatrixCalibrationForm
       Left = 124
       Top = 117
       Width = 39
-      Height = 24
+      Height = 21
       ImeName = #26085#25991#36664#20837#31995#32113' (MS-IME2002)'
       TabOrder = 10
       Text = '0'
@@ -202,7 +202,7 @@ object MatrixCalibrationForm: TMatrixCalibrationForm
       Left = 169
       Top = 39
       Width = 40
-      Height = 24
+      Height = 21
       ImeName = #26085#25991#36664#20837#31995#32113' (MS-IME2002)'
       TabOrder = 11
       Text = '0'
@@ -211,7 +211,7 @@ object MatrixCalibrationForm: TMatrixCalibrationForm
       Left = 169
       Top = 65
       Width = 40
-      Height = 24
+      Height = 21
       ImeName = #26085#25991#36664#20837#31995#32113' (MS-IME2002)'
       TabOrder = 12
       Text = '0'
@@ -220,7 +220,7 @@ object MatrixCalibrationForm: TMatrixCalibrationForm
       Left = 169
       Top = 91
       Width = 40
-      Height = 24
+      Height = 21
       ImeName = #26085#25991#36664#20837#31995#32113' (MS-IME2002)'
       TabOrder = 13
       Text = '0'
@@ -229,7 +229,7 @@ object MatrixCalibrationForm: TMatrixCalibrationForm
       Left = 169
       Top = 117
       Width = 40
-      Height = 24
+      Height = 21
       ImeName = #26085#25991#36664#20837#31995#32113' (MS-IME2002)'
       TabOrder = 14
       Text = '0'
@@ -238,7 +238,7 @@ object MatrixCalibrationForm: TMatrixCalibrationForm
       Left = 273
       Top = 39
       Width = 59
-      Height = 24
+      Height = 21
       ImeName = #26085#25991#36664#20837#31995#32113' (MS-IME2002)'
       TabOrder = 15
       Text = '1'
@@ -247,7 +247,7 @@ object MatrixCalibrationForm: TMatrixCalibrationForm
       Left = 273
       Top = 65
       Width = 59
-      Height = 24
+      Height = 21
       ImeName = #26085#25991#36664#20837#31995#32113' (MS-IME2002)'
       TabOrder = 16
       Text = ' '
@@ -297,7 +297,7 @@ object MatrixCalibrationForm: TMatrixCalibrationForm
       Left = 39
       Top = 20
       Width = 27
-      Height = 24
+      Height = 21
       ImeName = #26085#25991#36664#20837#31995#32113' (MS-IME2002)'
       TabOrder = 0
       Text = '0'
@@ -306,7 +306,7 @@ object MatrixCalibrationForm: TMatrixCalibrationForm
       Left = 104
       Top = 20
       Width = 27
-      Height = 24
+      Height = 21
       ImeName = #26085#25991#36664#20837#31995#32113' (MS-IME2002)'
       TabOrder = 1
       Text = '99'
@@ -385,7 +385,6 @@ object MatrixCalibrationForm: TMatrixCalibrationForm
         Left = 163
         Top = 20
         Width = 39
-        Height = 24
       end
       inherited ComboBox_DisplayMode: TComboBox
         Left = 78
