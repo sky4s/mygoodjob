@@ -14,8 +14,7 @@
 namespace gui {
     namespace util {
 	using namespace std;
-	 UIValueSetter::UIValueSetter():filterFunction(0),
-	    originalOnChangeFunction(0) {
+	 UIValueSetter::UIValueSetter():filterFunction(0), originalOnChangeFunction(0) {
 	};
 	void UIValueSetter::setFilter(TextFilterIF_ptr filter) {
 	    this->filter = filter;
@@ -108,19 +107,31 @@ namespace gui {
 	//=====================================================================
 	MultiUIBinder::MultiUIBinder() {
 	};
-	void __fastcall MultiUIBinder::active(TObject * sender) {
+	void __fastcall MultiUIBinder::active0(TObject * sender, bool onKeyPress, char &key) {
 	    TControl *ctrl = dynamic_cast < TControl * >(sender);
 	    if (null != ctrl) {
 		Range range = setterMap.equal_range(ctrl);
-		for (SetterIterator i = range.first; i != range.second;
-		     ++i) {
+		for (SetterIterator i = range.first; i != range.second; ++i) {
 		    uiset_ptr setter = i->second;
-		    if (0 != setter->originalOnChangeFunction) {
-			setter->originalOnChangeFunction(sender);
+		    if (true == onKeyPress) {
+			if (0 != setter->originalOnKeyPressFunction) {
+			    setter->originalOnKeyPressFunction(sender, key);
+			}
+		    } else {
+			if (0 != setter->originalOnChangeFunction) {
+			    setter->originalOnChangeFunction(sender);
+			}
 		    }
+
 		    setter->set(ctrl);
 		}
 	    }
+	};
+	void __fastcall MultiUIBinder::active(TObject * sender) {
+	    active0(sender, false, ' ');
+	};
+	void __fastcall MultiUIBinder::activeWithOnKeyPress(TObject * sender, char &key) {
+	    active0(sender, true, key);
 	};
 	void MultiUIBinder::bind(TEdit * edit, TScrollBar * scrollBar) {
 	    uiset_ptr setter(new Edit2ScrollBarSetter(edit, scrollBar));
@@ -131,19 +142,15 @@ namespace gui {
 	    uiset_ptr setter(new Edit2EditSetter(edit1, edit2));
 	    bind(edit1, edit2, setter);
 	};
-	void MultiUIBinder::bind(TScrollBar * scrollBar1,
-				 TScrollBar * scrollBar2) {
+	void MultiUIBinder::bind(TScrollBar * scrollBar1, TScrollBar * scrollBar2) {
 	    using namespace std;
-	    uiset_ptr setter(new
-			     ScrollBar2ScrollBarSetter(scrollBar1,
-						       scrollBar2));
+	    uiset_ptr setter(new ScrollBar2ScrollBarSetter(scrollBar1, scrollBar2));
 	    bind(scrollBar1, scrollBar2, setter);
 	};
 	void MultiUIBinder::bind(TLabel * label, TScrollBar * scrollBar) {
 	    bind(nil_TextFilterIF_ptr, label, scrollBar);
 	};
-	void MultiUIBinder::bind(TextFilterIF_ptr filter, TLabel * label,
-				 TScrollBar * scrollBar) {
+	void MultiUIBinder::bind(TextFilterIF_ptr filter, TLabel * label, TScrollBar * scrollBar) {
 	    using namespace std;
 	    uiset_ptr setter(new Label2ScrollBarSetter(label, scrollBar));
 	    setter->setFilter(filter);
@@ -162,16 +169,13 @@ namespace gui {
 	    bind(label, scrollBar, setter);
 	};
 
-	void MultiUIBinder::bind(TStaticText * text,
-				 TScrollBar * scrollBar) {
+	void MultiUIBinder::bind(TStaticText * text, TScrollBar * scrollBar) {
 	    bind(nil_TextFilterIF_ptr, text, scrollBar);
 	};
 	void MultiUIBinder::bind(TextFilterIF_ptr filter,
-				 TStaticText * text,
-				 TScrollBar * scrollBar) {
+				 TStaticText * text, TScrollBar * scrollBar) {
 	    using namespace std;
-	    uiset_ptr setter(new
-			     StaticText2ScrollBarSetter(text, scrollBar));
+	    uiset_ptr setter(new StaticText2ScrollBarSetter(text, scrollBar));
 	    setter->setFilter(filter);
 	    setter->set(scrollBar);
 	    processOnChange(scrollBar, setter);
@@ -179,19 +183,16 @@ namespace gui {
 	};
 
 	void MultiUIBinder::bind(FilterFunction filterFunction,
-				 TStaticText * text,
-				 TScrollBar * scrollBar) {
+				 TStaticText * text, TScrollBar * scrollBar) {
 	    using namespace std;
-	    uiset_ptr setter(new
-			     StaticText2ScrollBarSetter(text, scrollBar));
+	    uiset_ptr setter(new StaticText2ScrollBarSetter(text, scrollBar));
 	    setter->setFilterFunction(filterFunction);
 	    setter->set(scrollBar);
 	    processOnChange(scrollBar, setter);
 	    bind(text, scrollBar, setter);
 	};
 
-	void MultiUIBinder::bind(TControl * ctrl1, TControl * ctrl2,
-				 uiset_ptr setter) {
+	void MultiUIBinder::bind(TControl * ctrl1, TControl * ctrl2, uiset_ptr setter) {
 	    setterMap.insert(make_pair(ctrl1, setter));
 	    setterMap.insert(make_pair(ctrl2, setter));
 	};
@@ -202,13 +203,29 @@ namespace gui {
 	    }
 	    return eraseCount;
 	};
-	void MultiUIBinder::processOnChange(TScrollBar * scrollBar,
-					    uiset_ptr setter) {
+       	/*void MultiUIBinder::processOnClick(TCheckBox * checkBox, uiset_ptr setter) {
+	    if (0 != checkBox->OnClick) {
+		setter->originalOnChangeFunction = checkBox->OnClick;
+	    }
+	    checkBox->OnClick = active;
+	};
+	void MultiUIBinder::processOnClick(TComboBox * comboBox, uiset_ptr setter) {
+	    if (0 != comboBox->OnClick) {
+		setter->originalOnChangeFunction = comboBox->OnClick;
+	    }
+	    comboBox->OnClick = active;
+	};
+	void MultiUIBinder::processOnKeyPress(TLabeledEdit * labeledEdit, uiset_ptr setter) {
+	    if (0 != labeledEdit->OnKeyPress) {
+		setter->originalOnKeyPressFunction = labeledEdit->OnKeyPress;
+	    }
+	    labeledEdit->OnKeyPress = activeWithOnKeyPress;
+	};*/
+	void MultiUIBinder::processOnChange(TScrollBar * scrollBar, uiset_ptr setter) {
 	    if (0 != scrollBar->OnChange) {
 		setter->originalOnChangeFunction = scrollBar->OnChange;
 	    }
 	    scrollBar->OnChange = active;
-
 	};
 
 	//=====================================================================
