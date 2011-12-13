@@ -19,8 +19,7 @@
 //本項目內頭文件
 #include <java/lang.h>
 
-typedef std::multimap < TControl *,
-    uiset_ptr >::const_iterator SetterIterator;
+typedef std::multimap < TControl *, uiset_ptr >::const_iterator SetterIterator;
 typedef std::pair < SetterIterator, SetterIterator > Range;
 
 namespace gui {
@@ -38,6 +37,7 @@ namespace gui {
 	    FilterFunction filterFunction;
 	  protected:
 	    OnChangeFunction originalOnChangeFunction;
+	    OnKeyPressFunction originalOnKeyPressFunction;
 	    UIValueSetter();
 	  public:
 	    virtual void set(TObject * sender) = 0;
@@ -70,8 +70,7 @@ namespace gui {
 	    TStaticText * text;
 	    TScrollBar *scrollBar;
 	  public:
-	    StaticText2ScrollBarSetter(TStaticText * text,
-				       TScrollBar * scrollBar);
+	    StaticText2ScrollBarSetter(TStaticText * text, TScrollBar * scrollBar);
 	    virtual void set(TObject * sender);
 	};
 
@@ -79,8 +78,7 @@ namespace gui {
 	  protected:
 	    TScrollBar * scrollBar1, *scrollBar2;
 	  public:
-	    ScrollBar2ScrollBarSetter(TScrollBar * scrollBar1,
-				      TScrollBar * scrollBar2);
+	    ScrollBar2ScrollBarSetter(TScrollBar * scrollBar1, TScrollBar * scrollBar2);
 	    virtual void set(TObject * sender);
 	};
 
@@ -96,7 +94,12 @@ namespace gui {
 	class MultiUIBinder {
 	  private:
 	    std::multimap < TControl *, uiset_ptr > setterMap;
+	    //void processOnClick(TCheckBox * checkBox, uiset_ptr setter);
+	    //void processOnClick(TComboBox * comboBox, uiset_ptr setter);
+	    //void processOnKeyPress(TLabeledEdit * labeledEdit, uiset_ptr setter);
 	    void processOnChange(TScrollBar * scrollBar, uiset_ptr setter);
+	    void __fastcall activeWithOnKeyPress(TObject * sender, char &key);
+	    void __fastcall active0(TObject * sender, bool onKeyPress, char &key);
 	  public:
 	    MultiUIBinder();
 	    void __fastcall active(TObject * sender);
@@ -105,23 +108,17 @@ namespace gui {
 	    void bind(TScrollBar * scrollBar1, TScrollBar * scrollBar2);
 
 	    void bind(TLabel * label, TScrollBar * scrollBar);
-	    void bind(TextFilterIF_ptr filter, TLabel * label,
-		      TScrollBar * scrollBar);
-	    //void bind(TLabel * label, TScrollBar * scrollBar, TextFilterIF_ptr filter);
-	    void bind(FilterFunction filterFunction, TLabel * label,
-		      TScrollBar * scrollBar);
+	    void bind(TextFilterIF_ptr filter, TLabel * label, TScrollBar * scrollBar);
+	    void bind(FilterFunction filterFunction, TLabel * label, TScrollBar * scrollBar);
 
 	    void bind(TStaticText * text, TScrollBar * scrollBar);
-	    void bind(TextFilterIF_ptr filter, TStaticText * text,
-		      TScrollBar * scrollBar);
-	    void bind(FilterFunction filterFunction, TStaticText * text,
-		      TScrollBar * scrollBar);
+	    void bind(TextFilterIF_ptr filter, TStaticText * text, TScrollBar * scrollBar);
+	    void bind(FilterFunction filterFunction, TStaticText * text, TScrollBar * scrollBar);
 
 	    /*
 	       提供custom的Setter定義
 	     */
-	    void bind(TControl * ctrl1, TControl * ctrl2,
-		      uiset_ptr setter);
+	    void bind(TControl * ctrl1, TControl * ctrl2, uiset_ptr setter);
 	    int loose(TControl * ctrl);
 
 
