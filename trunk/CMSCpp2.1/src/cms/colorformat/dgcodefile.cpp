@@ -347,7 +347,7 @@ namespace cms {
 	const string DGLutProperty::Native = "native";
 	const string DGLutProperty::Target = "target";
 	void DGLutProperty::store(DGLutFile & dgfile) const {
-	    dgfile.addProperty("cct product version", "3.2");
+	    dgfile.addProperty("cct product version", "3.3");
 	    //==================================================================
 	    // MeasureCondition
 	    //==================================================================

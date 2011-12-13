@@ -1,6 +1,6 @@
 object CCTLUTForm: TCCTLUTForm
-  Left = 347
-  Top = 327
+  Left = 232
+  Top = 280
   Width = 849
   Height = 407
   Caption = 'CCT LUT'
@@ -251,6 +251,7 @@ object CCTLUTForm: TCCTLUTForm
       Height = 17
       Caption = 'Absolute Gamma'
       TabOrder = 10
+      Visible = False
     end
   end
   object GroupBox3: TGroupBox
@@ -486,6 +487,7 @@ object CCTLUTForm: TCCTLUTForm
       Height = 19
       Caption = 'B Target intensity'
       TabOrder = 4
+      Visible = False
       OnClick = CheckBox_BTargetIntensityClick
     end
     object Edit_BTargetIntensity: TEdit
@@ -496,6 +498,7 @@ object CCTLUTForm: TCCTLUTForm
       Enabled = False
       TabOrder = 5
       Text = '100'
+      Visible = False
     end
     object CheckBox_RTargetIntensity: TCheckBox
       Left = 7
@@ -504,6 +507,7 @@ object CCTLUTForm: TCCTLUTForm
       Height = 19
       Caption = 'R Target intensity'
       TabOrder = 6
+      Visible = False
       OnClick = CheckBox_RTargetIntensityClick
     end
     object Edit_RTargetIntensity: TEdit
@@ -514,6 +518,7 @@ object CCTLUTForm: TCCTLUTForm
       Enabled = False
       TabOrder = 7
       Text = '100'
+      Visible = False
     end
   end
   object Button_MeaRun: TButton

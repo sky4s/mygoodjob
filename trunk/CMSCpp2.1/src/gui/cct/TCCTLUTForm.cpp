@@ -321,14 +321,13 @@ void __fastcall TCCTLUTForm::FormShow(TObject * Sender)
 	//=========================================================================
 	//=========================================================================
 
-	//=========================================================================
-	// multi gen
-	//=========================================================================
-	//CheckBox_MultiGen->Visible = true;
-	//Edit_MultiGenTimes->Visible = true;
-	//=========================================================================
 	CheckBox_MemoryMeasure->Visible = true;
 	RadioGroup_NormalCase->Visible = true;
+	CheckBox_AbsoluteGamma->Visible = true;
+	CheckBox_RTargetIntensity->Visible = true;
+	Edit_RTargetIntensity->Visible = true;
+	CheckBox_BTargetIntensity->Visible = true;
+	Edit_BTargetIntensity->Visible = true;
     }
 
     this->CheckBox_NewMethod->Checked = true;

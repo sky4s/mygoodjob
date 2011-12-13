@@ -177,6 +177,7 @@ class TMainForm:public TForm {
     void __fastcall Edit_AverageTimesChange(TObject * Sender);
     void __fastcall RadioButton_PCTCON_TVClick(TObject * Sender);
     void __fastcall Edit_SourceCHKeyPress(TObject * Sender, char &Key);
+    void __fastcall TabSheet2Enter(TObject * Sender);
   private:			// User declarations
     //==========================================================================
     // meter
