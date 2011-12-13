@@ -40,7 +40,7 @@ namespace cms {
 	//======================================================================
 	void CA210IntensityAnalyzer::init() {
 	    ca210api->setDisplayMode(Lvxy);
-	    ca210api->setChannelNO(0);
+	    //ca210api->setChannelNO(0);
 	    //Util::deleteExist(CA210DAT);
 	    //ca210api->copyToFile(CA210DAT);
 	};

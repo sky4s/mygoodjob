@@ -393,9 +393,9 @@ void TMainForm::initCA210Meter()
 	StatusBar1->Panels->Items[1]->Text = "CA-210 Connected!";
 
 	bptr < ca210api::CA210API > ca210api = getCA210()->getCA210API();
+	//取出原先的ch
 	long ch = ca210api->getChannelNO();
 	Edit_SourceCH->Text = ch;
-	//GroupBox_CHSetting->Visible = true;
 	GroupBox_CHSetting->Enabled = true;
 	getAnalyzer();
 
@@ -1212,6 +1212,9 @@ void __fastcall TMainForm::FormDestroy(TObject * Sender)
 {
     writeSetup();
     writeTCONCustomSetup();
+    if( null !=ca210) {
+        ca210->close();
+    }
 }
 
 //---------------------------------------------------------------------------
@@ -1389,6 +1392,7 @@ void __fastcall ProgressThread::Execute()
     }
 }
 
+//---------------------------------------------------------------------------
 /*
 CA-X10 init procedure
   FormActive
@@ -1406,11 +1410,12 @@ CA-X10 init procedure
         false:
                 initCA210Meter();
 */
-
+//---------------------------------------------------------------------------
 void __fastcall TMainForm::FormActivate(TObject * Sender)
 {
     if (true == linkCA210) {
 	if (connectCA210ByThread) {
+
 	    class CA210Thread:public TThread {
 	      protected:
 		void __fastcall Execute() {
