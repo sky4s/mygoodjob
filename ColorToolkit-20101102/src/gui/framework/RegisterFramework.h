@@ -158,15 +158,16 @@ namespace gui {
 
 	class RegisterFramework {
 	  private:
+	    //container
 	    TControlVecMap childmap;	//parent->child
 	    TControl2RegNameMap ctrl2nameMap;	//TControl->Register Name
 	    RegisterMap_ptr registerMap;
-
 	    TControl_vector_ptr labelVector;
 	    TControl_vector_ptr statictextVector;
 	    TControl_vector_ptr checkVector;
 	    TControl_vector_ptr editVector;
-
+            
+	    //ui data binding
 	    gui::util::MultiUIBinder binder;
 
 	    void scanChild(TWinControl * ctrl);
@@ -182,7 +183,7 @@ namespace gui {
 	    static TControl_vector_ptr findSameTop(TControl_vector_ptr vector, TControl * find,
 						   bool loose);
 	    //=================================================================
-	    //event handler
+	    // event handler
 	    //=================================================================
 	    void __fastcall onClick(TObject * Sender);	//check/combo
 	    void __fastcall onKeyPress(TObject * Sender, char &Key);	//edit label
