@@ -152,6 +152,8 @@ class TFunctionForm1:public TForm {
     void __fastcall rg_od_table_typeClick(TObject * Sender);
 
   private:			// User declarations
+    static bool DG_IsChkSum;
+    static bool OD_IsChkSum;
   public:			// User declarations
      __fastcall TFunctionForm1(TComponent * Owner);
 

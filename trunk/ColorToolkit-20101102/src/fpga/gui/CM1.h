@@ -236,7 +236,8 @@ class TCMForm1:public TForm {
     void scrollBarOffsetChange(int index, bool w255Fix, TEdit * e[9],
 			       TScrollBar * scroll, TStaticText * text);
     void storeCMToTCON(int index, TEdit * e[9], TScrollBar * offset);
-    void loadCMFromTCON(int index, TEdit * e[9], TStaticText * offset);
+    //void loadCMFromTCON(int index, TEdit * e[9], TStaticText * offset);
+    void loadCMFromTCON(int index, TEdit * e[9], TScrollBar * offset);
     void storeCMToFile(String filename, TEdit * e[9], TStaticText * offset);
     void loadCMFromFile(String filename, OffsetType offsetType,
 			float CM[3][3], TEdit * CMEditArray[9],

@@ -212,12 +212,13 @@ void __fastcall TCMForm1::Btn_CM_reloadClick(TObject * Sender)
     for (int i = 0; i < OCM->CMChkBox_Nbr; i++) {
 	if (CMChkB[i]->Chkb->Visible == true) {
 	    EngineerForm->SetRead_Byte(CMChkB[i]->Addr, &read_val);
-	    if (read_val == 1)
+	    if (read_val == 1) {
 		CMChkB[i]->Chkb->Checked = 1;
-	    else if (read_val == 0)
+	    } else if (read_val == 0) {
 		CMChkB[i]->Chkb->Checked = 0;
-	    else
+	    } else {
 		ShowMessage("CM CheckBox read error:" + IntToStr(read_val));
+	    }
 	}
     }
     for (int i = 0; i < OCM->CMCboBox_Nbr; i++) {
@@ -281,7 +282,7 @@ int TCMForm1::MemToFloatOfsForm(int ofs)
 }
 
 //---------------------------------------------------------------------------
-void TCMForm1::loadCMFromTCON(int index, TEdit * e[9], TStaticText * offset)
+void TCMForm1::loadCMFromTCON(int index, TEdit * e[9], TScrollBar * offset)
 {
 
     if (CM_addr[index].LutNum() != 9) {	//Check CM1 table number
@@ -317,13 +318,14 @@ void TCMForm1::loadCMFromTCON(int index, TEdit * e[9], TStaticText * offset)
     }
 
     int sb_position = MemToFloatOfsForm(ofs[0]);
-    sb_ofs1->Position = sb_position;
+    /*sb_ofs1->Position = sb_position;
 
-    float s = parsePosition(sb_position);
+       float s = parsePosition(sb_position);
 
-    char buf[6];
-    sprintf(buf, "%3.2f", s);
-    offset->Caption = (AnsiString) buf;
+       char buf[6];
+       sprintf(buf, "%3.2f", s);
+       offset->Caption = (AnsiString) buf; */
+    offset->Position = sb_position;
 
     delete[]CM;
     delete[]ofs;
@@ -333,7 +335,7 @@ void TCMForm1::loadCMFromTCON(int index, TEdit * e[9], TStaticText * offset)
 void __fastcall TCMForm1::btn_CM1_ReadClick(TObject * Sender)
 {
     btn_CM1_Read->Enabled = false;
-    loadCMFromTCON(0, CM1EditArray, st_ofs1);
+    loadCMFromTCON(0, CM1EditArray, sb_ofs1);
     btn_CM1_Read->Enabled = true;
 }
 
@@ -341,7 +343,7 @@ void __fastcall TCMForm1::btn_CM1_ReadClick(TObject * Sender)
 void __fastcall TCMForm1::btn_CM2_ReadClick(TObject * Sender)
 {
     btn_CM2_Read->Enabled = false;
-    loadCMFromTCON(1, CM2EditArray, st_ofs2);
+    loadCMFromTCON(1, CM2EditArray, sb_ofs2);
     btn_CM2_Read->Enabled = true;
 }
 
@@ -350,7 +352,7 @@ void __fastcall TCMForm1::btn_CM2_ReadClick(TObject * Sender)
 void __fastcall TCMForm1::btn_CM3_ReadClick(TObject * Sender)
 {
     btn_CM3_Read->Enabled = false;
-    loadCMFromTCON(2, CM3EditArray, st_ofs3);
+    loadCMFromTCON(2, CM3EditArray, sb_ofs3);
     btn_CM3_Read->Enabled = true;
 }
 

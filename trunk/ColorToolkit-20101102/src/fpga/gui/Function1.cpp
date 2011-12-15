@@ -11,9 +11,10 @@
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
 #pragma resource "*.dfm"
-static bool DG_IsChkSum = true;
-static bool OD_IsChkSum = true;
-//extern String TCON_DEV;
+//static bool DG_IsChkSum = true;       //(1 == AbstractBase::getValueFromFile("DG_HAS_CHECK_SUM"));
+//static bool OD_IsChkSum = true;
+bool TFunctionForm1::DG_IsChkSum = (1 == AbstractBase::getValueFromFile("DG_HAS_CHECK_SUM"));
+bool TFunctionForm1::OD_IsChkSum = true;
 //---------------------------------------------------------------------------
 __fastcall TFunctionForm1::TFunctionForm1(TComponent * Owner)
 :TForm(Owner)
@@ -668,7 +669,7 @@ void __fastcall TFunctionForm1::btn_dg_loadClick(TObject * Sender)
     if (LoadDialog->Execute()) {
 	Fpath = LoadDialog->FileName;
 	String *DG_LUT = NULL;
-        //從檔案讀進來, 跟EngineerForm何關?
+	//從檔案讀進來, 跟EngineerForm何關?
 	DG_LUT = EngineerForm->Load_file(Fpath, Addr_DgLUT[0].LutNum() * OFunc->DGLUT_Nbr);
 	if (DG_LUT == NULL) {
 	    ShowMessage("Load file fail!");
@@ -677,7 +678,7 @@ void __fastcall TFunctionForm1::btn_dg_loadClick(TObject * Sender)
 
 	for (int c = 0; c < OFunc->DGLUT_Nbr; c++) {
 	    for (int r = 0; r < Addr_DgLUT[0].LutNum(); r++) {
-            //轉到UI去
+		//轉到UI去
 		sg_dg->Cells[c + 1][r + 1] = StrToInt(DG_LUT[r * OFunc->DGLUT_Nbr + c]);
 	    }
 	}

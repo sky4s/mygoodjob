@@ -155,6 +155,7 @@ class AbstractBase {
     static AbstractAddress_ptr getAddress(std::string tag);
     static AbstractAddressType *getAddress2(std::string tag);
     static int_vector_ptr getValuesFromFile(std::string tag);
+    static int getValueFromFile(std::string tag);
     static bool hasValueInFile(std::string tag);
     static void resetAddressMap();
     static StringMap_ptr getStringMap(std::string filename);
