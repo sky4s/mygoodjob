@@ -134,8 +134,9 @@ void __fastcall TSharpnessForm1::FormCreate(TObject * Sender)
     cb = OSP->SetChkBx();
 
     ChkB = new _CHKB *[OSP->SPChkBox_Nbr];
-    for (int i = 0; i < OSP->SPChkBox_Nbr; i++)
+    for (int i = 0; i < OSP->SPChkBox_Nbr; i++) {
 	ChkB[i] = new _CHKB;
+    }
 
     ChkB[0]->Chkb = CheckBox1;
     ChkB[1]->Chkb = CheckBox2;
@@ -542,12 +543,14 @@ void __fastcall TSharpnessForm1::btn_sp_LoadClick(TObject * Sender)
 {
     Clear_LUT(true);
 
-    if (!OpenDialog1->Execute())
+    if (!OpenDialog1->Execute()) {
 	return;
+    }
     SP_LUT_FuncEnable(0);
     String Fpath = OpenDialog1->FileName;
-    if (!Load_SP(Fpath))
+    if (!Load_SP(Fpath)) {
 	Application->MessageBox("Open Sharpness File Failed.", "Error Message", 0);
+    }
 
     sb_softgainChange(Sender);
     SP_LUTDblClick(Sender);
@@ -620,8 +623,9 @@ bool TSharpnessForm1::Load_SP(String Fpath)
 
 void __fastcall TSharpnessForm1::btn_sp_SaveClick(TObject * Sender)
 {
-    if (!SaveDialog1->Execute())
+    if (!SaveDialog1->Execute()) {
 	return;
+    }
     SP_LUT_FuncEnable(0);
     String Fpath = SaveDialog1->FileName;
     FILE *fptr = fopen(Fpath.c_str(), "w");
@@ -634,30 +638,38 @@ void __fastcall TSharpnessForm1::btn_sp_SaveClick(TObject * Sender)
     str[4] = "GLT_STR";		//hardwre gain
 
     AnsiString input_str[5];
-    for (int i = 0; i <= 3; i++)
+    for (int i = 0; i <= 3; i++) {
 	input_str[i] = "0";
-    input_str[4] = "1";
+    }
+    //input_str[4] = "1";
+    input_str[0] = CheckBox3->Checked ? "1" : "0";
+    input_str[1] = ScrollBar1->Position;
+    input_str[2] = ScrollBar2->Position;
+    input_str[3] = ScrollBar3->Position;
+    float val = (float) ScrollBar4->Position * 4;
+    input_str[4] = FloatToStr(val);
 
-    for (int i = 0; i < OSP->SPChkBox_Nbr; i++) {
-	if (SameText(ChkB[i]->Addr.Name(), str[0])) {
-	    input_str[0] = (ChkB[i]->Chkb->Checked ? "1" : "0");
-	    break;
-	}
-    }
-    for (int j = 0; j <= 3; j++)
-	for (int i = 0; i < OSP->SPScrollBar_Nbr; i++) {
-	    if (SameText(ScrlB[i]->Addr.Name(), str[j])) {
-		input_str[j] = ScrlB[i]->ScrlB->Position;
-		break;
-	    }
-	}
-    for (int i = 0; i < OSP->SPScrollBar_Nbr; i++) {
-	if (SameText(ScrlB[i]->Addr.Name(), str[4])) {
-	    float val = (float) ScrlB[i]->ScrlB->Position * 4;
-	    input_str[4] = FloatToStr(val);
-	    break;
-	}
-    }
+    /*for (int i = 0; i < OSP->SPChkBox_Nbr; i++) {
+       if (SameText(ChkB[i]->Addr.Name(), str[0])) {
+       input_str[0] = (ChkB[i]->Chkb->Checked ? "1" : "0");
+       break;
+       }
+       }
+       for (int j = 1; j <= 3; j++) {
+       for (int i = 0; i < OSP->SPScrollBar_Nbr; i++) {
+       if (SameText(ScrlB[i]->Addr.Name(), str[j])) {
+       input_str[j] = ScrlB[i]->ScrlB->Position;
+       break;
+       }
+       }
+       }
+       for (int i = 0; i < OSP->SPScrollBar_Nbr; i++) {
+       if (SameText(ScrlB[i]->Addr.Name(), str[4])) {
+       float val = (float) ScrlB[i]->ScrlB->Position * 4;
+       input_str[4] = FloatToStr(val);
+       break;
+       }
+       } */
     float input_str5 = StrToFloat(sb_softgain->Position) / 10;
 
     fprintf(fptr, "%s\t%s\t%s\t%s\t%s\t%f\n", input_str[0], input_str[1], input_str[2],

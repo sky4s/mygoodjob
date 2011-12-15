@@ -161,12 +161,12 @@ namespace gui {
 	    //container
 	    TControlVecMap childmap;	//parent->child
 	    TControl2RegNameMap ctrl2nameMap;	//TControl->Register Name
-	    RegisterMap_ptr registerMap;
+	    RegisterMap_ptr registerMap;	//©Ó¸ütcon.iniªº¤º®e
 	    TControl_vector_ptr labelVector;
 	    TControl_vector_ptr statictextVector;
 	    TControl_vector_ptr checkVector;
 	    TControl_vector_ptr editVector;
-            
+
 	    //ui data binding
 	    gui::util::MultiUIBinder binder;
 

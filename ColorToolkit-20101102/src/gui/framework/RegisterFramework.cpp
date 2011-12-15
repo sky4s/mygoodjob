@@ -134,6 +134,7 @@ namespace gui {
 	//=====================================================================
 	String RegisterFramework::NON_BIND = "Non-Bind";
 	void RegisterFramework::init() {
+	    //¥þ³¡²M°®²b
 	    childmap.clear();
 	    ctrl2nameMap.clear();
 	    labelVector = TControl_vector_ptr(new TControl_vector());

@@ -10,8 +10,8 @@ int_vector_ptr AbstractBase::getValuesFromFile(std::string tag)
     if (nil_StringMap_ptr == map) {
 	map = getStringMap(TMainForm::AddressFile);
     }
-    if (tag.length() == 0 || tag == "_NULL") {
-	return nil_int_vector;
+    if (null == map || tag.length() == 0 || tag == "_NULL") {
+	return nil_int_vector_ptr;
     }
     const std::string text = (*map)[tag];
     if (text.size() == 0) {
@@ -28,10 +28,22 @@ int_vector_ptr AbstractBase::getValuesFromFile(std::string tag)
     return values;
 };
 
+int AbstractBase::getValueFromFile(std::string tag)
+{
+    int_vector_ptr values = getValuesFromFile(tag);
+    if (nil_int_vector_ptr == values) {
+	return -1;
+    } else if (1 == values->size()) {
+	return (*values)[0];
+    } else {
+	throw java::lang::IllegalStateException("");
+    }
+};
+
 bool AbstractBase::hasValueInFile(std::string tag)
 {
 
-    int_vector_ptr values = getValuesFromFile("FPGA");
+    int_vector_ptr values = getValuesFromFile(tag);
     if (null != values) {
 	int result = (*values)[0];
 	return 0 != result;
