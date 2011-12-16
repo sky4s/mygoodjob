@@ -145,6 +145,7 @@ class AbstractBase {
     static StringMap_ptr aliasNameMap;
     static void initAliasNameMap();
     static int_vector_ptr getRegisterIntVector(string_vector_ptr registerTokens);
+    static std::string AliasFilename;
   protected:
 
     static bool setAddress(AbstractAddressType * address, std::string text);

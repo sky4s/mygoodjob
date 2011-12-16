@@ -1,6 +1,6 @@
 object SharpnessForm1: TSharpnessForm1
-  Left = 360
-  Top = 170
+  Left = 241
+  Top = 146
   Width = 654
   Height = 644
   Caption = 'Sharpness'
