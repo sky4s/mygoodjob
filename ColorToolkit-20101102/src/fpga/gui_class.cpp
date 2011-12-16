@@ -3,7 +3,23 @@
 
 #include <iostream>
 #include <fstream>
+
+
+//C系統文件
+
+//C++系統文件
+
+//vcl庫頭文件
+#include "inifiles.hpp"
+
+//其他庫頭文件
+
+//本項目內頭文件
+
+//本項目內gui頭文件
+
 StringMap_ptr AbstractBase::map = nil_StringMap_ptr;
+std::string AbstractBase::AliasFilename = "alias.txt";
 
 int_vector_ptr AbstractBase::getValuesFromFile(std::string tag)
 {
@@ -217,36 +233,42 @@ void AbstractBase::initAliasNameMap()
 {
     if (nil_StringMap_ptr == aliasNameMap) {
 	using namespace std;
+	using namespace cms::util;
 	aliasNameMap = StringMap_ptr(new StringMap());
 
-	//alias name , real name
-	string ALIAS_NAMES[] = {
-	    "CM_DEMO_EN", "CM_DEMO",
-	    "CM_DEMO_SIDE", "CM_DEMO_LEFT",
-	    "SP_DEMO_EN", "SP_DEMO",
-	    "SP_DEMO_SIDE", "SP_DEMO_LEFT",
-	    "HUE_DEMO_EN", "HUE_DEMO",
-	    "OFS1", "ofs1",
-	    "OFS2", "ofs2",
-	    "OFS3", "ofs3",
-	    "SP_GLB_STR", "GLB_STR",
-	    "SP_DEB_EN", "DEB_EN",
-	    "EDGE_THR", "SP_EDGE_THRESHOLD",
-	    "HORZ_THR", "SP_HORZ_THRESHOLD",
-	    "VERT_THR", "SP_VERT_THRESHOLD",
-	    "HSV_EN", "HUE_EN",
-	    "HUE_DEMO_EN", "HUE_DEMO",
-	    "VALUE_MODE", "V_OFS_EN"
-	};
-	//string *ALIAS_NAMES = getAliasNameArray();
-	int size = (sizeof(ALIAS_NAMES) / sizeof(ALIAS_NAMES[0])) / 2;
+	if (Util::isFileExist(AliasFilename)) {
+	    TIniFile* iniFile = new TIniFile(AliasFilename.c_str());
+	} else {
+	    //alias name , real name
+	    string ALIAS_NAMES[] = {
+		"CM_DEMO_EN", "CM_DEMO",
+		"CM_DEMO_SIDE", "CM_DEMO_LEFT",
+		"SP_DEMO_EN", "SP_DEMO",
+		"SP_DEMO_SIDE", "SP_DEMO_LEFT",
+		"HUE_DEMO_EN", "HUE_DEMO",
+		"OFS1", "ofs1",
+		"OFS2", "ofs2",
+		"OFS3", "ofs3",
+		"SP_GLB_STR", "GLB_STR",
+		"SP_DEB_EN", "DEB_EN",
+		"EDGE_THR", "SP_EDGE_THRESHOLD",
+		"HORZ_THR", "SP_HORZ_THRESHOLD",
+		"VERT_THR", "SP_VERT_THRESHOLD",
+		"HSV_EN", "HUE_EN",
+		"HUE_DEMO_EN", "HUE_DEMO",
+		"VALUE_MODE", "V_OFS_EN"
+	    };
+	    int size = (sizeof(ALIAS_NAMES) / sizeof(ALIAS_NAMES[0])) / 2;
 
-	for (int x = 0; x < size; x++) {
-	    string key = ALIAS_NAMES[x * 2];
-	    string value = ALIAS_NAMES[x * 2 + 1];
+	    for (int x = 0; x < size; x++) {
+		string key = ALIAS_NAMES[x * 2];
+		string value = ALIAS_NAMES[x * 2 + 1];
 
-	    aliasNameMap->insert(make_pair(key, value));
+		aliasNameMap->insert(make_pair(key, value));
+	    }
 	}
+
+
     }
 }
 

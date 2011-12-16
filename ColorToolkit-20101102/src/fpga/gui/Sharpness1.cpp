@@ -569,9 +569,12 @@ bool TSharpnessForm1::Load_SP(String Fpath)
 
     AnsiString str[5];
     str[0] = "TEXT_DET";
-    str[1] = "HORZ_THR";
-    str[2] = "VERT_THR";
-    str[3] = "EDGE_THR";
+     str[1] = "HORZ_THR";
+       str[2] = "VERT_THR";
+       str[3] = "EDGE_THR";
+    /*str[1] = "SP_HORZ_THRESHOLD";
+    str[2] = "SP_VERT_THRESHOLD";
+    str[3] = "SP_EDGE_THRESHOLD";*/
     str[4] = "GLT_STR";		//hardwre gain
     while (c < 38 && pch != NULL) {
 	if (pch == NULL) {
