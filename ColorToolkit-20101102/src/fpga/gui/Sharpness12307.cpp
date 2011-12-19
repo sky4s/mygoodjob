@@ -57,7 +57,7 @@ void __fastcall TSharpnessForm12307::ScrollBar_Change(TObject * Sender)
     }
     TCheckBox *c = (TCheckBox *) Sender;
     int idx = StrToInt(c->Hint);
-    if (ScrlB[idx]->Addr.Name().AnsiCompare("GLT_STR") == 0) {
+    if (ScrlB[idx]->Addr.Name().AnsiCompare("SP_GLB_STR") == 0) {
 	int set_val = (ScrlB[idx]->ScrlB->Position);
 	float tmp_val = (double) set_val / 4;
 	int t_val = (float) ((int) (tmp_val * 10)) / 10;
@@ -723,17 +723,11 @@ bool TSharpnessForm12307::Load_SP(String Fpath)
     gui::IniFileUtil ini(Fpath);
     ini.setCallEventHandlerWhenReading(true);
 
-    /*String spLutString = ini.iniFile->ReadString(SP, "SP_LUT", "");
-       if (spLutString.Length() == 0) {
-       return false;
-       }
-       int_array spLutArray = IntArray::fromString(spLutString.c_str());
-       IntArray::arraycopy(spLutArray, SP_lut, 32); */
     ini.readIntArray(SP, "SP_LUT", SP_lut, 32);
 
-    ini.readScrollBar(SP, "GLB_STR", ScrollBar1);
+    ini.readScrollBar(SP, "SP_GLB_STR", ScrollBar1);
     ini.readScrollBar(SP, "SPIKE_TH", ScrollBar2);
-    ini.readScrollBar(SP, "EDGE_TH", ScrollBar3);
+    ini.readScrollBar(SP, "SP_EDGE_THRESHOLD", ScrollBar3);
     ini.readScrollBar(SP, "FILTER_TH", ScrollBar4);
     ini.readCheckBox(SP, CheckBox4);
     ini.readCheckBox(SP, CheckBox5);
@@ -763,67 +757,7 @@ bool TSharpnessForm12307::Load_SP(String Fpath)
     ini.readScrollBar(CE, "DARK_DR", ScrollBar15);
     ini.readScrollBar(CE, "BRIGHT_MAX_ADJ", ScrollBar9);
     ini.readScrollBar(CE, "BRIGHT_DR", ScrollBar16);
-    //=========================================================================
-    //old
-    //=========================================================================
-    if (false) {
-	char *buffer = Load_File(Fpath);
-	char *pch;
-	pch = strtok(buffer, "\n\t");
-	int c = 0;
 
-	AnsiString str[5];
-	str[0] = "TEXT_DET";
-	str[1] = "HORZ_THR";
-	str[2] = "VERT_THR";
-	str[3] = "EDGE_THR";
-	str[4] = "GLT_STR";	//hardwre gain
-	while (c < 38 && pch != NULL) {
-	    if (pch == NULL) {
-		ShowMessage("Data Missing.");
-		delete[]buffer;
-		return 0;
-		//資料中的data缺少
-	    }
-
-	    if (c == 0) {	//TD
-		for (int i = 0; i < OSP->SPChkBox_Nbr; i++) {
-		    if (SameText(ChkB[i]->Addr.Name(), str[0])) {
-			ChkB[i]->Chkb->Checked = (StrToInt((AnsiString) pch) > 0 ? 1 : 0);
-			ChkB[i]->Chkb->OnClick;
-			break;
-		    }
-		}
-	    } else if (c >= 1 && c <= 3) {	//HORZ_THR, VERT_THR, EDGE_THR
-		for (int i = 0; i < OSP->SPScrollBar_Nbr; i++) {
-		    if (SameText(ScrlB[i]->Addr.Name(), str[c])) {
-			ScrlB[i]->ScrlB->Position = (StrToInt((AnsiString) pch));
-			ScrlB[i]->ScrlB->OnChange;
-			break;
-		    }
-		}
-	    } else if (c == 4) {	//hardware gain
-		for (int i = 0; i < OSP->SPScrollBar_Nbr; i++) {
-		    if (SameText(ScrlB[i]->Addr.Name(), str[c])) {
-			float tmp = (StrToFloat((AnsiString) pch));
-			ScrlB[i]->ScrlB->Position = int (tmp * 4);
-			ScrlB[i]->ScrlB->OnChange;
-			break;
-		    }
-		}
-	    } else if (c == 5) {	//swg
-		sb_softgain->Position = StrToFloat((AnsiString) pch) * 10;
-
-	    } else {		//tbl
-		SP_lut[c - 6] = StrToInt((AnsiString) pch);
-	    }
-	    pch = strtok(NULL, "\n\t");
-	    c++;
-	    if (c >= 38)
-		break;
-	}
-	delete[]buffer;
-    }
     return true;
 }
 
@@ -841,9 +775,9 @@ void __fastcall TSharpnessForm12307::btn_sp_SaveClick(TObject * Sender)
     using namespace math;
     gui::IniFileUtil ini(Fpath);
 
-    ini.writeScrollBar(SP, "GLB_STR", ScrollBar1);
+    ini.writeScrollBar(SP, "SP_GLB_STR", ScrollBar1);
     ini.writeScrollBar(SP, "SPIKE_TH", ScrollBar2);
-    ini.writeScrollBar(SP, "EDGE_TH", ScrollBar3);
+    ini.writeScrollBar(SP, "SP_EDGE_THRESHOLD", ScrollBar3);
     ini.writeScrollBar(SP, "FILTER_TH", ScrollBar4);
     ini.writeCheckBox(SP, CheckBox4);
     ini.writeCheckBox(SP, CheckBox5);
@@ -851,7 +785,6 @@ void __fastcall TSharpnessForm12307::btn_sp_SaveClick(TObject * Sender)
     ini.writeScrollBar(SP, "TAN_TH", ScrollBar6);
     ini.writeComboBox(SP, "STR_TP1", ComboBox1);
     ini.writeComboBox(SP, "STR_TP2", ComboBox2);
-    //ini.writeString(SP, "SP_LUT", IntArray::toString(SP_lut, 32).c_str());
     ini.writeIntArray(SP, "SP_LUT", SP_lut, 32);
 
     ini.writeCheckBox(CE, CheckBox11);
@@ -879,10 +812,10 @@ void __fastcall TSharpnessForm12307::btn_sp_SaveClick(TObject * Sender)
 	FILE *fptr = fopen(Fpath.c_str(), "w");
 	AnsiString str[5];
 	str[0] = "TEXT_DET";
-	str[1] = "HORZ_THR";
-	str[2] = "VERT_THR";
-	str[3] = "EDGE_THR";
-	str[4] = "GLT_STR";	//hardwre gain
+	str[1] = "SP_HORZ_THRESHOLD";
+	str[2] = "SP_VERT_THRESHOLD";
+	str[3] = "SP_EDGE_THRESHOLD";
+	str[4] = "SP_GLB_STR";	//hardwre gain
 	AnsiString input_str[5];
 	for (int i = 0; i <= 3; i++) {
 	    input_str[i] = "0";

@@ -47,7 +47,7 @@ void __fastcall TSharpnessForm1::ScrollBar_Change(TObject * Sender)
 	return;
     TCheckBox *c = (TCheckBox *) Sender;
     int idx = StrToInt(c->Hint);
-    if (ScrlB[idx]->Addr.Name().AnsiCompare("GLT_STR") == 0) {
+    if (ScrlB[idx]->Addr.Name().AnsiCompare("SP_GLB_STR") == 0) {
 	int set_val = (ScrlB[idx]->ScrlB->Position);
 	float tmp_val = (double) set_val / 4;
 	int t_val = (float) ((int) (tmp_val * 10)) / 10;
@@ -157,8 +157,9 @@ void __fastcall TSharpnessForm1::FormCreate(TObject * Sender)
     scrlb = OSP->SetScrollBar();
 
     ScrlB = new _ScrollBar *[OSP->SPScrollBar_Nbr];
-    for (int i = 0; i < OSP->SPScrollBar_Nbr; i++)
+    for (int i = 0; i < OSP->SPScrollBar_Nbr; i++) {
 	ScrlB[i] = new _ScrollBar;
+    }
 
     ScrlB[0]->Lbl = Label1;
     ScrlB[0]->StTxt = StaticText1;
@@ -569,13 +570,10 @@ bool TSharpnessForm1::Load_SP(String Fpath)
 
     AnsiString str[5];
     str[0] = "TEXT_DET";
-     str[1] = "HORZ_THR";
-       str[2] = "VERT_THR";
-       str[3] = "EDGE_THR";
-    /*str[1] = "SP_HORZ_THRESHOLD";
+    str[1] = "SP_HORZ_THRESHOLD";
     str[2] = "SP_VERT_THRESHOLD";
-    str[3] = "SP_EDGE_THRESHOLD";*/
-    str[4] = "GLT_STR";		//hardwre gain
+    str[3] = "SP_EDGE_THRESHOLD";
+    str[4] = "SP_GLB_STR";	//hardwre gain
     while (c < 38 && pch != NULL) {
 	if (pch == NULL) {
 	    ShowMessage("Data Missing.");
@@ -635,10 +633,10 @@ void __fastcall TSharpnessForm1::btn_sp_SaveClick(TObject * Sender)
 
     AnsiString str[5];
     str[0] = "TEXT_DET";
-    str[1] = "HORZ_THR";
-    str[2] = "VERT_THR";
-    str[3] = "EDGE_THR";
-    str[4] = "GLT_STR";		//hardwre gain
+    str[1] = "SP_HORZ_THRESHOLD";
+    str[2] = "SP_VERT_THRESHOLD";
+    str[3] = "SP_EDGE_THRESHOLD";
+    str[4] = "SP_GLB_STR";	//hardwre gain
 
     AnsiString input_str[5];
     for (int i = 0; i <= 3; i++) {

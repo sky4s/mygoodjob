@@ -19,7 +19,7 @@
 //本項目內gui頭文件
 
 StringMap_ptr AbstractBase::map = nil_StringMap_ptr;
-std::string AbstractBase::AliasFilename = "alias.txt";
+
 
 int_vector_ptr AbstractBase::getValuesFromFile(std::string tag)
 {
@@ -200,6 +200,7 @@ StringMap_ptr AbstractBase::getStringMap(std::string filename)
 		    string_vector_ptr stringvector = StringVector::tokenize(line, ",");
 		    string key = (*stringvector)[0];
 		    const std::string aliasName = (*aliasNameMap)[key];
+
 		    if (aliasName.length() != 0) {
 
 			//line = line.replace(key, aliasName);
@@ -228,50 +229,75 @@ void AbstractBase::resetAddressMap()
     map = nil_StringMap_ptr;
 }
 
-
+StringMap_ptr AbstractBase::aliasNameMap = nil_StringMap_ptr;
+//const std::string AbstractBase::AliasFilename = "alias.txt";
+//const String AbstractBase::Alias = "alias";
 void AbstractBase::initAliasNameMap()
 {
-    if (nil_StringMap_ptr == aliasNameMap) {
+    const std::string AliasFilename = "./alias.txt";
+    const String Alias = "alias";
+
+
+    if (NULL == aliasNameMap) {
 	using namespace std;
 	using namespace cms::util;
 	aliasNameMap = StringMap_ptr(new StringMap());
 
-	if (Util::isFileExist(AliasFilename)) {
-	    TIniFile* iniFile = new TIniFile(AliasFilename.c_str());
-	} else {
-	    //alias name , real name
+	if (!Util::isFileExist(AliasFilename)) {
+
 	    string ALIAS_NAMES[] = {
-		"CM_DEMO_EN", "CM_DEMO",
-		"CM_DEMO_SIDE", "CM_DEMO_LEFT",
+		//alias(nick), real name
+
+		//sharpness
 		"SP_DEMO_EN", "SP_DEMO",
 		"SP_DEMO_SIDE", "SP_DEMO_LEFT",
-		"HUE_DEMO_EN", "HUE_DEMO",
+		"SP_DEB_EN", "DEB_EN",
+		"GLT_STR", "SP_GLB_STR",
+		"GLB_STR", "SP_GLB_STR",
+		"EDGE_THR", "SP_EDGE_THRESHOLD",
+		"EDGE_TH", "SP_EDGE_THRESHOLD",
+		"HORZ_THR", "SP_HORZ_THRESHOLD",
+		"VERT_THR", "SP_VERT_THRESHOLD",
+
+		//CM
+		"CM_DEMO_EN", "CM_DEMO",
+		"CM_DEMO_SIDE", "CM_DEMO_LEFT",
 		"OFS1", "ofs1",
 		"OFS2", "ofs2",
 		"OFS3", "ofs3",
-		"SP_GLB_STR", "GLB_STR",
-		"SP_DEB_EN", "DEB_EN",
-		"EDGE_THR", "SP_EDGE_THRESHOLD",
-		"HORZ_THR", "SP_HORZ_THRESHOLD",
-		"VERT_THR", "SP_VERT_THRESHOLD",
+
+		//HSV
+		"HUE_DEMO_EN", "HUE_DEMO",
 		"HSV_EN", "HUE_EN",
 		"HUE_DEMO_EN", "HUE_DEMO",
 		"VALUE_MODE", "V_OFS_EN"
 	    };
 	    int size = (sizeof(ALIAS_NAMES) / sizeof(ALIAS_NAMES[0])) / 2;
 
+	    bptr_ < TIniFile > ini(new TIniFile(AliasFilename.c_str()));
 	    for (int x = 0; x < size; x++) {
 		string key = ALIAS_NAMES[x * 2];
 		string value = ALIAS_NAMES[x * 2 + 1];
-
-		aliasNameMap->insert(make_pair(key, value));
+		ini->WriteString(Alias, key.c_str(), value.c_str());
 	    }
+	    ini->UpdateFile();
+	}
+
+	if (Util::isFileExist(AliasFilename)) {
+	    bptr_ < TIniFile > ini(new TIniFile(AliasFilename.c_str()));
+	    TStrings *strings = new TStringList();
+	    ini->ReadSection(Alias, strings);
+	    int size = strings->Count;
+	    for (int x = 0; x < size; x++) {
+		String key = strings->Strings[x];
+		String value = ini->ReadString(Alias, key, "");
+		aliasNameMap->insert(make_pair(key.c_str(), value.c_str()));
+	    }
+	    delete strings;
+
 	}
 
 
     }
 }
-
-
-StringMap_ptr AbstractBase::aliasNameMap = nil_StringMap_ptr;
 
