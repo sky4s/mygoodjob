@@ -9,6 +9,7 @@
 #include <math.h>
 #include "include.h"
 #include <fpga/11307/ImageProcess/ImgProc_11307.h>
+#include <gui/GUIUtil.h>
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
 #pragma resource "*.dfm"
@@ -49,7 +50,8 @@ void __fastcall TSharpnessForm1::ScrollBar_Change(TObject * Sender)
     int idx = StrToInt(c->Hint);
     if (ScrlB[idx]->Addr.Name().AnsiCompare("SP_GLB_STR") == 0) {
 	int set_val = (ScrlB[idx]->ScrlB->Position);
-	float tmp_val = (double) set_val / 4;
+	//float tmp_val = (double) set_val / 4;
+	float tmp_val = (double) set_val;
 	int t_val = (float) ((int) (tmp_val * 10)) / 10;
 	ScrlB[idx]->StTxt->Caption = t_val;
 	EngineerForm->SetWrite_Byte(ScrlB[idx]->Addr, set_val);
@@ -457,8 +459,9 @@ void __fastcall TSharpnessForm1::btn_GainSetClick(TObject * Sender)
 {
     if (SP_lut[0] != -1) {
 	gain_flag = false;
-	for (int i = 0; i < 32; i++)
+	for (int i = 0; i < 32; i++) {
 	    SP_lut[i] = LUT_g[i];
+	}
 	sb_softgain->Position = 10;
 	st_softgain->Caption = 1;
 	SP_LUTDblClick(Sender);
@@ -549,7 +552,7 @@ void __fastcall TSharpnessForm1::btn_sp_LoadClick(TObject * Sender)
     }
     SP_LUT_FuncEnable(0);
     String Fpath = OpenDialog1->FileName;
-    if (!Load_SP(Fpath)) {
+    if (!loadSetting(Fpath)) {
 	Application->MessageBox("Open Sharpness File Failed.", "Error Message", 0);
     }
 
@@ -621,67 +624,59 @@ bool TSharpnessForm1::Load_SP(String Fpath)
     delete[]buffer;
     return 1;
 }
-
+static String SP = "Sharpness";
 void __fastcall TSharpnessForm1::btn_sp_SaveClick(TObject * Sender)
 {
     if (!SaveDialog1->Execute()) {
 	return;
     }
+
     SP_LUT_FuncEnable(0);
     String Fpath = SaveDialog1->FileName;
-    FILE *fptr = fopen(Fpath.c_str(), "w");
+    //=========================================================================
+    // new
+    //=========================================================================
+    using namespace math;
+    gui::IniFileUtil ini(Fpath);
 
-    AnsiString str[5];
-    str[0] = "TEXT_DET";
-    str[1] = "SP_HORZ_THRESHOLD";
-    str[2] = "SP_VERT_THRESHOLD";
-    str[3] = "SP_EDGE_THRESHOLD";
-    str[4] = "SP_GLB_STR";	//hardwre gain
 
-    AnsiString input_str[5];
-    for (int i = 0; i <= 3; i++) {
-	input_str[i] = "0";
-    }
-    //input_str[4] = "1";
-    input_str[0] = CheckBox3->Checked ? "1" : "0";
-    input_str[1] = ScrollBar1->Position;
-    input_str[2] = ScrollBar2->Position;
-    input_str[3] = ScrollBar3->Position;
-    float val = (float) ScrollBar4->Position * 4;
-    input_str[4] = FloatToStr(val);
+    ini.writeScrollBar(SP, "SP_GLB_STR", ScrollBar4);
+    //ini.writeString(SP, "SP_GLB_STR", ScrollBar4->Position * 4);
+    ini.writeScrollBar(SP, "SP_HORZ_THRESHOLD", ScrollBar1);
+    ini.writeScrollBar(SP, "SP_VERT_THRESHOLD", ScrollBar2);
+    ini.writeScrollBar(SP, "SP_EDGE_THRESHOLD", ScrollBar3);
+    ini.writeCheckBox(SP, CheckBox3);
+    ini.writeIntArray(SP, "SP_LUT", SP_lut, 32);
+    //ini.writeString(SP, "SOFT_GAIN", sb_softgain->Position / 10.);
 
-    /*for (int i = 0; i < OSP->SPChkBox_Nbr; i++) {
-       if (SameText(ChkB[i]->Addr.Name(), str[0])) {
-       input_str[0] = (ChkB[i]->Chkb->Checked ? "1" : "0");
-       break;
-       }
-       }
-       for (int j = 1; j <= 3; j++) {
-       for (int i = 0; i < OSP->SPScrollBar_Nbr; i++) {
-       if (SameText(ScrlB[i]->Addr.Name(), str[j])) {
-       input_str[j] = ScrlB[i]->ScrlB->Position;
-       break;
-       }
-       }
-       }
-       for (int i = 0; i < OSP->SPScrollBar_Nbr; i++) {
-       if (SameText(ScrlB[i]->Addr.Name(), str[4])) {
-       float val = (float) ScrlB[i]->ScrlB->Position * 4;
-       input_str[4] = FloatToStr(val);
-       break;
-       }
-       } */
-    float input_str5 = StrToFloat(sb_softgain->Position) / 10;
+    ini.iniFile->UpdateFile();
 
-    fprintf(fptr, "%s\t%s\t%s\t%s\t%s\t%f\n", input_str[0], input_str[1], input_str[2],
-	    input_str[3], input_str[4], input_str5);
-
-    for (int i = 0; i < 32; i++) {
-	fprintf(fptr, "%d\n", SP_lut[i]);
-    }
-    fclose(fptr);
     SP_LUT_FuncEnable(1);
 }
+
+//---------------------------------------------------------------------------
+bool TSharpnessForm1::loadSetting(String filename)
+{
+    if (!cms::util::Util::isFileExist(filename.c_str())) {
+	return false;
+    }
+    //=========================================================================
+    //new
+    //=========================================================================
+    using namespace math;
+    gui::IniFileUtil ini(filename);
+    ini.setCallEventHandlerWhenReading(true);
+    ini.Section = SP;
+
+    ini.readScrollBar("SP_GLB_STR", ScrollBar4);
+    //ScrollBar4->Position = ini.readInt("SP_GLB_STR") * 4;
+    ini.readScrollBar("SP_HORZ_THRESHOLD", ScrollBar1);
+    ini.readScrollBar("SP_VERT_THRESHOLD", ScrollBar2);
+    ini.readScrollBar("SP_EDGE_THRESHOLD", ScrollBar3);
+    ini.readCheckBox(CheckBox3);
+    ini.readIntArray("SP_LUT", SP_lut, 32);
+    return true;
+};
 
 //---------------------------------------------------------------------------
 
@@ -714,6 +709,72 @@ void __fastcall TSharpnessForm1::FormKeyDown(TObject * Sender, WORD & Key, TShif
 {
     if (Key == 0x40)
 	Btn_SP_reloadClick(Sender);
+}
+
+//---------------------------------------------------------------------------
+
+void __fastcall TSharpnessForm1::Button_LoadOldSettingClick(TObject * Sender)
+{
+    Clear_LUT(true);
+
+    if (!OpenDialog1->Execute()) {
+	return;
+    }
+    SP_LUT_FuncEnable(0);
+    String Fpath = OpenDialog1->FileName;
+    if (!Load_SP(Fpath)) {
+	Application->MessageBox("Open Sharpness File Failed.", "Error Message", 0);
+    }
+
+    sb_softgainChange(Sender);
+    SP_LUTDblClick(Sender);
+    btn_GainSetClick(Sender);
+    SP_LUT_FuncEnable(1);
+    btn_sp_lut_writeClick(Sender);
+}
+
+//---------------------------------------------------------------------------
+
+
+
+void __fastcall TSharpnessForm1::Button_SaveOldSettingClick(TObject * Sender)
+{
+    if (!SaveDialog1->Execute()) {
+	return;
+    }
+    SP_LUT_FuncEnable(0);
+    String Fpath = SaveDialog1->FileName;
+    FILE *fptr = fopen(Fpath.c_str(), "w");
+
+    /*AnsiString str[5];
+       str[0] = "TEXT_DET";
+       str[1] = "SP_HORZ_THRESHOLD";
+       str[2] = "SP_VERT_THRESHOLD";
+       str[3] = "SP_EDGE_THRESHOLD";
+       str[4] = "SP_GLB_STR";   //hardwre gain */
+
+    AnsiString input_str[5];
+    for (int i = 0; i <= 3; i++) {
+	input_str[i] = "0";
+    }
+    //input_str[4] = "1";
+    input_str[0] = CheckBox3->Checked ? "1" : "0";
+    input_str[1] = ScrollBar1->Position;
+    input_str[2] = ScrollBar2->Position;
+    input_str[3] = ScrollBar3->Position;
+    float val = (float) ScrollBar4->Position * 4;
+    input_str[4] = FloatToStr(val);
+
+    float input_str5 = StrToFloat(sb_softgain->Position) / 10;
+
+    fprintf(fptr, "%s\t%s\t%s\t%s\t%s\t%f\n", input_str[0], input_str[1], input_str[2],
+	    input_str[3], input_str[4], input_str5);
+
+    for (int i = 0; i < 32; i++) {
+	fprintf(fptr, "%d\n", SP_lut[i]);
+    }
+    fclose(fptr);
+    SP_LUT_FuncEnable(1);
 }
 
 //---------------------------------------------------------------------------

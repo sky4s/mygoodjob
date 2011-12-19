@@ -2,7 +2,7 @@ object SharpnessForm1: TSharpnessForm1
   Left = 241
   Top = 146
   Width = 654
-  Height = 644
+  Height = 716
   Caption = 'Sharpness'
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
@@ -23,7 +23,7 @@ object SharpnessForm1: TSharpnessForm1
     Left = 8
     Top = 0
     Width = 633
-    Height = 609
+    Height = 617
     TabOrder = 0
     object CheckBox1: TCheckBox
       Left = 16
@@ -123,7 +123,7 @@ object SharpnessForm1: TSharpnessForm1
     end
     object GroupBox2: TGroupBox
       Left = 8
-      Top = 144
+      Top = 152
       Width = 617
       Height = 425
       Caption = 'Weighting'
@@ -281,8 +281,8 @@ object SharpnessForm1: TSharpnessForm1
     end
     object LUT_type: TRadioGroup
       Left = 8
-      Top = 88
-      Width = 193
+      Top = 72
+      Width = 121
       Height = 49
       Caption = 'Sharpness Mode'
       Columns = 3
@@ -300,8 +300,8 @@ object SharpnessForm1: TSharpnessForm1
       OnClick = LUT_typeClick
     end
     object btn_sp_Load: TButton
-      Left = 208
-      Top = 80
+      Left = 136
+      Top = 88
       Width = 49
       Height = 25
       Caption = 'Load'
@@ -317,7 +317,7 @@ object SharpnessForm1: TSharpnessForm1
       OnClick = btn_sp_LoadClick
     end
     object btn_sp_Save: TButton
-      Left = 208
+      Left = 136
       Top = 112
       Width = 49
       Height = 25
@@ -335,8 +335,8 @@ object SharpnessForm1: TSharpnessForm1
       OnClick = btn_sp_SaveClick
     end
     object Btn_SP_reload: TBitBtn
-      Left = 24
-      Top = 576
+      Left = 8
+      Top = 584
       Width = 73
       Height = 25
       Caption = '&Reload'
@@ -369,6 +369,49 @@ object SharpnessForm1: TSharpnessForm1
       Height = 17
       Caption = 'CheckBox6'
       TabOrder = 10
+    end
+    object GroupBox4: TGroupBox
+      Left = 192
+      Top = 72
+      Width = 65
+      Height = 73
+      Caption = 'Old Setting'
+      TabOrder = 11
+      object Button_LoadOldSetting: TButton
+        Left = 8
+        Top = 16
+        Width = 49
+        Height = 25
+        Caption = 'Load'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -12
+        Font.Name = 'MS Sans Serif'
+        Font.Style = [fsBold]
+        ParentFont = False
+        ParentShowHint = False
+        ShowHint = True
+        TabOrder = 0
+        OnClick = Button_LoadOldSettingClick
+      end
+      object Button_SaveOldSetting: TButton
+        Left = 8
+        Top = 40
+        Width = 49
+        Height = 25
+        Hint = 'Save SP Table'
+        Caption = 'Save'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -12
+        Font.Name = 'MS Sans Serif'
+        Font.Style = [fsBold]
+        ParentFont = False
+        ParentShowHint = False
+        ShowHint = True
+        TabOrder = 1
+        OnClick = Button_SaveOldSettingClick
+      end
     end
   end
   object OpenDialog1: TOpenDialog

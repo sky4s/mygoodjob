@@ -152,7 +152,7 @@ class AbstractBase {
 
     static bool setAddress(AbstractAddressType * address, std::string text);
     static bool setAddressFromFile(AbstractAddressType * address, std::string tag);
-
+    ~AbstractBase();
   public:
 
     static AbstractAddress_ptr getAddress(std::string tag);
