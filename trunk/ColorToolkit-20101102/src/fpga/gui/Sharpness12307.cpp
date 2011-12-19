@@ -805,51 +805,7 @@ void __fastcall TSharpnessForm12307::btn_sp_SaveClick(TObject * Sender)
     ini.writeScrollBar(CE, "BRIGHT_MAX_ADJ", ScrollBar9);
     ini.writeScrollBar(CE, "BRIGHT_DR", ScrollBar16);
     ini.iniFile->UpdateFile();
-    //=========================================================================
-    // old
-    //=========================================================================
-    if (false) {
-	FILE *fptr = fopen(Fpath.c_str(), "w");
-	AnsiString str[5];
-	str[0] = "TEXT_DET";
-	str[1] = "SP_HORZ_THRESHOLD";
-	str[2] = "SP_VERT_THRESHOLD";
-	str[3] = "SP_EDGE_THRESHOLD";
-	str[4] = "SP_GLB_STR";	//hardwre gain
-	AnsiString input_str[5];
-	for (int i = 0; i <= 3; i++) {
-	    input_str[i] = "0";
-	}
-	input_str[4] = "1";
-	for (int i = 0; i < OSP->SPChkBox_Nbr; i++) {
-	    if (SameText(ChkB[i]->Addr.Name(), str[0])) {
-		input_str[0] = (ChkB[i]->Chkb->Checked ? "1" : "0");
-		break;
-	    }
-	}
-	for (int j = 0; j <= 3; j++)
-	    for (int i = 0; i < OSP->SPScrollBar_Nbr; i++) {
-		if (SameText(ScrlB[i]->Addr.Name(), str[j])) {
-		    input_str[j] = ScrlB[i]->ScrlB->Position;
-		    break;
-		}
-	    }
-	for (int i = 0; i < OSP->SPScrollBar_Nbr; i++) {
-	    if (SameText(ScrlB[i]->Addr.Name(), str[4])) {
-		float val = (float) ScrlB[i]->ScrlB->Position * 4;
-		input_str[4] = FloatToStr(val);
-		break;
-	    }
-	}
-	float input_str5 = StrToFloat(sb_softgain->Position) / 10;
-	fprintf(fptr, "%s\t%s\t%s\t%s\t%s\t%f\n",
-		input_str[0], input_str[1], input_str[2], input_str[3], input_str[4], input_str5);
-	for (int i = 0; i < 32; i++) {
-	    fprintf(fptr, "%d\n", SP_lut[i]);
-	}
-	fclose(fptr);
-    }
-    //=========================================================================
+ 
     SP_LUT_FuncEnable(1);
 }
 

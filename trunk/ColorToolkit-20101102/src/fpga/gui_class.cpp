@@ -20,7 +20,7 @@
 
 StringMap_ptr AbstractBase::map = nil_StringMap_ptr;
 
-
+ 
 int_vector_ptr AbstractBase::getValuesFromFile(std::string tag)
 {
     if (nil_StringMap_ptr == map) {
@@ -229,6 +229,10 @@ void AbstractBase::resetAddressMap()
     map = nil_StringMap_ptr;
 }
 
+AbstractBase::~AbstractBase()
+{
+    int x = 1;
+};
 StringMap_ptr AbstractBase::aliasNameMap = nil_StringMap_ptr;
 //const std::string AbstractBase::AliasFilename = "alias.txt";
 //const String AbstractBase::Alias = "alias";
