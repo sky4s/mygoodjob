@@ -147,7 +147,7 @@ TBit *SP_11307::SetScrollBar()
 	setAddressFromFile(&ScrlB[0], "SP_HORZ_THRESHOLD");
 	setAddressFromFile(&ScrlB[1], "SP_VERT_THRESHOLD");
 	setAddressFromFile(&ScrlB[2], "SP_EDGE_THRESHOLD");
-	setAddressFromFile(&ScrlB[3], "GLB_STR");
+	setAddressFromFile(&ScrlB[3], "SP_GLB_STR");
     }
     return ScrlB;
 }
@@ -307,9 +307,9 @@ TBit *SP_12307::SetScrollBar()
 	setAddress(&ScrlB[14], DARK_DR);
 	setAddress(&ScrlB[15], BRIGHT_DR);
     } else if (MainForm->addr_place == 1) {
-	setAddressFromFile(&ScrlB[0], "GLB_STR");
+	setAddressFromFile(&ScrlB[0], "SP_GLB_STR");
 	setAddressFromFile(&ScrlB[1], "SPIKE_TH");
-	setAddressFromFile(&ScrlB[2], "EDGE_TH");
+	setAddressFromFile(&ScrlB[2], "SP_EDGE_THRESHOLD");
 	setAddressFromFile(&ScrlB[3], "FILTER_TH");
 	setAddressFromFile(&ScrlB[4], "MAG_TH");
 	setAddressFromFile(&ScrlB[5], "TAN_TH");
