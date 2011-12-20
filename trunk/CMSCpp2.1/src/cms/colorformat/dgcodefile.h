@@ -21,13 +21,13 @@ namespace cms {
 	    string_vector_ptr makeValues(int n, Component_ptr c);
 	    string_vector_ptr makeValues(int n,
 					 Component_ptr c, RGB_ptr rgbGamma, RGB_ptr rgbGammaFix);
-	    static const std::string & GammaTable;
-	    static const std::string & OldGammaTable;
+	    //static const std::string & GammaTable;
+	    //static const std::string & OldGammaTable;
 	    static const std::string & RawData;
 	    static const std::string & Target;
 	    //static const std::string & DeltaData;
 	    const Dep::MaxValue & maxValue;
-
+	    void init();
 	  public:
 	     DGLutFile(const std::string & filename, Mode mode);
 	     DGLutFile(const std::string & filename, Mode mode, const Dep::MaxValue & maxValue);
@@ -40,12 +40,12 @@ namespace cms {
 	    void setRawData(Component_vector_ptr componentVector,
 			    RGBGamma_ptr initialRGBGamma, RGBGamma_ptr finalRGBGamma);
 
-	    void setGammaTable(RGB_vector_ptr dglut);
+	    //void setGammaTable(RGB_vector_ptr dglut);
 	    void setTargetXYZVector(XYZ_vector_ptr targetXYZVector);
 	    Component_vector_ptr getComponentVector();
-	    RGB_vector_ptr getGammaTable();
+	    //RGB_vector_ptr getGammaTable();
 	    //void setDeltaData(Component_vector_ptr componentVector);
-
+	    RGB_vector_ptr getGammaTable();
 	    /*
 	       量測的資料不見得是0~255全量, 但是產生的gamma一定是全部
 	       該如何整合兩者?兩種作法

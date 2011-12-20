@@ -104,6 +104,7 @@ namespace cms {
 		double getCode(const Dep::Channel & ch, double intensity);
 		RGB_ptr getCode(double luminance);
 		double correctIntensityInRange(const Dep::Channel & ch, double intensity);
+		double correctCodeInRange(const Dep::Channel & ch, double code);
 		double getMaxBIntensity();
 		bool hasCorrectedInRange(const Dep::Channel & ch);
 	    };

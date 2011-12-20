@@ -42,7 +42,6 @@ namespace cms {
 				Patch_vector_ptr rMeasureData, Patch_vector_ptr gMeasureData,
 				Patch_vector_ptr bMeasureData, bool XYZMode);
 
-
 	};
     };
 };

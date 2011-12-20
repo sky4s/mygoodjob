@@ -38,6 +38,7 @@ namespace cms {
 
 	    class LCDCalibrator {
 		friend class cms::colorformat::DGLutProperty;
+		friend class cms::lcd::calibrate::AdvancedDGLutGenerator;
 	      private:
 
 		//==============================================================
@@ -99,10 +100,21 @@ namespace cms {
 		//==============================================================
 
 		//==============================================================
-		// others
+		//intensity
 		//==============================================================
 		double rTargetIntensity;
+		double gTargetIntensity;
 		double bTargetIntensity;
+		bool autoIntensity;
+		RGB_ptr idealIntensity;
+		bool smoothIntensity;
+		int smoothIntensityStart;
+		int smoothIntensityEnd;
+		//==============================================================
+
+		//==============================================================
+		// others
+		//==============================================================
 		double bIntensityGain;
 		bool avoidFRCNoise;
 		bool useNewMethod;
@@ -156,6 +168,7 @@ namespace cms {
 							    double gamma, bool autoParameter);
 
 		void setMultiGen(bool enable, int times);
+		void setSmoothIntensity(int start, int end);
 		__property int DimFixEnd = { write = dimFixEnd };
 		__property bool DimFix = { write = dimFix };
 		__property double DimFixThreshold = { write = dimFixThreshold };
@@ -175,7 +188,6 @@ namespace cms {
 		    write = smoothComponent
 		};
 		__property bool AbsoluteGamma = { write = absoluteGamma };
-
 		//==============================================================
 
 

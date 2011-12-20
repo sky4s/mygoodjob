@@ -70,6 +70,7 @@ namespace cms {
 
 	    class DimDGLutGenerator;
 	    //class DimTargetGenerator;
+	    class AdvancedDGLutGenerator;
 	    namespace algo {
 		class ChromaticAroundAlgorithm;
 		class CIEuv1960NearestAlgorithm;

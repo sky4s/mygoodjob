@@ -4,7 +4,10 @@ namespace cms {
     namespace lcd {
 	namespace calibrate {
 	    Enumeration(KeepMaxLuminance)
-	    None, TargetWhite, NativeWhite	//keep狾程獹&︹放
+	    None,		//礚矪瞶
+	    TargetLuminance,	//keepヘ夹獹(ぃ﹚Τノ
+	    TargetWhite,	//keep ヘ夹フ翴
+	    NativeWhite		//keep狾程獹&︹放
 	    , NativeWhiteAdvanced	//keep狾程獹&︹放, smooth跑て
 	    , EnumerationEnd()
 

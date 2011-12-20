@@ -57,7 +57,9 @@ namespace cms {
 		double_vector_ptr getIntensityVector(const Dep::
 						     Channel & ch, RGB_vector_ptr rgbVector);
 		RGB_ptr getIntensity(RGB_ptr dgcode);
+		RGB_ptr getIntensity(RGB_ptr dgcode, bool correctInRange);
 		bool_array isCorrectIntensityInRange();
+		__property double MaxLuminance = { write = maxLuminance };
 	    };
 	};
     };

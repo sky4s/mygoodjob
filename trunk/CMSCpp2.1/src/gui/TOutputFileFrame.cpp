@@ -113,4 +113,3 @@ void __fastcall TOutputFileFrame::Edit_DirectoryChange(TObject * Sender)
 
 //---------------------------------------------------------------------------
 
-

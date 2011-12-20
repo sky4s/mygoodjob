@@ -225,19 +225,7 @@ namespace math {
     double Interpolation1DLUT::correctInRange(double number, double_vector_ptr numberArray) {
 	using java::lang;
 	hasCorrectedInRange_ = false;
-	/*double maxValue, minValue;
-
-	   switch (lutType) {
-	   case Ripple:
-	   maxValue = Math::max(numberArray);
-	   minValue = Math::min(numberArray);
-	   break;
-	   case Progressive:
-	   int arraySize = numberArray->size();
-	   maxValue = (*numberArray)[arraySize - 1];
-	   minValue = (*numberArray)[0];
-	   break;
-	   }; */
+ 
 	double maxValue = getMaxValue(numberArray);
 	double minValue = getMinValue(numberArray);
 
