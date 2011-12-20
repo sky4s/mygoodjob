@@ -73,7 +73,7 @@ class TCCTLUTForm:public TForm, cms::lcd::calibrate::FeedbackListener {
     TEdit *Edit_DimGamma;
     TCheckBox *CheckBox_NewMethod;
     TGroupBox *GroupBox_KeepMaxLuminance;
-    TRadioButton *RadioButton_MaxYTarget;
+    TRadioButton *RadioButton_MaxYNone;
     TRadioButton *RadioButton_MaxYNative;
     TRadioButton *RadioButton_MaxYNativeAdv;
     TLabel *Label20;
@@ -99,7 +99,6 @@ class TCCTLUTForm:public TForm, cms::lcd::calibrate::FeedbackListener {
     TLabel *Label15;
     TEdit *Edit_MiddleRatio;
     TCheckBox *CheckBox_MiddleCCT;
-    TCheckBox *CheckBox_DimFix;
     TProgressBar *ProgressBar1;
     TEdit *Edit_DimFixThreshold;
     TCheckBox *CheckBox_Feedback;
@@ -114,6 +113,10 @@ class TCCTLUTForm:public TForm, cms::lcd::calibrate::FeedbackListener {
     TCheckBox *CheckBox_AbsoluteGamma;
     TCheckBox *CheckBox_RTargetIntensity;
     TEdit *Edit_RTargetIntensity;
+    TRadioButton *RadioButton_MaxYTargetWhite;
+    TEdit *Edit_SmoothIntensityStart;
+    TEdit *Edit_SmoothIntensityEnd;
+    TCheckBox *CheckBox_SmoothIntensity;
     void __fastcall RadioButton_P1P2Click(TObject * Sender);
     void __fastcall Button_MeaRunClick(TObject * Sender);
     void __fastcall Button_DebugClick(TObject * Sender);
@@ -136,11 +139,12 @@ class TCCTLUTForm:public TForm, cms::lcd::calibrate::FeedbackListener {
     void __fastcall Edit_MaxYAdvOverChange(TObject * Sender);
     void __fastcall CheckBox_MaxYAdvAutoClick(TObject * Sender);
     void __fastcall CheckBox_MiddleCCTClick(TObject * Sender);
-    void __fastcall CheckBox_DimFixClick(TObject * Sender);
     void __fastcall CheckBox_FeedbackClick(TObject * Sender);
     void __fastcall Edit_DimGammaEndChange(TObject * Sender);
     void __fastcall RadioGroup_NormalCaseClick(TObject * Sender);
     void __fastcall CheckBox_RTargetIntensityClick(TObject * Sender);
+    void __fastcall FormMouseMove(TObject * Sender, TShiftState Shift, int X, int Y);
+    void __fastcall CheckBox_SmoothIntensityClick(TObject * Sender);
   private:			// User declarations
     void setMeasureInfo();
     int serialid;

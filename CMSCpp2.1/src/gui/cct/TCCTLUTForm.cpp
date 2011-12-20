@@ -104,10 +104,9 @@ void __fastcall TCCTLUTForm::Button_MeaRunClick(TObject * Sender)
 	    int under = this->Edit_DefinedDimUnder->Text.ToInt();	// + 1;
 	    double gamma = this->Edit_DimGamma->Text.ToDouble();
 	    calibrator.setDefinedDim(under, gamma);
-	    calibrator.DimFix = CheckBox_DimFix->Checked;
-	    calibrator.DimFixThreshold = Edit_DimFixThreshold->Text.ToDouble();
+	    //calibrator.DimFix = CheckBox_DimFix->Checked;
+	    //calibrator.DimFixThreshold = Edit_DimFixThreshold->Text.ToDouble();
 	    calibrator.FeedbackFix = CheckBox_Feedback->Checked;
-	    //calibrator.SmoothComponent = CheckBox_Smoothing->Checked;
 	} else if (this->RadioButton_NoneLowLevelCorrect->Checked) {
 	    calibrator.setNonDimCorrect();
 	}
@@ -160,7 +159,6 @@ void __fastcall TCCTLUTForm::Button_MeaRunClick(TObject * Sender)
 	//==========================================================================
 	// others
 	//==========================================================================
-	//calibrator.setAvoidFRCNoise(this->CheckBox_AvoidNoise->Checked);
 	calibrator.AvoidFRCNoise = this->CheckBox_AvoidNoise->Checked;
 
 	//新方法
@@ -175,9 +173,9 @@ void __fastcall TCCTLUTForm::Button_MeaRunClick(TObject * Sender)
 	    double bTargetIntensity = Edit_BTargetIntensity->Text.ToDouble();
 	    calibrator.BTargetIntensity = bTargetIntensity;
 	}
-	//calibrator.AccurateMode = this->CheckBox_Accurate->Checked;
-	//calibrator.ManualAccurateMode = CheckBox_ManualAccurate->Checked;
+
 	if (true == Edit_MiddleRatio->Enabled) {
+	    //不採用了
 	    double middleRatio = Edit_MiddleRatio->Text.ToDouble();
 	    calibrator.MiddleCCTRatio = middleRatio;
 	}
@@ -186,11 +184,8 @@ void __fastcall TCCTLUTForm::Button_MeaRunClick(TObject * Sender)
 	//==========================================================================
 	// Keep Max Luminance
 	//==========================================================================
-	/*if (true == RadioButton_MaxYNone->Checked) {
-	   calibrator.setKeepMaxLuminance(KeepMaxLuminance::None);
-	   } else */
-	if (true == RadioButton_MaxYTarget->Checked) {
-	    calibrator.setKeepMaxLuminance(KeepMaxLuminance::TargetWhite);
+	if (true == RadioButton_MaxYNone->Checked) {
+	    calibrator.setKeepMaxLuminance(KeepMaxLuminance::TargetLuminance);
 	} else if (true == RadioButton_MaxYNative->Checked) {
 	    calibrator.setKeepMaxLuminance(KeepMaxLuminance::NativeWhite);
 	} else if (true == RadioButton_MaxYNativeAdv->Checked) {
@@ -199,6 +194,14 @@ void __fastcall TCCTLUTForm::Button_MeaRunClick(TObject * Sender)
 	    bool autoParameter = CheckBox_MaxYAdvAuto->Checked;
 	    calibrator.SkipInverseB = this->CheckBox_SkipInverseB->Checked;
 	    calibrator.setKeepMaxLuminanceNativeWhiteAdvanced(over, gamma, autoParameter);
+	} else if (true == RadioButton_MaxYTargetWhite->Checked) {
+	    calibrator.setKeepMaxLuminance(KeepMaxLuminance::TargetWhite);
+
+	    if (true == this->CheckBox_SmoothIntensity->Checked) {
+		int start = Edit_SmoothIntensityStart->Text.ToInt();
+		int end = Edit_SmoothIntensityEnd->Text.ToInt();
+		calibrator.setSmoothIntensity(start, end);
+	    }
 	}
 	//==========================================================================
 
@@ -218,8 +221,6 @@ void __fastcall TCCTLUTForm::Button_MeaRunClick(TObject * Sender)
 	    bptr < TCONControl > tconctrl = MainForm->getTCONControl();
 	    calibrator.TCONControl = tconctrl;
 	    calibrator.NativeWhiteAnalyzer = nativeWhiteAnalyzer;
-	    //bptr < cms::lcd::calibrate::FeedbackListener > listener(this);
-	    //cms::lcd::calibrate::FeedbackListener * listener = this;
 	    calibrator.setFeedbackListener(this);
 
 
@@ -323,11 +324,15 @@ void __fastcall TCCTLUTForm::FormShow(TObject * Sender)
 
 	CheckBox_MemoryMeasure->Visible = true;
 	RadioGroup_NormalCase->Visible = true;
-	CheckBox_AbsoluteGamma->Visible = true;
+	//CheckBox_AbsoluteGamma->Visible = true;
 	CheckBox_RTargetIntensity->Visible = true;
 	Edit_RTargetIntensity->Visible = true;
 	CheckBox_BTargetIntensity->Visible = true;
 	Edit_BTargetIntensity->Visible = true;
+
+	CheckBox_SmoothIntensity->Visible = true;
+	Edit_SmoothIntensityStart->Visible = true;
+	Edit_SmoothIntensityEnd->Visible = true;
     }
 
     this->CheckBox_NewMethod->Checked = true;
@@ -364,7 +369,7 @@ void __fastcall TCCTLUTForm::FormShow(TObject * Sender)
     if (useNativeWhite) {
 	RadioButton_MaxYNative->Checked = true;
     } else {
-	RadioButton_MaxYTarget->Checked = true;
+	RadioButton_MaxYTargetWhite->Checked = true;
     }
 }
 
@@ -518,8 +523,9 @@ void __fastcall TCCTLUTForm::CheckBox_NewMethodClick(TObject * Sender)
 
     }
 
-    RadioButton_MaxYNative->Checked = newMethod;
-    RadioButton_MaxYTarget->Checked = !newMethod;
+    //RadioButton_MaxYNative->Checked = newMethod;
+    //RadioButton_MaxYNone->Checked = !newMethod;
+    //RadioButton_MaxYNone->Checked = true;
 }
 
 //---------------------------------------------------------------------------
@@ -637,19 +643,11 @@ void __fastcall TCCTLUTForm::CheckBox_MiddleCCTClick(TObject * Sender)
 
 //---------------------------------------------------------------------------
 
-void __fastcall TCCTLUTForm::CheckBox_DimFixClick(TObject * Sender)
-{
-    if (true == CheckBox_DimFix->Checked) {
-	CheckBox_Feedback->Checked = false;
-    }
-}
-
-//---------------------------------------------------------------------------
 
 void __fastcall TCCTLUTForm::CheckBox_FeedbackClick(TObject * Sender)
 {
     if (true == CheckBox_Feedback->Checked) {
-	CheckBox_DimFix->Checked = false;
+	//CheckBox_DimFix->Checked = false;
 	if (1 == MainForm->Edit_AverageTimes->Text) {
 	    //MainForm->Edit_AverageTimes->Text = 3;
 	}
@@ -705,6 +703,23 @@ void __fastcall TCCTLUTForm::CheckBox_RTargetIntensityClick(TObject * Sender)
 {
     bool check = this->CheckBox_RTargetIntensity->Checked;
     this->Edit_RTargetIntensity->Enabled = check;
+}
+
+//---------------------------------------------------------------------------
+
+
+void __fastcall TCCTLUTForm::FormMouseMove(TObject * Sender, TShiftState Shift, int X, int Y)
+{
+    TOutputFileFrame1->updateWarning();
+}
+
+//---------------------------------------------------------------------------
+
+void __fastcall TCCTLUTForm::CheckBox_SmoothIntensityClick(TObject * Sender)
+{
+    bool checked = CheckBox_SmoothIntensity->Checked;
+    Edit_SmoothIntensityStart->Enabled = checked;
+    Edit_SmoothIntensityEnd->Enabled = checked;
 }
 
 //---------------------------------------------------------------------------

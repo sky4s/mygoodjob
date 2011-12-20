@@ -39,7 +39,7 @@ object AboutBox: TAboutBox
       Top = 48
       Width = 53
       Height = 13
-      Caption = 'Version 3.2'
+      Caption = 'Version 3.3'
       IsControl = True
     end
     object Copyright: TLabel
@@ -171,6 +171,7 @@ object AboutBox: TAboutBox
       Top = 91
       Width = 332
       Height = 72
+      Enabled = False
       Lines.Strings = (
         
           'Warning: this computer program is protected by copyright law and' +

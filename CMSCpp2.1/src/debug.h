@@ -8,13 +8,15 @@
 #define METER_FILE "debug.xls"
 #define DEBUG_DIR  "debug/"
 #define DEBUG_NEWFUNC_FILE "new.txt"
+#define DEBUG_VERBOSE "verbose.txt"
+#define DEBUG_VERBOSE_STEP "verbose_step.txt"
 //=============================================================================
 
 //CCT功能的debug功能開啟
 
 #define DEBUG_CCTLUT
 //新方法的過程debug功能開啟
-//#define DEBUG_CCTLUT_NEWMETHOD
+#define DEBUG_CCTLUT_NEWMETHOD
 
 //新方法的過程step debug功能開啟
 //#define DEBUG_CCTLUT_NEWMETHOD_STEP
@@ -48,28 +50,33 @@
 #define debug_dir _s(DEBUG_DIR)
 
 #define MAKE_DEBUG_DIR() \
-if (!DirectoryExists(DEBUG_DIR)) { \
+if ( FileExists( DEBUG_VERBOSE ) && !DirectoryExists(DEBUG_DIR)) { \
     CreateDir(DEBUG_DIR); \
 }
 
 #define STORE_COMPONENT( filename , result ) \
 MAKE_DEBUG_DIR(); \
+if( FileExists( DEBUG_VERBOSE ) ) \
 ComponentFetcher::storeToExcel(debug_dir + _s(filename), result);
 
 #define STORE_RGBGAMMA( filename , result ) \
 MAKE_DEBUG_DIR(); \
+if( FileExists( DEBUG_VERBOSE ) ) \
 cms::lcd::calibrate::RGBGamma::storeToExcel(debug_dir + _s(filename), result);
 
 #define STORE_RGBVECTOR( filename , result ) \
 MAKE_DEBUG_DIR(); \
+if( FileExists( DEBUG_VERBOSE ) ) \
 RGBVector::storeToExcel(debug_dir + _s(filename), result);
 
 #define STORE_DOUBLE_VECTOR( filename , result ) \
 MAKE_DEBUG_DIR(); \
+if( FileExists( DEBUG_VERBOSE ) ) \
 DoubleArray::storeToExcel(debug_dir + _s(filename), result);
 
 #define STORE_XYZXY_VECTOE( filename, result ) \
 MAKE_DEBUG_DIR(); \
+if( FileExists( DEBUG_VERBOSE ) ) \
 Util::storeXYZxyVector(debug_dir + _s(filename), result);
 
 #else

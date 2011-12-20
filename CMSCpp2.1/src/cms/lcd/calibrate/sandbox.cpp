@@ -54,19 +54,34 @@ namespace cms {
 	    //==================================================================
 	    // AdvancedDGLutGenerator
 	    //==================================================================
-	  AdvancedDGLutGenerator::AdvancedDGLutGenerator(Component_vector_ptr componentVector, bptr < cms::lcd::calibrate::ComponentFetcher > fetcher, bptr < IntensityAnalyzerIF > analyzer1, bptr < IntensityAnalyzerIF > analyzer2nd, bptr < BitDepthProcessor > bitDepth):DimDGLutGenerator(componentVector, analyzer1),
-		fetcher(fetcher), useMaxTargetBIntensity(false), rTargetIntensity(-1),
-		gTargetIntensity(-1), bTargetIntensity(-1), stopMeasure(false), multiGen(false),
-		analyzer2nd(analyzer2nd), bitDepth(bitDepth), smoothMode(true), middleCCTRatio(-1),
-		autoParameter(false), rgbGenerateResult(nil_RGBGamma) {
+	  AdvancedDGLutGenerator::AdvancedDGLutGenerator(Component_vector_ptr componentVector, bptr < cms::lcd::calibrate::ComponentFetcher > fetcher, bptr < IntensityAnalyzerIF > analyzer1, bptr < IntensityAnalyzerIF > analyzer2nd, bptr < BitDepthProcessor > bitDepth, const LCDCalibrator & calibrator):DimDGLutGenerator(componentVector, analyzer1),
+		fetcher(fetcher), analyzer2nd(analyzer2nd), bitDepth(bitDepth),
+		smoothMode(true), c(calibrator) {
+		init();
 	    };
 
-	  AdvancedDGLutGenerator::AdvancedDGLutGenerator(Component_vector_ptr componentVector, bptr < ComponentFetcher > fetcher, bptr < BitDepthProcessor > bitDepth):DimDGLutGenerator
-		(componentVector, fetcher->getAnalyzer()),
-		fetcher(fetcher), useMaxTargetBIntensity(false),
-		rTargetIntensity(-1), gTargetIntensity(-1), bTargetIntensity(-1),
-		stopMeasure(false), multiGen(false), bitDepth(bitDepth), smoothMode(false),
-		middleCCTRatio(-1), autoParameter(false), rgbGenerateResult(nil_RGBGamma) {
+	    void AdvancedDGLutGenerator::init() {
+		/*rTargetIntensity = -1;
+		   gTargetIntensity = -1;
+		   bTargetIntensity = -1;
+		   autoIntensity = false; */
+		stopMeasure = false;
+		//multiGen = false;
+		this->bitDepth = bitDepth;
+		//middleCCTRatio = -1;
+		//autoParameter = false;
+		rgbGenerateResult = nil_RGBGamma;
+		//smoothIntensity = false;
+	    };
+
+	    AdvancedDGLutGenerator::AdvancedDGLutGenerator(Component_vector_ptr componentVector,
+							   bptr < ComponentFetcher > fetcher,
+							   bptr < BitDepthProcessor > bitDepth,
+							   const LCDCalibrator &
+							   calibrator):DimDGLutGenerator
+		(componentVector, fetcher->getAnalyzer()), fetcher(fetcher), bitDepth(bitDepth),
+		smoothMode(false), c(calibrator) {
+		init();
 	    };
 	    /*
 	       targetWhite: 目標白點
@@ -105,37 +120,37 @@ namespace cms {
 		this->brightTurn = brightTurn;
 
 		//求目標值曲線
-		if (true == autoParameter) {
-		    //auto目前沒有人使用...我也忘記用意了=.=
-		    //試驗性質吧...當作沒這東西..
-		    int turn = brightTurn;
-		    int width = -1;
-		    for (; turn >= 100; turn--) {
-			width = bitDepth->getEffectiveInputLevel() - turn;
-			targetXYZVector =
-			    getTarget0(blackXYZ, targetWhite, nativeWhite, luminanceGammaCurve,
-				       dimTurn, turn, dimGamma, brightGamma, width);
+		/*if (true == autoParameter) {
+		   //auto目前沒有人使用...我也忘記用意了=.=
+		   //試驗性質吧...當作沒這東西..
+		   int turn = brightTurn;
+		   int width = -1;
+		   for (; turn >= 100; turn--) {
+		   width = bitDepth->getEffectiveInputLevel() - turn;
+		   targetXYZVector =
+		   getTarget0(blackXYZ, targetWhite, nativeWhite, luminanceGammaCurve,
+		   dimTurn, turn, dimGamma, brightGamma, width);
 
-			if (true == checkTargetXYZVector(targetXYZVector, turn, turn + width, 3)) {
-			    //檢查若最大的dab小於threshold, 就跳出
-			    break;
-			}
-		    };
-		    this->autoBrightTurn = turn;
-		    this->autoBrightWidth = width;
+		   if (true == checkTargetXYZVector(targetXYZVector, turn, turn + width, 3)) {
+		   //檢查若最大的dab小於threshold, 就跳出
+		   break;
+		   }
+		   };
+		   this->autoBrightTurn = turn;
+		   this->autoBrightWidth = width;
+		   } else { */
+
+		if (-1 != c.middleCCTRatio) {
+		    targetXYZVector =
+			getTarget0(blackXYZ, targetWhite, nativeWhite, luminanceGammaCurve,
+				   dimTurn, brightTurn, dimGamma, brightGamma, brightWidth,
+				   c.middleCCTRatio);
 		} else {
-
-		    if (-1 != middleCCTRatio) {
-			targetXYZVector =
-			    getTarget0(blackXYZ, targetWhite, nativeWhite, luminanceGammaCurve,
-				       dimTurn, brightTurn, dimGamma, brightGamma, brightWidth,
-				       middleCCTRatio);
-		    } else {
-			targetXYZVector =
-			    getTarget0(blackXYZ, targetWhite, nativeWhite, luminanceGammaCurve,
-				       dimTurn, brightTurn, dimGamma, brightGamma, brightWidth);
-		    }
+		    targetXYZVector =
+			getTarget0(blackXYZ, targetWhite, nativeWhite, luminanceGammaCurve,
+				   dimTurn, brightTurn, dimGamma, brightGamma, brightWidth);
 		}
+		//}
 		return targetXYZVector;
 	    }
 
@@ -159,7 +174,7 @@ namespace cms {
 
 		   方法1. 以兩組analyer都產生一組DG, 然後再bright turn到end這段, 以gain值做內插處理.
 		 */
-		if (multiGen) {
+		if (c.multiGen) {
 		    return produceDGLutMulti(targetXYZVector, componentVector);
 		} else {
 		    if (smoothMode) {
@@ -221,9 +236,7 @@ namespace cms {
 		for (int x = part13Start; x < level; x++) {
 		    (*result)[x] = (*result2)[x]->clone();
 		}
-		/*STORE_RGBVECTOR("sm-result1.xls", result1);
-		   STORE_RGBVECTOR("sm-result2.xls", result2);
-		   STORE_RGBVECTOR("sm-result.xls", result); */
+
 
 		return result;
 	    };
@@ -246,7 +259,7 @@ namespace cms {
 		//STORE_RGBVECTOR("MultiGen_0.xls", result);
 		STORE_RGBVECTOR("MultiGen_DG_0.xls", result);
 
-		for (int t = 0; t < multiGenTimes; t++) {
+		for (int t = 0; t < c.multiGenTimes; t++) {
 		    RGBVector::changeMaxValue(result, bitDepth->getFRCAbilityBit());
 
 		    bptr < MeasureCondition >
@@ -266,7 +279,17 @@ namespace cms {
 		return result;
 	    };
 
-
+	    RGB_ptr AdvancedDGLutGenerator::
+		getIdealIntensity(Component_vector_ptr componentVector,
+				  bptr < cms::measure::MaxMatrixIntensityAnalyzer > analyzer) {
+		Component_vector_ptr newcomponentVector =
+		    fetchNewComponent(analyzer, componentVector);
+		STORE_COMPONENT("idealIntensity.xls", newcomponentVector);
+		DGLutGenerator lutgen(newcomponentVector);
+		RGB_ptr refRGB = analyzer->getReferenceRGB();
+		RGB_ptr intensity = lutgen.getIntensity(refRGB);
+		return intensity;
+	    };
 
 	    /*
 	       產生DG LUT的演算法核心部份
@@ -289,12 +312,13 @@ namespace cms {
 		RGB_vector_ptr result(new RGB_vector(size));
 		//==============================================================
 		//primary color只能用target white~
-		//MaxMatrixIntensityAnalyzer *aa = (MaxMatrixIntensityAnalyzer *) analyzer.get();
-		//xyY_ptr rxyY = analyzer->getPrimaryColor(Channel::R);
 		XYZ_ptr rXYZ = analyzer->getPrimaryColor(Channel::R)->toXYZ();
 		XYZ_ptr gXYZ = analyzer->getPrimaryColor(Channel::G)->toXYZ();
 		XYZ_ptr bXYZ = analyzer->getPrimaryColor(Channel::B)->toXYZ();
 
+		//=============================================================
+		// debug用
+		//=============================================================
 #ifdef DEBUG_CCTLUT_NEWMETHOD
 		Component_vector_ptr maxComponentVector(new Component_vector());
 #endif				//DEBUG_CCTLUT_NEWMETHOD
@@ -302,6 +326,47 @@ namespace cms {
 #ifdef DEBUG_INTENISITY
 		Component_vector_ptr debugComponentVector(new Component_vector());
 #endif
+		//=============================================================
+
+		//=============================================================
+		//設定intensity
+		//=============================================================
+		double rTargetIntensity = -1;
+		double gTargetIntensity = -1;
+		double bTargetIntensity = -1;
+		if (true == c.autoIntensity) {
+		    xyY_ptr refxyY = analyzer->getReferenceColor();
+		    XYZ_ptr targetXYZ = refxyY->toXYZ();
+		    RGB_ptr refRGB = analyzer->getReferenceRGB();
+
+		    bptr < MaxMatrixIntensityAnalyzer > ma(new MaxMatrixIntensityAnalyzer());
+		    ma->setupComponent(Channel::R, rXYZ);
+		    ma->setupComponent(Channel::G, gXYZ);
+		    ma->setupComponent(Channel::B, bXYZ);
+		    ma->setupComponent(Channel::W, targetXYZ);
+		    ma->setReferenceRGB(refRGB);
+		    ma->enter();
+
+		    idealIntensity = getIdealIntensity(componentVector, ma);
+		    rTargetIntensity = idealIntensity->R;
+		    gTargetIntensity = idealIntensity->G;
+		    bTargetIntensity = idealIntensity->B;
+		}
+		if (rTargetIntensity == -1) {
+		    rTargetIntensity = 100;
+		};
+		if (gTargetIntensity == -1) {
+		    gTargetIntensity = 100;
+		};
+		//B採100嗎?
+		if (bTargetIntensity == -1) {
+		    bTargetIntensity = 100;
+		};
+		double rIntensity = rTargetIntensity;
+		double gIntensity = gTargetIntensity;
+		double bIntensity = bTargetIntensity;
+		//=============================================================
+
 		RGB_vector_ptr rgbGenResultVector(new RGB_vector());
 		//=============================================================
 		// 迴圈開始
@@ -324,9 +389,9 @@ namespace cms {
 
 		    {		// debug scope
 #ifdef DEBUG_CCTLUT_NEWMETHOD
-#ifdef DEBUG_CCTLUT_NEWMETHOD_STEP
-			STORE_COMPONENT(_toString(x) + ".xls", newcomponentVector);
-#endif				//DEBUG_CCTLUT_NEWMETHOD_STEP
+			if (FileExists(DEBUG_VERBOSE_STEP)) {
+			    STORE_COMPONENT(_toString(x) + ".xls", newcomponentVector);
+			}
 			//把第一個存起來, 第一個往往是最大的
 			RGB_ptr grayLevel(new RGBColor(x, x, x));
 			Component_ptr c(new Component(grayLevel,
@@ -336,19 +401,22 @@ namespace cms {
 #endif				//DEBUG_CCTLUT_NEWMETHOD
 		    }
 
+		    if (true == c.autoIntensity && true == c.smoothIntensity
+			&& x >= c.smoothIntensityStart && x <= c.smoothIntensityEnd) {
+			rIntensity =
+			    Interpolation::linear(c.smoothIntensityStart, c.smoothIntensityEnd, 100,
+						  rTargetIntensity, x);
+			gIntensity =
+			    Interpolation::linear(c.smoothIntensityStart, c.smoothIntensityEnd, 100,
+						  gTargetIntensity, x);
+			bIntensity =
+			    Interpolation::linear(c.smoothIntensityStart, c.smoothIntensityEnd, 100,
+						  bTargetIntensity, x);
+		    }
+
+
 		    DGLutGenerator lutgen(newcomponentVector);
-		    if (rTargetIntensity == -1) {
-			rTargetIntensity = 100;
-		    };
-		    if (gTargetIntensity == -1) {
-			gTargetIntensity = 100;
-		    };
-		    //B採100嗎?
-		    if (bTargetIntensity == -1) {
-			bTargetIntensity = useMaxTargetBIntensity ? lutgen.getMaxBIntensity() : 100;
-		    };
-		    RGB_ptr rgb =
-			lutgen.getDGCode(rTargetIntensity, gTargetIntensity, bTargetIntensity);
+		    RGB_ptr rgb = lutgen.getDGCode(rIntensity, gIntensity, bIntensity);
 		    bool_array isCorrect = lutgen.isCorrectIntensityInRange();
 		    (*result)[x] = rgb;
 
@@ -566,16 +634,10 @@ namespace cms {
 		    DoubleArray::getRangeCopy(luminanceGammaCurve, 0, dimTurn - 1);
 		XYZ_vector_ptr dimResult =
 		    DimTargetGenerator::getTarget(startXYZ, targetXYZ, dimGammaCurve, dimGamma);
-		/*XYZ_vector_ptr dimResult = getDimGammaTarget(luminanceGammaCurve,
-		   startXYZ,
-		   middleXYZ, dimGamma,
-		   dimTurn); */
-
 		int dimSize = dimResult->size();
 		for (int x = 0; x < dimSize; x++) {
 		    (*result)[x] = (*dimResult)[x];
 		}
-		//DimTargetGenerator::getLinearTarget(startXYZ,middleXYZ,
 		//==============================================================
 
 		//==============================================================
@@ -661,28 +723,33 @@ namespace cms {
 		return result;
 		//==============================================================
 	    };
-	    void AdvancedDGLutGenerator::setUseMaxTargetBIntensity(bool useMaxTargetBIntensity) {
-		this->useMaxTargetBIntensity = useMaxTargetBIntensity;
-	    };
-	    void AdvancedDGLutGenerator::setRTargetIntensity(double rTargetIntensity) {
-		this->rTargetIntensity = rTargetIntensity;
-	    }
-	    void AdvancedDGLutGenerator::setGTargetIntensity(double gTargetIntensity) {
-		this->gTargetIntensity = gTargetIntensity;
-	    }
-	    void AdvancedDGLutGenerator::setBTargetIntensity(double bTargetIntensity) {
-		this->bTargetIntensity = bTargetIntensity;
-	    }
+	    /*void AdvancedDGLutGenerator::setUseMaxTargetBIntensity(bool useMaxTargetBIntensity) {
+	       this->useMaxTargetBIntensity = useMaxTargetBIntensity;
+	       };
+	       void AdvancedDGLutGenerator::setRTargetIntensity(double rTargetIntensity) {
+	       this->rTargetIntensity = rTargetIntensity;
+	       }
+	       void AdvancedDGLutGenerator::setGTargetIntensity(double gTargetIntensity) {
+	       this->gTargetIntensity = gTargetIntensity;
+	       }
+	       void AdvancedDGLutGenerator::setBTargetIntensity(double bTargetIntensity) {
+	       this->bTargetIntensity = bTargetIntensity;
+	       } */
+	    /*void AdvancedDGLutGenerator::setTargetIntensity(double_array intensity) {
+	       this->rTargetIntensity = intensity[0];
+	       this->gTargetIntensity = intensity[1];
+	       this->bTargetIntensity = intensity[2];
+	       }; */
 	    void AdvancedDGLutGenerator::windowClosing(TObject * Sender, TCloseAction & Action) {
 		stopMeasure = true;
 	    };
-	    void AdvancedDGLutGenerator::setMultiGen(bool enable, int times) {
-		if (null == fetcher) {
-		    throw IllegalStateException("null == fetcher");
-		}
-		this->multiGen = enable;
-		this->multiGenTimes = times;
-	    };
+	    /*void AdvancedDGLutGenerator::setMultiGen(bool enable, int times) {
+	       if (null == fetcher) {
+	       throw IllegalStateException("null == fetcher");
+	       }
+	       this->multiGen = enable;
+	       this->multiGenTimes = times;
+	       }; */
 	    XYZ_vector_ptr AdvancedDGLutGenerator::getTargetXYZVector() {
 		return targetXYZVector;
 	    };
@@ -704,9 +771,9 @@ namespace cms {
 		}
 		return timesOfB100 == 2;
 	    };
-	    void AdvancedDGLutGenerator::setAutoParameter(bool autoParameter) {
-		this->autoParameter = autoParameter;
-	    };
+	    /*void AdvancedDGLutGenerator::setAutoParameter(bool autoParameter) {
+	       this->autoParameter = autoParameter;
+	       }; */
 	    /*
 	       試驗性質
 	     */
@@ -752,9 +819,10 @@ namespace cms {
 	    void AdvancedDGLutGenerator::setPanelRegulator(bptr < PanelRegulator > panelRegulator) {
 		this->panelRegulator1 = panelRegulator;
 	    };
-	    void AdvancedDGLutGenerator::setMiddleCCTRatio(double ratio) {
-		this->middleCCTRatio = ratio;
-	    };
+	    /*void AdvancedDGLutGenerator::setMiddleCCTRatio(double ratio) {
+	       this->middleCCTRatio = ratio;
+	       }; */
+
 	    //==================================================================
 	    //==================================================================
 	    // DimTargetGenerator.

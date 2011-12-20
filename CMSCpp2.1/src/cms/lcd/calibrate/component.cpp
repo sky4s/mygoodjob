@@ -358,6 +358,18 @@ namespace cms {
 		    throw IllegalArgumentException("Unsupported Channel:" + *ch.toString());
 		}
 	    };
+	    double ComponentLUT::correctCodeInRange(const Dep::Channel & ch, double code) {
+		switch (ch.chindex) {
+		case ChannelIndex::R:
+		    return rLut->correctKeyInRange(code);
+		case ChannelIndex::G:
+		    return gLut->correctKeyInRange(code);
+		case ChannelIndex::B:
+		    return bLut->correctKeyInRange(code);
+		default:
+		    throw IllegalArgumentException("Unsupported Channel:" + *ch.toString());
+		}
+	    };
 
 	    double ComponentLUT::getMaxBIntensity() {
 		return bLut->getMaxValue();

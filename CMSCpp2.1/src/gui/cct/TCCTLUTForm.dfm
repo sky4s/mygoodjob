@@ -14,6 +14,7 @@ object CCTLUTForm: TCCTLUTForm
   OldCreateOrder = False
   OnClose = FormClose
   OnKeyPress = FormKeyPress
+  OnMouseMove = FormMouseMove
   OnShow = FormShow
   PixelsPerInch = 96
   TextHeight = 13
@@ -344,7 +345,7 @@ object CCTLUTForm: TCCTLUTForm
     end
     object RadioButton_NoneLowLevelCorrect: TRadioButton
       Left = 7
-      Top = 192
+      Top = 176
       Width = 59
       Height = 20
       Caption = 'None'
@@ -377,22 +378,12 @@ object CCTLUTForm: TCCTLUTForm
       TabOrder = 8
       Text = '1.0'
     end
-    object CheckBox_DimFix: TCheckBox
-      Left = 26
-      Top = 176
-      Width = 71
-      Height = 20
-      Caption = 'Dim Fix'
-      TabOrder = 9
-      Visible = False
-      OnClick = CheckBox_DimFixClick
-    end
     object Edit_DimFixThreshold: TEdit
       Left = 104
       Top = 160
       Width = 49
       Height = 21
-      TabOrder = 10
+      TabOrder = 9
       Text = '0.0001'
     end
     object CheckBox_Feedback: TCheckBox
@@ -401,7 +392,7 @@ object CCTLUTForm: TCCTLUTForm
       Width = 71
       Height = 20
       Caption = 'Feedback'
-      TabOrder = 11
+      TabOrder = 10
       OnClick = CheckBox_FeedbackClick
     end
   end
@@ -482,7 +473,7 @@ object CCTLUTForm: TCCTLUTForm
     end
     object CheckBox_BTargetIntensity: TCheckBox
       Left = 7
-      Top = 96
+      Top = 88
       Width = 111
       Height = 19
       Caption = 'B Target intensity'
@@ -492,7 +483,7 @@ object CCTLUTForm: TCCTLUTForm
     end
     object Edit_BTargetIntensity: TEdit
       Left = 115
-      Top = 96
+      Top = 88
       Width = 33
       Height = 21
       Enabled = False
@@ -502,7 +493,7 @@ object CCTLUTForm: TCCTLUTForm
     end
     object CheckBox_RTargetIntensity: TCheckBox
       Left = 7
-      Top = 72
+      Top = 67
       Width = 111
       Height = 19
       Caption = 'R Target intensity'
@@ -512,7 +503,7 @@ object CCTLUTForm: TCCTLUTForm
     end
     object Edit_RTargetIntensity: TEdit
       Left = 115
-      Top = 72
+      Top = 67
       Width = 33
       Height = 21
       Enabled = False
@@ -752,7 +743,7 @@ object CCTLUTForm: TCCTLUTForm
     TabOrder = 11
     object Label20: TLabel
       Left = 26
-      Top = 85
+      Top = 101
       Width = 27
       Height = 13
       Caption = 'Begin'
@@ -760,7 +751,7 @@ object CCTLUTForm: TCCTLUTForm
     end
     object Label21: TLabel
       Left = 26
-      Top = 105
+      Top = 137
       Width = 40
       Height = 13
       Caption = 'Strength'
@@ -768,7 +759,7 @@ object CCTLUTForm: TCCTLUTForm
     end
     object Label18: TLabel
       Left = 26
-      Top = 163
+      Top = 211
       Width = 27
       Height = 13
       Caption = 'Begin'
@@ -776,13 +767,13 @@ object CCTLUTForm: TCCTLUTForm
     end
     object Label19: TLabel
       Left = 26
-      Top = 183
+      Top = 231
       Width = 40
       Height = 13
       Caption = 'Strength'
       Visible = False
     end
-    object RadioButton_MaxYTarget: TRadioButton
+    object RadioButton_MaxYNone: TRadioButton
       Left = 7
       Top = 14
       Width = 59
@@ -796,7 +787,7 @@ object CCTLUTForm: TCCTLUTForm
     end
     object RadioButton_MaxYNative: TRadioButton
       Left = 7
-      Top = 33
+      Top = 65
       Width = 130
       Height = 20
       Caption = 'Native White'
@@ -804,7 +795,7 @@ object CCTLUTForm: TCCTLUTForm
     end
     object RadioButton_MaxYNativeAdv: TRadioButton
       Left = 7
-      Top = 53
+      Top = 85
       Width = 137
       Height = 19
       Caption = 'Native White (Smooth)'
@@ -814,7 +805,7 @@ object CCTLUTForm: TCCTLUTForm
     end
     object Edit_MaxYAdvOver: TEdit
       Left = 72
-      Top = 85
+      Top = 117
       Width = 59
       Height = 21
       Enabled = False
@@ -826,7 +817,7 @@ object CCTLUTForm: TCCTLUTForm
     end
     object Edit_MaxYAdvGamma: TEdit
       Left = 72
-      Top = 105
+      Top = 137
       Width = 59
       Height = 21
       Enabled = False
@@ -837,7 +828,7 @@ object CCTLUTForm: TCCTLUTForm
     end
     object CheckBox_AvoidHookNB: TCheckBox
       Left = 7
-      Top = 144
+      Top = 192
       Width = 104
       Height = 19
       Caption = 'Avoid Hook'
@@ -847,7 +838,7 @@ object CCTLUTForm: TCCTLUTForm
     end
     object CheckBox_BMax2: TCheckBox
       Left = 84
-      Top = 144
+      Top = 192
       Width = 97
       Height = 19
       Caption = 'B Max (Smooth)'
@@ -857,7 +848,7 @@ object CCTLUTForm: TCCTLUTForm
     end
     object Edit_BMax2Begin: TEdit
       Left = 72
-      Top = 163
+      Top = 211
       Width = 59
       Height = 21
       Enabled = False
@@ -868,7 +859,7 @@ object CCTLUTForm: TCCTLUTForm
     end
     object Edit_BMax2Gamma: TEdit
       Left = 72
-      Top = 183
+      Top = 231
       Width = 59
       Height = 21
       Enabled = False
@@ -879,7 +870,7 @@ object CCTLUTForm: TCCTLUTForm
     end
     object CheckBox_SkipInverseB: TCheckBox
       Left = 26
-      Top = 130
+      Top = 162
       Width = 105
       Height = 14
       Caption = 'Skip Inverse B'
@@ -891,7 +882,7 @@ object CCTLUTForm: TCCTLUTForm
     end
     object CheckBox_MaxYAdvAuto: TCheckBox
       Left = 26
-      Top = 72
+      Top = 104
       Width = 105
       Height = 13
       Caption = 'Auto'
@@ -901,6 +892,44 @@ object CCTLUTForm: TCCTLUTForm
       TabOrder = 10
       Visible = False
       OnClick = CheckBox_MaxYAdvAutoClick
+    end
+    object RadioButton_MaxYTargetWhite: TRadioButton
+      Left = 7
+      Top = 32
+      Width = 129
+      Height = 17
+      Caption = 'Target White'
+      TabOrder = 11
+    end
+    object CheckBox_SmoothIntensity: TCheckBox
+      Left = 24
+      Top = 48
+      Width = 97
+      Height = 17
+      Caption = 'Smooth Intensity'
+      Checked = True
+      State = cbChecked
+      TabOrder = 12
+      Visible = False
+      OnClick = CheckBox_SmoothIntensityClick
+    end
+    object Edit_SmoothIntensityStart: TEdit
+      Left = 120
+      Top = 24
+      Width = 33
+      Height = 21
+      TabOrder = 13
+      Text = '40'
+      Visible = False
+    end
+    object Edit_SmoothIntensityEnd: TEdit
+      Left = 120
+      Top = 48
+      Width = 33
+      Height = 21
+      TabOrder = 14
+      Text = '60'
+      Visible = False
     end
   end
   object CheckBox_MemoryMeasure: TCheckBox
@@ -913,8 +942,8 @@ object CCTLUTForm: TCCTLUTForm
     Visible = False
   end
   object GroupBox8: TGroupBox
-    Left = 680
-    Top = 199
+    Left = 816
+    Top = 183
     Width = 145
     Height = 58
     Caption = 'Test Function'

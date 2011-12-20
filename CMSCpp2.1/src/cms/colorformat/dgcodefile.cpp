@@ -58,16 +58,16 @@ namespace cms {
       DGLutFile::DGLutFile(const std::string & filename, Mode mode):ExcelAccessBase(filename,
 			mode),
 	    maxValue(Dep::MaxValue::Double255) {
-	    initSheet(GammaTable, 4, "Gray Level", "Gamma R", "Gamma G", "Gamma B");
-	    initSheet(RawData, 13, "Gray Level", "W_x", "W_y",
-		      "W_Y (nit)", "W_R", "W_G", "W_B", "RP", "GP", "BP",
-		      "RP_Intensity_Fix", "GP_Intensity_Fix", "BP_Intensity_Fix");
-	    initPropertySheet();
+	    init();
 	};
 
 	DGLutFile::DGLutFile(const std::string & filename, Mode mode,
 			     const Dep::MaxValue & maxValue):ExcelAccessBase(filename, mode),
 	    maxValue(maxValue) {
+	    init();
+	};
+
+	void DGLutFile::init() {
 	    initSheet(GammaTable, 4, "Gray Level", "Gamma R", "Gamma G", "Gamma B");
 	    initSheet(RawData, 13, "Gray Level", "W_x", "W_y",
 		      "W_Y (nit)", "W_R", "W_G", "W_B", "RP", "GP", "BP",
@@ -75,8 +75,8 @@ namespace cms {
 	    initPropertySheet();
 	};
 
-	const string & DGLutFile::GammaTable = "Gamma_Table";
-	const string & DGLutFile::OldGammaTable = "Gamma Table";
+	//const string & DGLutFile::GammaTable = "Gamma_Table";
+	//const string & DGLutFile::OldGammaTable = "Gamma Table";
 	const string & DGLutFile::RawData = "Raw_Data";
 	const string & DGLutFile::Target = "Target";
 
@@ -183,34 +183,32 @@ namespace cms {
 	    //==================================================================
 	};
 
-	void
-	 DGLutFile::setGammaTable(RGB_vector_ptr dglut) {
-	    //==================================================================
-	    // 初始資料設定
-	    //==================================================================
-	    int
-	     size = dglut->size();
-	    string_vector_ptr values(new string_vector(4));
-	    //string_vector_ptr headerNames = getHeaderNames(GammaTable);
-	    //==================================================================
-	    //==================================================================
-	    // 迴圈處理
-	    //==================================================================
-	    for (int x = 0; x != size; x++) {
+	/*void
+	   DGLutFile::setGammaTable(RGB_vector_ptr dglut) {
+	   //==================================================================
+	   // 初始資料設定
+	   //==================================================================
+	   int size = dglut->size();
+	   string_vector_ptr values(new string_vector(4));
+	   //==================================================================
+	   //==================================================================
+	   // 迴圈處理
+	   //==================================================================
+	   for (int x = 0; x != size; x++) {
 
-		RGB_ptr rgb = (*dglut)[x];
-		(*values)[0] = _toString(x);
-		(*values)
-		    [1] = _toString(rgb->R);
-		(*values)
-		    [2] = _toString(rgb->G);
-		(*values)
-		    [3] = _toString(rgb->B);
-		this->insertData(GammaTable, values, false);
-	    }
+	   RGB_ptr rgb = (*dglut)[x];
+	   (*values)[0] = _toString(x);
+	   (*values)
+	   [1] = _toString(rgb->R);
+	   (*values)
+	   [2] = _toString(rgb->G);
+	   (*values)
+	   [3] = _toString(rgb->B);
+	   this->insertData(GammaTable, values, false);
+	   }
 
-	    //==================================================================
-	};
+	   //==================================================================
+	   }; */
 	void DGLutFile::setTargetXYZVector(XYZ_vector_ptr targetXYZVector) {
 	    //==================================================================
 	    // 初始資料設定
@@ -300,31 +298,31 @@ namespace cms {
 	    };
 	    return vector;
 	};
-	RGB_vector_ptr DGLutFile::getGammaTable() {
-	    if (db->isTableExist(GammaTable)) {
-		db->setTableName(GammaTable);
-	    } else if (db->isTableExist(OldGammaTable)) {
-		db->setTableName(OldGammaTable);
-	    } else {
-		db->setTableName(Sheet1);
-	    }
+	/*RGB_vector_ptr DGLutFile::getGammaTable() {
+	   if (db->isTableExist(GammaTable)) {
+	   db->setTableName(GammaTable);
+	   } else if (db->isTableExist(OldGammaTable)) {
+	   db->setTableName(OldGammaTable);
+	   } else {
+	   db->setTableName(Sheet1);
+	   }
 
-	    RGB_vector_ptr vector(new RGB_vector());
-	    bptr < DBQuery > query = db->selectAll();
-	    while (query->hasNext()) {
-		string_vector_ptr result = query->nextResult();
-		if (result->size() > 3 && (*result)[1].size() != 0) {
-		    double R = _toDouble((*result)[1]);
-		    double G = _toDouble((*result)[2]);
-		    double B = _toDouble((*result)[3]);
-		    RGB_ptr rgb(new RGBColor(R, G, B, maxValue));
-		    vector->push_back(rgb);
-		} else {
-		    break;
-		}
-	    };
-	    return vector;
-	};
+	   RGB_vector_ptr vector(new RGB_vector());
+	   bptr < DBQuery > query = db->selectAll();
+	   while (query->hasNext()) {
+	   string_vector_ptr result = query->nextResult();
+	   if (result->size() > 3 && (*result)[1].size() != 0) {
+	   double R = _toDouble((*result)[1]);
+	   double G = _toDouble((*result)[2]);
+	   double B = _toDouble((*result)[3]);
+	   RGB_ptr rgb(new RGBColor(R, G, B, maxValue));
+	   vector->push_back(rgb);
+	   } else {
+	   break;
+	   }
+	   };
+	   return vector;
+	   }; */
 	void DGLutFile::setProperty(const
 				    DGLutProperty & property) {
 	    property.store(*this);
@@ -337,6 +335,9 @@ namespace cms {
 	    catch(IllegalStateException & ex) {
 		return bptr < DGLutProperty > ((DGLutProperty *) null);
 	    }
+	};
+	RGB_vector_ptr DGLutFile::getGammaTable() {
+	    return ExcelAccessBase::getGammaTable(maxValue);
 	};
 	//======================================================================
 	//======================================================================
@@ -397,7 +398,8 @@ namespace cms {
 		}
 		if (true == c->feedbackFix) {
 		    dgfile.addProperty("defined dim - feedback fix", On);
-		    dgfile.addProperty("defined dim - feedback fix init defect", c->initDefectCount );
+		    dgfile.addProperty("defined dim - feedback fix init defect",
+				       c->initDefectCount);
 		    dgfile.addProperty("defined dim - feedback fix count", c->feedbackFixCount);
 		    dgfile.addProperty("max measure dx", c->maxMeasureError[0]);
 		    dgfile.addProperty("max measure dy", c->maxMeasureError[1]);
@@ -459,8 +461,8 @@ namespace cms {
 	    //==================================================================
 	    string keepstr;
 	    switch (c->keepMaxLuminance) {
-	    case KeepMaxLuminance::None:
-		keepstr = "None";
+	    case KeepMaxLuminance::TargetLuminance:
+		keepstr = "Target Luminance(None)";
 		break;
 	    case KeepMaxLuminance::TargetWhite:
 		keepstr = "Target White";
@@ -482,6 +484,12 @@ namespace cms {
 		dgfile.addProperty("skip inverse b", c->skipInverseB ? On : Off);
 		if (true == c->skipInverseB) {
 		    dgfile.addProperty("maxZ dg code", c->maxZDGCode);
+		}
+	    }
+	    if (true == c->autoIntensity) {
+		RGB_ptr idealIntensity = c->idealIntensity;
+		if (null != idealIntensity) {
+		    dgfile.addProperty("target intensity", *idealIntensity->toString());
 		}
 	    }
 	    //==================================================================
@@ -525,7 +533,7 @@ namespace cms {
 		dynamic_cast < MaxMatrixIntensityAnalyzer * >(analyzer.get());
 	    if (null != ma) {
 		double2D_ptr ratio = ma->getTargetRatio();
-		dgfile.addProperty("Target Ratio", *DoubleArray::toString(ratio));
+		dgfile.addProperty("target white ratio", *DoubleArray::toString(ratio));
 		//ShowMessage("Set \"Target White \"first.");
 	    }
 

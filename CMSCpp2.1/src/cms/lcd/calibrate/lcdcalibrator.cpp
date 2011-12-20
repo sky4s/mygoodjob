@@ -164,6 +164,9 @@ namespace cms {
 			("Please call setKeepMaxLuminanceNativeWhiteAdvanced().");
 		}
 		this->keepMaxLuminance = keepMaxLuminance;
+		if (KeepMaxLuminance::TargetWhite == keepMaxLuminance) {
+		    autoIntensity = true;
+		}
 	    };
 	    void LCDCalibrator::
 		setKeepMaxLuminanceNativeWhiteAdvanced(int over, double gamma, bool autoParameter) {
@@ -186,6 +189,7 @@ namespace cms {
 		useNewMethod = false;
 		bMax = bMax2 = false;
 		rTargetIntensity = -1;
+		gTargetIntensity = -1;
 		bTargetIntensity = -1;
 		originalGamma = false;
 		skipInverseB = false;
@@ -206,6 +210,11 @@ namespace cms {
 
 		colorimetricQuanti = false;
 		quantiType = NearOriginal;
+
+		autoIntensity = false;
+		smoothIntensity = false;
+		smoothIntensityStart = 40;
+		smoothIntensityEnd = 60;
 	    };
 
 	    Component_vector_ptr LCDCalibrator::fetchComponentVector() {
@@ -473,7 +482,7 @@ namespace cms {
 		    advgenerator = bptr < AdvancedDGLutGenerator >
 			(new AdvancedDGLutGenerator(componentVector, fetcher,
 						    fetcher->getAnalyzer(),
-						    nativeWhiteAnalyzer, bitDepth));
+						    nativeWhiteAnalyzer, bitDepth, *this));
 		    if (doAccurate) {
 			advgenerator->setComponentVector2(componentVector2, panelRegulator2);
 		    }
@@ -489,20 +498,19 @@ namespace cms {
 		    luminanceGammaCurve =
 			generator.getLuminanceGammaCurve(gammaCurve, maxLuminance, minLuminance);
 		    //==============================================================================
+		    //end of native white
 		} else {
-		    //以最大亮度為Target White的進入點
 		    //componentVector是事先量好的(呼叫此function之前)
 
-		    /*bool smoothDim = true;
-		       //試著smooth componentVector, 得到更smooth 的dg lut
-		       Component_vector_ptr copy = Util::copy(componentVector);
-		       if (smoothDim) {
-		       smoothDimComponentVector(copy);
-		       STORE_COMPONENT("o_fetch_smooth.xls", copy);
-		       } */
 		    advgenerator =
 			bptr < AdvancedDGLutGenerator >
-			(new AdvancedDGLutGenerator(componentVector, fetcher, bitDepth));
+			(new AdvancedDGLutGenerator(componentVector, fetcher, bitDepth, *this));
+
+		    //max luminance
+		    bptr < cms::measure::IntensityAnalyzerIF > analyzer = fetcher->getAnalyzer();
+		    double maxLuminance = analyzer->getReferenceColor()->Y;
+		    generator.MaxLuminance = maxLuminance;
+
 		    luminanceGammaCurve = generator.getLuminanceGammaCurve(gammaCurve);
 		    //keepMaxLumiOver = bitDepth->getInputMaxDigitalCount();
 		    keepMaxLumiOver = bitDepth->getEffectiveInputLevel();
@@ -522,24 +530,22 @@ namespace cms {
 		//=================================================================================
 		// advgenerator options
 		//=================================================================================
-		if (this->rTargetIntensity != -1) {
-		    advgenerator->setRTargetIntensity(rTargetIntensity);
-		}
-		if (this->bTargetIntensity != -1) {
-		    advgenerator->setBTargetIntensity(bTargetIntensity);
-		}
-		if (multiGen) {
-		    advgenerator->setMultiGen(multiGen, multiGenTimes);
-		}
-		if (middleCCTRatio != -1) {
-		    advgenerator->setMiddleCCTRatio(middleCCTRatio);
-		}
+		/*if (this->rTargetIntensity != -1) {
+		   advgenerator->RTargetIntensity = rTargetIntensity;
+		   }
+		   if (this->bTargetIntensity != -1) {
+		   advgenerator->BTargetIntensity = bTargetIntensity;
+		   }
+		   advgenerator->AutoIntensity = this->autoIntensity; */
+		/*if (multiGen) {
+		   advgenerator->setMultiGen(multiGen, multiGenTimes);
+		   }
+		   if (middleCCTRatio != -1) {
+		   advgenerator->setMiddleCCTRatio(middleCCTRatio);
+		   } */
 		//=================================================================================
 
-		//外部迴圈針對是否疊階來決定起始位置
-		//這邊的思維是: 如果轉折點設定不當(太小太接近0), 就可能造成疊階
-		//所以逐漸調整轉折點來讓疊階消失
-		int overParameter = keepMaxLumiOver;
+
 		int startCheckPos = 50;
 		int minOverParameter = (useNewMethod && autoKeepMaxLumiParameter) ?
 		    startCheckPos : keepMaxLumiOver;
@@ -555,12 +561,16 @@ namespace cms {
 		if (null != nativeWhiteAnalyzer) {
 		    //nativeWhite = nativeWhiteAnalyzer->getReferenceColor()->toXYZ();
 		}
-		if (KeepMaxLuminance::TargetWhite == keepMaxLuminance) {
+		if (KeepMaxLuminance::TargetLuminance == keepMaxLuminance) {
 		    nativeWhite = targetWhite->clone();
 		    nativeWhite->normalizeY();
 		    double maxLuminance = (*luminanceGammaCurve)[luminanceGammaCurve->size() - 1];
 		    nativeWhite->times(maxLuminance);
 		}
+		//外部迴圈針對是否疊階來決定起始位置
+		//這邊的思維是: 如果轉折點設定不當(太小太接近0), 就可能造成疊階
+		//所以逐漸調整轉折點來讓疊階消失
+		int overParameter = keepMaxLumiOver;
 
 		for (; overParameter >= minOverParameter; overParameter -= step) {
 		    int width = bitDepth->getEffectiveInputLevel() - overParameter;
@@ -573,10 +583,12 @@ namespace cms {
 							 overParameter,
 							 dimStrengthParameter,
 							 brightgammaParameter, width);
+
 		    //從目標值算出DGLut
 		    dglut = advgenerator->produce(targetXYZVector);
 		    STORE_RGBVECTOR("3.1_org_dgcode.xls", dglut);
 		    initialRGBGamma = advgenerator->RGBGenerateResult;
+		    idealIntensity = advgenerator->IdealIntensity;
 
 
 
@@ -1106,6 +1118,11 @@ namespace cms {
 	    void LCDCalibrator::setMultiGen(bool enable, int times) {
 		this->multiGen = enable;
 		this->multiGenTimes = times;
+	    };
+	    void LCDCalibrator::setSmoothIntensity(int start, int end) {
+		this->smoothIntensity = true;
+		smoothIntensityStart = start;
+		smoothIntensityEnd = end;
 	    };
 	    void LCDCalibrator::setFeedbackListener(FeedbackListener * listener) {
 		this->feedbackListener = listener;

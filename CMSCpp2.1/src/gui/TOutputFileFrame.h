@@ -31,13 +31,14 @@ class TOutputFileFrame:public TFrame {
     void __fastcall Edit_DirectoryChange(TObject * Sender);
   private:			// User declarations
     int serialid;
-    void updateWarning();
+
     String_ptr _getOutputFilename();
   public:			// User declarations
      __fastcall TOutputFileFrame(TComponent * Owner);
     bool createDir();
     String_ptr getFullPrefix();
     String_ptr getOutputFilename();
+    void updateWarning();
 };
 //---------------------------------------------------------------------------
 extern PACKAGE TOutputFileFrame *OutputFileFrame;

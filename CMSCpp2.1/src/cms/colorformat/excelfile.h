@@ -126,7 +126,9 @@ namespace cms {
 	    const Mode mode;
 	     std::map < const std::string, string_vector_ptr) headerNamesMap;
 	    static const std::string & DeltaData;
+	    static const std::string & OldGammaTable;
 	  protected:
+	    static const std::string & GammaTable;
 	     bptr < ExcelFileDB > db;
 	    string_vector_ptr getHeaderNames(const std::string & sheetname);
 	    const int getHeaderCount(const std::string & sheetname);
@@ -151,6 +153,8 @@ namespace cms {
 	     bptr < DBQuery > retrieve(const std::string & sheetname);
 	    void setDeltaData(Component_vector_ptr componentVector);
 	    void setDeltaData(Patch_vector_ptr patchVector);
+	    void setGammaTable(RGB_vector_ptr dglut);
+	    RGB_vector_ptr getGammaTable(const Dep::MaxValue & maxValue);
 
 	};
 	class SimpleExcelAccess:protected ExcelAccessBase {

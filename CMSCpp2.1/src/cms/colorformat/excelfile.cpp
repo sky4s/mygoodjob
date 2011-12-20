@@ -362,6 +362,8 @@ namespace cms {
 	// ExcelAccessBase
 	//======================================================================
 	const string & ExcelAccessBase::DeltaData = "Delta_Data";
+	const string & ExcelAccessBase::GammaTable = "Gamma_Table";
+	const string & ExcelAccessBase::OldGammaTable = "Gamma Table";
 	const std::string & ExcelAccessBase::Sheet1 = "Sheet1";
 	string_vector_ptr ExcelAccessBase::getHeaderNames(const std::string & sheetname) {
 	    return headerNamesMap[sheetname];
@@ -384,6 +386,9 @@ namespace cms {
 	};
 	void ExcelAccessBase::initSheet(const std::string & sheetname,
 					string_vector_ptr headerNames) {
+	    if (db->isTableExist(sheetname)) {
+		return;
+	    }
 	    headerNamesMap.insert(make_pair(sheetname, headerNames));
 	    if (Create == mode) {
 		db->createTable(sheetname, headerNames);
@@ -393,6 +398,9 @@ namespace cms {
 	void ExcelAccessBase::initSheet(const std::string & sheetname,
 					string_vector_ptr headerNames,
 					string_vector_ptr fieldTypes) {
+	    if (db->isTableExist(sheetname)) {
+		return;
+	    }
 	    headerNamesMap.insert(make_pair(sheetname, headerNames));
 	    if (Create == mode) {
 		db->createTable(sheetname, headerNames, fieldTypes);
@@ -514,13 +522,69 @@ namespace cms {
 	    }
 	};
 
+
+	void ExcelAccessBase::setGammaTable(RGB_vector_ptr dglut) {
+	    //==================================================================
+	    // 初始資料設定
+	    //==================================================================
+	    int size = dglut->size();
+	    string_vector_ptr values(new string_vector(4));
+	    initSheet(GammaTable, 4, "Gray Level", "Gamma R", "Gamma G", "Gamma B");
+	    //==================================================================
+	    //==================================================================
+	    // 迴圈處理
+	    //==================================================================
+	    for (int x = 0; x != size; x++) {
+
+		RGB_ptr rgb = (*dglut)[x];
+		(*values)[0] = _toString(x);
+		(*values)
+		    [1] = _toString(rgb->R);
+		(*values)
+		    [2] = _toString(rgb->G);
+		(*values)
+		    [3] = _toString(rgb->B);
+		this->insertData(GammaTable, values, false);
+	    }
+
+	    //==================================================================
+	};
+
+	RGB_vector_ptr ExcelAccessBase::getGammaTable(const Dep::MaxValue & maxValue) {
+	    if (db->isTableExist(GammaTable)) {
+		db->setTableName(GammaTable);
+	    } else if (db->isTableExist(OldGammaTable)) {
+		db->setTableName(OldGammaTable);
+	    } else {
+		db->setTableName(Sheet1);
+	    }
+
+	    RGB_vector_ptr vector(new RGB_vector());
+	    bptr < DBQuery > query = db->selectAll();
+	    while (query->hasNext()) {
+		string_vector_ptr result = query->nextResult();
+		if (result->size() > 3 && (*result)[1].size() != 0) {
+		    double R = _toDouble((*result)[1]);
+		    double G = _toDouble((*result)[2]);
+		    double B = _toDouble((*result)[3]);
+		    RGB_ptr rgb(new RGBColor(R, G, B, maxValue));
+		    vector->push_back(rgb);
+		} else {
+		    break;
+		}
+	    };
+	    return vector;
+	};
 	//======================================================================
 
 	//======================================================================
 	// SimpleExcelAccess
 	//======================================================================
 
-	SimpleExcelAccess::SimpleExcelAccess(const std::string & filename, Mode mode):ExcelAccessBase(filename, mode) {	/*, headerNames(headerNames) */
+      SimpleExcelAccess::SimpleExcelAccess(const std::string & filename, Mode mode):ExcelAccessBase(filename,
+			mode)
+	{
+	    /*, headerNames(headerNames) */
 
 	};
 	SimpleExcelAccess::SimpleExcelAccess(const std::string & filename, Mode mode, string_vector_ptr headerNames):ExcelAccessBase(filename, mode) {	/*, headerNames(headerNames) */

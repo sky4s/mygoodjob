@@ -17,6 +17,7 @@ namespace cms {
 	using namespace cms::util;
 	const std::string & RampMeasureFile::Sheet1 = "xyY";
 	const std::string & RampMeasureFile::Sheet2 = "XYZ";
+	//const std::string & RampMeasureFile::GammaTable = "Gamma_Tab;e";
 	//const std::string & RampMeasureFile::Deltaxy = "dxdy";
 
 	 RampMeasureFile::RampMeasureFile(const std::string & fileName,
@@ -200,6 +201,7 @@ namespace cms {
 	    return values;
 	}
 
+ 
 	//==================================================================
     };
 };
