@@ -28,34 +28,23 @@ namespace cms {
 		bool isAvoidHook(XYZ_ptr targetXYZ, double offsetK);
 		XYZ_ptr getXYZ(XYZ_ptr XYZ, double offsetK);
 		bool isDuplicateBlue100(XYZ_ptr targetXYZ);
-		/*double rTargetIntensity;
-		   double gTargetIntensity;
-		   double bTargetIntensity;
-		   bool autoIntensity; */
 		RGB_ptr idealIntensity;
-		/*bool smoothIntensity;
-		   int smoothIntensityStart;
-		   int smoothIntensityEnd; */
+
 
 		bool stopMeasure;
-		//bool multiGen;
-		//int multiGenTimes, multiGenStart, multiGenEnd;
 		//multigen的時候會用到fetcher(因為要不斷重新量測)
 		 bptr < cms::lcd::calibrate::ComponentFetcher > fetcher;
 		 bptr < BitDepthProcessor > bitDepth;
 		 bptr < cms::measure::IntensityAnalyzerIF > analyzer2nd;
 		const bool smoothMode;
 		XYZ_vector_ptr targetXYZVector;
-		//bool autoParameter;
 		int autoBrightTurn;
 		int autoBrightWidth;
 		int brightTurn;
-		//double middleCCTRatio;
 
 		Component_vector_ptr componentVector2;
 		 bptr < PanelRegulator > panelRegulator1;
 		 bptr < PanelRegulator > panelRegulator2;
-
 		RGBGamma_ptr rgbGenerateResult;
 		void init();
 		XYZ_vector_ptr getTarget0(XYZ_ptr startXYZ, XYZ_ptr targetXYZ, XYZ_ptr endXYZ,
@@ -85,9 +74,7 @@ namespace cms {
 		RGB_vector_ptr produce(XYZ_vector_ptr targetXYZVector);
 
 
-		//void setTargetIntensity(double_array intensity);
 		virtual void windowClosing(TObject * Sender, TCloseAction & Action);
-		//void setMultiGen(bool enable, int times);
 		XYZ_vector_ptr getTargetXYZVector();
 		XYZ_vector_ptr getTargetXYZVector(XYZ_ptr targetWhite,
 						  double_vector_ptr luminanceGammaCurve,
@@ -131,18 +118,12 @@ namespace cms {
 		static RGB_vector_ptr smooth(RGB_vector_ptr result1,
 					     RGB_vector_ptr result2,
 					     bptr < BitDepthProcessor > bitDepth, int brightTurn);
-		//void setAutoParameter(bool autoParameter);
 		int getAutoBrightTurn();
 		int getAutoBrightWidth();
 		void setComponentVector2(Component_vector_ptr componentVector2,
 					 bptr < PanelRegulator > panelRegulator2);
 		void setPanelRegulator(bptr < PanelRegulator > panelRegulator);
-		//void setMiddleCCTRatio(double ratio);
 		__property RGBGamma_ptr RGBGenerateResult = { read = rgbGenerateResult };
-		/*__property bool AutoIntensity = { write = autoIntensity };
-		__property double RTargetIntensity = { write = rTargetIntensity };
-		__property double GTargetIntensity = { write = gTargetIntensity };
-		__property double BTargetIntensity = { write = bTargetIntensity };*/
 		__property RGB_ptr IdealIntensity = { read = idealIntensity };
 	    };
 

@@ -69,7 +69,6 @@ namespace cms {
 	    class ComponentPLRelation;
 
 	    class DimDGLutGenerator;
-	    //class DimTargetGenerator;
 	    class AdvancedDGLutGenerator;
 	    namespace algo {
 		class ChromaticAroundAlgorithm;

@@ -724,3 +724,10 @@ void __fastcall TCCTLUTForm::CheckBox_SmoothIntensityClick(TObject * Sender)
 
 //---------------------------------------------------------------------------
 
+void __fastcall TCCTLUTForm::Edit_DefinedDimUnderChange(TObject * Sender)
+{
+    Edit_SmoothIntensityStart->Text = Edit_DefinedDimUnder->Text;
+}
+
+//---------------------------------------------------------------------------
+

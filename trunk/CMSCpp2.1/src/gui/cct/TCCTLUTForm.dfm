@@ -368,6 +368,7 @@ object CCTLUTForm: TCCTLUTForm
       ImeName = #26085#25991#36664#20837#31995#32113' (MS-IME2002)'
       TabOrder = 7
       Text = '50'
+      OnChange = Edit_DefinedDimUnderChange
     end
     object Edit_DimGamma: TEdit
       Left = 72
@@ -919,7 +920,7 @@ object CCTLUTForm: TCCTLUTForm
       Width = 33
       Height = 21
       TabOrder = 13
-      Text = '40'
+      Text = '50'
       Visible = False
     end
     object Edit_SmoothIntensityEnd: TEdit
@@ -928,7 +929,7 @@ object CCTLUTForm: TCCTLUTForm
       Width = 33
       Height = 21
       TabOrder = 14
-      Text = '60'
+      Text = '255'
       Visible = False
     end
   end

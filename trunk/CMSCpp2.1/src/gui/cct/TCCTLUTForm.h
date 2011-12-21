@@ -145,6 +145,7 @@ class TCCTLUTForm:public TForm, cms::lcd::calibrate::FeedbackListener {
     void __fastcall CheckBox_RTargetIntensityClick(TObject * Sender);
     void __fastcall FormMouseMove(TObject * Sender, TShiftState Shift, int X, int Y);
     void __fastcall CheckBox_SmoothIntensityClick(TObject * Sender);
+    void __fastcall Edit_DefinedDimUnderChange(TObject * Sender);
   private:			// User declarations
     void setMeasureInfo();
     int serialid;
