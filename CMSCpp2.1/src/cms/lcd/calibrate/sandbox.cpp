@@ -262,9 +262,12 @@ namespace cms {
 		if (null == fetcher) {
 		    throw new IllegalStateException("null == fetcher");
 		}
-		//STORE_RGBVECTOR("MultiGen_0.xls", result);
 		STORE_RGBVECTOR("MultiGen_DG_0.xls", result);
 
+		/*
+		   multi gen的過程中時間是一直流逝的, 面板的特性也可能隨著時間改變
+		   但是targetXYZVector並不變, 是不是有可能導致做出來的結果會有clipping?
+		 */
 		for (int t = 0; t < c.multiGenTimes; t++) {
 		    RGBVector::changeMaxValue(result, bitDepth->getFRCAbilityBit());
 
@@ -819,7 +822,7 @@ namespace cms {
 		this->panelRegulator2 = panelRegulator2;
 	    };
 	    /*
-	       以載過DG的面板來產生DG Lut, 後續還需要panelRegulator做remap.
+	       以已載過DG的面板來產生DG Lut, 後續還需要panelRegulator做remap.
 	       因為載過DG的面板的Gray Level已經異動, 後續需要remap回正確的結果.
 	     */
 	    void AdvancedDGLutGenerator::setPanelRegulator(bptr < PanelRegulator > panelRegulator) {
