@@ -154,13 +154,7 @@ namespace cms {
 		return targetXYZVector;
 	    }
 
-	    /*
-	       更進階的產生方式
-	       1.先產生一組DG Lut
-	       2.把該組DG做量測當作Raw Data
-	       3.再拿該組偽Raw Data產生DG Lut
-	       4.若精準度要更高,就重複做到滿意為止
-	     */
+
 	    RGB_vector_ptr AdvancedDGLutGenerator::produce(XYZ_vector_ptr targetXYZVector) {
 		STORE_XYZXY_VECTOE("1.2_target.xls", targetXYZVector);
 		//==============================================================
@@ -175,9 +169,21 @@ namespace cms {
 		   方法1. 以兩組analyer都產生一組DG, 然後再bright turn到end這段, 以gain值做內插處理.
 		 */
 		if (c.multiGen) {
+		    /*
+		       更進階的產生方式
+		       1.先產生一組DG Lut
+		       2.把該組DG做量測當作Raw Data
+		       3.再拿該組偽Raw Data產生DG Lut
+		       4.若精準度要更高,就重複做到滿意為止
+		     */
 		    return produceDGLutMulti(targetXYZVector, componentVector);
 		} else {
 		    if (smoothMode) {
+			/*
+			   smooth mode是用在 白點非原始色溫 + 要keep最大亮度.
+			   此時兩個色溫若不同, 要將兩個結果做smooth.
+			   但目前該功能在UI上並未開放
+			 */
 			//target white產生的結果
 			RGB_vector_ptr result1 = produceDGLut(targetXYZVector, componentVector,
 							      analyzer, panelRegulator1);

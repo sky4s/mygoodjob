@@ -512,7 +512,6 @@ namespace cms {
 		    generator.MaxLuminance = maxLuminance;
 
 		    luminanceGammaCurve = generator.getLuminanceGammaCurve(gammaCurve);
-		    //keepMaxLumiOver = bitDepth->getInputMaxDigitalCount();
 		    keepMaxLumiOver = bitDepth->getEffectiveInputLevel();
 
 		}
@@ -527,24 +526,6 @@ namespace cms {
 		    dimStrengthParameter = dimStrength;
 		    underParameter = under;
 		}
-		//=================================================================================
-		// advgenerator options
-		//=================================================================================
-		/*if (this->rTargetIntensity != -1) {
-		   advgenerator->RTargetIntensity = rTargetIntensity;
-		   }
-		   if (this->bTargetIntensity != -1) {
-		   advgenerator->BTargetIntensity = bTargetIntensity;
-		   }
-		   advgenerator->AutoIntensity = this->autoIntensity; */
-		/*if (multiGen) {
-		   advgenerator->setMultiGen(multiGen, multiGenTimes);
-		   }
-		   if (middleCCTRatio != -1) {
-		   advgenerator->setMiddleCCTRatio(middleCCTRatio);
-		   } */
-		//=================================================================================
-
 
 		int startCheckPos = 50;
 		int minOverParameter = (useNewMethod && autoKeepMaxLumiParameter) ?

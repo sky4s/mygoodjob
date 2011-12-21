@@ -18,13 +18,6 @@ namespace cms {
 	    class DimDGLutGenerator {
 	      private:
 
-		/*static XYZ_vector_ptr getTarget(XYZ_ptr startXYZ,
-		   XYZ_ptr endXYZ,
-		   double_vector_ptr luminanceGammaCurve);
-		   static XYZ_vector_ptr getTarget(XYZ_ptr startXYZ,
-		   XYZ_ptr endXYZ,
-		   double_vector_ptr
-		   luminanceGammaCurve, double gamma); */
 	      protected:
 		Component_vector_ptr componentVector;
 		bptr < cms::measure::IntensityAnalyzerIF > analyzer;
