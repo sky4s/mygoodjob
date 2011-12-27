@@ -3,7 +3,7 @@ object TargetWhiteForm2: TTargetWhiteForm2
   Top = 138
   Width = 767
   Height = 506
-  Caption = 'TargetWhiteForm'
+  Caption = 'Target White'
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText

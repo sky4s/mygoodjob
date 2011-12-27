@@ -107,6 +107,7 @@ namespace math {
 	static double_vector_ptr toDoubleVector(double array[], int n);
 	static double *toCDoubleArray(double_vector_ptr doubleVector);
 	static void toCDoubleArray(double_vector_ptr doubleVector, double *cDoubleArray);
+	static double_array fromString(std::string str);
 	//=====================================================================
 
 #ifdef EXCEL_ACCESSIBLE

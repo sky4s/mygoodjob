@@ -886,7 +886,7 @@ namespace cms {
 		    dglutFile->setRawData(componentVector, initialRGBGamma, finalRGBGamma);
 		}
 		if (null != targetXYZVector) {
-		    dglutFile->setTargetXYZVector(targetXYZVector);
+		    dglutFile->setTargetXYZVector(targetXYZVector, dglut);
 		}
 	    };
 	    Component_vector_ptr LCDCalibrator::getDimComponentVector(RGB_vector_ptr dglut) {
