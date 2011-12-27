@@ -482,6 +482,17 @@ namespace math {
 	    cDoubleArray[x] = (*doubleVector)[x];
 	}
     };
+
+    double_array DoubleArray::fromString(std::string str) {
+	string_vector_ptr stringVec = StringVector::tokenize(str, ",\n");
+	int size = stringVec->size();
+	double_array result(new double[size]);
+	for (int x = 0; x < size; x++) {
+	    result[x] = _toDouble((*stringVec)[x]);
+	}
+	return result;
+    };
+
 #ifdef EXCEL_ACCESSIBLE
     void DoubleArray::storeToExcel(const string & filename, double_vector_ptr doubleVector) {
 	Util::deleteExist(filename);
@@ -655,7 +666,7 @@ namespace math {
     };
     void IntArray::arraycopy(int_array src, int *dest, int length) {
 	for (int x = 0; x < length; x++) {
- 	    dest[x] = src[x];
+	    dest[x] = src[x];
 	}
     };
     //==========================================================================

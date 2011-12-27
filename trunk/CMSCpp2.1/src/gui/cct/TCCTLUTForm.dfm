@@ -462,6 +462,7 @@ object CCTLUTForm: TCCTLUTForm
       Caption = 'Multi Generate'
       Enabled = False
       TabOrder = 2
+      Visible = False
     end
     object Edit_MultiGenTimes: TEdit
       Left = 117
@@ -471,6 +472,7 @@ object CCTLUTForm: TCCTLUTForm
       Enabled = False
       TabOrder = 3
       Text = '1'
+      Visible = False
     end
     object CheckBox_BTargetIntensity: TCheckBox
       Left = 7

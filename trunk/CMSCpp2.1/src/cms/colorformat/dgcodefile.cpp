@@ -80,6 +80,7 @@ namespace cms {
 	const string & DGLutFile::RawData = "Raw_Data";
 	const string & DGLutFile::Target = "Target";
 
+
 	void DGLutFile::setRawData(Component_vector_ptr componentVector,
 				   RGBGamma_ptr initialRGBGamma, RGBGamma_ptr finalRGBGamma) {
 	    //==================================================================
@@ -210,6 +211,10 @@ namespace cms {
 	   //==================================================================
 	   }; */
 	void DGLutFile::setTargetXYZVector(XYZ_vector_ptr targetXYZVector) {
+	    if (true) {
+		setTargetXYZVector(targetXYZVector, nil_RGB_vector_ptr);
+		return;
+	    }
 	    //==================================================================
 	    // 初始資料設定
 	    //==================================================================
@@ -259,7 +264,110 @@ namespace cms {
 		this->insertData(Target, values, false);
 	    }
 	};
-	Component_vector_ptr DGLutFile::getComponentVector() {
+
+	void DGLutFile::setTargetXYZVector(XYZ_vector_ptr targetXYZVector, RGB_vector_ptr dglut) {
+	    //==================================================================
+	    // 初始資料設定
+	    //==================================================================
+	    const int headerCount = 14;
+	    initSheet(Target, headerCount, "Gray Level", "X", "Y (nit)", "Z", "_x", "_y", "dx",
+		      "dy",
+		      // 8~13
+		      "Gamma R", "Gamma G", "Gamma B", "Gamma X", "Gamma Y", "Gamma Z");
+
+	    int size = targetXYZVector->size();
+	    string_vector_ptr values(new string_vector(headerCount));
+	    //==================================================================
+	    Component_vector_ptr componentVector = nil_Component_vector_ptr;
+	    bptr < ComponentLUT > componentLUT;
+	    bptr < DGLutProperty > property;
+	    XYZ_ptr rXYZ, gXYZ, bXYZ;
+	    double_array targetWhiteRatio;
+	    if (null != dglut) {
+		componentVector = getComponentVector(false);
+		componentLUT = bptr < ComponentLUT > (new ComponentLUT(componentVector));
+		property = getProperty();
+		xyY_ptr rxyY = property->getTargetReferenceColor(Channel::R);
+		xyY_ptr gxyY = property->getTargetReferenceColor(Channel::G);
+		xyY_ptr bxyY = property->getTargetReferenceColor(Channel::B);
+		rXYZ = rxyY->toXYZ();
+		gXYZ = gxyY->toXYZ();
+		bXYZ = bxyY->toXYZ();
+		targetWhiteRatio = property->getTargetWhiteRatio();
+		double r = targetWhiteRatio[0];
+		double g = targetWhiteRatio[1];
+		double b = targetWhiteRatio[2];
+	    }
+	    //==================================================================
+	    // 迴圈處理
+	    //==================================================================
+	    for (int x = 0; x != size; x++) {
+		XYZ_ptr XYZ = (*targetXYZVector)[x];
+
+		(*values)[0] = _toString(x);
+		(*values)
+		    [1] = _toString(XYZ->X);
+		(*values)
+		    [2] = _toString(XYZ->Y);
+		(*values)
+		    [3] = _toString(XYZ->Z);
+		xyY_ptr xyY(new CIExyY(XYZ));
+		(*values)
+		    [4] = _toString(xyY->x);
+		(*values)
+		    [5] = _toString(xyY->y);
+
+		if (x == 0) {
+		    StringVector::setContent(values, "0", 2, 6, 7);	//dx dy=0
+		} else {
+		    XYZ_ptr XYZ0 = (*targetXYZVector)[x - 1];
+		    xyY_ptr xyY0(new CIExyY(XYZ0));
+		    double dx = xyY->x - xyY0->x;
+		    double dy = xyY->y - xyY0->y;
+		    if (Math::abs(dx) < 0.00001 || Math::abs(dy) < 0.00001) {
+			StringVector::setContent(values, "0", 2, 6, 7);
+		    } else {
+			(*values)[6] = _toString(dx);
+			(*values)[7] = _toString(dy);
+		    }
+
+		}
+
+		if (null != dglut) {
+		    RGB_ptr rgb = (*dglut)[x];
+		    (*values)[8] = _toString(rgb->R);
+		    (*values)[9] = _toString(rgb->G);
+		    (*values)[10] = _toString(rgb->B);
+		    double r = rgb->getValue(Channel::R, MaxValue::Double255);
+		    double g = rgb->getValue(Channel::G, MaxValue::Double255);
+		    double b = rgb->getValue(Channel::B, MaxValue::Double255);
+
+		    double rIntensity =
+			componentLUT->getIntensity(Channel::R, r) * targetWhiteRatio[0];
+		    double gIntensity =
+			componentLUT->getIntensity(Channel::G, g) * targetWhiteRatio[1];
+		    double bIntensity =
+			componentLUT->getIntensity(Channel::B, b) * targetWhiteRatio[2];
+		    double X =
+			rXYZ->X * rIntensity / 100 + gXYZ->X * gIntensity / 100 +
+			bXYZ->X * bIntensity / 100;
+		    double Y =
+			rXYZ->Y * rIntensity / 100 + gXYZ->Y * gIntensity / 100 +
+			bXYZ->Y * bIntensity / 100;
+		    double Z =
+			rXYZ->Z * rIntensity / 100 + gXYZ->Z * gIntensity / 100 +
+			bXYZ->Z * bIntensity / 100;
+		    (*values)[11] = _toString(X);
+		    (*values)[12] = _toString(Y);
+		    (*values)[13] = _toString(Z);
+		} else {
+		    StringVector::setContent(values, "-1", 6, 8, 9, 10, 11, 12, 13);	//dx dy=0
+		}
+
+		this->insertData(Target, values, false);
+	    }
+	};
+	Component_vector_ptr DGLutFile::getComponentVector(bool rgbFromGammaTable) {
 	    Component_vector_ptr vector(new Component_vector());
 	    db->setTableName(RawData);
 	    bptr < DBQuery > query = db->selectAll();
@@ -281,7 +389,7 @@ namespace cms {
 		double g = _toDouble((*result)[8]);
 		double b = _toDouble((*result)[9]);
 		RGB_ptr rgb;
-		if (gammaTable->size() != 0) {
+		if (true == rgbFromGammaTable && gammaTable->size() != 0) {
 		    RGB_ptr gamma = (*gammaTable)[index++];
 		    rgb = gamma;
 		} else {
@@ -298,31 +406,14 @@ namespace cms {
 	    };
 	    return vector;
 	};
-	/*RGB_vector_ptr DGLutFile::getGammaTable() {
-	   if (db->isTableExist(GammaTable)) {
-	   db->setTableName(GammaTable);
-	   } else if (db->isTableExist(OldGammaTable)) {
-	   db->setTableName(OldGammaTable);
-	   } else {
-	   db->setTableName(Sheet1);
-	   }
 
-	   RGB_vector_ptr vector(new RGB_vector());
-	   bptr < DBQuery > query = db->selectAll();
-	   while (query->hasNext()) {
-	   string_vector_ptr result = query->nextResult();
-	   if (result->size() > 3 && (*result)[1].size() != 0) {
-	   double R = _toDouble((*result)[1]);
-	   double G = _toDouble((*result)[2]);
-	   double B = _toDouble((*result)[3]);
-	   RGB_ptr rgb(new RGBColor(R, G, B, maxValue));
-	   vector->push_back(rgb);
-	   } else {
-	   break;
-	   }
-	   };
-	   return vector;
-	   }; */
+	/*
+	   把存在xls檔案裡的資訊轉成ComponentVector (debug用)
+	 */
+	Component_vector_ptr DGLutFile::getComponentVector() {
+	    return getComponentVector(true);
+	};
+
 	void DGLutFile::setProperty(const
 				    DGLutProperty & property) {
 	    property.store(*this);
@@ -347,6 +438,7 @@ namespace cms {
 	const string DGLutProperty::Off = "Off";
 	const string DGLutProperty::Native = "native";
 	const string DGLutProperty::Target = "target";
+	const string DGLutProperty::TargetWhiteRatio = "TargetWhiteRatio";
 	void DGLutProperty::store(DGLutFile & dgfile) const {
 	    dgfile.addProperty("cct product version", "3.3");
 	    //==================================================================
@@ -533,8 +625,7 @@ namespace cms {
 		dynamic_cast < MaxMatrixIntensityAnalyzer * >(analyzer.get());
 	    if (null != ma) {
 		double2D_ptr ratio = ma->getTargetRatio();
-		dgfile.addProperty("target white ratio", *DoubleArray::toString(ratio));
-		//ShowMessage("Set \"Target White \"first.");
+		dgfile.addProperty(TargetWhiteRatio, *DoubleArray::toString(ratio));
 	    }
 
 	};
@@ -601,6 +692,7 @@ namespace cms {
 	    }
 	};
 	//=====================================================================
+
       DGLutProperty::DGLutProperty(bptr < DGLutFile > d):c((LCDCalibrator *) null), d(d) {
 	    if (false == initProperty(d)) {
 		throw IllegalStateException(" init Property failed.");
@@ -677,6 +769,11 @@ namespace cms {
 		bitDepth(new BitDepthProcessor(in.bit, lut.bit, out.bit, false));
 	    return bitDepth;
 	}
+	double_array DGLutProperty::getTargetWhiteRatio() {
+	    string_ptr value = getProperty(TargetWhiteRatio);
+	    double_array targetWhiteRatio = DoubleArray::fromString(*value);
+	    return targetWhiteRatio;
+	};
 	//======================================================================
     };
 };

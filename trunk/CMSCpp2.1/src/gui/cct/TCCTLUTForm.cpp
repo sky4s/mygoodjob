@@ -116,6 +116,7 @@ void __fastcall TCCTLUTForm::Button_MeaRunClick(TObject * Sender)
 	// gammaªº³B²z
 	//==========================================================================
 	bool absGamma = CheckBox_AbsoluteGamma->Checked;
+	calibrator.AbsoluteGamma = absGamma;
 	if (this->RadioButton_Gamma->Checked) {
 	    double gamma = this->ComboBox_Gamma->Text.ToDouble();
 	    calibrator.setGamma(gamma);
@@ -333,6 +334,9 @@ void __fastcall TCCTLUTForm::FormShow(TObject * Sender)
 	CheckBox_SmoothIntensity->Visible = true;
 	Edit_SmoothIntensityStart->Visible = true;
 	Edit_SmoothIntensityEnd->Visible = true;
+
+	CheckBox_MultiGen->Visible = true;
+	Edit_MultiGenTimes->Visible = true;
     }
 
     this->CheckBox_NewMethod->Checked = true;
