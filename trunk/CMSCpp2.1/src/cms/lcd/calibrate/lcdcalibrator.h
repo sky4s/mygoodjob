@@ -81,7 +81,7 @@ namespace cms {
 		bool gByPass;
 		bool originalGamma;
 		bool absoluteGamma;
-		bool absoluteGammaSmooth;
+		int absoluteGammaStart;
 		//==============================================================
 
 		//==============================================================
@@ -155,32 +155,25 @@ namespace cms {
 		void setDefinedDim(int under, double strength);
 
 		void setGamma(double gamma);
-		void setGamma(double dimGamma, int dimGammaEnd,
-			      double brightGamma);
+		void setGamma(double dimGamma, int dimGammaEnd, double brightGamma);
 		void setGamma(double rgamma, double ggamma, double bgamma);
 		void setGammaCurve(double_vector_ptr gammaCurve);
 		void setGammaCurve(double_vector_ptr rgammaCurve,
-				   double_vector_ptr ggammaCurve,
-				   double_vector_ptr bgammaCurve);
+				   double_vector_ptr ggammaCurve, double_vector_ptr bgammaCurve);
 		void setOriginalGamma();
-		//__property bool AbsoluteGamma = { write = absoluteGamma };
-		void setAbsoluteGamma(bool absoluteGamma, bool smooth);
+		void setAbsoluteGamma(bool absoluteGamma, int start);
 
 		void setBMax2(bool bMax2, int begin, double gamma);
 
-		void setKeepMaxLuminance(KeepMaxLuminance
-					 keepMaxLuminance);
+		void setKeepMaxLuminance(KeepMaxLuminance keepMaxLuminance);
 		void setKeepMaxLuminanceNativeWhiteAdvanced(int over,
-							    double gamma,
-							    bool
-							    autoParameter);
+							    double gamma, bool autoParameter);
 
 		void setMultiGen(bool enable, int times);
 		void setSmoothIntensity(int start, int end);
 		__property int DimFixEnd = { write = dimFixEnd };
 		__property bool DimFix = { write = dimFix };
-		__property double DimFixThreshold = { write =
-			dimFixThreshold
+		__property double DimFixThreshold = { write = dimFixThreshold
 		};
 		__property bool GByPass = { write = gByPass };
 		__property double BIntensityGain = { write = bIntensityGain
@@ -189,15 +182,12 @@ namespace cms {
 		__property bool AvoidFRCNoise = { write = avoidFRCNoise };
 		__property bool NewMethod = { write = useNewMethod };
 		__property bool SkipInverseB = { write = skipInverseB };
-		__property double RTargetIntensity = { write =
-			rTargetIntensity
+		__property double RTargetIntensity = { write = rTargetIntensity
 		};
-		__property double BTargetIntensity = { write =
-			bTargetIntensity
+		__property double BTargetIntensity = { write = bTargetIntensity
 		};
 		__property bool AccurateMode = { write = accurateMode };
-		__property bool ManualAccurateMode = { write =
-			manualAccurateMode
+		__property bool ManualAccurateMode = { write = manualAccurateMode
 		};
 		__property double MiddleCCTRatio = { write = middleCCTRatio
 		};
@@ -225,6 +215,7 @@ namespace cms {
 		 bptr < BitDepthProcessor > bitDepth;
 		//bptr < FeedbackListener > feedbackListener;
 		FeedbackListener *feedbackListener;
+		XYZ_ptr targetWhiteXYZ;
 		//==============================================================
 
 		//==============================================================
@@ -234,8 +225,7 @@ namespace cms {
 		//==============================================================
 		 bptr < i2c::TCONControl > tconctrl;
 		 bptr < ComponentFetcher > fetcher;
-		 bptr < cms::measure::MaxMatrixIntensityAnalyzer >
-		    nativeWhiteAnalyzer;
+		 bptr < cms::measure::MaxMatrixIntensityAnalyzer > nativeWhiteAnalyzer;
 		//==============================================================
 
 		//==============================================================
@@ -243,120 +233,95 @@ namespace cms {
 		//==============================================================
 		void setGammaCurve0(double_vector_ptr gammaCurve);
 		void setGammaCurve0(double_vector_ptr rgammaCurve,
-				    double_vector_ptr ggammaCurve,
-				    double_vector_ptr bgammaCurve);
+				    double_vector_ptr ggammaCurve, double_vector_ptr bgammaCurve);
 		Component_vector_ptr fetchComponentVector();
 		double_vector_ptr fetchLuminanceVector();
 		void initNativeWhiteAnalyzer();
 		RGB_vector_ptr getDGLutOpResult(RGB_vector_ptr dglut);
 		RGB_vector_ptr oldMethod(DGLutGenerator & generator,
 					 bptr < PanelRegulator >
-					 panelRegulator,
-					 const Dep::
-					 MaxValue & quantizationBit);
-		RGB_vector_ptr newMethod(bptr < PanelRegulator >
-					 panelRegulato);
+					 panelRegulator, const Dep::MaxValue & quantizationBit);
+		RGB_vector_ptr newMethod(bptr < PanelRegulator > panelRegulato);
 
 		void fixReverseByFeedback(RGB_vector_ptr dglut);
 		int checkReverse(double_vector_ptr deltaVector);
-		int checkReverse(double_vector_ptr deltaVector, int start,
-				 int end);
+		int checkReverse(double_vector_ptr deltaVector, int start, int end);
 		int_vector_ptr getReverseIndexVector(double_vector_ptr
-						     deltaVector,
-						     int start, int end);
+						     deltaVector, int start, int end);
 		 int_vector_ptr
 		    getMustMeasureZoneIndexVector(double_vector_ptr
 						  dxofBase,
-						  double_vector_ptr
-						  dyofBase, int start,
-						  int end);
+						  double_vector_ptr dyofBase, int start, int end);
 		void pushBackNumber(int_vector_ptr result, int number);
 		double_vector_ptr selectDelta(double_vector_ptr dxofBase,
-					      double_vector_ptr dyofBase,
-					      Dep::Channel & ch);
+					      double_vector_ptr dyofBase, Dep::Channel & ch);
 
-		Component_vector_ptr getDimComponentVector(RGB_vector_ptr
-							   dglut);
+		Component_vector_ptr getDimComponentVector(RGB_vector_ptr dglut);
 
 		//==============================================================
 		// ¶q¤Æ
 		//==============================================================
-		static RGB_vector_ptr
-		    colorimetricQuantization(RGB_vector_ptr dglut,
-					     int quadrant);
+		static RGB_vector_ptr colorimetricQuantization(RGB_vector_ptr dglut, int quadrant);
 		//==============================================================
 		//==============================================================
 		// smooth
 		//==============================================================
-		void smoothComponentVector(Component_vector_ptr
-					   componentVector);
-		void smoothComponentVector2(Component_vector_ptr
-					    componentVector);
-		static void smooth(double_array curve, int size,
-				   int times);
+		void smoothComponentVector(Component_vector_ptr componentVector);
+		void smoothComponentVector2(Component_vector_ptr componentVector);
+		static void smooth(double_array curve, int size, int times);
 		static double_array getSmoothCurve(double_array
 						   originalCurve,
-						   double_array deltaCurve,
-						   int size);
+						   double_array deltaCurve, int size);
 		//==============================================================
 
-		static double_vector_ptr getGammaCurveVector(double gamma,
-							     int n, int
+		static double_vector_ptr getGammaCurveVector(double gamma, int n, int
 							     effectiven);
 		static double_vector_ptr getAbsoluteGammaCurveVector(double
-								     gamma,
-								     int n,
-								     int
+								     gamma, int n, int
 								     effectiven,
 								     Component_vector_ptr
 								     componentVector);
 		static double_vector_ptr getGammaCurveVector(double
 							     dimGamma, int
 							     dimGammaEnd, double
-							     brightGamma,
-							     int n, int
+							     brightGamma, int n, int
 							     effectiven);
 
 
 	      public:
+
 		static double_vector_ptr
 		    getLuminanceGammaCurve(double_vector_ptr
 					   normalGammaCurve,
-					   double maxLuminance,
-					   double minLuminance);
+					   double maxLuminance, double minLuminance);
+		static double_vector_ptr
+		    getLuminanceGammaCurve(double_vector_ptr normalGammaCurve,
+					   double maxLuminance, double minLuminance,
+					   bool absoluteGamma, int absoluteGammaStart);
 		//==============================================================
 		// constructor
 		//==============================================================
 		 LCDCalibrator(bptr <
 			       cms::lcd::calibrate::ComponentFetcher >
-			       fetcher,
-			       bptr < BitDepthProcessor > bitDepth);
+			       fetcher, bptr < BitDepthProcessor > bitDepth);
 		//==============================================================
 
 		//==============================================================
 		// functions call from outside
 		//==============================================================
-		 double_vector_ptr
-		    getOriginalGammaCurve(Component_vector_ptr
-					  componentVector);
-		RGB_vector_ptr getCCTDGLut(bptr < MeasureCondition >
-					   measureCondition);
-		RGB_vector_ptr getGammaDGLut(bptr < MeasureCondition >
-					     measureCondition);
+		double_vector_ptr getOriginalGammaCurve(Component_vector_ptr componentVector);
+		RGB_vector_ptr getCCTDGLut(bptr < MeasureCondition > measureCondition);
+		RGB_vector_ptr getGammaDGLut(bptr < MeasureCondition > measureCondition);
 		 bptr < cms::colorformat::DGLutFile >
-		    storeDGLutFile(const std::string & filename,
-				   RGB_vector_ptr dglut);
+		    storeDGLutFile(const std::string & filename, RGB_vector_ptr dglut);
 		void storeDGLutFile(RGB_vector_ptr dglut,
-				    bptr < cms::colorformat::DGLutFile >
-				    dglutFile);
+				    bptr < cms::colorformat::DGLutFile > dglutFile);
 
 		__property bptr <
 		    cms::measure::MaxMatrixIntensityAnalyzer >
-		    NativeWhiteAnalyzer = { read =
-	  nativeWhiteAnalyzer, write = nativeWhiteAnalyzer
+		    NativeWhiteAnalyzer = { read = nativeWhiteAnalyzer, write = nativeWhiteAnalyzer
 		};
-		__property bptr < i2c::TCONControl > TCONControl =
-		    { write = tconctrl };
+		__property bptr < i2c::TCONControl > TCONControl = { write = tconctrl };
 		void setFeedbackListener(FeedbackListener * listener);
 		//==============================================================
 

@@ -272,7 +272,8 @@ namespace cms {
 	    const int headerCount = 14;
 	    initSheet(Target, headerCount, "Gray Level", "X", "Y (nit)", "Z", "_x", "_y", "dx",
 		      "dy",
-		      // 8~13
+		      // 8~13, 由Gamma Table R/G/B/找到對應的Intensity,
+		      //再由Intensity及Target White/Primary Color推算出XYZ, 得到Gamma X/Y/Z
 		      "Gamma R", "Gamma G", "Gamma B", "Gamma X", "Gamma Y", "Gamma Z");
 
 	    int size = targetXYZVector->size();
@@ -522,6 +523,10 @@ namespace cms {
 	    dgfile.addProperty("in", *bitDepth->getInputMaxValue().toString());
 	    dgfile.addProperty("lut", *bitDepth->getLutMaxValue().toString());
 	    dgfile.addProperty("out", *bitDepth->getOutputMaxValue().toString());
+
+	    //==================================================================
+	    // gamma
+	    //==================================================================
 	    dgfile.addProperty("gamma",
 			       c->originalGamma ? "Original Gamma" : _toString(c->gamma).c_str());
 	    if (-1 != c->dimGamma) {
@@ -529,6 +534,15 @@ namespace cms {
 		dgfile.addProperty("dim gamma end", _toString(c->dimGammaEnd));
 	    }
 	    dgfile.addProperty("gamma curve", c->useGammaCurve ? On : Off);
+	    if (true == c->absoluteGamma) {
+		dgfile.addProperty("absolute gamma", c->absoluteGamma ? On : Off);
+		dgfile.addProperty("absolute gamma start", _toString(c->absoluteGammaStart));
+	    }
+	    //==================================================================
+
+	    //==================================================================
+	    // others2
+	    //==================================================================
 	    dgfile.addProperty("g bypass", c->gByPass ? On : Off);
 	    dgfile.addProperty("b gain", c->bIntensityGain);
 	    dgfile.addProperty("b max", c->bMax ? "B Max" : (c->bMax2 ? "B Max Smooth" : "Off"));
@@ -619,6 +633,13 @@ namespace cms {
 	    RGB_ptr refRGB = analyzer->getReferenceRGB();
 	    if (null != refRGB) {
 		dgfile.addProperty(prestring + " reference white RGB", *refRGB->toString());
+
+		bptr < BitDepthProcessor > bitDepth = c->bitDepth;
+		const Dep::MaxValue & lutBit = bitDepth->getLutMaxValue();
+		RGB_ptr lutRefRGB = refRGB->clone();
+		lutRefRGB->changeMaxValue(lutBit);
+		dgfile.addProperty(prestring + " reference white RGB(LUT Bit)",
+				   *lutRefRGB->toString());
 	    }
 
 	    MaxMatrixIntensityAnalyzer *ma =

@@ -117,14 +117,13 @@ class TCCTLUTForm:public TForm, cms::lcd::calibrate::FeedbackListener {
     TEdit *Edit_SmoothIntensityStart;
     TEdit *Edit_SmoothIntensityEnd;
     TCheckBox *CheckBox_SmoothIntensity;
-    TCheckBox *CheckBox_AbsoluteGammaSmooth;
+    TEdit *Edit_AbsGammaStart;
     void __fastcall RadioButton_P1P2Click(TObject * Sender);
     void __fastcall Button_MeaRunClick(TObject * Sender);
     void __fastcall Button_DebugClick(TObject * Sender);
     void __fastcall FormShow(TObject * Sender);
     void __fastcall RadioButton_GammaCurveClick(TObject * Sender);
-    void __fastcall TOutputFileFrame1Button_BrowseDirClick(TObject *
-							   Sender);
+    void __fastcall TOutputFileFrame1Button_BrowseDirClick(TObject * Sender);
     void __fastcall FormKeyPress(TObject * Sender, char &Key);
     void __fastcall RadioButton_GammaClick(TObject * Sender);
     void __fastcall ComboBox_GammaChange(TObject * Sender);
@@ -145,8 +144,7 @@ class TCCTLUTForm:public TForm, cms::lcd::calibrate::FeedbackListener {
     void __fastcall Edit_DimGammaEndChange(TObject * Sender);
     void __fastcall RadioGroup_NormalCaseClick(TObject * Sender);
     void __fastcall CheckBox_RTargetIntensityClick(TObject * Sender);
-    void __fastcall FormMouseMove(TObject * Sender, TShiftState Shift,
-				  int X, int Y);
+    void __fastcall FormMouseMove(TObject * Sender, TShiftState Shift, int X, int Y);
     void __fastcall CheckBox_SmoothIntensityClick(TObject * Sender);
     void __fastcall Edit_DefinedDimUnderChange(TObject * Sender);
     void __fastcall CheckBox_AbsoluteGammaClick(TObject * Sender);
@@ -160,9 +158,7 @@ class TCCTLUTForm:public TForm, cms::lcd::calibrate::FeedbackListener {
     bptr < cms::measure::MaxMatrixIntensityAnalyzer > nativeWhiteAnalyzer;
   public:			// User declarations
     __fastcall TCCTLUTForm(TComponent * Owner);
-    void setBitDepthProcessor(bptr <
-			      cms::lcd::calibrate::BitDepthProcessor >
-			      bitDepth);
+    void setBitDepthProcessor(bptr < cms::lcd::calibrate::BitDepthProcessor > bitDepth);
     void doFeedback(int defectCount, int feedbackCount);
 };
 //---------------------------------------------------------------------------
