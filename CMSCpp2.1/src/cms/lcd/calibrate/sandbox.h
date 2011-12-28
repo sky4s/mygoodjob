@@ -75,7 +75,7 @@ namespace cms {
 
 
 		virtual void windowClosing(TObject * Sender, TCloseAction & Action);
-		XYZ_vector_ptr getTargetXYZVector();
+		//XYZ_vector_ptr getTargetXYZVector();
 		XYZ_vector_ptr getTargetXYZVector(XYZ_ptr targetWhite,
 						  double_vector_ptr luminanceGammaCurve,
 						  int dimTurn, int brightTurn, double dimGamma,

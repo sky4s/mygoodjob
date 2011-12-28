@@ -33,11 +33,14 @@ namespace cms {
 		bool stop;
 		 bptr < cms::lcd::calibrate::BitDepthProcessor > bitDepth;
 		Component_vector_ptr fetchComponent(RGB_vector_ptr rgbMeasureCode);
+		XYZ_ptr extraMeasureXYZ;
+		RGB_ptr extraMeasureRGB;
 	      public:
 		 ComponentFetcher(bptr <
 				  cms::measure::IntensityAnalyzerIF >
 				  analyzer, bptr < BitDepthProcessor > bitDepth);
 		Component_vector_ptr fetchComponent(bptr < MeasureCondition > measureCondition);
+
 		double_vector_ptr fetchLuminance(bptr < MeasureCondition > measureCondition);
 
 		static void storeToExcel(const std::string & filename,
@@ -45,6 +48,8 @@ namespace cms {
 		virtual void windowClosing(TObject * Sender, TCloseAction & Action);
 		 bptr < cms::measure::IntensityAnalyzerIF > getAnalyzer();
 		static RGB_vector_ptr getRGBVector(Component_vector_ptr componentVector);
+		__property RGB_ptr ExtraMeasureRGB = { write = extraMeasureRGB };
+		__property XYZ_ptr ExtraMeasureXYZ = { read = extraMeasureXYZ };
 	    };
 
 	    /*

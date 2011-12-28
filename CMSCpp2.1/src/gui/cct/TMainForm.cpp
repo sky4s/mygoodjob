@@ -355,13 +355,6 @@ void TMainForm::readSetup()
     //=========================================================================
     int typeIndex = ini->ReadInteger("TCON", "Type", 0);
     ComboBox_TCONType->ItemIndex = typeIndex;
-    /*this->ComboBox_AddressingSize->ItemIndex = ini->ReadInteger("TCON ", "AddressingSize ", 5);
-       this->Edit_GammaTestEnableAddress->Text =
-       ini->ReadString("TCON ", "GammaTestEnableAddress ", "4 A1 ");
-       this->Edit_GammaTestEnableBit->Text = ini->ReadInteger("TCON ", "GammaTestEnableBit ", 1);
-       this->Edit_GammaTestAddress->Text = ini->ReadString("TCON ", "GammaTestAddress ", "4 A7 ");
-       ComboBox_GammaTestType->ItemIndex = ini->ReadBool("TCON ", "IndepRGB ", true) ? 0 : 1;
-       ComboBox_GammaTestTypeChange(this); */
     //=========================================================================
 }
 
@@ -648,7 +641,9 @@ void TMainForm::resetDummyMeter()
     using namespace cms::measure::meter;
     using namespace cms::lcd::calibrate;
     DGLutFileMeter *dgc = dynamic_cast < DGLutFileMeter * >(meter.get());
-    dgc->reset();
+    if (null != dgc) {
+	dgc->reset();
+    }
 };
 
 //---------------------------------------------------------------------------

@@ -74,7 +74,7 @@ namespace cms {
 	    // ComponentFetcher
 	    //==================================================================
 	  ComponentFetcher::ComponentFetcher(bptr < IntensityAnalyzerIF > analyzer, bptr < BitDepthProcessor > bitDepth):analyzer
-		(analyzer), bitDepth(bitDepth)
+		(analyzer), bitDepth(bitDepth), extraMeasureRGB(nil_RGB_ptr)
 	    {
 	    };
 
@@ -86,6 +86,10 @@ namespace cms {
 		analyzer->setWaitTimes(10000);
 		analyzer->beginAnalyze();
 		stop = false;
+
+		if (nil_RGB_ptr != extraMeasureRGB) {
+		    extraMeasureXYZ = analyzer->getCIEXYZOnly(extraMeasureRGB);
+		}
 
 		foreach(const RGB_ptr & rgb, *rgbMeasureCode) {
 		    RGB_ptr intensity = analyzer->getIntensity(rgb);
@@ -160,6 +164,7 @@ namespace cms {
 		    double_vector_ptr b(new double_vector());
 		    foreach(Component_ptr c, *componentVector) {
 			RGB_ptr gamma = c->gamma;
+			//RGB_ptr gamma = c->rgb;
 			r->push_back(gamma->R);
 			g->push_back(gamma->G);
 			b->push_back(gamma->B);

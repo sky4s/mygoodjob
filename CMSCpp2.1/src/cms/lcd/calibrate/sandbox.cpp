@@ -115,30 +115,10 @@ namespace cms {
 		// 資訊準備
 		//==============================================================
 		XYZ_ptr blackXYZ = (*componentVector)[componentVector->size() - 1]->XYZ;
-		//XYZ_ptr nativeWhite = (*componentVector)[0]->XYZ;
 		XYZ_vector_ptr targetXYZVector;
 		this->brightTurn = brightTurn;
 
 		//求目標值曲線
-		/*if (true == autoParameter) {
-		   //auto目前沒有人使用...我也忘記用意了=.=
-		   //試驗性質吧...當作沒這東西..
-		   int turn = brightTurn;
-		   int width = -1;
-		   for (; turn >= 100; turn--) {
-		   width = bitDepth->getEffectiveInputLevel() - turn;
-		   targetXYZVector =
-		   getTarget0(blackXYZ, targetWhite, nativeWhite, luminanceGammaCurve,
-		   dimTurn, turn, dimGamma, brightGamma, width);
-
-		   if (true == checkTargetXYZVector(targetXYZVector, turn, turn + width, 3)) {
-		   //檢查若最大的dab小於threshold, 就跳出
-		   break;
-		   }
-		   };
-		   this->autoBrightTurn = turn;
-		   this->autoBrightWidth = width;
-		   } else { */
 
 		if (-1 != c.middleCCTRatio) {
 		    targetXYZVector =
@@ -324,7 +304,7 @@ namespace cms {
 		XYZ_ptr rXYZ = analyzer->getPrimaryColor(Channel::R)->toXYZ();
 		XYZ_ptr gXYZ = analyzer->getPrimaryColor(Channel::G)->toXYZ();
 		XYZ_ptr bXYZ = analyzer->getPrimaryColor(Channel::B)->toXYZ();
-
+		RGB_ptr refRGB = analyzer->getReferenceRGB();
 		//=============================================================
 		// debug用
 		//=============================================================
@@ -346,7 +326,6 @@ namespace cms {
 		if (true == c.autoIntensity) {
 		    xyY_ptr refxyY = analyzer->getReferenceColor();
 		    XYZ_ptr targetXYZ = refxyY->toXYZ();
-		    RGB_ptr refRGB = analyzer->getReferenceRGB();
 
 		    bptr < MaxMatrixIntensityAnalyzer > ma(new MaxMatrixIntensityAnalyzer());
 		    ma->setupComponent(Channel::R, rXYZ);
@@ -390,6 +369,7 @@ namespace cms {
 		    ma->setupComponent(Channel::G, gXYZ);
 		    ma->setupComponent(Channel::B, bXYZ);
 		    ma->setupComponent(Channel::W, targetXYZ);
+		    ma->setReferenceRGB(refRGB);
 		    ma->enter();
 
 		    //利用新的analyzer算出新的component(就是intensity)
@@ -474,6 +454,13 @@ namespace cms {
 		XYZ_ptr rXYZ = analyzer->getPrimaryColor(Channel::R)->toXYZ();
 		XYZ_ptr gXYZ = analyzer->getPrimaryColor(Channel::G)->toXYZ();
 		XYZ_ptr bXYZ = analyzer->getPrimaryColor(Channel::B)->toXYZ();
+		RGB_ptr refRGB = analyzer->getReferenceRGB();
+		RGB_ptr refR = refRGB->clone();
+		refR->reserveValue(Channel::R);
+		RGB_ptr refG = refRGB->clone();
+		refG->reserveValue(Channel::G);
+		RGB_ptr refB = refRGB->clone();
+		refB->reserveValue(Channel::B);
 
 		//debug scope
 		RGB_ptr clone = rgb->clone();
@@ -482,14 +469,20 @@ namespace cms {
 
 		DGLutGenerator lutgen2(componentVector);
 		RGB_ptr intensity2 = lutgen2.getIntensity(clone);
+		/*RGB_ptr remappingDGCode =
+		   lutgen2.getDGCode(intensity2->R, intensity2->G, intensity2->B);
+		   RGB_ptr intensity3 = lutgen2.getIntensity(remappingDGCode); */
+		RGB_ptr intensityR = lutgen2.getIntensity(refR);
+		RGB_ptr intensityG = lutgen2.getIntensity(refG);
+		RGB_ptr intensityB = lutgen2.getIntensity(refB);
 
 		double_array rXYZValues = rXYZ->getValues();
 		double_array gXYZValues = gXYZ->getValues();
 		double_array bXYZValues = bXYZ->getValues();
 		//用對上target primary的intensity推測CIEXYZ
-		rXYZValues = DoubleArray::times(rXYZValues, intensity2->R / 100., 3);
-		gXYZValues = DoubleArray::times(gXYZValues, intensity2->G / 100., 3);
-		bXYZValues = DoubleArray::times(bXYZValues, intensity2->B / 100., 3);
+		rXYZValues = DoubleArray::times(rXYZValues, intensity2->R / intensityR->R, 3);
+		gXYZValues = DoubleArray::times(gXYZValues, intensity2->G / intensityG->G, 3);
+		bXYZValues = DoubleArray::times(bXYZValues, intensity2->B / intensityB->B, 3);
 		XYZ_ptr rXYZ2(new Indep::CIEXYZ(rXYZValues));
 		XYZ_ptr gXYZ2(new Indep::CIEXYZ(gXYZValues));
 		XYZ_ptr bXYZ2(new Indep::CIEXYZ(bXYZValues));
@@ -558,7 +551,6 @@ namespace cms {
 			   double dimGamma, double brightGamma, int brightWidth) {
 		int size = luminanceGammaCurve->size();
 		double_array dimendValues = targetXYZ->getxyValues();
-
 		XYZ_vector_ptr result(new XYZ_vector(size));
 
 		//==============================================================
@@ -624,18 +616,19 @@ namespace cms {
 		return middlexyY->toXYZ();
 	    }
 
+	    /*
+	       middleCCTRatio特仕版本, 可以從 middleXYZ過度到 targetXYZ的功用
+	     */
 	    XYZ_vector_ptr AdvancedDGLutGenerator::
 		getTarget0(XYZ_ptr startXYZ, XYZ_ptr targetXYZ, XYZ_ptr endXYZ,
 			   double_vector_ptr luminanceGammaCurve, int dimTurn, int brightTurn,
 			   double dimGamma, double brightGamma, int brightWidth,
 			   double middleCCTRatio) {
 		int size = luminanceGammaCurve->size();
-
-
-		XYZ_vector_ptr result(new XYZ_vector(size));
 		XYZ_ptr middleXYZ = getMiddleXYZ(dimTurn, middleCCTRatio, targetXYZ);
 		double_array dimendValues = middleXYZ->getxyValues();
 		double_array brightstartValues = targetXYZ->getxyValues();
+		XYZ_vector_ptr result(new XYZ_vector(size));
 		//==============================================================
 		// dim區段
 		//==============================================================
@@ -643,6 +636,7 @@ namespace cms {
 		    DoubleArray::getRangeCopy(luminanceGammaCurve, 0, dimTurn - 1);
 		XYZ_vector_ptr dimResult =
 		    DimTargetGenerator::getTarget(startXYZ, targetXYZ, dimGammaCurve, dimGamma);
+
 		int dimSize = dimResult->size();
 		for (int x = 0; x < dimSize; x++) {
 		    (*result)[x] = (*dimResult)[x];
@@ -759,9 +753,9 @@ namespace cms {
 	       this->multiGen = enable;
 	       this->multiGenTimes = times;
 	       }; */
-	    XYZ_vector_ptr AdvancedDGLutGenerator::getTargetXYZVector() {
-		return targetXYZVector;
-	    };
+	    /*XYZ_vector_ptr AdvancedDGLutGenerator::getTargetXYZVector() {
+	       return targetXYZVector;
+	       }; */
 
 	    bool AdvancedDGLutGenerator::isDuplicateBlue100(Component_vector_ptr componentVector) {
 		int size = componentVector->size();
