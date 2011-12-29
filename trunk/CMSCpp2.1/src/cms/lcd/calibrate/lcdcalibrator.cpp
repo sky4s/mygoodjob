@@ -355,8 +355,7 @@ namespace cms {
 		    throw new IllegalStateException("null == gammaCurve");
 		}
 
-		bool doAccurate = (true == accurateMode)
-		    && (null != tconctrl);
+		bool doAccurate = (true == accurateMode) && (null != tconctrl);
 		bptr < PanelRegulator > panelRegulator;
 		if (doAccurate) {
 		    //原先: 以target white的rgb為最大值, 調整面板並重新量測
@@ -473,8 +472,7 @@ namespace cms {
 		    //NativeWhiteAdvanced是為了兼顧Hook和最大亮度的折衷產物
 		    bptr < PanelRegulator > panelRegulator2;
 		    Component_vector_ptr componentVector2;
-		    bool doAccurate = (true == accurateMode)
-			&& (true == skipInverseB)
+		    bool doAccurate = (true == accurateMode) && (true == skipInverseB)
 			&& (null != tconctrl);
 		    if (null == nativeWhiteAnalyzer) {
 			initNativeWhiteAnalyzer();
