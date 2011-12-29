@@ -126,7 +126,9 @@ namespace cms {
 		// 2. 將面板白點修改為目標白點
 		//   修改面板特性讓面板白點為目標白點, 使求出來的白點正好就是目標
 		bool accurateMode;
+		//如果手動去修改DG, 讓B的反轉點避掉, 就需要使這個flag為true
 		bool manualAccurateMode;
+		//用來註記是否有用了panel regulator
 		bool remapped;
 		//dprecated
 		double middleCCTRatio;
