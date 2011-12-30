@@ -118,6 +118,7 @@ namespace cms {
 		//==============================================================
 		double bIntensityGain;
 		bool avoidFRCNoise;
+		//使用新的有多種target的方法去找到DG
 		bool useNewMethod;
 		//兩種狀況下 accurateMode會有作用, 當然都要搭配tcon才能用
 		//所以一定是搭配PanelRegulator去修改面板特性的

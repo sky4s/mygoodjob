@@ -1,6 +1,6 @@
 object CCTLUTForm: TCCTLUTForm
   Left = 218
-  Top = 259
+  Top = 260
   Width = 848
   Height = 407
   Caption = 'CCT LUT'
@@ -57,7 +57,7 @@ object CCTLUTForm: TCCTLUTForm
       Left = 65
       Top = 39
       Width = 79
-      Height = 24
+      Height = 21
       ImeName = #26085#25991#36664#20837#31995#32113' (MS-IME2002)'
       TabOrder = 0
       Text = '255'
@@ -85,7 +85,7 @@ object CCTLUTForm: TCCTLUTForm
       Left = 65
       Top = 65
       Width = 79
-      Height = 24
+      Height = 21
       ImeName = #26085#25991#36664#20837#31995#32113' (MS-IME2002)'
       TabOrder = 2
       Text = '0'
@@ -240,7 +240,7 @@ object CCTLUTForm: TCCTLUTForm
       Left = 83
       Top = 61
       Width = 25
-      Height = 24
+      Height = 21
       TabOrder = 9
       Text = '50'
       OnChange = Edit_DimGammaEndChange
@@ -331,7 +331,7 @@ object CCTLUTForm: TCCTLUTForm
       Left = 72
       Top = 72
       Width = 59
-      Height = 24
+      Height = 21
       ImeName = #26085#25991#36664#20837#31995#32113' (MS-IME2002)'
       TabOrder = 2
       Text = '50'
@@ -340,7 +340,7 @@ object CCTLUTForm: TCCTLUTForm
       Left = 46
       Top = 33
       Width = 33
-      Height = 24
+      Height = 21
       ImeName = #26085#25991#36664#20837#31995#32113' (MS-IME2002)'
       TabOrder = 3
       Text = '20'
@@ -349,7 +349,7 @@ object CCTLUTForm: TCCTLUTForm
       Left = 117
       Top = 33
       Width = 33
-      Height = 24
+      Height = 21
       ImeName = #26085#25991#36664#20837#31995#32113' (MS-IME2002)'
       TabOrder = 4
       Text = '50'
@@ -375,7 +375,7 @@ object CCTLUTForm: TCCTLUTForm
       Left = 72
       Top = 116
       Width = 59
-      Height = 24
+      Height = 21
       ImeName = #26085#25991#36664#20837#31995#32113' (MS-IME2002)'
       TabOrder = 7
       Text = '50'
@@ -385,7 +385,7 @@ object CCTLUTForm: TCCTLUTForm
       Left = 72
       Top = 136
       Width = 59
-      Height = 24
+      Height = 21
       ImeName = #26085#25991#36664#20837#31995#32113' (MS-IME2002)'
       TabOrder = 8
       Text = '1.0'
@@ -394,7 +394,7 @@ object CCTLUTForm: TCCTLUTForm
       Left = 104
       Top = 160
       Width = 49
-      Height = 24
+      Height = 21
       TabOrder = 9
       Text = '0.0001'
     end
@@ -427,7 +427,7 @@ object CCTLUTForm: TCCTLUTForm
       Left = 105
       Top = 14
       Width = 45
-      Height = 24
+      Height = 21
       ImeName = #26085#25991#36664#20837#31995#32113' (MS-IME2002)'
       TabOrder = 1
       Text = '1.05'
@@ -479,7 +479,7 @@ object CCTLUTForm: TCCTLUTForm
       Left = 117
       Top = 46
       Width = 27
-      Height = 24
+      Height = 21
       Enabled = False
       TabOrder = 3
       Text = '1'
@@ -499,7 +499,7 @@ object CCTLUTForm: TCCTLUTForm
       Left = 115
       Top = 88
       Width = 33
-      Height = 24
+      Height = 21
       Enabled = False
       TabOrder = 5
       Text = '100'
@@ -519,7 +519,7 @@ object CCTLUTForm: TCCTLUTForm
       Left = 115
       Top = 67
       Width = 33
-      Height = 24
+      Height = 21
       Enabled = False
       TabOrder = 7
       Text = '100'
@@ -574,14 +574,12 @@ object CCTLUTForm: TCCTLUTForm
         Left = 91
         Top = 20
         Width = 163
-        Height = 24
         Text = 'Cal_Table'
       end
       inherited Edit_Directory: TEdit
         Left = 91
         Top = 46
         Width = 345
-        Height = 24
       end
       inherited Button_BrowseDir: TButton
         Left = 443
@@ -649,7 +647,7 @@ object CCTLUTForm: TCCTLUTForm
         Left = 65
         Top = 46
         Width = 59
-        Height = 24
+        Height = 21
         ImeName = #26085#25991#36664#20837#31995#32113' (MS-IME2002)'
         TabOrder = 1
         Text = '0'
@@ -658,7 +656,7 @@ object CCTLUTForm: TCCTLUTForm
         Left = 65
         Top = 20
         Width = 59
-        Height = 24
+        Height = 21
         ImeName = #26085#25991#36664#20837#31995#32113' (MS-IME2002)'
         TabOrder = 2
         Text = '64'
@@ -696,7 +694,7 @@ object CCTLUTForm: TCCTLUTForm
         Left = 65
         Top = 20
         Width = 59
-        Height = 24
+        Height = 21
         ImeName = #26085#25991#36664#20837#31995#32113' (MS-IME2002)'
         TabOrder = 0
         Text = '255'
@@ -705,7 +703,7 @@ object CCTLUTForm: TCCTLUTForm
         Left = 65
         Top = 46
         Width = 59
-        Height = 24
+        Height = 21
         ImeName = #26085#25991#36664#20837#31995#32113' (MS-IME2002)'
         TabOrder = 1
         Text = '64'
@@ -823,7 +821,7 @@ object CCTLUTForm: TCCTLUTForm
       Left = 72
       Top = 117
       Width = 59
-      Height = 24
+      Height = 21
       Enabled = False
       ImeName = #26085#25991#36664#20837#31995#32113' (MS-IME2002)'
       TabOrder = 3
@@ -835,7 +833,7 @@ object CCTLUTForm: TCCTLUTForm
       Left = 72
       Top = 137
       Width = 59
-      Height = 24
+      Height = 21
       Enabled = False
       ImeName = #26085#25991#36664#20837#31995#32113' (MS-IME2002)'
       TabOrder = 4
@@ -866,7 +864,7 @@ object CCTLUTForm: TCCTLUTForm
       Left = 72
       Top = 211
       Width = 59
-      Height = 24
+      Height = 21
       Enabled = False
       ImeName = #26085#25991#36664#20837#31995#32113' (MS-IME2002)'
       TabOrder = 7
@@ -877,7 +875,7 @@ object CCTLUTForm: TCCTLUTForm
       Left = 72
       Top = 231
       Width = 59
-      Height = 24
+      Height = 21
       Enabled = False
       ImeName = #26085#25991#36664#20837#31995#32113' (MS-IME2002)'
       TabOrder = 8
@@ -933,7 +931,7 @@ object CCTLUTForm: TCCTLUTForm
       Left = 120
       Top = 24
       Width = 33
-      Height = 24
+      Height = 21
       TabOrder = 13
       Text = '50'
       Visible = False
@@ -942,7 +940,7 @@ object CCTLUTForm: TCCTLUTForm
       Left = 120
       Top = 48
       Width = 33
-      Height = 24
+      Height = 21
       TabOrder = 14
       Text = '255'
       Visible = False
@@ -976,7 +974,7 @@ object CCTLUTForm: TCCTLUTForm
       Left = 86
       Top = 35
       Width = 51
-      Height = 24
+      Height = 21
       Enabled = False
       ImeName = #26085#25991#36664#20837#31995#32113' (MS-IME2002)'
       TabOrder = 0
@@ -1018,7 +1016,7 @@ object CCTLUTForm: TCCTLUTForm
     Left = 239
     Top = 352
     Width = 305
-    Height = 24
+    Height = 21
     TabOrder = 16
     Visible = False
   end
