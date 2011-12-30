@@ -150,16 +150,17 @@ void __fastcall TCCTLUTForm::Button_MeaRunClick(TObject * Sender)
 
 	bool bMax = this->CheckBox_BMax->Checked;
 	bool avoidHook = CheckBox_AvoidHookNB->Checked;
-	if (bMax) {
-	    if (avoidHook) {
-		int begin = Edit_BMax2Begin->Text.ToInt();
-		double gamma = Edit_BMax2Gamma->Text.ToDouble();
-		calibrator.setBMax2(CheckBox_BMax2->Checked, begin, gamma);
-	    } else {
-		//calibrator.setBMax(this->CheckBox_BMax->Checked);
-		calibrator.BMax = this->CheckBox_BMax->Checked;
-	    }
-	}
+	calibrator.BMax = this->CheckBox_BMax->Checked;
+	calibrator.AccurateMode = avoidHook;
+	/*if (bMax) {
+	   if (avoidHook) {
+	   int begin = Edit_BMax2Begin->Text.ToInt();
+	   double gamma = Edit_BMax2Gamma->Text.ToDouble();
+	   calibrator.setBMax2(CheckBox_BMax2->Checked, begin, gamma);
+	   } else {
+	   calibrator.BMax = this->CheckBox_BMax->Checked;
+	   }
+	   } */
 	//==========================================================================
 
 	//==========================================================================
@@ -365,6 +366,7 @@ void __fastcall TCCTLUTForm::FormShow(TObject * Sender)
     bool useTConCtrl = true == tconInput;
     //avoid hook再考慮一下開啟方式
     CheckBox_AvoidHookNB->Visible = useTConCtrl;
+    //CheckBox_AvoidHookNB->Visible = true;
     CheckBox_Feedback->Visible = useTConCtrl;
     if (true == CheckBox_Feedback->Checked) {
 	CheckBox_Feedback->Checked = useTConCtrl;

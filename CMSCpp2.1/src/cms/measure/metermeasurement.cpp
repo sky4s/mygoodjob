@@ -300,8 +300,7 @@ namespace cms {
 		    maxZRGB = rgb;
 		} else {
 		    mm->setMeasureWindowsVisible(false);
-		    //return (int) rgb->getValue(Channel::W);
-		    return (int) maxZRGB->getValue(Channel::W);
+		    return (int) maxZRGB->getValue(Channel::W, MaxValue::Int8Bit);
 		}
 	    };
 	    mm->setMeasureWindowsVisible(false);

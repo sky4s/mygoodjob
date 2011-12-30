@@ -21,17 +21,24 @@ namespace math {
     class Interpolation {
       protected:
 	double_vector_ptr xn_, yn_;
-	static int getxnPartStartIndex(double_vector_ptr xn, double x, int width);
+	static int getxnPartStartIndex(double_vector_ptr xn, double x,
+				       int width);
 	static int
-	 getxnPartStartIndexForExtrapolation(double_vector_ptr xn, double x, int width);
-	static double_vector_ptr getPart(double_vector_ptr array, int startIndex, int width);
+	 getxnPartStartIndexForExtrapolation(double_vector_ptr xn,
+					     double x, int width);
+	static double_vector_ptr getPart(double_vector_ptr array,
+					 int startIndex, int width);
       public:
 	 Interpolation(double_vector_ptr xn, double_vector_ptr yn);
-	static double linear(double x1, double x2, double y1, double y2, double x);
-	static double linear(double_vector_ptr xn, double_vector_ptr yn, double x);
-	static double linear2(double_vector_ptr xn, double_vector_ptr yn, double x);
+	static double linear(double x1, double x2, double y1, double y2,
+			     double x);
+	static double linear(double_vector_ptr xn, double_vector_ptr yn,
+			     double x);
+	static double linear2(double_vector_ptr xn, double_vector_ptr yn,
+			      double x);
 	static double interpolate(double_vector_ptr xn,
-				  double_vector_ptr yn, double x, Algo interpolationType);
+				  double_vector_ptr yn, double x,
+				  Algo interpolationType);
 	double interpolate(double x, Algo interpolationType);
     };
     /*
@@ -52,14 +59,19 @@ namespace math {
 	LUTType lutType;
 	double getMaxValue(double_vector_ptr array);
 	double getMinValue(double_vector_ptr array);
+	double maxKey, maxValue, minKey, minValue;
       protected:
 	static double interpolationValue(double key,
 					 double_vector_ptr keys,
-					 double_vector_ptr values, Algo type);
-	double correctInRange(double number, double_vector_ptr numberArray);
+					 double_vector_ptr values,
+					 Algo type);
+	double correctInRange(double number,
+			      double_vector_ptr numberArray);
       public:
-	 Interpolation1DLUT(double_vector_ptr key, double_vector_ptr value);
-	 Interpolation1DLUT(double_vector_ptr key, double_vector_ptr value, LUTType lutType);
+	 Interpolation1DLUT(double_vector_ptr key,
+			    double_vector_ptr value);
+	 Interpolation1DLUT(double_vector_ptr key, double_vector_ptr value,
+			    LUTType lutType);
 	double correctKeyInRange(double key);
 	double correctValueInRange(double value);
 

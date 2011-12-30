@@ -45,7 +45,9 @@ namespace cms {
 		const MeasureType type;
 	      public:
 
-		 MeasureCondition(bptr < cms::lcd::calibrate::BitDepthProcessor > bitDepth);
+		 MeasureCondition(bptr <
+				  cms::lcd::calibrate::BitDepthProcessor >
+				  bitDepth);
 		 MeasureCondition(const int start, const int end,
 				  const int firstStep, const int step,
 				  const Dep::MaxValue & maxValue);
@@ -54,26 +56,37 @@ namespace cms {
 				  const int highEnd, const int highStep,
 				  const Dep::MaxValue & maxValue);
 		 MeasureCondition(RGB_vector_ptr rgbMeasureCode);
-		 MeasureCondition(RGB_vector_ptr rgbMeasureCode, const int start, const int end);
+		 MeasureCondition(RGB_vector_ptr rgbMeasureCode,
+				  const int start, const int end);
 		RGB_vector_ptr getRGBMeasureCode();
 	      private:
-		void setRemappingRGBMeasureCode(RGB_vector_ptr rgbMeasureCode);
-		void setRemappingMode(bool remap);
+		//void setRemappingRGBMeasureCode(RGB_vector_ptr rgbMeasureCode);
+		//virtual void setRemappingMode(bool remap);
 		static int_vector_ptr getMeasureCode(const int start,
 						     const int end,
-						     const int firstStep, const int step);
+						     const int firstStep,
+						     const int step);
 		static int_vector_ptr getMeasureCode(const int lowStart,
 						     const int lowEnd,
 						     const int lowStep,
 						     const int highStart,
-						     const int highEnd, const int highStep);
+						     const int highEnd,
+						     const int highStep);
 		static bool isNoRemainder(int start, int end, int step);
-		RGB_vector_ptr getRGBMeasureCode(int_vector_ptr
-						 measureCode, const Dep::Channel & channel);
 		RGB_vector_ptr getRGBMeasureCode(int_vector_ptr
 						 measureCode,
 						 const Dep::
-						 Channel & channel, const Dep::MaxValue & maxValue);
+						 Channel & channel);
+		RGB_vector_ptr getRGBMeasureCode(int_vector_ptr
+						 measureCode,
+						 const Dep::
+						 Channel & channel,
+						 const Dep::
+						 MaxValue & maxValue);
+		__property RGB_vector_ptr RemappingRGBMeasureCode =
+		    { write = remappingRGBMeasureCode
+		};
+		__property bool RemappingMode = { write = remapping };
 	    };
 
 	    /*
@@ -93,12 +106,17 @@ namespace cms {
 		double rgain, ggain, bgain;
 		RGB_vector_ptr mappingRGBVector;
 	      public:
-		 PanelRegulator(bptr < cms::lcd::calibrate::BitDepthProcessor > bitDepth,
-				bptr < i2c::TCONControl > tconctrl, double rgain, double ggain,
-				double bgain);
-		 PanelRegulator(bptr < cms::lcd::calibrate::BitDepthProcessor > bitDepth,
-				bptr < i2c::TCONControl > tconctrl, int maxR, int maxG, int maxB);
-		void setEnable(bool enable);
+		 PanelRegulator(bptr <
+				cms::lcd::calibrate::BitDepthProcessor >
+				bitDepth,
+				bptr < i2c::TCONControl > tconctrl,
+				double rgain, double ggain, double bgain);
+		 PanelRegulator(bptr <
+				cms::lcd::calibrate::BitDepthProcessor >
+				bitDepth,
+				bptr < i2c::TCONControl > tconctrl,
+				int maxR, int maxG, int maxB);
+		virtual void setEnable(bool enable);
 		RGB_vector_ptr remapping(RGB_vector_ptr dglut);
 		RGB_vector_ptr getMappingRGBVector();
 	    };
@@ -110,10 +128,14 @@ namespace cms {
 		/*GammaTestPanelRegulator(bptr < cms::lcd::calibrate::BitDepthProcessor > bitDepth,
 		   bptr < i2c::TCONControl > tconctrl, double rgain,
 		   double ggain, double bgain); */
-		GammaTestPanelRegulator(bptr < cms::lcd::calibrate::BitDepthProcessor > bitDepth,
-					bptr < i2c::TCONControl > tconctrl, int maxR, int maxG,
-					int maxB, bptr < MeasureCondition > measureCondition);
-		void setEnable(bool enable);
+		GammaTestPanelRegulator(bptr <
+					cms::lcd::calibrate::
+					BitDepthProcessor > bitDepth,
+					bptr < i2c::TCONControl > tconctrl,
+					int maxR, int maxG, int maxB,
+					bptr < MeasureCondition >
+					measureCondition);
+		virtual void setEnable(bool enable);
 		void setRemappingMode(bool remap);
 	    };
 	};

@@ -212,7 +212,7 @@ namespace cms {
 		feedbackFix = false;
 		smoothComponent = false;
 
-		colorimetricQuanti = false;
+		colorimetricQuanti = true;
 		quantiType = NearOriginal;
 
 		autoIntensity = false;
@@ -228,6 +228,8 @@ namespace cms {
 		bptr < MeterMeasurement > mm = analyzer->getMeterMeasurement();
 		bool nativeTagetWhite = refRGB->isWhite();
 		if (!nativeTagetWhite && !mm->FakeMeasure) {
+		    //額外量測target white, 使的每次的作業中, 都確保白點的亮度可以穩定!
+		    //而不會限制白點的亮度只能是設定target white當下的亮度
 		    fetcher->ExtraMeasureRGB = refRGB;
 		}
 		Component_vector_ptr componentVector = fetcher->fetchComponent(measureCondition);
@@ -357,6 +359,7 @@ namespace cms {
 
 		bool doAccurate = (true == accurateMode) && (null != tconctrl);
 		bptr < PanelRegulator > panelRegulator;
+		//doAccurate = true;
 		if (doAccurate) {
 		    //原先: 以target white的rgb為最大值, 調整面板並重新量測
 		    //改良: 以direct gamma(gamma test)直接改變打出的pattern, 達到相同效果
@@ -367,6 +370,8 @@ namespace cms {
 			(new GammaTestPanelRegulator(bitDepth, tconctrl, (int) rgb->R, (int) rgb->G,
 						     (int) rgb->B, measureCondition));
 		    if (false == this->manualAccurateMode) {
+			//若是在direct gamma下, setEnable會無效, 因為setEnable是變更DG LUT
+			//但是direct gamma無視DG LUT的內容!
 			panelRegulator->setEnable(true);
 		    }
 		    remapped = true;
@@ -606,6 +611,9 @@ namespace cms {
 
 
 
+		    //=========================================================
+		    // feedback
+		    //=========================================================
 		    if (true == feedbackFix
 			&& (true != MainForm->linkCA210 || MainForm->isTCONInput()
 			    || MainForm->isPCwithTCONInput())) {
@@ -614,10 +622,11 @@ namespace cms {
 			const MaxValue & lutMaxValue = bitDepth->getLutMaxValue();
 			RGB_vector_ptr clone = RGBVector::deepClone(dglut);
 
-			colorimetricQuanti = true;
+			//colorimetricQuanti = true;
 			int frcBit = bitDepth->getFRCAbilityBit().bit;
 
 			if (true == colorimetricQuanti && 11 == frcBit) {
+			    //11bit下才可以使用colorimetricQuanti, 10bit下使用沒啥效果
 			    int domainBit = frcBit + 2;
 			    const MaxValue & domainMaxValue = MaxValue::getByIntegerBit(domainBit);
 			    //先降到domain bit, 為FRC bit+2 bit
@@ -658,6 +667,7 @@ namespace cms {
 			fixReverseByFeedback(clone);
 			dglut = clone;
 		    }		//end of feedbackFix
+		    //=========================================================
 
 		    if (autoKeepMaxLumiParameter) {
 			//檢查的時候, 還是需要將整個流程跑完才做檢查.
