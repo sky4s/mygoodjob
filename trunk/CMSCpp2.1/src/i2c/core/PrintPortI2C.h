@@ -29,6 +29,9 @@
 #define LPT_DATA_PORT (short)0x378
 #define LPT_STATUS_PORT (short)0x379
 #define LPT_CTRL_PORT (short)0x37A
+//#define LPT_DATA_PORT (short)0x3E8
+//#define LPT_STATUS_PORT (short)0x3E9
+//#define LPT_CTRL_PORT (short)0x3EA
 
 typedef unsigned short u16;
 typedef short _stdcall(*inpfuncPtr) (short portaddr);
