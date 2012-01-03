@@ -63,17 +63,9 @@ namespace cms {
 	    };
 
 	    void AdvancedDGLutGenerator::init() {
-		/*rTargetIntensity = -1;
-		   gTargetIntensity = -1;
-		   bTargetIntensity = -1;
-		   autoIntensity = false; */
 		stopMeasure = false;
-		//multiGen = false;
 		this->bitDepth = bitDepth;
-		//middleCCTRatio = -1;
-		//autoParameter = false;
 		rgbGenerateResult = nil_RGBGamma;
-		//smoothIntensity = false;
 	    };
 
 	    AdvancedDGLutGenerator::
@@ -225,7 +217,6 @@ namespace cms {
 		int part = level - brightTurn;
 		int part13 = part / 3;
 		int part13Start = level - part13;
-		//int size = result1->size();
 		for (int x = brightTurn; x < part13Start; x++) {
 		    RGB_ptr rgb = (*result)[x];
 		    RGB_ptr rgb1 = (*result1)[x];
@@ -438,6 +429,9 @@ namespace cms {
 			&& true == c.smoothIntensity
 			&& x >= c.smoothIntensityStart
 			&& x <= c.smoothIntensityEnd) {
+                        //如果啟用auto intensity, 會自動找到比100%更適合的intensity
+                        //但是此舉會造成低灰階的修正出問題, 因為低灰階的目標intensity不再是100%
+                        //幾乎都會造成暗灰階找不到而疊階變成許多0... 所以中間需要從1XX%過度回100%
 			rIntensity =
 			    Interpolation::linear(c.smoothIntensityStart,
 						  c.smoothIntensityEnd,

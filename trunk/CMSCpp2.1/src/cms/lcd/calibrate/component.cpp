@@ -24,14 +24,12 @@ namespace cms {
 	    //==================================================================
 	    // Component
 	    //==================================================================
-	     Component::Component(RGB_ptr rgb, RGB_ptr intensity):rgb(rgb),
-		intensity(intensity) {
+	     Component::Component(RGB_ptr rgb, RGB_ptr intensity):rgb(rgb), intensity(intensity) {
 
 	    };
 	     Component::Component(RGB_ptr rgb,
 				  RGB_ptr intensity,
-				  XYZ_ptr XYZ):rgb(rgb),
-		intensity(intensity), XYZ(XYZ) {
+				  XYZ_ptr XYZ):rgb(rgb), intensity(intensity), XYZ(XYZ) {
 
 	    };
 	     Component::Component(RGB_ptr rgb,
@@ -80,8 +78,7 @@ namespace cms {
 		extraMeasureRGB(nil_RGB_ptr) {
 	    };
 
-	    Component_vector_ptr ComponentFetcher::
-		fetchComponent(RGB_vector_ptr rgbMeasureCode) {
+	    Component_vector_ptr ComponentFetcher::fetchComponent(RGB_vector_ptr rgbMeasureCode) {
 		Component_vector_ptr result(new Component_vector());
 
 		bool waitingStable = true;
@@ -91,16 +88,13 @@ namespace cms {
 		stop = false;
 
 		if (nil_RGB_ptr != extraMeasureRGB) {
-		    extraMeasureXYZ =
-			analyzer->getCIEXYZOnly(extraMeasureRGB);
+		    extraMeasureXYZ = analyzer->getCIEXYZOnly(extraMeasureRGB);
 		}
 
 		foreach(const RGB_ptr & rgb, *rgbMeasureCode) {
 		    RGB_ptr intensity = analyzer->getIntensity(rgb);
 		    XYZ_ptr XYZ = analyzer->getCIEXYZ();
-		    Component_ptr component(new
-					    Component(rgb, intensity,
-						      XYZ));
+		    Component_ptr component(new Component(rgb, intensity, XYZ));
 		    result->push_back(component);
 
 		    if (true == waitingStable) {
@@ -121,20 +115,14 @@ namespace cms {
 
 	    Component_vector_ptr ComponentFetcher::fetchComponent(bptr <
 								  MeasureCondition
-								  >
-								  measureCondition)
-	    {
-		return fetchComponent(measureCondition->
-				      getRGBMeasureCode());
+								  > measureCondition) {
+		return fetchComponent(measureCondition->getRGBMeasureCode());
 	    };
 	    double_vector_ptr ComponentFetcher::fetchLuminance(bptr <
 							       MeasureCondition
-							       >
-							       measureCondition)
-	    {
+							       > measureCondition) {
 		double_vector_ptr result(new double_vector());
-		RGB_vector_ptr rgbMeasureCode =
-		    measureCondition->getRGBMeasureCode();
+		RGB_vector_ptr rgbMeasureCode = measureCondition->getRGBMeasureCode();
 		bool waitingStable = true;
 		int waitTimes = analyzer->getWaitTimes();
 
@@ -163,8 +151,7 @@ namespace cms {
 	    };
 
 	    void ComponentFetcher::storeToExcel(const string & filename,
-						Component_vector_ptr
-						componentVector) {
+						Component_vector_ptr componentVector) {
 
 		Util::deleteExist(filename);
 		DGLutFile dglut(filename, Create);
@@ -199,15 +186,13 @@ namespace cms {
 
 		dglut.setDeltaData(componentVector);
 	    };
-	    void ComponentFetcher::windowClosing(TObject * Sender,
-						 TCloseAction & Action) {
+	    void ComponentFetcher::windowClosing(TObject * Sender, TCloseAction & Action) {
 		stop = true;
 	    };
 	    bptr < IntensityAnalyzerIF > ComponentFetcher::getAnalyzer() {
 		return analyzer;
 	    };
-	    RGB_vector_ptr ComponentFetcher::
-		getRGBVector(Component_vector_ptr componentVector) {
+	    RGB_vector_ptr ComponentFetcher::getRGBVector(Component_vector_ptr componentVector) {
 		int size = componentVector->size();
 		RGB_vector_ptr rgbVector(new RGB_vector(size));
 		for (int x = 0; x < size; x++) {
@@ -221,15 +206,12 @@ namespace cms {
 	    //==================================================================
 	    // ComponentLinearRelation
 	    //==================================================================
-	    void ComponentLinearRelation::init(double2D_ptr input,
-					       double2D_ptr output) {
+	    void ComponentLinearRelation::init(double2D_ptr input, double2D_ptr output) {
 		//==============================================================
 		// 計算a/c/d
 		//==============================================================
 		regression = bptr < PolynomialRegression >
-		    (new
-		     PolynomialRegression(input, output,
-					  Polynomial::COEF_3::BY_3C));
+		    (new PolynomialRegression(input, output, Polynomial::COEF_3::BY_3C));
 		regression->regress();
 		const double *coefs = (*regression->getCoefs())[0];
 		a1 = coefs[1];
@@ -241,8 +223,7 @@ namespace cms {
 		//==============================================================
 	    };
 
-	    void ComponentLinearRelation::
-		init(Component_vector_ptr componentVector) {
+	    void ComponentLinearRelation:: init(Component_vector_ptr componentVector) {
 		//==============================================================
 		// 建立回歸資料
 		//==============================================================
@@ -270,8 +251,7 @@ namespace cms {
 	    };
 
 	    ComponentLinearRelation::
-		ComponentLinearRelation(double2D_ptr input,
-					double2D_ptr output) {
+		ComponentLinearRelation(double2D_ptr input, double2D_ptr output) {
 		init(input, output);
 
 	    };
@@ -283,10 +263,8 @@ namespace cms {
 		return c * luminance + d;
 	    };
 	    double ComponentLinearRelation::
-		getLuminance(double rIntensity, double gIntensity,
-			     double bIntensity) {
-		return a0 + rIntensity * a1 + gIntensity * a2 +
-		    bIntensity * a3;
+		getLuminance(double rIntensity, double gIntensity, double bIntensity) {
+		return a0 + rIntensity * a1 + gIntensity * a2 + bIntensity * a3;
 	    };
 	    //==================================================================
 
@@ -298,13 +276,20 @@ namespace cms {
 		// lut前置作業
 		//==============================================================
 		int size = componentVector->size();
-		double_vector_ptr rKeys(new double_vector(size));
+		/*double_vector_ptr rKeys(new double_vector(size));
 		double_vector_ptr gKeys(new double_vector(size));
 		double_vector_ptr bKeys(new double_vector(size));
 		double_vector_ptr rValues(new double_vector(size));
 		double_vector_ptr gValues(new double_vector(size));
 		double_vector_ptr bValues(new double_vector(size));
-		double_vector_ptr YValues(new double_vector(size));
+		double_vector_ptr YValues(new double_vector(size));*/
+		double_vector_ptr rKeys(new double_vector());
+		double_vector_ptr gKeys(new double_vector());
+		double_vector_ptr bKeys(new double_vector());
+		double_vector_ptr rValues(new double_vector());
+		double_vector_ptr gValues(new double_vector());
+		double_vector_ptr bValues(new double_vector());
+		double_vector_ptr YValues(new double_vector());
 		double_array values(new double[3]);
 
 		for (int x = 0; x != size; x++) {
@@ -314,13 +299,26 @@ namespace cms {
 		    RGB_ptr code = component->rgb;
 		    code->getValues(values, MaxValue::Double255);
 
-		    (*rKeys)[x] = values[0];
+		    /*(*rKeys)[x] = values[0];
 		    (*gKeys)[x] = values[1];
 		    (*bKeys)[x] = values[2];
 		    (*rValues)[x] = intensity->R;
 		    (*gValues)[x] = intensity->G;
 		    (*bValues)[x] = intensity->B;
-		    (*YValues)[x] = component->XYZ->Y;
+		    (*YValues)[x] = component->XYZ->Y;*/
+
+                    rKeys->push_back(values[0]);
+                    gKeys->push_back(values[1]);
+                    bKeys->push_back(values[2]);
+                    double r =intensity->R;
+                    double g =intensity->G;
+                    double b =intensity->B;
+                    rValues->push_back(r);
+                    gValues->push_back(g);
+                    bValues->push_back(b);
+                    double Y = component->XYZ->Y;
+                    YValues->push_back(Y);
+
 		    if (-1 == rMax) {
 			rMax = values[0];
 			gMax = values[1];
@@ -335,6 +333,9 @@ namespace cms {
 		//==============================================================
 		// 產生RGB LUT
 		//==============================================================
+		 DoubleArray::inspect(rKeys);
+		 DoubleArray::inspect(rValues);
+
 		rKeys = DoubleArray::getReverse(rKeys);
 		gKeys = DoubleArray::getReverse(gKeys);
 		bKeys = DoubleArray::getReverse(bKeys);
@@ -342,28 +343,22 @@ namespace cms {
 		gValues = DoubleArray::getReverse(gValues);
 		bValues = DoubleArray::getReverse(bValues);
 		YValues = DoubleArray::getReverse(YValues);
-		rLut =
-		    bptr < Interpolation1DLUT >
-		    (new Interpolation1DLUT(rKeys, rValues));
-		gLut =
-		    bptr < Interpolation1DLUT >
-		    (new Interpolation1DLUT(gKeys, gValues));
-		bLut =
-		    bptr < Interpolation1DLUT >
-		    (new Interpolation1DLUT(bKeys, bValues, Ripple));
-		YLut =
-		    bptr < Interpolation1DLUT >
-		    (new Interpolation1DLUT(gKeys, YValues));
+
+		DoubleArray::inspect(rKeys);
+		DoubleArray::inspect(rValues);
+
+		rLut = bptr < Interpolation1DLUT > (new Interpolation1DLUT(rKeys, rValues));
+		gLut = bptr < Interpolation1DLUT > (new Interpolation1DLUT(gKeys, gValues));
+		bLut = bptr < Interpolation1DLUT > (new Interpolation1DLUT(bKeys, bValues, Ripple));
+		YLut = bptr < Interpolation1DLUT > (new Interpolation1DLUT(gKeys, YValues));
 		//==============================================================                
 	    };
 	  ComponentLUT::ComponentLUT(Component_vector_ptr componentVector):componentVector(componentVector)
 	    {
-		rMax = gMax = bMax = rIntensityMax = gIntensityMax =
-		    bIntensityMax = -1;
+		rMax = gMax = bMax = rIntensityMax = gIntensityMax = bIntensityMax = -1;
 		init(componentVector);
 	    };
-	    double ComponentLUT::getIntensity(const Dep::Channel & ch,
-					      double code) {
+	    double ComponentLUT::getIntensity(const Dep::Channel & ch, double code) {
 		switch (ch.chindex) {
 		case ChannelIndex::R:
 		    return rLut->getValue(code);
@@ -372,12 +367,10 @@ namespace cms {
 		case ChannelIndex::B:
 		    return bLut->getValue(code);
 		default:
-		    throw IllegalArgumentException("Unsupported Channel:" +
-						   *ch.toString());
+		    throw IllegalArgumentException("Unsupported Channel:" + *ch.toString());
 		}
 	    };
-	    double ComponentLUT::getCode(const Dep::Channel & ch,
-					 double intensity) {
+	    double ComponentLUT::getCode(const Dep::Channel & ch, double intensity) {
 		switch (ch.chindex) {
 		case ChannelIndex::R:
 		    return rLut->getKey(intensity);
@@ -386,8 +379,7 @@ namespace cms {
 		case ChannelIndex::B:
 		    return bLut->getKey(intensity);
 		default:
-		    throw IllegalArgumentException("Unsupported Channel:" +
-						   *ch.toString());
+		    throw IllegalArgumentException("Unsupported Channel:" + *ch.toString());
 		}
 	    };
 	    RGB_ptr ComponentLUT::getCode(double luminance) {
@@ -396,10 +388,7 @@ namespace cms {
 		RGB_ptr rgb(new RGBColor(key, key, key));
 		return rgb;
 	    };
-	    double ComponentLUT::correctIntensityInRange(const Dep::
-							 Channel & ch,
-							 double intensity)
-	    {
+	    double ComponentLUT::correctIntensityInRange(const Dep::Channel & ch, double intensity) {
 		switch (ch.chindex) {
 		case ChannelIndex::R:
 		    return rLut->correctValueInRange(intensity);
@@ -408,13 +397,10 @@ namespace cms {
 		case ChannelIndex::B:
 		    return bLut->correctValueInRange(intensity);
 		default:
-		    throw IllegalArgumentException("Unsupported Channel:" +
-						   *ch.toString());
+		    throw IllegalArgumentException("Unsupported Channel:" + *ch.toString());
 		}
 	    };
-	    double ComponentLUT::correctCodeInRange(const Dep::
-						    Channel & ch,
-						    double code) {
+	    double ComponentLUT::correctCodeInRange(const Dep::Channel & ch, double code) {
 		switch (ch.chindex) {
 		case ChannelIndex::R:
 		    return rLut->correctKeyInRange(code);
@@ -423,8 +409,7 @@ namespace cms {
 		case ChannelIndex::B:
 		    return bLut->correctKeyInRange(code);
 		default:
-		    throw IllegalArgumentException("Unsupported Channel:" +
-						   *ch.toString());
+		    throw IllegalArgumentException("Unsupported Channel:" + *ch.toString());
 		}
 	    };
 
@@ -441,8 +426,7 @@ namespace cms {
 		case ChannelIndex::B:
 		    return bLut->hasCorrectedInRange();
 		default:
-		    throw IllegalArgumentException("Unsupported Channel:" +
-						   *ch.toString());
+		    throw IllegalArgumentException("Unsupported Channel:" + *ch.toString());
 		}
 	    };
 

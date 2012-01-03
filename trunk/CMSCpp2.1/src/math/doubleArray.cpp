@@ -538,16 +538,18 @@ namespace math {
 	return sum;
     };
     void DoubleArray::inspect(double_array array, int size) {
-	int v = 0;
+	double v = 0;
 	for (int x = 0; x < size; x++) {
 	    v = array[x];
+            double stopHere = v;
 	}
     };
     void DoubleArray::inspect(double_vector_ptr vector) {
 	int size = vector->size();
-	int v = 0;
+	double v = 0;
 	for (int x = 0; x < size; x++) {
 	    v = (*vector)[x];
+            double stopHere = v;
 	}
     };
     //==========================================================================

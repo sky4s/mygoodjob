@@ -19,8 +19,7 @@ namespace cms {
 	      public:
 		Component(RGB_ptr rgb, RGB_ptr intensity);
 		Component(RGB_ptr rgb, RGB_ptr intensity, XYZ_ptr XYZ);
-		Component(RGB_ptr rgb, RGB_ptr intensity, XYZ_ptr XYZ,
-			  RGB_ptr gamma);
+		Component(RGB_ptr rgb, RGB_ptr intensity, XYZ_ptr XYZ, RGB_ptr gamma);
 		Component(Component_ptr c);
 		Component(Patch_ptr p);
 		RGB_ptr rgb;
@@ -33,35 +32,25 @@ namespace cms {
 		bptr < cms::measure::IntensityAnalyzerIF > analyzer;
 		bool stop;
 		 bptr < cms::lcd::calibrate::BitDepthProcessor > bitDepth;
-		Component_vector_ptr fetchComponent(RGB_vector_ptr
-						    rgbMeasureCode);
+		Component_vector_ptr fetchComponent(RGB_vector_ptr rgbMeasureCode);
 		XYZ_ptr extraMeasureXYZ;
 		RGB_ptr extraMeasureRGB;
 	      public:
 		 ComponentFetcher(bptr <
 				  cms::measure::IntensityAnalyzerIF >
-				  analyzer,
-				  bptr < BitDepthProcessor > bitDepth);
-		Component_vector_ptr fetchComponent(bptr <
-						    MeasureCondition >
-						    measureCondition);
+				  analyzer, bptr < BitDepthProcessor > bitDepth);
+		Component_vector_ptr fetchComponent(bptr < MeasureCondition > measureCondition);
 
-		double_vector_ptr fetchLuminance(bptr < MeasureCondition >
-						 measureCondition);
+		double_vector_ptr fetchLuminance(bptr < MeasureCondition > measureCondition);
 
 		static void storeToExcel(const std::string & filename,
-					 Component_vector_ptr
-					 componentVector);
-		virtual void windowClosing(TObject * Sender,
-					   TCloseAction & Action);
+					 Component_vector_ptr componentVector);
+		virtual void windowClosing(TObject * Sender, TCloseAction & Action);
 		 bptr < cms::measure::IntensityAnalyzerIF > getAnalyzer();
-		static RGB_vector_ptr getRGBVector(Component_vector_ptr
-						   componentVector);
-		__property RGB_ptr ExtraMeasureRGB = { write =
-			extraMeasureRGB
+		static RGB_vector_ptr getRGBVector(Component_vector_ptr componentVector);
+		__property RGB_ptr ExtraMeasureRGB = { write = extraMeasureRGB
 		};
-		__property XYZ_ptr ExtraMeasureXYZ = { read =
-			extraMeasureXYZ
+		__property XYZ_ptr ExtraMeasureXYZ = { read = extraMeasureXYZ
 		};
 	    };
 
@@ -72,8 +61,7 @@ namespace cms {
 	      public:
 		virtual double getIntensity(double luminance) = 0;
 		virtual double getLuminance(double rIntensity,
-					    double gIntensity,
-					    double bIntensity) = 0;
+					    double gIntensity, double bIntensity) = 0;
 	    };
 	    class ComponentLinearRelation:public ComponentRelationIF {
 	      private:
@@ -83,13 +71,10 @@ namespace cms {
 		void init(Component_vector_ptr componentVector);
 		Component_vector_ptr componentVector;
 	      public:
-		 ComponentLinearRelation(double2D_ptr input,
-					 double2D_ptr output);
-		 ComponentLinearRelation(Component_vector_ptr
-					 componentVector);
+		 ComponentLinearRelation(double2D_ptr input, double2D_ptr output);
+		 ComponentLinearRelation(Component_vector_ptr componentVector);
 		double getIntensity(double luminance);
-		double getLuminance(double rIntensity, double gIntensity,
-				    double bIntensity);
+		double getLuminance(double rIntensity, double gIntensity, double bIntensity);
 	    };
 
 	    /*
@@ -117,8 +102,7 @@ namespace cms {
 		bptr < math::Interpolation1DLUT > gLut;
 		bptr < math::Interpolation1DLUT > bLut;
 		bptr < math::Interpolation1DLUT > YLut;
-		double rMax, gMax, bMax, rIntensityMax, gIntensityMax,
-		    bIntensityMax;
+		double rMax, gMax, bMax, rIntensityMax, gIntensityMax, bIntensityMax;
 	      protected:
 		void init(Component_vector_ptr componentVector);
 
@@ -127,10 +111,8 @@ namespace cms {
 		double getIntensity(const Dep::Channel & ch, double code);
 		double getCode(const Dep::Channel & ch, double intensity);
 		RGB_ptr getCode(double luminance);
-		double correctIntensityInRange(const Dep::Channel & ch,
-					       double intensity);
-		double correctCodeInRange(const Dep::Channel & ch,
-					  double code);
+		double correctIntensityInRange(const Dep::Channel & ch, double intensity);
+		double correctCodeInRange(const Dep::Channel & ch, double code);
 		double getMaxBIntensity();
 		bool hasCorrectedInRange(const Dep::Channel & ch);
 	    };

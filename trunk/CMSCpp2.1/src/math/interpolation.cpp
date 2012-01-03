@@ -231,6 +231,8 @@ namespace math {
 	minValue = (*value)[0];
 	maxKey = (*key)[key->size() - 1];
 	maxValue = (*value)[value->size() - 1];
+        DoubleArray::inspect(key);
+        DoubleArray::inspect(value);
     };
   Interpolation1DLUT::Interpolation1DLUT(double_vector_ptr key, double_vector_ptr value, LUTType lutType):keyArray(key), valueArray(value),
 	size(keyArray->
@@ -239,6 +241,8 @@ namespace math {
 	minValue = (*value)[0];
 	maxKey = (*key)[key->size() - 1];
 	maxValue = (*value)[value->size() - 1];
+        DoubleArray::inspect(key);
+        DoubleArray::inspect(value);
     };
     double Interpolation1DLUT::correctKeyInRange(double key) {
 	return correctInRange(key, keyArray);
