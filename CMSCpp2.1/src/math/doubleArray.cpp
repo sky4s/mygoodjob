@@ -537,6 +537,19 @@ namespace math {
 	}
 	return sum;
     };
+    void DoubleArray::inspect(double_array array, int size) {
+	int v = 0;
+	for (int x = 0; x < size; x++) {
+	    v = array[x];
+	}
+    };
+    void DoubleArray::inspect(double_vector_ptr vector) {
+	int size = vector->size();
+	int v = 0;
+	for (int x = 0; x < size; x++) {
+	    v = (*vector)[x];
+	}
+    };
     //==========================================================================
     float2D_ptr FloatArray::toFloat2D(int width, int n, ...) {
 	float *array = new float[n];
