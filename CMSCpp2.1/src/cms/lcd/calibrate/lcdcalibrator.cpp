@@ -664,7 +664,7 @@ namespace cms {
 
 
 
-			fixReverseByFeedback(clone);
+			fixChromaticityReverseByFeedback(clone);
 			dglut = clone;
 		    }		//end of feedbackFix
 		    //=========================================================
@@ -716,7 +716,7 @@ namespace cms {
 		}
 		return double_vector_ptr((double_vector *) null);
 	    }
-	    void LCDCalibrator::fixReverseByFeedback(RGB_vector_ptr dglut) {
+	    void LCDCalibrator::fixChromaticityReverseByFeedback(RGB_vector_ptr dglut) {
 		feedbackFixer =
 		    bptr < FeedbackFixer > (new
 					    FeedbackFixer(dimFixEnd,
@@ -729,7 +729,7 @@ namespace cms {
 		this->initDefectCount = feedbackFixer->InitDefectCount;
 	    };
 	    //const double LCDCalibrator::ReverseDefine = 0.0001;
-	    int LCDCalibrator::checkReverse(double_vector_ptr deltaVector) {
+	    /*int LCDCalibrator::checkReverse(double_vector_ptr deltaVector) {
 		int size = deltaVector->size();
 		for (int x = 1; x < size - 1; x++) {
 		    double delta = (*deltaVector)[x];
@@ -738,7 +738,7 @@ namespace cms {
 		    }
 		}
 		return -1;
-	    }
+	    }*/
 
 	    int_vector_ptr LCDCalibrator::
 		getReverseIndexVector(double_vector_ptr deltaVector, int start, int end) {
@@ -789,7 +789,7 @@ namespace cms {
 		    result->push_back(number);
 		}
 	    };
-	    int LCDCalibrator::checkReverse(double_vector_ptr deltaVector, int start, int end) {
+	    /*int LCDCalibrator::checkReverse(double_vector_ptr deltaVector, int start, int end) {
 		//int size = deltaVector->size();
 		for (int x = start; x < end; x++) {
 		    double delta = (*deltaVector)[x];
@@ -798,7 +798,7 @@ namespace cms {
 		    }
 		}
 		return -1;
-	    }
+	    }*/
 
 
 
@@ -932,7 +932,7 @@ namespace cms {
 		    dglutFile->setRawData(componentVector, initialRGBGamma, finalRGBGamma);
 		}
 		if (null != targetXYZVector) {
-		    dglutFile->setTargetXYZVector(targetXYZVector, dglut);
+		    dglutFile->setTargetXYZVector(targetXYZVector, dglut, bitDepth);
 		}
 	    };
 	    Component_vector_ptr LCDCalibrator::getDimComponentVector(RGB_vector_ptr dglut) {

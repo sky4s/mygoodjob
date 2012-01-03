@@ -22,12 +22,12 @@ namespace cms {
 
 	 RampMeasureFile::RampMeasureFile(const std::string & fileName,
 					  const Mode mode):ExcelAccessBase(fileName, mode) {
-	    initSheet(Sheet1, 18, "Gray Level", "W_x", "W_y", "W_Y (nit)",
+	    initSheet(Sheet1, 21, "Gray Level", "W_x", "W_y", "W_Y (nit)",
 		      "W_CCT", "ΔUV", "W_R", "W_G", "W_B", "R_x", "R_y",
-		      "R_Y (nit)", "G_x", "G_y", "G_Y (nit)", "B_x", "B_y", "B_Y (nit)");
-	    initSheet(Sheet2, 18, "Gray Level", "W_X", "W_Y (nit)", "W_Z",
+		      "R_Y (nit)", "G_x", "G_y", "G_Y (nit)", "B_x", "B_y", "B_Y (nit)","DG_R","DG_G","DG_B");
+	    initSheet(Sheet2, 21, "Gray Level", "W_X", "W_Y (nit)", "W_Z",
 		      "W_CCT", "ΔUV", "W_R", "W_G", "W_B", "R_X", "R_Y (nit)",
-		      "R_Z", "G_X", "G_Y (nit)", "G_Z", "B_X", "B_Y (nit)", "B_Z");
+		      "R_Z", "G_X", "G_Y (nit)", "G_Z", "B_X", "B_Y (nit)", "B_Z","DG_R","DG_G","DG_B");
 	};
 
 	int RampMeasureFile::
@@ -60,6 +60,10 @@ namespace cms {
 	    sizes[3] = bsize;
 	    return IntArray::max(sizes, 4);
 	};
+        /*
+                wMeasureData for Component_vector_ptr
+                wMeasureData2 for Patch_vector_ptr
+        */
 	void RampMeasureFile::
 	    setMeasureData(Component_vector_ptr wMeasureData, Patch_vector_ptr wMeasureData2,
 			   Patch_vector_ptr rMeasureData, Patch_vector_ptr gMeasureData,
@@ -82,7 +86,7 @@ namespace cms {
 	    //==================================================================
 	    // 初始資料設定
 	    //==================================================================
-	    string_vector_ptr values(new string_vector(18));
+	    string_vector_ptr values(new string_vector(21));
 	    //==================================================================
 	    //==================================================================
 	    // 迴圈處理
@@ -112,6 +116,10 @@ namespace cms {
 		    } else {
 			StringVector::setContent(values, "-1", 3, 6, 7, 8);
 		    }
+                    RGB_ptr rgb= c->rgb;
+                    (*values)[18] = _toString(rgb->R);
+		    (*values)[19] = _toString(rgb->G);
+		    (*values)[20] = _toString(rgb->B);
 		} else if (wMeasureData2 != null) {
 		    Patch_ptr p = (*wMeasureData2)[x];
 		    int w = static_cast < int >(p->getRGB()->getValue(Channel::W));
@@ -130,8 +138,12 @@ namespace cms {
 		    (*values)[5] = _toString(duv);
 		    StringVector::setContent(values, "-1", 3, 6, 7, 8);
 
+                    RGB_ptr rgb=p->getRGB();
+                    (*values)[18] = _toString(rgb->R);
+		    (*values)[19] = _toString(rgb->G);
+		    (*values)[20] = _toString(rgb->B);
 		} else {
-		    StringVector::setContent(values, "0", 9, 0, 1, 2, 3, 4, 5, 6, 7, 8);
+		    StringVector::setContent(values, "0", 12, 0, 1, 2, 3, 4, 5, 6, 7, 8, 18,19,20);
 		}
 
 		if (rMeasureData != null) {

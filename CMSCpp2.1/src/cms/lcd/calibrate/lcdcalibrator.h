@@ -246,9 +246,9 @@ namespace cms {
 					 panelRegulator, const Dep::MaxValue & quantizationBit);
 		RGB_vector_ptr newMethod(bptr < PanelRegulator > panelRegulato);
 
-		void fixReverseByFeedback(RGB_vector_ptr dglut);
-		int checkReverse(double_vector_ptr deltaVector);
-		int checkReverse(double_vector_ptr deltaVector, int start, int end);
+		void fixChromaticityReverseByFeedback(RGB_vector_ptr dglut);
+		/*int checkReverse(double_vector_ptr deltaVector);
+		int checkReverse(double_vector_ptr deltaVector, int start, int end);*/
 		int_vector_ptr getReverseIndexVector(double_vector_ptr
 						     deltaVector, int start, int end);
 		 int_vector_ptr
