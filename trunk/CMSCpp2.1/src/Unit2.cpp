@@ -125,11 +125,23 @@ void excel2()
     }
 }
 
+
+
 void lut()
 {
     using namespace math;
     double a[] = { 1, 2, 3, 4, 5, 6 };
     double b[] = { 2, 4, 5, 6, 8, 10 };
+    double *c = a;
+    double_array d(a);
+    double *e = new double[4];
+    e[0] = 1;
+    e[1] = 2;
+    e[3] = 4;
+    int z = 0;
+    for (int x = 0; x < 4; x++) {
+	z = e[x];
+    }
 
     double_vector_ptr key(new double_vector(a, a + 6));
     double_vector_ptr val(new double_vector(b, b + 6));
@@ -137,6 +149,8 @@ void lut()
     //cout << lut.getValue(3) << endl;
     cout << lut.getValue(3.5) << endl;
     //cout << lut.getValue(4) << endl;
+
+
 }
 
 
@@ -1377,7 +1391,7 @@ int main(int argc, char *argv[])
        cout << (" " == s) << endl; */
 
     //regress();
-    //lut();
+    lut();
     //excel();
     //excel2();
     //inverse();
@@ -1463,7 +1477,7 @@ int main(int argc, char *argv[])
     //getAA(aa);
     //putTest();
     //rgbVectorTest();
-    textLoad();
+    //textLoad();
 
 
     cout << "end" << endl;

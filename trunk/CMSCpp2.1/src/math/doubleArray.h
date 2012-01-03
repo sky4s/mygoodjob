@@ -117,6 +117,8 @@ namespace math {
 
 	static double_vector_ptr getReverse(double_vector_ptr vec);
 	static double sum(double_array array, int length);
+	static void inspect(double_array array, int size);
+	static void inspect(double_vector_ptr vector);
     };
 
     class FloatArray {
