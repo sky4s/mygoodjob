@@ -54,17 +54,19 @@ class TI2CTestForm:public TForm {
     TRadioButton *RadioButton_LPTSmall;
     TCheckBox *CheckBox_DG;
     TCheckBox *CheckBox_DGTest;
+    TLabel *Label8;
+    TEdit *Edit_W;
     void __fastcall Button1Click(TObject * Sender);
     void __fastcall CheckBox_ConnectingClick(TObject * Sender);
     void __fastcall CheckBox1Click(TObject * Sender);
     void __fastcall Edit_RChange(TObject * Sender);
-    void __fastcall Edit_GChange(TObject * Sender);
-    void __fastcall Edit_BChange(TObject * Sender);
     void __fastcall Button_ReadClick(TObject * Sender);
     void __fastcall Button_WriteClick(TObject * Sender);
     void __fastcall FormDeactivate(TObject * Sender);
     void __fastcall CheckBox_DGClick(TObject * Sender);
     void __fastcall CheckBox_DGTestClick(TObject * Sender);
+    void __fastcall Edit_WKeyDown(TObject * Sender, WORD & Key, TShiftState Shift);
+    void __fastcall Edit_WChange(TObject * Sender);
   private:			// User declarations
      bptr < i2c::TCONParameter > parameter;
      bptr < i2c::TCONControl > control;
