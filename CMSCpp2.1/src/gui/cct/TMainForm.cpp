@@ -60,7 +60,11 @@ void __fastcall TMainForm::TargetWhite1Click(TObject * Sender)
 	Application->CreateForm(__classid(TTargetWhiteForm2), &TargetWhiteForm2);
     }
     TargetWhiteForm2->setBitDepthProcessor(bitDepth);
-    TargetWhiteForm2->ShowModal();
+    if (null != I2CTestForm && I2CTestForm->Showing) {
+	TargetWhiteForm2->Show();
+    } else {
+	TargetWhiteForm2->ShowModal();
+    }
 }
 
 //---------------------------------------------------------------------------
@@ -1098,7 +1102,10 @@ void __fastcall TMainForm::Button_I2CTestClick(TObject * Sender)
     I2CTestForm->RadioButton_Dual->Checked = this->RadioButton_DualTCON->Checked;
     I2CTestForm->CheckBox_IndepRGB->Checked = this->CheckBox_GammaTestIndepRGB->Checked;
     I2CTestForm->setBitDepthProcessor(bitDepth);
-    I2CTestForm->ShowModal();
+    //I2CTestForm->ShowModal();
+    I2CTestForm->Height = 350;
+    I2CTestForm->Width = 350;
+    I2CTestForm->Show();
 }
 
 //---------------------------------------------------------------------------

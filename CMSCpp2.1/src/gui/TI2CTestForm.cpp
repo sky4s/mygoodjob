@@ -76,7 +76,7 @@ void __fastcall TI2CTestForm::Button1Click(TObject * Sender)
     AddressingSize addressingSize = getAddressingSize();
 
     if (this->RadioButton_USB->Checked) {
-    
+
 	i2c1st = i2cControl::getUSBInstance(first, addressingSize, _3_3V, _400KHz);
 	if (dual) {
 	    i2c2nd = i2cControl::getUSBInstance(second, addressingSize, _3_3V, _400KHz);
@@ -189,18 +189,6 @@ void __fastcall TI2CTestForm::Edit_RChange(TObject * Sender)
 }
 
 //---------------------------------------------------------------------------
-void __fastcall TI2CTestForm::Edit_GChange(TObject * Sender)
-{
-    Edit_RChange(Sender);
-}
-
-//---------------------------------------------------------------------------
-void __fastcall TI2CTestForm::Edit_BChange(TObject * Sender)
-{
-    Edit_RChange(Sender);
-}
-
-//---------------------------------------------------------------------------
 
 void __fastcall TI2CTestForm::Button_ReadClick(TObject * Sender)
 {
@@ -272,4 +260,35 @@ void TI2CTestForm::setBitDepthProcessor(bptr < cms::lcd::calibrate::BitDepthProc
 {
     this->bitDepth = bitDepth;
 }
+
+
+void __fastcall TI2CTestForm::Edit_WKeyDown(TObject * Sender, WORD & Key, TShiftState Shift)
+{
+    bool down = Key == 0x28;
+    bool up = Key == 0x26;
+
+
+    if (down || up) {
+	int dg = Edit_W->Text.ToInt();
+	dg = down ? dg - 1 : dg + 1;
+	dg = (dg < 0) ? 0 : dg;
+	Edit_W->Text = dg;
+    }
+
+
+
+}
+
+//---------------------------------------------------------------------------
+
+
+void __fastcall TI2CTestForm::Edit_WChange(TObject * Sender)
+{
+    String w = Edit_W->Text;
+    Edit_R->Text = w;
+    Edit_G->Text = w;
+    Edit_B->Text = w;
+}
+
+//---------------------------------------------------------------------------
 

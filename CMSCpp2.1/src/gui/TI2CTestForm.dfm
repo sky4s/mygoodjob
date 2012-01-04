@@ -1,8 +1,9 @@
 object I2CTestForm: TI2CTestForm
   Left = 738
   Top = 284
-  Width = 434
-  Height = 495
+  Width = 350
+  Height = 350
+  BiDiMode = bdRightToLeft
   Caption = 'I2C Tester'
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
@@ -10,7 +11,11 @@ object I2CTestForm: TI2CTestForm
   Font.Height = -10
   Font.Name = 'MS Sans Serif'
   Font.Style = []
+  KeyPreview = True
   OldCreateOrder = False
+  ParentBiDiMode = False
+  Position = poDefault
+  Visible = True
   OnDeactivate = FormDeactivate
   PixelsPerInch = 96
   TextHeight = 13
@@ -121,7 +126,7 @@ object I2CTestForm: TI2CTestForm
     Left = 7
     Top = 104
     Width = 91
-    Height = 150
+    Height = 177
     Caption = 'Gamma Test'
     TabOrder = 4
     object Label1: TLabel
@@ -144,6 +149,13 @@ object I2CTestForm: TI2CTestForm
       Width = 7
       Height = 13
       Caption = 'B'
+    end
+    object Label8: TLabel
+      Left = 7
+      Top = 122
+      Width = 11
+      Height = 13
+      Caption = 'W'
     end
     object CheckBox1: TCheckBox
       Left = 7
@@ -170,7 +182,7 @@ object I2CTestForm: TI2CTestForm
       Height = 21
       TabOrder = 2
       Text = '0'
-      OnChange = Edit_GChange
+      OnChange = Edit_RChange
     end
     object Edit_B: TEdit
       Left = 20
@@ -179,17 +191,27 @@ object I2CTestForm: TI2CTestForm
       Height = 21
       TabOrder = 3
       Text = '0'
-      OnChange = Edit_BChange
+      OnChange = Edit_RChange
     end
     object CheckBox_IndepRGB: TCheckBox
       Left = 7
-      Top = 124
+      Top = 148
       Width = 72
       Height = 20
       Caption = 'Indep RGB'
       Checked = True
       State = cbChecked
       TabOrder = 4
+    end
+    object Edit_W: TEdit
+      Left = 20
+      Top = 122
+      Width = 59
+      Height = 21
+      TabOrder = 5
+      Text = '0'
+      OnChange = Edit_WChange
+      OnKeyDown = Edit_WKeyDown
     end
   end
   object GroupBox4: TGroupBox
@@ -323,7 +345,7 @@ object I2CTestForm: TI2CTestForm
     end
   end
   object CheckBox_DG: TCheckBox
-    Left = 13
+    Left = 109
     Top = 260
     Width = 76
     Height = 14
@@ -332,7 +354,7 @@ object I2CTestForm: TI2CTestForm
     OnClick = CheckBox_DGClick
   end
   object CheckBox_DGTest: TCheckBox
-    Left = 104
+    Left = 200
     Top = 260
     Width = 85
     Height = 14
