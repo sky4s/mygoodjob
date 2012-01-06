@@ -9,6 +9,7 @@
 
 //本項目內頭文件
 #include <ca210api/CA210API.h>
+#include <EyeOneLib/EYEONECTRLLib_OCX.h>
 
 
 namespace cms {
@@ -43,7 +44,7 @@ namespace cms {
 	    class Meter:public jObject {
 	      public:
 		int getSuggestedWaitTimes();
-		void setLogoFileHeader(cms::colorformat::logo:: LogoFile & logo);
+		void setLogoFileHeader(cms::colorformat::logo::LogoFile & logo);
 
 		virtual void close() = 0;
 		virtual bool isConnected() = 0;
@@ -79,6 +80,24 @@ namespace cms {
 		void setScreenType(ScreenType screenType);
 		Instr getType();
 		void close();
+	    };
+
+	    class EyeOne:public Meter {
+	      private:
+		bptr < TEyeOneCtrl > i1;
+	      public:
+		EyeOne();
+		virtual void close();
+		virtual bool isConnected();
+		virtual void calibrate();
+		virtual string_ptr getCalibrationDescription();
+		virtual void setPatchIntensity(PatchIntensity patchIntensity);
+		virtual double_array triggerMeasurementInXYZ();
+		virtual string_ptr getLastCalibration();
+		virtual string_ptr getCalibrationCount();
+		virtual void setScreenType(ScreenType screenType);
+		virtual Instr getType();
+
 	    };
 
 	    class DGLutFileMeter:public Meter {
