@@ -7,7 +7,7 @@
 //C++系統文件
 
 //其他庫頭文件
-
+#include <EyeOneLib/EyeOne.h>
 //本項目內頭文件
 
 namespace cms {
@@ -37,7 +37,7 @@ namespace cms {
 	    //==================================================================
 	    // Meter
 	    //==================================================================
-	    void Meter::setLogoFileHeader(cms::colorformat::logo:: LogoFile & logo) {
+	    void Meter::setLogoFileHeader(cms::colorformat::logo::LogoFile & logo) {
 	    };
 	    int Meter::getSuggestedWaitTimes() {
 		return 300;
@@ -119,7 +119,41 @@ namespace cms {
 		}
 	    };
 	    //==================================================================
+	    EyeOne::EyeOne() {
+		i1 = bptr < TEyeOneCtrl > (new TEyeOneCtrl((TComponent *) null));
 
+	    };
+	    void EyeOne::close() {
+	    };
+	    bool EyeOne::isConnected() {
+		long result = i1->IsConnected();
+		return eNoError == result;
+	    };
+	    void EyeOne::calibrate() {
+		i1->Calibrate();
+	    };
+	    string_ptr EyeOne::getCalibrationDescription() {
+		return shared_ptr < string >
+		    (new string("Set the pointing ring to the 0-CAL position."));
+	    };
+	    void EyeOne::setPatchIntensity(PatchIntensity patchIntensity) {
+	    };
+	    double_array EyeOne::triggerMeasurementInXYZ() {
+		double_array result(new double[3]);
+		return result;
+	    };
+	    string_ptr EyeOne::getLastCalibration() {
+		return nil_string_ptr;
+	    };
+	    string_ptr EyeOne::getCalibrationCount() {
+		return nil_string_ptr;
+	    };
+	    void EyeOne::setScreenType(ScreenType screenType) {
+	    };
+	    Instr EyeOne::getType() {
+		return Instr::i1Pro;
+	    };
+	    //==================================================================
 	  DGLutFileMeter::DGLutFileMeter(bptr < DGLutFile > dglut):	/*dglut(dglut), */
 	    vector(dglut->getComponentVector()), index(0) {
 	    };
@@ -134,7 +168,7 @@ namespace cms {
 	    string_ptr DGLutFileMeter::getCalibrationDescription() {
 		return shared_ptr < string > (new string("Calibration needless."));
 	    };
-	    void DGLutFileMeter:: setPatchIntensity(PatchIntensity patchIntensity) {
+	    void DGLutFileMeter::setPatchIntensity(PatchIntensity patchIntensity) {
 	    };
 	    double_array DGLutFileMeter::triggerMeasurementInXYZ() {
 		int size = vector->size();

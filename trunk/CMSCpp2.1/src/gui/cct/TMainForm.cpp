@@ -27,7 +27,8 @@
 TMainForm *MainForm;
 //---------------------------------------------------------------------------
 __fastcall TMainForm::TMainForm(TComponent * Owner):TForm(Owner),
-linkCA210(!FileExists(DEBUG_FILE)), newFunction(FileExists(DEBUG_NEWFUNC_FILE))
+linkEyeOne(FileExists("i1.txt")), linkCA210(!linkEyeOne && !FileExists(DEBUG_FILE)),
+newFunction(FileExists(DEBUG_NEWFUNC_FILE))   
 {
     connectCA210ByThread = true;
     //StatusBar1->SimplePanel = true;
@@ -389,11 +390,14 @@ void TMainForm::initCA210Meter()
 	mm->WaitTimes = this->getInterval();
 	StatusBar1->Panels->Items[1]->Text = "CA-210 Connected!";
 
-	bptr < ca210api::CA210API > ca210api = getCA210()->getCA210API();
-	//取出原先的ch
-	long ch = ca210api->getChannelNO();
-	Edit_SourceCH->Text = ch;
-	GroupBox_CHSetting->Enabled = true;
+	bptr < cms::measure::meter::CA210 > ca210 = getCA210();
+	if (null != ca210) {
+	    bptr < ca210api::CA210API > ca210api = ca210->getCA210API();
+	    //取出原先的ch
+	    long ch = ca210api->getChannelNO();
+	    Edit_SourceCH->Text = ch;
+	    GroupBox_CHSetting->Enabled = true;
+	}
 	getAnalyzer();
 
 
