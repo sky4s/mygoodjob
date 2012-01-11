@@ -177,7 +177,6 @@ object CCTLUTForm: TCCTLUTForm
       Height = 13
       Caption = 'Gamma Value'
       TabOrder = 4
-      Visible = False
       OnClick = RadioButton_GammaValueClick
     end
     object RadioButton_OriginalGamma: TRadioButton
