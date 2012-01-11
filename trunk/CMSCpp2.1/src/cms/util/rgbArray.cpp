@@ -228,6 +228,9 @@ namespace cms {
 	    return loadFromDesiredGamma(filename, true);
 	};
 
+	/*
+	   excel®æ¦¡: level w r g b
+	 */
 	RGBGamma_ptr RGBGamma::loadFromDesiredGamma(const std::string & filename, bool isGammaValue) {
 	    using namespace java::lang;
 

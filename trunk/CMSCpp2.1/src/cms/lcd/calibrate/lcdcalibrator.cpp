@@ -323,10 +323,14 @@ namespace cms {
 
 		if (keepMaxLuminance ==
 		    KeepMaxLuminance::NativeWhiteAdvanced && true == skipInverseB) {
-		    //若要略過inverse B, 則要先量測到B在哪裡反轉
-		    //然後設定b最大只用到反轉點
-		    blueMax = MeasureTool::getMaxZDGCode(mm, bitDepth);
-		    this->maxZDGCode = blueMax;
+		    if (mm->FakeMeasure) {
+			this->maxZDGCode = blueMax;
+		    } else {
+			//若要略過inverse B, 則要先量測到B在哪裡反轉
+			//然後設定b最大只用到反轉點
+			blueMax = MeasureTool::getMaxZDGCode(mm, bitDepth);
+			this->maxZDGCode = blueMax;
+		    }
 		}
 		//已知rgb
 		RGB_ptr rgb(new RGBColor(max, max, blueMax, MaxValue::Int8Bit));
@@ -730,15 +734,15 @@ namespace cms {
 	    };
 	    //const double LCDCalibrator::ReverseDefine = 0.0001;
 	    /*int LCDCalibrator::checkReverse(double_vector_ptr deltaVector) {
-		int size = deltaVector->size();
-		for (int x = 1; x < size - 1; x++) {
-		    double delta = (*deltaVector)[x];
-		    if (delta < dimFixThreshold) {
-			return x;
-		    }
-		}
-		return -1;
-	    }*/
+	       int size = deltaVector->size();
+	       for (int x = 1; x < size - 1; x++) {
+	       double delta = (*deltaVector)[x];
+	       if (delta < dimFixThreshold) {
+	       return x;
+	       }
+	       }
+	       return -1;
+	       } */
 
 	    int_vector_ptr LCDCalibrator::
 		getReverseIndexVector(double_vector_ptr deltaVector, int start, int end) {
@@ -790,15 +794,15 @@ namespace cms {
 		}
 	    };
 	    /*int LCDCalibrator::checkReverse(double_vector_ptr deltaVector, int start, int end) {
-		//int size = deltaVector->size();
-		for (int x = start; x < end; x++) {
-		    double delta = (*deltaVector)[x];
-		    if (delta < dimFixThreshold) {
-			return x;
-		    }
-		}
-		return -1;
-	    }*/
+	       //int size = deltaVector->size();
+	       for (int x = start; x < end; x++) {
+	       double delta = (*deltaVector)[x];
+	       if (delta < dimFixThreshold) {
+	       return x;
+	       }
+	       }
+	       return -1;
+	       } */
 
 
 
