@@ -315,9 +315,6 @@ namespace cms {
 		//產生max matrix
 		bptr < cms::measure::IntensityAnalyzerIF > analyzer = fetcher->getAnalyzer();
 		bptr < MeterMeasurement > mm = analyzer->getMeterMeasurement();
-		nativeWhiteAnalyzer =
-		    bptr < MaxMatrixIntensityAnalyzer > (new MaxMatrixIntensityAnalyzer(mm));
-
 		int max = bitDepth->getOutputMaxDigitalCount();
 		int blueMax = max;
 
@@ -325,6 +322,7 @@ namespace cms {
 		    KeepMaxLuminance::NativeWhiteAdvanced && true == skipInverseB) {
 		    if (mm->FakeMeasure) {
 			this->maxZDGCode = blueMax;
+			return;
 		    } else {
 			//若要略過inverse B, 則要先量測到B在哪裡反轉
 			//然後設定b最大只用到反轉點
@@ -332,6 +330,9 @@ namespace cms {
 			this->maxZDGCode = blueMax;
 		    }
 		}
+
+		nativeWhiteAnalyzer =
+		    bptr < MaxMatrixIntensityAnalyzer > (new MaxMatrixIntensityAnalyzer(mm));
 		//已知rgb
 		RGB_ptr rgb(new RGBColor(max, max, blueMax, MaxValue::Int8Bit));
 		RGB_ptr r(new RGBColor(max, 0, 0, MaxValue::Int8Bit));
