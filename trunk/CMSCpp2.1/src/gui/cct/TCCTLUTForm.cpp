@@ -299,6 +299,8 @@ void __fastcall TCCTLUTForm::Button_DebugClick(TObject * Sender)
 	const AnsiString & filename = OpenDialog1->FileName;
 	MainForm->setDummyMeterFilename(string(filename.c_str()));
 	ShowMessage("Dummy meter setting Ok!");
+	nativeWhiteAnalyzer = MainForm->getNativeWhiteAnalyzer();
+
     };
 
 }
