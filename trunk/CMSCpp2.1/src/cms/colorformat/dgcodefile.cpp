@@ -213,12 +213,14 @@ namespace cms {
 	   }; */
 	void DGLutFile::setTargetXYZVector(XYZ_vector_ptr targetXYZVector) {
 	    if (true) {
-		setTargetXYZVector(targetXYZVector, nil_RGB_vector_ptr, bptr < BitDepthProcessor >((BitDepthProcessor*)null));
+		setTargetXYZVector(targetXYZVector, nil_RGB_vector_ptr,
+				   bptr < BitDepthProcessor > ((BitDepthProcessor *) null));
 		return;
 	    }
 	};
 
-	void DGLutFile::setTargetXYZVector(XYZ_vector_ptr targetXYZVector, RGB_vector_ptr dglut, bptr < BitDepthProcessor > bitDepth) {
+	void DGLutFile::setTargetXYZVector(XYZ_vector_ptr targetXYZVector, RGB_vector_ptr dglut,
+					   bptr < BitDepthProcessor > bitDepth) {
 	    //==================================================================
 	    // 初始資料設定
 	    //==================================================================
@@ -238,11 +240,10 @@ namespace cms {
 	    XYZ_ptr rXYZ, gXYZ, bXYZ;
 	    double_array targetWhiteRatio;
 	    if (null != dglut) {
-                int max =255;
-                if( null != bitDepth && bitDepth->isTCONInput()) {
-                        max = bitDepth->getLutMaxValue().max;
-                }
-
+		int max = 255;
+		if (null != bitDepth && bitDepth->isTCONInput()) {
+		    max = bitDepth->getLutMaxValue().max;
+		}
 		//從檔案回讀componentVector
 		componentVector = getComponentVector(false, max);
 		componentLUT = bptr < ComponentLUT > (new ComponentLUT(componentVector));
@@ -317,25 +318,31 @@ namespace cms {
 		    //double g = rgb->getValue(Channel::G);
 		    //double b = rgb->getValue(Channel::B);
 
-                    r = componentLUT->correctCodeInRange(Channel::R, r);
-                    double rIntensity = componentLUT->hasCorrectedInRange(Channel::R)?-1:componentLUT->getIntensity(Channel::R,
-								   r) * targetWhiteRatio[0];
-                    g = componentLUT->correctCodeInRange(Channel::G, g);
-                    double gIntensity = componentLUT->hasCorrectedInRange(Channel::G)?-1:componentLUT->getIntensity(Channel::G,
-								   g) * targetWhiteRatio[1];
-                    b = componentLUT->correctCodeInRange(Channel::B, b);
-                    double bIntensity = componentLUT->hasCorrectedInRange(Channel::B)?-1:componentLUT->getIntensity(Channel::B,
-								   b) * targetWhiteRatio[2];
+		    r = componentLUT->correctCodeInRange(Channel::R, r);
+		    double rIntensity =
+			componentLUT->hasCorrectedInRange(Channel::R) ? -1 : componentLUT->
+			getIntensity(Channel::R,
+				     r) * targetWhiteRatio[0];
+		    g = componentLUT->correctCodeInRange(Channel::G, g);
+		    double gIntensity =
+			componentLUT->hasCorrectedInRange(Channel::G) ? -1 : componentLUT->
+			getIntensity(Channel::G,
+				     g) * targetWhiteRatio[1];
+		    b = componentLUT->correctCodeInRange(Channel::B, b);
+		    double bIntensity =
+			componentLUT->hasCorrectedInRange(Channel::B) ? -1 : componentLUT->
+			getIntensity(Channel::B,
+				     b) * targetWhiteRatio[2];
 
 		    /*double rIntensity = componentLUT->getIntensity(Channel::R,
-								   r) * targetWhiteRatio[0];
-		    double gIntensity = componentLUT->getIntensity(Channel::G,
-								   g) * targetWhiteRatio[1];
-		    double bIntensity = componentLUT->getIntensity(Channel::B,
-								   b) * targetWhiteRatio[2];*/
-                    if( -1 == rIntensity || -1 == gIntensity || -1 == bIntensity ) {
-                        rIntensity = gIntensity = bIntensity = -1;         
-                    }
+		       r) * targetWhiteRatio[0];
+		       double gIntensity = componentLUT->getIntensity(Channel::G,
+		       g) * targetWhiteRatio[1];
+		       double bIntensity = componentLUT->getIntensity(Channel::B,
+		       b) * targetWhiteRatio[2]; */
+		    if (-1 == rIntensity || -1 == gIntensity || -1 == bIntensity) {
+			rIntensity = gIntensity = bIntensity = -1;
+		    }
 		    double X =
 			rXYZ->X * rIntensity / 100 +
 			gXYZ->X * gIntensity / 100 + bXYZ->X * bIntensity / 100;
@@ -381,8 +388,8 @@ namespace cms {
 		    //RGB_ptr gamma = (*gammaTable)[index++];
 		    rgb = (*gammaTable)[index++];
 		} else {
-                    int c = Math::round( ((double)gray) / max * 255);
-		    rgb = RGB_ptr(new RGBColor(c,c,c));
+		    int c = Math::round(((double) gray) / max * 255);
+		    rgb = RGB_ptr(new RGBColor(c, c, c));
 		}
 
 		//RGB_ptr rgb(new RGBColor(gray, gray, gray));
@@ -400,7 +407,7 @@ namespace cms {
 	   把存在xls檔案裡的資訊轉成ComponentVector (debug用)
 	 */
 	Component_vector_ptr DGLutFile::getComponentVector() {
-	    return getComponentVector(true,255);
+	    return getComponentVector(true, 255);
 	};
 
 	void DGLutFile::setProperty(const

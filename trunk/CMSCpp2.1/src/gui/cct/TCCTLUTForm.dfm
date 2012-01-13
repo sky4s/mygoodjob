@@ -824,7 +824,7 @@ object CCTLUTForm: TCCTLUTForm
       Enabled = False
       ImeName = #26085#25991#36664#20837#31995#32113' (MS-IME2002)'
       TabOrder = 3
-      Text = '235'
+      Text = '245'
       Visible = False
       OnChange = Edit_MaxYAdvOverChange
     end
