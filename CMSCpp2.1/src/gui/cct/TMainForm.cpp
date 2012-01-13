@@ -28,7 +28,7 @@ TMainForm *MainForm;
 //---------------------------------------------------------------------------
 __fastcall TMainForm::TMainForm(TComponent * Owner):TForm(Owner),
 linkEyeOne(FileExists("i1.txt")), linkCA210(!linkEyeOne && !FileExists(DEBUG_FILE)),
-newFunction(FileExists(DEBUG_NEWFUNC_FILE))   
+newFunction(FileExists(DEBUG_NEWFUNC_FILE))
 {
     connectCA210ByThread = true;
     //StatusBar1->SimplePanel = true;
@@ -589,7 +589,9 @@ void TMainForm::setDummyMeterFile(bptr < cms::colorformat::DGLutFile > dglutFile
 	    xyY_ptr rxyY = property->getNativeReferenceColor(Channel::R);
 	    xyY_ptr gxyY = property->getNativeReferenceColor(Channel::G);
 	    xyY_ptr bxyY = property->getNativeReferenceColor(Channel::B);
+	    RGB_ptr refRGB = property->getReferenceRGB(DGLutProperty::Native);
 
+	    matrixAnalyzer2->setReferenceRGB(refRGB);
 	    matrixAnalyzer2->setupComponent(Channel::W, nativewxyY->toXYZ());
 	    matrixAnalyzer2->setupComponent(Channel::R, rxyY->toXYZ());
 	    matrixAnalyzer2->setupComponent(Channel::G, gxyY->toXYZ());

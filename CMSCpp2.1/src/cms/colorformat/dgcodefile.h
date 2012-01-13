@@ -25,7 +25,7 @@ namespace cms {
 	    static const std::string & Target;
 	    const Dep::MaxValue & maxValue;
 	    void init();
-	    Component_vector_ptr getComponentVector(bool rgbFromGammaTable,int max);
+	    Component_vector_ptr getComponentVector(bool rgbFromGammaTable, int max);
 	  public:
 	     DGLutFile(const std::string & filename, Mode mode);
 	     DGLutFile(const std::string & filename, Mode mode, const Dep::MaxValue & maxValue);
@@ -39,7 +39,8 @@ namespace cms {
 			    RGBGamma_ptr initialRGBGamma, RGBGamma_ptr finalRGBGamma);
 
 	    void setTargetXYZVector(XYZ_vector_ptr targetXYZVector);
-	    void setTargetXYZVector(XYZ_vector_ptr targetXYZVector, RGB_vector_ptr dglut, bptr < cms::lcd::calibrate::BitDepthProcessor > bitDepth);
+	    void setTargetXYZVector(XYZ_vector_ptr targetXYZVector, RGB_vector_ptr dglut,
+				    bptr < cms::lcd::calibrate::BitDepthProcessor > bitDepth);
 	    Component_vector_ptr getComponentVector();
 	    RGB_vector_ptr getGammaTable();
 	    /*
@@ -58,8 +59,7 @@ namespace cms {
 
 	    static const std::string On;
 	    static const std::string Off;
-	    static const std::string Native;
-	    static const std::string Target;
+
 	    static const std::string TargetWhiteRatio;
 	    static std::string fileVersion;
 	    static std::string productVersion;
@@ -81,6 +81,8 @@ namespace cms {
 	    static void fetchVersionInfo();
 	    xyY_ptr getReferenceColor(const string & prestring, const Dep::Channel & ch);
 	  public:
+	    static const std::string Native;
+	    static const std::string Target;
 	     DGLutProperty(cms::lcd::calibrate::LCDCalibrator * c);
 	     DGLutProperty(bptr < DGLutFile > d);
 	     DGLutProperty(DGLutFile * d);
