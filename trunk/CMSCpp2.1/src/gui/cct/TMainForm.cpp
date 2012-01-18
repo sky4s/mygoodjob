@@ -684,7 +684,7 @@ bptr < cms::measure::meter::CA210 > TMainForm::getCA210()
     if (null == ca210 && true == linkCA210) {
 	using namespace cms::measure::meter;
 	if (null == meter) {
-	    ShowMessage("CA210 cannot be linked.");
+	    //ShowMessage("CA210 cannot be linked.");
 	    return bptr < CA210 > ((CA210 *) null);
 	}
 

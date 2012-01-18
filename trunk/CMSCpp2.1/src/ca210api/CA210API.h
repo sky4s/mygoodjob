@@ -28,8 +28,7 @@ namespace ca210api {
 	 CAMeasureResult(float x, float y, float Lv, float X, float Y,
 			 float Z, long cct, float duv);
 	 CAMeasureResult(float x, float y, float Lv, float X, float Y,
-			 float Z, long cct, float duv, float R, float G,
-			 float B);
+			 float Z, long cct, float duv, float R, float G, float B);
 	float_array getxyYValues();
 	float_array getXYZValues();
     };
@@ -40,8 +39,7 @@ namespace ca210api {
     };
     enum BrightnessUnit { fL = 0, nits
     };
-    enum DisplayMode { Lvxy =
-	    0, Tdudv, Analyzer_nodisplay, AnalyzerG, AnalyzerR, uv,
+    enum DisplayMode { Lvxy = 0, Tdudv, Analyzer_nodisplay, AnalyzerG, AnalyzerR, uv,
 	FMAflicker, XYZ, JEITAflicker
     };
     enum DisplayDigits { Display3digit = 0, Display4digit
@@ -56,6 +54,7 @@ namespace ca210api {
 
     class CA210API:public jObject {
       private:
+	bool enable;
 	ICa200Disp ca200;
 	ICaDisp ca;
 	IProbeDisp probe;
@@ -92,8 +91,7 @@ namespace ca210api {
 	void setAnalyzerCalData(lClr lclr);
 	void setLvxyCalMode();
 	void resetLvxyCalMode();
-	void setLvxyCalData(lClr lclr, float xValue, float yValue,
-			    float YValue);
+	void setLvxyCalData(lClr lclr, float xValue, float yValue, float YValue);
 
 	void setLvxyCalData(lClr lclr, float_array xyYValue);
 	void setLvxyCalData(lClr lclr, double_array xyYValue);

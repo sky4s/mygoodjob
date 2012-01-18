@@ -399,13 +399,21 @@ void __fastcall TCCTLUTForm::RadioButton_GammaCurveClick(TObject * Sender)
 	const AnsiString & filename = OpenDialog1->FileName;
 	rgbGamma = RGBGamma::loadFromDesiredGamma(filename.c_str());
 	unsigned int n = bitDepth->getLevel();
-	if (rgbGamma != null && n == rgbGamma->w->size()) {
-	    this->RadioButton_GammaCurve->Checked = true;
-	    this->CheckBox_GByPass->Visible = true;
-	    return;
+	if (rgbGamma != null) {
+	    if (n == rgbGamma->w->size()) {
+		this->RadioButton_GammaCurve->Checked = true;
+		this->CheckBox_GByPass->Visible = true;
+		return;
+	    } else {
+		String msg = "Desired Gamma File count is not match to the DG LUT count(need ";
+		msg += n;
+		msg += " records)";
+		ShowMessage(msg);
+	    }
 	} else {
-	    ShowMessage("Desired Gamma File Format is wrong!");
+	    ShowMessage("Desired Gamma File Format is wrong! (need W/R/G/B gamma in File)");
 	}
+
     }
     this->RadioButton_Gamma->Checked = true;
 }
