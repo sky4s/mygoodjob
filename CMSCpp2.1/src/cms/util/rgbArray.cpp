@@ -247,10 +247,14 @@ namespace cms {
 			maxLevel = level;
 		    }
 
-		    double wg = _toDouble((*result)[1]);
-		    double rg = _toDouble((*result)[2]);
-		    double gg = _toDouble((*result)[3]);
-		    double bg = _toDouble((*result)[4]);
+		    string ws = (*result)[1];
+		    string rs = (*result)[2];
+		    string gs = (*result)[3];
+		    string bs = (*result)[4];
+		    double wg = _toDouble(ws);
+		    double rg = _toDouble(rs);
+		    double gg = _toDouble(gs);
+		    double bg = _toDouble(bs);
 		    if (isGammaValue) {
 			double normal = level / maxLevel;
 			wg = Math::pow(normal, wg);
@@ -276,13 +280,14 @@ namespace cms {
 		RGBGamma_ptr rgbgamma(new RGBGamma(r, g, b, w));
 		return rgbgamma;
 	    }
+	    catch(boost::bad_lexical_cast) {
+                 return RGBGamma_ptr((RGBGamma *) null);
+	    }
 	    catch(EOleException & ex) {
 		//ShowMessage("Desired Gamma File Format is wrong!");
 		return RGBGamma_ptr((RGBGamma *) null);
 	    }
 	};
-
-
 	RGBGamma_ptr RGBGamma::clone() {
 	    double_vector_ptr rclone(new double_vector(*r));
 	    double_vector_ptr gclone(new double_vector(*g));
@@ -293,12 +298,10 @@ namespace cms {
 	    } else {
 		return RGBGamma_ptr(new RGBGamma(rclone, gclone, bclone, max, type));
 	    };
-
 	};
 	RGBGamma_ptr RGBGamma::getReverse(RGBGamma_ptr rgbGamma) {
 	    using namespace math;
 	    double_vector_ptr r, g, b, w;
-
 	    if (null != rgbGamma->r) {
 		r = DoubleArray::getReverse(rgbGamma->r);
 	    }
@@ -314,9 +317,7 @@ namespace cms {
 	    RGBGamma_ptr result(new RGBGamma(r, g, b, w, rgbGamma->max, rgbGamma->type));
 	    return result;
 	};
-
 	//==================================================================
-
     };
 };
 

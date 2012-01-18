@@ -47,11 +47,18 @@ namespace ca210api {
 
 
     CA210API::CA210API() {
+	//try {
+	enable = false;
 	ca200.BindDefault();
 	ca200.AutoConnect();
 	ca = ca200.get_SingleCa();
 	probe = ca.get_SingleProbe();
 	memory = ca.get_Memory();
+	enable = true;
+	/*}
+	   catch(EOleException & ex) {
+	   enable = false;
+	   } */
     };
     CA210API::~CA210API() {
 	close();
@@ -152,7 +159,9 @@ namespace ca210api {
 	ca.set_CalStandard(standard);
     };
     void CA210API::setRemoteMode(RemoteMode mode) {
-	ca.set_RemoteMode(mode);
+	if (enable) {
+	    ca.set_RemoteMode(mode);
+	}
     };
 
     // Analyzer Mode
@@ -172,8 +181,7 @@ namespace ca210api {
     void CA210API::resetLvxyCalMode() {
 	ca.ResetLvxyCalMode();
     };
-    void CA210API::setLvxyCalData(lClr lclr, float xValue, float yValue,
-				  float YValue) {
+    void CA210API::setLvxyCalData(lClr lclr, float xValue, float yValue, float YValue) {
 	ca.SetLvxyCalData(lclr, xValue, yValue, YValue);
     };
 
@@ -182,8 +190,7 @@ namespace ca210api {
     };
 
     void CA210API::setLvxyCalData(lClr lclr, double_array xyYValue) {
-	ca.SetLvxyCalData(lclr, (float) xyYValue[0], (float) xyYValue[1],
-			  (float) xyYValue[2]);
+	ca.SetLvxyCalData(lclr, (float) xyYValue[0], (float) xyYValue[1], (float) xyYValue[2]);
     };
 
     long CA210API::enter() {
