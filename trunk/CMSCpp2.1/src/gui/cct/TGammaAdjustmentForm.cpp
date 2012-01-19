@@ -170,3 +170,11 @@ bptr < cms::lcd::calibrate::MeasureCondition > TGammaAdjustmentForm::getMeasureC
 
 //---------------------------------------------------------------------------
 
+void __fastcall TGammaAdjustmentForm::TOutputFileFrame1Button_BrowseDirClick(
+      TObject *Sender)
+{
+  TOutputFileFrame1->Button_BrowseDirClick(Sender);
+
+}
+//---------------------------------------------------------------------------
+

@@ -472,7 +472,6 @@ object CCTLUTForm: TCCTLUTForm
       Caption = 'Multi Generate'
       Enabled = False
       TabOrder = 2
-      Visible = False
     end
     object Edit_MultiGenTimes: TEdit
       Left = 117
@@ -491,7 +490,6 @@ object CCTLUTForm: TCCTLUTForm
       Height = 19
       Caption = 'B Target intensity'
       TabOrder = 4
-      Visible = False
       OnClick = CheckBox_BTargetIntensityClick
     end
     object Edit_BTargetIntensity: TEdit
@@ -502,7 +500,6 @@ object CCTLUTForm: TCCTLUTForm
       Enabled = False
       TabOrder = 5
       Text = '100'
-      Visible = False
     end
     object CheckBox_RTargetIntensity: TCheckBox
       Left = 7
@@ -511,7 +508,6 @@ object CCTLUTForm: TCCTLUTForm
       Height = 19
       Caption = 'R Target intensity'
       TabOrder = 6
-      Visible = False
       OnClick = CheckBox_RTargetIntensityClick
     end
     object Edit_RTargetIntensity: TEdit
@@ -522,7 +518,6 @@ object CCTLUTForm: TCCTLUTForm
       Enabled = False
       TabOrder = 7
       Text = '100'
-      Visible = False
     end
   end
   object Button_MeaRun: TButton

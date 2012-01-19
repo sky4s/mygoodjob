@@ -73,6 +73,11 @@ void __fastcall TCCTLUTForm::Button_MeaRunClick(TObject * Sender)
 
     run = true;
     try {			//為了對應__finally使用的try
+
+	if (this->TOutputFileFrame1->Warning) {
+	    ShowMessage("Output file is locked! Try release file lock and retry!");
+	    return;
+	}
 	MainForm->showProgress(ProgressBar1);
 	String_ptr astr = this->TOutputFileFrame1->getOutputFilename();
 	string filename = astr->c_str();
@@ -336,17 +341,17 @@ void __fastcall TCCTLUTForm::FormShow(TObject * Sender)
 	RadioGroup_NormalCase->Visible = true;
 
 	//target intensity
-	CheckBox_RTargetIntensity->Visible = true;
-	Edit_RTargetIntensity->Visible = true;
-	CheckBox_BTargetIntensity->Visible = true;
-	Edit_BTargetIntensity->Visible = true;
+	//CheckBox_RTargetIntensity->Visible = true;
+	//Edit_RTargetIntensity->Visible = true;
+	//CheckBox_BTargetIntensity->Visible = true;
+	//Edit_BTargetIntensity->Visible = true;
 	//smooth intensity
 	CheckBox_SmoothIntensity->Visible = true;
 	Edit_SmoothIntensityStart->Visible = true;
 	Edit_SmoothIntensityEnd->Visible = true;
 	//multi-gen
-	CheckBox_MultiGen->Visible = true;
-	Edit_MultiGenTimes->Visible = true;
+	//CheckBox_MultiGen->Visible = true;
+	//Edit_MultiGenTimes->Visible = true;
 	//gamma
 	CheckBox_AbsoluteGamma->Visible = true;
 	Edit_AbsGammaStart->Visible = true;

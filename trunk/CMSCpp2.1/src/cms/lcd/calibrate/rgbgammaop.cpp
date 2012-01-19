@@ -88,7 +88,7 @@ namespace cms {
 		    (rgbp1->G - (*dglut)[indexB]->B);
 
 		if (0 == rdenominator || 0 == bdenominator) {
-		    //int x = 1;
+		    return nil_RGBGamma;
 		}
 		//此處的分母若為零, 會有除零的錯誤
 		r[p1] = rnumerator / rdenominator;
@@ -101,6 +101,9 @@ namespace cms {
 		double_vector & g = (*source->g);
 		double_vector & b = (*source->b);
 		double base = g[p2] - g[p1];
+		if (0 == base) {
+		    return nil_RGBGamma;
+		}
 		for (int x = p1 + 1; x != p2 - 1; x++) {
 		    //x在p1p2之間所佔的比例
 		    double ratio = (g[x] - g[p1]) / base;
@@ -112,6 +115,9 @@ namespace cms {
 	    };
 	    RGBGamma_ptr P1P2GammaOp::getRendering(RGBGamma_ptr source) {
 		source = processP1(source);
+		if (null == source) {
+		    return nil_RGBGamma;
+		}
 		source = processP1P2(source);
 		return source;
 	    };
