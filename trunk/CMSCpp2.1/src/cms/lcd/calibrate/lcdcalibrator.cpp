@@ -366,7 +366,8 @@ namespace cms {
 		    throw new IllegalStateException("null == gammaCurve");
 		}
 
-		bool doAccurate = (true == accurateMode) && (null != tconctrl);
+		bool doAccurate = isDoAccurate();
+		//呼叫doAccurate總共有兩處, 此處是用來產生panel regulator
 		bptr < PanelRegulator > panelRegulator;
 		//doAccurate = true;
 		if (doAccurate) {
@@ -441,8 +442,6 @@ namespace cms {
 		RGB_vector_ptr result = getDGLutOpResult(dglut);
 		//==============================================================
 
-
-
 		//==============================================================
 		// intensity的影響計算
 		//==============================================================
@@ -466,7 +465,9 @@ namespace cms {
 		this->dglut = result;
 		return result;
 	    };
-
+	    bool LCDCalibrator::isDoAccurate() {
+		return (true == accurateMode) && (null != tconctrl);
+	    };
 	    /*
 	       generator在此的用意只是拿來產生gamma curve
 	     */
@@ -486,8 +487,7 @@ namespace cms {
 		    //NativeWhiteAdvanced是為了兼顧Hook和最大亮度的折衷產物
 		    bptr < PanelRegulator > panelRegulator2;
 		    Component_vector_ptr componentVector2;
-		    bool doAccurate = (true == accurateMode) && (true == skipInverseB)
-			&& (null != tconctrl);
+		    bool doAccurate = (true == skipInverseB) && isDoAccurate();
 		    if (null == nativeWhiteAnalyzer) {
 			initNativeWhiteAnalyzer();
 
