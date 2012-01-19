@@ -118,6 +118,7 @@ class TCCTLUTForm:public TForm, cms::lcd::calibrate::FeedbackListener {
     TEdit *Edit_SmoothIntensityEnd;
     TCheckBox *CheckBox_SmoothIntensity;
     TEdit *Edit_AbsGammaStart;
+        TGroupBox *GroupBox_LoadGamma;
     void __fastcall RadioButton_P1P2Click(TObject * Sender);
     void __fastcall Button_MeaRunClick(TObject * Sender);
     void __fastcall Button_DebugClick(TObject * Sender);

@@ -128,6 +128,7 @@ namespace cms {
 		//   修改面板特性讓面板白點為目標白點, 使求出來的白點正好就是目標
 		bool accurateMode;
 		//如果手動去修改DG, 讓B的反轉點避掉, 就需要使這個flag為true
+                //此功能不建議開放, 僅適合開發測試使用
 		bool manualAccurateMode;
 		//用來註記是否有用了panel regulator
 		bool remapped;
@@ -199,7 +200,7 @@ namespace cms {
 		__property bool SmoothComponent = { read = smoothComponent,
 		    write = smoothComponent
 		};
-                __property string ExcuteStatus = { read = excuteStatus };
+		__property string ExcuteStatus = { read = excuteStatus };
 		//==============================================================
 
 
@@ -261,6 +262,7 @@ namespace cms {
 					      double_vector_ptr dyofBase, Dep::Channel & ch);
 
 		Component_vector_ptr getDimComponentVector(RGB_vector_ptr dglut);
+		bool isDoAccurate();
 
 		//==============================================================
 		// 量化

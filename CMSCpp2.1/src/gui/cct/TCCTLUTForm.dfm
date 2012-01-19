@@ -121,24 +121,6 @@ object CCTLUTForm: TCCTLUTForm
       Height = 13
       Caption = '51-255'
     end
-    object RadioButton_GammaCurve: TRadioButton
-      Left = 7
-      Top = 105
-      Width = 91
-      Height = 20
-      Caption = 'Gamma Curve'
-      TabOrder = 0
-      OnClick = RadioButton_GammaCurveClick
-    end
-    object CheckBox_GByPass: TCheckBox
-      Left = 27
-      Top = 124
-      Width = 78
-      Height = 20
-      Caption = 'G ByPass'
-      TabOrder = 1
-      Visible = False
-    end
     object RadioButton_Gamma: TRadioButton
       Left = 7
       Top = 13
@@ -146,7 +128,7 @@ object CCTLUTForm: TCCTLUTForm
       Height = 20
       Caption = 'Gamma'
       Checked = True
-      TabOrder = 2
+      TabOrder = 0
       TabStop = True
       OnClick = RadioButton_GammaClick
     end
@@ -157,7 +139,7 @@ object CCTLUTForm: TCCTLUTForm
       Height = 21
       ImeName = #20013#25991' ('#32321#39636') - '#26032#27880#38899
       ItemHeight = 13
-      TabOrder = 3
+      TabOrder = 1
       Text = '2.2'
       OnChange = ComboBox_GammaChange
       Items.Strings = (
@@ -170,22 +152,13 @@ object CCTLUTForm: TCCTLUTForm
         '2.4'
         '2.5')
     end
-    object RadioButton_GammaValue: TRadioButton
-      Left = 7
-      Top = 164
-      Width = 112
-      Height = 13
-      Caption = 'Gamma Value'
-      TabOrder = 4
-      OnClick = RadioButton_GammaValueClick
-    end
     object RadioButton_OriginalGamma: TRadioButton
       Left = 7
-      Top = 144
+      Top = 112
       Width = 111
       Height = 13
       Caption = 'Original Gamma'
-      TabOrder = 5
+      TabOrder = 2
     end
     object RadioButton_2Gamma: TRadioButton
       Left = 7
@@ -193,7 +166,7 @@ object CCTLUTForm: TCCTLUTForm
       Width = 65
       Height = 17
       Caption = '2 Gamma'
-      TabOrder = 6
+      TabOrder = 3
     end
     object ComboBox_DimGamma: TComboBox
       Left = 112
@@ -202,7 +175,7 @@ object CCTLUTForm: TCCTLUTForm
       Height = 21
       ImeName = #20013#25991' ('#32321#39636') - '#26032#27880#38899
       ItemHeight = 13
-      TabOrder = 7
+      TabOrder = 4
       Text = '2.4'
       OnChange = ComboBox_GammaChange
       Items.Strings = (
@@ -222,7 +195,7 @@ object CCTLUTForm: TCCTLUTForm
       Height = 21
       ImeName = #20013#25991' ('#32321#39636') - '#26032#27880#38899
       ItemHeight = 13
-      TabOrder = 8
+      TabOrder = 5
       Text = '2.2'
       OnChange = ComboBox_GammaChange
       Items.Strings = (
@@ -240,7 +213,7 @@ object CCTLUTForm: TCCTLUTForm
       Top = 61
       Width = 25
       Height = 21
-      TabOrder = 9
+      TabOrder = 6
       Text = '50'
       OnChange = Edit_DimGammaEndChange
     end
@@ -250,7 +223,7 @@ object CCTLUTForm: TCCTLUTForm
       Width = 68
       Height = 17
       Caption = 'Absolute'
-      TabOrder = 10
+      TabOrder = 7
       Visible = False
       OnClick = CheckBox_AbsoluteGammaClick
     end
@@ -260,9 +233,44 @@ object CCTLUTForm: TCCTLUTForm
       Width = 25
       Height = 21
       Enabled = False
-      TabOrder = 11
+      TabOrder = 8
       Text = '8'
       Visible = False
+    end
+    object GroupBox_LoadGamma: TGroupBox
+      Left = 2
+      Top = 128
+      Width = 165
+      Height = 73
+      Caption = 'Load Gamma'
+      TabOrder = 9
+      object RadioButton_GammaValue: TRadioButton
+        Left = 5
+        Top = 52
+        Width = 154
+        Height = 13
+        Caption = 'Gamma Value'
+        TabOrder = 0
+        OnClick = RadioButton_GammaValueClick
+      end
+      object RadioButton_GammaCurve: TRadioButton
+        Left = 5
+        Top = 13
+        Width = 154
+        Height = 20
+        Caption = 'Gamma Curve'
+        TabOrder = 1
+        OnClick = RadioButton_GammaCurveClick
+      end
+      object CheckBox_GByPass: TCheckBox
+        Left = 19
+        Top = 29
+        Width = 78
+        Height = 20
+        Caption = 'G ByPass'
+        TabOrder = 2
+        Visible = False
+      end
     end
   end
   object GroupBox3: TGroupBox
