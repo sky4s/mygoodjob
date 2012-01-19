@@ -143,9 +143,10 @@ namespace cms {
 		QuantiType quantiType;
 		 bptr < cms::lcd::calibrate::FeedbackFixer > feedbackFixer;
 
+		string excuteStatus;
+
 		//dprecated
 		bool smoothComponent;
-
 		//==============================================================
 
 	      public:
@@ -198,7 +199,7 @@ namespace cms {
 		__property bool SmoothComponent = { read = smoothComponent,
 		    write = smoothComponent
 		};
-
+                __property string ExcuteStatus = { read = excuteStatus };
 		//==============================================================
 
 
@@ -289,7 +290,7 @@ namespace cms {
 							     dimGammaEnd, double
 							     brightGamma, int n, int
 							     effectiven);
-
+		double_vector_ptr getOriginalGammaCurve(Component_vector_ptr componentVector);
 
 	      public:
 
@@ -312,7 +313,7 @@ namespace cms {
 		//==============================================================
 		// functions call from outside
 		//==============================================================
-		double_vector_ptr getOriginalGammaCurve(Component_vector_ptr componentVector);
+
 		RGB_vector_ptr getCCTDGLut(bptr < MeasureCondition > measureCondition);
 		RGB_vector_ptr getGammaDGLut(bptr < MeasureCondition > measureCondition);
 		 bptr < cms::colorformat::DGLutFile >

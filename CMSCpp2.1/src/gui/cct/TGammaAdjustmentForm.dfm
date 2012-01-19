@@ -266,6 +266,7 @@ object GammaAdjustmentForm: TGammaAdjustmentForm
         Top = 46
         Width = 46
         Height = 20
+        OnClick = TOutputFileFrame1Button_BrowseDirClick
       end
     end
   end

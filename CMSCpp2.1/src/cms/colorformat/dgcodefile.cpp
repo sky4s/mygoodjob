@@ -436,11 +436,13 @@ namespace cms {
 	const string DGLutProperty::Target = "target";
 	const string DGLutProperty::TargetWhiteRatio = "TargetWhiteRatio";
 	void DGLutProperty::store(DGLutFile & dgfile) const {
-	    dgfile.addProperty("cct product version", "3.3");
+	    dgfile.addProperty("cct product version", "3.3b");
+	    dgfile.addProperty("status", c->ExcuteStatus);
+	    bool isCCTMode = "CCTDGLut" == c->ExcuteStatus;
 	    //==================================================================
 	    // MeasureCondition
 	    //==================================================================
-	    bptr < MeasureCondition > mc = c->measureCondition;
+	     bptr < MeasureCondition > mc = c->measureCondition;
 	    switch (mc->type) {
 	    case MeasureCondition::Normal:{
 		    dgfile.addProperty("start", mc->start);
@@ -463,55 +465,60 @@ namespace cms {
 	    //==================================================================
 	    //low level correct
 	    //==================================================================
-	    string lowLevelCorrect = "low level correct";
-	    switch (c->correct) {
-	    case Correct::P1P2:
-		dgfile.addProperty(lowLevelCorrect, "P1P2");
-		dgfile.addProperty("p1", c->p1);
-		dgfile.addProperty("p2", c->p2);
-		break;
-	    case Correct::RBInterpolation:
-		dgfile.addProperty(lowLevelCorrect, "RBInterpolation");
-		dgfile.addProperty("rb under", c->under);
-		break;
-	    case Correct::None:
-		dgfile.addProperty(lowLevelCorrect, "None");
-		break;
-	    case Correct::DefinedDim:
-		dgfile.addProperty(lowLevelCorrect, "DefinedDim");
-		dgfile.addProperty("defined dim under", c->under);
-		dgfile.addProperty("defined dim strength", c->dimStrength);
-		if (true == c->dimFix) {
-		    dgfile.addProperty("defined dim - fix", On);
-		}
-		if (true == c->feedbackFix) {
-		    dgfile.addProperty("defined dim - feedback fix", On);
-		    dgfile.
-			addProperty("defined dim - feedback fix init defect", c->initDefectCount);
-		    dgfile.addProperty("defined dim - feedback fix count", c->feedbackFixCount);
-		    dgfile.addProperty("max measure dx", c->maxMeasureError[0]);
-		    dgfile.addProperty("max measure dy", c->maxMeasureError[1]);
-		}
-		if (true == c->dimFix || true == c->feedbackFix) {
-		    dgfile.addProperty("defined dim - fix threshold", c->dimFixThreshold);
-		}
+	    if (isCCTMode) {
+		string lowLevelCorrect = "low level correct";
+		switch (c->correct) {
+		case Correct::P1P2:
+		    dgfile.addProperty(lowLevelCorrect, "P1P2");
+		    dgfile.addProperty("p1", c->p1);
+		    dgfile.addProperty("p2", c->p2);
+		    break;
+		case Correct::RBInterpolation:
+		    dgfile.addProperty(lowLevelCorrect, "RBInterpolation");
+		    dgfile.addProperty("rb under", c->under);
+		    break;
+		case Correct::None:
+		    dgfile.addProperty(lowLevelCorrect, "None");
+		    break;
+		case Correct::DefinedDim:
+		    dgfile.addProperty(lowLevelCorrect, "DefinedDim");
+		    dgfile.addProperty("defined dim under", c->under);
+		    dgfile.addProperty("defined dim strength", c->dimStrength);
+		    if (true == c->dimFix) {
+			dgfile.addProperty("defined dim - fix", On);
+		    }
+		    if (true == c->feedbackFix) {
+			dgfile.addProperty("defined dim - feedback fix", On);
+			dgfile.
+			    addProperty("defined dim - feedback fix init defect",
+					c->initDefectCount);
+			dgfile.addProperty("defined dim - feedback fix count", c->feedbackFixCount);
+			dgfile.addProperty("max measure dx", c->maxMeasureError[0]);
+			dgfile.addProperty("max measure dy", c->maxMeasureError[1]);
+		    }
+		    if (true == c->dimFix || true == c->feedbackFix) {
+			dgfile.addProperty("defined dim - fix threshold", c->dimFixThreshold);
+		    }
 
-		XYZ_ptr blackXYZ = (*c->componentVector)[c->componentVector->size() - 1]->XYZ;
-		xyY_ptr blackxyY(new CIExyY(blackXYZ));
-		dgfile.addProperty("defined dim black", *blackxyY->toString());
-		if (true == c->SmoothComponent) {
-		    dgfile.addProperty("defined dim - smooth", On);
+		    XYZ_ptr blackXYZ = (*c->componentVector)[c->componentVector->size() - 1]->XYZ;
+		    xyY_ptr blackxyY(new CIExyY(blackXYZ));
+		    dgfile.addProperty("defined dim black", *blackxyY->toString());
+		    if (true == c->SmoothComponent) {
+			dgfile.addProperty("defined dim - smooth", On);
+		    }
+		    break;
 		}
-		break;
 	    }
 	    //==================================================================
 
 	    //==================================================================
 	    // others
 	    //==================================================================
-	    dgfile.addProperty("New Method", c->useNewMethod ? On : Off);
-	    if (c->useNewMethod && c->multiGen) {
-		dgfile.addProperty("Multi-Gen", c->multiGenTimes);
+	    if (isCCTMode) {
+		dgfile.addProperty("New Method", c->useNewMethod ? On : Off);
+		if (c->useNewMethod && c->multiGen) {
+		    dgfile.addProperty("Multi-Gen", c->multiGenTimes);
+		}
 	    }
 
 	    bptr < BitDepthProcessor > bitDepth = c->bitDepth;
@@ -538,12 +545,15 @@ namespace cms {
 	    //==================================================================
 	    // others2
 	    //==================================================================
-	    dgfile.addProperty("g bypass", c->gByPass ? On : Off);
-	    dgfile.addProperty("b gain", c->bIntensityGain);
-	    dgfile.addProperty("b max", c->bMax ? "B Max" : (c->bMax2 ? "B Max Smooth" : "Off"));
-	    if (c->bMax2) {
-		dgfile.addProperty("b max begin", c->bMax2Begin);
-		dgfile.addProperty("b max strength", c->bMax2Gamma);
+	    if (isCCTMode) {
+		dgfile.addProperty("g bypass", c->gByPass ? On : Off);
+		dgfile.addProperty("b gain", c->bIntensityGain);
+		dgfile.addProperty("b max",
+				   c->bMax ? "B Max" : (c->bMax2 ? "B Max Smooth" : "Off"));
+		if (c->bMax2) {
+		    dgfile.addProperty("b max begin", c->bMax2Begin);
+		    dgfile.addProperty("b max strength", c->bMax2Gamma);
+		}
 	    }
 	    dgfile.addProperty("avoid FRC noise", c->avoidFRCNoise ? On : Off);
 	    if (c->remapped) {
@@ -563,7 +573,7 @@ namespace cms {
 	    string keepstr;
 	    switch (c->keepMaxLuminance) {
 	    case KeepMaxLuminance::TargetLuminance:
-		keepstr = "Target Luminance(None)";
+		keepstr = "Target Luminance(Align Luminance Only)";
 		break;
 	    case KeepMaxLuminance::TargetWhite:
 		keepstr = "Target White";
@@ -572,7 +582,10 @@ namespace cms {
 		keepstr = "Native White";
 		break;
 	    case KeepMaxLuminance::NativeWhiteAdvanced:
-		keepstr = "Native White Advanced";
+		keepstr = "Native White Advanced(CCT Smoothing)";
+		break;
+	    case KeepMaxLuminance::None:
+		keepstr = "None process";
 		break;
 	    }
 	    dgfile.addProperty("keep max luminance", keepstr);

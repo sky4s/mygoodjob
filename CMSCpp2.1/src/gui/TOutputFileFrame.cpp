@@ -18,7 +18,7 @@
 TOutputFileFrame *OutputFileFrame;
 //---------------------------------------------------------------------------
 __fastcall TOutputFileFrame::TOutputFileFrame(TComponent * Owner)
-:TFrame(Owner), serialid(0)
+:TFrame(Owner), serialid(0), warning(false)
 {
     /*String_ptr filename = getOutputFilename();
        if (FileExists(*filename)) {
@@ -83,16 +83,19 @@ void TOutputFileFrame::updateWarning()
 	if (lock) {
 	    this->Label_Warning->Font->Color = clRed;
 	    this->Label_Warning->Caption = onlyfilename + " locked!";
+	    warning = true;
 
 	} else {
 	    FileClose(handle);
 	    this->Label_Warning->Font->Color = clGreen;
 	    this->Label_Warning->Caption = onlyfilename + " exists!";
+	    warning = false;
 	}
 
 
     } else {
 	this->Label_Warning->Caption = "";
+	warning = false;
     }
 
 };

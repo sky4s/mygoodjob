@@ -187,6 +187,7 @@ namespace cms {
 		bIntensityGain = 1;
 		under = 50;
 		p1 = p2 = 0;
+		correct = Correct::None;
 		gamma = rgamma = ggamma = bgamma = dimGamma = -1;
 		dimGammaEnd = 50;
 		this->fetcher = fetcher;
@@ -219,6 +220,8 @@ namespace cms {
 		smoothIntensity = false;
 		smoothIntensityStart = 40;
 		smoothIntensityEnd = 60;
+
+		excuteStatus = "N/A";
 	    };
 
 	    Component_vector_ptr LCDCalibrator::fetchComponentVector() {
@@ -357,6 +360,7 @@ namespace cms {
 	       因為需要將兩種結果做smooth(target和native), 所以必須將remapping放在AdvancedDGLutGenerator內
 	     */
 	    RGB_vector_ptr LCDCalibrator::getCCTDGLut(bptr < MeasureCondition > measureCondition) {
+		excuteStatus = "CCTDGLut";
 		this->measureCondition = measureCondition;
 		if (false == originalGamma && null == gammaCurve) {
 		    throw new IllegalStateException("null == gammaCurve");
@@ -853,6 +857,9 @@ namespace cms {
 		    gammaop.addOp(p1p2);
 		    //產生修正後的gamma2(若沒有p1p2,則為原封不動)
 		    rgbgamma = gammaop.createInstance();
+		    if (null == rgbgamma) {
+			return nil_RGB_vector_ptr;
+		    }
 		    STORE_RGBGAMMA("5.0_rgbgamma_p1p2.xls", rgbgamma);
 		    //從目標gamma curve產生dg code, 此處是傳入normal gammaCurve
 		    dglut = generator.getCCTDGLut(rgbgamma);
@@ -878,6 +885,7 @@ namespace cms {
 		//==========================================================
 	    };
 	    RGB_vector_ptr LCDCalibrator::getGammaDGLut(bptr < MeasureCondition > measureCondition) {
+		excuteStatus = "GammaDGLut";
 		this->measureCondition = measureCondition;
 		if (false == rgbIndepGamma && null == gammaCurve) {
 		    throw new IllegalStateException("null == gammaCurve");
