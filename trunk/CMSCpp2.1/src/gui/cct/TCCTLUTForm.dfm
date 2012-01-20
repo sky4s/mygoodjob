@@ -224,7 +224,6 @@ object CCTLUTForm: TCCTLUTForm
       Height = 17
       Caption = 'Absolute'
       TabOrder = 7
-      Visible = False
       OnClick = CheckBox_AbsoluteGammaClick
     end
     object Edit_AbsGammaStart: TEdit
@@ -235,18 +234,17 @@ object CCTLUTForm: TCCTLUTForm
       Enabled = False
       TabOrder = 8
       Text = '8'
-      Visible = False
     end
     object GroupBox_LoadGamma: TGroupBox
       Left = 2
       Top = 128
       Width = 165
-      Height = 73
+      Height = 57
       Caption = 'Load Gamma'
       TabOrder = 9
       object RadioButton_GammaValue: TRadioButton
         Left = 5
-        Top = 52
+        Top = 36
         Width = 154
         Height = 13
         Caption = 'Gamma Value'
@@ -263,9 +261,9 @@ object CCTLUTForm: TCCTLUTForm
         OnClick = RadioButton_GammaCurveClick
       end
       object CheckBox_GByPass: TCheckBox
-        Left = 19
-        Top = 29
-        Width = 78
+        Left = 91
+        Top = 13
+        Width = 70
         Height = 20
         Caption = 'G ByPass'
         TabOrder = 2
@@ -534,7 +532,7 @@ object CCTLUTForm: TCCTLUTForm
     Width = 84
     Height = 20
     Hint = 'Measure panel characteristic and produce CCT DG LUT.'
-    Caption = 'Measure&&Run'
+    Caption = ' Measure&&Run'
     ParentShowHint = False
     ShowHint = True
     TabOrder = 5

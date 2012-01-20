@@ -236,19 +236,40 @@ namespace cms {
 		    fetcher->ExtraMeasureRGB = refRGB;
 		}
 		Component_vector_ptr componentVector = fetcher->fetchComponent(measureCondition);
-
-		targetWhiteXYZ =
-		    nativeTagetWhite ? (*componentVector)[0]->XYZ :
-		    (!mm->FakeMeasure ? fetcher->ExtraMeasureXYZ :
-		     analyzer->getReferenceColor()->toXYZ());
-		RGB_vector_ptr rgbMeasureCode = measureCondition->getRGBMeasureCode();
+                RGB_vector_ptr rgbMeasureCode = measureCondition->getRGBMeasureCode();
 
 		if (componentVector == null || rgbMeasureCode->size() != componentVector->size()) {
 		    return Component_vector_ptr((Component_vector *)
 						null);
-		} else {
-		    return componentVector;
 		}
+
+                if(nativeTagetWhite) {
+                        targetWhiteXYZ = (*componentVector)[0]->XYZ;
+                }
+                else {
+                        if(!mm->FakeMeasure ) {
+                                targetWhiteXYZ = fetcher->ExtraMeasureXYZ;
+                        }
+                        else {
+                         xyY_ptr refColor=analyzer->getReferenceColor();
+                         XYZ_ptr refColorXYZ = refColor->toXYZ();
+                         targetWhiteXYZ = refColorXYZ;
+                        }
+                }
+
+                /*xyY_ptr refColor=analyzer->getReferenceColor();
+		targetWhiteXYZ =
+		    nativeTagetWhite ? (*componentVector)[0]->XYZ :
+		    (!mm->FakeMeasure ? fetcher->ExtraMeasureXYZ :
+		     refColor->toXYZ());*/
+		/*RGB_vector_ptr rgbMeasureCode = measureCondition->getRGBMeasureCode();
+
+		if (rgbMeasureCode->size() != componentVector->size()) {
+		    return Component_vector_ptr((Component_vector *)
+						null);
+		} else {*/
+		    return componentVector;
+		//}
 	    };
 
 	    double_vector_ptr LCDCalibrator::fetchLuminanceVector() {

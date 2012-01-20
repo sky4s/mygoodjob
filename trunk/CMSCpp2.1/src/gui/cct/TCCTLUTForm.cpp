@@ -240,9 +240,11 @@ void __fastcall TCCTLUTForm::Button_MeaRunClick(TObject * Sender)
 	    RGB_vector_ptr dglut = calibrator.getCCTDGLut(getMeasureCondition());
 	    nativeWhiteAnalyzer = calibrator.NativeWhiteAnalyzer;
 	    if (dglut == null) {
+                MainForm->stopProgress(ProgressBar1);
+                if(!run) {
 		//被中斷就直接return
-		MainForm->stopProgress(ProgressBar1);
 		ShowMessage("Parameter Error!! Stop!");
+                }
 		return;
 	    };
 
@@ -353,8 +355,8 @@ void __fastcall TCCTLUTForm::FormShow(TObject * Sender)
 	//CheckBox_MultiGen->Visible = true;
 	//Edit_MultiGenTimes->Visible = true;
 	//gamma
-	CheckBox_AbsoluteGamma->Visible = true;
-	Edit_AbsGammaStart->Visible = true;
+	//CheckBox_AbsoluteGamma->Visible = true;
+	//Edit_AbsGammaStart->Visible = true;
     }
 
     this->CheckBox_NewMethod->Checked = true;

@@ -174,6 +174,7 @@ object I2CTestForm: TI2CTestForm
       TabOrder = 1
       Text = '0'
       OnChange = Edit_RChange
+      OnKeyDown = Edit_RKeyDown
     end
     object Edit_G: TEdit
       Left = 20
@@ -183,6 +184,7 @@ object I2CTestForm: TI2CTestForm
       TabOrder = 2
       Text = '0'
       OnChange = Edit_RChange
+      OnKeyDown = Edit_RKeyDown
     end
     object Edit_B: TEdit
       Left = 20
@@ -192,6 +194,7 @@ object I2CTestForm: TI2CTestForm
       TabOrder = 3
       Text = '0'
       OnChange = Edit_RChange
+      OnKeyDown = Edit_RKeyDown
     end
     object CheckBox_IndepRGB: TCheckBox
       Left = 7
@@ -211,7 +214,7 @@ object I2CTestForm: TI2CTestForm
       TabOrder = 5
       Text = '0'
       OnChange = Edit_WChange
-      OnKeyDown = Edit_WKeyDown
+      OnKeyDown = Edit_RKeyDown
     end
   end
   object GroupBox4: TGroupBox

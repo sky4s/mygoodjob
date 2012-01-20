@@ -67,6 +67,9 @@ class TI2CTestForm:public TForm {
     void __fastcall CheckBox_DGTestClick(TObject * Sender);
     void __fastcall Edit_WKeyDown(TObject * Sender, WORD & Key, TShiftState Shift);
     void __fastcall Edit_WChange(TObject * Sender);
+        void __fastcall Edit_RKeyDown(TObject *Sender, WORD &Key,
+          TShiftState Shift);
+
   private:			// User declarations
      bptr < i2c::TCONParameter > parameter;
      bptr < i2c::TCONControl > control;
