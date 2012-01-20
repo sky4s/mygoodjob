@@ -37,8 +37,12 @@ namespace cms {
 	RGB_ptr MaxMatrixIntensityAnalyzer::getIntensity(RGB_ptr rgb) {
 	    //component: 0~100%
 	    getCIEXYZOnly(rgb);
-
+            if( null == XYZ ) {
+            return nil_RGB_ptr;
+            }
+            else {
 	    return getIntensity(XYZ);
+            }
 	};
 
 	RGB_ptr MaxMatrixIntensityAnalyzer::getIntensity(XYZ_ptr XYZ) {
@@ -68,8 +72,14 @@ namespace cms {
 	XYZ_ptr MaxMatrixIntensityAnalyzer::getCIEXYZOnly(RGB_ptr rgb) {
 	    if (null != mm) {
 		Patch_ptr patch = mm->measure(rgb, rgb->toString());
+                if( null ==patch) {
+                XYZ  =  nil_XYZ_ptr;
+                return nil_XYZ_ptr;
+                }
+                else {
 		XYZ = patch->getXYZ();
 		return XYZ;
+                }
 	    } else {
 		throw IllegalStateException("mm = null");
 	    }
@@ -223,7 +233,7 @@ namespace cms {
 					 ca210Intensity->R,
 					 ca210Intensity->G,
 					 ca210Intensity->B,
-					 matrixIntensity->R,
+				 	 matrixIntensity->R,
 					 matrixIntensity->G,
 					 matrixIntensity->B,
 					 (*originalIntensity)[0][0],

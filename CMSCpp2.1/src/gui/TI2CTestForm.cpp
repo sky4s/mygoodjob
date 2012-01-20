@@ -269,14 +269,12 @@ void __fastcall TI2CTestForm::Edit_WKeyDown(TObject * Sender, WORD & Key, TShift
 
 
     if (down || up) {
-	int dg = Edit_W->Text.ToInt();
+    TEdit *edit = dynamic_cast<TEdit *>(Sender);
+	int dg = edit->Text.ToInt();
 	dg = down ? dg - 1 : dg + 1;
 	dg = (dg < 0) ? 0 : dg;
-	Edit_W->Text = dg;
+	edit->Text = dg;
     }
-
-
-
 }
 
 //---------------------------------------------------------------------------
@@ -291,4 +289,23 @@ void __fastcall TI2CTestForm::Edit_WChange(TObject * Sender)
 }
 
 //---------------------------------------------------------------------------
+
+void __fastcall TI2CTestForm::Edit_RKeyDown(TObject *Sender, WORD &Key,
+      TShiftState Shift)
+{
+    bool down = Key == 0x28;
+    bool up = Key == 0x26;
+
+
+    if (down || up) {
+    TEdit *edit = dynamic_cast<TEdit *>(Sender);
+	int dg = edit->Text.ToInt();
+	dg = down ? dg - 1 : dg + 1;
+	dg = (dg < 0) ? 0 : dg;
+	edit->Text = dg;
+    }
+
+}
+//---------------------------------------------------------------------------
+
 

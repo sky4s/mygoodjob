@@ -93,14 +93,18 @@ namespace cms {
 
 		foreach(const RGB_ptr & rgb, *rgbMeasureCode) {
 		    RGB_ptr intensity = analyzer->getIntensity(rgb);
-		    XYZ_ptr XYZ = analyzer->getCIEXYZ();
-		    Component_ptr component(new Component(rgb, intensity, XYZ));
-		    result->push_back(component);
-
-		    if (true == waitingStable) {
+        	    if (true == waitingStable) {
 			waitingStable = false;
 			analyzer->setWaitTimes(waitTimes);
 		    }
+
+		    XYZ_ptr XYZ = analyzer->getCIEXYZ();
+                    if( null !=XYZ && null != intensity) {
+		    Component_ptr component(new Component(rgb, intensity, XYZ));
+		    result->push_back(component);
+                    }
+
+
 
 		    if (true == stop) {
 			stop = false;
