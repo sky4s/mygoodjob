@@ -118,7 +118,7 @@ class TCCTLUTForm:public TForm, cms::lcd::calibrate::FeedbackListener {
     TEdit *Edit_SmoothIntensityEnd;
     TCheckBox *CheckBox_SmoothIntensity;
     TEdit *Edit_AbsGammaStart;
-        TGroupBox *GroupBox_LoadGamma;
+    TGroupBox *GroupBox_LoadGamma;
     void __fastcall RadioButton_P1P2Click(TObject * Sender);
     void __fastcall Button_MeaRunClick(TObject * Sender);
     void __fastcall Button_DebugClick(TObject * Sender);
@@ -137,7 +137,6 @@ class TCCTLUTForm:public TForm, cms::lcd::calibrate::FeedbackListener {
     void __fastcall CheckBox_BTargetIntensityClick(TObject * Sender);
     void __fastcall RadioButton_GammaValueClick(TObject * Sender);
     void __fastcall CheckBox_BMax2Click(TObject * Sender);
-    void __fastcall CheckBox_AvoidHookNBClick(TObject * Sender);
     void __fastcall Edit_MaxYAdvOverChange(TObject * Sender);
     void __fastcall CheckBox_MaxYAdvAutoClick(TObject * Sender);
     void __fastcall CheckBox_MiddleCCTClick(TObject * Sender);

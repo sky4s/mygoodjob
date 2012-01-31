@@ -1,6 +1,6 @@
 object TargetWhiteForm2: TTargetWhiteForm2
-  Left = 219
-  Top = 138
+  Left = 248
+  Top = 135
   Width = 767
   Height = 506
   Caption = 'Target White'
@@ -273,7 +273,6 @@ object TargetWhiteForm2: TTargetWhiteForm2
           ParentShowHint = False
           ShowHint = True
           TabOrder = 7
-          OnClick = Edit_InverseBClick
         end
         object Button_FindInverseB: TButton
           Left = 10

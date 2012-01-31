@@ -11,6 +11,7 @@
 //本項目內頭文件
 #include "TCCTLUTForm.h"
 #include "TMainForm.h"
+#include "TTargetWhiteForm2.h"
 
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
@@ -240,11 +241,11 @@ void __fastcall TCCTLUTForm::Button_MeaRunClick(TObject * Sender)
 	    RGB_vector_ptr dglut = calibrator.getCCTDGLut(getMeasureCondition());
 	    nativeWhiteAnalyzer = calibrator.NativeWhiteAnalyzer;
 	    if (dglut == null) {
-                MainForm->stopProgress(ProgressBar1);
-                if(!run) {
-		//被中斷就直接return
-		ShowMessage("Parameter Error!! Stop!");
-                }
+		MainForm->stopProgress(ProgressBar1);
+		if (!run) {
+		    //被中斷就直接return
+		    ShowMessage("Parameter Error!! Stop!");
+		}
 		return;
 	    };
 
@@ -358,7 +359,9 @@ void __fastcall TCCTLUTForm::FormShow(TObject * Sender)
 	//CheckBox_AbsoluteGamma->Visible = true;
 	//Edit_AbsGammaStart->Visible = true;
     }
-
+    //=========================================================================
+    // function on/off relative
+    //=========================================================================
     this->CheckBox_NewMethod->Checked = true;
 
     const MaxValue & input = bitDepth->getInputMaxValue();
@@ -368,14 +371,20 @@ void __fastcall TCCTLUTForm::FormShow(TObject * Sender)
     bool tconInput = bitDepth->isTCONInput();
     this->CheckBox_Expand->Visible = !tconInput;
 
+
     //=========================================================================
     // tcon relative
     //=========================================================================
-
-    bool useTConCtrl = true == tconInput;
+    bool debugMode = !MainForm->linkCA210;
+    bool useTConCtrl = true == tconInput || debugMode;
     //avoid hook再考慮一下開啟方式
-    CheckBox_AvoidHookNB->Visible = useTConCtrl;
-    //CheckBox_AvoidHookNB->Visible = true;
+    if (useTConCtrl) {
+	bool findInverseZ = TargetWhiteForm2->FindInverseZ;
+	if (findInverseZ) {
+	    CheckBox_AvoidHookNB->Visible = true;
+	    CheckBox_AvoidHookNB->Checked = true;
+	}
+    }
     CheckBox_Feedback->Visible = useTConCtrl;
     if (true == CheckBox_Feedback->Checked) {
 	CheckBox_Feedback->Checked = useTConCtrl;
@@ -389,6 +398,9 @@ void __fastcall TCCTLUTForm::FormShow(TObject * Sender)
     setMeasureInfo();
     nativeWhiteAnalyzer = MainForm->getNativeWhiteAnalyzer();
 
+    //=========================================================================
+    // target white relative
+    //=========================================================================
     RGB_ptr refRGB = MainForm->getAnalyzer()->getReferenceRGB();
     bool useNativeWhite = refRGB->isWhite();
     if (useNativeWhite) {
@@ -638,13 +650,6 @@ void __fastcall TCCTLUTForm::CheckBox_BMax2Click(TObject * Sender)
 
 //---------------------------------------------------------------------------
 
-void __fastcall TCCTLUTForm::CheckBox_AvoidHookNBClick(TObject * Sender)
-{
-    //bool checked = this->CheckBox_AvoidHookNB->Checked;
-    //CheckBox_Accurate->Checked = checked;
-}
-
-//---------------------------------------------------------------------------
 
 void __fastcall TCCTLUTForm::Edit_MaxYAdvOverChange(TObject * Sender)
 {

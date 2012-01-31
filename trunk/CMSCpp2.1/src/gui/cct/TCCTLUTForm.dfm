@@ -1,6 +1,6 @@
 object CCTLUTForm: TCCTLUTForm
-  Left = 218
-  Top = 260
+  Left = 219
+  Top = 230
   Width = 848
   Height = 407
   Caption = 'CCT LUT'
@@ -417,15 +417,39 @@ object CCTLUTForm: TCCTLUTForm
     Left = 671
     Top = 7
     Width = 156
-    Height = 58
+    Height = 122
     Caption = 'Blue Correction'
+    Color = clMoneyGreen
+    ParentColor = False
     TabOrder = 3
+    object Label18: TLabel
+      Left = 26
+      Top = 69
+      Width = 27
+      Height = 13
+      Caption = 'Begin'
+      Visible = False
+    end
+    object Label19: TLabel
+      Left = 26
+      Top = 93
+      Width = 40
+      Height = 13
+      Caption = 'Strength'
+      Visible = False
+    end
     object CheckBox_BGain: TCheckBox
       Left = 7
       Top = 14
       Width = 98
       Height = 19
       Caption = 'B Intensity Gain'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -10
+      Font.Name = 'MS Sans Serif'
+      Font.Style = []
+      ParentFont = False
       TabOrder = 0
     end
     object Edit_BGain: TEdit
@@ -445,12 +469,44 @@ object CCTLUTForm: TCCTLUTForm
       Caption = 'B Max'
       TabOrder = 2
     end
+    object CheckBox_BMax2: TCheckBox
+      Left = 7
+      Top = 52
+      Width = 97
+      Height = 19
+      Caption = 'B Max (Smooth)'
+      TabOrder = 3
+      Visible = False
+      OnClick = CheckBox_BMax2Click
+    end
+    object Edit_BMax2Begin: TEdit
+      Left = 72
+      Top = 69
+      Width = 59
+      Height = 21
+      Enabled = False
+      ImeName = #26085#25991#36664#20837#31995#32113' (MS-IME2002)'
+      TabOrder = 4
+      Text = '235'
+      Visible = False
+    end
+    object Edit_BMax2Gamma: TEdit
+      Left = 72
+      Top = 93
+      Width = 59
+      Height = 21
+      Enabled = False
+      ImeName = #26085#25991#36664#20837#31995#32113' (MS-IME2002)'
+      TabOrder = 5
+      Text = '2.2'
+      Visible = False
+    end
   end
   object GroupBox5: TGroupBox
     Left = 671
-    Top = 64
+    Top = 128
     Width = 156
-    Height = 201
+    Height = 137
     Caption = 'Options'
     TabOrder = 4
     object CheckBox_AvoidNoise: TCheckBox
@@ -459,6 +515,8 @@ object CCTLUTForm: TCCTLUTForm
       Width = 111
       Height = 19
       Caption = 'Avoid FRC Noise'
+      Color = clMoneyGreen
+      ParentColor = False
       TabOrder = 0
     end
     object CheckBox_NewMethod: TCheckBox
@@ -477,6 +535,12 @@ object CCTLUTForm: TCCTLUTForm
       Height = 14
       Caption = 'Multi Generate'
       Enabled = False
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clRed
+      Font.Height = -10
+      Font.Name = 'MS Sans Serif'
+      Font.Style = []
+      ParentFont = False
       TabOrder = 2
     end
     object Edit_MultiGenTimes: TEdit
@@ -487,7 +551,6 @@ object CCTLUTForm: TCCTLUTForm
       Enabled = False
       TabOrder = 3
       Text = '1'
-      Visible = False
     end
     object CheckBox_BTargetIntensity: TCheckBox
       Left = 7
@@ -495,6 +558,14 @@ object CCTLUTForm: TCCTLUTForm
       Width = 111
       Height = 19
       Caption = 'B Target intensity'
+      Color = clBtnFace
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clRed
+      Font.Height = -10
+      Font.Name = 'MS Sans Serif'
+      Font.Style = []
+      ParentColor = False
+      ParentFont = False
       TabOrder = 4
       OnClick = CheckBox_BTargetIntensityClick
     end
@@ -513,6 +584,14 @@ object CCTLUTForm: TCCTLUTForm
       Width = 111
       Height = 19
       Caption = 'R Target intensity'
+      Color = clBtnFace
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clRed
+      Font.Height = -10
+      Font.Name = 'MS Sans Serif'
+      Font.Style = []
+      ParentColor = False
+      ParentFont = False
       TabOrder = 6
       OnClick = CheckBox_RTargetIntensityClick
     end
@@ -757,7 +836,7 @@ object CCTLUTForm: TCCTLUTForm
     TabOrder = 11
     object Label20: TLabel
       Left = 26
-      Top = 101
+      Top = 109
       Width = 27
       Height = 13
       Caption = 'Begin'
@@ -765,23 +844,7 @@ object CCTLUTForm: TCCTLUTForm
     end
     object Label21: TLabel
       Left = 26
-      Top = 137
-      Width = 40
-      Height = 13
-      Caption = 'Strength'
-      Visible = False
-    end
-    object Label18: TLabel
-      Left = 26
-      Top = 211
-      Width = 27
-      Height = 13
-      Caption = 'Begin'
-      Visible = False
-    end
-    object Label19: TLabel
-      Left = 26
-      Top = 231
+      Top = 129
       Width = 40
       Height = 13
       Caption = 'Strength'
@@ -813,14 +876,16 @@ object CCTLUTForm: TCCTLUTForm
       Width = 137
       Height = 19
       Caption = 'Native White (Smooth)'
+      Color = clMoneyGreen
       Enabled = False
+      ParentColor = False
       TabOrder = 2
       OnClick = RadioButton_MaxYNativeAdvClick
     end
     object Edit_MaxYAdvOver: TEdit
       Left = 72
-      Top = 117
-      Width = 59
+      Top = 109
+      Width = 33
       Height = 21
       Enabled = False
       ImeName = #26085#25991#36664#20837#31995#32113' (MS-IME2002)'
@@ -831,8 +896,8 @@ object CCTLUTForm: TCCTLUTForm
     end
     object Edit_MaxYAdvGamma: TEdit
       Left = 72
-      Top = 137
-      Width = 59
+      Top = 129
+      Width = 33
       Height = 21
       Enabled = False
       ImeName = #26085#25991#36664#20837#31995#32113' (MS-IME2002)'
@@ -842,68 +907,41 @@ object CCTLUTForm: TCCTLUTForm
     end
     object CheckBox_AvoidHookNB: TCheckBox
       Left = 7
-      Top = 192
+      Top = 168
       Width = 104
       Height = 19
       Caption = 'Avoid Hook'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clRed
+      Font.Height = -10
+      Font.Name = 'MS Sans Serif'
+      Font.Style = []
+      ParentFont = False
       TabOrder = 5
-      Visible = False
-      OnClick = CheckBox_AvoidHookNBClick
-    end
-    object CheckBox_BMax2: TCheckBox
-      Left = 84
-      Top = 192
-      Width = 97
-      Height = 19
-      Caption = 'B Max (Smooth)'
-      TabOrder = 6
-      Visible = False
-      OnClick = CheckBox_BMax2Click
-    end
-    object Edit_BMax2Begin: TEdit
-      Left = 72
-      Top = 211
-      Width = 59
-      Height = 21
-      Enabled = False
-      ImeName = #26085#25991#36664#20837#31995#32113' (MS-IME2002)'
-      TabOrder = 7
-      Text = '235'
-      Visible = False
-    end
-    object Edit_BMax2Gamma: TEdit
-      Left = 72
-      Top = 231
-      Width = 59
-      Height = 21
-      Enabled = False
-      ImeName = #26085#25991#36664#20837#31995#32113' (MS-IME2002)'
-      TabOrder = 8
-      Text = '2.2'
       Visible = False
     end
     object CheckBox_SkipInverseB: TCheckBox
       Left = 26
-      Top = 162
+      Top = 154
       Width = 105
       Height = 14
       Caption = 'Skip Inverse B'
       Checked = True
       Enabled = False
       State = cbChecked
-      TabOrder = 9
+      TabOrder = 6
       Visible = False
     end
     object CheckBox_MaxYAdvAuto: TCheckBox
-      Left = 26
+      Left = 106
       Top = 104
-      Width = 105
-      Height = 13
+      Width = 47
+      Height = 25
       Caption = 'Auto'
       Checked = True
       Enabled = False
       State = cbChecked
-      TabOrder = 10
+      TabOrder = 7
       Visible = False
       OnClick = CheckBox_MaxYAdvAutoClick
     end
@@ -913,7 +951,7 @@ object CCTLUTForm: TCCTLUTForm
       Width = 129
       Height = 17
       Caption = 'Target White'
-      TabOrder = 11
+      TabOrder = 8
     end
     object CheckBox_SmoothIntensity: TCheckBox
       Left = 24
@@ -923,7 +961,7 @@ object CCTLUTForm: TCCTLUTForm
       Caption = 'Smooth Intensity'
       Checked = True
       State = cbChecked
-      TabOrder = 12
+      TabOrder = 9
       Visible = False
       OnClick = CheckBox_SmoothIntensityClick
     end
@@ -932,7 +970,7 @@ object CCTLUTForm: TCCTLUTForm
       Top = 24
       Width = 33
       Height = 21
-      TabOrder = 13
+      TabOrder = 10
       Text = '50'
       Visible = False
     end
@@ -941,7 +979,7 @@ object CCTLUTForm: TCCTLUTForm
       Top = 48
       Width = 33
       Height = 21
-      TabOrder = 14
+      TabOrder = 11
       Text = '255'
       Visible = False
     end
@@ -956,9 +994,9 @@ object CCTLUTForm: TCCTLUTForm
     Visible = False
   end
   object GroupBox8: TGroupBox
-    Left = 815
-    Top = 183
-    Width = 145
+    Left = 671
+    Top = 295
+    Width = 154
     Height = 58
     Caption = 'Test Function'
     TabOrder = 13
@@ -1001,7 +1039,7 @@ object CCTLUTForm: TCCTLUTForm
   end
   object RadioGroup_NormalCase: TRadioGroup
     Left = 671
-    Top = 264
+    Top = 248
     Width = 156
     Height = 49
     Caption = 'Normal Case'

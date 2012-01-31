@@ -20,7 +20,7 @@
 TTargetWhiteForm2 *TargetWhiteForm2;
 //---------------------------------------------------------------------------
 __fastcall TTargetWhiteForm2::TTargetWhiteForm2(TComponent * Owner)
-:TForm(Owner), stopMeasure(false), maxZDGCode(-1), measuring(false)
+:TForm(Owner), stopMeasure(false), maxZDGCode(-1), measuring(false), findInverseZ(false)
 {
 }
 
@@ -43,6 +43,7 @@ void __fastcall TTargetWhiteForm2::ScrollBar_RChange(TObject * Sender)
 	ScrollBar_B->Position = ScrollBar_R->Position;
     }
     scrollBar_Change();
+
 }
 
 //---------------------------------------------------------------------------
@@ -122,10 +123,12 @@ void TTargetWhiteForm2::setColorimetricValues(double x, double y, double up, dou
 
 void TTargetWhiteForm2::scrollBar_Change()
 {
+    findInverseZ = false;
     this->RadioButton_RGBRatio->Checked = true;
     Panel1->Color =
 	(TColor) ScrollBar_R->Position + ((ScrollBar_G->Position) << 8) +
 	((ScrollBar_B->Position) << 16);
+
 }
 
 void __fastcall TTargetWhiteForm2::Edit_targetxChange(TObject * Sender)
@@ -369,6 +372,7 @@ void __fastcall TTargetWhiteForm2::Button_RunClick(TObject * Sender)
 void __fastcall TTargetWhiteForm2::Edit_RChange(TObject * Sender)
 {
     binder->active(Sender);
+    findInverseZ = false;
 }
 
 //---------------------------------------------------------------------------
@@ -376,6 +380,7 @@ void __fastcall TTargetWhiteForm2::Edit_RChange(TObject * Sender)
 void __fastcall TTargetWhiteForm2::Edit_BChange(TObject * Sender)
 {
     binder->active(Sender);
+    findInverseZ = false;
 }
 
 //---------------------------------------------------------------------------
@@ -383,6 +388,7 @@ void __fastcall TTargetWhiteForm2::Edit_BChange(TObject * Sender)
 void __fastcall TTargetWhiteForm2::Edit_GChange(TObject * Sender)
 {
     binder->active(Sender);
+    findInverseZ = false;
 }
 
 //----------------------------------------
@@ -559,18 +565,12 @@ void __fastcall TTargetWhiteForm2::Button_FindInverseBClick(TObject * Sender)
     using namespace cms::lcd::calibrate;
     this->maxZDGCode = MeasureTool::getMaxZDGCode(MainForm->mm, bitDepth);
     Edit_InverseB->Text = maxZDGCode;
+    findInverseZ = true;
+    binder->active(Sender);
 }
 
 //---------------------------------------------------------------------------
 
-void __fastcall TTargetWhiteForm2::Edit_InverseBClick(TObject * Sender)
-{
-    if (Edit_InverseB->Text.Length() != 0) {
-	binder->active(Sender);
-    }
-}
-
-//---------------------------------------------------------------------------
 
 void __fastcall TTargetWhiteForm2::Button_ContinueMeasureClick(TObject * Sender)
 {

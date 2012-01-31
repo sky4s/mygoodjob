@@ -115,7 +115,6 @@ class TTargetWhiteForm2:public TForm, gui::event::WindowListener {
     void __fastcall Button_ConnectClick(TObject * Sender);
     void __fastcall Button_DisconnectClick(TObject * Sender);
     void __fastcall Button_FindInverseBClick(TObject * Sender);
-    void __fastcall Edit_InverseBClick(TObject * Sender);
     void __fastcall Button_ContinueMeasureClick(TObject * Sender);
   private:			// User declarations
     void setColorimetricValues(double x, double y, double up, double vp);
@@ -126,6 +125,7 @@ class TTargetWhiteForm2:public TForm, gui::event::WindowListener {
     bptr < cms::lcd::calibrate::BitDepthProcessor > bitDepth;
     void setRGBRatio(int r, int g, int b);
     int maxZDGCode;
+    bool findInverseZ;
     mbinder_ptr binder;
     bool continueMeasure;
     bool measuring;
@@ -134,6 +134,7 @@ class TTargetWhiteForm2:public TForm, gui::event::WindowListener {
     void windowClosing();
     void setBitDepthProcessor(bptr < cms::lcd::calibrate::BitDepthProcessor > bitDepth);
     bool stopMeasure;
+    __property bool FindInverseZ = { read = findInverseZ };
 
 };
 //---------------------------------------------------------------------------
