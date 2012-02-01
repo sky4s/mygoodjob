@@ -16,6 +16,7 @@
 #include <ExtCtrls.hpp>
 #include <ComCtrls.hpp>
 #include <Menus.hpp>
+#include <Buttons.hpp>
 //本項目內頭文件
 #include <gui/event/listener.h>
 
@@ -85,8 +86,8 @@ class TTargetWhiteForm2:public TForm, gui::event::WindowListener {
     TButton *Button_Disconnect;
     TCheckBox *CheckBox_Lock;
     TCheckBox *CheckBox_AvoidHookTV;
-    TEdit *Edit_InverseB;
-    TButton *Button_FindInverseB;
+        TEdit *Edit_InverseZofB;
+        TButton *Button_FindInverseZofB;
     TGroupBox *GroupBox7;
     TLabel *Label4;
     TEdit *Edit_refx;
@@ -94,8 +95,11 @@ class TTargetWhiteForm2:public TForm, gui::event::WindowListener {
     TEdit *Edit_refy;
     TLabel *Label8;
     TEdit *Edit_refLuminance;
-    TButton *Button_ContinueMeasure;
+    TButton *Button_Measure;
     TProgressBar *ProgressBar1;
+    TButton *Button_ConnectToggle;
+        TEdit *Edit_InverseIntensityofB;
+        TButton *Button_FindInverseIntensity;
     void __fastcall RadioButton_MaxRGBClick(TObject * Sender);
     void __fastcall ScrollBar_RChange(TObject * Sender);
     void __fastcall ScrollBar_GChange(TObject * Sender);
@@ -114,8 +118,9 @@ class TTargetWhiteForm2:public TForm, gui::event::WindowListener {
     void __fastcall FormKeyPress(TObject * Sender, char &Key);
     void __fastcall Button_ConnectClick(TObject * Sender);
     void __fastcall Button_DisconnectClick(TObject * Sender);
-    void __fastcall Button_FindInverseBClick(TObject * Sender);
-    void __fastcall Button_ContinueMeasureClick(TObject * Sender);
+    void __fastcall Button_FindInverseZofBClick(TObject * Sender);
+    void __fastcall Button_MeasureClick(TObject * Sender);
+    void __fastcall Button_ConnectToggleClick(TObject * Sender);
   private:			// User declarations
     void setColorimetricValues(double x, double y, double up, double vp);
     void scrollBar_Change();
@@ -129,6 +134,7 @@ class TTargetWhiteForm2:public TForm, gui::event::WindowListener {
     mbinder_ptr binder;
     bool continueMeasure;
     bool measuring;
+    bool connect;
   public:			// User declarations
     __fastcall TTargetWhiteForm2(TComponent * Owner);
     void windowClosing();

@@ -905,7 +905,7 @@ object CCTLUTForm: TCCTLUTForm
       Text = '1'
       Visible = False
     end
-    object CheckBox_AvoidHookNB: TCheckBox
+    object CheckBox_AvoidHook: TCheckBox
       Left = 7
       Top = 168
       Width = 104
@@ -919,6 +919,7 @@ object CCTLUTForm: TCCTLUTForm
       ParentFont = False
       TabOrder = 5
       Visible = False
+      OnClick = CheckBox_AvoidHookClick
     end
     object CheckBox_SkipInverseB: TCheckBox
       Left = 26
@@ -967,7 +968,7 @@ object CCTLUTForm: TCCTLUTForm
     end
     object Edit_SmoothIntensityStart: TEdit
       Left = 120
-      Top = 24
+      Top = 32
       Width = 33
       Height = 21
       TabOrder = 10
@@ -976,7 +977,7 @@ object CCTLUTForm: TCCTLUTForm
     end
     object Edit_SmoothIntensityEnd: TEdit
       Left = 120
-      Top = 48
+      Top = 56
       Width = 33
       Height = 21
       TabOrder = 11

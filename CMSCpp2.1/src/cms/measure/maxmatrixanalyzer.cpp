@@ -37,12 +37,11 @@ namespace cms {
 	RGB_ptr MaxMatrixIntensityAnalyzer::getIntensity(RGB_ptr rgb) {
 	    //component: 0~100%
 	    getCIEXYZOnly(rgb);
-            if( null == XYZ ) {
-            return nil_RGB_ptr;
-            }
-            else {
-	    return getIntensity(XYZ);
-            }
+	    if (null == XYZ) {
+		return nil_RGB_ptr;
+	    } else {
+		return getIntensity(XYZ);
+	    }
 	};
 
 	RGB_ptr MaxMatrixIntensityAnalyzer::getIntensity(XYZ_ptr XYZ) {
@@ -72,14 +71,13 @@ namespace cms {
 	XYZ_ptr MaxMatrixIntensityAnalyzer::getCIEXYZOnly(RGB_ptr rgb) {
 	    if (null != mm) {
 		Patch_ptr patch = mm->measure(rgb, rgb->toString());
-                if( null ==patch) {
-                XYZ  =  nil_XYZ_ptr;
-                return nil_XYZ_ptr;
-                }
-                else {
-		XYZ = patch->getXYZ();
-		return XYZ;
-                }
+		if (null == patch) {
+		    XYZ = nil_XYZ_ptr;
+		    return nil_XYZ_ptr;
+		} else {
+		    XYZ = patch->getXYZ();
+		    return XYZ;
+		}
 	    } else {
 		throw IllegalStateException("mm = null");
 	    }
@@ -200,7 +198,28 @@ namespace cms {
 	double2D_ptr MaxMatrixIntensityAnalyzer::getTargetRatio() {
 	    return targetRatio;
 	};
+	bptr < MaxMatrixIntensityAnalyzer >
+	    MaxMatrixIntensityAnalyzer::getNativeWhiteAnalyzer(bptr < MeterMeasurement > mm,
+							       int rMax, int gMax, int bMax) {
+	    bptr < MaxMatrixIntensityAnalyzer >
+		nativeWhiteAnalyzer(new MaxMatrixIntensityAnalyzer(mm));
+	    //¤wª¾rgb
+	    RGB_ptr rgb(new RGBColor(rMax, gMax, bMax, MaxValue::Int8Bit));
+	    RGB_ptr r(new RGBColor(rMax, 0, 0, MaxValue::Int8Bit));
+	    RGB_ptr g(new RGBColor(0, gMax, 0, MaxValue::Int8Bit));
+	    RGB_ptr b(new RGBColor(0, 0, bMax, MaxValue::Int8Bit));
 
+	    int defaultWaitTimes = nativeWhiteAnalyzer->getWaitTimes();
+	    nativeWhiteAnalyzer->setWaitTimes(5000);
+	    nativeWhiteAnalyzer->beginAnalyze();
+	    nativeWhiteAnalyzer->setupComponent(Channel::R, r);
+	    nativeWhiteAnalyzer->setupComponent(Channel::G, g);
+	    nativeWhiteAnalyzer->setupComponent(Channel::B, b);
+	    nativeWhiteAnalyzer->setupComponent(Channel::W, rgb);
+	    nativeWhiteAnalyzer->enter();
+	    nativeWhiteAnalyzer->setWaitTimes(defaultWaitTimes);
+	    return nativeWhiteAnalyzer;
+	};
 	//=====================================================================
 	//=====================================================================
 	// IntensityAnayzer
@@ -233,7 +252,7 @@ namespace cms {
 					 ca210Intensity->R,
 					 ca210Intensity->G,
 					 ca210Intensity->B,
-				 	 matrixIntensity->R,
+					 matrixIntensity->R,
 					 matrixIntensity->G,
 					 matrixIntensity->B,
 					 (*originalIntensity)[0][0],

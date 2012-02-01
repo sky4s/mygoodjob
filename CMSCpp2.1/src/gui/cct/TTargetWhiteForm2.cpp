@@ -20,7 +20,8 @@
 TTargetWhiteForm2 *TargetWhiteForm2;
 //---------------------------------------------------------------------------
 __fastcall TTargetWhiteForm2::TTargetWhiteForm2(TComponent * Owner)
-:TForm(Owner), stopMeasure(false), maxZDGCode(-1), measuring(false), findInverseZ(false)
+:TForm(Owner), stopMeasure(false), maxZDGCode(-1), measuring(false), findInverseZ(false),
+connect(true)
 {
 }
 
@@ -219,7 +220,7 @@ void __fastcall TTargetWhiteForm2::Button_RunClick(TObject * Sender)
 	    //4. 找到對應色度的RGB
 	    if (maxZDGCode == -1) {
 		//this->maxZDGCode = MeasureTool::getMaxZDGCode(MainForm->mm, bitDepth);
-		Button_FindInverseB->Click();
+		Button_FindInverseZofB->Click();
 	    }
 	    rgb->B = maxZDGCode;
 	}
@@ -420,7 +421,7 @@ void __fastcall TTargetWhiteForm2::FormCreate(TObject * Sender)
     binder->bind(Edit_R, ScrollBar_R);
     binder->bind(Edit_G, ScrollBar_G);
     binder->bind(Edit_B, ScrollBar_B);
-    binder->bind(Edit_InverseB, Edit_B);
+    binder->bind(Edit_InverseZofB, Edit_B);
 }
 
 //---------------------------------------------------------------------------
@@ -538,7 +539,7 @@ void __fastcall TTargetWhiteForm2::Button_ConnectClick(TObject * Sender)
 	this->Button_Disconnect->Enabled = true;
 	this->Button_Connect->Enabled = false;
 	this->Button_Run->Enabled = true;
-	Button_ContinueMeasure->Enabled = true;
+	Button_Measure->Enabled = true;
     }
 }
 
@@ -552,19 +553,19 @@ void __fastcall TTargetWhiteForm2::Button_DisconnectClick(TObject * Sender)
 	this->Button_Disconnect->Enabled = false;
 	this->Button_Connect->Enabled = true;
 	this->Button_Run->Enabled = false;
-	Button_ContinueMeasure->Enabled = false;
+	Button_Measure->Enabled = false;
 
     }
 }
 
 //---------------------------------------------------------------------------
 
-void __fastcall TTargetWhiteForm2::Button_FindInverseBClick(TObject * Sender)
+void __fastcall TTargetWhiteForm2::Button_FindInverseZofBClick(TObject * Sender)
 {
     using namespace cms::measure;
     using namespace cms::lcd::calibrate;
     this->maxZDGCode = MeasureTool::getMaxZDGCode(MainForm->mm, bitDepth);
-    Edit_InverseB->Text = maxZDGCode;
+    Edit_InverseZofB->Text = maxZDGCode;
     findInverseZ = true;
     binder->active(Sender);
 }
@@ -572,16 +573,16 @@ void __fastcall TTargetWhiteForm2::Button_FindInverseBClick(TObject * Sender)
 //---------------------------------------------------------------------------
 
 
-void __fastcall TTargetWhiteForm2::Button_ContinueMeasureClick(TObject * Sender)
+void __fastcall TTargetWhiteForm2::Button_MeasureClick(TObject * Sender)
 {
 
     if (true == continueMeasure) {
 	continueMeasure = false;
 	GroupBox7->Caption = "Reference Color";
-	Button_ContinueMeasure->Caption = "Continue Measure";
+	Button_Measure->Caption = "Measure";
     } else {
 	GroupBox7->Caption = "Measure Color";
-	Button_ContinueMeasure->Caption = "Stop Measure";
+	Button_Measure->Caption = "Stop";
 
 	using namespace cms::measure;
 	using namespace Indep;
@@ -607,4 +608,21 @@ void __fastcall TTargetWhiteForm2::Button_ContinueMeasureClick(TObject * Sender)
 }
 
 //---------------------------------------------------------------------------
+
+
+void __fastcall TTargetWhiteForm2::Button_ConnectToggleClick(TObject * Sender)
+{
+    if (connect) {
+	Button_ConnectToggle->Caption = "Disconnect";
+	Button_DisconnectClick(Sender);
+    } else {
+	Button_ConnectToggle->Caption = "Connect";
+	Button_ConnectClick(Sender);
+    }
+    connect = !connect;
+}
+
+//---------------------------------------------------------------------------
+
+
 

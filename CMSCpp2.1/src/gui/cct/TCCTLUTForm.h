@@ -85,7 +85,7 @@ class TCCTLUTForm:public TForm, cms::lcd::calibrate::FeedbackListener {
     TEdit *Edit_MultiGenTimes;
     TCheckBox *CheckBox_BTargetIntensity;
     TEdit *Edit_BTargetIntensity;
-    TCheckBox *CheckBox_AvoidHookNB;
+        TCheckBox *CheckBox_AvoidHook;
     TRadioButton *RadioButton_OriginalGamma;
     TCheckBox *CheckBox_BMax2;
     TLabel *Label18;
@@ -148,6 +148,7 @@ class TCCTLUTForm:public TForm, cms::lcd::calibrate::FeedbackListener {
     void __fastcall CheckBox_SmoothIntensityClick(TObject * Sender);
     void __fastcall Edit_DefinedDimUnderChange(TObject * Sender);
     void __fastcall CheckBox_AbsoluteGammaClick(TObject * Sender);
+    void __fastcall CheckBox_AvoidHookClick(TObject * Sender);
   private:			// User declarations
     void setMeasureInfo();
     int serialid;

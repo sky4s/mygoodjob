@@ -236,39 +236,37 @@ namespace cms {
 		    fetcher->ExtraMeasureRGB = refRGB;
 		}
 		Component_vector_ptr componentVector = fetcher->fetchComponent(measureCondition);
-                RGB_vector_ptr rgbMeasureCode = measureCondition->getRGBMeasureCode();
+		RGB_vector_ptr rgbMeasureCode = measureCondition->getRGBMeasureCode();
 
 		if (componentVector == null || rgbMeasureCode->size() != componentVector->size()) {
 		    return Component_vector_ptr((Component_vector *)
 						null);
 		}
 
-                if(nativeTagetWhite) {
-                        targetWhiteXYZ = (*componentVector)[0]->XYZ;
-                }
-                else {
-                        if(!mm->FakeMeasure ) {
-                                targetWhiteXYZ = fetcher->ExtraMeasureXYZ;
-                        }
-                        else {
-                         xyY_ptr refColor=analyzer->getReferenceColor();
-                         XYZ_ptr refColorXYZ = refColor->toXYZ();
-                         targetWhiteXYZ = refColorXYZ;
-                        }
-                }
+		if (nativeTagetWhite) {
+		    targetWhiteXYZ = (*componentVector)[0]->XYZ;
+		} else {
+		    if (!mm->FakeMeasure) {
+			targetWhiteXYZ = fetcher->ExtraMeasureXYZ;
+		    } else {
+			xyY_ptr refColor = analyzer->getReferenceColor();
+			XYZ_ptr refColorXYZ = refColor->toXYZ();
+			targetWhiteXYZ = refColorXYZ;
+		    }
+		}
 
-                /*xyY_ptr refColor=analyzer->getReferenceColor();
-		targetWhiteXYZ =
-		    nativeTagetWhite ? (*componentVector)[0]->XYZ :
-		    (!mm->FakeMeasure ? fetcher->ExtraMeasureXYZ :
-		     refColor->toXYZ());*/
+		/*xyY_ptr refColor=analyzer->getReferenceColor();
+		   targetWhiteXYZ =
+		   nativeTagetWhite ? (*componentVector)[0]->XYZ :
+		   (!mm->FakeMeasure ? fetcher->ExtraMeasureXYZ :
+		   refColor->toXYZ()); */
 		/*RGB_vector_ptr rgbMeasureCode = measureCondition->getRGBMeasureCode();
 
-		if (rgbMeasureCode->size() != componentVector->size()) {
-		    return Component_vector_ptr((Component_vector *)
-						null);
-		} else {*/
-		    return componentVector;
+		   if (rgbMeasureCode->size() != componentVector->size()) {
+		   return Component_vector_ptr((Component_vector *)
+		   null);
+		   } else { */
+		return componentVector;
 		//}
 	    };
 
@@ -356,9 +354,10 @@ namespace cms {
 		}
 
 		nativeWhiteAnalyzer =
-		    bptr < MaxMatrixIntensityAnalyzer > (new MaxMatrixIntensityAnalyzer(mm));
+		    MaxMatrixIntensityAnalyzer::getNativeWhiteAnalyzer(mm, max, max, blueMax);
+		//bptr < MaxMatrixIntensityAnalyzer > (new MaxMatrixIntensityAnalyzer(mm));
 		//已知rgb
-		RGB_ptr rgb(new RGBColor(max, max, blueMax, MaxValue::Int8Bit));
+		/*RGB_ptr rgb(new RGBColor(max, max, blueMax, MaxValue::Int8Bit));
 		RGB_ptr r(new RGBColor(max, 0, 0, MaxValue::Int8Bit));
 		RGB_ptr g(new RGBColor(0, max, 0, MaxValue::Int8Bit));
 		RGB_ptr b(new RGBColor(0, 0, blueMax, MaxValue::Int8Bit));
@@ -371,7 +370,7 @@ namespace cms {
 		nativeWhiteAnalyzer->setupComponent(Channel::B, b);
 		nativeWhiteAnalyzer->setupComponent(Channel::W, rgb);
 		nativeWhiteAnalyzer->enter();
-		nativeWhiteAnalyzer->setWaitTimes(defaultWaitTimes);
+		nativeWhiteAnalyzer->setWaitTimes(defaultWaitTimes);*/
 		//=====================================================
 	    };
 
@@ -561,6 +560,7 @@ namespace cms {
 		    //==========================================================
 		    //max luminance
 		    //bptr < cms::measure::IntensityAnalyzerIF > analyzer = fetcher->getAnalyzer();
+		    //double maxLuminance = isDoAccurate()? targetWhiteXYZ->Y : targetWhiteXYZ->Y;
 		    double maxLuminance = targetWhiteXYZ->Y;
 		    //藉由傳統generator產生luminance gamma curve
 		    if (true == absoluteGamma) {
@@ -632,6 +632,7 @@ namespace cms {
 							 overParameter,
 							 dimStrengthParameter,
 							 brightgammaParameter, width);
+
 
 		    //從目標值算出DGLut
 		    dglut = advgenerator->produce(targetXYZVector);

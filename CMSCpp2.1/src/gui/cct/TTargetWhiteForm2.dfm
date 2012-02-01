@@ -59,7 +59,7 @@ object TargetWhiteForm2: TTargetWhiteForm2
         end
         object Button_Run: TButton
           Left = 72
-          Top = 378
+          Top = 380
           Width = 65
           Height = 18
           Caption = 'Run'
@@ -239,56 +239,76 @@ object TargetWhiteForm2: TTargetWhiteForm2
         end
         object GroupBox3: TGroupBox
           Left = 7
-          Top = 312
+          Top = 288
           Width = 182
-          Height = 60
+          Height = 41
           Caption = 'CA-210'
           TabOrder = 6
           object Button_Connect: TButton
-            Left = 26
+            Left = 162
             Top = 12
             Width = 59
             Height = 20
             Caption = 'Connect'
             Enabled = False
             TabOrder = 0
+            Visible = False
             OnClick = Button_ConnectClick
           end
           object Button_Disconnect: TButton
-            Left = 91
-            Top = 12
+            Left = 163
+            Top = 36
             Width = 72
             Height = 20
             Caption = 'Disconnect'
             TabOrder = 1
+            Visible = False
             OnClick = Button_DisconnectClick
           end
+          object Button_Measure: TButton
+            Left = 104
+            Top = 14
+            Width = 65
+            Height = 17
+            Caption = 'Measure'
+            TabOrder = 2
+            OnClick = Button_MeasureClick
+          end
+          object Button_ConnectToggle: TButton
+            Left = 8
+            Top = 14
+            Width = 89
+            Height = 17
+            Caption = 'Connect'
+            TabOrder = 3
+            OnClick = Button_ConnectToggleClick
+          end
         end
-        object Edit_InverseB: TEdit
-          Left = 111
+        object Edit_InverseZofB: TEdit
+          Left = 128
           Top = 235
-          Width = 33
-          Height = 21
+          Width = 32
+          Height = 22
           Hint = 'Click this can auto copy Inverse B to B of RGB Ratio'
           ParentShowHint = False
           ShowHint = True
           TabOrder = 7
         end
-        object Button_FindInverseB: TButton
+        object Button_FindInverseZofB: TButton
           Left = 10
           Top = 235
-          Width = 95
-          Height = 19
+          Width = 111
+          Height = 22
           Hint = 'Find Inverse B Intensity '
           Caption = 'Find Inverse Z of B'
           ParentShowHint = False
           ShowHint = True
           TabOrder = 8
-          OnClick = Button_FindInverseBClick
+          OnClick = Button_FindInverseZofBClick
         end
         object GroupBox7: TGroupBox
           Left = 7
-          Top = 264
+          Top = 328
           Width = 182
           Height = 49
           Caption = 'Reference Color'
@@ -342,14 +362,26 @@ object TargetWhiteForm2: TTargetWhiteForm2
             Text = '0.0'
           end
         end
-        object Button_ContinueMeasure: TButton
-          Left = 48
-          Top = 346
-          Width = 113
-          Height = 20
-          Caption = 'Continue Measure'
+        object Edit_InverseIntensityofB: TEdit
+          Left = 127
+          Top = 259
+          Width = 33
+          Height = 21
+          Hint = 'Click this can auto copy Inverse B to B of RGB Ratio'
+          ParentShowHint = False
+          ShowHint = True
           TabOrder = 10
-          OnClick = Button_ContinueMeasureClick
+        end
+        object Button_FindInverseIntensity: TButton
+          Left = 10
+          Top = 259
+          Width = 111
+          Height = 22
+          Hint = 'Find Inverse B Intensity '
+          Caption = 'Find Inverse Intensity'
+          ParentShowHint = False
+          ShowHint = True
+          TabOrder = 11
         end
       end
       object GroupBox5: TGroupBox
