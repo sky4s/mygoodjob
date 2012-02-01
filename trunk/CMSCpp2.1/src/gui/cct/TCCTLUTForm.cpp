@@ -155,7 +155,7 @@ void __fastcall TCCTLUTForm::Button_MeaRunClick(TObject * Sender)
 	}
 
 	bool bMax = this->CheckBox_BMax->Checked;
-	bool avoidHook = CheckBox_AvoidHookNB->Checked;
+	bool avoidHook = CheckBox_AvoidHook->Checked;
 	calibrator.BMax = this->CheckBox_BMax->Checked;
 	calibrator.AccurateMode = avoidHook;
 	/*if (bMax) {
@@ -371,18 +371,27 @@ void __fastcall TCCTLUTForm::FormShow(TObject * Sender)
     bool tconInput = bitDepth->isTCONInput();
     this->CheckBox_Expand->Visible = !tconInput;
 
+    //=========================================================================
+    // target white relative
+    //=========================================================================
+    RGB_ptr refRGB = MainForm->getAnalyzer()->getReferenceRGB();
+    bool useNativeWhite = refRGB->isWhite();
+    if (useNativeWhite) {
+	RadioButton_MaxYNative->Checked = true;
+    } else {
+	RadioButton_MaxYTargetWhite->Checked = true;
+    }
 
     //=========================================================================
     // tcon relative
     //=========================================================================
     bool debugMode = !MainForm->linkCA210;
     bool useTConCtrl = true == tconInput || debugMode;
-    //avoid hook再考慮一下開啟方式
     if (useTConCtrl) {
-	bool findInverseZ = TargetWhiteForm2->FindInverseZ;
+	bool findInverseZ = TargetWhiteForm2 != null ? TargetWhiteForm2->FindInverseZ : true;
 	if (findInverseZ) {
-	    CheckBox_AvoidHookNB->Visible = true;
-	    CheckBox_AvoidHookNB->Checked = true;
+	    CheckBox_AvoidHook->Visible = true;
+	    CheckBox_AvoidHook->Checked = true;
 	}
     }
     CheckBox_Feedback->Visible = useTConCtrl;
@@ -398,16 +407,7 @@ void __fastcall TCCTLUTForm::FormShow(TObject * Sender)
     setMeasureInfo();
     nativeWhiteAnalyzer = MainForm->getNativeWhiteAnalyzer();
 
-    //=========================================================================
-    // target white relative
-    //=========================================================================
-    RGB_ptr refRGB = MainForm->getAnalyzer()->getReferenceRGB();
-    bool useNativeWhite = refRGB->isWhite();
-    if (useNativeWhite) {
-	RadioButton_MaxYNative->Checked = true;
-    } else {
-	RadioButton_MaxYTargetWhite->Checked = true;
-    }
+
 }
 
 void __fastcall TCCTLUTForm::RadioButton_GammaCurveClick(TObject * Sender)
@@ -772,6 +772,13 @@ void __fastcall TCCTLUTForm::Edit_DefinedDimUnderChange(TObject * Sender)
 void __fastcall TCCTLUTForm::CheckBox_AbsoluteGammaClick(TObject * Sender)
 {
     Edit_AbsGammaStart->Enabled = CheckBox_AbsoluteGamma->Checked;
+}
+
+//---------------------------------------------------------------------------
+
+void __fastcall TCCTLUTForm::CheckBox_AvoidHookClick(TObject * Sender)
+{
+    RadioButton_MaxYNative->Checked = true;
 }
 
 //---------------------------------------------------------------------------
