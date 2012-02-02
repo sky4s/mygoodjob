@@ -304,6 +304,20 @@ typedef void __fastcall(__closure * OnKeyPressFunction) (TObject * sender, char 
  可以 Enumeration::item1使用, 較好辨識.
 */
 
+/*
+ UI與內部Object聯結的思維
+
+ UI上的選項設定後, 必定需要傳送到內部Object, 設定為Object內的property(特徵)
+ 因此UI必定會呼叫Object的setXXX(), 把這些參數傳送到Object
+ 所以每多一項參數, UI就要呼叫Object, Object也得開相對映的setXXX() method, 才可以完成這項工作.
+ 老實講很瑣碎=.=
+
+ 有沒有辦法可以自動化甚至半自動化完成這件事情呢?
+ 或許只能透過setProperty(propertyName, propertyValue); 這樣的函式吧!
+
+ __property這關鍵字還算不錯的東西! 只要在header宣告就好! 免去.cpp定義setXXX的麻煩!
+ 也好!
+*/
 namespace java {
     namespace lang {
 	class Object;
@@ -505,7 +519,7 @@ template < typename Container, typename ValueType, int nPropType > class Propert
     }
 //-- To make possible to cast the property class to the
 //   internal type --
-    operator                                                           ValueType() {
+    operator                                                            ValueType() {
 	assert(m_cObject != NULL);
 	assert(Get != NULL);
 	return (m_cObject->*Get) ();

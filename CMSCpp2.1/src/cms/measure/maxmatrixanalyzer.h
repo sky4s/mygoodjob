@@ -58,7 +58,7 @@ namespace cms {
 	    bool isInverseMatrixNull();
 	     bptr < MeterMeasurement > getMeterMeasurement();
 	    double2D_ptr getTargetRatio();
-	    static bptr < MaxMatrixIntensityAnalyzer > getNativeWhiteAnalyzer(bptr <
+	    static bptr < MaxMatrixIntensityAnalyzer > getReadyAnalyzer(bptr <
 									      MeterMeasurement > mm,
 									      int rMax, int gMax,
 									      int bMax);
