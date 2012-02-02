@@ -199,7 +199,7 @@ namespace cms {
 	    return targetRatio;
 	};
 	bptr < MaxMatrixIntensityAnalyzer >
-	    MaxMatrixIntensityAnalyzer::getNativeWhiteAnalyzer(bptr < MeterMeasurement > mm,
+	    MaxMatrixIntensityAnalyzer::getReadyAnalyzer(bptr < MeterMeasurement > mm,
 							       int rMax, int gMax, int bMax) {
 	    bptr < MaxMatrixIntensityAnalyzer >
 		nativeWhiteAnalyzer(new MaxMatrixIntensityAnalyzer(mm));

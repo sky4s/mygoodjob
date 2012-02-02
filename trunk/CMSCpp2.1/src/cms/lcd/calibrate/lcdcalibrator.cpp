@@ -342,6 +342,7 @@ namespace cms {
 
 		if (keepMaxLuminance ==
 		    KeepMaxLuminance::NativeWhiteAdvanced && true == skipInverseB) {
+
 		    if (mm->FakeMeasure) {
 			this->maxZDGCode = blueMax;
 			return;
@@ -354,23 +355,23 @@ namespace cms {
 		}
 
 		nativeWhiteAnalyzer =
-		    MaxMatrixIntensityAnalyzer::getNativeWhiteAnalyzer(mm, max, max, blueMax);
+		    MaxMatrixIntensityAnalyzer::getReadyAnalyzer(mm, max, max, blueMax);
 		//bptr < MaxMatrixIntensityAnalyzer > (new MaxMatrixIntensityAnalyzer(mm));
 		//已知rgb
 		/*RGB_ptr rgb(new RGBColor(max, max, blueMax, MaxValue::Int8Bit));
-		RGB_ptr r(new RGBColor(max, 0, 0, MaxValue::Int8Bit));
-		RGB_ptr g(new RGBColor(0, max, 0, MaxValue::Int8Bit));
-		RGB_ptr b(new RGBColor(0, 0, blueMax, MaxValue::Int8Bit));
+		   RGB_ptr r(new RGBColor(max, 0, 0, MaxValue::Int8Bit));
+		   RGB_ptr g(new RGBColor(0, max, 0, MaxValue::Int8Bit));
+		   RGB_ptr b(new RGBColor(0, 0, blueMax, MaxValue::Int8Bit));
 
-		int defaultWaitTimes = nativeWhiteAnalyzer->getWaitTimes();
-		nativeWhiteAnalyzer->setWaitTimes(5000);
-		nativeWhiteAnalyzer->beginAnalyze();
-		nativeWhiteAnalyzer->setupComponent(Channel::R, r);
-		nativeWhiteAnalyzer->setupComponent(Channel::G, g);
-		nativeWhiteAnalyzer->setupComponent(Channel::B, b);
-		nativeWhiteAnalyzer->setupComponent(Channel::W, rgb);
-		nativeWhiteAnalyzer->enter();
-		nativeWhiteAnalyzer->setWaitTimes(defaultWaitTimes);*/
+		   int defaultWaitTimes = nativeWhiteAnalyzer->getWaitTimes();
+		   nativeWhiteAnalyzer->setWaitTimes(5000);
+		   nativeWhiteAnalyzer->beginAnalyze();
+		   nativeWhiteAnalyzer->setupComponent(Channel::R, r);
+		   nativeWhiteAnalyzer->setupComponent(Channel::G, g);
+		   nativeWhiteAnalyzer->setupComponent(Channel::B, b);
+		   nativeWhiteAnalyzer->setupComponent(Channel::W, rgb);
+		   nativeWhiteAnalyzer->enter();
+		   nativeWhiteAnalyzer->setWaitTimes(defaultWaitTimes); */
 		//=====================================================
 	    };
 
@@ -488,6 +489,8 @@ namespace cms {
 	    bool LCDCalibrator::isDoAccurate() {
 		return (true == accurateMode) && (null != tconctrl);
 	    };
+
+
 	    /*
 	       generator在此的用意只是拿來產生gamma curve
 	     */
@@ -561,7 +564,13 @@ namespace cms {
 		    //max luminance
 		    //bptr < cms::measure::IntensityAnalyzerIF > analyzer = fetcher->getAnalyzer();
 		    //double maxLuminance = isDoAccurate()? targetWhiteXYZ->Y : targetWhiteXYZ->Y;
-		    double maxLuminance = targetWhiteXYZ->Y;
+		    bool doAccurate = isDoAccurate();
+		    if (doAccurate && null == nativeWhiteAnalyzer) {
+			initNativeWhiteAnalyzer();
+		    }
+		    double maxLuminance =
+			doAccurate ? nativeWhiteAnalyzer->getReferenceColor()->Y :
+			targetWhiteXYZ->Y;
 		    //藉由傳統generator產生luminance gamma curve
 		    if (true == absoluteGamma) {
 			luminanceGammaCurve =
@@ -595,7 +604,6 @@ namespace cms {
 		int minOverParameter = (useNewMethod
 					&& autoKeepMaxLumiParameter) ?
 		    startCheckPos : keepMaxLumiOver;
-		//int minOverParameter = startCheckPos;
 		advgenerator->setPanelRegulator(panelRegulator);
 
 
