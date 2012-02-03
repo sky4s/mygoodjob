@@ -1,6 +1,6 @@
 object HSVFormOrg: THSVFormOrg
-  Left = 227
-  Top = 171
+  Left = 253
+  Top = 207
   Width = 891
   Height = 708
   Caption = 'HSV'

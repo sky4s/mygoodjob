@@ -1,6 +1,6 @@
 object HSVForm2nd: THSVForm2nd
-  Left = 188
-  Top = 0
+  Left = 341
+  Top = 239
   Width = 869
   Height = 797
   Caption = 'HSV2'
@@ -240,15 +240,6 @@ object HSVForm2nd: THSVForm2nd
       Height = 289
       Caption = 'HSV Adjustment'
       TabOrder = 9
-      object cb_Hue_rotation: TCheckBox
-        Left = 323
-        Top = 33
-        Width = 62
-        Height = 17
-        Caption = 'Global'
-        TabOrder = 0
-        Visible = False
-      end
       object btn_set: TButton
         Left = 394
         Top = 256
@@ -261,7 +252,7 @@ object HSVForm2nd: THSVForm2nd
         Font.Name = 'MS Sans Serif'
         Font.Style = [fsBold]
         ParentFont = False
-        TabOrder = 1
+        TabOrder = 0
         Visible = False
         OnClick = btn_setClick
       end
@@ -277,7 +268,7 @@ object HSVForm2nd: THSVForm2nd
         Font.Name = 'MS Sans Serif'
         Font.Style = [fsBold]
         ParentFont = False
-        TabOrder = 2
+        TabOrder = 1
         OnClick = btn_resetClick
       end
       object btn_hsv_write: TButton
@@ -292,7 +283,7 @@ object HSVForm2nd: THSVForm2nd
         Font.Name = 'MS Sans Serif'
         Font.Style = [fsBold]
         ParentFont = False
-        TabOrder = 3
+        TabOrder = 2
         OnClick = btn_hsv_writeClick
       end
       object btn_hsv_read: TButton
@@ -307,7 +298,7 @@ object HSVForm2nd: THSVForm2nd
         Font.Name = 'MS Sans Serif'
         Font.Style = [fsBold]
         ParentFont = False
-        TabOrder = 4
+        TabOrder = 3
         OnClick = btn_hsv_readClick
       end
       object Btn_HSV_reload: TBitBtn
@@ -317,7 +308,7 @@ object HSVForm2nd: THSVForm2nd
         Height = 25
         Caption = '&Reload'
         ModalResult = 6
-        TabOrder = 5
+        TabOrder = 4
         OnClick = Btn_HSV_reloadClick
         Glyph.Data = {
           DE010000424DDE01000000000000760000002800000024000000120000000100
@@ -344,9 +335,7 @@ object HSVForm2nd: THSVForm2nd
         Width = 66
         Height = 14
         Caption = 'Auto Set'
-        Checked = True
-        State = cbChecked
-        TabOrder = 7
+        TabOrder = 6
         Visible = False
       end
       object CheckBox_AutoWrite: TCheckBox
@@ -357,14 +346,14 @@ object HSVForm2nd: THSVForm2nd
         Caption = 'Auto Write'
         Checked = True
         State = cbChecked
-        TabOrder = 6
+        TabOrder = 5
       end
       inline hsvAdjust: THSVAdjustFrame
         Left = 4
         Top = 57
         Width = 361
         Height = 178
-        TabOrder = 8
+        TabOrder = 7
         inherited GroupBox40: TGroupBox
           inherited lb_Hue_gain: TLabel
             Left = 332
@@ -444,7 +433,7 @@ object HSVForm2nd: THSVForm2nd
         Caption = 'Off when Write'
         Checked = True
         State = cbChecked
-        TabOrder = 9
+        TabOrder = 8
         Visible = False
       end
       object Button_15BaseInterp: TButton
@@ -453,7 +442,7 @@ object HSVForm2nd: THSVForm2nd
         Width = 49
         Height = 14
         Caption = 'I&nterp.'
-        TabOrder = 10
+        TabOrder = 9
         OnClick = Button_15BaseInterpClick
       end
       object Button_HInterp: TButton
@@ -462,7 +451,7 @@ object HSVForm2nd: THSVForm2nd
         Width = 49
         Height = 14
         Caption = 'H Interp.'
-        TabOrder = 11
+        TabOrder = 10
         OnClick = Button_HInterpClick
       end
       object Button_SInterp: TButton
@@ -471,7 +460,7 @@ object HSVForm2nd: THSVForm2nd
         Width = 49
         Height = 14
         Caption = 'S Interp.'
-        TabOrder = 12
+        TabOrder = 11
         OnClick = Button_SInterpClick
       end
       object Button_VInterp: TButton
@@ -480,7 +469,7 @@ object HSVForm2nd: THSVForm2nd
         Width = 49
         Height = 14
         Caption = 'V Interp.'
-        TabOrder = 13
+        TabOrder = 12
         OnClick = Button_VInterpClick
       end
       object CheckBox_ShowPattern: TCheckBox
@@ -489,7 +478,7 @@ object HSVForm2nd: THSVForm2nd
         Width = 97
         Height = 14
         Caption = 'Show Pattern'
-        TabOrder = 14
+        TabOrder = 13
         OnClick = CheckBox_ShowPatternClick
       end
       object GroupBox5: TGroupBox
@@ -498,7 +487,7 @@ object HSVForm2nd: THSVForm2nd
         Width = 185
         Height = 41
         Caption = 'Select Mode'
-        TabOrder = 15
+        TabOrder = 14
         object RadioButton_Global: TRadioButton
           Left = 120
           Top = 16
@@ -1123,6 +1112,32 @@ object HSVForm2nd: THSVForm2nd
         ShowHint = True
         TabOrder = 1
         OnClick = Button_ChromaResetClick
+      end
+    end
+    object GroupBox_HSVVersion: TGroupBox
+      Left = 632
+      Top = 8
+      Width = 105
+      Height = 33
+      Caption = 'HSV'
+      TabOrder = 18
+      object RadioButton_v1: TRadioButton
+        Left = 16
+        Top = 15
+        Width = 57
+        Height = 16
+        Caption = 'v1'
+        TabOrder = 0
+      end
+      object RadioButton_v2: TRadioButton
+        Left = 56
+        Top = 15
+        Width = 41
+        Height = 16
+        Caption = 'v2'
+        Checked = True
+        TabOrder = 1
+        TabStop = True
       end
     end
   end
