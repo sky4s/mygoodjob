@@ -59,7 +59,7 @@ colorspace(sRGBColorSpace), doubleHueSelected(false)
     hsvAdjust->addChangeListener(hsvListener);
     hsvAdjust->setMaxHueValue(MAX_HUE_VALUE);
 
-    captionIFListener = bptr < CaptionIFListener > (new CaptionIFListener());
+    captionIFListener = bptr < CaptionIFListener > (new CaptionIFListener(this));
     hsvAdjust->setCaptionIF(captionIFListener);
     hsvAdjust->updateHSVCaption();
 
@@ -241,12 +241,13 @@ void __fastcall THSVForm2nd::FormClose(TObject * Sender, TCloseAction & Action)
 void THSVForm2nd::Initial_HSV_table()
 {
     //initial table setting
+    bool inHSVv1 = parent->isInHSVv1();
     for (int i = 0; i < HUE_COUNT; i++) {
 	//hueTableTemp[i] = hueTable[i] = ((double) i) * MAX_HUE_VALUE / HUE_COUNT;
 	//satTableTemp[i] = satTable[i] = 0;
 	//valTableTemp[i] = valTable[i] = 0;
 	hueTable[i] = ((double) i) * MAX_HUE_VALUE / HUE_COUNT;
-	satTable[i] = 0;
+	satTable[i] = inHSVv1 ? 32 : 0;
 	valTable[i] = 0;
     }
 
@@ -689,10 +690,11 @@ void THSVForm2nd::initStringGrid_HSV()
 {
 
     //initial table setting
+    bool inHSVv1 = parent->isInHSVv1();
     for (int i = 0; i < HUE_COUNT; i++) {
 	stringGrid_HSV->Cells[0][i + 1] = IntToStr(WHOLE_HUE_ANGLE / HUE_COUNT * i) + "¢X";	// Index as hue
 	stringGrid_HSV->Cells[1][i + 1] = IntToStr(WHOLE_HUE_ANGLE / HUE_COUNT * i);	// Hue default value
-	stringGrid_HSV->Cells[2][i + 1] = 0;	// Saturation default value
+	stringGrid_HSV->Cells[2][i + 1] = inHSVv1 ? 1 : 0;	// Saturation default value
 	stringGrid_HSV->Cells[3][i + 1] = 0;	// Luminance default value
     }
 
@@ -870,6 +872,7 @@ void __fastcall THSVForm2nd::hsvAdjustsb_c3d_Manual39_hChange(TObject * Sender)
     int h = hsvPosition[0];
     int s = hsvPosition[1];
     int v = hsvPosition[2];
+    s = isInHSVv1()? s + 63 : s;
 
     //¥i¥H°µset
     btn_set->Enabled = true;
@@ -949,7 +952,10 @@ void __fastcall THSVForm2nd::hsvAdjustsb_c3d_Manual39_hChange(TObject * Sender)
     for (int i = 0; i < HUE_COUNT; i++) {
 	stringGrid_HSV->Cells[1][i + 1] =
 	    (((double) hueTable[i]) / MAX_HUE_VALUE) * WHOLE_HUE_ANGLE;
-	stringGrid_HSV->Cells[2][i + 1] = satTable[i];
+	/*int s = satTable[i];
+	   double saturation = inHSVv1 ? ((s + 63.) / 32) : s; */
+	stringGrid_HSV->Cells[2][i + 1] = getSaturationString(satTable[i]).c_str();
+	//stringGrid_HSV->Cells[2][i + 1] = satTable[i];
 	stringGrid_HSV->Cells[3][i + 1] = valTable[i];
     }
     //=========================================================================
@@ -963,10 +969,19 @@ void __fastcall THSVForm2nd::hsvAdjustsb_c3d_Manual39_hChange(TObject * Sender)
 }
 
 //---------------------------------------------------------------------------
+std::string THSVForm2nd::getSaturationString(int saturation)
+{
+    bool inHSVv1 = isInHSVv1();
+    double s = inHSVv1 ? (saturation / 32.) : saturation;
+    std::string str = _toString(s);
+    return str;
+};
 
-
-
-
+bool THSVForm2nd::isInHSVv1()
+{
+    bool inHSVv1 = RadioButton_v1->Checked;
+    return inHSVv1;
+};
 
 
 void __fastcall THSVForm2nd::RadioButton_deg60baseClick(TObject * Sender)

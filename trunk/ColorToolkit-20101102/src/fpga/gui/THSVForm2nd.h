@@ -61,7 +61,6 @@ class THSVForm2nd:public TForm, cms::util::CallBackIF, RGBInfoCallbackIF, Patter
     TStringGrid *stringGrid_HSV;
     TColorPickerFrame *colorPicker;
     TGroupBox *GroupBox2;
-    TCheckBox *cb_Hue_rotation;
     TButton *btn_set;
     TButton *btn_reset;
     TButton *btn_hsv_write;
@@ -137,6 +136,9 @@ class THSVForm2nd:public TForm, cms::util::CallBackIF, RGBInfoCallbackIF, Patter
     TRadioButton *RadioButton_Local;
     TRadioButton *RadioButton_Global;
     TGroupBox *GroupBox5;
+    TGroupBox *GroupBox_HSVVersion;
+    TRadioButton *RadioButton_v1;
+    TRadioButton *RadioButton_v2;
 
     void __fastcall btn_hsv_loadClick(TObject * Sender);
     void __fastcall btn_hsv_saveClick(TObject * Sender);
@@ -211,6 +213,8 @@ class THSVForm2nd:public TForm, cms::util::CallBackIF, RGBInfoCallbackIF, Patter
     int getValue();
     static int getSuggestLastHueValue(int firstHueValue);
     bool doubleHueSelected;
+    std::string getSaturationString(int saturation);
+
     //=========================================================================
 
     //=========================================================================
@@ -266,10 +270,14 @@ class THSVForm2nd:public TForm, cms::util::CallBackIF, RGBInfoCallbackIF, Patter
 
     class CaptionIFListener:public CaptionIF {
       private:
-	AnsiString astr;
+	//AnsiString astr;
+	THSVForm2nd * parent;
       public:
+	CaptionIFListener(THSVForm2nd * parent):parent(parent) {
+	};
 	virtual String getSaturationCaption(int saturationPos) {
-	    String result = (saturationPos);
+	    bool inHSVv1 = parent->isInHSVv1();
+	    String result = inHSVv1 ? (saturationPos + 63) / 32. : (saturationPos);
 	    return result;
 	};
 
@@ -374,6 +382,7 @@ class THSVForm2nd:public TForm, cms::util::CallBackIF, RGBInfoCallbackIF, Patter
     void HSV_LUT_FuncEnable(bool flag_en);	// 設定HSV lut button是否作用, flag =0 不作用, 反之,作用
     virtual void callback();
     virtual void callback(int_array rgbValues);
+    bool isInHSVv1();
     void imageMousePressed(TObject * Sender, TMouseButton Button, TShiftState Shift, int X, int Y);
 
     virtual void show15DegBasePattern();

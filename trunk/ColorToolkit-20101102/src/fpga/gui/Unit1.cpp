@@ -33,6 +33,7 @@ TForm *SharpnessForm;
 TForm *Sharpness12307Form;
 TForm *ContrastEnhanceForm;
 TForm *HSVForm;
+TForm *HSVForm2;
 TForm *C3DForm;
 TForm *SATForm;
 TForm *offsetForm;
@@ -163,6 +164,7 @@ void TMainForm::ContrastEnhanceFormNULL()	//remove by Michelle 20100716
 void TMainForm::HSVFormNULL()
 {
     HSVForm = NULL;
+    HSVForm2 = NULL;
 }
 
 void TMainForm::C3DFormNULL()	//remove by Michelle 20100716
@@ -228,6 +230,11 @@ void __fastcall TMainForm::FormClose(TObject * Sender, TCloseAction & Action)
 	HSVForm = NULL;
 	delete HSVForm;
     }
+    if (HSVForm2 != NULL) {
+	HSVForm2->Close();
+	HSVForm2 = NULL;
+	delete HSVForm2;
+    }
     if (C3DForm != NULL) {
 	C3DForm->Close();	// mask by Michelle 20100716
 	C3DForm = NULL;
@@ -280,6 +287,10 @@ void TMainForm::closeAllForms()
 	HSVForm->Close();
 	HSVForm = NULL;
     }
+    if (HSVForm2 != NULL) {
+	HSVForm2->Close();
+	HSVForm2 = NULL;
+    }
     if (C3DForm != NULL) {
 	C3DForm->Close();
 	C3DForm = NULL;
@@ -323,6 +334,10 @@ void __fastcall TMainForm::AUO_11307Click(TObject * Sender)
     if (HSVForm != NULL) {
 	HSVForm->Close();
 	HSVForm = NULL;
+    }
+    if (HSVForm2 != NULL) {
+	HSVForm2->Close();
+	HSVForm2 = NULL;
     }
     if (C3DForm != NULL) {
 	C3DForm->Close();
@@ -775,13 +790,13 @@ AnsiString TMainForm::AddressFile;
 
 void __fastcall TMainForm::mn_HSV2Click(TObject * Sender)
 {
-    if (HSVForm != NULL)
-	HSVForm->Show();
+    if (HSVForm2 != NULL)
+	HSVForm2->Show();
     else {
 	//if (TCON_DEV == "11307") {
 	//HSVForm = new THSVForm1(this);
-	HSVForm = new THSVForm2nd(this);
-	HSVForm->Show();
+	HSVForm2 = new THSVForm2nd(this);
+	HSVForm2->Show();
 	//}
     }
 }
