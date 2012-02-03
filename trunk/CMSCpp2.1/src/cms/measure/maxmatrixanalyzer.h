@@ -59,9 +59,11 @@ namespace cms {
 	     bptr < MeterMeasurement > getMeterMeasurement();
 	    double2D_ptr getTargetRatio();
 	    static bptr < MaxMatrixIntensityAnalyzer > getReadyAnalyzer(bptr <
-									      MeterMeasurement > mm,
-									      int rMax, int gMax,
-									      int bMax);
+									MeterMeasurement > mm,
+									int rMax, int gMax,
+									int bMax);
+	    static bptr < MaxMatrixIntensityAnalyzer > getReadyAnalyzer(XYZ_ptr rXYZ, XYZ_ptr gXYZ,
+							     XYZ_ptr bXYZ, XYZ_ptr wXYZ);
 	};
 
 	/*

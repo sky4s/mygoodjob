@@ -218,6 +218,7 @@ class TMainForm:public TForm {
     ProgressThread *progressThread;
     TThread *ca210Thread;
     bool connectCA210ByThread;
+
   public:			// User declarations
     //==========================================================================
     // meter
@@ -264,6 +265,7 @@ class TMainForm:public TForm {
     __fastcall TMainForm(TComponent * Owner);
     void showProgress(TProgressBar * progress);
     void stopProgress(TProgressBar * progress);
+    void setFunctionOn(bool on);
 
 };
 

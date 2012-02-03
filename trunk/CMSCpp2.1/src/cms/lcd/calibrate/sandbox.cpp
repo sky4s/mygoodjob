@@ -321,13 +321,9 @@ namespace cms {
 		    xyY_ptr refxyY = analyzer->getReferenceColor();
 		    XYZ_ptr targetXYZ = refxyY->toXYZ();
 
-		    bptr < MaxMatrixIntensityAnalyzer > ma(new MaxMatrixIntensityAnalyzer());
-		    ma->setupComponent(Channel::R, rXYZ);
-		    ma->setupComponent(Channel::G, gXYZ);
-		    ma->setupComponent(Channel::B, bXYZ);
-		    ma->setupComponent(Channel::W, targetXYZ);
+		    bptr < MaxMatrixIntensityAnalyzer > ma =
+			MaxMatrixIntensityAnalyzer::getReadyAnalyzer(rXYZ, gXYZ, bXYZ, targetXYZ);
 		    ma->setReferenceRGB(refRGB);
-		    ma->enter();
 
 		    idealIntensity = getIdealIntensity(componentVector, ma);
 		    rTargetIntensity = idealIntensity->R;
@@ -358,13 +354,9 @@ namespace cms {
 		    XYZ_ptr targetXYZ = (*targetXYZVector)[x];
 
 		    //不斷產生Analyzer, 因為Target White一直變化, 所以利用新的Analyzer, 計算出Intensity
-		    bptr < MaxMatrixIntensityAnalyzer > ma(new MaxMatrixIntensityAnalyzer());
-		    ma->setupComponent(Channel::R, rXYZ);
-		    ma->setupComponent(Channel::G, gXYZ);
-		    ma->setupComponent(Channel::B, bXYZ);
-		    ma->setupComponent(Channel::W, targetXYZ);
+		    bptr < MaxMatrixIntensityAnalyzer > ma =
+			MaxMatrixIntensityAnalyzer::getReadyAnalyzer(rXYZ, gXYZ, bXYZ, targetXYZ);
 		    ma->setReferenceRGB(refRGB);
-		    ma->enter();
 
 		    //利用新的analyzer算出新的component(就是intensity)
 		    Component_vector_ptr newcomponentVector =
@@ -534,12 +526,9 @@ namespace cms {
 		xyY_ptr gxyY = analyzer->getPrimaryColor(Channel::G);
 		xyY_ptr bxyY = analyzer->getPrimaryColor(Channel::B);
 
-		bptr < MaxMatrixIntensityAnalyzer > mmia(new MaxMatrixIntensityAnalyzer());
-		mmia->setupComponent(Channel::R, rxyY->toXYZ());
-		mmia->setupComponent(Channel::G, gxyY->toXYZ());
-		mmia->setupComponent(Channel::B, bxyY->toXYZ());
-		mmia->setupComponent(Channel::W, targetXYZ);
-		mmia->enter();
+		bptr < MaxMatrixIntensityAnalyzer > mmia =
+		    MaxMatrixIntensityAnalyzer::getReadyAnalyzer(rxyY->toXYZ(), gxyY->toXYZ(),
+								 bxyY->toXYZ(), targetXYZ);
 
 		Component_vector_ptr newcomponentVector = fetchNewComponent(mmia, componentVector);
 

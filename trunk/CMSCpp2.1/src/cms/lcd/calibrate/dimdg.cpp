@@ -66,12 +66,11 @@ namespace cms {
 		xyY_ptr bxyY = analyzer->getPrimaryColor(Channel::B);
 
 		foreach(const XYZ_ptr targetXYZ, *targetXYZVector) {
-		    bptr < MaxMatrixIntensityAnalyzer > analyzer(new MaxMatrixIntensityAnalyzer());
-		    analyzer->setupComponent(Channel::R, rxyY->toXYZ());
-		    analyzer->setupComponent(Channel::G, gxyY->toXYZ());
-		    analyzer->setupComponent(Channel::B, bxyY->toXYZ());
-		    analyzer->setupComponent(Channel::W, targetXYZ);
-		    analyzer->enter();
+
+		    bptr < MaxMatrixIntensityAnalyzer > analyzer =
+			MaxMatrixIntensityAnalyzer::getReadyAnalyzer(rxyY->toXYZ(), gxyY->toXYZ(),
+								     bxyY->toXYZ(), targetXYZ);
+
 		    Component_vector_ptr
 			newcomponentVector = fetchNewComponent(analyzer, componentVector);
 		    //STORE_COMPONENT(_toString(x++) + ".xls",
