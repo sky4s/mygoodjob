@@ -403,7 +403,7 @@ void TMainForm::initCA210Meter()
 
 	if (connectCA210ByThread) {
 	    stopProgress(MainForm->ProgressBar1);
-	    Enabled = true;
+	    setFunctionOn(true);
 	    ca210Thread->Terminate();
 	    delete ca210Thread;
 	    ca210Thread = null;
@@ -413,7 +413,8 @@ void TMainForm::initCA210Meter()
     catch(EOleException & ex) {
 	if (connectCA210ByThread) {
 	    stopProgress(MainForm->ProgressBar1);
-	    Enabled = true;
+	    //MainForm->PageControl1->Enabled = true;
+	    //MainForm->MainMenu1->Enabled = true;
 	}
 
 	ShowMessage
@@ -552,8 +553,6 @@ void TMainForm::setDummyMeterFile(bptr < cms::colorformat::DGLutFile > dglutFile
     bptr < DGLutProperty > property = dglutFile->getProperty();
     if (null != property) {
 	//若有property則為新版
-	bptr < MaxMatrixIntensityAnalyzer > matrixAnalyzer(new MaxMatrixIntensityAnalyzer(mm));
-	analyzer = matrixAnalyzer;
 
 	//=====================================================================
 	// 設定target analyzer
@@ -564,11 +563,9 @@ void TMainForm::setDummyMeterFile(bptr < cms::colorformat::DGLutFile > dglutFile
 	    xyY_ptr gxyY = property->getTargetReferenceColor(Channel::G);
 	    xyY_ptr bxyY = property->getTargetReferenceColor(Channel::B);
 
-	    matrixAnalyzer->setupComponent(Channel::W, targetwxyY->toXYZ());
-	    matrixAnalyzer->setupComponent(Channel::R, rxyY->toXYZ());
-	    matrixAnalyzer->setupComponent(Channel::G, gxyY->toXYZ());
-	    matrixAnalyzer->setupComponent(Channel::B, bxyY->toXYZ());
-	    matrixAnalyzer->enter();
+	    bptr < MaxMatrixIntensityAnalyzer > matrixAnalyzer =
+		MaxMatrixIntensityAnalyzer::getReadyAnalyzer(rxyY->toXYZ(), gxyY->toXYZ(),
+							     bxyY->toXYZ(), targetwxyY->toXYZ());
 
 	    string_ptr comment = property->getProperty("reference white comment");
 	    if (null != comment) {
@@ -576,6 +573,7 @@ void TMainForm::setDummyMeterFile(bptr < cms::colorformat::DGLutFile > dglutFile
 	    }
 	    RGB_ptr rgb = property->getTargetReferenceRGB();
 	    matrixAnalyzer->setReferenceRGB(rgb);
+	    analyzer = matrixAnalyzer;
 	}
 	//=====================================================================
 
@@ -584,19 +582,23 @@ void TMainForm::setDummyMeterFile(bptr < cms::colorformat::DGLutFile > dglutFile
 	//=====================================================================
 	xyY_ptr nativewxyY = property->getNativeReferenceColor(Channel::W);
 	if (null != nativewxyY) {
-	    bptr < MaxMatrixIntensityAnalyzer > matrixAnalyzer2(new MaxMatrixIntensityAnalyzer(mm));
-	    nativeWhiteAnalyzer = matrixAnalyzer2;
+	    //bptr < MaxMatrixIntensityAnalyzer > matrixAnalyzer2(new MaxMatrixIntensityAnalyzer(mm));
+	    //nativeWhiteAnalyzer = matrixAnalyzer2;
 	    xyY_ptr rxyY = property->getNativeReferenceColor(Channel::R);
 	    xyY_ptr gxyY = property->getNativeReferenceColor(Channel::G);
 	    xyY_ptr bxyY = property->getNativeReferenceColor(Channel::B);
 	    RGB_ptr refRGB = property->getReferenceRGB(DGLutProperty::Native);
 
+	    bptr < MaxMatrixIntensityAnalyzer > matrixAnalyzer2 =
+		MaxMatrixIntensityAnalyzer::getReadyAnalyzer(rxyY->toXYZ(), gxyY->toXYZ(),
+							     bxyY->toXYZ(), nativewxyY->toXYZ());
 	    matrixAnalyzer2->setReferenceRGB(refRGB);
-	    matrixAnalyzer2->setupComponent(Channel::W, nativewxyY->toXYZ());
-	    matrixAnalyzer2->setupComponent(Channel::R, rxyY->toXYZ());
-	    matrixAnalyzer2->setupComponent(Channel::G, gxyY->toXYZ());
-	    matrixAnalyzer2->setupComponent(Channel::B, bxyY->toXYZ());
-	    matrixAnalyzer2->enter();
+	    nativeWhiteAnalyzer = matrixAnalyzer2;
+	    /*matrixAnalyzer2->setupComponent(Channel::W, nativewxyY->toXYZ());
+	       matrixAnalyzer2->setupComponent(Channel::R, rxyY->toXYZ());
+	       matrixAnalyzer2->setupComponent(Channel::G, gxyY->toXYZ());
+	       matrixAnalyzer2->setupComponent(Channel::B, bxyY->toXYZ());
+	       matrixAnalyzer2->enter(); */
 	}
 	//=====================================================================
 
@@ -1419,6 +1421,16 @@ CA-X10 init procedure
                 initCA210Meter();
 */
 //---------------------------------------------------------------------------
+
+void TMainForm::setFunctionOn(bool on)
+{
+    MainForm->PageControl1->Visible = on;
+    MainForm->MatrixCalibration1->Enabled = on;
+    MainForm->TargetWhite1->Enabled = on;
+    MainForm->CCTLUT1->Enabled = on;
+    MainForm->GammaAdj1->Enabled = on;
+    MainForm->Measurement1->Enabled = on;
+};
 void __fastcall TMainForm::FormActivate(TObject * Sender)
 {
     if (true == linkCA210) {
@@ -1427,9 +1439,8 @@ void __fastcall TMainForm::FormActivate(TObject * Sender)
 	    class CA210Thread:public TThread {
 	      protected:
 		void __fastcall Execute() {
+		    MainForm->setFunctionOn(false);
 		    MainForm->StatusBar1->Panels->Items[1]->Text = "CA-210 Connecting...";
-
-		    MainForm->Enabled = false;
 		    MainForm->initCA210Meter();
 		};
 	      public:

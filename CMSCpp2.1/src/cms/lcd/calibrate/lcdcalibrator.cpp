@@ -356,23 +356,6 @@ namespace cms {
 
 		nativeWhiteAnalyzer =
 		    MaxMatrixIntensityAnalyzer::getReadyAnalyzer(mm, max, max, blueMax);
-		//bptr < MaxMatrixIntensityAnalyzer > (new MaxMatrixIntensityAnalyzer(mm));
-		//¤wª¾rgb
-		/*RGB_ptr rgb(new RGBColor(max, max, blueMax, MaxValue::Int8Bit));
-		   RGB_ptr r(new RGBColor(max, 0, 0, MaxValue::Int8Bit));
-		   RGB_ptr g(new RGBColor(0, max, 0, MaxValue::Int8Bit));
-		   RGB_ptr b(new RGBColor(0, 0, blueMax, MaxValue::Int8Bit));
-
-		   int defaultWaitTimes = nativeWhiteAnalyzer->getWaitTimes();
-		   nativeWhiteAnalyzer->setWaitTimes(5000);
-		   nativeWhiteAnalyzer->beginAnalyze();
-		   nativeWhiteAnalyzer->setupComponent(Channel::R, r);
-		   nativeWhiteAnalyzer->setupComponent(Channel::G, g);
-		   nativeWhiteAnalyzer->setupComponent(Channel::B, b);
-		   nativeWhiteAnalyzer->setupComponent(Channel::W, rgb);
-		   nativeWhiteAnalyzer->enter();
-		   nativeWhiteAnalyzer->setWaitTimes(defaultWaitTimes); */
-		//=====================================================
 	    };
 
 	    /*

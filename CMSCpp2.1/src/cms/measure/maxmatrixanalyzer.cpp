@@ -200,7 +200,7 @@ namespace cms {
 	};
 	bptr < MaxMatrixIntensityAnalyzer >
 	    MaxMatrixIntensityAnalyzer::getReadyAnalyzer(bptr < MeterMeasurement > mm,
-							       int rMax, int gMax, int bMax) {
+							 int rMax, int gMax, int bMax) {
 	    bptr < MaxMatrixIntensityAnalyzer >
 		nativeWhiteAnalyzer(new MaxMatrixIntensityAnalyzer(mm));
 	    //¤wª¾rgb
@@ -219,6 +219,17 @@ namespace cms {
 	    nativeWhiteAnalyzer->enter();
 	    nativeWhiteAnalyzer->setWaitTimes(defaultWaitTimes);
 	    return nativeWhiteAnalyzer;
+	};
+	bptr < MaxMatrixIntensityAnalyzer >
+	    MaxMatrixIntensityAnalyzer::getReadyAnalyzer(XYZ_ptr rXYZ, XYZ_ptr gXYZ, XYZ_ptr bXYZ,
+							 XYZ_ptr wXYZ) {
+	    bptr < MaxMatrixIntensityAnalyzer > ma(new MaxMatrixIntensityAnalyzer());
+	    ma->setupComponent(Channel::R, rXYZ);
+	    ma->setupComponent(Channel::G, gXYZ);
+	    ma->setupComponent(Channel::B, bXYZ);
+	    ma->setupComponent(Channel::W, wXYZ);
+	    ma->enter();
+	    return ma;
 	};
 	//=====================================================================
 	//=====================================================================
