@@ -214,6 +214,7 @@ class THSVForm2nd:public TForm, cms::util::CallBackIF, RGBInfoCallbackIF, Patter
     static int getSuggestLastHueValue(int firstHueValue);
     bool doubleHueSelected;
     std::string getSaturationString(int saturation);
+    int getSaturationValue(String saturationString);
 
     //=========================================================================
 
@@ -278,6 +279,7 @@ class THSVForm2nd:public TForm, cms::util::CallBackIF, RGBInfoCallbackIF, Patter
 	virtual String getSaturationCaption(int saturationPos) {
 	    bool inHSVv1 = parent->isInHSVv1();
 	    String result = inHSVv1 ? (saturationPos + 63) / 32. : (saturationPos);
+	    //saturationPos = inHSVv1 ? saturationPos : saturationPos;
 	    return result;
 	};
 

@@ -1,6 +1,6 @@
 object HSVForm2nd: THSVForm2nd
-  Left = 341
-  Top = 239
+  Left = 285
+  Top = 193
   Width = 869
   Height = 797
   Caption = 'HSV2'
@@ -339,7 +339,7 @@ object HSVForm2nd: THSVForm2nd
         Visible = False
       end
       object CheckBox_AutoWrite: TCheckBox
-        Left = 273
+        Left = 169
         Top = 11
         Width = 72
         Height = 14
@@ -426,15 +426,14 @@ object HSVForm2nd: THSVForm2nd
         end
       end
       object CheckBox_OffWhenWrite: TCheckBox
-        Left = 379
-        Top = 237
-        Width = 126
+        Left = 169
+        Top = 29
+        Width = 94
         Height = 14
         Caption = 'Off when Write'
         Checked = True
         State = cbChecked
         TabOrder = 8
-        Visible = False
       end
       object Button_15BaseInterp: TButton
         Left = 392
@@ -473,9 +472,9 @@ object HSVForm2nd: THSVForm2nd
         OnClick = Button_VInterpClick
       end
       object CheckBox_ShowPattern: TCheckBox
-        Left = 344
+        Left = 352
         Top = 11
-        Width = 97
+        Width = 89
         Height = 14
         Caption = 'Show Pattern'
         TabOrder = 13
@@ -484,23 +483,23 @@ object HSVForm2nd: THSVForm2nd
       object GroupBox5: TGroupBox
         Left = 4
         Top = 14
-        Width = 185
-        Height = 41
+        Width = 157
+        Height = 35
         Caption = 'Select Mode'
         TabOrder = 14
         object RadioButton_Global: TRadioButton
-          Left = 120
+          Left = 104
           Top = 16
-          Width = 57
+          Width = 49
           Height = 17
           Caption = 'Global'
           TabOrder = 0
           OnClick = RadioButton_GlobalClick
         end
         object RadioButton_Local: TRadioButton
-          Left = 64
+          Left = 56
           Top = 16
-          Width = 57
+          Width = 49
           Height = 17
           Caption = 'Local'
           TabOrder = 1
@@ -509,7 +508,7 @@ object HSVForm2nd: THSVForm2nd
         object RadioButton_Single: TRadioButton
           Left = 8
           Top = 16
-          Width = 57
+          Width = 49
           Height = 17
           Caption = 'Single'
           Checked = True
