@@ -152,7 +152,7 @@ namespace gui {
     bool IniFileUtil::readIntArray(const AnsiString Section, const AnsiString Ident, int *array,
 				   int length) {
 	String str = iniFile->ReadString(Section, Ident, "");
-	if (str.Length() == 0 || str.Length() != length) {
+	if (str.Length() == 0 /* || str.Length() != length */) {
 	    return false;
 	}
 	using namespace math;

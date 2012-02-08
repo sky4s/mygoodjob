@@ -241,7 +241,7 @@ void __fastcall THSVForm2nd::FormClose(TObject * Sender, TCloseAction & Action)
 void THSVForm2nd::Initial_HSV_table()
 {
     //initial table setting
-    bool inHSVv1 = parent->isInHSVv1();
+    bool inHSVv1 = isInHSVv1();
     for (int i = 0; i < HUE_COUNT; i++) {
 	//hueTableTemp[i] = hueTable[i] = ((double) i) * MAX_HUE_VALUE / HUE_COUNT;
 	//satTableTemp[i] = satTable[i] = 0;
@@ -285,7 +285,7 @@ void THSVForm2nd::Hue_LUTWrite()
 	hueTable[i] =
 	    (int) (StrToFloat(stringGrid_HSV->Cells[1][i + 1]) /
 		   WHOLE_HUE_ANGLE * MAX_HUE_VALUE + 0.5);
-	satTable[i] = StrToInt(stringGrid_HSV->Cells[2][i + 1]);
+	satTable[i] = getSaturationValue(stringGrid_HSV->Cells[2][i + 1]);
 	valTable[i] = StrToInt(stringGrid_HSV->Cells[3][i + 1]);
     }
 
@@ -358,7 +358,9 @@ bool THSVForm2nd::Load_HSV(String Fpath)
     ini.Section = HSV;
 
     ini.readCheckBox(CheckBox4);
-    ini.readCheckBox(CheckBox_SAT_CLIP_EN);
+    if( true==CheckBox_SAT_CLIP_EN->Visible) {
+        ini.readCheckBox(CheckBox_SAT_CLIP_EN);
+    }
     ini.readScrollBar("SAT_TP", ScrollBar_TurnPoint);
     ini.readIntArray("H", hueTable, HUE_COUNT);
     ini.readIntArray("S", satTable, HUE_COUNT);
@@ -448,7 +450,9 @@ void __fastcall THSVForm2nd::btn_hsv_saveClick(TObject * Sender)
     ini.Section = HSV;
 
     ini.writeCheckBox(CheckBox4);
-    ini.writeCheckBox(CheckBox_SAT_CLIP_EN);
+    if( true==CheckBox_SAT_CLIP_EN->Visible) {
+        ini.writeCheckBox(CheckBox_SAT_CLIP_EN);
+    }
     ini.writeScrollBar("SAT_TP", ScrollBar_TurnPoint);
     ini.writeIntArray("H", hueTable, HUE_COUNT);
     ini.writeIntArray("S", satTable, HUE_COUNT);
@@ -690,7 +694,7 @@ void THSVForm2nd::initStringGrid_HSV()
 {
 
     //initial table setting
-    bool inHSVv1 = parent->isInHSVv1();
+    bool inHSVv1 = isInHSVv1();
     for (int i = 0; i < HUE_COUNT; i++) {
 	stringGrid_HSV->Cells[0][i + 1] = IntToStr(WHOLE_HUE_ANGLE / HUE_COUNT * i) + "°";	// Index as hue
 	stringGrid_HSV->Cells[1][i + 1] = IntToStr(WHOLE_HUE_ANGLE / HUE_COUNT * i);	// Hue default value
@@ -845,7 +849,8 @@ void __fastcall THSVForm2nd::stringGrid_HSVSelectCell(TObject * Sender,
     if (positive) {
 	h += MAX_HUE_VALUE;
     }
-
+    bool inHSVv1 = isInHSVv1();
+    s = inHSVv1 ? s - 63 : s;
     hsvAdjust->setHSVPostition(h, s, v);
     //=========================================================================
     setupPatternForm();
@@ -975,6 +980,13 @@ std::string THSVForm2nd::getSaturationString(int saturation)
     double s = inHSVv1 ? (saturation / 32.) : saturation;
     std::string str = _toString(s);
     return str;
+};
+
+int THSVForm2nd::getSaturationValue(String saturationString)
+{
+    bool inHSVv1 = isInHSVv1();
+    int d = _toInt(_toDouble(saturationString.c_str()) * 32);
+    return inHSVv1 ? d : StrToInt(saturationString);
 };
 
 bool THSVForm2nd::isInHSVv1()
@@ -1419,14 +1431,12 @@ void THSVForm2nd::callback()
 	RGBBase::calculateRGBXYZMatrix(sourceRGBxyY[0], sourceRGBxyY[1],
 				       sourceRGBxyY[3],
 				       sourceRGBxyY[4], sourceRGBxyY[6],
-				       sourceRGBxyY[7],
-				       sourceWhiteXYZValues);
+				       sourceRGBxyY[7], sourceWhiteXYZValues);
     double2D_ptr targetToXYZMatrix =
 	RGBBase::calculateRGBXYZMatrix(targetRGBxyY[0], targetRGBxyY[1],
 				       targetRGBxyY[3],
 				       targetRGBxyY[4], targetRGBxyY[6],
-				       targetRGBxyY[7],
-				       targetWhiteXYZValues);
+				       targetRGBxyY[7], targetWhiteXYZValues);
     //取出gamma
     double sourceGamma = GamutSetupForm->Edit_SourceGamma->Text.ToDouble();
     double targetGamma = GamutSetupForm->Edit_TargetGamma->Text.ToDouble();
@@ -1899,7 +1909,6 @@ short THSVForm2nd::getValueFromChromaEnhance(short hue, short chroma)
     //==============================================================================================
     return value;
 }
-
 void __fastcall THSVForm2nd::ScrollBar_ChromaChange(TObject * Sender)
 {
     //取出現有的chroma值
