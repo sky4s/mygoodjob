@@ -288,7 +288,7 @@ object TargetWhiteForm2: TTargetWhiteForm2
           Left = 128
           Top = 235
           Width = 32
-          Height = 22
+          Height = 21
           Hint = 'Click this can auto copy Inverse B to B of RGB Ratio'
           ParentShowHint = False
           ShowHint = True
@@ -382,6 +382,7 @@ object TargetWhiteForm2: TTargetWhiteForm2
           ParentShowHint = False
           ShowHint = True
           TabOrder = 11
+          OnClick = Button_FindInverseIntensityClick
         end
       end
       object GroupBox5: TGroupBox

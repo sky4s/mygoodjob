@@ -86,8 +86,8 @@ class TTargetWhiteForm2:public TForm, gui::event::WindowListener {
     TButton *Button_Disconnect;
     TCheckBox *CheckBox_Lock;
     TCheckBox *CheckBox_AvoidHookTV;
-        TEdit *Edit_InverseZofB;
-        TButton *Button_FindInverseZofB;
+    TEdit *Edit_InverseZofB;
+    TButton *Button_FindInverseZofB;
     TGroupBox *GroupBox7;
     TLabel *Label4;
     TEdit *Edit_refx;
@@ -98,8 +98,8 @@ class TTargetWhiteForm2:public TForm, gui::event::WindowListener {
     TButton *Button_Measure;
     TProgressBar *ProgressBar1;
     TButton *Button_ConnectToggle;
-        TEdit *Edit_InverseIntensityofB;
-        TButton *Button_FindInverseIntensity;
+    TEdit *Edit_InverseIntensityofB;
+    TButton *Button_FindInverseIntensity;
     void __fastcall RadioButton_MaxRGBClick(TObject * Sender);
     void __fastcall ScrollBar_RChange(TObject * Sender);
     void __fastcall ScrollBar_GChange(TObject * Sender);
@@ -121,6 +121,7 @@ class TTargetWhiteForm2:public TForm, gui::event::WindowListener {
     void __fastcall Button_FindInverseZofBClick(TObject * Sender);
     void __fastcall Button_MeasureClick(TObject * Sender);
     void __fastcall Button_ConnectToggleClick(TObject * Sender);
+    void __fastcall Button_FindInverseIntensityClick(TObject * Sender);
   private:			// User declarations
     void setColorimetricValues(double x, double y, double up, double vp);
     void scrollBar_Change();

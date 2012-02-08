@@ -422,6 +422,7 @@ void __fastcall TTargetWhiteForm2::FormCreate(TObject * Sender)
     binder->bind(Edit_G, ScrollBar_G);
     binder->bind(Edit_B, ScrollBar_B);
     binder->bind(Edit_InverseZofB, Edit_B);
+    binder->bind(Edit_InverseIntensityofB, Edit_B);
 }
 
 //---------------------------------------------------------------------------
@@ -625,4 +626,34 @@ void __fastcall TTargetWhiteForm2::Button_ConnectToggleClick(TObject * Sender)
 //---------------------------------------------------------------------------
 
 
+
+
+void __fastcall TTargetWhiteForm2::Button_FindInverseIntensityClick(TObject * Sender)
+{
+    int max = bitDepth->getInputMaxDigitalCount();
+    using namespace cms::measure;
+    bptr < MaxMatrixIntensityAnalyzer > analyzer =
+	MaxMatrixIntensityAnalyzer::getReadyAnalyzer(MainForm->mm, max, max, max);
+    using namespace Dep;
+    RGB_ptr preIntensity;
+    findInverseZ = false;
+    maxZDGCode = max;
+
+    for (int x = max; x > (max - 50); x--) {
+	RGB_ptr rgb(new RGBColor(x, x, x));
+	RGB_ptr intensity = analyzer->getIntensity(rgb);
+	bool inverseB = intensity->B < preIntensity->B;
+	if (inverseB) {
+	    maxZDGCode = x;
+	    findInverseZ = true;
+	    break;
+	}
+	preIntensity = intensity;
+    }
+
+    Edit_InverseZofB->Text = maxZDGCode;
+    binder->active(Sender);
+}
+
+//---------------------------------------------------------------------------
 
