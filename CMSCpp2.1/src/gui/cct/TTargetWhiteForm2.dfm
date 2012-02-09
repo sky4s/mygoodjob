@@ -293,6 +293,7 @@ object TargetWhiteForm2: TTargetWhiteForm2
           ParentShowHint = False
           ShowHint = True
           TabOrder = 7
+          Visible = False
         end
         object Button_FindInverseZofB: TButton
           Left = 10
@@ -304,6 +305,7 @@ object TargetWhiteForm2: TTargetWhiteForm2
           ParentShowHint = False
           ShowHint = True
           TabOrder = 8
+          Visible = False
           OnClick = Button_FindInverseZofBClick
         end
         object GroupBox7: TGroupBox
