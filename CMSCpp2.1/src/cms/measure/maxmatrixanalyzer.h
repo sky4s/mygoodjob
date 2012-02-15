@@ -63,7 +63,11 @@ namespace cms {
 									int rMax, int gMax,
 									int bMax);
 	    static bptr < MaxMatrixIntensityAnalyzer > getReadyAnalyzer(XYZ_ptr rXYZ, XYZ_ptr gXYZ,
-							     XYZ_ptr bXYZ, XYZ_ptr wXYZ);
+									XYZ_ptr bXYZ, XYZ_ptr wXYZ);
+	    static bptr < MaxMatrixIntensityAnalyzer > getReadyAnalyzer(bptr <
+									MeterMeasurement > mm,
+									XYZ_ptr rXYZ, XYZ_ptr gXYZ,
+									XYZ_ptr bXYZ, XYZ_ptr wXYZ);
 	};
 
 	/*

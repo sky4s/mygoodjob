@@ -564,7 +564,7 @@ void TMainForm::setDummyMeterFile(bptr < cms::colorformat::DGLutFile > dglutFile
 	    xyY_ptr bxyY = property->getTargetReferenceColor(Channel::B);
 
 	    bptr < MaxMatrixIntensityAnalyzer > matrixAnalyzer =
-		MaxMatrixIntensityAnalyzer::getReadyAnalyzer(rxyY->toXYZ(), gxyY->toXYZ(),
+		MaxMatrixIntensityAnalyzer::getReadyAnalyzer(mm, rxyY->toXYZ(), gxyY->toXYZ(),
 							     bxyY->toXYZ(), targetwxyY->toXYZ());
 
 	    string_ptr comment = property->getProperty("reference white comment");

@@ -64,7 +64,7 @@ namespace cms {
 		// ­pºâa/c/d
 		//==============================================================
 		componentRelation =
-		    bptr < ComponentRelationIF >
+		    bptr < ComponentLinearRelation >
 		    (new ComponentLinearRelation(componentVector));
 		//==============================================================
 

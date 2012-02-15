@@ -269,11 +269,7 @@ namespace cms {
 
 		static double_vector_ptr getGammaCurveVector(double gamma, int n, int
 							     effectiven);
-		static double_vector_ptr getAbsoluteGammaCurveVector(double
-								     gamma, int n, int
-								     effectiven,
-								     Component_vector_ptr
-								     componentVector);
+
 		static double_vector_ptr getGammaCurveVector(double
 							     dimGamma, int
 							     dimGammaEnd, double
@@ -290,6 +286,11 @@ namespace cms {
 		    getLuminanceGammaCurve(double_vector_ptr normalGammaCurve,
 					   double maxLuminance, double minLuminance,
 					   bool absoluteGamma, int absoluteGammaStart);
+		static double_vector_ptr
+		    getLuminanceGammaCurve(double_vector_ptr normalGammaCurve,
+					   double maxLuminance, double minLuminance,
+					   bool absoluteGamma, int absoluteGammaStart,
+					   double absStartAboveGamma);
 		//==============================================================
 		// constructor
 		//==============================================================

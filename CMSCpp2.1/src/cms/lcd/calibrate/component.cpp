@@ -93,16 +93,16 @@ namespace cms {
 
 		foreach(const RGB_ptr & rgb, *rgbMeasureCode) {
 		    RGB_ptr intensity = analyzer->getIntensity(rgb);
-        	    if (true == waitingStable) {
+		    if (true == waitingStable) {
 			waitingStable = false;
 			analyzer->setWaitTimes(waitTimes);
 		    }
 
 		    XYZ_ptr XYZ = analyzer->getCIEXYZ();
-                    if( null !=XYZ && null != intensity) {
-		    Component_ptr component(new Component(rgb, intensity, XYZ));
-		    result->push_back(component);
-                    }
+		    if (null != XYZ && null != intensity) {
+			Component_ptr component(new Component(rgb, intensity, XYZ));
+			result->push_back(component);
+		    }
 
 
 
@@ -227,7 +227,7 @@ namespace cms {
 		//==============================================================
 	    };
 
-	    void ComponentLinearRelation:: init(Component_vector_ptr componentVector) {
+	    void ComponentLinearRelation::init(Component_vector_ptr componentVector) {
 		//==============================================================
 		// 建立回歸資料
 		//==============================================================
@@ -281,12 +281,12 @@ namespace cms {
 		//==============================================================
 		int size = componentVector->size();
 		/*double_vector_ptr rKeys(new double_vector(size));
-		double_vector_ptr gKeys(new double_vector(size));
-		double_vector_ptr bKeys(new double_vector(size));
-		double_vector_ptr rValues(new double_vector(size));
-		double_vector_ptr gValues(new double_vector(size));
-		double_vector_ptr bValues(new double_vector(size));
-		double_vector_ptr YValues(new double_vector(size));*/
+		   double_vector_ptr gKeys(new double_vector(size));
+		   double_vector_ptr bKeys(new double_vector(size));
+		   double_vector_ptr rValues(new double_vector(size));
+		   double_vector_ptr gValues(new double_vector(size));
+		   double_vector_ptr bValues(new double_vector(size));
+		   double_vector_ptr YValues(new double_vector(size)); */
 		double_vector_ptr rKeys(new double_vector());
 		double_vector_ptr gKeys(new double_vector());
 		double_vector_ptr bKeys(new double_vector());
@@ -304,24 +304,24 @@ namespace cms {
 		    code->getValues(values, MaxValue::Double255);
 
 		    /*(*rKeys)[x] = values[0];
-		    (*gKeys)[x] = values[1];
-		    (*bKeys)[x] = values[2];
-		    (*rValues)[x] = intensity->R;
-		    (*gValues)[x] = intensity->G;
-		    (*bValues)[x] = intensity->B;
-		    (*YValues)[x] = component->XYZ->Y;*/
+		       (*gKeys)[x] = values[1];
+		       (*bKeys)[x] = values[2];
+		       (*rValues)[x] = intensity->R;
+		       (*gValues)[x] = intensity->G;
+		       (*bValues)[x] = intensity->B;
+		       (*YValues)[x] = component->XYZ->Y; */
 
-                    rKeys->push_back(values[0]);
-                    gKeys->push_back(values[1]);
-                    bKeys->push_back(values[2]);
-                    double r =intensity->R;
-                    double g =intensity->G;
-                    double b =intensity->B;
-                    rValues->push_back(r);
-                    gValues->push_back(g);
-                    bValues->push_back(b);
-                    double Y = component->XYZ->Y;
-                    YValues->push_back(Y);
+		    rKeys->push_back(values[0]);
+		    gKeys->push_back(values[1]);
+		    bKeys->push_back(values[2]);
+		    double r = intensity->R;
+		    double g = intensity->G;
+		    double b = intensity->B;
+		    rValues->push_back(r);
+		    gValues->push_back(g);
+		    bValues->push_back(b);
+		    double Y = component->XYZ->Y;
+		    YValues->push_back(Y);
 
 		    if (-1 == rMax) {
 			rMax = values[0];
@@ -337,8 +337,8 @@ namespace cms {
 		//==============================================================
 		// 產生RGB LUT
 		//==============================================================
-		 DoubleArray::inspect(rKeys);
-		 DoubleArray::inspect(rValues);
+		DoubleArray::inspect(rKeys);
+		DoubleArray::inspect(rValues);
 
 		rKeys = DoubleArray::getReverse(rKeys);
 		gKeys = DoubleArray::getReverse(gKeys);

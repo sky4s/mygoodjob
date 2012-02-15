@@ -79,7 +79,7 @@ namespace cms {
 		    return XYZ;
 		}
 	    } else {
-		throw IllegalStateException("mm = null");
+		//throw IllegalStateException("mm = null");
 	    }
 	};
 
@@ -139,14 +139,14 @@ namespace cms {
 	    if (null != mm) {
 		mm->setMeasureWindowsVisible(true);
 	    } else {
-		throw IllegalStateException("mm = null");
+		//throw IllegalStateException("mm = null");
 	    }
 	};
 	void MaxMatrixIntensityAnalyzer::endAnalyze() {
 	    if (null != mm) {
 		mm->setMeasureWindowsVisible(false);
 	    } else {
-		throw IllegalStateException("mm = null");
+		//throw IllegalStateException("mm = null");
 	    }
 	};
 	void MaxMatrixIntensityAnalyzer::setWaitTimes(int waitTimes) {
@@ -221,9 +221,16 @@ namespace cms {
 	    return nativeWhiteAnalyzer;
 	};
 	bptr < MaxMatrixIntensityAnalyzer >
-	    MaxMatrixIntensityAnalyzer::getReadyAnalyzer(XYZ_ptr rXYZ, XYZ_ptr gXYZ, XYZ_ptr bXYZ,
-							 XYZ_ptr wXYZ) {
-	    bptr < MaxMatrixIntensityAnalyzer > ma(new MaxMatrixIntensityAnalyzer());
+	    MaxMatrixIntensityAnalyzer::getReadyAnalyzer(XYZ_ptr rXYZ,
+							 XYZ_ptr gXYZ, XYZ_ptr bXYZ, XYZ_ptr wXYZ) {
+
+	    return getReadyAnalyzer(bptr < MeterMeasurement > ((MeterMeasurement *) null), rXYZ,
+				    gXYZ, bXYZ, wXYZ);
+	};
+	bptr < MaxMatrixIntensityAnalyzer >
+	    MaxMatrixIntensityAnalyzer::getReadyAnalyzer(bptr < MeterMeasurement > mm, XYZ_ptr rXYZ,
+							 XYZ_ptr gXYZ, XYZ_ptr bXYZ, XYZ_ptr wXYZ) {
+	    bptr < MaxMatrixIntensityAnalyzer > ma(new MaxMatrixIntensityAnalyzer(mm));
 	    ma->setupComponent(Channel::R, rXYZ);
 	    ma->setupComponent(Channel::G, gXYZ);
 	    ma->setupComponent(Channel::B, bXYZ);
