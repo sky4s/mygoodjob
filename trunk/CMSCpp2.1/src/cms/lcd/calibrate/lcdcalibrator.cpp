@@ -41,13 +41,6 @@ namespace cms {
 		} return result;
 	    };
 
-	    double_vector_ptr LCDCalibrator::
-		getAbsoluteGammaCurveVector(double gamma, int n,
-					    int effectiven, Component_vector_ptr componentVector) {
-		double maxLuminance = (*componentVector)[0]->XYZ->Y;
-		double minLuminance = (*componentVector)[componentVector->size() - 1]->XYZ->Y;
-
-	    };
 
 	    double_vector_ptr
 		LCDCalibrator::getGammaCurveVector(double dimGamma,
@@ -1194,12 +1187,7 @@ namespace cms {
 		this->feedbackListener = listener;
 	    }
 
-	    /*
-	       gamma curve又分絕對和相對的
-	       相對的較簡單, 絕對的會遇到無法整條線都meet的問題
-	       samsung是規定8灰階的gamma要達到2.1以上; 為求保險, 直接把灰階8設在gamma 2.2,
-	       然後推算絕對gamma 2.2的相對gamma是多少, 以該gamma 接回原點(灰階0)
-	     */
+
 	    double_vector_ptr LCDCalibrator::
 		getLuminanceGammaCurve(double_vector_ptr normalGammaCurve,
 				       double maxLuminance, double minLuminance) {
@@ -1213,6 +1201,19 @@ namespace cms {
 		return luminanceGammaCurve;
 	    };
 
+	    double_vector_ptr
+		getLuminanceGammaCurve(double_vector_ptr normalGammaCurve,
+				       double maxLuminance, double minLuminance,
+				       bool absoluteGamma, int absoluteGammaStart,
+				       double absStartAboveGamma) {
+	    };
+
+	    /*
+	       gamma curve又分絕對和相對的
+	       相對的較簡單, 絕對的會遇到無法整條線都meet的問題
+	       samsung是規定8灰階的gamma要達到2.1以上; 為求保險, 直接把灰階8設在gamma 2.2,
+	       然後推算絕對gamma 2.2的相對gamma是多少, 以該gamma 接回原點(灰階0)
+	     */
 	    double_vector_ptr LCDCalibrator::
 		getLuminanceGammaCurve(double_vector_ptr normalGammaCurve,
 				       double maxLuminance, double minLuminance,
@@ -1238,6 +1239,7 @@ namespace cms {
 		    double_vector_ptr newNormalGammaCurve(new double_vector());
 
 		    for (int x = 0; x < absoluteGammaStart; x++) {
+			//此區段設定順勢修正到abs gamma
 			double normalInput = ((double) x) / size;
 			double relativeNomralOutput =
 			    GammaFinder::gamma(normalInput, relativeGamma);
@@ -1245,6 +1247,7 @@ namespace cms {
 		    }
 
 		    for (int x = absoluteGammaStart; x < size; x++) {
+			//此區段符合abs gamma
 			double normalInput = ((double) x) / size;
 			double absoluteNormalOutput = (*normalGammaCurve)[x];
 			double relativeNomralOutput =
@@ -1255,6 +1258,7 @@ namespace cms {
 			}
 			newNormalGammaCurve->push_back(relativeNomralOutput);
 		    }
+		    //newNormalGammaCurve裝載了能對應到abs gamma的rel gamma
 		    return getLuminanceGammaCurve(newNormalGammaCurve, maxLuminance, minLuminance);
 		} else {
 		    return getLuminanceGammaCurve(normalGammaCurve, maxLuminance, minLuminance);

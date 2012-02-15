@@ -31,7 +31,7 @@ namespace cms {
 		    bLuminanceVector;
 		double minLuminance, maxLuminance;
 		 bptr < ComponentLUT > lut;
-		 bptr < ComponentRelationIF > componentRelation;
+		 bptr < ComponentLinearRelation > componentRelation;
 		 bptr < Interpolation1DLUT > wlut;
 		double getMaximumIntensity();
 		void initComponent(Component_vector_ptr componentVector,
