@@ -261,6 +261,7 @@ class TMainForm:public TForm {
     const bool linkEyeOne;
     const bool linkCA210;
     const bool newFunction;
+    const bool debugMode;
     //==========================================================================
     __fastcall TMainForm(TComponent * Owner);
     void showProgress(TProgressBar * progress);

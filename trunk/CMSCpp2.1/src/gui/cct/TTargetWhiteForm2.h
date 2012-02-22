@@ -139,9 +139,7 @@ class TTargetWhiteForm2:public TForm, gui::event::WindowListener {
   public:			// User declarations
     __fastcall TTargetWhiteForm2(TComponent * Owner);
     void windowClosing();
-    void setBitDepthProcessor(bptr <
-			      cms::lcd::calibrate::BitDepthProcessor >
-			      bitDepth);
+    void setBitDepthProcessor(bptr < cms::lcd::calibrate::BitDepthProcessor > bitDepth);
     bool stopMeasure;
     __property bool FindInverseZ = { read = findInverseZ };
 

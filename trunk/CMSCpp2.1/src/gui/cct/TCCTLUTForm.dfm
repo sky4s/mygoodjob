@@ -1,9 +1,9 @@
 object CCTLUTForm: TCCTLUTForm
-  Left = 219
-  Top = 230
+  Left = 300
+  Top = 300
   Width = 848
   Height = 407
-  Caption = 'CCT LUT'
+  Caption = 'CCT(LUT)'
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -109,17 +109,31 @@ object CCTLUTForm: TCCTLUTForm
     TabOrder = 1
     object Label16: TLabel
       Left = 72
-      Top = 64
+      Top = 80
       Width = 9
       Height = 13
       Caption = '0-'
     end
     object Label_BrightZone: TLabel
       Left = 72
-      Top = 88
+      Top = 104
       Width = 33
       Height = 13
       Caption = '51-255'
+    end
+    object Label22: TLabel
+      Left = 96
+      Top = 48
+      Width = 11
+      Height = 13
+      Caption = 'as'
+    end
+    object Label23: TLabel
+      Left = 32
+      Top = 48
+      Width = 34
+      Height = 13
+      Caption = 'Keep L'
     end
     object RadioButton_Gamma: TRadioButton
       Left = 7
@@ -154,23 +168,25 @@ object CCTLUTForm: TCCTLUTForm
     end
     object RadioButton_OriginalGamma: TRadioButton
       Left = 7
-      Top = 112
+      Top = 128
       Width = 111
       Height = 13
       Caption = 'Original Gamma'
       TabOrder = 2
+      OnClick = RadioButton_OriginalGammaClick
     end
     object RadioButton_2Gamma: TRadioButton
       Left = 7
-      Top = 72
+      Top = 88
       Width = 65
       Height = 17
       Caption = '2 Gamma'
       TabOrder = 3
+      OnClick = RadioButton_2GammaClick
     end
     object ComboBox_DimGamma: TComboBox
       Left = 112
-      Top = 61
+      Top = 77
       Width = 49
       Height = 21
       ImeName = #20013#25991' ('#32321#39636') - '#26032#27880#38899
@@ -190,7 +206,7 @@ object CCTLUTForm: TCCTLUTForm
     end
     object ComboBox_BrightGamma: TComboBox
       Left = 112
-      Top = 85
+      Top = 101
       Width = 49
       Height = 21
       ImeName = #20013#25991' ('#32321#39636') - '#26032#27880#38899
@@ -210,7 +226,7 @@ object CCTLUTForm: TCCTLUTForm
     end
     object Edit_DimGammaEnd: TEdit
       Left = 83
-      Top = 61
+      Top = 77
       Width = 25
       Height = 21
       TabOrder = 6
@@ -219,16 +235,16 @@ object CCTLUTForm: TCCTLUTForm
     end
     object CheckBox_AbsoluteGamma: TCheckBox
       Left = 24
-      Top = 40
-      Width = 68
+      Top = 32
+      Width = 105
       Height = 17
       Caption = 'Absolute'
       TabOrder = 7
       OnClick = CheckBox_AbsoluteGammaClick
     end
     object Edit_AbsGammaStart: TEdit
-      Left = 96
-      Top = 40
+      Left = 72
+      Top = 48
       Width = 25
       Height = 21
       Enabled = False
@@ -237,7 +253,7 @@ object CCTLUTForm: TCCTLUTForm
     end
     object GroupBox_LoadGamma: TGroupBox
       Left = 2
-      Top = 128
+      Top = 144
       Width = 165
       Height = 57
       Caption = 'Load Gamma'
@@ -269,6 +285,27 @@ object CCTLUTForm: TCCTLUTForm
         TabOrder = 2
         Visible = False
       end
+    end
+    object ComboBox_AbsGammaStartAboveGamma: TComboBox
+      Left = 112
+      Top = 48
+      Width = 49
+      Height = 21
+      Enabled = False
+      ImeName = #20013#25991' ('#32321#39636') - '#26032#27880#38899
+      ItemHeight = 13
+      TabOrder = 10
+      Text = '2.1'
+      OnChange = ComboBox_GammaChange
+      Items.Strings = (
+        '1.8'
+        '1.9'
+        '2.0'
+        '2.1'
+        '2.2'
+        '2.3'
+        '2.4'
+        '2.5')
     end
   end
   object GroupBox3: TGroupBox

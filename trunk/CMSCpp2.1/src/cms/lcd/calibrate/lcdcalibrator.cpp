@@ -144,9 +144,15 @@ namespace cms {
 	    void LCDCalibrator::setOriginalGamma() {
 		this->originalGamma = true;
 	    };
-	    void LCDCalibrator::setAbsoluteGamma(bool absoluteGamma, int start) {
+	    /*void LCDCalibrator::setAbsoluteGamma(bool absoluteGamma, int start) {
+	       this->absoluteGamma = absoluteGamma;
+	       this->absoluteGammaStart = start;
+	       }; */
+	    void LCDCalibrator::setAbsoluteGamma(bool absoluteGamma, int startGrayLevel,
+						 double startGrayLevelAboveGamma) {
 		this->absoluteGamma = absoluteGamma;
-		this->absoluteGammaStart = start;
+		this->absoluteGammaStart = startGrayLevel;
+		this->absGammaStartGLAboveGamma = startGrayLevelAboveGamma;
 	    };
 	    void LCDCalibrator::setBMax2(bool bMax2, int begin, double gamma) {
 		this->bMax2 = bMax2;
@@ -549,9 +555,11 @@ namespace cms {
 			targetWhiteXYZ->Y;
 		    //藉由傳統generator產生luminance gamma curve
 		    if (true == absoluteGamma) {
+			int effectiven = bitDepth->getEffectiveInputLevel();
 			luminanceGammaCurve =
 			    getLuminanceGammaCurve(gammaCurve, maxLuminance, minLuminance,
-						   absoluteGamma, absoluteGammaStart);
+						   absoluteGamma, absoluteGammaStart,
+						   absGammaStartGLAboveGamma, effectiven);
 			if (nil_double_vector_ptr == luminanceGammaCurve) {
 			    return nil_RGB_vector_ptr;
 			}
@@ -574,6 +582,9 @@ namespace cms {
 		if (correct == Correct::DefinedDim) {
 		    dimStrengthParameter = dimStrength;
 		    underParameter = under;
+		} else if (correct == Correct::None) {
+		    underParameter = 0;
+
 		}
 
 		int startCheckPos = 50;
@@ -630,7 +641,7 @@ namespace cms {
 		    // feedback
 		    //=========================================================
 		    if (true == feedbackFix
-			&& (true != MainForm->linkCA210 || MainForm->isTCONInput()
+			&& (true == MainForm->debugMode || MainForm->isTCONInput()
 			    || MainForm->isPCwithTCONInput())) {
 			//先從DGLut算出灰階的dx dy
 			//再從這樣的結果微調目標值
@@ -804,18 +815,6 @@ namespace cms {
 		    result->push_back(number);
 		}
 	    };
-	    /*int LCDCalibrator::checkReverse(double_vector_ptr deltaVector, int start, int end) {
-	       //int size = deltaVector->size();
-	       for (int x = start; x < end; x++) {
-	       double delta = (*deltaVector)[x];
-	       if (delta < dimFixThreshold) {
-	       return x;
-	       }
-	       }
-	       return -1;
-	       } */
-
-
 
 	    RGB_vector_ptr LCDCalibrator::
 		oldMethod(DGLutGenerator & generator,
@@ -1201,54 +1200,78 @@ namespace cms {
 		return luminanceGammaCurve;
 	    };
 
-	    double_vector_ptr
-		getLuminanceGammaCurve(double_vector_ptr normalGammaCurve,
-				       double maxLuminance, double minLuminance,
-				       bool absoluteGamma, int absoluteGammaStart,
-				       double absStartAboveGamma) {
-	    };
-
 	    /*
 	       gamma curve又分絕對和相對的
 	       相對的較簡單, 絕對的會遇到無法整條線都meet的問題
 	       samsung是規定8灰階的gamma要達到2.1以上; 為求保險, 直接把灰階8設在gamma 2.2,
 	       然後推算絕對gamma 2.2的相對gamma是多少, 以該gamma 接回原點(灰階0)
 	     */
-	    double_vector_ptr LCDCalibrator::
-		getLuminanceGammaCurve(double_vector_ptr normalGammaCurve,
-				       double maxLuminance, double minLuminance,
-				       bool absoluteGamma, int absoluteGammaStart) {
-		if (true == absoluteGamma) {
-		    double normalInput = ((double) absoluteGammaStart) / normalGammaCurve->size();
-		    double absoluteNormalOutput = (*normalGammaCurve)[absoluteGammaStart];
-		    double absoluteGamma = GammaFinder::getGamma(normalInput, absoluteNormalOutput);
-		    double relativeNomralOutput =
-			(absoluteNormalOutput * maxLuminance - minLuminance) / (maxLuminance -
-										minLuminance);
-		    if (relativeNomralOutput < 0) {
+	    double_vector_ptr
+		LCDCalibrator::getLuminanceGammaCurve(double_vector_ptr normalGammaCurve,
+						      double maxLuminance, double minLuminance,
+						      bool absGamma, int absGammaStartGL,
+						      double startGLAboveGamma, int effectiven) {
+		if (true == absGamma) {
+		    int size = normalGammaCurve->size();
+		    //=========================================================
+		    // 1
+		    //=========================================================
+
+		    double startNormalInput = ((double) absGammaStartGL) / effectiven;
+		    double startAbsoluteNormalOutput =
+			GammaFinder::gamma(startNormalInput, startGLAboveGamma);
+		    double startAbsoluteLuminance = maxLuminance * startAbsoluteNormalOutput;
+		    //=========================================================
+		    // 2
+		    //=========================================================
+		    if (startAbsoluteLuminance < minLuminance) {
+			//若灰階設定太低就會落到此case
 			return nil_double_vector_ptr;
 		    }
-		    double relativeGamma = GammaFinder::getGamma(normalInput, relativeNomralOutput);
+		    double relativeNormalOutput =
+			(startAbsoluteLuminance - minLuminance) / (maxLuminance - minLuminance);
+		    double relativeGamma =
+			GammaFinder::getGamma(startNormalInput, relativeNormalOutput);
+		    int turnGrayLevel = -1;
 
-		    /*
-		       若採用abs gamma, gamma將分為兩段
-		       abs gamma start之前, 是 rel gamma的空間, 之後則是abs gamma的空間
-		       所以此處需要將原本的normalGammaCurve拆成兩段
-		     */
-		    int size = normalGammaCurve->size();
+
+		    //=========================================================
+		    // 4
+		    //=========================================================
+		    for (int x = absGammaStartGL; x < 255; x++) {
+			double normalInput = ((double) x) / effectiven;
+
+			double absoluteNormalOutput = (*normalGammaCurve)[x];
+
+			/*double absoluteNormalOutput =
+			   GammaFinder::gamma(normalInput, startGLAboveGamma); */
+			double absoluteGammaLuminance = maxLuminance * absoluteNormalOutput;
+
+			double relativeNormalOutput =
+			    GammaFinder::gamma(normalInput, relativeGamma);
+			double relativeGammaLuminance =
+			    (maxLuminance - minLuminance) * relativeNormalOutput + minLuminance;
+			if (absoluteGammaLuminance > relativeGammaLuminance) {
+			    turnGrayLevel = x;
+			    break;
+			}
+		    }
+		    if (-1 == turnGrayLevel) {
+			return nil_double_vector_ptr;
+		    }
+		    //=========================================================
 		    double_vector_ptr newNormalGammaCurve(new double_vector());
 
-		    for (int x = 0; x < absoluteGammaStart; x++) {
+		    for (int x = 0; x <= turnGrayLevel; x++) {
 			//此區段設定順勢修正到abs gamma
-			double normalInput = ((double) x) / size;
+			double normalInput = ((double) x) / effectiven;
 			double relativeNomralOutput =
 			    GammaFinder::gamma(normalInput, relativeGamma);
 			newNormalGammaCurve->push_back(relativeNomralOutput);
 		    }
-
-		    for (int x = absoluteGammaStart; x < size; x++) {
+		    for (int x = turnGrayLevel + 1; x < effectiven; x++) {
 			//此區段符合abs gamma
-			double normalInput = ((double) x) / size;
+			double normalInput = ((double) x) / effectiven;
 			double absoluteNormalOutput = (*normalGammaCurve)[x];
 			double relativeNomralOutput =
 			    (absoluteNormalOutput * maxLuminance - minLuminance) / (maxLuminance -
@@ -1258,13 +1281,85 @@ namespace cms {
 			}
 			newNormalGammaCurve->push_back(relativeNomralOutput);
 		    }
-		    //newNormalGammaCurve裝載了能對應到abs gamma的rel gamma
+		    for (int x = effectiven; x < size; x++) {
+			double absoluteNormalOutput = (*normalGammaCurve)[x];
+			newNormalGammaCurve->push_back(absoluteNormalOutput);
+		    }
 		    return getLuminanceGammaCurve(newNormalGammaCurve, maxLuminance, minLuminance);
-		} else {
+		}
+
+		/*if (true == absGamma) {
+		   double normalInput = ((double) absGammaStartGL) / normalGammaCurve->size();
+		   double absoluteNormalOutput =
+		   GammaFinder::gamma(normalInput, startGLAboveGamma);
+		   double relativeNomralOutput =
+		   (absoluteNormalOutput * maxLuminance - minLuminance) / (maxLuminance -
+		   minLuminance);
+		   if (relativeNomralOutput < 0) {
+		   return nil_double_vector_ptr;
+		   }
+		   double relativeGamma = GammaFinder::getGamma(normalInput, relativeNomralOutput);
+
+
+
+		   //若採用abs gamma, gamma將分為兩段
+		   //abs gamma start之前, 是 rel gamma的空間, 之後則是abs gamma的空間
+		   //所以此處需要將原本的normalGammaCurve拆成兩段
+
+		   int size = normalGammaCurve->size();
+		   double_vector_ptr newNormalGammaCurve(new double_vector());
+
+		   for (int x = 0; x < absGammaStartGL; x++) {
+		   //此區段設定順勢修正到abs gamma
+		   double normalInput = ((double) x) / size;
+		   double relativeNomralOutput =
+		   GammaFinder::gamma(normalInput, relativeGamma);
+		   newNormalGammaCurve->push_back(relativeNomralOutput);
+		   }
+
+		   for (int x = absGammaStartGL; x < size; x++) {
+		   //此區段符合abs gamma
+		   double normalInput = ((double) x) / size;
+		   double absoluteNormalOutput = (*normalGammaCurve)[x];
+		   double relativeNomralOutput =
+		   (absoluteNormalOutput * maxLuminance - minLuminance) / (maxLuminance -
+		   minLuminance);
+		   if (relativeNomralOutput < 0) {
+		   return nil_double_vector_ptr;
+		   }
+		   newNormalGammaCurve->push_back(relativeNomralOutput);
+		   }
+		   //newNormalGammaCurve裝載了能對應到abs gamma的rel gamma
+		   return getLuminanceGammaCurve(newNormalGammaCurve, maxLuminance, minLuminance);
+		   } */
+		else {
 		    return getLuminanceGammaCurve(normalGammaCurve, maxLuminance, minLuminance);
 		}
 		//==================================================================
 	    };
+
+	    /*
+	       gamma curve又分絕對和相對的
+	       相對的較簡單, 絕對的會遇到無法整條線都meet的問題
+	       samsung是規定8灰階的gamma要達到2.1以上; 為求保險, 直接把灰階8設在gamma 2.2,
+	       然後推算絕對gamma 2.2的相對gamma是多少, 以該gamma 接回原點(灰階0)
+	     */
+	    /*double_vector_ptr LCDCalibrator::
+	       getLuminanceGammaCurve(double_vector_ptr normalGammaCurve,
+	       double maxLuminance, double minLuminance,
+	       bool absoluteGamma, int absoluteGammaStart) {
+	       if (true == absoluteGamma) {
+	       double normalInput = ((double) absoluteGammaStart) / normalGammaCurve->size();
+	       double absoluteNormalOutput = (*normalGammaCurve)[absoluteGammaStart];
+	       double absoluteGamma = GammaFinder::getGamma(normalInput, absoluteNormalOutput);
+	       return getLuminanceGammaCurve(normalGammaCurve, maxLuminance, minLuminance,
+	       absoluteGamma, absoluteGammaStart, absoluteGamma);
+	       } else {
+	       return getLuminanceGammaCurve(normalGammaCurve, maxLuminance, minLuminance);
+	       }
+
+	       //==================================================================
+	       }; */
 	};
     };
 };

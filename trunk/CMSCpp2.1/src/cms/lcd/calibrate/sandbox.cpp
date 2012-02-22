@@ -554,15 +554,19 @@ namespace cms {
 		//==============================================================
 		// dim°Ï¬q
 		//==============================================================
-		double_vector_ptr dimGammaCurve = DoubleArray::getRangeCopy(luminanceGammaCurve, 0,
-									    dimTurn);
-		XYZ_vector_ptr dimResult = DimTargetGenerator::getTarget(startXYZ, targetXYZ,
-									 dimGammaCurve, dimGamma);
+		if (dimTurn != 0) {
+		    double_vector_ptr dimGammaCurve =
+			DoubleArray::getRangeCopy(luminanceGammaCurve, 0,
+						  dimTurn);
+		    XYZ_vector_ptr dimResult = DimTargetGenerator::getTarget(startXYZ, targetXYZ,
+									     dimGammaCurve,
+									     dimGamma);
 
-		STORE_XYZXY_VECTOE("1.1_target_dim.xls", dimResult);
-		int dimSize = dimResult->size();
-		for (int x = 0; x < dimSize; x++) {
-		    (*result)[x] = (*dimResult)[x];
+		    STORE_XYZXY_VECTOE("1.1_target_dim.xls", dimResult);
+		    int dimSize = dimResult->size();
+		    for (int x = 0; x < dimSize; x++) {
+			(*result)[x] = (*dimResult)[x];
+		    }
 		}
 		//==============================================================
 

@@ -181,7 +181,7 @@ void __fastcall TGammaMeasurementForm::FormShow(TObject * Sender)
        } */
 
 
-    bool tconInput = bitDepth->isTCONInput();
+    bool tconInput = bitDepth->isTCONInput() || MainForm->debugMode;
     this->Panel2->Visible = tconInput;
     setMeasureInfo();
     fetcher = MainForm->getComponentFetcher();

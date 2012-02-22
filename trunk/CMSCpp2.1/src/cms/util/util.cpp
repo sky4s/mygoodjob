@@ -137,9 +137,61 @@ namespace cms {
 	    getcurdir(0, curdir + 3);	/* fill rest of string with current directory */
 	    return curdir;
 	    /*string result(curdir);
-	    return result;*/
+	       return result; */
 
 	};
+
+
+	//=====================================================================
+	// 擷取app的檔案資訊, 很難寫, 所以尚未完成, 還不能用   
+	//=====================================================================
+	int_array Util::fetchVersionInfo() {
+	    const AnsiString InfoStr[10] = {
+		"CompanyName", "FileDescription", "FileVersion",
+		"InternalName",
+		"LegalCopyright", "LegalTradeMarks", "OriginalFileName",
+		"ProductName",
+		"ProductVersion", "Comments"
+	    };
+	    char *ExeName = Application->ExeName.c_str();
+	    DWORD dwVerInfoSize = GetFileVersionInfoSize(ExeName, null);
+	    if (dwVerInfoSize > 0) {
+		//char *pBuf = (char *) malloc(n);
+		BYTE *bVerInfoBuf = new BYTE[dwVerInfoSize];
+		if (GetFileVersionInfo(ExeName, 0, dwVerInfoSize, bVerInfoBuf)) {
+		    VS_FIXEDFILEINFO *vsInfo;
+		    UINT vsInfoSize;
+
+		    if (VerQueryValue(bVerInfoBuf, "\\", (void **) &vsInfo, &vsInfoSize)) {
+			int_array version(new int[4]);
+			int iFileVerMajor = HIWORD(vsInfo->dwFileVersionMS);
+			int iFileVerMinor = LOWORD(vsInfo->dwFileVersionMS);
+			int iFileVerRelease = HIWORD(vsInfo->dwFileVersionLS);
+			int iFileVerBuild = LOWORD(vsInfo->dwFileVersionLS);
+			version[0] = iFileVerMajor;
+			version[1] = iFileVerMinor;
+			version[2] = iFileVerRelease;
+			version[3] = iFileVerBuild;
+			delete[]bVerInfoBuf;
+			return version;
+		    }
+		    delete[]bVerInfoBuf;
+		}
+
+		/*AnsiString temp = "VersionInfoSize = ";
+		   GetFileVersionInfo(ExeName, 0, n, pBuf);
+		   for (int i = 0; i < 10; i++) {
+		   char *pValue;
+		   DWORD Len;
+		   temp = "StringFileInfo\\040904E4\\";
+		   temp = temp + InfoStr[i];
+
+		   }
+		   free(pBuf); */
+	    }
+	    return nil_int_array;
+	};
+	//=====================================================================
 	//==========================================================================
 
 	string_vector_ptr StringVector::fromCString(int count, ...) {

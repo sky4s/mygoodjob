@@ -27,10 +27,9 @@ namespace cms {
 	       將正規化的gamma curve, 轉換為絕對的亮度curve
 	     */
 	    double_vector_ptr DGLutGenerator::
-		getLuminanceGammaCurve(double_vector_ptr normalGammaCurve)
-	    {
+		getLuminanceGammaCurve(double_vector_ptr normalGammaCurve) {
 		return LCDCalibrator::getLuminanceGammaCurve(normalGammaCurve,
-					      maxLuminance, minLuminance);
+							     maxLuminance, minLuminance);
 	    };
 
 	    /*
@@ -45,7 +44,7 @@ namespace cms {
 		const Channel & minchannel = maxintensity->getMinChannel();
 		//以最小值得channel的intensity為最大的intensity
 		double maxvalue = maxintensity->getValue(minchannel);
-		return maxvalue;
+		 return maxvalue;
 	    };
 	    /*
 	       DGLutGenerator擔任產出DG Code的重責大任
@@ -58,37 +57,28 @@ namespace cms {
 	       3/4由produce產出
 	     */
 	    void DGLutGenerator::
-		initComponent(Component_vector_ptr componentVector,
-			      bool keepTargetMaxLuminance) {
+		initComponent(Component_vector_ptr componentVector, bool keepTargetMaxLuminance) {
 		//==============================================================
 		// 計算a/c/d
 		//==============================================================
 		componentRelation =
-		    bptr < ComponentLinearRelation >
-		    (new ComponentLinearRelation(componentVector));
+		    bptr < ComponentLinearRelation > (new ComponentLinearRelation(componentVector));
 		//==============================================================
 
 		//==============================================================
 		// 產生RGB LUT
 		//==============================================================
-		lut =
-		    bptr < ComponentLUT >
-		    (new ComponentLUT(componentVector));
+		lut = bptr < ComponentLUT > (new ComponentLUT(componentVector));
 		//==============================================================
 		//找到最大的intensity, 然後去推算對應的luminance;
 		//基於舊方法中, 建立intensity和luminance的關係所得
 		double maxintensity = Math::roundTo(getMaximumIntensity());
 		if (!keepTargetMaxLuminance) {
-		    maxintensity =
-			(maxintensity > 100) ? 100 : maxintensity;
+		    maxintensity = (maxintensity > 100) ? 100 : maxintensity;
 		}
-		//此處的作法比較適合target white = native white的case
-		//若遇到target white不是 native white....須從外部指定maxLuminance
-		//內部可能無法推算max luminace....
-		maxLuminance =
-		    componentRelation->getLuminance(maxintensity,
-						    maxintensity,
-						    maxintensity);
+		//此處的作法比較適合target white = native white的case//若遇到target white不是 native white....須從外部指定maxLuminance//內部可能無法推算max luminace....
+		    maxLuminance =
+		 componentRelation->getLuminance(maxintensity, maxintensity, maxintensity);
 		int size = componentVector->size();
 		minLuminance = (*componentVector)[size - 1]->XYZ->Y;
 	    };
@@ -97,16 +87,14 @@ namespace cms {
 		(componentVector), mode(Component),
 		keepMaxLuminance(KeepMaxLuminance::TargetLuminance) {
 		initComponent(componentVector,
-			      keepMaxLuminance ==
-			      KeepMaxLuminance::TargetLuminance);
+			      keepMaxLuminance == KeepMaxLuminance::TargetLuminance);
 	    };
 
 	  DGLutGenerator::DGLutGenerator(Component_vector_ptr componentVector, KeepMaxLuminance keepMaxLuminance):componentVector
 		(componentVector),
 		mode(Component), keepMaxLuminance(keepMaxLuminance) {
 		initComponent(componentVector,
-			      keepMaxLuminance ==
-			      KeepMaxLuminance::TargetLuminance);
+			      keepMaxLuminance == KeepMaxLuminance::TargetLuminance);
 	    };
 	  DGLutGenerator::DGLutGenerator(double_vector_ptr luminanceVector):luminanceVector(luminanceVector), mode(WLumi)
 	    {
@@ -118,19 +106,15 @@ namespace cms {
 		    (*key)[x] = size - x - 1;
 		}
 		key = DoubleArray::getReverse(key);
-		double_vector_ptr value =
-		    DoubleArray::getReverse(luminanceVector);
+		double_vector_ptr value = DoubleArray::getReverse(luminanceVector);
 
-		wlut =
-		    bptr < Interpolation1DLUT >
-		    (new Interpolation1DLUT(key, value));
+		wlut = bptr < Interpolation1DLUT > (new Interpolation1DLUT(key, value));
 	    };
 
 	    RGB_ptr DGLutGenerator::getIntensity(RGB_ptr dg) {
 		return getIntensity(dg, true);
 	    }
-	    RGB_ptr DGLutGenerator::getIntensity(RGB_ptr dg,
-						 bool correctInRange) {
+	    RGB_ptr DGLutGenerator::getIntensity(RGB_ptr dg, bool correctInRange) {
 		double r = dg->R;
 		double g = dg->G;
 		double b = dg->B;
@@ -146,29 +130,20 @@ namespace cms {
 		double rIntensity = lut->getIntensity(Channel::R, r);
 		double gIntensity = lut->getIntensity(Channel::G, g);
 		double bIntensity = lut->getIntensity(Channel::B, b);
-		RGB_ptr intensity(new
-				  RGBColor(rIntensity, gIntensity,
-					   bIntensity));
+		RGB_ptr intensity(new RGBColor(rIntensity, gIntensity, bIntensity));
 		return intensity;
 	    };
 
 	    RGB_ptr DGLutGenerator::getDGCode(double rIntensity,
 					      double gIntensity,
-					      double bIntensity,
-					      bool correctInRange) {
+					      double bIntensity, bool correctInRange) {
 
 		if (true == correctInRange) {
-		    rIntensity =
-			lut->correctIntensityInRange(Channel::R,
-						     rIntensity);
+		    rIntensity = lut->correctIntensityInRange(Channel::R, rIntensity);
 		    rCorrect = lut->hasCorrectedInRange(Channel::R);
-		    gIntensity =
-			lut->correctIntensityInRange(Channel::G,
-						     gIntensity);
+		    gIntensity = lut->correctIntensityInRange(Channel::G, gIntensity);
 		    gCorrect = lut->hasCorrectedInRange(Channel::G);
-		    bIntensity =
-			lut->correctIntensityInRange(Channel::B,
-						     bIntensity);
+		    bIntensity = lut->correctIntensityInRange(Channel::B, bIntensity);
 		    bCorrect = lut->hasCorrectedInRange(Channel::B);
 		}
 
@@ -181,8 +156,7 @@ namespace cms {
 	    };
 
 	    RGB_ptr DGLutGenerator::
-		getDGCode(double rIntensity, double gIntensity,
-			  double bIntensity) {
+		getDGCode(double rIntensity, double gIntensity, double bIntensity) {
 		return getDGCode(rIntensity, gIntensity, bIntensity, true);
 	    }
 
@@ -196,12 +170,9 @@ namespace cms {
 
 
 
-	    RGB_vector_ptr DGLutGenerator::
-		getCCTDGLut(RGBGamma_ptr rgbIntensityCurve) {
+	    RGB_vector_ptr DGLutGenerator::getCCTDGLut(RGBGamma_ptr rgbIntensityCurve) {
 		if (mode == WLumi || mode == RGBLumi) {
-		    throw
-			UnsupportedOperationException
-			("DGLutGenerator is in luminanceMode.");
+		    throw UnsupportedOperationException("DGLutGenerator is in luminanceMode.");
 		}
 
 		using namespace Dep;
@@ -223,10 +194,8 @@ namespace cms {
 		return dglut;
 	    };
 
-	    RGB_vector_ptr DGLutGenerator::
-		getGammaDGLut(double_vector_ptr normalGammaCurve) {
-		double_vector_ptr luminanceGammaCurve =
-		    getLuminanceGammaCurve(normalGammaCurve);
+	    RGB_vector_ptr DGLutGenerator::getGammaDGLut(double_vector_ptr normalGammaCurve) {
+		double_vector_ptr luminanceGammaCurve = getLuminanceGammaCurve(normalGammaCurve);
 		int size = luminanceGammaCurve->size();
 		RGB_vector_ptr dglut(new RGB_vector(size));
 
@@ -256,13 +225,10 @@ namespace cms {
 	    /*
 	       normalGammaCurve轉LuminanceGammaCurve再轉intensity
 	     */
-	    RGBGamma_ptr DGLutGenerator::
-		getRGBGamma(double_vector_ptr normalGammaCurve) {
+	    RGBGamma_ptr DGLutGenerator::getRGBGamma(double_vector_ptr normalGammaCurve) {
 		//gamma curve轉luminance curve
-		double_vector_ptr luminanceGammaCurve =
-		    getLuminanceGammaCurve(normalGammaCurve);
-		STORE_DOUBLE_VECTOR("0_lumicurve.xls",
-				    luminanceGammaCurve);
+		double_vector_ptr luminanceGammaCurve = getLuminanceGammaCurve(normalGammaCurve);
+		STORE_DOUBLE_VECTOR("0_lumicurve.xls", luminanceGammaCurve);
 		int size = luminanceGammaCurve->size();
 		double_vector_ptr rIntenisty(new double_vector(size));
 		double_vector_ptr gIntenisty(new double_vector(size));
@@ -271,17 +237,14 @@ namespace cms {
 		for (int x = 0; x != size; x++) {
 		    double luminance = (*luminanceGammaCurve)[x];
 		    //luminance curve轉intensity
-		    double intensity =
-			componentRelation->getIntensity(luminance);
+		    double intensity = componentRelation->getIntensity(luminance);
 		    (*rIntenisty)[x] = intensity;
 		    (*gIntenisty)[x] = intensity;
 		    (*bIntenisty)[x] = intensity;
 		}
 
 		RGBGamma_ptr rgbgamma(new
-				      RGBGamma(rIntenisty, gIntenisty,
-					       bIntenisty, 100,
-					       Intensity));
+				      RGBGamma(rIntenisty, gIntenisty, bIntenisty, 100, Intensity));
 
 		return rgbgamma;
 	    };
@@ -293,8 +256,7 @@ namespace cms {
 	       取出 rgbVector中, 所有ch channel下對應的intensity
 	     */
 	    double_vector_ptr DGLutGenerator::
-		getIntensityVector(const Dep::Channel & ch,
-				   RGB_vector_ptr rgbVector) {
+		getIntensityVector(const Dep::Channel & ch, RGB_vector_ptr rgbVector) {
 		double_vector_ptr vector(new double_vector());
 		foreach(RGB_ptr rgb, *rgbVector) {
 		    double v = rgb->getValue(ch);
