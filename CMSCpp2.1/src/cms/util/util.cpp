@@ -143,22 +143,14 @@ namespace cms {
 
 
 	//=====================================================================
-	// 擷取app的檔案資訊, 很難寫, 所以尚未完成, 還不能用   
+	// 擷取app的檔案資訊
 	//=====================================================================
 	int_array Util::fetchVersionInfo() {
-	    const AnsiString InfoStr[10] = {
-		"CompanyName", "FileDescription", "FileVersion",
-		"InternalName",
-		"LegalCopyright", "LegalTradeMarks", "OriginalFileName",
-		"ProductName",
-		"ProductVersion", "Comments"
-	    };
-	    char *ExeName = Application->ExeName.c_str();
-	    DWORD dwVerInfoSize = GetFileVersionInfoSize(ExeName, null);
+
+	    DWORD dwVerInfoSize = GetFileVersionInfoSize(Application->ExeName.c_str(), null);
 	    if (dwVerInfoSize > 0) {
-		//char *pBuf = (char *) malloc(n);
 		BYTE *bVerInfoBuf = new BYTE[dwVerInfoSize];
-		if (GetFileVersionInfo(ExeName, 0, dwVerInfoSize, bVerInfoBuf)) {
+		if (GetFileVersionInfo(Application->ExeName.c_str(), 0, dwVerInfoSize, bVerInfoBuf)) {
 		    VS_FIXEDFILEINFO *vsInfo;
 		    UINT vsInfoSize;
 
@@ -177,17 +169,6 @@ namespace cms {
 		    }
 		    delete[]bVerInfoBuf;
 		}
-
-		/*AnsiString temp = "VersionInfoSize = ";
-		   GetFileVersionInfo(ExeName, 0, n, pBuf);
-		   for (int i = 0; i < 10; i++) {
-		   char *pValue;
-		   DWORD Len;
-		   temp = "StringFileInfo\\040904E4\\";
-		   temp = temp + InfoStr[i];
-
-		   }
-		   free(pBuf); */
 	    }
 	    return nil_int_array;
 	};

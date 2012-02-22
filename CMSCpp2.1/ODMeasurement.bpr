@@ -9,7 +9,8 @@
       build\ciexyz.obj build\dgcodefile.obj build\excelfile.obj build\lang.obj 
       build\core.obj build\doubleArray.obj build\meter.obj 
       build\CA200SRVRLib_OCX.obj build\CA200SRVRLib_TLB.obj build\CA210API.obj 
-      build\cmf.obj build\T3DMeasureWindow.obj build\T3DMeasurementForm.obj"/>
+      build\cmf.obj build\T3DMeasureWindow.obj build\T3DMeasurementForm.obj 
+      build\EYEONECTRLLib_OCX.obj"/>
     <RESFILES value="ODMeasurement.res"/>
     <IDLFILES value=""/>
     <IDLGENFILES value=""/>
@@ -26,7 +27,7 @@
       inetdbbde.bpi inetdbxpress.bpi inetdb.bpi nmfast.bpi webdsnap.bpi 
       bcbie.bpi websnap.bpi soaprtl.bpi dclocx.bpi dbexpress.bpi dbxcds.bpi 
       indy.bpi bcb2kaxserver.bpi bcbindent.bpi"/>
-    <PATHCPP value=".;src\gui;src\cms\util;src\cms\colorspace;src\cms\colorspace;src\cms\colorspace;src\cms\colorspace;src\cms\colorspace;src\cms\colorformat;src\cms\colorformat;src\java;src\cms;src\math;src\cms\measure;lib\CA200SRVRLib;lib\CA200SRVRLib;src\ca210api;src\cms\colorformat;src\gui\3d;src\gui\3d"/>
+    <PATHCPP value=".;src\gui;src\cms\util;src\cms\colorspace;src\cms\colorspace;src\cms\colorspace;src\cms\colorspace;src\cms\colorspace;src\cms\colorformat;src\cms\colorformat;src\java;src\cms;src\math;src\cms\measure;lib\CA200SRVRLib;lib\CA200SRVRLib;src\ca210api;src\cms\colorformat;src\gui\3d;src\gui\3d;lib\EyeOneLib"/>
     <PATHPAS value=".;"/>
     <PATHRC value=".;"/>
     <PATHASM value=".;"/>
@@ -36,17 +37,17 @@
     <USERDEFINES value="_DEBUG"/>
     <SYSDEFINES value="NO_STRICT"/>
     <MAINSOURCE value="ODMeasurement.cpp"/>
-    <INCLUDEPATH value="src\gui\3d;src\cms;src\ca210api;src\cms\measure;src\math;src\java;src\cms\colorformat;src\cms\colorspace;src\cms\util;src\gui;src;&quot;D:\Program Files\Borland\CBuilder6\Projects&quot;;$(BCB)\include;$(BCB)\include\vcl;lib;lib\CA200SRVRLib"/>
-    <LIBPATH value="src\gui\3d;src\math;src\ca210api;src\cms\measure;src\cms;src\java;src\cms\colorformat;src\cms\colorspace;src\cms\util;src\gui;src;&quot;D:\Program Files\Borland\CBuilder6\Projects&quot;;$(BCB)\Projects\Lib;$(BCB)\lib\obj;$(BCB)\lib;lib;lib\CA200SRVRLib"/>
+    <INCLUDEPATH value="lib\EyeOneLib;src\gui\3d;src\cms;src\ca210api;src\cms\measure;src\math;src\java;src\cms\colorformat;src\cms\colorspace;src\cms\util;src\gui;src;&quot;D:\Program Files\Borland\CBuilder6\Projects&quot;;$(BCB)\include;$(BCB)\include\vcl;lib;lib\CA200SRVRLib"/>
+    <LIBPATH value="lib\EyeOneLib;src\gui\3d;src\math;src\ca210api;src\cms\measure;src\cms;src\java;src\cms\colorformat;src\cms\colorspace;src\cms\util;src\gui;src;&quot;D:\Program Files\Borland\CBuilder6\Projects&quot;;$(BCB)\Projects\Lib;$(BCB)\lib\obj;$(BCB)\lib;lib;lib\CA200SRVRLib"/>
     <WARNINGS value="-w-par"/>
     <OTHERFILES value=""/>
   </MACROS>
   <OPTIONS>
-    <IDLCFLAGS value="-Isrc\gui\3d -Isrc\cms -Isrc\ca210api -Isrc\cms\measure -Isrc\math 
-      -Isrc\java -Isrc\cms\colorformat -Isrc\cms\colorspace -Isrc\cms\util 
-      -Isrc\gui -Isrc -I&quot;D:\Program Files\Borland\CBuilder6\Projects&quot; 
-      -I$(BCB)\include -I$(BCB)\include\vcl -Ilib -Ilib\CA200SRVRLib -src_suffix 
-      cpp -D_DEBUG -boa"/>
+    <IDLCFLAGS value="-Ilib\EyeOneLib -Isrc\gui\3d -Isrc\cms -Isrc\ca210api -Isrc\cms\measure 
+      -Isrc\math -Isrc\java -Isrc\cms\colorformat -Isrc\cms\colorspace 
+      -Isrc\cms\util -Isrc\gui -Isrc 
+      -I&quot;D:\Program Files\Borland\CBuilder6\Projects&quot; -I$(BCB)\include 
+      -I$(BCB)\include\vcl -Ilib -Ilib\CA200SRVRLib -src_suffix cpp -D_DEBUG -boa"/>
     <CFLAG1 value="-Od -H=$(BCB)\lib\vcl60.csm -Hc -Vx -Ve -X- -r- -a1 -6 -b- -k -y -v -vi- 
       -c -tW -tWM"/>
     <PFLAGS value="-N2build -N0build -$YD -$W -$O- -$A8 -v -JPHNE -M"/>
@@ -84,6 +85,9 @@
       <FILE FILENAME="src\cms\colorformat\cmf.cpp" FORMNAME="" UNITNAME="cmf" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="src\gui\3d\T3DMeasureWindow.cpp" FORMNAME="ThreeDMeasureWindow" UNITNAME="T3DMeasureWindow" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="src\gui\3d\T3DMeasurementForm.cpp" FORMNAME="ThreeDMeasurementForm" UNITNAME="T3DMeasurementForm" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="lib\EyeOneLib\EYEONECTRLLib_OCX.h" FORMNAME="" UNITNAME="EYEONECTRLLib_OCX.h" CONTAINERID="" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="lib\EyeOneLib\EYEONECTRLLib_TLB.h" FORMNAME="" UNITNAME="EYEONECTRLLib_TLB.h" CONTAINERID="" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="lib\EyeOneLib\EYEONECTRLLib_OCX.cpp" FORMNAME="" UNITNAME="EYEONECTRLLib_OCX.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
   </FILELIST>
   <BUILDTOOLS>
   </BUILDTOOLS>

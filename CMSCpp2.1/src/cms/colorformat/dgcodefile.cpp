@@ -437,9 +437,18 @@ namespace cms {
 	const string DGLutProperty::WhiteRatio = "WhiteRatio";
 	const string DGLutProperty::TargetWhiteRatio = "TargetWhiteRatio";
 	void DGLutProperty::store(DGLutFile & dgfile) const {
-	    dgfile.addProperty("cct product version", "3.3b");
-	    dgfile.addProperty("status", c->ExcuteStatus);
+	    //==================================================================
+	    // application status
+	    //==================================================================
+	    int_array versionInfo = Util::fetchVersionInfo();
+	    string version =
+		"3.3b (build " + _toString(versionInfo[2]) + "." + _toString(versionInfo[3]);
+	     dgfile.addProperty("cct product version", version);
+	     dgfile.addProperty("status", c->ExcuteStatus);
 	    bool isCCTMode = "CCTDGLut" == c->ExcuteStatus;
+	    //==================================================================
+
+
 	    //==================================================================
 	    // MeasureCondition
 	    //==================================================================
@@ -699,34 +708,6 @@ namespace cms {
 		return false;
 	    }
 	};
-	//=====================================================================
-	// 擷取app的檔案資訊, 很難寫, 所以尚未完成, 還不能用   
-	//=====================================================================
-	/*void DGLutProperty::fetchVersionInfo() {
-	   const AnsiString InfoStr[10] = {
-	   "CompanyName", "FileDescription", "FileVersion",
-	   "InternalName",
-	   "LegalCopyright", "LegalTradeMarks", "OriginalFileName",
-	   "ProductName",
-	   "ProductVersion", "Comments"
-	   };
-	   char *ExeName = Application->ExeName.c_str();
-	   DWORD n = GetFileVersionInfoSize(ExeName, null);
-	   if (n > 0) {
-	   char *pBuf = (char *) malloc(n);
-	   AnsiString temp = "VersionInfoSize = ";
-	   GetFileVersionInfo(ExeName, 0, n, pBuf);
-	   for (int i = 0; i < 10; i++) {
-	   char *pValue;
-	   DWORD Len;
-	   temp = "StringFileInfo\\040904E4\\";
-	   temp = temp + InfoStr[i];
-
-	   }
-	   free(pBuf);
-	   }
-	   }; */
-	//=====================================================================
 
       DGLutProperty::DGLutProperty(bptr < DGLutFile > d):c((LCDCalibrator *) null), d(d) {
 	    if (false == initProperty(d)) {

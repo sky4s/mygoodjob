@@ -114,18 +114,19 @@ namespace cms {
 	    class GammaTestPanelRegulator:public PanelRegulator {
 	      private:
 		bptr < MeasureCondition > measureCondition;
+		void setRemappingMode(bool remap);
 	      public:
 		/*GammaTestPanelRegulator(bptr < cms::lcd::calibrate::BitDepthProcessor > bitDepth,
 		   bptr < i2c::TCONControl > tconctrl, double rgain,
 		   double ggain, double bgain); */
-		GammaTestPanelRegulator(bptr <
-					cms::lcd::calibrate::
-					BitDepthProcessor > bitDepth,
-					bptr < i2c::TCONControl > tconctrl,
-					int maxR, int maxG, int maxB,
-					bptr < MeasureCondition > measureCondition);
+		 GammaTestPanelRegulator(bptr <
+					 cms::lcd::calibrate::
+					 BitDepthProcessor > bitDepth,
+					 bptr < i2c::TCONControl > tconctrl,
+					 int maxR, int maxG, int maxB,
+					 bptr < MeasureCondition > measureCondition);
 		virtual void setEnable(bool enable);
-		void setRemappingMode(bool remap);
+
 	    };
 	};
     };
