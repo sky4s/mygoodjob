@@ -72,9 +72,9 @@ void __fastcall TCCTLUTForm::Button_MeaRunClick(TObject * Sender)
 	MainForm->setAnalyzerNull();
     }
 
-    run = true;
-    try {			//為了對應__finally使用的try
 
+    try {			//為了對應__finally使用的try
+	run = true;
 	if (this->TOutputFileFrame1->Warning) {
 	    ShowMessage("Output file is locked! Try release file lock and retry!");
 	    return;
@@ -159,15 +159,7 @@ void __fastcall TCCTLUTForm::Button_MeaRunClick(TObject * Sender)
 	bool avoidHook = CheckBox_AvoidHook->Checked;
 	calibrator.BMax = this->CheckBox_BMax->Checked;
 	calibrator.AccurateMode = avoidHook;
-	/*if (bMax) {
-	   if (avoidHook) {
-	   int begin = Edit_BMax2Begin->Text.ToInt();
-	   double gamma = Edit_BMax2Gamma->Text.ToDouble();
-	   calibrator.setBMax2(CheckBox_BMax2->Checked, begin, gamma);
-	   } else {
-	   calibrator.BMax = this->CheckBox_BMax->Checked;
-	   }
-	   } */
+
 	//==========================================================================
 
 	//==========================================================================
@@ -226,6 +218,7 @@ void __fastcall TCCTLUTForm::Button_MeaRunClick(TObject * Sender)
 	//=================================================================
 	try {
 	    if (this->TOutputFileFrame1->createDir() == false) {
+		ShowMessage("Cannot create directory!! Stop!");
 		MainForm->stopProgress(ProgressBar1);
 		return;
 	    }
@@ -240,15 +233,18 @@ void __fastcall TCCTLUTForm::Button_MeaRunClick(TObject * Sender)
 
 	    //開始量測及計算
 	    RGB_vector_ptr dglut = calibrator.getCCTDGLut(getMeasureCondition());
-	    nativeWhiteAnalyzer = calibrator.NativeWhiteAnalyzer;
 	    if (dglut == null) {
 		MainForm->stopProgress(ProgressBar1);
-		if (!run) {
+		if (run) {
 		    //被中斷就直接return
-		    ShowMessage("Parameter Error!! Stop!");
+		    ShowMessage("Internal abnormal stop!");
+		} else {
+		    ShowMessage("Interrupt!");
+
 		}
 		return;
 	    };
+	    nativeWhiteAnalyzer = calibrator.NativeWhiteAnalyzer;
 
 	    //=================================================================
 	    // 存檔
@@ -274,7 +270,7 @@ void __fastcall TCCTLUTForm::Button_MeaRunClick(TObject * Sender)
 		//檢查是否遞增且無疊階
 		ShowMessage("Ok!");
 	    } else {
-		ShowMessage("Warning: It's not ascend!");
+		ShowMessage("Warning: It's not ascend!(inverse)");
 	    }
 
 	    Util::shellExecute(filename);
@@ -414,8 +410,6 @@ void __fastcall TCCTLUTForm::FormShow(TObject * Sender)
 
 void __fastcall TCCTLUTForm::RadioButton_GammaCurveClick(TObject * Sender)
 {
-    this->RadioButton_Gamma->Checked = true;
-    this->RadioButton_Gamma->Checked = false;
     using namespace cms::util;
     OpenDialog1->Filter = "Desired Gamma Files(*.xls)|*.xls";
     if (OpenDialog1->Execute()) {
@@ -424,9 +418,6 @@ void __fastcall TCCTLUTForm::RadioButton_GammaCurveClick(TObject * Sender)
 	unsigned int n = bitDepth->getLevel();
 	if (rgbGamma != null) {
 	    if (n == rgbGamma->w->size()) {
-		//this->RadioButton_Gamma->Checked = true;
-		this->RadioButton_Gamma->Checked = false;
-		//this->RadioButton_GammaCurve->Checked = true;
 		this->CheckBox_GByPass->Visible = true;
 		return;
 	    } else {
@@ -439,8 +430,7 @@ void __fastcall TCCTLUTForm::RadioButton_GammaCurveClick(TObject * Sender)
 	    ShowMessage("Desired Gamma File Format is wrong! (need W/R/G/B gamma in File)");
 	}
     }
-    this->RadioButton_GammaCurve->Checked = false;
-    this->RadioButton_Gamma->Checked = true;
+    RadioButton_Gamma->Checked = true;
 }
 
 
@@ -460,6 +450,7 @@ void __fastcall TCCTLUTForm::TOutputFileFrame1Button_BrowseDirClick(TObject * Se
 void __fastcall TCCTLUTForm::FormKeyPress(TObject * Sender, char &Key)
 {
     if (27 == Key) {
+	//for tcon inpuse時, 關閉會跳到這邊
 	if (true == run) {
 	    ShowMessage("Interrupt!");
 	    if (false == MeasureWindow->Visible) {
@@ -479,8 +470,6 @@ void __fastcall TCCTLUTForm::FormKeyPress(TObject * Sender, char &Key)
 void __fastcall TCCTLUTForm::RadioButton_GammaClick(TObject * Sender)
 {
     this->CheckBox_GByPass->Visible = false;
-    this->RadioButton_GammaCurve->Checked = false;
-    this->RadioButton_GammaValue->Checked = false;
 }
 
 //---------------------------------------------------------------------------
@@ -629,8 +618,6 @@ void __fastcall TCCTLUTForm::CheckBox_BTargetIntensityClick(TObject * Sender)
 
 void __fastcall TCCTLUTForm::RadioButton_GammaValueClick(TObject * Sender)
 {
-    this->RadioButton_Gamma->Checked = true;
-    this->RadioButton_Gamma->Checked = false;
     using namespace cms::util;
     OpenDialog1->Filter = "Desired Gamma Values Files(*.xls)|*.xls";
     if (OpenDialog1->Execute()) {
@@ -638,15 +625,11 @@ void __fastcall TCCTLUTForm::RadioButton_GammaValueClick(TObject * Sender)
 	rgbGamma = RGBGamma::loadFromDesiredGammaValue(filename.c_str());
 	unsigned int n = bitDepth->getLevel();
 	if (rgbGamma != null && rgbGamma->w->size() == n) {
-	    //this->RadioButton_Gamma->Checked = true;
-	    this->RadioButton_Gamma->Checked = false;
-	    //this->RadioButton_GammaValue->Checked = true;
 	    return;
 	} else {
 	    ShowMessage("Desired Gamma File Format is wrong!");
 	}
     }
-    this->RadioButton_GammaValue->Checked = false;
     this->RadioButton_Gamma->Checked = true;
 }
 
@@ -799,20 +782,5 @@ void __fastcall TCCTLUTForm::CheckBox_AvoidHookClick(TObject * Sender)
 
 
 
-void __fastcall TCCTLUTForm::RadioButton_2GammaClick(TObject * Sender)
-{
-    this->RadioButton_GammaCurve->Checked = false;
-    this->RadioButton_GammaValue->Checked = false;
-}
-
-//---------------------------------------------------------------------------
-
-void __fastcall TCCTLUTForm::RadioButton_OriginalGammaClick(TObject * Sender)
-{
-    this->RadioButton_GammaCurve->Checked = false;
-    this->RadioButton_GammaValue->Checked = false;
-}
-
-//---------------------------------------------------------------------------
 
 

@@ -13,6 +13,7 @@
 //本項目內頭文件
 #include "TTargetWhiteForm2.h"
 #include "TMeasureWindow.h"
+#include "TCCTLUTForm.h"
 //運用若參考指標去儲存WindowListener
 #define WEAK_PTR
 
@@ -41,7 +42,12 @@ void __fastcall TMeasureWindow::FormKeyPress(TObject * Sender, char &Key)
 	    tconcontrol->setGammaTest(false);
 	}
 	this->Visible = false;
-	TargetWhiteForm2->stopMeasure = true;
+        if(null != TargetWhiteForm2) {
+	        TargetWhiteForm2->stopMeasure = true;
+        }
+        if(null != CCTLUTForm) {
+	        CCTLUTForm->run = false;
+        }
 	this->Close();
 
 	break;

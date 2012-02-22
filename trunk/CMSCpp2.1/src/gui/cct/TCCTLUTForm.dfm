@@ -135,6 +135,20 @@ object CCTLUTForm: TCCTLUTForm
       Height = 13
       Caption = 'Keep L'
     end
+    object Label24: TLabel
+      Left = 8
+      Top = 144
+      Width = 147
+      Height = 13
+      Caption = '=======Load Gamma======='
+    end
+    object Label25: TLabel
+      Left = 8
+      Top = 64
+      Width = 150
+      Height = 13
+      Caption = '========================='
+    end
     object RadioButton_Gamma: TRadioButton
       Left = 7
       Top = 13
@@ -173,7 +187,6 @@ object CCTLUTForm: TCCTLUTForm
       Height = 13
       Caption = 'Original Gamma'
       TabOrder = 2
-      OnClick = RadioButton_OriginalGammaClick
     end
     object RadioButton_2Gamma: TRadioButton
       Left = 7
@@ -182,7 +195,6 @@ object CCTLUTForm: TCCTLUTForm
       Height = 17
       Caption = '2 Gamma'
       TabOrder = 3
-      OnClick = RadioButton_2GammaClick
     end
     object ComboBox_DimGamma: TComboBox
       Left = 112
@@ -251,41 +263,6 @@ object CCTLUTForm: TCCTLUTForm
       TabOrder = 8
       Text = '8'
     end
-    object GroupBox_LoadGamma: TGroupBox
-      Left = 2
-      Top = 144
-      Width = 165
-      Height = 57
-      Caption = 'Load Gamma'
-      TabOrder = 9
-      object RadioButton_GammaValue: TRadioButton
-        Left = 5
-        Top = 36
-        Width = 154
-        Height = 13
-        Caption = 'Gamma Value'
-        TabOrder = 0
-        OnClick = RadioButton_GammaValueClick
-      end
-      object RadioButton_GammaCurve: TRadioButton
-        Left = 5
-        Top = 13
-        Width = 154
-        Height = 20
-        Caption = 'Gamma Curve'
-        TabOrder = 1
-        OnClick = RadioButton_GammaCurveClick
-      end
-      object CheckBox_GByPass: TCheckBox
-        Left = 91
-        Top = 13
-        Width = 70
-        Height = 20
-        Caption = 'G ByPass'
-        TabOrder = 2
-        Visible = False
-      end
-    end
     object ComboBox_AbsGammaStartAboveGamma: TComboBox
       Left = 112
       Top = 48
@@ -294,7 +271,7 @@ object CCTLUTForm: TCCTLUTForm
       Enabled = False
       ImeName = #20013#25991' ('#32321#39636') - '#26032#27880#38899
       ItemHeight = 13
-      TabOrder = 10
+      TabOrder = 9
       Text = '2.1'
       OnChange = ComboBox_GammaChange
       Items.Strings = (
@@ -307,6 +284,33 @@ object CCTLUTForm: TCCTLUTForm
         '2.4'
         '2.5')
     end
+    object RadioButton_GammaCurve: TRadioButton
+      Left = 7
+      Top = 157
+      Width = 154
+      Height = 20
+      Caption = 'Gamma Curve'
+      TabOrder = 10
+      OnClick = RadioButton_GammaCurveClick
+    end
+    object RadioButton_GammaValue: TRadioButton
+      Left = 7
+      Top = 180
+      Width = 154
+      Height = 13
+      Caption = 'Gamma Value'
+      TabOrder = 11
+      OnClick = RadioButton_GammaValueClick
+    end
+    object CheckBox_GByPass: TCheckBox
+      Left = 95
+      Top = 157
+      Width = 65
+      Height = 20
+      Caption = 'G bypass'
+      TabOrder = 12
+      Visible = False
+    end
   end
   object GroupBox3: TGroupBox
     Left = 344
@@ -317,42 +321,42 @@ object CCTLUTForm: TCCTLUTForm
     TabOrder = 2
     object Label4: TLabel
       Left = 26
-      Top = 72
+      Top = 96
       Width = 29
       Height = 13
       Caption = 'Under'
     end
     object Label7: TLabel
       Left = 26
-      Top = 33
+      Top = 57
       Width = 13
       Height = 13
       Caption = 'P1'
     end
     object Label8: TLabel
       Left = 98
-      Top = 33
+      Top = 57
       Width = 13
       Height = 13
       Caption = 'P2'
     end
     object Label17: TLabel
       Left = 26
-      Top = 116
+      Top = 140
       Width = 29
       Height = 13
       Caption = 'Under'
     end
     object Label14: TLabel
       Left = 26
-      Top = 136
+      Top = 160
       Width = 40
       Height = 13
       Caption = 'Strength'
     end
     object RadioButton_P1P2: TRadioButton
       Left = 7
-      Top = 14
+      Top = 38
       Width = 78
       Height = 19
       Caption = 'P1 P2'
@@ -363,7 +367,7 @@ object CCTLUTForm: TCCTLUTForm
     end
     object RadioButton_RBInterp: TRadioButton
       Left = 7
-      Top = 53
+      Top = 77
       Width = 104
       Height = 19
       Caption = 'RB Interpolation'
@@ -371,7 +375,7 @@ object CCTLUTForm: TCCTLUTForm
     end
     object Edit_RBInterpUnder: TEdit
       Left = 72
-      Top = 72
+      Top = 96
       Width = 59
       Height = 21
       ImeName = #26085#25991#36664#20837#31995#32113' (MS-IME2002)'
@@ -380,7 +384,7 @@ object CCTLUTForm: TCCTLUTForm
     end
     object Edit_P1: TEdit
       Left = 46
-      Top = 33
+      Top = 57
       Width = 33
       Height = 21
       ImeName = #26085#25991#36664#20837#31995#32113' (MS-IME2002)'
@@ -389,7 +393,7 @@ object CCTLUTForm: TCCTLUTForm
     end
     object Edit_P2: TEdit
       Left = 117
-      Top = 33
+      Top = 57
       Width = 33
       Height = 21
       ImeName = #26085#25991#36664#20837#31995#32113' (MS-IME2002)'
@@ -398,7 +402,7 @@ object CCTLUTForm: TCCTLUTForm
     end
     object RadioButton_NoneLowLevelCorrect: TRadioButton
       Left = 7
-      Top = 176
+      Top = 16
       Width = 59
       Height = 20
       Caption = 'None'
@@ -406,7 +410,7 @@ object CCTLUTForm: TCCTLUTForm
     end
     object RadioButton_DefinedDim: TRadioButton
       Left = 7
-      Top = 97
+      Top = 121
       Width = 98
       Height = 19
       Caption = 'Defined Dim'
@@ -415,7 +419,7 @@ object CCTLUTForm: TCCTLUTForm
     end
     object Edit_DefinedDimUnder: TEdit
       Left = 72
-      Top = 116
+      Top = 140
       Width = 59
       Height = 21
       ImeName = #26085#25991#36664#20837#31995#32113' (MS-IME2002)'
@@ -425,7 +429,7 @@ object CCTLUTForm: TCCTLUTForm
     end
     object Edit_DimGamma: TEdit
       Left = 72
-      Top = 136
+      Top = 160
       Width = 59
       Height = 21
       ImeName = #26085#25991#36664#20837#31995#32113' (MS-IME2002)'
@@ -434,7 +438,7 @@ object CCTLUTForm: TCCTLUTForm
     end
     object Edit_DimFixThreshold: TEdit
       Left = 104
-      Top = 160
+      Top = 184
       Width = 49
       Height = 21
       TabOrder = 9
@@ -442,7 +446,7 @@ object CCTLUTForm: TCCTLUTForm
     end
     object CheckBox_Feedback: TCheckBox
       Left = 26
-      Top = 160
+      Top = 184
       Width = 71
       Height = 20
       Caption = 'Feedback'
