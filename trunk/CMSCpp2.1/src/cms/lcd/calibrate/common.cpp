@@ -198,7 +198,7 @@ namespace cms {
 		    rgb->B *= bgain;
 		}
 		STORE_RGBVECTOR("PanelRegulator_beforeRemapping.xls", dglut);
-		STORE_RGBVECTOR("PanelRegulator_remapping.xls", result);
+		STORE_RGBVECTOR("PanelRegulator_afterRemapping.xls", result);
 		return result;
 	    };
 	    RGB_vector_ptr PanelRegulator::getMappingRGBVector() {
@@ -224,10 +224,9 @@ namespace cms {
 			RGBVector::getLinearRGBVector(measureCondition->rgbMeasureCode,
 						      rgain,
 						      ggain, bgain);
-		    STORE_RGBVECTOR("PanelRegulator_mapping.xls", remapping);
+		    STORE_RGBVECTOR("GammaTestPanelRegulator_mapping.xls", remapping);
 		    measureCondition->remappingRGBMeasureCode = remapping;
 		}
-		//measureCondition->setRemappingMode(remap);
 		measureCondition->RemappingMode = remap;
 	    };
 	};
