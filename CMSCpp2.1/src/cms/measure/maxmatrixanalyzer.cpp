@@ -55,9 +55,9 @@ namespace cms {
 	    (*rgbValues)[2][0] *= 100;
 	    double_array intensityValues(new double[3]);
 
-	    intensityValues[0] = (*rgbValues)[0][0] / (*targetRatio)[0][0];
-	    intensityValues[1] = (*rgbValues)[1][0] / (*targetRatio)[1][0];
-	    intensityValues[2] = (*rgbValues)[2][0] / (*targetRatio)[2][0];
+	    intensityValues[0] = (*rgbValues)[0][0] / (*whiteRatio)[0][0];
+	    intensityValues[1] = (*rgbValues)[1][0] / (*whiteRatio)[1][0];
+	    intensityValues[2] = (*rgbValues)[2][0] / (*whiteRatio)[2][0];
 
 	    RGB_ptr intensity(new
 			      RGBColor(intensityValues[0], intensityValues[1], intensityValues[2]));
@@ -132,7 +132,7 @@ namespace cms {
 	    this->inverseMatrix = DoubleArray::inverse(m);
 
 	    double2D_ptr targetWhite = DoubleArray::toDouble2D(1, 3, wXYZ->X, wXYZ->Y, wXYZ->Z);
-	    this->targetRatio = DoubleArray::times(inverseMatrix, targetWhite);
+	    this->whiteRatio = DoubleArray::times(inverseMatrix, targetWhite);
 
 	};
 	void MaxMatrixIntensityAnalyzer::beginAnalyze() {
@@ -195,8 +195,8 @@ namespace cms {
 	bptr < MeterMeasurement > MaxMatrixIntensityAnalyzer::getMeterMeasurement() {
 	    return mm;
 	};
-	double2D_ptr MaxMatrixIntensityAnalyzer::getTargetRatio() {
-	    return targetRatio;
+	double2D_ptr MaxMatrixIntensityAnalyzer::getWhiteRatio() {
+	    return whiteRatio;
 	};
 	bptr < MaxMatrixIntensityAnalyzer >
 	    MaxMatrixIntensityAnalyzer::getReadyAnalyzer(bptr < MeterMeasurement > mm,
@@ -296,13 +296,13 @@ namespace cms {
 	    ca210->enter();
 	    matrix->enter();
 
-	    double2D_ptr targetRatio = matrix->targetRatio;
+	    double2D_ptr whiteRatio = matrix->whiteRatio;
 	    string_vector_ptr values;
 
 	    values =
 		StringVector::fromDouble(13, 99., 0., 0., 0., 0., 0.,
-					 0., (*targetRatio)[0][0],
-					 (*targetRatio)[1][0], (*targetRatio)[2][0], 0., 0., 0.);
+					 0., (*whiteRatio)[0][0],
+					 (*whiteRatio)[1][0], (*whiteRatio)[2][0], 0., 0., 0.);
 	    excel->insert(values);
 
 	};

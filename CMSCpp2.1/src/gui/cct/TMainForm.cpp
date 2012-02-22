@@ -26,12 +26,14 @@
 #pragma resource "*.dfm"
 TMainForm *MainForm;
 //---------------------------------------------------------------------------
-__fastcall TMainForm::TMainForm(TComponent * Owner):TForm(Owner),
-linkEyeOne(FileExists("i1.txt")), linkCA210(!linkEyeOne && !FileExists(DEBUG_FILE)),
+__fastcall TMainForm::TMainForm(TComponent * Owner):TForm(Owner), debugMode(FileExists(DEBUG_FILE)),
+linkEyeOne(FileExists("i1.txt")), linkCA210(!FileExists("i1.txt") && !FileExists(DEBUG_FILE)),
 newFunction(FileExists(DEBUG_NEWFUNC_FILE))
 {
-    connectCA210ByThread = true;
+
     //StatusBar1->SimplePanel = true;
+    //bool t = (!linkEyeOne && !debugMode);
+    connectCA210ByThread = true;
 }
 
 //---------------------------------------------------------------------------

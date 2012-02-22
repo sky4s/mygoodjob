@@ -29,7 +29,7 @@ namespace cms {
 	    friend class IntensityAnayzer;
 	  protected:
 	     double2D_ptr inverseMatrix;
-	    double2D_ptr targetRatio;
+	    double2D_ptr whiteRatio;
 	    double2D_ptr rgbValues;
 	     bptr < MeterMeasurement > mm;
 	    XYZ_ptr XYZ;
@@ -57,7 +57,7 @@ namespace cms {
 	    void setReferenceRGB(RGB_ptr rgb);
 	    bool isInverseMatrixNull();
 	     bptr < MeterMeasurement > getMeterMeasurement();
-	    double2D_ptr getTargetRatio();
+	    double2D_ptr getWhiteRatio();
 	    static bptr < MaxMatrixIntensityAnalyzer > getReadyAnalyzer(bptr <
 									MeterMeasurement > mm,
 									int rMax, int gMax,

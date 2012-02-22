@@ -69,6 +69,7 @@ namespace cms {
 		bool originalGamma;
 		bool absoluteGamma;
 		int absoluteGammaStart;
+		double absGammaStartGLAboveGamma;
 		//==============================================================
 
 		//==============================================================
@@ -153,7 +154,10 @@ namespace cms {
 		void setGammaCurve(double_vector_ptr rgammaCurve,
 				   double_vector_ptr ggammaCurve, double_vector_ptr bgammaCurve);
 		void setOriginalGamma();
-		void setAbsoluteGamma(bool absoluteGamma, int start);
+		//void setAbsoluteGamma(bool absoluteGamma, int start);
+		void setAbsoluteGamma(bool absoluteGamma, int startGrayLevel,
+				      double startGrayLevelAboveGamma);
+
 
 		void setBMax2(bool bMax2, int begin, double gamma);
 
@@ -282,15 +286,15 @@ namespace cms {
 		    getLuminanceGammaCurve(double_vector_ptr
 					   normalGammaCurve,
 					   double maxLuminance, double minLuminance);
+		/*static double_vector_ptr
+		   getLuminanceGammaCurve(double_vector_ptr normalGammaCurve,
+		   double maxLuminance, double minLuminance,
+		   bool absoluteGamma, int absoluteGammaStart); */
 		static double_vector_ptr
 		    getLuminanceGammaCurve(double_vector_ptr normalGammaCurve,
 					   double maxLuminance, double minLuminance,
-					   bool absoluteGamma, int absoluteGammaStart);
-		static double_vector_ptr
-		    getLuminanceGammaCurve(double_vector_ptr normalGammaCurve,
-					   double maxLuminance, double minLuminance,
-					   bool absoluteGamma, int absoluteGammaStart,
-					   double absStartAboveGamma);
+					   bool absGamma, int absGammaStartGL,
+					   double startGLAboveGamma, int effectiven);
 		//==============================================================
 		// constructor
 		//==============================================================

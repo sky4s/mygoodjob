@@ -434,6 +434,7 @@ namespace cms {
 	const string DGLutProperty::Off = "Off";
 	const string DGLutProperty::Native = "native";
 	const string DGLutProperty::Target = "target";
+	const string DGLutProperty::WhiteRatio = "WhiteRatio";
 	const string DGLutProperty::TargetWhiteRatio = "TargetWhiteRatio";
 	void DGLutProperty::store(DGLutFile & dgfile) const {
 	    dgfile.addProperty("cct product version", "3.3b");
@@ -538,7 +539,9 @@ namespace cms {
 	    dgfile.addProperty("gamma curve", c->useGammaCurve ? On : Off);
 	    if (true == c->absoluteGamma) {
 		dgfile.addProperty("absolute gamma", c->absoluteGamma ? On : Off);
-		dgfile.addProperty("absolute gamma start", _toString(c->absoluteGammaStart));
+		dgfile.addProperty("keep absolute gamma start", _toString(c->absoluteGammaStart));
+		dgfile.addProperty("keep absolute gamma as",
+				   _toString(c->absGammaStartGLAboveGamma));
 	    }
 	    //==================================================================
 
@@ -655,8 +658,9 @@ namespace cms {
 	    MaxMatrixIntensityAnalyzer *ma =
 		dynamic_cast < MaxMatrixIntensityAnalyzer * >(analyzer.get());
 	    if (null != ma) {
-		double2D_ptr ratio = ma->getTargetRatio();
-		dgfile.addProperty(TargetWhiteRatio, *DoubleArray::toString(ratio));
+		double2D_ptr ratio = ma->getWhiteRatio();
+		string title = prestring + " " + WhiteRatio;
+		dgfile.addProperty(title, *DoubleArray::toString(ratio));
 	    }
 
 	};
@@ -698,32 +702,30 @@ namespace cms {
 	//=====================================================================
 	// 擷取app的檔案資訊, 很難寫, 所以尚未完成, 還不能用   
 	//=====================================================================
-	void DGLutProperty::fetchVersionInfo() {
-	    const AnsiString InfoStr[10] = {
-		"CompanyName", "FileDescription", "FileVersion",
-		"InternalName",
-		"LegalCopyright", "LegalTradeMarks", "OriginalFileName",
-		"ProductName",
-		"ProductVersion", "Comments"
-	    };
-	    char *ExeName = Application->ExeName.c_str();
-	    DWORD n = GetFileVersionInfoSize(ExeName, null);
-	    if (n > 0) {
-		char *pBuf = (char *) malloc(n);
-		AnsiString temp = "VersionInfoSize = ";
-		GetFileVersionInfo(ExeName, 0, n, pBuf);
-		for (int i = 0; i < 10; i++) {
-		    char *pValue;
-		    DWORD Len;
-		    temp = "StringFileInfo\\040904E4\\";
-		    temp = temp + InfoStr[i];
-		    /*if (VerQueryValue(pBuf, temp.c_str(), pValue, &Len)) {
+	/*void DGLutProperty::fetchVersionInfo() {
+	   const AnsiString InfoStr[10] = {
+	   "CompanyName", "FileDescription", "FileVersion",
+	   "InternalName",
+	   "LegalCopyright", "LegalTradeMarks", "OriginalFileName",
+	   "ProductName",
+	   "ProductVersion", "Comments"
+	   };
+	   char *ExeName = Application->ExeName.c_str();
+	   DWORD n = GetFileVersionInfoSize(ExeName, null);
+	   if (n > 0) {
+	   char *pBuf = (char *) malloc(n);
+	   AnsiString temp = "VersionInfoSize = ";
+	   GetFileVersionInfo(ExeName, 0, n, pBuf);
+	   for (int i = 0; i < 10; i++) {
+	   char *pValue;
+	   DWORD Len;
+	   temp = "StringFileInfo\\040904E4\\";
+	   temp = temp + InfoStr[i];
 
-		       } */
-		}
-		free(pBuf);
-	    }
-	};
+	   }
+	   free(pBuf);
+	   }
+	   }; */
 	//=====================================================================
 
       DGLutProperty::DGLutProperty(bptr < DGLutFile > d):c((LCDCalibrator *) null), d(d) {
@@ -803,10 +805,24 @@ namespace cms {
 	    return bitDepth;
 	}
 	double_array DGLutProperty::getTargetWhiteRatio() {
-	    string_ptr value = getProperty(TargetWhiteRatio);
+	    string title = Target + " " + WhiteRatio;
+	    string_ptr value = getProperty(title);
+	    if (null == value) {
+		//*為了相容舊的儲存方式
+		//原先是存 TargetWhiteRatio, 但是當有兩個analyzer的時候會搞混
+		//所以改成 target WhiteRatio跟native WhiteRatio
+		//如果新版的找不到, 就會回去找舊版的TargetWhiteRatio關鍵字
+		value = getProperty(TargetWhiteRatio);
+	    }
 	    double_array targetWhiteRatio = DoubleArray::fromString(*value);
 	    return targetWhiteRatio;
 	};
+	/*double_array DGLutProperty::getTargetWhiteRatio(const string & prestring) {
+	   string title = prestring + " " + TargetWhiteRatio;
+	   string_ptr value = getProperty(title);
+	   double_array targetWhiteRatio = DoubleArray::fromString(*value);
+	   return targetWhiteRatio;
+	   }; */
 	//======================================================================
     };
 };

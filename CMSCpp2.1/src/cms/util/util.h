@@ -40,6 +40,7 @@ namespace cms {
 	    static Component_vector_ptr copy(Component_vector_ptr src);
 #endif
 	    static string getCurrentDirectory();
+	    static int_array fetchVersionInfo();
 	};
 
 	class StringVector {

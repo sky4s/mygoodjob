@@ -26,8 +26,7 @@ findInverseZ(false), connect(true)
 }
 
 //---------------------------------------------------------------------------
-void __fastcall TTargetWhiteForm2::RadioButton_MaxRGBClick(TObject *
-							   Sender)
+void __fastcall TTargetWhiteForm2::RadioButton_MaxRGBClick(TObject * Sender)
 {
     int max = bitDepth->getInputMaxDigitalCount();
     setRGBRatio(max, max, max);
@@ -98,8 +97,7 @@ void __fastcall TTargetWhiteForm2::Edit_CTChange(TObject * Sender)
     int ct = ctText.ToInt();
 
     try {
-	bptr < CIExyY > xyY =
-	    CorrelatedColorTemperature::CCT2DIlluminantxyY(ct);
+	bptr < CIExyY > xyY = CorrelatedColorTemperature::CCT2DIlluminantxyY(ct);
 	double_array uvpValues = xyY->getuvPrimeValues();
 	setColorimetricValues(xyY->x, xyY->y, uvpValues[0], uvpValues[1]);
     }
@@ -110,8 +108,7 @@ void __fastcall TTargetWhiteForm2::Edit_CTChange(TObject * Sender)
 
 //---------------------------------------------------------------------------
 
-void TTargetWhiteForm2::setColorimetricValues(double x, double y,
-					      double up, double vp)
+void TTargetWhiteForm2::setColorimetricValues(double x, double y, double up, double vp)
 {
 
     AnsiString xStr = AnsiString().sprintf("%1.4g", x);
@@ -173,9 +170,7 @@ int TTargetWhiteForm2::calculateCCT(double x, double y)
     using cms::CorrelatedColorTemperature;
     using Indep::CIExyY;
     bptr < CIExyY > xyY(new CIExyY(x, y));
-    int cct =
-	static_cast <
-	int >(CorrelatedColorTemperature::xy2CCTByMcCamyFloat(xyY));
+    int cct = static_cast < int >(CorrelatedColorTemperature::xy2CCTByMcCamyFloat(xyY));
     return cct;
 }
 
@@ -215,8 +210,7 @@ void __fastcall TTargetWhiteForm2::Button_RunClick(TObject * Sender)
 	bool useRGBRatio = this->RadioButton_RGBRatio->Checked;
 	bool usexy = this->RadioButton_Targetxy->Checked;
 	bool moreAccurate = this->CheckBox_MoreAccurate->Checked;
-	bool avoidHookTV = true == usexy
-	    && this->CheckBox_AvoidHookTV->Checked;
+	bool avoidHookTV = true == usexy && this->CheckBox_AvoidHookTV->Checked;
 
 	if (avoidHookTV) {
 	    //tv下的avoid hook
@@ -236,8 +230,7 @@ void __fastcall TTargetWhiteForm2::Button_RunClick(TObject * Sender)
 	} else if (useRGBRatio) {
 	    analyzer->setReferenceColorComment("RGB Ratio");
 	} else if (usexy) {
-	    string comment =
-		"Target x,y(" + string(Edit_CT->Text.c_str()) + "k)";
+	    string comment = "Target x,y(" + string(Edit_CT->Text.c_str()) + "k)";
 	    /*if (avoidHookTV) {
 	       comment = "Target x,y(Max RGB) with avoid Hook TV";
 	       } else {
@@ -254,8 +247,7 @@ void __fastcall TTargetWhiteForm2::Button_RunClick(TObject * Sender)
 	    if (true == moreAccurate) {
 		finder =
 		    bptr < WhitePointFinder >
-		    (new
-		     WhitePointFinder(MainForm->mm, bitDepth, maxCount));
+		    (new WhitePointFinder(MainForm->mm, bitDepth, maxCount));
 		MeasureWindow->addWindowListener(finder);
 		rgb = finder->findRGB(xyY);
 	    } else {
@@ -263,8 +255,7 @@ void __fastcall TTargetWhiteForm2::Button_RunClick(TObject * Sender)
 		    bptr < StocktonWhitePointFinder > (new
 						       StocktonWhitePointFinder
 						       (MainForm->mm,
-							bitDepth, rgb,
-							maxCount, false));
+							bitDepth, rgb, maxCount, false));
 		MeasureWindow->addWindowListener(finder);
 		rgb = finder->findRGB(xyY);
 	    }
@@ -295,36 +286,31 @@ void __fastcall TTargetWhiteForm2::Button_RunClick(TObject * Sender)
 	analyzer->beginAnalyze();
 	//當在Direct Gamma下, false == MeasureWindow->Visibl會一直成立
 	//如此將無法進行量測
-	if (true == stopMeasure
-	    || (!tconinput && false == MeasureWindow->Visible)) {
+	if (true == stopMeasure || (!tconinput && false == MeasureWindow->Visible)) {
 	    //measuring = false;
 	    //analyzer->endAnalyze();
 	    return;
 	}
 	analyzer->setupComponent(Channel::R, r);
-	if (true == stopMeasure
-	    || (!tconinput && false == MeasureWindow->Visible)) {
+	if (true == stopMeasure || (!tconinput && false == MeasureWindow->Visible)) {
 	    //measuring = false;
 	    //analyzer->endAnalyze();
 	    return;
 	}
 	analyzer->setupComponent(Channel::G, g);
-	if (true == stopMeasure
-	    || (!tconinput && false == MeasureWindow->Visible)) {
+	if (true == stopMeasure || (!tconinput && false == MeasureWindow->Visible)) {
 	    //measuring = false;
 	    //analyzer->endAnalyze();
 	    return;
 	}
 	analyzer->setupComponent(Channel::B, b);
-	if (true == stopMeasure
-	    || (!tconinput && false == MeasureWindow->Visible)) {
+	if (true == stopMeasure || (!tconinput && false == MeasureWindow->Visible)) {
 	    //measuring = false;
 	    //analyzer->endAnalyze();
 	    return;
 	}
 	analyzer->setupComponent(Channel::W, rgb);
-	if (true == stopMeasure
-	    || (!tconinput && false == MeasureWindow->Visible)) {
+	if (true == stopMeasure || (!tconinput && false == MeasureWindow->Visible)) {
 	    //measuring = false;
 	    //analyzer->endAnalyze();
 	    return;
@@ -419,8 +405,7 @@ void __fastcall TTargetWhiteForm2::FormCreate(TObject * Sender)
     using namespace cms::util;
     using namespace gui::util;
     using namespace gui::event;
-    bptr < WindowListener > formPtr(dynamic_cast <
-				    WindowListener * >(this));
+    bptr < WindowListener > formPtr(dynamic_cast < WindowListener * >(this));
     MeasureWindow->addWindowListener(formPtr);
     if (MainForm->newFunction) {
     }
@@ -443,8 +428,7 @@ void __fastcall TTargetWhiteForm2::FormCreate(TObject * Sender)
 //---------------------------------------------------------------------------
 
 void TTargetWhiteForm2::setBitDepthProcessor(bptr <
-					     cms::lcd::calibrate::
-					     BitDepthProcessor > bitDepth)
+					     cms::lcd::calibrate:: BitDepthProcessor > bitDepth)
 {
     this->bitDepth = bitDepth;
     if (Edit_R->Text.ToInt() == 0) {
@@ -494,19 +478,18 @@ void __fastcall TTargetWhiteForm2::FormShow(TObject * Sender)
 {
     bool maxMatrix = MainForm->RadioButton_AnalyzerMaxMatrix->Checked;
     this->Button_setMaxMatrix->Enabled = maxMatrix;
+    findInverseZ = false;
 }
 
 //---------------------------------------------------------------------------
 
-void __fastcall TTargetWhiteForm2::Button_setMaxMatrixClick(TObject *
-							    Sender)
+void __fastcall TTargetWhiteForm2::Button_setMaxMatrixClick(TObject * Sender)
 {
     using namespace cms::measure;
     using namespace Dep;
     bptr < IntensityAnalyzerIF > analyzer = MainForm->getAnalyzer();
     bptr < MaxMatrixIntensityAnalyzer >
-	maxmatrix(dynamic_cast <
-		  MaxMatrixIntensityAnalyzer * >(analyzer.get()));
+	maxmatrix(dynamic_cast < MaxMatrixIntensityAnalyzer * >(analyzer.get()));
 
     double rX = this->Edit_RX->Text.ToDouble();
     double rY = this->Edit_RY->Text.ToDouble();
@@ -539,8 +522,7 @@ void __fastcall TTargetWhiteForm2::Button_setMaxMatrixClick(TObject *
 
 //---------------------------------------------------------------------------
 
-void __fastcall TTargetWhiteForm2::FormKeyPress(TObject * Sender,
-						char &Key)
+void __fastcall TTargetWhiteForm2::FormKeyPress(TObject * Sender, char &Key)
 {
     if (Key == 27) {		//esc
 	if (true == measuring) {
@@ -580,8 +562,7 @@ void __fastcall TTargetWhiteForm2::Button_DisconnectClick(TObject * Sender)
 
 //---------------------------------------------------------------------------
 
-void __fastcall TTargetWhiteForm2::Button_FindInverseZofBClick(TObject *
-							       Sender)
+void __fastcall TTargetWhiteForm2::Button_FindInverseZofBClick(TObject * Sender)
 {
     using namespace cms::measure;
     using namespace cms::lcd::calibrate;
@@ -631,8 +612,7 @@ void __fastcall TTargetWhiteForm2::Button_MeasureClick(TObject * Sender)
 //---------------------------------------------------------------------------
 
 
-void __fastcall TTargetWhiteForm2::Button_ConnectToggleClick(TObject *
-							     Sender)
+void __fastcall TTargetWhiteForm2::Button_ConnectToggleClick(TObject * Sender)
 {
     if (connect) {
 	Button_ConnectToggle->Caption = "Disconnect";
@@ -649,14 +629,12 @@ void __fastcall TTargetWhiteForm2::Button_ConnectToggleClick(TObject *
 
 
 
-void __fastcall TTargetWhiteForm2::
-Button_FindInverseIntensityClick(TObject * Sender)
+void __fastcall TTargetWhiteForm2:: Button_FindInverseIntensityClick(TObject * Sender)
 {
     int max = bitDepth->getInputMaxDigitalCount();
     using namespace cms::measure;
     bptr < MaxMatrixIntensityAnalyzer > analyzer =
-	MaxMatrixIntensityAnalyzer::getReadyAnalyzer(MainForm->mm, max,
-						     max, max);
+	MaxMatrixIntensityAnalyzer::getReadyAnalyzer(MainForm->mm, max, max, max);
     using namespace Dep;
     using namespace java::lang;
     RGB_ptr preIntensity;
@@ -671,9 +649,7 @@ Button_FindInverseIntensityClick(TObject * Sender)
 	    //bool inverseB = intensity->B < preIntensity->B;
 	    bool inverseB = intensity->B < 100;
 	    if (inverseB) {
-		bool preIsBetter =
-		    Math::abs(intensity->B - 100) >
-		    Math::abs(preIntensity->B - 100);
+		bool preIsBetter = Math::abs(intensity->B - 100) > Math::abs(preIntensity->B - 100);
 		maxZDGCode = preIsBetter ? x + 1 : x;
 		foundInverse = true;
 		break;
