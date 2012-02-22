@@ -656,8 +656,8 @@ void __fastcall TThreeDMeasurementForm::FormKeyPress(TObject * Sender, char &Key
     case 'B':
 	patGenB = !patGenB;
 	break;
-    case 88:			//x for swap
-    case 120:
+    case 'x':			//x for swap
+    case 'X':
 	{
 	    int startTemp = startAdj;
 	    startAdj = targetAdj;
@@ -665,8 +665,8 @@ void __fastcall TThreeDMeasurementForm::FormKeyPress(TObject * Sender, char &Key
 	    updateAdjust();
 	}
 	break;
-    case 67:			//c for measure
-    case 99:
+    case 'c':			//c for measure
+    case 'C':
 	updateAdjust();
 	dynamicMeasure(start, target, startAdj, targetAdj);
 	break;
@@ -683,6 +683,34 @@ void __fastcall TThreeDMeasurementForm::FormKeyPress(TObject * Sender, char &Key
 	    ThreeDMeasureWindow->Label_WXtalk->Font->Color = c;
 	    ThreeDMeasureWindow->Label_BXtalk->Font->Color = c;
 	    ThreeDMeasureWindow->Label_TargetAdj->Font->Color = c;
+	    break;
+	}
+    case ']':
+	{
+	    ThreeDMeasureWindow->Label_StartAdj->Left += 5;
+	    ThreeDMeasureWindow->Label_TargetAdj->Left += 5;
+	    ThreeDMeasureWindow->Label_StartBase->Left += 5;
+	    ThreeDMeasureWindow->Label_TargetBase->Left += 5;
+	    ThreeDMeasureWindow->Label_StartTarget->Left += 5;
+	    ThreeDMeasureWindow->Label_TargetAdj2->Left += 5;
+	    ThreeDMeasureWindow->Label_TargetStart->Left += 5;
+	    ThreeDMeasureWindow->Label_WXtalk->Left += 5;
+	    ThreeDMeasureWindow->Label_BXtalk->Left += 5;
+	    ThreeDMeasureWindow->Label_RealTimeMeasure->Left += 5;
+	    break;
+	}
+    case '[':
+	{
+	    ThreeDMeasureWindow->Label_StartAdj->Left -= 5;
+	    ThreeDMeasureWindow->Label_TargetAdj->Left -= 5;
+	    ThreeDMeasureWindow->*Label_StartBase->Left -= 5;
+	    ThreeDMeasureWindow->Label_TargetBase->Left -= 5;
+	    ThreeDMeasureWindow->Label_StartTarget->Left -= 5;
+	    ThreeDMeasureWindow->Label_TargetAdj2->Left -= 5;
+	    ThreeDMeasureWindow->Label_TargetStart->Left -= 5;
+	    ThreeDMeasureWindow->Label_WXtalk->Left -= 5;
+	    ThreeDMeasureWindow->Label_BXtalk->Left -= 5;
+	    ThreeDMeasureWindow->Label_RealTimeMeasure->Left -= 5;
 	    break;
 	}
 

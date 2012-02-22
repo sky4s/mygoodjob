@@ -442,7 +442,7 @@ namespace cms {
 	    //==================================================================
 	    int_array versionInfo = Util::fetchVersionInfo();
 	    string version =
-		"3.3b (build " + _toString(versionInfo[2]) + "." + _toString(versionInfo[3]);
+		"3.3b (build " + _toString(versionInfo[2]) + "." + _toString(versionInfo[3]) + ")";
 	     dgfile.addProperty("cct product version", version);
 	     dgfile.addProperty("status", c->ExcuteStatus);
 	    bool isCCTMode = "CCTDGLut" == c->ExcuteStatus;

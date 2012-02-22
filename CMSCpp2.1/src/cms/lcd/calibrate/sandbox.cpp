@@ -350,7 +350,7 @@ namespace cms {
 		// 迴圈開始
 		//=============================================================
 		for (int x = size - 1; x != -1; x--) {
-		    //x = 0;
+		    Application->ProcessMessages();
 		    XYZ_ptr targetXYZ = (*targetXYZVector)[x];
 
 		    //不斷產生Analyzer, 因為Target White一直變化, 所以利用新的Analyzer, 計算出Intensity
@@ -361,6 +361,7 @@ namespace cms {
 		    //利用新的analyzer算出新的component(就是intensity)
 		    Component_vector_ptr newcomponentVector =
 			fetchNewComponent(ma, componentVector);
+		    Application->ProcessMessages();
 
 		    {		// debug scope
 #ifdef DEBUG_CCTLUT_NEWMETHOD

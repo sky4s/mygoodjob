@@ -118,10 +118,11 @@ class TCCTLUTForm:public TForm, cms::lcd::calibrate::FeedbackListener {
     TEdit *Edit_SmoothIntensityEnd;
     TCheckBox *CheckBox_SmoothIntensity;
     TEdit *Edit_AbsGammaStart;
-    TGroupBox *GroupBox_LoadGamma;
     TLabel *Label22;
     TLabel *Label23;
     TComboBox *ComboBox_AbsGammaStartAboveGamma;
+        TLabel *Label24;
+        TLabel *Label25;
     void __fastcall RadioButton_P1P2Click(TObject * Sender);
     void __fastcall Button_MeaRunClick(TObject * Sender);
     void __fastcall Button_DebugClick(TObject * Sender);
@@ -152,20 +153,19 @@ class TCCTLUTForm:public TForm, cms::lcd::calibrate::FeedbackListener {
     void __fastcall Edit_DefinedDimUnderChange(TObject * Sender);
     void __fastcall CheckBox_AbsoluteGammaClick(TObject * Sender);
     void __fastcall CheckBox_AvoidHookClick(TObject * Sender);
-    void __fastcall RadioButton_2GammaClick(TObject * Sender);
-    void __fastcall RadioButton_OriginalGammaClick(TObject * Sender);
   private:			// User declarations
     void setMeasureInfo();
     int serialid;
     bptr < cms::lcd::calibrate::BitDepthProcessor > bitDepth;
     RGBGamma_ptr rgbGamma;
     bptr < cms::lcd::calibrate::MeasureCondition > getMeasureCondition();
-    bool run;
+
     bptr < cms::measure::MaxMatrixIntensityAnalyzer > nativeWhiteAnalyzer;
   public:			// User declarations
     __fastcall TCCTLUTForm(TComponent * Owner);
     void setBitDepthProcessor(bptr < cms::lcd::calibrate::BitDepthProcessor > bitDepth);
     void doFeedback(int defectCount, int feedbackCount);
+    bool run;
 };
 //---------------------------------------------------------------------------
 extern PACKAGE TCCTLUTForm *CCTLUTForm;

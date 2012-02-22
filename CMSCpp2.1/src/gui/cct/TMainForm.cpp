@@ -80,10 +80,10 @@ void __fastcall TMainForm::FormCreate(TObject * Sender)
     using namespace gui::util;
 
     using namespace cms::util;
-    //int_array version = Util::fetchVersionInfo();
-    //version = Util::fetchVersionInfo();	//不呼叫兩次...about那次的呼叫就會出問題..見鬼!
-    //string build = " (build:" + _toString(version[2]) + "." + _toString(version[3]) + ")";
-    //Caption = Caption + build.c_str();
+    int_array version = Util::fetchVersionInfo();
+    //version = Util::fetchVersionInfo();       //不呼叫兩次...about那次的呼叫就會出問題..見鬼!
+    string build = " (build:" + _toString(version[2]) + "." + _toString(version[3]) + ")";
+    Caption = Caption + build.c_str();
 
     bitDepth = bptr < BitDepthProcessor > (new BitDepthProcessor(8, 12, 8, false));
 

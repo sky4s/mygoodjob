@@ -144,10 +144,7 @@ namespace cms {
 	    void LCDCalibrator::setOriginalGamma() {
 		this->originalGamma = true;
 	    };
-	    /*void LCDCalibrator::setAbsoluteGamma(bool absoluteGamma, int start) {
-	       this->absoluteGamma = absoluteGamma;
-	       this->absoluteGammaStart = start;
-	       }; */
+ 
 	    void LCDCalibrator::setAbsoluteGamma(bool absoluteGamma, int startGrayLevel,
 						 double startGrayLevelAboveGamma) {
 		this->absoluteGamma = absoluteGamma;
@@ -615,6 +612,7 @@ namespace cms {
 		int overParameter = keepMaxLumiOver;
 		const int step = 4;
 
+		//開啟native white smooth(advanced)時, 會依照結果自動調整smooth區間的參數
 		for (; overParameter >= minOverParameter; overParameter -= step) {
 		    int width = bitDepth->getEffectiveInputLevel() - overParameter;
 		    //int width = bitDepth->getLevel() - overParameter;
@@ -683,12 +681,7 @@ namespace cms {
 
 			    //==============================================================
 			}
-
-
-
 			//==============================================================
-
-
 
 			fixChromaticityReverseByFeedback(clone);
 			dglut = clone;
