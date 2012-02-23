@@ -10,6 +10,8 @@
 #define DEBUG_NEWFUNC_FILE "new.txt"
 #define DEBUG_VERBOSE "verbose.txt"
 #define DEBUG_VERBOSE_STEP "verbose_step.txt"
+
+#define DEBUG_REMAP_NEW
 //=============================================================================
 
 //CCT功能的debug功能開啟

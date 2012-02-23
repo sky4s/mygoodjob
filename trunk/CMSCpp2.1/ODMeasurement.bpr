@@ -4,13 +4,13 @@
   <MACROS>
     <VERSION value="BCB.06.00"/>
     <PROJECT value="workdir\ODMeasurement.exe"/>
-    <OBJFILES value="build\ODMeasurement.obj build\TOutputFileFrame.obj build\util.obj 
-      build\colorspace.obj build\depend.obj build\independ.obj build\rgb.obj 
-      build\ciexyz.obj build\dgcodefile.obj build\excelfile.obj build\lang.obj 
-      build\core.obj build\doubleArray.obj build\meter.obj 
-      build\CA200SRVRLib_OCX.obj build\CA200SRVRLib_TLB.obj build\CA210API.obj 
-      build\cmf.obj build\T3DMeasureWindow.obj build\T3DMeasurementForm.obj 
-      build\EYEONECTRLLib_OCX.obj"/>
+    <OBJFILES value="build\ODMeasurement.obj build\TOutputFileFrame.obj build\colorspace.obj 
+      build\depend.obj build\independ.obj build\rgb.obj build\ciexyz.obj 
+      build\dgcodefile.obj build\excelfile.obj build\lang.obj build\core.obj 
+      build\doubleArray.obj build\meter.obj build\CA210API.obj build\cmf.obj 
+      build\T3DMeasureWindow.obj build\T3DMeasurementForm.obj 
+      build\EYEONECTRLLib_OCX.obj build\util.obj build\CA200SRVRLib_OCX.obj 
+      build\CA200SRVRLib_TLB.obj"/>
     <RESFILES value="ODMeasurement.res"/>
     <IDLFILES value=""/>
     <IDLGENFILES value=""/>
@@ -27,7 +27,7 @@
       inetdbbde.bpi inetdbxpress.bpi inetdb.bpi nmfast.bpi webdsnap.bpi 
       bcbie.bpi websnap.bpi soaprtl.bpi dclocx.bpi dbexpress.bpi dbxcds.bpi 
       indy.bpi bcb2kaxserver.bpi bcbindent.bpi"/>
-    <PATHCPP value=".;src\gui;src\cms\util;src\cms\colorspace;src\cms\colorspace;src\cms\colorspace;src\cms\colorspace;src\cms\colorspace;src\cms\colorformat;src\cms\colorformat;src\java;src\cms;src\math;src\cms\measure;lib\CA200SRVRLib;lib\CA200SRVRLib;src\ca210api;src\cms\colorformat;src\gui\3d;src\gui\3d;lib\EyeOneLib"/>
+    <PATHCPP value=".;src\gui;src\cms\colorspace;src\cms\colorspace;src\cms\colorspace;src\cms\colorspace;src\cms\colorspace;src\cms\colorformat;src\cms\colorformat;src\java;src\cms;src\math;src\cms\measure;src\ca210api;src\cms\colorformat;src\gui\3d;src\gui\3d;lib\EyeOneLib;src\cms\util;lib\CA200SRVRLib;lib\CA200SRVRLib"/>
     <PATHPAS value=".;"/>
     <PATHRC value=".;"/>
     <PATHASM value=".;"/>
@@ -66,7 +66,6 @@
       <FILE FILENAME="ODMeasurement.res" FORMNAME="" UNITNAME="ODMeasurement.res" CONTAINERID="ResTool" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="ODMeasurement.cpp" FORMNAME="" UNITNAME="ODMeasurement" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="src\gui\TOutputFileFrame.cpp" FORMNAME="OutputFileFrame" UNITNAME="TOutputFileFrame" CONTAINERID="CCompiler" DESIGNCLASS="TFrame" LOCALCOMMAND=""/>
-      <FILE FILENAME="src\cms\util\util.cpp" FORMNAME="" UNITNAME="util" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="src\cms\colorspace\colorspace.cpp" FORMNAME="" UNITNAME="colorspace.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="src\cms\colorspace\depend.cpp" FORMNAME="" UNITNAME="depend.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="src\cms\colorspace\independ.cpp" FORMNAME="" UNITNAME="independ.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
@@ -78,8 +77,6 @@
       <FILE FILENAME="src\cms\core.cpp" FORMNAME="" UNITNAME="core" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="src\math\doubleArray.cpp" FORMNAME="" UNITNAME="doubleArray" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="src\cms\measure\meter.cpp" FORMNAME="" UNITNAME="meter" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="lib\CA200SRVRLib\CA200SRVRLib_OCX.cpp" FORMNAME="" UNITNAME="CA200SRVRLib_OCX.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="lib\CA200SRVRLib\CA200SRVRLib_TLB.cpp" FORMNAME="" UNITNAME="CA200SRVRLib_TLB.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="src\ca210api\CA210API.cpp" FORMNAME="" UNITNAME="CA210API" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="src\debug.h" FORMNAME="" UNITNAME="debug.h" CONTAINERID="" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="src\cms\colorformat\cmf.cpp" FORMNAME="" UNITNAME="cmf" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
@@ -88,6 +85,11 @@
       <FILE FILENAME="lib\EyeOneLib\EYEONECTRLLib_OCX.h" FORMNAME="" UNITNAME="EYEONECTRLLib_OCX.h" CONTAINERID="" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="lib\EyeOneLib\EYEONECTRLLib_TLB.h" FORMNAME="" UNITNAME="EYEONECTRLLib_TLB.h" CONTAINERID="" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="lib\EyeOneLib\EYEONECTRLLib_OCX.cpp" FORMNAME="" UNITNAME="EYEONECTRLLib_OCX.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="src\cms\util\util.cpp" FORMNAME="" UNITNAME="util" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="lib\CA200SRVRLib\CA200SRVRLib_OCX.cpp" FORMNAME="" UNITNAME="CA200SRVRLib_OCX.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="lib\CA200SRVRLib\CA200SRVRLib_OCX.h" FORMNAME="" UNITNAME="CA200SRVRLib_OCX.h" CONTAINERID="" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="lib\CA200SRVRLib\CA200SRVRLib_TLB.cpp" FORMNAME="" UNITNAME="CA200SRVRLib_TLB.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="lib\CA200SRVRLib\CA200SRVRLib_TLB.h" FORMNAME="" UNITNAME="CA200SRVRLib_TLB.h" CONTAINERID="" DESIGNCLASS="" LOCALCOMMAND=""/>
   </FILELIST>
   <BUILDTOOLS>
   </BUILDTOOLS>
@@ -99,7 +101,7 @@ AutoIncBuild=1
 MajorVer=0
 MinorVer=1
 Release=0
-Build=93
+Build=106
 Debug=0
 PreRelease=1
 Special=0
@@ -111,7 +113,7 @@ CodePage=950
 [Version Info Keys]
 CompanyName=AUO
 FileDescription=
-FileVersion=0.1.0.93
+FileVersion=0.1.0.106
 InternalName=
 LegalCopyright=
 LegalTrademarks=
@@ -120,21 +122,30 @@ ProductName=
 ProductVersion=1.0.0.0
 Comments=
 
+[Excluded Packages]
+d:\program files\borland\cbuilder6\Bin\dclbde60.bpl=Borland BDE DB Components
+d:\program files\borland\cbuilder6\Bin\dcltee60.bpl=TeeChart Components
+d:\program files\borland\cbuilder6\Bin\dcldss60.bpl=Borland Decision Cube Components
+d:\program files\borland\cbuilder6\Bin\dcltqr60.bpl=TeeChart for QuickReport Components
+d:\program files\borland\cbuilder6\Bin\DBWEBXPRT.BPL=Borland Web Wizard Package
+
 [HistoryLists\hlIncludePath]
-Count=8
-Item0=src\gui\3d;src\cms;src\ca210api;src\cms\measure;src\math;src\java;src\cms\colorformat;src\cms\colorspace;src\cms\util;src\gui;src;D:\Program Files\Borland\CBuilder6\Projects;$(BCB)\include;$(BCB)\include\vcl;lib;lib\CA200SRVRLib
-Item1=src\cms;src\ca210api;src\cms\measure;src\math;src\java;src\cms\colorformat;src\cms\colorspace;src\cms\util;src\gui;src;D:\Program Files\Borland\CBuilder6\Projects;$(BCB)\include;$(BCB)\include\vcl;lib;lib\CA200SRVRLib
-Item2=
+Count=9
+Item0=lib\EyeOneLib;src\gui\3d;src\cms;src\ca210api;src\cms\measure;src\math;src\java;src\cms\colorformat;src\cms\colorspace;src\cms\util;src\gui;src;D:\Program Files\Borland\CBuilder6\Projects;$(BCB)\include;$(BCB)\include\vcl;lib;lib\CA200SRVRLib
+Item1=src\gui\3d;src\cms;src\ca210api;src\cms\measure;src\math;src\java;src\cms\colorformat;src\cms\colorspace;src\cms\util;src\gui;src;D:\Program Files\Borland\CBuilder6\Projects;$(BCB)\include;$(BCB)\include\vcl;lib;lib\CA200SRVRLib
+Item2=src\cms;src\ca210api;src\cms\measure;src\math;src\java;src\cms\colorformat;src\cms\colorspace;src\cms\util;src\gui;src;D:\Program Files\Borland\CBuilder6\Projects;$(BCB)\include;$(BCB)\include\vcl;lib;lib\CA200SRVRLib
 Item3=
 Item4=
 Item5=
 Item6=
 Item7=
+Item8=
 
 [HistoryLists\hlLibraryPath]
-Count=2
-Item0=src\gui\3d;src\math;src\ca210api;src\cms\measure;src\cms;src\java;src\cms\colorformat;src\cms\colorspace;src\cms\util;src\gui;src;D:\Program Files\Borland\CBuilder6\Projects;$(BCB)\Projects\Lib;$(BCB)\lib\obj;$(BCB)\lib;lib;lib\CA200SRVRLib
-Item1=src\math;src\ca210api;src\cms\measure;src\cms;src\java;src\cms\colorformat;src\cms\colorspace;src\cms\util;src\gui;src;D:\Program Files\Borland\CBuilder6\Projects;$(BCB)\Projects\Lib;$(BCB)\lib\obj;$(BCB)\lib;lib;lib\CA200SRVRLib
+Count=3
+Item0=lib\EyeOneLib;src\gui\3d;src\math;src\ca210api;src\cms\measure;src\cms;src\java;src\cms\colorformat;src\cms\colorspace;src\cms\util;src\gui;src;D:\Program Files\Borland\CBuilder6\Projects;$(BCB)\Projects\Lib;$(BCB)\lib\obj;$(BCB)\lib;lib;lib\CA200SRVRLib
+Item1=src\gui\3d;src\math;src\ca210api;src\cms\measure;src\cms;src\java;src\cms\colorformat;src\cms\colorspace;src\cms\util;src\gui;src;D:\Program Files\Borland\CBuilder6\Projects;$(BCB)\Projects\Lib;$(BCB)\lib\obj;$(BCB)\lib;lib;lib\CA200SRVRLib
+Item2=src\math;src\ca210api;src\cms\measure;src\cms;src\java;src\cms\colorformat;src\cms\colorspace;src\cms\util;src\gui;src;D:\Program Files\Borland\CBuilder6\Projects;$(BCB)\Projects\Lib;$(BCB)\lib\obj;$(BCB)\lib;lib;lib\CA200SRVRLib
 
 [HistoryLists\hlConditionals]
 Count=1
@@ -145,9 +156,10 @@ Count=1
 Item0=build
 
 [HistoryLists\hlFinalOutputDir]
-Count=2
-Item0=workdir
-Item1=build\
+Count=3
+Item0=workdir\
+Item1=workdir
+Item2=build\
 
 [HistoryLists\hIBPIOutputDir]
 Count=1

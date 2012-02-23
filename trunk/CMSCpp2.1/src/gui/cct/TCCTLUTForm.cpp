@@ -90,6 +90,7 @@ void __fastcall TCCTLUTForm::Button_MeaRunClick(TObject * Sender)
 	MainForm->setMeterMeasurementWaitTimes();
 	bptr < ComponentFetcher > fetcher = MainForm->getComponentFetcher();
 	LCDCalibrator calibrator(fetcher, bitDepth);
+	calibrator.DebugMode = MainForm->debugMode;
 
 	//以下都是選項的設定
 
@@ -383,7 +384,7 @@ void __fastcall TCCTLUTForm::FormShow(TObject * Sender)
     // tcon relative
     //=========================================================================
     bool debugMode = MainForm->debugMode;
-    bool useTConCtrl = true == tconInput || debugMode;
+    bool useTConCtrl = (true == tconInput) || debugMode;
     if (useTConCtrl) {
 	bool findInverseZ = TargetWhiteForm2 != null ? TargetWhiteForm2->FindInverseZ : true;
 	if (findInverseZ) {
@@ -477,6 +478,7 @@ void __fastcall TCCTLUTForm::RadioButton_GammaClick(TObject * Sender)
 void __fastcall TCCTLUTForm::ComboBox_GammaChange(TObject * Sender)
 {
     RadioButton_GammaClick(Sender);
+    ComboBox_AbsGammaStartAboveGamma->Text = ComboBox_Gamma->Text;
 }
 
 //---------------------------------------------------------------------------
@@ -775,12 +777,10 @@ void __fastcall TCCTLUTForm::CheckBox_AbsoluteGammaClick(TObject * Sender)
 
 void __fastcall TCCTLUTForm::CheckBox_AvoidHookClick(TObject * Sender)
 {
-    RadioButton_MaxYNative->Checked = true;
+    if (true == CheckBox_AvoidHook->Checked) {
+	RadioButton_MaxYNative->Checked = true;
+    }
 }
 
 //---------------------------------------------------------------------------
-
-
-
-
 

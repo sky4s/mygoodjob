@@ -703,7 +703,7 @@ void __fastcall TThreeDMeasurementForm::FormKeyPress(TObject * Sender, char &Key
 	{
 	    ThreeDMeasureWindow->Label_StartAdj->Left -= 5;
 	    ThreeDMeasureWindow->Label_TargetAdj->Left -= 5;
-	    ThreeDMeasureWindow->*Label_StartBase->Left -= 5;
+	    ThreeDMeasureWindow->Label_StartBase->Left -= 5;
 	    ThreeDMeasureWindow->Label_TargetBase->Left -= 5;
 	    ThreeDMeasureWindow->Label_StartTarget->Left -= 5;
 	    ThreeDMeasureWindow->Label_TargetAdj2->Left -= 5;

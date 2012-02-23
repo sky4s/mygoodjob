@@ -48,18 +48,18 @@ namespace ca210api {
 
     CA210API::CA210API() {
 	//try {
-	    enable = false;
+	enable = false;
 
-	    long result = ca200.BindDefault();
-	    ca200.AutoConnect();
-	    ca = ca200.get_SingleCa();
-	    probe = ca.get_SingleProbe();
-	    memory = ca.get_Memory();
-	    enable = true;
+	long result = ca200.BindDefault();
+	ca200.AutoConnect();
+	ca = ca200.get_SingleCa();
+	probe = ca.get_SingleProbe();
+	memory = ca.get_Memory();
+	enable = true;
 	/*}
-	catch(EOleException & ex) {
-	    enable = false;
-	}*/
+	   catch(EOleException & ex) {
+	   enable = false;
+	   } */
     };
     CA210API::~CA210API() {
 	close();

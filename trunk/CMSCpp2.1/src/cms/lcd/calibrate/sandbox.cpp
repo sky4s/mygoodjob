@@ -425,13 +425,18 @@ namespace cms {
 		//=============================================================
 
 		if (null != panelRegulator) {
+#ifdef DEBUG_REMAP_NEW
 		    //若有panelRegulator, 進行remapping (遇到hook才需要)
 		    GammaTestPanelRegulator *gammaTestRegulator =
 			dynamic_cast < GammaTestPanelRegulator * >(panelRegulator.get());
 		    if (null == gammaTestRegulator) {
-			//若是GammaTest基本上component就有mapping完的dg code, 所以無須再作remapping
+			//若是GammaTest(direct gamma)基本上component就有mapping完的dg code, 所以無須再作remapping
+			//需要remapping是因為採用寫入dg lut的方式改變面板特性
 			result = panelRegulator->remapping(result);
 		    }
+#else
+		    result = panelRegulator->remapping(result);
+#endif
 		}
 #ifdef DEBUG_CCTLUT_NEWMETHOD
 		STORE_COMPONENT("1.3_maxIntensity.xls", maxComponentVector);
@@ -734,36 +739,10 @@ namespace cms {
 		return result;
 		//==============================================================
 	    };
-	    /*void AdvancedDGLutGenerator::setUseMaxTargetBIntensity(bool useMaxTargetBIntensity) {
-	       this->useMaxTargetBIntensity = useMaxTargetBIntensity;
-	       };
-	       void AdvancedDGLutGenerator::setRTargetIntensity(double rTargetIntensity) {
-	       this->rTargetIntensity = rTargetIntensity;
-	       }
-	       void AdvancedDGLutGenerator::setGTargetIntensity(double gTargetIntensity) {
-	       this->gTargetIntensity = gTargetIntensity;
-	       }
-	       void AdvancedDGLutGenerator::setBTargetIntensity(double bTargetIntensity) {
-	       this->bTargetIntensity = bTargetIntensity;
-	       } */
-	    /*void AdvancedDGLutGenerator::setTargetIntensity(double_array intensity) {
-	       this->rTargetIntensity = intensity[0];
-	       this->gTargetIntensity = intensity[1];
-	       this->bTargetIntensity = intensity[2];
-	       }; */
+
 	    void AdvancedDGLutGenerator::windowClosing(TObject * Sender, TCloseAction & Action) {
 		stopMeasure = true;
 	    };
-	    /*void AdvancedDGLutGenerator::setMultiGen(bool enable, int times) {
-	       if (null == fetcher) {
-	       throw IllegalStateException("null == fetcher");
-	       }
-	       this->multiGen = enable;
-	       this->multiGenTimes = times;
-	       }; */
-	    /*XYZ_vector_ptr AdvancedDGLutGenerator::getTargetXYZVector() {
-	       return targetXYZVector;
-	       }; */
 
 	    bool AdvancedDGLutGenerator::isDuplicateBlue100(Component_vector_ptr componentVector) {
 		int size = componentVector->size();
@@ -782,9 +761,7 @@ namespace cms {
 		}
 		return timesOfB100 == 2;
 	    };
-	    /*void AdvancedDGLutGenerator::setAutoParameter(bool autoParameter) {
-	       this->autoParameter = autoParameter;
-	       }; */
+
 	    /*
 	       試驗性質
 	     */

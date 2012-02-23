@@ -16,6 +16,7 @@ WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	Application->Title = "ODMeasurement.exe";
 	Application->CreateForm(__classid(TThreeDMeasurementForm), &ThreeDMeasurementForm);
                  Application->CreateForm(__classid(TThreeDMeasureWindow), &ThreeDMeasureWindow);
+                 Application->CreateForm(__classid(TOutputFileFrame), &OutputFileFrame);
                  Application->Run();
     }
     catch(EOleException & ex) {

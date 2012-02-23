@@ -91,12 +91,7 @@ namespace cms {
 		}
 	    }
 
-	    /*void MeasureCondition::setRemappingRGBMeasureCode(RGB_vector_ptr rgbMeasureCode) {
-	       this->remappingRGBMeasureCode = rgbMeasureCode;
-	       }; */
-	    /*void MeasureCondition::setRemappingMode(bool remap) {
-	       this->remapping = remap;
-	       }; */
+
 	    int_vector_ptr MeasureCondition::
 		getMeasureCode(const int start, const int end,
 			       const int firstStep, const int step) {
@@ -206,10 +201,7 @@ namespace cms {
 	    };
 	    //==================================================================
 
-	    /*GammaTestPanelRegulator::GammaTestPanelRegulator(bptr < cms::lcd::calibrate::BitDepthProcessor > bitDepth, bptr < i2c::TCONControl > tconctrl, double rgain, double ggain, double bgain):PanelRegulator(bitDepth, tconctrl, rgain, ggain,
-	       bgain)
-	       {
-	       }; */
+
 	  GammaTestPanelRegulator::GammaTestPanelRegulator(bptr < cms::lcd::calibrate::BitDepthProcessor > bitDepth, bptr < i2c::TCONControl > tconctrl, int maxR, int maxG, int maxB, bptr < MeasureCondition > measureCondition):PanelRegulator(bitDepth,
 			   tconctrl, maxR, maxG,
 			   maxB), measureCondition(measureCondition) {
@@ -227,7 +219,9 @@ namespace cms {
 		    STORE_RGBVECTOR("GammaTestPanelRegulator_mapping.xls", remapping);
 		    measureCondition->remappingRGBMeasureCode = remapping;
 		}
+#ifdef DEBUG_REMAP_NEW
 		measureCondition->RemappingMode = remap;
+#endif
 	    };
 	};
     };

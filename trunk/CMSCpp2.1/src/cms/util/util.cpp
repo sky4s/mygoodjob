@@ -23,14 +23,15 @@ namespace cms {
 	using namespace boost;
 	using namespace java::lang;
 	using namespace cms::colorformat;
-	 shared_ptr < string > Util::toString(wchar_t * wc) {
+	string_ptr Util::toString(wchar_t * wc) {
 	    size_t size = wcslen(wc);
 	    char *c = new char[size];
 	    for (size_t x = 0; x != size; x++) {
 		c[x] = wc[x];
 	    };
-	     shared_ptr < string > result(new string(c));
-	     return result;
+	    string str = c;
+	    string_ptr result(new string(str));
+	    return result;
 	};
 
 	shared_array < wchar_t > Util::towchar_t(string & str) {
