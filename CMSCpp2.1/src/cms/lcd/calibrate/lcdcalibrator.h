@@ -133,7 +133,7 @@ namespace cms {
 		 bptr < cms::lcd::calibrate::FeedbackFixer > feedbackFixer;
 
 		string excuteStatus;
-
+		bool debugMode;
 		//dprecated
 		bool smoothComponent;
 		//==============================================================
@@ -192,6 +192,7 @@ namespace cms {
 		    write = smoothComponent
 		};
 		__property string ExcuteStatus = { read = excuteStatus };
+		__property bool DebugMode = { write = debugMode };
 		//==============================================================
 
 

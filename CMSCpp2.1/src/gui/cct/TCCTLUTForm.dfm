@@ -272,7 +272,7 @@ object CCTLUTForm: TCCTLUTForm
       ImeName = #20013#25991' ('#32321#39636') - '#26032#27880#38899
       ItemHeight = 13
       TabOrder = 9
-      Text = '2.1'
+      Text = '2.2'
       OnChange = ComboBox_GammaChange
       Items.Strings = (
         '1.8'
@@ -562,18 +562,19 @@ object CCTLUTForm: TCCTLUTForm
     end
     object CheckBox_NewMethod: TCheckBox
       Left = 7
-      Top = 33
+      Top = 73
       Width = 117
-      Height = 20
+      Height = 19
       Caption = 'New CCT Method'
       TabOrder = 1
+      Visible = False
       OnClick = CheckBox_NewMethodClick
     end
     object CheckBox_MultiGen: TCheckBox
-      Left = 26
-      Top = 52
+      Left = 7
+      Top = 92
       Width = 118
-      Height = 14
+      Height = 19
       Caption = 'Multi Generate'
       Enabled = False
       Font.Charset = DEFAULT_CHARSET
@@ -585,9 +586,9 @@ object CCTLUTForm: TCCTLUTForm
       TabOrder = 2
     end
     object Edit_MultiGenTimes: TEdit
-      Left = 117
-      Top = 46
-      Width = 27
+      Left = 115
+      Top = 92
+      Width = 33
       Height = 21
       Enabled = False
       TabOrder = 3
@@ -595,7 +596,7 @@ object CCTLUTForm: TCCTLUTForm
     end
     object CheckBox_BTargetIntensity: TCheckBox
       Left = 7
-      Top = 88
+      Top = 53
       Width = 111
       Height = 19
       Caption = 'B Target intensity'
@@ -612,7 +613,7 @@ object CCTLUTForm: TCCTLUTForm
     end
     object Edit_BTargetIntensity: TEdit
       Left = 115
-      Top = 88
+      Top = 56
       Width = 33
       Height = 21
       Enabled = False
@@ -621,7 +622,7 @@ object CCTLUTForm: TCCTLUTForm
     end
     object CheckBox_RTargetIntensity: TCheckBox
       Left = 7
-      Top = 67
+      Top = 35
       Width = 111
       Height = 19
       Caption = 'R Target intensity'
@@ -638,7 +639,7 @@ object CCTLUTForm: TCCTLUTForm
     end
     object Edit_RTargetIntensity: TEdit
       Left = 115
-      Top = 67
+      Top = 35
       Width = 33
       Height = 21
       Enabled = False

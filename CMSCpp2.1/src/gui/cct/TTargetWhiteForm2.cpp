@@ -278,7 +278,7 @@ void __fastcall TTargetWhiteForm2::Button_RunClick(TObject * Sender)
 	//==========================================================================
 	// 設定到ca-210去
 	//==========================================================================
-	bool tconinput = MainForm->isTCONInput();
+	bool tconinput = bitDepth->isTCONInput();
 
 	analyzer->setWaitTimes(5000);
 	stopMeasure = false;
@@ -428,7 +428,7 @@ void __fastcall TTargetWhiteForm2::FormCreate(TObject * Sender)
 //---------------------------------------------------------------------------
 
 void TTargetWhiteForm2::setBitDepthProcessor(bptr <
-					     cms::lcd::calibrate:: BitDepthProcessor > bitDepth)
+					     cms::lcd::calibrate::BitDepthProcessor > bitDepth)
 {
     this->bitDepth = bitDepth;
     if (Edit_R->Text.ToInt() == 0) {
@@ -629,8 +629,11 @@ void __fastcall TTargetWhiteForm2::Button_ConnectToggleClick(TObject * Sender)
 
 
 
-void __fastcall TTargetWhiteForm2:: Button_FindInverseIntensityClick(TObject * Sender)
+void __fastcall TTargetWhiteForm2::Button_FindInverseIntensityClick(TObject * Sender)
 {
+    if (!bitDepth->isTCONInput()) {
+	ShowMessage("Recommend using \"T-CON Input\"!!!");
+    }
     int max = bitDepth->getInputMaxDigitalCount();
     using namespace cms::measure;
     bptr < MaxMatrixIntensityAnalyzer > analyzer =

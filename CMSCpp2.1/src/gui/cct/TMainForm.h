@@ -251,7 +251,7 @@ class TMainForm:public TForm {
     // T-CON
     //==========================================================================
      bptr < i2c::TCONControl > getTCONControl();
-    bool isTCONInput();
+    //bool isTCONInput();
     bool isPCwithTCONInput();
     //==========================================================================
 

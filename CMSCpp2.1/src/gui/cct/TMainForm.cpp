@@ -595,7 +595,7 @@ void TMainForm::setDummyMeterFile(bptr < cms::colorformat::DGLutFile > dglutFile
 	    xyY_ptr rxyY = property->getNativeReferenceColor(Channel::R);
 	    xyY_ptr gxyY = property->getNativeReferenceColor(Channel::G);
 	    xyY_ptr bxyY = property->getNativeReferenceColor(Channel::B);
-	    RGB_ptr refRGB = property->getReferenceRGB(DGLutProperty::Native);
+	    RGB_ptr refRGB = property->getNativeReferenceRGB();
 
 	    bptr < MaxMatrixIntensityAnalyzer > matrixAnalyzer2 =
 		MaxMatrixIntensityAnalyzer::getReadyAnalyzer(rxyY->toXYZ(), gxyY->toXYZ(),
@@ -1300,10 +1300,10 @@ bptr < i2c::TCONControl > TMainForm::getTCONControl()
 {
     return control;
 };
-bool TMainForm::isTCONInput()
+/*bool TMainForm::isTCONInput()
 {
     return true == RadioButton_TCON->Checked;
-};
+};*/
 
 bool TMainForm::isPCwithTCONInput()
 {

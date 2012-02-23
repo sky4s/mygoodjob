@@ -471,7 +471,14 @@ namespace cms {
 		break;
 		//case MeasureCondition::Plain:break;
 	    };
+	    bptr < BitDepthProcessor > bitDepth = c->bitDepth;
+	    dgfile.addProperty("t-con input", bitDepth->isTCONInput()? On : Off);
+	    dgfile.addProperty("in", *bitDepth->getInputMaxValue().toString());
+	    dgfile.addProperty("lut", *bitDepth->getLutMaxValue().toString());
+	    dgfile.addProperty("out", *bitDepth->getOutputMaxValue().toString());
+
 	    //==================================================================
+
 	    //==================================================================
 	    //low level correct
 	    //==================================================================
@@ -530,12 +537,6 @@ namespace cms {
 		    dgfile.addProperty("Multi-Gen", c->multiGenTimes);
 		}
 	    }
-
-	    bptr < BitDepthProcessor > bitDepth = c->bitDepth;
-	    dgfile.addProperty("in", *bitDepth->getInputMaxValue().toString());
-	    dgfile.addProperty("lut", *bitDepth->getLutMaxValue().toString());
-	    dgfile.addProperty("out", *bitDepth->getOutputMaxValue().toString());
-
 	    //==================================================================
 	    // gamma
 	    //==================================================================

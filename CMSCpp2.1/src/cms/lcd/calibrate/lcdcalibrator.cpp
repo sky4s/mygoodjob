@@ -144,7 +144,7 @@ namespace cms {
 	    void LCDCalibrator::setOriginalGamma() {
 		this->originalGamma = true;
 	    };
- 
+
 	    void LCDCalibrator::setAbsoluteGamma(bool absoluteGamma, int startGrayLevel,
 						 double startGrayLevelAboveGamma) {
 		this->absoluteGamma = absoluteGamma;
@@ -218,6 +218,7 @@ namespace cms {
 		smoothIntensityEnd = 60;
 
 		excuteStatus = "N/A";
+		debugMode = false;
 	    };
 
 	    Component_vector_ptr LCDCalibrator::fetchComponentVector() {
@@ -380,8 +381,8 @@ namespace cms {
 			(new GammaTestPanelRegulator(bitDepth, tconctrl, (int) rgb->R, (int) rgb->G,
 						     (int) rgb->B, measureCondition));
 		    if (false == this->manualAccurateMode) {
-			//若是在direct gamma下, setEnable會無效, 因為setEnable是變更DG LUT
-			//但是direct gamma無視DG LUT的內容!
+			//若是在direct gamma下, setEnable會無效
+			//因為setEnable是變更DG LUT, 但是direct gamma無視DG LUT的內容!
 			panelRegulator->setEnable(true);
 		    }
 		    remapped = true;
@@ -466,7 +467,7 @@ namespace cms {
 		return result;
 	    };
 	    bool LCDCalibrator::isDoAccurate() {
-		return (true == accurateMode) && (null != tconctrl);
+		return (true == accurateMode) && (null != tconctrl || true == debugMode);
 	    };
 
 
@@ -486,6 +487,7 @@ namespace cms {
 		// 產生 luminance gamma curve
 		//=============================================================
 		if (keepMaxLuminance == KeepMaxLuminance::NativeWhiteAdvanced) {
+		    //native white smooth
 		    //NativeWhiteAdvanced是為了兼顧Hook和最大亮度的折衷產物
 		    bptr < PanelRegulator > panelRegulator2;
 		    Component_vector_ptr componentVector2;
@@ -541,8 +543,6 @@ namespace cms {
 		    // 產生gamma curve用
 		    //==========================================================
 		    //max luminance
-		    //bptr < cms::measure::IntensityAnalyzerIF > analyzer = fetcher->getAnalyzer();
-		    //double maxLuminance = isDoAccurate()? targetWhiteXYZ->Y : targetWhiteXYZ->Y;
 		    bool doAccurate = isDoAccurate();
 		    if (doAccurate && null == nativeWhiteAnalyzer) {
 			initNativeWhiteAnalyzer();
@@ -639,7 +639,7 @@ namespace cms {
 		    // feedback
 		    //=========================================================
 		    if (true == feedbackFix
-			&& (true == MainForm->debugMode || MainForm->isTCONInput()
+			&& (true == MainForm->debugMode || bitDepth->isTCONInput()
 			    || MainForm->isPCwithTCONInput())) {
 			//先從DGLut算出灰階的dx dy
 			//再從這樣的結果微調目標值
@@ -1255,6 +1255,7 @@ namespace cms {
 		    //=========================================================
 		    double_vector_ptr newNormalGammaCurve(new double_vector());
 
+		    //相對gamma區間
 		    for (int x = 0; x <= turnGrayLevel; x++) {
 			//此區段設定順勢修正到abs gamma
 			double normalInput = ((double) x) / effectiven;
@@ -1262,17 +1263,24 @@ namespace cms {
 			    GammaFinder::gamma(normalInput, relativeGamma);
 			newNormalGammaCurve->push_back(relativeNomralOutput);
 		    }
+		    //絕對gamma區間
 		    for (int x = turnGrayLevel + 1; x < effectiven; x++) {
 			//此區段符合abs gamma
 			double normalInput = ((double) x) / effectiven;
+			//原始是abs, 要轉成rel
 			double absoluteNormalOutput = (*normalGammaCurve)[x];
-			double relativeNomralOutput =
-			    (absoluteNormalOutput * maxLuminance - minLuminance) / (maxLuminance -
-										    minLuminance);
-			if (relativeNomralOutput < 0) {
+			double absoluteGammaLuminance = absoluteNormalOutput * maxLuminance;
+			double relativeNormalOutput =
+			    (absoluteGammaLuminance - minLuminance) / (maxLuminance - minLuminance);
+
+			if (relativeNormalOutput < 0) {
 			    return nil_double_vector_ptr;
 			}
-			newNormalGammaCurve->push_back(relativeNomralOutput);
+			double absGamma = GammaFinder::getGamma(normalInput, absoluteNormalOutput);
+
+
+			newNormalGammaCurve->push_back(relativeNormalOutput);
+
 		    }
 		    for (int x = effectiven; x < size; x++) {
 			double absoluteNormalOutput = (*normalGammaCurve)[x];

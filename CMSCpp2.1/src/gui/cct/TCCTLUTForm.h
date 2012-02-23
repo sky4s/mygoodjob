@@ -121,8 +121,8 @@ class TCCTLUTForm:public TForm, cms::lcd::calibrate::FeedbackListener {
     TLabel *Label22;
     TLabel *Label23;
     TComboBox *ComboBox_AbsGammaStartAboveGamma;
-        TLabel *Label24;
-        TLabel *Label25;
+    TLabel *Label24;
+    TLabel *Label25;
     void __fastcall RadioButton_P1P2Click(TObject * Sender);
     void __fastcall Button_MeaRunClick(TObject * Sender);
     void __fastcall Button_DebugClick(TObject * Sender);
