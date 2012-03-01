@@ -65,7 +65,6 @@ class THSVAdjustFrame:public TFrame {
     void __fastcall Button_BrightnessResetClick(TObject * Sender);
     void __fastcall sb_Sat_gainChange(TObject * Sender);
     void __fastcall sb_Val_gainChange(TObject * Sender);
-    void __fastcall Button_HueReturnClick(TObject * Sender);
 
   private:			// User declarations
     //double h, s, v;
@@ -76,8 +75,6 @@ class THSVAdjustFrame:public TFrame {
 
     int defaultH, defaultS, defaultV;
 
-    bool hgainChange, sgainChange, vgainChange;
-    int lastDefault;
     int maxHueValue;
      bptr < CaptionIF > captionIF;
   public:			// User declarations

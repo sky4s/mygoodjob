@@ -224,13 +224,6 @@ void __fastcall THSVAdjustFrame::sb_Val_gainChange(TObject * Sender)
 
     //---------------------------------------------------------------------------
 
-void __fastcall THSVAdjustFrame::Button_HueReturnClick(TObject * Sender)
-{
-    if (true == hgainChange) {
-	sb_Hue_gain->Position = lastDefault;
-	hgainChange = false;
-    }
-}
 
-    //---------------------------------------------------------------------------
+
 

@@ -67,7 +67,6 @@ object HSVAdjustFrame: THSVAdjustFrame
       Caption = 'Return'
       TabOrder = 3
       Visible = False
-      OnClick = Button_HueReturnClick
     end
   end
   object GroupBox41: TGroupBox
