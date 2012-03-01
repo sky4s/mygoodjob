@@ -173,6 +173,24 @@ void TMainForm::initTCONFile()
 	ini->WriteInteger("12306", "in", 8);
 	ini->WriteInteger("12306", "out", 8);
 	//=========================================================================
+	// 12307
+	//=========================================================================
+	/*ini->WriteInteger("12307", "AddressingSize", 5);
+
+	   ini->WriteString("12307", "DigitalGammaEnableAddress", "28");
+	   ini->WriteInteger("12307", "DigitalGammaEnableBit", 0);
+	   ini->WriteString("12307", "DigitalGammaLUTAddress", "302");
+	   ini->WriteInteger("12307", "DigitalGammaLUTType", 12);
+
+	   ini->WriteBool("12307", "GammaTestFunc", false);
+	   ini->WriteString("12307", "GammaTestEnableAddress", "29");
+	   ini->WriteInteger("12307", "GammaTestEnableBit", 0);
+	   ini->WriteString("12307", "GammaTestAddress", "154");
+	   ini->WriteBool("12307", "IndepRGB", true);
+
+	   ini->WriteInteger("12307", "in", 8);
+	   ini->WriteInteger("12307", "out", 8); */
+	//=========================================================================
 	// 12401
 	//=========================================================================
 	ini->WriteInteger("12401", "AddressingSize", 5);
@@ -867,19 +885,20 @@ void __fastcall TMainForm::Button_ConnectClick(TObject * Sender)
 	this->Button_Connect->Enabled = false;
 	this->StatusBar1->Panels->Items[2]->Text = "T-CON Connected";
 	if (!this->RadioButton_PCTCON_NB->Checked) {
+	    //不是TCON+NB的話
 
 	    if (this->RadioButton_PCTCON_TV->Checked) {
+		//看是TCON+TV
 		MeasureWindow->setDGLUTInput(control, bitDepth);
 		this->bitDepth->setTCONInput(true);
 	    } else {
-
+		//或純TCON
 		MeasureWindow->setTCONInput(control);
 		this->bitDepth->setTCONInput(true);
 	    }
 	}
-
-
     } else {
+	//純pc
 	MeasureWindow->setTCONControlOff();
     }
 }
@@ -1300,6 +1319,7 @@ bptr < i2c::TCONControl > TMainForm::getTCONControl()
 {
     return control;
 };
+
 /*bool TMainForm::isTCONInput()
 {
     return true == RadioButton_TCON->Checked;

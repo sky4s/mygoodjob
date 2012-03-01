@@ -53,6 +53,7 @@ void __fastcall TGammaMeasurementForm::Button_MeasureClick(TObject * Sender)
 
 
     try {
+	Button_Measure->Enabled = false;
 	MainForm->showProgress(ProgressBar1);
 	if (measure(rgbw, getMeasureCondition(), flicker, stlfilename)) {
 	    MainForm->stopProgress(ProgressBar1);
@@ -62,6 +63,7 @@ void __fastcall TGammaMeasurementForm::Button_MeasureClick(TObject * Sender)
     }
     __finally {
 	MainForm->stopProgress(ProgressBar1);
+	Button_Measure->Enabled = true;
     }
 }
 
@@ -185,6 +187,13 @@ void __fastcall TGammaMeasurementForm::FormShow(TObject * Sender)
     this->Panel2->Visible = tconInput;
     setMeasureInfo();
     fetcher = MainForm->getComponentFetcher();
+
+    this->CheckBox_Loaded->Checked = false;
+    this->CheckBox_Loaded->Enabled = false;
+    Edit_Count->Text = "0";
+    Edit_StartLevelT->Text = "0";
+    Edit_EndLevelT->Text = "0";
+    dgcodeTable = (RGB_vector_ptr) ((RGB_vector *) null);
 
 #ifdef EXPERIMENT_FUNC
     CheckBox_FlickerFMA->Visible = true;
