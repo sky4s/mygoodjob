@@ -14,6 +14,7 @@ object HSVForm2nd: THSVForm2nd
   KeyPreview = True
   OldCreateOrder = False
   Position = poDefault
+  ShowHint = True
   Visible = True
   WindowState = wsMaximized
   OnClose = FormClose
@@ -28,6 +29,8 @@ object HSVForm2nd: THSVForm2nd
     Top = 0
     Width = 802
     Height = 681
+    ParentShowHint = False
+    ShowHint = False
     TabOrder = 0
     object CheckBox1: TCheckBox
       Left = 129
@@ -339,7 +342,7 @@ object HSVForm2nd: THSVForm2nd
         Visible = False
       end
       object CheckBox_AutoWrite: TCheckBox
-        Left = 169
+        Left = 257
         Top = 11
         Width = 72
         Height = 14
@@ -357,6 +360,10 @@ object HSVForm2nd: THSVForm2nd
         inherited GroupBox40: TGroupBox
           inherited lb_Hue_gain: TLabel
             Left = 332
+          end
+          inherited Label197: TLabel
+            Width = 31
+            Caption = '  Hue'
           end
           inherited sb_Hue_gain: TScrollBar
             Left = 82
@@ -383,6 +390,10 @@ object HSVForm2nd: THSVForm2nd
           inherited lb_Sat_gain: TLabel
             Left = 332
           end
+          inherited Label207: TLabel
+            Width = 66
+            Caption = '  Saturation'
+          end
           inherited sb_Sat_gain: TScrollBar
             Left = 82
             Hint = '[q] for minus, [w] for plus'
@@ -407,6 +418,10 @@ object HSVForm2nd: THSVForm2nd
           inherited lb_Val_gain: TLabel
             Left = 332
           end
+          inherited Label25: TLabel
+            Width = 41
+            Caption = '  Value'
+          end
           inherited sb_Val_gain: TScrollBar
             Left = 82
             Hint = '[a] for minus, [s] for plus'
@@ -426,7 +441,7 @@ object HSVForm2nd: THSVForm2nd
         end
       end
       object CheckBox_OffWhenWrite: TCheckBox
-        Left = 169
+        Left = 257
         Top = 29
         Width = 94
         Height = 14
@@ -441,6 +456,8 @@ object HSVForm2nd: THSVForm2nd
         Width = 49
         Height = 14
         Caption = 'I&nterp.'
+        ParentShowHint = False
+        ShowHint = True
         TabOrder = 9
         OnClick = Button_15BaseInterpClick
       end
@@ -516,6 +533,19 @@ object HSVForm2nd: THSVForm2nd
           TabStop = True
           OnClick = RadioButton_SingleClick
         end
+      end
+      object RadioGroup_Global: TRadioGroup
+        Left = 168
+        Top = 8
+        Width = 57
+        Height = 41
+        Caption = 'Global'
+        Enabled = False
+        Items.Strings = (
+          'Abs'
+          'Rel')
+        TabOrder = 15
+        OnClick = RadioGroup_GlobalClick
       end
     end
     object GroupBox3: TGroupBox
@@ -1069,9 +1099,9 @@ object HSVForm2nd: THSVForm2nd
       object Label25: TLabel
         Left = 5
         Top = 33
-        Width = 47
+        Width = 53
         Height = 16
-        Caption = 'Chroma'
+        Caption = '  Chroma'
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clWindowText
         Font.Height = -15

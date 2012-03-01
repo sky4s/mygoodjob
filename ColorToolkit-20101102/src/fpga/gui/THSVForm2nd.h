@@ -139,6 +139,7 @@ class THSVForm2nd:public TForm, cms::util::CallBackIF, RGBInfoCallbackIF, Patter
     TGroupBox *GroupBox_HSVVersion;
     TRadioButton *RadioButton_v1;
     TRadioButton *RadioButton_v2;
+    TRadioGroup *RadioGroup_Global;
 
     void __fastcall btn_hsv_loadClick(TObject * Sender);
     void __fastcall btn_hsv_saveClick(TObject * Sender);
@@ -189,6 +190,7 @@ class THSVForm2nd:public TForm, cms::util::CallBackIF, RGBInfoCallbackIF, Patter
     void __fastcall colorPickerbtn_c3d_load_imgClick(TObject * Sender);
     void __fastcall RadioButton_SingleClick(TObject * Sender);
     void __fastcall RadioButton_LocalClick(TObject * Sender);
+    void __fastcall RadioGroup_GlobalClick(TObject * Sender);
   private:			// User declarations
     static const int HUE_COUNT = 24;	//­ì¥»¬O96, why?
     static const int MAX_HUE_VALUE = 768;
@@ -315,7 +317,8 @@ class THSVForm2nd:public TForm, cms::util::CallBackIF, RGBInfoCallbackIF, Patter
     bptr < Dep::RGBColorSpace > sourceColorSpace, targetColorSpace;
     int_array cursorRGBValues;
     int_array selectedRGBValues;
-    int_array storeHSVPosition;
+    int_array storeHSVPosition4DoubleHue;
+    //int_array storeHSVPosition4Return;
     bool customPattern;
 
     PatternMode patternMode;
@@ -341,6 +344,8 @@ class THSVForm2nd:public TForm, cms::util::CallBackIF, RGBInfoCallbackIF, Patter
     cms::hsvip::IntegerSaturationFormula isf;	//((byte) 7, 3);
     bptr < cms::hsvip::ChromaEnhance > ce;
     short getValueFromChromaEnhance(short hue, short chroma);
+    void setChromaOfScrollBar(short chroma);
+    bool changeChromaBySystem;
     //=========================================================================
 
     //=========================================================================
