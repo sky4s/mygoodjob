@@ -79,6 +79,7 @@ void __fastcall TCCTLUTForm::Button_MeaRunClick(TObject * Sender)
 	    ShowMessage("Output file is locked! Try release file lock and retry!");
 	    return;
 	}
+	Button_MeaRun->Enabled = false;
 	MainForm->showProgress(ProgressBar1);
 	String_ptr astr = this->TOutputFileFrame1->getOutputFilename();
 	string filename = astr->c_str();
@@ -286,7 +287,7 @@ void __fastcall TCCTLUTForm::Button_MeaRunClick(TObject * Sender)
 	MainForm->stopProgress(ProgressBar1);
 	run = false;
 	Edit_FeedbackMsg->Visible = false;
-	//this->Button_MeaRun->Enabled = true;
+	Button_MeaRun->Enabled = true;
     }
 }
 
