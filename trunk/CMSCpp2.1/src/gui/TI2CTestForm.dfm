@@ -1,6 +1,6 @@
 object I2CTestForm: TI2CTestForm
-  Left = 738
-  Top = 284
+  Left = 551
+  Top = 300
   Width = 350
   Height = 350
   BiDiMode = bdRightToLeft
@@ -25,6 +25,12 @@ object I2CTestForm: TI2CTestForm
     Width = 65
     Height = 20
     Caption = 'Connect'
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -10
+    Font.Name = 'MS Sans Serif'
+    Font.Style = []
+    ParentFont = False
     TabOrder = 0
     OnClick = Button1Click
   end

@@ -7,7 +7,9 @@
 //其他庫頭文件
 
 //本項目內頭文件
-//nclude <cms/colorformat/excelfile.h>
+//#include <java/lang.h>
+#include <cms/util/util.h>
+//#include <i2c/core/ReadWritefunc.h>
 
 namespace i2c {
     class TCONControl {
@@ -23,8 +25,8 @@ namespace i2c {
 		     bptr < i2cControl > control1, bptr < i2cControl > control2);
 	static bptr < cms::util::ByteBuffer > getRGBByteBuffer(int r, int g, int b, const
 							       TestRGBBit & testRGBBit);
-	void setGammaTestRGB(RGB_ptr rgb);
-	void setGammaTestRGB(int r, int g, int b);
+	bool setGammaTestRGB(RGB_ptr rgb);
+	bool setGammaTestRGB(int r, int g, int b);
 	void setGammaTest(bool enable);
 
 	const Dep::MaxValue & getLUTBit();
@@ -38,6 +40,8 @@ namespace i2c {
       private:
 
 	void write(int dataAddress, bptr < cms::util::ByteBuffer > data);
+	 bptr < cms::util::ByteBuffer > read(int dataAddress, int size);
+	 bptr < cms::util::ByteBuffer > read(int dataAddress, int size, int tconIndex);
 	static int_array getLMHData(int data);
 
 	void setBitData(int dataAddress, unsigned char bit, bool data);

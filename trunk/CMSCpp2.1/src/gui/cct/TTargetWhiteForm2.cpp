@@ -220,7 +220,7 @@ void __fastcall TTargetWhiteForm2::Button_RunClick(TObject * Sender)
 	    //4. 找到對應色度的RGB
 	    if (maxZDGCode == -1) {
 		//this->maxZDGCode = MeasureTool::getMaxZDGCode(MainForm->mm, bitDepth);
-		Button_FindInverseZofB->Click();
+		Button_FindInverseIntensity->Click();
 	    }
 	    rgb->B = maxZDGCode;
 	}
@@ -320,7 +320,7 @@ void __fastcall TTargetWhiteForm2::Button_RunClick(TObject * Sender)
 	    MainForm->setAnalyzerToTargetChannel();
 	}
 	analyzer->enter();
-	MainForm->StatusBar1->Panels->Items[0]->Text = "Target White: Set";
+
 
 	//==========================================================================
 
@@ -363,6 +363,8 @@ void __fastcall TTargetWhiteForm2::Button_RunClick(TObject * Sender)
 	//analyzer.reset();
 	Button_Run->Enabled = true;
 	MainForm->stopProgress(ProgressBar1);
+        MainForm->StatusBar1->Panels->Items[0]->Text = "Target White: Set";
+	StatusBar1->Panels->Items[0]->Text = "Target White: ." + Edit_refx->Text + " ." + Edit_refy->Text;
     }
 }
 
@@ -562,17 +564,6 @@ void __fastcall TTargetWhiteForm2::Button_DisconnectClick(TObject * Sender)
 
 //---------------------------------------------------------------------------
 
-void __fastcall TTargetWhiteForm2::Button_FindInverseZofBClick(TObject * Sender)
-{
-    using namespace cms::measure;
-    using namespace cms::lcd::calibrate;
-    this->maxZDGCode = MeasureTool::getMaxZDGCode(MainForm->mm, bitDepth);
-    Edit_InverseZofB->Text = maxZDGCode;
-    findInverseZ = true;
-    binder->active(Sender);
-}
-
-//---------------------------------------------------------------------------
 
 
 void __fastcall TTargetWhiteForm2::Button_MeasureClick(TObject * Sender)
@@ -655,6 +646,7 @@ void __fastcall TTargetWhiteForm2::Button_FindInverseIntensityClick(TObject * Se
 		bool preIsBetter = Math::abs(intensity->B - 100) > Math::abs(preIntensity->B - 100);
 		maxZDGCode = preIsBetter ? x + 1 : x;
 		foundInverse = true;
+		StatusBar1->Panels->Items[1]->Text = "De-Hook: Set";
 		break;
 	    }
 	}
@@ -666,7 +658,19 @@ void __fastcall TTargetWhiteForm2::Button_FindInverseIntensityClick(TObject * Se
     Edit_InverseIntensityofB->Text = maxZDGCode;
     binder->active(Edit_InverseIntensityofB);
     findInverseZ = foundInverse;
+
 }
 
 //---------------------------------------------------------------------------
+
+
+void __fastcall TTargetWhiteForm2::Edit_InverseIntensityofBKeyPress(TObject * Sender, char &Key)
+{
+        StatusBar1->Panels->Items[1]->Text = "De-Hook: Set";
+    findInverseZ = true;
+    maxZDGCode = Edit_InverseIntensityofB->Text.ToInt();
+}
+
+//---------------------------------------------------------------------------
+
 

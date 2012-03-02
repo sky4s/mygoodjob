@@ -77,6 +77,7 @@ namespace cms {
 	    };
 	    unsigned char &operator[] (const size_t index);
 	    const unsigned char &operator[] (const size_t index) const;
+	    bool equals(bptr < ByteBuffer > compare);
 	};
 
 

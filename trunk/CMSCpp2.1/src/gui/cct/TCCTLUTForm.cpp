@@ -286,7 +286,6 @@ void __fastcall TCCTLUTForm::Button_MeaRunClick(TObject * Sender)
     __finally {
 	MainForm->stopProgress(ProgressBar1);
 	run = false;
-	Edit_FeedbackMsg->Visible = false;
 	Button_MeaRun->Enabled = true;
     }
 }
@@ -728,10 +727,9 @@ void __fastcall TCCTLUTForm::RadioGroup_NormalCaseClick(TObject * Sender)
 
 void TCCTLUTForm::doFeedback(int defectCount, int feedbackCount)
 {
-    Edit_FeedbackMsg->Visible = true;
     String msg = "Defect/Total FeedBack: ";
     msg = msg + defectCount + "/" + feedbackCount;
-    Edit_FeedbackMsg->Text = msg;
+    StatusBar1->Panels->Items[0]->Text = msg;
 };
 
 //---------------------------------------------------------------------------

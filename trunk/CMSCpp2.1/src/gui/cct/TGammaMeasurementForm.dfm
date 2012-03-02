@@ -1,8 +1,8 @@
 object GammaMeasurementForm: TGammaMeasurementForm
-  Left = 270
-  Top = 266
-  Width = 341
-  Height = 421
+  Left = 501
+  Top = 301
+  Width = 339
+  Height = 419
   Caption = 'Gamma Measurement'
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET

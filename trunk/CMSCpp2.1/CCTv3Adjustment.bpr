@@ -26,7 +26,8 @@
       build\component.obj build\dg.obj build\deltae.obj build\common.obj 
       build\rgbgammaop.obj build\binder.obj build\listener.obj 
       build\lcdtarget.obj build\minimisation.obj build\maxmatrixanalyzer.obj 
-      build\feedback.obj build\quantizer.obj build\EYEONECTRLLib_OCX.obj"/>
+      build\feedback.obj build\quantizer.obj build\EYEONECTRLLib_OCX.obj 
+      build\TChangeLogForm.obj"/>
     <RESFILES value="CCTv3Adjustment.res"/>
     <IDLFILES value=""/>
     <IDLGENFILES value=""/>
@@ -37,7 +38,7 @@
       src\gui\TOutputFileFrame.dfm src\gui\cct\TGammaAdjustmentForm.dfm 
       src\gui\cct\TGammaMeasurementForm.dfm src\gui\cct\TMainForm.dfm 
       src\gui\cct\TTargetWhiteForm2.dfm src\gui\cct\TAboutBox.dfm 
-      src\gui\cct\TCCTLUTForm.dfm"/>
+      src\gui\cct\TCCTLUTForm.dfm src\gui\cct\TChangeLogForm.dfm"/>
     <LIBFILES value="lib\hid.lib"/>
     <LIBRARIES value="adortl.lib dbrtl.lib vclx.lib vcl.lib rtl.lib"/>
     <SPARELIBS value="rtl.lib vcl.lib vclx.lib dbrtl.lib adortl.lib"/>
@@ -48,7 +49,7 @@
       inetdbbde.bpi inetdbxpress.bpi inetdb.bpi nmfast.bpi webdsnap.bpi 
       bcbie.bpi websnap.bpi soaprtl.bpi dclocx.bpi dbexpress.bpi dbxcds.bpi 
       indy.bpi bcb2kaxserver.bpi bcbindent.bpi"/>
-    <PATHCPP value=".;lib\LPT_lib;lib\LPT_lib;lib\USB_i2c_lib;src\java;lib\CA200SRVRLib;lib\CA200SRVRLib;src\ca210api;src\cms\util;src\cms\util;src\cms\colorspace;src\cms\colorspace;src\cms\colorspace;src\cms\colorspace;src\cms\colorspace;src\cms;src\cms;src\cms\colorformat;src\cms\colorformat;src\cms\colorformat;src\cms\colorformat;src\math;src\math;src\math;src\math;src\math;src\cms\lcd\calibrate;src\cms\lcd\calibrate;src\cms\lcd\calibrate;src\cms\lcd\calibrate;src\cms\lcd\calibrate;src\cms\lcd\calibrate;src\cms\lcd\calibrate;src\cms\measure;src\cms\measure;src\cms\measure;src\cms\measure;src\gui;src\gui;src\gui;src\gui;src\gui;src\gui;src\gui;src\i2c;src\i2c;src\i2c;src\i2c\core;src\math;src\cms\lcd\calibrate;src\cms\lcd\calibrate;src\cms\colorformat;src\math;src\gui\cct;src\gui\cct;src\gui\cct;src\gui\cct;src\gui\cct;src\gui\cct;src\cms\lcd\calibrate;src\cms\lcd\calibrate;src\cms;src\cms\lcd\calibrate;src\cms\lcd\calibrate;src\gui\util;src\gui\event;src\cms\lcd;src\algo;src\cms\measure;src\cms\lcd\calibrate;src\cms\lcd\calibrate;lib\EyeOneLib"/>
+    <PATHCPP value=".;lib\LPT_lib;lib\LPT_lib;lib\USB_i2c_lib;src\java;lib\CA200SRVRLib;lib\CA200SRVRLib;src\ca210api;src\cms\util;src\cms\util;src\cms\colorspace;src\cms\colorspace;src\cms\colorspace;src\cms\colorspace;src\cms\colorspace;src\cms;src\cms;src\cms\colorformat;src\cms\colorformat;src\cms\colorformat;src\cms\colorformat;src\math;src\math;src\math;src\math;src\math;src\cms\lcd\calibrate;src\cms\lcd\calibrate;src\cms\lcd\calibrate;src\cms\lcd\calibrate;src\cms\lcd\calibrate;src\cms\lcd\calibrate;src\cms\lcd\calibrate;src\cms\measure;src\cms\measure;src\cms\measure;src\cms\measure;src\gui;src\gui;src\gui;src\gui;src\gui;src\gui;src\gui;src\i2c;src\i2c;src\i2c;src\i2c\core;src\math;src\cms\lcd\calibrate;src\cms\lcd\calibrate;src\cms\colorformat;src\math;src\gui\cct;src\gui\cct;src\gui\cct;src\gui\cct;src\gui\cct;src\gui\cct;src\cms\lcd\calibrate;src\cms\lcd\calibrate;src\cms;src\cms\lcd\calibrate;src\cms\lcd\calibrate;src\gui\util;src\gui\event;src\cms\lcd;src\algo;src\cms\measure;src\cms\lcd\calibrate;src\cms\lcd\calibrate;lib\EyeOneLib;src\gui\cct"/>
     <PATHPAS value=".;"/>
     <PATHRC value=".;"/>
     <PATHASM value=".;"/>
@@ -167,6 +168,7 @@
       <FILE FILENAME="lib\EyeOneLib\EYEONECTRLLib_TLB.h" FORMNAME="" UNITNAME="EYEONECTRLLib_TLB.h" CONTAINERID="" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="lib\EyeOneLib\EYEONECTRLLib_OCX.cpp" FORMNAME="" UNITNAME="EYEONECTRLLib_OCX.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="lib\EyeOneLib\EYEONECTRLLib_OCX.h" FORMNAME="" UNITNAME="EYEONECTRLLib_OCX.h" CONTAINERID="" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="src\gui\cct\TChangeLogForm.cpp" FORMNAME="ChangeLogForm" UNITNAME="TChangeLogForm" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
   </FILELIST>
   <BUILDTOOLS>
   </BUILDTOOLS>
@@ -178,7 +180,7 @@ AutoIncBuild=1
 MajorVer=3
 MinorVer=3
 Release=1
-Build=17
+Build=19
 Debug=1
 PreRelease=1
 Special=0
@@ -190,7 +192,7 @@ CodePage=950
 [Version Info Keys]
 CompanyName=AUO
 FileDescription=CCT Adjustment v3
-FileVersion=3.3.1.17
+FileVersion=3.3.1.19
 InternalName=
 LegalCopyright=Algorithm by StocktonTsai &amp; RichardYCTsai(5626) &amp; skyforce(6123), Implement by skyforce
 LegalTrademarks=

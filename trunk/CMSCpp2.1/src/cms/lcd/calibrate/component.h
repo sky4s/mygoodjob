@@ -10,6 +10,7 @@
 //本項目內頭文件
 #include <math/regression.h>
 #include "rgbgammaop.h"
+#include <gui/event/listener.h>
 
 namespace cms {
     namespace lcd {

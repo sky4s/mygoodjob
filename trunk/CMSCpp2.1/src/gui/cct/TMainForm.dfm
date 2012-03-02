@@ -1,8 +1,8 @@
 object MainForm: TMainForm
-  Left = 348
-  Top = 554
-  Width = 769
-  Height = 374
+  Left = 336
+  Top = 362
+  Width = 767
+  Height = 380
   Caption = 'CCT Adjustment v3.3b'
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
@@ -892,11 +892,10 @@ object MainForm: TMainForm
           Width = 178
           Height = 19
           Hint = 'For feedback with no "Direct Gamma" use'
-          Caption = 'PC w/T-CON (Feedback /TV)'
+          Caption = 'PC w/T-CON'
           ParentShowHint = False
           ShowHint = True
           TabOrder = 3
-          Visible = False
           OnClick = RadioButton_PCTCON_TVClick
         end
       end
@@ -969,7 +968,7 @@ object MainForm: TMainForm
           Height = 21
           ImeName = #26085#25991#36664#20837#31995#32113' (MS-IME2002)'
           TabOrder = 0
-          Text = '750'
+          Text = '400'
           OnChange = Edit_IntervalChange
         end
         object Edit_AverageTimes: TEdit
@@ -1467,7 +1466,7 @@ object MainForm: TMainForm
             Top = 13
             Width = 138
             Height = 21
-            ItemHeight = 13
+            ItemHeight = 0
             TabOrder = 0
             OnChange = ComboBox_TCONTypeChange
           end
@@ -1743,9 +1742,10 @@ object MainForm: TMainForm
   end
   object StatusBar1: TStatusBar
     Left = 0
-    Top = 307
-    Width = 761
+    Top = 313
+    Width = 759
     Height = 19
+    Color = clWhite
     Panels = <
       item
         Text = 'Target White: N/A'
@@ -1781,9 +1781,16 @@ object MainForm: TMainForm
       Caption = 'Measurement'
       OnClick = Measurement1Click
     end
-    object About1: TMenuItem
-      Caption = 'About'
-      OnClick = About1Click
+    object Help1: TMenuItem
+      Caption = 'Help'
+      object ChangeLog1: TMenuItem
+        Caption = 'Change Log'
+        OnClick = ChangeLog1Click
+      end
+      object About2: TMenuItem
+        Caption = 'About'
+        OnClick = About2Click
+      end
     end
     object Exit1: TMenuItem
       Caption = 'Exit'

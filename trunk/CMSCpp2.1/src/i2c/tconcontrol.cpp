@@ -25,17 +25,17 @@ namespace i2c {
 	dualTCON(true) {
 
     };
-    void TCONControl::setGammaTestRGB(RGB_ptr rgb) {
+    bool TCONControl::setGammaTestRGB(RGB_ptr rgb) {
 	//rgb->getValues()
 	int r = _toInt(rgb->R);
 	int g = _toInt(rgb->G);
 	int b = _toInt(rgb->B);
-	setGammaTestRGB(r, g, b);
+	return setGammaTestRGB(r, g, b);
     };
     bptr < ByteBuffer > TCONControl::getRGBByteBuffer(int r, int g, int b,
 						      const TestRGBBit & testRGBBit) {
-        // C B A 9 8 7 6 5 4 3 2 1
-        // ^^^^^^^H^^^^^^^^^^^^^^^L
+	// C B A 9 8 7 6 5 4 3 2 1
+	// ^^^^^^^H^^^^^^^^^^^^^^^L
 	int rLow = r & 255;
 	int rHigh = (r >> 8) & 15;
 	int gLow = g & 255;
@@ -85,13 +85,25 @@ namespace i2c {
 	return data;
     };
 
-    void TCONControl::setGammaTestRGB(int r, int g, int b) {
+    bool TCONControl::setGammaTestRGB(int r, int g, int b) {
 	const TestRGBBit & testRGBBit = parameter->testRGBBit;
 	bptr < ByteBuffer > data = getRGBByteBuffer(r, g, b, testRGBBit);
 
 	int address = parameter->testRGBAddress;
 	write(address, data);
+	int size = data->getSize();
+        bptr < ByteBuffer > dataFrom0 = read(address, size, 0);
+        if(!dualTCON) {
+              //1 tcon
+                return data->equals(dataFrom0);
+        }
+        else {
+        //2 tcon
+        	bptr < ByteBuffer > dataFrom1 = read(address, size, 1);
+                return data->equals(dataFrom0) && data->equals(dataFrom1);
+        }
     };
+
     void TCONControl::setGammaTest(bool enable) {
 	setBitData(parameter->gammaTestAddress, parameter->gammaTestBit, enable);
     };
@@ -115,9 +127,22 @@ namespace i2c {
 	    control2->write(dataAddress, data);
 	}
     }
+
+    bptr < ByteBuffer > TCONControl::read(int dataAddress, int size) {
+	return read(dataAddress, size, 0);
+    }
+    bptr < ByteBuffer > TCONControl::read(int dataAddress, int size, int tconIndex) {
+	if (0 == tconIndex) {
+	    return control->read(dataAddress, size);
+	} else if (1 == tconIndex && true == dualTCON) {
+	    return control2->read(dataAddress, size);
+	} else {
+	    throw new IllegalArgumentException("");
+	}
+    }
     const MaxValue & TCONControl::getLUTBit() {
 	return parameter->lutBit;
-    };
+    }
 
     bptr < ByteBuffer > TCONControl::getDGLut10BitByteBuffer(RGB_vector_ptr rgbVector) {
 	if (true) {
@@ -152,11 +177,7 @@ namespace i2c {
 		(*data)[index++] = ((d1 & 15) << 4) + d2 >> 6;
 		(*data)[index++] = ((d2 & 63) << 2) + d3 >> 8;
 		(*data)[index++] = d3 & 255;
-	    }
-	}
-
-
-	return data;
+	}} return data;
     };
 
     bptr < ByteBuffer > TCONControl::getDGLut10BitByteBufferType2(RGB_vector_ptr rgbVector) {
@@ -183,11 +204,7 @@ namespace i2c {
 		(*data)[index++] = ((d1 & 15) << 4) + (d2 >> 6);
 		(*data)[index++] = ((d2 & 63) << 2) + (d3 >> 8);
 		(*data)[index++] = d3 & 255;
-	    }
-	}
-
-
-	return data;
+	}} return data;
     };
 
     bptr < ByteBuffer > TCONControl::getDGLut12BitByteBuffer(RGB_vector_ptr rgbVector) {
@@ -226,8 +243,7 @@ namespace i2c {
 		(*data)[index++] = c0;
 		(*data)[index++] = c1;
 		(*data)[index++] = c2;
-	    }
-	    if (remainder) {
+	    } if (remainder) {
 		int d0 =
 		    static_cast <
 		    int >((*rgbVector)[rgbVector->size() - 1]->getValue(ch, MaxValue::Int12Bit));
@@ -262,7 +278,6 @@ namespace i2c {
 	result[2] = data >> 8 & 15;
 	return result;
     }
-
     void TCONControl::setDG(bool enable) {
 	setBitData(parameter->DGAddress, parameter->DGBit, enable);
     };

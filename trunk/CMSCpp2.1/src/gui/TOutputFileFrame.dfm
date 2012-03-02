@@ -1,8 +1,8 @@
 object OutputFileFrame: TOutputFileFrame
   Left = 0
   Top = 0
-  Width = 553
-  Height = 88
+  Width = 551
+  Height = 86
   TabOrder = 0
   object GroupBox_OutputFile: TGroupBox
     Left = -1

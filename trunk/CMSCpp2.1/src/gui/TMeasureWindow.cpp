@@ -42,12 +42,12 @@ void __fastcall TMeasureWindow::FormKeyPress(TObject * Sender, char &Key)
 	    tconcontrol->setGammaTest(false);
 	}
 	this->Visible = false;
-        if(null != TargetWhiteForm2) {
-	        TargetWhiteForm2->stopMeasure = true;
-        }
-        if(null != CCTLUTForm) {
-	        CCTLUTForm->run = false;
-        }
+	if (null != TargetWhiteForm2) {
+	    TargetWhiteForm2->stopMeasure = true;
+	}
+	if (null != CCTLUTForm) {
+	    CCTLUTForm->run = false;
+	}
 	this->Close();
 
 	break;
@@ -75,13 +75,24 @@ void TMeasureWindow::setRGB(int r, int g, int b)
     this->Update();
 
 
+
     if (TCON == source) {
+	//=========================================================================
+	// tcon-input
+	//=========================================================================
 	if (tconcontrol->isGammaTestEnable()) {
-	    tconcontrol->setGammaTestRGB(r, g, b);
+	    bool result = tconcontrol->setGammaTestRGB(r, g, b);
+	    if (false == result) {
+		ShowMessage("Set Gamma Test failed!");
+	    }
 	} else {
 	    throw java::lang::UnsupportedOperationException("");
 	}
+	//=========================================================================
     } else if (DGLUT == source) {
+	//=========================================================================
+	// dglut-input
+	//=========================================================================
 	//8bit
 	RGB_vector_ptr rgbVector = RGBVector::getLinearRGBVector(bitDepth->getLevelInTCon());
 	const Dep::MaxValue & lutBit = tconcontrol->getLUTBit();
@@ -90,12 +101,15 @@ void TMeasureWindow::setRGB(int r, int g, int b)
 	rgb0->R = r;
 	rgb0->G = g;
 	rgb0->B = b;
-        //tconcontrol->setDG(false);
+	//tconcontrol->setDG(false);
 	tconcontrol->setDGLut(rgbVector);
-        //tconcontrol->setDG(true);
+	//tconcontrol->setDG(true);
 
 	this->Color = clBlack;
     } else if (PC == source) {
+	//=========================================================================
+	// pc-input
+	//=========================================================================
 	TColor color = (TColor) ((b << 16) + (g << 8) + r);
 	switch (pattern) {
 	case HStripe:{
@@ -264,7 +278,10 @@ void TMeasureWindow::setRGB(bptr < Dep::RGBColor > rgb)
     double_array values(new double[3]);
     using namespace Dep;
 
-    const MaxValue & maxValue = (TCON == source) ? MaxValue::Int12Bit :  (DGLUT ==source)?     bitDepth->getLutMaxValue()  :  MaxValue::Int8Bit;
+    const MaxValue & maxValue =
+	(TCON == source) ? MaxValue::Int12Bit : (DGLUT ==
+						 source) ? bitDepth->
+	getLutMaxValue() : MaxValue::Int8Bit;
     rgb->getValues(values, maxValue);
 
     int r = static_cast < int >(values[0]);
@@ -328,9 +345,9 @@ void TMeasureWindow::setVisible(bool visible)
 	if (visible) {
 	    this->BringToFront();
 	}
-        if(DGLUT==source) {
-          tconcontrol->setDG(visible);
-        }
+	if (DGLUT == source) {
+	    tconcontrol->setDG(visible);
+	}
     }
 #endif
 

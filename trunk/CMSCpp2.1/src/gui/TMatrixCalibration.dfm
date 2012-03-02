@@ -1,6 +1,6 @@
 object MatrixCalibrationForm: TMatrixCalibrationForm
-  Left = 301
-  Top = 335
+  Left = 300
+  Top = 300
   Width = 538
   Height = 482
   Caption = 'Matrix Calibration'

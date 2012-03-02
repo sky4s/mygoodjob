@@ -31,7 +31,7 @@ namespace cms {
 	    };
 	    string str = c;
 	    string_ptr result(new string(str));
-	    return result;
+	     return result;
 	};
 
 	shared_array < wchar_t > Util::towchar_t(string & str) {
@@ -304,14 +304,25 @@ namespace cms {
 	    }
 	    return buffer[index];
 	};
+	bool ByteBuffer::equals(bptr < ByteBuffer > compare) {
+	    if (size != compare->size) {
+		throw IllegalStateException("size is not match");
+	    }
+	    for (int x = 0; x < size; x++) {
+		if ((*this)[x] != (*compare)[x]) {
+		    return false;
+		}
+	    }
+	    return true;
+	};
 	//======================================================================
 
 	//======================================================================
 	//
 	//======================================================================
-      DoubleBufferedCanvas::DoubleBufferedCanvas(TCanvas * canvas, int width, int height):canvas(canvas), width(width), height(height),
-	    doubleBuffered(true)
-	{
+      DoubleBufferedCanvas::DoubleBufferedCanvas(TCanvas * canvas, int width, int height):canvas(canvas), width(width),
+	    height(height),
+	    doubleBuffered(true) {
 	    if (doubleBuffered) {
 		bitmap = getTBitmap(canvas, width, height);
 		/*bitmap = bptr < Graphics::TBitmap > (new Graphics::TBitmap());
