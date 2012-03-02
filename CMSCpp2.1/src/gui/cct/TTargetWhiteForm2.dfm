@@ -1,8 +1,8 @@
 object TargetWhiteForm2: TTargetWhiteForm2
-  Left = 248
-  Top = 135
-  Width = 767
-  Height = 506
+  Left = 300
+  Top = 300
+  Width = 759
+  Height = 525
   Caption = 'Target White'
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
@@ -284,37 +284,13 @@ object TargetWhiteForm2: TTargetWhiteForm2
             OnClick = Button_ConnectToggleClick
           end
         end
-        object Edit_InverseZofB: TEdit
-          Left = 128
-          Top = 235
-          Width = 32
-          Height = 21
-          Hint = 'Click this can auto copy Inverse B to B of RGB Ratio'
-          ParentShowHint = False
-          ShowHint = True
-          TabOrder = 7
-          Visible = False
-        end
-        object Button_FindInverseZofB: TButton
-          Left = 10
-          Top = 235
-          Width = 111
-          Height = 22
-          Hint = 'Find Inverse B Intensity '
-          Caption = 'Find Inverse Z of B'
-          ParentShowHint = False
-          ShowHint = True
-          TabOrder = 8
-          Visible = False
-          OnClick = Button_FindInverseZofBClick
-        end
         object GroupBox7: TGroupBox
           Left = 7
           Top = 328
           Width = 182
           Height = 49
           Caption = 'Reference Color'
-          TabOrder = 9
+          TabOrder = 7
           object Label4: TLabel
             Left = 7
             Top = 19
@@ -365,25 +341,26 @@ object TargetWhiteForm2: TTargetWhiteForm2
           end
         end
         object Edit_InverseIntensityofB: TEdit
-          Left = 127
-          Top = 259
+          Left = 95
+          Top = 232
           Width = 33
           Height = 21
           Hint = 'Click this can auto copy Inverse B to B of RGB Ratio'
           ParentShowHint = False
           ShowHint = True
-          TabOrder = 10
+          TabOrder = 8
+          OnKeyPress = Edit_InverseIntensityofBKeyPress
         end
         object Button_FindInverseIntensity: TButton
-          Left = 10
-          Top = 259
-          Width = 111
-          Height = 22
+          Left = 18
+          Top = 232
+          Width = 71
+          Height = 17
           Hint = 'Find Inverse B Intensity '
-          Caption = 'Find Inverse Intensity'
+          Caption = 'De-Hook'
           ParentShowHint = False
           ShowHint = True
-          TabOrder = 11
+          TabOrder = 9
           OnClick = Button_FindInverseIntensityClick
         end
       end
@@ -688,5 +665,23 @@ object TargetWhiteForm2: TTargetWhiteForm2
     Min = 0
     Max = 100
     TabOrder = 1
+    Visible = False
+  end
+  object StatusBar1: TStatusBar
+    Left = 0
+    Top = 479
+    Width = 751
+    Height = 17
+    Color = clWhite
+    Panels = <
+      item
+        Text = 'Target White: N/A'
+        Width = 200
+      end
+      item
+        Text = 'De-Hook: N/A'
+        Width = 50
+      end>
+    SimplePanel = False
   end
 end

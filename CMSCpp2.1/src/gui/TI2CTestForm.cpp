@@ -180,8 +180,12 @@ void __fastcall TI2CTestForm::Edit_RChange(TObject * Sender)
 	    rgbValues[1] = g;
 	    rgbValues[2] = b;
 	    RGB_ptr rgb(new RGBColor(RGBColorSpace::unknowRGB, rgbValues, MaxValue::Int12Bit));
-	    control->setGammaTestRGB(rgb);
-	} catch(EConvertError & ex) {
+	    bool result = control->setGammaTestRGB(rgb);
+	    if (false == result) {
+		ShowMessage("Set Gamma Test failed!");
+	    }
+	}
+	catch(EConvertError & ex) {
 	    Application->ShowException(&ex);
 	}
     }
@@ -269,7 +273,7 @@ void __fastcall TI2CTestForm::Edit_WKeyDown(TObject * Sender, WORD & Key, TShift
 
 
     if (down || up) {
-    TEdit *edit = dynamic_cast<TEdit *>(Sender);
+	TEdit *edit = dynamic_cast < TEdit * >(Sender);
 	int dg = edit->Text.ToInt();
 	dg = down ? dg - 1 : dg + 1;
 	dg = (dg < 0) ? 0 : dg;
@@ -290,15 +294,14 @@ void __fastcall TI2CTestForm::Edit_WChange(TObject * Sender)
 
 //---------------------------------------------------------------------------
 
-void __fastcall TI2CTestForm::Edit_RKeyDown(TObject *Sender, WORD &Key,
-      TShiftState Shift)
+void __fastcall TI2CTestForm::Edit_RKeyDown(TObject * Sender, WORD & Key, TShiftState Shift)
 {
     bool down = Key == 0x28;
     bool up = Key == 0x26;
 
 
     if (down || up) {
-    TEdit *edit = dynamic_cast<TEdit *>(Sender);
+	TEdit *edit = dynamic_cast < TEdit * >(Sender);
 	int dg = edit->Text.ToInt();
 	dg = down ? dg - 1 : dg + 1;
 	dg = (dg < 0) ? 0 : dg;
@@ -306,6 +309,6 @@ void __fastcall TI2CTestForm::Edit_RKeyDown(TObject *Sender, WORD &Key,
     }
 
 }
-//---------------------------------------------------------------------------
 
+//---------------------------------------------------------------------------
 

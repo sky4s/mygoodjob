@@ -15,7 +15,7 @@
 #include "common.h"
 #include "quantizer.h"
 //#include "feedback.h"
-
+#include <cms/measure/include.h> //20120302
 
 
 namespace cms {

@@ -7,12 +7,13 @@
 //其他庫頭文件
 
 //本項目內頭文件
+#include <java/lang.h>
+#include <cms/util/util.h>
 #include <i2c/core/ReadWritefunc.h>
 
 namespace i2c {
 
-    class DeviceAddressSendFailException:public java::lang::
-	RuntimeException {
+    class DeviceAddressSendFailException:public java::lang::RuntimeException {
       public:
 	DeviceAddressSendFailException();
 	DeviceAddressSendFailException(std::string message);
@@ -61,22 +62,19 @@ namespace i2c {
 	unsigned char *getDataAddressByteArray(int dataAddress);
 	virtual void write0(unsigned char dev_addr,
 			    unsigned char *data_addr,
-			    int data_addr_cnt,
-			    unsigned char *data_write, int data_len) = 0;
+			    int data_addr_cnt, unsigned char *data_write, int data_len) = 0;
 	virtual void read0(unsigned char dev_addr,
 			   unsigned char *data_addr, int data_addr_cnt,
 			   unsigned char *data_read, int data_cnt) = 0;
 
 
       public:
-	 i2cControl(const unsigned char deviceAddress,
-		    const AddressingSize size);
+	 i2cControl(const unsigned char deviceAddress, const AddressingSize size);
 	virtual bool connect() = 0;
 	virtual void disconnect() = 0;
 	void write(int dataAddress, bptr < cms::util::ByteBuffer > data);
 	void writeByte(int dataAddress, unsigned char data);
-	 bptr < cms::util::ByteBuffer > read(int dataAddress,
-					     int dataLength);
+	 bptr < cms::util::ByteBuffer > read(int dataAddress, int dataLength);
 	unsigned char readByte(int dataAddress);
 	static bptr < i2cControl >
 	    getLPTInstance(const unsigned char deviceAddress,
@@ -84,8 +82,7 @@ namespace i2c {
 
 	static bptr < i2cControl >
 	    getUSBInstance(const unsigned char deviceAddress,
-			   const AddressingSize size, USBPower power,
-			   USBSpeed speed);
+			   const AddressingSize size, USBPower power, USBSpeed speed);
     };
 
 
@@ -93,8 +90,7 @@ namespace i2c {
       protected:
 	virtual void write0(unsigned char dev_addr,
 			    unsigned char *data_addr,
-			    int data_addr_cnt,
-			    unsigned char *data_write, int data_len);
+			    int data_addr_cnt, unsigned char *data_write, int data_len);
 	virtual void read0(unsigned char dev_addr,
 			   unsigned char *data_addr, int data_addr_cnt,
 			   unsigned char *data_read, int data_cnt);
@@ -112,16 +108,13 @@ namespace i2c {
       protected:
 	 virtual void write0(unsigned char dev_addr,
 			     unsigned char *data_addr,
-			     int data_addr_cnt,
-			     unsigned char *data_write, int data_len);
+			     int data_addr_cnt, unsigned char *data_write, int data_len);
 	virtual void read0(unsigned char dev_addr,
 			   unsigned char *data_addr,
-			   int data_addr_cnt,
-			   unsigned char *data_read, int data_cnt);
+			   int data_addr_cnt, unsigned char *data_read, int data_cnt);
       public:
 	 i2cUSBControl(const unsigned char deviceAddress,
-		       const AddressingSize size, USBPower power,
-		       USBSpeed speed);
+		       const AddressingSize size, USBPower power, USBSpeed speed);
 	bool connect();
 	void disconnect();
 	~i2cUSBControl();

@@ -2,7 +2,7 @@ object CCTLUTForm: TCCTLUTForm
   Left = 300
   Top = 300
   Width = 848
-  Height = 407
+  Height = 423
   Caption = 'CCT(LUT)'
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
@@ -557,7 +557,13 @@ object CCTLUTForm: TCCTLUTForm
       Height = 19
       Caption = 'Avoid FRC Noise'
       Color = clMoneyGreen
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -10
+      Font.Name = 'MS Sans Serif'
+      Font.Style = []
       ParentColor = False
+      ParentFont = False
       TabOrder = 0
     end
     object CheckBox_NewMethod: TCheckBox
@@ -576,12 +582,14 @@ object CCTLUTForm: TCCTLUTForm
       Width = 118
       Height = 19
       Caption = 'Multi Generate'
+      Color = clSkyBlue
       Enabled = False
       Font.Charset = DEFAULT_CHARSET
-      Font.Color = clRed
+      Font.Color = clWindowText
       Font.Height = -10
       Font.Name = 'MS Sans Serif'
       Font.Style = []
+      ParentColor = False
       ParentFont = False
       TabOrder = 2
     end
@@ -600,9 +608,9 @@ object CCTLUTForm: TCCTLUTForm
       Width = 111
       Height = 19
       Caption = 'B Target intensity'
-      Color = clBtnFace
+      Color = clSkyBlue
       Font.Charset = DEFAULT_CHARSET
-      Font.Color = clRed
+      Font.Color = clWindowText
       Font.Height = -10
       Font.Name = 'MS Sans Serif'
       Font.Style = []
@@ -626,10 +634,10 @@ object CCTLUTForm: TCCTLUTForm
       Width = 111
       Height = 19
       Caption = 'R Target intensity'
-      Color = clBtnFace
+      Color = clSkyBlue
       Font.Charset = DEFAULT_CHARSET
-      Font.Color = clRed
-      Font.Height = -10
+      Font.Color = clWindowText
+      Font.Height = -11
       Font.Name = 'MS Sans Serif'
       Font.Style = []
       ParentColor = False
@@ -953,11 +961,13 @@ object CCTLUTForm: TCCTLUTForm
       Width = 104
       Height = 19
       Caption = 'Avoid Hook'
-      Font.Charset = DEFAULT_CHARSET
-      Font.Color = clRed
-      Font.Height = -10
+      Color = clSkyBlue
+      Font.Charset = ANSI_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -11
       Font.Name = 'MS Sans Serif'
       Font.Style = []
+      ParentColor = False
       ParentFont = False
       TabOrder = 5
       Visible = False
@@ -1093,13 +1103,17 @@ object CCTLUTForm: TCCTLUTForm
     Visible = False
     OnClick = RadioGroup_NormalCaseClick
   end
-  object Edit_FeedbackMsg: TEdit
-    Left = 239
-    Top = 352
-    Width = 305
-    Height = 21
-    TabOrder = 16
-    Visible = False
+  object StatusBar1: TStatusBar
+    Left = 0
+    Top = 375
+    Width = 840
+    Height = 19
+    Color = clWhite
+    Panels = <
+      item
+        Width = 50
+      end>
+    SimplePanel = False
   end
   object OpenDialog1: TOpenDialog
     Filter = 'DGCode Files(*.xls)|*.xls'

@@ -109,7 +109,6 @@ class TCCTLUTForm:public TForm, cms::lcd::calibrate::FeedbackListener {
     TLabel *Label_BrightZone;
     TEdit *Edit_DimGammaEnd;
     TRadioGroup *RadioGroup_NormalCase;
-    TEdit *Edit_FeedbackMsg;
     TCheckBox *CheckBox_AbsoluteGamma;
     TCheckBox *CheckBox_RTargetIntensity;
     TEdit *Edit_RTargetIntensity;
@@ -123,6 +122,7 @@ class TCCTLUTForm:public TForm, cms::lcd::calibrate::FeedbackListener {
     TComboBox *ComboBox_AbsGammaStartAboveGamma;
     TLabel *Label24;
     TLabel *Label25;
+        TStatusBar *StatusBar1;
     void __fastcall RadioButton_P1P2Click(TObject * Sender);
     void __fastcall Button_MeaRunClick(TObject * Sender);
     void __fastcall Button_DebugClick(TObject * Sender);

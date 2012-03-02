@@ -18,6 +18,10 @@
 #include <ComCtrls.hpp>
 //本項目內頭文件
 #include <i2c/i2ccontrol.h>
+#include <cms/measure/meter.h> //20120302
+#include <cms/lcd/calibrate/include.h> //20120302
+
+extern bool g_bIsRunAgain;	//?明用于重?判?的?量g_bIsfRunAgain
 //---------------------------------------------------------------------------
 class ProgressThread;
 class TMainForm:public TForm {
@@ -26,7 +30,6 @@ class TMainForm:public TForm {
     TMenuItem *TargetWhite1;
     TMenuItem *CCTLUT1;
     TMenuItem *Measurement1;
-    TMenuItem *About1;
     TMenuItem *Exit1;
     TLabel *Label6;
     TImage *Image1;
@@ -131,6 +134,9 @@ class TMainForm:public TForm {
     TGroupBox *GroupBox_USBSetting;
     TRadioGroup *RadioGroup_USBPower;
     TRadioGroup *RadioGroup_Speed;
+    TMenuItem *Help1;
+    TMenuItem *ChangeLog1;
+    TMenuItem *About2;
     void __fastcall About1Click(TObject * Sender);
     void __fastcall Exit1Click(TObject * Sender);
     void __fastcall TargetWhite1Click(TObject * Sender);
@@ -178,6 +184,8 @@ class TMainForm:public TForm {
     void __fastcall RadioButton_PCTCON_TVClick(TObject * Sender);
     void __fastcall Edit_SourceCHKeyPress(TObject * Sender, char &Key);
     void __fastcall TabSheet2Enter(TObject * Sender);
+    void __fastcall About2Click(TObject * Sender);
+    void __fastcall ChangeLog1Click(TObject * Sender);
   private:			// User declarations
     //==========================================================================
     // meter

@@ -61,8 +61,7 @@ void i2c_start(void);
 void i2c_end(void);
 bool i2c_initial(void);
 bool i2c_send_byte(unsigned char data);
-bool i2c_read_byte_seq(unsigned char dev_addr, unsigned char *data_read,
-		       int data_cnt);
+bool i2c_read_byte_seq(unsigned char dev_addr, unsigned char *data_read, int data_cnt);
 bool i2c_read_byte(unsigned char dev_addr, unsigned char *data_read);
 void SetCardLarge();
 void SetCardSmall();
@@ -133,10 +132,12 @@ unsigned char lpt_read_byte_st(void)
 	WaitForSingleObject(hEvent, INFINITE);	// wait for control right
 	ret_data = inp32(LPT_STATUS_PORT);
 	SetEvent(hEvent);	// release the control right
-	if (ret_data < 0)
+	if (ret_data < 0) {
 	    ret_data = 0;
-	if (ret_data > 255)
+	}
+	if (ret_data > 255) {
 	    ret_data = 255;
+	}
     }
     return LOBYTE(ret_data);
 }
@@ -269,16 +270,17 @@ bool i2c_send_byte(unsigned char data)	//if ack fail, return 1, else return 0
     st_data = i2c_read_sda() & 0x80;	//read ack data
     i2c_reset_scl();		//scl low
 
-    if (st_data == 0)		//Ack signal get
+    if (st_data == 0) {		//Ack signal get
 	return 1;
-    if (Ack_stop)
+    }
+    if (Ack_stop) {
 	i2c_set_scl();		//scl high
+    }
     Ack_stop = 1;
     return 0;
 }
 
-bool i2c_read_byte_seq(unsigned char dev_addr, unsigned char *data_read,
-		       int data_cnt)
+bool i2c_read_byte_seq(unsigned char dev_addr, unsigned char *data_read, int data_cnt)
 {
     i2c_start();
     i2c_send_byte(dev_addr | 0x01);	//read
@@ -362,3 +364,4 @@ void SetOrigFreq()
     Half_freq = 0;
 }
 #endif
+
