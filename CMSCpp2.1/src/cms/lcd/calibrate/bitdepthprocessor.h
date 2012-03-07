@@ -45,7 +45,7 @@ namespace cms {
 		/*
 		   最大的DG值(廢棄)
 		 */
-		double getMaxDigitalCount();
+		//double getMaxDigitalCount();
 
 		/*
 		   輸入端最大的DG(訊號)

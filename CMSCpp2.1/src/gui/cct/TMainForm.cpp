@@ -81,7 +81,7 @@ void __fastcall TMainForm::FormCreate(TObject * Sender)
     // 外觀設定檔案讀取
     //=========================================================================
     String manifest = Application->ExeName + ".manifest";
-    if ( !FileExists(manifest)) {
+    if (!FileExists(manifest)) {
 	int handle = FileCreate(manifest);
 
 	String a = "\
@@ -137,71 +137,71 @@ void TMainForm::initTCONFile()
 	//=========================================================================
 	// 11303
 	//=========================================================================
-	ini->WriteInteger(" 11303 ", " AddressingSize ", 5);
+	ini->WriteInteger("11303", "AddressingSize", 5);
 
-	ini->WriteString(" 11303 ", " DigitalGammaEnableAddress ", " 4 ");
-	ini->WriteInteger(" 11303 ", " DigitalGammaEnableBit ", 1);
-	ini->WriteString(" 11303 ", " DigitalGammaLUTAddress ", " 302 ");
-	ini->WriteInteger(" 11303 ", " DigitalGammaLUTType ", 10);
+	ini->WriteString("11303", "DigitalGammaEnableAddress", "4");
+	ini->WriteInteger("11303", "DigitalGammaEnableBit", 1);
+	ini->WriteString("11303", "DigitalGammaLUTAddress", "302");
+	ini->WriteInteger("11303", "DigitalGammaLUTType", 10);
 
-	ini->WriteBool(" 11303 ", " GammaTestFunc ", false);
+	ini->WriteBool("11303", "GammaTestFunc", false);
 
-	ini->WriteInteger(" 11303 ", " in ", 8);
-	ini->WriteInteger(" 11303 ", " out ", 8);
+	ini->WriteInteger("11303", "in", 8);
+	ini->WriteInteger("11303", "out", 8);
 	//=========================================================================
 	// 11306
 	//=========================================================================
-	ini->WriteInteger(" 11306 ", " AddressingSize ", 5);
+	ini->WriteInteger("11306", "AddressingSize", 5);
 
-	ini->WriteString(" 11306 ", " DigitalGammaEnableAddress ", " 28 ");
-	ini->WriteInteger(" 11306 ", " DigitalGammaEnableBit ", 0);
-	ini->WriteString(" 11306 ", " DigitalGammaLUTAddress ", " 3 C0 ");
-	ini->WriteInteger(" 11306 ", " DigitalGammaLUTType ", 10);
+	ini->WriteString("11306", "DigitalGammaEnableAddress", "28");
+	ini->WriteInteger("11306", "DigitalGammaEnableBit", 0);
+	ini->WriteString("11306", "DigitalGammaLUTAddress", "3C0");
+	ini->WriteInteger("11306", "DigitalGammaLUTType", 10);
 
-	ini->WriteBool(" 11306 ", " GammaTestFunc ", true);
-	ini->WriteString(" 11306 ", " GammaTestEnableAddress ", " 381 ");
-	ini->WriteInteger(" 11306 ", " GammaTestEnableBit ", 1);
-	ini->WriteString(" 11306 ", " GammaTestAddress ", " 387 ");
-	ini->WriteBool(" 11306 ", " IndepRGB ", true);
+	ini->WriteBool("11306", "GammaTestFunc", true);
+	ini->WriteString("11306", "GammaTestEnableAddress", "381");
+	ini->WriteInteger("11306", "GammaTestEnableBit", 1);
+	ini->WriteString("11306", "GammaTestAddress", "387");
+	ini->WriteBool("11306", "IndepRGB", true);
 
-	ini->WriteInteger(" 11306 ", " in ", 6);
-	ini->WriteInteger(" 11306 ", " out ", 6);
+	ini->WriteInteger("11306", "in", 6);
+	ini->WriteInteger("11306 ", "out", 6);
 	//=========================================================================
 	// 11307
 	//=========================================================================
-	ini->WriteInteger(" 11307 ", " AddressingSize ", 5);
+	ini->WriteInteger("11307", "AddressingSize", 5);
 
-	ini->WriteString(" 11307 ", " DigitalGammaEnableAddress ", " 28 ");
-	ini->WriteInteger(" 11307 ", " DigitalGammaEnableBit ", 0);
-	ini->WriteString(" 11307 ", " DigitalGammaLUTAddress ", " 310 ");
-	ini->WriteInteger(" 11307 ", " DigitalGammaLUTType ", 10);
+	ini->WriteString("11307", "DigitalGammaEnableAddress", "28");
+	ini->WriteInteger("11307", "DigitalGammaEnableBit", 0);
+	ini->WriteString("11307", "DigitalGammaLUTAddress", "310");
+	ini->WriteInteger("11307", "DigitalGammaLUTType", 10);
 
-	ini->WriteBool(" 11307 ", " GammaTestFunc ", true);
-	ini->WriteString(" 11307 ", " GammaTestEnableAddress ", " 2F 1 ");
-	ini->WriteInteger(" 11307 ", " GammaTestEnableBit ", 1);
-	ini->WriteString(" 11307 ", " GammaTestAddress ", " 2F 3 ");
-	ini->WriteBool(" 11307 ", " IndepRGB ", true);
+	ini->WriteBool("11307", "GammaTestFunc", true);
+	ini->WriteString("11307", "GammaTestEnableAddress", "2F1");
+	ini->WriteInteger("11307", "GammaTestEnableBit", 1);
+	ini->WriteString("11307", "GammaTestAddress", "2F3");
+	ini->WriteBool("11307", "IndepRGB", true);
 
-	ini->WriteInteger(" 11307 ", " in ", 6);
-	ini->WriteInteger(" 11307 ", " out ", 6);
+	ini->WriteInteger("11307", "in", 6);
+	ini->WriteInteger("11307", "out", 6);
 	//=========================================================================
 	// 12306
 	//=========================================================================
-	ini->WriteInteger(" 12306 ", " AddressingSize ", 5);
+	ini->WriteInteger("12306", "AddressingSize", 5);
 
-	ini->WriteString(" 12306 ", " DigitalGammaEnableAddress ", " 28 ");
-	ini->WriteInteger(" 12306 ", " DigitalGammaEnableBit ", 0);
-	ini->WriteString(" 12306 ", " DigitalGammaLUTAddress ", " 302 ");
-	ini->WriteInteger(" 12306 ", " DigitalGammaLUTType ", 12);
+	ini->WriteString("12306", "DigitalGammaEnableAddress", "28");
+	ini->WriteInteger("12306", "DigitalGammaEnableBit", 0);
+	ini->WriteString("12306", "DigitalGammaLUTAddress", "302");
+	ini->WriteInteger("12306", "DigitalGammaLUTType", 12);
 
-	ini->WriteBool(" 12306 ", " GammaTestFunc ", true);
-	ini->WriteString(" 12306 ", " GammaTestEnableAddress ", " 29 ");
-	ini->WriteInteger(" 12306 ", " GammaTestEnableBit ", 0);
-	ini->WriteString(" 12306 ", " GammaTestAddress ", " 154 ");
-	ini->WriteBool(" 12306 ", " IndepRGB ", true);
+	ini->WriteBool("12306", "GammaTestFunc", true);
+	ini->WriteString("12306", "GammaTestEnableAddress", "29");
+	ini->WriteInteger("12306", "GammaTestEnableBit", 0);
+	ini->WriteString("12306", "GammaTestAddress", "154");
+	ini->WriteBool("12306", "IndepRGB", true);
 
-	ini->WriteInteger(" 12306 ", " in ", 8);
-	ini->WriteInteger(" 12306 ", " out ", 8);
+	ini->WriteInteger("12306", "in", 8);
+	ini->WriteInteger("12306", "out", 8);
 	//=========================================================================
 	// 12307
 	//=========================================================================
@@ -223,58 +223,58 @@ void TMainForm::initTCONFile()
 	//=========================================================================
 	// 12401
 	//=========================================================================
-	ini->WriteInteger(" 12401 ", " AddressingSize ", 5);
+	ini->WriteInteger("12401", "AddressingSize", 5);
 
-	ini->WriteString(" 12401 ", " DigitalGammaEnableAddress ", " 28 ");
-	ini->WriteInteger(" 12401 ", " DigitalGammaEnableBit ", 0);
-	ini->WriteString(" 12401 ", " DigitalGammaLUTAddress ", " 752 ");
-	ini->WriteInteger(" 12401 ", " DigitalGammaLUTType ", 12);
+	ini->WriteString("12401", "DigitalGammaEnableAddress", "28");
+	ini->WriteInteger("12401", "DigitalGammaEnableBit", 0);
+	ini->WriteString("12401", "DigitalGammaLUTAddress", "752");
+	ini->WriteInteger("12401", "DigitalGammaLUTType", 12);
 
-	ini->WriteBool(" 12401 ", " GammaTestFunc ", true);
-	ini->WriteString(" 12401 ", " GammaTestEnableAddress ", " 4 A1 ");
-	ini->WriteInteger(" 12401 ", " GammaTestEnableBit ", 1);
-	ini->WriteString(" 12401 ", " GammaTestAddress ", " 4 A7 ");
-	ini->WriteBool(" 12401 ", " IndepRGB ", true);
+	ini->WriteBool("12401", "GammaTestFunc", true);
+	ini->WriteString("12401", "GammaTestEnableAddress", "4A1");
+	ini->WriteInteger("12401", "GammaTestEnableBit", 1);
+	ini->WriteString("12401", "GammaTestAddress", "4A7");
+	ini->WriteBool("12401", "IndepRGB", true);
 
-	ini->WriteInteger(" 12401 ", " in ", 8);
-	ini->WriteInteger(" 12401 ", " out ", 8);
+	ini->WriteInteger("12401", "in", 8);
+	ini->WriteInteger("12401", "out", 8);
 	//=========================================================================
 	// 12405
 	//=========================================================================
-	ini->WriteInteger(" 12405 ", " AddressingSize ", 5);
+	ini->WriteInteger("12405", "AddressingSize", 5);
 
-	ini->WriteString(" 12405 ", " DigitalGammaEnableAddress ", " 29 ");
-	ini->WriteInteger(" 12405 ", " DigitalGammaEnableBit ", 0);
-	ini->WriteString(" 12405 ", " DigitalGammaLUTAddress ", " 106 D ");
-	ini->WriteInteger(" 12405 ", " DigitalGammaLUTType ", 12);
+	ini->WriteString("12405", "DigitalGammaEnableAddress", "29");
+	ini->WriteInteger("12405", "DigitalGammaEnableBit", 0);
+	ini->WriteString("12405", "DigitalGammaLUTAddress", "106D");
+	ini->WriteInteger("12405", "DigitalGammaLUTType", 12);
 
-	ini->WriteBool(" 12405 ", " GammaTestFunc ", true);
-	ini->WriteString(" 12405 ", " GammaTestEnableAddress ", " 1F EB ");
-	ini->WriteInteger(" 12405 ", " GammaTestEnableBit ", 4);
-	ini->WriteString(" 12405 ", " GammaTestAddress ", " 1F EC ");
-	ini->WriteBool(" 12405 ", " IndepRGB ", false);
+	ini->WriteBool("12405", "GammaTestFunc", true);
+	ini->WriteString("12405", "GammaTestEnableAddress", "1FEB");
+	ini->WriteInteger("12405", "GammaTestEnableBit", 4);
+	ini->WriteString("12405", "GammaTestAddress", "1FEC");
+	ini->WriteBool("12405", "IndepRGB", false);
 
-	ini->WriteInteger(" 12405 ", " in ", 8);
-	ini->WriteInteger(" 12405 ", " out ", 8);
+	ini->WriteInteger("12405", "in", 8);
+	ini->WriteInteger("12405", "out", 8);
 	//=========================================================================
 	//=========================================================================
 	// 12407
 	//=========================================================================
-	ini->WriteInteger(" 12407 ", " AddressingSize ", 5);
+	ini->WriteInteger("12407", "AddressingSize", 5);
 
-	ini->WriteString(" 12407 ", " DigitalGammaEnableAddress ", " 29 ");
-	ini->WriteInteger(" 12407 ", " DigitalGammaEnableBit ", 0);
-	ini->WriteString(" 12407 ", " DigitalGammaLUTAddress ", " 110 D ");
-	ini->WriteInteger(" 12407 ", " DigitalGammaLUTType ", 12);
+	ini->WriteString("12407", "DigitalGammaEnableAddress", "29");
+	ini->WriteInteger("12407", "DigitalGammaEnableBit", 0);
+	ini->WriteString("12407", "DigitalGammaLUTAddress", "110D");
+	ini->WriteInteger("12407", "DigitalGammaLUTType", 12);
 
-	ini->WriteBool(" 12407 ", " GammaTestFunc ", true);
-	ini->WriteString(" 12407 ", " GammaTestEnableAddress ", " 3F EB ");
-	ini->WriteInteger(" 12407 ", " GammaTestEnableBit ", 4);
-	ini->WriteString(" 12407 ", " GammaTestAddress ", " 3F EC ");
-	ini->WriteBool(" 12407 ", " IndepRGB ", false);
+	ini->WriteBool("12407", "GammaTestFunc", true);
+	ini->WriteString("12407", "GammaTestEnableAddress", "3FEB");
+	ini->WriteInteger("12407", "GammaTestEnableBit", 4);
+	ini->WriteString("12407", "GammaTestAddress", "3FEC");
+	ini->WriteBool("12407", "IndepRGB", false);
 
-	ini->WriteInteger(" 12407 ", " in ", 8);
-	ini->WriteInteger(" 12407 ", " out ", 8);
+	ini->WriteInteger("12407", "in", 8);
+	ini->WriteInteger("12407", "out", 8);
 	//=========================================================================
     }
 }
@@ -297,26 +297,24 @@ void TMainForm::readTCONSetup(String filename, String section)
 {
     //=========================================================================
     bptr_ < TIniFile > ini(new TIniFile(filename));
-    this->ComboBox_AddressingSize->ItemIndex = ini->ReadInteger(section, " AddressingSize ", 5);
-    bool gammaTestFunc = ini->ReadBool(section, " GammaTestFunc ", true);
+    this->ComboBox_AddressingSize->ItemIndex = ini->ReadInteger(section, "AddressingSize", 5);
+    bool gammaTestFunc = ini->ReadBool(section, "GammaTestFunc", true);
 
     if (gammaTestFunc) {
 	GroupBox_GammaTestAddress->Visible = true;
 	this->Edit_GammaTestEnableAddress->Text =
-	    ini->ReadString(section, " GammaTestEnableAddress ", " 29 ");
-	this->Edit_GammaTestEnableBit->Text = ini->ReadInteger(section, " GammaTestEnableBit ", 0);
-	this->Edit_GammaTestAddress->Text = ini->ReadString(section, " GammaTestAddress ", " 154 ");
-	this->ComboBox_GammaTestType->ItemIndex =
-	    ini->ReadBool(section, " IndepRGB ", true) ? 0 : 1;
+	    ini->ReadString(section, "GammaTestEnableAddress", "29");
+	this->Edit_GammaTestEnableBit->Text = ini->ReadInteger(section, "GammaTestEnableBit", 0);
+	this->Edit_GammaTestAddress->Text = ini->ReadString(section, "GammaTestAddress", "154");
+	this->ComboBox_GammaTestType->ItemIndex = ini->ReadBool(section, "IndepRGB", true) ? 0 : 1;
 	ComboBox_GammaTestTypeChange(this);
     }
     CheckBox_GammaTest->Checked = gammaTestFunc;
 
-    this->Edit_DGEnableAddress->Text =
-	ini->ReadString(section, " DigitalGammaEnableAddress ", " 28 ");
-    this->Edit_DGEnableBit->Text = ini->ReadInteger(section, " DigitalGammaEnableBit ", 0);
-    this->Edit_DGLUTAddress->Text = ini->ReadString(section, " DigitalGammaLUTAddress ", " 302 ");
-    int lut = ini->ReadInteger(section, " DigitalGammaLUTType ", 10);
+    this->Edit_DGEnableAddress->Text = ini->ReadString(section, "DigitalGammaEnableAddress", "28");
+    this->Edit_DGEnableBit->Text = ini->ReadInteger(section, "DigitalGammaEnableBit", 0);
+    this->Edit_DGLUTAddress->Text = ini->ReadString(section, "DigitalGammaLUTAddress", "302");
+    int lut = ini->ReadInteger(section, "DigitalGammaLUTType", 10);
     this->ComboBox_DGLUTType->Text = lut;
     switch (lut) {
     case 10:
@@ -327,10 +325,10 @@ void TMainForm::readTCONSetup(String filename, String section)
 	break;
     }
 
-    if (section != " Custom ") {
+    if (section != "Custom") {
 
-	int in = ini->ReadInteger(section, " in ", 6);
-	int out = ini->ReadInteger(section, " out ", 6);
+	int in = ini->ReadInteger(section, "in", 6);
+	int out = ini->ReadInteger(section, "out", 6);
 	switch (in) {
 	case 6:
 	    RadioButton_In6->Checked = true;
@@ -357,34 +355,34 @@ void TMainForm::readTCONSetup(String filename, String section)
     }
 
 }
-const char *TMainForm::CUSTOM = " Custom ";
+const char *TMainForm::CUSTOM = "Custom";
 void TMainForm::writeTCONCustomSetup()
 {
 
     if (ComboBox_TCONType->Text == CUSTOM) {
 	bptr_ < TIniFile > ini(new TIniFile(ExtractFilePath(Application->ExeName) + SETUPFILE));
 
-	ini->WriteString(CUSTOM, " DigitalGammaEnableAddress ", this->Edit_DGEnableAddress->Text);
-	ini->WriteInteger(CUSTOM, " DigitalGammaEnableBit ", this->Edit_DGEnableBit->Text.ToInt());
-	ini->WriteString(CUSTOM, " DigitalGammaLUTAddress ", this->Edit_DGLUTAddress->Text);
-	ini->WriteInteger(CUSTOM, " DigitalGammaLUTType ", ComboBox_DGLUTType->Text.ToInt());
+	ini->WriteString(CUSTOM, "DigitalGammaEnableAddress", this->Edit_DGEnableAddress->Text);
+	ini->WriteInteger(CUSTOM, "DigitalGammaEnableBit", this->Edit_DGEnableBit->Text.ToInt());
+	ini->WriteString(CUSTOM, "DigitalGammaLUTAddress", this->Edit_DGLUTAddress->Text);
+	ini->WriteInteger(CUSTOM, "DigitalGammaLUTType", ComboBox_DGLUTType->Text.ToInt());
 
 	bool gammaTest = CheckBox_GammaTest->Checked;
 	//CheckBox_GammaTest->Checked = gammaTest;
 	//bool gammaTest = true;
-	ini->WriteBool(CUSTOM, " GammaTestFunc ", gammaTest);
+	ini->WriteBool(CUSTOM, "GammaTestFunc", gammaTest);
 	if (gammaTest) {
-	    ini->WriteString(CUSTOM, " GammaTestEnableAddress ",
+	    ini->WriteString(CUSTOM, "GammaTestEnableAddress",
 			     this->Edit_GammaTestEnableAddress->Text);
-	    ini->WriteInteger(CUSTOM, " GammaTestEnableBit ",
+	    ini->WriteInteger(CUSTOM, "GammaTestEnableBit",
 			      this->Edit_GammaTestEnableBit->Text.ToInt());
-	    ini->WriteString(CUSTOM, " GammaTestAddress ", this->Edit_GammaTestAddress->Text);
-	    ini->WriteBool(CUSTOM, " IndepRGB ", this->CheckBox_GammaTestIndepRGB->Checked);
+	    ini->WriteString(CUSTOM, "GammaTestAddress", this->Edit_GammaTestAddress->Text);
+	    ini->WriteBool(CUSTOM, "IndepRGB", this->CheckBox_GammaTestIndepRGB->Checked);
 	}
 	int in = bitDepth->getInputMaxValue().bit;
 	int out = bitDepth->getOutputMaxValue().bit;
-	ini->WriteInteger(CUSTOM, " in ", in);
-	ini->WriteInteger(CUSTOM, " out ", out);
+	ini->WriteInteger(CUSTOM, "in", in);
+	ini->WriteInteger(CUSTOM, "out", out);
     }
 
 };
@@ -393,7 +391,7 @@ void TMainForm::readSetup()
 {
     bptr_ < TIniFile > ini(new TIniFile(ExtractFilePath(Application->ExeName) + SETUPFILE));
     //=========================================================================
-    int cardIndex = ini->ReadInteger(" I2C ", " Card ", 2);
+    int cardIndex = ini->ReadInteger("I2C", "Card", 2);
     switch (cardIndex) {
     case 0:
 	this->RadioButton_USB->Checked = true;
@@ -406,7 +404,7 @@ void TMainForm::readSetup()
 	break;
     };
     //=========================================================================
-    int tconIndex = ini->ReadInteger(" TCON ", " Count ", 0);
+    int tconIndex = ini->ReadInteger("TCON", "Count", 0);
     switch (tconIndex) {
     case 0:
 	this->RadioButton_SingleTCON->Checked = true;
@@ -416,7 +414,7 @@ void TMainForm::readSetup()
 	break;
     }
     //=========================================================================
-    int typeIndex = ini->ReadInteger(" TCON ", " Type ", 0);
+    int typeIndex = ini->ReadInteger("TCON", "Type", 0);
     ComboBox_TCONType->ItemIndex = typeIndex;
     //=========================================================================
 }
@@ -427,13 +425,13 @@ void TMainForm::writeSetup()
     //=========================================================================
     int cardIndex = this->RadioButton_LPTLarge->Checked ? 1 : 0;
     cardIndex += this->RadioButton_LPTSmall->Checked ? 2 : 0;
-    ini->WriteInteger(" I2C ", " Card ", cardIndex);
+    ini->WriteInteger("I2C", "Card", cardIndex);
     //=========================================================================
     int tconIndex = this->RadioButton_DualTCON->Checked ? 1 : 0;
-    ini->WriteInteger(" TCON ", " Count ", tconIndex);
+    ini->WriteInteger("TCON", "Count", tconIndex);
     //=========================================================================
     int typeIndex = ComboBox_TCONType->ItemIndex;
-    ini->WriteInteger(" TCON ", " Type ", typeIndex);
+    ini->WriteInteger("TCON", "Type", typeIndex);
 
 }
 
@@ -476,7 +474,7 @@ void TMainForm::initCA210Meter()
 	}
 
 	ShowMessage
-	    (" CA210 cannot be linked or unsupported version of CA - SDK(CA - SDK v4 .10 up needed).");
+	    ("CA210 cannot be linked or unsupported version of CA - SDK(CA - SDK v4 .10 up needed).");
 	//this->Close();
 
     }
@@ -535,7 +533,7 @@ void TMainForm::setAnalyzerToTargetChannel()
 
     if (true == linkCA210) {
 	if (null == ca210Analyzer) {
-	    throw java::lang::IllegalStateException(" call getAnalyzer()first ! ");
+	    throw java::lang::IllegalStateException("call getAnalyzer()first !");
 	}
 	//撈出channel no和id
 	/*int channel = this->Edit_TargetCH->Text.ToInt();
@@ -556,7 +554,7 @@ void TMainForm::setAnalyzerToSourceChannel()
     using namespace std;
     if (true == linkCA210) {
 	if (null == ca210Analyzer) {
-	    throw java::lang::IllegalStateException(" call getAnalyzer()first ! ");
+	    throw java::lang::IllegalStateException("call getAnalyzer()first !");
 	}
 	//撈出channel no和id
 	int channel = this->Edit_SourceCH->Text.ToInt();
@@ -625,7 +623,7 @@ void TMainForm::setDummyMeterFile(bptr < cms::colorformat::DGLutFile > dglutFile
 		MaxMatrixIntensityAnalyzer::getReadyAnalyzer(mm, rxyY->toXYZ(), gxyY->toXYZ(),
 							     bxyY->toXYZ(), targetwxyY->toXYZ());
 
-	    string_ptr comment = property->getProperty(" reference white comment ");
+	    string_ptr comment = property->getProperty("reference white comment");
 	    if (null != comment) {
 		matrixAnalyzer->setReferenceColorComment(*comment);
 	    }
@@ -697,7 +695,7 @@ void TMainForm::setDummyMeterFile(bptr < cms::colorformat::DGLutFile > dglutFile
 	//=====================================================================
 
     } else {
-	ShowMessage(" Old version Raw Data.");
+	ShowMessage("Old version Raw Data.");
 	//無property則為舊版
 	analyzer = bptr < CA210IntensityAnalyzer > (new CA210IntensityAnalyzer(mm));
     }

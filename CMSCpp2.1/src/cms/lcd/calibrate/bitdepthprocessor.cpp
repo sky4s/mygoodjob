@@ -116,22 +116,9 @@ namespace cms {
 	    /*
 	       DG Lut³Ì¤j­È(in 8Bit)
 	     */
-	    double BitDepthProcessor::getMaxDigitalCount() {
+	    /*double BitDepthProcessor::getMaxDigitalCount() {
 		throw IllegalStateException("Deprecated");
-		/*switch (bitDepth) {
-		   case b10_10:
-		   return 256;
-		   case b10_8:
-		   case b8_8:
-		   return 255;
-		   case b8_6:
-		   return 255;
-		   case b6_6:
-		   return 252;
-		   default:
-		   throw IllegalStateException("Unsupported bitDepth: " + bitDepth);
-		   } */
-	    };
+	    };*/
 
 	    double BitDepthProcessor::getInputMaxDigitalCount() {
 		switch (bitDepth) {

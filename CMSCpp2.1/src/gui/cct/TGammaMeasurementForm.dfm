@@ -183,9 +183,9 @@ object GammaMeasurementForm: TGammaMeasurementForm
           OnClick = Button2Click
         end
         object CheckBox_Loaded: TCheckBox
-          Left = 86
+          Left = 88
           Top = 39
-          Width = 67
+          Width = 65
           Height = 20
           Caption = 'Loaded'
           Enabled = False

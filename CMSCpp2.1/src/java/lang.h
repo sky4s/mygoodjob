@@ -342,13 +342,14 @@ namespace java {
 	    const int objectID;
 	    bool null_;
 	    const Class c;
+	    string_ptr name;
 	  public:
 	    const bool equals(Object_ptr obj);
 	    const Class & getClass() const;
 	    const int hashCode();
 	    const string_ptr toString() const;
 	    const bool isNull();
-	    Object(bool null_);
+	    Object(bool _null_);
 	    Object();
 	    const int getObjectID();
 
@@ -519,7 +520,7 @@ template < typename Container, typename ValueType, int nPropType > class Propert
     }
 //-- To make possible to cast the property class to the
 //   internal type --
-    operator                                                            ValueType() {
+    operator                                                                         ValueType() {
 	assert(m_cObject != NULL);
 	assert(Get != NULL);
 	return (m_cObject->*Get) ();

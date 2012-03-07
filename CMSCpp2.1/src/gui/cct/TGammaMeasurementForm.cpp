@@ -195,6 +195,9 @@ void __fastcall TGammaMeasurementForm::FormShow(TObject * Sender)
     Edit_EndLevelT->Text = "0";
     dgcodeTable = (RGB_vector_ptr) ((RGB_vector *) null);
 
+    if (true == tconInput) {
+	Button_Measure->Enabled = false;
+    }
 #ifdef EXPERIMENT_FUNC
     CheckBox_FlickerFMA->Visible = true;
 #endif
@@ -256,6 +259,7 @@ void __fastcall TGammaMeasurementForm::Button2Click(TObject * Sender)
 	Edit_EndLevelT->Text = size - 1;
 
 	chdir(currDir.c_str());
+	Button_Measure->Enabled = true;
     }
 }
 
@@ -286,6 +290,7 @@ void __fastcall TGammaMeasurementForm::CheckBox_LoadedClick(TObject * Sender)
     if (false == CheckBox_Loaded->Checked) {
 	this->CheckBox_Loaded->Enabled = false;
 	dgcodeTable.reset();
+	Button_Measure->Enabled = false;
     }
 }
 
