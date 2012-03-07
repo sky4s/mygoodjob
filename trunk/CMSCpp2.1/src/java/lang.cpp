@@ -38,7 +38,6 @@ namespace java {
 	};
 
 	const Class & Object::getClass() const {
-	    return c;
 	};
 	const int Object::hashCode() {
 	    return -1;
@@ -50,11 +49,14 @@ namespace java {
 	const bool Object::isNull() {
 	    return null_;
 	};
-      Object::Object(bool null_):null_(null_), c(*this), objectID(globalID++) {
+      Object::Object(bool _null_):null_(_null_), c(*this), objectID(globalID++) {
+	    //Object::Object(bool _null_):null_(_null_), objectID(globalID++) {
+	    name = c.getName();
 
 	};
       Object::Object():null_(false), c(*this), objectID(globalID++) {
-
+	    //Object::Object():null_(false), objectID(globalID++) {
+	    name = c.getName();
 	};
 
 	const int Object::getObjectID() {

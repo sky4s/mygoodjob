@@ -363,8 +363,9 @@ void __fastcall TTargetWhiteForm2::Button_RunClick(TObject * Sender)
 	//analyzer.reset();
 	Button_Run->Enabled = true;
 	MainForm->stopProgress(ProgressBar1);
-        MainForm->StatusBar1->Panels->Items[0]->Text = "Target White: Set";
-	StatusBar1->Panels->Items[0]->Text = "Target White: ." + Edit_refx->Text + " ." + Edit_refy->Text;
+	MainForm->StatusBar1->Panels->Items[0]->Text = "Target White: Set";
+	StatusBar1->Panels->Items[0]->Text =
+	    "Target White: ." + Edit_refx->Text + " ." + Edit_refy->Text;
     }
 }
 
@@ -376,6 +377,7 @@ void __fastcall TTargetWhiteForm2::Edit_RChange(TObject * Sender)
 {
     binder->active(Sender);
     findInverseZ = false;
+    int maxCount = (int) bitDepth->getInputMaxDigitalCount();
 }
 
 //---------------------------------------------------------------------------
@@ -640,11 +642,12 @@ void __fastcall TTargetWhiteForm2::Button_FindInverseIntensityClick(TObject * Se
 	RGB_ptr rgb(new RGBColor(x, x, x));
 	RGB_ptr intensity = analyzer->getIntensity(rgb);
 	if (null != preIntensity) {
-	    //bool inverseB = intensity->B < preIntensity->B;
-	    bool inverseB = intensity->B < 100;
+	    bool inverseB = intensity->B < preIntensity->B;
+	    //bool inverseB = intensity->B < 100;
 	    if (inverseB) {
-		bool preIsBetter = Math::abs(intensity->B - 100) > Math::abs(preIntensity->B - 100);
-		maxZDGCode = preIsBetter ? x + 1 : x;
+		//bool preIsBetter = Math::abs(intensity->B - 100) > Math::abs(preIntensity->B - 100);
+		//maxZDGCode = preIsBetter ? x + 1 : x;
+		maxZDGCode = x + 1;
 		foundInverse = true;
 		StatusBar1->Panels->Items[1]->Text = "De-Hook: Set";
 		break;
@@ -666,11 +669,10 @@ void __fastcall TTargetWhiteForm2::Button_FindInverseIntensityClick(TObject * Se
 
 void __fastcall TTargetWhiteForm2::Edit_InverseIntensityofBKeyPress(TObject * Sender, char &Key)
 {
-        StatusBar1->Panels->Items[1]->Text = "De-Hook: Set";
+    StatusBar1->Panels->Items[1]->Text = "De-Hook: Set";
     findInverseZ = true;
     maxZDGCode = Edit_InverseIntensityofB->Text.ToInt();
 }
 
 //---------------------------------------------------------------------------
-
 

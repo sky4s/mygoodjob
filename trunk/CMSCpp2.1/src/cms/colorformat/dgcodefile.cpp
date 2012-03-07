@@ -602,6 +602,8 @@ namespace cms {
 		break;
 	    }
 	    dgfile.addProperty("keep max luminance", keepstr);
+	    dgfile.addProperty("accurate mode", c->accurateMode ? On + "(De-Hook)" : Off);
+            
 	    if (c->keepMaxLuminance == KeepMaxLuminance::NativeWhiteAdvanced) {
 		if (true == c->autoKeepMaxLumiParameter) {
 		    dgfile.addProperty("auto keep max lumi adv parameter", On);

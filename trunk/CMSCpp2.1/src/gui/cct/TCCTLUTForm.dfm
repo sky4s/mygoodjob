@@ -669,9 +669,9 @@ object CCTLUTForm: TCCTLUTForm
   end
   object Button_Debug: TButton
     Left = 595
-    Top = 333
+    Top = 328
     Width = 45
-    Height = 13
+    Height = 18
     Caption = 'debug'
     TabOrder = 6
     Visible = False
@@ -858,9 +858,9 @@ object CCTLUTForm: TCCTLUTForm
   end
   object Button_Reset: TButton
     Left = 595
-    Top = 320
+    Top = 312
     Width = 45
-    Height = 13
+    Height = 18
     Caption = 'reset'
     TabOrder = 9
     Visible = False
@@ -960,7 +960,7 @@ object CCTLUTForm: TCCTLUTForm
       Top = 168
       Width = 104
       Height = 19
-      Caption = 'Avoid Hook'
+      Caption = 'De-Hook'
       Color = clSkyBlue
       Font.Charset = ANSI_CHARSET
       Font.Color = clWindowText
