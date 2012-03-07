@@ -376,8 +376,12 @@ void __fastcall TTargetWhiteForm2::Button_RunClick(TObject * Sender)
 void __fastcall TTargetWhiteForm2::Edit_RChange(TObject * Sender)
 {
     binder->active(Sender);
-    findInverseZ = false;
-    int maxCount = (int) bitDepth->getInputMaxDigitalCount();
+    //findInverseZ = false;
+    //int maxCount = (int) bitDepth->getInputMaxDigitalCount();
+    if (true == findInverseZ) {
+	ShowMessage("De-Hook will inactive!");
+	findInverseZ = false;
+    }
 }
 
 //---------------------------------------------------------------------------
@@ -385,7 +389,11 @@ void __fastcall TTargetWhiteForm2::Edit_RChange(TObject * Sender)
 void __fastcall TTargetWhiteForm2::Edit_BChange(TObject * Sender)
 {
     binder->active(Sender);
-    findInverseZ = false;
+    //findInverseZ = false;
+    if (true == findInverseZ) {
+	ShowMessage("De-Hook will inactive!");
+	findInverseZ = false;
+    }
 }
 
 //---------------------------------------------------------------------------
@@ -393,7 +401,11 @@ void __fastcall TTargetWhiteForm2::Edit_BChange(TObject * Sender)
 void __fastcall TTargetWhiteForm2::Edit_GChange(TObject * Sender)
 {
     binder->active(Sender);
-    findInverseZ = false;
+    //findInverseZ = false;
+    if (true == findInverseZ) {
+	ShowMessage("De-Hook will inactive!");
+	findInverseZ = false;
+    }
 }
 
 //----------------------------------------
@@ -649,6 +661,7 @@ void __fastcall TTargetWhiteForm2::Button_FindInverseIntensityClick(TObject * Se
 		//maxZDGCode = preIsBetter ? x + 1 : x;
 		maxZDGCode = x + 1;
 		foundInverse = true;
+		string dehook = "De-Hook: Set" + _toString(maxZDGCode);
 		StatusBar1->Panels->Items[1]->Text = "De-Hook: Set";
 		break;
 	    }
