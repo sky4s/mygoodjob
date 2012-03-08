@@ -7,7 +7,7 @@
 //C++系統文件
 
 //其他庫頭文件
-#include <EyeOneLib/EyeOne.h>
+//#include <EyeOneLib/EyeOne.h>
 //本項目內頭文件
 
 namespace cms {
@@ -119,7 +119,7 @@ namespace cms {
 		}
 	    };
 	    //==================================================================
-	    EyeOne::EyeOne() {
+	    /*EyeOne::EyeOne() {
 		i1 = bptr < TEyeOneCtrl > (new TEyeOneCtrl((TComponent *) null));
 
 	    };
@@ -152,7 +152,7 @@ namespace cms {
 	    };
 	    Instr EyeOne::getType() {
 		return Instr::i1Pro;
-	    };
+	    };*/
 	    //==================================================================
 	  DGLutFileMeter::DGLutFileMeter(bptr < DGLutFile > dglut):	/*dglut(dglut), */
 	    vector(dglut->getComponentVector()), index(0) {
