@@ -210,9 +210,9 @@ void __fastcall TTargetWhiteForm2::Button_RunClick(TObject * Sender)
 	bool useRGBRatio = this->RadioButton_RGBRatio->Checked;
 	bool usexy = this->RadioButton_Targetxy->Checked;
 	bool moreAccurate = this->CheckBox_MoreAccurate->Checked;
-	bool avoidHookTV = true == usexy && this->CheckBox_AvoidHookTV->Checked;
+	//bool avoidHookTV = true == usexy && this->CheckBox_AvoidHookTV->Checked;
 
-	if (avoidHookTV) {
+	/*if (avoidHookTV) {
 	    //tv下的avoid hook
 	    //1. 量測最大亮度點色度座標
 	    //2. 找到反轉點
@@ -223,7 +223,7 @@ void __fastcall TTargetWhiteForm2::Button_RunClick(TObject * Sender)
 		Button_FindInverseIntensity->Click();
 	    }
 	    rgb->B = maxZDGCode;
-	}
+	}*/
 
 	if (usemaxRGB) {
 	    analyzer->setReferenceColorComment("Max RGB");

@@ -26,18 +26,14 @@
       inetdbbde.bpi inetdbxpress.bpi inetdb.bpi nmfast.bpi webdsnap.bpi 
       bcbie.bpi websnap.bpi soaprtl.bpi dclocx.bpi dbexpress.bpi dbxcds.bpi 
       indy.bpi bcb2kaxserver.bpi bcbindent.bpi"/>
-<<<<<<< .mine
     <PATHCPP value=".;src\gui;src\cms\colorspace;src\cms\colorspace;src\cms\colorspace;src\cms\colorspace;src\cms\colorspace;src\cms\colorformat;src\cms\colorformat;src\java;src\cms;src\math;src\cms\measure;src\ca210api;src\cms\colorformat;src\gui\3d;src\gui\3d;src\cms\util;lib\CA200SRVRLib;lib\CA200SRVRLib"/>
-=======
-    <PATHCPP value=".;src\gui;src\cms\colorspace;src\cms\colorformat;src\java;src\cms;src\math;src\cms\measure;src\ca210api;src\gui\3d;lib\EyeOneLib;src\cms\util;lib\CA200SRVRLib"/>
->>>>>>> .r998
     <PATHPAS value=".;"/>
     <PATHRC value=".;"/>
     <PATHASM value=".;"/>
     <DEBUGLIBPATH value="$(BCB)\lib\debug"/>
     <RELEASELIBPATH value="$(BCB)\lib\release"/>
     <LINKER value="ilink32"/>
-    <USERDEFINES value="_DEBUG"/>
+    <USERDEFINES value="_DEBUG;OD_MEASUREMENT"/>
     <SYSDEFINES value="NO_STRICT"/>
     <MAINSOURCE value="ODMeasurement.cpp"/>
     <INCLUDEPATH value="lib\EyeOneLib;src\gui\3d;src\cms;src\ca210api;src\cms\measure;src\math;src\java;src\cms\colorformat;src\cms\colorspace;src\cms\util;src\gui;src;&quot;D:\Program Files\Borland\CBuilder6\Projects&quot;;$(BCB)\include;$(BCB)\include\vcl;lib;lib\CA200SRVRLib"/>
@@ -50,7 +46,8 @@
       -Isrc\math -Isrc\java -Isrc\cms\colorformat -Isrc\cms\colorspace 
       -Isrc\cms\util -Isrc\gui -Isrc 
       -I&quot;D:\Program Files\Borland\CBuilder6\Projects&quot; -I$(BCB)\include 
-      -I$(BCB)\include\vcl -Ilib -Ilib\CA200SRVRLib -src_suffix cpp -D_DEBUG -boa"/>
+      -I$(BCB)\include\vcl -Ilib -Ilib\CA200SRVRLib -src_suffix cpp -D_DEBUG 
+      -DOD_MEASUREMENT OD_MEASUREMENT -boa"/>
     <CFLAG1 value="-Od -H=$(BCB)\lib\vcl60.csm -Hc -Vx -Ve -X- -r- -a1 -6 -b- -k -y -v -vi- 
       -c -tW -tWM"/>
     <PFLAGS value="-N2build -N0build -$YD -$W -$O- -$A8 -v -JPHNE -M"/>
@@ -101,7 +98,7 @@ AutoIncBuild=1
 MajorVer=0
 MinorVer=1
 Release=0
-Build=106
+Build=108
 Debug=0
 PreRelease=1
 Special=0
@@ -113,7 +110,7 @@ CodePage=950
 [Version Info Keys]
 CompanyName=AUO
 FileDescription=
-FileVersion=0.1.0.106
+FileVersion=0.1.0.108
 InternalName=
 LegalCopyright=
 LegalTrademarks=
@@ -148,8 +145,11 @@ Item1=src\gui\3d;src\math;src\ca210api;src\cms\measure;src\cms;src\java;src\cms\
 Item2=src\math;src\ca210api;src\cms\measure;src\cms;src\java;src\cms\colorformat;src\cms\colorspace;src\cms\util;src\gui;src;D:\Program Files\Borland\CBuilder6\Projects;$(BCB)\Projects\Lib;$(BCB)\lib\obj;$(BCB)\lib;lib;lib\CA200SRVRLib
 
 [HistoryLists\hlConditionals]
-Count=1
-Item0=_DEBUG
+Count=4
+Item0=_DEBUG;OD_MEASUREMENT
+Item1=_DEBUG,;OD_MEASUREMENT
+Item2=_DEBUG, OD_MEASUREMENT
+Item3=_DEBUG
 
 [HistoryLists\hlIntOutputDir]
 Count=1
