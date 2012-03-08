@@ -9,7 +9,7 @@
 
 //本項目內頭文件
 #include <ca210api/CA210API.h>
-#include <EyeOneLib/EYEONECTRLLib_OCX.h>
+//#include <EyeOneLib/EYEONECTRLLib_OCX.h>
 
 
 namespace cms {
@@ -82,7 +82,7 @@ namespace cms {
 		void close();
 	    };
 
-	    class EyeOne:public Meter {
+	    /*class EyeOne:public Meter {
 	      private:
 		bptr < TEyeOneCtrl > i1;
 	      public:
@@ -98,7 +98,7 @@ namespace cms {
 		virtual void setScreenType(ScreenType screenType);
 		virtual Instr getType();
 
-	    };
+	    };*/
 
 	    class DGLutFileMeter:public Meter {
 	      private:

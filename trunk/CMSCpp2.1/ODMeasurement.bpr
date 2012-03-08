@@ -8,9 +8,8 @@
       build\depend.obj build\independ.obj build\rgb.obj build\ciexyz.obj 
       build\dgcodefile.obj build\excelfile.obj build\lang.obj build\core.obj 
       build\doubleArray.obj build\meter.obj build\CA210API.obj build\cmf.obj 
-      build\T3DMeasureWindow.obj build\T3DMeasurementForm.obj 
-      build\EYEONECTRLLib_OCX.obj build\util.obj build\CA200SRVRLib_OCX.obj 
-      build\CA200SRVRLib_TLB.obj"/>
+      build\T3DMeasureWindow.obj build\T3DMeasurementForm.obj build\util.obj 
+      build\CA200SRVRLib_OCX.obj build\CA200SRVRLib_TLB.obj"/>
     <RESFILES value="ODMeasurement.res"/>
     <IDLFILES value=""/>
     <IDLGENFILES value=""/>
@@ -27,7 +26,11 @@
       inetdbbde.bpi inetdbxpress.bpi inetdb.bpi nmfast.bpi webdsnap.bpi 
       bcbie.bpi websnap.bpi soaprtl.bpi dclocx.bpi dbexpress.bpi dbxcds.bpi 
       indy.bpi bcb2kaxserver.bpi bcbindent.bpi"/>
+<<<<<<< .mine
+    <PATHCPP value=".;src\gui;src\cms\colorspace;src\cms\colorspace;src\cms\colorspace;src\cms\colorspace;src\cms\colorspace;src\cms\colorformat;src\cms\colorformat;src\java;src\cms;src\math;src\cms\measure;src\ca210api;src\cms\colorformat;src\gui\3d;src\gui\3d;src\cms\util;lib\CA200SRVRLib;lib\CA200SRVRLib"/>
+=======
     <PATHCPP value=".;src\gui;src\cms\colorspace;src\cms\colorformat;src\java;src\cms;src\math;src\cms\measure;src\ca210api;src\gui\3d;lib\EyeOneLib;src\cms\util;lib\CA200SRVRLib"/>
+>>>>>>> .r998
     <PATHPAS value=".;"/>
     <PATHRC value=".;"/>
     <PATHASM value=".;"/>
@@ -82,9 +85,6 @@
       <FILE FILENAME="src\cms\colorformat\cmf.cpp" FORMNAME="" UNITNAME="cmf" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="src\gui\3d\T3DMeasureWindow.cpp" FORMNAME="ThreeDMeasureWindow" UNITNAME="T3DMeasureWindow" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="src\gui\3d\T3DMeasurementForm.cpp" FORMNAME="ThreeDMeasurementForm" UNITNAME="T3DMeasurementForm" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="lib\EyeOneLib\EYEONECTRLLib_OCX.h" FORMNAME="" UNITNAME="EYEONECTRLLib_OCX.h" CONTAINERID="" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="lib\EyeOneLib\EYEONECTRLLib_TLB.h" FORMNAME="" UNITNAME="EYEONECTRLLib_TLB.h" CONTAINERID="" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="lib\EyeOneLib\EYEONECTRLLib_OCX.cpp" FORMNAME="" UNITNAME="EYEONECTRLLib_OCX.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="src\cms\util\util.cpp" FORMNAME="" UNITNAME="util" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="lib\CA200SRVRLib\CA200SRVRLib_OCX.cpp" FORMNAME="" UNITNAME="CA200SRVRLib_OCX.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="lib\CA200SRVRLib\CA200SRVRLib_OCX.h" FORMNAME="" UNITNAME="CA200SRVRLib_OCX.h" CONTAINERID="" DESIGNCLASS="" LOCALCOMMAND=""/>
