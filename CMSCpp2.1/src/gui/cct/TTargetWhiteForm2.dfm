@@ -70,7 +70,7 @@ object TargetWhiteForm2: TTargetWhiteForm2
           Left = 20
           Top = 111
           Width = 169
-          Height = 117
+          Height = 106
           Caption = 'Target xy on D-Illuminant Locus'
           TabOrder = 0
           object Label10: TLabel
@@ -167,24 +167,12 @@ object TargetWhiteForm2: TTargetWhiteForm2
           end
           object CheckBox_MoreAccurate: TCheckBox
             Left = 7
-            Top = 94
+            Top = 78
             Width = 98
             Height = 20
             Caption = 'More Accurate'
             Enabled = False
             TabOrder = 5
-            Visible = False
-          end
-          object CheckBox_AvoidHookTV: TCheckBox
-            Left = 7
-            Top = 77
-            Width = 105
-            Height = 21
-            Hint = 'Find Target and keep B at maximum B Intensity'
-            Caption = 'Avoid Hook(TV)'
-            ParentShowHint = False
-            ShowHint = True
-            TabOrder = 6
             Visible = False
           end
         end
@@ -244,34 +232,13 @@ object TargetWhiteForm2: TTargetWhiteForm2
           Height = 41
           Caption = 'CA-210'
           TabOrder = 6
-          object Button_Connect: TButton
-            Left = 162
-            Top = 12
-            Width = 59
-            Height = 20
-            Caption = 'Connect'
-            Enabled = False
-            TabOrder = 0
-            Visible = False
-            OnClick = Button_ConnectClick
-          end
-          object Button_Disconnect: TButton
-            Left = 163
-            Top = 36
-            Width = 72
-            Height = 20
-            Caption = 'Disconnect'
-            TabOrder = 1
-            Visible = False
-            OnClick = Button_DisconnectClick
-          end
           object Button_Measure: TButton
             Left = 104
             Top = 14
             Width = 65
             Height = 17
             Caption = 'Measure'
-            TabOrder = 2
+            TabOrder = 0
             OnClick = Button_MeasureClick
           end
           object Button_ConnectToggle: TButton
@@ -280,7 +247,7 @@ object TargetWhiteForm2: TTargetWhiteForm2
             Width = 89
             Height = 17
             Caption = 'Connect'
-            TabOrder = 3
+            TabOrder = 1
             OnClick = Button_ConnectToggleClick
           end
         end
@@ -342,7 +309,7 @@ object TargetWhiteForm2: TTargetWhiteForm2
         end
         object Edit_InverseIntensityofB: TEdit
           Left = 95
-          Top = 232
+          Top = 224
           Width = 33
           Height = 21
           Hint = 'Click this can auto copy Inverse B to B of RGB Ratio'
@@ -353,7 +320,7 @@ object TargetWhiteForm2: TTargetWhiteForm2
         end
         object Button_FindInverseIntensity: TButton
           Left = 18
-          Top = 232
+          Top = 224
           Width = 71
           Height = 17
           Hint = 'Find Inverse B Intensity '
@@ -362,6 +329,27 @@ object TargetWhiteForm2: TTargetWhiteForm2
           ShowHint = True
           TabOrder = 9
           OnClick = Button_FindInverseIntensityClick
+        end
+        object Button_Connect: TButton
+          Left = 128
+          Top = 260
+          Width = 59
+          Height = 20
+          Caption = 'Connect'
+          Enabled = False
+          TabOrder = 10
+          Visible = False
+          OnClick = Button_ConnectClick
+        end
+        object Button_Disconnect: TButton
+          Left = 123
+          Top = 276
+          Width = 72
+          Height = 20
+          Caption = 'Disconnect'
+          TabOrder = 11
+          Visible = False
+          OnClick = Button_DisconnectClick
         end
       end
       object GroupBox5: TGroupBox
@@ -680,7 +668,11 @@ object TargetWhiteForm2: TTargetWhiteForm2
       end
       item
         Text = 'De-Hook: N/A'
-        Width = 50
+        Width = 100
+      end
+      item
+        Text = 'DG:'
+        Width = 200
       end>
     SimplePanel = False
   end

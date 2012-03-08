@@ -899,54 +899,13 @@ object MainForm: TMainForm
           OnClick = RadioButton_PCTCON_TVClick
         end
       end
-      object Resolution: TGroupBox
-        Left = 554
-        Top = 104
-        Width = 169
-        Height = 105
-        Caption = 'Resolution'
-        TabOrder = 1
-        Visible = False
-        object Width: TLabel
-          Left = 7
-          Top = 20
-          Width = 28
-          Height = 13
-          Caption = 'Width'
-        end
-        object Height: TLabel
-          Left = 7
-          Top = 46
-          Width = 31
-          Height = 13
-          Caption = 'Height'
-        end
-        object Edit_Width: TEdit
-          Left = 46
-          Top = 20
-          Width = 46
-          Height = 21
-          ImeName = #26085#25991#36664#20837#31995#32113' (MS-IME2002)'
-          TabOrder = 0
-          Text = '1366'
-        end
-        object Edit_Height: TEdit
-          Left = 46
-          Top = 46
-          Width = 46
-          Height = 21
-          ImeName = #26085#25991#36664#20837#31995#32113' (MS-IME2002)'
-          TabOrder = 1
-          Text = '768'
-        end
-      end
       object GroupBox1: TGroupBox
         Left = 0
         Top = 128
         Width = 193
         Height = 81
         Caption = 'Pattern Display Interval'
-        TabOrder = 2
+        TabOrder = 1
         object Label1: TLabel
           Left = 91
           Top = 20
@@ -988,7 +947,7 @@ object MainForm: TMainForm
         Height = 98
         Caption = 'CH Setting'
         Enabled = False
-        TabOrder = 3
+        TabOrder = 2
         object Label7: TLabel
           Left = 7
           Top = 20
@@ -1053,7 +1012,7 @@ object MainForm: TMainForm
         Width = 169
         Height = 97
         Caption = 'Intensity source'
-        TabOrder = 4
+        TabOrder = 3
         Visible = False
         object RadioButton_AnalyzerCA210: TRadioButton
           Left = 7
@@ -1098,7 +1057,7 @@ object MainForm: TMainForm
         Width = 169
         Height = 105
         Caption = 'Pattern'
-        TabOrder = 5
+        TabOrder = 4
         object RadioButton_Normal: TRadioButton
           Left = 7
           Top = 19
@@ -1180,7 +1139,7 @@ object MainForm: TMainForm
         Width = 163
         Height = 202
         Caption = 'Bit Depth'
-        TabOrder = 6
+        TabOrder = 5
         object Label10: TLabel
           Left = 7
           Top = 137
@@ -1466,7 +1425,7 @@ object MainForm: TMainForm
             Top = 13
             Width = 138
             Height = 21
-            ItemHeight = 0
+            ItemHeight = 13
             TabOrder = 0
             OnChange = ComboBox_TCONTypeChange
           end

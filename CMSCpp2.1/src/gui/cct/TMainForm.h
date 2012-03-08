@@ -63,11 +63,6 @@ class TMainForm:public TForm {
     TGroupBox *GroupBox2;
     TRadioButton *RadioButton_PC;
     TRadioButton *RadioButton_TCON;
-    TGroupBox *Resolution;
-    TLabel *Width;
-    TLabel *Height;
-    TEdit *Edit_Width;
-    TEdit *Edit_Height;
     TGroupBox *GroupBox1;
     TLabel *Label1;
     TEdit *Edit_Interval;

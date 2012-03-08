@@ -4,6 +4,7 @@
 #define NO_PROMPT_ON_HRCHECK_FAILURE
 #include <comobj.hpp>
 
+
 //---------------------------------------------------------------------------
 USEFORM("src\gui\TOutputFileFrame.cpp", OutputFileFrame); /* TFrame: File Type */
 USEFORM("src\gui\3d\T3DMeasureWindow.cpp", ThreeDMeasureWindow);

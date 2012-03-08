@@ -804,7 +804,7 @@ void __fastcall TMainForm::RadioButton_TCONClick(TObject * Sender)
 {
     this->Panel_TCON->Visible = true;
     ComboBox_TCONTypeChange(this);
-    ShowMessage("Please Turn On DG and FRC for Measurement when T-CON Input Source is selected!!!");
+    ShowMessage("Please Turn On DG and FRC for Measurement when T-CON Input Source is selected!!!\n(當選擇T-CON Input時, 請打開DG以及FRC!!)");
     PageControl1->ActivePageIndex = 1;
 }
 

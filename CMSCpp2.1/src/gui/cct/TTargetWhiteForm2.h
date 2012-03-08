@@ -85,7 +85,6 @@ class TTargetWhiteForm2:public TForm, gui::event::WindowListener {
     TButton *Button_Connect;
     TButton *Button_Disconnect;
     TCheckBox *CheckBox_Lock;
-    TCheckBox *CheckBox_AvoidHookTV;
     TGroupBox *GroupBox7;
     TLabel *Label4;
     TEdit *Edit_refx;
