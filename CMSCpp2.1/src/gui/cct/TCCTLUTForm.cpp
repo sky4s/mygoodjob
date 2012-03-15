@@ -110,7 +110,8 @@ void __fastcall TCCTLUTForm::Button_MeaRunClick(TObject * Sender)
 	} else if (this->RadioButton_DefinedDim->Checked) {
 	    //新低灰階修正方法
 	    int under = this->Edit_DefinedDimUnder->Text.ToInt();	// + 1;
-	    double gamma = this->Edit_DimGamma->Text.ToDouble();
+	    double gamma = this->ComboBox_DefinedDimGamma->Text.ToDouble();
+
 	    calibrator.setDefinedDim(under, gamma);
 	    //calibrator.DimFix = CheckBox_DimFix->Checked;
 	    //calibrator.DimFixThreshold = Edit_DimFixThreshold->Text.ToDouble();
