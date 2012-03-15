@@ -13,6 +13,10 @@ __fastcall TChangeLogForm::TChangeLogForm(TComponent * Owner)
 :TForm(Owner)
 {
     Memo1->Text = "\
+    Version 3.3b (build 1.20) 20120315\r\n\
+    -2 Gamma修正\r\n\
+    +Defined Dim Strength介面修改\r\n\
+    \r\n\
     Version 3.3b (build 1.19) 20120302\r\n\
     -Measurement PC Input修正\r\n\
     -量測時間(Pattern Display Interval)更改為400ms\r\n\

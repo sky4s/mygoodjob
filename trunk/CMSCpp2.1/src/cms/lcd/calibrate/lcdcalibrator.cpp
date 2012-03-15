@@ -50,18 +50,20 @@ namespace cms {
 
 		for (int x = 0; x <= dimGammaEnd; x++) {
 		    double normal = static_cast < double >(x) / (effectiven - 1);
-		    double v = Math::pow(normal, dimGamma);
+
+		    double gamma = Interpolation::linear(0, dimGammaEnd, dimGamma, brightGamma, x);
+		    double v = Math::pow(normal, gamma);
 		    (*result)[x] = v;
 		}
 		int brightGammaStart = dimGammaEnd + 1;
 		for (int x = brightGammaStart; x < effectiven; x++) {
 		    double normal = static_cast < double >(x) / (effectiven - 1);
-		    double gamma = Interpolation::linear(dimGammaEnd, effectiven - 1,
+		    /*double gamma = Interpolation::linear(dimGammaEnd, effectiven - 1,
 							 dimGamma,
-							 brightGamma, x);
-		    double v = Math::pow(normal, gamma);
+							 brightGamma, x);*/
+		    double v = Math::pow(normal, brightGamma);
 		    (*result)[x] = v;
-		};
+		}
 		for (int x = effectiven; x < n; x++) {
 		    (*result)[x] = 1;
 		} return result;

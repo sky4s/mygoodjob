@@ -427,21 +427,12 @@ object CCTLUTForm: TCCTLUTForm
       Text = '50'
       OnChange = Edit_DefinedDimUnderChange
     end
-    object Edit_DimGamma: TEdit
-      Left = 72
-      Top = 160
-      Width = 59
-      Height = 21
-      ImeName = #26085#25991#36664#20837#31995#32113' (MS-IME2002)'
-      TabOrder = 8
-      Text = '1.0'
-    end
     object Edit_DimFixThreshold: TEdit
       Left = 104
       Top = 184
       Width = 49
       Height = 21
-      TabOrder = 9
+      TabOrder = 8
       Text = '0.0001'
     end
     object CheckBox_Feedback: TCheckBox
@@ -450,8 +441,26 @@ object CCTLUTForm: TCCTLUTForm
       Width = 71
       Height = 20
       Caption = 'Feedback'
-      TabOrder = 10
+      TabOrder = 9
       OnClick = CheckBox_FeedbackClick
+    end
+    object ComboBox_DefinedDimGamma: TComboBox
+      Left = 72
+      Top = 160
+      Width = 59
+      Height = 21
+      ItemHeight = 13
+      TabOrder = 10
+      Text = '1.0'
+      Items.Strings = (
+        '0.5'
+        '0.6'
+        '0.7'
+        '0.8'
+        '0.85'
+        '0.9'
+        '0.95'
+        '1.0')
     end
   end
   object GroupBox4: TGroupBox
