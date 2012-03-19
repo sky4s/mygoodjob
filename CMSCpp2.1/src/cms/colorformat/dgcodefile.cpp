@@ -602,8 +602,19 @@ namespace cms {
 		break;
 	    }
 	    dgfile.addProperty("keep max luminance", keepstr);
-	    dgfile.addProperty("accurate mode", c->accurateMode ? On + "(De-Hook)" : Off);
-            
+	    //dgfile.addProperty("accurate mode", c->accurateMode ? On + "(De-Hook)" : Off);
+	    //dgfile.addProperty("dehook mode", c->accurateMode ? On + "(De-Hook)" : Off);
+	    string deHookStr;
+	    if (None == c->DeHookMode) {
+		deHookStr = "None";
+	    } else if (Original == c->DeHookMode) {
+		deHookStr = "Original";
+	    } else if (Evolution == c->DeHookMode) {
+		deHookStr = "Evolution";
+	    }
+
+	    dgfile.addProperty("dehook mode", deHookStr);
+
 	    if (c->keepMaxLuminance == KeepMaxLuminance::NativeWhiteAdvanced) {
 		if (true == c->autoKeepMaxLumiParameter) {
 		    dgfile.addProperty("auto keep max lumi adv parameter", On);

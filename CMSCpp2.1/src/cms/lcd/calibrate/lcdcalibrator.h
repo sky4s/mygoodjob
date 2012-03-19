@@ -15,13 +15,17 @@
 #include "common.h"
 #include "quantizer.h"
 //#include "feedback.h"
-#include <cms/measure/include.h> //20120302
+#include <cms/measure/include.h>	//20120302
 
 
 namespace cms {
     namespace lcd {
 	namespace calibrate {
 	    using namespace math;
+
+	    enum DeHook {
+		None, Original, Evolution
+	    };
 
 	    class LCDCalibrator {
 		friend class cms::colorformat::DGLutProperty;
@@ -99,31 +103,30 @@ namespace cms {
 		bool smoothIntensity;
 		int smoothIntensityStart;
 		int smoothIntensityEnd;
+		double bIntensityGain;
 		//==============================================================
 
 		//==============================================================
-		// others
+		// de-hook
 		//==============================================================
-		double bIntensityGain;
-		bool avoidFRCNoise;
-		//使用新的有多種target的方法去找到DG
-		bool useNewMethod;
 		//兩種狀況下 accurateMode會有作用, 當然都要搭配tcon才能用
 		//所以一定是搭配PanelRegulator去修改面板特性的
 		// 1. KeepMaxLuminance為NativeWhiteAdvanced的時候
 		//   為了讓結果跟接近NativeWhite, 所以Target White的B改為反轉點
 		// 2. 將面板白點修改為目標白點
 		//   修改面板特性讓面板白點為目標白點, 使求出來的白點正好就是目標
-		bool accurateMode;
+		//bool accurateMode;
 		//如果手動去修改DG, 讓B的反轉點避掉, 就需要使這個flag為true
 		//此功能不建議開放, 僅適合開發測試使用
 		bool manualAccurateMode;
 		//用來註記是否有用了panel regulator
 		bool remapped;
-		//dprecated
-		double middleCCTRatio;
+		DeHook dehook;
+		//==============================================================
 
-		//for feedback
+		//==============================================================
+		// feedback
+		//==============================================================
 		bool feedbackFix;
 		int feedbackFixCount;
 		int initDefectCount;
@@ -131,6 +134,16 @@ namespace cms {
 		bool colorimetricQuanti;
 		QuantiType quantiType;
 		 bptr < cms::lcd::calibrate::FeedbackFixer > feedbackFixer;
+		//==============================================================
+		//==============================================================
+		// others
+		//==============================================================
+		bool avoidFRCNoise;
+		//使用新的有多種target的方法去找到DG
+		bool useNewMethod;
+
+		//dprecated
+		double middleCCTRatio;
 
 		string excuteStatus;
 		bool debugMode;
@@ -148,7 +161,11 @@ namespace cms {
 		void setDefinedDim(int under, double strength);
 
 		void setGamma(double gamma);
+		//2-gamma
 		void setGamma(double dimGamma, int dimGammaEnd, double brightGamma);
+		//3-gamma
+		void setGamma(double dimGamma, int dimGammaEnd, int middleGammaEnd,
+			      double brightGamma);
 		void setGamma(double rgamma, double ggamma, double bgamma);
 		void setGammaCurve(double_vector_ptr gammaCurve);
 		void setGammaCurve(double_vector_ptr rgammaCurve,
@@ -182,7 +199,7 @@ namespace cms {
 		};
 		__property double BTargetIntensity = { write = bTargetIntensity
 		};
-		__property bool AccurateMode = { write = accurateMode };
+		//__property bool AccurateMode = { write = accurateMode };
 		__property bool ManualAccurateMode = { write = manualAccurateMode
 		};
 		__property double MiddleCCTRatio = { write = middleCCTRatio
@@ -193,6 +210,7 @@ namespace cms {
 		};
 		__property string ExcuteStatus = { read = excuteStatus };
 		__property bool DebugMode = { write = debugMode };
+		__property DeHook DeHookMode = { read = dehook, write = dehook };
 		//==============================================================
 
 
@@ -254,7 +272,9 @@ namespace cms {
 					      double_vector_ptr dyofBase, Dep::Channel & ch);
 
 		Component_vector_ptr getDimComponentVector(RGB_vector_ptr dglut);
-		bool isDoAccurate();
+		bool isDoDeHook();
+		bool isDoDeHookOrg();
+		bool isDoDeHookEvo();
 
 		//==============================================================
 		// 量化
@@ -280,6 +300,9 @@ namespace cms {
 							     dimGammaEnd, double
 							     brightGamma, int n, int
 							     effectiven);
+		static double_vector_ptr getGammaCurveVector(double dimGamma, int dimGammaEnd,
+							     int middleGammaEnd, double brightGamma,
+							     int n, int effectiven);
 		double_vector_ptr getOriginalGammaCurve(Component_vector_ptr componentVector);
 	      public:
 

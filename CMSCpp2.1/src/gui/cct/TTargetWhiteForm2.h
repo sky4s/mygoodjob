@@ -128,7 +128,7 @@ class TTargetWhiteForm2:public TForm, gui::event::WindowListener {
 
     bptr < cms::lcd::calibrate::BitDepthProcessor > bitDepth;
     void setRGBRatio(int r, int g, int b);
-    int maxZDGCode;
+    int maxBRawGrayLevel;
     bool findInverseZ;
     mbinder_ptr binder;
     bool continueMeasure;
