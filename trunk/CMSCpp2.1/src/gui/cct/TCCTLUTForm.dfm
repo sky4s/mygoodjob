@@ -1,7 +1,7 @@
 object CCTLUTForm: TCCTLUTForm
   Left = 264
   Top = 440
-  Width = 848
+  Width = 845
   Height = 423
   Caption = 'CCT(LUT)'
   Color = clBtnFace
@@ -24,6 +24,24 @@ object CCTLUTForm: TCCTLUTForm
     Width = 281
     Height = 13
     Caption = 'Copyright (C) 2012, AU Optronics Corp., All Right Reserved.'
+  end
+  object Label26: TLabel
+    Left = 672
+    Top = 264
+    Width = 62
+    Height = 13
+    Caption = 'Green for NB'
+    Color = clMoneyGreen
+    ParentColor = False
+  end
+  object Label27: TLabel
+    Left = 736
+    Top = 264
+    Width = 91
+    Height = 13
+    Caption = 'Blue for Experiment'
+    Color = clSkyBlue
+    ParentColor = False
   end
   object GroupBox1: TGroupBox
     Left = 6
@@ -116,10 +134,10 @@ object CCTLUTForm: TCCTLUTForm
     end
     object Label_BrightZone: TLabel
       Left = 72
-      Top = 104
-      Width = 33
+      Top = 128
+      Width = 41
       Height = 13
-      Caption = '51-255'
+      Caption = '81-255'
     end
     object Label22: TLabel
       Left = 96
@@ -137,7 +155,7 @@ object CCTLUTForm: TCCTLUTForm
     end
     object Label24: TLabel
       Left = 8
-      Top = 144
+      Top = 176
       Width = 147
       Height = 13
       Caption = '=======Load Gamma======='
@@ -148,6 +166,20 @@ object CCTLUTForm: TCCTLUTForm
       Width = 150
       Height = 13
       Caption = '========================='
+    end
+    object Label28: TLabel
+      Left = 8
+      Top = 144
+      Width = 150
+      Height = 13
+      Caption = '========================='
+    end
+    object Label_MiddleZone: TLabel
+      Left = 72
+      Top = 104
+      Width = 15
+      Height = 13
+      Caption = '51-'
     end
     object RadioButton_Gamma: TRadioButton
       Left = 7
@@ -182,22 +214,22 @@ object CCTLUTForm: TCCTLUTForm
     end
     object RadioButton_OriginalGamma: TRadioButton
       Left = 7
-      Top = 128
+      Top = 160
       Width = 111
       Height = 13
       Caption = 'Original Gamma'
       TabOrder = 2
     end
-    object RadioButton_2Gamma: TRadioButton
+    object RadioButton_3Gamma: TRadioButton
       Left = 7
       Top = 88
       Width = 65
       Height = 17
-      Caption = '2 Gamma'
+      Caption = '3 Gamma'
       TabOrder = 3
     end
     object ComboBox_DimGamma: TComboBox
-      Left = 112
+      Left = 116
       Top = 77
       Width = 49
       Height = 21
@@ -217,8 +249,8 @@ object CCTLUTForm: TCCTLUTForm
         '2.5')
     end
     object ComboBox_BrightGamma: TComboBox
-      Left = 112
-      Top = 101
+      Left = 116
+      Top = 125
       Width = 49
       Height = 21
       ImeName = #20013#25991' ('#32321#39636') - '#26032#27880#38899
@@ -237,7 +269,7 @@ object CCTLUTForm: TCCTLUTForm
         '2.5')
     end
     object Edit_DimGammaEnd: TEdit
-      Left = 83
+      Left = 88
       Top = 77
       Width = 25
       Height = 21
@@ -286,7 +318,7 @@ object CCTLUTForm: TCCTLUTForm
     end
     object RadioButton_GammaCurve: TRadioButton
       Left = 7
-      Top = 157
+      Top = 189
       Width = 154
       Height = 20
       Caption = 'Gamma Curve'
@@ -295,7 +327,7 @@ object CCTLUTForm: TCCTLUTForm
     end
     object RadioButton_GammaValue: TRadioButton
       Left = 7
-      Top = 180
+      Top = 212
       Width = 154
       Height = 13
       Caption = 'Gamma Value'
@@ -304,12 +336,21 @@ object CCTLUTForm: TCCTLUTForm
     end
     object CheckBox_GByPass: TCheckBox
       Left = 95
-      Top = 157
+      Top = 189
       Width = 65
       Height = 20
       Caption = 'G bypass'
       TabOrder = 12
       Visible = False
+    end
+    object Edit_MiddleGammaEnd: TEdit
+      Left = 88
+      Top = 101
+      Width = 25
+      Height = 21
+      TabOrder = 13
+      Text = '80'
+      OnChange = Edit_MiddleGammaEndChange
     end
   end
   object GroupBox3: TGroupBox
@@ -577,7 +618,7 @@ object CCTLUTForm: TCCTLUTForm
     end
     object CheckBox_NewMethod: TCheckBox
       Left = 7
-      Top = 73
+      Top = 97
       Width = 117
       Height = 19
       Caption = 'New CCT Method'
@@ -587,7 +628,7 @@ object CCTLUTForm: TCCTLUTForm
     end
     object CheckBox_MultiGen: TCheckBox
       Left = 7
-      Top = 92
+      Top = 77
       Width = 118
       Height = 19
       Caption = 'Multi Generate'
@@ -604,7 +645,7 @@ object CCTLUTForm: TCCTLUTForm
     end
     object Edit_MultiGenTimes: TEdit
       Left = 115
-      Top = 92
+      Top = 77
       Width = 33
       Height = 21
       Enabled = False
@@ -613,7 +654,7 @@ object CCTLUTForm: TCCTLUTForm
     end
     object CheckBox_BTargetIntensity: TCheckBox
       Left = 7
-      Top = 53
+      Top = 56
       Width = 111
       Height = 19
       Caption = 'B Target intensity'
@@ -920,6 +961,7 @@ object CCTLUTForm: TCCTLUTForm
       ShowHint = False
       TabOrder = 0
       TabStop = True
+      OnClick = RadioButton_MaxYNoneClick
     end
     object RadioButton_MaxYNative: TRadioButton
       Left = 7
@@ -964,27 +1006,9 @@ object CCTLUTForm: TCCTLUTForm
       Text = '1'
       Visible = False
     end
-    object CheckBox_AvoidHook: TCheckBox
-      Left = 7
-      Top = 168
-      Width = 104
-      Height = 19
-      Caption = 'De-Hook'
-      Color = clSkyBlue
-      Font.Charset = ANSI_CHARSET
-      Font.Color = clWindowText
-      Font.Height = -11
-      Font.Name = 'MS Sans Serif'
-      Font.Style = []
-      ParentColor = False
-      ParentFont = False
-      TabOrder = 5
-      Visible = False
-      OnClick = CheckBox_AvoidHookClick
-    end
     object CheckBox_SkipInverseB: TCheckBox
       Left = 26
-      Top = 154
+      Top = 150
       Width = 105
       Height = 14
       Caption = 'Skip Inverse B'
@@ -1014,6 +1038,7 @@ object CCTLUTForm: TCCTLUTForm
       Height = 17
       Caption = 'Target White'
       TabOrder = 8
+      OnClick = RadioButton_MaxYTargetWhiteClick
     end
     object CheckBox_SmoothIntensity: TCheckBox
       Left = 24
@@ -1043,6 +1068,23 @@ object CCTLUTForm: TCCTLUTForm
       Height = 21
       TabOrder = 11
       Text = '255'
+      Visible = False
+    end
+    object CheckBox_DeHook: TCheckBox
+      Left = 8
+      Top = 169
+      Width = 64
+      Height = 19
+      Caption = 'De-Hook'
+      Color = clSkyBlue
+      Font.Charset = ANSI_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -11
+      Font.Name = 'MS Sans Serif'
+      Font.Style = []
+      ParentColor = False
+      ParentFont = False
+      TabOrder = 5
       Visible = False
     end
   end
@@ -1100,8 +1142,8 @@ object CCTLUTForm: TCCTLUTForm
     TabOrder = 14
   end
   object RadioGroup_NormalCase: TRadioGroup
-    Left = 671
-    Top = 248
+    Left = 343
+    Top = 232
     Width = 156
     Height = 49
     Caption = 'Normal Case'
@@ -1115,7 +1157,7 @@ object CCTLUTForm: TCCTLUTForm
   object StatusBar1: TStatusBar
     Left = 0
     Top = 375
-    Width = 840
+    Width = 837
     Height = 19
     Color = clWhite
     Panels = <

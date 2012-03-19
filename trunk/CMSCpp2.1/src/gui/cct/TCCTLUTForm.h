@@ -84,7 +84,7 @@ class TCCTLUTForm:public TForm, cms::lcd::calibrate::FeedbackListener {
     TEdit *Edit_MultiGenTimes;
     TCheckBox *CheckBox_BTargetIntensity;
     TEdit *Edit_BTargetIntensity;
-    TCheckBox *CheckBox_AvoidHook;
+    TCheckBox *CheckBox_DeHook;
     TRadioButton *RadioButton_OriginalGamma;
     TCheckBox *CheckBox_BMax2;
     TLabel *Label18;
@@ -101,7 +101,7 @@ class TCCTLUTForm:public TForm, cms::lcd::calibrate::FeedbackListener {
     TProgressBar *ProgressBar1;
     TEdit *Edit_DimFixThreshold;
     TCheckBox *CheckBox_Feedback;
-    TRadioButton *RadioButton_2Gamma;
+    TRadioButton *RadioButton_3Gamma;
     TComboBox *ComboBox_DimGamma;
     TComboBox *ComboBox_BrightGamma;
     TLabel *Label16;
@@ -121,8 +121,13 @@ class TCCTLUTForm:public TForm, cms::lcd::calibrate::FeedbackListener {
     TComboBox *ComboBox_AbsGammaStartAboveGamma;
     TLabel *Label24;
     TLabel *Label25;
-        TStatusBar *StatusBar1;
-        TComboBox *ComboBox_DefinedDimGamma;
+    TStatusBar *StatusBar1;
+    TComboBox *ComboBox_DefinedDimGamma;
+    TLabel *Label26;
+    TLabel *Label27;
+    TLabel *Label28;
+    TLabel *Label_MiddleZone;
+    TEdit *Edit_MiddleGammaEnd;
     void __fastcall RadioButton_P1P2Click(TObject * Sender);
     void __fastcall Button_MeaRunClick(TObject * Sender);
     void __fastcall Button_DebugClick(TObject * Sender);
@@ -152,7 +157,11 @@ class TCCTLUTForm:public TForm, cms::lcd::calibrate::FeedbackListener {
     void __fastcall CheckBox_SmoothIntensityClick(TObject * Sender);
     void __fastcall Edit_DefinedDimUnderChange(TObject * Sender);
     void __fastcall CheckBox_AbsoluteGammaClick(TObject * Sender);
-    void __fastcall CheckBox_AvoidHookClick(TObject * Sender);
+    void __fastcall Edit_MiddleGammaEndChange(TObject * Sender);
+    void __fastcall RadioButton_DeHookOrgClick(TObject * Sender);
+    void __fastcall RadioButton_DeHookEvoClick(TObject * Sender);
+    void __fastcall RadioButton_MaxYNoneClick(TObject * Sender);
+    void __fastcall RadioButton_MaxYTargetWhiteClick(TObject * Sender);
   private:			// User declarations
     void setMeasureInfo();
     int serialid;

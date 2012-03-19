@@ -20,7 +20,7 @@
 TTargetWhiteForm2 *TargetWhiteForm2;
 //---------------------------------------------------------------------------
 __fastcall TTargetWhiteForm2::TTargetWhiteForm2(TComponent * Owner)
-:TForm(Owner), stopMeasure(false), maxZDGCode(-1), measuring(false),
+:TForm(Owner), stopMeasure(false), maxBRawGrayLevel(-1), measuring(false),
 findInverseZ(false), connect(true)
 {
 }
@@ -210,20 +210,6 @@ void __fastcall TTargetWhiteForm2::Button_RunClick(TObject * Sender)
 	bool useRGBRatio = this->RadioButton_RGBRatio->Checked;
 	bool usexy = this->RadioButton_Targetxy->Checked;
 	bool moreAccurate = this->CheckBox_MoreAccurate->Checked;
-	//bool avoidHookTV = true == usexy && this->CheckBox_AvoidHookTV->Checked;
-
-	/*if (avoidHookTV) {
-	    //tv下的avoid hook
-	    //1. 量測最大亮度點色度座標
-	    //2. 找到反轉點
-	    //3. 設定B為反轉點, 且保持不變
-	    //4. 找到對應色度的RGB
-	    if (maxZDGCode == -1) {
-		//this->maxZDGCode = MeasureTool::getMaxZDGCode(MainForm->mm, bitDepth);
-		Button_FindInverseIntensity->Click();
-	    }
-	    rgb->B = maxZDGCode;
-	}*/
 
 	if (usemaxRGB) {
 	    analyzer->setReferenceColorComment("Max RGB");
@@ -231,11 +217,7 @@ void __fastcall TTargetWhiteForm2::Button_RunClick(TObject * Sender)
 	    analyzer->setReferenceColorComment("RGB Ratio");
 	} else if (usexy) {
 	    string comment = "Target x,y(" + string(Edit_CT->Text.c_str()) + "k)";
-	    /*if (avoidHookTV) {
-	       comment = "Target x,y(Max RGB) with avoid Hook TV";
-	       } else {
-	       comment = "Target x,y(" + string(Edit_CT->Text.c_str()) + "k)";
-	       } */
+
 
 	    analyzer->setReferenceColorComment(comment);
 	    double targetx = this->Edit_targetx->Text.ToDouble();
@@ -287,32 +269,22 @@ void __fastcall TTargetWhiteForm2::Button_RunClick(TObject * Sender)
 	//當在Direct Gamma下, false == MeasureWindow->Visibl會一直成立
 	//如此將無法進行量測
 	if (true == stopMeasure || (!tconinput && false == MeasureWindow->Visible)) {
-	    //measuring = false;
-	    //analyzer->endAnalyze();
 	    return;
 	}
 	analyzer->setupComponent(Channel::R, r);
 	if (true == stopMeasure || (!tconinput && false == MeasureWindow->Visible)) {
-	    //measuring = false;
-	    //analyzer->endAnalyze();
 	    return;
 	}
 	analyzer->setupComponent(Channel::G, g);
 	if (true == stopMeasure || (!tconinput && false == MeasureWindow->Visible)) {
-	    //measuring = false;
-	    //analyzer->endAnalyze();
 	    return;
 	}
 	analyzer->setupComponent(Channel::B, b);
 	if (true == stopMeasure || (!tconinput && false == MeasureWindow->Visible)) {
-	    //measuring = false;
-	    //analyzer->endAnalyze();
 	    return;
 	}
 	analyzer->setupComponent(Channel::W, rgb);
 	if (true == stopMeasure || (!tconinput && false == MeasureWindow->Visible)) {
-	    //measuring = false;
-	    //analyzer->endAnalyze();
 	    return;
 	}
 
@@ -360,7 +332,6 @@ void __fastcall TTargetWhiteForm2::Button_RunClick(TObject * Sender)
 	stopMeasure = false;
 	MainForm->setMeterMeasurementWaitTimes();
 	analyzer->endAnalyze();
-	//analyzer.reset();
 	Button_Run->Enabled = true;
 	MainForm->stopProgress(ProgressBar1);
 	MainForm->StatusBar1->Panels->Items[0]->Text = "Target White: Set";
@@ -647,7 +618,7 @@ void __fastcall TTargetWhiteForm2::Button_FindInverseIntensityClick(TObject * Se
     using namespace java::lang;
     RGB_ptr preIntensity;
     findInverseZ = false;
-    maxZDGCode = max;
+    maxBRawGrayLevel = max;
     bool foundInverse = false;
 
     for (int x = max; x > (max - 50); x--) {
@@ -655,13 +626,10 @@ void __fastcall TTargetWhiteForm2::Button_FindInverseIntensityClick(TObject * Se
 	RGB_ptr intensity = analyzer->getIntensity(rgb);
 	if (null != preIntensity) {
 	    bool inverseB = intensity->B < preIntensity->B;
-	    //bool inverseB = intensity->B < 100;
 	    if (inverseB) {
-		//bool preIsBetter = Math::abs(intensity->B - 100) > Math::abs(preIntensity->B - 100);
-		//maxZDGCode = preIsBetter ? x + 1 : x;
-		maxZDGCode = x + 1;
+		maxBRawGrayLevel = x + 1;
 		foundInverse = true;
-		string dehook = "De-Hook: Set" + _toString(maxZDGCode);
+		string dehook = "De-Hook: Set" + _toString(maxBRawGrayLevel);
 		StatusBar1->Panels->Items[1]->Text = "De-Hook: Set";
 		break;
 	    }
@@ -671,7 +639,7 @@ void __fastcall TTargetWhiteForm2::Button_FindInverseIntensityClick(TObject * Se
 
     analyzer->endAnalyze();
 
-    Edit_InverseIntensityofB->Text = maxZDGCode;
+    Edit_InverseIntensityofB->Text = maxBRawGrayLevel;
     binder->active(Edit_InverseIntensityofB);
     findInverseZ = foundInverse;
 
@@ -684,7 +652,7 @@ void __fastcall TTargetWhiteForm2::Edit_InverseIntensityofBKeyPress(TObject * Se
 {
     StatusBar1->Panels->Items[1]->Text = "De-Hook: Set";
     findInverseZ = true;
-    maxZDGCode = Edit_InverseIntensityofB->Text.ToInt();
+    maxBRawGrayLevel = Edit_InverseIntensityofB->Text.ToInt();
 }
 
 //---------------------------------------------------------------------------

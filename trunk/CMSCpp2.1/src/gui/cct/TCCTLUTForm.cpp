@@ -142,11 +142,12 @@ void __fastcall TCCTLUTForm::Button_MeaRunClick(TObject * Sender)
 	} else if (this->RadioButton_OriginalGamma->Checked) {
 	    calibrator.setOriginalGamma();
 	    calibrator.GByPass = true;
-	} else if (this->RadioButton_2Gamma->Checked) {
+	} else if (this->RadioButton_3Gamma->Checked) {
 	    double gammaDim = this->ComboBox_DimGamma->Text.ToDouble();
 	    double gammaBright = this->ComboBox_BrightGamma->Text.ToDouble();
 	    int dimGammaEnd = Edit_DimGammaEnd->Text.ToInt();
-	    calibrator.setGamma(gammaDim, dimGammaEnd, gammaBright);
+	    int middleGammaEnd = Edit_MiddleGammaEnd->Text.ToInt();
+	    calibrator.setGamma(gammaDim, dimGammaEnd, middleGammaEnd, gammaBright);
 	}
 	//==========================================================================
 
@@ -159,10 +160,20 @@ void __fastcall TCCTLUTForm::Button_MeaRunClick(TObject * Sender)
 	}
 
 	bool bMax = this->CheckBox_BMax->Checked;
-	bool avoidHook = CheckBox_AvoidHook->Checked;
+	//bool deHook = CheckBox_DeHook->Checked;
 	calibrator.BMax = this->CheckBox_BMax->Checked;
-	calibrator.AccurateMode = avoidHook;
+	//calibrator.AccurateMode = avoidHook;
 
+
+	/*if (true == GroupBox_DeHook->Visible) {
+	   if (true == RadioButton_DeHookNone->Checked) {
+	   calibrator.DeHookMode = None;
+	   } else if (true == RadioButton_DeHookOrg->Checked) {
+	   calibrator.DeHookMode = Original;
+	   } else if (true == RadioButton_DeHookEvo->Checked) {
+	   calibrator.DeHookMode = Evolution;
+	   }
+	   } */
 	//==========================================================================
 
 	//==========================================================================
@@ -193,16 +204,20 @@ void __fastcall TCCTLUTForm::Button_MeaRunClick(TObject * Sender)
 	//==========================================================================
 	// Keep Max Luminance
 	//==========================================================================
+	bool deHook = CheckBox_DeHook->Checked;
 	if (true == RadioButton_MaxYNone->Checked) {
 	    calibrator.setKeepMaxLuminance(KeepMaxLuminance::TargetLuminance);
+	    calibrator.DeHookMode = None;
 	} else if (true == RadioButton_MaxYNative->Checked) {
 	    calibrator.setKeepMaxLuminance(KeepMaxLuminance::NativeWhite);
+	    calibrator.DeHookMode = deHook ? Original : None;
 	} else if (true == RadioButton_MaxYNativeAdv->Checked) {
 	    int over = this->Edit_MaxYAdvOver->Text.ToInt();
 	    double gamma = this->Edit_MaxYAdvGamma->Text.ToDouble();
 	    bool autoParameter = CheckBox_MaxYAdvAuto->Checked;
 	    calibrator.SkipInverseB = this->CheckBox_SkipInverseB->Checked;
 	    calibrator.setKeepMaxLuminanceNativeWhiteAdvanced(over, gamma, autoParameter);
+	    calibrator.DeHookMode = deHook ? Evolution : None;
 	} else if (true == RadioButton_MaxYTargetWhite->Checked) {
 	    calibrator.setKeepMaxLuminance(KeepMaxLuminance::TargetWhite);
 
@@ -211,6 +226,7 @@ void __fastcall TCCTLUTForm::Button_MeaRunClick(TObject * Sender)
 		int end = Edit_SmoothIntensityEnd->Text.ToInt();
 		calibrator.setSmoothIntensity(start, end);
 	    }
+	    calibrator.DeHookMode = None;
 	}
 	//==========================================================================
 
@@ -334,29 +350,13 @@ void __fastcall TCCTLUTForm::FormShow(TObject * Sender)
 
 	this->Button_Run->Visible = true;
 
-	//=========================================================================
-	// dim correct
-	//=========================================================================
-	//=========================================================================
-
 	CheckBox_MemoryMeasure->Visible = true;
 	RadioGroup_NormalCase->Visible = true;
 
-	//target intensity
-	//CheckBox_RTargetIntensity->Visible = true;
-	//Edit_RTargetIntensity->Visible = true;
-	//CheckBox_BTargetIntensity->Visible = true;
-	//Edit_BTargetIntensity->Visible = true;
 	//smooth intensity
 	CheckBox_SmoothIntensity->Visible = true;
 	Edit_SmoothIntensityStart->Visible = true;
 	Edit_SmoothIntensityEnd->Visible = true;
-	//multi-gen
-	//CheckBox_MultiGen->Visible = true;
-	//Edit_MultiGenTimes->Visible = true;
-	//gamma
-	//CheckBox_AbsoluteGamma->Visible = true;
-	//Edit_AbsGammaStart->Visible = true;
     }
     //=========================================================================
     // function on/off relative
@@ -370,6 +370,27 @@ void __fastcall TCCTLUTForm::FormShow(TObject * Sender)
     bool tconInput = bitDepth->isTCONInput();
     this->CheckBox_Expand->Visible = !tconInput;
 
+
+
+    //=========================================================================
+    // tcon relative
+    //=========================================================================
+    bool debugMode = MainForm->debugMode;
+    bool useTConCtrl = (true == tconInput) || debugMode;
+    if (useTConCtrl) {
+	bool findInverseZ = TargetWhiteForm2 != null ? TargetWhiteForm2->FindInverseZ : true;
+	if (findInverseZ) {
+	    CheckBox_DeHook->Visible = true;
+	    CheckBox_DeHook->Checked = true;
+	}
+    }
+    CheckBox_Feedback->Visible = useTConCtrl;
+    if (true == CheckBox_Feedback->Checked) {
+	CheckBox_Feedback->Checked = useTConCtrl;
+    }
+    Edit_DimFixThreshold->Visible = useTConCtrl;
+
+    //=========================================================================
     //=========================================================================
     // target white relative
     //=========================================================================
@@ -380,30 +401,7 @@ void __fastcall TCCTLUTForm::FormShow(TObject * Sender)
     } else {
 	RadioButton_MaxYTargetWhite->Checked = true;
     }
-
     //=========================================================================
-    // tcon relative
-    //=========================================================================
-    bool debugMode = MainForm->debugMode;
-    bool useTConCtrl = (true == tconInput) || debugMode;
-    if (useTConCtrl) {
-	bool findInverseZ = TargetWhiteForm2 != null ? TargetWhiteForm2->FindInverseZ : true;
-	if (findInverseZ) {
-	    CheckBox_AvoidHook->Visible = true;
-	    CheckBox_AvoidHook->Checked = true;
-	    RadioButton_MaxYNative->Checked = true;
-	}
-    }
-    CheckBox_Feedback->Visible = useTConCtrl;
-    if (true == CheckBox_Feedback->Checked) {
-	CheckBox_Feedback->Checked = useTConCtrl;
-    }
-    Edit_DimFixThreshold->Visible = useTConCtrl;
-
-    //accurate太複雜...要重新思考
-    //CheckBox_Accurate->Visible = visible;
-    //=========================================================================
-
     setMeasureInfo();
     nativeWhiteAnalyzer = MainForm->getNativeWhiteAnalyzer();
 
@@ -460,6 +458,7 @@ void __fastcall TCCTLUTForm::FormKeyPress(TObject * Sender, char &Key)
 		MainForm->getComponentFetcher()->windowClosing(Sender, caNone);
 		MainForm->mm->setMeasureWindowsVisible(false);
 	    }
+	    Button_MeaRun->Enabled = true;
 	    run = false;
 	} else {
 	    this->Close();
@@ -696,9 +695,9 @@ void __fastcall TCCTLUTForm::CheckBox_FeedbackClick(TObject * Sender)
 void __fastcall TCCTLUTForm::Edit_DimGammaEndChange(TObject * Sender)
 {
     int dimEnd = Edit_DimGammaEnd->Text.ToInt();
-    int brightStart = dimEnd + 1;
-    string text = _toString(brightStart) + "-255";
-    Label_BrightZone->Caption = text.c_str();
+    int middleStart = dimEnd + 1;
+    string text = _toString(middleStart) + "-";
+    Label_MiddleZone->Caption = text.c_str();
 }
 
 //---------------------------------------------------------------------------
@@ -715,7 +714,7 @@ void __fastcall TCCTLUTForm::RadioGroup_NormalCaseClick(TObject * Sender)
 	CheckBox_BMax->Checked = true;
 	break;
     case 1:
-	RadioButton_2Gamma->Checked = true;
+	RadioButton_3Gamma->Checked = true;
 	CheckBox_AvoidNoise->Checked = false;
 	RadioButton_DefinedDim->Checked = true;
 	CheckBox_Feedback->Checked = true;
@@ -775,11 +774,41 @@ void __fastcall TCCTLUTForm::CheckBox_AbsoluteGammaClick(TObject * Sender)
 
 //---------------------------------------------------------------------------
 
-void __fastcall TCCTLUTForm::CheckBox_AvoidHookClick(TObject * Sender)
+
+void __fastcall TCCTLUTForm::Edit_MiddleGammaEndChange(TObject * Sender)
 {
-    if (true == CheckBox_AvoidHook->Checked) {
-	RadioButton_MaxYNative->Checked = true;
-    }
+    int middleEnd = Edit_MiddleGammaEnd->Text.ToInt();
+    int brightStart = middleEnd + 1;
+    string text = _toString(brightStart) + "-255";
+    Label_BrightZone->Caption = text.c_str();
+}
+
+//---------------------------------------------------------------------------
+
+void __fastcall TCCTLUTForm::RadioButton_DeHookOrgClick(TObject * Sender)
+{
+    RadioButton_MaxYNative->Checked = true;
+}
+
+//---------------------------------------------------------------------------
+
+void __fastcall TCCTLUTForm::RadioButton_DeHookEvoClick(TObject * Sender)
+{
+    RadioButton_MaxYNative->Checked = true;
+}
+
+//---------------------------------------------------------------------------
+
+void __fastcall TCCTLUTForm::RadioButton_MaxYNoneClick(TObject * Sender)
+{
+    CheckBox_DeHook->Checked = false;
+}
+
+//---------------------------------------------------------------------------
+
+void __fastcall TCCTLUTForm::RadioButton_MaxYTargetWhiteClick(TObject * Sender)
+{
+    CheckBox_DeHook->Checked = false;
 }
 
 //---------------------------------------------------------------------------
