@@ -56,16 +56,9 @@ namespace cms {
 	    //==================================================================
 	  AdvancedDGLutGenerator::AdvancedDGLutGenerator(Component_vector_ptr componentVector, bptr < cms::lcd::calibrate::ComponentFetcher > fetcher, bptr < IntensityAnalyzerIF > analyzer1, bptr < IntensityAnalyzerIF > analyzer2nd, bptr < BitDepthProcessor > bitDepth, const LCDCalibrator & calibrator):DimDGLutGenerator(componentVector, analyzer1),
 		fetcher(fetcher), analyzer2nd(analyzer2nd),
-		bitDepth(bitDepth), smoothMode(true), c(calibrator) {
+		bitDepth(bitDepth), mode(WhiteSmooth), c(calibrator) {
 		init();
 	    };
-
-	    void AdvancedDGLutGenerator::init() {
-		stopMeasure = false;
-		this->bitDepth = bitDepth;
-		rgbGenerateResult = nil_RGBGamma;
-	    };
-
 	    AdvancedDGLutGenerator::
 		AdvancedDGLutGenerator(Component_vector_ptr
 				       componentVector,
@@ -73,12 +66,22 @@ namespace cms {
 				       bptr < BitDepthProcessor > bitDepth,
 				       const LCDCalibrator &
 				       calibrator):DimDGLutGenerator
-		(componentVector, fetcher->getAnalyzer()),
-		fetcher(fetcher), bitDepth(bitDepth), smoothMode(false), c(calibrator) {
+		(componentVector, fetcher->getAnalyzer()), fetcher(fetcher), bitDepth(bitDepth),
+		mode(Normal), c(calibrator) {
 		init();
 	    };
+
+	    void AdvancedDGLutGenerator::init() {
+		stopMeasure = false;
+		this->bitDepth = bitDepth;
+		rgbGenerateResult = nil_RGBGamma;
+		useMaxBIntensityZone = 30;
+	    };
+
+
 	    /*
 	       targetWhite: 目標白點
+	       nativeWhite: 原始白點
 	       luminanceGammaCurve: 目標gamma curve
 	       dimTurn: 低灰階的轉折點
 	       brightTurn: 高灰階的轉折點
@@ -86,50 +89,29 @@ namespace cms {
 	       brightGamma: 高灰階的色溫曲線gamma變化
 	       brightWidth: 高灰階
 	     */
-	    XYZ_vector_ptr AdvancedDGLutGenerator::
-		getTargetXYZVector(XYZ_ptr targetWhite,
-				   double_vector_ptr luminanceGammaCurve,
-				   int dimTurn, int brightTurn,
-				   double dimGamma, double brightGamma, int brightWidth) {
-		XYZ_ptr nativeWhite = (*componentVector)[0]->XYZ;
-		return getTargetXYZVector(targetWhite, nativeWhite,
-					  luminanceGammaCurve, dimTurn,
-					  brightTurn, dimGamma, brightGamma, brightWidth);
-	    };
-	    XYZ_vector_ptr AdvancedDGLutGenerator::
-		getTargetXYZVector(XYZ_ptr targetWhite,
-				   XYZ_ptr nativeWhite,
-				   double_vector_ptr luminanceGammaCurve,
-				   int dimTurn, int brightTurn,
-				   double dimGamma, double brightGamma, int brightWidth) {
+	    void AdvancedDGLutGenerator::
+		setTarget(XYZ_ptr targetWhite,
+			  XYZ_ptr nativeWhite,
+			  double_vector_ptr luminanceGammaCurve,
+			  int dimTurn, int brightTurn,
+			  double dimGamma, double brightGamma, int brightWidth) {
 		//==============================================================
 		// 資訊準備
 		//==============================================================
 		XYZ_ptr blackXYZ = (*componentVector)[componentVector->size() - 1]->XYZ;
-		XYZ_vector_ptr targetXYZVector;
+		//XYZ_vector_ptr targetXYZVector;
 		this->brightTurn = brightTurn;
 
-		//求目標值曲線
-		if (-1 != c.middleCCTRatio) {
-		    //middleCCTRatio在UI是看不到的, 因此應該不會進到此case
-		    targetXYZVector =
-			getTarget0(blackXYZ, targetWhite, nativeWhite,
-				   luminanceGammaCurve, dimTurn,
-				   brightTurn, dimGamma, brightGamma,
-				   brightWidth, c.middleCCTRatio);
-		} else {
-		    //大部分(或者該說全部)都會在此case
-		    targetXYZVector =
-			getTarget0(blackXYZ, targetWhite, nativeWhite,
-				   luminanceGammaCurve, dimTurn,
-				   brightTurn, dimGamma, brightGamma, brightWidth);
-		}
-		//}
-		return targetXYZVector;
+		this->targetXYZVector =
+		    getTarget0(blackXYZ, targetWhite, nativeWhite,
+			       luminanceGammaCurve, dimTurn,
+			       brightTurn, dimGamma, brightGamma, brightWidth);
 	    }
 
-
-	    RGB_vector_ptr AdvancedDGLutGenerator::produce(XYZ_vector_ptr targetXYZVector) {
+	    RGB_vector_ptr AdvancedDGLutGenerator::produce( /*XYZ_vector_ptr targetXYZVector */ ) {
+		if (null == targetXYZVector) {
+		    return nil_RGB_vector_ptr;
+		}
 		STORE_XYZXY_VECTOE("1.2_target.xls", targetXYZVector);
 		//==============================================================
 		/*
@@ -152,42 +134,81 @@ namespace cms {
 		     */
 		    return produceDGLutMulti(targetXYZVector, componentVector);
 		} else {
-		    if (smoothMode) {
-			/*
-			   smooth mode是用在 白點非原始色溫 + 要keep最大亮度.
-			   此時兩個色溫若不同, 要將兩個結果做smooth.
-			   但目前該功能在UI上並未開放
-			 */
-			//target white產生的結果
-			RGB_vector_ptr result1 = produceDGLut(targetXYZVector, componentVector,
-							      analyzer, panelRegulator1);
-			//native white產生的結果
-			RGB_vector_ptr result2;
-			if (componentVector2 != null) {
-			    result2 =
-				produceDGLut(targetXYZVector,
-					     componentVector2, analyzer2nd, panelRegulator2);
-			} else {
-			    result2 =
-				produceDGLut(targetXYZVector,
-					     componentVector, analyzer2nd, panelRegulator1);
+		    switch (mode) {
+		    case WhiteSmooth:{
+			    /*
+			       smooth mode是用在 白點非原始色溫 + 要keep最大亮度.
+			       此時兩個色溫若不同, 要將兩個結果做smooth.
+			     */
+			    //target white產生的結果
+			    RGB_vector_ptr result1 = produceDGLut(targetXYZVector, componentVector,
+								  analyzer, panelRegulator1);
+			    //native white產生的結果
+			    RGB_vector_ptr result2;
+			    if (componentVector2 != null) {
+				result2 =
+				    produceDGLut(targetXYZVector,
+						 componentVector2, analyzer2nd, panelRegulator2);
+			    } else {
+				result2 =
+				    produceDGLut(targetXYZVector,
+						 componentVector, analyzer2nd, panelRegulator1);
+			    }
+
+			    //將兩個結果銜接起來
+			    return smooth(result1, result2, bitDepth, brightTurn);
 			}
+		    case Normal:{
+			    //大部分都是在此case
+			    RGB_vector_ptr result = produceDGLut(targetXYZVector, componentVector,
+								 analyzer, panelRegulator1);
 
-			//將兩個結果銜接起來
-			return smooth(result1, result2, bitDepth, brightTurn);
-		    } else {
-			//大部分都是在此case
-			RGB_vector_ptr result = produceDGLut(targetXYZVector, componentVector,
-							     analyzer,
-							     panelRegulator1);
+			    //==========================================================================
+			    // 低灰階修正debug
+			    //==========================================================================
 
-			//==========================================================================
-			// 低灰階修正debug
-			//==========================================================================
-
-			//==========================================================================
-			return result;
+			    //==========================================================================
+			    return result;
+			}
+		    case BIntensitySmooth:{
+			    RGB_vector_ptr result = produceDGLut(targetXYZVector, componentVector,
+								 analyzer, panelRegulator1);
+			    return result;
+			}
 		    }
+		    /*if (smoothMode) {
+		       //smooth mode是用在 白點非原始色溫 + 要keep最大亮度.
+		       //此時兩個色溫若不同, 要將兩個結果做smooth.
+		       //target white產生的結果
+		       RGB_vector_ptr result1 = produceDGLut(targetXYZVector, componentVector,
+		       analyzer, panelRegulator1);
+		       //native white產生的結果
+		       RGB_vector_ptr result2;
+		       if (componentVector2 != null) {
+		       result2 =
+		       produceDGLut(targetXYZVector,
+		       componentVector2, analyzer2nd, panelRegulator2);
+		       } else {
+		       result2 =
+		       produceDGLut(targetXYZVector,
+		       componentVector, analyzer2nd, panelRegulator1);
+		       }
+
+		       //將兩個結果銜接起來
+		       return smooth(result1, result2, bitDepth, brightTurn);
+		       } else {
+		       //大部分都是在此case
+		       RGB_vector_ptr result = produceDGLut(targetXYZVector, componentVector,
+		       analyzer,
+		       panelRegulator1);
+
+		       //==========================================================================
+		       // 低灰階修正debug
+		       //==========================================================================
+
+		       //==========================================================================
+		       return result;
+		       } */
 		}
 	    }
 
@@ -272,10 +293,34 @@ namespace cms {
 		RGB_ptr intensity = lutgen.getIntensity(refRGB);
 		return intensity;
 	    };
-
-	    /*
-	       產生DG LUT的演算法核心部份
-	     */
+	    double_array AdvancedDGLutGenerator::getSmoothIntensity(double rTargetIntensity,
+								    double gTargetIntensity,
+								    double bTargetIntensity,
+								    int grayLevel) {
+		if (true == c.autoIntensity
+		    && true == c.smoothIntensity
+		    && grayLevel >= c.smoothIntensityStart && grayLevel <= c.smoothIntensityEnd) {
+		    double rIntensity = Interpolation::linear(c.smoothIntensityStart,
+							      c.smoothIntensityEnd, 100,
+							      rTargetIntensity, grayLevel);
+		    double gIntensity = Interpolation::linear(c.smoothIntensityStart,
+							      c.smoothIntensityEnd, 100,
+							      gTargetIntensity, grayLevel);
+		    double bIntensity = Interpolation::linear(c.smoothIntensityStart,
+							      c.smoothIntensityEnd, 100,
+							      bTargetIntensity, grayLevel);
+		    double_array result(new double[3]);
+		    result[0] = rIntensity;
+		    result[1] = gIntensity;
+		    result[2] = bIntensity;
+		    return result;
+		} else {
+		    return nil_double_array;
+		}
+	    };
+	    //======================================================================================
+	    //產生DG LUT的演算法核心部份
+	    //======================================================================================
 	    RGB_vector_ptr AdvancedDGLutGenerator::
 		produceDGLut(XYZ_vector_ptr targetXYZVector,
 			     Component_vector_ptr componentVector,
@@ -330,99 +375,212 @@ namespace cms {
 		    gTargetIntensity = idealIntensity->G;
 		    bTargetIntensity = idealIntensity->B;
 		}
-		if (rTargetIntensity == -1) {
-		    rTargetIntensity = 100;
-		};
-		if (gTargetIntensity == -1) {
-		    gTargetIntensity = 100;
-		};
+
+		rTargetIntensity = (-1 == rTargetIntensity) ? 100 : rTargetIntensity;
+		gTargetIntensity = (-1 == gTargetIntensity) ? 100 : gTargetIntensity;
 		//B採100嗎?
-		if (bTargetIntensity == -1) {
-		    bTargetIntensity = 100;
-		};
-		double rIntensity = rTargetIntensity;
-		double gIntensity = gTargetIntensity;
-		double bIntensity = bTargetIntensity;
+		bTargetIntensity = (-1 == bTargetIntensity) ? 100 : bTargetIntensity;
+		double_array intensity(new double[3]);
+		intensity[0] = rTargetIntensity;
+		intensity[1] = gTargetIntensity;
+		intensity[2] = bTargetIntensity;
 		//=============================================================
+
 
 		RGB_vector_ptr rgbGenResultVector(new RGB_vector());
 		//=============================================================
 		// 迴圈開始
 		//=============================================================
-		for (int x = size - 1; x != -1; x--) {
-		    Application->ProcessMessages();
-		    XYZ_ptr targetXYZ = (*targetXYZVector)[x];
+		if (mode == BIntensitySmooth) {
+		    //=============================================================
+		    // BIntensitySmooth init
+		    // native white advance+de-hook下才會啟用
+		    //=============================================================
+		    ComponentLUT lut(componentVector);
+		    double maxBIntensty = lut.getMaxBIntensity();
+		    int maxBIntenstyRGL = lut.getMaxBIntensityRGL();
+		    int halfSmoothZone = useMaxBIntensityZone / 2;
+		    int maxBGrayLevel = size - 1 - halfSmoothZone;
+		    double maxBIntensity = -1;
+		    {
+			XYZ_ptr bmaxtargetXYZ = (*targetXYZVector)[maxBGrayLevel];
+			bptr < MaxMatrixIntensityAnalyzer > bmaxma = MaxMatrixIntensityAnalyzer::getReadyAnalyzer(rXYZ, gXYZ, bXYZ, bmaxtargetXYZ);	//傳入 XYZ x3
+			bmaxma->setReferenceRGB(refRGB);
 
-		    //不斷產生Analyzer, 因為Target White一直變化, 所以利用新的Analyzer, 計算出Intensity
-		    bptr < MaxMatrixIntensityAnalyzer > ma =
-			MaxMatrixIntensityAnalyzer::getReadyAnalyzer(rXYZ, gXYZ, bXYZ, targetXYZ);
-		    ma->setReferenceRGB(refRGB);
+			//利用新的analyzer算出新的component(就是intensity)
+			Component_vector_ptr bmaxComponentVector =
+			    fetchNewComponent(bmaxma, componentVector);
+			ComponentLUT lut(bmaxComponentVector);
+			maxBIntensity = lut.getMaxBIntensity();
+		    }
 
-		    //利用新的analyzer算出新的component(就是intensity)
-		    Component_vector_ptr newcomponentVector =
-			fetchNewComponent(ma, componentVector);
-		    Application->ProcessMessages();
 
-		    {		// debug scope
+		    for (int x = size - 1; x != -1; x--) {
+			Application->ProcessMessages();
+			XYZ_ptr targetXYZ = (*targetXYZVector)[x];	//傳入(XYZ)
+
+			//不斷產生Analyzer, 因為Target White一直變化, 所以利用新的Analyzer, 計算出Intensity
+			bptr < MaxMatrixIntensityAnalyzer > ma = MaxMatrixIntensityAnalyzer::getReadyAnalyzer(rXYZ, gXYZ, bXYZ, targetXYZ);	//傳入 XYZ x3
+			ma->setReferenceRGB(refRGB);
+
+			//利用新的analyzer算出新的component(就是intensity)
+			Component_vector_ptr newcomponentVector =
+			    fetchNewComponent(ma, componentVector);
+			Application->ProcessMessages();
+
+			{	// debug scope
 #ifdef DEBUG_CCTLUT_NEWMETHOD
-			if (FileExists(DEBUG_VERBOSE_STEP)) {
-			    STORE_COMPONENT(_toString(x) + ".xls", newcomponentVector);
-			}
-			//把第一個存起來, 第一個往往是最大的
-			RGB_ptr grayLevel(new RGBColor(x, x, x));
-			Component_ptr c(new Component(grayLevel, (*newcomponentVector)
-						      [0]->intensity, targetXYZ));
-			maxComponentVector->push_back(c);
+			    if (FileExists(DEBUG_VERBOSE_STEP)) {
+				STORE_COMPONENT(_toString(x) + ".xls", newcomponentVector);
+			    }
+			    //把第一個存起來, 第一個往往是最大的
+			    RGB_ptr grayLevel(new RGBColor(x, x, x));
+			    Component_ptr c(new Component(grayLevel, (*newcomponentVector)
+							  [0]->intensity, targetXYZ));
+			    maxComponentVector->push_back(c);	//傳出(vector)
 #endif				//DEBUG_CCTLUT_NEWMETHOD
-		    }
+			}
 
-		    if (true == c.autoIntensity
-			&& true == c.smoothIntensity
-			&& x >= c.smoothIntensityStart && x <= c.smoothIntensityEnd) {
-			/**
-                         如果啟用auto intensity, 會自動找到比100%更適合的intensity
-			 但是此舉會造成低灰階的修正出問題, 因為低灰階的目標intensity不再是100%
-                         幾乎都會造成暗灰階找不到而疊階變成許多0... 所以中間需要從1XX%過度回100%
-                        **/
-			rIntensity =
-			    Interpolation::linear(c.smoothIntensityStart,
-						  c.smoothIntensityEnd, 100, rTargetIntensity, x);
-			gIntensity =
-			    Interpolation::linear(c.smoothIntensityStart,
-						  c.smoothIntensityEnd, 100, gTargetIntensity, x);
-			bIntensity =
-			    Interpolation::linear(c.smoothIntensityStart,
-						  c.smoothIntensityEnd, 100, bTargetIntensity, x);
-		    }
+			//=============================================================
+			// BIntensitySmooth
+			// native white advance+de-hook下才會啟用
+			//=============================================================
+			//intensity smooth的目的就是要讓blue intensity可以衝出100, 然後又smooth回100
+			//拆成三個區間 0~(zone start)~(zone middle/max b intensity)~255
+                        //226 241 255
+			DGLutGenerator lutgen(newcomponentVector);
+			if (x <= size - 1 && x > maxBGrayLevel) {
+			    intensity[2] =
+				Interpolation::linear(maxBGrayLevel + 1, size - 1, maxBIntensity,
+						      bTargetIntensity, x);
+			    lutgen.setInverseSearch(true);
+			} else if (x <= maxBGrayLevel && x > (size - 1 - useMaxBIntensityZone)) {
+			    intensity[2] =
+				Interpolation::linear((size - 1 - useMaxBIntensityZone),
+						      maxBGrayLevel, bTargetIntensity,
+						      maxBIntensity, x);
+			} else {
+			    intensity[2] = bTargetIntensity;
+			}
+			//=============================================================
+			double rIntensity = intensity[0];
+			double gIntensity = intensity[1];
+			double bIntensity = intensity[2];
+			RGB_ptr rgb = lutgen.getDGCode(intensity[0], intensity[1], intensity[2]);	//傳出(主要)
+			(*result)[x] = rgb;
 
-
-		    DGLutGenerator lutgen(newcomponentVector);
-		    RGB_ptr rgb = lutgen.getDGCode(rIntensity, gIntensity,
-						   bIntensity);
-		    bool_array isCorrect = lutgen.isCorrectIntensityInRange();
-		    (*result)[x] = rgb;
-
-		    //紀錄產生的過程是否有問題
-		    RGB_ptr genResult(new RGBColor());
-		    genResult->R = (true == isCorrect[0]) ? -1 : 0;
-		    genResult->G = (true == isCorrect[1]) ? -1 : 0;
-		    genResult->B = (true == isCorrect[2]) ? -1 : 0;
-		    rgbGenResultVector->push_back(genResult);
+			//紀錄產生的過程是否有問題
+			bool_array isCorrect = lutgen.isCorrectIntensityInRange();
+			RGB_ptr genResult(new
+					  RGBColor((true == isCorrect[0]) ? -1 : 0,
+						   (true == isCorrect[1]) ? -1 : 0,
+						   (true == isCorrect[2]) ? -1 : 0));
+			rgbGenResultVector->push_back(genResult);	//傳出(vecotr)
 
 #ifdef DEBUG_INTENISITY
-		    {		//debug scope
-			Component_ptr c = getFRCAbilityComponent(x, rgb, ma,
-								 newcomponentVector);
-			c->gamma = genResult;
-			debugComponentVector->push_back(c);
-		    }
+			{	//debug scope
+			    Component_ptr c =
+				getFRCAbilityComponent(x, rgb, ma, newcomponentVector);
+			    c->gamma = genResult;	//傳出(vector)
+			    debugComponentVector->push_back(c);
+			}
 #endif
+		    }
+		    //=============================================================
+		    // 迴圈結束
+		    //=============================================================
+		} else {
+		    for (int x = size - 1; x != -1; x--) {
+			Application->ProcessMessages();
+			XYZ_ptr targetXYZ = (*targetXYZVector)[x];	//傳入(XYZ)
+
+			//不斷產生Analyzer, 因為Target White一直變化, 所以利用新的Analyzer, 計算出Intensity
+			bptr < MaxMatrixIntensityAnalyzer > ma = MaxMatrixIntensityAnalyzer::getReadyAnalyzer(rXYZ, gXYZ, bXYZ, targetXYZ);	//傳入 XYZ x3
+			ma->setReferenceRGB(refRGB);
+
+			//利用新的analyzer算出新的component(就是intensity)
+			Component_vector_ptr newcomponentVector =
+			    fetchNewComponent(ma, componentVector);
+			Application->ProcessMessages();
+
+			{	// debug scope
+#ifdef DEBUG_CCTLUT_NEWMETHOD
+			    if (FileExists(DEBUG_VERBOSE_STEP)) {
+				STORE_COMPONENT(_toString(x) + ".xls", newcomponentVector);
+			    }
+			    //把第一個存起來, 第一個往往是最大的
+			    RGB_ptr grayLevel(new RGBColor(x, x, x));
+			    Component_ptr c(new Component(grayLevel, (*newcomponentVector)
+							  [0]->intensity, targetXYZ));
+			    maxComponentVector->push_back(c);	//傳出(vector)
+#endif				//DEBUG_CCTLUT_NEWMETHOD
+			}
+
+			//=============================================================
+			// intensity smooth(內插)
+			// target white下才會啟用
+			//=============================================================
+			if (true == c.autoIntensity
+			    && true == c.smoothIntensity
+			    && x >= c.smoothIntensityStart && x <= c.smoothIntensityEnd) {
+
+			    //如果啟用auto intensity, 會自動找到比100%更適合的intensity
+			    //但是此舉會造成低灰階的修正出問題, 因為低灰階的目標intensity不再是100%
+			    //幾乎都會造成暗灰階找不到而疊階變成許多0... 所以中間需要從1XX%過度回100%
+			    double_array smoothIntensity =
+				getSmoothIntensity(rTargetIntensity, gTargetIntensity,
+						   bTargetIntensity, x);
+			    intensity = smoothIntensity;
+			    /*rIntensity =
+			       Interpolation::linear(c.smoothIntensityStart,
+			       c.smoothIntensityEnd, 100, rTargetIntensity, x);
+			       gIntensity =
+			       Interpolation::linear(c.smoothIntensityStart, c.smoothIntensityEnd,
+			       100, gTargetIntensity, x);
+			       bIntensity =
+			       Interpolation::linear(c.smoothIntensityStart, c.smoothIntensityEnd,
+			       100, bTargetIntensity, x); */
+			}
+			//=============================================================
+			//=============================================================
+			// BIntensitySmooth
+			// native white advance+de-hook下才會啟用
+			//=============================================================
+			else if (mode == BIntensitySmooth) {
+			    //intensity smooth的目的就是要讓blue intensity可以衝出100, 然後又smooth回100
+			}
+			//=============================================================
+
+
+			DGLutGenerator lutgen(newcomponentVector);
+			RGB_ptr rgb = lutgen.getDGCode(intensity[0], intensity[1], intensity[2]);	//傳出(主要)
+			(*result)[x] = rgb;
+
+			//紀錄產生的過程是否有問題
+			bool_array isCorrect = lutgen.isCorrectIntensityInRange();
+			RGB_ptr genResult(new
+					  RGBColor((true == isCorrect[0]) ? -1 : 0,
+						   (true == isCorrect[1]) ? -1 : 0,
+						   (true == isCorrect[2]) ? -1 : 0));
+			rgbGenResultVector->push_back(genResult);	//傳出(vecotr)
+
+#ifdef DEBUG_INTENISITY
+			{	//debug scope
+			    Component_ptr c =
+				getFRCAbilityComponent(x, rgb, ma, newcomponentVector);
+			    c->gamma = genResult;	//傳出(vector)
+			    debugComponentVector->push_back(c);
+			}
+#endif
+		    }
+		    //=============================================================
+		    // 迴圈結束
+		    //=============================================================
 		}
+
 		rgbGenerateResult =
 		    RGBGamma::getReverse(RGBGamma_ptr(new RGBGamma(rgbGenResultVector, 0, Unknow)));
-		//=============================================================
-		// 迴圈結束
-		//=============================================================
+
 
 		if (null != panelRegulator) {
 #ifdef DEBUG_REMAP_NEW
@@ -449,6 +607,7 @@ namespace cms {
 
 		return result;
 	    };
+	    //======================================================================================
 
 	    Component_ptr AdvancedDGLutGenerator::
 		getFRCAbilityComponent(int grayLevel, RGB_ptr rgb,
@@ -474,9 +633,6 @@ namespace cms {
 
 		DGLutGenerator lutgen2(componentVector);
 		RGB_ptr intensity2 = lutgen2.getIntensity(clone);
-		/*RGB_ptr remappingDGCode =
-		   lutgen2.getDGCode(intensity2->R, intensity2->G, intensity2->B);
-		   RGB_ptr intensity3 = lutgen2.getIntensity(remappingDGCode); */
 		RGB_ptr intensityR = lutgen2.getIntensity(refR);
 		RGB_ptr intensityG = lutgen2.getIntensity(refG);
 		RGB_ptr intensityB = lutgen2.getIntensity(refB);
@@ -488,10 +644,12 @@ namespace cms {
 		rXYZValues = DoubleArray::times(rXYZValues, intensity2->R / intensityR->R, 3);
 		gXYZValues = DoubleArray::times(gXYZValues, intensity2->G / intensityG->G, 3);
 		bXYZValues = DoubleArray::times(bXYZValues, intensity2->B / intensityB->B, 3);
-		XYZ_ptr rXYZ2(new Indep::CIEXYZ(rXYZValues));
-		XYZ_ptr gXYZ2(new Indep::CIEXYZ(gXYZValues));
-		XYZ_ptr bXYZ2(new Indep::CIEXYZ(bXYZValues));
+		XYZ_ptr rXYZ2(new Indep::CIEXYZ(rXYZValues));	//r
+		XYZ_ptr gXYZ2(new Indep::CIEXYZ(gXYZValues));	//g
+		XYZ_ptr bXYZ2(new Indep::CIEXYZ(bXYZValues));	//b
+		//r+g
 		XYZ_ptr rgXYZ2 = CIEXYZ::plus(rXYZ2, gXYZ2);
+		//r+g+b
 		XYZ_ptr rgbXYZ2 = CIEXYZ::plus(rgXYZ2, bXYZ2);
 
 		RGB_ptr w(new RGBColor(grayLevel, grayLevel, grayLevel));
@@ -500,10 +658,10 @@ namespace cms {
 	    };
 
 
-	    bool AdvancedDGLutGenerator::isAvoidHook(XYZ_ptr targetXYZ, double offsetK) {
-		XYZ_ptr XYZOffset = getXYZ(targetXYZ, offsetK);
-		return isDuplicateBlue100(XYZOffset);
-	    };
+	    /*bool AdvancedDGLutGenerator::isAvoidHook(XYZ_ptr targetXYZ, double offsetK) {
+	       XYZ_ptr XYZOffset = getXYZ(targetXYZ, offsetK);
+	       return isDuplicateBlue100(XYZOffset);
+	       }; */
 	    XYZ_ptr AdvancedDGLutGenerator::getXYZ(XYZ_ptr XYZ, double offsetK) {
 		//==============================================================
 		// 材料準備
@@ -527,19 +685,19 @@ namespace cms {
 		XYZ_ptr XYZOffset = xyYOffset->toXYZ();
 		return XYZOffset;
 	    };
-	    bool AdvancedDGLutGenerator::isDuplicateBlue100(XYZ_ptr targetXYZ) {
-		xyY_ptr rxyY = analyzer->getPrimaryColor(Channel::R);
-		xyY_ptr gxyY = analyzer->getPrimaryColor(Channel::G);
-		xyY_ptr bxyY = analyzer->getPrimaryColor(Channel::B);
+	    /*bool AdvancedDGLutGenerator::isDuplicateBlue100(XYZ_ptr targetXYZ) {
+	       xyY_ptr rxyY = analyzer->getPrimaryColor(Channel::R);
+	       xyY_ptr gxyY = analyzer->getPrimaryColor(Channel::G);
+	       xyY_ptr bxyY = analyzer->getPrimaryColor(Channel::B);
 
-		bptr < MaxMatrixIntensityAnalyzer > mmia =
-		    MaxMatrixIntensityAnalyzer::getReadyAnalyzer(rxyY->toXYZ(), gxyY->toXYZ(),
-								 bxyY->toXYZ(), targetXYZ);
+	       bptr < MaxMatrixIntensityAnalyzer > mmia =
+	       MaxMatrixIntensityAnalyzer::getReadyAnalyzer(rxyY->toXYZ(), gxyY->toXYZ(),
+	       bxyY->toXYZ(), targetXYZ);
 
-		Component_vector_ptr newcomponentVector = fetchNewComponent(mmia, componentVector);
+	       Component_vector_ptr newcomponentVector = fetchNewComponent(mmia, componentVector);
 
-		return isDuplicateBlue100(newcomponentVector);
-	    };
+	       return isDuplicateBlue100(newcomponentVector);
+	       }; */
 
 	    /*
 	       產生smooth target還是有個問題, 就是luminance.
@@ -562,11 +720,10 @@ namespace cms {
 		//==============================================================
 		if (dimTurn != 0) {
 		    double_vector_ptr dimGammaCurve =
-			DoubleArray::getRangeCopy(luminanceGammaCurve, 0,
-						  dimTurn);
-		    XYZ_vector_ptr dimResult = DimTargetGenerator::getTarget(startXYZ, targetXYZ,
-									     dimGammaCurve,
-									     dimGamma);
+			DoubleArray::getRangeCopy(luminanceGammaCurve, 0, dimTurn);
+		    XYZ_vector_ptr dimResult =
+			DimTargetGenerator::getTarget(startXYZ, targetXYZ, dimGammaCurve,
+						      dimGamma);
 
 		    STORE_XYZXY_VECTOE("1.1_target_dim.xls", dimResult);
 		    int dimSize = dimResult->size();
@@ -602,91 +759,8 @@ namespace cms {
 		return result;
 	    };
 
-	    XYZ_ptr AdvancedDGLutGenerator::getMiddleXYZ(int middleIndex,
-							 double middleCCTRatio, XYZ_ptr targetXYZ) {
-		//翻出middle的XYZ
-		XYZ_ptr middleBaseXYZ =
-		    (*componentVector)[componentVector->size() - 1 - middleIndex]->XYZ;
-		xyY_ptr middleBasexyY(new CIExyY(middleBaseXYZ));
-		double middleBaseCCT =
-		    CorrelatedColorTemperature::xy2CCTByMcCamyFloat(middleBasexyY);
 
-		xyY_ptr targetxyY(new CIExyY(targetXYZ));
-		double targetCCT = CorrelatedColorTemperature::xy2CCTByMcCamyFloat(targetxyY);
 
-		//算出兩個CCT的差異
-		double cctDiff = Math::abs(middleBaseCCT - targetCCT);
-		//再乘上ratio(?)
-		double cct = cctDiff * middleCCTRatio;
-		double middleCCT =
-		    (targetCCT < middleCCT) ? (targetCCT + cct) : (middleBaseCCT + cct);
-		xyY_ptr middlexyY = CorrelatedColorTemperature::CCT2DIlluminantxyY(middleCCT);
-		return middlexyY->toXYZ();
-	    }
-
-	    /*
-	       middleCCTRatio特仕版本, 可以從 middleXYZ過度到 targetXYZ的功用
-	     */
-	    XYZ_vector_ptr AdvancedDGLutGenerator::
-		getTarget0(XYZ_ptr startXYZ, XYZ_ptr targetXYZ,
-			   XYZ_ptr endXYZ,
-			   double_vector_ptr luminanceGammaCurve,
-			   int dimTurn, int brightTurn, double dimGamma,
-			   double brightGamma, int brightWidth, double middleCCTRatio) {
-		int size = luminanceGammaCurve->size();
-		XYZ_ptr middleXYZ = getMiddleXYZ(dimTurn, middleCCTRatio, targetXYZ);
-		double_array dimendValues = middleXYZ->getxyValues();
-		double_array brightstartValues = targetXYZ->getxyValues();
-		XYZ_vector_ptr result(new XYZ_vector(size));
-		//==============================================================
-		// dim區段
-		//==============================================================
-		double_vector_ptr dimGammaCurve = DoubleArray::getRangeCopy(luminanceGammaCurve, 0,
-									    dimTurn - 1);
-		XYZ_vector_ptr dimResult = DimTargetGenerator::getTarget(startXYZ, targetXYZ,
-									 dimGammaCurve, dimGamma);
-
-		int dimSize = dimResult->size();
-		for (int x = 0; x < dimSize; x++) {
-		    (*result)[x] = (*dimResult)[x];
-		}
-		//==============================================================
-
-		//==============================================================
-		// 中間區段
-		//==============================================================
-		for (int x = dimTurn; x < brightTurn; x++) {
-		    //僅Y有變化
-		    double Y = (*luminanceGammaCurve)[x];
-		    double ratio = ((double) (x - dimTurn)) / (brightTurn - dimTurn);
-		    double v1 = Interpolation::linear(0, 1, dimendValues[0],
-						      brightstartValues[0],
-						      ratio);
-		    double v2 = Interpolation::linear(0, 1, dimendValues[1],
-						      brightstartValues[1],
-						      ratio);
-		    XYZ_ptr XYZ = getTargetXYZ(v1, v2, Y);;
-		    (*result)[x] = XYZ;
-
-		}
-		//==============================================================
-
-		//==============================================================
-		// bright區段
-		//==============================================================
-		XYZ_vector_ptr brightResult = getBrightGammaTarget(luminanceGammaCurve, targetXYZ,
-								   endXYZ,
-								   brightGamma, brightTurn,
-								   brightWidth,
-								   bitDepth);
-		int brightSize = brightResult->size();
-		for (int x = 0; x < brightSize; x++) {
-		    XYZ_ptr XYZ = (*brightResult)[x];
-		    (*result)[x + brightTurn] = XYZ;
-		}
-		//==============================================================
-		return result;
-	    };
 
 	    /*
 	       luminanceGammaCurve: 目標gamma curve
@@ -696,6 +770,7 @@ namespace cms {
 	       brightTurn: 色溫的轉折點
 	       brightWidth: 色溫變化的寬度區間
 	       bitDepth: 面板的色深資訊
+	       static
 	     */
 	    XYZ_vector_ptr
 		AdvancedDGLutGenerator::
@@ -717,17 +792,14 @@ namespace cms {
 		double brightbase = brightEnd - 1 - brightTurn;
 		for (int x = brightTurn; x < brightEnd; x++) {
 		    double normal = ((double) x - brightTurn) / brightbase;
-		    double gamma = Math::pow(normal,
-					     brightGamma) * brightbase + brightTurn;
+		    double gamma = Math::pow(normal, brightGamma) * brightbase + brightTurn;
 		    //在uv'上線性變化
 		    double u = Interpolation::linear(brightTurn, brightEnd - 1,
 						     brightstartValues[0],
-						     brightendValues[0],
-						     gamma);
+						     brightendValues[0], gamma);
 		    double v = Interpolation::linear(brightTurn, brightEnd - 1,
 						     brightstartValues[1],
-						     brightendValues[1],
-						     gamma);
+						     brightendValues[1], gamma);
 		    double Y = (*luminanceGammaCurve)[x];
 		    (*result)[x - brightTurn] = getTargetXYZ(u, v, Y);
 		}
@@ -744,23 +816,23 @@ namespace cms {
 		stopMeasure = true;
 	    };
 
-	    bool AdvancedDGLutGenerator::isDuplicateBlue100(Component_vector_ptr componentVector) {
-		int size = componentVector->size();
-		int timesOfB100 = 0;
-		for (int x = size - 1; x > 0; x--) {
-		    Component_ptr c0 = (*componentVector)[x];
-		    Component_ptr c1 = (*componentVector)[x - 1];
-		    if (c0->intensity->B > 100 && c1->intensity->B < 100
-			|| c0->intensity->B < 100 && c1->intensity->B > 100 ||
-			//剛好等於100, 應該很難
-			c0->intensity->B == 100 ||
-			//最後一個逼近100, 也視為100
-			(c0->intensity->B > 99.0 && x == size - 1)) {
-			timesOfB100++;
-		    }
-		}
-		return timesOfB100 == 2;
-	    };
+	    /*bool AdvancedDGLutGenerator::isDuplicateBlue100(Component_vector_ptr componentVector) {
+	       int size = componentVector->size();
+	       int timesOfB100 = 0;
+	       for (int x = size - 1; x > 0; x--) {
+	       Component_ptr c0 = (*componentVector)[x];
+	       Component_ptr c1 = (*componentVector)[x - 1];
+	       if (c0->intensity->B > 100 && c1->intensity->B < 100
+	       || c0->intensity->B < 100 && c1->intensity->B > 100 ||
+	       //剛好等於100, 應該很難
+	       c0->intensity->B == 100 ||
+	       //最後一個逼近100, 也視為100
+	       (c0->intensity->B > 99.0 && x == size - 1)) {
+	       timesOfB100++;
+	       }
+	       }
+	       return timesOfB100 == 2;
+	       }; */
 
 	    /*
 	       試驗性質
@@ -780,16 +852,15 @@ namespace cms {
 		    DeltaE de(lab0, lab1);
 		    double dab = de.getCIE2000Deltaab();
 		    (*checkResult)[x - (start + 1)] = dab;
-		}
-		double max = Math::max(checkResult);
+		} double max = Math::max(checkResult);
 		return max < deltaabThreshold;
 	    };
-	    int AdvancedDGLutGenerator::getAutoBrightTurn() {
-		return autoBrightTurn;
-	    };
-	    int AdvancedDGLutGenerator::getAutoBrightWidth() {
-		return autoBrightWidth;
-	    };
+	    /*int AdvancedDGLutGenerator::getAutoBrightTurn() {
+	       return autoBrightTurn;
+	       };
+	       int AdvancedDGLutGenerator::getAutoBrightWidth() {
+	       return autoBrightWidth;
+	       }; */
 	    /*
 	       此第二組componentVector2和panelRegulator2, 是用在target white != native white,
 	       但是又想 smooth過去時使用
@@ -807,9 +878,10 @@ namespace cms {
 	    void AdvancedDGLutGenerator::setPanelRegulator(bptr < PanelRegulator > panelRegulator) {
 		this->panelRegulator1 = panelRegulator;
 	    };
-	    /*void AdvancedDGLutGenerator::setMiddleCCTRatio(double ratio) {
-	       this->middleCCTRatio = ratio;
-	       }; */
+	    void AdvancedDGLutGenerator::setUseMaxBIntensityZone(int zone) {
+		this->useMaxBIntensityZone = zone;
+		mode = BIntensitySmooth;
+	    };
 
 	    //==================================================================
 	    //==================================================================
@@ -860,22 +932,20 @@ namespace cms {
 		    double gammax = gammanormal * (size - 1);
 		    //在uv'上線性變化
 		    double u = Interpolation::linear(0, size - 1,
-						     startuvValues[0],
-						     enduvValues[0],
-						     gammax);
+						     startuvValues[0], enduvValues[0], gammax);
 		    double v = Interpolation::linear(0, size - 1,
-						     startuvValues[1],
-						     enduvValues[1],
-						     gammax);
+						     startuvValues[1], enduvValues[1], gammax);
 		    double Y = (*luminanceGammaCurve)[x];
 
 		    (*result)[x] = getTargetXYZ(u, v, Y);
 		};
 		return result;
-	    }
 
-	    //==================================================================
+		//==================================================================
+	    };
 	};
+
     };
+
 };
 

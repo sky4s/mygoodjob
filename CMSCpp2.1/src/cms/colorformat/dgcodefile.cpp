@@ -520,9 +520,9 @@ namespace cms {
 		    XYZ_ptr blackXYZ = (*c->componentVector)[c->componentVector->size() - 1]->XYZ;
 		    xyY_ptr blackxyY(new CIExyY(blackXYZ));
 		    dgfile.addProperty("defined dim black", *blackxyY->toString());
-		    if (true == c->SmoothComponent) {
-			dgfile.addProperty("defined dim - smooth", On);
-		    }
+		    /*if (true == c->SmoothComponent) {
+		       dgfile.addProperty("defined dim - smooth", On);
+		       } */
 		    break;
 		}
 	    }
@@ -602,17 +602,14 @@ namespace cms {
 		break;
 	    }
 	    dgfile.addProperty("keep max luminance", keepstr);
-	    //dgfile.addProperty("accurate mode", c->accurateMode ? On + "(De-Hook)" : Off);
-	    //dgfile.addProperty("dehook mode", c->accurateMode ? On + "(De-Hook)" : Off);
 	    string deHookStr;
 	    if (None == c->DeHookMode) {
 		deHookStr = "None";
 	    } else if (Original == c->DeHookMode) {
 		deHookStr = "Original";
 	    } else if (Evolution == c->DeHookMode) {
-		deHookStr = "Evolution";
+		deHookStr = "Evolution (zone:" + _toString(c->EvolutionDeHookZone) + ")";
 	    }
-
 	    dgfile.addProperty("dehook mode", deHookStr);
 
 	    if (c->keepMaxLuminance == KeepMaxLuminance::NativeWhiteAdvanced) {
@@ -621,10 +618,10 @@ namespace cms {
 		}
 		dgfile.addProperty("keep max lumi adv over", c->keepMaxLumiOver);
 		dgfile.addProperty("keep max lumi adv gamma", c->keepMaxLumiGamma);
-		dgfile.addProperty("skip inverse b", c->skipInverseB ? On : Off);
-		if (true == c->skipInverseB) {
-		    dgfile.addProperty("maxZ dg code", c->maxZDGCode);
-		}
+		//dgfile.addProperty("skip inverse b", c->skipInverseB ? On : Off);
+		//if (true == c->skipInverseB) {
+		    dgfile.addProperty("max B intensity RGL", c->maxBRawGrayLevel);
+		//}
 	    }
 	    if (true == c->autoIntensity) {
 		RGB_ptr idealIntensity = c->idealIntensity;

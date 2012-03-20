@@ -420,6 +420,10 @@ namespace cms {
 	    double ComponentLUT::getMaxBIntensity() {
 		return bLut->getMaxValue();
 	    };
+	    int ComponentLUT::getMaxBIntensityRGL() {
+		double value = getMaxBIntensity();
+		return bLut->getKey(value);
+	    }
 
 	    bool ComponentLUT::hasCorrectedInRange(const Dep::Channel & ch) {
 		switch (ch.chindex) {
@@ -433,7 +437,9 @@ namespace cms {
 		    throw IllegalArgumentException("Unsupported Channel:" + *ch.toString());
 		}
 	    };
-
+	    void ComponentLUT::setInverseSearch(bool inverse) {
+		bLut->InverseSearch = inverse;
+	    };
 	    //==================================================================
 
 	};

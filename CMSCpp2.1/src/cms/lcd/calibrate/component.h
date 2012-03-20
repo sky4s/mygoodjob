@@ -115,7 +115,9 @@ namespace cms {
 		double correctIntensityInRange(const Dep::Channel & ch, double intensity);
 		double correctCodeInRange(const Dep::Channel & ch, double code);
 		double getMaxBIntensity();
+		int getMaxBIntensityRGL();
 		bool hasCorrectedInRange(const Dep::Channel & ch);
+		void setInverseSearch(bool inverse);
 	    };
 	};
     };

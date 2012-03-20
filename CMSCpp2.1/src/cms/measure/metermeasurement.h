@@ -105,6 +105,9 @@ namespace cms {
 	    int getMaxZDGCode(bptr < cms::lcd::calibrate::MeasureCondition > measureCondition);
 	    static int getMaxZDGCode(bptr < cms::measure::MeterMeasurement > mm,
 				     bptr < cms::lcd::calibrate::BitDepthProcessor > bitDepth);
+	    static int getMaxBIntensityRawGrayLevel(bptr < cms::measure::MeterMeasurement > mm,
+						    bptr < cms::lcd::calibrate::BitDepthProcessor >
+						    bitDepth);
 	};
 
 

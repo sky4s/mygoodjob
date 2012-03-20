@@ -91,7 +91,6 @@ class TCCTLUTForm:public TForm, cms::lcd::calibrate::FeedbackListener {
     TEdit *Edit_BMax2Begin;
     TEdit *Edit_BMax2Gamma;
     TLabel *Label19;
-    TCheckBox *CheckBox_SkipInverseB;
     TCheckBox *CheckBox_MemoryMeasure;
     TCheckBox *CheckBox_MaxYAdvAuto;
     TGroupBox *GroupBox8;
@@ -128,6 +127,8 @@ class TCCTLUTForm:public TForm, cms::lcd::calibrate::FeedbackListener {
     TLabel *Label28;
     TLabel *Label_MiddleZone;
     TEdit *Edit_MiddleGammaEnd;
+    TLabel *Label29;
+    TEdit *Edit_DeHookZone;
     void __fastcall RadioButton_P1P2Click(TObject * Sender);
     void __fastcall Button_MeaRunClick(TObject * Sender);
     void __fastcall Button_DebugClick(TObject * Sender);
@@ -162,6 +163,7 @@ class TCCTLUTForm:public TForm, cms::lcd::calibrate::FeedbackListener {
     void __fastcall RadioButton_DeHookEvoClick(TObject * Sender);
     void __fastcall RadioButton_MaxYNoneClick(TObject * Sender);
     void __fastcall RadioButton_MaxYTargetWhiteClick(TObject * Sender);
+    void __fastcall RadioButton_MaxYNativeClick(TObject * Sender);
   private:			// User declarations
     void setMeasureInfo();
     int serialid;

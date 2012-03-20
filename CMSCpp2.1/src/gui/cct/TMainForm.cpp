@@ -638,8 +638,6 @@ void TMainForm::setDummyMeterFile(bptr < cms::colorformat::DGLutFile > dglutFile
 	//=====================================================================
 	xyY_ptr nativewxyY = property->getNativeReferenceColor(Channel::W);
 	if (null != nativewxyY) {
-	    //bptr < MaxMatrixIntensityAnalyzer > matrixAnalyzer2(new MaxMatrixIntensityAnalyzer(mm));
-	    //nativeWhiteAnalyzer = matrixAnalyzer2;
 	    xyY_ptr rxyY = property->getNativeReferenceColor(Channel::R);
 	    xyY_ptr gxyY = property->getNativeReferenceColor(Channel::G);
 	    xyY_ptr bxyY = property->getNativeReferenceColor(Channel::B);
@@ -650,11 +648,6 @@ void TMainForm::setDummyMeterFile(bptr < cms::colorformat::DGLutFile > dglutFile
 							     bxyY->toXYZ(), nativewxyY->toXYZ());
 	    matrixAnalyzer2->setReferenceRGB(refRGB);
 	    nativeWhiteAnalyzer = matrixAnalyzer2;
-	    /*matrixAnalyzer2->setupComponent(Channel::W, nativewxyY->toXYZ());
-	       matrixAnalyzer2->setupComponent(Channel::R, rxyY->toXYZ());
-	       matrixAnalyzer2->setupComponent(Channel::G, gxyY->toXYZ());
-	       matrixAnalyzer2->setupComponent(Channel::B, bxyY->toXYZ());
-	       matrixAnalyzer2->enter(); */
 	}
 	//=====================================================================
 

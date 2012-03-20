@@ -611,33 +611,36 @@ void __fastcall TTargetWhiteForm2::Button_FindInverseIntensityClick(TObject * Se
 	ShowMessage("Recommend using \"T-CON Input\"!!!");
     }
     int max = bitDepth->getInputMaxDigitalCount();
+    /*using namespace cms::measure;
+       bptr < MaxMatrixIntensityAnalyzer > analyzer =
+       MaxMatrixIntensityAnalyzer::getReadyAnalyzer(MainForm->mm, max, max, max);
+       using namespace Dep;
+       using namespace java::lang;
+       RGB_ptr preIntensity;
+       findInverseZ = false;
+       maxBRawGrayLevel = max;
+       bool foundInverse = false;
+
+       for (int x = max; x > (max - 50); x--) {
+       RGB_ptr rgb(new RGBColor(x, x, x));
+       RGB_ptr intensity = analyzer->getIntensity(rgb);
+       if (null != preIntensity) {
+       bool inverseB = intensity->B < preIntensity->B;
+       if (inverseB) {
+       maxBRawGrayLevel = x + 1;
+       foundInverse = true;
+       string dehook = "De-Hook: Set" + _toString(maxBRawGrayLevel);
+       StatusBar1->Panels->Items[1]->Text = "De-Hook: Set";
+       break;
+       }
+       }
+       preIntensity = intensity;
+       }
+
+       analyzer->endAnalyze(); */
     using namespace cms::measure;
-    bptr < MaxMatrixIntensityAnalyzer > analyzer =
-	MaxMatrixIntensityAnalyzer::getReadyAnalyzer(MainForm->mm, max, max, max);
-    using namespace Dep;
-    using namespace java::lang;
-    RGB_ptr preIntensity;
-    findInverseZ = false;
-    maxBRawGrayLevel = max;
-    bool foundInverse = false;
-
-    for (int x = max; x > (max - 50); x--) {
-	RGB_ptr rgb(new RGBColor(x, x, x));
-	RGB_ptr intensity = analyzer->getIntensity(rgb);
-	if (null != preIntensity) {
-	    bool inverseB = intensity->B < preIntensity->B;
-	    if (inverseB) {
-		maxBRawGrayLevel = x + 1;
-		foundInverse = true;
-		string dehook = "De-Hook: Set" + _toString(maxBRawGrayLevel);
-		StatusBar1->Panels->Items[1]->Text = "De-Hook: Set";
-		break;
-	    }
-	}
-	preIntensity = intensity;
-    }
-
-    analyzer->endAnalyze();
+    int maxBRawGrayLevel = MeasureTool::getMaxBIntensityRawGrayLevel(MainForm->mm, bitDepth);
+    bool foundInverse = maxBRawGrayLevel != max;
 
     Edit_InverseIntensityofB->Text = maxBRawGrayLevel;
     binder->active(Edit_InverseIntensityofB);

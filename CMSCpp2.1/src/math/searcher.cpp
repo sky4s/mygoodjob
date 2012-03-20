@@ -26,6 +26,20 @@ namespace math {
 	return -1;
 
     };
+    int Searcher::inverseSequentialSearch(double_vector_ptr a, double key) {
+	double prev = NaN;
+	for (unsigned int x = a->size() - 1; x != -1; x--) {
+	    double v = (*a)[x];
+	    if (v == key) {
+		return x;
+	    } else if (!IsNan(prev) && key < prev && key < v) {
+		return -(static_cast < int >(x) + 1);
+	    };
+	    prev = v;
+	}
+	return -1;
+
+    };
     int Searcher::sequentialSearch(int_vector_ptr a, int key) {
 	int prev = NaN;
 	for (unsigned int x = 0; x != a->size(); x++) {
@@ -68,6 +82,10 @@ namespace math {
     };
     int Searcher::leftNearSequentialSearch(double_vector_ptr a, double key) {
 	int result = sequentialSearch(a, key);
+	return Searcher::leftNearSequentialSearch0(a->size(), result);
+    };
+    int Searcher::leftNearInverseSequentialSearch(double_vector_ptr a, double key) {
+	int result = inverseSequentialSearch(a, key);
 	return Searcher::leftNearSequentialSearch0(a->size(), result);
     };
 
