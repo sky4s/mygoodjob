@@ -61,7 +61,7 @@ namespace cms {
 	    };
 
 	    RGB_ptr WhitePointFinder::findRGBAround(xyY_ptr xyY) {
-		aroundAlgo->setMode(Normal);
+		aroundAlgo->setMode(algo::Normal);
 		RGB_ptr maxrgb(new RGBColor(maxcode, maxcode, maxcode));
 		RGB_ptr result = findMatchRGB0(xyY, maxrgb);
 		return result;

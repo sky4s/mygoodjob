@@ -54,8 +54,8 @@ namespace cms {
 		bool bMax2;
 		int bMax2Begin;
 		double bMax2Gamma;
-		bool skipInverseB;
-		int maxZDGCode;
+		//bool skipInverseB;
+		int maxBRawGrayLevel;
 		//==============================================================
 
 		//==============================================================
@@ -122,6 +122,7 @@ namespace cms {
 		//用來註記是否有用了panel regulator
 		bool remapped;
 		DeHook dehook;
+		int evoDeHookZone;
 		//==============================================================
 
 		//==============================================================
@@ -143,12 +144,12 @@ namespace cms {
 		bool useNewMethod;
 
 		//dprecated
-		double middleCCTRatio;
+		//double middleCCTRatio;
 
 		string excuteStatus;
 		bool debugMode;
 		//dprecated
-		bool smoothComponent;
+		//bool smoothComponent;
 		//==============================================================
 
 	      public:
@@ -194,23 +195,24 @@ namespace cms {
 		__property bool BMax = { write = bMax };
 		__property bool AvoidFRCNoise = { write = avoidFRCNoise };
 		__property bool NewMethod = { write = useNewMethod };
-		__property bool SkipInverseB = { write = skipInverseB };
+		//__property bool SkipInverseB = { write = skipInverseB };
 		__property double RTargetIntensity = { write = rTargetIntensity
 		};
 		__property double BTargetIntensity = { write = bTargetIntensity
 		};
-		//__property bool AccurateMode = { write = accurateMode };
 		__property bool ManualAccurateMode = { write = manualAccurateMode
 		};
-		__property double MiddleCCTRatio = { write = middleCCTRatio
-		};
+		/*__property double MiddleCCTRatio = { write = middleCCTRatio
+		};*/
 		__property bool FeedbackFix = { write = feedbackFix };
-		__property bool SmoothComponent = { read = smoothComponent,
+		/*__property bool SmoothComponent = { read = smoothComponent,
 		    write = smoothComponent
-		};
+		};*/
 		__property string ExcuteStatus = { read = excuteStatus };
 		__property bool DebugMode = { write = debugMode };
 		__property DeHook DeHookMode = { read = dehook, write = dehook };
+		void setEvolutionDeHook(int zone);
+		__property int EvolutionDeHookZone = { read = evoDeHookZone };
 		//==============================================================
 
 
@@ -228,7 +230,6 @@ namespace cms {
 
 		 bptr < MeasureCondition > measureCondition;
 		 bptr < BitDepthProcessor > bitDepth;
-		//bptr < FeedbackListener > feedbackListener;
 		FeedbackListener *feedbackListener;
 		XYZ_ptr targetWhiteXYZ;
 		//==============================================================
@@ -251,7 +252,7 @@ namespace cms {
 				    double_vector_ptr ggammaCurve, double_vector_ptr bgammaCurve);
 		Component_vector_ptr fetchComponentVector();
 		double_vector_ptr fetchLuminanceVector();
-		void initNativeWhiteAnalyzer();
+		void initNativeWhiteAnalyzer(bool useMaxBIntensity);
 		RGB_vector_ptr getDGLutOpResult(RGB_vector_ptr dglut);
 		RGB_vector_ptr oldMethod(DGLutGenerator & generator,
 					 bptr < PanelRegulator >
@@ -259,8 +260,6 @@ namespace cms {
 		RGB_vector_ptr newMethod(bptr < PanelRegulator > panelRegulato);
 
 		void fixChromaticityReverseByFeedback(RGB_vector_ptr dglut);
-		/*int checkReverse(double_vector_ptr deltaVector);
-		   int checkReverse(double_vector_ptr deltaVector, int start, int end); */
 		int_vector_ptr getReverseIndexVector(double_vector_ptr
 						     deltaVector, int start, int end);
 		 int_vector_ptr

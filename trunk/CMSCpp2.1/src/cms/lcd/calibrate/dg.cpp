@@ -275,6 +275,9 @@ namespace cms {
 	       intensity->B = lut->getIntensity(Channel::B, dgcode->B);
 	       return intensity;
 	       }; */
+	    void DGLutGenerator::setInverseSearch(bool inverse) {
+		lut->setInverseSearch(inverse);
+	    };
 	    //==================================================================
 	};
     };

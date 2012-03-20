@@ -1,5 +1,5 @@
 object CCTLUTForm: TCCTLUTForm
-  Left = 264
+  Left = 268
   Top = 440
   Width = 845
   Height = 423
@@ -135,7 +135,7 @@ object CCTLUTForm: TCCTLUTForm
     object Label_BrightZone: TLabel
       Left = 72
       Top = 128
-      Width = 41
+      Width = 33
       Height = 13
       Caption = '81-255'
     end
@@ -950,6 +950,14 @@ object CCTLUTForm: TCCTLUTForm
       Caption = 'Strength'
       Visible = False
     end
+    object Label29: TLabel
+      Left = 26
+      Top = 173
+      Width = 25
+      Height = 13
+      Caption = 'Zone'
+      Visible = False
+    end
     object RadioButton_MaxYNone: TRadioButton
       Left = 7
       Top = 14
@@ -970,6 +978,7 @@ object CCTLUTForm: TCCTLUTForm
       Height = 20
       Caption = 'Native White'
       TabOrder = 1
+      OnClick = RadioButton_MaxYNativeClick
     end
     object RadioButton_MaxYNativeAdv: TRadioButton
       Left = 7
@@ -1006,28 +1015,14 @@ object CCTLUTForm: TCCTLUTForm
       Text = '1'
       Visible = False
     end
-    object CheckBox_SkipInverseB: TCheckBox
-      Left = 26
-      Top = 150
-      Width = 105
-      Height = 14
-      Caption = 'Skip Inverse B'
-      Checked = True
-      Enabled = False
-      State = cbChecked
-      TabOrder = 6
-      Visible = False
-    end
     object CheckBox_MaxYAdvAuto: TCheckBox
       Left = 106
       Top = 104
       Width = 47
       Height = 25
       Caption = 'Auto'
-      Checked = True
       Enabled = False
-      State = cbChecked
-      TabOrder = 7
+      TabOrder = 6
       Visible = False
       OnClick = CheckBox_MaxYAdvAutoClick
     end
@@ -1037,7 +1032,7 @@ object CCTLUTForm: TCCTLUTForm
       Width = 129
       Height = 17
       Caption = 'Target White'
-      TabOrder = 8
+      TabOrder = 7
       OnClick = RadioButton_MaxYTargetWhiteClick
     end
     object CheckBox_SmoothIntensity: TCheckBox
@@ -1048,7 +1043,7 @@ object CCTLUTForm: TCCTLUTForm
       Caption = 'Smooth Intensity'
       Checked = True
       State = cbChecked
-      TabOrder = 9
+      TabOrder = 8
       Visible = False
       OnClick = CheckBox_SmoothIntensityClick
     end
@@ -1057,7 +1052,7 @@ object CCTLUTForm: TCCTLUTForm
       Top = 32
       Width = 33
       Height = 21
-      TabOrder = 10
+      TabOrder = 9
       Text = '50'
       Visible = False
     end
@@ -1066,13 +1061,13 @@ object CCTLUTForm: TCCTLUTForm
       Top = 56
       Width = 33
       Height = 21
-      TabOrder = 11
+      TabOrder = 10
       Text = '255'
       Visible = False
     end
     object CheckBox_DeHook: TCheckBox
       Left = 8
-      Top = 169
+      Top = 153
       Width = 64
       Height = 19
       Caption = 'De-Hook'
@@ -1086,6 +1081,17 @@ object CCTLUTForm: TCCTLUTForm
       ParentFont = False
       TabOrder = 5
       Visible = False
+    end
+    object Edit_DeHookZone: TEdit
+      Left = 72
+      Top = 173
+      Width = 33
+      Height = 21
+      ImeName = #26085#25991#36664#20837#31995#32113' (MS-IME2002)'
+      TabOrder = 11
+      Text = '30'
+      Visible = False
+      OnChange = Edit_MaxYAdvOverChange
     end
   end
   object CheckBox_MemoryMeasure: TCheckBox

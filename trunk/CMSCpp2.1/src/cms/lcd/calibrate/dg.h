@@ -60,6 +60,7 @@ namespace cms {
 		__property bool RCorrect = { read = rCorrect };
 		__property bool GCorrect = { read = gCorrect };
 		__property bool BCorrect = { read = bCorrect };
+		void setInverseSearch(bool inverse);
 	    };
 	};
     };

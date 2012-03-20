@@ -279,7 +279,6 @@ namespace cms {
 	    Patch_ptr prePatch;
 	    XYZ_ptr maxZ;
 	    RGB_ptr maxZRGB;
-	    //int maxZDG = -1;
 	    mm->setMeasureWindowsVisible(true);
 
 	    foreach(RGB_ptr rgb, *rgbMeasureCode) {
@@ -317,6 +316,35 @@ namespace cms {
 	    bptr < MeasureCondition > measureCondition(new MeasureCondition(bitDepth));
 	    int maxZDGCode = mt->getMaxZDGCode(measureCondition);
 	    return maxZDGCode;
+	};
+
+	int MeasureTool::getMaxBIntensityRawGrayLevel(bptr < MeterMeasurement > mm,
+						      bptr < BitDepthProcessor > bitDepth) {
+	    int max = bitDepth->getInputMaxDigitalCount();
+	    using namespace cms::measure;
+	    bptr < MaxMatrixIntensityAnalyzer > analyzer =
+		MaxMatrixIntensityAnalyzer::getReadyAnalyzer(mm, max, max, max);
+	    using namespace Dep;
+	    using namespace java::lang;
+	    RGB_ptr preIntensity;
+	    int maxBRawGrayLevel = max;
+
+	    for (int x = max; x > (max - 50); x--) {
+		RGB_ptr rgb(new RGBColor(x, x, x));
+		RGB_ptr intensity = analyzer->getIntensity(rgb);
+		if (null != preIntensity) {
+		    bool inverseB = intensity->B < preIntensity->B;
+		    if (inverseB) {
+			maxBRawGrayLevel = x + 1;
+			break;
+		    }
+		}
+		preIntensity = intensity;
+	    }
+
+	    analyzer->endAnalyze();
+	    return maxBRawGrayLevel;
+
 	};
 	//======================================================================
     };

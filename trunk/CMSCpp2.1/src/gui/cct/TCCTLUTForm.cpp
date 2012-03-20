@@ -160,20 +160,7 @@ void __fastcall TCCTLUTForm::Button_MeaRunClick(TObject * Sender)
 	}
 
 	bool bMax = this->CheckBox_BMax->Checked;
-	//bool deHook = CheckBox_DeHook->Checked;
 	calibrator.BMax = this->CheckBox_BMax->Checked;
-	//calibrator.AccurateMode = avoidHook;
-
-
-	/*if (true == GroupBox_DeHook->Visible) {
-	   if (true == RadioButton_DeHookNone->Checked) {
-	   calibrator.DeHookMode = None;
-	   } else if (true == RadioButton_DeHookOrg->Checked) {
-	   calibrator.DeHookMode = Original;
-	   } else if (true == RadioButton_DeHookEvo->Checked) {
-	   calibrator.DeHookMode = Evolution;
-	   }
-	   } */
 	//==========================================================================
 
 	//==========================================================================
@@ -193,17 +180,12 @@ void __fastcall TCCTLUTForm::Button_MeaRunClick(TObject * Sender)
 	    double bTargetIntensity = Edit_BTargetIntensity->Text.ToDouble();
 	    calibrator.BTargetIntensity = bTargetIntensity;
 	}
-
-	if (true == Edit_MiddleRatio->Enabled) {
-	    //不採用了
-	    double middleRatio = Edit_MiddleRatio->Text.ToDouble();
-	    calibrator.MiddleCCTRatio = middleRatio;
-	}
 	//==========================================================================
 
 	//==========================================================================
 	// Keep Max Luminance
 	//==========================================================================
+	//keep跟dehook融合在一起, 簡化ui
 	bool deHook = CheckBox_DeHook->Checked;
 	if (true == RadioButton_MaxYNone->Checked) {
 	    calibrator.setKeepMaxLuminance(KeepMaxLuminance::TargetLuminance);
@@ -215,9 +197,11 @@ void __fastcall TCCTLUTForm::Button_MeaRunClick(TObject * Sender)
 	    int over = this->Edit_MaxYAdvOver->Text.ToInt();
 	    double gamma = this->Edit_MaxYAdvGamma->Text.ToDouble();
 	    bool autoParameter = CheckBox_MaxYAdvAuto->Checked;
-	    calibrator.SkipInverseB = this->CheckBox_SkipInverseB->Checked;
+	    //calibrator.SkipInverseB = this->CheckBox_SkipInverseB->Checked;
 	    calibrator.setKeepMaxLuminanceNativeWhiteAdvanced(over, gamma, autoParameter);
 	    calibrator.DeHookMode = deHook ? Evolution : None;
+	    int deHookZone = Edit_DeHookZone->Text.ToInt();
+	    calibrator.setEvolutionDeHook(deHookZone);
 	} else if (true == RadioButton_MaxYTargetWhite->Checked) {
 	    calibrator.setKeepMaxLuminance(KeepMaxLuminance::TargetWhite);
 
@@ -580,7 +564,9 @@ void __fastcall TCCTLUTForm::RadioButton_MaxYNativeAdvClick(TObject * Sender)
     Edit_MaxYAdvOver->Enabled = checked;
     Edit_MaxYAdvGamma->Enabled = checked;
     this->CheckBox_MaxYAdvAuto->Enabled = checked;
-    this->CheckBox_SkipInverseB->Enabled = checked;
+    //this->CheckBox_SkipInverseB->Enabled = checked;
+    Label29->Visible = checked;
+    Edit_DeHookZone->Visible = checked;
 }
 
 //---------------------------------------------------------------------------
@@ -802,6 +788,8 @@ void __fastcall TCCTLUTForm::RadioButton_DeHookEvoClick(TObject * Sender)
 void __fastcall TCCTLUTForm::RadioButton_MaxYNoneClick(TObject * Sender)
 {
     CheckBox_DeHook->Checked = false;
+    Label29->Visible = false;
+    Edit_DeHookZone->Visible = false;
 }
 
 //---------------------------------------------------------------------------
@@ -809,6 +797,16 @@ void __fastcall TCCTLUTForm::RadioButton_MaxYNoneClick(TObject * Sender)
 void __fastcall TCCTLUTForm::RadioButton_MaxYTargetWhiteClick(TObject * Sender)
 {
     CheckBox_DeHook->Checked = false;
+    Label29->Visible = false;
+    Edit_DeHookZone->Visible = false;
+}
+
+//---------------------------------------------------------------------------
+
+void __fastcall TCCTLUTForm::RadioButton_MaxYNativeClick(TObject * Sender)
+{
+    Label29->Visible = false;
+    Edit_DeHookZone->Visible = false;
 }
 
 //---------------------------------------------------------------------------
