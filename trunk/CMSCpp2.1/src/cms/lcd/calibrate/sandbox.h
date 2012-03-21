@@ -116,6 +116,13 @@ namespace cms {
 					    cms::measure::
 					    IntensityAnalyzerIF > analyzer,
 					    bptr < PanelRegulator > panelRegulator);
+		RGB_vector_ptr produceDGLut0(XYZ_vector_ptr targetXYZVector,
+					     Component_vector_ptr
+					     componentVector,
+					     bptr <
+					     cms::measure::
+					     IntensityAnalyzerIF > analyzer,
+					     bptr < PanelRegulator > panelRegulator);
 
 		Component_ptr getFRCAbilityComponent(int grayLevel,
 						     RGB_ptr rgb,
