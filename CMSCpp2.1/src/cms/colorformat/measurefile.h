@@ -43,6 +43,17 @@ namespace cms {
 				Patch_vector_ptr bMeasureData, bool XYZMode);
 
 	};
+
+	class IntensityMatrixFile:public ExcelAccessBase {
+	  private:
+	    void initSheet();
+	    static const std::string & RSheet;
+	    static const std::string & GSheet;
+	    static const std::string & BSheet;
+	  public:
+	     IntensityMatrixFile(const std::string & filename);
+	    void addIntensityVector(Component_vector_ptr intensityVector);
+	};
     };
 };
 

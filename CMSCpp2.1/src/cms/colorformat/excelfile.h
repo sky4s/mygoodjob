@@ -127,6 +127,7 @@ namespace cms {
 	     std::map < const std::string, string_vector_ptr) headerNamesMap;
 	    static const std::string & DeltaData;
 	    static const std::string & OldGammaTable;
+	    void initBegin();
 	  protected:
 	    static const std::string & GammaTable;
 	     bptr < ExcelFileDB > db;
@@ -134,7 +135,7 @@ namespace cms {
 	    const int getHeaderCount(const std::string & sheetname);
 
 	    void initPropertySheet();
-	    void initBegin();
+
 	    const static std::string & Sheet1;
 	    //virtual void init() = 0;
 	  public:

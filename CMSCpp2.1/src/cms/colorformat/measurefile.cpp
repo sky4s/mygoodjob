@@ -24,10 +24,11 @@ namespace cms {
 					  const Mode mode):ExcelAccessBase(fileName, mode) {
 	    initSheet(Sheet1, 21, "Gray Level", "W_x", "W_y", "W_Y (nit)",
 		      "W_CCT", "ΔUV", "W_R", "W_G", "W_B", "R_x", "R_y",
-		      "R_Y (nit)", "G_x", "G_y", "G_Y (nit)", "B_x", "B_y", "B_Y (nit)","DG_R","DG_G","DG_B");
-	    initSheet(Sheet2, 21, "Gray Level", "W_X", "W_Y (nit)", "W_Z",
-		      "W_CCT", "ΔUV", "W_R", "W_G", "W_B", "R_X", "R_Y (nit)",
-		      "R_Z", "G_X", "G_Y (nit)", "G_Z", "B_X", "B_Y (nit)", "B_Z","DG_R","DG_G","DG_B");
+		      "R_Y (nit)", "G_x", "G_y", "G_Y (nit)", "B_x", "B_y", "B_Y (nit)", "DG_R",
+		      "DG_G", "DG_B");
+	    initSheet(Sheet2, 21, "Gray Level", "W_X", "W_Y (nit)", "W_Z", "W_CCT", "ΔUV", "W_R",
+		      "W_G", "W_B", "R_X", "R_Y (nit)", "R_Z", "G_X", "G_Y (nit)", "G_Z", "B_X",
+		      "B_Y (nit)", "B_Z", "DG_R", "DG_G", "DG_B");
 	};
 
 	int RampMeasureFile::
@@ -60,10 +61,10 @@ namespace cms {
 	    sizes[3] = bsize;
 	    return IntArray::max(sizes, 4);
 	};
-        /*
-                wMeasureData for Component_vector_ptr
-                wMeasureData2 for Patch_vector_ptr
-        */
+	/*
+	   wMeasureData for Component_vector_ptr
+	   wMeasureData2 for Patch_vector_ptr
+	 */
 	void RampMeasureFile::
 	    setMeasureData(Component_vector_ptr wMeasureData, Patch_vector_ptr wMeasureData2,
 			   Patch_vector_ptr rMeasureData, Patch_vector_ptr gMeasureData,
@@ -116,8 +117,8 @@ namespace cms {
 		    } else {
 			StringVector::setContent(values, "-1", 3, 6, 7, 8);
 		    }
-                    RGB_ptr rgb= c->rgb;
-                    (*values)[18] = _toString(rgb->R);
+		    RGB_ptr rgb = c->rgb;
+		    (*values)[18] = _toString(rgb->R);
 		    (*values)[19] = _toString(rgb->G);
 		    (*values)[20] = _toString(rgb->B);
 		} else if (wMeasureData2 != null) {
@@ -138,12 +139,13 @@ namespace cms {
 		    (*values)[5] = _toString(duv);
 		    StringVector::setContent(values, "-1", 3, 6, 7, 8);
 
-                    RGB_ptr rgb=p->getRGB();
-                    (*values)[18] = _toString(rgb->R);
+		    RGB_ptr rgb = p->getRGB();
+		    (*values)[18] = _toString(rgb->R);
 		    (*values)[19] = _toString(rgb->G);
 		    (*values)[20] = _toString(rgb->B);
 		} else {
-		    StringVector::setContent(values, "0", 12, 0, 1, 2, 3, 4, 5, 6, 7, 8, 18,19,20);
+		    StringVector::setContent(values, "0", 12, 0, 1, 2, 3, 4, 5, 6, 7, 8, 18, 19,
+					     20);
 		}
 
 		if (rMeasureData != null) {
@@ -213,8 +215,55 @@ namespace cms {
 	    return values;
 	}
 
- 
+
 	//==================================================================
+	const std::string & IntensityMatrixFile::RSheet = "R";
+	const std::string & IntensityMatrixFile::GSheet = "G";
+	const std::string & IntensityMatrixFile::BSheet = "B";
+	void IntensityMatrixFile::initSheet() {
+	    string_vector_ptr header(new string_vector());
+	    //ADO無法超過255個欄位
+	    for (int x = 255; x > 0; x--) {
+		string s = "GL" + _toString(x);
+		header->push_back(s);
+	    }
+	    ExcelAccessBase::initSheet(RSheet, header);
+	    ExcelAccessBase::initSheet(GSheet, header);
+	    ExcelAccessBase::initSheet(BSheet, header);
+	};
+	IntensityMatrixFile::
+	    IntensityMatrixFile(const std::string & filename):ExcelAccessBase(filename, Create) {
+	    initSheet();
+	};
+	void IntensityMatrixFile::addIntensityVector(Component_vector_ptr intensityVector) {
+	    /*std::string chstr;
+	       switch (ch.chindex) {
+	       case ChannelIndex::R:
+	       chstr = RSheet;
+	       break;
+	       case ChannelIndex::G:
+	       chstr = GSheet;
+	       break;
+	       case ChannelIndex::B:
+	       chstr = BSheet;
+	       break;
+	       }; */
+	    string_vector_ptr rIntensitys(new string_vector());
+	    string_vector_ptr gIntensitys(new string_vector());
+	    string_vector_ptr bIntensitys(new string_vector());
+	    //int size = intensityVector->size();
+	    //ADO無法超過255個欄位
+	    for (int x = 0; x < 255; x++) {
+		Component_ptr c = (*intensityVector)[x];
+		RGB_ptr intensity = c->intensity;
+		rIntensitys->push_back(_toString(intensity->R));
+		gIntensitys->push_back(_toString(intensity->G));
+		bIntensitys->push_back(_toString(intensity->B));
+	    }
+	    insertData(RSheet, rIntensitys, false);
+	    insertData(GSheet, gIntensitys, false);
+	    insertData(BSheet, bIntensitys, false);
+	};
     };
 };
 
