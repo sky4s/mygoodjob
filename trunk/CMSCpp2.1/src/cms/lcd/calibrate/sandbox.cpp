@@ -87,17 +87,19 @@ namespace cms {
 	       brightTurn: 高灰階的轉折點
 	       dimGamma: 低灰階的色溫曲線gamma變化
 	       brightGamma: 高灰階的色溫曲線gamma變化
-	       brightWidth: 高灰階
+	       brightWidth: 高灰階的灰階寬度
 	     */
 	    void AdvancedDGLutGenerator::
 		setTarget(XYZ_ptr targetWhite,
 			  XYZ_ptr nativeWhite,
 			  double_vector_ptr luminanceGammaCurve,
 			  int dimTurn, int brightTurn,
-			  double dimGamma, double brightGamma, int brightWidth) {
+			  double dimGamma, double brightGamma, int effectiveInputLevel) {
 		//==============================================================
 		// 資訊準備
 		//==============================================================
+		this->effectiveInputLevel = effectiveInputLevel;
+		int brightWidth = bitDepth->getEffectiveInputLevel() - brightTurn;
 		XYZ_ptr blackXYZ = (*componentVector)[componentVector->size() - 1]->XYZ;
 		//XYZ_vector_ptr targetXYZVector;
 		this->brightTurn = brightTurn;
@@ -173,39 +175,6 @@ namespace cms {
 			    return result;
 			}
 
-			/*if (smoothMode) {
-			   //smooth mode是用在 白點非原始色溫 + 要keep最大亮度.
-			   //此時兩個色溫若不同, 要將兩個結果做smooth.
-			   //target white產生的結果
-			   RGB_vector_ptr result1 = produceDGLut(targetXYZVector, componentVector,
-			   analyzer, panelRegulator1);
-			   //native white產生的結果
-			   RGB_vector_ptr result2;
-			   if (componentVector2 != null) {
-			   result2 =
-			   produceDGLut(targetXYZVector,
-			   componentVector2, analyzer2nd, panelRegulator2);
-			   } else {
-			   result2 =
-			   produceDGLut(targetXYZVector,
-			   componentVector, analyzer2nd, panelRegulator1);
-			   }
-
-			   //將兩個結果銜接起來
-			   return smooth(result1, result2, bitDepth, brightTurn);
-			   } else {
-			   //大部分都是在此case
-			   RGB_vector_ptr result = produceDGLut(targetXYZVector, componentVector,
-			   analyzer,
-			   panelRegulator1);
-
-			   //==========================================================================
-			   // 低灰階修正debug
-			   //==========================================================================
-
-			   //==========================================================================
-			   return result;
-			   } */
 		    }
 		}
 	    }
@@ -316,7 +285,34 @@ namespace cms {
 		    return nil_double_array;
 		}
 	    };
+	    //class MaxBIntensityInfo;
+	    MaxBIntensityInfo AdvancedDGLutGenerator::
+		getMaxBIntensityInfo(XYZ_vector_ptr targetXYZVector,
+				     Component_vector_ptr componentVector,
+				     bptr < cms::measure::IntensityAnalyzerIF > analyzer) {
+		ComponentLUT lut(componentVector);
+		//找到最大B Intensity的灰階
+		int maxBIntenstyRGL = lut.getMaxBIntensityRGL();
+		int halfSmoothZone = useMaxBIntensityZone / 2;
+		//要把最大B Intensity對應的DG放在:
+		//int size = targetXYZVector->size();
+		int maxBGrayLevel = effectiveInputLevel - 1 - halfSmoothZone;
 
+		//找到最大B Intensity的目標XYZ
+		XYZ_ptr bmaxtargetXYZ = (*targetXYZVector)[maxBGrayLevel];
+		//最大B Intensity目標XYZ對應出來的anlyzer
+		bptr < MaxMatrixIntensityAnalyzer > bmaxma = MaxMatrixIntensityAnalyzer::getReadyAnalyzer(analyzer, bmaxtargetXYZ);	//傳入 XYZ x3
+		RGB_ptr refRGB = analyzer->getReferenceRGB();
+		bmaxma->setReferenceRGB(refRGB);
+
+		//利用新的analyzer算出新的component(就是intensity)
+		Component_vector_ptr bmaxComponentVector =
+		    fetchNewComponent(bmaxma, componentVector);
+		ComponentLUT bmaxlut(bmaxComponentVector);
+		//算出上述目標XYZ對應出來的最大B Intensity
+		double maxBIntensity = bmaxlut.getMaxBIntensity();
+		return MaxBIntensityInfo(maxBGrayLevel, maxBIntensity);
+	    };
 	    //======================================================================================
 	    //產生DG LUT的演算法核心部份
 	    //======================================================================================
@@ -338,9 +334,6 @@ namespace cms {
 		RGB_vector_ptr result(new RGB_vector(size));
 		//==============================================================
 		//primary color只能用target white~
-		XYZ_ptr rXYZ = analyzer->getPrimaryColor(Channel::R)->toXYZ();
-		XYZ_ptr gXYZ = analyzer->getPrimaryColor(Channel::G)->toXYZ();
-		XYZ_ptr bXYZ = analyzer->getPrimaryColor(Channel::B)->toXYZ();
 		RGB_ptr refRGB = analyzer->getReferenceRGB();
 		//=============================================================
 		// debug用
@@ -366,7 +359,7 @@ namespace cms {
 		    XYZ_ptr targetXYZ = refxyY->toXYZ();
 
 		    bptr < MaxMatrixIntensityAnalyzer > ma =
-			MaxMatrixIntensityAnalyzer::getReadyAnalyzer(rXYZ, gXYZ, bXYZ, targetXYZ);
+			MaxMatrixIntensityAnalyzer::getReadyAnalyzer(analyzer, targetXYZ);
 		    ma->setReferenceRGB(refRGB);
 
 		    idealIntensity = getIdealIntensity(componentVector, ma);
@@ -388,38 +381,30 @@ namespace cms {
 		//=============================================================
 		// BIntensitySmooth init
 		//=============================================================
+		//getMaxBIntensityInfo(targetXYZVector, componentVector, analyzer);
+
 		double maxBIntensity = -1;
 		int maxBGrayLevel = -1;
-		int effectiveGrayLevel = -1;
+		//int intensitySmoothEndGL = -1;
 		if (mode == BIntensitySmooth) {
-		    ComponentLUT lut(componentVector);
-		    //找到最大B Intensity的灰階
-		    int maxBIntenstyRGL = lut.getMaxBIntensityRGL();
-		    int halfSmoothZone = useMaxBIntensityZone / 2;
-		    //要把最大B Intensity對應的DG放在:
-		    maxBGrayLevel = size - 1 - halfSmoothZone;
-
-		    //找到最大B Intensity的目標XYZ
-		    XYZ_ptr bmaxtargetXYZ = (*targetXYZVector)[maxBGrayLevel];
-		    //最大B Intensity目標XYZ對應出來的anlyzer
-		    bptr < MaxMatrixIntensityAnalyzer > bmaxma = MaxMatrixIntensityAnalyzer::getReadyAnalyzer(rXYZ, gXYZ, bXYZ, bmaxtargetXYZ);	//傳入 XYZ x3
-		    bmaxma->setReferenceRGB(refRGB);
-
-		    //利用新的analyzer算出新的component(就是intensity)
-		    Component_vector_ptr bmaxComponentVector =
-			fetchNewComponent(bmaxma, componentVector);
-		    ComponentLUT bmaxlut(bmaxComponentVector);
-		    //算出上述目標XYZ對應出來的最大B Intensity
-		    maxBIntensity = bmaxlut.getMaxBIntensity();
-
+		    MaxBIntensityInfo maxBIntensityInfo =
+			getMaxBIntensityInfo(targetXYZVector, componentVector, analyzer);
+		    maxBIntensity = maxBIntensityInfo.maxBIntensity;
+		    maxBGrayLevel = maxBIntensityInfo.maxBGrayLevel;
+		    //intensitySmoothEndGL = effectiveInputLevel ;
 		}
+		//=============================================================
 
 		RGB_vector_ptr rgbGenResultVector(new RGB_vector());
 #ifdef DEBUG_CCTLUT_NEWMETHOD
-		MAKE_DEBUG_DIR();
-		Util::deleteExist(debug_dir + "/intensityMatrix.xls");
-		IntensityMatrixFile intensityMatrixFile =
-		    IntensityMatrixFile(debug_dir + "/intensityMatrix.xls");
+		bptr < IntensityMatrixFile > intensityMatrixFile;
+		if (FileExists(DEBUG_VERBOSE_STEP)) {
+		    MAKE_DEBUG_DIR();
+		    Util::deleteExist(debug_dir + "/intensityMatrix.xls");
+		    intensityMatrixFile =
+			bptr < IntensityMatrixFile >
+			(new IntensityMatrixFile(debug_dir + "/intensityMatrix.xls"));
+		}
 #endif
 		//=============================================================
 		// 迴圈開始
@@ -429,7 +414,7 @@ namespace cms {
 		    XYZ_ptr targetXYZ = (*targetXYZVector)[x];	//傳入(XYZ)
 
 		    //不斷產生Analyzer, 因為Target White一直變化, 所以利用新的Analyzer, 計算出Intensity
-		    bptr < MaxMatrixIntensityAnalyzer > ma = MaxMatrixIntensityAnalyzer::getReadyAnalyzer(rXYZ, gXYZ, bXYZ, targetXYZ);	//傳入 XYZ x3
+		    bptr < MaxMatrixIntensityAnalyzer > ma = MaxMatrixIntensityAnalyzer::getReadyAnalyzer(analyzer, targetXYZ);	//傳入 XYZ x3
 		    ma->setReferenceRGB(refRGB);
 
 		    //利用新的analyzer算出新的component(就是intensity)
@@ -440,8 +425,7 @@ namespace cms {
 		    {		// debug scope
 #ifdef DEBUG_CCTLUT_NEWMETHOD
 			if (FileExists(DEBUG_VERBOSE_STEP)) {
-			    //STORE_COMPONENT(_toString(x) + ".xls", newcomponentVector);
-			    intensityMatrixFile.addIntensityVector(newcomponentVector);
+			    intensityMatrixFile->addIntensityVector(newcomponentVector);
 			}
 			//把第一個存起來, 第一個往往是最大的
 			RGB_ptr grayLevel(new RGBColor(x, x, x));
@@ -483,21 +467,22 @@ namespace cms {
 		    //=============================================================
 		    //intensity smooth的目的就是要讓blue intensity可以衝出100, 然後又smooth回100
 		    //拆成三個區間 0~(zone start)~(zone middle/max b intensity)~255
-		    //226 241 255
+		    //250 252 255
 		    else if (mode == BIntensitySmooth) {
 			//intensity smooth的目的就是要讓blue intensity可以衝出100, 然後又smooth回100
-			if (x <= size - 1 && x > maxBGrayLevel) {
+			if (x <= (effectiveInputLevel - 1) && x > maxBGrayLevel) {
 			    //252~255
 			    intensity[2] =
-				Interpolation::linear(maxBGrayLevel + 1, size - 1,
+				Interpolation::linear(maxBGrayLevel, (effectiveInputLevel - 1),
 						      maxBIntensity, bTargetIntensity, x);
 			    lutgen.setInverseSearch(true);
-			} else if (x <= maxBGrayLevel && x > (size - 1 - useMaxBIntensityZone)) {
+			} else if (x <= maxBGrayLevel
+				   && x > (effectiveInputLevel - 1 - useMaxBIntensityZone)) {
 			    //250~252
 			    intensity[2] =
-				Interpolation::linear((size - useMaxBIntensityZone),
-						      maxBGrayLevel, bTargetIntensity,
-						      maxBIntensity, x);
+				Interpolation::
+				linear((effectiveInputLevel - 1 - useMaxBIntensityZone),
+				       maxBGrayLevel, bTargetIntensity, maxBIntensity, x);
 			} else {
 			    //0~250
 			    intensity[2] = bTargetIntensity;
@@ -564,291 +549,6 @@ namespace cms {
 		return result;
 	    };
 
-
-	    RGB_vector_ptr AdvancedDGLutGenerator::
-		produceDGLut0(XYZ_vector_ptr targetXYZVector,
-			      Component_vector_ptr componentVector,
-			      bptr < cms::measure::IntensityAnalyzerIF >
-			      analyzer, bptr < PanelRegulator > panelRegulator) {
-		/*
-		   運算方式簡述:
-		   1.利用不斷變化的target XYZ, 代表會有很多組Target White.
-		   2.每個灰階各有一組Target White, 所以每個灰階都利用該Target White,
-		   計算出一組Intensity,
-		   3.那DG Lut要取的就是每一組Intensity裡面, R=G=B=100處,
-		   因為代表該Intensity對應的DG, 剛好就是Target White.
-		 */
-
-		int size = targetXYZVector->size();
-		RGB_vector_ptr result(new RGB_vector(size));
-		//==============================================================
-		//primary color只能用target white~
-		XYZ_ptr rXYZ = analyzer->getPrimaryColor(Channel::R)->toXYZ();
-		XYZ_ptr gXYZ = analyzer->getPrimaryColor(Channel::G)->toXYZ();
-		XYZ_ptr bXYZ = analyzer->getPrimaryColor(Channel::B)->toXYZ();
-		RGB_ptr refRGB = analyzer->getReferenceRGB();
-		//=============================================================
-		// debug用
-		//=============================================================
-#ifdef DEBUG_CCTLUT_NEWMETHOD
-		Component_vector_ptr maxComponentVector(new Component_vector());
-#endif				//DEBUG_CCTLUT_NEWMETHOD
-
-#ifdef DEBUG_INTENISITY
-		Component_vector_ptr debugComponentVector(new Component_vector());
-#endif
-		//=============================================================
-
-		//=============================================================
-		//設定intensity
-		//=============================================================
-		double rTargetIntensity = -1;
-		double gTargetIntensity = -1;
-		double bTargetIntensity = -1;
-		if (true == c.autoIntensity) {
-		    //autoIntensity從當下量到的componentVector推算最適當的target intensity
-		    xyY_ptr refxyY = analyzer->getReferenceColor();
-		    XYZ_ptr targetXYZ = refxyY->toXYZ();
-
-		    bptr < MaxMatrixIntensityAnalyzer > ma =
-			MaxMatrixIntensityAnalyzer::getReadyAnalyzer(rXYZ, gXYZ, bXYZ, targetXYZ);
-		    ma->setReferenceRGB(refRGB);
-
-		    idealIntensity = getIdealIntensity(componentVector, ma);
-		    rTargetIntensity = idealIntensity->R;
-		    gTargetIntensity = idealIntensity->G;
-		    bTargetIntensity = idealIntensity->B;
-		}
-
-		rTargetIntensity = (-1 == rTargetIntensity) ? 100 : rTargetIntensity;
-		gTargetIntensity = (-1 == gTargetIntensity) ? 100 : gTargetIntensity;
-		//B採100嗎?
-		bTargetIntensity = (-1 == bTargetIntensity) ? 100 : bTargetIntensity;
-		double_array intensity(new double[3]);
-		intensity[0] = rTargetIntensity;
-		intensity[1] = gTargetIntensity;
-		intensity[2] = bTargetIntensity;
-		//=============================================================
-
-
-		RGB_vector_ptr rgbGenResultVector(new RGB_vector());
-		//=============================================================
-		// 迴圈開始
-		//=============================================================
-		if (mode == BIntensitySmooth) {
-		    //=============================================================
-		    // BIntensitySmooth init
-		    // native white advance+de-hook下才會啟用
-		    //=============================================================
-		    ComponentLUT lut(componentVector);
-		    int maxBIntenstyRGL = lut.getMaxBIntensityRGL();
-		    int halfSmoothZone = useMaxBIntensityZone / 2;
-		    int maxBGrayLevel = size - 1 - halfSmoothZone;
-		    double maxBIntensity = -1;
-		    {
-			XYZ_ptr bmaxtargetXYZ = (*targetXYZVector)[maxBGrayLevel];
-			bptr < MaxMatrixIntensityAnalyzer > bmaxma = MaxMatrixIntensityAnalyzer::getReadyAnalyzer(rXYZ, gXYZ, bXYZ, bmaxtargetXYZ);	//傳入 XYZ x3
-			bmaxma->setReferenceRGB(refRGB);
-
-			//利用新的analyzer算出新的component(就是intensity)
-			Component_vector_ptr bmaxComponentVector =
-			    fetchNewComponent(bmaxma, componentVector);
-			ComponentLUT lut(bmaxComponentVector);
-			maxBIntensity = lut.getMaxBIntensity();
-		    }
-
-
-		    for (int x = size - 1; x != -1; x--) {
-			Application->ProcessMessages();
-			XYZ_ptr targetXYZ = (*targetXYZVector)[x];	//傳入(XYZ)
-
-			//不斷產生Analyzer, 因為Target White一直變化, 所以利用新的Analyzer, 計算出Intensity
-			bptr < MaxMatrixIntensityAnalyzer > ma = MaxMatrixIntensityAnalyzer::getReadyAnalyzer(rXYZ, gXYZ, bXYZ, targetXYZ);	//傳入 XYZ x3
-			ma->setReferenceRGB(refRGB);
-
-			//利用新的analyzer算出新的component(就是intensity)
-			Component_vector_ptr newcomponentVector =
-			    fetchNewComponent(ma, componentVector);
-			Application->ProcessMessages();
-
-			{	// debug scope
-#ifdef DEBUG_CCTLUT_NEWMETHOD
-			    if (FileExists(DEBUG_VERBOSE_STEP)) {
-				STORE_COMPONENT(_toString(x) + ".xls", newcomponentVector);
-			    }
-			    //把第一個存起來, 第一個往往是最大的
-			    RGB_ptr grayLevel(new RGBColor(x, x, x));
-
-			    RGB_ptr maxIntensity(new RGBColor());
-			    maxIntensity->R = lut.getIntensity(Channel::R, 255);
-			    maxIntensity->G = lut.getIntensity(Channel::G, 255);
-			    ComponentLUT lut(newcomponentVector);
-			    int maxBIntensityRGL = lut.getMaxBIntensityRGL();
-			    maxIntensity->B = lut.getIntensity(Channel::B, maxBIntensityRGL);
-
-			    Component_ptr c(new Component(grayLevel, (*newcomponentVector)
-							  [0]->intensity, targetXYZ, maxIntensity));
-			    maxComponentVector->push_back(c);	//傳出(vector)
-#endif				//DEBUG_CCTLUT_NEWMETHOD
-			}
-
-			//=============================================================
-			// BIntensitySmooth
-			// native white advance+de-hook下才會啟用
-			//=============================================================
-			//intensity smooth的目的就是要讓blue intensity可以衝出100, 然後又smooth回100
-			//拆成三個區間 0~(zone start)~(zone middle/max b intensity)~255
-			//226 241 255
-			DGLutGenerator lutgen(newcomponentVector);
-			if (x <= size - 1 && x > maxBGrayLevel) {
-			    intensity[2] =
-				Interpolation::linear(maxBGrayLevel + 1, size - 1,
-						      maxBIntensity, bTargetIntensity, x);
-			    lutgen.setInverseSearch(true);
-			} else if (x <= maxBGrayLevel && x > (size - 1 - useMaxBIntensityZone)) {
-			    intensity[2] =
-				Interpolation::linear((size - 1 - useMaxBIntensityZone),
-						      maxBGrayLevel, bTargetIntensity,
-						      maxBIntensity, x);
-			} else {
-			    intensity[2] = bTargetIntensity;
-			}
-			//=============================================================
-			double rIntensity = intensity[0];
-			double gIntensity = intensity[1];
-			double bIntensity = intensity[2];
-			RGB_ptr rgb = lutgen.getDGCode(intensity[0], intensity[1], intensity[2]);	//傳出(主要)
-			(*result)[x] = rgb;
-
-			//紀錄產生的過程是否有問題
-			bool_array isCorrect = lutgen.isCorrectIntensityInRange();
-			RGB_ptr genResult(new
-					  RGBColor((true == isCorrect[0]) ? -1 : 0,
-						   (true == isCorrect[1]) ? -1 : 0,
-						   (true == isCorrect[2]) ? -1 : 0));
-			rgbGenResultVector->push_back(genResult);	//傳出(vecotr)
-
-#ifdef DEBUG_INTENISITY
-			{	//debug scope
-			    Component_ptr c =
-				getFRCAbilityComponent(x, rgb, ma, newcomponentVector);
-			    c->gamma = genResult;	//傳出(vector)
-			    debugComponentVector->push_back(c);
-			}
-#endif
-		    }
-		    //=============================================================
-		    // 迴圈結束
-		    //=============================================================
-		} else {
-		    for (int x = size - 1; x != -1; x--) {
-			Application->ProcessMessages();
-			XYZ_ptr targetXYZ = (*targetXYZVector)[x];	//傳入(XYZ)
-
-			//不斷產生Analyzer, 因為Target White一直變化, 所以利用新的Analyzer, 計算出Intensity
-			bptr < MaxMatrixIntensityAnalyzer > ma = MaxMatrixIntensityAnalyzer::getReadyAnalyzer(rXYZ, gXYZ, bXYZ, targetXYZ);	//傳入 XYZ x3
-			ma->setReferenceRGB(refRGB);
-
-			//利用新的analyzer算出新的component(就是intensity)
-			Component_vector_ptr newcomponentVector =
-			    fetchNewComponent(ma, componentVector);
-			Application->ProcessMessages();
-
-			{	// debug scope
-#ifdef DEBUG_CCTLUT_NEWMETHOD
-			    if (FileExists(DEBUG_VERBOSE_STEP)) {
-				STORE_COMPONENT(_toString(x) + ".xls", newcomponentVector);
-			    }
-			    //把第一個存起來, 第一個往往是最大的
-			    RGB_ptr grayLevel(new RGBColor(x, x, x));
-			    Component_ptr c(new Component(grayLevel, (*newcomponentVector)
-							  [0]->intensity, targetXYZ));
-			    maxComponentVector->push_back(c);	//傳出(vector)
-#endif				//DEBUG_CCTLUT_NEWMETHOD
-			}
-
-			//=============================================================
-			// intensity smooth(內插)
-			// target white下才會啟用
-			//=============================================================
-			if (true == c.autoIntensity
-			    && true == c.smoothIntensity
-			    && x >= c.smoothIntensityStart && x <= c.smoothIntensityEnd) {
-
-			    //如果啟用auto intensity, 會自動找到比100%更適合的intensity
-			    //但是此舉會造成低灰階的修正出問題, 因為低灰階的目標intensity不再是100%
-			    //幾乎都會造成暗灰階找不到而疊階變成許多0... 所以中間需要從1XX%過度回100%
-			    double_array smoothIntensity =
-				getSmoothIntensity(rTargetIntensity, gTargetIntensity,
-						   bTargetIntensity, x);
-			    intensity = smoothIntensity;
-			}
-			//=============================================================
-			//=============================================================
-			// BIntensitySmooth
-			// native white advance+de-hook下才會啟用
-			//=============================================================
-			else if (mode == BIntensitySmooth) {
-			    //intensity smooth的目的就是要讓blue intensity可以衝出100, 然後又smooth回100
-			}
-			//=============================================================
-
-
-			DGLutGenerator lutgen(newcomponentVector);
-			RGB_ptr rgb = lutgen.getDGCode(intensity[0], intensity[1], intensity[2]);	//傳出(主要)
-			(*result)[x] = rgb;
-
-			//紀錄產生的過程是否有問題
-			bool_array isCorrect = lutgen.isCorrectIntensityInRange();
-			RGB_ptr genResult(new
-					  RGBColor((true == isCorrect[0]) ? -1 : 0,
-						   (true == isCorrect[1]) ? -1 : 0,
-						   (true == isCorrect[2]) ? -1 : 0));
-			rgbGenResultVector->push_back(genResult);	//傳出(vecotr)
-
-#ifdef DEBUG_INTENISITY
-			{	//debug scope
-			    Component_ptr c =
-				getFRCAbilityComponent(x, rgb, ma, newcomponentVector);
-			    c->gamma = genResult;	//傳出(vector)
-			    debugComponentVector->push_back(c);
-			}
-#endif
-		    }
-		    //=============================================================
-		    // 迴圈結束
-		    //=============================================================
-		}
-
-		rgbGenerateResult =
-		    RGBGamma::getReverse(RGBGamma_ptr(new RGBGamma(rgbGenResultVector, 0, Unknow)));
-
-
-		if (null != panelRegulator) {
-#ifdef DEBUG_REMAP_NEW
-		    //若有panelRegulator, 進行remapping (遇到hook才需要)
-		    GammaTestPanelRegulator *gammaTestRegulator =
-			dynamic_cast < GammaTestPanelRegulator * >(panelRegulator.get());
-		    if (null == gammaTestRegulator) {
-			//若是GammaTest(direct gamma)基本上component就有mapping完的dg code, 所以無須再作remapping
-			//需要remapping是因為採用寫入dg lut的方式改變面板特性
-			result = panelRegulator->remapping(result);
-		    }
-#else
-		    result = panelRegulator->remapping(result);
-#endif
-		}
-#ifdef DEBUG_CCTLUT_NEWMETHOD
-		STORE_COMPONENT("1.3_maxIntensity.xls", maxComponentVector);
-#endif
-
-#ifdef DEBUG_INTENISITY
-		//利用DG回推Intenisty和white point的primart color預測CIE xy
-		STORE_COMPONENT("1.3_debugIntensity.xls", debugComponentVector);
-#endif
-
-		return result;
-	    };
 	    //======================================================================================
 
 	    Component_ptr AdvancedDGLutGenerator::

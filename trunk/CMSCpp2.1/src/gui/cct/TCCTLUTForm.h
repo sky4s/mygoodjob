@@ -164,6 +164,7 @@ class TCCTLUTForm:public TForm, cms::lcd::calibrate::FeedbackListener {
     void __fastcall RadioButton_MaxYNoneClick(TObject * Sender);
     void __fastcall RadioButton_MaxYTargetWhiteClick(TObject * Sender);
     void __fastcall RadioButton_MaxYNativeClick(TObject * Sender);
+    void __fastcall FormCreate(TObject * Sender);
   private:			// User declarations
     void setMeasureInfo();
     int serialid;

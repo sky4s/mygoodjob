@@ -25,12 +25,20 @@ namespace cms {
 	    static XYZ_ptr getTargetXYZ(double v1, double v2, double v3, Domain domain);
 	    static XYZ_ptr getTargetXYZ(double x, double y, double Y);
 
+	    class MaxBIntensityInfo {
+	      public:
+		MaxBIntensityInfo(int maxBGrayLevel,
+				  double maxBIntensity):maxBGrayLevel(maxBGrayLevel),
+		    maxBIntensity(maxBIntensity) {
+		};
+		int maxBGrayLevel;
+		double maxBIntensity;
+	    };
+
 	    class AdvancedDGLutGenerator:private DimDGLutGenerator, gui::event::WindowAdapter {
 	      private:
 		const LCDCalibrator & c;
-		//bool isAvoidHook(XYZ_ptr targetXYZ, double offsetK);
 		XYZ_ptr getXYZ(XYZ_ptr XYZ, double offsetK);
-		//bool isDuplicateBlue100(XYZ_ptr targetXYZ);
 		RGB_ptr idealIntensity;
 
 
@@ -42,7 +50,27 @@ namespace cms {
 		WhiteMode mode;
 		XYZ_vector_ptr targetXYZVector;
 		int brightTurn;
+		int effectiveInputLevel;
+
+		//=============================================================
+		// Intensity Relative
+		//=============================================================
+		// Max B Intensity
 		int useMaxBIntensityZone;
+
+		MaxBIntensityInfo getMaxBIntensityInfo(XYZ_vector_ptr targetXYZVector,
+						       Component_vector_ptr componentVector,
+						       bptr < cms::measure::IntensityAnalyzerIF >
+						       analyzer);
+
+		RGB_ptr getIdealIntensity(Component_vector_ptr
+					  componentVector,
+					  bptr <
+					  cms::measure::MaxMatrixIntensityAnalyzer > analyzer);
+		double_array getSmoothIntensity(double rTargetIntensity,
+						double gTargetIntensity,
+						double bTargetIntensity, int grayLevel);
+		//=============================================================
 
 		Component_vector_ptr componentVector2;
 		 bptr < PanelRegulator > panelRegulator1;
@@ -88,7 +116,7 @@ namespace cms {
 		void setTarget(XYZ_ptr targetWhite, XYZ_ptr nativeWhite,
 			       double_vector_ptr luminanceGammaCurve,
 			       int dimTurn, int brightTurn, double dimGamma, double brightGamma,
-			       int brightWidth);
+			       int effectiveInputLevel);
 	      private:
 		static XYZ_vector_ptr
 		    getBrightGammaTarget(double_vector_ptr
@@ -98,17 +126,10 @@ namespace cms {
 					 int brightTurn, int brightWidth,
 					 bptr < BitDepthProcessor > bitDepth);
 
-		//static bool isDuplicateBlue100(Component_vector_ptr componentVector);
 		RGB_vector_ptr produceDGLutMulti(XYZ_vector_ptr
 						 targetXYZVector,
 						 Component_vector_ptr componentVector);
-		RGB_ptr getIdealIntensity(Component_vector_ptr
-					  componentVector,
-					  bptr <
-					  cms::measure::MaxMatrixIntensityAnalyzer > analyzer);
-		double_array getSmoothIntensity(double rTargetIntensity,
-						double gTargetIntensity,
-						double bTargetIntensity, int grayLevel);
+
 		RGB_vector_ptr produceDGLut(XYZ_vector_ptr targetXYZVector,
 					    Component_vector_ptr
 					    componentVector,
@@ -116,13 +137,6 @@ namespace cms {
 					    cms::measure::
 					    IntensityAnalyzerIF > analyzer,
 					    bptr < PanelRegulator > panelRegulator);
-		RGB_vector_ptr produceDGLut0(XYZ_vector_ptr targetXYZVector,
-					     Component_vector_ptr
-					     componentVector,
-					     bptr <
-					     cms::measure::
-					     IntensityAnalyzerIF > analyzer,
-					     bptr < PanelRegulator > panelRegulator);
 
 		Component_ptr getFRCAbilityComponent(int grayLevel,
 						     RGB_ptr rgb,

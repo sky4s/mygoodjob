@@ -23,6 +23,10 @@ namespace cms {
 	namespace calibrate {
 	    using namespace math;
 
+	    extern bool debugMode;
+	    extern bool linkCA210;
+	    extern bool pcWithTCONInput;
+
 	    enum DeHook {
 		None, Original, Evolution
 	    };
@@ -222,7 +226,7 @@ namespace cms {
 		//==============================================================
 		 RGB_vector_ptr dglut;
 		Component_vector_ptr originalComponentVector;
-		Component_vector_ptr componentVector;
+		//Component_vector_ptr componentVector;
 		double_vector_ptr luminanceVector;
 		RGBGamma_ptr finalRGBGamma;
 		RGBGamma_ptr initialRGBGamma;

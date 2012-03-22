@@ -765,7 +765,7 @@ void __fastcall TMainForm::CCTLUT1Click(TObject * Sender)
     if (CCTLUTForm == null) {
 	Application->CreateForm(__classid(TCCTLUTForm), &CCTLUTForm);
     }
-
+    CCTLUTForm->setBitDepthProcessor(bitDepth);
     if (true == this->RadioButton_AnalyzerMaxMatrix->Checked) {
 	MaxMatrixIntensityAnalyzer *ma =
 	    dynamic_cast < MaxMatrixIntensityAnalyzer * >(analyzer.get());
@@ -775,7 +775,7 @@ void __fastcall TMainForm::CCTLUT1Click(TObject * Sender)
 	}
     }
 
-    CCTLUTForm->setBitDepthProcessor(bitDepth);
+    //CCTLUTForm->setBitDepthProcessor(bitDepth);
     CCTLUTForm->ShowModal();
 }
 
