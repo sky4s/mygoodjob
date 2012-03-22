@@ -238,6 +238,14 @@ namespace cms {
 	    ma->enter();
 	    return ma;
 	};
+	bptr < MaxMatrixIntensityAnalyzer > MaxMatrixIntensityAnalyzer::getReadyAnalyzer
+	    (bptr < cms::measure::IntensityAnalyzerIF > originalAnalyzer, XYZ_ptr wXYZ) {
+	    XYZ_ptr rXYZ = originalAnalyzer->getPrimaryColor(Channel::R)->toXYZ();
+	    XYZ_ptr gXYZ = originalAnalyzer->getPrimaryColor(Channel::G)->toXYZ();
+	    XYZ_ptr bXYZ = originalAnalyzer->getPrimaryColor(Channel::B)->toXYZ();
+	    return getReadyAnalyzer(bptr < MeterMeasurement > ((MeterMeasurement *) null), rXYZ,
+				    gXYZ, bXYZ, wXYZ);
+	};
 	//=====================================================================
 	//=====================================================================
 	// IntensityAnayzer

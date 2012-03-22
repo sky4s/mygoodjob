@@ -68,6 +68,11 @@ namespace cms {
 									MeterMeasurement > mm,
 									XYZ_ptr rXYZ, XYZ_ptr gXYZ,
 									XYZ_ptr bXYZ, XYZ_ptr wXYZ);
+	    static bptr < MaxMatrixIntensityAnalyzer > getReadyAnalyzer(bptr <
+									cms::measure::
+									IntensityAnalyzerIF >
+									originalAnalyzer,
+									XYZ_ptr wXYZ);
 	};
 
 	/*

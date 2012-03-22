@@ -1,6 +1,6 @@
 object CCTLUTForm: TCCTLUTForm
-  Left = 268
-  Top = 440
+  Left = 299
+  Top = 529
   Width = 845
   Height = 423
   Caption = 'CCT(LUT)'
@@ -13,6 +13,7 @@ object CCTLUTForm: TCCTLUTForm
   KeyPreview = True
   OldCreateOrder = False
   OnClose = FormClose
+  OnCreate = FormCreate
   OnKeyPress = FormKeyPress
   OnMouseMove = FormMouseMove
   OnShow = FormShow
@@ -1080,7 +1081,6 @@ object CCTLUTForm: TCCTLUTForm
       ParentColor = False
       ParentFont = False
       TabOrder = 5
-      Visible = False
     end
     object Edit_DeHookZone: TEdit
       Left = 72
@@ -1089,7 +1089,7 @@ object CCTLUTForm: TCCTLUTForm
       Height = 21
       ImeName = #26085#25991#36664#20837#31995#32113' (MS-IME2002)'
       TabOrder = 11
-      Text = '5'
+      Text = '7'
       Visible = False
       OnChange = Edit_MaxYAdvOverChange
     end

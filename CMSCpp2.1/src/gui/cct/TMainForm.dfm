@@ -1,6 +1,6 @@
 object MainForm: TMainForm
-  Left = 336
-  Top = 362
+  Left = 448
+  Top = 483
   Width = 767
   Height = 380
   Caption = 'CCT Adjustment v3.3b'
@@ -1425,7 +1425,7 @@ object MainForm: TMainForm
             Top = 13
             Width = 138
             Height = 21
-            ItemHeight = 0
+            ItemHeight = 13
             TabOrder = 0
             OnChange = ComboBox_TCONTypeChange
           end

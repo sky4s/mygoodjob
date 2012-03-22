@@ -517,7 +517,8 @@ namespace cms {
 			dgfile.addProperty("defined dim - fix threshold", c->dimFixThreshold);
 		    }
 
-		    XYZ_ptr blackXYZ = (*c->componentVector)[c->componentVector->size() - 1]->XYZ;
+		    XYZ_ptr blackXYZ =
+			(*c->originalComponentVector)[c->originalComponentVector->size() - 1]->XYZ;
 		    xyY_ptr blackxyY(new CIExyY(blackXYZ));
 		    dgfile.addProperty("defined dim black", *blackxyY->toString());
 		    /*if (true == c->SmoothComponent) {
@@ -613,14 +614,18 @@ namespace cms {
 	    dgfile.addProperty("dehook mode", deHookStr);
 
 	    if (c->keepMaxLuminance == KeepMaxLuminance::NativeWhiteAdvanced) {
-		if (true == c->autoKeepMaxLumiParameter) {
-		    dgfile.addProperty("auto keep max lumi adv parameter", On);
+		if (c->isDoDeHookOrg()) {
+		    if (true == c->autoKeepMaxLumiParameter) {
+			dgfile.addProperty("auto keep max lumi adv parameter", On);
+		    }
+		    dgfile.addProperty("keep max lumi adv over", c->keepMaxLumiOver);
+		    dgfile.addProperty("keep max lumi adv gamma", c->keepMaxLumiGamma);
+		} else if (c->isDoDeHookEvo()) {
+
 		}
-		dgfile.addProperty("keep max lumi adv over", c->keepMaxLumiOver);
-		dgfile.addProperty("keep max lumi adv gamma", c->keepMaxLumiGamma);
 		//dgfile.addProperty("skip inverse b", c->skipInverseB ? On : Off);
 		//if (true == c->skipInverseB) {
-		    dgfile.addProperty("max B intensity RGL", c->maxBRawGrayLevel);
+		dgfile.addProperty("max B intensity RGL", c->maxBRawGrayLevel);
 		//}
 	    }
 	    if (true == c->autoIntensity) {

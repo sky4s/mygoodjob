@@ -1,10 +1,9 @@
 #include <includeall.h>
 #pragma hdrstop
 #include "lcdcalibrator.h"
-#include <gui/cct/TMainForm.h>
-//#include <cms/colorformat/excelfile.h>
+//#include <gui/cct/TMainForm.h>
 //C系統文件
-#include    <limits.h>
+#include   <limits.h>
 //C++系統文件
 #include <algorithm>
 
@@ -16,6 +15,10 @@
 namespace cms {
     namespace lcd {
 	namespace calibrate {
+	    bool debugMode = false;
+	    bool linkCA210 = false;
+	    bool pcWithTCONInput = false;
+
 	    using namespace cms::measure;
 	    using namespace Dep;
 	    using namespace Indep;
@@ -267,6 +270,7 @@ namespace cms {
 		this->keepMaxLumiOver = over;
 		this->keepMaxLumiGamma = gamma;
 		this->autoKeepMaxLumiParameter = autoParameter;
+		autoIntensity = true;
 	    };
 
 
@@ -380,7 +384,10 @@ namespace cms {
 		    } else {
 			//若要略過inverse B, 則要先量測到B在哪裡反轉
 			//然後設定b最大只用到反轉點
-			blueMax = MeasureTool::getMaxBIntensityRawGrayLevel(mm, bitDepth);
+			ComponentLUT lut(originalComponentVector);
+			//找到最大B Intensity的灰階
+			blueMax = lut.getMaxBIntensityRGL();
+			//blueMax = MeasureTool::getMaxBIntensityRawGrayLevel(mm, bitDepth);
 			this->maxBRawGrayLevel = blueMax;
 		    }
 		}
@@ -431,11 +438,11 @@ namespace cms {
 		}
 		STORE_COMPONENT("0.0_o_fetch.xls", originalComponentVector);
 
-		this->componentVector = Util::copy(originalComponentVector);
+		this->originalComponentVector = Util::copy(originalComponentVector);
 		if (isDoDeHookOrg()) {
 		    panelRegulator->setEnable(false);
 		}
-		if (componentVector == null) {
+		if (originalComponentVector == null) {
 		    //null代表量測被中斷
 		    return RGB_vector_ptr((RGB_vector *) null);
 		}
@@ -444,7 +451,7 @@ namespace cms {
 		//=============================================================
 		if (true == originalGamma) {
 		    //若要採用original gamma, 從量測結果拉出gamma, 當作目標gamma curve
-		    double_vector_ptr gammaCurve = getOriginalGammaCurve(componentVector);
+		    double_vector_ptr gammaCurve = getOriginalGammaCurve(originalComponentVector);
 		    setGammaCurve(gammaCurve);
 		}
 
@@ -459,7 +466,7 @@ namespace cms {
 		    dglut = newMethod(panelRegulator);
 		} else {
 		    //舊方法融合色度以及DG Code的處理
-		    DGLutGenerator generator(componentVector, keepMaxLuminance);
+		    DGLutGenerator generator(originalComponentVector, keepMaxLuminance);
 		    dglut = oldMethod(generator, panelRegulator, quantizationBit);
 		}
 
@@ -505,7 +512,8 @@ namespace cms {
 		//==========================================================
 		bptr < AdvancedDGLutGenerator > advgenerator;
 		double_vector_ptr luminanceGammaCurve;
-		double minLuminance = (*componentVector)[componentVector->size() - 1]->XYZ->Y;
+		double minLuminance =
+		    (*originalComponentVector)[originalComponentVector->size() - 1]->XYZ->Y;
 
 		//=============================================================
 		// 產生 luminance gamma curve
@@ -527,13 +535,11 @@ namespace cms {
 		    //較適合NB使用
 		    bptr < PanelRegulator > panelRegulator2;
 		    Component_vector_ptr componentVector2;
+		    //bool useMaxBIntensity = isDoDeHookOrg();
 
-		    if (null == nativeWhiteAnalyzer) {
-			//初始化255/255/255的white analyzer
-			initNativeWhiteAnalyzer(isDoDeHookOrg());
-		    }
 
 		    if (isDoDeHookOrg()) {
+			//NativeWhiteAdvanced + dehook org
 			int max = bitDepth->getInputMaxDigitalCount();
 			panelRegulator2 = bptr < PanelRegulator >
 			    (new
@@ -545,60 +551,36 @@ namespace cms {
 			STORE_COMPONENT("o_fetch2.xls", componentVector2);
 			panelRegulator2->setEnable(false);
 
+			if (null == nativeWhiteAnalyzer) {
+			    //初始化255/255/255的white analyzer
+			    initNativeWhiteAnalyzer(true);
+			}
+
 			advgenerator = bptr < AdvancedDGLutGenerator >
 			    (new
-			     AdvancedDGLutGenerator(componentVector, fetcher,
+			     AdvancedDGLutGenerator(originalComponentVector, fetcher,
 						    fetcher->getAnalyzer(),
 						    nativeWhiteAnalyzer, bitDepth, *this));
 
 			advgenerator->setComponentVector2(componentVector2, panelRegulator2);
 		    } else if (isDoDeHookEvo()) {
+			//NativeWhiteAdvanced + dehook evo
 			advgenerator = bptr < AdvancedDGLutGenerator >
-			    (new AdvancedDGLutGenerator(componentVector, fetcher, bitDepth, *this));
+			    (new
+			     AdvancedDGLutGenerator(originalComponentVector, fetcher, bitDepth,
+						    *this));
 			advgenerator->setUseMaxBIntensityZone(evoDeHookZone);
 
+		    } else {
+			//NativeWhiteAdvanced only
 		    }
-		    /*bool doDeHook = (true == skipInverseB) && isDoDeHookOrg();
 
-		       if (null == nativeWhiteAnalyzer) {
-		       //初始化255/255/255的white analyzer
-		       initNativeWhiteAnalyzer(true);
-
-		       if (doDeHook) {
-		       //若要skipInverseB, 就應該調整面板特性重新量測
-		       int max = bitDepth->getInputMaxDigitalCount();
-		       panelRegulator2 = bptr < PanelRegulator >
-		       (new
-		       GammaTestPanelRegulator(bitDepth,
-		       tconctrl, max,
-		       max, maxBRawGrayLevel, measureCondition));
-		       panelRegulator2->setEnable(true);
-		       componentVector2 = fetchComponentVector();
-		       STORE_COMPONENT("o_fetch2.xls", componentVector2);
-		       panelRegulator2->setEnable(false);
-		       }
-		       } */
-
-		    /*brightgammaParameter = keepMaxLumiGamma;
-		       advgenerator = bptr < AdvancedDGLutGenerator >
-		       (new
-		       AdvancedDGLutGenerator(componentVector, fetcher,
-		       fetcher->getAnalyzer(),
-		       nativeWhiteAnalyzer, bitDepth, *this)); */
-		    /*if (doDeHook) {
-		       advgenerator->setComponentVector2(componentVector2, panelRegulator2);
-		       } */
-		    /*if (isDoDeHookOrg()) {
-		       advgenerator->setComponentVector2(componentVector2, panelRegulator2);
-		       } */
 		    //==============================================================================
 		    // luminanceGammaCurve的計算
 		    //==============================================================================
 		    // max luminance的採用還是很有爭議
-		    /*double maxLuminance =
-		       (true == skipInverseB) ?
-		       nativeWhiteAnalyzer->getReferenceColor()->Y : (*componentVector)[0]->XYZ->Y; */
-		    double maxLuminance = nativeWhiteAnalyzer->getReferenceColor()->Y;
+		    //double maxLuminance = nativeWhiteAnalyzer->getReferenceColor()->Y;
+		    double maxLuminance = (*originalComponentVector)[0]->XYZ->Y;
 		    //藉由傳統generator產生luminance gamma curve
 		    luminanceGammaCurve =
 			getLuminanceGammaCurve(gammaCurve, maxLuminance, minLuminance);
@@ -611,7 +593,8 @@ namespace cms {
 
 		    advgenerator =
 			bptr < AdvancedDGLutGenerator >
-			(new AdvancedDGLutGenerator(componentVector, fetcher, bitDepth, *this));
+			(new
+			 AdvancedDGLutGenerator(originalComponentVector, fetcher, bitDepth, *this));
 
 		    //==========================================================
 		    // 產生gamma curve用
@@ -668,10 +651,7 @@ namespace cms {
 		//analyzer若沒有設定過target color, 會使此步驟失效
 		//因為analyzer->getReferenceColor()會是null
 		XYZ_ptr targetWhite = analyzer->getReferenceColor()->toXYZ();
-		XYZ_ptr nativeWhite = (*componentVector)[0]->XYZ;
-		if (null != nativeWhiteAnalyzer) {
-		    //nativeWhite = nativeWhiteAnalyzer->getReferenceColor()->toXYZ();
-		}
+		XYZ_ptr nativeWhite = (*originalComponentVector)[0]->XYZ;
 		if (KeepMaxLuminance::TargetLuminance == keepMaxLuminance) {
 		    //利用luminanceGammaCurve, 把native的亮度設定成luminanceGammaCurve的最大亮度
 		    nativeWhite = targetWhite->clone();
@@ -687,26 +667,16 @@ namespace cms {
 
 		//開啟native white smooth(advanced)時, 會依照結果自動調整smooth區間的參數
 		for (; overParameter >= minOverParameter; overParameter -= step) {
-		    int width = bitDepth->getEffectiveInputLevel() - overParameter;
-		    //int width = bitDepth->getLevel() - overParameter;
+		    //設定目標參數
 		    advgenerator->setTarget(targetWhite, nativeWhite, luminanceGammaCurve,
 					    underParameter, overParameter, dimStrengthParameter,
-					    brightgammaParameter, width);
+					    brightgammaParameter,
+					    bitDepth->getEffectiveInputLevel());
+		    //得到目標值
 		    targetXYZVector = advgenerator->TargetXYZVector;
 		    if (null == targetXYZVector) {
 			return nil_RGB_vector_ptr;
 		    }
-		    //計算得到目標值
-		    /*targetXYZVector =
-		       advgenerator->getTargetXYZVector(targetWhite,
-		       nativeWhite,
-		       luminanceGammaCurve,
-		       underParameter,
-		       overParameter,
-		       dimStrengthParameter,
-		       brightgammaParameter, width); */
-
-
 		    //從目標值算出DGLut
 		    dglut = advgenerator->produce();
 		    STORE_RGBVECTOR("3.1_org_dgcode.xls", dglut);
@@ -716,9 +686,8 @@ namespace cms {
 		    //=========================================================
 		    // feedback
 		    //=========================================================
-		    if (true == feedbackFix
-			&& (true == MainForm->debugMode || bitDepth->isTCONInput()
-			    || MainForm->isPCwithTCONInput())) {
+		    if (true == feedbackFix && (true == debugMode || bitDepth->isTCONInput()
+						|| pcWithTCONInput)) {
 			//先從DGLut算出灰階的dx dy
 			//再從這樣的結果微調目標值
 			const MaxValue & lutMaxValue = bitDepth->getLutMaxValue();
@@ -1000,9 +969,9 @@ namespace cms {
 
 
 
-		if (null != componentVector) {
+		if (null != originalComponentVector) {
 		    //寫入raw data
-		    dglutFile->setRawData(componentVector, initialRGBGamma, finalRGBGamma);
+		    dglutFile->setRawData(originalComponentVector, initialRGBGamma, finalRGBGamma);
 		}
 		if (null != targetXYZVector) {
 		    dglutFile->setTargetXYZVector(targetXYZVector, dglut, bitDepth);
@@ -1015,7 +984,7 @@ namespace cms {
 		RGBVector::quantization(measureCode, bitDepth->getFRCAbilityBit());
 		bptr < MeasureCondition > measureCondition(new MeasureCondition(measureCode));
 		Component_vector_ptr componentVector;	// = fetcher->fetchComponent(measureCondition);
-		if (true == MainForm->linkCA210) {
+		if (true == linkCA210) {
 		    //有連上ca210就量測取得
 		    componentVector = fetcher->fetchComponent(measureCondition);
 		} else {
@@ -1185,12 +1154,14 @@ namespace cms {
 		    }
 		    break;
 		case KeepMaxLuminance::NativeWhiteAdvanced:{
-			//最後還是要對DG做一次smooth
-			bptr < DGLutOp >
-			    nativeWhiteAdv(new
-					   KeepNativeWhiteAdvancedOp
-					   (bitDepth, keepMaxLumiOver, false));
-			dgop.addOp(nativeWhiteAdv);
+			if (isDoDeHookOrg()) {
+			    //最後還是要對DG做一次smooth
+			    bptr < DGLutOp >
+				nativeWhiteAdv(new
+					       KeepNativeWhiteAdvancedOp
+					       (bitDepth, keepMaxLumiOver, false));
+			    dgop.addOp(nativeWhiteAdv);
+			}
 		    }
 		    break;
 		}
@@ -1210,14 +1181,15 @@ namespace cms {
 
 		if (dimFix) {
 		    //50量到0
-		    Component_vector_ptr componentVector = getDimComponentVector(dglut);
+		    Component_vector_ptr dimComponentVector = getDimComponentVector(dglut);
 		    bptr < ChromaticityAdjustEstimatorIF >
 			chromaticityEstimator(new
 					      MeasureEstimator
-					      (componentVector, fetcher->getAnalyzer(), bitDepth));
+					      (dimComponentVector, fetcher->getAnalyzer(),
+					       bitDepth));
 		    bptr < DGLutOp >
 			dimfix(new
-			       DimDGLutFixOp(bitDepth, dimFixThreshold, componentVector,
+			       DimDGLutFixOp(bitDepth, dimFixThreshold, dimComponentVector,
 					     chromaticityEstimator));
 		    dgop.addOp(dimfix);
 		}

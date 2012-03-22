@@ -90,6 +90,10 @@ void __fastcall TCCTLUTForm::Button_MeaRunClick(TObject * Sender)
 	}
 	MainForm->setMeterMeasurementWaitTimes();
 	bptr < ComponentFetcher > fetcher = MainForm->getComponentFetcher();
+
+	cms::lcd::calibrate::debugMode = MainForm->debugMode;
+	cms::lcd::calibrate::linkCA210 = MainForm->linkCA210;
+	cms::lcd::calibrate::pcWithTCONInput = MainForm->isPCwithTCONInput();
 	LCDCalibrator calibrator(fetcher, bitDepth);
 	calibrator.DebugMode = MainForm->debugMode;
 
@@ -199,9 +203,11 @@ void __fastcall TCCTLUTForm::Button_MeaRunClick(TObject * Sender)
 	    bool autoParameter = CheckBox_MaxYAdvAuto->Checked;
 	    //calibrator.SkipInverseB = this->CheckBox_SkipInverseB->Checked;
 	    calibrator.setKeepMaxLuminanceNativeWhiteAdvanced(over, gamma, autoParameter);
-	    calibrator.DeHookMode = deHook ? Evolution : None;
-	    int deHookZone = Edit_DeHookZone->Text.ToInt();
-	    calibrator.setEvolutionDeHook(deHookZone);
+	    calibrator.DeHookMode = deHook ? Evolution : Original;
+	    if (deHook) {
+		int deHookZone = Edit_DeHookZone->Text.ToInt();
+		calibrator.setEvolutionDeHook(deHookZone);
+	    }
 	} else if (true == RadioButton_MaxYTargetWhite->Checked) {
 	    calibrator.setKeepMaxLuminance(KeepMaxLuminance::TargetWhite);
 
@@ -361,13 +367,13 @@ void __fastcall TCCTLUTForm::FormShow(TObject * Sender)
     //=========================================================================
     bool debugMode = MainForm->debugMode;
     bool useTConCtrl = (true == tconInput) || debugMode;
-    if (useTConCtrl) {
-	bool findInverseZ = TargetWhiteForm2 != null ? TargetWhiteForm2->FindInverseZ : true;
-	if (findInverseZ) {
-	    CheckBox_DeHook->Visible = true;
-	    CheckBox_DeHook->Checked = true;
-	}
-    }
+    /*if (useTConCtrl) {
+       bool findInverseZ = TargetWhiteForm2 != null ? TargetWhiteForm2->FindInverseZ : true;
+       if (findInverseZ) {
+       CheckBox_DeHook->Visible = true;
+       CheckBox_DeHook->Checked = true;
+       }
+       } */
     CheckBox_Feedback->Visible = useTConCtrl;
     if (true == CheckBox_Feedback->Checked) {
 	CheckBox_Feedback->Checked = useTConCtrl;
@@ -805,8 +811,16 @@ void __fastcall TCCTLUTForm::RadioButton_MaxYTargetWhiteClick(TObject * Sender)
 
 void __fastcall TCCTLUTForm::RadioButton_MaxYNativeClick(TObject * Sender)
 {
+    CheckBox_DeHook->Checked = false;
     Label29->Visible = false;
     Edit_DeHookZone->Visible = false;
+}
+
+//---------------------------------------------------------------------------
+
+void __fastcall TCCTLUTForm::FormCreate(TObject * Sender)
+{
+    int x = 1;
 }
 
 //---------------------------------------------------------------------------
