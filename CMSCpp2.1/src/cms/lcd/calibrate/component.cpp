@@ -280,13 +280,6 @@ namespace cms {
 		// lut前置作業
 		//==============================================================
 		int size = componentVector->size();
-		/*double_vector_ptr rKeys(new double_vector(size));
-		   double_vector_ptr gKeys(new double_vector(size));
-		   double_vector_ptr bKeys(new double_vector(size));
-		   double_vector_ptr rValues(new double_vector(size));
-		   double_vector_ptr gValues(new double_vector(size));
-		   double_vector_ptr bValues(new double_vector(size));
-		   double_vector_ptr YValues(new double_vector(size)); */
 		double_vector_ptr rKeys(new double_vector());
 		double_vector_ptr gKeys(new double_vector());
 		double_vector_ptr bKeys(new double_vector());
@@ -302,14 +295,6 @@ namespace cms {
 
 		    RGB_ptr code = component->rgb;
 		    code->getValues(values, MaxValue::Double255);
-
-		    /*(*rKeys)[x] = values[0];
-		       (*gKeys)[x] = values[1];
-		       (*bKeys)[x] = values[2];
-		       (*rValues)[x] = intensity->R;
-		       (*gValues)[x] = intensity->G;
-		       (*bValues)[x] = intensity->B;
-		       (*YValues)[x] = component->XYZ->Y; */
 
 		    rKeys->push_back(values[0]);
 		    gKeys->push_back(values[1]);
@@ -337,8 +322,8 @@ namespace cms {
 		//==============================================================
 		// 產生RGB LUT
 		//==============================================================
-		DoubleArray::inspect(rKeys);
-		DoubleArray::inspect(rValues);
+		//DoubleArray::inspect(rKeys);
+		//DoubleArray::inspect(rValues);
 
 		rKeys = DoubleArray::getReverse(rKeys);
 		gKeys = DoubleArray::getReverse(gKeys);
@@ -348,8 +333,8 @@ namespace cms {
 		bValues = DoubleArray::getReverse(bValues);
 		YValues = DoubleArray::getReverse(YValues);
 
-		DoubleArray::inspect(rKeys);
-		DoubleArray::inspect(rValues);
+		//DoubleArray::inspect(rKeys);
+		//DoubleArray::inspect(rValues);
 
 		rLut = bptr < Interpolation1DLUT > (new Interpolation1DLUT(rKeys, rValues));
 		gLut = bptr < Interpolation1DLUT > (new Interpolation1DLUT(gKeys, gValues));
