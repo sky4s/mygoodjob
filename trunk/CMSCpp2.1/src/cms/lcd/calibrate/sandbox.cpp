@@ -73,7 +73,7 @@ namespace cms {
 
 	    void AdvancedDGLutGenerator::init() {
 		stopMeasure = false;
-		this->bitDepth = bitDepth;
+		//this->bitDepth = bitDepth;
 		rgbGenerateResult = nil_RGBGamma;
 		useMaxBIntensityZone = 30;
 	    };
@@ -379,19 +379,15 @@ namespace cms {
 		//=============================================================
 
 		//=============================================================
-		// BIntensitySmooth init
+		// BIntensitySmooth init (NG)
 		//=============================================================
-		//getMaxBIntensityInfo(targetXYZVector, componentVector, analyzer);
-
 		double maxBIntensity = -1;
 		int maxBGrayLevel = -1;
-		//int intensitySmoothEndGL = -1;
 		if (mode == BIntensitySmooth) {
 		    MaxBIntensityInfo maxBIntensityInfo =
 			getMaxBIntensityInfo(targetXYZVector, componentVector, analyzer);
 		    maxBIntensity = maxBIntensityInfo.maxBIntensity;
 		    maxBGrayLevel = maxBIntensityInfo.maxBGrayLevel;
-		    //intensitySmoothEndGL = effectiveInputLevel ;
 		}
 		//=============================================================
 

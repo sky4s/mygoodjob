@@ -90,16 +90,6 @@ namespace cms {
 	    }
 	    setupComponent(ch, measureXYZ);
 
-	    /*if (null != mm) {
-	       Patch_ptr p = mm->measure(rgb, rgb->toString());
-	       if (ch == Channel::W) {
-	       referenceRGB = rgb->clone();
-	       }
-	       XYZ_ptr measureXYZ = p->getXYZ();
-	       setupComponent(ch, measureXYZ);
-	       } else {
-	       throw IllegalStateException("mm = null");
-	       } */
 	};
 
 	void MaxMatrixIntensityAnalyzer::setupComponent(const Dep::Channel & ch, XYZ_ptr measureXYZ) {
