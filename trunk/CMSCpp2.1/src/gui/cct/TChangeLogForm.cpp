@@ -14,7 +14,7 @@ __fastcall TChangeLogForm::TChangeLogForm(TComponent * Owner)
 {
     Memo1->Text = "\
     Version 3.3b (build 1.21) 20120316\r\n\
-    +增加De-Hook Evo\r\n\
+    +Target White Form的Pattern大小可調整\r\n\
     \r\n\
     Version 3.3b (build 1.20) 20120315\r\n\
     -取消2 Gamma\r\n\

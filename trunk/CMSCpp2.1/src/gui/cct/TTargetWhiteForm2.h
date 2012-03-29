@@ -120,6 +120,8 @@ class TTargetWhiteForm2:public TForm, gui::event::WindowListener {
     void __fastcall Button_ConnectToggleClick(TObject * Sender);
     void __fastcall Button_FindInverseIntensityClick(TObject * Sender);
     void __fastcall Edit_InverseIntensityofBKeyPress(TObject * Sender, char &Key);
+    void __fastcall FormResize(TObject * Sender);
+    void __fastcall PageControl1Resize(TObject * Sender);
   private:			// User declarations
     void setColorimetricValues(double x, double y, double up, double vp);
     void scrollBar_Change();

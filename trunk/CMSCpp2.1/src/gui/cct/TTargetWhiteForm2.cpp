@@ -660,3 +660,28 @@ void __fastcall TTargetWhiteForm2::Edit_InverseIntensityofBKeyPress(TObject * Se
 
 //---------------------------------------------------------------------------
 
+void __fastcall TTargetWhiteForm2::FormResize(TObject * Sender)
+{
+
+    if ((this->Height - 80) > 562 && (this->Width - 24) > 874) {
+	PageControl1->Height = this->Height - 80;
+	PageControl1->Width = this->Width - 24;
+	Label3->Top = this->Height - 66;
+	Label3->Left = this->Width - 291;
+	ProgressBar1->Top = this->Height - 66;
+    }
+}
+
+//---------------------------------------------------------------------------
+
+void __fastcall TTargetWhiteForm2::PageControl1Resize(TObject * Sender)
+{
+    if (PageControl1->Height > 562 && PageControl1->Width > 874) {
+	Panel1->Height = PageControl1->Height - 166;
+	Panel1->Width = PageControl1->Width - 224;
+	GroupBox5->Top = Panel1->Top + Panel1->Height + 7;
+    }
+}
+
+//---------------------------------------------------------------------------
+
