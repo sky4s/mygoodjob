@@ -1,8 +1,8 @@
 object TargetWhiteForm2: TTargetWhiteForm2
   Left = 398
   Top = 287
-  Width = 759
-  Height = 525
+  Width = 898
+  Height = 642
   Caption = 'Target White'
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
@@ -14,12 +14,13 @@ object TargetWhiteForm2: TTargetWhiteForm2
   OldCreateOrder = False
   OnCreate = FormCreate
   OnKeyPress = FormKeyPress
+  OnResize = FormResize
   OnShow = FormShow
   PixelsPerInch = 96
   TextHeight = 13
   object Label3: TLabel
-    Left = 455
-    Top = 456
+    Left = 607
+    Top = 576
     Width = 281
     Height = 13
     Caption = 'Copyright (C) 2012, AU Optronics Corp., All Right Reserved.'
@@ -27,11 +28,12 @@ object TargetWhiteForm2: TTargetWhiteForm2
   object PageControl1: TPageControl
     Left = 7
     Top = 7
-    Width = 735
-    Height = 442
+    Width = 874
+    Height = 562
     ActivePage = TabSheet1
     TabIndex = 0
     TabOrder = 0
+    OnResize = PageControl1Resize
     object TabSheet1: TTabSheet
       Caption = 'Target White'
       object GroupBox2: TGroupBox
@@ -354,35 +356,35 @@ object TargetWhiteForm2: TTargetWhiteForm2
       end
       object GroupBox5: TGroupBox
         Left = 208
-        Top = 7
+        Top = 416
         Width = 514
-        Height = 403
+        Height = 113
         Caption = 'RGB Pattern'
         TabOrder = 1
         object Label13: TLabel
           Left = 7
-          Top = 332
+          Top = 44
           Width = 8
           Height = 13
           Caption = 'G'
         end
         object Label14: TLabel
           Left = 7
-          Top = 358
+          Top = 70
           Width = 7
           Height = 13
           Caption = 'B'
         end
         object Label12: TLabel
           Left = 7
-          Top = 306
+          Top = 18
           Width = 8
           Height = 13
           Caption = 'R'
         end
         object ScrollBar_R: TScrollBar
           Left = 59
-          Top = 312
+          Top = 24
           Width = 449
           Height = 14
           LargeChange = 10
@@ -394,7 +396,7 @@ object TargetWhiteForm2: TTargetWhiteForm2
         end
         object ScrollBar_G: TScrollBar
           Left = 59
-          Top = 338
+          Top = 50
           Width = 449
           Height = 14
           LargeChange = 10
@@ -406,7 +408,7 @@ object TargetWhiteForm2: TTargetWhiteForm2
         end
         object ScrollBar_B: TScrollBar
           Left = 59
-          Top = 364
+          Top = 76
           Width = 449
           Height = 14
           LargeChange = 10
@@ -416,17 +418,19 @@ object TargetWhiteForm2: TTargetWhiteForm2
           TabOrder = 2
           OnChange = ScrollBar_BChange
         end
-        object Panel1: TPanel
-          Left = 7
-          Top = 13
-          Width = 501
-          Height = 287
-          Color = clWhite
-          TabOrder = 3
-        end
         object Edit_ScrollR: TEdit
           Left = 20
-          Top = 306
+          Top = 18
+          Width = 33
+          Height = 21
+          Enabled = False
+          ImeName = #26085#25991#36664#20837#31995#32113' (MS-IME2002)'
+          TabOrder = 3
+          Text = '255'
+        end
+        object Edit_ScrollG: TEdit
+          Left = 20
+          Top = 44
           Width = 33
           Height = 21
           Enabled = False
@@ -434,9 +438,9 @@ object TargetWhiteForm2: TTargetWhiteForm2
           TabOrder = 4
           Text = '255'
         end
-        object Edit_ScrollG: TEdit
+        object Edit_ScrollB: TEdit
           Left = 20
-          Top = 332
+          Top = 70
           Width = 33
           Height = 21
           Enabled = False
@@ -444,24 +448,22 @@ object TargetWhiteForm2: TTargetWhiteForm2
           TabOrder = 5
           Text = '255'
         end
-        object Edit_ScrollB: TEdit
-          Left = 20
-          Top = 358
-          Width = 33
-          Height = 21
-          Enabled = False
-          ImeName = #26085#25991#36664#20837#31995#32113' (MS-IME2002)'
-          TabOrder = 6
-          Text = '255'
-        end
         object CheckBox_Lock: TCheckBox
           Left = 7
-          Top = 377
+          Top = 91
           Width = 78
-          Height = 20
+          Height = 18
           Caption = 'RGB Lock'
-          TabOrder = 7
+          TabOrder = 6
         end
+      end
+      object Panel1: TPanel
+        Left = 207
+        Top = 13
+        Width = 650
+        Height = 396
+        Color = clWhite
+        TabOrder = 2
       end
     end
     object TabSheet2: TTabSheet
@@ -645,20 +647,10 @@ object TargetWhiteForm2: TTargetWhiteForm2
       end
     end
   end
-  object ProgressBar1: TProgressBar
-    Left = 8
-    Top = 456
-    Width = 225
-    Height = 17
-    Min = 0
-    Max = 100
-    TabOrder = 1
-    Visible = False
-  end
   object StatusBar1: TStatusBar
     Left = 0
-    Top = 479
-    Width = 751
+    Top = 596
+    Width = 890
     Height = 17
     Color = clWhite
     Panels = <
@@ -675,5 +667,15 @@ object TargetWhiteForm2: TTargetWhiteForm2
         Width = 200
       end>
     SimplePanel = False
+  end
+  object ProgressBar1: TProgressBar
+    Left = 8
+    Top = 576
+    Width = 225
+    Height = 17
+    Min = 0
+    Max = 100
+    TabOrder = 1
+    Visible = False
   end
 end
