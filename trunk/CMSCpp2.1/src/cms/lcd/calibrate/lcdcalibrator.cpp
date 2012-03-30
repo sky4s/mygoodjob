@@ -59,6 +59,7 @@ namespace cms {
 		dimFixEnd = 50;
 		dimFix = false;
 		dimFixThreshold = 0.0000;
+		keepDarkLevel = true;
 		feedbackFix = false;
 
 		colorimetricQuanti = true;
@@ -1196,6 +1197,12 @@ namespace cms {
 		//==============================================================
 
 		RGB_vector_ptr result = dgop.createInstance();
+		if (keepDarkLevel) {
+		    RGB_ptr rgb0 = (*result)[0];
+		    rgb0->R = 0;
+		    rgb0->G = 0;
+		    rgb0->B = 0;
+		}
 		return result;
 		//==============================================================
 	    };

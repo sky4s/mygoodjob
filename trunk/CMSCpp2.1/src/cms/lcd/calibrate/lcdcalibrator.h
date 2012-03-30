@@ -49,6 +49,7 @@ namespace cms {
 		int dimFixEnd;
 		bool dimFix;
 		double dimFixThreshold;
+		bool keepDarkLevel;
 		//==============================================================
 
 		//==============================================================
