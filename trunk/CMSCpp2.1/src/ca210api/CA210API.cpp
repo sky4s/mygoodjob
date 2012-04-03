@@ -50,7 +50,7 @@ namespace ca210api {
 	//try {
 	enable = false;
 
-	long result = ca200.BindDefault();
+        result = ca200.BindDefault();
 	ca200.AutoConnect();
 	ca = ca200.get_SingleCa();
 	probe = ca.get_SingleProbe();

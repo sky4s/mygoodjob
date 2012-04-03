@@ -539,8 +539,8 @@ namespace cms {
 	       value = hsvValues[2] = 0~100
 	     */
 	    double_array HSV::toRGBValues(double_array hsvValues) {
-		double s0 = hsvValues[1];
-		double v0 = hsvValues[2];
+		//double s0 = hsvValues[1];
+		//double v0 = hsvValues[2];
 
 		double h = hsvValues[0];	//eat 0~360
 		double s = hsvValues[1] / 100;	//eat 0~100 to 0~1

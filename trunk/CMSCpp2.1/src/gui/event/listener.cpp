@@ -18,6 +18,7 @@ namespace gui {
 	};
 	void WindowAdapter::windowDeactivated(TObject * Sender, TCloseAction & Action) {
 	};
+	//const TCloseAction WindowAdapter::None = caNone;
     };
 };
 

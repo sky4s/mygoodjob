@@ -30,6 +30,7 @@ namespace gui {
 	    virtual void windowClosing(TObject * Sender, TCloseAction & Action);
 	    virtual void windowActivated(TObject * Sender, TCloseAction & Action);
 	    virtual void windowDeactivated(TObject * Sender, TCloseAction & Action);
+	    //static const TCloseAction None;
 	};
 	class MouseListener {
 	  public:

@@ -1,8 +1,8 @@
 object CCTLUTForm: TCCTLUTForm
-  Left = 299
-  Top = 529
-  Width = 845
-  Height = 423
+  Left = 591
+  Top = 308
+  Width = 841
+  Height = 431
   Caption = 'CCT(LUT)'
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
@@ -352,6 +352,15 @@ object CCTLUTForm: TCCTLUTForm
       TabOrder = 13
       Text = '80'
       OnChange = Edit_MiddleGammaEndChange
+    end
+    object CheckBox_HighlightGammaFix: TCheckBox
+      Left = 8
+      Top = 232
+      Width = 121
+      Height = 17
+      Caption = 'Highlight Gamma Fix'
+      TabOrder = 14
+      OnClick = CheckBox_AbsoluteGammaClick
     end
   end
   object GroupBox3: TGroupBox
@@ -1162,8 +1171,8 @@ object CCTLUTForm: TCCTLUTForm
   end
   object StatusBar1: TStatusBar
     Left = 0
-    Top = 375
-    Width = 837
+    Top = 383
+    Width = 833
     Height = 19
     Color = clWhite
     Panels = <

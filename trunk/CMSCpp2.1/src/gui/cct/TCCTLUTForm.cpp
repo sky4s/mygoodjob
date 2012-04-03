@@ -72,7 +72,7 @@ void __fastcall TCCTLUTForm::Button_MeaRunClick(TObject * Sender)
 	MainForm->setAnalyzerNull();
     }
 
-
+    bptr < DGLutFile > dgLutFile;
     try {			//為了對應__finally使用的try
 	run = true;
 	if (this->TOutputFileFrame1->Warning) {
@@ -153,6 +153,8 @@ void __fastcall TCCTLUTForm::Button_MeaRunClick(TObject * Sender)
 	    int middleGammaEnd = Edit_MiddleGammaEnd->Text.ToInt();
 	    calibrator.setGamma(gammaDim, dimGammaEnd, middleGammaEnd, gammaBright);
 	}
+
+	calibrator.HighlightGammaFix = CheckBox_HighlightGammaFix->Checked;
 	//==========================================================================
 
 	//==========================================================================
@@ -162,8 +164,7 @@ void __fastcall TCCTLUTForm::Button_MeaRunClick(TObject * Sender)
 	    double gain = this->Edit_BGain->Text.ToDouble();
 	    calibrator.BIntensityGain = gain;
 	}
-
-	bool bMax = this->CheckBox_BMax->Checked;
+	//bool bMax = this->CheckBox_BMax->Checked;
 	calibrator.BMax = this->CheckBox_BMax->Checked;
 	//==========================================================================
 
@@ -201,7 +202,6 @@ void __fastcall TCCTLUTForm::Button_MeaRunClick(TObject * Sender)
 	    int over = this->Edit_MaxYAdvOver->Text.ToInt();
 	    double gamma = this->Edit_MaxYAdvGamma->Text.ToDouble();
 	    bool autoParameter = CheckBox_MaxYAdvAuto->Checked;
-	    //calibrator.SkipInverseB = this->CheckBox_SkipInverseB->Checked;
 	    calibrator.setKeepMaxLuminanceNativeWhiteAdvanced(over, gamma, autoParameter);
 	    calibrator.DeHookMode = deHook ? Evolution : Original;
 	    if (deHook) {
@@ -225,6 +225,7 @@ void __fastcall TCCTLUTForm::Button_MeaRunClick(TObject * Sender)
 	//=================================================================
 	// 設定結束, 進入主流程開始處理
 	//=================================================================
+
 	try {
 	    if (this->TOutputFileFrame1->createDir() == false) {
 		ShowMessage("Cannot create directory!! Stop!");
@@ -232,7 +233,7 @@ void __fastcall TCCTLUTForm::Button_MeaRunClick(TObject * Sender)
 		return;
 	    }
 	    Util::deleteExist(filename);
-	    bptr < DGLutFile > dgLutFile(new DGLutFile(filename, Create));
+	    dgLutFile = bptr < DGLutFile > (new DGLutFile(filename, Create));
 
 	    bptr < TCONControl > tconctrl = MainForm->getTCONControl();
 	    calibrator.TCONControl = tconctrl;
@@ -241,7 +242,7 @@ void __fastcall TCCTLUTForm::Button_MeaRunClick(TObject * Sender)
 
 
 	    //開始量測及計算
-	    RGB_vector_ptr dglut = calibrator.getCCTDGLut(getMeasureCondition());
+	    RGB_vector_ptr dglut = calibrator.getCCTDGLut(getMeasureCondition(), dgLutFile);
 	    if (dglut == null) {
 		MainForm->stopProgress(ProgressBar1);
 		if (run) {
@@ -258,7 +259,8 @@ void __fastcall TCCTLUTForm::Button_MeaRunClick(TObject * Sender)
 	    //=================================================================
 	    // 存檔
 	    //=================================================================
-	    calibrator.storeDGLutFile(dglut, dgLutFile);
+	    //calibrator.storeDGLutFile(dglut, dgLutFile);
+	    calibrator.storeDGLut2DGLutFile(dgLutFile, dglut);
 
 	    if (true == CheckBox_MemoryMeasure->Checked && false == MainForm->mm->FakeMeasure) {
 		//提供memory功能
@@ -268,7 +270,7 @@ void __fastcall TCCTLUTForm::Button_MeaRunClick(TObject * Sender)
 		this->Button_MeaRun->Enabled = false;
 	    }
 	    //要release掉, 才可以讀取該檔;但是要在set dummy後release, 要不然dummy沒東西可設
-	    dgLutFile.reset();
+	    //dgLutFile.reset();
 	    //寫到文字檔
 	    RGBVector::storeToText(ChangeFileExt(filename.c_str(), ".txt").c_str(), dglut);
 	    //=================================================================
@@ -285,8 +287,12 @@ void __fastcall TCCTLUTForm::Button_MeaRunClick(TObject * Sender)
 	    Util::shellExecute(filename);
 	}
 	catch(java::lang::IllegalStateException & ex) {
+	    //dgLutFile.reset();
 	    MainForm->stopProgress(ProgressBar1);
 	    ShowMessage(ex.toString().c_str());
+	}
+	catch(...) {
+	    //dgLutFile.reset();
 	}
 	//=================================================================
     }
@@ -294,6 +300,7 @@ void __fastcall TCCTLUTForm::Button_MeaRunClick(TObject * Sender)
 	MainForm->stopProgress(ProgressBar1);
 	run = false;
 	Button_MeaRun->Enabled = true;
+	dgLutFile.reset();
     }
 }
 
@@ -445,7 +452,8 @@ void __fastcall TCCTLUTForm::FormKeyPress(TObject * Sender, char &Key)
 	    ShowMessage("Interrupt!");
 	    if (false == MeasureWindow->Visible) {
 		//觸發fetcher的window closing, 可以停止量測
-		MainForm->getComponentFetcher()->windowClosing(Sender, caNone);
+		TCloseAction action = caNone;
+		MainForm->getComponentFetcher()->windowClosing(Sender, action);
 		MainForm->mm->setMeasureWindowsVisible(false);
 	    }
 	    Button_MeaRun->Enabled = true;
@@ -820,7 +828,7 @@ void __fastcall TCCTLUTForm::RadioButton_MaxYNativeClick(TObject * Sender)
 
 void __fastcall TCCTLUTForm::FormCreate(TObject * Sender)
 {
-    int x = 1;
+    //int x = 1;
 }
 
 //---------------------------------------------------------------------------

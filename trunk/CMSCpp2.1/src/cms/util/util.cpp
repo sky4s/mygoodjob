@@ -136,7 +136,8 @@ namespace cms {
 	    strcpy(curdir, "X:\\");	/* fill string with form of response: X:\ */
 	    curdir[0] = 'A' + getdisk();	/* replace X with current drive letter */
 	    getcurdir(0, curdir + 3);	/* fill rest of string with current directory */
-	    return curdir;
+            string result = curdir;
+	    return result;
 	    /*string result(curdir);
 	       return result; */
 
@@ -308,7 +309,7 @@ namespace cms {
 	    if (size != compare->size) {
 		throw IllegalStateException("size is not match");
 	    }
-	    for (int x = 0; x < size; x++) {
+	    for (unsigned int x = 0; x < size; x++) {
 		if ((*this)[x] != (*compare)[x]) {
 		    return false;
 		}

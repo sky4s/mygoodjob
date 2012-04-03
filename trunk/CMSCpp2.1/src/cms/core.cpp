@@ -200,17 +200,17 @@ namespace cms {
     const Illuminant Illuminant::D50;	// = Illuminant();
     const Illuminant Illuminant::D65;	// = Illuminant();
     const Illuminant Illuminant::C;	// = Illuminant();
-    XYZ_ptr Illuminant::getXYZ() {
+    XYZ_ptr Illuminant::getXYZ() const{
 	XYZ_ptr XYZ = getXYZ(*this);
 	return XYZ;
     };
 
-    const XYZ_ptr Illuminant::getXYZ(const Illuminant & illuminant){
+    const XYZ_ptr Illuminant::getXYZ(const Illuminant & illuminant) {
 	using namespace Indep;
 	//D50();                        // Illuminant();
 	XYZ_ptr XYZ;
 	if (&illuminant == null) {
-
+                throw new IllegalArgumentException("illuminant == null");
 	} else if (&illuminant == &Illuminant::D50) {
 	    XYZ = XYZ_ptr(new CIEXYZ(0.964221, 1, 0.825210, Normal1));
 	} else if (&illuminant == &Illuminant::D65) {

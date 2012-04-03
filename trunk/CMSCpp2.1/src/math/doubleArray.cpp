@@ -539,18 +539,22 @@ namespace math {
     };
     void DoubleArray::inspect(double_array array, int size) {
 	double v = 0;
+	double stopHere = 0;
 	for (int x = 0; x < size; x++) {
 	    v = array[x];
-            double stopHere = v;
+	    stopHere = v;
 	}
+	v = stopHere;
     };
     void DoubleArray::inspect(double_vector_ptr vector) {
 	int size = vector->size();
 	double v = 0;
+	double stopHere = 0;
 	for (int x = 0; x < size; x++) {
 	    v = (*vector)[x];
-            double stopHere = v;
+	    stopHere = v;
 	}
+	v = stopHere;
     };
     //==========================================================================
     float2D_ptr FloatArray::toFloat2D(int width, int n, ...) {

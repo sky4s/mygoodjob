@@ -75,6 +75,7 @@ namespace cms {
 
 		dehook = None;
 		evoDeHookZone = 0;
+		highlightGammaFix = false;
 	    };
 
 	     double_vector_ptr
@@ -402,7 +403,8 @@ namespace cms {
 	       不管PanelRegulator要怎麼用, 都是從LCDCalibrator量好必要的資訊, 再傳到AdvancedDGLutGenerator去
 	       因為需要將兩種結果做smooth(target和native), 所以必須將remapping放在AdvancedDGLutGenerator內
 	     */
-	    RGB_vector_ptr LCDCalibrator::getCCTDGLut(bptr < MeasureCondition > measureCondition) {
+	    RGB_vector_ptr LCDCalibrator::getCCTDGLut(bptr < MeasureCondition > measureCondition,
+						      bptr < DGLutFile > dgLutFile) {
 		excuteStatus = "CCTDGLut";
 		this->measureCondition = measureCondition;
 		if (false == originalGamma && null == gammaCurve) {
@@ -432,20 +434,21 @@ namespace cms {
 
 		    }
 		}
-
+		//原始特性量測
 		this->originalComponentVector = fetchComponentVector();
 		if (null == originalComponentVector) {
 		    return nil_RGB_vector_ptr;
 		}
+		if (null != dgLutFile) {
+		    //把一些設定訊息先存起來
+		    storeInfo2DGLutFile(dgLutFile);
+		}
+
 		STORE_COMPONENT("0.0_o_fetch.xls", originalComponentVector);
 
 		this->originalComponentVector = Util::copy(originalComponentVector);
 		if (isDoDeHookOrg()) {
 		    panelRegulator->setEnable(false);
-		}
-		if (originalComponentVector == null) {
-		    //null代表量測被中斷
-		    return RGB_vector_ptr((RGB_vector *) null);
 		}
 		//=============================================================
 		// gamma curve setting zone
@@ -957,16 +960,42 @@ namespace cms {
 		Util::deleteExist(filename);
 		//產生新檔
 		bptr < DGLutFile > file(new DGLutFile(filename, Create));
-		storeDGLutFile(dglut, file);
+		//storeDGLutFile(dglut, file);
+		storeInfo2DGLutFile(file);
+		storeDGLut2DGLutFile(file, dglut);
+
 		return file;
 	    };
-	    void LCDCalibrator::storeDGLutFile(RGB_vector_ptr dglut,
-					       bptr < cms::colorformat::DGLutFile > dglutFile) {
+	    /*void LCDCalibrator::storeDGLutFile(RGB_vector_ptr dglut,
+	       bptr < cms::colorformat::DGLutFile > dglutFile) {
+
+	       //storeInfo2DGLutFile(dglutFile);
+	       //storeDGLut2DGLutFile(dglutFile, dglut);
+
+	       DGLutProperty property(this);
+	       //寫入property
+	       dglutFile->setProperty(property);
+	       //寫入dgcode
+	       dglutFile->setGammaTable(dglut);
+
+
+
+	       if (null != originalComponentVector) {
+	       //寫入raw data
+	       dglutFile->setRawData(originalComponentVector, initialRGBGamma, finalRGBGamma);
+	       }
+	       if (null != targetXYZVector) {
+	       dglutFile->setTargetXYZVector(targetXYZVector, dglut, bitDepth);
+	       }
+	       }; */
+
+
+	    void LCDCalibrator::storeInfo2DGLutFile(bptr < cms::colorformat::DGLutFile > dglutFile) {
 		DGLutProperty property(this);
 		//寫入property
 		dglutFile->setProperty(property);
 		//寫入dgcode
-		dglutFile->setGammaTable(dglut);
+		//dglutFile->setGammaTable(dglut);
 
 
 
@@ -974,10 +1003,20 @@ namespace cms {
 		    //寫入raw data
 		    dglutFile->setRawData(originalComponentVector, initialRGBGamma, finalRGBGamma);
 		}
+		/*if (null != targetXYZVector) {
+		   dglutFile->setTargetXYZVector(targetXYZVector, dglut, bitDepth);
+		   } */
+	    };
+
+	    void LCDCalibrator::storeDGLut2DGLutFile(bptr < cms::colorformat::DGLutFile > dglutFile,
+						     RGB_vector_ptr dglut) {
+		dglutFile->setGammaTable(dglut);
 		if (null != targetXYZVector) {
 		    dglutFile->setTargetXYZVector(targetXYZVector, dglut, bitDepth);
 		}
-	    };
+
+	    }
+
 	    Component_vector_ptr LCDCalibrator::getDimComponentVector(RGB_vector_ptr dglut) {
 		RGB_vector_ptr measureCode = RGBVector::copyRange(dglut, 0, dimFixEnd);
 		//50量到0
@@ -1307,7 +1346,7 @@ namespace cms {
 		    //絕對gamma區間
 		    for (int x = turnGrayLevel + 1; x < effectiven; x++) {
 			//此區段符合abs gamma
-			double normalInput = ((double) x) / effectiven;
+			//double normalInput = ((double) x) / effectiven;
 			//原始是abs, 要轉成rel
 			double absoluteNormalOutput = (*normalGammaCurve)[x];
 			double absoluteGammaLuminance = absoluteNormalOutput * maxLuminance;

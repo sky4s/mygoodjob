@@ -80,6 +80,7 @@ namespace cms {
 		}
 	    } else {
 		//throw IllegalStateException("mm = null");
+                return nil_XYZ_ptr;
 	    }
 	};
 

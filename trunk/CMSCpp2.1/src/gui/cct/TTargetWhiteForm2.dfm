@@ -1,8 +1,8 @@
 object TargetWhiteForm2: TTargetWhiteForm2
   Left = 398
   Top = 287
-  Width = 898
-  Height = 642
+  Width = 900
+  Height = 650
   Caption = 'Target White'
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
@@ -318,6 +318,7 @@ object TargetWhiteForm2: TTargetWhiteForm2
           ParentShowHint = False
           ShowHint = True
           TabOrder = 8
+          Visible = False
           OnKeyPress = Edit_InverseIntensityofBKeyPress
         end
         object Button_FindInverseIntensity: TButton
@@ -330,28 +331,8 @@ object TargetWhiteForm2: TTargetWhiteForm2
           ParentShowHint = False
           ShowHint = True
           TabOrder = 9
+          Visible = False
           OnClick = Button_FindInverseIntensityClick
-        end
-        object Button_Connect: TButton
-          Left = 128
-          Top = 260
-          Width = 59
-          Height = 20
-          Caption = 'Connect'
-          Enabled = False
-          TabOrder = 10
-          Visible = False
-          OnClick = Button_ConnectClick
-        end
-        object Button_Disconnect: TButton
-          Left = 123
-          Top = 276
-          Width = 72
-          Height = 20
-          Caption = 'Disconnect'
-          TabOrder = 11
-          Visible = False
-          OnClick = Button_DisconnectClick
         end
       end
       object GroupBox5: TGroupBox
@@ -649,8 +630,8 @@ object TargetWhiteForm2: TTargetWhiteForm2
   end
   object StatusBar1: TStatusBar
     Left = 0
-    Top = 596
-    Width = 890
+    Top = 604
+    Width = 892
     Height = 17
     Color = clWhite
     Panels = <
@@ -677,5 +658,26 @@ object TargetWhiteForm2: TTargetWhiteForm2
     Max = 100
     TabOrder = 1
     Visible = False
+  end
+  object Button_Disconnect: TButton
+    Left = 91
+    Top = 452
+    Width = 72
+    Height = 20
+    Caption = 'Disconnect'
+    TabOrder = 3
+    Visible = False
+    OnClick = Button_DisconnectClick
+  end
+  object Button_Connect: TButton
+    Left = 24
+    Top = 452
+    Width = 59
+    Height = 20
+    Caption = 'Connect'
+    Enabled = False
+    TabOrder = 4
+    Visible = False
+    OnClick = Button_ConnectClick
   end
 end

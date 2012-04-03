@@ -101,7 +101,6 @@ namespace cms {
 		this->effectiveInputLevel = effectiveInputLevel;
 		int brightWidth = bitDepth->getEffectiveInputLevel() - brightTurn;
 		XYZ_ptr blackXYZ = (*componentVector)[componentVector->size() - 1]->XYZ;
-		//XYZ_vector_ptr targetXYZVector;
 		this->brightTurn = brightTurn;
 
 		this->targetXYZVector =
@@ -134,7 +133,12 @@ namespace cms {
 		       3.再拿該組偽Raw Data產生DG Lut
 		       4.若精準度要更高,就重複做到滿意為止
 		     */
-		    return produceDGLutMulti(targetXYZVector, componentVector);
+		    try {
+			return produceDGLutMulti(targetXYZVector, componentVector);
+		    }
+		    catch(IllegalStateException & ex) {
+                     return nil_RGB_vector_ptr;
+		    }
 		} else {
 		    switch (mode) {
 		    case WhiteSmooth:{
@@ -174,6 +178,8 @@ namespace cms {
 			    //==========================================================================
 			    return result;
 			}
+                    default:
+                         return nil_RGB_vector_ptr;
 
 		    }
 		}
@@ -240,6 +246,19 @@ namespace cms {
 		    STORE_COMPONENT("MultiGen_Component_" +
 				    _toString(t + 1) + ".xls", componentVectorPrime);
 
+		    {		//gamma correct test scopr
+			Component_ptr c = (*componentVectorPrime)[0];
+			double maxLuminance = c->XYZ->Y;
+			//int targetSize = targetXYZVector->size();
+			XYZ_ptr targetWhite = (*targetXYZVector)[effectiveInputLevel - 1];
+			XYZ_ptr secondWhite = (*targetXYZVector)[effectiveInputLevel - 2];
+			if (secondWhite->Y > maxLuminance) {
+			    throw new IllegalStateException("secondWhite->Y > maxLuminance");
+			}
+			targetWhite->scaleY(maxLuminance);
+
+		    }
+
 		    result =
 			produceDGLut(targetXYZVector, componentVectorPrime,
 				     analyzer, bptr < PanelRegulator > ((PanelRegulator *) null));
@@ -292,7 +311,7 @@ namespace cms {
 				     bptr < cms::measure::IntensityAnalyzerIF > analyzer) {
 		ComponentLUT lut(componentVector);
 		//找到最大B Intensity的灰階
-		int maxBIntenstyRGL = lut.getMaxBIntensityRGL();
+		//int maxBIntenstyRGL = lut.getMaxBIntensityRGL();
 		int halfSmoothZone = useMaxBIntensityZone / 2;
 		//要把最大B Intensity對應的DG放在:
 		//int size = targetXYZVector->size();
@@ -428,8 +447,10 @@ namespace cms {
 
 			RGB_ptr maxIntensity(new RGBColor());
 			ComponentLUT lut(newcomponentVector);
-			maxIntensity->R = lut.getIntensity(Channel::R, 255);
-			maxIntensity->G = lut.getIntensity(Channel::G, 255);
+			double rcode = lut.correctCodeInRange(Channel::R, 255);
+			double gcode = lut.correctCodeInRange(Channel::G, 255);
+			maxIntensity->R = lut.getIntensity(Channel::R, rcode);
+			maxIntensity->G = lut.getIntensity(Channel::G, gcode);
 			int maxBIntensityRGL = lut.getMaxBIntensityRGL();
 			maxIntensity->B = lut.getIntensity(Channel::B, maxBIntensityRGL);
 
@@ -486,9 +507,9 @@ namespace cms {
 		    }
 		    //=============================================================
 
-		    double rIntensity = intensity[0];
-		    double gIntensity = intensity[1];
-		    double bIntensity = intensity[2];
+		    //double rIntensity = intensity[0];
+		    //double gIntensity = intensity[1];
+		    //double bIntensity = intensity[2];
 		    RGB_ptr rgb = lutgen.getDGCode(intensity[0], intensity[1], intensity[2]);	//傳出(主要)
 		    (*result)[x] = rgb;
 
