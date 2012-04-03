@@ -212,11 +212,11 @@ namespace cms {
 	   //==================================================================
 	   }; */
 	void DGLutFile::setTargetXYZVector(XYZ_vector_ptr targetXYZVector) {
-	    if (true) {
+	    //if (true) {
 		setTargetXYZVector(targetXYZVector, nil_RGB_vector_ptr,
 				   bptr < BitDepthProcessor > ((BitDepthProcessor *) null));
-		return;
-	    }
+		//return;
+	    //}
 	};
 
 	void DGLutFile::setTargetXYZVector(XYZ_vector_ptr targetXYZVector, RGB_vector_ptr dglut,
@@ -255,9 +255,9 @@ namespace cms {
 		gXYZ = gxyY->toXYZ();
 		bXYZ = bxyY->toXYZ();
 		targetWhiteRatio = property->getTargetWhiteRatio();
-		double r = targetWhiteRatio[0];
-		double g = targetWhiteRatio[1];
-		double b = targetWhiteRatio[2];
+		//double r = targetWhiteRatio[0];
+		//double g = targetWhiteRatio[1];
+		//double b = targetWhiteRatio[2];
 	    }
 	    //==================================================================
 	    // °j°é³B²z

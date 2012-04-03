@@ -61,6 +61,7 @@ namespace ca210api {
 	IProbeDisp probe;
 	IMemoryDisp memory;
 	 bptr < CAMeasureResult > measureResult;
+	long result;
       public:
 
 	 bptr < CAMeasureResult > getMeasureResult();

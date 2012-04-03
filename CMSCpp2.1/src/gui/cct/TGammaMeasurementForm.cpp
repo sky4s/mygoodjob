@@ -270,6 +270,7 @@ void __fastcall TGammaMeasurementForm::FormKeyPress(TObject * Sender, char &Key)
     if (27 == Key) {
 	if (true == run) {
 	    ShowMessage("Interrupt!");
+	    //const TCloseAction &None = caNone;
 	    if (false == MeasureWindow->Visible) {
 		MainForm->getComponentFetcher()->windowClosing(Sender, caNone);
 	    }

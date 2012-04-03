@@ -611,33 +611,6 @@ void __fastcall TTargetWhiteForm2::Button_FindInverseIntensityClick(TObject * Se
 	ShowMessage("Recommend using \"T-CON Input\"!!!");
     }
     int max = bitDepth->getInputMaxDigitalCount();
-    /*using namespace cms::measure;
-       bptr < MaxMatrixIntensityAnalyzer > analyzer =
-       MaxMatrixIntensityAnalyzer::getReadyAnalyzer(MainForm->mm, max, max, max);
-       using namespace Dep;
-       using namespace java::lang;
-       RGB_ptr preIntensity;
-       findInverseZ = false;
-       maxBRawGrayLevel = max;
-       bool foundInverse = false;
-
-       for (int x = max; x > (max - 50); x--) {
-       RGB_ptr rgb(new RGBColor(x, x, x));
-       RGB_ptr intensity = analyzer->getIntensity(rgb);
-       if (null != preIntensity) {
-       bool inverseB = intensity->B < preIntensity->B;
-       if (inverseB) {
-       maxBRawGrayLevel = x + 1;
-       foundInverse = true;
-       string dehook = "De-Hook: Set" + _toString(maxBRawGrayLevel);
-       StatusBar1->Panels->Items[1]->Text = "De-Hook: Set";
-       break;
-       }
-       }
-       preIntensity = intensity;
-       }
-
-       analyzer->endAnalyze(); */
     using namespace cms::measure;
     int maxBRawGrayLevel = MeasureTool::getMaxBIntensityRawGrayLevel(MainForm->mm, bitDepth);
     bool foundInverse = maxBRawGrayLevel != max;
@@ -663,7 +636,7 @@ void __fastcall TTargetWhiteForm2::Edit_InverseIntensityofBKeyPress(TObject * Se
 void __fastcall TTargetWhiteForm2::FormResize(TObject * Sender)
 {
 
-    if ((this->Height - 80) > 562 && (this->Width - 24) > 874) {
+    if ((this->Height - 80) > 650 && (this->Width - 24) > 900) {
 	PageControl1->Height = this->Height - 80;
 	PageControl1->Width = this->Width - 24;
 	Label3->Top = this->Height - 66;

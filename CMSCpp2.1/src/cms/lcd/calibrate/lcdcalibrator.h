@@ -79,6 +79,7 @@ namespace cms {
 		bool absoluteGamma;
 		int absoluteGammaStart;
 		double absGammaStartGLAboveGamma;
+		bool highlightGammaFix;
 		//==============================================================
 
 		//==============================================================
@@ -148,24 +149,31 @@ namespace cms {
 		//使用新的有多種target的方法去找到DG
 		bool useNewMethod;
 
-		//dprecated
-		//double middleCCTRatio;
-
 		string excuteStatus;
 		bool debugMode;
-		//dprecated
-		//bool smoothComponent;
 		//==============================================================
 
 	      public:
 		//==============================================================
 		// options
 		//==============================================================
+
+		//==============================================================
+		//dim
+		//==============================================================
 		void setP1P2(int p1, int p2);
 		void setRBInterpolation(int under);
 		void setNonDimCorrect();
 		void setDefinedDim(int under, double strength);
+		__property int DimFixEnd = { write = dimFixEnd };
+		__property bool DimFix = { write = dimFix };
+		__property double DimFixThreshold = { write = dimFixThreshold
+		};
+		//==============================================================
 
+		//==============================================================
+		//gamma
+		//==============================================================
 		void setGamma(double gamma);
 		//2-gamma
 		void setGamma(double dimGamma, int dimGammaEnd, double brightGamma);
@@ -177,49 +185,55 @@ namespace cms {
 		void setGammaCurve(double_vector_ptr rgammaCurve,
 				   double_vector_ptr ggammaCurve, double_vector_ptr bgammaCurve);
 		void setOriginalGamma();
-		//void setAbsoluteGamma(bool absoluteGamma, int start);
 		void setAbsoluteGamma(bool absoluteGamma, int startGrayLevel,
 				      double startGrayLevelAboveGamma);
+		__property bool HighlightGammaFix = { write = highlightGammaFix };
+		//==============================================================
 
-
+		//==============================================================
+		// max luminance
+		//==============================================================
 		void setBMax2(bool bMax2, int begin, double gamma);
+		__property double BIntensityGain = { write = bIntensityGain
+		};
+		__property bool BMax = { write = bMax };
 
 		void setKeepMaxLuminance(KeepMaxLuminance keepMaxLuminance);
 		void setKeepMaxLuminanceNativeWhiteAdvanced(int over,
 							    double gamma, bool autoParameter);
-
-		void setMultiGen(bool enable, int times);
-		void setSmoothIntensity(int start, int end);
-		__property int DimFixEnd = { write = dimFixEnd };
-		__property bool DimFix = { write = dimFix };
-		__property double DimFixThreshold = { write = dimFixThreshold
-		};
-		__property bool GByPass = { write = gByPass };
-		__property double BIntensityGain = { write = bIntensityGain
-		};
-		__property bool BMax = { write = bMax };
-		__property bool AvoidFRCNoise = { write = avoidFRCNoise };
-		__property bool NewMethod = { write = useNewMethod };
-		//__property bool SkipInverseB = { write = skipInverseB };
-		__property double RTargetIntensity = { write = rTargetIntensity
-		};
-		__property double BTargetIntensity = { write = bTargetIntensity
-		};
-		__property bool ManualAccurateMode = { write = manualAccurateMode
-		};
-		/*__property double MiddleCCTRatio = { write = middleCCTRatio
-		};*/
-		__property bool FeedbackFix = { write = feedbackFix };
-		/*__property bool SmoothComponent = { read = smoothComponent,
-		    write = smoothComponent
-		};*/
-		__property string ExcuteStatus = { read = excuteStatus };
-		__property bool DebugMode = { write = debugMode };
 		__property DeHook DeHookMode = { read = dehook, write = dehook };
 		void setEvolutionDeHook(int zone);
 		__property int EvolutionDeHookZone = { read = evoDeHookZone };
 		//==============================================================
 
+		//==============================================================
+		//intensity
+		//==============================================================
+		__property double RTargetIntensity = { write = rTargetIntensity
+		};
+		__property double BTargetIntensity = { write = bTargetIntensity
+		};
+		void setSmoothIntensity(int start, int end);
+		//==============================================================
+
+		void setMultiGen(bool enable, int times);
+
+
+		//==============================================================
+		// for NB Noise
+		//==============================================================
+		__property bool GByPass = { write = gByPass };
+		__property bool AvoidFRCNoise = { write = avoidFRCNoise };
+		//==============================================================
+
+		__property bool NewMethod = { write = useNewMethod };
+
+		__property bool ManualAccurateMode = { write = manualAccurateMode
+		};
+		__property bool FeedbackFix = { write = feedbackFix };
+		__property string ExcuteStatus = { read = excuteStatus };
+		__property bool DebugMode = { write = debugMode };
+		//==============================================================
 
 	      private:
 		//==============================================================
@@ -227,7 +241,6 @@ namespace cms {
 		//==============================================================
 		 RGB_vector_ptr dglut;
 		Component_vector_ptr originalComponentVector;
-		//Component_vector_ptr componentVector;
 		double_vector_ptr luminanceVector;
 		RGBGamma_ptr finalRGBGamma;
 		RGBGamma_ptr initialRGBGamma;
@@ -314,10 +327,7 @@ namespace cms {
 		    getLuminanceGammaCurve(double_vector_ptr
 					   normalGammaCurve,
 					   double maxLuminance, double minLuminance);
-		/*static double_vector_ptr
-		   getLuminanceGammaCurve(double_vector_ptr normalGammaCurve,
-		   double maxLuminance, double minLuminance,
-		   bool absoluteGamma, int absoluteGammaStart); */
+
 		static double_vector_ptr
 		    getLuminanceGammaCurve(double_vector_ptr normalGammaCurve,
 					   double maxLuminance, double minLuminance,
@@ -335,12 +345,17 @@ namespace cms {
 		// functions call from outside
 		//==============================================================
 
-		RGB_vector_ptr getCCTDGLut(bptr < MeasureCondition > measureCondition);
+		RGB_vector_ptr getCCTDGLut(bptr < MeasureCondition > measureCondition,
+					   bptr < cms::colorformat::DGLutFile > dgLutFile);
 		RGB_vector_ptr getGammaDGLut(bptr < MeasureCondition > measureCondition);
 		 bptr < cms::colorformat::DGLutFile >
 		    storeDGLutFile(const std::string & filename, RGB_vector_ptr dglut);
-		void storeDGLutFile(RGB_vector_ptr dglut,
-				    bptr < cms::colorformat::DGLutFile > dglutFile);
+		/*void storeDGLutFile(RGB_vector_ptr dglut,
+		   bptr < cms::colorformat::DGLutFile > dglutFile); */
+		//bptr < DGLutFile > storeInfo2DGLutFile(const std::string & filename);
+		void storeInfo2DGLutFile(bptr < cms::colorformat::DGLutFile > dglutFile);
+		void storeDGLut2DGLutFile(bptr < cms::colorformat::DGLutFile > dglutFile,
+					  RGB_vector_ptr dglut);
 
 		__property bptr <
 		    cms::measure::MaxMatrixIntensityAnalyzer >

@@ -1,8 +1,8 @@
 object MatrixCalibrationForm: TMatrixCalibrationForm
   Left = 300
   Top = 300
-  Width = 538
-  Height = 482
+  Width = 435
+  Height = 398
   Caption = 'Matrix Calibration'
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET

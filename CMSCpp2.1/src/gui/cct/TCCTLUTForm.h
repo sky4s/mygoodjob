@@ -129,6 +129,7 @@ class TCCTLUTForm:public TForm, cms::lcd::calibrate::FeedbackListener {
     TEdit *Edit_MiddleGammaEnd;
     TLabel *Label29;
     TEdit *Edit_DeHookZone;
+    TCheckBox *CheckBox_HighlightGammaFix;
     void __fastcall RadioButton_P1P2Click(TObject * Sender);
     void __fastcall Button_MeaRunClick(TObject * Sender);
     void __fastcall Button_DebugClick(TObject * Sender);

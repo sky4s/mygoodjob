@@ -38,6 +38,7 @@ namespace java {
 	};
 
 	const Class & Object::getClass() const {
+	    return c;
 	};
 	const int Object::hashCode() {
 	    return -1;
@@ -349,4 +350,9 @@ namespace java {
 
     };
 };
+
+
+
+
+
 
