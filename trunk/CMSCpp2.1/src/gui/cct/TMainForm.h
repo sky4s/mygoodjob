@@ -192,7 +192,7 @@ class TMainForm:public TForm {
     int getInterval();
      bptr < cms::measure::CA210IntensityAnalyzer > ca210Analyzer;
      bptr < cms::measure::IntensityAnalyzerIF > analyzer;
-     bptr < cms::measure::MaxMatrixIntensityAnalyzer > nativeWhiteAnalyzer;
+     bptr < cms::measure::MaxMatrixIntensityAnalyzer > secondWhiteAnalyzer;
     //==========================================================================
     //==========================================================================
     // T-CON ctrl
@@ -234,7 +234,7 @@ class TMainForm:public TForm {
     //analyzer
     bool isCA210Analyzer();
      bptr < cms::measure::IntensityAnalyzerIF > getAnalyzer();
-     bptr < cms::measure::MaxMatrixIntensityAnalyzer > getNativeWhiteAnalyzer();
+     bptr < cms::measure::MaxMatrixIntensityAnalyzer > getSecondWhiteAnalyzer();
     void setAnalyzerNull();
 
     //meter

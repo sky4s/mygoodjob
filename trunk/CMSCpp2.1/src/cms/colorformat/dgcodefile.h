@@ -84,6 +84,7 @@ namespace cms {
 	  public:
 	    static const std::string Native;
 	    static const std::string Target;
+	    static const std::string Second;
 	     DGLutProperty(cms::lcd::calibrate::LCDCalibrator * c);
 	     DGLutProperty(bptr < DGLutFile > d);
 	     DGLutProperty(DGLutFile * d);
@@ -91,9 +92,11 @@ namespace cms {
 
 	    xyY_ptr getTargetReferenceColor(const Dep::Channel & ch);
 	    xyY_ptr getNativeReferenceColor(const Dep::Channel & ch);
+	    xyY_ptr getSecondReferenceColor(const Dep::Channel & ch);
 	    RGB_ptr getReferenceRGB(const string & prestring);
 	    RGB_ptr getTargetReferenceRGB();
 	    RGB_ptr getNativeReferenceRGB();
+	    RGB_ptr getSecondReferenceRGB();
 	     bptr < cms::lcd::calibrate::BitDepthProcessor > getBitDepthProcessor();
 	    double_array getTargetWhiteRatio();
 	    //double_array getTargetWhiteRatio(const string & prestring);

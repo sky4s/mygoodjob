@@ -213,9 +213,9 @@ namespace cms {
 	   }; */
 	void DGLutFile::setTargetXYZVector(XYZ_vector_ptr targetXYZVector) {
 	    //if (true) {
-		setTargetXYZVector(targetXYZVector, nil_RGB_vector_ptr,
-				   bptr < BitDepthProcessor > ((BitDepthProcessor *) null));
-		//return;
+	    setTargetXYZVector(targetXYZVector, nil_RGB_vector_ptr,
+			       bptr < BitDepthProcessor > ((BitDepthProcessor *) null));
+	    //return;
 	    //}
 	};
 
@@ -434,6 +434,7 @@ namespace cms {
 	const string DGLutProperty::Off = "Off";
 	const string DGLutProperty::Native = "native";
 	const string DGLutProperty::Target = "target";
+	const string DGLutProperty::Second = "second";
 	const string DGLutProperty::WhiteRatio = "WhiteRatio";
 	const string DGLutProperty::TargetWhiteRatio = "TargetWhiteRatio";
 	void DGLutProperty::store(DGLutFile & dgfile) const {
@@ -526,6 +527,7 @@ namespace cms {
 		       } */
 		    break;
 		}
+                dgfile.addProperty("keep dark level", c->KeepDarkLevel ? On : Off);
 	    }
 	    //==================================================================
 
@@ -554,10 +556,11 @@ namespace cms {
 		dgfile.addProperty("keep absolute gamma as",
 				   _toString(c->absGammaStartGLAboveGamma));
 	    }
+	    dgfile.addProperty("highlight famma fix", c->HighlightGammaFix ? On : Off);
 	    //==================================================================
 
 	    //==================================================================
-	    // others2
+	    // others 2
 	    //==================================================================
 	    if (isCCTMode) {
 		dgfile.addProperty("g bypass", c->gByPass ? On : Off);
@@ -595,38 +598,37 @@ namespace cms {
 	    case KeepMaxLuminance::NativeWhite:
 		keepstr = "Native White";
 		break;
-	    case KeepMaxLuminance::NativeWhiteAdvanced:
-		keepstr = "Native White Advanced(CCT Smoothing)";
+	    case KeepMaxLuminance::Smooth2NativeWhite:
+		keepstr = "Native White(CCT Smoothing)";
 		break;
 	    case KeepMaxLuminance::None:
 		keepstr = "None process";
 		break;
 	    }
 	    dgfile.addProperty("keep max luminance", keepstr);
-	    string deHookStr;
-	    if (None == c->DeHookMode) {
-		deHookStr = "None";
-	    } else if (Original == c->DeHookMode) {
-		deHookStr = "Original";
-	    } else if (Evolution == c->DeHookMode) {
-		deHookStr = "Evolution (zone:" + _toString(c->EvolutionDeHookZone) + ")";
-	    }
-	    dgfile.addProperty("dehook mode", deHookStr);
-
-	    if (c->keepMaxLuminance == KeepMaxLuminance::NativeWhiteAdvanced) {
-		if (c->isDoDeHookOrg()) {
-		    if (true == c->autoKeepMaxLumiParameter) {
-			dgfile.addProperty("auto keep max lumi adv parameter", On);
-		    }
-		    dgfile.addProperty("keep max lumi adv over", c->keepMaxLumiOver);
-		    dgfile.addProperty("keep max lumi adv gamma", c->keepMaxLumiGamma);
-		} else if (c->isDoDeHookEvo()) {
-
+	    if (c->keepMaxLuminance == KeepMaxLuminance::Smooth2NativeWhite) {
+		if (true == c->autoKeepMaxLumiParameter) {
+		    dgfile.addProperty("auto keep max lumi adv parameter", On);
 		}
-		//dgfile.addProperty("skip inverse b", c->skipInverseB ? On : Off);
-		//if (true == c->skipInverseB) {
+		dgfile.addProperty("keep max lumi adv over", c->keepMaxLumiOver);
+	    }
+	    //string deHookStr;
+	    if (None == c->DeHookMode) {
+		dgfile.addProperty("dehook mode", "None");
+	    } else if (KeepCCT == c->DeHookMode) {
+		dgfile.addProperty("dehook mode", "Keep CCT");
 		dgfile.addProperty("max B intensity RGL", c->maxBRawGrayLevel);
-		//}
+	    } else if (ReduceBGap == c->DeHookMode) {
+		string deHookStr = "Reduce B Gap (zone:" + _toString(c->DeHookRBGZone) + ")";
+		dgfile.addProperty("dehook mode", deHookStr);
+	    }
+
+	    if (c->keepMaxLuminance == KeepMaxLuminance::Smooth2NativeWhite) {
+		if (true == c->autoKeepMaxLumiParameter) {
+		    dgfile.addProperty("auto keep max lumi adv parameter", On);
+		}
+		dgfile.addProperty("keep max lumi adv over", c->keepMaxLumiOver);
+
 	    }
 	    if (true == c->autoIntensity) {
 		RGB_ptr idealIntensity = c->idealIntensity;
@@ -642,8 +644,8 @@ namespace cms {
 	    if (null != analyzer) {
 		storeAnalyzer(dgfile, analyzer, Target);
 	    }
-	    if (null != c->nativeWhiteAnalyzer) {
-		storeAnalyzer(dgfile, c->nativeWhiteAnalyzer, Native);
+	    if (null != c->secondWhiteAnalyzer) {
+		storeAnalyzer(dgfile, c->secondWhiteAnalyzer, Second);
 	    }
 	    //==================================================================
 	};
@@ -655,14 +657,15 @@ namespace cms {
 	    //¬ö¿ýref color
 	    xyY_ptr refWhitexyY = analyzer->getReferenceColor();
 	    if (null != refWhitexyY) {
-		xyY_ptr refRxyY = analyzer->getPrimaryColor(Channel::R);
-		xyY_ptr refGxyY = analyzer->getPrimaryColor(Channel::G);
-		xyY_ptr refBxyY = analyzer->getPrimaryColor(Channel::B);
-		 dgfile.addProperty(prestring + " reference white", *refWhitexyY->toString());
 		string_ptr comment = analyzer->getReferenceColorComment();
 		if (null != comment) {
 		    dgfile.addProperty("reference white comment", *comment);
 		}
+
+		xyY_ptr refRxyY = analyzer->getPrimaryColor(Channel::R);
+		xyY_ptr refGxyY = analyzer->getPrimaryColor(Channel::G);
+		xyY_ptr refBxyY = analyzer->getPrimaryColor(Channel::B);
+		dgfile.addProperty(prestring + " reference white", *refWhitexyY->toString());
 		dgfile.addProperty(prestring + " primary R", *refRxyY->toString());
 		dgfile.addProperty(prestring + " primary G", *refGxyY->toString());
 		dgfile.addProperty(prestring + " primary B", *refBxyY->toString());
@@ -781,6 +784,9 @@ namespace cms {
 	xyY_ptr DGLutProperty::getNativeReferenceColor(const Dep::Channel & ch) {
 	    return getReferenceColor(Native, ch);
 	};
+	xyY_ptr DGLutProperty::getSecondReferenceColor(const Dep::Channel & ch) {
+	    return getReferenceColor(Second, ch);
+	};
 	RGB_ptr DGLutProperty::getReferenceRGB(const string & prestring) {
 	    string_ptr value = getProperty(prestring + " reference white RGB");
 	    double_array rgbValues = ColorSpace::getValuesFromString(value);
@@ -792,6 +798,9 @@ namespace cms {
 	};
 	RGB_ptr DGLutProperty::getNativeReferenceRGB() {
 	    return getReferenceRGB(Native);
+	};
+	RGB_ptr DGLutProperty::getSecondReferenceRGB() {
+	    return getReferenceRGB(Second);
 	};
 	bptr < BitDepthProcessor > DGLutProperty::getBitDepthProcessor() {
 	    const MaxValue & in = MaxValue::valueOf(getProperty("in"));

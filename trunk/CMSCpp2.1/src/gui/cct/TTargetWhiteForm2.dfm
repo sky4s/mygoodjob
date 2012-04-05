@@ -138,9 +138,9 @@ object TargetWhiteForm2: TTargetWhiteForm2
             OnChange = Edit_targetyChange
           end
           object Edit_CT: TEdit
-            Left = 26
+            Left = 27
             Top = 33
-            Width = 59
+            Width = 58
             Height = 21
             ImeName = #26085#25991#36664#20837#31995#32113' (MS-IME2002)'
             TabOrder = 2
@@ -148,9 +148,9 @@ object TargetWhiteForm2: TTargetWhiteForm2
             OnChange = Edit_CTChange
           end
           object Edit_up: TEdit
-            Left = 26
+            Left = 27
             Top = 53
-            Width = 59
+            Width = 58
             Height = 21
             Enabled = False
             ImeName = #26085#25991#36664#20837#31995#32113' (MS-IME2002)'

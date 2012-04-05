@@ -517,9 +517,9 @@ bptr < cms::measure::IntensityAnalyzerIF > TMainForm::getAnalyzer()
     return analyzer;
 }
 
-bptr < cms::measure::MaxMatrixIntensityAnalyzer > TMainForm::getNativeWhiteAnalyzer()
+bptr < cms::measure::MaxMatrixIntensityAnalyzer > TMainForm::getSecondWhiteAnalyzer()
 {
-    return nativeWhiteAnalyzer;
+    return secondWhiteAnalyzer;
 };
 
 //---------------------------------------------------------------------------
@@ -634,20 +634,20 @@ void TMainForm::setDummyMeterFile(bptr < cms::colorformat::DGLutFile > dglutFile
 	//=====================================================================
 
 	//=====================================================================
-	// 設定native analyzer
+	// 設定2nd white analyzer
 	//=====================================================================
-	xyY_ptr nativewxyY = property->getNativeReferenceColor(Channel::W);
-	if (null != nativewxyY) {
-	    xyY_ptr rxyY = property->getNativeReferenceColor(Channel::R);
-	    xyY_ptr gxyY = property->getNativeReferenceColor(Channel::G);
-	    xyY_ptr bxyY = property->getNativeReferenceColor(Channel::B);
-	    RGB_ptr refRGB = property->getNativeReferenceRGB();
+	xyY_ptr secondxyY = property->getSecondReferenceColor(Channel::W);
+	if (null != secondxyY) {
+	    xyY_ptr rxyY = property->getSecondReferenceColor(Channel::R);
+	    xyY_ptr gxyY = property->getSecondReferenceColor(Channel::G);
+	    xyY_ptr bxyY = property->getSecondReferenceColor(Channel::B);
+	    RGB_ptr refRGB = property->getSecondReferenceRGB();
 
 	    bptr < MaxMatrixIntensityAnalyzer > matrixAnalyzer2 =
 		MaxMatrixIntensityAnalyzer::getReadyAnalyzer(rxyY->toXYZ(), gxyY->toXYZ(),
-							     bxyY->toXYZ(), nativewxyY->toXYZ());
+							     bxyY->toXYZ(), secondxyY->toXYZ());
 	    matrixAnalyzer2->setReferenceRGB(refRGB);
-	    nativeWhiteAnalyzer = matrixAnalyzer2;
+	    secondWhiteAnalyzer = matrixAnalyzer2;
 	}
 	//=====================================================================
 

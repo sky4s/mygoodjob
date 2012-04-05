@@ -108,7 +108,7 @@ namespace cms {
 
 	    };
 
-	    class KeepNativeWhiteAdvancedOp:public DGLutOp {
+	    class KeepNativeWhiteSmoothOp:public DGLutOp {
 	      private:
 		bptr < BitDepthProcessor > bitDepth;
 		int over;
@@ -116,7 +116,7 @@ namespace cms {
 	      protected:
 		 RGB_vector_ptr getRendering(RGB_vector_ptr source);
 	      public:
-		 KeepNativeWhiteAdvancedOp(bptr < BitDepthProcessor > bitDepth, int over,
+		 KeepNativeWhiteSmoothOp(bptr < BitDepthProcessor > bitDepth, int over,
 					   bool compensationR);
 	    };
 	    //=================================================================

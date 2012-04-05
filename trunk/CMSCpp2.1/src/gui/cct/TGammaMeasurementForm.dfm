@@ -321,6 +321,7 @@ object GammaMeasurementForm: TGammaMeasurementForm
     Min = 0
     Max = 100
     TabOrder = 5
+    Visible = False
   end
   object OpenDialog1: TOpenDialog
   end

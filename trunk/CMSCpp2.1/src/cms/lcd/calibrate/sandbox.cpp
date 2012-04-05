@@ -54,11 +54,25 @@ namespace cms {
 	    //==================================================================
 	    // AdvancedDGLutGenerator
 	    //==================================================================
+	    /* WhiteSmooth盡ノ
+	       componentVector: 秖代眔狾疭┦
+	       fetcher: ノㄓ秖代狾疭┦じン
+	       analyzer1:
+	       analyzer2nd:
+	       bitDepth: 狾bit疭┦
+	       calibrator:
+	     */
 	  AdvancedDGLutGenerator::AdvancedDGLutGenerator(Component_vector_ptr componentVector, bptr < cms::lcd::calibrate::ComponentFetcher > fetcher, bptr < IntensityAnalyzerIF > analyzer1, bptr < IntensityAnalyzerIF > analyzer2nd, bptr < BitDepthProcessor > bitDepth, const LCDCalibrator & calibrator):DimDGLutGenerator(componentVector, analyzer1),
 		fetcher(fetcher), analyzer2nd(analyzer2nd),
 		bitDepth(bitDepth), mode(WhiteSmooth), c(calibrator) {
 		init();
 	    };
+	    /* 獶WhiteSmoothノ
+	       componentVector: 秖代眔狾疭┦
+	       fetcher: ノㄓ秖代狾疭┦じン
+	       bitDepth: 狾bit疭┦
+	       calibrator:
+	     */
 	    AdvancedDGLutGenerator::
 		AdvancedDGLutGenerator(Component_vector_ptr
 				       componentVector,
@@ -137,7 +151,7 @@ namespace cms {
 			return produceDGLutMulti(targetXYZVector, componentVector);
 		    }
 		    catch(IllegalStateException & ex) {
-                     return nil_RGB_vector_ptr;
+			return nil_RGB_vector_ptr;
 		    }
 		} else {
 		    switch (mode) {
@@ -178,8 +192,8 @@ namespace cms {
 			    //==========================================================================
 			    return result;
 			}
-                    default:
-                         return nil_RGB_vector_ptr;
+		    default:
+			return nil_RGB_vector_ptr;
 
 		    }
 		}

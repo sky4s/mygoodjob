@@ -13,15 +13,19 @@ __fastcall TChangeLogForm::TChangeLogForm(TComponent * Owner)
 :TForm(Owner)
 {
     Memo1->Text = "\
-    Version 3.3b (build 1.21) 20120316\r\n\
+    [3.3b build 1.22] 2012/04/05\r\n\
+    +簡化De-Hook功能的使用\r\n\
+    -修正高灰階Gamma的準確性\r\n\
+    \r\n\
+    [3.3b build 1.21] 2012/03/16\r\n\
     +Target White Form的Pattern大小可調整\r\n\
     \r\n\
-    Version 3.3b (build 1.20) 20120315\r\n\
+    [3.3b build 1.20] 2012/03/15\r\n\
     -取消2 Gamma\r\n\
     +Defined Dim Strength介面修改\r\n\
     +增加3 Gamma\r\n\
     \r\n\
-    Version 3.3b (build 1.19) 20120302\r\n\
+    [3.3b build 1.19] 2012/03/02\r\n\
     -Measurement PC Input修正\r\n\
     -量測時間(Pattern Display Interval)更改為400ms\r\n\
     +增加PC w/ T-CON的功能(透過DG-LUT達到與Direct Gamma相同功能)\r\n\

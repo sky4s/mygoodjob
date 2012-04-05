@@ -310,7 +310,7 @@ namespace cms {
 
 	    };
 	    //==================================================================
-	    RGB_vector_ptr KeepNativeWhiteAdvancedOp::getRendering(RGB_vector_ptr source) {
+	    RGB_vector_ptr KeepNativeWhiteSmoothOp::getRendering(RGB_vector_ptr source) {
 		//STORE_RGBVECTOR("op-source.xls", source);
 		RGB_vector_ptr result = RGBVector::deepClone(source);
 		int size = result->size();
@@ -344,7 +344,7 @@ namespace cms {
 		return result;
 
 	    };
-	  KeepNativeWhiteAdvancedOp::KeepNativeWhiteAdvancedOp(bptr < BitDepthProcessor > bitDepth, int over, bool compensationR):bitDepth(bitDepth),
+	  KeepNativeWhiteSmoothOp::KeepNativeWhiteSmoothOp(bptr < BitDepthProcessor > bitDepth, int over, bool compensationR):bitDepth(bitDepth),
 		over(over), compensationR(compensationR)
 	    {
 
