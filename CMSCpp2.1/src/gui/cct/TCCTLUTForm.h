@@ -77,14 +77,11 @@ class TCCTLUTForm:public TForm, cms::lcd::calibrate::FeedbackListener {
     TRadioButton *RadioButton_MaxYNativeAdv;
     TLabel *Label20;
     TEdit *Edit_MaxYAdvOver;
-    TEdit *Edit_MaxYAdvGamma;
-    TLabel *Label21;
     TRadioButton *RadioButton_GammaValue;
     TCheckBox *CheckBox_MultiGen;
     TEdit *Edit_MultiGenTimes;
     TCheckBox *CheckBox_BTargetIntensity;
     TEdit *Edit_BTargetIntensity;
-    TCheckBox *CheckBox_DeHook;
     TRadioButton *RadioButton_OriginalGamma;
     TCheckBox *CheckBox_BMax2;
     TLabel *Label18;
@@ -127,9 +124,12 @@ class TCCTLUTForm:public TForm, cms::lcd::calibrate::FeedbackListener {
     TLabel *Label28;
     TLabel *Label_MiddleZone;
     TEdit *Edit_MiddleGammaEnd;
-    TLabel *Label29;
-    TEdit *Edit_DeHookZone;
     TCheckBox *CheckBox_HighlightGammaFix;
+    TGroupBox *GroupBox_DeHook;
+    TRadioButton *RadioButton_DeHookNone;
+    TRadioButton *RadioButton_DeHookReduceBGap;
+    TRadioButton *RadioButton_DeHookKeepCCT;
+    TEdit *Edit_DeHookRBGZone;
     void __fastcall RadioButton_P1P2Click(TObject * Sender);
     void __fastcall Button_MeaRunClick(TObject * Sender);
     void __fastcall Button_DebugClick(TObject * Sender);
@@ -142,7 +142,6 @@ class TCCTLUTForm:public TForm, cms::lcd::calibrate::FeedbackListener {
     void __fastcall CheckBox_ExpandClick(TObject * Sender);
     void __fastcall Button_ResetClick(TObject * Sender);
     void __fastcall CheckBox_NewMethodClick(TObject * Sender);
-    void __fastcall RadioButton_MaxYNativeAdvClick(TObject * Sender);
     void __fastcall FormClose(TObject * Sender, TCloseAction & Action);
     void __fastcall Button_RunClick(TObject * Sender);
     void __fastcall CheckBox_BTargetIntensityClick(TObject * Sender);
@@ -162,10 +161,8 @@ class TCCTLUTForm:public TForm, cms::lcd::calibrate::FeedbackListener {
     void __fastcall Edit_MiddleGammaEndChange(TObject * Sender);
     void __fastcall RadioButton_DeHookOrgClick(TObject * Sender);
     void __fastcall RadioButton_DeHookEvoClick(TObject * Sender);
-    void __fastcall RadioButton_MaxYNoneClick(TObject * Sender);
-    void __fastcall RadioButton_MaxYTargetWhiteClick(TObject * Sender);
-    void __fastcall RadioButton_MaxYNativeClick(TObject * Sender);
     void __fastcall FormCreate(TObject * Sender);
+    void __fastcall RadioButton_MaxYNativeClick(TObject * Sender);
   private:			// User declarations
     void setMeasureInfo();
     int serialid;
@@ -173,7 +170,8 @@ class TCCTLUTForm:public TForm, cms::lcd::calibrate::FeedbackListener {
     RGBGamma_ptr rgbGamma;
     bptr < cms::lcd::calibrate::MeasureCondition > getMeasureCondition();
 
-    bptr < cms::measure::MaxMatrixIntensityAnalyzer > nativeWhiteAnalyzer;
+    bptr < cms::measure::MaxMatrixIntensityAnalyzer > secondWhiteAnalyzer;
+    const bool debugMode;
   public:			// User declarations
     __fastcall TCCTLUTForm(TComponent * Owner);
     void setBitDepthProcessor(bptr < cms::lcd::calibrate::BitDepthProcessor > bitDepth);

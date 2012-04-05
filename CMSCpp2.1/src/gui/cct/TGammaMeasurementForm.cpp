@@ -182,8 +182,9 @@ void __fastcall TGammaMeasurementForm::FormShow(TObject * Sender)
        return;
        } */
 
-
-    bool tconInput = bitDepth->isTCONInput() || MainForm->debugMode;
+    int activeIndex = MainForm->PageControl1->ActivePageIndex;
+    bool tconInput = bitDepth->isTCONInput()
+	|| (MainForm->debugMode ? (1 == activeIndex ? true : false) : false);
     this->Panel2->Visible = tconInput;
     setMeasureInfo();
     fetcher = MainForm->getComponentFetcher();

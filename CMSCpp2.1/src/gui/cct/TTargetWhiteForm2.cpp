@@ -593,6 +593,7 @@ void __fastcall TTargetWhiteForm2::Button_ConnectToggleClick(TObject * Sender)
     if (connect) {
 	Button_ConnectToggle->Caption = "Disconnect";
 	Button_DisconnectClick(Sender);
+	ShowMessage("Please confirm Gamma and FRC IP is Off.\n(請確認Gamma和FRC是否Off)");
     } else {
 	Button_ConnectToggle->Caption = "Connect";
 	Button_ConnectClick(Sender);

@@ -360,7 +360,6 @@ object CCTLUTForm: TCCTLUTForm
       Height = 17
       Caption = 'Highlight Gamma Fix'
       TabOrder = 14
-      OnClick = CheckBox_AbsoluteGammaClick
     end
   end
   object GroupBox3: TGroupBox
@@ -946,26 +945,10 @@ object CCTLUTForm: TCCTLUTForm
     TabOrder = 11
     object Label20: TLabel
       Left = 26
-      Top = 109
+      Top = 181
       Width = 27
       Height = 13
       Caption = 'Begin'
-      Visible = False
-    end
-    object Label21: TLabel
-      Left = 26
-      Top = 129
-      Width = 40
-      Height = 13
-      Caption = 'Strength'
-      Visible = False
-    end
-    object Label29: TLabel
-      Left = 26
-      Top = 173
-      Width = 25
-      Height = 13
-      Caption = 'Zone'
       Visible = False
     end
     object RadioButton_MaxYNone: TRadioButton
@@ -979,7 +962,6 @@ object CCTLUTForm: TCCTLUTForm
       ShowHint = False
       TabOrder = 0
       TabStop = True
-      OnClick = RadioButton_MaxYNoneClick
     end
     object RadioButton_MaxYNative: TRadioButton
       Left = 7
@@ -992,7 +974,7 @@ object CCTLUTForm: TCCTLUTForm
     end
     object RadioButton_MaxYNativeAdv: TRadioButton
       Left = 7
-      Top = 85
+      Top = 157
       Width = 137
       Height = 19
       Caption = 'Native White (Smooth)'
@@ -1000,11 +982,10 @@ object CCTLUTForm: TCCTLUTForm
       Enabled = False
       ParentColor = False
       TabOrder = 2
-      OnClick = RadioButton_MaxYNativeAdvClick
     end
     object Edit_MaxYAdvOver: TEdit
-      Left = 72
-      Top = 109
+      Left = 64
+      Top = 181
       Width = 33
       Height = 21
       Enabled = False
@@ -1014,25 +995,14 @@ object CCTLUTForm: TCCTLUTForm
       Visible = False
       OnChange = Edit_MaxYAdvOverChange
     end
-    object Edit_MaxYAdvGamma: TEdit
-      Left = 72
-      Top = 129
-      Width = 33
-      Height = 21
-      Enabled = False
-      ImeName = #26085#25991#36664#20837#31995#32113' (MS-IME2002)'
-      TabOrder = 4
-      Text = '1'
-      Visible = False
-    end
     object CheckBox_MaxYAdvAuto: TCheckBox
       Left = 106
-      Top = 104
+      Top = 176
       Width = 47
       Height = 25
       Caption = 'Auto'
       Enabled = False
-      TabOrder = 6
+      TabOrder = 4
       Visible = False
       OnClick = CheckBox_MaxYAdvAutoClick
     end
@@ -1042,8 +1012,7 @@ object CCTLUTForm: TCCTLUTForm
       Width = 129
       Height = 17
       Caption = 'Target White'
-      TabOrder = 7
-      OnClick = RadioButton_MaxYTargetWhiteClick
+      TabOrder = 5
     end
     object CheckBox_SmoothIntensity: TCheckBox
       Left = 24
@@ -1053,7 +1022,7 @@ object CCTLUTForm: TCCTLUTForm
       Caption = 'Smooth Intensity'
       Checked = True
       State = cbChecked
-      TabOrder = 8
+      TabOrder = 6
       Visible = False
       OnClick = CheckBox_SmoothIntensityClick
     end
@@ -1062,7 +1031,7 @@ object CCTLUTForm: TCCTLUTForm
       Top = 32
       Width = 33
       Height = 21
-      TabOrder = 9
+      TabOrder = 7
       Text = '50'
       Visible = False
     end
@@ -1071,36 +1040,54 @@ object CCTLUTForm: TCCTLUTForm
       Top = 56
       Width = 33
       Height = 21
-      TabOrder = 10
+      TabOrder = 8
       Text = '255'
       Visible = False
     end
-    object CheckBox_DeHook: TCheckBox
-      Left = 8
-      Top = 153
-      Width = 64
-      Height = 19
-      Caption = 'De-Hook'
-      Color = clSkyBlue
-      Font.Charset = ANSI_CHARSET
-      Font.Color = clWindowText
-      Font.Height = -11
-      Font.Name = 'MS Sans Serif'
-      Font.Style = []
-      ParentColor = False
-      ParentFont = False
-      TabOrder = 5
-    end
-    object Edit_DeHookZone: TEdit
-      Left = 72
-      Top = 173
-      Width = 33
-      Height = 21
-      ImeName = #26085#25991#36664#20837#31995#32113' (MS-IME2002)'
-      TabOrder = 11
-      Text = '7'
-      Visible = False
-      OnChange = Edit_MaxYAdvOverChange
+    object GroupBox_DeHook: TGroupBox
+      Left = 16
+      Top = 80
+      Width = 137
+      Height = 73
+      Caption = 'DeHook'
+      TabOrder = 9
+      object RadioButton_DeHookNone: TRadioButton
+        Left = 8
+        Top = 16
+        Width = 105
+        Height = 17
+        Caption = 'None'
+        Checked = True
+        TabOrder = 0
+        TabStop = True
+      end
+      object RadioButton_DeHookReduceBGap: TRadioButton
+        Left = 8
+        Top = 32
+        Width = 89
+        Height = 17
+        Caption = 'Reduce B Gap'
+        TabOrder = 1
+      end
+      object RadioButton_DeHookKeepCCT: TRadioButton
+        Left = 8
+        Top = 48
+        Width = 105
+        Height = 17
+        Caption = 'Keep CCT'
+        TabOrder = 2
+        Visible = False
+      end
+      object Edit_DeHookRBGZone: TEdit
+        Left = 98
+        Top = 28
+        Width = 33
+        Height = 21
+        ImeName = #26085#25991#36664#20837#31995#32113' (MS-IME2002)'
+        TabOrder = 3
+        Text = '7'
+        Visible = False
+      end
     end
   end
   object CheckBox_MemoryMeasure: TCheckBox
@@ -1157,8 +1144,8 @@ object CCTLUTForm: TCCTLUTForm
     TabOrder = 14
   end
   object RadioGroup_NormalCase: TRadioGroup
-    Left = 343
-    Top = 232
+    Left = 319
+    Top = 240
     Width = 156
     Height = 49
     Caption = 'Normal Case'
@@ -1171,7 +1158,7 @@ object CCTLUTForm: TCCTLUTForm
   end
   object StatusBar1: TStatusBar
     Left = 0
-    Top = 383
+    Top = 378
     Width = 833
     Height = 19
     Color = clWhite

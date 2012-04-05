@@ -6,9 +6,10 @@ namespace cms {
 	    Enumeration(KeepMaxLuminance)
 	    None,		//礚矪瞶
 	    TargetLuminance,	//keepヘ夹獹(ぃ﹚Τノ
-	    TargetWhite,	//keep ヘ夹フ翴
+	    TargetWhite,	//keep ヘ夹フ翴: 穎皌de-hook
 	    NativeWhite,	//keep狾程獹&︹放
-	    NativeWhiteAdvanced,	//keep狾程獹&︹放, smooth跑て
+	    //NativeWhiteAdvanced,	//keep狾程獹&︹放, smooth跑て (紀斌ぃノ)
+	    Smooth2NativeWhite,	//keep狾程獹&︹放, smooth跑て
 	    EnumerationEnd()
 
 

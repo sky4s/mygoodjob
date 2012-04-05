@@ -20,7 +20,7 @@
 TCCTLUTForm *CCTLUTForm;
 //---------------------------------------------------------------------------
 __fastcall TCCTLUTForm::TCCTLUTForm(TComponent * Owner)
-:TForm(Owner), serialid(0), run(false)
+:TForm(Owner), serialid(0), run(false), debugMode(MainForm->debugMode)
 {
 }
 
@@ -91,11 +91,11 @@ void __fastcall TCCTLUTForm::Button_MeaRunClick(TObject * Sender)
 	MainForm->setMeterMeasurementWaitTimes();
 	bptr < ComponentFetcher > fetcher = MainForm->getComponentFetcher();
 
-	cms::lcd::calibrate::debugMode = MainForm->debugMode;
+	cms::lcd::calibrate::debugMode = debugMode;
 	cms::lcd::calibrate::linkCA210 = MainForm->linkCA210;
 	cms::lcd::calibrate::pcWithTCONInput = MainForm->isPCwithTCONInput();
 	LCDCalibrator calibrator(fetcher, bitDepth);
-	calibrator.DebugMode = MainForm->debugMode;
+	//calibrator.DebugMode = MainForm->debugMode;
 
 	//以下都是選項的設定
 
@@ -191,23 +191,42 @@ void __fastcall TCCTLUTForm::Button_MeaRunClick(TObject * Sender)
 	// Keep Max Luminance
 	//==========================================================================
 	//keep跟dehook融合在一起, 簡化ui
-	bool deHook = CheckBox_DeHook->Checked;
 	if (true == RadioButton_MaxYNone->Checked) {
 	    calibrator.setKeepMaxLuminance(KeepMaxLuminance::TargetLuminance);
 	    calibrator.DeHookMode = None;
 	} else if (true == RadioButton_MaxYNative->Checked) {
+	    //bool deHook = CheckBox_DeHook->Checked;
+	    //可採用de-hook, 搭配t-con input
 	    calibrator.setKeepMaxLuminance(KeepMaxLuminance::NativeWhite);
-	    calibrator.DeHookMode = deHook ? Original : None;
-	} else if (true == RadioButton_MaxYNativeAdv->Checked) {
-	    int over = this->Edit_MaxYAdvOver->Text.ToInt();
-	    double gamma = this->Edit_MaxYAdvGamma->Text.ToDouble();
-	    bool autoParameter = CheckBox_MaxYAdvAuto->Checked;
-	    calibrator.setKeepMaxLuminanceNativeWhiteAdvanced(over, gamma, autoParameter);
-	    calibrator.DeHookMode = deHook ? Evolution : Original;
-	    if (deHook) {
-		int deHookZone = Edit_DeHookZone->Text.ToInt();
-		calibrator.setEvolutionDeHook(deHookZone);
+	    //calibrator.DeHookMode = deHook ? Original : None;
+
+	    if (RadioButton_DeHookNone->Checked) {
+		calibrator.DeHookMode = None;
+	    } else if (RadioButton_DeHookReduceBGap->Checked) {
+		calibrator.DeHookMode = ReduceBGap;
+	    } else if (RadioButton_DeHookKeepCCT->Checked) {
+		calibrator.DeHookMode = KeepCCT;
 	    }
+
+
+	} else if (true == RadioButton_MaxYNativeAdv->Checked) {
+	    //可採用de-hook,
+	    int over = Edit_MaxYAdvOver->Text.ToInt();
+	    bool autoOver = CheckBox_MaxYAdvAuto->Checked;
+	    calibrator.setKeepMaxLuminanceSmooth2NativeWhite(over, autoOver);
+	    /*if (deHook) {
+	       //不需t-con input, 透過改變intensity讓B用盡
+	       int deHookZone = Edit_DeHookRBGZone->Text.ToInt();
+	       calibrator.setDeHookReduceBGap(deHookZone);
+	       } else {
+	       if (debugMode) {
+	       ShowMessage
+	       ("Cannot use \"Native White (Smooth)\" without De-Hook in debug mode.");
+	       return;
+	       }
+	       //需t-con input
+	       calibrator.DeHookMode = Original;
+	       } */
 	} else if (true == RadioButton_MaxYTargetWhite->Checked) {
 	    calibrator.setKeepMaxLuminance(KeepMaxLuminance::TargetWhite);
 
@@ -237,7 +256,7 @@ void __fastcall TCCTLUTForm::Button_MeaRunClick(TObject * Sender)
 
 	    bptr < TCONControl > tconctrl = MainForm->getTCONControl();
 	    calibrator.TCONControl = tconctrl;
-	    calibrator.NativeWhiteAnalyzer = nativeWhiteAnalyzer;
+	    calibrator.SecondWhiteAnalyzer = secondWhiteAnalyzer;
 	    calibrator.setFeedbackListener(this);
 
 
@@ -254,7 +273,7 @@ void __fastcall TCCTLUTForm::Button_MeaRunClick(TObject * Sender)
 		}
 		return;
 	    };
-	    nativeWhiteAnalyzer = calibrator.NativeWhiteAnalyzer;
+	    secondWhiteAnalyzer = calibrator.SecondWhiteAnalyzer;
 
 	    //=================================================================
 	    // 存檔
@@ -283,7 +302,7 @@ void __fastcall TCCTLUTForm::Button_MeaRunClick(TObject * Sender)
 	    } else {
 		ShowMessage("Warning: It's not ascend!(inverse)");
 	    }
-
+	    dgLutFile.reset();
 	    Util::shellExecute(filename);
 	}
 	catch(java::lang::IllegalStateException & ex) {
@@ -292,6 +311,7 @@ void __fastcall TCCTLUTForm::Button_MeaRunClick(TObject * Sender)
 	    ShowMessage(ex.toString().c_str());
 	}
 	catch(...) {
+	    ShowMessage("Abnormal stop!");
 	    //dgLutFile.reset();
 	}
 	//=================================================================
@@ -300,7 +320,9 @@ void __fastcall TCCTLUTForm::Button_MeaRunClick(TObject * Sender)
 	MainForm->stopProgress(ProgressBar1);
 	run = false;
 	Button_MeaRun->Enabled = true;
-	dgLutFile.reset();
+	if (null != dgLutFile) {
+	    dgLutFile.reset();
+	}
     }
 }
 
@@ -319,7 +341,7 @@ void __fastcall TCCTLUTForm::Button_DebugClick(TObject * Sender)
 	const AnsiString & filename = OpenDialog1->FileName;
 	MainForm->setDummyMeterFilename(string(filename.c_str()));
 	ShowMessage("Dummy meter setting Ok!");
-	nativeWhiteAnalyzer = MainForm->getNativeWhiteAnalyzer();
+	secondWhiteAnalyzer = MainForm->getSecondWhiteAnalyzer();
 
     };
 
@@ -354,6 +376,11 @@ void __fastcall TCCTLUTForm::FormShow(TObject * Sender)
 	CheckBox_SmoothIntensity->Visible = true;
 	Edit_SmoothIntensityStart->Visible = true;
 	Edit_SmoothIntensityEnd->Visible = true;
+
+	//native white smooth
+	Label20->Visible = true;
+	Edit_MaxYAdvOver->Visible = true;
+	CheckBox_MaxYAdvAuto->Visible = true;
     }
     //=========================================================================
     // function on/off relative
@@ -372,20 +399,16 @@ void __fastcall TCCTLUTForm::FormShow(TObject * Sender)
     //=========================================================================
     // tcon relative
     //=========================================================================
-    bool debugMode = MainForm->debugMode;
-    bool useTConCtrl = (true == tconInput) || debugMode;
-    /*if (useTConCtrl) {
-       bool findInverseZ = TargetWhiteForm2 != null ? TargetWhiteForm2->FindInverseZ : true;
-       if (findInverseZ) {
-       CheckBox_DeHook->Visible = true;
-       CheckBox_DeHook->Checked = true;
-       }
-       } */
-    CheckBox_Feedback->Visible = useTConCtrl;
-    if (true == CheckBox_Feedback->Checked) {
-	CheckBox_Feedback->Checked = useTConCtrl;
+    bool useTConInput = (true == tconInput) || debugMode;
+
+    if (useTConInput) {
+	RadioButton_DeHookKeepCCT->Visible = true;
     }
-    Edit_DimFixThreshold->Visible = useTConCtrl;
+    CheckBox_Feedback->Visible = useTConInput;
+    if (true == CheckBox_Feedback->Checked) {
+	CheckBox_Feedback->Checked = useTConInput;
+    }
+    Edit_DimFixThreshold->Visible = useTConInput;
 
     //=========================================================================
     //=========================================================================
@@ -400,7 +423,7 @@ void __fastcall TCCTLUTForm::FormShow(TObject * Sender)
     }
     //=========================================================================
     setMeasureInfo();
-    nativeWhiteAnalyzer = MainForm->getNativeWhiteAnalyzer();
+    secondWhiteAnalyzer = MainForm->getSecondWhiteAnalyzer();
 
 
 }
@@ -572,18 +595,6 @@ void __fastcall TCCTLUTForm::CheckBox_NewMethodClick(TObject * Sender)
 
 //---------------------------------------------------------------------------
 
-void __fastcall TCCTLUTForm::RadioButton_MaxYNativeAdvClick(TObject * Sender)
-{
-    bool checked = RadioButton_MaxYNativeAdv->Checked;
-    Edit_MaxYAdvOver->Enabled = checked;
-    Edit_MaxYAdvGamma->Enabled = checked;
-    this->CheckBox_MaxYAdvAuto->Enabled = checked;
-    //this->CheckBox_SkipInverseB->Enabled = checked;
-    Label29->Visible = checked;
-    Edit_DeHookZone->Visible = checked;
-}
-
-//---------------------------------------------------------------------------
 
 
 void __fastcall TCCTLUTForm::FormClose(TObject * Sender, TCloseAction & Action)
@@ -666,7 +677,6 @@ void __fastcall TCCTLUTForm::CheckBox_MaxYAdvAutoClick(TObject * Sender)
 {
     bool checked = CheckBox_MaxYAdvAuto->Checked;
     Edit_MaxYAdvOver->Enabled = !checked;
-    Edit_MaxYAdvGamma->Enabled = !checked;
 }
 
 //---------------------------------------------------------------------------
@@ -799,36 +809,21 @@ void __fastcall TCCTLUTForm::RadioButton_DeHookEvoClick(TObject * Sender)
 
 //---------------------------------------------------------------------------
 
-void __fastcall TCCTLUTForm::RadioButton_MaxYNoneClick(TObject * Sender)
-{
-    CheckBox_DeHook->Checked = false;
-    Label29->Visible = false;
-    Edit_DeHookZone->Visible = false;
-}
 
-//---------------------------------------------------------------------------
 
-void __fastcall TCCTLUTForm::RadioButton_MaxYTargetWhiteClick(TObject * Sender)
+
+void __fastcall TCCTLUTForm::FormCreate(TObject * Sender)
 {
-    CheckBox_DeHook->Checked = false;
-    Label29->Visible = false;
-    Edit_DeHookZone->Visible = false;
+    //int x = 1;
 }
 
 //---------------------------------------------------------------------------
 
 void __fastcall TCCTLUTForm::RadioButton_MaxYNativeClick(TObject * Sender)
 {
-    CheckBox_DeHook->Checked = false;
-    Label29->Visible = false;
-    Edit_DeHookZone->Visible = false;
-}
-
-//---------------------------------------------------------------------------
-
-void __fastcall TCCTLUTForm::FormCreate(TObject * Sender)
-{
-    //int x = 1;
+    if (RadioButton_MaxYNative->Checked && RadioButton_DeHookKeepCCT->Visible) {
+	RadioButton_DeHookKeepCCT->Checked = true;
+    }
 }
 
 //---------------------------------------------------------------------------

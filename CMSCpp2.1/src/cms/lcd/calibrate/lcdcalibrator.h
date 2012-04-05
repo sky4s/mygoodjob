@@ -28,7 +28,11 @@ namespace cms {
 	    extern bool pcWithTCONInput;
 
 	    enum DeHook {
-		None, Original, Evolution
+		None,
+		//Original,	//廢棄
+		//Evolution,	//廢棄
+		KeepCCT /*Original */ ,
+		ReduceBGap	/*Evolution */
 	    };
 
 	    class LCDCalibrator {
@@ -59,7 +63,6 @@ namespace cms {
 		bool bMax2;
 		int bMax2Begin;
 		double bMax2Gamma;
-		//bool skipInverseB;
 		int maxBRawGrayLevel;
 		//==============================================================
 
@@ -87,7 +90,6 @@ namespace cms {
 		//==============================================================
 		KeepMaxLuminance keepMaxLuminance;
 		int keepMaxLumiOver;
-		double keepMaxLumiGamma;
 		bool autoKeepMaxLumiParameter;
 		//==============================================================
 
@@ -115,20 +117,10 @@ namespace cms {
 		//==============================================================
 		// de-hook
 		//==============================================================
-		//兩種狀況下 accurateMode會有作用, 當然都要搭配tcon才能用
-		//所以一定是搭配PanelRegulator去修改面板特性的
-		// 1. KeepMaxLuminance為NativeWhiteAdvanced的時候
-		//   為了讓結果跟接近NativeWhite, 所以Target White的B改為反轉點
-		// 2. 將面板白點修改為目標白點
-		//   修改面板特性讓面板白點為目標白點, 使求出來的白點正好就是目標
-		//bool accurateMode;
-		//如果手動去修改DG, 讓B的反轉點避掉, 就需要使這個flag為true
-		//此功能不建議開放, 僅適合開發測試使用
-		bool manualAccurateMode;
 		//用來註記是否有用了panel regulator
 		bool remapped;
 		DeHook dehook;
-		int evoDeHookZone;
+		int deHookRBGZone;
 		//==============================================================
 
 		//==============================================================
@@ -150,7 +142,7 @@ namespace cms {
 		bool useNewMethod;
 
 		string excuteStatus;
-		bool debugMode;
+		//bool debugMode;
 		//==============================================================
 
 	      public:
@@ -169,6 +161,7 @@ namespace cms {
 		__property bool DimFix = { write = dimFix };
 		__property double DimFixThreshold = { write = dimFixThreshold
 		};
+                __property bool KeepDarkLevel = {read = keepDarkLevel, write = keepDarkLevel };
 		//==============================================================
 
 		//==============================================================
@@ -187,7 +180,7 @@ namespace cms {
 		void setOriginalGamma();
 		void setAbsoluteGamma(bool absoluteGamma, int startGrayLevel,
 				      double startGrayLevelAboveGamma);
-		__property bool HighlightGammaFix = { write = highlightGammaFix };
+		__property bool HighlightGammaFix = {read = highlightGammaFix, write = highlightGammaFix };
 		//==============================================================
 
 		//==============================================================
@@ -199,11 +192,12 @@ namespace cms {
 		__property bool BMax = { write = bMax };
 
 		void setKeepMaxLuminance(KeepMaxLuminance keepMaxLuminance);
-		void setKeepMaxLuminanceNativeWhiteAdvanced(int over,
-							    double gamma, bool autoParameter);
+		void setKeepMaxLuminanceSmooth2NativeWhite(int over, bool autoParameter);
 		__property DeHook DeHookMode = { read = dehook, write = dehook };
-		void setEvolutionDeHook(int zone);
-		__property int EvolutionDeHookZone = { read = evoDeHookZone };
+		//void setEvolutionDeHook(int zone);
+		void setDeHookReduceBGap(int zone);
+		//__property int EvolutionDeHookZone = { read = evoDeHookZone };
+		__property int DeHookRBGZone = { read = deHookRBGZone };
 		//==============================================================
 
 		//==============================================================
@@ -227,12 +221,8 @@ namespace cms {
 		//==============================================================
 
 		__property bool NewMethod = { write = useNewMethod };
-
-		__property bool ManualAccurateMode = { write = manualAccurateMode
-		};
 		__property bool FeedbackFix = { write = feedbackFix };
 		__property string ExcuteStatus = { read = excuteStatus };
-		__property bool DebugMode = { write = debugMode };
 		//==============================================================
 
 	      private:
@@ -259,7 +249,7 @@ namespace cms {
 		//==============================================================
 		 bptr < i2c::TCONControl > tconctrl;
 		 bptr < ComponentFetcher > fetcher;
-		 bptr < cms::measure::MaxMatrixIntensityAnalyzer > nativeWhiteAnalyzer;
+		 bptr < cms::measure::MaxMatrixIntensityAnalyzer > secondWhiteAnalyzer;
 		//==============================================================
 
 		//==============================================================
@@ -270,7 +260,7 @@ namespace cms {
 				    double_vector_ptr ggammaCurve, double_vector_ptr bgammaCurve);
 		Component_vector_ptr fetchComponentVector();
 		double_vector_ptr fetchLuminanceVector();
-		void initNativeWhiteAnalyzer(bool useMaxBIntensity);
+		void init2ndWhiteAnalyzer(bool useMaxBIntensity);
 		RGB_vector_ptr getDGLutOpResult(RGB_vector_ptr dglut);
 		RGB_vector_ptr oldMethod(DGLutGenerator & generator,
 					 bptr < PanelRegulator >
@@ -290,8 +280,10 @@ namespace cms {
 
 		Component_vector_ptr getDimComponentVector(RGB_vector_ptr dglut);
 		bool isDoDeHook();
-		bool isDoDeHookOrg();
-		bool isDoDeHookEvo();
+		//bool isDoDeHookOrg();
+		//bool isDoDeHookEvo();
+		bool isDoDeHookKeepCCT();
+		bool isDoDeHookReduceBGap();
 
 		//==============================================================
 		// 量化
@@ -357,9 +349,13 @@ namespace cms {
 		void storeDGLut2DGLutFile(bptr < cms::colorformat::DGLutFile > dglutFile,
 					  RGB_vector_ptr dglut);
 
-		__property bptr <
+		/*__property bptr <
 		    cms::measure::MaxMatrixIntensityAnalyzer >
 		    NativeWhiteAnalyzer = { read = nativeWhiteAnalyzer, write = nativeWhiteAnalyzer
+		};*/
+		__property bptr <
+		    cms::measure::MaxMatrixIntensityAnalyzer >
+		    SecondWhiteAnalyzer = { read = secondWhiteAnalyzer, write = secondWhiteAnalyzer
 		};
 		__property bptr < i2c::TCONControl > TCONControl = { write = tconctrl };
 		void setFeedbackListener(FeedbackListener * listener);
