@@ -20,8 +20,8 @@
 TTargetWhiteForm2 *TargetWhiteForm2;
 //---------------------------------------------------------------------------
 __fastcall TTargetWhiteForm2::TTargetWhiteForm2(TComponent * Owner)
-:TForm(Owner), stopMeasure(false), maxBRawGrayLevel(-1), measuring(false),
-findInverseZ(false), connect(true)
+:TForm(Owner), stopMeasure(false), /*maxBRawGrayLevel(-1),*/ measuring(false),
+/*findInverseZ(false),*/ connect(true)
 {
 }
 
@@ -124,7 +124,7 @@ void TTargetWhiteForm2::setColorimetricValues(double x, double y, double up, dou
 
 void TTargetWhiteForm2::scrollBar_Change()
 {
-    findInverseZ = false;
+    //findInverseZ = false;
     this->RadioButton_RGBRatio->Checked = true;
     Panel1->Color =
 	(TColor) ScrollBar_R->Position + ((ScrollBar_G->Position) << 8) +
@@ -349,10 +349,10 @@ void __fastcall TTargetWhiteForm2::Edit_RChange(TObject * Sender)
     binder->active(Sender);
     //findInverseZ = false;
     //int maxCount = (int) bitDepth->getInputMaxDigitalCount();
-    if (true == findInverseZ) {
+    /*if (true == findInverseZ) {
 	ShowMessage("De-Hook will inactive!");
 	findInverseZ = false;
-    }
+    }*/
 }
 
 //---------------------------------------------------------------------------
@@ -361,10 +361,10 @@ void __fastcall TTargetWhiteForm2::Edit_BChange(TObject * Sender)
 {
     binder->active(Sender);
     //findInverseZ = false;
-    if (true == findInverseZ) {
+    /*if (true == findInverseZ) {
 	ShowMessage("De-Hook will inactive!");
 	findInverseZ = false;
-    }
+    }*/
 }
 
 //---------------------------------------------------------------------------
@@ -373,10 +373,10 @@ void __fastcall TTargetWhiteForm2::Edit_GChange(TObject * Sender)
 {
     binder->active(Sender);
     //findInverseZ = false;
-    if (true == findInverseZ) {
+    /*if (true == findInverseZ) {
 	ShowMessage("De-Hook will inactive!");
 	findInverseZ = false;
-    }
+    }*/
 }
 
 //----------------------------------------
@@ -465,7 +465,7 @@ void __fastcall TTargetWhiteForm2::FormShow(TObject * Sender)
 {
     bool maxMatrix = MainForm->RadioButton_AnalyzerMaxMatrix->Checked;
     this->Button_setMaxMatrix->Enabled = maxMatrix;
-    findInverseZ = false;
+    //findInverseZ = false;
 }
 
 //---------------------------------------------------------------------------
@@ -618,7 +618,7 @@ void __fastcall TTargetWhiteForm2::Button_FindInverseIntensityClick(TObject * Se
 
     Edit_InverseIntensityofB->Text = maxBRawGrayLevel;
     binder->active(Edit_InverseIntensityofB);
-    findInverseZ = foundInverse;
+    //findInverseZ = foundInverse;
 
 }
 
@@ -627,9 +627,9 @@ void __fastcall TTargetWhiteForm2::Button_FindInverseIntensityClick(TObject * Se
 
 void __fastcall TTargetWhiteForm2::Edit_InverseIntensityofBKeyPress(TObject * Sender, char &Key)
 {
-    StatusBar1->Panels->Items[1]->Text = "De-Hook: Set";
-    findInverseZ = true;
-    maxBRawGrayLevel = Edit_InverseIntensityofB->Text.ToInt();
+    //StatusBar1->Panels->Items[1]->Text = "De-Hook: Set";
+    //findInverseZ = true;
+    //maxBRawGrayLevel = Edit_InverseIntensityofB->Text.ToInt();
 }
 
 //---------------------------------------------------------------------------

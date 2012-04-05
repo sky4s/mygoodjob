@@ -638,14 +638,6 @@ object TargetWhiteForm2: TTargetWhiteForm2
       item
         Text = 'Target White: N/A'
         Width = 200
-      end
-      item
-        Text = 'De-Hook: N/A'
-        Width = 100
-      end
-      item
-        Text = 'DG:'
-        Width = 200
       end>
     SimplePanel = False
   end
