@@ -410,9 +410,7 @@ object CCTLUTForm: TCCTLUTForm
       Width = 78
       Height = 19
       Caption = 'P1 P2'
-      Checked = True
       TabOrder = 0
-      TabStop = True
       OnClick = RadioButton_P1P2Click
     end
     object RadioButton_RBInterp: TRadioButton
@@ -464,8 +462,10 @@ object CCTLUTForm: TCCTLUTForm
       Width = 98
       Height = 19
       Caption = 'Defined Dim'
+      Checked = True
       Enabled = False
       TabOrder = 6
+      TabStop = True
     end
     object Edit_DefinedDimUnder: TEdit
       Left = 72
@@ -490,9 +490,8 @@ object CCTLUTForm: TCCTLUTForm
       Top = 184
       Width = 71
       Height = 20
-      Caption = 'Feedback'
+      Caption = 'Smooth'
       TabOrder = 9
-      OnClick = CheckBox_FeedbackClick
     end
     object ComboBox_DefinedDimGamma: TComboBox
       Left = 72
@@ -627,7 +626,7 @@ object CCTLUTForm: TCCTLUTForm
     end
     object CheckBox_NewMethod: TCheckBox
       Left = 7
-      Top = 97
+      Top = 100
       Width = 117
       Height = 19
       Caption = 'New CCT Method'
@@ -637,7 +636,7 @@ object CCTLUTForm: TCCTLUTForm
     end
     object CheckBox_MultiGen: TCheckBox
       Left = 7
-      Top = 77
+      Top = 37
       Width = 118
       Height = 19
       Caption = 'Multi Generate'
@@ -654,7 +653,7 @@ object CCTLUTForm: TCCTLUTForm
     end
     object Edit_MultiGenTimes: TEdit
       Left = 115
-      Top = 77
+      Top = 37
       Width = 33
       Height = 21
       Enabled = False
@@ -663,7 +662,7 @@ object CCTLUTForm: TCCTLUTForm
     end
     object CheckBox_BTargetIntensity: TCheckBox
       Left = 7
-      Top = 56
+      Top = 80
       Width = 111
       Height = 19
       Caption = 'B Target intensity'
@@ -680,7 +679,7 @@ object CCTLUTForm: TCCTLUTForm
     end
     object Edit_BTargetIntensity: TEdit
       Left = 115
-      Top = 56
+      Top = 80
       Width = 33
       Height = 21
       Enabled = False
@@ -689,7 +688,7 @@ object CCTLUTForm: TCCTLUTForm
     end
     object CheckBox_RTargetIntensity: TCheckBox
       Left = 7
-      Top = 35
+      Top = 59
       Width = 111
       Height = 19
       Caption = 'R Target intensity'
@@ -706,7 +705,7 @@ object CCTLUTForm: TCCTLUTForm
     end
     object Edit_RTargetIntensity: TEdit
       Left = 115
-      Top = 35
+      Top = 59
       Width = 33
       Height = 21
       Enabled = False
@@ -941,7 +940,7 @@ object CCTLUTForm: TCCTLUTForm
     Top = 7
     Width = 157
     Height = 258
-    Caption = 'Keep Max Luminance'
+    Caption = 'White Definition'
     TabOrder = 11
     object Label20: TLabel
       Left = 26
@@ -1001,7 +1000,9 @@ object CCTLUTForm: TCCTLUTForm
       Width = 47
       Height = 25
       Caption = 'Auto'
+      Checked = True
       Enabled = False
+      State = cbChecked
       TabOrder = 4
       Visible = False
       OnClick = CheckBox_MaxYAdvAutoClick
@@ -1067,6 +1068,8 @@ object CCTLUTForm: TCCTLUTForm
         Width = 89
         Height = 17
         Caption = 'Reduce B Gap'
+        Color = clMoneyGreen
+        ParentColor = False
         TabOrder = 1
       end
       object RadioButton_DeHookKeepCCT: TRadioButton
@@ -1136,7 +1139,7 @@ object CCTLUTForm: TCCTLUTForm
   end
   object ProgressBar1: TProgressBar
     Left = 7
-    Top = 352
+    Top = 360
     Width = 225
     Height = 17
     Min = 0
@@ -1158,7 +1161,7 @@ object CCTLUTForm: TCCTLUTForm
   end
   object StatusBar1: TStatusBar
     Left = 0
-    Top = 378
+    Top = 383
     Width = 833
     Height = 19
     Color = clWhite

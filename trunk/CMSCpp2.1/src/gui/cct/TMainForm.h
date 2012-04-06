@@ -203,7 +203,7 @@ class TMainForm:public TForm {
     void setBitDepthEnable(bool lut10, bool lut12, bool out6, bool out8, bool out10);
     void setBitDepthChecked(int lutSelect, int outSelect);
     void setFRCAbility();
-     bptr < cms::lcd::calibrate::BitDepthProcessor > bitDepth;
+     bptr < cms::lcd::BitDepthProcessor > bitDepth;
     //==========================================================================
     // T-CON setup
     //==========================================================================
@@ -214,7 +214,6 @@ class TMainForm:public TForm {
     void readTCONSections();
     String tconFilename;
     void initTCONFile();
-    //bptr < gui::util::UIBinder > binder;
     const static char *CUSTOM;
     //==========================================================================
 
@@ -251,10 +250,9 @@ class TMainForm:public TForm {
     //==========================================================================
 
     //==========================================================================
-    // T-CON
+    // T-CON/Panel
     //==========================================================================
      bptr < i2c::TCONControl > getTCONControl();
-    //bool isTCONInput();
     bool isPCwithTCONInput();
     //==========================================================================
 
@@ -269,7 +267,7 @@ class TMainForm:public TForm {
     __fastcall TMainForm(TComponent * Owner);
     void showProgress(TProgressBar * progress);
     void stopProgress(TProgressBar * progress);
-    void setFunctionOn(bool on);
+    void setAllFunctionOn(bool on);
 
 };
 

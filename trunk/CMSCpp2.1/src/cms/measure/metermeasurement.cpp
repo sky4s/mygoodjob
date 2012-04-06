@@ -20,6 +20,7 @@ namespace cms {
 	using namespace std;
 	using namespace java::lang;
 	using namespace cms::lcd::calibrate;
+	using namespace cms::lcd;        
 	using namespace cms::util;
 
 	void MeterMeasurement::init(bool calibration) {

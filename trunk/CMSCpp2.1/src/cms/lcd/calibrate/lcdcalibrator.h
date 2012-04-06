@@ -29,8 +29,8 @@ namespace cms {
 
 	    enum DeHook {
 		None,
-		//Original,	//¼o±ó
-		//Evolution,	//¼o±ó
+		//Original,     //¼o±ó
+		//Evolution,    //¼o±ó
 		KeepCCT /*Original */ ,
 		ReduceBGap	/*Evolution */
 	    };
@@ -161,7 +161,7 @@ namespace cms {
 		__property bool DimFix = { write = dimFix };
 		__property double DimFixThreshold = { write = dimFixThreshold
 		};
-                __property bool KeepDarkLevel = {read = keepDarkLevel, write = keepDarkLevel };
+		__property bool KeepDarkLevel = { read = keepDarkLevel, write = keepDarkLevel };
 		//==============================================================
 
 		//==============================================================
@@ -180,7 +180,8 @@ namespace cms {
 		void setOriginalGamma();
 		void setAbsoluteGamma(bool absoluteGamma, int startGrayLevel,
 				      double startGrayLevelAboveGamma);
-		__property bool HighlightGammaFix = {read = highlightGammaFix, write = highlightGammaFix };
+		__property bool HighlightGammaFix = { read = highlightGammaFix, write =
+			highlightGammaFix };
 		//==============================================================
 
 		//==============================================================

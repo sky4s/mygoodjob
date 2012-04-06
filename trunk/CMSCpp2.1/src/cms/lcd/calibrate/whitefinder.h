@@ -24,16 +24,14 @@ namespace cms {
 		 bptr < cms::lcd::calibrate::algo::CIEuv1960NearestAlgorithm > nearAlgo;
 
 	      protected:
-		 bptr < cms::lcd::calibrate::BitDepthProcessor > bitDepth;
+		 bptr < cms::lcd::BitDepthProcessor > bitDepth;
 		bool stop;
 		 bptr < cms::measure::MeterMeasurement > mm;
 		double maxcode;
 	      public:
 		 WhitePointFinder(bptr < cms::measure::MeterMeasurement >
 				  mm,
-				  bptr <
-				  cms::lcd::calibrate::BitDepthProcessor >
-				  bitDepth, double maxcode);
+				  bptr < cms::lcd::BitDepthProcessor > bitDepth, double maxcode);
 		virtual RGB_ptr findRGB(xyY_ptr xyY);
 		virtual void windowClosing(TObject * Sender, TCloseAction & Action);
 	    };
@@ -45,9 +43,7 @@ namespace cms {
 	      public:
 		 StocktonWhitePointFinder(bptr <
 					  cms::measure::MeterMeasurement >
-					  mm, bptr <
-					  cms::lcd::calibrate::
-					  BitDepthProcessor > bitDepth,
+					  mm, bptr < cms::lcd::BitDepthProcessor > bitDepth,
 					  RGB_ptr initRGB, double maxcode, bool keepBlue);
 		RGB_ptr findRGB(xyY_ptr targetxyY);
 	    };

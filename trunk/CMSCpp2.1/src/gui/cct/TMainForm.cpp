@@ -107,17 +107,17 @@ void __fastcall TMainForm::FormCreate(TObject * Sender)
     using namespace cms::measure;
     using namespace cms::colorformat;
     using namespace cms::lcd::calibrate;
+    using namespace cms::lcd;
     using namespace gui::util;
 
     using namespace cms::util;
     int_array version = Util::fetchVersionInfo();
-    //version = Util::fetchVersionInfo();       //不呼叫兩次...about那次的呼叫就會出問題..見鬼!
     string build = "(build:" + _toString(version[2]) + "." + _toString(version[3]) + ") ";
     Caption = Caption + build.c_str();
 
-    bitDepth = bptr < BitDepthProcessor > (new BitDepthProcessor(8, 12, 8, false));
+    bitDepth = bptr < BitDepthProcessor > (new BitDepthProcessor(8, 12, 8));
 
-
+    //初始化參數設定
     initTCONFile();
     readTCONSections();
     readSetup();
@@ -459,7 +459,7 @@ void TMainForm::initCA210Meter()
 
 	if (connectCA210ByThread) {
 	    stopProgress(MainForm->ProgressBar1);
-	    setFunctionOn(true);
+	    setAllFunctionOn(true);
 	    ca210Thread->Terminate();
 	    delete ca210Thread;
 	    ca210Thread = null;
@@ -597,6 +597,7 @@ void TMainForm::setDummyMeterFile(bptr < cms::colorformat::DGLutFile > dglutFile
     using namespace cms::measure;
     using namespace cms::colorformat;
     using namespace cms::lcd::calibrate;
+    using namespace cms::lcd;
     using namespace Indep;
     using namespace Dep;
 
@@ -774,7 +775,6 @@ void __fastcall TMainForm::CCTLUT1Click(TObject * Sender)
 	    return;
 	}
     }
-
     //CCTLUTForm->setBitDepthProcessor(bitDepth);
     CCTLUTForm->ShowModal();
 }
@@ -797,7 +797,8 @@ void __fastcall TMainForm::RadioButton_TCONClick(TObject * Sender)
 {
     this->Panel_TCON->Visible = true;
     ComboBox_TCONTypeChange(this);
-    ShowMessage("Please Turn On DG and FRC for Measurement when T-CON Input Source is selected!!!\n(當選擇T-CON Input時, 請打開DG以及FRC!!)");
+    ShowMessage
+	("Please Turn On DG and FRC for Measurement when T-CON Input Source is selected!!!\n(當選擇T-CON Input時, 請打開DG以及FRC!!)");
     PageControl1->ActivePageIndex = 1;
 }
 
@@ -874,7 +875,6 @@ void __fastcall TMainForm::Button_ConnectClick(TObject * Sender)
 	// gamma test
 	//=====================================================================
 	bool gammaTest = CheckBox_GammaTest->Checked;
-	//bool gammaTest = true;
 	if (gammaTest) {
 	    int gammaTestAddress = StrToInt("0x" + this->Edit_GammaTestEnableAddress->Text);
 	    int gammaTestBit = this->Edit_GammaTestEnableBit->Text.ToInt();
@@ -912,12 +912,12 @@ void __fastcall TMainForm::Button_ConnectClick(TObject * Sender)
 
 	    if (this->RadioButton_PCTCON_TV->Checked) {
 		//看是TCON+TV
-		MeasureWindow->setDGLUTInput(control, bitDepth);
 		this->bitDepth->setTCONInput(true);
+		MeasureWindow->setDGLUTInput(control, bitDepth);
 	    } else {
 		//或純TCON
-		MeasureWindow->setTCONInput(control);
 		this->bitDepth->setTCONInput(true);
+		MeasureWindow->setTCONInput(control);
 	    }
 	}
     } else {
@@ -1473,7 +1473,7 @@ CA-X10 init procedure
 */
 //---------------------------------------------------------------------------
 
-void TMainForm::setFunctionOn(bool on)
+void TMainForm::setAllFunctionOn(bool on)
 {
     MainForm->PageControl1->Visible = on;
     MainForm->MatrixCalibration1->Enabled = on;
@@ -1490,7 +1490,7 @@ void __fastcall TMainForm::FormActivate(TObject * Sender)
 	    class CA210Thread:public TThread {
 	      protected:
 		void __fastcall Execute() {
-		    MainForm->setFunctionOn(false);
+		    MainForm->setAllFunctionOn(false);
 		    MainForm->StatusBar1->Panels->Items[1]->Text = "CA-210 Connecting...";
 		    MainForm->initCA210Meter();
 		};

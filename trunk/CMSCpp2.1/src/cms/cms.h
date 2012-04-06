@@ -58,8 +58,9 @@ namespace cms {
 #endif
     namespace lcd {
 	class LCDTarget;
+	class BitDepthProcessor;
 	namespace calibrate {
-	    class BitDepthProcessor;
+
 	    class MeasureCondition;
 	    class LCDCalibrator;
 	    class Component;

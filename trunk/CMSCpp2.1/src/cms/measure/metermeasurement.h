@@ -104,9 +104,9 @@ namespace cms {
 	    virtual void windowClosing(TObject * Sender, TCloseAction & Action);
 	    int getMaxZDGCode(bptr < cms::lcd::calibrate::MeasureCondition > measureCondition);
 	    static int getMaxZDGCode(bptr < cms::measure::MeterMeasurement > mm,
-				     bptr < cms::lcd::calibrate::BitDepthProcessor > bitDepth);
+				     bptr < cms::lcd::BitDepthProcessor > bitDepth);
 	    static int getMaxBIntensityRawGrayLevel(bptr < cms::measure::MeterMeasurement > mm,
-						    bptr < cms::lcd::calibrate::BitDepthProcessor >
+						    bptr < cms::lcd::BitDepthProcessor >
 						    bitDepth);
 	};
 

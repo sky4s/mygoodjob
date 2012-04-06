@@ -128,7 +128,7 @@ class TTargetWhiteForm2:public TForm, gui::event::WindowListener {
     int calculateCCT(double x, double y);
     bool colorimetricChanging;
 
-    bptr < cms::lcd::calibrate::BitDepthProcessor > bitDepth;
+    bptr < cms::lcd::BitDepthProcessor > bitDepth;
     void setRGBRatio(int r, int g, int b);
     //int maxBRawGrayLevel;
     //bool findInverseZ;
@@ -139,7 +139,7 @@ class TTargetWhiteForm2:public TForm, gui::event::WindowListener {
   public:			// User declarations
     __fastcall TTargetWhiteForm2(TComponent * Owner);
     void windowClosing();
-    void setBitDepthProcessor(bptr < cms::lcd::calibrate::BitDepthProcessor > bitDepth);
+    void setBitDepthProcessor(bptr < cms::lcd::BitDepthProcessor > bitDepth);
     bool stopMeasure;
     //__property bool FindInverseZ = { read = findInverseZ };
 

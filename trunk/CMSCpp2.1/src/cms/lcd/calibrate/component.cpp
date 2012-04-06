@@ -89,6 +89,7 @@ namespace cms {
 
 		if (nil_RGB_ptr != extraMeasureRGB) {
 		    extraMeasureXYZ = analyzer->getCIEXYZOnly(extraMeasureRGB);
+		    extraMeasureRGB = nil_RGB_ptr;
 		}
 
 		foreach(const RGB_ptr & rgb, *rgbMeasureCode) {

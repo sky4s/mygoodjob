@@ -28,11 +28,17 @@ namespace cms {
 		XYZ_ptr XYZ;
 		RGB_ptr gamma;
 	    };
+
+	    /*
+	       ComponentFetcher =  IntensityAnalyzerIF+ BitDepthProcessor
+	       過去Analzyer有分硬體算(CA-2/310) 軟體算.
+	       現在統一用硬體算...analyzer存在的意義就降低了,ComponentFetcher老實講被虛化了
+	     */
 	    class ComponentFetcher:public gui::event::WindowAdapter {
 	      private:
 		bptr < cms::measure::IntensityAnalyzerIF > analyzer;
 		bool stop;
-		 bptr < cms::lcd::calibrate::BitDepthProcessor > bitDepth;
+		 bptr < cms::lcd::BitDepthProcessor > bitDepth;
 		Component_vector_ptr fetchComponent(RGB_vector_ptr rgbMeasureCode);
 		XYZ_ptr extraMeasureXYZ;
 		RGB_ptr extraMeasureRGB;

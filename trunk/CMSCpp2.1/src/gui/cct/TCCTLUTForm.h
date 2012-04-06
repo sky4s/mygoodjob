@@ -150,7 +150,6 @@ class TCCTLUTForm:public TForm, cms::lcd::calibrate::FeedbackListener {
     void __fastcall Edit_MaxYAdvOverChange(TObject * Sender);
     void __fastcall CheckBox_MaxYAdvAutoClick(TObject * Sender);
     void __fastcall CheckBox_MiddleCCTClick(TObject * Sender);
-    void __fastcall CheckBox_FeedbackClick(TObject * Sender);
     void __fastcall Edit_DimGammaEndChange(TObject * Sender);
     void __fastcall RadioGroup_NormalCaseClick(TObject * Sender);
     void __fastcall CheckBox_RTargetIntensityClick(TObject * Sender);
@@ -166,7 +165,7 @@ class TCCTLUTForm:public TForm, cms::lcd::calibrate::FeedbackListener {
   private:			// User declarations
     void setMeasureInfo();
     int serialid;
-    bptr < cms::lcd::calibrate::BitDepthProcessor > bitDepth;
+    bptr < cms::lcd::BitDepthProcessor > bitDepth;
     RGBGamma_ptr rgbGamma;
     bptr < cms::lcd::calibrate::MeasureCondition > getMeasureCondition();
 
@@ -174,7 +173,7 @@ class TCCTLUTForm:public TForm, cms::lcd::calibrate::FeedbackListener {
     const bool debugMode;
   public:			// User declarations
     __fastcall TCCTLUTForm(TComponent * Owner);
-    void setBitDepthProcessor(bptr < cms::lcd::calibrate::BitDepthProcessor > bitDepth);
+    void setBitDepthProcessor(bptr < cms::lcd::BitDepthProcessor > bitDepth);
     void doFeedback(int defectCount, int feedbackCount);
     bool run;
 };

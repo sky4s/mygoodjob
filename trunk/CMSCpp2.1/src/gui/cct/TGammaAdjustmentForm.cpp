@@ -25,7 +25,7 @@ __fastcall TGammaAdjustmentForm::TGammaAdjustmentForm(TComponent * Owner)
 
 //---------------------------------------------------------------------------
 void TGammaAdjustmentForm::setBitDepthProcessor(bptr <
-						cms::lcd::calibrate::BitDepthProcessor > bitDepth)
+						cms::lcd::BitDepthProcessor > bitDepth)
 {
     this->bitDepth = bitDepth;
 }

@@ -105,7 +105,7 @@ bptr < cms::lcd::calibrate::MeasureCondition > TGammaMeasurementForm::getMeasure
 
 //---------------------------------------------------------------------------
 void TGammaMeasurementForm::setBitDepthProcessor(bptr <
-						 cms::lcd::calibrate::BitDepthProcessor > bitDepth)
+						 cms::lcd::BitDepthProcessor > bitDepth)
 {
     this->bitDepth = bitDepth;
 }
@@ -178,10 +178,6 @@ void TGammaMeasurementForm::tconMeasure(bool_vector_ptr rgbw, int start,
 
 void __fastcall TGammaMeasurementForm::FormShow(TObject * Sender)
 {
-    /*if (false == checkMeasureable()) {
-       return;
-       } */
-
     int activeIndex = MainForm->PageControl1->ActivePageIndex;
     bool tconInput = bitDepth->isTCONInput()
 	|| (MainForm->debugMode ? (1 == activeIndex ? true : false) : false);
