@@ -386,16 +386,15 @@ namespace cms {
 			return;
 		    } else {
 
-                        if( null != originalComponentVector) {
-			//若要略過inverse B, 則要先量測到B在哪裡反轉
-			//然後設定b最大只用到反轉點
-			ComponentLUT lut(originalComponentVector);
-			//找到最大B Intensity的灰階
-			blueMax = lut.getMaxBIntensityRGL();
-                        }
-                        else {
-                        blueMax = MeasureTool::getMaxBIntensityRawGrayLevel(mm, bitDepth);
-                        }
+			if (null != originalComponentVector) {
+			    //若要略過inverse B, 則要先量測到B在哪裡反轉
+			    //然後設定b最大只用到反轉點
+			    ComponentLUT lut(originalComponentVector);
+			    //找到最大B Intensity的灰階
+			    blueMax = lut.getMaxBIntensityRGL();
+			} else {
+			    blueMax = MeasureTool::getMaxBIntensityRawGrayLevel(mm, bitDepth);
+			}
 
 			this->maxBRawGrayLevel = blueMax;
 		    }

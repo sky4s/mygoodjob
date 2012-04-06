@@ -415,7 +415,7 @@ void __fastcall TTargetWhiteForm2::FormCreate(TObject * Sender)
 //---------------------------------------------------------------------------
 
 void TTargetWhiteForm2::setBitDepthProcessor(bptr <
-					     cms::lcd::calibrate::BitDepthProcessor > bitDepth)
+					     cms::lcd::BitDepthProcessor > bitDepth)
 {
     this->bitDepth = bitDepth;
     if (Edit_R->Text.ToInt() == 0) {

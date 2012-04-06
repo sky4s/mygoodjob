@@ -16,9 +16,9 @@ namespace cms {
 	  public:
 	    static string_ptr toString(RGB_vector_ptr rgbVector);
 	    static RGB_vector_ptr getLinearRGBVector(int n);
-	    static RGB_vector_ptr getLinearRGBVector(bptr < cms::lcd::calibrate::BitDepthProcessor >
+	    static RGB_vector_ptr getLinearRGBVector(bptr < cms::lcd::BitDepthProcessor >
 						     bitDepth, double bgain);
-	    static RGB_vector_ptr getLinearRGBVector(bptr < cms::lcd::calibrate::BitDepthProcessor >
+	    static RGB_vector_ptr getLinearRGBVector(bptr < cms::lcd::BitDepthProcessor >
 						     bitDepth, double rgain, double ggain,
 						     double bgain);
 	    static RGB_vector_ptr getLinearRGBVector(RGB_vector_ptr rgbVector, double rgain,

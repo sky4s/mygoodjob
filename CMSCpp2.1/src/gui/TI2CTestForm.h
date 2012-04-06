@@ -74,10 +74,10 @@ class TI2CTestForm:public TForm {
      bptr < i2c::TCONControl > control;
     const i2c::AddressingSize getAddressingSize();
     void setOptionsEditable(bool editable);
-     bptr < cms::lcd::calibrate::BitDepthProcessor > bitDepth;
+     bptr < cms::lcd::BitDepthProcessor > bitDepth;
   public:			// User declarations
      __fastcall TI2CTestForm(TComponent * Owner);
-    void setBitDepthProcessor(bptr < cms::lcd::calibrate::BitDepthProcessor > bitDepth);
+    void setBitDepthProcessor(bptr < cms::lcd::BitDepthProcessor > bitDepth);
 };
 //---------------------------------------------------------------------------
 extern PACKAGE TI2CTestForm *I2CTestForm;

@@ -14,7 +14,7 @@
 #include "TTargetWhiteForm2.h"
 #include "TMeasureWindow.h"
 #include "TCCTLUTForm.h"
-//運用若參考指標去儲存WindowListener
+//運用弱參考指標去儲存WindowListener
 #define WEAK_PTR
 
 //---------------------------------------------------------------------------
@@ -42,12 +42,17 @@ void __fastcall TMeasureWindow::FormKeyPress(TObject * Sender, char &Key)
 	    tconcontrol->setGammaTest(false);
 	}
 	this->Visible = false;
+	//=====================================================================
+	// 這個部份應該改用listener pattern會較好, 但是實際上也就只有這兩個視窗會呼叫到
+	// 所以就免了!
+	//=====================================================================
 	if (null != TargetWhiteForm2) {
 	    TargetWhiteForm2->stopMeasure = true;
 	}
 	if (null != CCTLUTForm) {
 	    CCTLUTForm->run = false;
 	}
+	//=====================================================================
 	this->Close();
 
 	break;
@@ -313,7 +318,7 @@ void TMeasureWindow::setTCONInput(bptr < i2c::TCONControl > tconcontrol)
     source = TCON;
 };
 void TMeasureWindow::setDGLUTInput(bptr < i2c::TCONControl > tconcontrol,
-				   bptr < cms::lcd::calibrate::BitDepthProcessor > bitDepth)
+				   bptr < cms::lcd::BitDepthProcessor > bitDepth)
 {
     this->tconcontrol = tconcontrol;
     source = DGLUT;

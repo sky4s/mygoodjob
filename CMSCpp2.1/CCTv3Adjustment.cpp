@@ -6,12 +6,12 @@
 #include "src\gui\cct\TMainForm.h"
 //---------------------------------------------------------------------------
 USEFORM("src\gui\TMeasureWindow.cpp", MeasureWindow);
-USEFORM("src\gui\TAnalyzerFrame.cpp", AnalyzerFrame);	/* TFrame: File Type */
+USEFORM("src\gui\TAnalyzerFrame.cpp", AnalyzerFrame); /* TFrame: File Type */
 USEFORM("src\gui\TI2CTestForm.cpp", I2CTestForm);
 USEFORM("src\gui\TMatrixCalibration.cpp", MatrixCalibrationForm);
-USEFORM("src\gui\TCA210SettingFrame.cpp", CA210SettingFrame);	/* TFrame: File Type */
-USEFORM("src\gui\TOptionsFrame.cpp", OptionsFrame);	/* TFrame: File Type */
-USEFORM("src\gui\TOutputFileFrame.cpp", OutputFileFrame);	/* TFrame: File Type */
+USEFORM("src\gui\TCA210SettingFrame.cpp", CA210SettingFrame); /* TFrame: File Type */
+USEFORM("src\gui\TOptionsFrame.cpp", OptionsFrame); /* TFrame: File Type */
+USEFORM("src\gui\TOutputFileFrame.cpp", OutputFileFrame); /* TFrame: File Type */
 USEFORM("src\gui\cct\TGammaAdjustmentForm.cpp", GammaAdjustmentForm);
 USEFORM("src\gui\cct\TGammaMeasurementForm.cpp", GammaMeasurementForm);
 USEFORM("src\gui\cct\TMainForm.cpp", MainForm);
@@ -20,7 +20,6 @@ USEFORM("src\gui\cct\TAboutBox.cpp", AboutBox);
 USEFORM("src\gui\cct\TCCTLUTForm.cpp", CCTLUTForm);
 USEFORM("src\gui\cct\TChangeLogForm.cpp", ChangeLogForm);
 //---------------------------------------------------------------------------
-
 WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 {
 
@@ -30,8 +29,8 @@ WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	Application->Initialize();
 	Application->Title = "CCTAdjustment v3.3b ";
 	Application->CreateForm(__classid(TMainForm), &MainForm);
-	Application->CreateForm(__classid(TMeasureWindow), &MeasureWindow);
-	Application->Run();
+                 Application->CreateForm(__classid(TMeasureWindow), &MeasureWindow);
+                 Application->Run();
     }
     catch(EOleException & ex) {
 	ShowMessage("CA210 cannot be linked.");

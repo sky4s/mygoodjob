@@ -95,7 +95,6 @@ void __fastcall TCCTLUTForm::Button_MeaRunClick(TObject * Sender)
 	cms::lcd::calibrate::linkCA210 = MainForm->linkCA210;
 	cms::lcd::calibrate::pcWithTCONInput = MainForm->isPCwithTCONInput();
 	LCDCalibrator calibrator(fetcher, bitDepth);
-	//calibrator.DebugMode = MainForm->debugMode;
 
 	//以下都是選項的設定
 
@@ -214,19 +213,7 @@ void __fastcall TCCTLUTForm::Button_MeaRunClick(TObject * Sender)
 	    int over = Edit_MaxYAdvOver->Text.ToInt();
 	    bool autoOver = CheckBox_MaxYAdvAuto->Checked;
 	    calibrator.setKeepMaxLuminanceSmooth2NativeWhite(over, autoOver);
-	    /*if (deHook) {
-	       //不需t-con input, 透過改變intensity讓B用盡
-	       int deHookZone = Edit_DeHookRBGZone->Text.ToInt();
-	       calibrator.setDeHookReduceBGap(deHookZone);
-	       } else {
-	       if (debugMode) {
-	       ShowMessage
-	       ("Cannot use \"Native White (Smooth)\" without De-Hook in debug mode.");
-	       return;
-	       }
-	       //需t-con input
-	       calibrator.DeHookMode = Original;
-	       } */
+
 	} else if (true == RadioButton_MaxYTargetWhite->Checked) {
 	    calibrator.setKeepMaxLuminance(KeepMaxLuminance::TargetWhite);
 
@@ -405,9 +392,6 @@ void __fastcall TCCTLUTForm::FormShow(TObject * Sender)
 	RadioButton_DeHookKeepCCT->Visible = true;
     }
     CheckBox_Feedback->Visible = useTConInput;
-    if (true == CheckBox_Feedback->Checked) {
-	CheckBox_Feedback->Checked = useTConInput;
-    }
     Edit_DimFixThreshold->Visible = useTConInput;
 
     //=========================================================================
@@ -455,7 +439,7 @@ void __fastcall TCCTLUTForm::RadioButton_GammaCurveClick(TObject * Sender)
 
 
 //---------------------------------------------------------------------------
-void TCCTLUTForm::setBitDepthProcessor(bptr < cms::lcd::calibrate::BitDepthProcessor > bitDepth)
+void TCCTLUTForm::setBitDepthProcessor(bptr < cms::lcd::BitDepthProcessor > bitDepth)
 {
     this->bitDepth = bitDepth;
 }
@@ -690,17 +674,6 @@ void __fastcall TCCTLUTForm::CheckBox_MiddleCCTClick(TObject * Sender)
 //---------------------------------------------------------------------------
 
 
-void __fastcall TCCTLUTForm::CheckBox_FeedbackClick(TObject * Sender)
-{
-    if (true == CheckBox_Feedback->Checked) {
-	//CheckBox_DimFix->Checked = false;
-	if (1 == MainForm->Edit_AverageTimes->Text) {
-	    //MainForm->Edit_AverageTimes->Text = 3;
-	}
-    }
-}
-
-//---------------------------------------------------------------------------
 
 void __fastcall TCCTLUTForm::Edit_DimGammaEndChange(TObject * Sender)
 {

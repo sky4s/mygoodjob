@@ -40,7 +40,7 @@ namespace cms {
 
 	    void setTargetXYZVector(XYZ_vector_ptr targetXYZVector);
 	    void setTargetXYZVector(XYZ_vector_ptr targetXYZVector, RGB_vector_ptr dglut,
-				    bptr < cms::lcd::calibrate::BitDepthProcessor > bitDepth);
+				    bptr < cms::lcd::BitDepthProcessor > bitDepth);
 	    Component_vector_ptr getComponentVector();
 	    RGB_vector_ptr getGammaTable();
 	    /*
@@ -97,7 +97,7 @@ namespace cms {
 	    RGB_ptr getTargetReferenceRGB();
 	    RGB_ptr getNativeReferenceRGB();
 	    RGB_ptr getSecondReferenceRGB();
-	     bptr < cms::lcd::calibrate::BitDepthProcessor > getBitDepthProcessor();
+	     bptr < cms::lcd::BitDepthProcessor > getBitDepthProcessor();
 	    double_array getTargetWhiteRatio();
 	    //double_array getTargetWhiteRatio(const string & prestring);
 	};

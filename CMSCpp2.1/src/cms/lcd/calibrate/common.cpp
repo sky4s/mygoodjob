@@ -25,9 +25,7 @@ namespace cms {
 
 
 	    //==================================================================
-	     MeasureCondition::MeasureCondition(bptr <
-						cms::lcd::calibrate::
-						BitDepthProcessor >
+	     MeasureCondition::MeasureCondition(bptr < cms::lcd::BitDepthProcessor >
 						bitDepth):start(bitDepth->
 								getMeasureStart
 								()),
@@ -158,13 +156,11 @@ namespace cms {
 	    //==================================================================
 	    // PanelRegulator
 	    //==================================================================
-	  PanelRegulator::PanelRegulator(bptr < cms::lcd::calibrate::BitDepthProcessor > bitDepth, bptr < i2c::TCONControl > tconctrl, double rgain, double ggain, double bgain):
+	  PanelRegulator::PanelRegulator(bptr < cms::lcd::BitDepthProcessor > bitDepth, bptr < i2c::TCONControl > tconctrl, double rgain, double ggain, double bgain):
 	    bitDepth(bitDepth), tconctrl(tconctrl), rgain(rgain), ggain(ggain), bgain(bgain) {
 
 	    };
-	    PanelRegulator::PanelRegulator(bptr <
-					   cms::lcd::calibrate::
-					   BitDepthProcessor > bitDepth,
+	    PanelRegulator::PanelRegulator(bptr < cms::lcd::BitDepthProcessor > bitDepth,
 					   bptr < i2c::TCONControl >
 					   tconctrl, int maxR, int maxG,
 					   int maxB):bitDepth(bitDepth), tconctrl(tconctrl) {
@@ -202,7 +198,7 @@ namespace cms {
 	    //==================================================================
 
 
-	  GammaTestPanelRegulator::GammaTestPanelRegulator(bptr < cms::lcd::calibrate::BitDepthProcessor > bitDepth, bptr < i2c::TCONControl > tconctrl, int maxR, int maxG, int maxB, bptr < MeasureCondition > measureCondition):PanelRegulator(bitDepth,
+	  GammaTestPanelRegulator::GammaTestPanelRegulator(bptr < cms::lcd::BitDepthProcessor > bitDepth, bptr < i2c::TCONControl > tconctrl, int maxR, int maxG, int maxB, bptr < MeasureCondition > measureCondition):PanelRegulator(bitDepth,
 			   tconctrl, maxR, maxG,
 			   maxB), measureCondition(measureCondition) {
 	    };

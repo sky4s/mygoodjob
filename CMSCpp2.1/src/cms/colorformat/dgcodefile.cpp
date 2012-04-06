@@ -17,6 +17,7 @@ namespace cms {
 	using namespace boost;
 	using namespace java::lang;
 	using namespace cms::lcd::calibrate;
+        using namespace cms::lcd;
 	using namespace Indep;
 	using namespace Dep;
 	using namespace cms::colorspace;
@@ -527,7 +528,7 @@ namespace cms {
 		       } */
 		    break;
 		}
-                dgfile.addProperty("keep dark level", c->KeepDarkLevel ? On : Off);
+		dgfile.addProperty("keep dark level", c->KeepDarkLevel ? On : Off);
 	    }
 	    //==================================================================
 
@@ -806,8 +807,7 @@ namespace cms {
 	    const MaxValue & in = MaxValue::valueOf(getProperty("in"));
 	    const MaxValue & lut = MaxValue::valueOf(getProperty("lut"));
 	    const MaxValue & out = MaxValue::valueOf(getProperty("out"));
-	    bptr < BitDepthProcessor >
-		bitDepth(new BitDepthProcessor(in.bit, lut.bit, out.bit, false));
+	    bptr < BitDepthProcessor > bitDepth(new BitDepthProcessor(in.bit, lut.bit, out.bit));
 	    return bitDepth;
 	}
 	double_array DGLutProperty::getTargetWhiteRatio() {

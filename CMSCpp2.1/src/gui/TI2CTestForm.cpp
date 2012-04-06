@@ -260,7 +260,7 @@ void __fastcall TI2CTestForm::CheckBox_DGTestClick(TObject * Sender)
 }
 
 //---------------------------------------------------------------------------
-void TI2CTestForm::setBitDepthProcessor(bptr < cms::lcd::calibrate::BitDepthProcessor > bitDepth)
+void TI2CTestForm::setBitDepthProcessor(bptr < cms::lcd::BitDepthProcessor > bitDepth)
 {
     this->bitDepth = bitDepth;
 }

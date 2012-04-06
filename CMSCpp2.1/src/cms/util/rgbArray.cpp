@@ -38,11 +38,11 @@ namespace cms {
 	    };
 	    return result;
 	};
-	RGB_vector_ptr RGBVector::getLinearRGBVector(bptr < cms::lcd::calibrate::BitDepthProcessor >
+	RGB_vector_ptr RGBVector::getLinearRGBVector(bptr < cms::lcd::BitDepthProcessor >
 						     bitDepth, double bgain) {
 	    return getLinearRGBVector(bitDepth, 1, 1, bgain);
 	};
-	RGB_vector_ptr RGBVector::getLinearRGBVector(bptr < cms::lcd::calibrate::BitDepthProcessor >
+	RGB_vector_ptr RGBVector::getLinearRGBVector(bptr < cms::lcd::BitDepthProcessor >
 						     bitDepth, double rgain, double ggain,
 						     double bgain) {
 	    int n = bitDepth->getEffectiveInputLevel();

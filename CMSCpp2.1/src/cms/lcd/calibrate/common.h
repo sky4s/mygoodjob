@@ -8,7 +8,7 @@ namespace cms {
 	    TargetLuminance,	//keepヘ夹獹(ぃ﹚Τノ
 	    TargetWhite,	//keep ヘ夹フ翴: 穎皌de-hook
 	    NativeWhite,	//keep狾程獹&︹放
-	    //NativeWhiteAdvanced,	//keep狾程獹&︹放, smooth跑て (紀斌ぃノ)
+		//NativeWhiteAdvanced,      //keep狾程獹&︹放, smooth跑て (紀斌ぃノ)
 	    Smooth2NativeWhite,	//keep狾程獹&︹放, smooth跑て
 	    EnumerationEnd()
 
@@ -46,7 +46,7 @@ namespace cms {
 		const MeasureType type;
 	      public:
 
-		 MeasureCondition(bptr < cms::lcd::calibrate::BitDepthProcessor > bitDepth);
+		 MeasureCondition(bptr < cms::lcd::BitDepthProcessor > bitDepth);
 		 MeasureCondition(const int start, const int end,
 				  const int firstStep, const int step,
 				  const Dep::MaxValue & maxValue);
@@ -93,18 +93,18 @@ namespace cms {
 	     */
 	    class PanelRegulator {
 	      protected:
-		bptr < cms::lcd::calibrate::BitDepthProcessor > bitDepth;
+		bptr < cms::lcd::BitDepthProcessor > bitDepth;
 		bptr < i2c::TCONControl > tconctrl;
 		double rgain, ggain, bgain;
 		RGB_vector_ptr mappingRGBVector;
 	      public:
 		 PanelRegulator(bptr <
-				cms::lcd::calibrate::BitDepthProcessor >
+				cms::lcd::BitDepthProcessor >
 				bitDepth,
 				bptr < i2c::TCONControl > tconctrl,
 				double rgain, double ggain, double bgain);
 		 PanelRegulator(bptr <
-				cms::lcd::calibrate::BitDepthProcessor >
+				cms::lcd::BitDepthProcessor >
 				bitDepth,
 				bptr < i2c::TCONControl > tconctrl, int maxR, int maxG, int maxB);
 		virtual void setEnable(bool enable);
@@ -117,12 +117,10 @@ namespace cms {
 		bptr < MeasureCondition > measureCondition;
 		void setRemappingMode(bool remap);
 	      public:
-		/*GammaTestPanelRegulator(bptr < cms::lcd::calibrate::BitDepthProcessor > bitDepth,
+		/*GammaTestPanelRegulator(bptr < cms::lcd::BitDepthProcessor > bitDepth,
 		   bptr < i2c::TCONControl > tconctrl, double rgain,
 		   double ggain, double bgain); */
-		 GammaTestPanelRegulator(bptr <
-					 cms::lcd::calibrate::
-					 BitDepthProcessor > bitDepth,
+		 GammaTestPanelRegulator(bptr < cms::lcd::BitDepthProcessor > bitDepth,
 					 bptr < i2c::TCONControl > tconctrl,
 					 int maxR, int maxG, int maxB,
 					 bptr < MeasureCondition > measureCondition);
