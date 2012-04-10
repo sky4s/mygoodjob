@@ -386,14 +386,10 @@ void __fastcall TCCTLUTForm::FormShow(TObject * Sender)
     //=========================================================================
     // tcon relative
     //=========================================================================
-    bool useTConInput = (true == tconInput) || debugMode;
-
-    if (useTConInput) {
-	RadioButton_DeHookKeepCCT->Visible = true;
-    }
-    CheckBox_Feedback->Visible = useTConInput;
-    Edit_DimFixThreshold->Visible = useTConInput;
-
+    bool useTConInput = (true == tconInput || MainForm->isInTCONSetup());	// || debugMode;
+    RadioButton_DeHookKeepCCT->Enabled = useTConInput;
+    CheckBox_Feedback->Enabled = useTConInput;
+    Edit_DimFixThreshold->Enabled = useTConInput;
     //=========================================================================
     //=========================================================================
     // target white relative
@@ -422,7 +418,7 @@ void __fastcall TCCTLUTForm::RadioButton_GammaCurveClick(TObject * Sender)
 	unsigned int n = bitDepth->getLevel();
 	if (rgbGamma != null) {
 	    if (n == rgbGamma->w->size()) {
-		this->CheckBox_GByPass->Visible = true;
+		this->CheckBox_GByPass->Enabled = true;
 		return;
 	    } else {
 		String msg = "Desired Gamma File count is not match to the DG LUT count(need ";
@@ -475,7 +471,7 @@ void __fastcall TCCTLUTForm::FormKeyPress(TObject * Sender, char &Key)
 
 void __fastcall TCCTLUTForm::RadioButton_GammaClick(TObject * Sender)
 {
-    this->CheckBox_GByPass->Visible = false;
+    this->CheckBox_GByPass->Enabled = false;
 }
 
 //---------------------------------------------------------------------------
@@ -794,9 +790,23 @@ void __fastcall TCCTLUTForm::FormCreate(TObject * Sender)
 
 void __fastcall TCCTLUTForm::RadioButton_MaxYNativeClick(TObject * Sender)
 {
-    if (RadioButton_MaxYNative->Checked && RadioButton_DeHookKeepCCT->Visible) {
+    if (RadioButton_MaxYNative->Checked && RadioButton_DeHookKeepCCT->Enabled) {
 	RadioButton_DeHookKeepCCT->Checked = true;
     }
+}
+
+//---------------------------------------------------------------------------
+
+void __fastcall TCCTLUTForm::RadioButton_3GammaClick(TObject * Sender)
+{
+    this->CheckBox_GByPass->Enabled = false;
+}
+
+//---------------------------------------------------------------------------
+
+void __fastcall TCCTLUTForm::RadioButton_OriginalGammaClick(TObject * Sender)
+{
+    this->CheckBox_GByPass->Enabled = false;
 }
 
 //---------------------------------------------------------------------------

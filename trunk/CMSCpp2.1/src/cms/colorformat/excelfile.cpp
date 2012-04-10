@@ -392,6 +392,8 @@ namespace cms {
 	    headerNamesMap.insert(make_pair(sheetname, headerNames));
 	    if (Create == mode) {
 		db->createTable(sheetname, headerNames);
+	    } else {
+		throw new IllegalStateException("");
 	    }
 
 	};
@@ -404,15 +406,22 @@ namespace cms {
 	    headerNamesMap.insert(make_pair(sheetname, headerNames));
 	    if (Create == mode) {
 		db->createTable(sheetname, headerNames, fieldTypes);
+	    } else {
+		throw new IllegalStateException("");
 	    }
 
 	};
 	void ExcelAccessBase::initPropertySheet() {
+	    if (db->isTableExist(Properties)) {
+		return;
+	    }
 	    string_vector_ptr headerNames = StringVector::fromCString(2, "Key", "Value");
 	    string_vector_ptr fieldType = StringVector::fromCString(2, "Text", "Text");
 	    headerNamesMap.insert(make_pair(Properties, headerNames));
 	    if (Create == mode) {
 		db->createTable(Properties, headerNames, fieldType);
+	    } else {
+		throw new IllegalStateException("");
 	    }
 	};
 	void
@@ -575,15 +584,15 @@ namespace cms {
 	    };
 	    return vector;
 	};
+ 
 	//======================================================================
 
 	//======================================================================
 	// SimpleExcelAccess
 	//======================================================================
 
-      SimpleExcelAccess::SimpleExcelAccess(const std::string & filename, Mode mode):ExcelAccessBase(filename,
-			mode)
-	{
+	SimpleExcelAccess::SimpleExcelAccess(const std::string & filename,
+					     Mode mode):ExcelAccessBase(filename, mode) {
 	    /*, headerNames(headerNames) */
 
 	};

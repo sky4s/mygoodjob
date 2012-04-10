@@ -41,6 +41,7 @@ namespace cms {
 	    void setMeasureData(Patch_vector_ptr wMeasureData,
 				Patch_vector_ptr rMeasureData, Patch_vector_ptr gMeasureData,
 				Patch_vector_ptr bMeasureData, bool XYZMode);
+	    void addProperty(bptr < cms::colorformat::DGLutProperty > property);
 
 	};
 

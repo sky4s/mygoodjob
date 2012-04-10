@@ -17,7 +17,7 @@ namespace cms {
 	using namespace boost;
 	using namespace java::lang;
 	using namespace cms::lcd::calibrate;
-        using namespace cms::lcd;
+	using namespace cms::lcd;
 	using namespace Indep;
 	using namespace Dep;
 	using namespace cms::colorspace;
@@ -77,8 +77,7 @@ namespace cms {
 	    initPropertySheet();
 	};
 
-	//const string & DGLutFile::GammaTable = "Gamma_Table";
-	//const string & DGLutFile::OldGammaTable = "Gamma Table";
+
 	const string & DGLutFile::RawData = "Raw_Data";
 	const string & DGLutFile::Target = "Target";
 
@@ -186,32 +185,6 @@ namespace cms {
 	    //==================================================================
 	};
 
-	/*void
-	   DGLutFile::setGammaTable(RGB_vector_ptr dglut) {
-	   //==================================================================
-	   // 初始資料設定
-	   //==================================================================
-	   int size = dglut->size();
-	   string_vector_ptr values(new string_vector(4));
-	   //==================================================================
-	   //==================================================================
-	   // 迴圈處理
-	   //==================================================================
-	   for (int x = 0; x != size; x++) {
-
-	   RGB_ptr rgb = (*dglut)[x];
-	   (*values)[0] = _toString(x);
-	   (*values)
-	   [1] = _toString(rgb->R);
-	   (*values)
-	   [2] = _toString(rgb->G);
-	   (*values)
-	   [3] = _toString(rgb->B);
-	   this->insertData(GammaTable, values, false);
-	   }
-
-	   //==================================================================
-	   }; */
 	void DGLutFile::setTargetXYZVector(XYZ_vector_ptr targetXYZVector) {
 	    //if (true) {
 	    setTargetXYZVector(targetXYZVector, nil_RGB_vector_ptr,
@@ -315,9 +288,7 @@ namespace cms {
 		    double r = rgb->getValue(Channel::R, MaxValue::Double255);
 		    double g = rgb->getValue(Channel::G, MaxValue::Double255);
 		    double b = rgb->getValue(Channel::B, MaxValue::Double255);
-		    //double r = rgb->getValue(Channel::R);
-		    //double g = rgb->getValue(Channel::G);
-		    //double b = rgb->getValue(Channel::B);
+
 
 		    r = componentLUT->correctCodeInRange(Channel::R, r);
 		    double rIntensity =
@@ -335,12 +306,6 @@ namespace cms {
 			getIntensity(Channel::B,
 				     b) * targetWhiteRatio[2];
 
-		    /*double rIntensity = componentLUT->getIntensity(Channel::R,
-		       r) * targetWhiteRatio[0];
-		       double gIntensity = componentLUT->getIntensity(Channel::G,
-		       g) * targetWhiteRatio[1];
-		       double bIntensity = componentLUT->getIntensity(Channel::B,
-		       b) * targetWhiteRatio[2]; */
 		    if (-1 == rIntensity || -1 == gIntensity || -1 == bIntensity) {
 			rIntensity = gIntensity = bIntensity = -1;
 		    }
@@ -393,7 +358,6 @@ namespace cms {
 		    rgb = RGB_ptr(new RGBColor(c, c, c));
 		}
 
-		//RGB_ptr rgb(new RGBColor(gray, gray, gray));
 		RGB_ptr intensity(new RGBColor(R, G, B));
 		xyY_ptr xyY(new CIExyY(x, y, Y));
 		XYZ_ptr XYZ(xyY->toXYZ());
@@ -428,6 +392,8 @@ namespace cms {
 	    return ExcelAccessBase::getGammaTable(maxValue);
 	};
 	//======================================================================
+
+        
 	//======================================================================
 	// DGLutProperty
 	//======================================================================
@@ -438,7 +404,8 @@ namespace cms {
 	const string DGLutProperty::Second = "second";
 	const string DGLutProperty::WhiteRatio = "WhiteRatio";
 	const string DGLutProperty::TargetWhiteRatio = "TargetWhiteRatio";
-	void DGLutProperty::store(DGLutFile & dgfile) const {
+	void DGLutProperty::store(ExcelAccessBase & dgfile) const {
+
 	    //==================================================================
 	    // application status
 	    //==================================================================
@@ -557,7 +524,7 @@ namespace cms {
 		dgfile.addProperty("keep absolute gamma as",
 				   _toString(c->absGammaStartGLAboveGamma));
 	    }
-	    dgfile.addProperty("highlight famma fix", c->HighlightGammaFix ? On : Off);
+	    dgfile.addProperty("highlight gamma fix", c->highlightGammaFix ? On : Off);
 	    //==================================================================
 
 	    //==================================================================
@@ -650,7 +617,7 @@ namespace cms {
 	    }
 	    //==================================================================
 	};
-	void DGLutProperty::storeAnalyzer(DGLutFile & dgfile,
+	void DGLutProperty::storeAnalyzer(ExcelAccessBase & dgfile,
 					  bptr <
 					  cms::measure::
 					  IntensityAnalyzerIF > analyzer,
@@ -699,11 +666,7 @@ namespace cms {
 	void DGLutProperty::addProperty(const std::string key, const std::string value) {
 	    propertyMap.insert(make_pair(key, string_ptr(new string(value))));
 	};
-      DGLutProperty::DGLutProperty(cms::lcd::calibrate::LCDCalibrator * c):c(c),
-	    d(bptr < DGLutFile >
-	      ((DGLutFile *) null)) {
 
-	};
 	bool DGLutProperty::initProperty(bptr < DGLutFile > d) {
 	    bptr < DBQuery > query = d->retrieve(DGLutFile::Properties);
 	    if (query != null) {
@@ -728,7 +691,11 @@ namespace cms {
 		return false;
 	    }
 	};
+      DGLutProperty::DGLutProperty(cms::lcd::calibrate::LCDCalibrator * c):c(c),
+	    d(bptr < DGLutFile >
+	      ((DGLutFile *) null)) {
 
+	};
       DGLutProperty::DGLutProperty(bptr < DGLutFile > d):c((LCDCalibrator *) null), d(d) {
 	    if (false == initProperty(d)) {
 		throw IllegalStateException(" init Property failed.");

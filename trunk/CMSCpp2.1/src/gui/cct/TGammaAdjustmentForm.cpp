@@ -24,8 +24,7 @@ __fastcall TGammaAdjustmentForm::TGammaAdjustmentForm(TComponent * Owner)
 }
 
 //---------------------------------------------------------------------------
-void TGammaAdjustmentForm::setBitDepthProcessor(bptr <
-						cms::lcd::BitDepthProcessor > bitDepth)
+void TGammaAdjustmentForm::setBitDepthProcessor(bptr < cms::lcd::BitDepthProcessor > bitDepth)
 {
     this->bitDepth = bitDepth;
 }
@@ -170,11 +169,19 @@ bptr < cms::lcd::calibrate::MeasureCondition > TGammaAdjustmentForm::getMeasureC
 
 //---------------------------------------------------------------------------
 
-void __fastcall TGammaAdjustmentForm::TOutputFileFrame1Button_BrowseDirClick(
-      TObject *Sender)
+void __fastcall TGammaAdjustmentForm::TOutputFileFrame1Button_BrowseDirClick(TObject * Sender)
 {
-  TOutputFileFrame1->Button_BrowseDirClick(Sender);
+    TOutputFileFrame1->Button_BrowseDirClick(Sender);
 
 }
+
+//---------------------------------------------------------------------------
+
+void __fastcall TGammaAdjustmentForm::FormMouseMove(TObject * Sender,
+						    TShiftState Shift, int X, int Y)
+{
+    TOutputFileFrame1->updateWarning();
+}
+
 //---------------------------------------------------------------------------
 

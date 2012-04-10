@@ -29,6 +29,7 @@ namespace cms {
 	    initSheet(Sheet2, 21, "Gray Level", "W_X", "W_Y (nit)", "W_Z", "W_CCT", "£GUV", "W_R",
 		      "W_G", "W_B", "R_X", "R_Y (nit)", "R_Z", "G_X", "G_Y (nit)", "G_Z", "B_X",
 		      "B_Y (nit)", "B_Z", "DG_R", "DG_G", "DG_B");
+	    initPropertySheet();
 	};
 
 	int RampMeasureFile::
@@ -214,6 +215,18 @@ namespace cms {
 	    }
 	    return values;
 	}
+
+	void RampMeasureFile::addProperty(bptr < cms::colorformat::DGLutProperty > property) {
+	    using namespace std;
+	    map < const std::string, string_ptr) properties = property->propertyMap;
+	    map < const std::string, string_ptr)::const_iterator it = properties.begin();
+	    while (it != properties.end()) {
+		string key = it->first;
+		string_ptr val = it->second;
+		ExcelAccessBase::addProperty(key, *val);
+		it++;
+	    }
+	};
 
 
 	//==================================================================

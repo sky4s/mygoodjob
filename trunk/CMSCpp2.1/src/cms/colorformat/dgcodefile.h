@@ -55,6 +55,7 @@ namespace cms {
 
 	class DGLutProperty {
 	    friend class DGLutFile;
+            friend class RampMeasureFile;
 	  private:
 
 	    static const std::string On;
@@ -67,8 +68,8 @@ namespace cms {
 
 	     cms::lcd::calibrate::LCDCalibrator * c;
 	     bptr < DGLutFile > d;
-	    void store(DGLutFile & dglut) const;
-	    void DGLutProperty::storeAnalyzer(DGLutFile & dgfile,
+	    void store(ExcelAccessBase & dglut) const;
+	    void DGLutProperty::storeAnalyzer(ExcelAccessBase & dgfile,
 					      bptr <
 					      cms::measure::
 					      IntensityAnalyzerIF >

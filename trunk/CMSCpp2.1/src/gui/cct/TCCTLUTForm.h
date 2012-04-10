@@ -162,6 +162,8 @@ class TCCTLUTForm:public TForm, cms::lcd::calibrate::FeedbackListener {
     void __fastcall RadioButton_DeHookEvoClick(TObject * Sender);
     void __fastcall FormCreate(TObject * Sender);
     void __fastcall RadioButton_MaxYNativeClick(TObject * Sender);
+    void __fastcall RadioButton_3GammaClick(TObject * Sender);
+    void __fastcall RadioButton_OriginalGammaClick(TObject * Sender);
   private:			// User declarations
     void setMeasureInfo();
     int serialid;
