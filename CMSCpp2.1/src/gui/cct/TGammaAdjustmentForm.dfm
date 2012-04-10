@@ -11,6 +11,7 @@ object GammaAdjustmentForm: TGammaAdjustmentForm
   Font.Name = 'MS Sans Serif'
   Font.Style = []
   OldCreateOrder = False
+  OnMouseMove = FormMouseMove
   OnShow = FormShow
   PixelsPerInch = 96
   TextHeight = 13

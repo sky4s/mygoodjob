@@ -1352,7 +1352,10 @@ bool TMainForm::isPCwithTCONInput()
 {
     return true == RadioButton_PCTCON_TV->Checked || true == RadioButton_PCTCON_NB->Checked;
 };
-
+bool TMainForm::isInTCONSetup()
+{
+    return debugMode ? 1 == MainForm->PageControl1->ActivePageIndex : false;
+};
 void __fastcall TMainForm::RadioButton_PCTCON_NBClick(TObject * Sender)
 {
     this->Panel_TCON->Visible = true;

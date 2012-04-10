@@ -220,6 +220,7 @@ object CCTLUTForm: TCCTLUTForm
       Height = 13
       Caption = 'Original Gamma'
       TabOrder = 2
+      OnClick = RadioButton_OriginalGammaClick
     end
     object RadioButton_3Gamma: TRadioButton
       Left = 7
@@ -228,6 +229,7 @@ object CCTLUTForm: TCCTLUTForm
       Height = 17
       Caption = '3 Gamma'
       TabOrder = 3
+      OnClick = RadioButton_3GammaClick
     end
     object ComboBox_DimGamma: TComboBox
       Left = 116
@@ -341,8 +343,8 @@ object CCTLUTForm: TCCTLUTForm
       Width = 65
       Height = 20
       Caption = 'G bypass'
+      Enabled = False
       TabOrder = 12
-      Visible = False
     end
     object Edit_MiddleGammaEnd: TEdit
       Left = 88
@@ -360,6 +362,7 @@ object CCTLUTForm: TCCTLUTForm
       Height = 17
       Caption = 'Highlight Gamma Fix'
       TabOrder = 14
+      Visible = False
     end
   end
   object GroupBox3: TGroupBox
@@ -482,6 +485,7 @@ object CCTLUTForm: TCCTLUTForm
       Top = 184
       Width = 49
       Height = 21
+      Enabled = False
       TabOrder = 8
       Text = '0.0001'
     end
@@ -491,6 +495,7 @@ object CCTLUTForm: TCCTLUTForm
       Width = 71
       Height = 20
       Caption = 'Smooth'
+      Enabled = False
       TabOrder = 9
     end
     object ComboBox_DefinedDimGamma: TComboBox
@@ -987,7 +992,6 @@ object CCTLUTForm: TCCTLUTForm
       Top = 181
       Width = 33
       Height = 21
-      Enabled = False
       ImeName = #26085#25991#36664#20837#31995#32113' (MS-IME2002)'
       TabOrder = 3
       Text = '245'
@@ -1001,7 +1005,6 @@ object CCTLUTForm: TCCTLUTForm
       Height = 25
       Caption = 'Auto'
       Checked = True
-      Enabled = False
       State = cbChecked
       TabOrder = 4
       Visible = False
@@ -1078,8 +1081,8 @@ object CCTLUTForm: TCCTLUTForm
         Width = 105
         Height = 17
         Caption = 'Keep CCT'
+        Enabled = False
         TabOrder = 2
-        Visible = False
       end
       object Edit_DeHookRBGZone: TEdit
         Left = 98

@@ -978,28 +978,7 @@ namespace cms {
 
 		return file;
 	    };
-	    /*void LCDCalibrator::storeDGLutFile(RGB_vector_ptr dglut,
-	       bptr < cms::colorformat::DGLutFile > dglutFile) {
 
-	       //storeInfo2DGLutFile(dglutFile);
-	       //storeDGLut2DGLutFile(dglutFile, dglut);
-
-	       DGLutProperty property(this);
-	       //¼g¤Jproperty
-	       dglutFile->setProperty(property);
-	       //¼g¤Jdgcode
-	       dglutFile->setGammaTable(dglut);
-
-
-
-	       if (null != originalComponentVector) {
-	       //¼g¤Jraw data
-	       dglutFile->setRawData(originalComponentVector, initialRGBGamma, finalRGBGamma);
-	       }
-	       if (null != targetXYZVector) {
-	       dglutFile->setTargetXYZVector(targetXYZVector, dglut, bitDepth);
-	       }
-	       }; */
 
 
 	    void LCDCalibrator::storeInfo2DGLutFile(bptr < cms::colorformat::DGLutFile > dglutFile) {

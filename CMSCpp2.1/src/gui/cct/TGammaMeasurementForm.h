@@ -59,6 +59,7 @@ class TGammaMeasurementForm:public TForm {
     void __fastcall Button2Click(TObject * Sender);
     void __fastcall FormKeyPress(TObject * Sender, char &Key);
     void __fastcall CheckBox_LoadedClick(TObject * Sender);
+    void __fastcall FormMouseMove(TObject * Sender, TShiftState Shift, int X, int Y);
   private:			// User declarations
      bptr < cms::lcd::BitDepthProcessor > bitDepth;
     void setMeasureInfo();
@@ -71,10 +72,12 @@ class TGammaMeasurementForm:public TForm {
      bptr < cms::lcd::calibrate::ComponentFetcher > fetcher;
     //bptr < cms::measure::IntensityAnalyzerIF > analyzer;
     RGB_vector_ptr dgcodeTable;
+     bptr < cms::colorformat::DGLutProperty > property;
      bptr < cms::lcd::calibrate::MeasureCondition > getMeasureCondition();
     bool run;
      bptr < cms::measure::MeasureTool > mt;
     bool checkMeasureable();
+    const bool debugMode;
   public:			// User declarations
      __fastcall TGammaMeasurementForm(TComponent * Owner);
     void setBitDepthProcessor(bptr < cms::lcd::BitDepthProcessor > bitDepth);

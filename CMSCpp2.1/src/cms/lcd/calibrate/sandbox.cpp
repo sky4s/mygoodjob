@@ -233,6 +233,12 @@ namespace cms {
 		//先產生初步結果
 		RGB_vector_ptr initRGBVector = produceDGLut(targetXYZVector, componentVector,
 							    analyzer, panelRegulator1);
+		int whiteLevel = bitDepth->getEffectiveInputLevel();
+		bool keepMaxLumiInMulti = (KeepMaxLuminance::NativeWhite == c.keepMaxLuminance);
+		if (keepMaxLumiInMulti) {
+		    RGB_ptr whiteRGB = (*initRGBVector)[whiteLevel - 1];
+		    whiteRGB->R = whiteRGB->G = whiteRGB->B = bitDepth->getOutputMaxDigitalCount();
+		}
 
 		/*
 		   1. RGB不用換, 恆定255
@@ -259,23 +265,25 @@ namespace cms {
 			fetcher->fetchComponent(measureCondition);
 		    STORE_COMPONENT("MultiGen_Component_" +
 				    _toString(t + 1) + ".xls", componentVectorPrime);
-
-		    {		//gamma correct test scopr
-			Component_ptr c = (*componentVectorPrime)[0];
-			double maxLuminance = c->XYZ->Y;
-			//int targetSize = targetXYZVector->size();
-			XYZ_ptr targetWhite = (*targetXYZVector)[effectiveInputLevel - 1];
-			XYZ_ptr secondWhite = (*targetXYZVector)[effectiveInputLevel - 2];
-			if (secondWhite->Y > maxLuminance) {
-			    throw new IllegalStateException("secondWhite->Y > maxLuminance");
-			}
-			targetWhite->scaleY(maxLuminance);
-
-		    }
+		    /*if (c.HighlightGammaFix) {        //old gamma correct test scopr
+		       Component_ptr c = (*componentVectorPrime)[0];
+		       double maxLuminance = c->XYZ->Y;
+		       XYZ_ptr targetWhite = (*targetXYZVector)[effectiveInputLevel - 1];
+		       XYZ_ptr secondWhite = (*targetXYZVector)[effectiveInputLevel - 2];
+		       if (secondWhite->Y > maxLuminance) {
+		       throw new IllegalStateException("secondWhite->Y > maxLuminance");
+		       }
+		       targetWhite->scaleY(maxLuminance);
+		       } */
 
 		    result =
 			produceDGLut(targetXYZVector, componentVectorPrime,
 				     analyzer, bptr < PanelRegulator > ((PanelRegulator *) null));
+		    if (keepMaxLumiInMulti) {
+			RGB_ptr whiteRGB = (*result)[whiteLevel - 1];
+			whiteRGB->R = whiteRGB->G = whiteRGB->B =
+			    bitDepth->getOutputMaxDigitalCount();
+		    }
 		    STORE_RGBVECTOR("MultiGen_DG_" + _toString(t + 1) + ".xls", result);
 		}
 

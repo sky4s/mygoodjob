@@ -180,8 +180,8 @@ namespace cms {
 		void setOriginalGamma();
 		void setAbsoluteGamma(bool absoluteGamma, int startGrayLevel,
 				      double startGrayLevelAboveGamma);
-		__property bool HighlightGammaFix = { read = highlightGammaFix, write =
-			highlightGammaFix };
+		__property bool HighlightGammaFix = { write = highlightGammaFix
+		};
 		//==============================================================
 
 		//==============================================================

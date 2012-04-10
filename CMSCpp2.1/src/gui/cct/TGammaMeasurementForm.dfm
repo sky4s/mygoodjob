@@ -13,6 +13,7 @@ object GammaMeasurementForm: TGammaMeasurementForm
   KeyPreview = True
   OldCreateOrder = False
   OnKeyPress = FormKeyPress
+  OnMouseMove = FormMouseMove
   OnShow = FormShow
   PixelsPerInch = 96
   TextHeight = 13

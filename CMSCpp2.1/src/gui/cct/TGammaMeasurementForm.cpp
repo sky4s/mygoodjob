@@ -21,7 +21,7 @@
 TGammaMeasurementForm *GammaMeasurementForm;
 //---------------------------------------------------------------------------
 __fastcall TGammaMeasurementForm::TGammaMeasurementForm(TComponent * Owner)
-:TForm(Owner), mm(MainForm->mm), fetcher(MainForm->getComponentFetcher())
+:TForm(Owner), mm(MainForm->mm), debugMode(MainForm->debugMode)
 {
     run = false;
 }
@@ -104,8 +104,7 @@ bptr < cms::lcd::calibrate::MeasureCondition > TGammaMeasurementForm::getMeasure
 
 
 //---------------------------------------------------------------------------
-void TGammaMeasurementForm::setBitDepthProcessor(bptr <
-						 cms::lcd::BitDepthProcessor > bitDepth)
+void TGammaMeasurementForm::setBitDepthProcessor(bptr < cms::lcd::BitDepthProcessor > bitDepth)
 {
     this->bitDepth = bitDepth;
 }
@@ -134,34 +133,40 @@ bool TGammaMeasurementForm::measure(bool_vector_ptr rgbw,
     using namespace cms::measure;
     using namespace cms::util;
 
-    RampMeasureFile measureFile(filename, Create);
+
     Patch_vector_ptr vectors[4];
     mt = bptr < MeasureTool > (new MeasureTool(mm));
     MeasureWindow->addWindowListener(mt);
+    RampMeasureFile measureFile(filename, Create);
 
-    run = true;
-    try {
+    if (!debugMode) {
+	run = true;
+	try {
 
-	foreach(const Channel & ch, *Channel::RGBWChannel) {
-	    int index = ch.getArrayIndex();
-	    index = (Channel::W == ch) ? 3 : index;
-	    if (true == (*rgbw)[index]) {
-		vectors[index] = mt->rampMeasure(ch, measureCondition);
-		if (null == vectors[index]) {
-		    return false;
+	    foreach(const Channel & ch, *Channel::RGBWChannel) {
+		int index = ch.getArrayIndex();
+		index = (Channel::W == ch) ? 3 : index;
+		if (true == (*rgbw)[index]) {
+		    vectors[index] = mt->rampMeasure(ch, measureCondition);
+		    if (null == vectors[index]) {
+			return false;
+		    }
+		} else {
+		    vectors[index] = nil_Patch_vector_ptr;
 		}
-	    } else {
-		vectors[index] = nil_Patch_vector_ptr;
 	    }
 	}
+	__finally {
+	    run = false;
+	}
+	measureFile.setMeasureData(vectors[3], vectors[0], vectors[1], vectors[2], false);
+	measureFile.setMeasureData(vectors[3], vectors[0], vectors[1], vectors[2], true);
+	measureFile.setDeltaData(vectors[3]);
     }
-    __finally {
-	run = false;
+    if (null != property) {
+	//property->store(measureFile);
+	measureFile.addProperty(property);
     }
-
-    measureFile.setMeasureData(vectors[3], vectors[0], vectors[1], vectors[2], false);
-    measureFile.setMeasureData(vectors[3], vectors[0], vectors[1], vectors[2], true);
-    measureFile.setDeltaData(vectors[3]);
     return true;
 };
 
@@ -178,9 +183,7 @@ void TGammaMeasurementForm::tconMeasure(bool_vector_ptr rgbw, int start,
 
 void __fastcall TGammaMeasurementForm::FormShow(TObject * Sender)
 {
-    int activeIndex = MainForm->PageControl1->ActivePageIndex;
-    bool tconInput = bitDepth->isTCONInput()
-	|| (MainForm->debugMode ? (1 == activeIndex ? true : false) : false);
+    bool tconInput = bitDepth->isTCONInput() || MainForm->isInTCONSetup();
     this->Panel2->Visible = tconInput;
     setMeasureInfo();
     fetcher = MainForm->getComponentFetcher();
@@ -248,6 +251,7 @@ void __fastcall TGammaMeasurementForm::Button2Click(TObject * Sender)
 	DGLutFile dgcode(filename.c_str(), ReadOnly, maxValue);
 	//dgcodeTable = RGBVector::reverse(dgcode.getGammaTable());
 	dgcodeTable = dgcode.getGammaTable();
+	property = dgcode.getProperty();
 	this->CheckBox_Loaded->Checked = true;
 	this->CheckBox_Loaded->Enabled = true;
 
@@ -290,6 +294,14 @@ void __fastcall TGammaMeasurementForm::CheckBox_LoadedClick(TObject * Sender)
 	dgcodeTable.reset();
 	Button_Measure->Enabled = false;
     }
+}
+
+//---------------------------------------------------------------------------
+
+void __fastcall TGammaMeasurementForm::FormMouseMove(TObject * Sender,
+						     TShiftState Shift, int X, int Y)
+{
+    TOutputFileFrame1->updateWarning();
 }
 
 //---------------------------------------------------------------------------

@@ -255,8 +255,9 @@ namespace cms {
 		    double rg = _toDouble(rs);
 		    double gg = _toDouble(gs);
 		    double bg = _toDouble(bs);
-		    if (isGammaValue) {
+		    if (isGammaValue && 0 != level) {
 			double normal = level / maxLevel;
+
 			wg = Math::pow(normal, wg);
 			rg = Math::pow(normal, rg);
 			gg = Math::pow(normal, gg);
@@ -281,10 +282,13 @@ namespace cms {
 		return rgbgamma;
 	    }
 	    catch(boost::bad_lexical_cast) {
-                 return RGBGamma_ptr((RGBGamma *) null);
+		return RGBGamma_ptr((RGBGamma *) null);
 	    }
 	    catch(EOleException & ex) {
 		//ShowMessage("Desired Gamma File Format is wrong!");
+		return RGBGamma_ptr((RGBGamma *) null);
+	    }
+	    catch(...) {
 		return RGBGamma_ptr((RGBGamma *) null);
 	    }
 	};
