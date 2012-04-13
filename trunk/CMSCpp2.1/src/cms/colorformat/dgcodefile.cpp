@@ -198,12 +198,13 @@ namespace cms {
 	    //==================================================================
 	    // 初始資料設定
 	    //==================================================================
-	    const int headerCount = 14;
+	    const int headerCount = 16;
 	    initSheet(Target, headerCount, "Gray Level", "X", "Y (nit)",
 		      "Z", "_x", "_y", "dx", "dy",
 		      // 8~13, 由Gamma Table R/G/B/找到對應的Intensity,
 		      //再由Intensity及Target White/Primary Color推算出XYZ, 得到Gamma X/Y/Z
-		      "Gamma R", "Gamma G", "Gamma B", "Gamma X", "Gamma Y", "Gamma Z");
+		      "Gamma R", "Gamma G", "Gamma B", "Sim X", "Sim Y", "Sim Z",
+		      "Sim _x", "Sim _y");
 
 	    int size = targetXYZVector->size();
 	    string_vector_ptr values(new string_vector(headerCount));
@@ -238,14 +239,9 @@ namespace cms {
 	    //==================================================================
 
 	    //for debug only
-	    Component_ptr c0 = (*componentVector)[0];
-	    Component_ptr c128 = (*componentVector)[componentVector->size() / 2];
-	    Component_ptr c255 = (*componentVector)[componentVector->size() - 1];
-	    //double rMaxIntensity = componentLUT->getIntensity(Channel::R, 255);
-	    //double r128Intensity = componentLUT->getIntensity(Channel::R, 128);
-	    //double r0Intensity = componentLUT->getIntensity(Channel::R, 0);
-	    //double gMaxIntensity = componentLUT->getIntensity(Channel::G, 255);
-	    //double bMaxIntensity = componentLUT->getIntensity(Channel::B, 255);
+	    /*Component_ptr c0 = (*componentVector)[0];
+	       Component_ptr c128 = (*componentVector)[componentVector->size() / 2];
+	       Component_ptr c255 = (*componentVector)[componentVector->size() - 1]; */
 	    // end of debug purpose
 
 	    for (int x = 0; x != size; x++) {
@@ -318,11 +314,16 @@ namespace cms {
 		    double Z =
 			rXYZ->Z * rIntensity / 100 +
 			gXYZ->Z * gIntensity / 100 + bXYZ->Z * bIntensity / 100;
+
+		    double targetx = Y != 0 ? X / (X + Y + Z) : 0;
+		    double targety = Y != 0 ? Y / (X + Y + Z) : 0;
 		    (*values)[11] = _toString(X);
 		    (*values)[12] = _toString(Y);
 		    (*values)[13] = _toString(Z);
+		    (*values)[14] = _toString(targetx);
+		    (*values)[15] = _toString(targety);
 		} else {
-		    StringVector::setContent(values, "-1", 6, 8, 9, 10, 11, 12, 13);	//dx dy=0
+		    StringVector::setContent(values, "-1", 6, 8, 9, 10, 11, 12, 13, 14, 15);	//dx dy=0
 		}
 
 		this->insertData(Target, values, false);
@@ -393,7 +394,7 @@ namespace cms {
 	};
 	//======================================================================
 
-        
+
 	//======================================================================
 	// DGLutProperty
 	//======================================================================

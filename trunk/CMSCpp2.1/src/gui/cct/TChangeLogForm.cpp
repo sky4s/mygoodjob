@@ -13,9 +13,10 @@ __fastcall TChangeLogForm::TChangeLogForm(TComponent * Owner)
 :TForm(Owner)
 {
     Memo1->Text = "\
-    [3.3b build 1.22] 2012/04/10\r\n\
+    [3.3b build 1.22] 2012/04/12\r\n\
     +簡化De-Hook功能的使用\r\n\
     +Gamma量測保留Property供參考\r\n\
+    +Target Sheet新增Sim x/Sim y供參考\r\n\
     \r\n\
     [3.3b build 1.21] 2012/03/16\r\n\
     +Target White Form的Pattern大小可調整\r\n\
