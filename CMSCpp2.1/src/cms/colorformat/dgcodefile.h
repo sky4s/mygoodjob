@@ -55,7 +55,7 @@ namespace cms {
 
 	class DGLutProperty {
 	    friend class DGLutFile;
-            friend class RampMeasureFile;
+	    friend class RampMeasureFile;
 	  private:
 
 	    static const std::string On;
