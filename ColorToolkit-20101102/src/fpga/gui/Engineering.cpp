@@ -475,12 +475,14 @@ bool TEngineerForm::SetRead_DG(TLUT * Addr_LUT, int **DG_table, int LUT_Nbr, boo
     int start_addr = Addr_LUT[0].Addr() - chk_len;
 
     unsigned char *read_data = new unsigned char[read_len];
-    for (int i = 0; i < read_len; i++)
+    for (int i = 0; i < read_len; i++) {
 	read_data[i] = 0;
+    }
 
     unsigned char **read_data_C = new unsigned char *[LUT_Nbr];
-    for (int i = 0; i < LUT_Nbr; i++)
+    for (int i = 0; i < LUT_Nbr; i++) {
 	read_data_C[i] = new unsigned char[Byte_len[i]];
+    }
 
     // Set Table Start Address & length (in Bytes) to Interface
     String Addr_str;

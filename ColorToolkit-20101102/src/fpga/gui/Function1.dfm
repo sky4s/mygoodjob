@@ -1,6 +1,6 @@
 object FunctionForm1: TFunctionForm1
-  Left = 556
-  Top = 240
+  Left = 558
+  Top = 241
   Width = 724
   Height = 534
   Align = alCustom
@@ -472,6 +472,14 @@ object FunctionForm1: TFunctionForm1
           ParentFont = False
           TabOrder = 5
         end
+        object CheckBox_FuncOn: TCheckBox
+          Left = 312
+          Top = 88
+          Width = 73
+          Height = 17
+          Caption = 'Func On'
+          TabOrder = 6
+        end
       end
       object Btn_FRC_DG_reload: TBitBtn
         Left = 16
@@ -534,7 +542,7 @@ object FunctionForm1: TFunctionForm1
         Top = 176
         Width = 113
         Height = 21
-        ItemHeight = 0
+        ItemHeight = 13
         TabOrder = 2
         Text = 'ComboBox1'
       end
@@ -800,7 +808,7 @@ object FunctionForm1: TFunctionForm1
             Top = 16
             Width = 145
             Height = 21
-            ItemHeight = 0
+            ItemHeight = 13
             TabOrder = 3
             Text = 'ComboBox4'
           end
@@ -809,7 +817,7 @@ object FunctionForm1: TFunctionForm1
             Top = 56
             Width = 145
             Height = 21
-            ItemHeight = 0
+            ItemHeight = 13
             TabOrder = 4
             Text = 'ComboBox5'
           end
@@ -818,7 +826,7 @@ object FunctionForm1: TFunctionForm1
             Top = 88
             Width = 145
             Height = 21
-            ItemHeight = 0
+            ItemHeight = 13
             TabOrder = 5
             Text = 'ComboBox6'
           end
@@ -827,7 +835,7 @@ object FunctionForm1: TFunctionForm1
             Top = 128
             Width = 145
             Height = 21
-            ItemHeight = 0
+            ItemHeight = 13
             TabOrder = 6
             Text = 'ComboBox7'
           end

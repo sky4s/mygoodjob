@@ -117,6 +117,7 @@ class TFunctionForm1:public TForm {
     TCheckBox *CheckBox14;
     TLabel *Label3;
     TComboBox *ComboBox3;
+    TCheckBox *CheckBox_FuncOn;
     void __fastcall FormClose(TObject * Sender, TCloseAction & Action);
     void __fastcall FormCreate(TObject * Sender);
     void __fastcall btn_dg_wrtClick(TObject * Sender);

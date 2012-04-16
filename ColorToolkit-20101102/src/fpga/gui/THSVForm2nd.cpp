@@ -592,7 +592,9 @@ bool THSVForm2nd::HSV_LUT_RW_start()
 	ShowMessage("Unknown HSV enabled index.");
 	return 0;
     }
-
+    if (CheckBox_FuncOn->Checked) {
+	return true;
+    }
     unsigned char set_val;
     bool ok = EngineerForm->SetRead_Byte(ChkB[HSVEN_idx]->Addr, &set_val);
     if (ok == 0) {

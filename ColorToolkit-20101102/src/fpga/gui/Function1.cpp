@@ -558,6 +558,9 @@ bool TFunctionForm1::DG_LUT_RW_start()
 	ShowMessage("Unknown DG enabled index.");
 	return 0;
     }
+    if (CheckBox_FuncOn->Checked) {
+	return true;
+    }
     unsigned char set_val;
     bool ok = EngineerForm->SetRead_Byte(FrcDgChkB[DGEN_idx]->Addr, &set_val);
     if (ok == 0) {
@@ -573,6 +576,9 @@ bool TFunctionForm1::DG_LUT_RW_start()
 // 20100608 Recover the state of DG enable
 void TFunctionForm1::DG_LUT_RW_over()
 {
+    if (CheckBox_FuncOn->Checked) {
+	return ;
+    }
     // reload en state
     int set_val = (DG_EN_State == false ? 0 : 1);
     FrcDgChkB[DGEN_idx]->Chkb->Checked = DG_EN_State;
