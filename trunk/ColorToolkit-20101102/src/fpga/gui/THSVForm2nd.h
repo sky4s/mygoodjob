@@ -140,6 +140,7 @@ class THSVForm2nd:public TForm, cms::util::CallBackIF, RGBInfoCallbackIF, Patter
     TRadioButton *RadioButton_v1;
     TRadioButton *RadioButton_v2;
     TRadioGroup *RadioGroup_Global;
+        TCheckBox *CheckBox_FuncOn;
 
     void __fastcall btn_hsv_loadClick(TObject * Sender);
     void __fastcall btn_hsv_saveClick(TObject * Sender);

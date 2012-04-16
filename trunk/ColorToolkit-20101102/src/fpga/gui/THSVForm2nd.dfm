@@ -1,6 +1,6 @@
 object HSVForm2nd: THSVForm2nd
-  Left = 285
-  Top = 193
+  Left = 428
+  Top = 226
   Width = 869
   Height = 797
   Caption = 'HSV2'
@@ -276,7 +276,7 @@ object HSVForm2nd: THSVForm2nd
       end
       object btn_hsv_write: TButton
         Left = 394
-        Top = 136
+        Top = 152
         Width = 49
         Height = 15
         Caption = 'Write'
@@ -291,7 +291,7 @@ object HSVForm2nd: THSVForm2nd
       end
       object btn_hsv_read: TButton
         Left = 394
-        Top = 152
+        Top = 136
         Width = 49
         Height = 15
         Caption = 'Read'
@@ -546,6 +546,14 @@ object HSVForm2nd: THSVForm2nd
           'Rel')
         TabOrder = 15
         OnClick = RadioGroup_GlobalClick
+      end
+      object CheckBox_FuncOn: TCheckBox
+        Left = 376
+        Top = 104
+        Width = 65
+        Height = 17
+        Caption = 'Func On'
+        TabOrder = 16
       end
     end
     object GroupBox3: TGroupBox
