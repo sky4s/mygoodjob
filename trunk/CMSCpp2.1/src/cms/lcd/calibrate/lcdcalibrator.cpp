@@ -75,6 +75,7 @@ namespace cms {
 		dehook = None;
 		deHookRBGZone = 0;
 		highlightGammaFix = false;
+		useTargetWhiteYasMaxY = false;
 	    };
 
 	     double_vector_ptr
@@ -424,6 +425,7 @@ namespace cms {
 		    //dehook選項從target white拉到 cctlut去, 所以這邊的重新產生新的anzlyer
 
 		    if (null == secondWhiteAnalyzer) {
+			//此時init2ndWhiteAnalyzer找的是255 255 250(B Max IntensitY)
 			init2ndWhiteAnalyzer(true);
 		    }
 		    //bptr < cms::measure::IntensityAnalyzerIF > analyzer = fetcher->getAnalyzer();
@@ -523,6 +525,7 @@ namespace cms {
 		double_vector_ptr luminanceGammaCurve;
 		double minLuminance =
 		    (*originalComponentVector)[originalComponentVector->size() - 1]->XYZ->Y;
+		bptr < IntensityAnalyzerIF > analyzer = fetcher->getAnalyzer();
 
 		//=============================================================
 		// 產生 luminance gamma curve
@@ -619,9 +622,15 @@ namespace cms {
 			(new
 			 AdvancedDGLutGenerator(originalComponentVector, fetcher, bitDepth, *this));
 
+
+		    //targetWhite as raw white, 很即時
+		    //secondWhiteAnalyzer由於是系統自動產生, 所以建議不論null都要去量測
+		    double refLuminance = analyzer->getReferenceColor()->Y;
 		    double maxLuminance =
 			isDoDeHookKeepCCT()?
-			secondWhiteAnalyzer->getReferenceColor()->Y : targetWhiteXYZ->Y;
+			(useTargetWhiteYasMaxY ? refLuminance :
+			 secondWhiteAnalyzer->getReferenceColor()->Y)
+			: refLuminance;
 		    //藉由傳統generator產生luminance gamma curve
 		    if (true == absoluteGamma) {
 			int effectiven = bitDepth->getEffectiveInputLevel();
@@ -663,7 +672,7 @@ namespace cms {
 		advgenerator->setPanelRegulator(panelRegulator);
 
 
-		bptr < IntensityAnalyzerIF > analyzer = fetcher->getAnalyzer();
+
 		//analyzer若沒有設定過target color, 會使此步驟失效
 		//因為analyzer->getReferenceColor()會是null
 		XYZ_ptr targetWhite = analyzer->getReferenceColor()->toXYZ();

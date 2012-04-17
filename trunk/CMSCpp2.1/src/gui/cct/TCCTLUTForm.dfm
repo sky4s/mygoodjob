@@ -1,6 +1,6 @@
 object CCTLUTForm: TCCTLUTForm
-  Left = 591
-  Top = 308
+  Left = 887
+  Top = 361
   Width = 841
   Height = 431
   Caption = 'CCT(LUT)'
@@ -1064,6 +1064,7 @@ object CCTLUTForm: TCCTLUTForm
         Checked = True
         TabOrder = 0
         TabStop = True
+        OnClick = RadioButton_DeHookNoneClick
       end
       object RadioButton_DeHookReduceBGap: TRadioButton
         Left = 8
@@ -1074,6 +1075,8 @@ object CCTLUTForm: TCCTLUTForm
         Color = clMoneyGreen
         ParentColor = False
         TabOrder = 1
+        Visible = False
+        OnClick = RadioButton_DeHookReduceBGapClick
       end
       object RadioButton_DeHookKeepCCT: TRadioButton
         Left = 8
@@ -1083,6 +1086,8 @@ object CCTLUTForm: TCCTLUTForm
         Caption = 'Keep CCT'
         Enabled = False
         TabOrder = 2
+        Visible = False
+        OnClick = RadioButton_DeHookKeepCCTClick
       end
       object Edit_DeHookRBGZone: TEdit
         Left = 98
@@ -1094,6 +1099,15 @@ object CCTLUTForm: TCCTLUTForm
         Text = '7'
         Visible = False
       end
+    end
+    object CheckBox_TaregtWhiteYasMaxY: TCheckBox
+      Left = 8
+      Top = 232
+      Width = 145
+      Height = 17
+      Caption = 'Use TargetWhite as MaxY'
+      Enabled = False
+      TabOrder = 10
     end
   end
   object CheckBox_MemoryMeasure: TCheckBox
