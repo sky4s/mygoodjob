@@ -592,9 +592,7 @@ bool THSVForm2nd::HSV_LUT_RW_start()
 	ShowMessage("Unknown HSV enabled index.");
 	return 0;
     }
-    if (CheckBox_FuncOn->Checked) {
-	return true;
-    }
+
     unsigned char set_val;
     bool ok = EngineerForm->SetRead_Byte(ChkB[HSVEN_idx]->Addr, &set_val);
     if (ok == 0) {
@@ -602,6 +600,9 @@ bool THSVForm2nd::HSV_LUT_RW_start()
 	return 0;
     }
     HSV_EN_State = (set_val > 0 ? 1 : 0);
+    if (CheckBox_FuncOn->Checked) {
+	return true;
+    }
     if (CheckBox_OffWhenWrite->Checked) {
 	ChkB[HSVEN_idx]->Chkb->Checked = false;
 	EngineerForm->SetWrite_Byte(ChkB[HSVEN_idx]->Addr, 0);
