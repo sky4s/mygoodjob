@@ -31,7 +31,8 @@ namespace cms {
 
 	    double CIEXYZ::getCCT() {
 		return CorrelatedColorTemperature::
-		    xy2CCTByMcCamyFloat(xyY_ptr(new CIExyY(XYZ_ptr(this))));
+		    xy2CCTByMcCamyFloat(xyY_ptr
+					(new CIExyY(XYZ_ptr(this))));
 	    };
 
 	    const NormalizeY & CIEXYZ::getNormalizeY() {
@@ -43,7 +44,7 @@ namespace cms {
 		   return 13 * Math.sqrt(Maths.sqr(uv[0] - uvn[0]) +
 		   Maths.sqr(uv[1] - uvn[1])); */
 		/* TODO : getSaturation */
-                return -1;
+		return -1;
 	    };
 	    double_array CIEXYZ::getuvPrimeValues() {
 		CIExyY xyY(XYZ_ptr(new CIEXYZ(*this)));
@@ -53,9 +54,12 @@ namespace cms {
 		CIExyY xyY(XYZ_ptr(new CIEXYZ(*this)));
 		return xyY.getuvValues();
 	    };
-	    double_array CIEXYZ::getValues(double_array values, NormalizeY normalizeY) {
+	    double_array CIEXYZ::getValues(double_array values,
+					   NormalizeY normalizeY) {
 		if (normalizeY_ == Not) {
-		    throw IllegalStateException("this.normalizeY == NormalizeY.Not");
+		    throw
+			IllegalStateException
+			("this.normalizeY == NormalizeY.Not");
 		}
 		getValues(values);
 		if (normalizeY_ == normalizeY) {
@@ -153,7 +157,8 @@ namespace cms {
 		return true;
 	    };
 	    bool CIEXYZ::isLegal(XYZ_ptr white) {
-		return isLegal() && X <= white->X && Y <= white->Y && Z <= white->Z;
+		return isLegal() && X <= white->X && Y <= white->Y
+		    && Z <= white->Z;
 	    };
 	    XYZ_ptr CIEXYZ::minus(const XYZ_ptr XYZ1, const XYZ_ptr XYZ2) {
 
@@ -189,8 +194,9 @@ namespace cms {
 	    };
 
 	    void CIEXYZ::normalize(NormalizeY normalizeY) {
-		double_array values = getValues(double_array(new double[3]),
-						normalizeY);
+		double_array values =
+		    getValues(double_array(new double[3]),
+			      normalizeY);
 		setValues(values);
 		normalizeY_ = normalizeY;
 	    };
@@ -263,7 +269,9 @@ namespace cms {
 	  CIExyY::CIExyY():x(0), y(0), Y(0) {
 	    };
 
-	  CIExyY::CIExyY(XYZ_ptr XYZ):normalizeY_(XYZ->normalizeY_) {
+	  CIExyY::CIExyY(XYZ_ptr XYZ):normalizeY_(XYZ->
+			normalizeY_)
+	    {
 		double_array xyValues = XYZ->getxyValues();
 		setValues(xyValues[0], xyValues[1], XYZ->Y);
 	    };
@@ -337,9 +345,12 @@ namespace cms {
 		normalizeY_ = Normal1;
 	    };
 
-	    double_array CIExyY::getValues(double_array values, NormalizeY normalizeY) {
+	    double_array CIExyY::getValues(double_array values,
+					   NormalizeY normalizeY) {
 		if (normalizeY_ == Not) {
-		    throw IllegalStateException("this.normalizeY == NormalizeY.Not");
+		    throw
+			IllegalStateException
+			("this.normalizeY == NormalizeY.Not");
 		}
 		getValues(values);
 		if (normalizeY_ == normalizeY) {
@@ -459,6 +470,9 @@ namespace cms {
 		setuvValues(uvYValues);
 		Y = uvYValues[2];
 	    }
+	    xyY_ptr CIExyY::clone() {
+            	return xyY_ptr(new CIExyY(*this));
+	    };
 	    //======================================================================
 
 	    //======================================================================
@@ -481,7 +495,8 @@ namespace cms {
 	  CIELab::CIELab():L(0), a(0), b(0) {
 	    };
 
-	  CIELab::CIELab(XYZ_ptr XYZ, XYZ_ptr white):DeviceIndependentSpace(white) {
+	  CIELab::CIELab(XYZ_ptr XYZ, XYZ_ptr white):DeviceIndependentSpace(white)
+	    {
 		double_array r(new double[3]);
 		r[0] = XYZ->X / white->X;
 		r[1] = XYZ->Y / white->Y;
@@ -522,13 +537,14 @@ namespace cms {
 		return names;
 	    };
 	    XYZ_ptr CIELab::toXYZ() {
-            return XYZ_ptr((CIEXYZ*)null);
+		return XYZ_ptr((CIEXYZ *) null);
 	    };
 	    Lab_ptr CIELab::getLabAdaptedToD65() {
 		return Lab_ptr(this);
 	    };
 
-	    double_array CIELab::fromXYZValues(double_array XYZValues, double_array whitePoint) {
+	    double_array CIELab::fromXYZValues(double_array XYZValues,
+					       double_array whitePoint) {
 		double_array r(new double[3]);
 		r[0] = XYZValues[0] / whitePoint[0];
 		r[1] = XYZValues[1] / whitePoint[1];
@@ -553,14 +569,17 @@ namespace cms {
 	    Lab_ptr CIELab::fromXYZ(XYZ_ptr XYZ, XYZ_ptr whitePoint) {
 		double_array XYZValues = XYZ->getValues();
 		double_array whiteXYZValues = whitePoint->getValues();
-		double_array LabValues = fromXYZValues(XYZValues, whiteXYZValues);
+		double_array LabValues =
+		    fromXYZValues(XYZValues, whiteXYZValues);
 		Lab_ptr Lab(new CIELab(LabValues, whitePoint));
 		return Lab;
 	    };
 	    //======================================================================
 	    // CIELCh
 	    //===================================================================
-	  CIELCh::CIELCh(Lab_ptr Lab):DeviceIndependentSpace(Lab->getWhite()) {
+	  CIELCh::CIELCh(Lab_ptr Lab):DeviceIndependentSpace(Lab->
+				   getWhite())
+	    {
 		this->setValues(fromLabValues(Lab->getValues()));
 		this->style = Style::Lab;
 	    };
@@ -575,7 +594,7 @@ namespace cms {
 		return names;
 	    };
 	    XYZ_ptr CIELCh::toXYZ() {
-                        return XYZ_ptr((CIEXYZ*)null);
+		return XYZ_ptr((CIEXYZ *) null);
 	    };
 	    double_array CIELCh::_getValues(double_array values) {
 		values[0] = L;

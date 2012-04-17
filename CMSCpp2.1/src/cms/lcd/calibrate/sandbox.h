@@ -22,20 +22,23 @@ namespace cms {
 	    enum WhiteMode {
 		Normal, WhiteSmooth, BIntensitySmooth
 	    };
-	    static XYZ_ptr getTargetXYZ(double v1, double v2, double v3, Domain domain);
+	    static XYZ_ptr getTargetXYZ(double v1, double v2, double v3,
+					Domain domain);
 	    static XYZ_ptr getTargetXYZ(double x, double y, double Y);
 
 	    class MaxBIntensityInfo {
 	      public:
 		MaxBIntensityInfo(int maxBGrayLevel,
-				  double maxBIntensity):maxBGrayLevel(maxBGrayLevel),
-		    maxBIntensity(maxBIntensity) {
+				  double
+				  maxBIntensity):maxBGrayLevel
+		    (maxBGrayLevel), maxBIntensity(maxBIntensity) {
 		};
 		int maxBGrayLevel;
 		double maxBIntensity;
 	    };
 
-	    class AdvancedDGLutGenerator:private DimDGLutGenerator, gui::event::WindowAdapter {
+	    class AdvancedDGLutGenerator:private DimDGLutGenerator,
+		gui::event::WindowAdapter {
 	      private:
 		const LCDCalibrator & c;
 		XYZ_ptr getXYZ(XYZ_ptr XYZ, double offsetK);
@@ -58,18 +61,25 @@ namespace cms {
 		// Max B Intensity
 		int useMaxBIntensityZone;
 
-		MaxBIntensityInfo getMaxBIntensityInfo(XYZ_vector_ptr targetXYZVector,
-						       Component_vector_ptr componentVector,
-						       bptr < cms::measure::IntensityAnalyzerIF >
-						       analyzer);
+		MaxBIntensityInfo getMaxBIntensityInfo(XYZ_vector_ptr
+						       targetXYZVector,
+						       Component_vector_ptr
+						       componentVector,
+						       bptr <
+						       cms::measure::
+						       IntensityAnalyzerIF
+						       > analyzer);
 
 		RGB_ptr getIdealIntensity(Component_vector_ptr
 					  componentVector,
 					  bptr <
-					  cms::measure::MaxMatrixIntensityAnalyzer > analyzer);
+					  cms::measure::
+					  MaxMatrixIntensityAnalyzer >
+					  analyzer);
 		double_array getSmoothIntensity(double rTargetIntensity,
 						double gTargetIntensity,
-						double bTargetIntensity, int grayLevel);
+						double bTargetIntensity,
+						int grayLevel);
 		//=============================================================
 
 		Component_vector_ptr componentVector2;
@@ -83,7 +93,8 @@ namespace cms {
 					  double_vector_ptr
 					  luminanceGammaCurve, int dimTurn,
 					  int brightTurn, double dimGamma,
-					  double brightGamma, int brightWidth);
+					  double brightGamma,
+					  int brightWidth);
 
 
 	      public:
@@ -99,7 +110,8 @@ namespace cms {
 					cms::measure::IntensityAnalyzerIF >
 					analyzer2nd,
 					bptr < BitDepthProcessor >
-					bitDepth, const LCDCalibrator & calibrator);
+					bitDepth,
+					const LCDCalibrator & calibrator);
 
 		 AdvancedDGLutGenerator(Component_vector_ptr
 					componentVector,
@@ -107,15 +119,18 @@ namespace cms {
 					cms::lcd::calibrate::
 					ComponentFetcher > fetcher,
 					bptr < BitDepthProcessor >
-					bitDepth, const LCDCalibrator & calibrator);
+					bitDepth,
+					const LCDCalibrator & calibrator);
 
 		RGB_vector_ptr produce();
 
 
-		virtual void windowClosing(TObject * Sender, TCloseAction & Action);
+		virtual void windowClosing(TObject * Sender,
+					   TCloseAction & Action);
 		void setTarget(XYZ_ptr targetWhite, XYZ_ptr nativeWhite,
 			       double_vector_ptr luminanceGammaCurve,
-			       int dimTurn, int brightTurn, double dimGamma, double brightGamma,
+			       int dimTurn, int brightTurn,
+			       double dimGamma, double brightGamma,
 			       int effectiveInputLevel);
 	      private:
 		static XYZ_vector_ptr
@@ -124,11 +139,13 @@ namespace cms {
 					 XYZ_ptr startXYZ, XYZ_ptr endXYZ,
 					 double brightGamma,
 					 int brightTurn, int brightWidth,
-					 bptr < BitDepthProcessor > bitDepth);
+					 bptr < BitDepthProcessor >
+					 bitDepth);
 
 		RGB_vector_ptr produceDGLutMulti(XYZ_vector_ptr
 						 targetXYZVector,
-						 Component_vector_ptr componentVector);
+						 Component_vector_ptr
+						 componentVector);
 
 		RGB_vector_ptr produceDGLut(XYZ_vector_ptr targetXYZVector,
 					    Component_vector_ptr
@@ -136,7 +153,8 @@ namespace cms {
 					    bptr <
 					    cms::measure::
 					    IntensityAnalyzerIF > analyzer,
-					    bptr < PanelRegulator > panelRegulator);
+					    bptr < PanelRegulator >
+					    panelRegulator);
 
 		Component_ptr getFRCAbilityComponent(int grayLevel,
 						     RGB_ptr rgb,
@@ -144,24 +162,32 @@ namespace cms {
 						     cms::measure::
 						     IntensityAnalyzerIF >
 						     analyzer,
-						     Component_vector_ptr componentVector);
+						     Component_vector_ptr
+						     componentVector);
 
 		bool checkTargetXYZVector(XYZ_vector_ptr targetXYZVector,
-					  int start, int end, double deltaabThreshold);
+					  int start, int end,
+					  double deltaabThreshold);
 		static RGB_vector_ptr smooth(RGB_vector_ptr result1,
 					     RGB_vector_ptr result2,
-					     bptr < BitDepthProcessor > bitDepth, int brightTurn);
+					     bptr < BitDepthProcessor >
+					     bitDepth, int brightTurn);
 
 	      public:
 		void setComponentVector2(Component_vector_ptr
-					 componentVector2, bptr < PanelRegulator > panelRegulator2);
-		void setPanelRegulator(bptr < PanelRegulator > panelRegulator);
-		__property RGBGamma_ptr RGBGenerateResult = { read = rgbGenerateResult
+					 componentVector2,
+					 bptr < PanelRegulator >
+					 panelRegulator2);
+		void setPanelRegulator(bptr < PanelRegulator >
+				       panelRegulator);
+		__property RGBGamma_ptr RGBGenerateResult = { read =
+			rgbGenerateResult
 		};
 		__property RGB_ptr IdealIntensity = { read = idealIntensity
 		};
 		void setUseMaxBIntensityZone(int zone);
-		__property XYZ_vector_ptr TargetXYZVector = { read = targetXYZVector };
+		__property XYZ_vector_ptr TargetXYZVector = { read =
+			targetXYZVector };
 	    };
 
 
@@ -171,20 +197,25 @@ namespace cms {
 		const static Domain UsageColorSpace;
 		static XYZ_vector_ptr getLinearTarget(XYZ_ptr startXYZ,
 						      XYZ_ptr endXYZ,
-						      double_vector_ptr luminanceGammaCurve);
+						      double_vector_ptr
+						      luminanceGammaCurve);
 		static XYZ_vector_ptr getLinearTarget(XYZ_ptr startXYZ,
 						      XYZ_ptr endXYZ,
 						      double_vector_ptr
-						      luminanceGammaCurve, Domain domain);
+						      luminanceGammaCurve,
+						      Domain domain);
 
 		static XYZ_vector_ptr getTarget(XYZ_ptr startXYZ,
 						XYZ_ptr endXYZ,
 						double_vector_ptr
-						luminanceGammaCurve, Domain domain, double gamma);
+						luminanceGammaCurve,
+						Domain domain,
+						double gamma);
 		static XYZ_vector_ptr getTarget(XYZ_ptr startXYZ,
 						XYZ_ptr endXYZ,
 						double_vector_ptr
-						luminanceGammaCurve, double gamma);
+						luminanceGammaCurve,
+						double gamma);
 	    };
 	};
     };
