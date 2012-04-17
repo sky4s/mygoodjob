@@ -205,6 +205,8 @@ void __fastcall TCCTLUTForm::Button_MeaRunClick(TObject * Sender)
 		calibrator.DeHookMode = ReduceBGap;
 	    } else if (RadioButton_DeHookKeepCCT->Checked) {
 		calibrator.DeHookMode = KeepCCT;
+		calibrator.UseTargetWhiteYasMaxY = CheckBox_TaregtWhiteYasMaxY->Checked;
+
 	    }
 
 
@@ -368,6 +370,10 @@ void __fastcall TCCTLUTForm::FormShow(TObject * Sender)
 	Label20->Visible = true;
 	Edit_MaxYAdvOver->Visible = true;
 	CheckBox_MaxYAdvAuto->Visible = true;
+
+	RadioButton_DeHookReduceBGap->Visible = true;
+	Edit_DeHookRBGZone->Visible = true;
+	RadioButton_DeHookKeepCCT->Visible = true;
     }
     //=========================================================================
     // function on/off relative
@@ -807,6 +813,27 @@ void __fastcall TCCTLUTForm::RadioButton_3GammaClick(TObject * Sender)
 void __fastcall TCCTLUTForm::RadioButton_OriginalGammaClick(TObject * Sender)
 {
     this->CheckBox_GByPass->Enabled = false;
+}
+
+//---------------------------------------------------------------------------
+
+void __fastcall TCCTLUTForm::RadioButton_DeHookKeepCCTClick(TObject * Sender)
+{
+    CheckBox_TaregtWhiteYasMaxY->Enabled = true;
+}
+
+//---------------------------------------------------------------------------
+
+void __fastcall TCCTLUTForm::RadioButton_DeHookReduceBGapClick(TObject * Sender)
+{
+    CheckBox_TaregtWhiteYasMaxY->Enabled = false;
+}
+
+//---------------------------------------------------------------------------
+
+void __fastcall TCCTLUTForm::RadioButton_DeHookNoneClick(TObject * Sender)
+{
+    CheckBox_TaregtWhiteYasMaxY->Enabled = false;
 }
 
 //---------------------------------------------------------------------------

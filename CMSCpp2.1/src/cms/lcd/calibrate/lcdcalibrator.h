@@ -121,6 +121,7 @@ namespace cms {
 		bool remapped;
 		DeHook dehook;
 		int deHookRBGZone;
+		bool useTargetWhiteYasMaxY;
 		//==============================================================
 
 		//==============================================================
@@ -199,6 +200,7 @@ namespace cms {
 		void setDeHookReduceBGap(int zone);
 		//__property int EvolutionDeHookZone = { read = evoDeHookZone };
 		__property int DeHookRBGZone = { read = deHookRBGZone };
+		__property bool UseTargetWhiteYasMaxY = { write = useTargetWhiteYasMaxY };
 		//==============================================================
 
 		//==============================================================
