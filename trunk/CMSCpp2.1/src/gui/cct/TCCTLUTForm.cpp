@@ -84,9 +84,9 @@ void __fastcall TCCTLUTForm::Button_MeaRunClick(TObject * Sender)
 	String_ptr astr = this->TOutputFileFrame1->getOutputFilename();
 	string filename = astr->c_str();
 
-	MainForm->getAnalyzer();
+	MainForm->initAnalyzer();
 	if (MainForm->isCA210Analyzer()) {
-	    MainForm->setAnalyzerToTargetChannel();
+	    //MainForm->setAnalyzerToTargetChannel();
 	}
 	MainForm->setMeterMeasurementWaitTimes();
 	bptr < ComponentFetcher > fetcher = MainForm->getComponentFetcher();
@@ -153,7 +153,7 @@ void __fastcall TCCTLUTForm::Button_MeaRunClick(TObject * Sender)
 	    calibrator.setGamma(gammaDim, dimGammaEnd, middleGammaEnd, gammaBright);
 	}
 
-	calibrator.HighlightGammaFix = CheckBox_HighlightGammaFix->Checked;
+	//calibrator.HighlightGammaFix = CheckBox_HighlightGammaFix->Checked;
 	//==========================================================================
 
 	//==========================================================================
@@ -176,6 +176,7 @@ void __fastcall TCCTLUTForm::Button_MeaRunClick(TObject * Sender)
 	calibrator.NewMethod = this->CheckBox_NewMethod->Checked;
 	calibrator.setMultiGen(this->CheckBox_MultiGen->Checked,
 			       this->Edit_MultiGenTimes->Text.ToInt());
+	calibrator.KeepMaxYInMultiGen = this->CheckBox_KeepMaxYInMultiGen->Checked;
 	if (CheckBox_RTargetIntensity->Checked) {
 	    double rTargetIntensity = Edit_RTargetIntensity->Text.ToDouble();
 	    calibrator.RTargetIntensity = rTargetIntensity;
@@ -201,9 +202,9 @@ void __fastcall TCCTLUTForm::Button_MeaRunClick(TObject * Sender)
 
 	    if (RadioButton_DeHookNone->Checked) {
 		calibrator.DeHookMode = None;
-	    } else if (RadioButton_DeHookReduceBGap->Checked) {
+	    } /*else if (RadioButton_DeHookReduceBGap->Checked) {
 		calibrator.DeHookMode = ReduceBGap;
-	    } else if (RadioButton_DeHookKeepCCT->Checked) {
+	    }*/ else if (RadioButton_DeHookKeepCCT->Checked) {
 		calibrator.DeHookMode = KeepCCT;
 		calibrator.UseTargetWhiteYasMaxY = CheckBox_TaregtWhiteYasMaxY->Checked;
 
@@ -330,7 +331,7 @@ void __fastcall TCCTLUTForm::Button_DebugClick(TObject * Sender)
 	const AnsiString & filename = OpenDialog1->FileName;
 	MainForm->setDummyMeterFilename(string(filename.c_str()));
 	ShowMessage("Dummy meter setting Ok!");
-	secondWhiteAnalyzer = MainForm->getSecondWhiteAnalyzer();
+	secondWhiteAnalyzer = MainForm->getSecondAnalyzerFromProperty();
 
     };
 
@@ -371,8 +372,8 @@ void __fastcall TCCTLUTForm::FormShow(TObject * Sender)
 	Edit_MaxYAdvOver->Visible = true;
 	CheckBox_MaxYAdvAuto->Visible = true;
 
-	RadioButton_DeHookReduceBGap->Visible = true;
-	Edit_DeHookRBGZone->Visible = true;
+	//RadioButton_DeHookReduceBGap->Visible = true;
+	//Edit_DeHookRBGZone->Visible = true;
 	RadioButton_DeHookKeepCCT->Visible = true;
     }
     //=========================================================================
@@ -400,7 +401,7 @@ void __fastcall TCCTLUTForm::FormShow(TObject * Sender)
     //=========================================================================
     // target white relative
     //=========================================================================
-    RGB_ptr refRGB = MainForm->getAnalyzer()->getReferenceRGB();
+    RGB_ptr refRGB = MainForm->initAnalyzer()->getReferenceRGB();
     bool useNativeWhite = refRGB->isWhite();
     if (useNativeWhite) {
 	RadioButton_MaxYNative->Checked = true;
@@ -409,7 +410,7 @@ void __fastcall TCCTLUTForm::FormShow(TObject * Sender)
     }
     //=========================================================================
     setMeasureInfo();
-    secondWhiteAnalyzer = MainForm->getSecondWhiteAnalyzer();
+    secondWhiteAnalyzer = MainForm->getSecondAnalyzerFromProperty();
 
 
 }
@@ -824,12 +825,6 @@ void __fastcall TCCTLUTForm::RadioButton_DeHookKeepCCTClick(TObject * Sender)
 
 //---------------------------------------------------------------------------
 
-void __fastcall TCCTLUTForm::RadioButton_DeHookReduceBGapClick(TObject * Sender)
-{
-    CheckBox_TaregtWhiteYasMaxY->Enabled = false;
-}
-
-//---------------------------------------------------------------------------
 
 void __fastcall TCCTLUTForm::RadioButton_DeHookNoneClick(TObject * Sender)
 {

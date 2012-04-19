@@ -124,13 +124,11 @@ class TCCTLUTForm:public TForm, cms::lcd::calibrate::FeedbackListener {
     TLabel *Label28;
     TLabel *Label_MiddleZone;
     TEdit *Edit_MiddleGammaEnd;
-    TCheckBox *CheckBox_HighlightGammaFix;
     TGroupBox *GroupBox_DeHook;
     TRadioButton *RadioButton_DeHookNone;
-    TRadioButton *RadioButton_DeHookReduceBGap;
     TRadioButton *RadioButton_DeHookKeepCCT;
-    TEdit *Edit_DeHookRBGZone;
     TCheckBox *CheckBox_TaregtWhiteYasMaxY;
+    TCheckBox *CheckBox_KeepMaxYInMultiGen;
     void __fastcall RadioButton_P1P2Click(TObject * Sender);
     void __fastcall Button_MeaRunClick(TObject * Sender);
     void __fastcall Button_DebugClick(TObject * Sender);
@@ -166,7 +164,6 @@ class TCCTLUTForm:public TForm, cms::lcd::calibrate::FeedbackListener {
     void __fastcall RadioButton_3GammaClick(TObject * Sender);
     void __fastcall RadioButton_OriginalGammaClick(TObject * Sender);
     void __fastcall RadioButton_DeHookKeepCCTClick(TObject * Sender);
-    void __fastcall RadioButton_DeHookReduceBGapClick(TObject * Sender);
     void __fastcall RadioButton_DeHookNoneClick(TObject * Sender);
   private:			// User declarations
     void setMeasureInfo();

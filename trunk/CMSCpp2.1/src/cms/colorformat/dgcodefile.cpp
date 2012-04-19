@@ -439,7 +439,6 @@ namespace cms {
 		    dgfile.addProperty("low level step", mc->lowStep);
 		};
 		break;
-		//case MeasureCondition::Plain:break;
 	    };
 	    bptr < BitDepthProcessor > bitDepth = c->bitDepth;
 	    dgfile.addProperty("t-con input", bitDepth->isTCONInput()? On : Off);
@@ -491,9 +490,6 @@ namespace cms {
 			(*c->originalComponentVector)[c->originalComponentVector->size() - 1]->XYZ;
 		    xyY_ptr blackxyY(new CIExyY(blackXYZ));
 		    dgfile.addProperty("defined dim black", *blackxyY->toString());
-		    /*if (true == c->SmoothComponent) {
-		       dgfile.addProperty("defined dim - smooth", On);
-		       } */
 		    break;
 		}
 		dgfile.addProperty("keep dark level", c->KeepDarkLevel ? On : Off);
@@ -506,7 +502,8 @@ namespace cms {
 	    if (isCCTMode) {
 		dgfile.addProperty("New Method", c->useNewMethod ? On : Off);
 		if (c->useNewMethod && c->multiGen) {
-		    dgfile.addProperty("Multi-Gen", c->multiGenTimes);
+		    dgfile.addProperty("multi-gen", c->multiGenTimes);
+		    dgfile.addProperty("keep max Y in multi-gen", c->keepMaxYInMultiGen ? On : Off);
 		}
 	    }
 	    //==================================================================
@@ -525,7 +522,7 @@ namespace cms {
 		dgfile.addProperty("keep absolute gamma as",
 				   _toString(c->absGammaStartGLAboveGamma));
 	    }
-	    dgfile.addProperty("highlight gamma fix", c->highlightGammaFix ? On : Off);
+	    //dgfile.addProperty("highlight gamma fix", c->highlightGammaFix ? On : Off);
 	    //==================================================================
 
 	    //==================================================================
@@ -581,23 +578,22 @@ namespace cms {
 		}
 		dgfile.addProperty("keep max lumi adv over", c->keepMaxLumiOver);
 	    }
-	    //string deHookStr;
 	    if (None == c->DeHookMode) {
 		dgfile.addProperty("dehook mode", "None");
 	    } else if (KeepCCT == c->DeHookMode) {
 		dgfile.addProperty("dehook mode", "Keep CCT");
 		dgfile.addProperty("max B intensity RGL", c->maxBRawGrayLevel);
-	    } else if (ReduceBGap == c->DeHookMode) {
+		dgfile.addProperty("target whiteY as max Y", c->useTargetWhiteYasMaxY ? On : Off);
+	    } /*else if (ReduceBGap == c->DeHookMode) {
 		string deHookStr = "Reduce B Gap (zone:" + _toString(c->DeHookRBGZone) + ")";
 		dgfile.addProperty("dehook mode", deHookStr);
-	    }
+	    }*/
 
 	    if (c->keepMaxLuminance == KeepMaxLuminance::Smooth2NativeWhite) {
 		if (true == c->autoKeepMaxLumiParameter) {
 		    dgfile.addProperty("auto keep max lumi adv parameter", On);
 		}
 		dgfile.addProperty("keep max lumi adv over", c->keepMaxLumiOver);
-
 	    }
 	    if (true == c->autoIntensity) {
 		RGB_ptr idealIntensity = c->idealIntensity;
@@ -610,8 +606,8 @@ namespace cms {
 	    //==================================================================
 	    // analyzer
 	    //==================================================================
-	    if (null != analyzer) {
-		storeAnalyzer(dgfile, analyzer, Target);
+	    if (null != c->fetcher->FirstAnalyzer) {
+		storeAnalyzer(dgfile, c->fetcher->FirstAnalyzer, Target);
 	    }
 	    if (null != c->secondWhiteAnalyzer) {
 		storeAnalyzer(dgfile, c->secondWhiteAnalyzer, Second);

@@ -146,6 +146,13 @@ namespace cms {
 		ca210api->setChannelID(WideString(id->c_str()));
 	    }
 	};
+	void CA210IntensityAnalyzer::setChannel(int no) {
+	    if (false == dummyMode) {
+		//³]©wno
+		ca210api->setChannelNO(no);
+
+	    }
+	};
 	int CA210IntensityAnalyzer::getChannelNO() {
 	    if (false == dummyMode) {
 		return (int) ca210api->getChannelNO();

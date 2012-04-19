@@ -36,7 +36,8 @@ namespace cms {
 	     */
 	    class ComponentFetcher:public gui::event::WindowAdapter {
 	      private:
-		bptr < cms::measure::IntensityAnalyzerIF > analyzer;
+		bptr < cms::measure::IntensityAnalyzerIF > firstAnalyzer;
+		bptr < cms::measure::IntensityAnalyzerIF > secondAnalyzer;
 		bool stop;
 		 bptr < cms::lcd::BitDepthProcessor > bitDepth;
 		Component_vector_ptr fetchComponent(RGB_vector_ptr rgbMeasureCode);
@@ -58,6 +59,12 @@ namespace cms {
 		__property RGB_ptr ExtraMeasureRGB = { write = extraMeasureRGB
 		};
 		__property XYZ_ptr ExtraMeasureXYZ = { read = extraMeasureXYZ
+		};
+		__property bptr < cms::measure::IntensityAnalyzerIF > SecondAnalyzer = { write =
+			secondAnalyzer
+		};
+		__property bptr < cms::measure::IntensityAnalyzerIF > FirstAnalyzer = { read =
+			firstAnalyzer
 		};
 	    };
 

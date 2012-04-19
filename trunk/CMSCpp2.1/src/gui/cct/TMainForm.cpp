@@ -454,7 +454,7 @@ void TMainForm::initCA210Meter()
 	    Edit_SourceCH->Text = ch;
 	    GroupBox_CHSetting->Enabled = true;
 	}
-	getAnalyzer();
+	initAnalyzer();
 
 
 	if (connectCA210ByThread) {
@@ -486,7 +486,7 @@ int TMainForm::getAverageTimes()
 };
 
 //---------------------------------------------------------------------------
-bptr < cms::measure::IntensityAnalyzerIF > TMainForm::getAnalyzer()
+bptr < cms::measure::IntensityAnalyzerIF > TMainForm::initAnalyzer()
 {
     using namespace cms::measure::meter;
     using namespace cms::measure;
@@ -517,7 +517,7 @@ bptr < cms::measure::IntensityAnalyzerIF > TMainForm::getAnalyzer()
     return analyzer;
 }
 
-bptr < cms::measure::MaxMatrixIntensityAnalyzer > TMainForm::getSecondWhiteAnalyzer()
+bptr < cms::measure::MaxMatrixIntensityAnalyzer > TMainForm::getSecondAnalyzerFromProperty()
 {
     return secondWhiteAnalyzer;
 };
@@ -548,7 +548,9 @@ void TMainForm::setAnalyzerToTargetChannel()
 };
 
 //---------------------------------------------------------------------------
-
+/*
+  dprecated
+*/
 void TMainForm::setAnalyzerToSourceChannel()
 {
     using namespace std;
@@ -721,7 +723,7 @@ bptr < cms::lcd::calibrate::ComponentFetcher > TMainForm::getComponentFetcher()
 {
     using namespace cms::lcd::calibrate;
     if (null == fetcher) {
-	bptr < cms::measure::IntensityAnalyzerIF > analyzer = getAnalyzer();
+	bptr < cms::measure::IntensityAnalyzerIF > analyzer = initAnalyzer();
 	fetcher = bptr < ComponentFetcher > (new cms::lcd::calibrate::
 					     ComponentFetcher(analyzer, bitDepth));
 	MeasureWindow->addWindowListener(fetcher);
@@ -1560,8 +1562,7 @@ void __fastcall TMainForm::Edit_SourceCHKeyPress(TObject * Sender, char &Key)
 	TEdit *edit = dynamic_cast < TEdit * >(Sender);
 	int ch = edit->Text.ToInt();
 	if (ch >= 0 && ch <= 99) {
-	    string_ptr id(new string());
-	    ca210Analyzer->setChannel(ch, id);
+	    ca210Analyzer->setChannel(ch);
 	}
     }
 }
