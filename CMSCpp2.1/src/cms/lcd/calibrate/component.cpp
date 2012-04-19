@@ -73,7 +73,7 @@ namespace cms {
 	    //==================================================================
 	    // ComponentFetcher
 	    //==================================================================
-	  ComponentFetcher::ComponentFetcher(bptr < IntensityAnalyzerIF > analyzer, bptr < BitDepthProcessor > bitDepth):analyzer
+	  ComponentFetcher::ComponentFetcher(bptr < IntensityAnalyzerIF > analyzer, bptr < BitDepthProcessor > bitDepth):firstAnalyzer
 		(analyzer), bitDepth(bitDepth),
 		extraMeasureRGB(nil_RGB_ptr) {
 	    };
@@ -82,6 +82,7 @@ namespace cms {
 		Component_vector_ptr result(new Component_vector());
 
 		bool waitingStable = true;
+		bptr < cms::measure::IntensityAnalyzerIF > analyzer = getAnalyzer();
 		int waitTimes = analyzer->getWaitTimes();
 		analyzer->setWaitTimes(10000);
 		analyzer->beginAnalyze();
@@ -129,6 +130,7 @@ namespace cms {
 		double_vector_ptr result(new double_vector());
 		RGB_vector_ptr rgbMeasureCode = measureCondition->getRGBMeasureCode();
 		bool waitingStable = true;
+		bptr < cms::measure::IntensityAnalyzerIF > analyzer = getAnalyzer();
 		int waitTimes = analyzer->getWaitTimes();
 
 		analyzer->setWaitTimes(10000);
@@ -195,7 +197,12 @@ namespace cms {
 		stop = true;
 	    };
 	    bptr < IntensityAnalyzerIF > ComponentFetcher::getAnalyzer() {
-		return analyzer;
+		if (null != secondAnalyzer) {
+		    return secondAnalyzer;
+		} else {
+
+		    return firstAnalyzer;
+		}
 	    };
 	    RGB_vector_ptr ComponentFetcher::getRGBVector(Component_vector_ptr componentVector) {
 		int size = componentVector->size();

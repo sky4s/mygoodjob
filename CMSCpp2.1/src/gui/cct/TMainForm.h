@@ -232,8 +232,8 @@ class TMainForm:public TForm {
 
     //analyzer
     bool isCA210Analyzer();
-     bptr < cms::measure::IntensityAnalyzerIF > getAnalyzer();
-     bptr < cms::measure::MaxMatrixIntensityAnalyzer > getSecondWhiteAnalyzer();
+     bptr < cms::measure::IntensityAnalyzerIF > initAnalyzer();
+     bptr < cms::measure::MaxMatrixIntensityAnalyzer > getSecondAnalyzerFromProperty();
     void setAnalyzerNull();
 
     //meter

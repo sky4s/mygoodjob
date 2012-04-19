@@ -198,12 +198,12 @@ void __fastcall TTargetWhiteForm2::Button_RunClick(TObject * Sender)
     //¤wª¾rgb
     RGB_ptr rgb(new RGBColor(rvalue, gvalue, bvalue, MaxValue::Int8Bit));
 
-    bptr < IntensityAnalyzerIF > analyzer = MainForm->getAnalyzer();
+    bptr < IntensityAnalyzerIF > analyzer = MainForm->initAnalyzer();
     try {
 
 	MainForm->showProgress(ProgressBar1);
 	MainForm->setMeterMeasurementWaitTimes();
-	MainForm->setAnalyzerToSourceChannel();
+	//MainForm->setAnalyzerToSourceChannel();
 	Button_Run->Enabled = false;
 
 	bool usemaxRGB = this->RadioButton_MaxRGB->Checked;
@@ -289,7 +289,7 @@ void __fastcall TTargetWhiteForm2::Button_RunClick(TObject * Sender)
 	}
 
 	if (MainForm->isCA210Analyzer()) {
-	    MainForm->setAnalyzerToTargetChannel();
+	    //MainForm->setAnalyzerToTargetChannel();
 	}
 	analyzer->enter();
 
@@ -474,7 +474,7 @@ void __fastcall TTargetWhiteForm2::Button_setMaxMatrixClick(TObject * Sender)
 {
     using namespace cms::measure;
     using namespace Dep;
-    bptr < IntensityAnalyzerIF > analyzer = MainForm->getAnalyzer();
+    bptr < IntensityAnalyzerIF > analyzer = MainForm->initAnalyzer();
     bptr < MaxMatrixIntensityAnalyzer >
 	maxmatrix(dynamic_cast < MaxMatrixIntensityAnalyzer * >(analyzer.get()));
 
@@ -564,7 +564,7 @@ void __fastcall TTargetWhiteForm2::Button_MeasureClick(TObject * Sender)
 
 	using namespace cms::measure;
 	using namespace Indep;
-	bptr < IntensityAnalyzerIF > analyzer = MainForm->getAnalyzer();
+	bptr < IntensityAnalyzerIF > analyzer = MainForm->initAnalyzer();
 	bptr < MeterMeasurement > mm = analyzer->getMeterMeasurement();
 	bptr < cms::measure::meter::Meter > meter = mm->getMeter();
 

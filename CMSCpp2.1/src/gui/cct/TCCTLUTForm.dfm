@@ -1,6 +1,6 @@
 object CCTLUTForm: TCCTLUTForm
-  Left = 887
-  Top = 361
+  Left = 496
+  Top = 366
   Width = 841
   Height = 431
   Caption = 'CCT(LUT)'
@@ -28,7 +28,7 @@ object CCTLUTForm: TCCTLUTForm
   end
   object Label26: TLabel
     Left = 672
-    Top = 264
+    Top = 272
     Width = 62
     Height = 13
     Caption = 'Green for NB'
@@ -37,7 +37,7 @@ object CCTLUTForm: TCCTLUTForm
   end
   object Label27: TLabel
     Left = 736
-    Top = 264
+    Top = 272
     Width = 91
     Height = 13
     Caption = 'Blue for Experiment'
@@ -355,15 +355,6 @@ object CCTLUTForm: TCCTLUTForm
       Text = '80'
       OnChange = Edit_MiddleGammaEndChange
     end
-    object CheckBox_HighlightGammaFix: TCheckBox
-      Left = 8
-      Top = 232
-      Width = 121
-      Height = 17
-      Caption = 'Highlight Gamma Fix'
-      TabOrder = 14
-      Visible = False
-    end
   end
   object GroupBox3: TGroupBox
     Left = 344
@@ -608,9 +599,9 @@ object CCTLUTForm: TCCTLUTForm
   end
   object GroupBox5: TGroupBox
     Left = 671
-    Top = 128
+    Top = 127
     Width = 156
-    Height = 137
+    Height = 138
     Caption = 'Options'
     TabOrder = 4
     object CheckBox_AvoidNoise: TCheckBox
@@ -631,7 +622,7 @@ object CCTLUTForm: TCCTLUTForm
     end
     object CheckBox_NewMethod: TCheckBox
       Left = 7
-      Top = 100
+      Top = 116
       Width = 117
       Height = 19
       Caption = 'New CCT Method'
@@ -641,7 +632,7 @@ object CCTLUTForm: TCCTLUTForm
     end
     object CheckBox_MultiGen: TCheckBox
       Left = 7
-      Top = 37
+      Top = 77
       Width = 118
       Height = 19
       Caption = 'Multi Generate'
@@ -658,7 +649,7 @@ object CCTLUTForm: TCCTLUTForm
     end
     object Edit_MultiGenTimes: TEdit
       Left = 115
-      Top = 37
+      Top = 77
       Width = 33
       Height = 21
       Enabled = False
@@ -667,7 +658,7 @@ object CCTLUTForm: TCCTLUTForm
     end
     object CheckBox_BTargetIntensity: TCheckBox
       Left = 7
-      Top = 80
+      Top = 56
       Width = 111
       Height = 19
       Caption = 'B Target intensity'
@@ -684,7 +675,7 @@ object CCTLUTForm: TCCTLUTForm
     end
     object Edit_BTargetIntensity: TEdit
       Left = 115
-      Top = 80
+      Top = 56
       Width = 33
       Height = 21
       Enabled = False
@@ -693,7 +684,7 @@ object CCTLUTForm: TCCTLUTForm
     end
     object CheckBox_RTargetIntensity: TCheckBox
       Left = 7
-      Top = 59
+      Top = 35
       Width = 111
       Height = 19
       Caption = 'R Target intensity'
@@ -710,12 +701,20 @@ object CCTLUTForm: TCCTLUTForm
     end
     object Edit_RTargetIntensity: TEdit
       Left = 115
-      Top = 59
+      Top = 35
       Width = 33
       Height = 21
       Enabled = False
       TabOrder = 7
       Text = '100'
+    end
+    object CheckBox_KeepMaxYInMultiGen: TCheckBox
+      Left = 23
+      Top = 96
+      Width = 145
+      Height = 17
+      Caption = 'Keep MaxY'
+      TabOrder = 8
     end
   end
   object Button_MeaRun: TButton
@@ -949,7 +948,7 @@ object CCTLUTForm: TCCTLUTForm
     TabOrder = 11
     object Label20: TLabel
       Left = 26
-      Top = 181
+      Top = 197
       Width = 27
       Height = 13
       Caption = 'Begin'
@@ -978,7 +977,7 @@ object CCTLUTForm: TCCTLUTForm
     end
     object RadioButton_MaxYNativeAdv: TRadioButton
       Left = 7
-      Top = 157
+      Top = 173
       Width = 137
       Height = 19
       Caption = 'Native White (Smooth)'
@@ -989,7 +988,7 @@ object CCTLUTForm: TCCTLUTForm
     end
     object Edit_MaxYAdvOver: TEdit
       Left = 64
-      Top = 181
+      Top = 197
       Width = 33
       Height = 21
       ImeName = #26085#25991#36664#20837#31995#32113' (MS-IME2002)'
@@ -1000,7 +999,7 @@ object CCTLUTForm: TCCTLUTForm
     end
     object CheckBox_MaxYAdvAuto: TCheckBox
       Left = 106
-      Top = 176
+      Top = 192
       Width = 47
       Height = 25
       Caption = 'Auto'
@@ -1052,7 +1051,7 @@ object CCTLUTForm: TCCTLUTForm
       Left = 16
       Top = 80
       Width = 137
-      Height = 73
+      Height = 89
       Caption = 'DeHook'
       TabOrder = 9
       object RadioButton_DeHookNone: TRadioButton
@@ -1066,48 +1065,28 @@ object CCTLUTForm: TCCTLUTForm
         TabStop = True
         OnClick = RadioButton_DeHookNoneClick
       end
-      object RadioButton_DeHookReduceBGap: TRadioButton
-        Left = 8
-        Top = 32
-        Width = 89
-        Height = 17
-        Caption = 'Reduce B Gap'
-        Color = clMoneyGreen
-        ParentColor = False
-        TabOrder = 1
-        Visible = False
-        OnClick = RadioButton_DeHookReduceBGapClick
-      end
       object RadioButton_DeHookKeepCCT: TRadioButton
         Left = 8
-        Top = 48
+        Top = 32
         Width = 105
         Height = 17
         Caption = 'Keep CCT'
         Enabled = False
-        TabOrder = 2
+        TabOrder = 1
         Visible = False
         OnClick = RadioButton_DeHookKeepCCTClick
       end
-      object Edit_DeHookRBGZone: TEdit
-        Left = 98
-        Top = 28
-        Width = 33
-        Height = 21
-        ImeName = #26085#25991#36664#20837#31995#32113' (MS-IME2002)'
-        TabOrder = 3
-        Text = '7'
-        Visible = False
+      object CheckBox_TaregtWhiteYasMaxY: TCheckBox
+        Left = 24
+        Top = 48
+        Width = 73
+        Height = 17
+        Caption = 'Use MaxY'
+        Checked = True
+        Enabled = False
+        State = cbChecked
+        TabOrder = 2
       end
-    end
-    object CheckBox_TaregtWhiteYasMaxY: TCheckBox
-      Left = 8
-      Top = 232
-      Width = 145
-      Height = 17
-      Caption = 'Use TargetWhite as MaxY'
-      Enabled = False
-      TabOrder = 10
     end
   end
   object CheckBox_MemoryMeasure: TCheckBox

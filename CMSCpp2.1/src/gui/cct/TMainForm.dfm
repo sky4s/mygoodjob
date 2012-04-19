@@ -3,7 +3,7 @@ object MainForm: TMainForm
   Top = 436
   Width = 767
   Height = 380
-  Caption = 'CCT Adjustment v3.3b'
+  Caption = 'CCT Adjustment v3.4'
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -1425,7 +1425,7 @@ object MainForm: TMainForm
             Top = 13
             Width = 138
             Height = 21
-            ItemHeight = 0
+            ItemHeight = 13
             TabOrder = 0
             OnChange = ComboBox_TCONTypeChange
           end
