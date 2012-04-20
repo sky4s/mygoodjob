@@ -1,8 +1,8 @@
 object HSVForm2nd: THSVForm2nd
-  Left = 428
-  Top = 226
-  Width = 869
-  Height = 797
+  Left = 400
+  Top = 200
+  Width = 823
+  Height = 715
   Caption = 'HSV2'
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
@@ -33,7 +33,7 @@ object HSVForm2nd: THSVForm2nd
     ShowHint = False
     TabOrder = 0
     object CheckBox1: TCheckBox
-      Left = 129
+      Left = 177
       Top = 8
       Width = 86
       Height = 17
@@ -43,7 +43,7 @@ object HSVForm2nd: THSVForm2nd
       TabOrder = 0
     end
     object CheckBox2: TCheckBox
-      Left = 207
+      Left = 255
       Top = 8
       Width = 86
       Height = 17
@@ -65,7 +65,7 @@ object HSVForm2nd: THSVForm2nd
       OnClick = rg_HSV_ModeClick
     end
     object btn_hsv_load: TButton
-      Left = 10
+      Left = 2
       Top = 8
       Width = 57
       Height = 25
@@ -80,7 +80,7 @@ object HSVForm2nd: THSVForm2nd
       OnClick = btn_hsv_loadClick
     end
     object btn_hsv_save: TButton
-      Left = 68
+      Left = 60
       Top = 8
       Width = 57
       Height = 25
@@ -89,15 +89,15 @@ object HSVForm2nd: THSVForm2nd
       OnClick = btn_hsv_saveClick
     end
     object CheckBox3: TCheckBox
-      Left = 292
+      Left = 340
       Top = 8
-      Width = 117
+      Width = 85
       Height = 17
       Caption = 'CheckBox3'
       TabOrder = 5
     end
     object CheckBox4: TCheckBox
-      Left = 408
+      Left = 432
       Top = 8
       Width = 105
       Height = 17
@@ -1008,7 +1008,7 @@ object HSVForm2nd: THSVForm2nd
       end
     end
     object CheckBox_SAT_CLIP_EN: TCheckBox
-      Left = 504
+      Left = 584
       Top = 8
       Width = 89
       Height = 17
@@ -1152,7 +1152,7 @@ object HSVForm2nd: THSVForm2nd
       end
     end
     object GroupBox_HSVVersion: TGroupBox
-      Left = 632
+      Left = 688
       Top = 8
       Width = 105
       Height = 33
@@ -1176,6 +1176,15 @@ object HSVForm2nd: THSVForm2nd
         TabOrder = 1
         TabStop = True
       end
+    end
+    object Button_SaveOldFormat: TButton
+      Left = 118
+      Top = 8
+      Width = 57
+      Height = 25
+      Caption = 'Save Old'
+      TabOrder = 19
+      OnClick = Button_SaveOldFormatClick
     end
   end
   object OpenDialog1: TOpenDialog

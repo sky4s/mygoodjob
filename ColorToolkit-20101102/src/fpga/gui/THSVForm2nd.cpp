@@ -241,13 +241,13 @@ void __fastcall THSVForm2nd::FormClose(TObject * Sender, TCloseAction & Action)
 void THSVForm2nd::Initial_HSV_table()
 {
     //initial table setting
-    bool inHSVv1 = isInHSVv1();
+    //bool inHSVv1 = isInHSVv1();
     for (int i = 0; i < HUE_COUNT; i++) {
 	//hueTableTemp[i] = hueTable[i] = ((double) i) * MAX_HUE_VALUE / HUE_COUNT;
 	//satTableTemp[i] = satTable[i] = 0;
 	//valTableTemp[i] = valTable[i] = 0;
 	hueTable[i] = ((double) i) * MAX_HUE_VALUE / HUE_COUNT;
-	satTable[i] = inHSVv1 ? 32 : 0;
+	satTable[i] = 32;
 	valTable[i] = 0;
     }
 
@@ -438,6 +438,8 @@ bool THSVForm2nd::Load_HSV(String Fpath)
 
 void __fastcall THSVForm2nd::btn_hsv_saveClick(TObject * Sender)
 {
+    String filepath = ExtractFilePath(OpenDialog1->FileName);
+    SaveDialog1->InitialDir = filepath;
     if (!SaveDialog1->Execute()) {
 	return;
     }
@@ -2025,4 +2027,31 @@ void __fastcall THSVForm2nd::RadioGroup_GlobalClick(TObject * Sender)
 }
 
 //---------------------------------------------------------------------------
+
+
+
+void __fastcall THSVForm2nd::Button_SaveOldFormatClick(TObject * Sender)
+{
+    String filepath = ExtractFilePath(OpenDialog1->FileName);
+    SaveDialog1->InitialDir = filepath;
+    if (!SaveDialog1->Execute()) {
+	return;
+    }
+    String Fpath = SaveDialog1->FileName /*+".txt" */ ;
+
+    //=========================================================================
+    // old
+    //=========================================================================
+    if (true) {
+	FILE *fptr = fopen(Fpath.c_str(), "w");
+	for (int i = 0; i < HUE_COUNT; i++) {
+	    fprintf(fptr, "%d\t%d\t%d\n", hueTable[i], satTable[i], valTable[i]);
+	}
+	fclose(fptr);
+    }
+    //=========================================================================
+}
+
+//---------------------------------------------------------------------------
+
 
