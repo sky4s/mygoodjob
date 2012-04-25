@@ -397,10 +397,7 @@ object HSVForm2nd: THSVForm2nd
           inherited sb_Sat_gain: TScrollBar
             Left = 82
             Hint = '[q] for minus, [w] for plus'
-            Max = 63
-            Min = -63
             ParentShowHint = False
-            Position = 0
             ShowHint = True
             OnChange = hsvAdjustsb_Sat_gainChange
           end
@@ -425,7 +422,6 @@ object HSVForm2nd: THSVForm2nd
           inherited sb_Val_gain: TScrollBar
             Left = 82
             Hint = '[a] for minus, [s] for plus'
-            Min = -63
             ParentShowHint = False
             ShowHint = True
             OnChange = hsvAdjustsb_Val_gainChange

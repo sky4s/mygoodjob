@@ -760,7 +760,12 @@ void TMainForm::header2AddressFile(const AnsiString & header, const AnsiString &
 void __fastcall TMainForm::addressFromFileClick(TObject * Sender)
 {
     using namespace std;
+    ForceCurrentDirectory = true;
     OpenDialog1->Filter = "T-CON Address Files(*.*)|*.*";
+    /*if (0 == OpenDialog1->InitialDir) {
+	String appPath = ExtractFilePath(Application->ExeName);
+	OpenDialog1->InitialDir = appPath;
+    }*/
     if (OpenDialog1->Execute()) {
 	const AnsiString & header = OpenDialog1->FileName;
 	setAddressFile(header);

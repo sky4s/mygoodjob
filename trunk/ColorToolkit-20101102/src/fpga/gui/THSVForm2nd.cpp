@@ -703,9 +703,18 @@ void THSVForm2nd::initStringGrid_HSV()
     bool inHSVv1 = isInHSVv1();
     for (int i = 0; i < HUE_COUNT; i++) {
 	stringGrid_HSV->Cells[0][i + 1] = IntToStr(WHOLE_HUE_ANGLE / HUE_COUNT * i) + "¢X";	// Index as hue
-	stringGrid_HSV->Cells[1][i + 1] = IntToStr(WHOLE_HUE_ANGLE / HUE_COUNT * i);	// Hue default value
-	stringGrid_HSV->Cells[2][i + 1] = inHSVv1 ? 1 : 0;	// Saturation default value
-	stringGrid_HSV->Cells[3][i + 1] = 0;	// Luminance default value
+	//stringGrid_HSV->Cells[1][i + 1] = IntToStr(WHOLE_HUE_ANGLE / HUE_COUNT * i);  // Hue default value
+	//stringGrid_HSV->Cells[2][i + 1] = inHSVv1 ? 1 : 0;    // Saturation default value
+	//stringGrid_HSV->Cells[3][i + 1] = 0;  // Luminance default value
+
+	int h = hueTable[i];
+	int s = satTable[i];
+	int v = valTable[i];
+
+	stringGrid_HSV->Cells[1][i + 1] =
+	    FloatToStr(((double) h) / MAX_HUE_VALUE * WHOLE_HUE_ANGLE);
+	stringGrid_HSV->Cells[2][i + 1] = inHSVv1 ? s / 32 : s - 32;
+	stringGrid_HSV->Cells[3][i + 1] = v;
     }
 
     stringGrid_HSV->Cells[1][0] = "H";
@@ -2053,5 +2062,6 @@ void __fastcall THSVForm2nd::Button_SaveOldFormatClick(TObject * Sender)
 }
 
 //---------------------------------------------------------------------------
+
 
 
