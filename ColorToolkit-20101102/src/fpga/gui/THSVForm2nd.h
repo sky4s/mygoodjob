@@ -283,7 +283,7 @@ class THSVForm2nd:public TForm, cms::util::CallBackIF, RGBInfoCallbackIF, Patter
 	};
 	virtual String getSaturationCaption(int saturationPos) {
 	    bool inHSVv1 = parent->isInHSVv1();
-	    String result = inHSVv1 ? (saturationPos + 63) / 32. : (saturationPos);
+	    String result = inHSVv1 ? (saturationPos + 32) / 32. : (saturationPos - 32);
 	    //saturationPos = inHSVv1 ? saturationPos : saturationPos;
 	    return result;
 	};
