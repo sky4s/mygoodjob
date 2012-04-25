@@ -583,11 +583,7 @@ namespace cms {
 	    } else if (KeepCCT == c->DeHookMode) {
 		dgfile.addProperty("dehook mode", "Keep CCT");
 		dgfile.addProperty("max B intensity RGL", c->maxBRawGrayLevel);
-		dgfile.addProperty("target whiteY as max Y", c->useTargetWhiteYasMaxY ? On : Off);
-	    } /*else if (ReduceBGap == c->DeHookMode) {
-		string deHookStr = "Reduce B Gap (zone:" + _toString(c->DeHookRBGZone) + ")";
-		dgfile.addProperty("dehook mode", deHookStr);
-	    }*/
+	    }
 
 	    if (c->keepMaxLuminance == KeepMaxLuminance::Smooth2NativeWhite) {
 		if (true == c->autoKeepMaxLumiParameter) {

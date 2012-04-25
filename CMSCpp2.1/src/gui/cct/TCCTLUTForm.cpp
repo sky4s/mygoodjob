@@ -152,7 +152,6 @@ void __fastcall TCCTLUTForm::Button_MeaRunClick(TObject * Sender)
 	    int middleGammaEnd = Edit_MiddleGammaEnd->Text.ToInt();
 	    calibrator.setGamma(gammaDim, dimGammaEnd, middleGammaEnd, gammaBright);
 	}
-
 	//calibrator.HighlightGammaFix = CheckBox_HighlightGammaFix->Checked;
 	//==========================================================================
 
@@ -202,12 +201,18 @@ void __fastcall TCCTLUTForm::Button_MeaRunClick(TObject * Sender)
 
 	    if (RadioButton_DeHookNone->Checked) {
 		calibrator.DeHookMode = None;
-	    } /*else if (RadioButton_DeHookReduceBGap->Checked) {
-		calibrator.DeHookMode = ReduceBGap;
-	    }*/ else if (RadioButton_DeHookKeepCCT->Checked) {
+	    } else if (RadioButton_DeHookKeepCCT->Checked) {
 		calibrator.DeHookMode = KeepCCT;
-		calibrator.UseTargetWhiteYasMaxY = CheckBox_TaregtWhiteYasMaxY->Checked;
-
+	    } else if (RadioButton_NewDeHook->Checked) {
+		int index = RadioGroup_NewDeHookPriority->ItemIndex;
+		switch (index) {
+		case 0:	//B Gap first
+		    calibrator.DeHookMode = NewWithBGap1st;
+		    break;
+		case 1:	//Gamma first
+		    calibrator.DeHookMode = NewWithGamma1st;
+		    break;
+		};
 	    }
 
 
@@ -372,8 +377,6 @@ void __fastcall TCCTLUTForm::FormShow(TObject * Sender)
 	Edit_MaxYAdvOver->Visible = true;
 	CheckBox_MaxYAdvAuto->Visible = true;
 
-	//RadioButton_DeHookReduceBGap->Visible = true;
-	//Edit_DeHookRBGZone->Visible = true;
 	RadioButton_DeHookKeepCCT->Visible = true;
     }
     //=========================================================================
@@ -814,21 +817,6 @@ void __fastcall TCCTLUTForm::RadioButton_3GammaClick(TObject * Sender)
 void __fastcall TCCTLUTForm::RadioButton_OriginalGammaClick(TObject * Sender)
 {
     this->CheckBox_GByPass->Enabled = false;
-}
-
-//---------------------------------------------------------------------------
-
-void __fastcall TCCTLUTForm::RadioButton_DeHookKeepCCTClick(TObject * Sender)
-{
-    CheckBox_TaregtWhiteYasMaxY->Enabled = true;
-}
-
-//---------------------------------------------------------------------------
-
-
-void __fastcall TCCTLUTForm::RadioButton_DeHookNoneClick(TObject * Sender)
-{
-    CheckBox_TaregtWhiteYasMaxY->Enabled = false;
 }
 
 //---------------------------------------------------------------------------

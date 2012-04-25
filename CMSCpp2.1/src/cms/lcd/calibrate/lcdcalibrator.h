@@ -14,7 +14,6 @@
 #include "dg.h"
 #include "common.h"
 #include "quantizer.h"
-//#include "feedback.h"
 #include <cms/measure/include.h>	//20120302
 
 
@@ -27,13 +26,45 @@ namespace cms {
 	    extern bool linkCA210;
 	    extern bool pcWithTCONInput;
 
+	    /*
+	       只要DeHook有開, 基本上就是要PanelRegulator先改變面板特性, 再做量測
+	       改變的基準就是把Target White改到避開Hook
+
+	       第一代DeHook簡述:
+	       把TargetWhite的B直接改成B intensity最大點, 因此255那一點就是對到B Intensity最大點,
+	       因此可以避開Intensity反轉的問題
+
+	       第二代DeHook簡述:
+	       第一代的增強, 基本上概念與第一代無誤, 但是有兩種選項
+	       1.B Gap優先: 讓BGap最小
+	       2.Gamma優先: 讓Gamma最接近目標Gamma
+
+	       兩個選項是互相牴觸, 有trade-off的, 所以才開放兩個選項供選擇.
+	       1.B Gap優先
+	       與第一代De-Hook相同的概念, 但是把B Intensity最大點落在254, 如此可以進一步縮小B Gap
+	       由於是落在254, 因此採用的RGB將不會是255 255 250(假設B Intensity最大是250)的組合.
+	       R&G會是比250更小的值, 但是卻保證與Panel White的dxy <0.003(Panel White為255/255/255)
+	       且Gamma介於1.5~3(此為我們內定的SPEC, 非客戶要求)
+
+	       甚至將B Intensity最大點落在253...252...更可以進一步縮小B Gap
+	       (但還是要遵守Gamma 1.5~3的規則)
+
+	       2.Gamma優先
+	       基本規則等同於B Gap優先, 但是只會把B Intensity放在最接近目標Gamma(譬如2.2)的灰階,
+	       確保整條Gamma都接近目標值
+
+
+	     */
 	    enum DeHook {
 		None,
-		//Original,     //廢棄
-		//Evolution,    //廢棄
-		KeepCCT /*Original */ ,
-		ReduceBGap	/*Evolution */
+		KeepCCT,	//第一代的DeHook, 把TargetWhite的B直接改成B intensity最大點
+		NewWithBGap1st,	//第二代DeHook, 但是以降低B Gap為優先
+		NewWithGamma1st,	//第二代DeHook, 但是以Gamma優先(相對的B Gap就無法降低)
 	    };
+
+
+	     Enumeration(SecondWhite)
+	     None, MaxRGB, DeHook, DeHook2, EnumerationEnd();
 
 	    class LCDCalibrator {
 		friend class cms::colorformat::DGLutProperty;
@@ -122,7 +153,6 @@ namespace cms {
 		bool remapped;
 		DeHook dehook;
 		int deHookRBGZone;
-		bool useTargetWhiteYasMaxY;
 		//==============================================================
 
 		//==============================================================
@@ -183,8 +213,6 @@ namespace cms {
 		void setOriginalGamma();
 		void setAbsoluteGamma(bool absoluteGamma,
 				      int startGrayLevel, double startGrayLevelAboveGamma);
-		//__property bool HighlightGammaFix = { write = highlightGammaFix
-		//};
 		//==============================================================
 
 		//==============================================================
@@ -198,10 +226,6 @@ namespace cms {
 		void setKeepMaxLuminance(KeepMaxLuminance keepMaxLuminance);
 		void setKeepMaxLuminanceSmooth2NativeWhite(int over, bool autoParameter);
 		__property DeHook DeHookMode = { read = dehook, write = dehook
-		};
-		//void setDeHookReduceBGap(int zone);
-		//__property int DeHookRBGZone = { read = deHookRBGZone };
-		__property bool UseTargetWhiteYasMaxY = { write = useTargetWhiteYasMaxY
 		};
 		//==============================================================
 
@@ -251,7 +275,7 @@ namespace cms {
 		//==============================================================
 
 		//==============================================================
-		// 
+		// 外部componenet
 		//==============================================================
 		 bptr < i2c::TCONControl > tconctrl;
 		 bptr < ComponentFetcher > fetcher;
@@ -266,7 +290,6 @@ namespace cms {
 				    double_vector_ptr ggammaCurve, double_vector_ptr bgammaCurve);
 		Component_vector_ptr fetchComponentVector();
 		double_vector_ptr fetchLuminanceVector();
-		void init2ndWhiteAnalyzer(bool useMaxBIntensity);
 		RGB_vector_ptr getDGLutOpResult(RGB_vector_ptr dglut);
 		RGB_vector_ptr oldMethod(DGLutGenerator & generator,
 					 bptr < PanelRegulator >
@@ -274,20 +297,27 @@ namespace cms {
 		RGB_vector_ptr newMethod(bptr < PanelRegulator > panelRegulato);
 
 		void fixChromaticityReverseByFeedback(RGB_vector_ptr dglut);
-		int_vector_ptr getReverseIndexVector(double_vector_ptr
-						     deltaVector, int start, int end);
-		 int_vector_ptr
-		    getMustMeasureZoneIndexVector(double_vector_ptr
-						  dxofBase,
-						  double_vector_ptr dyofBase, int start, int end);
+		int_vector_ptr getReverseIndexVector(double_vector_ptr deltaVector, int start,
+						     int end);
+		int_vector_ptr getMustMeasureZoneIndexVector(double_vector_ptr dxofBase,
+							     double_vector_ptr dyofBase, int start,
+							     int end);
 		void pushBackNumber(int_vector_ptr result, int number);
 		double_vector_ptr selectDelta(double_vector_ptr dxofBase,
 					      double_vector_ptr dyofBase, Dep::Channel & ch);
 
 		Component_vector_ptr getDimComponentVector(RGB_vector_ptr dglut);
 		bool isDoDeHook();
-		bool isDoDeHookKeepCCT();
-		bool isDoDeHookReduceBGap();
+		//==============================================================
+
+		//==============================================================
+		// 2nd white analyzer
+		//==============================================================
+		void init2ndWhiteAnalyzer(SecondWhite secondWhite);
+		static SecondWhite getSecondWhite(KeepMaxLuminance keepMaxLuminance, DeHook deHook);
+		int getMaxBIntensityRawGrayLevel();
+		//==============================================================
+
 
 		//==============================================================
 		// 量化
@@ -319,8 +349,8 @@ namespace cms {
 
 		static double_vector_ptr
 		    getLuminanceGammaCurve(double_vector_ptr
-					   normalGammaCurve,
-					   double maxLuminance, double minLuminance);
+					   normalGammaCurve, double maxLuminance,
+					   double minLuminance);
 
 		static double_vector_ptr
 		    getLuminanceGammaCurve(double_vector_ptr

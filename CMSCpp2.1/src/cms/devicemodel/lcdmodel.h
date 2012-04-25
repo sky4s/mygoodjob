@@ -60,6 +60,11 @@ namespace cms {
 	     XYZ_ptr getXYZ(double r, double g, double b);
 	    XYZ_ptr getXYZ(double r, double g, double b, boolean relativeXYZ);
 	};
+
+	/*class SpecificModel:public MultiMatrixModel {
+	  public:
+	    SpecificModel(LCDTarget_ptr lcdTarget);
+	};*/
     };
 };
 

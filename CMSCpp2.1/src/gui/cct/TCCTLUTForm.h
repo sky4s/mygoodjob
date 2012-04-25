@@ -127,8 +127,9 @@ class TCCTLUTForm:public TForm, cms::lcd::calibrate::FeedbackListener {
     TGroupBox *GroupBox_DeHook;
     TRadioButton *RadioButton_DeHookNone;
     TRadioButton *RadioButton_DeHookKeepCCT;
-    TCheckBox *CheckBox_TaregtWhiteYasMaxY;
     TCheckBox *CheckBox_KeepMaxYInMultiGen;
+    TRadioButton *RadioButton_NewDeHook;
+    TRadioGroup *RadioGroup_NewDeHookPriority;
     void __fastcall RadioButton_P1P2Click(TObject * Sender);
     void __fastcall Button_MeaRunClick(TObject * Sender);
     void __fastcall Button_DebugClick(TObject * Sender);
@@ -163,8 +164,6 @@ class TCCTLUTForm:public TForm, cms::lcd::calibrate::FeedbackListener {
     void __fastcall RadioButton_MaxYNativeClick(TObject * Sender);
     void __fastcall RadioButton_3GammaClick(TObject * Sender);
     void __fastcall RadioButton_OriginalGammaClick(TObject * Sender);
-    void __fastcall RadioButton_DeHookKeepCCTClick(TObject * Sender);
-    void __fastcall RadioButton_DeHookNoneClick(TObject * Sender);
   private:			// User declarations
     void setMeasureInfo();
     int serialid;

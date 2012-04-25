@@ -191,6 +191,11 @@ namespace cms {
 	    LCDTarget_ptr target(new LCDTarget(patchList));
 	    return target;
 	};
+
+	LCDTarget_ptr LCDTarget::Instance::get(Patch_vector_ptr patchList) {
+	    LCDTarget_ptr target(new LCDTarget(patchList));
+	    return target;
+	};
 	//==========================================================================================
       LCDTarget::Filter::Filter(LCDTarget * lcdTarget):lcdTarget(lcdTarget) {
 	};
@@ -253,9 +258,7 @@ namespace cms {
 	    Patch_vector_ptr rPatchVector = lcdTarget->filter.grayScalePatch(Channel::R, true);
 	    Patch_vector_ptr gPatchVector = lcdTarget->filter.grayScalePatch(Channel::G, true);
 	    Patch_vector_ptr bPatchVector = lcdTarget->filter.grayScalePatch(Channel::B, true);
-	    /*foreach(Patch_ptr p, *grayPatchVector) {
-	       cout << *p->toString() << endl;
-	       } */
+
 	    w = initInterpolator(grayPatchVector);
 	    r = initInterpolator(rPatchVector);
 	    g = initInterpolator(gPatchVector);
@@ -305,13 +308,10 @@ namespace cms {
 	    rgb->setColorBlack();
 	    rgb->setValue(ch, value);
 
-	    //Patch_ptr wp = lcdTarget->getWhitePatch();
 	    Patch_ptr wp = lcdTarget->getBrightestPatch();
 	    XYZ_ptr white = wp->getXYZ();
 	    XYZ_ptr XYZ = getXYZFromDomainValues(values);
-	    //Lab_ptr Lab = CIELab::fromXYZ(XYZ, white);
 
-	    //Patch p = new Patch("Interp", XYZ, Lab, rgb);
 	    string_ptr name(new string("Interp"));
 	    Patch_ptr p(new Patch(name, XYZ, XYZ, rgb));
 	    return p;

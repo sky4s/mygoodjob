@@ -948,7 +948,7 @@ object CCTLUTForm: TCCTLUTForm
     TabOrder = 11
     object Label20: TLabel
       Left = 26
-      Top = 197
+      Top = 213
       Width = 27
       Height = 13
       Caption = 'Begin'
@@ -977,7 +977,7 @@ object CCTLUTForm: TCCTLUTForm
     end
     object RadioButton_MaxYNativeAdv: TRadioButton
       Left = 7
-      Top = 173
+      Top = 189
       Width = 137
       Height = 19
       Caption = 'Native White (Smooth)'
@@ -988,7 +988,7 @@ object CCTLUTForm: TCCTLUTForm
     end
     object Edit_MaxYAdvOver: TEdit
       Left = 64
-      Top = 197
+      Top = 213
       Width = 33
       Height = 21
       ImeName = #26085#25991#36664#20837#31995#32113' (MS-IME2002)'
@@ -999,7 +999,7 @@ object CCTLUTForm: TCCTLUTForm
     end
     object CheckBox_MaxYAdvAuto: TCheckBox
       Left = 106
-      Top = 192
+      Top = 208
       Width = 47
       Height = 25
       Caption = 'Auto'
@@ -1051,7 +1051,7 @@ object CCTLUTForm: TCCTLUTForm
       Left = 16
       Top = 80
       Width = 137
-      Height = 89
+      Height = 105
       Caption = 'DeHook'
       TabOrder = 9
       object RadioButton_DeHookNone: TRadioButton
@@ -1063,7 +1063,6 @@ object CCTLUTForm: TCCTLUTForm
         Checked = True
         TabOrder = 0
         TabStop = True
-        OnClick = RadioButton_DeHookNoneClick
       end
       object RadioButton_DeHookKeepCCT: TRadioButton
         Left = 8
@@ -1074,18 +1073,28 @@ object CCTLUTForm: TCCTLUTForm
         Enabled = False
         TabOrder = 1
         Visible = False
-        OnClick = RadioButton_DeHookKeepCCTClick
       end
-      object CheckBox_TaregtWhiteYasMaxY: TCheckBox
-        Left = 24
+      object RadioButton_NewDeHook: TRadioButton
+        Left = 8
+        Top = 48
+        Width = 41
+        Height = 17
+        Caption = 'New'
+        Enabled = False
+        TabOrder = 2
+        Visible = False
+      end
+      object RadioGroup_NewDeHookPriority: TRadioGroup
+        Left = 56
         Top = 48
         Width = 73
-        Height = 17
-        Caption = 'Use MaxY'
-        Checked = True
-        Enabled = False
-        State = cbChecked
-        TabOrder = 2
+        Height = 49
+        Caption = 'Priority'
+        ItemIndex = 1
+        Items.Strings = (
+          'B Gap'
+          'Gamma')
+        TabOrder = 3
       end
     end
   end
