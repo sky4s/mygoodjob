@@ -80,7 +80,6 @@ namespace cms {
 	    void addProperty(const std::string key, const std::string value);
 	    bool initProperty(bptr < DGLutFile > d);
 	    bool initProperty(DGLutFile * d);
-	    //static void fetchVersionInfo();
 	    xyY_ptr getReferenceColor(const string & prestring, const Dep::Channel & ch);
 	  public:
 	    static const std::string Native;
@@ -100,7 +99,6 @@ namespace cms {
 	    RGB_ptr getSecondReferenceRGB();
 	     bptr < cms::lcd::BitDepthProcessor > getBitDepthProcessor();
 	    double_array getTargetWhiteRatio();
-	    //double_array getTargetWhiteRatio(const string & prestring);
 	};
     };
 };

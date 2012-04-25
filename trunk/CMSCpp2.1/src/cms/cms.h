@@ -100,6 +100,7 @@ namespace cms {
 
     namespace devicemodel {
 	class MultiMatrixModel;
+	//class SpecificModel;
     };
     namespace hsvip {
 	class SingleHueAdjustValue;

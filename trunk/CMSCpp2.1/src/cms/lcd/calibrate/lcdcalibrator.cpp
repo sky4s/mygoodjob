@@ -75,8 +75,6 @@ namespace cms {
 
 		dehook = None;
 		deHookRBGZone = 0;
-		//highlightGammaFix = false;
-		useTargetWhiteYasMaxY = false;
 	    };
 
 	     double_vector_ptr
@@ -371,11 +369,37 @@ namespace cms {
 		return gammaCurve;
 	    };
 
+	    SecondWhite LCDCalibrator::getSecondWhite(KeepMaxLuminance keepMaxLuminance,
+						      DeHook deHook) {
+		if (keepMaxLuminance == KeepMaxLuminance::Smooth2NativeWhite) {
+		    return SecondWhite::MaxRGB;
+		} else if (deHook == KeepCCT) {
+		    return SecondWhite::DeHook;
+		} else if (deHook == NewWithBGap1st || deHook == NewWithGamma1st) {
+		    return SecondWhite::DeHook2;
+		} else {
+		    return SecondWhite::None;
+		}
+	    };
+
+	    int LCDCalibrator::getMaxBIntensityRawGrayLevel() {
+		if (null != originalComponentVector) {
+		    //若要略過inverse B, 則要先量測到B在哪裡反轉
+		    //然後設定b最大只用到反轉點
+		    ComponentLUT lut(originalComponentVector);
+		    //找到最大B Intensity的灰階
+		    return lut.getMaxBIntensityRGL();
+		} else {
+		    bptr < cms::measure::IntensityAnalyzerIF > analyzer = fetcher->FirstAnalyzer;
+		    bptr < MeterMeasurement > mm = analyzer->getMeterMeasurement();
+		    return MeasureTool::getMaxBIntensityRawGrayLevel(mm, bitDepth);
+		}
+	    };
 	    /*
 	       當有smooth CCT到native white需求時，就需要native white analyzer
 	       ，求得更準確的DG Lut
 	     */
-	    void LCDCalibrator::init2ndWhiteAnalyzer(bool useMaxBIntensity) {
+	    void LCDCalibrator::init2ndWhiteAnalyzer(SecondWhite secondWhite) {
 		//=====================================================
 		// 生出一組新的analyzer, 給smooth target的時候用
 		// 有這組analyzer, 在smooth到native white的時候可以得到更準確的結果.
@@ -386,25 +410,29 @@ namespace cms {
 		int max = bitDepth->getOutputMaxDigitalCount();
 		int blueMax = max;
 
-		if (useMaxBIntensity) {
+		switch (secondWhite) {
+		case SecondWhite::MaxRGB:
+		    break;
+		case SecondWhite::DeHook:
 		    if (mm->FakeMeasure) {
 			this->maxBRawGrayLevel = blueMax;
+			//如果是FakeMeasure, secondWhiteAnalyzer應該是從excel讀出來,
+			//所以不用(也不能,因為mm是fake不能量東西)重新產生secondWhiteAnalyzer
 			return;
 		    } else {
-
-			if (null != originalComponentVector) {
-			    //若要略過inverse B, 則要先量測到B在哪裡反轉
-			    //然後設定b最大只用到反轉點
-			    ComponentLUT lut(originalComponentVector);
-			    //找到最大B Intensity的灰階
-			    blueMax = lut.getMaxBIntensityRGL();
-			} else {
-			    blueMax = MeasureTool::getMaxBIntensityRawGrayLevel(mm, bitDepth);
-			}
-
+			blueMax = getMaxBIntensityRawGrayLevel();
 			this->maxBRawGrayLevel = blueMax;
 		    }
-		}
+		    break;
+		case SecondWhite::DeHook2:
+		    /*
+		       dehook2, 要找的2nd white也會跟過去不同
+		     */
+		    int blueMaxGrayLevel = getMaxBIntensityRawGrayLevel();
+
+		    break;
+		};
+
 
 		secondWhiteAnalyzer =
 		    MaxMatrixIntensityAnalyzer::getReadyAnalyzer(mm, max, max, blueMax);
@@ -426,14 +454,23 @@ namespace cms {
 		}
 
 		bptr < PanelRegulator > panelRegulator;
-		if (isDoDeHookKeepCCT()) {
+		bool needPanelRegular = isDoDeHook();
+		if (needPanelRegular) {
 		    //原先: 以target white的rgb為最大值, 調整面板並重新量測
 		    //改良: 以direct gamma(gamma test)直接改變打出的pattern, 達到相同效果
-		    //dehook選項從target white拉到 cctlut去, 所以這邊的重新產生新的anzlyer
+		    /*
+		       dehook選項從target white拉到 cctlut去, 所以這邊重新產生新的analyzer
+		       當dehook在target white的時候, 1st analyzer就是當作target white,
+		       因為設定target white同時就考慮的hook
+
+		       當dehook放到cctlut時, 因為1st analyzer沒考慮hook, 所以要產生2nd analyzer
+		       去對應hook, 因此才要這邊的步驟
+		     */
 
 		    if (null == secondWhiteAnalyzer) {
 			//此時init2ndWhiteAnalyzer找的是255 255 250(B Max IntensitY)
-			init2ndWhiteAnalyzer(true);
+			//init2ndWhiteAnalyzer(true);
+			init2ndWhiteAnalyzer(getSecondWhite(keepMaxLuminance, dehook));
 			fetcher->SecondAnalyzer = secondWhiteAnalyzer;
 		    }
 		    RGB_ptr rgb = secondWhiteAnalyzer->getReferenceRGB();
@@ -449,7 +486,7 @@ namespace cms {
 		}
 		//原始特性量測
 		this->originalComponentVector = fetchComponentVector();
-		if (isDoDeHookKeepCCT() && null != panelRegulator) {
+		if (needPanelRegular && null != panelRegulator) {
 		    panelRegulator->setEnable(false);
 		}
 		if (null == originalComponentVector) {
@@ -511,19 +548,11 @@ namespace cms {
 	    };
 
 	    bool LCDCalibrator::isDoDeHook() {
-		return (None != dehook)
-		    /*&& (null != tconctrl || true == debugMode) */ ;
+		return KeepCCT == dehook || NewWithBGap1st == dehook || NewWithGamma1st == dehook;
 	    };
 
 
-	    bool LCDCalibrator::isDoDeHookKeepCCT() {
-		return (KeepCCT == dehook)
-		    /*&& (null != tconctrl || true == debugMode) */ ;
-	    };
-	    bool LCDCalibrator::isDoDeHookReduceBGap() {
-		return (ReduceBGap == dehook)
-		    /*&& (null != tconctrl || true == debugMode) */ ;
-	    };
+
 	    /*
 	       generator在此的用意只是拿來產生gamma curve
 	     */
@@ -558,7 +587,6 @@ namespace cms {
 		    //較適合NB使用
 		    bptr < PanelRegulator > panelRegulator2;
 		    Component_vector_ptr componentVector2;
-		    //bool useMaxBIntensity = isDoDeHookOrg();
 
 
 		    //Smooth2NativeWhite + dehook org
@@ -575,7 +603,8 @@ namespace cms {
 
 		    if (null == secondWhiteAnalyzer) {
 			//初始化255/255/255的white analyzer
-			init2ndWhiteAnalyzer(false);
+			//init2ndWhiteAnalyzer(false);
+			init2ndWhiteAnalyzer(getSecondWhite(keepMaxLuminance, dehook));
 		    }
 
 		    advgenerator = bptr < AdvancedDGLutGenerator >
@@ -591,7 +620,6 @@ namespace cms {
 		    // luminanceGammaCurve的計算
 		    //==============================================================================
 		    // max luminance的採用還是很有爭議
-		    //double maxLuminance = secondWhiteAnalyzer->getReferenceColor()->Y;
 		    double maxLuminance = (*originalComponentVector)[0]->XYZ->Y;
 		    //藉由傳統generator產生luminance gamma curve
 		    luminanceGammaCurve =
@@ -603,10 +631,9 @@ namespace cms {
 		    //一般的case, 不用兼顧Hook和最大亮度
 		    //NativeWhite(可搭配de-hook) & TargetWhite
 		    //componentVector是事先量好的(呼叫此function之前)
-		    if (isDoDeHookKeepCCT() && null == secondWhiteAnalyzer) {
+		    if (isDoDeHook() && null == secondWhiteAnalyzer) {
 			throw new
-			    IllegalStateException
-			    ("isDoDeHookKeepCCT() && null == secondWhiteAnalyzer");
+			    IllegalStateException("isDoDeHook() && null == secondWhiteAnalyzer");
 		    }
 		    //==========================================================
 		    // 產生gamma curve用
@@ -618,16 +645,9 @@ namespace cms {
 			 AdvancedDGLutGenerator(originalComponentVector, fetcher, bitDepth, *this));
 
 
-		    //targetWhite as raw white, 很即時
-		    //secondWhiteAnalyzer由於是系統自動產生, 所以建議不論null都要去量測
 		    bptr < IntensityAnalyzerIF > firstAnalyzer = fetcher->FirstAnalyzer;
 		    double targetLuminance = firstAnalyzer->getReferenceColor()->Y;
-		    double secondLuminance =
-			isDoDeHookKeepCCT()? secondWhiteAnalyzer->getReferenceColor()->Y : 0;
-		    double maxLuminance =
-			isDoDeHookKeepCCT()? (useTargetWhiteYasMaxY ?
-					      targetLuminance : secondLuminance)
-			: targetLuminance;
+		    double maxLuminance = targetLuminance;
 		    //藉由傳統generator產生luminance gamma curve
 		    if (true == absoluteGamma) {
 			int effectiven = bitDepth->getEffectiveInputLevel();
@@ -662,7 +682,6 @@ namespace cms {
 		    underParameter = under;
 		} else if (correct == Correct::None) {
 		    underParameter = 0;
-
 		}
 
 		int startCheckReversePos = 50;
@@ -675,14 +694,6 @@ namespace cms {
 		//==================================================================================
 		// init maxWhiteXYZ
 		//==================================================================================
-		//analyzer若沒有設定過target color, 會使此步驟失效
-		//因為analyzer->getReferenceColor()會是null
-		/*bptr < IntensityAnalyzerIF > analyzer = fetcher->getAnalyzer();
-		xyY_ptr targetWhitexyY = analyzer->getReferenceColor();
-		if (null == targetWhitexyY) {
-		    return nil_RGB_vector_ptr;
-		}
-		XYZ_ptr targetWhite = targetWhitexyY->toXYZ();*/
 		XYZ_ptr maxWhiteXYZ = targetWhiteXYZ;
 		double maxLuminance = (*luminanceGammaCurve)[luminanceGammaCurve->size() - 1];
 
@@ -697,12 +708,10 @@ namespace cms {
 		case KeepMaxLuminance::TargetWhite:
 		    break;
 		case KeepMaxLuminance::NativeWhite:
-		    if (isDoDeHookKeepCCT()) {
+		    if (isDoDeHook()) {
 			xyY_ptr secondWhite = secondWhiteAnalyzer->getReferenceColor()->clone();
 			secondWhite->Y = maxLuminance;
 			maxWhiteXYZ = secondWhite->toXYZ();
-		    } else {
-
 		    }
 		};
 		//==================================================================================
@@ -1219,14 +1228,12 @@ namespace cms {
 		    }
 		    break;
 		case KeepMaxLuminance::Smooth2NativeWhite:{
-			//if (isDoDeHookOrg()) {
 			//最後還是要對DG做一次smooth
 			bptr < DGLutOp >
 			    nativeWhiteAdv(new
 					   KeepNativeWhiteSmoothOp
 					   (bitDepth, keepMaxLumiOver, false));
 			dgop.addOp(nativeWhiteAdv);
-			//}
 		    }
 		    break;
 		}
@@ -1401,14 +1408,7 @@ namespace cms {
 	    };
 
 
-	    /*void LCDCalibrator::setEvolutionDeHook(int zone) {
-	       dehook = Evolution;
-	       evoDeHookZone = zone;
-	       }; */
-	    /*void LCDCalibrator::setDeHookReduceBGap(int zone) {
-		dehook = ReduceBGap;
-		deHookRBGZone = zone;
-	    };*/
+
 	};
     };
 };

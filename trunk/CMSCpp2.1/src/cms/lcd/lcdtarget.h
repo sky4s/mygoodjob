@@ -36,6 +36,7 @@ namespace cms {
 	      public:
 		static LCDTarget_ptr getFromAUORampXLS(string_ptr filename);
 		static LCDTarget_ptr getFromAlteredLogoXLS(string_ptr filename);
+		static LCDTarget_ptr get(Patch_vector_ptr patchList);
 	    };
 
 	    class Filter {

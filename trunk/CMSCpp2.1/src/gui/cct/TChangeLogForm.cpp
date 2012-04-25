@@ -13,6 +13,9 @@ __fastcall TChangeLogForm::TChangeLogForm(TComponent * Owner)
 :TForm(Owner)
 {
     Memo1->Text = "\
+    [3.4 build 1.25] 2012/04/25\r\n\
+    +新De-Hook\r\n\
+    \r\n\
     [3.4 build 1.24] 2012/04/18\r\n\
     -De-Hook的Gamma修正\r\n\
     -設定CA-X10時不影響到內存資訊\r\n\
