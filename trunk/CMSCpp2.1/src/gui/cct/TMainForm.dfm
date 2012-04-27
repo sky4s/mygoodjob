@@ -876,7 +876,7 @@ object MainForm: TMainForm
         object RadioButton_PCTCON_NB: TRadioButton
           Left = 7
           Top = 80
-          Width = 186
+          Width = 178
           Height = 19
           Hint = 'For De-Hook with NB panel use'
           Caption = 'PC w/T-CON (Avoid Hook /NB)'
@@ -896,6 +896,7 @@ object MainForm: TMainForm
           ParentShowHint = False
           ShowHint = True
           TabOrder = 3
+          Visible = False
           OnClick = RadioButton_PCTCON_TVClick
         end
       end
@@ -940,124 +941,13 @@ object MainForm: TMainForm
           OnChange = Edit_AverageTimesChange
         end
       end
-      object GroupBox_CHSetting: TGroupBox
-        Left = 554
-        Top = 7
-        Width = 169
-        Height = 98
-        Caption = 'CH Setting'
-        Enabled = False
-        TabOrder = 2
-        object Label7: TLabel
-          Left = 7
-          Top = 20
-          Width = 52
-          Height = 13
-          Caption = 'Source CH'
-        end
-        object Label8: TLabel
-          Left = 7
-          Top = 46
-          Width = 63
-          Height = 13
-          Caption = 'Target W CH'
-          Visible = False
-        end
-        object Label9: TLabel
-          Left = 7
-          Top = 72
-          Width = 59
-          Height = 13
-          Caption = 'Target W ID'
-          Visible = False
-        end
-        object Edit_SourceCH: TEdit
-          Left = 79
-          Top = 13
-          Width = 39
-          Height = 21
-          ImeName = #26085#25991#36664#20837#31995#32113' (MS-IME2002)'
-          TabOrder = 0
-          Text = '0'
-          OnKeyPress = Edit_SourceCHKeyPress
-        end
-        object Edit_TargetCH: TEdit
-          Left = 80
-          Top = 39
-          Width = 38
-          Height = 21
-          Color = cl3DLight
-          Enabled = False
-          ImeName = #26085#25991#36664#20837#31995#32113' (MS-IME2002)'
-          TabOrder = 1
-          Text = '2'
-          Visible = False
-        end
-        object Edit_TargetID: TEdit
-          Left = 80
-          Top = 65
-          Width = 83
-          Height = 21
-          Color = cl3DLight
-          Enabled = False
-          ImeName = #26085#25991#36664#20837#31995#32113' (MS-IME2002)'
-          TabOrder = 2
-          Text = ' '
-          Visible = False
-        end
-      end
-      object GroupBox3: TGroupBox
-        Left = 376
-        Top = 112
-        Width = 169
-        Height = 97
-        Caption = 'Intensity source'
-        TabOrder = 3
-        Visible = False
-        object RadioButton_AnalyzerCA210: TRadioButton
-          Left = 7
-          Top = 20
-          Width = 78
-          Height = 20
-          Hint = 'Intensity from CA-210'
-          Caption = 'CA-210'
-          ParentShowHint = False
-          ShowHint = True
-          TabOrder = 0
-          OnClick = RadioButton_AnalyzerCA210Click
-        end
-        object RadioButton_AnalyzerMaxMatrix: TRadioButton
-          Left = 7
-          Top = 40
-          Width = 78
-          Height = 19
-          Hint = 'Intensity from software, more accuracy intensity'
-          Caption = 'Max Matrix'
-          Checked = True
-          ParentShowHint = False
-          ShowHint = True
-          TabOrder = 1
-          TabStop = True
-          OnClick = RadioButton_AnalyzerMaxMatrixClick
-        end
-        object RadioButton_AnalyzerDebug: TRadioButton
-          Left = 7
-          Top = 59
-          Width = 78
-          Height = 20
-          Caption = 'Debug'
-          TabOrder = 2
-          Visible = False
-          OnClick = RadioButton_AnalyzerDebugClick
-        end
-      end
       object GroupBox_Pattern: TGroupBox
         Left = 376
         Top = 7
         Width = 169
         Height = 105
         Caption = 'Pattern'
-        TabOrder = 4
+        TabOrder = 2
         object RadioButton_Normal: TRadioButton
           Left = 7
           Top = 19
@@ -1139,7 +1029,7 @@ object MainForm: TMainForm
         Width = 163
         Height = 202
         Caption = 'Bit Depth'
-        TabOrder = 5
+        TabOrder = 3
         object Label10: TLabel
           Left = 7
           Top = 137
@@ -1260,6 +1150,32 @@ object MainForm: TMainForm
           ImeName = #26085#25991#36664#20837#31995#32113' (MS-IME2002)'
           TabOrder = 3
           Text = '8+3'
+        end
+      end
+      object GroupBox_CHSetting: TGroupBox
+        Left = 376
+        Top = 119
+        Width = 169
+        Height = 42
+        Caption = 'CH Setting'
+        Enabled = False
+        TabOrder = 4
+        object Label7: TLabel
+          Left = 7
+          Top = 20
+          Width = 52
+          Height = 13
+          Caption = 'Source CH'
+        end
+        object Edit_SourceCH: TEdit
+          Left = 79
+          Top = 13
+          Width = 39
+          Height = 21
+          ImeName = #26085#25991#36664#20837#31995#32113' (MS-IME2002)'
+          TabOrder = 0
+          Text = '0'
+          OnKeyPress = Edit_SourceCHKeyPress
         end
       end
     end

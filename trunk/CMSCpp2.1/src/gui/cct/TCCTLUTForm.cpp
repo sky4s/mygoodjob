@@ -207,10 +207,10 @@ void __fastcall TCCTLUTForm::Button_MeaRunClick(TObject * Sender)
 		int index = RadioGroup_NewDeHookPriority->ItemIndex;
 		switch (index) {
 		case 0:	//B Gap first
-		    calibrator.DeHookMode = NewWithBGap1st;
+		    calibrator.DeHookMode = SecondWithBGap1st;
 		    break;
 		case 1:	//Gamma first
-		    calibrator.DeHookMode = NewWithGamma1st;
+		    calibrator.DeHookMode = SecondWithGamma1st;
 		    break;
 		};
 	    }
@@ -377,7 +377,7 @@ void __fastcall TCCTLUTForm::FormShow(TObject * Sender)
 	Edit_MaxYAdvOver->Visible = true;
 	CheckBox_MaxYAdvAuto->Visible = true;
 
-	RadioButton_DeHookKeepCCT->Visible = true;
+	//RadioButton_DeHookKeepCCT->Visible = true;
     }
     //=========================================================================
     // function on/off relative
@@ -398,6 +398,7 @@ void __fastcall TCCTLUTForm::FormShow(TObject * Sender)
     //=========================================================================
     bool useTConInput = (true == tconInput || MainForm->isInTCONSetup());	// || debugMode;
     RadioButton_DeHookKeepCCT->Enabled = useTConInput;
+    RadioButton_NewDeHook->Enabled = useTConInput;
     CheckBox_Feedback->Enabled = useTConInput;
     Edit_DimFixThreshold->Enabled = useTConInput;
     //=========================================================================
@@ -564,7 +565,6 @@ void __fastcall TCCTLUTForm::CheckBox_NewMethodClick(TObject * Sender)
     CheckBox_BTargetIntensity->Enabled = newMethod;
     CheckBox_MultiGen->Enabled = newMethod;
     Edit_MultiGenTimes->Enabled = newMethod;
-    CheckBox_MiddleCCT->Enabled = newMethod;
 
     if (newMethod) {
 	if (RadioButton_P1P2->Checked) {
@@ -671,13 +671,6 @@ void __fastcall TCCTLUTForm::CheckBox_MaxYAdvAutoClick(TObject * Sender)
 
 //---------------------------------------------------------------------------
 
-void __fastcall TCCTLUTForm::CheckBox_MiddleCCTClick(TObject * Sender)
-{
-    bool checked = CheckBox_MiddleCCT->Checked;
-    Edit_MiddleRatio->Enabled = checked;
-}
-
-//---------------------------------------------------------------------------
 
 
 
@@ -817,6 +810,27 @@ void __fastcall TCCTLUTForm::RadioButton_3GammaClick(TObject * Sender)
 void __fastcall TCCTLUTForm::RadioButton_OriginalGammaClick(TObject * Sender)
 {
     this->CheckBox_GByPass->Enabled = false;
+}
+
+//---------------------------------------------------------------------------
+
+void __fastcall TCCTLUTForm::RadioButton_NewDeHookClick(TObject * Sender)
+{
+    RadioGroup_NewDeHookPriority->Enabled = true;
+}
+
+//---------------------------------------------------------------------------
+
+void __fastcall TCCTLUTForm::RadioButton_DeHookKeepCCTClick(TObject * Sender)
+{
+    RadioGroup_NewDeHookPriority->Enabled = false;
+}
+
+//---------------------------------------------------------------------------
+
+void __fastcall TCCTLUTForm::RadioButton_DeHookNoneClick(TObject * Sender)
+{
+    RadioGroup_NewDeHookPriority->Enabled = false;
 }
 
 //---------------------------------------------------------------------------

@@ -461,14 +461,6 @@ void __fastcall TTargetWhiteForm2::Edit_BZChange(TObject * Sender)
 
 //---------------------------------------------------------------------------
 
-void __fastcall TTargetWhiteForm2::FormShow(TObject * Sender)
-{
-    bool maxMatrix = MainForm->RadioButton_AnalyzerMaxMatrix->Checked;
-    this->Button_setMaxMatrix->Enabled = maxMatrix;
-    //findInverseZ = false;
-}
-
-//---------------------------------------------------------------------------
 
 void __fastcall TTargetWhiteForm2::Button_setMaxMatrixClick(TObject * Sender)
 {

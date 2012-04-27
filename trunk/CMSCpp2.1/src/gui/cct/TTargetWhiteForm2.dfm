@@ -15,7 +15,6 @@ object TargetWhiteForm2: TTargetWhiteForm2
   OnCreate = FormCreate
   OnKeyPress = FormKeyPress
   OnResize = FormResize
-  OnShow = FormShow
   PixelsPerInch = 96
   TextHeight = 13
   object Label3: TLabel
@@ -621,7 +620,6 @@ object TargetWhiteForm2: TTargetWhiteForm2
           Width = 58
           Height = 19
           Caption = 'Set'
-          Enabled = False
           TabOrder = 12
           OnClick = Button_setMaxMatrixClick
         end

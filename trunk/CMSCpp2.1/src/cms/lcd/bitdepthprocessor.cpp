@@ -36,9 +36,37 @@ namespace cms {
 	    }
 	};
 
+	const Dep::MaxValue & BitDepthProcessor::getOutputMaxValue(BitDepth bitDepth) {
+	    switch (bitDepth) {
+	    case b10_10:
+		return MaxValue::Int10Bit;
+	    case b10_8:
+		return MaxValue::Int8Bit;
+	    case b8_8:
+		return MaxValue::Int8Bit;
+	    case b8_6:
+		return MaxValue::Int6Bit;
+	    case b6_6:
+		return MaxValue::Int6Bit;
+	    };
+	};
+	const int BitDepthProcessor::getFRCOnlyBit(BitDepth bitDepth) {
+	    switch (bitDepth) {
+	    case b10_10:
+		return 2;
+	    case b10_8:
+		return 3;
+	    case b8_8:
+		return 3;
+	    case b8_6:
+		return 3;
+	    case b6_6:
+		return 3;
+	    };
+	};
 
-      BitDepthProcessor::BitDepthProcessor(int inBit, int lutBit, int outBit, bool tconInput):tconInput
-	    (tconInput)
+
+      BitDepthProcessor::BitDepthProcessor(int inBit, int lutBit, int outBit, bool tconInput):tconInput(tconInput)
 	{
 	    in = &MaxValue::getByIntegerBit(inBit);
 	    lut = &MaxValue::getByIntegerBit(lutBit);
@@ -96,7 +124,6 @@ namespace cms {
 	    case b8_8:
 		return tconInput ? 16 : 1;
 	    case b8_6:
-		//return tconInput ? 16 : 1;
 	    case b6_6:
 		return tconInput ? 16 : 4;
 	    default:
@@ -112,19 +139,12 @@ namespace cms {
 	    case b8_8:
 		return tconInput ? 16 : 1;
 	    case b8_6:
-		//return tconInput ? 16 : 1;
 	    case b6_6:
 		return tconInput ? 16 : 4;
 	    default:
 		throw IllegalStateException("Unsupported bitDepth: " + bitDepth);
 	    }
 	};
-	/*
-	   DG Lut³Ì¤j­È(in 8Bit)
-	 */
-	/*double BitDepthProcessor::getMaxDigitalCount() {
-	   throw IllegalStateException("Deprecated");
-	   }; */
 
 	double BitDepthProcessor::getInputMaxDigitalCount() {
 	    switch (bitDepth) {
@@ -207,17 +227,7 @@ namespace cms {
 	void BitDepthProcessor::setTCONInput(bool tconInput) {
 	    this->tconInput = tconInput;
 	};
-	/*void BitDepthProcessor::setTCONInput(bptr < i2c::TCONControl > tconContrl) {
-	   this->tconInput = true;
-	   this->tconContrl = tconContrl;
-	   };
-	   bptr < i2c::TCONControl > BitDepthProcessor::getTCONControl() {
-	   if (tconInput) {
-	   return tconContrl;
-	   } else {
-	   throw new IllegalStateException("");
-	   }
-	   }; */
+
 	void BitDepthProcessor::setInBit(int inBit) {
 	    in = &MaxValue::getByIntegerBit(inBit);
 	    bitDepth = getBitDepth(*in, *out);
@@ -230,23 +240,38 @@ namespace cms {
 	    bitDepth = getBitDepth(*in, *out);
 	};
 	string_ptr BitDepthProcessor::getFRCAbility() {
-	    switch (bitDepth) {
-	    case b10_10:
-		return string_ptr(new string("10+2"));
-	    case b10_8:
-		return string_ptr(new string("8+3"));
-	    case b8_8:
+	    if (Unknow == bitDepth) {
+		return string_ptr(new string("N/A"));
+	    } else if (b8_8 == bitDepth) {
 		if (*lut == MaxValue::Int12Bit) {
 		    return string_ptr(new string("8+3"));
-		} else {
+		} else if (*lut == MaxValue::Int10Bit) {
 		    return string_ptr(new string("8+2"));
 		}
-	    case b8_6:
-	    case b6_6:
-		return string_ptr(new string("6+3"));
-	    default:
-		return string_ptr(new string("N/A"));
+	    } else {
+		const Dep::MaxValue & output = getOutputMaxValue(bitDepth);
+		int frcOnlyBit = getFRCOnlyBit(bitDepth);
+		string result = _toString(output.bit) + "+" + _toString(frcOnlyBit);
+		return string_ptr(new string(result));
 	    }
+
+	    /*switch (bitDepth) {
+	       case b10_10:
+	       return string_ptr(new string("10+2"));
+	       case b10_8:
+	       return string_ptr(new string("8+3"));
+	       case b8_8:
+	       if (*lut == MaxValue::Int12Bit) {
+	       return string_ptr(new string("8+3"));
+	       } else {
+	       return string_ptr(new string("8+2"));
+	       }
+	       case b8_6:
+	       case b6_6:
+	       return string_ptr(new string("6+3"));
+	       default:
+	       return string_ptr(new string("N/A"));
+	       } */
 	};
 	const Dep::MaxValue & BitDepthProcessor::getFRCAbilityBit() {
 	    switch (bitDepth) {

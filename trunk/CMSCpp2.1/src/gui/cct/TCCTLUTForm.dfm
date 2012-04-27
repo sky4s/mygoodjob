@@ -1063,6 +1063,7 @@ object CCTLUTForm: TCCTLUTForm
         Checked = True
         TabOrder = 0
         TabStop = True
+        OnClick = RadioButton_DeHookNoneClick
       end
       object RadioButton_DeHookKeepCCT: TRadioButton
         Left = 8
@@ -1072,7 +1073,7 @@ object CCTLUTForm: TCCTLUTForm
         Caption = 'Keep CCT'
         Enabled = False
         TabOrder = 1
-        Visible = False
+        OnClick = RadioButton_DeHookKeepCCTClick
       end
       object RadioButton_NewDeHook: TRadioButton
         Left = 8
@@ -1082,7 +1083,7 @@ object CCTLUTForm: TCCTLUTForm
         Caption = 'New'
         Enabled = False
         TabOrder = 2
-        Visible = False
+        OnClick = RadioButton_NewDeHookClick
       end
       object RadioGroup_NewDeHookPriority: TRadioGroup
         Left = 56
@@ -1090,6 +1091,7 @@ object CCTLUTForm: TCCTLUTForm
         Width = 73
         Height = 49
         Caption = 'Priority'
+        Enabled = False
         ItemIndex = 1
         Items.Strings = (
           'B Gap'
@@ -1107,41 +1109,6 @@ object CCTLUTForm: TCCTLUTForm
     TabOrder = 12
     Visible = False
   end
-  object GroupBox8: TGroupBox
-    Left = 671
-    Top = 295
-    Width = 154
-    Height = 58
-    Caption = 'Test Function'
-    TabOrder = 13
-    Visible = False
-    object Label15: TLabel
-      Left = 18
-      Top = 35
-      Width = 59
-      Height = 13
-      Caption = 'Middle Ratio'
-    end
-    object Edit_MiddleRatio: TEdit
-      Left = 86
-      Top = 35
-      Width = 51
-      Height = 21
-      Enabled = False
-      ImeName = #26085#25991#36664#20837#31995#32113' (MS-IME2002)'
-      TabOrder = 0
-      Text = '0.5'
-    end
-    object CheckBox_MiddleCCT: TCheckBox
-      Left = 7
-      Top = 16
-      Width = 104
-      Height = 19
-      Caption = 'Middle CCT'
-      TabOrder = 1
-      OnClick = CheckBox_MiddleCCTClick
-    end
-  end
   object ProgressBar1: TProgressBar
     Left = 7
     Top = 360
@@ -1149,18 +1116,18 @@ object CCTLUTForm: TCCTLUTForm
     Height = 17
     Min = 0
     Max = 100
-    TabOrder = 14
+    TabOrder = 13
   end
   object RadioGroup_NormalCase: TRadioGroup
-    Left = 319
-    Top = 240
+    Left = 671
+    Top = 296
     Width = 156
     Height = 49
     Caption = 'Normal Case'
     Items.Strings = (
       'NB'
       'TV')
-    TabOrder = 15
+    TabOrder = 14
     Visible = False
     OnClick = RadioGroup_NormalCaseClick
   end
