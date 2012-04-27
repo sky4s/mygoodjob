@@ -375,7 +375,7 @@ namespace cms {
 		    return SecondWhite::MaxRGB;
 		} else if (deHook == KeepCCT) {
 		    return SecondWhite::DeHook;
-		} else if (deHook == NewWithBGap1st || deHook == NewWithGamma1st) {
+		} else if (deHook == SecondWithBGap1st || deHook == SecondWithGamma1st) {
 		    return SecondWhite::DeHook2;
 		} else {
 		    return SecondWhite::None;
@@ -409,16 +409,18 @@ namespace cms {
 		bptr < MeterMeasurement > mm = analyzer->getMeterMeasurement();
 		int max = bitDepth->getOutputMaxDigitalCount();
 		int blueMax = max;
+		int redmax = max;
+		int greenmax = max;
 
 		switch (secondWhite) {
 		case SecondWhite::MaxRGB:
 		    break;
 		case SecondWhite::DeHook:
 		    if (mm->FakeMeasure) {
-			this->maxBRawGrayLevel = blueMax;
 			//如果是FakeMeasure, secondWhiteAnalyzer應該是從excel讀出來,
 			//所以不用(也不能,因為mm是fake不能量東西)重新產生secondWhiteAnalyzer
-			return;
+			//而且應該也不會進到這邊
+			throw new IllegalStateException();
 		    } else {
 			blueMax = getMaxBIntensityRawGrayLevel();
 			this->maxBRawGrayLevel = blueMax;
@@ -429,13 +431,54 @@ namespace cms {
 		       dehook2, 要找的2nd white也會跟過去不同
 		     */
 		    int blueMaxGrayLevel = getMaxBIntensityRawGrayLevel();
+		    bptr < cms::devicemodel::LCDModel > lcdmodel =
+			getLCDModelForDeHook(blueMaxGrayLevel);
 
 		    break;
 		};
 
 
 		secondWhiteAnalyzer =
-		    MaxMatrixIntensityAnalyzer::getReadyAnalyzer(mm, max, max, blueMax);
+		    MaxMatrixIntensityAnalyzer::getReadyAnalyzer(mm, redmax, greenmax, blueMax);
+	    };
+
+	    bptr < cms::devicemodel::LCDModel >
+		LCDCalibrator::getLCDModelForDeHook(int blueMaxGrayLevel) {
+		bptr < cms::measure::IntensityAnalyzerIF > analyzer = fetcher->FirstAnalyzer;
+		bptr < MeterMeasurement > mm = analyzer->getMeterMeasurement();
+		int max = bitDepth->getOutputMaxDigitalCount();
+
+
+		//int blueMaxGrayLevel = getMaxBIntensityRawGrayLevel();
+		//量測 R:B~255 G:B~255 B:blueMaxGrayLevel K
+		Patch_vector_ptr patchList(new Patch_vector());
+
+
+		//黑色不用再量, 直接從component撈
+		Component_ptr black =
+		    (*originalComponentVector)[originalComponentVector->size() - 1];
+		Patch_ptr blackPatch(new Patch(black));
+		patchList->push_back(blackPatch);
+
+
+		int measureStep = bitDepth->getMeasureStep();
+		//純色一定要直接量過
+		for (int r = blueMaxGrayLevel; r <= max; r += measureStep) {
+		    Patch_ptr p = mm->measure(r, 0, 0, null);
+		    patchList->push_back(p);
+		}
+		for (int g = blueMaxGrayLevel; g <= max; g += measureStep) {
+		    Patch_ptr p = mm->measure(0, g, 0, null);
+		    patchList->push_back(p);
+		}
+		//藍色也不能忘了, 雖然只要量一階
+		Patch_ptr p = mm->measure(0, 0, blueMaxGrayLevel, null);
+		patchList->push_back(p);
+
+		LCDTarget_ptr lcdTarget = LCDTarget::Instance::get(patchList);
+		bptr < cms::devicemodel::MultiMatrixModel >
+		    mmmodel(new cms::devicemodel::MultiMatrixModel(lcdTarget));
+		return mmmodel;
 	    };
 
 	    /*
@@ -548,7 +591,8 @@ namespace cms {
 	    };
 
 	    bool LCDCalibrator::isDoDeHook() {
-		return KeepCCT == dehook || NewWithBGap1st == dehook || NewWithGamma1st == dehook;
+		return KeepCCT == dehook || SecondWithBGap1st == dehook
+		    || SecondWithGamma1st == dehook;
 	    };
 
 

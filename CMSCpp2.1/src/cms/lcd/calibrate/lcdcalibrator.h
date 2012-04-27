@@ -58,8 +58,8 @@ namespace cms {
 	    enum DeHook {
 		None,
 		KeepCCT,	//第一代的DeHook, 把TargetWhite的B直接改成B intensity最大點
-		NewWithBGap1st,	//第二代DeHook, 但是以降低B Gap為優先
-		NewWithGamma1st,	//第二代DeHook, 但是以Gamma優先(相對的B Gap就無法降低)
+		SecondWithBGap1st,	//第二代DeHook, 但是以降低B Gap為優先
+		SecondWithGamma1st,	//第二代DeHook, 但是以Gamma優先(相對的B Gap就無法降低)
 	    };
 
 
@@ -316,6 +316,7 @@ namespace cms {
 		void init2ndWhiteAnalyzer(SecondWhite secondWhite);
 		static SecondWhite getSecondWhite(KeepMaxLuminance keepMaxLuminance, DeHook deHook);
 		int getMaxBIntensityRawGrayLevel();
+		 bptr < cms::devicemodel::LCDModel > getLCDModelForDeHook(int blueMaxGrayLevel);
 		//==============================================================
 
 

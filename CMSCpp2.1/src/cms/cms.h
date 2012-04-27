@@ -99,6 +99,7 @@ namespace cms {
     };
 
     namespace devicemodel {
+	class LCDModel;
 	class MultiMatrixModel;
 	//class SpecificModel;
     };

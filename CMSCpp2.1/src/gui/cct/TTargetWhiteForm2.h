@@ -111,7 +111,6 @@ class TTargetWhiteForm2:public TForm, gui::event::WindowListener {
     void __fastcall Edit_BChange(TObject * Sender);
     void __fastcall FormCreate(TObject * Sender);
     void __fastcall Edit_BZChange(TObject * Sender);
-    void __fastcall FormShow(TObject * Sender);
     void __fastcall Button_setMaxMatrixClick(TObject * Sender);
     void __fastcall FormKeyPress(TObject * Sender, char &Key);
     void __fastcall Button_ConnectClick(TObject * Sender);

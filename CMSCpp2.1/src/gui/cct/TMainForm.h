@@ -66,16 +66,6 @@ class TMainForm:public TForm {
     TGroupBox *GroupBox1;
     TLabel *Label1;
     TEdit *Edit_Interval;
-    TGroupBox *GroupBox_CHSetting;
-    TLabel *Label7;
-    TLabel *Label8;
-    TLabel *Label9;
-    TEdit *Edit_SourceCH;
-    TEdit *Edit_TargetCH;
-    TEdit *Edit_TargetID;
-    TRadioButton *RadioButton_AnalyzerCA210;
-    TRadioButton *RadioButton_AnalyzerMaxMatrix;
-    TRadioButton *RadioButton_AnalyzerDebug;
     TComboBox *ComboBox_GammaTestType;
     TLabel *Label11;
     TButton *Button_I2CTest;
@@ -132,6 +122,9 @@ class TMainForm:public TForm {
     TMenuItem *Help1;
     TMenuItem *ChangeLog1;
     TMenuItem *About2;
+        TGroupBox *GroupBox_CHSetting;
+        TLabel *Label7;
+        TEdit *Edit_SourceCH;
     void __fastcall About1Click(TObject * Sender);
     void __fastcall Exit1Click(TObject * Sender);
     void __fastcall TargetWhite1Click(TObject * Sender);
@@ -154,9 +147,6 @@ class TMainForm:public TForm {
     void __fastcall Button1Click(TObject * Sender);
     void __fastcall Edit_IntervalChange(TObject * Sender);
     void __fastcall Button_I2CTestClick(TObject * Sender);
-    void __fastcall RadioButton_AnalyzerMaxMatrixClick(TObject * Sender);
-    void __fastcall RadioButton_AnalyzerCA210Click(TObject * Sender);
-    void __fastcall RadioButton_AnalyzerDebugClick(TObject * Sender);
     void __fastcall RadioButton_NormalClick(TObject * Sender);
     void __fastcall RadioButton_HStripeClick(TObject * Sender);
     void __fastcall RadioButton_IndepClick(TObject * Sender);

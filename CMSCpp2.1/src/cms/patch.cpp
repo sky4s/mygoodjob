@@ -24,8 +24,8 @@ namespace cms {
   Patch::Patch(string_ptr name, XYZ_ptr XYZ, Lab_ptr Lab, RGB_ptr rgb):name(name), XYZ(XYZ), _Lab(Lab), rgb(rgb)
     {
     };
-    /*Patch::Patch() {
-    };*/
+  Patch::Patch(Component_ptr c):XYZ(c->XYZ), rgb(c->rgb) {
+    };
     string_ptr Patch::getName() {
 	return name;
     };

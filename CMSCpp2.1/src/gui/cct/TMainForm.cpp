@@ -503,16 +503,7 @@ bptr < cms::measure::IntensityAnalyzerIF > TMainForm::initAnalyzer()
 	}
 	//產生max matrix
 	bptr < MaxMatrixIntensityAnalyzer > ma(new MaxMatrixIntensityAnalyzer(mm));
-
-
-	if (true == this->RadioButton_AnalyzerCA210->Checked) {
-	    analyzer = ca210Analyzer;
-	} else if (true == this->RadioButton_AnalyzerMaxMatrix->Checked) {
-	    analyzer = ma;
-	} else if (true == this->RadioButton_AnalyzerDebug->Checked) {
-	    //產生兩者的合體
-	    analyzer = bptr < IntensityAnalyzerIF > (new IntensityAnayzer(ma, ca210Analyzer));
-	}
+	analyzer = ma;
     }
     return analyzer;
 }
@@ -769,15 +760,12 @@ void __fastcall TMainForm::CCTLUT1Click(TObject * Sender)
 	Application->CreateForm(__classid(TCCTLUTForm), &CCTLUTForm);
     }
     CCTLUTForm->setBitDepthProcessor(bitDepth);
-    if (true == this->RadioButton_AnalyzerMaxMatrix->Checked) {
-	MaxMatrixIntensityAnalyzer *ma =
-	    dynamic_cast < MaxMatrixIntensityAnalyzer * >(analyzer.get());
-	if (null == ma || ma->isInverseMatrixNull()) {
-	    ShowMessage("Set Target White first.");
-	    return;
-	}
+    MaxMatrixIntensityAnalyzer *ma = dynamic_cast < MaxMatrixIntensityAnalyzer * >(analyzer.get());
+    if (null == ma || ma->isInverseMatrixNull()) {
+	ShowMessage("Set Target White first.");
+	return;
     }
-    //CCTLUTForm->setBitDepthProcessor(bitDepth);
+
     CCTLUTForm->ShowModal();
 }
 
@@ -1108,7 +1096,7 @@ void __fastcall TMainForm::RadioButton_Out10Click(TObject * Sender)
 {
     if (!bitDepth->isTCONInput() && this->Visible) {
 	ShowMessage("Recommend using T-CON Input.");
-    };
+    }
     bitDepth->setOutBit(10);
     setFRCAbility();
 }
@@ -1185,30 +1173,8 @@ void TMainForm::connectMeter()
 	ca210->getCA210API()->setRemoteMode(ca210api::Locked);
     }
 };
-void __fastcall TMainForm::RadioButton_AnalyzerMaxMatrixClick(TObject * Sender)
-{
-    setAnalyzerNull();
-    Edit_TargetCH->Enabled = false;
-    Edit_TargetID->Enabled = false;
-}
 
-//---------------------------------------------------------------------------
 
-void __fastcall TMainForm::RadioButton_AnalyzerCA210Click(TObject * Sender)
-{
-    setAnalyzerNull();
-    Edit_TargetCH->Enabled = true;
-    Edit_TargetID->Enabled = true;
-}
-
-//---------------------------------------------------------------------------
-
-void __fastcall TMainForm::RadioButton_AnalyzerDebugClick(TObject * Sender)
-{
-    setAnalyzerNull();
-}
-
-//---------------------------------------------------------------------------
 
 
 void __fastcall TMainForm::RadioButton_NormalClick(TObject * Sender)
@@ -1595,4 +1561,4 @@ void __fastcall TMainForm::ChangeLog1Click(TObject * Sender)
 }
 
 //---------------------------------------------------------------------------
-
+ 

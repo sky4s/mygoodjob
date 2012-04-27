@@ -21,8 +21,10 @@ namespace cms {
 	    const Dep::MaxValue * in, *lut, *out;
 	    BitDepth bitDepth;
 	    static BitDepth getBitDepth(const Dep::MaxValue & in, const Dep::MaxValue & out);
+
+	    static const Dep::MaxValue & getOutputMaxValue(BitDepth bitDepth);
+	    static const int getFRCOnlyBit(BitDepth bitDepth);
 	    bool tconInput;
-	    //bptr < i2c::TCONControl > tconContrl;
 	  public:
 	     BitDepthProcessor(int inBit, int lutBit, int outBit, bool tconinput);
 	     BitDepthProcessor(int inBit, int lutBit, int outBit);
@@ -81,8 +83,6 @@ namespace cms {
 	    bool isTCONInput();
 
 	    void setTCONInput(bool tconInput);
-	    //void setTCONInput(bptr < i2c::TCONControl > tconContrl);
-	    //bptr < i2c::TCONControl > getTCONControl();
 	    void setInBit(int inBit);
 	    void setLUTBit(int lutBit);
 	    void setOutBit(int outBit);
@@ -98,8 +98,8 @@ namespace cms {
 
 	/*
 	   PanelInfo= BitDepthProcessor+ TCONControl
-           其實BitDepthProcessor與TCONControl應該是緊密綁在一起的
-           但是目前的情形
+	   其實BitDepthProcessor與TCONControl應該是緊密綁在一起的
+	   但是目前的情形
 	 */
 	class PanelInfo {
 	  private:
