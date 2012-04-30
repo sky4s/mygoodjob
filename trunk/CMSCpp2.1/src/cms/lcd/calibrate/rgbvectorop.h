@@ -117,7 +117,7 @@ namespace cms {
 		 RGB_vector_ptr getRendering(RGB_vector_ptr source);
 	      public:
 		 KeepNativeWhiteSmoothOp(bptr < BitDepthProcessor > bitDepth, int over,
-					   bool compensationR);
+					 bool compensationR);
 	    };
 	    //=================================================================
 	    class DimDGLutFixOp:public DGLutOp {
@@ -158,6 +158,13 @@ namespace cms {
 				bptr < ChromaticityAdjustEstimatorIF > adjustEstimator);
 	    };
 	    //=================================================================
+
+	    class DeHook2Op:public DGLutOp {
+	      protected:
+		RGB_vector_ptr getRendering(RGB_vector_ptr source);
+
+
+	    };
 	};
     };
 }

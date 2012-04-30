@@ -69,7 +69,7 @@ namespace cms {
 		RGB_ptr getIdealIntensity(Component_vector_ptr
 					  componentVector,
 					  bptr <
-					  cms::measure:: MaxMatrixIntensityAnalyzer > analyzer);
+					  cms::measure::MaxMatrixIntensityAnalyzer > analyzer);
 		double_array getSmoothIntensity(double rTargetIntensity,
 						double gTargetIntensity,
 						double bTargetIntensity, int grayLevel);
@@ -189,6 +189,23 @@ namespace cms {
 						XYZ_ptr endXYZ,
 						double_vector_ptr
 						luminanceGammaCurve, double gamma);
+	    };
+
+	    class DeHookProcessor {
+	      private:
+		const LCDCalibrator & c;
+	      public:
+		 DeHookProcessor(const LCDCalibrator & calibrator);
+		int getMaxBIntensityRawGrayLevel();
+		static SecondWhite getSecondWhite(KeepMaxLuminance keepMaxLuminance, DeHook deHook);
+		 bptr < cms::devicemodel::LCDModel > getLCDModelForDeHook(int blueMaxGrayLevel);
+		Patch_vector_ptr getReasonableChromaticityPatchVector(bptr < cms::devicemodel::LCDModel > model,
+							  int blueMaxGrayLevel, double deltaxySpec);
+		int getReasonableGammaGrayLevel(Patch_vector_ptr patchVector, double gammaDWLimit,
+					   double gammaUPLimit);
+		int getBestGrayLevel(Patch_vector_ptr patchVector, double targetGamma);
+		Patch_ptr getBestGammaPatch(Patch_vector_ptr patchVector, double targetGamma,
+					    int targetGrayLevel);
 	    };
 	};
     };

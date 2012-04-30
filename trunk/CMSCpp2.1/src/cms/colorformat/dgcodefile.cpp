@@ -454,19 +454,19 @@ namespace cms {
 	    if (isCCTMode) {
 		string lowLevelCorrect = "low level correct";
 		switch (c->correct) {
-		case Correct::P1P2:
+		case DimCorrect::P1P2:
 		    dgfile.addProperty(lowLevelCorrect, "P1P2");
 		    dgfile.addProperty("p1", c->p1);
 		    dgfile.addProperty("p2", c->p2);
 		    break;
-		case Correct::RBInterpolation:
+		case DimCorrect::RBInterpolation:
 		    dgfile.addProperty(lowLevelCorrect, "RBInterpolation");
 		    dgfile.addProperty("rb under", c->under);
 		    break;
-		case Correct::None:
+		case DimCorrect::None:
 		    dgfile.addProperty(lowLevelCorrect, "None");
 		    break;
-		case Correct::DefinedDim:
+		case DimCorrect::DefinedDim:
 		    dgfile.addProperty(lowLevelCorrect, "DefinedDim");
 		    dgfile.addProperty("defined dim under", c->under);
 		    dgfile.addProperty("defined dim strength", c->dimStrength);
