@@ -274,23 +274,41 @@ namespace cms {
 	       } */
 	};
 	const Dep::MaxValue & BitDepthProcessor::getFRCAbilityBit() {
-	    switch (bitDepth) {
-	    case b10_10:
-		return MaxValue::Int12Bit;
-	    case b10_8:
-		return MaxValue::Int11Bit;
-	    case b8_8:
+	    if (Unknow == bitDepth) {
+		throw IllegalStateException();
+	    } else if (b8_8 == bitDepth) {
 		if (*lut == MaxValue::Int12Bit) {
 		    return MaxValue::Int11Bit;
-		} else {
-		    return MaxValue::Int10Bit;
+		} else if (*lut == MaxValue::Int10Bit) {
+		    return MaxValue::Int11Bit;
 		}
-	    case b8_6:
-	    case b6_6:
-		return MaxValue::Int9Bit;
-	    default:
-		throw IllegalStateException();
+	    } else {
+		const Dep::MaxValue & output = getOutputMaxValue(bitDepth);
+		int frcOnlyBit = getFRCOnlyBit(bitDepth);
+		int totalbit = output.bit + frcOnlyBit;
+		return MaxValue::getByIntegerBit(totalbit);
 	    }
+
+	    /*switch (bitDepth) {
+	       case b10_10:
+	       return MaxValue::Int12Bit;
+	       case b10_8:
+	       return MaxValue::Int11Bit;
+	       case b8_8:
+	       if (*lut == MaxValue::Int12Bit) {
+	       return MaxValue::Int11Bit;
+	       } else {
+	       return MaxValue::Int10Bit;
+	       }
+	       case b8_6:
+	       case b6_6:
+	       return MaxValue::Int9Bit;
+	       default:
+	       throw IllegalStateException();
+	       } */
+	};
+	const int BitDepthProcessor::getFRCOnlyBit() {
+	    return getFRCOnlyBit(bitDepth);
 	};
 	const Dep::MaxValue & BitDepthProcessor::getMeasureMaxValue() {
 	    const MaxValue & maxValue = isTCONInput()? MaxValue::Int12Bit : MaxValue::Int8Bit;

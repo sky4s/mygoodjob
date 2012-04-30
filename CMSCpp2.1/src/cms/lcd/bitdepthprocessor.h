@@ -88,6 +88,7 @@ namespace cms {
 	    void setOutBit(int outBit);
 	    string_ptr getFRCAbility();
 	    const Dep::MaxValue & getFRCAbilityBit();
+	    const int getFRCOnlyBit();
 	    const Dep::MaxValue & getMeasureMaxValue();
 
 	};

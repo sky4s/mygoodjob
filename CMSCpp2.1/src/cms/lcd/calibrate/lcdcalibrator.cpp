@@ -39,7 +39,7 @@ namespace cms {
 		bIntensityGain = 1;
 		under = 50;
 		p1 = p2 = 0;
-		correct = Correct::None;
+		correct = DimCorrect::None;
 		gamma = rgamma = ggamma = bgamma = dimGamma = -1;
 		dimGammaEnd = 50;
 		this->fetcher = fetcher;
@@ -152,18 +152,18 @@ namespace cms {
 	    void LCDCalibrator::setP1P2(int p1, int p2) {
 		this->p1 = p1;
 		this->p2 = p2;
-		this->correct = Correct::P1P2;
+		this->correct = DimCorrect::P1P2;
 	    };
 	    void LCDCalibrator::setRBInterpolation(int under) {
-		this->correct = Correct::RBInterpolation;
+		this->correct = DimCorrect::RBInterpolation;
 		this->under = under;
 	    };
 	    void LCDCalibrator::setNonDimCorrect() {
-		this->correct = Correct::None;
+		this->correct = DimCorrect::None;
 	    };
 
 	    void LCDCalibrator::setDefinedDim(int under, double strength) {
-		this->correct = Correct::DefinedDim;
+		this->correct = DimCorrect::DefinedDim;
 		this->under = under;
 		this->dimFixEnd = under;
 		this->dimStrength = strength;
@@ -369,37 +369,39 @@ namespace cms {
 		return gammaCurve;
 	    };
 
-	    SecondWhite LCDCalibrator::getSecondWhite(KeepMaxLuminance keepMaxLuminance,
-						      DeHook deHook) {
-		if (keepMaxLuminance == KeepMaxLuminance::Smooth2NativeWhite) {
-		    return SecondWhite::MaxRGB;
-		} else if (deHook == KeepCCT) {
-		    return SecondWhite::DeHook;
-		} else if (deHook == SecondWithBGap1st || deHook == SecondWithGamma1st) {
-		    return SecondWhite::DeHook2;
-		} else {
-		    return SecondWhite::None;
-		}
-	    };
+	    /*SecondWhite LCDCalibrator::getSecondWhite(KeepMaxLuminance keepMaxLuminance,
+	       DeHook deHook) {
+	       if (keepMaxLuminance == KeepMaxLuminance::Smooth2NativeWhite) {
+	       return SecondWhite::MaxRGB;
+	       } else if (deHook == KeepCCT) {
+	       return SecondWhite::DeHook;
+	       } else if (deHook == SecondWithBGap1st || deHook == SecondWithGamma1st) {
+	       return SecondWhite::DeHook2;
+	       } else {
+	       return SecondWhite::None;
+	       }
+	       }; */
 
-	    int LCDCalibrator::getMaxBIntensityRawGrayLevel() {
-		if (null != originalComponentVector) {
-		    //若要略過inverse B, 則要先量測到B在哪裡反轉
-		    //然後設定b最大只用到反轉點
-		    ComponentLUT lut(originalComponentVector);
-		    //找到最大B Intensity的灰階
-		    return lut.getMaxBIntensityRGL();
-		} else {
-		    bptr < cms::measure::IntensityAnalyzerIF > analyzer = fetcher->FirstAnalyzer;
-		    bptr < MeterMeasurement > mm = analyzer->getMeterMeasurement();
-		    return MeasureTool::getMaxBIntensityRawGrayLevel(mm, bitDepth);
-		}
-	    };
+	    /*int LCDCalibrator::getMaxBIntensityRawGrayLevel() {
+	       if (null != originalComponentVector) {
+	       //若要略過inverse B, 則要先量測到B在哪裡反轉
+	       //然後設定b最大只用到反轉點
+	       ComponentLUT lut(originalComponentVector);
+	       //找到最大B Intensity的灰階
+	       return lut.getMaxBIntensityRGL();
+	       } else {
+	       bptr < cms::measure::IntensityAnalyzerIF > analyzer = fetcher->FirstAnalyzer;
+	       bptr < MeterMeasurement > mm = analyzer->getMeterMeasurement();
+	       return MeasureTool::getMaxBIntensityRawGrayLevel(mm, bitDepth);
+	       }
+	       }; */
 	    /*
 	       當有smooth CCT到native white需求時，就需要native white analyzer
 	       ，求得更準確的DG Lut
 	     */
-	    void LCDCalibrator::init2ndWhiteAnalyzer(SecondWhite secondWhite) {
+	    void LCDCalibrator::init2ndWhiteAnalyzer(KeepMaxLuminance keepMaxLuminance,
+						     DeHook deHook) {
+		SecondWhite secondWhite = DeHookProcessor::getSecondWhite(keepMaxLuminance, deHook);
 		//=====================================================
 		// 生出一組新的analyzer, 給smooth target的時候用
 		// 有這組analyzer, 在smooth到native white的時候可以得到更準確的結果.
@@ -411,6 +413,7 @@ namespace cms {
 		int blueMax = max;
 		int redmax = max;
 		int greenmax = max;
+		DeHookProcessor processor(*this);
 
 		switch (secondWhite) {
 		case SecondWhite::MaxRGB:
@@ -422,7 +425,7 @@ namespace cms {
 			//而且應該也不會進到這邊
 			throw new IllegalStateException();
 		    } else {
-			blueMax = getMaxBIntensityRawGrayLevel();
+			blueMax = processor.getMaxBIntensityRawGrayLevel();
 			this->maxBRawGrayLevel = blueMax;
 		    }
 		    break;
@@ -430,9 +433,28 @@ namespace cms {
 		    /*
 		       dehook2, 要找的2nd white也會跟過去不同
 		     */
-		    int blueMaxGrayLevel = getMaxBIntensityRawGrayLevel();
+		    int blueMaxGrayLevel = processor.getMaxBIntensityRawGrayLevel();
 		    bptr < cms::devicemodel::LCDModel > lcdmodel =
-			getLCDModelForDeHook(blueMaxGrayLevel);
+			processor.getLCDModelForDeHook(blueMaxGrayLevel);
+
+		    /*
+		       DeHook2+Gamma1st/BGap1st:會影響到搭配的R/G
+		       湊出所有R/G組合
+		       過濾出dxdy 0.003內
+		     */
+		    Patch_vector_ptr patchVector =
+			processor.getReasonableChromaticityPatchVector(lcdmodel, blueMaxGrayLevel,
+								       0.003);
+		    //XYZ_ptr whiteXYZ = lcdmodel->getXYZ(RGBColor::White, false);
+		    if (SecondWithBGap1st == deHook) {
+			//會盡量找到最低的gray level
+			int reasonableGammaGrayLevel =
+			    processor.getReasonableGammaGrayLevel(patchVector, 1.5, 3.0);
+			//再從這裡面撈出最接近target gamma的
+
+		    } else if (SecondWithGamma1st == deHook) {
+			//找到最貼近target gamma的patch及gray level
+		    }
 
 		    break;
 		};
@@ -442,44 +464,43 @@ namespace cms {
 		    MaxMatrixIntensityAnalyzer::getReadyAnalyzer(mm, redmax, greenmax, blueMax);
 	    };
 
-	    bptr < cms::devicemodel::LCDModel >
-		LCDCalibrator::getLCDModelForDeHook(int blueMaxGrayLevel) {
-		bptr < cms::measure::IntensityAnalyzerIF > analyzer = fetcher->FirstAnalyzer;
-		bptr < MeterMeasurement > mm = analyzer->getMeterMeasurement();
-		int max = bitDepth->getOutputMaxDigitalCount();
+	    /*bptr < cms::devicemodel::LCDModel >
+	       LCDCalibrator::getLCDModelForDeHook(int blueMaxGrayLevel) {
+	       bptr < cms::measure::IntensityAnalyzerIF > analyzer = fetcher->FirstAnalyzer;
+	       bptr < MeterMeasurement > mm = analyzer->getMeterMeasurement();
+	       int max = bitDepth->getOutputMaxDigitalCount();
 
 
-		//int blueMaxGrayLevel = getMaxBIntensityRawGrayLevel();
-		//量測 R:B~255 G:B~255 B:blueMaxGrayLevel K
-		Patch_vector_ptr patchList(new Patch_vector());
+	       //量測 R:B~255 G:B~255 B:blueMaxGrayLevel K
+	       Patch_vector_ptr patchList(new Patch_vector());
 
 
-		//黑色不用再量, 直接從component撈
-		Component_ptr black =
-		    (*originalComponentVector)[originalComponentVector->size() - 1];
-		Patch_ptr blackPatch(new Patch(black));
-		patchList->push_back(blackPatch);
+	       //黑色不用再量, 直接從component撈
+	       Component_ptr black =
+	       (*originalComponentVector)[originalComponentVector->size() - 1];
+	       Patch_ptr blackPatch(new Patch(black));
+	       patchList->push_back(blackPatch);
 
 
-		int measureStep = bitDepth->getMeasureStep();
-		//純色一定要直接量過
-		for (int r = blueMaxGrayLevel; r <= max; r += measureStep) {
-		    Patch_ptr p = mm->measure(r, 0, 0, null);
-		    patchList->push_back(p);
-		}
-		for (int g = blueMaxGrayLevel; g <= max; g += measureStep) {
-		    Patch_ptr p = mm->measure(0, g, 0, null);
-		    patchList->push_back(p);
-		}
-		//藍色也不能忘了, 雖然只要量一階
-		Patch_ptr p = mm->measure(0, 0, blueMaxGrayLevel, null);
-		patchList->push_back(p);
+	       int measureStep = bitDepth->getMeasureStep();
+	       //純色一定要直接量過
+	       for (int r = blueMaxGrayLevel; r <= max; r += measureStep) {
+	       Patch_ptr p = mm->measure(r, 0, 0, null);
+	       patchList->push_back(p);
+	       }
+	       for (int g = blueMaxGrayLevel; g <= max; g += measureStep) {
+	       Patch_ptr p = mm->measure(0, g, 0, null);
+	       patchList->push_back(p);
+	       }
+	       //藍色也不能忘了, 雖然只要量一階
+	       Patch_ptr p = mm->measure(0, 0, blueMaxGrayLevel, null);
+	       patchList->push_back(p);
 
-		LCDTarget_ptr lcdTarget = LCDTarget::Instance::get(patchList);
-		bptr < cms::devicemodel::MultiMatrixModel >
-		    mmmodel(new cms::devicemodel::MultiMatrixModel(lcdTarget));
-		return mmmodel;
-	    };
+	       LCDTarget_ptr lcdTarget = LCDTarget::Instance::get(patchList);
+	       bptr < cms::devicemodel::MultiMatrixModel >
+	       mmmodel(new cms::devicemodel::MultiMatrixModel(lcdTarget));
+	       return mmmodel;
+	       }; */
 
 	    /*
 	       CCT + Gamma
@@ -513,7 +534,7 @@ namespace cms {
 		    if (null == secondWhiteAnalyzer) {
 			//此時init2ndWhiteAnalyzer找的是255 255 250(B Max IntensitY)
 			//init2ndWhiteAnalyzer(true);
-			init2ndWhiteAnalyzer(getSecondWhite(keepMaxLuminance, dehook));
+			init2ndWhiteAnalyzer(keepMaxLuminance, dehook);
 			fetcher->SecondAnalyzer = secondWhiteAnalyzer;
 		    }
 		    RGB_ptr rgb = secondWhiteAnalyzer->getReferenceRGB();
@@ -648,7 +669,7 @@ namespace cms {
 		    if (null == secondWhiteAnalyzer) {
 			//初始化255/255/255的white analyzer
 			//init2ndWhiteAnalyzer(false);
-			init2ndWhiteAnalyzer(getSecondWhite(keepMaxLuminance, dehook));
+			init2ndWhiteAnalyzer(keepMaxLuminance, dehook);
 		    }
 
 		    advgenerator = bptr < AdvancedDGLutGenerator >
@@ -721,10 +742,10 @@ namespace cms {
 		double dimStrengthParameter = 1;
 		int underParameter = 50;
 
-		if (correct == Correct::DefinedDim) {
+		if (correct == DimCorrect::DefinedDim) {
 		    dimStrengthParameter = dimStrength;
 		    underParameter = under;
-		} else if (correct == Correct::None) {
+		} else if (correct == DimCorrect::None) {
 		    underParameter = 0;
 		}
 
@@ -978,7 +999,7 @@ namespace cms {
 		}
 		RGBVector::quantization(dglut, quantizationBit);
 		//==============================================================
-		if (correct == Correct::P1P2) {
+		if (correct == DimCorrect::P1P2) {
 		    //==========================================================
 		    //p1p2第一階段, 對gamma做調整
 		    //==========================================================
@@ -1071,18 +1092,12 @@ namespace cms {
 		DGLutProperty property(this);
 		//寫入property
 		dglutFile->setProperty(property);
-		//寫入dgcode
-		//dglutFile->setGammaTable(dglut);
-
-
 
 		if (null != originalComponentVector) {
 		    //寫入raw data
 		    dglutFile->setRawData(originalComponentVector, initialRGBGamma, finalRGBGamma);
 		}
-		/*if (null != targetXYZVector) {
-		   dglutFile->setTargetXYZVector(targetXYZVector, dglut, bitDepth);
-		   } */
+
 	    };
 
 	    void LCDCalibrator::storeDGLut2DGLutFile(bptr <
@@ -1114,129 +1129,7 @@ namespace cms {
 		return componentVector;
 	    };
 
-	    /*
-	       直接將值作平均達到smooth
-	     */
-	    /*void LCDCalibrator::smoothComponentVector(Component_vector_ptr componentVector) {
-	       bptr < cms::measure::IntensityAnalyzerIF > analyzer = fetcher->getAnalyzer();
-	       MaxMatrixIntensityAnalyzer *manalyzer =
-	       dynamic_cast < MaxMatrixIntensityAnalyzer * >(analyzer.get());
-	       int size = componentVector->size();
-	       if (null != manalyzer) {
-	       bool smoothAtXYZ = false;
-	       for (int gl = 1; gl < size - 1; gl++) {
-	       int x = size - 1 - gl;
-	       Component_ptr c0 = (*componentVector)[x + 1];
-	       Component_ptr c1 = (*componentVector)[x];
-	       Component_ptr c2 = (*componentVector)[x - 1];
-	       XYZ_ptr XYZ0 = c0->XYZ;
-	       XYZ_ptr XYZ1 = c1->XYZ;
-	       XYZ_ptr XYZ2 = c2->XYZ;
-	       XYZ_ptr XYZ;
-	       if (smoothAtXYZ) {
-	       XYZ1->X = Interpolation::linear(0, 1, XYZ0->X, XYZ2->X, 0.5);
-	       XYZ1->Y = Interpolation::linear(0, 1, XYZ0->Y, XYZ2->Y, 0.5);
-	       XYZ1->Z = Interpolation::linear(0, 1, XYZ0->Z, XYZ2->Z, 0.5);
-	       XYZ = XYZ1;
-	       } else {
-	       xyY_ptr xyY0(new CIExyY(XYZ0));
-	       xyY_ptr xyY1(new CIExyY(XYZ1));
-	       xyY_ptr xyY2(new CIExyY(XYZ2));
-	       xyY1->x = Interpolation::linear(0, 1, xyY0->x, xyY2->x, 0.5);
-	       xyY1->y = Interpolation::linear(0, 1, xyY0->y, xyY2->y, 0.5);
-	       //xyY1->Y = Interpolation::linear(0, 1, xyY0->Y, xyY2->Y, 0.5);
-	       XYZ = xyY1->toXYZ();
-	       }
 
-	       c1->XYZ = XYZ;
-	       RGB_ptr intensity = manalyzer->getIntensity(c1->XYZ);
-	       c1->intensity = intensity;
-	       }
-	       }
-	       }; */
-
-	    /*
-	       利用差異dx dy dY來做smooth, 會更為平順自然
-	     */
-	    /*void LCDCalibrator::smoothComponentVector2(Component_vector_ptr componentVector) {
-	       bptr < cms::measure::IntensityAnalyzerIF > analyzer = fetcher->getAnalyzer();
-	       MaxMatrixIntensityAnalyzer *manalyzer =
-	       dynamic_cast < MaxMatrixIntensityAnalyzer * >(analyzer.get());
-	       int size = componentVector->size();
-	       //smooth三次
-	       const int smoothTimes = 3;
-	       //manalyzer用來把smooth完的XYZ, 重新計算intensity
-	       if (null != manalyzer) {
-
-	       double_array outputx(new double[size]);
-	       double_array outputy(new double[size]);
-	       double_array outputY(new double[size]);
-	       double_array outputdx(new double[size]);
-	       double_array outputdy(new double[size]);
-	       double_array outputdY(new double[size]);
-	       outputdx[0] = outputdy[0] = outputdY[0] = 0;
-	       xyY_ptr prexyY;
-	       //弄成dx dy dY curve, 再smooth
-	       for (int gl = 0; gl < size; gl++) {
-	       Component_ptr c = (*componentVector)[gl];
-	       XYZ_ptr XYZ = c->XYZ;
-	       xyY_ptr xyY(new CIExyY(XYZ));
-	       outputx[gl] = xyY->x;
-	       outputy[gl] = xyY->y;
-	       outputY[gl] = xyY->Y;
-	       if (null != prexyY) {
-	       outputdx[gl] = xyY->x - prexyY->x;
-	       outputdy[gl] = xyY->y - prexyY->y;
-	       outputdY[gl] = xyY->Y - prexyY->Y;
-	       }
-
-	       prexyY = xyY;
-	       }
-
-	       smooth(outputdx, size, smoothTimes);
-	       smooth(outputdy, size, smoothTimes);
-	       smooth(outputdY, size, smoothTimes);
-	       //利用原本的outputx和smooth完的outputdx, 還原回新的經過smooth的outputx curve
-	       outputx = getSmoothCurve(outputx, outputdx, size);
-	       outputy = getSmoothCurve(outputy, outputdy, size);
-	       outputY = getSmoothCurve(outputY, outputdY, size);
-	       for (int gl = 0; gl < size; gl++) {
-	       Component_ptr c = (*componentVector)[gl];
-	       double x = outputx[gl];
-	       double y = outputy[gl];
-	       double Y = outputY[gl];
-	       xyY_ptr xyY(new CIExyY(x, y, Y));
-	       //先xyY轉到XYZ
-	       c->XYZ = xyY->toXYZ();
-	       //重新算出intensity
-	       RGB_ptr intensity = manalyzer->getIntensity(c->XYZ);
-	       c->intensity = intensity;
-	       }
-
-
-	       }
-	       };
-	       void LCDCalibrator::smooth(double_array curve, int size, int times) {
-	       //int size = curve.length;
-	       for (int t = 0; t < times; t++) {
-	       for (int x = 1; x < size - 1; x++) {
-	       curve[x] = (curve[x - 1] + curve[x + 1]) / 2;
-	       }
-	       }
-	       };
-	       double_array LCDCalibrator::
-	       getSmoothCurve(double_array originalCurve, double_array deltaCurve, int size) {
-	       double delta = originalCurve[size - 1] - originalCurve[0];
-	       double sumOfDelta = DoubleArray::sum(deltaCurve, size);
-	       double factor = delta / sumOfDelta;
-	       double_array smoothCurve(new double[size]);
-	       smoothCurve[0] = originalCurve[0];
-	       for (int x = 1; x < size; x++) {
-	       smoothCurve[x] = smoothCurve[x - 1] + deltaCurve[x] * factor;
-	       }
-
-	       return smoothCurve;
-	       }; */
 	    RGB_vector_ptr LCDCalibrator::getDGLutOpResult(RGB_vector_ptr dglut) {
 		//==============================================================
 		// DG Code Op block
@@ -1247,7 +1140,7 @@ namespace cms {
 		//==============================================================
 		// dim修正
 		//==============================================================
-		if (correct == Correct::RBInterpolation) {
+		if (correct == DimCorrect::RBInterpolation) {
 		    bptr < DGLutOp > op(new RBInterpolationOp(under));
 		    dgop.addOp(op);
 		}

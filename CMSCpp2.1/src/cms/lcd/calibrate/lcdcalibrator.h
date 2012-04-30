@@ -69,12 +69,13 @@ namespace cms {
 	    class LCDCalibrator {
 		friend class cms::colorformat::DGLutProperty;
 		friend class cms::lcd::calibrate::AdvancedDGLutGenerator;
+		friend class cms::lcd::calibrate::DeHookProcessor;
 	      private:
 
 		//==============================================================
 		// 校正參數
 		//==============================================================
-		 Correct correct;
+		 DimCorrect correct;
 		//==============================================================
 		//dim
 		//==============================================================
@@ -313,10 +314,10 @@ namespace cms {
 		//==============================================================
 		// 2nd white analyzer
 		//==============================================================
-		void init2ndWhiteAnalyzer(SecondWhite secondWhite);
-		static SecondWhite getSecondWhite(KeepMaxLuminance keepMaxLuminance, DeHook deHook);
-		int getMaxBIntensityRawGrayLevel();
-		 bptr < cms::devicemodel::LCDModel > getLCDModelForDeHook(int blueMaxGrayLevel);
+		void init2ndWhiteAnalyzer(KeepMaxLuminance keepMaxLuminance, DeHook deHook);
+		//static SecondWhite getSecondWhite(KeepMaxLuminance keepMaxLuminance, DeHook deHook);
+		//int getMaxBIntensityRawGrayLevel();
+		//bptr < cms::devicemodel::LCDModel > getLCDModelForDeHook(int blueMaxGrayLevel);
 		//==============================================================
 
 
