@@ -71,6 +71,10 @@ namespace cms {
 		boolean isGray();
 		boolean isPrimaryChannel();
 		const short_array get10BitValues();
+		inline bool operator==(const RGBColor & rhs);
+		inline bool operator!=(const RGBColor & rhs) {
+		    return !(*this == rhs);
+		};
 
 	      protected:
 		 boolean isLegal(double value);

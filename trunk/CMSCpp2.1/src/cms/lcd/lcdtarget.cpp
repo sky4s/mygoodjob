@@ -303,13 +303,14 @@ namespace cms {
 	    return ch == Channel::W ? 3 : ch.getArrayIndex();
 	};
 	Patch_ptr LCDTargetInterpolator::getPatch(const Dep::Channel & ch, double value) {
-	    double_array values = getValues(ch, value);
-	    RGB_ptr rgb = lcdTarget->getKeyRGB();
+
+	    RGB_ptr rgb = lcdTarget->getKeyRGB()->clone();
 	    rgb->setColorBlack();
 	    rgb->setValue(ch, value);
 
 	    Patch_ptr wp = lcdTarget->getBrightestPatch();
 	    XYZ_ptr white = wp->getXYZ();
+	    double_array values = getValues(ch, value);
 	    XYZ_ptr XYZ = getXYZFromDomainValues(values);
 
 	    string_ptr name(new string("Interp"));

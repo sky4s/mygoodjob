@@ -18,6 +18,7 @@
 #include "TGammaAdjustmentForm.h"
 #include "TGammaMeasurementForm.h"
 #include "../TI2CTestForm.h"
+#include "cms/core.h"
 
 
 #define SETUPFILE "cctv3.ini"
@@ -28,6 +29,8 @@
 #pragma resource "*.dfm"
 TMainForm *MainForm;
 bool g_bIsRunAgain = false;
+
+
 //---------------------------------------------------------------------------
 __fastcall TMainForm::TMainForm(TComponent * Owner):TForm(Owner), debugMode(FileExists(DEBUG_FILE)),
 linkEyeOne(FileExists("i1.txt")), linkCA210(!FileExists("i1.txt") && !FileExists(DEBUG_FILE)),
@@ -37,6 +40,30 @@ newFunction(FileExists(DEBUG_NEWFUNC_FILE))
     //StatusBar1->SimplePanel = true;
     //bool t = (!linkEyeOne && !debugMode);
     connectCA210ByThread = true;
+
+
+
+    using namespace cms;
+    using namespace Dep;
+    RGBPatchMap patchMap;
+    //Patch(string_ptr name, XYZ_ptr XYZ, Lab_ptr Lab, RGB_ptr rgb);
+    RGB_ptr o;
+    for (int x = 0; x < 10; x++) {
+	RGB_ptr rgb(new RGBColor(x, 0, 0));
+	Patch_ptr p(new Patch(nil_string_ptr, nil_XYZ_ptr, nil_XYZ_ptr, rgb));
+	patchMap.insert(make_pair(rgb, p));
+	if (x == 5) {
+	    o = rgb;
+	}
+    }
+    RGB_ptr rgb(new RGBColor(5, 0, 0));
+    Patch_ptr p = patchMap[rgb];
+    p = patchMap[rgb];
+    int x = 1;
+    /*foreach(Patch_ptr p, *patchList) {
+       RGB_ptr rgb = p->getRGB();
+       patchMap.insert(make_pair(rgb, p));
+       } */
 }
 
 //---------------------------------------------------------------------------
@@ -1561,4 +1588,4 @@ void __fastcall TMainForm::ChangeLog1Click(TObject * Sender)
 }
 
 //---------------------------------------------------------------------------
- 
+

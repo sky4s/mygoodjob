@@ -62,6 +62,10 @@ namespace cms {
 									MeterMeasurement > mm,
 									int rMax, int gMax,
 									int bMax);
+	    static bptr < MaxMatrixIntensityAnalyzer > getReadyAnalyzer(bptr <
+									MeterMeasurement > mm,
+									double rMax, double gMax,
+									double bMax);
 	    static bptr < MaxMatrixIntensityAnalyzer > getReadyAnalyzer(XYZ_ptr rXYZ, XYZ_ptr gXYZ,
 									XYZ_ptr bXYZ, XYZ_ptr wXYZ);
 	    static bptr < MaxMatrixIntensityAnalyzer > getReadyAnalyzer(bptr <

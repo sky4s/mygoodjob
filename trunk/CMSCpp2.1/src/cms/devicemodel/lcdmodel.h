@@ -51,20 +51,29 @@ namespace cms {
 	    cms::lcd::LCDTargetInterpolator interpolator;
 	    XYZ_ptr recoverAbsoluteOrRelative(XYZ_ptr rXYZ, XYZ_ptr gXYZ,
 					      XYZ_ptr bXYZ, boolean relativeXYZ);
-	    static XYZ_ptr recover(XYZ_ptr rXYZ, XYZ_ptr gXYZ, XYZ_ptr bXYZ, XYZ_ptr black);
 	  public:
 	     MultiMatrixModel(LCDTarget_ptr lcdTarget);
 	    virtual XYZ_ptr getXYZ(RGB_ptr rgb, boolean relativeXYZ);
 	    virtual RGB_ptr getRGB(XYZ_ptr XYZ, boolean relativeXYZ);
+	    static XYZ_ptr recover(XYZ_ptr rXYZ, XYZ_ptr gXYZ, XYZ_ptr bXYZ, XYZ_ptr black);
 	  protected:
 	     XYZ_ptr getXYZ(double r, double g, double b);
 	    XYZ_ptr getXYZ(double r, double g, double b, boolean relativeXYZ);
+
 	};
 
-	/*class SpecificModel:public MultiMatrixModel {
+	class DeHook2LCDModel:public LCDModel {
+	  private:
+	    XYZ_ptr interpolate(Patch_ptr patch1, Patch_ptr patch2, double x1, double x2, double x);
 	  public:
-	    SpecificModel(LCDTarget_ptr lcdTarget);
-	};*/
+	     DeHook2LCDModel(LCDTarget_ptr lcdTarget);
+	    virtual XYZ_ptr getXYZ(RGB_ptr rgb, boolean relativeXYZ);
+	    virtual RGB_ptr getRGB(XYZ_ptr XYZ, boolean relativeXYZ);
+	  protected:
+	     XYZ_ptr getXYZ(double r, double g, double b, boolean relativeXYZ);
+	};
+
+
     };
 };
 

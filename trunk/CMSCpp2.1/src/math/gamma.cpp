@@ -87,7 +87,7 @@ namespace math {
 	}
 	return correcInput;
     };
-    double GammaFinder::getGamma(double normalInput, double normalOutput) {
+    double GammaFinder::getGammaExponential(double normalInput, double normalOutput) {
 	double gamma = Math::log(normalOutput) / Math::log(normalInput);
 	return gamma;
     };

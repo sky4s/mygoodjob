@@ -619,6 +619,11 @@ namespace cms {
 		values10Bit[2] = (short) values[2];
 		return values10Bit;
 	    };
+	    inline bool RGBColor::operator==(const RGBColor & rhs) {
+		const RGBColor & lhs = *this;
+		return lhs.maxValue == rhs.maxValue && lhs.R == rhs.R && lhs.G == rhs.G
+		    && lhs.B == rhs.B;
+	    };
 	};
     };
 };

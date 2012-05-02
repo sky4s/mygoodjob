@@ -150,7 +150,65 @@ namespace cms {
 	};
 
 	//=========================================================================================
-  
+
+      DeHook2LCDModel::DeHook2LCDModel(LCDTarget_ptr lcdTarget):LCDModel(lcdTarget) {
+	};
+	XYZ_ptr DeHook2LCDModel::getXYZ(RGB_ptr rgb, boolean relativeXYZ) {
+	    XYZ_ptr XYZ = getXYZ(rgb->R, rgb->G, rgb->B, relativeXYZ);
+	    return XYZ;
+	};
+	RGB_ptr DeHook2LCDModel::getRGB(XYZ_ptr XYZ, boolean relativeXYZ) {
+	    throw new UnsupportedOperationException();
+	};
+	XYZ_ptr DeHook2LCDModel::getXYZ(double r, double g, double b, boolean relativeXYZ) {
+	    int r0 = static_cast < int >(r);
+	    int r1 = r0 + 1;
+	    int g0 = static_cast < int >(g);
+	    int g1 = g0 + 1;
+	    Patch_ptr r0p = lcdTarget->getPatch(r0, 0, 0);
+	    Patch_ptr r1p = lcdTarget->getPatch(r1, 0, 0);
+	    Patch_ptr g0p = lcdTarget->getPatch(0, g0, 0);
+	    Patch_ptr g1p = lcdTarget->getPatch(0, g1, 0);
+	    Patch_ptr bp = lcdTarget->getPatch(0, 0, b);
+	    Patch_ptr kp = lcdTarget->getPatch(0, 0, 0);
+
+	    XYZ_ptr rXYZ = r1p!=null? interpolate(r0p, r1p, r0, r1, r):r0p->getXYZ();
+	    XYZ_ptr gXYZ = g1p!=null? interpolate(g0p, g1p, g0, g1, g):g0p->getXYZ();
+	    XYZ_ptr bXYZ = bp->getXYZ();
+	    XYZ_ptr flare = kp->getXYZ();
+	    XYZ_ptr result = MultiMatrixModel::recover(rXYZ, gXYZ, bXYZ, flare);
+	    if (relativeXYZ) {
+		result = CIEXYZ::minus(result, flare);
+	    }
+	    return result;
+
+
+	    /*Patch_ptr rPatch = interpolator.getPatch(Channel::R, r);
+	       Patch_ptr gPatch = interpolator.getPatch(Channel::G, g);
+	       Patch_ptr bPatch = interpolator.getPatch(Channel::B, b);
+	       XYZ_ptr rXYZ = rPatch->getXYZ();
+	       XYZ_ptr gXYZ = gPatch->getXYZ();
+	       XYZ_ptr bXYZ = bPatch->getXYZ();
+	       return recoverAbsoluteOrRelative(rXYZ, gXYZ, bXYZ, relativeXYZ); */
+	};
+
+	XYZ_ptr DeHook2LCDModel::interpolate(Patch_ptr patch1, Patch_ptr patch2, double x1,
+					     double x2, double x) {
+	    using namespace math;
+	    XYZ_ptr XYZ1 = patch1->getXYZ();
+	    XYZ_ptr XYZ2 = patch2->getXYZ();
+	    double_array uvpValues1 = XYZ1->getuvPrimeValues();
+	    double_array uvpValues2 = XYZ2->getuvPrimeValues();
+	    double_array uvpValues(new double[3]);
+
+	    uvpValues[0] = Interpolation::linear(x1, x2, uvpValues1[0], uvpValues2[0], x);
+	    uvpValues[1] = Interpolation::linear(x1, x2, uvpValues1[1], uvpValues2[1], x);
+	    uvpValues[2] = Interpolation::linear(x1, x2, uvpValues1[2], uvpValues2[2], x);
+
+	    CIExyY xyY;
+	    xyY.setuvPrimeYValues(uvpValues);
+	    return xyY.toXYZ();
+	};
 	//=========================================================================================
     };
 };

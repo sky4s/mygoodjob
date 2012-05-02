@@ -18,8 +18,8 @@
 #include <ComCtrls.hpp>
 //本項目內頭文件
 #include <i2c/i2ccontrol.h>
-#include <cms/measure/meter.h> //20120302
-#include <cms/lcd/calibrate/include.h> //20120302
+#include <cms/measure/meter.h>	//20120302
+#include <cms/lcd/calibrate/include.h>	//20120302
 
 extern bool g_bIsRunAgain;	//?明用于重?判?的?量g_bIsfRunAgain
 //---------------------------------------------------------------------------
@@ -122,9 +122,9 @@ class TMainForm:public TForm {
     TMenuItem *Help1;
     TMenuItem *ChangeLog1;
     TMenuItem *About2;
-        TGroupBox *GroupBox_CHSetting;
-        TLabel *Label7;
-        TEdit *Edit_SourceCH;
+    TGroupBox *GroupBox_CHSetting;
+    TLabel *Label7;
+    TEdit *Edit_SourceCH;
     void __fastcall About1Click(TObject * Sender);
     void __fastcall Exit1Click(TObject * Sender);
     void __fastcall TargetWhite1Click(TObject * Sender);

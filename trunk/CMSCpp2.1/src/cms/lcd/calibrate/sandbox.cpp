@@ -978,45 +978,55 @@ namespace cms {
 
 		//量測 R:B~255 G:B~255 B:blueMaxGrayLevel K
 		Patch_vector_ptr patchList(new Patch_vector());
-
-		Component_vector_ptr componentVector = c.originalComponentVector;
-		//黑色不用再量, 直接從component撈
-		Component_ptr black = (*componentVector)[componentVector->size() - 1];
-		Patch_ptr blackPatch(new Patch(black));
+		Patch_ptr blackPatch = mm->measure(0, 0, 0, nil_string_ptr);
 		patchList->push_back(blackPatch);
+		//int measureStep = c.bitDepth->getMeasureStep();
 
-
-		int measureStep = c.bitDepth->getMeasureStep();
 		//純色一定要直接量過
-		for (int r = blueMaxGrayLevel; r <= max; r += measureStep) {
-		    Patch_ptr p = mm->measure(r, 0, 0, null);
+		for (int r = blueMaxGrayLevel; r <= max; r ++) {
+		    Patch_ptr p = mm->measure(r, 0, 0, nil_string_ptr);
 		    patchList->push_back(p);
 		}
-		for (int g = blueMaxGrayLevel; g <= max; g += measureStep) {
-		    Patch_ptr p = mm->measure(0, g, 0, null);
+		for (int g = blueMaxGrayLevel; g <= max; g ++) {
+		    Patch_ptr p = mm->measure(0, g, 0, nil_string_ptr);
 		    patchList->push_back(p);
 		}
-		//藍色也不能忘了, 雖然只要量一階
-		Patch_ptr p = mm->measure(0, 0, blueMaxGrayLevel, null);
-		patchList->push_back(p);
+		//藍色也不能忘了, 雖然只要量2階
+		Patch_ptr b0p = mm->measure(0, 0, blueMaxGrayLevel, nil_string_ptr);
+		patchList->push_back(b0p);
+		Patch_ptr b1p = mm->measure(0, 0, max, nil_string_ptr);
+		patchList->push_back(b1p);
+		mm->setMeasureWindowsVisible(false);
+
+                foreach(Patch_ptr p,*patchList) {
+                        XYZ_ptr XYZ=p->getXYZ();
+                        int a=1;
+                }
 
 		LCDTarget_ptr lcdTarget = LCDTarget::Instance::get(patchList);
-		bptr < cms::devicemodel::MultiMatrixModel >
-		    mmmodel(new cms::devicemodel::MultiMatrixModel(lcdTarget));
-		return mmmodel;
+		//bptr < cms::devicemodel::MultiMatrixModel >
+		    //model(new cms::devicemodel::MultiMatrixModel(lcdTarget));
+		bptr < cms::devicemodel::DeHook2LCDModel >
+		    model(new cms::devicemodel::DeHook2LCDModel(lcdTarget));
+		return model;
 	    };
 
 	    Patch_vector_ptr DeHookProcessor::getReasonableChromaticityPatchVector(bptr <
-								       cms::devicemodel::LCDModel >
-								       model, int blueMaxGrayLevel,
-								       double deltaxySpec) {
+										   cms::
+										   devicemodel::
+										   LCDModel > model,
+										   int
+										   blueMaxGrayLevel,
+										   double
+										   deltaxySpec) {
 		using namespace Dep;
 		bptr < BitDepthProcessor > bitDepth = c.bitDepth;
 		int initstep = bitDepth->getMeasureStep();
 		int frcOnlyBit = bitDepth->getFRCOnlyBit();
 		double step = initstep / Math::pow(2, frcOnlyBit);
 
-		XYZ_ptr whiteXYZ = model->getXYZ(RGBColor::White, false);
+		XYZ_ptr whiteXYZ = model->getXYZ(RGBColor::White,false);
+                //XYZ_ptr whiteXYZ = model->getXYZ(255.,255.,255.,false);
 		xyY_ptr whitexyY(new CIExyY(whiteXYZ));
 
 		Patch_vector_ptr result(new Patch_vector());
@@ -1025,6 +1035,7 @@ namespace cms {
 		    for (double r = g + step; r < 255; r += step) {
 			RGB_ptr rgb(new RGBColor(r, g, (double) blueMaxGrayLevel));
 			XYZ_ptr XYZ = model->getXYZ(rgb, false);
+			//XYZ_ptr XYZ = model->getXYZ(r, g, (double) blueMaxGrayLevel);
 			xyY_ptr xyY(new CIExyY(XYZ));
 			double_array dxy = xyY->getDeltaxy(whitexyY);
 			if (Math::abs(dxy[0]) < deltaxySpec && Math::abs(dxy[1]) < deltaxySpec) {
@@ -1039,8 +1050,13 @@ namespace cms {
 		return result;
 	    };
 
+	    /*
+	       從patchVector裡面的亮度, 找到符合gammaDWLimit~gammaUPLimit的最低灰階
+	       也就是說, 回傳值的gray level搭配的patchVector, 至少有一個patch的gamma落在gammaDWLimit~gammaUPLimit
+	     */
 	    int DeHookProcessor::getReasonableGammaGrayLevel(Patch_vector_ptr patchVector,
-							double gammaDWLimit, double gammaUPLimit) {
+							     double gammaDWLimit,
+							     double gammaUPLimit) {
 		bptr < BitDepthProcessor > bitDepth = c.bitDepth;
 		int maxcount = bitDepth->getInputMaxDigitalCount();
 		for (int targetGrayLevel = maxcount - 2; targetGrayLevel > maxcount - 10;
@@ -1049,7 +1065,7 @@ namespace cms {
 		    bool gammaOk = false;
 		    foreach(Patch_ptr p, *patchVector) {
 			XYZ_ptr XYZ = p->getNormalizedXYZ();
-			double gamma = GammaFinder::getGamma(normalInput, XYZ->Y);
+			double gamma = GammaFinder::getGammaExponential(normalInput, XYZ->Y);
 			if (gamma > gammaDWLimit || gamma < gammaUPLimit) {
 			    gammaOk = true;
 			}
@@ -1062,10 +1078,27 @@ namespace cms {
 
 	    Patch_ptr DeHookProcessor::getBestGammaPatch(Patch_vector_ptr patchVector,
 							 double targetGamma, int targetGrayLevel) {
+		bptr < BitDepthProcessor > bitDepth = c.bitDepth;
+		int maxcount = bitDepth->getInputMaxDigitalCount();
 		int size = patchVector->size();
-		for (int x = 0; x < size; x++) {
+		double normalInput = ((double) targetGrayLevel) / maxcount;
 
+		int minDeltaIndex = -1;
+		double minDeltaGamma = std::numeric_limits < double >::max();
+
+		for (int x = 0; x < size; x++) {
+		    Patch_ptr p = (*patchVector)[x];
+		    double normalOutput = p->getNormalizedXYZ()->Y;
+		    double gamma = GammaFinder::getGammaExponential(normalInput, normalOutput);
+		    double deltaGamma = Math::abs(gamma - targetGamma);
+		    if (deltaGamma < minDeltaGamma) {
+			minDeltaGamma = deltaGamma;
+			minDeltaIndex = x;
+		    }
 		}
+
+		Patch_ptr p = (*patchVector)[minDeltaIndex];
+		return p;
 	    };
 	};
     };
