@@ -101,7 +101,7 @@ namespace cms {
 	//static Illuminant D50;
 	//static Illuminant D65;
 	//static Illuminant C;
-	static const XYZ_ptr getXYZ(const Illuminant & illuminant) ;
+	static const XYZ_ptr getXYZ(const Illuminant & illuminant);
 	XYZ_ptr getXYZ() const;
     };
 #ifdef TNT_LIB
@@ -134,7 +134,6 @@ namespace cms {
     };
 #endif
 
-    typedef std::map < RGB_ptr, Patch_ptr) RGBPatchMap;
 
     class Target:public jObject {
       private:

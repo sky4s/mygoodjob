@@ -199,10 +199,12 @@ namespace cms {
 		int getMaxBIntensityRawGrayLevel();
 		static SecondWhite getSecondWhite(KeepMaxLuminance keepMaxLuminance, DeHook deHook);
 		 bptr < cms::devicemodel::LCDModel > getLCDModelForDeHook(int blueMaxGrayLevel);
-		Patch_vector_ptr getReasonableChromaticityPatchVector(bptr < cms::devicemodel::LCDModel > model,
-							  int blueMaxGrayLevel, double deltaxySpec);
+		Patch_vector_ptr getReasonableChromaticityPatchVector(bptr <
+								      cms::devicemodel::LCDModel >
+								      model, int blueMaxGrayLevel,
+								      double deltaxySpec);
 		int getReasonableGammaGrayLevel(Patch_vector_ptr patchVector, double gammaDWLimit,
-					   double gammaUPLimit);
+						double gammaUPLimit);
 		int getBestGrayLevel(Patch_vector_ptr patchVector, double targetGamma);
 		Patch_ptr getBestGammaPatch(Patch_vector_ptr patchVector, double targetGamma,
 					    int targetGrayLevel);

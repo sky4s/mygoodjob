@@ -284,9 +284,8 @@ void TMeasureWindow::setRGB(bptr < Dep::RGBColor > rgb)
     using namespace Dep;
 
     const MaxValue & maxValue =
-	(TCON == source) ? MaxValue::Int12Bit : (DGLUT ==
-						 source) ? bitDepth->
-	getLutMaxValue() : MaxValue::Int8Bit;
+	(TCON == source) ? MaxValue::Int12Bit :
+	(DGLUT == source) ? bitDepth->getLutMaxValue() : MaxValue::Int8Bit;
     rgb->getValues(values, maxValue);
 
     int r = static_cast < int >(values[0]);

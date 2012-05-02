@@ -369,32 +369,6 @@ namespace cms {
 		return gammaCurve;
 	    };
 
-	    /*SecondWhite LCDCalibrator::getSecondWhite(KeepMaxLuminance keepMaxLuminance,
-	       DeHook deHook) {
-	       if (keepMaxLuminance == KeepMaxLuminance::Smooth2NativeWhite) {
-	       return SecondWhite::MaxRGB;
-	       } else if (deHook == KeepCCT) {
-	       return SecondWhite::DeHook;
-	       } else if (deHook == SecondWithBGap1st || deHook == SecondWithGamma1st) {
-	       return SecondWhite::DeHook2;
-	       } else {
-	       return SecondWhite::None;
-	       }
-	       }; */
-
-	    /*int LCDCalibrator::getMaxBIntensityRawGrayLevel() {
-	       if (null != originalComponentVector) {
-	       //若要略過inverse B, 則要先量測到B在哪裡反轉
-	       //然後設定b最大只用到反轉點
-	       ComponentLUT lut(originalComponentVector);
-	       //找到最大B Intensity的灰階
-	       return lut.getMaxBIntensityRGL();
-	       } else {
-	       bptr < cms::measure::IntensityAnalyzerIF > analyzer = fetcher->FirstAnalyzer;
-	       bptr < MeterMeasurement > mm = analyzer->getMeterMeasurement();
-	       return MeasureTool::getMaxBIntensityRawGrayLevel(mm, bitDepth);
-	       }
-	       }; */
 	    /*
 	       當有smooth CCT到native white需求時，就需要native white analyzer
 	       ，求得更準確的DG Lut
@@ -410,9 +384,9 @@ namespace cms {
 		bptr < cms::measure::IntensityAnalyzerIF > analyzer = fetcher->FirstAnalyzer;
 		bptr < MeterMeasurement > mm = analyzer->getMeterMeasurement();
 		int max = bitDepth->getOutputMaxDigitalCount();
-		int blueMax = max;
-		int redmax = max;
-		int greenmax = max;
+		double bluemax = max;
+		double redmax = max;
+		double greenmax = max;
 		DeHookProcessor processor(*this);
 
 		switch (secondWhite) {
@@ -425,8 +399,8 @@ namespace cms {
 			//而且應該也不會進到這邊
 			throw new IllegalStateException();
 		    } else {
-			blueMax = processor.getMaxBIntensityRawGrayLevel();
-			this->maxBRawGrayLevel = blueMax;
+			bluemax = processor.getMaxBIntensityRawGrayLevel();
+			this->maxBRawGrayLevel = bluemax;
 		    }
 		    break;
 		case SecondWhite::DeHook2:
@@ -450,8 +424,17 @@ namespace cms {
 			//會盡量找到最低的gray level
 			int reasonableGammaGrayLevel =
 			    processor.getReasonableGammaGrayLevel(patchVector, 1.5, 3.0);
+			double normalOutput = (*gammaCurve)[reasonableGammaGrayLevel];
+			int maxcount = bitDepth->getInputMaxDigitalCount();
+			double normalInput = ((double) reasonableGammaGrayLevel) / maxcount;
+			double gamma = GammaFinder::getGammaExponential(normalInput, normalOutput);
 			//再從這裡面撈出最接近target gamma的
-
+			Patch_ptr bestPatch = processor.getBestGammaPatch(patchVector, gamma,
+									  reasonableGammaGrayLevel);
+			RGB_ptr rgb = bestPatch->getRGB();
+			redmax = rgb->R;
+			greenmax = rgb->G;
+			bluemax = rgb->B;
 		    } else if (SecondWithGamma1st == deHook) {
 			//找到最貼近target gamma的patch及gray level
 		    }
@@ -461,7 +444,7 @@ namespace cms {
 
 
 		secondWhiteAnalyzer =
-		    MaxMatrixIntensityAnalyzer::getReadyAnalyzer(mm, redmax, greenmax, blueMax);
+		    MaxMatrixIntensityAnalyzer::getReadyAnalyzer(mm, redmax, greenmax, bluemax);
 	    };
 
 	    /*bptr < cms::devicemodel::LCDModel >
@@ -532,8 +515,7 @@ namespace cms {
 		     */
 
 		    if (null == secondWhiteAnalyzer) {
-			//此時init2ndWhiteAnalyzer找的是255 255 250(B Max IntensitY)
-			//init2ndWhiteAnalyzer(true);
+			//此時找的是255 255 250(B Max IntensitY)
 			init2ndWhiteAnalyzer(keepMaxLuminance, dehook);
 			fetcher->SecondAnalyzer = secondWhiteAnalyzer;
 		    }
@@ -668,7 +650,6 @@ namespace cms {
 
 		    if (null == secondWhiteAnalyzer) {
 			//初始化255/255/255的white analyzer
-			//init2ndWhiteAnalyzer(false);
 			init2ndWhiteAnalyzer(keepMaxLuminance, dehook);
 		    }
 
@@ -1247,6 +1228,8 @@ namespace cms {
 	       相對的較簡單, 絕對的會遇到無法整條線都meet的問題
 	       samsung是規定8灰階的gamma要達到2.1以上; 為求保險, 直接把灰階8設在gamma 2.2,
 	       然後推算絕對gamma 2.2的相對gamma是多少, 以該gamma 接回原點(灰階0)
+
+	       effectiven有錯?
 	     */
 	    double_vector_ptr
 		LCDCalibrator::
@@ -1261,7 +1244,8 @@ namespace cms {
 		    // 1
 		    //=========================================================
 
-		    double startNormalInput = ((double) absGammaStartGL) / effectiven;
+		    double startNormalInput =
+			static_cast < double >(absGammaStartGL) / (effectiven - 1);
 		    double startAbsoluteNormalOutput = GammaFinder::gamma(startNormalInput,
 									  startGLAboveGamma);
 		    double startAbsoluteLuminance = maxLuminance * startAbsoluteNormalOutput;
@@ -1274,8 +1258,8 @@ namespace cms {
 		    }
 		    double relativeNormalOutput =
 			(startAbsoluteLuminance - minLuminance) / (maxLuminance - minLuminance);
-		    double relativeGamma = GammaFinder::getGamma(startNormalInput,
-								 relativeNormalOutput);
+		    double relativeGamma = GammaFinder::getGammaExponential(startNormalInput,
+									    relativeNormalOutput);
 		    int turnGrayLevel = -1;
 
 
@@ -1283,12 +1267,9 @@ namespace cms {
 		    // 4
 		    //=========================================================
 		    for (int x = absGammaStartGL; x < 255; x++) {
-			double normalInput = ((double) x) / effectiven;
+			double normalInput = static_cast < double >(x) / (effectiven - 1);
 
 			double absoluteNormalOutput = (*normalGammaCurve)[x];
-
-			/*double absoluteNormalOutput =
-			   GammaFinder::gamma(normalInput, startGLAboveGamma); */
 			double absoluteGammaLuminance = maxLuminance * absoluteNormalOutput;
 
 			double relativeNormalOutput =
@@ -1309,7 +1290,7 @@ namespace cms {
 		    //相對gamma區間
 		    for (int x = 0; x <= turnGrayLevel; x++) {
 			//此區段設定順勢修正到abs gamma
-			double normalInput = ((double) x) / effectiven;
+			double normalInput = static_cast < double >(x) / (effectiven - 1);
 			double relativeNomralOutput =
 			    GammaFinder::gamma(normalInput, relativeGamma);
 			newNormalGammaCurve->push_back(relativeNomralOutput);

@@ -102,6 +102,7 @@ namespace cms {
     namespace devicemodel {
 	class LCDModel;
 	class MultiMatrixModel;
+	class DeHook2LCDModel;
 	//class SpecificModel;
     };
     namespace hsvip {
@@ -182,6 +183,21 @@ typedef bptr < Component_vector > Component_vector_ptr;
 typedef bptr < cms::util::RGBGamma > RGBGamma_ptr;
 #define nil_RGBGamma RGBGamma_ptr( (RGBGamma*) null)
 //==============================================================================
+template < class T > struct Compare {
+    int operator() (const T & l, const T & r) const {
+	const string_ptr lstr = l->toString();
+	const string_ptr rstr = r->toString();
+	int lhash = std::hash < std::string > ()(*lstr);
+	int rhash = std::hash < std::string > ()(*rstr);
+	if (lhash >= rhash) {
+	    return 0;
+	} else {
+	    return 1;
+	};
+    };
+};
 
+typedef std::map < RGB_ptr, Patch_ptr) RGBPatchMap;
+typedef std::map < RGB_ptr, Patch_ptr, Compare < RGB_ptr >) RGBPatchMap2;
 #endif
 
