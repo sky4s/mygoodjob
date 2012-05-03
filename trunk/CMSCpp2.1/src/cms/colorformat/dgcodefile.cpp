@@ -28,10 +28,12 @@ namespace cms {
 	// DGLutFile
 	//======================================================================
 	string_vector_ptr DGLutFile::makeValues(int n, Component_ptr c) {
-	    return makeValues(n, c, RGB_ptr((RGBColor *) null), RGB_ptr((RGBColor *) null));
+	    return makeValues(n, c, RGB_ptr((RGBColor *) null),
+			      RGB_ptr((RGBColor *) null));
 	};
 	string_vector_ptr DGLutFile::
-	    makeValues(int n, Component_ptr c, RGB_ptr rgbGamma, RGB_ptr rgbGammaFix) {
+	    makeValues(int n, Component_ptr c, RGB_ptr rgbGamma,
+		       RGB_ptr rgbGammaFix) {
 	    string_vector_ptr values(new string_vector(13));
 	     (*values)[0] = _toString(n);
 	    xyY_ptr xyY(new CIExyY(c->XYZ));
@@ -65,32 +67,40 @@ namespace cms {
 	DGLutFile::DGLutFile(const std::string & filename, Mode mode,
 			     const Dep::
 			     MaxValue & maxValue):ExcelAccessBase(filename,
-								  mode), maxValue(maxValue) {
+								  mode),
+	    maxValue(maxValue) {
 	    init();
 	};
 
 	void DGLutFile::init() {
-	    initSheet(GammaTable, 4, "Gray Level", "Gamma R", "Gamma G", "Gamma B");
+	    initSheet(GammaTable, 4, "Gray Level", "Gamma R", "Gamma G",
+		      "Gamma B");
 	    initSheet(RawData, 13, "Gray Level", "W_x", "W_y", "W_Y (nit)",
 		      "W_R", "W_G", "W_B", "RP", "GP", "BP",
-		      "RP_Intensity_Fix", "GP_Intensity_Fix", "BP_Intensity_Fix");
+		      "RP_Intensity_Fix", "GP_Intensity_Fix",
+		      "BP_Intensity_Fix");
 	    initPropertySheet();
 	};
 
 
 	const string & DGLutFile::RawData = "Raw_Data";
 	const string & DGLutFile::Target = "Target";
+	const string & DGLutFile::LCDTarget = "LCD Target";
 
 
 	void DGLutFile::setRawData(Component_vector_ptr componentVector,
-				   RGBGamma_ptr initialRGBGamma, RGBGamma_ptr finalRGBGamma) {
+				   RGBGamma_ptr initialRGBGamma,
+				   RGBGamma_ptr finalRGBGamma) {
 	    //==================================================================
 	    // 檢查來源資料
 	    //==================================================================
 	    //int componentSize = componentVector->size();
 	    if (null != initialRGBGamma && null != finalRGBGamma
-		&& initialRGBGamma->r->size() != finalRGBGamma->r->size()) {
-		throw IllegalArgumentException("initialRGBGamma->size() != finalRGBGamma->size()");
+		&& initialRGBGamma->r->size() !=
+		finalRGBGamma->r->size()) {
+		throw
+		    IllegalArgumentException
+		    ("initialRGBGamma->size() != finalRGBGamma->size()");
 	    };
 
 	    //==================================================================
@@ -98,7 +108,9 @@ namespace cms {
 	    // 初始資料設定
 	    //==================================================================
 	    int part1Size = componentVector->size();
-	    int part2Size = null != initialRGBGamma ? initialRGBGamma->r->size() : part1Size;
+	    int part2Size =
+		null !=
+		initialRGBGamma ? initialRGBGamma->r->size() : part1Size;
 	    const int headerCount = getHeaderCount(RawData);
 	    string_vector_ptr values(new string_vector(headerCount));
 	    //==================================================================
@@ -160,7 +172,8 @@ namespace cms {
 	    //設定後半部gamma的data
 	    for (int x = part1Size; x != part2Size; x++) {
 		int n = part2Size - 1 - x;
-		StringVector::setContent(values, "-1", 7, 0, 1, 2, 3, 4, 5, 6);
+		StringVector::setContent(values, "-1", 7, 0, 1, 2, 3, 4, 5,
+					 6);
 
 		//gamma 0~100
 		if (null != initialRGBGamma) {
@@ -186,30 +199,82 @@ namespace cms {
 	};
 
 	void DGLutFile::setTargetXYZVector(XYZ_vector_ptr targetXYZVector) {
-	    //if (true) {
 	    setTargetXYZVector(targetXYZVector, nil_RGB_vector_ptr,
-			       bptr < BitDepthProcessor > ((BitDepthProcessor *) null));
-	    //return;
-	    //}
+			       bptr < BitDepthProcessor >
+			       ((BitDepthProcessor *) null));
+	}
+
+	LCDTarget_ptr DGLutFile::getLCDTarget() {
+	    if (db->isTableExist(LCDTarget)) {
+		db->setTableName(LCDTarget);
+		bptr < DBQuery > query = db->selectAll();
+		int index = 0;
+		while (query->hasNext()) {
+		    string_vector_ptr result = query->nextResult();
+		};
+
+	    } else {
+		return LCDTarget_ptr((cms::lcd::LCDTarget *) null);
+	    }
 	};
 
-	void DGLutFile::setTargetXYZVector(XYZ_vector_ptr targetXYZVector, RGB_vector_ptr dglut,
-					   bptr < BitDepthProcessor > bitDepth) {
+	void DGLutFile::setLCDTarget(LCDTarget_ptr lcdTarget) {
+	    Patch_vector_ptr patchList = lcdTarget->getPatchList();
+
+	    //==================================================================
+	    // 初始資料設定
+	    //==================================================================
+	    const int headerCount = 9;
+	    initSheet(LCDTarget, headerCount, "num", "R", "G", "B", "X",
+		      "Y (nit)", "Z", "_x", "_y");
+
+	    int size = patchList->size();
+	    string_vector_ptr values(new string_vector(headerCount));
+	    //==================================================================
+	    int num = 1;
+	    foreach(Patch_ptr p, *patchList) {
+		(*values)[0] = _toString(num++);
+
+		RGB_ptr rgb = p->getRGB();
+		(*values)[1] = _toString(rgb->R);
+		(*values)[2] = _toString(rgb->G);
+		(*values)[3] = _toString(rgb->B);
+
+		XYZ_ptr XYZ = p->getXYZ();
+		(*values)[4] = _toString(XYZ->X);
+		(*values)[5] = _toString(XYZ->Y);
+		(*values)[6] = _toString(XYZ->Z);
+
+		xyY_ptr xyY(new CIExyY(XYZ));
+		(*values)[7] = _toString(xyY->x);
+		(*values)[8] = _toString(xyY->y);
+
+		this->insertData(LCDTarget, values, false);
+	    }
+
+
+	};
+
+	void DGLutFile::
+	    setTargetXYZVector(XYZ_vector_ptr targetXYZVector,
+			       RGB_vector_ptr dglut,
+			       bptr < BitDepthProcessor > bitDepth) {
 	    //==================================================================
 	    // 初始資料設定
 	    //==================================================================
 	    const int headerCount = 16;
-	    initSheet(Target, headerCount, "Gray Level", "X", "Y (nit)",
-		      "Z", "_x", "_y", "dx", "dy",
+	    initSheet(Target, headerCount, "Gray Level", "X",
+		      "Y (nit)", "Z", "_x", "_y", "dx", "dy",
 		      // 8~13, 由Gamma Table R/G/B/找到對應的Intensity,
 		      //再由Intensity及Target White/Primary Color推算出XYZ, 得到Gamma X/Y/Z
-		      "Gamma R", "Gamma G", "Gamma B", "Sim X", "Sim Y", "Sim Z",
-		      "Sim _x", "Sim _y");
+		      "Gamma R", "Gamma G", "Gamma B", "Sim X",
+		      "Sim Y", "Sim Z", "Sim _x", "Sim _y");
 
 	    int size = targetXYZVector->size();
 	    string_vector_ptr values(new string_vector(headerCount));
 	    //==================================================================
-	    Component_vector_ptr componentVector = nil_Component_vector_ptr;
+	    Component_vector_ptr componentVector =
+		nil_Component_vector_ptr;
 	    bptr < ComponentLUT > componentLUT;
 	    bptr < DGLutProperty > property;
 	    XYZ_ptr rXYZ, gXYZ, bXYZ;
@@ -221,11 +286,16 @@ namespace cms {
 		}
 		//從檔案回讀componentVector
 		componentVector = getComponentVector(false, max);
-		componentLUT = bptr < ComponentLUT > (new ComponentLUT(componentVector));
+		componentLUT =
+		    bptr < ComponentLUT >
+		    (new ComponentLUT(componentVector));
 		property = getProperty();
-		xyY_ptr rxyY = property->getTargetReferenceColor(Channel::R);
-		xyY_ptr gxyY = property->getTargetReferenceColor(Channel::G);
-		xyY_ptr bxyY = property->getTargetReferenceColor(Channel::B);
+		xyY_ptr rxyY =
+		    property->getTargetReferenceColor(Channel::R);
+		xyY_ptr gxyY =
+		    property->getTargetReferenceColor(Channel::G);
+		xyY_ptr bxyY =
+		    property->getTargetReferenceColor(Channel::B);
 		rXYZ = rxyY->toXYZ();
 		gXYZ = gxyY->toXYZ();
 		bXYZ = bxyY->toXYZ();
@@ -281,39 +351,52 @@ namespace cms {
 		    (*values)[8] = _toString(rgb->R);
 		    (*values)[9] = _toString(rgb->G);
 		    (*values)[10] = _toString(rgb->B);
-		    double r = rgb->getValue(Channel::R, MaxValue::Double255);
-		    double g = rgb->getValue(Channel::G, MaxValue::Double255);
-		    double b = rgb->getValue(Channel::B, MaxValue::Double255);
+		    double r =
+			rgb->getValue(Channel::R, MaxValue::Double255);
+		    double g =
+			rgb->getValue(Channel::G, MaxValue::Double255);
+		    double b =
+			rgb->getValue(Channel::B, MaxValue::Double255);
 
 
 		    r = componentLUT->correctCodeInRange(Channel::R, r);
 		    double rIntensity =
-			componentLUT->hasCorrectedInRange(Channel::R) ? -1 : componentLUT->
+			componentLUT->
+			hasCorrectedInRange(Channel::
+					    R) ? -1 : componentLUT->
 			getIntensity(Channel::R,
 				     r) * targetWhiteRatio[0];
 		    g = componentLUT->correctCodeInRange(Channel::G, g);
 		    double gIntensity =
-			componentLUT->hasCorrectedInRange(Channel::G) ? -1 : componentLUT->
+			componentLUT->
+			hasCorrectedInRange(Channel::
+					    G) ? -1 : componentLUT->
 			getIntensity(Channel::G,
 				     g) * targetWhiteRatio[1];
 		    b = componentLUT->correctCodeInRange(Channel::B, b);
 		    double bIntensity =
-			componentLUT->hasCorrectedInRange(Channel::B) ? -1 : componentLUT->
+			componentLUT->
+			hasCorrectedInRange(Channel::
+					    B) ? -1 : componentLUT->
 			getIntensity(Channel::B,
 				     b) * targetWhiteRatio[2];
 
-		    if (-1 == rIntensity || -1 == gIntensity || -1 == bIntensity) {
+		    if (-1 == rIntensity || -1 == gIntensity
+			|| -1 == bIntensity) {
 			rIntensity = gIntensity = bIntensity = -1;
 		    }
 		    double X =
 			rXYZ->X * rIntensity / 100 +
-			gXYZ->X * gIntensity / 100 + bXYZ->X * bIntensity / 100;
+			gXYZ->X * gIntensity / 100 +
+			bXYZ->X * bIntensity / 100;
 		    double Y =
 			rXYZ->Y * rIntensity / 100 +
-			gXYZ->Y * gIntensity / 100 + bXYZ->Y * bIntensity / 100;
+			gXYZ->Y * gIntensity / 100 +
+			bXYZ->Y * bIntensity / 100;
 		    double Z =
 			rXYZ->Z * rIntensity / 100 +
-			gXYZ->Z * gIntensity / 100 + bXYZ->Z * bIntensity / 100;
+			gXYZ->Z * gIntensity / 100 +
+			bXYZ->Z * bIntensity / 100;
 
 		    double targetx = Y != 0 ? X / (X + Y + Z) : 0;
 		    double targety = Y != 0 ? Y / (X + Y + Z) : 0;
@@ -329,11 +412,13 @@ namespace cms {
 		this->insertData(Target, values, false);
 	    }
 	};
-	Component_vector_ptr DGLutFile::getComponentVector(bool rgbFromGammaTable, int max) {
+	Component_vector_ptr DGLutFile::
+	    getComponentVector(bool rgbFromGammaTable, int max) {
 	    Component_vector_ptr vector(new Component_vector());
 	    db->setTableName(RawData);
 	    bptr < DBQuery > query = db->selectAll();
-	    RGB_vector_ptr gammaTable = RGBVector::reverse(getGammaTable());
+	    RGB_vector_ptr gammaTable =
+		RGBVector::reverse(getGammaTable());
 	    int index = 0;
 	    while (query->hasNext()) {
 		string_vector_ptr result = query->nextResult();
@@ -363,7 +448,8 @@ namespace cms {
 		xyY_ptr xyY(new CIExyY(x, y, Y));
 		XYZ_ptr XYZ(xyY->toXYZ());
 		RGB_ptr gamma(new RGBColor(r, g, b));
-		bptr < Component > component(new Component(rgb, intensity, XYZ, gamma));
+		bptr < Component >
+		    component(new Component(rgb, intensity, XYZ, gamma));
 		vector->push_back(component);
 	    };
 	    return vector;
@@ -412,7 +498,8 @@ namespace cms {
 	    //==================================================================
 	    int_array versionInfo = Util::fetchVersionInfo();
 	    string version =
-		"3.3b (build " + _toString(versionInfo[2]) + "." + _toString(versionInfo[3]) + ")";
+		"3.3b (build " + _toString(versionInfo[2]) + "." +
+		_toString(versionInfo[3]) + ")";
 	     dgfile.addProperty("cct product version", version);
 	     dgfile.addProperty("status", c->ExcuteStatus);
 	    bool isCCTMode = "CCTDGLut" == c->ExcuteStatus;
@@ -441,10 +528,14 @@ namespace cms {
 		break;
 	    };
 	    bptr < BitDepthProcessor > bitDepth = c->bitDepth;
-	    dgfile.addProperty("t-con input", bitDepth->isTCONInput()? On : Off);
-	    dgfile.addProperty("in", *bitDepth->getInputMaxValue().toString());
-	    dgfile.addProperty("lut", *bitDepth->getLutMaxValue().toString());
-	    dgfile.addProperty("out", *bitDepth->getOutputMaxValue().toString());
+	    dgfile.addProperty("t-con input",
+			       bitDepth->isTCONInput()? On : Off);
+	    dgfile.addProperty("in",
+			       *bitDepth->getInputMaxValue().toString());
+	    dgfile.addProperty("lut",
+			       *bitDepth->getLutMaxValue().toString());
+	    dgfile.addProperty("out",
+			       *bitDepth->getOutputMaxValue().toString());
 
 	    //==================================================================
 
@@ -469,30 +560,44 @@ namespace cms {
 		case DimCorrect::DefinedDim:
 		    dgfile.addProperty(lowLevelCorrect, "DefinedDim");
 		    dgfile.addProperty("defined dim under", c->under);
-		    dgfile.addProperty("defined dim strength", c->dimStrength);
+		    dgfile.addProperty("defined dim strength",
+				       c->dimStrength);
 		    if (true == c->dimFix) {
 			dgfile.addProperty("defined dim - fix", On);
 		    }
 		    if (true == c->feedbackFix) {
-			dgfile.addProperty("defined dim - feedback fix", On);
 			dgfile.
-			    addProperty("defined dim - feedback fix init defect",
-					c->initDefectCount);
-			dgfile.addProperty("defined dim - feedback fix count", c->feedbackFixCount);
-			dgfile.addProperty("max measure dx", c->maxMeasureError[0]);
-			dgfile.addProperty("max measure dy", c->maxMeasureError[1]);
+			    addProperty("defined dim - feedback fix", On);
+			dgfile.
+			    addProperty
+			    ("defined dim - feedback fix init defect",
+			     c->initDefectCount);
+			dgfile.
+			    addProperty
+			    ("defined dim - feedback fix count",
+			     c->feedbackFixCount);
+			dgfile.addProperty("max measure dx",
+					   c->maxMeasureError[0]);
+			dgfile.addProperty("max measure dy",
+					   c->maxMeasureError[1]);
 		    }
 		    if (true == c->dimFix || true == c->feedbackFix) {
-			dgfile.addProperty("defined dim - fix threshold", c->dimFixThreshold);
+			dgfile.
+			    addProperty("defined dim - fix threshold",
+					c->dimFixThreshold);
 		    }
 
 		    XYZ_ptr blackXYZ =
-			(*c->originalComponentVector)[c->originalComponentVector->size() - 1]->XYZ;
+			(*c->originalComponentVector)[c->
+						      originalComponentVector->
+						      size() - 1]->XYZ;
 		    xyY_ptr blackxyY(new CIExyY(blackXYZ));
-		    dgfile.addProperty("defined dim black", *blackxyY->toString());
+		    dgfile.addProperty("defined dim black",
+				       *blackxyY->toString());
 		    break;
 		}
-		dgfile.addProperty("keep dark level", c->KeepDarkLevel ? On : Off);
+		dgfile.addProperty("keep dark level",
+				   c->KeepDarkLevel ? On : Off);
 	    }
 	    //==================================================================
 
@@ -500,27 +605,35 @@ namespace cms {
 	    // others
 	    //==================================================================
 	    if (isCCTMode) {
-		dgfile.addProperty("New Method", c->useNewMethod ? On : Off);
+		dgfile.addProperty("New Method",
+				   c->useNewMethod ? On : Off);
 		if (c->useNewMethod && c->multiGen) {
 		    dgfile.addProperty("multi-gen", c->multiGenTimes);
-		    dgfile.addProperty("keep max Y in multi-gen", c->keepMaxYInMultiGen ? On : Off);
+		    dgfile.addProperty("keep max Y in multi-gen",
+				       c->keepMaxYInMultiGen ? On : Off);
 		}
 	    }
 	    //==================================================================
 	    // gamma
 	    //==================================================================
 	    dgfile.addProperty("gamma",
-			       c->originalGamma ? "Original Gamma" : _toString(c->gamma).c_str());
+			       c->
+			       originalGamma ? "Original Gamma" :
+			       _toString(c->gamma).c_str());
 	    if (-1 != c->dimGamma) {
 		dgfile.addProperty("dim gamma", _toString(c->dimGamma));
-		dgfile.addProperty("dim gamma end", _toString(c->dimGammaEnd));
+		dgfile.addProperty("dim gamma end",
+				   _toString(c->dimGammaEnd));
 	    }
 	    dgfile.addProperty("gamma curve", c->useGammaCurve ? On : Off);
 	    if (true == c->absoluteGamma) {
-		dgfile.addProperty("absolute gamma", c->absoluteGamma ? On : Off);
-		dgfile.addProperty("keep absolute gamma start", _toString(c->absoluteGammaStart));
+		dgfile.addProperty("absolute gamma",
+				   c->absoluteGamma ? On : Off);
+		dgfile.addProperty("keep absolute gamma start",
+				   _toString(c->absoluteGammaStart));
 		dgfile.addProperty("keep absolute gamma as",
-				   _toString(c->absGammaStartGLAboveGamma));
+				   _toString(c->
+					     absGammaStartGLAboveGamma));
 	    }
 	    //dgfile.addProperty("highlight gamma fix", c->highlightGammaFix ? On : Off);
 	    //==================================================================
@@ -532,19 +645,25 @@ namespace cms {
 		dgfile.addProperty("g bypass", c->gByPass ? On : Off);
 		dgfile.addProperty("b gain", c->bIntensityGain);
 		dgfile.addProperty("b max",
-				   c->bMax ? "B Max" : (c->bMax2 ? "B Max Smooth" : "Off"));
+				   c->bMax ? "B Max" : (c->
+							bMax2 ?
+							"B Max Smooth"
+							: "Off"));
 		if (c->bMax2) {
 		    dgfile.addProperty("b max begin", c->bMax2Begin);
 		    dgfile.addProperty("b max strength", c->bMax2Gamma);
 		}
 	    }
-	    dgfile.addProperty("avoid FRC noise", c->avoidFRCNoise ? On : Off);
+	    dgfile.addProperty("avoid FRC noise",
+			       c->avoidFRCNoise ? On : Off);
 	    if (c->remapped) {
 		dgfile.addProperty("panel regulator remapping", On);
 	    }
-	    bptr < IntensityAnalyzerIF > analyzer = c->fetcher->getAnalyzer();
+	    bptr < IntensityAnalyzerIF > analyzer =
+		c->fetcher->getAnalyzer();
 	    if (null != analyzer) {
-		bptr < MeterMeasurement > mm = analyzer->getMeterMeasurement();
+		bptr < MeterMeasurement > mm =
+		    analyzer->getMeterMeasurement();
 		int averageTimes = mm->AverageTimes;
 		dgfile.addProperty("average times", averageTimes);
 	    }
@@ -572,11 +691,15 @@ namespace cms {
 		break;
 	    }
 	    dgfile.addProperty("keep max luminance", keepstr);
-	    if (c->keepMaxLuminance == KeepMaxLuminance::Smooth2NativeWhite) {
+	    if (c->keepMaxLuminance ==
+		KeepMaxLuminance::Smooth2NativeWhite) {
 		if (true == c->autoKeepMaxLumiParameter) {
-		    dgfile.addProperty("auto keep max lumi adv parameter", On);
+		    dgfile.
+			addProperty("auto keep max lumi adv parameter",
+				    On);
 		}
-		dgfile.addProperty("keep max lumi adv over", c->keepMaxLumiOver);
+		dgfile.addProperty("keep max lumi adv over",
+				   c->keepMaxLumiOver);
 	    }
 	    if (None == c->DeHookMode) {
 		dgfile.addProperty("dehook mode", "None");
@@ -593,24 +716,31 @@ namespace cms {
 		    dehookmode = "DeHook2 With Gamma first";
 		    break;
 		}
-                
+
 		dgfile.addProperty("dehook mode", dehookmode);
-		dgfile.addProperty("max B intensity RGL", c->maxBRawGrayLevel);
+		dgfile.addProperty("max B intensity RGL",
+				   c->maxBRawGrayLevel);
 		if (SecondWithBGap1st == c->DeHookMode) {
-		    dgfile.addProperty("max B at DG GL", c->maxBDGGrayLevel);
+		    dgfile.addProperty("max B at DG GL",
+				       c->maxBDGGrayLevel);
 		}
 	    }
 
-	    if (c->keepMaxLuminance == KeepMaxLuminance::Smooth2NativeWhite) {
+	    if (c->keepMaxLuminance ==
+		KeepMaxLuminance::Smooth2NativeWhite) {
 		if (true == c->autoKeepMaxLumiParameter) {
-		    dgfile.addProperty("auto keep max lumi adv parameter", On);
+		    dgfile.
+			addProperty("auto keep max lumi adv parameter",
+				    On);
 		}
-		dgfile.addProperty("keep max lumi adv over", c->keepMaxLumiOver);
+		dgfile.addProperty("keep max lumi adv over",
+				   c->keepMaxLumiOver);
 	    }
 	    if (true == c->autoIntensity) {
 		RGB_ptr idealIntensity = c->idealIntensity;
 		if (null != idealIntensity) {
-		    dgfile.addProperty("target intensity", *idealIntensity->toString());
+		    dgfile.addProperty("target intensity",
+				       *idealIntensity->toString());
 		}
 	    }
 	    //==================================================================
@@ -629,39 +759,49 @@ namespace cms {
 	void DGLutProperty::storeAnalyzer(ExcelAccessBase & dgfile,
 					  bptr <
 					  cms::measure::
-					  IntensityAnalyzerIF > analyzer,
-					  const string & prestring) const {
+					  IntensityAnalyzerIF >
+					  analyzer,
+					  const string & prestring)
+	    const {
 	    //紀錄ref color
 	    xyY_ptr refWhitexyY = analyzer->getReferenceColor();
 	    if (null != refWhitexyY) {
 		string_ptr comment = analyzer->getReferenceColorComment();
 		if (null != comment) {
-		    dgfile.addProperty("reference white comment", *comment);
+		    dgfile.addProperty("reference white comment",
+				       *comment);
 		}
 
 		xyY_ptr refRxyY = analyzer->getPrimaryColor(Channel::R);
 		xyY_ptr refGxyY = analyzer->getPrimaryColor(Channel::G);
 		xyY_ptr refBxyY = analyzer->getPrimaryColor(Channel::B);
-		dgfile.addProperty(prestring + " reference white", *refWhitexyY->toString());
-		dgfile.addProperty(prestring + " primary R", *refRxyY->toString());
-		dgfile.addProperty(prestring + " primary G", *refGxyY->toString());
-		dgfile.addProperty(prestring + " primary B", *refBxyY->toString());
+		dgfile.addProperty(prestring + " reference white",
+				   *refWhitexyY->toString());
+		dgfile.addProperty(prestring + " primary R",
+				   *refRxyY->toString());
+		dgfile.addProperty(prestring + " primary G",
+				   *refGxyY->toString());
+		dgfile.addProperty(prestring + " primary B",
+				   *refBxyY->toString());
 	    }
 	    //紀錄target white用的rgb
 	    RGB_ptr refRGB = analyzer->getReferenceRGB();
 	    if (null != refRGB) {
-		dgfile.addProperty(prestring + " reference white RGB", *refRGB->toString());
+		dgfile.addProperty(prestring + " reference white RGB",
+				   *refRGB->toString());
 
 		bptr < BitDepthProcessor > bitDepth = c->bitDepth;
 		const Dep::MaxValue & lutBit = bitDepth->getLutMaxValue();
 		RGB_ptr lutRefRGB = refRGB->clone();
 		lutRefRGB->changeMaxValue(lutBit);
 		dgfile.addProperty(prestring +
-				   " reference white RGB(LUT Bit)", *lutRefRGB->toString());
+				   " reference white RGB(LUT Bit)",
+				   *lutRefRGB->toString());
 	    }
 
 	    MaxMatrixIntensityAnalyzer *ma =
-		dynamic_cast < MaxMatrixIntensityAnalyzer * >(analyzer.get());
+		dynamic_cast <
+		MaxMatrixIntensityAnalyzer * >(analyzer.get());
 	    if (null != ma) {
 		double2D_ptr ratio = ma->getWhiteRatio();
 		string title = prestring + " " + WhiteRatio;
@@ -669,11 +809,14 @@ namespace cms {
 	    }
 
 	};
-	void DGLutProperty::addProperty(const std::string key, string_ptr value) {
+	void DGLutProperty::addProperty(const std::string key,
+					string_ptr value) {
 	    propertyMap.insert(make_pair(key, value));
 	};
-	void DGLutProperty::addProperty(const std::string key, const std::string value) {
-	    propertyMap.insert(make_pair(key, string_ptr(new string(value))));
+	void DGLutProperty::addProperty(const std::string key,
+					const std::string value) {
+	    propertyMap.
+		insert(make_pair(key, string_ptr(new string(value))));
 	};
 
 	bool DGLutProperty::initProperty(bptr < DGLutFile > d) {
@@ -705,12 +848,15 @@ namespace cms {
 	      ((DGLutFile *) null)) {
 
 	};
-      DGLutProperty::DGLutProperty(bptr < DGLutFile > d):c((LCDCalibrator *) null), d(d) {
+      DGLutProperty::DGLutProperty(bptr < DGLutFile > d):c((LCDCalibrator *) null),
+	    d(d)
+	{
 	    if (false == initProperty(d)) {
 		throw IllegalStateException(" init Property failed.");
 	    }
 	};
-      DGLutProperty::DGLutProperty(DGLutFile * d):c((LCDCalibrator *) null) {
+      DGLutProperty::DGLutProperty(DGLutFile * d):c((LCDCalibrator *) null)
+	{
 	    if (false == initProperty(d)) {
 		throw IllegalStateException(" init Property failed.");
 	    }
@@ -718,7 +864,9 @@ namespace cms {
 	string_ptr DGLutProperty::getProperty(const std::string key) {
 	    return propertyMap[key];
 	};
-	xyY_ptr DGLutProperty::getReferenceColor(const string & prestring, const Channel & ch) {
+	xyY_ptr DGLutProperty::
+	    getReferenceColor(const string & prestring,
+			      const Channel & ch) {
 	    string_ptr value;
 	    switch (ch.chindex) {
 	    case ChannelIndex::R:
@@ -746,28 +894,38 @@ namespace cms {
 		}
 		break;
 	    default:
-		throw IllegalArgumentException("Unsupported Channel : " + *ch.toString());
+		throw IllegalArgumentException("Unsupported Channel : "
+					       + *ch.toString());
 	    }
 	    if (null != value) {
-		xyY_ptr xyY(new CIExyY(ColorSpace::getValuesFromString(value)));
+		xyY_ptr xyY(new
+			    CIExyY(ColorSpace::
+				   getValuesFromString(value)));
 		return xyY;
 	    } else {
 		return xyY_ptr((CIExyY *) null);
 	    }
 	};
-	xyY_ptr DGLutProperty::getTargetReferenceColor(const Dep::Channel & ch) {
+	xyY_ptr DGLutProperty::getTargetReferenceColor(const Dep::
+						       Channel & ch) {
 	    return getReferenceColor(Target, ch);
 	};
-	xyY_ptr DGLutProperty::getNativeReferenceColor(const Dep::Channel & ch) {
+	xyY_ptr DGLutProperty::getNativeReferenceColor(const Dep::
+						       Channel & ch) {
 	    return getReferenceColor(Native, ch);
 	};
-	xyY_ptr DGLutProperty::getSecondReferenceColor(const Dep::Channel & ch) {
+	xyY_ptr DGLutProperty::getSecondReferenceColor(const Dep::
+						       Channel & ch) {
 	    return getReferenceColor(Second, ch);
 	};
 	RGB_ptr DGLutProperty::getReferenceRGB(const string & prestring) {
-	    string_ptr value = getProperty(prestring + " reference white RGB");
-	    double_array rgbValues = ColorSpace::getValuesFromString(value);
-	    RGB_ptr rgb(new RGBColor(rgbValues[0], rgbValues[1], rgbValues[2]));
+	    string_ptr value =
+		getProperty(prestring + " reference white RGB");
+	    double_array rgbValues =
+		ColorSpace::getValuesFromString(value);
+	    RGB_ptr rgb(new
+			RGBColor(rgbValues[0], rgbValues[1],
+				 rgbValues[2]));
 	    return rgb;
 	};
 	RGB_ptr DGLutProperty::getTargetReferenceRGB() {
@@ -783,7 +941,8 @@ namespace cms {
 	    const MaxValue & in = MaxValue::valueOf(getProperty("in"));
 	    const MaxValue & lut = MaxValue::valueOf(getProperty("lut"));
 	    const MaxValue & out = MaxValue::valueOf(getProperty("out"));
-	    bptr < BitDepthProcessor > bitDepth(new BitDepthProcessor(in.bit, lut.bit, out.bit));
+	    bptr < BitDepthProcessor >
+		bitDepth(new BitDepthProcessor(in.bit, lut.bit, out.bit));
 	    return bitDepth;
 	}
 	double_array DGLutProperty::getTargetWhiteRatio() {
@@ -796,7 +955,8 @@ namespace cms {
 		//如果新版的找不到, 就會回去找舊版的TargetWhiteRatio關鍵字
 		value = getProperty(TargetWhiteRatio);
 	    }
-	    double_array targetWhiteRatio = DoubleArray::fromString(*value);
+	    double_array targetWhiteRatio =
+		DoubleArray::fromString(*value);
 	    return targetWhiteRatio;
 	};
 	/*double_array DGLutProperty::getTargetWhiteRatio(const string & prestring) {
