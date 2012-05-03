@@ -197,8 +197,10 @@ namespace cms {
 	    using namespace math;
 	    XYZ_ptr XYZ1 = patch1->getXYZ();
 	    XYZ_ptr XYZ2 = patch2->getXYZ();
-	    double_array uvpValues1 = XYZ1->getuvPrimeValues();
-	    double_array uvpValues2 = XYZ2->getuvPrimeValues();
+            xyY_ptr xyY1(new CIExyY(XYZ1));
+            xyY_ptr xyY2(new CIExyY(XYZ2));
+	    double_array uvpValues1 = xyY1->getuvPrimeYValues();
+	    double_array uvpValues2 = xyY2->getuvPrimeYValues();
 	    double_array uvpValues(new double[3]);
 
 	    uvpValues[0] = Interpolation::linear(x1, x2, uvpValues1[0], uvpValues2[0], x);

@@ -95,7 +95,7 @@ namespace cms {
 		bool bMax2;
 		int bMax2Begin;
 		double bMax2Gamma;
-		int maxBRawGrayLevel;
+
 		//==============================================================
 
 		//==============================================================
@@ -114,7 +114,6 @@ namespace cms {
 		bool absoluteGamma;
 		int absoluteGammaStart;
 		double absGammaStartGLAboveGamma;
-		//bool highlightGammaFix;
 		//==============================================================
 
 		//==============================================================
@@ -153,7 +152,8 @@ namespace cms {
 		//用來註記是否有用了panel regulator
 		bool remapped;
 		DeHook dehook;
-		int deHookRBGZone;
+		int maxBRawGrayLevel;
+		int maxBDGGrayLevel;
 		//==============================================================
 
 		//==============================================================
@@ -175,7 +175,6 @@ namespace cms {
 		bool useNewMethod;
 
 		string excuteStatus;
-		//bool debugMode;
 		//==============================================================
 
 	      public:

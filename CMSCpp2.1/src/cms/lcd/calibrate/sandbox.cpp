@@ -939,7 +939,7 @@ namespace cms {
 
 	    //==================================================================
 
-	  DeHookProcessor::DeHookProcessor(const LCDCalibrator & calibrator):c(calibrator)
+	  DeHookProcessor::DeHookProcessor(const LCDCalibrator & calibrator):c(calibrator), bestGamma(-1)
 	    {
 	    };
 
@@ -983,29 +983,30 @@ namespace cms {
 		//int measureStep = c.bitDepth->getMeasureStep();
 
 		//純色一定要直接量過
-		for (int r = blueMaxGrayLevel; r <= max; r ++) {
+		for (int r = max; r >= blueMaxGrayLevel; r--) {
 		    Patch_ptr p = mm->measure(r, 0, 0, nil_string_ptr);
 		    patchList->push_back(p);
 		}
-		for (int g = blueMaxGrayLevel; g <= max; g ++) {
+		for (int g = max; g >= blueMaxGrayLevel; g--) {
 		    Patch_ptr p = mm->measure(0, g, 0, nil_string_ptr);
 		    patchList->push_back(p);
 		}
 		//藍色也不能忘了, 雖然只要量2階
-		Patch_ptr b0p = mm->measure(0, 0, blueMaxGrayLevel, nil_string_ptr);
-		patchList->push_back(b0p);
 		Patch_ptr b1p = mm->measure(0, 0, max, nil_string_ptr);
 		patchList->push_back(b1p);
+		Patch_ptr b0p = mm->measure(0, 0, blueMaxGrayLevel, nil_string_ptr);
+		patchList->push_back(b0p);
+
 		mm->setMeasureWindowsVisible(false);
 
-                foreach(Patch_ptr p,*patchList) {
-                        XYZ_ptr XYZ=p->getXYZ();
-                        int a=1;
-                }
+		foreach(Patch_ptr p, *patchList) {
+		    XYZ_ptr XYZ = p->getXYZ();
+		    int a = 1;
+		}
 
 		LCDTarget_ptr lcdTarget = LCDTarget::Instance::get(patchList);
 		//bptr < cms::devicemodel::MultiMatrixModel >
-		    //model(new cms::devicemodel::MultiMatrixModel(lcdTarget));
+		//model(new cms::devicemodel::MultiMatrixModel(lcdTarget));
 		bptr < cms::devicemodel::DeHook2LCDModel >
 		    model(new cms::devicemodel::DeHook2LCDModel(lcdTarget));
 		return model;
@@ -1021,12 +1022,11 @@ namespace cms {
 										   deltaxySpec) {
 		using namespace Dep;
 		bptr < BitDepthProcessor > bitDepth = c.bitDepth;
-		int initstep = bitDepth->getMeasureStep();
+		//int initstep = bitDepth->getMeasureStep();
 		int frcOnlyBit = bitDepth->getFRCOnlyBit();
-		double step = initstep / Math::pow(2, frcOnlyBit);
+		double step = 1 / Math::pow(2, frcOnlyBit);
 
-		XYZ_ptr whiteXYZ = model->getXYZ(RGBColor::White,false);
-                //XYZ_ptr whiteXYZ = model->getXYZ(255.,255.,255.,false);
+		XYZ_ptr whiteXYZ = model->getXYZ(RGBColor::White, false);
 		xyY_ptr whitexyY(new CIExyY(whiteXYZ));
 
 		Patch_vector_ptr result(new Patch_vector());
@@ -1059,21 +1059,25 @@ namespace cms {
 							     double gammaUPLimit) {
 		bptr < BitDepthProcessor > bitDepth = c.bitDepth;
 		int maxcount = bitDepth->getInputMaxDigitalCount();
-		for (int targetGrayLevel = maxcount - 2; targetGrayLevel > maxcount - 10;
+		bool hadGammaOk = false;
+
+		for (int targetGrayLevel = maxcount - 1; targetGrayLevel > maxcount - 10;
 		     targetGrayLevel--) {
 		    double normalInput = ((double) targetGrayLevel) / maxcount;
 		    bool gammaOk = false;
 		    foreach(Patch_ptr p, *patchVector) {
 			XYZ_ptr XYZ = p->getNormalizedXYZ();
 			double gamma = GammaFinder::getGammaExponential(normalInput, XYZ->Y);
-			if (gamma > gammaDWLimit || gamma < gammaUPLimit) {
+			if (gamma > gammaDWLimit && gamma < gammaUPLimit) {
 			    gammaOk = true;
+			    hadGammaOk = true;
 			}
 		    }
-		    if (false == gammaOk) {
+		    if (true == hadGammaOk && false == gammaOk) {
 			return targetGrayLevel + 1;
 		    }
 		}
+		return -1;
 	    };
 
 	    Patch_ptr DeHookProcessor::getBestGammaPatch(Patch_vector_ptr patchVector,
@@ -1081,6 +1085,9 @@ namespace cms {
 		bptr < BitDepthProcessor > bitDepth = c.bitDepth;
 		int maxcount = bitDepth->getInputMaxDigitalCount();
 		int size = patchVector->size();
+		if (0 == size) {
+		    return nil_Patch_ptr;
+		}
 		double normalInput = ((double) targetGrayLevel) / maxcount;
 
 		int minDeltaIndex = -1;
@@ -1094,7 +1101,11 @@ namespace cms {
 		    if (deltaGamma < minDeltaGamma) {
 			minDeltaGamma = deltaGamma;
 			minDeltaIndex = x;
+			bestGamma = gamma;
 		    }
+		}
+		if (-1 == minDeltaIndex) {
+		    return nil_Patch_ptr;
 		}
 
 		Patch_ptr p = (*patchVector)[minDeltaIndex];

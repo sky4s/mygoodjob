@@ -340,7 +340,8 @@ namespace cms {
 	}
 	return patchMap;
     };
-  Target::Target(Patch_vector_ptr patchList):patchList(patchList) {
+  Target::Target(Patch_vector_ptr patchList):patchList(patchList),
+	patchMap(processPatchMap(patchList)) {
 
     };
     string_ptr Target::getFilename() {
@@ -355,7 +356,9 @@ namespace cms {
 	    keyRGB = getKeyRGB();
 	}
 	keyRGB->setValues(r, g, b);
-	return getPatch(keyRGB);
+	RGB_ptr rgb(new Dep::RGBColor(r, g, b));
+	return getPatch(rgb);
+	//return getPatch(keyRGB);
     };
     Patch_ptr Target::getPatch(int index) {
 	return (*patchList)[index];

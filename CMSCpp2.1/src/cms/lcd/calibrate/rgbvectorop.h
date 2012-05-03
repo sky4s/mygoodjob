@@ -160,9 +160,13 @@ namespace cms {
 	    //=================================================================
 
 	    class DeHook2Op:public DGLutOp {
+	      private:
+		bptr < BitDepthProcessor > bitDepth;
+		int maxBDGGrayLevel;
 	      protected:
-		RGB_vector_ptr getRendering(RGB_vector_ptr source);
-
+		 RGB_vector_ptr getRendering(RGB_vector_ptr source);
+	      public:
+		 DeHook2Op(bptr < BitDepthProcessor > bitDepth, int maxBDGGrayLevel);
 
 	    };
 	};
