@@ -161,6 +161,7 @@ typedef bptr < Channel_vector > Channel_vector_ptr;
 #endif
 
 typedef bptr < cms::Patch > Patch_ptr;
+#define nil_Patch_ptr Patch_ptr( (Patch*) null)
 typedef std::vector < Patch_ptr > Patch_vector;
 typedef bptr < Patch_vector > Patch_vector_ptr;
 #define nil_Patch_vector_ptr Patch_vector_ptr( (Patch_vector*) null)
@@ -197,7 +198,7 @@ template < class T > struct Compare {
     };
 };
 
-typedef std::map < RGB_ptr, Patch_ptr) RGBPatchMap;
-typedef std::map < RGB_ptr, Patch_ptr, Compare < RGB_ptr >) RGBPatchMap2;
+//typedef std::map < RGB_ptr, Patch_ptr) RGBPatchMap;
+typedef std::map < RGB_ptr, Patch_ptr, Compare < RGB_ptr >) RGBPatchMap;
 #endif
 

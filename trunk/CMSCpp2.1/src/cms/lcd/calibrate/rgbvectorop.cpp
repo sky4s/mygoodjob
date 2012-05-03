@@ -689,6 +689,27 @@ namespace cms {
 		return defectArray;
 	    };
 	    //==================================================================
+
+	  DeHook2Op::DeHook2Op(bptr < BitDepthProcessor > bitDepth, int _maxBDGGrayLevel):bitDepth(bitDepth),
+		maxBDGGrayLevel(_maxBDGGrayLevel)
+	    {
+	    };
+
+	    RGB_vector_ptr DeHook2Op::getRendering(RGB_vector_ptr source) {
+		int maxCount = bitDepth->getOutputMaxDigitalCount();
+		RGB_vector_ptr result = RGBVector::deepClone(source);
+		RGB_ptr rgb0 = (*result)[maxBDGGrayLevel];
+		RGB_ptr rgb1 = (*result)[maxCount];
+
+		/*for (int x = maxBDGGrayLevel + 1; x < maxCount; x++) {
+		    RGB_ptr rgb = (*result)[x];
+		    rgb->R = Interpolation::linear(maxBDGGrayLevel, maxCount, rgb0->R, rgb1->R, x);
+		    rgb->G = Interpolation::linear(maxBDGGrayLevel, maxCount, rgb0->G, rgb1->G, x);
+		    rgb->B = Interpolation::linear(maxBDGGrayLevel, maxCount, rgb0->B, rgb1->B, x);
+		}*/
+
+		return result;
+	    };
 	};
     };
 };

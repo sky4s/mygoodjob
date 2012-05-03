@@ -208,6 +208,7 @@ namespace cms {
 		int getBestGrayLevel(Patch_vector_ptr patchVector, double targetGamma);
 		Patch_ptr getBestGammaPatch(Patch_vector_ptr patchVector, double targetGamma,
 					    int targetGrayLevel);
+		double bestGamma;
 	    };
 	};
     };

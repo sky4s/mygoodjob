@@ -49,8 +49,8 @@ namespace cms {
 		gTargetIntensity = -1;
 		bTargetIntensity = -1;
 		originalGamma = false;
-		//skipInverseB = false;
 		maxBRawGrayLevel = -1;
+		maxBDGGrayLevel = -1;
 		gByPass = false;
 		avoidFRCNoise = false;
 		autoKeepMaxLumiParameter = false;
@@ -74,7 +74,7 @@ namespace cms {
 		debugMode = false;
 
 		dehook = None;
-		deHookRBGZone = 0;
+		//deHookRBGZone = 0;
 	    };
 
 	     double_vector_ptr
@@ -266,7 +266,7 @@ namespace cms {
 		}
 		this->keepMaxLuminance = keepMaxLuminance;
 		if (KeepMaxLuminance::TargetWhite == keepMaxLuminance) {
-		    autoIntensity = true;
+		    this->autoIntensity = true;
 		}
 	    };
 
@@ -279,7 +279,7 @@ namespace cms {
 		this->keepMaxLuminance = KeepMaxLuminance::Smooth2NativeWhite;
 		this->keepMaxLumiOver = over;
 		this->autoKeepMaxLumiParameter = autoParameter;
-		autoIntensity = true;
+		this->autoIntensity = true;
 	    };
 
 
@@ -407,9 +407,9 @@ namespace cms {
 		    /*
 		       dehook2, 要找的2nd white也會跟過去不同
 		     */
-		    int blueMaxGrayLevel = processor.getMaxBIntensityRawGrayLevel();
+		    this->maxBRawGrayLevel = processor.getMaxBIntensityRawGrayLevel();
 		    bptr < cms::devicemodel::LCDModel > lcdmodel =
-			processor.getLCDModelForDeHook(blueMaxGrayLevel);
+			processor.getLCDModelForDeHook(this->maxBRawGrayLevel);
 
 		    /*
 		       DeHook2+Gamma1st/BGap1st:會影響到搭配的R/G
@@ -417,20 +417,28 @@ namespace cms {
 		       過濾出dxdy 0.003內
 		     */
 		    Patch_vector_ptr patchVector =
-			processor.getReasonableChromaticityPatchVector(lcdmodel, blueMaxGrayLevel,
+			processor.getReasonableChromaticityPatchVector(lcdmodel, this->maxBRawGrayLevel,
 								       0.003);
 		    //XYZ_ptr whiteXYZ = lcdmodel->getXYZ(RGBColor::White, false);
 		    if (SecondWithBGap1st == deHook) {
 			//會盡量找到最低的gray level
-			int reasonableGammaGrayLevel =
+			this->maxBDGGrayLevel =
 			    processor.getReasonableGammaGrayLevel(patchVector, 1.5, 3.0);
-			double normalOutput = (*gammaCurve)[reasonableGammaGrayLevel];
+                        if( -1== maxBDGGrayLevel) {
+                                maxBDGGrayLevel = max-1;
+                        }
+
+			double normalOutput = (*gammaCurve)[this->maxBDGGrayLevel];
 			int maxcount = bitDepth->getInputMaxDigitalCount();
-			double normalInput = ((double) reasonableGammaGrayLevel) / maxcount;
+			double normalInput = ((double) this->maxBDGGrayLevel) / maxcount;
 			double gamma = GammaFinder::getGammaExponential(normalInput, normalOutput);
 			//再從這裡面撈出最接近target gamma的
 			Patch_ptr bestPatch = processor.getBestGammaPatch(patchVector, gamma,
-									  reasonableGammaGrayLevel);
+									  this->maxBDGGrayLevel);
+			if (nil_Patch_ptr == bestPatch) {
+			    throw new IllegalStateException("");
+			}
+			double bestGamma = processor.bestGamma;
 			RGB_ptr rgb = bestPatch->getRGB();
 			redmax = rgb->R;
 			greenmax = rgb->G;
@@ -446,44 +454,6 @@ namespace cms {
 		secondWhiteAnalyzer =
 		    MaxMatrixIntensityAnalyzer::getReadyAnalyzer(mm, redmax, greenmax, bluemax);
 	    };
-
-	    /*bptr < cms::devicemodel::LCDModel >
-	       LCDCalibrator::getLCDModelForDeHook(int blueMaxGrayLevel) {
-	       bptr < cms::measure::IntensityAnalyzerIF > analyzer = fetcher->FirstAnalyzer;
-	       bptr < MeterMeasurement > mm = analyzer->getMeterMeasurement();
-	       int max = bitDepth->getOutputMaxDigitalCount();
-
-
-	       //量測 R:B~255 G:B~255 B:blueMaxGrayLevel K
-	       Patch_vector_ptr patchList(new Patch_vector());
-
-
-	       //黑色不用再量, 直接從component撈
-	       Component_ptr black =
-	       (*originalComponentVector)[originalComponentVector->size() - 1];
-	       Patch_ptr blackPatch(new Patch(black));
-	       patchList->push_back(blackPatch);
-
-
-	       int measureStep = bitDepth->getMeasureStep();
-	       //純色一定要直接量過
-	       for (int r = blueMaxGrayLevel; r <= max; r += measureStep) {
-	       Patch_ptr p = mm->measure(r, 0, 0, null);
-	       patchList->push_back(p);
-	       }
-	       for (int g = blueMaxGrayLevel; g <= max; g += measureStep) {
-	       Patch_ptr p = mm->measure(0, g, 0, null);
-	       patchList->push_back(p);
-	       }
-	       //藍色也不能忘了, 雖然只要量一階
-	       Patch_ptr p = mm->measure(0, 0, blueMaxGrayLevel, null);
-	       patchList->push_back(p);
-
-	       LCDTarget_ptr lcdTarget = LCDTarget::Instance::get(patchList);
-	       bptr < cms::devicemodel::MultiMatrixModel >
-	       mmmodel(new cms::devicemodel::MultiMatrixModel(lcdTarget));
-	       return mmmodel;
-	       }; */
 
 	    /*
 	       CCT + Gamma
@@ -523,8 +493,8 @@ namespace cms {
 		    panelRegulator = bptr < PanelRegulator >
 			(new
 			 GammaTestPanelRegulator(bitDepth, tconctrl,
-						 (int) rgb->R,
-						 (int) rgb->G, (int) rgb->B, measureCondition));
+						 (int) rgb->R, (int) rgb->G, (int) rgb->B,
+						 measureCondition));
 		    //若是在direct gamma下, setEnable會無效
 		    //因為setEnable是變更DG LUT, 但是direct gamma無視DG LUT的內容!
 		    panelRegulator->setEnable(true);
@@ -549,6 +519,7 @@ namespace cms {
 
 		//=============================================================
 		// gamma curve setting zone
+		// 因為要量過才知道原始的 gamma, 所以這個原始gamma的設定位置異於其他選項
 		//=============================================================
 		if (true == originalGamma) {
 		    //若要採用original gamma, 從量測結果拉出gamma, 當作目標gamma curve
@@ -558,7 +529,6 @@ namespace cms {
 
 		STORE_DOUBLE_VECTOR("0.1_gammacurve.xls", gammaCurve);
 		//=============================================================
-
 
 		const MaxValue & quantizationBit = bitDepth->getLutMaxValue();
 
@@ -1144,6 +1114,11 @@ namespace cms {
 			bptr < DGLutOp > nativeWhite(new KeepNativeWhiteOp(bitDepth));
 			dgop.addOp(nativeWhite);
 		    }
+                    //如果用上dehook2, maxBDGGrayLevel到白點需要內插, 使色度漸進到白點
+		    if (SecondWithBGap1st == dehook || SecondWithBGap1st == dehook) {
+			bptr < DGLutOp > deHook2(new DeHook2Op(bitDepth, maxBDGGrayLevel));
+			dgop.addOp(deHook2);
+		    }
 		    break;
 		case KeepMaxLuminance::Smooth2NativeWhite:{
 			//最後還是要對DG做一次smooth
@@ -1186,12 +1161,16 @@ namespace cms {
 		//==============================================================
 
 		RGB_vector_ptr result = dgop.createInstance();
+		//==============================================================
+		// keep dark level
+		//==============================================================
 		if (keepDarkLevel) {
 		    RGB_ptr rgb0 = (*result)[0];
 		    rgb0->R = 0;
 		    rgb0->G = 0;
 		    rgb0->B = 0;
 		}
+		//==============================================================
 		return result;
 		//==============================================================
 	    };

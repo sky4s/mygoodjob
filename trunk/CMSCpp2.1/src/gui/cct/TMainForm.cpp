@@ -37,33 +37,31 @@ linkEyeOne(FileExists("i1.txt")), linkCA210(!FileExists("i1.txt") && !FileExists
 newFunction(FileExists(DEBUG_NEWFUNC_FILE))
 {
 
-    //StatusBar1->SimplePanel = true;
-    //bool t = (!linkEyeOne && !debugMode);
     connectCA210ByThread = true;
 
 
 
     using namespace cms;
+    using namespace cms::lcd;
     using namespace Dep;
     RGBPatchMap patchMap;
-    //Patch(string_ptr name, XYZ_ptr XYZ, Lab_ptr Lab, RGB_ptr rgb);
-    RGB_ptr o;
+    Patch_vector_ptr vector(new Patch_vector());
     for (int x = 0; x < 10; x++) {
 	RGB_ptr rgb(new RGBColor(x, 0, 0));
 	Patch_ptr p(new Patch(nil_string_ptr, nil_XYZ_ptr, nil_XYZ_ptr, rgb));
 	patchMap.insert(make_pair(rgb, p));
-	if (x == 5) {
-	    o = rgb;
-	}
+	vector->push_back(p);
+
     }
+    LCDTarget_ptr lcdTarget = LCDTarget::Instance::get(vector);
+
+
+    Patch_ptr r0p = lcdTarget->getPatch(5, 0, 0);
     RGB_ptr rgb(new RGBColor(5, 0, 0));
     Patch_ptr p = patchMap[rgb];
-    p = patchMap[rgb];
+    /*p = patchMap[rgb]; */
     int x = 1;
-    /*foreach(Patch_ptr p, *patchList) {
-       RGB_ptr rgb = p->getRGB();
-       patchMap.insert(make_pair(rgb, p));
-       } */
+
 }
 
 //---------------------------------------------------------------------------

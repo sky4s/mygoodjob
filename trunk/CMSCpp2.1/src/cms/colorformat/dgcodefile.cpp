@@ -580,9 +580,25 @@ namespace cms {
 	    }
 	    if (None == c->DeHookMode) {
 		dgfile.addProperty("dehook mode", "None");
-	    } else if (KeepCCT == c->DeHookMode) {
-		dgfile.addProperty("dehook mode", "Keep CCT");
+	    } else {
+		string dehookmode;
+		switch (c->DeHookMode) {
+		case KeepCCT:
+		    dehookmode = "Keep CCT";
+		    break;
+		case SecondWithBGap1st:
+		    dehookmode = "DeHook2 With BGap first";
+		    break;
+		case SecondWithGamma1st:
+		    dehookmode = "DeHook2 With Gamma first";
+		    break;
+		}
+                
+		dgfile.addProperty("dehook mode", dehookmode);
 		dgfile.addProperty("max B intensity RGL", c->maxBRawGrayLevel);
+		if (SecondWithBGap1st == c->DeHookMode) {
+		    dgfile.addProperty("max B at DG GL", c->maxBDGGrayLevel);
+		}
 	    }
 
 	    if (c->keepMaxLuminance == KeepMaxLuminance::Smooth2NativeWhite) {
