@@ -711,7 +711,7 @@ object CCTLUTForm: TCCTLUTForm
     object CheckBox_KeepMaxYInMultiGen: TCheckBox
       Left = 23
       Top = 96
-      Width = 145
+      Width = 106
       Height = 17
       Caption = 'Keep MaxY'
       TabOrder = 8

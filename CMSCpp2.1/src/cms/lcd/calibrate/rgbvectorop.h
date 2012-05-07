@@ -163,10 +163,11 @@ namespace cms {
 	      private:
 		bptr < BitDepthProcessor > bitDepth;
 		int maxBDGGrayLevel;
+                RGB_ptr maxBDG;
 	      protected:
 		 RGB_vector_ptr getRendering(RGB_vector_ptr source);
 	      public:
-		 DeHook2Op(bptr < BitDepthProcessor > bitDepth, int maxBDGGrayLevel);
+		 DeHook2Op(bptr < BitDepthProcessor > bitDepth,RGB_ptr _maxBDG, int _maxBDGGrayLevel);
 
 	    };
 	};

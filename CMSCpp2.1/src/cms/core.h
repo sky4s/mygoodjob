@@ -137,11 +137,11 @@ namespace cms {
 
     class Target:public jObject {
       private:
-	static RGBPatchMap processPatchMap(Patch_vector_ptr patchList);
+	static RGBPatchMap_ptr processPatchMap(Patch_vector_ptr patchList);
       protected:
 	//XYZ_ptr luminance;
 	//const MaxValue *maxValue;
-	 RGBPatchMap patchMap;
+	 RGBPatchMap_ptr patchMap;
 	Patch_vector_ptr patchList;
 	string_ptr filename;
 	RGB_ptr keyRGB;
