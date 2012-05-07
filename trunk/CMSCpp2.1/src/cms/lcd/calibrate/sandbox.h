@@ -194,6 +194,12 @@ namespace cms {
 	    class DeHookProcessor {
 	      private:
 		const LCDCalibrator & c;
+		RGB_vector_ptr getAroudRGBVector(RGB_ptr center, double step);
+		Patch_ptr measure(RGB_ptr rgb);
+		RGBPatchMap_ptr rgbPatchMap;
+		double getNormalInput(int targetGrayLevel);
+		Patch_ptr getBestGammaPatchByMeasureLoop(Patch_ptr basePatch, double normalInput,
+							 double targetGamma, double deltaxySpec);
 	      public:
 		 DeHookProcessor(const LCDCalibrator & calibrator);
 		int getMaxBIntensityRawGrayLevel();
@@ -208,7 +214,12 @@ namespace cms {
 		int getBestGrayLevel(Patch_vector_ptr patchVector, double targetGamma);
 		Patch_ptr getBestGammaPatch(Patch_vector_ptr patchVector, double targetGamma,
 					    int targetGrayLevel);
+		Patch_ptr getBestGammaPatchByMeasure(Patch_ptr basePatch, double targetGamma,
+						     int targetGrayLevel, double deltaxySpec);
 		double bestGamma;
+		double_vector_ptr alterGammaCurve(double_vector_ptr gammaCurve, int alterStart,
+						  int alterEnd, int maxDigitalCount,
+						  double alterEndTargetGamma);
 	    };
 	};
     };

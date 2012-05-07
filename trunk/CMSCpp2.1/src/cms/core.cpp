@@ -332,11 +332,11 @@ namespace cms {
     };
 #endif
     //==========================================================================
-    RGBPatchMap Target::processPatchMap(Patch_vector_ptr patchList) {
-	RGBPatchMap patchMap;
+    RGBPatchMap_ptr Target::processPatchMap(Patch_vector_ptr patchList) {
+	RGBPatchMap_ptr patchMap(new RGBPatchMap());
 	foreach(Patch_ptr p, *patchList) {
 	    RGB_ptr rgb = p->getRGB();
-	    patchMap.insert(make_pair(rgb, p));
+	    patchMap->insert(make_pair(rgb, p));
 	}
 	return patchMap;
     };
@@ -364,7 +364,7 @@ namespace cms {
 	return (*patchList)[index];
     };
     Patch_ptr Target::getPatch(RGB_ptr rgb) {
-	return patchMap[rgb];
+	return (*patchMap)[rgb];
     };
     RGB_ptr Target::getKeyRGB() {
 	RGB_ptr clone = (*patchList)[0]->getRGB()->clone();

@@ -200,5 +200,6 @@ template < class T > struct Compare {
 
 //typedef std::map < RGB_ptr, Patch_ptr) RGBPatchMap;
 typedef std::map < RGB_ptr, Patch_ptr, Compare < RGB_ptr >) RGBPatchMap;
+typedef bptr < RGBPatchMap > RGBPatchMap_ptr;
 #endif
 

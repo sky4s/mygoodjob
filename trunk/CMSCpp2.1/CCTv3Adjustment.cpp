@@ -8,8 +8,8 @@
 USEFORM("src\gui\TMeasureWindow.cpp", MeasureWindow);
 USEFORM("src\gui\TAnalyzerFrame.cpp", AnalyzerFrame); /* TFrame: File Type */
 USEFORM("src\gui\TI2CTestForm.cpp", I2CTestForm);
-USEFORM("src\gui\TMatrixCalibration.cpp", MatrixCalibrationForm);
 USEFORM("src\gui\TCA210SettingFrame.cpp", CA210SettingFrame); /* TFrame: File Type */
+USEFORM("src\gui\TMatrixCalibration.cpp", MatrixCalibrationForm);
 USEFORM("src\gui\TOptionsFrame.cpp", OptionsFrame); /* TFrame: File Type */
 USEFORM("src\gui\TOutputFileFrame.cpp", OutputFileFrame); /* TFrame: File Type */
 USEFORM("src\gui\cct\TGammaAdjustmentForm.cpp", GammaAdjustmentForm);

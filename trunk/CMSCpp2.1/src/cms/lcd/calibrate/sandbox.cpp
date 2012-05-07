@@ -951,8 +951,9 @@ namespace cms {
 		    //找到最大B Intensity的灰階
 		    return lut.getMaxBIntensityRGL();
 		} else {
-		    bptr < cms::measure::IntensityAnalyzerIF > analyzer = c.fetcher->FirstAnalyzer;
-		    bptr < MeterMeasurement > mm = analyzer->getMeterMeasurement();
+		    /*bptr < cms::measure::IntensityAnalyzerIF > analyzer = c.fetcher->FirstAnalyzer;
+		       bptr < MeterMeasurement > mm = analyzer->getMeterMeasurement(); */
+		    bptr < MeterMeasurement > mm = c.getMeterMeasurement();
 		    return MeasureTool::getMaxBIntensityRawGrayLevel(mm, c.bitDepth);
 		}
 	    };
@@ -971,8 +972,9 @@ namespace cms {
 
 	    bptr < cms::devicemodel::LCDModel >
 		DeHookProcessor::getLCDModelForDeHook(int blueMaxGrayLevel) {
-		bptr < cms::measure::IntensityAnalyzerIF > analyzer = c.fetcher->FirstAnalyzer;
-		bptr < MeterMeasurement > mm = analyzer->getMeterMeasurement();
+		/*bptr < cms::measure::IntensityAnalyzerIF > analyzer = c.fetcher->FirstAnalyzer;
+		   bptr < MeterMeasurement > mm = analyzer->getMeterMeasurement(); */
+		bptr < MeterMeasurement > mm = c.getMeterMeasurement();
 		int max = c.bitDepth->getOutputMaxDigitalCount();
 
 
@@ -999,19 +1001,17 @@ namespace cms {
 
 		mm->setMeasureWindowsVisible(false);
 
-		foreach(Patch_ptr p, *patchList) {
-		    XYZ_ptr XYZ = p->getXYZ();
-		    int a = 1;
-		}
 
 		LCDTarget_ptr lcdTarget = LCDTarget::Instance::get(patchList);
-		//bptr < cms::devicemodel::MultiMatrixModel >
-		//model(new cms::devicemodel::MultiMatrixModel(lcdTarget));
 		bptr < cms::devicemodel::DeHook2LCDModel >
 		    model(new cms::devicemodel::DeHook2LCDModel(lcdTarget));
 		return model;
 	    };
 
+	    /*
+	       利用model預測的能力, 在RG: blueMaxGrayLevel~255的範圍內, 找到所有符合deltaxySpec
+	       的RGB及XYZ湊成Patch
+	     */
 	    Patch_vector_ptr DeHookProcessor::getReasonableChromaticityPatchVector(bptr <
 										   cms::
 										   devicemodel::
@@ -1035,7 +1035,6 @@ namespace cms {
 		    for (double r = g + step; r < 255; r += step) {
 			RGB_ptr rgb(new RGBColor(r, g, (double) blueMaxGrayLevel));
 			XYZ_ptr XYZ = model->getXYZ(rgb, false);
-			//XYZ_ptr XYZ = model->getXYZ(r, g, (double) blueMaxGrayLevel);
 			xyY_ptr xyY(new CIExyY(XYZ));
 			double_array dxy = xyY->getDeltaxy(whitexyY);
 			if (Math::abs(dxy[0]) < deltaxySpec && Math::abs(dxy[1]) < deltaxySpec) {
@@ -1079,16 +1078,23 @@ namespace cms {
 		}
 		return -1;
 	    };
-
-	    Patch_ptr DeHookProcessor::getBestGammaPatch(Patch_vector_ptr patchVector,
-							 double targetGamma, int targetGrayLevel) {
+	    double DeHookProcessor::getNormalInput(int targetGrayLevel) {
 		bptr < BitDepthProcessor > bitDepth = c.bitDepth;
 		int maxcount = bitDepth->getInputMaxDigitalCount();
+		double normalInput = ((double) targetGrayLevel) / maxcount;
+		return normalInput;
+	    }
+	    /*
+	       從patchVector裡面, 找到當patch放在targetGrayLevel時, 最接近targetGamma的那組patch
+	     */
+	    Patch_ptr DeHookProcessor::getBestGammaPatch(Patch_vector_ptr patchVector,
+							 double targetGamma, int targetGrayLevel) {
+
 		int size = patchVector->size();
 		if (0 == size) {
 		    return nil_Patch_ptr;
 		}
-		double normalInput = ((double) targetGrayLevel) / maxcount;
+		double normalInput = getNormalInput(targetGrayLevel);
 
 		int minDeltaIndex = -1;
 		double minDeltaGamma = std::numeric_limits < double >::max();
@@ -1110,6 +1116,93 @@ namespace cms {
 
 		Patch_ptr p = (*patchVector)[minDeltaIndex];
 		return p;
+	    };
+
+	    /*
+	       利用量測的方法, 以basePatch為基礎找到最符合SPEC的patch
+	     */
+	    Patch_ptr DeHookProcessor::getBestGammaPatchByMeasure(Patch_ptr basePatch,
+								  double targetGamma,
+								  int targetGrayLevel,
+								  double deltaxySpec) {
+		RGB_ptr center = basePatch->getRGB();
+		bptr < BitDepthProcessor > bitDepth = c.bitDepth;
+		int frcOnlyBit = bitDepth->getFRCOnlyBit();
+		double step = 1 / Math::pow(2, frcOnlyBit);
+		RGB_vector_ptr aroundRGBVector = getAroudRGBVector(center, step);
+
+		Patch_ptr white = measure(RGBColor::White);
+		XYZ_ptr whiteXYZ = white->getXYZ();
+		xyY_ptr whitexyY(new CIExyY(whiteXYZ));
+		double normalInput = getNormalInput(targetGrayLevel);
+
+		foreach(RGB_ptr rgb, *aroundRGBVector) {
+		    Patch_ptr patch = measure(rgb);
+		    XYZ_ptr XYZ = patch->getNormalizedXYZ();
+		    xyY_ptr xyY(new CIExyY(XYZ));
+		    double_array dxy = xyY->getDeltaxy(whitexyY);
+		    double gamma = GammaFinder::getGammaExponential(normalInput, XYZ->Y);
+		}
+	    };
+
+	    Patch_ptr DeHookProcessor::getBestGammaPatchByMeasureLoop(Patch_ptr basePatch,
+								      double normalInput,
+								      double targetGamma,
+								      double deltaxySpec) {
+	    };
+
+	    Patch_ptr DeHookProcessor::measure(RGB_ptr rgb) {
+		if (null == rgbPatchMap) {
+		    rgbPatchMap = RGBPatchMap_ptr(new RGBPatchMap());
+		}
+		Patch_ptr p = (*rgbPatchMap)[rgb];
+		if (null == p) {
+		    bptr < MeterMeasurement > mm = c.getMeterMeasurement();
+		    p = mm->measure(rgb, nil_string_ptr);
+		    (*rgbPatchMap)[rgb] = p;
+		    //rgbPatchMap
+		}
+		return p;
+	    };
+
+	    RGB_vector_ptr DeHookProcessor::getAroudRGBVector(RGB_ptr center, double step) {
+		RGB_vector_ptr result(new RGB_vector());
+
+
+		for (int baseR = -1; baseR <= 1; baseR++) {
+		    for (int baseG = -1; baseG <= 1; baseG++) {
+			double r = center->R + step * baseR;
+			double g = center->G + step * baseG;
+			if (r > g && g > center->B) {
+			    RGB_ptr clone = center->clone();
+			    clone->R = r;
+			    clone->G = g;
+			    result->push_back(clone);
+			}
+		    }
+		}
+		return result;
+	    };
+
+	    double_vector_ptr DeHookProcessor::alterGammaCurve(double_vector_ptr gammaCurve,
+							       int alterStart, int alterEnd,
+							       int maxDigitalCount,
+							       double alterEndTargetGamma) {
+		double_vector_ptr result = DoubleArray::copy(gammaCurve);
+		double startInput = ((double) alterStart) / maxDigitalCount;
+		double startOutput = (*gammaCurve)[alterStart];
+		double startGamma = GammaFinder::getGammaExponential(startInput, startOutput);
+
+		for (int x = alterStart + 1; x <= alterEnd; x++) {
+		    double normal = ((double) x) / maxDigitalCount;
+		    double gamma = Interpolation::linear(alterStart, alterEnd, startGamma,
+							 alterEndTargetGamma,
+							 x);
+		    double output = GammaFinder::gamma(normal, gamma);
+		    (*result)[x] = output;
+		}
+
+		return result;
 	    };
 	};
     };

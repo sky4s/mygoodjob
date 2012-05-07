@@ -16,7 +16,7 @@
       build\rgbvectorop.obj build\whitefinder.obj build\metermeasurement.obj 
       build\analyzer.obj build\cp.obj build\meter.obj build\TMeasureWindow.obj 
       build\TAnalyzerFrame.obj build\TI2CTestForm.obj 
-      build\TMatrixCalibration.obj build\TCA210SettingFrame.obj 
+      build\TCA210SettingFrame.obj build\TMatrixCalibration.obj 
       build\TOptionsFrame.obj build\TOutputFileFrame.obj build\i2ccontrol.obj 
       build\tconcontrol.obj build\tconparameter.obj build\ReadWriteFunc.obj 
       build\gamma.obj build\dimdg.obj build\sandbox.obj build\cmf.obj 
@@ -33,8 +33,8 @@
     <IDLGENFILES value=""/>
     <DEFFILE value=""/>
     <RESDEPEN value="$(RESFILES) src\gui\TMeasureWindow.dfm src\gui\TAnalyzerFrame.dfm 
-      src\gui\TI2CTestForm.dfm src\gui\TMatrixCalibration.dfm 
-      src\gui\TCA210SettingFrame.dfm src\gui\TOptionsFrame.dfm 
+      src\gui\TI2CTestForm.dfm src\gui\TCA210SettingFrame.dfm 
+      src\gui\TMatrixCalibration.dfm src\gui\TOptionsFrame.dfm 
       src\gui\TOutputFileFrame.dfm src\gui\cct\TGammaAdjustmentForm.dfm 
       src\gui\cct\TGammaMeasurementForm.dfm src\gui\cct\TMainForm.dfm 
       src\gui\cct\TTargetWhiteForm2.dfm src\gui\cct\TAboutBox.dfm 
@@ -49,7 +49,7 @@
       inetdbbde.bpi inetdbxpress.bpi inetdb.bpi nmfast.bpi webdsnap.bpi 
       bcbie.bpi websnap.bpi soaprtl.bpi dclocx.bpi dbexpress.bpi dbxcds.bpi 
       indy.bpi bcb2kaxserver.bpi bcbindent.bpi"/>
-    <PATHCPP value=".;lib\LPT_lib;lib\USB_i2c_lib;src\java;lib\CA200SRVRLib;src\ca210api;src\cms\util;src\cms\colorspace;src\cms;src\cms\colorformat;src\math;src\cms\lcd\calibrate;src\cms\measure;src\gui;src\i2c;src\i2c\core;src\gui\cct;src\gui\util;src\gui\event;src\cms\lcd;src\algo;lib\EyeOneLib;src\cms\devicemodel"/>
+    <PATHCPP value=".;lib\LPT_lib;lib\LPT_lib;lib\USB_i2c_lib;src\java;lib\CA200SRVRLib;lib\CA200SRVRLib;src\ca210api;src\cms\util;src\cms\util;src\cms\colorspace;src\cms\colorspace;src\cms\colorspace;src\cms\colorspace;src\cms\colorspace;src\cms;src\cms;src\cms\colorformat;src\cms\colorformat;src\cms\colorformat;src\cms\colorformat;src\math;src\math;src\math;src\math;src\math;src\cms\lcd\calibrate;src\cms\lcd\calibrate;src\cms\lcd\calibrate;src\cms\lcd\calibrate;src\cms\lcd\calibrate;src\cms\lcd\calibrate;src\cms\measure;src\cms\measure;src\cms\measure;src\cms\measure;src\gui;src\gui;src\gui;src\gui;src\gui;src\gui;src\gui;src\i2c;src\i2c;src\i2c;src\i2c\core;src\math;src\cms\lcd\calibrate;src\cms\lcd\calibrate;src\cms\colorformat;src\math;src\gui\cct;src\gui\cct;src\gui\cct;src\gui\cct;src\gui\cct;src\gui\cct;src\cms\lcd\calibrate;src\cms\lcd\calibrate;src\cms;src\cms\lcd\calibrate;src\cms\lcd\calibrate;src\gui\util;src\gui\event;src\cms\lcd;src\algo;src\cms\measure;src\cms\lcd\calibrate;src\cms\lcd\calibrate;lib\EyeOneLib;src\gui\cct;src\cms\lcd;src\cms\devicemodel"/>
     <PATHPAS value=".;"/>
     <PATHRC value=".;"/>
     <PATHASM value=".;"/>
@@ -131,8 +131,8 @@
       <FILE FILENAME="src\gui\TAnalyzerFrame.cpp" FORMNAME="AnalyzerFrame" UNITNAME="TAnalyzerFrame" CONTAINERID="CCompiler" DESIGNCLASS="TFrame" LOCALCOMMAND=""/>
       <FILE FILENAME="lib\hid.lib" FORMNAME="" UNITNAME="hid.lib" CONTAINERID="LibTool" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="src\gui\TI2CTestForm.cpp" FORMNAME="I2CTestForm" UNITNAME="TI2CTestForm" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="src\gui\TMatrixCalibration.cpp" FORMNAME="MatrixCalibrationForm" UNITNAME="TMatrixCalibration" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="src\gui\TCA210SettingFrame.cpp" FORMNAME="CA210SettingFrame" UNITNAME="TCA210SettingFrame" CONTAINERID="CCompiler" DESIGNCLASS="TFrame" LOCALCOMMAND=""/>
+      <FILE FILENAME="src\gui\TMatrixCalibration.cpp" FORMNAME="MatrixCalibrationForm" UNITNAME="TMatrixCalibration" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="src\gui\TOptionsFrame.cpp" FORMNAME="OptionsFrame" UNITNAME="TOptionsFrame" CONTAINERID="CCompiler" DESIGNCLASS="TFrame" LOCALCOMMAND=""/>
       <FILE FILENAME="src\gui\TOutputFileFrame.cpp" FORMNAME="OutputFileFrame" UNITNAME="TOutputFileFrame" CONTAINERID="CCompiler" DESIGNCLASS="TFrame" LOCALCOMMAND=""/>
       <FILE FILENAME="src\i2c\i2ccontrol.cpp" FORMNAME="" UNITNAME="i2ccontrol.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
