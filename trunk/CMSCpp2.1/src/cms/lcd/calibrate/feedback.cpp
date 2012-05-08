@@ -278,7 +278,8 @@ namespace cms {
 		    for (int y = x + 1; y < size; y++) {
 			Component_ptr c2 = (*storeComponentVector)[y];
 			RGB_ptr rgb2 = c2->rgb;
-			if (rgb->equals(rgb2)) {
+
+			if (rgb->equals(rgb2)) { //error!!!
 			    tmp->push_back(c2);
 			}
 		    }

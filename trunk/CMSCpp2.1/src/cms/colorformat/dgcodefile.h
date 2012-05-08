@@ -45,6 +45,7 @@ namespace cms {
 				    bptr < cms::lcd::BitDepthProcessor > bitDepth);
 	    void setLCDTarget(LCDTarget_ptr lcdTarget);
 	    LCDTarget_ptr getLCDTarget();
+            void addToLCDTarget(Patch_ptr p);
 	    Component_vector_ptr getComponentVector();
 	    RGB_vector_ptr getGammaTable();
 	    /*

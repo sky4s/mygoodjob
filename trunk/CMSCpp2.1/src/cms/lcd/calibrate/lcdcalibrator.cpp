@@ -78,7 +78,8 @@ namespace cms {
 		gammaUPLimit = 3.0;
 		bGap1stGammaBoundGrayLevel = 250;
 		bestGammaAtGammaBoundGrayLevel = -1;
-		reasonableDeltaChromaticity = 0.0025;
+		reasonableDeltaChromaticity = 0.003;
+                AlterGammaCurveAtDeHook2=false;
 	    };
 
 	     double_vector_ptr
@@ -419,7 +420,7 @@ namespace cms {
 		    /*
 		       DeHook2+Gamma1st/BGap1st:會影響到搭配的R/G
 		       湊出所有R/G組合
-		       過濾出dxdy reasonableDeltaChromaticity(0.0025)內
+		       過濾出dxdy reasonableDeltaChromaticity(0.003)內
 		     */
 		    Patch_vector_ptr patchVector = processor.
 			getReasonableChromaticityPatchVector
@@ -442,17 +443,21 @@ namespace cms {
 			double gamma = GammaFinder::getGammaExponential(normalInput,
 									normalOutput);
 			//再從這裡面撈出最接近target gamma的
-			Patch_ptr bestPatch = processor.getBestGammaPatch(patchVector, gamma,
+			bestGammaPatch1 = processor.getBestGammaPatch(patchVector, gamma,
 									  this->maxBDGGrayLevel);
-			if (nil_Patch_ptr == bestPatch) {
+			if (nil_Patch_ptr == bestGammaPatch1) {
 			    throw new IllegalStateException("");
 			}
+			bestGammaPatch2 = processor.getBestGammaPatchByMeasure(bestGammaPatch1, gamma,
+									 this->maxBDGGrayLevel,
+									 reasonableDeltaChromaticity);
+                        Patch_ptr bestPatch=bestGammaPatch2;
 			double bestGamma = processor.bestGamma;
 			this->bestGammaAtGammaBoundGrayLevel = bestGamma;
 			/*
 			   gamma算出來了, 所以要去更動gamma curve, 讓做出來的結果真的有碰到bestPatch
 			 */
-			if (true) {
+			if (alterGammaCurveAtDeHook2) {
 			    this->gammaCurve =
 				processor.alterGammaCurve(this->gammaCurve,
 							  bGap1stGammaBoundGrayLevel,
@@ -1071,6 +1076,10 @@ namespace cms {
 		}
 		if (null != lcdmodel4DeHook) {
 		    dglutFile->setLCDTarget(lcdmodel4DeHook->LCDTarget);
+                    if(null !=bestGammaPatch1) {
+                    dglutFile->addToLCDTarget(bestGammaPatch1);
+                    dglutFile->addToLCDTarget(bestGammaPatch2);
+                    }
 		}
 
 	    };

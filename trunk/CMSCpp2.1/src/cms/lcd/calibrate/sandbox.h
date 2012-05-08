@@ -198,8 +198,9 @@ namespace cms {
 		Patch_ptr measure(RGB_ptr rgb);
 		RGBPatchMap_ptr rgbPatchMap;
 		double getNormalInput(int targetGrayLevel);
-		Patch_ptr getBestGammaPatchByMeasureLoop(Patch_ptr basePatch, double normalInput,
-							 double targetGamma, double deltaxySpec);
+		Patch_ptr getBestGammaPatchByMeasureLoop(Patch_ptr basePatch, double targetGamma,
+							 int targetGrayLevel, double deltaxySpec);
+                double getGammaExponentialFromMeasure(Patch_ptr patch,int targetGrayLevel);
 	      public:
 		 DeHookProcessor(const LCDCalibrator & calibrator);
 		int getMaxBIntensityRawGrayLevel();

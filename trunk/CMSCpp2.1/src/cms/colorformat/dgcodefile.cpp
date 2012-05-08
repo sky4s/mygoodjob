@@ -205,6 +205,29 @@ namespace cms {
 	    }
 	};
 
+        void DGLutFile::addToLCDTarget(Patch_ptr p) {
+          //const int headerCount = 9;
+           const int headerCount = getHeaderCount(LCDTarget);
+         string_vector_ptr values(new string_vector(headerCount));
+
+		(*values)[0] = "-1";
+
+		RGB_ptr rgb = p->getRGB();
+		(*values)[1] = _toString(rgb->R);
+		(*values)[2] = _toString(rgb->G);
+		(*values)[3] = _toString(rgb->B);
+
+		XYZ_ptr XYZ = p->getXYZ();
+		(*values)[4] = _toString(XYZ->X);
+		(*values)[5] = _toString(XYZ->Y);
+		(*values)[6] = _toString(XYZ->Z);
+
+		xyY_ptr xyY(new CIExyY(XYZ));
+		(*values)[7] = _toString(xyY->x);
+		(*values)[8] = _toString(xyY->y);
+
+		this->insertData(LCDTarget, values, true);
+        };
 	void DGLutFile::setLCDTarget(LCDTarget_ptr lcdTarget) {
 	    Patch_vector_ptr patchList = lcdTarget->getPatchList();
 
@@ -212,15 +235,15 @@ namespace cms {
 	    // 初始資料設定
 	    //==================================================================
 	    const int headerCount = 9;
-	    initSheet(LCDTarget, headerCount, "num", "R", "G", "B", "X",
+	    initSheet(LCDTarget, headerCount, "id", "R", "G", "B", "X",
 		      "Y (nit)", "Z", "_x", "_y");
 
 	    int size = patchList->size();
 	    string_vector_ptr values(new string_vector(headerCount));
 	    //==================================================================
-	    int num = 1;
+	    int id = 1;
 	    foreach(Patch_ptr p, *patchList) {
-		(*values)[0] = _toString(num++);
+		(*values)[0] = _toString(id);
 
 		RGB_ptr rgb = p->getRGB();
 		(*values)[1] = _toString(rgb->R);
