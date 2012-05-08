@@ -126,6 +126,7 @@ class TCCTLUTForm:public TForm, cms::lcd::calibrate::FeedbackListener {
     TCheckBox *CheckBox_KeepMaxYInMultiGen;
     TRadioButton *RadioButton_NewDeHook;
     TRadioGroup *RadioGroup_NewDeHookPriority;
+        TCheckBox *CheckBox_AlterGammaCurveAtDeHook2;
     void __fastcall RadioButton_P1P2Click(TObject * Sender);
     void __fastcall Button_MeaRunClick(TObject * Sender);
     void __fastcall Button_DebugClick(TObject * Sender);

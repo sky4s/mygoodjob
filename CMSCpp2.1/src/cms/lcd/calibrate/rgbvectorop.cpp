@@ -697,7 +697,7 @@ namespace cms {
 	    RGB_vector_ptr DeHook2Op::getRendering(RGB_vector_ptr source) {
 		int maxCount = bitDepth->getOutputMaxDigitalCount();
 		RGB_vector_ptr result = RGBVector::deepClone(source);
-		RGB_ptr rgb0 = (*result)[maxBDGGrayLevel];
+		RGB_ptr rgb0 = (*result)[this->maxBDGGrayLevel];
                 rgb0->R= maxBDG->R;
                 rgb0->G= maxBDG->G;
                 rgb0->B= maxBDG->B;
@@ -706,11 +706,11 @@ namespace cms {
                 /*
                 這邊不應該用DG作內插就好, 應該考量亮度是否meet target gamma
                 */
-		for (int x = maxBDGGrayLevel + 1; x < maxCount; x++) {
+		for (int x = this->maxBDGGrayLevel + 1; x < maxCount; x++) {
 		    RGB_ptr rgb = (*result)[x];
-		    rgb->R = Interpolation::linear(maxBDGGrayLevel, maxCount, rgb0->R, rgb1->R, x);
-		    rgb->G = Interpolation::linear(maxBDGGrayLevel, maxCount, rgb0->G, rgb1->G, x);
-		    rgb->B = Interpolation::linear(maxBDGGrayLevel, maxCount, rgb0->B, rgb1->B, x);
+		    rgb->R = Interpolation::linear(this->maxBDGGrayLevel, maxCount, rgb0->R, rgb1->R, x);
+		    rgb->G = Interpolation::linear(this->maxBDGGrayLevel, maxCount, rgb0->G, rgb1->G, x);
+		    rgb->B = Interpolation::linear(this->maxBDGGrayLevel, maxCount, rgb0->B, rgb1->B, x);
 		}
 
 		return result;

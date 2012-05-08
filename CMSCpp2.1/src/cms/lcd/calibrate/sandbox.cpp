@@ -1126,6 +1126,50 @@ namespace cms {
 								  int targetGrayLevel,
 								  double deltaxySpec) {
 		RGB_ptr center = basePatch->getRGB();
+		Patch_ptr bestPatch = basePatch;
+
+		//限制最多量256次
+		for (int x = 0; x < 256; x++) {
+		    Patch_ptr patch =
+			getBestGammaPatchByMeasureLoop(bestPatch, targetGamma, targetGrayLevel,
+						       deltaxySpec);
+		    RGB_ptr newcenter = patch->getRGB();
+		    if (newcenter->equalsValues(center)) {
+
+                        /*XYZ_ptr XYZ=patch->getXYZ();
+		        Patch_ptr white = measure(RGBColor::White);
+		        XYZ_ptr whiteXYZ = white->getXYZ();
+                        double normalInput = getNormalInput(targetGrayLevel);
+                        double normalizedY = XYZ->Y / whiteXYZ->Y;
+                        double gamma = GammaFinder::getGammaExponential(normalInput, normalizedY);*/
+                        bestGamma=getGammaExponentialFromMeasure(patch,targetGrayLevel);
+			return patch;
+		    }
+		    bestPatch = patch;
+                    center = bestPatch->getRGB();
+		}
+
+		return nil_Patch_ptr;
+	    };
+
+            double DeHookProcessor::getGammaExponentialFromMeasure(Patch_ptr patch,int targetGrayLevel) {
+                        XYZ_ptr XYZ=patch->getXYZ();
+		        Patch_ptr white = measure(RGBColor::White);
+		        XYZ_ptr whiteXYZ = white->getXYZ();
+                        double normalInput = getNormalInput(targetGrayLevel);
+                        double normalizedY = XYZ->Y / whiteXYZ->Y;
+                        double gamma = GammaFinder::getGammaExponential(normalInput, normalizedY);
+                        return gamma;
+            };
+
+	    /*
+	       迴圈式迭代找到最佳解
+	     */
+	    Patch_ptr DeHookProcessor::getBestGammaPatchByMeasureLoop(Patch_ptr basePatch,
+								      double targetGamma,
+								      int targetGrayLevel,
+								      double deltaxySpec) {
+		RGB_ptr center = basePatch->getRGB();
 		bptr < BitDepthProcessor > bitDepth = c.bitDepth;
 		int frcOnlyBit = bitDepth->getFRCOnlyBit();
 		double step = 1 / Math::pow(2, frcOnlyBit);
@@ -1134,21 +1178,38 @@ namespace cms {
 		Patch_ptr white = measure(RGBColor::White);
 		XYZ_ptr whiteXYZ = white->getXYZ();
 		xyY_ptr whitexyY(new CIExyY(whiteXYZ));
-		double normalInput = getNormalInput(targetGrayLevel);
+		Patch_vector_ptr patchVector(new Patch_vector());
 
+		//先把符合色度的色塊撈出來
 		foreach(RGB_ptr rgb, *aroundRGBVector) {
 		    Patch_ptr patch = measure(rgb);
 		    XYZ_ptr XYZ = patch->getNormalizedXYZ();
 		    xyY_ptr xyY(new CIExyY(XYZ));
 		    double_array dxy = xyY->getDeltaxy(whitexyY);
-		    double gamma = GammaFinder::getGammaExponential(normalInput, XYZ->Y);
+		    if (dxy[0] < deltaxySpec && dxy[1] < deltaxySpec) {
+			patchVector->push_back(patch);
+		    }
 		}
-	    };
 
-	    Patch_ptr DeHookProcessor::getBestGammaPatchByMeasureLoop(Patch_ptr basePatch,
-								      double normalInput,
-								      double targetGamma,
-								      double deltaxySpec) {
+
+		//double normalInput = getNormalInput(targetGrayLevel);
+		Patch_ptr minDeltaGammaPatch = nil_Patch_ptr;
+		double minDeltaGamma = std::numeric_limits < double >::max();
+
+		//再找到最接近target gamma的色塊
+		foreach(Patch_ptr p, *patchVector) {
+		    XYZ_ptr XYZ = p->getXYZ();
+		    //double normalizedY = XYZ->Y / whiteXYZ->Y;
+		    //double gamma = GammaFinder::getGammaExponential(normalInput, normalizedY);
+                    //double gamma =getGammaExponentialFromMeasure(p,targetGrayLevel);
+                     double gamma =getGammaExponentialFromMeasure(p,targetGrayLevel);
+		    double deltaGamma = Math::abs(targetGamma - gamma);
+		    if (deltaGamma < minDeltaGamma) {
+			minDeltaGamma = deltaGamma;
+			minDeltaGammaPatch = p;
+		    }
+		}
+		return minDeltaGammaPatch;
 	    };
 
 	    Patch_ptr DeHookProcessor::measure(RGB_ptr rgb) {

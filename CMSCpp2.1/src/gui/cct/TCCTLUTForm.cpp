@@ -211,6 +211,7 @@ void __fastcall TCCTLUTForm::Button_MeaRunClick(TObject * Sender)
 		    break;
 		case 1:	//Gamma first
 		    calibrator.DeHookMode = SecondWithGamma1st;
+                   calibrator.AlterGammaCurveAtDeHook2= CheckBox_AlterGammaCurveAtDeHook2->Checked;
 		    break;
 		};
 	    }

@@ -1,6 +1,6 @@
 object CCTLUTForm: TCCTLUTForm
-  Left = 615
-  Top = 529
+  Left = 462
+  Top = 192
   Width = 841
   Height = 431
   Caption = 'CCT(LUT)'
@@ -1099,6 +1099,14 @@ object CCTLUTForm: TCCTLUTForm
         TabOrder = 3
       end
     end
+    object CheckBox_AlterGammaCurveAtDeHook2: TCheckBox
+      Left = 8
+      Top = 232
+      Width = 121
+      Height = 17
+      Caption = 'Alter r Curve'
+      TabOrder = 10
+    end
   end
   object CheckBox_MemoryMeasure: TCheckBox
     Left = 511
@@ -1133,7 +1141,7 @@ object CCTLUTForm: TCCTLUTForm
   end
   object StatusBar1: TStatusBar
     Left = 0
-    Top = 383
+    Top = 378
     Width = 833
     Height = 19
     Color = clWhite
