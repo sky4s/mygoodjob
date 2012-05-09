@@ -972,8 +972,6 @@ namespace cms {
 
 	    bptr < cms::devicemodel::LCDModel >
 		DeHookProcessor::getLCDModelForDeHook(int blueMaxGrayLevel) {
-		/*bptr < cms::measure::IntensityAnalyzerIF > analyzer = c.fetcher->FirstAnalyzer;
-		   bptr < MeterMeasurement > mm = analyzer->getMeterMeasurement(); */
 		bptr < MeterMeasurement > mm = c.getMeterMeasurement();
 		int max = c.bitDepth->getOutputMaxDigitalCount();
 
@@ -1136,31 +1134,26 @@ namespace cms {
 		    RGB_ptr newcenter = patch->getRGB();
 		    if (newcenter->equalsValues(center)) {
 
-                        /*XYZ_ptr XYZ=patch->getXYZ();
-		        Patch_ptr white = measure(RGBColor::White);
-		        XYZ_ptr whiteXYZ = white->getXYZ();
-                        double normalInput = getNormalInput(targetGrayLevel);
-                        double normalizedY = XYZ->Y / whiteXYZ->Y;
-                        double gamma = GammaFinder::getGammaExponential(normalInput, normalizedY);*/
-                        bestGamma=getGammaExponentialFromMeasure(patch,targetGrayLevel);
+			bestGamma = getGammaExponentialFromMeasure(patch, targetGrayLevel);
 			return patch;
 		    }
 		    bestPatch = patch;
-                    center = bestPatch->getRGB();
+		    center = bestPatch->getRGB();
 		}
 
 		return nil_Patch_ptr;
 	    };
 
-            double DeHookProcessor::getGammaExponentialFromMeasure(Patch_ptr patch,int targetGrayLevel) {
-                        XYZ_ptr XYZ=patch->getXYZ();
-		        Patch_ptr white = measure(RGBColor::White);
-		        XYZ_ptr whiteXYZ = white->getXYZ();
-                        double normalInput = getNormalInput(targetGrayLevel);
-                        double normalizedY = XYZ->Y / whiteXYZ->Y;
-                        double gamma = GammaFinder::getGammaExponential(normalInput, normalizedY);
-                        return gamma;
-            };
+	    double DeHookProcessor::getGammaExponentialFromMeasure(Patch_ptr patch,
+								   int targetGrayLevel) {
+		XYZ_ptr XYZ = patch->getXYZ();
+		Patch_ptr white = measure(RGBColor::White);
+		XYZ_ptr whiteXYZ = white->getXYZ();
+		double normalInput = getNormalInput(targetGrayLevel);
+		double normalizedY = XYZ->Y / whiteXYZ->Y;
+		double gamma = GammaFinder::getGammaExponential(normalInput, normalizedY);
+		return gamma;
+	    };
 
 	    /*
 	       迴圈式迭代找到最佳解
@@ -1183,26 +1176,21 @@ namespace cms {
 		//先把符合色度的色塊撈出來
 		foreach(RGB_ptr rgb, *aroundRGBVector) {
 		    Patch_ptr patch = measure(rgb);
-		    XYZ_ptr XYZ = patch->getNormalizedXYZ();
+		    XYZ_ptr XYZ = patch->getXYZ();
 		    xyY_ptr xyY(new CIExyY(XYZ));
 		    double_array dxy = xyY->getDeltaxy(whitexyY);
-		    if (dxy[0] < deltaxySpec && dxy[1] < deltaxySpec) {
+		    if (Math::abs(dxy[0]) < deltaxySpec && Math::abs(dxy[1]) < deltaxySpec) {
 			patchVector->push_back(patch);
 		    }
 		}
 
-
-		//double normalInput = getNormalInput(targetGrayLevel);
 		Patch_ptr minDeltaGammaPatch = nil_Patch_ptr;
 		double minDeltaGamma = std::numeric_limits < double >::max();
 
 		//再找到最接近target gamma的色塊
 		foreach(Patch_ptr p, *patchVector) {
 		    XYZ_ptr XYZ = p->getXYZ();
-		    //double normalizedY = XYZ->Y / whiteXYZ->Y;
-		    //double gamma = GammaFinder::getGammaExponential(normalInput, normalizedY);
-                    //double gamma =getGammaExponentialFromMeasure(p,targetGrayLevel);
-                     double gamma =getGammaExponentialFromMeasure(p,targetGrayLevel);
+		    double gamma = getGammaExponentialFromMeasure(p, targetGrayLevel);
 		    double deltaGamma = Math::abs(targetGamma - gamma);
 		    if (deltaGamma < minDeltaGamma) {
 			minDeltaGamma = deltaGamma;
@@ -1217,12 +1205,21 @@ namespace cms {
 		    rgbPatchMap = RGBPatchMap_ptr(new RGBPatchMap());
 		}
 		Patch_ptr p = (*rgbPatchMap)[rgb];
+		bptr < MeterMeasurement > mm = c.getMeterMeasurement();
 		if (null == p) {
-		    bptr < MeterMeasurement > mm = c.getMeterMeasurement();
 		    p = mm->measure(rgb, nil_string_ptr);
 		    (*rgbPatchMap)[rgb] = p;
-		    //rgbPatchMap
 		}
+		Patch_ptr whitepatch = (*rgbPatchMap)[RGBColor::White];
+		if (null == whitepatch) {
+		    whitepatch = mm->measure(RGBColor::White, nil_string_ptr);
+		    (*rgbPatchMap)[RGBColor::White] = whitepatch;
+		}
+		XYZ_ptr whiteXYZ = whitepatch->getXYZ();
+		XYZ_ptr XYZ = p->getXYZ();
+		XYZ_ptr normalizedXYZ = XYZ->clone();
+		normalizedXYZ->normalize(whiteXYZ);
+		Patch::Operator::setNormalizedXYZ(p, normalizedXYZ);
 		return p;
 	    };
 

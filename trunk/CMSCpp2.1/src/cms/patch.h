@@ -13,8 +13,10 @@
 namespace cms {
     class Patch:public jObject, cms::util::NameIF {
 
+	friend class PatchOperator;
       protected:
-	string_ptr name;
+
+	 string_ptr name;
 	XYZ_ptr XYZ;
 	Lab_ptr _Lab;
 	XYZ_ptr normalizedXYZ;
@@ -49,7 +51,17 @@ namespace cms {
 	};
 	static bool hasOnlyOneValue(Patch_ptr patch);
 	//Patch_ptr clone();
+
+	class Operator {
+	    friend class Patch;
+	  public:
+	    static void setXYZ(Patch_ptr p, XYZ_ptr XYZ);
+	    static void setNormalizedXYZ(Patch_ptr p, XYZ_ptr normalizedXYZ);
+	};
+	friend class Operator;
     };
+
+
 
 };
 #endif

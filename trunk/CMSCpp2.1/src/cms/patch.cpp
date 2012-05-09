@@ -94,5 +94,14 @@ namespace cms {
        Patch_ptr p(new Patch(name, XYZ, normalizedXYZ, rgb, intensity));
        return p;
        }; */
+
+    void Patch::Operator::setXYZ(Patch_ptr p, XYZ_ptr XYZ) {
+	p->XYZ = XYZ;
+    };
+    void Patch::Operator::setNormalizedXYZ(Patch_ptr p, XYZ_ptr normalizedXYZ) {
+	p->normalizedXYZ = normalizedXYZ;
+    };
+ 
+
 }
 

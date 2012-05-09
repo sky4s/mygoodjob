@@ -243,7 +243,7 @@ namespace cms {
 	    //==================================================================
 	    int id = 1;
 	    foreach(Patch_ptr p, *patchList) {
-		(*values)[0] = _toString(id);
+		(*values)[0] = _toString(id++);
 
 		RGB_ptr rgb = p->getRGB();
 		(*values)[1] = _toString(rgb->R);

@@ -415,6 +415,9 @@ namespace cms {
 		     */
 		    //*must measure
 		    this->maxBRawGrayLevel = processor.getMaxBIntensityRawGrayLevel();
+                    if( -1 == maxBRawGrayLevel) {
+                        ShowMessage("-1 == maxBRawGrayLevel");
+                    }
 		    lcdmodel4DeHook = processor.getLCDModelForDeHook(this->maxBRawGrayLevel);
 
 		    /*
@@ -430,8 +433,8 @@ namespace cms {
 			this->maxBDGGrayLevel =
 			    processor.
 			    getReasonableGammaGrayLevel(patchVector, gammaDWLimit, gammaUPLimit);
-			if (-1 == maxBDGGrayLevel) {
-			    maxBDGGrayLevel = max - 1;
+			if (-1 == this->maxBDGGrayLevel) {
+			    this->maxBDGGrayLevel = max - 1;
 			}
 			if (this->maxBDGGrayLevel <= bGap1stGammaBoundGrayLevel) {
 			    this->maxBDGGrayLevel = bGap1stGammaBoundGrayLevel + 1;
@@ -510,11 +513,11 @@ namespace cms {
 		       去對應hook, 因此才要這邊的步驟
 		     */
 
-		    if (null == secondWhiteAnalyzer) {
+		    //if (null == secondWhiteAnalyzer) {
 			//此時找的是255 255 250(B Max IntensitY)
 			init2ndWhiteAnalyzer(keepMaxLuminance, dehook);
 			fetcher->SecondAnalyzer = secondWhiteAnalyzer;
-		    }
+		    //}
 		    RGB_ptr rgb = secondWhiteAnalyzer->getReferenceRGB();
 		    panelRegulator = bptr < PanelRegulator >
 			(new
@@ -645,10 +648,10 @@ namespace cms {
 		    STORE_COMPONENT("o_fetch2.xls", componentVector2);
 		    panelRegulator2->setEnable(false);
 
-		    if (null == secondWhiteAnalyzer) {
+		    //if (null == secondWhiteAnalyzer) {
 			//初始化255/255/255的white analyzer
 			init2ndWhiteAnalyzer(keepMaxLuminance, dehook);
-		    }
+		    //}
 
 		    advgenerator = bptr < AdvancedDGLutGenerator >
 			(new
@@ -1150,6 +1153,9 @@ namespace cms {
 		    //如果用上dehook2, maxBDGGrayLevel到白點需要內插, 使色度漸進到白點
 		    if (SecondWithBGap1st == dehook || SecondWithBGap1st == dehook) {
 			RGB_ptr rgb = secondWhiteAnalyzer->getReferenceRGB();
+                        if( -1 == maxBDGGrayLevel) {
+                         ShowMessage("-1 == maxBDGGrayLevel");
+                        }
 			bptr < DGLutOp > deHook2(new DeHook2Op(bitDepth, rgb, maxBDGGrayLevel));
 			dgop.addOp(deHook2);
 		    }

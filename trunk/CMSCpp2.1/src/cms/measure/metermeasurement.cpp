@@ -169,7 +169,7 @@ namespace cms {
 	    }
 
 	    XYZ_ptr XYZ(new Indep::CIEXYZ(result));
-	    Patch_ptr patch(new Patch(patchName, XYZ, XYZ, measureRGB));
+	    Patch_ptr patch(new Patch(patchName, XYZ, nil_XYZ_ptr, measureRGB));
 	    return patch;
 	};
 	//======================================================================

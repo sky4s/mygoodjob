@@ -200,7 +200,7 @@ namespace cms {
 		double getNormalInput(int targetGrayLevel);
 		Patch_ptr getBestGammaPatchByMeasureLoop(Patch_ptr basePatch, double targetGamma,
 							 int targetGrayLevel, double deltaxySpec);
-                double getGammaExponentialFromMeasure(Patch_ptr patch,int targetGrayLevel);
+		double getGammaExponentialFromMeasure(Patch_ptr patch, int targetGrayLevel);
 	      public:
 		 DeHookProcessor(const LCDCalibrator & calibrator);
 		int getMaxBIntensityRawGrayLevel();
@@ -226,5 +226,7 @@ namespace cms {
     };
 };
 
+ 
+ 
 #endif
 
