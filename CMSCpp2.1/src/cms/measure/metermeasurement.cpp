@@ -20,7 +20,7 @@ namespace cms {
 	using namespace std;
 	using namespace java::lang;
 	using namespace cms::lcd::calibrate;
-	using namespace cms::lcd;        
+	using namespace cms::lcd;
 	using namespace cms::util;
 
 	void MeterMeasurement::init(bool calibration) {
@@ -33,6 +33,7 @@ namespace cms {
 	    measureWindowClosing(false), titleTouched(false),
 	    fakeMeasure(false), averageTimes(1) {
 	    init(calibration);
+	    measurePatchVector = Patch_vector_ptr(new Patch_vector());
 	};
 
 	void MeterMeasurement::calibrate() {
@@ -70,22 +71,6 @@ namespace cms {
 	    return measure(rgb, str);
 	};
 
-	/*void MeterMeasurement::setBlankTimes(int blankTimes) {
-	   this->blankTimes = blankTimes;
-	   };
-	   void MeterMeasurement::setWaitTimes(int waitTimes) {
-	   this->waitTimes = waitTimes;
-	   };
-	   int MeterMeasurement::getWaitTimes() {
-	   return waitTimes;
-	   };
-	   void MeterMeasurement::setFakeMeasure(bool fake) {
-	   this->fakeMeasure = fake;
-	   };
-	   bool MeterMeasurement::isFakeMeasure() {
-	   return fakeMeasure;
-	   }; */
-
 	bptr < cms::measure::meter::Meter > MeterMeasurement::getMeter() {
 	    return meter;
 	};
@@ -96,13 +81,7 @@ namespace cms {
 	Patch_ptr MeterMeasurement::measureFlicker(RGB_ptr rgb, const string_ptr patchName) {
 	    return measure0(rgb, patchName, nil_string_ptr, nil_string_ptr, true);
 	};
-	/*void MeterMeasurement::sleep(int waitTimes) {
-	   int count = waitTimes / 100;
-	   for (int x = 0; x < count; x++) {
-	   Sleep(100);
-	   Application->ProcessMessages();
-	   }
-	   }; */
+
 	Patch_ptr
 	    MeterMeasurement::measure0(RGB_ptr measureRGB,
 				       string_ptr patchName,
@@ -129,7 +108,6 @@ namespace cms {
 		Application->ProcessMessages();
 		measureWindow->setRGB(measureRGB);
 		Application->ProcessMessages();
-		//Sleep(waitTimes);
 		Util::sleep(waitTimes);
 	    }
 	    //==========================================================================
@@ -170,7 +148,13 @@ namespace cms {
 
 	    XYZ_ptr XYZ(new Indep::CIEXYZ(result));
 	    Patch_ptr patch(new Patch(patchName, XYZ, nil_XYZ_ptr, measureRGB));
+	    measurePatchVector->push_back(patch);
 	    return patch;
+	};
+
+	void MeterMeasurement::setMeasurePatchVector(Patch_vector_ptr measurePatchVector) {
+	    this->measurePatchVector = measurePatchVector;
+	    this->fakeMeasure = true;
 	};
 	//======================================================================
 

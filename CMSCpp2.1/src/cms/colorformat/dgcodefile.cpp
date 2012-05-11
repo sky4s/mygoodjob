@@ -81,6 +81,7 @@ namespace cms {
 	const string & DGLutFile::RawData = "Raw_Data";
 	const string & DGLutFile::Target = "Target";
 	const string & DGLutFile::LCDTarget = "LCD_Target";
+	const string & DGLutFile::Measure = "Measure";
 
 
 	void DGLutFile::setRawData(Component_vector_ptr componentVector,
@@ -193,41 +194,42 @@ namespace cms {
 
 	LCDTarget_ptr DGLutFile::getLCDTarget() {
 	    if (db->isTableExist(LCDTarget)) {
-		db->setTableName(LCDTarget);
-		bptr < DBQuery > query = db->selectAll();
-		int index = 0;
-		while (query->hasNext()) {
-		    string_vector_ptr result = query->nextResult();
-		};
+		/*db->setTableName(LCDTarget);
+		   bptr < DBQuery > query = db->selectAll();
+		   int index = 0;
+		   while (query->hasNext()) {
+		   string_vector_ptr result = query->nextResult();
+		   }; */
+		throw new UnsupportedOperationException();
 
 	    } else {
 		return LCDTarget_ptr((cms::lcd::LCDTarget *) null);
 	    }
 	};
 
-        void DGLutFile::addToLCDTarget(Patch_ptr p) {
-          //const int headerCount = 9;
-           const int headerCount = getHeaderCount(LCDTarget);
-         string_vector_ptr values(new string_vector(headerCount));
+	void DGLutFile::addToLCDTarget(Patch_ptr p) {
+	    //const int headerCount = 9;
+	    const int headerCount = getHeaderCount(LCDTarget);
+	    string_vector_ptr values(new string_vector(headerCount));
 
-		(*values)[0] = "-1";
+	    (*values)[0] = "-1";
 
-		RGB_ptr rgb = p->getRGB();
-		(*values)[1] = _toString(rgb->R);
-		(*values)[2] = _toString(rgb->G);
-		(*values)[3] = _toString(rgb->B);
+	    RGB_ptr rgb = p->getRGB();
+	    (*values)[1] = _toString(rgb->R);
+	    (*values)[2] = _toString(rgb->G);
+	    (*values)[3] = _toString(rgb->B);
 
-		XYZ_ptr XYZ = p->getXYZ();
-		(*values)[4] = _toString(XYZ->X);
-		(*values)[5] = _toString(XYZ->Y);
-		(*values)[6] = _toString(XYZ->Z);
+	    XYZ_ptr XYZ = p->getXYZ();
+	    (*values)[4] = _toString(XYZ->X);
+	    (*values)[5] = _toString(XYZ->Y);
+	    (*values)[6] = _toString(XYZ->Z);
 
-		xyY_ptr xyY(new CIExyY(XYZ));
-		(*values)[7] = _toString(xyY->x);
-		(*values)[8] = _toString(xyY->y);
+	    xyY_ptr xyY(new CIExyY(XYZ));
+	    (*values)[7] = _toString(xyY->x);
+	    (*values)[8] = _toString(xyY->y);
 
-		this->insertData(LCDTarget, values, true);
-        };
+	    this->insertData(LCDTarget, values, true);
+	};
 	void DGLutFile::setLCDTarget(LCDTarget_ptr lcdTarget) {
 	    Patch_vector_ptr patchList = lcdTarget->getPatchList();
 
@@ -235,8 +237,7 @@ namespace cms {
 	    // 初始資料設定
 	    //==================================================================
 	    const int headerCount = 9;
-	    initSheet(LCDTarget, headerCount, "id", "R", "G", "B", "X",
-		      "Y (nit)", "Z", "_x", "_y");
+	    initSheet(LCDTarget, headerCount, "id", "R", "G", "B", "X", "Y (nit)", "Z", "_x", "_y");
 
 	    int size = patchList->size();
 	    string_vector_ptr values(new string_vector(headerCount));
@@ -303,19 +304,10 @@ namespace cms {
 		gXYZ = gxyY->toXYZ();
 		bXYZ = bxyY->toXYZ();
 		targetWhiteRatio = property->getTargetWhiteRatio();
-		//double r = targetWhiteRatio[0];
-		//double g = targetWhiteRatio[1];
-		//double b = targetWhiteRatio[2];
 	    }
 	    //==================================================================
 	    // 迴圈處理
 	    //==================================================================
-
-	    //for debug only
-	    /*Component_ptr c0 = (*componentVector)[0];
-	       Component_ptr c128 = (*componentVector)[componentVector->size() / 2];
-	       Component_ptr c255 = (*componentVector)[componentVector->size() - 1]; */
-	    // end of debug purpose
 
 	    for (int x = 0; x != size; x++) {
 		XYZ_ptr XYZ = (*targetXYZVector)[x];
@@ -470,6 +462,78 @@ namespace cms {
 	};
 	RGB_vector_ptr DGLutFile::getGammaTable() {
 	    return ExcelAccessBase::getGammaTable(maxValue);
+	};
+	Patch_vector_ptr DGLutFile::getMeasure() {
+	    Patch_vector_ptr patchVector(new Patch_vector());
+	    if (!db->isTableExist(Measure)) {
+		return nil_Patch_vector_ptr;
+	    }
+	    db->setTableName(Measure);
+	    bptr < DBQuery > query = db->selectAll();
+	    int index = 0;
+	    while (query->hasNext()) {
+		string_vector_ptr result = query->nextResult();
+		string id = (*result)[0];
+		string_ptr name(new string(id));
+		double R = _toDouble((*result)[1]);
+		double G = _toDouble((*result)[2]);
+		double B = _toDouble((*result)[3]);
+
+		double X = _toDouble((*result)[4]);
+		double Y = _toDouble((*result)[5]);
+		double Z = _toDouble((*result)[6]);
+
+		RGB_ptr rgb(new RGBColor(R, G, B));
+		XYZ_ptr XYZ(new CIEXYZ(X, Y, Z));
+		Patch_ptr p(new Patch(name, XYZ, nil_XYZ_ptr, rgb));
+		patchVector->push_back(p);
+	    };
+	    return patchVector;
+
+	};
+	void DGLutFile::setMeasure(Patch_vector_ptr patchList) {
+
+	    //==================================================================
+	    // 初始資料設定
+	    //==================================================================
+	    const int headerCount = 12;
+	    initSheet(Measure, headerCount, "id", "R", "G", "B", "X", "Y (nit)", "Z", "_x", "_y",
+		      "R12", "G12", "B12");
+
+	    int size = patchList->size();
+	    string_vector_ptr values(new string_vector(headerCount));
+	    //==================================================================
+	    int id = 1;
+	    foreach(Patch_ptr p, *patchList) {
+		(*values)[0] = _toString(id++);
+
+		RGB_ptr rgb = p->getRGB();
+		double r = rgb->getValue(Channel::R, MaxValue::Double255);
+		double g = rgb->getValue(Channel::G, MaxValue::Double255);
+		double b = rgb->getValue(Channel::B, MaxValue::Double255);
+		(*values)[1] = _toString(r);
+		(*values)[2] = _toString(g);
+		(*values)[3] = _toString(b);
+
+		XYZ_ptr XYZ = p->getXYZ();
+		(*values)[4] = _toString(XYZ->X);
+		(*values)[5] = _toString(XYZ->Y);
+		(*values)[6] = _toString(XYZ->Z);
+
+		xyY_ptr xyY(new CIExyY(XYZ));
+		(*values)[7] = _toString(xyY->x);
+		(*values)[8] = _toString(xyY->y);
+
+		double r12 = rgb->getValue(Channel::R, MaxValue::Int12Bit);
+		double g12 = rgb->getValue(Channel::G, MaxValue::Int12Bit);
+		double b12 = rgb->getValue(Channel::B, MaxValue::Int12Bit);
+		(*values)[9] = _toString(r12);
+		(*values)[10] = _toString(g12);
+		(*values)[11] = _toString(b12);
+
+		this->insertData(Measure, values, false);
+	    }
+
 	};
 	//======================================================================
 
@@ -678,6 +742,8 @@ namespace cms {
 		    dgfile.addProperty("max B at DG GL", c->maxBDGGrayLevel);
 		    dgfile.addProperty("best gamma at max B DG GL",
 				       c->bestGammaAtGammaBoundGrayLevel);
+		    dgfile.addProperty("alter gamma curve@DeHook2",
+				       c->alterGammaCurveAtDeHook2 ? On : Off);
 		}
 	    }
 

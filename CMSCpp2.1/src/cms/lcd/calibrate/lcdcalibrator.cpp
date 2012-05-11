@@ -79,7 +79,7 @@ namespace cms {
 		bGap1stGammaBoundGrayLevel = 250;
 		bestGammaAtGammaBoundGrayLevel = -1;
 		reasonableDeltaChromaticity = 0.003;
-                AlterGammaCurveAtDeHook2=false;
+		AlterGammaCurveAtDeHook2 = false;
 	    };
 
 	     double_vector_ptr
@@ -415,9 +415,9 @@ namespace cms {
 		     */
 		    //*must measure
 		    this->maxBRawGrayLevel = processor.getMaxBIntensityRawGrayLevel();
-                    if( -1 == maxBRawGrayLevel) {
-                        ShowMessage("-1 == maxBRawGrayLevel");
-                    }
+		    if (-1 == maxBRawGrayLevel) {
+			ShowMessage("-1 == maxBRawGrayLevel");
+		    }
 		    lcdmodel4DeHook = processor.getLCDModelForDeHook(this->maxBRawGrayLevel);
 
 		    /*
@@ -447,14 +447,15 @@ namespace cms {
 									normalOutput);
 			//再從這裡面撈出最接近target gamma的
 			bestGammaPatch1 = processor.getBestGammaPatch(patchVector, gamma,
-									  this->maxBDGGrayLevel);
+								      this->maxBDGGrayLevel);
 			if (nil_Patch_ptr == bestGammaPatch1) {
 			    throw new IllegalStateException("");
 			}
-			bestGammaPatch2 = processor.getBestGammaPatchByMeasure(bestGammaPatch1, gamma,
-									 this->maxBDGGrayLevel,
-									 reasonableDeltaChromaticity);
-                        Patch_ptr bestPatch=bestGammaPatch2;
+			bestGammaPatch2 =
+			    processor.getBestGammaPatchByMeasure(bestGammaPatch1, gamma,
+								 this->maxBDGGrayLevel,
+								 reasonableDeltaChromaticity);
+			Patch_ptr bestPatch = bestGammaPatch2;
 			double bestGamma = processor.bestGamma;
 			this->bestGammaAtGammaBoundGrayLevel = bestGamma;
 			/*
@@ -514,16 +515,18 @@ namespace cms {
 		     */
 
 		    //if (null == secondWhiteAnalyzer) {
-			//此時找的是255 255 250(B Max IntensitY)
-			init2ndWhiteAnalyzer(keepMaxLuminance, dehook);
-			fetcher->SecondAnalyzer = secondWhiteAnalyzer;
+		    //此時找的是255 255 250(B Max IntensitY)
+		    init2ndWhiteAnalyzer(keepMaxLuminance, dehook);
+		    fetcher->SecondAnalyzer = secondWhiteAnalyzer;
 		    //}
 		    RGB_ptr rgb = secondWhiteAnalyzer->getReferenceRGB();
+		    double_array values(new double[3]);
+		    rgb->getValues(values, MaxValue::Double255);
 		    panelRegulator = bptr < PanelRegulator >
 			(new
 			 GammaTestPanelRegulator(bitDepth, tconctrl,
-						 (int) rgb->R,
-						 (int) rgb->G, (int) rgb->B, measureCondition));
+						 values[0], values[1], values[2],
+						 measureCondition));
 		    //若是在direct gamma下, setEnable會無效
 		    //因為setEnable是變更DG LUT, 但是direct gamma無視DG LUT的內容!
 		    panelRegulator->setEnable(true);
@@ -649,8 +652,8 @@ namespace cms {
 		    panelRegulator2->setEnable(false);
 
 		    //if (null == secondWhiteAnalyzer) {
-			//初始化255/255/255的white analyzer
-			init2ndWhiteAnalyzer(keepMaxLuminance, dehook);
+		    //初始化255/255/255的white analyzer
+		    init2ndWhiteAnalyzer(keepMaxLuminance, dehook);
 		    //}
 
 		    advgenerator = bptr < AdvancedDGLutGenerator >
@@ -696,7 +699,7 @@ namespace cms {
 		    double maxLuminance = targetLuminance;
 		    //藉由傳統generator產生luminance gamma curve
 		    if (true == absoluteGamma) {
-			int effectiven = bitDepth->getEffectiveInputLevel();
+			int effectiven = bitDepth->getEffectiveInputLevel();	//256
 			luminanceGammaCurve =
 			    getLuminanceGammaCurve(gammaCurve,
 						   maxLuminance,
@@ -1059,7 +1062,6 @@ namespace cms {
 		Util::deleteExist(filename);
 		//產生新檔
 		bptr < DGLutFile > file(new DGLutFile(filename, Create));
-		//storeDGLutFile(dglut, file);
 		storeInfo2DGLutFile(file);
 		storeDGLut2DGLutFile(file, dglut);
 
@@ -1079,11 +1081,12 @@ namespace cms {
 		}
 		if (null != lcdmodel4DeHook) {
 		    dglutFile->setLCDTarget(lcdmodel4DeHook->LCDTarget);
-                    if(null !=bestGammaPatch1) {
-                    dglutFile->addToLCDTarget(bestGammaPatch1);
-                    dglutFile->addToLCDTarget(bestGammaPatch2);
-                    }
+		    if (null != bestGammaPatch1) {
+			dglutFile->addToLCDTarget(bestGammaPatch1);
+			dglutFile->addToLCDTarget(bestGammaPatch2);
+		    }
 		}
+
 
 	    };
 
@@ -1095,6 +1098,13 @@ namespace cms {
 		    dglutFile->setTargetXYZVector(targetXYZVector, dglut, bitDepth);
 		}
 
+		bptr < cms::measure::MeterMeasurement > mm = getMeterMeasurement();
+		if (null != mm && !mm->FakeMeasure) {
+		    Patch_vector_ptr measurePatchVector = mm->MeasurePatchVector;
+		    if (measurePatchVector->size() != 0) {
+			dglutFile->setMeasure(measurePatchVector);
+		    }
+		}
 	    }
 
 	    Component_vector_ptr LCDCalibrator::getDimComponentVector(RGB_vector_ptr dglut) {
@@ -1153,9 +1163,9 @@ namespace cms {
 		    //如果用上dehook2, maxBDGGrayLevel到白點需要內插, 使色度漸進到白點
 		    if (SecondWithBGap1st == dehook || SecondWithBGap1st == dehook) {
 			RGB_ptr rgb = secondWhiteAnalyzer->getReferenceRGB();
-                        if( -1 == maxBDGGrayLevel) {
-                         ShowMessage("-1 == maxBDGGrayLevel");
-                        }
+			if (-1 == maxBDGGrayLevel) {
+			    ShowMessage("-1 == maxBDGGrayLevel");
+			}
 			bptr < DGLutOp > deHook2(new DeHook2Op(bitDepth, rgb, maxBDGGrayLevel));
 			dgop.addOp(deHook2);
 		    }
@@ -1254,19 +1264,17 @@ namespace cms {
 
 	       effectiven有錯?
 	     */
-	    double_vector_ptr
-		LCDCalibrator::
-		getLuminanceGammaCurve(double_vector_ptr normalGammaCurve,
-				       double maxLuminance,
-				       double minLuminance, bool absGamma,
-				       int absGammaStartGL,
-				       double startGLAboveGamma, int effectiven) {
+	    double_vector_ptr LCDCalibrator::getLuminanceGammaCurve(double_vector_ptr normalGammaCurve, double maxLuminance, double minLuminance, bool absGamma,	//
+								    int absGammaStartGL,	//8
+								    double startGLAboveGamma,	//2.2
+								    int effectiven) {	//256
 		if (true == absGamma) {
 		    int size = normalGammaCurve->size();
 		    //=========================================================
 		    // 1
 		    //=========================================================
 
+		    //計算abs gamma起點的normal input
 		    double startNormalInput =
 			static_cast < double >(absGammaStartGL) / (effectiven - 1);
 		    double startAbsoluteNormalOutput = GammaFinder::gamma(startNormalInput,
@@ -1277,8 +1285,10 @@ namespace cms {
 		    //=========================================================
 		    if (startAbsoluteLuminance < minLuminance) {
 			//若灰階設定太低就會落到此case
+			//回傳nul代表找不到
 			return nil_double_vector_ptr;
 		    }
+		    //換算相對應的rel gamma
 		    double relativeNormalOutput =
 			(startAbsoluteLuminance - minLuminance) / (maxLuminance - minLuminance);
 		    double relativeGamma = GammaFinder::getGammaExponential(startNormalInput,
@@ -1287,7 +1297,7 @@ namespace cms {
 
 
 		    //=========================================================
-		    // 4
+		    // 4 找到turnGrayLevel
 		    //=========================================================
 		    for (int x = absGammaStartGL; x < 255; x++) {
 			double normalInput = static_cast < double >(x) / (effectiven - 1);
@@ -1311,7 +1321,7 @@ namespace cms {
 		    double_vector_ptr newNormalGammaCurve(new double_vector());
 
 		    //相對gamma區間
-		    for (int x = 0; x <= turnGrayLevel; x++) {
+		    for (int x = 0; x < turnGrayLevel; x++) {
 			//此區段設定順勢修正到abs gamma
 			double normalInput = static_cast < double >(x) / (effectiven - 1);
 			double relativeNomralOutput =
@@ -1319,7 +1329,7 @@ namespace cms {
 			newNormalGammaCurve->push_back(relativeNomralOutput);
 		    }
 		    //絕對gamma區間
-		    for (int x = turnGrayLevel + 1; x < effectiven; x++) {
+		    for (int x = turnGrayLevel; x < effectiven; x++) {
 			//此區段符合abs gamma
 			//double normalInput = ((double) x) / effectiven;
 			//原始是abs, 要轉成rel

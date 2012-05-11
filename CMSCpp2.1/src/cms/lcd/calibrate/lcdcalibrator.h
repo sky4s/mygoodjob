@@ -159,9 +159,9 @@ namespace cms {
 		int bGap1stGammaBoundGrayLevel;
 		double bestGammaAtGammaBoundGrayLevel;
 		double reasonableDeltaChromaticity;
-                Patch_ptr bestGammaPatch1;
-                Patch_ptr bestGammaPatch2;
-                bool alterGammaCurveAtDeHook2;
+		Patch_ptr bestGammaPatch1;
+		Patch_ptr bestGammaPatch2;
+		bool alterGammaCurveAtDeHook2;
 		//==============================================================
 		//==============================================================
 		// feedback
@@ -399,7 +399,7 @@ namespace cms {
 		__property bptr < i2c::TCONControl > TCONControl = { write = tconctrl };
 		void setFeedbackListener(FeedbackListener * listener);
 		 bptr < cms::measure::MeterMeasurement > getMeterMeasurement();
-                __property bool AlterGammaCurveAtDeHook2 = { write = alterGammaCurveAtDeHook2 };
+		__property bool AlterGammaCurveAtDeHook2 = { write = alterGammaCurveAtDeHook2 };
 		//==============================================================
 
 

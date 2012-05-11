@@ -24,6 +24,7 @@ namespace cms {
 	    static const std::string & RawData;
 	    static const std::string & Target;
 	    static const std::string & LCDTarget;
+	    static const std::string & Measure;
 	    const Dep::MaxValue & maxValue;
 	    void init();
 	    Component_vector_ptr getComponentVector(bool rgbFromGammaTable, int max);
@@ -45,7 +46,7 @@ namespace cms {
 				    bptr < cms::lcd::BitDepthProcessor > bitDepth);
 	    void setLCDTarget(LCDTarget_ptr lcdTarget);
 	    LCDTarget_ptr getLCDTarget();
-            void addToLCDTarget(Patch_ptr p);
+	    void addToLCDTarget(Patch_ptr p);
 	    Component_vector_ptr getComponentVector();
 	    RGB_vector_ptr getGammaTable();
 	    /*
@@ -56,6 +57,8 @@ namespace cms {
 	       反正產生DG Code的時候還是可以生出來.
 
 	       選擇方案二, 所以不用刻意去縮減rgbgamma, 由setRawData自己去篩 */
+	    void setMeasure(Patch_vector_ptr patchList);
+	    Patch_vector_ptr getMeasure();
 	};
 
 	class DGLutProperty {

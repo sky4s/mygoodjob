@@ -156,7 +156,7 @@ namespace cms {
 	    //==================================================================
 	    // PanelRegulator
 	    //==================================================================
-	  PanelRegulator::PanelRegulator(bptr < cms::lcd::BitDepthProcessor > bitDepth, bptr < i2c::TCONControl > tconctrl, double rgain, double ggain, double bgain):
+	  PanelRegulator::PanelRegulator(double rgain, double ggain, double bgain, bptr < cms::lcd::BitDepthProcessor > bitDepth, bptr < i2c::TCONControl > tconctrl):
 	    bitDepth(bitDepth), tconctrl(tconctrl), rgain(rgain), ggain(ggain), bgain(bgain) {
 
 	    };
@@ -168,6 +168,15 @@ namespace cms {
 		rgain = ((double) maxR) / max;
 		ggain = ((double) maxG) / max;
 		bgain = ((double) maxB) / max;
+	    };
+	    PanelRegulator::PanelRegulator(bptr < cms::lcd::BitDepthProcessor > bitDepth,
+					   bptr < i2c::TCONControl >
+					   tconctrl, double maxR, double maxG,
+					   double maxB):bitDepth(bitDepth), tconctrl(tconctrl) {
+		int max = bitDepth->getOutputMaxDigitalCount();
+		rgain = maxR / max;
+		ggain = maxG / max;
+		bgain = maxB / max;
 	    };
 	    void PanelRegulator::setEnable(bool enable) {
 		if (true == enable) {
@@ -202,6 +211,14 @@ namespace cms {
 			   tconctrl, maxR, maxG,
 			   maxB), measureCondition(measureCondition) {
 	    };
+	    GammaTestPanelRegulator::GammaTestPanelRegulator(bptr < cms::lcd::BitDepthProcessor >
+							     bitDepth,
+							     bptr < i2c::TCONControl > tconctrl,
+							     double maxR, double maxG, double maxB,
+							     bptr < MeasureCondition >
+							     measureCondition):PanelRegulator
+		(bitDepth, tconctrl, maxR, maxG, maxB), measureCondition(measureCondition) {
+	    };
 	    void GammaTestPanelRegulator::setEnable(bool enable) {
 		setRemappingMode(enable);
 	    };
@@ -210,8 +227,10 @@ namespace cms {
 		if (null == measureCondition->remappingRGBMeasureCode) {
 		    RGB_vector_ptr remapping =
 			RGBVector::getLinearRGBVector(measureCondition->rgbMeasureCode,
-						      rgain,
-						      ggain, bgain);
+						      rgain, ggain, bgain);
+		    //const MaxValue & frcBit = bitDepth->getFRCAbilityBit();
+                    RGBVector::changeMaxValue(remapping, bitDepth->getFRCAbilityBit());
+
 		    STORE_RGBVECTOR("GammaTestPanelRegulator_mapping.xls", remapping);
 		    measureCondition->remappingRGBMeasureCode = remapping;
 		}

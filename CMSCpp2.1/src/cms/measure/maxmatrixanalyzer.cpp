@@ -189,7 +189,7 @@ namespace cms {
 	double2D_ptr MaxMatrixIntensityAnalyzer::getWhiteRatio() {
 	    return whiteRatio;
 	};
-	bptr < MaxMatrixIntensityAnalyzer >
+	/*bptr < MaxMatrixIntensityAnalyzer >
 	    MaxMatrixIntensityAnalyzer::getReadyAnalyzer(bptr < MeterMeasurement > mm,
 							 int rMax, int gMax, int bMax) {
 	    bptr < MaxMatrixIntensityAnalyzer >
@@ -210,7 +210,7 @@ namespace cms {
 	    nativeWhiteAnalyzer->enter();
 	    nativeWhiteAnalyzer->setWaitTimes(defaultWaitTimes);
 	    return nativeWhiteAnalyzer;
-	};
+	};*/
 	bptr < MaxMatrixIntensityAnalyzer >
 	    MaxMatrixIntensityAnalyzer::getReadyAnalyzer(bptr < MeterMeasurement > mm,
 							 double rMax, double gMax, double bMax) {
@@ -263,7 +263,7 @@ namespace cms {
 	//=====================================================================
 	// IntensityAnayzer
 	//=====================================================================
-      IntensityAnayzer::IntensityAnayzer(bptr < MaxMatrixIntensityAnalyzer > matrix, bptr < CA210IntensityAnalyzer > ca210):matrix(matrix), ca210(ca210),
+      /*IntensityAnayzer::IntensityAnayzer(bptr < MaxMatrixIntensityAnalyzer > matrix, bptr < CA210IntensityAnalyzer > ca210):matrix(matrix), ca210(ca210),
 	    no(0)
 	{
 
@@ -350,7 +350,7 @@ namespace cms {
 	};
 	bptr < MeterMeasurement > IntensityAnayzer::getMeterMeasurement() {
 	    return bptr < MeterMeasurement > ((MeterMeasurement *) null);
-	};
+	};*/
 	//=====================================================================
 #endif
     };
