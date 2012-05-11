@@ -41,7 +41,8 @@ namespace cms {
 	     bptr < cms::measure::meter::Meter > meter;
 	    TMeasureWindow *measureWindow;
 	    void init(bool calibration);
-	  public:                             
+	  public:
+	    void resetMeasurePatchVector();
 	     MeterMeasurement(bptr < cms::measure::meter::Meter > meter, bool calibration);
 	    void calibrate();
 	    void close();
@@ -97,6 +98,9 @@ namespace cms {
 				     bptr < cms::lcd::BitDepthProcessor > bitDepth);
 	    static int getMaxBIntensityRawGrayLevel(bptr < cms::measure::MeterMeasurement > mm,
 						    bptr < cms::lcd::BitDepthProcessor > bitDepth);
+	    static int getMaxBIntensityRawGrayLevel(bptr < cms::measure::MeterMeasurement > mm,
+						    bptr < cms::lcd::BitDepthProcessor > bitDepth,
+						    bptr < IntensityAnalyzerIF > analyzer);
 	};
 
 

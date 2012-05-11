@@ -954,7 +954,13 @@ namespace cms {
 		    /*bptr < cms::measure::IntensityAnalyzerIF > analyzer = c.fetcher->FirstAnalyzer;
 		       bptr < MeterMeasurement > mm = analyzer->getMeterMeasurement(); */
 		    bptr < MeterMeasurement > mm = c.getMeterMeasurement();
-		    return MeasureTool::getMaxBIntensityRawGrayLevel(mm, c.bitDepth);
+		    bptr < IntensityAnalyzerIF > analyzer = c.getFirstAnalzyer();
+		    RGB_ptr refRGB = analyzer->getReferenceRGB();
+		    if (refRGB->isWhite()) {
+			return MeasureTool::getMaxBIntensityRawGrayLevel(mm, c.bitDepth, analyzer);
+		    } else {
+			return MeasureTool::getMaxBIntensityRawGrayLevel(mm, c.bitDepth);
+		    }
 		}
 	    };
 	    SecondWhite DeHookProcessor::getSecondWhite(KeepMaxLuminance keepMaxLuminance,
@@ -980,7 +986,6 @@ namespace cms {
 		Patch_vector_ptr patchList(new Patch_vector());
 		Patch_ptr blackPatch = mm->measure(0, 0, 0, nil_string_ptr);
 		patchList->push_back(blackPatch);
-		//int measureStep = c.bitDepth->getMeasureStep();
 
 		//純色一定要直接量過
 		for (int r = max; r >= blueMaxGrayLevel; r--) {
@@ -1020,7 +1025,6 @@ namespace cms {
 										   deltaxySpec) {
 		using namespace Dep;
 		bptr < BitDepthProcessor > bitDepth = c.bitDepth;
-		//int initstep = bitDepth->getMeasureStep();
 		int frcOnlyBit = bitDepth->getFRCOnlyBit();
 		double step = 1 / Math::pow(2, frcOnlyBit);
 
