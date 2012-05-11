@@ -948,7 +948,7 @@ object CCTLUTForm: TCCTLUTForm
     TabOrder = 11
     object Label20: TLabel
       Left = 26
-      Top = 213
+      Top = 229
       Width = 27
       Height = 13
       Caption = 'Begin'
@@ -977,7 +977,7 @@ object CCTLUTForm: TCCTLUTForm
     end
     object RadioButton_MaxYNativeAdv: TRadioButton
       Left = 7
-      Top = 189
+      Top = 205
       Width = 137
       Height = 19
       Caption = 'Native White (Smooth)'
@@ -988,7 +988,7 @@ object CCTLUTForm: TCCTLUTForm
     end
     object Edit_MaxYAdvOver: TEdit
       Left = 64
-      Top = 213
+      Top = 229
       Width = 33
       Height = 21
       ImeName = #26085#25991#36664#20837#31995#32113' (MS-IME2002)'
@@ -999,7 +999,7 @@ object CCTLUTForm: TCCTLUTForm
     end
     object CheckBox_MaxYAdvAuto: TCheckBox
       Left = 106
-      Top = 208
+      Top = 224
       Width = 47
       Height = 25
       Caption = 'Auto'
@@ -1051,7 +1051,7 @@ object CCTLUTForm: TCCTLUTForm
       Left = 16
       Top = 80
       Width = 137
-      Height = 105
+      Height = 121
       Caption = 'DeHook'
       TabOrder = 9
       object RadioButton_DeHookNone: TRadioButton
@@ -1100,11 +1100,12 @@ object CCTLUTForm: TCCTLUTForm
       end
     end
     object CheckBox_AlterGammaCurveAtDeHook2: TCheckBox
-      Left = 8
-      Top = 232
-      Width = 121
+      Left = 40
+      Top = 176
+      Width = 81
       Height = 17
       Caption = 'Alter r Curve'
+      Enabled = False
       TabOrder = 10
     end
   end

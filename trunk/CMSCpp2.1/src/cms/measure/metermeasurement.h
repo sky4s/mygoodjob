@@ -35,40 +35,30 @@ namespace cms {
 	    bool titleTouched;
 	    bool fakeMeasure;
 	     bptr < cms::measure::meter::DGLutFileMeter > dgc;
-	    //void sleep(int waitTimes);
 	    int averageTimes;
+	    Patch_vector_ptr measurePatchVector;
 	  protected:
 	     bptr < cms::measure::meter::Meter > meter;
 	    TMeasureWindow *measureWindow;
 	    void init(bool calibration);
-	  public:
+	  public:                             
 	     MeterMeasurement(bptr < cms::measure::meter::Meter > meter, bool calibration);
-
 	    void calibrate();
-
 	    void close();
-
 	    void setMeasureWindowsVisible(bool visible);
 
 	    Patch_ptr measure(RGB_ptr rgb, const string_ptr patchName);
-
 	    Patch_ptr measure(int r, int g, int b, const string_ptr patchName);
 	    Patch_ptr measure(int r, int g, int b, const std::string & patchName);
 	    Patch_ptr measureFlicker(RGB_ptr rgb, const string_ptr patchName);
-
-	    //void setBlankTimes(int blankTimes);
-	    //void setWaitTimes(int waitTimes);
-	    //int getWaitTimes();
-	    //void setFakeMeasure(bool fake);
-	    //bool isFakeMeasure();
 
 	    __property int WaitTimes = { read = waitTimes, write = waitTimes };
 	    __property int BlankTimes = { write = blankTimes };
 	    __property bool FakeMeasure = { read = fakeMeasure, write = fakeMeasure };
 	    __property int AverageTimes = { read = averageTimes, write = averageTimes };
-
+	    __property Patch_vector_ptr MeasurePatchVector = { read = measurePatchVector };
 	     bptr < cms::measure::meter::Meter > getMeter();
-
+	    void setMeasurePatchVector(Patch_vector_ptr measurePatchVector);
 	  protected:
 	    void meterClose();
 
@@ -106,8 +96,7 @@ namespace cms {
 	    static int getMaxZDGCode(bptr < cms::measure::MeterMeasurement > mm,
 				     bptr < cms::lcd::BitDepthProcessor > bitDepth);
 	    static int getMaxBIntensityRawGrayLevel(bptr < cms::measure::MeterMeasurement > mm,
-						    bptr < cms::lcd::BitDepthProcessor >
-						    bitDepth);
+						    bptr < cms::lcd::BitDepthProcessor > bitDepth);
 	};
 
 

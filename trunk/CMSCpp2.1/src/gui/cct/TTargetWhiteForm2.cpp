@@ -203,7 +203,6 @@ void __fastcall TTargetWhiteForm2::Button_RunClick(TObject * Sender)
 
 	MainForm->showProgress(ProgressBar1);
 	MainForm->setMeterMeasurementWaitTimes();
-	//MainForm->setAnalyzerToSourceChannel();
 	Button_Run->Enabled = false;
 
 	bool usemaxRGB = this->RadioButton_MaxRGB->Checked;

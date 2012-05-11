@@ -58,10 +58,10 @@ namespace cms {
 	    bool isInverseMatrixNull();
 	     bptr < MeterMeasurement > getMeterMeasurement();
 	    double2D_ptr getWhiteRatio();
-	    static bptr < MaxMatrixIntensityAnalyzer > getReadyAnalyzer(bptr <
+	    /*static bptr < MaxMatrixIntensityAnalyzer > getReadyAnalyzer(bptr <
 									MeterMeasurement > mm,
 									int rMax, int gMax,
-									int bMax);
+									int bMax);*/
 	    static bptr < MaxMatrixIntensityAnalyzer > getReadyAnalyzer(bptr <
 									MeterMeasurement > mm,
 									double rMax, double gMax,
@@ -83,7 +83,7 @@ namespace cms {
 	   用來合併CA-210與MaxMatrix兩種方法來分析Intensity
 	   實際上輸出的值為CA-210的, MaxMatrix的輸出值會另外存在檔案
 	 */
-	class IntensityAnayzer:public IntensityAnalyzerIF {
+	/*class IntensityAnayzer:public IntensityAnalyzerIF {
 	  private:
 	    bptr < MaxMatrixIntensityAnalyzer > matrix;
 	    bptr < CA210IntensityAnalyzer > ca210;
@@ -107,7 +107,7 @@ namespace cms {
 	    xyY_ptr getPrimaryColor(const Dep::Channel & ch);
 	    RGB_ptr getReferenceRGB();
 	     bptr < MeterMeasurement > getMeterMeasurement();
-	};
+	};*/
 #endif
     };
 };

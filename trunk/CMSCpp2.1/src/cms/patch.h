@@ -50,7 +50,6 @@ namespace cms {
 					const Dep::Channel & channel);
 	};
 	static bool hasOnlyOneValue(Patch_ptr patch);
-	//Patch_ptr clone();
 
 	class Operator {
 	    friend class Patch;

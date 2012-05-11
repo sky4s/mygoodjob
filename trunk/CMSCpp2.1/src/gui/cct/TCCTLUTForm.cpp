@@ -85,9 +85,6 @@ void __fastcall TCCTLUTForm::Button_MeaRunClick(TObject * Sender)
 	string filename = astr->c_str();
 
 	MainForm->initAnalyzer();
-	if (MainForm->isCA210Analyzer()) {
-	    //MainForm->setAnalyzerToTargetChannel();
-	}
 	MainForm->setMeterMeasurementWaitTimes();
 	bptr < ComponentFetcher > fetcher = MainForm->getComponentFetcher();
 
@@ -116,8 +113,6 @@ void __fastcall TCCTLUTForm::Button_MeaRunClick(TObject * Sender)
 	    double gamma = this->ComboBox_DefinedDimGamma->Text.ToDouble();
 
 	    calibrator.setDefinedDim(under, gamma);
-	    //calibrator.DimFix = CheckBox_DimFix->Checked;
-	    //calibrator.DimFixThreshold = Edit_DimFixThreshold->Text.ToDouble();
 	    calibrator.FeedbackFix = CheckBox_Feedback->Checked;
 	} else if (this->RadioButton_NoneLowLevelCorrect->Checked) {
 	    calibrator.setNonDimCorrect();
@@ -211,9 +206,10 @@ void __fastcall TCCTLUTForm::Button_MeaRunClick(TObject * Sender)
 		    break;
 		case 1:	//Gamma first
 		    calibrator.DeHookMode = SecondWithGamma1st;
-                   calibrator.AlterGammaCurveAtDeHook2= CheckBox_AlterGammaCurveAtDeHook2->Checked;
+
 		    break;
 		};
+		calibrator.AlterGammaCurveAtDeHook2 = CheckBox_AlterGammaCurveAtDeHook2->Checked;
 	    }
 
 
@@ -274,7 +270,6 @@ void __fastcall TCCTLUTForm::Button_MeaRunClick(TObject * Sender)
 	    //=================================================================
 	    // 存檔
 	    //=================================================================
-	    //calibrator.storeDGLutFile(dglut, dgLutFile);
 	    calibrator.storeDGLut2DGLutFile(dgLutFile, dglut);
 
 	    if (true == CheckBox_MemoryMeasure->Checked && false == MainForm->mm->FakeMeasure) {
@@ -527,9 +522,8 @@ bptr < cms::lcd::calibrate::MeasureCondition > TCCTLUTForm::getMeasureCondition(
 	int step = this->ComboBox_LevelStep->Text.ToInt();
 	//預設的第一階
 	int firstStep = bitDepth->getMeasureFirstStep();
-	if (bitDepth->
-	    getMeasureStart() !=
-	    start || bitDepth->getMeasureEnd() != end || bitDepth->getMeasureStep() != step) {
+	if (bitDepth->getMeasureStart() != start
+	    || bitDepth->getMeasureEnd() != end || bitDepth->getMeasureStep() != step) {
 	    //如果量測條件被改變, 則不要採用原本的第一階
 	    firstStep = step;
 	}
@@ -818,6 +812,7 @@ void __fastcall TCCTLUTForm::RadioButton_OriginalGammaClick(TObject * Sender)
 void __fastcall TCCTLUTForm::RadioButton_NewDeHookClick(TObject * Sender)
 {
     RadioGroup_NewDeHookPriority->Enabled = true;
+    CheckBox_AlterGammaCurveAtDeHook2->Enabled = true;
 }
 
 //---------------------------------------------------------------------------
@@ -825,6 +820,7 @@ void __fastcall TCCTLUTForm::RadioButton_NewDeHookClick(TObject * Sender)
 void __fastcall TCCTLUTForm::RadioButton_DeHookKeepCCTClick(TObject * Sender)
 {
     RadioGroup_NewDeHookPriority->Enabled = false;
+    CheckBox_AlterGammaCurveAtDeHook2->Enabled = false;
 }
 
 //---------------------------------------------------------------------------
@@ -832,6 +828,7 @@ void __fastcall TCCTLUTForm::RadioButton_DeHookKeepCCTClick(TObject * Sender)
 void __fastcall TCCTLUTForm::RadioButton_DeHookNoneClick(TObject * Sender)
 {
     RadioGroup_NewDeHookPriority->Enabled = false;
+    CheckBox_AlterGammaCurveAtDeHook2->Enabled = false;
 }
 
 //---------------------------------------------------------------------------

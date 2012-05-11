@@ -41,26 +41,25 @@ newFunction(FileExists(DEBUG_NEWFUNC_FILE))
 
 
 
-    using namespace cms;
-    using namespace cms::lcd;
-    using namespace Dep;
-    RGBPatchMap patchMap;
-    Patch_vector_ptr vector(new Patch_vector());
-    for (int x = 0; x < 10; x++) {
-	RGB_ptr rgb(new RGBColor(x, 0, 0));
-	Patch_ptr p(new Patch(nil_string_ptr, nil_XYZ_ptr, nil_XYZ_ptr, rgb));
-	patchMap.insert(make_pair(rgb, p));
-	vector->push_back(p);
+    /*using namespace cms;
+       using namespace cms::lcd;
+       using namespace Dep;
+       RGBPatchMap patchMap;
+       Patch_vector_ptr vector(new Patch_vector());
+       for (int x = 0; x < 10; x++) {
+       RGB_ptr rgb(new RGBColor(x, 0, 0));
+       Patch_ptr p(new Patch(nil_string_ptr, nil_XYZ_ptr, nil_XYZ_ptr, rgb));
+       patchMap.insert(make_pair(rgb, p));
+       vector->push_back(p);
 
-    }
-    LCDTarget_ptr lcdTarget = LCDTarget::Instance::get(vector);
+       }
+       LCDTarget_ptr lcdTarget = LCDTarget::Instance::get(vector);
 
 
-    Patch_ptr r0p = lcdTarget->getPatch(5, 0, 0);
-    RGB_ptr rgb(new RGBColor(5, 0, 0));
-    Patch_ptr p = patchMap[rgb];
-    /*p = patchMap[rgb]; */
-    int x = 1;
+       Patch_ptr r0p = lcdTarget->getPatch(5, 0, 0);
+       RGB_ptr rgb(new RGBColor(5, 0, 0));
+       Patch_ptr p = patchMap[rgb];
+       int x = 1; */
 
 }
 
@@ -264,6 +263,24 @@ void TMainForm::initTCONFile()
 	ini->WriteInteger("12401", "in", 8);
 	ini->WriteInteger("12401", "out", 8);
 	//=========================================================================
+	// 12403
+	//=========================================================================
+	ini->WriteInteger("12403", "AddressingSize", 5);
+
+	ini->WriteString("12403", "DigitalGammaEnableAddress", "29");
+	ini->WriteInteger("12403", "DigitalGammaEnableBit", 0);
+	ini->WriteString("12403", "DigitalGammaLUTAddress", "B60");
+	ini->WriteInteger("12403", "DigitalGammaLUTType", 12);
+
+	ini->WriteBool("12403", "GammaTestFunc", true);
+	ini->WriteString("12403", "GammaTestEnableAddress", "FF9");
+	ini->WriteInteger("12403", "GammaTestEnableBit", 4);
+	ini->WriteString("12403", "GammaTestAddress", "FFA");
+	ini->WriteBool("12403", "IndepRGB", false);
+
+	ini->WriteInteger("12403", "in", 8);
+	ini->WriteInteger("12403", "out", 8);
+	//=========================================================================
 	// 12405
 	//=========================================================================
 	ini->WriteInteger("12405", "AddressingSize", 5);
@@ -281,7 +298,6 @@ void TMainForm::initTCONFile()
 
 	ini->WriteInteger("12405", "in", 8);
 	ini->WriteInteger("12405", "out", 8);
-	//=========================================================================
 	//=========================================================================
 	// 12407
 	//=========================================================================
@@ -622,6 +638,9 @@ void TMainForm::setDummyMeterFile(bptr < cms::colorformat::DGLutFile > dglutFile
     meter = bptr < Meter > (new DGLutFileMeter(dglutFile));
     mm = bptr < MeterMeasurement > (new MeterMeasurement(meter, false));
     mm->FakeMeasure = true;
+    Patch_vector_ptr measurePatchVector = dglutFile->getMeasure();
+    mm->setMeasurePatchVector(measurePatchVector);
+
 
     fetcher = bptr < ComponentFetcher > ((ComponentFetcher *) null);
 
