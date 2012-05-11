@@ -101,8 +101,8 @@ namespace cms {
 		 PanelRegulator(double rgain, double ggain, double bgain,
 				bptr < cms::lcd::BitDepthProcessor > bitDepth,
 				bptr < i2c::TCONControl > tconctrl);
-		 PanelRegulator(bptr < cms::lcd::BitDepthProcessor > bitDepth,
-				bptr < i2c::TCONControl > tconctrl, int maxR, int maxG, int maxB);
+		/*PanelRegulator(bptr < cms::lcd::BitDepthProcessor > bitDepth,
+		   bptr < i2c::TCONControl > tconctrl, int maxR, int maxG, int maxB); */
 		 PanelRegulator(bptr < cms::lcd::BitDepthProcessor > bitDepth,
 				bptr < i2c::TCONControl > tconctrl, double maxR, double maxG,
 				double maxB);
@@ -117,10 +117,10 @@ namespace cms {
 		void setRemappingMode(bool remap);
 	      public:
 
-		 GammaTestPanelRegulator(bptr < cms::lcd::BitDepthProcessor > bitDepth,
-					 bptr < i2c::TCONControl > tconctrl,
-					 int maxR, int maxG, int maxB,
-					 bptr < MeasureCondition > measureCondition);
+		/*GammaTestPanelRegulator(bptr < cms::lcd::BitDepthProcessor > bitDepth,
+		   bptr < i2c::TCONControl > tconctrl,
+		   int maxR, int maxG, int maxB,
+		   bptr < MeasureCondition > measureCondition); */
 		 GammaTestPanelRegulator(bptr < cms::lcd::BitDepthProcessor > bitDepth,
 					 bptr < i2c::TCONControl > tconctrl,
 					 double maxR, double maxG, double maxB,

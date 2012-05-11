@@ -317,15 +317,14 @@ namespace cms {
 
 		Component_vector_ptr getDimComponentVector(RGB_vector_ptr dglut);
 		bool isDoDeHook();
+                bptr < cms::measure::IntensityAnalyzerIF > getFirstAnalzyer();
+
 		//==============================================================
 
 		//==============================================================
 		// 2nd white analyzer
 		//==============================================================
 		void init2ndWhiteAnalyzer(KeepMaxLuminance keepMaxLuminance, DeHook deHook);
-		//static SecondWhite getSecondWhite(KeepMaxLuminance keepMaxLuminance, DeHook deHook);
-		//int getMaxBIntensityRawGrayLevel();
-		//bptr < cms::devicemodel::LCDModel > getLCDModelForDeHook(int blueMaxGrayLevel);
 		//==============================================================
 
 

@@ -87,6 +87,7 @@ void __fastcall TCCTLUTForm::Button_MeaRunClick(TObject * Sender)
 	MainForm->initAnalyzer();
 	MainForm->setMeterMeasurementWaitTimes();
 	bptr < ComponentFetcher > fetcher = MainForm->getComponentFetcher();
+	bptr < MeterMeasurement > mm = fetcher->FirstAnalyzer->getMeterMeasurement();
 
 	cms::lcd::calibrate::debugMode = debugMode;
 	cms::lcd::calibrate::linkCA210 = MainForm->linkCA210;

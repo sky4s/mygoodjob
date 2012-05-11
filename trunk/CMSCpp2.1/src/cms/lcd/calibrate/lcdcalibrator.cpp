@@ -373,7 +373,10 @@ namespace cms {
 
 		return result;
 	    };
-
+            bptr < cms::measure::IntensityAnalyzerIF > LCDCalibrator::getFirstAnalzyer(){
+            bptr < IntensityAnalyzerIF > firstAnalyzer = fetcher->FirstAnalyzer;
+            return firstAnalyzer;
+            };
 	    /*
 	       當有smooth CCT到native white需求時，就需要native white analyzer
 	       ，求得更準確的DG Lut
@@ -387,7 +390,6 @@ namespace cms {
 		// 有這組analyzer, 在smooth到native white的時候可以得到更準確的結果.
 		//=====================================================
 		//產生max matrix
-		//bptr < cms::measure::IntensityAnalyzerIF > analyzer = fetcher->FirstAnalyzer;
 		bptr < MeterMeasurement > mm = getMeterMeasurement();	//analyzer->getMeterMeasurement();
 		int max = bitDepth->getOutputMaxDigitalCount();
 		double bluemax = max;
@@ -428,6 +430,10 @@ namespace cms {
 		    Patch_vector_ptr patchVector = processor.
 			getReasonableChromaticityPatchVector
 			(lcdmodel4DeHook, this->maxBRawGrayLevel, reasonableDeltaChromaticity);
+                    if( 0 == patchVector->size()) {
+                      throw new IllegalStateException("");
+                    }
+
 		    if (SecondWithBGap1st == deHook) {
 			//會盡量找到最低的gray level
 			this->maxBDGGrayLevel =
@@ -519,9 +525,16 @@ namespace cms {
 		    init2ndWhiteAnalyzer(keepMaxLuminance, dehook);
 		    fetcher->SecondAnalyzer = secondWhiteAnalyzer;
 		    //}
+
 		    RGB_ptr rgb = secondWhiteAnalyzer->getReferenceRGB();
 		    double_array values(new double[3]);
 		    rgb->getValues(values, MaxValue::Double255);
+		    bool regulatorFix = true;
+		    if (!regulatorFix) {
+			values[0] = (int) values[0];
+			values[1] = (int) values[1];
+			values[2] = (int) values[2];
+		    }
 		    panelRegulator = bptr < PanelRegulator >
 			(new
 			 GammaTestPanelRegulator(bitDepth, tconctrl,
@@ -694,7 +707,7 @@ namespace cms {
 			 AdvancedDGLutGenerator(originalComponentVector, fetcher, bitDepth, *this));
 
 
-		    bptr < IntensityAnalyzerIF > firstAnalyzer = fetcher->FirstAnalyzer;
+		    bptr < IntensityAnalyzerIF > firstAnalyzer = getFirstAnalzyer();
 		    double targetLuminance = firstAnalyzer->getReferenceColor()->Y;
 		    double maxLuminance = targetLuminance;
 		    //藉由傳統generator產生luminance gamma curve
@@ -1239,7 +1252,7 @@ namespace cms {
 	    }
 
 	    bptr < MeterMeasurement > LCDCalibrator::getMeterMeasurement() {
-		bptr < cms::measure::IntensityAnalyzerIF > analyzer = fetcher->FirstAnalyzer;
+		bptr < cms::measure::IntensityAnalyzerIF > analyzer = getFirstAnalzyer();
 		bptr < MeterMeasurement > mm = analyzer->getMeterMeasurement();
 		return mm;
 	    };

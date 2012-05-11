@@ -160,7 +160,7 @@ namespace cms {
 	    bitDepth(bitDepth), tconctrl(tconctrl), rgain(rgain), ggain(ggain), bgain(bgain) {
 
 	    };
-	    PanelRegulator::PanelRegulator(bptr < cms::lcd::BitDepthProcessor > bitDepth,
+	    /*PanelRegulator::PanelRegulator(bptr < cms::lcd::BitDepthProcessor > bitDepth,
 					   bptr < i2c::TCONControl >
 					   tconctrl, int maxR, int maxG,
 					   int maxB):bitDepth(bitDepth), tconctrl(tconctrl) {
@@ -168,7 +168,7 @@ namespace cms {
 		rgain = ((double) maxR) / max;
 		ggain = ((double) maxG) / max;
 		bgain = ((double) maxB) / max;
-	    };
+	    };*/
 	    PanelRegulator::PanelRegulator(bptr < cms::lcd::BitDepthProcessor > bitDepth,
 					   bptr < i2c::TCONControl >
 					   tconctrl, double maxR, double maxG,
@@ -207,10 +207,10 @@ namespace cms {
 	    //==================================================================
 
 
-	  GammaTestPanelRegulator::GammaTestPanelRegulator(bptr < cms::lcd::BitDepthProcessor > bitDepth, bptr < i2c::TCONControl > tconctrl, int maxR, int maxG, int maxB, bptr < MeasureCondition > measureCondition):PanelRegulator(bitDepth,
+	  /*GammaTestPanelRegulator::GammaTestPanelRegulator(bptr < cms::lcd::BitDepthProcessor > bitDepth, bptr < i2c::TCONControl > tconctrl, int maxR, int maxG, int maxB, bptr < MeasureCondition > measureCondition):PanelRegulator(bitDepth,
 			   tconctrl, maxR, maxG,
 			   maxB), measureCondition(measureCondition) {
-	    };
+	    };*/
 	    GammaTestPanelRegulator::GammaTestPanelRegulator(bptr < cms::lcd::BitDepthProcessor >
 							     bitDepth,
 							     bptr < i2c::TCONControl > tconctrl,
@@ -229,7 +229,10 @@ namespace cms {
 			RGBVector::getLinearRGBVector(measureCondition->rgbMeasureCode,
 						      rgain, ggain, bgain);
 		    //const MaxValue & frcBit = bitDepth->getFRCAbilityBit();
-                    RGBVector::changeMaxValue(remapping, bitDepth->getFRCAbilityBit());
+		    bool remapFix = true;
+		    if (remapFix) {
+			RGBVector::changeMaxValue(remapping, bitDepth->getFRCAbilityBit());
+		    }
 
 		    STORE_RGBVECTOR("GammaTestPanelRegulator_mapping.xls", remapping);
 		    measureCondition->remappingRGBMeasureCode = remapping;

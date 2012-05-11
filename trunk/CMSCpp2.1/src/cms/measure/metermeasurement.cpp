@@ -29,6 +29,9 @@ namespace cms {
 		calibrate();
 	    }
 	};
+	void MeterMeasurement::resetMeasurePatchVector() {
+	    measurePatchVector->empty();
+	};
       MeterMeasurement::MeterMeasurement(shared_ptr < Meter > meter, bool calibration):meter(meter), waitTimes(meter->getSuggestedWaitTimes()),
 	    measureWindowClosing(false), titleTouched(false),
 	    fakeMeasure(false), averageTimes(1) {
@@ -302,13 +305,21 @@ namespace cms {
 	    int maxZDGCode = mt->getMaxZDGCode(measureCondition);
 	    return maxZDGCode;
 	};
-
 	int MeasureTool::getMaxBIntensityRawGrayLevel(bptr < MeterMeasurement > mm,
 						      bptr < BitDepthProcessor > bitDepth) {
 	    int max = bitDepth->getInputMaxDigitalCount();
 	    using namespace cms::measure;
 	    bptr < MaxMatrixIntensityAnalyzer > analyzer =
 		MaxMatrixIntensityAnalyzer::getReadyAnalyzer(mm, max, max, max);
+	    return getMaxBIntensityRawGrayLevel(mm, bitDepth, analyzer);
+	};
+	int MeasureTool::getMaxBIntensityRawGrayLevel(bptr < MeterMeasurement > mm,
+						      bptr < BitDepthProcessor > bitDepth,
+						      bptr < IntensityAnalyzerIF > analyzer) {
+	    int max = bitDepth->getInputMaxDigitalCount();
+	    /*using namespace cms::measure;
+	       bptr < MaxMatrixIntensityAnalyzer > analyzer =
+	       MaxMatrixIntensityAnalyzer::getReadyAnalyzer(mm, max, max, max); */
 	    using namespace Dep;
 	    using namespace java::lang;
 	    RGB_ptr preIntensity;
