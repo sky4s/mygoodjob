@@ -463,14 +463,20 @@ namespace cms {
 	RGB_vector_ptr DGLutFile::getGammaTable() {
 	    return ExcelAccessBase::getGammaTable(maxValue);
 	};
-	Patch_vector_ptr DGLutFile::getMeasure() {
-	    Patch_vector_ptr patchVector(new Patch_vector());
+	bool DGLutFile::isMeasurePatchVectorAvailable() {
+	    return db->isTableExist(Measure);
+	};
+	Patch_vector_ptr DGLutFile::getMeasurePatchVector() {
+
 	    if (!db->isTableExist(Measure)) {
 		return nil_Patch_vector_ptr;
 	    }
+
 	    db->setTableName(Measure);
 	    bptr < DBQuery > query = db->selectAll();
 	    int index = 0;
+	    Patch_vector_ptr patchVector(new Patch_vector());
+
 	    while (query->hasNext()) {
 		string_vector_ptr result = query->nextResult();
 		string id = (*result)[0];

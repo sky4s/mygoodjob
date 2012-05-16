@@ -48,6 +48,7 @@ namespace cms {
 	    virtual xyY_ptr getPrimaryColor(const Dep::Channel & ch) = 0;
 	    virtual RGB_ptr getReferenceRGB() = 0;
 	    virtual bptr < MeterMeasurement > getMeterMeasurement() = 0;
+	    xyY_ptr measureReferenceRGB();
 	};
 
 	/*
@@ -94,6 +95,7 @@ namespace cms {
 	    xyY_ptr getPrimaryColor(const Dep::Channel & ch);
 	    RGB_ptr getReferenceRGB();
 	     bptr < MeterMeasurement > getMeterMeasurement();
+	    //xyY_ptr measureReferenceRGB();
 	};
 
     };

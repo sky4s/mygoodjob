@@ -24,16 +24,7 @@ namespace cms {
 	    };
 	    static XYZ_ptr getTargetXYZ(double v1, double v2, double v3, Domain domain);
 	    static XYZ_ptr getTargetXYZ(double x, double y, double Y);
-
-	    class MaxBIntensityInfo {
-	      public:
-		MaxBIntensityInfo(int maxBGrayLevel, double
-				  maxBIntensity):maxBGrayLevel
-		    (maxBGrayLevel), maxBIntensity(maxBIntensity) {
-		};
-		int maxBGrayLevel;
-		double maxBIntensity;
-	    };
+ 
 
 	    class AdvancedDGLutGenerator:private DimDGLutGenerator, gui::event::WindowAdapter {
 	      private:
@@ -55,16 +46,6 @@ namespace cms {
 		//=============================================================
 		// Intensity Relative
 		//=============================================================
-		// Max B Intensity
-		int useMaxBIntensityZone;
-
-		MaxBIntensityInfo getMaxBIntensityInfo(XYZ_vector_ptr
-						       targetXYZVector,
-						       Component_vector_ptr
-						       componentVector,
-						       bptr <
-						       cms::measure::
-						       IntensityAnalyzerIF > analyzer);
 
 		RGB_ptr getIdealIntensity(Component_vector_ptr
 					  componentVector,
@@ -90,27 +71,17 @@ namespace cms {
 
 
 	      public:
-		 AdvancedDGLutGenerator(Component_vector_ptr
-					componentVector,
-					bptr <
-					cms::lcd::calibrate::
-					ComponentFetcher > fetcher,
-					bptr <
-					cms::measure::IntensityAnalyzerIF >
-					analyzer1,
-					bptr <
-					cms::measure::IntensityAnalyzerIF >
-					analyzer2nd,
-					bptr < BitDepthProcessor >
-					bitDepth, const LCDCalibrator & calibrator);
+		 AdvancedDGLutGenerator(Component_vector_ptr componentVector,
+					bptr < cms::lcd::calibrate::ComponentFetcher > fetcher,
+					bptr < cms::measure::IntensityAnalyzerIF > analyzer1,
+					bptr < cms::measure::IntensityAnalyzerIF > analyzer2nd,
+					bptr < BitDepthProcessor > bitDepth,
+					const LCDCalibrator & calibrator);
 
-		 AdvancedDGLutGenerator(Component_vector_ptr
-					componentVector,
-					bptr <
-					cms::lcd::calibrate::
-					ComponentFetcher > fetcher,
-					bptr < BitDepthProcessor >
-					bitDepth, const LCDCalibrator & calibrator);
+		 AdvancedDGLutGenerator(Component_vector_ptr componentVector,
+					bptr < cms::lcd::calibrate::ComponentFetcher > fetcher,
+					bptr < BitDepthProcessor > bitDepth,
+					const LCDCalibrator & calibrator);
 
 		RGB_vector_ptr produce();
 
@@ -163,7 +134,7 @@ namespace cms {
 		};
 		__property RGB_ptr IdealIntensity = { read = idealIntensity
 		};
-		void setUseMaxBIntensityZone(int zone);
+		//void setUseMaxBIntensityZone(int zone);
 		__property XYZ_vector_ptr TargetXYZVector = { read = targetXYZVector
 		};
 	    };

@@ -57,11 +57,12 @@ namespace cms {
 	    void setReferenceRGB(RGB_ptr rgb);
 	    bool isInverseMatrixNull();
 	     bptr < MeterMeasurement > getMeterMeasurement();
+	    //xyY_ptr measureReferenceRGB();
 	    double2D_ptr getWhiteRatio();
 	    /*static bptr < MaxMatrixIntensityAnalyzer > getReadyAnalyzer(bptr <
-									MeterMeasurement > mm,
-									int rMax, int gMax,
-									int bMax);*/
+	       MeterMeasurement > mm,
+	       int rMax, int gMax,
+	       int bMax); */
 	    static bptr < MaxMatrixIntensityAnalyzer > getReadyAnalyzer(bptr <
 									MeterMeasurement > mm,
 									double rMax, double gMax,
@@ -84,30 +85,30 @@ namespace cms {
 	   實際上輸出的值為CA-210的, MaxMatrix的輸出值會另外存在檔案
 	 */
 	/*class IntensityAnayzer:public IntensityAnalyzerIF {
-	  private:
-	    bptr < MaxMatrixIntensityAnalyzer > matrix;
-	    bptr < CA210IntensityAnalyzer > ca210;
-	    bptr < cms::colorformat::SimpleExcelAccess > excel;
-	    string_vector_ptr fieldNames;
-	    int no;
-	    XYZ_ptr XYZ;
-	  public:
-	     IntensityAnayzer(bptr < MaxMatrixIntensityAnalyzer >
-			      matrix, bptr < CA210IntensityAnalyzer > ca210);
-	    RGB_ptr getIntensity(RGB_ptr rgb);
-	    XYZ_ptr getCIEXYZ();
-	    XYZ_ptr getCIEXYZOnly(RGB_ptr rgb);
-	    void setupComponent(const Dep::Channel & ch, RGB_ptr rgb);
-	    void enter();
-	    void beginAnalyze();
-	    void endAnalyze();
-	    void setWaitTimes(int waitTimes);
-	    int getWaitTimes();
-	    xyY_ptr getReferenceColor();
-	    xyY_ptr getPrimaryColor(const Dep::Channel & ch);
-	    RGB_ptr getReferenceRGB();
-	     bptr < MeterMeasurement > getMeterMeasurement();
-	};*/
+	   private:
+	   bptr < MaxMatrixIntensityAnalyzer > matrix;
+	   bptr < CA210IntensityAnalyzer > ca210;
+	   bptr < cms::colorformat::SimpleExcelAccess > excel;
+	   string_vector_ptr fieldNames;
+	   int no;
+	   XYZ_ptr XYZ;
+	   public:
+	   IntensityAnayzer(bptr < MaxMatrixIntensityAnalyzer >
+	   matrix, bptr < CA210IntensityAnalyzer > ca210);
+	   RGB_ptr getIntensity(RGB_ptr rgb);
+	   XYZ_ptr getCIEXYZ();
+	   XYZ_ptr getCIEXYZOnly(RGB_ptr rgb);
+	   void setupComponent(const Dep::Channel & ch, RGB_ptr rgb);
+	   void enter();
+	   void beginAnalyze();
+	   void endAnalyze();
+	   void setWaitTimes(int waitTimes);
+	   int getWaitTimes();
+	   xyY_ptr getReferenceColor();
+	   xyY_ptr getPrimaryColor(const Dep::Channel & ch);
+	   RGB_ptr getReferenceRGB();
+	   bptr < MeterMeasurement > getMeterMeasurement();
+	   }; */
 #endif
     };
 };

@@ -1,6 +1,6 @@
 object MainForm: TMainForm
-  Left = 515
-  Top = 321
+  Left = 491
+  Top = 330
   Width = 767
   Height = 380
   Caption = 'CCT Adjustment v3.4'

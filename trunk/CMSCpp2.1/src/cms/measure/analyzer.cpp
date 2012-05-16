@@ -33,6 +33,15 @@ namespace cms {
 	string_ptr IntensityAnalyzerIF::getReferenceColorComment() {
 	    return comment;
 	};
+	xyY_ptr IntensityAnalyzerIF::measureReferenceRGB() {
+	    bptr < MeterMeasurement > mm = getMeterMeasurement();
+	    RGB_ptr rgb = getReferenceRGB();
+	    Patch_ptr result = mm->measure(rgb, nil_string_ptr);
+            mm->setMeasureWindowsVisible(false);
+	    XYZ_ptr XYZ = result->getXYZ();
+	    xyY_ptr xyY(new CIExyY(XYZ));
+	    return xyY;
+	};
 	//======================================================================
 
 	//======================================================================
@@ -64,7 +73,6 @@ namespace cms {
 	    getCIEXYZOnly(rgb);
 	    float_array rgbIntensity;
 	    if (true == dummyMode) {
-		//若為dummy mode, 代表從meter直接撈資料
 		//而meter是假的, 其實是從檔案撈資料
 		if (null == dgc) {
 		    dgc = dynamic_cast < DGLutFileMeter * >(mm->getMeter().get());

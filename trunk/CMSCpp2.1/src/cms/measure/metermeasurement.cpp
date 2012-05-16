@@ -30,13 +30,20 @@ namespace cms {
 	    }
 	};
 	void MeterMeasurement::resetMeasurePatchVector() {
-	    measurePatchVector->empty();
+	    measurePatchVector->clear();
 	};
       MeterMeasurement::MeterMeasurement(shared_ptr < Meter > meter, bool calibration):meter(meter), waitTimes(meter->getSuggestedWaitTimes()),
-	    measureWindowClosing(false), titleTouched(false),
-	    fakeMeasure(false), averageTimes(1) {
+	    measureWindowClosing(false),
+	    titleTouched(false),
+	    /*fakeMeasure(false), */ averageTimes(1) {
 	    init(calibration);
 	    measurePatchVector = Patch_vector_ptr(new Patch_vector());
+	    DGLutFileMeter *filemeter = dynamic_cast < DGLutFileMeter * >(meter.get());
+	    if (null != filemeter) {
+		fakeMode = filemeter->getFakeMode();
+	    } else {
+		fakeMode = FakeMode::None;
+	    }
 	};
 
 	void MeterMeasurement::calibrate() {
@@ -50,7 +57,7 @@ namespace cms {
 	};
 
 	void MeterMeasurement::setMeasureWindowsVisible(bool visible) {
-	    if (!fakeMeasure) {
+	    if (fakeMode == FakeMode::None) {
 		if (null == measureWindow) {
 		    measureWindow = MeasureWindow;
 		}
@@ -107,7 +114,7 @@ namespace cms {
 	    //==========================================================================
 	    // 變換完視窗顏色的短暫停留
 	    //==========================================================================
-	    if (!fakeMeasure) {
+	    if (fakeMode == FakeMode::None) {
 		Application->ProcessMessages();
 		measureWindow->setRGB(measureRGB);
 		Application->ProcessMessages();
@@ -154,10 +161,8 @@ namespace cms {
 	    measurePatchVector->push_back(patch);
 	    return patch;
 	};
-
-	void MeterMeasurement::setMeasurePatchVector(Patch_vector_ptr measurePatchVector) {
-	    this->measurePatchVector = measurePatchVector;
-	    this->fakeMeasure = true;
+	bool MeterMeasurement::doExtraMeasure() {
+	    return FakeMode::None == fakeMode || FakeMode::Patch == fakeMode;
 	};
 	//======================================================================
 
@@ -296,9 +301,9 @@ namespace cms {
 
 	int MeasureTool::getMaxZDGCode(bptr < MeterMeasurement > mm,
 				       bptr < BitDepthProcessor > bitDepth) {
-	    if (mm->FakeMeasure) {
-		throw IllegalStateException("mm->isFakeMeasure(), cannot do real measure.");
-	    }
+	    /*if (mm->FakeMeasure) {
+	       throw IllegalStateException("mm->isFakeMeasure(), cannot do real measure.");
+	       } */
 	    bptr < MeasureTool > mt(new MeasureTool(mm));
 	    MeasureWindow->addWindowListener(mt);
 	    bptr < MeasureCondition > measureCondition(new MeasureCondition(bitDepth));
