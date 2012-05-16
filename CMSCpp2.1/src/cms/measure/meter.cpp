@@ -158,8 +158,13 @@ namespace cms {
 	    };
 #endif
 	    //==================================================================
-	  DGLutFileMeter::DGLutFileMeter(bptr < DGLutFile > dglut):	/*dglut(dglut), */
-	    vector(dglut->getComponentVector()), index(0) {
+	  DGLutFileMeter::DGLutFileMeter(bptr < DGLutFile > dglut):index(0) {
+		Patch_vector_ptr patchVector = dglut->getMeasurePatchVector();
+		if (null != patchVector) {
+		    measurePatchVector = patchVector;
+		} else {
+		    vector = dglut->getComponentVector();
+		}
 	    };
 	    void DGLutFileMeter::close() {
 	    };
@@ -175,15 +180,29 @@ namespace cms {
 	    void DGLutFileMeter::setPatchIntensity(PatchIntensity patchIntensity) {
 	    };
 	    double_array DGLutFileMeter::triggerMeasurementInXYZ() {
-		int size = vector->size();
-		if (index >= size) {
-		    throw java::lang::IndexOutOfBoundsException("index >= size");
+
+		if (isMeasureFromPatchVector()) {
+		    int size = measurePatchVector->size();
+		    if (index >= size) {
+			throw java::lang::IndexOutOfBoundsException("index >= size");
+		    }
+
+		    Patch_ptr p = (*measurePatchVector)[index];
+		    index++;
+		    XYZ_ptr XYZ = p->getXYZ();
+		    return XYZ->getValues();
+		} else {
+		    int size = vector->size();
+		    if (index >= size) {
+			throw java::lang::IndexOutOfBoundsException("index >= size");
+		    }
+
+		    c = (*vector)[index];
+		    index++;
+		    XYZ_ptr XYZ = c->XYZ;
+		    return XYZ->getValues();
 		}
 
-		c = (*vector)[index];
-		index++;
-		XYZ_ptr XYZ = c->XYZ;
-		return XYZ->getValues();
 	    };
 	    string_ptr DGLutFileMeter::getLastCalibration() {
 		return nil_string_ptr;
@@ -204,6 +223,12 @@ namespace cms {
 	    };
 	    void DGLutFileMeter::reset() {
 		this->index = 0;
+	    };
+	    bool DGLutFileMeter::isMeasureFromPatchVector() {
+		return null != measurePatchVector;
+	    };
+	    FakeMode DGLutFileMeter::getFakeMode() {
+		return isMeasureFromPatchVector()? FakeMode::Patch : FakeMode::Component;
 	    };
 	    //==================================================================
 	};

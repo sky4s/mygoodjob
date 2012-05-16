@@ -635,11 +635,13 @@ void TMainForm::setDummyMeterFile(bptr < cms::colorformat::DGLutFile > dglutFile
     using namespace Indep;
     using namespace Dep;
 
+    bool measurePatchVectorAvailable = dglutFile->isMeasurePatchVectorAvailable();
     meter = bptr < Meter > (new DGLutFileMeter(dglutFile));
     mm = bptr < MeterMeasurement > (new MeterMeasurement(meter, false));
-    mm->FakeMeasure = true;
-    Patch_vector_ptr measurePatchVector = dglutFile->getMeasure();
-    mm->setMeasurePatchVector(measurePatchVector);
+    //mm->FakeMeasure = true;
+    //Patch_vector_ptr measurePatchVector = dglutFile->getMeasurePatchVector();
+    //bool hasMeasurePatchVector = null != measurePatchVector;
+    //mm->setMeasurePatchVector(measurePatchVector);
 
 
     fetcher = bptr < ComponentFetcher > ((ComponentFetcher *) null);
@@ -647,48 +649,49 @@ void TMainForm::setDummyMeterFile(bptr < cms::colorformat::DGLutFile > dglutFile
     bptr < DGLutProperty > property = dglutFile->getProperty();
     if (null != property) {
 	//若有property則為新版
+	if (!measurePatchVectorAvailable) {
+	    //=====================================================================
+	    // 設定target analyzer
+	    //=====================================================================
+	    xyY_ptr targetwxyY = property->getTargetReferenceColor(Channel::W);
+	    if (null != targetwxyY) {
+		xyY_ptr rxyY = property->getTargetReferenceColor(Channel::R);
+		xyY_ptr gxyY = property->getTargetReferenceColor(Channel::G);
+		xyY_ptr bxyY = property->getTargetReferenceColor(Channel::B);
 
-	//=====================================================================
-	// 設定target analyzer
-	//=====================================================================
-	xyY_ptr targetwxyY = property->getTargetReferenceColor(Channel::W);
-	if (null != targetwxyY) {
-	    xyY_ptr rxyY = property->getTargetReferenceColor(Channel::R);
-	    xyY_ptr gxyY = property->getTargetReferenceColor(Channel::G);
-	    xyY_ptr bxyY = property->getTargetReferenceColor(Channel::B);
+		bptr < MaxMatrixIntensityAnalyzer > matrixAnalyzer =
+		    MaxMatrixIntensityAnalyzer::getReadyAnalyzer(mm, rxyY->toXYZ(), gxyY->toXYZ(),
+								 bxyY->toXYZ(),
+								 targetwxyY->toXYZ());
 
-	    bptr < MaxMatrixIntensityAnalyzer > matrixAnalyzer =
-		MaxMatrixIntensityAnalyzer::getReadyAnalyzer(mm, rxyY->toXYZ(), gxyY->toXYZ(),
-							     bxyY->toXYZ(), targetwxyY->toXYZ());
-
-	    string_ptr comment = property->getProperty("reference white comment");
-	    if (null != comment) {
-		matrixAnalyzer->setReferenceColorComment(*comment);
+		string_ptr comment = property->getProperty("reference white comment");
+		if (null != comment) {
+		    matrixAnalyzer->setReferenceColorComment(*comment);
+		}
+		RGB_ptr rgb = property->getTargetReferenceRGB();
+		matrixAnalyzer->setReferenceRGB(rgb);
+		analyzer = matrixAnalyzer;
 	    }
-	    RGB_ptr rgb = property->getTargetReferenceRGB();
-	    matrixAnalyzer->setReferenceRGB(rgb);
-	    analyzer = matrixAnalyzer;
+	    //=====================================================================
+
+	    //=====================================================================
+	    // 設定2nd white analyzer
+	    //=====================================================================
+	    xyY_ptr secondxyY = property->getSecondReferenceColor(Channel::W);
+	    if (null != secondxyY) {
+		xyY_ptr rxyY = property->getSecondReferenceColor(Channel::R);
+		xyY_ptr gxyY = property->getSecondReferenceColor(Channel::G);
+		xyY_ptr bxyY = property->getSecondReferenceColor(Channel::B);
+		RGB_ptr refRGB = property->getSecondReferenceRGB();
+
+		bptr < MaxMatrixIntensityAnalyzer > matrixAnalyzer2 =
+		    MaxMatrixIntensityAnalyzer::getReadyAnalyzer(rxyY->toXYZ(), gxyY->toXYZ(),
+								 bxyY->toXYZ(), secondxyY->toXYZ());
+		matrixAnalyzer2->setReferenceRGB(refRGB);
+		secondWhiteAnalyzer = matrixAnalyzer2;
+	    }
+	    //=====================================================================
 	}
-	//=====================================================================
-
-	//=====================================================================
-	// 設定2nd white analyzer
-	//=====================================================================
-	xyY_ptr secondxyY = property->getSecondReferenceColor(Channel::W);
-	if (null != secondxyY) {
-	    xyY_ptr rxyY = property->getSecondReferenceColor(Channel::R);
-	    xyY_ptr gxyY = property->getSecondReferenceColor(Channel::G);
-	    xyY_ptr bxyY = property->getSecondReferenceColor(Channel::B);
-	    RGB_ptr refRGB = property->getSecondReferenceRGB();
-
-	    bptr < MaxMatrixIntensityAnalyzer > matrixAnalyzer2 =
-		MaxMatrixIntensityAnalyzer::getReadyAnalyzer(rxyY->toXYZ(), gxyY->toXYZ(),
-							     bxyY->toXYZ(), secondxyY->toXYZ());
-	    matrixAnalyzer2->setReferenceRGB(refRGB);
-	    secondWhiteAnalyzer = matrixAnalyzer2;
-	}
-	//=====================================================================
-
 	//=====================================================================
 	// BitDepthProcessor
 	//=====================================================================

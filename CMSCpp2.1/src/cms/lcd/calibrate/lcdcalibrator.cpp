@@ -290,15 +290,15 @@ namespace cms {
 
 	    Component_vector_ptr LCDCalibrator::fetchComponentVector() {
 		//量測start->end得到的coponent/Y
-		bptr < cms::measure::IntensityAnalyzerIF > analyzer = fetcher->FirstAnalyzer;
-		RGB_ptr refRGB = analyzer->getReferenceRGB();
-		bptr < MeterMeasurement > mm = analyzer->getMeterMeasurement();
-		bool nativeTagetWhite = refRGB->isWhite();
-		if (!nativeTagetWhite && !mm->FakeMeasure) {
-		    //額外量測target white, 使的每次的作業中, 都確保白點的亮度可以穩定!
-		    //而不會限制白點的亮度只能是設定target white當下的亮度
-		    fetcher->ExtraMeasureRGB = refRGB;
-		}
+		/*bptr < cms::measure::IntensityAnalyzerIF > analyzer = fetcher->FirstAnalyzer;
+		   RGB_ptr refRGB = analyzer->getReferenceRGB();
+		   bptr < MeterMeasurement > mm = analyzer->getMeterMeasurement();
+		   bool nativeTagetWhite = refRGB->isWhite();
+		   if (!nativeTagetWhite && mm->doExtraMeasure()) {
+		   //額外量測target white, 使的每次的作業中, 都確保白點的亮度可以穩定!
+		   //而不會限制白點的亮度只能是設定target white當下的亮度
+		   fetcher->ExtraMeasureRGB = refRGB;
+		   } */
 		Component_vector_ptr componentVector = fetcher->fetchComponent(measureCondition);
 		RGB_vector_ptr rgbMeasureCode = measureCondition->getRGBMeasureCode();
 
@@ -307,17 +307,18 @@ namespace cms {
 						null);
 		}
 
-		if (nativeTagetWhite) {
-		    targetWhiteXYZ = (*componentVector)[0]->XYZ;
-		} else {
-		    if (!mm->FakeMeasure) {
-			targetWhiteXYZ = fetcher->ExtraMeasureXYZ;
-		    } else {
-			xyY_ptr refColor = analyzer->getReferenceColor();
-			XYZ_ptr refColorXYZ = refColor->toXYZ();
-			targetWhiteXYZ = refColorXYZ;
-		    }
-		}
+		/*if (nativeTagetWhite) {
+		   targetWhiteXYZ = (*componentVector)[0]->XYZ;
+		   } else {
+		   if (!mm->doExtraMeasure()) {
+		   xyY_ptr refColor = analyzer->getReferenceColor();
+		   XYZ_ptr refColorXYZ = refColor->toXYZ();
+		   targetWhiteXYZ = refColorXYZ;
+		   } else {
+		   //不是fake measure才跳到這邊
+		   targetWhiteXYZ = fetcher->ExtraMeasureXYZ;
+		   }
+		   } */
 
 		return componentVector;
 	    };
@@ -373,10 +374,10 @@ namespace cms {
 
 		return result;
 	    };
-            bptr < cms::measure::IntensityAnalyzerIF > LCDCalibrator::getFirstAnalzyer(){
-            bptr < IntensityAnalyzerIF > firstAnalyzer = fetcher->FirstAnalyzer;
-            return firstAnalyzer;
-            };
+	    bptr < cms::measure::IntensityAnalyzerIF > LCDCalibrator::getFirstAnalzyer() {
+		bptr < IntensityAnalyzerIF > firstAnalyzer = fetcher->FirstAnalyzer;
+		return firstAnalyzer;
+	    };
 	    /*
 	       當有smooth CCT到native white需求時，就需要native white analyzer
 	       ，求得更準確的DG Lut
@@ -401,15 +402,9 @@ namespace cms {
 		case SecondWhite::MaxRGB:
 		    break;
 		case SecondWhite::DeHook:
-		    if (mm->FakeMeasure) {
-			//如果是FakeMeasure, secondWhiteAnalyzer應該是從excel讀出來,
-			//所以不用(也不能,因為mm是fake不能量東西)重新產生secondWhiteAnalyzer
-			//而且應該也不會進到這邊
-			throw new IllegalStateException();
-		    } else {
-			bluemax = processor.getMaxBIntensityRawGrayLevel();
-			this->maxBRawGrayLevel = bluemax;
-		    }
+
+		    bluemax = processor.getMaxBIntensityRawGrayLevel();
+		    this->maxBRawGrayLevel = bluemax;
 		    break;
 		case SecondWhite::DeHook2:
 		    /*
@@ -430,9 +425,9 @@ namespace cms {
 		    Patch_vector_ptr patchVector = processor.
 			getReasonableChromaticityPatchVector
 			(lcdmodel4DeHook, this->maxBRawGrayLevel, reasonableDeltaChromaticity);
-                    if( 0 == patchVector->size()) {
-                      throw new IllegalStateException("");
-                    }
+		    if (0 == patchVector->size()) {
+			throw new IllegalStateException("");
+		    }
 
 		    if (SecondWithBGap1st == deHook) {
 			//會盡量找到最低的gray level
@@ -614,7 +609,15 @@ namespace cms {
 		    || SecondWithGamma1st == dehook;
 	    };
 
-
+	    XYZ_ptr LCDCalibrator::measureFirstAnalyzerReferenceRGB() {
+		bptr < IntensityAnalyzerIF > firstAnalyzer = getFirstAnalzyer();
+		if (null == firstAnalyzer) {
+		    throw new IllegalStateException();
+		}
+		xyY_ptr refRGBxyY = firstAnalyzer->measureReferenceRGB();
+		XYZ_ptr XYZ = refRGBxyY->toXYZ();
+		return XYZ;
+	    };
 
 	    /*
 	       generator在此的用意只是拿來產生gamma curve
@@ -628,7 +631,9 @@ namespace cms {
 		double_vector_ptr luminanceGammaCurve;
 		double minLuminance =
 		    (*originalComponentVector)[originalComponentVector->size() - 1]->XYZ->Y;
-
+		//bptr < IntensityAnalyzerIF > firstAnalyzer = getFirstAnalzyer();
+		//xyY_ptr refRGBxyY = firstAnalyzer->measureReferenceRGB();
+		XYZ_ptr referenceXYZ = measureFirstAnalyzerReferenceRGB();
 
 		//=============================================================
 		// 產生 luminance gamma curve
@@ -664,10 +669,8 @@ namespace cms {
 		    STORE_COMPONENT("o_fetch2.xls", componentVector2);
 		    panelRegulator2->setEnable(false);
 
-		    //if (null == secondWhiteAnalyzer) {
 		    //初始化255/255/255的white analyzer
 		    init2ndWhiteAnalyzer(keepMaxLuminance, dehook);
-		    //}
 
 		    advgenerator = bptr < AdvancedDGLutGenerator >
 			(new
@@ -706,10 +709,7 @@ namespace cms {
 			(new
 			 AdvancedDGLutGenerator(originalComponentVector, fetcher, bitDepth, *this));
 
-
-		    bptr < IntensityAnalyzerIF > firstAnalyzer = getFirstAnalzyer();
-		    double targetLuminance = firstAnalyzer->getReferenceColor()->Y;
-		    double maxLuminance = targetLuminance;
+		    double maxLuminance = referenceXYZ->Y;
 		    //藉由傳統generator產生luminance gamma curve
 		    if (true == absoluteGamma) {
 			int effectiven = bitDepth->getEffectiveInputLevel();	//256
@@ -754,29 +754,39 @@ namespace cms {
 
 
 		//==================================================================================
-		// init maxWhiteXYZ
+		// init maxWhiteXYZ & target white
 		//==================================================================================
-		XYZ_ptr maxWhiteXYZ = targetWhiteXYZ;
-		double maxLuminance = (*luminanceGammaCurve)[luminanceGammaCurve->size() - 1];
+		//XYZ_ptr refRGBXYZ = refRGBxyY->toXYZ();
+		XYZ_ptr maxWhiteXYZ = referenceXYZ->clone();
+		XYZ_ptr targetWhiteXYZ;
 
 		switch (keepMaxLuminance) {
 		case KeepMaxLuminance::TargetLuminance:{
 			//利用luminanceGammaCurve, 把native的亮度設定成luminanceGammaCurve的最大亮度
-			maxWhiteXYZ = targetWhiteXYZ->clone();
-			maxWhiteXYZ->normalizeY();
-			maxWhiteXYZ->times(maxLuminance);
+			/*maxWhiteXYZ = targetWhiteXYZ->clone();
+			   maxWhiteXYZ->normalizeY();
+			   maxWhiteXYZ->times(maxLuminance); */
+			targetWhiteXYZ = maxWhiteXYZ->clone();
 		    };
 		    break;
 		case KeepMaxLuminance::TargetWhite:
+		    targetWhiteXYZ = maxWhiteXYZ->clone();
 		    break;
 		case KeepMaxLuminance::NativeWhite:
 		    if (isDoDeHook()) {
+			//de-hook需要1st white的亮度(確保 gamma正確) 以及 2nd的色度(確保避開B Intensity反轉區)
 			xyY_ptr secondWhite = secondWhiteAnalyzer->getReferenceColor()->clone();
-			secondWhite->Y = maxLuminance;
+			targetWhiteXYZ = secondWhite->toXYZ();
+			secondWhite->Y = referenceXYZ->Y;
 			maxWhiteXYZ = secondWhite->toXYZ();
+
+		    } else {
+			targetWhiteXYZ = maxWhiteXYZ;
 		    }
+		    break;
 		};
 		//==================================================================================
+
 
 		//外部迴圈針對是否疊階來決定起始位置
 		//這邊的思維是: 如果轉折點設定不當(太小太接近0), 就可能造成疊階
@@ -1112,9 +1122,9 @@ namespace cms {
 		}
 
 		bptr < cms::measure::MeterMeasurement > mm = getMeterMeasurement();
-		if (null != mm && !mm->FakeMeasure) {
+		if (null != mm && FakeMode::None == mm->FakeMeasureMode) {
 		    Patch_vector_ptr measurePatchVector = mm->MeasurePatchVector;
-		    if (measurePatchVector->size() != 0) {
+		    if (null != measurePatchVector && measurePatchVector->size() != 0) {
 			dglutFile->setMeasure(measurePatchVector);
 		    }
 		}

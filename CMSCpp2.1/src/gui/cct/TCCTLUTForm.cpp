@@ -88,6 +88,7 @@ void __fastcall TCCTLUTForm::Button_MeaRunClick(TObject * Sender)
 	MainForm->setMeterMeasurementWaitTimes();
 	bptr < ComponentFetcher > fetcher = MainForm->getComponentFetcher();
 	bptr < MeterMeasurement > mm = fetcher->FirstAnalyzer->getMeterMeasurement();
+	mm->resetMeasurePatchVector();
 
 	cms::lcd::calibrate::debugMode = debugMode;
 	cms::lcd::calibrate::linkCA210 = MainForm->linkCA210;
@@ -148,7 +149,6 @@ void __fastcall TCCTLUTForm::Button_MeaRunClick(TObject * Sender)
 	    int middleGammaEnd = Edit_MiddleGammaEnd->Text.ToInt();
 	    calibrator.setGamma(gammaDim, dimGammaEnd, middleGammaEnd, gammaBright);
 	}
-	//calibrator.HighlightGammaFix = CheckBox_HighlightGammaFix->Checked;
 	//==========================================================================
 
 	//==========================================================================
@@ -158,7 +158,6 @@ void __fastcall TCCTLUTForm::Button_MeaRunClick(TObject * Sender)
 	    double gain = this->Edit_BGain->Text.ToDouble();
 	    calibrator.BIntensityGain = gain;
 	}
-	//bool bMax = this->CheckBox_BMax->Checked;
 	calibrator.BMax = this->CheckBox_BMax->Checked;
 	//==========================================================================
 
@@ -190,10 +189,7 @@ void __fastcall TCCTLUTForm::Button_MeaRunClick(TObject * Sender)
 	    calibrator.setKeepMaxLuminance(KeepMaxLuminance::TargetLuminance);
 	    calibrator.DeHookMode = None;
 	} else if (true == RadioButton_MaxYNative->Checked) {
-	    //bool deHook = CheckBox_DeHook->Checked;
-	    //可採用de-hook, 搭配t-con input
 	    calibrator.setKeepMaxLuminance(KeepMaxLuminance::NativeWhite);
-	    //calibrator.DeHookMode = deHook ? Original : None;
 
 	    if (RadioButton_DeHookNone->Checked) {
 		calibrator.DeHookMode = None;
@@ -207,7 +203,6 @@ void __fastcall TCCTLUTForm::Button_MeaRunClick(TObject * Sender)
 		    break;
 		case 1:	//Gamma first
 		    calibrator.DeHookMode = SecondWithGamma1st;
-
 		    break;
 		};
 		calibrator.AlterGammaCurveAtDeHook2 = CheckBox_AlterGammaCurveAtDeHook2->Checked;
@@ -215,7 +210,6 @@ void __fastcall TCCTLUTForm::Button_MeaRunClick(TObject * Sender)
 
 
 	} else if (true == RadioButton_MaxYNativeAdv->Checked) {
-	    //可採用de-hook,
 	    int over = Edit_MaxYAdvOver->Text.ToInt();
 	    bool autoOver = CheckBox_MaxYAdvAuto->Checked;
 	    calibrator.setKeepMaxLuminanceSmooth2NativeWhite(over, autoOver);
@@ -231,9 +225,7 @@ void __fastcall TCCTLUTForm::Button_MeaRunClick(TObject * Sender)
 	    calibrator.DeHookMode = None;
 	}
 	//==========================================================================
-
 	//以上都是選項的設定
-
 	//=================================================================
 	// 設定結束, 進入主流程開始處理
 	//=================================================================
@@ -273,9 +265,9 @@ void __fastcall TCCTLUTForm::Button_MeaRunClick(TObject * Sender)
 	    //=================================================================
 	    calibrator.storeDGLut2DGLutFile(dgLutFile, dglut);
 
-	    if (true == CheckBox_MemoryMeasure->Checked && false == MainForm->mm->FakeMeasure) {
+	    if (true == CheckBox_MemoryMeasure->Checked
+		&& FakeMode::None != MainForm->mm->FakeMeasureMode) {
 		//提供memory功能
-		//dummy
 		MainForm->setDummyMeterFile(dgLutFile);
 		this->Button_Run->Enabled = true;
 		this->Button_MeaRun->Enabled = false;
@@ -298,13 +290,11 @@ void __fastcall TCCTLUTForm::Button_MeaRunClick(TObject * Sender)
 	    Util::shellExecute(filename);
 	}
 	catch(java::lang::IllegalStateException & ex) {
-	    //dgLutFile.reset();
 	    MainForm->stopProgress(ProgressBar1);
 	    ShowMessage(ex.toString().c_str());
 	}
 	catch(...) {
 	    ShowMessage("Abnormal stop!");
-	    //dgLutFile.reset();
 	}
 	//=================================================================
     }
@@ -374,7 +364,7 @@ void __fastcall TCCTLUTForm::FormShow(TObject * Sender)
 	Edit_MaxYAdvOver->Visible = true;
 	CheckBox_MaxYAdvAuto->Visible = true;
 
-	//RadioButton_DeHookKeepCCT->Visible = true;
+	CheckBox_KeepMaxYInMultiGen->Visible = true;
     }
     //=========================================================================
     // function on/off relative

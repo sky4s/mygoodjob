@@ -190,27 +190,27 @@ namespace cms {
 	    return whiteRatio;
 	};
 	/*bptr < MaxMatrixIntensityAnalyzer >
-	    MaxMatrixIntensityAnalyzer::getReadyAnalyzer(bptr < MeterMeasurement > mm,
-							 int rMax, int gMax, int bMax) {
-	    bptr < MaxMatrixIntensityAnalyzer >
-		nativeWhiteAnalyzer(new MaxMatrixIntensityAnalyzer(mm));
-	    //已知rgb
-	    RGB_ptr rgb(new RGBColor(rMax, gMax, bMax, MaxValue::Int8Bit));
-	    RGB_ptr r(new RGBColor(rMax, 0, 0, MaxValue::Int8Bit));
-	    RGB_ptr g(new RGBColor(0, gMax, 0, MaxValue::Int8Bit));
-	    RGB_ptr b(new RGBColor(0, 0, bMax, MaxValue::Int8Bit));
+	   MaxMatrixIntensityAnalyzer::getReadyAnalyzer(bptr < MeterMeasurement > mm,
+	   int rMax, int gMax, int bMax) {
+	   bptr < MaxMatrixIntensityAnalyzer >
+	   nativeWhiteAnalyzer(new MaxMatrixIntensityAnalyzer(mm));
+	   //已知rgb
+	   RGB_ptr rgb(new RGBColor(rMax, gMax, bMax, MaxValue::Int8Bit));
+	   RGB_ptr r(new RGBColor(rMax, 0, 0, MaxValue::Int8Bit));
+	   RGB_ptr g(new RGBColor(0, gMax, 0, MaxValue::Int8Bit));
+	   RGB_ptr b(new RGBColor(0, 0, bMax, MaxValue::Int8Bit));
 
-	    int defaultWaitTimes = nativeWhiteAnalyzer->getWaitTimes();
-	    nativeWhiteAnalyzer->setWaitTimes(5000);
-	    nativeWhiteAnalyzer->beginAnalyze();
-	    nativeWhiteAnalyzer->setupComponent(Channel::R, r);
-	    nativeWhiteAnalyzer->setupComponent(Channel::G, g);
-	    nativeWhiteAnalyzer->setupComponent(Channel::B, b);
-	    nativeWhiteAnalyzer->setupComponent(Channel::W, rgb);
-	    nativeWhiteAnalyzer->enter();
-	    nativeWhiteAnalyzer->setWaitTimes(defaultWaitTimes);
-	    return nativeWhiteAnalyzer;
-	};*/
+	   int defaultWaitTimes = nativeWhiteAnalyzer->getWaitTimes();
+	   nativeWhiteAnalyzer->setWaitTimes(5000);
+	   nativeWhiteAnalyzer->beginAnalyze();
+	   nativeWhiteAnalyzer->setupComponent(Channel::R, r);
+	   nativeWhiteAnalyzer->setupComponent(Channel::G, g);
+	   nativeWhiteAnalyzer->setupComponent(Channel::B, b);
+	   nativeWhiteAnalyzer->setupComponent(Channel::W, rgb);
+	   nativeWhiteAnalyzer->enter();
+	   nativeWhiteAnalyzer->setWaitTimes(defaultWaitTimes);
+	   return nativeWhiteAnalyzer;
+	   }; */
 	bptr < MaxMatrixIntensityAnalyzer >
 	    MaxMatrixIntensityAnalyzer::getReadyAnalyzer(bptr < MeterMeasurement > mm,
 							 double rMax, double gMax, double bMax) {
@@ -263,94 +263,94 @@ namespace cms {
 	//=====================================================================
 	// IntensityAnayzer
 	//=====================================================================
-      /*IntensityAnayzer::IntensityAnayzer(bptr < MaxMatrixIntensityAnalyzer > matrix, bptr < CA210IntensityAnalyzer > ca210):matrix(matrix), ca210(ca210),
-	    no(0)
-	{
+	/*IntensityAnayzer::IntensityAnayzer(bptr < MaxMatrixIntensityAnalyzer > matrix, bptr < CA210IntensityAnalyzer > ca210):matrix(matrix), ca210(ca210),
+	   no(0)
+	   {
 
-	    fieldNames =
-		StringVector::fromCString(13, "no", "CA_R", "CA_G", "CA_B",
-					  "MA_R", "MA_G", "MA_B", "MA_Ro",
-					  "MA_Go", "MA_Bo", "MA2_R", "MA2_G", "MA2_B");
-	    Util::deleteExist(INTENSITY_FILE);
-	    excel = bptr < SimpleExcelAccess > (new
-						SimpleExcelAccess
-						(INTENSITY_FILE,
-						 cms::colorformat::Create, fieldNames));
-	};
+	   fieldNames =
+	   StringVector::fromCString(13, "no", "CA_R", "CA_G", "CA_B",
+	   "MA_R", "MA_G", "MA_B", "MA_Ro",
+	   "MA_Go", "MA_Bo", "MA2_R", "MA2_G", "MA2_B");
+	   Util::deleteExist(INTENSITY_FILE);
+	   excel = bptr < SimpleExcelAccess > (new
+	   SimpleExcelAccess
+	   (INTENSITY_FILE,
+	   cms::colorformat::Create, fieldNames));
+	   };
 
-	RGB_ptr IntensityAnayzer::getIntensity(RGB_ptr rgb) {
-	    RGB_ptr ca210Intensity = ca210->getIntensity(rgb);
-	    XYZ_ptr XYZ = ca210->getCIEXYZ();
-	    RGB_ptr matrixIntensity = matrix->getIntensity(XYZ);
-	    double2D_ptr originalIntensity = matrix->rgbValues;
-	    string_vector_ptr values;
+	   RGB_ptr IntensityAnayzer::getIntensity(RGB_ptr rgb) {
+	   RGB_ptr ca210Intensity = ca210->getIntensity(rgb);
+	   XYZ_ptr XYZ = ca210->getCIEXYZ();
+	   RGB_ptr matrixIntensity = matrix->getIntensity(XYZ);
+	   double2D_ptr originalIntensity = matrix->rgbValues;
+	   string_vector_ptr values;
 
-	    values =
-		StringVector::fromDouble(13,
-					 static_cast < double >(no++),
-					 ca210Intensity->R,
-					 ca210Intensity->G,
-					 ca210Intensity->B,
-					 matrixIntensity->R,
-					 matrixIntensity->G,
-					 matrixIntensity->B,
-					 (*originalIntensity)[0][0],
-					 (*originalIntensity)[1][0],
-					 (*originalIntensity)[2][0], 0., 0., 0.);
-	    excel->insert(values);
-	    return ca210Intensity;
-	};
-	XYZ_ptr IntensityAnayzer::getCIEXYZ() {
-	    return ca210->getCIEXYZ();
-	};
+	   values =
+	   StringVector::fromDouble(13,
+	   static_cast < double >(no++),
+	   ca210Intensity->R,
+	   ca210Intensity->G,
+	   ca210Intensity->B,
+	   matrixIntensity->R,
+	   matrixIntensity->G,
+	   matrixIntensity->B,
+	   (*originalIntensity)[0][0],
+	   (*originalIntensity)[1][0],
+	   (*originalIntensity)[2][0], 0., 0., 0.);
+	   excel->insert(values);
+	   return ca210Intensity;
+	   };
+	   XYZ_ptr IntensityAnayzer::getCIEXYZ() {
+	   return ca210->getCIEXYZ();
+	   };
 
-	XYZ_ptr IntensityAnayzer::getCIEXYZOnly(RGB_ptr rgb) {
-	    throw UnsupportedOperationException();
-	};
+	   XYZ_ptr IntensityAnayzer::getCIEXYZOnly(RGB_ptr rgb) {
+	   throw UnsupportedOperationException();
+	   };
 
-	void IntensityAnayzer::setupComponent(const Dep::Channel & ch, RGB_ptr rgb) {
-	    ca210->setupComponent(ch, rgb);
-	    XYZ_ptr XYZ = ca210->getCIEXYZ();
-	    matrix->setupComponent(ch, XYZ);
-	};
-	void IntensityAnayzer::enter() {
-	    ca210->enter();
-	    matrix->enter();
+	   void IntensityAnayzer::setupComponent(const Dep::Channel & ch, RGB_ptr rgb) {
+	   ca210->setupComponent(ch, rgb);
+	   XYZ_ptr XYZ = ca210->getCIEXYZ();
+	   matrix->setupComponent(ch, XYZ);
+	   };
+	   void IntensityAnayzer::enter() {
+	   ca210->enter();
+	   matrix->enter();
 
-	    double2D_ptr whiteRatio = matrix->whiteRatio;
-	    string_vector_ptr values;
+	   double2D_ptr whiteRatio = matrix->whiteRatio;
+	   string_vector_ptr values;
 
-	    values =
-		StringVector::fromDouble(13, 99., 0., 0., 0., 0., 0.,
-					 0., (*whiteRatio)[0][0],
-					 (*whiteRatio)[1][0], (*whiteRatio)[2][0], 0., 0., 0.);
-	    excel->insert(values);
+	   values =
+	   StringVector::fromDouble(13, 99., 0., 0., 0., 0., 0.,
+	   0., (*whiteRatio)[0][0],
+	   (*whiteRatio)[1][0], (*whiteRatio)[2][0], 0., 0., 0.);
+	   excel->insert(values);
 
-	};
-	void IntensityAnayzer::beginAnalyze() {
-	    ca210->beginAnalyze();
-	};
-	void IntensityAnayzer::endAnalyze() {
-	    ca210->endAnalyze();
-	};
-	void IntensityAnayzer::setWaitTimes(int waitTimes) {
-	    ca210->setWaitTimes(waitTimes);
-	};
-	int IntensityAnayzer::getWaitTimes() {
-	    return ca210->getWaitTimes();
-	};
-	xyY_ptr IntensityAnayzer::getReferenceColor() {
-	    return ca210->getReferenceColor();
-	};
-	xyY_ptr IntensityAnayzer::getPrimaryColor(const Dep::Channel & ch) {
-	    return ca210->getPrimaryColor(ch);
-	};
-	RGB_ptr IntensityAnayzer::getReferenceRGB() {
-	    return ca210->getReferenceRGB();
-	};
-	bptr < MeterMeasurement > IntensityAnayzer::getMeterMeasurement() {
-	    return bptr < MeterMeasurement > ((MeterMeasurement *) null);
-	};*/
+	   };
+	   void IntensityAnayzer::beginAnalyze() {
+	   ca210->beginAnalyze();
+	   };
+	   void IntensityAnayzer::endAnalyze() {
+	   ca210->endAnalyze();
+	   };
+	   void IntensityAnayzer::setWaitTimes(int waitTimes) {
+	   ca210->setWaitTimes(waitTimes);
+	   };
+	   int IntensityAnayzer::getWaitTimes() {
+	   return ca210->getWaitTimes();
+	   };
+	   xyY_ptr IntensityAnayzer::getReferenceColor() {
+	   return ca210->getReferenceColor();
+	   };
+	   xyY_ptr IntensityAnayzer::getPrimaryColor(const Dep::Channel & ch) {
+	   return ca210->getPrimaryColor(ch);
+	   };
+	   RGB_ptr IntensityAnayzer::getReferenceRGB() {
+	   return ca210->getReferenceRGB();
+	   };
+	   bptr < MeterMeasurement > IntensityAnayzer::getMeterMeasurement() {
+	   return bptr < MeterMeasurement > ((MeterMeasurement *) null);
+	   }; */
 	//=====================================================================
 #endif
     };

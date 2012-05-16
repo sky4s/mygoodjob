@@ -287,9 +287,9 @@ void __fastcall TTargetWhiteForm2::Button_RunClick(TObject * Sender)
 	    return;
 	}
 
-	if (MainForm->isCA210Analyzer()) {
+	//if (MainForm->isCA210Analyzer()) {
 	    //MainForm->setAnalyzerToTargetChannel();
-	}
+	//}
 	analyzer->enter();
 
 

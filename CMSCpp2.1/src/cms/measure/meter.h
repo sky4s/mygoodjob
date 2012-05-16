@@ -16,6 +16,8 @@
 
 namespace cms {
     namespace measure {
+	Enumeration(FakeMode)
+	None, Component, Patch EnumerationEnd()
 	namespace meter {
 	    class Instr {
 	      public:
@@ -105,10 +107,10 @@ namespace cms {
 
 	    class DGLutFileMeter:public Meter {
 	      private:
-		//bptr < cms::colorformat::DGLutFile > dglut;
-		const Component_vector_ptr vector;
+		Component_vector_ptr vector;
 		int index;
 		Component_ptr c;
+		Patch_vector_ptr measurePatchVector;
 	      public:
 		 DGLutFileMeter(bptr < cms::colorformat::DGLutFile > dglut);
 		void close();
@@ -124,6 +126,8 @@ namespace cms {
 		Component_ptr getComponent();
 		void setIndex(int index);
 		void reset();
+		bool isMeasureFromPatchVector();
+		FakeMode getFakeMode();
 	    };
 
 	};

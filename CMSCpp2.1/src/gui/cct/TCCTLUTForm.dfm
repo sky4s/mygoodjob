@@ -1,6 +1,6 @@
 object CCTLUTForm: TCCTLUTForm
-  Left = 515
-  Top = 230
+  Left = 491
+  Top = 237
   Width = 841
   Height = 431
   Caption = 'CCT(LUT)'
@@ -715,6 +715,7 @@ object CCTLUTForm: TCCTLUTForm
       Height = 17
       Caption = 'Keep MaxY'
       TabOrder = 8
+      Visible = False
     end
   end
   object Button_MeaRun: TButton

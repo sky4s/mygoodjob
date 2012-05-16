@@ -87,9 +87,8 @@ namespace cms {
 
 	    void AdvancedDGLutGenerator::init() {
 		stopMeasure = false;
-		//this->bitDepth = bitDepth;
 		rgbGenerateResult = nil_RGBGamma;
-		useMaxBIntensityZone = 30;
+		//useMaxBIntensityZone = 30;
 	    };
 
 
@@ -124,7 +123,8 @@ namespace cms {
 
 	    RGB_vector_ptr AdvancedDGLutGenerator::produce() {
 		if (null == targetXYZVector) {
-		    return nil_RGB_vector_ptr;
+		    throw new IllegalStateException();
+		    //return nil_RGB_vector_ptr;
 		}
 		STORE_XYZXY_VECTOE("1.2_target.xls", targetXYZVector);
 		//==============================================================
@@ -179,7 +179,7 @@ namespace cms {
 			    return smooth(result1, result2, bitDepth, brightTurn);
 			}
 		    case Normal:
-		    case BIntensitySmooth:
+		    //case BIntensitySmooth: //dprecated
 			{
 			    //大部分都是在此case
 			    RGB_vector_ptr result = produceDGLut(targetXYZVector,
@@ -236,7 +236,6 @@ namespace cms {
 							    analyzer, panelRegulator1);
 		int whiteLevel = bitDepth->getEffectiveInputLevel();
 		bool keepMaxLumiInMulti = c.keepMaxYInMultiGen;
-		//(KeepMaxLuminance::NativeWhite == c.keepMaxLuminance);
 		if (keepMaxLumiInMulti) {
 		    RGB_ptr whiteRGB = (*initRGBVector)[whiteLevel - 1];
 		    whiteRGB->R = whiteRGB->G = whiteRGB->B = bitDepth->getOutputMaxDigitalCount();
@@ -260,24 +259,15 @@ namespace cms {
 		for (int t = 0; t < c.multiGenTimes; t++) {
 		    RGBVector::changeMaxValue(result, bitDepth->getFRCAbilityBit());
 
+		    //因為開頭就是反著量, 所以把上一次結果反轉才能開始量測
 		    bptr < MeasureCondition >
 			measureCondition(new MeasureCondition(RGBVector::reverse(result)));
-
+		    //重新fetch一次, 這時候白點會不會又變動了?
 		    Component_vector_ptr componentVectorPrime =
 			fetcher->fetchComponent(measureCondition);
 		    STORE_COMPONENT("MultiGen_Component_" +
 				    _toString(t + 1) + ".xls", componentVectorPrime);
-		    /*if (c.HighlightGammaFix) {        //old gamma correct test scopr
-		       Component_ptr c = (*componentVectorPrime)[0];
-		       double maxLuminance = c->XYZ->Y;
-		       XYZ_ptr targetWhite = (*targetXYZVector)[effectiveInputLevel - 1];
-		       XYZ_ptr secondWhite = (*targetXYZVector)[effectiveInputLevel - 2];
-		       if (secondWhite->Y > maxLuminance) {
-		       throw new IllegalStateException("secondWhite->Y > maxLuminance");
-		       }
-		       targetWhite->scaleY(maxLuminance);
-		       } */
-
+		    //此時用的是最一開始的target XYZ
 		    result =
 			produceDGLut(targetXYZVector, componentVectorPrime,
 				     analyzer, bptr < PanelRegulator > ((PanelRegulator *) null));
@@ -327,34 +317,7 @@ namespace cms {
 		    return nil_double_array;
 		}
 	    };
-	    //class MaxBIntensityInfo;
-	    MaxBIntensityInfo AdvancedDGLutGenerator::
-		getMaxBIntensityInfo(XYZ_vector_ptr targetXYZVector,
-				     Component_vector_ptr componentVector,
-				     bptr < cms::measure::IntensityAnalyzerIF > analyzer) {
-		ComponentLUT lut(componentVector);
-		//找到最大B Intensity的灰階
-		//int maxBIntenstyRGL = lut.getMaxBIntensityRGL();
-		int halfSmoothZone = useMaxBIntensityZone / 2;
-		//要把最大B Intensity對應的DG放在:
-		//int size = targetXYZVector->size();
-		int maxBGrayLevel = effectiveInputLevel - 1 - halfSmoothZone;
-
-		//找到最大B Intensity的目標XYZ
-		XYZ_ptr bmaxtargetXYZ = (*targetXYZVector)[maxBGrayLevel];
-		//最大B Intensity目標XYZ對應出來的anlyzer
-		bptr < MaxMatrixIntensityAnalyzer > bmaxma = MaxMatrixIntensityAnalyzer::getReadyAnalyzer(analyzer, bmaxtargetXYZ);	//傳入 XYZ x3
-		RGB_ptr refRGB = analyzer->getReferenceRGB();
-		bmaxma->setReferenceRGB(refRGB);
-
-		//利用新的analyzer算出新的component(就是intensity)
-		Component_vector_ptr bmaxComponentVector =
-		    fetchNewComponent(bmaxma, componentVector);
-		ComponentLUT bmaxlut(bmaxComponentVector);
-		//算出上述目標XYZ對應出來的最大B Intensity
-		double maxBIntensity = bmaxlut.getMaxBIntensity();
-		return MaxBIntensityInfo(maxBGrayLevel, maxBIntensity);
-	    };
+ 
 	    //======================================================================================
 	    //產生DG LUT的演算法核心部份
 	    //======================================================================================
@@ -420,19 +383,6 @@ namespace cms {
 		intensity[2] = bTargetIntensity;
 		//=============================================================
 
-		//=============================================================
-		// BIntensitySmooth init (NG)
-		//=============================================================
-		double maxBIntensity = -1;
-		int maxBGrayLevel = -1;
-		if (mode == BIntensitySmooth) {
-		    MaxBIntensityInfo maxBIntensityInfo = getMaxBIntensityInfo(targetXYZVector,
-									       componentVector,
-									       analyzer);
-		    maxBIntensity = maxBIntensityInfo.maxBIntensity;
-		    maxBGrayLevel = maxBIntensityInfo.maxBGrayLevel;
-		}
-		//=============================================================
 
 		RGB_vector_ptr rgbGenResultVector(new RGB_vector());
 #ifdef DEBUG_CCTLUT_NEWMETHOD
@@ -502,41 +452,7 @@ namespace cms {
 			intensity = smoothIntensity;
 		    }
 		    //=============================================================
-		    //=============================================================
-		    // BIntensitySmooth
-		    // native white advance+de-hook下才會啟用
-		    //=============================================================
-		    //intensity smooth的目的就是要讓blue intensity可以衝出100, 然後又smooth回100
-		    //拆成三個區間 0~(zone start)~(zone middle/max b intensity)~255
-		    //250 252 255
-		    else if (mode == BIntensitySmooth) {
-			//intensity smooth的目的就是要讓blue intensity可以衝出100, 然後又smooth回100
-			if (x <= (effectiveInputLevel - 1)
-			    && x > maxBGrayLevel) {
-			    //252~255
-			    intensity[2] =
-				Interpolation::linear(maxBGrayLevel,
-						      (effectiveInputLevel
-						       - 1), maxBIntensity, bTargetIntensity, x);
-			    lutgen.setInverseSearch(true);
-			} else if (x <= maxBGrayLevel
-				   && x > (effectiveInputLevel - 1 - useMaxBIntensityZone)) {
-			    //250~252
-			    intensity[2] =
-				Interpolation::
-				linear((effectiveInputLevel - 1 -
-					useMaxBIntensityZone),
-				       maxBGrayLevel, bTargetIntensity, maxBIntensity, x);
-			} else {
-			    //0~250
-			    intensity[2] = bTargetIntensity;
-			}
-		    }
-		    //=============================================================
 
-		    //double rIntensity = intensity[0];
-		    //double gIntensity = intensity[1];
-		    //double bIntensity = intensity[2];
 		    RGB_ptr rgb = lutgen.getDGCode(intensity[0], intensity[1], intensity[2]);	//傳出(主要)
 		    (*result)[x] = rgb;
 
@@ -869,10 +785,10 @@ namespace cms {
 	    void AdvancedDGLutGenerator::setPanelRegulator(bptr < PanelRegulator > panelRegulator) {
 		this->panelRegulator1 = panelRegulator;
 	    };
-	    void AdvancedDGLutGenerator::setUseMaxBIntensityZone(int zone) {
+	    /*void AdvancedDGLutGenerator::setUseMaxBIntensityZone(int zone) {
 		this->useMaxBIntensityZone = zone;
 		mode = BIntensitySmooth;
-	    };
+	    };*/
 
 	    //==================================================================
 	    //==================================================================
@@ -951,16 +867,15 @@ namespace cms {
 		    //找到最大B Intensity的灰階
 		    return lut.getMaxBIntensityRGL();
 		} else {
-		    /*bptr < cms::measure::IntensityAnalyzerIF > analyzer = c.fetcher->FirstAnalyzer;
-		       bptr < MeterMeasurement > mm = analyzer->getMeterMeasurement(); */
 		    bptr < MeterMeasurement > mm = c.getMeterMeasurement();
 		    bptr < IntensityAnalyzerIF > analyzer = c.getFirstAnalzyer();
 		    RGB_ptr refRGB = analyzer->getReferenceRGB();
-		    if (refRGB->isWhite()) {
-			return MeasureTool::getMaxBIntensityRawGrayLevel(mm, c.bitDepth, analyzer);
-		    } else {
-			return MeasureTool::getMaxBIntensityRawGrayLevel(mm, c.bitDepth);
-		    }
+		    return MeasureTool::getMaxBIntensityRawGrayLevel(mm, c.bitDepth);
+		    /*if (refRGB->isWhite()) {
+		       return MeasureTool::getMaxBIntensityRawGrayLevel(mm, c.bitDepth, analyzer);
+		       } else {
+		       return MeasureTool::getMaxBIntensityRawGrayLevel(mm, c.bitDepth);
+		       } */
 		}
 	    };
 	    SecondWhite DeHookProcessor::getSecondWhite(KeepMaxLuminance keepMaxLuminance,

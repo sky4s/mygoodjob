@@ -277,7 +277,7 @@ namespace cms {
 		 bptr < MeasureCondition > measureCondition;
 		 bptr < BitDepthProcessor > bitDepth;
 		FeedbackListener *feedbackListener;
-		XYZ_ptr targetWhiteXYZ;
+		//XYZ_ptr targetWhiteXYZ;
 		//==============================================================
 
 		//==============================================================
@@ -302,6 +302,7 @@ namespace cms {
 		RGB_vector_ptr oldMethod(DGLutGenerator & generator,
 					 bptr < PanelRegulator >
 					 panelRegulator, const Dep::MaxValue & quantizationBit);
+		XYZ_ptr measureFirstAnalyzerReferenceRGB();
 		RGB_vector_ptr newMethod(bptr < PanelRegulator > panelRegulato);
 
 		void fixChromaticityReverseByFeedback(RGB_vector_ptr dglut);
@@ -317,7 +318,7 @@ namespace cms {
 
 		Component_vector_ptr getDimComponentVector(RGB_vector_ptr dglut);
 		bool isDoDeHook();
-                bptr < cms::measure::IntensityAnalyzerIF > getFirstAnalzyer();
+		 bptr < cms::measure::IntensityAnalyzerIF > getFirstAnalzyer();
 
 		//==============================================================
 

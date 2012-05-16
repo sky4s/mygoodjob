@@ -11,6 +11,7 @@
 //本項目內頭文件
 #include <gui/TMeasureWindow.h>
 #include <gui/event/listener.h>
+#include "meter.h"
 
 namespace cms {
     namespace measure {
@@ -22,6 +23,8 @@ namespace cms {
 	    static void meterCalibrate(boost::shared_ptr < cms::measure::meter::Meter > meter,
 				       TMeasureWindow * measureWindow);
 	};
+	//Enumeration(FakeMode)
+	//None, Component, Patch EnumerationEnd()
 
 	class MeterMeasurement {
 	    friend class MeasureUtils;
@@ -33,10 +36,9 @@ namespace cms {
 	    int blankTimes;
 	    bool measureWindowClosing;
 	    bool titleTouched;
-	    bool fakeMeasure;
-	     bptr < cms::measure::meter::DGLutFileMeter > dgc;
 	    int averageTimes;
 	    Patch_vector_ptr measurePatchVector;
+	    FakeMode fakeMode;
 	  protected:
 	     bptr < cms::measure::meter::Meter > meter;
 	    TMeasureWindow *measureWindow;
@@ -55,11 +57,18 @@ namespace cms {
 
 	    __property int WaitTimes = { read = waitTimes, write = waitTimes };
 	    __property int BlankTimes = { write = blankTimes };
-	    __property bool FakeMeasure = { read = fakeMeasure, write = fakeMeasure };
+	    /*
+	       fake分兩種,..Orz
+	       只有Component的->只能量到Component
+	       有MeasurePatchVector->完全不受限
+
+	       如何區分兩種fake measure?
+	     */
+	    __property FakeMode FakeMeasureMode = { read = fakeMode };
 	    __property int AverageTimes = { read = averageTimes, write = averageTimes };
 	    __property Patch_vector_ptr MeasurePatchVector = { read = measurePatchVector };
 	     bptr < cms::measure::meter::Meter > getMeter();
-	    void setMeasurePatchVector(Patch_vector_ptr measurePatchVector);
+	    bool doExtraMeasure();
 	  protected:
 	    void meterClose();
 
