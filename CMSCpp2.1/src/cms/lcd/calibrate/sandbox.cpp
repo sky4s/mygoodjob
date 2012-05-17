@@ -179,7 +179,7 @@ namespace cms {
 			    return smooth(result1, result2, bitDepth, brightTurn);
 			}
 		    case Normal:
-		    //case BIntensitySmooth: //dprecated
+			//case BIntensitySmooth: //dprecated
 			{
 			    //大部分都是在此case
 			    RGB_vector_ptr result = produceDGLut(targetXYZVector,
@@ -228,6 +228,31 @@ namespace cms {
 
 		return result;
 	    };
+
+	    XYZ_vector_ptr AdvancedDGLutGenerator::scaleTargetXYZVector(XYZ_vector_ptr original,
+									double newMaxLuminance) {
+		int size = original->size();
+		XYZ_ptr white = (*original)[size - 1]->clone();
+		double factor = newMaxLuminance / white->Y;
+
+		XYZ_vector_ptr result(new XYZ_vector());
+		foreach(XYZ_ptr XYZ, *original) {
+		    XYZ_ptr clone = XYZ->clone();
+		    clone->times(factor);
+		    result->push_back(clone);
+		}
+		return result;
+	    };
+	    XYZ_vector_ptr AdvancedDGLutGenerator::copy(XYZ_vector_ptr original) {
+		XYZ_vector_ptr result(new XYZ_vector());
+		foreach(XYZ_ptr XYZ, *original) {
+		    XYZ_ptr clone = XYZ->clone();
+		    result->push_back(clone);
+		}
+		return result;
+	    };
+
+
 	    RGB_vector_ptr AdvancedDGLutGenerator::
 		produceDGLutMulti(XYZ_vector_ptr targetXYZVector,
 				  Component_vector_ptr componentVector) {
@@ -252,6 +277,7 @@ namespace cms {
 		}
 		STORE_RGBVECTOR("MultiGen_DG_0.xls", result);
 
+		XYZ_vector_ptr newTargetXYZVector;
 		/*
 		   multi gen的過程中時間是一直流逝的, 面板的特性也可能隨著時間改變
 		   但是targetXYZVector並不變, 是不是有可能導致做出來的結果會有clipping?
@@ -259,6 +285,8 @@ namespace cms {
 		for (int t = 0; t < c.multiGenTimes; t++) {
 		    RGBVector::changeMaxValue(result, bitDepth->getFRCAbilityBit());
 
+		    XYZ_ptr referenceXYZ = c.measureFirstAnalyzerReferenceRGB();
+		    newTargetXYZVector = scaleTargetXYZVector(targetXYZVector, referenceXYZ->Y);
 		    //因為開頭就是反著量, 所以把上一次結果反轉才能開始量測
 		    bptr < MeasureCondition >
 			measureCondition(new MeasureCondition(RGBVector::reverse(result)));
@@ -269,7 +297,7 @@ namespace cms {
 				    _toString(t + 1) + ".xls", componentVectorPrime);
 		    //此時用的是最一開始的target XYZ
 		    result =
-			produceDGLut(targetXYZVector, componentVectorPrime,
+			produceDGLut(newTargetXYZVector, componentVectorPrime,
 				     analyzer, bptr < PanelRegulator > ((PanelRegulator *) null));
 		    if (keepMaxLumiInMulti) {
 			RGB_ptr whiteRGB = (*result)[whiteLevel - 1];
@@ -278,6 +306,7 @@ namespace cms {
 		    }
 		    STORE_RGBVECTOR("MultiGen_DG_" + _toString(t + 1) + ".xls", result);
 		}
+		multiGenTargetXYZVector = newTargetXYZVector;
 
 		return result;
 	    };
@@ -317,7 +346,7 @@ namespace cms {
 		    return nil_double_array;
 		}
 	    };
- 
+
 	    //======================================================================================
 	    //產生DG LUT的演算法核心部份
 	    //======================================================================================
@@ -786,9 +815,9 @@ namespace cms {
 		this->panelRegulator1 = panelRegulator;
 	    };
 	    /*void AdvancedDGLutGenerator::setUseMaxBIntensityZone(int zone) {
-		this->useMaxBIntensityZone = zone;
-		mode = BIntensitySmooth;
-	    };*/
+	       this->useMaxBIntensityZone = zone;
+	       mode = BIntensitySmooth;
+	       }; */
 
 	    //==================================================================
 	    //==================================================================
