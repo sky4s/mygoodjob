@@ -13,6 +13,9 @@ __fastcall TChangeLogForm::TChangeLogForm(TComponent * Owner)
 :TForm(Owner)
 {
     Memo1->Text = "\
+    [3.4 build 1.29] 2012/05/17\r\n\
+    +Multi-Gen Gamma準確度提升\r\n\
+    \r\n\
     [3.4 build 1.28] 2012/05/15\r\n\
     +每次CCTLUT皆做TargetWhite量測\r\n\
     -Gamma Curve準確度提升\r\n\

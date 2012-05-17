@@ -24,7 +24,7 @@ namespace cms {
 	    };
 	    static XYZ_ptr getTargetXYZ(double v1, double v2, double v3, Domain domain);
 	    static XYZ_ptr getTargetXYZ(double x, double y, double Y);
- 
+
 
 	    class AdvancedDGLutGenerator:private DimDGLutGenerator, gui::event::WindowAdapter {
 	      private:
@@ -40,6 +40,7 @@ namespace cms {
 		 bptr < cms::measure::IntensityAnalyzerIF > analyzer2nd;
 		WhiteMode mode;
 		XYZ_vector_ptr targetXYZVector;
+		XYZ_vector_ptr multiGenTargetXYZVector;
 		int brightTurn;
 		int effectiveInputLevel;
 
@@ -120,10 +121,12 @@ namespace cms {
 						     analyzer,
 						     Component_vector_ptr componentVector);
 
-		bool checkTargetXYZVector(XYZ_vector_ptr targetXYZVector,
-					  int start, int end, double deltaabThreshold);
-		static RGB_vector_ptr smooth(RGB_vector_ptr result1,
-					     RGB_vector_ptr result2,
+		static bool checkTargetXYZVector(XYZ_vector_ptr targetXYZVector,
+						 int start, int end, double deltaabThreshold);
+		static XYZ_vector_ptr scaleTargetXYZVector(XYZ_vector_ptr original,
+							   double newMaxLuminance);
+		static XYZ_vector_ptr copy(XYZ_vector_ptr original);
+		static RGB_vector_ptr smooth(RGB_vector_ptr result1, RGB_vector_ptr result2,
 					     bptr < BitDepthProcessor > bitDepth, int brightTurn);
 
 	      public:
@@ -136,6 +139,8 @@ namespace cms {
 		};
 		//void setUseMaxBIntensityZone(int zone);
 		__property XYZ_vector_ptr TargetXYZVector = { read = targetXYZVector
+		};
+		__property XYZ_vector_ptr MultiGenTargetXYZVector = { read = multiGenTargetXYZVector
 		};
 	    };
 
