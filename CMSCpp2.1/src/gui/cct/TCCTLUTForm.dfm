@@ -282,7 +282,7 @@ object CCTLUTForm: TCCTLUTForm
     end
     object CheckBox_AbsoluteGamma: TCheckBox
       Left = 24
-      Top = 32
+      Top = 34
       Width = 105
       Height = 17
       Caption = 'Absolute'
@@ -1084,6 +1084,7 @@ object CCTLUTForm: TCCTLUTForm
         Caption = 'New'
         Enabled = False
         TabOrder = 2
+        Visible = False
         OnClick = RadioButton_NewDeHookClick
       end
       object RadioGroup_NewDeHookPriority: TRadioGroup
@@ -1098,6 +1099,7 @@ object CCTLUTForm: TCCTLUTForm
           'B Gap'
           'Gamma')
         TabOrder = 3
+        Visible = False
       end
     end
     object CheckBox_AlterGammaCurveAtDeHook2: TCheckBox
@@ -1108,6 +1110,7 @@ object CCTLUTForm: TCCTLUTForm
       Caption = 'Alter r Curve'
       Enabled = False
       TabOrder = 10
+      Visible = False
     end
   end
   object CheckBox_MemoryMeasure: TCheckBox

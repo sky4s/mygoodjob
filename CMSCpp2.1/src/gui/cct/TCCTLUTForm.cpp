@@ -365,6 +365,10 @@ void __fastcall TCCTLUTForm::FormShow(TObject * Sender)
 	CheckBox_MaxYAdvAuto->Visible = true;
 
 	CheckBox_KeepMaxYInMultiGen->Visible = true;
+
+	RadioButton_NewDeHook->Visible = true;
+	RadioGroup_NewDeHookPriority->Visible = true;
+	CheckBox_AlterGammaCurveAtDeHook2->Visible = true;
     }
     //=========================================================================
     // function on/off relative
@@ -823,4 +827,5 @@ void __fastcall TCCTLUTForm::RadioButton_DeHookNoneClick(TObject * Sender)
 }
 
 //---------------------------------------------------------------------------
+
 
