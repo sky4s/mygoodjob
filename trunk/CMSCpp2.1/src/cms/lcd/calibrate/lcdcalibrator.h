@@ -83,7 +83,7 @@ namespace cms {
 		int under;
 		double dimStrength;
 		int dimFixEnd;
-		bool dimFix;
+		//bool dimFix;
 		double dimFixThreshold;
 		bool keepDarkLevel;
 		//==============================================================
@@ -197,7 +197,7 @@ namespace cms {
 		void setNonDimCorrect();
 		void setDefinedDim(int under, double strength);
 		__property int DimFixEnd = { write = dimFixEnd };
-		__property bool DimFix = { write = dimFix };
+		//__property bool DimFix = { write = dimFix };
 		__property double DimFixThreshold = { write = dimFixThreshold
 		};
 		__property bool KeepDarkLevel = { read = keepDarkLevel, write = keepDarkLevel
@@ -273,6 +273,7 @@ namespace cms {
 		RGBGamma_ptr finalRGBGamma;
 		RGBGamma_ptr initialRGBGamma;
 		XYZ_vector_ptr targetXYZVector;
+		XYZ_vector_ptr multiGenTargetXYZVector;
 
 		 bptr < MeasureCondition > measureCondition;
 		 bptr < BitDepthProcessor > bitDepth;

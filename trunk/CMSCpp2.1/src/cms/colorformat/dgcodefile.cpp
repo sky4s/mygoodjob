@@ -80,6 +80,7 @@ namespace cms {
 
 	const string & DGLutFile::RawData = "Raw_Data";
 	const string & DGLutFile::Target = "Target";
+	const string & DGLutFile::MultiGenTarget = "Multi_Gen_Target";
 	const string & DGLutFile::LCDTarget = "LCD_Target";
 	const string & DGLutFile::Measure = "Measure";
 
@@ -266,14 +267,26 @@ namespace cms {
 
 	};
 
+
 	void DGLutFile::
 	    setTargetXYZVector(XYZ_vector_ptr targetXYZVector,
+			       RGB_vector_ptr dglut, bptr < BitDepthProcessor > bitDepth) {
+	    setTargetXYZVector(Target, targetXYZVector, dglut, bitDepth);
+	};
+	void DGLutFile::
+	    setMultiGenTargetXYZVector(XYZ_vector_ptr targetXYZVector,
+			       RGB_vector_ptr dglut, bptr < BitDepthProcessor > bitDepth) {
+	    setTargetXYZVector(MultiGenTarget, targetXYZVector, dglut, bitDepth);
+	};
+
+	void DGLutFile::
+	    setTargetXYZVector(const std::string & targetName, XYZ_vector_ptr targetXYZVector,
 			       RGB_vector_ptr dglut, bptr < BitDepthProcessor > bitDepth) {
 	    //==================================================================
 	    // 初始資料設定
 	    //==================================================================
 	    const int headerCount = 16;
-	    initSheet(Target, headerCount, "Gray Level", "X",
+	    initSheet(targetName, headerCount, "Gray Level", "X",
 		      "Y (nit)", "Z", "_x", "_y", "dx", "dy",
 		      // 8~13, 由Gamma Table R/G/B/找到對應的Intensity,
 		      //再由Intensity及Target White/Primary Color推算出XYZ, 得到Gamma X/Y/Z
@@ -397,7 +410,7 @@ namespace cms {
 		    StringVector::setContent(values, "-1", 6, 8, 9, 10, 11, 12, 13, 14, 15);	//dx dy=0
 		}
 
-		this->insertData(Target, values, false);
+		this->insertData(targetName, values, false);
 	    }
 	};
 	Component_vector_ptr DGLutFile::getComponentVector(bool rgbFromGammaTable, int max) {
@@ -619,21 +632,23 @@ namespace cms {
 		    dgfile.addProperty(lowLevelCorrect, "DefinedDim");
 		    dgfile.addProperty("defined dim under", c->under);
 		    dgfile.addProperty("defined dim strength", c->dimStrength);
-		    if (true == c->dimFix) {
+		    /*if (true == c->dimFix) {
 			dgfile.addProperty("defined dim - fix", On);
-		    }
-		    if (true == c->feedbackFix) {
+		    }*/
+		    /*if (true == c->feedbackFix) {
 			dgfile.addProperty("defined dim - feedback fix", On);
+                        if( null != maxMeasureError ) {
 			dgfile.
 			    addProperty
 			    ("defined dim - feedback fix init defect", c->initDefectCount);
 			dgfile.addProperty("defined dim - feedback fix count", c->feedbackFixCount);
 			dgfile.addProperty("max measure dx", c->maxMeasureError[0]);
 			dgfile.addProperty("max measure dy", c->maxMeasureError[1]);
-		    }
-		    if (true == c->dimFix || true == c->feedbackFix) {
+                        }
+		    }*/
+		    /*if (true == c->dimFix || true == c->feedbackFix) {
 			dgfile.addProperty("defined dim - fix threshold", c->dimFixThreshold);
-		    }
+		    }*/
 
 		    XYZ_ptr blackXYZ =
 			(*c->originalComponentVector)[c->originalComponentVector->size() - 1]->XYZ;
@@ -778,6 +793,21 @@ namespace cms {
 	    }
 	    //==================================================================
 	};
+
+	void DGLutProperty::storeFeedbackInfo(ExcelAccessBase & dgfile) const {
+             if( DimCorrect::DefinedDim == c->correct && true == c->feedbackFix) {
+                dgfile.addProperty("defined dim - feedback fix", On);
+                if( null != c->maxMeasureError ) {
+			dgfile.addProperty
+			    ("defined dim - feedback fix init defect", c->initDefectCount);
+			dgfile.addProperty("defined dim - feedback fix count", c->feedbackFixCount);
+			dgfile.addProperty("max measure dx", c->maxMeasureError[0]);
+			dgfile.addProperty("max measure dy", c->maxMeasureError[1]);
+                }
+
+             }
+
+        };
 	void DGLutProperty::storeAnalyzer(ExcelAccessBase & dgfile,
 					  bptr <
 					  cms::measure::

@@ -472,9 +472,9 @@ object CCTLUTForm: TCCTLUTForm
       OnChange = Edit_DefinedDimUnderChange
     end
     object Edit_DimFixThreshold: TEdit
-      Left = 104
-      Top = 184
-      Width = 49
+      Left = 72
+      Top = 208
+      Width = 41
       Height = 21
       Enabled = False
       TabOrder = 8
@@ -483,9 +483,9 @@ object CCTLUTForm: TCCTLUTForm
     object CheckBox_Feedback: TCheckBox
       Left = 26
       Top = 184
-      Width = 71
+      Width = 95
       Height = 20
-      Caption = 'Smooth'
+      Caption = 'CIExy Smooth'
       Enabled = False
       TabOrder = 9
     end
@@ -979,9 +979,9 @@ object CCTLUTForm: TCCTLUTForm
     object RadioButton_MaxYNativeAdv: TRadioButton
       Left = 7
       Top = 205
-      Width = 137
-      Height = 19
-      Caption = 'Native White (Smooth)'
+      Width = 146
+      Height = 20
+      Caption = 'Native White(CCTSmooth)'
       Color = clMoneyGreen
       Enabled = False
       ParentColor = False
@@ -1146,7 +1146,7 @@ object CCTLUTForm: TCCTLUTForm
   end
   object StatusBar1: TStatusBar
     Left = 0
-    Top = 383
+    Top = 385
     Width = 833
     Height = 19
     Color = clWhite

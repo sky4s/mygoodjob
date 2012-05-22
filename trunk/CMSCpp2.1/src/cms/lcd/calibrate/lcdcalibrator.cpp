@@ -57,7 +57,7 @@ namespace cms {
 		multiGen = false;
 		remapped = false;
 		dimFixEnd = 50;
-		dimFix = false;
+		//dimFix = false;
 		dimFixThreshold = 0.0000;
 		keepDarkLevel = true;
 		feedbackFix = false;
@@ -601,6 +601,14 @@ namespace cms {
 
 		STORE_RGBVECTOR("8_dgcode_final.xls", result);
 		this->dglut = result;
+        	if (null != dgLutFile) {
+		    //把一些設定訊息先存起來
+		    //storeInfo2DGLutFile(dgLutFile);
+                    //DGLutProperty property(this);
+	DGLutProperty property(this);
+       ExcelAccessBase & excelAccess= (*dgLutFile);
+                property.storeFeedbackInfo(excelAccess);
+		}
 		return result;
 	    };
 
@@ -804,12 +812,13 @@ namespace cms {
 					    brightgammaParameter,
 					    bitDepth->getEffectiveInputLevel());
 		    //得到目標值
-		    targetXYZVector = advgenerator->TargetXYZVector;
+		    this->targetXYZVector = advgenerator->TargetXYZVector;
 		    if (null == targetXYZVector) {
 			return nil_RGB_vector_ptr;
 		    }
 		    //從目標值算出DGLut
 		    dglut = advgenerator->produce();
+		    this->multiGenTargetXYZVector = advgenerator->MultiGenTargetXYZVector;
 		    STORE_RGBVECTOR("3.1_org_dgcode.xls", dglut);
 		    initialRGBGamma = advgenerator->RGBGenerateResult;
 		    idealIntensity = advgenerator->IdealIntensity;
@@ -1091,7 +1100,11 @@ namespace cms {
 		return file;
 	    };
 
-
+           	    /*void LCDCalibrator::storeFeedbackInfo2DGLutFile(bptr < cms::colorformat::DGLutFile > dglutFile) {
+		DGLutProperty property(this);
+                property.storeFeedbackInfo(dglutFile);
+                	//dglutFile->setProperty(property);
+            };        */
 
 	    void LCDCalibrator::storeInfo2DGLutFile(bptr < cms::colorformat::DGLutFile > dglutFile) {
 		DGLutProperty property(this);
@@ -1119,6 +1132,9 @@ namespace cms {
 		dglutFile->setGammaTable(dglut);
 		if (null != targetXYZVector) {
 		    dglutFile->setTargetXYZVector(targetXYZVector, dglut, bitDepth);
+		}
+		if (null != multiGenTargetXYZVector) {
+		    dglutFile->setMultiGenTargetXYZVector(multiGenTargetXYZVector, dglut, bitDepth);
 		}
 
 		bptr < cms::measure::MeterMeasurement > mm = getMeterMeasurement();
@@ -1214,10 +1230,10 @@ namespace cms {
 		    dgop.addOp(bmax2);
 		}
 		//==============================================================
-		// dim修正, 在xy domain上進行
+		// dim修正, 在xy domain上進行; dprecated
 		//==============================================================
 
-		if (dimFix) {
+		/*if (dimFix) { //dprecated
 		    //50量到0
 		    Component_vector_ptr dimComponentVector = getDimComponentVector(dglut);
 		    bptr < ChromaticityAdjustEstimatorIF >
@@ -1230,7 +1246,7 @@ namespace cms {
 			       DimDGLutFixOp(bitDepth, dimFixThreshold,
 					     dimComponentVector, chromaticityEstimator));
 		    dgop.addOp(dimfix);
-		}
+		}*/
 		//==============================================================
 
 		RGB_vector_ptr result = dgop.createInstance();
