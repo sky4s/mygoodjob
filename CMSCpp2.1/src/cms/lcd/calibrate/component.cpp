@@ -96,6 +96,7 @@ namespace cms {
 		foreach(const RGB_ptr & rgb, *rgbMeasureCode) {
 		    RGB_ptr intensity = analyzer->getIntensity(rgb);
 		    if (true == waitingStable) {
+                    //只有第一次量測的時候發揮作用
 			waitingStable = false;
 			analyzer->setWaitTimes(waitTimes);
 		    }
