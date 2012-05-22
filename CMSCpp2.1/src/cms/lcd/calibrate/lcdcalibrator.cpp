@@ -486,6 +486,41 @@ namespace cms {
 		    MaxMatrixIntensityAnalyzer::getReadyAnalyzer(mm, redmax, greenmax, bluemax);
 	    };
 
+	    bptr < PanelRegulator > LCDCalibrator::getPanelRegulator() {
+		//原先: 以target white的rgb為最大值, 調整面板並重新量測
+		//改良: 以direct gamma(gamma test)直接改變打出的pattern, 達到相同效果
+		/*
+		   dehook選項從target white拉到 cctlut去, 所以這邊重新產生新的analyzer
+		   當dehook在target white的時候, 1st analyzer就是當作target white,
+		   因為設定target white同時就考慮的hook
+
+		   當dehook放到cctlut時, 因為1st analyzer沒考慮hook, 所以要產生2nd analyzer
+		   去對應hook, 因此才要這邊的步驟
+		 */
+
+		init2ndWhiteAnalyzer(keepMaxLuminance, dehook);
+		fetcher->SecondAnalyzer = secondWhiteAnalyzer;
+
+		RGB_ptr rgb = secondWhiteAnalyzer->getReferenceRGB();
+		double_array values(new double[3]);
+		rgb->getValues(values, MaxValue::Double255);
+		bool regulatorFix = true;
+		if (!regulatorFix) {
+		    values[0] = (int) values[0];
+		    values[1] = (int) values[1];
+		    values[2] = (int) values[2];
+		}
+		bptr < PanelRegulator > panelRegulator
+		    (new
+		     GammaTestPanelRegulator(bitDepth, tconctrl,
+					     values[0], values[1], values[2], measureCondition));
+		//若是在direct gamma下, setEnable會無效
+		//因為setEnable是變更DG LUT, 但是direct gamma無視DG LUT的內容!
+		panelRegulator->setEnable(true);
+		remapped = true;
+		return panelRegulator;
+	    };
+
 	    /*
 	       CCT + Gamma
 	       不管PanelRegulator要怎麼用, 都是從LCDCalibrator量好必要的資訊, 再傳到AdvancedDGLutGenerator去
@@ -495,68 +530,34 @@ namespace cms {
 						      MeasureCondition >
 						      measureCondition,
 						      bptr < DGLutFile > dgLutFile) {
+		if (null == dgLutFile) {
+		    throw new IllegalArgumentException();
+		}
 		excuteStatus = "CCTDGLut";
 		this->measureCondition = measureCondition;
 		if (false == originalGamma && null == gammaCurve) {
 		    throw new IllegalStateException("null == gammaCurve");
 		}
 
-		bptr < PanelRegulator > panelRegulator;
 		bool needPanelRegular = isDoDeHook();
-		if (needPanelRegular) {
-		    //原先: 以target white的rgb為最大值, 調整面板並重新量測
-		    //改良: 以direct gamma(gamma test)直接改變打出的pattern, 達到相同效果
-		    /*
-		       dehook選項從target white拉到 cctlut去, 所以這邊重新產生新的analyzer
-		       當dehook在target white的時候, 1st analyzer就是當作target white,
-		       因為設定target white同時就考慮的hook
+		bptr < PanelRegulator > panelRegulator =
+		    needPanelRegular ? getPanelRegulator() : bptr < PanelRegulator >
+		    ((PanelRegulator *) null);
 
-		       當dehook放到cctlut時, 因為1st analyzer沒考慮hook, 所以要產生2nd analyzer
-		       去對應hook, 因此才要這邊的步驟
-		     */
-
-		    //if (null == secondWhiteAnalyzer) {
-		    //此時找的是255 255 250(B Max IntensitY)
-		    init2ndWhiteAnalyzer(keepMaxLuminance, dehook);
-		    fetcher->SecondAnalyzer = secondWhiteAnalyzer;
-		    //}
-
-		    RGB_ptr rgb = secondWhiteAnalyzer->getReferenceRGB();
-		    double_array values(new double[3]);
-		    rgb->getValues(values, MaxValue::Double255);
-		    bool regulatorFix = true;
-		    if (!regulatorFix) {
-			values[0] = (int) values[0];
-			values[1] = (int) values[1];
-			values[2] = (int) values[2];
-		    }
-		    panelRegulator = bptr < PanelRegulator >
-			(new
-			 GammaTestPanelRegulator(bitDepth, tconctrl,
-						 values[0], values[1], values[2],
-						 measureCondition));
-		    //若是在direct gamma下, setEnable會無效
-		    //因為setEnable是變更DG LUT, 但是direct gamma無視DG LUT的內容!
-		    panelRegulator->setEnable(true);
-		    remapped = true;
-		}
 		//原始特性量測
 		this->originalComponentVector = fetchComponentVector();
-		if (needPanelRegular && null != panelRegulator) {
-		    panelRegulator->setEnable(false);
-		}
 		if (null == originalComponentVector) {
 		    return nil_RGB_vector_ptr;
 		}
-		if (null != dgLutFile) {
-		    //把一些設定訊息先存起來
-		    storeInfo2DGLutFile(dgLutFile);
+		if (needPanelRegular && null != panelRegulator) {
+		    panelRegulator->setEnable(false);
 		}
+		//把一些設定訊息先存起來
+		storeInfo2DGLutFile(dgLutFile);
 
 		STORE_COMPONENT("0.0_o_fetch.xls", originalComponentVector);
 
 		this->originalComponentVector = Util::copy(originalComponentVector);
-
 		//=============================================================
 		// gamma curve setting zone
 		// 因為要量過才知道原始的 gamma, 所以這個原始gamma的設定位置異於其他選項
@@ -572,7 +573,6 @@ namespace cms {
 		//=============================================================
 
 		const MaxValue & quantizationBit = bitDepth->getLutMaxValue();
-
 		if (true == useNewMethod) {
 		    //新方法完全基於色度上的處理
 		    dglut = newMethod(panelRegulator);
@@ -601,14 +601,10 @@ namespace cms {
 
 		STORE_RGBVECTOR("8_dgcode_final.xls", result);
 		this->dglut = result;
-        	if (null != dgLutFile) {
-		    //把一些設定訊息先存起來
-		    //storeInfo2DGLutFile(dgLutFile);
-                    //DGLutProperty property(this);
-	DGLutProperty property(this);
-       ExcelAccessBase & excelAccess= (*dgLutFile);
-                property.storeFeedbackInfo(excelAccess);
-		}
+		//把一些設定訊息先存起來
+		DGLutProperty property(this);
+		ExcelAccessBase & excelAccess = (*dgLutFile);
+		property.storeFeedbackInfo(excelAccess);
 		return result;
 	    };
 
@@ -755,8 +751,7 @@ namespace cms {
 		}
 
 		int startCheckReversePos = 50;
-		int minOverParameter = (useNewMethod
-					&& autoKeepMaxLumiParameter) ?
+		int minOverParameter = autoKeepMaxLumiParameter ?
 		    startCheckReversePos : keepMaxLumiOver;
 		advgenerator->setPanelRegulator(panelRegulator);
 
@@ -764,16 +759,11 @@ namespace cms {
 		//==================================================================================
 		// init maxWhiteXYZ & target white
 		//==================================================================================
-		//XYZ_ptr refRGBXYZ = refRGBxyY->toXYZ();
 		XYZ_ptr maxWhiteXYZ = referenceXYZ->clone();
 		XYZ_ptr targetWhiteXYZ;
 
 		switch (keepMaxLuminance) {
 		case KeepMaxLuminance::TargetLuminance:{
-			//利用luminanceGammaCurve, 把native的亮度設定成luminanceGammaCurve的最大亮度
-			/*maxWhiteXYZ = targetWhiteXYZ->clone();
-			   maxWhiteXYZ->normalizeY();
-			   maxWhiteXYZ->times(maxLuminance); */
 			targetWhiteXYZ = maxWhiteXYZ->clone();
 		    };
 		    break;
@@ -1100,11 +1090,11 @@ namespace cms {
 		return file;
 	    };
 
-           	    /*void LCDCalibrator::storeFeedbackInfo2DGLutFile(bptr < cms::colorformat::DGLutFile > dglutFile) {
-		DGLutProperty property(this);
-                property.storeFeedbackInfo(dglutFile);
-                	//dglutFile->setProperty(property);
-            };        */
+	    /*void LCDCalibrator::storeFeedbackInfo2DGLutFile(bptr < cms::colorformat::DGLutFile > dglutFile) {
+	       DGLutProperty property(this);
+	       property.storeFeedbackInfo(dglutFile);
+	       //dglutFile->setProperty(property);
+	       };        */
 
 	    void LCDCalibrator::storeInfo2DGLutFile(bptr < cms::colorformat::DGLutFile > dglutFile) {
 		DGLutProperty property(this);
@@ -1234,19 +1224,19 @@ namespace cms {
 		//==============================================================
 
 		/*if (dimFix) { //dprecated
-		    //50量到0
-		    Component_vector_ptr dimComponentVector = getDimComponentVector(dglut);
-		    bptr < ChromaticityAdjustEstimatorIF >
-			chromaticityEstimator(new
-					      MeasureEstimator
-					      (dimComponentVector,
-					       fetcher->getAnalyzer(), bitDepth));
-		    bptr < DGLutOp >
-			dimfix(new
-			       DimDGLutFixOp(bitDepth, dimFixThreshold,
-					     dimComponentVector, chromaticityEstimator));
-		    dgop.addOp(dimfix);
-		}*/
+		   //50量到0
+		   Component_vector_ptr dimComponentVector = getDimComponentVector(dglut);
+		   bptr < ChromaticityAdjustEstimatorIF >
+		   chromaticityEstimator(new
+		   MeasureEstimator
+		   (dimComponentVector,
+		   fetcher->getAnalyzer(), bitDepth));
+		   bptr < DGLutOp >
+		   dimfix(new
+		   DimDGLutFixOp(bitDepth, dimFixThreshold,
+		   dimComponentVector, chromaticityEstimator));
+		   dgop.addOp(dimfix);
+		   } */
 		//==============================================================
 
 		RGB_vector_ptr result = dgop.createInstance();
