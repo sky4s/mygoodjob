@@ -356,6 +356,8 @@ namespace cms {
 							     brightGamma, int n, int
 							     effectiven);
 		double_vector_ptr getOriginalGammaCurve(Component_vector_ptr componentVector);
+
+		 bptr < PanelRegulator > getPanelRegulator();
 	      public:
 
 		static double_vector_ptr
