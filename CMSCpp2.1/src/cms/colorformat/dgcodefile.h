@@ -23,6 +23,7 @@ namespace cms {
 					 Component_ptr c, RGB_ptr rgbGamma, RGB_ptr rgbGammaFix);
 	    static const std::string & RawData;
 	    static const std::string & Target;
+	    static const std::string & MultiGenTarget;
 	    static const std::string & LCDTarget;
 	    static const std::string & Measure;
 	    const Dep::MaxValue & maxValue;
@@ -40,8 +41,14 @@ namespace cms {
 	    void setRawData(Component_vector_ptr componentVector,
 			    RGBGamma_ptr initialRGBGamma, RGBGamma_ptr finalRGBGamma);
 
+	    void setTargetXYZVector(const std::string & targetName, XYZ_vector_ptr targetXYZVector,
+				    RGB_vector_ptr dglut,
+				    bptr < cms::lcd::BitDepthProcessor > bitDepth);
 	    void setTargetXYZVector(XYZ_vector_ptr targetXYZVector);
 	    void setTargetXYZVector(XYZ_vector_ptr targetXYZVector,
+				    RGB_vector_ptr dglut,
+				    bptr < cms::lcd::BitDepthProcessor > bitDepth);
+	    void setMultiGenTargetXYZVector(XYZ_vector_ptr targetXYZVector,
 				    RGB_vector_ptr dglut,
 				    bptr < cms::lcd::BitDepthProcessor > bitDepth);
 	    void setLCDTarget(LCDTarget_ptr lcdTarget);
@@ -78,6 +85,7 @@ namespace cms {
 	     cms::lcd::calibrate::LCDCalibrator * c;
 	     bptr < DGLutFile > d;
 	    void store(ExcelAccessBase & dglut) const;
+
 	    void DGLutProperty::storeAnalyzer(ExcelAccessBase & dgfile,
 					      bptr <
 					      cms::measure::
@@ -108,6 +116,7 @@ namespace cms {
 	    RGB_ptr getSecondReferenceRGB();
 	     bptr < cms::lcd::BitDepthProcessor > getBitDepthProcessor();
 	    double_array getTargetWhiteRatio();
+            void storeFeedbackInfo(ExcelAccessBase & dgfile) const ;
 	};
     };
 };

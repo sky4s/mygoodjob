@@ -120,6 +120,8 @@ namespace cms {
 					 bool compensationR);
 	    };
 	    //=================================================================
+            // dprecated
+	    //=================================================================
 	    class DimDGLutFixOp:public DGLutOp {
 	      protected:
 		bptr < BitDepthProcessor > bitDepth;

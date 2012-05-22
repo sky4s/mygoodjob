@@ -140,7 +140,7 @@ namespace cms {
 		//void setUseMaxBIntensityZone(int zone);
 		__property XYZ_vector_ptr TargetXYZVector = { read = targetXYZVector
 		};
-		__property XYZ_vector_ptr MultiGenTargetXYZVector = { read = multiGenTargetXYZVector
+		__property XYZ_vector_ptr MultiGenTargetXYZVector = { read = multiGenTargetXYZVector 
 		};
 	    };
 

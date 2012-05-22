@@ -285,17 +285,19 @@ namespace cms {
 		for (int t = 0; t < c.multiGenTimes; t++) {
 		    RGBVector::changeMaxValue(result, bitDepth->getFRCAbilityBit());
 
-		    XYZ_ptr referenceXYZ = c.measureFirstAnalyzerReferenceRGB();
-		    newTargetXYZVector = scaleTargetXYZVector(targetXYZVector, referenceXYZ->Y);
+
+
 		    //因為開頭就是反著量, 所以把上一次結果反轉才能開始量測
 		    bptr < MeasureCondition >
 			measureCondition(new MeasureCondition(RGBVector::reverse(result)));
+                    XYZ_ptr referenceXYZ = c.measureFirstAnalyzerReferenceRGB();
 		    //重新fetch一次, 這時候白點會不會又變動了?
 		    Component_vector_ptr componentVectorPrime =
 			fetcher->fetchComponent(measureCondition);
 		    STORE_COMPONENT("MultiGen_Component_" +
 				    _toString(t + 1) + ".xls", componentVectorPrime);
 		    //此時用的是最一開始的target XYZ
+                    newTargetXYZVector = scaleTargetXYZVector(targetXYZVector, referenceXYZ->Y);                    
 		    result =
 			produceDGLut(newTargetXYZVector, componentVectorPrime,
 				     analyzer, bptr < PanelRegulator > ((PanelRegulator *) null));
