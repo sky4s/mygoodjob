@@ -289,16 +289,6 @@ namespace cms {
 
 
 	    Component_vector_ptr LCDCalibrator::fetchComponentVector() {
-		//量測start->end得到的coponent/Y
-		/*bptr < cms::measure::IntensityAnalyzerIF > analyzer = fetcher->FirstAnalyzer;
-		   RGB_ptr refRGB = analyzer->getReferenceRGB();
-		   bptr < MeterMeasurement > mm = analyzer->getMeterMeasurement();
-		   bool nativeTagetWhite = refRGB->isWhite();
-		   if (!nativeTagetWhite && mm->doExtraMeasure()) {
-		   //額外量測target white, 使的每次的作業中, 都確保白點的亮度可以穩定!
-		   //而不會限制白點的亮度只能是設定target white當下的亮度
-		   fetcher->ExtraMeasureRGB = refRGB;
-		   } */
 		Component_vector_ptr componentVector = fetcher->fetchComponent(measureCondition);
 		RGB_vector_ptr rgbMeasureCode = measureCondition->getRGBMeasureCode();
 
@@ -306,19 +296,6 @@ namespace cms {
 		    return Component_vector_ptr((Component_vector *)
 						null);
 		}
-
-		/*if (nativeTagetWhite) {
-		   targetWhiteXYZ = (*componentVector)[0]->XYZ;
-		   } else {
-		   if (!mm->doExtraMeasure()) {
-		   xyY_ptr refColor = analyzer->getReferenceColor();
-		   XYZ_ptr refColorXYZ = refColor->toXYZ();
-		   targetWhiteXYZ = refColorXYZ;
-		   } else {
-		   //不是fake measure才跳到這邊
-		   targetWhiteXYZ = fetcher->ExtraMeasureXYZ;
-		   }
-		   } */
 
 		return componentVector;
 	    };
