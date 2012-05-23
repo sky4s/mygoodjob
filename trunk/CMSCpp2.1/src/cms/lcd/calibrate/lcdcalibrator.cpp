@@ -673,7 +673,6 @@ namespace cms {
 		// init maxWhiteXYZ & target white
 		//==================================================================================
 		maxWhiteXYZ = referenceXYZ->clone();
-		//XYZ_ptr targetWhiteXYZ;
 
 		switch (keepMaxLuminance) {
 		case KeepMaxLuminance::TargetLuminance:{
@@ -835,7 +834,7 @@ namespace cms {
 
 		bptr < AdvancedDGLutGenerator > advgenerator =
 		    initAdvancedDGLutGenerator();
-	advgenerator->setPanelRegulator(panelRegulator);
+		advgenerator->setPanelRegulator(panelRegulator);
 		/*
 		   KeepMaxLuminance::Smooth2NativeWhite
 		   1. de-hook org
@@ -848,63 +847,63 @@ namespace cms {
 		   將target B Intensity由100->Max B Intensity->100做smooth
 		 */
 		/*if (keepMaxLuminance ==
-		    KeepMaxLuminance::Smooth2NativeWhite) {
-		    //native white smooth
-		    //Smooth2NativeWhite是為了兼顧Hook和最大亮度的折衷產物
-		    //較適合NB使用
-		    bptr < PanelRegulator > panelRegulator2;
-		    Component_vector_ptr componentVector2;
+		   KeepMaxLuminance::Smooth2NativeWhite) {
+		   //native white smooth
+		   //Smooth2NativeWhite是為了兼顧Hook和最大亮度的折衷產物
+		   //較適合NB使用
+		   bptr < PanelRegulator > panelRegulator2;
+		   Component_vector_ptr componentVector2;
 
 
-		    //Smooth2NativeWhite + dehook org
-		    int max = bitDepth->getInputMaxDigitalCount();
-		    panelRegulator2 = bptr < PanelRegulator >
-			(new
-			 GammaTestPanelRegulator(bitDepth,
-						 tconctrl, max,
-						 max, maxBRawGrayLevel,
-						 measureCondition));
-		    panelRegulator2->setEnable(true);
-		    componentVector2 = fetchComponentVector();
-		    STORE_COMPONENT("o_fetch2.xls", componentVector2);
-		    panelRegulator2->setEnable(false);
+		   //Smooth2NativeWhite + dehook org
+		   int max = bitDepth->getInputMaxDigitalCount();
+		   panelRegulator2 = bptr < PanelRegulator >
+		   (new
+		   GammaTestPanelRegulator(bitDepth,
+		   tconctrl, max,
+		   max, maxBRawGrayLevel,
+		   measureCondition));
+		   panelRegulator2->setEnable(true);
+		   componentVector2 = fetchComponentVector();
+		   STORE_COMPONENT("o_fetch2.xls", componentVector2);
+		   panelRegulator2->setEnable(false);
 
-		    //初始化255/255/255的white analyzer
-		    init2ndWhiteAnalyzer(keepMaxLuminance, dehook);
+		   //初始化255/255/255的white analyzer
+		   init2ndWhiteAnalyzer(keepMaxLuminance, dehook);
 
-		    advgenerator = bptr < AdvancedDGLutGenerator >
-			(new
-			 AdvancedDGLutGenerator(originalComponentVector,
-						fetcher,
-						fetcher->getAnalyzer(),
-						secondWhiteAnalyzer,
-						bitDepth, *this));
+		   advgenerator = bptr < AdvancedDGLutGenerator >
+		   (new
+		   AdvancedDGLutGenerator(originalComponentVector,
+		   fetcher,
+		   fetcher->getAnalyzer(),
+		   secondWhiteAnalyzer,
+		   bitDepth, *this));
 
-		    advgenerator->setComponentVector2(componentVector2,
-						      panelRegulator2);
+		   advgenerator->setComponentVector2(componentVector2,
+		   panelRegulator2);
 
 
-		    //end of Smooth2NativeWhite
-		} else {
-		    //一般的case, 不用兼顧Hook和最大亮度
-		    //NativeWhite(可搭配de-hook) & TargetWhite
-		    //componentVector是事先量好的(呼叫此function之前)
-		    if (isDoDeHook() && null == secondWhiteAnalyzer) {
-			throw new
-			    IllegalStateException
-			    ("isDoDeHook() && null == secondWhiteAnalyzer");
-		    }
-		    advgenerator =
-			bptr < AdvancedDGLutGenerator >
-			(new
-			 AdvancedDGLutGenerator(originalComponentVector,
-						fetcher, bitDepth, *this));
+		   //end of Smooth2NativeWhite
+		   } else {
+		   //一般的case, 不用兼顧Hook和最大亮度
+		   //NativeWhite(可搭配de-hook) & TargetWhite
+		   //componentVector是事先量好的(呼叫此function之前)
+		   if (isDoDeHook() && null == secondWhiteAnalyzer) {
+		   throw new
+		   IllegalStateException
+		   ("isDoDeHook() && null == secondWhiteAnalyzer");
+		   }
+		   advgenerator =
+		   bptr < AdvancedDGLutGenerator >
+		   (new
+		   AdvancedDGLutGenerator(originalComponentVector,
+		   fetcher, bitDepth, *this));
 
-		    //==========================================================
+		   //==========================================================
 
-		    keepMaxLumiOver = bitDepth->getEffectiveInputLevel();
+		   keepMaxLumiOver = bitDepth->getEffectiveInputLevel();
 
-		}*/
+		   } */
 		//=============================================================
 
 
