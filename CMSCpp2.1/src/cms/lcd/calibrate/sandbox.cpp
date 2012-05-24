@@ -290,14 +290,14 @@ namespace cms {
 		    //因為開頭就是反著量, 所以把上一次結果反轉才能開始量測
 		    bptr < MeasureCondition >
 			measureCondition(new MeasureCondition(RGBVector::reverse(result)));
-                    XYZ_ptr referenceXYZ = c.measureFirstAnalyzerReferenceRGB();
+		    XYZ_ptr referenceXYZ = c.measureFirstAnalyzerReferenceRGB();
 		    //重新fetch一次, 這時候白點會不會又變動了?
 		    Component_vector_ptr componentVectorPrime =
 			fetcher->fetchComponent(measureCondition);
 		    STORE_COMPONENT("MultiGen_Component_" +
 				    _toString(t + 1) + ".xls", componentVectorPrime);
 		    //此時用的是最一開始的target XYZ
-                    newTargetXYZVector = scaleTargetXYZVector(targetXYZVector, referenceXYZ->Y);                    
+		    newTargetXYZVector = scaleTargetXYZVector(targetXYZVector, referenceXYZ->Y);
 		    result =
 			produceDGLut(newTargetXYZVector, componentVectorPrime,
 				     analyzer, bptr < PanelRegulator > ((PanelRegulator *) null));
@@ -348,7 +348,47 @@ namespace cms {
 		    return nil_double_array;
 		}
 	    };
+	    double_array AdvancedDGLutGenerator::calculateTargetIntensity(bptr <
+									  cms::measure::
+									  IntensityAnalyzerIF >
+									  analyzer) {
+		/*double rTargetIntensity = -1;
+		   double gTargetIntensity = -1;
+		   double bTargetIntensity = -1; */
+		double_array intensity(new double[3]);
+		if (true == c.autoIntensity) {
+		    //autoIntensity從當下量到的componentVector推算最適當的target intensity
+		    RGB_ptr refRGB = analyzer->getReferenceRGB();
+		    xyY_ptr refxyY = analyzer->getReferenceColor();
+		    XYZ_ptr targetXYZ = refxyY->toXYZ();
 
+		    bptr < MaxMatrixIntensityAnalyzer > ma =
+			MaxMatrixIntensityAnalyzer::getReadyAnalyzer(analyzer, targetXYZ);
+		    ma->setReferenceRGB(refRGB);
+
+		    idealIntensity = getIdealIntensity(componentVector, ma);
+		    /*rTargetIntensity = idealIntensity->R;
+		       gTargetIntensity = idealIntensity->G;
+		       bTargetIntensity = idealIntensity->B; */
+		    intensity[0] = idealIntensity->R;
+		    intensity[1] = idealIntensity->G;
+		    intensity[2] = idealIntensity->B;
+		} else {
+		    intensity[0] = 100;
+		    intensity[1] = 100;
+		    intensity[2] = 100;
+		}
+
+		/*rTargetIntensity = (-1 == rTargetIntensity) ? 100 : rTargetIntensity;
+		   gTargetIntensity = (-1 == gTargetIntensity) ? 100 : gTargetIntensity;
+		   //B採100嗎?
+		   bTargetIntensity = (-1 == bTargetIntensity) ? 100 : bTargetIntensity;
+		   double_array intensity(new double[3]);
+		   intensity[0] = rTargetIntensity;
+		   intensity[1] = gTargetIntensity;
+		   intensity[2] = bTargetIntensity; */
+		return intensity;
+	    };
 	    //======================================================================================
 	    //產生DG LUT的演算法核心部份
 	    //======================================================================================
@@ -369,8 +409,8 @@ namespace cms {
 		int size = targetXYZVector->size();
 		RGB_vector_ptr result(new RGB_vector(size));
 		//==============================================================
-		//primary color只能用target white~
-		RGB_ptr refRGB = analyzer->getReferenceRGB();
+
+
 		//=============================================================
 		// debug用
 		//=============================================================
@@ -386,32 +426,37 @@ namespace cms {
 		//=============================================================
 		//設定intensity
 		//=============================================================
-		double rTargetIntensity = -1;
-		double gTargetIntensity = -1;
-		double bTargetIntensity = -1;
-		if (true == c.autoIntensity) {
-		    //autoIntensity從當下量到的componentVector推算最適當的target intensity
-		    xyY_ptr refxyY = analyzer->getReferenceColor();
-		    XYZ_ptr targetXYZ = refxyY->toXYZ();
+		/*double rTargetIntensity = -1;
+		   double gTargetIntensity = -1;
+		   double bTargetIntensity = -1;
+		   if (true == c.autoIntensity) {
+		   //autoIntensity從當下量到的componentVector推算最適當的target intensity
+		   xyY_ptr refxyY = analyzer->getReferenceColor();
+		   XYZ_ptr targetXYZ = refxyY->toXYZ();
 
-		    bptr < MaxMatrixIntensityAnalyzer > ma =
-			MaxMatrixIntensityAnalyzer::getReadyAnalyzer(analyzer, targetXYZ);
-		    ma->setReferenceRGB(refRGB);
+		   bptr < MaxMatrixIntensityAnalyzer > ma =
+		   MaxMatrixIntensityAnalyzer::getReadyAnalyzer(analyzer, targetXYZ);
+		   ma->setReferenceRGB(refRGB);
 
-		    idealIntensity = getIdealIntensity(componentVector, ma);
-		    rTargetIntensity = idealIntensity->R;
-		    gTargetIntensity = idealIntensity->G;
-		    bTargetIntensity = idealIntensity->B;
-		}
+		   idealIntensity = getIdealIntensity(componentVector, ma);
+		   rTargetIntensity = idealIntensity->R;
+		   gTargetIntensity = idealIntensity->G;
+		   bTargetIntensity = idealIntensity->B;
+		   }
 
-		rTargetIntensity = (-1 == rTargetIntensity) ? 100 : rTargetIntensity;
-		gTargetIntensity = (-1 == gTargetIntensity) ? 100 : gTargetIntensity;
-		//B採100嗎?
-		bTargetIntensity = (-1 == bTargetIntensity) ? 100 : bTargetIntensity;
-		double_array intensity(new double[3]);
-		intensity[0] = rTargetIntensity;
-		intensity[1] = gTargetIntensity;
-		intensity[2] = bTargetIntensity;
+		   rTargetIntensity = (-1 == rTargetIntensity) ? 100 : rTargetIntensity;
+		   gTargetIntensity = (-1 == gTargetIntensity) ? 100 : gTargetIntensity;
+		   //B採100嗎?
+		   bTargetIntensity = (-1 == bTargetIntensity) ? 100 : bTargetIntensity;
+
+		   double_array intensity(new double[3]);
+		   intensity[0] = rTargetIntensity;
+		   intensity[1] = gTargetIntensity;
+		   intensity[2] = bTargetIntensity; */
+		double_array targetIntensity = calculateTargetIntensity(analyzer);
+		double rTargetIntensity = targetIntensity[0];
+		double gTargetIntensity = targetIntensity[1];
+		double bTargetIntensity = targetIntensity[2];
 		//=============================================================
 
 
@@ -426,6 +471,8 @@ namespace cms {
 			(new IntensityMatrixFile(debug_dir + "/intensityMatrix.xls"));
 		}
 #endif
+		//primary color只能用target white~
+		RGB_ptr refRGB = analyzer->getReferenceRGB();
 		//=============================================================
 		// 迴圈開始
 		//=============================================================
@@ -435,7 +482,7 @@ namespace cms {
 
 		    //不斷產生Analyzer, 因為Target White一直變化, 所以利用新的Analyzer, 計算出Intensity
 		    bptr < MaxMatrixIntensityAnalyzer > ma = MaxMatrixIntensityAnalyzer::getReadyAnalyzer(analyzer, targetXYZ);	//傳入 XYZ x3
-		    ma->setReferenceRGB(refRGB);
+		    ma->setReferenceRGB(refRGB); //refRGB是給getFRCAbilityComponent使用的
 
 		    //利用新的analyzer算出新的component(就是intensity)
 		    Component_vector_ptr newcomponentVector =
@@ -480,11 +527,11 @@ namespace cms {
 			double_array smoothIntensity = getSmoothIntensity(rTargetIntensity,
 									  gTargetIntensity,
 									  bTargetIntensity, x);
-			intensity = smoothIntensity;
+			targetIntensity = smoothIntensity;
 		    }
 		    //=============================================================
 
-		    RGB_ptr rgb = lutgen.getDGCode(intensity[0], intensity[1], intensity[2]);	//傳出(主要)
+		    RGB_ptr rgb = lutgen.getDGCode(targetIntensity[0], targetIntensity[1], targetIntensity[2]);	//傳出(主要)
 		    (*result)[x] = rgb;
 
 		    //紀錄產生的過程是否有問題

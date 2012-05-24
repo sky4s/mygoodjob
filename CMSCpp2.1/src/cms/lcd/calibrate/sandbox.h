@@ -52,6 +52,8 @@ namespace cms {
 					  componentVector,
 					  bptr <
 					  cms::measure::MaxMatrixIntensityAnalyzer > analyzer);
+		double_array calculateTargetIntensity(bptr < cms::measure::IntensityAnalyzerIF >
+						      analyzer);
 		double_array getSmoothIntensity(double rTargetIntensity,
 						double gTargetIntensity,
 						double bTargetIntensity, int grayLevel);
@@ -140,7 +142,7 @@ namespace cms {
 		//void setUseMaxBIntensityZone(int zone);
 		__property XYZ_vector_ptr TargetXYZVector = { read = targetXYZVector
 		};
-		__property XYZ_vector_ptr MultiGenTargetXYZVector = { read = multiGenTargetXYZVector 
+		__property XYZ_vector_ptr MultiGenTargetXYZVector = { read = multiGenTargetXYZVector
 		};
 	    };
 

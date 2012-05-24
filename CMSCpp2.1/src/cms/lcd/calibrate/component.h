@@ -39,14 +39,15 @@ namespace cms {
 		bptr < cms::measure::IntensityAnalyzerIF > firstAnalyzer;
 		bptr < cms::measure::IntensityAnalyzerIF > secondAnalyzer;
 		bool stop;
-		 bptr < cms::lcd::BitDepthProcessor > bitDepth;
+		//bptr < cms::lcd::BitDepthProcessor > bitDepth;
 		Component_vector_ptr fetchComponent(RGB_vector_ptr rgbMeasureCode);
 		XYZ_ptr extraMeasureXYZ;
 		RGB_ptr extraMeasureRGB;
 	      public:
-		 ComponentFetcher(bptr <
+		 /*ComponentFetcher(bptr <
 				  cms::measure::IntensityAnalyzerIF >
-				  analyzer, bptr < BitDepthProcessor > bitDepth);
+				  analyzer, bptr < BitDepthProcessor > bitDepth);*/
+		 ComponentFetcher(bptr < cms::measure::IntensityAnalyzerIF > analyzer);
 		Component_vector_ptr fetchComponent(bptr < MeasureCondition > measureCondition);
 
 		double_vector_ptr fetchLuminance(bptr < MeasureCondition > measureCondition);

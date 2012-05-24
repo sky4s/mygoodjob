@@ -73,9 +73,14 @@ namespace cms {
 	    //==================================================================
 	    // ComponentFetcher
 	    //==================================================================
-	  ComponentFetcher::ComponentFetcher(bptr < IntensityAnalyzerIF > analyzer, bptr < BitDepthProcessor > bitDepth):firstAnalyzer
-		(analyzer), bitDepth(bitDepth),
+	  /*ComponentFetcher::ComponentFetcher(bptr < IntensityAnalyzerIF > analyzer, bptr < BitDepthProcessor > bitDepth):firstAnalyzer
+		(analyzer),
+		//bitDepth(bitDepth),
 		extraMeasureRGB(nil_RGB_ptr) {
+	    };*/
+	  ComponentFetcher::ComponentFetcher(bptr < IntensityAnalyzerIF > analyzer):firstAnalyzer(analyzer),
+		extraMeasureRGB(nil_RGB_ptr)
+	    {
 	    };
 
 	    Component_vector_ptr ComponentFetcher::fetchComponent(RGB_vector_ptr rgbMeasureCode) {
@@ -96,7 +101,7 @@ namespace cms {
 		foreach(const RGB_ptr & rgb, *rgbMeasureCode) {
 		    RGB_ptr intensity = analyzer->getIntensity(rgb);
 		    if (true == waitingStable) {
-                    //只有第一次量測的時候發揮作用
+			//只有第一次量測的時候發揮作用
 			waitingStable = false;
 			analyzer->setWaitTimes(waitTimes);
 		    }

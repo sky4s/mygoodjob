@@ -1,4 +1,5 @@
 //---------------------------------------------------------------------------
+//#define OD_MEASUREMENT
 #include <includeall.h>
 #pragma hdrstop
 //#include "utilcls.h"
@@ -812,6 +813,7 @@ void maxValueTry()
 
 void linearRGBTry()
 {
+    using namespace cms::lcd;
     using namespace cms::lcd::calibrate;
     bptr < BitDepthProcessor > bitDepth(new BitDepthProcessor(8, 12, 8, false));
     RGB_vector_ptr vec = RGBVector::getLinearRGBVector(bitDepth, .5);
@@ -826,8 +828,9 @@ void linearRGBTry()
 
 void smoothTry()
 {
-    using namespace cms::lcd::calibrate;
+    using namespace cms::lcd;
     using namespace cms::util;
+    using namespace cms::lcd::calibrate;
     bptr < BitDepthProcessor > bitDepth(new BitDepthProcessor(8, 10, 6, false));
     RGB_vector_ptr vector1 = RGBVector::getLinearRGBVector(bitDepth, 0.5);
     RGB_vector_ptr vector2 = RGBVector::getLinearRGBVector(bitDepth, 1);
@@ -837,24 +840,13 @@ void smoothTry()
        foreach(RGB_ptr rgb, *vector2) {
        cout << *rgb->toString() << endl;
        } */
-    RGB_vector_ptr result = AdvancedDGLutGenerator::smooth(vector1, vector2, bitDepth, 230);
-    /*foreach(RGB_ptr rgb, *result) {
-       cout << *rgb->toString() << endl;
-       } */
-    for (int x = 200; x < vector1->size(); x++) {
-	cout << *(*vector1)[x]->toString() << endl;
-    }
-    for (int x = 200; x < vector1->size(); x++) {
-	cout << *(*vector2)[x]->toString() << endl;
-    }
-    for (int x = 200; x < vector1->size(); x++) {
-	cout << *(*result)[x]->toString() << endl;
-    }
+
 }
 
 void cloneTry()
 {
     using namespace cms::lcd::calibrate;
+    using namespace cms::lcd;
     using namespace cms::util;
     bptr < BitDepthProcessor > bitDepth(new BitDepthProcessor(8, 10, 6, false));
 
@@ -1379,10 +1371,28 @@ void textLoad()
 
 }
 
+String binaryToHex(String binary)
+{
+    int integer =
+	(binary[1] - '0') * 8 + (binary[2] - '0') * 4 + (binary[3] - '0') * 2 + (binary[4] - '0');
+    if (integer > 9) {
+	return (char) ('A' + (integer - 10));
+    } else {
+	return integer;
+    }
+}
+
+void toHexTest()
+{
+    cout << binaryToHex("1010") << endl;
+}
 
 #pragma argsused
 int main(int argc, char *argv[])
 {
+    toHexTest();
+    //String a = "123$";
+    //.a.
     //wstringtest();
     //stringtest();
 
@@ -1391,7 +1401,7 @@ int main(int argc, char *argv[])
        cout << (" " == s) << endl; */
 
     //regress();
-    lut();
+    //lut();
     //excel();
     //excel2();
     //inverse();
