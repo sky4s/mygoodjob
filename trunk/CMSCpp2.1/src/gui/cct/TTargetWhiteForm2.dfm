@@ -59,7 +59,7 @@ object TargetWhiteForm2: TTargetWhiteForm2
           TabOrder = 2
         end
         object Button_Run: TButton
-          Left = 72
+          Left = 64
           Top = 380
           Width = 65
           Height = 18

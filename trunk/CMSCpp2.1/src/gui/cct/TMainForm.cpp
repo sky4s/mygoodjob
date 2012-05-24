@@ -36,7 +36,8 @@ __fastcall TMainForm::TMainForm(TComponent * Owner):TForm(Owner), debugMode(File
 linkEyeOne(FileExists("i1.txt")), linkCA210(!FileExists("i1.txt") && !FileExists(DEBUG_FILE)),
 newFunction(FileExists(DEBUG_NEWFUNC_FILE))
 {
-
+    String a="0100";
+    //a[1];
     connectCA210ByThread = true;
 
 
@@ -762,8 +763,7 @@ bptr < cms::lcd::calibrate::ComponentFetcher > TMainForm::getComponentFetcher()
     using namespace cms::lcd::calibrate;
     if (null == fetcher) {
 	bptr < cms::measure::IntensityAnalyzerIF > analyzer = initAnalyzer();
-	fetcher = bptr < ComponentFetcher > (new cms::lcd::calibrate::
-					     ComponentFetcher(analyzer, bitDepth));
+	fetcher = bptr < ComponentFetcher > (new cms::lcd::calibrate::ComponentFetcher(analyzer));
 	MeasureWindow->addWindowListener(fetcher);
     }
 
