@@ -1,6 +1,6 @@
 object CCTLUTForm: TCCTLUTForm
-  Left = 491
-  Top = 237
+  Left = 492
+  Top = 238
   Width = 841
   Height = 431
   Caption = 'CCT(LUT)'
@@ -1146,7 +1146,7 @@ object CCTLUTForm: TCCTLUTForm
   end
   object StatusBar1: TStatusBar
     Left = 0
-    Top = 385
+    Top = 383
     Width = 833
     Height = 19
     Color = clWhite

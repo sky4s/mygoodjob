@@ -57,12 +57,12 @@ namespace cms {
 	    /* WhiteSmooth專用
 	       componentVector: 量測得到的面板特性
 	       fetcher: 用來量測面板特性的元件
-	       analyzer1:
+	       analyzer1st:
 	       analyzer2nd:
 	       bitDepth: 面板的bit特性
 	       calibrator:
 	     */
-	  AdvancedDGLutGenerator::AdvancedDGLutGenerator(Component_vector_ptr componentVector, bptr < cms::lcd::calibrate::ComponentFetcher > fetcher, bptr < IntensityAnalyzerIF > analyzer1, bptr < IntensityAnalyzerIF > analyzer2nd, bptr < BitDepthProcessor > bitDepth, const LCDCalibrator & calibrator):DimDGLutGenerator(componentVector, analyzer1),
+	  AdvancedDGLutGenerator::AdvancedDGLutGenerator(Component_vector_ptr componentVector, bptr < cms::lcd::calibrate::ComponentFetcher > fetcher, bptr < IntensityAnalyzerIF > analyzer1st, bptr < IntensityAnalyzerIF > analyzer2nd, bptr < BitDepthProcessor > bitDepth, const LCDCalibrator & calibrator):DimDGLutGenerator(componentVector, analyzer1st),
 		fetcher(fetcher), analyzer2nd(analyzer2nd),
 		bitDepth(bitDepth), mode(WhiteSmooth), c(calibrator) {
 		init();
@@ -121,6 +121,8 @@ namespace cms {
 						   brightTurn, dimGamma, brightGamma, brightWidth);
 	    }
 
+
+
 	    RGB_vector_ptr AdvancedDGLutGenerator::produce() {
 		if (null == targetXYZVector) {
 		    throw new IllegalStateException();
@@ -147,7 +149,10 @@ namespace cms {
 		       4.若精準度要更高,就重複做到滿意為止
 		     */
 		    try {
-			return produceDGLutMulti(targetXYZVector, componentVector);
+			RGB_vector_ptr multiResult =
+			    produceDGLutMulti(targetXYZVector, componentVector);
+			RGB_vector_ptr luminanceResult = produceDGLutInLuminance(multiResult);
+			return luminanceResult;
 		    }
 		    catch(IllegalStateException & ex) {
 			return nil_RGB_vector_ptr;
@@ -252,6 +257,46 @@ namespace cms {
 		return result;
 	    };
 
+	    RGB_vector_ptr AdvancedDGLutGenerator::
+		produceDGLutInLuminance(RGB_vector_ptr initRGBVector) {
+		RGB_vector_ptr result = RGBVector::deepClone(initRGBVector);
+		RGBVector::changeMaxValue(result, bitDepth->getFRCAbilityBit());
+
+
+		//因為開頭就是反著量, 所以把上一次結果反轉才能開始量測
+		bptr < MeasureCondition >
+		    measureCondition(new MeasureCondition(RGBVector::reverse(result)));
+		XYZ_ptr referenceXYZ = c.measureFirstAnalyzerReferenceRGB();
+		//重新fetch一次, 這時候白點會不會又變動了?
+		Component_vector_ptr componentVectorPrime =
+		    fetcher->fetchComponent(measureCondition);
+		/*STORE_COMPONENT("MultiGen_Component_" +
+		   _toString(t + 1) + ".xls", componentVectorPrime); */
+		//此時用的是最一開始的target XYZ
+		XYZ_vector_ptr newTargetXYZVector =
+		    scaleTargetXYZVector(targetXYZVector, referenceXYZ->Y);
+
+
+		xyY_ptr rxyY = analyzer->getPrimaryColor(Dep::Channel::R);
+		xyY_ptr gxyY = analyzer->getPrimaryColor(Dep::Channel::G);
+		xyY_ptr bxyY = analyzer->getPrimaryColor(Dep::Channel::B);
+		double denominator = rxyY->Y + gxyY->Y + bxyY->Y;
+		double rratio = rxyY->Y / denominator;
+		double gratio = gxyY->Y / denominator;
+		double bratio = bxyY->Y / denominator;
+		code2YRatioArray = double_array(new double[7]);
+		code2YRatioArray[0] = bratio;
+		code2YRatioArray[1] = rratio;
+		code2YRatioArray[2] = rratio + bratio;
+		code2YRatioArray[3] = gratio;
+		code2YRatioArray[4] = gratio + bratio;
+		code2YRatioArray[5] = rratio + gratio;
+		code2YRatioArray[6] = 1;
+
+
+		return result;
+	    }
+
 
 	    RGB_vector_ptr AdvancedDGLutGenerator::
 		produceDGLutMulti(XYZ_vector_ptr targetXYZVector,
@@ -284,7 +329,6 @@ namespace cms {
 		 */
 		for (int t = 0; t < c.multiGenTimes; t++) {
 		    RGBVector::changeMaxValue(result, bitDepth->getFRCAbilityBit());
-
 
 
 		    //因為開頭就是反著量, 所以把上一次結果反轉才能開始量測
@@ -352,9 +396,7 @@ namespace cms {
 									  cms::measure::
 									  IntensityAnalyzerIF >
 									  analyzer) {
-		/*double rTargetIntensity = -1;
-		   double gTargetIntensity = -1;
-		   double bTargetIntensity = -1; */
+
 		double_array intensity(new double[3]);
 		if (true == c.autoIntensity) {
 		    //autoIntensity從當下量到的componentVector推算最適當的target intensity
@@ -367,9 +409,7 @@ namespace cms {
 		    ma->setReferenceRGB(refRGB);
 
 		    idealIntensity = getIdealIntensity(componentVector, ma);
-		    /*rTargetIntensity = idealIntensity->R;
-		       gTargetIntensity = idealIntensity->G;
-		       bTargetIntensity = idealIntensity->B; */
+
 		    intensity[0] = idealIntensity->R;
 		    intensity[1] = idealIntensity->G;
 		    intensity[2] = idealIntensity->B;
@@ -379,14 +419,6 @@ namespace cms {
 		    intensity[2] = 100;
 		}
 
-		/*rTargetIntensity = (-1 == rTargetIntensity) ? 100 : rTargetIntensity;
-		   gTargetIntensity = (-1 == gTargetIntensity) ? 100 : gTargetIntensity;
-		   //B採100嗎?
-		   bTargetIntensity = (-1 == bTargetIntensity) ? 100 : bTargetIntensity;
-		   double_array intensity(new double[3]);
-		   intensity[0] = rTargetIntensity;
-		   intensity[1] = gTargetIntensity;
-		   intensity[2] = bTargetIntensity; */
 		return intensity;
 	    };
 	    //======================================================================================
@@ -423,36 +455,6 @@ namespace cms {
 #endif
 		//=============================================================
 
-		//=============================================================
-		//設定intensity
-		//=============================================================
-		/*double rTargetIntensity = -1;
-		   double gTargetIntensity = -1;
-		   double bTargetIntensity = -1;
-		   if (true == c.autoIntensity) {
-		   //autoIntensity從當下量到的componentVector推算最適當的target intensity
-		   xyY_ptr refxyY = analyzer->getReferenceColor();
-		   XYZ_ptr targetXYZ = refxyY->toXYZ();
-
-		   bptr < MaxMatrixIntensityAnalyzer > ma =
-		   MaxMatrixIntensityAnalyzer::getReadyAnalyzer(analyzer, targetXYZ);
-		   ma->setReferenceRGB(refRGB);
-
-		   idealIntensity = getIdealIntensity(componentVector, ma);
-		   rTargetIntensity = idealIntensity->R;
-		   gTargetIntensity = idealIntensity->G;
-		   bTargetIntensity = idealIntensity->B;
-		   }
-
-		   rTargetIntensity = (-1 == rTargetIntensity) ? 100 : rTargetIntensity;
-		   gTargetIntensity = (-1 == gTargetIntensity) ? 100 : gTargetIntensity;
-		   //B採100嗎?
-		   bTargetIntensity = (-1 == bTargetIntensity) ? 100 : bTargetIntensity;
-
-		   double_array intensity(new double[3]);
-		   intensity[0] = rTargetIntensity;
-		   intensity[1] = gTargetIntensity;
-		   intensity[2] = bTargetIntensity; */
 		double_array targetIntensity = calculateTargetIntensity(analyzer);
 		double rTargetIntensity = targetIntensity[0];
 		double gTargetIntensity = targetIntensity[1];
@@ -482,7 +484,7 @@ namespace cms {
 
 		    //不斷產生Analyzer, 因為Target White一直變化, 所以利用新的Analyzer, 計算出Intensity
 		    bptr < MaxMatrixIntensityAnalyzer > ma = MaxMatrixIntensityAnalyzer::getReadyAnalyzer(analyzer, targetXYZ);	//傳入 XYZ x3
-		    ma->setReferenceRGB(refRGB); //refRGB是給getFRCAbilityComponent使用的
+		    ma->setReferenceRGB(refRGB);	//refRGB是給getFRCAbilityComponent使用的
 
 		    //利用新的analyzer算出新的component(就是intensity)
 		    Component_vector_ptr newcomponentVector =
@@ -641,10 +643,6 @@ namespace cms {
 	    };
 
 
-	    /*bool AdvancedDGLutGenerator::isAvoidHook(XYZ_ptr targetXYZ, double offsetK) {
-	       XYZ_ptr XYZOffset = getXYZ(targetXYZ, offsetK);
-	       return isDuplicateBlue100(XYZOffset);
-	       }; */
 	    XYZ_ptr AdvancedDGLutGenerator::getXYZ(XYZ_ptr XYZ, double offsetK) {
 		//==============================================================
 		// 材料準備
@@ -668,19 +666,6 @@ namespace cms {
 		XYZ_ptr XYZOffset = xyYOffset->toXYZ();
 		return XYZOffset;
 	    };
-	    /*bool AdvancedDGLutGenerator::isDuplicateBlue100(XYZ_ptr targetXYZ) {
-	       xyY_ptr rxyY = analyzer->getPrimaryColor(Channel::R);
-	       xyY_ptr gxyY = analyzer->getPrimaryColor(Channel::G);
-	       xyY_ptr bxyY = analyzer->getPrimaryColor(Channel::B);
-
-	       bptr < MaxMatrixIntensityAnalyzer > mmia =
-	       MaxMatrixIntensityAnalyzer::getReadyAnalyzer(rxyY->toXYZ(), gxyY->toXYZ(),
-	       bxyY->toXYZ(), targetXYZ);
-
-	       Component_vector_ptr newcomponentVector = fetchNewComponent(mmia, componentVector);
-
-	       return isDuplicateBlue100(newcomponentVector);
-	       }; */
 
 	    /*
 	       產生smooth target還是有個問題, 就是luminance.
@@ -801,23 +786,7 @@ namespace cms {
 		stopMeasure = true;
 	    };
 
-	    /*bool AdvancedDGLutGenerator::isDuplicateBlue100(Component_vector_ptr componentVector) {
-	       int size = componentVector->size();
-	       int timesOfB100 = 0;
-	       for (int x = size - 1; x > 0; x--) {
-	       Component_ptr c0 = (*componentVector)[x];
-	       Component_ptr c1 = (*componentVector)[x - 1];
-	       if (c0->intensity->B > 100 && c1->intensity->B < 100
-	       || c0->intensity->B < 100 && c1->intensity->B > 100 ||
-	       //剛好等於100, 應該很難
-	       c0->intensity->B == 100 ||
-	       //最後一個逼近100, 也視為100
-	       (c0->intensity->B > 99.0 && x == size - 1)) {
-	       timesOfB100++;
-	       }
-	       }
-	       return timesOfB100 == 2;
-	       }; */
+
 
 	    /*
 	       試驗性質
@@ -949,11 +918,7 @@ namespace cms {
 		    bptr < IntensityAnalyzerIF > analyzer = c.getFirstAnalzyer();
 		    RGB_ptr refRGB = analyzer->getReferenceRGB();
 		    return MeasureTool::getMaxBIntensityRawGrayLevel(mm, c.bitDepth);
-		    /*if (refRGB->isWhite()) {
-		       return MeasureTool::getMaxBIntensityRawGrayLevel(mm, c.bitDepth, analyzer);
-		       } else {
-		       return MeasureTool::getMaxBIntensityRawGrayLevel(mm, c.bitDepth);
-		       } */
+
 		}
 	    };
 	    SecondWhite DeHookProcessor::getSecondWhite(KeepMaxLuminance keepMaxLuminance,

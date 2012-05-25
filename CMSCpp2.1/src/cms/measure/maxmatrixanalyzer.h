@@ -57,12 +57,8 @@ namespace cms {
 	    void setReferenceRGB(RGB_ptr rgb);
 	    bool isInverseMatrixNull();
 	     bptr < MeterMeasurement > getMeterMeasurement();
-	    //xyY_ptr measureReferenceRGB();
 	    double2D_ptr getWhiteRatio();
-	    /*static bptr < MaxMatrixIntensityAnalyzer > getReadyAnalyzer(bptr <
-	       MeterMeasurement > mm,
-	       int rMax, int gMax,
-	       int bMax); */
+
 	    static bptr < MaxMatrixIntensityAnalyzer > getReadyAnalyzer(bptr <
 									MeterMeasurement > mm,
 									double rMax, double gMax,
