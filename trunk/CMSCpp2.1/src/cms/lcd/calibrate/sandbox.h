@@ -76,7 +76,7 @@ namespace cms {
 	      public:
 		 AdvancedDGLutGenerator(Component_vector_ptr componentVector,
 					bptr < cms::lcd::calibrate::ComponentFetcher > fetcher,
-					bptr < cms::measure::IntensityAnalyzerIF > analyzer1,
+					bptr < cms::measure::IntensityAnalyzerIF > analyzer1st,
 					bptr < cms::measure::IntensityAnalyzerIF > analyzer2nd,
 					bptr < BitDepthProcessor > bitDepth,
 					const LCDCalibrator & calibrator);
@@ -103,6 +103,8 @@ namespace cms {
 					 int brightTurn, int brightWidth,
 					 bptr < BitDepthProcessor > bitDepth);
 
+		double_array code2YRatioArray;
+		RGB_vector_ptr produceDGLutInLuminance(RGB_vector_ptr initRGBVector);
 		RGB_vector_ptr produceDGLutMulti(XYZ_vector_ptr
 						 targetXYZVector,
 						 Component_vector_ptr componentVector);

@@ -814,11 +814,7 @@ namespace cms {
 		//==========================================================
 		// 新方法
 		//==========================================================
-		//bptr < AdvancedDGLutGenerator > advgenerator;
 
-		/*double minLuminance =
-		   (*originalComponentVector)[originalComponentVector->
-		   size() - 1]->XYZ->Y; */
 		XYZ_ptr referenceXYZ = measureFirstAnalyzerReferenceRGB();
 
 		//=============================================================
@@ -846,64 +842,6 @@ namespace cms {
 		   直接對b intensity做smooth
 		   將target B Intensity由100->Max B Intensity->100做smooth
 		 */
-		/*if (keepMaxLuminance ==
-		   KeepMaxLuminance::Smooth2NativeWhite) {
-		   //native white smooth
-		   //Smooth2NativeWhite是為了兼顧Hook和最大亮度的折衷產物
-		   //較適合NB使用
-		   bptr < PanelRegulator > panelRegulator2;
-		   Component_vector_ptr componentVector2;
-
-
-		   //Smooth2NativeWhite + dehook org
-		   int max = bitDepth->getInputMaxDigitalCount();
-		   panelRegulator2 = bptr < PanelRegulator >
-		   (new
-		   GammaTestPanelRegulator(bitDepth,
-		   tconctrl, max,
-		   max, maxBRawGrayLevel,
-		   measureCondition));
-		   panelRegulator2->setEnable(true);
-		   componentVector2 = fetchComponentVector();
-		   STORE_COMPONENT("o_fetch2.xls", componentVector2);
-		   panelRegulator2->setEnable(false);
-
-		   //初始化255/255/255的white analyzer
-		   init2ndWhiteAnalyzer(keepMaxLuminance, dehook);
-
-		   advgenerator = bptr < AdvancedDGLutGenerator >
-		   (new
-		   AdvancedDGLutGenerator(originalComponentVector,
-		   fetcher,
-		   fetcher->getAnalyzer(),
-		   secondWhiteAnalyzer,
-		   bitDepth, *this));
-
-		   advgenerator->setComponentVector2(componentVector2,
-		   panelRegulator2);
-
-
-		   //end of Smooth2NativeWhite
-		   } else {
-		   //一般的case, 不用兼顧Hook和最大亮度
-		   //NativeWhite(可搭配de-hook) & TargetWhite
-		   //componentVector是事先量好的(呼叫此function之前)
-		   if (isDoDeHook() && null == secondWhiteAnalyzer) {
-		   throw new
-		   IllegalStateException
-		   ("isDoDeHook() && null == secondWhiteAnalyzer");
-		   }
-		   advgenerator =
-		   bptr < AdvancedDGLutGenerator >
-		   (new
-		   AdvancedDGLutGenerator(originalComponentVector,
-		   fetcher, bitDepth, *this));
-
-		   //==========================================================
-
-		   keepMaxLumiOver = bitDepth->getEffectiveInputLevel();
-
-		   } */
 		//=============================================================
 
 
@@ -921,40 +859,10 @@ namespace cms {
 		}
 		//=============================================================
 
-
-		//advgenerator->setPanelRegulator(panelRegulator);
-
-
 		//==================================================================================
 		// init maxWhiteXYZ & target white
 		//==================================================================================
 		initWhiteXYZ(referenceXYZ);
-		/*XYZ_ptr maxWhiteXYZ = referenceXYZ->clone();
-		   XYZ_ptr targetWhiteXYZ;
-
-		   switch (keepMaxLuminance) {
-		   case KeepMaxLuminance::TargetLuminance:{
-		   targetWhiteXYZ = maxWhiteXYZ->clone();
-		   };
-		   break;
-		   case KeepMaxLuminance::TargetWhite:
-		   targetWhiteXYZ = maxWhiteXYZ->clone();
-		   break;
-		   case KeepMaxLuminance::NativeWhite:
-		   if (isDoDeHook()) {
-		   //de-hook需要1st white的亮度(確保 gamma正確) 以及 2nd的色度(確保避開B Intensity反轉區)
-		   xyY_ptr secondWhite =
-		   secondWhiteAnalyzer->getReferenceColor()->
-		   clone();
-		   targetWhiteXYZ = secondWhite->toXYZ();
-		   secondWhite->Y = referenceXYZ->Y;
-		   maxWhiteXYZ = secondWhite->toXYZ();
-
-		   } else {
-		   targetWhiteXYZ = maxWhiteXYZ;
-		   }
-		   break;
-		   }; */
 		//==================================================================================
 
 
