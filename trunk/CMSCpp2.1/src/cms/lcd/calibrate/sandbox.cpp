@@ -257,26 +257,7 @@ namespace cms {
 		return result;
 	    };
 
-	    RGB_vector_ptr AdvancedDGLutGenerator::
-		produceDGLutInLuminance(RGB_vector_ptr initRGBVector) {
-		RGB_vector_ptr result = RGBVector::deepClone(initRGBVector);
-		RGBVector::changeMaxValue(result, bitDepth->getFRCAbilityBit());
-
-
-		//因為開頭就是反著量, 所以把上一次結果反轉才能開始量測
-		bptr < MeasureCondition >
-		    measureCondition(new MeasureCondition(RGBVector::reverse(result)));
-		XYZ_ptr referenceXYZ = c.measureFirstAnalyzerReferenceRGB();
-		//重新fetch一次, 這時候白點會不會又變動了?
-		Component_vector_ptr componentVectorPrime =
-		    fetcher->fetchComponent(measureCondition);
-		/*STORE_COMPONENT("MultiGen_Component_" +
-		   _toString(t + 1) + ".xls", componentVectorPrime); */
-		//此時用的是最一開始的target XYZ
-		XYZ_vector_ptr newTargetXYZVector =
-		    scaleTargetXYZVector(targetXYZVector, referenceXYZ->Y);
-
-
+	    void AdvancedDGLutGenerator::initCode2YRatioArray() {
 		xyY_ptr rxyY = analyzer->getPrimaryColor(Dep::Channel::R);
 		xyY_ptr gxyY = analyzer->getPrimaryColor(Dep::Channel::G);
 		xyY_ptr bxyY = analyzer->getPrimaryColor(Dep::Channel::B);
@@ -292,7 +273,74 @@ namespace cms {
 		code2YRatioArray[4] = gratio + bratio;
 		code2YRatioArray[5] = rratio + gratio;
 		code2YRatioArray[6] = 1;
+	    };
 
+	    RGB_vector_ptr AdvancedDGLutGenerator::
+		produceDGLutInLuminance(RGB_vector_ptr initRGBVector) {
+		RGB_vector_ptr clone = RGBVector::deepClone(initRGBVector);
+		RGBVector::changeMaxValue(clone, bitDepth->getFRCAbilityBit());
+
+
+		//因為開頭就是反著量, 所以把上一次結果反轉才能開始量測
+		bptr < MeasureCondition >
+		    measureCondition(new MeasureCondition(RGBVector::reverse(clone)));
+		XYZ_ptr referenceXYZ = c.measureFirstAnalyzerReferenceRGB();
+		//重新fetch一次, 這時候白點會不會又變動了?
+		Component_vector_ptr componentVectorPrime =
+		    fetcher->fetchComponent(measureCondition);
+
+		/*
+		   1. 0~255對應出亮度
+		   2. 從目標亮度反推出灰階
+		   3. 從灰階推出DG
+		 */
+		double_vector_ptr grayLevelArray(new double_vector());
+		double_vector_ptr luminanceArray(new double_vector());
+		double_vector_ptr rDGArray(new double_vector());
+		double_vector_ptr gDGArray(new double_vector());
+		double_vector_ptr bDGArray(new double_vector());
+		int size = componentVectorPrime->size();
+
+		for (int x = size - 1; x >= 0; x--) {
+		    int grayLevel = (size - 1) - x;
+		    Component_ptr c = (*componentVectorPrime)[x];
+		    RGB_ptr rgb = c->rgb;
+
+		    double r = rgb->getValue(Channel::R, MaxValue::Double255);
+		    double g = rgb->getValue(Channel::G, MaxValue::Double255);
+		    double b = rgb->getValue(Channel::B, MaxValue::Double255);
+		    double luminance = c->XYZ->Y;
+		    rDGArray->push_back(r);
+		    gDGArray->push_back(g);
+		    bDGArray->push_back(b);
+		    grayLevelArray->push_back(grayLevel);
+		    luminanceArray->push_back(luminance);
+		}
+
+		Interpolation1DLUT lut(grayLevelArray, luminanceArray);
+		Interpolation1DLUT rlut(grayLevelArray, rDGArray);
+		Interpolation1DLUT glut(grayLevelArray, gDGArray);
+		Interpolation1DLUT blut(grayLevelArray, bDGArray);
+
+		/*STORE_COMPONENT("MultiGen_Component_" +
+		   _toString(t + 1) + ".xls", componentVectorPrime); */
+		//此時用的是最一開始的target XYZ
+		XYZ_vector_ptr newTargetXYZVector =
+		    scaleTargetXYZVector(targetXYZVector, referenceXYZ->Y);
+		RGB_vector_ptr result(new RGB_vector());
+
+		foreach(XYZ_ptr XYZ, *newTargetXYZVector) {
+		    double targetLuminance = XYZ->Y;
+                    double value=lut.correctValueInRange(targetLuminance);
+		    double grayLevel = lut.getKey(value);
+		    double r = rlut.getValue(grayLevel);
+		    double g = glut.getValue(grayLevel);
+		    double b = blut.getValue(grayLevel);
+		    RGB_ptr rgb(new RGBColor(r, g, b, MaxValue::Double255));
+		    result->push_back(rgb);
+		}
+
+		//initCode2YRatioArray();
 
 		return result;
 	    }
@@ -643,7 +691,7 @@ namespace cms {
 	    };
 
 
-	    XYZ_ptr AdvancedDGLutGenerator::getXYZ(XYZ_ptr XYZ, double offsetK) {
+	    /*XYZ_ptr AdvancedDGLutGenerator::getXYZ(XYZ_ptr XYZ, double offsetK) {
 		//==============================================================
 		// 材料準備
 		//==============================================================
@@ -665,7 +713,7 @@ namespace cms {
 		xyYOffset->Y = XYZ->Y;
 		XYZ_ptr XYZOffset = xyYOffset->toXYZ();
 		return XYZOffset;
-	    };
+	    };*/
 
 	    /*
 	       產生smooth target還是有個問題, 就是luminance.

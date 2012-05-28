@@ -1,8 +1,8 @@
 object CCTLUTForm: TCCTLUTForm
   Left = 492
-  Top = 238
+  Top = 239
   Width = 841
-  Height = 431
+  Height = 430
   Caption = 'CCT(LUT)'
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
@@ -356,167 +356,15 @@ object CCTLUTForm: TCCTLUTForm
       OnChange = Edit_MiddleGammaEndChange
     end
   end
-  object GroupBox3: TGroupBox
-    Left = 344
-    Top = 7
-    Width = 156
-    Height = 258
-    Caption = 'Low Level Correction'
-    TabOrder = 2
-    object Label4: TLabel
-      Left = 26
-      Top = 96
-      Width = 29
-      Height = 13
-      Caption = 'Under'
-    end
-    object Label7: TLabel
-      Left = 26
-      Top = 57
-      Width = 13
-      Height = 13
-      Caption = 'P1'
-    end
-    object Label8: TLabel
-      Left = 98
-      Top = 57
-      Width = 13
-      Height = 13
-      Caption = 'P2'
-    end
-    object Label17: TLabel
-      Left = 26
-      Top = 140
-      Width = 29
-      Height = 13
-      Caption = 'Under'
-    end
-    object Label14: TLabel
-      Left = 26
-      Top = 160
-      Width = 40
-      Height = 13
-      Caption = 'Strength'
-    end
-    object RadioButton_P1P2: TRadioButton
-      Left = 7
-      Top = 38
-      Width = 78
-      Height = 19
-      Caption = 'P1 P2'
-      TabOrder = 0
-      OnClick = RadioButton_P1P2Click
-    end
-    object RadioButton_RBInterp: TRadioButton
-      Left = 7
-      Top = 77
-      Width = 104
-      Height = 19
-      Caption = 'RB Interpolation'
-      TabOrder = 1
-    end
-    object Edit_RBInterpUnder: TEdit
-      Left = 72
-      Top = 96
-      Width = 59
-      Height = 21
-      ImeName = #26085#25991#36664#20837#31995#32113' (MS-IME2002)'
-      TabOrder = 2
-      Text = '50'
-    end
-    object Edit_P1: TEdit
-      Left = 46
-      Top = 57
-      Width = 33
-      Height = 21
-      ImeName = #26085#25991#36664#20837#31995#32113' (MS-IME2002)'
-      TabOrder = 3
-      Text = '20'
-    end
-    object Edit_P2: TEdit
-      Left = 117
-      Top = 57
-      Width = 33
-      Height = 21
-      ImeName = #26085#25991#36664#20837#31995#32113' (MS-IME2002)'
-      TabOrder = 4
-      Text = '50'
-    end
-    object RadioButton_NoneLowLevelCorrect: TRadioButton
-      Left = 7
-      Top = 16
-      Width = 59
-      Height = 20
-      Caption = 'None'
-      TabOrder = 5
-    end
-    object RadioButton_DefinedDim: TRadioButton
-      Left = 7
-      Top = 121
-      Width = 98
-      Height = 19
-      Caption = 'Defined Dim'
-      Checked = True
-      Enabled = False
-      TabOrder = 6
-      TabStop = True
-    end
-    object Edit_DefinedDimUnder: TEdit
-      Left = 72
-      Top = 140
-      Width = 59
-      Height = 21
-      ImeName = #26085#25991#36664#20837#31995#32113' (MS-IME2002)'
-      TabOrder = 7
-      Text = '50'
-      OnChange = Edit_DefinedDimUnderChange
-    end
-    object Edit_DimFixThreshold: TEdit
-      Left = 72
-      Top = 208
-      Width = 41
-      Height = 21
-      Enabled = False
-      TabOrder = 8
-      Text = '0.0001'
-    end
-    object CheckBox_Feedback: TCheckBox
-      Left = 26
-      Top = 184
-      Width = 95
-      Height = 20
-      Caption = 'CIExy Smooth'
-      Enabled = False
-      TabOrder = 9
-    end
-    object ComboBox_DefinedDimGamma: TComboBox
-      Left = 72
-      Top = 160
-      Width = 59
-      Height = 21
-      ItemHeight = 13
-      TabOrder = 10
-      Text = '1.0'
-      Items.Strings = (
-        '0.5'
-        '0.6'
-        '0.7'
-        '0.8'
-        '0.85'
-        '0.9'
-        '0.95'
-        '1.0')
-    end
-  end
   object GroupBox4: TGroupBox
-    Left = 671
-    Top = 7
+    Left = 343
+    Top = 135
     Width = 156
-    Height = 122
+    Height = 130
     Caption = 'Blue Correction'
     Color = clMoneyGreen
     ParentColor = False
-    TabOrder = 3
+    TabOrder = 2
     object Label18: TLabel
       Left = 26
       Top = 69
@@ -599,11 +447,11 @@ object CCTLUTForm: TCCTLUTForm
   end
   object GroupBox5: TGroupBox
     Left = 671
-    Top = 127
+    Top = 7
     Width = 156
-    Height = 138
+    Height = 258
     Caption = 'Options'
-    TabOrder = 4
+    TabOrder = 3
     object CheckBox_AvoidNoise: TCheckBox
       Left = 7
       Top = 14
@@ -620,16 +468,6 @@ object CCTLUTForm: TCCTLUTForm
       ParentFont = False
       TabOrder = 0
     end
-    object CheckBox_NewMethod: TCheckBox
-      Left = 7
-      Top = 116
-      Width = 117
-      Height = 19
-      Caption = 'New CCT Method'
-      TabOrder = 1
-      Visible = False
-      OnClick = CheckBox_NewMethodClick
-    end
     object CheckBox_MultiGen: TCheckBox
       Left = 7
       Top = 77
@@ -645,7 +483,7 @@ object CCTLUTForm: TCCTLUTForm
       Font.Style = []
       ParentColor = False
       ParentFont = False
-      TabOrder = 2
+      TabOrder = 1
     end
     object Edit_MultiGenTimes: TEdit
       Left = 115
@@ -653,7 +491,7 @@ object CCTLUTForm: TCCTLUTForm
       Width = 33
       Height = 21
       Enabled = False
-      TabOrder = 3
+      TabOrder = 2
       Text = '1'
     end
     object CheckBox_BTargetIntensity: TCheckBox
@@ -670,7 +508,7 @@ object CCTLUTForm: TCCTLUTForm
       Font.Style = []
       ParentColor = False
       ParentFont = False
-      TabOrder = 4
+      TabOrder = 3
       OnClick = CheckBox_BTargetIntensityClick
     end
     object Edit_BTargetIntensity: TEdit
@@ -679,7 +517,7 @@ object CCTLUTForm: TCCTLUTForm
       Width = 33
       Height = 21
       Enabled = False
-      TabOrder = 5
+      TabOrder = 4
       Text = '100'
     end
     object CheckBox_RTargetIntensity: TCheckBox
@@ -696,7 +534,7 @@ object CCTLUTForm: TCCTLUTForm
       Font.Style = []
       ParentColor = False
       ParentFont = False
-      TabOrder = 6
+      TabOrder = 5
       OnClick = CheckBox_RTargetIntensityClick
     end
     object Edit_RTargetIntensity: TEdit
@@ -705,17 +543,25 @@ object CCTLUTForm: TCCTLUTForm
       Width = 33
       Height = 21
       Enabled = False
-      TabOrder = 7
+      TabOrder = 6
       Text = '100'
     end
     object CheckBox_KeepMaxYInMultiGen: TCheckBox
       Left = 23
       Top = 96
-      Width = 106
+      Width = 82
       Height = 17
       Caption = 'Keep MaxY'
-      TabOrder = 8
+      TabOrder = 7
       Visible = False
+    end
+    object CheckBox_LuminanceCalInMultiGen: TCheckBox
+      Left = 23
+      Top = 112
+      Width = 98
+      Height = 17
+      Caption = 'Luminance Cal'
+      TabOrder = 8
     end
   end
   object Button_MeaRun: TButton
@@ -727,7 +573,7 @@ object CCTLUTForm: TCCTLUTForm
     Caption = ' Measure&&Run'
     ParentShowHint = False
     ShowHint = True
-    TabOrder = 5
+    TabOrder = 4
     OnClick = Button_MeaRunClick
   end
   object Button_Debug: TButton
@@ -736,7 +582,7 @@ object CCTLUTForm: TCCTLUTForm
     Width = 45
     Height = 18
     Caption = 'debug'
-    TabOrder = 6
+    TabOrder = 5
     Visible = False
     OnClick = Button_DebugClick
   end
@@ -745,7 +591,7 @@ object CCTLUTForm: TCCTLUTForm
     Top = 274
     Width = 501
     Height = 78
-    TabOrder = 7
+    TabOrder = 6
     inherited GroupBox_OutputFile: TGroupBox
       Width = 496
       Height = 73
@@ -788,7 +634,7 @@ object CCTLUTForm: TCCTLUTForm
     Width = 143
     Height = 208
     Caption = 'Panel_Expand'
-    TabOrder = 8
+    TabOrder = 7
     Visible = False
     object GroupBox6: TGroupBox
       Left = 7
@@ -925,7 +771,7 @@ object CCTLUTForm: TCCTLUTForm
     Width = 45
     Height = 18
     Caption = 'reset'
-    TabOrder = 9
+    TabOrder = 8
     Visible = False
     OnClick = Button_ResetClick
   end
@@ -936,7 +782,7 @@ object CCTLUTForm: TCCTLUTForm
     Height = 19
     Caption = 'Run'
     Enabled = False
-    TabOrder = 10
+    TabOrder = 9
     Visible = False
     OnClick = Button_RunClick
   end
@@ -946,7 +792,7 @@ object CCTLUTForm: TCCTLUTForm
     Width = 157
     Height = 258
     Caption = 'White Definition'
-    TabOrder = 11
+    TabOrder = 10
     object Label20: TLabel
       Left = 26
       Top = 229
@@ -983,7 +829,6 @@ object CCTLUTForm: TCCTLUTForm
       Height = 20
       Caption = 'Native White(CCTSmooth)'
       Color = clMoneyGreen
-      Enabled = False
       ParentColor = False
       TabOrder = 2
     end
@@ -1119,7 +964,7 @@ object CCTLUTForm: TCCTLUTForm
     Width = 113
     Height = 17
     Caption = 'Memory Measure'
-    TabOrder = 12
+    TabOrder = 11
     Visible = False
   end
   object ProgressBar1: TProgressBar
@@ -1129,7 +974,7 @@ object CCTLUTForm: TCCTLUTForm
     Height = 17
     Min = 0
     Max = 100
-    TabOrder = 13
+    TabOrder = 12
   end
   object RadioGroup_NormalCase: TRadioGroup
     Left = 671
@@ -1140,13 +985,13 @@ object CCTLUTForm: TCCTLUTForm
     Items.Strings = (
       'NB'
       'TV')
-    TabOrder = 14
+    TabOrder = 13
     Visible = False
     OnClick = RadioGroup_NormalCaseClick
   end
   object StatusBar1: TStatusBar
     Left = 0
-    Top = 383
+    Top = 384
     Width = 833
     Height = 19
     Color = clWhite
@@ -1155,6 +1000,92 @@ object CCTLUTForm: TCCTLUTForm
         Width = 50
       end>
     SimplePanel = False
+  end
+  object GroupBox3: TGroupBox
+    Left = 344
+    Top = 7
+    Width = 156
+    Height = 122
+    Caption = 'Low Level Correction'
+    TabOrder = 15
+    object Label17: TLabel
+      Left = 26
+      Top = 52
+      Width = 29
+      Height = 13
+      Caption = 'Under'
+    end
+    object Label14: TLabel
+      Left = 26
+      Top = 72
+      Width = 40
+      Height = 13
+      Caption = 'Strength'
+    end
+    object RadioButton_NoneLowLevelCorrect: TRadioButton
+      Left = 7
+      Top = 16
+      Width = 59
+      Height = 20
+      Caption = 'None'
+      TabOrder = 0
+    end
+    object RadioButton_DefinedDim: TRadioButton
+      Left = 7
+      Top = 33
+      Width = 98
+      Height = 19
+      Caption = 'Defined Dim'
+      Checked = True
+      TabOrder = 1
+      TabStop = True
+    end
+    object Edit_DefinedDimUnder: TEdit
+      Left = 72
+      Top = 52
+      Width = 59
+      Height = 21
+      ImeName = #26085#25991#36664#20837#31995#32113' (MS-IME2002)'
+      TabOrder = 2
+      Text = '50'
+      OnChange = Edit_DefinedDimUnderChange
+    end
+    object Edit_DimFixThreshold: TEdit
+      Left = 104
+      Top = 96
+      Width = 41
+      Height = 21
+      Enabled = False
+      TabOrder = 3
+      Text = '0.0001'
+    end
+    object CheckBox_Feedback: TCheckBox
+      Left = 26
+      Top = 96
+      Width = 71
+      Height = 20
+      Caption = 'xy Smooth'
+      Enabled = False
+      TabOrder = 4
+    end
+    object ComboBox_DefinedDimGamma: TComboBox
+      Left = 72
+      Top = 72
+      Width = 59
+      Height = 21
+      ItemHeight = 13
+      TabOrder = 5
+      Text = '1.0'
+      Items.Strings = (
+        '0.5'
+        '0.6'
+        '0.7'
+        '0.8'
+        '0.85'
+        '0.9'
+        '0.95'
+        '1.0')
+    end
   end
   object OpenDialog1: TOpenDialog
     Filter = 'DGCode Files(*.xls)|*.xls'
