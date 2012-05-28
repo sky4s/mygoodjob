@@ -29,7 +29,7 @@ namespace cms {
 	    class AdvancedDGLutGenerator:private DimDGLutGenerator, gui::event::WindowAdapter {
 	      private:
 		const LCDCalibrator & c;
-		XYZ_ptr getXYZ(XYZ_ptr XYZ, double offsetK);
+		//XYZ_ptr getXYZ(XYZ_ptr XYZ, double offsetK);
 		RGB_ptr idealIntensity;
 
 
@@ -104,6 +104,7 @@ namespace cms {
 					 bptr < BitDepthProcessor > bitDepth);
 
 		double_array code2YRatioArray;
+		void initCode2YRatioArray();
 		RGB_vector_ptr produceDGLutInLuminance(RGB_vector_ptr initRGBVector);
 		RGB_vector_ptr produceDGLutMulti(XYZ_vector_ptr
 						 targetXYZVector,

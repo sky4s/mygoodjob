@@ -47,12 +47,6 @@ void TCCTLUTForm::setMeasureInfo()
 
 
 
-void __fastcall TCCTLUTForm::RadioButton_P1P2Click(TObject * Sender)
-{
-    this->CheckBox_NewMethod->Checked = false;
-}
-
-//---------------------------------------------------------------------------
 
 
 
@@ -100,16 +94,18 @@ void __fastcall TCCTLUTForm::Button_MeaRunClick(TObject * Sender)
 	//==========================================================================
 	// P1P2和RBInterp的選擇
 	//==========================================================================
-	if (this->RadioButton_P1P2->Checked) {
-	    //選了P1P2
-	    int p1 = this->Edit_P1->Text.ToInt();
-	    int p2 = this->Edit_P2->Text.ToInt();
-	    calibrator.setP1P2(p1, p2);
-	} else if (this->RadioButton_RBInterp->Checked) {
-	    //選了RBInterp
-	    int rbunder = this->Edit_RBInterpUnder->Text.ToInt();
-	    calibrator.setRBInterpolation(rbunder);
-	} else if (this->RadioButton_DefinedDim->Checked) {
+	/*if (this->RadioButton_P1P2->Checked) {
+	   //選了P1P2
+	   int p1 = this->Edit_P1->Text.ToInt();
+	   int p2 = this->Edit_P2->Text.ToInt();
+	   calibrator.setP1P2(p1, p2);
+	   } else
+	   if (this->RadioButton_RBInterp->Checked) {
+	   //選了RBInterp
+	   int rbunder = this->Edit_RBInterpUnder->Text.ToInt();
+	   calibrator.setRBInterpolation(rbunder);
+	   } else */
+	if (this->RadioButton_DefinedDim->Checked) {
 	    //新低灰階修正方法
 	    int under = this->Edit_DefinedDimUnder->Text.ToInt();	// + 1;
 	    double gamma = this->ComboBox_DefinedDimGamma->Text.ToDouble();
@@ -167,10 +163,11 @@ void __fastcall TCCTLUTForm::Button_MeaRunClick(TObject * Sender)
 	calibrator.AvoidFRCNoise = this->CheckBox_AvoidNoise->Checked;
 
 	//新方法
-	calibrator.NewMethod = this->CheckBox_NewMethod->Checked;
+	calibrator.NewMethod = true;	//= this->CheckBox_NewMethod->Checked;
 	calibrator.setMultiGen(this->CheckBox_MultiGen->Checked,
 			       this->Edit_MultiGenTimes->Text.ToInt());
 	calibrator.KeepMaxYInMultiGen = this->CheckBox_KeepMaxYInMultiGen->Checked;
+	calibrator.LuminanceCalibration = this->CheckBox_LuminanceCalInMultiGen->Checked;
 	if (CheckBox_RTargetIntensity->Checked) {
 	    double rTargetIntensity = Edit_RTargetIntensity->Text.ToDouble();
 	    calibrator.RTargetIntensity = rTargetIntensity;
@@ -373,7 +370,7 @@ void __fastcall TCCTLUTForm::FormShow(TObject * Sender)
     //=========================================================================
     // function on/off relative
     //=========================================================================
-    this->CheckBox_NewMethod->Checked = true;
+    //this->CheckBox_NewMethod->Checked = true;
 
     const MaxValue & input = bitDepth->getInputMaxValue();
     bool avoidNoise = (input == MaxValue::Int6Bit || input == MaxValue::Int8Bit);
@@ -392,6 +389,9 @@ void __fastcall TCCTLUTForm::FormShow(TObject * Sender)
     RadioButton_NewDeHook->Enabled = useTConInput;
     CheckBox_Feedback->Enabled = useTConInput;
     Edit_DimFixThreshold->Enabled = useTConInput;
+    CheckBox_MultiGen->Enabled = useTConInput;
+    Edit_MultiGenTimes->Enabled = useTConInput;
+    CheckBox_KeepMaxYInMultiGen->Enabled = useTConInput;
     //=========================================================================
     //=========================================================================
     // target white relative
@@ -546,34 +546,6 @@ void __fastcall TCCTLUTForm::Button_ResetClick(TObject * Sender)
 
 
 
-void __fastcall TCCTLUTForm::CheckBox_NewMethodClick(TObject * Sender)
-{
-    bool newMethod = CheckBox_NewMethod->Checked;
-    RadioButton_P1P2->Enabled = !newMethod;
-    RadioButton_DefinedDim->Enabled = newMethod;
-    RadioButton_MaxYNativeAdv->Enabled = newMethod;
-    CheckBox_BTargetIntensity->Enabled = newMethod;
-    CheckBox_MultiGen->Enabled = newMethod;
-    Edit_MultiGenTimes->Enabled = newMethod;
-
-    if (newMethod) {
-	if (RadioButton_P1P2->Checked) {
-	    this->RadioButton_DefinedDim->Checked = true;
-	}
-
-    } else {
-	if (RadioButton_DefinedDim->Checked) {
-	    this->RadioButton_P1P2->Checked = true;
-	}
-
-    }
-
-    //RadioButton_MaxYNative->Checked = newMethod;
-    //RadioButton_MaxYNone->Checked = !newMethod;
-    //RadioButton_MaxYNone->Checked = true;
-}
-
-//---------------------------------------------------------------------------
 
 
 
@@ -681,7 +653,7 @@ void __fastcall TCCTLUTForm::RadioGroup_NormalCaseClick(TObject * Sender)
     case 0:			//NB
 	RadioButton_OriginalGamma->Checked = true;
 	CheckBox_AvoidNoise->Checked = true;
-	RadioButton_RBInterp->Checked = true;
+	//RadioButton_RBInterp->Checked = true;
 	RadioButton_MaxYNative->Checked = true;
 	CheckBox_BMax->Checked = true;
 	break;
@@ -827,5 +799,4 @@ void __fastcall TCCTLUTForm::RadioButton_DeHookNoneClick(TObject * Sender)
 }
 
 //---------------------------------------------------------------------------
-
 

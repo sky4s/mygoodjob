@@ -129,6 +129,7 @@ namespace cms {
 		bool multiGen;
 		int multiGenTimes;
 		bool keepMaxYInMultiGen;
+		bool luminanceCalibration;
 		//==============================================================
 
 		//==============================================================
@@ -198,11 +199,9 @@ namespace cms {
 		void setDefinedDim(int under, double strength);
 		__property int DimFixEnd = { write = dimFixEnd };
 		//__property bool DimFix = { write = dimFix };
-		__property double DimFixThreshold = { write =
-			dimFixThreshold
+		__property double DimFixThreshold = { write = dimFixThreshold
 		};
-		__property bool KeepDarkLevel = { read =
-			keepDarkLevel, write = keepDarkLevel
+		__property bool KeepDarkLevel = { read = keepDarkLevel, write = keepDarkLevel
 		};
 		//==============================================================
 
@@ -211,20 +210,17 @@ namespace cms {
 		//==============================================================
 		void setGamma(double gamma);
 		//2-gamma
-		void setGamma(double dimGamma, int dimGammaEnd,
-			      double brightGamma);
+		void setGamma(double dimGamma, int dimGammaEnd, double brightGamma);
 		//3-gamma
 		void setGamma(double dimGamma, int dimGammaEnd,
 			      int middleGammaEnd, double brightGamma);
 		void setGamma(double rgamma, double ggamma, double bgamma);
 		void setGammaCurve(double_vector_ptr gammaCurve);
 		void setGammaCurve(double_vector_ptr rgammaCurve,
-				   double_vector_ptr ggammaCurve,
-				   double_vector_ptr bgammaCurve);
+				   double_vector_ptr ggammaCurve, double_vector_ptr bgammaCurve);
 		void setOriginalGamma();
 		void setAbsoluteGamma(bool absoluteGamma,
-				      int startGrayLevel,
-				      double startGrayLevelAboveGamma);
+				      int startGrayLevel, double startGrayLevelAboveGamma);
 		//==============================================================
 
 		//==============================================================
@@ -235,33 +231,27 @@ namespace cms {
 		};
 		__property bool BMax = { write = bMax };
 
-		void setKeepMaxLuminance(KeepMaxLuminance
-					 keepMaxLuminance);
-		void setKeepMaxLuminanceSmooth2NativeWhite(int over,
-							   bool
-							   autoParameter);
-		__property DeHook DeHookMode = { read = dehook, write =
-			dehook
+		void setKeepMaxLuminance(KeepMaxLuminance keepMaxLuminance);
+		void setKeepMaxLuminanceSmooth2NativeWhite(int over, bool autoParameter);
+		__property DeHook DeHookMode = { read = dehook, write = dehook
 		};
 		//==============================================================
 
 		//==============================================================
 		//intensity
 		//==============================================================
-		__property double RTargetIntensity = { write =
-			rTargetIntensity
+		__property double RTargetIntensity = { write = rTargetIntensity
 		};
-		__property double BTargetIntensity = { write =
-			bTargetIntensity
+		__property double BTargetIntensity = { write = bTargetIntensity
 		};
 		void setSmoothIntensity(int start, int end);
 		//==============================================================
 
 		void setMultiGen(bool enable, int times);
-		__property bool KeepMaxYInMultiGen = { write =
-			keepMaxYInMultiGen
+		__property bool KeepMaxYInMultiGen = { write = keepMaxYInMultiGen
 		};
-
+                	__property bool LuminanceCalibration = { write = luminanceCalibration
+		};
 
 		//==============================================================
 		// for NB Noise
@@ -300,8 +290,7 @@ namespace cms {
 		//==============================================================
 		 bptr < i2c::TCONControl > tconctrl;
 		 bptr < ComponentFetcher > fetcher;
-		 bptr < cms::measure::MaxMatrixIntensityAnalyzer >
-		    secondWhiteAnalyzer;
+		 bptr < cms::measure::MaxMatrixIntensityAnalyzer > secondWhiteAnalyzer;
 		//==============================================================
 
 		//==============================================================
@@ -309,16 +298,13 @@ namespace cms {
 		//==============================================================
 		void setGammaCurve0(double_vector_ptr gammaCurve);
 		void setGammaCurve0(double_vector_ptr rgammaCurve,
-				    double_vector_ptr ggammaCurve,
-				    double_vector_ptr bgammaCurve);
+				    double_vector_ptr ggammaCurve, double_vector_ptr bgammaCurve);
 		Component_vector_ptr fetchComponentVector();
 		double_vector_ptr fetchLuminanceVector();
 		RGB_vector_ptr getDGLutOpResult(RGB_vector_ptr dglut);
 		RGB_vector_ptr oldMethod(DGLutGenerator & generator,
 					 bptr < PanelRegulator >
-					 panelRegulator,
-					 const Dep::
-					 MaxValue & quantizationBit);
+					 panelRegulator, const Dep::MaxValue & quantizationBit);
 
 		//==============================================================
 		// white XYZ relative
@@ -329,51 +315,38 @@ namespace cms {
 		void initWhiteXYZ(XYZ_ptr referenceXYZ);
 		//==============================================================
 
-		double_vector_ptr initLuminanceGammaCurve(XYZ_ptr
-							  referenceXYZ);
-		 bptr < AdvancedDGLutGenerator >
-		    initAdvancedDGLutGenerator();
-		RGB_vector_ptr newMethod(bptr < PanelRegulator >
-					 panelRegulato);
+		double_vector_ptr initLuminanceGammaCurve(XYZ_ptr referenceXYZ);
+		 bptr < AdvancedDGLutGenerator > initAdvancedDGLutGenerator();
+		RGB_vector_ptr newMethod(bptr < PanelRegulator > panelRegulato);
 
-		void fixChromaticityReverseByFeedback(RGB_vector_ptr
-						      dglut);
+		void fixChromaticityReverseByFeedback(RGB_vector_ptr dglut);
 		int_vector_ptr getReverseIndexVector(double_vector_ptr
-						     deltaVector,
-						     int start, int end);
+						     deltaVector, int start, int end);
 		 int_vector_ptr
 		    getMustMeasureZoneIndexVector(double_vector_ptr
 						  dxofBase,
-						  double_vector_ptr
-						  dyofBase, int start,
-						  int end);
+						  double_vector_ptr dyofBase, int start, int end);
 		void pushBackNumber(int_vector_ptr result, int number);
 		double_vector_ptr selectDelta(double_vector_ptr dxofBase,
-					      double_vector_ptr dyofBase,
-					      Dep::Channel & ch);
+					      double_vector_ptr dyofBase, Dep::Channel & ch);
 
-		Component_vector_ptr getDimComponentVector(RGB_vector_ptr
-							   dglut);
+		Component_vector_ptr getDimComponentVector(RGB_vector_ptr dglut);
 		bool isDoDeHook();
-		 bptr < cms::measure::IntensityAnalyzerIF >
-		    getFirstAnalzyer();
+		 bptr < cms::measure::IntensityAnalyzerIF > getFirstAnalzyer();
 
 		//==============================================================
 
 		//==============================================================
 		// 2nd white analyzer
 		//==============================================================
-		void init2ndWhiteAnalyzer(KeepMaxLuminance
-					  keepMaxLuminance, DeHook deHook);
+		void init2ndWhiteAnalyzer(KeepMaxLuminance keepMaxLuminance, DeHook deHook);
 		//==============================================================
 
 
 		//==============================================================
 		// ¶q¤Æ
 		//==============================================================
-		static RGB_vector_ptr
-		    colorimetricQuantization(RGB_vector_ptr dglut,
-					     int quadrant);
+		static RGB_vector_ptr colorimetricQuantization(RGB_vector_ptr dglut, int quadrant);
 		//==============================================================
 		//==============================================================
 		// smooth
@@ -382,26 +355,21 @@ namespace cms {
 		//==============================================================
 		// gamma curve relative
 		//==============================================================
-		static double_vector_ptr getGammaCurveVector(double gamma,
-							     int n, int
+		static double_vector_ptr getGammaCurveVector(double gamma, int n, int
 							     effectiven);
 
 		static double_vector_ptr getGammaCurveVector(double
 							     dimGamma, int
 							     dimGammaEnd, double
-							     brightGamma,
-							     int n, int
+							     brightGamma, int n, int
 							     effectiven);
 		static double_vector_ptr getGammaCurveVector(double
 							     dimGamma, int
 							     dimGammaEnd, int
 							     middleGammaEnd, double
-							     brightGamma,
-							     int n, int
+							     brightGamma, int n, int
 							     effectiven);
-		 double_vector_ptr
-		    getOriginalGammaCurve(Component_vector_ptr
-					  componentVector);
+		double_vector_ptr getOriginalGammaCurve(Component_vector_ptr componentVector);
 		//==============================================================
 
 		 bptr < PanelRegulator > getPanelRegulator();
@@ -410,8 +378,7 @@ namespace cms {
 		static double_vector_ptr
 		    getLuminanceGammaCurve(double_vector_ptr
 					   normalGammaCurve,
-					   double maxLuminance,
-					   double minLuminance);
+					   double maxLuminance, double minLuminance);
 
 		static double_vector_ptr
 		    getLuminanceGammaCurve(double_vector_ptr
@@ -420,15 +387,13 @@ namespace cms {
 					   double minLuminance,
 					   bool absGamma,
 					   int absGammaStartGL,
-					   double startGLAboveGamma,
-					   int effectiven);
+					   double startGLAboveGamma, int effectiven);
 		//==============================================================
 		// constructor
 		//==============================================================
 		 LCDCalibrator(bptr <
 			       cms::lcd::calibrate::ComponentFetcher >
-			       fetcher,
-			       bptr < BitDepthProcessor > bitDepth);
+			       fetcher, bptr < BitDepthProcessor > bitDepth);
 		//==============================================================
 
 		//==============================================================
@@ -437,32 +402,22 @@ namespace cms {
 
 		RGB_vector_ptr getCCTDGLut(bptr < MeasureCondition >
 					   measureCondition,
-					   bptr <
-					   cms::colorformat::DGLutFile >
-					   dgLutFile);
-		RGB_vector_ptr getGammaDGLut(bptr < MeasureCondition >
-					     measureCondition);
+					   bptr < cms::colorformat::DGLutFile > dgLutFile);
+		RGB_vector_ptr getGammaDGLut(bptr < MeasureCondition > measureCondition);
 		 bptr < cms::colorformat::DGLutFile >
-		    storeDGLutFile(const std::string & filename,
-				   RGB_vector_ptr dglut);
-		void storeInfo2DGLutFile(bptr <
-					 cms::colorformat::DGLutFile >
-					 dglutFile);
+		    storeDGLutFile(const std::string & filename, RGB_vector_ptr dglut);
+		void storeInfo2DGLutFile(bptr < cms::colorformat::DGLutFile > dglutFile);
 		void storeDGLut2DGLutFile(bptr <
 					  cms::colorformat::DGLutFile >
 					  dglutFile, RGB_vector_ptr dglut);
 		__property bptr <
 		    cms::measure::MaxMatrixIntensityAnalyzer >
-		    SecondWhiteAnalyzer = { read =
-	  secondWhiteAnalyzer, write = secondWhiteAnalyzer
+		    SecondWhiteAnalyzer = { read = secondWhiteAnalyzer, write = secondWhiteAnalyzer
 		};
-		__property bptr < i2c::TCONControl > TCONControl =
-		    { write = tconctrl };
+		__property bptr < i2c::TCONControl > TCONControl = { write = tconctrl };
 		void setFeedbackListener(FeedbackListener * listener);
-		 bptr < cms::measure::MeterMeasurement >
-		    getMeterMeasurement();
-		__property bool AlterGammaCurveAtDeHook2 = { write =
-			alterGammaCurveAtDeHook2
+		 bptr < cms::measure::MeterMeasurement > getMeterMeasurement();
+		__property bool AlterGammaCurveAtDeHook2 = { write = alterGammaCurveAtDeHook2
 		};
 		//==============================================================
 
