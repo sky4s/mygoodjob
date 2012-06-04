@@ -228,23 +228,23 @@ void TMainForm::initTCONFile()
 	ini->WriteInteger("12306", "in", 8);
 	ini->WriteInteger("12306", "out", 8);
 	//=========================================================================
-	// 12307
+	// 12309
 	//=========================================================================
-	/*ini->WriteInteger(" 12307 ", " AddressingSize ", 5);
+	ini->WriteInteger("12309", "AddressingSize", 5);
 
-	   ini->WriteString(" 12307 ", " DigitalGammaEnableAddress ", " 28 ");
-	   ini->WriteInteger(" 12307 ", " DigitalGammaEnableBit ", 0);
-	   ini->WriteString(" 12307 ", " DigitalGammaLUTAddress ", " 302 ");
-	   ini->WriteInteger(" 12307 ", " DigitalGammaLUTType ", 12);
+	ini->WriteString("12309", "DigitalGammaEnableAddress", "76");
+	ini->WriteInteger("12309", "DigitalGammaEnableBit", 1);
+	ini->WriteString("12309", "DigitalGammaLUTAddress", "800");
+	ini->WriteInteger("12309", "DigitalGammaLUTType", 12);
 
-	   ini->WriteBool(" 12307 ", " GammaTestFunc ", false);
-	   ini->WriteString(" 12307 ", " GammaTestEnableAddress ", " 29 ");
-	   ini->WriteInteger(" 12307 ", " GammaTestEnableBit ", 0);
-	   ini->WriteString(" 12307 ", " GammaTestAddress ", " 154 ");
-	   ini->WriteBool(" 12307 ", " IndepRGB ", true);
+	ini->WriteBool("12309", "GammaTestFunc", true);
+	ini->WriteString("12309", "GammaTestEnableAddress", "76");
+	ini->WriteInteger("12309", "GammaTestEnableBit", 5);
+	ini->WriteString("12309", "GammaTestAddress", "107");
+	ini->WriteBool("12309", "IndepRGB", true);
 
-	   ini->WriteInteger(" 12307 ", " in ", 8);
-	   ini->WriteInteger(" 12307 ", " out ", 8); */
+	ini->WriteInteger("12309", "in", 8);
+	ini->WriteInteger("12309", "out", 8);
 	//=========================================================================
 	// 12401
 	//=========================================================================
@@ -996,16 +996,6 @@ const i2c::AddressingSize TMainForm::getAddressingSize()
 
 
 
-void __fastcall TMainForm::Measurement1Click(TObject * Sender)
-{
-    if (GammaMeasurementForm == null) {
-	Application->CreateForm(__classid(TGammaMeasurementForm), &GammaMeasurementForm);
-    }
-    GammaMeasurementForm->setBitDepthProcessor(bitDepth);
-    GammaMeasurementForm->ShowModal();
-}
-
-//---------------------------------------------------------------------------
 
 
 
@@ -1608,4 +1598,15 @@ void __fastcall TMainForm::ChangeLog1Click(TObject * Sender)
 }
 
 //---------------------------------------------------------------------------
+
+void __fastcall TMainForm::GammaMeasure1Click(TObject *Sender)
+{
+    if (GammaMeasurementForm == null) {
+	Application->CreateForm(__classid(TGammaMeasurementForm), &GammaMeasurementForm);
+    }
+    GammaMeasurementForm->setBitDepthProcessor(bitDepth);
+    GammaMeasurementForm->ShowModal();        
+}
+//---------------------------------------------------------------------------
+
 

@@ -119,6 +119,7 @@ class TCCTLUTForm:public TForm, cms::lcd::calibrate::FeedbackListener {
     TCheckBox *CheckBox_Feedback;
     TComboBox *ComboBox_DefinedDimGamma;
     TCheckBox *CheckBox_LuminanceCalInMultiGen;
+    TCheckBox *CheckBox_YOnly;
     void __fastcall Button_MeaRunClick(TObject * Sender);
     void __fastcall Button_DebugClick(TObject * Sender);
     void __fastcall FormShow(TObject * Sender);

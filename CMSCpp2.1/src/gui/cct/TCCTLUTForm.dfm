@@ -1,6 +1,6 @@
 object CCTLUTForm: TCCTLUTForm
-  Left = 492
-  Top = 239
+  Left = 200
+  Top = 210
   Width = 841
   Height = 430
   Caption = 'CCT(LUT)'
@@ -563,6 +563,14 @@ object CCTLUTForm: TCCTLUTForm
       Caption = 'Luminance Cal'
       TabOrder = 8
     end
+    object CheckBox_YOnly: TCheckBox
+      Left = 23
+      Top = 128
+      Width = 105
+      Height = 17
+      Caption = 'Y Only'
+      TabOrder = 9
+    end
   end
   object Button_MeaRun: TButton
     Left = 507
@@ -991,7 +999,7 @@ object CCTLUTForm: TCCTLUTForm
   end
   object StatusBar1: TStatusBar
     Left = 0
-    Top = 384
+    Top = 382
     Width = 833
     Height = 19
     Color = clWhite

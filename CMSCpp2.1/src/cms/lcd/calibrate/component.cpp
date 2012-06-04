@@ -130,10 +130,11 @@ namespace cms {
 								  > measureCondition) {
 		return fetchComponent(measureCondition->getRGBMeasureCode());
 	    };
-	    double_vector_ptr ComponentFetcher::fetchLuminance(bptr <
+	     Component_vector_ptr ComponentFetcher::fetchLuminance(bptr <
 							       MeasureCondition
 							       > measureCondition) {
-		double_vector_ptr result(new double_vector());
+                Component_vector_ptr result(new Component_vector());
+		//double_vector_ptr result(new double_vector());
 		RGB_vector_ptr rgbMeasureCode = measureCondition->getRGBMeasureCode();
 		bool waitingStable = true;
 		bptr < cms::measure::IntensityAnalyzerIF > analyzer = getAnalyzer();
@@ -145,7 +146,9 @@ namespace cms {
 		foreach(RGB_ptr rgb, *rgbMeasureCode) {
 		    //RGB_ptr rgb(new RGBColor(x, x, x));
 		    XYZ_ptr XYZ = analyzer->getCIEXYZOnly(rgb);
-		    result->push_back(XYZ->Y);
+		    //result->push_back(XYZ->Y);
+                    Component_ptr c(new Component(rgb,nil_RGB_ptr,XYZ));
+                    result->push_back(c);
 
 		    if (true == waitingStable) {
 			waitingStable = false;
@@ -155,8 +158,8 @@ namespace cms {
 		    if (true == stop) {
 			stop = false;
 			analyzer->endAnalyze();
-			return double_vector_ptr((double_vector *)
-						 null);
+
+                        return nil_Component_vector_ptr;                                                 
 		    }
 		}
 		analyzer->endAnalyze();

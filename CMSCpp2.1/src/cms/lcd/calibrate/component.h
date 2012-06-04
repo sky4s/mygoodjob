@@ -50,7 +50,7 @@ namespace cms {
 		 ComponentFetcher(bptr < cms::measure::IntensityAnalyzerIF > analyzer);
 		Component_vector_ptr fetchComponent(bptr < MeasureCondition > measureCondition);
 
-		double_vector_ptr fetchLuminance(bptr < MeasureCondition > measureCondition);
+		Component_vector_ptr fetchLuminance(bptr < MeasureCondition > measureCondition);
 
 		static void storeToExcel(const std::string & filename,
 					 Component_vector_ptr componentVector);

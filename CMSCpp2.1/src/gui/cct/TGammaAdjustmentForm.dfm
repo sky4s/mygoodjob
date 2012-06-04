@@ -1,8 +1,8 @@
 object GammaAdjustmentForm: TGammaAdjustmentForm
-  Left = 500
-  Top = 300
-  Width = 384
-  Height = 341
+  Left = 501
+  Top = 301
+  Width = 382
+  Height = 352
   Caption = 'Gamma Adjustment'
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
@@ -10,14 +10,16 @@ object GammaAdjustmentForm: TGammaAdjustmentForm
   Font.Height = -10
   Font.Name = 'MS Sans Serif'
   Font.Style = []
+  KeyPreview = True
   OldCreateOrder = False
+  OnKeyPress = FormKeyPress
   OnMouseMove = FormMouseMove
   OnShow = FormShow
   PixelsPerInch = 96
   TextHeight = 13
   object Label9: TLabel
-    Left = 78
-    Top = 291
+    Left = 86
+    Top = 307
     Width = 281
     Height = 13
     Caption = 'Copyright (C) 2012, AU Optronics Corp., All Right Reserved.'
@@ -220,7 +222,7 @@ object GammaAdjustmentForm: TGammaAdjustmentForm
     TabOrder = 2
     object CheckBox_AvoidNoise: TCheckBox
       Left = 7
-      Top = 46
+      Top = 40
       Width = 111
       Height = 20
       Caption = 'Avoid FRC Noise'
@@ -233,6 +235,14 @@ object GammaAdjustmentForm: TGammaAdjustmentForm
       Height = 20
       Caption = 'Keep Max Luminance'
       TabOrder = 1
+    end
+    object CheckBox_FineCalibrate: TCheckBox
+      Left = 7
+      Top = 60
+      Width = 98
+      Height = 25
+      Caption = 'Fine Calibrate'
+      TabOrder = 2
     end
   end
   inline TOutputFileFrame1: TOutputFileFrame
@@ -270,6 +280,15 @@ object GammaAdjustmentForm: TGammaAdjustmentForm
         OnClick = TOutputFileFrame1Button_BrowseDirClick
       end
     end
+  end
+  object ProgressBar1: TProgressBar
+    Left = 8
+    Top = 288
+    Width = 353
+    Height = 17
+    Min = 0
+    Max = 100
+    TabOrder = 4
   end
   object OpenDialog1: TOpenDialog
   end
