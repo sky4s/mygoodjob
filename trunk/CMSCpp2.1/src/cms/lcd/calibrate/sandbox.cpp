@@ -151,8 +151,13 @@ namespace cms {
 		    try {
 			RGB_vector_ptr multiResult =
 			    produceDGLutMulti(targetXYZVector, componentVector);
-			RGB_vector_ptr luminanceResult = produceDGLutInLuminance(multiResult);
-			return luminanceResult;
+			if (true == c.luminanceCalibration) {
+			    RGB_vector_ptr luminanceResult = produceDGLutInLuminance(multiResult);
+			    return luminanceResult;
+			} else {
+			    return multiResult;
+			}
+
 		    }
 		    catch(IllegalStateException & ex) {
 			return nil_RGB_vector_ptr;
@@ -331,7 +336,7 @@ namespace cms {
 
 		foreach(XYZ_ptr XYZ, *newTargetXYZVector) {
 		    double targetLuminance = XYZ->Y;
-                    double value=lut.correctValueInRange(targetLuminance);
+		    double value = lut.correctValueInRange(targetLuminance);
 		    double grayLevel = lut.getKey(value);
 		    double r = rlut.getValue(grayLevel);
 		    double g = glut.getValue(grayLevel);
@@ -692,28 +697,28 @@ namespace cms {
 
 
 	    /*XYZ_ptr AdvancedDGLutGenerator::getXYZ(XYZ_ptr XYZ, double offsetK) {
-		//==============================================================
-		// 材料準備
-		//==============================================================
-		xyY_ptr xyY(new CIExyY(XYZ));
-		double cct = CorrelatedColorTemperature::xy2CCTByMcCamyFloat(xyY);
-		xyY_ptr xyYOriginal = CorrelatedColorTemperature::CCT2DIlluminantxyY(cct);
-		double cctOffset = cct + offsetK;
-		xyY_ptr xyYOffset = CorrelatedColorTemperature::CCT2DIlluminantxyY(cctOffset);
-		//==============================================================
+	       //==============================================================
+	       // 材料準備
+	       //==============================================================
+	       xyY_ptr xyY(new CIExyY(XYZ));
+	       double cct = CorrelatedColorTemperature::xy2CCTByMcCamyFloat(xyY);
+	       xyY_ptr xyYOriginal = CorrelatedColorTemperature::CCT2DIlluminantxyY(cct);
+	       double cctOffset = cct + offsetK;
+	       xyY_ptr xyYOffset = CorrelatedColorTemperature::CCT2DIlluminantxyY(cctOffset);
+	       //==============================================================
 
-		//==============================================================
-		// shift
-		//==============================================================
-		double_array dxy = xyY->getDeltaxy(xyYOriginal);
-		xyYOffset->x += dxy[0];
-		xyYOffset->y += dxy[1];
-		//==============================================================
+	       //==============================================================
+	       // shift
+	       //==============================================================
+	       double_array dxy = xyY->getDeltaxy(xyYOriginal);
+	       xyYOffset->x += dxy[0];
+	       xyYOffset->y += dxy[1];
+	       //==============================================================
 
-		xyYOffset->Y = XYZ->Y;
-		XYZ_ptr XYZOffset = xyYOffset->toXYZ();
-		return XYZOffset;
-	    };*/
+	       xyYOffset->Y = XYZ->Y;
+	       XYZ_ptr XYZOffset = xyYOffset->toXYZ();
+	       return XYZOffset;
+	       }; */
 
 	    /*
 	       產生smooth target還是有個問題, 就是luminance.

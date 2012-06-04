@@ -844,7 +844,7 @@ namespace cms {
 
 	    MaxMatrixIntensityAnalyzer *ma =
 		dynamic_cast < MaxMatrixIntensityAnalyzer * >(analyzer.get());
-	    if (null != ma) {
+	    if (null != ma && null != ma->getWhiteRatio()) {
 		double2D_ptr ratio = ma->getWhiteRatio();
 		string title = prestring + " " + WhiteRatio;
 		dgfile.addProperty(title, *DoubleArray::toString(ratio));

@@ -168,6 +168,7 @@ void __fastcall TCCTLUTForm::Button_MeaRunClick(TObject * Sender)
 			       this->Edit_MultiGenTimes->Text.ToInt());
 	calibrator.KeepMaxYInMultiGen = this->CheckBox_KeepMaxYInMultiGen->Checked;
 	calibrator.LuminanceCalibration = this->CheckBox_LuminanceCalInMultiGen->Checked;
+	calibrator.LuminanceCalibrationOnly = this->CheckBox_YOnly->Checked;
 	if (CheckBox_RTargetIntensity->Checked) {
 	    double rTargetIntensity = Edit_RTargetIntensity->Text.ToDouble();
 	    calibrator.RTargetIntensity = rTargetIntensity;
@@ -452,7 +453,7 @@ void __fastcall TCCTLUTForm::TOutputFileFrame1Button_BrowseDirClick(TObject * Se
 void __fastcall TCCTLUTForm::FormKeyPress(TObject * Sender, char &Key)
 {
     if (27 == Key) {
-	//for tcon inpuse時, 關閉會跳到這邊
+	//for tcon input時, 關閉會跳到這邊
 	if (true == run) {
 	    ShowMessage("Interrupt!");
 	    if (false == MeasureWindow->Visible) {

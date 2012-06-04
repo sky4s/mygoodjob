@@ -105,51 +105,61 @@ void TGammaAdjustmentForm::gammaAdjust(bool rgbGammaAdjust)
 {
     using namespace std;
     using namespace cms::util;
-    //int step = this->ComboBox_LevelStep->Text.ToInt();
-    //==========================================================================
-    // gamma的處理
-    //==========================================================================
-    if (rgbGammaAdjust) {
-	if (this->CheckBox_LoadingGamma->Checked) {
-	    //載入gamma
-	    double_vector_ptr rgammaCurve = rgbGamma->r;
-	    double_vector_ptr ggammaCurve = rgbGamma->g;
-	    double_vector_ptr bgammaCurve = rgbGamma->b;
-	    calibrator->setGammaCurve(rgammaCurve, ggammaCurve, bgammaCurve);
-	} else {
-	    //rgb gamma分開設定
-	    double rgamma = this->ComboBox_RGamma->Text.ToDouble();
-	    double ggamma = this->ComboBox_GGamma->Text.ToDouble();
-	    double bgamma = this->ComboBox_BGamma->Text.ToDouble();
-	    calibrator->setGamma(rgamma, ggamma, bgamma);
-	}
+    try {
+	run = true;
+	MainForm->showProgress(ProgressBar1);
+	//==========================================================================
+	// gamma的處理
+	//==========================================================================
+	if (rgbGammaAdjust) {
+	    if (this->CheckBox_LoadingGamma->Checked) {
+		//載入gamma
+		double_vector_ptr rgammaCurve = rgbGamma->r;
+		double_vector_ptr ggammaCurve = rgbGamma->g;
+		double_vector_ptr bgammaCurve = rgbGamma->b;
+		calibrator->setGammaCurve(rgammaCurve, ggammaCurve, bgammaCurve);
+	    } else {
+		//rgb gamma分開設定
+		double rgamma = this->ComboBox_RGamma->Text.ToDouble();
+		double ggamma = this->ComboBox_GGamma->Text.ToDouble();
+		double bgamma = this->ComboBox_BGamma->Text.ToDouble();
+		calibrator->setGamma(rgamma, ggamma, bgamma);
+	    }
 
-    } else {
-	if (this->CheckBox_LoadingGamma->Checked) {
-	    //載入gamma
-	    double_vector_ptr gammaCurve = rgbGamma->w;
-	    calibrator->setGammaCurve(gammaCurve);
 	} else {
-	    double gamma = this->ComboBox_GrayGamma->Text.ToDouble();
-	    calibrator->setGamma(gamma);
+	    if (this->CheckBox_LoadingGamma->Checked) {
+		//載入gamma
+		double_vector_ptr gammaCurve = rgbGamma->w;
+		calibrator->setGammaCurve(gammaCurve);
+	    } else {
+		double gamma = this->ComboBox_GrayGamma->Text.ToDouble();
+		calibrator->setGamma(gamma);
+	    }
 	}
-    }
-    //==========================================================================
-    calibrator->AvoidFRCNoise = this->CheckBox_AvoidNoise->Checked;
-    calibrator->setKeepMaxLuminance(this->CheckBox_KeepMax->Checked);
+	//==========================================================================
+	calibrator->AvoidFRCNoise = this->CheckBox_AvoidNoise->Checked;
+	calibrator->setKeepMaxLuminance(this->CheckBox_KeepMax->Checked);
+	calibrator->FineLuminanceCalibrate = this->CheckBox_FineCalibrate->Checked;
 
-    if (this->TOutputFileFrame1->createDir() == false) {
-	return;
+	if (this->TOutputFileFrame1->createDir() == false) {
+	    return;
+	}
+	RGB_vector_ptr dglut = calibrator->getGammaDGLut(getMeasureCondition());
+	if (dglut == null) {
+	    return;
+	}
+	String_ptr astr = this->TOutputFileFrame1->getOutputFilename();
+	string filename = astr->c_str();
+	calibrator->storeDGLutFile(filename, dglut);
+	ShowMessage("Ok!");
+	Util::shellExecute(filename);
     }
-    RGB_vector_ptr dglut = calibrator->getGammaDGLut(getMeasureCondition());
-    if (dglut == null) {
-	return;
+    __finally {
+	MainForm->stopProgress(ProgressBar1);
+	run = false;
+
     }
-    String_ptr astr = this->TOutputFileFrame1->getOutputFilename();
-    string filename = astr->c_str();
-    calibrator->storeDGLutFile(filename, dglut);
-    ShowMessage("Ok!");
-    Util::shellExecute(filename);
+
 };
 
 
@@ -181,6 +191,28 @@ void __fastcall TGammaAdjustmentForm::FormMouseMove(TObject * Sender,
 						    TShiftState Shift, int X, int Y)
 {
     TOutputFileFrame1->updateWarning();
+}
+
+//---------------------------------------------------------------------------
+
+void __fastcall TGammaAdjustmentForm::FormKeyPress(TObject * Sender, char &Key)
+{
+    if (27 == Key) {
+	//for tcon input時, 關閉會跳到這邊
+	if (true == run) {
+	    ShowMessage("Interrupt!");
+	    if (false == MeasureWindow->Visible) {
+		//觸發fetcher的window closing, 可以停止量測
+		TCloseAction action = caNone;
+		MainForm->getComponentFetcher()->windowClosing(Sender, action);
+		MainForm->mm->setMeasureWindowsVisible(false);
+	    }
+	    //Button_MeaRun->Enabled = true;
+	    run = false;
+	} else {
+	    this->Close();
+	}
+    }
 }
 
 //---------------------------------------------------------------------------

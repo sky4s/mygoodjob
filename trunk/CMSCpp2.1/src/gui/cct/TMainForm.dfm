@@ -1,5 +1,5 @@
 object MainForm: TMainForm
-  Left = 491
+  Left = 257
   Top = 330
   Width = 767
   Height = 380
@@ -1341,7 +1341,7 @@ object MainForm: TMainForm
             Top = 13
             Width = 138
             Height = 21
-            ItemHeight = 0
+            ItemHeight = 13
             TabOrder = 0
             OnChange = ComboBox_TCONTypeChange
           end
@@ -1654,7 +1654,13 @@ object MainForm: TMainForm
     end
     object Measurement1: TMenuItem
       Caption = 'Measurement'
-      OnClick = Measurement1Click
+      object GammaMeasure1: TMenuItem
+        Caption = 'Gamma Measure'
+        OnClick = GammaMeasure1Click
+      end
+      object StabilityMeasure1: TMenuItem
+        Caption = 'Stability Measure'
+      end
     end
     object Help1: TMenuItem
       Caption = 'Help'

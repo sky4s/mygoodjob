@@ -113,6 +113,7 @@ namespace cms {
 		bool absoluteGamma;
 		int absoluteGammaStart;
 		double absGammaStartGLAboveGamma;
+		bool fineLuminanceCalibrate;
 		//==============================================================
 
 		//==============================================================
@@ -130,6 +131,7 @@ namespace cms {
 		int multiGenTimes;
 		bool keepMaxYInMultiGen;
 		bool luminanceCalibration;
+		bool luminanceCalibrationOnly;
 		//==============================================================
 
 		//==============================================================
@@ -250,9 +252,12 @@ namespace cms {
 		void setMultiGen(bool enable, int times);
 		__property bool KeepMaxYInMultiGen = { write = keepMaxYInMultiGen
 		};
-                	__property bool LuminanceCalibration = { write = luminanceCalibration
+		__property bool LuminanceCalibration = { write = luminanceCalibration
 		};
-
+		__property bool LuminanceCalibrationOnly = { write = luminanceCalibrationOnly
+		};
+		__property bool FineLuminanceCalibrate = { write = fineLuminanceCalibrate
+		};
 		//==============================================================
 		// for NB Noise
 		//==============================================================
@@ -271,7 +276,7 @@ namespace cms {
 		//==============================================================
 		 RGB_vector_ptr dglut;
 		Component_vector_ptr originalComponentVector;
-		double_vector_ptr luminanceVector;
+		Component_vector_ptr luminanceVector;
 		RGBGamma_ptr finalRGBGamma;
 		RGBGamma_ptr initialRGBGamma;
 		XYZ_vector_ptr targetXYZVector;
@@ -300,7 +305,10 @@ namespace cms {
 		void setGammaCurve0(double_vector_ptr rgammaCurve,
 				    double_vector_ptr ggammaCurve, double_vector_ptr bgammaCurve);
 		Component_vector_ptr fetchComponentVector();
-		double_vector_ptr fetchLuminanceVector();
+		Component_vector_ptr fetchComponentVector(bptr < MeasureCondition >
+							  measureCondition);
+		Component_vector_ptr fetchLuminanceVector(bptr < MeasureCondition >
+							  measureCondition);
 		RGB_vector_ptr getDGLutOpResult(RGB_vector_ptr dglut);
 		RGB_vector_ptr oldMethod(DGLutGenerator & generator,
 					 bptr < PanelRegulator >

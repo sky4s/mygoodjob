@@ -15,6 +15,7 @@
 //本項目內頭文件
 #include "TOutputFileFrame.h"
 #include <Dialogs.hpp>
+#include <ComCtrls.hpp>
 //---------------------------------------------------------------------------
 class TGammaAdjustmentForm:public TForm {
     __published:		// IDE-managed Components
@@ -41,6 +42,8 @@ class TGammaAdjustmentForm:public TForm {
     TComboBox *ComboBox_RGamma;
     TComboBox *ComboBox_GGamma;
     TComboBox *ComboBox_BGamma;
+    TProgressBar *ProgressBar1;
+    TCheckBox *CheckBox_FineCalibrate;
     void __fastcall FormShow(TObject * Sender);
     void __fastcall Button3Click(TObject * Sender);
     void __fastcall CheckBox_LoadingGammaClick(TObject * Sender);
@@ -48,12 +51,14 @@ class TGammaAdjustmentForm:public TForm {
     void __fastcall Button_RGBGammaClick(TObject * Sender);
     void __fastcall TOutputFileFrame1Button_BrowseDirClick(TObject * Sender);
     void __fastcall FormMouseMove(TObject * Sender, TShiftState Shift, int X, int Y);
+    void __fastcall FormKeyPress(TObject * Sender, char &Key);
   private:			// User declarations
      bptr < cms::lcd::BitDepthProcessor > bitDepth;
     RGBGamma_ptr rgbGamma;
      bptr < cms::lcd::calibrate::LCDCalibrator > calibrator;
     void gammaAdjust(bool rgbGammaAdjust);
      bptr < cms::lcd::calibrate::MeasureCondition > getMeasureCondition();
+    bool run;
   public:			// User declarations
      __fastcall TGammaAdjustmentForm(TComponent * Owner);
     void setBitDepthProcessor(bptr < cms::lcd::BitDepthProcessor > bitDepth);

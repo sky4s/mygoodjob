@@ -80,8 +80,11 @@ namespace cms {
 		bGap1stGammaBoundGrayLevel = 250;
 		bestGammaAtGammaBoundGrayLevel = -1;
 		reasonableDeltaChromaticity = 0.003;
-		AlterGammaCurveAtDeHook2 = false;
+		alterGammaCurveAtDeHook2 = false;
+
+		fineLuminanceCalibrate = false;
 	    };
+
 
 	     double_vector_ptr
 		LCDCalibrator::getGammaCurveVector(double gamma, int n, int effectiven) {
@@ -288,8 +291,8 @@ namespace cms {
 		this->autoIntensity = true;
 	    };
 
-
-	    Component_vector_ptr LCDCalibrator::fetchComponentVector() {
+	    Component_vector_ptr LCDCalibrator::fetchComponentVector(bptr < MeasureCondition >
+								     measureCondition) {
 		Component_vector_ptr componentVector = fetcher->fetchComponent(measureCondition);
 		RGB_vector_ptr rgbMeasureCode = measureCondition->getRGBMeasureCode();
 
@@ -301,16 +304,17 @@ namespace cms {
 		return componentVector;
 	    };
 
-	    double_vector_ptr LCDCalibrator::fetchLuminanceVector() {
+	    Component_vector_ptr LCDCalibrator::fetchComponentVector() {
+		return fetchComponentVector(measureCondition);
+	    };
+
+	    Component_vector_ptr LCDCalibrator::fetchLuminanceVector(bptr < MeasureCondition >
+								     measureCondition) {
 		//量測start->end得到的coponent/Y
 		luminanceVector = fetcher->fetchLuminance(measureCondition);
 
-		if (luminanceVector == null) {
-		    return double_vector_ptr((double_vector *)
-					     null);
-		} else {
-		    return luminanceVector;
-		}
+		return luminanceVector;
+
 	    };
 
 	    double_vector_ptr LCDCalibrator::
@@ -1061,20 +1065,29 @@ namespace cms {
 		RGB_vector_ptr dglut;
 		if (true == rgbIndepGamma) {
 		    //暫不提供
-		    dglut = RGB_vector_ptr((RGB_vector *) null);
-		    return dglut;
+		    return RGB_vector_ptr((RGB_vector *) null);
 		} else {
-		    double_vector_ptr luminanceVector = fetchLuminanceVector();
-		    STORE_DOUBLE_VECTOR("o_fetch.xls", luminanceVector);
-		    if (luminanceVector == null) {
+		    Component_vector_ptr luminanceVector = fetchLuminanceVector(measureCondition);
+		    //STORE_DOUBLE_VECTOR("o_fetch.xls", luminanceVector);
+		    if (null == luminanceVector) {
 			return RGB_vector_ptr((RGB_vector *) null);
 		    }
 
-		    DGLutGenerator generator(luminanceVector);
+		    DGLutGenerator generator(luminanceVector, true);
 		    dglut = generator.getGammaDGLut(gammaCurve);
+		    if (fineLuminanceCalibrate) {
+			RGB_vector_ptr measuredDGlut = RGBVector::reverse(dglut);
+			Component_vector_ptr luminanceVector2 =
+			    fetchLuminanceVector(bptr < MeasureCondition >
+						 (new MeasureCondition(measuredDGlut)));
+			DGLutGenerator generator(luminanceVector2, true);
+			RGB_vector_ptr dglut2 = generator.getGammaDGLut(gammaCurve);
+			dglut = dglut2;
+		    }
+		    //uminanceVector = fetcher->fetchLuminance(measureCondition);
 		}
 		//量化
-		MaxValue quantizationBit = bitDepth->getLutMaxValue();
+		MaxValue quantizationBit = bitDepth->getFRCAbilityBit();
 		RGBVector::quantization(dglut, quantizationBit);
 		//調整max value
 		RGBVector::changeMaxValue(dglut, bitDepth->getLutMaxValue());
@@ -1092,12 +1105,6 @@ namespace cms {
 
 		return file;
 	    };
-
-	    /*void LCDCalibrator::storeFeedbackInfo2DGLutFile(bptr < cms::colorformat::DGLutFile > dglutFile) {
-	       DGLutProperty property(this);
-	       property.storeFeedbackInfo(dglutFile);
-	       //dglutFile->setProperty(property);
-	       };        */
 
 	    void LCDCalibrator::storeInfo2DGLutFile(bptr < cms::colorformat::DGLutFile > dglutFile) {
 		DGLutProperty property(this);

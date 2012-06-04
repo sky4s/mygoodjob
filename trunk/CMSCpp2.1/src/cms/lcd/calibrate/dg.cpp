@@ -86,8 +86,8 @@ namespace cms {
 	  DGLutGenerator::DGLutGenerator(Component_vector_ptr componentVector):componentVector
 		(componentVector), mode(Component),
 		keepMaxLuminance(KeepMaxLuminance::TargetLuminance) {
-		initComponent(componentVector,
-			      keepMaxLuminance == KeepMaxLuminance::TargetLuminance);
+
+		init(componentVector, false);
 	    };
 
 	  DGLutGenerator::DGLutGenerator(Component_vector_ptr componentVector, KeepMaxLuminance keepMaxLuminance):componentVector
@@ -96,19 +96,41 @@ namespace cms {
 		initComponent(componentVector,
 			      keepMaxLuminance == KeepMaxLuminance::TargetLuminance);
 	    };
-	  DGLutGenerator::DGLutGenerator(double_vector_ptr luminanceVector):luminanceVector(luminanceVector), mode(WLumi)
-	    {
-		maxLuminance = (*luminanceVector)[0];
-		int size = luminanceVector->size();
-		minLuminance = (*luminanceVector)[size - 1];
-		double_vector_ptr key(new double_vector(size));
-		for (int x = 0; x != size; x++) {
-		    (*key)[x] = size - x - 1;
+	    void DGLutGenerator::init(Component_vector_ptr componentVector, bool luminanceMode) {
+		if (luminanceMode) {
+		    initLuminance(componentVector);
+		} else {
+		    keepMaxLuminance = KeepMaxLuminance::TargetLuminance;
+		    initComponent(componentVector,
+				  keepMaxLuminance == KeepMaxLuminance::TargetLuminance);
 		}
-		key = DoubleArray::getReverse(key);
-		double_vector_ptr value = DoubleArray::getReverse(luminanceVector);
+	    };
+	  DGLutGenerator::DGLutGenerator(Component_vector_ptr componentVector, bool luminanceMode):componentVector
+		(componentVector),
+		mode(luminanceMode ? WLumi : Component) {
+		init(componentVector, luminanceMode);
 
-		wlut = bptr < Interpolation1DLUT > (new Interpolation1DLUT(key, value));
+	    };
+
+	    void DGLutGenerator::initLuminance(Component_vector_ptr componentVector) {
+		maxLuminance = (*componentVector)[0]->XYZ->Y;
+		int size = componentVector->size();
+		minLuminance = (*componentVector)[size - 1]->XYZ->Y;
+		double_vector_ptr keys(new double_vector());
+		double_vector_ptr values(new double_vector());
+
+		for (int x = 0; x != size; x++) {
+		    Component_ptr c = (*componentVector)[x];
+		    RGB_ptr rgb = c->rgb;
+		    XYZ_ptr XYZ = c->XYZ;
+		    double w = rgb->getValue(Dep::Channel::W);
+		    keys->push_back(w);
+		    values->push_back(XYZ->Y);
+		}
+		keys = DoubleArray::getReverse(keys);
+		values = DoubleArray::getReverse(values);
+
+		wlut = bptr < Interpolation1DLUT > (new Interpolation1DLUT(keys, values));
 	    };
 
 	    RGB_ptr DGLutGenerator::getIntensity(RGB_ptr dg) {
@@ -198,8 +220,8 @@ namespace cms {
 		double_vector_ptr luminanceGammaCurve = getLuminanceGammaCurve(normalGammaCurve);
 		int size = luminanceGammaCurve->size();
 		RGB_vector_ptr dglut(new RGB_vector(size));
+		RGB_ptr rgb0 = (*componentVector)[0]->rgb;
 
-		//for (int x = 0; x != size; x++) {
 		for (int x = size - 1; x != -1; x--) {
 		    double luminance = (*luminanceGammaCurve)[x];
 		    RGB_ptr rgb;
@@ -212,7 +234,7 @@ namespace cms {
 		    case WLumi:
 			luminance = wlut->correctValueInRange(luminance);
 			double key = wlut->getKey(luminance);
-			rgb = RGB_ptr(new RGBColor(key, key, key));
+			rgb = RGB_ptr(new RGBColor(key, key, key, rgb0->getMaxValue()));
 			break;
 
 		    }
@@ -220,6 +242,11 @@ namespace cms {
 		}
 
 		return dglut;
+	    };
+
+	    RGB_vector_ptr getFineGammaDGLut(RGB_vector_ptr rgbVector,
+					     double_vector_ptr normalGammaCurve) {
+		//double_vector_ptr luminanceGammaCurve = getLuminanceGammaCurve(normalGammaCurve);
 	    };
 
 	    /*
@@ -266,15 +293,6 @@ namespace cms {
 		return vector;
 	    };
 
-	    /*RGB_ptr DGLutGenerator::getIntensity(RGB_ptr dgcode) {
-	       using namespace Dep;
-	       //double_array intensity(new double[3]);
-	       RGB_ptr intensity(new RGBColor());
-	       intensity->R = lut->getIntensity(Channel::R, dgcode->R);
-	       intensity->G = lut->getIntensity(Channel::G, dgcode->G);
-	       intensity->B = lut->getIntensity(Channel::B, dgcode->B);
-	       return intensity;
-	       }; */
 	    void DGLutGenerator::setInverseSearch(bool inverse) {
 		lut->setInverseSearch(inverse);
 	    };

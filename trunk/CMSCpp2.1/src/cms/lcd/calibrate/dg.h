@@ -24,9 +24,9 @@ namespace cms {
 		KeepMaxLuminance keepMaxLuminance;
 		bool rCorrect, gCorrect, bCorrect;
 	      protected:
-		 Mode mode;
+		const Mode mode;
 		Component_vector_ptr componentVector;
-		double_vector_ptr luminanceVector;
+		//double_vector_ptr luminanceVector;
 		double_vector_ptr rLuminanceVector, gLuminanceVector, bLuminanceVector;
 		double minLuminance, maxLuminance;
 		 bptr < ComponentLUT > lut;
@@ -35,16 +35,21 @@ namespace cms {
 		double getMaximumIntensity();
 		void initComponent(Component_vector_ptr componentVector,
 				   bool keepTargetWhiteMaxLuminance);
+		void initLuminance(Component_vector_ptr componentVector);
+		void init(Component_vector_ptr componentVector, bool luminanceMode);
 	      public:
 		 DGLutGenerator(Component_vector_ptr componentVector);
 		 DGLutGenerator(Component_vector_ptr componentVector,
 				KeepMaxLuminance keepMaxLuminance);
-		 DGLutGenerator(double_vector_ptr luminanceVector);
+		 DGLutGenerator(Component_vector_ptr componentVector, bool luminanceMode);
+		//DGLutGenerator(double_vector_ptr luminanceVector);
 		RGB_ptr getDGCode(double rIntensity, double gIntensity, double bIntensity);
 		RGB_ptr getDGCode(double rIntensity, double gIntensity,
 				  double bIntensity, bool correctInRange);
 		RGB_vector_ptr getCCTDGLut(RGBGamma_ptr normalRGBGammaCurve);
 		RGB_vector_ptr getGammaDGLut(double_vector_ptr normalGammaCurve);
+		RGB_vector_ptr getFineGammaDGLut(RGB_vector_ptr rgbVector,
+						 double_vector_ptr normalGammaCurve);
 
 		//¥Ñgamma curveÂàrgb intensity
 		RGBGamma_ptr getRGBGamma(double_vector_ptr normalGammaCurve);
