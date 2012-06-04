@@ -19,6 +19,7 @@ USEFORM("src\gui\cct\TTargetWhiteForm2.cpp", TargetWhiteForm2);
 USEFORM("src\gui\cct\TAboutBox.cpp", AboutBox);
 USEFORM("src\gui\cct\TCCTLUTForm.cpp", CCTLUTForm);
 USEFORM("src\gui\cct\TChangeLogForm.cpp", ChangeLogForm);
+USEFORM("src\gui\cct\TStabilityForm.cpp", StabilityForm);
 //---------------------------------------------------------------------------
 WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 {
@@ -30,6 +31,7 @@ WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	Application->Title = "CCTAdjustment v3.3b ";
 	Application->CreateForm(__classid(TMainForm), &MainForm);
                  Application->CreateForm(__classid(TMeasureWindow), &MeasureWindow);
+                 Application->CreateForm(__classid(TStabilityForm), &StabilityForm);
                  Application->Run();
     }
     catch(EOleException & ex) {
