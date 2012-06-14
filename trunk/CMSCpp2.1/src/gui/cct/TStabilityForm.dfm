@@ -1,6 +1,6 @@
 object StabilityForm: TStabilityForm
-  Left = 377
-  Top = 469
+  Left = 378
+  Top = 470
   Width = 221
   Height = 293
   Caption = 'Stability Measure'
