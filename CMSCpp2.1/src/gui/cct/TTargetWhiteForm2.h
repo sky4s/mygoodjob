@@ -29,7 +29,6 @@ class TTargetWhiteForm2:public TForm, gui::event::WindowListener {
     TGroupBox *GroupBox2;
     TRadioButton *RadioButton_Targetxy;
     TRadioButton *RadioButton_RGBRatio;
-    TButton *Button_Run;
     TGroupBox *GroupBox4;
     TLabel *Label10;
     TLabel *Label11;
@@ -82,22 +81,21 @@ class TTargetWhiteForm2:public TForm, gui::event::WindowListener {
     TLabel *Label9;
     TLabel *Label16;
     TButton *Button_setMaxMatrix;
-    TButton *Button_Connect;
-    TButton *Button_Disconnect;
     TCheckBox *CheckBox_Lock;
+    TProgressBar *ProgressBar1;
+    TStatusBar *StatusBar1;
+    TGroupBox *GroupBox8;
+    TGroupBox *GroupBox3;
+    TButton *Button_Measure;
+    TButton *Button_ConnectToggle;
     TGroupBox *GroupBox7;
     TLabel *Label4;
-    TEdit *Edit_refx;
     TLabel *Label7;
-    TEdit *Edit_refy;
     TLabel *Label8;
+    TEdit *Edit_refx;
+    TEdit *Edit_refy;
     TEdit *Edit_refLuminance;
-    TButton *Button_Measure;
-    TProgressBar *ProgressBar1;
-    TButton *Button_ConnectToggle;
-    TEdit *Edit_InverseIntensityofB;
-    TButton *Button_FindInverseIntensity;
-    TStatusBar *StatusBar1;
+    TButton *Button_Run;
     void __fastcall RadioButton_MaxRGBClick(TObject * Sender);
     void __fastcall ScrollBar_RChange(TObject * Sender);
     void __fastcall ScrollBar_GChange(TObject * Sender);
@@ -113,12 +111,8 @@ class TTargetWhiteForm2:public TForm, gui::event::WindowListener {
     void __fastcall Edit_BZChange(TObject * Sender);
     void __fastcall Button_setMaxMatrixClick(TObject * Sender);
     void __fastcall FormKeyPress(TObject * Sender, char &Key);
-    void __fastcall Button_ConnectClick(TObject * Sender);
-    void __fastcall Button_DisconnectClick(TObject * Sender);
     void __fastcall Button_MeasureClick(TObject * Sender);
     void __fastcall Button_ConnectToggleClick(TObject * Sender);
-    void __fastcall Button_FindInverseIntensityClick(TObject * Sender);
-    void __fastcall Edit_InverseIntensityofBKeyPress(TObject * Sender, char &Key);
     void __fastcall FormResize(TObject * Sender);
     void __fastcall PageControl1Resize(TObject * Sender);
   private:			// User declarations
@@ -129,8 +123,6 @@ class TTargetWhiteForm2:public TForm, gui::event::WindowListener {
 
     bptr < cms::lcd::BitDepthProcessor > bitDepth;
     void setRGBRatio(int r, int g, int b);
-    //int maxBRawGrayLevel;
-    //bool findInverseZ;
     mbinder_ptr binder;
     bool continueMeasure;
     bool measuring;
@@ -140,7 +132,6 @@ class TTargetWhiteForm2:public TForm, gui::event::WindowListener {
     void windowClosing();
     void setBitDepthProcessor(bptr < cms::lcd::BitDepthProcessor > bitDepth);
     bool stopMeasure;
-    //__property bool FindInverseZ = { read = findInverseZ };
 
 };
 //---------------------------------------------------------------------------

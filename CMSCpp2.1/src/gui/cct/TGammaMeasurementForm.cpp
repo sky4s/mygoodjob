@@ -136,6 +136,8 @@ bool TGammaMeasurementForm::measure(bool_vector_ptr rgbw,
 
     Patch_vector_ptr vectors[4];
     mt = bptr < MeasureTool > (new MeasureTool(mm));
+bool inverseMeasure=    MainForm->CheckBox_InverseMeasure->Checked;
+mt->InverseMeasure=inverseMeasure;
     MeasureWindow->addWindowListener(mt);
     RampMeasureFile measureFile(filename, Create);
 

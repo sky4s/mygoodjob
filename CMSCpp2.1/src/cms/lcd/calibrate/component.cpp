@@ -67,25 +67,95 @@ namespace cms {
 		    this->XYZ = p->getXYZ()->clone();
 		}
 	    };
+	    Component_vector_ptr Component::reverse(Component_vector_ptr componentVector) {
+		Component_vector_ptr result(new
+					    Component_vector(componentVector->rbegin(),
+							     componentVector->rend()));
+		return result;
+	    };
 	    //==================================================================
 
 
 	    //==================================================================
 	    // ComponentFetcher
 	    //==================================================================
-	  /*ComponentFetcher::ComponentFetcher(bptr < IntensityAnalyzerIF > analyzer, bptr < BitDepthProcessor > bitDepth):firstAnalyzer
-		(analyzer),
-		//bitDepth(bitDepth),
-		extraMeasureRGB(nil_RGB_ptr) {
-	    };*/
+	    /*ComponentFetcher::ComponentFetcher(bptr < IntensityAnalyzerIF > analyzer, bptr < BitDepthProcessor > bitDepth):firstAnalyzer
+	       (analyzer),
+	       //bitDepth(bitDepth),
+	       extraMeasureRGB(nil_RGB_ptr) {
+	       }; */
 	  ComponentFetcher::ComponentFetcher(bptr < IntensityAnalyzerIF > analyzer):firstAnalyzer(analyzer),
 		extraMeasureRGB(nil_RGB_ptr)
 	    {
 	    };
-
-	    Component_vector_ptr ComponentFetcher::fetchComponent(RGB_vector_ptr rgbMeasureCode) {
+	    Component_vector_ptr ComponentFetcher::fetch(RGB_vector_ptr rgbMeasureCode,
+							 bool luminanceMode) {
 		Component_vector_ptr result(new Component_vector());
 
+		bptr < cms::measure::IntensityAnalyzerIF > analyzer = getAnalyzer();
+		int waitTimes = analyzer->getWaitTimes();
+		analyzer->setWaitTimes(10000);
+		analyzer->beginAnalyze();
+
+
+		if (false == luminanceMode && nil_RGB_ptr != extraMeasureRGB) {
+		    extraMeasureXYZ = analyzer->getCIEXYZOnly(extraMeasureRGB);
+		    //量過就歸零
+		    extraMeasureRGB = nil_RGB_ptr;
+		}
+
+		bool waitingStable = true;
+		stop = false;
+		if (inverseMeasure) {
+		    rgbMeasureCode = RGBVector::reverse(rgbMeasureCode);
+		}
+		int count = 0;
+		foreach(const RGB_ptr & rgb, *rgbMeasureCode) {
+		    if (luminanceMode) {
+			XYZ_ptr XYZ = analyzer->getCIEXYZOnly(rgb);
+			Component_ptr c(new Component(rgb, nil_RGB_ptr, XYZ));
+			result->push_back(c);
+		    } else {
+			RGB_ptr intensity = analyzer->getIntensity(rgb);
+			XYZ_ptr XYZ = analyzer->getCIEXYZ();
+
+			if (null != XYZ && null != intensity) {
+			    Component_ptr component(new Component(rgb, intensity, XYZ));
+			    result->push_back(component);
+			}
+		    }
+
+		    if (true == waitingStable) {
+			//只有第一次量測的時候發揮作用
+			waitingStable = false;
+			analyzer->setWaitTimes(waitTimes);
+		    }
+
+		    if (true == stop) {
+			stop = false;
+			analyzer->endAnalyze();
+			return nil_Component_vector_ptr;
+		    }
+
+		    if (null != feedbackListener) {
+			string msg = _toString(count++) + "=> " + (*rgb->toString());
+			if (feedbackMessage.size() != 0) {
+			    msg = feedbackMessage + ": " + msg;
+			}
+			feedbackListener->doFeedback(msg);
+		    }
+		}
+		if (inverseMeasure) {
+		    result = Component::reverse(result);
+		}
+		analyzer->endAnalyze();
+		return result;
+	    };
+	    Component_vector_ptr ComponentFetcher::fetchComponent(RGB_vector_ptr rgbMeasureCode) {
+		if (true) {
+		    return fetch(rgbMeasureCode, false);
+		}
+		Component_vector_ptr result(new Component_vector());
 		bool waitingStable = true;
 		bptr < cms::measure::IntensityAnalyzerIF > analyzer = getAnalyzer();
 		int waitTimes = analyzer->getWaitTimes();
@@ -100,25 +170,23 @@ namespace cms {
 
 		foreach(const RGB_ptr & rgb, *rgbMeasureCode) {
 		    RGB_ptr intensity = analyzer->getIntensity(rgb);
+		    XYZ_ptr XYZ = analyzer->getCIEXYZ();
+
+		    if (null != XYZ && null != intensity) {
+			Component_ptr component(new Component(rgb, intensity, XYZ));
+			result->push_back(component);
+		    }
+
 		    if (true == waitingStable) {
 			//只有第一次量測的時候發揮作用
 			waitingStable = false;
 			analyzer->setWaitTimes(waitTimes);
 		    }
 
-		    XYZ_ptr XYZ = analyzer->getCIEXYZ();
-		    if (null != XYZ && null != intensity) {
-			Component_ptr component(new Component(rgb, intensity, XYZ));
-			result->push_back(component);
-		    }
-
-
-
 		    if (true == stop) {
 			stop = false;
 			analyzer->endAnalyze();
-			return Component_vector_ptr((Component_vector *)
-						    null);
+			return nil_Component_vector_ptr;
 		    }
 		}
 		analyzer->endAnalyze();
@@ -130,25 +198,25 @@ namespace cms {
 								  > measureCondition) {
 		return fetchComponent(measureCondition->getRGBMeasureCode());
 	    };
-	     Component_vector_ptr ComponentFetcher::fetchLuminance(bptr <
-							       MeasureCondition
-							       > measureCondition) {
-                Component_vector_ptr result(new Component_vector());
-		//double_vector_ptr result(new double_vector());
+	    Component_vector_ptr ComponentFetcher::fetchLuminance(bptr <
+								  MeasureCondition
+								  > measureCondition) {
 		RGB_vector_ptr rgbMeasureCode = measureCondition->getRGBMeasureCode();
+		if (true) {
+		    return fetch(rgbMeasureCode, true);
+		}
+		Component_vector_ptr result(new Component_vector());
 		bool waitingStable = true;
 		bptr < cms::measure::IntensityAnalyzerIF > analyzer = getAnalyzer();
 		int waitTimes = analyzer->getWaitTimes();
-
 		analyzer->setWaitTimes(10000);
-
 		analyzer->beginAnalyze();
+		stop = false;
+
 		foreach(RGB_ptr rgb, *rgbMeasureCode) {
-		    //RGB_ptr rgb(new RGBColor(x, x, x));
 		    XYZ_ptr XYZ = analyzer->getCIEXYZOnly(rgb);
-		    //result->push_back(XYZ->Y);
-                    Component_ptr c(new Component(rgb,nil_RGB_ptr,XYZ));
-                    result->push_back(c);
+		    Component_ptr c(new Component(rgb, nil_RGB_ptr, XYZ));
+		    result->push_back(c);
 
 		    if (true == waitingStable) {
 			waitingStable = false;
@@ -158,8 +226,7 @@ namespace cms {
 		    if (true == stop) {
 			stop = false;
 			analyzer->endAnalyze();
-
-                        return nil_Component_vector_ptr;                                                 
+			return nil_Component_vector_ptr;
 		    }
 		}
 		analyzer->endAnalyze();

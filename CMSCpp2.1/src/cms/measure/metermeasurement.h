@@ -29,11 +29,12 @@ namespace cms {
 	class MeterMeasurement {
 	    friend class MeasureUtils;
 	  public:
-	    static const int DefaultWaitTimes = 300;
-	    static const int DefaultBlankTimes = 17;
+	    static const int DefaultWaitTimes = 400;
+	    static const int DefaultBlankTimes = 0;
 	  private:
 	    int waitTimes;
 	    int blankTimes;
+	    RGB_ptr blankRGB;
 	    bool measureWindowClosing;
 	    bool titleTouched;
 	    int averageTimes;
@@ -50,13 +51,16 @@ namespace cms {
 	    void close();
 	    void setMeasureWindowsVisible(bool visible);
 
+	    Patch_ptr measure(const string_ptr patchName);
 	    Patch_ptr measure(RGB_ptr rgb, const string_ptr patchName);
 	    Patch_ptr measure(int r, int g, int b, const string_ptr patchName);
 	    Patch_ptr measure(int r, int g, int b, const std::string & patchName);
 	    Patch_ptr measureFlicker(RGB_ptr rgb, const string_ptr patchName);
+	    Patch_ptr measureFlicker(const string_ptr patchName);
 
 	    __property int WaitTimes = { read = waitTimes, write = waitTimes };
 	    __property int BlankTimes = { write = blankTimes };
+	    __property RGB_ptr BlankRGB = { write = blankRGB };
 	    /*
 	       fake分兩種,..Orz
 	       只有Component的->只能量到Component
@@ -75,7 +79,8 @@ namespace cms {
 	    Patch_ptr measure0(RGB_ptr
 			       measureRGB,
 			       const string_ptr patchName,
-			       const string_ptr titleNote, string_ptr timeNote, bool flicker);
+			       const string_ptr titleNote, string_ptr timeNote, bool flicker,
+			       bool noPattern);
 
 
 
@@ -91,8 +96,9 @@ namespace cms {
 	  private:
 	    bool stop;
 	    bptr < cms::measure::MeterMeasurement > mm;
+	    bool inverseMeasure;
 	  public:
-	    MeasureTool(bptr < cms::measure::MeterMeasurement > mm);
+	     MeasureTool(bptr < cms::measure::MeterMeasurement > mm);
 	    Patch_vector_ptr rampMeasure(const Dep::Channel & channel,
 					 bptr <
 					 cms::lcd::calibrate::MeasureCondition > measureCondition);
@@ -110,6 +116,8 @@ namespace cms {
 	    static int getMaxBIntensityRawGrayLevel(bptr < cms::measure::MeterMeasurement > mm,
 						    bptr < cms::lcd::BitDepthProcessor > bitDepth,
 						    bptr < IntensityAnalyzerIF > analyzer);
+	    __property bool InverseMeasure = { write = inverseMeasure
+	    };
 	};
 
 

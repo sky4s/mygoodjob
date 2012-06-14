@@ -389,8 +389,10 @@ namespace cms {
 			measureCondition(new MeasureCondition(RGBVector::reverse(result)));
 		    XYZ_ptr referenceXYZ = c.measureFirstAnalyzerReferenceRGB();
 		    //重新fetch一次, 這時候白點會不會又變動了?
+		    fetcher->FeedbackMessage = "Multi-Gen Round " + _toString(t + 1);
 		    Component_vector_ptr componentVectorPrime =
 			fetcher->fetchComponent(measureCondition);
+		    fetcher->FeedbackMessage = "";
 		    STORE_COMPONENT("MultiGen_Component_" +
 				    _toString(t + 1) + ".xls", componentVectorPrime);
 		    //此時用的是最一開始的target XYZ

@@ -13,6 +13,12 @@ __fastcall TChangeLogForm::TChangeLogForm(TComponent * Owner)
 :TForm(Owner)
 {
     Memo1->Text = "\
+    [3.4 build 1.31] 2012/06/12\r\n\
+    -量測時間(Pattern Display Interval)改成500ms, 較為穩定\r\n\
+    \r\n\
+    [3.4 build 1.30] 2012/06/06\r\n\
+    +Stability量測功能\r\n\
+    \r\n\
     [3.4 build 1.29] 2012/05/17\r\n\
     +Multi-Gen Gamma準確度提升\r\n\
     \r\n\
@@ -25,7 +31,7 @@ __fastcall TChangeLogForm::TChangeLogForm(TComponent * Owner)
     \r\n\
     [3.4 build 1.24] 2012/04/18\r\n\
     -De-Hook的Gamma修正\r\n\
-    -設定CA-X10時不影響到內存資訊\r\n\
+    -設定CA-X10時不影響到儀器內存資訊\r\n\
     \r\n\
     [3.3b build 1.22] 2012/04/12\r\n\
     +簡化De-Hook功能的使用\r\n\

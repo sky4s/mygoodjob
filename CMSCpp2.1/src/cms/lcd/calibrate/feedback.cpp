@@ -92,7 +92,8 @@ namespace cms {
 		init();
 	    };
 	  MeasureEstimator::MeasureEstimator(RGB_vector_ptr dglut, bptr < cms::measure::IntensityAnalyzerIF > analyzer, bptr < BitDepthProcessor > bitDepth):dglut(dglut), mm(analyzer->getMeterMeasurement()),
-		bitDepth(bitDepth), size(dglut->size()), useComponentVector(false), measureRdxGdy(true) {
+		bitDepth(bitDepth), size(dglut->size()), useComponentVector(false),
+		measureRdxGdy(true) {
 		init();
 	    };
 	    double_array MeasureEstimator::getdxdy(const Dep::Channel & ch, int componentIndex) {
@@ -279,7 +280,7 @@ namespace cms {
 			Component_ptr c2 = (*storeComponentVector)[y];
 			RGB_ptr rgb2 = c2->rgb;
 
-			if (rgb->equals(rgb2)) { //error!!!
+			if (rgb->equals(rgb2)) {	//error!!!
 			    tmp->push_back(c2);
 			}
 		    }
@@ -424,7 +425,12 @@ namespace cms {
 				if (null != feedbackListener) {
 				    int feedbackFixCount = chromaticityEstimator->getMeasureCount();
 				    int reverseCount = reverseIndexes->size();
-				    feedbackListener->doFeedback(reverseCount, feedbackFixCount);
+				    string msg = "Defect/Total FeedBack: ";
+				    msg =
+					msg + _toString(reverseCount) + "/" +
+					_toString(feedbackFixCount);
+
+				    feedbackListener->doFeedback(msg);
 				}
 				//stop here
 				if (true == stop) {

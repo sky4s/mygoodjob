@@ -35,7 +35,8 @@ namespace cms {
       MeterMeasurement::MeterMeasurement(shared_ptr < Meter > meter, bool calibration):meter(meter), waitTimes(meter->getSuggestedWaitTimes()),
 	    measureWindowClosing(false),
 	    titleTouched(false),
-	    /*fakeMeasure(false), */ averageTimes(1) {
+	    /*fakeMeasure(false), */ averageTimes(1), blankTimes(DefaultBlankTimes),
+	    blankRGB(RGBColor::Black) {
 	    init(calibration);
 	    measurePatchVector = Patch_vector_ptr(new Patch_vector());
 	    DGLutFileMeter *filemeter = dynamic_cast < DGLutFileMeter * >(meter.get());
@@ -66,8 +67,12 @@ namespace cms {
 	    }
 	};
 
+	Patch_ptr MeterMeasurement::measure(const string_ptr patchName) {
+	    return measure0(nil_RGB_ptr, patchName, nil_string_ptr, nil_string_ptr, false, true);
+	};
+
 	Patch_ptr MeterMeasurement::measure(RGB_ptr rgb, const string_ptr patchName) {
-	    return measure0(rgb, patchName, nil_string_ptr, nil_string_ptr, false);
+	    return measure0(rgb, patchName, nil_string_ptr, nil_string_ptr, false, false);
 	};
 
 	Patch_ptr MeterMeasurement::measure(int r, int g, int b, const string_ptr patchName) {
@@ -89,15 +94,20 @@ namespace cms {
 
 	};
 	Patch_ptr MeterMeasurement::measureFlicker(RGB_ptr rgb, const string_ptr patchName) {
-	    return measure0(rgb, patchName, nil_string_ptr, nil_string_ptr, true);
+	    return measure0(rgb, patchName, nil_string_ptr, nil_string_ptr, true, false);
+	};
+	Patch_ptr MeterMeasurement::measureFlicker(const string_ptr patchName) {
+	    return measure0(nil_RGB_ptr, patchName, nil_string_ptr, nil_string_ptr, true, true);
 	};
 
 	Patch_ptr
 	    MeterMeasurement::measure0(RGB_ptr measureRGB,
 				       string_ptr patchName,
 				       string_ptr titleNote, string_ptr timeNote,
-				       bool flickerMeasure) {
-	    setMeasureWindowsVisible(true);
+				       bool flickerMeasure, bool noPattern) {
+	    if (!noPattern) {
+		setMeasureWindowsVisible(true);
+	    }
 	    //量測的顏色, 量測的顏色可能與導具的顏色不同, 所以特別獨立出此變數
 
 	    if (!titleTouched) {
@@ -111,16 +121,26 @@ namespace cms {
 		    measureWindow->Caption = AnsiString("Measure Window");
 		}
 	    }
+
+	    if (0 != blankTimes) {
+		Application->ProcessMessages();
+		measureWindow->setRGB(blankRGB);
+		Application->ProcessMessages();
+		Util::sleep(blankTimes);
+	    }
 	    //==========================================================================
 	    // 變換完視窗顏色的短暫停留
 	    //==========================================================================
 	    if (fakeMode == FakeMode::None) {
 		Application->ProcessMessages();
-		measureWindow->setRGB(measureRGB);
+		if (!noPattern) {
+		    measureWindow->setRGB(measureRGB);
+		}
 		Application->ProcessMessages();
 		Util::sleep(waitTimes);
 	    }
 	    //==========================================================================
+
 
 	    if (true == measureWindowClosing) {
 		//如果視窗被關閉, 就結束量測
@@ -206,7 +226,7 @@ namespace cms {
 	// MeasureTool
 	//======================================================================
       MeasureTool::MeasureTool(bptr < cms::measure::MeterMeasurement > mm):mm(mm),
-	    stop(false)
+	    stop(false), inverseMeasure(false)
 	{
 
 	};
@@ -233,6 +253,10 @@ namespace cms {
 	Patch_vector_ptr MeasureTool::rampMeasure(bptr < cms::lcd::calibrate::MeasureCondition >
 						  measureCondition) {
 	    RGB_vector_ptr rgbMeasureCode = measureCondition->getRGBMeasureCode();
+	    if (inverseMeasure) {
+		rgbMeasureCode = RGBVector::reverse(rgbMeasureCode);
+	    }
+
 	    Patch_vector_ptr vector(new Patch_vector());
 	    foreach(RGB_ptr rgb, *rgbMeasureCode) {
 		Patch_ptr patch = mm->measure(rgb, rgb->toString());
@@ -244,6 +268,9 @@ namespace cms {
 		}
 	    };
 	    mm->setMeasureWindowsVisible(false);
+	    if (inverseMeasure) {
+		vector = Patch::reverse(vector);
+	    }
 	    return vector;
 	};
 	Component_vector_ptr MeasureTool::flickerMeasure(bptr < MeasureCondition > measureCondition) {

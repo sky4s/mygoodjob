@@ -1,6 +1,6 @@
 object TargetWhiteForm2: TTargetWhiteForm2
-  Left = 398
-  Top = 287
+  Left = 304
+  Top = 281
   Width = 900
   Height = 650
   Caption = 'Target White'
@@ -39,7 +39,7 @@ object TargetWhiteForm2: TTargetWhiteForm2
         Left = 7
         Top = 7
         Width = 195
-        Height = 403
+        Height = 226
         Caption = 'Target Color'
         TabOrder = 0
         object RadioButton_Targetxy: TRadioButton
@@ -57,15 +57,6 @@ object TargetWhiteForm2: TTargetWhiteForm2
           Height = 20
           Caption = 'Adjust by RGB ratio'
           TabOrder = 2
-        end
-        object Button_Run: TButton
-          Left = 64
-          Top = 380
-          Width = 65
-          Height = 18
-          Caption = 'Run'
-          TabOrder = 3
-          OnClick = Button_RunClick
         end
         object GroupBox4: TGroupBox
           Left = 20
@@ -184,7 +175,7 @@ object TargetWhiteForm2: TTargetWhiteForm2
           Height = 20
           Caption = 'Adjust to Max RGB'
           Checked = True
-          TabOrder = 4
+          TabOrder = 3
           TabStop = True
           OnClick = RadioButton_MaxRGBClick
         end
@@ -194,7 +185,7 @@ object TargetWhiteForm2: TTargetWhiteForm2
           Width = 169
           Height = 40
           Caption = 'RGB ratio'
-          TabOrder = 5
+          TabOrder = 4
           object Edit_R: TEdit
             Left = 7
             Top = 14
@@ -225,113 +216,6 @@ object TargetWhiteForm2: TTargetWhiteForm2
             Text = '0'
             OnChange = Edit_BChange
           end
-        end
-        object GroupBox3: TGroupBox
-          Left = 7
-          Top = 288
-          Width = 182
-          Height = 41
-          Caption = 'CA-210'
-          TabOrder = 6
-          object Button_Measure: TButton
-            Left = 104
-            Top = 14
-            Width = 65
-            Height = 17
-            Caption = 'Measure'
-            TabOrder = 0
-            OnClick = Button_MeasureClick
-          end
-          object Button_ConnectToggle: TButton
-            Left = 8
-            Top = 14
-            Width = 89
-            Height = 17
-            Caption = 'Connect'
-            TabOrder = 1
-            OnClick = Button_ConnectToggleClick
-          end
-        end
-        object GroupBox7: TGroupBox
-          Left = 7
-          Top = 328
-          Width = 182
-          Height = 49
-          Caption = 'Reference Color'
-          TabOrder = 7
-          object Label4: TLabel
-            Left = 7
-            Top = 19
-            Width = 5
-            Height = 13
-            Caption = 'x'
-          end
-          object Label7: TLabel
-            Left = 67
-            Top = 19
-            Width = 5
-            Height = 13
-            Caption = 'y'
-          end
-          object Label8: TLabel
-            Left = 119
-            Top = 19
-            Width = 7
-            Height = 13
-            Caption = 'Y'
-          end
-          object Edit_refx: TEdit
-            Left = 13
-            Top = 19
-            Width = 40
-            Height = 21
-            ImeName = #26085#25991#36664#20837#31995#32113' (MS-IME2002)'
-            TabOrder = 0
-            Text = '0.0000'
-          end
-          object Edit_refy: TEdit
-            Left = 74
-            Top = 19
-            Width = 39
-            Height = 21
-            ImeName = #26085#25991#36664#20837#31995#32113' (MS-IME2002)'
-            TabOrder = 1
-            Text = '0.0000'
-          end
-          object Edit_refLuminance: TEdit
-            Left = 132
-            Top = 19
-            Width = 39
-            Height = 21
-            ImeName = #26085#25991#36664#20837#31995#32113' (MS-IME2002)'
-            TabOrder = 2
-            Text = '0.0'
-          end
-        end
-        object Edit_InverseIntensityofB: TEdit
-          Left = 95
-          Top = 224
-          Width = 33
-          Height = 21
-          Hint = 'Click this can auto copy Inverse B to B of RGB Ratio'
-          ParentShowHint = False
-          ShowHint = True
-          TabOrder = 8
-          Visible = False
-          OnKeyPress = Edit_InverseIntensityofBKeyPress
-        end
-        object Button_FindInverseIntensity: TButton
-          Left = 18
-          Top = 224
-          Width = 71
-          Height = 17
-          Hint = 'Find Inverse B Intensity '
-          Caption = 'De-Hook'
-          ParentShowHint = False
-          ShowHint = True
-          TabOrder = 9
-          Visible = False
-          OnClick = Button_FindInverseIntensityClick
         end
       end
       object GroupBox5: TGroupBox
@@ -445,9 +329,108 @@ object TargetWhiteForm2: TTargetWhiteForm2
         Color = clWhite
         TabOrder = 2
       end
+      object GroupBox8: TGroupBox
+        Left = 7
+        Top = 240
+        Width = 195
+        Height = 113
+        Caption = 'Meter'
+        TabOrder = 3
+        object GroupBox3: TGroupBox
+          Left = 7
+          Top = 16
+          Width = 182
+          Height = 41
+          Caption = 'CA-210'
+          TabOrder = 0
+          object Button_Measure: TButton
+            Left = 104
+            Top = 14
+            Width = 65
+            Height = 17
+            Caption = 'Measure'
+            TabOrder = 0
+            OnClick = Button_MeasureClick
+          end
+          object Button_ConnectToggle: TButton
+            Left = 8
+            Top = 14
+            Width = 89
+            Height = 17
+            Caption = 'Connect'
+            TabOrder = 1
+            OnClick = Button_ConnectToggleClick
+          end
+        end
+        object GroupBox7: TGroupBox
+          Left = 7
+          Top = 56
+          Width = 182
+          Height = 49
+          Caption = 'Reference Color'
+          TabOrder = 1
+          object Label4: TLabel
+            Left = 7
+            Top = 19
+            Width = 5
+            Height = 13
+            Caption = 'x'
+          end
+          object Label7: TLabel
+            Left = 67
+            Top = 19
+            Width = 5
+            Height = 13
+            Caption = 'y'
+          end
+          object Label8: TLabel
+            Left = 119
+            Top = 19
+            Width = 7
+            Height = 13
+            Caption = 'Y'
+          end
+          object Edit_refx: TEdit
+            Left = 13
+            Top = 19
+            Width = 40
+            Height = 21
+            ImeName = #26085#25991#36664#20837#31995#32113' (MS-IME2002)'
+            TabOrder = 0
+            Text = '0.0000'
+          end
+          object Edit_refy: TEdit
+            Left = 74
+            Top = 19
+            Width = 39
+            Height = 21
+            ImeName = #26085#25991#36664#20837#31995#32113' (MS-IME2002)'
+            TabOrder = 1
+            Text = '0.0000'
+          end
+          object Edit_refLuminance: TEdit
+            Left = 132
+            Top = 19
+            Width = 39
+            Height = 21
+            ImeName = #26085#25991#36664#20837#31995#32113' (MS-IME2002)'
+            TabOrder = 2
+            Text = '0.0'
+          end
+        end
+      end
+      object Button_Run: TButton
+        Left = 64
+        Top = 356
+        Width = 65
+        Height = 18
+        Caption = 'Run'
+        TabOrder = 4
+        OnClick = Button_RunClick
+      end
     end
     object TabSheet2: TTabSheet
-      Caption = 'Max Matrix'
+      Caption = 'Target White Matrix'
       ImageIndex = 1
       object GroupBox6: TGroupBox
         Left = 7
@@ -648,26 +631,5 @@ object TargetWhiteForm2: TTargetWhiteForm2
     Max = 100
     TabOrder = 1
     Visible = False
-  end
-  object Button_Disconnect: TButton
-    Left = 91
-    Top = 452
-    Width = 72
-    Height = 20
-    Caption = 'Disconnect'
-    TabOrder = 3
-    Visible = False
-    OnClick = Button_DisconnectClick
-  end
-  object Button_Connect: TButton
-    Left = 24
-    Top = 452
-    Width = 59
-    Height = 20
-    Caption = 'Connect'
-    Enabled = False
-    TabOrder = 4
-    Visible = False
-    OnClick = Button_ConnectClick
   end
 end
