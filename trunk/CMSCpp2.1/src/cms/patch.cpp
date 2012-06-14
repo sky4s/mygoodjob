@@ -65,6 +65,11 @@ namespace cms {
 	return str;
     };
 
+      Patch_vector_ptr Patch::reverse(Patch_vector_ptr patchVector){
+        	    Patch_vector_ptr result(new Patch_vector(patchVector->rbegin(), patchVector->rend()));
+	    return result;
+      };
+
     void Patch::Filter::grayPatch(Patch_vector_ptr patchList, Patch_vector_ptr filtered) {
 	foreach(Patch_ptr p, *patchList) {
 	    RGB_ptr rgb = p->getRGB();

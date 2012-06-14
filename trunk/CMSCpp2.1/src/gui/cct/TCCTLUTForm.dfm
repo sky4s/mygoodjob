@@ -1,5 +1,5 @@
 object CCTLUTForm: TCCTLUTForm
-  Left = 200
+  Left = 183
   Top = 210
   Width = 841
   Height = 430

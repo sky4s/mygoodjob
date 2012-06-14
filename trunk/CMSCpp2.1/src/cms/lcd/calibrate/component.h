@@ -27,6 +27,7 @@ namespace cms {
 		RGB_ptr intensity;
 		XYZ_ptr XYZ;
 		RGB_ptr gamma;
+		static Component_vector_ptr reverse(Component_vector_ptr componentVector);
 	    };
 
 	    /*
@@ -40,13 +41,17 @@ namespace cms {
 		bptr < cms::measure::IntensityAnalyzerIF > secondAnalyzer;
 		bool stop;
 		//bptr < cms::lcd::BitDepthProcessor > bitDepth;
+		Component_vector_ptr fetch(RGB_vector_ptr rgbMeasureCode, bool luminanceMode);
 		Component_vector_ptr fetchComponent(RGB_vector_ptr rgbMeasureCode);
 		XYZ_ptr extraMeasureXYZ;
 		RGB_ptr extraMeasureRGB;
+		bool inverseMeasure;
+		FeedbackListener *feedbackListener;
+		string feedbackMessage;
 	      public:
-		 /*ComponentFetcher(bptr <
-				  cms::measure::IntensityAnalyzerIF >
-				  analyzer, bptr < BitDepthProcessor > bitDepth);*/
+		/*ComponentFetcher(bptr <
+		   cms::measure::IntensityAnalyzerIF >
+		   analyzer, bptr < BitDepthProcessor > bitDepth); */
 		 ComponentFetcher(bptr < cms::measure::IntensityAnalyzerIF > analyzer);
 		Component_vector_ptr fetchComponent(bptr < MeasureCondition > measureCondition);
 
@@ -66,6 +71,12 @@ namespace cms {
 		};
 		__property bptr < cms::measure::IntensityAnalyzerIF > FirstAnalyzer = { read =
 			firstAnalyzer
+		};
+		__property bool InverseMeasure = { write = inverseMeasure
+		};
+		__property FeedbackListener *Listener = { write = feedbackListener
+		};
+		__property string FeedbackMessage = { write = feedbackMessage
 		};
 	    };
 

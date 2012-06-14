@@ -125,8 +125,10 @@ class TMainForm:public TForm {
     TGroupBox *GroupBox_CHSetting;
     TLabel *Label7;
     TEdit *Edit_SourceCH;
-        TMenuItem *GammaMeasure1;
-        TMenuItem *StabilityMeasure1;
+    TMenuItem *GammaMeasure1;
+    TMenuItem *StabilityMeasure1;
+    TGroupBox *GroupBox3;
+    TCheckBox *CheckBox_InverseMeasure;
     void __fastcall About1Click(TObject * Sender);
     void __fastcall Exit1Click(TObject * Sender);
     void __fastcall TargetWhite1Click(TObject * Sender);
@@ -172,7 +174,8 @@ class TMainForm:public TForm {
     void __fastcall TabSheet2Enter(TObject * Sender);
     void __fastcall About2Click(TObject * Sender);
     void __fastcall ChangeLog1Click(TObject * Sender);
-        void __fastcall GammaMeasure1Click(TObject *Sender);
+    void __fastcall GammaMeasure1Click(TObject * Sender);
+    void __fastcall StabilityMeasure1Click(TObject * Sender);
   private:			// User declarations
     //==========================================================================
     // meter

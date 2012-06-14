@@ -36,6 +36,8 @@ namespace cms {
 	RGB_ptr getIntensity();
 	Lab_ptr getLab();
 	const string_ptr toString() const;
+static Patch_vector_ptr reverse(Patch_vector_ptr patchVector);
+
 	class Produce {
 	  public:
 	    static Patch_vector_ptr LabPatches(Patch_vector_ptr XYZPatchList, XYZ_ptr white);

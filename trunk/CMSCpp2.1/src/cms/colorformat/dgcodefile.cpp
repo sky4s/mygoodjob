@@ -275,7 +275,7 @@ namespace cms {
 	};
 	void DGLutFile::
 	    setMultiGenTargetXYZVector(XYZ_vector_ptr targetXYZVector,
-			       RGB_vector_ptr dglut, bptr < BitDepthProcessor > bitDepth) {
+				       RGB_vector_ptr dglut, bptr < BitDepthProcessor > bitDepth) {
 	    setTargetXYZVector(MultiGenTarget, targetXYZVector, dglut, bitDepth);
 	};
 
@@ -526,10 +526,13 @@ namespace cms {
 	    foreach(Patch_ptr p, *patchList) {
 		(*values)[0] = _toString(id++);
 
+		double r = -1, g = -1, b = -1;
 		RGB_ptr rgb = p->getRGB();
-		double r = rgb->getValue(Channel::R, MaxValue::Double255);
-		double g = rgb->getValue(Channel::G, MaxValue::Double255);
-		double b = rgb->getValue(Channel::B, MaxValue::Double255);
+		if (null != rgb) {
+		    r = rgb->getValue(Channel::R, MaxValue::Double255);
+		    g = rgb->getValue(Channel::G, MaxValue::Double255);
+		    b = rgb->getValue(Channel::B, MaxValue::Double255);
+		}
 		(*values)[1] = _toString(r);
 		(*values)[2] = _toString(g);
 		(*values)[3] = _toString(b);
@@ -543,9 +546,12 @@ namespace cms {
 		(*values)[7] = _toString(xyY->x);
 		(*values)[8] = _toString(xyY->y);
 
-		double r12 = rgb->getValue(Channel::R, MaxValue::Int12Bit);
-		double g12 = rgb->getValue(Channel::G, MaxValue::Int12Bit);
-		double b12 = rgb->getValue(Channel::B, MaxValue::Int12Bit);
+		double r12 = -1, g12 = -1, b12 = -1;
+		if (null != rgb) {
+		    r12 = rgb->getValue(Channel::R, MaxValue::Int12Bit);
+		    g12 = rgb->getValue(Channel::G, MaxValue::Int12Bit);
+		    b12 = rgb->getValue(Channel::B, MaxValue::Int12Bit);
+		}
 		(*values)[9] = _toString(r12);
 		(*values)[10] = _toString(g12);
 		(*values)[11] = _toString(b12);
@@ -607,6 +613,7 @@ namespace cms {
 	    dgfile.addProperty("in", *bitDepth->getInputMaxValue().toString());
 	    dgfile.addProperty("lut", *bitDepth->getLutMaxValue().toString());
 	    dgfile.addProperty("out", *bitDepth->getOutputMaxValue().toString());
+	    //dgfile.addProperty("out", *bitDepth->getOutputMaxValue().toString());
 
 	    //==================================================================
 
@@ -633,22 +640,22 @@ namespace cms {
 		    dgfile.addProperty("defined dim under", c->under);
 		    dgfile.addProperty("defined dim strength", c->dimStrength);
 		    /*if (true == c->dimFix) {
-			dgfile.addProperty("defined dim - fix", On);
-		    }*/
+		       dgfile.addProperty("defined dim - fix", On);
+		       } */
 		    /*if (true == c->feedbackFix) {
-			dgfile.addProperty("defined dim - feedback fix", On);
-                        if( null != maxMeasureError ) {
-			dgfile.
-			    addProperty
-			    ("defined dim - feedback fix init defect", c->initDefectCount);
-			dgfile.addProperty("defined dim - feedback fix count", c->feedbackFixCount);
-			dgfile.addProperty("max measure dx", c->maxMeasureError[0]);
-			dgfile.addProperty("max measure dy", c->maxMeasureError[1]);
-                        }
-		    }*/
+		       dgfile.addProperty("defined dim - feedback fix", On);
+		       if( null != maxMeasureError ) {
+		       dgfile.
+		       addProperty
+		       ("defined dim - feedback fix init defect", c->initDefectCount);
+		       dgfile.addProperty("defined dim - feedback fix count", c->feedbackFixCount);
+		       dgfile.addProperty("max measure dx", c->maxMeasureError[0]);
+		       dgfile.addProperty("max measure dy", c->maxMeasureError[1]);
+		       }
+		       } */
 		    /*if (true == c->dimFix || true == c->feedbackFix) {
-			dgfile.addProperty("defined dim - fix threshold", c->dimFixThreshold);
-		    }*/
+		       dgfile.addProperty("defined dim - fix threshold", c->dimFixThreshold);
+		       } */
 
 		    XYZ_ptr blackXYZ =
 			(*c->originalComponentVector)[c->originalComponentVector->size() - 1]->XYZ;
@@ -708,8 +715,11 @@ namespace cms {
 	    }
 	    bptr < MeterMeasurement > mm = c->getMeterMeasurement();
 	    if (null != mm) {
+		int waitTimes = mm->WaitTimes;
+		dgfile.addProperty("wait times", waitTimes);
 		int averageTimes = mm->AverageTimes;
 		dgfile.addProperty("average times", averageTimes);
+
 	    }
 	    //==================================================================
 
@@ -795,19 +805,19 @@ namespace cms {
 	};
 
 	void DGLutProperty::storeFeedbackInfo(ExcelAccessBase & dgfile) const {
-             if( DimCorrect::DefinedDim == c->correct && true == c->feedbackFix) {
-                dgfile.addProperty("defined dim - feedback fix", On);
-                if( null != c->maxMeasureError ) {
-			dgfile.addProperty
-			    ("defined dim - feedback fix init defect", c->initDefectCount);
-			dgfile.addProperty("defined dim - feedback fix count", c->feedbackFixCount);
-			dgfile.addProperty("max measure dx", c->maxMeasureError[0]);
-			dgfile.addProperty("max measure dy", c->maxMeasureError[1]);
-                }
+	    if (DimCorrect::DefinedDim == c->correct && true == c->feedbackFix) {
+		dgfile.addProperty("defined dim - feedback fix", On);
+		if (null != c->maxMeasureError) {
+		    dgfile.addProperty
+			("defined dim - feedback fix init defect", c->initDefectCount);
+		    dgfile.addProperty("defined dim - feedback fix count", c->feedbackFixCount);
+		    dgfile.addProperty("max measure dx", c->maxMeasureError[0]);
+		    dgfile.addProperty("max measure dy", c->maxMeasureError[1]);
+		}
 
-             }
+	    }
 
-        };
+	};
 	void DGLutProperty::storeAnalyzer(ExcelAccessBase & dgfile,
 					  bptr <
 					  cms::measure::

@@ -19,7 +19,7 @@
 #include "TGammaMeasurementForm.h"
 #include "../TI2CTestForm.h"
 #include "cms/core.h"
-
+#include "TStabilityForm.h"
 
 #define SETUPFILE "cctv3.ini"
 #define TCONFILE "tcon.ini"
@@ -36,7 +36,7 @@ __fastcall TMainForm::TMainForm(TComponent * Owner):TForm(Owner), debugMode(File
 linkEyeOne(FileExists("i1.txt")), linkCA210(!FileExists("i1.txt") && !FileExists(DEBUG_FILE)),
 newFunction(FileExists(DEBUG_NEWFUNC_FILE))
 {
-    String a="0100";
+    String a = "0100";
     //a[1];
     connectCA210ByThread = true;
 
@@ -764,6 +764,8 @@ bptr < cms::lcd::calibrate::ComponentFetcher > TMainForm::getComponentFetcher()
     if (null == fetcher) {
 	bptr < cms::measure::IntensityAnalyzerIF > analyzer = initAnalyzer();
 	fetcher = bptr < ComponentFetcher > (new cms::lcd::calibrate::ComponentFetcher(analyzer));
+	bool inverseMeasure = CheckBox_InverseMeasure->Checked;
+	fetcher->InverseMeasure = inverseMeasure;
 	MeasureWindow->addWindowListener(fetcher);
     }
 
@@ -1599,14 +1601,26 @@ void __fastcall TMainForm::ChangeLog1Click(TObject * Sender)
 
 //---------------------------------------------------------------------------
 
-void __fastcall TMainForm::GammaMeasure1Click(TObject *Sender)
+void __fastcall TMainForm::GammaMeasure1Click(TObject * Sender)
 {
     if (GammaMeasurementForm == null) {
 	Application->CreateForm(__classid(TGammaMeasurementForm), &GammaMeasurementForm);
     }
     GammaMeasurementForm->setBitDepthProcessor(bitDepth);
-    GammaMeasurementForm->ShowModal();        
+    GammaMeasurementForm->ShowModal();
 }
+
 //---------------------------------------------------------------------------
 
+
+void __fastcall TMainForm::StabilityMeasure1Click(TObject * Sender)
+{
+    if (StabilityForm == null) {
+	Application->CreateForm(__classid(TStabilityForm), &StabilityForm);
+    }
+    //GammaMeasurementForm->setBitDepthProcessor(bitDepth);
+    StabilityForm->Show();
+}
+
+//---------------------------------------------------------------------------
 

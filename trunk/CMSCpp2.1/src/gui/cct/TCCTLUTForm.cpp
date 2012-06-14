@@ -81,6 +81,7 @@ void __fastcall TCCTLUTForm::Button_MeaRunClick(TObject * Sender)
 	MainForm->initAnalyzer();
 	MainForm->setMeterMeasurementWaitTimes();
 	bptr < ComponentFetcher > fetcher = MainForm->getComponentFetcher();
+	fetcher->Listener = this;
 	bptr < MeterMeasurement > mm = fetcher->FirstAnalyzer->getMeterMeasurement();
 	mm->resetMeasurePatchVector();
 
@@ -659,12 +660,17 @@ void __fastcall TCCTLUTForm::RadioGroup_NormalCaseClick(TObject * Sender)
 	CheckBox_BMax->Checked = true;
 	break;
     case 1:
-	RadioButton_3Gamma->Checked = true;
+	RadioButton_Gamma->Checked = true;
+	CheckBox_AbsoluteGamma->Checked = true;
 	CheckBox_AvoidNoise->Checked = false;
 	RadioButton_DefinedDim->Checked = true;
-	CheckBox_Feedback->Checked = true;
+	Edit_DefinedDimUnder->Text = "20";
+	//CheckBox_Feedback->Checked = true;
 	RadioButton_MaxYNative->Checked = true;
+	RadioButton_DeHookNone->Checked = true;
 	CheckBox_BMax->Checked = false;
+	CheckBox_MultiGen->Checked = true;
+	Edit_MultiGenTimes->Text = "1";
 	break;
 
     }
@@ -675,6 +681,10 @@ void TCCTLUTForm::doFeedback(int defectCount, int feedbackCount)
     String msg = "Defect/Total FeedBack: ";
     msg = msg + defectCount + "/" + feedbackCount;
     StatusBar1->Panels->Items[0]->Text = msg;
+};
+void TCCTLUTForm::doFeedback(string msg)
+{
+    StatusBar1->Panels->Items[0]->Text = msg.c_str();
 };
 
 //---------------------------------------------------------------------------

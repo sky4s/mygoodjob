@@ -89,6 +89,7 @@ namespace cms {
 	    class FeedbackListener {
 	      public:
 		virtual void doFeedback(int defectCount, int feedbackCount) = 0;
+		virtual void doFeedback(string msg) = 0;
 	    };
 	    class FeedbackFixer {
 	      public:

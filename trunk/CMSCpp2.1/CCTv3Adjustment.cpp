@@ -31,7 +31,6 @@ WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	Application->Title = "CCTAdjustment v3.3b ";
 	Application->CreateForm(__classid(TMainForm), &MainForm);
                  Application->CreateForm(__classid(TMeasureWindow), &MeasureWindow);
-                 Application->CreateForm(__classid(TStabilityForm), &StabilityForm);
                  Application->Run();
     }
     catch(EOleException & ex) {

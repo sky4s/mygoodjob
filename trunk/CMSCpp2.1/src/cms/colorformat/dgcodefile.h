@@ -49,8 +49,8 @@ namespace cms {
 				    RGB_vector_ptr dglut,
 				    bptr < cms::lcd::BitDepthProcessor > bitDepth);
 	    void setMultiGenTargetXYZVector(XYZ_vector_ptr targetXYZVector,
-				    RGB_vector_ptr dglut,
-				    bptr < cms::lcd::BitDepthProcessor > bitDepth);
+					    RGB_vector_ptr dglut,
+					    bptr < cms::lcd::BitDepthProcessor > bitDepth);
 	    void setLCDTarget(LCDTarget_ptr lcdTarget);
 	    LCDTarget_ptr getLCDTarget();
 	    void addToLCDTarget(Patch_ptr p);
@@ -116,7 +116,7 @@ namespace cms {
 	    RGB_ptr getSecondReferenceRGB();
 	     bptr < cms::lcd::BitDepthProcessor > getBitDepthProcessor();
 	    double_array getTargetWhiteRatio();
-            void storeFeedbackInfo(ExcelAccessBase & dgfile) const ;
+	    void storeFeedbackInfo(ExcelAccessBase & dgfile) const;
 	};
     };
 };

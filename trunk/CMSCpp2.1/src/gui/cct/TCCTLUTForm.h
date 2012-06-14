@@ -167,6 +167,7 @@ class TCCTLUTForm:public TForm, cms::lcd::calibrate::FeedbackListener {
     __fastcall TCCTLUTForm(TComponent * Owner);
     void setBitDepthProcessor(bptr < cms::lcd::BitDepthProcessor > bitDepth);
     void doFeedback(int defectCount, int feedbackCount);
+    void doFeedback(string msg);
     bool run;
 };
 //---------------------------------------------------------------------------

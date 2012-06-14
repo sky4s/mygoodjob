@@ -20,8 +20,7 @@
 TTargetWhiteForm2 *TargetWhiteForm2;
 //---------------------------------------------------------------------------
 __fastcall TTargetWhiteForm2::TTargetWhiteForm2(TComponent * Owner)
-:TForm(Owner), stopMeasure(false), /*maxBRawGrayLevel(-1),*/ measuring(false),
-/*findInverseZ(false),*/ connect(true)
+:TForm(Owner), stopMeasure(false), measuring(false), connect(true)
 {
 }
 
@@ -124,7 +123,6 @@ void TTargetWhiteForm2::setColorimetricValues(double x, double y, double up, dou
 
 void TTargetWhiteForm2::scrollBar_Change()
 {
-    //findInverseZ = false;
     this->RadioButton_RGBRatio->Checked = true;
     Panel1->Color =
 	(TColor) ScrollBar_R->Position + ((ScrollBar_G->Position) << 8) +
@@ -286,9 +284,8 @@ void __fastcall TTargetWhiteForm2::Button_RunClick(TObject * Sender)
 	if (true == stopMeasure || (!tconinput && false == MeasureWindow->Visible)) {
 	    return;
 	}
-
 	//if (MainForm->isCA210Analyzer()) {
-	    //MainForm->setAnalyzerToTargetChannel();
+	//MainForm->setAnalyzerToTargetChannel();
 	//}
 	analyzer->enter();
 
@@ -346,12 +343,7 @@ void __fastcall TTargetWhiteForm2::Button_RunClick(TObject * Sender)
 void __fastcall TTargetWhiteForm2::Edit_RChange(TObject * Sender)
 {
     binder->active(Sender);
-    //findInverseZ = false;
-    //int maxCount = (int) bitDepth->getInputMaxDigitalCount();
-    /*if (true == findInverseZ) {
-	ShowMessage("De-Hook will inactive!");
-	findInverseZ = false;
-    }*/
+
 }
 
 //---------------------------------------------------------------------------
@@ -361,9 +353,9 @@ void __fastcall TTargetWhiteForm2::Edit_BChange(TObject * Sender)
     binder->active(Sender);
     //findInverseZ = false;
     /*if (true == findInverseZ) {
-	ShowMessage("De-Hook will inactive!");
-	findInverseZ = false;
-    }*/
+       ShowMessage("De-Hook will inactive!");
+       findInverseZ = false;
+       } */
 }
 
 //---------------------------------------------------------------------------
@@ -371,11 +363,7 @@ void __fastcall TTargetWhiteForm2::Edit_BChange(TObject * Sender)
 void __fastcall TTargetWhiteForm2::Edit_GChange(TObject * Sender)
 {
     binder->active(Sender);
-    //findInverseZ = false;
-    /*if (true == findInverseZ) {
-	ShowMessage("De-Hook will inactive!");
-	findInverseZ = false;
-    }*/
+
 }
 
 //----------------------------------------
@@ -408,13 +396,12 @@ void __fastcall TTargetWhiteForm2::FormCreate(TObject * Sender)
     binder->bind(Edit_G, ScrollBar_G);
     binder->bind(Edit_B, ScrollBar_B);
     //binder->bind(Edit_InverseZofB, Edit_B);
-    binder->bind(Edit_InverseIntensityofB, Edit_B);
+    //binder->bind(Edit_InverseIntensityofB, Edit_B);
 }
 
 //---------------------------------------------------------------------------
 
-void TTargetWhiteForm2::setBitDepthProcessor(bptr <
-					     cms::lcd::BitDepthProcessor > bitDepth)
+void TTargetWhiteForm2::setBitDepthProcessor(bptr < cms::lcd::BitDepthProcessor > bitDepth)
 {
     this->bitDepth = bitDepth;
     if (Edit_R->Text.ToInt() == 0) {
@@ -512,33 +499,8 @@ void __fastcall TTargetWhiteForm2::FormKeyPress(TObject * Sender, char &Key)
 }
 
 //---------------------------------------------------------------------------
-void __fastcall TTargetWhiteForm2::Button_ConnectClick(TObject * Sender)
-{
-    if (MainForm->linkCA210) {
-	MainForm->connectMeter();
-	this->Button_Disconnect->Enabled = true;
-	this->Button_Connect->Enabled = false;
-	this->Button_Run->Enabled = true;
-	Button_Measure->Enabled = true;
-    }
-}
 
-//---------------------------------------------------------------------------
 
-void __fastcall TTargetWhiteForm2::Button_DisconnectClick(TObject * Sender)
-{
-    if (MainForm->linkCA210) {
-
-	MainForm->disconnectMeter();
-	this->Button_Disconnect->Enabled = false;
-	this->Button_Connect->Enabled = true;
-	this->Button_Run->Enabled = false;
-	Button_Measure->Enabled = false;
-
-    }
-}
-
-//---------------------------------------------------------------------------
 
 
 
@@ -583,11 +545,26 @@ void __fastcall TTargetWhiteForm2::Button_ConnectToggleClick(TObject * Sender)
 {
     if (connect) {
 	Button_ConnectToggle->Caption = "Disconnect";
-	Button_DisconnectClick(Sender);
+	if (MainForm->linkCA210) {
+
+	    MainForm->disconnectMeter();
+	    //this->Button_Disconnect->Enabled = false;
+	    //this->Button_Connect->Enabled = true;
+	    this->Button_Run->Enabled = false;
+	    Button_Measure->Enabled = false;
+
+	}
 	ShowMessage("Please confirm Gamma and FRC IP is Off.\n(請確認Gamma和FRC是否Off)");
     } else {
 	Button_ConnectToggle->Caption = "Connect";
-	Button_ConnectClick(Sender);
+
+	if (MainForm->linkCA210) {
+	    MainForm->connectMeter();
+	    //this->Button_Disconnect->Enabled = true;
+	    //this->Button_Connect->Enabled = false;
+	    this->Button_Run->Enabled = true;
+	    Button_Measure->Enabled = true;
+	}
     }
     connect = !connect;
 }
@@ -597,33 +574,8 @@ void __fastcall TTargetWhiteForm2::Button_ConnectToggleClick(TObject * Sender)
 
 
 
-void __fastcall TTargetWhiteForm2::Button_FindInverseIntensityClick(TObject * Sender)
-{
-    if (!bitDepth->isTCONInput()) {
-	ShowMessage("Recommend using \"T-CON Input\"!!!");
-    }
-    int max = bitDepth->getInputMaxDigitalCount();
-    using namespace cms::measure;
-    int maxBRawGrayLevel = MeasureTool::getMaxBIntensityRawGrayLevel(MainForm->mm, bitDepth);
-    bool foundInverse = maxBRawGrayLevel != max;
-
-    Edit_InverseIntensityofB->Text = maxBRawGrayLevel;
-    binder->active(Edit_InverseIntensityofB);
-    //findInverseZ = foundInverse;
-
-}
-
-//---------------------------------------------------------------------------
 
 
-void __fastcall TTargetWhiteForm2::Edit_InverseIntensityofBKeyPress(TObject * Sender, char &Key)
-{
-    //StatusBar1->Panels->Items[1]->Text = "De-Hook: Set";
-    //findInverseZ = true;
-    //maxBRawGrayLevel = Edit_InverseIntensityofB->Text.ToInt();
-}
-
-//---------------------------------------------------------------------------
 
 void __fastcall TTargetWhiteForm2::FormResize(TObject * Sender)
 {

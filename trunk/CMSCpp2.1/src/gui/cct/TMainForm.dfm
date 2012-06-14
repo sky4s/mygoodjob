@@ -1,6 +1,6 @@
 object MainForm: TMainForm
-  Left = 257
-  Top = 330
+  Left = 323
+  Top = 442
   Width = 767
   Height = 380
   Caption = 'CCT Adjustment v3.4'
@@ -928,7 +928,7 @@ object MainForm: TMainForm
           Height = 21
           ImeName = #26085#25991#36664#20837#31995#32113' (MS-IME2002)'
           TabOrder = 0
-          Text = '400'
+          Text = '500'
           OnChange = Edit_IntervalChange
         end
         object Edit_AverageTimes: TEdit
@@ -1176,6 +1176,22 @@ object MainForm: TMainForm
           TabOrder = 0
           Text = '0'
           OnKeyPress = Edit_SourceCHKeyPress
+        end
+      end
+      object GroupBox3: TGroupBox
+        Left = 552
+        Top = 8
+        Width = 177
+        Height = 41
+        Caption = 'Sequence'
+        TabOrder = 5
+        object CheckBox_InverseMeasure: TCheckBox
+          Left = 16
+          Top = 16
+          Width = 121
+          Height = 17
+          Caption = 'Inverse Measure'
+          TabOrder = 0
         end
       end
     end
@@ -1638,6 +1654,7 @@ object MainForm: TMainForm
   object MainMenu1: TMainMenu
     object MatrixCalibration1: TMenuItem
       Caption = 'Matrix Calibration'
+      Enabled = False
       OnClick = MatrixCalibration1Click
     end
     object TargetWhite1: TMenuItem
@@ -1660,6 +1677,7 @@ object MainForm: TMainForm
       end
       object StabilityMeasure1: TMenuItem
         Caption = 'Stability Measure'
+        OnClick = StabilityMeasure1Click
       end
     end
     object Help1: TMenuItem
