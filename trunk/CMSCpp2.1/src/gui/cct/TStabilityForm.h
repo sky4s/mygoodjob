@@ -39,6 +39,8 @@ class TStabilityForm:public TForm {
     TGroupBox *GroupBox2;
     TButton *Button2;
     TButton *Button4;
+    TCheckBox *CheckBox_Flicker;
+        TCheckBox *CheckBox_JEITA;
     void __fastcall Button1Click(TObject * Sender);
     void __fastcall FormKeyPress(TObject * Sender, char &Key);
     void __fastcall Button3Click(TObject * Sender);

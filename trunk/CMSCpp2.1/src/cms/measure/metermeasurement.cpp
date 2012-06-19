@@ -36,7 +36,7 @@ namespace cms {
 	    measureWindowClosing(false),
 	    titleTouched(false),
 	    /*fakeMeasure(false), */ averageTimes(1), blankTimes(DefaultBlankTimes),
-	    blankRGB(RGBColor::Black) {
+	    blankRGB(RGBColor::Black), flicker(FlickerMode::JEITA) {
 	    init(calibration);
 	    measurePatchVector = Patch_vector_ptr(new Patch_vector());
 	    DGLutFileMeter *filemeter = dynamic_cast < DGLutFileMeter * >(meter.get());
@@ -152,7 +152,11 @@ namespace cms {
 		CA210 *ca210 = dynamic_cast < CA210 * >(meter.get());
 		if (null != ca210) {
 		    bptr < ca210api::CA210API > ca210api = ca210->getCA210API();
-		    flickerValue = ca210api->triggerFlickerFMA();
+		    if (FlickerMode::FMA == flicker) {
+			flickerValue = ca210api->triggerFlickerFMA();
+		    } else if (FlickerMode::JEITA == flicker) {
+			flickerValue = ca210api->triggerFlickerJEITA();
+		    }
 		}
 		result = double_array(new double[3]);
 		result[0] = 0;
