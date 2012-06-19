@@ -1,8 +1,8 @@
 object StabilityForm: TStabilityForm
-  Left = 378
-  Top = 470
-  Width = 221
-  Height = 293
+  Left = 421
+  Top = 564
+  Width = 237
+  Height = 344
   Caption = 'Stability Measure'
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
@@ -24,7 +24,7 @@ object StabilityForm: TStabilityForm
   end
   object GroupBox1: TGroupBox
     Left = 8
-    Top = 32
+    Top = 64
     Width = 193
     Height = 137
     Caption = 'Condition'
@@ -110,7 +110,7 @@ object StabilityForm: TStabilityForm
   end
   object Button_ContinueMeasure: TButton
     Left = 64
-    Top = 232
+    Top = 264
     Width = 105
     Height = 17
     Caption = 'Continue Measure'
@@ -127,7 +127,7 @@ object StabilityForm: TStabilityForm
   end
   object GroupBox2: TGroupBox
     Left = 8
-    Top = 168
+    Top = 200
     Width = 193
     Height = 49
     Caption = 'GroupBox2'
@@ -150,6 +150,22 @@ object StabilityForm: TStabilityForm
       TabOrder = 1
       OnClick = Button4Click
     end
+  end
+  object CheckBox_Flicker: TCheckBox
+    Left = 16
+    Top = 32
+    Width = 57
+    Height = 17
+    Caption = 'Flicker'
+    TabOrder = 4
+  end
+  object CheckBox_JEITA: TCheckBox
+    Left = 88
+    Top = 32
+    Width = 89
+    Height = 17
+    Caption = 'JEITA'
+    TabOrder = 5
   end
   object OpenDialog1: TOpenDialog
     Top = 232

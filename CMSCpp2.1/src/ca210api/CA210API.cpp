@@ -50,7 +50,7 @@ namespace ca210api {
 	//try {
 	enable = false;
 
-        result = ca200.BindDefault();
+	result = ca200.BindDefault();
 	ca200.AutoConnect();
 	ca = ca200.get_SingleCa();
 	probe = ca.get_SingleProbe();
@@ -123,6 +123,12 @@ namespace ca210api {
 	measureValues[1] = probe.get_G();
 	measureValues[2] = probe.get_B();
 	return measureValues;
+    };
+
+    float CA210API::triggerFlickerJEITA() {
+	ca.set_DisplayMode(JEITAflicker);
+	ca.Measure(0);
+	return probe.get_FlckrJEITA();
     };
 
     float CA210API::triggerFlickerFMA() {

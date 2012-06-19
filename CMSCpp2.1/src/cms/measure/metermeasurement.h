@@ -26,6 +26,9 @@ namespace cms {
 	//Enumeration(FakeMode)
 	//None, Component, Patch EnumerationEnd()
 
+	 Enumeration(FlickerMode)
+	 FMA, JEITA EnumerationEnd()
+
 	class MeterMeasurement {
 	    friend class MeasureUtils;
 	  public:
@@ -40,6 +43,7 @@ namespace cms {
 	    int averageTimes;
 	    Patch_vector_ptr measurePatchVector;
 	    FakeMode fakeMode;
+	    FlickerMode flicker;
 	  protected:
 	     bptr < cms::measure::meter::Meter > meter;
 	    TMeasureWindow *measureWindow;
@@ -69,6 +73,7 @@ namespace cms {
 	       如何區分兩種fake measure?
 	     */
 	    __property FakeMode FakeMeasureMode = { read = fakeMode };
+	    __property FlickerMode Flicker = { write = flicker };
 	    __property int AverageTimes = { read = averageTimes, write = averageTimes };
 	    __property Patch_vector_ptr MeasurePatchVector = { read = measurePatchVector };
 	     bptr < cms::measure::meter::Meter > getMeter();

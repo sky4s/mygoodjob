@@ -134,16 +134,22 @@ void __fastcall TStabilityForm::Button_ContinueMeasureClick(TObject * Sender)
 {
     using namespace cms::colorformat;
     using namespace cms::util;
+    using namespace cms::measure;    
     if (false == run) {
 	Button_ContinueMeasure->Caption = "Stop Measure";
 	run = true;
 	mm->WaitTimes = 0;
 	int waitTimes = Edit_WaitTime->Text.ToInt();;
+	bool flicker = CheckBox_Flicker->Checked;
+	bool jeita = CheckBox_JEITA->Checked;
+        mm->Flicker= jeita?FlickerMode::JEITA:FlickerMode::FMA;
 
 	while (true) {
 	    Util::sleep(waitTimes);
 	    mm->measure(nil_string_ptr);
-            mm->measureFlicker(nil_string_ptr);
+	    if (flicker) {
+		mm->measureFlicker(nil_string_ptr);
+	    }
 	    Application->ProcessMessages();
 	    if (false == run) {
 		break;
