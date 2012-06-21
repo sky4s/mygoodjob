@@ -75,6 +75,9 @@ namespace cms {
 		      "W_R", "W_G", "W_B", "RP", "GP", "BP",
 		      "RP_Intensity_Fix", "GP_Intensity_Fix", "BP_Intensity_Fix");
 	    initPropertySheet();
+	    initSheet(Measure, 12, "id", "R", "G", "B", "X", "Y (nit)", "Z", "_x", "_y",
+		      "R12", "G12", "B12");
+	    measureID = 1;
 	};
 
 
@@ -510,53 +513,96 @@ namespace cms {
 	    return patchVector;
 
 	};
+
+	void DGLutFile::addMeasure(Patch_ptr p) {
+	    //==================================================================
+	    // 初始資料設定
+	    //==================================================================
+	    const int headerCount = 12;
+	    string_vector_ptr values(new string_vector(headerCount));
+
+
+	    (*values)[0] = _toString(measureID++);
+
+	    double r = -1, g = -1, b = -1;
+	    RGB_ptr rgb = p->getRGB();
+	    if (null != rgb) {
+		r = rgb->getValue(Channel::R, MaxValue::Double255);
+		g = rgb->getValue(Channel::G, MaxValue::Double255);
+		b = rgb->getValue(Channel::B, MaxValue::Double255);
+	    }
+	    (*values)[1] = _toString(r);
+	    (*values)[2] = _toString(g);
+	    (*values)[3] = _toString(b);
+
+	    XYZ_ptr XYZ = p->getXYZ();
+	    (*values)[4] = _toString(XYZ->X);
+	    (*values)[5] = _toString(XYZ->Y);
+	    (*values)[6] = _toString(XYZ->Z);
+
+	    xyY_ptr xyY(new CIExyY(XYZ));
+	    (*values)[7] = _toString(xyY->x);
+	    (*values)[8] = _toString(xyY->y);
+
+	    double r12 = -1, g12 = -1, b12 = -1;
+	    if (null != rgb) {
+		r12 = rgb->getValue(Channel::R, MaxValue::Int12Bit);
+		g12 = rgb->getValue(Channel::G, MaxValue::Int12Bit);
+		b12 = rgb->getValue(Channel::B, MaxValue::Int12Bit);
+	    }
+	    (*values)[9] = _toString(r12);
+	    (*values)[10] = _toString(g12);
+	    (*values)[11] = _toString(b12);
+
+	    this->insertData(Measure, values, false);
+	}
+
+
 	void DGLutFile::setMeasure(Patch_vector_ptr patchList) {
 
 	    //==================================================================
 	    // 初始資料設定
 	    //==================================================================
-	    const int headerCount = 12;
-	    initSheet(Measure, headerCount, "id", "R", "G", "B", "X", "Y (nit)", "Z", "_x", "_y",
-		      "R12", "G12", "B12");
-
+	    //const int headerCount = 12;
+	    //string_vector_ptr values(new string_vector(headerCount));
 	    int size = patchList->size();
-	    string_vector_ptr values(new string_vector(headerCount));
 	    //==================================================================
-	    int id = 1;
+
 	    foreach(Patch_ptr p, *patchList) {
-		(*values)[0] = _toString(id++);
+		addMeasure(p);
+		/*(*values)[0] = _toString(measureID++);
 
-		double r = -1, g = -1, b = -1;
-		RGB_ptr rgb = p->getRGB();
-		if (null != rgb) {
-		    r = rgb->getValue(Channel::R, MaxValue::Double255);
-		    g = rgb->getValue(Channel::G, MaxValue::Double255);
-		    b = rgb->getValue(Channel::B, MaxValue::Double255);
-		}
-		(*values)[1] = _toString(r);
-		(*values)[2] = _toString(g);
-		(*values)[3] = _toString(b);
+		   double r = -1, g = -1, b = -1;
+		   RGB_ptr rgb = p->getRGB();
+		   if (null != rgb) {
+		   r = rgb->getValue(Channel::R, MaxValue::Double255);
+		   g = rgb->getValue(Channel::G, MaxValue::Double255);
+		   b = rgb->getValue(Channel::B, MaxValue::Double255);
+		   }
+		   (*values)[1] = _toString(r);
+		   (*values)[2] = _toString(g);
+		   (*values)[3] = _toString(b);
 
-		XYZ_ptr XYZ = p->getXYZ();
-		(*values)[4] = _toString(XYZ->X);
-		(*values)[5] = _toString(XYZ->Y);
-		(*values)[6] = _toString(XYZ->Z);
+		   XYZ_ptr XYZ = p->getXYZ();
+		   (*values)[4] = _toString(XYZ->X);
+		   (*values)[5] = _toString(XYZ->Y);
+		   (*values)[6] = _toString(XYZ->Z);
 
-		xyY_ptr xyY(new CIExyY(XYZ));
-		(*values)[7] = _toString(xyY->x);
-		(*values)[8] = _toString(xyY->y);
+		   xyY_ptr xyY(new CIExyY(XYZ));
+		   (*values)[7] = _toString(xyY->x);
+		   (*values)[8] = _toString(xyY->y);
 
-		double r12 = -1, g12 = -1, b12 = -1;
-		if (null != rgb) {
-		    r12 = rgb->getValue(Channel::R, MaxValue::Int12Bit);
-		    g12 = rgb->getValue(Channel::G, MaxValue::Int12Bit);
-		    b12 = rgb->getValue(Channel::B, MaxValue::Int12Bit);
-		}
-		(*values)[9] = _toString(r12);
-		(*values)[10] = _toString(g12);
-		(*values)[11] = _toString(b12);
+		   double r12 = -1, g12 = -1, b12 = -1;
+		   if (null != rgb) {
+		   r12 = rgb->getValue(Channel::R, MaxValue::Int12Bit);
+		   g12 = rgb->getValue(Channel::G, MaxValue::Int12Bit);
+		   b12 = rgb->getValue(Channel::B, MaxValue::Int12Bit);
+		   }
+		   (*values)[9] = _toString(r12);
+		   (*values)[10] = _toString(g12);
+		   (*values)[11] = _toString(b12);
 
-		this->insertData(Measure, values, false);
+		   this->insertData(Measure, values, false); */
 	    }
 
 	};
