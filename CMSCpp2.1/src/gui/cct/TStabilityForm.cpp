@@ -129,12 +129,12 @@ void __fastcall TStabilityForm::Button3Click(TObject * Sender)
 }
 
 //---------------------------------------------------------------------------
-
+bptr < cms::colorformat::DGLutFile > stabilityDGLutFile;
 void __fastcall TStabilityForm::Button_ContinueMeasureClick(TObject * Sender)
 {
     using namespace cms::colorformat;
     using namespace cms::util;
-    using namespace cms::measure;    
+    using namespace cms::measure;
     if (false == run) {
 	Button_ContinueMeasure->Caption = "Stop Measure";
 	run = true;
@@ -142,13 +142,18 @@ void __fastcall TStabilityForm::Button_ContinueMeasureClick(TObject * Sender)
 	int waitTimes = Edit_WaitTime->Text.ToInt();;
 	bool flicker = CheckBox_Flicker->Checked;
 	bool jeita = CheckBox_JEITA->Checked;
-        mm->Flicker= jeita?FlickerMode::JEITA:FlickerMode::FMA;
+	mm->Flicker = jeita ? FlickerMode::JEITA : FlickerMode::FMA;
+
+	Util::deleteExist("stability.xls");
+	stabilityDGLutFile = bptr < DGLutFile > (new DGLutFile("stability.xls", Create));
 
 	while (true) {
 	    Util::sleep(waitTimes);
-	    mm->measure(nil_string_ptr);
+	    Patch_ptr XYZPatch = mm->measure(nil_string_ptr);
+	    stabilityDGLutFile->addMeasure(XYZPatch);
 	    if (flicker) {
-		mm->measureFlicker(nil_string_ptr);
+		Patch_ptr flickerPatch = mm->measureFlicker(nil_string_ptr);
+		stabilityDGLutFile->addMeasure(flickerPatch);
 	    }
 	    Application->ProcessMessages();
 	    if (false == run) {
@@ -163,13 +168,16 @@ void __fastcall TStabilityForm::Button_ContinueMeasureClick(TObject * Sender)
 	run = false;
 	mm->WaitTimes = Edit_WaitTime->Text.ToInt();
 
-	Patch_vector_ptr measurePatchVector = mm->MeasurePatchVector;
-	if (null != measurePatchVector && measurePatchVector->size() != 0) {
-	    Util::deleteExist("stability.xls");
-	    bptr < DGLutFile > dglutFile(new DGLutFile("stability.xls", Create));
-	    dglutFile->setMeasure(measurePatchVector);
-	    dglutFile.reset();
-	}
+	stabilityDGLutFile.reset();
+	stabilityDGLutFile = bptr < DGLutFile > ((DGLutFile *) null);
+
+	/*Patch_vector_ptr measurePatchVector = mm->MeasurePatchVector;
+	   if (null != measurePatchVector && measurePatchVector->size() != 0) {
+	   Util::deleteExist("stability.xls");
+	   bptr < DGLutFile > dglutFile(new DGLutFile("stability.xls", Create));
+	   dglutFile->setMeasure(measurePatchVector);
+	   dglutFile.reset();
+	   } */
     }
 }
 
