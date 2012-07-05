@@ -124,7 +124,7 @@ object CCTLUTForm: TCCTLUTForm
     Top = 7
     Width = 169
     Height = 258
-    Caption = 'Gamma'
+    Caption = 'White Gamma'
     TabOrder = 1
     object Label16: TLabel
       Left = 72

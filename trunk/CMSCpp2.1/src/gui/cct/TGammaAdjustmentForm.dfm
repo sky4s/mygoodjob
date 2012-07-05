@@ -193,24 +193,24 @@ object GammaAdjustmentForm: TGammaAdjustmentForm
           '2.5')
       end
     end
-    object Button3: TButton
+    object Button_LoadGamma: TButton
       Left = 20
       Top = 170
       Width = 78
       Height = 19
       Caption = 'Load Gamma'
       TabOrder = 2
-      OnClick = Button3Click
+      OnClick = Button_LoadGammaClick
     end
-    object CheckBox_LoadingGamma: TCheckBox
+    object CheckBox_LoadGamma: TCheckBox
       Left = 105
       Top = 170
       Width = 58
       Height = 19
-      Caption = 'Loading'
+      Caption = 'Loaded'
       Enabled = False
       TabOrder = 3
-      OnClick = CheckBox_LoadingGammaClick
+      OnClick = CheckBox_LoadGammaClick
     end
   end
   object GroupBox1: TGroupBox

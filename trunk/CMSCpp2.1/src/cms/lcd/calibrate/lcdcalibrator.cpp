@@ -1084,7 +1084,6 @@ namespace cms {
 			RGB_vector_ptr dglut2 = generator.getGammaDGLut(gammaCurve);
 			dglut = dglut2;
 		    }
-		    //uminanceVector = fetcher->fetchLuminance(measureCondition);
 		}
 		//¶q¤Æ
 		MaxValue quantizationBit = bitDepth->getFRCAbilityBit();

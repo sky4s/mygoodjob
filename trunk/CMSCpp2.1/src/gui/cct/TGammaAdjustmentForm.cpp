@@ -54,33 +54,52 @@ void __fastcall TGammaAdjustmentForm::FormShow(TObject * Sender)
 
 
 
-void __fastcall TGammaAdjustmentForm::Button3Click(TObject * Sender)
+void __fastcall TGammaAdjustmentForm::Button_LoadGammaClick(TObject * Sender)
 {
     using namespace cms::util;
     OpenDialog1->Filter = "Desired Gamma Files(*.xls)|*.xls";
     if (OpenDialog1->Execute()) {
 	const AnsiString & filename = OpenDialog1->FileName;
 	rgbGamma = RGBGamma::loadFromDesiredGamma(filename.c_str());
-	unsigned int n = bitDepth->getLevel();
-	if (rgbGamma != null && rgbGamma->w->size() == n) {
-	    this->CheckBox_LoadingGamma->Checked = true;
-	    this->CheckBox_LoadingGamma->Enabled = true;
+
+
+	if (rgbGamma != null) {
+	    unsigned int n = bitDepth->getLevel();
+	    if (rgbGamma->w->size() == n) {
+		ComboBox_GrayGamma->Text = "Load";
+	    }
+	    if (rgbGamma->r->size() == n) {
+		ComboBox_RGamma->Text = "Load";
+	    }
+	    if (rgbGamma->g->size() == n) {
+		ComboBox_GGamma->Text = "Load";
+	    }
+	    if (rgbGamma->b->size() == n) {
+		ComboBox_BGamma->Text = "Load";
+	    }
+	    this->CheckBox_LoadGamma->Checked = true;
+	    this->CheckBox_LoadGamma->Enabled = true;
 	} else {
 	    ShowMessage("Desired Gamma File Format is wrong!");
-	    this->CheckBox_LoadingGamma->Checked = false;
-	    this->CheckBox_LoadingGamma->Enabled = false;
+	    this->CheckBox_LoadGamma->Checked = false;
+	    this->CheckBox_LoadGamma->Enabled = false;
 	}
+
     }
 }
 
 //---------------------------------------------------------------------------
 
-void __fastcall TGammaAdjustmentForm::CheckBox_LoadingGammaClick(TObject * Sender)
+void __fastcall TGammaAdjustmentForm::CheckBox_LoadGammaClick(TObject * Sender)
 {
     using namespace cms::util;
-    if (false == this->CheckBox_LoadingGamma->Checked) {
-	this->CheckBox_LoadingGamma->Enabled = false;
+    if (false == this->CheckBox_LoadGamma->Checked) {
+	this->CheckBox_LoadGamma->Enabled = false;
 	rgbGamma = RGBGamma_ptr((RGBGamma *) null);
+	ComboBox_GrayGamma->Text = "2.2";
+	ComboBox_RGamma->Text = "2.2";
+	ComboBox_GGamma->Text = "2.2";
+	ComboBox_BGamma->Text = "2.2";
     }
 }
 
@@ -112,7 +131,7 @@ void TGammaAdjustmentForm::gammaAdjust(bool rgbGammaAdjust)
 	// gamma的處理
 	//==========================================================================
 	if (rgbGammaAdjust) {
-	    if (this->CheckBox_LoadingGamma->Checked) {
+	    if (this->CheckBox_LoadGamma->Checked) {
 		//載入gamma
 		double_vector_ptr rgammaCurve = rgbGamma->r;
 		double_vector_ptr ggammaCurve = rgbGamma->g;
@@ -127,7 +146,7 @@ void TGammaAdjustmentForm::gammaAdjust(bool rgbGammaAdjust)
 	    }
 
 	} else {
-	    if (this->CheckBox_LoadingGamma->Checked) {
+	    if (this->CheckBox_LoadGamma->Checked) {
 		//載入gamma
 		double_vector_ptr gammaCurve = rgbGamma->w;
 		calibrator->setGammaCurve(gammaCurve);
@@ -146,6 +165,7 @@ void TGammaAdjustmentForm::gammaAdjust(bool rgbGammaAdjust)
 	}
 	RGB_vector_ptr dglut = calibrator->getGammaDGLut(getMeasureCondition());
 	if (dglut == null) {
+	    ShowMessage("Internal Error!");
 	    return;
 	}
 	String_ptr astr = this->TOutputFileFrame1->getOutputFilename();

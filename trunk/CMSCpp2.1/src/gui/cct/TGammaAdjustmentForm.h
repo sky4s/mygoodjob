@@ -31,13 +31,13 @@ class TGammaAdjustmentForm:public TForm {
     TLabel *Label3;
     TLabel *Label4;
     TButton *Button_RGBGamma;
-    TButton *Button3;
+    TButton *Button_LoadGamma;
     TGroupBox *GroupBox1;
     TCheckBox *CheckBox_AvoidNoise;
     TCheckBox *CheckBox_KeepMax;
     TOutputFileFrame *TOutputFileFrame1;
     TOpenDialog *OpenDialog1;
-    TCheckBox *CheckBox_LoadingGamma;
+    TCheckBox *CheckBox_LoadGamma;
     TComboBox *ComboBox_GrayGamma;
     TComboBox *ComboBox_RGamma;
     TComboBox *ComboBox_GGamma;
@@ -45,8 +45,8 @@ class TGammaAdjustmentForm:public TForm {
     TProgressBar *ProgressBar1;
     TCheckBox *CheckBox_FineCalibrate;
     void __fastcall FormShow(TObject * Sender);
-    void __fastcall Button3Click(TObject * Sender);
-    void __fastcall CheckBox_LoadingGammaClick(TObject * Sender);
+    void __fastcall Button_LoadGammaClick(TObject * Sender);
+    void __fastcall CheckBox_LoadGammaClick(TObject * Sender);
     void __fastcall Button_GrayGammaClick(TObject * Sender);
     void __fastcall Button_RGBGammaClick(TObject * Sender);
     void __fastcall TOutputFileFrame1Button_BrowseDirClick(TObject * Sender);
