@@ -32,6 +32,7 @@ namespace cms {
 		 bptr < ComponentLUT > lut;
 		 bptr < ComponentLinearRelation > componentRelation;
 		 bptr < Interpolation1DLUT > wlut;
+		 bptr < Interpolation1DLUT > rlut, glut, blut;
 		double getMaximumIntensity();
 		void initComponent(Component_vector_ptr componentVector,
 				   bool keepTargetWhiteMaxLuminance);
@@ -48,6 +49,7 @@ namespace cms {
 				  double bIntensity, bool correctInRange);
 		RGB_vector_ptr getCCTDGLut(RGBGamma_ptr normalRGBGammaCurve);
 		RGB_vector_ptr getGammaDGLut(double_vector_ptr normalGammaCurve);
+		RGB_vector_ptr getGammaDGLut(RGBGamma_ptr rgbNormalGammaCurve);
 		RGB_vector_ptr getFineGammaDGLut(RGB_vector_ptr rgbVector,
 						 double_vector_ptr normalGammaCurve);
 

@@ -56,6 +56,7 @@ namespace cms {
 		Component_vector_ptr fetchComponent(bptr < MeasureCondition > measureCondition);
 
 		Component_vector_ptr fetchLuminance(bptr < MeasureCondition > measureCondition);
+		Component_vector_ptr fetchRGBLuminance(bptr < MeasureCondition > measureCondition);
 
 		static void storeToExcel(const std::string & filename,
 					 Component_vector_ptr componentVector);

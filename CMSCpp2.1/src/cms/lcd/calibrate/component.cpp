@@ -233,6 +233,17 @@ namespace cms {
 		return result;
 	    };
 
+
+	    Component_vector_ptr ComponentFetcher::fetchRGBLuminance(bptr <
+								     MeasureCondition
+								     > measureCondition) {
+		bptr < cms::measure::MeterMeasurement > mm = firstAnalyzer->getMeterMeasurement();
+		bptr < MeasureTool > mt(new MeasureTool(mm));
+		//bool inverseMeasure = MainForm->CheckBox_InverseMeasure->Checked;
+		//mt->InverseMeasure = inverseMeasure;
+		MeasureWindow->addWindowListener(mt);
+
+	    };
 	    void ComponentFetcher::storeToExcel(const string & filename,
 						Component_vector_ptr componentVector) {
 

@@ -117,7 +117,10 @@ namespace cms {
 		int size = componentVector->size();
 		minLuminance = (*componentVector)[size - 1]->XYZ->Y;
 		double_vector_ptr keys(new double_vector());
-		double_vector_ptr values(new double_vector());
+		double_vector_ptr wvalues(new double_vector());
+		double_vector_ptr rvalues(new double_vector());
+		double_vector_ptr gvalues(new double_vector());
+		double_vector_ptr bvalues(new double_vector());
 
 		for (int x = 0; x != size; x++) {
 		    Component_ptr c = (*componentVector)[x];
@@ -125,12 +128,23 @@ namespace cms {
 		    XYZ_ptr XYZ = c->XYZ;
 		    double w = rgb->getValue(Dep::Channel::W);
 		    keys->push_back(w);
-		    values->push_back(XYZ->Y);
+		    wvalues->push_back(XYZ->Y);
+
+		    RGB_ptr intensity = c->intensity;
+		    rvalues->push_back(intensity->R);
+		    gvalues->push_back(intensity->R);
+		    bvalues->push_back(intensity->R);
 		}
 		keys = DoubleArray::getReverse(keys);
-		values = DoubleArray::getReverse(values);
+		wvalues = DoubleArray::getReverse(wvalues);
+		rvalues = DoubleArray::getReverse(rvalues);
+		gvalues = DoubleArray::getReverse(gvalues);
+		bvalues = DoubleArray::getReverse(bvalues);
 
-		wlut = bptr < Interpolation1DLUT > (new Interpolation1DLUT(keys, values));
+		wlut = bptr < Interpolation1DLUT > (new Interpolation1DLUT(keys, wvalues));
+		rlut = bptr < Interpolation1DLUT > (new Interpolation1DLUT(keys, rvalues));
+		glut = bptr < Interpolation1DLUT > (new Interpolation1DLUT(keys, gvalues));
+		blut = bptr < Interpolation1DLUT > (new Interpolation1DLUT(keys, bvalues));
 	    };
 
 	    RGB_ptr DGLutGenerator::getIntensity(RGB_ptr dg) {
@@ -242,6 +256,13 @@ namespace cms {
 		}
 
 		return dglut;
+	    };
+
+	    RGB_vector_ptr DGLutGenerator::getGammaDGLut(RGBGamma_ptr rgbNormalGammaCurve) {
+
+		LCDCalibrator::getLuminanceGammaCurve(rgbNormalGammaCurve->r,
+						      maxLuminance, minLuminance);
+
 	    };
 
 	    RGB_vector_ptr getFineGammaDGLut(RGB_vector_ptr rgbVector,
