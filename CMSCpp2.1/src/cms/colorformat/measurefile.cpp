@@ -264,9 +264,9 @@ namespace cms {
 	    string_vector_ptr rIntensitys(new string_vector());
 	    string_vector_ptr gIntensitys(new string_vector());
 	    string_vector_ptr bIntensitys(new string_vector());
-	    //int size = intensityVector->size();
+	    int size = intensityVector->size();
 	    //ADO無法超過255個欄位
-	    for (int x = 0; x < 255; x++) {
+	    for (int x = 0; x < 255 && x < size; x++) {
 		Component_ptr c = (*intensityVector)[x];
 		RGB_ptr intensity = c->intensity;
 		rIntensitys->push_back(_toString(intensity->R));
