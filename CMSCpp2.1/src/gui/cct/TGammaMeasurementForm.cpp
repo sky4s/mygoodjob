@@ -198,7 +198,7 @@ void __fastcall TGammaMeasurementForm::FormShow(TObject * Sender)
     dgcodeTable = (RGB_vector_ptr) ((RGB_vector *) null);
 
     if (true == tconInput) {
-	Button_Measure->Enabled = false;
+	//Button_Measure->Enabled = false;
     }
 #ifdef EXPERIMENT_FUNC
     CheckBox_FlickerFMA->Visible = true;
