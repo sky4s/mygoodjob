@@ -120,7 +120,7 @@ namespace cms {
 					 bool compensationR);
 	    };
 	    //=================================================================
-            // dprecated
+	    // dprecated
 	    //=================================================================
 	    class DimDGLutFixOp:public DGLutOp {
 	      protected:
@@ -165,11 +165,12 @@ namespace cms {
 	      private:
 		bptr < BitDepthProcessor > bitDepth;
 		int maxBDGGrayLevel;
-                RGB_ptr maxBDG;
+		RGB_ptr maxBDG;
 	      protected:
 		 RGB_vector_ptr getRendering(RGB_vector_ptr source);
 	      public:
-		 DeHook2Op(bptr < BitDepthProcessor > bitDepth,RGB_ptr _maxBDG, int _maxBDGGrayLevel);
+		 DeHook2Op(bptr < BitDepthProcessor > bitDepth, RGB_ptr _maxBDG,
+			   int _maxBDGGrayLevel);
 
 	    };
 	};

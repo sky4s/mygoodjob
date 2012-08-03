@@ -53,6 +53,11 @@ class TGammaMeasurementForm:public TForm {
     TEdit *Edit_EndLevelT;
     TEdit *Edit_Count;
     TProgressBar *ProgressBar1;
+    TPanel *Panel3;
+    TGroupBox *GroupBox4;
+    TEdit *Edit_BackgroundR;
+    TEdit *Edit_BackgroundG;
+    TEdit *Edit_BackgroundB;
     void __fastcall Button_MeasureClick(TObject * Sender);
     void __fastcall FormShow(TObject * Sender);
     void __fastcall TOutputFileFrame1Button_BrowseDirClick(TObject * Sender);
@@ -63,7 +68,7 @@ class TGammaMeasurementForm:public TForm {
   private:			// User declarations
      bptr < cms::lcd::BitDepthProcessor > bitDepth;
     void setMeasureInfo();
-    bool measure(bool_vector_ptr rgbw,
+    bool measure(bool_vector_ptr rgbw, int_vector_ptr background,
 		 bptr < cms::lcd::calibrate::MeasureCondition >
 		 measureCondition, bool flicker, const std::string & filename);
     void tconMeasure(bool_vector_ptr rgbw, int start, int end, int step,

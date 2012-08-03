@@ -12,9 +12,9 @@
 namespace cms {
     namespace lcd {
 	namespace calibrate {
-	    enum QuantiType {
-		NearOriginal, Quadrant1, Quadrant3
-	    };
+	    /*enum QuantiType {
+	       NearOriginal, Quadrant1, Quadrant3
+	       }; */
 	    class ColorimetricQuantizer {
 	      public:
 		static RGB_vector_ptr colorimetricQuantization(RGB_vector_ptr dglut, int quadrant);
