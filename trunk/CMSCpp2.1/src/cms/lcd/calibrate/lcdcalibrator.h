@@ -174,7 +174,7 @@ namespace cms {
 		int initDefectCount;
 		double_array maxMeasureError;
 		bool colorimetricQuanti;
-		QuantiType quantiType;
+		//QuantiType quantiType;
 		 bptr < cms::lcd::calibrate::FeedbackFixer > feedbackFixer;
 		//==============================================================
 		//==============================================================
@@ -351,11 +351,6 @@ namespace cms {
 		//==============================================================
 
 
-		//==============================================================
-		// ¶q¤Æ
-		//==============================================================
-		static RGB_vector_ptr colorimetricQuantization(RGB_vector_ptr dglut, int quadrant);
-		//==============================================================
 		//==============================================================
 		// smooth
 		//==============================================================

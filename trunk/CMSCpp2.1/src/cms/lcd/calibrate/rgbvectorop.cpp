@@ -127,12 +127,16 @@ namespace cms {
 		    RGB_ptr rgb = (*result)[x];
 		    RGB_ptr nextrgb = (*result)[x - 1];
 		    //設定差異
+		    // 253~   : 2.5
+		    // 233~252: 2
+		    //    ~232: 1.5
 		    double diff = x > 252 ? 10 / 4. : (x > 232 ? 8 / 4. : 6 / 4.);
 		    double thisB = rgb->B;
 		    double nextB = nextrgb->B;
 		    if (thisB > nextB) {
 			nextrgb->B = thisB - diff;
 		    } else {
+			//代表有反轉
 			double preB = (*result)[x + 1]->B;
 			rgb->B = (preB + nextB) / 2.;
 			break;
@@ -690,27 +694,32 @@ namespace cms {
 	    };
 	    //==================================================================
 
-	  DeHook2Op::DeHook2Op(bptr < BitDepthProcessor > bitDepth,RGB_ptr _maxBDG, int _maxBDGGrayLevel):bitDepth(bitDepth),maxBDG(_maxBDG) {
-            this->maxBDGGrayLevel= _maxBDGGrayLevel;
+	  DeHook2Op::DeHook2Op(bptr < BitDepthProcessor > bitDepth, RGB_ptr _maxBDG, int _maxBDGGrayLevel):bitDepth(bitDepth),
+		maxBDG(_maxBDG)
+	    {
+		this->maxBDGGrayLevel = _maxBDGGrayLevel;
 	    };
 
 	    RGB_vector_ptr DeHook2Op::getRendering(RGB_vector_ptr source) {
 		int maxCount = bitDepth->getOutputMaxDigitalCount();
 		RGB_vector_ptr result = RGBVector::deepClone(source);
 		RGB_ptr rgb0 = (*result)[this->maxBDGGrayLevel];
-                rgb0->R= maxBDG->R;
-                rgb0->G= maxBDG->G;
-                rgb0->B= maxBDG->B;
+		rgb0->R = maxBDG->R;
+		rgb0->G = maxBDG->G;
+		rgb0->B = maxBDG->B;
 		RGB_ptr rgb1 = (*result)[maxCount];
 
-                /*
-                這邊不應該用DG作內插就好, 應該考量亮度是否meet target gamma
-                */
+		/*
+		   這邊不應該用DG作內插就好, 應該考量亮度是否meet target gamma
+		 */
 		for (int x = this->maxBDGGrayLevel + 1; x < maxCount; x++) {
 		    RGB_ptr rgb = (*result)[x];
-		    rgb->R = Interpolation::linear(this->maxBDGGrayLevel, maxCount, rgb0->R, rgb1->R, x);
-		    rgb->G = Interpolation::linear(this->maxBDGGrayLevel, maxCount, rgb0->G, rgb1->G, x);
-		    rgb->B = Interpolation::linear(this->maxBDGGrayLevel, maxCount, rgb0->B, rgb1->B, x);
+		    rgb->R =
+			Interpolation::linear(this->maxBDGGrayLevel, maxCount, rgb0->R, rgb1->R, x);
+		    rgb->G =
+			Interpolation::linear(this->maxBDGGrayLevel, maxCount, rgb0->G, rgb1->G, x);
+		    rgb->B =
+			Interpolation::linear(this->maxBDGGrayLevel, maxCount, rgb0->B, rgb1->B, x);
 		}
 
 		return result;

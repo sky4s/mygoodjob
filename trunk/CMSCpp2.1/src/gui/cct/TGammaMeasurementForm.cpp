@@ -39,6 +39,10 @@ void __fastcall TGammaMeasurementForm::Button_MeasureClick(TObject * Sender)
     (*rgbw)[1] = this->CheckBox_G->Checked;
     (*rgbw)[2] = this->CheckBox_B->Checked;
     (*rgbw)[3] = this->CheckBox_W->Checked;
+    int_vector_ptr backgroud(new int_vector(3));
+    (*backgroud)[0] = Edit_BackgroundR->Text.ToInt();
+    (*backgroud)[1] = Edit_BackgroundG->Text.ToInt();
+    (*backgroud)[2] = Edit_BackgroundB->Text.ToInt();
     bool flicker = this->CheckBox_FlickerFMA->Checked;
 
     if (false == (*rgbw)[0] && false == (*rgbw)[1] && false == (*rgbw)[2]
@@ -55,7 +59,7 @@ void __fastcall TGammaMeasurementForm::Button_MeasureClick(TObject * Sender)
     try {
 	Button_Measure->Enabled = false;
 	MainForm->showProgress(ProgressBar1);
-	if (measure(rgbw, getMeasureCondition(), flicker, stlfilename)) {
+	if (measure(rgbw, backgroud, getMeasureCondition(), flicker, stlfilename)) {
 	    MainForm->stopProgress(ProgressBar1);
 	    ShowMessage("Ok!");
 	    Util::shellExecute(stlfilename);
@@ -122,7 +126,7 @@ void TGammaMeasurementForm::setMeasureInfo()
 };
 
 //---------------------------------------------------------------------------
-bool TGammaMeasurementForm::measure(bool_vector_ptr rgbw,
+bool TGammaMeasurementForm::measure(bool_vector_ptr rgbw, int_vector_ptr background,
 				    bptr <
 				    cms::lcd::calibrate::MeasureCondition >
 				    measureCondition, bool flicker, const std::string & filename)
@@ -140,8 +144,8 @@ bool TGammaMeasurementForm::measure(bool_vector_ptr rgbw,
     mt->InverseMeasure = inverseMeasure;
     MeasureWindow->addWindowListener(mt);
     RampMeasureFile measureFile(filename, Create);
-
-    if (!debugMode) {
+    //debugMode = false;
+    if (!debugMode  ) {
 	run = true;
 	try {
 
@@ -149,7 +153,7 @@ bool TGammaMeasurementForm::measure(bool_vector_ptr rgbw,
 		int index = ch.getArrayIndex();
 		index = (Channel::W == ch) ? 3 : index;
 		if (true == (*rgbw)[index]) {
-		    vectors[index] = mt->rampMeasure(ch, measureCondition);
+		    vectors[index] = mt->rampMeasure(ch, background, measureCondition);
 		    if (null == vectors[index]) {
 			return false;
 		    }
@@ -163,7 +167,9 @@ bool TGammaMeasurementForm::measure(bool_vector_ptr rgbw,
 	}
 	measureFile.setMeasureData(vectors[3], vectors[0], vectors[1], vectors[2], false);
 	measureFile.setMeasureData(vectors[3], vectors[0], vectors[1], vectors[2], true);
-	measureFile.setDeltaData(vectors[3]);
+        if( null!=vectors[3]) {
+	  measureFile.setDeltaData(vectors[3]);
+        }
     }
     if (null != property) {
 	//property->store(measureFile);

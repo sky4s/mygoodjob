@@ -1,8 +1,8 @@
 object GammaMeasurementForm: TGammaMeasurementForm
-  Left = 822
-  Top = 412
-  Width = 336
-  Height = 424
+  Left = 550
+  Top = 307
+  Width = 406
+  Height = 407
   Caption = 'Gamma Measurement'
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
@@ -19,7 +19,7 @@ object GammaMeasurementForm: TGammaMeasurementForm
   TextHeight = 13
   object Copyright: TLabel
     Left = 34
-    Top = 373
+    Top = 357
     Width = 281
     Height = 13
     Caption = 'Copyright (C) 2012, AU Optronics Corp., All Right Reserved.'
@@ -224,12 +224,12 @@ object GammaMeasurementForm: TGammaMeasurementForm
   inline TOutputFileFrame1: TOutputFileFrame
     Left = 7
     Top = 260
-    Width = 314
+    Width = 386
     Height = 93
     TabOrder = 2
     inherited GroupBox_OutputFile: TGroupBox
-      Width = 314
-      Height = 90
+      Width = 378
+      Height = 74
       OnClick = Button_MeasureClick
       inherited Label5: TLabel
         Left = 7
@@ -237,7 +237,7 @@ object GammaMeasurementForm: TGammaMeasurementForm
       end
       inherited Label6: TLabel
         Left = 7
-        Top = 62
+        Top = 46
       end
       inherited Label_Warning: TLabel
         Left = 96
@@ -246,17 +246,17 @@ object GammaMeasurementForm: TGammaMeasurementForm
       inherited Edit_Prefix: TEdit
         Left = 91
         Top = 20
-        Width = 163
+        Width = 278
         Text = 'Measurement'
       end
       inherited Edit_Directory: TEdit
         Left = 91
-        Top = 62
-        Width = 163
+        Top = 46
+        Width = 230
       end
       inherited Button_BrowseDir: TButton
-        Left = 260
-        Top = 62
+        Left = 324
+        Top = 46
         Width = 46
         Height = 20
         OnClick = TOutputFileFrame1Button_BrowseDirClick
@@ -266,7 +266,7 @@ object GammaMeasurementForm: TGammaMeasurementForm
   object GroupBox3: TGroupBox
     Left = 260
     Top = 13
-    Width = 59
+    Width = 125
     Height = 215
     Caption = 'Color'
     TabOrder = 3
@@ -280,33 +280,72 @@ object GammaMeasurementForm: TGammaMeasurementForm
       State = cbChecked
       TabOrder = 0
     end
-    object CheckBox_R: TCheckBox
-      Left = 7
-      Top = 46
-      Width = 33
-      Height = 20
-      Caption = 'R'
+    object Panel3: TPanel
+      Left = 8
+      Top = 40
+      Width = 113
+      Height = 113
       TabOrder = 1
-    end
-    object CheckBox_G: TCheckBox
-      Left = 7
-      Top = 72
-      Width = 33
-      Height = 20
-      Caption = 'G'
-      TabOrder = 2
-    end
-    object CheckBox_B: TCheckBox
-      Left = 7
-      Top = 98
-      Width = 26
-      Height = 20
-      Caption = 'B'
-      TabOrder = 3
+      object CheckBox_B: TCheckBox
+        Left = 7
+        Top = 69
+        Width = 26
+        Height = 20
+        Caption = 'B'
+        TabOrder = 0
+      end
+      object CheckBox_R: TCheckBox
+        Left = 7
+        Top = 21
+        Width = 33
+        Height = 20
+        Caption = 'R'
+        TabOrder = 1
+      end
+      object CheckBox_G: TCheckBox
+        Left = 7
+        Top = 45
+        Width = 33
+        Height = 20
+        Caption = 'G'
+        TabOrder = 2
+      end
+      object GroupBox4: TGroupBox
+        Left = 40
+        Top = 8
+        Width = 65
+        Height = 97
+        Caption = 'Backgroud'
+        TabOrder = 3
+        object Edit_BackgroundR: TEdit
+          Left = 8
+          Top = 16
+          Width = 49
+          Height = 21
+          TabOrder = 0
+          Text = '0'
+        end
+        object Edit_BackgroundG: TEdit
+          Left = 8
+          Top = 40
+          Width = 49
+          Height = 21
+          TabOrder = 1
+          Text = '0'
+        end
+        object Edit_BackgroundB: TEdit
+          Left = 8
+          Top = 64
+          Width = 49
+          Height = 21
+          TabOrder = 2
+          Text = '0'
+        end
+      end
     end
   end
   object Button_Measure: TButton
-    Left = 260
+    Left = 324
     Top = 234
     Width = 59
     Height = 20
@@ -316,7 +355,7 @@ object GammaMeasurementForm: TGammaMeasurementForm
   end
   object ProgressBar1: TProgressBar
     Left = 8
-    Top = 352
+    Top = 336
     Width = 225
     Height = 17
     Min = 0

@@ -64,7 +64,7 @@ namespace cms {
 		feedbackFix = false;
 
 		colorimetricQuanti = true;
-		quantiType = NearOriginal;
+		//quantiType = NearOriginal;
 
 		autoIntensity = false;
 		smoothIntensity = false;
@@ -723,9 +723,6 @@ namespace cms {
 					       absoluteGamma,
 					       absoluteGammaStart,
 					       absGammaStartGLAboveGamma, effectiven);
-		    /*if (nil_double_vector_ptr == luminanceGammaCurve) {
-		       return nil_RGB_vector_ptr;
-		       } */
 		} else {
 		    luminanceGammaCurve =
 			getLuminanceGammaCurve(gammaCurve, maxLuminance, minLuminance);
@@ -841,7 +838,7 @@ namespace cms {
 			    STORE_RGBVECTOR("3.2_domain_dgcode.xls", clone);
 
 			    //進行smart quanti
-			    clone = colorimetricQuantization(clone, 0);	//11bit
+			    clone = ColorimetricQuantizer::colorimetricQuantization(clone, 0);	//11bit
 			    //用frc bit(11bit)去跑 feedback才是對的
 			    STORE_RGBVECTOR("3.3_smart0_dgcode.xls", clone);
 
@@ -896,15 +893,6 @@ namespace cms {
 		//==========================================================
 	    };			// end of newMethod
 
-	    //=================================================================
-	    // colorimetric quantization
-	    //=================================================================
-	    RGB_vector_ptr LCDCalibrator::
-		colorimetricQuantization(RGB_vector_ptr dglut, int quadrant) {
-		return ColorimetricQuantizer::colorimetricQuantization(dglut, quadrant);
-	    };
-
-	    //=================================================================
 
 	    /*
 	       從ch來挑選delta資料
@@ -986,7 +974,7 @@ namespace cms {
 		initialRGBGamma = rgbgamma->clone();
 		STORE_RGBGAMMA("1_rgbgamma_org.xls", rgbgamma);
 		/* TODO : bIntensityGain要確認 */
-		//老實講調intensity我覺得是很爛的作法
+		//老實講調intensity gain我覺得是很爛的作法
 		if (bIntensityGain != 1.0) {
 		    //重新產生目標gamma curve
 		    bptr < BIntensityGainOp >
@@ -1302,7 +1290,10 @@ namespace cms {
 
 	       effectiven有錯?
 	     */
-	    double_vector_ptr LCDCalibrator::getLuminanceGammaCurve(double_vector_ptr normalGammaCurve, double maxLuminance, double minLuminance, bool absGamma,	//
+	    double_vector_ptr LCDCalibrator::getLuminanceGammaCurve(double_vector_ptr normalGammaCurve,	//
+								    double maxLuminance,	//
+								    double minLuminance,	//
+								    bool absGamma,	//
 								    int absGammaStartGL,	//8
 								    double startGLAboveGamma,	//2.2
 								    int effectiven) {	//256
@@ -1318,6 +1309,8 @@ namespace cms {
 		    double startAbsoluteNormalOutput = GammaFinder::gamma(startNormalInput,
 									  startGLAboveGamma);
 		    double startAbsoluteLuminance = maxLuminance * startAbsoluteNormalOutput;
+
+
 		    //=========================================================
 		    // 2
 		    //=========================================================
@@ -1335,7 +1328,7 @@ namespace cms {
 
 
 		    //=========================================================
-		    // 4 找到turnGrayLevel
+		    // 4 找到turnGrayLevel, 若採用兩階段, 這邊的計算會是多餘的
 		    //=========================================================
 		    for (int x = absGammaStartGL; x < 255; x++) {
 			double normalInput = static_cast < double >(x) / (effectiven - 1);
@@ -1358,7 +1351,7 @@ namespace cms {
 		    //=========================================================
 		    double_vector_ptr newNormalGammaCurve(new double_vector());
 
-		    //相對gamma區間
+		    //相對gamma區間,
 		    for (int x = 0; x < turnGrayLevel; x++) {
 			//此區段設定順勢修正到abs gamma
 			double normalInput = static_cast < double >(x) / (effectiven - 1);
