@@ -107,7 +107,7 @@ namespace cms {
 	    Patch_vector_ptr rampMeasure(const Dep::Channel & channel,
 					 bptr <
 					 cms::lcd::calibrate::MeasureCondition > measureCondition);
-	    Patch_vector_ptr rampMeasure(const Dep::Channel & channel, int_vector_ptr backgroud,
+	    Patch_vector_ptr rampMeasure(const Dep::Channel & channel, int_vector_ptr background,
 					 bptr <
 					 cms::lcd::calibrate::MeasureCondition > measureCondition);
 	    Patch_vector_ptr rampMeasure(bptr < cms::lcd::calibrate::MeasureCondition >

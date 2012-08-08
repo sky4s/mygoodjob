@@ -25,11 +25,11 @@ namespace cms {
 	    static const std::string & Target;
 	    static const std::string & MultiGenTarget;
 	    static const std::string & LCDTarget;
-	    static const std::string & Measure;
+	    //static const std::string & Measure;
 	    const Dep::MaxValue & maxValue;
 	    void init();
 	    Component_vector_ptr getComponentVector(bool rgbFromGammaTable, int max);
-	    int measureID;
+	    //int measureID;
 	  public:
 	     DGLutFile(const std::string & filename, Mode mode);
 	     DGLutFile(const std::string & filename, Mode mode, const Dep::MaxValue & maxValue);
@@ -65,10 +65,10 @@ namespace cms {
 	       反正產生DG Code的時候還是可以生出來.
 
 	       選擇方案二, 所以不用刻意去縮減rgbgamma, 由setRawData自己去篩 */
-	    void setMeasure(Patch_vector_ptr patchList);
+	    /*void setMeasure(Patch_vector_ptr patchList);
 	    void addMeasure(Patch_ptr p);
 	    bool isMeasurePatchVectorAvailable();
-	    Patch_vector_ptr getMeasurePatchVector();
+	    Patch_vector_ptr getMeasurePatchVector();*/
 	};
 
 	class DGLutProperty {

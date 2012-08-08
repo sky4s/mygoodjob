@@ -128,6 +128,7 @@ namespace cms {
 	    static const std::string & DeltaData;
 	    static const std::string & OldGammaTable;
 	    void initBegin();
+	    int measureID;
 	  protected:
 	    static const std::string & GammaTable;
 	     bptr < ExcelFileDB > db;
@@ -137,7 +138,7 @@ namespace cms {
 	    void initPropertySheet();
 
 	    const static std::string & Sheet1;
-	    //virtual void init() = 0;
+	    static const std::string & Measure;
 	  public:
 	    void initSheet(const std::string & sheetname, int headerCount, ...);
 	    void initSheet(const std::string & sheetname, string_vector_ptr headerNames);
@@ -156,6 +157,11 @@ namespace cms {
 	    void setDeltaData(Patch_vector_ptr patchVector);
 	    void setGammaTable(RGB_vector_ptr dglut);
 	    RGB_vector_ptr getGammaTable(const Dep::MaxValue & maxValue);
+
+	    void setMeasure(Patch_vector_ptr patchList);
+	    void addMeasure(Patch_ptr p);
+	    bool isMeasurePatchVectorAvailable();
+	    Patch_vector_ptr getMeasurePatchVector();
 
 	};
 	class SimpleExcelAccess:protected ExcelAccessBase {

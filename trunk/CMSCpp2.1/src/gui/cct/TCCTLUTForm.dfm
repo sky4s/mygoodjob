@@ -417,7 +417,7 @@ object CCTLUTForm: TCCTLUTForm
       Top = 52
       Width = 97
       Height = 19
-      Caption = 'B Max (Smooth)'
+      Caption = 'B Max2 (Smooth)'
       TabOrder = 3
       Visible = False
       OnClick = CheckBox_BMax2Click
@@ -1066,6 +1066,7 @@ object CCTLUTForm: TCCTLUTForm
       Enabled = False
       TabOrder = 3
       Text = '0.0001'
+      Visible = False
     end
     object CheckBox_Feedback: TCheckBox
       Left = 26
