@@ -13,6 +13,9 @@ __fastcall TChangeLogForm::TChangeLogForm(TComponent * Owner)
 :TForm(Owner)
 {
     Memo1->Text = "\
+    [3.4 build 1.34] 2012/08/03\r\n\
+    +Gamma Measurement可設定背景功能\r\n\
+    \r\n\
     [3.4 build 1.31] 2012/06/12\r\n\
     -量測時間(Pattern Display Interval)改成500ms, 較為穩定\r\n\
     \r\n\

@@ -257,7 +257,7 @@ namespace cms {
 	    return rampMeasure(newMeasureCondition);
 	};
 	Patch_vector_ptr MeasureTool::rampMeasure(const Dep::
-						  Channel & channel, int_vector_ptr backgroud,
+						  Channel & channel, int_vector_ptr background,
 						  bptr <
 						  cms::lcd::calibrate::
 						  MeasureCondition > measureCondition) {
@@ -270,10 +270,10 @@ namespace cms {
 		} else {
 		    rgb = RGB_ptr(new RGBColor(c->getMaxValue()));
 		    rgb->setValue(channel, c->getValue(channel));
-		    if (null != backgroud) {
+		    if (null != background) {
 			foreach(const Channel & ch, *Channel::RGBChannel) {
 			    if (ch != channel) {
-				int bgcolor = (*backgroud)[ch.getArrayIndex()];
+				int bgcolor = (*background)[ch.getArrayIndex()];
 				rgb->setValue(ch, bgcolor);
 			    }
 			}

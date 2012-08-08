@@ -39,10 +39,10 @@ void __fastcall TGammaMeasurementForm::Button_MeasureClick(TObject * Sender)
     (*rgbw)[1] = this->CheckBox_G->Checked;
     (*rgbw)[2] = this->CheckBox_B->Checked;
     (*rgbw)[3] = this->CheckBox_W->Checked;
-    int_vector_ptr backgroud(new int_vector(3));
-    (*backgroud)[0] = Edit_BackgroundR->Text.ToInt();
-    (*backgroud)[1] = Edit_BackgroundG->Text.ToInt();
-    (*backgroud)[2] = Edit_BackgroundB->Text.ToInt();
+    int_vector_ptr background(new int_vector(3));
+    (*background)[0] = Edit_BackgroundR->Text.ToInt();
+    (*background)[1] = Edit_BackgroundG->Text.ToInt();
+    (*background)[2] = Edit_BackgroundB->Text.ToInt();
     bool flicker = this->CheckBox_FlickerFMA->Checked;
 
     if (false == (*rgbw)[0] && false == (*rgbw)[1] && false == (*rgbw)[2]
@@ -59,7 +59,7 @@ void __fastcall TGammaMeasurementForm::Button_MeasureClick(TObject * Sender)
     try {
 	Button_Measure->Enabled = false;
 	MainForm->showProgress(ProgressBar1);
-	if (measure(rgbw, backgroud, getMeasureCondition(), flicker, stlfilename)) {
+	if (measure(rgbw, background, getMeasureCondition(), flicker, stlfilename)) {
 	    MainForm->stopProgress(ProgressBar1);
 	    ShowMessage("Ok!");
 	    Util::shellExecute(stlfilename);
@@ -145,7 +145,7 @@ bool TGammaMeasurementForm::measure(bool_vector_ptr rgbw, int_vector_ptr backgro
     MeasureWindow->addWindowListener(mt);
     RampMeasureFile measureFile(filename, Create);
     //debugMode = false;
-    if (!debugMode  ) {
+    if (!debugMode) {
 	run = true;
 	try {
 
@@ -167,9 +167,14 @@ bool TGammaMeasurementForm::measure(bool_vector_ptr rgbw, int_vector_ptr backgro
 	}
 	measureFile.setMeasureData(vectors[3], vectors[0], vectors[1], vectors[2], false);
 	measureFile.setMeasureData(vectors[3], vectors[0], vectors[1], vectors[2], true);
-        if( null!=vectors[3]) {
-	  measureFile.setDeltaData(vectors[3]);
-        }
+	if (null != vectors[3]) {
+	    measureFile.setDeltaData(vectors[3]);
+	}
+
+	Patch_vector_ptr measurePatchVector = mm->MeasurePatchVector;
+	if (null != measurePatchVector && measurePatchVector->size() != 0) {
+	    measureFile.setMeasure(measurePatchVector);
+	}
     }
     if (null != property) {
 	//property->store(measureFile);
