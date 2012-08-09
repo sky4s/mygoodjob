@@ -562,6 +562,7 @@ object CCTLUTForm: TCCTLUTForm
       Height = 17
       Caption = 'Luminance Cal'
       TabOrder = 8
+      Visible = False
     end
     object CheckBox_YOnly: TCheckBox
       Left = 23
@@ -570,6 +571,7 @@ object CCTLUTForm: TCCTLUTForm
       Height = 17
       Caption = 'Y Only'
       TabOrder = 9
+      Visible = False
     end
   end
   object Button_MeaRun: TButton

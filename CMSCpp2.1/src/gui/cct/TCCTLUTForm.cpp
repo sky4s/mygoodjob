@@ -364,6 +364,8 @@ void __fastcall TCCTLUTForm::FormShow(TObject * Sender)
 	CheckBox_MaxYAdvAuto->Visible = true;
 
 	CheckBox_KeepMaxYInMultiGen->Visible = true;
+        CheckBox_LuminanceCalInMultiGen->Visible = true;
+        CheckBox_YOnly->Visible = true;
 
 	RadioButton_NewDeHook->Visible = true;
 	RadioGroup_NewDeHookPriority->Visible = true;
@@ -767,7 +769,7 @@ void __fastcall TCCTLUTForm::FormCreate(TObject * Sender)
 void __fastcall TCCTLUTForm::RadioButton_MaxYNativeClick(TObject * Sender)
 {
     if (RadioButton_MaxYNative->Checked && RadioButton_DeHookKeepCCT->Enabled) {
-	RadioButton_DeHookKeepCCT->Checked = true;
+	//RadioButton_DeHookKeepCCT->Checked = true;
     }
 }
 
