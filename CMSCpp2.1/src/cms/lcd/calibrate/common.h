@@ -44,6 +44,7 @@ namespace cms {
 		    Normal, Extend
 		};
 		const MeasureType type;
+		 bptr < cms::lcd::BitDepthProcessor > bitDepth;
 	      public:
 
 		 MeasureCondition(bptr < cms::lcd::BitDepthProcessor > bitDepth);
@@ -55,6 +56,8 @@ namespace cms {
 				  const int highEnd, const int highStep,
 				  const Dep::MaxValue & maxValue);
 		 MeasureCondition(RGB_vector_ptr rgbMeasureCode);
+		 MeasureCondition(RGB_vector_ptr rgbMeasureCode,
+				  bptr < cms::lcd::BitDepthProcessor > bitDepth);
 		 MeasureCondition(RGB_vector_ptr rgbMeasureCode, const int start, const int end);
 		RGB_vector_ptr getRGBMeasureCode();
 	      private:
