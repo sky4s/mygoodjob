@@ -66,9 +66,14 @@ namespace cms {
 				       highStart, highEnd, highStep), Channel::W, maxValue);
 	    };
 
-	  MeasureCondition::MeasureCondition(RGB_vector_ptr rgbMeasureCode):type(Normal), remapping(false)
+	  MeasureCondition::MeasureCondition(RGB_vector_ptr rgbMeasureCode):type(Normal), remapping(false), rgbMeasureCode(rgbMeasureCode)
 	    {
-		this->rgbMeasureCode = rgbMeasureCode;
+
+	    };
+
+	  MeasureCondition::MeasureCondition(RGB_vector_ptr rgbMeasureCode, bptr < cms::lcd::BitDepthProcessor > bitDepth):type(Normal), remapping(false), bitDepth(bitDepth), rgbMeasureCode(rgbMeasureCode)
+	    {
+
 	    };
 
 	    MeasureCondition::
@@ -161,14 +166,14 @@ namespace cms {
 
 	    };
 	    /*PanelRegulator::PanelRegulator(bptr < cms::lcd::BitDepthProcessor > bitDepth,
-					   bptr < i2c::TCONControl >
-					   tconctrl, int maxR, int maxG,
-					   int maxB):bitDepth(bitDepth), tconctrl(tconctrl) {
-		int max = bitDepth->getOutputMaxDigitalCount();
-		rgain = ((double) maxR) / max;
-		ggain = ((double) maxG) / max;
-		bgain = ((double) maxB) / max;
-	    };*/
+	       bptr < i2c::TCONControl >
+	       tconctrl, int maxR, int maxG,
+	       int maxB):bitDepth(bitDepth), tconctrl(tconctrl) {
+	       int max = bitDepth->getOutputMaxDigitalCount();
+	       rgain = ((double) maxR) / max;
+	       ggain = ((double) maxG) / max;
+	       bgain = ((double) maxB) / max;
+	       }; */
 	    PanelRegulator::PanelRegulator(bptr < cms::lcd::BitDepthProcessor > bitDepth,
 					   bptr < i2c::TCONControl >
 					   tconctrl, double maxR, double maxG,
@@ -207,17 +212,13 @@ namespace cms {
 	    //==================================================================
 
 
-	  /*GammaTestPanelRegulator::GammaTestPanelRegulator(bptr < cms::lcd::BitDepthProcessor > bitDepth, bptr < i2c::TCONControl > tconctrl, int maxR, int maxG, int maxB, bptr < MeasureCondition > measureCondition):PanelRegulator(bitDepth,
-			   tconctrl, maxR, maxG,
-			   maxB), measureCondition(measureCondition) {
-	    };*/
-	    GammaTestPanelRegulator::GammaTestPanelRegulator(bptr < cms::lcd::BitDepthProcessor >
-							     bitDepth,
-							     bptr < i2c::TCONControl > tconctrl,
-							     double maxR, double maxG, double maxB,
-							     bptr < MeasureCondition >
-							     measureCondition):PanelRegulator
-		(bitDepth, tconctrl, maxR, maxG, maxB), measureCondition(measureCondition) {
+	    /*GammaTestPanelRegulator::GammaTestPanelRegulator(bptr < cms::lcd::BitDepthProcessor > bitDepth, bptr < i2c::TCONControl > tconctrl, int maxR, int maxG, int maxB, bptr < MeasureCondition > measureCondition):PanelRegulator(bitDepth,
+	       tconctrl, maxR, maxG,
+	       maxB), measureCondition(measureCondition) {
+	       }; */
+	  GammaTestPanelRegulator::GammaTestPanelRegulator(bptr < cms::lcd::BitDepthProcessor > bitDepth, bptr < i2c::TCONControl > tconctrl, double maxR, double maxG, double maxB, bptr < MeasureCondition > measureCondition):PanelRegulator
+		(bitDepth, tconctrl, maxR, maxG, maxB),
+		measureCondition(measureCondition) {
 	    };
 	    void GammaTestPanelRegulator::setEnable(bool enable) {
 		setRemappingMode(enable);

@@ -101,7 +101,7 @@ bptr < cms::lcd::calibrate::MeasureCondition > TGammaMeasurementForm::getMeasure
 	}
 
 	measureTable = RGBVector::reverse(measureTable);
-	condition = bptr < MeasureCondition > (new MeasureCondition(measureTable));
+	condition = bptr < MeasureCondition > (new MeasureCondition(measureTable, bitDepth));
     }
     return condition;
 };
