@@ -43,6 +43,7 @@ namespace cms {
 		XYZ_vector_ptr multiGenTargetXYZVector;
 		int brightTurn;
 		int effectiveInputLevel;
+		int multiGenIndex;
 
 		//=============================================================
 		// Intensity Relative

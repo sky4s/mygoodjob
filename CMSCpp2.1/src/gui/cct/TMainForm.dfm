@@ -960,18 +960,18 @@ object MainForm: TMainForm
           OnClick = RadioButton_NormalClick
         end
         object RadioButton_HStripe: TRadioButton
-          Left = 7
-          Top = 35
+          Left = 71
+          Top = 51
           Width = 65
           Height = 15
-          Caption = 'H Stripe'
+          Caption = 'H Stripe I'
           TabOrder = 1
           OnClick = RadioButton_HStripeClick
         end
         object RadioButton_Indep: TRadioButton
           Left = 7
           Top = 51
-          Width = 65
+          Width = 58
           Height = 15
           Caption = 'Indep'
           TabOrder = 2
@@ -988,7 +988,7 @@ object MainForm: TMainForm
         end
         object RadioButton_FlickrPixel: TRadioButton
           Left = 71
-          Top = 35
+          Top = 19
           Width = 90
           Height = 15
           Caption = 'FlickrPixel'
@@ -997,7 +997,7 @@ object MainForm: TMainForm
         end
         object RadioButton_FlickrSubPixel: TRadioButton
           Left = 71
-          Top = 51
+          Top = 35
           Width = 90
           Height = 15
           Caption = 'FlickrSubPixel'
@@ -1005,9 +1005,9 @@ object MainForm: TMainForm
           OnClick = RadioButton_FlickrSubPixelClick
         end
         object RadioButton_Ninth: TRadioButton
-          Left = 71
-          Top = 19
-          Width = 65
+          Left = 7
+          Top = 35
+          Width = 58
           Height = 14
           Caption = '1/9'
           TabOrder = 6
@@ -1021,6 +1021,15 @@ object MainForm: TMainForm
           Caption = 'Line Adjoin'
           TabOrder = 7
           Visible = False
+        end
+        object RadioButton_HStripe2: TRadioButton
+          Left = 71
+          Top = 67
+          Width = 65
+          Height = 15
+          Caption = 'H Stripe II'
+          TabOrder = 8
+          OnClick = RadioButton_HStripe2Click
         end
       end
       object GroupBox6: TGroupBox

@@ -88,7 +88,7 @@ namespace cms {
 	    void AdvancedDGLutGenerator::init() {
 		stopMeasure = false;
 		rgbGenerateResult = nil_RGBGamma;
-		//useMaxBIntensityZone = 30;
+		multiGenIndex = -1;
 	    };
 
 
@@ -350,7 +350,6 @@ namespace cms {
 		return result;
 	    }
 
-
 	    RGB_vector_ptr AdvancedDGLutGenerator::
 		produceDGLutMulti(XYZ_vector_ptr targetXYZVector,
 				  Component_vector_ptr componentVector) {
@@ -381,6 +380,7 @@ namespace cms {
 		   但是targetXYZVector並不變, 是不是有可能導致做出來的結果會有clipping?
 		 */
 		for (int t = 0; t < c.multiGenTimes; t++) {
+		    multiGenIndex = t;
 		    RGBVector::changeMaxValue(result, bitDepth->getFRCAbilityBit());
 
 
@@ -408,6 +408,7 @@ namespace cms {
 		    STORE_RGBVECTOR("MultiGen_DG_" + _toString(t + 1) + ".xls", result);
 		}
 		multiGenTargetXYZVector = newTargetXYZVector;
+		multiGenIndex = -1;
 
 		return result;
 	    };
@@ -522,10 +523,18 @@ namespace cms {
 		bptr < IntensityMatrixFile > intensityMatrixFile;
 		if (FileExists(DEBUG_VERBOSE_STEP)) {
 		    MAKE_DEBUG_DIR();
-		    Util::deleteExist(debug_dir + "/intensityMatrix.xls");
+		    string intensityMatrixFilename;
+		    if (-1 != multiGenIndex) {
+			intensityMatrixFilename = debug_dir + "intensityMatrix-" +
+			    _toString(multiGenIndex) + ".xls";
+		    } else {
+			intensityMatrixFilename = debug_dir + "intensityMatrix.xls";
+		    }
+
+		    Util::deleteExist(intensityMatrixFilename);
 		    intensityMatrixFile =
 			bptr < IntensityMatrixFile >
-			(new IntensityMatrixFile(debug_dir + "/intensityMatrix.xls"));
+			(new IntensityMatrixFile(intensityMatrixFilename));
 		}
 #endif
 		//primary color只能用target white~
@@ -573,8 +582,9 @@ namespace cms {
 		    //=============================================================
 		    // intensity smooth(內插)
 		    // target white下才會啟用
+		    // 不能在multiGen下使用
 		    //=============================================================
-		    if (true == c.autoIntensity
+		    if (-1 == multiGenIndex && true == c.autoIntensity
 			&& true == c.smoothIntensity
 			&& x >= c.smoothIntensityStart && x <= c.smoothIntensityEnd) {
 

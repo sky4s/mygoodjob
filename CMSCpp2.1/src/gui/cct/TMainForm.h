@@ -20,6 +20,7 @@
 #include <i2c/i2ccontrol.h>
 #include <cms/measure/meter.h>	//20120302
 #include <cms/lcd/calibrate/include.h>	//20120302
+#include "TGammaMeasurementForm.h"
 
 extern bool g_bIsRunAgain;	//?明用于重?判?的?量g_bIsfRunAgain
 //---------------------------------------------------------------------------
@@ -129,6 +130,7 @@ class TMainForm:public TForm {
     TMenuItem *StabilityMeasure1;
     TGroupBox *GroupBox3;
     TCheckBox *CheckBox_InverseMeasure;
+    TRadioButton *RadioButton_HStripe2;
     void __fastcall About1Click(TObject * Sender);
     void __fastcall Exit1Click(TObject * Sender);
     void __fastcall TargetWhite1Click(TObject * Sender);
@@ -176,6 +178,7 @@ class TMainForm:public TForm {
     void __fastcall ChangeLog1Click(TObject * Sender);
     void __fastcall GammaMeasure1Click(TObject * Sender);
     void __fastcall StabilityMeasure1Click(TObject * Sender);
+    void __fastcall RadioButton_HStripe2Click(TObject * Sender);
   private:			// User declarations
     //==========================================================================
     // meter
@@ -264,6 +267,13 @@ class TMainForm:public TForm {
     void showProgress(TProgressBar * progress);
     void stopProgress(TProgressBar * progress);
     void setAllFunctionOn(bool on);
+    TGammaMeasurementForm *getGammaMeasurementForm() {
+	if (GammaMeasurementForm == null) {
+	    Application->CreateForm(__classid(TGammaMeasurementForm), &GammaMeasurementForm);
+
+	}
+	return GammaMeasurementForm;
+    };
 
 };
 

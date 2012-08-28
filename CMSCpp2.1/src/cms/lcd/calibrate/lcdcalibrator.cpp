@@ -1182,9 +1182,20 @@ namespace cms {
 		}
 
 		switch (keepMaxLuminance) {
+		case KeepMaxLuminance::TargetWhite:{
+			bptr < cms::measure::IntensityAnalyzerIF > analyzer =
+			    fetcher->getAnalyzer();
+			RGB_ptr targetRGB = analyzer->getReferenceRGB();
+			bptr < DGLutOp > setWhite(new SetWhiteOp(bitDepth, targetRGB));
+			dgop.addOp(setWhite);
+		    }
+		    break;
 		case KeepMaxLuminance::NativeWhite:{
-			bptr < DGLutOp > nativeWhite(new KeepNativeWhiteOp(bitDepth));
-			dgop.addOp(nativeWhite);
+			bptr < cms::measure::IntensityAnalyzerIF > analyzer =
+			    fetcher->getAnalyzer();
+			RGB_ptr targetRGB = analyzer->getReferenceRGB();
+			bptr < DGLutOp > setWhite(new SetWhiteOp(bitDepth, targetRGB));
+			dgop.addOp(setWhite);
 		    }
 		    //如果用上dehook2, maxBDGGrayLevel到白點需要內插, 使色度漸進到白點
 		    if (SecondWithBGap1st == dehook || SecondWithBGap1st == dehook) {

@@ -12,6 +12,7 @@
 #include "TOutputFileFrame.h"
 #include <ComCtrls.hpp>
 #include <cms/lcd/calibrate/lcdcalibrator.h>
+#include "TGammaMeasurementForm.h"
 //---------------------------------------------------------------------------
 class TCCTLUTForm:public TForm, cms::lcd::calibrate::FeedbackListener {
     __published:		// IDE-managed Components
@@ -154,6 +155,7 @@ class TCCTLUTForm:public TForm, cms::lcd::calibrate::FeedbackListener {
     void __fastcall RadioButton_NewDeHookClick(TObject * Sender);
     void __fastcall RadioButton_DeHookKeepCCTClick(TObject * Sender);
     void __fastcall RadioButton_DeHookNoneClick(TObject * Sender);
+    void __fastcall Button1Click(TObject * Sender);
   private:			// User declarations
     void setMeasureInfo();
     int serialid;
@@ -163,6 +165,7 @@ class TCCTLUTForm:public TForm, cms::lcd::calibrate::FeedbackListener {
 
     bptr < cms::measure::MaxMatrixIntensityAnalyzer > secondWhiteAnalyzer;
     const bool debugMode;
+    TGammaMeasurementForm *gammaMeasureForm;
   public:			// User declarations
     __fastcall TCCTLUTForm(TComponent * Owner);
     void setBitDepthProcessor(bptr < cms::lcd::BitDepthProcessor > bitDepth);

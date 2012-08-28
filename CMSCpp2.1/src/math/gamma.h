@@ -21,9 +21,11 @@ namespace math {
 				   double inputMinValue,
 				   double outputMinValue,
 				   double inputMaxValue, double outputMaxValue);
+	static double findingGamma(double input, double output);
 	static double_vector_ptr normalize(double_vector_ptr valueArray,
 					   double minValue, double maxValue);
 	static double gamma(double input, double gamma);
+
 	static double_vector_ptr gamma(double_vector_ptr input, double gamma);
 	static double getGammaExponential(double normalInput, double normalOutput);
       protected:

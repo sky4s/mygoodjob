@@ -76,8 +76,8 @@ namespace cms {
 		      "RP_Intensity_Fix", "GP_Intensity_Fix", "BP_Intensity_Fix");
 	    initPropertySheet();
 	    /*initSheet(Measure, 12, "id", "R", "G", "B", "X", "Y (nit)", "Z", "_x", "_y",
-		      "R12", "G12", "B12");
-	    measureID = 1;*/
+	       "R12", "G12", "B12");
+	       measureID = 1; */
 	};
 
 
@@ -479,100 +479,7 @@ namespace cms {
 	RGB_vector_ptr DGLutFile::getGammaTable() {
 	    return ExcelAccessBase::getGammaTable(maxValue);
 	};
-	/*bool DGLutFile::isMeasurePatchVectorAvailable() {
-	    return db->isTableExist(Measure);
-	};
-	Patch_vector_ptr DGLutFile::getMeasurePatchVector() {
 
-	    if (!db->isTableExist(Measure)) {
-		return nil_Patch_vector_ptr;
-	    }
-
-	    db->setTableName(Measure);
-	    bptr < DBQuery > query = db->selectAll();
-	    int index = 0;
-	    Patch_vector_ptr patchVector(new Patch_vector());
-
-	    while (query->hasNext()) {
-		string_vector_ptr result = query->nextResult();
-		string id = (*result)[0];
-		string_ptr name(new string(id));
-		double R = _toDouble((*result)[1]);
-		double G = _toDouble((*result)[2]);
-		double B = _toDouble((*result)[3]);
-
-		double X = _toDouble((*result)[4]);
-		double Y = _toDouble((*result)[5]);
-		double Z = _toDouble((*result)[6]);
-
-		RGB_ptr rgb(new RGBColor(R, G, B));
-		XYZ_ptr XYZ(new CIEXYZ(X, Y, Z));
-		Patch_ptr p(new Patch(name, XYZ, nil_XYZ_ptr, rgb));
-		patchVector->push_back(p);
-	    };
-	    return patchVector;
-
-	};
-
-	void DGLutFile::addMeasure(Patch_ptr p) {
-	    //==================================================================
-	    // 初始資料設定
-	    //==================================================================
-	    const int headerCount = 12;
-	    string_vector_ptr values(new string_vector(headerCount));
-
-
-	    (*values)[0] = _toString(measureID++);
-
-	    double r = -1, g = -1, b = -1;
-	    RGB_ptr rgb = p->getRGB();
-	    if (null != rgb) {
-		r = rgb->getValue(Channel::R, MaxValue::Double255);
-		g = rgb->getValue(Channel::G, MaxValue::Double255);
-		b = rgb->getValue(Channel::B, MaxValue::Double255);
-	    }
-	    (*values)[1] = _toString(r);
-	    (*values)[2] = _toString(g);
-	    (*values)[3] = _toString(b);
-
-	    XYZ_ptr XYZ = p->getXYZ();
-	    (*values)[4] = _toString(XYZ->X);
-	    (*values)[5] = _toString(XYZ->Y);
-	    (*values)[6] = _toString(XYZ->Z);
-
-	    xyY_ptr xyY(new CIExyY(XYZ));
-	    (*values)[7] = _toString(xyY->x);
-	    (*values)[8] = _toString(xyY->y);
-
-	    double r12 = -1, g12 = -1, b12 = -1;
-	    if (null != rgb) {
-		r12 = rgb->getValue(Channel::R, MaxValue::Int12Bit);
-		g12 = rgb->getValue(Channel::G, MaxValue::Int12Bit);
-		b12 = rgb->getValue(Channel::B, MaxValue::Int12Bit);
-	    }
-	    (*values)[9] = _toString(r12);
-	    (*values)[10] = _toString(g12);
-	    (*values)[11] = _toString(b12);
-
-	    this->insertData(Measure, values, false);
-	}
-
-
-	void DGLutFile::setMeasure(Patch_vector_ptr patchList) {
-
-	    //==================================================================
-	    // 初始資料設定
-	    //==================================================================
-	    //const int headerCount = 12;
-	    //string_vector_ptr values(new string_vector(headerCount));
-	    int size = patchList->size();
-	    //==================================================================
-
-	    foreach(Patch_ptr p, *patchList) {
-		addMeasure(p);
-	    }
-
-	};*/
 	//======================================================================
 
 
@@ -744,8 +651,11 @@ namespace cms {
 	    case KeepMaxLuminance::TargetLuminance:
 		keepstr = "Target Luminance(Align Luminance Only)";
 		break;
-	    case KeepMaxLuminance::TargetWhite:
-		keepstr = "Target White";
+	    case KeepMaxLuminance::TargetWhite:{
+		    keepstr = "Target White";
+		    string smoothIntensity = c->smoothIntensity ? On : Off;
+		    dgfile.addProperty("Smooth Intensity", smoothIntensity);
+		}
 		break;
 	    case KeepMaxLuminance::NativeWhite:
 		keepstr = "Native White";
@@ -764,6 +674,8 @@ namespace cms {
 		}
 		dgfile.addProperty("keep max lumi adv over", c->keepMaxLumiOver);
 	    }
+
+
 	    if (None == c->DeHookMode) {
 		dgfile.addProperty("dehook mode", "None");
 	    } else {

@@ -97,16 +97,28 @@ namespace cms {
 
 	    /*
 	       純粹將EffectiveLevel以後的值全部設成最大值
+	       deprecated
 	     */
-	    class KeepNativeWhiteOp:public DGLutOp {
+	    /*class KeepNativeWhiteOp:public DGLutOp {
+	       private:
+	       bptr < BitDepthProcessor > bitDepth;
+	       protected:
+	       RGB_vector_ptr getRendering(RGB_vector_ptr source);
+	       public:
+	       KeepNativeWhiteOp(bptr < BitDepthProcessor > bitDepth);
+
+	       }; */
+
+	    class SetWhiteOp:public DGLutOp {
 	      private:
 		bptr < BitDepthProcessor > bitDepth;
+		RGB_ptr setRGB;
 	      protected:
-		RGB_vector_ptr getRendering(RGB_vector_ptr source);
+		 RGB_vector_ptr getRendering(RGB_vector_ptr source);
 	      public:
-		KeepNativeWhiteOp(bptr < BitDepthProcessor > bitDepth);
-
+		 SetWhiteOp(bptr < BitDepthProcessor > bitDepth, RGB_ptr setRGB);
 	    };
+
 
 	    class KeepNativeWhiteSmoothOp:public DGLutOp {
 	      private:
@@ -119,41 +131,49 @@ namespace cms {
 		 KeepNativeWhiteSmoothOp(bptr < BitDepthProcessor > bitDepth, int over,
 					 bool compensationR);
 	    };
+
+
 	    //=================================================================
-	    // dprecated
+	    // deprecated
 	    //=================================================================
-	    class DimDGLutFixOp:public DGLutOp {
+	    /*class DimDGLutFixOp:public DGLutOp {
+	       protected:
+	       bptr < BitDepthProcessor > bitDepth;
+	       double dimFixThreshold;
+	       //const double suitGapx, suitGapy;
+	       //double targetGapx, targetGapy;
+	       Component_vector_ptr componentVector;
+	       bptr < ChromaticityAdjustEstimatorIF > adjustEstimator;
+
+	       static int getDefectType(bool dxdefect, bool dydefect);
+	       static int_array getDefectTypeArray(double2D_ptr deltaxyValues, double thresholdx,
+	       double thresholdy);
+	       static double2D_ptr getDeltaxyValues(Component_vector_ptr componentVector);
+	       int getSuitAdjustGrayLevel(int middleGrayLevel, double delta,
+	       double_array coordinatorArray);
+	       double_array getCoordinatorArray(int grayLevel, bool getCoordinatorX);
+	       bool isSuitGap(double_array coordinatorArray);
+
+	       RGB_vector_ptr getRendering(RGB_vector_ptr source);
+	       public:
+	       DimDGLutFixOp(bptr < BitDepthProcessor > bitDepth, double dimFixThreshold,
+	       Component_vector_ptr componentVector,
+	       bptr < ChromaticityAdjustEstimatorIF > adjustEstimator);
+	       enum DefectType {
+	       None, Type0, Type1x, Type1y, Type2, Type12, Type21, Type3, Type4
+	       };
+	       }; */
+	    //=================================================================
+	    class DimDGLutFixOp2 /*:public DimDGLutFixOp */  {
 	      protected:
 		bptr < BitDepthProcessor > bitDepth;
 		double dimFixThreshold;
-		//const double suitGapx, suitGapy;
-		//double targetGapx, targetGapy;
 		Component_vector_ptr componentVector;
 		 bptr < ChromaticityAdjustEstimatorIF > adjustEstimator;
-
-		static int getDefectType(bool dxdefect, bool dydefect);
-		static int_array getDefectTypeArray(double2D_ptr deltaxyValues, double thresholdx,
-						    double thresholdy);
-		static double2D_ptr getDeltaxyValues(Component_vector_ptr componentVector);
-		int getSuitAdjustGrayLevel(int middleGrayLevel, double delta,
-					   double_array coordinatorArray);
-		double_array getCoordinatorArray(int grayLevel, bool getCoordinatorX);
-		bool isSuitGap(double_array coordinatorArray);
-
-		RGB_vector_ptr getRendering(RGB_vector_ptr source);
-	      public:
-		 DimDGLutFixOp(bptr < BitDepthProcessor > bitDepth, double dimFixThreshold,
-			       Component_vector_ptr componentVector,
-			       bptr < ChromaticityAdjustEstimatorIF > adjustEstimator);
-		enum DefectType {
-		    None, Type0, Type1x, Type1y, Type2, Type12, Type21, Type3, Type4
-		};
-	    };
-	    //=================================================================
-	    class DimDGLutFixOp2:public DimDGLutFixOp {
-	      protected:
 		RGB_vector_ptr getRendering(RGB_vector_ptr source);
 		bool_array getDefectArray(double2D_ptr deltaxyValues, double threshold, int index);
+
+		static double2D_ptr getDeltaxyValues(Component_vector_ptr componentVector);
 	      public:
 		 DimDGLutFixOp2(bptr < BitDepthProcessor > bitDepth, double dimFixThreshold,
 				Component_vector_ptr componentVector,
