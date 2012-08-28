@@ -13,6 +13,9 @@ __fastcall TChangeLogForm::TChangeLogForm(TComponent * Owner)
 :TForm(Owner)
 {
     Memo1->Text = "\
+    [3.4 build 1.37] 2012/08/24\r\n\
+    +Target White下Gamma Curve修正\r\n\
+    \r\n\
     [3.4 build 1.34] 2012/08/03\r\n\
     +Gamma Measurement可設定背景功能\r\n\
     \r\n\

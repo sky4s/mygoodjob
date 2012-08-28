@@ -22,13 +22,13 @@ namespace cms {
 
 	 RampMeasureFile::RampMeasureFile(const std::string & fileName,
 					  const Mode mode):ExcelAccessBase(fileName, mode) {
-	    initSheet(Sheet1, 21, "Gray Level", "W_x", "W_y", "W_Y (nit)",
-		      "W_CCT", "ΔUV", "W_R", "W_G", "W_B", "R_x", "R_y",
+	    initSheet(Sheet1, 22, "Gray Level", "W_x", "W_y", "W_Y (nit)",
+		      "W_CCT", "ΔUV", "W_R", "W_G", "W_B", "W_Gamma", "R_x", "R_y",
 		      "R_Y (nit)", "G_x", "G_y", "G_Y (nit)", "B_x", "B_y", "B_Y (nit)", "DG_R",
 		      "DG_G", "DG_B");
-	    initSheet(Sheet2, 21, "Gray Level", "W_X", "W_Y (nit)", "W_Z", "W_CCT", "ΔUV", "W_R",
-		      "W_G", "W_B", "R_X", "R_Y (nit)", "R_Z", "G_X", "G_Y (nit)", "G_Z", "B_X",
-		      "B_Y (nit)", "B_Z", "DG_R", "DG_G", "DG_B");
+	    initSheet(Sheet2, 22, "Gray Level", "W_X", "W_Y (nit)", "W_Z", "W_CCT", "ΔUV", "W_R",
+		      "W_G", "W_B", "W_Gamma", "R_X", "R_Y (nit)", "R_Z", "G_X", "G_Y (nit)", "G_Z",
+		      "B_X", "B_Y (nit)", "B_Z", "DG_R", "DG_G", "DG_B");
 	    initPropertySheet();
 	};
 
@@ -78,21 +78,25 @@ namespace cms {
 	       throw IllegalArgumentException();
 	       } */
 	    int size = -1;
+	    int wsize = -1;
 	    if (null != wMeasureData) {
 		size = getMaximumSize(wMeasureData, rMeasureData, gMeasureData, bMeasureData);
 	    } else {
 		size = getMaximumSize(wMeasureData2, rMeasureData, gMeasureData, bMeasureData);
+		wsize = wMeasureData2->size();
 	    }
+	    bool skipFirstLevel = (257 == wsize);
 
 	    //==================================================================
 	    //==================================================================
 	    // 初始資料設定
 	    //==================================================================
-	    string_vector_ptr values(new string_vector(21));
+	    string_vector_ptr values(new string_vector(22));
 	    //==================================================================
 	    //==================================================================
 	    // 迴圈處理
 	    //==================================================================
+	    double maxLuminance = -1;
 	    for (int x = 0; x < size; x++) {
 		if (wMeasureData != null) {
 		    Component_ptr c = (*wMeasureData)[x];
@@ -118,10 +122,12 @@ namespace cms {
 		    } else {
 			StringVector::setContent(values, "-1", 3, 6, 7, 8);
 		    }
+		    (*values)[9] = -1;	//gamma
+
 		    RGB_ptr rgb = c->rgb;
-		    (*values)[18] = _toString(rgb->R);
-		    (*values)[19] = _toString(rgb->G);
-		    (*values)[20] = _toString(rgb->B);
+		    (*values)[19] = _toString(rgb->R);
+		    (*values)[20] = _toString(rgb->G);
+		    (*values)[21] = _toString(rgb->B);
 		} else if (wMeasureData2 != null) {
 		    Patch_ptr p = (*wMeasureData2)[x];
 		    int w = static_cast < int >(p->getRGB()->getValue(Channel::W));
@@ -140,41 +146,55 @@ namespace cms {
 		    (*values)[5] = _toString(duv);
 		    StringVector::setContent(values, "-1", 3, 6, 7, 8);
 
+
+		    if (-1 == maxLuminance && (skipFirstLevel ? 1 == x : true)) {
+			maxLuminance = XYZValues[1];
+		    }
+		    int level = wsize - x - 1;
+		    if (level < (skipFirstLevel ? 255 : 256)) {
+			(*values)[9] =
+			    _toString(math::GammaFinder::
+				      findingGamma(level / (wsize - 1),
+						   XYZValues[1] / maxLuminance));
+		    } else {
+			(*values)[9] = _toString(-1);
+		    }
+
 		    RGB_ptr rgb = p->getRGB();
-		    (*values)[18] = _toString(rgb->R);
-		    (*values)[19] = _toString(rgb->G);
-		    (*values)[20] = _toString(rgb->B);
+		    (*values)[19] = _toString(rgb->R);
+		    (*values)[20] = _toString(rgb->G);
+		    (*values)[21] = _toString(rgb->B);
 		} else {
-		    StringVector::setContent(values, "0", 12, 0, 1, 2, 3, 4, 5, 6, 7, 8, 18, 19,
-					     20);
+		    StringVector::setContent(values, "0", 13, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 19, 20,
+					     21);
 		}
 
 		if (rMeasureData != null) {
 		    Patch_ptr p = (*rMeasureData)[x];
 		    double_array XYZValues = getValues(p->getXYZ(), XYZMode);
-		    (*values)[9] = _toString(XYZValues[0]);
-		    (*values)[10] = _toString(XYZValues[1]);
-		    (*values)[11] = _toString(XYZValues[2]);
+		    (*values)[10] = _toString(XYZValues[0]);
+		    (*values)[11] = _toString(XYZValues[1]);
+		    (*values)[12] = _toString(XYZValues[2]);
 		} else {
-		    StringVector::setContent(values, "0", 3, 9, 10, 11);
+		    StringVector::setContent(values, "0", 3, 10, 11, 12);
 		}
 		if (gMeasureData != null) {
 		    Patch_ptr p = (*gMeasureData)[x];
 		    double_array XYZValues = getValues(p->getXYZ(), XYZMode);
-		    (*values)[12] = _toString(XYZValues[0]);
-		    (*values)[13] = _toString(XYZValues[1]);
-		    (*values)[14] = _toString(XYZValues[2]);
+		    (*values)[13] = _toString(XYZValues[0]);
+		    (*values)[14] = _toString(XYZValues[1]);
+		    (*values)[15] = _toString(XYZValues[2]);
 		} else {
-		    StringVector::setContent(values, "0", 3, 12, 13, 14);
+		    StringVector::setContent(values, "0", 3, 13, 14, 15);
 		}
 		if (bMeasureData != null) {
 		    Patch_ptr p = (*bMeasureData)[x];
 		    double_array XYZValues = getValues(p->getXYZ(), XYZMode);
-		    (*values)[15] = _toString(XYZValues[0]);
-		    (*values)[16] = _toString(XYZValues[1]);
-		    (*values)[17] = _toString(XYZValues[2]);
+		    (*values)[16] = _toString(XYZValues[0]);
+		    (*values)[17] = _toString(XYZValues[1]);
+		    (*values)[18] = _toString(XYZValues[2]);
 		} else {
-		    StringVector::setContent(values, "0", 3, 15, 16, 17);
+		    StringVector::setContent(values, "0", 3, 16, 17, 18);
 		}
 
 		this->insertData(XYZMode ? Sheet2 : Sheet1, values, false);

@@ -31,10 +31,9 @@
 
  final: 最後決議拉
  */
-/*Enumeration(WindowPattern)
-    Normal, HStripe, Indepedent, EnumerationEnd();*/
+ 
 enum Pattern {
-    Normal, HStripe, Indepedent, HSD, FlickrPixel, FlickrSubPixel, Ninth
+    Normal, HStripe,HStripe2, Indepedent, HSD, FlickrPixel, FlickrSubPixel, Ninth
 };
 enum PatternSource {
     PC, TCON, DGLUT

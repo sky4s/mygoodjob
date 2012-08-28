@@ -66,9 +66,9 @@ namespace cms {
 
 	       選擇方案二, 所以不用刻意去縮減rgbgamma, 由setRawData自己去篩 */
 	    /*void setMeasure(Patch_vector_ptr patchList);
-	    void addMeasure(Patch_ptr p);
-	    bool isMeasurePatchVectorAvailable();
-	    Patch_vector_ptr getMeasurePatchVector();*/
+	       void addMeasure(Patch_ptr p);
+	       bool isMeasurePatchVectorAvailable();
+	       Patch_vector_ptr getMeasurePatchVector(); */
 	};
 
 	class DGLutProperty {

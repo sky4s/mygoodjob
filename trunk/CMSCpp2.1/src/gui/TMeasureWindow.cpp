@@ -117,7 +117,18 @@ void TMeasureWindow::setRGB(int r, int g, int b)
 	//=========================================================================
 	TColor color = (TColor) ((b << 16) + (g << 8) + r);
 	switch (pattern) {
-	case HStripe:{
+	case HStripe:
+	case HStripe2:
+	    {
+		TColor color1, color2;
+		if (pattern == HStripe) {
+		    color1 = color;
+		    color2 = clBlack;
+		} else {
+		    color1 = clBlack;
+		    color2 = color;
+		}
+
 		bptr < DoubleBufferedCanvas > doubleBuffered = getDoubleBufferedCanvas();
 		TCanvas *canvas = doubleBuffered->getDoubleBufferedCanvas();
 		int w = this->Width;
@@ -125,9 +136,9 @@ void TMeasureWindow::setRGB(int r, int g, int b)
 		for (int y = 0; y < h; y++) {
 		    canvas->PenPos = TPoint(0, y);
 		    if (y % 2 == 0) {
-			canvas->Pen->Color = color;
+			canvas->Pen->Color = color1;
 		    } else {
-			canvas->Pen->Color = clBlack;
+			canvas->Pen->Color = color2;
 		    }
 		    canvas->LineTo(w, y);
 		}

@@ -41,14 +41,7 @@ void TCCTLUTForm::setMeasureInfo()
     this->ComboBox_LevelStep->Text = Util::toString(step).c_str();
 };
 
-
 //---------------------------------------------------------------------------
-
-
-
-
-
-
 
 void __fastcall TCCTLUTForm::Button_MeaRunClick(TObject * Sender)
 {
@@ -75,8 +68,8 @@ void __fastcall TCCTLUTForm::Button_MeaRunClick(TObject * Sender)
 	}
 	Button_MeaRun->Enabled = false;
 	MainForm->showProgress(ProgressBar1);
-	String_ptr astr = this->TOutputFileFrame1->getOutputFilename();
-	string filename = astr->c_str();
+	//String_ptr astr = this->TOutputFileFrame1->getOutputFilename();
+	string filename = this->TOutputFileFrame1->getOutputFilename()->c_str();
 
 	MainForm->initAnalyzer();
 	MainForm->setMeterMeasurementWaitTimes();
@@ -279,6 +272,8 @@ void __fastcall TCCTLUTForm::Button_MeaRunClick(TObject * Sender)
 	    RGB_vector_ptr checkResult = RGBVector::deepClone(dglut);
 	    RGBVector::changeMaxValue(checkResult, bitDepth->getFRCAbilityBit());
 	    MainForm->stopProgress(ProgressBar1);
+
+
 	    if (RGBVector::isAscend(checkResult, 0, bitDepth->getOutputMaxDigitalCount())) {
 		//檢查是否遞增且無疊階
 		ShowMessage("Ok!");
@@ -286,6 +281,30 @@ void __fastcall TCCTLUTForm::Button_MeaRunClick(TObject * Sender)
 		ShowMessage("Warning: It's not ascend!(inverse)");
 	    }
 	    dgLutFile.reset();
+
+	    int button = MessageDlg("Do verify measurement? ", mtConfirmation,
+				    TMsgDlgButtons() << mbYes << mbNo,
+				    0);
+	    if (false && button == mrYes) {
+		bool_vector_ptr rgbw(new bool_vector(4));
+		(*rgbw)[0] = false;
+		(*rgbw)[1] = false;
+		(*rgbw)[2] = false;
+		(*rgbw)[3] = true;
+
+		int_vector_ptr background(new int_vector(3));
+		(*background)[0] = 0;
+		(*background)[1] = 0;
+		(*background)[2] = 0;
+
+		bptr < MeasureCondition > condition(new MeasureCondition(dglut, bitDepth));
+
+		gammaMeasureForm = MainForm->getGammaMeasurementForm();
+		string verifyFilename = filename + "-verify.xls";
+		Util::deleteExist(verifyFilename);
+		gammaMeasureForm->measure(rgbw, background, condition, false, verifyFilename);
+	    }
+
 	    Util::shellExecute(filename);
 	}
 	catch(java::lang::IllegalStateException & ex) {
@@ -364,8 +383,8 @@ void __fastcall TCCTLUTForm::FormShow(TObject * Sender)
 	CheckBox_MaxYAdvAuto->Visible = true;
 
 	CheckBox_KeepMaxYInMultiGen->Visible = true;
-        CheckBox_LuminanceCalInMultiGen->Visible = true;
-        CheckBox_YOnly->Visible = true;
+	CheckBox_LuminanceCalInMultiGen->Visible = true;
+	CheckBox_YOnly->Visible = true;
 
 	RadioButton_NewDeHook->Visible = true;
 	RadioGroup_NewDeHookPriority->Visible = true;
@@ -813,4 +832,13 @@ void __fastcall TCCTLUTForm::RadioButton_DeHookNoneClick(TObject * Sender)
 
 //---------------------------------------------------------------------------
 
+void __fastcall TCCTLUTForm::Button1Click(TObject * Sender)
+{
+    int button =
+	MessageDlg("Do verify measurement? ", mtConfirmation, TMsgDlgButtons() << mbYes << mbNo,
+		   0);
+
+}
+
+//---------------------------------------------------------------------------
 

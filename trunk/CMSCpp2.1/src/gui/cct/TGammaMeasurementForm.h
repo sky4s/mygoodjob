@@ -68,9 +68,7 @@ class TGammaMeasurementForm:public TForm {
   private:			// User declarations
      bptr < cms::lcd::BitDepthProcessor > bitDepth;
     void setMeasureInfo();
-    bool measure(bool_vector_ptr rgbw, int_vector_ptr background,
-		 bptr < cms::lcd::calibrate::MeasureCondition >
-		 measureCondition, bool flicker, const std::string & filename);
+
     void tconMeasure(bool_vector_ptr rgbw, int start, int end, int step,
 		     const std::string & filename);
      bptr < cms::measure::MeterMeasurement > mm;
@@ -86,6 +84,10 @@ class TGammaMeasurementForm:public TForm {
   public:			// User declarations
      __fastcall TGammaMeasurementForm(TComponent * Owner);
     void setBitDepthProcessor(bptr < cms::lcd::BitDepthProcessor > bitDepth);
+    bool measure(bool_vector_ptr rgbw, int_vector_ptr background,
+		 bptr < cms::lcd::calibrate::MeasureCondition >
+		 measureCondition, bool flicker, const std::string & filename);
+    void stopMeasure(TObject * Sender);
 };
 //---------------------------------------------------------------------------
 extern PACKAGE TGammaMeasurementForm *GammaMeasurementForm;

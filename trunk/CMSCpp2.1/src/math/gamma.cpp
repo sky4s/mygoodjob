@@ -50,6 +50,10 @@ namespace math {
 	return findingGamma(normalize[0], normalize[1]);
     };
 
+    double GammaFinder::findingGamma(double input, double output) {
+	return Math::log(output) / Math::log(input);
+    };
+
     double_vector_ptr GammaFinder::normalize(double_vector_ptr valueArray,
 					     double minValue, double maxValue) {
 	double_vector_ptr normal = DoubleArray::minus(valueArray, minValue);
