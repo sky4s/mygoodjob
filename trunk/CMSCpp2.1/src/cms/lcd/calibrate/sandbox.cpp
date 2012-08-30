@@ -359,6 +359,7 @@ namespace cms {
 		int whiteLevel = bitDepth->getEffectiveInputLevel();
 		bool keepMaxLumiInMulti = c.keepMaxYInMultiGen;
 		if (keepMaxLumiInMulti) {
+		    //找到白點的DG
 		    RGB_ptr whiteRGB = (*initRGBVector)[whiteLevel - 1];
 		    whiteRGB->R = whiteRGB->G = whiteRGB->B = bitDepth->getOutputMaxDigitalCount();
 		}
@@ -395,7 +396,7 @@ namespace cms {
 		    fetcher->FeedbackMessage = "";
 		    STORE_COMPONENT("MultiGen_Component_" +
 				    _toString(t + 1) + ".xls", componentVectorPrime);
-		    //此時用的是最一開始的target XYZ
+		    //此時用的是最一開始的target XYZ, 這樣好嗎?
 		    newTargetXYZVector = scaleTargetXYZVector(targetXYZVector, referenceXYZ->Y);
 		    result =
 			produceDGLut(newTargetXYZVector, componentVectorPrime,
@@ -526,9 +527,9 @@ namespace cms {
 		    string intensityMatrixFilename;
 		    if (-1 != multiGenIndex) {
 			intensityMatrixFilename = debug_dir + "intensityMatrix-" +
-			    _toString(multiGenIndex) + ".xls";
+			    _toString(multiGenIndex + 1) + ".xls";
 		    } else {
-			intensityMatrixFilename = debug_dir + "intensityMatrix.xls";
+			intensityMatrixFilename = debug_dir + "intensityMatrix-0.xls";
 		    }
 
 		    Util::deleteExist(intensityMatrixFilename);

@@ -1007,6 +1007,8 @@ void __fastcall TMainForm::Button_I2CTestClick(TObject * Sender)
 {
     if (I2CTestForm == null) {
 	Application->CreateForm(__classid(TI2CTestForm), &I2CTestForm);
+	I2CTestForm->Height = 300;
+	I2CTestForm->Width = 230;
     }
     I2CTestForm->Edit_GammaTestAddress->Text = this->Edit_GammaTestEnableAddress->Text;
     I2CTestForm->Edit_GammaTestBit->Text = this->Edit_GammaTestEnableBit->Text;
@@ -1020,8 +1022,7 @@ void __fastcall TMainForm::Button_I2CTestClick(TObject * Sender)
     I2CTestForm->CheckBox_IndepRGB->Checked = this->CheckBox_GammaTestIndepRGB->Checked;
     I2CTestForm->setBitDepthProcessor(bitDepth);
     //I2CTestForm->ShowModal();
-    I2CTestForm->Height = 350;
-    I2CTestForm->Width = 350;
+
     I2CTestForm->Show();
 }
 
@@ -1456,7 +1457,7 @@ void __fastcall TMainForm::StabilityMeasure1Click(TObject * Sender)
 
 void __fastcall TMainForm::RadioButton_HStripe2Click(TObject * Sender)
 {
-    MeasureWindow->setPattern(HStripe);
+    MeasureWindow->setPattern(HStripe2);
     this->CheckBox_LineAdjoin->Visible = false;
 }
 

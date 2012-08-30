@@ -1,8 +1,8 @@
 object I2CTestForm: TI2CTestForm
-  Left = 551
-  Top = 300
-  Width = 350
-  Height = 350
+  Left = 337
+  Top = 220
+  Width = 230
+  Height = 300
   BiDiMode = bdRightToLeft
   Caption = 'I2C Tester'
   Color = clBtnFace
@@ -21,7 +21,7 @@ object I2CTestForm: TI2CTestForm
   TextHeight = 13
   object Button1: TButton
     Left = 105
-    Top = 78
+    Top = 14
     Width = 65
     Height = 20
     Caption = 'Connect'
@@ -35,12 +35,13 @@ object I2CTestForm: TI2CTestForm
     OnClick = Button1Click
   end
   object GroupBox1: TGroupBox
-    Left = 105
+    Left = 225
     Top = 7
     Width = 234
     Height = 65
     Caption = 'T-CON'
     TabOrder = 1
+    Visible = False
     object RadioButton_Single: TRadioButton
       Left = 7
       Top = 20
@@ -85,12 +86,13 @@ object I2CTestForm: TI2CTestForm
     end
   end
   object GroupBox_I2CCard: TGroupBox
-    Left = 7
-    Top = 7
+    Left = 223
+    Top = 263
     Width = 91
     Height = 91
     Caption = 'Card'
     TabOrder = 2
+    Visible = False
     object RadioButton_USB: TRadioButton
       Left = 7
       Top = 20
@@ -119,18 +121,19 @@ object I2CTestForm: TI2CTestForm
     end
   end
   object CheckBox_Connecting: TCheckBox
-    Left = 176
+    Left = 224
     Top = 78
     Width = 85
     Height = 20
     Caption = 'Connecting'
     Enabled = False
     TabOrder = 3
+    Visible = False
     OnClick = CheckBox_ConnectingClick
   end
   object GroupBox3: TGroupBox
     Left = 7
-    Top = 104
+    Top = 8
     Width = 91
     Height = 177
     Caption = 'Gamma Test'
@@ -224,12 +227,13 @@ object I2CTestForm: TI2CTestForm
     end
   end
   object GroupBox4: TGroupBox
-    Left = 104
+    Left = 224
     Top = 104
     Width = 111
     Height = 150
     Caption = 'Address'
     TabOrder = 5
+    Visible = False
     object Label4: TLabel
       Left = 7
       Top = 20
@@ -297,10 +301,10 @@ object I2CTestForm: TI2CTestForm
     end
   end
   object GroupBox5: TGroupBox
-    Left = 221
-    Top = 104
+    Left = 101
+    Top = 40
     Width = 118
-    Height = 150
+    Height = 145
     Caption = 'Data'
     TabOrder = 6
     object Label7: TLabel
@@ -354,8 +358,8 @@ object I2CTestForm: TI2CTestForm
     end
   end
   object CheckBox_DG: TCheckBox
-    Left = 109
-    Top = 260
+    Left = 8
+    Top = 188
     Width = 76
     Height = 14
     Caption = 'DG Enable'
@@ -363,8 +367,8 @@ object I2CTestForm: TI2CTestForm
     OnClick = CheckBox_DGClick
   end
   object CheckBox_DGTest: TCheckBox
-    Left = 200
-    Top = 260
+    Left = 8
+    Top = 204
     Width = 85
     Height = 14
     Caption = 'DG Test'

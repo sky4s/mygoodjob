@@ -1,6 +1,6 @@
 object CCTLUTForm: TCCTLUTForm
-  Left = 463
-  Top = 300
+  Left = 183
+  Top = 220
   Width = 841
   Height = 430
   Caption = 'CCT(LUT)'
@@ -805,7 +805,7 @@ object CCTLUTForm: TCCTLUTForm
     TabOrder = 10
     object Label20: TLabel
       Left = 26
-      Top = 229
+      Top = 213
       Width = 27
       Height = 13
       Caption = 'Begin'
@@ -825,7 +825,7 @@ object CCTLUTForm: TCCTLUTForm
     end
     object RadioButton_MaxYNative: TRadioButton
       Left = 7
-      Top = 65
+      Top = 49
       Width = 130
       Height = 20
       Caption = 'Native White'
@@ -834,7 +834,7 @@ object CCTLUTForm: TCCTLUTForm
     end
     object RadioButton_MaxYNativeAdv: TRadioButton
       Left = 7
-      Top = 205
+      Top = 189
       Width = 146
       Height = 20
       Caption = 'Native White(CCTSmooth)'
@@ -844,7 +844,7 @@ object CCTLUTForm: TCCTLUTForm
     end
     object Edit_MaxYAdvOver: TEdit
       Left = 64
-      Top = 229
+      Top = 213
       Width = 33
       Height = 21
       ImeName = #26085#25991#36664#20837#31995#32113' (MS-IME2002)'
@@ -855,7 +855,7 @@ object CCTLUTForm: TCCTLUTForm
     end
     object CheckBox_MaxYAdvAuto: TCheckBox
       Left = 106
-      Top = 224
+      Top = 208
       Width = 47
       Height = 25
       Caption = 'Auto'
@@ -873,43 +873,13 @@ object CCTLUTForm: TCCTLUTForm
       Caption = 'Target White'
       TabOrder = 5
     end
-    object CheckBox_SmoothIntensity: TCheckBox
-      Left = 24
-      Top = 48
-      Width = 97
-      Height = 17
-      Caption = 'Smooth Intensity'
-      Checked = True
-      State = cbChecked
-      TabOrder = 6
-      Visible = False
-      OnClick = CheckBox_SmoothIntensityClick
-    end
-    object Edit_SmoothIntensityStart: TEdit
-      Left = 120
-      Top = 32
-      Width = 33
-      Height = 21
-      TabOrder = 7
-      Text = '50'
-      Visible = False
-    end
-    object Edit_SmoothIntensityEnd: TEdit
-      Left = 120
-      Top = 56
-      Width = 33
-      Height = 21
-      TabOrder = 8
-      Text = '255'
-      Visible = False
-    end
     object GroupBox_DeHook: TGroupBox
       Left = 16
-      Top = 80
+      Top = 64
       Width = 137
       Height = 121
       Caption = 'DeHook'
-      TabOrder = 9
+      TabOrder = 6
       object RadioButton_DeHookNone: TRadioButton
         Left = 8
         Top = 16
@@ -959,12 +929,12 @@ object CCTLUTForm: TCCTLUTForm
     end
     object CheckBox_AlterGammaCurveAtDeHook2: TCheckBox
       Left = 40
-      Top = 176
+      Top = 162
       Width = 81
       Height = 17
       Caption = 'Alter r Curve'
       Enabled = False
-      TabOrder = 10
+      TabOrder = 7
       Visible = False
     end
   end
@@ -1058,7 +1028,6 @@ object CCTLUTForm: TCCTLUTForm
       ImeName = #26085#25991#36664#20837#31995#32113' (MS-IME2002)'
       TabOrder = 2
       Text = '50'
-      OnChange = Edit_DefinedDimUnderChange
     end
     object Edit_DimFixThreshold: TEdit
       Left = 104
