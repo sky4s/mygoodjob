@@ -70,9 +70,9 @@ class TI2CTestForm:public TForm {
     void __fastcall Edit_RKeyDown(TObject * Sender, WORD & Key, TShiftState Shift);
 
   private:			// User declarations
-     bptr < i2c::TCONParameter > parameter;
+    //bptr < i2c::TCONParameter > parameter;
      bptr < i2c::TCONControl > control;
-    const i2c::AddressingSize getAddressingSize();
+    //const i2c::AddressingSize getAddressingSize();
     void setOptionsEditable(bool editable);
      bptr < cms::lcd::BitDepthProcessor > bitDepth;
   public:			// User declarations

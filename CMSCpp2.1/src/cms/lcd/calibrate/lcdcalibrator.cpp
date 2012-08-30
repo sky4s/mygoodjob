@@ -275,7 +275,7 @@ namespace cms {
 		}
 		this->keepMaxLuminance = keepMaxLuminance;
 		if (KeepMaxLuminance::TargetWhite == keepMaxLuminance) {
-		    this->autoIntensity = true;
+		    //this->autoIntensity = true;
 		}
 	    };
 
@@ -288,7 +288,7 @@ namespace cms {
 		this->keepMaxLuminance = KeepMaxLuminance::Smooth2NativeWhite;
 		this->keepMaxLumiOver = over;
 		this->autoKeepMaxLumiParameter = autoParameter;
-		this->autoIntensity = true;
+		//this->autoIntensity = true;
 	    };
 
 	    Component_vector_ptr LCDCalibrator::fetchComponentVector(bptr < MeasureCondition >

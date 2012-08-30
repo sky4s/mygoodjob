@@ -36,31 +36,31 @@ namespace cms {
 	    getMaximumSize(Component_vector_ptr wMeasureData, Patch_vector_ptr rMeasureData,
 			   Patch_vector_ptr gMeasureData, Patch_vector_ptr bMeasureData) {
 	    using namespace math;
-	    int wsize = wMeasureData != null ? wMeasureData->size() : 0;
+	    /*int wsize = wMeasureData != null ? wMeasureData->size() : 0;
 	    int rsize = rMeasureData != null ? rMeasureData->size() : 0;
 	    int gsize = gMeasureData != null ? gMeasureData->size() : 0;
-	    int bsize = bMeasureData != null ? bMeasureData->size() : 0;
+	    int bsize = bMeasureData != null ? bMeasureData->size() : 0;*/
 	    int_array sizes(new int[4]);
-	     sizes[0] = wsize;
-	     sizes[1] = rsize;
-	     sizes[2] = gsize;
-	     sizes[3] = bsize;
+	     sizes[0] = wMeasureData != null ? wMeasureData->size() : 0;
+	     sizes[1] = rMeasureData != null ? rMeasureData->size() : 0;
+	     sizes[2] = gMeasureData != null ? gMeasureData->size() : 0;
+	     sizes[3] = bMeasureData != null ? bMeasureData->size() : 0;
 	     return IntArray::max(sizes, 4);
 	};
 	int RampMeasureFile::
 	    getMaximumSize(Patch_vector_ptr wMeasureData, Patch_vector_ptr rMeasureData,
 			   Patch_vector_ptr gMeasureData, Patch_vector_ptr bMeasureData) {
 	    using namespace math;
-	    int wsize = wMeasureData != null ? wMeasureData->size() : 0;
+	    /*int wsize = wMeasureData != null ? wMeasureData->size() : 0;
 	    int rsize = rMeasureData != null ? rMeasureData->size() : 0;
 	    int gsize = gMeasureData != null ? gMeasureData->size() : 0;
-	    int bsize = bMeasureData != null ? bMeasureData->size() : 0;
+	    int bsize = bMeasureData != null ? bMeasureData->size() : 0;*/
 	    int_array sizes(new int[4]);
-	    sizes[0] = wsize;
-	    sizes[1] = rsize;
-	    sizes[2] = gsize;
-	    sizes[3] = bsize;
-	    return IntArray::max(sizes, 4);
+	     sizes[0] = wMeasureData != null ? wMeasureData->size() : 0;
+	     sizes[1] = rMeasureData != null ? rMeasureData->size() : 0;
+	     sizes[2] = gMeasureData != null ? gMeasureData->size() : 0;
+	     sizes[3] = bMeasureData != null ? bMeasureData->size() : 0;
+	     return IntArray::max(sizes, 4);
 	};
 	/*
 	   wMeasureData for Component_vector_ptr
@@ -83,7 +83,7 @@ namespace cms {
 		size = getMaximumSize(wMeasureData, rMeasureData, gMeasureData, bMeasureData);
 	    } else {
 		size = getMaximumSize(wMeasureData2, rMeasureData, gMeasureData, bMeasureData);
-		wsize = wMeasureData2->size();
+		wsize =(null!=wMeasureData2)? wMeasureData2->size():-1 ;
 	    }
 	    bool skipFirstLevel = (257 == wsize);
 
@@ -150,15 +150,16 @@ namespace cms {
 		    if (-1 == maxLuminance && (skipFirstLevel ? 1 == x : true)) {
 			maxLuminance = XYZValues[1];
 		    }
-		    int level = wsize - x - 1;
-		    if (level < (skipFirstLevel ? 255 : 256)) {
+		    //int level = wsize - x - 1;
+		    /*if (wsize >= 256 && level < (skipFirstLevel ? 255 : 256)) {
 			(*values)[9] =
 			    _toString(math::GammaFinder::
 				      findingGamma(level / (wsize - 1),
 						   XYZValues[1] / maxLuminance));
 		    } else {
 			(*values)[9] = _toString(-1);
-		    }
+		    }*/
+                    (*values)[9] = _toString(-1);
 
 		    RGB_ptr rgb = p->getRGB();
 		    (*values)[19] = _toString(rgb->R);

@@ -209,11 +209,11 @@ void __fastcall TCCTLUTForm::Button_MeaRunClick(TObject * Sender)
 	} else if (true == RadioButton_MaxYTargetWhite->Checked) {
 	    calibrator.setKeepMaxLuminance(KeepMaxLuminance::TargetWhite);
 
-	    if (true == this->CheckBox_SmoothIntensity->Checked) {
+	    /*if (true == this->CheckBox_SmoothIntensity->Checked) {
 		int start = Edit_SmoothIntensityStart->Text.ToInt();
 		int end = Edit_SmoothIntensityEnd->Text.ToInt();
 		calibrator.setSmoothIntensity(start, end);
-	    }
+	    }*/
 	    calibrator.DeHookMode = None;
 	}
 	//==========================================================================
@@ -282,10 +282,10 @@ void __fastcall TCCTLUTForm::Button_MeaRunClick(TObject * Sender)
 	    }
 	    dgLutFile.reset();
 
-	    int button = MessageDlg("Do verify measurement? ", mtConfirmation,
+	    /*int button = MessageDlg("Do verify measurement? ", mtConfirmation,
 				    TMsgDlgButtons() << mbYes << mbNo,
 				    0);
-	    if (false && button == mrYes) {
+	    if (button == mrYes) {
 		bool_vector_ptr rgbw(new bool_vector(4));
 		(*rgbw)[0] = false;
 		(*rgbw)[1] = false;
@@ -303,7 +303,7 @@ void __fastcall TCCTLUTForm::Button_MeaRunClick(TObject * Sender)
 		string verifyFilename = filename + "-verify.xls";
 		Util::deleteExist(verifyFilename);
 		gammaMeasureForm->measure(rgbw, background, condition, false, verifyFilename);
-	    }
+	    }*/
 
 	    Util::shellExecute(filename);
 	}
@@ -373,9 +373,9 @@ void __fastcall TCCTLUTForm::FormShow(TObject * Sender)
 	RadioGroup_NormalCase->Visible = true;
 
 	//smooth intensity
-	CheckBox_SmoothIntensity->Visible = true;
+	/*CheckBox_SmoothIntensity->Visible = true;
 	Edit_SmoothIntensityStart->Visible = true;
-	Edit_SmoothIntensityEnd->Visible = true;
+	Edit_SmoothIntensityEnd->Visible = true;*/
 
 	//native white smooth
 	Label20->Visible = true;
@@ -726,21 +726,7 @@ void __fastcall TCCTLUTForm::FormMouseMove(TObject * Sender, TShiftState Shift, 
 
 //---------------------------------------------------------------------------
 
-void __fastcall TCCTLUTForm::CheckBox_SmoothIntensityClick(TObject * Sender)
-{
-    bool checked = CheckBox_SmoothIntensity->Checked;
-    Edit_SmoothIntensityStart->Enabled = checked;
-    Edit_SmoothIntensityEnd->Enabled = checked;
-}
 
-//---------------------------------------------------------------------------
-
-void __fastcall TCCTLUTForm::Edit_DefinedDimUnderChange(TObject * Sender)
-{
-    Edit_SmoothIntensityStart->Text = Edit_DefinedDimUnder->Text;
-}
-
-//---------------------------------------------------------------------------
 
 void __fastcall TCCTLUTForm::CheckBox_AbsoluteGammaClick(TObject * Sender)
 {

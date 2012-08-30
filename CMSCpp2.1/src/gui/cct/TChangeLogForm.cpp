@@ -13,8 +13,17 @@ __fastcall TChangeLogForm::TChangeLogForm(TComponent * Owner)
 :TForm(Owner)
 {
     Memo1->Text = "\
+    [3.4 build 1.39] 2012/08/30\r\n\
+    -取消Target White的Auto Intensity\r\n\
+    -取消Target White的Smooth Intensity\r\n\
+    -解決Target White+MultiGen後Gamma不準確的問題\r\n\
+    \r\n\
+    [3.4 build 1.38] 2012/08/29\r\n\
+    +新增H Stripe II Pattern\r\n\
+    -關閉smooth intensity在multi-gen下的作用\r\n\
+    \r\n\
     [3.4 build 1.37] 2012/08/24\r\n\
-    +Target White下Gamma Curve修正\r\n\
+    -Target White下白點修正\r\n\
     \r\n\
     [3.4 build 1.34] 2012/08/03\r\n\
     +Gamma Measurement可設定背景功能\r\n\

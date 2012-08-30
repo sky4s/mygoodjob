@@ -1,6 +1,6 @@
 object MainForm: TMainForm
-  Left = 323
-  Top = 442
+  Left = 325
+  Top = 443
   Width = 767
   Height = 380
   Caption = 'CCT Adjustment v3.4'
@@ -1231,9 +1231,7 @@ object MainForm: TMainForm
             Width = 52
             Height = 19
             Caption = 'USB'
-            Checked = True
             TabOrder = 0
-            TabStop = True
             OnClick = RadioButton_USBClick
           end
           object RadioButton_LPTLarge: TRadioButton
@@ -1251,7 +1249,9 @@ object MainForm: TMainForm
             Width = 73
             Height = 19
             Caption = 'LPT Small'
+            Checked = True
             TabOrder = 2
+            TabStop = True
             OnClick = RadioButton_LPTSmallClick
           end
           object Button_I2CTest: TButton
@@ -1366,7 +1366,7 @@ object MainForm: TMainForm
             Top = 13
             Width = 138
             Height = 21
-            ItemHeight = 0
+            ItemHeight = 13
             TabOrder = 0
             OnChange = ComboBox_TCONTypeChange
           end
@@ -1598,6 +1598,7 @@ object MainForm: TMainForm
           Height = 105
           Caption = 'USB Setting'
           TabOrder = 4
+          Visible = False
           object RadioGroup_USBPower: TRadioGroup
             Left = 8
             Top = 16
@@ -1642,7 +1643,7 @@ object MainForm: TMainForm
   end
   object StatusBar1: TStatusBar
     Left = 0
-    Top = 313
+    Top = 315
     Width = 759
     Height = 19
     Color = clWhite

@@ -71,9 +71,10 @@ namespace cms {
 
 	void DGLutFile::init() {
 	    initSheet(GammaTable, 4, "Gray Level", "Gamma R", "Gamma G", "Gamma B");
-	    initSheet(RawData, 13, "Gray Level", "W_x", "W_y", "W_Y (nit)",
+	    initSheet(RawData, 16, "Gray Level", "W_x", "W_y", "W_Y (nit)",
 		      "W_R", "W_G", "W_B", "RP", "GP", "BP",
-		      "RP_Intensity_Fix", "GP_Intensity_Fix", "BP_Intensity_Fix");
+		      "RP_Intensity_Fix", "GP_Intensity_Fix", "BP_Intensity_Fix", "DG_R", "DG_G",
+		      "DG_B");
 	    initPropertySheet();
 	    /*initSheet(Measure, 12, "id", "R", "G", "B", "X", "Y (nit)", "Z", "_x", "_y",
 	       "R12", "G12", "B12");
@@ -159,6 +160,14 @@ namespace cms {
 		} else {
 		    StringVector::setContent(values, "0", 3, 10, 11, 12);
 		}
+		RGB_ptr dg = c->rgb;
+		if (null != dg) {
+		    (*values)[13] = _toString(dg->R);
+		    (*values)[14] = _toString(dg->G);
+		    (*values)[15] = _toString(dg->B);
+		} else {
+		    StringVector::setContent(values, "-1", 3, 13, 14, 15);
+		}
 
 		this->insertData(RawData, values, false);
 	    }
@@ -184,7 +193,7 @@ namespace cms {
 		} else {
 		    StringVector::setContent(values, "0", 3, 10, 11, 12);
 		}
-
+		StringVector::setContent(values, "-1", 3, 13, 14, 15);
 		this->insertData(RawData, values, false);
 	    }
 
@@ -289,6 +298,9 @@ namespace cms {
 	    // 初始資料設定
 	    //==================================================================
 	    const int headerCount = 16;
+	    //const int headerCount = getHeaderCount(targetName);
+	    string_vector_ptr values(new string_vector(headerCount));
+
 	    initSheet(targetName, headerCount, "Gray Level", "X",
 		      "Y (nit)", "Z", "_x", "_y", "dx", "dy",
 		      // 8~13, 由Gamma Table R/G/B/找到對應的Intensity,
@@ -297,7 +309,7 @@ namespace cms {
 		      "Sim Y", "Sim Z", "Sim _x", "Sim _y");
 
 	    int size = targetXYZVector->size();
-	    string_vector_ptr values(new string_vector(headerCount));
+	    //string_vector_ptr values(new string_vector(headerCount));
 	    //==================================================================
 	    Component_vector_ptr componentVector = nil_Component_vector_ptr;
 	    bptr < ComponentLUT > componentLUT;

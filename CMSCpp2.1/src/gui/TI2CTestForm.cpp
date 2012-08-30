@@ -17,7 +17,7 @@ __fastcall TI2CTestForm::TI2CTestForm(TComponent * Owner)
 
 //---------------------------------------------------------------------------
 
-const i2c::AddressingSize TI2CTestForm::getAddressingSize()
+/*const i2c::AddressingSize TI2CTestForm::getAddressingSize()
 {
     using namespace i2c;
     int index = this->ComboBox_AddressingSize->ItemIndex;
@@ -43,7 +43,7 @@ const i2c::AddressingSize TI2CTestForm::getAddressingSize()
     default:
 	throw java::lang::IllegalArgumentException("Unsupported AddressingSize.");
     }
-}
+}*/
 
 void TI2CTestForm::setOptionsEditable(bool editable)
 {
@@ -58,85 +58,80 @@ void TI2CTestForm::setOptionsEditable(bool editable)
 
 void __fastcall TI2CTestForm::Button1Click(TObject * Sender)
 {
-    using namespace i2c;
-    using namespace Dep;
-    bptr < i2cControl > i2c1st;
-    bptr < i2cControl > i2c2nd;
-    unsigned char first, second;
-    bool dual = false;
+    MainForm->Button_ConnectClick(Sender);
+    control = MainForm->getTCONControl();
+    /*using namespace i2c;
+       using namespace Dep;
+       bptr < i2cControl > i2c1st;
+       bptr < i2cControl > i2c2nd;
+       unsigned char first, second;
+       bool dual = false;
 
-    if (this->RadioButton_Single->Checked) {
-	first = StrToInt("0x" + this->Edit_Single->Text);
-    } else {
-	first = StrToInt("0x" + this->Edit_Master->Text);
-	second = StrToInt("0x" + this->Edit_Slave->Text);
-	dual = true;
-    }
-    //int dataAddressLength = this->CheckBox_2ByteAddress->Checked ? 2 : 1;
-    AddressingSize addressingSize = getAddressingSize();
+       if (this->RadioButton_Single->Checked) {
+       first = StrToInt("0x" + this->Edit_Single->Text);
+       } else {
+       first = StrToInt("0x" + this->Edit_Master->Text);
+       second = StrToInt("0x" + this->Edit_Slave->Text);
+       dual = true;
+       }
+       AddressingSize addressingSize = getAddressingSize();
 
-    if (this->RadioButton_USB->Checked) {
+       if (this->RadioButton_USB->Checked) {
 
-	i2c1st = i2cControl::getUSBInstance(first, addressingSize, _3_3V, _400KHz);
-	if (dual) {
-	    i2c2nd = i2cControl::getUSBInstance(second, addressingSize, _3_3V, _400KHz);
-	};
-    } else {
+       i2c1st = i2cControl::getUSBInstance(first, addressingSize, _3_3V, _400KHz);
+       if (dual) {
+       i2c2nd = i2cControl::getUSBInstance(second, addressingSize, _3_3V, _400KHz);
+       };
+       } else {
 
-	const LPTCard card = this->RadioButton_LPTLarge->Checked ? Large : Small;
+       const LPTCard card = this->RadioButton_LPTLarge->Checked ? Large : Small;
 
-	i2c1st = i2cControl::getLPTInstance(first, addressingSize, card);
-	if (dual) {
-	    i2c2nd = i2cControl::getLPTInstance(second, addressingSize, card);
-	};
-    };
-    try {
-	bool connect = i2c1st->connect();
-	if (dual) {
-	    i2c2nd->connect();
-	}
-	if (true == connect) {
-	    setOptionsEditable(false);
+       i2c1st = i2cControl::getLPTInstance(first, addressingSize, card);
+       if (dual) {
+       i2c2nd = i2cControl::getLPTInstance(second, addressingSize, card);
+       };
+       };
+       try {
+       bool connect = i2c1st->connect();
+       if (dual) {
+       i2c2nd->connect();
+       }
+       if (true == connect) {
+       setOptionsEditable(false);
 
-	    int dgEnableAddress = StrToInt("0x" + MainForm->Edit_DGEnableAddress->Text);
-	    int dgEnableBit = MainForm->Edit_DGEnableBit->Text.ToInt();
-	    int dgLUTAddress = StrToInt("0x" + MainForm->Edit_DGLUTAddress->Text);
-	    int dgLUTType = MainForm->ComboBox_DGLUTType->Text.ToInt();
+       int dgEnableAddress = StrToInt("0x" + MainForm->Edit_DGEnableAddress->Text);
+       int dgEnableBit = MainForm->Edit_DGEnableBit->Text.ToInt();
+       int dgLUTAddress = StrToInt("0x" + MainForm->Edit_DGLUTAddress->Text);
+       int dgLUTType = MainForm->ComboBox_DGLUTType->Text.ToInt();
 
-	    int gammaTestAddress = StrToInt("0x" + this->Edit_GammaTestAddress->Text);
-	    int gammaTestBit = StrToInt(this->Edit_GammaTestBit->Text);
-	    int testRGBAddress = StrToInt("0x" + this->Edit_TestRGBAdress->Text);
-	    bool indepRGB = CheckBox_IndepRGB->Checked;
-	    const TestRGBBit & testRGBBit =
-		indepRGB ? TestRGBBit::IndependentInstance : TestRGBBit::DependentInstance;
-
-	    /*parameter = bptr < TCONParameter > (new
-	       TCONParameter
-	       (gammaTestAddress,
-	       gammaTestBit,
-	       testRGBAddress, indepRGB,
-	       MainForm->bitDepth->getLutMaxValue())); */
-
-	    parameter =
-		bptr < TCONParameter >
-		(new
-		 TCONParameter(dgLUTType == 10 ? MaxValue::Int10Bit : MaxValue::Int12Bit,
-			       dgLUTAddress, dgEnableAddress, dgEnableBit, gammaTestAddress,
-			       gammaTestBit, testRGBAddress, testRGBBit));
+       int gammaTestAddress = StrToInt("0x" + this->Edit_GammaTestAddress->Text);
+       int gammaTestBit = StrToInt(this->Edit_GammaTestBit->Text);
+       int testRGBAddress = StrToInt("0x" + this->Edit_TestRGBAdress->Text);
+       bool indepRGB = CheckBox_IndepRGB->Checked;
+       const TestRGBBit & testRGBBit =
+       indepRGB ? TestRGBBit::IndependentInstance : TestRGBBit::DependentInstance;
 
 
-	    if (!dual) {
-		control = bptr < TCONControl > (new TCONControl(parameter, i2c1st));
-	    } else {
-		control = bptr < TCONControl > (new TCONControl(parameter, i2c1st, i2c2nd));
-	    }
-	}
+       parameter =
+       bptr < TCONParameter >
+       (new
+       TCONParameter(dgLUTType == 10 ? MaxValue::Int10Bit : MaxValue::Int12Bit,
+       dgLUTAddress, dgEnableAddress, dgEnableBit, gammaTestAddress,
+       gammaTestBit, testRGBAddress, testRGBBit));
 
 
-    }
-    catch(java::lang::RuntimeException & ex) {
-	ShowMessage("I2C link error!");
-    }
+       if (!dual) {
+       control = bptr < TCONControl > (new TCONControl(parameter, i2c1st));
+       } else {
+       control = bptr < TCONControl > (new TCONControl(parameter, i2c1st, i2c2nd));
+       }
+       }
+
+
+       }
+       catch(java::lang::RuntimeException & ex) {
+       ShowMessage("I2C link error!");
+       } */
 }
 
 //---------------------------------------------------------------------------

@@ -88,9 +88,6 @@ class TCCTLUTForm:public TForm, cms::lcd::calibrate::FeedbackListener {
     TCheckBox *CheckBox_RTargetIntensity;
     TEdit *Edit_RTargetIntensity;
     TRadioButton *RadioButton_MaxYTargetWhite;
-    TEdit *Edit_SmoothIntensityStart;
-    TEdit *Edit_SmoothIntensityEnd;
-    TCheckBox *CheckBox_SmoothIntensity;
     TEdit *Edit_AbsGammaStart;
     TLabel *Label22;
     TLabel *Label23;
@@ -142,8 +139,6 @@ class TCCTLUTForm:public TForm, cms::lcd::calibrate::FeedbackListener {
     void __fastcall RadioGroup_NormalCaseClick(TObject * Sender);
     void __fastcall CheckBox_RTargetIntensityClick(TObject * Sender);
     void __fastcall FormMouseMove(TObject * Sender, TShiftState Shift, int X, int Y);
-    void __fastcall CheckBox_SmoothIntensityClick(TObject * Sender);
-    void __fastcall Edit_DefinedDimUnderChange(TObject * Sender);
     void __fastcall CheckBox_AbsoluteGammaClick(TObject * Sender);
     void __fastcall Edit_MiddleGammaEndChange(TObject * Sender);
     void __fastcall RadioButton_DeHookOrgClick(TObject * Sender);

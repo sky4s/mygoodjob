@@ -31,9 +31,9 @@
 
  final: 最後決議拉
  */
- 
+
 enum Pattern {
-    Normal, HStripe,HStripe2, Indepedent, HSD, FlickrPixel, FlickrSubPixel, Ninth
+    Normal, HStripe, HStripe2, Indepedent, HSD, FlickrPixel, FlickrSubPixel, Ninth
 };
 enum PatternSource {
     PC, TCON, DGLUT
