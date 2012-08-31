@@ -94,24 +94,43 @@ namespace cms {
 	       3. remapping將得到的DG Lut對應回正確的DG Code
 	       4. 視需要setEnable(false)恢復面板特性
 	     */
+
 	    class PanelRegulator {
 	      protected:
 		bptr < cms::lcd::BitDepthProcessor > bitDepth;
 		bptr < i2c::TCONControl > tconctrl;
 		double rgain, ggain, bgain;
-		RGB_vector_ptr mappingRGBVector;
+		//RGB_vector_ptr mappingRGBVector;
 	      public:
-		 PanelRegulator(double rgain, double ggain, double bgain,
-				bptr < cms::lcd::BitDepthProcessor > bitDepth,
-				bptr < i2c::TCONControl > tconctrl);
-		/*PanelRegulator(bptr < cms::lcd::BitDepthProcessor > bitDepth,
-		   bptr < i2c::TCONControl > tconctrl, int maxR, int maxG, int maxB); */
+		/*PanelRegulator(double rgain, double ggain, double bgain,
+		   bptr < cms::lcd::BitDepthProcessor > bitDepth,
+		   bptr < i2c::TCONControl > tconctrl); */
+
 		 PanelRegulator(bptr < cms::lcd::BitDepthProcessor > bitDepth,
 				bptr < i2c::TCONControl > tconctrl, double maxR, double maxG,
 				double maxB);
+		virtual void setEnable(bool enable) = 0;
+		virtual RGB_vector_ptr remapping(RGB_vector_ptr dglut) = 0;
+		//RGB_vector_ptr getMappingRGBVector();
+	    };
+
+	    class DGLutPanelRegulator:public PanelRegulator {
+	      protected:
+		//bptr < cms::lcd::BitDepthProcessor > bitDepth;
+		//bptr < i2c::TCONControl > tconctrl;
+		//double rgain, ggain, bgain;
+		RGB_vector_ptr mappingRGBVector;
+	      public:
+		/*PanelRegulator(double rgain, double ggain, double bgain,
+		   bptr < cms::lcd::BitDepthProcessor > bitDepth,
+		   bptr < i2c::TCONControl > tconctrl); */
+
+		DGLutPanelRegulator(bptr < cms::lcd::BitDepthProcessor > bitDepth,
+				    bptr < i2c::TCONControl > tconctrl, double maxR, double maxG,
+				    double maxB);
 		virtual void setEnable(bool enable);
-		RGB_vector_ptr remapping(RGB_vector_ptr dglut);
-		RGB_vector_ptr getMappingRGBVector();
+		virtual RGB_vector_ptr remapping(RGB_vector_ptr dglut);
+		//RGB_vector_ptr getMappingRGBVector();
 	    };
 
 	    class GammaTestPanelRegulator:public PanelRegulator {
@@ -119,17 +138,12 @@ namespace cms {
 		bptr < MeasureCondition > measureCondition;
 		void setRemappingMode(bool remap);
 	      public:
-
-		/*GammaTestPanelRegulator(bptr < cms::lcd::BitDepthProcessor > bitDepth,
-		   bptr < i2c::TCONControl > tconctrl,
-		   int maxR, int maxG, int maxB,
-		   bptr < MeasureCondition > measureCondition); */
 		 GammaTestPanelRegulator(bptr < cms::lcd::BitDepthProcessor > bitDepth,
 					 bptr < i2c::TCONControl > tconctrl,
 					 double maxR, double maxG, double maxB,
 					 bptr < MeasureCondition > measureCondition);
 		virtual void setEnable(bool enable);
-
+		virtual RGB_vector_ptr remapping(RGB_vector_ptr dglut);
 	    };
 	};
     };

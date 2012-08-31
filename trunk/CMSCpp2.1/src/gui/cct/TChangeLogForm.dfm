@@ -1,8 +1,8 @@
 object ChangeLogForm: TChangeLogForm
   Left = 290
   Top = 0
-  Width = 595
-  Height = 708
+  Width = 597
+  Height = 724
   Caption = 'Change Log'
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET

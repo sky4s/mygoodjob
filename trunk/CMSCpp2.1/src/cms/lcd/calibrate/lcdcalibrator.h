@@ -122,6 +122,7 @@ namespace cms {
 		KeepMaxLuminance keepMaxLuminance;
 		int keepMaxLumiOver;
 		bool autoKeepMaxLumiParameter;
+		bool forceAssignTargetWhite;
 		//==============================================================
 
 		//==============================================================
@@ -140,8 +141,9 @@ namespace cms {
 		double rTargetIntensity;
 		double gTargetIntensity;
 		double bTargetIntensity;
-		bool autoIntensity;
-		RGB_ptr idealIntensity;
+		//bool autoIntensity;
+		bool autoIntensityInMultiGen;
+		//RGB_ptr idealIntensity;
 		bool smoothIntensity;
 		int smoothIntensityStart;
 		int smoothIntensityEnd;
@@ -237,6 +239,9 @@ namespace cms {
 		void setKeepMaxLuminanceSmooth2NativeWhite(int over, bool autoParameter);
 		__property DeHook DeHookMode = { read = dehook, write = dehook
 		};
+		__property bool ForceAssignTargetWhite = { write = forceAssignTargetWhite
+		};
+
 		//==============================================================
 
 		//==============================================================
@@ -247,6 +252,8 @@ namespace cms {
 		__property double BTargetIntensity = { write = bTargetIntensity
 		};
 		void setSmoothIntensity(int start, int end);
+		__property bool AutoIntensityInMultiGen = { write = autoIntensityInMultiGen
+		};
 		//==============================================================
 
 		void setMultiGen(bool enable, int times);
@@ -375,7 +382,8 @@ namespace cms {
 		double_vector_ptr getOriginalGammaCurve(Component_vector_ptr componentVector);
 		//==============================================================
 
-		 bptr < PanelRegulator > getPanelRegulator();
+		 bptr < PanelRegulator > getPanelRegulatorForDeHook();
+		 bptr < PanelRegulator > getPanelRegulatorForTargetWhite();
 	      public:
 
 		static double_vector_ptr

@@ -177,10 +177,10 @@ void __fastcall TCCTLUTForm::Button_MeaRunClick(TObject * Sender)
 	// Keep Max Luminance
 	//==========================================================================
 	//keep跟dehook融合在一起, 簡化ui
-	if (true == RadioButton_MaxYNone->Checked) {
-	    calibrator.setKeepMaxLuminance(KeepMaxLuminance::TargetLuminance);
-	    calibrator.DeHookMode = None;
-	} else if (true == RadioButton_MaxYNative->Checked) {
+	/*if (true == RadioButton_MaxYNone->Checked) {
+	   calibrator.setKeepMaxLuminance(KeepMaxLuminance::TargetLuminance);
+	   calibrator.DeHookMode = None;
+	   } else */ if (true == RadioButton_MaxYNative->Checked) {
 	    calibrator.setKeepMaxLuminance(KeepMaxLuminance::NativeWhite);
 
 	    if (RadioButton_DeHookNone->Checked) {
@@ -210,11 +210,15 @@ void __fastcall TCCTLUTForm::Button_MeaRunClick(TObject * Sender)
 	    calibrator.setKeepMaxLuminance(KeepMaxLuminance::TargetWhite);
 
 	    /*if (true == this->CheckBox_SmoothIntensity->Checked) {
-		int start = Edit_SmoothIntensityStart->Text.ToInt();
-		int end = Edit_SmoothIntensityEnd->Text.ToInt();
-		calibrator.setSmoothIntensity(start, end);
-	    }*/
+	       int start = Edit_SmoothIntensityStart->Text.ToInt();
+	       int end = Edit_SmoothIntensityEnd->Text.ToInt();
+	       calibrator.setSmoothIntensity(start, end);
+	       } */
 	    calibrator.DeHookMode = None;
+	    bool autoIntensityInMultiGen = RadioButton_IntensityShift->Checked;
+	    calibrator.AutoIntensityInMultiGen = autoIntensityInMultiGen;
+	    bool forceAssignWhite = RadioButton_ForceAssignWhite->Checked;
+	    calibrator.ForceAssignTargetWhite = forceAssignWhite;
 	}
 	//==========================================================================
 	//以上都是選項的設定
@@ -283,27 +287,27 @@ void __fastcall TCCTLUTForm::Button_MeaRunClick(TObject * Sender)
 	    dgLutFile.reset();
 
 	    /*int button = MessageDlg("Do verify measurement? ", mtConfirmation,
-				    TMsgDlgButtons() << mbYes << mbNo,
-				    0);
-	    if (button == mrYes) {
-		bool_vector_ptr rgbw(new bool_vector(4));
-		(*rgbw)[0] = false;
-		(*rgbw)[1] = false;
-		(*rgbw)[2] = false;
-		(*rgbw)[3] = true;
+	       TMsgDlgButtons() << mbYes << mbNo,
+	       0);
+	       if (button == mrYes) {
+	       bool_vector_ptr rgbw(new bool_vector(4));
+	       (*rgbw)[0] = false;
+	       (*rgbw)[1] = false;
+	       (*rgbw)[2] = false;
+	       (*rgbw)[3] = true;
 
-		int_vector_ptr background(new int_vector(3));
-		(*background)[0] = 0;
-		(*background)[1] = 0;
-		(*background)[2] = 0;
+	       int_vector_ptr background(new int_vector(3));
+	       (*background)[0] = 0;
+	       (*background)[1] = 0;
+	       (*background)[2] = 0;
 
-		bptr < MeasureCondition > condition(new MeasureCondition(dglut, bitDepth));
+	       bptr < MeasureCondition > condition(new MeasureCondition(dglut, bitDepth));
 
-		gammaMeasureForm = MainForm->getGammaMeasurementForm();
-		string verifyFilename = filename + "-verify.xls";
-		Util::deleteExist(verifyFilename);
-		gammaMeasureForm->measure(rgbw, background, condition, false, verifyFilename);
-	    }*/
+	       gammaMeasureForm = MainForm->getGammaMeasurementForm();
+	       string verifyFilename = filename + "-verify.xls";
+	       Util::deleteExist(verifyFilename);
+	       gammaMeasureForm->measure(rgbw, background, condition, false, verifyFilename);
+	       } */
 
 	    Util::shellExecute(filename);
 	}
@@ -374,8 +378,8 @@ void __fastcall TCCTLUTForm::FormShow(TObject * Sender)
 
 	//smooth intensity
 	/*CheckBox_SmoothIntensity->Visible = true;
-	Edit_SmoothIntensityStart->Visible = true;
-	Edit_SmoothIntensityEnd->Visible = true;*/
+	   Edit_SmoothIntensityStart->Visible = true;
+	   Edit_SmoothIntensityEnd->Visible = true; */
 
 	//native white smooth
 	Label20->Visible = true;
@@ -389,6 +393,7 @@ void __fastcall TCCTLUTForm::FormShow(TObject * Sender)
 	RadioButton_NewDeHook->Visible = true;
 	RadioGroup_NewDeHookPriority->Visible = true;
 	CheckBox_AlterGammaCurveAtDeHook2->Visible = true;
+	GroupBox_DeIntensityError->Visible = true;
     }
     //=========================================================================
     // function on/off relative
@@ -823,6 +828,23 @@ void __fastcall TCCTLUTForm::Button1Click(TObject * Sender)
     int button =
 	MessageDlg("Do verify measurement? ", mtConfirmation, TMsgDlgButtons() << mbYes << mbNo,
 		   0);
+
+}
+
+//---------------------------------------------------------------------------
+
+void __fastcall TCCTLUTForm::CheckBox_MultiGenClick(TObject * Sender)
+{
+    RadioButton_IntensityShift->Enabled = CheckBox_MultiGen->Checked;
+
+    if (true == CheckBox_MultiGen->Checked) {
+	if (true == RadioButton_MaxYTargetWhite->Checked) {
+	    RadioButton_IntensityShift->Checked = true;
+	}
+    } else {
+	//關掉multigen就把IntensityShift一起關掉
+	RadioButton_ForceAssignWhite->Checked = true;
+    }
 
 }
 

@@ -66,7 +66,8 @@ namespace cms {
 		colorimetricQuanti = true;
 		//quantiType = NearOriginal;
 
-		autoIntensity = false;
+		//autoIntensity = false;
+		autoIntensityInMultiGen = false;
 		smoothIntensity = false;
 		smoothIntensityStart = 40;
 		smoothIntensityEnd = 60;
@@ -472,7 +473,7 @@ namespace cms {
 		    MaxMatrixIntensityAnalyzer::getReadyAnalyzer(mm, redmax, greenmax, bluemax);
 	    };
 
-	    bptr < PanelRegulator > LCDCalibrator::getPanelRegulator() {
+	    bptr < PanelRegulator > LCDCalibrator::getPanelRegulatorForDeHook() {
 		//原先: 以target white的rgb為最大值, 調整面板並重新量測
 		//改良: 以direct gamma(gamma test)直接改變打出的pattern, 達到相同效果
 		/*
@@ -507,6 +508,9 @@ namespace cms {
 		return panelRegulator;
 	    };
 
+	    bptr < PanelRegulator > LCDCalibrator::getPanelRegulatorForTargetWhite() {
+	    };
+
 	    /*
 	       CCT + Gamma
 	       不管PanelRegulator要怎麼用, 都是從LCDCalibrator量好必要的資訊, 再傳到AdvancedDGLutGenerator去
@@ -527,8 +531,16 @@ namespace cms {
 
 		bool needPanelRegular = isDoDeHook();
 		bptr < PanelRegulator > panelRegulator =
-		    needPanelRegular ? getPanelRegulator() : bptr <
+		    needPanelRegular ? getPanelRegulatorForDeHook() : bptr <
 		    PanelRegulator > ((PanelRegulator *) null);
+
+		if (isDoDeHook()) {
+
+		} else if (true) {
+
+		} else {
+
+		}
 
 		//原始特性量測
 		this->originalComponentVector = fetchComponentVector();
@@ -814,7 +826,7 @@ namespace cms {
 		    this->multiGenTargetXYZVector = advgenerator->MultiGenTargetXYZVector;
 		    STORE_RGBVECTOR("3.1_org_dgcode.xls", dglut);
 		    initialRGBGamma = advgenerator->RGBGenerateResult;
-		    idealIntensity = advgenerator->IdealIntensity;
+		    //idealIntensity = advgenerator->IdealIntensity;
 
 		    //=========================================================
 		    // feedback
@@ -1182,11 +1194,13 @@ namespace cms {
 
 		switch (keepMaxLuminance) {
 		case KeepMaxLuminance::TargetWhite:{
-			bptr < cms::measure::IntensityAnalyzerIF > analyzer =
-			    fetcher->getAnalyzer();
-			RGB_ptr targetRGB = analyzer->getReferenceRGB();
-			bptr < DGLutOp > setWhite(new SetWhiteOp(bitDepth, targetRGB));
-			dgop.addOp(setWhite);
+			if (forceAssignTargetWhite) {
+			    bptr < cms::measure::IntensityAnalyzerIF > analyzer =
+				fetcher->getAnalyzer();
+			    RGB_ptr targetRGB = analyzer->getReferenceRGB();
+			    bptr < DGLutOp > setWhite(new SetWhiteOp(bitDepth, targetRGB));
+			    dgop.addOp(setWhite);
+			}
 		    }
 		    break;
 		case KeepMaxLuminance::NativeWhite:{

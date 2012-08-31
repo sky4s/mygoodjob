@@ -11,7 +11,7 @@
 #define DEBUG_VERBOSE "verbose.txt"
 #define DEBUG_VERBOSE_STEP "verbose_step.txt"
 
-#define DEBUG_REMAP_NEW
+//#define DEBUG_REMAP_NEW deprecated
 //=============================================================================
 
 //CCT功能的debug功能開啟

@@ -58,7 +58,6 @@ class TCCTLUTForm:public TForm, cms::lcd::calibrate::FeedbackListener {
     TButton *Button_Reset;
     TButton *Button_Run;
     TGroupBox *GroupBox_KeepMaxLuminance;
-    TRadioButton *RadioButton_MaxYNone;
     TRadioButton *RadioButton_MaxYNative;
     TRadioButton *RadioButton_MaxYNativeAdv;
     TLabel *Label20;
@@ -118,6 +117,11 @@ class TCCTLUTForm:public TForm, cms::lcd::calibrate::FeedbackListener {
     TComboBox *ComboBox_DefinedDimGamma;
     TCheckBox *CheckBox_LuminanceCalInMultiGen;
     TCheckBox *CheckBox_YOnly;
+    TGroupBox *GroupBox_DeIntensityError;
+    TRadioButton *RadioButton_None;
+    TRadioButton *RadioButton_ForceAssignWhite;
+    TRadioButton *RadioButton_IntensityShift;
+    TGroupBox *GroupBox_Execute;
     void __fastcall Button_MeaRunClick(TObject * Sender);
     void __fastcall Button_DebugClick(TObject * Sender);
     void __fastcall FormShow(TObject * Sender);
@@ -151,6 +155,7 @@ class TCCTLUTForm:public TForm, cms::lcd::calibrate::FeedbackListener {
     void __fastcall RadioButton_DeHookKeepCCTClick(TObject * Sender);
     void __fastcall RadioButton_DeHookNoneClick(TObject * Sender);
     void __fastcall Button1Click(TObject * Sender);
+    void __fastcall CheckBox_MultiGenClick(TObject * Sender);
   private:			// User declarations
     void setMeasureInfo();
     int serialid;

@@ -357,8 +357,11 @@ namespace cms {
 	    RGB_vector_ptr AdvancedDGLutGenerator::
 		produceDGLutMulti(XYZ_vector_ptr targetXYZVector,
 				  Component_vector_ptr componentVector) {
+
 		//先產生初步結果
-		autoIntensity = true;	//為了讓尋找Target White時可以避免Intensity Error的影響, 所以打開autoIntensity
+		if (c.autoIntensityInMultiGen) {
+		    autoIntensity = true;	//為了讓尋找Target White時可以避免Intensity Error的影響, 所以打開autoIntensity
+		}
 		RGB_vector_ptr initRGBVector = produceDGLut(targetXYZVector, componentVector,
 							    analyzer, panelRegulator1);
 		autoIntensity = false;	//隨即關閉, 僅有multi-gen第一次可以使用autoIntensity, 否則會導致gamma錯誤
@@ -436,7 +439,7 @@ namespace cms {
 		getSmoothIntensity(double rTargetIntensity,
 				   double gTargetIntensity,
 				   double bTargetIntensity, int grayLevel) {
-		if (true == c.autoIntensity && true == c.smoothIntensity
+		if ( /*true == c.autoIntensity && */ true == c.smoothIntensity
 		    && grayLevel >= c.smoothIntensityStart && grayLevel <= c.smoothIntensityEnd) {
 		    double rIntensity = Interpolation::linear(c.smoothIntensityStart,
 							      c.smoothIntensityEnd, 100,
@@ -462,7 +465,7 @@ namespace cms {
 									  analyzer) {
 
 		double_array intensity(new double[3]);
-		if (true == c.autoIntensity || true == autoIntensity) {
+		if ( /*true == c.autoIntensity || */ true == autoIntensity) {
 		    //autoIntensity從當下量到的componentVector推算最適當的target intensity
 		    RGB_ptr refRGB = analyzer->getReferenceRGB();
 		    xyY_ptr refxyY = analyzer->getReferenceColor();
@@ -637,7 +640,7 @@ namespace cms {
 
 
 		if (null != panelRegulator) {
-#ifdef DEBUG_REMAP_NEW
+/*#ifdef DEBUG_REMAP_NEW deprecated
 		    //若有panelRegulator, 進行remapping (遇到hook才需要)
 		    GammaTestPanelRegulator *gammaTestRegulator =
 			dynamic_cast < GammaTestPanelRegulator * >(panelRegulator.get());
@@ -646,9 +649,9 @@ namespace cms {
 			//需要remapping是因為採用寫入dg lut的方式改變面板特性
 			result = panelRegulator->remapping(result);
 		    }
-#else
+#else*/
 		    result = panelRegulator->remapping(result);
-#endif
+//#endif
 		}
 		//=============================================================
 		// debug scope

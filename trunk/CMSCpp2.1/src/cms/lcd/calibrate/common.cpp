@@ -161,10 +161,10 @@ namespace cms {
 	    //==================================================================
 	    // PanelRegulator
 	    //==================================================================
-	  PanelRegulator::PanelRegulator(double rgain, double ggain, double bgain, bptr < cms::lcd::BitDepthProcessor > bitDepth, bptr < i2c::TCONControl > tconctrl):
-	    bitDepth(bitDepth), tconctrl(tconctrl), rgain(rgain), ggain(ggain), bgain(bgain) {
+	    /*PanelRegulator::PanelRegulator(double rgain, double ggain, double bgain, bptr < cms::lcd::BitDepthProcessor > bitDepth, bptr < i2c::TCONControl > tconctrl):
+	       bitDepth(bitDepth), tconctrl(tconctrl), rgain(rgain), ggain(ggain), bgain(bgain) {
 
-	    };
+	       }; */
 	    /*PanelRegulator::PanelRegulator(bptr < cms::lcd::BitDepthProcessor > bitDepth,
 	       bptr < i2c::TCONControl >
 	       tconctrl, int maxR, int maxG,
@@ -174,16 +174,28 @@ namespace cms {
 	       ggain = ((double) maxG) / max;
 	       bgain = ((double) maxB) / max;
 	       }; */
-	    PanelRegulator::PanelRegulator(bptr < cms::lcd::BitDepthProcessor > bitDepth,
-					   bptr < i2c::TCONControl >
-					   tconctrl, double maxR, double maxG,
-					   double maxB):bitDepth(bitDepth), tconctrl(tconctrl) {
+	  PanelRegulator::PanelRegulator(bptr < cms::lcd::BitDepthProcessor > bitDepth, bptr < i2c::TCONControl > tconctrl, double maxR, double maxG, double maxB):bitDepth(bitDepth),
+		tconctrl(tconctrl)
+	    {
 		int max = bitDepth->getOutputMaxDigitalCount();
 		rgain = maxR / max;
 		ggain = maxG / max;
 		bgain = maxB / max;
 	    };
-	    void PanelRegulator::setEnable(bool enable) {
+	    //==================================================================
+
+	    //==================================================================
+	    // DGLutPanelRegulator
+	    //==================================================================
+
+	    DGLutPanelRegulator::DGLutPanelRegulator(bptr < cms::lcd::BitDepthProcessor > bitDepth,
+						     bptr < i2c::TCONControl > tconctrl,
+						     double maxR, double maxG,
+						     double maxB):PanelRegulator(bitDepth, tconctrl,
+										 maxR, maxG, maxB) {
+	    };
+
+	    void DGLutPanelRegulator::setEnable(bool enable) {
 		if (true == enable) {
 		    mappingRGBVector = RGBVector::getLinearRGBVector(bitDepth, rgain, ggain, bgain);
 		    //量測前寫在DG裡的lut
@@ -195,7 +207,7 @@ namespace cms {
 		    tconctrl->setDG(false);
 		}
 	    };
-	    RGB_vector_ptr PanelRegulator::remapping(RGB_vector_ptr dglut) {
+	    RGB_vector_ptr DGLutPanelRegulator::remapping(RGB_vector_ptr dglut) {
 		RGB_vector_ptr result = RGBVector::deepClone(dglut);
 		foreach(RGB_ptr rgb, *result) {
 		    rgb->R *= rgain;
@@ -206,9 +218,9 @@ namespace cms {
 		STORE_RGBVECTOR("PanelRegulator_afterRemapping.xls", result);
 		return result;
 	    };
-	    RGB_vector_ptr PanelRegulator::getMappingRGBVector() {
-		return mappingRGBVector;
-	    };
+	    /*RGB_vector_ptr PanelRegulator::getMappingRGBVector() {
+	       return mappingRGBVector;
+	       }; */
 	    //==================================================================
 
 
@@ -229,7 +241,6 @@ namespace cms {
 		    RGB_vector_ptr remapping =
 			RGBVector::getLinearRGBVector(measureCondition->rgbMeasureCode,
 						      rgain, ggain, bgain);
-		    //const MaxValue & frcBit = bitDepth->getFRCAbilityBit();
 		    bool remapFix = true;
 		    if (remapFix) {
 			RGBVector::changeMaxValue(remapping, bitDepth->getFRCAbilityBit());
@@ -238,9 +249,13 @@ namespace cms {
 		    STORE_RGBVECTOR("GammaTestPanelRegulator_mapping.xls", remapping);
 		    measureCondition->remappingRGBMeasureCode = remapping;
 		}
-#ifdef DEBUG_REMAP_NEW
+//#ifdef DEBUG_REMAP_NEW deprecated 
 		measureCondition->RemappingMode = remap;
-#endif
+//#endif
+	    };
+
+	    RGB_vector_ptr GammaTestPanelRegulator::remapping(RGB_vector_ptr dglut) {
+		return dglut;
 	    };
 	};
     };

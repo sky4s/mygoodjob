@@ -142,8 +142,8 @@ namespace cms {
 		void setPanelRegulator(bptr < PanelRegulator > panelRegulator);
 		__property RGBGamma_ptr RGBGenerateResult = { read = rgbGenerateResult
 		};
-		__property RGB_ptr IdealIntensity = { read = idealIntensity
-		};
+		/*__property RGB_ptr IdealIntensity = { read = idealIntensity
+		};*/
 		//void setUseMaxBIntensityZone(int zone);
 		__property XYZ_vector_ptr TargetXYZVector = { read = targetXYZVector
 		};

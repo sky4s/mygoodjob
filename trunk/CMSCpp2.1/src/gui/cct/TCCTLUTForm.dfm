@@ -2,7 +2,7 @@ object CCTLUTForm: TCCTLUTForm
   Left = 183
   Top = 220
   Width = 841
-  Height = 430
+  Height = 466
   Caption = 'CCT(LUT)'
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
@@ -21,14 +21,14 @@ object CCTLUTForm: TCCTLUTForm
   TextHeight = 13
   object Label9: TLabel
     Left = 550
-    Top = 360
+    Top = 392
     Width = 281
     Height = 13
     Caption = 'Copyright (C) 2012, AU Optronics Corp., All Right Reserved.'
   end
   object Label26: TLabel
     Left = 672
-    Top = 272
+    Top = 312
     Width = 62
     Height = 13
     Caption = 'Green for NB'
@@ -37,7 +37,7 @@ object CCTLUTForm: TCCTLUTForm
   end
   object Label27: TLabel
     Left = 736
-    Top = 272
+    Top = 312
     Width = 91
     Height = 13
     Caption = 'Blue for Experiment'
@@ -48,7 +48,7 @@ object CCTLUTForm: TCCTLUTForm
     Left = 6
     Top = 7
     Width = 156
-    Height = 260
+    Height = 298
     Caption = 'Gray Level Option'
     TabOrder = 0
     object Label1: TLabel
@@ -123,7 +123,7 @@ object CCTLUTForm: TCCTLUTForm
     Left = 169
     Top = 7
     Width = 169
-    Height = 258
+    Height = 298
     Caption = 'White Gamma'
     TabOrder = 1
     object Label16: TLabel
@@ -360,7 +360,7 @@ object CCTLUTForm: TCCTLUTForm
     Left = 343
     Top = 135
     Width = 156
-    Height = 130
+    Height = 170
     Caption = 'Blue Correction'
     Color = clMoneyGreen
     ParentColor = False
@@ -449,7 +449,7 @@ object CCTLUTForm: TCCTLUTForm
     Left = 671
     Top = 7
     Width = 156
-    Height = 258
+    Height = 298
     Caption = 'Options'
     TabOrder = 3
     object CheckBox_AvoidNoise: TCheckBox
@@ -484,6 +484,7 @@ object CCTLUTForm: TCCTLUTForm
       ParentColor = False
       ParentFont = False
       TabOrder = 1
+      OnClick = CheckBox_MultiGenClick
     end
     object Edit_MultiGenTimes: TEdit
       Left = 115
@@ -574,37 +575,15 @@ object CCTLUTForm: TCCTLUTForm
       Visible = False
     end
   end
-  object Button_MeaRun: TButton
-    Left = 507
-    Top = 306
-    Width = 84
-    Height = 20
-    Hint = 'Measure panel characteristic and produce CCT DG LUT.'
-    Caption = ' Measure&&Run'
-    ParentShowHint = False
-    ShowHint = True
-    TabOrder = 4
-    OnClick = Button_MeaRunClick
-  end
-  object Button_Debug: TButton
-    Left = 595
-    Top = 328
-    Width = 45
-    Height = 18
-    Caption = 'debug'
-    TabOrder = 5
-    Visible = False
-    OnClick = Button_DebugClick
-  end
   inline TOutputFileFrame1: TOutputFileFrame
     Left = 6
-    Top = 274
+    Top = 306
     Width = 501
-    Height = 78
-    TabOrder = 6
+    Height = 87
+    TabOrder = 4
     inherited GroupBox_OutputFile: TGroupBox
       Width = 496
-      Height = 73
+      Height = 80
       inherited Label5: TLabel
         Left = 7
         Top = 23
@@ -644,7 +623,7 @@ object CCTLUTForm: TCCTLUTForm
     Width = 143
     Height = 208
     Caption = 'Panel_Expand'
-    TabOrder = 7
+    TabOrder = 5
     Visible = False
     object GroupBox6: TGroupBox
       Left = 7
@@ -775,111 +754,78 @@ object CCTLUTForm: TCCTLUTForm
       end
     end
   end
-  object Button_Reset: TButton
-    Left = 595
-    Top = 312
-    Width = 45
-    Height = 18
-    Caption = 'reset'
-    TabOrder = 8
-    Visible = False
-    OnClick = Button_ResetClick
-  end
-  object Button_Run: TButton
-    Left = 507
-    Top = 326
-    Width = 84
-    Height = 19
-    Caption = 'Run'
-    Enabled = False
-    TabOrder = 9
-    Visible = False
-    OnClick = Button_RunClick
-  end
   object GroupBox_KeepMaxLuminance: TGroupBox
     Left = 506
     Top = 7
     Width = 157
-    Height = 258
+    Height = 298
     Caption = 'White Definition'
-    TabOrder = 10
+    TabOrder = 6
     object Label20: TLabel
       Left = 26
-      Top = 213
+      Top = 269
       Width = 27
       Height = 13
       Caption = 'Begin'
       Visible = False
     end
-    object RadioButton_MaxYNone: TRadioButton
-      Left = 7
-      Top = 14
-      Width = 59
-      Height = 19
-      Caption = 'None'
-      Checked = True
-      ParentShowHint = False
-      ShowHint = False
-      TabOrder = 0
-      TabStop = True
-    end
     object RadioButton_MaxYNative: TRadioButton
       Left = 7
-      Top = 49
+      Top = 105
       Width = 130
       Height = 20
       Caption = 'Native White'
-      TabOrder = 1
+      TabOrder = 0
       OnClick = RadioButton_MaxYNativeClick
     end
     object RadioButton_MaxYNativeAdv: TRadioButton
       Left = 7
-      Top = 189
+      Top = 245
       Width = 146
       Height = 20
       Caption = 'Native White(CCTSmooth)'
       Color = clMoneyGreen
       ParentColor = False
-      TabOrder = 2
+      TabOrder = 1
     end
     object Edit_MaxYAdvOver: TEdit
       Left = 64
-      Top = 213
+      Top = 269
       Width = 33
       Height = 21
       ImeName = #26085#25991#36664#20837#31995#32113' (MS-IME2002)'
-      TabOrder = 3
+      TabOrder = 2
       Text = '245'
       Visible = False
       OnChange = Edit_MaxYAdvOverChange
     end
     object CheckBox_MaxYAdvAuto: TCheckBox
       Left = 106
-      Top = 208
+      Top = 264
       Width = 47
       Height = 25
       Caption = 'Auto'
       Checked = True
       State = cbChecked
-      TabOrder = 4
+      TabOrder = 3
       Visible = False
       OnClick = CheckBox_MaxYAdvAutoClick
     end
     object RadioButton_MaxYTargetWhite: TRadioButton
       Left = 7
-      Top = 32
+      Top = 16
       Width = 129
       Height = 17
       Caption = 'Target White'
-      TabOrder = 5
+      TabOrder = 4
     end
     object GroupBox_DeHook: TGroupBox
       Left = 16
-      Top = 64
+      Top = 120
       Width = 137
       Height = 121
       Caption = 'DeHook'
-      TabOrder = 6
+      TabOrder = 5
       object RadioButton_DeHookNone: TRadioButton
         Left = 8
         Top = 16
@@ -926,52 +872,79 @@ object CCTLUTForm: TCCTLUTForm
         TabOrder = 3
         Visible = False
       end
+      object CheckBox_AlterGammaCurveAtDeHook2: TCheckBox
+        Left = 48
+        Top = 98
+        Width = 81
+        Height = 17
+        Caption = 'Alter r Curve'
+        Enabled = False
+        TabOrder = 4
+        Visible = False
+      end
     end
-    object CheckBox_AlterGammaCurveAtDeHook2: TCheckBox
-      Left = 40
-      Top = 162
-      Width = 81
-      Height = 17
-      Caption = 'Alter r Curve'
-      Enabled = False
-      TabOrder = 7
+    object GroupBox_DeIntensityError: TGroupBox
+      Left = 16
+      Top = 32
+      Width = 137
+      Height = 73
+      Caption = 'De-WhiteError'
+      TabOrder = 6
       Visible = False
+      object RadioButton_None: TRadioButton
+        Left = 8
+        Top = 16
+        Width = 57
+        Height = 17
+        Caption = 'None'
+        TabOrder = 0
+      end
+      object RadioButton_ForceAssignWhite: TRadioButton
+        Left = 8
+        Top = 48
+        Width = 121
+        Height = 17
+        Caption = 'Force  Assign White'
+        Checked = True
+        TabOrder = 1
+        TabStop = True
+      end
+      object RadioButton_IntensityShift: TRadioButton
+        Left = 8
+        Top = 32
+        Width = 121
+        Height = 17
+        Caption = 'Intensity Shift'
+        Enabled = False
+        TabOrder = 2
+      end
     end
-  end
-  object CheckBox_MemoryMeasure: TCheckBox
-    Left = 511
-    Top = 288
-    Width = 113
-    Height = 17
-    Caption = 'Memory Measure'
-    TabOrder = 11
-    Visible = False
   end
   object ProgressBar1: TProgressBar
     Left = 7
-    Top = 360
+    Top = 392
     Width = 225
     Height = 17
     Min = 0
     Max = 100
-    TabOrder = 12
+    TabOrder = 7
   end
   object RadioGroup_NormalCase: TRadioGroup
     Left = 671
-    Top = 296
+    Top = 328
     Width = 156
     Height = 49
     Caption = 'Normal Case'
     Items.Strings = (
       'NB'
       'TV')
-    TabOrder = 13
+    TabOrder = 8
     Visible = False
     OnClick = RadioGroup_NormalCaseClick
   end
   object StatusBar1: TStatusBar
     Left = 0
-    Top = 382
+    Top = 418
     Width = 833
     Height = 19
     Color = clWhite
@@ -987,7 +960,7 @@ object CCTLUTForm: TCCTLUTForm
     Width = 156
     Height = 122
     Caption = 'Low Level Correction'
-    TabOrder = 15
+    TabOrder = 10
     object Label17: TLabel
       Left = 26
       Top = 52
@@ -1065,6 +1038,66 @@ object CCTLUTForm: TCCTLUTForm
         '0.9'
         '0.95'
         '1.0')
+    end
+  end
+  object GroupBox_Execute: TGroupBox
+    Left = 504
+    Top = 305
+    Width = 161
+    Height = 80
+    Caption = 'Execute'
+    TabOrder = 11
+    object Button_Reset: TButton
+      Left = 100
+      Top = 38
+      Width = 45
+      Height = 18
+      Caption = 'reset'
+      TabOrder = 0
+      Visible = False
+      OnClick = Button_ResetClick
+    end
+    object CheckBox_MemoryMeasure: TCheckBox
+      Left = 16
+      Top = 16
+      Width = 113
+      Height = 17
+      Caption = 'Memory Measure'
+      TabOrder = 1
+      Visible = False
+    end
+    object Button_MeaRun: TButton
+      Left = 13
+      Top = 53
+      Width = 84
+      Height = 20
+      Hint = 'Measure panel characteristic and produce CCT DG LUT.'
+      Caption = ' Measure&&Run'
+      ParentShowHint = False
+      ShowHint = True
+      TabOrder = 2
+      OnClick = Button_MeaRunClick
+    end
+    object Button_Run: TButton
+      Left = 13
+      Top = 34
+      Width = 84
+      Height = 19
+      Caption = 'Run'
+      Enabled = False
+      TabOrder = 3
+      Visible = False
+      OnClick = Button_RunClick
+    end
+    object Button_Debug: TButton
+      Left = 100
+      Top = 55
+      Width = 45
+      Height = 18
+      Caption = 'debug'
+      TabOrder = 4
+      Visible = False
+      OnClick = Button_DebugClick
     end
   end
   object OpenDialog1: TOpenDialog
