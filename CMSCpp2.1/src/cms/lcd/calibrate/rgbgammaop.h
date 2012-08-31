@@ -44,6 +44,7 @@ namespace cms {
 		   RGB_vector_ptr dglut); */
 	    };
 
+            //§Ñ°O¬O·F³Âªº, deprecated§a!
 	    class NewGammaOp:public RGBGammaOp {
 	      private:
 		int p1, p2;

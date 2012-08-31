@@ -721,12 +721,12 @@ namespace cms {
 		}
 		dgfile.addProperty("keep max lumi adv over", c->keepMaxLumiOver);
 	    }
-	    if (true == c->autoIntensity) {
+	    /*if (true == c->autoIntensity) {
 		RGB_ptr idealIntensity = c->idealIntensity;
 		if (null != idealIntensity) {
 		    dgfile.addProperty("target intensity", *idealIntensity->toString());
 		}
-	    }
+	    }*/
 	    //==================================================================
 
 	    //==================================================================
