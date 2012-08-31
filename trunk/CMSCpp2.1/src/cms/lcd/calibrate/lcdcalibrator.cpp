@@ -749,6 +749,12 @@ namespace cms {
 		    return nil_RGB_vector_ptr;
 		}
 		STORE_DOUBLE_VECTOR("1.0_lumigammacurve.xls", luminanceGammaCurve);
+		//==================================================================================
+		// init maxWhiteXYZ & target white
+		//==================================================================================
+		initWhiteXYZ(referenceXYZ);
+		//==================================================================================
+
 
 		bptr < AdvancedDGLutGenerator > advgenerator = initAdvancedDGLutGenerator();
 		advgenerator->setPanelRegulator(panelRegulator);
@@ -767,7 +773,7 @@ namespace cms {
 
 
 		//=============================================================
-		//
+		// dim相關參數初始化
 		//=============================================================
 		double dimStrengthParameter = 1;
 		int underParameter = 50;
@@ -779,13 +785,6 @@ namespace cms {
 		    underParameter = 0;
 		}
 		//=============================================================
-
-		//==================================================================================
-		// init maxWhiteXYZ & target white
-		//==================================================================================
-		initWhiteXYZ(referenceXYZ);
-		//==================================================================================
-
 
 		//外部迴圈針對是否疊階來決定起始位置
 		//這邊的思維是: 如果轉折點設定不當(太小太接近0), 就可能造成疊階

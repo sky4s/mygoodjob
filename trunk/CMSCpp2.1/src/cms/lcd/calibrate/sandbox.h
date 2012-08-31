@@ -29,7 +29,6 @@ namespace cms {
 	    class AdvancedDGLutGenerator:private DimDGLutGenerator, gui::event::WindowAdapter {
 	      private:
 		const LCDCalibrator & c;
-		//XYZ_ptr getXYZ(XYZ_ptr XYZ, double offsetK);
 		RGB_ptr idealIntensity;
 
 
@@ -44,6 +43,7 @@ namespace cms {
 		int brightTurn;
 		int effectiveInputLevel;
 		int multiGenIndex;
+		bool autoIntensity;
 
 		//=============================================================
 		// Intensity Relative
@@ -95,14 +95,15 @@ namespace cms {
 			       double_vector_ptr luminanceGammaCurve,
 			       int dimTurn, int brightTurn,
 			       double dimGamma, double brightGamma, int effectiveInputLevel);
+		void updateTarget(XYZ_ptr targetWhite);
 	      private:
 		static XYZ_vector_ptr
-		    getBrightGammaTarget(double_vector_ptr
-					 luminanceGammaCurve,
-					 XYZ_ptr startXYZ, XYZ_ptr endXYZ,
-					 double brightGamma,
-					 int brightTurn, int brightWidth,
-					 bptr < BitDepthProcessor > bitDepth);
+		    getBrightTarget(double_vector_ptr
+				    luminanceGammaCurve,
+				    XYZ_ptr startXYZ, XYZ_ptr endXYZ,
+				    double brightGamma,
+				    int brightTurn, int brightWidth,
+				    bptr < BitDepthProcessor > bitDepth);
 
 		double_array code2YRatioArray;
 		void initCode2YRatioArray();
