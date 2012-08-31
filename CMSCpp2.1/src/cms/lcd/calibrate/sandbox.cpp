@@ -89,6 +89,7 @@ namespace cms {
 		stopMeasure = false;
 		rgbGenerateResult = nil_RGBGamma;
 		multiGenIndex = -1;
+		autoIntensity = false;
 	    };
 
 
@@ -120,6 +121,9 @@ namespace cms {
 						   luminanceGammaCurve, dimTurn,
 						   brightTurn, dimGamma, brightGamma, brightWidth);
 	    }
+
+	    void AdvancedDGLutGenerator::updateTarget(XYZ_ptr targetWhite) {
+	    };
 
 
 
@@ -354,8 +358,11 @@ namespace cms {
 		produceDGLutMulti(XYZ_vector_ptr targetXYZVector,
 				  Component_vector_ptr componentVector) {
 		//先產生初步結果
+		autoIntensity = true;	//為了讓尋找Target White時可以避免Intensity Error的影響, 所以打開autoIntensity
 		RGB_vector_ptr initRGBVector = produceDGLut(targetXYZVector, componentVector,
 							    analyzer, panelRegulator1);
+		autoIntensity = false;	//隨即關閉, 僅有multi-gen第一次可以使用autoIntensity, 否則會導致gamma錯誤
+
 		int whiteLevel = bitDepth->getEffectiveInputLevel();
 		bool keepMaxLumiInMulti = c.keepMaxYInMultiGen;
 		if (keepMaxLumiInMulti) {
@@ -455,7 +462,7 @@ namespace cms {
 									  analyzer) {
 
 		double_array intensity(new double[3]);
-		if (true == c.autoIntensity) {
+		if (true == c.autoIntensity || true == autoIntensity) {
 		    //autoIntensity從當下量到的componentVector推算最適當的target intensity
 		    RGB_ptr refRGB = analyzer->getReferenceRGB();
 		    xyY_ptr refxyY = analyzer->getReferenceColor();
@@ -585,18 +592,18 @@ namespace cms {
 		    // target white下才會啟用
 		    // 不能在multiGen下使用
 		    //=============================================================
-		    if (-1 == multiGenIndex && true == c.autoIntensity
-			&& true == c.smoothIntensity
-			&& x >= c.smoothIntensityStart && x <= c.smoothIntensityEnd) {
+		    /*if (-1 == multiGenIndex && true == c.autoIntensity
+		       && true == c.smoothIntensity
+		       && x >= c.smoothIntensityStart && x <= c.smoothIntensityEnd) {
 
-			//如果啟用auto intensity, 會自動找到比100%更適合的intensity
-			//但是此舉會造成低灰階的修正出問題, 因為低灰階的目標intensity不再是100%
-			//幾乎都會造成暗灰階找不到而疊階變成許多0... 所以中間需要從1XX%過度回100%
-			double_array smoothIntensity = getSmoothIntensity(rTargetIntensity,
-									  gTargetIntensity,
-									  bTargetIntensity, x);
-			targetIntensity = smoothIntensity;
-		    }
+		       //如果啟用auto intensity, 會自動找到比100%更適合的intensity
+		       //但是此舉會造成低灰階的修正出問題, 因為低灰階的目標intensity不再是100%
+		       //幾乎都會造成暗灰階找不到而疊階變成許多0... 所以中間需要從1XX%過度回100%
+		       double_array smoothIntensity = getSmoothIntensity(rTargetIntensity,
+		       gTargetIntensity,
+		       bTargetIntensity, x);
+		       targetIntensity = smoothIntensity;
+		       } */
 		    //=============================================================
 
 		    RGB_ptr rgb = lutgen.getDGCode(targetIntensity[0], targetIntensity[1], targetIntensity[2]);	//傳出(主要)
@@ -709,30 +716,6 @@ namespace cms {
 	    };
 
 
-	    /*XYZ_ptr AdvancedDGLutGenerator::getXYZ(XYZ_ptr XYZ, double offsetK) {
-	       //==============================================================
-	       // 材料準備
-	       //==============================================================
-	       xyY_ptr xyY(new CIExyY(XYZ));
-	       double cct = CorrelatedColorTemperature::xy2CCTByMcCamyFloat(xyY);
-	       xyY_ptr xyYOriginal = CorrelatedColorTemperature::CCT2DIlluminantxyY(cct);
-	       double cctOffset = cct + offsetK;
-	       xyY_ptr xyYOffset = CorrelatedColorTemperature::CCT2DIlluminantxyY(cctOffset);
-	       //==============================================================
-
-	       //==============================================================
-	       // shift
-	       //==============================================================
-	       double_array dxy = xyY->getDeltaxy(xyYOriginal);
-	       xyYOffset->x += dxy[0];
-	       xyYOffset->y += dxy[1];
-	       //==============================================================
-
-	       xyYOffset->Y = XYZ->Y;
-	       XYZ_ptr XYZOffset = xyYOffset->toXYZ();
-	       return XYZOffset;
-	       }; */
-
 	    /*
 	       產生smooth target還是有個問題, 就是luminance.
 	       現在的作法是用原本的Target White的亮度來產生Luminance(也就是最大亮度),
@@ -746,7 +729,6 @@ namespace cms {
 			   int dimTurn, int brightTurn, double dimGamma,
 			   double brightGamma, int brightWidth) {
 		int size = luminanceGammaCurve->size();
-		double_array dimendValues = targetXYZ->getxyValues();
 		XYZ_vector_ptr result(new XYZ_vector(size));
 
 		//==============================================================
@@ -771,6 +753,7 @@ namespace cms {
 		//==============================================================
 		// 中間區段
 		//==============================================================
+		double_array dimendValues = targetXYZ->getxyValues();
 		for (int x = dimTurn; x < brightTurn; x++) {
 		    //僅Y有變化
 		    double Y = (*luminanceGammaCurve)[x];
@@ -781,11 +764,11 @@ namespace cms {
 		//==============================================================
 		// bright區段
 		//==============================================================
-		XYZ_vector_ptr brightResult = getBrightGammaTarget(luminanceGammaCurve,
-								   targetXYZ,
-								   endXYZ, brightGamma,
-								   brightTurn, brightWidth,
-								   bitDepth);
+		XYZ_vector_ptr brightResult = getBrightTarget(luminanceGammaCurve,
+							      targetXYZ,
+							      endXYZ, brightGamma,
+							      brightTurn, brightWidth,
+							      bitDepth);
 		int brightSize = brightResult->size();
 		for (int x = 0; x < brightSize; x++) {
 		    (*result)[x + brightTurn] = (*brightResult)[x];
@@ -809,12 +792,12 @@ namespace cms {
 	     */
 	    XYZ_vector_ptr
 		AdvancedDGLutGenerator::
-		getBrightGammaTarget(double_vector_ptr
-				     luminanceGammaCurve,
-				     XYZ_ptr startXYZ,
-				     XYZ_ptr endXYZ, double brightGamma,
-				     int brightTurn, int brightWidth,
-				     bptr < BitDepthProcessor > bitDepth) {
+		getBrightTarget(double_vector_ptr
+				luminanceGammaCurve,
+				XYZ_ptr startXYZ,
+				XYZ_ptr endXYZ, double brightGamma,
+				int brightTurn, int brightWidth,
+				bptr < BitDepthProcessor > bitDepth) {
 		//==============================================================
 		// bright區段
 		//==============================================================
@@ -875,12 +858,7 @@ namespace cms {
 		} double max = Math::max(checkResult);
 		return max < deltaabThreshold;
 	    };
-	    /*int AdvancedDGLutGenerator::getAutoBrightTurn() {
-	       return autoBrightTurn;
-	       };
-	       int AdvancedDGLutGenerator::getAutoBrightWidth() {
-	       return autoBrightWidth;
-	       }; */
+
 	    /*
 	       此第二組componentVector2和panelRegulator2, 是用在target white != native white,
 	       但是又想 smooth過去時使用
@@ -898,10 +876,7 @@ namespace cms {
 	    void AdvancedDGLutGenerator::setPanelRegulator(bptr < PanelRegulator > panelRegulator) {
 		this->panelRegulator1 = panelRegulator;
 	    };
-	    /*void AdvancedDGLutGenerator::setUseMaxBIntensityZone(int zone) {
-	       this->useMaxBIntensityZone = zone;
-	       mode = BIntensitySmooth;
-	       }; */
+
 
 	    //==================================================================
 	    //==================================================================
