@@ -13,12 +13,16 @@ __fastcall TChangeLogForm::TChangeLogForm(TComponent * Owner)
 :TForm(Owner)
 {
     Memo1->Text = "\
+       [3.4 build 1.42] 2012/09/14\r\n\
+       +支援TCON 62301以及其DirectGamma\r\n\
+       \r\n\
        [3.4 build 1.41] 2012/08/31\r\n\
        +PanelRegulator分為DGLut和GammaTest\r\n\
        +Target White下增加De-WhiteError功能,有:\r\n\
        1.None (不修正)\r\n\
        2.Intensity Shift (Intensity平移對齊至Target White, 需搭配Multi-Gen)\r\n\
        3.Force Assign White (白點DG強制指定為TargetWhite)\r\n\
+       \r\n\
        [3.4 build 1.40] 2012/08/31\r\n\
        +Target White增加Force Assign White, 可選擇是否強制設定Target White的RGB\r\n\
        +Auto Intensity僅在MultiGen的第一次開啟, 若無MultiGen則不執行\r\n\

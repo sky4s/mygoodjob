@@ -21,12 +21,18 @@ namespace i2c {
 	const int bLowBit;
 	const int bHighBit;
 	const int totalByte;
+	const int patternBit;
 	 TestRGBBit(const int rLowBit, const int rHighBit,
 		    const int gLowBit, const int gHighBit,
-		    const int bLowBit, const int bHighBit, const int totalByte);
+		    const int bLowBit, const int bHighBit, const int totalByte,
+		    const int patternBit);
+	bool operator==(const TestRGBBit &)const ;	// use member function
 
 	static const TestRGBBit IndependentInstance;
 	static const TestRGBBit DependentInstance;
+	static const TestRGBBit TCON62301Instance;
+	static const TestRGBBit NotAssignInstance;
+
     };
 
     class TCONParameter {

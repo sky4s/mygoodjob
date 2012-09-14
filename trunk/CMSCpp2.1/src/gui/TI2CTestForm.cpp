@@ -47,13 +47,13 @@ __fastcall TI2CTestForm::TI2CTestForm(TComponent * Owner)
 
 void TI2CTestForm::setOptionsEditable(bool editable)
 {
-    this->CheckBox_Connecting->Checked = !editable;
-    this->CheckBox_Connecting->Enabled = !editable;
+    //this->CheckBox_Connecting->Checked = !editable;
+    //this->CheckBox_Connecting->Enabled = !editable;
     this->Edit_GammaTestAddress->Enabled = editable;
     this->Edit_GammaTestBit->Enabled = editable;
     this->Edit_TestRGBAdress->Enabled = editable;
     this->ComboBox_AddressingSize->Enabled = editable;
-    this->CheckBox_IndepRGB->Enabled = editable;
+    //this->CheckBox_IndepRGB->Enabled = editable;
 };
 
 void __fastcall TI2CTestForm::Button1Click(TObject * Sender)
@@ -137,24 +137,24 @@ void __fastcall TI2CTestForm::Button1Click(TObject * Sender)
 //---------------------------------------------------------------------------
 void __fastcall TI2CTestForm::CheckBox_ConnectingClick(TObject * Sender)
 {
-    if (false == this->CheckBox_Connecting->Checked) {
-	setOptionsEditable(true);
+    //if (false == this->CheckBox_Connecting->Checked) {
+	//setOptionsEditable(true);
 	/*this->Edit_GammaTestAddress->Enabled = true;
 	   this->Edit_GammaTestBit->Enabled = true;
 	   this->Edit_TestRGBAdress->Enabled = true;
 	   this->CheckBox_IndepRGB->Enabled = true;
 	   this->CheckBox_Connecting->Enabled = false; */
-    }
+    //}
 }
 
 //---------------------------------------------------------------------------
 void __fastcall TI2CTestForm::CheckBox1Click(TObject * Sender)
 {
-    if (true == this->CheckBox_Connecting->Checked) {
+    //if (true == this->CheckBox_Connecting->Checked) {
 	bool enable = this->CheckBox1->Checked;
 	Edit_RChange(Sender);
 	control->setGammaTest(enable);
-    }
+    //}
 }
 
 //---------------------------------------------------------------------------
@@ -163,7 +163,7 @@ void __fastcall TI2CTestForm::Edit_RChange(TObject * Sender)
     using namespace Dep;
     bool doing = Edit_R->Text.Length() != 0 && Edit_G->Text.Length() != 0
 	&& Edit_B->Text.Length() != 0 && true == CheckBox1->Checked
-	&& true == this->CheckBox_Connecting->Checked;
+	/*&& true == this->CheckBox_Connecting->Checked*/;
     if (doing) {
 	try {
 	    int r = StrToInt(this->Edit_R->Text);
@@ -191,18 +191,18 @@ void __fastcall TI2CTestForm::Edit_RChange(TObject * Sender)
 
 void __fastcall TI2CTestForm::Button_ReadClick(TObject * Sender)
 {
-    if (true == this->CheckBox_Connecting->Checked) {
+    //if (true == this->CheckBox_Connecting->Checked) {
 	int address = StrToInt("0x" + this->Edit_Address->Text);
 	const unsigned char data = control->readByte(address);
 	this->Edit_ReadData->Text = IntToHex(data, 2);
-    }
+    //}
 }
 
 //---------------------------------------------------------------------------
 
 void __fastcall TI2CTestForm::Button_WriteClick(TObject * Sender)
 {
-    if (true == this->CheckBox_Connecting->Checked && this->Edit_WriteData->Text.Length() != 0) {
+    if (/*true == this->CheckBox_Connecting->Checked &&*/ this->Edit_WriteData->Text.Length() != 0) {
 	int address = StrToInt("0x" + this->Edit_Address->Text);
 	const unsigned int data =
 	    static_cast < const unsigned int >(StrToInt(this->Edit_WriteData->Text));
@@ -225,7 +225,7 @@ void __fastcall TI2CTestForm::FormDeactivate(TObject * Sender)
     MainForm->RadioButton_SingleTCON->Checked = this->RadioButton_Single->Checked;
     MainForm->RadioButton_DualTCON->Checked = this->RadioButton_Dual->Checked;
 
-    MainForm->ComboBox_GammaTestType->ItemIndex = this->CheckBox_IndepRGB->Checked ? 0 : 1;
+    //MainForm->ComboBox_GammaTestType->ItemIndex = this->CheckBox_IndepRGB->Checked ? 0 : 1;
     MainForm->ComboBox_GammaTestTypeChange(this);
 }
 

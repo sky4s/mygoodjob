@@ -25,6 +25,11 @@ namespace i2c {
 		     bptr < i2cControl > control1, bptr < i2cControl > control2);
 	static bptr < cms::util::ByteBuffer > getRGBByteBuffer(int r, int g, int b, const
 							       TestRGBBit & testRGBBit);
+	static bptr < cms::util::ByteBuffer > getRGBByteBufferWith62301(int r, int g, int b,
+									const TestRGBBit &
+									testRGBBit);
+
+
 	bool setGammaTestRGB(RGB_ptr rgb);
 	bool setGammaTestRGB(int r, int g, int b);
 	void setGammaTest(bool enable);
