@@ -26,7 +26,6 @@ class TI2CTestForm:public TForm {
     TGroupBox *GroupBox_I2CCard;
     TRadioButton *RadioButton_USB;
     TRadioButton *RadioButton_LPTLarge;
-    TCheckBox *CheckBox_Connecting;
     TGroupBox *GroupBox3;
     TLabel *Label1;
     TLabel *Label2;

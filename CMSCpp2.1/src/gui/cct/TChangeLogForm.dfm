@@ -1,6 +1,6 @@
 object ChangeLogForm: TChangeLogForm
-  Left = 290
-  Top = 0
+  Left = 293
+  Top = 152
   Width = 597
   Height = 724
   Caption = 'Change Log'
@@ -21,6 +21,7 @@ object ChangeLogForm: TChangeLogForm
     Height = 673
     Lines.Strings = (
       'Memo1')
+    ScrollBars = ssVertical
     TabOrder = 0
   end
 end

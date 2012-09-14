@@ -32,19 +32,51 @@ namespace i2c {
 	int b = _toInt(rgb->B);
 	return setGammaTestRGB(r, g, b);
     };
-    bptr < ByteBuffer > TCONControl::getRGBByteBuffer(int r, int g, int b,
-						      const TestRGBBit & testRGBBit) {
-	// C B A 9 8 7 6 5 4 3 2 1
-	// ^^^^^^^H^^^^^^^^^^^^^^^L
+    bptr < cms::util::ByteBuffer > TCONControl::getRGBByteBufferWith62301(int r, int g, int b,
+									  const TestRGBBit &
+									  testRGBBit) {
+	int highMask = 3;
 	int rLow = r & 255;
-	int rHigh = (r >> 8) & 15;
+	int rHigh = (r >> 8) & highMask;
 	int gLow = g & 255;
-	int gHigh = (g >> 8) & 15;
+	int gHigh = (g >> 8) & highMask;
 	int bLow = b & 255;
-	int bHigh = (b >> 8) & 15;
+	int bHigh = (b >> 8) & highMask;
 
 	int totalByte = testRGBBit.totalByte;
 	bptr < ByteBuffer > data(new ByteBuffer(totalByte));
+	//先清空buffer
+	for (int x = 0; x < totalByte; x++) {
+	    (*data)[x] = 0;
+	}
+	(*data)[0] = 64 | rHigh << 4 | gHigh << 2 | bHigh;
+
+	(*data)[testRGBBit.rLowBit / 8] = rLow;	//0
+	(*data)[testRGBBit.gLowBit / 8] = gLow;	//16
+	(*data)[testRGBBit.bLowBit / 8] = bLow;	//24
+
+	return data;
+    };
+    bptr < ByteBuffer > TCONControl::getRGBByteBuffer(int r, int g, int b,
+						      const TestRGBBit & testRGBBit) {
+	if (TestRGBBit::TCON62301Instance == testRGBBit) {
+	    return getRGBByteBufferWith62301(r, g, b, testRGBBit);
+	}
+
+	int patternBit = testRGBBit.patternBit;
+	int highMask = (12 == patternBit) ? 15 : 3;
+	// C B A 9 8 7 6 5 4 3 2 1
+	// ^^^^^^^H^^^^^^^^^^^^^^^L
+	int rLow = r & 255;
+	int rHigh = (r >> 8) & highMask;
+	int gLow = g & 255;
+	int gHigh = (g >> 8) & highMask;
+	int bLow = b & 255;
+	int bHigh = (b >> 8) & highMask;
+
+	int totalByte = testRGBBit.totalByte;
+	bptr < ByteBuffer > data(new ByteBuffer(totalByte));
+	//先清空buffer
 	for (int x = 0; x < totalByte; x++) {
 	    (*data)[x] = 0;
 	}

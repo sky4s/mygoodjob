@@ -1,6 +1,6 @@
 object MainForm: TMainForm
-  Left = 325
-  Top = 443
+  Left = 326
+  Top = 444
   Width = 767
   Height = 380
   Caption = 'CCT Adjustment v3.4'
@@ -1574,6 +1574,7 @@ object MainForm: TMainForm
               Enabled = False
               State = cbChecked
               TabOrder = 2
+              Visible = False
             end
             object ComboBox_GammaTestType: TComboBox
               Left = 39
@@ -1583,11 +1584,12 @@ object MainForm: TMainForm
               ItemHeight = 13
               ItemIndex = 0
               TabOrder = 3
-              Text = '12401'
+              Text = '12401Type'
               OnChange = ComboBox_GammaTestTypeChange
               Items.Strings = (
-                '12401'
-                '12403')
+                '12401Type'
+                '12403Type'
+                '62301Type')
             end
           end
         end
@@ -1643,7 +1645,7 @@ object MainForm: TMainForm
   end
   object StatusBar1: TStatusBar
     Left = 0
-    Top = 315
+    Top = 313
     Width = 759
     Height = 19
     Color = clWhite
