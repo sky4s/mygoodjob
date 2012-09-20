@@ -1119,6 +1119,15 @@ void __fastcall TMainForm::ComboBox_GammaTestTypeChange(TObject * Sender)
 {
     /*bool indepRGB = this->ComboBox_GammaTestType->ItemIndex == 0;
        CheckBox_GammaTestIndepRGB->Checked = indepRGB; */
+    String type = ComboBox_GammaTestType->Text;
+    if (type == "12401Type") {
+	Edit_GAMDIRECT_Bit->Text = "12";
+    } else if (type == "12403Type") {
+	Edit_GAMDIRECT_Bit->Text = "12";
+    } else if (type == "62301Type") {
+	Edit_GAMDIRECT_Bit->Text = "10";
+    }
+
 }
 
 //---------------------------------------------------------------------------
@@ -1523,6 +1532,7 @@ void TMainForm::initTCONFile()
 	ini->WriteString("11306", "GammaTestAddress", "387");
 	ini->WriteBool("11306", "IndepRGB", true);
 	ini->WriteString("11306", "GammaTestType", "12401Type");
+	ini->WriteString("11306", "GammaTestBit", "12");
 
 	ini->WriteInteger("11306", "in", 6);
 	ini->WriteInteger("11306 ", "out", 6);
@@ -1542,6 +1552,7 @@ void TMainForm::initTCONFile()
 	ini->WriteString("11307", "GammaTestAddress", "2F3");
 	ini->WriteBool("11307", "IndepRGB", true);
 	ini->WriteString("11307", "GammaTestType", "12401Type");
+	ini->WriteString("11307", "GammaTestBit", "12");
 
 	ini->WriteInteger("11307", "in", 6);
 	ini->WriteInteger("11307", "out", 6);
@@ -1561,6 +1572,7 @@ void TMainForm::initTCONFile()
 	ini->WriteString("12306", "GammaTestAddress", "154");
 	ini->WriteBool("12306", "IndepRGB", true);
 	ini->WriteString("12306", "GammaTestType", "12401Type");
+	ini->WriteString("12306", "GammaTestBit", "12");
 
 	ini->WriteInteger("12306", "in", 8);
 	ini->WriteInteger("12306", "out", 8);
@@ -1580,6 +1592,7 @@ void TMainForm::initTCONFile()
 	ini->WriteString("12309", "GammaTestAddress", "107");
 	ini->WriteBool("12309", "IndepRGB", true);
 	ini->WriteString("12309", "GammaTestType", "12401Type");
+	ini->WriteString("12309", "GammaTestBit", "12");
 
 	ini->WriteInteger("12309", "in", 8);
 	ini->WriteInteger("12309", "out", 8);
@@ -1599,6 +1612,7 @@ void TMainForm::initTCONFile()
 	ini->WriteString("12401", "GammaTestAddress", "4A7");
 	ini->WriteBool("12401", "IndepRGB", true);
 	ini->WriteString("12401", "GammaTestType", "12401Type");
+	ini->WriteString("12401", "GammaTestBit", "12");
 
 	ini->WriteInteger("12401", "in", 8);
 	ini->WriteInteger("12401", "out", 8);
@@ -1618,6 +1632,7 @@ void TMainForm::initTCONFile()
 	ini->WriteString("12403", "GammaTestAddress", "FFA");
 	ini->WriteBool("12403", "IndepRGB", false);
 	ini->WriteString("12403", "GammaTestType", "12403Type");
+	ini->WriteString("12403", "GammaTestBit", "12");
 
 	ini->WriteInteger("12403", "in", 8);
 	ini->WriteInteger("12403", "out", 8);
@@ -1637,6 +1652,7 @@ void TMainForm::initTCONFile()
 	ini->WriteString("12405", "GammaTestAddress", "1FEC");
 	ini->WriteBool("12405", "IndepRGB", false);
 	ini->WriteString("12405", "GammaTestType", "12403Type");
+	ini->WriteString("12405", "GammaTestBit", "12");
 
 	ini->WriteInteger("12405", "in", 8);
 	ini->WriteInteger("12405", "out", 8);
@@ -1656,6 +1672,7 @@ void TMainForm::initTCONFile()
 	ini->WriteString("12407", "GammaTestAddress", "3FEC");
 	ini->WriteBool("12407", "IndepRGB", false);
 	ini->WriteString("12407", "GammaTestType", "12403Type");
+	ini->WriteString("12407", "GammaTestBit", "12");
 
 	ini->WriteInteger("12407", "in", 8);
 	ini->WriteInteger("12407", "out", 8);
@@ -1675,6 +1692,7 @@ void TMainForm::initTCONFile()
 	ini->WriteString("62301", "GammaTestAddress", "307");
 	//ini->WriteBool("62301", "IndepRGB", false);
 	ini->WriteString("62301", "GammaTestType", "62301Type");
+	ini->WriteString("62301", "GammaTestBit", "10");
 
 	ini->WriteInteger("62301", "in", 8);
 	ini->WriteInteger("62301", "out", 6);

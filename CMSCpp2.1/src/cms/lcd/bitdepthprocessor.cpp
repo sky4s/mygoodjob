@@ -65,9 +65,15 @@ namespace cms {
 	    };
 	};
 
-
-      BitDepthProcessor::BitDepthProcessor(int inBit, int lutBit, int outBit, bool tconInput):tconInput(tconInput)
+      BitDepthProcessor::BitDepthProcessor(int inBit, int lutBit, int outBit, bool tconInput, int tconInputBit):tconInput(tconInput)
 	{
+	    in = &MaxValue::getByIntegerBit(inBit);
+	    lut = &MaxValue::getByIntegerBit(lutBit);
+	    out = &MaxValue::getByIntegerBit(outBit);
+	    bitDepth = getBitDepth(*in, *out);
+	};
+	BitDepthProcessor::BitDepthProcessor(int inBit, int lutBit, int outBit,
+					     bool tconInput):tconInput(tconInput) {
 	    in = &MaxValue::getByIntegerBit(inBit);
 	    lut = &MaxValue::getByIntegerBit(lutBit);
 	    out = &MaxValue::getByIntegerBit(outBit);
