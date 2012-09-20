@@ -60,7 +60,6 @@ class TMainForm:public TForm {
     TEdit *Edit_GammaTestEnableAddress;
     TEdit *Edit_GammaTestEnableBit;
     TEdit *Edit_GammaTestAddress;
-    TCheckBox *CheckBox_GammaTestIndepRGB;
     TGroupBox *GroupBox2;
     TRadioButton *RadioButton_PC;
     TRadioButton *RadioButton_TCON;
@@ -92,10 +91,6 @@ class TMainForm:public TForm {
     TRadioButton *RadioButton_FlickrPixel;
     TRadioButton *RadioButton_FlickrSubPixel;
     TRadioButton *RadioButton_PCTCON_NB;
-    TLabel *Label17;
-    TLabel *Label18;
-    TLabel *Label19;
-    TLabel *Label20;
     TRadioButton *RadioButton_Ninth;
     TCheckBox *CheckBox_LineAdjoin;
     TGroupBox *GroupBox6;
@@ -131,6 +126,10 @@ class TMainForm:public TForm {
     TGroupBox *GroupBox3;
     TCheckBox *CheckBox_InverseMeasure;
     TRadioButton *RadioButton_HStripe2;
+    TGroupBox *GroupBox_LUT;
+    TGroupBox *GroupBox_GAMDIRECT;
+    TLabel *Label8;
+    TEdit *Edit_GAMDIRECT_Bit;
     void __fastcall About1Click(TObject * Sender);
     void __fastcall Exit1Click(TObject * Sender);
     void __fastcall TargetWhite1Click(TObject * Sender);

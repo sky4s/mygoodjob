@@ -25,7 +25,10 @@ namespace cms {
 	    static const Dep::MaxValue & getOutputMaxValue(BitDepth bitDepth);
 	    static const int getFRCOnlyBit(BitDepth bitDepth);
 	    bool tconInput;
+	    //int tconInputBit;
+	    const Dep::MaxValue * tcon;
 	  public:
+	     BitDepthProcessor(int inBit, int lutBit, int outBit, bool tconinput, int tconInputBit);
 	     BitDepthProcessor(int inBit, int lutBit, int outBit, bool tconinput);
 	     BitDepthProcessor(int inBit, int lutBit, int outBit);
 

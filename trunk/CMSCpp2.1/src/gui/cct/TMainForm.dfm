@@ -1,8 +1,8 @@
 object MainForm: TMainForm
   Left = 326
   Top = 444
-  Width = 767
-  Height = 380
+  Width = 719
+  Height = 398
   Caption = 'CCT Adjustment v3.4'
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
@@ -722,15 +722,15 @@ object MainForm: TMainForm
   PixelsPerInch = 96
   TextHeight = 13
   object Label6: TLabel
-    Left = 470
-    Top = 288
+    Left = 422
+    Top = 312
     Width = 281
     Height = 13
     Caption = 'Copyright (C) 2012, AU Optronics Corp., All Right Reserved.'
   end
   object Image1: TImage
     Left = 7
-    Top = 261
+    Top = 285
     Width = 113
     Height = 42
     AutoSize = True
@@ -835,8 +835,8 @@ object MainForm: TMainForm
   object PageControl1: TPageControl
     Left = 7
     Top = 13
-    Width = 741
-    Height = 241
+    Width = 698
+    Height = 268
     ActivePage = TabSheet1
     TabIndex = 0
     TabOrder = 0
@@ -1190,14 +1190,14 @@ object MainForm: TMainForm
       object GroupBox3: TGroupBox
         Left = 552
         Top = 8
-        Width = 177
+        Width = 129
         Height = 41
         Caption = 'Sequence'
         TabOrder = 5
         object CheckBox_InverseMeasure: TCheckBox
-          Left = 16
+          Left = 8
           Top = 16
-          Width = 121
+          Width = 97
           Height = 17
           Caption = 'Inverse Measure'
           TabOrder = 0
@@ -1211,8 +1211,8 @@ object MainForm: TMainForm
       object Panel_TCON: TPanel
         Left = 2
         Top = 1
-        Width = 719
-        Height = 214
+        Width = 663
+        Height = 240
         BevelOuter = bvNone
         TabOrder = 0
         Visible = False
@@ -1357,8 +1357,8 @@ object MainForm: TMainForm
         object GroupBox7: TGroupBox
           Left = 312
           Top = 7
-          Width = 297
-          Height = 202
+          Width = 345
+          Height = 226
           Caption = 'TCON Type'
           TabOrder = 3
           object ComboBox_TCONType: TComboBox
@@ -1385,52 +1385,22 @@ object MainForm: TMainForm
             Left = 8
             Top = 38
             Width = 137
-            Height = 155
+            Height = 179
             Caption = 'Digital Gamma '
             TabOrder = 2
-            object Label12: TLabel
-              Left = 7
-              Top = 85
-              Width = 62
-              Height = 13
-              Caption = 'LUT Address'
-            end
-            object Label15: TLabel
-              Left = 7
-              Top = 111
-              Width = 65
-              Height = 13
-              Caption = 'LUT Type(bit)'
-            end
-            object Label18: TLabel
-              Left = 52
-              Top = 98
-              Width = 23
-              Height = 13
-              Caption = '(hex)'
-            end
-            object Edit_DGLUTAddress: TEdit
-              Left = 78
-              Top = 85
-              Width = 53
-              Height = 21
-              ImeName = #20013#25991' ('#32321#39636') - '#26032#27880#38899
-              TabOrder = 0
-              Text = '302'
-            end
             object GroupBox_GAM_EN: TGroupBox
               Left = 7
               Top = 13
               Width = 124
               Height = 66
               Caption = 'GAM_EN'
-              TabOrder = 1
+              TabOrder = 0
               object Label13: TLabel
                 Left = 7
                 Top = 13
-                Width = 38
+                Width = 64
                 Height = 13
-                Caption = 'Address'
+                Caption = 'Address (hex)'
               end
               object Label14: TLabel
                 Left = 7
@@ -1439,17 +1409,10 @@ object MainForm: TMainForm
                 Height = 13
                 Caption = 'Bit'
               end
-              object Label19: TLabel
-                Left = 26
-                Top = 27
-                Width = 23
-                Height = 13
-                Caption = '(hex)'
-              end
               object Edit_DGEnableAddress: TEdit
-                Left = 52
+                Left = 80
                 Top = 13
-                Width = 66
+                Width = 38
                 Height = 21
                 ImeName = #26085#25991#36664#20837#31995#32113' (MS-IME2002)'
                 TabOrder = 0
@@ -1465,62 +1428,72 @@ object MainForm: TMainForm
                 Text = '0'
               end
             end
-            object ComboBox_DGLUTType: TComboBox
-              Left = 78
-              Top = 111
-              Width = 53
-              Height = 21
-              ItemHeight = 13
-              ItemIndex = 0
-              TabOrder = 2
-              Text = '10'
-              OnChange = ComboBox_DGLUTTypeChange
-              Items.Strings = (
-                '10'
-                '12')
+            object GroupBox_LUT: TGroupBox
+              Left = 7
+              Top = 79
+              Width = 124
+              Height = 98
+              Caption = 'LUT'
+              TabOrder = 1
+              object Label12: TLabel
+                Left = 7
+                Top = 20
+                Width = 67
+                Height = 13
+                Caption = ' Address (hex)'
+              end
+              object Label15: TLabel
+                Left = 7
+                Top = 44
+                Width = 65
+                Height = 13
+                Caption = 'LUT Type(bit)'
+              end
+              object ComboBox_DGLUTType: TComboBox
+                Left = 78
+                Top = 44
+                Width = 43
+                Height = 21
+                ItemHeight = 13
+                ItemIndex = 0
+                TabOrder = 0
+                Text = '10'
+                OnChange = ComboBox_DGLUTTypeChange
+                Items.Strings = (
+                  '10'
+                  '12')
+              end
+              object Edit_DGLUTAddress: TEdit
+                Left = 78
+                Top = 20
+                Width = 43
+                Height = 21
+                ImeName = #20013#25991' ('#32321#39636') - '#26032#27880#38899
+                TabOrder = 1
+                Text = '302'
+              end
             end
           end
           object GroupBox_GammaTestAddress: TGroupBox
             Left = 152
             Top = 38
-            Width = 137
-            Height = 155
+            Width = 185
+            Height = 179
             Caption = 'Gamma Test'
             TabOrder = 3
-            object Label4: TLabel
-              Left = 7
-              Top = 85
-              Width = 70
-              Height = 13
-              Caption = 'GAM_DIRECT'
-            end
-            object Label11: TLabel
-              Left = 7
-              Top = 111
-              Width = 24
-              Height = 13
-              Caption = 'Type'
-            end
-            object Label17: TLabel
-              Left = 59
-              Top = 98
-              Width = 23
-              Height = 13
-              Caption = '(hex)'
-            end
             object GroupBox5: TGroupBox
               Left = 7
               Top = 13
-              Width = 124
+              Width = 130
               Height = 66
               Caption = 'GAM_TEST'
               TabOrder = 0
               object Label2: TLabel
                 Left = 7
                 Top = 13
-                Width = 38
+                Width = 64
                 Height = 13
-                Caption = 'Address'
+                Caption = 'Address (hex)'
               end
               object Label3: TLabel
                 Left = 7
@@ -1529,24 +1502,17 @@ object MainForm: TMainForm
                 Height = 13
                 Caption = 'Bit'
               end
-              object Label20: TLabel
-                Left = 26
-                Top = 27
-                Width = 23
-                Height = 13
-                Caption = '(hex)'
-              end
               object Edit_GammaTestEnableAddress: TEdit
-                Left = 52
+                Left = 88
                 Top = 13
-                Width = 66
+                Width = 38
                 Height = 21
                 ImeName = #26085#25991#36664#20837#31995#32113' (MS-IME2002)'
                 TabOrder = 0
                 Text = '29'
               end
               object Edit_GammaTestEnableBit: TEdit
-                Left = 52
+                Left = 60
                 Top = 39
                 Width = 66
                 Height = 21
@@ -1555,41 +1521,67 @@ object MainForm: TMainForm
                 Text = '0'
               end
             end
-            object Edit_GammaTestAddress: TEdit
-              Left = 85
-              Top = 85
-              Width = 46
-              Height = 21
-              ImeName = #26085#25991#36664#20837#31995#32113' (MS-IME2002)'
+            object GroupBox_GAMDIRECT: TGroupBox
+              Left = 7
+              Top = 80
+              Width = 170
+              Height = 97
+              Caption = 'GAM_DIRECT'
               TabOrder = 1
-              Text = '154'
-            end
-            object CheckBox_GammaTestIndepRGB: TCheckBox
-              Left = 20
-              Top = 131
-              Width = 104
-              Height = 19
-              Caption = 'Independent RGB'
-              Checked = True
-              Enabled = False
-              State = cbChecked
-              TabOrder = 2
-              Visible = False
-            end
-            object ComboBox_GammaTestType: TComboBox
-              Left = 39
-              Top = 111
-              Width = 92
-              Height = 21
-              ItemHeight = 13
-              ItemIndex = 0
-              TabOrder = 3
-              Text = '12401Type'
-              OnChange = ComboBox_GammaTestTypeChange
-              Items.Strings = (
-                '12401Type'
-                '12403Type'
-                '62301Type')
+              object Label4: TLabel
+                Left = 7
+                Top = 20
+                Width = 64
+                Height = 13
+                Caption = 'Address (hex)'
+              end
+              object Label11: TLabel
+                Left = 7
+                Top = 44
+                Width = 24
+                Height = 13
+                Caption = 'Type'
+              end
+              object Label8: TLabel
+                Left = 144
+                Top = 48
+                Width = 11
+                Height = 13
+                Caption = 'bit'
+              end
+              object Edit_GammaTestAddress: TEdit
+                Left = 75
+                Top = 20
+                Width = 46
+                Height = 21
+                ImeName = #26085#25991#36664#20837#31995#32113' (MS-IME2002)'
+                TabOrder = 0
+                Text = '154'
+              end
+              object ComboBox_GammaTestType: TComboBox
+                Left = 37
+                Top = 44
+                Width = 84
+                Height = 21
+                ItemHeight = 13
+                ItemIndex = 0
+                TabOrder = 1
+                Text = '12401Type'
+                OnChange = ComboBox_GammaTestTypeChange
+                Items.Strings = (
+                  '12401Type'
+                  '12403Type'
+                  '62301Type')
+              end
+              object Edit_GAMDIRECT_Bit: TEdit
+                Left = 120
+                Top = 44
+                Width = 25
+                Height = 21
+                Enabled = False
+                TabOrder = 2
+                Text = '12'
+              end
             end
           end
         end
@@ -1597,7 +1589,7 @@ object MainForm: TMainForm
           Left = 98
           Top = 104
           Width = 207
-          Height = 105
+          Height = 129
           Caption = 'USB Setting'
           TabOrder = 4
           Visible = False
@@ -1635,7 +1627,7 @@ object MainForm: TMainForm
   end
   object ProgressBar1: TProgressBar
     Left = 128
-    Top = 288
+    Top = 312
     Width = 201
     Height = 17
     Min = 0
@@ -1645,8 +1637,8 @@ object MainForm: TMainForm
   end
   object StatusBar1: TStatusBar
     Left = 0
-    Top = 313
-    Width = 759
+    Top = 331
+    Width = 711
     Height = 19
     Color = clWhite
     Panels = <
