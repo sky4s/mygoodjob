@@ -382,7 +382,7 @@ bool THSVForm2nd::Load_HSV(String Fpath)
 	char *buffer = Load_File(Fpath);
 	if (buffer == NULL) {
 
-	    return 0;
+	    return false;
 	}
 	for (int i = 0; i < HUE_COUNT; i++) {
 	    hueTable[i] = -1;
@@ -400,7 +400,7 @@ bool THSVForm2nd::Load_HSV(String Fpath)
 	while (c < Length && pch != NULL) {
 	    if (pch == NULL) {
 		ShowMessage(" Can 't open Hue table file.");
-		return 0;	//資料中的data缺少
+		return false;	//資料中的data缺少
 	    }
 	    int index = c / 3;
 	    if (c % 3 == 0) {
@@ -592,14 +592,14 @@ bool THSVForm2nd::HSV_LUT_RW_start()
 {
     if (HSVEN_idx == -1) {
 	ShowMessage("Unknown HSV enabled index.");
-	return 0;
+	return false;
     }
 
     unsigned char set_val;
     bool ok = EngineerForm->SetRead_Byte(ChkB[HSVEN_idx]->Addr, &set_val);
-    if (ok == 0) {
+    if (ok == false) {
 	ShowMessage("read enable fail.");
-	return 0;
+	return false;
     }
     HSV_EN_State = (set_val > 0 ? 1 : 0);
     if (CheckBox_FuncOn->Checked) {
@@ -609,7 +609,7 @@ bool THSVForm2nd::HSV_LUT_RW_start()
 	ChkB[HSVEN_idx]->Chkb->Checked = false;
 	EngineerForm->SetWrite_Byte(ChkB[HSVEN_idx]->Addr, 0);
     }
-    return 1;
+    return true;
 }
 
 //---------------------------------------------------------------------------
@@ -2062,6 +2062,7 @@ void __fastcall THSVForm2nd::Button_SaveOldFormatClick(TObject * Sender)
 }
 
 //---------------------------------------------------------------------------
+
 
 
 
