@@ -7,7 +7,7 @@
 //C++系統文件
 
 //其他庫頭文件
-#ifndef OD_MEASUREMENT
+#ifdef EYE_ONE_SUPPORT
 #include <EyeOneLib/EyeOne.h>
 #endif
 //本項目內頭文件
@@ -121,7 +121,7 @@ namespace cms {
 		}
 	    };
 	    //==================================================================
-#ifndef OD_MEASUREMENT
+#ifdef EYE_ONE_SUPPORT
 	    EyeOne::EyeOne() {
 		i1 = bptr < TEyeOneCtrl > (new TEyeOneCtrl((TComponent *) null));
 

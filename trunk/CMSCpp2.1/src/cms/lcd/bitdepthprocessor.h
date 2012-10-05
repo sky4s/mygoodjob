@@ -18,7 +18,7 @@ namespace cms {
 		b10_10, b10_8, b8_8, b8_6, b6_6, Unknow
 	    };
 	  private:
-	    const Dep::MaxValue * in, *lut, *out;
+	    const Dep::MaxValue * in, *lut, *out, *tcon;
 	    BitDepth bitDepth;
 	    static BitDepth getBitDepth(const Dep::MaxValue & in, const Dep::MaxValue & out);
 
@@ -26,7 +26,8 @@ namespace cms {
 	    static const int getFRCOnlyBit(BitDepth bitDepth);
 	    bool tconInput;
 	    //int tconInputBit;
-	    const Dep::MaxValue * tcon;
+	    //const Dep::MaxValue * tcon;
+	    bool is10BitTCONInput();
 	  public:
 	     BitDepthProcessor(int inBit, int lutBit, int outBit, bool tconinput, int tconInputBit);
 	     BitDepthProcessor(int inBit, int lutBit, int outBit, bool tconinput);
