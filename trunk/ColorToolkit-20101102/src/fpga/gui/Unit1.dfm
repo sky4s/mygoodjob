@@ -1,6 +1,6 @@
 object MainForm: TMainForm
-  Left = 413
-  Top = 200
+  Left = 365
+  Top = 92
   Width = 832
   Height = 748
   Caption = 'Toolkit'
@@ -18,7 +18,7 @@ object MainForm: TMainForm
   TextHeight = 13
   object StatusBar1: TStatusBar
     Left = 0
-    Top = 683
+    Top = 685
     Width = 824
     Height = 17
     Color = clYellow

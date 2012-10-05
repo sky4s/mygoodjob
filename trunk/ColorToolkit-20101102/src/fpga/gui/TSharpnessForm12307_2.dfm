@@ -1,5 +1,7 @@
 inherited SharpnessForm12307_2: TSharpnessForm12307_2
-  Caption = 'SharpnessForm 12307-2'
+  Left = 457
+  Top = 115
+  Caption = 'Sharpness v2.1'
   OldCreateOrder = True
   PixelsPerInch = 96
   TextHeight = 13
