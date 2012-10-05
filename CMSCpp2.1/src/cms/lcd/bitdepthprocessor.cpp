@@ -19,6 +19,7 @@ namespace cms {
 	//==================================================================
 	// BitDepthProcessor
 	//==================================================================
+
 	 BitDepthProcessor::BitDepth BitDepthProcessor::
 	    getBitDepth(const Dep::MaxValue & in, const Dep::MaxValue & out) {
 	    if (in == MaxValue::Int10Bit && out == MaxValue::Int10Bit) {
@@ -64,12 +65,15 @@ namespace cms {
 		return 3;
 	    };
 	};
-
+	bool BitDepthProcessor::is10BitTCONInput() {
+	    return *tcon == MaxValue::Int10Bit;
+	};
       BitDepthProcessor::BitDepthProcessor(int inBit, int lutBit, int outBit, bool tconInput, int tconInputBit):tconInput(tconInput)
 	{
 	    in = &MaxValue::getByIntegerBit(inBit);
 	    lut = &MaxValue::getByIntegerBit(lutBit);
 	    out = &MaxValue::getByIntegerBit(outBit);
+	    tcon = &MaxValue::getByIntegerBit(tconInputBit);
 	    bitDepth = getBitDepth(*in, *out);
 	};
 	BitDepthProcessor::BitDepthProcessor(int inBit, int lutBit, int outBit,
@@ -77,6 +81,7 @@ namespace cms {
 	    in = &MaxValue::getByIntegerBit(inBit);
 	    lut = &MaxValue::getByIntegerBit(lutBit);
 	    out = &MaxValue::getByIntegerBit(outBit);
+	    tcon = &MaxValue::getByIntegerBit(12);
 	    bitDepth = getBitDepth(*in, *out);
 	};
 
@@ -99,7 +104,7 @@ namespace cms {
 		return tconInput ? 4080 : 255;
 	    case b8_6:
 	    case b6_6:
-		return tconInput ? 4032 : 252;
+		return tconInput ? (is10BitTCONInput()? 1008 : 4032) : 252;
 	    default:
 		throw IllegalStateException("Unsupported bitDepth: " + bitDepth);
 	    }
@@ -131,7 +136,7 @@ namespace cms {
 		return tconInput ? 16 : 1;
 	    case b8_6:
 	    case b6_6:
-		return tconInput ? 16 : 4;
+		return tconInput ? (is10BitTCONInput()? 16 : 64) : 4;
 	    default:
 		throw IllegalStateException("Unsupported bitDepth: " + bitDepth);
 	    }
@@ -146,7 +151,8 @@ namespace cms {
 		return tconInput ? 16 : 1;
 	    case b8_6:
 	    case b6_6:
-		return tconInput ? 16 : 4;
+		//return tconInput ? 16 : 4;
+		return tconInput ? (is10BitTCONInput()? 16 : 64) : 4;
 	    default:
 		throw IllegalStateException("Unsupported bitDepth: " + bitDepth);
 	    }

@@ -9,7 +9,7 @@
 
 //本項目內頭文件
 #include <ca210api/CA210API.h>
-#ifndef OD_MEASUREMENT
+#ifdef EYE_ONE_SUPPORT
 #include <EyeOneLib/EYEONECTRLLib_OCX.h>
 #endif
 
@@ -85,7 +85,7 @@ namespace cms {
 		Instr getType();
 		void close();
 	    };
-#ifndef OD_MEASUREMENT
+#ifdef EYE_ONE_SUPPORT
 	    class EyeOne:public Meter {
 	      private:
 		bptr < TEyeOneCtrl > i1;
