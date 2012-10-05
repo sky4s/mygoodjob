@@ -60,7 +60,7 @@ class THSVForm2nd:public TForm, cms::util::CallBackIF, RGBInfoCallbackIF, Patter
     TCheckBox *CheckBox4;
     TStringGrid *stringGrid_HSV;
     TColorPickerFrame *colorPicker;
-    TGroupBox *GroupBox2;
+        TGroupBox *GroupBox_Adjust;
     TButton *btn_set;
     TButton *btn_reset;
     TButton *btn_hsv_write;
@@ -79,7 +79,6 @@ class THSVForm2nd:public TForm, cms::util::CallBackIF, RGBInfoCallbackIF, Patter
     TRadioButton *RadioButton16;
     TRadioButton *RadioButton17;
     TRadioButton *RadioButton18;
-    TBitBtn *Btn_HSV_reload;
     TGroupBox *GroupBox4;
     TGroupBox *GroupBox_60base;
     TRadioButton *RadioButton_deg0;
@@ -142,6 +141,8 @@ class THSVForm2nd:public TForm, cms::util::CallBackIF, RGBInfoCallbackIF, Patter
     TRadioGroup *RadioGroup_Global;
     TCheckBox *CheckBox_FuncOn;
     TButton *Button_SaveOldFormat;
+        TGroupBox *GroupBox_ReadWrite;
+        TBitBtn *Btn_HSV_reload;
 
     void __fastcall btn_hsv_loadClick(TObject * Sender);
     void __fastcall btn_hsv_saveClick(TObject * Sender);

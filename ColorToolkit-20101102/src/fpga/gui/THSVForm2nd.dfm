@@ -1,8 +1,8 @@
 object HSVForm2nd: THSVForm2nd
-  Left = 400
-  Top = 200
+  Left = 395
+  Top = 167
   Width = 823
-  Height = 715
+  Height = 741
   Caption = 'HSV2'
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
@@ -28,7 +28,7 @@ object HSVForm2nd: THSVForm2nd
     Left = 7
     Top = 0
     Width = 802
-    Height = 681
+    Height = 697
     ParentShowHint = False
     ShowHint = False
     TabOrder = 0
@@ -53,7 +53,7 @@ object HSVForm2nd: THSVForm2nd
     object rg_HSV_Mode: TRadioGroup
       Left = 8
       Top = 33
-      Width = 116
+      Width = 161
       Height = 42
       Caption = 'HUE/Sat Mode'
       Columns = 3
@@ -108,7 +108,7 @@ object HSVForm2nd: THSVForm2nd
       Left = 627
       Top = 45
       Width = 166
-      Height = 540
+      Height = 500
       Cursor = crIBeam
       ColCount = 4
       DefaultColWidth = 38
@@ -222,29 +222,29 @@ object HSVForm2nd: THSVForm2nd
         end
       end
       inherited btn_c3d_load_img: TButton
-        Left = 232
+        Left = 192
         Top = 5
         Width = 65
         Height = 15
         OnClick = colorPickerbtn_c3d_load_imgClick
       end
       inherited cb_show_ref_img: TCheckBox
-        Left = 306
+        Left = 258
         Top = 5
         Width = 129
         Height = 16
         OnClick = colorPickercb_show_ref_imgClick
       end
     end
-    object GroupBox2: TGroupBox
+    object GroupBox_Adjust: TGroupBox
       Left = 176
       Top = 384
-      Width = 449
-      Height = 289
+      Width = 441
+      Height = 305
       Caption = 'HSV Adjustment'
       TabOrder = 9
       object btn_set: TButton
-        Left = 394
+        Left = 386
         Top = 256
         Width = 49
         Height = 15
@@ -259,105 +259,23 @@ object HSVForm2nd: THSVForm2nd
         Visible = False
         OnClick = btn_setClick
       end
-      object btn_reset: TButton
-        Left = 394
-        Top = 120
-        Width = 49
-        Height = 15
-        Caption = 'Reset'
-        Font.Charset = DEFAULT_CHARSET
-        Font.Color = clWindowText
-        Font.Height = -12
-        Font.Name = 'MS Sans Serif'
-        Font.Style = [fsBold]
-        ParentFont = False
-        TabOrder = 1
-        OnClick = btn_resetClick
-      end
-      object btn_hsv_write: TButton
-        Left = 394
-        Top = 152
-        Width = 49
-        Height = 15
-        Caption = 'Write'
-        Font.Charset = DEFAULT_CHARSET
-        Font.Color = clWindowText
-        Font.Height = -12
-        Font.Name = 'MS Sans Serif'
-        Font.Style = [fsBold]
-        ParentFont = False
-        TabOrder = 2
-        OnClick = btn_hsv_writeClick
-      end
-      object btn_hsv_read: TButton
-        Left = 394
-        Top = 136
-        Width = 49
-        Height = 15
-        Caption = 'Read'
-        Font.Charset = DEFAULT_CHARSET
-        Font.Color = clWindowText
-        Font.Height = -12
-        Font.Name = 'MS Sans Serif'
-        Font.Style = [fsBold]
-        ParentFont = False
-        TabOrder = 3
-        OnClick = btn_hsv_readClick
-      end
-      object Btn_HSV_reload: TBitBtn
-        Left = 371
-        Top = 168
-        Width = 72
-        Height = 25
-        Caption = '&Reload'
-        ModalResult = 6
-        TabOrder = 4
-        OnClick = Btn_HSV_reloadClick
-        Glyph.Data = {
-          DE010000424DDE01000000000000760000002800000024000000120000000100
-          0400000000006801000000000000000000001000000000000000000000000000
-          80000080000000808000800000008000800080800000C0C0C000808080000000
-          FF0000FF000000FFFF00FF000000FF00FF00FFFF0000FFFFFF00333333333333
-          3333333333333333333333330000333333333333333333333333F33333333333
-          00003333344333333333333333388F3333333333000033334224333333333333
-          338338F3333333330000333422224333333333333833338F3333333300003342
-          222224333333333383333338F3333333000034222A22224333333338F338F333
-          8F33333300003222A3A2224333333338F3838F338F33333300003A2A333A2224
-          33333338F83338F338F33333000033A33333A222433333338333338F338F3333
-          0000333333333A222433333333333338F338F33300003333333333A222433333
-          333333338F338F33000033333333333A222433333333333338F338F300003333
-          33333333A222433333333333338F338F00003333333333333A22433333333333
-          3338F38F000033333333333333A223333333333333338F830000333333333333
-          333A333333333333333338330000333333333333333333333333333333333333
-          0000}
-        NumGlyphs = 2
-      end
       object CheckBox_AutoSet: TCheckBox
         Left = 377
-        Top = 221
+        Top = 245
         Width = 66
         Height = 14
         Caption = 'Auto Set'
-        TabOrder = 6
+        TabOrder = 1
         Visible = False
-      end
-      object CheckBox_AutoWrite: TCheckBox
-        Left = 257
-        Top = 11
-        Width = 72
-        Height = 14
-        Caption = 'Auto Write'
-        Checked = True
-        State = cbChecked
-        TabOrder = 5
       end
       inline hsvAdjust: THSVAdjustFrame
         Left = 4
         Top = 57
         Width = 361
-        Height = 178
-        TabOrder = 7
+        Height = 186
+        TabOrder = 2
         inherited GroupBox40: TGroupBox
+          Top = 0
           inherited lb_Hue_gain: TLabel
             Left = 332
           end
@@ -386,7 +304,7 @@ object HSVForm2nd: THSVForm2nd
           end
         end
         inherited GroupBox41: TGroupBox
-          Top = 55
+          Top = 63
           inherited lb_Sat_gain: TLabel
             Left = 332
           end
@@ -411,7 +329,7 @@ object HSVForm2nd: THSVForm2nd
           end
         end
         inherited GroupBox7: TGroupBox
-          Top = 108
+          Top = 121
           inherited lb_Val_gain: TLabel
             Left = 332
           end
@@ -436,72 +354,53 @@ object HSVForm2nd: THSVForm2nd
           end
         end
       end
-      object CheckBox_OffWhenWrite: TCheckBox
-        Left = 257
-        Top = 29
-        Width = 94
-        Height = 14
-        Caption = 'Off when Write'
-        Checked = True
-        State = cbChecked
-        TabOrder = 8
-      end
       object Button_15BaseInterp: TButton
-        Left = 392
-        Top = 29
+        Left = 376
+        Top = 61
         Width = 49
         Height = 14
         Caption = 'I&nterp.'
         ParentShowHint = False
         ShowHint = True
-        TabOrder = 9
+        TabOrder = 3
         OnClick = Button_15BaseInterpClick
       end
       object Button_HInterp: TButton
-        Left = 392
-        Top = 45
-        Width = 49
-        Height = 14
-        Caption = 'H Interp.'
-        TabOrder = 10
-        OnClick = Button_HInterpClick
-      end
-      object Button_SInterp: TButton
-        Left = 392
-        Top = 61
-        Width = 49
-        Height = 14
-        Caption = 'S Interp.'
-        TabOrder = 11
-        OnClick = Button_SInterpClick
-      end
-      object Button_VInterp: TButton
-        Left = 392
+        Left = 376
         Top = 77
         Width = 49
         Height = 14
-        Caption = 'V Interp.'
-        TabOrder = 12
-        OnClick = Button_VInterpClick
+        Caption = 'H Interp.'
+        TabOrder = 4
+        OnClick = Button_HInterpClick
       end
-      object CheckBox_ShowPattern: TCheckBox
-        Left = 352
-        Top = 11
-        Width = 89
+      object Button_SInterp: TButton
+        Left = 376
+        Top = 93
+        Width = 49
         Height = 14
-        Caption = 'Show Pattern'
-        TabOrder = 13
-        OnClick = CheckBox_ShowPatternClick
+        Caption = 'S Interp.'
+        TabOrder = 5
+        OnClick = Button_SInterpClick
+      end
+      object Button_VInterp: TButton
+        Left = 376
+        Top = 109
+        Width = 49
+        Height = 14
+        Caption = 'V Interp.'
+        TabOrder = 6
+        OnClick = Button_VInterpClick
       end
       object GroupBox5: TGroupBox
         Left = 4
         Top = 14
-        Width = 157
+        Width = 173
         Height = 35
         Caption = 'Select Mode'
-        TabOrder = 14
+        TabOrder = 7
         object RadioButton_Global: TRadioButton
-          Left = 104
+          Left = 120
           Top = 16
           Width = 49
           Height = 17
@@ -510,7 +409,7 @@ object HSVForm2nd: THSVForm2nd
           OnClick = RadioButton_GlobalClick
         end
         object RadioButton_Local: TRadioButton
-          Left = 56
+          Left = 64
           Top = 16
           Width = 49
           Height = 17
@@ -531,25 +430,96 @@ object HSVForm2nd: THSVForm2nd
         end
       end
       object RadioGroup_Global: TRadioGroup
-        Left = 168
+        Left = 184
         Top = 8
-        Width = 57
+        Width = 73
         Height = 41
         Caption = 'Global'
         Enabled = False
         Items.Strings = (
           'Abs'
           'Rel')
-        TabOrder = 15
+        TabOrder = 8
         OnClick = RadioGroup_GlobalClick
       end
-      object CheckBox_FuncOn: TCheckBox
-        Left = 376
-        Top = 104
-        Width = 65
-        Height = 17
-        Caption = 'Func On'
-        TabOrder = 16
+      object GroupBox7: TGroupBox
+        Left = 264
+        Top = 8
+        Width = 169
+        Height = 41
+        Caption = 'Turn Point'
+        TabOrder = 9
+        object Label_TurnPoint: TLabel
+          Left = 113
+          Top = 16
+          Width = 6
+          Height = 13
+          Caption = '0'
+        end
+        object ScrollBar_TurnPoint: TScrollBar
+          Left = 4
+          Top = 16
+          Width = 105
+          Height = 17
+          Max = 15
+          PageSize = 0
+          Position = 7
+          TabOrder = 0
+          OnChange = ScrollBar_TurnPointChange
+        end
+      end
+      object GroupBox9: TGroupBox
+        Left = 5
+        Top = 239
+        Width = 360
+        Height = 61
+        TabOrder = 10
+        object Label25: TLabel
+          Left = 5
+          Top = 33
+          Width = 53
+          Height = 16
+          Caption = '  Chroma'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -15
+          Font.Name = 'MS Sans Serif'
+          Font.Style = []
+          ParentFont = False
+        end
+        object Label_Chroma: TLabel
+          Left = 332
+          Top = 41
+          Width = 6
+          Height = 13
+          Caption = '0'
+        end
+        object ScrollBar_Chroma: TScrollBar
+          Left = 82
+          Top = 32
+          Width = 244
+          Height = 21
+          Hint = '[z] for minus, [x] for plus'
+          Max = 63
+          Min = -63
+          PageSize = 0
+          ParentShowHint = False
+          ShowHint = True
+          TabOrder = 0
+          OnChange = ScrollBar_ChromaChange
+        end
+        object Button_ChromaReset: TButton
+          Left = 232
+          Top = 8
+          Width = 49
+          Height = 17
+          Hint = '[c]'
+          Caption = 'Reset'
+          ParentShowHint = False
+          ShowHint = True
+          TabOrder = 1
+          OnClick = Button_ChromaResetClick
+        end
       end
     end
     object GroupBox3: TGroupBox
@@ -921,7 +891,7 @@ object HSVForm2nd: THSVForm2nd
     end
     object Edit_CursorColor: TEdit
       Left = 8
-      Top = 368
+      Top = 592
       Width = 161
       Height = 21
       TabOrder = 11
@@ -929,7 +899,7 @@ object HSVForm2nd: THSVForm2nd
     end
     object GroupBox_OoG: TGroupBox
       Left = 8
-      Top = 544
+      Top = 496
       Width = 161
       Height = 89
       Caption = 'Out of Gamut Indicator'
@@ -971,53 +941,27 @@ object HSVForm2nd: THSVForm2nd
     end
     object Edit_CursorColorHSV: TEdit
       Left = 8
-      Top = 388
+      Top = 612
       Width = 161
       Height = 21
       TabOrder = 13
       Text = 'HSV Cursor Color'
     end
-    object GroupBox7: TGroupBox
-      Left = 8
-      Top = 632
-      Width = 161
-      Height = 41
-      Caption = 'Turn Point'
-      TabOrder = 14
-      object Label_TurnPoint: TLabel
-        Left = 113
-        Top = 16
-        Width = 6
-        Height = 13
-        Caption = '0'
-      end
-      object ScrollBar_TurnPoint: TScrollBar
-        Left = 4
-        Top = 16
-        Width = 105
-        Height = 17
-        Max = 15
-        PageSize = 0
-        Position = 7
-        TabOrder = 0
-        OnChange = ScrollBar_TurnPointChange
-      end
-    end
     object CheckBox_SAT_CLIP_EN: TCheckBox
-      Left = 584
+      Left = 520
       Top = 8
       Width = 89
       Height = 17
       Caption = 'SAT_CLIP_EN'
-      TabOrder = 15
+      TabOrder = 14
     end
     object GroupBox8: TGroupBox
       Left = 8
-      Top = 416
+      Top = 368
       Width = 161
       Height = 121
       Caption = 'Memory Color'
-      TabOrder = 16
+      TabOrder = 15
       object RadioButton_CSkin: TRadioButton
         Left = 8
         Top = 16
@@ -1094,66 +1038,13 @@ object HSVForm2nd: THSVForm2nd
         Visible = False
       end
     end
-    object GroupBox9: TGroupBox
-      Left = 181
-      Top = 609
-      Width = 360
-      Height = 61
-      TabOrder = 17
-      object Label25: TLabel
-        Left = 5
-        Top = 33
-        Width = 53
-        Height = 16
-        Caption = '  Chroma'
-        Font.Charset = DEFAULT_CHARSET
-        Font.Color = clWindowText
-        Font.Height = -15
-        Font.Name = 'MS Sans Serif'
-        Font.Style = []
-        ParentFont = False
-      end
-      object Label_Chroma: TLabel
-        Left = 332
-        Top = 41
-        Width = 6
-        Height = 13
-        Caption = '0'
-      end
-      object ScrollBar_Chroma: TScrollBar
-        Left = 82
-        Top = 32
-        Width = 244
-        Height = 21
-        Hint = '[z] for minus, [x] for plus'
-        Max = 63
-        Min = -63
-        PageSize = 0
-        ParentShowHint = False
-        ShowHint = True
-        TabOrder = 0
-        OnChange = ScrollBar_ChromaChange
-      end
-      object Button_ChromaReset: TButton
-        Left = 232
-        Top = 8
-        Width = 49
-        Height = 17
-        Hint = '[c]'
-        Caption = 'Reset'
-        ParentShowHint = False
-        ShowHint = True
-        TabOrder = 1
-        OnClick = Button_ChromaResetClick
-      end
-    end
     object GroupBox_HSVVersion: TGroupBox
-      Left = 688
+      Left = 630
       Top = 8
-      Width = 105
+      Width = 161
       Height = 33
       Caption = 'HSV'
-      TabOrder = 18
+      TabOrder = 16
       object RadioButton_v1: TRadioButton
         Left = 16
         Top = 15
@@ -1179,9 +1070,127 @@ object HSVForm2nd: THSVForm2nd
       Width = 57
       Height = 25
       Caption = 'Save Old'
-      TabOrder = 19
+      TabOrder = 17
       OnClick = Button_SaveOldFormatClick
     end
+    object GroupBox_ReadWrite: TGroupBox
+      Left = 624
+      Top = 552
+      Width = 169
+      Height = 73
+      Caption = 'Read/Write'
+      TabOrder = 18
+      object btn_hsv_write: TButton
+        Left = 104
+        Top = 48
+        Width = 49
+        Height = 15
+        Caption = 'Write'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -12
+        Font.Name = 'MS Sans Serif'
+        Font.Style = [fsBold]
+        ParentFont = False
+        TabOrder = 0
+        OnClick = btn_hsv_writeClick
+      end
+      object CheckBox_FuncOn: TCheckBox
+        Left = 8
+        Top = 16
+        Width = 89
+        Height = 17
+        Caption = 'Keep Func On'
+        TabOrder = 1
+      end
+      object btn_reset: TButton
+        Left = 104
+        Top = 16
+        Width = 49
+        Height = 15
+        Caption = 'Reset'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -12
+        Font.Name = 'MS Sans Serif'
+        Font.Style = [fsBold]
+        ParentFont = False
+        TabOrder = 2
+        OnClick = btn_resetClick
+      end
+      object btn_hsv_read: TButton
+        Left = 104
+        Top = 32
+        Width = 49
+        Height = 15
+        Caption = 'Read'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -12
+        Font.Name = 'MS Sans Serif'
+        Font.Style = [fsBold]
+        ParentFont = False
+        TabOrder = 3
+        OnClick = btn_hsv_readClick
+      end
+      object CheckBox_OffWhenWrite: TCheckBox
+        Left = 8
+        Top = 53
+        Width = 94
+        Height = 14
+        Caption = 'Off when Write'
+        Checked = True
+        State = cbChecked
+        TabOrder = 4
+      end
+      object CheckBox_AutoWrite: TCheckBox
+        Left = 8
+        Top = 35
+        Width = 72
+        Height = 14
+        Caption = 'Auto Write'
+        Checked = True
+        State = cbChecked
+        TabOrder = 5
+      end
+    end
+    object Btn_HSV_reload: TBitBtn
+      Left = 681
+      Top = 656
+      Width = 72
+      Height = 25
+      Caption = '&Reload'
+      ModalResult = 6
+      TabOrder = 19
+      OnClick = Btn_HSV_reloadClick
+      Glyph.Data = {
+        DE010000424DDE01000000000000760000002800000024000000120000000100
+        0400000000006801000000000000000000001000000000000000000000000000
+        80000080000000808000800000008000800080800000C0C0C000808080000000
+        FF0000FF000000FFFF00FF000000FF00FF00FFFF0000FFFFFF00333333333333
+        3333333333333333333333330000333333333333333333333333F33333333333
+        00003333344333333333333333388F3333333333000033334224333333333333
+        338338F3333333330000333422224333333333333833338F3333333300003342
+        222224333333333383333338F3333333000034222A22224333333338F338F333
+        8F33333300003222A3A2224333333338F3838F338F33333300003A2A333A2224
+        33333338F83338F338F33333000033A33333A222433333338333338F338F3333
+        0000333333333A222433333333333338F338F33300003333333333A222433333
+        333333338F338F33000033333333333A222433333333333338F338F300003333
+        33333333A222433333333333338F338F00003333333333333A22433333333333
+        3338F38F000033333333333333A223333333333333338F830000333333333333
+        333A333333333333333338330000333333333333333333333333333333333333
+        0000}
+      NumGlyphs = 2
+    end
+  end
+  object CheckBox_ShowPattern: TCheckBox
+    Left = 16
+    Top = 635
+    Width = 89
+    Height = 14
+    Caption = 'Show Pattern'
+    TabOrder = 1
+    OnClick = CheckBox_ShowPatternClick
   end
   object OpenDialog1: TOpenDialog
     Left = 760
