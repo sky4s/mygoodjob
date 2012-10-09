@@ -861,3 +861,18 @@ void __fastcall TMainForm::Example2Click(TObject * Sender)
 
 //---------------------------------------------------------------------------
 
+
+void __fastcall TMainForm::Sharpnessv211Click(TObject *Sender)
+{
+    if (SharpnessForm12307_2 != NULL) {
+	SharpnessForm12307_2->Show();
+    } else {
+	if (TCON_DEV == "11307") {
+	    SharpnessForm12307_2 = new TSharpnessForm12307_2(this);
+	    SharpnessForm12307_2->Show();
+	}
+
+    }
+}
+//---------------------------------------------------------------------------
+
