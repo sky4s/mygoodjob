@@ -19,7 +19,7 @@ __fastcall TSharpnessForm12307_2::TSharpnessForm12307_2(TComponent * Owner)
 
 void __fastcall TSharpnessForm12307_2::FormCreate(TObject * Sender)
 {
-    Clear_LUT(true);
+    TSharpnessForm12307::FormCreate(Sender);
 }
 
 //---------------------------------------------------------------------------
