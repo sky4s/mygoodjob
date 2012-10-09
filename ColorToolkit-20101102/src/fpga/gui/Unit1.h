@@ -75,6 +75,7 @@ class TMainForm:public TForm {
     TMenuItem *Test1;
     TMenuItem *Example2;
     TMenuItem *Sharpness2;
+        TMenuItem *Sharpnessv211;
     void __fastcall mn_TCONClick(TObject * Sender);
     void __fastcall mn_EngineerClick(TObject * Sender);
     void __fastcall mn_FunctionClick(TObject * Sender);
@@ -104,6 +105,7 @@ class TMainForm:public TForm {
     void __fastcall mn_Sharpness12307Click(TObject * Sender);
     void __fastcall Sharpness2Click(TObject * Sender);
     void __fastcall Example2Click(TObject * Sender);
+        void __fastcall Sharpnessv211Click(TObject *Sender);
 
   private:			// User declarations
      String getFileVersionInfo();
