@@ -56,7 +56,6 @@ class TMainForm:public TForm {
     TMenuItem *Sharpness1;
     TMenuItem *ContrastEnhancement1;
     TStatusBar *StatusBar1;
-    TCheckBox *cb_address_txt;
     TMenuItem *AUO_12303;
     TMenuItem *mn_C3D;
     TMenuItem *C3D1;
@@ -65,10 +64,10 @@ class TMainForm:public TForm {
     TMenuItem *mn_C3D_999;
     TMenuItem *mn_SAT;
     TMenuItem *mn_offset;
-    TMenuItem *Header2Address1;
+        TMenuItem *header2Address;
     TOpenDialog *OpenDialog1;
     TSaveDialog *SaveDialog1;
-    TMenuItem *addressFromFile;
+        TMenuItem *loadAddressFromFile;
     TMenuItem *mn_HSV2;
     TMenuItem *HSV1;
     TMenuItem *mn_Sharpness12307;
@@ -90,7 +89,6 @@ class TMainForm:public TForm {
     void __fastcall mn_SharpnessClick(TObject * Sender);
     void __fastcall mn_CEClick(TObject * Sender);
     void __fastcall mn_HSVClick(TObject * Sender);
-    void __fastcall cb_address_txtClick(TObject * Sender);
     void __fastcall StatusBar1DblClick(TObject * Sender);
     void __fastcall AUO_12303Click(TObject * Sender);
     void __fastcall mn_C3DClick(TObject * Sender);
@@ -98,8 +96,8 @@ class TMainForm:public TForm {
     void __fastcall mn_C3D_999Click(TObject * Sender);
     void __fastcall mn_SATClick(TObject * Sender);
     void __fastcall mn_offsetClick(TObject * Sender);
-    void __fastcall Header2Address1Click(TObject * Sender);
-    void __fastcall addressFromFileClick(TObject * Sender);
+    void __fastcall header2AddressClick(TObject * Sender);
+    void __fastcall loadAddressFromFileClick(TObject * Sender);
     void __fastcall mn_HSV2Click(TObject * Sender);
     void __fastcall HSV1Click(TObject * Sender);
     void __fastcall mn_Sharpness12307Click(TObject * Sender);
@@ -128,13 +126,8 @@ class TMainForm:public TForm {
     void SATFormNULL();
     void offsetFormNULL();
 
-    //=========================================================================
-    //¹w­p­n®³±¼
-    //=========================================================================
-    String TCON_DEV;
-    int addr_place;		//0:auo_12401_address.h   1:auo_12401_address.txt
-    //=========================================================================
-
+ 
+    bool addressFromFile;
     static AnsiString AddressFile;
 
 };

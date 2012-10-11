@@ -44,9 +44,9 @@ void __fastcall TC3DForm1::CheckBox_Click(TObject *Sender)
 void __fastcall TC3DForm1::FormCreate(TObject *Sender)
 {
         C3D_Chg = 0;
-        int ic_choice;
-        if(MainForm->TCON_DEV=="11307")
-                ic_choice = 0;
+        int ic_choice=0;
+        /*if(MainForm->TCON_DEV=="11307")
+                ic_choice = 0;*/
 
         switch(ic_choice)
         {

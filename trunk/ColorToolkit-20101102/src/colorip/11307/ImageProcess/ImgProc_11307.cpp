@@ -21,12 +21,12 @@ TBit *CM_11307::SetChkBx()
 {
     TBit *ChkBox = new TBit[CMChkBox_Nbr];
     //chb = new TBit [CMChkBox_Nbr];
-    if (MainForm->addr_place == 0) {
+    if (false == MainForm->addressFromFile) {
 	setAddress(&ChkBox[0], CM_EN);	//
 	setAddress(&ChkBox[1], CM_DEMO);	//
 	setAddress(&ChkBox[2], CM_DEMO_LEFT);	//
 	setAddress(&ChkBox[3], CM_FIRST);	//
-    } else if (MainForm->addr_place == 1) {
+    } else   {
 	setAddressFromFile(&ChkBox[0], "CM_EN");
 	setAddressFromFile(&ChkBox[1], "CM_DEMO");
 	setAddressFromFile(&ChkBox[2], "CM_DEMO_LEFT");
@@ -39,9 +39,9 @@ TBit *CM_11307::SetChkBx()
 TBit *CM_11307::SetCboBx()
 {
     TBit *CboBox = new TBit[CMCboBox_Nbr];
-    if (MainForm->addr_place == 0) {
+    if (false == MainForm->addressFromFile) {
 	setAddress(&CboBox[0], CM_SEL);	//
-    } else if (MainForm->addr_place == 1) {
+    } else   {
 	setAddressFromFile(&CboBox[0], "CM_SEL");
     }
     CboBox[0].choice_nbr = 4;
@@ -56,11 +56,11 @@ TBit *CM_11307::SetCboBx()
 TLUT *CM_11307::Setval()
 {
     TLUT *LUT = new TLUT[CMval_Nbr];
-    if (MainForm->addr_place == 0) {
+    if (false == MainForm->addressFromFile) {
 	setAddress(&LUT[0], CM1);
 	setAddress(&LUT[1], CM2);
 	setAddress(&LUT[2], CM3);
-    } else if (MainForm->addr_place == 1) {
+    } else  {
 	setAddressFromFile(&LUT[0], "CM1");
 	setAddressFromFile(&LUT[1], "CM2");
 	setAddressFromFile(&LUT[2], "CM3");
@@ -71,11 +71,11 @@ TLUT *CM_11307::Setval()
 TLUT *CM_11307::Setofs()
 {
     TLUT *LUT = new TLUT[CMofs_Nbr];
-    if (MainForm->addr_place == 0) {
+    if (false == MainForm->addressFromFile) {
 	setAddress(&LUT[0], ofs1);
 	setAddress(&LUT[1], ofs2);
 	setAddress(&LUT[2], ofs3);
-    } else if (MainForm->addr_place == 1) {
+    } else   {
 	setAddressFromFile(&LUT[0], "ofs1");
 	setAddressFromFile(&LUT[1], "ofs2");
 	setAddressFromFile(&LUT[2], "ofs3");
@@ -85,9 +85,9 @@ TLUT *CM_11307::Setofs()
 
 int CM_11307::Setofs_type()
 {
-    if (MainForm->addr_place == 0) {
+    if (false == MainForm->addressFromFile) {
 	return 1;
-    } else if (MainForm->addr_place == 1) {
+    } else   {
 	int_vector_ptr values = getValuesFromFile("OFS_TYPE");
 	if (null != values) {
 	    int v = (*values)[0];
@@ -112,14 +112,14 @@ SP_11307::SP_11307()
 TBit *SP_11307::SetChkBx()
 {
     TBit *ChkBox = new TBit[SPChkBox_Nbr];
-    if (MainForm->addr_place == 0) {
+    if (false == MainForm->addressFromFile) {
 	setAddress(&ChkBox[0], SP_EN);	//
 	setAddress(&ChkBox[1], SP_DEMO);	//
 	setAddress(&ChkBox[2], TEXT_DET);	//
 	setAddress(&ChkBox[3], SP_DEMO_LEFT);	//
 	setAddress(&ChkBox[4], SP_DEB);	//
 	setAddress(&ChkBox[5], SP_MASK_EN);	//
-    } else if (MainForm->addr_place == 1) {
+    } else   {
 	setAddressFromFile(&ChkBox[0], "SP_EN");
 	setAddressFromFile(&ChkBox[1], "SP_DEMO");
 	setAddressFromFile(&ChkBox[2], "TEXT_DET");
@@ -138,12 +138,12 @@ TBit *SP_11307::SetCboBx()
 TBit *SP_11307::SetScrollBar()
 {
     TBit *ScrlB = new TBit[SPScrollBar_Nbr];
-    if (MainForm->addr_place == 0) {
+    if (false == MainForm->addressFromFile) {
 	setAddress(&ScrlB[0], SP_HORZ_THRESHOLD);	//
 	setAddress(&ScrlB[1], SP_VERT_THRESHOLD);	//
 	setAddress(&ScrlB[2], SP_EDGE_THRESHOLD);	//
 	setAddress(&ScrlB[3], GLB_STR);	//
-    } else if (MainForm->addr_place == 1) {
+    } else   {
 	setAddressFromFile(&ScrlB[0], "SP_HORZ_THRESHOLD");
 	setAddressFromFile(&ScrlB[1], "SP_VERT_THRESHOLD");
 	setAddressFromFile(&ScrlB[2], "SP_EDGE_THRESHOLD");
@@ -156,10 +156,10 @@ TBit2 *SP_11307::SetLblE2()	//Add by Michelle 20100702
 {
     TBit2 *LEdt = new TBit2[SPLblE2_Nbr];
 
-    if (MainForm->addr_place == 0) {
+    if (false == MainForm->addressFromFile) {
 	//       setAddress(&LEdt[0],SP_VACTIVE);                     //
 
-    } else if (MainForm->addr_place == 1) {
+    } else  {
 	//       setAddressFromFile(&LEdt[0],"SP_VACTIVE(0~4095)");
 
     }
@@ -169,9 +169,9 @@ TBit2 *SP_11307::SetLblE2()	//Add by Michelle 20100702
 TLUT *SP_11307::SetSPLUT()
 {
     TLUT *LUT = new TLUT[1];
-    if (MainForm->addr_place == 0) {
+    if (false == MainForm->addressFromFile) {
 	setAddress(&LUT[0], SP_LUT);
-    } else if (MainForm->addr_place == 1) {
+    } else   {
 	setAddressFromFile(&LUT[0], "SP_LUT");
     }
     return LUT;
@@ -196,7 +196,7 @@ SP_12307::SP_12307()
 TBit *SP_12307::SetChkBx()
 {
     TBit *ChkBox = new TBit[SPChkBox_Nbr];
-    if (MainForm->addr_place == 0) {
+    if (false == MainForm->addressFromFile) {
 	setAddress(&ChkBox[0], SP_EN);
 	setAddress(&ChkBox[1], SP_DEMO_EN);
 	setAddress(&ChkBox[2], SP_DEMO_LEFT);
@@ -209,7 +209,7 @@ TBit *SP_12307::SetChkBx()
 	setAddress(&ChkBox[9], CE_DEMO_LEFT);
 	setAddress(&ChkBox[10], PIX_FILTER);
 	setAddress(&ChkBox[11], SMOOTH_EN);
-    } else if (MainForm->addr_place == 1) {
+    } else  {
 	setAddressFromFile(&ChkBox[0], "SP_EN");
 	setAddressFromFile(&ChkBox[1], "SP_DEMO");
 	setAddressFromFile(&ChkBox[2], "SP_DEMO_LEFT");
@@ -229,14 +229,14 @@ TBit *SP_12307::SetChkBx()
 TBit *SP_12307::SetCboBx()
 {
     TBit *CboBox = new TBit[SPCboBox_Nbr];
-    if (MainForm->addr_place == 0) {
+    if (false == MainForm->addressFromFile) {
 	setAddress(&CboBox[0], STR_TP1);
 	setAddress(&CboBox[1], STR_TP2);
 	setAddress(&CboBox[2], VMASK_SEL);
 	setAddress(&CboBox[3], HMASK_SEL);
 	setAddress(&CboBox[4], DARK_TP);
 	setAddress(&CboBox[5], BRIGHT_TP);
-    } else if (MainForm->addr_place == 1) {
+    } else   {
 	setAddressFromFile(&CboBox[0], "STR_TP1");
 	setAddressFromFile(&CboBox[1], "STR_TP2");
 	setAddressFromFile(&CboBox[2], "VMASK_SEL");
@@ -289,7 +289,7 @@ TBit *SP_12307::SetCboBx()
 TBit *SP_12307::SetScrollBar()
 {
     TBit *ScrlB = new TBit[SPScrollBar_Nbr];
-    if (MainForm->addr_place == 0) {
+    if (false == MainForm->addressFromFile) {
 	setAddress(&ScrlB[0], GLB_STR);
 	setAddress(&ScrlB[1], SPIKE_TH);
 	setAddress(&ScrlB[2], EDGE_TH);
@@ -306,7 +306,7 @@ TBit *SP_12307::SetScrollBar()
 	setAddress(&ScrlB[13], BRIGHT_OFS);
 	setAddress(&ScrlB[14], DARK_DR);
 	setAddress(&ScrlB[15], BRIGHT_DR);
-    } else if (MainForm->addr_place == 1) {
+    } else   {
 	setAddressFromFile(&ScrlB[0], "SP_GLB_STR");
 	setAddressFromFile(&ScrlB[1], "SPIKE_TH");
 	setAddressFromFile(&ScrlB[2], "SP_EDGE_THRESHOLD");
@@ -330,9 +330,9 @@ TBit *SP_12307::SetScrollBar()
 TBit3 *SP_12307::SetLblE3()
 {
     TBit3 *LEdt = new TBit3[SPLblE3_Nbr];
-    if (MainForm->addr_place == 0) {
+    if (false == MainForm->addressFromFile) {
 	setAddress(&LEdt[0], ACT_PIX_NUM);
-    } else if (MainForm->addr_place == 1) {
+    } else   {
 	setAddressFromFile(&LEdt[0], "ACT_PIX_NUM");
     }
     return LEdt;
@@ -341,9 +341,9 @@ TBit3 *SP_12307::SetLblE3()
 TLUT *SP_12307::SetSPLUT()
 {
     TLUT *LUT = new TLUT[1];
-    if (MainForm->addr_place == 0) {
+    if (false == MainForm->addressFromFile) {
 	setAddress(&LUT[0], SP_LUT);
-    } else if (MainForm->addr_place == 1) {
+    } else   {
 	setAddressFromFile(&LUT[0], "SP_LUT");
     }
     return LUT;
@@ -368,7 +368,7 @@ CE_11307::CE_11307()
 TBit *CE_11307::SetChkBx()
 {
     TBit *ChkBox = new TBit[CEChkBox_Nbr];
-    if (MainForm->addr_place == 0) {
+    if (false == MainForm->addressFromFile) {
 	setAddress(&ChkBox[0], LC_EN);
 	setAddress(&ChkBox[1], LC_DEMO);
 	setAddress(&ChkBox[2], PURITYWT_EN);
@@ -378,7 +378,7 @@ TBit *CE_11307::SetChkBx()
 	setAddress(&ChkBox[6], GRAD_EN);
 	setAddress(&ChkBox[7], MLC_EN);
 	setAddress(&ChkBox[8], LC_DEMO_LEFT);
-    } else if (MainForm->addr_place == 1) {
+    } else   {
 	setAddressFromFile(&ChkBox[0], "LC_EN");
 	setAddressFromFile(&ChkBox[1], "LC_DEMO");
 	setAddressFromFile(&ChkBox[2], "PURITYWT_EN");
@@ -395,13 +395,13 @@ TBit *CE_11307::SetChkBx()
 TBit *CE_11307::SetCboBx()
 {
     TBit *CboBox = new TBit[CECboBox_Nbr];
-    if (MainForm->addr_place == 0) {
+    if (false == MainForm->addressFromFile) {
 	setAddress(&CboBox[0], MAXLIMT_SEL);
 	setAddress(&CboBox[1], PIXHIST_SEL);
 	setAddress(&CboBox[2], LOWST_SEL);
 	setAddress(&CboBox[3], JND_SEL);
 	setAddress(&CboBox[4], ST_SEL);
-    } else if (MainForm->addr_place == 1) {
+    } else   {
 	setAddressFromFile(&CboBox[0], "MAXLIMT_SEL");
 	setAddressFromFile(&CboBox[1], "PIXHIST_SEL");
 	setAddressFromFile(&CboBox[2], "LOWST_SEL");
@@ -440,7 +440,7 @@ TBit *CE_11307::SetCboBx()
 TBit *CE_11307::SetScrollBar()
 {
     TBit *ScrlB = new TBit[CEScrollBar_Nbr];
-    if (MainForm->addr_place == 0) {
+    if (false == MainForm->addressFromFile) {
 	setAddress(&ScrlB[0], PATDET_FRM_NUM);
 	setAddress(&ScrlB[1], PATDET_LINE_NUM);
 	setAddress(&ScrlB[2], GRAD_GMA_STEP);
@@ -455,7 +455,7 @@ TBit *CE_11307::SetScrollBar()
 	setAddress(&ScrlB[11], JND_MIN);
 	setAddress(&ScrlB[12], ST_MAX);
 	setAddress(&ScrlB[13], ST_MIN);
-    } else if (MainForm->addr_place == 1) {
+    } else   {
 	setAddressFromFile(&ScrlB[0], "PATDET_FRM_NUM");
 	setAddressFromFile(&ScrlB[1], "PATDET_LINE_NUM");
 	setAddressFromFile(&ScrlB[2], "GRAD_GMA_STEP");
@@ -477,9 +477,9 @@ TBit *CE_11307::SetScrollBar()
 TLUT *CE_11307::SetJNDlut()
 {
     TLUT *lut = new TLUT[1];
-    if (MainForm->addr_place == 0) {
+    if (false == MainForm->addressFromFile) {
 	setAddress(&lut[0], JND_LUT);
-    } else if (MainForm->addr_place == 1) {
+    } else   {
 	setAddressFromFile(&lut[0], "JND_LUT");
     }
     return lut;
@@ -488,9 +488,9 @@ TLUT *CE_11307::SetJNDlut()
 TLUT *CE_11307::SetSTlut()
 {
     TLUT *lut = new TLUT[1];
-    if (MainForm->addr_place == 0) {
+    if (false == MainForm->addressFromFile) {
 	setAddress(&lut[0], ST_LUT);
-    } else if (MainForm->addr_place == 1) {
+    } else     {
 	setAddressFromFile(&lut[0], "ST_LUT");
     }
     return lut;
@@ -499,9 +499,9 @@ TLUT *CE_11307::SetSTlut()
 TLUT *CE_11307::SetMAXlut()
 {
     TLUT *lut = new TLUT[1];
-    if (MainForm->addr_place == 0) {
+    if (false == MainForm->addressFromFile) {
 	setAddress(&lut[0], MAX_LUT);
-    } else if (MainForm->addr_place == 1) {
+    } else   {
 	setAddressFromFile(&lut[0], "MAX_LUT");
     }
     return lut;
@@ -510,9 +510,9 @@ TLUT *CE_11307::SetMAXlut()
 TLUT *CE_11307::SetMINlut()
 {
     TLUT *lut = new TLUT[1];
-    if (MainForm->addr_place == 0) {
+    if (false == MainForm->addressFromFile) {
 	setAddress(&lut[0], MIN_LUT);
-    } else if (MainForm->addr_place == 1) {
+    } else   {
 	setAddressFromFile(&lut[0], "MIN_LUT");
     }
     return lut;
@@ -530,14 +530,14 @@ TBit *HSV_11307::SetChkBx()
 {
     TBit *ChkBx = new TBit[HSVChkBox_Nbr];
     //TBit從define或者txt檔案撈出相關資訊
-    if (MainForm->addr_place == 0) {
+    if (false == MainForm->addressFromFile) {
 	//from define, 也就是macro
 	setAddress(&ChkBx[0], HUE_EN);	//
 	setAddress(&ChkBx[1], HUE_DEMO);	//
 	setAddress(&ChkBx[2], HUE_DEMO_LEFT);	//
 	setAddress(&ChkBx[3], V_OFS_EN);
 	setAddress(&ChkBx[4], CLIP_SEL);
-    } else if (MainForm->addr_place == 1) {
+    } else   {
 	//from text file, 也就是設定檔
 	setAddressFromFile(&ChkBx[0], "HUE_EN");
 	setAddressFromFile(&ChkBx[1], "HUE_DEMO");
@@ -551,9 +551,9 @@ TBit *HSV_11307::SetChkBx()
 TLUT *HSV_11307::SetLUT()
 {
     TLUT *lut = new TLUT[1];
-    if (MainForm->addr_place == 0) {
+    if (false == MainForm->addressFromFile) {
 	setAddress(&lut[0], HSVlut);	//
-    } else if (MainForm->addr_place == 1) {
+    } else   {
 	setAddressFromFile(&lut[0], "HSVlut");
     }
     return lut;
@@ -578,11 +578,11 @@ C3D_11307_777::C3D_11307_777()
 TBit *C3D_11307_777::SetChkBx()
 {
     TBit *ChkBx = new TBit[C3DChkBox_Nbr];
-    if (MainForm->addr_place == 0) {
+    if (false == MainForm->addressFromFile) {
 	setAddress(&ChkBx[0], C3D_777_EN);
 	setAddress(&ChkBx[1], C3D_777_DEMO);
 	setAddress(&ChkBx[2], C3D_777_DEMO_LEFT);
-    } else if (MainForm->addr_place == 1) {
+    } else   {
 	setAddressFromFile(&ChkBx[0], "C3D_777_EN");
 	setAddressFromFile(&ChkBx[1], "C3D_777_DEMO");
 	setAddressFromFile(&ChkBx[2], "C3D_777_DEMO_LEFT");
@@ -593,12 +593,12 @@ TBit *C3D_11307_777::SetChkBx()
 TLUT *C3D_11307_777::SetLUT()
 {
     TLUT *lut = new TLUT[C3DLUT_Nbr];
-    if (MainForm->addr_place == 0) {
+    if (false == MainForm->addressFromFile) {
 	setAddress(&lut[0], C3D_777_LUTR);
 	setAddress(&lut[1], C3D_777_LUTG);
 	setAddress(&lut[2], C3D_777_LUTB);
 	// setAddress(&lut[3],C3D_LUTW);
-    } else if (MainForm->addr_place == 1) {
+    } else  {
 	setAddressFromFile(&lut[0], "C3D_777_LUTR");
 	setAddressFromFile(&lut[1], "C3D_777_LUTG");
 	setAddressFromFile(&lut[2], "C3D_777_LUTB");
@@ -624,11 +624,11 @@ C3D_11307_999::C3D_11307_999()
 TBit *C3D_11307_999::SetChkBx()
 {
     TBit *ChkBx = new TBit[C3DChkBox_Nbr];
-    if (MainForm->addr_place == 0) {
+    if (false == MainForm->addressFromFile) {
 	setAddress(&ChkBx[0], C3D_999_EN);
 	setAddress(&ChkBx[1], C3D_999_DEMO);
 	setAddress(&ChkBx[2], C3D_999_DEMO_LEFT);
-    } else if (MainForm->addr_place == 1) {
+    } else   {
 	setAddressFromFile(&ChkBx[0], "C3D_999_EN");
 	setAddressFromFile(&ChkBx[1], "C3D_999_DEMO");
 	setAddressFromFile(&ChkBx[2], "C3D_999_DEMO_LEFT");
@@ -639,12 +639,12 @@ TBit *C3D_11307_999::SetChkBx()
 TLUT *C3D_11307_999::SetLUT()
 {
     TLUT *lut = new TLUT[C3DLUT_Nbr];
-    if (MainForm->addr_place == 0) {
+    if (false == MainForm->addressFromFile) {
 	setAddress(&lut[0], C3D_999_LUTR);
 	setAddress(&lut[1], C3D_999_LUTG);
 	setAddress(&lut[2], C3D_999_LUTB);
 	// setAddress(&lut[3],C3D_LUTW);
-    } else if (MainForm->addr_place == 1) {
+    } else   {
 	setAddressFromFile(&lut[0], "C3D_999_LUTR");
 	setAddressFromFile(&lut[1], "C3D_999_LUTG");
 	setAddressFromFile(&lut[2], "C3D_999_LUTB");

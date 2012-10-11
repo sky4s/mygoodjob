@@ -222,17 +222,17 @@ void __fastcall TDCRForm1::FormCreate(TObject * Sender)
 {
     CheckBox16->Visible = false;
     //GroupBox41-> Visible = false;
-    int ic_choice;
+    /*int ic_choice;
     if (MainForm->TCON_DEV == "11307")
 	ic_choice = 0;
 
     switch (ic_choice) {
-    case 0:
+    case 0:*/
 	//ODCR = new DCR_12401();
 	ODCR = new DCR_11307();
-	break;
+	/*break;
 
-    }
+    }     */
     // 20100608 DCR enable name, [0]: BL_EN, [1]: GLT_EN
     String DCRenName[2];
     DCRenName[0] = ODCR->DCR_BL_EN_Name();	// Retrieve DCR enable name 1

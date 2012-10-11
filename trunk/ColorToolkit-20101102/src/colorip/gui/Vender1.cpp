@@ -192,21 +192,9 @@ void __fastcall TVenderForm1::Debug_LblEdit2_KeyPress(TObject * Sender, char &Ke
 //---------------------------------------------------------------------------
 void __fastcall TVenderForm1::FormCreate(TObject * Sender)
 {
-    int ic_choice;
-    if (MainForm->TCON_DEV == "11307")
-	ic_choice = 0;
 
-    switch (ic_choice) {
-    case 0:
 	OVender = new Vend_11307;
-	break;
-
-	/* case 1:
-	   OVender = new Vend_1240x;
-	   break; */
-
-    }
-
+ 
 	/****************************************************************/
     //   Vender CheckBox*4 & ComboBox*7 & ScrollBar*0               //
 	/****************************************************************/

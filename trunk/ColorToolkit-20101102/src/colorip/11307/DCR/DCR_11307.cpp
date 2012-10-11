@@ -28,7 +28,7 @@ DCR_11307::DCR_11307()
 TBit *DCR_11307::SetChkBx()
 {
     TBit *ChkBox = new TBit[DCRChkBox_Nbr];
-    if (MainForm->addr_place == 0) {
+    if (false==MainForm->addressFromFile ) {
 	setAddress(&ChkBox[0], BL_EN);
 	setAddress(&ChkBox[1], DYN_BL_EN);
 	setAddress(&ChkBox[2], GLT_EN);
@@ -49,7 +49,7 @@ TBit *DCR_11307::SetChkBx()
 
 
 
-    } else if (MainForm->addr_place == 1) {
+    } else  {
 	setAddressFromFile(&ChkBox[0], "BL_EN");
 	setAddressFromFile(&ChkBox[1], "DYN_BL_EN");
 	setAddressFromFile(&ChkBox[2], "GLT_EN");
@@ -66,7 +66,7 @@ TBit *DCR_11307::SetChkBx()
 TBit *DCR_11307::SetCboBx()
 {
     TBit *CboBox = new TBit[DCRCboBox_Nbr];
-    if (MainForm->addr_place == 0) {
+    if (false == MainForm->addressFromFile) {
 	setAddress(&CboBox[1], BL_POL);
 	setAddress(&CboBox[0], PWM_MODE);
 	setAddress(&CboBox[3], PWM_LINE_SYNC);
@@ -77,7 +77,7 @@ TBit *DCR_11307::SetCboBx()
 	setAddress(&CboBox[7], IN_DEMO_SIDE);
 	setAddress(&CboBox[8], PWM_BYPASS_SEL);
 
-    } else if (MainForm->addr_place == 1) {
+    } else   {
 	setAddressFromFile(&CboBox[0], "PWM_MODE");
 	setAddressFromFile(&CboBox[1], "BL_POL");
 	setAddressFromFile(&CboBox[2], "PWM_FL_MODE_SEL");
@@ -136,7 +136,7 @@ TBit *DCR_11307::SetCboBx()
 TBit *DCR_11307::SetScrollBar()
 {
     TBit *ScrlB = new TBit[DCRScrollBar_Nbr];
-    if (MainForm->addr_place == 0) {
+    if (false == MainForm->addressFromFile) {
 	setAddress(&ScrlB[0], GLT_SHARPNESS_RATIO);
 	setAddress(&ScrlB[1], PWM_BL_IDX);
 	setAddress(&ScrlB[2], PWM_FREQ);
@@ -158,7 +158,7 @@ TBit *DCR_11307::SetScrollBar()
 	setAddress(&ScrlB[18], MATRIX_WEIGHTING_EDGE);
 	setAddress(&ScrlB[19], MATRIX_WEIGHTING_CORNER);
 
-    } else if (MainForm->addr_place == 1) {
+    }  else {
 	setAddressFromFile(&ScrlB[0], "PWM_BL_IDX");
 	setAddressFromFile(&ScrlB[1], "BL_FRM_INTV");
 	setAddressFromFile(&ScrlB[2], "BL_GRAD_STEP");
@@ -179,7 +179,7 @@ TBit *DCR_11307::SetScrollBar()
 TBit2 *DCR_11307::SetScrollBar2()
 {
     TBit2 *ScrlB = new TBit2[DCRScrollBar2_Nbr];
-    if (MainForm->addr_place == 0) {
+    if (false == MainForm->addressFromFile) {
 	setAddress(&ScrlB[0], PWM_COEFF_A);
 	setAddress(&ScrlB[1], PWM_COEFF_B);
 	setAddress(&ScrlB[2], MIN_IDX_CUM_RATIO);
@@ -194,7 +194,7 @@ TBit2 *DCR_11307::SetScrollBar2()
 	setAddress(&ScrlB[11], HIST_DIFF_RATIO);
 
 
-    } else if (MainForm->addr_place == 1) {
+    } else   {
 	setAddressFromFile(&ScrlB[0], "PWM_COEFF_A");
 	setAddressFromFile(&ScrlB[1], "PWM_COEFF_B");
     }
@@ -206,7 +206,7 @@ TBit2 *DCR_11307::SetDCRLblE2()
 {
     TBit2 *LEdt = new TBit2[DCRLblE2_Nbr];	//1
 
-    if (MainForm->addr_place == 0) {
+    if (false == MainForm->addressFromFile) {
 	setAddress(&LEdt[0], H_SECTION_NUM);
 	setAddress(&LEdt[1], V_SECTION_NUM);
 	setAddress(&LEdt[2], HORIZONTAL_DIVIDE_NUM);
@@ -216,7 +216,7 @@ TBit2 *DCR_11307::SetDCRLblE2()
 	setAddress(&LEdt[6], H_INTP_COEFF);
 	setAddress(&LEdt[7], V_INTP_COEFF);
 
-    } else if (MainForm->addr_place == 1) {
+    } else   {
 	setAddressFromFile(&LEdt[0], "SLOPE");
     }
     return LEdt;
@@ -227,11 +227,11 @@ TBit3 *DCR_11307::SetLblE3()
 {
     TBit3 *LblE = new TBit3[DCRLblE3_Nbr];
 
-    if (MainForm->addr_place == 0) {
+    if (false == MainForm->addressFromFile) {
 	setAddress(&LblE[0], SLOPE);
 	setAddress(&LblE[1], GRAY_SCALE_UNIT);
 
-    } else if (MainForm->addr_place == 1) {
+    } else   {
 	//setAddressFromFile(&LblE[0],"SLOPE");
     }
     return LblE;
@@ -241,12 +241,12 @@ TBit3 *DCR_11307::SetLblE3()
 TLUT *DCR_11307::SetLUT()
 {
     TLUT *LUT = new TLUT[DCRLUT_Nbr];
-    if (MainForm->addr_place == 0) {
+    if (false == MainForm->addressFromFile) {
 	setAddress(&LUT[0], HM_LUT);
 	setAddress(&LUT[1], BL_LUT);
 	setAddress(&LUT[2], DIM_LUT);
 
-    } else if (MainForm->addr_place == 1) {
+    } else   {
 	setAddressFromFile(&LUT[0], "HM_LUT");
 	setAddressFromFile(&LUT[1], "BL_LUT");
 	setAddressFromFile(&LUT[2], "DIM_LUT");
@@ -261,12 +261,12 @@ TLUT *DCR_11307::SetLUT()
 TBit *DCR_11307::SetALSChkBx()
 {
     TBit *ChkBox = new TBit[ALSChkBox_Nbr];
-    if (MainForm->addr_place == 0) {
+    if (false == MainForm->addressFromFile) {
 	setAddress(&ChkBox[0], SMBUS_EN);
 	setAddress(&ChkBox[1], ALS_EN);
 	setAddress(&ChkBox[2], ALS_COM_SEL);
 
-    } else if (MainForm->addr_place == 1) {
+    } else  {
 	setAddressFromFile(&ChkBox[0], "BL_EN");
 	setAddressFromFile(&ChkBox[1], "DYN_BL_EN");
 	setAddressFromFile(&ChkBox[2], "GLT_EN");
@@ -283,10 +283,10 @@ TBit *DCR_11307::SetALSChkBx()
 TBit *DCR_11307::SetALSCboBx()
 {
     TBit *CboBox = new TBit[ALSCboBox_Nbr];
-    if (MainForm->addr_place == 0) {
+    if (false == MainForm->addressFromFile) {
 	setAddress(&CboBox[0], IN_LUX_SEL);
 
-    } else if (MainForm->addr_place == 1) {
+    } else  {
 	setAddressFromFile(&CboBox[0], "PWM_MODE");
     }
     CboBox[0].choice_nbr = 2;
@@ -299,7 +299,7 @@ TBit *DCR_11307::SetALSCboBx()
 TBit *DCR_11307::SetALSScrollBar()
 {
     TBit *ScrlB = new TBit[ALSScrollBar_Nbr];
-    if (MainForm->addr_place == 0) {
+    if (false == MainForm->addressFromFile) {
 	setAddress(&ScrlB[0], SMBUS_DEV_ADDR);
 	setAddress(&ScrlB[1], SMBUS_REG_ADDR);
 	setAddress(&ScrlB[2], ALS_SEGM_COEF);
@@ -319,7 +319,7 @@ TBit *DCR_11307::SetALSScrollBar()
 	setAddress(&ScrlB[16], BL_2_ALS_TH);
 	setAddress(&ScrlB[17], TEST_LUX);
 
-    } else if (MainForm->addr_place == 1) {
+    } else   {
 	setAddressFromFile(&ScrlB[0], "PWM_BL_IDX");
 	setAddressFromFile(&ScrlB[1], "BL_FRM_INTV");
 	setAddressFromFile(&ScrlB[2], "BL_GRAD_STEP");
@@ -339,7 +339,7 @@ TBit *DCR_11307::SetALSScrollBar()
 TBit *DCR_11307::SetHDRCboBx()
 {
     TBit *CboBox = new TBit[HDRCboBox_Nbr];
-    if (MainForm->addr_place == 0) {
+    if (false == MainForm->addressFromFile) {
 	setAddress(&CboBox[0], HSC_DRIVER_MULT);
 	setAddress(&CboBox[1], HSC_DATA_ORD);
 	setAddress(&CboBox[2], HSC_DATA_ORD_CHROW);
@@ -348,7 +348,7 @@ TBit *DCR_11307::SetHDRCboBx()
 	setAddress(&CboBox[5], HSC_PWM_FREQ);
 
 
-    } else if (MainForm->addr_place == 1) {
+    } else   {
 	setAddressFromFile(&CboBox[0], "PWM_MODE");
 	setAddressFromFile(&CboBox[1], "BL_POL");
 	setAddressFromFile(&CboBox[2], "PWM_FL_MODE_SEL");
@@ -397,7 +397,7 @@ TBit *DCR_11307::SetHDRCboBx()
 TBit *DCR_11307::SetHDRScrollBar()
 {
     TBit *ScrlB = new TBit[HDRScrollBar_Nbr];
-    if (MainForm->addr_place == 0) {
+    if (false == MainForm->addressFromFile) {
 	/*        setAddress(&ScrlB[0],fix_phase_shift);
 	   setAddress(&ScrlB[1],scanning_offset_row_01);
 	   setAddress(&ScrlB[2],scanning_offset_row_02);
@@ -417,7 +417,7 @@ TBit *DCR_11307::SetHDRScrollBar()
 	   setAddress(&ScrlB[16],scanning_offset_row_16);
 
 	 */
-    } else if (MainForm->addr_place == 1) {
+    } else   {
 	setAddressFromFile(&ScrlB[0], "PWM_BL_IDX");
 	setAddressFromFile(&ScrlB[1], "BL_FRM_INTV");
 	setAddressFromFile(&ScrlB[2], "BL_GRAD_STEP");
@@ -436,7 +436,7 @@ TBit *DCR_11307::SetHDRScrollBar()
 TBit2 *DCR_11307::SetHDRScrollBar2()
 {
     TBit2 *ScrlB = new TBit2[HDRScrollBar2_Nbr];
-    if (MainForm->addr_place == 0) {
+    if (false == MainForm->addressFromFile) {
 	setAddress(&ScrlB[0], FIX_PHASE_SHIFT);
 	setAddress(&ScrlB[1], SCANNING_OFFSET_ROW_01);
 	setAddress(&ScrlB[2], SCANNING_OFFSET_ROW_02);
@@ -455,7 +455,7 @@ TBit2 *DCR_11307::SetHDRScrollBar2()
 	setAddress(&ScrlB[15], SCANNING_OFFSET_ROW_15);
 	setAddress(&ScrlB[16], SCANNING_OFFSET_ROW_16);
 
-    } else if (MainForm->addr_place == 1) {
+    } else   {
 	setAddressFromFile(&ScrlB[0], "PWM_COEFF_A");
 	setAddressFromFile(&ScrlB[1], "PWM_COEFF_B");
     }
@@ -466,14 +466,14 @@ TBit2 *DCR_11307::SetHDRLblE2()
 {
     TBit2 *LEdt = new TBit2[HDRLblE2_Nbr];	//1
 
-    if (MainForm->addr_place == 0) {
+    if (false == MainForm->addressFromFile) {
 	setAddress(&LEdt[0], HSC_ROW_DRIVER_NUM);
 	setAddress(&LEdt[1], HSC_DRIVER_CH_1);
 	setAddress(&LEdt[2], HSC_DRIVER_CH_2);
 	setAddress(&LEdt[3], HSC_DRIVER_CH_3);
 	setAddress(&LEdt[4], HSC_DRIVER_CH_4);
 
-    } else if (MainForm->addr_place == 1) {
+    } else   {
 	setAddressFromFile(&LEdt[0], "SLOPE");
     }
     return LEdt;

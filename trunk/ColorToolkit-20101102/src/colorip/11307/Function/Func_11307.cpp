@@ -35,7 +35,7 @@ Func_11307::Func_11307()
 TBit *Func_11307::SetFrcDgChkBx()
 {
     TBit *ChkBox = new TBit[FrcDgChkBox_Nbr];
-    if (MainForm->addr_place == 0) {
+    if (false == MainForm->addressFromFile) {
 	setAddress(&ChkBox[0], FRC_EN);	//
 	setAddress(&ChkBox[1], FRC_DEMO_EN);	//
 	setAddress(&ChkBox[2], FRC_DEMO_LEFTEN);	//
@@ -43,7 +43,7 @@ TBit *Func_11307::SetFrcDgChkBx()
 	setAddress(&ChkBox[4], SPECIAL_2LINE);	//
 	setAddress(&ChkBox[5], OP6B);	//
 
-    } else if (MainForm->addr_place == 1) {
+    } else {
 	setAddressFromFile(&ChkBox[0], "FRC_EN");
 	setAddressFromFile(&ChkBox[1], "FRC_DEMO_EN");
 	setAddressFromFile(&ChkBox[2], "FRC_DEMO_LEFTEN");
@@ -57,9 +57,9 @@ TBit *Func_11307::SetFrcDgChkBx()
 TBit *Func_11307::SetFrcDgCboBx()
 {
     TBit *CboBox = new TBit[FrcDgCboBox_Nbr];
-    if (MainForm->addr_place == 0) {
+    if (false == MainForm->addressFromFile) {
 	setAddress(&CboBox[0], FRAME_DEMO);	//
-    } else if (MainForm->addr_place == 1) {
+    } else {
 	setAddressFromFile(&CboBox[0], "FRAME_DEMO");
     }
     CboBox[0].choice_nbr = 16;
@@ -87,9 +87,9 @@ TBit *Func_11307::SetFrcDgCboBx()
 TBit *Func_11307::SetFrcDgLblE()
 {
     TBit *LEdt = new TBit[FrcDgLblE_Nbr];
-    if (MainForm->addr_place == 0) {
+    if (false == MainForm->addressFromFile) {
 	//setAddress(&LEdt[0],FRC_FRMCHG);
-    } else if (MainForm->addr_place == 1) {
+    } else {
 	//setAddress(&LEdt[0],"FRC_FRMCHG");
     }
     return LEdt;
@@ -101,10 +101,10 @@ TBit *Func_11307::SetFrcDgLblE()
 TBit *Func_11307::SetPstateChkBx()
 {
     TBit *ChkBox = new TBit[PstateChkBox_Nbr];
-    if (MainForm->addr_place == 0) {
+    if (false == MainForm->addressFromFile) {
 	setAddress(&ChkBox[0], PSTATE_EN);	//
 	setAddress(&ChkBox[1], FR_DET_EN);	// 
-    } else if (MainForm->addr_place == 1) {
+    } else {
 	setAddressFromFile(&ChkBox[0], "PSTATE_EN");
 	setAddressFromFile(&ChkBox[1], "FR_DET_EN");
     }
@@ -114,9 +114,9 @@ TBit *Func_11307::SetPstateChkBx()
 TBit *Func_11307::SetPstateCboBx()
 {
     TBit *CboBox = new TBit[PstateCboBox_Nbr];
-    if (MainForm->addr_place == 0) {
+    if (false == MainForm->addressFromFile) {
 	setAddress(&CboBox[0], STOPFRM);	//
-    } else if (MainForm->addr_place == 1) {
+    } else {
 	setAddressFromFile(&CboBox[0], "STOPFRM");
     }
     CboBox[0].choice_nbr = 3;
@@ -130,12 +130,12 @@ TBit *Func_11307::SetPstateCboBx()
 TBit2 *Func_11307::SetPstateLblE2()
 {
     TBit2 *LEdt = new TBit2[PstateLblE2_Nbr];
-    if (MainForm->addr_place == 0) {
+    if (false == MainForm->addressFromFile) {
 	setAddress(&LEdt[0], CLK_DET_PERIOD);	//
 	setAddress(&LEdt[1], PSTATE_DET_PRIOD);	//
 	setAddress(&LEdt[2], FR_DIFF_THR);	// 
 	setAddress(&LEdt[3], FR_DET_NUM);	//
-    } else if (MainForm->addr_place == 1) {
+    } else {
 	/*setAddress(&LEdt[0], "CLK_DET_PERIOD");
 	   setAddress(&LEdt[1], "PSTATE_DET_PRIOD");
 	   setAddress(&LEdt[2], "FR_DIFF_THR");
@@ -151,11 +151,11 @@ TBit2 *Func_11307::SetPstateLblE2()
 TBit *Func_11307::SetAGBSChkBx()
 {
     TBit *ChkBox = new TBit[AGBSChkBox_Nbr];
-    if (MainForm->addr_place == 0) {
+    if (false == MainForm->addressFromFile) {
 	setAddress(&ChkBox[0], AGBSEN_INV);	//
 	setAddress(&ChkBox[1], CHESS_EN);	//
 	setAddress(&ChkBox[2], AGING_SRC);	//
-    } else if (MainForm->addr_place == 1) {
+    } else {
 	setAddressFromFile(&ChkBox[0], "AGBSEN_INV");
 	setAddressFromFile(&ChkBox[1], "CHESS_EN");
 	setAddressFromFile(&ChkBox[2], "AGING_SRC");
@@ -166,9 +166,9 @@ TBit *Func_11307::SetAGBSChkBx()
 TBit *Func_11307::SetAGBSCboBx()
 {
     TBit *CboBox = new TBit[AGBSCboBox_Nbr];
-    if (MainForm->addr_place == 0) {
+    if (false == MainForm->addressFromFile) {
 	//setAddress(&CboBox[0],AG_TYPE);
-    } else if (MainForm->addr_place == 1) {
+    } else {
 	//setAddress(&CboBox[0],"AG_TYPE");
     }
     /*
@@ -185,13 +185,13 @@ TBit2 *Func_11307::SetAGBSLblE2()
 {
     TBit2 *LEdt = new TBit2[AGBSLblE2_Nbr];
     /*for (int x = 0; x < AGBSLblE2_Nbr; x++) {
-	TBit2 a = LEdt[x];
-    }*/
-    if (MainForm->addr_place == 0) {
+       TBit2 a = LEdt[x];
+       } */
+    if (false == MainForm->addressFromFile) {
 	setAddress(&LEdt[0], AG_HBLK);	//
 	setAddress(&LEdt[1], AG_VBLK);	//
 	setAddress(&LEdt[2], AG_SPEED);	//
-    } else if (MainForm->addr_place == 1) {
+    } else {
 	setAddressFromFile(&LEdt[0], "AG_HBLK");
 	setAddressFromFile(&LEdt[1], "AG_VBLK");
 	setAddressFromFile(&LEdt[2], "AG_SPEED");
@@ -205,11 +205,11 @@ TBit2 *Func_11307::SetAGBSLblE2()
 TBit *Func_11307::SetODChkBx()
 {
     TBit *ChkBox = new TBit[ODChkBox_Nbr];
-    if (MainForm->addr_place == 0) {
+    if (false == MainForm->addressFromFile) {
 	//setAddress(&ChkBox[0],OD_EN);
 	//setAddress(&ChkBox[1],OD_DEMO);
 	//setAddress(&ChkBox[2],SDR_CHKEN);
-    } else if (MainForm->addr_place == 1) {
+    } else {
 	//setAddress(&ChkBox[0],"OD_EN");
 	//setAddress(&ChkBox[1],"OD_DEMO");
 	//setAddress(&ChkBox[2],"SDR_CHKEN");
@@ -220,11 +220,11 @@ TBit *Func_11307::SetODChkBx()
 TBit *Func_11307::SetODCboBx()
 {
     TBit *CboBox = new TBit[ODCboBox_Nbr];
-    if (MainForm->addr_place == 0) {
+    if (false == MainForm->addressFromFile) {
 	//setAddress(&CboBox[0],SEL_OD);
 	//setAddress(&CboBox[1],ODLUTSEL_INV);
 	//setAddress(&CboBox[2],SCALE16);
-    } else if (MainForm->addr_place == 1) {
+    } else {
 	//setAddress(&CboBox[0],"SEL_OD");
 	//setAddress(&CboBox[1],"ODLUTSEL_INV");
 	//setAddress(&CboBox[2],"SCALE16");
@@ -249,9 +249,9 @@ TBit *Func_11307::SetODCboBx()
 TBit2 *Func_11307::SetODCboBx2()
 {
     TBit2 *CboBox = new TBit2[ODCboBox_Nbr];
-    if (MainForm->addr_place == 0) {
+    if (false == MainForm->addressFromFile) {
 	//setAddress(&CboBox[0],OD_LEVEL_SEL);
-    } else if (MainForm->addr_place == 1) {
+    } else {
 	//setAddress(&CboBox[0],"OD_LEVEL_SEL");
     }
     CboBox[0].choice_nbr = 8;
@@ -270,11 +270,11 @@ TBit2 *Func_11307::SetODCboBx2()
 TBit *Func_11307::SetODScrollBar()
 {
     TBit *ScrlB = new TBit[ODScrollBar_Nbr];
-    if (MainForm->addr_place == 0) {
+    if (false == MainForm->addressFromFile) {
 	//setAddress(&ScrlB[0],OD_THR);
 	//setAddress(&ScrlB[1],OD_THR_VALUE1);
 	//setAddress(&ScrlB[2],OD_THR_VALUE2);
-    } else if (MainForm->addr_place == 1) {
+    } else {
 	//setAddress(&ScrlB[0],"OD_THR");
 	//setAddress(&ScrlB[1],"OD_THR_VALUE1");
 	//setAddress(&ScrlB[2],"OD_THR_VALUE2");
@@ -286,12 +286,12 @@ TBit *Func_11307::SetODScrollBar()
 TLUT *Func_11307::SetDGLUT()
 {
     TLUT *LUT = new TLUT[DGLUT_Nbr];
-    if (MainForm->addr_place == 0) {
+    if (false == MainForm->addressFromFile) {
 	setAddress(&LUT[0], DG_LUTR);
 	setAddress(&LUT[1], DG_LUTG);
 	setAddress(&LUT[2], DG_LUTB);
 	//setAddress(&LUT[3], DG_LUTW);
-    } else if (MainForm->addr_place == 1) {
+    } else {
 	setAddressFromFile(&LUT[0], "DG_LUTR");
 	setAddressFromFile(&LUT[1], "DG_LUTG");
 	setAddressFromFile(&LUT[2], "DG_LUTB");
@@ -304,10 +304,9 @@ TLUT *Func_11307::SetDGLUT()
 TLUT *Func_11307::SetODLUT()
 {
     TLUT *LUT = new TLUT[1];
-    if (MainForm->addr_place == 0) {
+    if (false == MainForm->addressFromFile) {
 	//setAddress(&LUT[0],OD_LUT);
-    } else if (MainForm->addr_place == 1) {
-	//setAddress(&LUT[0],"OD_LUT");
+    } else {
     }
     return LUT;
 }

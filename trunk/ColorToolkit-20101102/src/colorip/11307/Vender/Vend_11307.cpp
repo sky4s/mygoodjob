@@ -30,12 +30,12 @@ TBit2 *Vend_11307::SetLblE2()
 TBit *Vend_11307::SetChkBx()
 {
     TBit *ChkBox = new TBit[VendChkBox_Nbr];
-    if (MainForm->addr_place == 0) {
+    if (false == MainForm->addressFromFile) {
 	setAddress(&ChkBox[0], SSC_VSYNC_EN);	//
 	setAddress(&ChkBox[1], SSC_CLK_NG_EN);	//
 	setAddress(&ChkBox[2], SSC_CLK_STOP_EN);	//
 	setAddress(&ChkBox[3], PP_CHCD);	//
-    } else if (MainForm->addr_place == 1) {
+    } else   {
 	setAddressFromFile(&ChkBox[0], "SSC_VSYNC_EN");
 	setAddressFromFile(&ChkBox[1], "SSC_CLK_NG_EN");
 	setAddressFromFile(&ChkBox[2], "SSC_CLK_STOP_EN");
@@ -48,7 +48,7 @@ TBit *Vend_11307::SetChkBx()
 TBit *Vend_11307::SetCboBx()
 {
     TBit *CboBox = new TBit[VendCboBox_Nbr];
-    if (MainForm->addr_place == 0) {
+    if (false == MainForm->addressFromFile) {
 	setAddress(&CboBox[0], VOCSEL);	//                
 	setAddress(&CboBox[1], XDRV_CTL);	//
 	setAddress(&CboBox[2], YDRV_CTL);	//
@@ -56,7 +56,7 @@ TBit *Vend_11307::SetCboBx()
 	setAddress(&CboBox[4], ML_SKEW_2);	//
 	setAddress(&CboBox[5], ML_SKEW_3);	//
 	setAddress(&CboBox[6], ML_SKEW_4);	//
-    } else if (MainForm->addr_place == 1) {
+    } else   {
 	setAddressFromFile(&CboBox[0], "VOCSEL");
 	setAddressFromFile(&CboBox[1], "XDRV_CTL");
 	setAddressFromFile(&CboBox[2], "YDRV_CTL");
@@ -170,10 +170,10 @@ TBit *Vend_11307::SetCboBx()
 TBit *Vend_11307::SetScrollBar()
 {
     TBit *ScrlB = new TBit[VendScrollBar_Nbr];
-    if (MainForm->addr_place == 0) {
+    if (false == MainForm->addressFromFile) {
 	//setAddress(&ScrlB[0],_NULL);
 	//setAddress(&ScrlB[1],_NULL);
-    } else if (MainForm->addr_place == 1) {
+    } else   {
 	//setAddressFromFile(&ScrlB[0],"_NULL");
 	//setAddressFromFile(&ScrlB[1],"_NULL");
     }
@@ -184,9 +184,9 @@ TBit *Vend_11307::SetScrollBar()
 TBit2 *Vend_11307::SetScrollBar2()
 {
     TBit2 *ScrlB = new TBit2[VendScrollBar2_Nbr];
-    if (MainForm->addr_place == 0) {
+    if (false == MainForm->addressFromFile) {
 	//setAddress(&ScrlB[0],_NULL);
-    } else if (MainForm->addr_place == 1) {
+    } else   {
 	//setAddressFromFile(&ScrlB[0],"_NULL");
     }
     return ScrlB;
@@ -196,7 +196,7 @@ TBit2 *Vend_11307::SetScrollBar2()
 TBit *Vend_11307::SetDebugChkBx()
 {
     TBit *ChkBox = new TBit[DebugChkBox_Nbr];
-    if (MainForm->addr_place == 0) {
+    if (false == MainForm->addressFromFile) {
 	setAddress(&ChkBox[0], LUX_SEL);	// 
 	setAddress(&ChkBox[1], DIRECT_DUTY_EN);	//
 	setAddress(&ChkBox[2], HUE_TEST);	//
@@ -205,7 +205,7 @@ TBit *Vend_11307::SetDebugChkBx()
 	setAddress(&ChkBox[5], OE_AREA_CNT_MODE_EN);	//
 	setAddress(&ChkBox[6], CM_TEST);	// 
 
-    } else if (MainForm->addr_place == 1) {
+    } else   {
 	setAddressFromFile(&ChkBox[0], "LUX_SEL");
 	setAddressFromFile(&ChkBox[1], "DIRECT_DUTY_EN");
 	setAddressFromFile(&ChkBox[2], "HUE_TEST");
@@ -221,7 +221,7 @@ TBit *Vend_11307::SetDebugCboBx()
 {
     TBit *CboBox = new TBit[DebugCboBox_Nbr];
 
-    if (MainForm->addr_place == 0) {
+    if (false == MainForm->addressFromFile) {
 	setAddress(&CboBox[0], DEBUG_MODE);	//
 	setAddress(&CboBox[1], ST_INI_EN);	//
 	setAddress(&CboBox[2], OE_AREA_CNT_MODE);	//
@@ -229,7 +229,7 @@ TBit *Vend_11307::SetDebugCboBx()
 	setAddress(&CboBox[4], SDR_POL_CASE_SEL);	//
 	setAddress(&CboBox[5], POL_VBK_TYPE);	//
 	setAddress(&CboBox[6], YV1C_AREA_CNT_MODE);	//
-    } else if (MainForm->addr_place == 1) {
+    } else   {
 	setAddressFromFile(&CboBox[0], "DEBUG_MODE");
 	setAddressFromFile(&CboBox[1], "ST_INI_EN");
 	setAddressFromFile(&CboBox[2], "OE_AREA_CNT_MODE");
@@ -293,14 +293,14 @@ TBit *Vend_11307::SetStaCboBx()
 {
     TBit *CboBox = new TBit[VStaCboBox_Nbr];
 
-    if (MainForm->addr_place == 0) {
+    if (false == MainForm->addressFromFile) {
 	setAddress(&CboBox[0], CLK_UNSTABLE);	//
 	setAddress(&CboBox[1], CLK_STOP);	//
 	setAddress(&CboBox[2], CLK_DET_REGION);	//
 	setAddress(&CboBox[3], END_FRAME_MODI);	//
 	setAddress(&CboBox[4], CORE_STATE);	//
 
-    } else if (MainForm->addr_place == 1) {
+    } else   {
 	setAddressFromFile(&CboBox[0], "CLK_UNSTABLE");
 	setAddressFromFile(&CboBox[1], "CLK_STOP");
 	setAddressFromFile(&CboBox[2], "CLK_DET_REGION");
@@ -356,7 +356,7 @@ TBit2 *Vend_11307::SetDebugLblE2()
 {
     TBit2 *LEdt = new TBit2[DebugLblE2_Nbr];
 
-    if (MainForm->addr_place == 0) {
+    if (false == MainForm->addressFromFile) {
 	setAddress(&LEdt[0], DIRECT_DUTY);	// 
 	setAddress(&LEdt[1], TEST_LUX);	//
 	setAddress(&LEdt[2], GAM_DIRECT_R);	//
@@ -364,7 +364,7 @@ TBit2 *Vend_11307::SetDebugLblE2()
 	setAddress(&LEdt[4], GAM_DIRECT_B);	//
 	setAddress(&LEdt[5], ST_FRAME_NUM);	//
 	setAddress(&LEdt[6], IN_DEB_HDR_BL_SECTION);	//
-    } else if (MainForm->addr_place == 1) {
+    } else   {
 	setAddressFromFile(&LEdt[0], "DIRECT_DUTY");
 	setAddressFromFile(&LEdt[1], "TEST_LUX");
 	setAddressFromFile(&LEdt[2], "GAM_DIRECT_R");
@@ -381,7 +381,7 @@ TBit2 *Vend_11307::SetDebugLblE2()
 TBit2 *Vend_11307::SetStaLblE2()
 {
     TBit2 *LEdt = new TBit2[VStaLblE2_Nbr];
-    if (MainForm->addr_place == 0) {
+    if (false == MainForm->addressFromFile) {
 	setAddress(&LEdt[0], OUT_BL_IDX);	//
 	setAddress(&LEdt[1], OUT_DUTY_DETECT_VALUE);	// 
 	setAddress(&LEdt[2], OUT_BL_LUT_RD_DATA);	//
@@ -396,7 +396,7 @@ TBit2 *Vend_11307::SetStaLblE2()
 	setAddress(&LEdt[9], OUT_DEB_HDR_BL_DATA);	//
 	setAddress(&LEdt[10], SLAVE_FSM);	//
 	setAddress(&LEdt[11], CHKSUM_FSM);	//
-    } else if (MainForm->addr_place == 1) {
+    } else   {
 	setAddressFromFile(&LEdt[0], "OUT_BL_IDX");
 	setAddressFromFile(&LEdt[1], "OUT_DUTY_DETECT_VALUE");
 	setAddressFromFile(&LEdt[2], "OUT_BL_LUT_RD_DATA");
