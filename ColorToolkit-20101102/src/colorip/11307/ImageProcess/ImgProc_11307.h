@@ -5,7 +5,7 @@
 
 #ifndef ImgProc_11307H
 #define ImgProc_11307H
-#include <fpga/gui_class.h>
+#include <colorip/gui_class.h>
 //---------------------------------------------------------------------------
 
 

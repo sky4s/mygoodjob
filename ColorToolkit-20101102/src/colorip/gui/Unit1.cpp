@@ -12,10 +12,10 @@
 //本項目內頭文件
 #include <addresstype/Address_type.h>
 //本項目內gui頭文件
-#include <fpga/gui/THSVForm2nd.h>
-#include <fpga/gui/CM1.h>
+#include <colorip/gui/THSVForm2nd.h>
+#include <colorip/gui/CM1.h>
 #include <gui/TExampleForm.h>
-#include <fpga/gui/TSharpnessForm12307_2.h>
+#include <colorip/gui/TSharpnessForm12307_2.h>
 #include "include.h"
 #include <iostream>
 #include <fstream>

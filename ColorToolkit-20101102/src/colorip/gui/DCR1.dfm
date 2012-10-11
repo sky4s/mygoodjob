@@ -1,8 +1,8 @@
 object DCRForm1: TDCRForm1
   Left = -4
   Top = -4
-  Width = 1928
-  Height = 1148
+  Width = 1692
+  Height = 1062
   Align = alCustom
   Caption = 'DCR'
   Color = clBtnFace
@@ -512,7 +512,7 @@ object DCRForm1: TDCRForm1
             Left = 8
             Top = 75
             Width = 73
-            Height = 24
+            Height = 21
             EditLabel.Width = 51
             EditLabel.Height = 10
             EditLabel.Caption = 'LabeledEdit1'
@@ -1048,7 +1048,7 @@ object DCRForm1: TDCRForm1
             Top = 9
             Width = 190
             Height = 21
-            ItemHeight = 13
+            ItemHeight = 0
             TabOrder = 0
             Text = 'ComboBox2'
           end
@@ -1057,7 +1057,7 @@ object DCRForm1: TDCRForm1
             Top = 33
             Width = 190
             Height = 21
-            ItemHeight = 13
+            ItemHeight = 0
             TabOrder = 1
             Text = 'ComboBox3'
           end
@@ -1066,7 +1066,7 @@ object DCRForm1: TDCRForm1
             Top = 57
             Width = 190
             Height = 21
-            ItemHeight = 13
+            ItemHeight = 0
             TabOrder = 2
             Text = 'ComboBox4'
           end
@@ -1345,7 +1345,7 @@ object DCRForm1: TDCRForm1
             Top = 8
             Width = 190
             Height = 21
-            ItemHeight = 13
+            ItemHeight = 0
             TabOrder = 0
             Text = 'ComboBox5'
           end

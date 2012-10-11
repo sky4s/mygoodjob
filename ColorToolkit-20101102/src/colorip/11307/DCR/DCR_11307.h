@@ -1,6 +1,6 @@
 #ifndef DCR_11307H
 #define DCR_11307H
-#include <fpga/gui/DCR1.h>
+#include <colorip/gui/DCR1.h>
 
 
 class DCR_11307:public AbstDCR {

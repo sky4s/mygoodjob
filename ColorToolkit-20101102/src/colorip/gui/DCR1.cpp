@@ -4,7 +4,7 @@
 #pragma hdrstop
 #include "DCR1.h"
 //#include <fpga/11307/DCR/DCR_12401.h>
-#include <fpga/11307/DCR/DCR_11307.h>
+#include <colorip/11307/DCR/DCR_11307.h>
 #include "Engineering.h"
 //---------------------------------------------------------------------------
 #pragma package(smart_init)

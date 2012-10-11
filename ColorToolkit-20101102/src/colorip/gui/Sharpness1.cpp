@@ -8,7 +8,7 @@
 #include "Sharpness1.h"
 #include <math.h>
 #include "include.h"
-#include <fpga/11307/ImageProcess/ImgProc_11307.h>
+#include <colorip/11307/ImageProcess/ImgProc_11307.h>
 #include <gui/GUIUtil.h>
 //---------------------------------------------------------------------------
 #pragma package(smart_init)

@@ -1,11 +1,11 @@
 //---------------------------------------------------------------------------
 
 #include <vcl.h>
-#include <fpga/includeallfpga.h>
+#include <colorip/includeallcolorip.h>
 #pragma hdrstop
 #include "TCON1.h"
 #include "Unit1.h"
-#include <fpga/11307/TCON/TCON_11307.h>
+#include <colorip/11307/TCON/TCON_11307.h>
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
 #pragma link "CSPIN"

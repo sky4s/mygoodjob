@@ -24,7 +24,7 @@
 //其他庫頭文件
 #include "CSPIN.h"
 //本項目內頭文件
-#include <fpga/gui_class.h>
+#include <colorip/gui_class.h>
 //本項目內gui頭文件
 //---------------------------------------------------------------------------
 

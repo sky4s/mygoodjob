@@ -45,7 +45,7 @@
 
 //本項目內gui頭文件
 #include <gui/framework/RegisterFramework.h>
-#include <fpga/gui_class.h>
+#include <colorip/gui_class.h>
 #include "table_type.h"
 //---------------------------------------------------------------------------
 /*=========================================================================

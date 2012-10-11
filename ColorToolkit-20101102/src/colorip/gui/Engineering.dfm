@@ -10799,7 +10799,7 @@ object EngineerForm: TEngineerForm
   end
   object stb_page_operat: TStatusBar
     Left = 0
-    Top = 626
+    Top = 621
     Width = 908
     Height = 17
     Color = clSkyBlue

@@ -17,7 +17,7 @@
 #include <Buttons.hpp>
 
 #include "Unit1.h"
-#include <fpga/gui_class.h>
+#include <colorip/gui_class.h>
 
 
 //---------------------------------------------------------------------------
