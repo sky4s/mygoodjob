@@ -15,7 +15,8 @@
 #include <colorip/gui/THSVForm2nd.h>
 #include <colorip/gui/CM1.h>
 #include <gui/TExampleForm.h>
-//#include <colorip/gui/TSharpnessForm12307_2.h>
+#include <colorip/gui/TSharpnessV1Form.h>
+#include <colorip/gui/TSharpnessV2Form.h>
 #include "include.h"
 #include <iostream>
 #include <fstream>
@@ -29,8 +30,8 @@ TForm *FunctionForm;
 TForm *DCRForm;
 TForm *VenderForm;
 TForm *CMForm;
-TForm *SharpnessForm;
-TForm *Sharpness12307Form;
+TForm *SharpnessV1Form;
+TForm *SharpnessV2Form;
 TForm *ContrastEnhanceForm;
 TForm *HSVForm;
 TForm *HSVForm2;
@@ -153,7 +154,7 @@ void TMainForm::CMFormNULL()
 
 void TMainForm::SharpnessFormNULL()
 {
-    SharpnessForm = NULL;
+    SharpnessV1Form = NULL;
 }
 
 void TMainForm::ContrastEnhanceFormNULL()	//remove by Michelle 20100716
@@ -210,15 +211,15 @@ void __fastcall TMainForm::FormClose(TObject * Sender, TCloseAction & Action)
 	CMForm = NULL;
 	delete CMForm;
     }
-    if (SharpnessForm != NULL) {
-	SharpnessForm->Close();
-	SharpnessForm = NULL;
-	delete SharpnessForm;
+    if (SharpnessV1Form != NULL) {
+	SharpnessV1Form->Close();
+	SharpnessV1Form = NULL;
+	delete SharpnessV1Form;
     }
-    if (Sharpness12307Form != NULL) {
-	Sharpness12307Form->Close();
-	Sharpness12307Form = NULL;
-	delete Sharpness12307Form;
+    if (SharpnessV2Form != NULL) {
+	SharpnessV2Form->Close();
+	SharpnessV2Form = NULL;
+	delete SharpnessV2Form;
     }
     if (ContrastEnhanceForm != NULL) {
 	ContrastEnhanceForm->Close();	// mask by Michelle 20100716
@@ -275,13 +276,13 @@ void TMainForm::closeAllForms()
 	CMForm->Close();
 	CMForm = NULL;
     }
-    if (SharpnessForm != NULL) {
-	SharpnessForm->Close();
-	SharpnessForm = NULL;
+    if (SharpnessV1Form != NULL) {
+	SharpnessV1Form->Close();
+	SharpnessV1Form = NULL;
     }
-    if (Sharpness12307Form != NULL) {
-	Sharpness12307Form->Close();
-	Sharpness12307Form = NULL;
+    if (SharpnessV2Form != NULL) {
+	SharpnessV2Form->Close();
+	SharpnessV2Form = NULL;
     }
     if (HSVForm != NULL) {
 	HSVForm->Close();
@@ -327,9 +328,9 @@ void __fastcall TMainForm::AUO_11307Click(TObject * Sender)
 	CMForm->Close();
 	CMForm = NULL;
     }
-    if (SharpnessForm != NULL) {
-	SharpnessForm->Close();
-	SharpnessForm = NULL;
+    if (SharpnessV1Form != NULL) {
+	SharpnessV1Form->Close();
+	SharpnessV1Form = NULL;
     }
     if (HSVForm != NULL) {
 	HSVForm->Close();
@@ -389,13 +390,13 @@ void __fastcall TMainForm::AUO_12303Click(TObject * Sender)
 	CMForm->Close();
 	CMForm = NULL;
     }
-    if (SharpnessForm != NULL) {
-	SharpnessForm->Close();
-	SharpnessForm = NULL;
+    if (SharpnessV1Form != NULL) {
+	SharpnessV1Form->Close();
+	SharpnessV1Form = NULL;
     }
-    if (Sharpness12307Form != NULL) {
-	Sharpness12307Form->Close();
-	Sharpness12307Form = NULL;
+    if (SharpnessV2Form != NULL) {
+	SharpnessV2Form->Close();
+	SharpnessV2Form = NULL;
     }
     if (C3DForm != NULL) {
 	C3DForm->Close();
@@ -453,7 +454,7 @@ void __fastcall TMainForm::FormCreate(TObject * Sender)
 //---------------------------------------------------------------------------
 void TMainForm::reload_all(TObject * Sender)
 {
-    mn_TCONClick(Sender);
+    /*mn_TCONClick(Sender);
     mn_FunctionClick(Sender);
     mn_DCRClick(Sender);
     mn_VenderClick(Sender);
@@ -473,12 +474,12 @@ void TMainForm::reload_all(TObject * Sender)
     VenderForm->OnKeyDown(Sender, Key, Shift);
     CMForm->OnKeyDown(Sender, Key, Shift);
     SharpnessForm->OnKeyDown(Sender, Key, Shift);
-    Sharpness12307Form->OnKeyDown(Sender, Key, Shift);
+    SharpnessV2Form->OnKeyDown(Sender, Key, Shift);
     ContrastEnhanceForm->OnKeyDown(Sender, Key, Shift);	//mssk by Michelle 20100716
     HSVForm->OnKeyDown(Sender, Key, Shift);
     C3DForm->OnKeyDown(Sender, Key, Shift);	// mask by Michelle 20100716
     SATForm->OnKeyDown(Sender, Key, Shift);
-    offsetForm->OnKeyDown(Sender, Key, Shift);
+    offsetForm->OnKeyDown(Sender, Key, Shift);*/
 
 }
 
@@ -500,12 +501,12 @@ void __fastcall TMainForm::mn_CMClick(TObject * Sender)
 //---------------------------------------------------------------------------
 void __fastcall TMainForm::mn_SharpnessClick(TObject * Sender)
 {
-    if (SharpnessForm != NULL)
-	SharpnessForm->Show();
+    if (SharpnessV1Form != NULL)
+	SharpnessV1Form->Show();
     else {
 	if (TCON_DEV == "11307") {
-	    SharpnessForm = new TSharpnessForm1(this);
-	    SharpnessForm->Show();
+	    SharpnessV1Form = new TSharpnessV1Form(this);
+	    SharpnessV1Form->Show();
 	}
 
     }
@@ -826,12 +827,12 @@ void __fastcall TMainForm::HSV1Click(TObject * Sender)
 
 void __fastcall TMainForm::mn_Sharpness12307Click(TObject * Sender)
 {
-    if (Sharpness12307Form != NULL) {
-	Sharpness12307Form->Show();
+    if (SharpnessV2Form != NULL) {
+	SharpnessV2Form->Show();
     } else {
 	if (TCON_DEV == "11307") {
-	    Sharpness12307Form = new TSharpnessForm12307(this);
-	    Sharpness12307Form->Show();
+	    SharpnessV2Form = new TSharpnessV2Form(this);
+	    SharpnessV2Form->Show();
 	}
 
     }
@@ -875,4 +876,5 @@ void __fastcall TMainForm::Sharpnessv211Click(TObject *Sender)
     }*/
 }
 //---------------------------------------------------------------------------
+
 

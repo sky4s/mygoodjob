@@ -107,7 +107,7 @@ object MainForm: TMainForm
         OnClick = mn_CMClick
       end
       object mn_Sharpness: TMenuItem
-        Caption = '&Sharpness'
+        Caption = '&Sharpness v1'
         OnClick = mn_SharpnessClick
       end
       object mn_Sharpness12307: TMenuItem
