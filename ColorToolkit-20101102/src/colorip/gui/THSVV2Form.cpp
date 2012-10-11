@@ -23,7 +23,7 @@
 
 //本項目內gui頭文件
 #include "THSVV2Form.h"
-#include "CM1.h"
+#include "TCMForm.h"
 #include "TGamutForm.h"
 #include <colorip/11307/ImageProcess/ImgProc_11307.h>
 #include <gui/GUIUtil.h>

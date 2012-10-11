@@ -13,7 +13,7 @@
 #include <addresstype/Address_type.h>
 //本項目內gui頭文件
 #include <colorip/gui/THSVV2Form.h>
-#include <colorip/gui/CM1.h>
+#include <colorip/gui/TCMForm.h>
 #include <gui/TExampleForm.h>
 #include <colorip/gui/TSharpnessV1Form.h>
 #include <colorip/gui/TSharpnessV2Form.h>
@@ -25,16 +25,16 @@
 #pragma resource "*.dfm"
 TMainForm *MainForm;
 
-TForm *TCONForm;
+//TForm *TCONForm;
 TForm *FunctionForm;
-TForm *DCRForm;
-TForm *VenderForm;
+//TForm *DCRForm;
+//TForm *VenderForm;
 TForm *CMForm;
 TForm *SharpnessV1Form;
 TForm *SharpnessV2Form;
-TForm *ContrastEnhanceForm;
-TForm *HSVForm;
-TForm *HSVForm2;
+TForm *CEForm;
+TForm *HSVV1Form;
+TForm *HSVV2Form;
 TForm *C3DForm;
 TForm *SATForm;
 TForm *offsetForm;
@@ -45,8 +45,8 @@ __fastcall TMainForm::TMainForm(TComponent * Owner):TForm(Owner)
 {
     //Set Real-Time Priority of process
     SetPriorityClass(GetCurrentProcess(), REALTIME_PRIORITY_CLASS);
-    //addr_place = 0;		//0:auo_12401_address.h   1:auo_12401_address.txt
-    addressFromFile=false;
+    //addr_place = 0;           //0:auo_12401_address.h   1:auo_12401_address.txt
+    addressFromFile = false;
     C3D_type = 7;
 
     using namespace cms::util;
@@ -54,7 +54,7 @@ __fastcall TMainForm::TMainForm(TComponent * Owner):TForm(Owner)
 	setAddressFile("tcon.txt");
     }
     //if (Util::isFileExist("debug.txt")) {
-	mn_Header2Address->Visible = true;
+    mn_Header2Address->Visible = true;
     //}
 
 
@@ -77,62 +77,23 @@ void __fastcall TMainForm::mn_FunctionClick(TObject * Sender)
 	FunctionForm->Show();
     else {
 	//if (TCON_DEV == "11307") {
-	    FunctionForm = new TFunctionForm1(this);
-	    FunctionForm->Show();
+	FunctionForm = new TFunctionForm1(this);
+	FunctionForm->Show();
 	//}
     }
 
 }
 
 //---------------------------------------------------------------------------
-
-void __fastcall TMainForm::mn_DCRClick(TObject * Sender)
-{
-    if (DCRForm != NULL)
-	DCRForm->Show();
-    else {
-	//if (TCON_DEV == "11307") {
-	    DCRForm = new TDCRForm1(this);
-	    DCRForm->Show();
-	//}
-
-    }
-}
-
-//---------------------------------------------------------------------------
-void __fastcall TMainForm::mn_VenderClick(TObject * Sender)
-{
-    if (VenderForm != NULL)
-	VenderForm->Show();
-    else {
-	//if (TCON_DEV == "11307") {
-	    VenderForm = new TVenderForm1(this);
-	    VenderForm->Show();
-	//}
-
-    }
-}
-
-//---------------------------------------------------------------------------
-void TMainForm::TCONFormNULL()
-{
-    TCONForm = NULL;
-}
 
 void TMainForm::FunctionFormNULL()
 {
     FunctionForm = NULL;
 }
 
-void TMainForm::DCRFormNULL()
-{
-    DCRForm = NULL;
-}
 
-void TMainForm::VenderFormNULL()
-{
-    VenderForm = NULL;
-}
+
+
 
 void TMainForm::CMFormNULL()
 {
@@ -144,15 +105,15 @@ void TMainForm::SharpnessFormNULL()
     SharpnessV1Form = NULL;
 }
 
-void TMainForm::ContrastEnhanceFormNULL()	//remove by Michelle 20100716
+void TMainForm::CEFormNULL()	//remove by Michelle 20100716
 {
-    ContrastEnhanceForm = NULL;
+    CEForm = NULL;
 }
 
 void TMainForm::HSVFormNULL()
 {
-    HSVForm = NULL;
-    HSVForm2 = NULL;
+    HSVV1Form = NULL;
+    HSVV2Form = NULL;
 }
 
 void TMainForm::C3DFormNULL()	//remove by Michelle 20100716
@@ -173,26 +134,12 @@ void __fastcall TMainForm::FormClose(TObject * Sender, TCloseAction & Action)
 {
     EngineerForm->FormClose(Sender, Action);
 
-    if (TCONForm != NULL) {
-	TCONForm->Close();
-	TCONForm = NULL;
-	delete TCONForm;
-    }
     if (FunctionForm != NULL) {
 	FunctionForm->Close();
 	FunctionForm = NULL;
 	delete FunctionForm;
     }
-    if (DCRForm != NULL) {
-	DCRForm->Close();
-	DCRForm = NULL;
-	delete DCRForm;
-    }
-    if (VenderForm != NULL) {
-	VenderForm->Close();
-	VenderForm = NULL;
-	delete VenderForm;
-    }
+
     if (CMForm != NULL) {
 	CMForm->Close();
 	CMForm = NULL;
@@ -208,20 +155,20 @@ void __fastcall TMainForm::FormClose(TObject * Sender, TCloseAction & Action)
 	SharpnessV2Form = NULL;
 	delete SharpnessV2Form;
     }
-    if (ContrastEnhanceForm != NULL) {
-	ContrastEnhanceForm->Close();	// mask by Michelle 20100716
-	ContrastEnhanceForm = NULL;
-	delete ContrastEnhanceForm;
+    if (CEForm != NULL) {
+	CEForm->Close();	// mask by Michelle 20100716
+	CEForm = NULL;
+	delete CEForm;
     }
-    if (HSVForm != NULL) {
-	HSVForm->Close();
-	HSVForm = NULL;
-	delete HSVForm;
+    if (HSVV1Form != NULL) {
+	HSVV1Form->Close();
+	HSVV1Form = NULL;
+	delete HSVV1Form;
     }
-    if (HSVForm2 != NULL) {
-	HSVForm2->Close();
-	HSVForm2 = NULL;
-	delete HSVForm2;
+    if (HSVV2Form != NULL) {
+	HSVV2Form->Close();
+	HSVV2Form = NULL;
+	delete HSVV2Form;
     }
     if (C3DForm != NULL) {
 	C3DForm->Close();	// mask by Michelle 20100716
@@ -243,22 +190,12 @@ void __fastcall TMainForm::FormClose(TObject * Sender, TCloseAction & Action)
 //---------------------------------------------------------------------------
 void TMainForm::closeAllForms()
 {
-    if (TCONForm != NULL) {
-	TCONForm->Close();
-	TCONForm = NULL;
-    }
+
     if (FunctionForm != NULL) {
 	FunctionForm->Close();
 	FunctionForm = NULL;
     }
-    if (DCRForm != NULL) {
-	DCRForm->Close();
-	DCRForm = NULL;
-    }
-    if (VenderForm != NULL) {
-	VenderForm->Close();
-	VenderForm = NULL;
-    }
+
     if (CMForm != NULL) {
 	CMForm->Close();
 	CMForm = NULL;
@@ -271,13 +208,13 @@ void TMainForm::closeAllForms()
 	SharpnessV2Form->Close();
 	SharpnessV2Form = NULL;
     }
-    if (HSVForm != NULL) {
-	HSVForm->Close();
-	HSVForm = NULL;
+    if (HSVV1Form != NULL) {
+	HSVV1Form->Close();
+	HSVV1Form = NULL;
     }
-    if (HSVForm2 != NULL) {
-	HSVForm2->Close();
-	HSVForm2 = NULL;
+    if (HSVV2Form != NULL) {
+	HSVV2Form->Close();
+	HSVV2Form = NULL;
     }
     if (C3DForm != NULL) {
 	C3DForm->Close();
@@ -295,22 +232,12 @@ void TMainForm::closeAllForms()
 
 void __fastcall TMainForm::AUO_11307Click(TObject * Sender)
 {
-    if (TCONForm != NULL) {
-	TCONForm->Close();
-	TCONForm = NULL;
-    }
+
     if (FunctionForm != NULL) {
 	FunctionForm->Close();
 	FunctionForm = NULL;
     }
-    if (DCRForm != NULL) {
-	DCRForm->Close();
-	DCRForm = NULL;
-    }
-    if (VenderForm != NULL) {
-	VenderForm->Close();
-	VenderForm = NULL;
-    }
+
     if (CMForm != NULL) {
 	CMForm->Close();
 	CMForm = NULL;
@@ -319,13 +246,13 @@ void __fastcall TMainForm::AUO_11307Click(TObject * Sender)
 	SharpnessV1Form->Close();
 	SharpnessV1Form = NULL;
     }
-    if (HSVForm != NULL) {
-	HSVForm->Close();
-	HSVForm = NULL;
+    if (HSVV1Form != NULL) {
+	HSVV1Form->Close();
+	HSVV1Form = NULL;
     }
-    if (HSVForm2 != NULL) {
-	HSVForm2->Close();
-	HSVForm2 = NULL;
+    if (HSVV2Form != NULL) {
+	HSVV2Form->Close();
+	HSVV2Form = NULL;
     }
     if (C3DForm != NULL) {
 	C3DForm->Close();
@@ -339,74 +266,13 @@ void __fastcall TMainForm::AUO_11307Click(TObject * Sender)
 	offsetForm->Close();
 	offsetForm = NULL;
     }
-
     //TCON_DEV = "11307";
     MainForm->Caption = "AUO 11307";
     mn_Function->Enabled = true;
     //mn_TCON->Enabled = true;
-    mn_DCR->Enabled = true;
-    mn_Vender->Enabled = true;
+    //mn_DCR->Enabled = true;
+    //mn_Vender->Enabled = true;
     mn_ImageProc->Enabled = true;
-    mn_CE->Enabled = true;
-    //mn_HSV->Enabled = true;
-    mn_C3D->Enabled = true;
-    mn_SAT->Enabled = true;
-    mn_offset->Enabled = true;
-}
-
-//---------------------------------------------------------------------------
-void __fastcall TMainForm::AUO_12303Click(TObject * Sender)
-{
-    if (TCONForm != NULL) {
-	TCONForm->Close();
-	TCONForm = NULL;
-    }
-    if (FunctionForm != NULL) {
-	FunctionForm->Close();
-	FunctionForm = NULL;
-    }
-    if (DCRForm != NULL) {
-	DCRForm->Close();
-	DCRForm = NULL;
-    }
-    if (VenderForm != NULL) {
-	VenderForm->Close();
-	VenderForm = NULL;
-    }
-    if (CMForm != NULL) {
-	CMForm->Close();
-	CMForm = NULL;
-    }
-    if (SharpnessV1Form != NULL) {
-	SharpnessV1Form->Close();
-	SharpnessV1Form = NULL;
-    }
-    if (SharpnessV2Form != NULL) {
-	SharpnessV2Form->Close();
-	SharpnessV2Form = NULL;
-    }
-    if (C3DForm != NULL) {
-	C3DForm->Close();
-	C3DForm = NULL;
-    }
-    if (SATForm != NULL) {
-	SATForm->Close();
-	SATForm = NULL;
-    }
-    if (offsetForm != NULL) {
-	offsetForm->Close();
-	offsetForm = NULL;
-    }
-    //TCON_DEV = "12303";
-    MainForm->Caption = "AUO 12303";
-    //mn_TCON->Enabled = true;
-    mn_Function->Enabled = true;
-    mn_Vender->Enabled = true;
-    mn_DCR->Enabled = true;
-    mn_ImageProc->Enabled = true;
-    mn_CM->Enabled = true;
-    mn_Sharpness->Enabled = true;
-    mn_Sharpness12307->Enabled = true;
     mn_CE->Enabled = true;
     //mn_HSV->Enabled = true;
     mn_C3D->Enabled = true;
@@ -419,14 +285,14 @@ void __fastcall TMainForm::AUO_12303Click(TObject * Sender)
 void __fastcall TMainForm::FormCreate(TObject * Sender)
 {
 
-    //TCON_DEV = "11307";		//default device
+    //TCON_DEV = "11307";               //default device
     //String info = getFileVersionInfo();
     //MainForm->Caption = "AUO 11307";
     MainForm->Caption = "Color Engine Toolkit";
     mn_Function->Enabled = true;
     //mn_TCON->Enabled = true;
-    mn_DCR->Enabled = true;
-    mn_Vender->Enabled = true;
+    //mn_DCR->Enabled = true;
+    //mn_Vender->Enabled = true;
     mn_ImageProc->Enabled = true;
     mn_CM->Enabled = true;
     mn_Sharpness->Enabled = true;
@@ -442,31 +308,31 @@ void __fastcall TMainForm::FormCreate(TObject * Sender)
 void TMainForm::reload_all(TObject * Sender)
 {
     /*mn_TCONClick(Sender);
-    mn_FunctionClick(Sender);
-    mn_DCRClick(Sender);
-    mn_VenderClick(Sender);
-    mn_CMClick(Sender);
-    mn_SharpnessClick(Sender);
-    mn_Sharpness12307Click(Sender);
-    mn_CEClick(Sender);
-    mn_HSVClick(Sender);
-    mn_C3DClick(Sender);
-    mn_SATClick(Sender);
-    mn_offsetClick(Sender);
-    TShiftState Shift;
-    WORD Key = 0x40;
-    TCONForm->OnKeyDown(Sender, Key, Shift);
-    FunctionForm->OnKeyDown(Sender, Key, Shift);
-    DCRForm->OnKeyDown(Sender, Key, Shift);
-    VenderForm->OnKeyDown(Sender, Key, Shift);
-    CMForm->OnKeyDown(Sender, Key, Shift);
-    SharpnessForm->OnKeyDown(Sender, Key, Shift);
-    SharpnessV2Form->OnKeyDown(Sender, Key, Shift);
-    ContrastEnhanceForm->OnKeyDown(Sender, Key, Shift);	//mssk by Michelle 20100716
-    HSVForm->OnKeyDown(Sender, Key, Shift);
-    C3DForm->OnKeyDown(Sender, Key, Shift);	// mask by Michelle 20100716
-    SATForm->OnKeyDown(Sender, Key, Shift);
-    offsetForm->OnKeyDown(Sender, Key, Shift);*/
+       mn_FunctionClick(Sender);
+       mn_DCRClick(Sender);
+       mn_VenderClick(Sender);
+       mn_CMClick(Sender);
+       mn_SharpnessClick(Sender);
+       mn_Sharpness12307Click(Sender);
+       mn_CEClick(Sender);
+       mn_HSVClick(Sender);
+       mn_C3DClick(Sender);
+       mn_SATClick(Sender);
+       mn_offsetClick(Sender);
+       TShiftState Shift;
+       WORD Key = 0x40;
+       TCONForm->OnKeyDown(Sender, Key, Shift);
+       FunctionForm->OnKeyDown(Sender, Key, Shift);
+       DCRForm->OnKeyDown(Sender, Key, Shift);
+       VenderForm->OnKeyDown(Sender, Key, Shift);
+       CMForm->OnKeyDown(Sender, Key, Shift);
+       SharpnessForm->OnKeyDown(Sender, Key, Shift);
+       SharpnessV2Form->OnKeyDown(Sender, Key, Shift);
+       ContrastEnhanceForm->OnKeyDown(Sender, Key, Shift);      //mssk by Michelle 20100716
+       HSVForm->OnKeyDown(Sender, Key, Shift);
+       C3DForm->OnKeyDown(Sender, Key, Shift);  // mask by Michelle 20100716
+       SATForm->OnKeyDown(Sender, Key, Shift);
+       offsetForm->OnKeyDown(Sender, Key, Shift); */
 
 }
 
@@ -478,8 +344,8 @@ void __fastcall TMainForm::mn_CMClick(TObject * Sender)
 	CMForm->Show();
     else {
 	//if (TCON_DEV == "11307") {
-	    CMForm = new TCMForm1(this);
-	    CMForm->Show();
+	CMForm = new TCMForm(this);
+	CMForm->Show();
 	//}
 
     }
@@ -492,8 +358,8 @@ void __fastcall TMainForm::mn_SharpnessClick(TObject * Sender)
 	SharpnessV1Form->Show();
     else {
 	//if (TCON_DEV == "11307") {
-	    SharpnessV1Form = new TSharpnessV1Form(this);
-	    SharpnessV1Form->Show();
+	SharpnessV1Form = new TSharpnessV1Form(this);
+	SharpnessV1Form->Show();
 	//}
 
     }
@@ -517,12 +383,12 @@ void __fastcall TMainForm::FormMouseDown(TObject * Sender,
  // remove by Michelle 20100716
 void __fastcall TMainForm::mn_CEClick(TObject * Sender)
 {
-    if (ContrastEnhanceForm != NULL)
-	ContrastEnhanceForm->Show();
+    if (CEForm != NULL)
+	CEForm->Show();
     else {
 	//if (TCON_DEV == "11307") {
-	    ContrastEnhanceForm = new TContrastEnhanceForm1(this);
-	    ContrastEnhanceForm->Show();
+	CEForm = new TCEForm(this);
+	CEForm->Show();
 	//}
     }
 
@@ -532,13 +398,13 @@ void __fastcall TMainForm::mn_CEClick(TObject * Sender)
 
 void __fastcall TMainForm::mn_HSVClick(TObject * Sender)
 {
-    if (HSVForm != NULL)
-	HSVForm->Show();
+    if (HSVV1Form != NULL)
+	HSVV1Form->Show();
     else {
 	//if (TCON_DEV == "11307") {
-	    HSVForm = new THSVV1Form(this);
-	    //HSVForm = new THSVFormNew_(this);
-	    HSVForm->Show();
+	HSVV1Form = new THSVV1Form(this);
+	//HSVForm = new THSVFormNew_(this);
+	HSVV1Form->Show();
 	//}
     }
 
@@ -563,8 +429,8 @@ void __fastcall TMainForm::mn_C3DClick(TObject * Sender)
 	C3DForm->Show();
     else {
 	//if (TCON_DEV == "11307") {
-	    C3DForm = new TC3DForm1(this);
-	    C3DForm->Show();
+	C3DForm = new TC3DForm(this);
+	C3DForm->Show();
 	//}
     }
 }
@@ -582,8 +448,8 @@ void __fastcall TMainForm::mn_C3D_777Click(TObject * Sender)
 	    C3DForm->Close();
     }
     //if (TCON_DEV == "11307") {
-	C3DForm = new TC3DForm1(this);
-	C3DForm->Show();
+    C3DForm = new TC3DForm(this);
+    C3DForm->Show();
     //}
 
 }
@@ -601,8 +467,8 @@ void __fastcall TMainForm::mn_C3D_999Click(TObject * Sender)
 	    C3DForm->Close();
     }
     //if (TCON_DEV == "11307") {
-	C3DForm = new TC3DForm1(this);
-	C3DForm->Show();
+    C3DForm = new TC3DForm(this);
+    C3DForm->Show();
     //}
 
 }
@@ -615,8 +481,8 @@ void __fastcall TMainForm::mn_SATClick(TObject * Sender)
 	SATForm->Show();
     else {
 	//if (TCON_DEV == "11307") {
-	    SATForm = new TSATForm(this);
-	    SATForm->Show();
+	SATForm = new TSATForm(this);
+	SATForm->Show();
 	//}
     }
 }
@@ -629,8 +495,8 @@ void __fastcall TMainForm::mn_offsetClick(TObject * Sender)
 	offsetForm->Show();
     else {
 	//if (TCON_DEV == "11307") {
-	    offsetForm = new ToffsetForm(this);
-	    offsetForm->Show();
+	offsetForm = new ToffsetForm(this);
+	offsetForm->Show();
 	//}
     }
 }
@@ -742,9 +608,9 @@ void __fastcall TMainForm::mn_LoadAddressFromFileClick(TObject * Sender)
     ForceCurrentDirectory = true;
     OpenDialog1->Filter = "T-CON Address Files(*.*)|*.*";
     /*if (0 == OpenDialog1->InitialDir) {
-	String appPath = ExtractFilePath(Application->ExeName);
-	OpenDialog1->InitialDir = appPath;
-    }*/
+       String appPath = ExtractFilePath(Application->ExeName);
+       OpenDialog1->InitialDir = appPath;
+       } */
     if (OpenDialog1->Execute()) {
 	const AnsiString & header = OpenDialog1->FileName;
 	setAddressFile(header);
@@ -760,7 +626,7 @@ void TMainForm::setAddressFile(AnsiString filename)
 	caption = caption.SubString(1, dotIndex - 1);
     }
     MainForm->Caption = caption;
-    addressFromFile=true;
+    addressFromFile = true;
     mn_LoadAddressFromFile->Checked = true;
     AbstractBase::resetAddressMap();
     closeAllForms();
@@ -774,13 +640,13 @@ AnsiString TMainForm::AddressFile;
 
 void __fastcall TMainForm::mn_HSV2Click(TObject * Sender)
 {
-    if (HSVForm2 != NULL)
-	HSVForm2->Show();
+    if (HSVV2Form != NULL)
+	HSVV2Form->Show();
     else {
 	//if (TCON_DEV == "11307") {
 	//HSVForm = new THSVForm1(this);
-	HSVForm2 = new THSVV2Form(this);
-	HSVForm2->Show();
+	HSVV2Form = new THSVV2Form(this);
+	HSVV2Form->Show();
 	//}
     }
 }
@@ -789,13 +655,13 @@ void __fastcall TMainForm::mn_HSV2Click(TObject * Sender)
 
 void __fastcall TMainForm::mn_HSV1Click(TObject * Sender)
 {
-    if (HSVForm != NULL)
-	HSVForm->Show();
+    if (HSVV1Form != NULL)
+	HSVV1Form->Show();
     else {
 	//if (TCON_DEV == "11307") {
-	    HSVForm = new THSVV1Form(this);
-	    //HSVForm = new THSVFormNew(this);
-	    HSVForm->Show();
+	HSVV1Form = new THSVV1Form(this);
+	//HSVForm = new THSVFormNew(this);
+	HSVV1Form->Show();
 	//}
     }
 }
@@ -809,8 +675,8 @@ void __fastcall TMainForm::mn_Sharpness12307Click(TObject * Sender)
 	SharpnessV2Form->Show();
     } else {
 	//if (TCON_DEV == "11307") {
-	    SharpnessV2Form = new TSharpnessV2Form(this);
-	    SharpnessV2Form->Show();
+	SharpnessV2Form = new TSharpnessV2Form(this);
+	SharpnessV2Form->Show();
 	//}
 
     }
@@ -823,9 +689,9 @@ void __fastcall TMainForm::mn_Sharpness12307Click(TObject * Sender)
 void __fastcall TMainForm::Sharpness2Click(TObject * Sender)
 {
     /*if (null == SharpnessForm12307_2) {
-	SharpnessForm12307_2 = new TSharpnessForm12307_2(this);
-    }
-    SharpnessForm12307_2->Show();*/
+       SharpnessForm12307_2 = new TSharpnessForm12307_2(this);
+       }
+       SharpnessForm12307_2->Show(); */
 }
 
 //---------------------------------------------------------------------------
@@ -841,18 +707,18 @@ void __fastcall TMainForm::Example2Click(TObject * Sender)
 //---------------------------------------------------------------------------
 
 
-void __fastcall TMainForm::Sharpnessv211Click(TObject *Sender)
+void __fastcall TMainForm::Sharpnessv211Click(TObject * Sender)
 {
     /*if (SharpnessForm12307_2 != NULL) {
-	SharpnessForm12307_2->Show();
-    } else {
-	if (TCON_DEV == "11307") {
-	    SharpnessForm12307_2 = new TSharpnessForm12307_2(this);
-	    SharpnessForm12307_2->Show();
-	}
+       SharpnessForm12307_2->Show();
+       } else {
+       if (TCON_DEV == "11307") {
+       SharpnessForm12307_2 = new TSharpnessForm12307_2(this);
+       SharpnessForm12307_2->Show();
+       }
 
-    }*/
+       } */
 }
-//---------------------------------------------------------------------------
 
+//---------------------------------------------------------------------------
 

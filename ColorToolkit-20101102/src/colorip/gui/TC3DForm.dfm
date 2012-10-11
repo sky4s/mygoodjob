@@ -1,4 +1,4 @@
-object C3DForm1: TC3DForm1
+object C3DForm: TC3DForm
   Left = 0
   Top = 0
   Width = 1280

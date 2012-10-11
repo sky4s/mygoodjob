@@ -1,4 +1,4 @@
-object CMForm1: TCMForm1
+object CMForm: TCMForm
   Left = 540
   Top = 182
   Width = 909

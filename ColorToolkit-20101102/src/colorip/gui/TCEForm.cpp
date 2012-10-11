@@ -3,7 +3,7 @@
 #include <vcl.h>
 #pragma hdrstop
 
-#include "ContrastEnhance1.h"
+#include "TCEForm.h"
 #include "include.h"
 #include <colorip/11307/ImageProcess/ImgProc_11307.h>
 //---------------------------------------------------------------------------
@@ -12,14 +12,14 @@
 //TContrastEnhanceForm1 *ContrastEnhanceForm1;
 
 //---------------------------------------------------------------------------
-__fastcall TContrastEnhanceForm1::TContrastEnhanceForm1(TComponent * Owner)
+__fastcall TCEForm::TCEForm(TComponent * Owner)
 :TForm(Owner)
 {
     CE_Chg = 0;
 }
 
 //---------------------------------------------------------------------------
-void __fastcall TContrastEnhanceForm1::CheckBox_Click(TObject * Sender)
+void __fastcall TCEForm::CheckBox_Click(TObject * Sender)
 {
     if (CE_Chg == 0) {
 	ShowMessage("Previous write is not over yet.");
@@ -32,7 +32,7 @@ void __fastcall TContrastEnhanceForm1::CheckBox_Click(TObject * Sender)
 }
 
 //---------------------------------------------------------------------------
-void __fastcall TContrastEnhanceForm1::ComboBox_Change(TObject * Sender)
+void __fastcall TCEForm::ComboBox_Change(TObject * Sender)
 {
     if (CE_Chg == 0) {
 	ShowMessage("Previous write is not over yet.");
@@ -45,7 +45,7 @@ void __fastcall TContrastEnhanceForm1::ComboBox_Change(TObject * Sender)
 }
 
 //--------------------------------------------------------------------------
-void __fastcall TContrastEnhanceForm1::ScrollBar_Change(TObject * Sender)
+void __fastcall TCEForm::ScrollBar_Change(TObject * Sender)
 {
     if (CE_Chg == 0) {
 	ShowMessage("Previous write is not over yet.");
@@ -60,7 +60,7 @@ void __fastcall TContrastEnhanceForm1::ScrollBar_Change(TObject * Sender)
 }
 
 //---------------------------------------------------------------------------
-void __fastcall TContrastEnhanceForm1::FormCreate(TObject * Sender)
+void __fastcall TCEForm::FormCreate(TObject * Sender)
 {
     CE_Chg = 0;
     /*int ic_choice;
@@ -231,7 +231,7 @@ int JND_lut[16];
 int ST_lut[16];
 int MAX_lut[16];
 int MIN_lut[16];
-void TContrastEnhanceForm1::Clear_JND_LUT(bool type)
+void TCEForm::Clear_JND_LUT(bool type)
 {
     if (type == true) {
 	for (int i = 0; i < 16; i++)
@@ -318,7 +318,7 @@ void TContrastEnhanceForm1::Clear_JND_LUT(bool type)
 }
 
 //---------------------------------------------------------------------------
-void __fastcall TContrastEnhanceForm1::JND_LUTMouseDown(TObject * Sender,
+void __fastcall TCEForm::JND_LUTMouseDown(TObject * Sender,
 							TMouseButton Button, TShiftState Shift,
 							int X, int Y)
 {
@@ -351,7 +351,7 @@ void __fastcall TContrastEnhanceForm1::JND_LUTMouseDown(TObject * Sender,
 }
 
 //---------------------------------------------------------------------------
-void __fastcall TContrastEnhanceForm1::JND_WriteClick(TObject * Sender)
+void __fastcall TCEForm::JND_WriteClick(TObject * Sender)
 {
     if (JND_addr[0].LutNum() != 16) {
 	ShowMessage("JND LUT number defined in AddressCE.cpp is wrong.");
@@ -364,7 +364,7 @@ void __fastcall TContrastEnhanceForm1::JND_WriteClick(TObject * Sender)
 }
 
 //---------------------------------------------------------------------------
-void __fastcall TContrastEnhanceForm1::ST_WriteClick(TObject * Sender)
+void __fastcall TCEForm::ST_WriteClick(TObject * Sender)
 {
     if (ST_addr[0].LutNum() != 16) {
 	ShowMessage("ST LUT number defined in AddressCE.cpp is wrong.");
@@ -377,7 +377,7 @@ void __fastcall TContrastEnhanceForm1::ST_WriteClick(TObject * Sender)
 }
 
 //---------------------------------------------------------------------------
-void __fastcall TContrastEnhanceForm1::MAX_WriteClick(TObject * Sender)
+void __fastcall TCEForm::MAX_WriteClick(TObject * Sender)
 {
     if (MAX_addr[0].LutNum() != 16) {
 	ShowMessage("MAX LUT number defined in AddressCE.cpp is wrong.");
@@ -391,7 +391,7 @@ void __fastcall TContrastEnhanceForm1::MAX_WriteClick(TObject * Sender)
 
 //---------------------------------------------------------------------------
 
-void __fastcall TContrastEnhanceForm1::MIN_WriteClick(TObject * Sender)
+void __fastcall TCEForm::MIN_WriteClick(TObject * Sender)
 {
     if (MIN_addr[0].LutNum() != 16) {
 	ShowMessage("MIN LUT number defined in AddressCE.cpp is wrong.");
@@ -405,7 +405,7 @@ void __fastcall TContrastEnhanceForm1::MIN_WriteClick(TObject * Sender)
 
 //---------------------------------------------------------------------------
 
-void __fastcall TContrastEnhanceForm1::ST_LUTMouseDown(TObject * Sender,
+void __fastcall TCEForm::ST_LUTMouseDown(TObject * Sender,
 						       TMouseButton Button, TShiftState Shift,
 						       int X, int Y)
 {
@@ -438,7 +438,7 @@ void __fastcall TContrastEnhanceForm1::ST_LUTMouseDown(TObject * Sender,
 }
 
 //---------------------------------------------------------------------------
-void TContrastEnhanceForm1::Clear_ST_LUT(bool type)
+void TCEForm::Clear_ST_LUT(bool type)
 {
     if (type == true) {
 	for (int i = 0; i < 16; i++)
@@ -523,7 +523,7 @@ void TContrastEnhanceForm1::Clear_ST_LUT(bool type)
 }
 
 //--------------------------------------------------------------------------
-void __fastcall TContrastEnhanceForm1::MAX_LUTMouseDown(TObject * Sender,
+void __fastcall TCEForm::MAX_LUTMouseDown(TObject * Sender,
 							TMouseButton Button, TShiftState Shift,
 							int X, int Y)
 {
@@ -556,7 +556,7 @@ void __fastcall TContrastEnhanceForm1::MAX_LUTMouseDown(TObject * Sender,
 }
 
 //---------------------------------------------------------------------------
-void __fastcall TContrastEnhanceForm1::MIN_LUTMouseDown(TObject * Sender,
+void __fastcall TCEForm::MIN_LUTMouseDown(TObject * Sender,
 							TMouseButton Button, TShiftState Shift,
 							int X, int Y)
 {
@@ -589,7 +589,7 @@ void __fastcall TContrastEnhanceForm1::MIN_LUTMouseDown(TObject * Sender,
 }
 
 //---------------------------------------------------------------------------
-void TContrastEnhanceForm1::Clear_MAX_LUT(bool type)
+void TCEForm::Clear_MAX_LUT(bool type)
 {
     if (type == true) {
 	for (int i = 0; i < 16; i++)
@@ -675,7 +675,7 @@ void TContrastEnhanceForm1::Clear_MAX_LUT(bool type)
 
 //--------------------------------------------------------------------------
 
-void TContrastEnhanceForm1::Clear_MIN_LUT(bool type)
+void TCEForm::Clear_MIN_LUT(bool type)
 {
     if (type == true) {
 	for (int i = 0; i < 16; i++)
@@ -762,7 +762,7 @@ void TContrastEnhanceForm1::Clear_MIN_LUT(bool type)
 //---------------------------------------------------------------------------
 
 
-void __fastcall TContrastEnhanceForm1::btn_CE_loadClick(TObject * Sender)
+void __fastcall TCEForm::btn_CE_loadClick(TObject * Sender)
 {
     btn_CE_load->Enabled = false;
     if (!OpenDialog1->Execute())
@@ -781,7 +781,7 @@ void __fastcall TContrastEnhanceForm1::btn_CE_loadClick(TObject * Sender)
 }
 
 //---------------------------------------------------------------------------
-bool TContrastEnhanceForm1::Load_CEini(String Fpath)
+bool TCEForm::Load_CEini(String Fpath)
 {
     long lSize;
     char *Buffer;
@@ -938,7 +938,7 @@ bool TContrastEnhanceForm1::Load_CEini(String Fpath)
 }
 
 //--------------------------------------------------------------------------
-void __fastcall TContrastEnhanceForm1::btn_wrt_allClick(TObject * Sender)
+void __fastcall TCEForm::btn_wrt_allClick(TObject * Sender)
 {
     if (CE_Chg == 0) {
 	ShowMessage("Previous write is not over yet.");
@@ -967,7 +967,7 @@ void __fastcall TContrastEnhanceForm1::btn_wrt_allClick(TObject * Sender)
 
 //---------------------------------------------------------------------------
 
-void __fastcall TContrastEnhanceForm1::btn_CE_saveClick(TObject * Sender)
+void __fastcall TCEForm::btn_CE_saveClick(TObject * Sender)
 {
     btn_CE_save->Enabled = false;
     FILE *fptr;
@@ -1019,35 +1019,35 @@ void __fastcall TContrastEnhanceForm1::btn_CE_saveClick(TObject * Sender)
 
 //---------------------------------------------------------------------------
 
-void __fastcall TContrastEnhanceForm1::btn_JND_ClearClick(TObject * Sender)
+void __fastcall TCEForm::btn_JND_ClearClick(TObject * Sender)
 {
     Clear_JND_LUT(true);
 }
 
 //---------------------------------------------------------------------------
 
-void __fastcall TContrastEnhanceForm1::btn_ST_ClearClick(TObject * Sender)
+void __fastcall TCEForm::btn_ST_ClearClick(TObject * Sender)
 {
     Clear_ST_LUT(true);
 }
 
 //---------------------------------------------------------------------------
 
-void __fastcall TContrastEnhanceForm1::btn_MAX_ClearClick(TObject * Sender)
+void __fastcall TCEForm::btn_MAX_ClearClick(TObject * Sender)
 {
     Clear_MAX_LUT(true);
 }
 
 //---------------------------------------------------------------------------
 
-void __fastcall TContrastEnhanceForm1::btn_MIN_ClearClick(TObject * Sender)
+void __fastcall TCEForm::btn_MIN_ClearClick(TObject * Sender)
 {
     Clear_MIN_LUT(true);
 }
 
 //---------------------------------------------------------------------------
 
-void __fastcall TContrastEnhanceForm1::rg_ce_modeClick(TObject * Sender)
+void __fastcall TCEForm::rg_ce_modeClick(TObject * Sender)
 {
     String Fpath;
 
@@ -1072,7 +1072,7 @@ void __fastcall TContrastEnhanceForm1::rg_ce_modeClick(TObject * Sender)
 
 
 
-void __fastcall TContrastEnhanceForm1::JND_ReadClick(TObject * Sender)
+void __fastcall TCEForm::JND_ReadClick(TObject * Sender)
 {
     EngineerForm->SetRead_PG(JND_addr[0], JND_lut, 0);
     for (int i = 0; i < 16; i++)
@@ -1083,7 +1083,7 @@ void __fastcall TContrastEnhanceForm1::JND_ReadClick(TObject * Sender)
 //---------------------------------------------------------------------------
 
 
-void __fastcall TContrastEnhanceForm1::ST_ReadClick(TObject * Sender)
+void __fastcall TCEForm::ST_ReadClick(TObject * Sender)
 {
     EngineerForm->SetRead_PG(ST_addr[0], ST_lut, 0);
     for (int i = 0; i < 16; i++)
@@ -1093,7 +1093,7 @@ void __fastcall TContrastEnhanceForm1::ST_ReadClick(TObject * Sender)
 
 //---------------------------------------------------------------------------
 
-void __fastcall TContrastEnhanceForm1::MAX_ReadClick(TObject * Sender)
+void __fastcall TCEForm::MAX_ReadClick(TObject * Sender)
 {
     EngineerForm->SetRead_PG(MAX_addr[0], MAX_lut, 0);
     for (int i = 0; i < 16; i++)
@@ -1103,7 +1103,7 @@ void __fastcall TContrastEnhanceForm1::MAX_ReadClick(TObject * Sender)
 
 //---------------------------------------------------------------------------
 
-void __fastcall TContrastEnhanceForm1::MIN_ReadClick(TObject * Sender)
+void __fastcall TCEForm::MIN_ReadClick(TObject * Sender)
 {
     EngineerForm->SetRead_PG(MIN_addr[0], MIN_lut, 0);
     for (int i = 0; i < 16; i++)
@@ -1113,7 +1113,7 @@ void __fastcall TContrastEnhanceForm1::MIN_ReadClick(TObject * Sender)
 
 //---------------------------------------------------------------------------
 
-void __fastcall TContrastEnhanceForm1::Btn_CE_reloadClick(TObject * Sender)
+void __fastcall TCEForm::Btn_CE_reloadClick(TObject * Sender)
 {
     Btn_CE_reload->Enabled = false;
     unsigned char read_val;
@@ -1151,7 +1151,7 @@ void __fastcall TContrastEnhanceForm1::Btn_CE_reloadClick(TObject * Sender)
 
 //---------------------------------------------------------------------------
 
-void __fastcall TContrastEnhanceForm1::FormKeyDown(TObject * Sender, WORD & Key, TShiftState Shift)
+void __fastcall TCEForm::FormKeyDown(TObject * Sender, WORD & Key, TShiftState Shift)
 {
     if (Key == 0x40) {
 	Btn_CE_reloadClick(Sender);
@@ -1160,11 +1160,11 @@ void __fastcall TContrastEnhanceForm1::FormKeyDown(TObject * Sender, WORD & Key,
 
 //---------------------------------------------------------------------------
 
-void __fastcall TContrastEnhanceForm1::FormClose(TObject * Sender, TCloseAction & Action)
+void __fastcall TCEForm::FormClose(TObject * Sender, TCloseAction & Action)
 {
     delete[]OCE;
     Action = caFree;
-    MainForm->ContrastEnhanceFormNULL();
+    MainForm->CEFormNULL();
 }
 
 //---------------------------------------------------------------------------

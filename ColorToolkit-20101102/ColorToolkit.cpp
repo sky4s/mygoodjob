@@ -8,10 +8,9 @@ USEFORM("src\gui\frame\THSVAdjustFrame.cpp", HSVAdjustFrame); /* TFrame: File Ty
 USEFORM("src\c3d\gui\TInTargetForm.cpp", InTargetForm);
 USEFORM("src\gui\TDebugForm.cpp", DebugForm);
 USEFORM("src\gui\TExampleForm.cpp", ExampleForm);
-USEFORM("src\colorip\gui\C3D1.cpp", C3DForm1);
-USEFORM("src\colorip\gui\CM1.cpp", CMForm1);
-USEFORM("src\colorip\gui\ContrastEnhance1.cpp", ContrastEnhanceForm1);
-USEFORM("src\colorip\gui\DCR1.cpp", DCRForm1);
+USEFORM("src\colorip\gui\TC3DForm.cpp", C3DForm);
+USEFORM("src\colorip\gui\TCMForm.cpp", CMForm);
+USEFORM("src\colorip\gui\TCEForm.cpp", CEForm);
 USEFORM("src\colorip\gui\Engineering.cpp", EngineerForm);
 USEFORM("src\colorip\gui\Function1.cpp", FunctionForm1);
 USEFORM("src\colorip\gui\THSVV1Form.cpp", HSVV1Form);
@@ -22,7 +21,6 @@ USEFORM("src\colorip\gui\TSharpnessV2Form.cpp", SharpnessV2Form);
 USEFORM("src\colorip\gui\TMainForm.cpp", MainForm);
 USEFORM("src\colorip\gui\TGamutForm.cpp", GamutSetupForm);
 USEFORM("src\colorip\gui\TPatternForm.cpp", PatternForm);
-USEFORM("src\colorip\gui\Vender1.cpp", VenderForm1);
 USEFORM("src\colorip\gui\THSVV2Form.cpp", HSVV2Form);
 USEFORM("src\colorip\gui\TSharpnessV2_1Form.cpp", SharpnessV2_1Form);
 //---------------------------------------------------------------------------
