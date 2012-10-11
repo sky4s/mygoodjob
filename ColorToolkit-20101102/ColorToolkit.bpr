@@ -17,11 +17,11 @@
       build\offset_11307.obj build\C3D1.obj build\CM1.obj 
       build\ContrastEnhance1.obj build\DCR1.obj build\Engineering.obj 
       build\Function1.obj build\THSVV1Form.obj build\offset.obj build\SAT.obj 
-      build\TSharpnessV1Form.obj build\TSharpnessV2Form.obj build\TCON1.obj 
-      build\TMainForm.obj build\DCR_11307.obj build\Func_11307.obj 
-      build\ImgProc_11307.obj build\TCON_11307.obj build\Vend_11307.obj 
-      build\TGamutForm.obj build\TPatternForm.obj build\Vender1.obj 
-      build\THSVV2Form.obj build\TSharpnessV2_1Form.obj"/>
+      build\TSharpnessV1Form.obj build\TSharpnessV2Form.obj build\TMainForm.obj 
+      build\DCR_11307.obj build\Func_11307.obj build\ImgProc_11307.obj 
+      build\TCON_11307.obj build\Vend_11307.obj build\TGamutForm.obj 
+      build\TPatternForm.obj build\Vender1.obj build\THSVV2Form.obj 
+      build\TSharpnessV2_1Form.obj"/>
     <RESFILES value="ColorToolkit.res"/>
     <IDLFILES value=""/>
     <IDLGENFILES value=""/>
@@ -34,10 +34,9 @@
       src\colorip\gui\Function1.dfm src\colorip\gui\THSVV1Form.dfm 
       src\colorip\gui\offset.dfm src\colorip\gui\SAT.dfm 
       src\colorip\gui\TSharpnessV1Form.dfm src\colorip\gui\TSharpnessV2Form.dfm 
-      src\colorip\gui\TCON1.dfm src\colorip\gui\TMainForm.dfm 
-      src\colorip\gui\TGamutForm.dfm src\colorip\gui\TPatternForm.dfm 
-      src\colorip\gui\Vender1.dfm src\colorip\gui\THSVV2Form.dfm 
-      src\colorip\gui\TSharpnessV2_1Form.dfm"/>
+      src\colorip\gui\TMainForm.dfm src\colorip\gui\TGamutForm.dfm 
+      src\colorip\gui\TPatternForm.dfm src\colorip\gui\Vender1.dfm 
+      src\colorip\gui\THSVV2Form.dfm src\colorip\gui\TSharpnessV2_1Form.dfm"/>
     <LIBFILES value="lib\USB_i2c_lib\hid.lib"/>
     <LIBRARIES value="tee.lib vclx.lib bcbsmp.lib rtl.lib vcl.lib"/>
     <SPARELIBS value="vcl.lib rtl.lib bcbsmp.lib vclx.lib tee.lib"/>
@@ -48,7 +47,7 @@
       inetdbbde.bpi inetdbxpress.bpi inetdb.bpi nmfast.bpi webdsnap.bpi 
       bcbie.bpi websnap.bpi soaprtl.bpi dclocx.bpi dbexpress.bpi dbxcds.bpi 
       indy.bpi bcb2kaxserver.bpi"/>
-    <PATHCPP value=".;lib\USB_i2c_lib;lib\LPT_lib;lib\LPT_lib;src\gui\frame;src\gui\frame;src\c3d\gui;src\c3d;lib\CMSCpp2.1\src\i2c\core;lib\CMSCpp2.1\src\math;lib\CMSCpp2.1\src\cms\colorspace;lib\CMSCpp2.1\src\cms\colorspace;lib\CMSCpp2.1\src\java;lib\CMSCpp2.1\src\cms;lib\CMSCpp2.1\src\cms\colorspace;lib\CMSCpp2.1\src\math;lib\CMSCpp2.1\src\math;lib\CMSCpp2.1\src\cms\colorspace;lib\CMSCpp2.1\src\cms\colorspace;lib\CMSCpp2.1\src\cms\util;lib\CMSCpp2.1\src\cms\lcd;lib\CMSCpp2.1\src\gui\util;lib\CMSCpp2.1\src\cms\hsv;lib\CMSCpp2.1\src\algo;lib\CMSCpp2.1\src\algo;src\gui;src\gui\framework;src\gui;src\gui;src\colorip;src\colorip;src\colorip;src\colorip\gui;src\colorip\gui;src\colorip\gui;src\colorip\gui;src\colorip\gui;src\colorip\gui;src\colorip\gui;src\colorip\gui;src\colorip\gui;src\colorip\gui;src\colorip\gui;src\colorip\gui;src\colorip\gui;src\colorip\11307\DCR;src\colorip\11307\Function;src\colorip\11307\ImageProcess;src\colorip\11307\TCON;src\colorip\11307\Vender;src\colorip\gui;src\colorip\gui;src\colorip\gui;src\colorip\gui;src\colorip\gui"/>
+    <PATHCPP value=".;lib\USB_i2c_lib;lib\LPT_lib;lib\LPT_lib;src\gui\frame;src\gui\frame;src\c3d\gui;src\c3d;lib\CMSCpp2.1\src\i2c\core;lib\CMSCpp2.1\src\math;lib\CMSCpp2.1\src\cms\colorspace;lib\CMSCpp2.1\src\cms\colorspace;lib\CMSCpp2.1\src\java;lib\CMSCpp2.1\src\cms;lib\CMSCpp2.1\src\cms\colorspace;lib\CMSCpp2.1\src\math;lib\CMSCpp2.1\src\math;lib\CMSCpp2.1\src\cms\colorspace;lib\CMSCpp2.1\src\cms\colorspace;lib\CMSCpp2.1\src\cms\util;lib\CMSCpp2.1\src\cms\lcd;lib\CMSCpp2.1\src\gui\util;lib\CMSCpp2.1\src\cms\hsv;lib\CMSCpp2.1\src\algo;lib\CMSCpp2.1\src\algo;src\gui;src\gui\framework;src\gui;src\gui;src\colorip;src\colorip;src\colorip;src\colorip\gui;src\colorip\gui;src\colorip\gui;src\colorip\gui;src\colorip\gui;src\colorip\gui;src\colorip\gui;src\colorip\gui;src\colorip\gui;src\colorip\gui;src\colorip\gui;src\colorip\gui;src\colorip\11307\DCR;src\colorip\11307\Function;src\colorip\11307\ImageProcess;src\colorip\11307\TCON;src\colorip\11307\Vender;src\colorip\gui;src\colorip\gui;src\colorip\gui;src\colorip\gui;src\colorip\gui"/>
     <PATHPAS value=".;"/>
     <PATHRC value=".;"/>
     <PATHASM value=".;"/>
@@ -140,7 +139,6 @@
       <FILE FILENAME="src\colorip\gui\SAT.cpp" FORMNAME="SATForm" UNITNAME="SAT" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="src\colorip\gui\TSharpnessV1Form.cpp" FORMNAME="SharpnessV1Form" UNITNAME="TSharpnessV1Form" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="src\colorip\gui\TSharpnessV2Form.cpp" FORMNAME="SharpnessV2Form" UNITNAME="TSharpnessV2Form" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="src\colorip\gui\TCON1.cpp" FORMNAME="TCONForm1" UNITNAME="TCON1" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="src\colorip\gui\TMainForm.cpp" FORMNAME="MainForm" UNITNAME="TMainForm" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="src\colorip\11307\DCR\DCR_11307.cpp" FORMNAME="" UNITNAME="DCR_11307" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="src\colorip\11307\Function\Func_11307.cpp" FORMNAME="" UNITNAME="Func_11307" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>

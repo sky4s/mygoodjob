@@ -66,12 +66,6 @@ object MainForm: TMainForm
         OnClick = mn_Header2AddressClick
       end
     end
-    object mn_TCON: TMenuItem
-      Caption = '&TCON'
-      ImageIndex = 1
-      Visible = False
-      OnClick = mn_TCONClick
-    end
     object mn_Function: TMenuItem
       Caption = '&Function'
       ImageIndex = 2
