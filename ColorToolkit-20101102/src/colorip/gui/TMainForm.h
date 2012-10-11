@@ -2,8 +2,8 @@
 //    20100608 ¼W¥[C3D Form
 //---------------------------------------------------------------------------
 
-#ifndef Unit1H
-#define Unit1H
+#ifndef TMainFormH
+#define TMainFormH
 //---------------------------------------------------------------------------
 #include <Classes.hpp>
 #include <Controls.hpp>
@@ -64,12 +64,12 @@ class TMainForm:public TForm {
     TMenuItem *mn_C3D_999;
     TMenuItem *mn_SAT;
     TMenuItem *mn_offset;
-        TMenuItem *header2Address;
+        TMenuItem *mn_Header2Address;
     TOpenDialog *OpenDialog1;
     TSaveDialog *SaveDialog1;
-        TMenuItem *loadAddressFromFile;
+        TMenuItem *mn_LoadAddressFromFile;
     TMenuItem *mn_HSV2;
-    TMenuItem *HSV1;
+        TMenuItem *mn_HSV1;
     TMenuItem *mn_Sharpness12307;
     TMenuItem *Test1;
     TMenuItem *Example2;
@@ -96,10 +96,10 @@ class TMainForm:public TForm {
     void __fastcall mn_C3D_999Click(TObject * Sender);
     void __fastcall mn_SATClick(TObject * Sender);
     void __fastcall mn_offsetClick(TObject * Sender);
-    void __fastcall header2AddressClick(TObject * Sender);
-    void __fastcall loadAddressFromFileClick(TObject * Sender);
+    void __fastcall mn_Header2AddressClick(TObject * Sender);
+    void __fastcall mn_LoadAddressFromFileClick(TObject * Sender);
     void __fastcall mn_HSV2Click(TObject * Sender);
-    void __fastcall HSV1Click(TObject * Sender);
+    void __fastcall mn_HSV1Click(TObject * Sender);
     void __fastcall mn_Sharpness12307Click(TObject * Sender);
     void __fastcall Sharpness2Click(TObject * Sender);
     void __fastcall Example2Click(TObject * Sender);
