@@ -25,7 +25,7 @@
 #include "THSVForm2nd.h"
 #include "CM1.h"
 #include "TGamutForm.h"
-#include <fpga/11307/ImageProcess/ImgProc_11307.h>
+#include <colorip/11307/ImageProcess/ImgProc_11307.h>
 #include <gui/GUIUtil.h>
 //---------------------------------------------------------------------------
 #pragma package(smart_init)

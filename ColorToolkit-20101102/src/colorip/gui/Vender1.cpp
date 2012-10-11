@@ -20,7 +20,7 @@
 #include "Vender1.h"
 #include "Unit1.h"
 #include "Engineering.h"
-#include <fpga/11307/Vender/Vend_11307.h>
+#include <colorip/11307/Vender/Vend_11307.h>
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
 #pragma resource "*.dfm"

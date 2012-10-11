@@ -28,9 +28,9 @@
 #include "gui_class.h"
 
 //本項目內gui頭文件
-#include "Sharpness1.h"
-#include "Sharpness12307.h"
-#include "ContrastEnhance1.h"
+#include <colorip/gui/Sharpness1.h>
+#include <colorip/gui/Sharpness12307.h>
+#include <colorip/gui/ContrastEnhance1.h>
 
 //---------------------------------------------------------------------------
 class TMainForm:public TForm {

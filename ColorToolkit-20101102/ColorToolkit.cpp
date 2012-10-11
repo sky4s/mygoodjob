@@ -23,6 +23,8 @@ USEFORM("src\colorip\gui\TCON1.cpp", TCONForm1);
 USEFORM("src\colorip\gui\Unit1.cpp", MainForm);
 USEFORM("src\colorip\gui\TGamutForm.cpp", GamutSetupForm);
 USEFORM("src\colorip\gui\TPatternForm.cpp", PatternForm);
+USEFORM("src\colorip\gui\Vender1.cpp", VenderForm1);
+USEFORM("src\colorip\gui\THSVForm2nd.cpp", HSVForm2nd);
 //---------------------------------------------------------------------------
 WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 {
