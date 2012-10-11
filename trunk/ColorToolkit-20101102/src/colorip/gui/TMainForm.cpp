@@ -63,20 +63,6 @@ __fastcall TMainForm::TMainForm(TComponent * Owner):TForm(Owner)
 //---------------------------------------------------------------------------
 
 
-void __fastcall TMainForm::mn_TCONClick(TObject * Sender)
-{
-    if (TCONForm != NULL)
-	TCONForm->Show();
-    else {
-	//if (TCON_DEV == "11307") {
-	    TCONForm = new TTCONForm1(this);
-	    TCONForm->Show();
-	//}
-
-    }
-}
-
-//---------------------------------------------------------------------------
 
 void __fastcall TMainForm::mn_EngineerClick(TObject * Sender)
 {
@@ -357,7 +343,7 @@ void __fastcall TMainForm::AUO_11307Click(TObject * Sender)
     //TCON_DEV = "11307";
     MainForm->Caption = "AUO 11307";
     mn_Function->Enabled = true;
-    mn_TCON->Enabled = true;
+    //mn_TCON->Enabled = true;
     mn_DCR->Enabled = true;
     mn_Vender->Enabled = true;
     mn_ImageProc->Enabled = true;
@@ -413,7 +399,7 @@ void __fastcall TMainForm::AUO_12303Click(TObject * Sender)
     }
     //TCON_DEV = "12303";
     MainForm->Caption = "AUO 12303";
-    mn_TCON->Enabled = true;
+    //mn_TCON->Enabled = true;
     mn_Function->Enabled = true;
     mn_Vender->Enabled = true;
     mn_DCR->Enabled = true;
@@ -438,7 +424,7 @@ void __fastcall TMainForm::FormCreate(TObject * Sender)
     //MainForm->Caption = "AUO 11307";
     MainForm->Caption = "Color Engine Toolkit";
     mn_Function->Enabled = true;
-    mn_TCON->Enabled = true;
+    //mn_TCON->Enabled = true;
     mn_DCR->Enabled = true;
     mn_Vender->Enabled = true;
     mn_ImageProc->Enabled = true;

@@ -19,7 +19,6 @@ USEFORM("src\colorip\gui\offset.cpp", offsetForm);
 USEFORM("src\colorip\gui\SAT.cpp", SATForm);
 USEFORM("src\colorip\gui\TSharpnessV1Form.cpp", SharpnessV1Form);
 USEFORM("src\colorip\gui\TSharpnessV2Form.cpp", SharpnessV2Form);
-USEFORM("src\colorip\gui\TCON1.cpp", TCONForm1);
 USEFORM("src\colorip\gui\TMainForm.cpp", MainForm);
 USEFORM("src\colorip\gui\TGamutForm.cpp", GamutSetupForm);
 USEFORM("src\colorip\gui\TPatternForm.cpp", PatternForm);

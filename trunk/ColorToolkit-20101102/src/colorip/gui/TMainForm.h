@@ -37,7 +37,6 @@ class TMainForm:public TForm {
     __published:		// IDE-managed Components
     TMainMenu * MainMenu1;
     TMenuItem *mn_Engineer;
-    TMenuItem *mn_TCON;
     TMenuItem *mn_Function;
     TMenuItem *mn_DCR;
     TMenuItem *mn_Vender;
@@ -75,7 +74,6 @@ class TMainForm:public TForm {
     TMenuItem *Example2;
     TMenuItem *Sharpness2;
         TMenuItem *Sharpnessv211;
-    void __fastcall mn_TCONClick(TObject * Sender);
     void __fastcall mn_EngineerClick(TObject * Sender);
     void __fastcall mn_FunctionClick(TObject * Sender);
     void __fastcall mn_DCRClick(TObject * Sender);
