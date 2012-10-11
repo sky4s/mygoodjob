@@ -20,7 +20,8 @@
       build\Sharpness1.obj build\Sharpness12307.obj build\TCON1.obj 
       build\Unit1.obj build\DCR_11307.obj build\Func_11307.obj 
       build\ImgProc_11307.obj build\TCON_11307.obj build\Vend_11307.obj 
-      build\TGamutForm.obj build\TPatternForm.obj"/>
+      build\TGamutForm.obj build\TPatternForm.obj build\Vender1.obj 
+      build\THSVForm2nd.obj"/>
     <RESFILES value="ColorToolkit.res"/>
     <IDLFILES value=""/>
     <IDLGENFILES value=""/>
@@ -34,7 +35,8 @@
       src\colorip\gui\offset.dfm src\colorip\gui\SAT.dfm 
       src\colorip\gui\Sharpness1.dfm src\colorip\gui\Sharpness12307.dfm 
       src\colorip\gui\TCON1.dfm src\colorip\gui\Unit1.dfm 
-      src\colorip\gui\TGamutForm.dfm src\colorip\gui\TPatternForm.dfm"/>
+      src\colorip\gui\TGamutForm.dfm src\colorip\gui\TPatternForm.dfm 
+      src\colorip\gui\Vender1.dfm src\colorip\gui\THSVForm2nd.dfm"/>
     <LIBFILES value="lib\USB_i2c_lib\hid.lib"/>
     <LIBRARIES value="tee.lib vclx.lib bcbsmp.lib rtl.lib vcl.lib"/>
     <SPARELIBS value="vcl.lib rtl.lib bcbsmp.lib vclx.lib tee.lib"/>
@@ -45,7 +47,7 @@
       inetdbbde.bpi inetdbxpress.bpi inetdb.bpi nmfast.bpi webdsnap.bpi 
       bcbie.bpi websnap.bpi soaprtl.bpi dclocx.bpi dbexpress.bpi dbxcds.bpi 
       indy.bpi bcb2kaxserver.bpi"/>
-    <PATHCPP value=".;lib\USB_i2c_lib;lib\LPT_lib;lib\LPT_lib;src\gui\frame;src\gui\frame;src\c3d\gui;src\c3d;lib\CMSCpp2.1\src\i2c\core;lib\CMSCpp2.1\src\math;lib\CMSCpp2.1\src\cms\colorspace;lib\CMSCpp2.1\src\cms\colorspace;lib\CMSCpp2.1\src\java;lib\CMSCpp2.1\src\cms;lib\CMSCpp2.1\src\cms\colorspace;lib\CMSCpp2.1\src\math;lib\CMSCpp2.1\src\math;lib\CMSCpp2.1\src\cms\colorspace;lib\CMSCpp2.1\src\cms\colorspace;lib\CMSCpp2.1\src\cms\util;lib\CMSCpp2.1\src\cms\lcd;lib\CMSCpp2.1\src\gui\util;lib\CMSCpp2.1\src\cms\hsv;lib\CMSCpp2.1\src\algo;lib\CMSCpp2.1\src\algo;src\gui;src\gui\framework;src\gui;src\gui;src\colorip;src\colorip;src\colorip;src\colorip\gui;src\colorip\gui;src\colorip\gui;src\colorip\gui;src\colorip\gui;src\colorip\gui;src\colorip\gui;src\colorip\gui;src\colorip\gui;src\colorip\gui;src\colorip\gui;src\colorip\gui;src\colorip\gui;src\colorip\11307\DCR;src\colorip\11307\Function;src\colorip\11307\ImageProcess;src\colorip\11307\TCON;src\colorip\11307\Vender;src\colorip\gui;src\colorip\gui"/>
+    <PATHCPP value=".;lib\USB_i2c_lib;lib\LPT_lib;lib\LPT_lib;src\gui\frame;src\gui\frame;src\c3d\gui;src\c3d;lib\CMSCpp2.1\src\i2c\core;lib\CMSCpp2.1\src\math;lib\CMSCpp2.1\src\cms\colorspace;lib\CMSCpp2.1\src\cms\colorspace;lib\CMSCpp2.1\src\java;lib\CMSCpp2.1\src\cms;lib\CMSCpp2.1\src\cms\colorspace;lib\CMSCpp2.1\src\math;lib\CMSCpp2.1\src\math;lib\CMSCpp2.1\src\cms\colorspace;lib\CMSCpp2.1\src\cms\colorspace;lib\CMSCpp2.1\src\cms\util;lib\CMSCpp2.1\src\cms\lcd;lib\CMSCpp2.1\src\gui\util;lib\CMSCpp2.1\src\cms\hsv;lib\CMSCpp2.1\src\algo;lib\CMSCpp2.1\src\algo;src\gui;src\gui\framework;src\gui;src\gui;src\colorip;src\colorip;src\colorip;src\colorip\gui;src\colorip\gui;src\colorip\gui;src\colorip\gui;src\colorip\gui;src\colorip\gui;src\colorip\gui;src\colorip\gui;src\colorip\gui;src\colorip\gui;src\colorip\gui;src\colorip\gui;src\colorip\gui;src\colorip\11307\DCR;src\colorip\11307\Function;src\colorip\11307\ImageProcess;src\colorip\11307\TCON;src\colorip\11307\Vender;src\colorip\gui;src\colorip\gui;src\colorip\gui;src\colorip\gui"/>
     <PATHPAS value=".;"/>
     <PATHRC value=".;"/>
     <PATHASM value=".;"/>
@@ -146,6 +148,8 @@
       <FILE FILENAME="src\colorip\11307\Vender\Vend_11307.cpp" FORMNAME="" UNITNAME="Vend_11307" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="src\colorip\gui\TGamutForm.cpp" FORMNAME="GamutSetupForm" UNITNAME="TGamutForm" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="src\colorip\gui\TPatternForm.cpp" FORMNAME="PatternForm" UNITNAME="TPatternForm" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="src\colorip\gui\Vender1.cpp" FORMNAME="VenderForm1" UNITNAME="Vender1" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="src\colorip\gui\THSVForm2nd.cpp" FORMNAME="HSVForm2nd" UNITNAME="THSVForm2nd" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
   </FILELIST>
   <BUILDTOOLS>
   </BUILDTOOLS>

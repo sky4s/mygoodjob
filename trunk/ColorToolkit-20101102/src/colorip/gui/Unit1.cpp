@@ -15,7 +15,7 @@
 #include <colorip/gui/THSVForm2nd.h>
 #include <colorip/gui/CM1.h>
 #include <gui/TExampleForm.h>
-#include <colorip/gui/TSharpnessForm12307_2.h>
+//#include <colorip/gui/TSharpnessForm12307_2.h>
 #include "include.h"
 #include <iostream>
 #include <fstream>
@@ -843,10 +843,10 @@ void __fastcall TMainForm::mn_Sharpness12307Click(TObject * Sender)
 
 void __fastcall TMainForm::Sharpness2Click(TObject * Sender)
 {
-    if (null == SharpnessForm12307_2) {
+    /*if (null == SharpnessForm12307_2) {
 	SharpnessForm12307_2 = new TSharpnessForm12307_2(this);
     }
-    SharpnessForm12307_2->Show();
+    SharpnessForm12307_2->Show();*/
 }
 
 //---------------------------------------------------------------------------
@@ -864,7 +864,7 @@ void __fastcall TMainForm::Example2Click(TObject * Sender)
 
 void __fastcall TMainForm::Sharpnessv211Click(TObject *Sender)
 {
-    if (SharpnessForm12307_2 != NULL) {
+    /*if (SharpnessForm12307_2 != NULL) {
 	SharpnessForm12307_2->Show();
     } else {
 	if (TCON_DEV == "11307") {
@@ -872,7 +872,7 @@ void __fastcall TMainForm::Sharpnessv211Click(TObject *Sender)
 	    SharpnessForm12307_2->Show();
 	}
 
-    }
+    }*/
 }
 //---------------------------------------------------------------------------
 
