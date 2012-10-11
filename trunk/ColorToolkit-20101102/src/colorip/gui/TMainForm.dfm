@@ -56,14 +56,14 @@ object MainForm: TMainForm
         Visible = False
         OnClick = AUO_12303Click
       end
-      object loadAddressFromFile: TMenuItem
+      object mn_LoadAddressFromFile: TMenuItem
         Caption = 'Load T-CON Address File'
-        OnClick = loadAddressFromFileClick
+        OnClick = mn_LoadAddressFromFileClick
       end
-      object header2Address: TMenuItem
+      object mn_Header2Address: TMenuItem
         Caption = 'Header to Address File'
         Visible = False
-        OnClick = header2AddressClick
+        OnClick = mn_Header2AddressClick
       end
     end
     object mn_TCON: TMenuItem
@@ -112,12 +112,12 @@ object MainForm: TMainForm
         Caption = '&Contrast Enhancement'
         OnClick = mn_CEClick
       end
-      object HSV1: TMenuItem
-        Caption = 'HSV'
-        OnClick = HSV1Click
+      object mn_HSV1: TMenuItem
+        Caption = 'HSV v1'
+        OnClick = mn_HSV1Click
       end
       object mn_HSV2: TMenuItem
-        Caption = 'HSV2'
+        Caption = 'HSV v2'
         OnClick = mn_HSV2Click
       end
       object mn_C3D: TMenuItem

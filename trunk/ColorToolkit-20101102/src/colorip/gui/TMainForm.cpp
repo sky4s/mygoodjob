@@ -1,6 +1,6 @@
 
 #pragma hdrstop
-#include "Unit1.h"
+#include "TMainForm.h"
 //C系統文件                  
 
 //C++系統文件
@@ -12,7 +12,7 @@
 //本項目內頭文件
 #include <addresstype/Address_type.h>
 //本項目內gui頭文件
-#include <colorip/gui/THSVForm2nd.h>
+#include <colorip/gui/THSVV2Form.h>
 #include <colorip/gui/CM1.h>
 #include <gui/TExampleForm.h>
 #include <colorip/gui/TSharpnessV1Form.h>
@@ -54,7 +54,7 @@ __fastcall TMainForm::TMainForm(TComponent * Owner):TForm(Owner)
 	setAddressFile("tcon.txt");
     }
     //if (Util::isFileExist("debug.txt")) {
-	header2Address->Visible = true;
+	mn_Header2Address->Visible = true;
     //}
 
 
@@ -550,7 +550,7 @@ void __fastcall TMainForm::mn_HSVClick(TObject * Sender)
 	HSVForm->Show();
     else {
 	//if (TCON_DEV == "11307") {
-	    HSVForm = new THSVFormOrg(this);
+	    HSVForm = new THSVV1Form(this);
 	    //HSVForm = new THSVFormNew_(this);
 	    HSVForm->Show();
 	//}
@@ -679,7 +679,7 @@ String TMainForm::getFileVersionInfo()
 }
 
 
-void __fastcall TMainForm::header2AddressClick(TObject * Sender)
+void __fastcall TMainForm::mn_Header2AddressClick(TObject * Sender)
 {
     using namespace std;
     OpenDialog1->Filter = "Header Files(*.h)|*.h";
@@ -750,7 +750,7 @@ void TMainForm::header2AddressFile(const AnsiString & header, const AnsiString &
     infile.close();
 }
 
-void __fastcall TMainForm::loadAddressFromFileClick(TObject * Sender)
+void __fastcall TMainForm::mn_LoadAddressFromFileClick(TObject * Sender)
 {
     using namespace std;
     ForceCurrentDirectory = true;
@@ -775,7 +775,7 @@ void TMainForm::setAddressFile(AnsiString filename)
     }
     MainForm->Caption = caption;
     addressFromFile=true;
-    loadAddressFromFile->Checked = true;
+    mn_LoadAddressFromFile->Checked = true;
     AbstractBase::resetAddressMap();
     closeAllForms();
 }
@@ -793,7 +793,7 @@ void __fastcall TMainForm::mn_HSV2Click(TObject * Sender)
     else {
 	//if (TCON_DEV == "11307") {
 	//HSVForm = new THSVForm1(this);
-	HSVForm2 = new THSVForm2nd(this);
+	HSVForm2 = new THSVV2Form(this);
 	HSVForm2->Show();
 	//}
     }
@@ -801,13 +801,13 @@ void __fastcall TMainForm::mn_HSV2Click(TObject * Sender)
 
 //---------------------------------------------------------------------------
 
-void __fastcall TMainForm::HSV1Click(TObject * Sender)
+void __fastcall TMainForm::mn_HSV1Click(TObject * Sender)
 {
     if (HSVForm != NULL)
 	HSVForm->Show();
     else {
 	//if (TCON_DEV == "11307") {
-	    HSVForm = new THSVFormOrg(this);
+	    HSVForm = new THSVV1Form(this);
 	    //HSVForm = new THSVFormNew(this);
 	    HSVForm->Show();
 	//}
