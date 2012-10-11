@@ -186,16 +186,16 @@ void __fastcall ToffsetForm::LblE4_KeyPress(TObject * Sender, char &Key)
 
 void __fastcall ToffsetForm::FormCreate(TObject * Sender)
 {
-    int ic_choice;
+    /*int ic_choice;
     if (MainForm->TCON_DEV == "11307")
 	ic_choice = 0;
 
     switch (ic_choice) {
-    case 0:
+    case 0:*/
 	OoffsetForm = new offsetForm_11307;
-	break;
+	/*break;
 
-    }
+    }     */
 
 	/****************************************************************
         //      CheckBox: ChkBox_Nbr=3                                   //

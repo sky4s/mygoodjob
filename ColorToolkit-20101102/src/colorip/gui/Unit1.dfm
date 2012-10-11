@@ -40,16 +40,6 @@ object MainForm: TMainForm
     UseSystemFont = False
     OnDblClick = StatusBar1DblClick
   end
-  object cb_address_txt: TCheckBox
-    Left = 640
-    Top = 520
-    Width = 97
-    Height = 17
-    Caption = 'Address from txt file'
-    TabOrder = 1
-    Visible = False
-    OnClick = cb_address_txtClick
-  end
   object MainMenu1: TMainMenu
     BiDiMode = bdLeftToRight
     ParentBiDiMode = False
@@ -66,14 +56,14 @@ object MainForm: TMainForm
         Visible = False
         OnClick = AUO_12303Click
       end
-      object addressFromFile: TMenuItem
+      object loadAddressFromFile: TMenuItem
         Caption = 'Load T-CON Address File'
-        OnClick = addressFromFileClick
+        OnClick = loadAddressFromFileClick
       end
-      object Header2Address1: TMenuItem
+      object header2Address: TMenuItem
         Caption = 'Header to Address File'
         Visible = False
-        OnClick = Header2Address1Click
+        OnClick = header2AddressClick
       end
     end
     object mn_TCON: TMenuItem

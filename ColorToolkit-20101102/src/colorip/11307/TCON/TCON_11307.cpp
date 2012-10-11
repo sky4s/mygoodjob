@@ -32,7 +32,7 @@ TBit *TCON_11307::SetDevChkBx()	//12
 {
     //CheckBox數量等於TCON1.cpp裡的DevChkBox_Nbr數量, 必須大於index
     TBit *ChkBox = new TBit[DevChkBox_Nbr];
-    if (MainForm->addr_place == 0) {
+    if (false == MainForm->addressFromFile) {
 	//setAddress(&ChkBox[0],_NULL);
 	setAddress(&ChkBox[0], SSCG_EN);	//20100624
 	setAddress(&ChkBox[1], GAT_CLK_EN);	//
@@ -47,7 +47,7 @@ TBit *TCON_11307::SetDevChkBx()	//12
 	setAddress(&ChkBox[10], CLK_STOP_EN);	//
 	setAddress(&ChkBox[11], CLK_NG_VENDOR_EN);	//
 
-    } else if (MainForm->addr_place == 1) {
+    } else    {
 	setAddressFromFile(&ChkBox[0], "SSCG_EN");	//20100624
 	setAddressFromFile(&ChkBox[1], "GAT_CLK_EN");	//
 	setAddressFromFile(&ChkBox[2], "IMGEN_HUE");	//
@@ -69,11 +69,11 @@ TBit *TCON_11307::SetDevCboBx()	//2
 {
     TBit *CboBox = new TBit[DevCboBox_Nbr];
 
-    if (MainForm->addr_place == 0) {
+    if (false == MainForm->addressFromFile) {
 	setAddress(&CboBox[0], SSCG_SEL);	//20100624                
 	setAddress(&CboBox[1], OTP_PTM);	//
 
-    } else if (MainForm->addr_place == 1) {
+    } else   {
 	setAddressFromFile(&CboBox[0], "SSCG_SEL");	//20100624               
 	setAddressFromFile(&CboBox[1], "OTP_PTM");	//
     }
@@ -102,7 +102,7 @@ TBit2 *TCON_11307::SetDevLblE2()	//8
 {
     TBit2 *LEdt = new TBit2[DevLblE2_Nbr];
 
-    if (MainForm->addr_place == 0) {
+    if (false == MainForm->addressFromFile) {
 	setAddress(&LEdt[0], PROG_1);	//
 	setAddress(&LEdt[1], PROG_2);	//
 	setAddress(&LEdt[2], CLK_NG_AUO_TIME);	//
@@ -112,7 +112,7 @@ TBit2 *TCON_11307::SetDevLblE2()	//8
 	setAddress(&LEdt[6], CLK_NG_LFREQ_MARGIN);	//
 	setAddress(&LEdt[7], CLK_STOP_DETREG);	//      
 
-    } else if (MainForm->addr_place == 1) {
+    } else  {
 	setAddressFromFile(&LEdt[0], "PROG_1(0~7)");	//
 	setAddressFromFile(&LEdt[1], "PROG_1(0~7)");	//
 	setAddressFromFile(&LEdt[2], "CLK_NG_AUO_TIME(0~255)");	//
@@ -130,7 +130,7 @@ TBit2 *TCON_11307::SetDevLblE2()	//8
 TBit *TCON_11307::SetIOChkBx()
 {
     TBit *ChkBox = new TBit[IOChkBox_Nbr];	//13
-    if (MainForm->addr_place == 0) {
+    if (false == MainForm->addressFromFile) {
 	setAddress(&ChkBox[0], IP8B);	//20100624
 	setAddress(&ChkBox[1], LORD_INV);	//  
 	setAddress(&ChkBox[2], CHPN);	//
@@ -145,7 +145,7 @@ TBit *TCON_11307::SetIOChkBx()
 	setAddress(&ChkBox[11], BRVS);	//                                
 	setAddress(&ChkBox[12], PPFB_4P);	//       
 
-    } else if (MainForm->addr_place == 1) {
+    } else   {
 	setAddressFromFile(&ChkBox[0], "IP8B");	//20100624
 	setAddressFromFile(&ChkBox[1], "LORD_INV");	//
 	setAddressFromFile(&ChkBox[2], "CHPN");	//
@@ -167,9 +167,9 @@ TBit *TCON_11307::SetIOChkBx()
 TBit *TCON_11307::SetIOCboBx()	//1
 {
     TBit *CboBox = new TBit[IOCboBox_Nbr];
-    if (MainForm->addr_place == 0) {
+    if (false == MainForm->addressFromFile) {
 	setAddress(&CboBox[0], RES);	//20100624
-    } else if (MainForm->addr_place == 1) {
+    } else   {
 	setAddressFromFile(&CboBox[0], "RES");	//20100624
     }
     CboBox[0].choice_nbr = 16;	//20100624
@@ -199,7 +199,7 @@ TBit *TCON_11307::SetIOCboBx()	//1
 TBit *TCON_11307::SetDrvChkBx()	//18
 {
     TBit *ChkBox = new TBit[DrvChkBox_Nbr];
-    if (MainForm->addr_place == 0) {
+    if (false == MainForm->addressFromFile) {
 	setAddress(&ChkBox[0], HSD_EN);	//
 	setAddress(&ChkBox[1], FIX_GATE_ON_EN);	//                                      
 	setAddress(&ChkBox[2], TDEF_EN);	//                
@@ -219,7 +219,7 @@ TBit *TCON_11307::SetDrvChkBx()	//18
 	setAddress(&ChkBox[16], VST_SNG);	//
 	setAddress(&ChkBox[17], HSD_DUMMY_EN);	//
 
-    } else if (MainForm->addr_place == 1) {
+    } else   {
 	setAddressFromFile(&ChkBox[0], "HSD_EN");	//                
 	setAddressFromFile(&ChkBox[1], "FIX_GATE_ON_EN");	//
 	setAddressFromFile(&ChkBox[2], "TDEF_EN");	//
@@ -246,7 +246,7 @@ TBit *TCON_11307::SetDrvCboBx()	//9
 {
     TBit *CboBox = new TBit[DrvCboBox_Nbr];
 
-    if (MainForm->addr_place == 0) {
+    if (false == MainForm->addressFromFile) {
 	setAddress(&CboBox[0], HSD_MODE);	//                                           
 	setAddress(&CboBox[1], BGI);	//
 	setAddress(&CboBox[2], TF_INV);	//
@@ -256,7 +256,7 @@ TBit *TCON_11307::SetDrvCboBx()	//9
 	setAddress(&CboBox[6], MULTI_GOA_PRESEL);	//
 	setAddress(&CboBox[7], TCON_POL_JUDGE_SEL);	//
 	setAddress(&CboBox[8], VST_FALLING_EXT);	//
-    } else if (MainForm->addr_place == 1) {
+    } else   {
 	setAddressFromFile(&CboBox[0], "HSD_MODE");	//                
 	setAddressFromFile(&CboBox[1], "BGI");	//
 	setAddressFromFile(&CboBox[2], "TF_INV");	//
@@ -337,7 +337,7 @@ TBit2 *TCON_11307::SetDrvLblE()	//9
 {
     TBit2 *LEdt = new TBit2[DrvLblE2_Nbr];
 
-    if (MainForm->addr_place == 0) {
+    if (false == MainForm->addressFromFile) {
 	setAddress(&LEdt[0], OE_AREA1);	//
 	setAddress(&LEdt[1], OE_AREA2);	//
 	setAddress(&LEdt[2], BGI_GRAY);	//
@@ -348,7 +348,7 @@ TBit2 *TCON_11307::SetDrvLblE()	//9
 	setAddress(&LEdt[7], DUMMY_CK_NUM);	//
 	setAddress(&LEdt[8], HSD_DUMMY_DIV2);	//        
 
-    } else if (MainForm->addr_place == 1) {
+    } else   {
 	setAddressFromFile(&LEdt[0], "OE_AREA1(0~4095)");	//
 	setAddressFromFile(&LEdt[1], "OE_AREA2(0~4095)");	//
 	setAddressFromFile(&LEdt[2], "BGI_GRAY(0~255)");	//
@@ -366,10 +366,10 @@ TBit3 *TCON_11307::SetDrvLblE3()	//1
 {
     TBit3 *LEdt = new TBit3[DrvLblE3_Nbr];
 
-    if (MainForm->addr_place == 0) {
+    if (false == MainForm->addressFromFile) {
 	setAddress(&LEdt[0], SDR_POL_ACCUM_THRES);	//
 
-    } else if (MainForm->addr_place == 1) {
+    } else   {
 	//setAddressFromFile(&LEdt[0],"SDR_POL_ACCUM_THRES(0~8388607)"); // Not support setAddressFromFile(TBit3)
     }
     return LEdt;
@@ -381,7 +381,7 @@ TBit2 *TCON_11307::SetTimLblE2()
 {
     TBit2 *LEdt = new TBit2[TimLblE2_Nbr];	//152
 
-    if (MainForm->addr_place == 0) {
+    if (false == MainForm->addressFromFile) {
 	setAddress(&LEdt[0], TXSTBR_DEF);	//6
 	setAddress(&LEdt[35], TXSTBR_DEF2);	//
 	setAddress(&LEdt[1], PWXSTB_DEF);	//
@@ -553,7 +553,7 @@ TBit2 *TCON_11307::SetTimLblE2()
 	setAddress(&LEdt[58], HSD_PWXSTB_VAR_CNT5);	//
 	setAddress(&LEdt[59], HSD_PWXSTB_VAR_CNT6);	//
 
-    } else if (MainForm->addr_place == 1) {
+    } else   {
 	setAddressFromFile(&LEdt[0], "TXSTBR_DEF");	//
 	setAddressFromFile(&LEdt[35], "TXSTBR_DEF2");	//
 	setAddressFromFile(&LEdt[1], "PWXSTB_DEF");	//

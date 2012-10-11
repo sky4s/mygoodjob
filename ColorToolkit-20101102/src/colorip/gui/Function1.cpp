@@ -328,21 +328,21 @@ void TFunctionForm1::Initial_DG_table()
 
 void __fastcall TFunctionForm1::FormCreate(TObject * Sender)
 {
-    int ic_choice;
+    /*int ic_choice;
     if (MainForm->TCON_DEV == "11307") {
 	ic_choice = 0;
     }
 
     switch (ic_choice) {
-    case 0:
+    case 0:*/
 	OFunc = new Func_11307;
-	break;
+	//break;
 
 	/* case 1:
 	   OFunc = new Func_1240x;
 	   break; */
 
-    }
+    //}
 
 	/****************************************************************/
     //                                                              //

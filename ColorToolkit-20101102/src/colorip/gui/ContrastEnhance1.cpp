@@ -63,15 +63,15 @@ void __fastcall TContrastEnhanceForm1::ScrollBar_Change(TObject * Sender)
 void __fastcall TContrastEnhanceForm1::FormCreate(TObject * Sender)
 {
     CE_Chg = 0;
-    int ic_choice;
+    /*int ic_choice;
     if (MainForm->TCON_DEV == "11307")
 	ic_choice = 0;
 
     switch (ic_choice) {
-    case 0:
+    case 0:*/
 	OCE = new CE_11307;
-	break;
-    }
+	/*break;
+    }     */
 
 	/********************************************************************/
     //                                                                  //

@@ -169,16 +169,16 @@ void __fastcall TSharpnessV2Form::FormCreate(TObject * Sender)
     //regframework.scanUI(this);
 
     SP_Chg = 0;
-    int ic_choice = -1;
+    /*int ic_choice = -1;
     if (MainForm->TCON_DEV == "11307") {
 	ic_choice = 0;
     }
 
     switch (ic_choice) {
-    case 0:
+    case 0:*/
 	OSP = new SP_12307;
-	break;
-    }
+	/*break;
+    }     */
 
     /********************************************************************///
     //  Image Process SP has CheckBox*6 & ScrollBar*4  & table idx 32   //

@@ -103,16 +103,9 @@ void __fastcall THSVForm2nd::FormCreate(TObject * Sender)
 {
     //=========================================================================
     hsvInitialized = false;
-    int ic_choice;
-    if (MainForm->TCON_DEV == "11307") {
-	ic_choice = 0;
-    }
 
-    switch (ic_choice) {
-    case 0:
-	OHSV = new HSV_11307;
-	break;
-    }
+    OHSV = new HSV_11307;
+
 
     lut_addr = OHSV->SetLUT();
 
@@ -2062,8 +2055,4 @@ void __fastcall THSVForm2nd::Button_SaveOldFormatClick(TObject * Sender)
 }
 
 //---------------------------------------------------------------------------
-
-
-
-
 

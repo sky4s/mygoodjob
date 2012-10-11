@@ -357,18 +357,18 @@ void __fastcall TTCONForm1::TimLblEdit3_KeyPress(TObject * Sender, char &Key)
 //---------------------------------------------------------------------------
 void __fastcall TTCONForm1::FormCreate(TObject * Sender)
 {
-    int ic_choice;
-    String Path;
-    if (MainForm->TCON_DEV == "11307") {
+    //int ic_choice;
+    //String Path;
+    /*if (MainForm->TCON_DEV == "11307") {
 	ic_choice = 0;
 	Path = "AUO_11307_addr.txt";
-    }
+    }*/
 
-    switch (ic_choice) {
-    case 0:
+    //switch (ic_choice) {
+    //case 0:
 	OTCON = new TCON_11307;
-	break;
-    }
+	//break;
+    //}
 
 	/********************************************************************/
     //                                                                  //
