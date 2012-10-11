@@ -9,7 +9,7 @@
 
 #include "Unit1.h"
 #include <Buttons.hpp>
-#include <fpga/gui_class.h>
+#include <colorip/gui_class.h>
 //---------------------------------------------------------------------------
 
 

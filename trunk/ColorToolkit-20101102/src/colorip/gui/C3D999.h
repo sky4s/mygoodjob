@@ -17,7 +17,7 @@
 #include <Grids.hpp>
 #include <Dialogs.hpp>
 #include <Buttons.hpp>
-
+#include <colorip/gui_class.h>
 //---------------------------------------------------------------------------
 class AbstC3D
 {

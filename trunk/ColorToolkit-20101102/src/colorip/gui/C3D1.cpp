@@ -5,7 +5,7 @@
 #pragma hdrstop
 
 #include "C3D1.h"
-#include <fpga/11307/ImageProcess/ImgProc_11307.h>
+#include <colorip/11307/ImageProcess/ImgProc_11307.h>
 #include "include.h"
 //---------------------------------------------------------------------------
 #pragma package(smart_init)

@@ -31,7 +31,7 @@
 //其他庫頭文件
 
 //本項目內頭文件
-#include <fpga/gui_class.h>
+#include <colorip/gui_class.h>
 #include <addresstype/Address_type.h>
 //本項目內gui頭文件
 //---------------------------------------------------------------------------

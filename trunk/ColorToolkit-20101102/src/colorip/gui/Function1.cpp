@@ -7,7 +7,7 @@
 #include "Unit1.h"
 #include "Function1.h"
 #include "include.h"
-#include  <fpga/11307/Function/Func_11307.h>
+#include  <colorip/11307/Function/Func_11307.h>
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
 #pragma resource "*.dfm"

@@ -18,7 +18,7 @@
 #include <Dialogs.hpp>
 #include <Buttons.hpp>
 
-#include <fpga/gui_class.h>
+#include <colorip/gui_class.h>
 //---------------------------------------------------------------------------
 
 

@@ -7,9 +7,9 @@
 
 #include "Sharpness12307.h"
 #include <math.h>
-#include <fpga/11307/ImageProcess/ImgProc_11307.h>
-#include <fpga/gui/Unit1.h>
-#include <fpga/gui/Engineering.h>
+#include <colorip/11307/ImageProcess/ImgProc_11307.h>
+#include <colorip/gui/Unit1.h>
+#include <colorip/gui/Engineering.h>
 //#include <gui/framework/RegisterFramework.h>
 #include <gui/GUIUtil.h>
 #include "TDebugForm.h"

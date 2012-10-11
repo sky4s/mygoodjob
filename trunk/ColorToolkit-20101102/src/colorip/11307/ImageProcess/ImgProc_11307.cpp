@@ -1,8 +1,8 @@
 //---------------------------------------------------------------------------
-#include <fpga/includeallfpga.h>
+#include <colorip/includeallcolorip.h>
 #pragma hdrstop
 
-#include <fpga/11307/TCON/TCON_11307.h>
+#include <colorip/11307/TCON/TCON_11307.h>
 #include "ImgProc_11307.h"
 #include "Unit1.h"
 //---------------------------------------------------------------------------

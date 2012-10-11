@@ -14,7 +14,7 @@
 
 
 //本項目內gui頭文件
-#include <fpga/gui_class.h>
+#include <colorip/gui_class.h>
 
 namespace gui {
     namespace framework {

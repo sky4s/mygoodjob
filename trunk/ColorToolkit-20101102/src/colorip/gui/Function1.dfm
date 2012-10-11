@@ -542,7 +542,7 @@ object FunctionForm1: TFunctionForm1
         Top = 176
         Width = 113
         Height = 21
-        ItemHeight = 13
+        ItemHeight = 0
         TabOrder = 2
         Text = 'ComboBox1'
       end
@@ -808,7 +808,7 @@ object FunctionForm1: TFunctionForm1
             Top = 16
             Width = 145
             Height = 21
-            ItemHeight = 13
+            ItemHeight = 0
             TabOrder = 3
             Text = 'ComboBox4'
           end
@@ -817,7 +817,7 @@ object FunctionForm1: TFunctionForm1
             Top = 56
             Width = 145
             Height = 21
-            ItemHeight = 13
+            ItemHeight = 0
             TabOrder = 4
             Text = 'ComboBox5'
           end
@@ -826,7 +826,7 @@ object FunctionForm1: TFunctionForm1
             Top = 88
             Width = 145
             Height = 21
-            ItemHeight = 13
+            ItemHeight = 0
             TabOrder = 5
             Text = 'ComboBox6'
           end
@@ -835,7 +835,7 @@ object FunctionForm1: TFunctionForm1
             Top = 128
             Width = 145
             Height = 21
-            ItemHeight = 13
+            ItemHeight = 0
             TabOrder = 6
             Text = 'ComboBox7'
           end
