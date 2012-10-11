@@ -4,7 +4,7 @@
 #include <lib/CMSCpp2.1/src/includeall.h>
 #pragma hdrstop
 
-#include "Unit1.h"
+#include "TMainForm.h"
 #include "Function1.h"
 #include "include.h"
 #include  <colorip/11307/Function/Func_11307.h>

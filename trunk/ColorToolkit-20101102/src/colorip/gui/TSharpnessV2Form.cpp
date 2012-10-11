@@ -8,7 +8,7 @@
 #include "TSharpnessV2Form.h"
 #include <math.h>
 #include <colorip/11307/ImageProcess/ImgProc_11307.h>
-#include <colorip/gui/Unit1.h>
+#include <colorip/gui/TMainForm.h>
 #include <colorip/gui/Engineering.h>
 //#include <gui/framework/RegisterFramework.h>
 #include <gui/GUIUtil.h>

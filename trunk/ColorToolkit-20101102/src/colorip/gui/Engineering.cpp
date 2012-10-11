@@ -7,7 +7,7 @@
 #include <i2c/core/ReadWriteFunc.h>
 #include <i2c/core/PrintPortI2C.h>
 
-#include "Unit1.h"
+#include "TMainForm.h"
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
 #pragma resource "*.dfm"

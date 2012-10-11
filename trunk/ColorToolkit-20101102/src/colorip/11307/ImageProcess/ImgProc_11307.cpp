@@ -4,7 +4,7 @@
 
 #include <colorip/11307/TCON/TCON_11307.h>
 #include "ImgProc_11307.h"
-#include "Unit1.h"
+#include "TMainForm.h"
 //---------------------------------------------------------------------------
 
 #pragma package(smart_init)

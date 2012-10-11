@@ -15,7 +15,7 @@
 
 
 
-#include "Unit1.h"
+#include "TMainForm.h"
 
 //C系統文件
 #include <math.h>

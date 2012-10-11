@@ -13,7 +13,7 @@
 #include <Controls.hpp>
 #include <StdCtrls.hpp>
 #include <Forms.hpp>
-#include "Unit1.h"
+#include "TMainForm.h"
 #include <Grids.hpp>
 #include <Dialogs.hpp>
 #include <Buttons.hpp>
