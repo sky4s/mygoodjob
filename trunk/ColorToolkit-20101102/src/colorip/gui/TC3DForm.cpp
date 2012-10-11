@@ -4,7 +4,7 @@
 #include <lib/CMSCpp2.1/src/includeall.h>
 #pragma hdrstop
 
-#include "C3D1.h"
+#include "TC3DForm.h"
 #include <colorip/11307/ImageProcess/ImgProc_11307.h>
 #include "include.h"
 //---------------------------------------------------------------------------
@@ -24,14 +24,14 @@ int tbl_val[4][33] = {{0,32,64,96,128,160,192,224,255},  //9x9x9 uniform table, 
 //---------------------------------------------------------------------------
 
 
-__fastcall TC3DForm1::TC3DForm1(TComponent* Owner)
+__fastcall TC3DForm::TC3DForm(TComponent* Owner)
         : TForm(Owner)
 {
         C3D_Chg = 0;
         C3DEN_idx = -1;
 }
 
-void __fastcall TC3DForm1::CheckBox_Click(TObject *Sender)
+void __fastcall TC3DForm::CheckBox_Click(TObject *Sender)
 {
         if(C3D_Chg==0)
                 return;
@@ -41,7 +41,7 @@ void __fastcall TC3DForm1::CheckBox_Click(TObject *Sender)
         EngineerForm->SetWrite_Byte(ChkB[idx]->Addr ,set_val);
 }
 //---------------------------------------------------------------------------
-void __fastcall TC3DForm1::FormCreate(TObject *Sender)
+void __fastcall TC3DForm::FormCreate(TObject *Sender)
 {
         C3D_Chg = 0;
         int ic_choice=0;
@@ -94,7 +94,7 @@ void __fastcall TC3DForm1::FormCreate(TObject *Sender)
         C3D_Chg = 1;
 }
 //---------------------------------------------------------------------------
-void __fastcall TC3DForm1::FormClose(TObject *Sender, TCloseAction &Action)
+void __fastcall TC3DForm::FormClose(TObject *Sender, TCloseAction &Action)
 {
         delete [] OC3D;
         delete [] ChkB;
@@ -104,7 +104,7 @@ void __fastcall TC3DForm1::FormClose(TObject *Sender, TCloseAction &Action)
         MainForm->C3DFormNULL();
 }
 //---------------------------------------------------------------------------
-void TC3DForm1::Initial_C3D_table()
+void TC3DForm::Initial_C3D_table()
 {
         //initial table setting
         if(TBL_SIZE == 9)
@@ -157,7 +157,7 @@ void TC3DForm1::Initial_C3D_table()
                 }
         }
 }
- bool TC3DForm1::c3d_lutArrange()
+ bool TC3DForm::c3d_lutArrange()
 {
         int idx = 0;
 
@@ -260,7 +260,7 @@ void TC3DForm1::Initial_C3D_table()
                         }
         return 1;
 }
-void __fastcall TC3DForm1::btn_C3D_readClick(TObject *Sender)
+void __fastcall TC3DForm::btn_C3D_readClick(TObject *Sender)
 {
         C3D_LUT_FuncEnable(0);           // Table operation button disable
         bool ok = C3D_LUT_RW_start();    // Record the state of C3D enable
@@ -319,7 +319,7 @@ void __fastcall TC3DForm1::btn_C3D_readClick(TObject *Sender)
         C3D_LUT_FuncEnable(1);      // Table operation button enable
 }
 //---------------------------------------------------------------------------
-void __fastcall TC3DForm1::btn_C3D_wrtClick(TObject *Sender)
+void __fastcall TC3DForm::btn_C3D_wrtClick(TObject *Sender)
 {
         C3D_LUT_FuncEnable(0);           // Table operation button disable
         bool ok = C3D_LUT_RW_start();    // Record the state of C3D enable
@@ -368,7 +368,7 @@ void __fastcall TC3DForm1::btn_C3D_wrtClick(TObject *Sender)
 }
 //---------------------------------------------------------------------------
 // Record the state of C3D enable
-bool TC3DForm1::C3D_LUT_RW_start()
+bool TC3DForm::C3D_LUT_RW_start()
 {
         if(C3DEN_idx==-1){
                 ShowMessage("Unknown C3D enabled index.");
@@ -386,13 +386,13 @@ bool TC3DForm1::C3D_LUT_RW_start()
         return 1;
 }
 // Recover the state of C3D enable
-void TC3DForm1::C3D_LUT_RW_over(){
+void TC3DForm::C3D_LUT_RW_over(){
         // reload en state
         int set_val = (C3D_EN_State == false?0:1);
         ChkB[C3DEN_idx]->Chkb->Checked = C3D_EN_State;
         EngineerForm->SetWrite_Byte(ChkB[C3DEN_idx]->Addr ,set_val);
 }
-void TC3DForm1::C3D_LUT_FuncEnable(bool en_flag)
+void TC3DForm::C3D_LUT_FuncEnable(bool en_flag)
 {
         if(en_flag == true){  // Table operation button enable
                 btn_C3D_wrt->Enabled = true;
@@ -409,7 +409,7 @@ void TC3DForm1::C3D_LUT_FuncEnable(bool en_flag)
 
 //---------------------------------------------------------------------------
 
-void __fastcall TC3DForm1::btn_C3D_saveClick(TObject *Sender)
+void __fastcall TC3DForm::btn_C3D_saveClick(TObject *Sender)
 {
         C3D_LUT_FuncEnable(0);
         if(!SaveDialog1->Execute()){
@@ -432,7 +432,7 @@ void __fastcall TC3DForm1::btn_C3D_saveClick(TObject *Sender)
 }
 //---------------------------------------------------------------------------
 
-void __fastcall TC3DForm1::btn_C3D_loadClick(TObject *Sender)
+void __fastcall TC3DForm::btn_C3D_loadClick(TObject *Sender)
 {
         C3D_LUT_FuncEnable(0);
         String Fpath;
@@ -459,7 +459,7 @@ void __fastcall TC3DForm1::btn_C3D_loadClick(TObject *Sender)
 //---------------------------------------------------------------------------
 
 
-void __fastcall TC3DForm1::OnKeyDown(TObject *Sender, WORD &Key,
+void __fastcall TC3DForm::OnKeyDown(TObject *Sender, WORD &Key,
       TShiftState Shift)
 {
         if(Key == 0x40)
@@ -467,7 +467,7 @@ void __fastcall TC3DForm1::OnKeyDown(TObject *Sender, WORD &Key,
 }
 //---------------------------------------------------------------------------
 
-void __fastcall TC3DForm1::Btn_C3D_reloadClick(TObject *Sender)
+void __fastcall TC3DForm::Btn_C3D_reloadClick(TObject *Sender)
 {
         Btn_C3D_reload->Enabled = false;
         C3D_Chg = 0;

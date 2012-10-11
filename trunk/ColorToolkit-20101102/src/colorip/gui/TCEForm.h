@@ -3,8 +3,8 @@
 //   tableÅª¼g¨Ï¥Î TEngineerForm::SetRead_PG »P TEngineerForm::SetWrite_PG
 //---------------------------------------------------------------------------
 
-#ifndef ContrastEnhance1H
-#define ContrastEnhance1H
+#ifndef TCEFormH
+#define TCEFormH
 //---------------------------------------------------------------------------
 #include <Classes.hpp>
 #include <Controls.hpp>
@@ -21,7 +21,7 @@
 
 
 //---------------------------------------------------------------------------
-class TContrastEnhanceForm1:public TForm {
+class TCEForm:public TForm {
     __published:		// IDE-managed Components
     TGroupBox * GroupBox3;
     TCheckBox *CheckBox1;
@@ -172,7 +172,7 @@ class TContrastEnhanceForm1:public TForm {
     AbstCE *OCE;
     bool CE_Chg;
 
-    __fastcall TContrastEnhanceForm1(TComponent * Owner);
+    __fastcall TCEForm(TComponent * Owner);
     void Clear_JND_LUT(bool type);
     void Clear_ST_LUT(bool type);
     void Clear_MAX_LUT(bool type);
@@ -181,7 +181,7 @@ class TContrastEnhanceForm1:public TForm {
 
 };
 //---------------------------------------------------------------------------
-extern PACKAGE TContrastEnhanceForm1 *ContrastEnhanceForm1;
+//extern PACKAGE TCEForm *CEForm;
 //---------------------------------------------------------------------------
 
 

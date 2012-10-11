@@ -46,16 +46,6 @@ object MainForm: TMainForm
     object Device1: TMenuItem
       Caption = '&Device'
       ImageIndex = 0
-      object AUO_11307: TMenuItem
-        Caption = '&1.11307'
-        Visible = False
-        OnClick = AUO_11307Click
-      end
-      object AUO_12303: TMenuItem
-        Caption = '&2.12303'
-        Visible = False
-        OnClick = AUO_12303Click
-      end
       object mn_LoadAddressFromFile: TMenuItem
         Caption = 'Load T-CON Address File'
         OnClick = mn_LoadAddressFromFileClick
@@ -70,18 +60,6 @@ object MainForm: TMainForm
       Caption = '&Function'
       ImageIndex = 2
       OnClick = mn_FunctionClick
-    end
-    object mn_DCR: TMenuItem
-      Caption = 'D&CR'
-      ImageIndex = 3
-      Visible = False
-      OnClick = mn_DCRClick
-    end
-    object mn_Vender: TMenuItem
-      Caption = '&Vender'
-      ImageIndex = 4
-      Visible = False
-      OnClick = mn_VenderClick
     end
     object mn_ImageProc: TMenuItem
       Caption = 'Image Process'

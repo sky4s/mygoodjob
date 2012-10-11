@@ -6,8 +6,8 @@
 //   table讀寫使用 TEngineerForm::SetRead_DG 與 TEngineerForm::SetWrite_DG                                                             //
 //---------------------------------------------------------------------------
 
-#ifndef C3D1H
-#define C3D1H
+#ifndef TC3DFormH
+#define TC3DFormH
 //---------------------------------------------------------------------------
 #include <Classes.hpp>
 #include <Controls.hpp>
@@ -22,7 +22,7 @@
 //---------------------------------------------------------------------------
 
 
-class TC3DForm1 : public TForm
+class TC3DForm : public TForm
 {
 __published:	// IDE-managed Components
         TCheckBox *CheckBox1;
@@ -50,7 +50,7 @@ __published:	// IDE-managed Components
 private:	// User declarations
 public:		// User declarations
 
-        __fastcall TC3DForm1(TComponent* Owner);
+        __fastcall TC3DForm(TComponent* Owner);
         //TC3DForm1(int tbl_size);
 
         bool c3d_lutArrange();
@@ -74,6 +74,6 @@ public:		// User declarations
         bool C3D_Chg;               // C3D_Chg = 0 為禁止寫入, C3D_Chg =1 為允許寫入
 };
 //---------------------------------------------------------------------------
-extern PACKAGE TC3DForm1 *C3DForm1;
+//extern PACKAGE TC3DForm *C3DForm;
 //---------------------------------------------------------------------------
 #endif

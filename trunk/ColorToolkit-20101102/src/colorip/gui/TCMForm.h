@@ -17,8 +17,8 @@
 //
 //----------------------------------------------------------------------------
 
-#ifndef CM1H
-#define CM1H
+#ifndef TCMFormH
+#define TCMFormH
 //---------------------------------------------------------------------------
 
 //C系統文件
@@ -56,7 +56,7 @@ enum OffsetType {
 enum Mode {
     Manual, WhiteBalance, Vivid
 };
-class TCMForm1:public TForm {
+class TCMForm:public TForm {
     __published:		// IDE-managed Components
     TOpenDialog * OpenDialog1;
     TSaveDialog *SaveDialog1;
@@ -243,11 +243,11 @@ class TCMForm1:public TForm {
 			float CM[3][3], TEdit * CMEditArray[9],
 			TScrollBar * gain[3], TScrollBar * offset);
   public:			// User declarations
-     __fastcall TCMForm1(TComponent * Owner);
+     __fastcall TCMForm(TComponent * Owner);
 
 };
 //---------------------------------------------------------------------------
-extern PACKAGE TCMForm1 *CMForm1;
+//extern PACKAGE TCMForm *CMForm;
 //---------------------------------------------------------------------------
 
 

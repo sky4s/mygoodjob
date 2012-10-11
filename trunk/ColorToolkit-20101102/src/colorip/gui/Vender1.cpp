@@ -65,7 +65,7 @@ void __fastcall TVenderForm1::FormClose(TObject * Sender, TCloseAction & Action)
     delete[]DebugLblE2;
 
     Action = caFree;
-    MainForm->VenderFormNULL();
+    //MainForm->VenderFormNULL();
 }
 
 //---------------------------------------------------------------------------

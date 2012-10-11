@@ -30,7 +30,7 @@
 //本項目內gui頭文件
 //#include <colorip/gui/TSharpnessV1Form.h>
 //#include <colorip/gui/TSharpnessV2Form.h>
-#include <colorip/gui/ContrastEnhance1.h>
+#include <colorip/gui/TCEForm.h>
 
 //---------------------------------------------------------------------------
 class TMainForm:public TForm {
@@ -38,8 +38,6 @@ class TMainForm:public TForm {
     TMainMenu * MainMenu1;
     TMenuItem *mn_Engineer;
     TMenuItem *mn_Function;
-    TMenuItem *mn_DCR;
-    TMenuItem *mn_Vender;
     TMenuItem *Device1;
     TMenuItem *mn_ImageProc;
     TMenuItem *mn_CM;
@@ -55,30 +53,26 @@ class TMainForm:public TForm {
     TMenuItem *Sharpness1;
     TMenuItem *ContrastEnhancement1;
     TStatusBar *StatusBar1;
-    TMenuItem *AUO_12303;
     TMenuItem *mn_C3D;
     TMenuItem *C3D1;
-    TMenuItem *AUO_11307;
     TMenuItem *mn_C3D_777;
     TMenuItem *mn_C3D_999;
     TMenuItem *mn_SAT;
     TMenuItem *mn_offset;
-        TMenuItem *mn_Header2Address;
+    TMenuItem *mn_Header2Address;
     TOpenDialog *OpenDialog1;
     TSaveDialog *SaveDialog1;
-        TMenuItem *mn_LoadAddressFromFile;
+    TMenuItem *mn_LoadAddressFromFile;
     TMenuItem *mn_HSV2;
-        TMenuItem *mn_HSV1;
+    TMenuItem *mn_HSV1;
     TMenuItem *mn_Sharpness12307;
     TMenuItem *Test1;
     TMenuItem *Example2;
     TMenuItem *Sharpness2;
-        TMenuItem *Sharpnessv211;
+    TMenuItem *Sharpnessv211;
     void __fastcall mn_EngineerClick(TObject * Sender);
     void __fastcall mn_FunctionClick(TObject * Sender);
-    void __fastcall mn_DCRClick(TObject * Sender);
     void __fastcall FormClose(TObject * Sender, TCloseAction & Action);
-    void __fastcall mn_VenderClick(TObject * Sender);
     void __fastcall AUO_11307Click(TObject * Sender);
     void __fastcall FormCreate(TObject * Sender);
     void __fastcall mn_CMClick(TObject * Sender);
@@ -88,7 +82,6 @@ class TMainForm:public TForm {
     void __fastcall mn_CEClick(TObject * Sender);
     void __fastcall mn_HSVClick(TObject * Sender);
     void __fastcall StatusBar1DblClick(TObject * Sender);
-    void __fastcall AUO_12303Click(TObject * Sender);
     void __fastcall mn_C3DClick(TObject * Sender);
     void __fastcall mn_C3D_777Click(TObject * Sender);
     void __fastcall mn_C3D_999Click(TObject * Sender);
@@ -101,7 +94,7 @@ class TMainForm:public TForm {
     void __fastcall mn_Sharpness12307Click(TObject * Sender);
     void __fastcall Sharpness2Click(TObject * Sender);
     void __fastcall Example2Click(TObject * Sender);
-        void __fastcall Sharpnessv211Click(TObject *Sender);
+    void __fastcall Sharpnessv211Click(TObject * Sender);
 
   private:			// User declarations
      String getFileVersionInfo();
@@ -112,19 +105,16 @@ class TMainForm:public TForm {
      __fastcall TMainForm(TComponent * Owner);
     int C3D_type;
     void reload_all(TObject * Sender);
-    void TCONFormNULL();
     void FunctionFormNULL();
-    void DCRFormNULL();
-    void VenderFormNULL();
     void CMFormNULL();
     void SharpnessFormNULL();
-    void ContrastEnhanceFormNULL();
+    void CEFormNULL();
     void HSVFormNULL();
     void C3DFormNULL();
     void SATFormNULL();
     void offsetFormNULL();
 
- 
+
     bool addressFromFile;
     static AnsiString AddressFile;
 

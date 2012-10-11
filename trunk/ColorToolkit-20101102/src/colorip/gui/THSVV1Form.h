@@ -209,7 +209,7 @@ int Cmplmnt2sToSign(int value, int Range)
 }
 int Get_select_idx(double angle);
 //---------------------------------------------------------------------------
-extern PACKAGE THSVV1Form *HSVV1Form;
+//extern PACKAGE THSVV1Form *HSVV1Form;
 //---------------------------------------------------------------------------
 #endif
 
