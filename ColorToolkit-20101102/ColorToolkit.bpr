@@ -16,12 +16,12 @@
       build\GUIUtil.obj build\SAT_11307.obj build\gui_class.obj 
       build\offset_11307.obj build\C3D1.obj build\CM1.obj 
       build\ContrastEnhance1.obj build\DCR1.obj build\Engineering.obj 
-      build\Function1.obj build\HueSatVal1.obj build\offset.obj build\SAT.obj 
+      build\Function1.obj build\THSVV1Form.obj build\offset.obj build\SAT.obj 
       build\TSharpnessV1Form.obj build\TSharpnessV2Form.obj build\TCON1.obj 
-      build\Unit1.obj build\DCR_11307.obj build\Func_11307.obj 
+      build\TMainForm.obj build\DCR_11307.obj build\Func_11307.obj 
       build\ImgProc_11307.obj build\TCON_11307.obj build\Vend_11307.obj 
       build\TGamutForm.obj build\TPatternForm.obj build\Vender1.obj 
-      build\THSVForm2nd.obj build\TSharpnessV2_1Form.obj"/>
+      build\THSVV2Form.obj build\TSharpnessV2_1Form.obj"/>
     <RESFILES value="ColorToolkit.res"/>
     <IDLFILES value=""/>
     <IDLGENFILES value=""/>
@@ -31,12 +31,12 @@
       src\gui\TDebugForm.dfm src\gui\TExampleForm.dfm src\colorip\gui\C3D1.dfm 
       src\colorip\gui\CM1.dfm src\colorip\gui\ContrastEnhance1.dfm 
       src\colorip\gui\DCR1.dfm src\colorip\gui\Engineering.dfm 
-      src\colorip\gui\Function1.dfm src\colorip\gui\HueSatVal1.dfm 
+      src\colorip\gui\Function1.dfm src\colorip\gui\THSVV1Form.dfm 
       src\colorip\gui\offset.dfm src\colorip\gui\SAT.dfm 
       src\colorip\gui\TSharpnessV1Form.dfm src\colorip\gui\TSharpnessV2Form.dfm 
-      src\colorip\gui\TCON1.dfm src\colorip\gui\Unit1.dfm 
+      src\colorip\gui\TCON1.dfm src\colorip\gui\TMainForm.dfm 
       src\colorip\gui\TGamutForm.dfm src\colorip\gui\TPatternForm.dfm 
-      src\colorip\gui\Vender1.dfm src\colorip\gui\THSVForm2nd.dfm 
+      src\colorip\gui\Vender1.dfm src\colorip\gui\THSVV2Form.dfm 
       src\colorip\gui\TSharpnessV2_1Form.dfm"/>
     <LIBFILES value="lib\USB_i2c_lib\hid.lib"/>
     <LIBRARIES value="tee.lib vclx.lib bcbsmp.lib rtl.lib vcl.lib"/>
@@ -135,13 +135,13 @@
       <FILE FILENAME="src\colorip\gui\DCR1.cpp" FORMNAME="DCRForm1" UNITNAME="DCR1" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="src\colorip\gui\Engineering.cpp" FORMNAME="EngineerForm" UNITNAME="Engineering" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="src\colorip\gui\Function1.cpp" FORMNAME="FunctionForm1" UNITNAME="Function1" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="src\colorip\gui\HueSatVal1.cpp" FORMNAME="HSVFormOrg" UNITNAME="HueSatVal1" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="src\colorip\gui\THSVV1Form.cpp" FORMNAME="HSVV1Form" UNITNAME="THSVV1Form" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="src\colorip\gui\offset.cpp" FORMNAME="offsetForm" UNITNAME="offset" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="src\colorip\gui\SAT.cpp" FORMNAME="SATForm" UNITNAME="SAT" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="src\colorip\gui\TSharpnessV1Form.cpp" FORMNAME="SharpnessV1Form" UNITNAME="TSharpnessV1Form" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="src\colorip\gui\TSharpnessV2Form.cpp" FORMNAME="SharpnessV2Form" UNITNAME="TSharpnessV2Form" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="src\colorip\gui\TCON1.cpp" FORMNAME="TCONForm1" UNITNAME="TCON1" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="src\colorip\gui\Unit1.cpp" FORMNAME="MainForm" UNITNAME="Unit1" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="src\colorip\gui\TMainForm.cpp" FORMNAME="MainForm" UNITNAME="TMainForm" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="src\colorip\11307\DCR\DCR_11307.cpp" FORMNAME="" UNITNAME="DCR_11307" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="src\colorip\11307\Function\Func_11307.cpp" FORMNAME="" UNITNAME="Func_11307" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="src\colorip\11307\ImageProcess\ImgProc_11307.cpp" FORMNAME="" UNITNAME="ImgProc_11307" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
@@ -150,7 +150,7 @@
       <FILE FILENAME="src\colorip\gui\TGamutForm.cpp" FORMNAME="GamutSetupForm" UNITNAME="TGamutForm" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="src\colorip\gui\TPatternForm.cpp" FORMNAME="PatternForm" UNITNAME="TPatternForm" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="src\colorip\gui\Vender1.cpp" FORMNAME="VenderForm1" UNITNAME="Vender1" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="src\colorip\gui\THSVForm2nd.cpp" FORMNAME="HSVForm2nd" UNITNAME="THSVForm2nd" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="src\colorip\gui\THSVV2Form.cpp" FORMNAME="HSVV2Form" UNITNAME="THSVV2Form" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="src\colorip\gui\TSharpnessV2_1Form.cpp" FORMNAME="SharpnessV2_1Form" UNITNAME="TSharpnessV2_1Form" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
   </FILELIST>
   <BUILDTOOLS>

@@ -4,7 +4,7 @@
 #include <colorip/includeallcolorip.h>
 #pragma hdrstop
 #include "TCON1.h"
-#include "Unit1.h"
+#include "TMainForm.h"
 #include <colorip/11307/TCON/TCON_11307.h>
 //---------------------------------------------------------------------------
 #pragma package(smart_init)

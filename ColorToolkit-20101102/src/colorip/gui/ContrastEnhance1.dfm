@@ -443,7 +443,7 @@ object ContrastEnhanceForm1: TContrastEnhanceForm1
           Top = 24
           Width = 153
           Height = 21
-          ItemHeight = 0
+          ItemHeight = 13
           TabOrder = 0
           Text = 'ComboBox4'
         end
@@ -573,7 +573,7 @@ object ContrastEnhanceForm1: TContrastEnhanceForm1
           Top = 24
           Width = 161
           Height = 21
-          ItemHeight = 0
+          ItemHeight = 13
           TabOrder = 0
           Text = 'ComboBox5'
         end

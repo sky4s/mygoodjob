@@ -14,17 +14,17 @@ USEFORM("src\colorip\gui\ContrastEnhance1.cpp", ContrastEnhanceForm1);
 USEFORM("src\colorip\gui\DCR1.cpp", DCRForm1);
 USEFORM("src\colorip\gui\Engineering.cpp", EngineerForm);
 USEFORM("src\colorip\gui\Function1.cpp", FunctionForm1);
-USEFORM("src\colorip\gui\HueSatVal1.cpp", HSVFormOrg);
+USEFORM("src\colorip\gui\THSVV1Form.cpp", HSVV1Form);
 USEFORM("src\colorip\gui\offset.cpp", offsetForm);
 USEFORM("src\colorip\gui\SAT.cpp", SATForm);
 USEFORM("src\colorip\gui\TSharpnessV1Form.cpp", SharpnessV1Form);
 USEFORM("src\colorip\gui\TSharpnessV2Form.cpp", SharpnessV2Form);
 USEFORM("src\colorip\gui\TCON1.cpp", TCONForm1);
-USEFORM("src\colorip\gui\Unit1.cpp", MainForm);
+USEFORM("src\colorip\gui\TMainForm.cpp", MainForm);
 USEFORM("src\colorip\gui\TGamutForm.cpp", GamutSetupForm);
 USEFORM("src\colorip\gui\TPatternForm.cpp", PatternForm);
 USEFORM("src\colorip\gui\Vender1.cpp", VenderForm1);
-USEFORM("src\colorip\gui\THSVForm2nd.cpp", HSVForm2nd);
+USEFORM("src\colorip\gui\THSVV2Form.cpp", HSVV2Form);
 USEFORM("src\colorip\gui\TSharpnessV2_1Form.cpp", SharpnessV2_1Form);
 //---------------------------------------------------------------------------
 WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
@@ -33,8 +33,7 @@ WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	Application->Initialize();
 	Application->Title = "Color Engine Toolkit";
 	Application->CreateForm(__classid(TMainForm), &MainForm);
-                 Application->CreateForm(__classid(TPatternForm), &PatternForm);
-                 Application->CreateForm(__classid(TSharpnessV2_1Form), &SharpnessV2_1Form);
+                 Application->CreateForm(__classid(TEngineerForm), &EngineerForm);
                  Application->Run();
     }
     catch(Exception & exception) {

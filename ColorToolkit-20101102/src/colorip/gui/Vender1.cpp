@@ -18,7 +18,7 @@
 
 //本項目內gui頭文件
 #include "Vender1.h"
-#include "Unit1.h"
+#include "TMainForm.h"
 #include "Engineering.h"
 #include <colorip/11307/Vender/Vend_11307.h>
 //---------------------------------------------------------------------------

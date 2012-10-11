@@ -7,7 +7,7 @@
 #include <StdCtrls.hpp>
 #include <Forms.hpp>
 
-#include "Unit1.h"
+#include "TMainForm.h"
 #include <Buttons.hpp>
 #include <colorip/gui_class.h>
 //---------------------------------------------------------------------------

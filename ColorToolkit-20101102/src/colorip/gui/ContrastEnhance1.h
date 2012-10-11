@@ -16,7 +16,7 @@
 #include <Dialogs.hpp>
 #include <Buttons.hpp>
 
-#include "Unit1.h"
+#include "TMainForm.h"
 #include <colorip/gui_class.h>
 
 

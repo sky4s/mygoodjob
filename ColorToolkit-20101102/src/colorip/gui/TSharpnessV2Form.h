@@ -175,7 +175,7 @@ class TSharpnessV2Form:public TForm {
        ScrlB: 具有ScrollBar物件所對應的介面物件與address
        ChkB: 具有checkbox物件所對應的介面物件與address
        TBit,TLUT: 為自定的Address class,詳細內容參考Address_type.h
-       _CHKB,_ScrollBar: 為自定的class, 內含圖形介面物件與位置的參數,詳情參考Unit1.h
+       _CHKB,_ScrollBar: 為自定的class, 內含圖形介面物件與位置的參數,詳情參考MainForm.h
      */
 
     AbstSP *OSP;

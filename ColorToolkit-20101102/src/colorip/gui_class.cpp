@@ -1,5 +1,5 @@
 #include "gui_class.h"
-#include <colorip/gui/Unit1.h>
+#include <colorip/gui/TMainForm.h>
 
 #include <iostream>
 #include <fstream>
