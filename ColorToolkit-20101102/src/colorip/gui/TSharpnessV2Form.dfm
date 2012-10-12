@@ -1,8 +1,8 @@
 object SharpnessV2Form: TSharpnessV2Form
-  Left = 489
-  Top = 179
+  Left = 333
+  Top = 0
   Width = 821
-  Height = 741
+  Height = 692
   Caption = 'Sharpness v2'
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET

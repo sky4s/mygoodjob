@@ -2,7 +2,6 @@
 #include <colorip/includeallcolorip.h>
 #pragma hdrstop
 
-//#include <colorip/11307/TCON/TCON_11307.h>
 #include "ImgProc_11307.h"
 #include "TMainForm.h"
 //---------------------------------------------------------------------------
