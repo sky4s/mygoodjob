@@ -25,10 +25,7 @@
 #pragma resource "*.dfm"
 TMainForm *MainForm;
 
-//TForm *TCONForm;
 TForm *FunctionForm;
-//TForm *DCRForm;
-//TForm *VenderForm;
 TForm *CMForm;
 TForm *SharpnessV1Form;
 TForm *SharpnessV2Form;
@@ -38,7 +35,6 @@ TForm *HSVV2Form;
 TForm *C3DForm;
 TForm *SATForm;
 TForm *offsetForm;
-//TForm *ExampleForm;
 
 //---------------------------------------------------------------------------
 __fastcall TMainForm::TMainForm(TComponent * Owner):TForm(Owner)
@@ -70,7 +66,7 @@ void __fastcall TMainForm::mn_EngineerClick(TObject * Sender)
 }
 
 //---------------------------------------------------------------------------
-
+ 
 void __fastcall TMainForm::mn_FunctionClick(TObject * Sender)
 {
     if (FunctionForm != NULL)
@@ -86,50 +82,8 @@ void __fastcall TMainForm::mn_FunctionClick(TObject * Sender)
 
 //---------------------------------------------------------------------------
 
-void TMainForm::FunctionFormNULL()
-{
-    FunctionForm = NULL;
-}
 
 
-
-
-
-void TMainForm::CMFormNULL()
-{
-    CMForm = NULL;
-}
-
-void TMainForm::SharpnessFormNULL()
-{
-    SharpnessV1Form = NULL;
-}
-
-void TMainForm::CEFormNULL()	//remove by Michelle 20100716
-{
-    CEForm = NULL;
-}
-
-void TMainForm::HSVFormNULL()
-{
-    HSVV1Form = NULL;
-    HSVV2Form = NULL;
-}
-
-void TMainForm::C3DFormNULL()	//remove by Michelle 20100716
-{
-    C3DForm = NULL;
-}
-
-void TMainForm::SATFormNULL()
-{
-    SATForm = NULL;
-}
-
-void TMainForm::offsetFormNULL()
-{
-    offsetForm = NULL;
-}
 void __fastcall TMainForm::FormClose(TObject * Sender, TCloseAction & Action)
 {
     EngineerForm->FormClose(Sender, Action);
