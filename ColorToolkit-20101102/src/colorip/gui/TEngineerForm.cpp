@@ -2,7 +2,7 @@
 #include <vcl.h>
 #include <lib/CMSCpp2.1/src/includeall.h>
 #pragma hdrstop
-#include "Engineering.h"
+#include "TEngineerForm.h"
 
 #include <i2c/core/ReadWriteFunc.h>
 #include <i2c/core/PrintPortI2C.h>

@@ -9,8 +9,8 @@
 //      TEngineerForm::SetWrite_PG(TLUT*, int**, int, bool)
 //---------------------------------------------------------------------------
 
-#ifndef Function1H
-#define Function1H
+#ifndef TFunctionFormH
+#define TFunctionFormH
 //---------------------------------------------------------------------------
 
 //C系統文件
@@ -38,7 +38,7 @@
 
 
 
-class TFunctionForm1:public TForm {
+class TFunctionForm:public TForm {
     __published:		// IDE-managed Components
     TOpenDialog * LoadDialog;
     TSaveDialog *SaveDialog;
@@ -156,7 +156,7 @@ class TFunctionForm1:public TForm {
     static bool DG_IsChkSum;
     static bool OD_IsChkSum;
   public:			// User declarations
-     __fastcall TFunctionForm1(TComponent * Owner);
+     __fastcall TFunctionForm(TComponent * Owner);
 
     AbstFunc *OFunc;
 
@@ -229,7 +229,7 @@ class TFunctionForm1:public TForm {
     //=====================================================================
 };
 //---------------------------------------------------------------------------
-extern PACKAGE TFunctionForm1 *FunctionForm1;
+//extern PACKAGE TFunctionForm *FunctionForm;
 
 //---------------------------------------------------------------------------
 

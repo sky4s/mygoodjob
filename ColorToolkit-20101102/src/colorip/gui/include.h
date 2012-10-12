@@ -13,6 +13,6 @@
 #include "THSVV2Form.h"
 #include "TC3DForm.h"
 #include "SAT.h"
-#include "Offset.h"
-#include "Engineering.h"
+#include "TOffsetForm.h"
+#include "TEngineerForm.h"
  
