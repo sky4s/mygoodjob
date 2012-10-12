@@ -15,4 +15,5 @@
 #include "TSaturationForm.h"
 #include "TOffsetForm.h"
 #include "TEngineerForm.h"
+#include <gui/TExampleForm.h>
  

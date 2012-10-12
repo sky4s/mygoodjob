@@ -12,11 +12,11 @@
 //本項目內頭文件
 #include <addresstype/Address_type.h>
 //本項目內gui頭文件
-#include <colorip/gui/THSVV2Form.h>
-#include <colorip/gui/TCMForm.h>
-#include <gui/TExampleForm.h>
-#include <colorip/gui/TSharpnessV1Form.h>
-#include <colorip/gui/TSharpnessV2Form.h>
+//#include <colorip/gui/THSVV2Form.h>
+//#include <colorip/gui/TCMForm.h>
+//#include <gui/TExampleForm.h>
+//#include <colorip/gui/TSharpnessV1Form.h>
+//#include <colorip/gui/TSharpnessV2Form.h>
 #include "include.h"
 #include <iostream>
 #include <fstream>
