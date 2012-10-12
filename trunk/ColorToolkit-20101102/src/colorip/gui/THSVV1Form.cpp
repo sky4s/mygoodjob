@@ -103,7 +103,7 @@ void __fastcall THSVV1Form::FormClose(TObject * Sender, TCloseAction & Action)
     delete[]lut_addr;
 
     Action = caFree;
-    MainForm->HSVFormNULL();
+    //MainForm->HSVFormNULL();
 }
 
 //---------------------------------------------------------------------------

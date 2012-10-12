@@ -64,7 +64,7 @@ void __fastcall TFunctionForm::FormClose(TObject * Sender, TCloseAction & Action
     delete[]Addr_DgLUT;
 
     Action = caFree;
-    MainForm->FunctionFormNULL();
+    //MainForm->FunctionFormNULL();
 }
 
 //---------------------------------------------------------------------------

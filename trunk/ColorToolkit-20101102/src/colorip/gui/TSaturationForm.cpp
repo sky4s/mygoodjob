@@ -352,7 +352,7 @@ void __fastcall TSaturationForm::FormClose(TObject * Sender, TCloseAction & Acti
     delete[]ScrlB2;
 
     Action = caFree;
-    MainForm->SATFormNULL();
+    //MainForm->SATFormNULL();
 }
 
 //---------------------------------------------------------------------------

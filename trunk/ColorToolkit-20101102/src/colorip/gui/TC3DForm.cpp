@@ -101,7 +101,7 @@ void __fastcall TC3DForm::FormClose(TObject *Sender, TCloseAction &Action)
         delete [] Addr_LUT;
 
         Action = caFree;
-        MainForm->C3DFormNULL();
+        //MainForm->C3DFormNULL();
 }
 //---------------------------------------------------------------------------
 void TC3DForm::Initial_C3D_table()
