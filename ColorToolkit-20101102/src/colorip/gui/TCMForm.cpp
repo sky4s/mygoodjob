@@ -11,6 +11,7 @@
 #pragma package(smart_init)
 #pragma link "PERFGRAP"
 #pragma resource "*.dfm"
+TCMForm *CMForm;
 
 
 void TCMForm::CM_val_initial()

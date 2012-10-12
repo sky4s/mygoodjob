@@ -13,7 +13,7 @@
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
 #pragma resource "*.dfm"
-//TSharpnessForm1 *SharpnessForm;       //使用動態宣告,不需作實體宣告
+TSharpnessV1Form *SharpnessV1Form;
 static String SP = "Sharpness";
 //---------------------------------------------------------------------------
 __fastcall TSharpnessV1Form::TSharpnessV1Form(TComponent * Owner)

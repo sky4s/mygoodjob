@@ -74,6 +74,6 @@ public:		// User declarations
         bool C3D_Chg;               // C3D_Chg = 0 為禁止寫入, C3D_Chg =1 為允許寫入
 };
 //---------------------------------------------------------------------------
-//extern PACKAGE TC3DForm *C3DForm;
+extern PACKAGE TC3DForm *C3DForm;
 //---------------------------------------------------------------------------
 #endif

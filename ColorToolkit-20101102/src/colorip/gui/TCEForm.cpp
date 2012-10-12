@@ -9,6 +9,7 @@
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
 #pragma resource "*.dfm"
+TCEForm *CEForm;
 //TContrastEnhanceForm1 *ContrastEnhanceForm1;
 
 //---------------------------------------------------------------------------

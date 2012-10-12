@@ -125,9 +125,9 @@ object MainForm: TMainForm
         Caption = 'Example'
         OnClick = Example2Click
       end
-      object Sharpness2: TMenuItem
-        Caption = 'Sharpness'
-        OnClick = Sharpness2Click
+      object Debug: TMenuItem
+        Caption = 'Debug'
+        OnClick = DebugClick
       end
     end
   end

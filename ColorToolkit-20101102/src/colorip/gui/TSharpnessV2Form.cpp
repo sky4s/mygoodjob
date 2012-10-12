@@ -17,6 +17,7 @@
 #pragma package(smart_init)
 #pragma resource "*.dfm"
 //TSharpnessForm12307 *SharpnessForm;       //使用動態宣告,不需作實體宣告
+TSharpnessV2Form *SharpnessV2Form;
 //TDebugForm *DebugForm;
 static String SP = "Sharpness";
 static String CE = "Contrast";
@@ -100,7 +101,7 @@ void __fastcall TSharpnessV2Form::ComboBox_Click(TObject * Sender)
 }
 
 //---------------------------------------------------------------------------
-void __fastcall TSharpnessV2Form::LblE3_KeyPress(TObject * Sender,  char &Key)
+void __fastcall TSharpnessV2Form::LblE3_KeyPress(TObject * Sender, char &Key)
 {
     TLabeledEdit *c = (TLabeledEdit *) Sender;
     int idx = StrToInt(c->Hint);
@@ -854,7 +855,7 @@ void __fastcall TSharpnessV2Form::FormKeyDown(TObject * Sender, WORD & Key, TShi
 
 //---------------------------------------------------------------------------
 
-void __fastcall TSharpnessV2Form::Edit_ResolutionHKeyPress(TObject * Sender,const char &Key)
+void __fastcall TSharpnessV2Form::Edit_ResolutionHKeyPress(TObject * Sender, const char &Key)
 {
     int h = Edit_ResolutionH->Text.ToInt();
     int v = Edit_ResolutionV->Text.ToInt();
@@ -872,7 +873,7 @@ void __fastcall TSharpnessV2Form::Edit_ResolutionHKeyPress(TObject * Sender,cons
     LabeledEdit1->Text = intResult;
     if (SP_Chg) {
 	static const char &CR = 13;
-	LblE3_KeyPress(LabeledEdit1,(char &) CR);
+	LblE3_KeyPress(LabeledEdit1, (char &) CR);
     }
 }
 

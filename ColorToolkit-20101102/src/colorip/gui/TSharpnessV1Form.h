@@ -143,7 +143,7 @@ class TSharpnessV1Form:public TForm {
     void SP_LUT_FuncEnable(bool);
 };
 //---------------------------------------------------------------------------
-//extern PACKAGE TSharpnessV1Form *SharpnessV1Form;
+extern PACKAGE TSharpnessV1Form *SharpnessV1Form;
 //---------------------------------------------------------------------------
 
 

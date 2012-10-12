@@ -10,7 +10,7 @@
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
 #pragma resource "*.dfm"
-
+TSaturationForm *SaturationForm;
 //---------------------------------------------------------------------------
 __fastcall TSaturationForm::TSaturationForm(TComponent * Owner)
 :TForm(Owner)

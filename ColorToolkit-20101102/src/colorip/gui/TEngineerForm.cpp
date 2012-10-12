@@ -64,7 +64,7 @@ void __fastcall TEngineerForm::FormCreate(TObject * Sender)
 
 void __fastcall TEngineerForm::FormClose(TObject * Sender, TCloseAction & Action)
 {
-    Action = caFree;
+    //Action = caFree;
     RW.USB_disconnect();
     if (hLib != NULL) {
 	LPT_disconnect();

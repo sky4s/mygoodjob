@@ -18,6 +18,7 @@
 #pragma package(smart_init)
 #pragma resource "*.dfm"
 //THSVForm1 *HSVForm1;
+THSVV1Form *HSVV1Form;
 bool HSV_IsChkSum = 0;
 int tbl_step = 360 / 24;
 //---------------------------------------------------------------------------
@@ -45,14 +46,14 @@ void __fastcall THSVV1Form::FormCreate(TObject * Sender)
 {
     HSV_Chg = 0;
     /*int ic_choice;
-    if (MainForm->TCON_DEV == "11307")
-	ic_choice = 0;
+       if (MainForm->TCON_DEV == "11307")
+       ic_choice = 0;
 
-    switch (ic_choice) {
-    case 0:*/
-	OHSV = new HSV_11307;
-	/*break;
-    }     */
+       switch (ic_choice) {
+       case 0: */
+    OHSV = new HSV_11307;
+    /*break;
+       }     */
 
     lut_addr = OHSV->SetLUT();
 
@@ -452,7 +453,7 @@ double Gauss(int x, double sigma)
 
 //---------------------------------------------------------------------------
 void __fastcall THSVV1Form::sb_Hue_gainScroll(TObject * Sender,
-					       TScrollCode ScrollCode, int &ScrollPos)
+					      TScrollCode ScrollCode, int &ScrollPos)
 {
     double sigma;
     if (ScrollCode != scEndScroll) {
@@ -893,7 +894,7 @@ void __fastcall THSVV1Form::btn_hsv_readClick(TObject * Sender)
 
 
 void __fastcall THSVV1Form::Hue_ImgMouseDown(TObject * Sender,
-					      TMouseButton Button, TShiftState Shift, int X, int Y)
+					     TMouseButton Button, TShiftState Shift, int X, int Y)
 {
     int color;
     double h, s, v, i, r, g, b;

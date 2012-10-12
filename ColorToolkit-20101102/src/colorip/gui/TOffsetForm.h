@@ -62,7 +62,7 @@ class TOffsetForm:public TForm {
 
 };
 //---------------------------------------------------------------------------
-extern PACKAGE TOffsetForm *offsetForm1;
+extern PACKAGE TOffsetForm *offsetForm;
 //---------------------------------------------------------------------------
 #endif
 
