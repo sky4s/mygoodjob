@@ -109,11 +109,13 @@ class TSharpnessV1Form:public TForm {
        Sharpness 頁面使用的變數
        AbstSP:是一個class,擁有可傳回Sharpness Address的函式
        OSP: 宣告成AbstSP形態的變數
+
        cb: 為checkbox物件所對應的address
        ChkB: 具有checkbox物件所對應的介面物件與address
+
        scrlb: 為ScrollBar物件所對應的address
        ScrlB: 具有ScrollBar物件所對應的介面物件與address
-       ChkB: 具有checkbox物件所對應的介面物件與address
+
        TBit,TLUT: 為自定的Address class,詳細內容參考Address_type.h
        _CHKB,_ScrollBar: 為自定的class, 內含圖形介面物件與位置的參數,詳情參考MainForm.h
      */
@@ -130,6 +132,7 @@ class TSharpnessV1Form:public TForm {
     _LBLE2 **LblE2;
 
     TLUT *SP_addr;		//lookup table的address
+
     int SP_lut[32];		//lookup table
     bool SP_Chg;		//用來設定介面物件是否可寫入的flag
     int LUT_g[32];

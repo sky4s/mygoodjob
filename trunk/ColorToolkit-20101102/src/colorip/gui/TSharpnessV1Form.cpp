@@ -14,6 +14,7 @@
 #pragma package(smart_init)
 #pragma resource "*.dfm"
 //TSharpnessForm1 *SharpnessForm;       //使用動態宣告,不需作實體宣告
+static String SP = "Sharpness";
 //---------------------------------------------------------------------------
 __fastcall TSharpnessV1Form::TSharpnessV1Form(TComponent * Owner)
 :TForm(Owner)
@@ -65,8 +66,9 @@ void __fastcall TSharpnessV1Form::ScrollBar_Change(TObject * Sender)
 //---------------------------------------------------------------------------
 void __fastcall TSharpnessV1Form::CheckBox_Click(TObject * Sender)
 {
-    if (SP_Chg == 0)
+    if (SP_Chg == 0) {
 	return;
+    }
     TCheckBox *c = (TCheckBox *) Sender;
     int idx = StrToInt(c->Hint);
     int set_val = (ChkB[idx]->Chkb->Checked ? 1 : 0);
@@ -83,8 +85,9 @@ void __fastcall TSharpnessV1Form::LblEdit2_KeyPress(TObject * Sender, char &Key)
 	return;
     }
 
-    if (SP_Chg == 0)
+    if (SP_Chg == 0) {
 	return;
+    }
 
     String tmp_v = LblE2[idx]->Lble->Text;
     if (tmp_v == "") {
@@ -119,13 +122,13 @@ void __fastcall TSharpnessV1Form::FormCreate(TObject * Sender)
     SP_Chg = 0;
     int ic_choice;
     /*if (MainForm->TCON_DEV == "11307")
-	ic_choice = 0;
+       ic_choice = 0;
 
-    switch (ic_choice) {
-    case 0:*/
-	OSP = new SP_11307;
-	/*break;
-    }     */
+       switch (ic_choice) {
+       case 0: */
+    OSP = new SP_11307;
+    /*break;
+       }     */
 
     /********************************************************************///
     //  Image Process SP has CheckBox*6 & ScrollBar*4  & table idx 32   //
@@ -298,8 +301,8 @@ void TSharpnessV1Form::Clear_LUT(bool type)
 //--------------------------------------------------------------------------
 
 void __fastcall TSharpnessV1Form::SP_LUTMouseDown(TObject * Sender,
-						 TMouseButton Button, TShiftState Shift, int X,
-						 int Y)
+						  TMouseButton Button, TShiftState Shift, int X,
+						  int Y)
 {
     if (X >= (30 - 5) && X <= (340 + 5) && Y <= (264) && Y >= (12)) {
 	int tmp_y;
@@ -624,7 +627,7 @@ bool TSharpnessV1Form::Load_SP(String Fpath)
     delete[]buffer;
     return 1;
 }
-static String SP = "Sharpness";
+
 void __fastcall TSharpnessV1Form::btn_sp_SaveClick(TObject * Sender)
 {
     if (!SaveDialog1->Execute()) {
@@ -707,8 +710,9 @@ void __fastcall TSharpnessV1Form::LUT_typeClick(TObject * Sender)
 
 void __fastcall TSharpnessV1Form::FormKeyDown(TObject * Sender, WORD & Key, TShiftState Shift)
 {
-    if (Key == 0x40)
+    if (Key == 0x40) {
 	Btn_SP_reloadClick(Sender);
+    }
 }
 
 //---------------------------------------------------------------------------
@@ -745,13 +749,7 @@ void __fastcall TSharpnessV1Form::Button_SaveOldSettingClick(TObject * Sender)
     SP_LUT_FuncEnable(0);
     String Fpath = SaveDialog1->FileName;
     FILE *fptr = fopen(Fpath.c_str(), "w");
-
-    /*AnsiString str[5];
-       str[0] = "TEXT_DET";
-       str[1] = "SP_HORZ_THRESHOLD";
-       str[2] = "SP_VERT_THRESHOLD";
-       str[3] = "SP_EDGE_THRESHOLD";
-       str[4] = "SP_GLB_STR";   //hardwre gain */
+ 
 
     AnsiString input_str[5];
     for (int i = 0; i <= 3; i++) {
