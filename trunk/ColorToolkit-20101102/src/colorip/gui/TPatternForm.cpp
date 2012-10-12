@@ -411,7 +411,7 @@ void __fastcall TPatternForm::FormDblClick(TObject * Sender)
 
 void __fastcall TPatternForm::FormClose(TObject * Sender, TCloseAction & Action)
 {
-    int x = 1;
+    //int x = 1;
 }
 
 //---------------------------------------------------------------------------

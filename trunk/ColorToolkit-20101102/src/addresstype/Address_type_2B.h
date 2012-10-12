@@ -42,7 +42,7 @@ class TBit2:public AbstractAddressType {
     };
 };
 
-int_array TBit2::getValues(value)
+int_array TBit2::getValues(int value)
 {
     SetVal(value);
     int_array values(new int[2]);

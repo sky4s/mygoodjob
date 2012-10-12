@@ -191,7 +191,7 @@ namespace gui {
 	    void processOnChange(TScrollBar * scrollBar, RegisterType_ptr reg);
 	    void processOnClick(TCheckBox * checkBox, RegisterType_ptr reg);
 	    void processOnClick(TComboBox * comboBox, RegisterType_ptr reg);
-	    void simpleEventHandler(std::string regname, TObject * sender, char &ke);
+	    void simpleEventHandler(std::string regname, TObject * sender, const char &ke);
 	    //=================================================================
 	  public:
 	    void bindComboBox(const string & regname, int n, ...);

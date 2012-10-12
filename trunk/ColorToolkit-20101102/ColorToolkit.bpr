@@ -6,20 +6,20 @@
     <PROJECT value="workdir\ColorToolkit.exe"/>
     <OBJFILES value="build\ColorToolkit.obj build\USBHIDIOC.obj build\HWINTERFACELib_TLB.obj 
       build\HWINTERFACELib_OCX.obj build\TColorPickerFrame.obj 
-      build\THSVAdjustFrame.obj build\GetCursorColor.obj build\ReadWriteFunc.obj 
-      build\doubleArray.obj build\depend.obj build\rgb.obj build\lang.obj 
-      build\core.obj build\colorspace.obj build\searcher.obj 
-      build\interpolation.obj build\ciexyz.obj build\independ.obj build\util.obj 
-      build\lcdtarget.obj build\binder.obj build\hsvip.obj 
-      build\minimisation.obj build\asa047.obj build\TDebugForm.obj 
-      build\RegisterFramework.obj build\TExampleForm.obj build\gui_class.obj 
-      build\TC3DForm.obj build\TCMForm.obj build\TCEForm.obj 
+      build\THSVAdjustFrame.obj build\ReadWriteFunc.obj build\doubleArray.obj 
+      build\depend.obj build\rgb.obj build\lang.obj build\core.obj 
+      build\colorspace.obj build\searcher.obj build\interpolation.obj 
+      build\ciexyz.obj build\independ.obj build\util.obj build\lcdtarget.obj 
+      build\binder.obj build\hsvip.obj build\minimisation.obj build\asa047.obj 
+      build\TDebugForm.obj build\RegisterFramework.obj build\TExampleForm.obj 
+      build\gui_class.obj build\TC3DForm.obj build\TCMForm.obj build\TCEForm.obj 
       build\TEngineerForm.obj build\TFunctionForm.obj build\THSVV1Form.obj 
       build\TOffsetForm.obj build\TSaturationForm.obj build\TSharpnessV1Form.obj 
       build\TSharpnessV2Form.obj build\TMainForm.obj build\TGamutForm.obj 
       build\TPatternForm.obj build\THSVV2Form.obj build\TSharpnessV2_1Form.obj 
       build\ImgProc_11307.obj build\offset_11307.obj build\SAT_11307.obj 
-      build\Func_11307.obj build\TInTargetForm.obj build\GUIUtil.obj"/>
+      build\Func_11307.obj build\TInTargetForm.obj build\GUIUtil.obj 
+      build\GetCursorColor.obj"/>
     <RESFILES value="ColorToolkit.res"/>
     <IDLFILES value=""/>
     <IDLGENFILES value=""/>
@@ -45,7 +45,7 @@
       inetdbbde.bpi inetdbxpress.bpi inetdb.bpi nmfast.bpi webdsnap.bpi 
       bcbie.bpi websnap.bpi soaprtl.bpi dclocx.bpi dbexpress.bpi dbxcds.bpi 
       indy.bpi bcb2kaxserver.bpi"/>
-    <PATHCPP value=".;lib\USB_i2c_lib;lib\LPT_lib;lib\LPT_lib;src\gui\frame;src\gui\frame;src\c3d;lib\CMSCpp2.1\src\i2c\core;lib\CMSCpp2.1\src\math;lib\CMSCpp2.1\src\cms\colorspace;lib\CMSCpp2.1\src\cms\colorspace;lib\CMSCpp2.1\src\java;lib\CMSCpp2.1\src\cms;lib\CMSCpp2.1\src\cms\colorspace;lib\CMSCpp2.1\src\math;lib\CMSCpp2.1\src\math;lib\CMSCpp2.1\src\cms\colorspace;lib\CMSCpp2.1\src\cms\colorspace;lib\CMSCpp2.1\src\cms\util;lib\CMSCpp2.1\src\cms\lcd;lib\CMSCpp2.1\src\gui\util;lib\CMSCpp2.1\src\cms\hsv;lib\CMSCpp2.1\src\algo;lib\CMSCpp2.1\src\algo;src\gui;src\gui\framework;src\gui;src\colorip;src\colorip\gui;src\colorip\gui;src\colorip\gui;src\colorip\gui;src\colorip\gui;src\colorip\gui;src\colorip\gui;src\colorip\gui;src\colorip\gui;src\colorip\gui;src\colorip\gui;src\colorip\gui;src\colorip\gui;src\colorip\gui;src\colorip\gui;src\colorip\11307;src\colorip\11307;src\colorip\11307;src\colorip\11307;src\gui\util;src\gui\util"/>
+    <PATHCPP value=".;lib\USB_i2c_lib;lib\LPT_lib;lib\LPT_lib;src\gui\frame;src\gui\frame;lib\CMSCpp2.1\src\i2c\core;lib\CMSCpp2.1\src\math;lib\CMSCpp2.1\src\cms\colorspace;lib\CMSCpp2.1\src\cms\colorspace;lib\CMSCpp2.1\src\java;lib\CMSCpp2.1\src\cms;lib\CMSCpp2.1\src\cms\colorspace;lib\CMSCpp2.1\src\math;lib\CMSCpp2.1\src\math;lib\CMSCpp2.1\src\cms\colorspace;lib\CMSCpp2.1\src\cms\colorspace;lib\CMSCpp2.1\src\cms\util;lib\CMSCpp2.1\src\cms\lcd;lib\CMSCpp2.1\src\gui\util;lib\CMSCpp2.1\src\cms\hsv;lib\CMSCpp2.1\src\algo;lib\CMSCpp2.1\src\algo;src\gui;src\gui\framework;src\gui;src\colorip;src\colorip\gui;src\colorip\gui;src\colorip\gui;src\colorip\gui;src\colorip\gui;src\colorip\gui;src\colorip\gui;src\colorip\gui;src\colorip\gui;src\colorip\gui;src\colorip\gui;src\colorip\gui;src\colorip\gui;src\colorip\gui;src\colorip\gui;src\colorip\11307;src\colorip\11307;src\colorip\11307;src\colorip\11307;src\gui\util;src\gui\util;src\gui\util"/>
     <PATHPAS value=".;"/>
     <PATHRC value=".;"/>
     <PATHASM value=".;"/>
@@ -100,7 +100,6 @@
       <FILE FILENAME="lib\LPT_lib\HWINTERFACELib_OCX.cpp" FORMNAME="" UNITNAME="HWINTERFACELib_OCX.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="src\gui\frame\TColorPickerFrame.cpp" FORMNAME="ColorPickerFrame" UNITNAME="TColorPickerFrame" CONTAINERID="CCompiler" DESIGNCLASS="TFrame" LOCALCOMMAND=""/>
       <FILE FILENAME="src\gui\frame\THSVAdjustFrame.cpp" FORMNAME="HSVAdjustFrame" UNITNAME="THSVAdjustFrame" CONTAINERID="CCompiler" DESIGNCLASS="TFrame" LOCALCOMMAND=""/>
-      <FILE FILENAME="src\c3d\GetCursorColor.cpp" FORMNAME="" UNITNAME="GetCursorColor" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="lib\CMSCpp2.1\src\i2c\core\ReadWriteFunc.cpp" FORMNAME="" UNITNAME="ReadWriteFunc" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="lib\CMSCpp2.1\src\math\doubleArray.cpp" FORMNAME="" UNITNAME="doubleArray" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="lib\CMSCpp2.1\src\cms\colorspace\depend.cpp" FORMNAME="" UNITNAME="depend" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
@@ -143,6 +142,7 @@
       <FILE FILENAME="src\colorip\11307\Func_11307.cpp" FORMNAME="" UNITNAME="Func_11307.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="src\gui\util\TInTargetForm.cpp" FORMNAME="InTargetForm" UNITNAME="TInTargetForm" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="src\gui\util\GUIUtil.cpp" FORMNAME="" UNITNAME="GUIUtil" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="src\gui\util\GetCursorColor.cpp" FORMNAME="" UNITNAME="GetCursorColor" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
   </FILELIST>
   <BUILDTOOLS>
   </BUILDTOOLS>

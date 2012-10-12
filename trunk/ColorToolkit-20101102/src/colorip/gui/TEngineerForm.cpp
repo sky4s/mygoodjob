@@ -1195,7 +1195,7 @@ bool TEngineerForm::USB_seq_pg_write(unsigned char dev_ad,
 	return 0;		//memory allocate fail
 
     unsigned char dev_ad_tmp;	//device address byte (device addr(4bit)+data addr(3 bit))
-    int data_ad = (int) data_addr_tmp[0] + (int) data_addr_tmp[1] * 256;
+    //int data_ad = (int) data_addr_tmp[0] + (int) data_addr_tmp[1] * 256;
     int ok = 0, front = 0, pck_cnt = 0;
     //read ok or not  //fail read count
 
@@ -1533,16 +1533,16 @@ void __fastcall TEngineerForm::btn_soft_resetClick(TObject * Sender)
 // Function for getting device address from UI
 bool TEngineerForm::Get_device_addr(int *dev_ad)
 {
-    bool ok;
+    //bool ok;
     int val;
     if (rg_device_addr_sel->ItemIndex == 0) {	//single TCON
-	ok = Hex2Dec(edt_addr_tcon_s->Text, &val);
+	/*ok =*/ Hex2Dec(edt_addr_tcon_s->Text, &val);
 	*dev_ad = (unsigned char) val;
     } else if (rg_device_addr_sel->ItemIndex == 1) {	//dual TCON
-	ok = Hex2Dec(edt_addr_tcon_dm->Text, &val);
+	/*ok =*/ Hex2Dec(edt_addr_tcon_dm->Text, &val);
 	*dev_ad = (unsigned char) val;
     } else if (rg_device_addr_sel->ItemIndex == 2) {	//single EEPROM
-	ok = Hex2Dec(edt_addr_EEP->Text, &val);
+	/*ok =*/ Hex2Dec(edt_addr_EEP->Text, &val);
 	*dev_ad = (unsigned char) val;
     } else			//may add quad-TCON here
 	return 0;
@@ -1732,7 +1732,7 @@ void __fastcall TEngineerForm::btn_seq_loadClick(TObject * Sender)
 
     } else {			//hex file
 	int val;
-	int i = 0;
+	//int i = 0;
 	int intel_address;
 	int Chksum_line = 0;
 	int checksum;		//每一行的checksum
@@ -2109,11 +2109,11 @@ void __fastcall TEngineerForm::btn_byte_read_no_ackClick(TObject * Sender)
     if (Get_device_addr(dev_addr, &dev_addr_cnt) == 0) {
 	ShowMessage(Err_Msg_Dev);
     }
-    int ok = 1;
+    //int ok = 1;
     unsigned char dev_addr_tmp;
     for (int i = 0; i < dev_addr_cnt; i++) {
 	SetDeviceAddr(dev_addr[i], &dev_addr_tmp, data_addr, data_addr_cnt);
-	ok = RW.LPT_Read_Byte_Skip_Ack(dev_addr_tmp, data_addr, data_addr_cnt, &data_read);
+	//ok = RW.LPT_Read_Byte_Skip_Ack(dev_addr_tmp, data_addr, data_addr_cnt, &data_read);
     }
     char string[20];
     sprintf(string, "Read Data: %X", data_read);

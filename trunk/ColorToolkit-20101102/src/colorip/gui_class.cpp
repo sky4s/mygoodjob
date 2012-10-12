@@ -231,7 +231,7 @@ void AbstractBase::resetAddressMap()
 
 AbstractBase::~AbstractBase()
 {
-    int x = 1;
+    //int x = 1;
 };
 StringMap_ptr AbstractBase::aliasNameMap = nil_StringMap_ptr;
 //const std::string AbstractBase::AliasFilename = "alias.txt";

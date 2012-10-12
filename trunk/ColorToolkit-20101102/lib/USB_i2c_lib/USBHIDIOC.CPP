@@ -77,14 +77,10 @@ extern "C" {
 #include "hidsdi.h"
 #include <setupapi.h>
 }
-
-//function prototypes
-
-void __cdecl RcvThreadFunction(HANDLE hidHandle) ;
-
-bool fg_RunThread=false;
-bool fg_ThreadRunning=false;
-bool fg_NewData=false;
+//function prototypes void __cdecl RcvThreadFunction(HANDLE hidHandle);
+bool fg_RunThread = false;
+    bool fg_ThreadRunning = false;
+bool fg_NewData = false;
 char InBuffer[65];
 int InBufferLen;
 
@@ -95,374 +91,325 @@ int InBufferLen;
 
 
 //Application global variables
-	HIDP_CAPS		Capabilities; //  08Mar2005 - Capabilities call fails on WinXP
-	DWORD			cbBytesRead;
-	PSP_DEVICE_INTERFACE_DETAIL_DATA	detailData;
-	bool			DeviceDetected = false;
-	HANDLE			DeviceHandle;
-	DWORD			dwError;
-	HANDLE			hEventObject;
-	HANDLE			hDevInfo;
-	GUID			HidGuid;
-	OVERLAPPED		HIDOverlapped;
-	char			InputReport[65];
-	ULONG			Length;
-	DWORD			NumberOfBytesRead;
-	HANDLE			ReadHandle;
-	ULONG			Required;
-	int InBufferValidLen;
+HIDP_CAPS Capabilities;		//  08Mar2005 - Capabilities call fails on WinXP
+DWORD cbBytesRead;
+PSP_DEVICE_INTERFACE_DETAIL_DATA detailData;
+bool DeviceDetected = false;
+HANDLE DeviceHandle;
+DWORD dwError;
+HANDLE hEventObject;
+HANDLE hDevInfo;
+GUID HidGuid;
+OVERLAPPED HIDOverlapped;
+char InputReport[65];
+ULONG Length;
+DWORD NumberOfBytesRead;
+HANDLE ReadHandle;
+ULONG Required;
+int InBufferValidLen;
 
-CUsbhidioc  USB;
+CUsbhidioc USB;
 /////////////////////////////////////////////////////////////////////////////
 // CUsbhidiocDlg message handlers
-	unsigned int VendorID=0x04b4;// = 0x0e8f;    // Uses Microchip's Vendor ID.
-	unsigned int ProductID=0xf232;// = 0x0003;   // PICkit 2 Flash Starter Kit
-    AnsiString ErrorName;
+unsigned int VendorID = 0x04b4;	// = 0x0e8f;    // Uses Microchip's Vendor ID.
+unsigned int ProductID = 0xf232;	// = 0x0003;   // PICkit 2 Flash Starter Kit
+AnsiString ErrorName;
 
 CUsbhidioc::~CUsbhidioc(void)
 {
-	if(DeviceDetected)
-    {
-    	CloseHandle(DeviceHandle);
-        // CloseHandle(ReadHandle);
+    if (DeviceDetected) {
+	CloseHandle(DeviceHandle);
+	// CloseHandle(ReadHandle);
     }
-	fg_RunThread = false;
-	while (fg_ThreadRunning);
+    fg_RunThread = false;
+    while (fg_ThreadRunning) {
+    };
 }
+
 bool CUsbhidioc::FindTheHID()
 {
-	//Use a series of API calls to find a HID with a matching Vendor and Product ID.
+    //Use a series of API calls to find a HID with a matching Vendor and Product ID.
 
-	HIDD_ATTRIBUTES			   Attributes;
-	SP_DEVICE_INTERFACE_DATA	   devInfoData;
-	bool				   LastDevice = FALSE;
-	int				   MemberIndex = 0;
-	LONG				   Result;
+    HIDD_ATTRIBUTES Attributes;
+    SP_DEVICE_INTERFACE_DATA devInfoData;
+    bool LastDevice = FALSE;
+    int MemberIndex = 0;
+    LONG Result;
 
-	//These are the vendor and product IDs to look for.
+    //These are the vendor and product IDs to look for.
 
-	//const unsigned int VendorID = 0x04b4;    // Uses Microchip's Vendor ID.
-	//const unsigned int ProductID = 0xf232;   // PICkit 2 Flash Starter Kit
+    //const unsigned int VendorID = 0x04b4;    // Uses Microchip's Vendor ID.
+    //const unsigned int ProductID = 0xf232;   // PICkit 2 Flash Starter Kit
 
-	Length = 0;
-	detailData = NULL;
-	DeviceHandle=NULL;
+    Length = 0;
+    detailData = NULL;
+    DeviceHandle = NULL;
+
+    /*
+       API function: HidD_GetHidGuid
+       Get the GUID for all system HIDs.
+       Returns: the GUID in HidGuid.
+     */
+
+    HidD_GetHidGuid(&HidGuid);
+
+    /*
+       API function: SetupDiGetClassDevs
+       Returns: a handle to a device information set for all installed devices.
+       Requires: the GUID returned by GetHidGuid.
+     */
+
+    hDevInfo = SetupDiGetClassDevs(&HidGuid, NULL, NULL,
+				   //DIGCF_PRESENT|DIGCF_INTERFACEDEVICE);
+				   DIGCF_PRESENT | DIGCF_DEVICEINTERFACE);
+
+    devInfoData.cbSize = sizeof(devInfoData);
+
+    //Step through the available devices looking for the one we want. 
+    //Quit on detecting the desired device or checking all available devices without success.
+    MemberIndex = 0;
+    LastDevice = FALSE;
+
+    do {
+	DeviceDetected = false;
 
 	/*
-	API function: HidD_GetHidGuid
-	Get the GUID for all system HIDs.
-	Returns: the GUID in HidGuid.
-	*/
+	   API function: SetupDiEnumDeviceInterfaces
+	   On return, MyDeviceInterfaceData contains the handle to a
+	   SP_DEVICE_INTERFACE_DATA structure for a detected device.
+	   Requires:
+	   The DeviceInfoSet returned in SetupDiGetClassDevs.
+	   The HidGuid returned in GetHidGuid.
+	   An index to specify a device.
+	 */
 
-	HidD_GetHidGuid(&HidGuid);
-	
-	/*
-	API function: SetupDiGetClassDevs
-	Returns: a handle to a device information set for all installed devices.
-	Requires: the GUID returned by GetHidGuid.
-	*/
-	
-	hDevInfo=SetupDiGetClassDevs
-		(&HidGuid,
-		NULL, 
-		NULL,
-		//DIGCF_PRESENT|DIGCF_INTERFACEDEVICE);
-		DIGCF_PRESENT|DIGCF_DEVICEINTERFACE);
+	Result = SetupDiEnumDeviceInterfaces(hDevInfo, 0, &HidGuid, MemberIndex, &devInfoData);
 
-	devInfoData.cbSize = sizeof(devInfoData);
+	if (Result != 0) {
+	    //A device has been detected, so get more information about it.
 
-	//Step through the available devices looking for the one we want. 
-	//Quit on detecting the desired device or checking all available devices without success.
-	MemberIndex = 0;
-	LastDevice = FALSE;
+	    /*
+	       API function: SetupDiGetDeviceInterfaceDetail
+	       Returns: an SP_DEVICE_INTERFACE_DETAIL_DATA structure
+	       containing information about a device.
+	       To retrieve the information, call this function twice.
+	       The first time returns the size of the structure in Length.
+	       The second time returns a pointer to the data in DeviceInfoSet.
+	       Requires:
+	       A DeviceInfoSet returned by SetupDiGetClassDevs
+	       The SP_DEVICE_INTERFACE_DATA structure returned by SetupDiEnumDeviceInterfaces.
 
-	do
-	{
-		DeviceDetected=false;
+	       The final parameter is an optional pointer to an SP_DEV_INFO_DATA structure.
+	       This application doesn't retrieve or use the structure.
+	       If retrieving the structure, set
+	       MyDeviceInfoData.cbSize = length of MyDeviceInfoData.
+	       and pass the structure's address.
+	     */
 
-		/*
-		API function: SetupDiEnumDeviceInterfaces
-		On return, MyDeviceInterfaceData contains the handle to a
-		SP_DEVICE_INTERFACE_DATA structure for a detected device.
-		Requires:
-		The DeviceInfoSet returned in SetupDiGetClassDevs.
-		The HidGuid returned in GetHidGuid.
-		An index to specify a device.
-		*/
+	    //Get the Length value.
+	    //The call will return with a "buffer too small" error which can be ignored.
+	    Result = SetupDiGetDeviceInterfaceDetail
+		(hDevInfo, &devInfoData, NULL, 0, &Length, NULL);
 
-		Result=SetupDiEnumDeviceInterfaces
-			(hDevInfo,
-			0,
-			&HidGuid,
-			MemberIndex,
-			&devInfoData);
+	    //Allocate memory for the hDevInfo structure, using the returned Length.
+	    detailData = (PSP_DEVICE_INTERFACE_DETAIL_DATA) malloc(Length);
 
-		if (Result != 0)
-		{
-			//A device has been detected, so get more information about it.
+	    //Set cbSize in the detailData structure.
+	    detailData->cbSize = sizeof(SP_DEVICE_INTERFACE_DETAIL_DATA);
+	    // **** IMPORTANT ****
+	    // sizeof(SP_DEVICE_INTERFACE_DETAIL_DATA) should equal 5.
+	    // In C++ Builder, go to Project/Options/Advanced Compiler/Data Alignment
+	    // and select "byte" align.
 
-			/*
-			API function: SetupDiGetDeviceInterfaceDetail
-			Returns: an SP_DEVICE_INTERFACE_DETAIL_DATA structure
-			containing information about a device.
-			To retrieve the information, call this function twice.
-			The first time returns the size of the structure in Length.
-			The second time returns a pointer to the data in DeviceInfoSet.
-			Requires:
-			A DeviceInfoSet returned by SetupDiGetClassDevs
-			The SP_DEVICE_INTERFACE_DATA structure returned by SetupDiEnumDeviceInterfaces.
+	    //Call the function again, this time passing it the returned buffer size.
+	    Result = SetupDiGetDeviceInterfaceDetail
+		(hDevInfo, &devInfoData, detailData, Length, &Required, NULL);
 
-			The final parameter is an optional pointer to an SP_DEV_INFO_DATA structure.
-			This application doesn't retrieve or use the structure.
-			If retrieving the structure, set
-			MyDeviceInfoData.cbSize = length of MyDeviceInfoData.
-			and pass the structure's address.
-			*/
+	    Result = GetLastError();
+	    //Open a handle to the device.
 
-			//Get the Length value.
-			//The call will return with a "buffer too small" error which can be ignored.
-			Result = SetupDiGetDeviceInterfaceDetail
-				(hDevInfo,
-				&devInfoData,
-				NULL,
-				0,
-				&Length,
-				NULL);
+	    /*
+	       API function: CreateFile
+	       Returns: a handle that enables reading and writing to the device.
+	       Requires:
+	       The DevicePath in the detailData structure
+	       returned by SetupDiGetDeviceInterfaceDetail.
+	     */
 
-			//Allocate memory for the hDevInfo structure, using the returned Length.
-			detailData = (PSP_DEVICE_INTERFACE_DETAIL_DATA)malloc(Length);
-
-			//Set cbSize in the detailData structure.
-			detailData -> cbSize = sizeof(SP_DEVICE_INTERFACE_DETAIL_DATA);
-        // **** IMPORTANT ****
-        // sizeof(SP_DEVICE_INTERFACE_DETAIL_DATA) should equal 5.
-        // In C++ Builder, go to Project/Options/Advanced Compiler/Data Alignment
-        // and select "byte" align.
-
-			//Call the function again, this time passing it the returned buffer size.
-			Result = SetupDiGetDeviceInterfaceDetail
-				(hDevInfo,
-				&devInfoData,
-				detailData,
-				Length,
-				&Required,
-				NULL);
-
-            Result = GetLastError ();
-			//Open a handle to the device.
-
-			/*
-			API function: CreateFile
-			Returns: a handle that enables reading and writing to the device.
-			Requires:
-			The DevicePath in the detailData structure
-			returned by SetupDiGetDeviceInterfaceDetail.
-			*/
-
-			DeviceHandle=CreateFile
-				(detailData->DevicePath,
-				GENERIC_READ|GENERIC_WRITE,
-				FILE_SHARE_READ|FILE_SHARE_WRITE,
-				(LPSECURITY_ATTRIBUTES)NULL,
-				OPEN_EXISTING,
-                0,
-				//FILE_FLAG_OVERLAPPED,
-				NULL);
+	    DeviceHandle = CreateFile
+		(detailData->DevicePath,
+		 GENERIC_READ | GENERIC_WRITE,
+		 FILE_SHARE_READ | FILE_SHARE_WRITE, (LPSECURITY_ATTRIBUTES) NULL, OPEN_EXISTING, 0,
+		 //FILE_FLAG_OVERLAPPED,
+		 NULL);
 
 
-			/*
-			API function: HidD_GetAttributes
-			Requests information from the device.
-			Requires: the handle returned by CreateFile.
-			Returns: a HIDD_ATTRIBUTES structure containing
-			the Vendor ID, Product ID, and Product Version Number.
-			Use this information to decide if the detected device is
-			the one we're looking for.
-			*/
+	    /*
+	       API function: HidD_GetAttributes
+	       Requests information from the device.
+	       Requires: the handle returned by CreateFile.
+	       Returns: a HIDD_ATTRIBUTES structure containing
+	       the Vendor ID, Product ID, and Product Version Number.
+	       Use this information to decide if the detected device is
+	       the one we're looking for.
+	     */
 
-			//Set the Size to the number of bytes in the structure.
-			Attributes.Size = sizeof(Attributes);
+	    //Set the Size to the number of bytes in the structure.
+	    Attributes.Size = sizeof(Attributes);
 
-			Result = HidD_GetAttributes
-				(DeviceHandle,
-				&Attributes);
+	    Result = HidD_GetAttributes(DeviceHandle, &Attributes);
 
-			//Is it the desired device?
-			DeviceDetected = false;
+	    //Is it the desired device?
+	    DeviceDetected = false;
 
-			if (Attributes.VendorID == VendorID)
-			{
-				if (Attributes.ProductID == ProductID)
-				{
-					//Both the Product and Vendor IDs match.
-					DeviceDetected = true;
-					GetDeviceCapabilities();//  08Mar2005 - Capabilities call fails on WinXP
-                    // fg_RunThread = true;
-                    //_beginthread(RcvThreadFunction, 0, DeviceHandle);
-					PrepareForOverlappedTransfer();
-				} //if (Attributes.ProductID == ProductID)
-
-				else
-					//The Product ID doesn't match.
-					CloseHandle(DeviceHandle);
-			} //if (Attributes.VendorID == VendorID)
-
-			else
-				//The Vendor ID doesn't match.
-				CloseHandle(DeviceHandle);
-
-		//Free the memory used by the detailData structure (no longer needed).
-		free(detailData);
-		}  //if (Result != 0)
+	    if (((unsigned int) Attributes.VendorID) == VendorID) {
+		if (((unsigned int) Attributes.ProductID) == ProductID) {
+		    //Both the Product and Vendor IDs match.
+		    DeviceDetected = true;
+		    GetDeviceCapabilities();	//  08Mar2005 - Capabilities call fails on WinXP
+		    // fg_RunThread = true;
+		    //_beginthread(RcvThreadFunction, 0, DeviceHandle);
+		    PrepareForOverlappedTransfer();
+		}		//if (Attributes.ProductID == ProductID)
 
 		else
-			//SetupDiEnumDeviceInterfaces returned 0, so there are no more devices to check.
-			LastDevice=TRUE;
+		    //The Product ID doesn't match.
+		    CloseHandle(DeviceHandle);
+	    }			//if (Attributes.VendorID == VendorID)
 
-		//If we haven't found the device yet, and haven't tried every available device,
-		//try the next one.
-		MemberIndex = MemberIndex + 1;
+	    else
+		//The Vendor ID doesn't match.
+		CloseHandle(DeviceHandle);
 
-	} //do
-	while ((LastDevice == FALSE) && (DeviceDetected == false));
+	    //Free the memory used by the detailData structure (no longer needed).
+	    free(detailData);
+	}			//if (Result != 0)
 
-	//Free the memory reserved for hDevInfo by SetupDiClassDevs.
-	SetupDiDestroyDeviceInfoList(hDevInfo);
+	else
+	    //SetupDiEnumDeviceInterfaces returned 0, so there are no more devices to check.
+	    LastDevice = TRUE;
 
-	return DeviceDetected;
+	//If we haven't found the device yet, and haven't tried every available device,
+	//try the next one.
+	MemberIndex = MemberIndex + 1;
+
+    }				//do
+    while ((LastDevice == FALSE) && (DeviceDetected == false));
+
+    //Free the memory reserved for hDevInfo by SetupDiClassDevs.
+    SetupDiDestroyDeviceInfoList(hDevInfo);
+
+    return DeviceDetected;
 }
 
 
 
 void CUsbhidioc::PrepareForOverlappedTransfer()
 {
-	//Get another handle to the device for the overlapped ReadFiles.
-	ReadHandle=CreateFile
-		(detailData->DevicePath,
-		GENERIC_READ|GENERIC_WRITE,
-		FILE_SHARE_READ|FILE_SHARE_WRITE,
-		(LPSECURITY_ATTRIBUTES)NULL,
-		OPEN_EXISTING,
-		FILE_FLAG_OVERLAPPED,
-		NULL);
+    //Get another handle to the device for the overlapped ReadFiles.
+    ReadHandle = CreateFile
+	(detailData->DevicePath,
+	 GENERIC_READ | GENERIC_WRITE,
+	 FILE_SHARE_READ | FILE_SHARE_WRITE,
+	 (LPSECURITY_ATTRIBUTES) NULL, OPEN_EXISTING, FILE_FLAG_OVERLAPPED, NULL);
 
-	//Get an event object for the overlapped structure.
+    //Get an event object for the overlapped structure.
 
-	/*API function: CreateEvent
-	Requires:
-	  Security attributes or Null
-	  Manual reset (true). Use ResetEvent to set the event object's state to non-signaled.
-	  Initial state (true = signaled)
-	  Event object name (optional)
-	Returns: a handle to the event object
-	*/
+    /*API function: CreateEvent
+       Requires:
+       Security attributes or Null
+       Manual reset (true). Use ResetEvent to set the event object's state to non-signaled.
+       Initial state (true = signaled)
+       Event object name (optional)
+       Returns: a handle to the event object
+     */
 
-	if (hEventObject == 0)
-	{
-            hEventObject = CreateEvent
-                    (NULL,
-                    TRUE,
-                    //TRUE,   // Andy 0531 mask
-                    false,	  // Andy 0531 add
-                    "");
+    if (hEventObject == 0) {
+	hEventObject = CreateEvent(NULL, TRUE,
+				   //TRUE,   // Andy 0531 mask
+				   false,	// Andy 0531 add
+				   "");
 
-            //Set the members of the overlapped structure.
-            HIDOverlapped.hEvent = hEventObject;
-            HIDOverlapped.Offset = 0;
-            HIDOverlapped.OffsetHigh = 0;
-	}
+	//Set the members of the overlapped structure.
+	HIDOverlapped.hEvent = hEventObject;
+	HIDOverlapped.Offset = 0;
+	HIDOverlapped.OffsetHigh = 0;
+    }
 }
 
 bool CUsbhidioc::ReadReportEx(char InBuffer[])
 {
-	DWORD	Result;
+    DWORD Result;
     unsigned int i;
 
-    ErrorName="NONE";
-    if (DeviceDetected == false)
-    {
-    	FindTheHID ();
+    ErrorName = "NONE";
+    if (DeviceDetected == false) {
+	FindTheHID();
     }
-    if (DeviceDetected)
-    {
-        InBufferValidLen=0;
-        Result = ReadFile
-            (ReadHandle,
-            InputReport,
-            Capabilities.InputReportByteLength,
-            &NumberOfBytesRead,
-            (LPOVERLAPPED) &HIDOverlapped);
-        if(Result)
-        {
-        	//SetEvent(hEventObject);
-            ErrorName="IMM_RETURN";
-            InBufferValidLen = NumberOfBytesRead;
-            for (i=0; i < NumberOfBytesRead; ++i)
-                InBuffer[i] = InputReport [i+1];
-        }
-        else
-        {
-        	// Andy 0531 add Below lines
-            Result = GetLastError();
-            if(Result==ERROR_IO_PENDING)
-            {
-            // Andy 0531 add above lines
-                Result = WaitForSingleObject(hEventObject,1000);
-                if(Result== WAIT_OBJECT_0)
-                {
-                    Result=GetOverlappedResult(ReadHandle,
-                        &HIDOverlapped,
-                        &NumberOfBytesRead,
-                        FALSE);
-                    if(Result)
-                    {
-                        ErrorName="OBJECT_0_GOT";
-                        InBufferValidLen = NumberOfBytesRead;
-                        for (i=0; i < NumberOfBytesRead; ++i)
-                            InBuffer[i] = InputReport [i+1];
-                    }
-                    else
-                    {
-                    	ErrorName="UNKNOWN 1";
-                    }
-                }
-                else
-                {
-                    Result = CancelIo(ReadHandle);
+    if (DeviceDetected) {
+	InBufferValidLen = 0;
+	Result = ReadFile
+	    (ReadHandle,
+	     InputReport,
+	     Capabilities.InputReportByteLength,
+	     &NumberOfBytesRead, (LPOVERLAPPED) & HIDOverlapped);
+	if (Result) {
+	    //SetEvent(hEventObject);
+	    ErrorName = "IMM_RETURN";
+	    InBufferValidLen = NumberOfBytesRead;
+	    for (i = 0; i < NumberOfBytesRead; ++i)
+		InBuffer[i] = InputReport[i + 1];
+	} else {
+	    // Andy 0531 add Below lines
+	    Result = GetLastError();
+	    if (Result == ERROR_IO_PENDING) {
+		// Andy 0531 add above lines
+		Result = WaitForSingleObject(hEventObject, 1000);
+		if (Result == WAIT_OBJECT_0) {
+		    Result = GetOverlappedResult(ReadHandle,
+						 &HIDOverlapped, &NumberOfBytesRead, FALSE);
+		    if (Result) {
+			ErrorName = "OBJECT_0_GOT";
+			InBufferValidLen = NumberOfBytesRead;
+			for (i = 0; i < NumberOfBytesRead; ++i)
+			    InBuffer[i] = InputReport[i + 1];
+		    } else {
+			ErrorName = "UNKNOWN 1";
+		    }
+		} else {
+		    Result = CancelIo(ReadHandle);
 
-                    //A timeout may mean that the device has been removed.
-                    //Close the device handles and set DeviceDetected = False
-                    //so the next access attempt will search for the device.
-                    CloseHandle(ReadHandle);
-                    CloseHandle(DeviceHandle);
-                    DeviceDetected = FALSE;
-                    Result = false;
-                    ErrorName = "TIME_OUT";
-                }
-            }
-            else
-            {
-                ErrorName = "ERROR NOT PENDING";
-            }
-        }
+		    //A timeout may mean that the device has been removed.
+		    //Close the device handles and set DeviceDetected = False
+		    //so the next access attempt will search for the device.
+		    CloseHandle(ReadHandle);
+		    CloseHandle(DeviceHandle);
+		    DeviceDetected = FALSE;
+		    Result = false;
+		    ErrorName = "TIME_OUT";
+		}
+	    } else {
+		ErrorName = "ERROR NOT PENDING";
+	    }
+	}
     }
     return Result;
 }
 
-int wid=0;
+int wid = 0;
 bool CUsbhidioc::WriteReport(char OutputBuffer[], unsigned int nBytes)
 {
-    DWORD   BytesWritten = 0;
-    ULONG   Result;
-    char    OutputReport [65];
-    unsigned int     i;
+    DWORD BytesWritten = 0;
+    ULONG Result;
+    char OutputReport[65];
+    unsigned int i;
 
-	//The first byte is the report number.
-    OutputReport[0]=0;
-    for (i=0; i < nBytes; i++)
-        OutputReport [i+1] = OutputBuffer[i];
-    for (i = nBytes+1; i < 65; ++i)
-        OutputReport [i] = 'Z';  // Pad buffer with Null Commands
+    //The first byte is the report number.
+    OutputReport[0] = 0;
+    for (i = 0; i < nBytes; i++)
+	OutputReport[i + 1] = OutputBuffer[i];
+    for (i = nBytes + 1; i < 65; ++i)
+	OutputReport[i] = 'Z';	// Pad buffer with Null Commands
 
 /*
 	API Function: WriteFile
@@ -475,86 +422,75 @@ bool CUsbhidioc::WriteReport(char OutputBuffer[], unsigned int nBytes)
 	*/
 
     if (DeviceDetected == false)
-        FindTheHID ();
+	FindTheHID();
 
-    if (DeviceDetected)
-    {
-        Result = WriteFile
-		(DeviceHandle,
-		OutputReport,
-		//65, //
-		Capabilities.OutputReportByteLength,//  08Mar2005 - Capabilities call fails on WinXP
-		&BytesWritten,
-		NULL);
+    if (DeviceDetected) {
+	Result = WriteFile(DeviceHandle, OutputReport,
+			   //65, //
+			   Capabilities.OutputReportByteLength,	//  08Mar2005 - Capabilities call fails on WinXP
+			   &BytesWritten, NULL);
 
-        if (Result == 0)
-        {
-            Result = GetLastError ();
-		//The WriteFile failed, so close the handle, display a message,
-		//and set DeviceDetected to FALSE so the next attempt will look for the device.
-		CloseHandle(DeviceHandle);
-		CloseHandle(ReadHandle);
-		DeviceDetected = false;
-        }
-    }
-    else
-        Result = false;
+	if (Result == 0) {
+	    Result = GetLastError();
+	    //The WriteFile failed, so close the handle, display a message,
+	    //and set DeviceDetected to FALSE so the next attempt will look for the device.
+	    CloseHandle(DeviceHandle);
+	    CloseHandle(ReadHandle);
+	    DeviceDetected = false;
+	}
+    } else
+	Result = false;
     return Result;
 }
 
 
 // Close the channel
-void CUsbhidioc::CloseReport ()
+void CUsbhidioc::CloseReport()
 {
-    if (DeviceDetected == true)
-    {
-        CancelIo(ReadHandle);
+    if (DeviceDetected == true) {
+	CancelIo(ReadHandle);
 
-    //A timeout may mean that the device has been removed.
-    //Close the device handles and set DeviceDetected = False
-    //so the next access attempt will search for the device.
-        CloseHandle(ReadHandle);
-        CloseHandle(DeviceHandle);
-        DeviceDetected = false;
+	//A timeout may mean that the device has been removed.
+	//Close the device handles and set DeviceDetected = False
+	//so the next access attempt will search for the device.
+	CloseHandle(ReadHandle);
+	CloseHandle(DeviceHandle);
+	DeviceDetected = false;
     }
 }
 
 //08Mar2005 - Capabilities call fails on WinXP
 void CUsbhidioc::GetDeviceCapabilities()
 {
-    ULONG  Result;
-	//Get the Capabilities structure for the device.
-	PHIDP_PREPARSED_DATA	PreparsedData;
+    ULONG Result;
+    //Get the Capabilities structure for the device.
+    PHIDP_PREPARSED_DATA PreparsedData;
 
-	/*
-	API function: HidD_GetPreparsedData
-	Returns: a pointer to a buffer containing the information about the device's capabilities.
-	Requires: A handle returned by CreateFile.
-	There's no need to access the buffer directly,
-	but HidP_GetCaps and other API functions require a pointer to the buffer.
-	*/
+    /*
+       API function: HidD_GetPreparsedData
+       Returns: a pointer to a buffer containing the information about the device's capabilities.
+       Requires: A handle returned by CreateFile.
+       There's no need to access the buffer directly,
+       but HidP_GetCaps and other API functions require a pointer to the buffer.
+     */
 
-	Result = HidD_GetPreparsedData
-		(DeviceHandle,
-		&PreparsedData);
+    /*Result = */ HidD_GetPreparsedData(DeviceHandle, &PreparsedData);
 
-	/*
-	API function: HidP_GetCaps
-	Learn the device's capabilities.
-	For standard devices such as joysticks, you can find out the specific
-	capabilities of the device.
-	For a custom device, the software will probably know what the device is capable of,
-	and the call only verifies the information.
-	Requires: the pointer to the buffer returned by HidD_GetPreparsedData.
-	Returns: a Capabilities structure containing the information.
-	*/
+    /*
+       API function: HidP_GetCaps
+       Learn the device's capabilities.
+       For standard devices such as joysticks, you can find out the specific
+       capabilities of the device.
+       For a custom device, the software will probably know what the device is capable of,
+       and the call only verifies the information.
+       Requires: the pointer to the buffer returned by HidD_GetPreparsedData.
+       Returns: a Capabilities structure containing the information.
+     */
 
-	Result = HidP_GetCaps
-		(PreparsedData,
-		&Capabilities);
+    /*Result = */ HidP_GetCaps(PreparsedData, &Capabilities);
 
-	//No need for PreparsedData any more, so free the memory it's using.
-	HidD_FreePreparsedData(PreparsedData);
+    //No need for PreparsedData any more, so free the memory it's using.
+    HidD_FreePreparsedData(PreparsedData);
 }
 
 void __cdecl RcvThreadFunction(HANDLE hidHandle)
@@ -565,92 +501,77 @@ void __cdecl RcvThreadFunction(HANDLE hidHandle)
     // create Overlapped read structure and event
     HANDLE hIOWaiter = CreateEvent(NULL, TRUE, FALSE, NULL);
 
-    if(hIOWaiter == NULL)
-        goto exit2;
+    if (hIOWaiter == NULL)
+	goto exit2;
 
     OVERLAPPED ol;
     ol.Offset = 0;
     ol.OffsetHigh = 0;
     ol.hEvent = hIOWaiter;
 
-    fg_ThreadRunning=true;
+    fg_ThreadRunning = true;
     // loop waiting for events, till fg_RunThread goes false
-    for(;;)
-    {
-        // initiate overlapped read
-        DWORD rcvdBytes;
-        ResetEvent(hIOWaiter);
-        if(!ReadFile(hidHandle, rcvDataBuf, 65, &rcvdBytes, &ol))
-        {
-            // Check for read errors
-            DWORD err = GetLastError();
-            if(err != ERROR_IO_PENDING && err != ERROR_DEVICE_NOT_CONNECTED && fg_RunThread)
-            {
-                //msg.Format("Read error: %d", err);
-                //AfxMessageBox(msg);
-                goto exit1;
-            }
+    for (;;) {
+	// initiate overlapped read
+	DWORD rcvdBytes;
+	ResetEvent(hIOWaiter);
+	if (!ReadFile(hidHandle, rcvDataBuf, 65, &rcvdBytes, &ol)) {
+	    // Check for read errors
+	    DWORD err = GetLastError();
+	    if (err != ERROR_IO_PENDING && err != ERROR_DEVICE_NOT_CONNECTED && fg_RunThread) {
+		//msg.Format("Read error: %d", err);
+		//AfxMessageBox(msg);
+		goto exit1;
+	    }
+	    // wait for read to complete (check for fg_RunThread going false every 100ms)
+	    while (WaitForSingleObject(hIOWaiter, 100) == WAIT_TIMEOUT) {
+		if (!fg_RunThread) {
+		    if (hidHandle != INVALID_HANDLE_VALUE)	// if handle hasn't already been closed
+		    {
+			// cancel the pending read
+			CancelIo(hidHandle);
+		    }
+		    goto exit1;
+		}
+	    }
 
+	    // get read result, i.e. bytes transferred
+	    if (!GetOverlappedResult(hidHandle, &ol, &rcvdBytes, false)) {
+		err = GetLastError();
+		if (err != ERROR_DEVICE_NOT_CONNECTED && fg_RunThread) {
+		    //msg.Format("GetOverlappedResult error: %d", err);
+		    //AfxMessageBox(msg);
+		}
 
-            // wait for read to complete (check for fg_RunThread going false every 100ms)
-            while(WaitForSingleObject(hIOWaiter, 100) == WAIT_TIMEOUT)
-            {
-                if(!fg_RunThread)
-                {
-                    if(hidHandle != INVALID_HANDLE_VALUE) // if handle hasn't already been closed
-                    {
-                        // cancel the pending read
-                        CancelIo(hidHandle);
-                    }
-                    goto exit1;
-                }
-            }
+		continue;
+	    }
+	}
+	// make sure there's something there
+	if (rcvdBytes < 65) {
+	    if (fg_RunThread) {
+		//msg.Format("Only read %d bytes", rcvdBytes);
+		//AfxMessageBox(msg);
+	    }
 
-            // get read result, i.e. bytes transferred
-            if(!GetOverlappedResult(hidHandle, &ol, &rcvdBytes, false))
-            {
-                err = GetLastError();
-                if(err != ERROR_DEVICE_NOT_CONNECTED && fg_RunThread)
-                {
-                    //msg.Format("GetOverlappedResult error: %d", err);
-                    //AfxMessageBox(msg);
-                }
+	    continue;		// Loop while not finish receiving all bytes.
+	} else {
+	    //InBufferLen = rcvdBytes;
+	    //memcpy(InBuffer,rcvDataBuf,rcvdBytes);
+	    fg_NewData = true;
 
-                continue;
-            }
-        }
+	}
 
-        // make sure there's something there
-        if(rcvdBytes < 65)
-        {
-            if(fg_RunThread)
-            {
-                //msg.Format("Only read %d bytes", rcvdBytes);
-                //AfxMessageBox(msg);
-            }
-
-            continue;      // Loop while not finish receiving all bytes.
-        }
-        else
-        {
-        	//InBufferLen = rcvdBytes;
-        	//memcpy(InBuffer,rcvDataBuf,rcvdBytes);
-        	fg_NewData=true;
-
-        }
-
-        // notify app of new data
-        // (note rcvDataBuf[0] just contains the report ID)
-        //AfxGetMainWnd()->SendMessage(IDM_RCV_DATA, 0, (LPARAM)(rcvDataBuf + 1));
+	// notify app of new data
+	// (note rcvDataBuf[0] just contains the report ID)
+	//AfxGetMainWnd()->SendMessage(IDM_RCV_DATA, 0, (LPARAM)(rcvDataBuf + 1));
     }
 
-exit1:
+  exit1:
     CloseHandle(hIOWaiter);
 
-exit2:
-    fg_ThreadRunning=false;
+  exit2:
+    fg_ThreadRunning = false;
     _endthread();
 
 }
-
 

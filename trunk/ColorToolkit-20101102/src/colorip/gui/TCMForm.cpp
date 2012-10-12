@@ -704,11 +704,11 @@ void __fastcall TCMForm::sb_cm33Change(TObject * Sender)
 }
 
 //---------------------------------------------------------------------------
-
+static const char &Zero = '0';
 void __fastcall TCMForm::rg_CM1_modeClick(TObject * Sender)
 {
     selectMode(rg_CM1_mode->ItemIndex, CM1EditArray);
-    CM1_keyPress(Sender, '0');	//refesh memory
+    CM1_keyPress(Sender, Zero);	//refesh memory
 }
 
 //---------------------------------------------------------------------------
@@ -745,7 +745,7 @@ void TCMForm::selectMode(int mode, TEdit * e[9])
 void __fastcall TCMForm::rg_CM2_modeClick(TObject * Sender)
 {
     selectMode(rg_CM2_mode->ItemIndex, CM2EditArray);
-    CM2_keyPress(Sender, '0');	//refesh memory
+    CM2_keyPress(Sender, Zero);	//refesh memory
 }
 
 //---------------------------------------------------------------------------
@@ -753,13 +753,13 @@ void __fastcall TCMForm::rg_CM2_modeClick(TObject * Sender)
 void __fastcall TCMForm::rg_CM3_modeClick(TObject * Sender)
 {
     selectMode(rg_CM3_mode->ItemIndex, CM3EditArray);
-    CM3_keyPress(Sender, '0');	//refesh memory
+    CM3_keyPress(Sender, Zero);	//refesh memory
 }
 
 //---------------------------------------------------------------------------
 
 
-void __fastcall TCMForm::CM1_keyPress(TObject * Sender, char &Key)
+void __fastcall TCMForm::CM1_keyPress(TObject * Sender,const char &Key)
 {
     CM1[0][0] = StrToFloat(CM1_11->Text);
     CM1[0][1] = StrToFloat(CM1_12->Text);
@@ -780,7 +780,7 @@ void __fastcall TCMForm::CM1_keyPress(TObject * Sender, char &Key)
 
 //---------------------------------------------------------------------------
 
-void __fastcall TCMForm::CM2_keyPress(TObject * Sender, char &Key)
+void __fastcall TCMForm::CM2_keyPress(TObject * Sender,const char &Key)
 {
     CM2[0][0] = StrToFloat(CM2_11->Text);
     CM2[0][1] = StrToFloat(CM2_12->Text);
@@ -800,7 +800,7 @@ void __fastcall TCMForm::CM2_keyPress(TObject * Sender, char &Key)
 }
 
 //---------------------------------------------------------------------------
-void __fastcall TCMForm::CM3_keyPress(TObject * Sender, char &Key)
+void __fastcall TCMForm::CM3_keyPress(TObject * Sender,const char &Key)
 {
     CM3[0][0] = StrToFloat(CM3_11->Text);
     CM3[0][1] = StrToFloat(CM3_12->Text);
