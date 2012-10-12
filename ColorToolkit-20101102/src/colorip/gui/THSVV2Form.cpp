@@ -26,7 +26,7 @@
 #include "TCMForm.h"
 #include "TGamutForm.h"
 #include <colorip/11307/ImgProc_11307.h>
-#include <gui/GUIUtil.h>
+#include <gui/util/GUIUtil.h>
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
 #pragma link "TColorPickerFrame"

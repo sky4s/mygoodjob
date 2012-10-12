@@ -6,35 +6,35 @@
     <PROJECT value="workdir\ColorToolkit.exe"/>
     <OBJFILES value="build\ColorToolkit.obj build\USBHIDIOC.obj build\HWINTERFACELib_TLB.obj 
       build\HWINTERFACELib_OCX.obj build\TColorPickerFrame.obj 
-      build\THSVAdjustFrame.obj build\TInTargetForm.obj build\GetCursorColor.obj 
-      build\ReadWriteFunc.obj build\doubleArray.obj build\depend.obj 
-      build\rgb.obj build\lang.obj build\core.obj build\colorspace.obj 
-      build\searcher.obj build\interpolation.obj build\ciexyz.obj 
-      build\independ.obj build\util.obj build\lcdtarget.obj build\binder.obj 
-      build\hsvip.obj build\minimisation.obj build\asa047.obj 
-      build\TDebugForm.obj build\RegisterFramework.obj build\TExampleForm.obj 
-      build\GUIUtil.obj build\gui_class.obj build\TC3DForm.obj build\TCMForm.obj 
-      build\TCEForm.obj build\TEngineerForm.obj build\TFunctionForm.obj 
-      build\THSVV1Form.obj build\TOffsetForm.obj build\TSaturationForm.obj 
-      build\TSharpnessV1Form.obj build\TSharpnessV2Form.obj build\TMainForm.obj 
-      build\TGamutForm.obj build\TPatternForm.obj build\THSVV2Form.obj 
-      build\TSharpnessV2_1Form.obj build\ImgProc_11307.obj 
-      build\offset_11307.obj build\SAT_11307.obj build\Func_11307.obj"/>
+      build\THSVAdjustFrame.obj build\GetCursorColor.obj build\ReadWriteFunc.obj 
+      build\doubleArray.obj build\depend.obj build\rgb.obj build\lang.obj 
+      build\core.obj build\colorspace.obj build\searcher.obj 
+      build\interpolation.obj build\ciexyz.obj build\independ.obj build\util.obj 
+      build\lcdtarget.obj build\binder.obj build\hsvip.obj 
+      build\minimisation.obj build\asa047.obj build\TDebugForm.obj 
+      build\RegisterFramework.obj build\TExampleForm.obj build\gui_class.obj 
+      build\TC3DForm.obj build\TCMForm.obj build\TCEForm.obj 
+      build\TEngineerForm.obj build\TFunctionForm.obj build\THSVV1Form.obj 
+      build\TOffsetForm.obj build\TSaturationForm.obj build\TSharpnessV1Form.obj 
+      build\TSharpnessV2Form.obj build\TMainForm.obj build\TGamutForm.obj 
+      build\TPatternForm.obj build\THSVV2Form.obj build\TSharpnessV2_1Form.obj 
+      build\ImgProc_11307.obj build\offset_11307.obj build\SAT_11307.obj 
+      build\Func_11307.obj build\TInTargetForm.obj build\GUIUtil.obj"/>
     <RESFILES value="ColorToolkit.res"/>
     <IDLFILES value=""/>
     <IDLGENFILES value=""/>
     <DEFFILE value=""/>
     <RESDEPEN value="$(RESFILES) src\gui\frame\TColorPickerFrame.dfm 
-      src\gui\frame\THSVAdjustFrame.dfm src\c3d\gui\TInTargetForm.dfm 
-      src\gui\TDebugForm.dfm src\gui\TExampleForm.dfm 
-      src\colorip\gui\TC3DForm.dfm src\colorip\gui\TCMForm.dfm 
-      src\colorip\gui\TCEForm.dfm src\colorip\gui\TEngineerForm.dfm 
-      src\colorip\gui\TFunctionForm.dfm src\colorip\gui\THSVV1Form.dfm 
-      src\colorip\gui\TOffsetForm.dfm src\colorip\gui\TSaturationForm.dfm 
-      src\colorip\gui\TSharpnessV1Form.dfm src\colorip\gui\TSharpnessV2Form.dfm 
-      src\colorip\gui\TMainForm.dfm src\colorip\gui\TGamutForm.dfm 
-      src\colorip\gui\TPatternForm.dfm src\colorip\gui\THSVV2Form.dfm 
-      src\colorip\gui\TSharpnessV2_1Form.dfm"/>
+      src\gui\frame\THSVAdjustFrame.dfm src\gui\TDebugForm.dfm 
+      src\gui\TExampleForm.dfm src\colorip\gui\TC3DForm.dfm 
+      src\colorip\gui\TCMForm.dfm src\colorip\gui\TCEForm.dfm 
+      src\colorip\gui\TEngineerForm.dfm src\colorip\gui\TFunctionForm.dfm 
+      src\colorip\gui\THSVV1Form.dfm src\colorip\gui\TOffsetForm.dfm 
+      src\colorip\gui\TSaturationForm.dfm src\colorip\gui\TSharpnessV1Form.dfm 
+      src\colorip\gui\TSharpnessV2Form.dfm src\colorip\gui\TMainForm.dfm 
+      src\colorip\gui\TGamutForm.dfm src\colorip\gui\TPatternForm.dfm 
+      src\colorip\gui\THSVV2Form.dfm src\colorip\gui\TSharpnessV2_1Form.dfm 
+      src\gui\util\TInTargetForm.dfm"/>
     <LIBFILES value="lib\USB_i2c_lib\hid.lib"/>
     <LIBRARIES value="tee.lib vclx.lib bcbsmp.lib rtl.lib vcl.lib"/>
     <SPARELIBS value="vcl.lib rtl.lib bcbsmp.lib vclx.lib tee.lib"/>
@@ -45,7 +45,7 @@
       inetdbbde.bpi inetdbxpress.bpi inetdb.bpi nmfast.bpi webdsnap.bpi 
       bcbie.bpi websnap.bpi soaprtl.bpi dclocx.bpi dbexpress.bpi dbxcds.bpi 
       indy.bpi bcb2kaxserver.bpi"/>
-    <PATHCPP value=".;lib\USB_i2c_lib;lib\LPT_lib;lib\LPT_lib;src\gui\frame;src\gui\frame;src\c3d\gui;src\c3d;lib\CMSCpp2.1\src\i2c\core;lib\CMSCpp2.1\src\math;lib\CMSCpp2.1\src\cms\colorspace;lib\CMSCpp2.1\src\cms\colorspace;lib\CMSCpp2.1\src\java;lib\CMSCpp2.1\src\cms;lib\CMSCpp2.1\src\cms\colorspace;lib\CMSCpp2.1\src\math;lib\CMSCpp2.1\src\math;lib\CMSCpp2.1\src\cms\colorspace;lib\CMSCpp2.1\src\cms\colorspace;lib\CMSCpp2.1\src\cms\util;lib\CMSCpp2.1\src\cms\lcd;lib\CMSCpp2.1\src\gui\util;lib\CMSCpp2.1\src\cms\hsv;lib\CMSCpp2.1\src\algo;lib\CMSCpp2.1\src\algo;src\gui;src\gui\framework;src\gui;src\gui;src\colorip;src\colorip\gui;src\colorip\gui;src\colorip\gui;src\colorip\gui;src\colorip\gui;src\colorip\gui;src\colorip\gui;src\colorip\gui;src\colorip\gui;src\colorip\gui;src\colorip\gui;src\colorip\gui;src\colorip\gui;src\colorip\gui;src\colorip\gui;src\colorip\11307;src\colorip\11307;src\colorip\11307;src\colorip\11307"/>
+    <PATHCPP value=".;lib\USB_i2c_lib;lib\LPT_lib;lib\LPT_lib;src\gui\frame;src\gui\frame;src\c3d;lib\CMSCpp2.1\src\i2c\core;lib\CMSCpp2.1\src\math;lib\CMSCpp2.1\src\cms\colorspace;lib\CMSCpp2.1\src\cms\colorspace;lib\CMSCpp2.1\src\java;lib\CMSCpp2.1\src\cms;lib\CMSCpp2.1\src\cms\colorspace;lib\CMSCpp2.1\src\math;lib\CMSCpp2.1\src\math;lib\CMSCpp2.1\src\cms\colorspace;lib\CMSCpp2.1\src\cms\colorspace;lib\CMSCpp2.1\src\cms\util;lib\CMSCpp2.1\src\cms\lcd;lib\CMSCpp2.1\src\gui\util;lib\CMSCpp2.1\src\cms\hsv;lib\CMSCpp2.1\src\algo;lib\CMSCpp2.1\src\algo;src\gui;src\gui\framework;src\gui;src\colorip;src\colorip\gui;src\colorip\gui;src\colorip\gui;src\colorip\gui;src\colorip\gui;src\colorip\gui;src\colorip\gui;src\colorip\gui;src\colorip\gui;src\colorip\gui;src\colorip\gui;src\colorip\gui;src\colorip\gui;src\colorip\gui;src\colorip\gui;src\colorip\11307;src\colorip\11307;src\colorip\11307;src\colorip\11307;src\gui\util;src\gui\util"/>
     <PATHPAS value=".;"/>
     <PATHRC value=".;"/>
     <PATHASM value=".;"/>
@@ -55,16 +55,16 @@
     <USERDEFINES value="_DEBUG"/>
     <SYSDEFINES value="NO_STRICT"/>
     <MAINSOURCE value="ColorToolkit.cpp"/>
-    <INCLUDEPATH value="src\colorip\11307;src\colorip\11307\Vender;src\colorip\11307\TCON;src\colorip\11307\ImageProcess;src\colorip\11307\Function;src\colorip\11307\DCR;src\colorip\gui;src\colorip;src\gui\framework;src\gui;lib\CMSCpp2.1\src\algo;lib\CMSCpp2.1\src\cms\hsv;lib\CMSCpp2.1\src\gui\util;lib\CMSCpp2.1\src\cms\lcd;src\fpga\11307\DCR;lib\CMSCpp2.1\src\cms\util;lib\CMSCpp2.1\src\cms;lib\CMSCpp2.1\src\java;lib\CMSCpp2.1\src\cms\colorspace;lib\CMSCpp2.1\src\math;lib\CMSCpp2.1\src\i2c\core;src\c3d;src\c3d\gui;src\fpga;src\fpga\gui;src\fpga\11307\Vender;src\fpga\11307\TCON;src\fpga\11307\ImageProcess;src\fpga\11307\Function;src\gui\frame;&quot;D:\Program Files\Borland\CBuilder6\Projects&quot;;$(BCB)\include;$(BCB)\include\vcl;lib;./;lib\LPT_lib;lib\USB_i2c_lib;src;lib\CMSCpp2.1\src"/>
-    <LIBPATH value="src\colorip\11307;src\colorip\11307\Vender;src\colorip\11307\TCON;src\colorip\11307\ImageProcess;src\colorip\11307\Function;src\colorip\11307\DCR;src\colorip\gui;src\colorip;src\gui\framework;src\gui;lib\CMSCpp2.1\src\algo;lib\CMSCpp2.1\src\cms\hsv;..\..\CMSCpp2.1\src\cms\hsv;lib\CMSCpp2.1\src\gui\util;lib\CMSCpp2.1\src\cms\lcd;lib\CMSCpp2.1\src\cms\util;lib\CMSCpp2.1\src\cms;lib\CMSCpp2.1\src\java;lib\CMSCpp2.1\src\cms\colorspace;lib\CMSCpp2.1\src\math;lib\CMSCpp2.1\src\i2c\core;src\c3d;src\c3d\gui;src\fpga;src\fpga\11307\Vender;src\fpga\11307\TCON;src\fpga\11307\ImageProcess;src\fpga\11307\Function;src\fpga\11307\DCR;lib\java;src\gui\frame;src\fpga\gui;&quot;D:\Program Files\Borland\CBuilder6\Projects&quot;;$(BCB)\lib\obj;$(BCB)\lib;lib;lib\LPT_lib;lib\USB_i2c_lib;src;lib\CMSCpp2.1\src"/>
+    <INCLUDEPATH value="src\gui\util;src\colorip\11307;src\colorip\11307\Vender;src\colorip\11307\TCON;src\colorip\11307\ImageProcess;src\colorip\11307\Function;src\colorip\11307\DCR;src\colorip\gui;src\colorip;src\gui\framework;src\gui;lib\CMSCpp2.1\src\algo;lib\CMSCpp2.1\src\cms\hsv;lib\CMSCpp2.1\src\gui\util;lib\CMSCpp2.1\src\cms\lcd;src\fpga\11307\DCR;lib\CMSCpp2.1\src\cms\util;lib\CMSCpp2.1\src\cms;lib\CMSCpp2.1\src\java;lib\CMSCpp2.1\src\cms\colorspace;lib\CMSCpp2.1\src\math;lib\CMSCpp2.1\src\i2c\core;src\c3d;src\c3d\gui;src\fpga;src\fpga\gui;src\fpga\11307\Vender;src\fpga\11307\TCON;src\fpga\11307\ImageProcess;src\fpga\11307\Function;src\gui\frame;&quot;D:\Program Files\Borland\CBuilder6\Projects&quot;;$(BCB)\include;$(BCB)\include\vcl;lib;./;lib\LPT_lib;lib\USB_i2c_lib;src;lib\CMSCpp2.1\src"/>
+    <LIBPATH value="src\gui\util;src\colorip\11307;src\colorip\11307\Vender;src\colorip\11307\TCON;src\colorip\11307\ImageProcess;src\colorip\11307\Function;src\colorip\11307\DCR;src\colorip\gui;src\colorip;src\gui\framework;src\gui;lib\CMSCpp2.1\src\algo;lib\CMSCpp2.1\src\cms\hsv;..\..\CMSCpp2.1\src\cms\hsv;lib\CMSCpp2.1\src\gui\util;lib\CMSCpp2.1\src\cms\lcd;lib\CMSCpp2.1\src\cms\util;lib\CMSCpp2.1\src\cms;lib\CMSCpp2.1\src\java;lib\CMSCpp2.1\src\cms\colorspace;lib\CMSCpp2.1\src\math;lib\CMSCpp2.1\src\i2c\core;src\c3d;src\c3d\gui;src\fpga;src\fpga\11307\Vender;src\fpga\11307\TCON;src\fpga\11307\ImageProcess;src\fpga\11307\Function;src\fpga\11307\DCR;lib\java;src\gui\frame;src\fpga\gui;&quot;D:\Program Files\Borland\CBuilder6\Projects&quot;;$(BCB)\lib\obj;$(BCB)\lib;lib;lib\LPT_lib;lib\USB_i2c_lib;src;lib\CMSCpp2.1\src"/>
     <WARNINGS value="-w-par"/>
     <OTHERFILES value=""/>
   </MACROS>
   <OPTIONS>
-    <IDLCFLAGS value="-Isrc\colorip\11307 -Isrc\colorip\11307\Vender -Isrc\colorip\11307\TCON 
-      -Isrc\colorip\11307\ImageProcess -Isrc\colorip\11307\Function 
-      -Isrc\colorip\11307\DCR -Isrc\colorip\gui -Isrc\colorip 
-      -Isrc\gui\framework -Isrc\gui -Ilib\CMSCpp2.1\src\algo 
+    <IDLCFLAGS value="-Isrc\gui\util -Isrc\colorip\11307 -Isrc\colorip\11307\Vender 
+      -Isrc\colorip\11307\TCON -Isrc\colorip\11307\ImageProcess 
+      -Isrc\colorip\11307\Function -Isrc\colorip\11307\DCR -Isrc\colorip\gui 
+      -Isrc\colorip -Isrc\gui\framework -Isrc\gui -Ilib\CMSCpp2.1\src\algo 
       -Ilib\CMSCpp2.1\src\cms\hsv -Ilib\CMSCpp2.1\src\gui\util 
       -Ilib\CMSCpp2.1\src\cms\lcd -Isrc\fpga\11307\DCR 
       -Ilib\CMSCpp2.1\src\cms\util -Ilib\CMSCpp2.1\src\cms 
@@ -100,7 +100,6 @@
       <FILE FILENAME="lib\LPT_lib\HWINTERFACELib_OCX.cpp" FORMNAME="" UNITNAME="HWINTERFACELib_OCX.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="src\gui\frame\TColorPickerFrame.cpp" FORMNAME="ColorPickerFrame" UNITNAME="TColorPickerFrame" CONTAINERID="CCompiler" DESIGNCLASS="TFrame" LOCALCOMMAND=""/>
       <FILE FILENAME="src\gui\frame\THSVAdjustFrame.cpp" FORMNAME="HSVAdjustFrame" UNITNAME="THSVAdjustFrame" CONTAINERID="CCompiler" DESIGNCLASS="TFrame" LOCALCOMMAND=""/>
-      <FILE FILENAME="src\c3d\gui\TInTargetForm.cpp" FORMNAME="InTargetForm" UNITNAME="TInTargetForm" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="src\c3d\GetCursorColor.cpp" FORMNAME="" UNITNAME="GetCursorColor" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="lib\CMSCpp2.1\src\i2c\core\ReadWriteFunc.cpp" FORMNAME="" UNITNAME="ReadWriteFunc" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="lib\CMSCpp2.1\src\math\doubleArray.cpp" FORMNAME="" UNITNAME="doubleArray" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
@@ -122,7 +121,6 @@
       <FILE FILENAME="src\gui\TDebugForm.cpp" FORMNAME="DebugForm" UNITNAME="TDebugForm" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="src\gui\framework\RegisterFramework.cpp" FORMNAME="" UNITNAME="RegisterFramework" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="src\gui\TExampleForm.cpp" FORMNAME="ExampleForm" UNITNAME="TExampleForm" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="src\gui\GUIUtil.cpp" FORMNAME="" UNITNAME="GUIUtil" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="src\colorip\gui_class.cpp" FORMNAME="" UNITNAME="gui_class.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="src\colorip\gui\TC3DForm.cpp" FORMNAME="C3DForm" UNITNAME="TC3DForm" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="src\colorip\gui\TCMForm.cpp" FORMNAME="CMForm" UNITNAME="TCMForm" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
@@ -143,6 +141,8 @@
       <FILE FILENAME="src\colorip\11307\offset_11307.cpp" FORMNAME="" UNITNAME="offset_11307.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="src\colorip\11307\SAT_11307.cpp" FORMNAME="" UNITNAME="SAT_11307.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="src\colorip\11307\Func_11307.cpp" FORMNAME="" UNITNAME="Func_11307.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="src\gui\util\TInTargetForm.cpp" FORMNAME="InTargetForm" UNITNAME="TInTargetForm" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="src\gui\util\GUIUtil.cpp" FORMNAME="" UNITNAME="GUIUtil" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
   </FILELIST>
   <BUILDTOOLS>
   </BUILDTOOLS>
