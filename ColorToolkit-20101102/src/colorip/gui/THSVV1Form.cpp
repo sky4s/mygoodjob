@@ -13,7 +13,7 @@
 
 #include "THSVV1Form.h"
 #include "include.h"
-#include <colorip/11307/ImageProcess/ImgProc_11307.h>
+#include <colorip/11307/ImgProc_11307.h>
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
 #pragma resource "*.dfm"
