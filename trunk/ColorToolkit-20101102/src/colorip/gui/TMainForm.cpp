@@ -495,7 +495,7 @@ void __fastcall TMainForm::mn_offsetClick(TObject * Sender)
 	offsetForm->Show();
     else {
 	//if (TCON_DEV == "11307") {
-	offsetForm = new ToffsetForm(this);
+	offsetForm = new TOffsetForm(this);
 	offsetForm->Show();
 	//}
     }

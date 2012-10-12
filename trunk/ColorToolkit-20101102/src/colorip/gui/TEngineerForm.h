@@ -8,8 +8,8 @@
 //   4. Table type 的轉換由class RW_Func完成, 定義在"table_type.h"
 //---------------------------------------------------------------------------
 
-#ifndef EngineeringH
-#define EngineeringH
+#ifndef TEngineerFormH
+#define TEngineerFormH
 //---------------------------------------------------------------------------
 
 

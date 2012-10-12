@@ -5,7 +5,7 @@
 #pragma hdrstop
 
 #include "TMainForm.h"
-#include "Function1.h"
+#include "TFunctionForm.h"
 #include "include.h"
 #include  <colorip/11307/Function/Func_11307.h>
 //---------------------------------------------------------------------------
@@ -13,10 +13,10 @@
 #pragma resource "*.dfm"
 //static bool DG_IsChkSum = true;       //(1 == AbstractBase::getValueFromFile("DG_HAS_CHECK_SUM"));
 //static bool OD_IsChkSum = true;
-bool TFunctionForm1::DG_IsChkSum = (1 == AbstractBase::getValueFromFile("DG_HAS_CHECK_SUM"));
-bool TFunctionForm1::OD_IsChkSum = true;
+bool TFunctionForm::DG_IsChkSum = (1 == AbstractBase::getValueFromFile("DG_HAS_CHECK_SUM"));
+bool TFunctionForm::OD_IsChkSum = true;
 //---------------------------------------------------------------------------
-__fastcall TFunctionForm1::TFunctionForm1(TComponent * Owner)
+__fastcall TFunctionForm::TFunctionForm(TComponent * Owner)
 :TForm(Owner)
 {
     Func_Chg = 0;
@@ -25,7 +25,7 @@ __fastcall TFunctionForm1::TFunctionForm1(TComponent * Owner)
 }
 
 //---------------------------------------------------------------------------
-void __fastcall TFunctionForm1::FormClose(TObject * Sender, TCloseAction & Action)
+void __fastcall TFunctionForm::FormClose(TObject * Sender, TCloseAction & Action)
 {
     delete[]OFunc;
     //Pstate
@@ -68,7 +68,7 @@ void __fastcall TFunctionForm1::FormClose(TObject * Sender, TCloseAction & Actio
 }
 
 //---------------------------------------------------------------------------
-void __fastcall TFunctionForm1::Pstate_CheckBox_Click(TObject * Sender)
+void __fastcall TFunctionForm::Pstate_CheckBox_Click(TObject * Sender)
 {
     if (Func_Chg == 0)
 	return;
@@ -79,7 +79,7 @@ void __fastcall TFunctionForm1::Pstate_CheckBox_Click(TObject * Sender)
 }
 
 //---------------------------------------------------------------------------
-void __fastcall TFunctionForm1::Pstate_ComboBox_Click(TObject * Sender)
+void __fastcall TFunctionForm::Pstate_ComboBox_Click(TObject * Sender)
 {
     if (Func_Chg == 0)
 	return;
@@ -90,7 +90,7 @@ void __fastcall TFunctionForm1::Pstate_ComboBox_Click(TObject * Sender)
 }
 
 //---------------------------------------------------------------------------
-void __fastcall TFunctionForm1::Pstate_LblEdit2_KeyPress(TObject * Sender, char &Key)
+void __fastcall TFunctionForm::Pstate_LblEdit2_KeyPress(TObject * Sender, char &Key)
 {
     TLabeledEdit *c = (TLabeledEdit *) Sender;
     int idx = StrToInt(c->Hint);
@@ -129,7 +129,7 @@ void __fastcall TFunctionForm1::Pstate_LblEdit2_KeyPress(TObject * Sender, char 
 }
 
 //---------------------------------------------------------------------------
-void __fastcall TFunctionForm1::AGBS_CheckBox_Click(TObject * Sender)
+void __fastcall TFunctionForm::AGBS_CheckBox_Click(TObject * Sender)
 {
     if (Func_Chg == 0)
 	return;
@@ -140,7 +140,7 @@ void __fastcall TFunctionForm1::AGBS_CheckBox_Click(TObject * Sender)
 }
 
 //---------------------------------------------------------------------------
-void __fastcall TFunctionForm1::AGBS_ComboBox_Click(TObject * Sender)
+void __fastcall TFunctionForm::AGBS_ComboBox_Click(TObject * Sender)
 {
     if (Func_Chg == 0)
 	return;
@@ -151,7 +151,7 @@ void __fastcall TFunctionForm1::AGBS_ComboBox_Click(TObject * Sender)
 }
 
 //---------------------------------------------------------------------------
-void __fastcall TFunctionForm1::AGBS_LblEdit2_KeyPress(TObject * Sender, char &Key)
+void __fastcall TFunctionForm::AGBS_LblEdit2_KeyPress(TObject * Sender, char &Key)
 {
     TLabeledEdit *c = (TLabeledEdit *) Sender;
     int idx = StrToInt(c->Hint);
@@ -189,7 +189,7 @@ void __fastcall TFunctionForm1::AGBS_LblEdit2_KeyPress(TObject * Sender, char &K
 }
 
 //---------------------------------------------------------------------------
-void __fastcall TFunctionForm1::FrcDg_CheckBox_Click(TObject * Sender)
+void __fastcall TFunctionForm::FrcDg_CheckBox_Click(TObject * Sender)
 {
     if (Func_Chg == 0)
 	return;
@@ -200,7 +200,7 @@ void __fastcall TFunctionForm1::FrcDg_CheckBox_Click(TObject * Sender)
 }
 
 //---------------------------------------------------------------------------
-void __fastcall TFunctionForm1::FrcDg_ComboBox_Click(TObject * Sender)
+void __fastcall TFunctionForm::FrcDg_ComboBox_Click(TObject * Sender)
 {
     if (Func_Chg == 0)
 	return;
@@ -211,7 +211,7 @@ void __fastcall TFunctionForm1::FrcDg_ComboBox_Click(TObject * Sender)
 }
 
 //---------------------------------------------------------------------------
-void __fastcall TFunctionForm1::FrcDg_LblEdit_KeyPress(TObject * Sender, char &Key)
+void __fastcall TFunctionForm::FrcDg_LblEdit_KeyPress(TObject * Sender, char &Key)
 {
     TLabeledEdit *c = (TLabeledEdit *) Sender;
     int idx = StrToInt(c->Hint);
@@ -244,7 +244,7 @@ void __fastcall TFunctionForm1::FrcDg_LblEdit_KeyPress(TObject * Sender, char &K
 }
 
 //---------------------------------------------------------------------------
-void __fastcall TFunctionForm1::OD_CheckBox_Click(TObject * Sender)
+void __fastcall TFunctionForm::OD_CheckBox_Click(TObject * Sender)
 {
     if (Func_Chg == 0)
 	return;
@@ -255,7 +255,7 @@ void __fastcall TFunctionForm1::OD_CheckBox_Click(TObject * Sender)
 }
 
 //--------------------------------------------------------------------------
-void __fastcall TFunctionForm1::OD_ComboBox_Click(TObject * Sender)
+void __fastcall TFunctionForm::OD_ComboBox_Click(TObject * Sender)
 {
     if (Func_Chg == 0)
 	return;
@@ -266,7 +266,7 @@ void __fastcall TFunctionForm1::OD_ComboBox_Click(TObject * Sender)
 }
 
 //---------------------------------------------------------------------------
-void __fastcall TFunctionForm1::OD_ComboBox2_Click(TObject * Sender)
+void __fastcall TFunctionForm::OD_ComboBox2_Click(TObject * Sender)
 {
     if (Func_Chg == 0)
 	return;
@@ -281,7 +281,7 @@ void __fastcall TFunctionForm1::OD_ComboBox2_Click(TObject * Sender)
 }
 
 //---------------------------------------------------------------------------
-void __fastcall TFunctionForm1::OD_ScrollBar_Scroll(TObject * Sender,
+void __fastcall TFunctionForm::OD_ScrollBar_Scroll(TObject * Sender,
 						    TScrollCode ScrollCode, int &ScrollPos)
 {
     TCheckBox *c = (TCheckBox *) Sender;
@@ -298,7 +298,7 @@ void __fastcall TFunctionForm1::OD_ScrollBar_Scroll(TObject * Sender,
 }
 
 //---------------------------------------------------------------------------
-void TFunctionForm1::Initial_DG_table()
+void TFunctionForm::Initial_DG_table()
 {
     sg_dg->Cells[1][0] = "R";	//RGB top row
     sg_dg->Cells[2][0] = "G";
@@ -326,7 +326,7 @@ void TFunctionForm1::Initial_DG_table()
     }
 }
 
-void __fastcall TFunctionForm1::FormCreate(TObject * Sender)
+void __fastcall TFunctionForm::FormCreate(TObject * Sender)
 {
     /*int ic_choice;
     if (MainForm->TCON_DEV == "11307") {
@@ -552,7 +552,7 @@ void __fastcall TFunctionForm1::FormCreate(TObject * Sender)
 //---------------------------------------------------------------------------
 
 // 20100608 Record the state of DG enable
-bool TFunctionForm1::DG_LUT_RW_start()
+bool TFunctionForm::DG_LUT_RW_start()
 {
     if (DGEN_idx == -1) {
 	ShowMessage("Unknown DG enabled index.");
@@ -574,7 +574,7 @@ bool TFunctionForm1::DG_LUT_RW_start()
 }
 
 // 20100608 Recover the state of DG enable
-void TFunctionForm1::DG_LUT_RW_over()
+void TFunctionForm::DG_LUT_RW_over()
 {
     if (CheckBox_FuncOn->Checked) {
 	return ;
@@ -586,7 +586,7 @@ void TFunctionForm1::DG_LUT_RW_over()
 }
 
 // 20100608 DG table operation enable/disable
-void TFunctionForm1::DG_LUT_FuncEnable(bool en_flag)
+void TFunctionForm::DG_LUT_FuncEnable(bool en_flag)
 {
     if (en_flag == true) {	// Table operation button enable
 	btn_dg_wrt->Enabled = true;
@@ -603,7 +603,7 @@ void TFunctionForm1::DG_LUT_FuncEnable(bool en_flag)
 
 // DG table write
 // 20100608 add enable record and revise EngineerForm->SetWrite_DG(...)
-void __fastcall TFunctionForm1::btn_dg_wrtClick(TObject * Sender)
+void __fastcall TFunctionForm::btn_dg_wrtClick(TObject * Sender)
 {
     DG_LUT_FuncEnable(0);	// Table operation button disable
     bool ok = DG_LUT_RW_start();	// Record the state of DG enable
@@ -634,7 +634,7 @@ void __fastcall TFunctionForm1::btn_dg_wrtClick(TObject * Sender)
 //---------------------------------------------------------------------------
 // DG table read
 // 20100608 add enable record and revise EngineerForm->SetRead_DG(...)
-void __fastcall TFunctionForm1::btn_dg_readClick(TObject * Sender)
+void __fastcall TFunctionForm::btn_dg_readClick(TObject * Sender)
 {
     DG_LUT_FuncEnable(0);	// Table operation button disable
     bool ok = DG_LUT_RW_start();	// Record the state of DG enable
@@ -668,7 +668,7 @@ void __fastcall TFunctionForm1::btn_dg_readClick(TObject * Sender)
 
 // DG table, Load from text file
 // 20100608 Add table operation Enable/ Disable
-void __fastcall TFunctionForm1::btn_dg_loadClick(TObject * Sender)
+void __fastcall TFunctionForm::btn_dg_loadClick(TObject * Sender)
 {
     DG_LUT_FuncEnable(0);
     String Fpath;
@@ -697,7 +697,7 @@ void __fastcall TFunctionForm1::btn_dg_loadClick(TObject * Sender)
 //---------------------------------------------------------------------------
 // DG table, Save to text file
 // 20100608 add table operation enable/ disble
-void __fastcall TFunctionForm1::btn_dg_saveClick(TObject * Sender)
+void __fastcall TFunctionForm::btn_dg_saveClick(TObject * Sender)
 {
     DG_LUT_FuncEnable(0);
     if (!SaveDialog->Execute())
@@ -719,7 +719,7 @@ void __fastcall TFunctionForm1::btn_dg_saveClick(TObject * Sender)
 
 //---------------------------------------------------------------------------
 
-void __fastcall TFunctionForm1::Btn_FRC_DG_reloadClick(TObject * Sender)
+void __fastcall TFunctionForm::Btn_FRC_DG_reloadClick(TObject * Sender)
 {
     Btn_FRC_DG_reload->Enabled = false;
     DG_LUT_FuncEnable(0);
@@ -757,7 +757,7 @@ void __fastcall TFunctionForm1::Btn_FRC_DG_reloadClick(TObject * Sender)
 
 //---------------------------------------------------------------------------
 
-void __fastcall TFunctionForm1::Btn_Pstate_reloadClick(TObject * Sender)
+void __fastcall TFunctionForm::Btn_Pstate_reloadClick(TObject * Sender)
 {
     Btn_Pstate_reload->Enabled = false;
     Func_Chg = 0;
@@ -795,7 +795,7 @@ void __fastcall TFunctionForm1::Btn_Pstate_reloadClick(TObject * Sender)
 
 //---------------------------------------------------------------------------
 
-void __fastcall TFunctionForm1::Btn_AGBS_reloadClick(TObject * Sender)
+void __fastcall TFunctionForm::Btn_AGBS_reloadClick(TObject * Sender)
 {
     Btn_AGBS_reload->Enabled = false;
     Func_Chg = 0;
@@ -833,7 +833,7 @@ void __fastcall TFunctionForm1::Btn_AGBS_reloadClick(TObject * Sender)
 //---------------------------------------------------------------------------
 
 // 20100608 Record the state of OD enable
-bool TFunctionForm1::OD_LUT_RW_start()
+bool TFunctionForm::OD_LUT_RW_start()
 {
     if (ODEN_idx == -1) {
 	ShowMessage("Unknown OD enabled index.");
@@ -854,7 +854,7 @@ bool TFunctionForm1::OD_LUT_RW_start()
 
 //---------------------------------------------------------------------------
 // 20100608 Recover the state of OD enable
-void TFunctionForm1::OD_LUT_RW_over()
+void TFunctionForm::OD_LUT_RW_over()
 {
     // reload en state
     int set_val = (OD_EN_State == false ? 0 : 1);
@@ -864,7 +864,7 @@ void TFunctionForm1::OD_LUT_RW_over()
 
 //---------------------------------------------------------------------------
 // 20100608 OD table operation enable/disable
-void TFunctionForm1::OD_LUT_FuncEnable(bool flag_en)
+void TFunctionForm::OD_LUT_FuncEnable(bool flag_en)
 {
     if (flag_en == true) {	// Table operation button enable
 	btn_od_read->Enabled = true;
@@ -882,7 +882,7 @@ void TFunctionForm1::OD_LUT_FuncEnable(bool flag_en)
 //---------------------------------------------------------------------------
 // OD table reload
 // 20100608 Add operation Disable befor reload and Enable after reload
-void __fastcall TFunctionForm1::Btn_OD_reloadClick(TObject * Sender)
+void __fastcall TFunctionForm::Btn_OD_reloadClick(TObject * Sender)
 {
     Btn_OD_reload->Enabled = false;
     OD_LUT_FuncEnable(0);
@@ -932,7 +932,7 @@ void __fastcall TFunctionForm1::Btn_OD_reloadClick(TObject * Sender)
 
 //---------------------------------------------------------------------------
 
-void __fastcall TFunctionForm1::FormKeyDown(TObject * Sender, WORD & Key, TShiftState Shift)
+void __fastcall TFunctionForm::FormKeyDown(TObject * Sender, WORD & Key, TShiftState Shift)
 {
     if (Key == 0x40) {
 	Btn_FRC_DG_reloadClick(Sender);
@@ -947,7 +947,7 @@ void __fastcall TFunctionForm1::FormKeyDown(TObject * Sender, WORD & Key, TShift
 // OD table read
 // 20100608 Add Table Enable record and revise EngineerForm->SetRead_PG(...)
 // for 2 types of IP (AUO 18x18 & vender 17x17)
-void __fastcall TFunctionForm1::btn_od_readClick(TObject * Sender)
+void __fastcall TFunctionForm::btn_od_readClick(TObject * Sender)
 {
     OD_LUT_FuncEnable(0);	// Table operation button disable
     bool ok = OD_LUT_RW_start();	// Record the state of OD enable
@@ -1023,7 +1023,7 @@ void __fastcall TFunctionForm1::btn_od_readClick(TObject * Sender)
 // OD table write
 // 20100608 Add Table Enable record and revise EngineerForm->SetWrite_PG(...)
 // for 2 types of IP (AUO 18x18 & vender 17x17)
-void __fastcall TFunctionForm1::btn_od_writeClick(TObject * Sender)
+void __fastcall TFunctionForm::btn_od_writeClick(TObject * Sender)
 {
     OD_LUT_FuncEnable(0);	// Table operation button disable
     bool ok = OD_LUT_RW_start();	// Record the state of OD enable
@@ -1118,7 +1118,7 @@ void __fastcall TFunctionForm1::btn_od_writeClick(TObject * Sender)
 // OD table Load
 // 20100608 Add Table Operation Disable/Enable
 // and Load table for 2 types of IP (AUO 18x18 & vender 17x17)
-void __fastcall TFunctionForm1::btn_od_loadClick(TObject * Sender)
+void __fastcall TFunctionForm::btn_od_loadClick(TObject * Sender)
 {				// File Format: 上方是OD1 17x17 table, 下方是OD2 17x17 table
 
     String Fpath;
@@ -1186,7 +1186,7 @@ void __fastcall TFunctionForm1::btn_od_loadClick(TObject * Sender)
 // OD table Save
 // 20100608 Add Table Operation Disable/Enable
 // and Save table for 2 types of IP (AUO 18x18 & vender 17x17)
-void __fastcall TFunctionForm1::btn_od_saveClick(TObject * Sender)
+void __fastcall TFunctionForm::btn_od_saveClick(TObject * Sender)
 {				// File Format: 上方是OD1 17x17 table, 下方是OD2 17x17 table
 
     if (!SaveDialog->Execute()) {
@@ -1219,7 +1219,7 @@ void __fastcall TFunctionForm1::btn_od_saveClick(TObject * Sender)
 
 //---------------------------------------------------------------------------
 // 20100608 Choose OD table as Difference or Target Value
-void __fastcall TFunctionForm1::rg_od_table_typeClick(TObject * Sender)
+void __fastcall TFunctionForm::rg_od_table_typeClick(TObject * Sender)
 {
     if (sg_od_1->Cells[2][2] == "")
 	return;

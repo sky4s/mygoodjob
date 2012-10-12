@@ -1,4 +1,4 @@
-object FunctionForm1: TFunctionForm1
+object FunctionForm: TFunctionForm
   Left = 558
   Top = 241
   Width = 724
