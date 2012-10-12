@@ -12,7 +12,7 @@ USEFORM("src\colorip\gui\TC3DForm.cpp", C3DForm);
 USEFORM("src\colorip\gui\TCMForm.cpp", CMForm);
 USEFORM("src\colorip\gui\TCEForm.cpp", CEForm);
 USEFORM("src\colorip\gui\Engineering.cpp", EngineerForm);
-USEFORM("src\colorip\gui\Function1.cpp", FunctionForm1);
+USEFORM("src\colorip\gui\TFunctionForm.cpp", FunctionForm);
 USEFORM("src\colorip\gui\THSVV1Form.cpp", HSVV1Form);
 USEFORM("src\colorip\gui\offset.cpp", offsetForm);
 USEFORM("src\colorip\gui\SAT.cpp", SATForm);

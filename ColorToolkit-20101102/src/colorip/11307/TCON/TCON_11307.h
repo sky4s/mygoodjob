@@ -7,7 +7,7 @@
 //---------------------------------------------------------------------------
 
 
-class TCON_11307:public AbstTCON {
+/*class TCON_11307:public AbstTCON {
   public:
     //device
     virtual TBit * SetDevChkBx();
@@ -31,7 +31,7 @@ class TCON_11307:public AbstTCON {
     virtual TBit3 *SetTimLblE3();
 
      TCON_11307();
-};
+};*/
  
 
 //--------------------------------------------------------------------------
