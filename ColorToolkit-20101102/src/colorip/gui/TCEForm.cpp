@@ -1164,7 +1164,7 @@ void __fastcall TCEForm::FormClose(TObject * Sender, TCloseAction & Action)
 {
     delete[]OCE;
     Action = caFree;
-    MainForm->CEFormNULL();
+    //MainForm->CEFormNULL();
 }
 
 //---------------------------------------------------------------------------

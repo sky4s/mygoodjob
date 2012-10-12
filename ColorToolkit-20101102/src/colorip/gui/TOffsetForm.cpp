@@ -357,7 +357,7 @@ void __fastcall TOffsetForm::FormClose(TObject * Sender, TCloseAction & Action)
     delete[]ScrlB2;
 
     Action = caFree;
-    MainForm->offsetFormNULL();
+    //MainForm->offsetFormNULL();
 }
 
 //---------------------------------------------------------------------------

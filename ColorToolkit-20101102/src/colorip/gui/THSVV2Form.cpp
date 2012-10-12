@@ -226,7 +226,7 @@ void __fastcall THSVV2Form::FormClose(TObject * Sender, TCloseAction & Action)
 
     Action = caFree;
     tpColorThread->Terminate();
-    MainForm->HSVFormNULL();
+    //MainForm->HSVFormNULL();
 }
 
 //---------------------------------------------------------------------------

@@ -36,7 +36,7 @@ void __fastcall TSharpnessV1Form::FormClose(TObject * Sender, TCloseAction & Act
     delete[]scrlb;
     delete[]ScrlB;
     Action = caFree;
-    MainForm->SharpnessFormNULL();
+    //MainForm->SharpnessFormNULL();
 }
 
 //---------------------------------------------------------------------------
