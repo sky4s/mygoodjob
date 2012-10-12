@@ -105,19 +105,12 @@ class TMainForm:public TForm {
      __fastcall TMainForm(TComponent * Owner);
     int C3D_type;
     void reload_all(TObject * Sender);
-    void FunctionFormNULL();
-    void CMFormNULL();
-    void SharpnessFormNULL();
-    void CEFormNULL();
-    void HSVFormNULL();
-    void C3DFormNULL();
-    void SATFormNULL();
-    void offsetFormNULL();
+
 
 
     bool addressFromFile;
     static AnsiString AddressFile;
-
+     //FunctionFormNULL();
 };
 
 
