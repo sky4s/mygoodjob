@@ -160,7 +160,7 @@ class THSVV2Form:public TForm, cms::util::CallBackIF, RGBInfoCallbackIF, Pattern
     void __fastcall stringGrid_HSVDrawCell(TObject * Sender, int ACol,
 					   int ARow, TRect & Rect, TGridDrawState State);
     void __fastcall stringGrid_HSVSelectCell(TObject * Sender, int ACol,
-					     int ARow,const bool & CanSelect);
+					     int ARow, const bool & CanSelect);
     void __fastcall hsvAdjustsb_c3d_Manual39_hChange(TObject * Sender);
     void __fastcall RadioButton_deg60baseClick(TObject * Sender);
     void __fastcall RadioButton_deg30baseClick(TObject * Sender);
@@ -406,7 +406,7 @@ class THSVV2Form:public TForm, cms::util::CallBackIF, RGBInfoCallbackIF, Pattern
 
 
 //---------------------------------------------------------------------------
-
+extern PACKAGE THSVV2Form *HSVV2Form;
 //---------------------------------------------------------------------------
 #endif
 

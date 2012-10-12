@@ -10,7 +10,7 @@
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
 #pragma resource "*.dfm"
-
+TOffsetForm *offsetForm;
 //---------------------------------------------------------------------------
 __fastcall TOffsetForm::TOffsetForm(TComponent * Owner)
 :TForm(Owner)
@@ -187,15 +187,15 @@ void __fastcall TOffsetForm::LblE4_KeyPress(TObject * Sender, char &Key)
 void __fastcall TOffsetForm::FormCreate(TObject * Sender)
 {
     /*int ic_choice;
-    if (MainForm->TCON_DEV == "11307")
-	ic_choice = 0;
+       if (MainForm->TCON_DEV == "11307")
+       ic_choice = 0;
 
-    switch (ic_choice) {
-    case 0:*/
-	OoffsetForm = new OffsetForm_11307;
-	/*break;
+       switch (ic_choice) {
+       case 0: */
+    OoffsetForm = new OffsetForm_11307;
+    /*break;
 
-    }     */
+       }     */
 
 	/****************************************************************
         //      CheckBox: ChkBox_Nbr=3                                   //

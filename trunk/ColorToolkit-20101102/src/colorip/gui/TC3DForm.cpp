@@ -10,7 +10,7 @@
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
 #pragma resource "*.dfm"
-//TC3DForm1 *C3DForm1;
+ TC3DForm *C3DForm;
 int **c3d_r, **c3d_g, **c3d_b;
 bool C3D_IsChkSum = 1;
 int TBL_SIZE;

@@ -11,6 +11,7 @@
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
 #pragma resource "*.dfm"
+TFunctionForm *FunctionForm;
 //static bool DG_IsChkSum = true;       //(1 == AbstractBase::getValueFromFile("DG_HAS_CHECK_SUM"));
 //static bool OD_IsChkSum = true;
 bool TFunctionForm::DG_IsChkSum = (1 == AbstractBase::getValueFromFile("DG_HAS_CHECK_SUM"));

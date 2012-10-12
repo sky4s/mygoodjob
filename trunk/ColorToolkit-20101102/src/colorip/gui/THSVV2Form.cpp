@@ -36,6 +36,7 @@
 #pragma link "TColorPickerFrame"
 #pragma link "THSVAdjustFrame"
 #pragma resource "*.dfm"
+THSVV2Form *HSVV2Form;
 
 #define sRGBColorSpace bptr < Dep::RGBColorSpace >(new \
 	    Dep::RGBColorSpace(Dep::CSType::sRGB_gamma22, cms::Illuminant::D65, 2.2, 0.64, 0.33, \
@@ -377,45 +378,45 @@ bool THSVV2Form::Load_HSV(String Fpath)
     //=========================================================================
 
     /*if (false) {
-	char *buffer = Load_File(Fpath);
-	if (buffer == NULL) {
+       char *buffer = Load_File(Fpath);
+       if (buffer == NULL) {
 
-	    return false;
-	}
-	for (int i = 0; i < HUE_COUNT; i++) {
-	    hueTable[i] = -1;
-	    satTable[i] = -1;
-	    valTable[i] = 0;
-	}
+       return false;
+       }
+       for (int i = 0; i < HUE_COUNT; i++) {
+       hueTable[i] = -1;
+       satTable[i] = -1;
+       valTable[i] = 0;
+       }
 
 
 
-	//取出檔案中的數值
-	int c = 0;
-	char *pch;
-	pch = strtok(buffer, "\n\t");
-	int Length = lut_addr[0].LutNum();
-	while (c < Length && pch != NULL) {
-	    if (pch == NULL) {
-		ShowMessage(" Can 't open Hue table file.");
-		return false;	//資料中的data缺少
-	    }
-	    int index = c / 3;
-	    if (c % 3 == 0) {
-		//hueTable[index] = hueTableTemp[index] = StrToInt((AnsiString) pch);
-		hueTable[index] = StrToInt((AnsiString) pch);
-	    } else if (c % 3 == 1) {
-		//satTable[index] = satTableTemp[index] = StrToInt((AnsiString) pch);
-		satTable[index] = StrToInt((AnsiString) pch);
-	    } else {
-		//valTable[index] = valTableTemp[index] = StrToInt((AnsiString) pch);
-		valTable[index] = StrToInt((AnsiString) pch);
-	    }
-	    pch = strtok(NULL, "\n\t");
-	    c++;
-	}
-	delete[]buffer;
-    } */
+       //取出檔案中的數值
+       int c = 0;
+       char *pch;
+       pch = strtok(buffer, "\n\t");
+       int Length = lut_addr[0].LutNum();
+       while (c < Length && pch != NULL) {
+       if (pch == NULL) {
+       ShowMessage(" Can 't open Hue table file.");
+       return false;    //資料中的data缺少
+       }
+       int index = c / 3;
+       if (c % 3 == 0) {
+       //hueTable[index] = hueTableTemp[index] = StrToInt((AnsiString) pch);
+       hueTable[index] = StrToInt((AnsiString) pch);
+       } else if (c % 3 == 1) {
+       //satTable[index] = satTableTemp[index] = StrToInt((AnsiString) pch);
+       satTable[index] = StrToInt((AnsiString) pch);
+       } else {
+       //valTable[index] = valTableTemp[index] = StrToInt((AnsiString) pch);
+       valTable[index] = StrToInt((AnsiString) pch);
+       }
+       pch = strtok(NULL, "\n\t");
+       c++;
+       }
+       delete[]buffer;
+       } */
     //=========================================================================
 
 
@@ -462,12 +463,12 @@ void __fastcall THSVV2Form::btn_hsv_saveClick(TObject * Sender)
     // old
     //=========================================================================
     /*if (false) {
-	FILE *fptr = fopen(Fpath.c_str(), "w");
-	for (int i = 0; i < HUE_COUNT; i++) {
-	    fprintf(fptr, "%d\t%d\t%d\n", hueTable[i], satTable[i], valTable[i]);
-	}
-	fclose(fptr);
-    }*/
+       FILE *fptr = fopen(Fpath.c_str(), "w");
+       for (int i = 0; i < HUE_COUNT; i++) {
+       fprintf(fptr, "%d\t%d\t%d\n", hueTable[i], satTable[i], valTable[i]);
+       }
+       fclose(fptr);
+       } */
     //=========================================================================
 }
 
@@ -803,7 +804,7 @@ int_array THSVV2Form::getHSVAdjustValue(int index)
     return adjustValue;
 }
 void __fastcall THSVV2Form::stringGrid_HSVSelectCell(TObject * Sender,
-						     int ACol, int ARow,const bool & CanSelect)
+						     int ACol, int ARow, const bool & CanSelect)
 {
     if (-1 != ACol) {
 	RadioButton_Single->Checked = true;
@@ -1346,7 +1347,7 @@ void __fastcall THSVV2Form::hsvAdjustButton_HueResetClick(TObject * Sender)
 
 void __fastcall THSVV2Form::stringGrid_HSVKeyDown(TObject * Sender, WORD & Key, TShiftState Shift)
 {
-    FormKeyPress(Sender, (char &)Key);
+    FormKeyPress(Sender, (char &) Key);
 }
 
 //---------------------------------------------------------------------------
@@ -1623,8 +1624,8 @@ void THSVV2Form::setupPatternForm()
 
     const int stdSize = 5;
     /*int valueArray[stdSize] = {
-	192, 192, 192, 192, 192
-    };*/
+       192, 192, 192, 192, 192
+       }; */
     double saturationArray[stdSize] = {
 	33.333333333333336, 50, 58.333333333333336, 66.66666666666667, 75	/*, 1, .5, 1 */
     };
@@ -2050,11 +2051,11 @@ void __fastcall THSVV2Form::Button_SaveOldFormatClick(TObject * Sender)
     // old
     //=========================================================================
     //if (true) {
-	FILE *fptr = fopen(Fpath.c_str(), "w");
-	for (int i = 0; i < HUE_COUNT; i++) {
-	    fprintf(fptr, "%d\t%d\t%d\n", hueTable[i], satTable[i], valTable[i]);
-	}
-	fclose(fptr);
+    FILE *fptr = fopen(Fpath.c_str(), "w");
+    for (int i = 0; i < HUE_COUNT; i++) {
+	fprintf(fptr, "%d\t%d\t%d\n", hueTable[i], satTable[i], valTable[i]);
+    }
+    fclose(fptr);
     //}
     //=========================================================================
 }

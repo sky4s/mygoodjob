@@ -62,7 +62,7 @@ class TSaturationForm:public TForm {
 
 };
 //---------------------------------------------------------------------------
-//extern PACKAGE TSaturationForm *SATForm1;
+extern PACKAGE TSaturationForm *SaturationForm;
 //---------------------------------------------------------------------------
 #endif
 
