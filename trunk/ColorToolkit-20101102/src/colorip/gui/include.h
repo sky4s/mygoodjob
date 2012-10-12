@@ -1,5 +1,5 @@
 //#include "TCON1.h"
-#include "Function1.h"
+#include "TFunctionForm.h"
 //#include "DCR1.h"
 //#include "Vender1.h"
 #include "TCMForm.h"
