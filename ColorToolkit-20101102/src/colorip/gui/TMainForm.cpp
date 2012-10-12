@@ -77,7 +77,7 @@ void __fastcall TMainForm::mn_FunctionClick(TObject * Sender)
 	FunctionForm->Show();
     else {
 	//if (TCON_DEV == "11307") {
-	FunctionForm = new TFunctionForm1(this);
+	FunctionForm = new TFunctionForm(this);
 	FunctionForm->Show();
 	//}
     }
