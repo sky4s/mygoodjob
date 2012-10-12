@@ -481,7 +481,7 @@ void __fastcall TMainForm::mn_SATClick(TObject * Sender)
 	SATForm->Show();
     else {
 	//if (TCON_DEV == "11307") {
-	SATForm = new TSATForm(this);
+	SATForm = new TSaturationForm(this);
 	SATForm->Show();
 	//}
     }
