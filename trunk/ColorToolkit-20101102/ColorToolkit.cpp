@@ -15,7 +15,7 @@ USEFORM("src\colorip\gui\TEngineerForm.cpp", EngineerForm);
 USEFORM("src\colorip\gui\TFunctionForm.cpp", FunctionForm);
 USEFORM("src\colorip\gui\THSVV1Form.cpp", HSVV1Form);
 USEFORM("src\colorip\gui\TOffsetForm.cpp", OffsetForm);
-USEFORM("src\colorip\gui\SAT.cpp", SATForm);
+USEFORM("src\colorip\gui\TSaturationForm.cpp", SaturationForm);
 USEFORM("src\colorip\gui\TSharpnessV1Form.cpp", SharpnessV1Form);
 USEFORM("src\colorip\gui\TSharpnessV2Form.cpp", SharpnessV2Form);
 USEFORM("src\colorip\gui\TMainForm.cpp", MainForm);

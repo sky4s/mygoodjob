@@ -2,7 +2,7 @@
 
 #ifndef SAT_11307H
 #define SAT_11307H
-#include "SAT.h"
+#include "TSaturationForm.h"
 //---------------------------------------------------------------------------
 class SATForm_11307:public AbstSATForm
 {
