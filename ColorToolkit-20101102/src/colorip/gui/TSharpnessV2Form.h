@@ -144,7 +144,7 @@ class TSharpnessV2Form:public TForm {
     void __fastcall FormCreate(TObject * Sender);
     void __fastcall CheckBox_Click(TObject * Sender);
     void __fastcall ComboBox_Click(TObject * Sender);
-    void __fastcall LblE3_KeyPress(TObject * Sender, char &Key);
+    void __fastcall LblE3_KeyPress(TObject * Sender,  char &Key);
     void __fastcall ScrollBar_Change(TObject * Sender);
     void __fastcall SP_LUTMouseDown(TObject * Sender,
 				    TMouseButton Button, TShiftState Shift, int X, int Y);
@@ -159,7 +159,7 @@ class TSharpnessV2Form:public TForm {
     void __fastcall btn_sp_lut_readClick(TObject * Sender);
     void __fastcall Btn_SP_reloadClick(TObject * Sender);
     void __fastcall FormKeyDown(TObject * Sender, WORD & Key, TShiftState Shift);
-    void __fastcall Edit_ResolutionHKeyPress(TObject * Sender, char &Key);
+    void __fastcall Edit_ResolutionHKeyPress(TObject * Sender,const char &Key);
     void __fastcall FormKeyPress(TObject * Sender, char &Key);
   private:			// User declarations
      bool SP_IsChkSum;

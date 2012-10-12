@@ -176,6 +176,8 @@ double THSVV2Form::getSaturation()
 	return .75;
     case 3:
 	return 1;
+    default:
+	return -1;
     }
 }
 
@@ -191,6 +193,8 @@ int THSVV2Form::getValue()
 	return 192;
     case 3:
 	return 255;
+    default:
+	return -1;
     }
 }
 
@@ -371,7 +375,8 @@ bool THSVV2Form::Load_HSV(String Fpath)
     //=========================================================================
     // old 
     //=========================================================================
-    if (false) {
+
+    /*if (false) {
 	char *buffer = Load_File(Fpath);
 	if (buffer == NULL) {
 
@@ -410,7 +415,7 @@ bool THSVV2Form::Load_HSV(String Fpath)
 	    c++;
 	}
 	delete[]buffer;
-    }
+    } */
     //=========================================================================
 
 
@@ -456,13 +461,13 @@ void __fastcall THSVV2Form::btn_hsv_saveClick(TObject * Sender)
     //=========================================================================
     // old
     //=========================================================================
-    if (false) {
+    /*if (false) {
 	FILE *fptr = fopen(Fpath.c_str(), "w");
 	for (int i = 0; i < HUE_COUNT; i++) {
 	    fprintf(fptr, "%d\t%d\t%d\n", hueTable[i], satTable[i], valTable[i]);
 	}
 	fclose(fptr);
-    }
+    }*/
     //=========================================================================
 }
 
@@ -759,8 +764,8 @@ RGB_ptr THSVV2Form::getHueRGB(int index, double s, int v)
 }
 
 void __fastcall THSVV2Form::stringGrid_HSVDrawCell(TObject * Sender,
-						    int ACol, int ARow,
-						    TRect & Rect, TGridDrawState State)
+						   int ACol, int ARow,
+						   TRect & Rect, TGridDrawState State)
 {
     using namespace Dep;
 
@@ -798,7 +803,7 @@ int_array THSVV2Form::getHSVAdjustValue(int index)
     return adjustValue;
 }
 void __fastcall THSVV2Form::stringGrid_HSVSelectCell(TObject * Sender,
-						      int ACol, int ARow, bool & CanSelect)
+						     int ACol, int ARow,const bool & CanSelect)
 {
     if (-1 != ACol) {
 	RadioButton_Single->Checked = true;
@@ -954,7 +959,7 @@ void __fastcall THSVV2Form::hsvAdjustsb_c3d_Manual39_hChange(TObject * Sender)
 	    //storeHSVPosition = nil_int_array;
 	}
 	//local ½Õ¾ã
-	int standardHueValue = hueAngleToValue(getHueAngle(index));
+	//int standardHueValue = hueAngleToValue(getHueAngle(index));
 
 	hueTable[index] = storeHSVPosition4DoubleHue[0] + h;
 	satTable[index] = storeHSVPosition4DoubleHue[1] + s;
@@ -1341,7 +1346,7 @@ void __fastcall THSVV2Form::hsvAdjustButton_HueResetClick(TObject * Sender)
 
 void __fastcall THSVV2Form::stringGrid_HSVKeyDown(TObject * Sender, WORD & Key, TShiftState Shift)
 {
-    FormKeyPress(Sender, Key);
+    FormKeyPress(Sender, (char &)Key);
 }
 
 //---------------------------------------------------------------------------
@@ -1535,7 +1540,7 @@ void THSVV2Form::callback(int_array rgbValues)
     Dep::HSV hsv(rgb);
     double_array hsviValues = hsv.getHSVIValues();
     double vv = hsviValues[2];
-    double ii = hsviValues[3];
+    //double ii = hsviValues[3];
     double showVale = vv * 2.55;
 
     Edit_CursorColorHSV->Text =
@@ -1563,7 +1568,7 @@ void THSVV2Form::callback(int_array rgbValues)
 	Dep::HSV hsv(rgb);
 	double_array hsviValues = hsv.getHSVIValues();
 	double vv = hsviValues[2];
-	double ii = hsviValues[3];
+	//double ii = hsviValues[3];
 	double showVale = vv * 2.55;
 	Edit_TargetCursorColorHSV->Text =
 	    "H" + IntToStr((int) hsviValues[0]) +
@@ -1596,7 +1601,7 @@ void THSVV2Form::selectColor()
 }
 
 void THSVV2Form::imageMousePressed(TObject * Sender, TMouseButton Button,
-				    TShiftState Shift, int X, int Y)
+				   TShiftState Shift, int X, int Y)
 {
     selectColor();
 
@@ -1617,9 +1622,9 @@ void THSVV2Form::setupPatternForm()
     HSV_vector_ptr hsvVector(new HSV_vector());
 
     const int stdSize = 5;
-    int valueArray[stdSize] = {
-	192, 192, 192, 192, 192	/*, 128, 255, 255 */
-    };
+    /*int valueArray[stdSize] = {
+	192, 192, 192, 192, 192
+    };*/
     double saturationArray[stdSize] = {
 	33.333333333333336, 50, 58.333333333333336, 66.66666666666667, 75	/*, 1, .5, 1 */
     };
@@ -1676,7 +1681,7 @@ void THSVV2Form::setupPatternForm()
 	break;
     }
 
-    for (int x = 0; x < hueVector.size(); x++) {
+    for (unsigned int x = 0; x < hueVector.size(); x++) {
 	int h = hueVector[x];
 	if (customPattern) {
 	    hsvValues[0] = h;
@@ -1705,7 +1710,7 @@ void THSVV2Form::setupPatternForm()
 
     if (true == CheckBox_OoG->Enabled) {
 	int_vector_ptr whiteIndexVector(new int_vector());
-	for (int x = 0; x < hsvVector->size(); x++) {
+	for (unsigned int x = 0; x < hsvVector->size(); x++) {
 	    HSV_ptr hsv = (*hsvVector)[x];
 	    RGB_ptr rgb = hsv->toRGB();
 	    int_array rgbValues(new int[3]);
@@ -1888,10 +1893,10 @@ void __fastcall THSVV2Form::RadioButton_MemoryColorClick(TObject * Sender)
 
 
 void __fastcall THSVV2Form::RadioButton_MemoryColorMouseDown(TObject *
-							      Sender,
-							      TMouseButton
-							      Button,
-							      TShiftState Shift, int X, int Y)
+							     Sender,
+							     TMouseButton
+							     Button,
+							     TShiftState Shift, int X, int Y)
 {
     RadioButton_MemoryColorClick(Sender);
 }
@@ -2025,7 +2030,7 @@ void __fastcall THSVV2Form::RadioButton_LocalClick(TObject * Sender)
 
 void __fastcall THSVV2Form::RadioGroup_GlobalClick(TObject * Sender)
 {
-    int index = RadioGroup_Global->ItemIndex;
+    //int index = RadioGroup_Global->ItemIndex;
 }
 
 //---------------------------------------------------------------------------
@@ -2044,13 +2049,13 @@ void __fastcall THSVV2Form::Button_SaveOldFormatClick(TObject * Sender)
     //=========================================================================
     // old
     //=========================================================================
-    if (true) {
+    //if (true) {
 	FILE *fptr = fopen(Fpath.c_str(), "w");
 	for (int i = 0; i < HUE_COUNT; i++) {
 	    fprintf(fptr, "%d\t%d\t%d\n", hueTable[i], satTable[i], valTable[i]);
 	}
 	fclose(fptr);
-    }
+    //}
     //=========================================================================
 }
 

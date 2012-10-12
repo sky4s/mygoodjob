@@ -172,13 +172,13 @@ class TCMForm:public TForm {
     void __fastcall btn_CM2_WriteClick(TObject * Sender);
     void __fastcall btn_CM3_WriteClick(TObject * Sender);
     void __fastcall sb_cm11Change(TObject * Sender);
-    void __fastcall CM1_keyPress(TObject * Sender, char &Key);
+    void __fastcall CM1_keyPress(TObject * Sender,const char &Key);
     void __fastcall rg_CM1_modeClick(TObject * Sender);
     void __fastcall sb_cm12Change(TObject * Sender);
     void __fastcall sb_cm13Change(TObject * Sender);
-    void __fastcall CM2_keyPress(TObject * Sender, char &Key);
+    void __fastcall CM2_keyPress(TObject * Sender,const char &Key);
     void __fastcall sb_cm21Change(TObject * Sender);
-    void __fastcall CM3_keyPress(TObject * Sender, char &Key);
+    void __fastcall CM3_keyPress(TObject * Sender,const char &Key);
     void __fastcall sb_cm22Change(TObject * Sender);
     void __fastcall sb_cm23Change(TObject * Sender);
     void __fastcall sb_cm31Change(TObject * Sender);

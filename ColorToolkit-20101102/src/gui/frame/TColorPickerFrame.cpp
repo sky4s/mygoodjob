@@ -13,7 +13,7 @@
 //其他庫頭文件
 
 //本項目內頭文件
-#include <c3d/core.h>
+#include <gui/util/core.h>
 
 //本項目內gui頭文件
 

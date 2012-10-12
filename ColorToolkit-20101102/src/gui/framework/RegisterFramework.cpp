@@ -49,23 +49,23 @@ namespace gui {
 	   ToDo
 	 */
 	RegisterType_ptr RegisterMap::getRegister(std::string regname, int_vector_ptr intVector) {
-	    if (true) {
-		RegisterType_ptr result(new RegisterType(regname));
-		return result;
-	    }
-	    int size = intVector->size();
-	    RegisterType_ptr reg;
-	    switch (size) {
-	    case 3:		//TBit1
-	    case 6:		//TBit2
-	    case 9:		//TBit3
-	    case 12:		//TBit4
-		reg = RegisterType_ptr(new BitRegister(regname, intVector));
-		break;
-	    case 4:		//TLUT
-		break;
-	    };
-	    return reg;
+	    //if (true) {
+	    RegisterType_ptr result(new RegisterType(regname));
+	    return result;
+	    /*}
+	       int size = intVector->size();
+	       RegisterType_ptr reg;
+	       switch (size) {
+	       case 3:          //TBit1
+	       case 6:          //TBit2
+	       case 9:          //TBit3
+	       case 12:         //TBit4
+	       reg = RegisterType_ptr(new BitRegister(regname, intVector));
+	       break;
+	       case 4:          //TLUT
+	       break;
+	       };
+	       return reg; */
 	};
 	RegisterType_ptr RegisterMap::getRegister(std::string regname) {
 	    //_NULL是原本的 tcon header定義不用顯示的關鍵字
@@ -426,18 +426,18 @@ namespace gui {
 	void RegisterFramework::setRegisterFilename(std::string filename) {
 	    registerMap = RegisterMap_ptr(new RegisterMap(filename));
 	};
-
+	static  const char &Space = ' ';
 	void __fastcall RegisterFramework::onClick(TObject * Sender) {
 	    TCheckBox *chechBox = dynamic_cast < TCheckBox * >(Sender);
 	    if (null != chechBox) {
 		string regname = ctrl2nameMap[chechBox];
-		simpleEventHandler(regname, chechBox, ' ');
+		simpleEventHandler(regname, chechBox, Space);
 		return;
 	    }
 	    TComboBox *comboBox = dynamic_cast < TComboBox * >(Sender);
 	    if (null != comboBox) {
 		string regname = ctrl2nameMap[comboBox];
-		simpleEventHandler(regname, comboBox, ' ');
+		simpleEventHandler(regname, comboBox, Space);
 	    }
 	};
 	void __fastcall RegisterFramework::onKeyPress(TObject * Sender, char &Key) {
@@ -451,11 +451,11 @@ namespace gui {
 	    TScrollBar *scroll = dynamic_cast < TScrollBar * >(Sender);
 	    if (null != scroll) {
 		string regname = ctrl2nameMap[scroll];
-		simpleEventHandler(regname, scroll, ' ');
+		simpleEventHandler(regname, scroll, Space);
 
 	    }
 	};
-	void RegisterFramework::simpleEventHandler(std::string regname, TObject * sender, char &key) {
+	void RegisterFramework::simpleEventHandler(std::string regname, TObject * sender,const char &key) {
 	    RegisterType_ptr regType = registerMap->getRegister(regname);
 	    if (0 != regType->originalOnChangeFunc) {
 		regType->originalOnChangeFunc(sender);

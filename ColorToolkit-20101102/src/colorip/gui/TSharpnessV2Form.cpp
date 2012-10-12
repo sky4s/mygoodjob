@@ -83,6 +83,7 @@ void __fastcall TSharpnessV2Form::CheckBox_Click(TObject * Sender)
 }
 
 //---------------------------------------------------------------------------
+static const char &Space = ' ';
 void __fastcall TSharpnessV2Form::ComboBox_Click(TObject * Sender)
 {
     if (SP_Chg == 0) {
@@ -94,12 +95,12 @@ void __fastcall TSharpnessV2Form::ComboBox_Click(TObject * Sender)
     EngineerForm->SetWrite_Byte(CboB[idx]->Addr, set_val);
 
     if (Sender == ComboBox3 || Sender == ComboBox4) {
-	Edit_ResolutionHKeyPress(Sender, ' ');
+	Edit_ResolutionHKeyPress(Sender, Space);
     }
 }
 
 //---------------------------------------------------------------------------
-void __fastcall TSharpnessV2Form::LblE3_KeyPress(TObject * Sender, char &Key)
+void __fastcall TSharpnessV2Form::LblE3_KeyPress(TObject * Sender,  char &Key)
 {
     TLabeledEdit *c = (TLabeledEdit *) Sender;
     int idx = StrToInt(c->Hint);
@@ -142,11 +143,11 @@ void __fastcall TSharpnessV2Form::LblE3_KeyPress(TObject * Sender, char &Key)
 	    (set_val / LblE3[idx]->Addr.Divide2()) % (int) pow(2, LblE3[idx]->Addr.Byte2.BitNum());
 	val3 = set_val % LblE3[idx]->Addr.Divide2();
 
-	int _val1 = floor((double) set_val / LblE3[idx]->Addr.Divide1());
-	int _val2 =
-	    floor((double) (set_val - val1 * LblE3[idx]->Addr.Divide1()) /
-		  LblE3[idx]->Addr.Divide2());
-	int _val3 = set_val % LblE3[idx]->Addr.Divide2();
+	/*int _val1 = floor((double) set_val / LblE3[idx]->Addr.Divide1());
+	   int _val2 =
+	   floor((double) (set_val - val1 * LblE3[idx]->Addr.Divide1()) /
+	   LblE3[idx]->Addr.Divide2());
+	   int _val3 = set_val % LblE3[idx]->Addr.Divide2(); */
 
 
 	EngineerForm->SetWrite_Byte(LblE3[idx]->Addr.Byte1, val1);
@@ -170,15 +171,15 @@ void __fastcall TSharpnessV2Form::FormCreate(TObject * Sender)
 
     SP_Chg = 0;
     /*int ic_choice = -1;
-    if (MainForm->TCON_DEV == "11307") {
-	ic_choice = 0;
-    }
+       if (MainForm->TCON_DEV == "11307") {
+       ic_choice = 0;
+       }
 
-    switch (ic_choice) {
-    case 0:*/
-	OSP = new SP_12307;
-	/*break;
-    }     */
+       switch (ic_choice) {
+       case 0: */
+    OSP = new SP_12307;
+    /*break;
+       }     */
 
     /********************************************************************///
     //  Image Process SP has CheckBox*6 & ScrollBar*4  & table idx 32   //
@@ -426,8 +427,8 @@ void TSharpnessV2Form::Clear_LUT(bool type)
 //--------------------------------------------------------------------------
 
 void __fastcall TSharpnessV2Form::SP_LUTMouseDown(TObject * Sender,
-						     TMouseButton Button,
-						     TShiftState Shift, int X, int Y)
+						  TMouseButton Button,
+						  TShiftState Shift, int X, int Y)
 {
     if (X >= (30 - 5) && X <= (340 + 5) && Y <= (264) && Y >= (12)) {
 	int tmp_y;
@@ -662,15 +663,15 @@ void __fastcall TSharpnessV2Form::Btn_SP_reloadClick(TObject * Sender)
 	}
     }
 
-    unsigned char read_val1, read_val2, read_val3;
+    //unsigned char read_val1, read_val2, read_val3;
     for (int i = 0; i < OSP->SPLblE3_Nbr; i++) {
 	if (LblE3[i]->Lble->Visible == true) {
 	    //EngineerForm->SetRead_Byte(LblE3[i]->Addr.Byte1, &read_val1);
 	    //EngineerForm->SetRead_Byte(LblE3[i]->Addr.Byte2, &read_val2);
 	    //EngineerForm->SetRead_Byte(LblE3[i]->Addr.Byte3, &read_val3);
-	    read_val1 = EngineerForm->readByte(LblE3[i]->Addr.Byte1);
-	    read_val2 = EngineerForm->readByte(LblE3[i]->Addr.Byte2);
-	    read_val3 = EngineerForm->readByte(LblE3[i]->Addr.Byte3);
+	    /*read_val1 = EngineerForm->readByte(LblE3[i]->Addr.Byte1);
+	       read_val2 = EngineerForm->readByte(LblE3[i]->Addr.Byte2);
+	       read_val3 = EngineerForm->readByte(LblE3[i]->Addr.Byte3); */
 	    LblE3[i]->Lble->Text = LblE3[i]->Addr.GetVal();
 	    /*LblE3[i]->Lble->Text =
 	       (int) read_val1 *LblE3[i]->Addr.Divide1()
@@ -805,7 +806,7 @@ void __fastcall TSharpnessV2Form::btn_sp_SaveClick(TObject * Sender)
     ini.writeScrollBar(CE, "BRIGHT_MAX_ADJ", ScrollBar9);
     ini.writeScrollBar(CE, "BRIGHT_DR", ScrollBar16);
     ini.iniFile->UpdateFile();
- 
+
     SP_LUT_FuncEnable(1);
 }
 
@@ -853,7 +854,7 @@ void __fastcall TSharpnessV2Form::FormKeyDown(TObject * Sender, WORD & Key, TShi
 
 //---------------------------------------------------------------------------
 
-void __fastcall TSharpnessV2Form::Edit_ResolutionHKeyPress(TObject * Sender, char &Key)
+void __fastcall TSharpnessV2Form::Edit_ResolutionHKeyPress(TObject * Sender,const char &Key)
 {
     int h = Edit_ResolutionH->Text.ToInt();
     int v = Edit_ResolutionV->Text.ToInt();
@@ -870,7 +871,8 @@ void __fastcall TSharpnessV2Form::Edit_ResolutionHKeyPress(TObject * Sender, cha
     int intResult = (int) result;
     LabeledEdit1->Text = intResult;
     if (SP_Chg) {
-	LblE3_KeyPress(LabeledEdit1, 13);
+	static const char &CR = 13;
+	LblE3_KeyPress(LabeledEdit1,(char &) CR);
     }
 }
 
