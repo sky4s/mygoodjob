@@ -26,7 +26,7 @@
 #include <gui/event/listener.h>
 #include <java/lang.h>
 //本項目內gui頭文件
-#include <c3d/gui/TInTargetForm.h>
+#include <gui/util/TInTargetForm.h>
 //---------------------------------------------------------------------------
 class TColorPickerFrame:public TFrame {
     __published:		// IDE-managed Components
