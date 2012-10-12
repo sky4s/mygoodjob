@@ -4,7 +4,7 @@
 #pragma hdrstop
 
 #include "SAT_11307.h"
-#include <colorip/11307/TCON/TCON_11307.h>
+//#include <colorip/11307/TCON/TCON_11307.h>
 //---------------------------------------------------------------------------
 
 #pragma package(smart_init)

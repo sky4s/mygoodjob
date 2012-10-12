@@ -258,7 +258,7 @@ class AbstCM:public AbstractBase {
 
 //---------------------------------------------------------------------------
 //Abstract class of Vender
-class AbstVender:public AbstractBase {
+/*class AbstVender:public AbstractBase {
   public:
     virtual TBit * SetChkBx() = 0;
     virtual TBit *SetCboBx() = 0;
@@ -283,10 +283,10 @@ class AbstVender:public AbstractBase {
     int DebugLblE2_Nbr;
     int VStaCboBox_Nbr;
     int VStaLblE2_Nbr;
-};
+};*/
 
 //Abstract class of TCON
-class AbstTCON:public AbstractBase {
+/*class AbstTCON:public AbstractBase {
   public:
     //device
     virtual TBit * SetDevChkBx() = 0;
@@ -325,7 +325,7 @@ class AbstTCON:public AbstractBase {
     int TimLblE3_Nbr;
     int StaCboBox_Nbr;
     int StaLblE2_Nbr;
-};
+};*/
 
 //Abstract class of FunctionForm
 class AbstFunc:public AbstractBase {
@@ -381,7 +381,7 @@ class AbstFunc:public AbstractBase {
 };
 
 //Abstract class of DCR
-class AbstDCR:public AbstractBase {
+/*class AbstDCR:public AbstractBase {
   public:
     //DCR setting
     virtual TBit * SetChkBx() = 0;
@@ -425,7 +425,7 @@ class AbstDCR:public AbstractBase {
     int HDRScrollBar2_Nbr;
     int HDRLblE2_Nbr;
     int DCRLUT_Nbr;		// 20100608 set number of DCR table
-};
+};*/
 class AbstC3D:public AbstractBase {
   public:
     virtual TBit * SetChkBx() = 0;
