@@ -13,7 +13,6 @@ object MainForm: TMainForm
   Visible = True
   OnClose = FormClose
   OnCreate = FormCreate
-  OnMouseDown = FormMouseDown
   PixelsPerInch = 96
   TextHeight = 13
   object StatusBar1: TStatusBar
@@ -128,42 +127,6 @@ object MainForm: TMainForm
       object Debug: TMenuItem
         Caption = 'Debug'
         OnClick = DebugClick
-      end
-    end
-  end
-  object PopupMenu1: TPopupMenu
-    OwnerDraw = True
-    Left = 32
-    object popupmenu2: TMenuItem
-      Caption = 'TCON'
-      ImageIndex = 0
-    end
-    object Function1: TMenuItem
-      Caption = 'Function'
-      ImageIndex = 1
-    end
-    object DCR1: TMenuItem
-      Caption = 'DCR'
-      ImageIndex = 2
-    end
-    object Vender1: TMenuItem
-      Caption = 'Vender'
-      ImageIndex = 3
-    end
-    object ImageProcess1: TMenuItem
-      Caption = 'Image Process'
-      ImageIndex = 4
-      object ColorMatrix1: TMenuItem
-        Caption = 'Color Matrix'
-      end
-      object Sharpness1: TMenuItem
-        Caption = 'Sharpness'
-      end
-      object ContrastEnhancement1: TMenuItem
-        Caption = 'Contrast Enhancement'
-      end
-      object C3D1: TMenuItem
-        Caption = 'C3D'
       end
     end
   end

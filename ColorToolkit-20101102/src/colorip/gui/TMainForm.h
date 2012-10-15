@@ -43,18 +43,8 @@ class TMainForm:public TForm {
     TMenuItem *mn_CM;
     TMenuItem *mn_Sharpness;
     TMenuItem *mn_CE;
-    TPopupMenu *PopupMenu1;
-    TMenuItem *popupmenu2;
-    TMenuItem *Function1;
-    TMenuItem *DCR1;
-    TMenuItem *Vender1;
-    TMenuItem *ImageProcess1;
-    TMenuItem *ColorMatrix1;
-    TMenuItem *Sharpness1;
-    TMenuItem *ContrastEnhancement1;
     TStatusBar *StatusBar1;
     TMenuItem *mn_C3D;
-    TMenuItem *C3D1;
     TMenuItem *mn_C3D_777;
     TMenuItem *mn_C3D_999;
     TMenuItem *mn_SAT;
@@ -75,11 +65,8 @@ class TMainForm:public TForm {
     void __fastcall FormClose(TObject * Sender, TCloseAction & Action);
     void __fastcall FormCreate(TObject * Sender);
     void __fastcall mn_CMClick(TObject * Sender);
-    void __fastcall FormMouseDown(TObject * Sender, TMouseButton Button,
-				  TShiftState Shift, int X, int Y);
     void __fastcall mn_SharpnessClick(TObject * Sender);
     void __fastcall mn_CEClick(TObject * Sender);
-    void __fastcall mn_HSVClick(TObject * Sender);
     void __fastcall StatusBar1DblClick(TObject * Sender);
     void __fastcall mn_C3DClick(TObject * Sender);
     void __fastcall mn_C3D_777Click(TObject * Sender);

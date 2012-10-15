@@ -1958,9 +1958,9 @@ String *TEngineerForm::Load_file(String Fpath, int Lut_no)
 // reload whole TCON Address
 void __fastcall TEngineerForm::btn_reloadClick(TObject * Sender)
 {
-    btn_reload->Enabled = false;
-    MainForm->reload_all(Sender);
-    btn_reload->Enabled = true;
+    //btn_reload->Enabled = false;
+    //MainForm->reload_all(Sender);
+    //btn_reload->Enabled = true;
 }
 
 //---------------------------------------------------------------------------
