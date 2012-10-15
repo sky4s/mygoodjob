@@ -12,11 +12,7 @@
 //本項目內頭文件
 #include <addresstype/Address_type.h>
 //本項目內gui頭文件
-//#include <colorip/gui/THSVV2Form.h>
-//#include <colorip/gui/TCMForm.h>
-//#include <gui/TExampleForm.h>
-//#include <colorip/gui/TSharpnessV1Form.h>
-//#include <colorip/gui/TSharpnessV2Form.h>
+ 
 #include "include.h"
 #include <iostream>
 #include <fstream>
@@ -205,36 +201,7 @@ void __fastcall TMainForm::FormCreate(TObject * Sender)
 }
 
 //---------------------------------------------------------------------------
-void TMainForm::reload_all(TObject * Sender)
-{
-    /*mn_TCONClick(Sender);
-       mn_FunctionClick(Sender);
-       mn_DCRClick(Sender);
-       mn_VenderClick(Sender);
-       mn_CMClick(Sender);
-       mn_SharpnessClick(Sender);
-       mn_Sharpness12307Click(Sender);
-       mn_CEClick(Sender);
-       mn_HSVClick(Sender);
-       mn_C3DClick(Sender);
-       mn_SATClick(Sender);
-       mn_offsetClick(Sender);
-       TShiftState Shift;
-       WORD Key = 0x40;
-       TCONForm->OnKeyDown(Sender, Key, Shift);
-       FunctionForm->OnKeyDown(Sender, Key, Shift);
-       DCRForm->OnKeyDown(Sender, Key, Shift);
-       VenderForm->OnKeyDown(Sender, Key, Shift);
-       CMForm->OnKeyDown(Sender, Key, Shift);
-       SharpnessForm->OnKeyDown(Sender, Key, Shift);
-       SharpnessV2Form->OnKeyDown(Sender, Key, Shift);
-       ContrastEnhanceForm->OnKeyDown(Sender, Key, Shift);      //mssk by Michelle 20100716
-       HSVForm->OnKeyDown(Sender, Key, Shift);
-       C3DForm->OnKeyDown(Sender, Key, Shift);  // mask by Michelle 20100716
-       SaturationForm->OnKeyDown(Sender, Key, Shift);
-       offsetForm->OnKeyDown(Sender, Key, Shift); */
-
-}
+ 
 
 //---------------------------------------------------------------------------
 
@@ -265,17 +232,6 @@ void __fastcall TMainForm::mn_SharpnessClick(TObject * Sender)
 //---------------------------------------------------------------------------
 
 
-void __fastcall TMainForm::FormMouseDown(TObject * Sender,
-					 TMouseButton Button, TShiftState Shift, int X, int Y)
-{
-    if (Button == mbRight) {
-	TPoint pt = MainForm->ClientToScreen(Point(X, Y));
-	PopupMenu1->Popup(pt.x, pt.y);
-    }
-
-}
-
-//---------------------------------------------------------------------------
 
  // remove by Michelle 20100716
 void __fastcall TMainForm::mn_CEClick(TObject * Sender)
@@ -290,16 +246,6 @@ void __fastcall TMainForm::mn_CEClick(TObject * Sender)
 
 //---------------------------------------------------------------------------
 
-void __fastcall TMainForm::mn_HSVClick(TObject * Sender)
-{
-    if (NULL == HSVV1Form || !HSVV1Form->Active) {
-	HSVV1Form = new THSVV1Form(this);
-    }
-
-    HSVV1Form->Show();
-}
-
-//---------------------------------------------------------------------------
 
 
 void __fastcall TMainForm::StatusBar1DblClick(TObject * Sender)
