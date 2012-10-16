@@ -841,7 +841,6 @@ void __fastcall THSVV2Form::stringGrid_HSVSelectCell(TObject * Sender,
     //³]©whsvadjust
     int_array hsvAdjustValue = getHSVAdjustValue(index);
     using namespace math;
-    //storeHSVPosition4Return = IntArray::arraycopy(hsvAdjustValue, 3);
     int s = hsvAdjustValue[1], v = hsvAdjustValue[2];
 
     int standardHueAngle = getHueAngle(ARow - 1);
@@ -2061,4 +2060,6 @@ void __fastcall THSVV2Form::Button_SaveOldFormatClick(TObject * Sender)
 }
 
 //---------------------------------------------------------------------------
+
+
 
