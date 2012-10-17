@@ -803,9 +803,15 @@ int_array THSVV2Form::getHSVAdjustValue(int index)
     adjustValue[2] = valTable[index];
     return adjustValue;
 }
+static int count = 0;
 void __fastcall THSVV2Form::stringGrid_HSVSelectCell(TObject * Sender,
 						     int ACol, int ARow, const bool & CanSelect)
 {
+//Mouse->
+    Label1->Caption = _toString(count++).c_str();
+    if (true) {
+	return;
+    }
     if (-1 != ACol) {
 	RadioButton_Single->Checked = true;
     }
@@ -2060,6 +2066,4 @@ void __fastcall THSVV2Form::Button_SaveOldFormatClick(TObject * Sender)
 }
 
 //---------------------------------------------------------------------------
-
-
 

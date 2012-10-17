@@ -32,6 +32,13 @@ object HSVV2Form: THSVV2Form
     ParentShowHint = False
     ShowHint = False
     TabOrder = 0
+    object Label1: TLabel
+      Left = 640
+      Top = 632
+      Width = 81
+      Height = 13
+      Caption = 'Label1'
+    end
     object CheckBox1: TCheckBox
       Left = 177
       Top = 8
