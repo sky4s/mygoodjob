@@ -143,6 +143,7 @@ class THSVV2Form:public TForm, cms::util::CallBackIF, RGBInfoCallbackIF, Pattern
     TButton *Button_SaveOldFormat;
     TGroupBox *GroupBox_ReadWrite;
     TBitBtn *Btn_HSV_reload;
+    TLabel *Label1;
 
     void __fastcall btn_hsv_loadClick(TObject * Sender);
     void __fastcall btn_hsv_saveClick(TObject * Sender);

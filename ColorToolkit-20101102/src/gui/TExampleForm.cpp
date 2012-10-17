@@ -28,8 +28,16 @@ void __fastcall TExampleForm::FormActivate(TObject * Sender)
 
 void __fastcall TExampleForm::FormCreate(TObject * Sender)
 {
-    regframework.scanUI(this);
-    regframework.bindComboBox("FPGA", 2, "AA", "BB");
+    //regframework.scanUI(this);
+    //regframework.bindComboBox("FPGA", 2, "AA", "BB");
+}
+
+//---------------------------------------------------------------------------
+static int count = 0;
+void __fastcall TExampleForm::StringGrid1SelectCell(TObject * Sender,
+						    int ACol, int ARow, bool & CanSelect)
+{
+    Label5->Caption = _toString(count++).c_str();
 }
 
 //---------------------------------------------------------------------------

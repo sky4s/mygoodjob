@@ -1,8 +1,8 @@
 object ExampleForm: TExampleForm
   Left = 403
   Top = 148
-  Width = 282
-  Height = 272
+  Width = 278
+  Height = 620
   Caption = 'ExampleForm'
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
@@ -15,6 +15,13 @@ object ExampleForm: TExampleForm
   OnCreate = FormCreate
   PixelsPerInch = 96
   TextHeight = 13
+  object Label5: TLabel
+    Left = 8
+    Top = 552
+    Width = 137
+    Height = 17
+    Caption = 'Label5'
+  end
   object GroupBox1: TGroupBox
     Left = 7
     Top = 7
@@ -121,5 +128,20 @@ object ExampleForm: TExampleForm
       TabOrder = 7
       Text = 'ComboBox1'
     end
+  end
+  object StringGrid1: TStringGrid
+    Left = 8
+    Top = 248
+    Width = 249
+    Height = 297
+    Options = [goFixedVertLine, goFixedHorzLine, goVertLine, goHorzLine]
+    TabOrder = 1
+    OnSelectCell = StringGrid1SelectCell
+    RowHeights = (
+      24
+      24
+      24
+      24
+      24)
   end
 end
