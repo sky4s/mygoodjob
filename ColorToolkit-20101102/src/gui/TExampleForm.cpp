@@ -28,7 +28,7 @@ void __fastcall TExampleForm::FormActivate(TObject * Sender)
 
 void __fastcall TExampleForm::FormCreate(TObject * Sender)
 {
-    //regframework.scanUI(this);
+    regframework.scanUI(this);
     //regframework.bindComboBox("FPGA", 2, "AA", "BB");
 }
 

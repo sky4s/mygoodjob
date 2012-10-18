@@ -50,14 +50,14 @@ void __fastcall TColorPickerFrame::imageMouseMove(TObject * Sender, TShiftState 
 	h = (double (int (h * 10))) /10.0;
 	s = (double (int (s * 1000))) /1000.0;
 
-	lb_c3d_showX->Caption = "X: " + IntToStr((int) X);
-	lb_c3d_showY->Caption = "Y: " + IntToStr((int) Y);
-	lb_c3d_showR->Caption = "R: " + IntToStr((int) r);
-	lb_c3d_showG->Caption = "G: " + IntToStr((int) g);
-	lb_c3d_showB->Caption = "B: " + IntToStr((int) b);
-	lb_c3d_showH->Caption = "H: " + IntToStr((int) h);
-	lb_c3d_showS->Caption = "S: " + FloatToStr((float) s);
-	lb_c3d_showV->Caption = "V: " + IntToStr((int) v);
+	lb_showX->Caption = "X: " + IntToStr((int) X);
+	lb_showY->Caption = "Y: " + IntToStr((int) Y);
+	lb_showR->Caption = "R: " + IntToStr((int) r);
+	lb_showG->Caption = "G: " + IntToStr((int) g);
+	lb_showB->Caption = "B: " + IntToStr((int) b);
+	lb_showH->Caption = "H: " + IntToStr((int) h);
+	lb_showS->Caption = "S: " + FloatToStr((float) s);
+	lb_showV->Caption = "V: " + IntToStr((int) v);
     }
 
     using namespace gui::event;
@@ -111,7 +111,7 @@ void __fastcall TColorPickerFrame::imageMouseUp(TObject * Sender,
 
 //---------------------------------------------------------------------------
 
-void __fastcall TColorPickerFrame::btn_c3d_load_imgClick(TObject * Sender)
+void __fastcall TColorPickerFrame::btn_load_imgClick(TObject * Sender)
 {
     AnsiString S1;
     Graphics::TBitmap * OrgBitmap = new Graphics::TBitmap();

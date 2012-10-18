@@ -395,6 +395,9 @@ namespace gui {
  */
 	void RegisterFramework::bindComboBox(const string & regname, int n, ...) {
 	    RegisterType_ptr reg = registerMap->getRegister(regname);
+	    if (null == reg) {
+		return;
+	    };
 	    TControl *ctrl = reg->control;
 	    if (null == ctrl) {
 		return;
@@ -426,7 +429,7 @@ namespace gui {
 	void RegisterFramework::setRegisterFilename(std::string filename) {
 	    registerMap = RegisterMap_ptr(new RegisterMap(filename));
 	};
-	static  const char &Space = ' ';
+	static const char &Space = ' ';
 	void __fastcall RegisterFramework::onClick(TObject * Sender) {
 	    TCheckBox *chechBox = dynamic_cast < TCheckBox * >(Sender);
 	    if (null != chechBox) {
@@ -455,7 +458,8 @@ namespace gui {
 
 	    }
 	};
-	void RegisterFramework::simpleEventHandler(std::string regname, TObject * sender,const char &key) {
+	void RegisterFramework::simpleEventHandler(std::string regname, TObject * sender,
+						   const char &key) {
 	    RegisterType_ptr regType = registerMap->getRegister(regname);
 	    if (0 != regType->originalOnChangeFunc) {
 		regType->originalOnChangeFunc(sender);
