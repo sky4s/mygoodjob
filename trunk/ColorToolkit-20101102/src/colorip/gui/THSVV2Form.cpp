@@ -56,6 +56,8 @@ colorspace(sRGBColorSpace), doubleHueSelected(false), changeChromaBySystem(false
 
     hsvInitialized = false;
     HSVEN_idx = -1;
+    turnToRelativeGlobalAdjust = false;
+
     hsvListener = bptr < HSVChangeListener > (new HSVChangeListener(this));
     hsvAdjust->addChangeListener(hsvListener);
     hsvAdjust->setMaxHueValue(MAX_HUE_VALUE);
@@ -79,6 +81,7 @@ colorspace(sRGBColorSpace), doubleHueSelected(false), changeChromaBySystem(false
     using namespace cms::hsvip;
     //因為colorspace在建構式才初始化, 所以此處的ce是為了chroma調整而存在
     ce = bptr < ChromaEnhance > (new ChromaEnhance(colorspace, isf));
+
 }
 
 //---------------------------------------------------------------------------
@@ -140,15 +143,11 @@ void __fastcall THSVV2Form::FormCreate(TObject * Sender)
     if (HSVEN_idx == -1) {
 	ShowMessage("Can' t Get HSV enable index.");
     }
-    Initial_HSV_table();	// initial HSV table
+    initHSVTable();		// initial HSV table
 
     //=========================================================================
 
-    this->initStringGrid_HSV();
-    /*if (null == InTargetForm) {
-       InTargetForm = new TInTargetForm(this);
-       } */
-    //colorPicker->setTInTargetForm(InTargetForm);
+    this->initHSVStringGrid();
     tpColorThread->Resume();
     RadioButton_deg60baseClick(RadioButton_deg0);
 
@@ -156,6 +155,7 @@ void __fastcall THSVV2Form::FormCreate(TObject * Sender)
     // bind
     //==========================================================================
     binder.bind(turnPointFilter, Label_TurnPoint, ScrollBar_TurnPoint);
+    binder.bind(Label_Chroma, ScrollBar_Chroma);
     //==========================================================================
     ScrollBar_TurnPoint->Position = 7;
     hsvInitialized = true;
@@ -236,39 +236,46 @@ void __fastcall THSVV2Form::FormClose(TObject * Sender, TCloseAction & Action)
 
 //---------------------------------------------------------------------------
 
-void THSVV2Form::Initial_HSV_table()
+void THSVV2Form::initHSVTable()
 {
     //initial table setting
-    //bool inHSVv1 = isInHSVv1();
     for (int i = 0; i < HUE_COUNT; i++) {
-	//hueTableTemp[i] = hueTable[i] = ((double) i) * MAX_HUE_VALUE / HUE_COUNT;
-	//satTableTemp[i] = satTable[i] = 0;
-	//valTableTemp[i] = valTable[i] = 0;
 	hueTable[i] = ((double) i) * MAX_HUE_VALUE / HUE_COUNT;
-	satTable[i] = 32;
+	satTable[i] = DefaultSaturationPos;
 	valTable[i] = 0;
     }
 
-    hsvAdjust->setDefaultHSVPosition(0, 0, 0);
+    hsvAdjust->setDefaultHSVPosition(0, DefaultSaturationPos, 0);
 }
 
 
 //---------------------------------------------------------------------------
 
-void THSVV2Form::Reset_HSVshow()
-{				// Set gain value relative to color choose
-    int tbl_idx = getGridSelectRow();
 
-    //Hue gain
-    String hueStr = stringGrid_HSV->Cells[1][tbl_idx];
-    String saturationStr = stringGrid_HSV->Cells[2][tbl_idx];
-    String valueStr = stringGrid_HSV->Cells[3][tbl_idx];
-    hsvAdjust->setHSVPostition(hueStr.ToInt(), saturationStr.ToInt() + 64, valueStr.ToInt());
-}
 
 
 
 //---------------------------------------------------------------------------
+
+void THSVV2Form::syncStringGridToTable()
+{
+    for (int i = 0; i < HUE_COUNT; i++) {
+	hueTable[i] =
+	    (int) (StrToFloat(hsvStringGrid->Cells[1][i + 1]) /
+		   WHOLE_HUE_ANGLE * MAX_HUE_VALUE + 0.5);
+	satTable[i] = getSaturationValue(hsvStringGrid->Cells[2][i + 1]);
+	valTable[i] = StrToInt(hsvStringGrid->Cells[3][i + 1]);
+    }
+}
+
+void THSVV2Form::syncTableToStringGrid()
+{
+    for (int i = 0; i < HUE_COUNT; i++) {
+	hsvStringGrid->Cells[1][i + 1] = ((double) hueTable[i]) / MAX_HUE_VALUE * WHOLE_HUE_ANGLE;
+	hsvStringGrid->Cells[2][i + 1] = getSaturationString(satTable[i]).c_str();
+	hsvStringGrid->Cells[3][i + 1] = valTable[i];
+    }
+}
 
 void THSVV2Form::Hue_LUTWrite()
 {
@@ -278,14 +285,8 @@ void THSVV2Form::Hue_LUTWrite()
 	HSV_LUT_FuncEnable(1);	// Table operation button enable
 	return;
     }
+    syncStringGridToTable();
 
-    for (int i = 0; i < HUE_COUNT; i++) {
-	hueTable[i] =
-	    (int) (StrToFloat(stringGrid_HSV->Cells[1][i + 1]) /
-		   WHOLE_HUE_ANGLE * MAX_HUE_VALUE + 0.5);
-	satTable[i] = getSaturationValue(stringGrid_HSV->Cells[2][i + 1]);
-	valTable[i] = StrToInt(stringGrid_HSV->Cells[3][i + 1]);
-    }
 
     bool fpga = AbstractBase::hasValueInFile("FPGA");
     int *HSV_lut = new int[HUE_COUNT * 3];
@@ -321,9 +322,12 @@ void THSVV2Form::Hue_LUTWrite()
 
 void __fastcall THSVV2Form::btn_resetClick(TObject * Sender)
 {
-    Initial_HSV_table();
-    initStringGrid_HSV();
+    initHSVTable();
+    initHSVStringGrid();
     setChromaOfScrollBar(0);
+    if (1 == RadioGroup_Global->ItemIndex) {
+	turnToRelativeGlobalAdjust = true;
+    }
 }
 
 
@@ -364,69 +368,9 @@ bool THSVV2Form::Load_HSV(String Fpath)
     ini.readIntArray("H", hueTable, HUE_COUNT);
     ini.readIntArray("S", satTable, HUE_COUNT);
     ini.readIntArray("V", valTable, HUE_COUNT);
+    syncTableToStringGrid();
 
-    /*String spLutString = ini.iniFile->ReadString("H", "");
-       if (spLutString.Length() == 0) {
-       return false;
-       }
-       int_array spLutArray = IntArray::fromString(spLutString.c_str());
-       IntArray::arraycopy(spLutArray, SP_lut, 32); */
-
-
-    //=========================================================================
-    // old 
-    //=========================================================================
-
-    /*if (false) {
-       char *buffer = Load_File(Fpath);
-       if (buffer == NULL) {
-
-       return false;
-       }
-       for (int i = 0; i < HUE_COUNT; i++) {
-       hueTable[i] = -1;
-       satTable[i] = -1;
-       valTable[i] = 0;
-       }
-
-
-
-       //取出檔案中的數值
-       int c = 0;
-       char *pch;
-       pch = strtok(buffer, "\n\t");
-       int Length = lut_addr[0].LutNum();
-       while (c < Length && pch != NULL) {
-       if (pch == NULL) {
-       ShowMessage(" Can 't open Hue table file.");
-       return false;    //資料中的data缺少
-       }
-       int index = c / 3;
-       if (c % 3 == 0) {
-       //hueTable[index] = hueTableTemp[index] = StrToInt((AnsiString) pch);
-       hueTable[index] = StrToInt((AnsiString) pch);
-       } else if (c % 3 == 1) {
-       //satTable[index] = satTableTemp[index] = StrToInt((AnsiString) pch);
-       satTable[index] = StrToInt((AnsiString) pch);
-       } else {
-       //valTable[index] = valTableTemp[index] = StrToInt((AnsiString) pch);
-       valTable[index] = StrToInt((AnsiString) pch);
-       }
-       pch = strtok(NULL, "\n\t");
-       c++;
-       }
-       delete[]buffer;
-       } */
-    //=========================================================================
-
-
-    for (int i = 0; i < HUE_COUNT; i++) {
-	stringGrid_HSV->Cells[1][i + 1] = ((double) hueTable[i]) / MAX_HUE_VALUE * WHOLE_HUE_ANGLE;
-	stringGrid_HSV->Cells[2][i + 1] = satTable[i];
-	stringGrid_HSV->Cells[3][i + 1] = valTable[i];
-    }
-
-    stringGrid_HSVSelectCell(this, 0, lastStringGridSelectRow, false);
+    hsvStringGridSelectCell(this, 0, lastStringGridSelectRow, false);
 
     //Hue_LUTWrite();
     return true;
@@ -459,17 +403,7 @@ void __fastcall THSVV2Form::btn_hsv_saveClick(TObject * Sender)
     ini.writeIntArray("H", hueTable, HUE_COUNT);
     ini.writeIntArray("S", satTable, HUE_COUNT);
     ini.writeIntArray("V", valTable, HUE_COUNT);
-    //=========================================================================
-    // old
-    //=========================================================================
-    /*if (false) {
-       FILE *fptr = fopen(Fpath.c_str(), "w");
-       for (int i = 0; i < HUE_COUNT; i++) {
-       fprintf(fptr, "%d\t%d\t%d\n", hueTable[i], satTable[i], valTable[i]);
-       }
-       fclose(fptr);
-       } */
-    //=========================================================================
+
 }
 
 //---------------------------------------------------------------------------
@@ -561,20 +495,8 @@ void __fastcall THSVV2Form::FormKeyDown(TObject * Sender, WORD & Key, TShiftStat
 
 void __fastcall THSVV2Form::btn_setClick(TObject * Sender)
 {
-    for (int i = 0; i < HUE_COUNT; i++) {
-	//hueTable[i] = hueTableTemp[i];
-	//satTable[i] = satTableTemp[i];
-	//valTable[i] = valTableTemp[i];
 
-	/*stringGrid_HSV->Cells[1][i + 1] =
-	   FloatToStr((double) hueTableTemp[i] / MAX_HUE_VALUE * WHOLE_HUE_ANGLE);
-	   stringGrid_HSV->Cells[2][i + 1] = satTableTemp[i];
-	   stringGrid_HSV->Cells[3][i + 1] = valTableTemp[i]; */
-	stringGrid_HSV->Cells[1][i + 1] =
-	    FloatToStr((double) hueTable[i] / MAX_HUE_VALUE * WHOLE_HUE_ANGLE);
-	stringGrid_HSV->Cells[2][i + 1] = satTable[i];
-	stringGrid_HSV->Cells[3][i + 1] = valTable[i];
-    }
+    syncTableToStringGrid();
     btn_set->Enabled = false;
 }
 
@@ -680,11 +602,8 @@ void __fastcall THSVV2Form::btn_hsv_readClick(TObject * Sender)
 	}
 	valTable[i] = Cmplmnt2sToSign(val_r, 128);
 
-	double hue = ((double) hueTable[i]) / MAX_HUE_VALUE * WHOLE_HUE_ANGLE;
-	stringGrid_HSV->Cells[1][i + 1] = hue;
-	stringGrid_HSV->Cells[2][i + 1] = (_toString(satTable[i])).c_str();
-	stringGrid_HSV->Cells[3][i + 1] = valTable[i];
     }
+    syncTableToStringGrid();
     HSV_LUT_RW_over();		// Recover HSV enable
     HSV_LUT_FuncEnable(1);	// Table operation button enable
 }
@@ -695,30 +614,18 @@ void __fastcall THSVV2Form::btn_hsv_readClick(TObject * Sender)
 
 
 //---------------------------------------------------------------------------
-void THSVV2Form::initStringGrid_HSV()
+void THSVV2Form::initHSVStringGrid()
 {
 
     //initial table setting
-    bool inHSVv1 = isInHSVv1();
     for (int i = 0; i < HUE_COUNT; i++) {
-	stringGrid_HSV->Cells[0][i + 1] = IntToStr(WHOLE_HUE_ANGLE / HUE_COUNT * i) + "°";	// Index as hue
-	//stringGrid_HSV->Cells[1][i + 1] = IntToStr(WHOLE_HUE_ANGLE / HUE_COUNT * i);  // Hue default value
-	//stringGrid_HSV->Cells[2][i + 1] = inHSVv1 ? 1 : 0;    // Saturation default value
-	//stringGrid_HSV->Cells[3][i + 1] = 0;  // Luminance default value
-
-	int h = hueTable[i];
-	int s = satTable[i];
-	int v = valTable[i];
-
-	stringGrid_HSV->Cells[1][i + 1] =
-	    FloatToStr(((double) h) / MAX_HUE_VALUE * WHOLE_HUE_ANGLE);
-	stringGrid_HSV->Cells[2][i + 1] = inHSVv1 ? s / 32 : s - 32;
-	stringGrid_HSV->Cells[3][i + 1] = v;
+	hsvStringGrid->Cells[0][i + 1] = IntToStr(WHOLE_HUE_ANGLE / HUE_COUNT * i) + "°";	// Index as hue
     }
 
-    stringGrid_HSV->Cells[1][0] = "H";
-    stringGrid_HSV->Cells[2][0] = "S";
-    stringGrid_HSV->Cells[3][0] = "V";
+    hsvStringGrid->Cells[1][0] = "H";
+    hsvStringGrid->Cells[2][0] = "S";
+    hsvStringGrid->Cells[3][0] = "V";
+    syncTableToStringGrid();
 };
 
 int THSVV2Form::getHueAngle(int index)
@@ -764,9 +671,9 @@ RGB_ptr THSVV2Form::getHueRGB(int index, double s, int v)
     return rgb;
 }
 
-void __fastcall THSVV2Form::stringGrid_HSVDrawCell(TObject * Sender,
-						   int ACol, int ARow,
-						   TRect & Rect, TGridDrawState State)
+void __fastcall THSVV2Form::hsvStringGridDrawCell(TObject * Sender,
+						  int ACol, int ARow,
+						  TRect & Rect, TGridDrawState State)
 {
     using namespace Dep;
 
@@ -774,22 +681,22 @@ void __fastcall THSVV2Form::stringGrid_HSVDrawCell(TObject * Sender,
     if (ARow >= 1 && ARow <= 24 && ACol == 1) {
 	int index = ARow - 1;
 	RGB_ptr rgb = getHueRGB(index);
-	stringGrid_HSV->Canvas->Brush->Color = rgb->getColor();
-	int height = stringGrid_HSV->DefaultRowHeight + 1;
-	int width = stringGrid_HSV->ColWidths[0];
-	stringGrid_HSV->Canvas->Rectangle(0, height * ARow, width, height * (ARow + 1));
+	hsvStringGrid->Canvas->Brush->Color = rgb->getColor();
+	int height = hsvStringGrid->DefaultRowHeight + 1;
+	int width = hsvStringGrid->ColWidths[0];
+	hsvStringGrid->Canvas->Rectangle(0, height * ARow, width, height * (ARow + 1));
 	TColor fontColor = getValue() < 170 ? clWhite : clBlack;
-	stringGrid_HSV->Canvas->Font->Color = fontColor;
+	hsvStringGrid->Canvas->Font->Color = fontColor;
 	int hueAngle = index * 15;
-	stringGrid_HSV->Canvas->TextOut(0 + 4, height * ARow + 1, hueAngle);
+	hsvStringGrid->Canvas->TextOut(0 + 4, height * ARow + 1, hueAngle);
     }
 };
-void THSVV2Form::drawStringGrid_HSVCell(TObject * Sender)
+void THSVV2Form::drawHSVStringGridCell(TObject * Sender)
 {
     TRect r;
     TGridDrawState g;
     for (int x = 1; x <= 24; x++) {
-	stringGrid_HSVDrawCell(Sender, 1, x, r, g);
+	hsvStringGridDrawCell(Sender, 1, x, r, g);
     }
 }
 
@@ -803,15 +710,12 @@ int_array THSVV2Form::getHSVAdjustValue(int index)
     adjustValue[2] = valTable[index];
     return adjustValue;
 }
-static int count = 0;
-void __fastcall THSVV2Form::stringGrid_HSVSelectCell(TObject * Sender,
-						     int ACol, int ARow, const bool & CanSelect)
+
+void __fastcall THSVV2Form::hsvStringGridSelectCell(TObject * Sender,
+						    int ACol, int ARow, const bool & CanSelect)
 {
-//Mouse->
-    Label1->Caption = _toString(count++).c_str();
-    if (true) {
-	return;
-    }
+
+
     if (-1 != ACol) {
 	RadioButton_Single->Checked = true;
     }
@@ -822,8 +726,8 @@ void __fastcall THSVV2Form::stringGrid_HSVSelectCell(TObject * Sender,
 	lastStringGridSelectRow = ARow;
     }
     storeHSVPosition4DoubleHue = nil_int_array;
-    //int index = ARow - 1;
-    int index = getGridSelectRow() - 1;
+    int index = ARow - 1;
+    //int index = getGridSelectRow() - 1;
 
     //如果是15度的base
     //bool base15deg = index % 2 == 1;
@@ -871,10 +775,9 @@ void __fastcall THSVV2Form::stringGrid_HSVSelectCell(TObject * Sender,
     if (positive) {
 	h += MAX_HUE_VALUE;
     }
-    bool inHSVv1 = isInHSVv1();
-    s = inHSVv1 ? s - 63 : s;
+    //s = isInHSVv1()? s - 63 : s;
     hsvAdjust->setHSVPostition(h, s, v);
-    setChromaOfScrollBar(s);
+    setChromaOfScrollBar(0);
 
     //=========================================================================
     setupPatternForm();
@@ -883,7 +786,7 @@ void __fastcall THSVV2Form::stringGrid_HSVSelectCell(TObject * Sender,
 //---------------------------------------------------------------------------
 
 
-void __fastcall THSVV2Form::hsvAdjustsb_c3d_Manual39_hChange(TObject * Sender)
+void __fastcall THSVV2Form::hsvAdjustsb_Manual39_hChange(TObject * Sender)
 {
     if (true == settingScrollBarPosition) {
 	return;
@@ -901,19 +804,22 @@ void __fastcall THSVV2Form::hsvAdjustsb_c3d_Manual39_hChange(TObject * Sender)
     int h = hsvPosition[0];
     int s = hsvPosition[1];
     int v = hsvPosition[2];
-    s = isInHSVv1()? s + 63 : s;
+    //s = isInHSVv1()? s + 63 : s;
 
     //可以做set
     btn_set->Enabled = true;
 
     if (true == RadioButton_Global->Checked) {
 
-	if (0 == RadioGroup_Global->ItemIndex) {
-	    //abs
+	bool relativeGlobalAdjust = (1 == RadioGroup_Global->ItemIndex);
 
-	} else if (1 == RadioGroup_Global->ItemIndex) {
-	    //rel,offset,delta
-
+	if (relativeGlobalAdjust && turnToRelativeGlobalAdjust) {
+	    for (int i = 0; i < HUE_COUNT; i++) {
+		hsvTableForRelative[0][i] = hueTable[i];
+		hsvTableForRelative[1][i] = satTable[i];
+		hsvTableForRelative[2][i] = valTable[i];
+	    }
+	    turnToRelativeGlobalAdjust = false;
 	}
 	//全域調整
 	for (int i = 0; i < HUE_COUNT; i++) {
@@ -921,19 +827,30 @@ void __fastcall THSVV2Form::hsvAdjustsb_c3d_Manual39_hChange(TObject * Sender)
 	    int standardHueValue = hueAngleToValue(hueAngle);
 
 	    if (hsvAdjust->sb_Hue_gain == Sender) {
-		hueTable[i] = (standardHueValue + h + MAX_HUE_VALUE) % MAX_HUE_VALUE;
+		if (relativeGlobalAdjust) {
+		    hueTable[i] = (hsvTableForRelative[0][i] + h + MAX_HUE_VALUE) % MAX_HUE_VALUE;
+		} else {
+		    hueTable[i] = (standardHueValue + h + MAX_HUE_VALUE) % MAX_HUE_VALUE;
+		}
 	    }
 	    if (hsvAdjust->sb_Sat_gain == Sender) {
-		satTable[i] = s;
+		if (relativeGlobalAdjust) {
+		} else {
+		    satTable[i] = s;
+		}
 	    }
 	    if (hsvAdjust->sb_Val_gain == Sender) {
-		valTable[i] = v;
+		if (relativeGlobalAdjust) {
+		} else {
+		    valTable[i] = v;
+		}
 	    }
 	    if (ScrollBar_Chroma == Sender) {
 		//chroma的global adjust
 		satTable[i] = s;
 		valTable[i] = getValueFromChromaEnhance(standardHueValue, s);
-		if (valTable[i] > 63 || valTable[i] < -64) {
+		int val = valTable[i];
+		if (val > 63 || val < -64) {
 		    valTable[i] = (valTable[i] > 63) ? 63 : valTable[i];
 		    valTable[i] = (valTable[i] < -64) ? -64 : valTable[i];
 		    ShowMessage("Brightness adjustment of Hue(" +
@@ -987,15 +904,8 @@ void __fastcall THSVV2Form::hsvAdjustsb_c3d_Manual39_hChange(TObject * Sender)
     //=========================================================================
     //同步到grid
     //=========================================================================
-    for (int i = 0; i < HUE_COUNT; i++) {
-	stringGrid_HSV->Cells[1][i + 1] =
-	    (((double) hueTable[i]) / MAX_HUE_VALUE) * WHOLE_HUE_ANGLE;
-	/*int s = satTable[i];
-	   double saturation = inHSVv1 ? ((s + 63.) / 32) : s; */
-	stringGrid_HSV->Cells[2][i + 1] = getSaturationString(satTable[i]).c_str();
-	//stringGrid_HSV->Cells[2][i + 1] = satTable[i];
-	stringGrid_HSV->Cells[3][i + 1] = valTable[i];
-    }
+
+    syncTableToStringGrid();
     //=========================================================================
 
     if (true == CheckBox_AutoSet->Checked) {
@@ -1009,17 +919,17 @@ void __fastcall THSVV2Form::hsvAdjustsb_c3d_Manual39_hChange(TObject * Sender)
 //---------------------------------------------------------------------------
 std::string THSVV2Form::getSaturationString(int saturation)
 {
-    bool inHSVv1 = isInHSVv1();
-    double s = inHSVv1 ? (saturation / 32.) : saturation;
+    double s =
+	isInHSVv1()? (saturation / ((double) DefaultSaturationPos)) : saturation -
+	DefaultSaturationPos;
     std::string str = _toString(s);
     return str;
 };
 
 int THSVV2Form::getSaturationValue(String saturationString)
 {
-    bool inHSVv1 = isInHSVv1();
-    int d = _toInt(_toDouble(saturationString.c_str()) * 32);
-    return inHSVv1 ? d : StrToInt(saturationString);
+    return isInHSVv1()? _toInt(_toDouble(saturationString.c_str()) * DefaultSaturationPos) :
+	StrToInt(saturationString) + DefaultSaturationPos;
 };
 
 bool THSVV2Form::isInHSVv1()
@@ -1052,34 +962,30 @@ void THSVV2Form::setGridSelectRow(int row)
 void THSVV2Form::setGridSelectRow(int startRow, int endRow)
 {
     //設定選擇區域
-    TGridRect select = stringGrid_HSV->Selection;
+    TGridRect select = hsvStringGrid->Selection;
     select.Top = startRow;
     select.Bottom = endRow;
-    stringGrid_HSV->Selection = select;
-    stringGrid_HSVSelectCell(null, -1, endRow, true);
+    hsvStringGrid->Selection = select;
+    hsvStringGridSelectCell(null, -1, endRow, true);
     if (startRow == endRow) {
 	//single
 	RadioButton_Single->Checked = true;
 	doubleHueSelected = false;
-	//settingScrollBarPosition = false;
     } else if ((startRow + 1) == endRow) {
 	//local
 	RadioButton_Local->Checked = true;
 	doubleHueSelected = true;
 
-	//settingScrollBarPosition = true;
-	hsvAdjust->setHSVPostition(0, 0, 0);
+	hsvAdjust->setHSVPostition(0, DefaultSaturationPos, 0);
 	setChromaOfScrollBar(0);
-	//settingScrollBarPosition = false;
     } else {
 	//global
 	doubleHueSelected = false;
-	//settingScrollBarPosition = false;
     }
 };
 int THSVV2Form::getGridSelectRow()
 {
-    return stringGrid_HSV->Selection.Top;
+    return hsvStringGrid->Selection.Top;
 }
 
 //---------------------------------------------------------------------------//---------------------------------------------------------------------------
@@ -1119,9 +1025,8 @@ void __fastcall THSVV2Form::RadioGroup_SaturationClick(TObject * Sender)
 {
     initGroupBoxBase(GroupBox_30base);
     initGroupBoxBase(GroupBox_60base);
-    drawStringGrid_HSVCell(Sender);
+    drawHSVStringGridCell(Sender);
     setGridSelectRow(getGridSelectRow());
-    //this->CheckBox_MemoryColor->Checked = false;
 }
 
 //---------------------------------------------------------------------------
@@ -1130,9 +1035,8 @@ void __fastcall THSVV2Form::RadioGroup_ValueClick(TObject * Sender)
 {
     initGroupBoxBase(GroupBox_30base);
     initGroupBoxBase(GroupBox_60base);
-    drawStringGrid_HSVCell(Sender);
+    drawHSVStringGridCell(Sender);
     setGridSelectRow(getGridSelectRow());
-    //this->CheckBox_MemoryColor->Checked = false;
 }
 
 //---------------------------------------------------------------------------
@@ -1324,11 +1228,11 @@ void __fastcall THSVV2Form::FormKeyPress(TObject * Sender, char &Key)
 	hsvAdjusting = true;
     }
     if (hsvAdjusting) {
-	//相當於喚起hsvAdjustsb_c3d_Manual39_hChange
+	//相當於喚起hsvAdjustsb_Manual39_hChange
 	//呼叫的流程為:
 	//hsvAdjust->sb_HSV_gainChange(Sender) =>
 	//HSVChangeListener->stateChanged() =>
-	//hsvAdjustsb_c3d_Manual39_hChange()
+	//hsvAdjustsb_Manual39_hChange()
 
 	//為什麼要繞這麼大一圈? 其實是希望這個變更至少告知過hsvAdjust而已,
 	//以便hsvAdjust可以做他應該要做的處理
@@ -1395,7 +1299,7 @@ void THSVV2Form::base15DegInterpClick(TObject * Sender, bool hInterp, bool sInte
     }
 
     btn_setClick(Sender);
-    stringGrid_HSVSelectCell(Sender, 0, lastStringGridSelectRow, false);
+    hsvStringGridSelectCell(Sender, 0, lastStringGridSelectRow, false);
 }
 
 //---------------------------------------------------------------------------
@@ -1930,7 +1834,8 @@ short THSVV2Form::getValueFromChromaEnhance(short hue, short chroma)
     //==============================================================================================
     //最小值求解
     //==============================================================================================
-    bptr < MinimisationFunction > mf(new MinFunction(hue, chroma, ce));
+    short realchroma = chroma - DefaultSaturationPos;
+    bptr < MinimisationFunction > mf(new MinFunction(hue, realchroma, ce));
     double_vector_ptr start(new double_vector(1));
     double_vector_ptr step(new double_vector(1));
     (*start)[0] = 0;
@@ -1955,7 +1860,7 @@ void __fastcall THSVV2Form::ScrollBar_ChromaChange(TObject * Sender)
     //取出現有的chroma值
     int chromaValue = this->ScrollBar_Chroma->Position;
     //更新到label去
-    Label_Chroma->Caption = chromaValue;
+    //Label_Chroma->Caption = chromaValue;
 
     if (Sender != ScrollBar_Chroma || changeChromaBySystem) {
 	return;
@@ -1964,7 +1869,7 @@ void __fastcall THSVV2Form::ScrollBar_ChromaChange(TObject * Sender)
     int_array hsvPos = hsvAdjust->getHSVPosition();
     if (true == RadioButton_Global->Checked) {
 	//global adjust
-	hsvPos[1] = chromaValue;
+	hsvPos[1] = DefaultSaturationPos + chromaValue;
 
     } else {
 	//single hue
@@ -1978,12 +1883,12 @@ void __fastcall THSVV2Form::ScrollBar_ChromaChange(TObject * Sender)
 	int huePos = hsvPos[0];
 	int finalHueValue = hueValue + huePos;
 
-	hsvPos[1] = chromaValue;
+	hsvPos[1] = DefaultSaturationPos + chromaValue;
 	hsvPos[2] = getValueFromChromaEnhance((short) finalHueValue, (short) chromaValue);
     }
     hsvAdjust->setHSVPostition(hsvPos);
     //更新到grid去
-    hsvAdjustsb_c3d_Manual39_hChange(Sender);
+    hsvAdjustsb_Manual39_hChange(Sender);
 };
 
 //---------------------------------------------------------------------------
@@ -2002,9 +1907,9 @@ void __fastcall THSVV2Form::RadioButton_GlobalClick(TObject * Sender)
 
 //---------------------------------------------------------------------------
 
-void __fastcall THSVV2Form::colorPickerbtn_c3d_load_imgClick(TObject * Sender)
+void __fastcall THSVV2Form::colorPickerbtn_load_imgClick(TObject * Sender)
 {
-    colorPicker->btn_c3d_load_imgClick(Sender);
+    colorPicker->btn_load_imgClick(Sender);
 
 }
 
@@ -2033,10 +1938,13 @@ void __fastcall THSVV2Form::RadioButton_LocalClick(TObject * Sender)
 }
 
 //---------------------------------------------------------------------------
-
 void __fastcall THSVV2Form::RadioGroup_GlobalClick(TObject * Sender)
 {
-    //int index = RadioGroup_Global->ItemIndex;
+    int index = RadioGroup_Global->ItemIndex;
+    turnToRelativeGlobalAdjust = 1 == index;
+    if (turnToRelativeGlobalAdjust) {
+	hsvAdjust->setDefaultHSVPosition(0, DefaultSaturationPos, 0);
+    }
 }
 
 //---------------------------------------------------------------------------
@@ -2063,6 +1971,22 @@ void __fastcall THSVV2Form::Button_SaveOldFormatClick(TObject * Sender)
     fclose(fptr);
     //}
     //=========================================================================
+}
+
+//---------------------------------------------------------------------------
+
+void __fastcall THSVV2Form::RadioButton_v1Click(TObject * Sender)
+{
+    syncTableToStringGrid();
+    hsvAdjust->updateHSVCaption();
+}
+
+//---------------------------------------------------------------------------
+
+void __fastcall THSVV2Form::RadioButton_v2Click(TObject * Sender)
+{
+    syncTableToStringGrid();
+    hsvAdjust->updateHSVCaption();
 }
 
 //---------------------------------------------------------------------------

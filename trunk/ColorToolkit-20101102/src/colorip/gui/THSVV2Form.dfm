@@ -35,9 +35,8 @@ object HSVV2Form: THSVV2Form
     object Label1: TLabel
       Left = 640
       Top = 632
-      Width = 81
+      Width = 3
       Height = 13
-      Caption = 'Label1'
     end
     object CheckBox1: TCheckBox
       Left = 177
@@ -98,22 +97,22 @@ object HSVV2Form: THSVV2Form
     object CheckBox3: TCheckBox
       Left = 340
       Top = 8
-      Width = 85
+      Width = 117
       Height = 17
       Caption = 'CheckBox3'
       TabOrder = 5
     end
     object CheckBox4: TCheckBox
-      Left = 432
+      Left = 456
       Top = 8
       Width = 105
       Height = 17
       Caption = 'CheckBox4'
       TabOrder = 6
     end
-    object stringGrid_HSV: TStringGrid
+    object hsvStringGrid: TStringGrid
       Left = 627
-      Top = 45
+      Top = 69
       Width = 166
       Height = 500
       Cursor = crIBeam
@@ -123,8 +122,8 @@ object HSVV2Form: THSVV2Form
       RowCount = 25
       Options = [goFixedVertLine, goFixedHorzLine, goVertLine, goHorzLine, goDrawFocusSelected, goTabs, goRowSelect]
       TabOrder = 7
-      OnDrawCell = stringGrid_HSVDrawCell
-      OnSelectCell = stringGrid_HSVSelectCell
+      OnDrawCell = hsvStringGridDrawCell
+      OnSelectCell = hsvStringGridSelectCell
       RowHeights = (
         16
         16
@@ -158,35 +157,35 @@ object HSVV2Form: THSVV2Form
       Width = 449
       Height = 351
       TabOrder = 8
-      inherited lb_c3d_showV: TLabel
+      inherited lb_showV: TLabel
         Left = 320
         Top = 328
       end
-      inherited lb_c3d_showS: TLabel
+      inherited lb_showS: TLabel
         Left = 272
         Top = 328
       end
-      inherited lb_c3d_showH: TLabel
+      inherited lb_showH: TLabel
         Left = 232
         Top = 328
       end
-      inherited lb_c3d_showB: TLabel
+      inherited lb_showB: TLabel
         Left = 184
         Top = 328
       end
-      inherited lb_c3d_showG: TLabel
+      inherited lb_showG: TLabel
         Left = 144
         Top = 328
       end
-      inherited lb_c3d_showR: TLabel
+      inherited lb_showR: TLabel
         Left = 106
         Top = 328
       end
-      inherited lb_c3d_showY: TLabel
+      inherited lb_showY: TLabel
         Left = 56
         Top = 328
       end
-      inherited lb_c3d_showX: TLabel
+      inherited lb_showX: TLabel
         Left = 18
         Top = 328
       end
@@ -228,12 +227,12 @@ object HSVV2Form: THSVV2Form
           end
         end
       end
-      inherited btn_c3d_load_img: TButton
+      inherited btn_load_img: TButton
         Left = 192
         Top = 5
         Width = 65
         Height = 15
-        OnClick = colorPickerbtn_c3d_load_imgClick
+        OnClick = colorPickerbtn_load_imgClick
       end
       inherited cb_show_ref_img: TCheckBox
         Left = 258
@@ -443,6 +442,7 @@ object HSVV2Form: THSVV2Form
         Height = 41
         Caption = 'Global'
         Enabled = False
+        ItemIndex = 0
         Items.Strings = (
           'Abs'
           'Rel')
@@ -457,9 +457,9 @@ object HSVV2Form: THSVV2Form
         Caption = 'Turn Point'
         TabOrder = 9
         object Label_TurnPoint: TLabel
-          Left = 113
+          Left = 121
           Top = 16
-          Width = 6
+          Width = 40
           Height = 13
           Caption = '0'
         end
@@ -507,8 +507,8 @@ object HSVV2Form: THSVV2Form
           Width = 244
           Height = 21
           Hint = '[z] for minus, [x] for plus'
-          Max = 63
-          Min = -63
+          Max = 95
+          Min = -32
           PageSize = 0
           ParentShowHint = False
           ShowHint = True
@@ -955,7 +955,7 @@ object HSVV2Form: THSVV2Form
       Text = 'HSV Cursor Color'
     end
     object CheckBox_SAT_CLIP_EN: TCheckBox
-      Left = 520
+      Left = 624
       Top = 8
       Width = 89
       Height = 17
@@ -1047,7 +1047,7 @@ object HSVV2Form: THSVV2Form
     end
     object GroupBox_HSVVersion: TGroupBox
       Left = 630
-      Top = 8
+      Top = 32
       Width = 161
       Height = 33
       Caption = 'HSV'
@@ -1055,10 +1055,11 @@ object HSVV2Form: THSVV2Form
       object RadioButton_v1: TRadioButton
         Left = 16
         Top = 15
-        Width = 57
+        Width = 41
         Height = 16
         Caption = 'v1'
         TabOrder = 0
+        OnClick = RadioButton_v1Click
       end
       object RadioButton_v2: TRadioButton
         Left = 56
@@ -1069,6 +1070,7 @@ object HSVV2Form: THSVV2Form
         Checked = True
         TabOrder = 1
         TabStop = True
+        OnClick = RadioButton_v2Click
       end
     end
     object Button_SaveOldFormat: TButton
@@ -1082,7 +1084,7 @@ object HSVV2Form: THSVV2Form
     end
     object GroupBox_ReadWrite: TGroupBox
       Left = 624
-      Top = 552
+      Top = 576
       Width = 169
       Height = 73
       Caption = 'Read/Write'

@@ -4,7 +4,7 @@ object ColorPickerFrame: TColorPickerFrame
   Width = 552
   Height = 420
   TabOrder = 0
-  object lb_c3d_showV: TLabel
+  object lb_showV: TLabel
     Left = 394
     Top = 404
     Width = 16
@@ -13,7 +13,7 @@ object ColorPickerFrame: TColorPickerFrame
     Color = clCream
     ParentColor = False
   end
-  object lb_c3d_showS: TLabel
+  object lb_showS: TLabel
     Left = 335
     Top = 404
     Width = 16
@@ -22,7 +22,7 @@ object ColorPickerFrame: TColorPickerFrame
     Color = clCream
     ParentColor = False
   end
-  object lb_c3d_showH: TLabel
+  object lb_showH: TLabel
     Left = 286
     Top = 404
     Width = 17
@@ -31,7 +31,7 @@ object ColorPickerFrame: TColorPickerFrame
     Color = clCream
     ParentColor = False
   end
-  object lb_c3d_showB: TLabel
+  object lb_showB: TLabel
     Left = 226
     Top = 404
     Width = 19
@@ -40,7 +40,7 @@ object ColorPickerFrame: TColorPickerFrame
     Color = clCream
     ParentColor = False
   end
-  object lb_c3d_showG: TLabel
+  object lb_showG: TLabel
     Left = 177
     Top = 404
     Width = 20
@@ -49,7 +49,7 @@ object ColorPickerFrame: TColorPickerFrame
     Color = clCream
     ParentColor = False
   end
-  object lb_c3d_showR: TLabel
+  object lb_showR: TLabel
     Left = 130
     Top = 404
     Width = 20
@@ -58,7 +58,7 @@ object ColorPickerFrame: TColorPickerFrame
     Color = clCream
     ParentColor = False
   end
-  object lb_c3d_showY: TLabel
+  object lb_showY: TLabel
     Left = 69
     Top = 404
     Width = 19
@@ -67,7 +67,7 @@ object ColorPickerFrame: TColorPickerFrame
     Color = clCream
     ParentColor = False
   end
-  object lb_c3d_showX: TLabel
+  object lb_showX: TLabel
     Left = 22
     Top = 404
     Width = 19
@@ -12377,14 +12377,14 @@ object ColorPickerFrame: TColorPickerFrame
       end
     end
   end
-  object btn_c3d_load_img: TButton
+  object btn_load_img: TButton
     Left = 286
     Top = 6
     Width = 80
     Height = 19
     Caption = 'Load Image'
     TabOrder = 1
-    OnClick = btn_c3d_load_imgClick
+    OnClick = btn_load_imgClick
   end
   object cb_show_ref_img: TCheckBox
     Left = 376

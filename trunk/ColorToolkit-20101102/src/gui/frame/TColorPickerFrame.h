@@ -40,15 +40,15 @@ class TColorPickerFrame:public TFrame {
     TBitBtn *btn_img_prev;
     TTabSheet *TabSheet3;
     TImage *simulatedColor;
-    TLabel *lb_c3d_showV;
-    TLabel *lb_c3d_showS;
-    TLabel *lb_c3d_showH;
-    TLabel *lb_c3d_showB;
-    TLabel *lb_c3d_showG;
-    TLabel *lb_c3d_showR;
-    TLabel *lb_c3d_showY;
-    TLabel *lb_c3d_showX;
-    TButton *btn_c3d_load_img;
+        TLabel *lb_showV;
+        TLabel *lb_showS;
+        TLabel *lb_showH;
+        TLabel *lb_showB;
+        TLabel *lb_showG;
+        TLabel *lb_showR;
+        TLabel *lb_showY;
+        TLabel *lb_showX;
+        TButton *btn_load_img;
     TCheckBox *cb_show_ref_img;
     TOpenDialog *OpenDialog_img;
     void __fastcall imageMouseMove(TObject * Sender, TShiftState Shift, int X, int Y);
@@ -56,7 +56,7 @@ class TColorPickerFrame:public TFrame {
 				   TMouseButton Button, TShiftState Shift, int X, int Y);
     void __fastcall imageMouseUp(TObject * Sender,
 				 TMouseButton Button, TShiftState Shift, int X, int Y);
-    void __fastcall btn_c3d_load_imgClick(TObject * Sender);
+    void __fastcall btn_load_imgClick(TObject * Sender);
     void __fastcall cb_show_ref_imgClick(TObject * Sender);
   private:			// User declarations
      std::vector < bwptr < gui::event::MouseMotionListener > >mouseMotionListenerVector;

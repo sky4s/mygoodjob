@@ -58,7 +58,7 @@ class THSVV2Form:public TForm, cms::util::CallBackIF, RGBInfoCallbackIF, Pattern
     TButton *btn_hsv_save;
     TCheckBox *CheckBox3;
     TCheckBox *CheckBox4;
-    TStringGrid *stringGrid_HSV;
+    TStringGrid *hsvStringGrid;
     TColorPickerFrame *colorPicker;
     TGroupBox *GroupBox_Adjust;
     TButton *btn_set;
@@ -158,11 +158,11 @@ class THSVV2Form:public TForm, cms::util::CallBackIF, RGBInfoCallbackIF, Pattern
     void __fastcall btn_setClick(TObject * Sender);
     void __fastcall btn_hsv_writeClick(TObject * Sender);
     void __fastcall btn_hsv_readClick(TObject * Sender);
-    void __fastcall stringGrid_HSVDrawCell(TObject * Sender, int ACol,
-					   int ARow, TRect & Rect, TGridDrawState State);
-    void __fastcall stringGrid_HSVSelectCell(TObject * Sender, int ACol,
-					     int ARow, const bool & CanSelect);
-    void __fastcall hsvAdjustsb_c3d_Manual39_hChange(TObject * Sender);
+    void __fastcall hsvStringGridDrawCell(TObject * Sender, int ACol,
+					  int ARow, TRect & Rect, TGridDrawState State);
+    void __fastcall hsvStringGridSelectCell(TObject * Sender, int ACol,
+					    int ARow, const bool & CanSelect);
+    void __fastcall hsvAdjustsb_Manual39_hChange(TObject * Sender);
     void __fastcall RadioButton_deg60baseClick(TObject * Sender);
     void __fastcall RadioButton_deg30baseClick(TObject * Sender);
     void __fastcall FormShow(TObject * Sender);
@@ -191,11 +191,13 @@ class THSVV2Form:public TForm, cms::util::CallBackIF, RGBInfoCallbackIF, Pattern
     void __fastcall hsvAdjustsb_Val_gainChange(TObject * Sender);
     void __fastcall ScrollBar_ChromaChange(TObject * Sender);
     void __fastcall RadioButton_GlobalClick(TObject * Sender);
-    void __fastcall colorPickerbtn_c3d_load_imgClick(TObject * Sender);
+    void __fastcall colorPickerbtn_load_imgClick(TObject * Sender);
     void __fastcall RadioButton_SingleClick(TObject * Sender);
     void __fastcall RadioButton_LocalClick(TObject * Sender);
     void __fastcall RadioGroup_GlobalClick(TObject * Sender);
     void __fastcall Button_SaveOldFormatClick(TObject * Sender);
+    void __fastcall RadioButton_v1Click(TObject * Sender);
+    void __fastcall RadioButton_v2Click(TObject * Sender);
   private:			// User declarations
     static const int HUE_COUNT = 24;	//原本是96, why?
     static const int MAX_HUE_VALUE = 768;
@@ -203,7 +205,7 @@ class THSVV2Form:public TForm, cms::util::CallBackIF, RGBInfoCallbackIF, Pattern
     static const int WHOLE_HUE_ANGLE = 360;
     bool HSV_IsChkSum;
     const int EachHueStep;
-    void initStringGrid_HSV();
+
 
     //=========================================================================
     // hue
@@ -231,7 +233,7 @@ class THSVV2Form:public TForm, cms::util::CallBackIF, RGBInfoCallbackIF, Pattern
     void deg60baseClick(TObject * Sender);
     void deg30baseClick(TObject * Sender);
 
-    void drawStringGrid_HSVCell(TObject * Sender);
+    void drawHSVStringGridCell(TObject * Sender);
     void setGridSelectRow(int row);
     void setGridSelectRow(int startRow, int endRow);
     int getGridSelectRow();
@@ -242,6 +244,7 @@ class THSVV2Form:public TForm, cms::util::CallBackIF, RGBInfoCallbackIF, Pattern
     bool settingScrollBarPosition;
     void base15DegInterpClick(TObject * Sender, bool hInterp, bool sInterp, bool vInterp);
     bool hsvInitialized;	// hsvInitialized = F 為禁止寫入, hsvInitialized = T 為允許寫入, 以避免動作被中斷
+    bool turnToRelativeGlobalAdjust;
     //=========================================================================
 
     void interpolation(int angleBase);
@@ -256,7 +259,7 @@ class THSVV2Form:public TForm, cms::util::CallBackIF, RGBInfoCallbackIF, Pattern
 	HSVChangeListener(THSVV2Form * parent):parent(parent) {
 	};
 	virtual void stateChanged(TObject * Sender) {
-	    parent->hsvAdjustsb_c3d_Manual39_hChange(Sender);
+	    parent->hsvAdjustsb_Manual39_hChange(Sender);
 	};
     };
 
@@ -284,9 +287,7 @@ class THSVV2Form:public TForm, cms::util::CallBackIF, RGBInfoCallbackIF, Pattern
 	CaptionIFListener(THSVV2Form * parent):parent(parent) {
 	};
 	virtual String getSaturationCaption(int saturationPos) {
-	    bool inHSVv1 = parent->isInHSVv1();
-	    String result = inHSVv1 ? (saturationPos + 32) / 32. : (saturationPos - 32);
-	    //saturationPos = inHSVv1 ? saturationPos : saturationPos;
+	    String result = parent->isInHSVv1()? (saturationPos) / 32. : (saturationPos - 32);
 	    return result;
 	};
 
@@ -323,7 +324,6 @@ class THSVV2Form:public TForm, cms::util::CallBackIF, RGBInfoCallbackIF, Pattern
     int_array cursorRGBValues;
     int_array selectedRGBValues;
     int_array storeHSVPosition4DoubleHue;
-    //int_array storeHSVPosition4Return;
     bool customPattern;
 
     PatternMode patternMode;
@@ -367,23 +367,27 @@ class THSVV2Form:public TForm, cms::util::CallBackIF, RGBInfoCallbackIF, Pattern
     AbstHSV *OHSV;
     //=========================================================================
 
-  public:			// User declarations
-
+    //=========================================================================
+    //hsv table
+    //=========================================================================
     int hueTable[HUE_COUNT];
     int satTable[HUE_COUNT];
     int valTable[HUE_COUNT];
+    int hsvTableForRelative[3][HUE_COUNT];
+    void syncStringGridToTable();
+    void syncTableToStringGrid();
+    void initHSVStringGrid();
+    static const int DefaultSaturationPos = 32;
+    //=========================================================================
 
-    //int hueTableTemp[HUE_COUNT];
-    //int satTableTemp[HUE_COUNT];
-    //int valTableTemp[HUE_COUNT];
+  public:			// User declarations
 
 
 
 
     __fastcall THSVV2Form(TComponent * Owner);
-    void Reset_HSVshow();
     void Hue_LUTWrite();
-    void Initial_HSV_table();
+    void initHSVTable();
     bool Load_HSV(String Fpath);
 
 

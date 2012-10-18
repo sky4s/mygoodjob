@@ -39,9 +39,9 @@ object ExampleForm: TExampleForm
     object Label2: TLabel
       Left = 7
       Top = 121
-      Width = 45
+      Width = 44
       Height = 13
-      Caption = 'GAM_EN'
+      Caption = 'HUE_EN'
     end
     object Label3: TLabel
       Left = 7
@@ -91,7 +91,7 @@ object ExampleForm: TExampleForm
       TabOrder = 3
     end
     object LabeledEdit1: TLabeledEdit
-      Left = 7
+      Left = 55
       Top = 160
       Width = 130
       Height = 21
