@@ -12,7 +12,7 @@
 //本項目內頭文件
 #include <addresstype/Address_type.h>
 //本項目內gui頭文件
- 
+
 #include "include.h"
 #include <iostream>
 #include <fstream>
@@ -133,7 +133,7 @@ void __fastcall TMainForm::FormClose(TObject * Sender, TCloseAction & Action)
 void TMainForm::closeAllForms()
 {
 
-    int count = MDIChildCount;
+
     for (int i = MDIChildCount - 1; i >= 0; i--) {
 	MDIChildren[i]->Close();
     }
@@ -189,7 +189,13 @@ void __fastcall TMainForm::FormCreate(TObject * Sender)
     //mn_TCON->Enabled = true;
     //mn_DCR->Enabled = true;
     //mn_Vender->Enabled = true;
-    mn_ImageProc->Enabled = true;
+    using namespace cms::util;
+    if (Util::isFileExist("rgbgain.txt")) {
+	mn_ImageProc->Visible = false;
+	mn_Test->Visible = false;
+    } else {
+	mn_ImageProc->Enabled = true;
+    }
     mn_CM->Enabled = true;
     mn_Sharpness->Enabled = true;
     mn_Sharpness12307->Enabled = true;
@@ -201,7 +207,7 @@ void __fastcall TMainForm::FormCreate(TObject * Sender)
 }
 
 //---------------------------------------------------------------------------
- 
+
 
 //---------------------------------------------------------------------------
 
@@ -479,7 +485,7 @@ void TMainForm::setAddressFile(AnsiString filename)
     MainForm->Caption = caption;
     addressFromFile = true;
     mn_LoadAddressFromFile->Checked = true;
-    AbstractBase::resetAddressMap();
+    AbstractIPBase::resetAddressMap();
     closeAllForms();
 }
 
@@ -532,7 +538,7 @@ void __fastcall TMainForm::mn_Sharpness12307Click(TObject * Sender)
 
 
 
-void __fastcall TMainForm::DebugClick(TObject * Sender)
+void __fastcall TMainForm::mn_DebugClick(TObject * Sender)
 {
     /*if (null == SharpnessForm12307_2) {
        SharpnessForm12307_2 = new TSharpnessForm12307_2(this);
@@ -548,7 +554,7 @@ void __fastcall TMainForm::DebugClick(TObject * Sender)
 
 //---------------------------------------------------------------------------
 
-void __fastcall TMainForm::Example2Click(TObject * Sender)
+void __fastcall TMainForm::mn_Example2Click(TObject * Sender)
 {
 
 

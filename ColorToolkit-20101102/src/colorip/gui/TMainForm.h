@@ -56,9 +56,9 @@ class TMainForm:public TForm {
     TMenuItem *mn_HSV2;
     TMenuItem *mn_HSV1;
     TMenuItem *mn_Sharpness12307;
-    TMenuItem *Test1;
-    TMenuItem *Example2;
-    TMenuItem *Debug;
+    TMenuItem *mn_Test;
+    TMenuItem *mn_Example2;
+    TMenuItem *mn_Debug;
     TMenuItem *Sharpnessv211;
     void __fastcall mn_EngineerClick(TObject * Sender);
     void __fastcall mn_FunctionClick(TObject * Sender);
@@ -78,8 +78,8 @@ class TMainForm:public TForm {
     void __fastcall mn_HSV2Click(TObject * Sender);
     void __fastcall mn_HSV1Click(TObject * Sender);
     void __fastcall mn_Sharpness12307Click(TObject * Sender);
-    void __fastcall DebugClick(TObject * Sender);
-    void __fastcall Example2Click(TObject * Sender);
+    void __fastcall mn_DebugClick(TObject * Sender);
+    void __fastcall mn_Example2Click(TObject * Sender);
     void __fastcall Sharpnessv211Click(TObject * Sender);
 
   private:			// User declarations

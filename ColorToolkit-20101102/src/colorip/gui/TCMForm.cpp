@@ -855,7 +855,7 @@ void TCMForm::writeOffset(TLUT offsetAddress, int position)
     ofs[1] = ofs[0];
     ofs[2] = ofs[0];
 
-    int_vector_ptr values = AbstractBase::getValuesFromFile("TCON_12307");
+    int_vector_ptr values = AbstractIPBase::getValuesFromFile("TCON_12307");
     bool isTCON12307 = (null != values) ? (*values)[0] == 1 : false;
 
     if (isTCON12307 && 5 == offsetAddress.Type()) {

@@ -1,7 +1,7 @@
 object MainForm: TMainForm
-  Left = 315
+  Left = 318
   Top = 0
-  Width = 832
+  Width = 826
   Height = 692
   Caption = 'Toolkit'
   Color = clBtnFace
@@ -18,7 +18,7 @@ object MainForm: TMainForm
   object StatusBar1: TStatusBar
     Left = 0
     Top = 619
-    Width = 824
+    Width = 818
     Height = 17
     Color = clYellow
     Font.Charset = DEFAULT_CHARSET
@@ -118,15 +118,15 @@ object MainForm: TMainForm
       ImageIndex = 6
       OnClick = mn_EngineerClick
     end
-    object Test1: TMenuItem
+    object mn_Test: TMenuItem
       Caption = 'Test'
-      object Example2: TMenuItem
+      object mn_Example2: TMenuItem
         Caption = 'Example'
-        OnClick = Example2Click
+        OnClick = mn_Example2Click
       end
-      object Debug: TMenuItem
+      object mn_Debug: TMenuItem
         Caption = 'Debug'
-        OnClick = DebugClick
+        OnClick = mn_DebugClick
       end
     end
   end

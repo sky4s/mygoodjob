@@ -13,7 +13,6 @@ object C3DForm: TC3DForm
   Font.Style = []
   FormStyle = fsMDIChild
   OldCreateOrder = False
-  PopupMenu = MainForm.PopupMenu1
   Position = poDefault
   Visible = True
   OnClose = FormClose

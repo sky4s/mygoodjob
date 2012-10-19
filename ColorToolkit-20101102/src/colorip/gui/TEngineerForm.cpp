@@ -452,13 +452,7 @@ bool TEngineerForm::SetRead_DG(TLUT * Addr_LUT, int **DG_table, int LUT_Nbr, boo
     // DG_table: 4*257的矩陣 或是 3*256... ,
     // LUT_Nbr =3 RGB table,LUT_Nbr =4 RGBW table
 
-    int chk_len;		// 預留的Checksum長度
-    if (IsChkSum == true) {
-	chk_len = 2;
-    } else {
-	chk_len = 0;
-    }
-
+    int chk_len = IsChkSum ? 2 : 0;	// 預留的Checksum長度
     int read_len = chk_len;
 
     // 計算table拆成Byte後的長度, Addr_LUT.LutNum()是table當中的數值個數
@@ -519,9 +513,9 @@ bool TEngineerForm::SetRead_DG(TLUT * Addr_LUT, int **DG_table, int LUT_Nbr, boo
     delete[]read_data_C;
 
     if (ok == 0) {
-	return 0;
+	return false;
     }
-    return 1;
+    return true;
 }
 
 //---------------------------------------------------------------------------
@@ -1536,13 +1530,13 @@ bool TEngineerForm::Get_device_addr(int *dev_ad)
     //bool ok;
     int val;
     if (rg_device_addr_sel->ItemIndex == 0) {	//single TCON
-	/*ok =*/ Hex2Dec(edt_addr_tcon_s->Text, &val);
+	/*ok = */ Hex2Dec(edt_addr_tcon_s->Text, &val);
 	*dev_ad = (unsigned char) val;
     } else if (rg_device_addr_sel->ItemIndex == 1) {	//dual TCON
-	/*ok =*/ Hex2Dec(edt_addr_tcon_dm->Text, &val);
+	/*ok = */ Hex2Dec(edt_addr_tcon_dm->Text, &val);
 	*dev_ad = (unsigned char) val;
     } else if (rg_device_addr_sel->ItemIndex == 2) {	//single EEPROM
-	/*ok =*/ Hex2Dec(edt_addr_EEP->Text, &val);
+	/*ok = */ Hex2Dec(edt_addr_EEP->Text, &val);
 	*dev_ad = (unsigned char) val;
     } else			//may add quad-TCON here
 	return 0;

@@ -14,3 +14,4 @@ __fastcall TSharpnessV2_1Form::TSharpnessV2_1Form(TComponent* Owner)
 {
 }
 //---------------------------------------------------------------------------
+

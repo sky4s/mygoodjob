@@ -1,8 +1,8 @@
 object HSVV2Form: THSVV2Form
-  Left = 395
-  Top = 167
+  Left = 377
+  Top = 0
   Width = 823
-  Height = 741
+  Height = 692
   Caption = 'HSV v2'
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
@@ -459,7 +459,7 @@ object HSVV2Form: THSVV2Form
         object Label_TurnPoint: TLabel
           Left = 121
           Top = 16
-          Width = 40
+          Width = 6
           Height = 13
           Caption = '0'
         end
