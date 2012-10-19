@@ -288,7 +288,7 @@ void THSVV2Form::Hue_LUTWrite()
     syncStringGridToTable();
 
 
-    bool fpga = AbstractBase::hasValueInFile("FPGA");
+    bool fpga = AbstractIPBase::hasValueInFile("FPGA");
     int *HSV_lut = new int[HUE_COUNT * 3];
     int val_w;
     for (int i = 0; i < HUE_COUNT; i++) {
@@ -467,7 +467,7 @@ void __fastcall THSVV2Form::Btn_HSV_reloadClick(TObject * Sender)
     btn_hsv_readClick(Sender);
     //read turn point
     hsvInitialized = false;
-    AbstractAddress_ptr turnPointAbAds = AbstractBase::getAddress("SAT_TP");
+    AbstractAddress_ptr turnPointAbAds = AbstractIPBase::getAddress("SAT_TP");
     TBit *turnPointAddress = (TBit *) turnPointAbAds.get();
     EngineerForm->SetRead_Byte(*turnPointAddress, &read_val);
     ScrollBar_TurnPoint->Position = read_val;
@@ -580,8 +580,8 @@ void __fastcall THSVV2Form::btn_hsv_readClick(TObject * Sender)
 
 
     EngineerForm->SetWrite_Byte(en.Addr, HSV_EN_State);
-    bool fpga = AbstractBase::hasValueInFile("FPGA");
-    bool hsvIP2 = AbstractBase::hasValueInFile("HSVIP_2");
+    bool fpga = AbstractIPBase::hasValueInFile("FPGA");
+    bool hsvIP2 = AbstractIPBase::hasValueInFile("HSVIP_2");
 
     int val_r;
     for (int i = 0; i < HUE_COUNT; i++) {
@@ -1724,9 +1724,9 @@ void __fastcall THSVV2Form::ScrollBar_TurnPointChange(TObject * Sender)
     ce.reset();
     ce = bptr < ChromaEnhance > (new ChromaEnhance(colorspace, isf));
 
-    AbstractAddress_ptr turnPointAbAds = AbstractBase::getAddress("SAT_TP");
-    AbstractAddress_ptr slope1AbAds = AbstractBase::getAddress("SLOPE_COEF1");
-    AbstractAddress_ptr slope2AbAds = AbstractBase::getAddress("SLOPE_COEF2");
+    AbstractAddress_ptr turnPointAbAds = AbstractIPBase::getAddress("SAT_TP");
+    AbstractAddress_ptr slope1AbAds = AbstractIPBase::getAddress("SLOPE_COEF1");
+    AbstractAddress_ptr slope2AbAds = AbstractIPBase::getAddress("SLOPE_COEF2");
 
     if (null == turnPointAbAds) {
 	return;
@@ -1895,14 +1895,15 @@ void __fastcall THSVV2Form::ScrollBar_ChromaChange(TObject * Sender)
 
 void __fastcall THSVV2Form::RadioButton_GlobalClick(TObject * Sender)
 {
-    hsvAdjust->Label197->Caption = "Hue";
-    hsvAdjust->Label207->Caption = "Saturation";
-    hsvAdjust->Label25->Caption = "Value";
-    Label25->Caption = "Chroma";
+    hsvAdjust->Label197->Caption = "  Hue";
+    hsvAdjust->Label207->Caption = "  Saturation";
+    hsvAdjust->Label25->Caption = "  Value";
+    Label25->Caption = "  Chroma";
     CheckBox_MemoryColor->Checked = false;
     setGridSelectRow(1, 24);
     RadioGroup_Global->ItemIndex = 0;
     RadioGroup_Global->Enabled = true;
+    RadioGroup_Global->ItemIndex = 0;
 }
 
 //---------------------------------------------------------------------------
@@ -1944,6 +1945,15 @@ void __fastcall THSVV2Form::RadioGroup_GlobalClick(TObject * Sender)
     turnToRelativeGlobalAdjust = 1 == index;
     if (turnToRelativeGlobalAdjust) {
 	hsvAdjust->setDefaultHSVPosition(0, DefaultSaturationPos, 0);
+	hsvAdjust->Label197->Caption = "£GHue";
+	hsvAdjust->Label207->Caption = "£GSaturation";
+	hsvAdjust->Label25->Caption = "£GValue";
+	Label25->Caption = "£GChroma";
+    } else {
+	hsvAdjust->Label197->Caption = "  Hue";
+	hsvAdjust->Label207->Caption = "  Saturation";
+	hsvAdjust->Label25->Caption = "  Value";
+	Label25->Caption = "  Chroma";
     }
 }
 

@@ -26,7 +26,7 @@ namespace gui {
 	};
 	//=====================================================================
 	RegisterMap::RegisterMap(std::string filename) {
-	    tconMap = AbstractBase::getStringMap(filename);
+	    tconMap = AbstractIPBase::getStringMap(filename);
 	    registerMap = RegisterTypeMap_ptr(new RegisterTypeMap());
 	};
 

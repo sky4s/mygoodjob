@@ -1,5 +1,5 @@
 object SharpnessV2Form: TSharpnessV2Form
-  Left = 333
+  Left = 381
   Top = 0
   Width = 821
   Height = 692

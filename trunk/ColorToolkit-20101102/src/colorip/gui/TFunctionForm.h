@@ -57,67 +57,21 @@ class TFunctionForm:public TForm {
     TCheckBox *CheckBox8;
     TCheckBox *CheckBox9;
     TBitBtn *Btn_FRC_DG_reload;
-    TTabSheet *ts_p_state;
-    TLabel *Label1;
-    TCheckBox *CheckBox1;
-    TCheckBox *CheckBox2;
-    TComboBox *ComboBox1;
-    TLabeledEdit *LabeledEdit1;
-    TLabeledEdit *LabeledEdit2;
-    TLabeledEdit *LabeledEdit3;
-    TLabeledEdit *LabeledEdit4;
-    TBitBtn *Btn_Pstate_reload;
-    TTabSheet *ts_agbs;
-    TCheckBox *CheckBox3;
-    TCheckBox *CheckBox4;
-    TLabeledEdit *LabeledEdit5;
-    TLabeledEdit *LabeledEdit6;
-    TLabeledEdit *LabeledEdit7;
-    TBitBtn *Btn_AGBS_reload;
-    TTabSheet *TabSheet1;
-    TPageControl *PageControl2;
-    TTabSheet *TabSheet6;
-    TTabSheet *TabSheet7;
-    TCheckBox *CheckBox10;
-    TCheckBox *CheckBox11;
-    TCheckBox *CheckBox12;
-    TLabel *Label4;
-    TLabel *Label5;
-    TLabel *Label6;
-    TLabel *Label7;
-    TComboBox *ComboBox4;
-    TComboBox *ComboBox5;
-    TComboBox *ComboBox6;
-    TComboBox *ComboBox7;
-    TLabel *Label8;
-    TLabel *Label9;
-    TLabel *Label10;
-    TScrollBar *ScrollBar3;
-    TScrollBar *ScrollBar2;
-    TScrollBar *ScrollBar1;
-    TStaticText *StaticText1;
-    TStaticText *StaticText2;
-    TStaticText *StaticText3;
-    TBitBtn *Btn_OD_reload;
-    TPageControl *OD;
-    TTabSheet *TabSheet4;
-    TStringGrid *sg_od_1;
-    TTabSheet *TabSheet5;
-    TStringGrid *sg_od_2;
-    TButton *btn_od_read;
-    TButton *btn_od_write;
-    TButton *btn_od_load;
-    TButton *btn_od_save;
-    TLabel *Label13;
-    TLabel *Label14;
-    TLabel *Label15;
-    TLabel *Label16;
-    TRadioGroup *rg_od_table_type;
-    TCheckBox *CheckBox13;
     TCheckBox *CheckBox14;
     TLabel *Label3;
     TComboBox *ComboBox3;
     TCheckBox *CheckBox_FuncOn;
+    TGroupBox *GroupBox_ManualAdjust;
+    TEdit *Edit_R;
+    TEdit *Edit_G;
+    TEdit *Edit_B;
+    TButton *Button_RAdd;
+    TButton *Button_GAdd;
+    TButton *Button_BAdd;
+    TButton *Button_RMinus;
+    TButton *Button_GMinus;
+    TButton *Button_BMinus;
+    TCheckBox *CheckBox_ManualEnable;
     void __fastcall FormClose(TObject * Sender, TCloseAction & Action);
     void __fastcall FormCreate(TObject * Sender);
     void __fastcall btn_dg_wrtClick(TObject * Sender);
@@ -125,60 +79,38 @@ class TFunctionForm:public TForm {
     void __fastcall btn_dg_loadClick(TObject * Sender);
     void __fastcall btn_dg_saveClick(TObject * Sender);
 
-    void __fastcall Pstate_CheckBox_Click(TObject * Sender);
-    void __fastcall Pstate_ComboBox_Click(TObject * Sender);
-    void __fastcall Pstate_LblEdit2_KeyPress(TObject * Sender, char &Key);
 
-    void __fastcall AGBS_CheckBox_Click(TObject * Sender);
-    void __fastcall AGBS_ComboBox_Click(TObject * Sender);
-    void __fastcall AGBS_LblEdit2_KeyPress(TObject * Sender, char &Key);
-
-    void __fastcall OD_CheckBox_Click(TObject * Sender);
-    void __fastcall OD_ComboBox_Click(TObject * Sender);
-    void __fastcall OD_ComboBox2_Click(TObject * Sender);
-    void __fastcall OD_ScrollBar_Scroll(TObject * Sender, TScrollCode ScrollCode, int &ScrollPos);
 
     void __fastcall FrcDg_CheckBox_Click(TObject * Sender);
     void __fastcall FrcDg_ComboBox_Click(TObject * Sender);
     void __fastcall FrcDg_LblEdit_KeyPress(TObject * Sender, char &Key);
     void __fastcall Btn_FRC_DG_reloadClick(TObject * Sender);
-    void __fastcall Btn_Pstate_reloadClick(TObject * Sender);
-    void __fastcall Btn_AGBS_reloadClick(TObject * Sender);
-    void __fastcall Btn_OD_reloadClick(TObject * Sender);
+
     void __fastcall FormKeyDown(TObject * Sender, WORD & Key, TShiftState Shift);
-    void __fastcall btn_od_readClick(TObject * Sender);
-    void __fastcall btn_od_writeClick(TObject * Sender);
-    void __fastcall btn_od_loadClick(TObject * Sender);
-    void __fastcall btn_od_saveClick(TObject * Sender);
-    void __fastcall rg_od_table_typeClick(TObject * Sender);
+    void __fastcall CheckBox_ManualEnableClick(TObject * Sender);
+    void __fastcall Button_RAddClick(TObject * Sender);
+    void __fastcall Button_RMinusClick(TObject * Sender);
+    void __fastcall Button_GAddClick(TObject * Sender);
+    void __fastcall Button_GMinusClick(TObject * Sender);
+    void __fastcall Button_BAddClick(TObject * Sender);
+    void __fastcall Button_BMinusClick(TObject * Sender);
+
 
   private:			// User declarations
     static bool DG_IsChkSum;
-    static bool OD_IsChkSum;
+    void adjustNumberOfEdit(TEdit * edit, bool add);
+    int **generateGainDGLUT(int maxR, int maxG, int maxB);
+    int **getDGLUTFromUI();
+    int **getEmptyDGLUT();
+    void setDGLUTToUI(int **dgLUT);
+    void deleteDGLUT(int **dgLUT);
+
+    int **manualBasedDGLUT;
+    int **gainDGLUT;
   public:			// User declarations
      __fastcall TFunctionForm(TComponent * Owner);
 
     AbstFunc *OFunc;
-
-    //P-state parameter declare
-    TBit *Pstate_cb;
-    _CHKB **PstateChkB;
-
-    TBit *Pstate_cbo;
-    _CBOB **PstateCboB;
-
-    TBit2 *Pstate_lble2;
-    _LBLE2 **PstateLblE2;
-
-    //Aging Bist parameter declare
-    TBit *AGBS_cb;
-    _CHKB **AGBSChkB;
-
-    TBit *AGBS_cbo;
-    _CBOB **AGBSCboB;
-
-    TBit2 *AGBS_lble2;
-    _LBLE2 **AGBSLblE2;
 
     // FRC DG
     TBit *FrcDg_cb;
@@ -190,24 +122,9 @@ class TFunctionForm:public TForm {
     TBit *FrcDg_lble;
     _LBLE **FrcDgLblE;
 
-    //OD
-    TBit *OD_cb;
-    _CHKB **ODChkB;
 
-    TBit *OD_cbo;
-    _CBOB **ODCboB;
-
-    TBit2 *OD_cbo2;
-    _CBOB2 **ODCboB2;
-
-    TBit *OD_ScrlB;
-    _ScrollBar **ODScrlB;
 
     TLUT *Addr_DgLUT;
-
-    TLUT *Addr_ODLUT;
-    TLUT *Addr_ODLUT1;
-    TLUT *Addr_ODLUT2;
 
     bool Func_Chg;		// Func_Chg = 0 為禁止寫入, Func_Chg =1 為允許寫入, 以避免動作被中斷
 
@@ -218,14 +135,7 @@ class TFunctionForm:public TForm {
     void DG_LUT_RW_over();	// 回復enable狀態
     void DG_LUT_FuncEnable(bool flag);	// 設定DG lut button是否作用, flag =0 不作用, 反之,作用
 
-    bool OD_EN_State;		// 紀錄OD table 的 Enable狀態
-    int ODEN_idx;		// 紀錄OD Enable的CheckBox的index
-    bool OD_LUT_RW_start();	// 紀錄enable狀態
-    void OD_LUT_RW_over();	// 回復enable狀態
-    void OD_LUT_FuncEnable(bool);	// 設定OD lut button是否作用, flag =0 不作用, 反之,作用
-    int ODLUT_ip_type;		// 1: AUO IP(18x18 table) , 2: Vender IP (17x17 table)
     void Initial_DG_table();
-    void Initial_OD_table();
     //=====================================================================
 };
 //---------------------------------------------------------------------------

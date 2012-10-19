@@ -18,10 +18,10 @@
 
 //本項目內gui頭文件
 
-StringMap_ptr AbstractBase::map = nil_StringMap_ptr;
+StringMap_ptr AbstractIPBase::map = nil_StringMap_ptr;
 
  
-int_vector_ptr AbstractBase::getValuesFromFile(std::string tag)
+int_vector_ptr AbstractIPBase::getValuesFromFile(std::string tag)
 {
     if (nil_StringMap_ptr == map) {
 	map = getStringMap(TMainForm::AddressFile);
@@ -44,7 +44,7 @@ int_vector_ptr AbstractBase::getValuesFromFile(std::string tag)
     return values;
 };
 
-int AbstractBase::getValueFromFile(std::string tag)
+int AbstractIPBase::getValueFromFile(std::string tag)
 {
     int_vector_ptr values = getValuesFromFile(tag);
     if (nil_int_vector_ptr == values) {
@@ -56,7 +56,7 @@ int AbstractBase::getValueFromFile(std::string tag)
     }
 };
 
-bool AbstractBase::hasValueInFile(std::string tag)
+bool AbstractIPBase::hasValueInFile(std::string tag)
 {
 
     int_vector_ptr values = getValuesFromFile(tag);
@@ -68,7 +68,7 @@ bool AbstractBase::hasValueInFile(std::string tag)
     }
 
 };
-int_vector_ptr AbstractBase::getRegisterIntVector(string_vector_ptr registerTokens)
+int_vector_ptr AbstractIPBase::getRegisterIntVector(string_vector_ptr registerTokens)
 {
     using namespace std;
     int size = registerTokens->size();
@@ -79,7 +79,7 @@ int_vector_ptr AbstractBase::getRegisterIntVector(string_vector_ptr registerToke
     }
     return values;
 };
-bool AbstractBase::setAddress(AbstractAddressType * address, std::string text)
+bool AbstractIPBase::setAddress(AbstractAddressType * address, std::string text)
 {
     if (text.length() == 0 || text == "_NULL") {
 	return false;
@@ -91,7 +91,7 @@ bool AbstractBase::setAddress(AbstractAddressType * address, std::string text)
     return true;
 };
 
-bool AbstractBase::setAddressFromFile(AbstractAddressType * address, std::string tag)
+bool AbstractIPBase::setAddressFromFile(AbstractAddressType * address, std::string tag)
 {
     if (nil_StringMap_ptr == map) {
 	map = getStringMap(TMainForm::AddressFile);
@@ -105,7 +105,7 @@ bool AbstractBase::setAddressFromFile(AbstractAddressType * address, std::string
 };
 
 
-AbstractAddress_ptr AbstractBase::getAddress(std::string tag)
+AbstractAddress_ptr AbstractIPBase::getAddress(std::string tag)
 {
     if (nil_StringMap_ptr == map) {
 	map = getStringMap(TMainForm::AddressFile);
@@ -141,7 +141,7 @@ AbstractAddress_ptr AbstractBase::getAddress(std::string tag)
     return result;
 };
 
-AbstractAddressType *AbstractBase::getAddress2(std::string tag)
+AbstractAddressType *AbstractIPBase::getAddress2(std::string tag)
 {
     if (nil_StringMap_ptr == map) {
 	map = getStringMap(TMainForm::AddressFile);
@@ -182,7 +182,7 @@ AbstractAddressType *AbstractBase::getAddress2(std::string tag)
     return result;
 };
 
-StringMap_ptr AbstractBase::getStringMap(std::string filename)
+StringMap_ptr AbstractIPBase::getStringMap(std::string filename)
 {
     using namespace std;
     using namespace cms::util;
@@ -217,26 +217,26 @@ StringMap_ptr AbstractBase::getStringMap(std::string filename)
     return nil_StringMap_ptr;
 }
 
-StringMap_ptr AbstractBase::getStringMap(AnsiString filename)
+StringMap_ptr AbstractIPBase::getStringMap(AnsiString filename)
 {
     return getStringMap(std::string(filename.c_str()));
 }
 
 
 
-void AbstractBase::resetAddressMap()
+void AbstractIPBase::resetAddressMap()
 {
     map = nil_StringMap_ptr;
 }
 
-AbstractBase::~AbstractBase()
+AbstractIPBase::~AbstractIPBase()
 {
     //int x = 1;
 };
-StringMap_ptr AbstractBase::aliasNameMap = nil_StringMap_ptr;
-//const std::string AbstractBase::AliasFilename = "alias.txt";
-//const String AbstractBase::Alias = "alias";
-void AbstractBase::initAliasNameMap()
+StringMap_ptr AbstractIPBase::aliasNameMap = nil_StringMap_ptr;
+//const std::string AbstractIPBase::AliasFilename = "alias.txt";
+//const String AbstractIPBase::Alias = "alias";
+void AbstractIPBase::initAliasNameMap()
 {
     const std::string AliasFilename = "./alias.txt";
     const String Alias = "alias";

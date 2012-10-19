@@ -139,7 +139,7 @@ class _ScrollBar		//Address 為 1 byte
 
 
 
-class AbstractBase {
+class AbstractIPBase {
   private:
     static StringMap_ptr map;
     static StringMap_ptr aliasNameMap;
@@ -152,7 +152,7 @@ class AbstractBase {
 
     static bool setAddress(AbstractAddressType * address, std::string text);
     static bool setAddressFromFile(AbstractAddressType * address, std::string tag);
-    ~AbstractBase();
+    ~AbstractIPBase();
   public:
 
     static AbstractAddress_ptr getAddress(std::string tag);
@@ -166,7 +166,7 @@ class AbstractBase {
 };
 
 
-class AbstHSV:public AbstractBase {
+class AbstHSV:public AbstractIPBase {
   public:
     virtual TBit * SetChkBx() = 0;
     virtual TLUT *SetLUT() = 0;
@@ -204,7 +204,7 @@ char *Load_File(String Fpath)
 /*==========================================================================
 AbstSP為一自定的class, 具有可傳回IC中關於Sharpness address定義的函式
 ===========================================================================*/
-class AbstSP:public AbstractBase {
+class AbstSP:public AbstractIPBase {
   public:
     virtual TBit * SetChkBx() = 0;	//傳回CheckBox的address定義
     virtual TBit *SetCboBx() = 0;
@@ -221,7 +221,7 @@ class AbstSP:public AbstractBase {
     int SPScrollBar_Nbr;
 };
 
-class AbstCE:public AbstractBase {
+class AbstCE:public AbstractIPBase {
   public:
     virtual TBit * SetChkBx() = 0;
     virtual TBit *SetCboBx() = 0;
@@ -239,7 +239,7 @@ class AbstCE:public AbstractBase {
 AbstCM為一自定的class, 具有可傳回IC中關於Color Matrix address定義的函式
 ===========================================================================*/
 
-class AbstCM:public AbstractBase {
+class AbstCM:public AbstractIPBase {
   public:
     //CM
     virtual TBit * SetChkBx() = 0;	//傳回CheckBox的address定義
@@ -258,7 +258,7 @@ class AbstCM:public AbstractBase {
 
 //---------------------------------------------------------------------------
 //Abstract class of Vender
-/*class AbstVender:public AbstractBase {
+/*class AbstVender:public AbstractIPBase {
   public:
     virtual TBit * SetChkBx() = 0;
     virtual TBit *SetCboBx() = 0;
@@ -286,7 +286,7 @@ class AbstCM:public AbstractBase {
 };*/
 
 //Abstract class of TCON
-/*class AbstTCON:public AbstractBase {
+/*class AbstTCON:public AbstractIPBase {
   public:
     //device
     virtual TBit * SetDevChkBx() = 0;
@@ -328,7 +328,7 @@ class AbstCM:public AbstractBase {
 };*/
 
 //Abstract class of FunctionForm
-class AbstFunc:public AbstractBase {
+class AbstFunc:public AbstractIPBase {
   public:
     //frc_dg
     virtual TBit * SetFrcDgChkBx() = 0;
@@ -381,7 +381,7 @@ class AbstFunc:public AbstractBase {
 };
 
 //Abstract class of DCR
-/*class AbstDCR:public AbstractBase {
+/*class AbstDCR:public AbstractIPBase {
   public:
     //DCR setting
     virtual TBit * SetChkBx() = 0;
@@ -426,7 +426,7 @@ class AbstFunc:public AbstractBase {
     int HDRLblE2_Nbr;
     int DCRLUT_Nbr;		// 20100608 set number of DCR table
 };*/
-class AbstC3D:public AbstractBase {
+class AbstC3D:public AbstractIPBase {
   public:
     virtual TBit * SetChkBx() = 0;
     virtual TLUT *SetLUT() = 0;
@@ -436,7 +436,7 @@ class AbstC3D:public AbstractBase {
 };
 
 //Abstract class of SATForm
-class AbstSATForm:public AbstractBase {
+class AbstSATForm:public AbstractIPBase {
   public:
     virtual TBit * SetChkBx() = 0;
     virtual TBit *SetCboBx() = 0;
@@ -454,7 +454,7 @@ class AbstSATForm:public AbstractBase {
 };
 
 //Abstract class of offsetForm
-class AbstoffsetForm:public AbstractBase {
+class AbstoffsetForm:public AbstractIPBase {
   public:
     virtual TBit * SetChkBx() = 0;
     virtual TBit *SetCboBx() = 0;

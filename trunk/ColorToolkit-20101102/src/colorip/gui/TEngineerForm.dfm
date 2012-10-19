@@ -1,6 +1,6 @@
 object EngineerForm: TEngineerForm
-  Left = 306
-  Top = 233
+  Left = 350
+  Top = 240
   Width = 916
   Height = 672
   Caption = 'Engineering'
