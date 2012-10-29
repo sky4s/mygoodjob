@@ -13,6 +13,7 @@
 #include <addresstype/Address_type.h>
 //本項目內gui頭文件
 
+#include <colorip/gui/TSharpnessV2_1Form.h>
 #include "include.h"
 #include <iostream>
 #include <fstream>
@@ -571,15 +572,13 @@ void __fastcall TMainForm::mn_Example2Click(TObject * Sender)
 
 void __fastcall TMainForm::Sharpnessv211Click(TObject * Sender)
 {
-    /*if (SharpnessForm12307_2 != NULL) {
-       SharpnessForm12307_2->Show();
+    if (SharpnessV2_1Form != NULL) {
+       SharpnessV2_1Form->Show();
        } else {
-       if (TCON_DEV == "11307") {
-       SharpnessForm12307_2 = new TSharpnessForm12307_2(this);
-       SharpnessForm12307_2->Show();
-       }
+        SharpnessV2_1Form = new TSharpnessV2_1Form(this);
+        SharpnessV2_1Form->Show();
 
-       } */
+    }
 }
 
 //---------------------------------------------------------------------------
