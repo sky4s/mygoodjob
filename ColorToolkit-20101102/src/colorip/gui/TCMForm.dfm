@@ -14,6 +14,7 @@ object CMForm: TCMForm
   OldCreateOrder = False
   Position = poDefault
   Visible = True
+  WindowState = wsMaximized
   OnClose = FormClose
   OnCreate = FormCreate
   OnKeyDown = FormKeyDown

@@ -10,7 +10,10 @@ object ExampleForm: TExampleForm
   Font.Height = -10
   Font.Name = 'MS Sans Serif'
   Font.Style = []
+  FormStyle = fsMDIChild
   OldCreateOrder = False
+  Position = poDefault
+  Visible = True
   OnActivate = FormActivate
   OnCreate = FormCreate
   PixelsPerInch = 96
@@ -18,8 +21,8 @@ object ExampleForm: TExampleForm
   object Label5: TLabel
     Left = 8
     Top = 552
-    Width = 137
-    Height = 17
+    Width = 32
+    Height = 13
     Caption = 'Label5'
   end
   object GroupBox1: TGroupBox

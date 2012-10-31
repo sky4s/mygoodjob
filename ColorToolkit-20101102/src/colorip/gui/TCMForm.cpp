@@ -1154,6 +1154,8 @@ void __fastcall TCMForm::FormClose(TObject * Sender, TCloseAction & Action)
     delete[]CM_addr;
     delete[]ofs_addr;
     delete[]OCM;
+    
+    Action = caFree;
 }
 
 //---------------------------------------------------------------------------

@@ -48,9 +48,9 @@ __fastcall TMainForm::TMainForm(TComponent * Owner):TForm(Owner)
 void __fastcall TMainForm::mn_EngineerClick(TObject * Sender)
 {
     //EngineerForm->action
-    if (NULL == EngineerForm || !EngineerForm->Active) {
+    /*if (NULL == EngineerForm || !EngineerForm->Showing ) {
 	EngineerForm = new TEngineerForm(this);
-    }
+    }*/
     if (wsMinimized == EngineerForm->WindowState) {
 	EngineerForm->WindowState = wsMaximized;
     }
@@ -62,7 +62,7 @@ void __fastcall TMainForm::mn_EngineerClick(TObject * Sender)
 
 void __fastcall TMainForm::mn_FunctionClick(TObject * Sender)
 {
-    if (NULL == FunctionForm || !FunctionForm->Active) {
+    if (NULL == FunctionForm || !FunctionForm->Showing) {
 	FunctionForm = new TFunctionForm(this);
 
     }
@@ -136,7 +136,10 @@ void TMainForm::closeAllForms()
 
 
     for (int i = MDIChildCount - 1; i >= 0; i--) {
-	MDIChildren[i]->Close();
+	TForm *form = MDIChildren[i];
+	if (form != EngineerForm) {
+	    form->Close();
+	}
     }
 
     /*if (FunctionForm != NULL) {
@@ -215,7 +218,7 @@ void __fastcall TMainForm::FormCreate(TObject * Sender)
 void __fastcall TMainForm::mn_CMClick(TObject * Sender)
 {
 
-    if (NULL == CMForm || !CMForm->Active) {
+    if (NULL == CMForm || !CMForm->Showing) {
 	CMForm = new TCMForm(this);
 
     }
@@ -228,7 +231,7 @@ void __fastcall TMainForm::mn_CMClick(TObject * Sender)
 void __fastcall TMainForm::mn_SharpnessClick(TObject * Sender)
 {
 
-    if (NULL == SharpnessV1Form || !SharpnessV1Form->Active) {
+    if (NULL == SharpnessV1Form || !SharpnessV1Form->Showing) {
 	SharpnessV1Form = new TSharpnessV1Form(this);
     }
 
@@ -244,7 +247,7 @@ void __fastcall TMainForm::mn_SharpnessClick(TObject * Sender)
 void __fastcall TMainForm::mn_CEClick(TObject * Sender)
 {
 
-    if (NULL == CEForm || !CEForm->Active) {
+    if (NULL == CEForm || !CEForm->Showing) {
 	CEForm = new TCEForm(this);
     }
 
@@ -268,7 +271,7 @@ void __fastcall TMainForm::StatusBar1DblClick(TObject * Sender)
 void __fastcall TMainForm::mn_C3DClick(TObject * Sender)
 {
 
-    if (NULL == C3DForm || !C3DForm->Active) {
+    if (NULL == C3DForm || !C3DForm->Showing) {
 	C3DForm = new TC3DForm(this);
     }
 
@@ -282,8 +285,8 @@ void __fastcall TMainForm::mn_C3D_777Click(TObject * Sender)
 {
     C3D_type = 7;
 
-    if (NULL == C3DForm || !C3DForm->Active || C3DForm->Hint != C3D_type) {
-	if (NULL != C3DForm && C3DForm->Active) {
+    if (NULL == C3DForm || !C3DForm->Showing || C3DForm->Hint != C3D_type) {
+	if (NULL != C3DForm && C3DForm->Showing) {
 	    C3DForm->Close();
 	}
 	C3DForm = new TC3DForm(this);
@@ -312,8 +315,8 @@ void __fastcall TMainForm::mn_C3D_999Click(TObject * Sender)
 {
     C3D_type = 9;
 
-    if (NULL == C3DForm || !C3DForm->Active || C3DForm->Hint != C3D_type) {
-	if (NULL != C3DForm && C3DForm->Active) {
+    if (NULL == C3DForm || !C3DForm->Showing || C3DForm->Hint != C3D_type) {
+	if (NULL != C3DForm && C3DForm->Showing) {
 	    C3DForm->Close();
 	}
 	C3DForm = new TC3DForm(this);
@@ -339,7 +342,7 @@ void __fastcall TMainForm::mn_C3D_999Click(TObject * Sender)
 void __fastcall TMainForm::mn_SATClick(TObject * Sender)
 {
 
-    if (NULL == SaturationForm || !SaturationForm->Active) {
+    if (NULL == SaturationForm || !SaturationForm->Showing) {
 	SaturationForm = new TSaturationForm(this);
     }
 
@@ -352,7 +355,7 @@ void __fastcall TMainForm::mn_offsetClick(TObject * Sender)
 {
 
 
-    if (NULL == offsetForm || !offsetForm->Active) {
+    if (NULL == offsetForm || !offsetForm->Showing) {
 	offsetForm = new TOffsetForm(this);
     }
 
@@ -499,7 +502,7 @@ AnsiString TMainForm::AddressFile;
 void __fastcall TMainForm::mn_HSV2Click(TObject * Sender)
 {
 
-    if (NULL == HSVV2Form || !HSVV2Form->Active) {
+    if (NULL == HSVV2Form || !HSVV2Form->Showing) {
 	HSVV2Form = new THSVV2Form(this);
     }
 
@@ -512,7 +515,7 @@ void __fastcall TMainForm::mn_HSV1Click(TObject * Sender)
 {
 
 
-    if (NULL == HSVV1Form || !HSVV1Form->Active) {
+    if (NULL == HSVV1Form || !HSVV1Form->Showing) {
 	HSVV1Form = new THSVV1Form(this);
     }
 
@@ -528,7 +531,7 @@ void __fastcall TMainForm::mn_Sharpness12307Click(TObject * Sender)
 {
 
 
-    if (NULL == SharpnessV2Form || !SharpnessV2Form->Active) {
+    if (NULL == SharpnessV2Form || !SharpnessV2Form->Showing) {
 	SharpnessV2Form = new TSharpnessV2Form(this);
     }
 
@@ -559,7 +562,7 @@ void __fastcall TMainForm::mn_Example2Click(TObject * Sender)
 {
 
 
-    if (NULL == ExampleForm || !ExampleForm->Active) {
+    if (NULL == ExampleForm || !ExampleForm->Showing) {
 	ExampleForm = new TExampleForm(this);
     }
 
