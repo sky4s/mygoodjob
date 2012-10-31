@@ -1690,12 +1690,30 @@ void TMainForm::initTCONFile()
 	ini->WriteString("62301", "GammaTestEnableAddress", "307");
 	ini->WriteInteger("62301", "GammaTestEnableBit", 6);
 	ini->WriteString("62301", "GammaTestAddress", "307");
-	//ini->WriteBool("62301", "IndepRGB", false);
 	ini->WriteString("62301", "GammaTestType", "62301Type");
 	ini->WriteString("62301", "GammaTestBit", "10");
 
 	ini->WriteInteger("62301", "in", 8);
 	ini->WriteInteger("62301", "out", 6);
+	//=========================================================================
+	// 1H501
+	//=========================================================================
+	ini->WriteInteger("1H501", "AddressingSize", 5);
+
+	ini->WriteString("1H501", "DigitalGammaEnableAddress", "28");
+	ini->WriteInteger("1H501", "DigitalGammaEnableBit", 0);
+	ini->WriteString("1H501", "DigitalGammaLUTAddress", "BE0");
+	ini->WriteInteger("1H501", "DigitalGammaLUTType", 10);
+
+	ini->WriteBool("1H501", "GammaTestFunc", false);
+	/*ini->WriteString("1H501", "GammaTestEnableAddress", "307");
+	ini->WriteInteger("1H501", "GammaTestEnableBit", 6);
+	ini->WriteString("1H501", "GammaTestAddress", "307");
+	ini->WriteString("1H501", "GammaTestType", "62301Type");
+	ini->WriteString("1H501", "GammaTestBit", "10");*/
+
+	ini->WriteInteger("1H501", "in", 8);
+	ini->WriteInteger("1H501", "out", 6);
 	//=========================================================================
     }
 }
