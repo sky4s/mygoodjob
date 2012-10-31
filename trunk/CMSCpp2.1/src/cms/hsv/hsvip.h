@@ -25,7 +25,7 @@ namespace cms {
 	    short hueAdjustValue;
 	    short saturationAdjustValue;
 	    short valueAdjustValue;
-	    double getDoubleHueAdjustValue();
+	    double getDoubleHueAdjustValue() const;
 	};
 
 	class TuneParameter {
@@ -42,8 +42,7 @@ namespace cms {
 	  public:
 	    HSVLUT(TuneParameter & tuneParameter);
 	    static int getDownAddrO(AUOHSV & auoHSV);
-	    static short_array getHSVIntpol(AUOHSV & auoHSV,
-					    SingleHueAdjustValue & singleHueAdjustValue);
+	    static short_array getHSVIntpol(const AUOHSV & auoHSV, const SingleHueAdjustValue & v);
 
 	  private:
 	    short_array hueAdjustValue;
@@ -53,9 +52,9 @@ namespace cms {
 		      short_array saturationAdjustValue, short_array valueAdjustValue);
 	    TuneParameter & tuneParameter;
 	    static int getMaxIdx(AUOHSV & auoHSV);
-	    static short getHueIntpol(AUOHSV & auoHSV, int down, int up);
-	    static short getSatIntpol(AUOHSV & auoHSV, int down, int up);
-	    static short getLumIntpol(AUOHSV & auoHSV, int down, int up);
+	    static short getHueIntpol(const AUOHSV & auoHSV, int down, int up);
+	    static short getSatIntpol(const AUOHSV & auoHSV, int down, int up);
+	    static short getLumIntpol(const AUOHSV & auoHSV, int down, int up);
 	};
 
 	class ValuePrecisionEvaluator {
@@ -78,7 +77,7 @@ namespace cms {
 	class IntegerSaturationFormula {
 	  public:
 	    IntegerSaturationFormula(byte turnPoint, int turnPointBit);
-	    short getSaturartion(short originalSaturation, short adjustValue);
+	    short getSaturation(short originalSaturation, short adjustValue) const;
 	  private:
 	    byte turnPoint;
 	    int turnPointBit;

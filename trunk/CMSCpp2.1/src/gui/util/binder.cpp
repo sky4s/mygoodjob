@@ -107,7 +107,7 @@ namespace gui {
 	//=====================================================================
 	MultiUIBinder::MultiUIBinder() {
 	};
-	void __fastcall MultiUIBinder::active0(TObject * sender, bool onKeyPress, char &key) {
+	void __fastcall MultiUIBinder::active0(TObject * sender, bool onKeyPress, const char &key) {
 	    TControl *ctrl = dynamic_cast < TControl * >(sender);
 	    if (null != ctrl) {
 		Range range = setterMap.equal_range(ctrl);
@@ -127,10 +127,11 @@ namespace gui {
 		}
 	    }
 	};
+	static const char &Space = ' ';
 	void __fastcall MultiUIBinder::active(TObject * sender) {
-	    active0(sender, false, ' ');
+	    active0(sender, false, Space);
 	};
-	void __fastcall MultiUIBinder::activeWithOnKeyPress(TObject * sender, char &key) {
+	void __fastcall MultiUIBinder::activeWithOnKeyPress(TObject * sender, const char &key) {
 	    active0(sender, true, key);
 	};
 	void MultiUIBinder::bind(TEdit * edit, TScrollBar * scrollBar) {
@@ -203,24 +204,24 @@ namespace gui {
 	    }
 	    return eraseCount;
 	};
-       	/*void MultiUIBinder::processOnClick(TCheckBox * checkBox, uiset_ptr setter) {
-	    if (0 != checkBox->OnClick) {
-		setter->originalOnChangeFunction = checkBox->OnClick;
-	    }
-	    checkBox->OnClick = active;
-	};
-	void MultiUIBinder::processOnClick(TComboBox * comboBox, uiset_ptr setter) {
-	    if (0 != comboBox->OnClick) {
-		setter->originalOnChangeFunction = comboBox->OnClick;
-	    }
-	    comboBox->OnClick = active;
-	};
-	void MultiUIBinder::processOnKeyPress(TLabeledEdit * labeledEdit, uiset_ptr setter) {
-	    if (0 != labeledEdit->OnKeyPress) {
-		setter->originalOnKeyPressFunction = labeledEdit->OnKeyPress;
-	    }
-	    labeledEdit->OnKeyPress = activeWithOnKeyPress;
-	};*/
+	/*void MultiUIBinder::processOnClick(TCheckBox * checkBox, uiset_ptr setter) {
+	   if (0 != checkBox->OnClick) {
+	   setter->originalOnChangeFunction = checkBox->OnClick;
+	   }
+	   checkBox->OnClick = active;
+	   };
+	   void MultiUIBinder::processOnClick(TComboBox * comboBox, uiset_ptr setter) {
+	   if (0 != comboBox->OnClick) {
+	   setter->originalOnChangeFunction = comboBox->OnClick;
+	   }
+	   comboBox->OnClick = active;
+	   };
+	   void MultiUIBinder::processOnKeyPress(TLabeledEdit * labeledEdit, uiset_ptr setter) {
+	   if (0 != labeledEdit->OnKeyPress) {
+	   setter->originalOnKeyPressFunction = labeledEdit->OnKeyPress;
+	   }
+	   labeledEdit->OnKeyPress = activeWithOnKeyPress;
+	   }; */
 	void MultiUIBinder::processOnChange(TScrollBar * scrollBar, uiset_ptr setter) {
 	    if (0 != scrollBar->OnChange) {
 		setter->originalOnChangeFunction = scrollBar->OnChange;

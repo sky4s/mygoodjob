@@ -94,12 +94,9 @@ namespace gui {
 	class MultiUIBinder {
 	  private:
 	    std::multimap < TControl *, uiset_ptr > setterMap;
-	    //void processOnClick(TCheckBox * checkBox, uiset_ptr setter);
-	    //void processOnClick(TComboBox * comboBox, uiset_ptr setter);
-	    //void processOnKeyPress(TLabeledEdit * labeledEdit, uiset_ptr setter);
 	    void processOnChange(TScrollBar * scrollBar, uiset_ptr setter);
-	    void __fastcall activeWithOnKeyPress(TObject * sender, char &key);
-	    void __fastcall active0(TObject * sender, bool onKeyPress, char &key);
+	    void __fastcall activeWithOnKeyPress(TObject * sender, const char &key);
+	    void __fastcall active0(TObject * sender, bool onKeyPress, const char &key);
 	  public:
 	    MultiUIBinder();
 	    void __fastcall active(TObject * sender);
@@ -122,10 +119,6 @@ namespace gui {
 	    int loose(TControl * ctrl);
 
 
-	    /*void bind(TEdit * edit, TScrollBar * scrollBaruiset_ptr, uiset_ptr setter);
-	       void bind(TEdit * edit1, TEdit * edit2, uiset_ptr setter);
-	       void bind(TScrollBar * scrollBar1, TScrollBar * scrollBar2, uiset_ptr setter);
-	       void bind(TLabel * label, TScrollBar * scrollBar, uiset_ptr setter); */
 	};
     };
 };
