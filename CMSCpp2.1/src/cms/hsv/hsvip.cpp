@@ -17,7 +17,7 @@ namespace cms {
 	    saturationAdjustValue = _saturationAdjustValue;
 	    valueAdjustValue = _valueAdjustValue;
 	};
-	double SingleHueAdjustValue::getDoubleHueAdjustValue() {
+	double SingleHueAdjustValue::getDoubleHueAdjustValue() const {
 	    return hueAdjustValue / 768. * 360;
 	};
 	//======================================================================
@@ -25,7 +25,7 @@ namespace cms {
 	//======================================================================
 	// TuneParameter
 	//======================================================================
-	TuneParameter::TuneParameter(barray < SingleHueAdjustValue > hsvAdjustValue) {
+	 TuneParameter::TuneParameter(barray < SingleHueAdjustValue > hsvAdjustValue) {
 	};
 	void TuneParameter::init(barray < SingleHueAdjustValue > hsvAdjustValue) {
 	    hueAdjustValue = short_array(new short[24]);
@@ -84,7 +84,7 @@ namespace cms {
 		return 0;
 	    }
 	};
-	short_array HSVLUT::getHSVIntpol(AUOHSV & auoHSV, SingleHueAdjustValue & v) {
+	short_array HSVLUT::getHSVIntpol(const AUOHSV & auoHSV, const SingleHueAdjustValue & v) {
 	    short_array hsvIntpol(new short[4]);
 	    hsvIntpol[0] = getHueIntpol(auoHSV, v.hueAdjustValue, v.hueAdjustValue);
 	    hsvIntpol[1] = getSatIntpol(auoHSV, v.saturationAdjustValue, v.saturationAdjustValue);
@@ -94,7 +94,7 @@ namespace cms {
 	    //double vv = hsvIntpol[2];
 	    return hsvIntpol;
 	};
-	short HSVLUT::getHueIntpol(AUOHSV & auoHSV, int down, int up) {
+	short HSVLUT::getHueIntpol(const AUOHSV & auoHSV, int down, int up) {
 	    up = up < down ? up + 768 : up;
 
 	    int down_3 = down << 3;
@@ -105,7 +105,7 @@ namespace cms {
 	    int hueIntpol = up_down_index + down_3;
 	    return (short) hueIntpol;
 	};
-	short HSVLUT::getSatIntpol(AUOHSV & auoHSV, int down, int up) {
+	short HSVLUT::getSatIntpol(const AUOHSV & auoHSV, int down, int up) {
 	    int down_up = up - down;
 	    int sat_intval = down_up * auoHSV.hueIndex;
 
@@ -116,7 +116,7 @@ namespace cms {
 
 	    return (short) sat_intpol;
 	};
-	short HSVLUT::getLumIntpol(AUOHSV & auoHSV, int down, int up) {
+	short HSVLUT::getLumIntpol(const AUOHSV & auoHSV, int down, int up) {
 	    int down_up = up - down;
 	    int lum_intval = down_up * auoHSV.hueIndex;
 
@@ -264,7 +264,7 @@ namespace cms {
 	{
 
 	};
-	short IntegerSaturationFormula::getSaturartion(short originalSaturation, short adjustValue) {
+	short IntegerSaturationFormula::getSaturation(short originalSaturation, short adjustValue) const {
 	    boolean runInComplement = true;
 	    //boolean showMessage = false;
 	    int bitg2 = 11;
@@ -275,7 +275,7 @@ namespace cms {
 								 turnPoint, runInComplement, bitg2,
 								 bitgain, bitOutputSaturation,
 								 turnPointBit);
-	    return result;
+	     return result;
 	};
 	short_array IntegerHSVIP::getHSVValues(AUOHSV & hsv,
 					       const SingleHueAdjustValue
@@ -292,14 +292,14 @@ namespace cms {
 					       & integerSaturationFormula, boolean hsvClip) {
 	    short_array hsvValues(new short[3]);
 	    hsvValues[0] = hsvIntpol[0];
-	    hsvValues[1] = integerSaturationFormula.getSaturartion(hsv.saturation, hsvIntpol[1]);
+	    hsvValues[1] = integerSaturationFormula.getSaturation(hsv.saturation, hsvIntpol[1]);
 
 	    short offset = (short) (hsvIntpol[2] / Math::pow(2, 4));
 	    hsvValues[2] = ValuePrecisionEvaluator::getV(hsv.value, hsv.min, offset);
 
-	    short h0 = hsvValues[0];
-	    short h1 = hsvValues[1];
-	    short h2 = hsvValues[2];
+	    /*short h0 = hsvValues[0];
+	       short h1 = hsvValues[1];
+	       short h2 = hsvValues[2]; */
 
 	    if (hsvClip) {
 		hsvValues[1] = hsvValues[1] > 1023 ? 1023 : hsvValues[1];
@@ -350,6 +350,7 @@ namespace cms {
 	    b = _b;
 	    divH = _divH;
 	};
+        
 	static short getDiv(short a, short b) {
 	    short div = (short) (((double) a) / b * (Math::pow(2, 10)));
 	    return div;
@@ -371,26 +372,36 @@ namespace cms {
 	    }
 	}
 
+	/*
+	   rgbValues 10bit
+	 */
 	short_array AUOHSV::fromRGBValues(short_array rgbValues) {
-	    short r = rgbValues[0];
-	    short g = rgbValues[1];
-	    short b = rgbValues[2];
+	    /*short r = rgbValues[0];
+	       short g = rgbValues[1];
+	       short b = rgbValues[2];*/
 
 	    short max = Math::max(rgbValues, 3);
 	    short min = Math::min(rgbValues, 3);
 	    short max_min = (short) (max - min);
-	    short sDivq = getDiv(max_min, max);
+	    //div: 以10bit表示除法的結果
+            //sDiv = saturation = (max-min) / max = C / V
+	    short sDivq = getDiv(max_min, max);	//short div = (short) (((double) a) / b * (Math::pow(2, 10)));
+	    //如果是1024(也就是1)則強制修正為1023
 	    sDivq = (sDivq == 1024) ? 1023 : sDivq;
+
 	    short hDividend = getHDividend(rgbValues);
+            //這個才是真正的h
 	    short divH = getDiv(hDividend, max_min);
 	    divH = (divH == 1024) ? 1023 : divH;
+            //前3個bit用來標示分區
 	    short hPre3Divq = (short) (divH >> 7);
 	    short hDivq = (short) (divH & 255);
+            
 	    short_array auoHSVValues(new short[NUMBER_BAND]);
-	    auoHSVValues[0] = hDivq;
+	    auoHSVValues[0] = hDivq;  //hue index
 	    auoHSVValues[1] = sDivq;
 	    auoHSVValues[2] = max;
-	    auoHSVValues[3] = hPre3Divq;
+	    auoHSVValues[3] = hPre3Divq; //zone
 	    auoHSVValues[4] = min;
 	    auoHSVValues[5] = rgbValues[0];
 	    auoHSVValues[6] = rgbValues[1];

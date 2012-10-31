@@ -246,7 +246,7 @@ typedef bptr < gui::util::TextFilterIF > TextFilterIF_ptr;
 #define nil_TextFilterIF_ptr TextFilterIF_ptr((TextFilterIF *) NULL)
 typedef String(*FilterFunction) (const int value);
 typedef void __fastcall(__closure * OnChangeFunction) (TObject * sender);
-typedef void __fastcall(__closure * OnKeyPressFunction) (TObject * sender, char &Key);
+typedef void __fastcall(__closure * OnKeyPressFunction) (TObject * sender, const char &Key);
 //==============================================================================
 /*
  java->C++Âà´«­ì«h
