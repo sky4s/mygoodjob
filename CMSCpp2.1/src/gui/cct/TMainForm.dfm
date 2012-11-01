@@ -1,8 +1,8 @@
 object MainForm: TMainForm
   Left = 330
   Top = 402
-  Width = 719
-  Height = 398
+  Width = 852
+  Height = 415
   Caption = 'CCT Adjustment v3.4'
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
@@ -835,10 +835,10 @@ object MainForm: TMainForm
   object PageControl1: TPageControl
     Left = 7
     Top = 13
-    Width = 698
+    Width = 826
     Height = 268
-    ActivePage = TabSheet1
-    TabIndex = 0
+    ActivePage = TabSheet2
+    TabIndex = 1
     TabOrder = 0
     object TabSheet1: TTabSheet
       Caption = 'Measure Setup'
@@ -1211,7 +1211,7 @@ object MainForm: TMainForm
       object Panel_TCON: TPanel
         Left = 2
         Top = 1
-        Width = 663
+        Width = 807
         Height = 240
         BevelOuter = bvNone
         TabOrder = 0
@@ -1357,7 +1357,7 @@ object MainForm: TMainForm
         object GroupBox7: TGroupBox
           Left = 312
           Top = 7
-          Width = 345
+          Width = 489
           Height = 226
           Caption = 'TCON Type'
           TabOrder = 3
@@ -1371,7 +1371,7 @@ object MainForm: TMainForm
             OnChange = ComboBox_TCONTypeChange
           end
           object CheckBox_GammaTest: TCheckBox
-            Left = 151
+            Left = 295
             Top = 13
             Width = 90
             Height = 20
@@ -1382,7 +1382,7 @@ object MainForm: TMainForm
             OnClick = CheckBox_GammaTestClick
           end
           object GroupBox_DigitalGamma: TGroupBox
-            Left = 8
+            Left = 152
             Top = 38
             Width = 137
             Height = 179
@@ -1475,7 +1475,7 @@ object MainForm: TMainForm
             end
           end
           object GroupBox_GammaTestAddress: TGroupBox
-            Left = 152
+            Left = 296
             Top = 38
             Width = 185
             Height = 179
@@ -1584,6 +1584,54 @@ object MainForm: TMainForm
               end
             end
           end
+          object GroupBox_FRC: TGroupBox
+            Left = 8
+            Top = 38
+            Width = 137
+            Height = 177
+            Caption = 'FRC'
+            TabOrder = 4
+            object GroupBox_FRC_EN: TGroupBox
+              Left = 8
+              Top = 13
+              Width = 124
+              Height = 66
+              Caption = 'FRC_EN'
+              TabOrder = 0
+              object Label9: TLabel
+                Left = 7
+                Top = 13
+                Width = 64
+                Height = 13
+                Caption = 'Address (hex)'
+              end
+              object Label16: TLabel
+                Left = 7
+                Top = 39
+                Width = 12
+                Height = 13
+                Caption = 'Bit'
+              end
+              object Edit_FRCEnableAddress: TEdit
+                Left = 80
+                Top = 13
+                Width = 38
+                Height = 21
+                ImeName = #26085#25991#36664#20837#31995#32113' (MS-IME2002)'
+                TabOrder = 0
+                Text = '28'
+              end
+              object Edit_FRCEnableBit: TEdit
+                Left = 52
+                Top = 39
+                Width = 66
+                Height = 21
+                ImeName = #26085#25991#36664#20837#31995#32113' (MS-IME2002)'
+                TabOrder = 1
+                Text = '1'
+              end
+            end
+          end
         end
         object GroupBox_USBSetting: TGroupBox
           Left = 98
@@ -1637,8 +1685,8 @@ object MainForm: TMainForm
   end
   object StatusBar1: TStatusBar
     Left = 0
-    Top = 327
-    Width = 705
+    Top = 340
+    Width = 844
     Height = 19
     Color = clWhite
     Panels = <

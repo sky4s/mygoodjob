@@ -323,7 +323,7 @@ namespace cms {
 
 		double_array rgbValues(new double[3]);
 		setRGB->getValues(rgbValues, MaxValue::Int12Bit);
-		int size = result->size();
+		//int size = result->size();
 		for (int x = level - 1; x != bitDepth->getLevel(); x++) {
 		    RGB_ptr rgb = (*result)[x];
                     //因為下一行的setValues..會改變到rgbValues裡面的值

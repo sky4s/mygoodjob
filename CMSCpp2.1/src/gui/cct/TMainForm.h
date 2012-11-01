@@ -130,6 +130,12 @@ class TMainForm:public TForm {
     TGroupBox *GroupBox_GAMDIRECT;
     TLabel *Label8;
     TEdit *Edit_GAMDIRECT_Bit;
+    TGroupBox *GroupBox_FRC;
+    TGroupBox *GroupBox_FRC_EN;
+    TLabel *Label9;
+    TEdit *Edit_FRCEnableAddress;
+    TEdit *Edit_FRCEnableBit;
+    TLabel *Label16;
     void __fastcall About1Click(TObject * Sender);
     void __fastcall Exit1Click(TObject * Sender);
     void __fastcall TargetWhite1Click(TObject * Sender);

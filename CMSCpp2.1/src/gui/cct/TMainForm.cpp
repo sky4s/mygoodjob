@@ -175,8 +175,8 @@ void TMainForm::readTCONSetup(String filename, String section)
 	GroupBox_GammaTestAddress->Visible = true;
 	this->Edit_GammaTestEnableAddress->Text =
 	    ini->ReadString(section, "GammaTestEnableAddress", "29");
-	this->Edit_GammaTestEnableBit->Text = ini->ReadInteger(section, "GammaTestEnableBit", 0);
-	this->Edit_GammaTestAddress->Text = ini->ReadString(section, "GammaTestAddress", "154");
+	this->Edit_GammaTestEnableBit->Text = ini->ReadInteger(section, "GammaTestEnableBit", -1);
+	this->Edit_GammaTestAddress->Text = ini->ReadString(section, "GammaTestAddress", "?");
 	//this->ComboBox_GammaTestType->ItemIndex = ini->ReadBool(section, "IndepRGB", true) ? 0 : 1;
 	String gammaTestType = ini->ReadString(section, "GammaTestType", "N/A");
 	if (gammaTestType == "12401Type") {
@@ -194,9 +194,11 @@ void TMainForm::readTCONSetup(String filename, String section)
     }
     CheckBox_GammaTest->Checked = gammaTestFunc;
 
-    this->Edit_DGEnableAddress->Text = ini->ReadString(section, "DigitalGammaEnableAddress", "28");
-    this->Edit_DGEnableBit->Text = ini->ReadInteger(section, "DigitalGammaEnableBit", 0);
-    this->Edit_DGLUTAddress->Text = ini->ReadString(section, "DigitalGammaLUTAddress", "302");
+    this->Edit_FRCEnableAddress->Text = ini->ReadString(section, "FRCEnableAddress", "??");
+    this->Edit_FRCEnableBit->Text = ini->ReadInteger(section, "FRCEnableBit", -1);
+    this->Edit_DGEnableAddress->Text = ini->ReadString(section, "DigitalGammaEnableAddress", "??");
+    this->Edit_DGEnableBit->Text = ini->ReadInteger(section, "DigitalGammaEnableBit", -1);
+    this->Edit_DGLUTAddress->Text = ini->ReadString(section, "DigitalGammaLUTAddress", "??");
     int lut = ini->ReadInteger(section, "DigitalGammaLUTType", 10);
     this->ComboBox_DGLUTType->Text = lut;
     switch (lut) {
@@ -245,6 +247,8 @@ void TMainForm::writeTCONCustomSetup()
     if (ComboBox_TCONType->Text == CUSTOM) {
 	bptr_ < TIniFile > ini(new TIniFile(ExtractFilePath(Application->ExeName) + SETUPFILE));
 
+	ini->WriteString(CUSTOM, "FRCEnableAddress", this->Edit_FRCEnableAddress->Text);
+	ini->WriteInteger(CUSTOM, "FRCEnableBit", this->Edit_FRCEnableBit->Text.ToInt());
 	ini->WriteString(CUSTOM, "DigitalGammaEnableAddress", this->Edit_DGEnableAddress->Text);
 	ini->WriteInteger(CUSTOM, "DigitalGammaEnableBit", this->Edit_DGEnableBit->Text.ToInt());
 	ini->WriteString(CUSTOM, "DigitalGammaLUTAddress", this->Edit_DGLUTAddress->Text);
@@ -478,7 +482,7 @@ void TMainForm::setDummyMeterFile(bptr < cms::colorformat::DGLutFile > dglutFile
     using namespace Indep;
     using namespace Dep;
 
-    bool measurePatchVectorAvailable = dglutFile->isMeasurePatchVectorAvailable();
+    //bool measurePatchVectorAvailable = dglutFile->isMeasurePatchVectorAvailable();
     meter = bptr < Meter > (new DGLutFileMeter(dglutFile));
     mm = bptr < MeterMeasurement > (new MeterMeasurement(meter, false));
     //mm->FakeMeasure = true;
@@ -746,6 +750,12 @@ void __fastcall TMainForm::Button_ConnectClick(TObject * Sender)
 
     if (true == connect) {
 	//=====================================================================
+	// FRC
+	//=====================================================================
+	int frcEnableAddress = StrToInt("0x" + Edit_FRCEnableAddress->Text);
+	int frcEnableBit = this->Edit_FRCEnableBit->Text.ToInt();
+	//=====================================================================
+	//=====================================================================
 	// digital gamma
 	//=====================================================================
 	int dgEnableAddress = StrToInt("0x" + Edit_DGEnableAddress->Text);
@@ -774,13 +784,15 @@ void __fastcall TMainForm::Button_ConnectClick(TObject * Sender)
 		(new
 		 TCONParameter(dgLUTType == 10 ? MaxValue::Int10Bit : MaxValue::Int12Bit,
 			       dgLUTAddress, dgEnableAddress, dgEnableBit, gammaTestAddress,
-			       gammaTestBit, testRGBAddress, testRGBBit));
+			       gammaTestBit, testRGBAddress, testRGBBit, frcEnableAddress,
+			       frcEnableBit));
 	} else {
 	    parameter =
 		bptr < TCONParameter >
 		(new
 		 TCONParameter(dgLUTType == 10 ? MaxValue::Int10Bit : MaxValue::Int12Bit,
-			       dgLUTAddress, dgEnableAddress, dgEnableBit));
+			       dgLUTAddress, dgEnableAddress, dgEnableBit, frcEnableAddress,
+			       frcEnableBit));
 	}
 
 	//=====================================================================
@@ -1507,6 +1519,9 @@ void TMainForm::initTCONFile()
 	//=========================================================================
 	ini->WriteInteger("11303", "AddressingSize", 5);
 
+	ini->WriteString("11303", "FRCEnableAddress", "4");
+	ini->WriteInteger("11303", "FRCEnableBit", 2);
+
 	ini->WriteString("11303", "DigitalGammaEnableAddress", "4");
 	ini->WriteInteger("11303", "DigitalGammaEnableBit", 1);
 	ini->WriteString("11303", "DigitalGammaLUTAddress", "302");
@@ -1520,6 +1535,9 @@ void TMainForm::initTCONFile()
 	// 11306
 	//=========================================================================
 	ini->WriteInteger("11306", "AddressingSize", 5);
+
+	ini->WriteString("11306", "FRCEnableAddress", "28");
+	ini->WriteInteger("11306", "FRCEnableBit", 1);
 
 	ini->WriteString("11306", "DigitalGammaEnableAddress", "28");
 	ini->WriteInteger("11306", "DigitalGammaEnableBit", 0);
@@ -1541,6 +1559,9 @@ void TMainForm::initTCONFile()
 	//=========================================================================
 	ini->WriteInteger("11307", "AddressingSize", 5);
 
+	ini->WriteString("11307", "FRCEnableAddress", "28");
+	ini->WriteInteger("11307", "FRCEnableBit", 1);
+
 	ini->WriteString("11307", "DigitalGammaEnableAddress", "28");
 	ini->WriteInteger("11307", "DigitalGammaEnableBit", 0);
 	ini->WriteString("11307", "DigitalGammaLUTAddress", "310");
@@ -1560,6 +1581,9 @@ void TMainForm::initTCONFile()
 	// 12306
 	//=========================================================================
 	ini->WriteInteger("12306", "AddressingSize", 5);
+
+	ini->WriteString("12306", "FRCEnableAddress", "28");
+	ini->WriteInteger("12306", "FRCEnableBit", 1);
 
 	ini->WriteString("12306", "DigitalGammaEnableAddress", "28");
 	ini->WriteInteger("12306", "DigitalGammaEnableBit", 0);
@@ -1581,6 +1605,9 @@ void TMainForm::initTCONFile()
 	//=========================================================================
 	ini->WriteInteger("12309", "AddressingSize", 5);
 
+	//ini->WriteString("12309", "FRCEnableAddress", "28");
+	//ini->WriteInteger("12309", "FRCEnableBit", 1);
+
 	ini->WriteString("12309", "DigitalGammaEnableAddress", "76");
 	ini->WriteInteger("12309", "DigitalGammaEnableBit", 1);
 	ini->WriteString("12309", "DigitalGammaLUTAddress", "800");
@@ -1600,6 +1627,9 @@ void TMainForm::initTCONFile()
 	// 12401
 	//=========================================================================
 	ini->WriteInteger("12401", "AddressingSize", 5);
+
+	ini->WriteString("12401", "FRCEnableAddress", "28");
+	ini->WriteInteger("12401", "FRCEnableBit", 4);
 
 	ini->WriteString("12401", "DigitalGammaEnableAddress", "28");
 	ini->WriteInteger("12401", "DigitalGammaEnableBit", 0);
@@ -1621,6 +1651,9 @@ void TMainForm::initTCONFile()
 	//=========================================================================
 	ini->WriteInteger("12403", "AddressingSize", 5);
 
+	//ini->WriteString("12403", "FRCEnableAddress", "28");
+	//ini->WriteInteger("12403", "FRCEnableBit", 1);
+
 	ini->WriteString("12403", "DigitalGammaEnableAddress", "29");
 	ini->WriteInteger("12403", "DigitalGammaEnableBit", 0);
 	ini->WriteString("12403", "DigitalGammaLUTAddress", "B60");
@@ -1640,6 +1673,9 @@ void TMainForm::initTCONFile()
 	// 12405
 	//=========================================================================
 	ini->WriteInteger("12405", "AddressingSize", 5);
+
+	//ini->WriteString("12405", "FRCEnableAddress", "28");
+	//ini->WriteInteger("12405", "FRCEnableBit", 1);
 
 	ini->WriteString("12405", "DigitalGammaEnableAddress", "29");
 	ini->WriteInteger("12405", "DigitalGammaEnableBit", 0);
@@ -1661,6 +1697,9 @@ void TMainForm::initTCONFile()
 	//=========================================================================
 	ini->WriteInteger("12407", "AddressingSize", 5);
 
+	//ini->WriteString("12407", "FRCEnableAddress", "28");
+	//ini->WriteInteger("12407", "FRCEnableBit", 1);
+
 	ini->WriteString("12407", "DigitalGammaEnableAddress", "29");
 	ini->WriteInteger("12407", "DigitalGammaEnableBit", 0);
 	ini->WriteString("12407", "DigitalGammaLUTAddress", "110D");
@@ -1681,6 +1720,9 @@ void TMainForm::initTCONFile()
 	//=========================================================================
 	ini->WriteInteger("62301", "AddressingSize", 5);
 
+	//ini->WriteString("62301", "FRCEnableAddress", "28");
+	//ini->WriteInteger("62301", "FRCEnableBit", 1);
+
 	ini->WriteString("62301", "DigitalGammaEnableAddress", "28");
 	ini->WriteInteger("62301", "DigitalGammaEnableBit", 0);
 	ini->WriteString("62301", "DigitalGammaLUTAddress", "400");
@@ -1700,6 +1742,9 @@ void TMainForm::initTCONFile()
 	//=========================================================================
 	ini->WriteInteger("1H501", "AddressingSize", 5);
 
+	//ini->WriteString("1H501", "FRCEnableAddress", "28");
+	//ini->WriteInteger("1H501", "FRCEnableBit", 1);
+
 	ini->WriteString("1H501", "DigitalGammaEnableAddress", "28");
 	ini->WriteInteger("1H501", "DigitalGammaEnableBit", 0);
 	ini->WriteString("1H501", "DigitalGammaLUTAddress", "BE0");
@@ -1707,10 +1752,10 @@ void TMainForm::initTCONFile()
 
 	ini->WriteBool("1H501", "GammaTestFunc", false);
 	/*ini->WriteString("1H501", "GammaTestEnableAddress", "307");
-	ini->WriteInteger("1H501", "GammaTestEnableBit", 6);
-	ini->WriteString("1H501", "GammaTestAddress", "307");
-	ini->WriteString("1H501", "GammaTestType", "62301Type");
-	ini->WriteString("1H501", "GammaTestBit", "10");*/
+	   ini->WriteInteger("1H501", "GammaTestEnableBit", 6);
+	   ini->WriteString("1H501", "GammaTestAddress", "307");
+	   ini->WriteString("1H501", "GammaTestType", "62301Type");
+	   ini->WriteString("1H501", "GammaTestBit", "10"); */
 
 	ini->WriteInteger("1H501", "in", 8);
 	ini->WriteInteger("1H501", "out", 6);

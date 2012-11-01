@@ -158,8 +158,8 @@ void __fastcall TCCTLUTForm::Button_MeaRunClick(TObject * Sender)
 
 	//新方法
 	calibrator.NewMethod = true;	//= this->CheckBox_NewMethod->Checked;
-	calibrator.setMultiGen(this->CheckBox_MultiGen->Checked,
-			       this->Edit_MultiGenTimes->Text.ToInt());
+	bool multiGen = this->CheckBox_MultiGen->Checked;
+	calibrator.setMultiGen(multiGen, this->Edit_MultiGenTimes->Text.ToInt());
 	calibrator.KeepMaxYInMultiGen = this->CheckBox_KeepMaxYInMultiGen->Checked;
 	calibrator.LuminanceCalibration = this->CheckBox_LuminanceCalInMultiGen->Checked;
 	calibrator.LuminanceCalibrationOnly = this->CheckBox_YOnly->Checked;
@@ -240,7 +240,12 @@ void __fastcall TCCTLUTForm::Button_MeaRunClick(TObject * Sender)
 	    calibrator.SecondWhiteAnalyzer = secondWhiteAnalyzer;
 	    calibrator.setFeedbackListener(this);
 
-
+	    //multigen的狀況下, 檢查FRC是否有打開
+	    if (multiGen && !tconctrl->isFRC()) {
+		ShowMessage
+		    ("Set FRC_EN Enable is needed in Multi-Gen, program will force to set Enable");
+		tconctrl->setFRC(true);
+	    }
 	    //開始量測及計算
 	    RGB_vector_ptr dglut = calibrator.getCCTDGLut(getMeasureCondition(), dgLutFile);
 	    if (dglut == null) {
@@ -825,9 +830,9 @@ void __fastcall TCCTLUTForm::RadioButton_DeHookNoneClick(TObject * Sender)
 
 void __fastcall TCCTLUTForm::Button1Click(TObject * Sender)
 {
-    int button =
-	MessageDlg("Do verify measurement? ", mtConfirmation, TMsgDlgButtons() << mbYes << mbNo,
-		   0);
+    /*int button =
+       MessageDlg("Do verify measurement? ", mtConfirmation, TMsgDlgButtons() << mbYes << mbNo,
+       0); */
 
 }
 

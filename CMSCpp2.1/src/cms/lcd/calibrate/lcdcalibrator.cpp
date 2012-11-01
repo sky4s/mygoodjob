@@ -357,7 +357,7 @@ namespace cms {
 
 		return result;
 	    };
-	    bptr < cms::measure::IntensityAnalyzerIF > LCDCalibrator::getFirstAnalzyer() {
+	    bptr < cms::measure::IntensityAnalyzerIF > LCDCalibrator::getFirstAnalzyer() const{
 		bptr < IntensityAnalyzerIF > firstAnalyzer = fetcher->FirstAnalyzer;
 		return firstAnalyzer;
 	    };
@@ -509,6 +509,7 @@ namespace cms {
 	    };
 
 	    bptr < PanelRegulator > LCDCalibrator::getPanelRegulatorForTargetWhite() {
+            throw java::lang::UnsupportedOperationException();
 	    };
 
 	    /*
@@ -536,12 +537,7 @@ namespace cms {
 
 		if (isDoDeHook()) {
 
-		} else if (true) {
-
-		} else {
-
 		}
-
 		//原始特性量測
 		this->originalComponentVector = fetchComponentVector();
 		if (null == originalComponentVector) {
@@ -611,7 +607,7 @@ namespace cms {
 		    || SecondWithGamma1st == dehook;
 	    };
 
-	    XYZ_ptr LCDCalibrator::measureFirstAnalyzerReferenceRGB() {
+	    XYZ_ptr LCDCalibrator::measureFirstAnalyzerReferenceRGB() const {
 		bptr < IntensityAnalyzerIF > firstAnalyzer = getFirstAnalzyer();
 		if (null == firstAnalyzer) {
 		    throw new IllegalStateException();
@@ -1288,7 +1284,7 @@ namespace cms {
 		this->feedbackListener = listener;
 	    }
 
-	    bptr < MeterMeasurement > LCDCalibrator::getMeterMeasurement() {
+	    bptr < MeterMeasurement > LCDCalibrator::getMeterMeasurement()const {
 		bptr < cms::measure::IntensityAnalyzerIF > analyzer = getFirstAnalzyer();
 		bptr < MeterMeasurement > mm = analyzer->getMeterMeasurement();
 		return mm;

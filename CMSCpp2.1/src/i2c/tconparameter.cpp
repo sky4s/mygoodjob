@@ -20,7 +20,7 @@ namespace i2c {
 	testRGBAddress(testRGBAddress), lutBit(lutBit),
 	testRGBBit(independentRGB ? TestRGBBit::
 		   IndependentInstance : TestRGBBit::DependentInstance),
-	DGLutAddress(-1), DGAddress(DGAddress), DGBit(DGBit), gammaTest(true) {
+	DGLutAddress(-1), DGAddress(-1), DGBit(0), gammaTest(true), FRCAddress(-1), FRCBit(0) {
 
     };
     TCONParameter::TCONParameter(const Dep::MaxValue & lutBit, const int
@@ -28,19 +28,21 @@ namespace i2c {
 				 DGBit, const int gammaTestAddress,
 				 const unsigned char gammaTestBit,
 				 const int testRGBAddress,
-				 const TestRGBBit & testRGBBit):gammaTestAddress(gammaTestAddress),
-	gammaTestBit(gammaTestBit), testRGBAddress(testRGBAddress),
-	lutBit(lutBit), testRGBBit(testRGBBit), DGLutAddress(DGLutAddress),
-	DGAddress(DGAddress), DGBit(DGBit), gammaTest(true) {
+				 const TestRGBBit & testRGBBit, const int FRCAddress,
+				 const unsigned char FRCBit):gammaTestAddress(gammaTestAddress),
+	gammaTestBit(gammaTestBit), testRGBAddress(testRGBAddress), lutBit(lutBit),
+	testRGBBit(testRGBBit), DGLutAddress(DGLutAddress), DGAddress(DGAddress), DGBit(DGBit),
+	gammaTest(true), FRCAddress(FRCAddress), FRCBit(FRCBit) {
 
     };
 
     TCONParameter::TCONParameter(const Dep::MaxValue & lutBit, const int DGLutAddress,
 				 const int DGAddress,
-				 const unsigned char DGBit):gammaTestAddress(-1),
-	gammaTestBit(-1), testRGBAddress(-1), lutBit(lutBit),
-	testRGBBit(testRGBBit), DGLutAddress(DGLutAddress), DGAddress(DGAddress), DGBit(DGBit),
-	gammaTest(false) {
+				 const unsigned char DGBit, const int FRCAddress,
+				 const unsigned char FRCBit):gammaTestAddress(-1), gammaTestBit(-1),
+	testRGBAddress(-1), lutBit(lutBit), testRGBBit(testRGBBit), DGLutAddress(DGLutAddress),
+	DGAddress(DGAddress), DGBit(DGBit), gammaTest(false), FRCAddress(FRCAddress),
+	FRCBit(FRCBit) {
     };
     TestRGBBit::TestRGBBit(const int rLowBit, const int rHighBit,
 			   const int gLowBit, const int gHighBit,

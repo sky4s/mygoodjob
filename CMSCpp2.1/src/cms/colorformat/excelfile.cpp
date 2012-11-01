@@ -601,7 +601,7 @@ namespace cms {
 
 	    db->setTableName(Measure);
 	    bptr < DBQuery > query = db->selectAll();
-	    int index = 0;
+	    //int index = 0;
 	    Patch_vector_ptr patchVector(new Patch_vector());
 
 	    while (query->hasNext()) {
@@ -680,7 +680,7 @@ namespace cms {
 	    //==================================================================
 	    //const int headerCount = 12;
 	    //string_vector_ptr values(new string_vector(headerCount));
-	    int size = patchList->size();
+	    //int size = patchList->size();
 	    //==================================================================
 
 	    foreach(Patch_ptr p, *patchList) {
