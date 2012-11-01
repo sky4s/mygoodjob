@@ -12,7 +12,7 @@
 #include <colorip/gui/TEngineerForm.h>
 //#include <gui/framework/RegisterFramework.h>
 #include <gui/util/GUIUtil.h>
-#include "TDebugForm.h"
+//#include "TDebugForm.h"
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
 #pragma resource "*.dfm"
