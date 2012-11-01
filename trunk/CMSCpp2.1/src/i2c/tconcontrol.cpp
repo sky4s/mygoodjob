@@ -309,6 +309,12 @@ namespace i2c {
     bool TCONControl::isDG() {
 	return getBitData(parameter->DGAddress, parameter->DGBit);
     };
+    void TCONControl::setFRC(bool enable) {
+	setBitData(parameter->FRCAddress, parameter->FRCBit, enable);
+    };
+    bool TCONControl::isFRC() {
+	return getBitData(parameter->FRCAddress, parameter->FRCBit);
+    };
     void TCONControl::setBitData(int dataAddress, unsigned char bit, bool data) {
 	unsigned char bytedata = readByte(dataAddress);
 	//»s§@¾B¸n

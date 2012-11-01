@@ -49,6 +49,8 @@ namespace cms {
 		return MaxValue::Int6Bit;
 	    case b6_6:
 		return MaxValue::Int6Bit;
+	    default:
+		return MaxValue::DoubleUnlimited;
 	    };
 	};
 	const int BitDepthProcessor::getFRCOnlyBit(BitDepth bitDepth) {
@@ -63,6 +65,8 @@ namespace cms {
 		return 3;
 	    case b6_6:
 		return 3;
+	    default:
+		return -1;
 	    };
 	};
 	bool BitDepthProcessor::is10BitTCONInput() {
@@ -259,6 +263,8 @@ namespace cms {
 		    return string_ptr(new string("8+3"));
 		} else if (*lut == MaxValue::Int10Bit) {
 		    return string_ptr(new string("8+2"));
+		} else {
+		    return string_ptr(new string("N/A"));
 		}
 	    } else {
 		const Dep::MaxValue & output = getOutputMaxValue(bitDepth);
@@ -293,6 +299,8 @@ namespace cms {
 		    return MaxValue::Int11Bit;
 		} else if (*lut == MaxValue::Int10Bit) {
 		    return MaxValue::Int11Bit;
+		} else {
+		    throw IllegalStateException();
 		}
 	    } else {
 		const Dep::MaxValue & output = getOutputMaxValue(bitDepth);

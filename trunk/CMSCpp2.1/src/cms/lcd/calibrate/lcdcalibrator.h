@@ -324,7 +324,7 @@ namespace cms {
 		//==============================================================
 		// white XYZ relative
 		//==============================================================
-		XYZ_ptr measureFirstAnalyzerReferenceRGB();
+		XYZ_ptr measureFirstAnalyzerReferenceRGB() const;
 		XYZ_ptr maxWhiteXYZ;
 		XYZ_ptr targetWhiteXYZ;
 		void initWhiteXYZ(XYZ_ptr referenceXYZ);
@@ -347,7 +347,7 @@ namespace cms {
 
 		Component_vector_ptr getDimComponentVector(RGB_vector_ptr dglut);
 		bool isDoDeHook();
-		 bptr < cms::measure::IntensityAnalyzerIF > getFirstAnalzyer();
+		 bptr < cms::measure::IntensityAnalyzerIF > getFirstAnalzyer() const;
 
 		//==============================================================
 
@@ -427,7 +427,7 @@ namespace cms {
 		};
 		__property bptr < i2c::TCONControl > TCONControl = { write = tconctrl };
 		void setFeedbackListener(FeedbackListener * listener);
-		 bptr < cms::measure::MeterMeasurement > getMeterMeasurement();
+		 bptr < cms::measure::MeterMeasurement > getMeterMeasurement() const;
 		__property bool AlterGammaCurveAtDeHook2 = { write = alterGammaCurveAtDeHook2
 		};
 		//==============================================================

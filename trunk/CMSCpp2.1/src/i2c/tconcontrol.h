@@ -39,7 +39,8 @@ namespace i2c {
 	RGB_vector_ptr getDGLut();
 	void setDG(bool enable);
 	bool isDG();
-	//bool isFRC();
+	void setFRC(bool enable);
+	bool isFRC();
 	unsigned char readByte(int dataAddress);
 	void writeByte(int dataAddress, unsigned char data);
 	bool isGammaTestEnable();

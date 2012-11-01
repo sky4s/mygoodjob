@@ -239,22 +239,8 @@ namespace cms {
 						  bptr <
 						  cms::lcd::calibrate::
 						  MeasureCondition > measureCondition) {
-	    if (true) {
 		return rampMeasure(channel, nil_int_vector_ptr, measureCondition);
-	    }
-	    RGB_vector_ptr trueMeasureCode(new RGB_vector());
-	    foreach(RGB_ptr & c, *measureCondition->getRGBMeasureCode()) {
-		RGB_ptr rgb;
-		if (channel == Channel::W) {
-		    rgb = c;
-		} else {
-		    rgb = RGB_ptr(new RGBColor(c->getMaxValue()));
-		    rgb->setValue(channel, c->getValue(channel));
-		}
-		trueMeasureCode->push_back(rgb);
-	    };
-	    bptr < MeasureCondition > newMeasureCondition(new MeasureCondition(trueMeasureCode));
-	    return rampMeasure(newMeasureCondition);
+
 	};
 	Patch_vector_ptr MeasureTool::rampMeasure(const Dep::
 						  Channel & channel, int_vector_ptr background,

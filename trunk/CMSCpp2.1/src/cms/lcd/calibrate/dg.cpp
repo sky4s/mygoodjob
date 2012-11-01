@@ -262,12 +262,13 @@ namespace cms {
 
 		LCDCalibrator::getLuminanceGammaCurve(rgbNormalGammaCurve->r,
 						      maxLuminance, minLuminance);
-
+                                                               throw java::lang::UnsupportedOperationException();
 	    };
 
 	    RGB_vector_ptr getFineGammaDGLut(RGB_vector_ptr rgbVector,
 					     double_vector_ptr normalGammaCurve) {
 		//double_vector_ptr luminanceGammaCurve = getLuminanceGammaCurve(normalGammaCurve);
+                            throw java::lang::UnsupportedOperationException();
 	    };
 
 	    /*

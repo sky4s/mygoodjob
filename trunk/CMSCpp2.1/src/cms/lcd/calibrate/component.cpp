@@ -152,9 +152,9 @@ namespace cms {
 		return result;
 	    };
 	    Component_vector_ptr ComponentFetcher::fetchComponent(RGB_vector_ptr rgbMeasureCode) {
-		if (true) {
+		//if (true) {
 		    return fetch(rgbMeasureCode, false);
-		}
+		/*}
 		Component_vector_ptr result(new Component_vector());
 		bool waitingStable = true;
 		bptr < cms::measure::IntensityAnalyzerIF > analyzer = getAnalyzer();
@@ -190,7 +190,7 @@ namespace cms {
 		    }
 		}
 		analyzer->endAnalyze();
-		return result;
+		return result;*/
 	    };
 
 	    Component_vector_ptr ComponentFetcher::fetchComponent(bptr <
@@ -202,9 +202,9 @@ namespace cms {
 								  MeasureCondition
 								  > measureCondition) {
 		RGB_vector_ptr rgbMeasureCode = measureCondition->getRGBMeasureCode();
-		if (true) {
+		//if (true) {
 		    return fetch(rgbMeasureCode, true);
-		}
+		/*}
 		Component_vector_ptr result(new Component_vector());
 		bool waitingStable = true;
 		bptr < cms::measure::IntensityAnalyzerIF > analyzer = getAnalyzer();
@@ -230,7 +230,7 @@ namespace cms {
 		    }
 		}
 		analyzer->endAnalyze();
-		return result;
+		return result; */
 	    };
 
 
@@ -242,7 +242,7 @@ namespace cms {
 		//bool inverseMeasure = MainForm->CheckBox_InverseMeasure->Checked;
 		//mt->InverseMeasure = inverseMeasure;
 		MeasureWindow->addWindowListener(mt);
-
+                           throw java::lang::UnsupportedOperationException();
 	    };
 	    void ComponentFetcher::storeToExcel(const string & filename,
 						Component_vector_ptr componentVector) {

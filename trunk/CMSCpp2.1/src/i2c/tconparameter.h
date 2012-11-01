@@ -26,7 +26,7 @@ namespace i2c {
 		    const int gLowBit, const int gHighBit,
 		    const int bLowBit, const int bHighBit, const int totalByte,
 		    const int patternBit);
-	bool operator==(const TestRGBBit &)const ;	// use member function
+	bool operator==(const TestRGBBit &) const;	// use member function
 
 	static const TestRGBBit IndependentInstance;
 	static const TestRGBBit DependentInstance;
@@ -52,7 +52,11 @@ namespace i2c {
 	const int DGAddress;
 	const unsigned char DGBit;
 	//======================================================================
-
+	// FRC On/Off
+	//======================================================================
+	const int FRCAddress;
+	const unsigned char FRCBit;
+	//======================================================================
 	const Dep::MaxValue & lutBit;
 
       public:
@@ -62,9 +66,10 @@ namespace i2c {
 	 TCONParameter(const Dep::MaxValue & lutBit,
 		       const int DGLutAddress, const int DGAddress, const unsigned char DGBit,
 		       const int gammaTestAddress, const unsigned char gammaTestBit,
-		       const int testRGBAddress, const TestRGBBit & testRGBBit);
+		       const int testRGBAddress, const TestRGBBit & testRGBBit,
+		       const int FRCAddress, const unsigned char FRCBit);
 	 TCONParameter(const Dep::MaxValue & lutBit, const int DGLutAddress, const int DGAddress,
-		       const unsigned char DGBit);
+		       const unsigned char DGBit, const int FRCAddress, const unsigned char FRCBit);
 	bool isGammaTestEnable();
     };
 

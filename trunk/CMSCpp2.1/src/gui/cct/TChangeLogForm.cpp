@@ -88,10 +88,10 @@ __fastcall TChangeLogForm::TChangeLogForm(TComponent * Owner)
 
 void __fastcall TChangeLogForm::FormResize(TObject * Sender)
 {
-    int w = this->ClientRect.Width();
+    /*int w = this->ClientRect.Width();
     int h = this->ClientRect.Height();
     int height = h - Memo1->Top * 2;
-    int width = w - Memo1->Left * 2;
+    int width = w - Memo1->Left * 2;*/
     //Memo1->Height = height;
     //Memo1->Width = width;
 }

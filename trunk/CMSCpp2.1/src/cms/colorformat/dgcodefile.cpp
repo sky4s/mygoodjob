@@ -252,7 +252,7 @@ namespace cms {
 	    const int headerCount = 9;
 	    initSheet(LCDTarget, headerCount, "id", "R", "G", "B", "X", "Y (nit)", "Z", "_x", "_y");
 
-	    int size = patchList->size();
+	    //int size = patchList->size();
 	    string_vector_ptr values(new string_vector(headerCount));
 	    //==================================================================
 	    int id = 1;
