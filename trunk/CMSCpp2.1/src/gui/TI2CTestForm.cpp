@@ -49,10 +49,10 @@ void TI2CTestForm::setOptionsEditable(bool editable)
 {
     //this->CheckBox_Connecting->Checked = !editable;
     //this->CheckBox_Connecting->Enabled = !editable;
-    this->Edit_GammaTestAddress->Enabled = editable;
-    this->Edit_GammaTestBit->Enabled = editable;
-    this->Edit_TestRGBAdress->Enabled = editable;
-    this->ComboBox_AddressingSize->Enabled = editable;
+    //this->Edit_GammaTestAddress->Enabled = editable;
+    //this->Edit_GammaTestBit->Enabled = editable;
+    //this->Edit_TestRGBAdress->Enabled = editable;
+    //this->ComboBox_AddressingSize->Enabled = editable;
     //this->CheckBox_IndepRGB->Enabled = editable;
 };
 
@@ -150,6 +150,9 @@ void __fastcall TI2CTestForm::CheckBox_ConnectingClick(TObject * Sender)
 //---------------------------------------------------------------------------
 void __fastcall TI2CTestForm::CheckBox1Click(TObject * Sender)
 {
+if(null==control) {
+return;
+}
     //if (true == this->CheckBox_Connecting->Checked) {
 	bool enable = this->CheckBox1->Checked;
 	Edit_RChange(Sender);
@@ -215,10 +218,10 @@ void __fastcall TI2CTestForm::Button_WriteClick(TObject * Sender)
 
 void __fastcall TI2CTestForm::FormDeactivate(TObject * Sender)
 {
-    MainForm->Edit_GammaTestEnableAddress->Text = this->Edit_GammaTestAddress->Text;
-    MainForm->Edit_GammaTestEnableBit->Text = this->Edit_GammaTestBit->Text;
-    MainForm->Edit_GammaTestAddress->Text = this->Edit_TestRGBAdress->Text;
-    MainForm->ComboBox_AddressingSize->ItemIndex = this->ComboBox_AddressingSize->ItemIndex;
+    //MainForm->Edit_GammaTestEnableAddress->Text = this->Edit_GammaTestAddress->Text;
+    //MainForm->Edit_GammaTestEnableBit->Text = this->Edit_GammaTestBit->Text;
+    //MainForm->Edit_GammaTestAddress->Text = this->Edit_TestRGBAdress->Text;
+    //MainForm->ComboBox_AddressingSize->ItemIndex = this->ComboBox_AddressingSize->ItemIndex;
     MainForm->RadioButton_LPTLarge->Checked = this->RadioButton_LPTLarge->Checked;
     MainForm->RadioButton_LPTSmall->Checked = this->RadioButton_LPTSmall->Checked;
     MainForm->RadioButton_USB->Checked = this->RadioButton_USB->Checked;
@@ -226,7 +229,7 @@ void __fastcall TI2CTestForm::FormDeactivate(TObject * Sender)
     MainForm->RadioButton_DualTCON->Checked = this->RadioButton_Dual->Checked;
 
     //MainForm->ComboBox_GammaTestType->ItemIndex = this->CheckBox_IndepRGB->Checked ? 0 : 1;
-    MainForm->ComboBox_GammaTestTypeChange(this);
+    //MainForm->ComboBox_GammaTestTypeChange(this);
 }
 
 //---------------------------------------------------------------------------
@@ -234,6 +237,9 @@ void __fastcall TI2CTestForm::FormDeactivate(TObject * Sender)
 
 void __fastcall TI2CTestForm::CheckBox_DGClick(TObject * Sender)
 {
+if(null==control) {
+return;
+}
     bool enable = this->CheckBox_DG->Checked;
     control->setDG(enable);
 }
@@ -242,6 +248,9 @@ void __fastcall TI2CTestForm::CheckBox_DGClick(TObject * Sender)
 
 void __fastcall TI2CTestForm::CheckBox_DGTestClick(TObject * Sender)
 {
+if(null==control) {
+return;
+}
     using namespace cms::util;
     bool test = this->CheckBox_DGTest->Checked;
     if (test) {
@@ -306,4 +315,15 @@ void __fastcall TI2CTestForm::Edit_RKeyDown(TObject * Sender, WORD & Key, TShift
 }
 
 //---------------------------------------------------------------------------
+
+void __fastcall TI2CTestForm::CheckBox_FRCClick(TObject *Sender)
+{
+if(null==control) {
+return;
+}
+    bool enable = this->CheckBox_FRC->Checked;
+    control->setFRC(enable);
+}
+//---------------------------------------------------------------------------
+
 

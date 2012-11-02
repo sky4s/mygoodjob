@@ -1,6 +1,6 @@
 object MainForm: TMainForm
-  Left = 330
-  Top = 402
+  Left = 147
+  Top = 215
   Width = 852
   Height = 415
   Caption = 'CCT Adjustment v3.4'
@@ -1542,13 +1542,6 @@ object MainForm: TMainForm
                 Height = 13
                 Caption = 'Type'
               end
-              object Label8: TLabel
-                Left = 144
-                Top = 48
-                Width = 11
-                Height = 13
-                Caption = 'bit'
-              end
               object Edit_GammaTestAddress: TEdit
                 Left = 75
                 Top = 20
@@ -1567,20 +1560,10 @@ object MainForm: TMainForm
                 ItemIndex = 0
                 TabOrder = 1
                 Text = '12401Type'
-                OnChange = ComboBox_GammaTestTypeChange
                 Items.Strings = (
                   '12401Type'
                   '12403Type'
                   '62301Type')
-              end
-              object Edit_GAMDIRECT_Bit: TEdit
-                Left = 120
-                Top = 44
-                Width = 25
-                Height = 21
-                Enabled = False
-                TabOrder = 2
-                Text = '12'
               end
             end
           end
