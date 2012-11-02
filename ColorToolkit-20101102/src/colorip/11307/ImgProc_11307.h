@@ -45,6 +45,18 @@ class SP_12307:public AbstSP {
      SP_12307();
 };
 
+class SP_v2_1:public AbstSP {
+  public:
+    virtual TBit * SetChkBx();
+    virtual TBit *SetScrollBar();
+    virtual TLUT *SetSPLUT();
+    virtual TBit2 *SetLblE2();
+    virtual TBit3 *SetLblE3();
+    virtual TBit *SetCboBx();
+
+     SP_v2_1();
+};
+
 class CE_11307:public AbstCE {
   public:
     virtual TBit * SetChkBx();

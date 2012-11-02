@@ -203,6 +203,7 @@ void __fastcall TMainForm::FormCreate(TObject * Sender)
     mn_CM->Enabled = true;
     mn_Sharpness->Enabled = true;
     mn_Sharpness12307->Enabled = true;
+    mn_Sharpness_v2_1->Enabled = true;
     mn_CE->Enabled = true;	// mask by Michelle 20100716
     mn_HSV2->Enabled = true;
     mn_C3D->Enabled = true;
@@ -573,8 +574,10 @@ void __fastcall TMainForm::mn_Example2Click(TObject * Sender)
 //---------------------------------------------------------------------------
 
 
-void __fastcall TMainForm::Sharpnessv211Click(TObject * Sender)
+//void __fastcall TMainForm::Sharpnessv211Click(TObject * Sender)
+void __fastcall TMainForm::mn_Sharpness_v2_1Click(TObject * Sender)
 {
+    /*
     if (SharpnessV2_1Form != NULL) {
        SharpnessV2_1Form->Show();
        } else {
@@ -582,7 +585,14 @@ void __fastcall TMainForm::Sharpnessv211Click(TObject * Sender)
         SharpnessV2_1Form->Show();
 
     }
+    */
+    if (NULL == SharpnessV2_1Form || !SharpnessV2_1Form->Showing) {
+	SharpnessV2_1Form = new TSharpnessV2_1Form(this);
+    }
+
+    SharpnessV2_1Form->Show();
 }
 
 //---------------------------------------------------------------------------
+
 

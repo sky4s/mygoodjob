@@ -1,6 +1,6 @@
 object SharpnessV2_1Form: TSharpnessV2_1Form
-  Left = 399
-  Top = 26
+  Left = 300
+  Top = 5
   Width = 761
   Height = 852
   Caption = 'SharpnessV2_1Form'
@@ -10,7 +10,14 @@ object SharpnessV2_1Form: TSharpnessV2_1Form
   Font.Height = -11
   Font.Name = 'MS Sans Serif'
   Font.Style = []
+  FormStyle = fsMDIChild
   OldCreateOrder = False
+  Position = poDefault
+  Visible = True
+  OnClose = FormClose
+  OnCreate = FormCreate
+  OnKeyDown = FormKeyDown
+  OnKeyPress = FormKeyPress
   PixelsPerInch = 96
   TextHeight = 13
   object GroupBox3: TGroupBox
