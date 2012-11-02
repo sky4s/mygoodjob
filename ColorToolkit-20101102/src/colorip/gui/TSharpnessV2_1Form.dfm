@@ -1,8 +1,8 @@
 object SharpnessV2_1Form: TSharpnessV2_1Form
-  Left = 300
-  Top = 5
+  Left = 232
+  Top = 53
   Width = 761
-  Height = 852
+  Height = 736
   Caption = 'SharpnessV2_1Form'
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
@@ -34,6 +34,7 @@ object SharpnessV2_1Form: TSharpnessV2_1Form
       Caption = '&Reload'
       ModalResult = 6
       TabOrder = 0
+      OnClick = Btn_SP_reloadClick
       Glyph.Data = {
         DE010000424DDE01000000000000760000002800000024000000120000000100
         0400000000006801000000000000000000001000000000000000000000000000
@@ -78,6 +79,7 @@ object SharpnessV2_1Form: TSharpnessV2_1Form
           '3')
         ParentFont = False
         TabOrder = 0
+        OnClick = LUT_typeClick
       end
       object btn_sp_Load: TButton
         Left = 136
@@ -94,6 +96,7 @@ object SharpnessV2_1Form: TSharpnessV2_1Form
         ParentShowHint = False
         ShowHint = True
         TabOrder = 1
+        OnClick = btn_sp_LoadClick
       end
       object btn_sp_Save: TButton
         Left = 184
@@ -111,6 +114,7 @@ object SharpnessV2_1Form: TSharpnessV2_1Form
         ParentShowHint = False
         ShowHint = True
         TabOrder = 2
+        OnClick = btn_sp_SaveClick
       end
     end
     object Sharpness: TGroupBox
@@ -178,6 +182,8 @@ object SharpnessV2_1Form: TSharpnessV2_1Form
             Top = 48
             Width = 369
             Height = 305
+            OnDblClick = SP_LUTDblClick
+            OnMouseDown = SP_LUTMouseDown
           end
           object Software: TLabel
             Left = 312
@@ -199,6 +205,7 @@ object SharpnessV2_1Form: TSharpnessV2_1Form
             Font.Style = [fsBold]
             ParentFont = False
             TabOrder = 0
+            OnClick = btn_sp_lut_writeClick
           end
           object btn_sp_lut_read: TBitBtn
             Left = 72
@@ -213,6 +220,7 @@ object SharpnessV2_1Form: TSharpnessV2_1Form
             Font.Style = [fsBold]
             ParentFont = False
             TabOrder = 1
+            OnClick = btn_sp_lut_readClick
           end
           object btn_sp_lut_Set: TButton
             Left = 136
@@ -227,6 +235,7 @@ object SharpnessV2_1Form: TSharpnessV2_1Form
             Font.Style = [fsBold]
             ParentFont = False
             TabOrder = 2
+            OnClick = btn_sp_lut_SetClick
           end
           object sb_softgain: TScrollBar
             Left = 389
@@ -238,6 +247,7 @@ object SharpnessV2_1Form: TSharpnessV2_1Form
             PageSize = 0
             Position = 140
             TabOrder = 3
+            OnChange = sb_softgainChange
           end
           object st_softgain: TStaticText
             Left = 392
@@ -261,6 +271,7 @@ object SharpnessV2_1Form: TSharpnessV2_1Form
             Font.Style = [fsBold]
             ParentFont = False
             TabOrder = 5
+            OnClick = btn_GainSetClick
           end
         end
         object ScrollBar3: TScrollBar
@@ -928,6 +939,7 @@ object SharpnessV2_1Form: TSharpnessV2_1Form
           Height = 21
           TabOrder = 3
           Text = '1920'
+          OnKeyPress = Edit_ResolutionHKeyPress
         end
         object Edit_ResolutionV: TEdit
           Left = 184
@@ -936,6 +948,7 @@ object SharpnessV2_1Form: TSharpnessV2_1Form
           Height = 21
           TabOrder = 4
           Text = '1080'
+          OnKeyPress = Edit_ResolutionHKeyPress
         end
       end
       object GroupBox13: TGroupBox

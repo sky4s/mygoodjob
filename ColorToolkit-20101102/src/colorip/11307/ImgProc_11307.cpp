@@ -409,7 +409,7 @@ TBit *SP_v2_1::SetCboBx()
 	setAddress(&CboBox[3], HMASK_SEL);
 	setAddress(&CboBox[4], DARK_TP);
 	setAddress(&CboBox[5], BRIGHT_TP);
-        //setAddress(&CboBox[6], MAG_TH_6);               //New Create
+        setAddress(&CboBox[6], MAG_TH_6);               //New Create
     } else   {
 	setAddressFromFile(&CboBox[0], "STR_TP1");
 	setAddressFromFile(&CboBox[1], "STR_TP2");
@@ -417,7 +417,7 @@ TBit *SP_v2_1::SetCboBx()
 	setAddressFromFile(&CboBox[3], "HMASK_SEL");
 	setAddressFromFile(&CboBox[4], "DARK_TP");
 	setAddressFromFile(&CboBox[5], "BRIGHT_TP");
-        setAddressFromFile(&CboBox[6], "MAG_TH_6");     //New Create
+        setAddressFromFile(&CboBox[6], "MAG_TH[6]");     //New Create
     }
 
     CboBox[0].choice_nbr = 4;
@@ -478,23 +478,23 @@ TBit *SP_v2_1::SetScrollBar()
 	setAddress(&ScrlB[4], MAG_TH);
 	setAddress(&ScrlB[5], TAN_TH);
 	setAddress(&ScrlB[6], LUM_MEDIAN);
-	//setAddress(&ScrlB[7], PIX_FILTER_DARK);                 //CONTRAST_STR->PIX_FILTER_DARK
-	//setAddress(&ScrlB[8], PIX_FILTER_BRIGHT);               //BRIGHT_MAX_ADJ->PIX_FILTER_BRIGHT
+	setAddress(&ScrlB[7], PIX_FILTER_DARK);                 //CONTRAST_STR->PIX_FILTER_DARK
+	setAddress(&ScrlB[8], PIX_FILTER_BRIGHT);               //BRIGHT_MAX_ADJ->PIX_FILTER_BRIGHT
 	setAddress(&ScrlB[9], DARK_MAX_ADJ);
 	setAddress(&ScrlB[10], BRIGHT_MAX_ADJ);                 //STEP_GAIN->BRIGHT_MAX_ADJ
-	//setAddress(&ScrlB[11], CE_STR);                         //VARIANT_THR->CE_STR
+	setAddress(&ScrlB[11], CE_STR);                         //VARIANT_THR->CE_STR
 	setAddress(&ScrlB[12], DARK_OFS);
 	setAddress(&ScrlB[13], BRIGHT_OFS);
 	setAddress(&ScrlB[14], DARK_DR);
 	setAddress(&ScrlB[15], BRIGHT_DR);
         setAddress(&ScrlB[16], STEP_GAIN);                      //New Create
-	//setAddress(&ScrlB[17], VARIANT_TH);                     //New Create
+	setAddress(&ScrlB[17], VARIANT_TH);                     //New Create
     } else   {
-	setAddressFromFile(&ScrlB[0], "GLB_STR");               //SP_GLB_STR->GLB_STR
-	setAddressFromFile(&ScrlB[1], "SPIKE_TH");
-	setAddressFromFile(&ScrlB[2], "EDGE_TH");               //SP_EDGE_THRESHOLD->EDGE_TH
+	setAddressFromFile(&ScrlB[0], "GLB_STR¡@");             //SP_GLB_STR->GLB_STR
+        setAddressFromFile(&ScrlB[1], "SPIKE_TH");
+	setAddressFromFile(&ScrlB[2], "EDGE_TH¡@");             //SP_EDGE_THRESHOLD->EDGE_TH
 	setAddressFromFile(&ScrlB[3], "FILTER_TH");
-	setAddressFromFile(&ScrlB[4], "MAG_TH");
+	setAddressFromFile(&ScrlB[4], "MAG_TH[5:0]");
 	setAddressFromFile(&ScrlB[5], "TAN_TH");
 	setAddressFromFile(&ScrlB[6], "LUM_MEDIAN");
 	setAddressFromFile(&ScrlB[7], "PIX_FILTER_DARK");       //CONTRAST_STR->PIX_FILTER_DARK
