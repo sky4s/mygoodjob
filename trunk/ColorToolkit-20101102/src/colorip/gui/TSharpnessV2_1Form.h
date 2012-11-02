@@ -37,7 +37,7 @@
 #include "ImgProc_11307.h"
 
 /*====================================================================
-TSharpnessForm12307為一繼承TForm形態的class, 為Sharpness頁面的Interface
+TSharpnessV2_1Form為一繼承TForm形態的class, 為Sharpness頁面的Interface
 ======================================================================*/
 class TSharpnessV2_1Form : public TForm
 {
