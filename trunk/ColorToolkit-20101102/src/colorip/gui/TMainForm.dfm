@@ -17,7 +17,7 @@ object MainForm: TMainForm
   TextHeight = 13
   object StatusBar1: TStatusBar
     Left = 0
-    Top = 619
+    Top = 629
     Width = 818
     Height = 17
     Color = clYellow
@@ -75,9 +75,9 @@ object MainForm: TMainForm
         Caption = 'Sharpness v2'
         OnClick = mn_Sharpness12307Click
       end
-      object Sharpnessv211: TMenuItem
+      object mn_Sharpness_v2_1: TMenuItem
         Caption = 'Sharpness v2.1'
-        OnClick = Sharpnessv211Click
+        OnClick = mn_Sharpness_v2_1Click
       end
       object mn_CE: TMenuItem
         Caption = '&Contrast Enhancement'

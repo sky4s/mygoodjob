@@ -59,7 +59,8 @@ class TMainForm:public TForm {
     TMenuItem *mn_Test;
     TMenuItem *mn_Example2;
     TMenuItem *mn_Debug;
-    TMenuItem *Sharpnessv211;
+    TMenuItem *mn_Sharpness_v2_1;
+
     void __fastcall mn_EngineerClick(TObject * Sender);
     void __fastcall mn_FunctionClick(TObject * Sender);
     void __fastcall FormClose(TObject * Sender, TCloseAction & Action);
@@ -80,7 +81,7 @@ class TMainForm:public TForm {
     void __fastcall mn_Sharpness12307Click(TObject * Sender);
     void __fastcall mn_DebugClick(TObject * Sender);
     void __fastcall mn_Example2Click(TObject * Sender);
-    void __fastcall Sharpnessv211Click(TObject * Sender);
+    void __fastcall mn_Sharpness_v2_1Click(TObject * Sender);
 
   private:			// User declarations
      String getFileVersionInfo();
