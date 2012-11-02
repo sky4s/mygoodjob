@@ -216,87 +216,13 @@ object I2CTestForm: TI2CTestForm
       OnKeyDown = Edit_RKeyDown
     end
   end
-  object GroupBox4: TGroupBox
-    Left = 224
-    Top = 104
-    Width = 111
-    Height = 150
-    Caption = 'Address'
-    TabOrder = 4
-    Visible = False
-    object Label4: TLabel
-      Left = 7
-      Top = 20
-      Width = 34
-      Height = 13
-      Caption = 'Device'
-    end
-    object Label5: TLabel
-      Left = 7
-      Top = 46
-      Width = 12
-      Height = 13
-      Caption = 'Bit'
-    end
-    object Label6: TLabel
-      Left = 7
-      Top = 72
-      Width = 36
-      Height = 13
-      Caption = 'Gamma'
-    end
-    object Edit_GammaTestAddress: TEdit
-      Left = 46
-      Top = 20
-      Width = 59
-      Height = 21
-      TabOrder = 0
-      Text = '4A1'
-    end
-    object Edit_GammaTestBit: TEdit
-      Left = 46
-      Top = 46
-      Width = 59
-      Height = 21
-      TabOrder = 1
-      Text = '2'
-    end
-    object Edit_TestRGBAdress: TEdit
-      Left = 46
-      Top = 72
-      Width = 59
-      Height = 21
-      TabOrder = 2
-      Text = '4A7'
-    end
-    object ComboBox_AddressingSize: TComboBox
-      Left = 8
-      Top = 104
-      Width = 89
-      Height = 21
-      ItemHeight = 13
-      ItemIndex = 0
-      TabOrder = 3
-      Text = '2k'
-      Items.Strings = (
-        '2k'
-        '4k'
-        '8k'
-        '16k'
-        '32k'
-        '64k'
-        '128k'
-        '256k'
-        '512k')
-    end
-  end
   object GroupBox5: TGroupBox
     Left = 101
     Top = 40
     Width = 118
     Height = 145
     Caption = 'Data'
-    TabOrder = 5
+    TabOrder = 4
     object Label7: TLabel
       Left = 7
       Top = 20
@@ -353,7 +279,7 @@ object I2CTestForm: TI2CTestForm
     Width = 76
     Height = 14
     Caption = 'DG Enable'
-    TabOrder = 6
+    TabOrder = 5
     OnClick = CheckBox_DGClick
   end
   object CheckBox_DGTest: TCheckBox
@@ -362,7 +288,16 @@ object I2CTestForm: TI2CTestForm
     Width = 85
     Height = 14
     Caption = 'DG Test'
-    TabOrder = 7
+    TabOrder = 6
     OnClick = CheckBox_DGTestClick
+  end
+  object CheckBox_FRC: TCheckBox
+    Left = 88
+    Top = 192
+    Width = 76
+    Height = 10
+    Caption = 'FRC Enable'
+    TabOrder = 7
+    OnClick = CheckBox_FRCClick
   end
 end

@@ -35,19 +35,11 @@ class TI2CTestForm:public TForm {
     TEdit *Edit_G;
     TEdit *Edit_B;
     TCheckBox *CheckBox_IndepRGB;
-    TGroupBox *GroupBox4;
-    TEdit *Edit_GammaTestAddress;
-    TEdit *Edit_GammaTestBit;
-    TEdit *Edit_TestRGBAdress;
-    TLabel *Label4;
-    TLabel *Label5;
-    TLabel *Label6;
     TGroupBox *GroupBox5;
     TEdit *Edit_WriteData;
     TEdit *Edit_ReadData;
     TButton *Button_Write;
     TButton *Button_Read;
-    TComboBox *ComboBox_AddressingSize;
     TEdit *Edit_Address;
     TLabel *Label7;
     TRadioButton *RadioButton_LPTSmall;
@@ -55,6 +47,7 @@ class TI2CTestForm:public TForm {
     TCheckBox *CheckBox_DGTest;
     TLabel *Label8;
     TEdit *Edit_W;
+        TCheckBox *CheckBox_FRC;
     void __fastcall Button1Click(TObject * Sender);
     void __fastcall CheckBox_ConnectingClick(TObject * Sender);
     void __fastcall CheckBox1Click(TObject * Sender);
@@ -67,6 +60,7 @@ class TI2CTestForm:public TForm {
     void __fastcall Edit_WKeyDown(TObject * Sender, WORD & Key, TShiftState Shift);
     void __fastcall Edit_WChange(TObject * Sender);
     void __fastcall Edit_RKeyDown(TObject * Sender, WORD & Key, TShiftState Shift);
+        void __fastcall CheckBox_FRCClick(TObject *Sender);
 
   private:			// User declarations
     //bptr < i2c::TCONParameter > parameter;

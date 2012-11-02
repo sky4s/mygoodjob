@@ -128,8 +128,6 @@ class TMainForm:public TForm {
     TRadioButton *RadioButton_HStripe2;
     TGroupBox *GroupBox_LUT;
     TGroupBox *GroupBox_GAMDIRECT;
-    TLabel *Label8;
-    TEdit *Edit_GAMDIRECT_Bit;
     TGroupBox *GroupBox_FRC;
     TGroupBox *GroupBox_FRC_EN;
     TLabel *Label9;
@@ -163,7 +161,6 @@ class TMainForm:public TForm {
     void __fastcall RadioButton_HSDClick(TObject * Sender);
     void __fastcall RadioButton_FlickrPixelClick(TObject * Sender);
     void __fastcall RadioButton_FlickrSubPixelClick(TObject * Sender);
-    void __fastcall ComboBox_GammaTestTypeChange(TObject * Sender);
     void __fastcall FormDestroy(TObject * Sender);
     void __fastcall RadioButton_USBClick(TObject * Sender);
     void __fastcall RadioButton_LPTLargeClick(TObject * Sender);
