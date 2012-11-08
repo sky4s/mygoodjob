@@ -1,8 +1,8 @@
 object HSVV2Form: THSVV2Form
-  Left = 377
+  Left = 378
   Top = 0
-  Width = 823
-  Height = 692
+  Width = 826
+  Height = 741
   Caption = 'HSV v2'
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
@@ -321,6 +321,8 @@ object HSVV2Form: THSVV2Form
           inherited sb_Sat_gain: TScrollBar
             Left = 82
             Hint = '[q] for minus, [w] for plus'
+            Max = 63
+            Min = -63
             ParentShowHint = False
             ShowHint = True
             OnChange = hsvAdjustsb_Sat_gainChange
@@ -475,7 +477,7 @@ object HSVV2Form: THSVV2Form
           OnChange = ScrollBar_TurnPointChange
         end
       end
-      object GroupBox9: TGroupBox
+      object GroupBox_Chroma: TGroupBox
         Left = 5
         Top = 239
         Width = 360

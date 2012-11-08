@@ -124,7 +124,7 @@ class THSVV2Form:public TForm, cms::util::CallBackIF, RGBInfoCallbackIF, Pattern
     TRadioButton *RadioButton_DFoliage;
     TRadioButton *RadioButton_BlueSky;
     TCheckBox *CheckBox_MemoryColor;
-    TGroupBox *GroupBox9;
+    TGroupBox *GroupBox_Chroma;
     TLabel *Label25;
     TScrollBar *ScrollBar_Chroma;
     TLabel *Label_Chroma;
@@ -287,7 +287,7 @@ class THSVV2Form:public TForm, cms::util::CallBackIF, RGBInfoCallbackIF, Pattern
 	CaptionIFListener(THSVV2Form * parent):parent(parent) {
 	};
 	virtual String getSaturationCaption(int saturationPos) {
-	    String result = parent->isInHSVv1()? (saturationPos) / 32. : (saturationPos - 32);
+	    String result = parent->isInHSVv1()? (saturationPos) / 32. : saturationPos;
 	    return result;
 	};
 
@@ -377,7 +377,15 @@ class THSVV2Form:public TForm, cms::util::CallBackIF, RGBInfoCallbackIF, Pattern
     void syncStringGridToTable();
     void syncTableToStringGrid();
     void initHSVStringGrid();
-    static const int DefaultSaturationPos = 32;
+    static const int DefaultV1SaturationPos = 32;
+    static const int DefaultV2SaturationPos = 0;
+    const int getDefaultSaturationPos() {
+	if (isInHSVv1()) {
+	    return DefaultV1SaturationPos;
+	} else {
+	    return DefaultV2SaturationPos;
+	}
+    };
     //=========================================================================
 
   public:			// User declarations

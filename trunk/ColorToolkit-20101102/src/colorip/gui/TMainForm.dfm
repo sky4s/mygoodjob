@@ -1,5 +1,5 @@
 object MainForm: TMainForm
-  Left = 278
+  Left = 280
   Top = 0
   Width = 826
   Height = 692
@@ -17,7 +17,7 @@ object MainForm: TMainForm
   TextHeight = 13
   object StatusBar1: TStatusBar
     Left = 0
-    Top = 629
+    Top = 619
     Width = 818
     Height = 17
     Color = clYellow
