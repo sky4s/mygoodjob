@@ -241,11 +241,11 @@ void THSVV2Form::initHSVTable()
     //initial table setting
     for (int i = 0; i < HUE_COUNT; i++) {
 	hueTable[i] = ((double) i) * MAX_HUE_VALUE / HUE_COUNT;
-	satTable[i] = DefaultSaturationPos;
+	satTable[i] = getDefaultSaturationPos();
 	valTable[i] = 0;
     }
 
-    hsvAdjust->setDefaultHSVPosition(0, DefaultSaturationPos, 0);
+    hsvAdjust->setDefaultHSVPosition(0, getDefaultSaturationPos(), 0);
 }
 
 
@@ -835,12 +835,14 @@ void __fastcall THSVV2Form::hsvAdjustsb_Manual39_hChange(TObject * Sender)
 	    }
 	    if (hsvAdjust->sb_Sat_gain == Sender) {
 		if (relativeGlobalAdjust) {
+		    satTable[i] = hsvTableForRelative[1][i] + s;
 		} else {
 		    satTable[i] = s;
 		}
 	    }
 	    if (hsvAdjust->sb_Val_gain == Sender) {
 		if (relativeGlobalAdjust) {
+		    valTable[i] = hsvTableForRelative[2][i] + v;
 		} else {
 		    valTable[i] = v;
 		}
@@ -920,16 +922,16 @@ void __fastcall THSVV2Form::hsvAdjustsb_Manual39_hChange(TObject * Sender)
 std::string THSVV2Form::getSaturationString(int saturation)
 {
     double s =
-	isInHSVv1()? (saturation / ((double) DefaultSaturationPos)) : saturation -
-	DefaultSaturationPos;
+	isInHSVv1()? (saturation / ((double) DefaultV1SaturationPos)) : saturation -
+	DefaultV2SaturationPos;
     std::string str = _toString(s);
     return str;
 };
 
 int THSVV2Form::getSaturationValue(String saturationString)
 {
-    return isInHSVv1()? _toInt(_toDouble(saturationString.c_str()) * DefaultSaturationPos) :
-	StrToInt(saturationString) + DefaultSaturationPos;
+    return isInHSVv1()? _toInt(_toDouble(saturationString.c_str()) * DefaultV1SaturationPos) :
+	StrToInt(saturationString) + DefaultV2SaturationPos;
 };
 
 bool THSVV2Form::isInHSVv1()
@@ -976,7 +978,7 @@ void THSVV2Form::setGridSelectRow(int startRow, int endRow)
 	RadioButton_Local->Checked = true;
 	doubleHueSelected = true;
 
-	hsvAdjust->setHSVPostition(0, DefaultSaturationPos, 0);
+	hsvAdjust->setHSVPostition(0, getDefaultSaturationPos(), 0);
 	setChromaOfScrollBar(0);
     } else {
 	//global
@@ -1834,7 +1836,7 @@ short THSVV2Form::getValueFromChromaEnhance(short hue, short chroma)
     //==============================================================================================
     //最小值求解
     //==============================================================================================
-    short realchroma = chroma - DefaultSaturationPos;
+    short realchroma = chroma - getDefaultSaturationPos();
     bptr < MinimisationFunction > mf(new MinFunction(hue, realchroma, ce));
     double_vector_ptr start(new double_vector(1));
     double_vector_ptr step(new double_vector(1));
@@ -1869,7 +1871,7 @@ void __fastcall THSVV2Form::ScrollBar_ChromaChange(TObject * Sender)
     int_array hsvPos = hsvAdjust->getHSVPosition();
     if (true == RadioButton_Global->Checked) {
 	//global adjust
-	hsvPos[1] = DefaultSaturationPos + chromaValue;
+	hsvPos[1] = getDefaultSaturationPos() + chromaValue;
 
     } else {
 	//single hue
@@ -1883,7 +1885,7 @@ void __fastcall THSVV2Form::ScrollBar_ChromaChange(TObject * Sender)
 	int huePos = hsvPos[0];
 	int finalHueValue = hueValue + huePos;
 
-	hsvPos[1] = DefaultSaturationPos + chromaValue;
+	hsvPos[1] = getDefaultSaturationPos() + chromaValue;
 	hsvPos[2] = getValueFromChromaEnhance((short) finalHueValue, (short) chromaValue);
     }
     hsvAdjust->setHSVPostition(hsvPos);
@@ -1942,18 +1944,20 @@ void __fastcall THSVV2Form::RadioButton_LocalClick(TObject * Sender)
 void __fastcall THSVV2Form::RadioGroup_GlobalClick(TObject * Sender)
 {
     int index = RadioGroup_Global->ItemIndex;
-    turnToRelativeGlobalAdjust = 1 == index;
+    turnToRelativeGlobalAdjust = (1 == index);
     if (turnToRelativeGlobalAdjust) {
-	hsvAdjust->setDefaultHSVPosition(0, DefaultSaturationPos, 0);
+	hsvAdjust->setDefaultHSVPosition(0, getDefaultSaturationPos(), 0);
 	hsvAdjust->Label197->Caption = "ΔHue";
 	hsvAdjust->Label207->Caption = "ΔSaturation";
 	hsvAdjust->Label25->Caption = "ΔValue";
-	Label25->Caption = "ΔChroma";
+	//Label25->Caption = "ΔChroma";
+	GroupBox_Chroma->Visible = false;
     } else {
 	hsvAdjust->Label197->Caption = "  Hue";
 	hsvAdjust->Label207->Caption = "  Saturation";
 	hsvAdjust->Label25->Caption = "  Value";
-	Label25->Caption = "  Chroma";
+	//Label25->Caption = "  Chroma";
+	GroupBox_Chroma->Visible = true;
     }
 }
 
@@ -1987,6 +1991,8 @@ void __fastcall THSVV2Form::Button_SaveOldFormatClick(TObject * Sender)
 
 void __fastcall THSVV2Form::RadioButton_v1Click(TObject * Sender)
 {
+    hsvAdjust->sb_Sat_gain->Min = 0;
+    hsvAdjust->sb_Sat_gain->Max = 127;
     syncTableToStringGrid();
     hsvAdjust->updateHSVCaption();
 }
@@ -1995,6 +2001,8 @@ void __fastcall THSVV2Form::RadioButton_v1Click(TObject * Sender)
 
 void __fastcall THSVV2Form::RadioButton_v2Click(TObject * Sender)
 {
+    hsvAdjust->sb_Sat_gain->Min = -63;
+    hsvAdjust->sb_Sat_gain->Max = 63;
     syncTableToStringGrid();
     hsvAdjust->updateHSVCaption();
 }
