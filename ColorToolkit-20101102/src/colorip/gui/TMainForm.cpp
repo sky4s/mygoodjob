@@ -49,8 +49,8 @@ void __fastcall TMainForm::mn_EngineerClick(TObject * Sender)
 {
     //EngineerForm->action
     /*if (NULL == EngineerForm || !EngineerForm->Showing ) {
-	EngineerForm = new TEngineerForm(this);
-    }*/
+       EngineerForm = new TEngineerForm(this);
+       } */
     if (wsMinimized == EngineerForm->WindowState) {
 	EngineerForm->WindowState = wsMaximized;
     }
@@ -188,7 +188,15 @@ void __fastcall TMainForm::FormCreate(TObject * Sender)
     //TCON_DEV = "11307";               //default device
     //String info = getFileVersionInfo();
     //MainForm->Caption = "AUO 11307";
+    using namespace cms::util;
+    int_array version = Util::fetchVersionInfo();
+    string build =
+	" v" + _toString(version[0]) + "." + _toString(version[1]) + "(build:" +
+	_toString(version[3]) + ") ";
+    //Caption = Caption + build.c_str();
+
     MainForm->Caption = "Color Engine Toolkit";
+    Caption = Caption + build.c_str();
     mn_Function->Enabled = true;
     //mn_TCON->Enabled = true;
     //mn_DCR->Enabled = true;
@@ -578,14 +586,14 @@ void __fastcall TMainForm::mn_Example2Click(TObject * Sender)
 void __fastcall TMainForm::mn_Sharpness_v2_1Click(TObject * Sender)
 {
     /*
-    if (SharpnessV2_1Form != NULL) {
+       if (SharpnessV2_1Form != NULL) {
        SharpnessV2_1Form->Show();
        } else {
-        SharpnessV2_1Form = new TSharpnessV2_1Form(this);
-        SharpnessV2_1Form->Show();
+       SharpnessV2_1Form = new TSharpnessV2_1Form(this);
+       SharpnessV2_1Form->Show();
 
-    }
-    */
+       }
+     */
     if (NULL == SharpnessV2_1Form || !SharpnessV2_1Form->Showing) {
 	SharpnessV2_1Form = new TSharpnessV2_1Form(this);
     }
@@ -594,5 +602,4 @@ void __fastcall TMainForm::mn_Sharpness_v2_1Click(TObject * Sender)
 }
 
 //---------------------------------------------------------------------------
-
 
