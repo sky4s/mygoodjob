@@ -1,8 +1,8 @@
 object MainForm: TMainForm
-  Left = 147
-  Top = 215
-  Width = 852
-  Height = 415
+  Left = 271
+  Top = 242
+  Width = 810
+  Height = 442
   Caption = 'CCT Adjustment v3.4'
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
@@ -722,15 +722,15 @@ object MainForm: TMainForm
   PixelsPerInch = 96
   TextHeight = 13
   object Label6: TLabel
-    Left = 422
-    Top = 312
+    Left = 510
+    Top = 344
     Width = 281
     Height = 13
     Caption = 'Copyright (C) 2012, AU Optronics Corp., All Right Reserved.'
   end
   object Image1: TImage
     Left = 7
-    Top = 285
+    Top = 317
     Width = 113
     Height = 42
     AutoSize = True
@@ -835,10 +835,10 @@ object MainForm: TMainForm
   object PageControl1: TPageControl
     Left = 7
     Top = 13
-    Width = 826
-    Height = 268
-    ActivePage = TabSheet2
-    TabIndex = 1
+    Width = 786
+    Height = 300
+    ActivePage = TabSheet1
+    TabIndex = 0
     TabOrder = 0
     object TabSheet1: TTabSheet
       Caption = 'Measure Setup'
@@ -1212,7 +1212,7 @@ object MainForm: TMainForm
         Left = 2
         Top = 1
         Width = 807
-        Height = 240
+        Height = 272
         BevelOuter = bvNone
         TabOrder = 0
         Visible = False
@@ -1357,8 +1357,8 @@ object MainForm: TMainForm
         object GroupBox7: TGroupBox
           Left = 312
           Top = 7
-          Width = 489
-          Height = 226
+          Width = 457
+          Height = 258
           Caption = 'TCON Type'
           TabOrder = 3
           object ComboBox_TCONType: TComboBox
@@ -1370,22 +1370,11 @@ object MainForm: TMainForm
             TabOrder = 0
             OnChange = ComboBox_TCONTypeChange
           end
-          object CheckBox_GammaTest: TCheckBox
-            Left = 295
-            Top = 13
-            Width = 90
-            Height = 20
-            Caption = 'Gamma Test'
-            Checked = True
-            State = cbChecked
-            TabOrder = 1
-            OnClick = CheckBox_GammaTestClick
-          end
           object GroupBox_DigitalGamma: TGroupBox
             Left = 152
-            Top = 38
+            Top = 14
             Width = 137
-            Height = 179
+            Height = 235
             Caption = 'Digital Gamma '
             TabOrder = 2
             object GroupBox_GAM_EN: TGroupBox
@@ -1432,7 +1421,7 @@ object MainForm: TMainForm
               Left = 7
               Top = 79
               Width = 124
-              Height = 98
+              Height = 146
               Caption = 'LUT'
               TabOrder = 1
               object Label12: TLabel
@@ -1476,15 +1465,15 @@ object MainForm: TMainForm
           end
           object GroupBox_GammaTestAddress: TGroupBox
             Left = 296
-            Top = 38
-            Width = 185
-            Height = 179
+            Top = 14
+            Width = 153
+            Height = 235
             Caption = 'Gamma Test'
             TabOrder = 3
             object GroupBox5: TGroupBox
               Left = 7
               Top = 13
-              Width = 130
+              Width = 138
               Height = 66
               Caption = 'GAM_TEST'
               TabOrder = 0
@@ -1512,9 +1501,9 @@ object MainForm: TMainForm
                 Text = '29'
               end
               object Edit_GammaTestEnableBit: TEdit
-                Left = 60
+                Left = 88
                 Top = 39
-                Width = 66
+                Width = 38
                 Height = 21
                 ImeName = #26085#25991#36664#20837#31995#32113' (MS-IME2002)'
                 TabOrder = 1
@@ -1524,8 +1513,8 @@ object MainForm: TMainForm
             object GroupBox_GAMDIRECT: TGroupBox
               Left = 7
               Top = 80
-              Width = 170
-              Height = 97
+              Width = 138
+              Height = 73
               Caption = 'GAM_DIRECT'
               TabOrder = 1
               object Label4: TLabel
@@ -1557,21 +1546,71 @@ object MainForm: TMainForm
                 Width = 84
                 Height = 21
                 ItemHeight = 13
-                ItemIndex = 0
                 TabOrder = 1
                 Text = '12401Type'
                 Items.Strings = (
                   '12401Type'
                   '12403Type'
-                  '62301Type')
+                  '62301Type'
+                  '1H501Type')
               end
+            end
+            object GroupBox_HideEN: TGroupBox
+              Left = 7
+              Top = 157
+              Width = 138
+              Height = 66
+              TabOrder = 2
+              Visible = False
+              object Label8: TLabel
+                Left = 7
+                Top = 13
+                Width = 64
+                Height = 13
+                Caption = 'Address (hex)'
+              end
+              object Label17: TLabel
+                Left = 7
+                Top = 39
+                Width = 12
+                Height = 13
+                Caption = 'Bit'
+              end
+              object Edit_HideEnableAddress: TEdit
+                Left = 88
+                Top = 13
+                Width = 38
+                Height = 21
+                ImeName = #26085#25991#36664#20837#31995#32113' (MS-IME2002)'
+                TabOrder = 0
+                Text = '29'
+              end
+              object Edit_HideEnableBit: TEdit
+                Left = 88
+                Top = 39
+                Width = 38
+                Height = 21
+                ImeName = #26085#25991#36664#20837#31995#32113' (MS-IME2002)'
+                TabOrder = 1
+                Text = '0'
+              end
+            end
+            object CheckBox_HideEN: TCheckBox
+              Left = 16
+              Top = 155
+              Width = 73
+              Height = 17
+              Caption = 'HIDE_EN'
+              TabOrder = 3
+              Visible = False
+              OnClick = CheckBox_HideENClick
             end
           end
           object GroupBox_FRC: TGroupBox
             Left = 8
-            Top = 38
+            Top = 40
             Width = 137
-            Height = 177
+            Height = 209
             Caption = 'FRC'
             TabOrder = 4
             object GroupBox_FRC_EN: TGroupBox
@@ -1605,9 +1644,9 @@ object MainForm: TMainForm
                 Text = '28'
               end
               object Edit_FRCEnableBit: TEdit
-                Left = 52
+                Left = 80
                 Top = 39
-                Width = 66
+                Width = 38
                 Height = 21
                 ImeName = #26085#25991#36664#20837#31995#32113' (MS-IME2002)'
                 TabOrder = 1
@@ -1615,12 +1654,23 @@ object MainForm: TMainForm
               end
             end
           end
+          object CheckBox_GammaTest: TCheckBox
+            Left = 303
+            Top = 8
+            Width = 85
+            Height = 20
+            Caption = 'Gamma Test'
+            Checked = True
+            State = cbChecked
+            TabOrder = 1
+            OnClick = CheckBox_GammaTestClick
+          end
         end
         object GroupBox_USBSetting: TGroupBox
           Left = 98
           Top = 104
           Width = 207
-          Height = 129
+          Height = 161
           Caption = 'USB Setting'
           TabOrder = 4
           Visible = False
@@ -1658,7 +1708,7 @@ object MainForm: TMainForm
   end
   object ProgressBar1: TProgressBar
     Left = 128
-    Top = 312
+    Top = 344
     Width = 201
     Height = 17
     Min = 0
@@ -1668,8 +1718,8 @@ object MainForm: TMainForm
   end
   object StatusBar1: TStatusBar
     Left = 0
-    Top = 340
-    Width = 844
+    Top = 367
+    Width = 802
     Height = 19
     Color = clWhite
     Panels = <

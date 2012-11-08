@@ -333,8 +333,14 @@ namespace cms {
 	    double_vector_ptr doublevec(new double_vector(size));
 	    for (int x = 0; x != size; x++) {
 		try {
-		    (*doublevec)[x] = _toDouble((*result)[x]);
-		} catch(boost::bad_lexical_cast e) {
+		    string str = (*result)[x];
+		    if (0 == str.size()) {
+			(*doublevec)[x] = -1;
+		    } else {
+			(*doublevec)[x] = _toDouble((*result)[x]);
+		    }
+		}
+		catch(boost::bad_lexical_cast e) {
 		    (*doublevec)[x] = -1;
 		}
 	    }
@@ -726,6 +732,15 @@ namespace cms {
 	    string_vector_ptr fieldNames = StringVector::fromCString(1,
 								     "value");
 	    bptr < SimpleExcelAccess > access(new SimpleExcelAccess(filename, Create, fieldNames));
+	    return access;
+	};
+
+	bptr < SimpleExcelAccess >
+	    SimpleExcelAccess::getCustomPatternInstance(const std::string & filename) {
+	    string_vector_ptr fieldNames = StringVector::fromCString(4,
+								     "Num", "R", "G", "B");
+	    bptr < SimpleExcelAccess >
+		access(new SimpleExcelAccess(filename, ReadOnly, fieldNames));
 	    return access;
 	};
 	//======================================================================
