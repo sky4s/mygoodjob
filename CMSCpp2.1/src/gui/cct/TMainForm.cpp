@@ -137,7 +137,9 @@ void __fastcall TMainForm::FormCreate(TObject * Sender)
 
     using namespace cms::util;
     int_array version = Util::fetchVersionInfo();
-    string build = "(build:" + _toString(version[2]) + "." + _toString(version[3]) + ") ";
+    string build =
+	" v" + _toString(version[0]) + "." + _toString(version[1]) + "(build:" +
+	_toString(version[2]) + "." + _toString(version[3]) + ") ";
     Caption = Caption + build.c_str();
 
     bitDepth = bptr < BitDepthProcessor > (new BitDepthProcessor(8, 12, 8));
@@ -1233,7 +1235,7 @@ void __fastcall TMainForm::ComboBox_TCONTypeChange(TObject * Sender)
 	GroupBox_DigitalGamma->Enabled = true;
 	//GroupBox_DigitalGamma->Visible = true;
 	GroupBox_GammaTestAddress->Enabled = true;
-        CheckBox_HideEN->Visible = true;
+	CheckBox_HideEN->Visible = true;
 	//CheckBox_HideEN->Enabled = true;
 
     }
