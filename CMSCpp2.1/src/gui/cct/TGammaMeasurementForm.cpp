@@ -45,6 +45,17 @@ void __fastcall TGammaMeasurementForm::Button_MeasureClick(TObject * Sender)
     (*background)[2] = Edit_BackgroundB->Text.ToInt();
     bool flicker = this->CheckBox_FlickerFMA->Checked;
 
+    bool customPattern = RadioButton_TCONInputCustomPattern->Checked;
+    if (customPattern) {
+	(*rgbw)[0] = false;
+	(*rgbw)[1] = false;
+	(*rgbw)[2] = false;
+	(*rgbw)[3] = true;
+	(*background)[0] = 0;
+	(*background)[1] = 0;
+	(*background)[2] = 0;
+    }
+
     if (false == (*rgbw)[0] && false == (*rgbw)[1] && false == (*rgbw)[2]
 	&& false == (*rgbw)[3]) {
 	ShowMessage("Select at least one color.");
@@ -95,6 +106,12 @@ bptr < cms::lcd::calibrate::MeasureCondition > TGammaMeasurementForm::getMeasure
     } else {
 	int start = this->Edit_StartLevelT->Text.ToInt();
 	int end = this->Edit_EndLevelT->Text.ToInt();
+
+	if (RadioButton_TCONInputCustomPattern->Checked) {
+	    start = 0;
+	    end = Edit_CustormPatternCount->Text.ToInt();
+	}
+
 	RGB_vector_ptr measureTable(new RGB_vector());
 	for (int x = start; x <= end; x++) {
 	    measureTable->push_back((*dgcodeTable)[x]);
@@ -201,9 +218,9 @@ void __fastcall TGammaMeasurementForm::FormShow(TObject * Sender)
     setMeasureInfo();
     fetcher = MainForm->getComponentFetcher();
 
-    this->CheckBox_Loaded->Checked = false;
-    this->CheckBox_Loaded->Enabled = false;
-    Edit_Count->Text = "0";
+    this->CheckBox_DGLoaded->Checked = false;
+    this->CheckBox_DGLoaded->Enabled = false;
+    Edit_GrayScaleCount->Text = "0";
     Edit_StartLevelT->Text = "0";
     Edit_EndLevelT->Text = "0";
     dgcodeTable = (RGB_vector_ptr) ((RGB_vector *) null);
@@ -248,7 +265,7 @@ void __fastcall TGammaMeasurementForm::TOutputFileFrame1Button_BrowseDirClick(TO
 
 //---------------------------------------------------------------------------
 
-void __fastcall TGammaMeasurementForm::Button2Click(TObject * Sender)
+void __fastcall TGammaMeasurementForm::Button_LoadDGTableClick(TObject * Sender)
 {
     using namespace cms::colorformat;
     using namespace cms::util;
@@ -260,21 +277,23 @@ void __fastcall TGammaMeasurementForm::Button2Click(TObject * Sender)
     if (OpenDialog1->Execute()) {
 	const AnsiString & filename = OpenDialog1->FileName;
 	const MaxValue & maxValue =
-	    RadioButton_12Bit->Checked ? MaxValue::Int12Bit : MaxValue::Int10Bit;
+	    RadioButton_GrayScale12Bit->Checked ? MaxValue::Int12Bit : MaxValue::Int10Bit;
 	DGLutFile dgcode(filename.c_str(), ReadOnly, maxValue);
-	//dgcodeTable = RGBVector::reverse(dgcode.getGammaTable());
-	dgcodeTable = dgcode.getGammaTable();
-	property = dgcode.getProperty();
-	this->CheckBox_Loaded->Checked = true;
-	this->CheckBox_Loaded->Enabled = true;
 
-	int size = dgcodeTable->size();
-	Edit_Count->Text = size;
+	grayScaleTable = dgcode.getGammaTable();
+	property = dgcode.getProperty();
+	this->CheckBox_DGLoaded->Checked = true;
+	this->CheckBox_DGLoaded->Enabled = true;
+
+	int size = grayScaleTable->size();
+	Edit_GrayScaleCount->Text = size;
 	Edit_EndLevelT->Text = size - 1;
 
 	chdir(currDir.c_str());
 	Button_Measure->Enabled = true;
+	dgcodeTable = grayScaleTable;
     }
+
 }
 
 //---------------------------------------------------------------------------
@@ -305,12 +324,13 @@ void TGammaMeasurementForm::stopMeasure(TObject * Sender)
 
 //---------------------------------------------------------------------------
 
-void __fastcall TGammaMeasurementForm::CheckBox_LoadedClick(TObject * Sender)
+void __fastcall TGammaMeasurementForm::CheckBox_DGLoadedClick(TObject * Sender)
 {
-    if (false == CheckBox_Loaded->Checked) {
-	this->CheckBox_Loaded->Enabled = false;
-	dgcodeTable.reset();
+    if (false == CheckBox_DGLoaded->Checked) {
+	this->CheckBox_DGLoaded->Enabled = false;
+	grayScaleTable.reset();
 	Button_Measure->Enabled = false;
+	Edit_GrayScaleCount->Text = "";
     }
 }
 
@@ -320,6 +340,87 @@ void __fastcall TGammaMeasurementForm::FormMouseMove(TObject * Sender,
 						     TShiftState Shift, int X, int Y)
 {
     TOutputFileFrame1->updateWarning();
+}
+
+//---------------------------------------------------------------------------
+
+void __fastcall TGammaMeasurementForm::RadioButton_TCONInputGrayScaleClick(TObject * Sender)
+{
+    bool grayScale = RadioButton_TCONInputGrayScale->Checked;
+    //GroupBox_GrayScale->Enabled = grayScale;
+    GroupBox_GrayScale->Visible = grayScale;
+    GroupBox_Color->Visible = grayScale;
+    bool customPattern = RadioButton_TCONInputCustomPattern->Checked;
+    //GroupBox_CustomPattern->Enabled = customPattern;
+    GroupBox_CustomPattern->Visible = customPattern;
+    if (grayScale) {
+	dgcodeTable = grayScaleTable;
+    } else {
+	dgcodeTable = customTable;
+    }
+
+}
+
+//---------------------------------------------------------------------------
+
+void __fastcall TGammaMeasurementForm::Button_LoadPatternClick(TObject * Sender)
+{
+    using namespace cms::colorformat;
+    using namespace cms::util;
+    using namespace java::lang;
+    using namespace Dep;
+    OpenDialog1->Filter = "Pattern Files(*.xls)|*.xls";
+    string currDir = Util::getCurrentDirectory();
+
+    //OpenDialog1->InitialDir = currDir;
+    if (OpenDialog1->Execute()) {
+	const AnsiString & filename = OpenDialog1->FileName;
+	const MaxValue & maxValue =
+	    RadioButton_Custom12Bit->Checked ? MaxValue::Int12Bit : RadioButton_Custom12Bit->
+	    Checked ? MaxValue::Int10Bit : MaxValue::Int8Bit;
+
+	bptr < SimpleExcelAccess > excel(new SimpleExcelAccess(filename.c_str()));
+	bptr < DBQuery > dbquery = excel->retrieve();
+	customTable = RGB_vector_ptr(new RGB_vector());
+
+	int tconInputBit = bitDepth->is10BitTCONInput()? 10 : 12;
+	int patterhBit =
+	    RadioButton_Custom8Bit->Checked ? 8 : RadioButton_Custom10Bit->Checked ? 10 : 12;
+	double gain = Math::pow(2, tconInputBit - patterhBit);
+	int count = 0;
+
+	while (dbquery->hasNext()) {
+	    string_vector_ptr result = dbquery->nextResult();
+	    double_vector_ptr doubleResult = DBQuery::toDoubleVector(result);
+	    double r = (*doubleResult)[1] * gain;
+	    double g = (*doubleResult)[2] * gain;
+	    double b = (*doubleResult)[3] * gain;
+	    RGB_ptr rgb(new RGBColor(r, g, b));
+	    customTable->push_back(rgb);
+	    count++;
+	}
+	Edit_CustormPatternCount->Text = count;
+
+	this->CheckBox_CustomLoaded->Checked = true;
+	this->CheckBox_CustomLoaded->Enabled = true;
+
+	chdir(currDir.c_str());
+	Button_Measure->Enabled = true;
+	dgcodeTable = customTable;
+    }
+
+}
+
+//---------------------------------------------------------------------------
+
+void __fastcall TGammaMeasurementForm::CheckBox_CustomLoadedClick(TObject * Sender)
+{
+    if (false == CheckBox_CustomLoaded->Checked) {
+	this->CheckBox_CustomLoaded->Enabled = false;
+	customTable.reset();
+	Button_Measure->Enabled = false;
+	Edit_CustormPatternCount->Text = "";
+    }
 }
 
 //---------------------------------------------------------------------------

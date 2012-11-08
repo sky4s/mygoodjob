@@ -169,7 +169,7 @@ void TMainForm::readTCONSetup(String filename, String section)
     //=========================================================================
     bptr_ < TIniFile > ini(new TIniFile(filename));
     this->ComboBox_AddressingSize->ItemIndex = ini->ReadInteger(section, "AddressingSize", 5);
-    bool gammaTestFunc = ini->ReadBool(section, "GammaTestFunc", true);
+    bool gammaTestFunc = ini->ReadBool(section, "GammaTestFunc", false);
 
     if (gammaTestFunc) {
 	GroupBox_GammaTestAddress->Visible = true;
@@ -177,7 +177,6 @@ void TMainForm::readTCONSetup(String filename, String section)
 	    ini->ReadString(section, "GammaTestEnableAddress", "29");
 	this->Edit_GammaTestEnableBit->Text = ini->ReadInteger(section, "GammaTestEnableBit", -1);
 	this->Edit_GammaTestAddress->Text = ini->ReadString(section, "GammaTestAddress", "?");
-	//this->ComboBox_GammaTestType->ItemIndex = ini->ReadBool(section, "IndepRGB", true) ? 0 : 1;
 	String gammaTestType = ini->ReadString(section, "GammaTestType", "N/A");
 	if (gammaTestType == "12401Type") {
 	    ComboBox_GammaTestType->ItemIndex = 0;
@@ -185,6 +184,8 @@ void TMainForm::readTCONSetup(String filename, String section)
 	    ComboBox_GammaTestType->ItemIndex = 1;
 	} else if (gammaTestType == "62301Type") {
 	    ComboBox_GammaTestType->ItemIndex = 2;
+	} else if (gammaTestType == "1H501Type") {
+	    ComboBox_GammaTestType->ItemIndex = 3;
 	} else if (gammaTestType == "N/A") {
 	    int index = ini->ReadBool(section, "IndepRGB", true) ? 0 : 1;
 	    ComboBox_GammaTestType->ItemIndex = index;
@@ -192,6 +193,18 @@ void TMainForm::readTCONSetup(String filename, String section)
 	//ComboBox_GammaTestTypeChange(this);
 	//ini->WriteString("12407", "GammaTestType", "12403Type");
 	//ComboBox_GammaTestTypeChange(this);
+
+	bool hideFunc = ini->ReadBool(section, "HideFunc", false);
+	if (hideFunc) {
+	    this->Edit_HideEnableAddress->Text =
+		ini->ReadString(section, "HideEnableAddress", "29");
+	    this->Edit_HideEnableBit->Text = ini->ReadInteger(section, "HideEnableBit", -1);
+
+
+	}
+	CheckBox_HideEN->Visible = hideFunc;
+	CheckBox_HideEN->Checked = hideFunc;
+	GroupBox_HideEN->Visible = hideFunc;
     }
     CheckBox_GammaTest->Checked = gammaTestFunc;
 
@@ -266,7 +279,16 @@ void TMainForm::writeTCONCustomSetup()
 			      this->Edit_GammaTestEnableBit->Text.ToInt());
 	    ini->WriteString(CUSTOM, "GammaTestAddress", this->Edit_GammaTestAddress->Text);
 	    ini->WriteString(CUSTOM, "GammaTestType", this->ComboBox_GammaTestType->Text);
-	    //ini->WriteBool(CUSTOM, "IndepRGB", this->CheckBox_GammaTestIndepRGB->Checked);
+
+	    bool hideEN = CheckBox_HideEN->Checked;
+	    ini->WriteBool(CUSTOM, "HideFunc", hideEN);
+	    if (hideEN) {
+
+		ini->WriteString("CUSTOM", "HideEnableAddress", this->Edit_HideEnableAddress->Text);
+		ini->WriteInteger("CUSTOM", "HideEnableBit",
+				  this->Edit_HideEnableBit->Text.ToInt());
+	    }
+
 	}
 	int in = bitDepth->getInputMaxValue().bit;
 	int out = bitDepth->getOutputMaxValue().bit;
@@ -772,21 +794,38 @@ void __fastcall TMainForm::Button_ConnectClick(TObject * Sender)
 	    int gammaTestAddress = StrToInt("0x" + this->Edit_GammaTestEnableAddress->Text);
 	    int gammaTestBit = this->Edit_GammaTestEnableBit->Text.ToInt();
 	    int testRGBAddress = StrToInt("0x" + this->Edit_GammaTestAddress->Text);
-	    //bool indepRGB = this->ComboBox_GammaTestType->ItemIndex == 0;
 	    int index = this->ComboBox_GammaTestType->ItemIndex;
 	    const TestRGBBit & testRGBBit =
 		(0 == index) ? TestRGBBit::IndependentInstance :
 		(1 == index) ? TestRGBBit::DependentInstance :
-		(2 == index) ? TestRGBBit::TCON62301Instance : TestRGBBit::NotAssignInstance;
+		(2 == index) ? TestRGBBit::TCON62301Instance :
+		(3 == index) ? TestRGBBit::TCON1H501Instance : TestRGBBit::NotAssignInstance;
 
 
-	    parameter =
-		bptr < TCONParameter >
-		(new
-		 TCONParameter(dgLUTType == 10 ? MaxValue::Int10Bit : MaxValue::Int12Bit,
-			       dgLUTAddress, dgEnableAddress, dgEnableBit, gammaTestAddress,
-			       gammaTestBit, testRGBAddress, testRGBBit, frcEnableAddress,
-			       frcEnableBit));
+	    //hide en
+	    bool hideEN = CheckBox_HideEN->Checked;
+	    if (hideEN) {
+		int hideEnableAddress = StrToInt("0x" + Edit_HideEnableAddress->Text);
+		int hideEnableBit = this->Edit_HideEnableBit->Text.ToInt();
+
+		parameter =
+		    bptr < TCONParameter >
+		    (new
+		     TCONParameter(dgLUTType == 10 ? MaxValue::Int10Bit : MaxValue::Int12Bit,
+				   dgLUTAddress, dgEnableAddress, dgEnableBit, gammaTestAddress,
+				   gammaTestBit, testRGBAddress, testRGBBit, frcEnableAddress,
+				   frcEnableBit, hideEnableAddress, hideEnableBit));
+	    } else {
+		parameter =
+		    bptr < TCONParameter >
+		    (new
+		     TCONParameter(dgLUTType == 10 ? MaxValue::Int10Bit : MaxValue::Int12Bit,
+				   dgLUTAddress, dgEnableAddress, dgEnableBit, gammaTestAddress,
+				   gammaTestBit, testRGBAddress, testRGBBit, frcEnableAddress,
+				   frcEnableBit));
+	    }
+
+
 	} else {
 	    parameter =
 		bptr < TCONParameter >
@@ -796,7 +835,6 @@ void __fastcall TMainForm::Button_ConnectClick(TObject * Sender)
 			       frcEnableBit));
 	}
 
-	//=====================================================================
 
 
 	if (!dual) {
@@ -809,7 +847,7 @@ void __fastcall TMainForm::Button_ConnectClick(TObject * Sender)
 	if (!this->RadioButton_PCTCON_NB->Checked) {
 	    //不是TCON+NB的話
 	    /*int tconInputBit = Edit_GAMDIRECT_Bit->Text.ToInt();
-	    this->bitDepth->setTCONInputBit(tconInputBit);*/
+	       this->bitDepth->setTCONInputBit(tconInputBit); */
 	    if (this->RadioButton_PCTCON_TV->Checked) {
 		//看是TCON+TV
 		this->bitDepth->setTCONInput(true);
@@ -1180,9 +1218,14 @@ void __fastcall TMainForm::ComboBox_TCONTypeChange(TObject * Sender)
 	    GroupBox_DigitalGamma->Enabled = false;
 	    //GroupBox_DigitalGamma->Visible = false;
 	    GroupBox_GammaTestAddress->Enabled = false;
+
 	}
     } else {
 	ShowMessage("Remember setting Bit Depth!");
+
+	//CheckBox_HideEN->Visible = true;
+	//GroupBox_HideEN->Visible = false;
+
 
 	readTCONSetup(ExtractFilePath(Application->ExeName) + SETUPFILE, "Custom");
 	CheckBox_GammaTest->Visible = true;
@@ -1190,6 +1233,9 @@ void __fastcall TMainForm::ComboBox_TCONTypeChange(TObject * Sender)
 	GroupBox_DigitalGamma->Enabled = true;
 	//GroupBox_DigitalGamma->Visible = true;
 	GroupBox_GammaTestAddress->Enabled = true;
+        CheckBox_HideEN->Visible = true;
+	//CheckBox_HideEN->Enabled = true;
+
     }
 }
 
@@ -1728,24 +1774,34 @@ void TMainForm::initTCONFile()
 	//=========================================================================
 	ini->WriteInteger("1H501", "AddressingSize", 5);
 
-	//ini->WriteString("1H501", "FRCEnableAddress", "28");
-	//ini->WriteInteger("1H501", "FRCEnableBit", 1);
+	ini->WriteString("1H501", "FRCEnableAddress", "28");
+	ini->WriteInteger("1H501", "FRCEnableBit", 1);
 
 	ini->WriteString("1H501", "DigitalGammaEnableAddress", "28");
 	ini->WriteInteger("1H501", "DigitalGammaEnableBit", 0);
 	ini->WriteString("1H501", "DigitalGammaLUTAddress", "BE0");
 	ini->WriteInteger("1H501", "DigitalGammaLUTType", 10);
 
-	ini->WriteBool("1H501", "GammaTestFunc", false);
-	/*ini->WriteString("1H501", "GammaTestEnableAddress", "307");
-	   ini->WriteInteger("1H501", "GammaTestEnableBit", 6);
-	   ini->WriteString("1H501", "GammaTestAddress", "307");
-	   ini->WriteString("1H501", "GammaTestType", "62301Type");
-	   ini->WriteString("1H501", "GammaTestBit", "10"); */
+	ini->WriteBool("1H501", "GammaTestFunc", true);
+	ini->WriteString("1H501", "GammaTestEnableAddress", "B");
+	ini->WriteInteger("1H501", "GammaTestEnableBit", 0);
+	ini->WriteString("1H501", "GammaTestAddress", "5");
+	ini->WriteString("1H501", "GammaTestType", "1H501Type");
+	ini->WriteBool("1H501", "HideFunc", true);
+	ini->WriteString("1H501", "HideEnableAddress", "2");
+	ini->WriteInteger("1H501", "HideEnableBit", 6);
 
 	ini->WriteInteger("1H501", "in", 8);
-	ini->WriteInteger("1H501", "out", 6);
+	ini->WriteInteger("1H501", "out", 8);
 	//=========================================================================
     }
 }
+
+void __fastcall TMainForm::CheckBox_HideENClick(TObject * Sender)
+{
+    bool hide = this->CheckBox_HideEN->Checked;
+    GroupBox_HideEN->Visible = hide;
+}
+
+//---------------------------------------------------------------------------
 

@@ -136,7 +136,13 @@ namespace i2c {
     };
 
     void TCONControl::setGammaTest(bool enable) {
+	if (enable && parameter->isHideEnable()) {
+	    setBitData(parameter->hideENAddress, parameter->hideENBit, enable);
+	}
 	setBitData(parameter->gammaTestAddress, parameter->gammaTestBit, enable);
+	if (!enable && parameter->isHideEnable()) {
+	    setBitData(parameter->hideENAddress, parameter->hideENBit, enable);
+	}
     };
 
     unsigned char TCONControl::readByte(int dataAddress) {

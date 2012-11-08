@@ -72,16 +72,16 @@ namespace cms {
 	bool BitDepthProcessor::is10BitTCONInput() {
 	    return *lut == MaxValue::Int10Bit;
 	};
-      /*BitDepthProcessor::BitDepthProcessor(int inBit, int lutBit, int outBit, bool tconInput, int tconInputBit):tconInput(tconInput)
+	/*BitDepthProcessor::BitDepthProcessor(int inBit, int lutBit, int outBit, bool tconInput, int tconInputBit):tconInput(tconInput)
+	   {
+	   in = &MaxValue::getByIntegerBit(inBit);
+	   lut = &MaxValue::getByIntegerBit(lutBit);
+	   out = &MaxValue::getByIntegerBit(outBit);
+	   tcon = &MaxValue::getByIntegerBit(tconInputBit);
+	   bitDepth = getBitDepth(*in, *out);
+	   }; */
+      BitDepthProcessor::BitDepthProcessor(int inBit, int lutBit, int outBit, bool tconInput):tconInput(tconInput)
 	{
-	    in = &MaxValue::getByIntegerBit(inBit);
-	    lut = &MaxValue::getByIntegerBit(lutBit);
-	    out = &MaxValue::getByIntegerBit(outBit);
-	    tcon = &MaxValue::getByIntegerBit(tconInputBit);
-	    bitDepth = getBitDepth(*in, *out);
-	};*/
-	BitDepthProcessor::BitDepthProcessor(int inBit, int lutBit, int outBit,
-					     bool tconInput):tconInput(tconInput) {
 	    in = &MaxValue::getByIntegerBit(inBit);
 	    lut = &MaxValue::getByIntegerBit(lutBit);
 	    out = &MaxValue::getByIntegerBit(outBit);
@@ -105,7 +105,7 @@ namespace cms {
 		return tconInput ? 4095 : 255;
 	    case b10_8:
 	    case b8_8:
-		return tconInput ? 4080 : 255;
+		return tconInput ? (is10BitTCONInput()? 1020 : 4080) : 255;
 	    case b8_6:
 	    case b6_6:
 		return tconInput ? (is10BitTCONInput()? 1008 : 4032) : 252;
@@ -137,7 +137,7 @@ namespace cms {
 		return tconInput ? 16 : 1;
 	    case b10_8:
 	    case b8_8:
-		return tconInput ? 16 : 1;
+		return tconInput ? (is10BitTCONInput()? 4 : 16) : 1;
 	    case b8_6:
 	    case b6_6:
 		return tconInput ? (is10BitTCONInput()? 16 : 64) : 4;
@@ -244,9 +244,9 @@ namespace cms {
 	    this->tconInput = tconInput;
 	};
 	/*void BitDepthProcessor::setTCONInputBit(int tconInputBit) {
-	    tcon = &MaxValue::getByIntegerBit(tconInputBit);
-	    //bitDepth = getBitDepth(*in, *out);
-	};*/
+	   tcon = &MaxValue::getByIntegerBit(tconInputBit);
+	   //bitDepth = getBitDepth(*in, *out);
+	   }; */
 	void BitDepthProcessor::setInBit(int inBit) {
 	    in = &MaxValue::getByIntegerBit(inBit);
 	    bitDepth = getBitDepth(*in, *out);

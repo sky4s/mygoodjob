@@ -13,6 +13,10 @@ __fastcall TChangeLogForm::TChangeLogForm(TComponent * Owner)
 :TForm(Owner)
 {
     Memo1->Text = "\
+       [3.4 build 1.45] 2012/11/05\r\n\
+       +支援TCON 1H501以及其DirectGamma\r\n\
+       +支援Custome Pattern的載入\r\n\
+       \r\n\
        [3.4 build 1.42] 2012/09/14\r\n\
        +支援TCON 62301以及其DirectGamma\r\n\
        \r\n\

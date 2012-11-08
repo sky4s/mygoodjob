@@ -31,6 +31,7 @@ namespace i2c {
 	static const TestRGBBit IndependentInstance;
 	static const TestRGBBit DependentInstance;
 	static const TestRGBBit TCON62301Instance;
+	static const TestRGBBit TCON1H501Instance;
 	static const TestRGBBit NotAssignInstance;
 
     };
@@ -45,6 +46,10 @@ namespace i2c {
 	const unsigned char gammaTestBit;
 	const TestRGBBit & testRGBBit;
 	const bool gammaTest;
+	//hide en
+	const bool hideEn;
+	const int hideENAddress;
+	const unsigned char hideENBit;
 	//======================================================================
 	// DG On/Off , Lut
 	//======================================================================
@@ -68,9 +73,16 @@ namespace i2c {
 		       const int gammaTestAddress, const unsigned char gammaTestBit,
 		       const int testRGBAddress, const TestRGBBit & testRGBBit,
 		       const int FRCAddress, const unsigned char FRCBit);
+	 TCONParameter(const Dep::MaxValue & lutBit,
+		       const int DGLutAddress, const int DGAddress, const unsigned char DGBit,
+		       const int gammaTestAddress, const unsigned char gammaTestBit,
+		       const int testRGBAddress, const TestRGBBit & testRGBBit,
+		       const int FRCAddress, const unsigned char FRCBit,
+		       const int hideENAddress, const unsigned char hideENBit);
 	 TCONParameter(const Dep::MaxValue & lutBit, const int DGLutAddress, const int DGAddress,
 		       const unsigned char DGBit, const int FRCAddress, const unsigned char FRCBit);
 	bool isGammaTestEnable();
+	bool isHideEnable();
     };
 
 };

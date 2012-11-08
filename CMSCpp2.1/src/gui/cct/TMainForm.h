@@ -134,6 +134,12 @@ class TMainForm:public TForm {
     TEdit *Edit_FRCEnableAddress;
     TEdit *Edit_FRCEnableBit;
     TLabel *Label16;
+    TGroupBox *GroupBox_HideEN;
+    TLabel *Label8;
+    TLabel *Label17;
+    TEdit *Edit_HideEnableAddress;
+    TEdit *Edit_HideEnableBit;
+    TCheckBox *CheckBox_HideEN;
     void __fastcall About1Click(TObject * Sender);
     void __fastcall Exit1Click(TObject * Sender);
     void __fastcall TargetWhite1Click(TObject * Sender);
@@ -181,6 +187,7 @@ class TMainForm:public TForm {
     void __fastcall GammaMeasure1Click(TObject * Sender);
     void __fastcall StabilityMeasure1Click(TObject * Sender);
     void __fastcall RadioButton_HStripe2Click(TObject * Sender);
+    void __fastcall CheckBox_HideENClick(TObject * Sender);
   private:			// User declarations
     //==========================================================================
     // meter

@@ -186,6 +186,8 @@ namespace cms {
 	       提供可用來儲存value的預先定義格式
 	     */
 	    static bptr < SimpleExcelAccess > getValueStoreInstance(const std::string & filename);
+	    static bptr < SimpleExcelAccess >
+		getCustomPatternInstance(const std::string & filename);
 	};
     };
 };

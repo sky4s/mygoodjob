@@ -1,8 +1,8 @@
 object GammaMeasurementForm: TGammaMeasurementForm
   Left = 336
   Top = 226
-  Width = 406
-  Height = 407
+  Width = 408
+  Height = 445
   Caption = 'Gamma Measurement'
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
@@ -19,7 +19,7 @@ object GammaMeasurementForm: TGammaMeasurementForm
   TextHeight = 13
   object Copyright: TLabel
     Left = 34
-    Top = 357
+    Top = 397
     Width = 281
     Height = 13
     Caption = 'Copyright (C) 2012, AU Optronics Corp., All Right Reserved.'
@@ -28,14 +28,14 @@ object GammaMeasurementForm: TGammaMeasurementForm
   object Panel1: TPanel
     Left = 7
     Top = 13
-    Width = 247
+    Width = 258
     Height = 241
     Caption = 'Panel1'
     TabOrder = 0
     object GroupBox1: TGroupBox
       Left = 7
       Top = 7
-      Width = 234
+      Width = 242
       Height = 228
       Caption = 'Gamma Measurement (PC Input)'
       TabOrder = 0
@@ -116,48 +116,47 @@ object GammaMeasurementForm: TGammaMeasurementForm
   object Panel2: TPanel
     Left = 7
     Top = 13
-    Width = 247
-    Height = 241
+    Width = 258
+    Height = 276
     Caption = 'Panel2'
     TabOrder = 1
     Visible = False
     object GroupBox5: TGroupBox
       Left = 7
       Top = 7
-      Width = 234
-      Height = 228
+      Width = 242
+      Height = 258
       Caption = 'Direct Pattern Measurement (T-CON Input)'
       TabOrder = 0
-      object Table: TGroupBox
+      object GroupBox_GrayScale: TGroupBox
         Left = 7
         Top = 14
         Width = 221
         Height = 139
-        Caption = 'Table'
         TabOrder = 0
         object Label4: TLabel
-          Left = 8
+          Left = 16
           Top = 64
           Width = 85
           Height = 13
           Caption = 'Load Table Count'
         end
         object Label5: TLabel
-          Left = 8
+          Left = 16
           Top = 88
           Width = 95
           Height = 13
           Caption = 'Measure Start Level'
         end
         object Label6: TLabel
-          Left = 8
+          Left = 16
           Top = 112
           Width = 92
           Height = 13
           Caption = 'Measure End Level'
         end
-        object RadioButton_10Bit: TRadioButton
-          Left = 7
+        object RadioButton_GrayScale10Bit: TRadioButton
+          Left = 15
           Top = 14
           Width = 59
           Height = 19
@@ -166,35 +165,35 @@ object GammaMeasurementForm: TGammaMeasurementForm
           TabOrder = 0
           TabStop = True
         end
-        object RadioButton_12Bit: TRadioButton
-          Left = 59
+        object RadioButton_GrayScale12Bit: TRadioButton
+          Left = 67
           Top = 14
           Width = 65
           Height = 20
           Caption = '12bit'
           TabOrder = 1
         end
-        object Button2: TButton
-          Left = 7
+        object Button_LoadDGTable: TButton
+          Left = 15
           Top = 40
-          Width = 74
+          Width = 90
           Height = 19
-          Caption = 'Load Table'
+          Caption = 'Load DG Table'
           TabOrder = 2
-          OnClick = Button2Click
+          OnClick = Button_LoadDGTableClick
         end
-        object CheckBox_Loaded: TCheckBox
-          Left = 88
+        object CheckBox_DGLoaded: TCheckBox
+          Left = 112
           Top = 39
           Width = 65
           Height = 20
           Caption = 'Loaded'
           Enabled = False
           TabOrder = 3
-          OnClick = CheckBox_LoadedClick
+          OnClick = CheckBox_DGLoadedClick
         end
         object Edit_StartLevelT: TEdit
-          Left = 112
+          Left = 120
           Top = 88
           Width = 65
           Height = 21
@@ -202,15 +201,15 @@ object GammaMeasurementForm: TGammaMeasurementForm
           Text = '0'
         end
         object Edit_EndLevelT: TEdit
-          Left = 112
+          Left = 120
           Top = 112
           Width = 65
           Height = 21
           TabOrder = 5
           Text = '0'
         end
-        object Edit_Count: TEdit
-          Left = 112
+        object Edit_GrayScaleCount: TEdit
+          Left = 120
           Top = 64
           Width = 65
           Height = 21
@@ -219,16 +218,106 @@ object GammaMeasurementForm: TGammaMeasurementForm
           Text = '0'
         end
       end
+      object GroupBox_CustomPattern: TGroupBox
+        Left = 7
+        Top = 160
+        Width = 221
+        Height = 89
+        TabOrder = 1
+        Visible = False
+        object Label7: TLabel
+          Left = 16
+          Top = 64
+          Width = 85
+          Height = 13
+          Caption = 'Load Table Count'
+        end
+        object Button_LoadPattern: TButton
+          Left = 15
+          Top = 40
+          Width = 90
+          Height = 19
+          Caption = 'Load Pattern'
+          TabOrder = 0
+          OnClick = Button_LoadPatternClick
+        end
+        object CheckBox_CustomLoaded: TCheckBox
+          Left = 112
+          Top = 39
+          Width = 65
+          Height = 20
+          Caption = 'Loaded'
+          Enabled = False
+          TabOrder = 1
+          OnClick = CheckBox_CustomLoadedClick
+        end
+        object RadioButton_Custom10Bit: TRadioButton
+          Left = 63
+          Top = 14
+          Width = 59
+          Height = 19
+          Caption = '10bit'
+          TabOrder = 2
+        end
+        object RadioButton_Custom12Bit: TRadioButton
+          Left = 115
+          Top = 14
+          Width = 65
+          Height = 20
+          Caption = '12bit'
+          TabOrder = 3
+        end
+        object RadioButton_Custom8Bit: TRadioButton
+          Left = 15
+          Top = 14
+          Width = 42
+          Height = 19
+          Caption = '8bit'
+          Checked = True
+          TabOrder = 4
+          TabStop = True
+        end
+        object Edit_CustormPatternCount: TEdit
+          Left = 120
+          Top = 64
+          Width = 65
+          Height = 21
+          Enabled = False
+          TabOrder = 5
+          Text = '0'
+        end
+      end
+      object RadioButton_TCONInputGrayScale: TRadioButton
+        Left = 16
+        Top = 12
+        Width = 73
+        Height = 17
+        Caption = 'Gray Scale'
+        Checked = True
+        TabOrder = 2
+        TabStop = True
+        OnClick = RadioButton_TCONInputGrayScaleClick
+      end
+      object RadioButton_TCONInputCustomPattern: TRadioButton
+        Left = 16
+        Top = 158
+        Width = 97
+        Height = 17
+        Caption = 'Custom Pattern'
+        TabOrder = 3
+        OnClick = RadioButton_TCONInputGrayScaleClick
+      end
     end
   end
   inline TOutputFileFrame1: TOutputFileFrame
     Left = 7
-    Top = 260
+    Top = 292
     Width = 386
-    Height = 93
+    Height = 85
     TabOrder = 2
     inherited GroupBox_OutputFile: TGroupBox
-      Width = 378
+      Top = 7
+      Width = 386
       Height = 74
       OnClick = Button_MeasureClick
       inherited Label5: TLabel
@@ -263,8 +352,8 @@ object GammaMeasurementForm: TGammaMeasurementForm
       end
     end
   end
-  object GroupBox3: TGroupBox
-    Left = 260
+  object GroupBox_Color: TGroupBox
+    Left = 268
     Top = 13
     Width = 125
     Height = 215
@@ -345,7 +434,7 @@ object GammaMeasurementForm: TGammaMeasurementForm
     end
   end
   object Button_Measure: TButton
-    Left = 324
+    Left = 332
     Top = 234
     Width = 59
     Height = 20
@@ -355,7 +444,7 @@ object GammaMeasurementForm: TGammaMeasurementForm
   end
   object ProgressBar1: TProgressBar
     Left = 8
-    Top = 336
+    Top = 376
     Width = 225
     Height = 17
     Min = 0
