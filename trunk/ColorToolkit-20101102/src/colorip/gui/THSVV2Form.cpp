@@ -394,8 +394,9 @@ void __fastcall THSVV2Form::btn_hsv_saveClick(TObject * Sender)
     using namespace math;
     gui::IniFileUtil ini(Fpath);
     ini.Section = HSV;
-
-    ini.writeCheckBox(CheckBox4);
+    if (true == CheckBox4->Visible) {
+	ini.writeCheckBox(CheckBox4);
+    }
     if (true == CheckBox_SAT_CLIP_EN->Visible) {
 	ini.writeCheckBox(CheckBox_SAT_CLIP_EN);
     }
