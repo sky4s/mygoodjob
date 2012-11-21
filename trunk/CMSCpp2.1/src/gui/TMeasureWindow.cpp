@@ -293,10 +293,15 @@ void TMeasureWindow::setRGB(bptr < Dep::RGBColor > rgb)
 {
     double_array values(new double[3]);
     using namespace Dep;
+    if ((TCON == source || DGLUT == source) && null == bitDepth) {
+	ShowMessage("State of TMeasureWindow is wrong!");
+	return;
+    }
 
-    const MaxValue & maxValue =
-	(TCON == source) ? MaxValue::Int12Bit :
-	((DGLUT == source) ? bitDepth->getLutMaxValue() : MaxValue::Int8Bit);
+    const MaxValue & maxValue = (TCON == source || DGLUT == source) ?
+	bitDepth->getLutMaxValue() : MaxValue::Int8Bit;
+    /*(TCON == source) ? MaxValue::Int12Bit :
+       ((DGLUT == source) ? bitDepth->getLutMaxValue() : MaxValue::Int8Bit); */
     rgb->getValues(values, maxValue);
 
     int r = static_cast < int >(values[0]);
@@ -322,10 +327,12 @@ void __fastcall TMeasureWindow::Button1Click(TObject * Sender)
 }
 
 //---------------------------------------------------------------------------
-void TMeasureWindow::setTCONInput(bptr < i2c::TCONControl > tconcontrol)
+void TMeasureWindow::setTCONInput(bptr < i2c::TCONControl > tconcontrol,
+				  bptr < cms::lcd::BitDepthProcessor > bitDepth)
 {
     this->tconcontrol = tconcontrol;
     source = TCON;
+    this->bitDepth = bitDepth;
 };
 void TMeasureWindow::setDGLUTInput(bptr < i2c::TCONControl > tconcontrol,
 				   bptr < cms::lcd::BitDepthProcessor > bitDepth)

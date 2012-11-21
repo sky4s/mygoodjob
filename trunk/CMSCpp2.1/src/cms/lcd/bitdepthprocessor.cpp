@@ -334,7 +334,7 @@ namespace cms {
 	    return getFRCOnlyBit(bitDepth);
 	};
 	const Dep::MaxValue & BitDepthProcessor::getMeasureMaxValue() {
-	    const MaxValue & maxValue = isTCONInput()? MaxValue::Int12Bit : MaxValue::Int8Bit;
+	    const MaxValue & maxValue = isTCONInput()? getLutMaxValue() : MaxValue::Int8Bit;
 	    return maxValue;
 	};
 	//==================================================================
