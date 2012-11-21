@@ -857,7 +857,7 @@ void __fastcall TMainForm::Button_ConnectClick(TObject * Sender)
 	    } else {
 		//©Î¯ÂTCON
 		this->bitDepth->setTCONInput(true);
-		MeasureWindow->setTCONInput(control);
+		MeasureWindow->setTCONInput(control, bitDepth);
 	    }
 	}
     }

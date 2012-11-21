@@ -249,9 +249,9 @@ void __fastcall TTargetWhiteForm2::Button_RunClick(TObject * Sender)
 	RGB_ptr r(new RGBColor(MaxValue::Int8Bit));
 	RGB_ptr g(new RGBColor(MaxValue::Int8Bit));
 	RGB_ptr b(new RGBColor(MaxValue::Int8Bit));
-	r->R = rgb->R;
-	g->G = rgb->G;
-	b->B = rgb->B;
+	r->R = rgb->R;//*;4;
+	g->G = rgb->G;//*4;
+	b->B = rgb->B;//*4;
 	//==========================================================================
 
 	//==========================================================================

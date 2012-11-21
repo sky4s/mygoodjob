@@ -62,7 +62,8 @@ class TMeasureWindow:public TForm {
      __fastcall TMeasureWindow(TComponent * Owner);
     void setRGB(int r, int g, int b);
     void setRGB(RGB_ptr rgb);
-    void setTCONInput(bptr < i2c::TCONControl > tconcontrl);
+    void setTCONInput(bptr < i2c::TCONControl > tconcontrl,
+		      bptr < cms::lcd::BitDepthProcessor > bitDepth);
     void setDGLUTInput(bptr < i2c::TCONControl > tconcontrl,
 		       bptr < cms::lcd::BitDepthProcessor > bitDepth);
     void setTCONControlOff();
