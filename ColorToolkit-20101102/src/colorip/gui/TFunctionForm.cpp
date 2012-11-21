@@ -279,13 +279,39 @@ void TFunctionForm::DG_LUT_FuncEnable(bool en_flag)
 }
 int **TFunctionForm::getDGLUTFromUI()
 {
-    int **lut = new int *[OFunc->DGLUT_Nbr];
-    for (int i = 0; i < OFunc->DGLUT_Nbr; i++) {
-	int lutnum = Addr_DgLUT[i].LutNum();
-	lut[i] = new int[lutnum];
+    int lutLength = OFunc->DGLUT_Nbr;
+    int **lut = new int *[lutLength];
+    bool orderFix = CheckBox_OrderFix->Checked;
+    int lutnum = Addr_DgLUT[0].LutNum();
+    if (orderFix) {
+	for (int i = 0; i < lutLength; i += 2) {
+	    lut[i] = new int[lutnum];
+	    for (int j = 0; j < lutnum; j++) {
+		//從UI撈回資料
+		lut[i][j] = StrToInt(sg_dg->Cells[i + 1][j + 1]);
+	    }
+	}
+	for (int i = 1; i < lutLength - 2; i += 2) {
+	    lut[i] = new int[lutnum];
+	    for (int j = 0; j < lutnum; j++) {
+		//從UI撈回資料
+		lut[i][j] = StrToInt(sg_dg->Cells[i + 3][j + 1]);
+	    }
+	}
+	lut[lutLength - 1] = new int[lutnum];
 	for (int j = 0; j < lutnum; j++) {
 	    //從UI撈回資料
-	    lut[i][j] = StrToInt(sg_dg->Cells[i + 1][j + 1]);
+	    lut[lutLength - 1][j] = StrToInt(sg_dg->Cells[2][j + 1]);
+	}
+    } else {
+
+	for (int i = 0; i < lutLength; i++) {
+	    //int lutnum = Addr_DgLUT[i].LutNum();
+	    lut[i] = new int[lutnum];
+	    for (int j = 0; j < lutnum; j++) {
+		//從UI撈回資料
+		lut[i][j] = StrToInt(sg_dg->Cells[i + 1][j + 1]);
+	    }
 	}
     }
     return lut;
@@ -293,10 +319,31 @@ int **TFunctionForm::getDGLUTFromUI()
 
 void TFunctionForm::setDGLUTToUI(int **dgLUT)
 {
-    for (int i = 0; i < OFunc->DGLUT_Nbr; i++) {
-	int lutnum = Addr_DgLUT[i].LutNum();
+
+    bool olderFix = CheckBox_OrderFix->Checked;
+    int lutLength = OFunc->DGLUT_Nbr;
+    if (olderFix) {
+	int lutnum = Addr_DgLUT[0].LutNum();
+	for (int i = 0; i < lutLength; i += 2) {
+	    for (int j = 0; j < lutnum; j++) {	//To GUI
+		sg_dg->Cells[i + 1][j + 1] = IntToStr(dgLUT[i][j]);
+	    }
+	}
+	for (int i = 3; i < lutLength - 2; i += 2) {
+	    for (int j = 0; j < lutnum; j++) {	//To GUI
+		sg_dg->Cells[i + 1][j + 1] = IntToStr(dgLUT[i - 2][j]);
+	    }
+	}
 	for (int j = 0; j < lutnum; j++) {	//To GUI
-	    sg_dg->Cells[i + 1][j + 1] = IntToStr(dgLUT[i][j]);
+	    sg_dg->Cells[2][j + 1] = IntToStr(dgLUT[lutLength - 1][j]);
+	}
+    } else {
+
+	for (int i = 0; i < lutLength; i++) {
+	    int lutnum = Addr_DgLUT[i].LutNum();
+	    for (int j = 0; j < lutnum; j++) {	//To GUI
+		sg_dg->Cells[i + 1][j + 1] = IntToStr(dgLUT[i][j]);
+	    }
 	}
     }
 }
