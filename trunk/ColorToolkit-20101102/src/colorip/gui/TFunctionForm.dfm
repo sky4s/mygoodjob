@@ -425,7 +425,7 @@ object FunctionForm: TFunctionForm
         end
         object btn_dg_read: TButton
           Left = 312
-          Top = 24
+          Top = 56
           Width = 65
           Height = 25
           Caption = '&Read'
@@ -434,7 +434,7 @@ object FunctionForm: TFunctionForm
         end
         object btn_dg_wrt: TButton
           Left = 312
-          Top = 64
+          Top = 80
           Width = 65
           Height = 25
           Caption = '&Write'
@@ -443,7 +443,7 @@ object FunctionForm: TFunctionForm
         end
         object btn_dg_save: TButton
           Left = 312
-          Top = 96
+          Top = 136
           Width = 65
           Height = 25
           Caption = '&Save File'
@@ -452,7 +452,7 @@ object FunctionForm: TFunctionForm
         end
         object btn_dg_load: TButton
           Left = 312
-          Top = 128
+          Top = 112
           Width = 65
           Height = 25
           Caption = '&Load File'
@@ -475,16 +475,24 @@ object FunctionForm: TFunctionForm
         end
         object CheckBox_FuncOn: TCheckBox
           Left = 312
-          Top = 48
+          Top = 24
           Width = 73
           Height = 17
           Caption = 'Func On'
           TabOrder = 6
         end
+        object CheckBox_OrderFix: TCheckBox
+          Left = 312
+          Top = 40
+          Width = 73
+          Height = 17
+          Caption = 'Order Fix'
+          TabOrder = 7
+        end
       end
       object Btn_FRC_DG_reload: TBitBtn
         Left = 584
-        Top = 168
+        Top = 176
         Width = 65
         Height = 25
         Caption = '&Reload'

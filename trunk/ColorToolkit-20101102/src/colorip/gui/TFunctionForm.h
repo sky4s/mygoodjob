@@ -72,6 +72,7 @@ class TFunctionForm:public TForm {
     TButton *Button_GMinus;
     TButton *Button_BMinus;
     TCheckBox *CheckBox_ManualEnable;
+    TCheckBox *CheckBox_OrderFix;
     void __fastcall FormClose(TObject * Sender, TCloseAction & Action);
     void __fastcall FormCreate(TObject * Sender);
     void __fastcall btn_dg_wrtClick(TObject * Sender);
