@@ -270,18 +270,7 @@ namespace cms {
 	    initSheet();
 	};
 	void IntensityMatrixFile::addIntensityVector(Component_vector_ptr intensityVector) {
-	    /*std::string chstr;
-	       switch (ch.chindex) {
-	       case ChannelIndex::R:
-	       chstr = RSheet;
-	       break;
-	       case ChannelIndex::G:
-	       chstr = GSheet;
-	       break;
-	       case ChannelIndex::B:
-	       chstr = BSheet;
-	       break;
-	       }; */
+
 	    string_vector_ptr rIntensitys(new string_vector());
 	    string_vector_ptr gIntensitys(new string_vector());
 	    string_vector_ptr bIntensitys(new string_vector());

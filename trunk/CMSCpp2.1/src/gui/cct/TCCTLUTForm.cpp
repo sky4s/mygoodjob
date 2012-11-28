@@ -177,10 +177,7 @@ void __fastcall TCCTLUTForm::Button_MeaRunClick(TObject * Sender)
 	// Keep Max Luminance
 	//==========================================================================
 	//keep跟dehook融合在一起, 簡化ui
-	/*if (true == RadioButton_MaxYNone->Checked) {
-	   calibrator.setKeepMaxLuminance(KeepMaxLuminance::TargetLuminance);
-	   calibrator.DeHookMode = None;
-	   } else */ if (true == RadioButton_MaxYNative->Checked) {
+	if (true == RadioButton_MaxYNative->Checked) {
 	    calibrator.setKeepMaxLuminance(KeepMaxLuminance::NativeWhite);
 
 	    if (RadioButton_DeHookNone->Checked) {
@@ -209,11 +206,6 @@ void __fastcall TCCTLUTForm::Button_MeaRunClick(TObject * Sender)
 	} else if (true == RadioButton_MaxYTargetWhite->Checked) {
 	    calibrator.setKeepMaxLuminance(KeepMaxLuminance::TargetWhite);
 
-	    /*if (true == this->CheckBox_SmoothIntensity->Checked) {
-	       int start = Edit_SmoothIntensityStart->Text.ToInt();
-	       int end = Edit_SmoothIntensityEnd->Text.ToInt();
-	       calibrator.setSmoothIntensity(start, end);
-	       } */
 	    calibrator.DeHookMode = None;
 	    bool autoIntensityInMultiGen = RadioButton_IntensityShift->Checked;
 	    calibrator.AutoIntensityInMultiGen = autoIntensityInMultiGen;
@@ -251,9 +243,15 @@ void __fastcall TCCTLUTForm::Button_MeaRunClick(TObject * Sender)
 	    if (dglut == null) {
 		MainForm->stopProgress(ProgressBar1);
 		if (run) {
-		    //被中斷就直接return
-		    ShowMessage("Internal abnormal stop!");
+		    if (calibrator.componentVectorLuminanceCheckResult) {
+			//被內部中斷(邏輯)
+			ShowMessage("Internal abnormal stop!");
+		    } else {
+			ShowMessage("Luminance is inverse!");
+		    }
+
 		} else {
+		    //被外部中斷(人為)
 		    ShowMessage("Interrupt!");
 
 		}
@@ -485,7 +483,7 @@ void __fastcall TCCTLUTForm::TOutputFileFrame1Button_BrowseDirClick(TObject * Se
 void __fastcall TCCTLUTForm::FormKeyPress(TObject * Sender, char &Key)
 {
     if (27 == Key) {
-	//for tcon input時, 關閉會跳到這邊
+	//for direct gamma時, 關閉會跳到這邊
 	if (true == run) {
 	    ShowMessage("Interrupt!");
 	    if (false == MeasureWindow->Visible) {

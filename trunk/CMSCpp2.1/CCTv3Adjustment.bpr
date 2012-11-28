@@ -185,7 +185,7 @@ AutoIncBuild=1
 MajorVer=3
 MinorVer=4
 Release=1
-Build=45
+Build=47
 Debug=1
 PreRelease=1
 Special=0
@@ -197,13 +197,13 @@ CodePage=950
 [Version Info Keys]
 CompanyName=AUO
 FileDescription=CCT Adjustment v3
-FileVersion=3.4.1.45
+FileVersion=3.4.1.47
 InternalName=
 LegalCopyright=Algorithm by StocktonTsai &amp; RichardYCTsai(5626) &amp; skyforce(6123), Implement by skyforce
 LegalTrademarks=
 OriginalFilename=
 ProductName=CCT Adjustment v3
-ProductVersion=3.3
+ProductVersion=3.4
 Comments=
 
 [Excluded Packages]

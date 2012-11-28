@@ -541,7 +541,7 @@ namespace cms {
 		break;
 	    };
 	    bptr < BitDepthProcessor > bitDepth = c->bitDepth;
-	    dgfile.addProperty("t-con input", bitDepth->isTCONInput()? On : Off);
+	    dgfile.addProperty("direct gamma", bitDepth->isTCONInput()? On : Off);
 	    dgfile.addProperty("in", *bitDepth->getInputMaxValue().toString());
 	    dgfile.addProperty("lut", *bitDepth->getLutMaxValue().toString());
 	    dgfile.addProperty("out", *bitDepth->getOutputMaxValue().toString());

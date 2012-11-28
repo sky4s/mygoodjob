@@ -49,7 +49,6 @@ class TI2CTestForm:public TForm {
     TEdit *Edit_W;
         TCheckBox *CheckBox_FRC;
     void __fastcall Button1Click(TObject * Sender);
-    void __fastcall CheckBox_ConnectingClick(TObject * Sender);
     void __fastcall CheckBox1Click(TObject * Sender);
     void __fastcall Edit_RChange(TObject * Sender);
     void __fastcall Button_ReadClick(TObject * Sender);

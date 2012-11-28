@@ -126,7 +126,7 @@ object GammaMeasurementForm: TGammaMeasurementForm
       Top = 7
       Width = 242
       Height = 258
-      Caption = 'Direct Pattern Measurement (T-CON Input)'
+      Caption = 'Direct Pattern Measurement (Direct Gamma)'
       TabOrder = 0
       object GroupBox_GrayScale: TGroupBox
         Left = 7

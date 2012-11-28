@@ -275,6 +275,7 @@ namespace cms {
 		__property bool NewMethod = { write = useNewMethod };
 		__property bool FeedbackFix = { write = feedbackFix };
 		__property string ExcuteStatus = { read = excuteStatus };
+		bool componentVectorLuminanceCheckResult;
 		//==============================================================
 
 	      private:
@@ -292,7 +293,6 @@ namespace cms {
 		 bptr < MeasureCondition > measureCondition;
 		 bptr < BitDepthProcessor > bitDepth;
 		FeedbackListener *feedbackListener;
-		//XYZ_ptr targetWhiteXYZ;
 		//==============================================================
 
 		//==============================================================
@@ -316,6 +316,8 @@ namespace cms {
 							  measureCondition);
 		Component_vector_ptr fetchLuminanceVector(bptr < MeasureCondition >
 							  measureCondition);
+
+		bool checkComponentVectorLuminance(Component_vector_ptr componentVector);
 		RGB_vector_ptr getDGLutOpResult(RGB_vector_ptr dglut);
 		RGB_vector_ptr oldMethod(DGLutGenerator & generator,
 					 bptr < PanelRegulator >

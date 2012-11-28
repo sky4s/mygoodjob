@@ -12,7 +12,7 @@
 
 namespace i2c {
 
-    class TestRGBBit {
+    class DirectGammaType {
       public:
 	const int rLowBit;
 	const int rHighBit;
@@ -22,17 +22,17 @@ namespace i2c {
 	const int bHighBit;
 	const int totalByte;
 	const int patternBit;
-	 TestRGBBit(const int rLowBit, const int rHighBit,
+	 DirectGammaType(const int rLowBit, const int rHighBit,
 		    const int gLowBit, const int gHighBit,
 		    const int bLowBit, const int bHighBit, const int totalByte,
 		    const int patternBit);
-	bool operator==(const TestRGBBit &) const;	// use member function
+	bool operator==(const DirectGammaType &) const;	// use member function
 
-	static const TestRGBBit IndependentInstance;
-	static const TestRGBBit DependentInstance;
-	static const TestRGBBit TCON62301Instance;
-	static const TestRGBBit TCON1H501Instance;
-	static const TestRGBBit NotAssignInstance;
+	static const DirectGammaType IndependentInstance;
+	static const DirectGammaType DependentInstance;
+	static const DirectGammaType TCON62301Instance;
+	static const DirectGammaType TCON1H501Instance;
+	static const DirectGammaType NotAssignInstance;
 
     };
 
@@ -42,9 +42,9 @@ namespace i2c {
 	// gamma test(direct gamma)
 	//======================================================================
 	const int gammaTestAddress;
-	const int testRGBAddress;
+	const int directGammaRGBAddress;
 	const unsigned char gammaTestBit;
-	const TestRGBBit & testRGBBit;
+	const DirectGammaType & directGammaType;
 	const bool gammaTest;
 	//hide en
 	const bool hideEn;
@@ -66,17 +66,17 @@ namespace i2c {
 
       public:
 	 TCONParameter(int gammaTestAddress,
-		       unsigned char gammaTestBit, int testRGBAddress,
+		       unsigned char gammaTestBit, int directGammaRGBAddress,
 		       bool independentRGB, const Dep::MaxValue & lutBit);
 	 TCONParameter(const Dep::MaxValue & lutBit,
 		       const int DGLutAddress, const int DGAddress, const unsigned char DGBit,
 		       const int gammaTestAddress, const unsigned char gammaTestBit,
-		       const int testRGBAddress, const TestRGBBit & testRGBBit,
+		       const int directGammaRGBAddress, const DirectGammaType & directGammaType,
 		       const int FRCAddress, const unsigned char FRCBit);
 	 TCONParameter(const Dep::MaxValue & lutBit,
 		       const int DGLutAddress, const int DGAddress, const unsigned char DGBit,
 		       const int gammaTestAddress, const unsigned char gammaTestBit,
-		       const int testRGBAddress, const TestRGBBit & testRGBBit,
+		       const int directGammaRGBAddress, const DirectGammaType & directGammaType,
 		       const int FRCAddress, const unsigned char FRCBit,
 		       const int hideENAddress, const unsigned char hideENBit);
 	 TCONParameter(const Dep::MaxValue & lutBit, const int DGLutAddress, const int DGAddress,

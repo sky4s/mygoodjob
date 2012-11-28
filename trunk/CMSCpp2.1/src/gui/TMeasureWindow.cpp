@@ -14,6 +14,7 @@
 #include "TTargetWhiteForm2.h"
 #include "TMeasureWindow.h"
 #include "TCCTLUTForm.h"
+#include "TMainForm.h"
 //運用弱參考指標去儲存WindowListener
 #define WEAK_PTR
 
@@ -27,7 +28,7 @@ __fastcall TMeasureWindow::TMeasureWindow(TComponent * Owner)
 {
 
     DoubleBuffered = true;
-    this->Button1->OnClick = Button1Click;
+    //this->Button1->OnClick = Button1Click;
     pattern = Normal;
     lineAdjoin = false;
     source = PC;
@@ -86,7 +87,7 @@ void TMeasureWindow::setRGB(int r, int g, int b)
 	// tcon-input
 	//=========================================================================
 	if (tconcontrol->isGammaTestEnable()) {
-	    bool result = tconcontrol->setGammaTestRGB(r, g, b);
+	    bool result = tconcontrol->setDirectGammaRGB(r, g, b);
 	    if (false == result) {
 		ShowMessage("Set Gamma Test failed!");
 	    }
@@ -116,12 +117,13 @@ void TMeasureWindow::setRGB(int r, int g, int b)
 	// pc-input
 	//=========================================================================
 	TColor color = (TColor) ((b << 16) + (g << 8) + r);
-	switch (pattern) {
+	Pattern displayPattern = (wsMaximized == this->WindowState) ? pattern : testPattern;
+	switch (displayPattern) {
 	case HStripe:
 	case HStripe2:
 	    {
 		TColor color1, color2;
-		if (pattern == HStripe) {
+		if (displayPattern == HStripe) {
 		    color1 = color;
 		    color2 = clBlack;
 		} else {
@@ -413,6 +415,9 @@ void __fastcall TMeasureWindow::FormShow(TObject * Sender)
 {
     Image1->Width = this->Width;
     Image1->Height = this->Height;
+    if (this->WindowState == wsNormal) {
+	setRGB(255, 255, 255);
+    }
 }
 
 //---------------------------------------------------------------------------
@@ -438,9 +443,19 @@ void TMeasureWindow::setPattern(Pattern pattern)
 {
     this->pattern = pattern;
 };
-
+void TMeasureWindow::setTestPattern(Pattern pattern)
+{
+    this->pattern = testPattern;
+};
 void TMeasureWindow::setLineAdjoin(bool lineAdjoin)
 {
     this->lineAdjoin = lineAdjoin;
 };
+
+void __fastcall TMeasureWindow::FormCreate(TObject * Sender)
+{
+    //Button1->Visible = MainForm->debugMode;
+}
+
+//---------------------------------------------------------------------------
 

@@ -13,8 +13,11 @@ __fastcall TChangeLogForm::TChangeLogForm(TComponent * Owner)
 :TForm(Owner)
 {
     Memo1->Text = "\
+       [3.4 build 1.48] 2012/11/23\r\n\
+       +Main頁面修改\r\n\
+       \r\n\
        [3.4 build 1.47] 2012/11/21\r\n\
-       -T-CON Input的輸出修正\r\n\
+       -Direct Gamma的輸出修正\r\n\
        \r\n\
        [3.4 build 1.45] 2012/11/05\r\n\
        +支援TCON 1H501以及其DirectGamma\r\n\
@@ -87,7 +90,7 @@ __fastcall TChangeLogForm::TChangeLogForm(TComponent * Owner)
        -量測時間(Pattern Display Interval)更改為400ms\r\n\
        +增加PC w/ T-CON的功能(透過DG-LUT達到與Direct Gamma相同功能)\r\n\
        -De-Hook量測功能修正\r\n\
-       +Measurement T-CON Input需\"Load Table\"之後才可使用, 避免誤用\r\n\
+       +Measurement Direct Gamma需\"Load Table\"之後才可使用, 避免誤用\r\n\
        ";
 }
 

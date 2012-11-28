@@ -218,7 +218,7 @@ void __fastcall TGammaAdjustmentForm::FormMouseMove(TObject * Sender,
 void __fastcall TGammaAdjustmentForm::FormKeyPress(TObject * Sender, char &Key)
 {
     if (27 == Key) {
-	//for tcon input時, 關閉會跳到這邊
+	//for direct gamma時, 關閉會跳到這邊
 	if (true == run) {
 	    ShowMessage("Interrupt!");
 	    if (false == MeasureWindow->Visible) {

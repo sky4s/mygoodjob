@@ -52,21 +52,21 @@ class TMainForm:public TForm {
     TEdit *Edit_MasterDeviceAddress;
     TEdit *Edit_SlaveDeviceAddress;
     TComboBox *ComboBox_AddressingSize;
-    TGroupBox *GroupBox_GammaTestAddress;
+    TGroupBox *GroupBox_DirectGamma;
     TLabel *Label4;
     TGroupBox *GroupBox5;
     TLabel *Label2;
     TLabel *Label3;
     TEdit *Edit_GammaTestEnableAddress;
     TEdit *Edit_GammaTestEnableBit;
-    TEdit *Edit_GammaTestAddress;
+    TEdit *Edit_DirectGammaAddress;
     TGroupBox *GroupBox2;
     TRadioButton *RadioButton_PC;
     TRadioButton *RadioButton_TCON;
     TGroupBox *GroupBox1;
     TLabel *Label1;
     TEdit *Edit_Interval;
-    TComboBox *ComboBox_GammaTestType;
+    TComboBox *ComboBox_DirectGammaType;
     TLabel *Label11;
     TButton *Button_I2CTest;
     TButton *Button_Connect;
@@ -82,7 +82,7 @@ class TMainForm:public TForm {
     TEdit *Edit_DGEnableBit;
     TLabel *Label15;
     TComboBox *ComboBox_DGLUTType;
-    TCheckBox *CheckBox_GammaTest;
+    TCheckBox *CheckBox_DirectGamma;
     TGroupBox *GroupBox_Pattern;
     TRadioButton *RadioButton_Normal;
     TRadioButton *RadioButton_HStripe;
@@ -93,7 +93,7 @@ class TMainForm:public TForm {
     TRadioButton *RadioButton_PCTCON_NB;
     TRadioButton *RadioButton_Ninth;
     TCheckBox *CheckBox_LineAdjoin;
-    TGroupBox *GroupBox6;
+    TGroupBox *GroupBox_BitDepth;
     TLabel *Label10;
     TGroupBox *GroupBox8;
     TRadioButton *RadioButton_In6;
@@ -140,6 +140,8 @@ class TMainForm:public TForm {
     TEdit *Edit_HideEnableAddress;
     TEdit *Edit_HideEnableBit;
     TCheckBox *CheckBox_HideEN;
+    TGroupBox *GroupBox4;
+    TButton *Button_PatternTest;
     void __fastcall About1Click(TObject * Sender);
     void __fastcall Exit1Click(TObject * Sender);
     void __fastcall TargetWhite1Click(TObject * Sender);
@@ -172,11 +174,10 @@ class TMainForm:public TForm {
     void __fastcall RadioButton_LPTLargeClick(TObject * Sender);
     void __fastcall RadioButton_LPTSmallClick(TObject * Sender);
     void __fastcall ComboBox_TCONTypeChange(TObject * Sender);
-    void __fastcall CheckBox_GammaTestClick(TObject * Sender);
+    void __fastcall CheckBox_DirectGammaClick(TObject * Sender);
     void __fastcall RadioButton_PCTCON_NBClick(TObject * Sender);
     void __fastcall RadioButton_NinthClick(TObject * Sender);
     void __fastcall ComboBox_DGLUTTypeChange(TObject * Sender);
-    void __fastcall FormActivate(TObject * Sender);
     void __fastcall TabSheet2Exit(TObject * Sender);
     void __fastcall Edit_AverageTimesChange(TObject * Sender);
     void __fastcall RadioButton_PCTCON_TVClick(TObject * Sender);
@@ -188,6 +189,21 @@ class TMainForm:public TForm {
     void __fastcall StabilityMeasure1Click(TObject * Sender);
     void __fastcall RadioButton_HStripe2Click(TObject * Sender);
     void __fastcall CheckBox_HideENClick(TObject * Sender);
+    void __fastcall Button_PatternTestClick(TObject * Sender);
+    void __fastcall RadioButton_NinthMouseMove(TObject * Sender, TShiftState Shift, int X, int Y);
+    void __fastcall GroupBox4MouseMove(TObject * Sender, TShiftState Shift, int X, int Y);
+    void __fastcall TabSheet1MouseMove(TObject * Sender, TShiftState Shift, int X, int Y);
+    void __fastcall RadioButton_IndepMouseMove(TObject * Sender, TShiftState Shift, int X, int Y);
+    void __fastcall RadioButton_HSDMouseMove(TObject * Sender, TShiftState Shift, int X, int Y);
+    void __fastcall RadioButton_FlickrPixelMouseMove(TObject * Sender,
+						     TShiftState Shift, int X, int Y);
+    void __fastcall RadioButton_FlickrSubPixelMouseMove(TObject * Sender, TShiftState Shift, int X,
+							int Y);
+    void __fastcall RadioButton_HStripeMouseMove(TObject * Sender, TShiftState Shift, int X, int Y);
+    void __fastcall RadioButton_HStripe2MouseMove(TObject * Sender,
+						  TShiftState Shift, int X, int Y);
+    void __fastcall RadioButton_NormalMouseMove(TObject * Sender, TShiftState Shift, int X, int Y);
+        void __fastcall FormActivate(TObject *Sender);
   private:			// User declarations
     //==========================================================================
     // meter
