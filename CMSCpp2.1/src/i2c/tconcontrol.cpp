@@ -25,16 +25,16 @@ namespace i2c {
 	dualTCON(true) {
 
     };
-    bool TCONControl::setGammaTestRGB(RGB_ptr rgb) {
+    bool TCONControl::setDirectGammaRGB(RGB_ptr rgb) {
 	//rgb->getValues()
 	int r = _toInt(rgb->R);
 	int g = _toInt(rgb->G);
 	int b = _toInt(rgb->B);
-	return setGammaTestRGB(r, g, b);
+	return setDirectGammaRGB(r, g, b);
     };
     bptr < cms::util::ByteBuffer > TCONControl::getRGBByteBufferWith62301(int r, int g, int b,
-									  const TestRGBBit &
-									  testRGBBit) {
+									  const DirectGammaType &
+									  directGammaType) {
 	int highMask = 3;
 	int rLow = r & 255;
 	int rHigh = (r >> 8) & highMask;
@@ -43,7 +43,7 @@ namespace i2c {
 	int bLow = b & 255;
 	int bHigh = (b >> 8) & highMask;
 
-	int totalByte = testRGBBit.totalByte;
+	int totalByte = directGammaType.totalByte;
 	bptr < ByteBuffer > data(new ByteBuffer(totalByte));
 	//先清空buffer
 	for (int x = 0; x < totalByte; x++) {
@@ -51,19 +51,19 @@ namespace i2c {
 	}
 	(*data)[0] = 64 | rHigh << 4 | gHigh << 2 | bHigh;
 
-	(*data)[testRGBBit.rLowBit / 8] = rLow;	//0
-	(*data)[testRGBBit.gLowBit / 8] = gLow;	//16
-	(*data)[testRGBBit.bLowBit / 8] = bLow;	//24
+	(*data)[directGammaType.rLowBit / 8] = rLow;	//0
+	(*data)[directGammaType.gLowBit / 8] = gLow;	//16
+	(*data)[directGammaType.bLowBit / 8] = bLow;	//24
 
 	return data;
     };
     bptr < ByteBuffer > TCONControl::getRGBByteBuffer(int r, int g, int b,
-						      const TestRGBBit & testRGBBit) {
-	if (TestRGBBit::TCON62301Instance == testRGBBit) {
-	    return getRGBByteBufferWith62301(r, g, b, testRGBBit);
+						      const DirectGammaType & directGammaType) {
+ 	if (DirectGammaType::TCON62301Instance == directGammaType) {
+	    return getRGBByteBufferWith62301(r, g, b, directGammaType);
 	}
 
-	int patternBit = testRGBBit.patternBit;
+	int patternBit = directGammaType.patternBit;
 	int highMask = (12 == patternBit) ? 15 : 3;
 	// C B A 9 8 7 6 5 4 3 2 1
 	// ^^^^^^^H^^^^^^^^^^^^^^^L
@@ -74,7 +74,7 @@ namespace i2c {
 	int bLow = b & 255;
 	int bHigh = (b >> 8) & highMask;
 
-	int totalByte = testRGBBit.totalByte;
+	int totalByte = directGammaType.totalByte;
 	bptr < ByteBuffer > data(new ByteBuffer(totalByte));
 	//先清空buffer
 	for (int x = 0; x < totalByte; x++) {
@@ -82,34 +82,34 @@ namespace i2c {
 	}
 	//0, 8, 16, 12, 24, 32
 	//0,1,2,1,3,4
-	(*data)[testRGBBit.rLowBit / 8] = rLow;	//0
-	(*data)[testRGBBit.gLowBit / 8] = gLow;	//16
-	(*data)[testRGBBit.bLowBit / 8] = bLow;	//24
+	(*data)[directGammaType.rLowBit / 8] = rLow;	//0
+	(*data)[directGammaType.gLowBit / 8] = gLow;	//16
+	(*data)[directGammaType.bLowBit / 8] = bLow;	//24
 
-	if (testRGBBit.rHighBit % 8 != 0) {
-	    int index = testRGBBit.rHighBit / 8;
+	if (directGammaType.rHighBit % 8 != 0) {
+	    int index = directGammaType.rHighBit / 8;
 	    byte d = (*data)[index];
 	    (*data)[index] = d + (rHigh << 4);
 	} else {
-	    int index = testRGBBit.rHighBit / 8;
+	    int index = directGammaType.rHighBit / 8;
 	    byte d = (*data)[index];
 	    (*data)[index] = d + rHigh;
 	}
-	if (testRGBBit.gHighBit % 8 != 0) {
-	    int index = testRGBBit.gHighBit / 8;
+	if (directGammaType.gHighBit % 8 != 0) {
+	    int index = directGammaType.gHighBit / 8;
 	    byte d = (*data)[index];
 	    (*data)[index] = d + (gHigh << 4);
 	} else {
-	    int index = testRGBBit.gHighBit / 8;
+	    int index = directGammaType.gHighBit / 8;
 	    byte d = (*data)[index];
 	    (*data)[index] = d + gHigh;
 	}
-	if (testRGBBit.bHighBit % 8 != 0) {
-	    int index = testRGBBit.bHighBit / 8;
+	if (directGammaType.bHighBit % 8 != 0) {
+	    int index = directGammaType.bHighBit / 8;
 	    byte d = (*data)[index];
 	    (*data)[index] = d + (bHigh << 4);
 	} else {
-	    int index = testRGBBit.bHighBit / 8;
+	    int index = directGammaType.bHighBit / 8;
 	    byte d = (*data)[index];
 	    (*data)[index] = d + bHigh;
 	}
@@ -117,11 +117,11 @@ namespace i2c {
 	return data;
     };
 
-    bool TCONControl::setGammaTestRGB(int r, int g, int b) {
-	const TestRGBBit & testRGBBit = parameter->testRGBBit;
-	bptr < ByteBuffer > data = getRGBByteBuffer(r, g, b, testRGBBit);
+    bool TCONControl::setDirectGammaRGB(int r, int g, int b) {
+	const DirectGammaType & directGammaType = parameter->directGammaType;
+	bptr < ByteBuffer > data = getRGBByteBuffer(r, g, b, directGammaType);
 
-	int address = parameter->testRGBAddress;
+	int address = parameter->directGammaRGBAddress;
 	write(address, data);
 	int size = data->getSize();
 	bptr < ByteBuffer > dataFrom0 = read(address, size, 0);

@@ -1,8 +1,8 @@
 object MainForm: TMainForm
-  Left = 271
-  Top = 242
-  Width = 810
-  Height = 442
+  Left = 272
+  Top = 243
+  Width = 748
+  Height = 489
   Caption = 'CCT Adjustment '
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
@@ -722,15 +722,15 @@ object MainForm: TMainForm
   PixelsPerInch = 96
   TextHeight = 13
   object Label6: TLabel
-    Left = 510
-    Top = 344
+    Left = 446
+    Top = 392
     Width = 281
     Height = 13
     Caption = 'Copyright (C) 2012, AU Optronics Corp., All Right Reserved.'
   end
   object Image1: TImage
     Left = 7
-    Top = 317
+    Top = 365
     Width = 113
     Height = 42
     AutoSize = True
@@ -835,18 +835,19 @@ object MainForm: TMainForm
   object PageControl1: TPageControl
     Left = 7
     Top = 13
-    Width = 786
-    Height = 300
+    Width = 546
+    Height = 348
     ActivePage = TabSheet1
     TabIndex = 0
     TabOrder = 0
     object TabSheet1: TTabSheet
       Caption = 'Measure Setup'
+      OnMouseMove = TabSheet1MouseMove
       object GroupBox2: TGroupBox
-        Left = 0
+        Left = 1
         Top = 7
         Width = 193
-        Height = 122
+        Height = 106
         Caption = 'Input Source'
         TabOrder = 0
         object RadioButton_PC: TRadioButton
@@ -863,11 +864,11 @@ object MainForm: TMainForm
         object RadioButton_TCON: TRadioButton
           Left = 7
           Top = 40
-          Width = 65
+          Width = 130
           Height = 20
           Hint = 'For "Direct Gamma" use'
           HelpType = htKeyword
-          Caption = 'T-CON'
+          Caption = 'T-CON (Direct Gamma)'
           ParentShowHint = False
           ShowHint = True
           TabOrder = 1
@@ -900,275 +901,14 @@ object MainForm: TMainForm
           OnClick = RadioButton_PCTCON_TVClick
         end
       end
-      object GroupBox1: TGroupBox
-        Left = 0
-        Top = 128
-        Width = 193
-        Height = 81
-        Caption = 'Pattern Display Interval'
-        TabOrder = 1
-        object Label1: TLabel
-          Left = 91
-          Top = 20
-          Width = 25
-          Height = 13
-          Caption = 'msec'
-        end
-        object Label21: TLabel
-          Left = 8
-          Top = 48
-          Width = 40
-          Height = 13
-          Caption = 'Average'
-        end
-        object Edit_Interval: TEdit
-          Left = 7
-          Top = 20
-          Width = 78
-          Height = 21
-          ImeName = #26085#25991#36664#20837#31995#32113' (MS-IME2002)'
-          TabOrder = 0
-          Text = '500'
-          OnChange = Edit_IntervalChange
-        end
-        object Edit_AverageTimes: TEdit
-          Left = 56
-          Top = 48
-          Width = 33
-          Height = 21
-          TabOrder = 1
-          Text = '1'
-          OnChange = Edit_AverageTimesChange
-        end
-      end
-      object GroupBox_Pattern: TGroupBox
-        Left = 376
-        Top = 7
-        Width = 169
-        Height = 105
-        Caption = 'Pattern'
-        TabOrder = 2
-        object RadioButton_Normal: TRadioButton
-          Left = 7
-          Top = 19
-          Width = 65
-          Height = 14
-          Caption = 'Normal'
-          Checked = True
-          TabOrder = 0
-          TabStop = True
-          OnClick = RadioButton_NormalClick
-        end
-        object RadioButton_HStripe: TRadioButton
-          Left = 71
-          Top = 51
-          Width = 65
-          Height = 15
-          Caption = 'H Stripe I'
-          TabOrder = 1
-          OnClick = RadioButton_HStripeClick
-        end
-        object RadioButton_Indep: TRadioButton
-          Left = 7
-          Top = 51
-          Width = 58
-          Height = 15
-          Caption = 'Indep'
-          TabOrder = 2
-          OnClick = RadioButton_IndepClick
-        end
-        object RadioButton_HSD: TRadioButton
-          Left = 7
-          Top = 67
-          Width = 52
-          Height = 15
-          Caption = 'HSD'
-          TabOrder = 3
-          OnClick = RadioButton_HSDClick
-        end
-        object RadioButton_FlickrPixel: TRadioButton
-          Left = 71
-          Top = 19
-          Width = 90
-          Height = 15
-          Caption = 'FlickrPixel'
-          TabOrder = 4
-          OnClick = RadioButton_FlickrPixelClick
-        end
-        object RadioButton_FlickrSubPixel: TRadioButton
-          Left = 71
-          Top = 35
-          Width = 90
-          Height = 15
-          Caption = 'FlickrSubPixel'
-          TabOrder = 5
-          OnClick = RadioButton_FlickrSubPixelClick
-        end
-        object RadioButton_Ninth: TRadioButton
-          Left = 7
-          Top = 35
-          Width = 58
-          Height = 14
-          Caption = '1/9'
-          TabOrder = 6
-          OnClick = RadioButton_NinthClick
-        end
-        object CheckBox_LineAdjoin: TCheckBox
-          Left = 7
-          Top = 85
-          Width = 73
-          Height = 14
-          Caption = 'Line Adjoin'
-          TabOrder = 7
-          Visible = False
-        end
-        object RadioButton_HStripe2: TRadioButton
-          Left = 71
-          Top = 67
-          Width = 65
-          Height = 15
-          Caption = 'H Stripe II'
-          TabOrder = 8
-          OnClick = RadioButton_HStripe2Click
-        end
-      end
-      object GroupBox6: TGroupBox
-        Left = 202
-        Top = 7
-        Width = 163
-        Height = 202
-        Caption = 'Bit Depth'
-        TabOrder = 3
-        object Label10: TLabel
-          Left = 7
-          Top = 137
-          Width = 21
-          Height = 13
-          Caption = 'FRC'
-        end
-        object GroupBox8: TGroupBox
-          Left = 7
-          Top = 20
-          Width = 46
-          Height = 111
-          Caption = 'IN'
-          TabOrder = 0
-          object RadioButton_In6: TRadioButton
-            Left = 7
-            Top = 20
-            Width = 32
-            Height = 13
-            Caption = '6'
-            TabOrder = 0
-            OnClick = RadioButton_In6Click
-          end
-          object RadioButton_In8: TRadioButton
-            Left = 7
-            Top = 52
-            Width = 32
-            Height = 14
-            Caption = '8'
-            Checked = True
-            TabOrder = 1
-            TabStop = True
-            OnClick = RadioButton_In8Click
-          end
-          object RadioButton_In10: TRadioButton
-            Left = 7
-            Top = 85
-            Width = 32
-            Height = 13
-            Caption = '10'
-            TabOrder = 2
-            OnClick = RadioButton_In10Click
-          end
-        end
-        object GroupBox9: TGroupBox
-          Left = 59
-          Top = 20
-          Width = 46
-          Height = 111
-          Caption = 'LUT'
-          TabOrder = 1
-          object RadioButton_Lut10: TRadioButton
-            Left = 7
-            Top = 20
-            Width = 32
-            Height = 13
-            Caption = '10'
-            TabOrder = 0
-            OnClick = RadioButton_Lut10Click
-          end
-          object RadioButton_Lut12: TRadioButton
-            Left = 7
-            Top = 52
-            Width = 32
-            Height = 14
-            Caption = '12'
-            Checked = True
-            TabOrder = 1
-            TabStop = True
-            OnClick = RadioButton_Lut12Click
-          end
-        end
-        object GroupBox10: TGroupBox
-          Left = 111
-          Top = 20
-          Width = 46
-          Height = 111
-          Caption = 'OUT'
-          TabOrder = 2
-          object RadioButton_Out6: TRadioButton
-            Left = 7
-            Top = 20
-            Width = 32
-            Height = 13
-            Caption = '6'
-            TabOrder = 0
-            OnClick = RadioButton_Out6Click
-          end
-          object RadioButton_Out8: TRadioButton
-            Left = 7
-            Top = 52
-            Width = 32
-            Height = 14
-            Caption = '8'
-            Checked = True
-            TabOrder = 1
-            TabStop = True
-            OnClick = RadioButton_Out8Click
-          end
-          object RadioButton_Out10: TRadioButton
-            Left = 7
-            Top = 85
-            Width = 32
-            Height = 13
-            Caption = '10'
-            Enabled = False
-            TabOrder = 2
-            OnClick = RadioButton_Out10Click
-          end
-        end
-        object Edit_FRCAbility: TEdit
-          Left = 33
-          Top = 137
-          Width = 52
-          Height = 21
-          Color = cl3DLight
-          Enabled = False
-          ImeName = #26085#25991#36664#20837#31995#32113' (MS-IME2002)'
-          TabOrder = 3
-          Text = '8+3'
-        end
-      end
       object GroupBox_CHSetting: TGroupBox
-        Left = 376
-        Top = 119
-        Width = 169
+        Left = 392
+        Top = 7
+        Width = 129
         Height = 42
         Caption = 'CH Setting'
         Enabled = False
-        TabOrder = 4
+        TabOrder = 1
         object Label7: TLabel
           Left = 7
           Top = 20
@@ -1187,21 +927,180 @@ object MainForm: TMainForm
           OnKeyPress = Edit_SourceCHKeyPress
         end
       end
-      object GroupBox3: TGroupBox
-        Left = 552
-        Top = 8
-        Width = 129
-        Height = 41
-        Caption = 'Sequence'
-        TabOrder = 5
-        object CheckBox_InverseMeasure: TCheckBox
+      object GroupBox4: TGroupBox
+        Left = 200
+        Top = 7
+        Width = 185
+        Height = 266
+        Caption = 'Pattern'
+        TabOrder = 2
+        OnMouseMove = GroupBox4MouseMove
+        object GroupBox1: TGroupBox
           Left = 8
           Top = 16
-          Width = 97
-          Height = 17
-          Caption = 'Inverse Measure'
+          Width = 169
+          Height = 81
+          Caption = 'Pattern Display Interval'
           TabOrder = 0
+          object Label1: TLabel
+            Left = 91
+            Top = 20
+            Width = 25
+            Height = 13
+            Caption = 'msec'
+          end
+          object Label21: TLabel
+            Left = 8
+            Top = 48
+            Width = 40
+            Height = 13
+            Caption = 'Average'
+          end
+          object Edit_Interval: TEdit
+            Left = 7
+            Top = 20
+            Width = 78
+            Height = 21
+            ImeName = #26085#25991#36664#20837#31995#32113' (MS-IME2002)'
+            TabOrder = 0
+            Text = '500'
+            OnChange = Edit_IntervalChange
+          end
+          object Edit_AverageTimes: TEdit
+            Left = 56
+            Top = 48
+            Width = 33
+            Height = 21
+            TabOrder = 1
+            Text = '1'
+            OnChange = Edit_AverageTimesChange
+          end
         end
+        object GroupBox_Pattern: TGroupBox
+          Left = 9
+          Top = 103
+          Width = 168
+          Height = 105
+          Caption = 'Pattern Select'
+          TabOrder = 1
+          object RadioButton_Normal: TRadioButton
+            Left = 7
+            Top = 19
+            Width = 65
+            Height = 14
+            Caption = 'Normal'
+            Checked = True
+            TabOrder = 0
+            TabStop = True
+            OnClick = RadioButton_NormalClick
+            OnMouseMove = RadioButton_NormalMouseMove
+          end
+          object RadioButton_HStripe: TRadioButton
+            Left = 71
+            Top = 51
+            Width = 65
+            Height = 15
+            Caption = 'H Stripe I'
+            TabOrder = 1
+            OnClick = RadioButton_HStripeClick
+            OnMouseMove = RadioButton_HStripeMouseMove
+          end
+          object RadioButton_Indep: TRadioButton
+            Left = 7
+            Top = 51
+            Width = 58
+            Height = 15
+            Caption = 'Indep'
+            TabOrder = 2
+            OnClick = RadioButton_IndepClick
+            OnMouseMove = RadioButton_IndepMouseMove
+          end
+          object RadioButton_HSD: TRadioButton
+            Left = 7
+            Top = 67
+            Width = 52
+            Height = 15
+            Caption = 'HSD'
+            TabOrder = 3
+            OnClick = RadioButton_HSDClick
+            OnMouseMove = RadioButton_HSDMouseMove
+          end
+          object RadioButton_FlickrPixel: TRadioButton
+            Left = 71
+            Top = 19
+            Width = 90
+            Height = 15
+            Caption = 'FlickrPixel'
+            TabOrder = 4
+            OnClick = RadioButton_FlickrPixelClick
+            OnMouseMove = RadioButton_FlickrPixelMouseMove
+          end
+          object RadioButton_FlickrSubPixel: TRadioButton
+            Left = 71
+            Top = 35
+            Width = 90
+            Height = 15
+            Caption = 'FlickrSubPixel'
+            TabOrder = 5
+            OnClick = RadioButton_FlickrSubPixelClick
+            OnMouseMove = RadioButton_FlickrSubPixelMouseMove
+          end
+          object RadioButton_Ninth: TRadioButton
+            Left = 7
+            Top = 35
+            Width = 58
+            Height = 14
+            Caption = '1/9'
+            TabOrder = 6
+            OnClick = RadioButton_NinthClick
+            OnMouseMove = RadioButton_NinthMouseMove
+          end
+          object CheckBox_LineAdjoin: TCheckBox
+            Left = 7
+            Top = 85
+            Width = 73
+            Height = 14
+            Caption = 'Line Adjoin'
+            TabOrder = 7
+            Visible = False
+          end
+          object RadioButton_HStripe2: TRadioButton
+            Left = 71
+            Top = 67
+            Width = 65
+            Height = 15
+            Caption = 'H Stripe II'
+            TabOrder = 8
+            OnClick = RadioButton_HStripe2Click
+            OnMouseMove = RadioButton_HStripe2MouseMove
+          end
+        end
+        object GroupBox3: TGroupBox
+          Left = 8
+          Top = 216
+          Width = 169
+          Height = 41
+          Caption = 'Pattern Sequence'
+          TabOrder = 2
+          object CheckBox_InverseMeasure: TCheckBox
+            Left = 8
+            Top = 16
+            Width = 97
+            Height = 17
+            Caption = 'Inverse Measure'
+            TabOrder = 0
+          end
+        end
+      end
+      object Button_PatternTest: TButton
+        Left = 312
+        Top = 200
+        Width = 81
+        Height = 17
+        Caption = 'Pattern Test'
+        TabOrder = 3
+        Visible = False
+        OnClick = Button_PatternTestClick
       end
     end
     object TabSheet2: TTabSheet
@@ -1212,16 +1111,16 @@ object MainForm: TMainForm
         Left = 2
         Top = 1
         Width = 807
-        Height = 272
+        Height = 320
         BevelOuter = bvNone
         TabOrder = 0
         Visible = False
         object GroupBox_Card: TGroupBox
           Left = 1
           Top = 7
-          Width = 91
-          Height = 98
-          Caption = 'I2C Card'
+          Width = 208
+          Height = 74
+          Caption = 'Card Select'
           Color = clBtnFace
           ParentColor = False
           TabOrder = 0
@@ -1254,19 +1153,10 @@ object MainForm: TMainForm
             TabStop = True
             OnClick = RadioButton_LPTSmallClick
           end
-          object Button_I2CTest: TButton
-            Left = 15
-            Top = 76
-            Width = 57
-            Height = 17
-            Caption = 'I2C Test'
-            TabOrder = 3
-            OnClick = Button_I2CTestClick
-          end
         end
         object GroupBox_DeviceAddress: TGroupBox
-          Left = 98
-          Top = 7
+          Left = 2
+          Top = 81
           Width = 207
           Height = 98
           Caption = 'Device Address'
@@ -1346,8 +1236,8 @@ object MainForm: TMainForm
           end
         end
         object Button_Connect: TButton
-          Left = 13
-          Top = 111
+          Left = 37
+          Top = 287
           Width = 66
           Height = 20
           Caption = 'Connect'
@@ -1355,10 +1245,10 @@ object MainForm: TMainForm
           OnClick = Button_ConnectClick
         end
         object GroupBox7: TGroupBox
-          Left = 312
+          Left = 216
           Top = 7
-          Width = 457
-          Height = 258
+          Width = 313
+          Height = 306
           Caption = 'TCON Type'
           TabOrder = 3
           object ComboBox_TCONType: TComboBox
@@ -1366,15 +1256,15 @@ object MainForm: TMainForm
             Top = 13
             Width = 138
             Height = 21
-            ItemHeight = 0
+            ItemHeight = 13
             TabOrder = 0
             OnChange = ComboBox_TCONTypeChange
           end
           object GroupBox_DigitalGamma: TGroupBox
-            Left = 152
-            Top = 14
+            Left = 8
+            Top = 134
             Width = 137
-            Height = 235
+            Height = 163
             Caption = 'Digital Gamma '
             TabOrder = 2
             object GroupBox_GAM_EN: TGroupBox
@@ -1421,7 +1311,7 @@ object MainForm: TMainForm
               Left = 7
               Top = 79
               Width = 124
-              Height = 146
+              Height = 74
               Caption = 'LUT'
               TabOrder = 1
               object Label12: TLabel
@@ -1463,11 +1353,11 @@ object MainForm: TMainForm
               end
             end
           end
-          object GroupBox_GammaTestAddress: TGroupBox
-            Left = 296
-            Top = 14
+          object GroupBox_DirectGamma: TGroupBox
+            Left = 152
+            Top = 40
             Width = 153
-            Height = 235
+            Height = 251
             Caption = 'Gamma Test'
             TabOrder = 3
             object GroupBox5: TGroupBox
@@ -1531,7 +1421,7 @@ object MainForm: TMainForm
                 Height = 13
                 Caption = 'Type'
               end
-              object Edit_GammaTestAddress: TEdit
+              object Edit_DirectGammaAddress: TEdit
                 Left = 75
                 Top = 20
                 Width = 46
@@ -1540,7 +1430,7 @@ object MainForm: TMainForm
                 TabOrder = 0
                 Text = '154'
               end
-              object ComboBox_GammaTestType: TComboBox
+              object ComboBox_DirectGammaType: TComboBox
                 Left = 37
                 Top = 44
                 Width = 84
@@ -1559,7 +1449,7 @@ object MainForm: TMainForm
               Left = 7
               Top = 157
               Width = 138
-              Height = 66
+              Height = 84
               TabOrder = 2
               Visible = False
               object Label8: TLabel
@@ -1610,7 +1500,7 @@ object MainForm: TMainForm
             Left = 8
             Top = 40
             Width = 137
-            Height = 209
+            Height = 89
             Caption = 'FRC'
             TabOrder = 4
             object GroupBox_FRC_EN: TGroupBox
@@ -1654,23 +1544,23 @@ object MainForm: TMainForm
               end
             end
           end
-          object CheckBox_GammaTest: TCheckBox
-            Left = 303
-            Top = 8
+          object CheckBox_DirectGamma: TCheckBox
+            Left = 159
+            Top = 34
             Width = 85
             Height = 20
-            Caption = 'Gamma Test'
+            Caption = 'Direct Gamma'
             Checked = True
             State = cbChecked
             TabOrder = 1
-            OnClick = CheckBox_GammaTestClick
+            OnClick = CheckBox_DirectGammaClick
           end
         end
         object GroupBox_USBSetting: TGroupBox
-          Left = 98
-          Top = 104
+          Left = 2
+          Top = 179
           Width = 207
-          Height = 161
+          Height = 105
           Caption = 'USB Setting'
           TabOrder = 4
           Visible = False
@@ -1703,12 +1593,21 @@ object MainForm: TMainForm
             TabOrder = 1
           end
         end
+        object Button_I2CTest: TButton
+          Left = 109
+          Top = 287
+          Width = 66
+          Height = 20
+          Caption = 'I2C Test'
+          TabOrder = 5
+          OnClick = Button_I2CTestClick
+        end
       end
     end
   end
   object ProgressBar1: TProgressBar
     Left = 128
-    Top = 344
+    Top = 392
     Width = 201
     Height = 17
     Min = 0
@@ -1718,8 +1617,8 @@ object MainForm: TMainForm
   end
   object StatusBar1: TStatusBar
     Left = 0
-    Top = 367
-    Width = 802
+    Top = 414
+    Width = 740
     Height = 19
     Color = clWhite
     Panels = <
@@ -1736,10 +1635,140 @@ object MainForm: TMainForm
       end>
     SimplePanel = False
   end
+  object GroupBox_BitDepth: TGroupBox
+    Left = 562
+    Top = 39
+    Width = 163
+    Height = 202
+    Caption = 'T-CON Bit Depth'
+    TabOrder = 3
+    object Label10: TLabel
+      Left = 7
+      Top = 137
+      Width = 21
+      Height = 13
+      Caption = 'FRC'
+    end
+    object GroupBox8: TGroupBox
+      Left = 7
+      Top = 20
+      Width = 46
+      Height = 111
+      Caption = 'IN'
+      TabOrder = 0
+      object RadioButton_In6: TRadioButton
+        Left = 7
+        Top = 20
+        Width = 32
+        Height = 13
+        Caption = '6'
+        TabOrder = 0
+        OnClick = RadioButton_In6Click
+      end
+      object RadioButton_In8: TRadioButton
+        Left = 7
+        Top = 52
+        Width = 32
+        Height = 14
+        Caption = '8'
+        Checked = True
+        TabOrder = 1
+        TabStop = True
+        OnClick = RadioButton_In8Click
+      end
+      object RadioButton_In10: TRadioButton
+        Left = 7
+        Top = 85
+        Width = 32
+        Height = 13
+        Caption = '10'
+        TabOrder = 2
+        OnClick = RadioButton_In10Click
+      end
+    end
+    object GroupBox9: TGroupBox
+      Left = 59
+      Top = 20
+      Width = 46
+      Height = 111
+      Caption = 'LUT'
+      TabOrder = 1
+      object RadioButton_Lut10: TRadioButton
+        Left = 7
+        Top = 20
+        Width = 32
+        Height = 13
+        Caption = '10'
+        TabOrder = 0
+        OnClick = RadioButton_Lut10Click
+      end
+      object RadioButton_Lut12: TRadioButton
+        Left = 7
+        Top = 52
+        Width = 32
+        Height = 14
+        Caption = '12'
+        Checked = True
+        TabOrder = 1
+        TabStop = True
+        OnClick = RadioButton_Lut12Click
+      end
+    end
+    object GroupBox10: TGroupBox
+      Left = 111
+      Top = 20
+      Width = 46
+      Height = 111
+      Caption = 'OUT'
+      TabOrder = 2
+      object RadioButton_Out6: TRadioButton
+        Left = 7
+        Top = 20
+        Width = 32
+        Height = 13
+        Caption = '6'
+        TabOrder = 0
+        OnClick = RadioButton_Out6Click
+      end
+      object RadioButton_Out8: TRadioButton
+        Left = 7
+        Top = 52
+        Width = 32
+        Height = 14
+        Caption = '8'
+        Checked = True
+        TabOrder = 1
+        TabStop = True
+        OnClick = RadioButton_Out8Click
+      end
+      object RadioButton_Out10: TRadioButton
+        Left = 7
+        Top = 85
+        Width = 32
+        Height = 13
+        Caption = '10'
+        Enabled = False
+        TabOrder = 2
+        OnClick = RadioButton_Out10Click
+      end
+    end
+    object Edit_FRCAbility: TEdit
+      Left = 33
+      Top = 137
+      Width = 52
+      Height = 21
+      Color = cl3DLight
+      Enabled = False
+      ImeName = #26085#25991#36664#20837#31995#32113' (MS-IME2002)'
+      TabOrder = 3
+      Text = '8+3'
+    end
+  end
   object MainMenu1: TMainMenu
     object MatrixCalibration1: TMenuItem
       Caption = 'Matrix Calibration'
       Enabled = False
+      Visible = False
       OnClick = MatrixCalibration1Click
     end
     object TargetWhite1: TMenuItem

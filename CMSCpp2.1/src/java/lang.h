@@ -83,7 +83,7 @@ namespace math {
 };
 
 namespace i2c {
-    class TestRGBBit;
+    class DirectGammaType;
     class i2cControl;
     class TCONParameter;
     class TCONControl;

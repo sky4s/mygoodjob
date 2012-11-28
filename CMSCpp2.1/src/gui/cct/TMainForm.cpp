@@ -36,8 +36,9 @@ __fastcall TMainForm::TMainForm(TComponent * Owner):TForm(Owner), debugMode(File
 linkEyeOne(FileExists("i1.txt")), linkCA210(!FileExists("i1.txt") && !FileExists(DEBUG_FILE)),
 newFunction(FileExists(DEBUG_NEWFUNC_FILE))
 {
-    String a = "0100";
+    //String a = "0100";
     //a[1];
+
     connectCA210ByThread = true;
 
 
@@ -135,7 +136,6 @@ void __fastcall TMainForm::FormCreate(TObject * Sender)
     using namespace cms::lcd;
     using namespace gui::util;
 
-    using namespace cms::util;
     int_array version = Util::fetchVersionInfo();
     string build =
 	" v" + _toString(version[0]) + "." + _toString(version[1]) + "(build:" +
@@ -148,6 +148,8 @@ void __fastcall TMainForm::FormCreate(TObject * Sender)
     initTCONFile();
     readTCONSections();
     readSetup();
+
+
 
 }
 
@@ -171,30 +173,27 @@ void TMainForm::readTCONSetup(String filename, String section)
     //=========================================================================
     bptr_ < TIniFile > ini(new TIniFile(filename));
     this->ComboBox_AddressingSize->ItemIndex = ini->ReadInteger(section, "AddressingSize", 5);
-    bool gammaTestFunc = ini->ReadBool(section, "GammaTestFunc", false);
+    bool directGammaFunc = ini->ReadBool(section, "DirectGammaFunc", false);
 
-    if (gammaTestFunc) {
-	GroupBox_GammaTestAddress->Visible = true;
+    if (directGammaFunc) {
+	GroupBox_DirectGamma->Visible = true;
 	this->Edit_GammaTestEnableAddress->Text =
 	    ini->ReadString(section, "GammaTestEnableAddress", "29");
 	this->Edit_GammaTestEnableBit->Text = ini->ReadInteger(section, "GammaTestEnableBit", -1);
-	this->Edit_GammaTestAddress->Text = ini->ReadString(section, "GammaTestAddress", "?");
-	String gammaTestType = ini->ReadString(section, "GammaTestType", "N/A");
-	if (gammaTestType == "12401Type") {
-	    ComboBox_GammaTestType->ItemIndex = 0;
-	} else if (gammaTestType == "12403Type") {
-	    ComboBox_GammaTestType->ItemIndex = 1;
-	} else if (gammaTestType == "62301Type") {
-	    ComboBox_GammaTestType->ItemIndex = 2;
-	} else if (gammaTestType == "1H501Type") {
-	    ComboBox_GammaTestType->ItemIndex = 3;
-	} else if (gammaTestType == "N/A") {
-	    int index = ini->ReadBool(section, "IndepRGB", true) ? 0 : 1;
-	    ComboBox_GammaTestType->ItemIndex = index;
+	this->Edit_DirectGammaAddress->Text = ini->ReadString(section, "DirectGammaAddress", "?");
+	String directGammaType = ini->ReadString(section, "DirectGammaType", "N/A");
+	if (directGammaType == "12401Type") {
+	    ComboBox_DirectGammaType->ItemIndex = 0;
+	} else if (directGammaType == "12403Type") {
+	    ComboBox_DirectGammaType->ItemIndex = 1;
+	} else if (directGammaType == "62301Type") {
+	    ComboBox_DirectGammaType->ItemIndex = 2;
+	} else if (directGammaType == "1H501Type") {
+	    ComboBox_DirectGammaType->ItemIndex = 3;
+	} else if (directGammaType == "N/A") {
+	    int index = ini->ReadBool(section, "DirectGammaIndepRGB", true) ? 0 : 1;
+	    ComboBox_DirectGammaType->ItemIndex = index;
 	}
-	//ComboBox_GammaTestTypeChange(this);
-	//ini->WriteString("12407", "GammaTestType", "12403Type");
-	//ComboBox_GammaTestTypeChange(this);
 
 	bool hideFunc = ini->ReadBool(section, "HideFunc", false);
 	if (hideFunc) {
@@ -208,7 +207,7 @@ void TMainForm::readTCONSetup(String filename, String section)
 	CheckBox_HideEN->Checked = hideFunc;
 	GroupBox_HideEN->Visible = hideFunc;
     }
-    CheckBox_GammaTest->Checked = gammaTestFunc;
+    CheckBox_DirectGamma->Checked = directGammaFunc;
 
     this->Edit_FRCEnableAddress->Text = ini->ReadString(section, "FRCEnableAddress", "??");
     this->Edit_FRCEnableBit->Text = ini->ReadInteger(section, "FRCEnableBit", -1);
@@ -270,17 +269,17 @@ void TMainForm::writeTCONCustomSetup()
 	ini->WriteString(CUSTOM, "DigitalGammaLUTAddress", this->Edit_DGLUTAddress->Text);
 	ini->WriteInteger(CUSTOM, "DigitalGammaLUTType", ComboBox_DGLUTType->Text.ToInt());
 
-	bool gammaTest = CheckBox_GammaTest->Checked;
+	bool directGamma = CheckBox_DirectGamma->Checked;
 	//CheckBox_GammaTest->Checked = gammaTest;
 	//bool gammaTest = true;
-	ini->WriteBool(CUSTOM, "GammaTestFunc", gammaTest);
-	if (gammaTest) {
+	ini->WriteBool(CUSTOM, "DirectGammaFunc", directGamma);
+	if (directGamma) {
 	    ini->WriteString(CUSTOM, "GammaTestEnableAddress",
 			     this->Edit_GammaTestEnableAddress->Text);
 	    ini->WriteInteger(CUSTOM, "GammaTestEnableBit",
 			      this->Edit_GammaTestEnableBit->Text.ToInt());
-	    ini->WriteString(CUSTOM, "GammaTestAddress", this->Edit_GammaTestAddress->Text);
-	    ini->WriteString(CUSTOM, "GammaTestType", this->ComboBox_GammaTestType->Text);
+	    ini->WriteString(CUSTOM, "DirectGammaAddress", this->Edit_DirectGammaAddress->Text);
+	    ini->WriteString(CUSTOM, "DirectGammaType", this->ComboBox_DirectGammaType->Text);
 
 	    bool hideEN = CheckBox_HideEN->Checked;
 	    ini->WriteBool(CUSTOM, "HideFunc", hideEN);
@@ -464,6 +463,7 @@ void TMainForm::setAnalyzerToSourceChannel()
 	}
 	//撈出channel no和id
 	int channel = this->Edit_SourceCH->Text.ToInt();
+	//this->Edit_SourceCH->Text + this->Edit_SourceCH->Text;
 	string_ptr id(new string(" "));
 	//設定在ca210
 	ca210Analyzer->setChannel(channel, id);
@@ -708,7 +708,7 @@ void __fastcall TMainForm::RadioButton_TCONClick(TObject * Sender)
     this->Panel_TCON->Visible = true;
     ComboBox_TCONTypeChange(this);
     ShowMessage
-	("Please Turn On DG and FRC for Measurement when T-CON Input Source is selected!!!\n(當選擇T-CON Input時, 請打開DG以及FRC!!)");
+	("Please Turn On DG and FRC for Measurement when \"Direct Gamma\" is selected!!!\n(當選擇Direct Gamma時, 請打開DG以及FRC!!)");
     PageControl1->ActivePageIndex = 1;
 }
 
@@ -791,17 +791,18 @@ void __fastcall TMainForm::Button_ConnectClick(TObject * Sender)
 	//=====================================================================
 	// gamma test
 	//=====================================================================
-	bool gammaTest = CheckBox_GammaTest->Checked;
-	if (gammaTest) {
+	bool directGamma = CheckBox_DirectGamma->Checked;
+	if (directGamma) {
 	    int gammaTestAddress = StrToInt("0x" + this->Edit_GammaTestEnableAddress->Text);
 	    int gammaTestBit = this->Edit_GammaTestEnableBit->Text.ToInt();
-	    int testRGBAddress = StrToInt("0x" + this->Edit_GammaTestAddress->Text);
-	    int index = this->ComboBox_GammaTestType->ItemIndex;
-	    const TestRGBBit & testRGBBit =
-		(0 == index) ? TestRGBBit::IndependentInstance :
-		(1 == index) ? TestRGBBit::DependentInstance :
-		(2 == index) ? TestRGBBit::TCON62301Instance :
-		(3 == index) ? TestRGBBit::TCON1H501Instance : TestRGBBit::NotAssignInstance;
+	    int directGammaRGBAddress = StrToInt("0x" + this->Edit_DirectGammaAddress->Text);
+	    int index = this->ComboBox_DirectGammaType->ItemIndex;
+	    const DirectGammaType & directGammaType =
+		(0 == index) ? DirectGammaType::IndependentInstance :
+		(1 == index) ? DirectGammaType::DependentInstance :
+		(2 == index) ? DirectGammaType::TCON62301Instance :
+		(3 ==
+		 index) ? DirectGammaType::TCON1H501Instance : DirectGammaType::NotAssignInstance;
 
 
 	    //hide en
@@ -815,16 +816,17 @@ void __fastcall TMainForm::Button_ConnectClick(TObject * Sender)
 		    (new
 		     TCONParameter(dgLUTType == 10 ? MaxValue::Int10Bit : MaxValue::Int12Bit,
 				   dgLUTAddress, dgEnableAddress, dgEnableBit, gammaTestAddress,
-				   gammaTestBit, testRGBAddress, testRGBBit, frcEnableAddress,
-				   frcEnableBit, hideEnableAddress, hideEnableBit));
+				   gammaTestBit, directGammaRGBAddress, directGammaType,
+				   frcEnableAddress, frcEnableBit, hideEnableAddress,
+				   hideEnableBit));
 	    } else {
 		parameter =
 		    bptr < TCONParameter >
 		    (new
 		     TCONParameter(dgLUTType == 10 ? MaxValue::Int10Bit : MaxValue::Int12Bit,
 				   dgLUTAddress, dgEnableAddress, dgEnableBit, gammaTestAddress,
-				   gammaTestBit, testRGBAddress, testRGBBit, frcEnableAddress,
-				   frcEnableBit));
+				   gammaTestBit, directGammaRGBAddress, directGammaType,
+				   frcEnableAddress, frcEnableBit));
 	    }
 
 
@@ -1037,7 +1039,7 @@ void __fastcall TMainForm::RadioButton_Out8Click(TObject * Sender)
 void __fastcall TMainForm::RadioButton_Out10Click(TObject * Sender)
 {
     if (!bitDepth->isTCONInput() && this->Visible) {
-	ShowMessage("Recommend using T-CON Input.");
+	ShowMessage("Recommend using Direct Gamma.");
     }
     bitDepth->setOutBit(10);
     setFRCAbility();
@@ -1083,10 +1085,6 @@ void __fastcall TMainForm::Button_I2CTestClick(TObject * Sender)
 	I2CTestForm->Height = 300;
 	I2CTestForm->Width = 230;
     }
-    //I2CTestForm->Edit_GammaTestAddress->Text = this->Edit_GammaTestEnableAddress->Text;
-    //I2CTestForm->Edit_GammaTestBit->Text = this->Edit_GammaTestEnableBit->Text;
-    //I2CTestForm->Edit_TestRGBAdress->Text = this->Edit_GammaTestAddress->Text;
-    //I2CTestForm->ComboBox_AddressingSize->ItemIndex = this->ComboBox_AddressingSize->ItemIndex;
     I2CTestForm->RadioButton_LPTLarge->Checked = this->RadioButton_LPTLarge->Checked;
     I2CTestForm->RadioButton_LPTSmall->Checked = this->RadioButton_LPTSmall->Checked;
     I2CTestForm->RadioButton_USB->Checked = this->RadioButton_USB->Checked;
@@ -1213,13 +1211,13 @@ void __fastcall TMainForm::ComboBox_TCONTypeChange(TObject * Sender)
     using namespace cms::util;
     String section = this->ComboBox_TCONType->Text;
     if (section != null && section.Length() != 0 && section != "Custom") {
-	CheckBox_GammaTest->Visible = false;
+	CheckBox_DirectGamma->Visible = false;
 	if (Util::isFileExist(tconFilename.c_str())) {
 	    readTCONSetup(tconFilename, section);
 
 	    GroupBox_DigitalGamma->Enabled = false;
 	    //GroupBox_DigitalGamma->Visible = false;
-	    GroupBox_GammaTestAddress->Enabled = false;
+	    GroupBox_DirectGamma->Enabled = false;
 
 	}
     } else {
@@ -1230,11 +1228,11 @@ void __fastcall TMainForm::ComboBox_TCONTypeChange(TObject * Sender)
 
 
 	readTCONSetup(ExtractFilePath(Application->ExeName) + SETUPFILE, "Custom");
-	CheckBox_GammaTest->Visible = true;
-	CheckBox_GammaTestClick(null);
+	CheckBox_DirectGamma->Visible = true;
+	CheckBox_DirectGammaClick(null);
 	GroupBox_DigitalGamma->Enabled = true;
 	//GroupBox_DigitalGamma->Visible = true;
-	GroupBox_GammaTestAddress->Enabled = true;
+	GroupBox_DirectGamma->Enabled = true;
 	CheckBox_HideEN->Visible = true;
 	//CheckBox_HideEN->Enabled = true;
 
@@ -1243,10 +1241,10 @@ void __fastcall TMainForm::ComboBox_TCONTypeChange(TObject * Sender)
 
 //---------------------------------------------------------------------------
 
-void __fastcall TMainForm::CheckBox_GammaTestClick(TObject * Sender)
+void __fastcall TMainForm::CheckBox_DirectGammaClick(TObject * Sender)
 {
-    bool gammaTest = this->CheckBox_GammaTest->Checked;
-    GroupBox_GammaTestAddress->Visible = gammaTest;
+    bool directGamma = this->CheckBox_DirectGamma->Checked;
+    GroupBox_DirectGamma->Visible = directGamma;
 }
 
 //---------------------------------------------------------------------------
@@ -1397,44 +1395,6 @@ void TMainForm::setAllFunctionOn(bool on)
     MainForm->GammaAdj1->Enabled = on;
     MainForm->Measurement1->Enabled = on;
 };
-void __fastcall TMainForm::FormActivate(TObject * Sender)
-{
-    if (true == linkCA210) {
-	if (connectCA210ByThread) {
-
-	    class CA210Thread:public TThread {
-	      protected:
-		void __fastcall Execute() {
-		    MainForm->setAllFunctionOn(false);
-		    MainForm->StatusBar1->Panels->Items[1]->Text = "CA-210 Connecting...";
-		    MainForm->initCA210Meter();
-		};
-	      public:
-	      __fastcall CA210Thread(bool CreateSuspended):TThread(CreateSuspended) {
-		};
-	    };
-
-
-	    showProgress(ProgressBar1);
-	    //memory leakage...but..懶的鳥他, 反正程式關閉的時候,heap就一併清掉
-	    ca210Thread = new CA210Thread(false);
-	    //改用thread去啟動ca-210, 這樣可以正常更新progress bar!
-	    ca210Thread->Resume();
-	} else {
-	    initCA210Meter();
-	}
-    } else {
-	if (FileExists(METER_FILE)) {
-	    setDummyMeterFilename(METER_FILE);
-	}
-	//this->Caption = this->Caption + " (debug mode)";
-	//this->StatusBar1->SimpleText = "Debug mode";
-	MainForm->StatusBar1->Panels->Items[1]->Text = "Debug mode";
-	this->GroupBox_CHSetting->Visible = false;
-    }
-}
-
-//---------------------------------------------------------------------------
 
 
 void __fastcall TMainForm::TabSheet2Exit(TObject * Sender)
@@ -1450,6 +1410,7 @@ void __fastcall TMainForm::TabSheet2Exit(TObject * Sender)
 void __fastcall TMainForm::Edit_AverageTimesChange(TObject * Sender)
 {
     mm->AverageTimes = this->Edit_AverageTimes->Text.ToInt();
+    //Edit_Interval->Text = Edit_Interval->Text + Edit_Interval->Text;
 }
 
 //---------------------------------------------------------------------------
@@ -1561,7 +1522,7 @@ void TMainForm::initTCONFile()
 	ini->WriteString("11303", "DigitalGammaLUTAddress", "302");
 	ini->WriteInteger("11303", "DigitalGammaLUTType", 10);
 
-	ini->WriteBool("11303", "GammaTestFunc", false);
+	ini->WriteBool("11303", "DirectGammaFunc", false);
 
 	ini->WriteInteger("11303", "in", 8);
 	ini->WriteInteger("11303", "out", 8);
@@ -1578,12 +1539,12 @@ void TMainForm::initTCONFile()
 	ini->WriteString("11306", "DigitalGammaLUTAddress", "3C0");
 	ini->WriteInteger("11306", "DigitalGammaLUTType", 10);
 
-	ini->WriteBool("11306", "GammaTestFunc", true);
+	ini->WriteBool("11306", "DirectGammaFunc", true);
 	ini->WriteString("11306", "GammaTestEnableAddress", "381");
 	ini->WriteInteger("11306", "GammaTestEnableBit", 1);
-	ini->WriteString("11306", "GammaTestAddress", "387");
-	ini->WriteBool("11306", "IndepRGB", true);
-	ini->WriteString("11306", "GammaTestType", "12401Type");
+	ini->WriteString("11306", "DirectGammaAddress", "387");
+	ini->WriteBool("11306", "DirectGammaIndepRGB", true);
+	ini->WriteString("11306", "DirectGammaType", "12401Type");
 	//ini->WriteString("11306", "GammaTestBit", "12");
 
 	ini->WriteInteger("11306", "in", 6);
@@ -1601,12 +1562,12 @@ void TMainForm::initTCONFile()
 	ini->WriteString("11307", "DigitalGammaLUTAddress", "310");
 	ini->WriteInteger("11307", "DigitalGammaLUTType", 10);
 
-	ini->WriteBool("11307", "GammaTestFunc", true);
+	ini->WriteBool("11307", "DirectGammaFunc", true);
 	ini->WriteString("11307", "GammaTestEnableAddress", "2F1");
 	ini->WriteInteger("11307", "GammaTestEnableBit", 1);
-	ini->WriteString("11307", "GammaTestAddress", "2F3");
-	ini->WriteBool("11307", "IndepRGB", true);
-	ini->WriteString("11307", "GammaTestType", "12401Type");
+	ini->WriteString("11307", "DirectGammaAddress", "2F3");
+	ini->WriteBool("11307", "DirectGammaIndepRGB", true);
+	ini->WriteString("11307", "DirectGammaType", "12401Type");
 	//ini->WriteString("11307", "GammaTestBit", "12");
 
 	ini->WriteInteger("11307", "in", 6);
@@ -1624,12 +1585,12 @@ void TMainForm::initTCONFile()
 	ini->WriteString("12306", "DigitalGammaLUTAddress", "302");
 	ini->WriteInteger("12306", "DigitalGammaLUTType", 12);
 
-	ini->WriteBool("12306", "GammaTestFunc", true);
+	ini->WriteBool("12306", "DirectGammaFunc", true);
 	ini->WriteString("12306", "GammaTestEnableAddress", "29");
 	ini->WriteInteger("12306", "GammaTestEnableBit", 0);
-	ini->WriteString("12306", "GammaTestAddress", "154");
-	ini->WriteBool("12306", "IndepRGB", true);
-	ini->WriteString("12306", "GammaTestType", "12401Type");
+	ini->WriteString("12306", "DirectGammaAddress", "154");
+	ini->WriteBool("12306", "DirectGammaIndepRGB", true);
+	ini->WriteString("12306", "DirectGammaType", "12401Type");
 	//ini->WriteString("12306", "GammaTestBit", "12");
 
 	ini->WriteInteger("12306", "in", 8);
@@ -1647,12 +1608,12 @@ void TMainForm::initTCONFile()
 	ini->WriteString("12309", "DigitalGammaLUTAddress", "800");
 	ini->WriteInteger("12309", "DigitalGammaLUTType", 12);
 
-	ini->WriteBool("12309", "GammaTestFunc", true);
+	ini->WriteBool("12309", "DirectGammaFunc", true);
 	ini->WriteString("12309", "GammaTestEnableAddress", "76");
 	ini->WriteInteger("12309", "GammaTestEnableBit", 5);
-	ini->WriteString("12309", "GammaTestAddress", "107");
-	ini->WriteBool("12309", "IndepRGB", true);
-	ini->WriteString("12309", "GammaTestType", "12401Type");
+	ini->WriteString("12309", "DirectGammaAddress", "107");
+	ini->WriteBool("12309", "DirectGammaIndepRGB", true);
+	ini->WriteString("12309", "DirectGammaType", "12401Type");
 	//ini->WriteString("12309", "GammaTestBit", "12");
 
 	ini->WriteInteger("12309", "in", 8);
@@ -1670,12 +1631,12 @@ void TMainForm::initTCONFile()
 	ini->WriteString("12401", "DigitalGammaLUTAddress", "752");
 	ini->WriteInteger("12401", "DigitalGammaLUTType", 12);
 
-	ini->WriteBool("12401", "GammaTestFunc", true);
+	ini->WriteBool("12401", "DirectGammaFunc", true);
 	ini->WriteString("12401", "GammaTestEnableAddress", "4A1");
 	ini->WriteInteger("12401", "GammaTestEnableBit", 1);
-	ini->WriteString("12401", "GammaTestAddress", "4A7");
-	ini->WriteBool("12401", "IndepRGB", true);
-	ini->WriteString("12401", "GammaTestType", "12401Type");
+	ini->WriteString("12401", "DirectGammaAddress", "4A7");
+	ini->WriteBool("12401", "DirectGammaIndepRGB", true);
+	ini->WriteString("12401", "DirectGammaType", "12401Type");
 	//ini->WriteString("12401", "GammaTestBit", "12");
 
 	ini->WriteInteger("12401", "in", 8);
@@ -1693,12 +1654,12 @@ void TMainForm::initTCONFile()
 	ini->WriteString("12403", "DigitalGammaLUTAddress", "B60");
 	ini->WriteInteger("12403", "DigitalGammaLUTType", 12);
 
-	ini->WriteBool("12403", "GammaTestFunc", true);
+	ini->WriteBool("12403", "DirectGammaFunc", true);
 	ini->WriteString("12403", "GammaTestEnableAddress", "FF9");
 	ini->WriteInteger("12403", "GammaTestEnableBit", 4);
-	ini->WriteString("12403", "GammaTestAddress", "FFA");
-	ini->WriteBool("12403", "IndepRGB", false);
-	ini->WriteString("12403", "GammaTestType", "12403Type");
+	ini->WriteString("12403", "DirectGammaAddress", "FFA");
+	ini->WriteBool("12403", "DirectGammaIndepRGB", false);
+	ini->WriteString("12403", "DirectGammaType", "12403Type");
 	//ini->WriteString("12403", "GammaTestBit", "12");
 
 	ini->WriteInteger("12403", "in", 8);
@@ -1716,12 +1677,12 @@ void TMainForm::initTCONFile()
 	ini->WriteString("12405", "DigitalGammaLUTAddress", "106D");
 	ini->WriteInteger("12405", "DigitalGammaLUTType", 12);
 
-	ini->WriteBool("12405", "GammaTestFunc", true);
+	ini->WriteBool("12405", "DirectGammaFunc", true);
 	ini->WriteString("12405", "GammaTestEnableAddress", "1FEB");
 	ini->WriteInteger("12405", "GammaTestEnableBit", 4);
-	ini->WriteString("12405", "GammaTestAddress", "1FEC");
-	ini->WriteBool("12405", "IndepRGB", false);
-	ini->WriteString("12405", "GammaTestType", "12403Type");
+	ini->WriteString("12405", "DirectGammaAddress", "1FEC");
+	ini->WriteBool("12405", "DirectGammaIndepRGB", false);
+	ini->WriteString("12405", "DirectGammaType", "12403Type");
 	//ini->WriteString("12405", "GammaTestBit", "12");
 
 	ini->WriteInteger("12405", "in", 8);
@@ -1739,12 +1700,12 @@ void TMainForm::initTCONFile()
 	ini->WriteString("12407", "DigitalGammaLUTAddress", "110D");
 	ini->WriteInteger("12407", "DigitalGammaLUTType", 12);
 
-	ini->WriteBool("12407", "GammaTestFunc", true);
+	ini->WriteBool("12407", "DirectGammaFunc", true);
 	ini->WriteString("12407", "GammaTestEnableAddress", "3FEB");
 	ini->WriteInteger("12407", "GammaTestEnableBit", 4);
-	ini->WriteString("12407", "GammaTestAddress", "3FEC");
-	ini->WriteBool("12407", "IndepRGB", false);
-	ini->WriteString("12407", "GammaTestType", "12403Type");
+	ini->WriteString("12407", "DirectGammaAddress", "3FEC");
+	ini->WriteBool("12407", "DirectGammaIndepRGB", false);
+	ini->WriteString("12407", "DirectGammaType", "12403Type");
 	//ini->WriteString("12407", "GammaTestBit", "12");
 
 	ini->WriteInteger("12407", "in", 8);
@@ -1762,11 +1723,11 @@ void TMainForm::initTCONFile()
 	ini->WriteString("62301", "DigitalGammaLUTAddress", "400");
 	ini->WriteInteger("62301", "DigitalGammaLUTType", 10);
 
-	ini->WriteBool("62301", "GammaTestFunc", true);
+	ini->WriteBool("62301", "DirectGammaFunc", true);
 	ini->WriteString("62301", "GammaTestEnableAddress", "307");
 	ini->WriteInteger("62301", "GammaTestEnableBit", 6);
-	ini->WriteString("62301", "GammaTestAddress", "307");
-	ini->WriteString("62301", "GammaTestType", "62301Type");
+	ini->WriteString("62301", "DirectGammaAddress", "307");
+	ini->WriteString("62301", "DirectGammaType", "62301Type");
 	//ini->WriteString("62301", "GammaTestBit", "10");
 
 	ini->WriteInteger("62301", "in", 8);
@@ -1784,11 +1745,11 @@ void TMainForm::initTCONFile()
 	ini->WriteString("1H501", "DigitalGammaLUTAddress", "BE0");
 	ini->WriteInteger("1H501", "DigitalGammaLUTType", 10);
 
-	ini->WriteBool("1H501", "GammaTestFunc", true);
+	ini->WriteBool("1H501", "DirectGammaFunc", true);
 	ini->WriteString("1H501", "GammaTestEnableAddress", "B");
 	ini->WriteInteger("1H501", "GammaTestEnableBit", 0);
-	ini->WriteString("1H501", "GammaTestAddress", "5");
-	ini->WriteString("1H501", "GammaTestType", "1H501Type");
+	ini->WriteString("1H501", "DirectGammaAddress", "5");
+	ini->WriteString("1H501", "DirectGammaType", "1H501Type");
 	ini->WriteBool("1H501", "HideFunc", true);
 	ini->WriteString("1H501", "HideEnableAddress", "2");
 	ini->WriteInteger("1H501", "HideEnableBit", 6);
@@ -1805,5 +1766,157 @@ void __fastcall TMainForm::CheckBox_HideENClick(TObject * Sender)
     GroupBox_HideEN->Visible = hide;
 }
 
+//---------------------------------------------------------------------------
+
+void __fastcall TMainForm::Button_PatternTestClick(TObject * Sender)
+{
+    MeasureWindow->Visible = true;
+}
+
+//---------------------------------------------------------------------------
+
+void __fastcall TMainForm::RadioButton_NinthMouseMove(TObject * Sender,
+						      TShiftState Shift, int X, int Y)
+{
+    TRadioButton *button = dynamic_cast < TRadioButton * >(Sender);
+    if (RadioButton_Ninth == button) {
+	MeasureWindow->setTestPattern(Ninth);
+    }
+    if (null != button) {
+	/*TPoint point = button->ClientToScreen(TPoint(X, Y));
+	MeasureWindow->Left = point.x + 50;
+	MeasureWindow->Top = point.y;
+	MeasureWindow->Width = 100;
+	MeasureWindow->Height = 100;
+	MeasureWindow->WindowState = wsNormal;
+	MeasureWindow->Visible = true;*/
+    }
+}
+
+//---------------------------------------------------------------------------
+
+
+
+void __fastcall TMainForm::GroupBox4MouseMove(TObject * Sender, TShiftState Shift, int X, int Y)
+{
+    MeasureWindow->Visible = false;
+    MeasureWindow->WindowState = wsMaximized;
+}
+
+//---------------------------------------------------------------------------
+
+
+void __fastcall TMainForm::TabSheet1MouseMove(TObject * Sender, TShiftState Shift, int X, int Y)
+{
+    MeasureWindow->Visible = false;
+    MeasureWindow->WindowState = wsMaximized;
+}
+
+//---------------------------------------------------------------------------
+
+void __fastcall TMainForm::RadioButton_IndepMouseMove(TObject * Sender,
+						      TShiftState Shift, int X, int Y)
+{
+    MeasureWindow->setTestPattern(Indepedent);
+    RadioButton_NinthMouseMove(Sender, Shift, X, Y);
+}
+
+//---------------------------------------------------------------------------
+
+void __fastcall TMainForm::RadioButton_HSDMouseMove(TObject * Sender,
+						    TShiftState Shift, int X, int Y)
+{
+    MeasureWindow->setTestPattern(HSD);
+    RadioButton_NinthMouseMove(Sender, Shift, X, Y);
+}
+
+//---------------------------------------------------------------------------
+
+void __fastcall TMainForm::RadioButton_FlickrPixelMouseMove(TObject * Sender, TShiftState Shift,
+							    int X, int Y)
+{
+    MeasureWindow->setTestPattern(FlickrPixel);
+    RadioButton_NinthMouseMove(Sender, Shift, X, Y);
+}
+
+//---------------------------------------------------------------------------
+
+void __fastcall TMainForm::RadioButton_FlickrSubPixelMouseMove(TObject * Sender, TShiftState Shift,
+							       int X, int Y)
+{
+    MeasureWindow->setTestPattern(FlickrSubPixel);
+    RadioButton_NinthMouseMove(Sender, Shift, X, Y);
+}
+
+//---------------------------------------------------------------------------
+
+void __fastcall TMainForm::RadioButton_HStripeMouseMove(TObject * Sender,
+							TShiftState Shift, int X, int Y)
+{
+    MeasureWindow->setTestPattern(HStripe);
+    RadioButton_NinthMouseMove(Sender, Shift, X, Y);
+}
+
+//---------------------------------------------------------------------------
+
+void __fastcall TMainForm::RadioButton_HStripe2MouseMove(TObject * Sender,
+							 TShiftState Shift, int X, int Y)
+{
+    MeasureWindow->setTestPattern(HStripe2);
+    RadioButton_NinthMouseMove(Sender, Shift, X, Y);
+}
+
+//---------------------------------------------------------------------------
+
+void __fastcall TMainForm::RadioButton_NormalMouseMove(TObject * Sender,
+						       TShiftState Shift, int X, int Y)
+{
+    MeasureWindow->Visible = false;
+}
+
+//---------------------------------------------------------------------------
+
+void __fastcall TMainForm::FormActivate(TObject *Sender)
+{
+    //original from form active
+
+    if (debugMode) {
+	ShowMessage("It's in Debug Mode, stop connecting to CA-X10");
+	Button_PatternTest->Visible = true;
+    } else {
+
+    }
+    if (true == linkCA210) {
+	if (connectCA210ByThread) {
+
+	    class CA210Thread:public TThread {
+	      protected:
+		void __fastcall Execute() {
+		    MainForm->setAllFunctionOn(false);
+		    MainForm->StatusBar1->Panels->Items[1]->Text = "CA-210 Connecting...";
+		    MainForm->initCA210Meter();
+		};
+	      public:
+	      __fastcall CA210Thread(bool CreateSuspended):TThread(CreateSuspended) {
+		};
+	    };
+
+
+	    showProgress(ProgressBar1);
+	    //memory leakage...but..懶的鳥他, 反正程式關閉的時候,heap就一併清掉
+	    ca210Thread = new CA210Thread(false);
+	    //改用thread去啟動ca-210, 這樣可以正常更新progress bar!
+	    ca210Thread->Resume();
+	} else {
+	    initCA210Meter();
+	}
+    } else {
+	if (FileExists(METER_FILE)) {
+	    setDummyMeterFilename(METER_FILE);
+	}
+	MainForm->StatusBar1->Panels->Items[1]->Text = "Debug mode";
+	this->GroupBox_CHSetting->Visible = false;
+    }        
+}
 //---------------------------------------------------------------------------
 

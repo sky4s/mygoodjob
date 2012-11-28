@@ -292,12 +292,36 @@ namespace cms {
 		//this->autoIntensity = true;
 	    };
 
+	    boolean LCDCalibrator::
+		checkComponentVectorLuminance(Component_vector_ptr componentVector) {
+		Component_ptr c0 = (*componentVector)[0];
+		Component_ptr c1 = (*componentVector)[1];
+		double Y0 = c0->XYZ->Y;
+		double Y1 = c1->XYZ->Y;
+		bool increaseBase = Y1 > Y0;
+		double lastY = -1;
+		foreach(Component_ptr c, *componentVector) {
+		    double Y = c->XYZ->Y;
+		    if (-1 != lastY) {
+			bool increase = Y > lastY;
+			if (increase != increaseBase) {
+			    componentVectorLuminanceCheckResult = false;
+			    return false;
+			}
+		    }
+		    lastY = Y;
+		}
+		componentVectorLuminanceCheckResult = true;
+		return true;
+	    };
+
 	    Component_vector_ptr LCDCalibrator::fetchComponentVector(bptr < MeasureCondition >
 								     measureCondition) {
 		Component_vector_ptr componentVector = fetcher->fetchComponent(measureCondition);
 		RGB_vector_ptr rgbMeasureCode = measureCondition->getRGBMeasureCode();
-
-		if (componentVector == null || rgbMeasureCode->size() != componentVector->size()) {
+		bool checkResult = checkComponentVectorLuminance(componentVector);
+		if (componentVector == null || rgbMeasureCode->size() != componentVector->size()
+		    || false == checkResult) {
 		    return Component_vector_ptr((Component_vector *)
 						null);
 		}
@@ -357,7 +381,7 @@ namespace cms {
 
 		return result;
 	    };
-	    bptr < cms::measure::IntensityAnalyzerIF > LCDCalibrator::getFirstAnalzyer() const{
+	    bptr < cms::measure::IntensityAnalyzerIF > LCDCalibrator::getFirstAnalzyer()const {
 		bptr < IntensityAnalyzerIF > firstAnalyzer = fetcher->FirstAnalyzer;
 		return firstAnalyzer;
 	    };
@@ -509,7 +533,7 @@ namespace cms {
 	    };
 
 	    bptr < PanelRegulator > LCDCalibrator::getPanelRegulatorForTargetWhite() {
-            throw java::lang::UnsupportedOperationException();
+		throw java::lang::UnsupportedOperationException();
 	    };
 
 	    /*

@@ -47,104 +47,14 @@ __fastcall TI2CTestForm::TI2CTestForm(TComponent * Owner)
 
 void TI2CTestForm::setOptionsEditable(bool editable)
 {
-    //this->CheckBox_Connecting->Checked = !editable;
-    //this->CheckBox_Connecting->Enabled = !editable;
-    //this->Edit_GammaTestAddress->Enabled = editable;
-    //this->Edit_GammaTestBit->Enabled = editable;
-    //this->Edit_TestRGBAdress->Enabled = editable;
-    //this->ComboBox_AddressingSize->Enabled = editable;
-    //this->CheckBox_IndepRGB->Enabled = editable;
+
 };
 
 void __fastcall TI2CTestForm::Button1Click(TObject * Sender)
 {
     MainForm->Button_ConnectClick(Sender);
     control = MainForm->getTCONControl();
-    /*using namespace i2c;
-       using namespace Dep;
-       bptr < i2cControl > i2c1st;
-       bptr < i2cControl > i2c2nd;
-       unsigned char first, second;
-       bool dual = false;
 
-       if (this->RadioButton_Single->Checked) {
-       first = StrToInt("0x" + this->Edit_Single->Text);
-       } else {
-       first = StrToInt("0x" + this->Edit_Master->Text);
-       second = StrToInt("0x" + this->Edit_Slave->Text);
-       dual = true;
-       }
-       AddressingSize addressingSize = getAddressingSize();
-
-       if (this->RadioButton_USB->Checked) {
-
-       i2c1st = i2cControl::getUSBInstance(first, addressingSize, _3_3V, _400KHz);
-       if (dual) {
-       i2c2nd = i2cControl::getUSBInstance(second, addressingSize, _3_3V, _400KHz);
-       };
-       } else {
-
-       const LPTCard card = this->RadioButton_LPTLarge->Checked ? Large : Small;
-
-       i2c1st = i2cControl::getLPTInstance(first, addressingSize, card);
-       if (dual) {
-       i2c2nd = i2cControl::getLPTInstance(second, addressingSize, card);
-       };
-       };
-       try {
-       bool connect = i2c1st->connect();
-       if (dual) {
-       i2c2nd->connect();
-       }
-       if (true == connect) {
-       setOptionsEditable(false);
-
-       int dgEnableAddress = StrToInt("0x" + MainForm->Edit_DGEnableAddress->Text);
-       int dgEnableBit = MainForm->Edit_DGEnableBit->Text.ToInt();
-       int dgLUTAddress = StrToInt("0x" + MainForm->Edit_DGLUTAddress->Text);
-       int dgLUTType = MainForm->ComboBox_DGLUTType->Text.ToInt();
-
-       int gammaTestAddress = StrToInt("0x" + this->Edit_GammaTestAddress->Text);
-       int gammaTestBit = StrToInt(this->Edit_GammaTestBit->Text);
-       int testRGBAddress = StrToInt("0x" + this->Edit_TestRGBAdress->Text);
-       bool indepRGB = CheckBox_IndepRGB->Checked;
-       const TestRGBBit & testRGBBit =
-       indepRGB ? TestRGBBit::IndependentInstance : TestRGBBit::DependentInstance;
-
-
-       parameter =
-       bptr < TCONParameter >
-       (new
-       TCONParameter(dgLUTType == 10 ? MaxValue::Int10Bit : MaxValue::Int12Bit,
-       dgLUTAddress, dgEnableAddress, dgEnableBit, gammaTestAddress,
-       gammaTestBit, testRGBAddress, testRGBBit));
-
-
-       if (!dual) {
-       control = bptr < TCONControl > (new TCONControl(parameter, i2c1st));
-       } else {
-       control = bptr < TCONControl > (new TCONControl(parameter, i2c1st, i2c2nd));
-       }
-       }
-
-
-       }
-       catch(java::lang::RuntimeException & ex) {
-       ShowMessage("I2C link error!");
-       } */
-}
-
-//---------------------------------------------------------------------------
-void __fastcall TI2CTestForm::CheckBox_ConnectingClick(TObject * Sender)
-{
-    //if (false == this->CheckBox_Connecting->Checked) {
-	//setOptionsEditable(true);
-	/*this->Edit_GammaTestAddress->Enabled = true;
-	   this->Edit_GammaTestBit->Enabled = true;
-	   this->Edit_TestRGBAdress->Enabled = true;
-	   this->CheckBox_IndepRGB->Enabled = true;
-	   this->CheckBox_Connecting->Enabled = false; */
-    //}
 }
 
 //---------------------------------------------------------------------------
@@ -178,7 +88,7 @@ void __fastcall TI2CTestForm::Edit_RChange(TObject * Sender)
 	    rgbValues[1] = g;
 	    rgbValues[2] = b;
 	    RGB_ptr rgb(new RGBColor(RGBColorSpace::unknowRGB, rgbValues, MaxValue::Int12Bit));
-	    bool result = control->setGammaTestRGB(rgb);
+	    bool result = control->setDirectGammaRGB(rgb);
 	    if (false == result) {
 		ShowMessage("Set Gamma Test failed!");
 	    }
@@ -218,18 +128,13 @@ void __fastcall TI2CTestForm::Button_WriteClick(TObject * Sender)
 
 void __fastcall TI2CTestForm::FormDeactivate(TObject * Sender)
 {
-    //MainForm->Edit_GammaTestEnableAddress->Text = this->Edit_GammaTestAddress->Text;
-    //MainForm->Edit_GammaTestEnableBit->Text = this->Edit_GammaTestBit->Text;
-    //MainForm->Edit_GammaTestAddress->Text = this->Edit_TestRGBAdress->Text;
-    //MainForm->ComboBox_AddressingSize->ItemIndex = this->ComboBox_AddressingSize->ItemIndex;
+
     MainForm->RadioButton_LPTLarge->Checked = this->RadioButton_LPTLarge->Checked;
     MainForm->RadioButton_LPTSmall->Checked = this->RadioButton_LPTSmall->Checked;
     MainForm->RadioButton_USB->Checked = this->RadioButton_USB->Checked;
     MainForm->RadioButton_SingleTCON->Checked = this->RadioButton_Single->Checked;
     MainForm->RadioButton_DualTCON->Checked = this->RadioButton_Dual->Checked;
 
-    //MainForm->ComboBox_GammaTestType->ItemIndex = this->CheckBox_IndepRGB->Checked ? 0 : 1;
-    //MainForm->ComboBox_GammaTestTypeChange(this);
 }
 
 //---------------------------------------------------------------------------

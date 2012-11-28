@@ -1,6 +1,6 @@
 object MeasureWindow: TMeasureWindow
-  Left = 164
-  Top = 193
+  Left = 166
+  Top = 194
   BorderStyle = bsNone
   Caption = 'MeasureWindow'
   ClientHeight = 363
@@ -16,6 +16,7 @@ object MeasureWindow: TMeasureWindow
   OldCreateOrder = False
   WindowState = wsMaximized
   OnClose = FormClose
+  OnCreate = FormCreate
   OnKeyPress = FormKeyPress
   OnShow = FormShow
   PixelsPerInch = 96

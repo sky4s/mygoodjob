@@ -48,13 +48,14 @@ class TMeasureWindow:public TForm {
     void __fastcall FormClose(TObject * Sender, TCloseAction & Action);
     void __fastcall FormShow(TObject * Sender);
     void __fastcall Button2Click(TObject * Sender);
+    void __fastcall FormCreate(TObject * Sender);
   private:			// User declarations
      PatternSource source;
     bool lineAdjoin;
      bptr < i2c::TCONControl > tconcontrol;
      std::vector < bptr < gui::event::WindowListener > >listenerVector;
      std::vector < bwptr < gui::event::WindowListener > >listenerVector2;
-    Pattern pattern;
+    Pattern pattern, testPattern;
      bptr < cms::util::DoubleBufferedCanvas > doubleBuffered;
      bptr < cms::util::DoubleBufferedCanvas > getDoubleBufferedCanvas();
      bptr < cms::lcd::BitDepthProcessor > bitDepth;
@@ -72,6 +73,7 @@ class TMeasureWindow:public TForm {
     void setImageFilename(const std::string & filename);
     void setImageOff();
     void setPattern(Pattern pattern);
+    void setTestPattern(Pattern pattern);
     void setLineAdjoin(bool lineAdjoin);
 
 };
