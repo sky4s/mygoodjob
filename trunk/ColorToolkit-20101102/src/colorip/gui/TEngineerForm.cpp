@@ -1416,12 +1416,13 @@ bool TEngineerForm::pg_write()
 	rg_w_cycl_t->ItemIndex = 2;	//no need cycle time
 
     int wait_t = 0;
-    if (rg_w_cycl_t->ItemIndex == 0)
+    if (rg_w_cycl_t->ItemIndex == 0) {
 	wait_t = 6;
-    else if (rg_w_cycl_t->ItemIndex == 1)
+    } else if (rg_w_cycl_t->ItemIndex == 1) {
 	wait_t = 11;
-    else if (rg_w_cycl_t->ItemIndex == 2)
+    } else if (rg_w_cycl_t->ItemIndex == 2) {
 	wait_t = 0;
+    }
 
     int ok = 0;
     for (int i = 0; i < dev_addr_cnt; i++) {
@@ -1433,25 +1434,28 @@ bool TEngineerForm::pg_write()
 	    if (rg_device_addr_sel->ItemIndex == 2) {
 		ok = USB_pg_write(dev_addr[i], data_addr, data_addr_cnt,
 				  data_write, data_len, pck_size, wait_t);
-		if (ok == 0)
+		if (ok == 0) {
 		    ShowMessage(Err_Msg_W);
+		}
 	    } else {
 		// no seperate
 		ok = USB_seq_pg_write(dev_addr[i], data_addr,
 				      data_addr_cnt, data_write, data_len, pck_size, wait_t);
-		if (ok == 0)
+		if (ok == 0) {
 		    ShowMessage(Err_Msg_W);
+		}
 	    }
 	} else {		// Use Printport to transfer
 	    ok = LPT_pg_write(dev_addr[i], data_addr, data_addr_cnt,
 			      data_write, data_len, pck_size, wait_t);
 	    if (ok != 1) {
-		if (ok == -1)
+		if (ok == -1) {
 		    ShowMessage("Device address Send fail!");
-		else if (ok == -2)
+		} else if (ok == -2) {
 		    ShowMessage("Data address Send fail!");
-		else if (ok == 0)
+		} else if (ok == 0) {
 		    ShowMessage("Data Send fail!");
+		}
 		return 0;
 	    }
 	}
@@ -1459,8 +1463,9 @@ bool TEngineerForm::pg_write()
     }
 
     int write_chk = 0;
-    for (int i = 0; i < data_len; i++)
+    for (int i = 0; i < data_len; i++) {
 	write_chk += int (data_write[i]);
+    }
 
     // show read/ write checksum in the bottom of windows
     char string[10];
@@ -1884,13 +1889,15 @@ void __fastcall TEngineerForm::btn_en_ftmClick(TObject * Sender)
     if (rg_device_addr_sel->ItemIndex == 2 || rg_device_addr_sel->ItemIndex == 1) {
 	rg_device_addr_sel->ItemIndex = 0;
 	btn_connect_cardClick(Sender);
-	if (!connect)
+	if (!connect) {
 	    return;
+	}
     }
     if (!connect) {
 	btn_connect_cardClick(Sender);
-	if (!connect)
+	if (!connect) {
 	    return;
+	}
     }
 
     btn_byte_readClick(Sender);

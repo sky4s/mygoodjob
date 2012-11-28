@@ -281,29 +281,8 @@ int **TFunctionForm::getDGLUTFromUI()
 {
     int lutLength = OFunc->DGLUT_Nbr;
     int **lut = new int *[lutLength];
-    bool orderFix = CheckBox_OrderFix->Checked;
+    //bool orderFix = false;//CheckBox_OrderFix->Checked;
     int lutnum = Addr_DgLUT[0].LutNum();
-    if (orderFix) {
-	for (int i = 0; i < lutLength; i += 2) {
-	    lut[i] = new int[lutnum];
-	    for (int j = 0; j < lutnum; j++) {
-		//從UI撈回資料
-		lut[i][j] = StrToInt(sg_dg->Cells[i + 1][j + 1]);
-	    }
-	}
-	for (int i = 1; i < lutLength - 2; i += 2) {
-	    lut[i] = new int[lutnum];
-	    for (int j = 0; j < lutnum; j++) {
-		//從UI撈回資料
-		lut[i][j] = StrToInt(sg_dg->Cells[i + 3][j + 1]);
-	    }
-	}
-	lut[lutLength - 1] = new int[lutnum];
-	for (int j = 0; j < lutnum; j++) {
-	    //從UI撈回資料
-	    lut[lutLength - 1][j] = StrToInt(sg_dg->Cells[2][j + 1]);
-	}
-    } else {
 
 	for (int i = 0; i < lutLength; i++) {
 	    //int lutnum = Addr_DgLUT[i].LutNum();
@@ -313,40 +292,36 @@ int **TFunctionForm::getDGLUTFromUI()
 		lut[i][j] = StrToInt(sg_dg->Cells[i + 1][j + 1]);
 	    }
 	}
-    }
     return lut;
 }
 
 void TFunctionForm::setDGLUTToUI(int **dgLUT)
 {
-
-    bool olderFix = CheckBox_OrderFix->Checked;
+    setDGLUTToUI(dgLUT,false);
+}
+void TFunctionForm::setDGLUTToUI(int **dgLUT,bool withOrderFix){
     int lutLength = OFunc->DGLUT_Nbr;
-    if (olderFix) {
-	int lutnum = Addr_DgLUT[0].LutNum();
-	for (int i = 0; i < lutLength; i += 2) {
-	    for (int j = 0; j < lutnum; j++) {	//To GUI
+    int lutnum = Addr_DgLUT[0].LutNum();
+    if (withOrderFix) {
+	for (int i = 0; i < lutLength; i++) {
+	    int lutnum = Addr_DgLUT[i].LutNum();
+	    for (int j = 0; j < lutnum; j+=2) {	//To GUI 偶數ok
 		sg_dg->Cells[i + 1][j + 1] = IntToStr(dgLUT[i][j]);
 	    }
-	}
-	for (int i = 3; i < lutLength - 2; i += 2) {
-	    for (int j = 0; j < lutnum; j++) {	//To GUI
-		sg_dg->Cells[i + 1][j + 1] = IntToStr(dgLUT[i - 2][j]);
+	    for (int j = 3; j < lutnum; j+=2) {	//To GUI 奇數跳開, 往前2
+		sg_dg->Cells[i + 1][j + 1] =  IntToStr(dgLUT[i][j-2]);
 	    }
-	}
-	for (int j = 0; j < lutnum; j++) {	//To GUI
-	    sg_dg->Cells[2][j + 1] = IntToStr(dgLUT[lutLength - 1][j]);
+            sg_dg->Cells[i + 1][2] =  IntToStr(dgLUT[i][lutnum-1]);
 	}
     } else {
 
 	for (int i = 0; i < lutLength; i++) {
-	    int lutnum = Addr_DgLUT[i].LutNum();
 	    for (int j = 0; j < lutnum; j++) {	//To GUI
 		sg_dg->Cells[i + 1][j + 1] = IntToStr(dgLUT[i][j]);
 	    }
 	}
     }
-}
+};
 
 // DG table write
 // 20100608 add enable record and revise EngineerForm->SetWrite_DG(...)
@@ -395,7 +370,8 @@ void __fastcall TFunctionForm::btn_dg_readClick(TObject * Sender)
     int **DG_table = getEmptyDGLUT();
     EngineerForm->SetRead_DG(Addr_DgLUT, DG_table, OFunc->DGLUT_Nbr, DG_IsChkSum);
 
-    setDGLUTToUI(DG_table);
+    bool olderFix = CheckBox_OrderFix->Checked;
+    setDGLUTToUI(DG_table,olderFix);
     /*for (int i = 0; i < OFunc->DGLUT_Nbr; i++) {
        for (int j = 0; j < Addr_DgLUT[i].LutNum(); j++) {       //To GUI
        sg_dg->Cells[i + 1][j + 1] = IntToStr(DG_table[i][j]);
@@ -578,11 +554,12 @@ int **TFunctionForm::generateGainDGLUT(int maxR, int maxG, int maxB)
     double gGain = ((double) manualBasedDGLUT[1][maxG]) / manualBasedDGLUT[1][255];
     double bGain = ((double) manualBasedDGLUT[2][maxB]) / manualBasedDGLUT[2][255];
     int h = OFunc->DGLUT_Nbr;	//3
-    //int w = Addr_DgLUT[0].Addr();     //n~
     int w = Addr_DgLUT[0].LutNum();	//n~
 
     for (int x = 0; x < w; x++) {
-	gainDGLUT[0][x] = (int) (manualBasedDGLUT[0][x] * rGain);
+    double r=manualBasedDGLUT[0][x];
+    double rresult =manualBasedDGLUT[0][x] * rGain;
+	gainDGLUT[0][x] = (int) rresult;
     }
     for (int x = 0; x < w; x++) {
 	gainDGLUT[1][x] = (int) (manualBasedDGLUT[1][x] * gGain);
