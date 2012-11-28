@@ -104,6 +104,7 @@ class TFunctionForm:public TForm {
     int **getDGLUTFromUI();
     int **getEmptyDGLUT();
     void setDGLUTToUI(int **dgLUT);
+    void setDGLUTToUI(int **dgLUT,bool withOrderFix);    
     void deleteDGLUT(int **dgLUT);
 
     int **manualBasedDGLUT;

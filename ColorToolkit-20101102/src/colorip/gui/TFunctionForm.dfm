@@ -1,6 +1,6 @@
 object FunctionForm: TFunctionForm
-  Left = 494
-  Top = 216
+  Left = 245
+  Top = 143
   Width = 724
   Height = 534
   Align = alCustom
