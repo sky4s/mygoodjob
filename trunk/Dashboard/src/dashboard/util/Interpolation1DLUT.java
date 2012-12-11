@@ -107,7 +107,7 @@ public final class Interpolation1DLUT {
             70.0, 75.0, 85.0, 95.0, 98.0, 100.0};
 
         Interpolation1DLUT lut2 = new Interpolation1DLUT(key, value);
-        System.out.println(lut2.getValue(69.9));
+        System.out.println(lut2.getValue(71.9));
 
 //    System.out.println(lut2.getValue(69.9));
     }
