@@ -11,7 +11,7 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.RenderingHints;
-import java.awt.image.BufferedImage;
+import java.awt.Stroke;
 import javax.swing.JComponent;
 
 /**
@@ -58,22 +58,7 @@ public class DashboardCanvas
             gOffScreen = offScreen.getGraphics();
             initGraphics2D = true;
         }
-//        drawDashboard()
-
         g.drawImage(offScreen, 0, 0, this);
-//        if (img != null) {
-//            int w = getSize().width;
-//            int h = getSize().height;
-//            g.drawImage(img, 0, 0, w, h, this);
-//        } else {
-//            Graphics2D g2d = (Graphics2D) g;
-////            if (!initGraphics2D) {
-//            g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, // Anti-alias!
-//                    RenderingHints.VALUE_ANTIALIAS_ON);
-////            size = this.getSize();
-////                initGraphics2D = true;
-////            }
-//            drawDashboard(g2d);
     }
 //    private Dimension size;
 
@@ -97,17 +82,38 @@ public class DashboardCanvas
         g.fillRect(0, 0, w, h);
 
         g.setColor(Color.lightGray);
-        int strokeWidth = 5;
+        int strokeWidth = 10;
         int length = Math.min(w, h);
         length -= strokeWidth;
         int y = strokeWidth / 2;
-//        length+=2;
-
-        g2d.setStroke(new BasicStroke(strokeWidth));
+        Stroke stroke = new BasicStroke(strokeWidth);
+        g2d.setStroke(stroke);
         g.drawOval(w / 2 - length / 2, y, length, length);
+    }
+
+    static double[] toPolarCoordinates(int x, int y) {
+        double r = Math.sqrt(x * x + y * y);
+        double theta = Math.atan2(y, x);
+        return new double[]{r, theta};
+    }
+
+    static double[] toCartesianCoordinates(double r, double theta) {
+        double x = r * Math.cos(theta);
+        double y = r * Math.sin(theta);
+        return new double[]{x, y};
     }
 
     public void update(Graphics g) {
         paint(g);
+    }
+}
+
+class CoordinateSystemMapper {
+    private double anglecount;
+    private double anglepiece;
+    
+    public CoordinateSystemMapper(int anglecount){
+        this.anglecount=anglecount;
+        anglepiece=360/anglecount;
     }
 }
