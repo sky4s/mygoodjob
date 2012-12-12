@@ -89,31 +89,64 @@ public class DashboardCanvas
         Stroke stroke = new BasicStroke(strokeWidth);
         g2d.setStroke(stroke);
         g.drawOval(w / 2 - length / 2, y, length, length);
+//        double[] polar = toPolarCoordinates(0, length);
+        double[] polar=cartesian2polarCoordinatesValues(new double[]{0,length});
+//        double[] xy = toCartesianCoordinates(polar[0], polar[1]);
+        int a = 1;
     }
 
-    static double[] toPolarCoordinates(int x, int y) {
-        double r = Math.sqrt(x * x + y * y);
-        double theta = Math.atan2(y, x);
-        return new double[]{r, theta};
+    public static final double[] cartesian2polarCoordinatesValues(final double[] cartesianValues) {
+        double[] polarValues = new double[2];
+
+//    polarValues[0] = cartesianValues[0];
+        double t1 = cartesianValues[0];
+        double t2 = cartesianValues[1];
+        polarValues[0] = Math.sqrt(Math.pow(cartesianValues[0], 2)
+                + Math.pow(cartesianValues[1], 2));
+        if (t1 == 0 && t2 == 0) {
+            polarValues[1] = 0;
+        } else {
+            polarValues[1] = Math.atan2(t2, t1);
+        }
+        polarValues[1] *= (180.0 / Math.PI);
+        while (polarValues[1] >= 360.0) { // Not necessary, but included as a check.
+            polarValues[1] -= 360.0;
+        }
+        while (polarValues[1] < 0) {
+            polarValues[1] += 360.0;
+        }
+        return polarValues;
     }
 
-    static double[] toCartesianCoordinates(double r, double theta) {
-        double x = r * Math.cos(theta);
-        double y = r * Math.sin(theta);
-        return new double[]{x, y};
+    /**
+     * 極座標=>笛卡兒座標
+     *
+     * @param polarValues double[]
+     * @return double[]
+     */
+    public static final double[] polar2cartesianCoordinatesValues(final double[] polarValues) {
+        double t = (polarValues[1] * Math.PI) / 180.0;
+
+        double[] cartesianValues = new double[2];
+        cartesianValues[0] = polarValues[0] * Math.cos(t);
+        cartesianValues[1] = polarValues[0] * Math.sin(t);
+
+        return cartesianValues;
     }
 
+ 
     public void update(Graphics g) {
         paint(g);
     }
 }
 
 class CoordinateSystemMapper {
+
     private double anglecount;
     private double anglepiece;
-    
-    public CoordinateSystemMapper(int anglecount){
-        this.anglecount=anglecount;
-        anglepiece=360/anglecount;
+
+    public CoordinateSystemMapper(int anglecount) {
+        this.anglecount = anglecount;
+        anglepiece = 360. / anglecount;
     }
 }
