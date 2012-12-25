@@ -134,11 +134,11 @@ public class LunarLander extends Activity {
 
         if (savedInstanceState == null) {
             // we were just launched: set up a new game
-            mLunarThread.setState(LunarThread.STATE_READY);
+//            mLunarThread.setState(LunarThread.STATE_READY);
             Log.w(this.getClass().getName(), "SIS is null");
         } else {
             // we are being restored: resume a previous game
-            mLunarThread.restoreState(savedInstanceState);
+//            mLunarThread.restoreState(savedInstanceState);
             Log.w(this.getClass().getName(), "SIS is nonnull");
         }
     }
@@ -149,7 +149,7 @@ public class LunarLander extends Activity {
     @Override
     protected void onPause() {
         super.onPause();
-        mLunarView.getThread().pause(); // pause game when Activity pauses
+//        mLunarView.getThread().pause(); // pause game when Activity pauses
     }
 
     /**
@@ -162,7 +162,7 @@ public class LunarLander extends Activity {
     protected void onSaveInstanceState(Bundle outState) {
         // just have the View's thread save its state into our Bundle
         super.onSaveInstanceState(outState);
-        mLunarThread.saveState(outState);
+//        mLunarThread.saveState(outState);
         Log.w(this.getClass().getName(), "SIS called");
     }
 }
