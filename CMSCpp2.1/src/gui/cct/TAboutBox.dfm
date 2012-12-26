@@ -38,9 +38,9 @@ object AboutBox: TAboutBox
     object Version: TLabel
       Left = 135
       Top = 48
-      Width = 53
+      Width = 38
       Height = 13
-      Caption = 'Version 3.4'
+      Caption = 'Version '
       IsControl = True
     end
     object Copyright: TLabel
@@ -48,7 +48,7 @@ object AboutBox: TAboutBox
       Top = 73
       Width = 281
       Height = 13
-      Caption = 'Copyright (C) 2012, AU Optronics Corp., All Right Reserved.'
+      Caption = 'Copyright (C) 2013, AU Optronics Corp., All Right Reserved.'
       IsControl = True
     end
     object Comments: TLabel

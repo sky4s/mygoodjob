@@ -203,7 +203,7 @@ class TMainForm:public TForm {
     void __fastcall RadioButton_HStripe2MouseMove(TObject * Sender,
 						  TShiftState Shift, int X, int Y);
     void __fastcall RadioButton_NormalMouseMove(TObject * Sender, TShiftState Shift, int X, int Y);
-        void __fastcall FormActivate(TObject *Sender);
+    void __fastcall FormActivate(TObject * Sender);
   private:			// User declarations
     //==========================================================================
     // meter
@@ -276,7 +276,7 @@ class TMainForm:public TForm {
     // T-CON/Panel
     //==========================================================================
      bptr < i2c::TCONControl > getTCONControl();
-    bool isPCwithTCONInput();
+    bool isPCwithDirectGamma();
     bool isInTCONSetup();
     //==========================================================================
 

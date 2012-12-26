@@ -23,18 +23,20 @@ namespace cms {
 	    //======================================================================
 	     RGBColor::RGBColor():rgbColorSpace(&RGBColorSpace::unknowRGB),
 		maxValue(&MaxValue::Double1), R(0), G(0), B(0) {
+		processOverflow = true;
 		//setValues(0, 0, 0);
 	    };
 	     RGBColor::RGBColor(const MaxValue &
 				maxValue):rgbColorSpace(&RGBColorSpace::
 							unknowRGB), maxValue(&maxValue), R(0), G(0),
 		B(0) {
+		processOverflow = true;
 	    };
 	     RGBColor::RGBColor(const RGBColorSpace & rgbColorSpace,
 				double_array rgb,
 				const MaxValue &
 				maxValue):rgbColorSpace(&rgbColorSpace), maxValue(&maxValue) {
-
+		processOverflow = true;
 		if (rgb != null) {
 		    setValues(rgb);
 		}
@@ -42,32 +44,29 @@ namespace cms {
 	    RGBColor::RGBColor(int r, int g,
 			       int b):rgbColorSpace(&RGBColorSpace::
 						    unknowRGB), maxValue(&MaxValue::Int8Bit) {
+		processOverflow = true;
 		setValues(r, g, b);
 	    };
 	    RGBColor::RGBColor(double r, double g, double b,
 			       const MaxValue &
 			       maxValue):rgbColorSpace(&RGBColorSpace::
 						       unknowRGB), maxValue(&maxValue) {
+		processOverflow = true;
 		setValues(r, g, b);
 	    };
 	    RGBColor::RGBColor(double r, double g,
 			       double b):rgbColorSpace(&RGBColorSpace::
 						       unknowRGB), maxValue(&MaxValue::Double255) {
+		processOverflow = true;
 		setValues(r, g, b);
 	    };
 	    RGBColor::RGBColor(const RGBColorSpace & rgbColorSpace,
 			       XYZ_ptr XYZ):rgbColorSpace(&rgbColorSpace),
 		maxValue(&MaxValue::Double1) {
+		processOverflow = true;
 		this->setValues(fromXYZValues(XYZ->getValues(), rgbColorSpace));
 	    };
 	    /* TODO : RGBColor */
-	    /*RGBColor::RGBColor(const RGBColorSpace & rgbColorSpace,
-	       XYZ_ptr XYZ):rgbColorSpace(&rgbColorSpace),
-	       maxValue(&MaxValue::Double1) {
-
-	       //this(colorSpace, fromXYZValues(XYZ.getValues(), colorSpace),
-	       //MaxValue.Double1);
-	       }; */
 
 
 	    double_array RGBColor::_getValues(double_array values) {
@@ -110,7 +109,7 @@ namespace cms {
 		}
 
 		double_array values = this->getValues();
-		changeMaxValue(values, *this->maxValue, type, integerRoundDown);
+		changeMaxValue(values, *this->maxValue, type, integerRoundDown, processOverflow);
 
 		this->maxValue = &type;
 		this->setValues(values);
@@ -122,9 +121,11 @@ namespace cms {
 
 	    void RGBColor::changeMaxValue(double_array values,
 					  const MaxValue & srcType,
-					  const MaxValue & destType, bool integerRoundDown) {
+					  const MaxValue & destType, bool integerRoundDown,
+					  bool processOverflow) {
 		if (srcType.integer == true || destType.integer == true) {
-		    changeIntegerMaxValue(values, srcType, destType, integerRoundDown);
+		    changeIntegerMaxValue(values, srcType, destType, integerRoundDown,
+					  processOverflow);
 		} else {
 		    values = normalizeTo100(values, srcType);
 		    changeMaxValue(values, destType, integerRoundDown);
@@ -134,7 +135,8 @@ namespace cms {
 	    double_array RGBColor::
 		changeIntegerMaxValue(double_array integerValues,
 				      const MaxValue & srcType,
-				      const MaxValue & destType, bool roundDown) {
+				      const MaxValue & destType, bool roundDown,
+				      bool processOverflow) {
 		if (false == srcType.integer && false == destType.integer) {
 		    //既然是處理整數的轉換, 當然至少要有一個是整數啦~
 		    throw IllegalArgumentException
@@ -161,11 +163,16 @@ namespace cms {
 			(roundDown ? (int) integerValues[x] : Math::
 			 roundTo(integerValues[x])) : integerValues[x];
 		    //小於8bit的轉換, 會有超過max的狀況, 所以要作clip
-		    integerValues[x] =
-			(integerValues[x] > destType.max) ? destType.max : integerValues[x];
+		    if (processOverflow) {
+			integerValues[x] =
+			    (integerValues[x] > destType.max) ? destType.max : integerValues[x];
+		    }
 		}
 
 		return integerValues;
+	    };
+	    void RGBColor::setProcessOverflow(bool process) {
+		this->processOverflow = process;
 	    };
 
 	    double_array RGBColor::changeMaxValue(double_array normal100,
@@ -262,7 +269,7 @@ namespace cms {
 	    double_array RGBColor::getValues(double_array values, const MaxValue & type) {
 		getValues(values);
 		if (type != *maxValue) {
-		    changeMaxValue(values, *maxValue, type, false);
+		    changeMaxValue(values, *maxValue, type, false, processOverflow);
 		}
 		return values;
 	    };
@@ -308,7 +315,7 @@ namespace cms {
 	    void RGBColor::setValues(double_array values, const MaxValue & type) {
 		if (type != *maxValue) {
 		    //values = DoubleArray.copy(values);
-		    changeMaxValue(values, type, *maxValue, false);
+		    changeMaxValue(values, type, *maxValue, false, processOverflow);
 		}
 		setValues(values);
 	    };

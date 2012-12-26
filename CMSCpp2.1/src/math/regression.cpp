@@ -41,26 +41,21 @@ namespace math {
 	int m = coefs->dim1();
 	int n = input->dim1();
 	double2D_ptr predict(new double2D(m, n));
-	//cout << *input << endl;
-	//cout << *coefs << endl;
 
 	for (int x = 0; x < m; x++) {
 	    double1D_ptr coef = DoubleArray::getDouble1D(coefs, x);
-	    //cout << *coef << endl;
 	    double1D_ptr v = SVDLib::getPredict(input, coef);
-	    //cout << *v << endl;
 	    DoubleArray::setDouble1D(predict, v, x);
 	}
-	//cout << *predict << endl;
 	return DoubleArray::transpose(predict);
     };
     double Regression::getRMSD() {
 	/* TODO : getRMSD */
-        return -1;
+        throw java::lang::UnsupportedOperationException();
     };
     double Regression::getrSquare() {
 	/* TODO : getrSquare */
-        return -1;
+        throw java::lang::UnsupportedOperationException();
     };
     void Regression::regress() {
 	SVDLib svdLib(inputCoefs);

@@ -279,6 +279,7 @@ object MatrixCalibrationForm: TMatrixCalibrationForm
     Caption = 'Backup'
     Enabled = False
     TabOrder = 1
+    Visible = False
     object Label11: TLabel
       Left = 13
       Top = 20

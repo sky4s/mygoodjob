@@ -1,6 +1,6 @@
 object CCTLUTForm: TCCTLUTForm
-  Left = 187
-  Top = 223
+  Left = 239
+  Top = 265
   Width = 841
   Height = 466
   Caption = 'CCT(LUT)'
@@ -44,7 +44,7 @@ object CCTLUTForm: TCCTLUTForm
     Color = clSkyBlue
     ParentColor = False
   end
-  object GroupBox1: TGroupBox
+  object GroupBox_GrayLevel: TGroupBox
     Left = 6
     Top = 7
     Width = 156
@@ -118,6 +118,15 @@ object CCTLUTForm: TCCTLUTForm
       TabOrder = 3
       OnClick = CheckBox_ExpandClick
     end
+    object CheckBox_MeasureRGBFromDebugFile: TCheckBox
+      Left = 8
+      Top = 248
+      Width = 129
+      Height = 17
+      Caption = 'RGB from Debug File'
+      TabOrder = 4
+      Visible = False
+    end
   end
   object GroupBox2: TGroupBox
     Left = 169
@@ -128,14 +137,14 @@ object CCTLUTForm: TCCTLUTForm
     TabOrder = 1
     object Label16: TLabel
       Left = 72
-      Top = 80
+      Top = 88
       Width = 9
       Height = 13
       Caption = '0-'
     end
     object Label_BrightZone: TLabel
       Left = 72
-      Top = 128
+      Top = 136
       Width = 33
       Height = 13
       Caption = '81-255'
@@ -149,35 +158,35 @@ object CCTLUTForm: TCCTLUTForm
     end
     object Label23: TLabel
       Left = 32
-      Top = 48
+      Top = 56
       Width = 34
       Height = 13
       Caption = 'Keep L'
     end
     object Label24: TLabel
       Left = 8
-      Top = 176
+      Top = 184
       Width = 147
       Height = 13
       Caption = '=======Load Gamma======='
     end
     object Label25: TLabel
       Left = 8
-      Top = 64
+      Top = 72
       Width = 150
       Height = 13
       Caption = '========================='
     end
     object Label28: TLabel
       Left = 8
-      Top = 144
+      Top = 152
       Width = 150
       Height = 13
       Caption = '========================='
     end
     object Label_MiddleZone: TLabel
       Left = 72
-      Top = 104
+      Top = 112
       Width = 15
       Height = 13
       Caption = '51-'
@@ -215,7 +224,7 @@ object CCTLUTForm: TCCTLUTForm
     end
     object RadioButton_OriginalGamma: TRadioButton
       Left = 7
-      Top = 160
+      Top = 168
       Width = 111
       Height = 13
       Caption = 'Original Gamma'
@@ -224,7 +233,7 @@ object CCTLUTForm: TCCTLUTForm
     end
     object RadioButton_3Gamma: TRadioButton
       Left = 7
-      Top = 88
+      Top = 96
       Width = 65
       Height = 17
       Caption = '3 Gamma'
@@ -233,7 +242,7 @@ object CCTLUTForm: TCCTLUTForm
     end
     object ComboBox_DimGamma: TComboBox
       Left = 116
-      Top = 77
+      Top = 85
       Width = 49
       Height = 21
       ImeName = #20013#25991' ('#32321#39636') - '#26032#27880#38899
@@ -253,7 +262,7 @@ object CCTLUTForm: TCCTLUTForm
     end
     object ComboBox_BrightGamma: TComboBox
       Left = 116
-      Top = 125
+      Top = 133
       Width = 49
       Height = 21
       ImeName = #20013#25991' ('#32321#39636') - '#26032#27880#38899
@@ -273,7 +282,7 @@ object CCTLUTForm: TCCTLUTForm
     end
     object Edit_DimGammaEnd: TEdit
       Left = 88
-      Top = 77
+      Top = 85
       Width = 25
       Height = 21
       TabOrder = 6
@@ -321,7 +330,7 @@ object CCTLUTForm: TCCTLUTForm
     end
     object RadioButton_GammaCurve: TRadioButton
       Left = 7
-      Top = 189
+      Top = 197
       Width = 154
       Height = 20
       Caption = 'Gamma Curve'
@@ -330,7 +339,7 @@ object CCTLUTForm: TCCTLUTForm
     end
     object RadioButton_GammaValue: TRadioButton
       Left = 7
-      Top = 212
+      Top = 220
       Width = 154
       Height = 13
       Caption = 'Gamma Value'
@@ -339,7 +348,7 @@ object CCTLUTForm: TCCTLUTForm
     end
     object CheckBox_GByPass: TCheckBox
       Left = 95
-      Top = 189
+      Top = 197
       Width = 65
       Height = 20
       Caption = 'G bypass'
@@ -348,19 +357,33 @@ object CCTLUTForm: TCCTLUTForm
     end
     object Edit_MiddleGammaEnd: TEdit
       Left = 88
-      Top = 101
+      Top = 109
       Width = 25
       Height = 21
       TabOrder = 13
       Text = '80'
       OnChange = Edit_MiddleGammaEndChange
     end
+    object RadioGroup_KeepLBy: TRadioGroup
+      Left = 96
+      Top = 240
+      Width = 129
+      Height = 49
+      Caption = 'By'
+      Enabled = False
+      ItemIndex = 0
+      Items.Strings = (
+        'Gamma'
+        'Luminance')
+      TabOrder = 14
+      Visible = False
+    end
   end
   object GroupBox4: TGroupBox
     Left = 343
-    Top = 135
+    Top = 183
     Width = 156
-    Height = 170
+    Height = 122
     Caption = 'Blue Correction'
     Color = clMoneyGreen
     ParentColor = False
@@ -474,7 +497,7 @@ object CCTLUTForm: TCCTLUTForm
       Width = 118
       Height = 19
       Caption = 'Multi Generate'
-      Color = clSkyBlue
+      Color = clBtnFace
       Enabled = False
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clWindowText
@@ -572,6 +595,15 @@ object CCTLUTForm: TCCTLUTForm
       Height = 17
       Caption = 'Y Only'
       TabOrder = 9
+      Visible = False
+    end
+    object CheckBox_FixInverseCIEZ: TCheckBox
+      Left = 8
+      Top = 144
+      Width = 137
+      Height = 17
+      Caption = 'Fix Inverse Target CIE Z'
+      TabOrder = 10
       Visible = False
     end
   end
@@ -958,7 +990,7 @@ object CCTLUTForm: TCCTLUTForm
     Left = 344
     Top = 7
     Width = 156
-    Height = 122
+    Height = 170
     Caption = 'Low Level Correction'
     TabOrder = 10
     object Label17: TLabel
@@ -1038,6 +1070,33 @@ object CCTLUTForm: TCCTLUTForm
         '0.9'
         '0.95'
         '1.0')
+    end
+    object CheckBox_DimRBFix: TCheckBox
+      Left = 26
+      Top = 118
+      Width = 71
+      Height = 17
+      Caption = 'RB Fix'
+      TabOrder = 6
+      OnClick = CheckBox_DimRBFixClick
+    end
+    object Edit_DimRBFixUnder: TEdit
+      Left = 104
+      Top = 134
+      Width = 41
+      Height = 21
+      TabOrder = 7
+      Text = '5'
+    end
+    object CheckBox_RBFixAuto: TCheckBox
+      Left = 40
+      Top = 136
+      Width = 49
+      Height = 17
+      Caption = 'Auto'
+      Enabled = False
+      TabOrder = 8
+      OnClick = CheckBox_RBFixAutoClick
     end
   end
   object GroupBox_Execute: TGroupBox

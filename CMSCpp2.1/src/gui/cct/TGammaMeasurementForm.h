@@ -68,6 +68,8 @@ class TGammaMeasurementForm:public TForm {
     TRadioButton *RadioButton_Custom8Bit;
     TLabel *Label7;
     TEdit *Edit_CustormPatternCount;
+    TCheckBox *CheckBox_10BitInMeasurement;
+    TLabel *Label8;
     void __fastcall Button_MeasureClick(TObject * Sender);
     void __fastcall FormShow(TObject * Sender);
     void __fastcall TOutputFileFrame1Button_BrowseDirClick(TObject * Sender);
@@ -78,8 +80,10 @@ class TGammaMeasurementForm:public TForm {
     void __fastcall RadioButton_TCONInputGrayScaleClick(TObject * Sender);
     void __fastcall Button_LoadPatternClick(TObject * Sender);
     void __fastcall CheckBox_CustomLoadedClick(TObject * Sender);
+    void __fastcall CheckBox_10BitInMeasurementClick(TObject * Sender);
   private:			// User declarations
      bptr < cms::lcd::BitDepthProcessor > bitDepth;
+     bptr < cms::lcd::BitDepthProcessor > dgLutBitDepth;
     void setMeasureInfo();
 
     void tconMeasure(bool_vector_ptr rgbw, int start, int end, int step,

@@ -400,7 +400,7 @@ namespace cms {
 	    if (Create == mode) {
 		db->createTable(sheetname, headerNames);
 	    } else {
-		throw new IllegalStateException("");
+		throw IllegalStateException("");
 	    }
 
 	};
@@ -414,7 +414,7 @@ namespace cms {
 	    if (Create == mode) {
 		db->createTable(sheetname, headerNames, fieldTypes);
 	    } else {
-		throw new IllegalStateException("");
+		throw   IllegalStateException("");
 	    }
 
 	};
@@ -428,7 +428,7 @@ namespace cms {
 	    if (Create == mode) {
 		db->createTable(Properties, headerNames, fieldType);
 	    } else {
-		throw new IllegalStateException("");
+		throw   IllegalStateException("");
 	    }
 	};
 	void

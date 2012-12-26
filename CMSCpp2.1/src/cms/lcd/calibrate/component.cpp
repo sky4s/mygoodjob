@@ -145,6 +145,7 @@ namespace cms {
 			feedbackListener->doFeedback(msg);
 		    }
 		}
+		feedbackMessage = "";
 		if (inverseMeasure) {
 		    result = Component::reverse(result);
 		}
@@ -152,45 +153,8 @@ namespace cms {
 		return result;
 	    };
 	    Component_vector_ptr ComponentFetcher::fetchComponent(RGB_vector_ptr rgbMeasureCode) {
-		//if (true) {
-		    return fetch(rgbMeasureCode, false);
-		/*}
-		Component_vector_ptr result(new Component_vector());
-		bool waitingStable = true;
-		bptr < cms::measure::IntensityAnalyzerIF > analyzer = getAnalyzer();
-		int waitTimes = analyzer->getWaitTimes();
-		analyzer->setWaitTimes(10000);
-		analyzer->beginAnalyze();
-		stop = false;
+		return fetch(rgbMeasureCode, false);
 
-		if (nil_RGB_ptr != extraMeasureRGB) {
-		    extraMeasureXYZ = analyzer->getCIEXYZOnly(extraMeasureRGB);
-		    extraMeasureRGB = nil_RGB_ptr;
-		}
-
-		foreach(const RGB_ptr & rgb, *rgbMeasureCode) {
-		    RGB_ptr intensity = analyzer->getIntensity(rgb);
-		    XYZ_ptr XYZ = analyzer->getCIEXYZ();
-
-		    if (null != XYZ && null != intensity) {
-			Component_ptr component(new Component(rgb, intensity, XYZ));
-			result->push_back(component);
-		    }
-
-		    if (true == waitingStable) {
-			//只有第一次量測的時候發揮作用
-			waitingStable = false;
-			analyzer->setWaitTimes(waitTimes);
-		    }
-
-		    if (true == stop) {
-			stop = false;
-			analyzer->endAnalyze();
-			return nil_Component_vector_ptr;
-		    }
-		}
-		analyzer->endAnalyze();
-		return result;*/
 	    };
 
 	    Component_vector_ptr ComponentFetcher::fetchComponent(bptr <
@@ -202,35 +166,8 @@ namespace cms {
 								  MeasureCondition
 								  > measureCondition) {
 		RGB_vector_ptr rgbMeasureCode = measureCondition->getRGBMeasureCode();
-		//if (true) {
-		    return fetch(rgbMeasureCode, true);
-		/*}
-		Component_vector_ptr result(new Component_vector());
-		bool waitingStable = true;
-		bptr < cms::measure::IntensityAnalyzerIF > analyzer = getAnalyzer();
-		int waitTimes = analyzer->getWaitTimes();
-		analyzer->setWaitTimes(10000);
-		analyzer->beginAnalyze();
-		stop = false;
+		return fetch(rgbMeasureCode, true);
 
-		foreach(RGB_ptr rgb, *rgbMeasureCode) {
-		    XYZ_ptr XYZ = analyzer->getCIEXYZOnly(rgb);
-		    Component_ptr c(new Component(rgb, nil_RGB_ptr, XYZ));
-		    result->push_back(c);
-
-		    if (true == waitingStable) {
-			waitingStable = false;
-			analyzer->setWaitTimes(waitTimes);
-		    }
-
-		    if (true == stop) {
-			stop = false;
-			analyzer->endAnalyze();
-			return nil_Component_vector_ptr;
-		    }
-		}
-		analyzer->endAnalyze();
-		return result; */
 	    };
 
 
@@ -242,7 +179,7 @@ namespace cms {
 		//bool inverseMeasure = MainForm->CheckBox_InverseMeasure->Checked;
 		//mt->InverseMeasure = inverseMeasure;
 		MeasureWindow->addWindowListener(mt);
-                           throw java::lang::UnsupportedOperationException();
+		throw java::lang::UnsupportedOperationException();
 	    };
 	    void ComponentFetcher::storeToExcel(const string & filename,
 						Component_vector_ptr componentVector) {
@@ -349,11 +286,11 @@ namespace cms {
 		//==============================================================                
 	    };
 
-	    ComponentLinearRelation::
+	    /*ComponentLinearRelation::
 		ComponentLinearRelation(double2D_ptr input, double2D_ptr output) {
 		init(input, output);
 
-	    };
+	    };*/
 	  ComponentLinearRelation::ComponentLinearRelation(Component_vector_ptr componentVector):componentVector(componentVector)
 	    {
 		init(componentVector);

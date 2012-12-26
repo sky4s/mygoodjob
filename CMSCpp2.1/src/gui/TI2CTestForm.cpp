@@ -52,9 +52,16 @@ void TI2CTestForm::setOptionsEditable(bool editable)
 
 void __fastcall TI2CTestForm::Button1Click(TObject * Sender)
 {
+if( MainForm->Button_Connect->Enabled) {
     MainForm->Button_ConnectClick(Sender);
+    }
     control = MainForm->getTCONControl();
 
+                    	/*bptr < cms::lcd::calibrate::ComponentFetcher > fetcher = MainForm->getComponentFetcher();
+    using namespace cms::measure;
+	bptr < MeterMeasurement > mm = fetcher->FirstAnalyzer->getMeterMeasurement();
+        int defaultWaitTimes=mm->WaitTimes;
+        int x=1;*/
 }
 
 //---------------------------------------------------------------------------

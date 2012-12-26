@@ -373,6 +373,7 @@ namespace java {
 	    static double round(double v);
 	    static double floor(double v);
 	    static double roundTo(double v);
+	    static int ceil(double v);
 	    static double log(double v);
 	    static double fmod(double x, double y);
 
@@ -520,7 +521,7 @@ template < typename Container, typename ValueType, int nPropType > class Propert
     }
 //-- To make possible to cast the property class to the
 //   internal type --
-    operator                                                                          ValueType() {
+    operator                                                                            ValueType() {
 	assert(m_cObject != NULL);
 	assert(Get != NULL);
 	return (m_cObject->*Get) ();

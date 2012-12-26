@@ -189,28 +189,7 @@ namespace cms {
 	double2D_ptr MaxMatrixIntensityAnalyzer::getWhiteRatio() {
 	    return whiteRatio;
 	};
-	/*bptr < MaxMatrixIntensityAnalyzer >
-	   MaxMatrixIntensityAnalyzer::getReadyAnalyzer(bptr < MeterMeasurement > mm,
-	   int rMax, int gMax, int bMax) {
-	   bptr < MaxMatrixIntensityAnalyzer >
-	   nativeWhiteAnalyzer(new MaxMatrixIntensityAnalyzer(mm));
-	   //¤wª¾rgb
-	   RGB_ptr rgb(new RGBColor(rMax, gMax, bMax, MaxValue::Int8Bit));
-	   RGB_ptr r(new RGBColor(rMax, 0, 0, MaxValue::Int8Bit));
-	   RGB_ptr g(new RGBColor(0, gMax, 0, MaxValue::Int8Bit));
-	   RGB_ptr b(new RGBColor(0, 0, bMax, MaxValue::Int8Bit));
-
-	   int defaultWaitTimes = nativeWhiteAnalyzer->getWaitTimes();
-	   nativeWhiteAnalyzer->setWaitTimes(5000);
-	   nativeWhiteAnalyzer->beginAnalyze();
-	   nativeWhiteAnalyzer->setupComponent(Channel::R, r);
-	   nativeWhiteAnalyzer->setupComponent(Channel::G, g);
-	   nativeWhiteAnalyzer->setupComponent(Channel::B, b);
-	   nativeWhiteAnalyzer->setupComponent(Channel::W, rgb);
-	   nativeWhiteAnalyzer->enter();
-	   nativeWhiteAnalyzer->setWaitTimes(defaultWaitTimes);
-	   return nativeWhiteAnalyzer;
-	   }; */
+ 
 	bptr < MaxMatrixIntensityAnalyzer >
 	    MaxMatrixIntensityAnalyzer::getReadyAnalyzer(bptr < MeterMeasurement > mm,
 							 double rMax, double gMax, double bMax) {

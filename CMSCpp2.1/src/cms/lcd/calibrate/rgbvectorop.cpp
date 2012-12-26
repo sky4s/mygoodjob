@@ -81,9 +81,9 @@ namespace cms {
 	    //==================================================================
 
 	    //==================================================================
-	    // RBInterpolation
+	    // RGBInterpolation
 	    //==================================================================
-	    RGB_vector_ptr RBInterpolationOp::getRendering(RGB_vector_ptr source) {
+	    RGB_vector_ptr RGBInterpolationOp::getRendering(RGB_vector_ptr source) {
 
 		double rInterval = (*source)[under]->R / under;
 		double gInterval = (*source)[under]->G / under;
@@ -92,7 +92,7 @@ namespace cms {
 
 
 		for (int x = 0; x != under; x++) {
-		    //做RB interpolation
+		    //做RGB interpolation
 		    RGB_ptr rgb = (*result)[x];
 
 		    rgb->R = rInterval * x;
@@ -101,9 +101,43 @@ namespace cms {
 		}
 		return result;
 	    };
-	  RBInterpolationOp::RBInterpolationOp(double under):under(under) {
+	  RGBInterpolationOp::RGBInterpolationOp(int under):under(under) {
 	    };
+
 	    //==================================================================
+	    int RBInterpolationOp::calculateAutoUnder() {
+		return -1;
+	    };
+	    RGB_vector_ptr RBInterpolationOp::getRendering(RGB_vector_ptr source) {
+		RGB_vector_ptr result = RGBVector::deepClone(source);
+		int realunder = under;
+		if (autoUnder) {
+		    realunder = calculateAutoUnder();
+		}
+		for (int x = 1; x != realunder; x++) {
+		    double gratio = (realunder - x + 1) / realunder;
+		    //做RB interpolation
+		    RGB_ptr rgb = (*result)[x];
+
+		    //double r_ = rgb->R * (1 - gratio) + rgb->G * gratio;
+		    //double b_ = rgb->B * (1 - gratio) + rgb->G * gratio;
+		    double r = Interpolation::linear(0, 1, rgb->R, rgb->G, gratio);
+		    double b = Interpolation::linear(0, 1, rgb->B, rgb->G, gratio);
+
+		    rgb->R = r;
+		    rgb->B = b;
+
+		}
+		RGB_ptr rgb0 = (*result)[0];
+		rgb0->R = rgb0->G = rgb0->B = 0;
+		return result;
+	    };
+	  RBInterpolationOp::RBInterpolationOp(int under):under(under),
+		autoUnder(false) {
+	    };
+	    RBInterpolationOp::RBInterpolationOp(int under, bool autoUnder):under(under),
+		autoUnder(autoUnder) {
+	    };
 
 	    //==================================================================
 	    // BMaxOp
@@ -295,51 +329,69 @@ namespace cms {
 	  FrcNROp::FrcNROp(bptr < BitDepthProcessor > bitDepth):bitDepth(bitDepth) {
 	    };
 	    //==================================================================
-	    //==================================================================
-	    /*RGB_vector_ptr KeepNativeWhiteOp::getRendering(RGB_vector_ptr source) {
-	       RGB_vector_ptr result = RGBVector::deepClone(source);
-	       double max = bitDepth->getOutputMaxDigitalCount();
-	       int level = bitDepth->getLevelInTCon();
 
-	       for (int x = level - 1; x != bitDepth->getLevel(); x++) {
-	       RGB_ptr rgb = (*result)[x];
-	       rgb->setValues(max, max, max);
-	       }
-
-	       return result;
-	       };
-	       KeepNativeWhiteOp::KeepNativeWhiteOp(bptr < BitDepthProcessor > bitDepth):bitDepth(bitDepth)
-	       {
-
-	       }; */
 
 	    //==================================================================
 
 	    RGB_vector_ptr SetWhiteOp::getRendering(RGB_vector_ptr source) {
 
 		RGB_vector_ptr result = RGBVector::deepClone(source);
-		//double max = bitDepth->getOutputMaxDigitalCount();
 		int level = bitDepth->getLevelInTCon();
 
-		double_array rgbValues(new double[3]);
-		setRGB->getValues(rgbValues, MaxValue::Int12Bit);
-		//int size = result->size();
-		for (int x = level - 1; x != bitDepth->getLevel(); x++) {
-		    RGB_ptr rgb = (*result)[x];
-                    //因為下一行的setValues..會改變到rgbValues裡面的值
-                    //所以改成每次都要讀出來到rgbValues, 就不會受到影響
+		if (input10Bit) {
+		    double_array rgb255Values(new double[3]);
+		    double_array rgb256Values(new double[3]);
+		    double_array setrgbValues(new double[3]);
+
+		    RGB_ptr rgb255 = (*result)[level - 2];
+		    rgb255->getValues(rgb255Values, MaxValue::Int12Bit);
+		    setRGB->getValues(setrgbValues, MaxValue::Int12Bit);
+		    double r255 = rgb255Values[0];
+		    double g255 = rgb255Values[1];
+		    double b255 = rgb255Values[2];
+		    double setr255 = setrgbValues[0];
+		    double setg255 = setrgbValues[1];
+		    double setb255 = setrgbValues[2];
+		    rgb256Values[0] =
+			Interpolation::linear(255, 255.75, rgb255Values[0], setrgbValues[0], 256);
+		    rgb256Values[1] =
+			Interpolation::linear(255, 255.75, rgb255Values[1], setrgbValues[1], 256);
+		    rgb256Values[2] =
+			Interpolation::linear(255, 255.75, rgb255Values[2], setrgbValues[2], 256);
+		    rgb256Values[0] = Math::ceil(rgb256Values[0]);
+		    rgb256Values[1] = Math::ceil(rgb256Values[1]);
+		    rgb256Values[2] = Math::ceil(rgb256Values[2]);
+
+		    if (rgb256Values[0] > 4095 || rgb256Values[1] > 4095 || rgb256Values[2] > 4095) {
+ 			errorMessage = "10Bit輸入時, 計算出的DG255與DG256, 無法滿足10Bit輸入1023時, DG255.75內插出4080的需求";
+			//return nil_RGB_vector_ptr;
+		    }
+
+		    RGB_ptr rgb256 = (*result)[level - 1];
+		    rgb256->setProcessOverflow(false);
+		    rgb256->setValues(rgb256Values, MaxValue::Int12Bit);
+
+		} else {
+		    double_array rgbValues(new double[3]);
 		    setRGB->getValues(rgbValues, MaxValue::Int12Bit);
-		    rgb->setValues(rgbValues, MaxValue::Int12Bit);
+		    for (int x = level - 1; x != bitDepth->getLevel(); x++) {
+			RGB_ptr rgb = (*result)[x];
+			//因為下一行的setValues..會改變到rgbValues裡面的值
+			//所以改成每次都要讀出來到rgbValues, 就不會受到影響
+			setRGB->getValues(rgbValues, MaxValue::Int12Bit);
+			rgb->setValues(rgbValues, MaxValue::Int12Bit);
+		    }
 		}
 
 		return result;
 	    };
 
 	  SetWhiteOp::SetWhiteOp(bptr < BitDepthProcessor > bitDepth, RGB_ptr setRGB):bitDepth(bitDepth),
-		setRGB(setRGB)
+		setRGB(setRGB), input10Bit(bitDepth->is10BitInput())
 	    {
 
 	    };
+
 	    //==================================================================
 	    RGB_vector_ptr KeepNativeWhiteSmoothOp::getRendering(RGB_vector_ptr source) {
 		//STORE_RGBVECTOR("op-source.xls", source);
@@ -384,288 +436,6 @@ namespace cms {
 
 	    //==================================================================
 
-	    /*int DimDGLutFixOp::getDefectType(bool dxdefect, bool dydefect) {
-	       if (dxdefect && dydefect) {
-	       return Type2;
-	       } else if (dxdefect) {
-	       return Type1x;
-	       } else if (dydefect) {
-	       return Type1y;
-	       } else {
-	       return None;
-	       }
-	       };
-	       int_array DimDGLutFixOp::getDefectTypeArray(double2D_ptr deltaxyValues,
-	       double thresholdx, double thresholdy) {
-	       int size = deltaxyValues->dim1();
-	       int_array defectTypeArray(new int[size]);
-	       for (int x = 0; x < size; x++) {
-	       defectTypeArray[x] = None;
-	       }
-	       // dx = 1
-	       // dy = 2
-	       // dx + dy =3
-	       for (int x = 1; x < size - 1; x++) {
-	       //辨識Type 1x/1y/2
-	       bool dx = (*deltaxyValues)[x][0] < thresholdx;
-	       bool dy = (*deltaxyValues)[x][1] < thresholdy;
-	       defectTypeArray[x] = getDefectType(dx, dy);
-	       }
-
-	       for (int x = 1; x < size - 3; x++) {
-	       //辨識Type 12/21/3/4
-	       int thisType = defectTypeArray[x];
-	       int nextType = defectTypeArray[x + 1];
-	       int next2Type = defectTypeArray[x + 2];
-	       if ((Type1x == thisType || Type1y == thisType) && Type2 == nextType
-	       && None == next2Type) {
-	       //12
-	       defectTypeArray[x] = Type12;
-	       defectTypeArray[x + 1] = None;
-	       } else if (Type2 == thisType && (Type1x == nextType || Type1y == nextType)
-	       && None == next2Type) {
-	       //21
-	       defectTypeArray[x] = Type21;
-	       defectTypeArray[x + 1] = None;
-	       } else if ((thisType == nextType) && (Type1x == thisType || Type1y == thisType)) {
-	       //3
-	       defectTypeArray[x] = Type3;
-	       defectTypeArray[x + 1] = None;
-	       } else if (Type2 == thisType && Type2 == nextType && None == next2Type) {
-	       //4
-	       defectTypeArray[x] = Type4;
-	       defectTypeArray[x + 1] = None;
-	       }
-	       }
-	       return defectTypeArray;
-	       };
-
-	       double2D_ptr DimDGLutFixOp::getDeltaxyValues(Component_vector_ptr componentVector) {
-	       using namespace Indep;
-	       int size = componentVector->size();
-	       xyY_vector_ptr xyYVector(new xyY_vector());
-
-	       for (int x = 0; x < size; x++) {
-	       Component_ptr c = (*componentVector)[x];
-	       XYZ_ptr XYZ = c->XYZ;
-	       xyY_ptr xyY(new CIExyY(XYZ));
-	       xyYVector->push_back(xyY);
-	       }
-
-	       double2D_ptr deltaxyValues(new double2D(size - 1, 2));
-
-	       for (int x = 0; x < (size - 1); x++) {
-	       xyY_ptr xyY0 = (*xyYVector)[x];
-	       xyY_ptr xyY1 = (*xyYVector)[x + 1];
-	       double_array xy0Values = xyY0->getxyValues();
-	       double_array xy1Values = xyY1->getxyValues();
-	       double_array delta = DoubleArray::minus(xy0Values, xy1Values, 2);
-	       (*deltaxyValues)[x][0] = delta[0];
-	       (*deltaxyValues)[x][1] = delta[1];
-	       }
-	       return deltaxyValues;
-	       };
-
-	       RGB_vector_ptr DimDGLutFixOp::getRendering(RGB_vector_ptr source) {
-	       //source是0~255, 要先轉成frc
-	       STORE_RGBVECTOR("6.1_before_fix.xls", source);
-	       RGB_vector_ptr result = RGBVector::deepClone(source);
-	       RGBVector::changeMaxValue(result, bitDepth->getFRCAbilityBit());
-	       STORE_RGBVECTOR("6.2_change2FRC.xls", result);
-
-	       double2D_ptr deltaxyValues = getDeltaxyValues(componentVector);
-	       int size = componentVector->size();
-
-	       double threshold = dimFixThreshold;
-
-	       //bool_array defectArray = getDefectArray(deltaxyValues, threshold);
-	       //bool_array continueDefectArray = getContinueDefectArray(deltaxyValues, threshold);
-	       int_array defectTypeArray = getDefectTypeArray(deltaxyValues, threshold, threshold);
-
-	       for (int x = 1; x < size; x++) {
-	       int defect = defectTypeArray[x];
-	       int predefect = defectTypeArray[x - 1];
-	       int nextdefect = defectTypeArray[x + 1];
-
-	       bool doDefectErase = false;
-	       if (Type1x == defect || Type1y == defect) {
-	       //若是x或y的defect, 相鄰不同type就進行處理
-	       doDefectErase = defect != predefect && defect != nextdefect;
-	       } else if (Type2 == defect) {
-	       //若是x y皆須進行處理的type, 相鄰必須無defect
-	       doDefectErase = (None == predefect) && (None == nextdefect);
-	       }
-
-
-	       if (doDefectErase) {
-	       //確定要消除defect
-	       int grayLevel = size - x - 1;
-
-	       //double dx = (*deltaxyValues)[x][0];
-	       //double dy = (*deltaxyValues)[x][1];
-
-	       //double predx = (*deltaxyValues)[x - 1][0];
-	       //double pre2dx = dx + predx;
-	       //double predy = (*deltaxyValues)[x - 1][1];
-	       //double pre2dy = dy + predy;
-
-
-	       switch (defect) {
-	       case Type2:{
-	       //type II
-	       double_array dxdyofB = adjustEstimator->getdxdy(Channel::B, x);
-	       double dxofB = -dxdyofB[0];
-	       double dyofB = -dxdyofB[1];
-	       double_array xCoordinatorArray =
-	       getCoordinatorArray(grayLevel, true);
-	       double_array yCoordinatorArray =
-	       getCoordinatorArray(grayLevel, false);
-
-	       int suitAdjustGrayLevel_1 = getSuitAdjustGrayLevel(grayLevel, dxofB,
-	       xCoordinatorArray);
-	       int suitAdjustGrayLevel_2 = getSuitAdjustGrayLevel(grayLevel, dyofB,
-	       yCoordinatorArray);
-
-
-	       if (suitAdjustGrayLevel_1 == suitAdjustGrayLevel_2
-	       && -1 != suitAdjustGrayLevel_1) {
-	       //調整方向相同的case, B就可以解決
-	       if (suitAdjustGrayLevel_1 == grayLevel) {
-	       (*result)[grayLevel]->B -= 1;    //1
-	       } else if (suitAdjustGrayLevel_1 == (grayLevel - 1)) {
-	       (*result)[grayLevel - 1]->B += 1;        //3
-	       }
-	       } else {
-	       double_array dxdyR = adjustEstimator->getdxdy(Channel::R, x);
-	       double_array dxdyG = adjustEstimator->getdxdy(Channel::G, x);
-
-	       int suitAdjustGrayLevel_3R =
-	       getSuitAdjustGrayLevel(grayLevel, dxdyR[0],
-	       xCoordinatorArray);
-	       int suitAdjustGrayLevel_3G =
-	       getSuitAdjustGrayLevel(grayLevel, dxdyG[1],
-	       yCoordinatorArray);
-
-	       if (suitAdjustGrayLevel_3R == grayLevel) {
-	       (*result)[grayLevel]->R += 1;    //4
-	       } else if (suitAdjustGrayLevel_3R == (grayLevel - 1)) {
-	       (*result)[grayLevel - 1]->R -= 1;        //2
-	       }
-
-	       if (suitAdjustGrayLevel_3G == grayLevel) {
-	       (*result)[grayLevel]->G += 1;    //2
-	       } else if (suitAdjustGrayLevel_3G == (grayLevel - 1)) {
-	       (*result)[grayLevel - 1]->G -= 1;        //4
-	       }
-	       }
-
-	       break;
-	       }
-	       case Type1x:{
-	       //type I, dx
-	       double_array dxdy = adjustEstimator->getdxdy(Channel::R, x);
-	       double dxOfR = dxdy[0];
-	       double_array coordinatorArray =
-	       getCoordinatorArray(grayLevel, true);
-	       int suitAdjustGrayLevel =
-	       getSuitAdjustGrayLevel(grayLevel, dxOfR, coordinatorArray);
-
-	       if (suitAdjustGrayLevel == grayLevel) {
-	       (*result)[grayLevel]->R += 1;
-	       } else if (suitAdjustGrayLevel == (grayLevel - 1)) {
-	       (*result)[grayLevel - 1]->R -= 1;
-	       } else if (-1 == suitAdjustGrayLevel) {
-	       //沒輒=.=
-	       }
-	       break;
-	       }
-	       case Type1y:{
-	       //type I, dy
-	       double_array dxdy = adjustEstimator->getdxdy(Channel::G, x);
-	       double dyOfG = dxdy[1];
-	       double_array coordinatorArray =
-	       getCoordinatorArray(grayLevel, false);
-	       int suitAdjustGrayLevel =
-	       getSuitAdjustGrayLevel(grayLevel, dyOfG, coordinatorArray);
-
-	       if (suitAdjustGrayLevel == grayLevel) {
-	       (*result)[grayLevel]->G += 1;
-	       } else if (suitAdjustGrayLevel == (grayLevel - 1)) {
-	       (*result)[grayLevel - 1]->G -= 1;
-	       } else if (-1 == suitAdjustGrayLevel) {
-	       //沒輒=.=
-	       }
-	       break;
-	       }
-	       }
-
-
-
-	       }
-	       }
-	       STORE_RGBVECTOR("6.3_afterFix.xls", result);
-	       return result;
-	       };
-
-	       int DimDGLutFixOp::getSuitAdjustGrayLevel(int middleGrayLevel, double delta,
-	       double_array coordinatorArray) {
-	       double_array case1 = DoubleArray::arraycopy(coordinatorArray, 3);
-	       case1[1] += delta;
-
-	       double_array case2 = DoubleArray::arraycopy(coordinatorArray, 3);
-	       case2[2] -= delta;
-
-
-
-	       if (isSuitGap(case1)) {
-	       return middleGrayLevel;
-	       } else if (isSuitGap(case2)) {
-	       return middleGrayLevel - 1;
-	       } else {
-	       return -1;
-	       }
-	       };             
-
-	       //coordinatorArray為遞減的 N -> N-1 -> N-2
-	       bool DimDGLutFixOp::isSuitGap(double_array coordinatorArray) {
-	       double x0 = coordinatorArray[0];
-	       double x1 = coordinatorArray[1];
-	       double x2 = coordinatorArray[2];
-	       bool increase = x0 > x1 && x1 > x2;
-	       return increase;
-	       };
-	       double_array DimDGLutFixOp::getCoordinatorArray(int grayLevel, bool getCoordinatorX) {
-	       int size = componentVector->size();
-	       int x = size - grayLevel - 1;
-	       Component_ptr p0 = (*componentVector)[x - 1];    //亮的
-	       Component_ptr p1 = (*componentVector)[x];
-	       Component_ptr p2 = (*componentVector)[x + 1];
-	       double_array p0xyValues = p0->XYZ->getxyValues();
-	       double_array p1xyValues = p1->XYZ->getxyValues();
-	       double_array p2xyValues = p2->XYZ->getxyValues();
-	       double_array coordinatorArray(new double[3]);
-
-	       int xyindex = getCoordinatorX ? 0 : 1;
-	       coordinatorArray[0] = p0xyValues[xyindex];
-	       coordinatorArray[1] = p1xyValues[xyindex];
-	       coordinatorArray[2] = p2xyValues[xyindex];
-	       return coordinatorArray;
-	       };
-
-	       DimDGLutFixOp::DimDGLutFixOp(bptr < BitDepthProcessor > bitDepth, double dimFixThreshold, Component_vector_ptr componentVector, bptr < ChromaticityAdjustEstimatorIF > adjustEstimator):bitDepth
-	       (bitDepth), dimFixThreshold(dimFixThreshold),
-	       componentVector(componentVector), adjustEstimator(adjustEstimator) {
-	       };
-	     */
-	    //==================================================================
-	    /*DimDGLutFixOp2::DimDGLutFixOp2(bptr < BitDepthProcessor > bitDepth,
-	       double dimFixThreshold,
-	       Component_vector_ptr componentVector,
-	       bptr < ChromaticityAdjustEstimatorIF >
-	       adjustEstimator):DimDGLutFixOp(bitDepth, dimFixThreshold,
-	       componentVector,
-	       adjustEstimator) {
-	       }; */
 
 
 	    double2D_ptr DimDGLutFixOp2::getDeltaxyValues(Component_vector_ptr componentVector) {

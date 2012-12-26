@@ -16,7 +16,7 @@
 //---------------------------------------------------------------------------
 class TCCTLUTForm:public TForm, cms::lcd::calibrate::FeedbackListener {
     __published:		// IDE-managed Components
-    TGroupBox * GroupBox1;
+    TGroupBox * GroupBox_GrayLevel;
     TLabel *Label1;
     TEdit *Edit_StartLevel;
     TLabel *Label2;
@@ -122,6 +122,12 @@ class TCCTLUTForm:public TForm, cms::lcd::calibrate::FeedbackListener {
     TRadioButton *RadioButton_ForceAssignWhite;
     TRadioButton *RadioButton_IntensityShift;
     TGroupBox *GroupBox_Execute;
+    TCheckBox *CheckBox_FixInverseCIEZ;
+    TRadioGroup *RadioGroup_KeepLBy;
+    TCheckBox *CheckBox_MeasureRGBFromDebugFile;
+    TCheckBox *CheckBox_DimRBFix;
+    TEdit *Edit_DimRBFixUnder;
+    TCheckBox *CheckBox_RBFixAuto;
     void __fastcall Button_MeaRunClick(TObject * Sender);
     void __fastcall Button_DebugClick(TObject * Sender);
     void __fastcall FormShow(TObject * Sender);
@@ -156,6 +162,8 @@ class TCCTLUTForm:public TForm, cms::lcd::calibrate::FeedbackListener {
     void __fastcall RadioButton_DeHookNoneClick(TObject * Sender);
     void __fastcall Button1Click(TObject * Sender);
     void __fastcall CheckBox_MultiGenClick(TObject * Sender);
+    void __fastcall CheckBox_DimRBFixClick(TObject * Sender);
+    void __fastcall CheckBox_RBFixAutoClick(TObject * Sender);
   private:			// User declarations
     void setMeasureInfo();
     int serialid;
@@ -166,6 +174,7 @@ class TCCTLUTForm:public TForm, cms::lcd::calibrate::FeedbackListener {
     bptr < cms::measure::MaxMatrixIntensityAnalyzer > secondWhiteAnalyzer;
     const bool debugMode;
     TGammaMeasurementForm *gammaMeasureForm;
+    RGB_vector_ptr gammaTableFromDebugFile;
   public:			// User declarations
     __fastcall TCCTLUTForm(TComponent * Owner);
     void setBitDepthProcessor(bptr < cms::lcd::BitDepthProcessor > bitDepth);

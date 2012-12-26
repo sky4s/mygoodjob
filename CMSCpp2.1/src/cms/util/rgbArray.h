@@ -34,6 +34,7 @@ namespace cms {
 	    static bool isAscend(RGB_vector_ptr rgbVector);
 	    static bool isAscend(RGB_vector_ptr rgbVector, int start, int end);
 	    static RGB_vector_ptr copyRange(RGB_vector_ptr rgbVector, int start, int end);
+	    static double_vector_ptr *toRGBDoubleVector(RGB_vector_ptr rgbVector);
 	};
 
 	enum RGBType {

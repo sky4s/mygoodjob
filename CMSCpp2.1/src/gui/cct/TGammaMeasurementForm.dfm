@@ -1,8 +1,8 @@
 object GammaMeasurementForm: TGammaMeasurementForm
-  Left = 336
-  Top = 226
-  Width = 408
-  Height = 445
+  Left = 439
+  Top = 239
+  Width = 411
+  Height = 484
   Caption = 'Gamma Measurement'
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
@@ -19,7 +19,7 @@ object GammaMeasurementForm: TGammaMeasurementForm
   TextHeight = 13
   object Copyright: TLabel
     Left = 34
-    Top = 397
+    Top = 429
     Width = 281
     Height = 13
     Caption = 'Copyright (C) 2012, AU Optronics Corp., All Right Reserved.'
@@ -117,7 +117,7 @@ object GammaMeasurementForm: TGammaMeasurementForm
     Left = 7
     Top = 13
     Width = 258
-    Height = 276
+    Height = 300
     Caption = 'Panel2'
     TabOrder = 1
     Visible = False
@@ -125,14 +125,14 @@ object GammaMeasurementForm: TGammaMeasurementForm
       Left = 7
       Top = 7
       Width = 242
-      Height = 258
+      Height = 282
       Caption = 'Direct Pattern Measurement (Direct Gamma)'
       TabOrder = 0
       object GroupBox_GrayScale: TGroupBox
         Left = 7
         Top = 14
         Width = 221
-        Height = 139
+        Height = 163
         TabOrder = 0
         object Label4: TLabel
           Left = 16
@@ -155,9 +155,16 @@ object GammaMeasurementForm: TGammaMeasurementForm
           Height = 13
           Caption = 'Measure End Level'
         end
+        object Label8: TLabel
+          Left = 16
+          Top = 136
+          Width = 48
+          Height = 13
+          Caption = 'LUT Type'
+        end
         object RadioButton_GrayScale10Bit: TRadioButton
-          Left = 15
-          Top = 14
+          Left = 71
+          Top = 134
           Width = 59
           Height = 19
           Caption = '10bit'
@@ -166,8 +173,8 @@ object GammaMeasurementForm: TGammaMeasurementForm
           TabStop = True
         end
         object RadioButton_GrayScale12Bit: TRadioButton
-          Left = 67
-          Top = 14
+          Left = 123
+          Top = 134
           Width = 65
           Height = 20
           Caption = '12bit'
@@ -175,7 +182,7 @@ object GammaMeasurementForm: TGammaMeasurementForm
         end
         object Button_LoadDGTable: TButton
           Left = 15
-          Top = 40
+          Top = 22
           Width = 90
           Height = 19
           Caption = 'Load DG Table'
@@ -184,7 +191,7 @@ object GammaMeasurementForm: TGammaMeasurementForm
         end
         object CheckBox_DGLoaded: TCheckBox
           Left = 112
-          Top = 39
+          Top = 22
           Width = 65
           Height = 20
           Caption = 'Loaded'
@@ -217,10 +224,19 @@ object GammaMeasurementForm: TGammaMeasurementForm
           TabOrder = 6
           Text = '0'
         end
+        object CheckBox_10BitInMeasurement: TCheckBox
+          Left = 16
+          Top = 46
+          Width = 137
+          Height = 17
+          Caption = '10Bit in Measurement'
+          TabOrder = 7
+          OnClick = CheckBox_10BitInMeasurementClick
+        end
       end
       object GroupBox_CustomPattern: TGroupBox
         Left = 7
-        Top = 160
+        Top = 184
         Width = 221
         Height = 89
         TabOrder = 1
@@ -300,7 +316,7 @@ object GammaMeasurementForm: TGammaMeasurementForm
       end
       object RadioButton_TCONInputCustomPattern: TRadioButton
         Left = 16
-        Top = 158
+        Top = 182
         Width = 97
         Height = 17
         Caption = 'Custom Pattern'
@@ -311,7 +327,7 @@ object GammaMeasurementForm: TGammaMeasurementForm
   end
   inline TOutputFileFrame1: TOutputFileFrame
     Left = 7
-    Top = 292
+    Top = 316
     Width = 386
     Height = 85
     TabOrder = 2
@@ -356,7 +372,7 @@ object GammaMeasurementForm: TGammaMeasurementForm
     Left = 268
     Top = 13
     Width = 125
-    Height = 215
+    Height = 268
     Caption = 'Color'
     TabOrder = 3
     object CheckBox_W: TCheckBox
@@ -435,7 +451,7 @@ object GammaMeasurementForm: TGammaMeasurementForm
   end
   object Button_Measure: TButton
     Left = 332
-    Top = 234
+    Top = 290
     Width = 59
     Height = 20
     Caption = 'Measure'
@@ -444,7 +460,7 @@ object GammaMeasurementForm: TGammaMeasurementForm
   end
   object ProgressBar1: TProgressBar
     Left = 8
-    Top = 376
+    Top = 408
     Width = 225
     Height = 17
     Min = 0

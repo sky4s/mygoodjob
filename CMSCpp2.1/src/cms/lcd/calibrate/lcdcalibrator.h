@@ -24,7 +24,7 @@ namespace cms {
 
 	    extern bool debugMode;
 	    extern bool linkCA210;
-	    extern bool pcWithTCONInput;
+	    extern bool pcWithDirectGamma;
 
 	    /*
 	       只要DeHook有開, 基本上就是要PanelRegulator先改變面板特性, 再做量測
@@ -62,6 +62,10 @@ namespace cms {
 		SecondWithGamma1st,	//第二代DeHook, 但是以Gamma優先(相對的B Gap就無法降低)
 	    };
 
+	    enum KeepL {
+		ByGamma, ByLuminance
+	    };
+
 
 	     Enumeration(SecondWhite)
 	     None, MaxRGB, DeHook, DeHook2, EnumerationEnd();
@@ -80,12 +84,16 @@ namespace cms {
 		//dim
 		//==============================================================
 		int p1, p2;
-		int under;
+		int dimUnder;
 		double dimStrength;
 		int dimFixEnd;
 		//bool dimFix;
 		double dimFixThreshold;
 		bool keepDarkLevel;
+		bool fixInverseCIEZ;
+		int dimRBFixUnder;
+		bool dimRBFix;
+		bool dimRBFixAutoUnder;
 		//==============================================================
 
 		//==============================================================
@@ -113,6 +121,7 @@ namespace cms {
 		bool absoluteGamma;
 		int absoluteGammaStart;
 		double absGammaStartGLAboveGamma;
+		KeepL keepL;
 		bool fineLuminanceCalibrate;
 		//==============================================================
 
@@ -198,14 +207,17 @@ namespace cms {
 		//dim
 		//==============================================================
 		void setP1P2(int p1, int p2);
-		void setRBInterpolation(int under);
+		void setRGBInterpolation(int under);
 		void setNonDimCorrect();
 		void setDefinedDim(int under, double strength);
+		void setDefinedDimRBFix(int under, bool enable, bool autoUnder);
 		__property int DimFixEnd = { write = dimFixEnd };
 		//__property bool DimFix = { write = dimFix };
 		__property double DimFixThreshold = { write = dimFixThreshold
 		};
 		__property bool KeepDarkLevel = { read = keepDarkLevel, write = keepDarkLevel
+		};
+		__property bool FixInverseCIEZ = { read = fixInverseCIEZ, write = fixInverseCIEZ
 		};
 		//==============================================================
 
@@ -224,7 +236,8 @@ namespace cms {
 				   double_vector_ptr ggammaCurve, double_vector_ptr bgammaCurve);
 		void setOriginalGamma();
 		void setAbsoluteGamma(bool absoluteGamma,
-				      int startGrayLevel, double startGrayLevelAboveGamma);
+				      int startGrayLevel, double startGrayLevelAboveGamma,
+				      KeepL keepL);
 		//==============================================================
 
 		//==============================================================
@@ -276,6 +289,7 @@ namespace cms {
 		__property bool FeedbackFix = { write = feedbackFix };
 		__property string ExcuteStatus = { read = excuteStatus };
 		bool componentVectorLuminanceCheckResult;
+		bool increaseZOfTarget;
 		//==============================================================
 
 	      private:
@@ -367,14 +381,18 @@ namespace cms {
 		//==============================================================
 		// gamma curve relative
 		//==============================================================
+		//一段式gamma
 		static double_vector_ptr getGammaCurveVector(double gamma, int n, int
 							     effectiven);
-
+		static double_vector_ptr get10BitGammaCurveVector(double gamma, int n,
+								  int effectiven);
+		//兩段式gamma
 		static double_vector_ptr getGammaCurveVector(double
 							     dimGamma, int
 							     dimGammaEnd, double
 							     brightGamma, int n, int
 							     effectiven);
+		//三段式gamma
 		static double_vector_ptr getGammaCurveVector(double
 							     dimGamma, int
 							     dimGammaEnd, int
@@ -400,7 +418,7 @@ namespace cms {
 					   double minLuminance,
 					   bool absGamma,
 					   int absGammaStartGL,
-					   double startGLAboveGamma, int effectiven);
+					   double startGLAboveGamma, KeepL keepL, int effectiven);
 		//==============================================================
 		// constructor
 		//==============================================================
@@ -432,6 +450,8 @@ namespace cms {
 		 bptr < cms::measure::MeterMeasurement > getMeterMeasurement() const;
 		__property bool AlterGammaCurveAtDeHook2 = { write = alterGammaCurveAtDeHook2
 		};
+		String dgLutOpErrorMessage;
+		String errorMessage;
 		//==============================================================
 
 

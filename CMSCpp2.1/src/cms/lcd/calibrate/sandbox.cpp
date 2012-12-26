@@ -121,15 +121,30 @@ namespace cms {
 						   luminanceGammaCurve, dimTurn,
 						   brightTurn, dimGamma, brightGamma, brightWidth);
 	    }
+	    bool AdvancedDGLutGenerator::checkIncreaseZOfTarget() {
+		if (null == targetXYZVector) {
+		    return false;
+		}
+		int size = targetXYZVector->size();
+		for (int x = 1; x < size; x++) {
+		    XYZ_ptr XYZ0 = (*targetXYZVector)[x - 1];
+		    XYZ_ptr XYZ1 = (*targetXYZVector)[x];
+		    if (XYZ1->Z < XYZ0->Z) {
+			return false;
+		    }
+		}
+		return true;
+	    };
 
 	    void AdvancedDGLutGenerator::updateTarget(XYZ_ptr targetWhite) {
+		throw UnsupportedOperationException();
 	    };
 
 
 
 	    RGB_vector_ptr AdvancedDGLutGenerator::produce() {
 		if (null == targetXYZVector) {
-		    throw new IllegalStateException();
+		    throw   IllegalStateException();
 		    //return nil_RGB_vector_ptr;
 		}
 		STORE_XYZXY_VECTOE("1.2_target.xls", targetXYZVector);
@@ -381,7 +396,7 @@ namespace cms {
 		 */
 		RGB_vector_ptr result = initRGBVector;
 		if (null == fetcher) {
-		    throw new IllegalStateException("null == fetcher");
+		    throw   IllegalStateException("null == fetcher");
 		}
 		STORE_RGBVECTOR("MultiGen_DG_0.xls", result);
 
@@ -523,9 +538,9 @@ namespace cms {
 		//=============================================================
 
 		double_array targetIntensity = calculateTargetIntensity(analyzer);
-		double rTargetIntensity = targetIntensity[0];
-		double gTargetIntensity = targetIntensity[1];
-		double bTargetIntensity = targetIntensity[2];
+		//double rTargetIntensity = targetIntensity[0];
+		//double gTargetIntensity = targetIntensity[1];
+		//double bTargetIntensity = targetIntensity[2];
 		//=============================================================
 
 

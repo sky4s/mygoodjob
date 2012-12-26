@@ -38,7 +38,9 @@ void __fastcall TAboutBox::FormCreate(TObject * Sender)
 {
     using namespace cms::util;
     int_array version = Util::fetchVersionInfo();
-    string build = " (build:" + _toString(version[2]) + "." + _toString(version[3]) + ")";
+    string build =
+	_toString(version[0]) + "." + _toString(version[1]) + " (build:" + _toString(version[2]) +
+	"." + _toString(version[3]) + ")";
     Version->Caption = Version->Caption + build.c_str();
 }
 

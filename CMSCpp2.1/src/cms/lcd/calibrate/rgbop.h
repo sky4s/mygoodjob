@@ -22,13 +22,18 @@ namespace cms {
 		    bptr < Type > rendering = getRendering(source);
 		    foreach(bptr < RGBOp_Type > op, opvector) {
 			rendering = op->createInstance(rendering);
+			if (0 != errorMessage.size()) {
+			    errorMessage = errorMessage  + "\n" + op->errorMessage;
+			} else {
+			    errorMessage = op->errorMessage;
+			};
 		    };
-		     return rendering;
+		    return rendering;
 		};
 		virtual bptr < Type > getRendering(bptr < Type > source) {
 		    return source;
 		};
-
+		std::string errorMessage;
 	      public:
 		RGBOp() {
 		};
@@ -43,6 +48,9 @@ namespace cms {
 		void addOp(bptr < RGBOp_Type > op) {
 		    opvector.push_back(op);
 		};
+		std::string getErrorMessage() {
+		    return errorMessage;
+		}
 	    };
 
 	};

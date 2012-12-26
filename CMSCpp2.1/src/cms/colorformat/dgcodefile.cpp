@@ -66,6 +66,11 @@ namespace cms {
 			     const Dep::
 			     MaxValue & maxValue):ExcelAccessBase(filename,
 								  mode), maxValue(maxValue) {
+	    if (ReadOnly == mode) {
+		throw java::lang::
+		    UnsupportedOperationException
+		    ("No recommend set MaxValue in ReadOnly mode.(Load MaxValue from file is better)");
+	    }
 	    init();
 	};
 
@@ -76,9 +81,6 @@ namespace cms {
 		      "RP_Intensity_Fix", "GP_Intensity_Fix", "BP_Intensity_Fix", "DG_R", "DG_G",
 		      "DG_B");
 	    initPropertySheet();
-	    /*initSheet(Measure, 12, "id", "R", "G", "B", "X", "Y (nit)", "Z", "_x", "_y",
-	       "R12", "G12", "B12");
-	       measureID = 1; */
 	};
 
 
@@ -213,7 +215,7 @@ namespace cms {
 		   while (query->hasNext()) {
 		   string_vector_ptr result = query->nextResult();
 		   }; */
-		throw new UnsupportedOperationException();
+		throw UnsupportedOperationException();
 
 	    } else {
 		return LCDTarget_ptr((cms::lcd::LCDTarget *) null);
@@ -318,7 +320,7 @@ namespace cms {
 	    double_array targetWhiteRatio;
 	    if (null != dglut) {
 		int max = 255;
-		if (null != bitDepth && bitDepth->isTCONInput()) {
+		if (null != bitDepth && bitDepth->isDirectGamma()) {
 		    max = bitDepth->getLutMaxValue().max;
 		}
 		//±qÀÉ®×¦^ÅªcomponentVector
@@ -480,16 +482,24 @@ namespace cms {
 	    property.store(*this);
 	};
 	bptr < DGLutProperty > DGLutFile::getProperty() {
-	    try {
-		bptr < DGLutProperty > property(new DGLutProperty(this));
-		return property;
+	    if (null == property) {
+		try {
+		    //bptr < DGLutProperty > property(new DGLutProperty(this));
+		    property = bptr < DGLutProperty > (new DGLutProperty(this));
+		    //return property;
+		}
+		catch(IllegalStateException & ex) {
+		    return bptr < DGLutProperty > ((DGLutProperty *) null);
+		}
 	    }
-	    catch(IllegalStateException & ex) {
-		return bptr < DGLutProperty > ((DGLutProperty *) null);
-	    }
+	    return property;
 	};
 	RGB_vector_ptr DGLutFile::getGammaTable() {
-	    return ExcelAccessBase::getGammaTable(maxValue);
+	    bptr < DGLutProperty > property = getProperty();
+	    bptr < cms::lcd::BitDepthProcessor > bitDepth = property->getBitDepthProcessor();
+	    const Dep::MaxValue & lutMaxValue = bitDepth->getLutMaxValue();
+	    return ExcelAccessBase::getGammaTable(lutMaxValue);
+//          return ExcelAccessBase::getGammaTable(maxValue);
 	};
 
 	//======================================================================
@@ -541,7 +551,7 @@ namespace cms {
 		break;
 	    };
 	    bptr < BitDepthProcessor > bitDepth = c->bitDepth;
-	    dgfile.addProperty("direct gamma", bitDepth->isTCONInput()? On : Off);
+	    dgfile.addProperty("direct gamma", bitDepth->isDirectGamma()? On : Off);
 	    dgfile.addProperty("in", *bitDepth->getInputMaxValue().toString());
 	    dgfile.addProperty("lut", *bitDepth->getLutMaxValue().toString());
 	    dgfile.addProperty("out", *bitDepth->getOutputMaxValue().toString());
@@ -560,39 +570,29 @@ namespace cms {
 		    dgfile.addProperty("p1", c->p1);
 		    dgfile.addProperty("p2", c->p2);
 		    break;
-		case DimCorrect::RBInterpolation:
-		    dgfile.addProperty(lowLevelCorrect, "RBInterpolation");
-		    dgfile.addProperty("rb under", c->under);
+		case DimCorrect::RGBInterpolation:
+		    dgfile.addProperty(lowLevelCorrect, "RGBInterpolation");
+		    dgfile.addProperty("rgb under", c->dimUnder);
 		    break;
 		case DimCorrect::None:
 		    dgfile.addProperty(lowLevelCorrect, "None");
 		    break;
 		case DimCorrect::DefinedDim:
 		    dgfile.addProperty(lowLevelCorrect, "DefinedDim");
-		    dgfile.addProperty("defined dim under", c->under);
+		    dgfile.addProperty("defined dim under", c->dimUnder);
 		    dgfile.addProperty("defined dim strength", c->dimStrength);
-		    /*if (true == c->dimFix) {
-		       dgfile.addProperty("defined dim - fix", On);
-		       } */
-		    /*if (true == c->feedbackFix) {
-		       dgfile.addProperty("defined dim - feedback fix", On);
-		       if( null != maxMeasureError ) {
-		       dgfile.
-		       addProperty
-		       ("defined dim - feedback fix init defect", c->initDefectCount);
-		       dgfile.addProperty("defined dim - feedback fix count", c->feedbackFixCount);
-		       dgfile.addProperty("max measure dx", c->maxMeasureError[0]);
-		       dgfile.addProperty("max measure dy", c->maxMeasureError[1]);
-		       }
-		       } */
-		    /*if (true == c->dimFix || true == c->feedbackFix) {
-		       dgfile.addProperty("defined dim - fix threshold", c->dimFixThreshold);
-		       } */
 
 		    XYZ_ptr blackXYZ =
 			(*c->originalComponentVector)[c->originalComponentVector->size() - 1]->XYZ;
 		    xyY_ptr blackxyY(new CIExyY(blackXYZ));
 		    dgfile.addProperty("defined dim black", *blackxyY->toString());
+
+		    if (c->dimRBFix) {
+			dgfile.addProperty("defined dim RB Fix", "True");
+			dgfile.addProperty("defined dim RB Fix under", c->dimRBFixUnder);
+		    }
+
+
 		    break;
 		}
 		dgfile.addProperty("keep dark level", c->KeepDarkLevel ? On : Off);
@@ -603,7 +603,7 @@ namespace cms {
 	    // others
 	    //==================================================================
 	    if (isCCTMode) {
-		dgfile.addProperty("New Method", c->useNewMethod ? On : Off);
+		dgfile.addProperty("new method", c->useNewMethod ? On : Off);
 		if (c->useNewMethod && c->multiGen) {
 		    dgfile.addProperty("multi-gen", c->multiGenTimes);
 		    dgfile.addProperty("keep max Y in multi-gen", c->keepMaxYInMultiGen ? On : Off);
@@ -666,7 +666,13 @@ namespace cms {
 	    case KeepMaxLuminance::TargetWhite:{
 		    keepstr = "Target White";
 		    string smoothIntensity = c->smoothIntensity ? On : Off;
-		    dgfile.addProperty("Smooth Intensity", smoothIntensity);
+		    dgfile.addProperty("smooth itensity", smoothIntensity);
+		    string forceAssignTargetWhite = c->forceAssignTargetWhite ? On : Off;
+		    dgfile.addProperty("force assign target white", forceAssignTargetWhite);
+		    if (c->multiGen) {
+			string autoIntensityInMultiGen = c->autoIntensityInMultiGen ? On : Off;
+			dgfile.addProperty("autoIntensity in multi-gen", autoIntensityInMultiGen);
+		    }
 		}
 		break;
 	    case KeepMaxLuminance::NativeWhite:
@@ -721,12 +727,6 @@ namespace cms {
 		}
 		dgfile.addProperty("keep max lumi adv over", c->keepMaxLumiOver);
 	    }
-	    /*if (true == c->autoIntensity) {
-		RGB_ptr idealIntensity = c->idealIntensity;
-		if (null != idealIntensity) {
-		    dgfile.addProperty("target intensity", *idealIntensity->toString());
-		}
-	    }*/
 	    //==================================================================
 
 	    //==================================================================

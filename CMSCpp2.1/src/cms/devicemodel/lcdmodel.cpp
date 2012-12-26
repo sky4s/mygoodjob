@@ -150,7 +150,7 @@ namespace cms {
 	    return XYZ;
 	};
 	RGB_ptr MultiMatrixModel::getRGB(XYZ_ptr XYZ, boolean relativeXYZ) {
-	    throw new UnsupportedOperationException();
+	    throw   UnsupportedOperationException();
 	};
 	XYZ_ptr MultiMatrixModel::getXYZ(double r, double g, double b) {
 	    return getXYZ(r, g, b, true);
@@ -177,7 +177,7 @@ namespace cms {
 	    return XYZ;
 	};
 	RGB_ptr DeHook2LCDModel::getRGB(XYZ_ptr XYZ, boolean relativeXYZ) {
-	    throw new UnsupportedOperationException();
+	    throw   UnsupportedOperationException();
 	};
 	XYZ_ptr DeHook2LCDModel::getXYZ(double r, double g, double b,
 					boolean relativeXYZ) {

@@ -17,7 +17,7 @@ namespace cms {
 	namespace calibrate {
 	    bool debugMode = false;
 	    bool linkCA210 = false;
-	    bool pcWithTCONInput = false;
+	    bool pcWithDirectGamma = false;
 
 	    using namespace cms::measure;
 	    using namespace Dep;
@@ -37,7 +37,7 @@ namespace cms {
 		rgbIndepGamma = false;
 		useGammaCurve = false;
 		bIntensityGain = 1;
-		under = 50;
+		dimUnder = 50;
 		p1 = p2 = 0;
 		correct = DimCorrect::None;
 		gamma = rgamma = ggamma = bgamma = dimGamma = -1;
@@ -62,6 +62,7 @@ namespace cms {
 		dimFixThreshold = 0.0000;
 		keepDarkLevel = true;
 		feedbackFix = false;
+		fixInverseCIEZ = false;
 
 		colorimetricQuanti = true;
 		//quantiType = NearOriginal;
@@ -86,7 +87,7 @@ namespace cms {
 		fineLuminanceCalibrate = false;
 	    };
 
-
+	    //一段式gamma
 	     double_vector_ptr
 		LCDCalibrator::getGammaCurveVector(double gamma, int n, int effectiven) {
 		double_vector_ptr result(new double_vector(n));
@@ -97,10 +98,27 @@ namespace cms {
 		};
 		for (int x = effectiven; x < n; x++) {
 		    (*result)[x] = 1;
-		} return result;
+		};
+		return result;
+	    };
+	    //一段式10bit gamma
+	    double_vector_ptr LCDCalibrator::get10BitGammaCurveVector(double gamma, int n,
+								      int effectiven) {
+		double_vector_ptr result(new double_vector(n));
+		for (int x = 0; x < effectiven; x++) {
+		    double normal = static_cast < double >(x) / 255.75;
+		    double v = Math::pow(normal, gamma);
+		    v = (v > 1) ? 1 : v;
+		    (*result)[x] = v;
+		};
+		double v = (*result)[effectiven - 1];
+		for (int x = effectiven; x < n; x++) {
+		    (*result)[x] = 1;
+		};
+		return result;
 	    };
 
-
+	    //兩段式gamma
 	    double_vector_ptr
 		LCDCalibrator::getGammaCurveVector(double dimGamma,
 						   int dimGammaEnd,
@@ -126,6 +144,7 @@ namespace cms {
 		} return result;
 	    };
 
+	    //三段式gamma
 	    double_vector_ptr
 		LCDCalibrator::getGammaCurveVector(double dimGamma,
 						   int dimGammaEnd,
@@ -164,9 +183,9 @@ namespace cms {
 		this->p2 = p2;
 		this->correct = DimCorrect::P1P2;
 	    };
-	    void LCDCalibrator::setRBInterpolation(int under) {
-		this->correct = DimCorrect::RBInterpolation;
-		this->under = under;
+	    void LCDCalibrator::setRGBInterpolation(int under) {
+		this->correct = DimCorrect::RGBInterpolation;
+		this->dimUnder = under;
 	    };
 	    void LCDCalibrator::setNonDimCorrect() {
 		this->correct = DimCorrect::None;
@@ -174,16 +193,26 @@ namespace cms {
 
 	    void LCDCalibrator::setDefinedDim(int under, double strength) {
 		this->correct = DimCorrect::DefinedDim;
-		this->under = under;
+		this->dimUnder = under;
 		this->dimFixEnd = under;
 		this->dimStrength = strength;
 
+	    };
+	    void LCDCalibrator::setDefinedDimRBFix(int under, bool enable, bool autoUnder) {
+		this->dimRBFixUnder = under;
+		this->dimRBFix = enable;
+		this->dimRBFixAutoUnder = autoUnder;
 	    };
 
 	    void LCDCalibrator::setGamma(double gamma) {
 		this->gamma = gamma;
 		int n = bitDepth->getLevel();
 		int effectiven = bitDepth->getEffectiveInputLevel();
+		if (bitDepth->is10BitInput()) {
+		    setGammaCurve0(get10BitGammaCurveVector(gamma, n, effectiven));
+		} else {
+		    setGammaCurve0(getGammaCurveVector(gamma, n, effectiven));
+		}
 		setGammaCurve0(getGammaCurveVector(gamma, n, effectiven));
 		useGammaCurve = false;
 		rgbIndepGamma = false;
@@ -257,10 +286,11 @@ namespace cms {
 	    };
 
 	    void LCDCalibrator::setAbsoluteGamma(bool absoluteGamma, int startGrayLevel, double
-						 startGrayLevelAboveGamma) {
+						 startGrayLevelAboveGamma, KeepL keepL) {
 		this->absoluteGamma = absoluteGamma;
 		this->absoluteGammaStart = startGrayLevel;
 		this->absGammaStartGLAboveGamma = startGrayLevelAboveGamma;
+		this->keepL = keepL;
 	    };
 	    void LCDCalibrator::setBMax2(bool bMax2, int begin, double gamma) {
 		this->bMax2 = bMax2;
@@ -305,6 +335,7 @@ namespace cms {
 		    if (-1 != lastY) {
 			bool increase = Y > lastY;
 			if (increase != increaseBase) {
+			    //errorMessage = "Luminance is inverse";
 			    componentVectorLuminanceCheckResult = false;
 			    return false;
 			}
@@ -312,6 +343,7 @@ namespace cms {
 		    lastY = Y;
 		}
 		componentVectorLuminanceCheckResult = true;
+		//errorMessage = "";
 		return true;
 	    };
 
@@ -319,7 +351,10 @@ namespace cms {
 								     measureCondition) {
 		Component_vector_ptr componentVector = fetcher->fetchComponent(measureCondition);
 		RGB_vector_ptr rgbMeasureCode = measureCondition->getRGBMeasureCode();
-		bool checkResult = checkComponentVectorLuminance(componentVector);
+		bool checkResult =
+		    (null !=
+		     componentVector) ? checkComponentVectorLuminance(componentVector) : false;
+		checkResult = true;
 		if (componentVector == null || rgbMeasureCode->size() != componentVector->size()
 		    || false == checkResult) {
 		    return Component_vector_ptr((Component_vector *)
@@ -434,7 +469,7 @@ namespace cms {
 			(lcdmodel4DeHook, this->maxBRawGrayLevel,
 			 reasonableDeltaChromaticity);
 		    if (0 == patchVector->size()) {
-			throw new IllegalStateException("");
+			throw IllegalStateException("");
 		    }
 
 		    if (SecondWithBGap1st == deHook) {
@@ -458,7 +493,7 @@ namespace cms {
 			bestGammaPatch1 =
 			    processor.getBestGammaPatch(patchVector, gamma, this->maxBDGGrayLevel);
 			if (nil_Patch_ptr == bestGammaPatch1) {
-			    throw new IllegalStateException("");
+			    throw IllegalStateException("");
 			}
 			bestGammaPatch2 =
 			    processor.
@@ -546,12 +581,12 @@ namespace cms {
 						      measureCondition,
 						      bptr < DGLutFile > dgLutFile) {
 		if (null == dgLutFile) {
-		    throw new IllegalArgumentException();
+		    throw IllegalArgumentException();
 		}
 		excuteStatus = "CCTDGLut";
 		this->measureCondition = measureCondition;
 		if (false == originalGamma && null == gammaCurve) {
-		    throw new IllegalStateException("null == gammaCurve");
+		    throw IllegalStateException("null == gammaCurve");
 		}
 
 		bool needPanelRegular = isDoDeHook();
@@ -565,6 +600,7 @@ namespace cms {
 		//原始特性量測
 		this->originalComponentVector = fetchComponentVector();
 		if (null == originalComponentVector) {
+		    errorMessage = "null == originalComponentVector";
 		    return nil_RGB_vector_ptr;
 		}
 		if (needPanelRegular && null != panelRegulator) {
@@ -608,12 +644,16 @@ namespace cms {
 		//==============================================================
 		//量化
 		RGB_vector_ptr result = getDGLutOpResult(dglut);
+		/*if (nil_RGB_vector_ptr == result) {
+		   return nil_RGB_vector_ptr;
+		   } */
 		//==============================================================
 
 		//==============================================================
 		//調整max value, 調整到LUT真正的max value
 		//==============================================================
 		STORE_RGBVECTOR("7.9_dgcode_final.xls", result);
+		RGB_ptr r0 = (*result)[0];
 		RGBVector::changeMaxValue(result, bitDepth->getLutMaxValue());
 		//==============================================================
 
@@ -634,7 +674,7 @@ namespace cms {
 	    XYZ_ptr LCDCalibrator::measureFirstAnalyzerReferenceRGB() const {
 		bptr < IntensityAnalyzerIF > firstAnalyzer = getFirstAnalzyer();
 		if (null == firstAnalyzer) {
-		    throw new IllegalStateException();
+		    throw IllegalStateException();
 		}
 		xyY_ptr refRGBxyY = firstAnalyzer->measureReferenceRGB();
 		XYZ_ptr XYZ = refRGBxyY->toXYZ();
@@ -720,8 +760,7 @@ namespace cms {
 		    //NativeWhite(可搭配de-hook) & TargetWhite
 		    //componentVector是事先量好的(呼叫此function之前)
 		    if (isDoDeHook() && null == secondWhiteAnalyzer) {
-			throw new
-			    IllegalStateException("isDoDeHook() && null == secondWhiteAnalyzer");
+			throw IllegalStateException("isDoDeHook() && null == secondWhiteAnalyzer");
 		    }
 		    advgenerator =
 			bptr < AdvancedDGLutGenerator >
@@ -754,7 +793,7 @@ namespace cms {
 					       minLuminance,
 					       absoluteGamma,
 					       absoluteGammaStart,
-					       absGammaStartGLAboveGamma, effectiven);
+					       absGammaStartGLAboveGamma, keepL, effectiven);
 		} else {
 		    luminanceGammaCurve =
 			getLuminanceGammaCurve(gammaCurve, maxLuminance, minLuminance);
@@ -778,6 +817,7 @@ namespace cms {
 		//=============================================================
 		double_vector_ptr luminanceGammaCurve = initLuminanceGammaCurve(referenceXYZ);
 		if (nil_double_vector_ptr == luminanceGammaCurve) {
+		    errorMessage = "nil_double_vector_ptr == luminanceGammaCurve";
 		    return nil_RGB_vector_ptr;
 		}
 		STORE_DOUBLE_VECTOR("1.0_lumigammacurve.xls", luminanceGammaCurve);
@@ -812,7 +852,7 @@ namespace cms {
 
 		if (correct == DimCorrect::DefinedDim) {
 		    dimStrengthParameter = dimStrength;
-		    underParameter = under;
+		    underParameter = dimUnder;
 		} else if (correct == DimCorrect::None) {
 		    underParameter = 0;
 		}
@@ -836,9 +876,14 @@ namespace cms {
 					    dimStrengthParameter,
 					    brightgammaParameter,
 					    bitDepth->getEffectiveInputLevel());
+		    this->increaseZOfTarget = advgenerator->checkIncreaseZOfTarget();
+		    if (!increaseZOfTarget && fixInverseCIEZ) {
+			//遇到沒有遞增
+		    }
 		    //得到目標值
 		    this->targetXYZVector = advgenerator->TargetXYZVector;
 		    if (null == targetXYZVector) {
+			errorMessage = "null == targetXYZVector";
 			return nil_RGB_vector_ptr;
 		    }
 		    //從目標值算出DGLut
@@ -851,8 +896,8 @@ namespace cms {
 		    //=========================================================
 		    // feedback
 		    //=========================================================
-		    if (true == feedbackFix && (true == debugMode || bitDepth->isTCONInput()
-						|| pcWithTCONInput)) {
+		    if (true == feedbackFix && (true == debugMode || bitDepth->isDirectGamma()
+						|| pcWithDirectGamma)) {
 			//先從DGLut算出灰階的dx dy
 			//再從這樣的結果微調目標值
 			const MaxValue & lutMaxValue = bitDepth->getLutMaxValue();
@@ -1071,11 +1116,11 @@ namespace cms {
 		excuteStatus = "GammaDGLut";
 		this->measureCondition = measureCondition;
 		if (false == rgbIndepGamma && null == gammaCurve) {
-		    throw new IllegalStateException("null == gammaCurve");
+		    throw IllegalStateException("null == gammaCurve");
 		} else
 		    if (true == rgbIndepGamma
 			&& (null == rgammaCurve || null == ggammaCurve || null == bgammaCurve)) {
-		    throw new
+		    throw
 			IllegalStateException
 			("null == rgammaCurve || null == ggammaCurve || null == bgammaCurve");
 		}
@@ -1194,8 +1239,11 @@ namespace cms {
 		//==============================================================
 		// dim修正
 		//==============================================================
-		if (correct == DimCorrect::RBInterpolation) {
-		    bptr < DGLutOp > op(new RBInterpolationOp(under));
+		if (correct == DimCorrect::RGBInterpolation) {
+		    bptr < DGLutOp > op(new RGBInterpolationOp(dimUnder));
+		    dgop.addOp(op);
+		} else if (correct == DimCorrect::DefinedDim && true == dimRBFix) {
+		    bptr < DGLutOp > op(new RBInterpolationOp(dimRBFixUnder, dimRBFixAutoUnder));
 		    dgop.addOp(op);
 		}
 		//==============================================================
@@ -1214,7 +1262,8 @@ namespace cms {
 
 		switch (keepMaxLuminance) {
 		case KeepMaxLuminance::TargetWhite:{
-			if (forceAssignTargetWhite) {
+			//20121214新增autoIntensityInMultiGen入判斷式
+			if (forceAssignTargetWhite /*|| autoIntensityInMultiGen */ ) {
 			    bptr < cms::measure::IntensityAnalyzerIF > analyzer =
 				fetcher->getAnalyzer();
 			    RGB_ptr targetRGB = analyzer->getReferenceRGB();
@@ -1223,21 +1272,23 @@ namespace cms {
 			}
 		    }
 		    break;
-		case KeepMaxLuminance::NativeWhite:{
-			bptr < cms::measure::IntensityAnalyzerIF > analyzer =
-			    fetcher->getAnalyzer();
-			RGB_ptr targetRGB = analyzer->getReferenceRGB();
-			bptr < DGLutOp > setWhite(new SetWhiteOp(bitDepth, targetRGB));
-			dgop.addOp(setWhite);
-		    }
+		case KeepMaxLuminance::NativeWhite:
 		    //如果用上dehook2, maxBDGGrayLevel到白點需要內插, 使色度漸進到白點
-		    if (SecondWithBGap1st == dehook || SecondWithBGap1st == dehook) {
+		    if (SecondWithBGap1st == dehook || SecondWithGamma1st == dehook) {
 			RGB_ptr rgb = secondWhiteAnalyzer->getReferenceRGB();
 			if (-1 == maxBDGGrayLevel) {
 			    ShowMessage("-1 == maxBDGGrayLevel");
 			}
 			bptr < DGLutOp > deHook2(new DeHook2Op(bitDepth, rgb, maxBDGGrayLevel));
 			dgop.addOp(deHook2);
+		    } else {
+			bptr < cms::measure::IntensityAnalyzerIF > analyzer =
+			    fetcher->FirstAnalyzer;
+			RGB_ptr targetRGB = analyzer->getReferenceRGB();
+
+			bptr < DGLutOp > setWhite(new SetWhiteOp(bitDepth, targetRGB));
+			dgop.addOp(setWhite);
+
 		    }
 		    break;
 		case KeepMaxLuminance::Smooth2NativeWhite:{
@@ -1264,23 +1315,10 @@ namespace cms {
 		// dim修正, 在xy domain上進行; dprecated
 		//==============================================================
 
-		/*if (dimFix) { //dprecated
-		   //50量到0
-		   Component_vector_ptr dimComponentVector = getDimComponentVector(dglut);
-		   bptr < ChromaticityAdjustEstimatorIF >
-		   chromaticityEstimator(new
-		   MeasureEstimator
-		   (dimComponentVector,
-		   fetcher->getAnalyzer(), bitDepth));
-		   bptr < DGLutOp >
-		   dimfix(new
-		   DimDGLutFixOp(bitDepth, dimFixThreshold,
-		   dimComponentVector, chromaticityEstimator));
-		   dgop.addOp(dimfix);
-		   } */
 		//==============================================================
 
 		RGB_vector_ptr result = dgop.createInstance();
+		dgLutOpErrorMessage = dgop.getErrorMessage().c_str();
 		//==============================================================
 		// keep dark level
 		//==============================================================
@@ -1340,6 +1378,7 @@ namespace cms {
 								    bool absGamma,	//
 								    int absGammaStartGL,	//8
 								    double startGLAboveGamma,	//2.2
+								    KeepL keepL,	//by gamma/luminance
 								    int effectiven) {	//256
 		if (true == absGamma) {
 		    int size = normalGammaCurve->size();
@@ -1395,13 +1434,39 @@ namespace cms {
 		    //=========================================================
 		    double_vector_ptr newNormalGammaCurve(new double_vector());
 
-		    //相對gamma區間,
-		    for (int x = 0; x < turnGrayLevel; x++) {
-			//此區段設定順勢修正到abs gamma
-			double normalInput = static_cast < double >(x) / (effectiven - 1);
-			double relativeNomralOutput =
-			    GammaFinder::gamma(normalInput, relativeGamma);
-			newNormalGammaCurve->push_back(relativeNomralOutput);
+		    if (ByGamma == keepL) {
+			//相對gamma區間, 透過gamma線性內插修正
+			for (int x = 0; x < turnGrayLevel; x++) {
+			    //此區段設定順勢修正到abs gamma
+			    double normalInput = static_cast < double >(x) / (effectiven - 1);
+			    double relativeNomralOutput =
+				GammaFinder::gamma(normalInput, relativeGamma);
+			    newNormalGammaCurve->push_back(relativeNomralOutput);
+			}
+		    } else if (ByLuminance == keepL) {
+			//相對gamma區間, 透過亮度線性內插修正
+
+			//in turnGrayLevel
+			double absoluteNormalOutputInTurn = (*normalGammaCurve)[turnGrayLevel];
+			double absoluteGammaLuminanceInTurn =
+			    absoluteNormalOutputInTurn * maxLuminance;
+			double relativeNormalOutputInTurn =
+			    (absoluteGammaLuminanceInTurn - minLuminance) / (maxLuminance -
+									     minLuminance);
+
+			for (int x = 0; x < turnGrayLevel; x++) {
+			    //此區段設定順勢修正到abs gamma
+			    /*double normalInput = static_cast < double >(x) / (effectiven - 1);
+			       double relativeNomralOutput =
+			       GammaFinder::gamma(normalInput, relativeGamma);
+
+			       double relativeGamma = GammaFinder::getGammaExponential(normalInput,
+			       relativeNormalOutput); */
+
+			    double relativeNomralOutput =
+				relativeNormalOutputInTurn / turnGrayLevel * x;
+			    newNormalGammaCurve->push_back(relativeNomralOutput);
+			}
 		    }
 		    //絕對gamma區間
 		    for (int x = turnGrayLevel; x < effectiven; x++) {

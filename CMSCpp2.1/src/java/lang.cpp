@@ -112,6 +112,9 @@ namespace java {
 	    return RoundTo(v, 0);
 	    //return round(v);
 	};
+	int Math::ceil(double v) {
+	    return std::ceil(v);
+	};
 	double Math::log(double v) {
 	    return std::log(v);
 	};
@@ -350,9 +353,4 @@ namespace java {
 
     };
 };
-
-
-
-
-
 

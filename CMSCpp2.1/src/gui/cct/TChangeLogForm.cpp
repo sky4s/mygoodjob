@@ -13,6 +13,22 @@ __fastcall TChangeLogForm::TChangeLogForm(TComponent * Owner)
 :TForm(Owner)
 {
     Memo1->Text = "\
+       {Issue List}\r\n\
+       開啟I2C Test會造成量測delay時間拉長為10sec\r\n\
+       \r\n\
+       [3.5 build 1.55] 2012/12/18\r\n\
+       +10in時, 1023若無法對應DG4080, 會顯示警告訊息\r\n\
+       [3.5 build 1.54] 2012/12/14\r\n\
+       -10Bit in時Target White修正256為255\r\n\
+       +Target White時儲存Force Assign Target White的設定值\r\n\
+       [3.5 build 1.53] 2012/12/13\r\n\
+       改變版本號策略: 子版本供Product Team辨識, Build流水號供Platform Team內部識別\r\n\
+       +加回Matrix Calibration Form\r\n\
+       [3.4 build 1.52] 2012/12/13\r\n\
+       +增加10bit in Gamma Measure\r\n\
+       -解決10bit in Gamma Curve bug\r\n\
+       [3.4 build 1.50] 2012/12/5\r\n\
+       +增加Defined Dim:RB Fix(為解決低灰階偏色問題)\r\n\
        [3.4 build 1.48] 2012/11/23\r\n\
        +Main頁面修改\r\n\
        \r\n\
@@ -99,9 +115,9 @@ __fastcall TChangeLogForm::TChangeLogForm(TComponent * Owner)
 void __fastcall TChangeLogForm::FormResize(TObject * Sender)
 {
     /*int w = this->ClientRect.Width();
-    int h = this->ClientRect.Height();
-    int height = h - Memo1->Top * 2;
-    int width = w - Memo1->Left * 2;*/
+       int h = this->ClientRect.Height();
+       int height = h - Memo1->Top * 2;
+       int width = w - Memo1->Left * 2; */
     //Memo1->Height = height;
     //Memo1->Width = width;
 }

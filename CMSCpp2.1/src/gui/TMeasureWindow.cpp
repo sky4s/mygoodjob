@@ -329,7 +329,7 @@ void __fastcall TMeasureWindow::Button1Click(TObject * Sender)
 }
 
 //---------------------------------------------------------------------------
-void TMeasureWindow::setTCONInput(bptr < i2c::TCONControl > tconcontrol,
+void TMeasureWindow::setDirectGamma(bptr < i2c::TCONControl > tconcontrol,
 				  bptr < cms::lcd::BitDepthProcessor > bitDepth)
 {
     this->tconcontrol = tconcontrol;
@@ -353,7 +353,7 @@ void TMeasureWindow::setTCONControlOff()
 //---------------------------------------------------------------------------
 void TMeasureWindow::setVisible(bool visible)
 {
-#ifdef DEBUG_STOP_TCONINPUT
+#ifdef DEBUG_STOP_DIRECTGAMMA
     if (TCON == source) {
 	tconcontrol->setGammaTest(visible);
     }

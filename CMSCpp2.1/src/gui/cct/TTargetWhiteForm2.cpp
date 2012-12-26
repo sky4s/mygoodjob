@@ -257,7 +257,7 @@ void __fastcall TTargetWhiteForm2::Button_RunClick(TObject * Sender)
 	//==========================================================================
 	// 設定到ca-210去
 	//==========================================================================
-	bool tconinput = bitDepth->isTCONInput();
+	bool directGamma = bitDepth->isDirectGamma();
 
 	analyzer->setWaitTimes(5000);
 	stopMeasure = false;
@@ -265,23 +265,23 @@ void __fastcall TTargetWhiteForm2::Button_RunClick(TObject * Sender)
 	analyzer->beginAnalyze();
 	//當在Direct Gamma下, false == MeasureWindow->Visibl會一直成立
 	//如此將無法進行量測
-	if (true == stopMeasure || (!tconinput && false == MeasureWindow->Visible)) {
+	if (true == stopMeasure || (!directGamma && false == MeasureWindow->Visible)) {
 	    return;
 	}
 	analyzer->setupComponent(Channel::R, r);
-	if (true == stopMeasure || (!tconinput && false == MeasureWindow->Visible)) {
+	if (true == stopMeasure || (!directGamma && false == MeasureWindow->Visible)) {
 	    return;
 	}
 	analyzer->setupComponent(Channel::G, g);
-	if (true == stopMeasure || (!tconinput && false == MeasureWindow->Visible)) {
+	if (true == stopMeasure || (!directGamma && false == MeasureWindow->Visible)) {
 	    return;
 	}
 	analyzer->setupComponent(Channel::B, b);
-	if (true == stopMeasure || (!tconinput && false == MeasureWindow->Visible)) {
+	if (true == stopMeasure || (!directGamma && false == MeasureWindow->Visible)) {
 	    return;
 	}
 	analyzer->setupComponent(Channel::W, rgb);
-	if (true == stopMeasure || (!tconinput && false == MeasureWindow->Visible)) {
+	if (true == stopMeasure || (!directGamma && false == MeasureWindow->Visible)) {
 	    return;
 	}
 	//if (MainForm->isCA210Analyzer()) {
