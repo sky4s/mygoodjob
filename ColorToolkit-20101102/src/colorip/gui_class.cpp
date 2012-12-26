@@ -274,7 +274,7 @@ void AbstractIPBase::initAliasNameMap()
 		"HUE_DEMO_EN", "HUE_DEMO",
 		"HSV_EN", "HUE_EN",
 		"HUE_DEMO_EN", "HUE_DEMO",
-		"VALUE_MODE", "V_OFS_EN"
+		//"VALUE_MODE", "V_OFS_EN"
 	    };
 	    int size = (sizeof(ALIAS_NAMES) / sizeof(ALIAS_NAMES[0])) / 2;
 

@@ -729,7 +729,7 @@ TBit *HSV_11307::SetChkBx()
 	setAddressFromFile(&ChkBx[0], "HUE_EN");
 	setAddressFromFile(&ChkBx[1], "HUE_DEMO");
 	setAddressFromFile(&ChkBx[2], "HUE_DEMO_LEFT");
-	setAddressFromFile(&ChkBx[3], "V_OFS_EN");
+	setAddressFromFile(&ChkBx[3], "VALUE_MODE");
 	setAddressFromFile(&ChkBx[4], "CLIP_SEL");
     }
     return ChkBx;

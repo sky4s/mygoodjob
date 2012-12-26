@@ -1,6 +1,6 @@
 object EngineerForm: TEngineerForm
-  Left = 108
-  Top = 66
+  Left = 218
+  Top = 171
   Width = 916
   Height = 672
   Caption = 'Engineering'
@@ -10517,6 +10517,16 @@ object EngineerForm: TEngineerForm
         OnClick = btn_reloadClick
         Kind = bkRetry
       end
+      object CheckBox_ShowRWWarning: TCheckBox
+        Left = 520
+        Top = 312
+        Width = 121
+        Height = 25
+        Caption = 'Show R/W Warning'
+        Checked = True
+        State = cbChecked
+        TabOrder = 5
+      end
     end
     object TabSheet2: TTabSheet
       Caption = 'R/W &Operation'
@@ -10799,7 +10809,7 @@ object EngineerForm: TEngineerForm
   end
   object stb_page_operat: TStatusBar
     Left = 0
-    Top = 628
+    Top = 621
     Width = 908
     Height = 17
     Color = clSkyBlue

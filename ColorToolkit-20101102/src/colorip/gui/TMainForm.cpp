@@ -190,6 +190,9 @@ void __fastcall TMainForm::FormCreate(TObject * Sender)
     //MainForm->Caption = "AUO 11307";
     using namespace cms::util;
     int_array version = Util::fetchVersionInfo();
+    string v0 = _toString(version[0]);
+    string v1 = _toString(version[1]);
+    string v3 = _toString(version[3]);
     string build =
 	" v" + _toString(version[0]) + "." + _toString(version[1]) + "(build:" +
 	_toString(version[3]) + ") ";
