@@ -1072,7 +1072,9 @@ void __fastcall TEngineerForm::btn_byte_writeClick(TObject * Sender)
     }
     if (str[0] != '\0') {
 	Connect_Msg = (String) str + " Fail!";
-	ShowMessage(Err_Msg_W);
+	if (CheckBox_ShowRWWarning->Checked) {
+	    ShowMessage(Err_Msg_W);
+	}
     }
     btn_byte_write->Enabled = true;
 }
@@ -1434,14 +1436,14 @@ bool TEngineerForm::pg_write()
 	    if (rg_device_addr_sel->ItemIndex == 2) {
 		ok = USB_pg_write(dev_addr[i], data_addr, data_addr_cnt,
 				  data_write, data_len, pck_size, wait_t);
-		if (ok == 0) {
+		if (ok == 0 && CheckBox_ShowRWWarning->Checked) {
 		    ShowMessage(Err_Msg_W);
 		}
 	    } else {
 		// no seperate
 		ok = USB_seq_pg_write(dev_addr[i], data_addr,
 				      data_addr_cnt, data_write, data_len, pck_size, wait_t);
-		if (ok == 0) {
+		if (ok == 0 && CheckBox_ShowRWWarning->Checked) {
 		    ShowMessage(Err_Msg_W);
 		}
 	    }

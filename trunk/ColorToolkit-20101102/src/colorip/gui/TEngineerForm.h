@@ -114,6 +114,7 @@ class TEngineerForm:public TForm {
     TButton *btn_byte_read_no_ack;
     TLabel *Label2;
     TStringGrid *sg_seq_data;
+    TCheckBox *CheckBox_ShowRWWarning;
     void __fastcall FormCreate(TObject * Sender);
     void __fastcall FormClose(TObject * Sender, TCloseAction & Action);
     void __fastcall btn_byte_readClick(TObject * Sender);
