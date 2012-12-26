@@ -24,7 +24,7 @@
 //#define DEBUG_CCTLUT_NEWMETHOD_STEP
 
 //解析Intensity
-#define DEBUG_INTENISITY
+//#define DEBUG_INTENISITY
 
 
 //find white過程的紀錄
@@ -36,7 +36,7 @@
   是否支援在tcon input狀況下, 能中止量測;
   能中止意味著會跳出量測視窗來阻擋, 因為中止功能要靠視窗去攔截按鍵
 */
-//#define DEBUG_STOP_TCONINPUT
+//#define DEBUG_STOP_DIRECTGAMMA
 
 //是否提供excel讀寫功能
 #define EXCEL_ACCESSIBLE

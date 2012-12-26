@@ -69,18 +69,13 @@ namespace cms {
 		return -1;
 	    };
 	};
-	bool BitDepthProcessor::is10BitTCONInput() {
+	bool BitDepthProcessor::is10BitDirectGamma() {
 	    return *lut == MaxValue::Int10Bit;
 	};
-	/*BitDepthProcessor::BitDepthProcessor(int inBit, int lutBit, int outBit, bool tconInput, int tconInputBit):tconInput(tconInput)
-	   {
-	   in = &MaxValue::getByIntegerBit(inBit);
-	   lut = &MaxValue::getByIntegerBit(lutBit);
-	   out = &MaxValue::getByIntegerBit(outBit);
-	   tcon = &MaxValue::getByIntegerBit(tconInputBit);
-	   bitDepth = getBitDepth(*in, *out);
-	   }; */
-      BitDepthProcessor::BitDepthProcessor(int inBit, int lutBit, int outBit, bool tconInput):tconInput(tconInput)
+	bool BitDepthProcessor::is10BitInput() {
+	    return *in == MaxValue::Int10Bit;
+	};
+      BitDepthProcessor::BitDepthProcessor(int inBit, int lutBit, int outBit, bool directGamma):directGamma(directGamma)
 	{
 	    in = &MaxValue::getByIntegerBit(inBit);
 	    lut = &MaxValue::getByIntegerBit(lutBit);
@@ -89,7 +84,7 @@ namespace cms {
 	    bitDepth = getBitDepth(*in, *out);
 	};
 
-	BitDepthProcessor::BitDepthProcessor(int inBit, int lutBit, int outBit):tconInput(false) {
+	BitDepthProcessor::BitDepthProcessor(int inBit, int lutBit, int outBit):directGamma(false) {
 	    in = &MaxValue::getByIntegerBit(inBit);
 	    lut = &MaxValue::getByIntegerBit(lutBit);
 	    out = &MaxValue::getByIntegerBit(outBit);
@@ -102,13 +97,13 @@ namespace cms {
 	int BitDepthProcessor::getMeasureStart() {
 	    switch (bitDepth) {
 	    case b10_10:
-		return tconInput ? 4095 : 255;
+		return directGamma ? 4095 : 255;
 	    case b10_8:
 	    case b8_8:
-		return tconInput ? (is10BitTCONInput()? 1020 : 4080) : 255;
+		return directGamma ? (is10BitDirectGamma()? 1020 : 4080) : 255;
 	    case b8_6:
 	    case b6_6:
-		return tconInput ? (is10BitTCONInput()? 1008 : 4032) : 252;
+		return directGamma ? (is10BitDirectGamma()? 1008 : 4032) : 252;
 	    default:
 		throw IllegalStateException("Unsupported bitDepth: " + bitDepth);
 	    }
@@ -134,13 +129,13 @@ namespace cms {
 	int BitDepthProcessor::getMeasureStep() {
 	    switch (bitDepth) {
 	    case b10_10:
-		return tconInput ? 16 : 1;
+		return directGamma ? 16 : 1;
 	    case b10_8:
 	    case b8_8:
-		return tconInput ? (is10BitTCONInput()? 4 : 16) : 1;
+		return directGamma ? (is10BitDirectGamma()? 4 : 16) : 1;
 	    case b8_6:
 	    case b6_6:
-		return tconInput ? (is10BitTCONInput()? 16 : 64) : 4;
+		return directGamma ? (is10BitDirectGamma()? 16 : 64) : 4;
 	    default:
 		throw IllegalStateException("Unsupported bitDepth: " + bitDepth);
 	    }
@@ -149,14 +144,13 @@ namespace cms {
 	int BitDepthProcessor::getMeasureFirstStep() {
 	    switch (bitDepth) {
 	    case b10_10:
-		return tconInput ? 15 : 1;
+		return directGamma ? 15 : 1;
 	    case b10_8:
 	    case b8_8:
-		return tconInput ? 16 : 1;
+		return directGamma ? 16 : 1;
 	    case b8_6:
 	    case b6_6:
-		//return tconInput ? 16 : 4;
-		return tconInput ? (is10BitTCONInput()? 16 : 64) : 4;
+		return directGamma ? (is10BitDirectGamma()? 16 : 64) : 4;
 	    default:
 		throw IllegalStateException("Unsupported bitDepth: " + bitDepth);
 	    }
@@ -166,7 +160,7 @@ namespace cms {
 	    switch (bitDepth) {
 	    case b10_10:
 	    case b10_8:
-		return 256;
+		return 255.75;
 	    case b8_8:
 	    case b8_6:
 		return 255;
@@ -179,7 +173,7 @@ namespace cms {
 	double BitDepthProcessor::getOutputMaxDigitalCount() {
 	    switch (bitDepth) {
 	    case b10_10:
-		return 256;
+		return 255.75;
 	    case b10_8:
 	    case b8_8:
 		return 255;
@@ -208,7 +202,9 @@ namespace cms {
 	    }
 	};
 	int BitDepthProcessor::getEffectiveInputLevel() {
-	    return getInputMaxDigitalCount() + 1;
+	    int v = Math::ceil(getInputMaxDigitalCount());
+	    return Math::ceil(getInputMaxDigitalCount()) + 1;
+	    //            return getInputMaxDigitalCount() + 1;
 	};
 	bool BitDepthProcessor::is8in8Out() {
 	    return bitDepth == b8_8;
@@ -236,17 +232,14 @@ namespace cms {
 	    return *out;
 	};
 
-	bool BitDepthProcessor::isTCONInput() {
-	    return tconInput;
+	bool BitDepthProcessor::isDirectGamma() {
+	    return directGamma;
 	};
 
-	void BitDepthProcessor::setTCONInput(bool tconInput) {
-	    this->tconInput = tconInput;
+	void BitDepthProcessor::setDirectGamma(bool directGamma) {
+	    this->directGamma = directGamma;
 	};
-	/*void BitDepthProcessor::setTCONInputBit(int tconInputBit) {
-	   tcon = &MaxValue::getByIntegerBit(tconInputBit);
-	   //bitDepth = getBitDepth(*in, *out);
-	   }; */
+
 	void BitDepthProcessor::setInBit(int inBit) {
 	    in = &MaxValue::getByIntegerBit(inBit);
 	    bitDepth = getBitDepth(*in, *out);
@@ -276,23 +269,6 @@ namespace cms {
 		return string_ptr(new string(result));
 	    }
 
-	    /*switch (bitDepth) {
-	       case b10_10:
-	       return string_ptr(new string("10+2"));
-	       case b10_8:
-	       return string_ptr(new string("8+3"));
-	       case b8_8:
-	       if (*lut == MaxValue::Int12Bit) {
-	       return string_ptr(new string("8+3"));
-	       } else {
-	       return string_ptr(new string("8+2"));
-	       }
-	       case b8_6:
-	       case b6_6:
-	       return string_ptr(new string("6+3"));
-	       default:
-	       return string_ptr(new string("N/A"));
-	       } */
 	};
 	const Dep::MaxValue & BitDepthProcessor::getFRCAbilityBit() {
 	    if (Unknow == bitDepth) {
@@ -312,56 +288,39 @@ namespace cms {
 		return MaxValue::getByIntegerBit(totalbit);
 	    }
 
-	    /*switch (bitDepth) {
-	       case b10_10:
-	       return MaxValue::Int12Bit;
-	       case b10_8:
-	       return MaxValue::Int11Bit;
-	       case b8_8:
-	       if (*lut == MaxValue::Int12Bit) {
-	       return MaxValue::Int11Bit;
-	       } else {
-	       return MaxValue::Int10Bit;
-	       }
-	       case b8_6:
-	       case b6_6:
-	       return MaxValue::Int9Bit;
-	       default:
-	       throw IllegalStateException();
-	       } */
 	};
 	const int BitDepthProcessor::getFRCOnlyBit() {
 	    return getFRCOnlyBit(bitDepth);
 	};
 	const Dep::MaxValue & BitDepthProcessor::getMeasureMaxValue() {
-	    const MaxValue & maxValue = isTCONInput()? getLutMaxValue() : MaxValue::Int8Bit;
+	    const MaxValue & maxValue = isDirectGamma()? getLutMaxValue() : MaxValue::Int8Bit;
 	    return maxValue;
 	};
 	//==================================================================
 
       PanelInfo::PanelInfo(bptr < BitDepthProcessor > bitDepth):bitDepth(bitDepth),
 	    tconContrl(bptr < i2c::TCONControl >
-		       ((i2c::TCONControl *) null)), tconInput(false) {
-	    if (bitDepth->isTCONInput()) {
-		throw new IllegalArgumentException("");
+		       ((i2c::TCONControl *) null)), directGamma(false) {
+	    if (bitDepth->isDirectGamma()) {
+		throw IllegalArgumentException("");
 	    }
 	};
       PanelInfo::PanelInfo(bptr < BitDepthProcessor > bitDepth, bptr < i2c::TCONControl > tconContrl):bitDepth(bitDepth),
-	    tconContrl(tconContrl), tconInput(true)
+	    tconContrl(tconContrl), directGamma(true)
 	{
-	    if (null == tconContrl || !bitDepth->isTCONInput()) {
-		throw new IllegalArgumentException("");
+	    if (null == tconContrl || !bitDepth->isDirectGamma()) {
+		throw IllegalArgumentException("");
 	    }
 	};
-	void PanelInfo::setPCWithTCONInput(bool enable) {
+	void PanelInfo::setPCWithDirectGamma(bool enable) {
 	    if (enable) {
-		if (!tconInput) {
-		    throw new IllegalStateException("");
+		if (!directGamma) {
+		    throw IllegalStateException("");
 		} else {
-		    pcWithTCONInput = true;
+		    pcWithDirectGamma = true;
 		}
 	    } else {
-		pcWithTCONInput = false;
+		pcWithDirectGamma = false;
 	    }
 
 	};

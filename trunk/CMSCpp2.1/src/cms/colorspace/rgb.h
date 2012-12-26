@@ -75,6 +75,7 @@ namespace cms {
 		inline bool operator!=(const RGBColor & rhs) {
 		    return !(*this == rhs);
 		};
+		void setProcessOverflow(bool process);
 
 	      protected:
 		 boolean isLegal(double value);
@@ -100,16 +101,18 @@ namespace cms {
 
 		static void changeMaxValue(double_array values,
 					   const MaxValue & srcType,
-					   const MaxValue & destType, bool integerRoundDown);
+					   const MaxValue & destType, bool integerRoundDown,
+					   bool processOverflow);
 		static double_array changeIntegerMaxValue(double_array integerValues,
 							  const MaxValue & srcType,
-							  const MaxValue & destType,
-							  bool roundDown);
-		static double_array changeMaxValue(double_array normal100,
-						   const MaxValue & type, bool integerRoundDown);
+							  const MaxValue & destType, bool roundDown,
+							  bool processOverflow);
+		static double_array changeMaxValue(double_array normal100, const MaxValue & type,
+						   bool integerRoundDown);
 
 		static double_array normalizeTo100(double_array values, const MaxValue & maxValue);
 		int getNumberBands();
+		bool processOverflow;
 	    };
 	};
     };

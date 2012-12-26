@@ -726,7 +726,7 @@ object MainForm: TMainForm
     Top = 392
     Width = 281
     Height = 13
-    Caption = 'Copyright (C) 2012, AU Optronics Corp., All Right Reserved.'
+    Caption = 'Copyright (C) 2013, AU Optronics Corp., All Right Reserved.'
   end
   object Image1: TImage
     Left = 7
@@ -1767,8 +1767,6 @@ object MainForm: TMainForm
   object MainMenu1: TMainMenu
     object MatrixCalibration1: TMenuItem
       Caption = 'Matrix Calibration'
-      Enabled = False
-      Visible = False
       OnClick = MatrixCalibration1Click
     end
     object TargetWhite1: TMenuItem

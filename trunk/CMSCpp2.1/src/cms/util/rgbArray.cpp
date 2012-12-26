@@ -159,7 +159,20 @@ namespace cms {
 
 	    return result;
 	};
-
+	double_vector_ptr *RGBVector::toRGBDoubleVector(RGB_vector_ptr rgbVector) {
+	    double_vector_ptr *result = new double_vector_ptr[3];
+	    int size = rgbVector->size();
+	    result[0] = double_vector_ptr(new double_vector());
+	    result[1] = double_vector_ptr(new double_vector());
+	    result[2] = double_vector_ptr(new double_vector());
+	    for (int x = 0; x < size; x++) {
+		RGB_ptr rgb = (*rgbVector)[x];
+		result[0]->push_back(rgb->R);
+		result[1]->push_back(rgb->G);
+		result[2]->push_back(rgb->B);
+	    }
+	    return result;
+	};
 	//==================================================================
 
 	//==================================================================

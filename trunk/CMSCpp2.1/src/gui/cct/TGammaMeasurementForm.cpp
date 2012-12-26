@@ -9,11 +9,9 @@
 
 //其他庫頭文件
 
-
 //本項目內頭文件
 #include "TGammaMeasurementForm.h"
 #include "TMainForm.h"
-
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
 #pragma link "TOutputFileFrame"
@@ -94,7 +92,7 @@ bptr < cms::lcd::calibrate::MeasureCondition > TGammaMeasurementForm::getMeasure
 
     bptr < MeasureCondition > condition;
     if (null == dgcodeTable) {
-	if (bitDepth->isTCONInput()) {
+	if (bitDepth->isDirectGamma()) {
 	    start = bitDepth->getMeasureStart();
 	    end = bitDepth->getMeasureEnd();
 	    step = bitDepth->getMeasureStep();
@@ -113,11 +111,37 @@ bptr < cms::lcd::calibrate::MeasureCondition > TGammaMeasurementForm::getMeasure
 	}
 
 	RGB_vector_ptr measureTable(new RGB_vector());
-	for (int x = start; x <= end; x++) {
-	    measureTable->push_back((*dgcodeTable)[x]);
-	}
 
+	if (CheckBox_10BitInMeasurement->Checked) {
+
+	    int size = dgcodeTable->size();
+	    double_vector_ptr *rgbDoubleVector = RGBVector::toRGBDoubleVector(dgcodeTable);
+	    double_vector_ptr keys(new double_vector());
+	    for (int x = 0; x < size; x++) {
+		keys->push_back(x);
+	    }
+	    Interpolation1DLUT rlut(keys, rgbDoubleVector[0]);
+	    Interpolation1DLUT glut(keys, rgbDoubleVector[1]);
+	    Interpolation1DLUT blut(keys, rgbDoubleVector[2]);
+	    const MaxValue & lutBit = bitDepth->getLutMaxValue();
+
+	    for (int x = start; x <= end; x++) {
+		double key = x / 4.;
+		RGB_ptr rgb(new RGBColor(lutBit));
+
+		rgb->R = rlut.getValue(key);
+		rgb->G = glut.getValue(key);
+		rgb->B = blut.getValue(key);
+		measureTable->push_back(rgb);
+	    }
+	} else {
+	    for (int x = start; x <= end; x++) {
+		RGB_ptr rgb = (*dgcodeTable)[x];
+		measureTable->push_back((*dgcodeTable)[x]);
+	    }
+	}
 	measureTable = RGBVector::reverse(measureTable);
+
 	condition = bptr < MeasureCondition > (new MeasureCondition(measureTable, bitDepth));
     }
     return condition;
@@ -213,8 +237,8 @@ void TGammaMeasurementForm::tconMeasure(bool_vector_ptr rgbw, int start,
 
 void __fastcall TGammaMeasurementForm::FormShow(TObject * Sender)
 {
-    bool tconInput = bitDepth->isTCONInput() || MainForm->isInTCONSetup();
-    this->Panel2->Visible = tconInput;
+    bool directGamma = bitDepth->isDirectGamma() || MainForm->isInTCONSetup();
+    this->Panel2->Visible = directGamma;
     setMeasureInfo();
     fetcher = MainForm->getComponentFetcher();
 
@@ -225,7 +249,7 @@ void __fastcall TGammaMeasurementForm::FormShow(TObject * Sender)
     Edit_EndLevelT->Text = "0";
     dgcodeTable = (RGB_vector_ptr) ((RGB_vector *) null);
 
-    if (true == tconInput) {
+    if (true == directGamma) {
 	//Button_Measure->Enabled = false;
     }
 #ifdef EXPERIMENT_FUNC
@@ -276,18 +300,27 @@ void __fastcall TGammaMeasurementForm::Button_LoadDGTableClick(TObject * Sender)
     //OpenDialog1->InitialDir = currDir;
     if (OpenDialog1->Execute()) {
 	const AnsiString & filename = OpenDialog1->FileName;
-	const MaxValue & maxValue =
-	    RadioButton_GrayScale12Bit->Checked ? MaxValue::Int12Bit : MaxValue::Int10Bit;
-	DGLutFile dgcode(filename.c_str(), ReadOnly, maxValue);
+	/*const MaxValue & maxValue =
+	   RadioButton_GrayScale12Bit->Checked ? MaxValue::Int12Bit : MaxValue::Int10Bit; */
+	DGLutFile dgcode(filename.c_str(), ReadOnly);
 
 	grayScaleTable = dgcode.getGammaTable();
 	property = dgcode.getProperty();
+	dgLutBitDepth = property->getBitDepthProcessor();
+	bool lut12Bit = MaxValue::Int12Bit == dgLutBitDepth->getLutMaxValue();
+	bool input10Bit = MaxValue::Int10Bit == dgLutBitDepth->getInputMaxValue();
+	RadioButton_GrayScale12Bit->Checked = lut12Bit;
+	RadioButton_GrayScale10Bit->Checked = !lut12Bit;
+
+
 	this->CheckBox_DGLoaded->Checked = true;
 	this->CheckBox_DGLoaded->Enabled = true;
 
 	int size = grayScaleTable->size();
 	Edit_GrayScaleCount->Text = size;
 	Edit_EndLevelT->Text = size - 1;
+	//此checkbox點選會決定量測的end level, 所以要擺在這個地方
+	CheckBox_10BitInMeasurement->Checked = input10Bit;
 
 	chdir(currDir.c_str());
 	Button_Measure->Enabled = true;
@@ -383,10 +416,10 @@ void __fastcall TGammaMeasurementForm::Button_LoadPatternClick(TObject * Sender)
 	bptr < DBQuery > dbquery = excel->retrieve();
 	customTable = RGB_vector_ptr(new RGB_vector());
 
-	int tconInputBit = bitDepth->is10BitTCONInput()? 10 : 12;
+	int directGammaBit = bitDepth->is10BitDirectGamma()? 10 : 12;
 	int patterhBit =
 	    RadioButton_Custom8Bit->Checked ? 8 : RadioButton_Custom10Bit->Checked ? 10 : 12;
-	double gain = Math::pow(2, tconInputBit - patterhBit);
+	double gain = Math::pow(2, directGammaBit - patterhBit);
 	int count = 0;
 
 	while (dbquery->hasNext()) {
@@ -420,6 +453,21 @@ void __fastcall TGammaMeasurementForm::CheckBox_CustomLoadedClick(TObject * Send
 	customTable.reset();
 	Button_Measure->Enabled = false;
 	Edit_CustormPatternCount->Text = "";
+    }
+}
+
+//---------------------------------------------------------------------------
+
+void __fastcall TGammaMeasurementForm::CheckBox_10BitInMeasurementClick(TObject * Sender)
+{
+    bool measureIn10Bit = CheckBox_10BitInMeasurement->Checked;
+    if (measureIn10Bit) {
+	Edit_StartLevelT->Text = 0;
+	Edit_EndLevelT->Text = 1023;
+    } else {
+	int size = Edit_GrayScaleCount->Text.ToInt();
+	Edit_StartLevelT->Text = 0;
+	Edit_EndLevelT->Text = size - 1;
     }
 }
 

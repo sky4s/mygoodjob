@@ -15,7 +15,7 @@ namespace cms {
 
 
 	    Enumeration(DimCorrect)
-	    P1P2, RBInterpolation, None, DefinedDim, EnumerationEnd()
+	    P1P2, RGBInterpolation, None, DefinedDim, EnumerationEnd()
 
 	    class PanelRegulator;
 	    /*

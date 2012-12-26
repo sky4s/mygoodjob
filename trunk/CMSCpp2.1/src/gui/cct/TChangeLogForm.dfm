@@ -1,6 +1,6 @@
 object ChangeLogForm: TChangeLogForm
-  Left = 293
-  Top = 152
+  Left = 335
+  Top = 156
   Width = 597
   Height = 724
   Caption = 'Change Log'

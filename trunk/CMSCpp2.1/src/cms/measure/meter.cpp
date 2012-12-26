@@ -191,7 +191,7 @@ namespace cms {
 		    index++;
 		    XYZ_ptr XYZ = p->getXYZ();
 		    return XYZ->getValues();
-		} else {
+		} else { //from raw data
 		    int size = vector->size();
 		    if (index >= size) {
 			throw java::lang::IndexOutOfBoundsException("index >= size");

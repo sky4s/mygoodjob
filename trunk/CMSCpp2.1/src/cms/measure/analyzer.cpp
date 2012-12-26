@@ -35,9 +35,16 @@ namespace cms {
 	};
 	xyY_ptr IntensityAnalyzerIF::measureReferenceRGB() {
 	    bptr < MeterMeasurement > mm = getMeterMeasurement();
+	    bptr < Meter > meter = mm->getMeter();
+
+	    DGLutFileMeter *dgFileMeter = dynamic_cast < DGLutFileMeter * >(meter.get());
+	    if (null != dgFileMeter && !dgFileMeter->isMeasureFromPatchVector()) {
+		throw java::lang::IllegalStateException("Ref RGB cannot measure from RawData.");
+	    }
+
 	    RGB_ptr rgb = getReferenceRGB();
 	    Patch_ptr result = mm->measure(rgb, nil_string_ptr);
-            mm->setMeasureWindowsVisible(false);
+	    mm->setMeasureWindowsVisible(false);
 	    XYZ_ptr XYZ = result->getXYZ();
 	    xyY_ptr xyY(new CIExyY(XYZ));
 	    return xyY;

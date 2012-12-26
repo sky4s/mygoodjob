@@ -76,11 +76,13 @@ void __fastcall TCCTLUTForm::Button_MeaRunClick(TObject * Sender)
 	bptr < ComponentFetcher > fetcher = MainForm->getComponentFetcher();
 	fetcher->Listener = this;
 	bptr < MeterMeasurement > mm = fetcher->FirstAnalyzer->getMeterMeasurement();
+
+	int defaultWaitTimes = mm->WaitTimes;
 	mm->resetMeasurePatchVector();
 
 	cms::lcd::calibrate::debugMode = debugMode;
 	cms::lcd::calibrate::linkCA210 = MainForm->linkCA210;
-	cms::lcd::calibrate::pcWithTCONInput = MainForm->isPCwithTCONInput();
+	cms::lcd::calibrate::pcWithDirectGamma = MainForm->isPCwithDirectGamma();
 	LCDCalibrator calibrator(fetcher, bitDepth);
 
 	//以下都是選項的設定
@@ -106,6 +108,12 @@ void __fastcall TCCTLUTForm::Button_MeaRunClick(TObject * Sender)
 
 	    calibrator.setDefinedDim(under, gamma);
 	    calibrator.FeedbackFix = CheckBox_Feedback->Checked;
+
+	    bool dimRBFix = CheckBox_DimRBFix->Checked;
+	    int rbFixUnder = Edit_DimRBFixUnder->Text.ToInt();
+	    bool autoUnder = CheckBox_RBFixAuto->Checked;
+	    calibrator.setDefinedDimRBFix(rbFixUnder, dimRBFix, autoUnder);
+
 	} else if (this->RadioButton_NoneLowLevelCorrect->Checked) {
 	    calibrator.setNonDimCorrect();
 	}
@@ -114,12 +122,14 @@ void __fastcall TCCTLUTForm::Button_MeaRunClick(TObject * Sender)
 	//==========================================================================
 	// gamma的處理
 	//==========================================================================
-
+	calibrator.FixInverseCIEZ = CheckBox_FixInverseCIEZ->Checked;
 	if (true == CheckBox_AbsoluteGamma->Checked) {
 	    bool absGamma = CheckBox_AbsoluteGamma->Checked;
 	    int start = Edit_AbsGammaStart->Text.ToInt();
 	    double aboveGamma = ComboBox_AbsGammaStartAboveGamma->Text.ToDouble();
-	    calibrator.setAbsoluteGamma(absGamma, start, aboveGamma);
+	    //KeepL keepL = (0 == RadioGroup_KeepLBy->ItemIndex) ? ByGamma : ByLuminance;
+	    KeepL keepL = ByGamma;
+	    calibrator.setAbsoluteGamma(absGamma, start, aboveGamma, keepL);
 	}
 
 	if (this->RadioButton_Gamma->Checked) {
@@ -157,7 +167,7 @@ void __fastcall TCCTLUTForm::Button_MeaRunClick(TObject * Sender)
 	calibrator.AvoidFRCNoise = this->CheckBox_AvoidNoise->Checked;
 
 	//新方法
-	calibrator.NewMethod = true;	//= this->CheckBox_NewMethod->Checked;
+	calibrator.NewMethod = true;
 	bool multiGen = this->CheckBox_MultiGen->Checked;
 	calibrator.setMultiGen(multiGen, this->Edit_MultiGenTimes->Text.ToInt());
 	calibrator.KeepMaxYInMultiGen = this->CheckBox_KeepMaxYInMultiGen->Checked;
@@ -238,21 +248,34 @@ void __fastcall TCCTLUTForm::Button_MeaRunClick(TObject * Sender)
 		    ("Set FRC_EN Enable is needed in Multi-Gen, program will force to set Enable");
 		tconctrl->setFRC(true);
 	    }
+	    //throw IllegalStateException("NULL == inverseMatrix");
 	    //開始量測及計算
 	    RGB_vector_ptr dglut = calibrator.getCCTDGLut(getMeasureCondition(), dgLutFile);
+	    if (!calibrator.componentVectorLuminanceCheckResult) {
+		ShowMessage("Raw luminance of Panel is inverse!");
+	    }
+	    if (!calibrator.increaseZOfTarget) {
+		ShowMessage("Target CIE Z is inverse!");
+	    }
+	    if (0 != calibrator.dgLutOpErrorMessage.Length()) {
+		ShowMessage(calibrator.dgLutOpErrorMessage);
+	    }
 	    if (dglut == null) {
+
 		MainForm->stopProgress(ProgressBar1);
 		if (run) {
-		    if (calibrator.componentVectorLuminanceCheckResult) {
-			//被內部中斷(邏輯)
-			ShowMessage("Internal abnormal stop!");
+		    //被內部中斷(邏輯)
+
+		    if (0 != calibrator.errorMessage.Length()) {
+			ShowMessage("Internal abnormal stop: " + calibrator.errorMessage);
 		    } else {
-			ShowMessage("Luminance is inverse!");
+			ShowMessage("Internal abnormal stop!");
 		    }
+
 
 		} else {
 		    //被外部中斷(人為)
-		    ShowMessage("Interrupt!");
+		    //ShowMessage("Interrupt!");
 
 		}
 		return;
@@ -315,8 +338,17 @@ void __fastcall TCCTLUTForm::Button_MeaRunClick(TObject * Sender)
 	    Util::shellExecute(filename);
 	}
 	catch(java::lang::IllegalStateException & ex) {
-	    MainForm->stopProgress(ProgressBar1);
+	    //MainForm->stopProgress(ProgressBar1);
 	    ShowMessage(ex.toString().c_str());
+	}
+	catch(java::lang::Exception & ex) {
+	    //const char *exstr = ex.what();
+	    ShowMessage(ex.toString().c_str());
+	}
+
+	catch(std::exception & ex) {
+	    const char *exstr = ex.what();
+	    ShowMessage(exstr);
 	}
 	catch(...) {
 	    ShowMessage("Abnormal stop!");
@@ -346,10 +378,22 @@ void __fastcall TCCTLUTForm::Button_DebugClick(TObject * Sender)
     OpenDialog1->Filter = "DGCode Files(*.xls)|*.xls";
     if (OpenDialog1->Execute()) {
 	const AnsiString & filename = OpenDialog1->FileName;
-	MainForm->setDummyMeterFilename(string(filename.c_str()));
+
+	using namespace cms::colorformat;
+	bptr < DGLutFile > dglutFile(new DGLutFile(filename.c_str(), ReadOnly));
+	MainForm->setDummyMeterFile(dglutFile);
+	RGB_vector_ptr gammaTableFromDGFile = dglutFile->getGammaTable();
+	gammaTableFromDebugFile = RGB_vector_ptr(new RGB_vector());
+
+	for (int x = 255; x >= 0; x--) {
+	    RGB_ptr rgb = (*gammaTableFromDGFile)[x];
+	    gammaTableFromDebugFile->push_back(rgb);
+	}
+
+	//MainForm->setDummyMeterFilename(string(filename.c_str()));
 	ShowMessage("Dummy meter setting Ok!");
 	secondWhiteAnalyzer = MainForm->getSecondAnalyzerFromProperty();
-
+	CheckBox_MeasureRGBFromDebugFile->Visible = true;
     };
 
 }
@@ -367,6 +411,9 @@ void __fastcall TCCTLUTForm::FormShow(TObject * Sender)
     using namespace i2c;
     using namespace cms::measure;
     using namespace cms::lcd::calibrate;
+    /*if (debugMode) {
+       CheckBox_MeasureRGBFromDebugFile->Visible = true;
+       } */
 
     if (true == MainForm->newFunction) {
 	//=========================================================================
@@ -376,7 +423,8 @@ void __fastcall TCCTLUTForm::FormShow(TObject * Sender)
 
 	this->Button_Run->Visible = true;
 
-	CheckBox_MemoryMeasure->Visible = true;
+	//CheckBox_MemoryMeasure->Visible = true;
+
 	RadioGroup_NormalCase->Visible = true;
 
 	//smooth intensity
@@ -401,28 +449,27 @@ void __fastcall TCCTLUTForm::FormShow(TObject * Sender)
     //=========================================================================
     // function on/off relative
     //=========================================================================
-    //this->CheckBox_NewMethod->Checked = true;
 
     const MaxValue & input = bitDepth->getInputMaxValue();
     bool avoidNoise = (input == MaxValue::Int6Bit || input == MaxValue::Int8Bit);
     this->CheckBox_AvoidNoise->Enabled = avoidNoise;
 
-    bool tconInput = bitDepth->isTCONInput();
-    this->CheckBox_Expand->Visible = !tconInput;
+    bool directGamma = bitDepth->isDirectGamma();
+    this->CheckBox_Expand->Visible = !directGamma;
 
 
 
     //=========================================================================
     // tcon relative
     //=========================================================================
-    bool useTConInput = (true == tconInput || MainForm->isInTCONSetup());	// || debugMode;
-    RadioButton_DeHookKeepCCT->Enabled = useTConInput;
-    RadioButton_NewDeHook->Enabled = useTConInput;
-    CheckBox_Feedback->Enabled = useTConInput;
-    Edit_DimFixThreshold->Enabled = useTConInput;
-    CheckBox_MultiGen->Enabled = useTConInput;
-    Edit_MultiGenTimes->Enabled = useTConInput;
-    CheckBox_KeepMaxYInMultiGen->Enabled = useTConInput;
+    bool useDirectGamma = (true == directGamma || MainForm->isInTCONSetup());	// || debugMode;
+    RadioButton_DeHookKeepCCT->Enabled = useDirectGamma;
+    RadioButton_NewDeHook->Enabled = useDirectGamma;
+    CheckBox_Feedback->Enabled = useDirectGamma;
+    Edit_DimFixThreshold->Enabled = useDirectGamma;
+    CheckBox_MultiGen->Enabled = useDirectGamma;
+    Edit_MultiGenTimes->Enabled = useDirectGamma;
+    CheckBox_KeepMaxYInMultiGen->Enabled = useDirectGamma;
     //=========================================================================
     //=========================================================================
     // target white relative
@@ -531,7 +578,10 @@ bptr < cms::lcd::calibrate::MeasureCondition > TCCTLUTForm::getMeasureCondition(
     bool expand = this->CheckBox_Expand->Checked;
     bptr < MeasureCondition > condition;
     const MaxValue & maxValue = bitDepth->getMeasureMaxValue();
-    if (expand) {
+    if (CheckBox_MeasureRGBFromDebugFile->Checked && null != gammaTableFromDebugFile) {
+	condition =
+	    bptr < MeasureCondition > (new MeasureCondition(gammaTableFromDebugFile, bitDepth));
+    } else if (expand) {
 	int lowstart = this->Edit_LowStartLevel->Text.ToInt();
 	int lowend = this->Edit_LowEndLevel->Text.ToInt();
 	int lowstep = this->ComboBox_LowStep->Text.ToInt();
@@ -733,13 +783,12 @@ void __fastcall TCCTLUTForm::FormMouseMove(TObject * Sender, TShiftState Shift, 
 }
 
 //---------------------------------------------------------------------------
-
-
-
 void __fastcall TCCTLUTForm::CheckBox_AbsoluteGammaClick(TObject * Sender)
 {
-    Edit_AbsGammaStart->Enabled = CheckBox_AbsoluteGamma->Checked;
-    ComboBox_AbsGammaStartAboveGamma->Enabled = CheckBox_AbsoluteGamma->Checked;
+    bool absGamma = CheckBox_AbsoluteGamma->Checked;;
+    Edit_AbsGammaStart->Enabled = absGamma;
+    ComboBox_AbsGammaStartAboveGamma->Enabled = absGamma;
+    RadioGroup_KeepLBy->Enabled = absGamma;
 }
 
 //---------------------------------------------------------------------------
@@ -849,6 +898,23 @@ void __fastcall TCCTLUTForm::CheckBox_MultiGenClick(TObject * Sender)
 	RadioButton_ForceAssignWhite->Checked = true;
     }
 
+}
+
+//---------------------------------------------------------------------------
+
+void __fastcall TCCTLUTForm::CheckBox_DimRBFixClick(TObject * Sender)
+{
+    //CheckBox_RBFixAuto->Enabled = CheckBox_DimRBFix->Checked;
+    /*if (!CheckBox_DimRBFix->Checked) {
+       Edit_DimRBFixUnder->Enabled = false;
+       } */
+}
+
+//---------------------------------------------------------------------------
+
+void __fastcall TCCTLUTForm::CheckBox_RBFixAutoClick(TObject * Sender)
+{
+    Edit_DimRBFixUnder->Enabled = !CheckBox_RBFixAuto->Checked;
 }
 
 //---------------------------------------------------------------------------

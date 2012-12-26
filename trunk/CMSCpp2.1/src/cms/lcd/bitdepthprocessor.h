@@ -24,14 +24,12 @@ namespace cms {
 
 	    static const Dep::MaxValue & getOutputMaxValue(BitDepth bitDepth);
 	    static const int getFRCOnlyBit(BitDepth bitDepth);
-	    bool tconInput;
-	    //int tconInputBit;
-	    //const Dep::MaxValue * tcon;
+	    bool directGamma;
 
 	  public:
-	     bool is10BitTCONInput();
-	    //BitDepthProcessor(int inBit, int lutBit, int outBit, bool tconinput, int tconInputBit);
-	     BitDepthProcessor(int inBit, int lutBit, int outBit, bool tconinput);
+	     bool is10BitDirectGamma();
+	    bool is10BitInput();
+	     BitDepthProcessor(int inBit, int lutBit, int outBit, bool directGamma);
 	     BitDepthProcessor(int inBit, int lutBit, int outBit);
 
 	    /*
@@ -50,10 +48,6 @@ namespace cms {
 	       量測第一次間隔(可能與其他間隔不同)
 	     */
 	    int getMeasureFirstStep();
-	    /*
-	       最大的DG值(廢棄)
-	     */
-	    //double getMaxDigitalCount();
 
 	    /*
 	       輸入端最大的DG(訊號)
@@ -85,10 +79,9 @@ namespace cms {
 	    const Dep::MaxValue & getInputMaxValue();
 	    const Dep::MaxValue & getLutMaxValue();
 	    const Dep::MaxValue & getOutputMaxValue();
-	    bool isTCONInput();
+	    bool isDirectGamma();
+	    void setDirectGamma(bool directGamma);
 
-	    void setTCONInput(bool tconInput);
-	    //void setTCONInputBit(int tconInputBit);
 	    void setInBit(int inBit);
 	    void setLUTBit(int lutBit);
 	    void setOutBit(int outBit);
@@ -106,21 +99,24 @@ namespace cms {
 	/*
 	   PanelInfo= BitDepthProcessor+ TCONControl
 	   其實BitDepthProcessor與TCONControl應該是緊密綁在一起的
-	   但是目前的情形
+	   但是目前的情形 ...
+
+	   此類別尚未啟用
 	 */
 	class PanelInfo {
 	  private:
-	    const bool tconInput;
-	    bool pcWithTCONInput;
+	    const bool directGamma;
+	    bool pcWithDirectGamma;
 	    PatternSource patternSource;
-	    void setPCWithTCONInput(bool enable);
+	    void setPCWithDirectGamma(bool enable);
 	  public:
 	    const bptr < BitDepthProcessor > bitDepth;
 	    const bptr < i2c::TCONControl > tconContrl;
 	     PanelInfo(bptr < BitDepthProcessor > bitDepth);
 	     PanelInfo(bptr < BitDepthProcessor > bitDepth, bptr < i2c::TCONControl > tconContrl);
-	    __property bool TCONInput = { read = tconInput };
-	    __property bool PCWithTCONInput = { read = pcWithTCONInput, write = setPCWithTCONInput
+	    __property bool DirectGamma = { read = directGamma };
+	    __property bool PCWithDirectGamma = { read = pcWithDirectGamma, write =
+		    setPCWithDirectGamma
 	    };
 	    __property PatternSource PatternSource = { read = patternSource };
 

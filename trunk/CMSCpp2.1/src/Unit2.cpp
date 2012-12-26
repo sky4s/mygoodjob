@@ -614,13 +614,13 @@ void targetTester()
 void directGammaTester()
 {
     using namespace i2c;
-    bptr < cms::util::ByteBuffer > buf =
-	TCONControl::getRGBByteBuffer(513, 2052, 0, TestRGBBit::DependentInstance);
-    int size = buf->getSize();
-    for (int x = 0; x < size; x++) {
-	byte b = (*buf)[x];
-	cout << (int) b << endl;
-    }
+    /*bptr < cms::util::ByteBuffer > buf =
+       TCONControl::getRGBByteBuffer(513, 2052, 0, TestRGBBit::DependentInstance);
+       int size = buf->getSize();
+       for (int x = 0; x < size; x++) {
+       byte b = (*buf)[x];
+       cout << (int) b << endl;
+       }    */
 };
 
 void hookTester()
@@ -973,7 +973,8 @@ class property {
     property(const std::string & name, const boost::any & value):name_(name), value_(value) {
     } std::string name() const {
 	return name_;
-    } boost::any & value() {
+    }
+    boost::any & value() {
 	return value_;
     }
     friend bool operator<(const property & lhs, const property & rhs) {
@@ -1387,10 +1388,31 @@ void toHexTest()
     cout << binaryToHex("1010") << endl;
 }
 
+void exception2()
+{
+    throw   java::lang::IllegalStateException("1234");
+}
+
+void exception1()
+{
+
+    exception2();
+    /*try {
+
+       exception2();
+       }
+       catch(java::lang::IllegalStateException & ex) {
+       int x = 1;
+
+       } */
+}
+
+
+
 #pragma argsused
 int main(int argc, char *argv[])
 {
-    toHexTest();
+    //toHexTest();
     //String a = "123$";
     //.a.
     //wstringtest();
@@ -1488,7 +1510,18 @@ int main(int argc, char *argv[])
     //putTest();
     //rgbVectorTest();
     //textLoad();
+    //exception1();
+    try {
 
+	exception1();
+    }
+    catch(java::lang::IllegalStateException & ex) {
+	int x = 1;
+
+    }
+    catch(...) {
+	int x = 2;
+    }
 
     cout << "end" << endl;
     getch();

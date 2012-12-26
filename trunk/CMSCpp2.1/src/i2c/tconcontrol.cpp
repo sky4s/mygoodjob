@@ -174,7 +174,7 @@ namespace i2c {
 	} else if (1 == tconIndex && true == dualTCON) {
 	    return control2->read(dataAddress, size);
 	} else {
-	    throw new IllegalArgumentException("");
+	    throw   IllegalArgumentException("");
 	}
     }
     const MaxValue & TCONControl::getLUTBit() {
@@ -299,7 +299,7 @@ namespace i2c {
 	write(parameter->DGLutAddress, data);
     }
     RGB_vector_ptr TCONControl::getDGLut() {
-	throw new UnsupportedOperationException("");
+	throw   UnsupportedOperationException("");
     };
 
     int_array TCONControl::getLMHData(int data) {

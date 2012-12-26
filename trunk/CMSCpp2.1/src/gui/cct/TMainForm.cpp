@@ -154,19 +154,7 @@ void __fastcall TMainForm::FormCreate(TObject * Sender)
 }
 
 
-void TMainForm::readTCONSections()
-{
-    bptr_ < TIniFile > ini(new TIniFile(tconFilename));
-    bptr_ < TStringList > tconSections(new TStringList());
-    ini->ReadSections(tconSections.get());
-    int size = tconSections->Count;
-    for (int x = 0; x < size; x++) {
-	String section = (*tconSections)[x];
-	ComboBox_TCONType->AddItem(section, null);
-    }
-    ComboBox_TCONType->AddItem(CUSTOM, null);
-    ComboBox_TCONType->ItemIndex = 0;
-}
+
 
 void TMainForm::readTCONSetup(String filename, String section)
 {
@@ -507,13 +495,8 @@ void TMainForm::setDummyMeterFile(bptr < cms::colorformat::DGLutFile > dglutFile
     using namespace Indep;
     using namespace Dep;
 
-    //bool measurePatchVectorAvailable = dglutFile->isMeasurePatchVectorAvailable();
     meter = bptr < Meter > (new DGLutFileMeter(dglutFile));
     mm = bptr < MeterMeasurement > (new MeterMeasurement(meter, false));
-    //mm->FakeMeasure = true;
-    //Patch_vector_ptr measurePatchVector = dglutFile->getMeasurePatchVector();
-    //bool hasMeasurePatchVector = null != measurePatchVector;
-    //mm->setMeasurePatchVector(measurePatchVector);
 
 
     fetcher = bptr < ComponentFetcher > ((ComponentFetcher *) null);
@@ -718,7 +701,7 @@ void __fastcall TMainForm::RadioButton_PCClick(TObject * Sender)
 {
     GroupBox_Pattern->Enabled = true;
     this->Panel_TCON->Visible = false;
-    bitDepth->setTCONInput(false);
+    bitDepth->setDirectGamma(false);
     MeasureWindow->setTCONControlOff();
     control.reset();
     Button_Connect->Enabled = true;
@@ -777,7 +760,9 @@ void __fastcall TMainForm::Button_ConnectClick(TObject * Sender)
 	//=====================================================================
 	// FRC
 	//=====================================================================
-	int frcEnableAddress = StrToInt("0x" + Edit_FRCEnableAddress->Text);
+	int frcEnableAddress =
+	    (Edit_FRCEnableAddress->Text !=
+	     "??") ? StrToInt("0x" + Edit_FRCEnableAddress->Text) : -1;
 	int frcEnableBit = this->Edit_FRCEnableBit->Text.ToInt();
 	//=====================================================================
 	//=====================================================================
@@ -850,16 +835,15 @@ void __fastcall TMainForm::Button_ConnectClick(TObject * Sender)
 	this->StatusBar1->Panels->Items[2]->Text = "T-CON Connected";
 	if (!this->RadioButton_PCTCON_NB->Checked) {
 	    //不是TCON+NB的話
-	    /*int tconInputBit = Edit_GAMDIRECT_Bit->Text.ToInt();
-	       this->bitDepth->setTCONInputBit(tconInputBit); */
+
 	    if (this->RadioButton_PCTCON_TV->Checked) {
 		//看是TCON+TV
-		this->bitDepth->setTCONInput(true);
+		this->bitDepth->setDirectGamma(true);
 		MeasureWindow->setDGLUTInput(control, bitDepth);
 	    } else {
 		//或純TCON
-		this->bitDepth->setTCONInput(true);
-		MeasureWindow->setTCONInput(control, bitDepth);
+		this->bitDepth->setDirectGamma(true);
+		MeasureWindow->setDirectGamma(control, bitDepth);
 	    }
 	}
     }
@@ -1038,7 +1022,7 @@ void __fastcall TMainForm::RadioButton_Out8Click(TObject * Sender)
 
 void __fastcall TMainForm::RadioButton_Out10Click(TObject * Sender)
 {
-    if (!bitDepth->isTCONInput() && this->Visible) {
+    if (!bitDepth->isDirectGamma() && this->Visible) {
 	ShowMessage("Recommend using Direct Gamma.");
     }
     bitDepth->setOutBit(10);
@@ -1076,10 +1060,12 @@ void __fastcall TMainForm::Edit_IntervalChange(TObject * Sender)
 
 void TMainForm::setMeterMeasurementWaitTimes()
 {
-    this->mm->WaitTimes = this->getInterval();
+    int waitTimes = this->getInterval();
+    this->mm->WaitTimes = waitTimes;
 };
 void __fastcall TMainForm::Button_I2CTestClick(TObject * Sender)
 {
+
     if (I2CTestForm == null) {
 	Application->CreateForm(__classid(TI2CTestForm), &I2CTestForm);
 	I2CTestForm->Height = 300;
@@ -1253,12 +1239,9 @@ bptr < i2c::TCONControl > TMainForm::getTCONControl()
     return control;
 };
 
-/*bool TMainForm::isTCONInput()
-{
-    return true == RadioButton_TCON->Checked;
-};*/
 
-bool TMainForm::isPCwithTCONInput()
+
+bool TMainForm::isPCwithDirectGamma()
 {
     return true == RadioButton_PCTCON_TV->Checked || true == RadioButton_PCTCON_NB->Checked;
 };
@@ -1270,7 +1253,7 @@ void __fastcall TMainForm::RadioButton_PCTCON_NBClick(TObject * Sender)
 {
     this->Panel_TCON->Visible = true;
     ComboBox_TCONTypeChange(this);
-    bitDepth->setTCONInput(false);
+    bitDepth->setDirectGamma(false);
     MeasureWindow->setTCONControlOff();
     PageControl1->ActivePageIndex = 1;
 }
@@ -1419,7 +1402,7 @@ void __fastcall TMainForm::RadioButton_PCTCON_TVClick(TObject * Sender)
 {
     this->Panel_TCON->Visible = true;
     ComboBox_TCONTypeChange(this);
-    bitDepth->setTCONInput(false);
+    bitDepth->setDirectGamma(false);
     MeasureWindow->setTCONControlOff();
     PageControl1->ActivePageIndex = 1;
 }
@@ -1499,6 +1482,169 @@ void __fastcall TMainForm::RadioButton_HStripe2Click(TObject * Sender)
 //---------------------------------------------------------------------------
 
 
+
+void __fastcall TMainForm::CheckBox_HideENClick(TObject * Sender)
+{
+    bool hide = this->CheckBox_HideEN->Checked;
+    GroupBox_HideEN->Visible = hide;
+}
+
+//---------------------------------------------------------------------------
+
+void __fastcall TMainForm::Button_PatternTestClick(TObject * Sender)
+{
+    MeasureWindow->Visible = true;
+}
+
+//---------------------------------------------------------------------------
+
+void __fastcall TMainForm::RadioButton_NinthMouseMove(TObject * Sender,
+						      TShiftState Shift, int X, int Y)
+{
+    TRadioButton *button = dynamic_cast < TRadioButton * >(Sender);
+    if (RadioButton_Ninth == button) {
+	MeasureWindow->setTestPattern(Ninth);
+    }
+    if (null != button) {
+	/*TPoint point = button->ClientToScreen(TPoint(X, Y));
+	   MeasureWindow->Left = point.x + 50;
+	   MeasureWindow->Top = point.y;
+	   MeasureWindow->Width = 100;
+	   MeasureWindow->Height = 100;
+	   MeasureWindow->WindowState = wsNormal;
+	   MeasureWindow->Visible = true; */
+    }
+}
+
+//---------------------------------------------------------------------------
+
+
+
+void __fastcall TMainForm::GroupBox4MouseMove(TObject * Sender, TShiftState Shift, int X, int Y)
+{
+    MeasureWindow->Visible = false;
+    MeasureWindow->WindowState = wsMaximized;
+}
+
+//---------------------------------------------------------------------------
+
+
+void __fastcall TMainForm::TabSheet1MouseMove(TObject * Sender, TShiftState Shift, int X, int Y)
+{
+    MeasureWindow->Visible = false;
+    MeasureWindow->WindowState = wsMaximized;
+}
+
+//---------------------------------------------------------------------------
+
+void __fastcall TMainForm::RadioButton_IndepMouseMove(TObject * Sender,
+						      TShiftState Shift, int X, int Y)
+{
+    MeasureWindow->setTestPattern(Indepedent);
+    RadioButton_NinthMouseMove(Sender, Shift, X, Y);
+}
+
+//---------------------------------------------------------------------------
+
+void __fastcall TMainForm::RadioButton_HSDMouseMove(TObject * Sender,
+						    TShiftState Shift, int X, int Y)
+{
+    MeasureWindow->setTestPattern(HSD);
+    RadioButton_NinthMouseMove(Sender, Shift, X, Y);
+}
+
+//---------------------------------------------------------------------------
+
+void __fastcall TMainForm::RadioButton_FlickrPixelMouseMove(TObject * Sender, TShiftState Shift,
+							    int X, int Y)
+{
+    MeasureWindow->setTestPattern(FlickrPixel);
+    RadioButton_NinthMouseMove(Sender, Shift, X, Y);
+}
+
+//---------------------------------------------------------------------------
+
+void __fastcall TMainForm::RadioButton_FlickrSubPixelMouseMove(TObject * Sender, TShiftState Shift,
+							       int X, int Y)
+{
+    MeasureWindow->setTestPattern(FlickrSubPixel);
+    RadioButton_NinthMouseMove(Sender, Shift, X, Y);
+}
+
+//---------------------------------------------------------------------------
+
+void __fastcall TMainForm::RadioButton_HStripeMouseMove(TObject * Sender,
+							TShiftState Shift, int X, int Y)
+{
+    MeasureWindow->setTestPattern(HStripe);
+    RadioButton_NinthMouseMove(Sender, Shift, X, Y);
+}
+
+//---------------------------------------------------------------------------
+
+void __fastcall TMainForm::RadioButton_HStripe2MouseMove(TObject * Sender,
+							 TShiftState Shift, int X, int Y)
+{
+    MeasureWindow->setTestPattern(HStripe2);
+    RadioButton_NinthMouseMove(Sender, Shift, X, Y);
+}
+
+//---------------------------------------------------------------------------
+
+void __fastcall TMainForm::RadioButton_NormalMouseMove(TObject * Sender,
+						       TShiftState Shift, int X, int Y)
+{
+    MeasureWindow->Visible = false;
+}
+
+//---------------------------------------------------------------------------
+
+void __fastcall TMainForm::FormActivate(TObject * Sender)
+{
+    //original from form active
+
+    if (debugMode) {
+	ShowMessage("It's in Debug Mode, stop connecting to CA-X10");
+	Button_PatternTest->Visible = true;
+    } else {
+
+    }
+    if (true == linkCA210) {
+	if (connectCA210ByThread) {
+
+	    class CA210Thread:public TThread {
+	      protected:
+		void __fastcall Execute() {
+		    MainForm->setAllFunctionOn(false);
+		    MainForm->StatusBar1->Panels->Items[1]->Text = "CA-210 Connecting...";
+		    MainForm->initCA210Meter();
+		};
+	      public:
+	      __fastcall CA210Thread(bool CreateSuspended):TThread(CreateSuspended) {
+		};
+	    };
+
+
+	    showProgress(ProgressBar1);
+	    //memory leakage...but..懶的鳥他, 反正程式關閉的時候,heap就一併清掉
+	    ca210Thread = new CA210Thread(false);
+	    //改用thread去啟動ca-210, 這樣可以正常更新progress bar!
+	    ca210Thread->Resume();
+	} else {
+	    initCA210Meter();
+	}
+    } else {
+	if (FileExists(METER_FILE)) {
+	    setDummyMeterFilename(METER_FILE);
+	}
+	MainForm->StatusBar1->Panels->Items[1]->Text = "Debug mode";
+	this->GroupBox_CHSetting->Visible = false;
+    }
+}
+
+//---------------------------------------------------------------------------
+
+static int TCONIniVerstion = 1;
 void TMainForm::initTCONFile()
 {
     using namespace cms::util;
@@ -1508,6 +1654,12 @@ void TMainForm::initTCONFile()
 	// produce tcon ini file
 	//=========================================================================================
 	bptr_ < TIniFile > ini(new TIniFile(tconFilename));
+	int_array version = Util::fetchVersionInfo();
+	ini->WriteInteger("Version", "Release", version[2]);
+	ini->WriteInteger("Version", "Build", version[3]);
+	ini->WriteInteger("Version", "T-CON ini", TCONIniVerstion);
+
+
 
 	//=========================================================================
 	// 11303
@@ -1600,8 +1752,8 @@ void TMainForm::initTCONFile()
 	//=========================================================================
 	ini->WriteInteger("12309", "AddressingSize", 5);
 
-	//ini->WriteString("12309", "FRCEnableAddress", "28");
-	//ini->WriteInteger("12309", "FRCEnableBit", 1);
+	ini->WriteString("12309", "FRCEnableAddress", "76");
+	ini->WriteInteger("12309", "FRCEnableBit", 0);
 
 	ini->WriteString("12309", "DigitalGammaEnableAddress", "76");
 	ini->WriteInteger("12309", "DigitalGammaEnableBit", 1);
@@ -1646,8 +1798,8 @@ void TMainForm::initTCONFile()
 	//=========================================================================
 	ini->WriteInteger("12403", "AddressingSize", 5);
 
-	//ini->WriteString("12403", "FRCEnableAddress", "28");
-	//ini->WriteInteger("12403", "FRCEnableBit", 1);
+	ini->WriteString("12403", "FRCEnableAddress", "29");
+	ini->WriteInteger("12403", "FRCEnableBit", 2);
 
 	ini->WriteString("12403", "DigitalGammaEnableAddress", "29");
 	ini->WriteInteger("12403", "DigitalGammaEnableBit", 0);
@@ -1669,8 +1821,8 @@ void TMainForm::initTCONFile()
 	//=========================================================================
 	ini->WriteInteger("12405", "AddressingSize", 5);
 
-	//ini->WriteString("12405", "FRCEnableAddress", "28");
-	//ini->WriteInteger("12405", "FRCEnableBit", 1);
+	ini->WriteString("12405", "FRCEnableAddress", "29");
+	ini->WriteInteger("12405", "FRCEnableBit", 2);
 
 	ini->WriteString("12405", "DigitalGammaEnableAddress", "29");
 	ini->WriteInteger("12405", "DigitalGammaEnableBit", 0);
@@ -1692,8 +1844,8 @@ void TMainForm::initTCONFile()
 	//=========================================================================
 	ini->WriteInteger("12407", "AddressingSize", 5);
 
-	//ini->WriteString("12407", "FRCEnableAddress", "28");
-	//ini->WriteInteger("12407", "FRCEnableBit", 1);
+	ini->WriteString("12407", "FRCEnableAddress", "29");
+	ini->WriteInteger("12407", "FRCEnableBit", 2);
 
 	ini->WriteString("12407", "DigitalGammaEnableAddress", "29");
 	ini->WriteInteger("12407", "DigitalGammaEnableBit", 0);
@@ -1760,163 +1912,32 @@ void TMainForm::initTCONFile()
     }
 }
 
-void __fastcall TMainForm::CheckBox_HideENClick(TObject * Sender)
+void TMainForm::readTCONSections()
 {
-    bool hide = this->CheckBox_HideEN->Checked;
-    GroupBox_HideEN->Visible = hide;
-}
-
-//---------------------------------------------------------------------------
-
-void __fastcall TMainForm::Button_PatternTestClick(TObject * Sender)
-{
-    MeasureWindow->Visible = true;
-}
-
-//---------------------------------------------------------------------------
-
-void __fastcall TMainForm::RadioButton_NinthMouseMove(TObject * Sender,
-						      TShiftState Shift, int X, int Y)
-{
-    TRadioButton *button = dynamic_cast < TRadioButton * >(Sender);
-    if (RadioButton_Ninth == button) {
-	MeasureWindow->setTestPattern(Ninth);
-    }
-    if (null != button) {
-	/*TPoint point = button->ClientToScreen(TPoint(X, Y));
-	MeasureWindow->Left = point.x + 50;
-	MeasureWindow->Top = point.y;
-	MeasureWindow->Width = 100;
-	MeasureWindow->Height = 100;
-	MeasureWindow->WindowState = wsNormal;
-	MeasureWindow->Visible = true;*/
-    }
-}
-
-//---------------------------------------------------------------------------
-
-
-
-void __fastcall TMainForm::GroupBox4MouseMove(TObject * Sender, TShiftState Shift, int X, int Y)
-{
-    MeasureWindow->Visible = false;
-    MeasureWindow->WindowState = wsMaximized;
-}
-
-//---------------------------------------------------------------------------
-
-
-void __fastcall TMainForm::TabSheet1MouseMove(TObject * Sender, TShiftState Shift, int X, int Y)
-{
-    MeasureWindow->Visible = false;
-    MeasureWindow->WindowState = wsMaximized;
-}
-
-//---------------------------------------------------------------------------
-
-void __fastcall TMainForm::RadioButton_IndepMouseMove(TObject * Sender,
-						      TShiftState Shift, int X, int Y)
-{
-    MeasureWindow->setTestPattern(Indepedent);
-    RadioButton_NinthMouseMove(Sender, Shift, X, Y);
-}
-
-//---------------------------------------------------------------------------
-
-void __fastcall TMainForm::RadioButton_HSDMouseMove(TObject * Sender,
-						    TShiftState Shift, int X, int Y)
-{
-    MeasureWindow->setTestPattern(HSD);
-    RadioButton_NinthMouseMove(Sender, Shift, X, Y);
-}
-
-//---------------------------------------------------------------------------
-
-void __fastcall TMainForm::RadioButton_FlickrPixelMouseMove(TObject * Sender, TShiftState Shift,
-							    int X, int Y)
-{
-    MeasureWindow->setTestPattern(FlickrPixel);
-    RadioButton_NinthMouseMove(Sender, Shift, X, Y);
-}
-
-//---------------------------------------------------------------------------
-
-void __fastcall TMainForm::RadioButton_FlickrSubPixelMouseMove(TObject * Sender, TShiftState Shift,
-							       int X, int Y)
-{
-    MeasureWindow->setTestPattern(FlickrSubPixel);
-    RadioButton_NinthMouseMove(Sender, Shift, X, Y);
-}
-
-//---------------------------------------------------------------------------
-
-void __fastcall TMainForm::RadioButton_HStripeMouseMove(TObject * Sender,
-							TShiftState Shift, int X, int Y)
-{
-    MeasureWindow->setTestPattern(HStripe);
-    RadioButton_NinthMouseMove(Sender, Shift, X, Y);
-}
-
-//---------------------------------------------------------------------------
-
-void __fastcall TMainForm::RadioButton_HStripe2MouseMove(TObject * Sender,
-							 TShiftState Shift, int X, int Y)
-{
-    MeasureWindow->setTestPattern(HStripe2);
-    RadioButton_NinthMouseMove(Sender, Shift, X, Y);
-}
-
-//---------------------------------------------------------------------------
-
-void __fastcall TMainForm::RadioButton_NormalMouseMove(TObject * Sender,
-						       TShiftState Shift, int X, int Y)
-{
-    MeasureWindow->Visible = false;
-}
-
-//---------------------------------------------------------------------------
-
-void __fastcall TMainForm::FormActivate(TObject *Sender)
-{
-    //original from form active
-
-    if (debugMode) {
-	ShowMessage("It's in Debug Mode, stop connecting to CA-X10");
-	Button_PatternTest->Visible = true;
-    } else {
-
-    }
-    if (true == linkCA210) {
-	if (connectCA210ByThread) {
-
-	    class CA210Thread:public TThread {
-	      protected:
-		void __fastcall Execute() {
-		    MainForm->setAllFunctionOn(false);
-		    MainForm->StatusBar1->Panels->Items[1]->Text = "CA-210 Connecting...";
-		    MainForm->initCA210Meter();
-		};
-	      public:
-	      __fastcall CA210Thread(bool CreateSuspended):TThread(CreateSuspended) {
-		};
-	    };
-
-
-	    showProgress(ProgressBar1);
-	    //memory leakage...but..懶的鳥他, 反正程式關閉的時候,heap就一併清掉
-	    ca210Thread = new CA210Thread(false);
-	    //改用thread去啟動ca-210, 這樣可以正常更新progress bar!
-	    ca210Thread->Resume();
-	} else {
-	    initCA210Meter();
+    bptr_ < TIniFile > ini(new TIniFile(tconFilename));
+    bptr_ < TStringList > tconSections(new TStringList());
+    ini->ReadSections(tconSections.get());
+    int size = tconSections->Count;
+    // bool hadVersionSection = false;
+    for (int x = 0; x < size; x++) {
+	String section = (*tconSections)[x];
+	if (section != "Version") {
+	    ComboBox_TCONType->AddItem(section, null);
 	}
-    } else {
-	if (FileExists(METER_FILE)) {
-	    setDummyMeterFilename(METER_FILE);
-	}
-	MainForm->StatusBar1->Panels->Items[1]->Text = "Debug mode";
-	this->GroupBox_CHSetting->Visible = false;
-    }        
-}
-//---------------------------------------------------------------------------
+	/*else {
+	   hadVersionSection = true;
+	   } */
+    }
+    //if (hadVersionSection) {
+    int tconIniVersion = ini->ReadInteger("Version", "T-CON ini", 0);
+    if (tconIniVersion < TCONIniVerstion) {
+	ShowMessage("\"tcon.ini\" needs updating!");
+    }
+    //ini->ReadInteger(section, "AddressingSize", 5);
+    /*} else {
+       ShowMessage("\"tcon.ini\" needs updating!");
+       } */
 
+    ComboBox_TCONType->AddItem(CUSTOM, null);
+    ComboBox_TCONType->ItemIndex = 0;
+}

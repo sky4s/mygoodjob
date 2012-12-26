@@ -366,6 +366,7 @@ namespace cms {
 	    const MaxValue & MaxValue::Int7Bit = MaxValue(127., true, false, 7);	//7bit
 	    const MaxValue & MaxValue::Int8Bit = MaxValue(255., true, true, 8);	//一般常用的RGB code
 	    const MaxValue & MaxValue::Double255 = MaxValue(255.);	//各種bit數的RGB code通用
+	    const MaxValue & MaxValue::Double256 = MaxValue(256.);	//各種bit數的RGB code通用
 	    const MaxValue & MaxValue::Int9Bit = MaxValue(510., true, true, 9);	//9bit
 	    const MaxValue & MaxValue::Double1020 = MaxValue(1020, false, true, -1);	//10bit
 	    const MaxValue & MaxValue::Int10Bit = MaxValue(1020, true, true, 10);	//10bit

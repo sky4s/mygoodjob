@@ -1,6 +1,6 @@
 object TargetWhiteForm2: TTargetWhiteForm2
-  Left = 304
-  Top = 281
+  Left = 142
+  Top = 91
   Width = 900
   Height = 650
   Caption = 'Target White'
@@ -611,7 +611,7 @@ object TargetWhiteForm2: TTargetWhiteForm2
   end
   object StatusBar1: TStatusBar
     Left = 0
-    Top = 604
+    Top = 599
     Width = 892
     Height = 17
     Color = clWhite

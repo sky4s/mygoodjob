@@ -95,6 +95,7 @@ namespace cms {
 			       double_vector_ptr luminanceGammaCurve,
 			       int dimTurn, int brightTurn,
 			       double dimGamma, double brightGamma, int effectiveInputLevel);
+		bool checkIncreaseZOfTarget();
 		void updateTarget(XYZ_ptr targetWhite);
 	      private:
 		static XYZ_vector_ptr
