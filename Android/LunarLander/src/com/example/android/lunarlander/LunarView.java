@@ -16,6 +16,8 @@
 
 package com.example.android.lunarlander;
 
+import com.example.android.lunarlander.R;
+
 import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
