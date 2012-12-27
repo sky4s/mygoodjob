@@ -16,26 +16,22 @@
 
 package com.example.android.lunarlander;
 
-import com.example.android.lunarlander.R;
-
 import android.content.Context;
 import android.content.res.Resources;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.LinearGradient;
 import android.graphics.Paint;
-import android.graphics.RectF;
-import android.graphics.drawable.Drawable;
-import android.os.Bundle;
+import android.graphics.PaintFlagsDrawFilter;
+import android.graphics.RadialGradient;
+import android.graphics.Shader;
 import android.os.Handler;
 import android.os.Message;
 import android.util.AttributeSet;
-import android.view.KeyEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
-import android.view.View;
 import android.widget.TextView;
+import dashboard.util.Interpolation;
 
 /**
  * View that draws, takes keystrokes, etc. for a simple LunarLander game.
@@ -234,8 +230,8 @@ class LunarView extends SurfaceView implements SurfaceHolder.Callback {
 
 			// load background image as a Bitmap instead of a Drawable b/c
 			// we don't need to transform it and it's faster to draw this way
-//			mBackgroundImage = BitmapFactory.decodeResource(res,
-//					R.drawable.earthrise);
+			// mBackgroundImage = BitmapFactory.decodeResource(res,
+			// R.drawable.earthrise);
 
 			// Use the regular lander image as the model size for all sprites
 			// mLanderWidth = mLanderImage.getIntrinsicWidth();
@@ -631,6 +627,11 @@ class LunarView extends SurfaceView implements SurfaceHolder.Callback {
 		// return handled;
 		// }
 
+		int lightGray = Color.rgb(192, 192, 192);
+		int middleGray = Color.rgb(144, 144, 144);
+		int gray = Color.rgb(128, 128, 128);
+		int darkGray = Color.rgb(64, 64, 64);
+
 		/**
 		 * Draws the ship, fuel/speed bars, and background to the provided
 		 * Canvas.
@@ -639,67 +640,92 @@ class LunarView extends SurfaceView implements SurfaceHolder.Callback {
 			if (null == canvas) {
 				return;
 			}
-			// Draw the background image. Operations on the Canvas accumulate
-			// so this is like clearing the screen.
-			// canvas.drawBitmap(mBackgroundImage, 0, 0, null);
 
-			// int yTop = mCanvasHeight - ((int) mY + mLanderHeight / 2);
-			// int xLeft = (int) mX - mLanderWidth / 2;
+			Paint paint = new Paint();
+			paint.setStyle(Paint.Style.STROKE);
+			paint.setAntiAlias(true);
+			paint.setFilterBitmap(true);
+			canvas.setDrawFilter(new PaintFlagsDrawFilter(0,
+					Paint.ANTI_ALIAS_FLAG | Paint.FILTER_BITMAP_FLAG));
 
-			// Draw the fuel gauge
-			// int fuelWidth = (int) (UI_BAR * mFuel / PHYS_FUEL_MAX);
-			// mScratchRect.set(4, 4, 4 + fuelWidth, 4 + UI_BAR_HEIGHT);
-			// canvas.drawRect(mScratchRect, mLineP/aint);
+			int shortSideLength = Math.min(mCanvasWidth, mCanvasHeight);
 
-			// Draw the speed gauge, with a two-tone effect
-			// double speed = Math.sqrt(mDX * mDX + mDY * mDY);
-			// int speedWidth = (int) (UI_BAR * speed / PHYS_SPEED_MAX);
+			int baseRadius = shortSideLength / 2;
+			int cx = mCanvasWidth / 2;
+			int cy = mCanvasHeight / 2;
 
-			// if (speed <= mGoalSpeed) {
-			// mScratchRect.set(4 + UI_BAR + 4, 4,
-			// 4 + UI_BAR + 4 + speedWidth, 4 + UI_BAR_HEIGHT);
-			// canvas.drawRect(mScratchRect, mLinePaint);
-			// } else {
-			// // Draw the bad color in back, with the good color in front of
-			// // it
-			// mScratchRect.set(4 + UI_BAR + 4, 4,
-			// 4 + UI_BAR + 4 + speedWidth, 4 + UI_BAR_HEIGHT);
-			// canvas.drawRect(mScratchRect, mLinePaintBad);
-			// int goalWidth = (UI_BAR * mGoalSpeed / PHYS_SPEED_MAX);
-			// mScratchRect.set(4 + UI_BAR + 4, 4, 4 + UI_BAR + 4 + goalWidth,
-			// 4 + UI_BAR_HEIGHT);
-			// canvas.drawRect(mScratchRect, mLinePaint);
-			// }
+			// 外圈 底層
+			int dkgrayWidth = 22;
+			paint.setColor(darkGray);
+			paint.setStrokeWidth(dkgrayWidth);
+			canvas.drawCircle(cx, cy, baseRadius - dkgrayWidth / 2, paint);
 
-			// Draw the landing pad
-			// canvas.drawLine(mGoalX, 1 + mCanvasHeight - TARGET_PAD_HEIGHT,
-			// mGoalX + mGoalWidth, 1 + mCanvasHeight - TARGET_PAD_HEIGHT,
-			// mLinePaint);
+			// 外圈 中間
+			int grayWidth = 16;
+			int grayOffset = (dkgrayWidth - grayWidth) / 2;
+			paint.setColor(gray);
+			paint.setStrokeWidth(grayWidth);
+			canvas.drawCircle(cx, cy, baseRadius - grayWidth / 2 - grayOffset,
+					paint);
 
-			Paint mPaint = new Paint();
-			mPaint.setColor(Color.WHITE);
+			// 外圈 階梯
+			int outterCircleCount = 6;
+			paint.setStrokeWidth(1);
+			for (int x = 0; x < outterCircleCount; x++) {
+				int color = (x % 2 == 0) ? gray : darkGray;
+				paint.setColor(color);
+				canvas.drawCircle(cx, cy, baseRadius - dkgrayWidth - 1 - x,
+						paint);
+			}
 
-			canvas.drawRect(new RectF(40, 60, 80, 80), mPaint);
-			// Draw the ship with its current rotation
-//			canvas.save();
-			// canvas.rotate((float) mHeading, (float) mX, mCanvasHeight
-			// - (float) mY);
-			// if (mMode == STATE_LOSE) {
-			// mCrashedImage.setBounds(xLeft, yTop, xLeft + mLanderWidth, yTop
-			// + mLanderHeight);
-			// mCrashedImage.draw(canvas);
-			// } else if (mEngineFiring) {
-			// mFiringImage.setBounds(xLeft, yTop, xLeft + mLanderWidth, yTop
-			// + mLanderHeight);
-			// mFiringImage.draw(canvas);
-			// } else {
-			// mLanderImage.setBounds(xLeft, yTop, xLeft + mLanderWidth, yTop
-			// + mLanderHeight);
-			// mLanderImage.draw(canvas);
-			// }
-//			canvas.restore();
+			// 外圈 刻度
+			float[] polarValues = new float[2];
+			int midgrayWidth = 6;
+			int whiteWidth = 3;
+			Polar2cartesianIF polar2cartesian = new MathPolar2cartesian();
+
+			for (int x = 0; x < 12; x++) {
+				polarValues[1] = x * 30;
+				polarValues[0] = baseRadius;
+				float[] coord0 = polar2cartesian
+						.getCartesianCoordinatesValues(polarValues);
+				polarValues[0] = baseRadius - dkgrayWidth;
+				float[] coord1 = polar2cartesian
+						.getCartesianCoordinatesValues(polarValues);
+
+				paint.setColor(middleGray);
+				paint.setStrokeWidth(midgrayWidth);
+				canvas.drawLine(coord0[0] + cx, coord0[1] + cy, coord1[0] + cx,
+						coord1[1] + cy, paint);
+
+				coord0[0] = (float) Interpolation.linear(0, 1, coord0[0],
+						coord1[0], .3);
+				coord0[1] = (float) Interpolation.linear(0, 1, coord0[1],
+						coord1[1], .3);
+
+				paint.setColor(Color.WHITE);
+				paint.setStrokeWidth(whiteWidth);
+				canvas.drawLine(coord0[0] + cx, coord0[1] + cy, coord1[0] + cx,
+						coord1[1] + cy, paint);
+			}
+
+			// 內圈
+			int internalRadius = baseRadius - dkgrayWidth - 1
+					- outterCircleCount;
+			RadialGradient lg = new RadialGradient(cx, cy, internalRadius,
+					new int[] { Color.BLACK, Color.BLACK, Color.BLUE },
+					new float[] { 0, 0.7f, 1 }, Shader.TileMode.CLAMP);
+			paint.setColor(Color.WHITE);
+			paint.setShader(lg);
+			paint.setStyle(Paint.Style.FILL);
+			canvas.drawCircle(cx, cy, internalRadius, paint);
+
+			// int whiteWidth = 1;
+			// paint.setColor(Color.WHITE);
+			// paint.setStrokeWidth(whiteWidth);
+			// canvas.drawCircle(cx, cy, baseRadius - whiteWidth, paint);
+
 		}
-
 		/**
 		 * Figures the lander state (x, y, fuel, ...) based on the passage of
 		 * realtime. Does not invalidate(). Called at the start of draw().
@@ -833,7 +859,6 @@ class LunarView extends SurfaceView implements SurfaceHolder.Callback {
 				mStatusText.setText(m.getData().getString("text"));
 			}
 		});
-
 		setFocusable(true); // make sure we get key events
 	}
 
@@ -913,5 +938,71 @@ class LunarView extends SurfaceView implements SurfaceHolder.Callback {
 			} catch (InterruptedException e) {
 			}
 		}
+	}
+
+}
+
+interface Polar2cartesianIF {
+	float[] getCartesianCoordinatesValues(final float[] polarValues);
+}
+
+class MathPolar2cartesian implements Polar2cartesianIF {
+	public static final float[] cartesian2polarCoordinatesValues(
+			final float[] cartesianValues) {
+		float[] polarValues = new float[2];
+
+		// polarValues[0] = cartesianValues[0];
+		float t1 = cartesianValues[0];
+		float t2 = cartesianValues[1];
+		polarValues[0] = (float) (Math.sqrt(Math.pow(cartesianValues[0], 2)
+				+ Math.pow(cartesianValues[1], 2)));
+		if (t1 == 0 && t2 == 0) {
+			polarValues[1] = 0;
+		} else {
+			polarValues[1] = (float) Math.atan2(t2, t1);
+		}
+		polarValues[1] *= (180.0 / Math.PI);
+		while (polarValues[1] >= 360.0) { // Not necessary, but included as a
+											// check.
+			polarValues[1] -= 360.0;
+		}
+		while (polarValues[1] < 0) {
+			polarValues[1] += 360.0;
+		}
+		return polarValues;
+	}
+
+	/**
+	 * 極座標=>笛卡兒座標
+	 * 
+	 * @param polarValues
+	 *            double[]
+	 * @return double[]
+	 */
+	public static final float[] polar2cartesianCoordinatesValues(
+			final float[] polarValues) {
+		float t = (float) ((polarValues[1] * Math.PI) / 180.0);
+
+		float[] cartesianValues = new float[2];
+		cartesianValues[0] = (float) (polarValues[0] * Math.cos(t));
+		cartesianValues[1] = (float) (polarValues[0] * Math.sin(t));
+
+		return cartesianValues;
+	}
+
+	public float[] getCartesianCoordinatesValues(final float[] polarValues) {
+		return polar2cartesianCoordinatesValues(polarValues);
+	}
+}
+
+class LutPolar2cartesian implements Polar2cartesianIF {
+	public float[] getCartesianCoordinatesValues(final float[] polarValues) {
+		float t = (float) ((polarValues[1] * Math.PI) / 180.0);
+
+		float[] cartesianValues = new float[2];
+		cartesianValues[0] = (float) (polarValues[0] * Math.cos(t));
+		cartesianValues[1] = (float) (polarValues[0] * Math.sin(t));
+
+		return cartesianValues;
 	}
 }
