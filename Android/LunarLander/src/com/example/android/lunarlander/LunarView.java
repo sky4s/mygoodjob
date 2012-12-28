@@ -24,7 +24,10 @@ import android.graphics.LinearGradient;
 import android.graphics.Paint;
 import android.graphics.PaintFlagsDrawFilter;
 import android.graphics.RadialGradient;
+import android.graphics.Rect;
+import android.graphics.RectF;
 import android.graphics.Shader;
+import android.graphics.SweepGradient;
 import android.os.Handler;
 import android.os.Message;
 import android.util.AttributeSet;
@@ -628,9 +631,12 @@ class LunarView extends SurfaceView implements SurfaceHolder.Callback {
 		// }
 
 		int lightGray = Color.rgb(192, 192, 192);
+		int lightRed = Color.rgb(192, 0, 0);
 		int middleGray = Color.rgb(144, 144, 144);
+		int middleRed = Color.rgb(144, 0, 0);
 		int gray = Color.rgb(128, 128, 128);
-		int darkGray = Color.rgb(64, 64, 64);
+		int dullGray = Color.rgb(64, 64, 64);
+		int darkGray = Color.rgb(32, 32, 32);
 
 		/**
 		 * Draws the ship, fuel/speed bars, and background to the provided
@@ -663,28 +669,36 @@ class LunarView extends SurfaceView implements SurfaceHolder.Callback {
 			// 外圈 中間
 			int grayWidth = 16;
 			int grayOffset = (dkgrayWidth - grayWidth) / 2;
-			paint.setColor(gray);
+			paint.setColor(middleGray);
 			paint.setStrokeWidth(grayWidth);
 			canvas.drawCircle(cx, cy, baseRadius - grayWidth / 2 - grayOffset,
 					paint);
 
 			// 外圈 階梯
-			int outterCircleCount = 6;
-			paint.setStrokeWidth(1);
-			for (int x = 0; x < outterCircleCount; x++) {
-				int color = (x % 2 == 0) ? gray : darkGray;
-				paint.setColor(color);
-				canvas.drawCircle(cx, cy, baseRadius - dkgrayWidth - 1 - x,
-						paint);
+			boolean showStairs = true;
+			int outterStairsCount = 6;
+			if (showStairs) {
+				paint.setStrokeWidth(1);
+				for (int x = 0; x < outterStairsCount; x++) {
+					int color = (x % 2 == 0) ? gray : darkGray;
+					paint.setColor(color);
+					canvas.drawCircle(cx, cy, baseRadius - dkgrayWidth - 1 - x,
+							paint);
+				}
 			}
 
 			// 外圈 刻度
 			float[] polarValues = new float[2];
-			int midgrayWidth = 6;
-			int whiteWidth = 3;
+			int midgrayWidth = 8;
+			int whiteWidth = 5;
 			Polar2cartesianIF polar2cartesian = new MathPolar2cartesian();
+			int[] outterColors = new int[] { Color.RED, Color.BLACK,
+					Color.BLACK, Color.BLACK, Color.BLACK, Color.WHITE,
+					Color.WHITE, Color.WHITE, Color.WHITE, Color.WHITE,
+					Color.WHITE, Color.WHITE };
 
 			for (int x = 0; x < 12; x++) {
+
 				polarValues[1] = x * 30;
 				polarValues[0] = baseRadius;
 				float[] coord0 = polar2cartesian
@@ -693,7 +707,7 @@ class LunarView extends SurfaceView implements SurfaceHolder.Callback {
 				float[] coord1 = polar2cartesian
 						.getCartesianCoordinatesValues(polarValues);
 
-				paint.setColor(middleGray);
+				paint.setColor(dullGray);
 				paint.setStrokeWidth(midgrayWidth);
 				canvas.drawLine(coord0[0] + cx, coord0[1] + cy, coord1[0] + cx,
 						coord1[1] + cy, paint);
@@ -703,7 +717,7 @@ class LunarView extends SurfaceView implements SurfaceHolder.Callback {
 				coord0[1] = (float) Interpolation.linear(0, 1, coord0[1],
 						coord1[1], .3);
 
-				paint.setColor(Color.WHITE);
+				paint.setColor(outterColors[x]);
 				paint.setStrokeWidth(whiteWidth);
 				canvas.drawLine(coord0[0] + cx, coord0[1] + cy, coord1[0] + cx,
 						coord1[1] + cy, paint);
@@ -711,128 +725,159 @@ class LunarView extends SurfaceView implements SurfaceHolder.Callback {
 
 			// 內圈
 			int internalRadius = baseRadius - dkgrayWidth - 1
-					- outterCircleCount;
-			RadialGradient lg = new RadialGradient(cx, cy, internalRadius,
-					new int[] { Color.BLACK, Color.BLACK, Color.BLUE },
-					new float[] { 0, 0.7f, 1 }, Shader.TileMode.CLAMP);
-			paint.setColor(Color.WHITE);
+					- outterStairsCount;
+			// RadialGradient lg = new RadialGradient(cx, cy, internalRadius,
+			// new int[] { Color.BLACK, Color.BLACK, Color.BLUE },
+			// new float[] { 0, 0.7f, 1 }, Shader.TileMode.CLAMP);
+			// paint.setColor(Color.WHITE);
+			// paint.setShader(lg);
+			// paint.setStyle(Paint.Style.FILL);
+			// canvas.drawCircle(cx, cy, internalRadius, paint);
+
+			int degreePerkRPM = 30;
+			int maxkRPM = 7;
+			int startDegree = 150;
+			int endDegree = degreePerkRPM * maxkRPM + startDegree;
+			int redDegree = endDegree - degreePerkRPM;
+
+			int ringWidth = 5;
+			paint.setColor(Color.RED);
+			paint.setStyle(Paint.Style.STROKE);
+			paint.setStrokeWidth(ringWidth);
+			RectF oval1 = new RectF(cx - internalRadius + 1, cy
+					- internalRadius + 1, cx + internalRadius - 1, cy
+					+ internalRadius - 1);
+			canvas.drawArc(oval1, redDegree, degreePerkRPM, false, paint);
+
+			// 刻度定義
+			int graduationWidth = 6;
+
+			int graduationLength = 14;
+			int graduationRadius = internalRadius - ringWidth - 1;
+
+			int middleGraduationWidth = (int) (graduationWidth * (2. / 3));
+			int middleGraduationLength = graduationLength / 2;
+
+			int smallGraduationWidth = middleGraduationWidth / 2;
+			int smallGraduationLength = middleGraduationLength - 2;
+
+			// 漸層
+			int innerGradientRadius = graduationRadius - middleGraduationLength;
+			RadialGradient lg = new RadialGradient(cx, cy, innerGradientRadius,
+					new int[] { Color.BLACK, Color.BLACK, dullGray },
+					new float[] { 0, 0.83f, 1 }, Shader.TileMode.CLAMP);
+			// paint.setColor(Color.BLACK);
 			paint.setShader(lg);
 			paint.setStyle(Paint.Style.FILL);
-			canvas.drawCircle(cx, cy, internalRadius, paint);
+			canvas.drawCircle(cx, cy, innerGradientRadius, paint);
 
-			// int whiteWidth = 1;
-			// paint.setColor(Color.WHITE);
-			// paint.setStrokeWidth(whiteWidth);
-			// canvas.drawCircle(cx, cy, baseRadius - whiteWidth, paint);
+			// 紅色漸層
+			int redGradientWidth = 100;
+			int redGradientRadius = innerGradientRadius - redGradientWidth / 2;
+			RadialGradient redlg = new RadialGradient(cx, cy,
+					innerGradientRadius, new int[] { Color.BLACK, Color.BLACK,
+							lightRed }, new float[] { 0, 0.7f, 1 },
+					Shader.TileMode.CLAMP);
+			paint.setShader(redlg);
+			paint.setColor(Color.RED);
+			paint.setStyle(Paint.Style.STROKE);
+			paint.setStrokeWidth(redGradientWidth);
+			RectF redoval = new RectF(cx - redGradientRadius, cy
+					- redGradientRadius, cx + redGradientRadius, cy
+					+ redGradientRadius);
+			canvas.drawArc(redoval, redDegree, degreePerkRPM, false, paint);
+			paint.setShader(null);
+
+			int textSize = 45;
+			Paint fpaint = new Paint();
+			fpaint.setTextSize(textSize);
+			fpaint.setTextAlign(Paint.Align.CENTER);
+
+			float[] fontcoord = new float[2];
+			Rect fontrect = new Rect();
+			// 刻度
+			for (int x = 0; x <= maxkRPM; x++) {
+				int degree = startDegree + x * degreePerkRPM;
+				int c = (x != 7) ? Color.WHITE : Color.RED;
+				float[][] coord0 = drawRadiation(canvas, degree,
+						graduationRadius, graduationLength, c, graduationWidth,
+						polar2cartesian);
+
+				fontcoord[0] = (float) Interpolation.linear(0, 1, coord0[0][0],
+						coord0[1][0], 2);
+				fontcoord[1] = (float) Interpolation.linear(0, 1, coord0[0][1],
+						coord0[1][1], 2);
+				
+				fpaint.setStrokeWidth(3);
+				fpaint.setColor(Color.YELLOW);
+				canvas.drawPoint(fontcoord[0] + cx, fontcoord[1] + cy, fpaint);
+				
+				String text = Integer.toString(x);
+//				canvas.drawText(text, fontcoord[0] + cx, fontcoord[1] + cy,
+//						fpaint);
+				
+				paint.getTextBounds(text, 0, text.length(), fontrect);
+				// fontcoord[0] -= fontrect.width() / 2;
+				int textHeight = fontrect.height();
+				fontcoord[1] += fontrect.height();
+
+				// 刻字
+				fpaint.setColor(Color.WHITE);
+				canvas.drawText(text, fontcoord[0] + cx, fontcoord[1] + cy,
+						fpaint);
+				if (x < maxkRPM) {
+					// 中刻度
+					int degree2 = degree + 15;
+					int c2 = (x < (maxkRPM - 1)) ? Color.WHITE : Color.RED;
+					drawRadiation(canvas, degree2, graduationRadius,
+							middleGraduationLength, c2, middleGraduationWidth,
+							polar2cartesian);
+				}
+			}
+
+			// 小刻度
+			for (int degree = startDegree; degree < endDegree; degree += 3) {
+				if (degree % 30 != 0 && degree % 15 != 0) {
+
+					int c = (degree < (endDegree - degreePerkRPM)) ? Color.WHITE
+							: Color.RED;
+					drawRadiation(canvas, degree, graduationRadius,
+							smallGraduationLength, c, smallGraduationWidth,
+							polar2cartesian);
+				}
+
+			}
 
 		}
-		/**
-		 * Figures the lander state (x, y, fuel, ...) based on the passage of
-		 * realtime. Does not invalidate(). Called at the start of draw().
-		 * Detects the end-of-game and sets the UI to the next state.
-		 */
-		// private void updatePhysics() {
-		// long now = System.currentTimeMillis();
-		//
-		// // Do nothing if mLastTime is in the future.
-		// // This allows the game-start to delay the start of the physics
-		// // by 100ms or whatever.
-		// if (mLastTime > now) return;
-		//
-		// double elapsed = (now - mLastTime) / 1000.0;
-		//
-		// // mRotating -- update heading
-		// if (mRotating != 0) {
-		// mHeading += mRotating * (PHYS_SLEW_SEC * elapsed);
-		//
-		// // Bring things back into the range 0..360
-		// if (mHeading < 0)
-		// mHeading += 360;
-		// else if (mHeading >= 360) mHeading -= 360;
-		// }
-		//
-		// // Base accelerations -- 0 for x, gravity for y
-		// double ddx = 0.0;
-		// double ddy = -PHYS_DOWN_ACCEL_SEC * elapsed;
-		//
-		// if (mEngineFiring) {
-		// // taking 0 as up, 90 as to the right
-		// // cos(deg) is ddy component, sin(deg) is ddx component
-		// double elapsedFiring = elapsed;
-		// double fuelUsed = elapsedFiring * PHYS_FUEL_SEC;
-		//
-		// // tricky case where we run out of fuel partway through the
-		// // elapsed
-		// if (fuelUsed > mFuel) {
-		// elapsedFiring = mFuel / fuelUsed * elapsed;
-		// fuelUsed = mFuel;
-		//
-		// // Oddball case where we adjust the "control" from here
-		// mEngineFiring = false;
-		// }
-		//
-		// mFuel -= fuelUsed;
-		//
-		// // have this much acceleration from the engine
-		// double accel = PHYS_FIRE_ACCEL_SEC * elapsedFiring;
-		//
-		// double radians = 2 * Math.PI * mHeading / 360;
-		// ddx = Math.sin(radians) * accel;
-		// ddy += Math.cos(radians) * accel;
-		// }
-		//
-		// double dxOld = mDX;
-		// double dyOld = mDY;
-		//
-		// // figure speeds for the end of the period
-		// mDX += ddx;
-		// mDY += ddy;
-		//
-		// // figure position based on average speed during the period
-		// mX += elapsed * (mDX + dxOld) / 2;
-		// mY += elapsed * (mDY + dyOld) / 2;
-		//
-		// mLastTime = now;
-		//
-		// // Evaluate if we have landed ... stop the game
-		// double yLowerBound = TARGET_PAD_HEIGHT + mLanderHeight / 2
-		// - TARGET_BOTTOM_PADDING;
-		// if (mY <= yLowerBound) {
-		// mY = yLowerBound;
-		//
-		// int result = STATE_LOSE;
-		// CharSequence message = "";
-		// Resources res = mContext.getResources();
-		// double speed = Math.sqrt(mDX * mDX + mDY * mDY);
-		// boolean onGoal = (mGoalX <= mX - mLanderWidth / 2 && mX
-		// + mLanderWidth / 2 <= mGoalX + mGoalWidth);
-		//
-		// // "Hyperspace" win -- upside down, going fast,
-		// // puts you back at the top.
-		// if (onGoal && Math.abs(mHeading - 180) < mGoalAngle
-		// && speed > PHYS_SPEED_HYPERSPACE) {
-		// result = STATE_WIN;
-		// mWinsInARow++;
-		// doStart();
-		//
-		// return;
-		// // Oddball case: this case does a return, all other cases
-		// // fall through to setMode() below.
-		// } else if (!onGoal) {
-		// message = res.getText(R.string.message_off_pad);
-		// } else if (!(mHeading <= mGoalAngle || mHeading >= 360 - mGoalAngle))
-		// {
-		// message = res.getText(R.string.message_bad_angle);
-		// } else if (speed > mGoalSpeed) {
-		// message = res.getText(R.string.message_too_fast);
-		// } else {
-		// result = STATE_WIN;
-		// mWinsInARow++;
-		// }
-		//
-		// setState(result, message);
-		// }
-		// }
+
+		private float[][] drawRadiation(Canvas canvas, int degree, int radius,
+				int length, int color, int width,
+				Polar2cartesianIF polar2cartesian) {
+			float[] polarValues = new float[2];
+			polarValues[1] = degree;
+			polarValues[0] = radius;
+			float[] coord0 = polar2cartesian
+					.getCartesianCoordinatesValues(polarValues);
+
+			polarValues[0] = radius - length;
+			float[] coord1 = polar2cartesian
+					.getCartesianCoordinatesValues(polarValues);
+
+			Paint paint = new Paint();
+			paint.setStyle(Paint.Style.STROKE);
+			paint.setAntiAlias(true);
+			paint.setFilterBitmap(true);
+			paint.setStrokeWidth(width);
+			paint.setColor(color);
+
+			int cx = mCanvasWidth / 2;
+			int cy = mCanvasHeight / 2;
+			canvas.drawLine(coord0[0] + cx, coord0[1] + cy, coord1[0] + cx,
+					coord1[1] + cy, paint);
+
+			float[][] coordinators = new float[][] { coord0, coord1 };
+			return coordinators;
+		}
 	}
 
 	/** Handle to the application context, used to e.g. fetch Drawables. */
