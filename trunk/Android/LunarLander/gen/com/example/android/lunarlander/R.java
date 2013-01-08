@@ -18,20 +18,27 @@ public final class R {
         public static final int lander_plain=0x7f020004;
     }
     public static final class id {
-        public static final int lunar=0x7f050000;
-        public static final int text=0x7f050001;
+        public static final int lunar=0x7f060000;
+        public static final int menu_settings=0x7f060002;
+        public static final int text=0x7f060001;
     }
     public static final class layout {
-        public static final int lunar_layout=0x7f030000;
+        public static final int activity_text_align=0x7f030000;
+        public static final int lunar_layout=0x7f030001;
+    }
+    public static final class menu {
+        public static final int activity_text_align=0x7f050000;
     }
     public static final class string {
         public static final int app_name=0x7f040000;
+        public static final int hello_world=0x7f040012;
         public static final int lunar_layout_text_text=0x7f040011;
         public static final int menu_easy=0x7f040005;
         public static final int menu_hard=0x7f040007;
         public static final int menu_medium=0x7f040006;
         public static final int menu_pause=0x7f040003;
         public static final int menu_resume=0x7f040004;
+        public static final int menu_settings=0x7f040013;
         public static final int menu_start=0x7f040001;
         public static final int menu_stop=0x7f040002;
         public static final int message_bad_angle=0x7f040010;
@@ -43,5 +50,6 @@ public final class R {
         public static final int mode_ready=0x7f040008;
         public static final int mode_win_prefix=0x7f04000b;
         public static final int mode_win_suffix=0x7f04000c;
+        public static final int title_activity_text_align=0x7f040014;
     }
 }
