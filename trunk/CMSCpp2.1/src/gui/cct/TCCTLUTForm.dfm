@@ -1,7 +1,7 @@
 object CCTLUTForm: TCCTLUTForm
   Left = 239
   Top = 265
-  Width = 841
+  Width = 900
   Height = 466
   Caption = 'CCT(LUT)'
   Color = clBtnFace
@@ -27,7 +27,7 @@ object CCTLUTForm: TCCTLUTForm
     Caption = 'Copyright (C) 2012, AU Optronics Corp., All Right Reserved.'
   end
   object Label26: TLabel
-    Left = 672
+    Left = 696
     Top = 312
     Width = 62
     Height = 13
@@ -36,7 +36,7 @@ object CCTLUTForm: TCCTLUTForm
     ParentColor = False
   end
   object Label27: TLabel
-    Left = 736
+    Left = 760
     Top = 312
     Width = 91
     Height = 13
@@ -469,7 +469,7 @@ object CCTLUTForm: TCCTLUTForm
     end
   end
   object GroupBox5: TGroupBox
-    Left = 671
+    Left = 695
     Top = 7
     Width = 156
     Height = 298
@@ -789,7 +789,7 @@ object CCTLUTForm: TCCTLUTForm
   object GroupBox_KeepMaxLuminance: TGroupBox
     Left = 506
     Top = 7
-    Width = 157
+    Width = 183
     Height = 298
     Caption = 'White Definition'
     TabOrder = 6
@@ -803,7 +803,7 @@ object CCTLUTForm: TCCTLUTForm
     end
     object RadioButton_MaxYNative: TRadioButton
       Left = 7
-      Top = 105
+      Top = 121
       Width = 130
       Height = 20
       Caption = 'Native White'
@@ -853,9 +853,9 @@ object CCTLUTForm: TCCTLUTForm
     end
     object GroupBox_DeHook: TGroupBox
       Left = 16
-      Top = 120
-      Width = 137
-      Height = 121
+      Top = 136
+      Width = 161
+      Height = 81
       Caption = 'DeHook'
       TabOrder = 5
       object RadioButton_DeHookNone: TRadioButton
@@ -891,8 +891,8 @@ object CCTLUTForm: TCCTLUTForm
         OnClick = RadioButton_NewDeHookClick
       end
       object RadioGroup_NewDeHookPriority: TRadioGroup
-        Left = 56
-        Top = 48
+        Left = 80
+        Top = 8
         Width = 73
         Height = 49
         Caption = 'Priority'
@@ -905,8 +905,8 @@ object CCTLUTForm: TCCTLUTForm
         Visible = False
       end
       object CheckBox_AlterGammaCurveAtDeHook2: TCheckBox
-        Left = 48
-        Top = 98
+        Left = 72
+        Top = 58
         Width = 81
         Height = 17
         Caption = 'Alter r Curve'
@@ -918,8 +918,8 @@ object CCTLUTForm: TCCTLUTForm
     object GroupBox_DeIntensityError: TGroupBox
       Left = 16
       Top = 32
-      Width = 137
-      Height = 73
+      Width = 161
+      Height = 89
       Caption = 'De-WhiteError'
       TabOrder = 6
       Visible = False
@@ -933,7 +933,7 @@ object CCTLUTForm: TCCTLUTForm
       end
       object RadioButton_ForceAssignWhite: TRadioButton
         Left = 8
-        Top = 48
+        Top = 64
         Width = 121
         Height = 17
         Caption = 'Force  Assign White'
@@ -950,6 +950,14 @@ object CCTLUTForm: TCCTLUTForm
         Enabled = False
         TabOrder = 2
       end
+      object RadioButton_WhiteShift: TRadioButton
+        Left = 8
+        Top = 48
+        Width = 113
+        Height = 17
+        Caption = 'White Shift'
+        TabOrder = 3
+      end
     end
   end
   object ProgressBar1: TProgressBar
@@ -962,7 +970,7 @@ object CCTLUTForm: TCCTLUTForm
     TabOrder = 7
   end
   object RadioGroup_NormalCase: TRadioGroup
-    Left = 671
+    Left = 695
     Top = 328
     Width = 156
     Height = 49
@@ -977,7 +985,7 @@ object CCTLUTForm: TCCTLUTForm
   object StatusBar1: TStatusBar
     Left = 0
     Top = 413
-    Width = 833
+    Width = 892
     Height = 19
     Color = clWhite
     Panels = <
@@ -1032,7 +1040,7 @@ object CCTLUTForm: TCCTLUTForm
       Height = 21
       ImeName = #26085#25991#36664#20837#31995#32113' (MS-IME2002)'
       TabOrder = 2
-      Text = '50'
+      Text = '25'
     end
     object Edit_DimFixThreshold: TEdit
       Left = 104
@@ -1102,7 +1110,7 @@ object CCTLUTForm: TCCTLUTForm
   object GroupBox_Execute: TGroupBox
     Left = 504
     Top = 305
-    Width = 161
+    Width = 185
     Height = 80
     Caption = 'Execute'
     TabOrder = 11

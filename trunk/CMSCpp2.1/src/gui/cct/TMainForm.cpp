@@ -508,24 +508,26 @@ void TMainForm::setDummyMeterFile(bptr < cms::colorformat::DGLutFile > dglutFile
 	//=====================================================================
 	// ³]©wtarget analyzer
 	//=====================================================================
-	xyY_ptr targetwxyY = property->getTargetReferenceColor(Channel::W);
-	if (null != targetwxyY) {
-	    xyY_ptr rxyY = property->getTargetReferenceColor(Channel::R);
-	    xyY_ptr gxyY = property->getTargetReferenceColor(Channel::G);
-	    xyY_ptr bxyY = property->getTargetReferenceColor(Channel::B);
+	    xyY_ptr targetwxyY = property->getTargetReferenceColor(Channel::W);
+	    if (null != targetwxyY) {
+		xyY_ptr rxyY = property->getTargetReferenceColor(Channel::R);
+		xyY_ptr gxyY = property->getTargetReferenceColor(Channel::G);
+		xyY_ptr bxyY = property->getTargetReferenceColor(Channel::B);
 
-	    bptr < MaxMatrixIntensityAnalyzer > matrixAnalyzer =
-		MaxMatrixIntensityAnalyzer::getReadyAnalyzer(mm, rxyY->toXYZ(), gxyY->toXYZ(),
-							     bxyY->toXYZ(), targetwxyY->toXYZ());
+		bptr < MaxMatrixIntensityAnalyzer > matrixAnalyzer =
+		    MaxMatrixIntensityAnalyzer::getReadyAnalyzer(mm, rxyY->toXYZ(), gxyY->toXYZ(),
+								 bxyY->toXYZ(),
+								 targetwxyY->toXYZ());
 
-	    string_ptr comment = property->getProperty("reference white comment");
-	    if (null != comment) {
-		matrixAnalyzer->setReferenceColorComment(*comment);
+		string_ptr comment = property->getProperty("reference white comment");
+		if (null != comment) {
+		    matrixAnalyzer->setReferenceColorComment(*comment);
+		}
+		RGB_ptr rgb = property->getTargetReferenceRGB();
+		matrixAnalyzer->setReferenceRGB(rgb);
+		analyzer = matrixAnalyzer;
 	    }
-	    RGB_ptr rgb = property->getTargetReferenceRGB();
-	    matrixAnalyzer->setReferenceRGB(rgb);
-	    analyzer = matrixAnalyzer;
-	}
+ 
 	//=====================================================================
 
 	//=====================================================================
@@ -1941,3 +1943,4 @@ void TMainForm::readTCONSections()
     ComboBox_TCONType->AddItem(CUSTOM, null);
     ComboBox_TCONType->ItemIndex = 0;
 }
+

@@ -82,6 +82,7 @@ namespace cms {
 
 	    static const std::string TargetWhiteRatio;
 	    static const std::string WhiteRatio;
+	    static const std::string Empty;
 	    static std::string fileVersion;
 	    static std::string productVersion;
 
@@ -100,7 +101,15 @@ namespace cms {
 	    void addProperty(const std::string key, const std::string value);
 	    bool initProperty(bptr < DGLutFile > d);
 	    bool initProperty(DGLutFile * d);
-	    xyY_ptr getReferenceColor(const string & prestring, const Dep::Channel & ch);
+	    xyY_ptr getReferenceColor(const string & prestring, const Dep::Channel & ch,
+				      const string & afterstring);
+
+	    /*double getTargetReferenceColorx(const Dep::Channel & ch);
+	       double getTargetReferenceColory(const Dep::Channel & ch);
+	       double getTargetReferenceColorY(const Dep::Channel & ch);
+	       double getSecondReferenceColorx(const Dep::Channel & ch);
+	       double getSecondReferenceColory(const Dep::Channel & ch);
+	       double getSecondReferenceColorY(const Dep::Channel & ch); */
 	  public:
 	    static const std::string Native;
 	    static const std::string Target;
@@ -111,8 +120,10 @@ namespace cms {
 	    string_ptr getProperty(const std::string key);
 
 	    xyY_ptr getTargetReferenceColor(const Dep::Channel & ch);
+
 	    xyY_ptr getNativeReferenceColor(const Dep::Channel & ch);
 	    xyY_ptr getSecondReferenceColor(const Dep::Channel & ch);
+
 	    RGB_ptr getReferenceRGB(const string & prestring);
 	    RGB_ptr getTargetReferenceRGB();
 	    RGB_ptr getNativeReferenceRGB();

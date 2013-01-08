@@ -14,8 +14,20 @@ __fastcall TChangeLogForm::TChangeLogForm(TComponent * Owner)
 {
     Memo1->Text = "\
        {Issue List}\r\n\
-       開啟I2C Test會造成量測delay時間拉長為10sec\r\n\
+       *開啟I2C Test會造成量測delay時間拉長為10sec\r\n\
        \r\n\
+       [3.5 build 1.59] 2013/01/08\r\n\
+       +增加Target White Shift, 在Target White模式下增加色度/亮度準確率\r\n\
+       [3.5 build 1.58] 2013/01/08\r\n\
+       +Multi-Gen & Target White & 10Bit In下, 白點257以運算產生\r\n\
+       +增加native(target) white的色度資料\r\n\
+       -解決 非10Bit量測10Bit in LUT時,未內插出DG255.75的bug\r\n\
+       [3.5 build 1.57] 2013/01/04\r\n\
+       -去除10Bit In量測值最大到4095的限制(對應12405具備GL256 DG為13Bit的特性)\r\n\
+       [3.5 build 1.56] 2012/12/28\r\n\
+       -Gamma Measurement 10Bit in量測確保維持在1024階\r\n\
+       -10Bit In時的Gamma偏移作了修正\r\n\
+       +Defined Dim的Under預設值改為25\r\n\
        [3.5 build 1.55] 2012/12/18\r\n\
        +10in時, 1023若無法對應DG4080, 會顯示警告訊息\r\n\
        [3.5 build 1.54] 2012/12/14\r\n\

@@ -117,13 +117,22 @@ bptr < cms::lcd::calibrate::MeasureCondition > TGammaMeasurementForm::getMeasure
 	    int size = dgcodeTable->size();
 	    double_vector_ptr *rgbDoubleVector = RGBVector::toRGBDoubleVector(dgcodeTable);
 	    double_vector_ptr keys(new double_vector());
+	    const MaxValue & lutBit = dgLutBitDepth->getLutMaxValue();
+	    //double max = MaxValue::Real12Bit.max;
 	    for (int x = 0; x < size; x++) {
 		keys->push_back(x);
+		//限制DG的最大值
+		/*double r = (*rgbDoubleVector[0])[x];
+		   (*rgbDoubleVector[0])[x] = r > max ? max : r;
+		   double g = (*rgbDoubleVector[1])[x];
+		   (*rgbDoubleVector[1])[x] = g > max ? max : g;
+		   double b = (*rgbDoubleVector[2])[x];
+		   (*rgbDoubleVector[1])[x] = b > max ? max : b; */
 	    }
 	    Interpolation1DLUT rlut(keys, rgbDoubleVector[0]);
 	    Interpolation1DLUT glut(keys, rgbDoubleVector[1]);
 	    Interpolation1DLUT blut(keys, rgbDoubleVector[2]);
-	    const MaxValue & lutBit = bitDepth->getLutMaxValue();
+
 
 	    for (int x = start; x <= end; x++) {
 		double key = x / 4.;
@@ -135,9 +144,24 @@ bptr < cms::lcd::calibrate::MeasureCondition > TGammaMeasurementForm::getMeasure
 		measureTable->push_back(rgb);
 	    }
 	} else {
+	    bool input10Bit = MaxValue::Int10Bit == dgLutBitDepth->getInputMaxValue();
 	    for (int x = start; x <= end; x++) {
 		RGB_ptr rgb = (*dgcodeTable)[x];
-		measureTable->push_back((*dgcodeTable)[x]);
+
+		if (input10Bit && x == end) {
+		    RGB_ptr rgb0 = (*dgcodeTable)[x - 1];
+
+		    RGB_ptr rgbMeasure(new RGBColor(rgb0->getMaxValue()));
+		    rgbMeasure->R = (rgb->R - rgb0->R) / 4. * 3 + rgb0->R;
+		    rgbMeasure->G = (rgb->G - rgb0->G) / 4. * 3 + rgb0->G;
+		    rgbMeasure->B = (rgb->B - rgb0->B) / 4. * 3 + rgb0->B;
+		    measureTable->push_back(rgbMeasure);
+		} else {
+		    measureTable->push_back(rgb);
+		}
+
+
+
 	    }
 	}
 	measureTable = RGBVector::reverse(measureTable);
@@ -320,6 +344,7 @@ void __fastcall TGammaMeasurementForm::Button_LoadDGTableClick(TObject * Sender)
 	Edit_GrayScaleCount->Text = size;
 	Edit_EndLevelT->Text = size - 1;
 	//此checkbox點選會決定量測的end level, 所以要擺在這個地方
+	CheckBox_10BitInMeasurement->Checked = false;
 	CheckBox_10BitInMeasurement->Checked = input10Bit;
 
 	chdir(currDir.c_str());
