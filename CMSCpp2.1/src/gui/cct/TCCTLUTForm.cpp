@@ -219,6 +219,8 @@ void __fastcall TCCTLUTForm::Button_MeaRunClick(TObject * Sender)
 	    calibrator.DeHookMode = None;
 	    bool autoIntensityInMultiGen = RadioButton_IntensityShift->Checked;
 	    calibrator.AutoIntensityInMultiGen = autoIntensityInMultiGen;
+	    bool targetWhiteShift = RadioButton_WhiteShift->Checked;
+	    calibrator.TargetWhiteShift = targetWhiteShift;
 	    bool forceAssignWhite = RadioButton_ForceAssignWhite->Checked;
 	    calibrator.ForceAssignTargetWhite = forceAssignWhite;
 	}

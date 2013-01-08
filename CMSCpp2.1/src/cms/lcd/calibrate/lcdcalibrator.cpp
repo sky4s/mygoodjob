@@ -213,7 +213,7 @@ namespace cms {
 		} else {
 		    setGammaCurve0(getGammaCurveVector(gamma, n, effectiven));
 		}
-		setGammaCurve0(getGammaCurveVector(gamma, n, effectiven));
+		//setGammaCurve0(getGammaCurveVector(gamma, n, effectiven));
 		useGammaCurve = false;
 		rgbIndepGamma = false;
 	    };
@@ -524,8 +524,8 @@ namespace cms {
 			//找到最貼近target gamma的patch及gray level
 		    }
 
-		    break;
-		};
+		    break;	//end of SecondWhite::DeHook2:
+		};		//end of switch
 
 
 		secondWhiteAnalyzer =
@@ -568,7 +568,20 @@ namespace cms {
 	    };
 
 	    bptr < PanelRegulator > LCDCalibrator::getPanelRegulatorForTargetWhite() {
-		throw java::lang::UnsupportedOperationException();
+		bptr < IntensityAnalyzerIF > analyzer = fetcher->getAnalyzer();
+		RGB_ptr rgb = analyzer->getReferenceRGB();
+		double_array values(new double[3]);
+		rgb->getValues(values, MaxValue::Double255);
+
+		bptr < PanelRegulator > panelRegulator
+		    (new
+		     GammaTestPanelRegulator(bitDepth, tconctrl,
+					     values[0], values[1], values[2], measureCondition));
+		//若是在direct gamma下, setEnable會無效
+		//因為setEnable是變更DG LUT, 但是direct gamma無視DG LUT的內容!
+		panelRegulator->setEnable(true);
+		remapped = true;
+		return panelRegulator;
 	    };
 
 	    /*
@@ -589,21 +602,29 @@ namespace cms {
 		    throw IllegalStateException("null == gammaCurve");
 		}
 
-		bool needPanelRegular = isDoDeHook();
-		bptr < PanelRegulator > panelRegulator =
-		    needPanelRegular ? getPanelRegulatorForDeHook() : bptr <
-		    PanelRegulator > ((PanelRegulator *) null);
-
+		bptr < PanelRegulator > panelRegulator((PanelRegulator *) null);
 		if (isDoDeHook()) {
-
+		    panelRegulator = getPanelRegulatorForDeHook();
+		} else if (targetWhiteShift) {
+		    panelRegulator = getPanelRegulatorForTargetWhite();
 		}
+
+		/*bool needPanelRegular = isDoDeHook();
+		   getPanelRegulatorForDeHook
+		   bptr < PanelRegulator > panelRegulator =
+		   needPanelRegular ? getPanelRegulatorForDeHook() : bptr <
+		   PanelRegulator > ((PanelRegulator *) null);
+
+		   if (isDoDeHook()) {
+
+		   } */
 		//原始特性量測
 		this->originalComponentVector = fetchComponentVector();
 		if (null == originalComponentVector) {
 		    errorMessage = "null == originalComponentVector";
 		    return nil_RGB_vector_ptr;
 		}
-		if (needPanelRegular && null != panelRegulator) {
+		if (null != panelRegulator) {
 		    panelRegulator->setEnable(false);
 		}
 		//把一些設定訊息先存起來
@@ -1227,7 +1248,10 @@ namespace cms {
 		STORE_COMPONENT("6.0_dimComponent.xls", componentVector);
 		return componentVector;
 	    };
-
+             boolean LCDCalibrator::isUseSetWhiteOP(){
+             boolean userSetWhiteOp = forceAssignTargetWhite || autoIntensityInMultiGen || targetWhiteShift;
+                    return userSetWhiteOp;
+             };
 
 	    RGB_vector_ptr LCDCalibrator::getDGLutOpResult(RGB_vector_ptr dglut) {
 		//==============================================================
@@ -1263,7 +1287,8 @@ namespace cms {
 		switch (keepMaxLuminance) {
 		case KeepMaxLuminance::TargetWhite:{
 			//20121214新增autoIntensityInMultiGen入判斷式
-			if (forceAssignTargetWhite /*|| autoIntensityInMultiGen */ ) {
+			//20130108 不知道啥時autoIntensityInMultiGen被拿掉, 但是這天又決定加回來
+			if (isUseSetWhiteOP()) {
 			    bptr < cms::measure::IntensityAnalyzerIF > analyzer =
 				fetcher->getAnalyzer();
 			    RGB_ptr targetRGB = analyzer->getReferenceRGB();

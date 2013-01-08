@@ -379,8 +379,9 @@ namespace cms {
 	    using namespace java::lang;
 	    RGB_ptr preIntensity;
 	    int maxBRawGrayLevel = max;
+            const int DefinedMaxBRawGrayLevel = 50;
 
-	    for (int x = max; x > (max - 50); x--) {
+	    for (int x = max; x > (max - DefinedMaxBRawGrayLevel); x--) {
 		RGB_ptr rgb(new RGBColor(x, x, x));
 		RGB_ptr intensity = analyzer->getIntensity(rgb);
 		if (null != preIntensity) {

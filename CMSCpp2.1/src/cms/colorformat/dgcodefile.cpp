@@ -514,7 +514,8 @@ namespace cms {
 	const string DGLutProperty::Target = "target";
 	const string DGLutProperty::Second = "second";
 	const string DGLutProperty::WhiteRatio = "WhiteRatio";
-	const string DGLutProperty::TargetWhiteRatio = "TargetWhiteRatio";
+	const string DGLutProperty::Empty = "";
+	const string DGLutProperty::TargetWhiteRatio = "TargetWhiteRatio";	//不要動大小寫, 為了維持向前相容
 	void DGLutProperty::store(ExcelAccessBase & dgfile) const {
 
 	    //==================================================================
@@ -673,6 +674,8 @@ namespace cms {
 			string autoIntensityInMultiGen = c->autoIntensityInMultiGen ? On : Off;
 			dgfile.addProperty("autoIntensity in multi-gen", autoIntensityInMultiGen);
 		    }
+		    boolean useSetWhiteOp = c->isUseSetWhiteOP();
+		    dgfile.addProperty("assign(8bit)/recal(10bit) DG256", useSetWhiteOp ? On : Off);
 		}
 		break;
 	    case KeepMaxLuminance::NativeWhite:
@@ -768,23 +771,27 @@ namespace cms {
 		    dgfile.addProperty("reference white comment", *comment);
 		}
 
-		xyY_ptr refRxyY = analyzer->getPrimaryColor(Channel::R);
+		/*xyY_ptr refRxyY = analyzer->getPrimaryColor(Channel::R);
 		xyY_ptr refGxyY = analyzer->getPrimaryColor(Channel::G);
 		xyY_ptr refBxyY = analyzer->getPrimaryColor(Channel::B);
+		//target reference white
 		dgfile.addProperty(prestring + " reference white", *refWhitexyY->toString());
+		//target primary R
 		dgfile.addProperty(prestring + " primary R", *refRxyY->toString());
 		dgfile.addProperty(prestring + " primary G", *refGxyY->toString());
-		dgfile.addProperty(prestring + " primary B", *refBxyY->toString());
+		dgfile.addProperty(prestring + " primary B", *refBxyY->toString());*/
 	    }
 	    //紀錄target white用的rgb
 	    RGB_ptr refRGB = analyzer->getReferenceRGB();
 	    if (null != refRGB) {
+		//target reference white RGB
 		dgfile.addProperty(prestring + " reference white RGB", *refRGB->toString());
 
 		bptr < BitDepthProcessor > bitDepth = c->bitDepth;
 		const Dep::MaxValue & lutBit = bitDepth->getLutMaxValue();
 		RGB_ptr lutRefRGB = refRGB->clone();
 		lutRefRGB->changeMaxValue(lutBit);
+		//target reference white RGB(LUT Bit)
 		dgfile.addProperty(prestring +
 				   " reference white RGB(LUT Bit)", *lutRefRGB->toString());
 	    }
@@ -794,7 +801,28 @@ namespace cms {
 	    if (null != ma && null != ma->getWhiteRatio()) {
 		double2D_ptr ratio = ma->getWhiteRatio();
 		string title = prestring + " " + WhiteRatio;
+		//target WhiteRatio
 		dgfile.addProperty(title, *DoubleArray::toString(ratio));
+	    }
+
+	    if (null != refWhitexyY) {
+		xyY_ptr refRxyY = analyzer->getPrimaryColor(Channel::R);
+		xyY_ptr refGxyY = analyzer->getPrimaryColor(Channel::G);
+		xyY_ptr refBxyY = analyzer->getPrimaryColor(Channel::B);
+		//target reference white
+		dgfile.addProperty(prestring + " reference white x", _toString(refWhitexyY->x));
+		dgfile.addProperty(prestring + " reference white y", _toString(refWhitexyY->y));
+		dgfile.addProperty(prestring + " reference white Y", _toString(refWhitexyY->Y));
+		//target primary R
+		dgfile.addProperty(prestring + " primary R x", _toString(refRxyY->x));
+		dgfile.addProperty(prestring + " primary R y", _toString(refRxyY->y));
+		dgfile.addProperty(prestring + " primary R Y", _toString(refRxyY->Y));
+		dgfile.addProperty(prestring + " primary G x", _toString(refGxyY->x));
+		dgfile.addProperty(prestring + " primary G y", _toString(refGxyY->y));
+		dgfile.addProperty(prestring + " primary G Y", _toString(refGxyY->Y));
+		dgfile.addProperty(prestring + " primary B x", _toString(refBxyY->x));
+		dgfile.addProperty(prestring + " primary B y", _toString(refBxyY->y));
+		dgfile.addProperty(prestring + " primary B Y", _toString(refBxyY->Y));
 	    }
 
 	};
@@ -847,29 +875,31 @@ namespace cms {
 	string_ptr DGLutProperty::getProperty(const std::string key) {
 	    return propertyMap[key];
 	};
-	xyY_ptr DGLutProperty::getReferenceColor(const string & prestring, const Channel & ch) {
+	xyY_ptr DGLutProperty::getReferenceColor(const string & prestring, const Channel & ch,
+						 const string & afterstring) {
 	    string_ptr value;
+	    string insert = afterstring != "" ? " " : "";
 	    switch (ch.chindex) {
 	    case ChannelIndex::R:
-		value = getProperty(prestring + " primary R");
+		value = getProperty(prestring + " primary R" + insert + afterstring);
 		if (null == value && Target == prestring) {
 		    value = getProperty("primary R");
 		}
 		break;
 	    case ChannelIndex::G:
-		value = getProperty(prestring + " primary G");
+		value = getProperty(prestring + " primary G" + insert + afterstring);
 		if (null == value && Target == prestring) {
 		    value = getProperty("primary G");
 		}
 		break;
 	    case ChannelIndex::B:
-		value = getProperty(prestring + " primary B");
+		value = getProperty(prestring + " primary B" + insert + afterstring);
 		if (null == value && Target == prestring) {
 		    value = getProperty("primary B");
 		}
 		break;
 	    case ChannelIndex::W:
-		value = getProperty(prestring + " reference white");
+		value = getProperty(prestring + " reference white" + insert + afterstring);
 		if (null == value && Target == prestring) {
 		    value = getProperty("reference white");
 		}
@@ -878,21 +908,47 @@ namespace cms {
 		throw IllegalArgumentException("Unsupported Channel : " + *ch.toString());
 	    }
 	    if (null != value) {
-		xyY_ptr xyY(new CIExyY(ColorSpace::getValuesFromString(value)));
-		return xyY;
+		if (afterstring == "") {
+		    xyY_ptr xyY(new CIExyY(ColorSpace::getValuesFromString(value)));
+		    return xyY;
+		} else {
+		    xyY_ptr xyY(new CIExyY(_toDouble(*value), 0));
+		    return xyY;
+		}
 	    } else {
 		return xyY_ptr((CIExyY *) null);
 	    }
 	};
 	xyY_ptr DGLutProperty::getTargetReferenceColor(const Dep::Channel & ch) {
-	    return getReferenceColor(Target, ch);
+	    if (null == getReferenceColor(Target, ch, "x")) {
+		return getReferenceColor(Target, ch, "");
+	    } else {
+		double x = getReferenceColor(Target, ch, "x")->x;
+		double y = getReferenceColor(Target, ch, "y")->x;
+		double Y = getReferenceColor(Target, ch, "Y")->x;
+		return xyY_ptr(new CIExyY(x, y, Y));
+	    }
+
 	};
+
+
+
 	xyY_ptr DGLutProperty::getNativeReferenceColor(const Dep::Channel & ch) {
-	    return getReferenceColor(Native, ch);
+	    return getReferenceColor(Native, ch, "");
 	};
 	xyY_ptr DGLutProperty::getSecondReferenceColor(const Dep::Channel & ch) {
-	    return getReferenceColor(Second, ch);
+	    //return getReferenceColor(Second, ch, "");
+	    if (null == getReferenceColor(Second, ch, "x")) {
+		return getReferenceColor(Second, ch, "");
+	    } else {
+		double x = getReferenceColor(Second, ch, "x")->x;
+		double y = getReferenceColor(Second, ch, "y")->x;
+		double Y = getReferenceColor(Second, ch, "Y")->x;
+		return xyY_ptr(new CIExyY(x, y, Y));
+	    }
 	};
+
+
 	RGB_ptr DGLutProperty::getReferenceRGB(const string & prestring) {
 	    string_ptr value = getProperty(prestring + " reference white RGB");
 	    double_array rgbValues = ColorSpace::getValuesFromString(value);

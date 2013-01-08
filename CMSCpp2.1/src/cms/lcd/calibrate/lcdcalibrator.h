@@ -132,6 +132,7 @@ namespace cms {
 		int keepMaxLumiOver;
 		bool autoKeepMaxLumiParameter;
 		bool forceAssignTargetWhite;
+		bool targetWhiteShift;
 		//==============================================================
 
 		//==============================================================
@@ -253,6 +254,8 @@ namespace cms {
 		__property DeHook DeHookMode = { read = dehook, write = dehook
 		};
 		__property bool ForceAssignTargetWhite = { write = forceAssignTargetWhite
+		};
+		__property bool TargetWhiteShift = { write = targetWhiteShift
 		};
 
 		//==============================================================
@@ -404,6 +407,7 @@ namespace cms {
 
 		 bptr < PanelRegulator > getPanelRegulatorForDeHook();
 		 bptr < PanelRegulator > getPanelRegulatorForTargetWhite();
+                 boolean isUseSetWhiteOP();
 	      public:
 
 		static double_vector_ptr
