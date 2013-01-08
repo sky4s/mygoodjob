@@ -22,7 +22,10 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.LinearGradient;
 import android.graphics.Paint;
+import android.graphics.Paint.FontMetrics;
+import android.graphics.Paint.Style;
 import android.graphics.PaintFlagsDrawFilter;
+import android.graphics.PointF;
 import android.graphics.RadialGradient;
 import android.graphics.Rect;
 import android.graphics.RectF;
@@ -789,7 +792,9 @@ class LunarView extends SurfaceView implements SurfaceHolder.Callback {
 			paint.setShader(null);
 
 			int textSize = 45;
+			int distanceOfFontToLine = 4;
 			Paint fpaint = new Paint();
+			fpaint.setStyle(Style.FILL);
 			fpaint.setTextSize(textSize);
 			fpaint.setTextAlign(Paint.Align.CENTER);
 
@@ -803,28 +808,49 @@ class LunarView extends SurfaceView implements SurfaceHolder.Callback {
 						graduationRadius, graduationLength, c, graduationWidth,
 						polar2cartesian);
 
+				// 外插
 				fontcoord[0] = (float) Interpolation.linear(0, 1, coord0[0][0],
-						coord0[1][0], 2);
+						coord0[1][0], distanceOfFontToLine);
 				fontcoord[1] = (float) Interpolation.linear(0, 1, coord0[0][1],
-						coord0[1][1], 2);
-				
+						coord0[1][1], distanceOfFontToLine);
+
+				// 畫點, 參考用
 				fpaint.setStrokeWidth(3);
 				fpaint.setColor(Color.YELLOW);
 				canvas.drawPoint(fontcoord[0] + cx, fontcoord[1] + cy, fpaint);
-				
+
 				String text = Integer.toString(x);
-//				canvas.drawText(text, fontcoord[0] + cx, fontcoord[1] + cy,
-//						fpaint);
-				
-				paint.getTextBounds(text, 0, text.length(), fontrect);
+				// canvas.drawText(text, fontcoord[0] + cx, fontcoord[1] + cy,
+				// fpaint);
+
+				// paint.getTextBounds(text, 0, text.length(), fontrect);
 				// fontcoord[0] -= fontrect.width() / 2;
-				int textHeight = fontrect.height();
-				fontcoord[1] += fontrect.height();
+				// FontMetrics fm = fpaint.getFontMetrics();
+				// int textHeight = (int) (Math.ceil(fm.descent - fm.ascent) +
+				// 2);
+				// int textHeight = getFontHeight(fpaint);
+				// int textHeight = fontrect.height();
+				// fontcoord[1] += textHeight ;
 
 				// 刻字
 				fpaint.setColor(Color.WHITE);
-				canvas.drawText(text, fontcoord[0] + cx, fontcoord[1] + cy,
-						fpaint);
+				// PointF p = getTextCenterToDraw(text, new PointF(fontcoord[0]
+				// + cx, fontcoord[1] + cy), fpaint);
+				int halfTextSize = textSize / 2;
+				Rect textRect = new Rect(
+						(int) fontcoord[0] + cx - halfTextSize,
+						(int) fontcoord[1] + cy - halfTextSize,
+						(int) fontcoord[0] + cx + halfTextSize,
+						(int) fontcoord[1] + cy + halfTextSize);
+				PointF p = getTextCenterInRect(text, textRect, fpaint);
+				// + cx,)
+				canvas.drawText(text, p.x, p.y, fpaint);
+
+				// 畫點, 參考用
+				fpaint.setStrokeWidth(3);
+				fpaint.setColor(Color.YELLOW);
+				canvas.drawPoint(fontcoord[0] + cx, fontcoord[1] + cy, fpaint);
+
 				if (x < maxkRPM) {
 					// 中刻度
 					int degree2 = degree + 15;
@@ -834,6 +860,8 @@ class LunarView extends SurfaceView implements SurfaceHolder.Callback {
 							polar2cartesian);
 				}
 			}
+
+			drawHelloRectangle(canvas, 10, 10, 150, 30);
 
 			// 小刻度
 			for (int degree = startDegree; degree < endDegree; degree += 3) {
@@ -848,6 +876,52 @@ class LunarView extends SurfaceView implements SurfaceHolder.Callback {
 
 			}
 
+		}
+
+		private PointF getTextCenterInRect(String text, Rect rect, Paint paint) {
+			int fontHeight = (int) (rect.height() / 0.7);
+			paint.setTextSize(fontHeight);
+			Rect bounds = new Rect();
+			paint.getTextBounds(text, 0, text.length(), bounds);
+			PointF p = new PointF(rect.left + rect.width() / 2, rect.top
+					+ rect.height() / 2 + (bounds.bottom - bounds.top) / 2);
+			return p;
+		}
+
+		void drawHelloRectangle(Canvas c, int topLeftX, int topLeftY,
+				int width, int height) {
+			Paint mPaint = new Paint();
+			// height of 'Hello World'; height*0.7 looks good
+			int fontHeight = (int) (height * 0.7);
+
+			mPaint.setColor(Color.RED);
+			mPaint.setStyle(Style.FILL);
+			c.drawRect(topLeftX, topLeftY, topLeftX + width, topLeftY + height,
+					mPaint);
+
+			mPaint.setTextSize(fontHeight);
+			mPaint.setColor(Color.BLACK);
+			mPaint.setTextAlign(Paint.Align.CENTER);
+			String textToDraw = new String("Hello World");
+			Rect bounds = new Rect();
+			mPaint.getTextBounds(textToDraw, 0, textToDraw.length(), bounds);
+			c.drawText(textToDraw, topLeftX + width / 2, topLeftY + height / 2
+					+ (bounds.bottom - bounds.top) / 2, mPaint);
+		}
+
+		private int getFontHeight(Paint paint) {
+			FontMetrics fm = paint.getFontMetrics();
+			return (int) Math.ceil(fm.descent - fm.top) + 2;
+
+		}
+
+		private PointF getTextCenterToDraw(String text, PointF center,
+				Paint paint) {
+			Rect textBounds = new Rect();
+			paint.getTextBounds(text, 0, text.length(), textBounds);
+			float x = center.x - textBounds.width() * 0.4f;
+			float y = center.y + textBounds.height() * 0.4f;
+			return new PointF(x, y);
 		}
 
 		private float[][] drawRadiation(Canvas canvas, int degree, int radius,
