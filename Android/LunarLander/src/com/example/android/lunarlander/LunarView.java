@@ -20,7 +20,6 @@ import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Canvas;
 import android.graphics.Color;
-import android.graphics.LinearGradient;
 import android.graphics.Paint;
 import android.graphics.Paint.FontMetrics;
 import android.graphics.Paint.Style;
@@ -30,7 +29,6 @@ import android.graphics.RadialGradient;
 import android.graphics.Rect;
 import android.graphics.RectF;
 import android.graphics.Shader;
-import android.graphics.SweepGradient;
 import android.os.Handler;
 import android.os.Message;
 import android.util.AttributeSet;
@@ -799,7 +797,7 @@ class LunarView extends SurfaceView implements SurfaceHolder.Callback {
 			fpaint.setTextAlign(Paint.Align.CENTER);
 
 			float[] fontcoord = new float[2];
-			Rect fontrect = new Rect();
+//			Rect fontrect = new Rect();
 			// ишл╫
 			for (int x = 0; x <= maxkRPM; x++) {
 				int degree = startDegree + x * degreePerkRPM;
@@ -909,20 +907,20 @@ class LunarView extends SurfaceView implements SurfaceHolder.Callback {
 					+ (bounds.bottom - bounds.top) / 2, mPaint);
 		}
 
-		private int getFontHeight(Paint paint) {
-			FontMetrics fm = paint.getFontMetrics();
-			return (int) Math.ceil(fm.descent - fm.top) + 2;
-
-		}
-
-		private PointF getTextCenterToDraw(String text, PointF center,
-				Paint paint) {
-			Rect textBounds = new Rect();
-			paint.getTextBounds(text, 0, text.length(), textBounds);
-			float x = center.x - textBounds.width() * 0.4f;
-			float y = center.y + textBounds.height() * 0.4f;
-			return new PointF(x, y);
-		}
+//		private int getFontHeight(Paint paint) {
+//			FontMetrics fm = paint.getFontMetrics();
+//			return (int) Math.ceil(fm.descent - fm.top) + 2;
+//
+//		}
+//
+//		private PointF getTextCenterToDraw(String text, PointF center,
+//				Paint paint) {
+//			Rect textBounds = new Rect();
+//			paint.getTextBounds(text, 0, text.length(), textBounds);
+//			float x = center.x - textBounds.width() * 0.4f;
+//			float y = center.y + textBounds.height() * 0.4f;
+//			return new PointF(x, y);
+//		}
 
 		private float[][] drawRadiation(Canvas canvas, int degree, int radius,
 				int length, int color, int width,
