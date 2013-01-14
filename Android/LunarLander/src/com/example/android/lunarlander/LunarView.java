@@ -28,6 +28,7 @@ import android.graphics.RadialGradient;
 import android.graphics.Rect;
 import android.graphics.RectF;
 import android.graphics.Shader;
+import android.graphics.Typeface;
 import android.os.Handler;
 import android.os.Message;
 import android.util.AttributeSet;
@@ -636,7 +637,6 @@ class LunarView extends SurfaceView implements SurfaceHolder.Callback {
 		int middleRed = Color.rgb(144, 0, 0);
 		int gray = Color.rgb(128, 128, 128);
 		int dullGray = Color.rgb(64, 64, 64);
-		int darkGray = Color.rgb(32, 32, 32);
 
 		/**
 		 * Draws the ship, fuel/speed bars, and background to the provided
@@ -647,6 +647,9 @@ class LunarView extends SurfaceView implements SurfaceHolder.Callback {
 				return;
 			}
 
+			// =================================================================
+			// 初期設定
+			// =================================================================
 			Paint paint = new Paint();
 			paint.setStyle(Paint.Style.STROKE);
 			paint.setAntiAlias(true);
@@ -654,19 +657,24 @@ class LunarView extends SurfaceView implements SurfaceHolder.Callback {
 			canvas.setDrawFilter(new PaintFlagsDrawFilter(0,
 					Paint.ANTI_ALIAS_FLAG | Paint.FILTER_BITMAP_FLAG));
 
+			// 找到短邊, 好確定圓要怎麼畫
 			int shortSideLength = Math.min(mCanvasWidth, mCanvasHeight);
-
+			// 找到基礎半徑(最長半徑)
 			int baseRadius = shortSideLength / 2;
 			int cx = mCanvasWidth / 2;
 			int cy = mCanvasHeight / 2;
+			// =================================================================
 
-			// 外圈 底層
+			// =================================================================
+			// 外圈
+			// =================================================================
+			// 外圈 底層(深色)
 			int dkgrayWidth = 22;
 			paint.setColor(darkGray);
 			paint.setStrokeWidth(dkgrayWidth);
 			canvas.drawCircle(cx, cy, baseRadius - dkgrayWidth / 2, paint);
 
-			// 外圈 中間
+			// 外圈 中間(稍淺)
 			int grayWidth = 16;
 			int grayOffset = (dkgrayWidth - grayWidth) / 2;
 			paint.setColor(middleGray);
@@ -675,30 +683,30 @@ class LunarView extends SurfaceView implements SurfaceHolder.Callback {
 					paint);
 
 			// 外圈 階梯
-			boolean showStairs = true;
 			int outterStairsCount = 6;
-			if (showStairs) {
-				paint.setStrokeWidth(1);
-				for (int x = 0; x < outterStairsCount; x++) {
-					int color = (x % 2 == 0) ? gray : darkGray;
-					paint.setColor(color);
-					canvas.drawCircle(cx, cy, baseRadius - dkgrayWidth - 1 - x,
-							paint);
-				}
+			paint.setStrokeWidth(1);
+			for (int x = 0; x < outterStairsCount; x++) {
+				int color = (x % 2 == 0) ? gray : darkGray;
+				paint.setColor(color);
+				canvas.drawCircle(cx, cy, baseRadius - dkgrayWidth - 1 - x,
+						paint);
 			}
 
 			// 外圈 刻度
 			float[] polarValues = new float[2];
-			int midgrayWidth = 8;
-			int whiteWidth = 5;
+			int midgrayWidth = 8; // 刻度的洞
+			int whiteWidth = 5;// 刻度
 			Polar2cartesianIF polar2cartesian = new MathPolar2cartesian();
 			int[] outterColors = new int[] { Color.RED, Color.BLACK,
-					Color.BLACK, Color.BLACK, Color.BLACK, Color.WHITE,
+					Color.BLACK, Color.BLACK, Color.BLACK,
+					Color.WHITE,// 0
 					Color.WHITE, Color.WHITE, Color.WHITE, Color.WHITE,
 					Color.WHITE, Color.WHITE };
 
 			for (int x = 0; x < 12; x++) {
-
+				// =================================================================
+				// 刻度的洞
+				// =================================================================
 				polarValues[1] = x * 30;
 				polarValues[0] = baseRadius;
 				float[] coord0 = polar2cartesian
@@ -711,7 +719,11 @@ class LunarView extends SurfaceView implements SurfaceHolder.Callback {
 				paint.setStrokeWidth(midgrayWidth);
 				canvas.drawLine(coord0[0] + cx, coord0[1] + cy, coord1[0] + cx,
 						coord1[1] + cy, paint);
+				// =================================================================
 
+				// =================================================================
+				// 刻度
+				// =================================================================
 				coord0[0] = (float) Interpolation.linear(0, 1, coord0[0],
 						coord1[0], .3);
 				coord0[1] = (float) Interpolation.linear(0, 1, coord0[1],
@@ -721,19 +733,15 @@ class LunarView extends SurfaceView implements SurfaceHolder.Callback {
 				paint.setStrokeWidth(whiteWidth);
 				canvas.drawLine(coord0[0] + cx, coord0[1] + cy, coord1[0] + cx,
 						coord1[1] + cy, paint);
+				// =================================================================
 			}
+			// =================================================================
 
+			// =================================================================
 			// 內圈
+			// =================================================================
 			int internalRadius = baseRadius - dkgrayWidth - 1
 					- outterStairsCount;
-			// RadialGradient lg = new RadialGradient(cx, cy, internalRadius,
-			// new int[] { Color.BLACK, Color.BLACK, Color.BLUE },
-			// new float[] { 0, 0.7f, 1 }, Shader.TileMode.CLAMP);
-			// paint.setColor(Color.WHITE);
-			// paint.setShader(lg);
-			// paint.setStyle(Paint.Style.FILL);
-			// canvas.drawCircle(cx, cy, internalRadius, paint);
-
 			int degreePerkRPM = 30;
 			int maxkRPM = 7;
 			int startDegree = 150;
@@ -750,23 +758,21 @@ class LunarView extends SurfaceView implements SurfaceHolder.Callback {
 			canvas.drawArc(oval1, redDegree, degreePerkRPM, false, paint);
 
 			// 刻度定義
-			int graduationWidth = 6;
+			int graduatorWidth = 6;
+			int graduatorLength = 14;
+			int graduatorRadius = internalRadius - ringWidth - 1;
 
-			int graduationLength = 14;
-			int graduationRadius = internalRadius - ringWidth - 1;
+			int middleGraduatorWidth = (int) (graduatorWidth * (2. / 3));
+			int middleGraduatorLength = graduatorLength / 2;
 
-			int middleGraduationWidth = (int) (graduationWidth * (2. / 3));
-			int middleGraduationLength = graduationLength / 2;
-
-			int smallGraduationWidth = middleGraduationWidth / 2;
-			int smallGraduationLength = middleGraduationLength - 2;
+			int smallGraduatorWidth = middleGraduatorWidth / 2;
+			int smallGraduatorLength = middleGraduatorLength - 2;
 
 			// 漸層
-			int innerGradientRadius = graduationRadius - middleGraduationLength;
+			int innerGradientRadius = graduatorRadius - middleGraduatorLength;
 			RadialGradient lg = new RadialGradient(cx, cy, innerGradientRadius,
 					new int[] { Color.BLACK, Color.BLACK, dullGray },
 					new float[] { 0, 0.83f, 1 }, Shader.TileMode.CLAMP);
-			// paint.setColor(Color.BLACK);
 			paint.setShader(lg);
 			paint.setStyle(Paint.Style.FILL);
 			canvas.drawCircle(cx, cy, innerGradientRadius, paint);
@@ -788,21 +794,24 @@ class LunarView extends SurfaceView implements SurfaceHolder.Callback {
 			canvas.drawArc(redoval, redDegree, degreePerkRPM, false, paint);
 			paint.setShader(null);
 
+			// 字
 			int textSize = 45;
 			int distanceOfFontToLine = 4;
 			Paint fpaint = new Paint();
+			fpaint.setTypeface(Typeface.DEFAULT_BOLD);
 			fpaint.setStyle(Style.FILL);
 			fpaint.setTextSize(textSize);
 			fpaint.setTextAlign(Paint.Align.CENTER);
 
 			float[] fontcoord = new float[2];
-//			Rect fontrect = new Rect();
 			// 刻度
 			for (int x = 0; x <= maxkRPM; x++) {
 				int degree = startDegree + x * degreePerkRPM;
+
 				int c = (x != 7) ? Color.WHITE : Color.RED;
+				// 大刻度
 				float[][] coord0 = drawRadiation(canvas, degree,
-						graduationRadius, graduationLength, c, graduationWidth,
+						graduatorRadius, graduatorLength, c, graduatorWidth,
 						polar2cartesian);
 
 				// 外插
@@ -812,53 +821,45 @@ class LunarView extends SurfaceView implements SurfaceHolder.Callback {
 						coord0[1][1], distanceOfFontToLine);
 
 				// 畫點, 參考用
-				fpaint.setStrokeWidth(3);
-				fpaint.setColor(Color.YELLOW);
-				canvas.drawPoint(fontcoord[0] + cx, fontcoord[1] + cy, fpaint);
-
-				String text = Integer.toString(x);
-				// canvas.drawText(text, fontcoord[0] + cx, fontcoord[1] + cy,
+				// fpaint.setStrokeWidth(3);
+				// fpaint.setColor(Color.YELLOW);
+				// canvas.drawPoint(fontcoord[0] + cx, fontcoord[1] + cy,
 				// fpaint);
-
-				// paint.getTextBounds(text, 0, text.length(), fontrect);
-				// fontcoord[0] -= fontrect.width() / 2;
-				// FontMetrics fm = fpaint.getFontMetrics();
-				// int textHeight = (int) (Math.ceil(fm.descent - fm.ascent) +
-				// 2);
-				// int textHeight = getFontHeight(fpaint);
-				// int textHeight = fontrect.height();
-				// fontcoord[1] += textHeight ;
 
 				// 刻字
 				fpaint.setColor(Color.WHITE);
 				// PointF p = getTextCenterToDraw(text, new PointF(fontcoord[0]
 				// + cx, fontcoord[1] + cy), fpaint);
-				int halfTextSize = textSize / 2;
-				Rect textRect = new Rect(
-						(int) fontcoord[0] + cx - halfTextSize,
-						(int) fontcoord[1] + cy - halfTextSize,
-						(int) fontcoord[0] + cx + halfTextSize,
-						(int) fontcoord[1] + cy + halfTextSize);
-				PointF p = getTextCenterInRect(text, textRect, fpaint);
-				// + cx,)
+				// int halfTextSize = textSize / 2;
+				// Rect textRect = new Rect(
+				// (int) fontcoord[0] + cx - halfTextSize,
+				// (int) fontcoord[1] + cy - halfTextSize,
+				// (int) fontcoord[0] + cx + halfTextSize,
+				// (int) fontcoord[1] + cy + halfTextSize);
+				String text = Integer.toString(x);
+				// PointF p = getTextCenterInRect(text, textRect, fpaint);
+				PointF p = getStringCoordinator(text, textSize, fontcoord[0]
+						+ cx, fontcoord[1] + cy, fpaint);
 				canvas.drawText(text, p.x, p.y, fpaint);
 
 				// 畫點, 參考用
-				fpaint.setStrokeWidth(3);
-				fpaint.setColor(Color.YELLOW);
-				canvas.drawPoint(fontcoord[0] + cx, fontcoord[1] + cy, fpaint);
+				// fpaint.setStrokeWidth(3);
+				// fpaint.setColor(Color.YELLOW);
+				// canvas.drawPoint(fontcoord[0] + cx, fontcoord[1] + cy,
+				// fpaint);
 
-				if (x < maxkRPM) {
+				if (x < maxkRPM) { // 為了省掉最後一個不用畫
 					// 中刻度
 					int degree2 = degree + 15;
 					int c2 = (x < (maxkRPM - 1)) ? Color.WHITE : Color.RED;
-					drawRadiation(canvas, degree2, graduationRadius,
-							middleGraduationLength, c2, middleGraduationWidth,
+					drawRadiation(canvas, degree2, graduatorRadius,
+							middleGraduatorLength, c2, middleGraduatorWidth,
 							polar2cartesian);
 				}
+				// =================================================================
 			}
 
-			drawHelloRectangle(canvas, 10, 10, 150, 30);
+			// drawHelloRectangle(canvas, 10, 10, 150, 30);
 
 			// 小刻度
 			for (int degree = startDegree; degree < endDegree; degree += 3) {
@@ -866,14 +867,76 @@ class LunarView extends SurfaceView implements SurfaceHolder.Callback {
 
 					int c = (degree < (endDegree - degreePerkRPM)) ? Color.WHITE
 							: Color.RED;
-					drawRadiation(canvas, degree, graduationRadius,
-							smallGraduationLength, c, smallGraduationWidth,
+					drawRadiation(canvas, degree, graduatorRadius,
+							smallGraduatorLength, c, smallGraduatorWidth,
 							polar2cartesian);
 				}
 
 			}
+			// ================================================================
+			// 轉速指示
+			// ================================================================
+			int indicatorLength = graduatorRadius - graduatorLength / 2;
+			RadialGradient ig = new RadialGradient(cx, cy, indicatorLength,
+					new int[] { Color.BLACK, Color.RED }, new float[] { 0.10f,
+							1 }, Shader.TileMode.CLAMP);
+			int indicatorWidth = 8;
+			float degree = rpm2Degree(1800);
+
+			Paint ipaint = new Paint();
+			ipaint.setColor(Color.RED);
+			ipaint.setStrokeWidth(indicatorWidth);
+			ipaint.setShader(ig);
+
+			float[][] indicatorCoord = getCoordinator(degree, indicatorLength,
+					indicatorLength, polar2cartesian);
+			canvas.drawLine(indicatorCoord[0][0] + cx, indicatorCoord[0][1]
+					+ cy, indicatorCoord[1][0] + cx, indicatorCoord[1][1] + cy,
+					ipaint);
+			// ================================================================
+
+			// ================================================================
+			// 檔位顯示
+			// ================================================================
+			int gearFontText = 75;
+			String gear = "N";
+			PointF gearCoord = getStringCoordinator(gear, gearFontText, cx, cy,
+					fpaint);
+			canvas.drawText(gear, gearCoord.x, gearCoord.y, fpaint);
+
+			// ================================================================
+			// 時速顯示
+			// ================================================================
+			int speedFontText = 75;
+			int kphFontText = 20;
+			String speed = String.valueOf(0);
+			String kph = "KPH";
+
+			PointF speedCoord = getStringCoordinator(speed, speedFontText, cx,
+					(int) (cy - speedFontText * 1.5), fpaint);
+			canvas.drawText(speed, speedCoord.x, speedCoord.y, fpaint);
+			PointF kphCoord = getStringCoordinator(kph, kphFontText, cx, cy
+					- speedFontText / 2 - kphFontText + kphFontText * 2, fpaint);
+			canvas.drawText(kph, kphCoord.x, kphCoord.y, fpaint);
+		}
+
+		private PointF getStringCoordinator(String text, int textSize,
+				float centerX, float centerY, Paint paint) {
+			paint.setTextSize(textSize);
+			int halfTextSize = textSize / 2;
+			Rect textRect = new Rect((int) centerX - halfTextSize,
+					(int) centerY - halfTextSize, (int) centerX + halfTextSize,
+					(int) centerY + halfTextSize);
+			PointF p = getTextCenterInRect(text, textRect, paint);
+			return p;
+		}
+
+		private float rpm2Degree(float rpm) {
+			return (150 + rpm / 7000 * 210);
 
 		}
+
+		int darkGray = Color.rgb(32, 32, 32);
 
 		private PointF getTextCenterInRect(String text, Rect rect, Paint paint) {
 			int fontHeight = (int) (rect.height() / 0.7);
@@ -906,23 +969,22 @@ class LunarView extends SurfaceView implements SurfaceHolder.Callback {
 					+ (bounds.bottom - bounds.top) / 2, mPaint);
 		}
 
-//		private int getFontHeight(Paint paint) {
-//			FontMetrics fm = paint.getFontMetrics();
-//			return (int) Math.ceil(fm.descent - fm.top) + 2;
-//
-//		}
-//
-//		private PointF getTextCenterToDraw(String text, PointF center,
-//				Paint paint) {
-//			Rect textBounds = new Rect();
-//			paint.getTextBounds(text, 0, text.length(), textBounds);
-//			float x = center.x - textBounds.width() * 0.4f;
-//			float y = center.y + textBounds.height() * 0.4f;
-//			return new PointF(x, y);
-//		}
+		// private int getFontHeight(Paint paint) {
+		// FontMetrics fm = paint.getFontMetrics();
+		// return (int) Math.ceil(fm.descent - fm.top) + 2;
+		//
+		// }
+		//
+		// private PointF getTextCenterToDraw(String text, PointF center,
+		// Paint paint) {
+		// Rect textBounds = new Rect();
+		// paint.getTextBounds(text, 0, text.length(), textBounds);
+		// float x = center.x - textBounds.width() * 0.4f;
+		// float y = center.y + textBounds.height() * 0.4f;
+		// return new PointF(x, y);
+		// }
 
-		private float[][] drawRadiation(Canvas canvas, int degree, int radius,
-				int length, int color, int width,
+		private float[][] getCoordinator(float degree, int radius, int length,
 				Polar2cartesianIF polar2cartesian) {
 			float[] polarValues = new float[2];
 			polarValues[1] = degree;
@@ -933,6 +995,45 @@ class LunarView extends SurfaceView implements SurfaceHolder.Callback {
 			polarValues[0] = radius - length;
 			float[] coord1 = polar2cartesian
 					.getCartesianCoordinatesValues(polarValues);
+
+			float[][] coordinators = new float[][] { coord0, coord1 };
+			return coordinators;
+		}
+
+		/**
+		 * 畫出放射線的函式
+		 * 
+		 * @param canvas
+		 * @param degree
+		 *            角度
+		 * @param radius
+		 *            外緣的半徑
+		 * @param length
+		 *            從外圈往圓心畫的長度
+		 * @param color
+		 *            顏色
+		 * @param width
+		 *            寬度
+		 * @param polar2cartesian
+		 *            使用的座標轉換工具
+		 * @return
+		 */
+		private float[][] drawRadiation(Canvas canvas, int degree, int radius,
+				int length, int color, int width,
+				Polar2cartesianIF polar2cartesian) {
+			float[][] coordinators = getCoordinator(degree, radius, length,
+					polar2cartesian);
+			float[] coord0 = coordinators[0];
+			float[] coord1 = coordinators[1];
+			// float[] polarValues = new float[2];
+			// polarValues[1] = degree;
+			// polarValues[0] = radius;
+			// float[] coord0 = polar2cartesian
+			// .getCartesianCoordinatesValues(polarValues);
+			//
+			// polarValues[0] = radius - length;
+			// float[] coord1 = polar2cartesian
+			// .getCartesianCoordinatesValues(polarValues);
 
 			Paint paint = new Paint();
 			paint.setStyle(Paint.Style.STROKE);
@@ -946,7 +1047,7 @@ class LunarView extends SurfaceView implements SurfaceHolder.Callback {
 			canvas.drawLine(coord0[0] + cx, coord0[1] + cy, coord1[0] + cx,
 					coord1[1] + cy, paint);
 
-			float[][] coordinators = new float[][] { coord0, coord1 };
+			// float[][] coordinators = new float[][] { coord0, coord1 };
 			return coordinators;
 		}
 	}
