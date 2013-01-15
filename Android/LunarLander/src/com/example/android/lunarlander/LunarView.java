@@ -873,7 +873,6 @@ class LunarView extends SurfaceView implements SurfaceHolder.Callback {
 				}
 
 			}
-			// ================================================================
 			// 轉速指示
 			// ================================================================
 			int indicatorLength = graduatorRadius - graduatorLength / 2;
@@ -895,6 +894,7 @@ class LunarView extends SurfaceView implements SurfaceHolder.Callback {
 					ipaint);
 			// ================================================================
 
+
 			// ================================================================
 			// 檔位顯示
 			// ================================================================
@@ -903,21 +903,38 @@ class LunarView extends SurfaceView implements SurfaceHolder.Callback {
 			PointF gearCoord = getStringCoordinator(gear, gearFontText, cx, cy,
 					fpaint);
 			canvas.drawText(gear, gearCoord.x, gearCoord.y, fpaint);
-
+			// ================================================================
+			
 			// ================================================================
 			// 時速顯示
 			// ================================================================
 			int speedFontText = 75;
-			int kphFontText = 20;
 			String speed = String.valueOf(0);
-			String kph = "KPH";
-
+			int speedY = (int) (cy - speedFontText * 1.75);
 			PointF speedCoord = getStringCoordinator(speed, speedFontText, cx,
-					(int) (cy - speedFontText * 1.5), fpaint);
+					speedY, fpaint);
 			canvas.drawText(speed, speedCoord.x, speedCoord.y, fpaint);
-			PointF kphCoord = getStringCoordinator(kph, kphFontText, cx, cy
-					- speedFontText / 2 - kphFontText + kphFontText * 2, fpaint);
+
+			int kphFontText = 20;
+			String kph = "km/h";
+			int kphY = speedY + speedFontText / 2 + kphFontText;
+			PointF kphCoord = getStringCoordinator(kph, kphFontText, cx, kphY,
+					fpaint);
 			canvas.drawText(kph, kphCoord.x, kphCoord.y, fpaint);
+			// ================================================================
+			// ================================================================
+			// 橫線
+			// ================================================================
+			int kphBottomY=kphY+kphFontText/2;
+			int gearTopY=cy-gearFontText/2;
+			int lineY= (kphBottomY+gearTopY)/2;
+			canvas.drawLine(cx-100, lineY, cx+100, lineY, fpaint);
+			
+			// ================================================================			
+			// ================================================================
+
+
+
 		}
 
 		private PointF getStringCoordinator(String text, int textSize,
