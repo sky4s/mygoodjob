@@ -37,19 +37,6 @@ import com.example.android.lunarlander.LunarView.LunarThread;
  * </ul>
  */
 public class LunarLander extends Activity {
-	// private static final int MENU_EASY = 1;
-	//
-	// private static final int MENU_HARD = 2;
-	//
-	// private static final int MENU_MEDIUM = 3;
-	//
-	// private static final int MENU_PAUSE = 4;
-	//
-	// private static final int MENU_RESUME = 5;
-	//
-	// private static final int MENU_START = 6;
-	//
-	// private static final int MENU_STOP = 7;
 
 	/** A handle to the thread that's actually running the animation. */
 	private LunarThread mLunarThread;
@@ -87,35 +74,7 @@ public class LunarLander extends Activity {
 	 * @return true if the Menu item was legit (and we consumed it), false
 	 *         otherwise
 	 */
-	// @Override
-	// public boolean onOptionsItemSelected(MenuItem item) {
-	// switch (item.getItemId()) {
-	// case MENU_START:
-	// mLunarThread.doStart();
-	// return true;
-	// case MENU_STOP:
-	// mLunarThread.setState(LunarThread.STATE_LOSE,
-	// getText(R.string.message_stopped));
-	// return true;
-	// case MENU_PAUSE:
-	// mLunarThread.pause();
-	// return true;
-	// case MENU_RESUME:
-	// mLunarThread.unpause();
-	// return true;
-	// case MENU_EASY:
-	// mLunarThread.setDifficulty(LunarThread.DIFFICULTY_EASY);
-	// return true;
-	// case MENU_MEDIUM:
-	// mLunarThread.setDifficulty(LunarThread.DIFFICULTY_MEDIUM);
-	// return true;
-	// case MENU_HARD:
-	// mLunarThread.setDifficulty(LunarThread.DIFFICULTY_HARD);
-	// return true;
-	// }
-	//
-	// return false;
-	// }
+
 
 	/**
 	 * Invoked when the Activity is created.
