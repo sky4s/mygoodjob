@@ -220,7 +220,7 @@ class LunarView extends SurfaceView implements SurfaceHolder.Callback {
 					paint);
 
 			// 外圈 階梯
-			int outterStairsCount = 6;
+			int outterStairsCount = 0;
 			paint.setStrokeWidth(1);
 			for (int x = 0; x < outterStairsCount; x++) {
 				int color = (x % 2 == 0) ? gray : darkGray;
@@ -364,12 +364,21 @@ class LunarView extends SurfaceView implements SurfaceHolder.Callback {
 				// fpaint);
 
 				// 刻字
-				fpaint.setColor(Color.WHITE);
+		
 				String text = Integer.toString(x);
 				// PointF p = getTextCenterInRect(text, textRect, fpaint);
 				PointF p = getStringCoordinator(text, textSize, fontcoord[0]
 						+ cx, fontcoord[1] + cy, fpaint);
+				
+				fpaint.setColor(Color.BLACK);
+				fpaint.setStyle(Paint.Style.FILL);
 				canvas.drawText(text, p.x, p.y, fpaint);
+				
+				fpaint.setColor(Color.WHITE);
+				fpaint.setStyle(Paint.Style.STROKE);
+				fpaint.setStrokeWidth(3);
+				canvas.drawText(text, p.x, p.y, fpaint);
+				
 
 				// 畫點, 參考用
 				// fpaint.setStrokeWidth(3);
@@ -387,6 +396,7 @@ class LunarView extends SurfaceView implements SurfaceHolder.Callback {
 				}
 				// =================================================================
 			}
+			fpaint.setStyle(Paint.Style.FILL);
 
 			// 小刻度
 			for (int degree = startDegree; degree < endDegree; degree += 3) {
@@ -428,6 +438,7 @@ class LunarView extends SurfaceView implements SurfaceHolder.Callback {
 			// String gear = "N";
 			PointF gearCoord = getStringCoordinator(gear, gearFontText, cx, cy,
 					fpaint);
+
 			canvas.drawText(gear, gearCoord.x, gearCoord.y, fpaint);
 			// ================================================================
 
