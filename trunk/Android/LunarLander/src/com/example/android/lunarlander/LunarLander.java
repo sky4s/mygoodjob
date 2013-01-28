@@ -20,6 +20,7 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.TextView;
@@ -38,6 +39,20 @@ import com.example.android.lunarlander.LunarView.LunarThread;
  */
 public class LunarLander extends Activity {
 
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
+		case Menu.FIRST:
+
+			break;
+		case Menu.FIRST + 1:
+			finish();
+			break;
+		}
+
+		return super.onOptionsItemSelected(item);
+	}
+
 	/** A handle to the thread that's actually running the animation. */
 	private LunarThread mLunarThread;
 
@@ -54,7 +69,9 @@ public class LunarLander extends Activity {
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		super.onCreateOptionsMenu(menu);
-
+//		menu.add(0, Menu.FIRST, 0, "1");
+		MenuItem actionItem =menu.add(0, Menu.FIRST + 1, 0, "Exit");
+		actionItem.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);  
 		// menu.add(0, MENU_START, 0, R.string.menu_start);
 		// menu.add(0, MENU_STOP, 0, R.string.menu_stop);
 		// menu.add(0, MENU_PAUSE, 0, R.string.menu_pause);
@@ -74,7 +91,6 @@ public class LunarLander extends Activity {
 	 * @return true if the Menu item was legit (and we consumed it), false
 	 *         otherwise
 	 */
-
 
 	/**
 	 * Invoked when the Activity is created.
