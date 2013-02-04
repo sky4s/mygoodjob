@@ -12,7 +12,7 @@
      distributed under the License is distributed on an "AS IS" BASIS,
      WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
      See the License for the specific language governing permissions and
-     limitations under the License.
+     limitations under the License.
 -->
 
 <!--
@@ -20,11 +20,14 @@
      attribute brings in the Android platform namespace, and the package
      supplies a unique name for the application.  When writing your
      own application, the package name must be changed from "com.example.*"
-     to come from a domain that you own or have control over.
+     to come from a domain that you own or have control over.
 -->
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.android.lunarlander" >
-    <uses-sdk android:minSdkVersion="11" android:targetSdkVersion="11"/>
+
+    <uses-sdk
+        android:minSdkVersion="3"
+        android:targetSdkVersion="11" />
 
     <application
         android:icon="@drawable/app_lunar_lander"
@@ -45,6 +48,16 @@
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name="com.example.android.lunarlander.RotationVectorDemo"
+            android:label="OS/Rotation Vector"
+            android:screenOrientation="nosensor" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.SAMPLE_CODE" />
             </intent-filter>
         </activity>
     </application>

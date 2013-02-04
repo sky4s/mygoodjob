@@ -364,18 +364,17 @@ class LunarView extends SurfaceView implements SurfaceHolder.Callback {
 				// fpaint);
 
 				// ¨è¦r
-		
 				String text = Integer.toString(x);
 				// PointF p = getTextCenterInRect(text, textRect, fpaint);
 				PointF p = getStringCoordinator(text, textSize, fontcoord[0]
 						+ cx, fontcoord[1] + cy, fpaint);
 				
-				fpaint.setColor(Color.BLACK);
-				fpaint.setStyle(Paint.Style.FILL);
-				canvas.drawText(text, p.x, p.y, fpaint);
+//				fpaint.setColor(Color.BLACK);
+//				fpaint.setStyle(Paint.Style.FILL);
+//				canvas.drawText(text, p.x, p.y, fpaint);
 				
 				fpaint.setColor(Color.WHITE);
-				fpaint.setStyle(Paint.Style.STROKE);
+//				fpaint.setStyle(Paint.Style.STROKE);
 				fpaint.setStrokeWidth(3);
 				canvas.drawText(text, p.x, p.y, fpaint);
 				
