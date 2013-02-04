@@ -17,6 +17,7 @@
 package com.example.android.lunarlander;
 
 import android.app.Activity;
+import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -69,9 +70,9 @@ public class LunarLander extends Activity {
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		super.onCreateOptionsMenu(menu);
-//		menu.add(0, Menu.FIRST, 0, "1");
-		MenuItem actionItem =menu.add(0, Menu.FIRST + 1, 0, "Exit");
-		actionItem.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);  
+		// menu.add(0, Menu.FIRST, 0, "1");
+		MenuItem actionItem = menu.add(0, Menu.FIRST + 1, 0, "Exit");
+//		actionItem.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
 		// menu.add(0, MENU_START, 0, R.string.menu_start);
 		// menu.add(0, MENU_STOP, 0, R.string.menu_stop);
 		// menu.add(0, MENU_PAUSE, 0, R.string.menu_pause);
@@ -91,6 +92,7 @@ public class LunarLander extends Activity {
 	 * @return true if the Menu item was legit (and we consumed it), false
 	 *         otherwise
 	 */
+	private SensorManager mSensorManager;
 
 	/**
 	 * Invoked when the Activity is created.
@@ -103,6 +105,9 @@ public class LunarLander extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
+		// Get an instance of the SensorManager
+		mSensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
+
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
 				WindowManager.LayoutParams.FLAG_FULLSCREEN);
@@ -112,6 +117,7 @@ public class LunarLander extends Activity {
 
 		// get handles to the LunarView from XML, and its LunarThread
 		mLunarView = (LunarView) findViewById(R.id.lunar);
+		mLunarView.setmSensorManager(mSensorManager);
 		mLunarThread = mLunarView.getThread();
 
 		// give the LunarView a handle to the TextView used for messages
@@ -134,7 +140,12 @@ public class LunarLander extends Activity {
 	@Override
 	protected void onPause() {
 		super.onPause();
-		// mLunarView.getThread().pause(); // pause game when Activity pauses
+//		 mLunarView.getThread().pause(); // pause game when Activity pauses
+		mLunarView.stop();
+	}
+	protected void onResume() {
+		super.onResume();
+		mLunarView.start();
 	}
 
 	/**

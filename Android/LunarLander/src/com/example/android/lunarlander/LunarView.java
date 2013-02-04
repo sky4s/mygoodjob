@@ -29,6 +29,10 @@ import android.graphics.Rect;
 import android.graphics.RectF;
 import android.graphics.Shader;
 import android.graphics.Typeface;
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
+import android.hardware.SensorManager;
 import android.os.Handler;
 import android.os.Message;
 import android.util.AttributeSet;
@@ -46,7 +50,22 @@ import dashboard.util.Interpolation;
  * ship, and does an invalidate() to prompt another draw() as soon as possible
  * by the system.
  */
-class LunarView extends SurfaceView implements SurfaceHolder.Callback {
+class LunarView extends SurfaceView implements SurfaceHolder.Callback,
+		SensorEventListener {
+	// public void onSensorChanged(SensorEvent event) {
+	// // we received a sensor event. it is a good practice to check
+	// // that we received the proper event
+	// if (event.sensor.getType() == Sensor.TYPE_ROTATION_VECTOR) {
+	// rpm=0;
+	// // convert the rotation-vector to a 4x4 matrix. the matrix
+	// // is interpreted by Open GL as the inverse of the
+	// // rotation-vector, which is what we want.
+	// // SensorManager.getRotationMatrixFromVector(
+	// // mRotationMatrix , event.values);
+	// // event.values[0];
+	// }
+	// }
+
 	class LunarThread extends Thread {
 
 		/*
@@ -139,7 +158,9 @@ class LunarView extends SurfaceView implements SurfaceHolder.Callback {
 		private int rpm = 0;
 
 		private void updateDashboard() {
-
+			if (null != sensorValues) {
+				rpm = (int) (Math.abs(sensorValues[0]) * 7000);
+			}
 		}
 
 		/**
@@ -368,16 +389,15 @@ class LunarView extends SurfaceView implements SurfaceHolder.Callback {
 				// PointF p = getTextCenterInRect(text, textRect, fpaint);
 				PointF p = getStringCoordinator(text, textSize, fontcoord[0]
 						+ cx, fontcoord[1] + cy, fpaint);
-				
-//				fpaint.setColor(Color.BLACK);
-//				fpaint.setStyle(Paint.Style.FILL);
-//				canvas.drawText(text, p.x, p.y, fpaint);
-				
+
+				// fpaint.setColor(Color.BLACK);
+				// fpaint.setStyle(Paint.Style.FILL);
+				// canvas.drawText(text, p.x, p.y, fpaint);
+
 				fpaint.setColor(Color.WHITE);
-//				fpaint.setStyle(Paint.Style.STROKE);
+				// fpaint.setStyle(Paint.Style.STROKE);
 				fpaint.setStrokeWidth(3);
 				canvas.drawText(text, p.x, p.y, fpaint);
-				
 
 				// 畫點, 參考用
 				// fpaint.setStrokeWidth(3);
@@ -409,6 +429,7 @@ class LunarView extends SurfaceView implements SurfaceHolder.Callback {
 				}
 
 			}
+			// ================================================================
 			// 轉速指示
 			// ================================================================
 			int indicatorLength = graduatorRadius - graduatorLength / 2;
@@ -588,9 +609,50 @@ class LunarView extends SurfaceView implements SurfaceHolder.Callback {
 
 	/** The thread that actually draws the animation */
 	private LunarThread thread;
+	private SensorManager mSensorManager;
+	private Sensor mRotationVectorSensor;
 
+	public void setmSensorManager(SensorManager mSensorManager) {
+		this.mSensorManager = mSensorManager;
+		mRotationVectorSensor = mSensorManager
+				.getDefaultSensor(Sensor.TYPE_ROTATION_VECTOR);
+	}
+
+	public void onSensorChanged(SensorEvent event) {
+		// we received a sensor event. it is a good practice to check
+		// that we received the proper event
+		if (event.sensor.getType() == Sensor.TYPE_ROTATION_VECTOR) {
+			// convert the rotation-vector to a 4x4 matrix. the matrix
+			// is interpreted by Open GL as the inverse of the
+			// rotation-vector, which is what we want.
+			// SensorManager.getRotationMatrixFromVector(
+			// mRotationMatrix , event.values);
+			sensorValues = event.values;
+		}
+	}
+
+	private float[] sensorValues;
+
+	public void start() {
+		// enable our sensor when the activity is resumed, ask for
+		// 10 ms updates.
+		mSensorManager.registerListener(this, mRotationVectorSensor, 10000);
+	}
+
+	public void stop() {
+		// make sure to turn our sensor off when the activity is paused
+		mSensorManager.unregisterListener(this);
+	}
+
+	// public void start() {
+	// // enable our sensor when the activity is resumed, ask for
+	// // 10 ms updates.
+	// mSensorManager.registerListener(this, mRotationVectorSensor, 10000);
+	// }
 	public LunarView(Context context, AttributeSet attrs) {
 		super(context, attrs);
+
+		// Get an instance of the SensorManager
 
 		// register our interest in hearing about changes to our surface
 		SurfaceHolder holder = getHolder();
@@ -666,6 +728,12 @@ class LunarView extends SurfaceView implements SurfaceHolder.Callback {
 			} catch (InterruptedException e) {
 			}
 		}
+	}
+
+	@Override
+	public void onAccuracyChanged(Sensor sensor, int accuracy) {
+		// TODO Auto-generated method stub
+
 	}
 
 }
