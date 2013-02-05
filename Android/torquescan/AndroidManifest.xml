@@ -6,7 +6,8 @@
 		android:debuggable="true">
 		<activity android:name=".PluginActivity" android:label="@string/app_name"
 			android:exported="true" android:finishOnTaskLaunch="false"
-			android:alwaysRetainTaskState="true" android:clearTaskOnLaunch="true">
+			android:alwaysRetainTaskState="true" android:clearTaskOnLaunch="true"
+			android:theme="@android:style/Theme.NoTitleBar.Fullscreen">
 			<intent-filter>
 				<action android:name="org.prowl.torque.ACTIVITY_PLUGIN" />
 			</intent-filter>
