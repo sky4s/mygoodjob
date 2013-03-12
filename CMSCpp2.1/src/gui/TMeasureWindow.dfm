@@ -1,6 +1,6 @@
 object MeasureWindow: TMeasureWindow
-  Left = 166
-  Top = 194
+  Left = 167
+  Top = 196
   BorderStyle = bsNone
   Caption = 'MeasureWindow'
   ClientHeight = 363

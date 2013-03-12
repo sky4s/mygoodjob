@@ -36,7 +36,7 @@ namespace cms {
 	RGB_ptr getIntensity();
 	Lab_ptr getLab();
 	const string_ptr toString() const;
-static Patch_vector_ptr reverse(Patch_vector_ptr patchVector);
+	static Patch_vector_ptr reverse(Patch_vector_ptr patchVector);
 
 	class Produce {
 	  public:
@@ -58,6 +58,7 @@ static Patch_vector_ptr reverse(Patch_vector_ptr patchVector);
 	  public:
 	    static void setXYZ(Patch_ptr p, XYZ_ptr XYZ);
 	    static void setNormalizedXYZ(Patch_ptr p, XYZ_ptr normalizedXYZ);
+	    static void setIntensity(Patch_ptr p, RGB_ptr intensity);
 	};
 	friend class Operator;
     };

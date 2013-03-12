@@ -414,7 +414,7 @@ namespace cms {
 	    if (Create == mode) {
 		db->createTable(sheetname, headerNames, fieldTypes);
 	    } else {
-		throw   IllegalStateException("");
+		throw IllegalStateException("");
 	    }
 
 	};
@@ -428,7 +428,7 @@ namespace cms {
 	    if (Create == mode) {
 		db->createTable(Properties, headerNames, fieldType);
 	    } else {
-		throw   IllegalStateException("");
+		throw IllegalStateException("");
 	    }
 	};
 	void
@@ -493,7 +493,6 @@ namespace cms {
 		      "ave_x", "ave_y");
 
 	    int size = componentVector->size();
-	    //const int headerCount = getHeaderCount(MeasureData);
 	    string_vector_ptr values(new string_vector(headerCount));
 	    //==================================================================
 
@@ -622,9 +621,14 @@ namespace cms {
 		double Y = _toDouble((*result)[5]);
 		double Z = _toDouble((*result)[6]);
 
+		double intensityR = _toDouble((*result)[9]);
+		double intensityG = _toDouble((*result)[10]);
+		double intensityB = _toDouble((*result)[11]);
+
 		RGB_ptr rgb(new RGBColor(R, G, B));
 		XYZ_ptr XYZ(new CIEXYZ(X, Y, Z));
-		Patch_ptr p(new Patch(name, XYZ, nil_XYZ_ptr, rgb));
+		RGB_ptr intensity(new RGBColor(intensityR, intensityG, intensityB));
+		Patch_ptr p(new Patch(name, XYZ, nil_XYZ_ptr, rgb, intensity));
 		patchVector->push_back(p);
 	    };
 	    return patchVector;
@@ -632,14 +636,15 @@ namespace cms {
 	};
 
 	void ExcelAccessBase::addMeasure(Patch_ptr p) {
+	    const int headerCount = 15;
 	    if (!isMeasurePatchVectorAvailable()) {
-		initSheet(Measure, 12, "id", "R", "G", "B", "X", "Y (nit)", "Z", "_x", "_y",
-			  "R12", "G12", "B12");
+		initSheet(Measure, headerCount, "id", "R", "G", "B", "X", "Y (nit)", "Z", "_x",
+			  "_y", "W_R", "W_G", "W_B", "R12", "G12", "B12");
 	    }
 	    //==================================================================
 	    // 初始資料設定
 	    //==================================================================
-	    const int headerCount = 12;
+
 	    string_vector_ptr values(new string_vector(headerCount));
 
 
@@ -665,15 +670,27 @@ namespace cms {
 	    (*values)[7] = _toString(xyY->x);
 	    (*values)[8] = _toString(xyY->y);
 
+	    //intensity
+	    RGB_ptr intensity = p->getIntensity();
+	    if (null != intensity) {
+		(*values)[9] = _toString(intensity->R);
+		(*values)[10] = _toString(intensity->G);
+		(*values)[11] = _toString(intensity->B);
+	    } else {
+		(*values)[9] = "-1";
+		(*values)[10] = "-1";
+		(*values)[11] = "-1";
+	    }
+
 	    double r12 = -1, g12 = -1, b12 = -1;
 	    if (null != rgb) {
 		r12 = rgb->getValue(Channel::R, MaxValue::Int12Bit);
 		g12 = rgb->getValue(Channel::G, MaxValue::Int12Bit);
 		b12 = rgb->getValue(Channel::B, MaxValue::Int12Bit);
 	    }
-	    (*values)[9] = _toString(r12);
-	    (*values)[10] = _toString(g12);
-	    (*values)[11] = _toString(b12);
+	    (*values)[12] = _toString(r12);
+	    (*values)[13] = _toString(g12);
+	    (*values)[14] = _toString(b12);
 
 	    this->insertData(Measure, values, false);
 	}

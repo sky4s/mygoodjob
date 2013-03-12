@@ -856,7 +856,7 @@ object CCTLUTForm: TCCTLUTForm
       Top = 136
       Width = 161
       Height = 81
-      Caption = 'DeHook'
+      Caption = 'De-Hook'
       TabOrder = 5
       object RadioButton_DeHookNone: TRadioButton
         Left = 8

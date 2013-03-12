@@ -22,7 +22,7 @@ object TargetWhiteForm2: TTargetWhiteForm2
     Top = 576
     Width = 281
     Height = 13
-    Caption = 'Copyright (C) 2012, AU Optronics Corp., All Right Reserved.'
+    Caption = 'Copyright (C) 2013, AU Optronics Corp., All Right Reserved.'
   end
   object PageControl1: TPageControl
     Left = 7

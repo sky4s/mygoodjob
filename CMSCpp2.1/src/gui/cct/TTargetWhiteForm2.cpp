@@ -249,9 +249,9 @@ void __fastcall TTargetWhiteForm2::Button_RunClick(TObject * Sender)
 	RGB_ptr r(new RGBColor(MaxValue::Int8Bit));
 	RGB_ptr g(new RGBColor(MaxValue::Int8Bit));
 	RGB_ptr b(new RGBColor(MaxValue::Int8Bit));
-	r->R = rgb->R;//*;4;
-	g->G = rgb->G;//*4;
-	b->B = rgb->B;//*4;
+	r->R = rgb->R;		//*;4;
+	g->G = rgb->G;		//*4;
+	b->B = rgb->B;		//*4;
 	//==========================================================================
 
 	//==========================================================================
@@ -331,8 +331,11 @@ void __fastcall TTargetWhiteForm2::Button_RunClick(TObject * Sender)
 	Button_Run->Enabled = true;
 	MainForm->stopProgress(ProgressBar1);
 	MainForm->StatusBar1->Panels->Items[0]->Text = "Target White: Set";
+	double x = Edit_refx->Text.ToDouble();
+	double y = Edit_refy->Text.ToDouble();
+	int CCT = calculateCCT(x, y);
 	StatusBar1->Panels->Items[0]->Text =
-	    "Target White: ." + Edit_refx->Text + " ." + Edit_refy->Text;
+	    "Target White: ." + Edit_refx->Text + " ." + Edit_refy->Text + " (CCT:" + CCT + "k)";
     }
 }
 

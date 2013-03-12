@@ -35,6 +35,7 @@ namespace cms {
 	    XYZ_ptr XYZ;
 	    XYZ_ptr rXYZ, gXYZ, bXYZ, wXYZ;
 	    RGB_ptr referenceRGB;
+	    Patch_ptr measurePatch;
 
 	  public:
 	     MaxMatrixIntensityAnalyzer(bptr < MeterMeasurement > mm);
