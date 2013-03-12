@@ -40,7 +40,9 @@ namespace cms {
 	    if (null == XYZ) {
 		return nil_RGB_ptr;
 	    } else {
-		return getIntensity(XYZ);
+		RGB_ptr intensity = getIntensity(XYZ);
+		Patch::Operator::setIntensity(measurePatch, intensity);
+		return intensity;
 	    }
 	};
 
@@ -70,12 +72,12 @@ namespace cms {
 
 	XYZ_ptr MaxMatrixIntensityAnalyzer::getCIEXYZOnly(RGB_ptr rgb) {
 	    if (null != mm) {
-		Patch_ptr patch = mm->measure(rgb, rgb->toString());
-		if (null == patch) {
+		measurePatch = mm->measure(rgb, rgb->toString());
+		if (null == measurePatch) {
 		    XYZ = nil_XYZ_ptr;
 		    return nil_XYZ_ptr;
 		} else {
-		    XYZ = patch->getXYZ();
+		    XYZ = measurePatch->getXYZ();
 		    return XYZ;
 		}
 	    } else {
@@ -189,7 +191,7 @@ namespace cms {
 	double2D_ptr MaxMatrixIntensityAnalyzer::getWhiteRatio() {
 	    return whiteRatio;
 	};
- 
+
 	bptr < MaxMatrixIntensityAnalyzer >
 	    MaxMatrixIntensityAnalyzer::getReadyAnalyzer(bptr < MeterMeasurement > mm,
 							 double rMax, double gMax, double bMax) {

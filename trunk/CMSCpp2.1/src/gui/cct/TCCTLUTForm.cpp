@@ -429,10 +429,6 @@ void __fastcall TCCTLUTForm::FormShow(TObject * Sender)
 
 	RadioGroup_NormalCase->Visible = true;
 
-	//smooth intensity
-	/*CheckBox_SmoothIntensity->Visible = true;
-	   Edit_SmoothIntensityStart->Visible = true;
-	   Edit_SmoothIntensityEnd->Visible = true; */
 
 	//native white smooth
 	Label20->Visible = true;

@@ -450,11 +450,14 @@ namespace cms {
 		RGB_ptr intensity = lutgen.getIntensity(refRGB);
 		return intensity;
 	    };
+            /*
+            此方法會造成色溫失準 不建議使用
+            */
 	    double_array AdvancedDGLutGenerator::
 		getSmoothIntensity(double rTargetIntensity,
 				   double gTargetIntensity,
 				   double bTargetIntensity, int grayLevel) {
-		if ( /*true == c.autoIntensity && */ true == c.smoothIntensity
+		if (  true == c.smoothIntensity
 		    && grayLevel >= c.smoothIntensityStart && grayLevel <= c.smoothIntensityEnd) {
 		    double rIntensity = Interpolation::linear(c.smoothIntensityStart,
 							      c.smoothIntensityEnd, 100,

@@ -1362,11 +1362,11 @@ namespace cms {
 		this->multiGen = enable;
 		this->multiGenTimes = times;
 	    };
-	    void LCDCalibrator::setSmoothIntensity(int start, int end) {
+	    /*void LCDCalibrator::setSmoothIntensity(int start, int end) {
 		this->smoothIntensity = true;
 		smoothIntensityStart = start;
 		smoothIntensityEnd = end;
-	    };
+	    };*/
 	    void LCDCalibrator::setFeedbackListener(FeedbackListener * listener) {
 		this->feedbackListener = listener;
 	    }

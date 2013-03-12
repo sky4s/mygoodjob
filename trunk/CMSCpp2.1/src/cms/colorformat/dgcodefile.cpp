@@ -659,36 +659,45 @@ namespace cms {
 	    //==================================================================
 	    // KeepMaxLuminance
 	    //==================================================================
-	    string keepstr;
+	    //string keepstr;
 	    switch (c->keepMaxLuminance) {
 	    case KeepMaxLuminance::TargetLuminance:
-		keepstr = "Target Luminance(Align Luminance Only)";
+		dgfile.addProperty("keep max luminance", "Target Luminance(Align Luminance Only)");
 		break;
 	    case KeepMaxLuminance::TargetWhite:{
-		    keepstr = "Target White";
-		    string smoothIntensity = c->smoothIntensity ? On : Off;
-		    dgfile.addProperty("smooth itensity", smoothIntensity);
-		    string forceAssignTargetWhite = c->forceAssignTargetWhite ? On : Off;
-		    dgfile.addProperty("force assign target white", forceAssignTargetWhite);
-		    if (c->multiGen) {
-			string autoIntensityInMultiGen = c->autoIntensityInMultiGen ? On : Off;
-			dgfile.addProperty("autoIntensity in multi-gen", autoIntensityInMultiGen);
+		    dgfile.addProperty("keep max luminance", "Target White");
+		    string deWhiteError = "None";
+		    if (c->autoIntensityInMultiGen) {
+			deWhiteError = "Intensity Shift(Auto Intensity in Multi-Gen)";
+		    } else if (c->targetWhiteShift) {
+			deWhiteError = "Target White Shift";
+		    } else if (c->forceAssignTargetWhite) {
+			deWhiteError = "Force Assign Target White";
 		    }
+		    dgfile.addProperty("de white error", deWhiteError);
+		    /*string smoothIntensity = c->smoothIntensity ? On : Off;
+		       dgfile.addProperty("smooth itensity", smoothIntensity);
+		       string forceAssignTargetWhite = c->forceAssignTargetWhite ? On : Off;
+		       dgfile.addProperty("force assign target white", forceAssignTargetWhite);
+		       if (c->multiGen) {
+		       string autoIntensityInMultiGen = c->autoIntensityInMultiGen ? On : Off;
+		       dgfile.addProperty("autoIntensity in multi-gen", autoIntensityInMultiGen);
+		       } */
 		    boolean useSetWhiteOp = c->isUseSetWhiteOP();
 		    dgfile.addProperty("assign(8bit)/recal(10bit) DG256", useSetWhiteOp ? On : Off);
 		}
 		break;
 	    case KeepMaxLuminance::NativeWhite:
-		keepstr = "Native White";
+		dgfile.addProperty("keep max luminance", "Native White");
 		break;
 	    case KeepMaxLuminance::Smooth2NativeWhite:
-		keepstr = "Native White(CCT Smoothing)";
+		dgfile.addProperty("keep max luminance", "Native White(CCT Smoothing)");
 		break;
 	    case KeepMaxLuminance::None:
-		keepstr = "None process";
+		dgfile.addProperty("keep max luminance", "Target White");
 		break;
 	    }
-	    dgfile.addProperty("keep max luminance", keepstr);
+	    //dgfile.addProperty("keep max luminance", keepstr);
 	    if (c->keepMaxLuminance == KeepMaxLuminance::Smooth2NativeWhite) {
 		if (true == c->autoKeepMaxLumiParameter) {
 		    dgfile.addProperty("auto keep max lumi adv parameter", On);
@@ -772,17 +781,17 @@ namespace cms {
 		}
 
 		/*xyY_ptr refRxyY = analyzer->getPrimaryColor(Channel::R);
-		xyY_ptr refGxyY = analyzer->getPrimaryColor(Channel::G);
-		xyY_ptr refBxyY = analyzer->getPrimaryColor(Channel::B);
-		//target reference white
-		dgfile.addProperty(prestring + " reference white", *refWhitexyY->toString());
-		//target primary R
-		dgfile.addProperty(prestring + " primary R", *refRxyY->toString());
-		dgfile.addProperty(prestring + " primary G", *refGxyY->toString());
-		dgfile.addProperty(prestring + " primary B", *refBxyY->toString());*/
+		   xyY_ptr refGxyY = analyzer->getPrimaryColor(Channel::G);
+		   xyY_ptr refBxyY = analyzer->getPrimaryColor(Channel::B);
+		   //target reference white
+		   dgfile.addProperty(prestring + " reference white", *refWhitexyY->toString());
+		   //target primary R
+		   dgfile.addProperty(prestring + " primary R", *refRxyY->toString());
+		   dgfile.addProperty(prestring + " primary G", *refGxyY->toString());
+		   dgfile.addProperty(prestring + " primary B", *refBxyY->toString()); */
 	    }
-	    //紀錄target white用的rgb
-	    RGB_ptr refRGB = analyzer->getReferenceRGB();
+
+	    RGB_ptr refRGB = analyzer->getReferenceRGB();	//紀錄target white用的rgb.
 	    if (null != refRGB) {
 		//target reference white RGB
 		dgfile.addProperty(prestring + " reference white RGB", *refRGB->toString());

@@ -65,10 +65,10 @@ namespace cms {
 	return str;
     };
 
-      Patch_vector_ptr Patch::reverse(Patch_vector_ptr patchVector){
-        	    Patch_vector_ptr result(new Patch_vector(patchVector->rbegin(), patchVector->rend()));
-	    return result;
-      };
+    Patch_vector_ptr Patch::reverse(Patch_vector_ptr patchVector) {
+	Patch_vector_ptr result(new Patch_vector(patchVector->rbegin(), patchVector->rend()));
+	return result;
+    };
 
     void Patch::Filter::grayPatch(Patch_vector_ptr patchList, Patch_vector_ptr filtered) {
 	foreach(Patch_ptr p, *patchList) {
@@ -106,7 +106,9 @@ namespace cms {
     void Patch::Operator::setNormalizedXYZ(Patch_ptr p, XYZ_ptr normalizedXYZ) {
 	p->normalizedXYZ = normalizedXYZ;
     };
- 
+    void Patch::Operator::setIntensity(Patch_ptr p, RGB_ptr intensity) {
+	p->intensity = intensity;
+    };
 
 }
 

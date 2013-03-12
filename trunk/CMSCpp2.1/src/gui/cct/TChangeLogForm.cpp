@@ -16,6 +16,8 @@ __fastcall TChangeLogForm::TChangeLogForm(TComponent * Owner)
        {Issue List}\r\n\
        *開啟I2C Test會造成量測delay時間拉長為10sec\r\n\
        \r\n\
+       [3.5 build 1.60] 2013/01/09\r\n\
+       +Measure Sheet增加Intensity的紀錄\r\n\
        [3.5 build 1.59] 2013/01/08\r\n\
        +增加Target White Shift, 在Target White模式下增加色度/亮度準確率\r\n\
        [3.5 build 1.58] 2013/01/08\r\n\

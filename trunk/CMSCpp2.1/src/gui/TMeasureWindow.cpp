@@ -439,13 +439,13 @@ void TMeasureWindow::setImageOff()
     Image1->Visible = false;
 }
 
-void TMeasureWindow::setPattern(Pattern pattern)
+void TMeasureWindow::setPattern(Pattern _pattern)
 {
-    this->pattern = pattern;
+    this->pattern = _pattern;
 };
-void TMeasureWindow::setTestPattern(Pattern pattern)
+void TMeasureWindow::setTestPattern(Pattern _pattern)
 {
-    this->pattern = testPattern;
+    this->testPattern = _pattern;
 };
 void TMeasureWindow::setLineAdjoin(bool lineAdjoin)
 {

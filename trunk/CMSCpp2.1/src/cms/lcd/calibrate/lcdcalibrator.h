@@ -151,9 +151,7 @@ namespace cms {
 		double rTargetIntensity;
 		double gTargetIntensity;
 		double bTargetIntensity;
-		//bool autoIntensity;
 		bool autoIntensityInMultiGen;
-		//RGB_ptr idealIntensity;
 		bool smoothIntensity;
 		int smoothIntensityStart;
 		int smoothIntensityEnd;
@@ -196,6 +194,7 @@ namespace cms {
 		//使用新的有多種target的方法去找到DG
 		bool useNewMethod;
 
+                //紀錄執行的狀態
 		string excuteStatus;
 		//==============================================================
 
@@ -267,7 +266,7 @@ namespace cms {
 		};
 		__property double BTargetIntensity = { write = bTargetIntensity
 		};
-		void setSmoothIntensity(int start, int end);
+		//void setSmoothIntensity(int start, int end);
 		__property bool AutoIntensityInMultiGen = { write = autoIntensityInMultiGen
 		};
 		//==============================================================
