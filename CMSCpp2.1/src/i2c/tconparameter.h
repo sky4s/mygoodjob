@@ -23,9 +23,9 @@ namespace i2c {
 	const int totalByte;
 	const int patternBit;
 	 DirectGammaType(const int rLowBit, const int rHighBit,
-		    const int gLowBit, const int gHighBit,
-		    const int bLowBit, const int bHighBit, const int totalByte,
-		    const int patternBit);
+			 const int gLowBit, const int gHighBit,
+			 const int bLowBit, const int bHighBit, const int totalByte,
+			 const int patternBit);
 	bool operator==(const DirectGammaType &) const;	// use member function
 
 	static const DirectGammaType IndependentInstance;
@@ -33,7 +33,7 @@ namespace i2c {
 	static const DirectGammaType TCON62301Instance;
 	static const DirectGammaType TCON1H501Instance;
 	static const DirectGammaType NotAssignInstance;
-
+	static const DirectGammaType TCON12409AgingInstance;
     };
 
     class TCONParameter {

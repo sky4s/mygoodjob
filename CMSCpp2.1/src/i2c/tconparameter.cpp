@@ -19,7 +19,7 @@ namespace i2c {
 	(gammaTestAddress), gammaTestBit(gammaTestBit),
 	directGammaRGBAddress(directGammaRGBAddress), lutBit(lutBit),
 	directGammaType(independentRGB ? DirectGammaType::
-		   IndependentInstance : DirectGammaType::DependentInstance),
+			IndependentInstance : DirectGammaType::DependentInstance),
 	DGLutAddress(-1), DGAddress(-1), DGBit(0), gammaTest(true), FRCAddress(-1), FRCBit(0),
 	hideENAddress(-1), hideENBit(-1), hideEn(false) {
 
@@ -32,8 +32,8 @@ namespace i2c {
 				 const DirectGammaType & directGammaType, const int FRCAddress,
 				 const unsigned char FRCBit):gammaTestAddress(gammaTestAddress),
 	gammaTestBit(gammaTestBit), directGammaRGBAddress(directGammaRGBAddress), lutBit(lutBit),
-	directGammaType(directGammaType), DGLutAddress(DGLutAddress), DGAddress(DGAddress), DGBit(DGBit),
-	gammaTest(true), FRCAddress(FRCAddress), FRCBit(FRCBit), hideENAddress(-1),
+	directGammaType(directGammaType), DGLutAddress(DGLutAddress), DGAddress(DGAddress),
+	DGBit(DGBit), gammaTest(true), FRCAddress(FRCAddress), FRCBit(FRCBit), hideENAddress(-1),
 	hideENBit(-1), hideEn(false) {
 
     };
@@ -46,23 +46,23 @@ namespace i2c {
 				 const unsigned char FRCBit, const int hideENAddress,
 				 const unsigned char hideENBit):gammaTestAddress(gammaTestAddress),
 	gammaTestBit(gammaTestBit), directGammaRGBAddress(directGammaRGBAddress), lutBit(lutBit),
-	directGammaType(directGammaType), DGLutAddress(DGLutAddress), DGAddress(DGAddress), DGBit(DGBit),
-	gammaTest(true), FRCAddress(FRCAddress), FRCBit(FRCBit), hideENAddress(hideENAddress),
-	hideENBit(hideENBit), hideEn(true) {
+	directGammaType(directGammaType), DGLutAddress(DGLutAddress), DGAddress(DGAddress),
+	DGBit(DGBit), gammaTest(true), FRCAddress(FRCAddress), FRCBit(FRCBit),
+	hideENAddress(hideENAddress), hideENBit(hideENBit), hideEn(true) {
 
     };
     TCONParameter::TCONParameter(const Dep::MaxValue & lutBit, const int DGLutAddress,
 				 const int DGAddress,
 				 const unsigned char DGBit, const int FRCAddress,
 				 const unsigned char FRCBit):gammaTestAddress(-1), gammaTestBit(-1),
-	directGammaRGBAddress(-1), lutBit(lutBit), directGammaType(directGammaType), DGLutAddress(DGLutAddress),
-	DGAddress(DGAddress), DGBit(DGBit), gammaTest(false), FRCAddress(FRCAddress),
-	FRCBit(FRCBit), hideENAddress(-1), hideENBit(-1), hideEn(false) {
+	directGammaRGBAddress(-1), lutBit(lutBit), directGammaType(directGammaType),
+	DGLutAddress(DGLutAddress), DGAddress(DGAddress), DGBit(DGBit), gammaTest(false),
+	FRCAddress(FRCAddress), FRCBit(FRCBit), hideENAddress(-1), hideENBit(-1), hideEn(false) {
     };
     DirectGammaType::DirectGammaType(const int rLowBit, const int rHighBit,
-			   const int gLowBit, const int gHighBit,
-			   const int bLowBit, const int bHighBit, const int totalByte,
-			   const int patternBit)
+				     const int gLowBit, const int gHighBit,
+				     const int bLowBit, const int bHighBit, const int totalByte,
+				     const int patternBit)
     :rLowBit(rLowBit), rHighBit(rHighBit), gLowBit(gLowBit), gHighBit(gHighBit), bLowBit(bLowBit),
 	bHighBit(bHighBit), totalByte(totalByte), patternBit(patternBit) {
 
@@ -82,15 +82,20 @@ namespace i2c {
 
     };
 
-    //12401  RL RH GL GH BL BG
-    //
+
+
+    //format: RL RH GL GH BL BH TOTALBYTE BIT
+
+    //12401 |RH |RL|GH |GL|BH |BL|
     const DirectGammaType DirectGammaType::IndependentInstance(8, 0, 24, 16, 40, 32, 6, 12);
-    //12403
+    //12403 |RL|RHGH|GL|BL|BH  |
     const DirectGammaType DirectGammaType::DependentInstance(0, 8, 16, 12, 24, 32, 5, 12);
-    //62301 |BHGHRH|RL|GL|BL|
+    //62301 |BHGHRH |RL|GL|BL|
     const DirectGammaType DirectGammaType::TCON62301Instance(8, 4, 16, 2, 24, 0, 4, 10);
-    //1H501
+    //1H501 |RL|RH |GL|GH |BL|BH |
     const DirectGammaType DirectGammaType::TCON1H501Instance(0, 8, 16, 24, 32, 40, 6, 10);
+    //12409 Aging |RHRL1|RL2GHGL1|GL2BHBL1|BL2
+    const DirectGammaType DirectGammaType::TCON12409AgingInstance(2, 0, 12, 10, 22, 20, 4, 10);
     const DirectGammaType DirectGammaType::NotAssignInstance(0, 0, 0, 0, 0, 0, 0, 12);
 };
 

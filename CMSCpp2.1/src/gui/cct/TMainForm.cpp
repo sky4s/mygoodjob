@@ -785,8 +785,9 @@ void __fastcall TMainForm::Button_ConnectClick(TObject * Sender)
 	    const DirectGammaType & directGammaType =
 		(0 == index) ? DirectGammaType::IndependentInstance :
 		(1 == index) ? DirectGammaType::DependentInstance :
-		(2 == index) ? DirectGammaType::TCON62301Instance :
-		(3 ==
+                (2 == index) ? DirectGammaType::TCON12409AgingInstance :
+		(3 == index) ? DirectGammaType::TCON62301Instance :
+		(4 ==
 		 index) ? DirectGammaType::TCON1H501Instance : DirectGammaType::NotAssignInstance;
 
 
@@ -1942,4 +1943,5 @@ void TMainForm::readTCONSections()
     ComboBox_TCONType->AddItem(CUSTOM, null);
     ComboBox_TCONType->ItemIndex = 0;
 }
+
 

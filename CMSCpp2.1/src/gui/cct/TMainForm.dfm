@@ -837,8 +837,8 @@ object MainForm: TMainForm
     Top = 13
     Width = 546
     Height = 348
-    ActivePage = TabSheet1
-    TabIndex = 0
+    ActivePage = TabSheet2
+    TabIndex = 1
     TabOrder = 0
     object TabSheet1: TTabSheet
       Caption = 'Measure Setup'
@@ -1441,6 +1441,7 @@ object MainForm: TMainForm
                 Items.Strings = (
                   '12401Type'
                   '12403Type'
+                  '12409Aging'
                   '62301Type'
                   '1H501Type')
               end
