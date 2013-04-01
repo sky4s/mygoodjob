@@ -57,10 +57,40 @@ namespace i2c {
 
 	return data;
     };
+
+    bptr < cms::util::ByteBuffer > TCONControl::getRGBByteBufferWith12409Aging(int r, int g, int b,
+									       const DirectGammaType
+									       & directGammaType) {
+	int rLow = r & 3;
+	int rHigh = (r >> 2) & 255;
+	int gLow = g & 15;
+	int gHigh = (g >> 4) & 63;
+	int bLow = b & 63;
+	int bHigh = (b >> 6) & 15;
+
+	int totalByte = directGammaType.totalByte;
+	bptr < ByteBuffer > data(new ByteBuffer(totalByte));
+	//¥ý²MªÅbuffer
+	for (int x = 0; x < totalByte; x++) {
+	    (*data)[x] = 0;
+	}
+	// rHigh
+	// rLow(2)|gHigh(6)
+	// gLow(4)|bHigh(4)
+	// bLow(6)|(2)
+	(*data)[0] = rHigh;
+	(*data)[1] = rLow << 6 | gHigh;
+	(*data)[2] = gLow << 4 | bHigh;
+	(*data)[3] = bLow << 2;
+
+	return data;
+    };
     bptr < ByteBuffer > TCONControl::getRGBByteBuffer(int r, int g, int b,
 						      const DirectGammaType & directGammaType) {
- 	if (DirectGammaType::TCON62301Instance == directGammaType) {
+	if (DirectGammaType::TCON62301Instance == directGammaType) {
 	    return getRGBByteBufferWith62301(r, g, b, directGammaType);
+	} else if (DirectGammaType::TCON12409AgingInstance == directGammaType) {
+	    return getRGBByteBufferWith12409Aging(r, g, b, directGammaType);
 	}
 
 	int patternBit = directGammaType.patternBit;
@@ -86,6 +116,7 @@ namespace i2c {
 	(*data)[directGammaType.gLowBit / 8] = gLow;	//16
 	(*data)[directGammaType.bLowBit / 8] = bLow;	//24
 
+	//Red
 	if (directGammaType.rHighBit % 8 != 0) {
 	    int index = directGammaType.rHighBit / 8;
 	    byte d = (*data)[index];
@@ -95,6 +126,8 @@ namespace i2c {
 	    byte d = (*data)[index];
 	    (*data)[index] = d + rHigh;
 	}
+
+	//Green
 	if (directGammaType.gHighBit % 8 != 0) {
 	    int index = directGammaType.gHighBit / 8;
 	    byte d = (*data)[index];
@@ -104,6 +137,7 @@ namespace i2c {
 	    byte d = (*data)[index];
 	    (*data)[index] = d + gHigh;
 	}
+	//Blue
 	if (directGammaType.bHighBit % 8 != 0) {
 	    int index = directGammaType.bHighBit / 8;
 	    byte d = (*data)[index];
@@ -174,7 +208,7 @@ namespace i2c {
 	} else if (1 == tconIndex && true == dualTCON) {
 	    return control2->read(dataAddress, size);
 	} else {
-	    throw   IllegalArgumentException("");
+	    throw IllegalArgumentException("");
 	}
     }
     const MaxValue & TCONControl::getLUTBit() {
@@ -299,7 +333,7 @@ namespace i2c {
 	write(parameter->DGLutAddress, data);
     }
     RGB_vector_ptr TCONControl::getDGLut() {
-	throw   UnsupportedOperationException("");
+	throw UnsupportedOperationException("");
     };
 
     int_array TCONControl::getLMHData(int data) {
