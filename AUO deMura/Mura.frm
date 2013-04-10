@@ -164,7 +164,7 @@ Dim Data_file As String
 
 
 
-    '**********  ファイルの指定  *****************************
+    '**********  ファイ?の指定  *****************************
 
         CommonDialog1.FileName = ""
         CommonDialog1.InitDir = App.Path & "\data"
@@ -188,7 +188,7 @@ Dim Data_file As String
 
 inPic.Picture = LoadPicture(Data_file)  'Input Picture
 
-'画像の分析
+'画?の分析
 hbm = inPic.Picture
 status = GetObject(hbm, BITMAP_SIZE, bm)
 inPicWid = bm.bmWidthBytes
@@ -224,7 +224,7 @@ Picture2.Refresh
 
 
 
-'********** ビットマップ画像の取得    **********
+'********** ビットマップ画?の取得    **********
     
     hbm = Picture1.Image
     status = GetObject(hbm, BITMAP_SIZE, bm)
@@ -517,6 +517,11 @@ For i = 0 To PictureWidth - 1
             
             Case PlaneLevel1 To PlaneLevel2 - 1
         
+                'y=y0+(y1-y0)(x-x0)/(x1-x0)'
+                'Plane12Coef=(x1-x0)
+                'x=InputPicture x0=PlaneLevel1 x1=PlaneLevel2'
+                'wiki: v0+(v1-v0)*t = v0*(1-t)+v1*t = v0+v1t-v0t'
+                'code: {(x1-x)*y0 + (x-x0)*y1}*1/(x1-x0) (use wiki formula 2)'
                                          
                 TotaldeMuraValue(Color) = ((PlaneLevel2 - InputPicture(i, j, Color)) * CLng(deMuravalue(1, Color)) _
                                         + (InputPicture(i, j, Color) - PlaneLevel1) * CLng(deMuravalue(2, Color))) _
@@ -618,7 +623,7 @@ ProgressBar1.Value = ProgressBar1.Value + 30
 
 
 
-'********** ビットマップ画像の取得    **********
+'********** ビットマップ画?の取得    **********
     
     hbm = Picture2.Image
     status = GetObject(hbm, BITMAP_SIZE, bm)
@@ -671,13 +676,13 @@ End Sub
 
 Private Sub Form_Load()
 
-'DATA フォルダの作成
+'DATA フォ?ダの作成
 On Error Resume Next
 MkDir (App.Path & "\Data")
 On Error GoTo 0
 
 
-'Result フォルダの作成
+'Result フォ?ダの作成
 On Error Resume Next
 MkDir (App.Path & "\Result")
 On Error GoTo 0
