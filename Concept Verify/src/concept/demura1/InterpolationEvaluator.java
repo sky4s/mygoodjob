@@ -4,6 +4,8 @@
  */
 package concept.demura1;
 
+import java.util.Arrays;
+
 /**
  *
  * @author SkyforceShen
@@ -27,10 +29,10 @@ public class InterpolationEvaluator {
 //        return result;
     }
 
-    static int getTetradedral(byte fx6bit, byte fy6bit, int fz, int fzBit) {
-        int gain = (int) Math.pow(2, fzBit - 6);
-        int fx = fx6bit * gain;
-        int fy = fy6bit * gain;
+    static int getTetradedral(byte fxbit, byte fybit, int fxyBitnum, int fz, int fzBitnum) {
+        int gain = (int) Math.pow(2, fzBitnum - fxyBitnum);
+        int fx = fxbit * gain;
+        int fy = fybit * gain;
         if (fx >= fy && fy > fz) {
             return 1;
         } else if (fx > fz && fz >= fy) {
@@ -48,10 +50,10 @@ public class InterpolationEvaluator {
         }
     }
 
-    static int getTetradedral(byte fx6bit, byte fy6bit, double fz) {
-        double one = Math.pow(2, 6);
-        double fx = fx6bit / one;
-        double fy = fy6bit / one;
+    static int getTetradedral(byte fxbit, byte fybit, int fxyBitnum, double fz) {
+        double one = Math.pow(2, fxyBitnum);
+        double fx = fxbit / one;
+        double fy = fybit / one;
         if (fx >= fy && fy > fz) {
             return 1;
         } else if (fx > fz && fz >= fy) {
@@ -71,8 +73,9 @@ public class InterpolationEvaluator {
 
     static boolean evaluate(short[] R0, short[] R1, short v, short h, short delta) {
         short coef = (short) Math.round(Math.pow(2, 16) / delta);
-        int fzBit = 6;
-        byte one6bit = (byte) (Math.pow(2, 6));
+        int fzBit = 4;
+        int fxyBit = 4;
+        byte onexy = (byte) (Math.pow(2, fxyBit));
         int totalCount = 0;
         int errorTCount = 0;
         int errorValueCount = 0;
@@ -86,8 +89,8 @@ public class InterpolationEvaluator {
                 short c0 = getDeMuravalue(S1234, R0);
                 short c1 = getDeMuravalue(S1234, R1);
 
-                byte fx = (byte) (x * one6bit / h);
-                byte fy = (byte) (y * one6bit / v);
+                byte fx = (byte) (x * onexy / h);
+                byte fy = (byte) (y * onexy / v);
 
                 for (short level = shortLevel; level < delta; level++) {
 //                for (short level = 1; level < delta; level++) {
@@ -95,12 +98,18 @@ public class InterpolationEvaluator {
 
                     int fz = (int) ((level * Math.pow(2, fzBit)) / delta);
 //                    System.out.println(fx+" "+fy+" "+fz);
-                    int tInteger = getTetradedral(fx, fy, fz, fzBit);
+                    int tInteger = getTetradedral(fx, fy, fxyBit, fz, fzBit);
                     double dfz = ((double) level) / delta;
-                    int tDouble = getTetradedral(fx, fy, dfz);
+                    int tDouble = getTetradedral(fx, fy, fxyBit, dfz);
                     if (tInteger != tDouble) {
                         System.out.println("y: " + y + " x: " + x + " l: " + level + " => " + tInteger + " " + tDouble);
                         errorTCount++;
+                    }
+                    double dfx = ((double) x) / h;
+                    double dfy = ((double) y) / v;
+                    double dtetrahedralValue = tetrahedral(tInteger, R0, R1, dfx, dfy, dfz);
+                    if (dtetrahedralValue != linearValue) {
+//                        System.out.println(linearValue + " " + dtetrahedralValue);
                     }
                     totalCount++;
                 }
@@ -114,10 +123,73 @@ public class InterpolationEvaluator {
         return true;
     }
 
+    static double tetrahedral(int tetradedralIndex, short[] R0, short[] R1, double fx, double fy, double fz) {
+        short[] c = getc123(tetradedralIndex, R0, R1);
+//        System.out.println(Arrays.toString(c));
+        double result = R0[0] + c[0] * fx + c[1] * fy + c[2] * fz;
+        return result;
+    }
+
+    static short tetrahedral(int tetradedralIndex, short[] R0, short[] R1, byte fxbit, byte fybit, int fxyBitnum, short fz, int fzBitnum) {
+        //short linearValue = (short) (((delta - level) * c0 + level * c1) * (coef * 2 + 1) / Math.pow(2, 17));
+        short[] c123 = getc123(tetradedralIndex, R0, R1);//8bit
+        return -1;
+    }
+
+    static short p(int x, int y, short[] R) {
+        //00,10,01,11
+        int index = ((x != 0) ? 1 : 0) + ((y != 0) ? 2 : 0);
+        return R[index];
+    }
+
+    static short[] getc123(int tetradedralIndex, short[] R0, short[] R1) {
+        //00,10,01,11
+        switch (tetradedralIndex) {
+            case 1:
+                return new short[]{
+                            (short) (p(1, 0, R0) - p(0, 0, R0)),
+                            (short) (p(1, 1, R0) - p(1, 0, R0)),
+                            (short) (p(1, 1, R1) - p(1, 1, R0))};
+            case 2:
+                return new short[]{
+                            (short) (p(1, 0, R0) - p(0, 0, R0)),
+                            (short) (p(1, 1, R1) - p(1, 0, R1)),
+                            (short) (p(1, 0, R1) - p(1, 0, R0))};
+            case 3:
+                return new short[]{
+                            (short) (p(1, 0, R1) - p(0, 0, R1)),
+                            (short) (p(1, 1, R1) - p(1, 0, R1)),
+                            (short) (p(0, 0, R1) - p(0, 0, R0))};
+            case 4:
+                return new short[]{
+                            (short) (p(1, 1, R0) - p(0, 1, R0)),
+                            (short) (p(0, 1, R0) - p(0, 0, R0)),
+                            (short) (p(1, 1, R1) - p(1, 1, R0))};
+            case 5:
+                return new short[]{
+                            (short) (p(1, 1, R1) - p(0, 1, R1)),
+                            (short) (p(0, 1, R0) - p(0, 0, R0)),
+                            (short) (p(0, 1, R1) - p(0, 1, R0))};
+            case 6:
+                return new short[]{
+                            (short) (p(1, 1, R1) - p(0, 1, R1)),
+                            (short) (p(0, 1, R1) - p(0, 0, R1)),
+                            (short) (p(0, 0, R1) - p(0, 0, R0))};
+
+        }
+        return null;
+    }
+
     public static void main(String[] args) {
         //00,10,01,11
         short[] R0 = new short[]{-128, -128, -128, -128};
         short[] R1 = new short[]{127, 127, 127, 127};
+
+//        short[] R = new short[]{1, 2, 3, 4};
+//        getP(R, 0, 0);
+//        getP(R, 1, 0);
+//        getP(R, 0, 1);
+//        getP(R, 1, 1);
 
 //        short delta = 102;
 //        short v = 4, h = 16;
