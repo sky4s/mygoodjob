@@ -70,6 +70,7 @@ public class InterpolationEvaluator {
             return -1;
         }
     }
+//    static short[] c0c1 = new short[2];
 
     static boolean evaluate(short[] R0, short[] R1, short v, short h, short delta) {
         short coef = (short) Math.round(Math.pow(2, 16) / delta); //16-9 = 7
@@ -81,37 +82,37 @@ public class InterpolationEvaluator {
         int errorValueCount = 0;
 
 //        short shortLevel = (short) (delta - 1);
-        short shortLevel = 1;
+//        short shortLevel = 1;
+        short shortLevel = 0;
 
-        for (int y = 0; y < v; y++) {
-            for (int x = 0; x < h; x++) {
+        int starty = v - 1;
+        int startx = h - 1;
+//                int starty =0;
+//        int startx=0;
+
+//        for (int y = starty; y < v; y++) {
+//            for (int x = startx; x < h; x++) {
+
+        for (int y = 0; y < 1; y++) {
+            for (int x = 0; x < 1; x++) {
+
                 short[] S1234 = getS1234(h, v, x, y); //8bit
                 short c0 = getDeMuravalue(S1234, R0); //10bit?? or 8?
                 short c1 = getDeMuravalue(S1234, R1);
+//                c0c1[0] = c0;
+//                c0c1[1] = c1;
 
                 byte fx = (byte) (x * onexy / h);
                 byte fy = (byte) (y * onexy / v);
 
-                for (short level = shortLevel; level < delta; level++) {
+                for (short level = shortLevel; level <= delta; level++) {
 //                for (short level = 1; level < delta; level++) {
                     //9+10  + 7+1 = 27 - 17 = 10??
                     // 9+8 +7+1 = 25 - 17 =8 (right?)
-//                    int linearValuePart1 = ((delta - level) * c0 + level * c1) * (coef * 2 + 1);
-//                    short linearValue2 = (short) (linearValuePart1 >> 17);
-//                    short linearValue3 = (short) ((linearValue2 < 0) ? (-(-linearValuePart1 >> 17)) : (linearValuePart1 >> 17));
-//                    int vv = (int) (((delta - level) * c0 + level * c1) * (coef * 2 + 1) / Math.pow(2, 17));
-//                    int vv2 = (int) (linearValuePart1 / Math.pow(2, 17));
+
                     short linearValue = (short) (((delta - level) * c0 + level * c1) * (coef * 2 + 1) / Math.pow(2, 17));
-                    short linearValue0 = (short) ((((delta - level) * c0 + level * c1) * (coef * 2 + 1) )>>17);
-//                    int linearValuePart1 = ((delta - level) * c0 + level * c1) * (coef * 2 + 1);
-//                    boolean negative = linearValuePart1 < 0;
-//                    if (negative) {
-//                        linearValuePart1 = -linearValuePart1;
-//                    }
-//                    short linearValue = (short) (linearValuePart1 >> 17);
-//                    if (negative) {
-//                        linearValue = (short) -linearValue;
-//                    }
+//                         short linearValue = (short) (((delta - level) * c0 + level * c1) * (coef * 2  ) / Math.pow(2, 17));
+
 
                     int fz = (int) ((level * Math.pow(2, fzBit)) / delta);
                     int tInteger = getTetrahedral(fx, fy, fxyBit, fz, fzBit);
@@ -128,10 +129,11 @@ public class InterpolationEvaluator {
 //                    double dfx = ((double) x) / h;
 //                    double dfy = ((double) y) / v;
 //                    double dtetrahedralValue = tetrahedral(tInteger, R0, R1, dfx, dfy, dfz);
+                    tetrahedralWithLinear(tInteger, R0, R1, fx, fy, fxyBit, level, coef, c0, c1, level, delta);
+//                    System.out.println(level + " " + linearValue + " " + tetrahedralValue);
                     if (tetrahedralValue != linearValue) {
-                        System.out.println(linearValue + " " + tetrahedralValue);
-//                        short linearValue2 = (short) (((delta - level) * c0 + level * c1) * (coef * 2 + 1) / Math.pow(2, 17));
-//                        tetrahedral(tInteger, R0, R1, fx, fy, fxyBit, level, coef);
+//                        System.out.println(level + " " + linearValue + " " + tetrahedralValue);
+
                         errorValueCount++;
                     }
                     totalCount++;
@@ -172,42 +174,92 @@ public class InterpolationEvaluator {
     static short tetrahedral(int tetradedralIndex, short[] R0, short[] R1, byte fxbit, byte fybit, int fxyBitnum, short fz, short coef) {
         //10 +8 + 16+1 -17
         //short linearValue = (short) (((delta - level) * c0 + level * c1) * (coef * 2 + 1) / Math.pow(2, 17));
+//        short[] c = getc123(tetradedralIndex, R0, R1);//8bit
+//        int fxyone = (int) Math.pow(2, 8 - fxyBitnum);
+//        int fx = fxbit * fxyone;
+//        int fy = fybit * fxyone;
+//
+//        int z = c[2] * fz * (coef * 2 + 1);// / ((int) Math.pow(2, 17));
+//        z = (int) (z / Math.pow(2, 16));
+//
+//        int part1 = R0[0] + c[0] * fx + c[1] * fy;
+//        part1 = part1 * 2;
+//        int part2 = part1 + z;
+//
+//        short result = (short) (part2 / 2);
+//        return result;
+
+
         short[] c = getc123(tetradedralIndex, R0, R1);//8bit
         int fxyone = (int) Math.pow(2, 8 - fxyBitnum);
         int fx = fxbit * fxyone;
         int fy = fybit * fxyone;
 
-//        int fzone = (fzBitnum < 8) ? (int) Math.pow(2, 8 - fzBitnum) : 1;
-//        int fz = fzbit * fzone;
+        //fz = level
+        //c:8 fz:9 coef:7 = 24   ;   coef=16-9=7
+        int z = c[2] * fz * (coef);// / ((int) Math.pow(2, 17));
+        int z0 = (int) (z / Math.pow(2, 15)); //?-15=9 => 24
 
-//        int z = (c[2] * fz) >> 8;
-//        short result = (short) ((R0[0] + c[0] * fx + c[1] * fy + c[2] * fz) * (coef * 2 + 1) / Math.pow(2, 17));
-
-//        int z = c[2] * fz * (coef * 2 + 1) / ((int) Math.pow(2, 17));
-//        short result = (short) (R0[0] + c[0] * fx + c[1] * fy + z);
-
-        int z = c[2] * fz * (coef * 2 + 1);// / ((int) Math.pow(2, 17));
-        boolean negative = z < 0;
-        if (negative) {
-//            z = -z;
-        }
-        z = z >> 16;
-        if (negative) {
-//            z = -z;
-        }
         int part1 = R0[0] + c[0] * fx + c[1] * fy;
-        part1 = part1 << 1;
-        int part2 = part1 + z;
-        negative = part2 < 0;
-        if (negative) {
-//            part2 = -part2;
-        }
-        short result = (short) (part2 >> 1);
-        if (negative) {
-//            result = (short) -result;
-        }
+        int part2 = part1 * 2; //8+1 = 9bit
+        int part3 = part2 + z0;
+        short tetrahedralValue = (short) (part3 / 2);
+        return tetrahedralValue;
+    }
 
-        return result;
+    static short tetrahedralWithLinear(int tetradedralIndex, short[] R0, short[] R1, byte fxbit, byte fybit, int fxyBitnum, short fz, short coef, short c0, short c1, short level, short delta) {
+
+
+
+
+
+
+        short[] c = getc123(tetradedralIndex, R0, R1);//8bit
+        int fxyone = (int) Math.pow(2, 8 - fxyBitnum);
+        int fx = fxbit * fxyone;
+        int fy = fybit * fxyone;
+
+        //fz = level
+        //c:8 fz:9 coef:7 = 24   ;   coef=16-9=7
+        int z = c[2] * fz * (coef);// / ((int) Math.pow(2, 17));
+        int z0 = (int) (z / Math.pow(2, 15)); //?-15=9 => 24
+
+        int part1 = R0[0] + c[0] * fx + c[1] * fy;
+        int part2 = part1 * 2; //8+1 = 9bit
+        int part3 = part2 + z0; //9
+        short tetrahedralValue = (short) (part3 / 2);
+
+        int tpart1 = (R0[0] + c[0] * fx + c[1] * fy) * 2;
+        int tpart2 = (int) (c[2] * fz * coef / Math.pow(2, 15));
+//        short tetrahedralValue0 = (short) (((R0[0] + c[0] * fx + c[1] * fy) * 2 + (int) (c[2] * fz * coef / Math.pow(2, 15))) / 2);
+        short tetrahedralValue0 = (short) ((tpart1 + tpart2) / 2);
+        //        short tetrahedralValue = (short) (part3);
+
+        //short coef = (short) Math.round(Math.pow(2, 16) / delta); //16-9 = 7
+//           short linearValue = (short) (((delta - level) * c0 + level * c1) * (coef * 2 + 1) / Math.pow(2, 17));
+
+        //25 - 17 =8; 24+1
+        short linearValue = (short) (((delta - level) * c0 + level * c1) * (coef * 2 + 1) / Math.pow(2, 17));
+
+        //   short coef = (short) Math.round(Math.pow(2, 16) / delta); //16-9 = 7
+//        short linearValue0 = (short) (((c0 + (c1 - c0) * level * coef) / Math.pow(2, 16)));
+//        short linearValue0 = (short) (c0 + ((c1 - c0) * level * (coef * 2) / Math.pow(2, 17)));
+//        short linearValue0 = (short) ( 2*coef)
+//        short linearValue0 = (short) (((delta - level) * c0 + level * c1) * (coef * 2 + 1) / Math.pow(2, 17));
+//        short linearValue0 = (short) (((delta - level) * c0 + level * c1) * (coef * 2 + 1) / Math.pow(2, 17));
+        short linearValue1 = (short) ((c0 * delta + (c1 - c0) * level) * (coef * 2 + 1) / Math.pow(2, 17));
+
+        if (tetrahedralValue != tetrahedralValue0) {
+            System.out.println(tetrahedralValue + " " + tetrahedralValue0);
+        }
+//        short _linearValue = (short) (((delta - level) * c0 + level * c1) * (coef * 2 + 1) / Math.pow(2, 15));
+
+//        System.out.println(level + " " + linearValue + " " + tetrahedralValue + " " + _linearValue + " " + (part1 * 4 + (int) ((z) / Math.pow(2, 14))));
+//        if (linearValue != linearValue1 || linearValue != linearValue0) {
+//            System.out.println(level + " " + linearValue + " " + linearValue0 + " " + linearValue1);
+//        }
+//             System.out.println(level + " " + linearValue + " " + linearValue_ );
+        return tetrahedralValue;
     }
 
     static short p(int x, int y, short[] R) {
@@ -259,9 +311,9 @@ public class InterpolationEvaluator {
         short[] R0 = new short[]{-128, -128, -128, -128};
         short[] R1 = new short[]{127, 127, 127, 127};
 
-        int a=-5/2;
-        int b=-5>>1;
-        int c=5>>1;
+        int a = -5 / 2;
+        int b = -5 >> 1;
+        int c = 5 >> 1;
 //        short[] R = new short[]{1, 2, 3, 4};
 //        getP(R, 0, 0);
 //        getP(R, 1, 0);
@@ -279,7 +331,7 @@ public class InterpolationEvaluator {
 
 //        int deltaStart = (int) Math.round(1023 * 0.05); //51
         int deltaStart = 510;
-        int deltaEnd = 511;//(int) Math.round(1023 * 0.5);
+        int deltaEnd = 510;//(int) Math.round(1023 * 0.5);
 //        int deltaEnd = deltaStart;
         for (short[] vh : vhs) {
             for (int delta = deltaStart; delta <= deltaEnd; delta++) {
