@@ -282,9 +282,9 @@ public class InterpolationEvaluator {
         short newcoef = (short) Math.round(Math.pow(2, 19) / delta); //19-9 = 10
         int linearValue_noplus_27bit = (((delta - level) * c0 + level * c1) * (newcoef)); //26bit
         int linearValue_noplus_27bit_to_8bit = (int) (linearValue_noplus_27bit / Math.pow(2, 19));
-        if (linearValue_noplus_27bit_to_8bit != tetrahedralValue) {
+//        if (linearValue_noplus_27bit_to_8bit != tetrahedralValue) {
             System.out.println(linearValue_noplus_27bit_to_8bit + " " + tetrahedralValue);
-        }
+//        }
 //        if(tetrahedralValue_24bit!=tetrahedralValue_24bit_2){
 //            System.out.println(tetrahedralValue_24bit);
 //        }
