@@ -6,7 +6,7 @@ package concept.demura1;
 
 import java.awt.Color;
 import java.util.Arrays;
-import shu.plot.*;
+//import shu.plot.*;
 
 /**
  *
@@ -157,11 +157,11 @@ public class InterpolationEvaluator {
                     int error = Math.abs(tetrahedralTest - tetrahedralStandard);
                     maxError = Math.max(maxError, error);
 //                    System.out.println(level + " " + linearValue + " " + tetrahedralStandard);
-                    if (tetrahedralTest != tetrahedralStandard) {
-//                        System.out.println(level + " " + linearValue + " " + tetrahedralStandard + "*");
+                    if (linearValue != tetrahedralTest) {
+                        System.out.println(level + " " + linearValue + " " + tetrahedralTest + "*");
                         errorValueCount++;
                     } else {
-//                        System.out.println(level + " " + tetrahedralStandard + " " + tetrahedralTest);
+                        System.out.println(level + " " + linearValue + " " + tetrahedralTest);
                     }
 //                    plot.addCacheScatterLinePlot("linear", Color.red, level, linearValue_25bit);
 //                    plot.addCacheScatterLinePlot("tetra", Color.green, level, tetrahedral25bit);
@@ -298,13 +298,22 @@ public class InterpolationEvaluator {
         z = z & 0x1FFFFFF; //25
         int tetrahedralValue_25bit = (int) ((((R0[0] * Math.pow(2, 4)) + c[0] * fx + c[1] * fy) * Math.pow(2, 12)) * Math.pow(2, coefbit - 16)) + z;
 
-        int z12 = z >> 17;
-        int part0_12 = ((int) (R0[0] * Math.pow(2, 4)) + c[0] * fx + c[1] * fy) >> 4;
-        int t0 = z12 + part0_12;
-        int result = t0;
+        int part0_12 = ((int) (R0[0] * Math.pow(2, 4)) + c[0] * fx + c[1] * fy);
+//        int part0_10 = ((int) (R0[0] * Math.pow(2, 4)) + c[0] * fx + c[1] * fy);
+//        int t0 = (int) (z / Math.pow(2, 16) + part0_12 / 8);
+//        int result = (int) (t0 / Math.pow(2, 1));
+        int z10 = (int) (z / Math.pow(2, 15));
+        int R0_10bit = (int) (R0[0] * Math.pow(2, 2));
+        int fxy_10bit = (int) ((c[0] * fx + c[1] * fy) / Math.pow(2, 2));
+//        int t0 = (int) (z10 + part0_12 / Math.pow(2, 2));
+        int t0_10bit = (int) (z10 + R0_10bit + fxy_10bit);
+        int t0_10bit_2 = (int) (z10 + fxy_10bit);
+//        t0_10bit_2 = (t0_10bit_2 < 0) ? t0_10bit_2 + 1 : t0_10bit_2;
+//        int t0_9bit = t0_10bit_2 / 2 + R0[0] * 2;
+
+        int result = (int) ((t0_10bit_2 + R0_10bit) / 4);
+//        int result = (int) (t0_9bit / 2);
         return (short) result;
-        //        int tetrahedralValue_25bit = tetrahedralValue_25bit * 2;
-//        return (short) (tetrahedralValue_25bit / Math.pow(2, coefbit));
     }
 
     static short tetrahedralWithLinear(int tetradedralIndex, short[] R0, short[] R1, byte fxbit, byte fybit, int fxyBitnum, short fz, short coef, short[] linearc, short level, short delta) {
@@ -400,34 +409,34 @@ public class InterpolationEvaluator {
         switch (tetradedralIndex) {
             case 1:
                 return new short[]{
-                    (short) (p(1, 0, R0) - p(0, 0, R0)),
-                    (short) (p(1, 1, R0) - p(1, 0, R0)),
-                    (short) (p(1, 1, R1) - p(1, 1, R0))};
+                            (short) (p(1, 0, R0) - p(0, 0, R0)),
+                            (short) (p(1, 1, R0) - p(1, 0, R0)),
+                            (short) (p(1, 1, R1) - p(1, 1, R0))};
             case 2:
                 return new short[]{
-                    (short) (p(1, 0, R0) - p(0, 0, R0)),
-                    (short) (p(1, 1, R1) - p(1, 0, R1)),
-                    (short) (p(1, 0, R1) - p(1, 0, R0))};
+                            (short) (p(1, 0, R0) - p(0, 0, R0)),
+                            (short) (p(1, 1, R1) - p(1, 0, R1)),
+                            (short) (p(1, 0, R1) - p(1, 0, R0))};
             case 3:
                 return new short[]{
-                    (short) (p(1, 0, R1) - p(0, 0, R1)),
-                    (short) (p(1, 1, R1) - p(1, 0, R1)),
-                    (short) (p(0, 0, R1) - p(0, 0, R0))};
+                            (short) (p(1, 0, R1) - p(0, 0, R1)),
+                            (short) (p(1, 1, R1) - p(1, 0, R1)),
+                            (short) (p(0, 0, R1) - p(0, 0, R0))};
             case 4:
                 return new short[]{
-                    (short) (p(1, 1, R0) - p(0, 1, R0)),
-                    (short) (p(0, 1, R0) - p(0, 0, R0)),
-                    (short) (p(1, 1, R1) - p(1, 1, R0))};
+                            (short) (p(1, 1, R0) - p(0, 1, R0)),
+                            (short) (p(0, 1, R0) - p(0, 0, R0)),
+                            (short) (p(1, 1, R1) - p(1, 1, R0))};
             case 5:
                 return new short[]{
-                    (short) (p(1, 1, R1) - p(0, 1, R1)),
-                    (short) (p(0, 1, R0) - p(0, 0, R0)),
-                    (short) (p(0, 1, R1) - p(0, 1, R0))};
+                            (short) (p(1, 1, R1) - p(0, 1, R1)),
+                            (short) (p(0, 1, R0) - p(0, 0, R0)),
+                            (short) (p(0, 1, R1) - p(0, 1, R0))};
             case 6:
                 return new short[]{
-                    (short) (p(1, 1, R1) - p(0, 1, R1)),
-                    (short) (p(0, 1, R1) - p(0, 0, R1)),
-                    (short) (p(0, 0, R1) - p(0, 0, R0))};
+                            (short) (p(1, 1, R1) - p(0, 1, R1)),
+                            (short) (p(0, 1, R1) - p(0, 0, R1)),
+                            (short) (p(0, 0, R1) - p(0, 0, R0))};
 
         }
         return null;
@@ -469,8 +478,8 @@ public class InterpolationEvaluator {
         short[][] vhs = {{4, 16}};
         short[] vhArray = {4, 8, 16};
 
-        int deltaStart = (int) Math.round(1023 * 0.05); //51
-//        int deltaStart = 511;
+//        int deltaStart = (int) Math.round(1023 * 0.05); //51
+        int deltaStart = 511;
         int deltaEnd = 511;//(int) Math.round(1023 * 0.5);
 //        int deltaEnd = deltaStart;
 
