@@ -154,14 +154,14 @@ public class InterpolationEvaluator {
                     short tetrahedralTest = tetrahedralTest(tInteger, R0, R1, fx, fy, fxyBit, level, delta);
 
 
-                    int error = Math.abs(linearValue - tetrahedralStandard);
+                    int error = Math.abs(tetrahedralTest - tetrahedralStandard);
                     maxError = Math.max(maxError, error);
 //                    System.out.println(level + " " + linearValue + " " + tetrahedralStandard);
                     if (tetrahedralTest != tetrahedralStandard) {
 //                        System.out.println(level + " " + linearValue + " " + tetrahedralStandard + "*");
                         errorValueCount++;
                     } else {
-//                        System.out.println(level + " " + linearValue + " " + tetrahedralStandard);
+//                        System.out.println(level + " " + tetrahedralStandard + " " + tetrahedralTest);
                     }
 //                    plot.addCacheScatterLinePlot("linear", Color.red, level, linearValue_25bit);
 //                    plot.addCacheScatterLinePlot("tetra", Color.green, level, tetrahedral25bit);
@@ -296,13 +296,15 @@ public class InterpolationEvaluator {
         short coef = (short) ((Math.pow(2, coefbit)) / delta + 1); //17-9=8 X =>9bit
         int z = c[2] * level * (coef);//8+9+9=25
         z = z & 0x1FFFFFF; //25
-        //255 511 257
-        //8 9 9
-
-        // (8+4)  +12+1
         int tetrahedralValue_25bit = (int) ((((R0[0] * Math.pow(2, 4)) + c[0] * fx + c[1] * fy) * Math.pow(2, 12)) * Math.pow(2, coefbit - 16)) + z;
-//        int tetrahedralValue_25bit = tetrahedralValue_25bit * 2;
-        return (short) (tetrahedralValue_25bit / Math.pow(2, coefbit));
+
+        int z12 = z >> 17;
+        int part0_12 = ((int) (R0[0] * Math.pow(2, 4)) + c[0] * fx + c[1] * fy) >> 4;
+        int t0 = z12 + part0_12;
+        int result = t0;
+        return (short) result;
+        //        int tetrahedralValue_25bit = tetrahedralValue_25bit * 2;
+//        return (short) (tetrahedralValue_25bit / Math.pow(2, coefbit));
     }
 
     static short tetrahedralWithLinear(int tetradedralIndex, short[] R0, short[] R1, byte fxbit, byte fybit, int fxyBitnum, short fz, short coef, short[] linearc, short level, short delta) {
@@ -467,8 +469,8 @@ public class InterpolationEvaluator {
         short[][] vhs = {{4, 16}};
         short[] vhArray = {4, 8, 16};
 
-//        int deltaStart = (int) Math.round(1023 * 0.05); //51
-        int deltaStart = 511;
+        int deltaStart = (int) Math.round(1023 * 0.05); //51
+//        int deltaStart = 511;
         int deltaEnd = 511;//(int) Math.round(1023 * 0.5);
 //        int deltaEnd = deltaStart;
 
