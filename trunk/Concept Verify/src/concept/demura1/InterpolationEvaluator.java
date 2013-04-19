@@ -80,7 +80,7 @@ public class InterpolationEvaluator {
 //    static short[] c0c1 = new short[2];
 
     static boolean evaluate(short[] R0, short[] R1, short v, short h, short delta) {
-        short coef = (short) Math.round(Math.pow(2, 16) / delta); //16-9 = 7
+        short coef = (short) Math.round(Math.pow(2, 16) / delta); //16-9 = 7 ~12bit ,delta >=17
         int fzBit = 9;
         int fxyBit = 4;
         byte onexy = (byte) (Math.pow(2, fxyBit));
@@ -106,6 +106,7 @@ public class InterpolationEvaluator {
 //        
         int vxh = v * h;
         int maxError = 0;
+
         for (int y = starty; y < v; y++) {
             for (int x = startx; x < h; x++) {
 
@@ -116,6 +117,7 @@ public class InterpolationEvaluator {
 //                System.out.println(Arrays.toString(S1234));
                 short c0 = getDeMuravalue(S1234, R0, vxh); //8bit 
                 short c1 = getDeMuravalue(S1234, R1, vxh);
+
 //                System.out.println(c0 + " " + c1);
 //                c0c1[0] = c0;
 //                c0c1[1] = c1;
@@ -128,12 +130,31 @@ public class InterpolationEvaluator {
                 byte fy = (byte) (y * onexy / v);
 //                Plot2D plot = Plot2D.getInstance();
 
+                int maxValue = 0;
+                int minValue = Integer.MAX_VALUE;
+//                int maxc0Value = 0;
+
+
+
                 for (short level = shortLevel; level <= delta; level++) {
 //                for (short level = 1; level < delta; level++) {
                     //9+10  + 7+1 = 27 - 17 = 10??
                     // 9+8 +7+1 = 25 - 17 =8 (right?) 
 
-                    short linearValue = (short) (((delta - level) * c0 + level * c1) * (coef * 2 + 1) / Math.pow(2, 17));
+
+                    int c0c1 = ((delta - level) * c0 + level * c1);
+                    maxValue = Math.max(maxValue, c0c1);
+                    minValue = Math.min(minValue, c0c1);
+//                    System.out.println((delta - level) * c0 + " " + level * c1);
+
+
+                    //8+17=25;  25-13 = 12
+                    //9+8+12+1=30
+                    short linearValue = (short) (c0c1 * (coef * 2 + 1) / Math.pow(2, 17));
+//                      short linearValue = (short) (((delta - level) * c0 + level * c1) * (coef * 2 + 1) / Math.pow(2, 17));
+                    //17 17 17 17+13
+                    System.out.println((delta - level) * c0 + " " + level * c1 + " " + c0c1 + " " + c0c1 * (coef * 2 + 1) + " " + linearValue + " " + coef);
+
 //                    short linearValue = (short) (((delta - level) * c0 + level * c1) * (coef * 2) / Math.pow(2, 17));
                     int linearValue_25bit = (((delta - level) * c0 + level * c1) * (coef * 2 + 1)); //8bit
 
@@ -148,8 +169,8 @@ public class InterpolationEvaluator {
                     }
 
 //                    short tetrahedralValue = tetrahedral(tInteger, R0, R1, fx, fy, fxyBit, (short) fz, fzBit);
-                    short tetrahedralValue = tetrahedral(tInteger, R0, R1, fx, fy, fxyBit, level, coef);
-                    int tetrahedral25bit = tetrahedral25bit(tInteger, R0, R1, fx, fy, fxyBit, level, coef);
+//                    short tetrahedralValue = tetrahedral(tInteger, R0, R1, fx, fy, fxyBit, level, coef);
+//                    int tetrahedral25bit = tetrahedral25bit(tInteger, R0, R1, fx, fy, fxyBit, level, coef);
                     short tetrahedralStandard = tetrahedralStandard(tInteger, R0, R1, fx, fy, fxyBit, level, delta);
                     short tetrahedralTest = tetrahedralTest(tInteger, R0, R1, fx, fy, fxyBit, level, delta);
 
@@ -157,11 +178,11 @@ public class InterpolationEvaluator {
                     int error = Math.abs(tetrahedralTest - tetrahedralStandard);
                     maxError = Math.max(maxError, error);
 //                    System.out.println(level + " " + linearValue + " " + tetrahedralStandard);
-                    if (linearValue != tetrahedralTest) {
-                        System.out.println(level + " " + linearValue + " " + tetrahedralTest + "*");
+                    if (linearValue != tetrahedralStandard) {
+//                        System.out.println(level + " " + linearValue + " " + tetrahedralTest + "*");
                         errorValueCount++;
                     } else {
-                        System.out.println(level + " " + linearValue + " " + tetrahedralTest);
+//                        System.out.println(level + " " + linearValue + " " + tetrahedralTest);
                     }
 //                    plot.addCacheScatterLinePlot("linear", Color.red, level, linearValue_25bit);
 //                    plot.addCacheScatterLinePlot("tetra", Color.green, level, tetrahedral25bit);
@@ -181,15 +202,19 @@ public class InterpolationEvaluator {
 //                    }
                     totalCount++;
                 }
+                System.out.println("minValue: " + minValue + " maxValue:" + maxValue);
 //                plot.setVisible();
             }
         }
         if (errorTCount != 0 || errorValueCount != 0) {
-            System.out.println("v: " + v + " h:" + h + " delta:" + delta);
-            System.out.println("errorT:" + errorTCount + " errorV:" + errorValueCount + " / " + totalCount + " (rate:" + ((double) errorValueCount) / totalCount + ") " + maxError);
+            System.out.print("v: " + v + " h:" + h + " delta:" + delta);
+            System.out.println("==> errT:" + errorTCount + " errV:" + errorValueCount + " / " + totalCount + " (rate:" + ((double) errorValueCount) / totalCount + ") " + maxError);
             return false;
+        } else {
+            System.out.println("v: " + v + " h:" + h + " delta:" + delta);
+            return true;
         }
-        return true;
+//        return true;
     }
 
     static double tetrahedral(int tetradedralIndex, short[] R0, short[] R1, double fx, double fy, double fz) {
@@ -299,20 +324,13 @@ public class InterpolationEvaluator {
         int tetrahedralValue_25bit = (int) ((((R0[0] * Math.pow(2, 4)) + c[0] * fx + c[1] * fy) * Math.pow(2, 12)) * Math.pow(2, coefbit - 16)) + z;
 
         int part0_12 = ((int) (R0[0] * Math.pow(2, 4)) + c[0] * fx + c[1] * fy);
-//        int part0_10 = ((int) (R0[0] * Math.pow(2, 4)) + c[0] * fx + c[1] * fy);
-//        int t0 = (int) (z / Math.pow(2, 16) + part0_12 / 8);
-//        int result = (int) (t0 / Math.pow(2, 1));
         int z10 = (int) (z / Math.pow(2, 15));
         int R0_10bit = (int) (R0[0] * Math.pow(2, 2));
         int fxy_10bit = (int) ((c[0] * fx + c[1] * fy) / Math.pow(2, 2));
-//        int t0 = (int) (z10 + part0_12 / Math.pow(2, 2));
         int t0_10bit = (int) (z10 + R0_10bit + fxy_10bit);
         int t0_10bit_2 = (int) (z10 + fxy_10bit);
-//        t0_10bit_2 = (t0_10bit_2 < 0) ? t0_10bit_2 + 1 : t0_10bit_2;
-//        int t0_9bit = t0_10bit_2 / 2 + R0[0] * 2;
 
         int result = (int) ((t0_10bit_2 + R0_10bit) / 4);
-//        int result = (int) (t0_9bit / 2);
         return (short) result;
     }
 
@@ -373,9 +391,12 @@ public class InterpolationEvaluator {
         // linearValue=linearValue
         //===========================================================================
         short linearValue = (short) (((delta - level) * c0 + level * c1) * (coef * 2 + 1) / Math.pow(2, 17)); //8bit
+        short linearValue_modified = (short) ((c0 * delta + (c1 - c0) * level) * (coef * 2 + 1) / Math.pow(2, 17));//8bit
+
         int linearValue_25bit = (((delta - level) * c0 + level * c1) * (coef * 2 + 1)); //8bit
         short linearValue_9bit = (short) (((delta - level) * c0 + level * c1) * (coef * 2 + 1) / Math.pow(2, 16)); //8bit
-        short linearValue_modified = (short) ((c0 * delta + (c1 - c0) * level) * (coef * 2 + 1) / Math.pow(2, 17));//8bit
+
+
 
         int linearValueWiki_part2 = (c1 - c0) * level * coef;
         int linearValueWiki_part2_minus16bit = (int) ((c1 - c0) * level * coef / Math.pow(2, 16));
@@ -409,34 +430,34 @@ public class InterpolationEvaluator {
         switch (tetradedralIndex) {
             case 1:
                 return new short[]{
-                            (short) (p(1, 0, R0) - p(0, 0, R0)),
-                            (short) (p(1, 1, R0) - p(1, 0, R0)),
-                            (short) (p(1, 1, R1) - p(1, 1, R0))};
+                    (short) (p(1, 0, R0) - p(0, 0, R0)),
+                    (short) (p(1, 1, R0) - p(1, 0, R0)),
+                    (short) (p(1, 1, R1) - p(1, 1, R0))};
             case 2:
                 return new short[]{
-                            (short) (p(1, 0, R0) - p(0, 0, R0)),
-                            (short) (p(1, 1, R1) - p(1, 0, R1)),
-                            (short) (p(1, 0, R1) - p(1, 0, R0))};
+                    (short) (p(1, 0, R0) - p(0, 0, R0)),
+                    (short) (p(1, 1, R1) - p(1, 0, R1)),
+                    (short) (p(1, 0, R1) - p(1, 0, R0))};
             case 3:
                 return new short[]{
-                            (short) (p(1, 0, R1) - p(0, 0, R1)),
-                            (short) (p(1, 1, R1) - p(1, 0, R1)),
-                            (short) (p(0, 0, R1) - p(0, 0, R0))};
+                    (short) (p(1, 0, R1) - p(0, 0, R1)),
+                    (short) (p(1, 1, R1) - p(1, 0, R1)),
+                    (short) (p(0, 0, R1) - p(0, 0, R0))};
             case 4:
                 return new short[]{
-                            (short) (p(1, 1, R0) - p(0, 1, R0)),
-                            (short) (p(0, 1, R0) - p(0, 0, R0)),
-                            (short) (p(1, 1, R1) - p(1, 1, R0))};
+                    (short) (p(1, 1, R0) - p(0, 1, R0)),
+                    (short) (p(0, 1, R0) - p(0, 0, R0)),
+                    (short) (p(1, 1, R1) - p(1, 1, R0))};
             case 5:
                 return new short[]{
-                            (short) (p(1, 1, R1) - p(0, 1, R1)),
-                            (short) (p(0, 1, R0) - p(0, 0, R0)),
-                            (short) (p(0, 1, R1) - p(0, 1, R0))};
+                    (short) (p(1, 1, R1) - p(0, 1, R1)),
+                    (short) (p(0, 1, R0) - p(0, 0, R0)),
+                    (short) (p(0, 1, R1) - p(0, 1, R0))};
             case 6:
                 return new short[]{
-                            (short) (p(1, 1, R1) - p(0, 1, R1)),
-                            (short) (p(0, 1, R1) - p(0, 0, R1)),
-                            (short) (p(0, 0, R1) - p(0, 0, R0))};
+                    (short) (p(1, 1, R1) - p(0, 1, R1)),
+                    (short) (p(0, 1, R1) - p(0, 0, R1)),
+                    (short) (p(0, 0, R1) - p(0, 0, R0))};
 
         }
         return null;
@@ -453,6 +474,7 @@ public class InterpolationEvaluator {
     public static void main(String[] args) {
         //00,10,01,11
         short[] R0 = new short[]{-128, -128, -128, -128};
+//        short[] R0 = new short[]{127, 127, 127, 127};
         short[] R1 = new short[]{127, 127, 127, 127};
 
 
@@ -460,17 +482,7 @@ public class InterpolationEvaluator {
 //        short[] R0 = new short[]{-128, -126, -123, -119};
 //        short[] R1 = new short[]{121, 124, 126, 127};
 
-//        int a = -5 / 2;
-//        int b = -5 >> 1;
-//        int c = 5 >> 1;
-//        short[] R = new short[]{1, 2, 3, 4};
-//        getP(R, 0, 0);
-//        getP(R, 1, 0);
-//        getP(R, 0, 1);
-//        getP(R, 1, 1);
 
-//        short delta = 102;
-//        short v = 4, h = 16;
 
 
 
@@ -478,22 +490,29 @@ public class InterpolationEvaluator {
         short[][] vhs = {{4, 16}};
         short[] vhArray = {4, 8, 16};
 
+        int deltaStart = 17;
 //        int deltaStart = (int) Math.round(1023 * 0.05); //51
-        int deltaStart = 511;
-        int deltaEnd = 511;//(int) Math.round(1023 * 0.5);
-//        int deltaEnd = deltaStart;
+//        int deltaStart = 511;
+//        int deltaEnd = 511;//(int) Math.round(1023 * 0.5);
+//        int deltaEnd = (int) Math.round(1023 * 0.05); //51
+        int deltaEnd = deltaStart;
 
 //        for (short v : vhArray) {
 //            for (short h : vhArray) {
+        int errorDeltaCount = 0;
         for (short[] vh : vhs) {
             for (int delta = deltaStart; delta <= deltaEnd; delta++) {
 
-                evaluate(R0, R1, vh[0], vh[1], (short) delta);
+                if (!evaluate(R0, R1, vh[0], vh[1], (short) delta)) {
+                    errorDeltaCount++;
+                }
 //                    evaluate(R0, R1, v, h, (short) delta);
 
 
             }
         }
+
+        System.out.println("errDeltaCount: " + errorDeltaCount);
 //        }
 
 
