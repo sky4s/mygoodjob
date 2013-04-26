@@ -161,7 +161,7 @@ public class InterpolationEvaluator {
 //                    maxc0c1 = Math.max(maxc0c1, c0c1);
 
 //                    short linearValue = (short) (((delta - level) * c0 + level * c1) * (coef * 2) / Math.pow(2, 17));
-                    int linearValue_25bit = (((delta - level) * c0 + level * c1) * (coef * 2 + 1)); //8bit
+//                    int linearValue_25bit = (((delta - level) * c0 + level * c1) * (coef * 2 + 1)); //8bit
 
                     int fz = (int) ((level * Math.pow(2, fzBit)) / delta);
                     int tInteger = getTetrahedral(fx, fy, fxyBit, fz, fzBit);
@@ -176,43 +176,30 @@ public class InterpolationEvaluator {
 //                    short tetrahedralValue = tetrahedral(tInteger, R0, R1, fx, fy, fxyBit, (short) fz, fzBit);
 //                    short tetrahedralValue = tetrahedral(tInteger, R0, R1, fx, fy, fxyBit, level, coef);
 //                    int tetrahedral25bit = tetrahedral25bit(tInteger, R0, R1, fx, fy, fxyBit, level, coef);
-                    short tetrahedralStandard = tetrahedralStandard(tInteger, R0, R1, fx, fy, fxyBit, level, delta);
-                    short tetrahedralTest = tetrahedralTest(tInteger, R0, R1, fx, fy, fxyBit, level, delta);
-//                    short tetrahedralTest = tetrahedralStandard(tInteger, R0, R1, fx, fy, fxyBit, level, delta);
 
-                    int error = Math.abs(tetrahedralTest - linearValue);
+                    short tetrahedralStandard = tetrahedralStandard(tInteger, R0, R1, fx, fy, fxyBit, level, delta);
+//                    short tetrahedralTest = tetrahedralTest(tInteger, R0, R1, fx, fy, fxyBit, level, delta);
+
+
+                    short compareValue = tetrahedralStandard;
+
+                    int error = Math.abs(compareValue - linearValue);
                     maxError = Math.max(maxError, error);
-                    if (error > 1) {
-                        tetrahedralTest(tInteger, R0, R1, fx, fy, fxyBit, level, delta);
+                    if (error > 127) {
+////                        tetrahedralTest(tInteger, R0, R1, fx, fy, fxyBit, level, delta);
+                        tetrahedralStandard = tetrahedralStandard(tInteger, R0, R1, fx, fy, fxyBit, level, delta);
                     }
 //                    System.out.println(level + " " + linearValue + " " + tetrahedralStandard);
-                    if (linearValue != tetrahedralTest) {
+                    if (linearValue != compareValue) {
 //                        System.out.println(level + " " + linearValue + " " + tetrahedralTest + "*");
                         errorValueCount++;
                     } else {
 //                        System.out.println(level + " " + linearValue + " " + tetrahedralTest);
                     }
-//                    plot.addCacheScatterLinePlot("linear", Color.red, level, linearValue_25bit);
-//                    plot.addCacheScatterLinePlot("tetra", Color.green, level, tetrahedral25bit);
-//                    double dfx = ((double) x) / h;
-//                    double dfy = ((double) y) / v;
-//                    double dtetrahedralValue = tetrahedral(tInteger, R0, R1, dfx, dfy, dfz);
-//                    tetrahedralWithLinear(tInteger, R0, R1, fx, fy, fxyBit, level, coef, new short[]{c0, c1}, level, delta);
-//                    System.out.println(level + " " + linearValue + " " + tetrahedralValue);
-//                    System.out.println(linearValue);
 
-
-
-//                    if (tetrahedralValue != linearValue) {
-////                        System.out.println(level + " " + linearValue + " " + tetrahedralValue);
-//
-//                        errorValueCount++;
-//                    }
                     totalCount++;
                 }
-//                System.out.println("minValue: " + minValue + " maxValue:" + maxValue);
-//                System.out.println(delta + ": " + minc0c1 + " " + maxc0c1);
-//                plot.setVisible();
+
             }
         }
 
@@ -318,19 +305,55 @@ public class InterpolationEvaluator {
 
         int coefbit = 17;
 
-//        short coef = (short) Math.round((Math.pow(2, coefbit) ) / delta); //17-9=8
-        short coef = (short) ((Math.pow(2, coefbit)) / delta + 1); //17-9=8 X =>9bit
+        short coef = (short) ((Math.pow(2, coefbit)) / delta + 1);
         int z = c[2] * level * (coef);//8+9+9=25
-        z = z & 0x1FFFFFF; //25
+
+        minZ_S = Math.min(minZ_S, z);
+        maxZ_S = Math.max(maxZ_S, z);
+//        z = z & 0x1FFFFFF; //25
         //255 511 257
         //8 9 9
 
         // (8+4)  +12+1
-        int tetrahedralValue_25bit = (int) ((((R0[0] * Math.pow(2, 4)) + c[0] * fx + c[1] * fy) * Math.pow(2, 12)) * Math.pow(2, coefbit - 16)) + z;
+        int part00 = (int) ((R0[0] * Math.pow(2, 4)) + c[0] * fx + c[1] * fy);
+        minPart00_S = Math.min(minPart00_S, part00);
+        maxPart00_S = Math.max(maxPart00_S, part00);
+
+        int part0 = (int) ((part00 * Math.pow(2, 12)) * Math.pow(2, coefbit - 16));
+        minPart_S = Math.min(minPart_S, part0);
+        maxPart_S = Math.max(maxPart_S, part0);
+//        if (-48111616 == part0) {
+//            int a = 1;
+//        }
+
+        int tetrahedralValue_25bit = (int) part0 + z;
+        maxT_S = Math.max(maxT_S, tetrahedralValue_25bit);
+        minT_S = Math.min(minT_S, tetrahedralValue_25bit);
 //        int tetrahedralValue_25bit = tetrahedralValue_25bit * 2;
-        return (short) (tetrahedralValue_25bit / Math.pow(2, coefbit));
+        short result = (short) (tetrahedralValue_25bit / Math.pow(2, coefbit));;
+        maxR_S = Math.max(maxR_S, result);
+        minR_S = Math.min(minR_S, result);
+        return result;
     }
+    static int minPart00_S = 0;
+    static int maxPart00_S = 0;
+    static int minPart_S = 0;
+    static int maxPart_S = 0;
+    static int maxZ_S = 0;
+    static int minZ_S = 0;
+    static int maxT_S = 0;
+    static int minT_S = 0;
+    static int maxR_S = 0;
+    static int minR_S = 0;
     static int testbit = 25;
+    static int maxZ = 0;
+    static int minZ = 0;
+    static int maxc0fx = 0;
+    static int minc0fx = 0;
+    static int maxc0fxc1fy = 0;
+    static int minc0fxc1fy = 0;
+    static int maxPart0 = 0;
+    static int minPart0 = 0;
 
     static short tetrahedralTest(int tetradedralIndex, short[] R0, short[] R1, byte fxbit, byte fybit, int fxyBitnum, short level, short delta) {
         short[] c = getc123(tetradedralIndex, R0, R1);//8bit
@@ -342,16 +365,40 @@ public class InterpolationEvaluator {
 //        short coef = (short) Math.round((Math.pow(2, coefbit) ) / delta); //17-9=8
         short coef = (short) ((Math.pow(2, coefbit)) / delta + 1); //17-9=8 X =>9bit
         int z = c[2] * level * (coef);//8+9+9=25
-        int z25bit = z & 0x1FFFFFF; //25
-//        int z24bit = z25bit / 2;
-//        int z23bit = z24bit / 2;
-//        int z22bit = z23bit / 2;
+        int z25bit = z;
+        maxZ = Math.max(z, maxZ);
+        minZ = Math.min(z, minZ);
+//        if(z >0) {
+//            z25bit= z>16777215?16777215:z;
+//        }else {
+//            z25bit= z<(-16777215)?-16777215:z;
+//        }
+//        if( z25bit!=z) {
+//            int x=1;
+//        }
+//        int z25bit = z & 0x1FFFFFF; //25
+
+        //33554431
 
         int invcoef = (int) Math.pow(2, coefbit - 16);  //1bit
 //          int invcoef = 1;
-        int tetrahedralValue_25bit = (int) ((((R0[0] * Math.pow(2, 4)) + c[0] * fx + c[1] * fy) * Math.pow(2, 12)) * invcoef) + z25bit;
+//        int tetrahedralValue_25bit = (int) ((((R0[0] * Math.pow(2, 4)) + c[0] * fx + c[1] * fy) * Math.pow(2, 12)) * invcoef) + z25bit;
 
-        int part0_12 = ((int) (R0[0] * Math.pow(2, 4)) + c[0] * fx + c[1] * fy);
+        int c0fx = c[0] * fx;
+        int c1fy = c[1] * fy;
+        int c0fx_c1fy = c0fx + c1fy;
+
+        maxc0fx = Math.max(maxc0fx, c0fx);
+        minc0fx = Math.min(minc0fx, c0fx);
+
+        maxc0fxc1fy = Math.max(maxc0fxc1fy, c0fx_c1fy);
+        minc0fxc1fy = Math.min(minc0fxc1fy, c0fx_c1fy);
+
+        int part0_12 = ((int) (R0[0] * Math.pow(2, 4)) + c0fx_c1fy);
+
+        maxPart0 = Math.max(part0_12, maxPart0);
+        minPart0 = Math.min(part0_12, minPart0);
+
         int z10 = (int) (z / Math.pow(2, 15));
         int z12 = (int) (z / Math.pow(2, 13));
         int R0_10bit = (int) (R0[0] * Math.pow(2, 2));
@@ -360,17 +407,21 @@ public class InterpolationEvaluator {
         int t0_10bit_2 = (int) (z10 + fxy_10bit);
 
         //12+12+1 = 25
-        int test = ((int) (part0_12 * Math.pow(2, 12))) * invcoef + z25bit;
+//        int test = ((int) (part0_12 * Math.pow(2, 12))) * invcoef + z25bit;
 //    
         int dividebit = testbit - 25 + coefbit;
 
         int z12bit = z25bit / ((int) Math.pow(2, 13));
-        int partA = (int) (part0_12 * Math.pow(2, 12 - 25 + testbit));
+        int partA = (int) (part0_12 * Math.pow(2, 12 - 25 + testbit)); //+8
         int partB = (int) (z25bit / Math.pow(2, 25 - testbit));
         int testbitvalue = (partA * invcoef + partB);
 
+        int testbitvalueA = partA * invcoef;
+        short resultA = (short) (testbitvalueA / Math.pow(2, dividebit));
+
 //        int result = (int) ((t0_10bit_2 + R0_10bit) / 4);
-        return (short) (testbitvalue / Math.pow(2, dividebit));
+        short result = (short) (testbitvalue / Math.pow(2, dividebit));
+        return result;
 //            return (short) (tetrahedralValue_25bit / Math.pow(2, coefbit));
     }
 
@@ -460,13 +511,13 @@ public class InterpolationEvaluator {
     }
 
     static short p(int x, int y, short[] R) {
-        //00,10,01,11
+        //00,01,10,11
         int index = ((x != 0) ? 1 : 0) + ((y != 0) ? 2 : 0);
         return R[index];
     }
 
     static short[] getc123(int tetradedralIndex, short[] R0, short[] R1) {
-        //00,10,01,11
+        //00,01,10,11
         switch (tetradedralIndex) {
             case 1:
                 return new short[]{
@@ -512,7 +563,7 @@ public class InterpolationEvaluator {
     }
 
     public static void main(String[] args) {
-        //00,10,01,11
+        //00,01,10,11
 //        short[] R0 = new short[]{-128, -128, -128, -128};
 //        short[] R0 = new short[]{127, 127, 127, 127};
 //        short[] R1 = new short[]{127, 127, 127, 127};
@@ -520,6 +571,48 @@ public class InterpolationEvaluator {
 
         short[] R0 = new short[]{-128, 127, -128, 127};
         short[] R1 = new short[]{127, -128, 127, -128};
+
+//        short[] R0 = new short[]{-121, -4, 99, 115};
+//        short[] R1 = new short[]{128, 77, 61, -106};
+
+        process(R0, R1);
+
+
+//        short[] R0 = new short[]{-128, -126, -123, -119};
+//        short[] R1 = new short[]{121, 124, 126, 127};
+
+//        process(R0, R1);
+        short[] R = new short[8];
+
+        for (int test = 0; test < 0; test++) {
+
+            for (int x = 0; x < 8; x++) {
+                double d = Math.random() * 256 - 128;
+                int i = (int) Math.round(d);
+                R[x] = (short) i;
+            }
+            for (int x = 0; x < 4; x++) {
+                R0[x] = R[x];
+
+                R1[x] = R[x + 4];
+            }
+            int error = process(R0, R1);
+            if (error > 127) {
+                System.out.println(Arrays.toString(R0));
+                System.out.println(Arrays.toString(R1) + " error: " + error);
+            }
+        }
+    }
+
+    public static int process(short[] R0, short[] R1) {
+        //00,01,10,11
+//        short[] R0 = new short[]{-128, -128, -128, -128};
+//        short[] R0 = new short[]{127, 127, 127, 127};
+//        short[] R1 = new short[]{127, 127, 127, 127};
+//        short[] R1 = new short[]{-128, -128, -128, -128};
+
+//        short[] R0 = new short[]{-128, 127, -128, 127};
+//        short[] R1 = new short[]{127, -128, 127, -128};
 
 
 
@@ -535,21 +628,28 @@ public class InterpolationEvaluator {
         short[] vhArray = {4, 8, 16};
 
         int deltaStart = 17;
+//        int deltaStart = 510;
 //        int deltaStart = (int) Math.round(1023 * 0.05); //51
 //        int deltaStart = 511;
         int deltaEnd = 511;//(int) Math.round(1023 * 0.5);
 //        int deltaEnd = (int) Math.round(1023 * 0.05); //51
 //        int deltaEnd = deltaStart;
 
+//        int coefbit =17;
+//        for(int delta = deltaStart;delta<=deltaEnd;delta++){
+//             short coef = (short) ((Math.pow(2, coefbit)) / delta + 1); //13bit
+//             System.out.println(coef);
+//        }
+        int totalMaxError = 0;
 //        for (short v : vhArray) {
 //            for (short h : vhArray) {
-        for (int bit = 25; bit >= 8; bit--) {
+        for (int bit = 11; bit >= 11; bit--) {
 //             for (int bit = 12; bit >= 12; bit--) {
             testbit = bit;
             int errorCount = 0;
             int totalCount = 0;
             double totalRate = 0;
-            int totalMaxError = 0;
+
 
             for (short[] vh : vhs) {
                 for (int delta = deltaStart; delta <= deltaEnd; delta++) {
@@ -560,7 +660,7 @@ public class InterpolationEvaluator {
                     if (0 != rate) {
                         errorCount++;
                         totalRate += rate;
-                        System.out.println(delta + " " + rate + " " + maxError);
+//                        System.out.println(delta + " " + rate + " " + maxError);
                     } else {
 //                        System.out.println(delta + " 0");
                     }
@@ -570,14 +670,28 @@ public class InterpolationEvaluator {
 
                 }
             }
-            System.out.println(bit + " errorCount: " + errorCount + " " + "ave rate: " + (totalRate / errorCount));
-//            System.out.println("totalMaxError: "+totalMaxError);
-//            System.out.println();
+//            System.out.println(bit + " errorCount: " + errorCount + " " + "ave rate: " + (totalRate / errorCount));
+//            System.out.println("totalMaxError: " + totalMaxError);
+
+
         }
 
 
 //        }
+        boolean showStep = false;
+        if (showStep) {
+            System.out.println("Z: " + minZ + " " + maxZ); //-31447620 33552900 26bit
+            System.out.println("cofx: " + minc0fx + " " + maxc0fx); //-3825 3825 13bit
+            System.out.println("cofx*c1fy: " + minc0fxc1fy + " " + maxc0fxc1fy);//-3825 3825 13bit
+            System.out.println("part0: " + minPart0 + " " + maxPart0);//-5873 1777 14bit
 
+            System.out.println("Part00_S: " + minPart00_S + " " + maxPart00_S); //-a 1777  14bit
+            System.out.println("Part_S: " + minPart_S + " " + maxPart_S); //-48111616 14557184 27bit 25bit
+            System.out.println("Z_S: " + minZ_S + " " + maxZ_S); //-31447620 33552900 26bit
+            System.out.println("T_S: " + minT_S + " " + maxT_S); //-16890436 16775684 26bit
+            System.out.println("maxR_S: " + minR_S + " " + maxR_S); //-128 127 8bit
+        }
 
+        return totalMaxError;
     }
 }
