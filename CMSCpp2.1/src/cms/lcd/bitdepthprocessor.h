@@ -25,6 +25,7 @@ namespace cms {
 	    static const Dep::MaxValue & getOutputMaxValue(BitDepth bitDepth);
 	    static const int getFRCOnlyBit(BitDepth bitDepth);
 	    bool directGamma;
+            bool agingMdoe;
 
 	  public:
 	     bool is10BitDirectGamma();
@@ -81,6 +82,7 @@ namespace cms {
 	    const Dep::MaxValue & getOutputMaxValue();
 	    bool isDirectGamma();
 	    void setDirectGamma(bool directGamma);
+            void setAgingMode(bool directGamma);
 
 	    void setInBit(int inBit);
 	    void setLUTBit(int lutBit);

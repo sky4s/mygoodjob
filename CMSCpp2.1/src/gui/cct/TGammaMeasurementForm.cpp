@@ -104,6 +104,8 @@ bptr < cms::lcd::calibrate::MeasureCondition > TGammaMeasurementForm::getMeasure
     } else {
 	int start = this->Edit_StartLevelT->Text.ToInt();
 	int end = this->Edit_EndLevelT->Text.ToInt();
+        bool isAgingSource = MeasureWindow->isAgingSource();
+        bool is10BitInMeasurement = CheckBox_10BitInMeasurement->Checked;
 
 	if (RadioButton_TCONInputCustomPattern->Checked) {
 	    start = 0;
@@ -112,61 +114,71 @@ bptr < cms::lcd::calibrate::MeasureCondition > TGammaMeasurementForm::getMeasure
 
 	RGB_vector_ptr measureTable(new RGB_vector());
 
-	if (CheckBox_10BitInMeasurement->Checked) {
+	if (is10BitInMeasurement) {
+            if(!isAgingSource) {
+                int size = dgcodeTable->size();
+                double_vector_ptr *rgbDoubleVector = RGBVector::toRGBDoubleVector(dgcodeTable);
+                double_vector_ptr keys(new double_vector());
+                const MaxValue & lutBit = dgLutBitDepth->getLutMaxValue();
+                //double max = MaxValue::Real12Bit.max;
+                for (int x = 0; x < size; x++) {
+                    keys->push_back(x);
+                    //限制DG的最大值
+                    /*double r = (*rgbDoubleVector[0])[x];
+                       (*rgbDoubleVector[0])[x] = r > max ? max : r;
+                       double g = (*rgbDoubleVector[1])[x];
+                       (*rgbDoubleVector[1])[x] = g > max ? max : g;
+                       double b = (*rgbDoubleVector[2])[x];
+                       (*rgbDoubleVector[1])[x] = b > max ? max : b; */
+                }
+                Interpolation1DLUT rlut(keys, rgbDoubleVector[0]);
+                Interpolation1DLUT glut(keys, rgbDoubleVector[1]);
+                Interpolation1DLUT blut(keys, rgbDoubleVector[2]);
 
-	    int size = dgcodeTable->size();
-	    double_vector_ptr *rgbDoubleVector = RGBVector::toRGBDoubleVector(dgcodeTable);
-	    double_vector_ptr keys(new double_vector());
-	    const MaxValue & lutBit = dgLutBitDepth->getLutMaxValue();
-	    //double max = MaxValue::Real12Bit.max;
-	    for (int x = 0; x < size; x++) {
-		keys->push_back(x);
-		//限制DG的最大值
-		/*double r = (*rgbDoubleVector[0])[x];
-		   (*rgbDoubleVector[0])[x] = r > max ? max : r;
-		   double g = (*rgbDoubleVector[1])[x];
-		   (*rgbDoubleVector[1])[x] = g > max ? max : g;
-		   double b = (*rgbDoubleVector[2])[x];
-		   (*rgbDoubleVector[1])[x] = b > max ? max : b; */
-	    }
-	    Interpolation1DLUT rlut(keys, rgbDoubleVector[0]);
-	    Interpolation1DLUT glut(keys, rgbDoubleVector[1]);
-	    Interpolation1DLUT blut(keys, rgbDoubleVector[2]);
 
+                for (int x = start; x <= end; x++) {
+                    double key = x / 4.;
+                    RGB_ptr rgb(new RGBColor(lutBit));
 
-	    for (int x = start; x <= end; x++) {
-		double key = x / 4.;
-		RGB_ptr rgb(new RGBColor(lutBit));
-
-		rgb->R = rlut.getValue(key);
-		rgb->G = glut.getValue(key);
-		rgb->B = blut.getValue(key);
-		measureTable->push_back(rgb);
-	    }
+                    rgb->R = rlut.getValue(key);
+                    rgb->G = glut.getValue(key);
+                    rgb->B = blut.getValue(key);
+                    measureTable->push_back(rgb);
+                }
+            } else {
+	        for (int x = start; x <= end; x++) {
+                    RGB_ptr rgb = (*dgcodeTable)[x];
+                    measureTable->push_back(rgb);
+                }
+            }
 	} else {
-	    bool input10Bit = MaxValue::Int10Bit == dgLutBitDepth->getInputMaxValue();
-	    for (int x = start; x <= end; x++) {
-		RGB_ptr rgb = (*dgcodeTable)[x];
+            if(!isAgingSource) {
+                bool input10Bit = MaxValue::Int10Bit == dgLutBitDepth->getInputMaxValue();
+                for (int x = start; x <= end; x++) {
+                    RGB_ptr rgb = (*dgcodeTable)[x];
 
-		if (input10Bit && x == end) {
-		    RGB_ptr rgb0 = (*dgcodeTable)[x - 1];
+                    if (input10Bit && x == end) {
+                        RGB_ptr rgb0 = (*dgcodeTable)[x - 1];
 
-		    RGB_ptr rgbMeasure(new RGBColor(rgb0->getMaxValue()));
-		    rgbMeasure->R = (rgb->R - rgb0->R) / 4. * 3 + rgb0->R;
-		    rgbMeasure->G = (rgb->G - rgb0->G) / 4. * 3 + rgb0->G;
-		    rgbMeasure->B = (rgb->B - rgb0->B) / 4. * 3 + rgb0->B;
-		    measureTable->push_back(rgbMeasure);
-		} else {
-		    measureTable->push_back(rgb);
-		}
-
-
-
-	    }
+                        RGB_ptr rgbMeasure(new RGBColor(rgb0->getMaxValue()));
+                        rgbMeasure->R = (rgb->R - rgb0->R) / 4. * 3 + rgb0->R;
+                        rgbMeasure->G = (rgb->G - rgb0->G) / 4. * 3 + rgb0->G;
+                        rgbMeasure->B = (rgb->B - rgb0->B) / 4. * 3 + rgb0->B;
+                        measureTable->push_back(rgbMeasure);
+                    } else {
+                        measureTable->push_back(rgb);
+                    }
+                }
+            } else {
+	        for (int x = start; x <= end; x++) {      //要處理嗎? 不然有些筆數257
+                    RGB_ptr rgb = (*dgcodeTable)[x];
+                    measureTable->push_back(rgb);
+                }
+            }
 	}
 	measureTable = RGBVector::reverse(measureTable);
 
-	condition = bptr < MeasureCondition > (new MeasureCondition(measureTable, bitDepth));
+	condition = bptr < MeasureCondition > (new MeasureCondition(measureTable, bitDepth, is10BitInMeasurement));
     }
     return condition;
 };
@@ -263,6 +275,9 @@ void __fastcall TGammaMeasurementForm::FormShow(TObject * Sender)
 {
     bool directGamma = bitDepth->isDirectGamma() || MainForm->isInTCONSetup();
     this->Panel2->Visible = directGamma;
+    if(MeasureWindow->isAgingSource()) {
+        this->GroupBox5->Caption = "Aging Pattern Measurement (Aging Mode)";
+    }    
     setMeasureInfo();
     fetcher = MainForm->getComponentFetcher();
 

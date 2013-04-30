@@ -185,7 +185,7 @@ AutoIncBuild=1
 MajorVer=3
 MinorVer=6
 Release=1
-Build=60
+Build=62
 Debug=1
 PreRelease=1
 Special=0
@@ -197,7 +197,7 @@ CodePage=950
 [Version Info Keys]
 CompanyName=AUO
 FileDescription=CCT Adjustment v3
-FileVersion=3.6.1.60
+FileVersion=3.6.1.62
 InternalName=
 LegalCopyright=Algorithm by StocktonTsai &amp; RichardYCTsai(5626) &amp; skyforce(6123), Implement by skyforce
 LegalTrademarks=
@@ -207,11 +207,7 @@ ProductVersion=3.4
 Comments=
 
 [Excluded Packages]
-d:\program files\borland\cbuilder6\Bin\dclbde60.bpl=Borland BDE DB Components
-d:\program files\borland\cbuilder6\Bin\dcltee60.bpl=TeeChart Components
-d:\program files\borland\cbuilder6\Bin\dcldss60.bpl=Borland Decision Cube Components
-d:\program files\borland\cbuilder6\Bin\dcltqr60.bpl=TeeChart for QuickReport Components
-d:\program files\borland\cbuilder6\Bin\DBWEBXPRT.BPL=Borland Web Wizard Package
+c:\program files\borland\cbuilder6\Bin\dclite60.bpl=Borland Integrated Translation Environment
 
 [HistoryLists\hlIncludePath]
 Count=15
@@ -298,10 +294,5 @@ LinkCGLIB=0
 AddServerUnit=1
 AddClientUnit=1
 PrecompiledHeaders=1
-
-[Language]
-ActiveLang=
-ProjectLang=
-RootDir=
   </IDEOPTIONS>
 </PROJECT>

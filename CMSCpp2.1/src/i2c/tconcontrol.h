@@ -31,11 +31,15 @@ namespace i2c {
 	static bptr < cms::util::ByteBuffer > getRGBByteBufferWith12409Aging(int r, int g, int b,
 									     const DirectGammaType &
 									     directGammaType);
-
+	static bptr < cms::util::ByteBuffer > getRGBByteBufferWith12409(int r, int g, int b,
+								        const DirectGammaType &
+								        directGammaType);
 
 	bool setDirectGammaRGB(RGB_ptr rgb);
 	bool setDirectGammaRGB(int r, int g, int b);
+        bool setAgingModeRGB(int r, int g, int b);
 	void setGammaTest(bool enable);
+        void setAgingMode(bool enable);
 
 	const Dep::MaxValue & getLUTBit();
 	void setDGLut(RGB_vector_ptr rgbVector);
@@ -47,6 +51,7 @@ namespace i2c {
 	unsigned char readByte(int dataAddress);
 	void writeByte(int dataAddress, unsigned char data);
 	bool isGammaTestEnable();
+        bool isAgingModeEnable();
       private:
 
 	void write(int dataAddress, bptr < cms::util::ByteBuffer > data);
@@ -54,7 +59,8 @@ namespace i2c {
 	 bptr < cms::util::ByteBuffer > read(int dataAddress, int size, int tconIndex);
 	static int_array getLMHData(int data);
 
-	void setBitData(int dataAddress, unsigned char bit, bool data);
+	void setSingleBitData(int dataAddress, unsigned char bit, bool data);
+        void setBitData(int dataAddress, unsigned char Startbit, unsigned char Endbit, unsigned char data);
 	bool getBitData(int dataAddress, unsigned char bit);
       public:
 	static bptr < cms::util::ByteBuffer > getDGLut10BitByteBuffer(RGB_vector_ptr rgbVector);

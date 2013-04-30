@@ -1,7 +1,7 @@
 object MainForm: TMainForm
-  Left = 274
-  Top = 245
-  Width = 748
+  Left = 222
+  Top = 187
+  Width = 895
   Height = 489
   Caption = 'CCT Adjustment '
   Color = clBtnFace
@@ -835,7 +835,7 @@ object MainForm: TMainForm
   object PageControl1: TPageControl
     Left = 7
     Top = 13
-    Width = 546
+    Width = 706
     Height = 348
     ActivePage = TabSheet2
     TabIndex = 1
@@ -847,7 +847,7 @@ object MainForm: TMainForm
         Left = 1
         Top = 7
         Width = 193
-        Height = 106
+        Height = 130
         Caption = 'Input Source'
         TabOrder = 0
         object RadioButton_PC: TRadioButton
@@ -861,7 +861,7 @@ object MainForm: TMainForm
           TabStop = True
           OnClick = RadioButton_PCClick
         end
-        object RadioButton_TCON: TRadioButton
+        object RadioButton_TCON_directGamma: TRadioButton
           Left = 7
           Top = 40
           Width = 130
@@ -872,11 +872,11 @@ object MainForm: TMainForm
           ParentShowHint = False
           ShowHint = True
           TabOrder = 1
-          OnClick = RadioButton_TCONClick
+          OnClick = RadioButton_TCON_directGammaClick
         end
         object RadioButton_PCTCON_NB: TRadioButton
           Left = 7
-          Top = 80
+          Top = 104
           Width = 178
           Height = 19
           Hint = 'For De-Hook with NB panel use'
@@ -889,7 +889,7 @@ object MainForm: TMainForm
         end
         object RadioButton_PCTCON_TV: TRadioButton
           Left = 7
-          Top = 60
+          Top = 84
           Width = 178
           Height = 19
           Hint = 'For feedback with no "Direct Gamma" use'
@@ -899,6 +899,15 @@ object MainForm: TMainForm
           TabOrder = 3
           Visible = False
           OnClick = RadioButton_PCTCON_TVClick
+        end
+        object RadioButton_TCON_aging: TRadioButton
+          Left = 7
+          Top = 64
+          Width = 122
+          Height = 17
+          Caption = 'T-CON (Aging mode)'
+          TabOrder = 4
+          OnClick = RadioButton_TCON_agingClick
         end
       end
       object GroupBox_CHSetting: TGroupBox
@@ -1247,7 +1256,7 @@ object MainForm: TMainForm
         object GroupBox7: TGroupBox
           Left = 216
           Top = 7
-          Width = 313
+          Width = 473
           Height = 306
           Caption = 'TCON Type'
           TabOrder = 3
@@ -1298,9 +1307,9 @@ object MainForm: TMainForm
                 Text = '28'
               end
               object Edit_DGEnableBit: TEdit
-                Left = 52
+                Left = 80
                 Top = 39
-                Width = 66
+                Width = 38
                 Height = 21
                 ImeName = #26085#25991#36664#20837#31995#32113' (MS-IME2002)'
                 TabOrder = 1
@@ -1357,7 +1366,7 @@ object MainForm: TMainForm
             Left = 152
             Top = 40
             Width = 153
-            Height = 251
+            Height = 257
             Caption = 'Gamma Test'
             TabOrder = 3
             object GroupBox5: TGroupBox
@@ -1422,16 +1431,16 @@ object MainForm: TMainForm
                 Caption = 'Type'
               end
               object Edit_DirectGammaAddress: TEdit
-                Left = 75
+                Left = 88
                 Top = 20
-                Width = 46
+                Width = 38
                 Height = 21
                 ImeName = #26085#25991#36664#20837#31995#32113' (MS-IME2002)'
                 TabOrder = 0
                 Text = '154'
               end
               object ComboBox_DirectGammaType: TComboBox
-                Left = 37
+                Left = 45
                 Top = 44
                 Width = 84
                 Height = 21
@@ -1441,16 +1450,16 @@ object MainForm: TMainForm
                 Items.Strings = (
                   '12401Type'
                   '12403Type'
-                  '12409Aging'
                   '62301Type'
-                  '1H501Type')
+                  '1H501Type'
+                  '12409Type')
               end
             end
             object GroupBox_HideEN: TGroupBox
               Left = 7
               Top = 157
               Width = 138
-              Height = 84
+              Height = 92
               TabOrder = 2
               Visible = False
               object Label8: TLabel
@@ -1556,6 +1565,177 @@ object MainForm: TMainForm
             TabOrder = 1
             OnClick = CheckBox_DirectGammaClick
           end
+          object GroupBox_AgingMode: TGroupBox
+            Left = 312
+            Top = 40
+            Width = 153
+            Height = 257
+            Caption = 'Aging Mode'
+            TabOrder = 5
+            object GroupBox_AgingModeSel: TGroupBox
+              Left = 8
+              Top = 13
+              Width = 138
+              Height = 66
+              Caption = 'MODE_SEL'
+              TabOrder = 0
+              object Label18: TLabel
+                Left = 8
+                Top = 16
+                Width = 64
+                Height = 13
+                Caption = 'Address (hex)'
+              end
+              object Label19: TLabel
+                Left = 8
+                Top = 40
+                Width = 12
+                Height = 13
+                Caption = 'Bit'
+              end
+              object Edit_AgingModeSelectAddress: TEdit
+                Left = 88
+                Top = 13
+                Width = 38
+                Height = 21
+                TabOrder = 0
+                Text = '40'
+              end
+              object Edit_AgingModeSelectBit: TEdit
+                Left = 88
+                Top = 39
+                Width = 38
+                Height = 21
+                TabOrder = 1
+                Text = '5'
+              end
+            end
+            object GroupBox_AgingPatternSel: TGroupBox
+              Left = 9
+              Top = 80
+              Width = 138
+              Height = 97
+              Caption = 'PTN_SEL'
+              TabOrder = 1
+              object Label20: TLabel
+                Left = 8
+                Top = 16
+                Width = 64
+                Height = 13
+                Caption = 'Address (hex)'
+              end
+              object Label23: TLabel
+                Left = 8
+                Top = 72
+                Width = 12
+                Height = 13
+                Caption = 'Bit'
+              end
+              object Label25: TLabel
+                Left = 72
+                Top = 72
+                Width = 7
+                Height = 13
+                Caption = '~'
+              end
+              object Label26: TLabel
+                Left = 8
+                Top = 40
+                Width = 54
+                Height = 13
+                Caption = 'Value (dec)'
+              end
+              object Edit_AgingPatternSelectAddress: TEdit
+                Left = 88
+                Top = 14
+                Width = 38
+                Height = 21
+                TabOrder = 0
+                Text = '40'
+              end
+              object Edit_AgingPatternSelectStartBit: TEdit
+                Left = 26
+                Top = 66
+                Width = 39
+                Height = 21
+                TabOrder = 1
+                Text = '0'
+              end
+              object Edit_AgingPatternSelectEndBit: TEdit
+                Left = 88
+                Top = 66
+                Width = 38
+                Height = 21
+                TabOrder = 2
+                Text = '4'
+              end
+              object Edit_AgingPatternSelectValue: TEdit
+                Left = 88
+                Top = 40
+                Width = 38
+                Height = 21
+                TabOrder = 3
+                Text = '16'
+              end
+            end
+            object GroupBox_AgingRasterGray: TGroupBox
+              Left = 8
+              Top = 184
+              Width = 138
+              Height = 65
+              Caption = 'RASTER_GRAY'
+              TabOrder = 2
+              object Label22: TLabel
+                Left = 8
+                Top = 40
+                Width = 24
+                Height = 13
+                Caption = 'Type'
+              end
+              object Label24: TLabel
+                Left = 8
+                Top = 16
+                Width = 64
+                Height = 13
+                Caption = 'Address (hex)'
+              end
+              object ComboBox_AgingType: TComboBox
+                Left = 48
+                Top = 40
+                Width = 84
+                Height = 21
+                ItemHeight = 13
+                TabOrder = 0
+                Text = '12409Aging'
+                Items.Strings = (
+                  '12401Type'
+                  '12403Type'
+                  '62301Type'
+                  '1H501Type'
+                  '12409Type'
+                  '12409Aging')
+              end
+              object Edit_AgingRasterGrayAddress: TEdit
+                Left = 88
+                Top = 16
+                Width = 38
+                Height = 21
+                TabOrder = 1
+                Text = '41'
+              end
+            end
+          end
+          object CheckBox_AgingMode: TCheckBox
+            Left = 392
+            Top = 40
+            Width = 49
+            Height = 17
+            Caption = 'Aging'
+            Checked = True
+            State = cbChecked
+            TabOrder = 6
+            OnClick = CheckBox_AgingModeClick
+          end
         end
         object GroupBox_USBSetting: TGroupBox
           Left = 2
@@ -1618,8 +1798,8 @@ object MainForm: TMainForm
   end
   object StatusBar1: TStatusBar
     Left = 0
-    Top = 414
-    Width = 740
+    Top = 416
+    Width = 887
     Height = 19
     Color = clWhite
     Panels = <
@@ -1637,8 +1817,8 @@ object MainForm: TMainForm
     SimplePanel = False
   end
   object GroupBox_BitDepth: TGroupBox
-    Left = 562
-    Top = 39
+    Left = 714
+    Top = 31
     Width = 163
     Height = 202
     Caption = 'T-CON Bit Depth'

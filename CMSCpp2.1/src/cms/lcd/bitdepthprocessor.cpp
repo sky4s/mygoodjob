@@ -240,6 +240,10 @@ namespace cms {
 	    this->directGamma = directGamma;
 	};
 
+	void BitDepthProcessor::setAgingMode(bool agingMdoe) {
+	    this->directGamma = agingMdoe;   //方式同directGamma，直接設置?  byBS+
+	};
+
 	void BitDepthProcessor::setInBit(int inBit) {
 	    in = &MaxValue::getByIntegerBit(inBit);
 	    bitDepth = getBitDepth(*in, *out);
