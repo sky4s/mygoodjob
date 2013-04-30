@@ -57,10 +57,39 @@ namespace i2c {
 
 	return data;
     };
+    bptr < cms::util::ByteBuffer > TCONControl::getRGBByteBufferWith12409(int r, int g, int b,
+								          const DirectGammaType
+								          & directGammaType) {
+        //12409   |RH |RLGH |GL|BH |BL|
+        //         8    4,4  8   8  4
+	int rLow = r & 15;
+	int rHigh = (r >> 4) & 255;
+	int gLow = g & 255;
+	int gHigh = (g >> 8) & 15;
+	int bLow = b & 15;
+	int bHigh = (b >> 4) & 255;
 
+	int totalByte = directGammaType.totalByte;
+	bptr < ByteBuffer > data(new ByteBuffer(totalByte));
+	//先清空buffer
+	for (int x = 0; x < totalByte; x++) {
+	    (*data)[x] = 0;
+	}
+
+	(*data)[0] = rHigh; //RH
+	(*data)[1] = rLow << 4 | gHigh;
+	(*data)[2] = gLow ;
+	(*data)[3] = bHigh;
+        (*data)[4] = bLow << 4;
+
+	return data;
+
+    };
     bptr < cms::util::ByteBuffer > TCONControl::getRGBByteBufferWith12409Aging(int r, int g, int b,
 									       const DirectGammaType
 									       & directGammaType) {
+        //12409 Aging |RHRL1|RL2GHGL1|GL2BHBL1|BL2
+        //              2,6   2,2,4    4,2,2    6
 	int rLow = r & 3;
 	int rHigh = (r >> 2) & 255;
 	int gLow = g & 15;
@@ -78,8 +107,8 @@ namespace i2c {
 	// rLow(2)|gHigh(6)
 	// gLow(4)|bHigh(4)
 	// bLow(6)|(2)
-	(*data)[0] = rHigh;
-	(*data)[1] = rLow << 6 | gHigh;
+	(*data)[0] = rHigh; //RH+RL1
+	(*data)[1] = rLow << 6 | gHigh; //RL2 GH GL1
 	(*data)[2] = gLow << 4 | bHigh;
 	(*data)[3] = bLow << 2;
 
@@ -91,7 +120,9 @@ namespace i2c {
 	    return getRGBByteBufferWith62301(r, g, b, directGammaType);
 	} else if (DirectGammaType::TCON12409AgingInstance == directGammaType) {
 	    return getRGBByteBufferWith12409Aging(r, g, b, directGammaType);
-	}
+	} else if (DirectGammaType::TCON12409Instance == directGammaType) {
+	    return getRGBByteBufferWith12409(r, g, b, directGammaType);
+        }
 
 	int patternBit = directGammaType.patternBit;
 	int highMask = (12 == patternBit) ? 15 : 3;
@@ -169,14 +200,26 @@ namespace i2c {
 	}
     };
 
+    bool TCONControl::setAgingModeRGB(int r, int g, int b) {
+
+    };
+
     void TCONControl::setGammaTest(bool enable) {
 	if (enable && parameter->isHideEnable()) {
-	    setBitData(parameter->hideENAddress, parameter->hideENBit, enable);
+	    setSingleBitData(parameter->hideENAddress, parameter->hideENBit, enable);
 	}
-	setBitData(parameter->gammaTestAddress, parameter->gammaTestBit, enable);
+	setSingleBitData(parameter->gammaTestAddress, parameter->gammaTestBit, enable);
 	if (!enable && parameter->isHideEnable()) {
-	    setBitData(parameter->hideENAddress, parameter->hideENBit, enable);
+	    setSingleBitData(parameter->hideENAddress, parameter->hideENBit, enable);
 	}
+    };
+
+    void TCONControl::setAgingMode(bool enable) {
+        //1. AG_PTN_SEL
+        //2. AG_MODE_SEL
+        setBitData(parameter->agingPatternSelectAddress, parameter->agingPatternSelectStartBit,
+                   parameter->agingPatternSelectEndBit, parameter->agingPatternSelectValue);
+        setSingleBitData(parameter->agingModeSelectAddress, parameter->agingModeSelectBit, enable);
     };
 
     unsigned char TCONControl::readByte(int dataAddress) {
@@ -190,6 +233,9 @@ namespace i2c {
     };
     bool TCONControl::isGammaTestEnable() {
 	return parameter->isGammaTestEnable();
+    };
+    bool TCONControl::isAgingModeEnable() {
+	return parameter->isAgingModeEnable();
     };
 
     void TCONControl::write(int dataAddress, bptr < ByteBuffer > data) {
@@ -344,18 +390,18 @@ namespace i2c {
 	return result;
     }
     void TCONControl::setDG(bool enable) {
-	setBitData(parameter->DGAddress, parameter->DGBit, enable);
+	setSingleBitData(parameter->DGAddress, parameter->DGBit, enable);
     };
     bool TCONControl::isDG() {
 	return getBitData(parameter->DGAddress, parameter->DGBit);
     };
     void TCONControl::setFRC(bool enable) {
-	setBitData(parameter->FRCAddress, parameter->FRCBit, enable);
+	setSingleBitData(parameter->FRCAddress, parameter->FRCBit, enable);
     };
     bool TCONControl::isFRC() {
 	return getBitData(parameter->FRCAddress, parameter->FRCBit);
     };
-    void TCONControl::setBitData(int dataAddress, unsigned char bit, bool data) {
+    void TCONControl::setSingleBitData(int dataAddress, unsigned char bit, bool data) {
 	unsigned char bytedata = readByte(dataAddress);
 	//製作遮罩
 	unsigned char mask = ~(1 << bit);
@@ -363,6 +409,20 @@ namespace i2c {
 	bytedata = bytedata & mask;
 	//產生要填的data
 	bytedata = bytedata | data << bit;
+	writeByte(dataAddress, bytedata);
+    };
+                                 //1.EEPROM位址  2.開始bit  3.結束bit  4. 寫入值
+    void TCONControl::setBitData(int dataAddress, unsigned char Startbit,
+                                 unsigned char Endbit, unsigned char data) {
+	unsigned char bytedata = readByte(dataAddress);
+        unsigned char bitlength = (Endbit-Startbit+1);
+
+	//製作遮罩
+	unsigned char mask = 255 &  ~ (((1 << bitlength )-1)  << Startbit);
+	//挖掉要填的位元
+	bytedata = bytedata & mask;
+	//產生要填的data
+	bytedata = bytedata | data << Startbit;
 	writeByte(dataAddress, bytedata);
     };
 

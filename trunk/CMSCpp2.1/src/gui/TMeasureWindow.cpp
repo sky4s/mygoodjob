@@ -39,9 +39,10 @@ void __fastcall TMeasureWindow::FormKeyPress(TObject * Sender, char &Key)
 {
     switch (Key) {
     case 27:			//esc
-	if (TCON == source) {
+	if (DIRECT_GAMMA == source) {
 	    tconcontrol->setGammaTest(false);
 	}
+
 	this->Visible = false;
 	//=====================================================================
 	// 這個部份應該改用listener pattern會較好, 但是實際上也就只有這兩個視窗會呼叫到
@@ -82,9 +83,9 @@ void TMeasureWindow::setRGB(int r, int g, int b)
 
 
 
-    if (TCON == source) {
+    if (DIRECT_GAMMA == source) {
 	//=========================================================================
-	// tcon-input
+	// tcon-input (Direct Gamma)
 	//=========================================================================
 	if (tconcontrol->isGammaTestEnable()) {
 	    bool result = tconcontrol->setDirectGammaRGB(r, g, b);
@@ -95,6 +96,18 @@ void TMeasureWindow::setRGB(int r, int g, int b)
 	    throw java::lang::UnsupportedOperationException("");
 	}
 	//=========================================================================
+    } else if (AGING == source) {
+	//=========================================================================
+	// tcon-input (Aging mode)
+	//=========================================================================
+	if (tconcontrol->isAgingModeEnable()) {
+	    bool result = tconcontrol->setAgingModeRGB(r, g, b);
+	    if (false == result) {
+		ShowMessage("Set Aging Mode failed!");
+	    }
+	} else {
+	    throw java::lang::UnsupportedOperationException("");
+	}
     } else if (DGLUT == source) {
 	//=========================================================================
 	// dglut-input
@@ -295,14 +308,14 @@ void TMeasureWindow::setRGB(bptr < Dep::RGBColor > rgb)
 {
     double_array values(new double[3]);
     using namespace Dep;
-    if ((TCON == source || DGLUT == source) && null == bitDepth) {
+    if ((DIRECT_GAMMA == source || AGING == source || DGLUT == source) && null == bitDepth) {
 	ShowMessage("State of TMeasureWindow is wrong!");
 	return;
     }
 
-    const MaxValue & maxValue = (TCON == source || DGLUT == source) ?
+    const MaxValue & maxValue = (DIRECT_GAMMA == source || AGING == source || DGLUT == source) ?
 	bitDepth->getLutMaxValue() : MaxValue::Int8Bit;
-    /*(TCON == source) ? MaxValue::Int12Bit :
+    /*(DIRECT_GAMMA == source) ? MaxValue::Int12Bit :
        ((DGLUT == source) ? bitDepth->getLutMaxValue() : MaxValue::Int8Bit); */
     rgb->getValues(values, maxValue);
 
@@ -333,7 +346,14 @@ void TMeasureWindow::setDirectGamma(bptr < i2c::TCONControl > tconcontrol,
 				  bptr < cms::lcd::BitDepthProcessor > bitDepth)
 {
     this->tconcontrol = tconcontrol;
-    source = TCON;
+    source = DIRECT_GAMMA;
+    this->bitDepth = bitDepth;
+};
+void TMeasureWindow::setAgingMode(bptr < i2c::TCONControl > tconcontrol,
+				  bptr < cms::lcd::BitDepthProcessor > bitDepth)
+{
+    this->tconcontrol = tconcontrol;
+    source = AGING;
     this->bitDepth = bitDepth;
 };
 void TMeasureWindow::setDGLUTInput(bptr < i2c::TCONControl > tconcontrol,
@@ -351,10 +371,24 @@ void TMeasureWindow::setTCONControlOff()
 };
 
 //---------------------------------------------------------------------------
+void TMeasureWindow::setAgingEnable(RGB_vector_ptr rgbMeasureCodeVector)       //for AgingMode byBS+
+{
+    tconcontrol->setDG(false);
+    tconcontrol->setDGLut(rgbMeasureCodeVector);
+    tconcontrol->setDG(true);
+};
+
+//---------------------------------------------------------------------------
+bool TMeasureWindow::isAgingSource()       //for AgingMode byBS+
+{
+    return (source == AGING) ? 1 : 0;
+};
+
+//---------------------------------------------------------------------------
 void TMeasureWindow::setVisible(bool visible)
 {
 #ifdef DEBUG_STOP_DIRECTGAMMA
-    if (TCON == source) {
+    if (DIRECT_GAMMA == source) {
 	tconcontrol->setGammaTest(visible);
     }
     this->Visible = visible;
@@ -362,8 +396,10 @@ void TMeasureWindow::setVisible(bool visible)
 	this->BringToFront();
     }
 #else
-    if (TCON == source) {
+    if (DIRECT_GAMMA == source) {
 	tconcontrol->setGammaTest(visible);
+    } else if (AGING == source){
+        tconcontrol->setAgingMode(visible);
     } else {
 	this->Visible = visible;
 	if (visible) {

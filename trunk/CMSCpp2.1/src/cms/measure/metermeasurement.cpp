@@ -276,20 +276,55 @@ namespace cms {
 	Patch_vector_ptr MeasureTool::rampMeasure(bptr < cms::lcd::calibrate::MeasureCondition >
 						  measureCondition) {
 	    RGB_vector_ptr rgbMeasureCode = measureCondition->getRGBMeasureCode();
+            bool is10BitInMeasurement = measureCondition->get10BitInMeasurement();
 	    if (inverseMeasure) {
 		rgbMeasureCode = RGBVector::reverse(rgbMeasureCode);
 	    }
 
-	    Patch_vector_ptr vector(new Patch_vector());
-	    foreach(RGB_ptr rgb, *rgbMeasureCode) {
-		Patch_ptr patch = mm->measure(rgb, rgb->toString());
-		vector->push_back(patch);
-		if (true == stop) {
-		    stop = false;
-		    mm->setMeasureWindowsVisible(false);
-		    return nil_Patch_vector_ptr;
-		}
-	    };
+            Patch_vector_ptr vector(new Patch_vector());
+
+            //for AgingMode byBS+
+            if(isAgingMode()) {
+                if(true) {
+                    MeasureWindow->setAgingEnable(rgbMeasureCode);     //TCON¼g¤JDG LUT¡A¨Ã¶}±ÒDG
+                }
+
+                if(is10BitInMeasurement){
+                    for (int x = 0; x < 1024; x++) {               //¶¶§Ç?
+		        RGB_ptr rgb(new RGBColor(x, x, x));
+                        Patch_ptr patch = mm->measure(rgb, rgb->toString());
+                        vector->push_back(patch);
+                        if (true == stop) {
+                            stop = false;
+                            mm->setMeasureWindowsVisible(false);
+                            return nil_Patch_vector_ptr;
+                        }
+                    }
+                } else {
+                    for (int x = 0; x < 1024; x+=4) {
+		        RGB_ptr rgb(new RGBColor(x, x, x));
+                        Patch_ptr patch = mm->measure(rgb, rgb->toString());
+                        vector->push_back(patch);
+                        if (true == stop) {
+                            stop = false;
+                            mm->setMeasureWindowsVisible(false);
+                            return nil_Patch_vector_ptr;
+                        }
+                    }
+                }
+            } else {
+                //Patch_vector_ptr vector(new Patch_vector());
+                foreach(RGB_ptr rgb, *rgbMeasureCode) {
+                    Patch_ptr patch = mm->measure(rgb, rgb->toString());
+                    vector->push_back(patch);
+                    if (true == stop) {
+                        stop = false;
+                        mm->setMeasureWindowsVisible(false);
+                        return nil_Patch_vector_ptr;
+                    }
+                };
+            }
+
 	    mm->setMeasureWindowsVisible(false);
 	    if (inverseMeasure) {
 		vector = Patch::reverse(vector);
@@ -313,6 +348,9 @@ namespace cms {
 	    mm->setMeasureWindowsVisible(false);
 	    return vector;
 	};
+        bool MeasureTool::isAgingMode() {
+            return MeasureWindow->isAgingSource();
+        }
 	void MeasureTool::windowClosing(TObject * Sender, TCloseAction & Action) {
 	    stop = true;
 	}

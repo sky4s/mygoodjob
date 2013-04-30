@@ -76,8 +76,16 @@ namespace cms {
 
 	    };
 
+	  MeasureCondition::MeasureCondition(RGB_vector_ptr rgbMeasureCode,
+                                             bptr < cms::lcd::BitDepthProcessor > bitDepth,
+                                             const bool Enable10BitInMeasurement):type(Normal), remapping(false), bitDepth(bitDepth), rgbMeasureCode(rgbMeasureCode), Enable10BitInMeasurement(Enable10BitInMeasurement)
+	    {
+
+	    };
+
+
 	    MeasureCondition::
-		MeasureCondition(RGB_vector_ptr rgbMeasureCode,
+		MeasureCondition(RGB_vector_ptr rgbMeasureCode ,
 				 const int start, const int end):type(Normal) {
 		RGB_vector_ptr result(new RGB_vector());
 		for (int x = start; x <= end; x++) {
@@ -93,7 +101,10 @@ namespace cms {
 		    return rgbMeasureCode;
 		}
 	    }
-
+            //for AgingMode byBS+ ¶·½T»{
+            bool MeasureCondition::get10BitInMeasurement() {
+                return Enable10BitInMeasurement;
+            }
 
 	    int_vector_ptr MeasureCondition::
 		getMeasureCode(const int start, const int end,

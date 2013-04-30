@@ -62,7 +62,7 @@ class TMainForm:public TForm {
     TEdit *Edit_DirectGammaAddress;
     TGroupBox *GroupBox2;
     TRadioButton *RadioButton_PC;
-    TRadioButton *RadioButton_TCON;
+        TRadioButton *RadioButton_TCON_directGamma;
     TGroupBox *GroupBox1;
     TLabel *Label1;
     TEdit *Edit_Interval;
@@ -142,13 +142,35 @@ class TMainForm:public TForm {
     TCheckBox *CheckBox_HideEN;
     TGroupBox *GroupBox4;
     TButton *Button_PatternTest;
+        TRadioButton *RadioButton_TCON_aging;
+        TGroupBox *GroupBox_AgingMode;
+        TGroupBox *GroupBox_AgingModeSel;
+        TGroupBox *GroupBox_AgingPatternSel;
+        TLabel *Label18;
+        TLabel *Label19;
+        TLabel *Label20;
+        TLabel *Label22;
+        TEdit *Edit_AgingModeSelectAddress;
+        TEdit *Edit_AgingModeSelectBit;
+        TEdit *Edit_AgingPatternSelectAddress;
+        TComboBox *ComboBox_AgingType;
+        TGroupBox *GroupBox_AgingRasterGray;
+        TEdit *Edit_AgingPatternSelectStartBit;
+        TLabel *Label23;
+        TLabel *Label24;
+        TEdit *Edit_AgingRasterGrayAddress;
+        TCheckBox *CheckBox_AgingMode;
+        TEdit *Edit_AgingPatternSelectEndBit;
+        TEdit *Edit_AgingPatternSelectValue;
+        TLabel *Label25;
+        TLabel *Label26;
     void __fastcall About1Click(TObject * Sender);
     void __fastcall Exit1Click(TObject * Sender);
     void __fastcall TargetWhite1Click(TObject * Sender);
     void __fastcall FormCreate(TObject * Sender);
     void __fastcall CCTLUT1Click(TObject * Sender);
     void __fastcall GammaAdj1Click(TObject * Sender);
-    void __fastcall RadioButton_TCONClick(TObject * Sender);
+    void __fastcall RadioButton_TCON_directGammaClick(TObject * Sender);
     void __fastcall RadioButton_PCClick(TObject * Sender);
     void __fastcall Button_ConnectClick(TObject * Sender);
     void __fastcall MatrixCalibration1Click(TObject * Sender);
@@ -204,6 +226,8 @@ class TMainForm:public TForm {
 						  TShiftState Shift, int X, int Y);
     void __fastcall RadioButton_NormalMouseMove(TObject * Sender, TShiftState Shift, int X, int Y);
     void __fastcall FormActivate(TObject * Sender);
+        void __fastcall RadioButton_TCON_agingClick(TObject *Sender);
+        void __fastcall CheckBox_AgingModeClick(TObject *Sender);
   private:			// User declarations
     //==========================================================================
     // meter

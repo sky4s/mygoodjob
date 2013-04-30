@@ -27,6 +27,7 @@ namespace cms {
 	      private:
 		//int_vector_ptr measureCode;
 		 bool remapping;
+                 bool Enable10BitInMeasurement;
 		RGB_vector_ptr rgbMeasureCode;
 		RGB_vector_ptr remappingRGBMeasureCode;
 		int start;
@@ -58,8 +59,12 @@ namespace cms {
 		 MeasureCondition(RGB_vector_ptr rgbMeasureCode);
 		 MeasureCondition(RGB_vector_ptr rgbMeasureCode,
 				  bptr < cms::lcd::BitDepthProcessor > bitDepth);
+		 MeasureCondition(RGB_vector_ptr rgbMeasureCode,
+				  bptr < cms::lcd::BitDepthProcessor > bitDepth,
+                                  const bool Enable10BitInMeasurement);
 		 MeasureCondition(RGB_vector_ptr rgbMeasureCode, const int start, const int end);
 		RGB_vector_ptr getRGBMeasureCode();
+                bool get10BitInMeasurement();
 	      private:
 		//void setRemappingRGBMeasureCode(RGB_vector_ptr rgbMeasureCode);
 		//virtual void setRemappingMode(bool remap);

@@ -36,7 +36,7 @@ enum Pattern {
     Normal, HStripe, HStripe2, Indepedent, HSD, FlickrPixel, FlickrSubPixel, Ninth
 };
 enum PatternSource {
-    PC, TCON, DGLUT
+    PC, DIRECT_GAMMA, DGLUT, AGING
 };
 class TMeasureWindow:public TForm {
     __published:		// IDE-managed Components
@@ -65,6 +65,8 @@ class TMeasureWindow:public TForm {
     void setRGB(RGB_ptr rgb);
     void setDirectGamma(bptr < i2c::TCONControl > tconcontrl,
 		      bptr < cms::lcd::BitDepthProcessor > bitDepth);
+    void setAgingMode(bptr < i2c::TCONControl > tconcontrol,
+		      bptr < cms::lcd::BitDepthProcessor > bitDepth);
     void setDGLUTInput(bptr < i2c::TCONControl > tconcontrl,
 		       bptr < cms::lcd::BitDepthProcessor > bitDepth);
     void setTCONControlOff();
@@ -75,7 +77,8 @@ class TMeasureWindow:public TForm {
     void setPattern(Pattern pattern);
     void setTestPattern(Pattern pattern);
     void setLineAdjoin(bool lineAdjoin);
-
+    void setAgingEnable(RGB_vector_ptr rgbMeasureCodeVector);
+    bool isAgingSource();
 };
 
 //---------------------------------------------------------------------------

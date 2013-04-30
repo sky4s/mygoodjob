@@ -1,6 +1,6 @@
 object GammaMeasurementForm: TGammaMeasurementForm
-  Left = 441
-  Top = 241
+  Left = 690
+  Top = 118
   Width = 411
   Height = 484
   Caption = 'Gamma Measurement'
@@ -387,7 +387,7 @@ object GammaMeasurementForm: TGammaMeasurementForm
     end
     object Panel3: TPanel
       Left = 8
-      Top = 40
+      Top = 48
       Width = 113
       Height = 113
       TabOrder = 1
