@@ -77,7 +77,112 @@ public class InterpolationEvaluator {
             return -1;
         }
     }
-//    static short[] c0c1 = new short[2];
+
+    static short[] processR(short[] R, short delta) {
+        int size = R.length;
+        short[] result = Arrays.copyOf(R, size);
+        for (int x = 0; x < size; x++) {
+            result[x] = (short) (R[x] + delta);
+        }
+        return result;
+    }
+
+    static Report evaluate12bit(short[] R0_, short[] R1_, short v, short h, short delta) {
+        short coef = (short) Math.round(Math.pow(2, 16) / delta); //16-9 = 7 ~12bit ,delta >=17
+        int fzBit = 9;
+        int fxyBit = 4;
+        byte onexy = (byte) (Math.pow(2, fxyBit));
+        int totalCount = 0;
+        int errorTCount = 0;
+        int errorValueCount = 0;
+
+        short shortLevel = 0;
+
+        int starty = 0;
+        int startx = 0;
+        short[] R0 = processR(R0_, (short) 128);
+        short[] R1 = processR(R1_, delta);
+        if (equal(R0) && equal(R1)) {
+            starty = v - 1;
+            startx = h - 1;
+        }
+
+        int vxh = v * h;
+        int maxError = 0;
+
+
+        for (int y = starty; y < v; y++) {
+            for (int x = startx; x < h; x++) {
+
+                short[] S1234 = getS1234(h, v, x, y); //8bit  
+                short c0 = getDeMuravalue(S1234, R0_, vxh); //8bit 
+                short c1 = getDeMuravalue(S1234, R1_, vxh);
+
+                byte fx = (byte) (x * onexy / h);
+                byte fy = (byte) (y * onexy / v);
+
+                int maxValue = 0;
+                int minValue = Integer.MAX_VALUE;
+
+                for (short level = shortLevel; level <= delta; level++) {
+
+                    int c0c1 = ((delta - level) * c0 + level * c1);
+                    maxValue = Math.max(maxValue, c0c1);
+                    minValue = Math.min(minValue, c0c1);
+
+
+                    //8+17=25;  25-13 = 12
+                    //9+8+12+1=30
+                    short linearValue = (short) (c0c1 * (coef * 2 + 1) / Math.pow(2, 17));
+
+                    int fz = (int) ((level * Math.pow(2, fzBit)) / delta);
+                    int tInteger = getTetrahedral(fx, fy, fxyBit, fz, fzBit);
+
+                    double dfz = ((double) level) / delta;
+                    int tDouble = getTetradedral(fx, fy, fxyBit, dfz);
+                    if (tInteger != tDouble) {
+                        errorTCount++;
+                    }
+
+                    short tetrahedralStandard = tetrahedralStandard(tInteger, R0, R1, fx, fy, fxyBit, level, delta);
+//                    short tetrahedralTest = tetrahedralTest(tInteger, R0, R1, fx, fy, fxyBit, level, delta);
+                    short temp = tetrahedralStandard;
+                    if (process12Bit) {
+
+                        tetrahedralStandard = (short) (tetrahedralStandard - level);
+                    }
+
+
+                    short compareValue = tetrahedralStandard;
+
+                    int error = Math.abs(compareValue - linearValue);
+                    maxError = Math.max(maxError, error);
+                    if (error > 127) {
+                        tetrahedralStandard = tetrahedralStandard(tInteger, R0, R1, fx, fy, fxyBit, level, delta);
+                    }
+                    if (linearValue != compareValue) {
+                        errorValueCount++;
+                    } else {
+                    }
+
+                    totalCount++;
+                }
+
+            }
+        }
+
+
+        if (errorTCount != 0 || errorValueCount != 0) {
+            double rate = ((double) errorValueCount) / totalCount;
+//            System.out.println("==> errT:" + errorTCount + " errV:" + errorValueCount + " / " + totalCount + " (rate:" + rate + ") " + maxError);
+            Report report = new Report();
+            report.rate = rate;
+            report.maxError = maxError;
+            return report;
+        } else {
+            return new Report();
+        }
+    }
 
     static Report evaluate(short[] R0, short[] R1, short v, short h, short delta) {
         short coef = (short) Math.round(Math.pow(2, 16) / delta); //16-9 = 7 ~12bit ,delta >=17
@@ -582,27 +687,28 @@ public class InterpolationEvaluator {
 //        short[] R1 = new short[]{121, 124, 126, 127};
 
 //        process(R0, R1);
-        short[] R = new short[8];
-
-        for (int test = 0; test < 0; test++) {
-
-            for (int x = 0; x < 8; x++) {
-                double d = Math.random() * 256 - 128;
-                int i = (int) Math.round(d);
-                R[x] = (short) i;
-            }
-            for (int x = 0; x < 4; x++) {
-                R0[x] = R[x];
-
-                R1[x] = R[x + 4];
-            }
-            int error = process(R0, R1);
-            if (error > 127) {
-                System.out.println(Arrays.toString(R0));
-                System.out.println(Arrays.toString(R1) + " error: " + error);
-            }
-        }
+//        short[] R = new short[8];
+//
+//        for (int test = 0; test < 0; test++) {
+//
+//            for (int x = 0; x < 8; x++) {
+//                double d = Math.random() * 256 - 128;
+//                int i = (int) Math.round(d);
+//                R[x] = (short) i;
+//            }
+//            for (int x = 0; x < 4; x++) {
+//                R0[x] = R[x];
+//
+//                R1[x] = R[x + 4];
+//            }
+//            int error = process(R0, R1);
+//            if (error > 127) {
+//                System.out.println(Arrays.toString(R0));
+//                System.out.println(Arrays.toString(R1) + " error: " + error);
+//            }
+//        }
     }
+    static boolean process12Bit = true;
 
     public static int process(short[] R0, short[] R1) {
         //00,01,10,11
@@ -627,7 +733,12 @@ public class InterpolationEvaluator {
         short[][] vhs = {{4, 16}};
         short[] vhArray = {4, 8, 16};
 
+
         int deltaStart = 17;
+
+        if (process12Bit) {
+            deltaStart = 256;
+        }
 //        int deltaStart = 510;
 //        int deltaStart = (int) Math.round(1023 * 0.05); //51
 //        int deltaStart = 511;
@@ -653,7 +764,12 @@ public class InterpolationEvaluator {
 
             for (short[] vh : vhs) {
                 for (int delta = deltaStart; delta <= deltaEnd; delta++) {
-                    Report report = evaluate(R0, R1, vh[0], vh[1], (short) delta);
+                    Report report = null;
+                    if (process12Bit) {
+                        report = evaluate12bit(R0, R1, vh[0], vh[1], (short) delta);
+                    } else {
+                        report = evaluate(R0, R1, vh[0], vh[1], (short) delta);
+                    }
                     double rate = report.rate;
                     int maxError = report.maxError;
                     totalMaxError = (int) Math.max(totalMaxError, maxError);
@@ -670,8 +786,8 @@ public class InterpolationEvaluator {
 
                 }
             }
-//            System.out.println(bit + " errorCount: " + errorCount + " " + "ave rate: " + (totalRate / errorCount));
-//            System.out.println("totalMaxError: " + totalMaxError);
+            System.out.println(bit + " errorCount: " + errorCount + " " + "ave rate: " + (totalRate / errorCount));
+            System.out.println("totalMaxError: " + totalMaxError);
 
 
         }
