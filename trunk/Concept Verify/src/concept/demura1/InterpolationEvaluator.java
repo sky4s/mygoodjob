@@ -149,7 +149,7 @@ public class InterpolationEvaluator {
                     short temp = tetrahedralStandard;
                     if (process12Bit) {
 
-                        tetrahedralStandard = (short) (tetrahedralStandard - level);
+                        tetrahedralStandard = (short) (tetrahedralStandard - level - 128);
                     }
 
 
@@ -159,6 +159,7 @@ public class InterpolationEvaluator {
                     maxError = Math.max(maxError, error);
                     if (error > 127) {
                         tetrahedralStandard = tetrahedralStandard(tInteger, R0, R1, fx, fy, fxyBit, level, delta);
+                        tetrahedralStandard = (short) (tetrahedralStandard - level - 128);
                     }
                     if (linearValue != compareValue) {
                         errorValueCount++;
@@ -436,6 +437,8 @@ public class InterpolationEvaluator {
         minT_S = Math.min(minT_S, tetrahedralValue_25bit);
 //        int tetrahedralValue_25bit = tetrahedralValue_25bit * 2;
         short result = (short) (tetrahedralValue_25bit / Math.pow(2, coefbit));;
+        short result_part0 = (short) (part0 / Math.pow(2, coefbit));
+        short result_z = (short) (z / Math.pow(2, coefbit));
         maxR_S = Math.max(maxR_S, result);
         minR_S = Math.min(minR_S, result);
         return result;
