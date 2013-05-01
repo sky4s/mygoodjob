@@ -101,7 +101,7 @@ public class InterpolationEvaluator {
         int starty = 0;
         int startx = 0;
         short[] R0 = processR(R0_, (short) 128);
-        short[] R1 = processR(R1_, delta);
+        short[] R1 = processR(R1_, (short) (128 + delta));
         if (equal(R0) && equal(R1)) {
             starty = v - 1;
             startx = h - 1;
@@ -626,34 +626,34 @@ public class InterpolationEvaluator {
         switch (tetradedralIndex) {
             case 1:
                 return new short[]{
-                    (short) (p(1, 0, R0) - p(0, 0, R0)),
-                    (short) (p(1, 1, R0) - p(1, 0, R0)),
-                    (short) (p(1, 1, R1) - p(1, 1, R0))};
+                            (short) (p(1, 0, R0) - p(0, 0, R0)),
+                            (short) (p(1, 1, R0) - p(1, 0, R0)),
+                            (short) (p(1, 1, R1) - p(1, 1, R0))};
             case 2:
                 return new short[]{
-                    (short) (p(1, 0, R0) - p(0, 0, R0)),
-                    (short) (p(1, 1, R1) - p(1, 0, R1)),
-                    (short) (p(1, 0, R1) - p(1, 0, R0))};
+                            (short) (p(1, 0, R0) - p(0, 0, R0)),
+                            (short) (p(1, 1, R1) - p(1, 0, R1)),
+                            (short) (p(1, 0, R1) - p(1, 0, R0))};
             case 3:
                 return new short[]{
-                    (short) (p(1, 0, R1) - p(0, 0, R1)),
-                    (short) (p(1, 1, R1) - p(1, 0, R1)),
-                    (short) (p(0, 0, R1) - p(0, 0, R0))};
+                            (short) (p(1, 0, R1) - p(0, 0, R1)),
+                            (short) (p(1, 1, R1) - p(1, 0, R1)),
+                            (short) (p(0, 0, R1) - p(0, 0, R0))};
             case 4:
                 return new short[]{
-                    (short) (p(1, 1, R0) - p(0, 1, R0)),
-                    (short) (p(0, 1, R0) - p(0, 0, R0)),
-                    (short) (p(1, 1, R1) - p(1, 1, R0))};
+                            (short) (p(1, 1, R0) - p(0, 1, R0)),
+                            (short) (p(0, 1, R0) - p(0, 0, R0)),
+                            (short) (p(1, 1, R1) - p(1, 1, R0))};
             case 5:
                 return new short[]{
-                    (short) (p(1, 1, R1) - p(0, 1, R1)),
-                    (short) (p(0, 1, R0) - p(0, 0, R0)),
-                    (short) (p(0, 1, R1) - p(0, 1, R0))};
+                            (short) (p(1, 1, R1) - p(0, 1, R1)),
+                            (short) (p(0, 1, R0) - p(0, 0, R0)),
+                            (short) (p(0, 1, R1) - p(0, 1, R0))};
             case 6:
                 return new short[]{
-                    (short) (p(1, 1, R1) - p(0, 1, R1)),
-                    (short) (p(0, 1, R1) - p(0, 0, R1)),
-                    (short) (p(0, 0, R1) - p(0, 0, R0))};
+                            (short) (p(1, 1, R1) - p(0, 1, R1)),
+                            (short) (p(0, 1, R1) - p(0, 0, R1)),
+                            (short) (p(0, 0, R1) - p(0, 0, R0))};
 
         }
         return null;
