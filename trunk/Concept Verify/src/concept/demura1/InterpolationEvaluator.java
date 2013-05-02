@@ -6,6 +6,7 @@ package concept.demura1;
 
 import java.awt.Color;
 import java.util.Arrays;
+import shu.math.array.DoubleArray;
 //import shu.plot.*;
 
 /**
@@ -29,6 +30,8 @@ public class InterpolationEvaluator {
         //8+8 - 6 = 10?
 
         //v,h: 4 8 16:  16 32 64 128 256 4~8bit
+        //00,01,10,11
+        //yagi-san: 00 10 01 11 (rg)
         return (short) ((S[3] * R[0] + S[2] * R[1] + S[1] * R[2] + S[0] * R[3]) / vxh);
 
 //        short[] result = new short[2];
@@ -148,6 +151,7 @@ public class InterpolationEvaluator {
 //                    short tetrahedralTest = tetrahedralTest(tInteger, R0, R1, fx, fy, fxyBit, level, delta);
                     short temp = tetrahedralStandard;
                     if (process12Bit) {
+//tetrahedralInterpolate()
 
                         tetrahedralStandard = (short) (tetrahedralStandard - level - 128);
                     }
@@ -158,6 +162,18 @@ public class InterpolationEvaluator {
                     int error = Math.abs(compareValue - linearValue);
                     maxError = Math.max(maxError, error);
                     if (error > 127) {
+                        if (2 == tInteger) {
+                            double[] x_ = {((double) x) / h, ((double) y) / v, ((double) level) / delta};
+                            double[][] xn = {{0, 0, 0}, {1, 0, 0}, {1, 0, 1}, {1, 1, 1}};
+                            double[][] yn = {{p(0, 0, R0), p(0, 0, R0), p(0, 0, R0)},
+                                {p(1, 0, R0), p(1, 0, R0), p(1, 0, R0)},
+                                {p(1, 0, R1), p(1, 0, R1), p(1, 0, R1)},
+                                {p(1, 1, R1), p(1, 1, R1), p(1, 1, R1)}};
+                            double[] result = tetrahedralInterpolate(x_, xn, yn);
+                            double r = result[0];
+                            int a = 1;
+                        }
+
                         tetrahedralStandard = tetrahedralStandard(tInteger, R0, R1, fx, fy, fxyBit, level, delta);
                         tetrahedralStandard = (short) (tetrahedralStandard - level - 128);
                     }
@@ -619,44 +635,47 @@ public class InterpolationEvaluator {
     }
 
     static short p(int x, int y, short[] R) {
-        //00,01,10,11
+//        00,01,10,11
+        //yagi-san: 00 10 01 11 (rg)
         int index = ((x != 0) ? 1 : 0) + ((y != 0) ? 2 : 0);
+//        int index = ((x != 0) ? 2 : 0) + ((y != 0) ? 1: 0);
         return R[index];
     }
 
     static short[] getc123(int tetradedralIndex, short[] R0, short[] R1) {
         //00,01,10,11
+        //yagi-san: 00 10 01 11 (rg)
         switch (tetradedralIndex) {
             case 1:
                 return new short[]{
-                            (short) (p(1, 0, R0) - p(0, 0, R0)),
-                            (short) (p(1, 1, R0) - p(1, 0, R0)),
-                            (short) (p(1, 1, R1) - p(1, 1, R0))};
+                    (short) (p(1, 0, R0) - p(0, 0, R0)),
+                    (short) (p(1, 1, R0) - p(1, 0, R0)),
+                    (short) (p(1, 1, R1) - p(1, 1, R0))};
             case 2:
                 return new short[]{
-                            (short) (p(1, 0, R0) - p(0, 0, R0)),
-                            (short) (p(1, 1, R1) - p(1, 0, R1)),
-                            (short) (p(1, 0, R1) - p(1, 0, R0))};
+                    (short) (p(1, 0, R0) - p(0, 0, R0)),
+                    (short) (p(1, 1, R1) - p(1, 0, R1)),
+                    (short) (p(1, 0, R1) - p(1, 0, R0))};
             case 3:
                 return new short[]{
-                            (short) (p(1, 0, R1) - p(0, 0, R1)),
-                            (short) (p(1, 1, R1) - p(1, 0, R1)),
-                            (short) (p(0, 0, R1) - p(0, 0, R0))};
+                    (short) (p(1, 0, R1) - p(0, 0, R1)),
+                    (short) (p(1, 1, R1) - p(1, 0, R1)),
+                    (short) (p(0, 0, R1) - p(0, 0, R0))};
             case 4:
                 return new short[]{
-                            (short) (p(1, 1, R0) - p(0, 1, R0)),
-                            (short) (p(0, 1, R0) - p(0, 0, R0)),
-                            (short) (p(1, 1, R1) - p(1, 1, R0))};
+                    (short) (p(1, 1, R0) - p(0, 1, R0)),
+                    (short) (p(0, 1, R0) - p(0, 0, R0)),
+                    (short) (p(1, 1, R1) - p(1, 1, R0))};
             case 5:
                 return new short[]{
-                            (short) (p(1, 1, R1) - p(0, 1, R1)),
-                            (short) (p(0, 1, R0) - p(0, 0, R0)),
-                            (short) (p(0, 1, R1) - p(0, 1, R0))};
+                    (short) (p(1, 1, R1) - p(0, 1, R1)),
+                    (short) (p(0, 1, R0) - p(0, 0, R0)),
+                    (short) (p(0, 1, R1) - p(0, 1, R0))};
             case 6:
                 return new short[]{
-                            (short) (p(1, 1, R1) - p(0, 1, R1)),
-                            (short) (p(0, 1, R1) - p(0, 0, R1)),
-                            (short) (p(0, 0, R1) - p(0, 0, R0))};
+                    (short) (p(1, 1, R1) - p(0, 1, R1)),
+                    (short) (p(0, 1, R1) - p(0, 0, R1)),
+                    (short) (p(0, 0, R1) - p(0, 0, R0))};
 
         }
         return null;
@@ -671,12 +690,11 @@ public class InterpolationEvaluator {
     }
 
     public static void main(String[] args) {
-        //00,01,10,11
 //        short[] R0 = new short[]{-128, -128, -128, -128};
 //        short[] R0 = new short[]{127, 127, 127, 127};
 //        short[] R1 = new short[]{127, 127, 127, 127};
 //        short[] R1 = new short[]{-128, -128, -128, -128};
-
+        //00,01,10,11
         short[] R0 = new short[]{-128, 127, -128, 127};
         short[] R1 = new short[]{127, -128, 127, -128};
 
@@ -812,5 +830,75 @@ public class InterpolationEvaluator {
         }
 
         return totalMaxError;
+    }
+
+    /**
+     * 以任意四點為基礎的四面體內插法
+     *
+     * @param x double[]
+     * @param xn double[][]
+     * @param yn double[][]
+     * @return double[]
+     */
+    public static double[] tetrahedralInterpolate(double[] x, double[][] xn,
+            double[][] yn) {
+        if (xn.length != 4 || yn.length != 4) {
+            throw new IllegalArgumentException(" xn.length or yn.length != 4");
+        }
+        double[] abr = calculateAlphaBetaGamma(x, xn[0], xn[1], xn[2], xn[3]);
+        if (!isInsideTetrahedron(abr[0], abr[1], abr[2])) {
+            throw new IllegalArgumentException("x is not in xn");
+        }
+
+        double[][] delta = new double[][]{
+            {
+                yn[1][0] - yn[0][0], yn[2][0] - yn[0][0], yn[3][0] - yn[0][0]}, {
+                yn[1][1] - yn[0][1], yn[2][1] - yn[0][1], yn[3][1] - yn[0][1]}, {
+                yn[1][2] - yn[0][2], yn[2][2] - yn[0][2], yn[3][2] - yn[0][2]}
+        };
+        double[] timesResult = DoubleArray.timesFast(delta, abr);
+        //yn[0][0]~[2]是原點
+        timesResult[0] += yn[0][0];
+        timesResult[1] += yn[0][1];
+        timesResult[2] += yn[0][2];
+
+        return timesResult;
+    }
+
+    /**
+     * 測試p是否在p0~p3所組成的四面體內
+     *
+     * @param alpha double
+     * @param beta double
+     * @param gamma double
+     * @return boolean
+     */
+    protected static boolean isInsideTetrahedron(double alpha, double beta,
+            double gamma) {
+        if (alpha >= 0 && beta >= 0 && gamma >= 0
+                && (alpha + beta + gamma) <= 1) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    protected static double[] calculateAlphaBetaGamma(double[] p, double[] p0,
+            double[] p1,
+            double[] p2, double[] p3) {
+        double[][] delta = new double[][]{
+            {
+                p1[0] - p0[0], p2[0] - p0[0], p3[0] - p0[0]}, {
+                p1[1] - p0[1], p2[1] - p0[1], p3[1] - p0[1]}, {
+                p1[2] - p0[2], p2[2] - p0[2], p3[2] - p0[2]}
+        };
+//        if (!DoubleArray.isNonsingular(delta)) {
+//            return null;
+//        }
+        double[][] deltaInv = DoubleArray.inverse(delta);
+        double[] deltaP = new double[]{
+            p[0] - p0[0], p[1] - p0[1], p[2] - p0[2]};
+        double[] abr = DoubleArray.times(deltaInv, deltaP);
+        return abr;
     }
 }
