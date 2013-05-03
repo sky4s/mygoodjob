@@ -182,6 +182,9 @@ namespace cms {
 		mm->close();
 	    };
 
+	    /*
+	       量測startIndex->endIndex的DG
+	     */
 	    bool MeasureEstimator::measure(int startIndex, int endIndex) {
 		//success = false;
 		resetMeasure();
@@ -530,6 +533,7 @@ namespace cms {
 			|| (nil_double_array != averageDistance ?
 			    dx > (averagex + dimFixThreshold) ||
 			    dy > (averagey + dimFixThreshold) : false)) {
+			//量有defect的前後兩個, 總共五個
 			pushBackNumber(result, x - 2);
 			pushBackNumber(result, x - 1);
 			pushBackNumber(result, x);

@@ -20,6 +20,7 @@ namespace cms {
 
 	    /*
 	       色度調整幅度的預測, 透過intensity
+	       目前並無使用到此類別
 	     */
 	    class IntensityEstimator:public ChromaticityAdjustEstimatorIF {
 	      private:

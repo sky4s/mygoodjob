@@ -101,8 +101,8 @@ namespace cms {
 	  private:
 	    bool stop;
 	    bptr < cms::measure::MeterMeasurement > mm;
-	    bool inverseMeasure;     
-            bool isAgingMode();
+	    bool inverseMeasure;
+	    bool isAgingMode();
 	  public:
 	     MeasureTool(bptr < cms::measure::MeterMeasurement > mm);
 	    Patch_vector_ptr rampMeasure(const Dep::Channel & channel,

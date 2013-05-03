@@ -139,9 +139,9 @@ namespace cms {
 		Application->ProcessMessages();
 		Util::sleep(waitTimes);
 	    }
-            if(5000==waitTimes) {
-             int x=1;
-            }
+	    if (5000 == waitTimes) {
+		int x = 1;
+	    }
 	    //==========================================================================
 
 
@@ -242,7 +242,7 @@ namespace cms {
 						  bptr <
 						  cms::lcd::calibrate::
 						  MeasureCondition > measureCondition) {
-		return rampMeasure(channel, nil_int_vector_ptr, measureCondition);
+	    return rampMeasure(channel, nil_int_vector_ptr, measureCondition);
 
 	};
 	Patch_vector_ptr MeasureTool::rampMeasure(const Dep::
@@ -276,54 +276,66 @@ namespace cms {
 	Patch_vector_ptr MeasureTool::rampMeasure(bptr < cms::lcd::calibrate::MeasureCondition >
 						  measureCondition) {
 	    RGB_vector_ptr rgbMeasureCode = measureCondition->getRGBMeasureCode();
-            bool is10BitInMeasurement = measureCondition->get10BitInMeasurement();
+	    bool is10BitInMeasurement = measureCondition->get10BitInMeasurement();
 	    if (inverseMeasure) {
 		rgbMeasureCode = RGBVector::reverse(rgbMeasureCode);
 	    }
 
-            Patch_vector_ptr vector(new Patch_vector());
+	    Patch_vector_ptr vector(new Patch_vector());
 
-            //for AgingMode byBS+
-            if(isAgingMode()) {
-                if(true) {
-                    MeasureWindow->setAgingEnable(rgbMeasureCode);     //TCON寫入DG LUT，並開啟DG
-                }
+	    //for AgingMode byBS+
+	    if (isAgingMode()) {
+		if (true) {
+		    MeasureWindow->setAgingEnable(rgbMeasureCode);	//TCON寫入DG LUT，並開啟DG
+		}
 
-                if(is10BitInMeasurement){
-                    for (int x = 0; x < 1024; x++) {               //順序?
-		        RGB_ptr rgb(new RGBColor(x, x, x));
-                        Patch_ptr patch = mm->measure(rgb, rgb->toString());
-                        vector->push_back(patch);
-                        if (true == stop) {
-                            stop = false;
-                            mm->setMeasureWindowsVisible(false);
-                            return nil_Patch_vector_ptr;
-                        }
-                    }
-                } else {
-                    for (int x = 0; x < 1024; x+=4) {
-		        RGB_ptr rgb(new RGBColor(x, x, x));
-                        Patch_ptr patch = mm->measure(rgb, rgb->toString());
-                        vector->push_back(patch);
-                        if (true == stop) {
-                            stop = false;
-                            mm->setMeasureWindowsVisible(false);
-                            return nil_Patch_vector_ptr;
-                        }
-                    }
-                }
-            } else {
-                //Patch_vector_ptr vector(new Patch_vector());
-                foreach(RGB_ptr rgb, *rgbMeasureCode) {
-                    Patch_ptr patch = mm->measure(rgb, rgb->toString());
-                    vector->push_back(patch);
-                    if (true == stop) {
-                        stop = false;
-                        mm->setMeasureWindowsVisible(false);
-                        return nil_Patch_vector_ptr;
-                    }
-                };
-            }
+		int step = is10BitInMeasurement ? 1 : 4;
+		for (int x = 0; x < 1024; x += step) {	//順序?
+		    RGB_ptr rgb(new RGBColor(x, x, x));
+		    Patch_ptr patch = mm->measure(rgb, rgb->toString());
+		    vector->push_back(patch);
+		    if (true == stop) {
+			stop = false;
+			mm->setMeasureWindowsVisible(false);
+			return nil_Patch_vector_ptr;
+		    }
+		}
+
+		/*if (is10BitInMeasurement) {
+		   for (int x = 0; x < 1024; x++) {     //順序?
+		   RGB_ptr rgb(new RGBColor(x, x, x));
+		   Patch_ptr patch = mm->measure(rgb, rgb->toString());
+		   vector->push_back(patch);
+		   if (true == stop) {
+		   stop = false;
+		   mm->setMeasureWindowsVisible(false);
+		   return nil_Patch_vector_ptr;
+		   }
+		   }
+		   } else {
+		   for (int x = 0; x < 1024; x += 4) {
+		   RGB_ptr rgb(new RGBColor(x, x, x));
+		   Patch_ptr patch = mm->measure(rgb, rgb->toString());
+		   vector->push_back(patch);
+		   if (true == stop) {
+		   stop = false;
+		   mm->setMeasureWindowsVisible(false);
+		   return nil_Patch_vector_ptr;
+		   }
+		   }
+		   } */
+	    } else {
+		//Patch_vector_ptr vector(new Patch_vector());
+		foreach(RGB_ptr rgb, *rgbMeasureCode) {
+		    Patch_ptr patch = mm->measure(rgb, rgb->toString());
+		    vector->push_back(patch);
+		    if (true == stop) {
+			stop = false;
+			mm->setMeasureWindowsVisible(false);
+			return nil_Patch_vector_ptr;
+		    }
+		};
+	    }
 
 	    mm->setMeasureWindowsVisible(false);
 	    if (inverseMeasure) {
@@ -348,9 +360,9 @@ namespace cms {
 	    mm->setMeasureWindowsVisible(false);
 	    return vector;
 	};
-        bool MeasureTool::isAgingMode() {
-            return MeasureWindow->isAgingSource();
-        }
+	bool MeasureTool::isAgingMode() {
+	    return MeasureWindow->isAgingSource();
+	}
 	void MeasureTool::windowClosing(TObject * Sender, TCloseAction & Action) {
 	    stop = true;
 	}
@@ -409,7 +421,8 @@ namespace cms {
 	int MeasureTool::getMaxBIntensityRawGrayLevel(bptr < MeterMeasurement > mm,
 						      bptr < BitDepthProcessor > bitDepth,
 						      bptr < IntensityAnalyzerIF > analyzer) {
-	    int max = bitDepth->getInputMaxDigitalCount();
+	    //int max = bitDepth->getInputMaxDigitalCount();
+	    int max = bitDepth->getOutputMaxDigitalCount();	//modified@20130503 by skyforce
 	    /*using namespace cms::measure;
 	       bptr < MaxMatrixIntensityAnalyzer > analyzer =
 	       MaxMatrixIntensityAnalyzer::getReadyAnalyzer(mm, max, max, max); */
@@ -417,8 +430,12 @@ namespace cms {
 	    using namespace java::lang;
 	    RGB_ptr preIntensity;
 	    int maxBRawGrayLevel = max;
-            const int DefinedMaxBRawGrayLevel = 50;
+	    const int DefinedMaxBRawGrayLevel = 50;
 
+	    //如果處在aging mode, DG必須off
+
+	    //由於x用整數做迭代, 最大值僅到255, 面對於10bit out的panel, 255.75會被cut剩下255, 無法正確輸出10bit pattern
+	    //但是反轉點往往落在254以下, 所以以上提到的錯誤不會造成實質影響
 	    for (int x = max; x > (max - DefinedMaxBRawGrayLevel); x--) {
 		RGB_ptr rgb(new RGBColor(x, x, x));
 		RGB_ptr intensity = analyzer->getIntensity(rgb);

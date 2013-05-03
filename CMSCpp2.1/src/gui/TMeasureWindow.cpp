@@ -343,7 +343,7 @@ void __fastcall TMeasureWindow::Button1Click(TObject * Sender)
 
 //---------------------------------------------------------------------------
 void TMeasureWindow::setDirectGamma(bptr < i2c::TCONControl > tconcontrol,
-				  bptr < cms::lcd::BitDepthProcessor > bitDepth)
+				    bptr < cms::lcd::BitDepthProcessor > bitDepth)
 {
     this->tconcontrol = tconcontrol;
     source = DIRECT_GAMMA;
@@ -371,7 +371,7 @@ void TMeasureWindow::setTCONControlOff()
 };
 
 //---------------------------------------------------------------------------
-void TMeasureWindow::setAgingEnable(RGB_vector_ptr rgbMeasureCodeVector)       //for AgingMode byBS+
+void TMeasureWindow::setAgingEnable(RGB_vector_ptr rgbMeasureCodeVector)	//for AgingMode byBS+
 {
     tconcontrol->setDG(false);
     tconcontrol->setDGLut(rgbMeasureCodeVector);
@@ -379,9 +379,9 @@ void TMeasureWindow::setAgingEnable(RGB_vector_ptr rgbMeasureCodeVector)       /
 };
 
 //---------------------------------------------------------------------------
-bool TMeasureWindow::isAgingSource()       //for AgingMode byBS+
+bool TMeasureWindow::isAgingSource()	//for AgingMode byBS+
 {
-    return (source == AGING) ? 1 : 0;
+    return (source == AGING) ? true : false;
 };
 
 //---------------------------------------------------------------------------
@@ -398,8 +398,8 @@ void TMeasureWindow::setVisible(bool visible)
 #else
     if (DIRECT_GAMMA == source) {
 	tconcontrol->setGammaTest(visible);
-    } else if (AGING == source){
-        tconcontrol->setAgingMode(visible);
+    } else if (AGING == source) {
+	tconcontrol->setAgingMode(visible);
     } else {
 	this->Visible = visible;
 	if (visible) {
