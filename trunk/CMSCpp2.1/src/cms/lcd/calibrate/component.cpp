@@ -100,6 +100,7 @@ namespace cms {
 
 
 		if (false == luminanceMode && nil_RGB_ptr != extraMeasureRGB) {
+		    //量測真實白點
 /* TODO : Aging */
 		    extraMeasureXYZ = analyzer->getCIEXYZOnly(extraMeasureRGB);
 		    //量過就歸零
