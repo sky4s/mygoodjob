@@ -98,7 +98,7 @@ namespace cms {
 		void init(Component_vector_ptr componentVector);
 		Component_vector_ptr componentVector;
 	      public:
-		 //ComponentLinearRelation(double2D_ptr input, double2D_ptr output);
+		//ComponentLinearRelation(double2D_ptr input, double2D_ptr output);
 		 ComponentLinearRelation(Component_vector_ptr componentVector);
 		double getIntensity(double luminance);
 		double getLuminance(double rIntensity, double gIntensity, double bIntensity);

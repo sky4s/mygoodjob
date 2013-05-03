@@ -837,8 +837,8 @@ object MainForm: TMainForm
     Top = 13
     Width = 706
     Height = 348
-    ActivePage = TabSheet2
-    TabIndex = 1
+    ActivePage = TabSheet1
+    TabIndex = 0
     TabOrder = 0
     object TabSheet1: TTabSheet
       Caption = 'Measure Setup'
@@ -1798,7 +1798,7 @@ object MainForm: TMainForm
   end
   object StatusBar1: TStatusBar
     Left = 0
-    Top = 416
+    Top = 414
     Width = 887
     Height = 19
     Color = clWhite

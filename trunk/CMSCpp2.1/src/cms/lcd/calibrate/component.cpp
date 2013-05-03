@@ -98,7 +98,9 @@ namespace cms {
 		analyzer->beginAnalyze();
 
 
+
 		if (false == luminanceMode && nil_RGB_ptr != extraMeasureRGB) {
+/* TODO : Aging */
 		    extraMeasureXYZ = analyzer->getCIEXYZOnly(extraMeasureRGB);
 		    //¶q¹L´NÂk¹s
 		    extraMeasureRGB = nil_RGB_ptr;
@@ -287,10 +289,10 @@ namespace cms {
 	    };
 
 	    /*ComponentLinearRelation::
-		ComponentLinearRelation(double2D_ptr input, double2D_ptr output) {
-		init(input, output);
+	       ComponentLinearRelation(double2D_ptr input, double2D_ptr output) {
+	       init(input, output);
 
-	    };*/
+	       }; */
 	  ComponentLinearRelation::ComponentLinearRelation(Component_vector_ptr componentVector):componentVector(componentVector)
 	    {
 		init(componentVector);

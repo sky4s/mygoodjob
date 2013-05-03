@@ -35,6 +35,11 @@
 enum Pattern {
     Normal, HStripe, HStripe2, Indepedent, HSD, FlickrPixel, FlickrSubPixel, Ninth
 };
+/*
+Aging 0 : AG+DG Off
+Aging 1 : AG+完整的DG LUT
+Aging 2 : AG+單一的RGB塞入DG LUT(譬如0,0,0), 且AG打出(0,0,0)
+*/
 enum PatternSource {
     PC, DIRECT_GAMMA, DGLUT, AGING
 };
@@ -64,7 +69,7 @@ class TMeasureWindow:public TForm {
     void setRGB(int r, int g, int b);
     void setRGB(RGB_ptr rgb);
     void setDirectGamma(bptr < i2c::TCONControl > tconcontrl,
-		      bptr < cms::lcd::BitDepthProcessor > bitDepth);
+			bptr < cms::lcd::BitDepthProcessor > bitDepth);
     void setAgingMode(bptr < i2c::TCONControl > tconcontrol,
 		      bptr < cms::lcd::BitDepthProcessor > bitDepth);
     void setDGLUTInput(bptr < i2c::TCONControl > tconcontrl,
