@@ -55,6 +55,7 @@ namespace cms {
 	    void close();
 	    void setMeasureWindowsVisible(bool visible);
 
+            //measure由量測bit數決定是AG0/AG2
 	    Patch_ptr measure(const string_ptr patchName);
 	    Patch_ptr measure(RGB_ptr rgb, const string_ptr patchName);
 	    Patch_ptr measure(int r, int g, int b, const string_ptr patchName);
@@ -62,9 +63,13 @@ namespace cms {
 	    Patch_ptr measureFlicker(RGB_ptr rgb, const string_ptr patchName);
 	    Patch_ptr measureFlicker(const string_ptr patchName);
 
+
 	    void pushMeasureRequest(RGB_ptr rgb, const string_ptr patchName);
 	    void pushMeasureRequest(RGB_vector_ptr measureVector);
+            void clearMeasureRequest();
+            //pullMeasureResult一率以AG1運行
 	    Patch_vector_ptr pullMeasureResult();
+            
 
 
 	    __property int WaitTimes = { read = waitTimes, write = waitTimes };
