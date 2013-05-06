@@ -44,6 +44,7 @@ namespace cms {
 	    Patch_vector_ptr measurePatchVector;
 	    FakeMode fakeMode;
 	    FlickerMode flicker;
+	    RGB_vector_ptr measureRequest;
 	  protected:
 	     bptr < cms::measure::meter::Meter > meter;
 	    TMeasureWindow *measureWindow;
@@ -55,7 +56,7 @@ namespace cms {
 	    void close();
 	    void setMeasureWindowsVisible(bool visible);
 
-            //measureパ秖代bit计∕﹚琌AG0/AG2
+	    //measureパ秖代bit计∕﹚琌AG0/AG2
 	    Patch_ptr measure(const string_ptr patchName);
 	    Patch_ptr measure(RGB_ptr rgb, const string_ptr patchName);
 	    Patch_ptr measure(int r, int g, int b, const string_ptr patchName);
@@ -64,12 +65,12 @@ namespace cms {
 	    Patch_ptr measureFlicker(const string_ptr patchName);
 
 
-	    void pushMeasureRequest(RGB_ptr rgb, const string_ptr patchName);
+	    void pushMeasureRequest(RGB_ptr rgb);
 	    void pushMeasureRequest(RGB_vector_ptr measureVector);
-            void clearMeasureRequest();
-            //pullMeasureResult瞯AG1笲︽
+	    void clearMeasureRequest();
+	    //pullMeasureResult瞯AG1笲︽
 	    Patch_vector_ptr pullMeasureResult();
-            
+
 
 
 	    __property int WaitTimes = { read = waitTimes, write = waitTimes };
