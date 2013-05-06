@@ -92,6 +92,7 @@ namespace cms {
 	  protected:
 	    void meterClose();
 
+	    //measure0如果在aging mode, 由量測bit數決定是AG0/AG2
 	    Patch_ptr measure0(RGB_ptr
 			       measureRGB,
 			       const string_ptr patchName,
