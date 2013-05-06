@@ -1,6 +1,7 @@
 package org.prowl.torquescan;
 
 import java.text.NumberFormat;
+import java.util.StringTokenizer;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -53,9 +54,9 @@ public class PluginActivity extends Activity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-//		requestWindowFeature(Window.FEATURE_NO_TITLE);
-//		getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
-//				WindowManager.LayoutParams.FLAG_FULLSCREEN);
+		// requestWindowFeature(Window.FEATURE_NO_TITLE);
+		// getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+		// WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
 		setContentView(R.layout.main);
 		LayoutInflater inflater = LayoutInflater.from(this);
@@ -109,25 +110,52 @@ public class PluginActivity extends Activity {
 		try {
 			text = text + "API Version: " + torqueService.getVersion() + "\n";
 
-			long[] pids = torqueService.getListOfActivePids();
-			for (long pid : pids) {
+			torqueService.setDebugTestMode(true);
 
-				String description = torqueService.getDescriptionForPid(pid);
-				// If no description, display as hex.
-				if (description == null)
-					description = Long.toString(pid, 16);
-
-				float value = torqueService.getValueForPid(pid, true);
-				String unit = torqueService.getUnitForPid(pid);
+			// long[] pids = torqueService.getListOfActivePids();
+			String[] pids = torqueService.listActivePIDs();
+			String[] infos = torqueService.getPIDInformation(pids);
+			float[] values = torqueService.getPIDValues(pids);
+			
+			int size = pids.length;
+			for (int x = 0; x < size; x++) {
+//				String pid = pids[x];
+				// String description=infos[x];
+				// if (description == null)
+				// description = Long.toString(pid, 16);
+				StringTokenizer tokenzier = new StringTokenizer(infos[x], ",");
+				String description = tokenzier.nextToken();
+				tokenzier.nextToken();
+				String unit = tokenzier.nextToken();
+				float value = values[x];
 
 				text = text + description + ": " + nf.format(value);
-
+				// text = text + description;
 				if (unit != null)
 					text += " " + unit;
 
 				text += "\n";
-
 			}
+
+			// for (String pid : pids) {
+			//
+			// String description = torqueService.getDescriptionForPid(pid);
+			//
+			// // If no description, display as hex.
+			// if (description == null)
+			// description = Long.toString(pid, 16);
+			//
+			// float value = torqueService.getValueForPid(pid, true);
+			// String unit = torqueService.getUnitForPid(pid);
+			//
+			// text = text + description + ": " + nf.format(value);
+			//
+			// if (unit != null)
+			// text += " " + unit;
+			//
+			// text += "\n";
+			//
+			// }
 
 		} catch (RemoteException e) {
 			Log.e(getClass().getCanonicalName(), e.getMessage(), e);
