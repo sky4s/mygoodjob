@@ -62,6 +62,11 @@ namespace cms {
 	    Patch_ptr measureFlicker(RGB_ptr rgb, const string_ptr patchName);
 	    Patch_ptr measureFlicker(const string_ptr patchName);
 
+	    void pushMeasureRequest(RGB_ptr rgb, const string_ptr patchName);
+	    void pushMeasureRequest(RGB_vector_ptr measureVector);
+	    Patch_vector_ptr pullMeasureResult();
+
+
 	    __property int WaitTimes = { read = waitTimes, write = waitTimes };
 	    __property int BlankTimes = { write = blankTimes };
 	    __property RGB_ptr BlankRGB = { write = blankRGB };

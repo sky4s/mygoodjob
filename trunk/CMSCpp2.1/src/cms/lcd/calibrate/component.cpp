@@ -130,17 +130,20 @@ namespace cms {
 
 		    if (true == waitingStable) {
 			//只有第一次量測的時候發揮作用
+			//為了希望量測前面板穩定而設計
 			waitingStable = false;
 			analyzer->setWaitTimes(waitTimes);
 		    }
 
 		    if (true == stop) {
+			//為了可以中斷量測
 			stop = false;
 			analyzer->endAnalyze();
 			return nil_Component_vector_ptr;
 		    }
 
 		    if (null != feedbackListener) {
+			//show出現在量到的灰階
 			string msg = _toString(count++) + "=> " + (*rgb->toString());
 			if (feedbackMessage.size() != 0) {
 			    msg = feedbackMessage + ": " + msg;
