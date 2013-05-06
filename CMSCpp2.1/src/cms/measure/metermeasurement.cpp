@@ -45,6 +45,7 @@ namespace cms {
 	    } else {
 		fakeMode = FakeMode::None;
 	    }
+	    measureRequest = RGB_vector_ptr(new RGB_vector());
 	};
 
 	void MeterMeasurement::calibrate() {
@@ -99,6 +100,21 @@ namespace cms {
 	Patch_ptr MeterMeasurement::measureFlicker(const string_ptr patchName) {
 	    return measure0(nil_RGB_ptr, patchName, nil_string_ptr, nil_string_ptr, true, true);
 	};
+
+	void MeterMeasurement::pushMeasureRequest(RGB_ptr rgb) {
+	    measureRequest->push_back(rgb);
+	}
+	void MeterMeasurement::pushMeasureRequest(RGB_vector_ptr measureVector) {
+	    foreach(RGB_ptr rgb, *measureVector) {
+		measureRequest->push_back(rgb);
+	    }
+	}
+	void MeterMeasurement::clearMeasureRequest() {
+	    measureRequest->clear();
+	}
+	Patch_vector_ptr MeterMeasurement::pullMeasureResult() {
+
+	}
 
 	Patch_ptr
 	    MeterMeasurement::measure0(RGB_ptr measureRGB,
