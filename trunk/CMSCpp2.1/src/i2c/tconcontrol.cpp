@@ -201,7 +201,21 @@ namespace i2c {
     };
 
     bool TCONControl::setAgingModeRGB(int r, int g, int b) {
+	const DirectGammaType & agingModeType = parameter->agingModeType;
+	bptr < ByteBuffer > data = getRGBByteBuffer(r, g, b, agingModeType);
 
+	int address = parameter->agingRasterGrayAddress;
+	write(address, data);
+	int size = data->getSize();
+	bptr < ByteBuffer > dataFrom0 = read(address, size, 0);
+	if (!dualTCON) {
+	    //1 tcon
+	    return data->equals(dataFrom0);
+	} else {
+	    //2 tcon
+	    bptr < ByteBuffer > dataFrom1 = read(address, size, 1);
+	    return data->equals(dataFrom0) && data->equals(dataFrom1);
+	}
     };
 
     void TCONControl::setGammaTest(bool enable) {
