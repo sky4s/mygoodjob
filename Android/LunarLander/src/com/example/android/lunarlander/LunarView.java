@@ -190,6 +190,7 @@ class LunarView extends SurfaceView implements SurfaceHolder.Callback,
 		}
 
 		int lightGray = Color.rgb(192, 192, 192);
+		int darkGray = Color.rgb(32, 32, 32);
 		int lightRed = Color.rgb(192, 0, 0);
 		int middleGray = Color.rgb(144, 144, 144);
 		int middleRed = Color.rgb(144, 0, 0);
@@ -509,7 +510,7 @@ class LunarView extends SurfaceView implements SurfaceHolder.Callback,
 
 		}
 
-		int darkGray = Color.rgb(32, 32, 32);
+		
 
 		private PointF getTextCenterInRect(String text, Rect rect, Paint paint) {
 			int fontHeight = (int) (rect.height() / 0.7);

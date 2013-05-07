@@ -26,7 +26,7 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.TextView;
 
-import com.example.android.lunarlander.R;
+//import com.example.android.lunarlander.R;
 import com.example.android.lunarlander.LunarView.LunarThread;
 
 /**
