@@ -34,6 +34,7 @@ namespace cms {
 	    string_ptr comment;
 	  public:
 	    virtual RGB_ptr getIntensity(RGB_ptr rgb) = 0;
+	    virtual RGB_ptr getIntensity(XYZ_ptr XYZ) = 0;
 	    virtual XYZ_ptr getCIEXYZ() = 0;
 	    virtual XYZ_ptr getCIEXYZOnly(RGB_ptr rgb) = 0;
 	    virtual void setupComponent(const Dep::Channel & ch, RGB_ptr rgb) = 0;
@@ -80,6 +81,7 @@ namespace cms {
 	     CA210IntensityAnalyzer(bptr < MeterMeasurement > mm);
 
 	    RGB_ptr getIntensity(RGB_ptr rgb);
+            RGB_ptr getIntensity(XYZ_ptr XYZ);
 	    XYZ_ptr getCIEXYZ();
 	    XYZ_ptr getCIEXYZOnly(RGB_ptr rgb);
 	    void setupComponent(const Dep::Channel & ch, RGB_ptr rgb);

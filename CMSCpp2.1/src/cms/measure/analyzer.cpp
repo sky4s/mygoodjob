@@ -98,6 +98,11 @@ namespace cms {
 	    return intensity;
 
 	};
+
+	RGB_ptr CA210IntensityAnalyzer::getIntensity(XYZ_ptr XYZ) {
+	    throw new UnsupportedOperationException();
+	};
+
 	XYZ_ptr CA210IntensityAnalyzer::getCIEXYZ() {
 	    return XYZ;
 	};
