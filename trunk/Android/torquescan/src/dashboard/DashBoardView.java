@@ -52,8 +52,8 @@ import dashboard.util.Interpolation;
  * ship, and does an invalidate() to prompt another draw() as soon as possible
  * by the system.
  */
-class DashBoardView extends SurfaceView implements SurfaceHolder.Callback,
-		SensorEventListener {
+class DashBoardView extends SurfaceView implements SurfaceHolder.Callback/*,
+		SensorEventListener*/ {
 	// public void onSensorChanged(SensorEvent event) {
 	// // we received a sensor event. it is a good practice to check
 	// // that we received the proper event
@@ -68,7 +68,7 @@ class DashBoardView extends SurfaceView implements SurfaceHolder.Callback,
 	// }
 	// }
 
-	class LunarThread extends Thread {
+	class DashBoardThread extends Thread {
 
 		/*
 		 * UI constants (i.e. the speed & fuel bars)
@@ -103,7 +103,7 @@ class DashBoardView extends SurfaceView implements SurfaceHolder.Callback,
 		/** Handle to the surface manager object we interact with */
 		private SurfaceHolder mSurfaceHolder;
 
-		public LunarThread(SurfaceHolder surfaceHolder, Context context,
+		public DashBoardThread(SurfaceHolder surfaceHolder, Context context,
 				Handler handler) {
 			// get handles to some important objects
 			mSurfaceHolder = surfaceHolder;
@@ -610,40 +610,40 @@ class DashBoardView extends SurfaceView implements SurfaceHolder.Callback,
 	private TextView mStatusText;
 
 	/** The thread that actually draws the animation */
-	private LunarThread thread;
-	private SensorManager mSensorManager;
-	private Sensor mRotationVectorSensor;
-
-	public void setmSensorManager(SensorManager mSensorManager) {
-		this.mSensorManager = mSensorManager;
-		mRotationVectorSensor = mSensorManager
-				.getDefaultSensor(Sensor.TYPE_ROTATION_VECTOR);
-	}
-
-	public void onSensorChanged(SensorEvent event) {
-		// we received a sensor event. it is a good practice to check
-		// that we received the proper event
-		if (event.sensor.getType() == Sensor.TYPE_ROTATION_VECTOR) {
-			// convert the rotation-vector to a 4x4 matrix. the matrix
-			// is interpreted by Open GL as the inverse of the
-			// rotation-vector, which is what we want.
-			// SensorManager.getRotationMatrixFromVector(
-			// mRotationMatrix , event.values);
-			sensorValues = event.values;
-		}
-	}
+	private DashBoardThread thread;
+//	private SensorManager mSensorManager;
+//	private Sensor mRotationVectorSensor;
+//
+//	public void setmSensorManager(SensorManager mSensorManager) {
+//		this.mSensorManager = mSensorManager;
+//		mRotationVectorSensor = mSensorManager
+//				.getDefaultSensor(Sensor.TYPE_ROTATION_VECTOR);
+//	}
+//
+//	public void onSensorChanged(SensorEvent event) {
+//		// we received a sensor event. it is a good practice to check
+//		// that we received the proper event
+//		if (event.sensor.getType() == Sensor.TYPE_ROTATION_VECTOR) {
+//			// convert the rotation-vector to a 4x4 matrix. the matrix
+//			// is interpreted by Open GL as the inverse of the
+//			// rotation-vector, which is what we want.
+//			// SensorManager.getRotationMatrixFromVector(
+//			// mRotationMatrix , event.values);
+//			sensorValues = event.values;
+//		}
+//	}
 
 	private float[] sensorValues;
 
 	public void start() {
 		// enable our sensor when the activity is resumed, ask for
 		// 10 ms updates.
-		mSensorManager.registerListener(this, mRotationVectorSensor, 10000);
+//		mSensorManager.registerListener(this, mRotationVectorSensor, 10000);
 	}
 
 	public void stop() {
 		// make sure to turn our sensor off when the activity is paused
-		mSensorManager.unregisterListener(this);
+//		mSensorManager.unregisterListener(this);
 	}
 
 	// public void start() {
@@ -661,7 +661,7 @@ class DashBoardView extends SurfaceView implements SurfaceHolder.Callback,
 		holder.addCallback(this);
 
 		// create thread only; it's started in surfaceCreated()
-		thread = new LunarThread(holder, context, new Handler() {
+		thread = new DashBoardThread(holder, context, new Handler() {
 			@Override
 			public void handleMessage(Message m) {
 				mStatusText.setVisibility(m.getData().getInt("viz"));
@@ -676,7 +676,7 @@ class DashBoardView extends SurfaceView implements SurfaceHolder.Callback,
 	 * 
 	 * @return the animation thread
 	 */
-	public LunarThread getThread() {
+	public DashBoardThread getThread() {
 		return thread;
 	}
 
@@ -732,11 +732,11 @@ class DashBoardView extends SurfaceView implements SurfaceHolder.Callback,
 		}
 	}
 
-	@Override
+	/*@Override
 	public void onAccuracyChanged(Sensor sensor, int accuracy) {
 		// TODO Auto-generated method stub
 
-	}
+	}*/
 
 }
 

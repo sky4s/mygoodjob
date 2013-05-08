@@ -1,5 +1,10 @@
 package org.prowl.torquescan;
 
+import java.text.NumberFormat;
+import java.util.StringTokenizer;
+import java.util.Timer;
+import java.util.TimerTask;
+
 import org.prowl.torque.remote.ITorqueService;
 import org.prowl.torquescan.R;
 import org.prowl.torquescan.R.id;
@@ -9,13 +14,18 @@ import org.prowl.torquescan.util.SystemUiHider;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.ComponentName;
+import android.content.Intent;
 import android.content.ServiceConnection;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
+import android.os.RemoteException;
+import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.TextView;
 
 /**
  * An example full-screen activity that shows and hides the system UI (i.e.
@@ -52,6 +62,11 @@ public class PluginActivity extends Activity {
 	 */
 	private SystemUiHider mSystemUiHider;
 
+	private TextView textView;
+	private Handler handler;
+	private Timer updateTimer;
+	private NumberFormat nf;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -61,6 +76,17 @@ public class PluginActivity extends Activity {
 		final View controlsView = findViewById(R.id.fullscreen_content_controls);
 		final View contentView = findViewById(R.id.fullscreen_content);
 
+//		LayoutInflater inflater = LayoutInflater.from(this);
+//		View view = inflater.inflate(R.layout.activity_dash_board, null);
+//		textView = (TextView) view.findViewById(R.id.fullscreen_content);
+		textView = (TextView)  findViewById(R.id.fullscreen_content);
+		// Max of 2 digits for readings.
+		nf = NumberFormat.getInstance();
+		nf.setMaximumFractionDigits(2);
+		handler = new Handler();
+//		setContentView(view);
+//		setContentView(R.layout.activity_dash_board);
+	 
 		// Set up an instance of SystemUiHider to control the system UI for
 		// this activity.
 		mSystemUiHider = SystemUiHider.getInstance(this, contentView,
@@ -166,10 +192,11 @@ public class PluginActivity extends Activity {
 		mHideHandler.removeCallbacks(mHideRunnable);
 		mHideHandler.postDelayed(mHideRunnable, delayMillis);
 	}
-	
+
 	public void onExitButtonClick(View view) {
 		super.finish();
 	}
+
 	private ITorqueService torqueService;
 	/**
 	 * Bits of service code. You usually won't need to change this.
@@ -184,4 +211,105 @@ public class PluginActivity extends Activity {
 		};
 	};
 
+	@Override
+	protected void onResume() {
+		super.onResume();
+
+		// Bind to the torque service
+		Intent intent = new Intent();
+		intent.setClassName("org.prowl.torque",
+				"org.prowl.torque.remote.TorqueService");
+		boolean successfulBind = bindService(intent, connection, 0);
+
+		if (successfulBind) {
+			updateTimer = new Timer();
+			updateTimer.schedule(new TimerTask() {
+				public void run() {
+					update();
+				}
+			}, 1000, 200);
+		}
+	}
+
+	@Override
+	protected void onPause() {
+		// TODO Auto-generated method stub
+		super.onPause();
+		updateTimer.cancel();
+		unbindService(connection);
+	}
+
+	/**
+	 * Do an update
+	 */
+	public void update() {
+		// String used for code readability.
+		String text = "";
+		if (null == torqueService) {
+			return;
+		}
+		try {
+			text = text + "API Version: " + torqueService.getVersion() + "\n";
+
+			torqueService.setDebugTestMode(true);
+
+			// long[] pids = torqueService.getListOfActivePids();
+			String[] pids = torqueService.listActivePIDs();
+			String[] infos = torqueService.getPIDInformation(pids);
+			float[] values = torqueService.getPIDValues(pids);
+
+			int size = pids.length;
+			for (int x = 0; x < size; x++) {
+				// String pid = pids[x];
+				// String description=infos[x];
+				// if (description == null)
+				// description = Long.toString(pid, 16);
+				StringTokenizer tokenzier = new StringTokenizer(infos[x], ",");
+				String description = tokenzier.nextToken();
+				tokenzier.nextToken();
+				String unit = tokenzier.nextToken();
+				float value = values[x];
+
+				text = text + description + ": " + nf.format(value);
+				// text = text + description;
+				if (unit != null)
+					text += " " + unit;
+
+				text += "\n";
+			}
+
+			// for (String pid : pids) {
+			//
+			// String description = torqueService.getDescriptionForPid(pid);
+			//
+			// // If no description, display as hex.
+			// if (description == null)
+			// description = Long.toString(pid, 16);
+			//
+			// float value = torqueService.getValueForPid(pid, true);
+			// String unit = torqueService.getUnitForPid(pid);
+			//
+			// text = text + description + ": " + nf.format(value);
+			//
+			// if (unit != null)
+			// text += " " + unit;
+			//
+			// text += "\n";
+			//
+			// }
+
+		} catch (RemoteException e) {
+			Log.e(getClass().getCanonicalName(), e.getMessage(), e);
+		}
+
+		// Update the widget.
+		final String myText = text;
+		handler.post(new Runnable() {
+			public void run() {
+				textView.setText(myText);
+//				findViewById(R.layout.activity_dash_board).refreshDrawableState();
+			}
+		});
+
+	}
 }
