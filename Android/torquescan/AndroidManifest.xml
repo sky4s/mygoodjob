@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="org.prowl.torquescan"
+    package="sky4s.dashboard"
     android:versionCode="1"
     android:versionName="1.0" >
 
@@ -10,7 +10,7 @@
         android:label="@string/app_name" >
         
         <activity
-            android:name="org.prowl.torquescan.PluginActivity"
+            android:name="sky4s.dashboard.PluginActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:label="@string/title_activity_dash_board"
             android:theme="@style/FullscreenTheme" >
@@ -47,6 +47,6 @@
 
     </application>
 
-    <uses-sdk android:minSdkVersion="5" />
+    <uses-sdk android:minSdkVersion="14" />
 
 </manifest>
