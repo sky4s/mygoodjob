@@ -240,65 +240,13 @@ class DashBoardView extends SurfaceView implements SurfaceHolder.Callback/*
 		int gray = Color.rgb(128, 128, 128);
 		int dullGray = Color.rgb(64, 64, 64);
 
-		/**
-		 * Draws the ship, fuel/speed bars, and background to the provided
-		 * Canvas.
-		 */
-		private void doDraw(Canvas canvas) {
-			if (null == canvas) {
-				return;
-			}
-
-			// =================================================================
-			// 初期設定
-			// =================================================================
-			Paint paint = new Paint();
-			paint.setStyle(Paint.Style.STROKE);
-			paint.setAntiAlias(true);
-			paint.setFilterBitmap(true);
-			canvas.setDrawFilter(new PaintFlagsDrawFilter(0,
-					Paint.ANTI_ALIAS_FLAG | Paint.FILTER_BITMAP_FLAG));
-
-			// 找到短邊, 好確定圓要怎麼畫
-			int shortSideLength = Math.min(mCanvasWidth, mCanvasHeight);
-			// 找到基礎半徑(最長半徑)
-			int baseRadius = shortSideLength / 2;
-			int cx = mCanvasWidth / 2;
-			int cy = mCanvasHeight / 2;
-			// =================================================================
-
-			// =================================================================
-			// 外圈
-			// =================================================================
-			// 外圈 底層(深色)
-			int dkgrayWidth = 22;
-			paint.setColor(darkGray);
-			paint.setStrokeWidth(dkgrayWidth);
-			canvas.drawCircle(cx, cy, baseRadius - dkgrayWidth / 2, paint);
-
-			// 外圈 中間(稍淺)
-			int grayWidth = 16;
-			int grayOffset = (dkgrayWidth - grayWidth) / 2;
-			paint.setColor(middleGray);
-			paint.setStrokeWidth(grayWidth);
-			canvas.drawCircle(cx, cy, baseRadius - grayWidth / 2 - grayOffset,
-					paint);
-
-			// 外圈 階梯
-			int outterStairsCount = 0;
-			paint.setStrokeWidth(1);
-			for (int x = 0; x < outterStairsCount; x++) {
-				int color = (x % 2 == 0) ? gray : darkGray;
-				paint.setColor(color);
-				canvas.drawCircle(cx, cy, baseRadius - dkgrayWidth - 1 - x,
-						paint);
-			}
-
+		private void drawOutterGraduator(Canvas canvas, Paint paint,
+				int baseRadius, int dkgrayWidth) {
 			// 外圈 刻度
 			float[] polarValues = new float[2];
 			int midgrayWidth = 8; // 刻度的洞
 			int whiteWidth = 5;// 刻度
-			Polar2cartesianIF polar2cartesian = new MathPolar2cartesian();
+			// Polar2cartesianIF polar2cartesian = new MathPolar2cartesian();
 			int[] outterColors = new int[] { Color.RED, Color.BLACK,
 					Color.BLACK, Color.BLACK, Color.BLACK,
 					Color.WHITE,// 0
@@ -339,17 +287,134 @@ class DashBoardView extends SurfaceView implements SurfaceHolder.Callback/*
 			}
 			// =================================================================
 
+		}
+
+		private void drawOutter(Canvas canvas, Paint paint, int baseRadius,
+				int dkgrayWidth, int outterStairsCount) {
+			// =================================================================
+			// 外圈
+			// =================================================================
+			// 外圈 底層(深色)
+			// int dkgrayWidth = 22;
+			paint.setColor(darkGray);
+			paint.setStrokeWidth(dkgrayWidth);
+			canvas.drawCircle(cx, cy, baseRadius - dkgrayWidth / 2, paint);
+
+			// 外圈 中間(稍淺)
+			int grayWidth = 16;
+			int grayOffset = (dkgrayWidth - grayWidth) / 2;
+			paint.setColor(middleGray);
+			paint.setStrokeWidth(grayWidth);
+			canvas.drawCircle(cx, cy, baseRadius - grayWidth / 2 - grayOffset,
+					paint);
+
+			// 外圈 階梯
+			// int outterStairsCount = 0;
+			paint.setStrokeWidth(1);
+			for (int x = 0; x < outterStairsCount; x++) {
+				int color = (x % 2 == 0) ? gray : darkGray;
+				paint.setColor(color);
+				canvas.drawCircle(cx, cy, baseRadius - dkgrayWidth - 1 - x,
+						paint);
+			}
+		}
+
+		/**
+		 * Draws the ship, fuel/speed bars, and background to the provided
+		 * Canvas.
+		 */
+		private void doDraw(Canvas canvas) {
+			if (null == canvas) {
+				return;
+			}
+
+			// =================================================================
+			// 初期設定
+			// =================================================================
+			Paint paint = new Paint();
+			paint.setStyle(Paint.Style.STROKE);
+			paint.setAntiAlias(true);
+			paint.setFilterBitmap(true);
+			canvas.setDrawFilter(new PaintFlagsDrawFilter(0,
+					Paint.ANTI_ALIAS_FLAG | Paint.FILTER_BITMAP_FLAG));
+
+			// 找到短邊, 好確定圓要怎麼畫
+			int shortSideLength = Math.min(mCanvasWidth, mCanvasHeight);
+			// 找到基礎半徑(最長半徑)
+			int baseRadius = shortSideLength / 2;
+			cx = mCanvasWidth / 2;
+			cy = mCanvasHeight / 2;
+			// =================================================================
+
+			// =================================================================
+			// 外圈
+			// =================================================================
+			// 外圈 底層(深色)
+			int dkgrayWidth = 22;
+			// // 外圈 階梯
+			int outterStairsCount = 0;
+			drawOutter(canvas, paint, baseRadius, dkgrayWidth,
+					outterStairsCount);
+
+			// 外圈 刻度
+			drawOutterGraduator(canvas, paint, baseRadius, dkgrayWidth);
+			// float[] polarValues = new float[2];
+			// int midgrayWidth = 8; // 刻度的洞
+			// int whiteWidth = 5;// 刻度
+			// // Polar2cartesianIF polar2cartesian = new MathPolar2cartesian();
+			// int[] outterColors = new int[] { Color.RED, Color.BLACK,
+			// Color.BLACK, Color.BLACK, Color.BLACK,
+			// Color.WHITE,// 0
+			// Color.WHITE, Color.WHITE, Color.WHITE, Color.WHITE,
+			// Color.WHITE, Color.WHITE };
+			//
+			// for (int x = 0; x < 12; x++) {
+			// //
+			// =================================================================
+			// // 刻度的洞
+			// //
+			// =================================================================
+			// polarValues[1] = x * 30;
+			// polarValues[0] = baseRadius;
+			// float[] coord0 = polar2cartesian
+			// .getCartesianCoordinatesValues(polarValues);
+			// polarValues[0] = baseRadius - dkgrayWidth;
+			// float[] coord1 = polar2cartesian
+			// .getCartesianCoordinatesValues(polarValues);
+			//
+			// paint.setColor(dullGray);
+			// paint.setStrokeWidth(midgrayWidth);
+			// canvas.drawLine(coord0[0] + cx, coord0[1] + cy, coord1[0] + cx,
+			// coord1[1] + cy, paint);
+			// //
+			// =================================================================
+			//
+			// //
+			// =================================================================
+			// // 刻度
+			// //
+			// =================================================================
+			// coord0[0] = (float) Interpolation.linear(0, 1, coord0[0],
+			// coord1[0], .3);
+			// coord0[1] = (float) Interpolation.linear(0, 1, coord0[1],
+			// coord1[1], .3);
+			//
+			// paint.setColor(outterColors[x]);
+			// paint.setStrokeWidth(whiteWidth);
+			// canvas.drawLine(coord0[0] + cx, coord0[1] + cy, coord1[0] + cx,
+			// coord1[1] + cy, paint);
+			// //
+			// =================================================================
+			// }
+			// =================================================================
+
 			// =================================================================
 			// 內圈
 			// =================================================================
 			int internalRadius = baseRadius - dkgrayWidth - 1
 					- outterStairsCount;
-			int degreePerkRPM = 30;
-			int maxkRPM = 7;
-			int startDegree = 150;
-			int endDegree = degreePerkRPM * maxkRPM + startDegree;
-			int redDegree = endDegree - degreePerkRPM;
 
+			// 紅色圓弧
 			int ringWidth = 5;
 			paint.setColor(Color.RED);
 			paint.setStyle(Paint.Style.STROKE);
@@ -367,21 +432,82 @@ class DashBoardView extends SurfaceView implements SurfaceHolder.Callback/*
 			int middleGraduatorWidth = (int) (graduatorWidth * (2. / 3));
 			int middleGraduatorLength = graduatorLength / 2;
 
-			int smallGraduatorWidth = middleGraduatorWidth / 2;
-			int smallGraduatorLength = middleGraduatorLength - 2;
-
 			// 漸層
 			int innerGradientRadius = graduatorRadius - middleGraduatorLength;
+			drawInnerGradient(canvas, paint, innerGradientRadius);
+
+			// 紅色漸層
+			int redGradientWidth = 100;
+			int redGradientRadius = innerGradientRadius - redGradientWidth / 2;
+			drawRedGradien(canvas, paint, innerGradientRadius,
+					redGradientWidth, redGradientRadius);
+
+			// 字
+			int textSize = 45;
+			int distanceOfFontToLine = 4;
+			Paint fpaint = new Paint();
+			fpaint.setTypeface(Typeface.DEFAULT_BOLD);
+			fpaint.setStyle(Style.FILL);
+			fpaint.setTextSize(textSize);
+			fpaint.setTextAlign(Paint.Align.CENTER);
+
+			// 刻度
+			drawGraduator(canvas, fpaint, graduatorRadius, textSize,
+					middleGraduatorWidth, middleGraduatorLength);
+
+			// 小刻度
+			int smallGraduatorWidth = middleGraduatorWidth / 2;
+			int smallGraduatorLength = middleGraduatorLength - 2;
+			drawSmallGraduator(canvas, fpaint, graduatorRadius,
+					smallGraduatorWidth, smallGraduatorLength);
+
+			// ================================================================
+			// 轉速指示
+			// ================================================================
+			int indicatorLength = graduatorRadius - graduatorLength / 2;
+			drawIndicator(canvas, fpaint, indicatorLength);
+			// ================================================================
+			// ================================================================
+			// 檔位顯示
+			// ================================================================
+			drawGear(canvas, fpaint);
+			// ================================================================
+			// 時速顯示
+			// ================================================================
+			int kphY = drawSpeed(canvas, fpaint);
+			// ================================================================
+			// 橫線
+			// ================================================================
+			int kphBottomY = kphY + kphFontText / 2;
+			int gearTopY = cy - gearFontText / 2;
+			int lineY = (kphBottomY + gearTopY) / 2;
+			canvas.drawLine(cx - 100, lineY, cx + 100, lineY, fpaint);
+
+			// ================================================================
+			// ================================================================
+
+		}
+
+		private void drawInnerGradient(Canvas canvas, Paint paint,
+				int innerGradientRadius) {
+			// 漸層
+			// int innerGradientRadius = graduatorRadius -
+			// middleGraduatorLength;
 			RadialGradient lg = new RadialGradient(cx, cy, innerGradientRadius,
 					new int[] { Color.BLACK, Color.BLACK, dullGray },
 					new float[] { 0, 0.83f, 1 }, Shader.TileMode.CLAMP);
 			paint.setShader(lg);
 			paint.setStyle(Paint.Style.FILL);
 			canvas.drawCircle(cx, cy, innerGradientRadius, paint);
+		}
 
+		private void drawRedGradien(Canvas canvas, Paint paint,
+				int innerGradientRadius, int redGradientWidth,
+				int redGradientRadius) {
 			// 紅色漸層
-			int redGradientWidth = 100;
-			int redGradientRadius = innerGradientRadius - redGradientWidth / 2;
+			// int redGradientWidth = 100;
+			// int redGradientRadius = innerGradientRadius - redGradientWidth /
+			// 2;
 			RadialGradient redlg = new RadialGradient(cx, cy,
 					innerGradientRadius, new int[] { Color.BLACK, Color.BLACK,
 							lightRed }, new float[] { 0, 0.7f, 1 },
@@ -395,15 +521,14 @@ class DashBoardView extends SurfaceView implements SurfaceHolder.Callback/*
 					+ redGradientRadius);
 			canvas.drawArc(redoval, redDegree, degreePerkRPM, false, paint);
 			paint.setShader(null);
+		}
 
-			// 字
-			int textSize = 45;
+		private void drawGraduator(Canvas canvas, Paint fpaint,
+				int graduatorRadius, int textSize, int middleGraduatorWidth,
+				int middleGraduatorLength) {
+			int graduatorWidth = 6;
+			int graduatorLength = 14;
 			int distanceOfFontToLine = 4;
-			Paint fpaint = new Paint();
-			fpaint.setTypeface(Typeface.DEFAULT_BOLD);
-			fpaint.setStyle(Style.FILL);
-			fpaint.setTextSize(textSize);
-			fpaint.setTextAlign(Paint.Align.CENTER);
 
 			float[] fontcoord = new float[2];
 			// 刻度
@@ -422,12 +547,6 @@ class DashBoardView extends SurfaceView implements SurfaceHolder.Callback/*
 				fontcoord[1] = (float) Interpolation.linear(0, 1, coord0[0][1],
 						coord0[1][1], distanceOfFontToLine);
 
-				// 畫點, 參考用
-				// fpaint.setStrokeWidth(3);
-				// fpaint.setColor(Color.YELLOW);
-				// canvas.drawPoint(fontcoord[0] + cx, fontcoord[1] + cy,
-				// fpaint);
-
 				// 刻字
 				String text = Integer.toString(x);
 				// PointF p = getTextCenterInRect(text, textRect, fpaint);
@@ -443,12 +562,6 @@ class DashBoardView extends SurfaceView implements SurfaceHolder.Callback/*
 				fpaint.setStrokeWidth(3);
 				canvas.drawText(text, p.x, p.y, fpaint);
 
-				// 畫點, 參考用
-				// fpaint.setStrokeWidth(3);
-				// fpaint.setColor(Color.YELLOW);
-				// canvas.drawPoint(fontcoord[0] + cx, fontcoord[1] + cy,
-				// fpaint);
-
 				if (x < maxkRPM) { // 為了省掉最後一個不用畫
 					// 中刻度
 					int degree2 = degree + 15;
@@ -459,9 +572,19 @@ class DashBoardView extends SurfaceView implements SurfaceHolder.Callback/*
 				}
 				// =================================================================
 			}
-			fpaint.setStyle(Paint.Style.FILL);
+		}
 
+		int degreePerkRPM = 30;
+		int maxkRPM = 7;
+		int startDegree = 150;
+		int endDegree = degreePerkRPM * maxkRPM + startDegree;
+		int redDegree = endDegree - degreePerkRPM;
+
+		private void drawSmallGraduator(Canvas canvas, Paint fpaint,
+				int graduatorRadius, int smallGraduatorWidth,
+				int smallGraduatorLength) {
 			// 小刻度
+			fpaint.setStyle(Paint.Style.FILL);
 			for (int degree = startDegree; degree < endDegree; degree += 3) {
 				if (degree % 30 != 0 && degree % 15 != 0) {
 
@@ -473,10 +596,14 @@ class DashBoardView extends SurfaceView implements SurfaceHolder.Callback/*
 				}
 
 			}
+		}
+
+		private void drawIndicator(Canvas canvas, Paint fpaint,
+				int indicatorLength) {
 			// ================================================================
 			// 轉速指示
 			// ================================================================
-			int indicatorLength = graduatorRadius - graduatorLength / 2;
+			// int indicatorLength = graduatorRadius - graduatorLength / 2;
 			RadialGradient ig = new RadialGradient(cx, cy, indicatorLength,
 					new int[] { Color.BLACK, Color.RED }, new float[] { 0.10f,
 							1 }, Shader.TileMode.CLAMP);
@@ -494,18 +621,27 @@ class DashBoardView extends SurfaceView implements SurfaceHolder.Callback/*
 					+ cy, indicatorCoord[1][0] + cx, indicatorCoord[1][1] + cy,
 					ipaint);
 			// ================================================================
+		}
 
+		private void drawGear(Canvas canvas, Paint fpaint) {
 			// ================================================================
 			// 檔位顯示
 			// ================================================================
-			int gearFontText = 75;
+			// int gearFontText = 75;
 			// String gear = "N";
 			PointF gearCoord = getStringCoordinator(gear, gearFontText, cx, cy,
 					fpaint);
 
 			canvas.drawText(gear, gearCoord.x, gearCoord.y, fpaint);
 			// ================================================================
+		}
 
+		private int cx, cy;
+		Polar2cartesianIF polar2cartesian = new MathPolar2cartesian();
+		private int gearFontText = 75;
+		private int kphFontText = 20;
+
+		private int drawSpeed(Canvas canvas, Paint fpaint) {
 			// ================================================================
 			// 時速顯示
 			// ================================================================
@@ -517,24 +653,14 @@ class DashBoardView extends SurfaceView implements SurfaceHolder.Callback/*
 					cx, speedY, fpaint);
 			canvas.drawText(speedText, speedCoord.x, speedCoord.y, fpaint);
 
-			int kphFontText = 20;
+			// int kphFontText = 20;
 			String kph = "km/h";
 			int kphY = speedY + speedFontText / 2 + kphFontText;
 			PointF kphCoord = getStringCoordinator(kph, kphFontText, cx, kphY,
 					fpaint);
 			canvas.drawText(kph, kphCoord.x, kphCoord.y, fpaint);
 			// ================================================================
-			// ================================================================
-			// 橫線
-			// ================================================================
-			int kphBottomY = kphY + kphFontText / 2;
-			int gearTopY = cy - gearFontText / 2;
-			int lineY = (kphBottomY + gearTopY) / 2;
-			canvas.drawLine(cx - 100, lineY, cx + 100, lineY, fpaint);
-
-			// ================================================================
-			// ================================================================
-
+			return kphY;
 		}
 
 		private PointF getStringCoordinator(String text, int textSize,
