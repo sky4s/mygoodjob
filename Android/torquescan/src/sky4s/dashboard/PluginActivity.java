@@ -30,6 +30,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.TextView;
 
 /**
@@ -65,10 +67,10 @@ public class PluginActivity extends Activity {
 	/**
 	 * The instance of the {@link SystemUiHider} for this activity.
 	 */
-	private SystemUiHider mSystemUiHider;
+//	private SystemUiHider mSystemUiHider;
 
 	// private TextView textView;
-	private Handler handler;
+//	private Handler handler;
 	private Timer updateTimer;
 	private NumberFormat nf;
 
@@ -82,7 +84,12 @@ public class PluginActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
+		requestWindowFeature(Window.FEATURE_NO_TITLE);
+		getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+				WindowManager.LayoutParams.FLAG_FULLSCREEN);
+		
 		setContentView(R.layout.activity_dash_board);
+				
 
 		mDashBoardView = (DashBoardView) findViewById(R.id.dashboard);
 		mDashBoardThread = mDashBoardView.getThread();
@@ -97,75 +104,80 @@ public class PluginActivity extends Activity {
 		// Max of 2 digits for readings.
 		nf = NumberFormat.getInstance();
 		nf.setMaximumFractionDigits(2);
-		handler = new Handler();
+//		handler = new Handler();
 		// setContentView(view);
 		// setContentView(R.layout.activity_dash_board);
 
+		
+		
 		// Set up an instance of SystemUiHider to control the system UI for
 		// this activity.
-		mSystemUiHider = SystemUiHider.getInstance(this, mDashBoardView,
-				HIDER_FLAGS);
-		mSystemUiHider.setup();
-		mSystemUiHider
-				.setOnVisibilityChangeListener(new SystemUiHider.OnVisibilityChangeListener() {
-					// Cached values.
-					int mControlsHeight;
-					int mShortAnimTime;
-
-					@Override
-					@TargetApi(Build.VERSION_CODES.HONEYCOMB_MR2)
-					public void onVisibilityChange(boolean visible) {
-						if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB_MR2) {
-							// If the ViewPropertyAnimator API is available
-							// (Honeycomb MR2 and later), use it to animate
-							// the
-							// in-layout UI controls at the bottom of the
-							// screen.
-							if (mControlsHeight == 0) {
-								mControlsHeight = controlsView.getHeight();
-							}
-							if (mShortAnimTime == 0) {
-								mShortAnimTime = getResources().getInteger(
-										android.R.integer.config_shortAnimTime);
-							}
-							controlsView
-									.animate()
-									.translationY(visible ? 0 : mControlsHeight)
-									.setDuration(mShortAnimTime);
-						} else {
-							// If the ViewPropertyAnimator APIs aren't
-							// available, simply show or hide the in-layout
-							// UI
-							// controls.
-							controlsView.setVisibility(visible ? View.VISIBLE
-									: View.GONE);
-						}
-
-						if (visible && AUTO_HIDE) {
-							// Schedule a hide().
-							delayedHide(AUTO_HIDE_DELAY_MILLIS);
-						}
-					}
-				});
-
-		// Set up the user interaction to manually show or hide the system
-		// UI.
-		mDashBoardView.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View view) {
-				if (TOGGLE_ON_CLICK) {
-					mSystemUiHider.toggle();
-				} else {
-					mSystemUiHider.show();
-				}
-			}
-		});
-
-		// Upon interacting with UI controls, delay any scheduled hide()
-		// operations to prevent the jarring behavior of controls going away
-		// while interacting with the UI.
-		findViewById(R.id.dummy_button).setOnTouchListener(
-				mDelayHideTouchListener);
+//		if(true) {
+//			return;
+//		}
+//		mSystemUiHider = SystemUiHider.getInstance(this, mDashBoardView,
+//				HIDER_FLAGS);
+//		mSystemUiHider.setup();
+//		mSystemUiHider
+//				.setOnVisibilityChangeListener(new SystemUiHider.OnVisibilityChangeListener() {
+//					// Cached values.
+//					int mControlsHeight;
+//					int mShortAnimTime;
+//
+//					@Override
+//					@TargetApi(Build.VERSION_CODES.HONEYCOMB_MR2)
+//					public void onVisibilityChange(boolean visible) {
+//						if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB_MR2) {
+//							// If the ViewPropertyAnimator API is available
+//							// (Honeycomb MR2 and later), use it to animate
+//							// the
+//							// in-layout UI controls at the bottom of the
+//							// screen.
+//							if (mControlsHeight == 0) {
+//								mControlsHeight = controlsView.getHeight();
+//							}
+//							if (mShortAnimTime == 0) {
+//								mShortAnimTime = getResources().getInteger(
+//										android.R.integer.config_shortAnimTime);
+//							}
+//							controlsView
+//									.animate()
+//									.translationY(visible ? 0 : mControlsHeight)
+//									.setDuration(mShortAnimTime);
+//						} else {
+//							// If the ViewPropertyAnimator APIs aren't
+//							// available, simply show or hide the in-layout
+//							// UI
+//							// controls.
+//							controlsView.setVisibility(visible ? View.VISIBLE
+//									: View.GONE);
+//						}
+//
+//						if (visible && AUTO_HIDE) {
+//							// Schedule a hide().
+//							delayedHide(AUTO_HIDE_DELAY_MILLIS);
+//						}
+//					}
+//				});
+//
+//		// Set up the user interaction to manually show or hide the system
+//		// UI.
+//		mDashBoardView.setOnClickListener(new View.OnClickListener() {
+//			@Override
+//			public void onClick(View view) {
+//				if (TOGGLE_ON_CLICK) {
+//					mSystemUiHider.toggle();
+//				} else {
+//					mSystemUiHider.show();
+//				}
+//			}
+//		});
+//
+//		// Upon interacting with UI controls, delay any scheduled hide()
+//		// operations to prevent the jarring behavior of controls going away
+//		// while interacting with the UI.
+//		findViewById(R.id.dummy_button).setOnTouchListener(
+//				mDelayHideTouchListener);
 	}
 
 	@Override
@@ -175,7 +187,7 @@ public class PluginActivity extends Activity {
 		// Trigger the initial hide() shortly after the activity has been
 		// created, to briefly hint to the user that UI controls
 		// are available.
-		delayedHide(100);
+//		delayedHide(100);
 	}
 
 	/**
@@ -183,32 +195,32 @@ public class PluginActivity extends Activity {
 	 * system UI. This is to prevent the jarring behavior of controls going away
 	 * while interacting with activity UI.
 	 */
-	View.OnTouchListener mDelayHideTouchListener = new View.OnTouchListener() {
-		@Override
-		public boolean onTouch(View view, MotionEvent motionEvent) {
-			if (AUTO_HIDE) {
-				delayedHide(AUTO_HIDE_DELAY_MILLIS);
-			}
-			return false;
-		}
-	};
+//	View.OnTouchListener mDelayHideTouchListener = new View.OnTouchListener() {
+//		@Override
+//		public boolean onTouch(View view, MotionEvent motionEvent) {
+//			if (AUTO_HIDE) {
+//				delayedHide(AUTO_HIDE_DELAY_MILLIS);
+//			}
+//			return false;
+//		}
+//	};
 
-	Handler mHideHandler = new Handler();
-	Runnable mHideRunnable = new Runnable() {
-		@Override
-		public void run() {
-			mSystemUiHider.hide();
-		}
-	};
+//	Handler mHideHandler = new Handler();
+//	Runnable mHideRunnable = new Runnable() {
+//		@Override
+//		public void run() {
+//			mSystemUiHider.hide();
+//		}
+//	};
 
 	/**
 	 * Schedules a call to hide() in [delay] milliseconds, canceling any
 	 * previously scheduled calls.
 	 */
-	private void delayedHide(int delayMillis) {
-		mHideHandler.removeCallbacks(mHideRunnable);
-		mHideHandler.postDelayed(mHideRunnable, delayMillis);
-	}
+//	private void delayedHide(int delayMillis) {
+//		mHideHandler.removeCallbacks(mHideRunnable);
+//		mHideHandler.postDelayed(mHideRunnable, delayMillis);
+//	}
 
 	public void onExitButtonClick(View view) {
 		super.finish();
@@ -254,7 +266,7 @@ public class PluginActivity extends Activity {
 	protected void onPause() {
 		// TODO Auto-generated method stub
 		super.onPause();
-		updateTimer.cancel();
+//		updateTimer.cancel();
 		unbindService(connection);
 
 		this.mDashBoardView.stop();
@@ -272,7 +284,7 @@ public class PluginActivity extends Activity {
 		try {
 			text = text + "API Version: " + torqueService.getVersion() + "\n";
 
-			torqueService.setDebugTestMode(true);
+//			torqueService.setDebugTestMode(true);
 
 			// long[] pids = torqueService.getListOfActivePids();
 			String[] pids = torqueService.listActivePIDs();
@@ -306,6 +318,8 @@ public class PluginActivity extends Activity {
 				} else if (pid.equals("211b3")) {
 					// rpm
 					// mDashBoardThread.rpm = (int) value;
+				}else if (pid.equals("ff1001")) {
+					mDashBoardThread.speed = (int) value;
 				}
 			}
 
@@ -314,12 +328,12 @@ public class PluginActivity extends Activity {
 		}
 
 		// Update the widget.
-		final String myText = text;
-		handler.post(new Runnable() {
-			public void run() {
-				// textView.setText(myText);
-			}
-		});
+//		final String myText = text;
+//		handler.post(new Runnable() {
+//			public void run() {
+//				// textView.setText(myText);
+//			}
+//		});
 
 	}
 }
