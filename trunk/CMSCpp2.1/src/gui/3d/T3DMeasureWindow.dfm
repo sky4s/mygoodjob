@@ -14,7 +14,6 @@ object ThreeDMeasureWindow: TThreeDMeasureWindow
   FormStyle = fsStayOnTop
   KeyPreview = True
   OldCreateOrder = False
-  WindowState = wsMaximized
   OnCreate = FormCreate
   OnKeyPress = FormKeyPress
   OnPaint = FormPaint
