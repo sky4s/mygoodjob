@@ -149,7 +149,7 @@ void __fastcall TMainForm::FormCreate(TObject * Sender)
     readTCONSections();
     readSetup();
 
-
+             //MeasureWindow->Visible=true;
 
 }
 
@@ -1593,13 +1593,7 @@ void __fastcall TMainForm::RadioButton_NinthMouseMove(TObject * Sender,
 	MeasureWindow->setTestPattern(Ninth);
     }
     if (null != button) {
-	/*TPoint point = button->ClientToScreen(TPoint(X, Y));
-	   MeasureWindow->Left = point.x + 50;
-	   MeasureWindow->Top = point.y;
-	   MeasureWindow->Width = 100;
-	   MeasureWindow->Height = 100;
-	   MeasureWindow->WindowState = wsNormal;
-	   MeasureWindow->Visible = true; */
+
     }
 }
 
@@ -1610,7 +1604,7 @@ void __fastcall TMainForm::RadioButton_NinthMouseMove(TObject * Sender,
 void __fastcall TMainForm::GroupBox4MouseMove(TObject * Sender, TShiftState Shift, int X, int Y)
 {
     MeasureWindow->Visible = false;
-    MeasureWindow->WindowState = wsMaximized;
+    //MeasureWindow->WindowState = wsMaximized;
 }
 
 //---------------------------------------------------------------------------
@@ -1619,7 +1613,7 @@ void __fastcall TMainForm::GroupBox4MouseMove(TObject * Sender, TShiftState Shif
 void __fastcall TMainForm::TabSheet1MouseMove(TObject * Sender, TShiftState Shift, int X, int Y)
 {
     MeasureWindow->Visible = false;
-    MeasureWindow->WindowState = wsMaximized;
+    //MeasureWindow->WindowState = wsMaximized;
 }
 
 //---------------------------------------------------------------------------
