@@ -228,12 +228,14 @@ namespace i2c {
 	}
     };
 
-    void TCONControl::setAgingMode(bool enable) {
+    void TCONControl::setTconAgingMode(bool enable) {
         //1. AG_PTN_SEL
         //2. AG_MODE_SEL
+        //3. AGBS_DEBUG
         setBitData(parameter->agingPatternSelectAddress, parameter->agingPatternSelectStartBit,
                    parameter->agingPatternSelectEndBit, parameter->agingPatternSelectValue);
         setSingleBitData(parameter->agingModeSelectAddress, parameter->agingModeSelectBit, enable);
+        setSingleBitData(parameter->agingAGBSDebugAddress, parameter->agingAGBSDebugBit, enable);
     };
 
     unsigned char TCONControl::readByte(int dataAddress) {
@@ -273,6 +275,9 @@ namespace i2c {
     }
     const MaxValue & TCONControl::getLUTBit() {
 	return parameter->lutBit;
+    }
+    AnsiString TCONControl::getLUTType() {
+        return parameter->dgLUTType;
     }
 
     bptr < ByteBuffer > TCONControl::getDGLut10BitByteBuffer(RGB_vector_ptr rgbVector) {
@@ -337,7 +342,7 @@ namespace i2c {
 	}} return data;
     };
 
-    bptr < ByteBuffer > TCONControl::getDGLut12BitByteBuffer(RGB_vector_ptr rgbVector) {
+    bptr < ByteBuffer > TCONControl::getDGLut12BitByteBufferType1(RGB_vector_ptr rgbVector) {
 	int size = rgbVector->size();
 	if (257 != size) {
 	    if (size == 256) {
@@ -381,12 +386,67 @@ namespace i2c {
 	}
 	return data;
     };
+
+    bptr < ByteBuffer > TCONControl::getDGLut12BitByteBufferType2(RGB_vector_ptr rgbVector) {
+	int size = rgbVector->size();
+	if (257 != size) {
+	    if (size == 256) {
+		rgbVector->push_back((*rgbVector)[size - 1]);
+		size = rgbVector->size();
+	    } else {
+		throw IllegalArgumentException("rgbVector->size() != 257");
+	    }
+	}
+	int halfSize = size / 2;
+	int remainder = size % 2;
+	int singleChannelDataSize = halfSize * 3 + (remainder ? 2 : 0);
+	int totalDataSize = singleChannelDataSize * 3;
+	bptr < ByteBuffer > data(new ByteBuffer(totalDataSize));
+	int index = 0;
+
+	foreach(const Channel & ch, *Channel::RGBChannel) {
+	    for (int x = 0; x < halfSize; x++) {
+		int d0 = static_cast < int >((*rgbVector)[x * 2]->getValue(ch, MaxValue::Int12Bit));
+		int d1 =
+		    static_cast < int >((*rgbVector)[x * 2 + 1]->getValue(ch, MaxValue::Int12Bit));
+		int_array d0lmh = getLMHData(d0);
+		int_array d1lmh = getLMHData(d1);
+
+		int c0 = d0lmh[1] + (d0lmh[2] << 4);
+		int c1 = d1lmh[2] + (d0lmh[0] << 4);
+		int c2 = d1lmh[0] + (d1lmh[1] << 4);
+		(*data)[index++] = c0;
+		(*data)[index++] = c1;
+		(*data)[index++] = c2;
+	    } if (remainder) {
+		int d0 =
+		    static_cast <
+		    int >((*rgbVector)[rgbVector->size() - 1]->getValue(ch, MaxValue::Int12Bit));
+		//int_array dlmh = getLMHData(d0);
+                //int c0 = dlmh[1] + (dlmh[2] << 4);
+		//int c1 = dlmh[0] << 4;
+
+                //第257筆Data，為13 bit，做另外處理
+                int c0 = d0 >> 5;         //取前面msb : 8bit
+                int c1 = (d0 & 31) << 3;  //取後面lsb : 5bit 置於msb
+
+		(*data)[index++] = c0;
+		(*data)[index++] = c1;
+	    }
+	}
+	return data;
+    };
+
     void TCONControl::setDGLut(RGB_vector_ptr rgbVector) {
 	const MaxValue & lutBit = getLUTBit();
+        AnsiString lutType = getLUTType();
 	bptr < ByteBuffer > data;
 
 	if (lutBit == MaxValue::Int12Bit) {
-	    data = getDGLut12BitByteBuffer(rgbVector);
+            if(lutType == "12bitType1")        //Type define rule in "tconcontrol.h"
+	        data = getDGLut12BitByteBufferType1(rgbVector);
+            else if(lutType == "12bitType2")
+                data = getDGLut12BitByteBufferType2(rgbVector);
 	} else if (lutBit == MaxValue::Int10Bit) {
 	    data = getDGLut10BitByteBuffer(rgbVector);
 	}
@@ -425,7 +485,7 @@ namespace i2c {
 	bytedata = bytedata | data << bit;
 	writeByte(dataAddress, bytedata);
     };
-                                 //1.EEPROM位址  2.開始bit  3.結束bit  4. 寫入值
+                                 //1.EEPROM位址  2.開始bit  3.結束bit  4. 寫入值    byBS+
     void TCONControl::setBitData(int dataAddress, unsigned char Startbit,
                                  unsigned char Endbit, unsigned char data) {
 	unsigned char bytedata = readByte(dataAddress);

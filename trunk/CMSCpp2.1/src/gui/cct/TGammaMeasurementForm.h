@@ -40,8 +40,6 @@ class TGammaMeasurementForm:public TForm {
     TCheckBox *CheckBox_B;
     TButton *Button_Measure;
     TGroupBox *GroupBox_GrayScale;
-    TRadioButton *RadioButton_GrayScale10Bit;
-    TRadioButton *RadioButton_GrayScale12Bit;
     TButton *Button_LoadDGTable;
     TOpenDialog *OpenDialog1;
     TCheckBox *CheckBox_DGLoaded;
@@ -68,8 +66,14 @@ class TGammaMeasurementForm:public TForm {
     TRadioButton *RadioButton_Custom8Bit;
     TLabel *Label7;
     TEdit *Edit_CustormPatternCount;
-    TCheckBox *CheckBox_10BitInMeasurement;
     TLabel *Label8;
+        TButton *Button1;
+        TLabel *Label9;
+        TRadioGroup *RadioGroup_10BitInMeasurement;
+        TLabel *Label10;
+        TComboBox *ComboBox_AgingMeasureStep;
+        TRadioGroup *RadioGroup_GrayScaleBit;
+        TButton *Button2;
     void __fastcall Button_MeasureClick(TObject * Sender);
     void __fastcall FormShow(TObject * Sender);
     void __fastcall TOutputFileFrame1Button_BrowseDirClick(TObject * Sender);
@@ -80,7 +84,9 @@ class TGammaMeasurementForm:public TForm {
     void __fastcall RadioButton_TCONInputGrayScaleClick(TObject * Sender);
     void __fastcall Button_LoadPatternClick(TObject * Sender);
     void __fastcall CheckBox_CustomLoadedClick(TObject * Sender);
-    void __fastcall CheckBox_10BitInMeasurementClick(TObject * Sender);
+        void __fastcall Button1Click(TObject *Sender);
+        void __fastcall RadioGroup_10BitInMeasurementClick(TObject *Sender);
+        void __fastcall Button2Click(TObject *Sender);
   private:			// User declarations
      bptr < cms::lcd::BitDepthProcessor > bitDepth;
      bptr < cms::lcd::BitDepthProcessor > dgLutBitDepth;
@@ -90,7 +96,7 @@ class TGammaMeasurementForm:public TForm {
 		     const std::string & filename);
      bptr < cms::measure::MeterMeasurement > mm;
      bptr < cms::lcd::calibrate::ComponentFetcher > fetcher;
-    //bptr < cms::measure::IntensityAnalyzerIF > analyzer;
+    //bptr < cms::measure::IntensityAnalyzerIF > analyzer; 
     RGB_vector_ptr dgcodeTable;
     RGB_vector_ptr grayScaleTable;
     RGB_vector_ptr customTable;

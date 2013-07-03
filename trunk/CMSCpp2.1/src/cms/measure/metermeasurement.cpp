@@ -266,85 +266,97 @@ namespace cms {
 						  bptr <
 						  cms::lcd::calibrate::
 						  MeasureCondition > measureCondition) {
-
-	    RGB_vector_ptr trueMeasureCode(new RGB_vector());
-	    foreach(RGB_ptr & c, *measureCondition->getRGBMeasureCode()) {
-		RGB_ptr rgb;
-		if (channel == Channel::W) {
-		    rgb = c;
-		} else {
-		    rgb = RGB_ptr(new RGBColor(c->getMaxValue()));
-		    rgb->setValue(channel, c->getValue(channel));
-		    if (null != background) {
-			foreach(const Channel & ch, *Channel::RGBChannel) {
-			    if (ch != channel) {
-				int bgcolor = (*background)[ch.getArrayIndex()];
-				rgb->setValue(ch, bgcolor);
-			    }
-			}
-		    }
-		}
-		trueMeasureCode->push_back(rgb);
-	    };
-	    bptr < MeasureCondition > newMeasureCondition(new MeasureCondition(trueMeasureCode));
-	    return rampMeasure(newMeasureCondition);
+            if (!isAgingMode()) { 
+                RGB_vector_ptr trueMeasureCode(new RGB_vector());
+                foreach(RGB_ptr & c, *measureCondition->getRGBMeasureCode()) {
+                    RGB_ptr rgb;
+                    if (channel == Channel::W) {
+                        rgb = c;
+                    } else {
+                        rgb = RGB_ptr(new RGBColor(c->getMaxValue()));
+                        rgb->setValue(channel, c->getValue(channel));
+                        if (null != background) {
+                            foreach(const Channel & ch, *Channel::RGBChannel) {
+                                if (ch != channel) {
+                                    int bgcolor = (*background)[ch.getArrayIndex()];
+                                    rgb->setValue(ch, bgcolor);
+                                }
+                            }
+                        }
+                    }
+                    trueMeasureCode->push_back(rgb);
+                };
+                bptr < MeasureCondition > newMeasureCondition(new MeasureCondition(trueMeasureCode));
+                return rampMeasure(newMeasureCondition);
+            } else {
+                return rampMeasure(measureCondition);
+            }
 	};
 	Patch_vector_ptr MeasureTool::rampMeasure(bptr < cms::lcd::calibrate::MeasureCondition >
 						  measureCondition) {
-	    RGB_vector_ptr rgbMeasureCode = measureCondition->getRGBMeasureCode();
-	    bool is10BitInMeasurement = measureCondition->get10BitInMeasurement();
-	    if (inverseMeasure) {
-		rgbMeasureCode = RGBVector::reverse(rgbMeasureCode);
-	    }
 
 	    Patch_vector_ptr vector(new Patch_vector());
+            int counter = 0;
 
 	    //for AgingMode byBS+
 	    if (isAgingMode()) {
-		if (true) {
-		    MeasureWindow->setAgingEnable(rgbMeasureCode);	//TCON寫入DG LUT，並開啟DG
-		}
+                bool is10BitInMeasurement = measureCondition->get10BitInMeasurement();
+                bool NullDgCodeTable = measureCondition->getNullDgCodeTable();
+                int AgingMeasureStep = measureCondition->getAgingMeasureStep();
 
-		int step = is10BitInMeasurement ? 1 : 4;
-		for (int x = 0; x < 1024; x += step) {	//順序?
-		    RGB_ptr rgb(new RGBColor(x, x, x));
+                if(NullDgCodeTable != true) {  //有讀入DG LUT
+                    RGB_vector_ptr rgbMeasureCode = measureCondition->getRGBMeasureCode();
+                    if (inverseMeasure) {
+                        rgbMeasureCode = RGBVector::reverse(rgbMeasureCode);
+                    }
+	            MeasureWindow->setAgingEnable(rgbMeasureCode);	//TCON寫入DG LUT，並開啟DG
+                }
+
+		int inputBitShift = is10BitInMeasurement ? 1 : 4;
+                int start = is10BitInMeasurement ? 1023 : 1020;
+                int step = AgingMeasureStep*inputBitShift;
+                int graylevel;
+		for (graylevel = start; graylevel >= 0; graylevel -= step) {
+
+
+		    RGB_ptr rgb(new RGBColor(graylevel, graylevel, graylevel));
 		    Patch_ptr patch = mm->measure(rgb, rgb->toString());
 		    vector->push_back(patch);
+
+                    /*if(counter == 0 || counter == 127 || counter == 255)
+                    {
+                         Sleep(0);
+                    }*/
+                    counter++;
+
 		    if (true == stop) {
 			stop = false;
 			mm->setMeasureWindowsVisible(false);
 			return nil_Patch_vector_ptr;
 		    }
 		}
+                if (graylevel > 0) {
+		    RGB_ptr rgb(new RGBColor(0, 0, 0));
+		    Patch_ptr patch = mm->measure(rgb, rgb->toString());
+		    vector->push_back(patch);
+                }
 
-		/*if (is10BitInMeasurement) {
-		   for (int x = 0; x < 1024; x++) {     //順序?
-		   RGB_ptr rgb(new RGBColor(x, x, x));
-		   Patch_ptr patch = mm->measure(rgb, rgb->toString());
-		   vector->push_back(patch);
-		   if (true == stop) {
-		   stop = false;
-		   mm->setMeasureWindowsVisible(false);
-		   return nil_Patch_vector_ptr;
-		   }
-		   }
-		   } else {
-		   for (int x = 0; x < 1024; x += 4) {
-		   RGB_ptr rgb(new RGBColor(x, x, x));
-		   Patch_ptr patch = mm->measure(rgb, rgb->toString());
-		   vector->push_back(patch);
-		   if (true == stop) {
-		   stop = false;
-		   mm->setMeasureWindowsVisible(false);
-		   return nil_Patch_vector_ptr;
-		   }
-		   }
-		   } */
 	    } else {
+                RGB_vector_ptr rgbMeasureCode = measureCondition->getRGBMeasureCode();
+                if (inverseMeasure) {
+                    rgbMeasureCode = RGBVector::reverse(rgbMeasureCode);
+                }
 		//Patch_vector_ptr vector(new Patch_vector());
 		foreach(RGB_ptr rgb, *rgbMeasureCode) {
 		    Patch_ptr patch = mm->measure(rgb, rgb->toString());
 		    vector->push_back(patch);
+
+                    if(counter == 0 || counter == 127 || counter == 255)
+                    {
+                         Sleep(0);
+                    }
+                    counter++;
+
 		    if (true == stop) {
 			stop = false;
 			mm->setMeasureWindowsVisible(false);

@@ -1,6 +1,6 @@
 object I2CTestForm: TI2CTestForm
-  Left = 338
-  Top = 221
+  Left = 288
+  Top = 176
   Width = 234
   Height = 300
   BiDiMode = bdRightToLeft

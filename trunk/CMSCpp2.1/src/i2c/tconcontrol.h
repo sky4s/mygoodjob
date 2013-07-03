@@ -39,9 +39,10 @@ namespace i2c {
 	bool setDirectGammaRGB(int r, int g, int b);
         bool setAgingModeRGB(int r, int g, int b);
 	void setGammaTest(bool enable);
-        void setAgingMode(bool enable);
+        void setTconAgingMode(bool enable);
 
 	const Dep::MaxValue & getLUTBit();
+        AnsiString getLUTType();
 	void setDGLut(RGB_vector_ptr rgbVector);
 	RGB_vector_ptr getDGLut();
 	void setDG(bool enable);
@@ -66,7 +67,12 @@ namespace i2c {
 	static bptr < cms::util::ByteBuffer > getDGLut10BitByteBuffer(RGB_vector_ptr rgbVector);
 	static bptr < cms::util::ByteBuffer >
 	    getDGLut10BitByteBufferType2(RGB_vector_ptr rgbVector);
-	static bptr < cms::util::ByteBuffer > getDGLut12BitByteBuffer(RGB_vector_ptr rgbVector);
+
+        //DGLut 12Bit Type        Type1: M0 L0      Type2: H0 M0
+        //0000 | 0000 | 0000             L1 H0             L0 H1
+        // H      M       L              H1 M1             M1 L1
+	static bptr < cms::util::ByteBuffer > getDGLut12BitByteBufferType1(RGB_vector_ptr rgbVector);
+        static bptr < cms::util::ByteBuffer > getDGLut12BitByteBufferType2(RGB_vector_ptr rgbVector);
     };
 };
 

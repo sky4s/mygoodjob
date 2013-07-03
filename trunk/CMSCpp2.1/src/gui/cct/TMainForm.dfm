@@ -1,7 +1,7 @@
 object MainForm: TMainForm
-  Left = 222
-  Top = 187
-  Width = 895
+  Left = 18
+  Top = 135
+  Width = 1017
   Height = 489
   Caption = 'CCT Adjustment '
   Color = clBtnFace
@@ -833,9 +833,9 @@ object MainForm: TMainForm
       8C30C1EEC7CF8107BD09F7630853E89B70F76338C245858C30FFD9}
   end
   object PageControl1: TPageControl
-    Left = 7
+    Left = -1
     Top = 13
-    Width = 706
+    Width = 826
     Height = 348
     ActivePage = TabSheet1
     TabIndex = 0
@@ -846,10 +846,17 @@ object MainForm: TMainForm
       object GroupBox2: TGroupBox
         Left = 1
         Top = 7
-        Width = 193
-        Height = 130
+        Width = 208
+        Height = 146
         Caption = 'Input Source'
         TabOrder = 0
+        object Label29: TLabel
+          Left = 24
+          Top = 80
+          Width = 150
+          Height = 13
+          Caption = '(For 10bit gamma measurement)'
+        end
         object RadioButton_PC: TRadioButton
           Left = 7
           Top = 20
@@ -876,7 +883,7 @@ object MainForm: TMainForm
         end
         object RadioButton_PCTCON_NB: TRadioButton
           Left = 7
-          Top = 104
+          Top = 120
           Width = 178
           Height = 19
           Hint = 'For De-Hook with NB panel use'
@@ -889,7 +896,7 @@ object MainForm: TMainForm
         end
         object RadioButton_PCTCON_TV: TRadioButton
           Left = 7
-          Top = 84
+          Top = 100
           Width = 178
           Height = 19
           Hint = 'For feedback with no "Direct Gamma" use'
@@ -903,15 +910,15 @@ object MainForm: TMainForm
         object RadioButton_TCON_aging: TRadioButton
           Left = 7
           Top = 64
-          Width = 122
+          Width = 198
           Height = 17
-          Caption = 'T-CON (Aging mode)'
+          Caption = 'T-CON (Aging Mode)'
           TabOrder = 4
           OnClick = RadioButton_TCON_agingClick
         end
       end
       object GroupBox_CHSetting: TGroupBox
-        Left = 392
+        Left = 408
         Top = 7
         Width = 129
         Height = 42
@@ -937,7 +944,7 @@ object MainForm: TMainForm
         end
       end
       object GroupBox4: TGroupBox
-        Left = 200
+        Left = 216
         Top = 7
         Width = 185
         Height = 266
@@ -1127,7 +1134,7 @@ object MainForm: TMainForm
         object GroupBox_Card: TGroupBox
           Left = 1
           Top = 7
-          Width = 208
+          Width = 200
           Height = 74
           Caption = 'Card Select'
           Color = clBtnFace
@@ -1166,7 +1173,7 @@ object MainForm: TMainForm
         object GroupBox_DeviceAddress: TGroupBox
           Left = 2
           Top = 81
-          Width = 207
+          Width = 199
           Height = 98
           Caption = 'Device Address'
           TabOrder = 1
@@ -1254,9 +1261,9 @@ object MainForm: TMainForm
           OnClick = Button_ConnectClick
         end
         object GroupBox7: TGroupBox
-          Left = 216
+          Left = 208
           Top = 7
-          Width = 473
+          Width = 601
           Height = 306
           Caption = 'TCON Type'
           TabOrder = 3
@@ -1333,23 +1340,23 @@ object MainForm: TMainForm
               object Label15: TLabel
                 Left = 7
                 Top = 44
-                Width = 65
+                Width = 24
                 Height = 13
-                Caption = 'LUT Type(bit)'
+                Caption = 'Type'
               end
               object ComboBox_DGLUTType: TComboBox
-                Left = 78
+                Left = 40
                 Top = 44
-                Width = 43
+                Width = 81
                 Height = 21
                 ItemHeight = 13
-                ItemIndex = 0
                 TabOrder = 0
-                Text = '10'
+                Text = '10bit'
                 OnChange = ComboBox_DGLUTTypeChange
                 Items.Strings = (
-                  '10'
-                  '12')
+                  '10bit'
+                  '12bitType1'
+                  '12bitType2')
               end
               object Edit_DGLUTAddress: TEdit
                 Left = 78
@@ -1452,7 +1459,8 @@ object MainForm: TMainForm
                   '12403Type'
                   '62301Type'
                   '1H501Type'
-                  '12409Type')
+                  '12409Type'
+                  '12409Aging')
               end
             end
             object GroupBox_HideEN: TGroupBox
@@ -1568,14 +1576,14 @@ object MainForm: TMainForm
           object GroupBox_AgingMode: TGroupBox
             Left = 312
             Top = 40
-            Width = 153
+            Width = 281
             Height = 257
             Caption = 'Aging Mode'
             TabOrder = 5
             object GroupBox_AgingModeSel: TGroupBox
               Left = 8
-              Top = 13
-              Width = 138
+              Top = 85
+              Width = 129
               Height = 66
               Caption = 'MODE_SEL'
               TabOrder = 0
@@ -1594,7 +1602,7 @@ object MainForm: TMainForm
                 Caption = 'Bit'
               end
               object Edit_AgingModeSelectAddress: TEdit
-                Left = 88
+                Left = 80
                 Top = 13
                 Width = 38
                 Height = 21
@@ -1602,7 +1610,7 @@ object MainForm: TMainForm
                 Text = '40'
               end
               object Edit_AgingModeSelectBit: TEdit
-                Left = 88
+                Left = 80
                 Top = 39
                 Width = 38
                 Height = 21
@@ -1612,8 +1620,8 @@ object MainForm: TMainForm
             end
             object GroupBox_AgingPatternSel: TGroupBox
               Left = 9
-              Top = 80
-              Width = 138
+              Top = 152
+              Width = 128
               Height = 97
               Caption = 'PTN_SEL'
               TabOrder = 1
@@ -1632,7 +1640,7 @@ object MainForm: TMainForm
                 Caption = 'Bit'
               end
               object Label25: TLabel
-                Left = 72
+                Left = 64
                 Top = 72
                 Width = 7
                 Height = 13
@@ -1646,7 +1654,7 @@ object MainForm: TMainForm
                 Caption = 'Value (dec)'
               end
               object Edit_AgingPatternSelectAddress: TEdit
-                Left = 88
+                Left = 80
                 Top = 14
                 Width = 38
                 Height = 21
@@ -1662,7 +1670,7 @@ object MainForm: TMainForm
                 Text = '0'
               end
               object Edit_AgingPatternSelectEndBit: TEdit
-                Left = 88
+                Left = 80
                 Top = 66
                 Width = 38
                 Height = 21
@@ -1670,7 +1678,7 @@ object MainForm: TMainForm
                 Text = '4'
               end
               object Edit_AgingPatternSelectValue: TEdit
-                Left = 88
+                Left = 80
                 Top = 40
                 Width = 38
                 Height = 21
@@ -1679,9 +1687,9 @@ object MainForm: TMainForm
               end
             end
             object GroupBox_AgingRasterGray: TGroupBox
-              Left = 8
-              Top = 184
-              Width = 138
+              Left = 144
+              Top = 16
+              Width = 129
               Height = 65
               Caption = 'RASTER_GRAY'
               TabOrder = 2
@@ -1700,7 +1708,7 @@ object MainForm: TMainForm
                 Caption = 'Address (hex)'
               end
               object ComboBox_AgingType: TComboBox
-                Left = 48
+                Left = 40
                 Top = 40
                 Width = 84
                 Height = 21
@@ -1716,12 +1724,50 @@ object MainForm: TMainForm
                   '12409Aging')
               end
               object Edit_AgingRasterGrayAddress: TEdit
-                Left = 88
+                Left = 80
                 Top = 16
                 Width = 38
                 Height = 21
                 TabOrder = 1
                 Text = '41'
+              end
+            end
+            object GroupBox_AgingAGBSDebug: TGroupBox
+              Left = 8
+              Top = 16
+              Width = 129
+              Height = 65
+              Caption = 'AGBS_DEBUG'
+              TabOrder = 3
+              object Label27: TLabel
+                Left = 8
+                Top = 16
+                Width = 64
+                Height = 13
+                Caption = 'Address (hex)'
+              end
+              object Label28: TLabel
+                Left = 8
+                Top = 40
+                Width = 12
+                Height = 13
+                Caption = 'Bit'
+              end
+              object Edit_AgingAGBSDebugAddress: TEdit
+                Left = 80
+                Top = 16
+                Width = 41
+                Height = 21
+                TabOrder = 0
+                Text = 'FE8'
+              end
+              object Edit_AgingAGBSDebugBit: TEdit
+                Left = 80
+                Top = 40
+                Width = 41
+                Height = 21
+                TabOrder = 1
+                Text = '0'
               end
             end
           end
@@ -1740,7 +1786,7 @@ object MainForm: TMainForm
         object GroupBox_USBSetting: TGroupBox
           Left = 2
           Top = 179
-          Width = 207
+          Width = 199
           Height = 105
           Caption = 'USB Setting'
           TabOrder = 4
@@ -1748,7 +1794,7 @@ object MainForm: TMainForm
           object RadioGroup_USBPower: TRadioGroup
             Left = 8
             Top = 16
-            Width = 193
+            Width = 185
             Height = 41
             Caption = 'Power'
             Columns = 3
@@ -1762,7 +1808,7 @@ object MainForm: TMainForm
           object RadioGroup_Speed: TRadioGroup
             Left = 8
             Top = 56
-            Width = 193
+            Width = 185
             Height = 41
             Caption = 'Speed'
             Columns = 3
@@ -1798,8 +1844,8 @@ object MainForm: TMainForm
   end
   object StatusBar1: TStatusBar
     Left = 0
-    Top = 414
-    Width = 887
+    Top = 412
+    Width = 1001
     Height = 19
     Color = clWhite
     Panels = <
@@ -1817,7 +1863,7 @@ object MainForm: TMainForm
     SimplePanel = False
   end
   object GroupBox_BitDepth: TGroupBox
-    Left = 714
+    Left = 834
     Top = 31
     Width = 163
     Height = 202
@@ -1946,6 +1992,7 @@ object MainForm: TMainForm
     end
   end
   object MainMenu1: TMainMenu
+    Left = 176
     object MatrixCalibration1: TMenuItem
       Caption = 'Matrix Calibration'
       OnClick = MatrixCalibration1Click
