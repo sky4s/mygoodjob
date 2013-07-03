@@ -16,6 +16,7 @@
 #include <ExtCtrls.hpp>
 #include <jpeg.hpp>
 #include <ComCtrls.hpp>
+#include <Buttons.hpp>
 //本項目內頭文件
 #include <i2c/i2ccontrol.h>
 #include <cms/measure/meter.h>	//20120302
@@ -164,6 +165,12 @@ class TMainForm:public TForm {
         TEdit *Edit_AgingPatternSelectValue;
         TLabel *Label25;
         TLabel *Label26;
+        TGroupBox *GroupBox_AgingAGBSDebug;
+        TLabel *Label27;
+        TLabel *Label28;
+        TEdit *Edit_AgingAGBSDebugAddress;
+        TEdit *Edit_AgingAGBSDebugBit;
+        TLabel *Label29;
     void __fastcall About1Click(TObject * Sender);
     void __fastcall Exit1Click(TObject * Sender);
     void __fastcall TargetWhite1Click(TObject * Sender);
@@ -261,6 +268,7 @@ class TMainForm:public TForm {
     void readTCONSections();
     String tconFilename;
     void initTCONFile();
+    void setComboBoxTCONType();   //用來控制選Aging mode時，出現哪些tcon選項。
     const static char *CUSTOM;
     //==========================================================================
 

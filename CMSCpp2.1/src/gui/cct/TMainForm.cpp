@@ -145,9 +145,9 @@ void __fastcall TMainForm::FormCreate(TObject * Sender)
     bitDepth = bptr < BitDepthProcessor > (new BitDepthProcessor(8, 12, 8));
 
     //初始化參數設定
-    initTCONFile();
-    readTCONSections();
-    readSetup();
+    initTCONFile();              //Setting all TCON as defult value
+    readTCONSections();          //Setting ComboBox_TCONType context
+    readSetup();                 //Read cctv3.ini (i2c card/TCONnum/TCONtype)
 
              //MeasureWindow->Visible=true;
 
@@ -203,6 +203,10 @@ void TMainForm::readTCONSetup(String filename, String section)
     bool agingFunc = ini->ReadBool(section, "AgingFunc", false);
     if (agingFunc) {
         GroupBox_AgingMode->Visible = true;
+        this->Edit_AgingAGBSDebugAddress->Text =
+            ini->ReadString(section, "AgingAGBSDebugAddress", "FE8");
+        this->Edit_AgingAGBSDebugBit->Text =
+            ini->ReadInteger(section, "AgingAGBSDebugBit", -1);
         this->Edit_AgingModeSelectAddress->Text =
             ini->ReadString(section, "AgingModeSelectAddress", "40");
         this->Edit_AgingModeSelectBit->Text =
@@ -242,7 +246,19 @@ void TMainForm::readTCONSetup(String filename, String section)
     this->Edit_DGEnableAddress->Text = ini->ReadString(section, "DigitalGammaEnableAddress", "??");
     this->Edit_DGEnableBit->Text = ini->ReadInteger(section, "DigitalGammaEnableBit", -1);
     this->Edit_DGLUTAddress->Text = ini->ReadString(section, "DigitalGammaLUTAddress", "??");
-    int lut = ini->ReadInteger(section, "DigitalGammaLUTType", 10);
+    String lutType = ini->ReadString(section, "DigitalGammaLUTType", "N/A");
+    if (lutType == "10bit") {
+        ComboBox_DGLUTType->ItemIndex = 0;
+        RadioButton_Lut10->Checked = true;
+    } else if (lutType == "12bitType1") {
+        ComboBox_DGLUTType->ItemIndex = 1;
+        RadioButton_Lut12->Checked = true;
+    } else if (lutType == "12bitType2") {
+        ComboBox_DGLUTType->ItemIndex = 2;
+        RadioButton_Lut12->Checked = true;
+    }
+
+    /*int lut = ini->ReadInteger(section, "DigitalGammaLUTType", 10);
     this->ComboBox_DGLUTType->Text = lut;
     switch (lut) {
     case 10:
@@ -251,7 +267,7 @@ void TMainForm::readTCONSetup(String filename, String section)
     case 12:
 	RadioButton_Lut12->Checked = true;
 	break;
-    }
+    }*/
 
     if (section != "Custom") {
 
@@ -295,7 +311,7 @@ void TMainForm::writeTCONCustomSetup()
 	ini->WriteString(CUSTOM, "DigitalGammaEnableAddress", this->Edit_DGEnableAddress->Text);
 	ini->WriteInteger(CUSTOM, "DigitalGammaEnableBit", this->Edit_DGEnableBit->Text.ToInt());
 	ini->WriteString(CUSTOM, "DigitalGammaLUTAddress", this->Edit_DGLUTAddress->Text);
-	ini->WriteInteger(CUSTOM, "DigitalGammaLUTType", ComboBox_DGLUTType->Text.ToInt());
+	ini->WriteString(CUSTOM, "DigitalGammaLUTType", this->ComboBox_DGLUTType->Text);
 
 	bool directGamma = CheckBox_DirectGamma->Checked;
 	//CheckBox_GammaTest->Checked = gammaTest;
@@ -729,6 +745,11 @@ void __fastcall TMainForm::RadioButton_TCON_directGammaClick(TObject * Sender)
 {
     GroupBox_Pattern->Enabled = false;
     this->Panel_TCON->Visible = true;
+    this->TargetWhite1->Enabled = true;
+    this->CCTLUT1->Enabled = true;
+    this->GammaAdj1->Enabled = true;
+    ComboBox_TCONType->Clear();
+    readTCONSections();
     ComboBox_TCONTypeChange(this);
     ShowMessage
 	("Please Turn On DG and FRC for Measurement when \"Direct Gamma\" is selected!!!\n(當選擇Direct Gamma時, 請打開DG以及FRC!!)");
@@ -742,6 +763,10 @@ void __fastcall TMainForm::RadioButton_PCClick(TObject * Sender)
     GroupBox_Pattern->Enabled = true;
     this->Panel_TCON->Visible = false;
     bitDepth->setDirectGamma(false);
+    bitDepth->setAgingMode(false);
+    this->TargetWhite1->Enabled = true;
+    this->CCTLUT1->Enabled = true;
+    this->GammaAdj1->Enabled = true;
     MeasureWindow->setTCONControlOff();
     control.reset();
     Button_Connect->Enabled = true;
@@ -811,7 +836,11 @@ void __fastcall TMainForm::Button_ConnectClick(TObject * Sender)
 	int dgEnableAddress = StrToInt("0x" + Edit_DGEnableAddress->Text);
 	int dgEnableBit = this->Edit_DGEnableBit->Text.ToInt();
 	int dgLUTAddress = StrToInt("0x" + Edit_DGLUTAddress->Text);
-	int dgLUTType = ComboBox_DGLUTType->Text.ToInt();
+        int DGLUTTypeIndex = this->ComboBox_DGLUTType->ItemIndex;
+
+	//int dgLUTType = (DGLUTTypeIndex == 1) ? 10 : 12;
+        int dgLUTBit = (DGLUTTypeIndex == 1) ? 10 : 12;
+        AnsiString dgLUTType = this->ComboBox_DGLUTType->Text;
 	//=====================================================================
 	//=====================================================================
 	// gamma test / Aging mode
@@ -831,11 +860,9 @@ void __fastcall TMainForm::Button_ConnectClick(TObject * Sender)
 		(1 == index) ? DirectGammaType::DependentInstance :
 		(2 == index) ? DirectGammaType::TCON62301Instance :
 		(3 == index) ? DirectGammaType::TCON1H501Instance :
-                (4 == index) ? DirectGammaType::TCON12409AgingInstance :
-                (5 == index) ?
-                DirectGammaType::TCON12409Instance : DirectGammaType::NotAssignInstance;
-
-
+                (4 == index) ? DirectGammaType::TCON12409Instance :
+                (5 == index) ?                      
+                DirectGammaType::TCON12409AgingInstance : DirectGammaType::NotAssignInstance; 
 
 
 	    //hide en
@@ -847,13 +874,16 @@ void __fastcall TMainForm::Button_ConnectClick(TObject * Sender)
 		parameter =
 		    bptr < TCONParameter >
 		    (new
-		     TCONParameter(dgLUTType == 10 ? MaxValue::Int10Bit : MaxValue::Int12Bit,
-				   dgLUTAddress, dgEnableAddress, dgEnableBit, gammaTestAddress,
+		     TCONParameter(dgLUTBit == 10 ? MaxValue::Int10Bit : MaxValue::Int12Bit,
+				   dgLUTAddress, dgLUTType, dgEnableAddress, dgEnableBit, gammaTestAddress,
 				   gammaTestBit, directGammaRGBAddress, directGammaType,
 				   frcEnableAddress, frcEnableBit, hideEnableAddress,
 				   hideEnableBit));
 	    } else {
                 if(AgingMode) {    //TCON包括DirectGamma與Aging功能  byBS+
+                    int agingAGBSDebugAddress = StrToInt("0x" + Edit_AgingAGBSDebugAddress->Text);
+                    int agingAGBSDebugBit = this->Edit_AgingAGBSDebugBit->Text.ToInt();
+
                     int agingModeSelectAddress = StrToInt("0x" + Edit_AgingModeSelectAddress->Text);
                     int agingModeSelectBit = this->Edit_AgingModeSelectBit->Text.ToInt();
 
@@ -865,23 +895,25 @@ void __fastcall TMainForm::Button_ConnectClick(TObject * Sender)
                     int agingRasterGrayAddress = StrToInt("0x" + this->Edit_AgingRasterGrayAddress->Text);
                     int aging_index = this->ComboBox_AgingType->ItemIndex;
 
-                    const DirectGammaType & agingModeType =   //注意agingModeType後續處理
+                    const DirectGammaType & agingModeType =
                         (0 == aging_index) ? DirectGammaType::IndependentInstance :
                         (1 == aging_index) ? DirectGammaType::DependentInstance :
                         (2 == aging_index) ? DirectGammaType::TCON62301Instance :
                         (3 == aging_index) ? DirectGammaType::TCON1H501Instance :
-                        (4 == aging_index) ? DirectGammaType::TCON12409AgingInstance :
+                        (4 == aging_index) ? DirectGammaType::TCON12409Instance :
                         (5 == aging_index) ?
-                        DirectGammaType::TCON12409Instance : DirectGammaType::NotAssignInstance;
+                        DirectGammaType::TCON12409AgingInstance : DirectGammaType::NotAssignInstance;
 
-
- 	            parameter =
+                       parameter =
 		        bptr < TCONParameter >
 		        (new
-		         TCONParameter(dgLUTType == 10 ? MaxValue::Int10Bit : MaxValue::Int12Bit,
-			   	       dgLUTAddress, dgEnableAddress, dgEnableBit, gammaTestAddress,
-				       gammaTestBit, directGammaRGBAddress, directGammaType,
-				       frcEnableAddress, frcEnableBit, agingModeSelectAddress,
+		         TCONParameter(dgLUTBit == 10 ? MaxValue::Int10Bit : MaxValue::Int12Bit,
+			   	       dgLUTAddress, dgLUTType, dgEnableAddress, dgEnableBit,
+                                       gammaTestAddress, gammaTestBit,
+                                       directGammaRGBAddress, directGammaType,
+				       frcEnableAddress, frcEnableBit,
+                                       agingAGBSDebugAddress, agingAGBSDebugBit,
+                                       agingModeSelectAddress,
                                        agingModeSelectBit, agingPatternSelectAddress,
                                        agingPatternSelectValue, agingPatternSelectStartBit,
                                        agingPatternSelectEndBit, agingRasterGrayAddress,
@@ -890,18 +922,18 @@ void __fastcall TMainForm::Button_ConnectClick(TObject * Sender)
 	            parameter =
 		        bptr < TCONParameter >
 		        (new
-		         TCONParameter(dgLUTType == 10 ? MaxValue::Int10Bit : MaxValue::Int12Bit,
-			   	       dgLUTAddress, dgEnableAddress, dgEnableBit, gammaTestAddress,
-				       gammaTestBit, directGammaRGBAddress, directGammaType,
-				       frcEnableAddress, frcEnableBit));
+		         TCONParameter(dgLUTBit == 10 ? MaxValue::Int10Bit : MaxValue::Int12Bit,
+			   	       dgLUTAddress, dgLUTType, dgEnableAddress, dgEnableBit,
+                                       gammaTestAddress, gammaTestBit, directGammaRGBAddress,
+                                       directGammaType, frcEnableAddress, frcEnableBit));
                 }
 	    }
 	} else {
 	    parameter =
 		bptr < TCONParameter >
 		(new
-		 TCONParameter(dgLUTType == 10 ? MaxValue::Int10Bit : MaxValue::Int12Bit,
-			       dgLUTAddress, dgEnableAddress, dgEnableBit, frcEnableAddress,
+		 TCONParameter(dgLUTBit == 10 ? MaxValue::Int10Bit : MaxValue::Int12Bit,
+			       dgLUTAddress, dgLUTType, dgEnableAddress, dgEnableBit, frcEnableAddress,
 			       frcEnableBit));
 	}
 
@@ -924,11 +956,14 @@ void __fastcall TMainForm::Button_ConnectClick(TObject * Sender)
 	    } else if(RadioButton_TCON_directGamma->Checked) {
 		//TCON (DirectGamma)
 		this->bitDepth->setDirectGamma(true);
+                this->bitDepth->setAgingMode(false);
 		MeasureWindow->setDirectGamma(control, bitDepth);
 	    } else if(RadioButton_TCON_aging->Checked) {
                 //TCON (Aging)
 		this->bitDepth->setAgingMode(true);
+                this->bitDepth->setDirectGamma(false);
 		MeasureWindow->setAgingMode(control, bitDepth);
+
             }
 	}
     }
@@ -1061,7 +1096,7 @@ void __fastcall TMainForm::RadioButton_In8Click(TObject * Sender)
 //---------------------------------------------------------------------------
 
 void __fastcall TMainForm::RadioButton_In10Click(TObject * Sender)
-{
+{         
     using namespace cms::util;
     bitDepth->setInBit(10);
     // 設定lut/out bit depth checked
@@ -1340,6 +1375,7 @@ void __fastcall TMainForm::RadioButton_PCTCON_NBClick(TObject * Sender)
     this->Panel_TCON->Visible = true;
     ComboBox_TCONTypeChange(this);
     bitDepth->setDirectGamma(false);
+    bitDepth->setAgingMode(false);
     MeasureWindow->setTCONControlOff();
     PageControl1->ActivePageIndex = 1;
 }
@@ -1356,7 +1392,24 @@ void __fastcall TMainForm::RadioButton_NinthClick(TObject * Sender)
 
 void __fastcall TMainForm::ComboBox_DGLUTTypeChange(TObject * Sender)
 {
-    int lut = ComboBox_DGLUTType->Text.ToInt();
+    String lutType = ComboBox_DGLUTType->Text;
+    if (lutType == "10bit") {
+	if (RadioButton_Lut10->Enabled) {
+	    RadioButton_Lut10->Checked = true;
+	} else {
+	    ShowMessage("Cannot select 10Bit LUT in present Bit Depth setting");
+	    ComboBox_DGLUTType->ItemIndex = 1;
+	}
+    } else if (lutType == "12bitType1" || lutType == "12bitType2") {
+	if (RadioButton_Lut12->Enabled) {
+	    RadioButton_Lut12->Checked = true;
+	} else {
+	    ShowMessage("Cannot select 12Bit LUT in present Bit Depth setting");
+	    ComboBox_DGLUTType->ItemIndex = 0;
+	}
+    }
+
+    /*int lut = ComboBox_DGLUTType->Text.ToInt();
     switch (lut) {
     case 10:
 	if (RadioButton_Lut10->Enabled) {
@@ -1374,7 +1427,7 @@ void __fastcall TMainForm::ComboBox_DGLUTTypeChange(TObject * Sender)
 	    ComboBox_DGLUTType->ItemIndex = 0;
 	}
 	break;
-    }
+    }*/
 }
 
 //---------------------------------------------------------------------------
@@ -1468,9 +1521,11 @@ void TMainForm::setAllFunctionOn(bool on)
 
 void __fastcall TMainForm::TabSheet2Exit(TObject * Sender)
 {
-    if (true == Button_Connect->Enabled) {
+    /*if (true == Button_Connect->Enabled) {
 	RadioButton_PC->Checked = true;
-    }
+    }*/
+
+    //影響到選bit數時，TabSheet2 消失。    20130607 byBS-
 }
 
 //---------------------------------------------------------------------------
@@ -1489,6 +1544,7 @@ void __fastcall TMainForm::RadioButton_PCTCON_TVClick(TObject * Sender)
     this->Panel_TCON->Visible = true;
     ComboBox_TCONTypeChange(this);
     bitDepth->setDirectGamma(false);
+    bitDepth->setAgingMode(false);
     MeasureWindow->setTCONControlOff();
     PageControl1->ActivePageIndex = 1;
 }
@@ -1753,7 +1809,7 @@ void TMainForm::initTCONFile()
 	ini->WriteString("11303", "DigitalGammaEnableAddress", "4");
 	ini->WriteInteger("11303", "DigitalGammaEnableBit", 1);
 	ini->WriteString("11303", "DigitalGammaLUTAddress", "302");
-	ini->WriteInteger("11303", "DigitalGammaLUTType", 10);
+	ini->WriteString("11303", "DigitalGammaLUTType", "10bit");
 
 	ini->WriteBool("11303", "DirectGammaFunc", false);
 
@@ -1770,7 +1826,7 @@ void TMainForm::initTCONFile()
 	ini->WriteString("11306", "DigitalGammaEnableAddress", "28");
 	ini->WriteInteger("11306", "DigitalGammaEnableBit", 0);
 	ini->WriteString("11306", "DigitalGammaLUTAddress", "3C0");
-	ini->WriteInteger("11306", "DigitalGammaLUTType", 10);
+	ini->WriteString("11306", "DigitalGammaLUTType", "10bit");
 
 	ini->WriteBool("11306", "DirectGammaFunc", true);
 	ini->WriteString("11306", "GammaTestEnableAddress", "381");
@@ -1793,7 +1849,7 @@ void TMainForm::initTCONFile()
 	ini->WriteString("11307", "DigitalGammaEnableAddress", "28");
 	ini->WriteInteger("11307", "DigitalGammaEnableBit", 0);
 	ini->WriteString("11307", "DigitalGammaLUTAddress", "310");
-	ini->WriteInteger("11307", "DigitalGammaLUTType", 10);
+	ini->WriteString("11307", "DigitalGammaLUTType", "10bit");
 
 	ini->WriteBool("11307", "DirectGammaFunc", true);
 	ini->WriteString("11307", "GammaTestEnableAddress", "2F1");
@@ -1816,7 +1872,7 @@ void TMainForm::initTCONFile()
 	ini->WriteString("12306", "DigitalGammaEnableAddress", "28");
 	ini->WriteInteger("12306", "DigitalGammaEnableBit", 0);
 	ini->WriteString("12306", "DigitalGammaLUTAddress", "302");
-	ini->WriteInteger("12306", "DigitalGammaLUTType", 12);
+	ini->WriteString("12306", "DigitalGammaLUTType", "12bitType1");
 
 	ini->WriteBool("12306", "DirectGammaFunc", true);
 	ini->WriteString("12306", "GammaTestEnableAddress", "29");
@@ -1839,7 +1895,7 @@ void TMainForm::initTCONFile()
 	ini->WriteString("12309", "DigitalGammaEnableAddress", "76");
 	ini->WriteInteger("12309", "DigitalGammaEnableBit", 1);
 	ini->WriteString("12309", "DigitalGammaLUTAddress", "800");
-	ini->WriteInteger("12309", "DigitalGammaLUTType", 12);
+	ini->WriteString("12309", "DigitalGammaLUTType", "12bitType1");
 
 	ini->WriteBool("12309", "DirectGammaFunc", true);
 	ini->WriteString("12309", "GammaTestEnableAddress", "76");
@@ -1862,7 +1918,7 @@ void TMainForm::initTCONFile()
 	ini->WriteString("12401", "DigitalGammaEnableAddress", "28");
 	ini->WriteInteger("12401", "DigitalGammaEnableBit", 0);
 	ini->WriteString("12401", "DigitalGammaLUTAddress", "752");
-	ini->WriteInteger("12401", "DigitalGammaLUTType", 12);
+	ini->WriteString("12401", "DigitalGammaLUTType", "12bitType1");
 
 	ini->WriteBool("12401", "DirectGammaFunc", true);
 	ini->WriteString("12401", "GammaTestEnableAddress", "4A1");
@@ -1885,7 +1941,7 @@ void TMainForm::initTCONFile()
 	ini->WriteString("12403", "DigitalGammaEnableAddress", "29");
 	ini->WriteInteger("12403", "DigitalGammaEnableBit", 0);
 	ini->WriteString("12403", "DigitalGammaLUTAddress", "B60");
-	ini->WriteInteger("12403", "DigitalGammaLUTType", 12);
+	ini->WriteString("12403", "DigitalGammaLUTType", "12bitType1");
 
 	ini->WriteBool("12403", "DirectGammaFunc", true);
 	ini->WriteString("12403", "GammaTestEnableAddress", "FF9");
@@ -1908,7 +1964,7 @@ void TMainForm::initTCONFile()
 	ini->WriteString("12405", "DigitalGammaEnableAddress", "29");
 	ini->WriteInteger("12405", "DigitalGammaEnableBit", 0);
 	ini->WriteString("12405", "DigitalGammaLUTAddress", "106D");
-	ini->WriteInteger("12405", "DigitalGammaLUTType", 12);
+	ini->WriteString("12405", "DigitalGammaLUTType", "12bitType1");
 
 	ini->WriteBool("12405", "DirectGammaFunc", true);
 	ini->WriteString("12405", "GammaTestEnableAddress", "1FEB");
@@ -1931,7 +1987,7 @@ void TMainForm::initTCONFile()
 	ini->WriteString("12407", "DigitalGammaEnableAddress", "29");
 	ini->WriteInteger("12407", "DigitalGammaEnableBit", 0);
 	ini->WriteString("12407", "DigitalGammaLUTAddress", "110D");
-	ini->WriteInteger("12407", "DigitalGammaLUTType", 12);
+	ini->WriteString("12407", "DigitalGammaLUTType", "12bitType1");
 
 	ini->WriteBool("12407", "DirectGammaFunc", true);
 	ini->WriteString("12407", "GammaTestEnableAddress", "3FEB");
@@ -1954,7 +2010,7 @@ void TMainForm::initTCONFile()
 	ini->WriteString("62301", "DigitalGammaEnableAddress", "28");
 	ini->WriteInteger("62301", "DigitalGammaEnableBit", 0);
 	ini->WriteString("62301", "DigitalGammaLUTAddress", "400");
-	ini->WriteInteger("62301", "DigitalGammaLUTType", 10);
+	ini->WriteString("62301", "DigitalGammaLUTType", "10bit");
 
 	ini->WriteBool("62301", "DirectGammaFunc", true);
 	ini->WriteString("62301", "GammaTestEnableAddress", "307");
@@ -1976,7 +2032,7 @@ void TMainForm::initTCONFile()
 	ini->WriteString("1H501", "DigitalGammaEnableAddress", "28");
 	ini->WriteInteger("1H501", "DigitalGammaEnableBit", 0);
 	ini->WriteString("1H501", "DigitalGammaLUTAddress", "BE0");
-	ini->WriteInteger("1H501", "DigitalGammaLUTType", 10);
+	ini->WriteString("1H501", "DigitalGammaLUTType", "10bit");
 
 	ini->WriteBool("1H501", "DirectGammaFunc", true);
 	ini->WriteString("1H501", "GammaTestEnableAddress", "B");
@@ -2000,7 +2056,7 @@ void TMainForm::initTCONFile()
 	ini->WriteString("12409", "DigitalGammaEnableAddress", "55");
 	ini->WriteInteger("12409", "DigitalGammaEnableBit", 1);
 	ini->WriteString("12409", "DigitalGammaLUTAddress", "302"); //不包含CheckSum
-	ini->WriteInteger("12409", "DigitalGammaLUTType", 12);
+	ini->WriteString("12409", "DigitalGammaLUTType", "12bitType2");
 
 	ini->WriteBool("12409", "DirectGammaFunc", true);
 	ini->WriteString("12409", "GammaTestEnableAddress", "FE1");
@@ -2009,6 +2065,8 @@ void TMainForm::initTCONFile()
 	ini->WriteString("12409", "DirectGammaType", "12409Type");
 
 	ini->WriteBool("12409", "AgingFunc", true);
+	ini->WriteString("12409", "AgingAGBSDebugAddress", "FE8");
+	ini->WriteInteger("12409", "AgingAGBSDebugBit", 0);
 	ini->WriteString("12409", "AgingModeSelectAddress", "40");
 	ini->WriteInteger("12409", "AgingModeSelectBit", 5);
 	ini->WriteString("12409", "AgingPatternSelectAddress", "40");
@@ -2057,7 +2115,20 @@ void TMainForm::readTCONSections()
 //---------------------------------------------------------------------------
 void __fastcall TMainForm::RadioButton_TCON_agingClick(TObject *Sender)
 {
-    RadioButton_TCON_directGammaClick(this);
+
+    GroupBox_Pattern->Enabled = false;
+    this->Panel_TCON->Visible = true;
+    this->TargetWhite1->Enabled = false;   //*******************//
+    this->CCTLUT1->Enabled = false;        //  鎖定演算法相關   //
+    this->GammaAdj1->Enabled = false;      //*******************//
+
+    setComboBoxTCONType();                 //設定顯示只有Aging mode的Tcon
+    
+    ShowMessage
+        ("\"Aging mode\" only for Gamma Measurement, not support CCT algo to produce DG LUT.\n And please turn on FRC for measurement.");
+
+    PageControl1->ActivePageIndex = 1;
+
 }
 //---------------------------------------------------------------------------
 
@@ -2068,3 +2139,21 @@ void __fastcall TMainForm::CheckBox_AgingModeClick(TObject *Sender)
 }
 //---------------------------------------------------------------------------
 
+void TMainForm::setComboBoxTCONType()
+{
+    bptr_ < TIniFile > ini(new TIniFile(tconFilename));
+    bptr_ < TStringList > tconSections(new TStringList());
+    ini->ReadSections(tconSections.get());
+    int size = tconSections->Count;
+
+    for (int x = size-1; x >0; x--) {
+	String section = (*tconSections)[x];
+        bool agingFunc = ini->ReadBool(section, "AgingFunc", false);
+
+	if (agingFunc == false && section != "Version") {
+	    ComboBox_TCONType->Items->Delete(x-1);
+	}   
+    }
+
+    ComboBox_TCONType->ItemIndex = -1; //顯示空白給user自己選擇tcn
+}

@@ -78,12 +78,19 @@ namespace cms {
 
 	  MeasureCondition::MeasureCondition(RGB_vector_ptr rgbMeasureCode,
                                              bptr < cms::lcd::BitDepthProcessor > bitDepth,
-                                             const bool Enable10BitInMeasurement):type(Normal), remapping(false), bitDepth(bitDepth), rgbMeasureCode(rgbMeasureCode), Enable10BitInMeasurement(Enable10BitInMeasurement)
+                                             const bool Enable10BitInMeasurement,
+                                             const int AgingMeasureStep):
+                                             type(Normal), remapping(false), bitDepth(bitDepth),
+                                             rgbMeasureCode(rgbMeasureCode), Enable10BitInMeasurement(Enable10BitInMeasurement),
+	                                     AgingMeasureStep(AgingMeasureStep)
+            {
+
+	    };
+          MeasureCondition::MeasureCondition(const bool Enable10BitInMeasurement,const int AgingMeasureStep, const bool NullDgCodeTable):
+                                             Enable10BitInMeasurement(Enable10BitInMeasurement),AgingMeasureStep(AgingMeasureStep), NullDgCodeTable(NullDgCodeTable)
 	    {
 
 	    };
-
-
 	    MeasureCondition::
 		MeasureCondition(RGB_vector_ptr rgbMeasureCode ,
 				 const int start, const int end):type(Normal) {
@@ -101,9 +108,15 @@ namespace cms {
 		    return rgbMeasureCode;
 		}
 	    }
-            //for AgingMode byBS+ ¶·½T»{
+            //for AgingMode byBS+ 
             bool MeasureCondition::get10BitInMeasurement() {
                 return Enable10BitInMeasurement;
+            }
+            bool MeasureCondition::getNullDgCodeTable() {
+                return NullDgCodeTable;
+            }
+            int MeasureCondition::getAgingMeasureStep() {
+                return AgingMeasureStep;
             }
 
 	    int_vector_ptr MeasureCondition::

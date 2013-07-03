@@ -1,6 +1,6 @@
 object MeasureWindow: TMeasureWindow
-  Left = 357
-  Top = 213
+  Left = 286
+  Top = 180
   BorderStyle = bsNone
   Caption = 'MeasureWindow'
   ClientHeight = 363
@@ -48,5 +48,23 @@ object MeasureWindow: TMeasureWindow
     TabOrder = 1
     Visible = False
     OnClick = Button2Click
+  end
+  object Button3: TButton
+    Left = 184
+    Top = 8
+    Width = 75
+    Height = 25
+    Caption = 'agingTest'
+    TabOrder = 2
+    OnClick = Button3Click
+  end
+  object Button4: TButton
+    Left = 184
+    Top = 48
+    Width = 75
+    Height = 25
+    Caption = 'DirectGAM'
+    TabOrder = 3
+    OnClick = Button4Click
   end
 end

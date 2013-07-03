@@ -88,7 +88,9 @@ bptr < cms::lcd::calibrate::MeasureCondition > TGammaMeasurementForm::getMeasure
     int start = this->Edit_StartLevel->Text.ToInt();
     int end = this->Edit_EndLevel->Text.ToInt();
     int step = this->ComboBox_LevelStep->Text.ToInt();
-
+    //bool is10BitInMeasurement = CheckBox_10BitInMeasurement->Checked;
+    bool is10BitInMeasurement = RadioGroup_10BitInMeasurement->ItemIndex;
+    int AgingMeasureStep = ComboBox_AgingMeasureStep->Text.ToInt();
 
     bptr < MeasureCondition > condition;
     if (null == dgcodeTable) {
@@ -96,16 +98,28 @@ bptr < cms::lcd::calibrate::MeasureCondition > TGammaMeasurementForm::getMeasure
 	    start = bitDepth->getMeasureStart();
 	    end = bitDepth->getMeasureEnd();
 	    step = bitDepth->getMeasureStep();
-	}
 
-	condition =
-	    bptr < MeasureCondition >
-	    (new MeasureCondition(start, end, step, step, bitDepth->getMeasureMaxValue()));
+            condition =
+	       bptr < MeasureCondition >
+	       (new MeasureCondition(start, end, step, step, bitDepth->getMeasureMaxValue()));
+	} else if (bitDepth->isAgingMode()) {
+            bool NullDgCodeTable = true;
+
+            condition =
+	       bptr < MeasureCondition >
+	       (new MeasureCondition(is10BitInMeasurement, AgingMeasureStep, NullDgCodeTable));
+
+        } else {
+            condition =
+               bptr < MeasureCondition >
+              (new MeasureCondition(start, end, step, step, bitDepth->getMeasureMaxValue()));
+        }
+
     } else {
 	int start = this->Edit_StartLevelT->Text.ToInt();
 	int end = this->Edit_EndLevelT->Text.ToInt();
+        int size = dgcodeTable->size();
         bool isAgingSource = MeasureWindow->isAgingSource();
-        bool is10BitInMeasurement = CheckBox_10BitInMeasurement->Checked;
 
 	if (RadioButton_TCONInputCustomPattern->Checked) {
 	    start = 0;
@@ -116,7 +130,7 @@ bptr < cms::lcd::calibrate::MeasureCondition > TGammaMeasurementForm::getMeasure
 
 	if (is10BitInMeasurement) {
             if(!isAgingSource) {
-                int size = dgcodeTable->size();
+
                 double_vector_ptr *rgbDoubleVector = RGBVector::toRGBDoubleVector(dgcodeTable);
                 double_vector_ptr keys(new double_vector());
                 const MaxValue & lutBit = dgLutBitDepth->getLutMaxValue();
@@ -135,7 +149,6 @@ bptr < cms::lcd::calibrate::MeasureCondition > TGammaMeasurementForm::getMeasure
                 Interpolation1DLUT glut(keys, rgbDoubleVector[1]);
                 Interpolation1DLUT blut(keys, rgbDoubleVector[2]);
 
-
                 for (int x = start; x <= end; x++) {
                     double key = x / 4.;
                     RGB_ptr rgb(new RGBColor(lutBit));
@@ -145,12 +158,16 @@ bptr < cms::lcd::calibrate::MeasureCondition > TGammaMeasurementForm::getMeasure
                     rgb->B = blut.getValue(key);
                     measureTable->push_back(rgb);
                 }
+
+                measureTable = RGBVector::reverse(measureTable);
             } else {
-	        for (int x = start; x <= end; x++) {
+	        for (int x = start; x < size; x++) {
                     RGB_ptr rgb = (*dgcodeTable)[x];
                     measureTable->push_back(rgb);
                 }
             }
+
+
 	} else {
             if(!isAgingSource) {
                 bool input10Bit = MaxValue::Int10Bit == dgLutBitDepth->getInputMaxValue();
@@ -169,16 +186,16 @@ bptr < cms::lcd::calibrate::MeasureCondition > TGammaMeasurementForm::getMeasure
                         measureTable->push_back(rgb);
                     }
                 }
+                measureTable = RGBVector::reverse(measureTable);
             } else {
-	        for (int x = start; x <= end; x++) {      //要處理嗎? 不然有些筆數257
+	        for (int x = start; x < size; x++) {      
                     RGB_ptr rgb = (*dgcodeTable)[x];
                     measureTable->push_back(rgb);
                 }
             }
 	}
-	measureTable = RGBVector::reverse(measureTable);
 
-	condition = bptr < MeasureCondition > (new MeasureCondition(measureTable, bitDepth, is10BitInMeasurement));
+	condition = bptr < MeasureCondition > (new MeasureCondition(measureTable, bitDepth, is10BitInMeasurement, AgingMeasureStep));
     }
     return condition;
 };
@@ -273,11 +290,21 @@ void TGammaMeasurementForm::tconMeasure(bool_vector_ptr rgbw, int start,
 
 void __fastcall TGammaMeasurementForm::FormShow(TObject * Sender)
 {
-    bool directGamma = bitDepth->isDirectGamma() || MainForm->isInTCONSetup();
-    this->Panel2->Visible = directGamma;
-    if(MeasureWindow->isAgingSource()) {
+    bool Panel2Show = bitDepth->isDirectGamma() || MainForm->isInTCONSetup() || bitDepth->isAgingMode();
+    this->Panel2->Visible = Panel2Show;
+    if(bitDepth->isAgingMode()) {
         this->GroupBox5->Caption = "Aging Pattern Measurement (Aging Mode)";
-    }    
+        this->Label5->Visible = false;            // 以下Aging mode沒作用，隱藏起來
+        this->Label6->Visible = false;            // 因量測數以CheckBox_10BitInMeasurement決定
+        this->Edit_StartLevelT->Visible = false;
+        this->Edit_EndLevelT->Visible = false;
+        this->RadioButton_TCONInputCustomPattern->Visible = false;
+    } else {
+        this->GroupBox5->Caption = "Direct Pattern Measurement (Direct Gamma)";
+        this->Label10->Visible = false;
+        this->ComboBox_AgingMeasureStep->Visible = false;
+    }
+
     setMeasureInfo();
     fetcher = MainForm->getComponentFetcher();
 
@@ -288,7 +315,7 @@ void __fastcall TGammaMeasurementForm::FormShow(TObject * Sender)
     Edit_EndLevelT->Text = "0";
     dgcodeTable = (RGB_vector_ptr) ((RGB_vector *) null);
 
-    if (true == directGamma) {
+    if (true == Panel2Show) {
 	//Button_Measure->Enabled = false;
     }
 #ifdef EXPERIMENT_FUNC
@@ -348,9 +375,9 @@ void __fastcall TGammaMeasurementForm::Button_LoadDGTableClick(TObject * Sender)
 	dgLutBitDepth = property->getBitDepthProcessor();
 	bool lut12Bit = MaxValue::Int12Bit == dgLutBitDepth->getLutMaxValue();
 	bool input10Bit = MaxValue::Int10Bit == dgLutBitDepth->getInputMaxValue();
-	RadioButton_GrayScale12Bit->Checked = lut12Bit;
-	RadioButton_GrayScale10Bit->Checked = !lut12Bit;
-
+	//RadioButton_GrayScale12Bit->Checked = lut12Bit;
+	//RadioButton_GrayScale10Bit->Checked = !lut12Bit;
+        RadioGroup_GrayScaleBit->ItemIndex = lut12Bit;
 
 	this->CheckBox_DGLoaded->Checked = true;
 	this->CheckBox_DGLoaded->Enabled = true;
@@ -359,12 +386,17 @@ void __fastcall TGammaMeasurementForm::Button_LoadDGTableClick(TObject * Sender)
 	Edit_GrayScaleCount->Text = size;
 	Edit_EndLevelT->Text = size - 1;
 	//此checkbox點選會決定量測的end level, 所以要擺在這個地方
-	CheckBox_10BitInMeasurement->Checked = false;
-	CheckBox_10BitInMeasurement->Checked = input10Bit;
+	//CheckBox_10BitInMeasurement->Checked = false;
+	//CheckBox_10BitInMeasurement->Checked = input10Bit;
+	//RadioButton_10BitInMeasurement->Checked = false;
+	//RadioButton_10BitInMeasurement->Checked = input10Bit;
+        RadioGroup_10BitInMeasurement->ItemIndex = 0;
+        RadioGroup_10BitInMeasurement->ItemIndex = input10Bit;
 
 	chdir(currDir.c_str());
 	Button_Measure->Enabled = true;
 	dgcodeTable = grayScaleTable;
+
     }
 
 }
@@ -498,9 +530,20 @@ void __fastcall TGammaMeasurementForm::CheckBox_CustomLoadedClick(TObject * Send
 
 //---------------------------------------------------------------------------
 
-void __fastcall TGammaMeasurementForm::CheckBox_10BitInMeasurementClick(TObject * Sender)
+
+
+
+void __fastcall TGammaMeasurementForm::Button1Click(TObject *Sender)
 {
-    bool measureIn10Bit = CheckBox_10BitInMeasurement->Checked;
+    MeasureWindow->Button3Click(this);
+}
+//---------------------------------------------------------------------------
+
+
+
+void __fastcall TGammaMeasurementForm::RadioGroup_10BitInMeasurementClick(TObject *Sender)
+{
+    bool measureIn10Bit = RadioGroup_10BitInMeasurement->ItemIndex;
     if (measureIn10Bit) {
 	Edit_StartLevelT->Text = 0;
 	Edit_EndLevelT->Text = 1023;
@@ -510,6 +553,13 @@ void __fastcall TGammaMeasurementForm::CheckBox_10BitInMeasurementClick(TObject 
 	Edit_EndLevelT->Text = size - 1;
     }
 }
-
 //---------------------------------------------------------------------------
+
+
+void __fastcall TGammaMeasurementForm::Button2Click(TObject *Sender)
+{
+    MeasureWindow->Button4Click(this);
+}
+//---------------------------------------------------------------------------
+
 

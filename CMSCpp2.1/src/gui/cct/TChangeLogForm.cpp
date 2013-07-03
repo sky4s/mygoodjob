@@ -140,3 +140,4 @@ void __fastcall TChangeLogForm::FormResize(TObject * Sender)
 
 //---------------------------------------------------------------------------
 
+

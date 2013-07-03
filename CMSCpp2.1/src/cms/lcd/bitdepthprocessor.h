@@ -29,6 +29,7 @@ namespace cms {
 
 	  public:
 	     bool is10BitDirectGamma();
+             bool isAgingMode();
 	    bool is10BitInput();
 	     BitDepthProcessor(int inBit, int lutBit, int outBit, bool directGamma);
 	     BitDepthProcessor(int inBit, int lutBit, int outBit);

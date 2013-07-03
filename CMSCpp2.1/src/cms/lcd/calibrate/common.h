@@ -28,6 +28,7 @@ namespace cms {
 		//int_vector_ptr measureCode;
 		 bool remapping;
                  bool Enable10BitInMeasurement;
+                 bool NullDgCodeTable;
 		RGB_vector_ptr rgbMeasureCode;
 		RGB_vector_ptr remappingRGBMeasureCode;
 		int start;
@@ -41,6 +42,7 @@ namespace cms {
 		int highStart;
 		int highEnd;
 		int highStep;
+                int AgingMeasureStep;
 		enum MeasureType {
 		    Normal, Extend
 		};
@@ -61,10 +63,15 @@ namespace cms {
 				  bptr < cms::lcd::BitDepthProcessor > bitDepth);
 		 MeasureCondition(RGB_vector_ptr rgbMeasureCode,
 				  bptr < cms::lcd::BitDepthProcessor > bitDepth,
-                                  const bool Enable10BitInMeasurement);
+                                  const bool Enable10BitInMeasurement,
+                                  const int AgingMeasureStep);
 		 MeasureCondition(RGB_vector_ptr rgbMeasureCode, const int start, const int end);
+                 MeasureCondition(const bool Enable10BitInMeasurement, const int AgingMeasureStep,
+                                  const bool NullDgCodeTable);
 		RGB_vector_ptr getRGBMeasureCode();
                 bool get10BitInMeasurement();
+                bool getNullDgCodeTable();
+                int getAgingMeasureStep();
 	      private:
 		//void setRemappingRGBMeasureCode(RGB_vector_ptr rgbMeasureCode);
 		//virtual void setRemappingMode(bool remap);

@@ -313,11 +313,15 @@ void TMeasureWindow::setRGB(bptr < Dep::RGBColor > rgb)
 	return;
     }
 
-    const MaxValue & maxValue = (DIRECT_GAMMA == source || AGING == source || DGLUT == source) ?
-	bitDepth->getLutMaxValue() : MaxValue::Int8Bit;
-    /*(DIRECT_GAMMA == source) ? MaxValue::Int12Bit :
-       ((DGLUT == source) ? bitDepth->getLutMaxValue() : MaxValue::Int8Bit); */
-    rgb->getValues(values, maxValue);
+    if(DIRECT_GAMMA == source || DGLUT == source) {
+        const MaxValue & maxValue = (DIRECT_GAMMA == source || DGLUT == source) ?
+            bitDepth->getLutMaxValue() : MaxValue::Int8Bit;
+        /*(DIRECT_GAMMA == source) ? MaxValue::Int12Bit :
+          ((DGLUT == source) ? bitDepth->getLutMaxValue() : MaxValue::Int8Bit); */
+        rgb->getValues(values, maxValue);
+    } else {       // AGING == source
+        rgb->getValues(values);
+    }
 
     int r = static_cast < int >(values[0]);
     int g = static_cast < int >(values[1]);
@@ -399,7 +403,9 @@ void TMeasureWindow::setVisible(bool visible)
     if (DIRECT_GAMMA == source) {
 	tconcontrol->setGammaTest(visible);
     } else if (AGING == source) {
-	tconcontrol->setAgingMode(visible);
+        tconcontrol->setGammaTest(false);
+        tconcontrol->setDG(true);
+	tconcontrol->setTconAgingMode(visible);
     } else {
 	this->Visible = visible;
 	if (visible) {
@@ -493,5 +499,58 @@ void __fastcall TMeasureWindow::FormCreate(TObject * Sender)
     //Button1->Visible = MainForm->debugMode;
 }
 
+//---------------------------------------------------------------------------
+
+
+void __fastcall TMeasureWindow::Button3Click(TObject *Sender)
+{
+
+	using namespace cms::measure;
+	using namespace Indep;
+	bptr < IntensityAnalyzerIF > analyzer = MainForm->initAnalyzer();
+	bptr < MeterMeasurement > mm = analyzer->getMeterMeasurement();
+	bptr < cms::measure::meter::Meter > meter = mm->getMeter();
+
+        double_array result;
+
+        tconcontrol->setGammaTest(false);
+        tconcontrol->setDG(true);
+	tconcontrol->setTconAgingMode(true);
+
+
+        //setRGB(512, 512, 512);
+        tconcontrol->setAgingModeRGB(1020, 1020, 1020);
+        //tconcontrol->setAgingModeRGB(1022, 1022, 1022);
+        //tconcontrol->setAgingModeRGB(1023, 1023, 1023);
+
+        Sleep(500);
+        result = meter->triggerMeasurementInXYZ();
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TMeasureWindow::Button4Click(TObject *Sender)
+{
+	using namespace cms::measure;
+	using namespace Indep;
+	bptr < IntensityAnalyzerIF > analyzer = MainForm->initAnalyzer();
+	bptr < MeterMeasurement > mm = analyzer->getMeterMeasurement();
+	bptr < cms::measure::meter::Meter > meter = mm->getMeter();
+
+        double_array result;
+
+        tconcontrol->setTconAgingMode(false);
+        tconcontrol->setDG(false);
+        tconcontrol->setGammaTest(true);
+	//tconcontrol->setTconAgingMode(true);
+
+        //Sleep();
+        //setRGB(512, 512, 512);
+        tconcontrol->setDirectGammaRGB(4080, 4080, 4080);
+        //tconcontrol->setDirectGammaRGB(4095, 4095, 4095);
+        //tconcontrol->setDirectGammaRGB(4064, 4064, 4064);
+
+        Sleep(500);
+        result = meter->triggerMeasurementInXYZ();
+}
 //---------------------------------------------------------------------------
 

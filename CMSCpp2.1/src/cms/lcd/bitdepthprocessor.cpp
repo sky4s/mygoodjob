@@ -236,12 +236,16 @@ namespace cms {
 	    return directGamma;
 	};
 
+	bool BitDepthProcessor::isAgingMode() {
+	    return agingMdoe;
+	};
+
 	void BitDepthProcessor::setDirectGamma(bool directGamma) {
 	    this->directGamma = directGamma;
 	};
 
 	void BitDepthProcessor::setAgingMode(bool agingMdoe) {
-	    this->directGamma = agingMdoe;   //方式同directGamma，直接設置?  byBS+
+	    this->agingMdoe = agingMdoe;   //方式同directGamma，直接設置?  byBS+
 	};
 
 	void BitDepthProcessor::setInBit(int inBit) {
