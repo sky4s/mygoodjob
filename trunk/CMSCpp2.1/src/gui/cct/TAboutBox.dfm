@@ -52,8 +52,8 @@ object AboutBox: TAboutBox
       IsControl = True
     end
     object Comments: TLabel
-      Left = 327
-      Top = 7
+      Left = 311
+      Top = 15
       Width = 311
       Height = 52
       Caption = 
