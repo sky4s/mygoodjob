@@ -16,6 +16,10 @@ __fastcall TChangeLogForm::TChangeLogForm(TComponent * Owner)
        {Issue List}\r\n\
        *開啟I2C Test會造成量測delay時間拉長為10sec\r\n\
        \r\n\
+       [3.6 build 1.62] 2013/07/19\r\n\
+       +增加Input source : TCON(Aging mode) 選項\r\n\
+       +增加TCON 12409(包括Aging setting部分)\r\n\
+       +增加GammaMeasurementForm中的Aging Mode量測方式\r\n\
        [3.6 build 1.61] 2013/03/26\r\n\
        +增加12409 Aging Pattern的支援\r\n\
        [3.5 build 1.60] 2013/01/09\r\n\
