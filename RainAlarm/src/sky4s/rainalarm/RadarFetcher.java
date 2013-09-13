@@ -4,14 +4,15 @@
  */
 package sky4s.rainalarm;
 
+import java.awt.image.BufferedImage;
+import java.awt.image.DataBuffer;
+import java.awt.image.DataBufferByte;
+import java.awt.image.DataBufferInt;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.net.InetSocketAddress;
 import java.net.MalformedURLException;
-import java.net.Proxy;
 import java.net.URL;
 import java.nio.channels.Channels;
 import java.nio.channels.ReadableByteChannel;
@@ -20,6 +21,7 @@ import java.security.NoSuchAlgorithmException;
 import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.imageio.ImageIO;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
 import javax.net.ssl.*;
@@ -43,7 +45,10 @@ class DateTask extends TimerTask {
                 File nowfile = new File(filename);
                 FileInputStream nowfis = new FileInputStream(nowfile);
                 FileInputStream prefis = new FileInputStream(new File(prefilename));
-                if (nowfis.available() == prefis.available()) {
+                BufferedImage nowimage = ImageUtils.loadImage(filename);
+                BufferedImage preimage = ImageUtils.loadImage(prefilename);
+
+                if (nowfis.available() == prefis.available() || ImageUtils.compare(nowimage, preimage)) {
                     nowfis.close();
                     nowfile.delete();
                     System.out.println("delete " + filename);
@@ -108,5 +113,37 @@ public class RadarFetcher {
 //        }
 //
 //        timer.cancel();
+    }
+}
+
+final class ImageUtils {
+
+    public static boolean compare(BufferedImage imagea, BufferedImage imageb) {
+        DataBuffer dbActual = imagea.getRaster().getDataBuffer();
+        DataBuffer dbExpected = imageb.getRaster().getDataBuffer();
+        DataBufferByte actualDBAsDBInt = (DataBufferByte) dbActual;
+        DataBufferByte expectedDBAsDBInt = (DataBufferByte) dbExpected;
+
+        for (int bank = 0; bank < actualDBAsDBInt.getNumBanks(); bank++) {
+//            int[] actual = actualDBAsDBInt.getData(bank);
+//            int[] expected = expectedDBAsDBInt.getData(bank);
+            byte[] actual = actualDBAsDBInt.getData(bank);
+            byte[] expected = expectedDBAsDBInt.getData(bank);
+
+            // this line may vary depending on your test framework
+//   assertTrue(Arrays.equals(actual, expected));
+            if (!Arrays.equals(actual, expected)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public static BufferedImage loadImage(String filename) throws
+            IOException {
+//    PlanarImage planar = JAI.create("FileLoad", filename);
+//    return planar.getAsBufferedImage();
+        BufferedImage image = ImageIO.read(new File(filename));
+        return image;
     }
 }
