@@ -129,6 +129,7 @@ class TCCTLUTForm:public TForm, cms::lcd::calibrate::FeedbackListener {
     TEdit *Edit_DimRBFixUnder;
     TCheckBox *CheckBox_RBFixAuto;
     TRadioButton *RadioButton_WhiteShift;
+        TCheckBox *CheckBox_DimThreePart;
     void __fastcall Button_MeaRunClick(TObject * Sender);
     void __fastcall Button_DebugClick(TObject * Sender);
     void __fastcall FormShow(TObject * Sender);
@@ -165,6 +166,7 @@ class TCCTLUTForm:public TForm, cms::lcd::calibrate::FeedbackListener {
     void __fastcall CheckBox_MultiGenClick(TObject * Sender);
     void __fastcall CheckBox_DimRBFixClick(TObject * Sender);
     void __fastcall CheckBox_RBFixAutoClick(TObject * Sender);
+        void __fastcall CheckBox_DimThreePartClick(TObject *Sender);
   private:			// User declarations
     void setMeasureInfo();
     int serialid;

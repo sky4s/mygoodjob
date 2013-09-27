@@ -103,10 +103,11 @@ void __fastcall TCCTLUTForm::Button_MeaRunClick(TObject * Sender)
 	   } else */
 	if (this->RadioButton_DefinedDim->Checked) {
 	    //新低灰階修正方法
-	    int under = this->Edit_DefinedDimUnder->Text.ToInt();	// + 1;
+            bool DimThreePart = CheckBox_DimThreePart->Checked;         //在低灰階色度切三段(斜線-smooth-水平線)  201309 byBS+
+	    int under = this->Edit_DefinedDimUnder->Text.ToInt();
 	    double gamma = this->ComboBox_DefinedDimGamma->Text.ToDouble();
 
-	    calibrator.setDefinedDim(under, gamma);
+	    calibrator.setDefinedDim(under, gamma, DimThreePart);
 	    calibrator.FeedbackFix = CheckBox_Feedback->Checked;
 
 	    bool dimRBFix = CheckBox_DimRBFix->Checked;
@@ -914,6 +915,26 @@ void __fastcall TCCTLUTForm::CheckBox_RBFixAutoClick(TObject * Sender)
 {
     Edit_DimRBFixUnder->Enabled = !CheckBox_RBFixAuto->Checked;
 }
+
+//---------------------------------------------------------------------------
+
+void __fastcall TCCTLUTForm::CheckBox_DimThreePartClick(TObject *Sender)
+{
+    bool checked = this->CheckBox_DimThreePart->Checked;
+
+    ComboBox_DefinedDimGamma->Clear();
+    if(checked) {
+        for (int i=5; i<=15; i++)
+           ComboBox_DefinedDimGamma->Items->Add(i);
+        ComboBox_DefinedDimGamma->Text = "10";
+    } else {
+        AnsiString str[8] = {"0.5" ,"0.6" ,"0.7", "0.8", "0.85", "0.9", "0.95", "1.0"};
+        for (int i=0; i<8; i++)
+           ComboBox_DefinedDimGamma->Items->Add(str[i]);
+        ComboBox_DefinedDimGamma->Text = "1.0";
+    }
+}
+
 
 //---------------------------------------------------------------------------
 

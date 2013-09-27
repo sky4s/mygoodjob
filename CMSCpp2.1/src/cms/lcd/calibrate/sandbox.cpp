@@ -93,6 +93,7 @@ namespace cms {
 	    };
 
 
+
 	    /*
 	       targetWhite: 目標白點
 	       nativeWhite: 原始白點
@@ -103,11 +104,19 @@ namespace cms {
 	       brightGamma: 高灰階的色溫曲線gamma變化
 	       brightWidth: 高灰階的灰階寬度
 	     */
+              //  ↑   色度座標(isDimSmooth=true)  ↑   色度座標(isDimSmooth=false)
+              //  |  ╭ -----------                |  / -----------
+              //  | /  ↑dimTurnHigh               | / ↑dimTurnLow
+              //  |/  ↑dimTurnLow                 |/
+              //  |                                |
+              //  |                                |
+              //  |------------------>             |------------------>
+
 	    void AdvancedDGLutGenerator::
 		setTarget(XYZ_ptr targetWhite,
 			  XYZ_ptr nativeWhite,
 			  double_vector_ptr luminanceGammaCurve,
-			  int dimTurn, int brightTurn,
+			  int dimTurn, bool isDimSmooth, int brightTurn,
 			  double dimGamma, double brightGamma, int effectiveInputLevel) {
 		//==============================================================
 		// 資訊準備
@@ -117,8 +126,12 @@ namespace cms {
 		XYZ_ptr blackXYZ = (*componentVector)[componentVector->size() - 1]->XYZ;
 		this->brightTurn = brightTurn;
 
+                //for DimSmooth 使用
+                XYZ_ptr dimTurnLowXYZ = (*componentVector)[componentVector->size() - 1 - dimTurn]->XYZ;
+
 		this->targetXYZVector = getTarget0(blackXYZ, targetWhite, nativeWhite,	//start target end
 						   luminanceGammaCurve, dimTurn,
+                                                   dimTurnLowXYZ, isDimSmooth,
 						   brightTurn, dimGamma, brightGamma, brightWidth);
 	    }
 	    bool AdvancedDGLutGenerator::checkIncreaseZOfTarget() {
@@ -747,27 +760,43 @@ namespace cms {
 		getTarget0(XYZ_ptr startXYZ, XYZ_ptr targetXYZ,
 			   XYZ_ptr endXYZ,
 			   double_vector_ptr luminanceGammaCurve,
-			   int dimTurn, int brightTurn, double dimGamma,
-			   double brightGamma, int brightWidth) {
+			   int dimTurn, XYZ_ptr dimTurnLowXYZ, bool isDimSmooth,
+                           int brightTurn, double dimGamma, double brightGamma, int brightWidth) {
 		int size = luminanceGammaCurve->size();
 		XYZ_vector_ptr result(new XYZ_vector(size));
 
 		//==============================================================
 		// dim區段
 		//==============================================================
-		if (dimTurn != 0) {
-		    double_vector_ptr dimGammaCurve =
-			DoubleArray::getRangeCopy(luminanceGammaCurve, 0,
-						  dimTurn);
-		    XYZ_vector_ptr dimResult = DimTargetGenerator::getTarget(startXYZ, targetXYZ,
-									     dimGammaCurve,
-									     dimGamma);
 
-		    STORE_XYZXY_VECTOE("1.1_target_dim.xls", dimResult);
-		    int dimSize = dimResult->size();
-		    for (int x = 0; x < dimSize; x++) {
-			(*result)[x] = (*dimResult)[x];
-		    }
+		if (dimTurn != 0) {
+
+                    XYZ_vector_ptr dimResult;
+                    if(isDimSmooth) {    //201309 byBS+
+                        double_vector_ptr dimGammaCurve =
+                            DoubleArray::getRangeCopy(luminanceGammaCurve, 0,
+                                                      dimTurn+dimGamma);
+
+                        dimResult = DimTargetGenerator::getSmoothDimTarget(startXYZ, targetXYZ,
+                                                                           dimTurn, dimGammaCurve, dimGamma);
+
+                        //dimTurn = dimTurnHigh;//開始直線區段
+
+                        dimTurn += dimGamma; //開始水平直線區段
+                    } else {
+                        double_vector_ptr dimGammaCurve =
+                           DoubleArray::getRangeCopy(luminanceGammaCurve, 0,
+                                                      dimTurn);
+                                                                 //blackXYZ
+                        dimResult = DimTargetGenerator::getTarget(startXYZ, targetXYZ,
+                                                                  dimGammaCurve, dimGamma);
+                    }
+
+                    STORE_XYZXY_VECTOE("1.1_target_dim.xls", dimResult);
+                    int dimSize = dimResult->size();
+                    for (int x = 0; x < dimSize; x++) {
+                        (*result)[x] = (*dimResult)[x];
+                    }
 		}
 		//==============================================================
 
@@ -914,16 +943,22 @@ namespace cms {
 				double_vector_ptr luminanceGammaCurve, Domain domain) {
 		return getTarget(startXYZ, endXYZ, luminanceGammaCurve, domain, 1);
 	    }
-	    XYZ_vector_ptr DimTargetGenerator::getTarget(XYZ_ptr startXYZ,
-							 XYZ_ptr endXYZ,
-							 double_vector_ptr
-							 luminanceGammaCurve, double gamma) {
+	    XYZ_vector_ptr DimTargetGenerator::getTarget(XYZ_ptr startXYZ, XYZ_ptr endXYZ,
+							 double_vector_ptr luminanceGammaCurve,
+							 double gamma) {
 		return getTarget(startXYZ, endXYZ, luminanceGammaCurve, UsageColorSpace, gamma);
 	    };
+	    XYZ_vector_ptr DimTargetGenerator::getSmoothDimTarget(XYZ_ptr startXYZ, XYZ_ptr endXYZ,
+                                                                  int dimTurn,
+                                                                  double_vector_ptr luminanceGammaCurve,
+                                                                  double gamma) {
+                return getSmoothDimTarget(startXYZ, endXYZ, dimTurn, luminanceGammaCurve, UsageColorSpace, gamma);
+            };
 
-	    XYZ_vector_ptr DimTargetGenerator::
-		getTarget(XYZ_ptr startXYZ, XYZ_ptr endXYZ,
-			  double_vector_ptr luminanceGammaCurve, Domain domain, double gamma) {
+	    XYZ_vector_ptr DimTargetGenerator::getTarget(XYZ_ptr startXYZ,
+                                                         XYZ_ptr endXYZ,
+                                                         double_vector_ptr luminanceGammaCurve,
+                                                         Domain domain, double gamma) {
 		int size = luminanceGammaCurve->size();
 		double_array startuvValues;
 		double_array enduvValues;
@@ -962,6 +997,221 @@ namespace cms {
 		return result;
 	    };
 
+
+	    XYZ_vector_ptr DimTargetGenerator::getSmoothDimTarget(XYZ_ptr startXYZ,
+                                                                  XYZ_ptr endXYZ,
+                                                                  int dimTurn,
+                                                                  double_vector_ptr luminanceGammaCurve,
+                                                                  Domain domain, double strength) {
+
+                //==================== Method 4(BezierCurve) =========================
+                int size = luminanceGammaCurve->size();
+                XYZ_vector_ptr result(new XYZ_vector(size));
+
+                double P0x = dimTurn - strength;
+                double P2x = dimTurn + strength;
+
+                double_array startuvValues;
+		double_array enduvValues;
+		switch (domain) {
+		case CIExy:
+		    enduvValues = endXYZ->getxyValues();
+                    startuvValues = startXYZ->getxyValues();
+		    break;
+		case CIEuv:
+		    enduvValues = endXYZ->getuvValues();
+                    startuvValues = startXYZ->getxyValues();
+		    break;
+		case CIEuvPrime:
+		    enduvValues = endXYZ->getuvPrimeValues();
+                    startuvValues = startXYZ->getxyValues();
+		    break;
+		};
+                //找P0y
+                double m_u = (enduvValues[0]-startuvValues[0]) / (dimTurn-0);
+                double m_v = (enduvValues[1]-startuvValues[1]) / (dimTurn-0);
+                //代入P0x進點斜式求P0y
+                double P0y_u = m_u*P0x+startuvValues[0];
+                double P0y_v = m_v*P0x+startuvValues[1];
+
+                //----------------- dim Low(斜線線性內插部分) -----------------------
+		for (int x = 0; x < P0x; x++) {
+		    //在uv'上線性變化
+		    double u = Interpolation::linear(0, P0x,
+						     startuvValues[0], P0y_u, x);
+		    double v = Interpolation::linear(0, P0x,
+						     startuvValues[1], P0y_v, x);
+		    double Y = (*luminanceGammaCurve)[x];
+
+		    (*result)[x] = getTargetXYZ(u, v, Y);
+		};
+                //----------------- dim High(BezierCurve內插部分) -------------------
+		for (int x = P0x; x < size; x++) {
+		    double u = Interpolation::BezierCurve(P0x, P0y_u,
+                                                          dimTurn, enduvValues[0],
+                                                          P2x, enduvValues[0], x);
+
+		    double v = Interpolation::BezierCurve(P0x, P0y_v,
+                                                          dimTurn, enduvValues[1],
+                                                          P2x, enduvValues[1], x);
+
+		    double Y = (*luminanceGammaCurve)[x];
+
+		    (*result)[x] = getTargetXYZ(u, v, Y);
+		};
+
+		return result;        
+
+                //==================== Method 3(BezierCurve) =========================
+                /*int size = luminanceGammaCurve->size();
+                XYZ_vector_ptr result(new XYZ_vector(size));
+
+                //----------------- dim Low(斜線線性內插部分) -----------------------
+                double_vector_ptr dimLowGammaCurve =
+                            DoubleArray::getRangeCopy(luminanceGammaCurve, 0, dimTurnLow);
+
+                XYZ_vector_ptr dimlLowResult = DimTargetGenerator::getTarget(startXYZ, dimTurnLowXYZ,
+                                                                             dimLowGammaCurve, gamma);
+
+                for(int i=0; i<=dimTurnLow; i++)
+                    (*result)[i] = (*dimlLowResult)[i];
+                //----------------- dim High(BezierCurve內插部分) -------------------
+                double_array startuvValues;
+		double_array lowuvValues;
+		double_array highuvValues;
+		switch (domain) {
+		case CIExy:
+		    lowuvValues = dimTurnLowXYZ->getxyValues();
+		    highuvValues = endXYZ->getxyValues();
+                    startuvValues = startXYZ->getxyValues();
+		    break;
+		case CIEuv:
+		    lowuvValues = dimTurnLowXYZ->getuvValues();
+		    highuvValues = endXYZ->getuvValues();
+                    startuvValues = startXYZ->getxyValues();
+		    break;
+		case CIEuvPrime:
+		    lowuvValues = dimTurnLowXYZ->getuvPrimeValues();
+		    highuvValues = endXYZ->getuvPrimeValues();
+                    startuvValues = startXYZ->getxyValues();
+		    break;
+		};
+
+                //第一段(斜直線)斜率
+                double m_u = (lowuvValues[0]-startuvValues[0]) / (dimTurnLow-0);
+                double m_v = (lowuvValues[1]-startuvValues[1]) / (dimTurnLow-0);
+                //代入highuvValues[0]近點斜式求兩線焦點x
+                double P1x_u = (highuvValues[0]-lowuvValues[0])/m_u+dimTurnLow;
+                double P1x_v = (highuvValues[1]-lowuvValues[1])/m_u+dimTurnLow;
+
+		for (int x = dimTurnLow+1; x < size; x++) {
+		    double u = Interpolation::BezierCurve(dimTurnLow, lowuvValues[0],
+                                                          P1x_u, highuvValues[0],
+                                                          size-1, highuvValues[0], x);
+
+		    double v = Interpolation::BezierCurve(dimTurnLow, lowuvValues[1],
+                                                          P1x_u, highuvValues[1],
+                                                          size-1, highuvValues[1], x);
+
+		    double Y = (*luminanceGammaCurve)[x];
+
+		    (*result)[x] = getTargetXYZ(u, v, Y);
+		};
+		return result; */
+
+               //======================== Method 2 =============================
+                /*int size = luminanceGammaCurve->size();
+                XYZ_vector_ptr result(new XYZ_vector(size));
+
+
+                //----------------- dim High(拋物線Smooth內插部分) -------------------
+		double_array startuvValues;
+		double_array enduvValues;
+		switch (domain) {
+		case CIExy:
+		    startuvValues = startXYZ->getxyValues();
+		    enduvValues = endXYZ->getxyValues();
+		    break;
+		case CIEuv:
+		    startuvValues = startXYZ->getuvValues();
+		    enduvValues = endXYZ->getuvValues();
+		    break;
+		case CIEuvPrime:
+		    startuvValues = startXYZ->getuvPrimeValues();
+		    enduvValues = endXYZ->getuvPrimeValues();
+		    break;
+		};
+
+                double u, v, Y;
+
+                double TurnLow_u = Interpolation::parabola(size-1, enduvValues[0],
+		         	   	        0, startuvValues[0], dimTurnLow);
+		double TurnLow_v = Interpolation::parabola(size-1, enduvValues[1],
+		    			        0, startuvValues[1], dimTurnLow);
+
+		for (int x = 0; x < size; x++) {
+                    if(x <= dimTurnLow) {
+		        u = Interpolation::linear(0, dimTurnLow,
+						  startuvValues[0], TurnLow_u, x);
+		        v = Interpolation::linear(0, dimTurnLow,
+                                                  startuvValues[1], TurnLow_v, x);
+		        Y = (*luminanceGammaCurve)[x];
+                    } else {
+		        u = Interpolation::parabola(size-1, enduvValues[0],
+                                                    0, startuvValues[0], x);
+		        v = Interpolation::parabola(size-1, enduvValues[1],
+		    				    0, startuvValues[1], x);
+                        Y = (*luminanceGammaCurve)[x];
+                    }
+
+		    (*result)[x] = getTargetXYZ(u, v, Y);
+		};
+		return result;*/
+
+
+                //======================== Method 1 =============================
+                /*int size = luminanceGammaCurve->size();
+                XYZ_vector_ptr result(new XYZ_vector(size));
+
+                //----------------- dim Low(斜線線性內插部分) -----------------------
+                double_vector_ptr dimLowGammaCurve =
+                            DoubleArray::getRangeCopy(luminanceGammaCurve, 0, dimTurnLow);
+
+                XYZ_vector_ptr dimlLowResult = DimTargetGenerator::getTarget(startXYZ, dimTurnLowXYZ,
+                                                                             dimLowGammaCurve, gamma);
+
+                for(int i=0; i<=dimTurnLow; i++)
+                    (*result)[i] = (*dimlLowResult)[i];
+                //----------------- dim High(拋物線Smooth內插部分) -------------------
+		double_array lowuvValues;
+		double_array highuvValues;
+		switch (domain) {
+		case CIExy:
+		    lowuvValues = dimTurnLowXYZ->getxyValues();
+		    highuvValues = endXYZ->getxyValues();
+		    break;
+		case CIEuv:
+		    lowuvValues = dimTurnLowXYZ->getuvValues();
+		    highuvValues = endXYZ->getuvValues();
+		    break;
+		case CIEuvPrime:
+		    lowuvValues = dimTurnLowXYZ->getuvPrimeValues();
+		    highuvValues = endXYZ->getuvPrimeValues();
+		    break;
+		};
+
+		for (int x = dimTurnLow+1; x < size; x++) {
+		    double u = Interpolation::parabola(size-1, highuvValues[0],
+		    				       dimTurnLow, lowuvValues[0], x);
+		    double v = Interpolation::parabola(size-1, highuvValues[1],
+		    				       dimTurnLow, lowuvValues[1], x);
+
+		    double Y = (*luminanceGammaCurve)[x];
+
+		    (*result)[x] = getTargetXYZ(u, v, Y);
+		};
+		return result; */
+	    };
 	    //==================================================================
 
 	  DeHookProcessor::DeHookProcessor(const LCDCalibrator & calibrator):c(calibrator), bestGamma(-1)

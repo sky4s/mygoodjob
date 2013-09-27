@@ -87,6 +87,7 @@ namespace cms {
 		int dimUnder;
 		double dimStrength;
 		int dimFixEnd;
+                bool DimSmooth;       //將目標色度低灰階分三段，中間段為平滑用   201309 byBS+
 		//bool dimFix;
 		double dimFixThreshold;
 		bool keepDarkLevel;
@@ -209,7 +210,7 @@ namespace cms {
 		void setP1P2(int p1, int p2);
 		void setRGBInterpolation(int under);
 		void setNonDimCorrect();
-		void setDefinedDim(int under, double strength);
+		void setDefinedDim(int under, double strength, bool DimThreePart);
 		void setDefinedDimRBFix(int under, bool enable, bool autoUnder);
 		__property int DimFixEnd = { write = dimFixEnd };
 		//__property bool DimFix = { write = dimFix };

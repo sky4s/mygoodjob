@@ -113,7 +113,7 @@ namespace cms {
 		     values[1] = 0;
 		     return values;
 		} else {
-		    double sum = (X + Y + Z);
+	            double sum = (X + Y + Z);
 		    double x = X / sum;
 		    double y = Y / sum;
 		    double_array values(new double[2]);

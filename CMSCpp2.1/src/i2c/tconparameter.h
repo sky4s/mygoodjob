@@ -35,6 +35,7 @@ namespace i2c {
 	static const DirectGammaType NotAssignInstance;
 	static const DirectGammaType TCON12409AgingInstance;
         static const DirectGammaType TCON12409Instance;
+        static const DirectGammaType TCON11311Instance;
     };
 
     class TCONParameter {

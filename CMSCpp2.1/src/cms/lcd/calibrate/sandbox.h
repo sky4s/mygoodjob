@@ -68,8 +68,9 @@ namespace cms {
 		XYZ_vector_ptr getTarget0(XYZ_ptr startXYZ,
 					  XYZ_ptr targetXYZ,
 					  XYZ_ptr endXYZ,
-					  double_vector_ptr
-					  luminanceGammaCurve, int dimTurn,
+					  double_vector_ptr luminanceGammaCurve,
+                                          int dimTurn, XYZ_ptr dimTurnLowXYZ,
+                                          bool isDimSmooth,
 					  int brightTurn, double dimGamma,
 					  double brightGamma, int brightWidth);
 
@@ -93,7 +94,7 @@ namespace cms {
 		virtual void windowClosing(TObject * Sender, TCloseAction & Action);
 		void setTarget(XYZ_ptr targetWhite, XYZ_ptr nativeWhite,
 			       double_vector_ptr luminanceGammaCurve,
-			       int dimTurn, int brightTurn,
+			       int dimTurnLow, bool isDimSmooth, int brightTurn,
 			       double dimGamma, double brightGamma, int effectiveInputLevel);
 		bool checkIncreaseZOfTarget();
 		void updateTarget(XYZ_ptr targetWhite);
@@ -167,12 +168,24 @@ namespace cms {
 
 		static XYZ_vector_ptr getTarget(XYZ_ptr startXYZ,
 						XYZ_ptr endXYZ,
-						double_vector_ptr
-						luminanceGammaCurve, Domain domain, double gamma);
+						double_vector_ptr luminanceGammaCurve,
+                                                Domain domain, double gamma);
 		static XYZ_vector_ptr getTarget(XYZ_ptr startXYZ,
 						XYZ_ptr endXYZ,
-						double_vector_ptr
-						luminanceGammaCurve, double gamma);
+						double_vector_ptr luminanceGammaCurve,
+					        double gamma);
+
+                static XYZ_vector_ptr getSmoothDimTarget(XYZ_ptr startXYZ,
+                                                         XYZ_ptr endXYZ,
+                                                         int dimTurn,
+                                                         double_vector_ptr luminanceGammaCurve,
+                                                        Domain domain, double gamma);
+                static XYZ_vector_ptr getSmoothDimTarget(XYZ_ptr startXYZ,
+                                                         XYZ_ptr endXYZ,
+                                                         int dimTurn,
+                                                         double_vector_ptr luminanceGammaCurve,
+                                                         double gamma);
+
 	    };
 
 	    class DeHookProcessor {

@@ -1,6 +1,6 @@
 object CCTLUTForm: TCCTLUTForm
-  Left = 239
-  Top = 265
+  Left = 120
+  Top = 149
   Width = 900
   Height = 466
   Caption = 'CCT(LUT)'
@@ -1036,7 +1036,7 @@ object CCTLUTForm: TCCTLUTForm
     object Edit_DefinedDimUnder: TEdit
       Left = 72
       Top = 52
-      Width = 59
+      Width = 57
       Height = 21
       ImeName = #26085#25991#36664#20837#31995#32113' (MS-IME2002)'
       TabOrder = 2
@@ -1082,7 +1082,7 @@ object CCTLUTForm: TCCTLUTForm
     object CheckBox_DimRBFix: TCheckBox
       Left = 26
       Top = 118
-      Width = 71
+      Width = 55
       Height = 17
       Caption = 'RB Fix'
       TabOrder = 6
@@ -1099,12 +1099,21 @@ object CCTLUTForm: TCCTLUTForm
     object CheckBox_RBFixAuto: TCheckBox
       Left = 40
       Top = 136
-      Width = 49
+      Width = 41
       Height = 17
       Caption = 'Auto'
       Enabled = False
       TabOrder = 8
       OnClick = CheckBox_RBFixAutoClick
+    end
+    object CheckBox_DimThreePart: TCheckBox
+      Left = 96
+      Top = 32
+      Width = 57
+      Height = 17
+      Caption = '3 Parts'
+      TabOrder = 9
+      OnClick = CheckBox_DimThreePartClick
     end
   end
   object GroupBox_Execute: TGroupBox

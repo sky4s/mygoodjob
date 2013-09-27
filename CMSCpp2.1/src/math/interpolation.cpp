@@ -9,6 +9,7 @@
 
 //其他庫頭文件
 #include <math.hpp>
+#include <math.h>
 
 //本項目內頭文件
 #include "searcher.h"
@@ -68,6 +69,38 @@ namespace math {
 	}
 	return linear((*xn)[0], (*xn)[1], (*yn)[0], (*yn)[1], x);
     };
+
+    //帶入兩點A(x,y)、B(x,y)，且頂點為A，得一開口向下的拋物線(X-Ax)^2 = -4c(Y-Ay)
+    double Interpolation::parabola(double Ax, double Ay, double Bx, double By, double X) {
+        //帶入B點求常數c
+        double constant = ((Bx-Ax)*(Bx-Ax)) / (-4*(By-Ay));
+        //帶入欲求的X，求result(Y)
+	double result = Ay - ((X-Ax)*(X-Ax)) / (4*constant);
+	return result;
+    };
+
+    //帶入三點P0(x,y)、P1(x,y)、P2(x,y)，求得二次貝茲曲線並內插 X=(1-t)^2*P0+2t(1-t)*P1+t^2*P2
+    double Interpolation::BezierCurve(double P0x, double P0y, double P1x, double P1y, double P2x, double P2y, double X) {
+           //由x座與GrayLevel(X座標)代入整理成 : aX^2+bX+c , 欲求t
+           double a = P0x-2*P1x+P2x;
+           double b = -2*P0x+2*P1x;
+           double c = P0x-X;
+           double t;
+           //求一元二次方程式解
+           if(a == 0) {
+               t = -c/b;
+           } else {
+               double b2_4ac = b*b-4*a*c;
+               t = (-b+sqrt(b2_4ac)) / (2*a);
+           }
+           //將GrayLevel(X座標)對應之t值代入，求得對應之y
+           double result = ((1-t)*(1-t)*P0y) + (2*t*(1-t)*P1y) + (t*t*P2y);
+
+           return result;
+    };
+
+
+
     double Interpolation::interpolate(double_vector_ptr xn,
 				      double_vector_ptr yn, double x, Algo interpolationType) {
 	switch (interpolationType) {

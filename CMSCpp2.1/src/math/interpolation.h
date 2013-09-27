@@ -30,6 +30,8 @@ namespace math {
 	static double linear(double x1, double x2, double y1, double y2, double x);
 	static double linear(double_vector_ptr xn, double_vector_ptr yn, double x);
 	static double linear2(double_vector_ptr xn, double_vector_ptr yn, double x);
+        static double parabola(double Ax, double Ay, double Bx, double By, double X);
+        static double BezierCurve(double P0x, double P0y, double P1x, double P1y, double P2x, double P2y, double X);
 	static double interpolate(double_vector_ptr xn,
 				  double_vector_ptr yn, double x, Algo interpolationType);
 	double interpolate(double x, Algo interpolationType);
@@ -38,7 +40,7 @@ namespace math {
        影響到array內最大值與最小值的判定
        Progressive: 漸增的
        Ripple: 有起伏的
-     */
+    */
     enum LUTType {
 	Progressive, Ripple
     };

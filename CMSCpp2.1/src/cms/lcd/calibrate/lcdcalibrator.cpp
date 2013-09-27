@@ -191,11 +191,12 @@ namespace cms {
 		this->correct = DimCorrect::None;
 	    };
 
-	    void LCDCalibrator::setDefinedDim(int under, double strength) {
+	    void LCDCalibrator::setDefinedDim(int under, double strength, bool DimThreePart) {
 		this->correct = DimCorrect::DefinedDim;
 		this->dimUnder = under;
 		this->dimFixEnd = under;
 		this->dimStrength = strength;
+                this->DimSmooth = DimThreePart;
 
 	    };
 	    void LCDCalibrator::setDefinedDimRBFix(int under, bool enable, bool autoUnder) {
@@ -871,9 +872,12 @@ namespace cms {
 		double dimStrengthParameter = 1;
 		int underParameter = 50;
 
+                bool isDimSmooth = DimSmooth;     //Dim切三段   byBS+
+
 		if (correct == DimCorrect::DefinedDim) {
 		    dimStrengthParameter = dimStrength;
 		    underParameter = dimUnder;
+
 		} else if (correct == DimCorrect::None) {
 		    underParameter = 0;
 		}
@@ -893,7 +897,9 @@ namespace cms {
 		    //設定目標參數: target end
 		    advgenerator->setTarget(targetWhiteXYZ, maxWhiteXYZ,
 					    luminanceGammaCurve,
-					    underParameter, overParameter,
+					    underParameter,
+                                            isDimSmooth,
+                                            overParameter,
 					    dimStrengthParameter,
 					    brightgammaParameter,
 					    bitDepth->getEffectiveInputLevel());
