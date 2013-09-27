@@ -114,6 +114,47 @@ namespace i2c {
 
 	return data;
     };
+    bptr < cms::util::ByteBuffer > TCONControl::getRGBByteBufferWith11311(int r, int g, int b,
+									       const DirectGammaType
+									       & directGammaType) {
+        //11311  |RH|RL|GH|GL|BH|BL|
+        //        8  2  8  2  8  2
+	int rLow = (r & 3) << 6;
+	int rHigh = r >> 2;
+	int gLow = (g & 3) << 6;
+	int gHigh = g >> 2;
+	int bLow = (b & 3) << 6;
+	int bHigh = b >> 2;
+
+        int totalByte = directGammaType.totalByte;
+
+        //當Direct gamma 的Address中出現其他register時，需要做的處理。
+        //但parameter在這不能直接使用，改在setDirectGammaRGB判斷?
+        /*int EnableAddress = parameter->gammaTestAddress;
+        int RGBAddress = parameter->directGammaRGBAddress;
+        if(EnableAddress >= RGBAddress && EnableAddress < RGBAddress+totalByte)
+        {
+            unsigned char bytedata = readByte(EnableAddress);
+            rLow = rLow | bytedata;  //For AUO11311
+        }*/
+
+	bptr < ByteBuffer > data(new ByteBuffer(totalByte));
+	//先清空buffer
+	for (int x = 0; x < totalByte; x++) {
+	    (*data)[x] = 0;
+	}
+
+	(*data)[0] = rHigh;
+	(*data)[1] = rLow;
+	(*data)[2] = gHigh;
+	(*data)[3] = gLow;
+        (*data)[4] = bHigh;
+        (*data)[5] = bLow;
+
+	return data;
+
+    };
+
     bptr < ByteBuffer > TCONControl::getRGBByteBuffer(int r, int g, int b,
 						      const DirectGammaType & directGammaType) {
 	if (DirectGammaType::TCON62301Instance == directGammaType) {
@@ -122,7 +163,7 @@ namespace i2c {
 	    return getRGBByteBufferWith12409Aging(r, g, b, directGammaType);
 	} else if (DirectGammaType::TCON12409Instance == directGammaType) {
 	    return getRGBByteBufferWith12409(r, g, b, directGammaType);
-        }
+        }  
 
 	int patternBit = directGammaType.patternBit;
 	int highMask = (12 == patternBit) ? 15 : 3;
@@ -142,7 +183,7 @@ namespace i2c {
 	    (*data)[x] = 0;
 	}
 	//0, 8, 16, 12, 24, 32
-	//0,1,2,1,3,4
+	//0, 1, 2,  1,  3,  4
 	(*data)[directGammaType.rLowBit / 8] = rLow;	//0
 	(*data)[directGammaType.gLowBit / 8] = gLow;	//16
 	(*data)[directGammaType.bLowBit / 8] = bLow;	//24
@@ -186,16 +227,27 @@ namespace i2c {
 	const DirectGammaType & directGammaType = parameter->directGammaType;
 	bptr < ByteBuffer > data = getRGBByteBuffer(r, g, b, directGammaType);
 
-	int address = parameter->directGammaRGBAddress;
-	write(address, data);
+        //當Direct gamma 的Address中出現其他register時，需要做的處理。
+        int EnableAddress = parameter->gammaTestAddress;
+        int RGBAddress = parameter->directGammaRGBAddress;
+        int totalByte = directGammaType.totalByte;
+        if(EnableAddress >= RGBAddress && EnableAddress < RGBAddress+totalByte)
+        {
+            //unsigned char bytedata = readByte(EnableAddress);
+            //rLow = rLow | bytedata;  //For AUO11311
+            ShowMessage("Waring : Direct gamma Enable address conflict");
+            return 0;
+        }
+
+	write(RGBAddress, data);
 	int size = data->getSize();
-	bptr < ByteBuffer > dataFrom0 = read(address, size, 0);
+	bptr < ByteBuffer > dataFrom0 = read(RGBAddress, size, 0);
 	if (!dualTCON) {
 	    //1 tcon
 	    return data->equals(dataFrom0);
 	} else {
 	    //2 tcon
-	    bptr < ByteBuffer > dataFrom1 = read(address, size, 1);
+	    bptr < ByteBuffer > dataFrom1 = read(RGBAddress, size, 1);
 	    return data->equals(dataFrom0) && data->equals(dataFrom1);
 	}
     };

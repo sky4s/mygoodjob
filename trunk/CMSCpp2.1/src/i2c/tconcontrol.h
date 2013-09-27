@@ -34,6 +34,9 @@ namespace i2c {
 	static bptr < cms::util::ByteBuffer > getRGBByteBufferWith12409(int r, int g, int b,
 								        const DirectGammaType &
 								        directGammaType);
+        static bptr < cms::util::ByteBuffer > getRGBByteBufferWith11311(int r, int g, int b,
+								        const DirectGammaType &
+								        directGammaType);
 
 	bool setDirectGammaRGB(RGB_ptr rgb);
 	bool setDirectGammaRGB(int r, int g, int b);

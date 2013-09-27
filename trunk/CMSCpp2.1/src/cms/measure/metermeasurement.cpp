@@ -296,7 +296,6 @@ namespace cms {
 						  measureCondition) {
 
 	    Patch_vector_ptr vector(new Patch_vector());
-            int counter = 0;
 
 	    //for AgingMode byBS+
 	    if (isAgingMode()) {
@@ -318,16 +317,9 @@ namespace cms {
                 int graylevel;
 		for (graylevel = start; graylevel >= 0; graylevel -= step) {
 
-
 		    RGB_ptr rgb(new RGBColor(graylevel, graylevel, graylevel));
 		    Patch_ptr patch = mm->measure(rgb, rgb->toString());
 		    vector->push_back(patch);
-
-                    /*if(counter == 0 || counter == 127 || counter == 255)
-                    {
-                         Sleep(0);
-                    }*/
-                    counter++;
 
 		    if (true == stop) {
 			stop = false;
@@ -350,12 +342,6 @@ namespace cms {
 		foreach(RGB_ptr rgb, *rgbMeasureCode) {
 		    Patch_ptr patch = mm->measure(rgb, rgb->toString());
 		    vector->push_back(patch);
-
-                    if(counter == 0 || counter == 127 || counter == 255)
-                    {
-                         Sleep(0);
-                    }
-                    counter++;
 
 		    if (true == stop) {
 			stop = false;

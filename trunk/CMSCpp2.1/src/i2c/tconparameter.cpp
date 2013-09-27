@@ -148,6 +148,8 @@ namespace i2c {
     const DirectGammaType DirectGammaType::TCON12409AgingInstance(2, 0, 12, 10, 22, 20, 4, 10);
     //12409 |RH |RLGH|GL|BH |BL|
     const DirectGammaType DirectGammaType::TCON12409Instance(12, 0, 16, 8, 36, 24, 5, 12);
+    //11311  |RH |RL|GH |GL|BH |BL|
+    const DirectGammaType DirectGammaType::TCON11311Instance(14, 0, 30, 16, 46, 32, 6, 10);
     const DirectGammaType DirectGammaType::NotAssignInstance(0, 0, 0, 0, 0, 0, 0, 12);
 };
 
