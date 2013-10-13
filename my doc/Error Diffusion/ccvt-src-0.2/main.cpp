@@ -101,7 +101,7 @@ int main(int, char*[]) {
 	
 	  const double  TORUS_SIZE        = 1024;
 	  const int     NUMBER_SITES      = TORUS_SIZE*TORUS_SIZE*err/16;
-	  const int     NUMBER_POINTS     = 1024 * NUMBER_SITES;
+	  const int     NUMBER_POINTS     = 2048 * NUMBER_SITES;
 	  
 	  const bool    CONSTANT_DENSITY  = true;
 	  const bool    CENTROIDAL        = true;
