@@ -32,26 +32,35 @@ void setup() {
  word "Arduino" one after the other on digit 0. 
  */
 void writeArduinoOn7Segment() { 
-  for(int x=0;x<=199;x++) {
-     if( x>=100) {
-       lc.setChar(0,2,'1',false);
-     }
-     else {
-       lc.setChar(0,2,' ',false);
-     }
-     int d0=x%10;
-     int d1=(x-d0)/10%10;
-
-     lc.setChar(0,0,'0'+d0,false);
-     if( x>10) {
-       lc.setChar(0,1,'0'+d1,false);
-     }
-     else {
-       lc.setChar(0,1,' ',false);
-     }
-     delay(delaytime);
-  }
- 
+//  for(int x=0;x<=299;x++) {
+//
+//     int d0=x%10;
+//     int d1=(x-d0)/10%10;
+//     int d3=x/100;
+//
+//     lc.setChar(0,0,'0'+d0,false);
+//     if( x>10) {
+//       lc.setChar(0,1,'0'+d1,false);
+//     }
+//     else {
+//       lc.setChar(0,1,' ',false);
+//     }
+//     if( d3 ==0) {
+//       lc.setChar(0,2,' ',false); 
+//     }else {
+//       lc.setChar(0,2,'0'+d3,false);
+//     }
+//     
+//     
+//     delay(delaytime);
+//  }
+   
+    for(int x=0;x<=9;x++) {
+      lc.setChar(0,0,'0'+x,false); 
+      lc.setChar(0,1,'0'+x,false); 
+      lc.setChar(0,2,'0'+x,false);       
+      delay(delaytime*5);
+    }
 //  lc.setChar(0,0,'0',false);
 //  delay(delaytime);
 //  lc.setChar(0,0,'1',false);
