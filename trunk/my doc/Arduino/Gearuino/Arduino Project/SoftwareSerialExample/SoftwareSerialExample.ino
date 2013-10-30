@@ -28,6 +28,7 @@
 #include <SoftwareSerial.h>
 
 SoftwareSerial mySerial(10, 11); // RX, TX
+//SoftwareSerial mySerial(8, 9); // RX, TX
 
 void setup()  
 {
