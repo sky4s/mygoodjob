@@ -99,9 +99,9 @@ int main(int, char*[]) {
 	char RESULT_FILENAME [50];
 	for(int err=1;err<=8;err++){
 	
-	  const double  TORUS_SIZE        = 1024;
+	  const double  TORUS_SIZE        = 128;
 	  const int     NUMBER_SITES      = TORUS_SIZE*TORUS_SIZE*err/16;
-	  const int     NUMBER_POINTS     = 2048 * NUMBER_SITES;
+	  const int     NUMBER_POINTS     = 1792 * NUMBER_SITES;
 	  
 	  const bool    CONSTANT_DENSITY  = true;
 	  const bool    CENTROIDAL        = true;
