@@ -38,11 +38,11 @@ void setup()
   }
 
 
-//  Serial.println("Goodnight moon!");
+  //  Serial.println("Goodnight moon!");
 
   // set the data rate for the SoftwareSerial port
   mySerial.begin(38400);
-//  mySerial.println("Hello, world?");
+  //  mySerial.println("Hello, world?");
 }
 
 void loop() // run over and over
@@ -51,10 +51,11 @@ void loop() // run over and over
     Serial.write(mySerial.read());
   }
   if (Serial.available()){
-//    mySerial.write(Serial.read());
-     char in = Serial.read();
-     Serial.write(in);
-     mySerial.write(in);
+    //    mySerial.write(Serial.read());
+    char in = Serial.read();
+    Serial.write(in);
+    mySerial.write(in);
   }
 }
+
 
