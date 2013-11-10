@@ -1,0 +1,7 @@
+canvas	KEYWORD1
+setPaint	KEYWORD2
+setText	KEYWORD2
+drawRect	KEYWORD2
+drawLine	KEYWORD2
+drawCircle	KEYWORD2
+drawText	KEYWORD2
