@@ -43,7 +43,7 @@ void setup()
   //  Serial.println("Goodnight moon!");
 
   // set the data rate for the SoftwareSerial port
-  mySerial.begin(38400);
+  mySerial.begin(38400);a
   //  mySerial.println("Hello, world?");
 }
 

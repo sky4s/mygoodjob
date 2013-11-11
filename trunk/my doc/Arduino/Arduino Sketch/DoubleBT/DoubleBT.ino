@@ -90,8 +90,9 @@ public:
 
   }
   void sendString(String str) {
-    Serial.println(str);
-    serial.println(str);
+//    Serial.println(str);
+//    serial.print(str+21+"\r");
+    serial.print(str+"\r"+21);
   }
   boolean isResponse() {
     return buffer.listen();
@@ -121,6 +122,7 @@ void loop() // run over and over
 {
   if(serialBuffer.listen()) {
     String line= serialBuffer.getLine();
+//    Serial.println(line);
     serialControl.sendString(line);
 //    Serial.write(line.toCharArray());
 
