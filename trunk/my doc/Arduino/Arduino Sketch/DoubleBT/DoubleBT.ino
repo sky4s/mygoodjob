@@ -29,32 +29,43 @@
 
 class InputBuffer {
 private:
-  SoftwareSerial& serial;
-  boolean echo;// = true;
+  SoftwareSerial* serial;
+  boolean echo;
   char buffer[40];
   int bufferIndex;
-  String input;
+  String line;
+  boolean hardware;
 public:
   InputBuffer(SoftwareSerial& serial):
-  serial(serial) {
-    echo=true;
+  serial(&serial),hardware(false) {
+    echo=false;
     bufferIndex=0;
   }
-  
-  String getInput() {
-    return input;
+
+  InputBuffer():  
+  hardware(true) {
+    echo=false;
+    bufferIndex=0;
+  }
+
+  void setEcho(boolean _echo) {
+    echo=_echo;
+  }
+
+  String getLine() {
+    return line;
   }
 
   boolean listen() {
-    if (serial.available()) {
-      char read=serial.read();
+    if (hardware?Serial.available(): serial->available()) {
+      char read=hardware?Serial.read():serial->read();
 
       if('\n'==read || '\r'==read) {
         if(0!=bufferIndex) {
           buffer[bufferIndex++]='\0';
-          input=String(buffer);
+          line=String(buffer);
           if(echo) {
-            Serial.println(input);
+            Serial.println(line);
           }
           bufferIndex=0;
           return true;
@@ -64,17 +75,36 @@ public:
         buffer[bufferIndex++]=read;
       }
 
-      //      mySerial_m.write(read);
       return false;
     }
   }
 };
 
+class SerialControl {
+private:
+  SoftwareSerial  serial;
+  InputBuffer buffer;
+public:
+  SerialControl(SoftwareSerial & serial):
+  serial(serial), buffer(InputBuffer(serial)){
 
-//SoftwareSerial mySerial_s(10, 11); // RX, TX
+  }
+  void sendString(String str) {
+    Serial.println(str);
+    serial.println(str);
+  }
+  boolean isResponse() {
+    return buffer.listen();
+  }
+  String getResponse() {
+    return buffer.getLine();
+  }
+
+};
+
 SoftwareSerial softserial(8, 9); // RX, TX
- 
-InputBuffer input(softserial);
+SerialControl serialControl(softserial);
+InputBuffer serialBuffer;
 void setup()  
 {
   // Open serial communications and wait for port to open:
@@ -83,46 +113,44 @@ void setup()
     ; // wait for serial port to connect. Needed for Leonardo only
   }
 
-
-  //  Serial.println("Goodnight moon!");
-
-  // set the data rate for the SoftwareSerial port
-  //  mySerial_s.begin(38400);
   softserial.begin(38400);
-  //  mySerial.println("Hello, world?");
+  //  serialBuffer.setEcho(true);
 }
-//boolean echo = true;
-//char buffer[40];
-//int bufferIndex=0;
-//String input;
+
 void loop() // run over and over
 {
-  if (Serial.available()) {
-    char read=Serial.read();
-    //
-    //    if('\n'==read || '\r'==read) {
-    //      if(0!=bufferIndex) {
-    //        buffer[bufferIndex++]='\0';
-    //        input=String(buffer);
-    //        if(echo) {
-    //          Serial.println(input);
-    //        }
-    //        bufferIndex=0;
-    //      }
-    //    }
-    //    else {
-    //      buffer[bufferIndex++]=read;
-    //    }
-    //
-    softserial.write(read);
+  if(serialBuffer.listen()) {
+    String line= serialBuffer.getLine();
+    serialControl.sendString(line);
+//    Serial.write(line.toCharArray());
+
+//    if(serialControl.isResponse()) {
+//      Serial.println(serialControl.getResponse());
+//    }
   }
-  if(input.listen()) {
-    Serial.println(input.getInput());
+
+
+
+  //   if (Serial.available()) {
+  //      char read=Serial.read();
+  //      softserial.write(read);
+  //    }
+  if(softserial.available()) {
+    Serial.write(softserial.read());
   }
-//  if (softserial.available()){
-//    Serial.write(softserial.read());
-//  }
+
 }
+
+
+
+
+
+
+
+
+
+
+
 
 
 

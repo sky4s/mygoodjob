@@ -52,7 +52,7 @@ void loop() // run over and over
   if (Serial.available()){
     char in = Serial.read();
     Serial.write(in);
-    mySerial.write(in);
+    mySerial.print(in);
   }
   if (mySerial.available()) {
     Serial.write(mySerial.read());
