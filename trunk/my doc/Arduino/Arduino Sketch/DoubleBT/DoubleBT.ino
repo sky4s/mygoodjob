@@ -27,9 +27,54 @@
  */
 #include <SoftwareSerial.h>
 
-//SoftwareSerial mySerial_s(10, 11); // RX, TX
-SoftwareSerial mySerial_m(8, 9); // RX, TX
+class InputBuffer {
+private:
+  SoftwareSerial& serial;
+  boolean echo;// = true;
+  char buffer[40];
+  int bufferIndex;
+  String input;
+public:
+  InputBuffer(SoftwareSerial& serial):
+  serial(serial) {
+    echo=true;
+    bufferIndex=0;
+  }
+  
+  String getInput() {
+    return input;
+  }
 
+  boolean listen() {
+    if (serial.available()) {
+      char read=serial.read();
+
+      if('\n'==read || '\r'==read) {
+        if(0!=bufferIndex) {
+          buffer[bufferIndex++]='\0';
+          input=String(buffer);
+          if(echo) {
+            Serial.println(input);
+          }
+          bufferIndex=0;
+          return true;
+        }
+      }
+      else {
+        buffer[bufferIndex++]=read;
+      }
+
+      //      mySerial_m.write(read);
+      return false;
+    }
+  }
+};
+
+
+//SoftwareSerial mySerial_s(10, 11); // RX, TX
+SoftwareSerial softserial(8, 9); // RX, TX
+ 
+InputBuffer input(softserial);
 void setup()  
 {
   // Open serial communications and wait for port to open:
@@ -42,24 +87,56 @@ void setup()
   //  Serial.println("Goodnight moon!");
 
   // set the data rate for the SoftwareSerial port
-//  mySerial_s.begin(38400);
-  mySerial_m.begin(38400);
+  //  mySerial_s.begin(38400);
+  softserial.begin(38400);
   //  mySerial.println("Hello, world?");
 }
-
+//boolean echo = true;
+//char buffer[40];
+//int bufferIndex=0;
+//String input;
 void loop() // run over and over
 {
   if (Serial.available()) {
     char read=Serial.read();
-//    Serial.write(read);
-    mySerial_m.write(read);
+    //
+    //    if('\n'==read || '\r'==read) {
+    //      if(0!=bufferIndex) {
+    //        buffer[bufferIndex++]='\0';
+    //        input=String(buffer);
+    //        if(echo) {
+    //          Serial.println(input);
+    //        }
+    //        bufferIndex=0;
+    //      }
+    //    }
+    //    else {
+    //      buffer[bufferIndex++]=read;
+    //    }
+    //
+    softserial.write(read);
   }
-  if (mySerial_m.available()){
-    //    mySerial.write(Serial.read());
-    char in = mySerial_m.read();
-    Serial.write(in);
-//    mySerial_s.write(in);
+  if(input.listen()) {
+    Serial.println(input.getInput());
   }
+//  if (softserial.available()){
+//    Serial.write(softserial.read());
+//  }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
