@@ -82,17 +82,18 @@ public:
 
 class SerialControl {
 private:
-  SoftwareSerial  serial;
+  SoftwareSerial&  serial;
   InputBuffer buffer;
 public:
-  SerialControl(SoftwareSerial & serial):
-  serial(serial), buffer(InputBuffer(serial)){
+  SerialControl(SoftwareSerial & _serial):
+  serial(_serial), buffer(InputBuffer(_serial)){
 
   }
   void sendString(String str) {
 //    Serial.println(str);
 //    serial.print(str+21+"\r");
-    serial.print(str+"\r"+21);
+//    serial.print(str);
+    serial.println(str);
   }
   boolean isResponse() {
     return buffer.listen();
@@ -122,24 +123,11 @@ void loop() // run over and over
 {
   if(serialBuffer.listen()) {
     String line= serialBuffer.getLine();
-//    Serial.println(line);
     serialControl.sendString(line);
-//    Serial.write(line.toCharArray());
-
-//    if(serialControl.isResponse()) {
-//      Serial.println(serialControl.getResponse());
-//    }
   }
-
-
-
-  //   if (Serial.available()) {
-  //      char read=Serial.read();
-  //      softserial.write(read);
-  //    }
-  if(softserial.available()) {
-    Serial.write(softserial.read());
-  }
+    if(serialControl.isResponse()) {
+      Serial.println(serialControl.getResponse());
+    }
 
 }
 
