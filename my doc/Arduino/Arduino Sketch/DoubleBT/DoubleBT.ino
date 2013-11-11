@@ -90,9 +90,9 @@ public:
 
   }
   void sendString(String str) {
-//    Serial.println(str);
-//    serial.print(str+21+"\r");
-//    serial.print(str);
+    //    Serial.println(str);
+    //    serial.print(str+21+"\r");
+    //    serial.print(str);
     serial.println(str);
   }
   boolean isResponse() {
@@ -102,6 +102,15 @@ public:
     return buffer.getLine();
   }
 
+};
+
+class HC05Control {
+private:
+  SerialControl serialControl;
+public:
+  HC05Control(SoftwareSerial & _serial):
+  serialControl(SerialControl(_serial)){
+  }
 };
 
 SoftwareSerial softserial(8, 9); // RX, TX
@@ -125,11 +134,12 @@ void loop() // run over and over
     String line= serialBuffer.getLine();
     serialControl.sendString(line);
   }
-    if(serialControl.isResponse()) {
-      Serial.println(serialControl.getResponse());
-    }
+  if(serialControl.isResponse()) {
+    Serial.println(serialControl.getResponse());
+  }
 
 }
+
 
 
 
