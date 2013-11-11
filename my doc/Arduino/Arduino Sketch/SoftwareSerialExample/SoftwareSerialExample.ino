@@ -49,14 +49,13 @@ void setup()
 
 void loop() // run over and over
 {
-  if (mySerial.available()) {
-    Serial.write(mySerial.read());
-  }
   if (Serial.available()){
-    //    mySerial.write(Serial.read());
     char in = Serial.read();
     Serial.write(in);
     mySerial.write(in);
+  }
+  if (mySerial.available()) {
+    Serial.write(mySerial.read());
   }
 }
 
