@@ -246,9 +246,10 @@ public:
   serialControl(SerialControl(_serial)),error(false){
     responseIndex=0;
   }
-  void sendCommandAndWait(String command) {
+  boolean sendCommandAndWaitOk(String command) {
     sendCommand(command);
     while (isResponse()) ;
+    return isResponseOk();
   }
   void sendCommand(String command) {
     responseIndex=0;
@@ -315,17 +316,15 @@ void setup()
   //  }
 
   softserial.begin(38400);
-  hc05.sendCommandAndWait("AT+INIT");
-  hc05.sendCommandAndWait("AT+INQM=1,"+String(ResponseMaxSize)+",24");
-  if(hc05.isResponseOk()) {
+  hc05.sendCommandAndWaitOk("AT+INIT");
+  if( hc05.sendCommandAndWaitOk("AT+INQM=1,"+String(ResponseMaxSize)+",24")){
     Serial.println("init.");
   }
   else{
     Serial.println("init failed!");
   }
-  hc05.sendCommandAndWait("AT+DISC");
-  hc05.sendCommandAndWait("AT+LINK="+String(GEARUINI_SLAVE));
-  if(hc05.isResponseOk()) {
+  hc05.sendCommandAndWaitOk("AT+DISC");
+  if(hc05.sendCommandAndWaitOk("AT+LINK="+String(GEARUINI_SLAVE))){
     Serial.println("Link to "+String(GEARUINI_SLAVE));
   } 
 }
@@ -347,6 +346,7 @@ void loop() // run over and over
   //  }
 
 }
+
 
 
 
