@@ -121,10 +121,13 @@ public:
   }
 
   boolean listen() {
+#ifdef DEBUG
+    Serial.println("InputBuffer debug listen()"); 
+#endif
     if (hardware?Serial.available(): serial->available()) {
       read=hardware?Serial.read():serial->read();
 #ifdef DEBUG
-      Serial.print(read); 
+      Serial.print("InputBuffer debug "+read); 
 #endif
 
       if('\n'==read || '\r'==read) {
@@ -141,7 +144,7 @@ public:
       else {
         if(bufferIndex+1 >= MaxBufferSize){
 #ifdef DEBUG
-          Serial.println("bufferIndex+1 >= MaxBufferSize");
+          Serial.println("InputBuffer debug bufferIndex+1 >= MaxBufferSize");
           return false;
 #endif
         }
@@ -231,7 +234,9 @@ public:
 
 static const String OK="OK";
 static const String ERROR="ERROR";
+static const String FAIL="FAIL";
 static const int ResponseMaxSize = 10;
+static const int MaxWaitTimes = 100;
 class HC05Control {
 private:
   SerialControl serialControl;
@@ -246,10 +251,10 @@ public:
   }
   boolean sendCommandAndWaitOk(String command) {
     sendCommand(command);
-    while (isResponse()) ;
-    //    Serial.println(command);
-    //        Serial.println("is"+isResponseOk());
-    //        Serial.println(responses[0]);
+    for(int x=0;!isResponse()&&x<MaxWaitTimes;x++) {
+      delay(10);
+    };
+
     return isResponseOk();
   }
   void sendCommand(String _command) {
@@ -260,12 +265,14 @@ public:
     Serial.println("HC05Control debug "+_command);
 #endif
   }
+
   boolean isResponse() {
     if(serialControl.isResponse()) {
       String response=serialControl.getResponse();
 #ifdef DEBUG
-      Serial.println("HC05Control debug "+response);
+      Serial.println("HC05Control debug response "+response);
 #endif
+
       if(response.startsWith(OK)) {
 #ifdef DEBUG
         Serial.println("HC05Control debug ok");
@@ -273,7 +280,7 @@ public:
         error=false;
         return true;
       }
-      else if(response.startsWith(ERROR)) {
+      else if(response.startsWith(ERROR)||response.startsWith(FAIL)) {
 #ifdef DEBUG
         Serial.println("HC05Control debug error");
 #endif
@@ -287,20 +294,27 @@ public:
 #endif
         if((responseIndex+1) >ResponseMaxSize) {
 #ifdef DEBUG
-          Serial.println("responseIndex+1 >=ResponseMaxSize");
+          Serial.println("HC05Control debug responseIndex+1 >=ResponseMaxSize");
 #endif
           return false;
         }
         responses[responseIndex++]=response;
+        error=true;
         return false;
       }
     }
-    return false;
+    else {
+#ifdef DEBUG
+      Serial.println("HC05Control debug no response");
+#endif
+      return false;
+    }
+
   }
 
   boolean isResponseOk() {
 #ifdef DEBUG
-    Serial.println("HC05Control debug isResponseOk() "+String(error?"err":"ok"));
+    Serial.println("HC05Control debug isResponseOk() "+String(error?"Error":"Ok"));
 #endif
     return !error;
   }
@@ -342,11 +356,13 @@ void setup()
   //if(true) {
   //  return;
   //}
+
+  //  
   if(hc05.sendCommandAndWaitOk("AT+LINK="+String(GEARUINI_SLAVE))){
     Serial.println("XXX??");    
     Serial.println("Link to "+String(GEARUINI_SLAVE));
   }
-  else /*if( hc05.getResponses()[0].equals( "ERROR:(16)"))*/ {
+  else if( hc05.getResponses()[0].equals( "ERROR:(16)")) {
     Serial.println("XXX");    
     if(hc05.sendCommandAndWaitOk("AT+INIT")) {
       Serial.println("SPP init.");
@@ -358,6 +374,7 @@ void setup()
       Serial.println("Link to "+String(GEARUINI_SLAVE));
     }
   }
+  Serial.println(hc05.getResponses()[0]);
 }
 ATCommand at;
 //#define ITERACTION
@@ -405,6 +422,11 @@ void loop() // run over and over
   }
 #endif
 }
+
+
+
+
+
 
 
 
