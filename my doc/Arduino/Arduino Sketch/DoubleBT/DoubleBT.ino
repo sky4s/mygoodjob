@@ -299,6 +299,9 @@ public:
   }
 
   boolean isResponseOk() {
+#ifdef DEBUG
+    Serial.println("HC05Control debug isResponseOk "+!error);
+#endif
     return !error;
   }
 
@@ -402,6 +405,7 @@ void loop() // run over and over
   }
 #endif
 }
+
 
 
 
