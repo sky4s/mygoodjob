@@ -300,7 +300,7 @@ public:
 
   boolean isResponseOk() {
 #ifdef DEBUG
-    Serial.println("HC05Control debug isResponseOk() "+(error?"err":"ok"));
+    Serial.println("HC05Control debug isResponseOk() "+String(error?"err":"ok"));
 #endif
     return !error;
   }
