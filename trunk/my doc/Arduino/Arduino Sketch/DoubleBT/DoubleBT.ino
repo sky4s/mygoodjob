@@ -122,12 +122,12 @@ public:
 
   boolean listen() {
 #ifdef DEBUG
-    Serial.println("InputBuffer debug listen()"); 
+//    Serial.println("InputBuffer debug listen()"); 
 #endif
     if (hardware?Serial.available(): serial->available()) {
       read=hardware?Serial.read():serial->read();
 #ifdef DEBUG
-      Serial.print("InputBuffer debug "+read); 
+//      Serial.print("InputBuffer debug "+read); 
 #endif
 
       if('\n'==read || '\r'==read) {
@@ -237,6 +237,7 @@ static const String ERROR="ERROR";
 static const String FAIL="FAIL";
 static const int ResponseMaxSize = 10;
 static const int MaxWaitTimes = 100;
+static const int DelayTime = 200;
 class HC05Control {
 private:
   SerialControl serialControl;
@@ -252,7 +253,7 @@ public:
   boolean sendCommandAndWaitOk(String command) {
     sendCommand(command);
     for(int x=0;!isResponse()&&x<MaxWaitTimes;x++) {
-      delay(10);
+      delay(DelayTime);
     };
 
     return isResponseOk();
@@ -359,11 +360,11 @@ void setup()
 
   //  
   if(hc05.sendCommandAndWaitOk("AT+LINK="+String(GEARUINI_SLAVE))){
-    Serial.println("XXX??");    
+//    Serial.println("XXX??");    
     Serial.println("Link to "+String(GEARUINI_SLAVE));
   }
   else if( hc05.getResponses()[0].equals( "ERROR:(16)")) {
-    Serial.println("XXX");    
+//    Serial.println("XXX");    
     if(hc05.sendCommandAndWaitOk("AT+INIT")) {
       Serial.println("SPP init.");
     }
@@ -374,7 +375,7 @@ void setup()
       Serial.println("Link to "+String(GEARUINI_SLAVE));
     }
   }
-  Serial.println(hc05.getResponses()[0]);
+//  Serial.println(hc05.getResponses()[0]);
 }
 ATCommand at;
 //#define ITERACTION
