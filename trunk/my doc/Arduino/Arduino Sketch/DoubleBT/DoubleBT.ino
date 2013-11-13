@@ -98,14 +98,12 @@ private:
   int bufferIndex;
   String line;
   boolean hardware;
-  //  boolean debug;
   char read;
 public:
   InputBuffer(SoftwareSerial& serial):
   serial(&serial),hardware(false) {
     echo=false;
     bufferIndex=0;
-    //    debug=false;
   }
 
   InputBuffer():  
@@ -249,13 +247,17 @@ public:
   boolean sendCommandAndWaitOk(String command) {
     sendCommand(command);
     while (isResponse()) ;
+//    Serial.println(command);
+//        Serial.println("is"+isResponseOk());
+//        Serial.println(responses[0]);
     return isResponseOk();
   }
-  void sendCommand(String command) {
+  void sendCommand(String _command) {
+//    command=_command;
     responseIndex=0;
-    serialControl.sendString(command);
+    serialControl.sendString(_command);
 #ifdef DEBUG
-    Serial.println("HC05Control debug "+command);
+    Serial.println("HC05Control debug "+_command);
 #endif
   }
   boolean isResponse() {
@@ -270,6 +272,7 @@ public:
       }
       else if(response.startsWith(ERROR)) {
         error=true;
+        responses[0]=response;
         return true;
       }
       else {
@@ -299,6 +302,7 @@ public:
   int getResponseSize() {
     return responseIndex;
   }
+//  String command;
 
 };
 
@@ -314,38 +318,96 @@ void setup()
   //  while (!Serial) {
   //    ; // wait for serial port to connect. Needed for Leonardo only
   //  }
-
   softserial.begin(38400);
-  hc05.sendCommandAndWaitOk("AT+INIT");
-  if( hc05.sendCommandAndWaitOk("AT+INQM=1,"+String(ResponseMaxSize)+",24")){
-    Serial.println("init.");
-  }
-  else{
-    Serial.println("init failed!");
-  }
-  hc05.sendCommandAndWaitOk("AT+DISC");
+
+
+  //  hc05.sendCommandAndWaitOk("AT+INQM=1,"+String(ResponseMaxSize)+",24");
+  //  if(hc05.sendCommandAndWaitOk("AT+BIND="+String(GEARUINI_SLAVE))){
+  //    Serial.println("Bind to "+String(GEARUINI_SLAVE));
+  //  }
+
+
+//  if(hc05.sendCommandAndWaitOk("AT+DISC")) {
+//    Serial.println(hc05.getResponses()[0]);
+//  }
+//if(true) {
+//  return;
+//}
   if(hc05.sendCommandAndWaitOk("AT+LINK="+String(GEARUINI_SLAVE))){
+    Serial.println("XXX??");    
     Serial.println("Link to "+String(GEARUINI_SLAVE));
-  } 
+  }
+  else /*if( hc05.getResponses()[0].equals( "ERROR:(16)"))*/ {
+    Serial.println("XXX");    
+    if(hc05.sendCommandAndWaitOk("AT+INIT")) {
+      Serial.println("SPP init.");
+    }
+    else {
+      Serial.println("SPP init failed: "+hc05.getResponses()[0]);
+    }
+    if(hc05.sendCommandAndWaitOk("AT+LINK="+String(GEARUINI_SLAVE))){
+      Serial.println("Link to "+String(GEARUINI_SLAVE));
+    }
+  }
 }
 ATCommand at;
+//#define ITERACTION
+#define BRIDGE
 void loop() // run over and over
 {
-  //  if(serialBuffer.listen()) {
-  //    String line= serialBuffer.getLine();
-  //    //    Serial.println("Send: "+line);
-  //    hc05.sendCommand(line);
+  //  if(hc05.sendCommandAndWaitOk("a")) {
+  //    Serial.println("AT ok");
+  //    delay(500);
+  //  }else {
+  //    Serial.println("err");
   //  }
-  //  if(hc05.isResponse() && hc05.isResponseOk()  ) {
-  //    String*vec=hc05.getResponses();
-  //    for(int x=0;x<hc05.getResponseSize();x++) {
-  //      String s = vec[x];
-  //      at.parse(s);
-  //      Serial.println(at.toString());
-  //    }
-  //  }
-
+#ifdef ITERACTION
+  //  String line;
+  if(serialBuffer.listen()) {
+    String line= serialBuffer.getLine();
+    //    Serial.println("Send: "+line);
+    hc05.sendCommand(line);
+  }
+  if(hc05.isResponse()) {
+    if(hc05.isResponseOk()) {
+      String*vec=hc05.getResponses();
+      int size=hc05.getResponseSize();
+      if(size==0) {
+        Serial.println("Ok");
+      }
+      for(int x=0;x<size;x++) {
+        String s = vec[x];
+        Serial.println(s);
+      }
+    }
+    else {
+      Serial.println("? "+hc05.command+" "+hc05.getResponses()[0]);
+    }
+  }
+#endif
+#ifdef BRIDGE
+  if (Serial.available()){
+    char in = Serial.read();
+    Serial.write(in);
+    softserial.print(in);
+  }
+  if (softserial.available()) {
+    Serial.write(softserial.read());
+  }
+#endif
 }
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
