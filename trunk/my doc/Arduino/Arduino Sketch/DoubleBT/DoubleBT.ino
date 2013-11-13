@@ -26,7 +26,7 @@
  */
 #include <SoftwareSerial.h>
 
-//#define DEBUG
+#define DEBUG
 //#define GEARUINO_Vector
 
 //#ifdef GEARUINO_Vector
@@ -247,13 +247,13 @@ public:
   boolean sendCommandAndWaitOk(String command) {
     sendCommand(command);
     while (isResponse()) ;
-//    Serial.println(command);
-//        Serial.println("is"+isResponseOk());
-//        Serial.println(responses[0]);
+    //    Serial.println(command);
+    //        Serial.println("is"+isResponseOk());
+    //        Serial.println(responses[0]);
     return isResponseOk();
   }
   void sendCommand(String _command) {
-//    command=_command;
+    //    command=_command;
     responseIndex=0;
     serialControl.sendString(_command);
 #ifdef DEBUG
@@ -263,6 +263,9 @@ public:
   boolean isResponse() {
     if(serialControl.isResponse()) {
       String response=serialControl.getResponse();
+#ifdef DEBUG
+      Serial.println("HC05Control debug "+response);
+#endif
       if(response.startsWith(OK)) {
 #ifdef DEBUG
         Serial.println("HC05Control debug ok");
@@ -271,6 +274,9 @@ public:
         return true;
       }
       else if(response.startsWith(ERROR)) {
+#ifdef DEBUG
+        Serial.println("HC05Control debug error");
+#endif
         error=true;
         responses[0]=response;
         return true;
@@ -302,7 +308,7 @@ public:
   int getResponseSize() {
     return responseIndex;
   }
-//  String command;
+  //  String command;
 
 };
 
@@ -327,12 +333,12 @@ void setup()
   //  }
 
 
-//  if(hc05.sendCommandAndWaitOk("AT+DISC")) {
-//    Serial.println(hc05.getResponses()[0]);
-//  }
-//if(true) {
-//  return;
-//}
+  //  if(hc05.sendCommandAndWaitOk("AT+DISC")) {
+  //    Serial.println(hc05.getResponses()[0]);
+  //  }
+  //if(true) {
+  //  return;
+  //}
   if(hc05.sendCommandAndWaitOk("AT+LINK="+String(GEARUINI_SLAVE))){
     Serial.println("XXX??");    
     Serial.println("Link to "+String(GEARUINI_SLAVE));
@@ -396,6 +402,8 @@ void loop() // run over and over
   }
 #endif
 }
+
+
 
 
 
