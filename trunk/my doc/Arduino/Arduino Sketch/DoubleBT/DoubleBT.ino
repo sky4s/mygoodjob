@@ -448,7 +448,7 @@ void setup()
       }
     }
 
-    Serial.println("Link to "+String(GEARUINO_SLAVE));
+    Serial.println("Linked");
   }
 
 }
