@@ -26,7 +26,7 @@
  */
 #include <SoftwareSerial.h>
 
-#define DEBUG
+//#define DEBUG
 //#define GEARUINO_Vector
 
 //#ifdef GEARUINO_Vector
@@ -122,12 +122,12 @@ public:
 
   boolean listen() {
 #ifdef DEBUG
-//    Serial.println("InputBuffer debug listen()"); 
+    //    Serial.println("InputBuffer debug listen()"); 
 #endif
     if (hardware?Serial.available(): serial->available()) {
       read=hardware?Serial.read():serial->read();
 #ifdef DEBUG
-//      Serial.print("InputBuffer debug "+read); 
+      //      Serial.print("InputBuffer debug "+read); 
 #endif
 
       if('\n'==read || '\r'==read) {
@@ -231,30 +231,48 @@ public:
   }
 };
 
+enum State {
+  INITIALIZED,
+  READY,
+  PAIRABLE,
+  PAIRED,
+  INQUIRING,
+  CONNECTING,
+  CONNECTED,
+  DISCONNECTED,
+  UNKNOW
+};
 
 static const String OK="OK";
 static const String ERROR="ERROR";
 static const String FAIL="FAIL";
 static const int ResponseMaxSize = 10;
-static const int MaxWaitTimes = 100;
-static const int DelayTime = 200;
+static const int MaxWaitTimes = 30;
+static const int DelayTime = 500;
+static const int A2IBufferSize=3;
 class HC05Control {
 private:
   SerialControl serialControl;
-  boolean error;
+  boolean ok;
   String responses[ResponseMaxSize];
   int responseIndex;
+  char atoiBuffer[A2IBufferSize];
 public:
 
   HC05Control(SoftwareSerial & _serial):
-  serialControl(SerialControl(_serial)),error(false){
+  serialControl(SerialControl(_serial)),ok(false),touchMaxWaitTimes(false){
     responseIndex=0;
   }
   boolean sendCommandAndWaitOk(String command) {
     sendCommand(command);
-    for(int x=0;!isResponse()&&x<MaxWaitTimes;x++) {
+    int x=0;
+    touchMaxWaitTimes=false;
+    for(;!isResponse()&&x<MaxWaitTimes;x++) {
       delay(DelayTime);
     };
+    if(x==MaxWaitTimes) {
+      touchMaxWaitTimes=true;
+    }
 
     return isResponseOk();
   }
@@ -267,7 +285,51 @@ public:
 #endif
   }
 
+  State getState() {
+    //    sendCommandAndWaitOk("AT+STATE");
+    //    while(!isResponse()){
+    //      delay(1);
+    //    };
+    if(sendCommandAndWaitOk("AT+STATE")) {
+      String response=responses[0];
+      int index=response.indexOf(':');
+      String statestr=response.substring(index+1);
+#ifdef DEBUG
+      Serial.println("HC05Control debug getState() "+statestr+"/"+response[0]);
+#endif
+      if(statestr=="INITIALIZED") {
+        return INITIALIZED;
+      }
+      else  if(statestr.equals("READY")) {
+        return READY;
+      }
+      else  if(statestr.equals("PAIRABLE")) {
+        return PAIRABLE;
+      } 
+      else  if(statestr.equals("PAIRED")) {
+        return PAIRED;
+      } 
+      else  if(statestr.equals("INQUIRING")) {
+        return INQUIRING;
+      } 
+      else  if(statestr.equals("CONNECTING")) {
+        return CONNECTING;
+      } 
+      else  if(statestr.equals("CONNECTED")) {
+        return CONNECTED;
+      } 
+      else  if(statestr.equals("DISCONNECTED")) {
+        return DISCONNECTED;
+      }
+      else {
+        return UNKNOW;
+      }
+    }
+    return UNKNOW;
+  }
+
   boolean isResponse() {
+    ok=false;
     if(serialControl.isResponse()) {
       String response=serialControl.getResponse();
 #ifdef DEBUG
@@ -278,14 +340,29 @@ public:
 #ifdef DEBUG
         Serial.println("HC05Control debug ok");
 #endif
-        error=false;
+        ok=true;
         return true;
       }
-      else if(response.startsWith(ERROR)||response.startsWith(FAIL)) {
+      else if(response.startsWith(ERROR)) {
 #ifdef DEBUG
         Serial.println("HC05Control debug error");
 #endif
-        error=true;
+        responses[0]=response;
+
+        int first=response.indexOf('(');
+        int second=response.indexOf(')');
+        String errorString=response.substring(first+1,second);
+        errorString.toCharArray(atoiBuffer,A2IBufferSize);
+        errorcode=  atoi(atoiBuffer);
+#ifdef DEBUG
+        Serial.println("HC05Control debug errorcode "+String(errorcode)+" "+errorString);
+#endif
+        return true;
+      }
+      else if(response.startsWith(FAIL)) {
+#ifdef DEBUG
+        Serial.println("HC05Control debug fail");
+#endif
         responses[0]=response;
         return true;
       }
@@ -300,13 +377,13 @@ public:
           return false;
         }
         responses[responseIndex++]=response;
-        error=true;
         return false;
       }
     }
     else {
 #ifdef DEBUG
-      Serial.println("HC05Control debug no response");
+      //      Serial.println("HC05Control debug no response");
+      Serial.print(".");
 #endif
       return false;
     }
@@ -315,9 +392,9 @@ public:
 
   boolean isResponseOk() {
 #ifdef DEBUG
-    Serial.println("HC05Control debug isResponseOk() "+String(error?"Error":"Ok"));
+    Serial.println("HC05Control debug isResponseOk() "+String(ok?"Yes":"No"));
 #endif
-    return !error;
+    return ok;
   }
 
   String*  getResponses() {
@@ -327,6 +404,8 @@ public:
     return responseIndex;
   }
   //  String command;
+  int errorcode;
+  boolean touchMaxWaitTimes;
 
 };
 
@@ -334,7 +413,9 @@ public:
 SoftwareSerial softserial(8, 9); // RX, TX
 InputBuffer serialBuffer;
 HC05Control hc05(softserial);
-#define GEARUINI_SLAVE "2013,9,110911"
+//#define GEARUINO_SLAVE "2013,9,110911"
+#define GEARUINO_SLAVE "19,5D,253224"
+boolean autoconnect=true;
 void setup()  
 {
   // Open serial communications and wait for port to open:
@@ -344,50 +425,40 @@ void setup()
   //  }
   softserial.begin(38400);
 
+  if(autoconnect){
+    State state=hc05.getState();
+    if(true==hc05.touchMaxWaitTimes) {
+      Serial.println("TouchMaxWaitTimes"); 
+      return;
+    }
+    //    Serial.println(state);
+    if(CONNECTED!=state) {
+      Serial.println("Try connect");
+      //    hc05.sendCommandAndWaitOk("AT+DISC");
 
-  //  hc05.sendCommandAndWaitOk("AT+INQM=1,"+String(ResponseMaxSize)+",24");
-  //  if(hc05.sendCommandAndWaitOk("AT+BIND="+String(GEARUINI_SLAVE))){
-  //    Serial.println("Bind to "+String(GEARUINI_SLAVE));
-  //  }
+      while(!hc05.sendCommandAndWaitOk("AT+LINK="+String(GEARUINO_SLAVE))) {
+        if(16==hc05.errorcode) {
+          if(hc05.sendCommandAndWaitOk("AT+INIT")) {
+            Serial.println("SPP init.");
+          }
+          else {
+            Serial.println("SPP init failed: "+hc05.getResponses()[0]);
+          }
+        }
+      }
+    }
 
-
-  //  if(hc05.sendCommandAndWaitOk("AT+DISC")) {
-  //    Serial.println(hc05.getResponses()[0]);
-  //  }
-  //if(true) {
-  //  return;
-  //}
-
-  //  
-  if(hc05.sendCommandAndWaitOk("AT+LINK="+String(GEARUINI_SLAVE))){
-//    Serial.println("XXX??");    
-    Serial.println("Link to "+String(GEARUINI_SLAVE));
+    Serial.println("Linked");
   }
-  else if( hc05.getResponses()[0].equals( "ERROR:(16)")) {
-//    Serial.println("XXX");    
-    if(hc05.sendCommandAndWaitOk("AT+INIT")) {
-      Serial.println("SPP init.");
-    }
-    else {
-      Serial.println("SPP init failed: "+hc05.getResponses()[0]);
-    }
-    if(hc05.sendCommandAndWaitOk("AT+LINK="+String(GEARUINI_SLAVE))){
-      Serial.println("Link to "+String(GEARUINI_SLAVE));
-    }
-  }
-//  Serial.println(hc05.getResponses()[0]);
+
 }
 ATCommand at;
 //#define ITERACTION
 #define BRIDGE
 void loop() // run over and over
 {
-  //  if(hc05.sendCommandAndWaitOk("a")) {
-  //    Serial.println("AT ok");
-  //    delay(500);
-  //  }else {
-  //    Serial.println("err");
-  //  }
+  //  Serial.println(hc05.getState());
+  //  delay(500);
 #ifdef ITERACTION
   //  String line;
   if(serialBuffer.listen()) {
@@ -416,13 +487,48 @@ void loop() // run over and over
   if (Serial.available()){
     char in = Serial.read();
     Serial.write(in);
+    //    if(in=='c') {
+    //      Serial.println(hc05.getState());
+    //    }
+    //    else {
     softserial.print(in);
+    //    }
   }
   if (softserial.available()) {
     Serial.write(softserial.read());
   }
 #endif
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
