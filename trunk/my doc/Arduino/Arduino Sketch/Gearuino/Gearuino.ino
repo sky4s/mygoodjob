@@ -25,6 +25,7 @@
  
  */
 #include <SoftwareSerial.h>
+#include "OBD2.h"
 
 //#define DEBUG
 //#define GEARUINO_Vector
