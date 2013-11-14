@@ -413,7 +413,8 @@ public:
 SoftwareSerial softserial(8, 9); // RX, TX
 InputBuffer serialBuffer;
 HC05Control hc05(softserial);
-#define GEARUINI_SLAVE "2013,9,110911"
+//#define GEARUINO_SLAVE "2013,9,110911"
+#define GEARUINO_SLAVE "19,5D,253224"
 boolean autoconnect=true;
 void setup()  
 {
@@ -435,7 +436,7 @@ void setup()
       Serial.println("Try connect");
       //    hc05.sendCommandAndWaitOk("AT+DISC");
 
-      while(!hc05.sendCommandAndWaitOk("AT+LINK="+String(GEARUINI_SLAVE))) {
+      while(!hc05.sendCommandAndWaitOk("AT+LINK="+String(GEARUINO_SLAVE))) {
         if(16==hc05.errorcode) {
           if(hc05.sendCommandAndWaitOk("AT+INIT")) {
             Serial.println("SPP init.");
@@ -447,7 +448,7 @@ void setup()
       }
     }
 
-    Serial.println("Link to "+String(GEARUINI_SLAVE));
+    Serial.println("Link to "+String(GEARUINO_SLAVE));
   }
 
 }
