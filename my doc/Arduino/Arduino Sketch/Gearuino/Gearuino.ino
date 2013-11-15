@@ -413,7 +413,7 @@ InputBuffer serialBuffer;
 HC05Control hc05(softserial);
 //#define GEARUINO_SLAVE "2013,9,110911"
 #define GEARUINO_SLAVE "19,5D,253224"
-boolean autoconnect=false;
+boolean autoconnect=true;
 ATCommand at;
 COBD obd(softserial);
 
@@ -425,6 +425,8 @@ void setup()
   //    ; // wait for serial port to connect. Needed for Leonardo only
   //  }
   softserial.begin(38400);
+  canvas.setPaint(1,0,0,0,1);
+  canvas.drawRect(0,0,4000,2250); // set full screen to white
 
   if(autoconnect){
     State state=hc05.getState();
@@ -452,12 +454,14 @@ void setup()
     Serial.println("Linked");
 
   }
+  canvas.setPaint(2,255,255,255,1);
+  canvas.setText("BTLink");
+  canvas.drawText(0,90,90);//big blue text
   while (!obd.Init());  
-  canvas.setPaint(1,0,0,0,1);
-  canvas.drawRect(0,0,4000,2250); // set full screen to white
-  canvas.setPaint(20,0,0,255,1);
-  canvas.setText("ABCDEFGH");
-  canvas.drawText(0,2250,950);//big blue text
+  canvas.setText("OBDLink");
+  canvas.drawText(0,90,90);//big blue text
+
+
 }
 
 
@@ -522,9 +526,31 @@ void loop() // run over and over
     // RPM is read and stored in 'value'
     // light on LED when RPM exceeds 5000
     //    digitalWrite(13, value > 5000 ? HIGH : LOW);
-
+    canvas.setText(String(value));
+    canvas.drawText(0,90,90);//big blue text
   }
 }
+
+class CanvasWrapper {
+private:
+  canvasclass canvas;
+public:
+  CanvasWrapper(canvasclass _canvas){
+    canvas=_canvas;
+  }
+  void println(String s) {
+    int length=s.length();
+    int mod = length%8;
+    for(int x=0;x<mod;x++) {
+      int start=mod*x;
+      s.substring(start,length); 
+    }
+  }
+};
+
+
+
+
 
 
 
