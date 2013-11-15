@@ -1,11 +1,12 @@
 /*************************************************************************
-* OBD-II (ELM327) data accessing library for Arduino
-* Distributed under GPL v2.0
-* Copyright (c) 2012 Stanley Huang <stanleyhuangyc@gmail.com>
-* All rights reserved.
-*************************************************************************/
+ * OBD-II (ELM327) data accessing library for Arduino
+ * Distributed under GPL v2.0
+ * Copyright (c) 2012 Stanley Huang <stanleyhuangyc@gmail.com>
+ * All rights reserved.
+ *************************************************************************/
 
 #include <Arduino.h>
+#include <SoftwareSerial.h>
 
 #define OBD_TIMEOUT_SHORT 2000 /* ms */
 #define OBD_TIMEOUT_LONG 7000 /* ms */
@@ -37,44 +38,59 @@ unsigned char hex2uint8(const char *p);
 
 class COBD
 {
+private:
+  SoftwareSerial* serial;
+  boolean hardwareSource;
 public:
-    COBD()
-    {
-        dataMode = 1;
-        errors = 0;
-    }
-	bool Init(bool passive = false);
-	bool ReadSensor(byte pid, int& result, bool passive = false);
-	void Sleep(int seconds);
-	// Query and GetResponse for advanced usage only
-	void Query(byte pid);
-	virtual char* GetResponse(byte pid, char* buffer);
-	virtual bool GetResponse(byte pid, int& result);
-	virtual bool GetResponsePassive(byte& pid, int& result);
-	virtual bool DataAvailable();
-	byte dataMode;
-	byte errors;
-	byte revision;
-	//char recvBuf[OBD_RECV_BUF_SIZE];
+  COBD(SoftwareSerial& _serial)
+  {
+    dataMode = 1;
+    errors = 0;
+    hardwareSource=false;
+    serial=&_serial;
+  }
+  COBD()
+  {
+    dataMode = 1;
+    errors = 0;
+    hardwareSource=true;
+  }
+  bool Init(bool passive = false);
+  bool ReadSensor(byte pid, int& result, bool passive = false);
+  void Sleep(int seconds);
+  // Query and GetResponse for advanced usage only
+  void Query(byte pid);
+  virtual char* GetResponse(byte pid, char* buffer);
+  virtual bool GetResponse(byte pid, int& result);
+  virtual bool GetResponsePassive(byte& pid, int& result);
+  virtual bool DataAvailable();
+  byte dataMode;
+  byte errors;
+  byte revision;
+  //char recvBuf[OBD_RECV_BUF_SIZE];
 protected:
-    static bool GetParsedData(byte pid, char* data, int& result);
-	static int GetPercentageValue(char* data)
-	{
-		return (int)hex2uint8(data) * 100 / 255;
-	}
-	static int GetLargeValue(char* data)
-	{
-		return hex2uint16(data);
-	}
-	static int GetSmallValue(char* data)
-	{
-		return hex2uint8(data);
-	}
-	static int GetTemperatureValue(char* data)
-	{
-		return (int)hex2uint8(data) - 40;
-	}
-	virtual char ReadData();
-	virtual void WriteData(const char* s);
-	virtual void WriteData(const char c);
+  static bool GetParsedData(byte pid, char* data, int& result);
+  static int GetPercentageValue(char* data)
+  {
+    return (int)hex2uint8(data) * 100 / 255;
+  }
+  static int GetLargeValue(char* data)
+  {
+    return hex2uint16(data);
+  }
+  static int GetSmallValue(char* data)
+  {
+    return hex2uint8(data);
+  }
+  static int GetTemperatureValue(char* data)
+  {
+    return (int)hex2uint8(data) - 40;
+  }
+  virtual char ReadData();
+  virtual void WriteData(const char* s);
+  virtual void WriteData(const char c);
 };
+
+
+
+
