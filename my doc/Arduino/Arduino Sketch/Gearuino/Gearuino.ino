@@ -26,9 +26,12 @@
  */
 #include <SoftwareSerial.h>
 #include "OBD2.h"
+#include <canvas.h>
 
 //#define DEBUG
 //#define GEARUINO_Vector
+//#define ITERACTION
+//#define BRIDGE
 
 //#ifdef GEARUINO_Vector
 //template<typename Data>
@@ -278,7 +281,6 @@ public:
     return isResponseOk();
   }
   void sendCommand(String _command) {
-    //    command=_command;
     responseIndex=0;
     serialControl.sendString(_command);
 #ifdef DEBUG
@@ -287,10 +289,6 @@ public:
   }
 
   State getState() {
-    //    sendCommandAndWaitOk("AT+STATE");
-    //    while(!isResponse()){
-    //      delay(1);
-    //    };
     if(sendCommandAndWaitOk("AT+STATE")) {
       String response=responses[0];
       int index=response.indexOf(':');
@@ -404,7 +402,6 @@ public:
   int getResponseSize() {
     return responseIndex;
   }
-  //  String command;
   int errorcode;
   boolean touchMaxWaitTimes;
 
@@ -416,7 +413,10 @@ InputBuffer serialBuffer;
 HC05Control hc05(softserial);
 //#define GEARUINO_SLAVE "2013,9,110911"
 #define GEARUINO_SLAVE "19,5D,253224"
-boolean autoconnect=true;
+boolean autoconnect=false;
+ATCommand at;
+COBD obd(softserial);
+
 void setup()  
 {
   // Open serial communications and wait for port to open:
@@ -450,18 +450,19 @@ void setup()
     }
 
     Serial.println("Linked");
-  }
 
+  }
+  while (!obd.Init());  
+  canvas.setPaint(1,0,0,0,1);
+  canvas.drawRect(0,0,4000,2250); // set full screen to white
+  canvas.setPaint(20,0,0,255,1);
+  canvas.setText("ABCDEFGH");
+  canvas.drawText(0,2250,950);//big blue text
 }
-ATCommand at;
-//#define ITERACTION
-#define BRIDGE
-void loop() // run over and over
-{
-  //  Serial.println(hc05.getState());
-  //  delay(500);
+
+
 #ifdef ITERACTION
-  //  String line;
+void interaction() {
   if(serialBuffer.listen()) {
     String line= serialBuffer.getLine();
     //    Serial.println("Send: "+line);
@@ -480,11 +481,14 @@ void loop() // run over and over
       }
     }
     else {
-      Serial.println("? "+hc05.command+" "+hc05.getResponses()[0]);
+      Serial.println("? " +hc05.getResponses()[0]);
     }
   }
+}
 #endif
+
 #ifdef BRIDGE
+void bridge() {
   if (Serial.available()){
     char in = Serial.read();
     Serial.write(in);
@@ -498,8 +502,34 @@ void loop() // run over and over
   if (softserial.available()) {
     Serial.write(softserial.read());
   }
-#endif
 }
+#endif
+
+
+void loop() // run over and over
+{
+  //  Serial.println(hc05.getState());
+  //  delay(500);
+#ifdef ITERACTION
+  interaction();
+#endif
+#ifdef BRIDGE
+  bridge();
+#endif
+
+  int value;
+  if (obd.ReadSensor(PID_RPM, value)) {
+    // RPM is read and stored in 'value'
+    // light on LED when RPM exceeds 5000
+    //    digitalWrite(13, value > 5000 ? HIGH : LOW);
+
+  }
+}
+
+
+
+
+
 
 
 
