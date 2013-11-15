@@ -10,7 +10,7 @@
 #include "Arduino.h"
 #include "canvas.h"
 
-void canvasclass::setPaint(unsigned int w, byte r ,byte g ,byte b, byte s){ 
+void canvasclass::setPaint(unsigned int wide, byte r ,byte g ,byte b, byte stroke){ 
  unsigned int t1 =0;
  t1 |= r;
  t1 <<= 8; //move into top 8
@@ -18,8 +18,8 @@ void canvasclass::setPaint(unsigned int w, byte r ,byte g ,byte b, byte s){
  unsigned int t2 =0;
  t2 |= b;
  t2 <<= 8; //move into top 8
- t2 |= s;  //next into bottom 8
- usbSend('P',w,t1,t2,0);   
+ t2 |= stroke;  //next into bottom 8
+ usbSend('P',wide,t1,t2,0);   
 }
 
 void canvasclass::setText(String t){
