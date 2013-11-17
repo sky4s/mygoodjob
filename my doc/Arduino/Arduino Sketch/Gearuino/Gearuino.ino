@@ -577,8 +577,9 @@ void setup()
 #ifdef CANVAS_WRAPPER
   wrapper.clear();
 #endif
+ elm.sendCommandAndWaitOk("AT");
   elm.sendCommandAndWaitOk("ATZ");
-   elm.sendCommandAndWaitOk("AT");
+  
   if(true) return;
 
   if(hc05.sendCommandAndWaitOk("ATZ")) {
