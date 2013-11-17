@@ -252,6 +252,7 @@ static const String OK="OK";
 static const String ERROR="ERROR";
 static const String FAIL="FAIL";
 static const int ResponseMaxSize = 10;
+String responses[ResponseMaxSize];
 static const int MaxWaitTimes = 30;
 static const int DelayTime = 500;
 static const int A2IBufferSize=3;
@@ -259,7 +260,6 @@ class HC05Control {
 private:
   SerialControl serialControl;
   boolean ok;
-  String responses[ResponseMaxSize];
   int responseIndex;
   char atoiBuffer[A2IBufferSize];
 public:
@@ -406,6 +406,13 @@ public:
   int errorcode;
   boolean touchMaxWaitTimes;
 
+};
+
+class ELM327 {
+  private:
+  SerialControl serialControl;
+  public:
+  
 };
 
 class CanvasWrapper {
@@ -600,6 +607,7 @@ void loop() // run over and over
   //    Serial.println(value);
   //  }
 }
+
 
 
 
