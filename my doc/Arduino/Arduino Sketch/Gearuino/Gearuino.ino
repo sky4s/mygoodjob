@@ -28,10 +28,11 @@
 #include "OBD2.h"
 #include <canvas.h>
 
-//#define DEBUG
+#define DEBUG
 //#define GEARUINO_Vector
 //#define ITERACTION
-//#define BRIDGE
+#define BRIDGE
+//#define CANVAS_WRAPPER
 
 //#ifdef GEARUINO_Vector
 //template<typename Data>
@@ -407,6 +408,53 @@ public:
 
 };
 
+class CanvasWrapper {
+private:
+  canvasclass canvas;
+  int line;
+  int lineheight;
+  int currentline;
+  int factor;
+public:
+  CanvasWrapper(canvasclass _canvas,int _line){
+    canvas=_canvas;
+    line=_line;
+    lineheight = 2250/line;
+    factor=500;
+  }
+  inline int getY() {
+    return (currentline++%line)*lineheight;
+  }
+
+  void println(String s) {
+    int length=s.length();
+    int count = length/8;
+    int mod = length%8;
+    canvas.setPaint(2,255,255,255,1);
+    int y=getY();
+    for(int x=0;x<count;x++) {
+      int start=8*x;
+      String sub= s.substring(start,start+8); 
+      canvas.setText(sub);
+      canvas.drawText(factor*x,y,lineheight);//big blue text
+      //      Serial.println(sub+" "+String(start));
+    }
+    if(0!=mod) {
+      //      int start=factor*count;
+      String sub= count!=0?s.substring(length-mod,length):s;
+      //      Serial.println(sub+" "+String(start));
+      canvas.setText(sub);
+      canvas.drawText(factor*count,y,lineheight);//big blue text
+    }
+  }
+
+  void clear() {
+    canvas.setPaint(1,0,0,0,1);
+    canvas.drawRect(0,0,4000,2250); // set full screen to white 
+  }
+};
+
+
 
 SoftwareSerial softserial(8, 9); // RX, TX
 InputBuffer serialBuffer;
@@ -417,6 +465,10 @@ boolean autoconnect=true;
 ATCommand at;
 COBD obd(softserial);
 
+#ifdef CANVAS_WRAPPER
+CanvasWrapper wrapper(canvas,20);
+#endif
+
 void setup()  
 {
   // Open serial communications and wait for port to open:
@@ -425,17 +477,26 @@ void setup()
   //    ; // wait for serial port to connect. Needed for Leonardo only
   //  }
   softserial.begin(38400);
-  canvas.setPaint(1,0,0,0,1);
-  canvas.drawRect(0,0,4000,2250); // set full screen to white
+#ifdef CANVAS_WRAPPER
+  wrapper.clear();
+#endif
+
+  if(hc05.sendCommandAndWaitOk("ATZ")) {
+    Serial.println("ELM327 Linked"); 
+    autoconnect=false;
+  }
 
   if(autoconnect){
+    //檢查el327是否已連上
+
+
+    Serial.println("Begin connect..."); 
     State state=hc05.getState();
     if(true==hc05.touchMaxWaitTimes) {
       Serial.println("TouchMaxWaitTimes"); 
-      return;
+      //      return;
     }
-    //    Serial.println(state);
-    if(CONNECTED!=state) {
+    else if(CONNECTED!=state) {
       Serial.println("Try connect");
       //    hc05.sendCommandAndWaitOk("AT+DISC");
 
@@ -451,15 +512,17 @@ void setup()
       }
     }
 
-    Serial.println("Linked");
+    Serial.println("BT Linked");
 
   }
-  canvas.setPaint(2,255,255,255,1);
-  canvas.setText("BTLink");
-  canvas.drawText(0,90,90);//big blue text
-  while (!obd.Init());  
-  canvas.setText("OBDLink");
-  canvas.drawText(0,90,90);//big blue text
+
+  //  canvas.setPaint(2,255,255,255,1);
+  //  canvas.setText("BTLink");
+  //  canvas.drawText(0,90,90);//big blue text
+  //  while (!obd.Init());  
+  Serial.println("OBD Linked");
+  //  canvas.setText("OBDLink");
+  //  canvas.drawText(0,90,90);//big blue text
 
 
 }
@@ -512,41 +575,41 @@ void bridge() {
 
 void loop() // run over and over
 {
-  //  Serial.println(hc05.getState());
-  //  delay(500);
+
+#ifdef CANVAS_WRAPPER
+
+  wrapper.println("12345678#ABCDEFGH");
+#endif
+
 #ifdef ITERACTION
   interaction();
 #endif
 #ifdef BRIDGE
   bridge();
 #endif
-
-  int value;
-  if (obd.ReadSensor(PID_RPM, value)) {
-    // RPM is read and stored in 'value'
-    // light on LED when RPM exceeds 5000
-    //    digitalWrite(13, value > 5000 ? HIGH : LOW);
-    canvas.setText(String(value));
-    canvas.drawText(0,90,90);//big blue text
-  }
+  // delay(1000);
+  //  Serial.println("loop");
+  //  hc05.sendCommand("AT Z");
+  //  int value;
+  //  if (obd.ReadSensor(PID_RPM, value)) {
+  //    // RPM is read and stored in 'value'
+  //    // light on LED when RPM exceeds 5000
+  //    digitalWrite(13, value > 5000 ? HIGH : LOW);
+  //    //    canvas.setText(String(value));
+  //    //    canvas.drawText(0,90,90);//big blue text
+  //    Serial.println(value);
+  //  }
 }
 
-class CanvasWrapper {
-private:
-  canvasclass canvas;
-public:
-  CanvasWrapper(canvasclass _canvas){
-    canvas=_canvas;
-  }
-  void println(String s) {
-    int length=s.length();
-    int mod = length%8;
-    for(int x=0;x<mod;x++) {
-      int start=mod*x;
-      s.substring(start,length); 
-    }
-  }
-};
+
+
+
+
+
+
+
+
+
 
 
 
