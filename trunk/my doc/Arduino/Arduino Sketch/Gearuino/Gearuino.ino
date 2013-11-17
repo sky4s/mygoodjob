@@ -577,10 +577,10 @@ void setup()
 #ifdef CANVAS_WRAPPER
   wrapper.clear();
 #endif
- elm.sendCommandAndWaitOk("AT");
-  elm.sendCommandAndWaitOk("ATZ");
-  
-  if(true) return;
+// elm.sendCommandAndWaitOk("AT");
+//  elm.sendCommandAndWaitOk("ATZ");
+//  
+//  if(true) return;
 
   if(hc05.sendCommandAndWaitOk("ATZ")) {
     Serial.println("ELM327 Linked"); 
