@@ -252,7 +252,7 @@ static const String OK="OK";
 static const String ERROR="ERROR";
 static const String FAIL="FAIL";
 static const int ResponseMaxSize = 10;
-String responses[ResponseMaxSize];
+
 static const int MaxWaitTimes = 30;
 static const int DelayTime = 500;
 static const int A2IBufferSize=3;
@@ -262,6 +262,7 @@ private:
   boolean ok;
   int responseIndex;
   char atoiBuffer[A2IBufferSize];
+  String responses[ResponseMaxSize];
 public:
 
   HC05Control(SoftwareSerial & _serial):
@@ -409,10 +410,98 @@ public:
 };
 
 class ELM327 {
-  private:
+private:
   SerialControl serialControl;
-  public:
-  
+  //  boolean ok;
+  int responseIndex;
+  char atoiBuffer[A2IBufferSize];
+  String responses[ResponseMaxSize];
+public:
+boolean touchMaxWaitTimes;
+
+  ELM327(SoftwareSerial & _serial):
+  serialControl(SerialControl(_serial))/*,ok(false),touchMaxWaitTimes(false)*/{
+    responseIndex=0;
+  }
+  boolean sendCommandAndWaitOk(String command) {
+    sendCommand(command);
+    int x=0;
+    touchMaxWaitTimes=false;
+    for(;!isResponse()&&x<MaxWaitTimes;x++) {
+      delay(DelayTime);
+    };
+    if(x==MaxWaitTimes) {
+      touchMaxWaitTimes=true;
+    }
+  return false;
+//    return isResponseOk();
+  }
+  void sendCommand(String _command) {
+    responseIndex=0;
+    serialControl.sendString(_command);
+  }
+
+  boolean isResponse() {
+    //    ok=false;
+    
+    if(serialControl.isResponse()) {
+      String response=serialControl.getResponse();
+#ifdef DEBUG
+      Serial.println("ELM327 debug response "+response);
+#endif
+
+      //      if(response.startsWith(OK)) {
+      //#ifdef DEBUG
+      //        Serial.println("HC05Control debug ok");
+      //#endif
+      //        ok=true;
+      //        return true;
+      //      }
+      //      else if(response.startsWith(ERROR)) {
+      //#ifdef DEBUG
+      //        Serial.println("HC05Control debug error");
+      //#endif
+      //        responses[0]=response;
+      //
+      //        int first=response.indexOf('(');
+      //        int second=response.indexOf(')');
+      //        String errorString=response.substring(first+1,second);
+      //        errorString.toCharArray(atoiBuffer,A2IBufferSize);
+      //        errorcode=  atoi(atoiBuffer);
+      //#ifdef DEBUG
+      //        Serial.println("HC05Control debug errorcode "+String(errorcode)+" "+errorString);
+      //#endif
+      //        return true;
+      //      }
+      //      else if(response.startsWith(FAIL)) {
+      //#ifdef DEBUG
+      //        Serial.println("HC05Control debug fail");
+      //#endif
+      //        responses[0]=response;
+      //        return true;
+      //      }
+      //      else {
+      //#ifdef DEBUG
+      //        Serial.println("HC05Control debug ["+response+"]");
+      //#endif
+      //        if((responseIndex+1) >ResponseMaxSize) {
+      //#ifdef DEBUG
+      //          Serial.println("HC05Control debug responseIndex+1 >=ResponseMaxSize");
+      //#endif
+      //          return false;
+      //        }
+      //        responses[responseIndex++]=response;
+      //        return false;
+      //      }
+    }
+    else {
+#ifdef DEBUG
+      Serial.print(".");
+#endif
+      return false;
+    }
+
+  }
 };
 
 class CanvasWrapper {
@@ -466,6 +555,7 @@ public:
 SoftwareSerial softserial(8, 9); // RX, TX
 InputBuffer serialBuffer;
 HC05Control hc05(softserial);
+ELM327 elm(softserial);
 //#define GEARUINO_SLAVE "2013,9,110911"
 #define GEARUINO_SLAVE "19,5D,253224"
 boolean autoconnect=true;
@@ -487,6 +577,9 @@ void setup()
 #ifdef CANVAS_WRAPPER
   wrapper.clear();
 #endif
+  elm.sendCommandAndWaitOk("ATZ");
+   elm.sendCommandAndWaitOk("AT");
+  if(true) return;
 
   if(hc05.sendCommandAndWaitOk("ATZ")) {
     Serial.println("ELM327 Linked"); 
@@ -584,7 +677,6 @@ void loop() // run over and over
 {
 
 #ifdef CANVAS_WRAPPER
-
   wrapper.println("12345678#ABCDEFGH");
 #endif
 
@@ -594,7 +686,9 @@ void loop() // run over and over
 #ifdef BRIDGE
   bridge();
 #endif
-  // delay(1000);
+// elm.sendCommand("ATZ");
+//delay(1000);
+// elm.sendCommand("AT");
   //  Serial.println("loop");
   //  hc05.sendCommand("AT Z");
   //  int value;
@@ -607,6 +701,9 @@ void loop() // run over and over
   //    Serial.println(value);
   //  }
 }
+
+
+
 
 
 
