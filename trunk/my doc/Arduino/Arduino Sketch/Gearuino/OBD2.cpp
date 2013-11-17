@@ -115,6 +115,8 @@ char COBD::ReadData()
 
 void COBD::WriteData(const char* s)
 {
+  Serial.println(s);
+  Serial.println(hardwareSource?"hw":"sw");
   if(hardwareSource){
     Serial.write(s);
   }
@@ -313,6 +315,7 @@ bool COBD::Init(bool passive)
   errors = 0;
   return true;
 }
+
 
 
 
