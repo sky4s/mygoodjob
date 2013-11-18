@@ -588,7 +588,7 @@ void setup()
   }
 
   if(autoconnect){
-    //檢查el327是否已連上
+    //檢查el327?�否已�??
 
 
     Serial.println("Begin connect..."); 
