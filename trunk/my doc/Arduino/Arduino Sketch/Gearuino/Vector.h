@@ -1,3 +1,6 @@
+#ifndef VECTOR_H
+#define VECTOR_H
+
 template<typename Data>
 class Vector {
   size_t d_size; // Stores no. of actually stored objects
