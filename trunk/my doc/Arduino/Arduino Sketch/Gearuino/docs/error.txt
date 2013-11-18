@@ -1,0 +1,14 @@
+ute Load Value: AT E0XXXXXXXXXAT SP 0XXXXXXXXXrature Bank1 Sensor 2: 
+ ATRVXXXXXXXXXrature Bank1 Sensor 2: 
+ ATIGNXXXXXXXXXrature Bank1 Sensor 2: 
+ttle position: ATIXXXXXXXXXrature Bank1 Sensor 2: 
+ 01 04XXXXXXXXXrature Bank1 Sensor 2: 
+rature: 01 05XXXXXXXXXrature Bank1 Sensor 2: 
+position B: 01 06XXXXXXXXXrature Bank1 Sensor 2: 
+on C: 01 08XXXXXXXXXrature Bank1 Sensor 2: 
+01 07XXXXXXXXXrature Bank1 Sensor 2: 
+lerator pedal position F: 01 09XXXXXXXXXrature Bank1 Sensor 2: 
+ Throttle Actuator: 01 0AXXXXXXXXXrature Bank1 Sensor 2: 
+OBD Linked01 0BXXXXXXXXXrature Bank1 Sensor 2: 
+CHING...01 0CXXXXXXXXXrature Bank1 Sensor 2: 
+01 0D
