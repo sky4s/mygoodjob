@@ -1,6 +1,7 @@
 #ifndef IO_H
 #define IO_H
 
+
 static const int MaxBufferSize = 40;
 class InputBuffer {
 private:

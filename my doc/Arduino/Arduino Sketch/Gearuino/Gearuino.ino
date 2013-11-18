@@ -24,390 +24,22 @@
  This example code is in the public domain.
  
  */
-#include <SoftwareSerial.h>
-#include "OBD2.h"
-#include <canvas.h>
-
 #define DEBUG
-//#define GEARUINO_Vector
 //#define ITERACTION
 #define BRIDGE
 //#define CANVAS_WRAPPER
 
-//#ifdef GEARUINO_Vector
-//template<typename Data>
-//class Vector {
-//  size_t d_size; // Stores no. of actually stored objects
-//  size_t d_capacity; // Stores allocated capacity
-//  Data *d_data; // Stores data
-//public:
-//  Vector() : 
-//  d_size(0), d_capacity(0), d_data(0) {
-//
-//  }; // Default constructor
-//  Vector(int initcapacity) : 
-//  d_size(0),   d_data(0) {
-//    init(initcapacity);
-//  }; 
-//  Vector(Vector const &other) : 
-//  d_size(other.d_size), d_capacity(other.d_capacity), d_data(0) { 
-//    d_data = (Data *)malloc(d_capacity*sizeof(Data)); 
-//    memcpy(d_data, other.d_data, d_size*sizeof(Data)); 
-//  }; // Copy constuctor
-//  ~Vector() { 
-//    free(d_data); 
-//  }; // Destructor
-//  Vector &operator=(Vector const &other) { 
-//    free(d_data); 
-//    d_size = other.d_size; 
-//    d_capacity = other.d_capacity; 
-//    d_data = (Data *)malloc(d_capacity*sizeof(Data)); 
-//    memcpy(d_data, other.d_data, d_size*sizeof(Data)); 
-//    return *this; 
-//  }; // Needed for memory management
-//  void push_back(Data const &x) { 
-//    if (d_capacity == d_size) resize(); 
-//    d_data[d_size++] = x; 
-//  }; // Adds new value. If needed, allocates more space
-//  size_t size() const { 
-//    return d_size; 
-//  }; // Size getter
-//  Data const &operator[](size_t idx) const { 
-//    return d_data[idx]; 
-//  }; // Const getter
-//  Data &operator[](size_t idx) { 
-//    return d_data[idx]; 
-//  }; // Changeable getter
-//private:
-//  void init(int initcapacity) {
-//    d_capacity=initcapacity;
-//    d_data = (Data *)malloc(d_capacity*sizeof(Data)); 
-//  };
-//  void resize() { 
-//    d_capacity = d_capacity ? d_capacity*2 : 1; 
-//    Data *newdata = (Data *)malloc(d_capacity*sizeof(Data)); 
-//    memcpy(newdata, d_data, d_size * sizeof(Data)); 
-//    free(d_data); 
-//    d_data = newdata; 
-//  };// Allocates double the old space
-//};
-//#endif
+#include <SoftwareSerial.h>
+#include "OBD2.h"
+#include <canvas.h>
+#include "HC05.h"
+#include "io.h"
 
-
-static const int MaxBufferSize = 40;
-class InputBuffer {
-private:
-  SoftwareSerial* serial;
-  boolean echo;
-  char buffer[MaxBufferSize];
-  int bufferIndex;
-  String line;
-  boolean hardware;
-  char read;
-public:
-  InputBuffer(SoftwareSerial& serial):
-  serial(&serial),hardware(false) {
-    echo=false;
-    bufferIndex=0;
-  }
-
-  InputBuffer():  
-  hardware(true) {
-    echo=false;
-    bufferIndex=0;
-  }
-
-  void setEcho(boolean _echo) {
-    echo=_echo;
-  }
-
-  String getLine() {
-    return line;
-  }
-
-  boolean listen() {
-#ifdef DEBUG
-    //    Serial.println("InputBuffer debug listen()"); 
-#endif
-    if (hardware?Serial.available(): serial->available()) {
-      read=hardware?Serial.read():serial->read();
-#ifdef DEBUG
-      //      Serial.print("InputBuffer debug "+read); 
+#ifdef CANVAS_WRAPPER
+#include "canvas.h"
+CanvasWrapper wrapper(canvas,20);
 #endif
 
-      if('\n'==read || '\r'==read) {
-        if(0!=bufferIndex) {
-          buffer[bufferIndex++]='\0';
-          line=String(buffer);
-          if(echo) {
-            Serial.println(line);
-          }
-          bufferIndex=0;
-          return true;
-        }
-      }
-      else {
-        if(bufferIndex+1 >= MaxBufferSize){
-#ifdef DEBUG
-          Serial.println("InputBuffer debug bufferIndex+1 >= MaxBufferSize");
-          return false;
-#endif
-        }
-        buffer[bufferIndex++]=read;
-      }
-
-      return false;
-    }
-  }
-};
-
-class SerialControl {
-private:
-  SoftwareSerial&  serial;
-  InputBuffer buffer;
-  String response;
-public:
-  SerialControl(SoftwareSerial & _serial):
-  serial(_serial), buffer(InputBuffer(_serial)){
-
-  }
-  void sendString(String str) {
-    serial.println(str);
-  }
-  boolean isResponse() {
-    boolean listen= buffer.listen();
-    if(listen) {
-      response=buffer.getLine();
-    }
-    return listen;
-  }
-  String getResponse() {
-    return response;
-  }
-
-};
-
-class ATCommand {
-private:
-  char buf[MaxBufferSize];
-  void init(String cmd) {
-    cmd.toCharArray(buf,MaxBufferSize);
-    command = strtok(buf,":+");
-    char* p="";
-    for(int x=0;x<3&&NULL!=p;x++) {
-      p=strtok(NULL,",");
-      //      Serial.println(p);
-      switch(x) {
-      case 0:
-        param1=p;
-        break;
-      case 1:
-        param2=p;
-        break;
-      case 2: 
-        param3=p;
-        break;
-      }
-    }
-
-  }
-public:
-  char* command;
-  char* param1;
-  char* param2;
-  char* param3;
-  ATCommand(String cmd) {
-    init(cmd);
-  }
-  ATCommand() {
-  }
-  void parse(String cmd) {
-    init(cmd);
-  }
-  String toString() {
-    return String(command)+","+String(param1) +( (param2!=NULL)?","+String(param2):"")+ ((param3!=NULL)?","+String(param3):""); 
-  }
-
-  String addressToParam(char* address) {
-    char* p1 = strtok(address,":");
-    char* p2 = strtok(NULL,":");
-    char* p3 = strtok(NULL,":");
-    return String(p1)+","+String(p2)+","+String(p3);
-  }
-};
-
-enum State {
-  INITIALIZED,
-  READY,
-  PAIRABLE,
-  PAIRED,
-  INQUIRING,
-  CONNECTING,
-  CONNECTED,
-  DISCONNECTED,
-  UNKNOW
-};
-
-static const String OK="OK";
-static const String ERROR="ERROR";
-static const String FAIL="FAIL";
-static const int ResponseMaxSize = 10;
-
-static const int MaxWaitTimes = 30;
-static const int DelayTime = 500;
-static const int A2IBufferSize=3;
-class HC05Control {
-private:
-  SerialControl serialControl;
-  boolean ok;
-  int responseIndex;
-  char atoiBuffer[A2IBufferSize];
-  String responses[ResponseMaxSize];
-public:
-
-  HC05Control(SoftwareSerial & _serial):
-  serialControl(SerialControl(_serial)),ok(false),touchMaxWaitTimes(false){
-    responseIndex=0;
-  }
-  boolean sendCommandAndWaitOk(String command) {
-    sendCommand(command);
-    int x=0;
-    touchMaxWaitTimes=false;
-    for(;!isResponse()&&x<MaxWaitTimes;x++) {
-      delay(DelayTime);
-    };
-    if(x==MaxWaitTimes) {
-      touchMaxWaitTimes=true;
-    }
-
-    return isResponseOk();
-  }
-  void sendCommand(String _command) {
-    responseIndex=0;
-    serialControl.sendString(_command);
-#ifdef DEBUG
-    Serial.println("HC05Control debug "+_command);
-#endif
-  }
-
-  State getState() {
-    if(sendCommandAndWaitOk("AT+STATE")) {
-      String response=responses[0];
-      int index=response.indexOf(':');
-      String statestr=response.substring(index+1);
-#ifdef DEBUG
-      Serial.println("HC05Control debug getState() "+statestr+"/"+response[0]);
-#endif
-      if(statestr=="INITIALIZED") {
-        return INITIALIZED;
-      }
-      else  if(statestr.equals("READY")) {
-        return READY;
-      }
-      else  if(statestr.equals("PAIRABLE")) {
-        return PAIRABLE;
-      } 
-      else  if(statestr.equals("PAIRED")) {
-        return PAIRED;
-      } 
-      else  if(statestr.equals("INQUIRING")) {
-        return INQUIRING;
-      } 
-      else  if(statestr.equals("CONNECTING")) {
-        return CONNECTING;
-      } 
-      else  if(statestr.equals("CONNECTED")) {
-        return CONNECTED;
-      } 
-      else  if(statestr.equals("DISCONNECTED")) {
-        return DISCONNECTED;
-      }
-      else {
-        return UNKNOW;
-      }
-    }
-    return UNKNOW;
-  }
-
-  boolean isResponse() {
-    ok=false;
-    if(serialControl.isResponse()) {
-      String response=serialControl.getResponse();
-#ifdef DEBUG
-      Serial.println("HC05Control debug response "+response);
-#endif
-
-      if(response.startsWith(OK)) {
-#ifdef DEBUG
-        Serial.println("HC05Control debug ok");
-#endif
-        ok=true;
-        return true;
-      }
-      else if(response.startsWith(ERROR)) {
-#ifdef DEBUG
-        Serial.println("HC05Control debug error");
-#endif
-        responses[0]=response;
-
-        int first=response.indexOf('(');
-        int second=response.indexOf(')');
-        String errorString=response.substring(first+1,second);
-        errorString.toCharArray(atoiBuffer,A2IBufferSize);
-        errorcode=  atoi(atoiBuffer);
-#ifdef DEBUG
-        Serial.println("HC05Control debug errorcode "+String(errorcode)+" "+errorString);
-#endif
-        return true;
-      }
-      else if(response.startsWith(FAIL)) {
-#ifdef DEBUG
-        Serial.println("HC05Control debug fail");
-#endif
-        responses[0]=response;
-        return true;
-      }
-      else {
-#ifdef DEBUG
-        Serial.println("HC05Control debug ["+response+"]");
-#endif
-        if((responseIndex+1) >ResponseMaxSize) {
-#ifdef DEBUG
-          Serial.println("HC05Control debug responseIndex+1 >=ResponseMaxSize");
-#endif
-          return false;
-        }
-        responses[responseIndex++]=response;
-        return false;
-      }
-    }
-    else {
-#ifdef DEBUG
-      //      Serial.println("HC05Control debug no response");
-      Serial.print(".");
-#endif
-      return false;
-    }
-
-  }
-
-  boolean isResponseOk() {
-#ifdef DEBUG
-    Serial.println("HC05Control debug isResponseOk() "+String(ok?"Yes":"No"));
-#endif
-    return ok;
-  }
-
-  String*  getResponses() {
-    return responses;
-  }
-  int getResponseSize() {
-    return responseIndex;
-  }
-  int errorcode;
-  boolean touchMaxWaitTimes;
-
-};
 
 class ELM327 {
 private:
@@ -417,7 +49,7 @@ private:
   char atoiBuffer[A2IBufferSize];
   String responses[ResponseMaxSize];
 public:
-boolean touchMaxWaitTimes;
+  boolean touchMaxWaitTimes;
 
   ELM327(SoftwareSerial & _serial):
   serialControl(SerialControl(_serial))/*,ok(false),touchMaxWaitTimes(false)*/{
@@ -433,8 +65,8 @@ boolean touchMaxWaitTimes;
     if(x==MaxWaitTimes) {
       touchMaxWaitTimes=true;
     }
-  return false;
-//    return isResponseOk();
+    return false;
+    //    return isResponseOk();
   }
   void sendCommand(String _command) {
     responseIndex=0;
@@ -443,7 +75,7 @@ boolean touchMaxWaitTimes;
 
   boolean isResponse() {
     //    ok=false;
-    
+
     if(serialControl.isResponse()) {
       String response=serialControl.getResponse();
 #ifdef DEBUG
@@ -504,51 +136,6 @@ boolean touchMaxWaitTimes;
   }
 };
 
-class CanvasWrapper {
-private:
-  canvasclass canvas;
-  int line;
-  int lineheight;
-  int currentline;
-  int factor;
-public:
-  CanvasWrapper(canvasclass _canvas,int _line){
-    canvas=_canvas;
-    line=_line;
-    lineheight = 2250/line;
-    factor=500;
-  }
-  inline int getY() {
-    return (currentline++%line)*lineheight;
-  }
-
-  void println(String s) {
-    int length=s.length();
-    int count = length/8;
-    int mod = length%8;
-    canvas.setPaint(2,255,255,255,1);
-    int y=getY();
-    for(int x=0;x<count;x++) {
-      int start=8*x;
-      String sub= s.substring(start,start+8); 
-      canvas.setText(sub);
-      canvas.drawText(factor*x,y,lineheight);//big blue text
-      //      Serial.println(sub+" "+String(start));
-    }
-    if(0!=mod) {
-      //      int start=factor*count;
-      String sub= count!=0?s.substring(length-mod,length):s;
-      //      Serial.println(sub+" "+String(start));
-      canvas.setText(sub);
-      canvas.drawText(factor*count,y,lineheight);//big blue text
-    }
-  }
-
-  void clear() {
-    canvas.setPaint(1,0,0,0,1);
-    canvas.drawRect(0,0,4000,2250); // set full screen to white 
-  }
-};
 
 
 
@@ -562,9 +149,6 @@ boolean autoconnect=true;
 ATCommand at;
 COBD obd(softserial);
 
-#ifdef CANVAS_WRAPPER
-CanvasWrapper wrapper(canvas,20);
-#endif
 
 void setup()  
 {
@@ -577,10 +161,10 @@ void setup()
 #ifdef CANVAS_WRAPPER
   wrapper.clear();
 #endif
-// elm.sendCommandAndWaitOk("AT");
-//  elm.sendCommandAndWaitOk("ATZ");
-//  
-//  if(true) return;
+  // elm.sendCommandAndWaitOk("AT");
+  //  elm.sendCommandAndWaitOk("ATZ");
+  //  
+  //  if(true) return;
 
   if(hc05.sendCommandAndWaitOk("ATZ")) {
     Serial.println("ELM327 Linked"); 
@@ -588,7 +172,7 @@ void setup()
   }
 
   if(autoconnect){
-    //檢查el327?�否已�??
+    //檢查el327?�否已�??
 
 
     Serial.println("Begin connect..."); 
@@ -687,9 +271,9 @@ void loop() // run over and over
 #ifdef BRIDGE
   bridge();
 #endif
-// elm.sendCommand("ATZ");
-//delay(1000);
-// elm.sendCommand("AT");
+  // elm.sendCommand("ATZ");
+  //delay(1000);
+  // elm.sendCommand("AT");
   //  Serial.println("loop");
   //  hc05.sendCommand("AT Z");
   //  int value;
@@ -702,6 +286,7 @@ void loop() // run over and over
   //    Serial.println(value);
   //  }
 }
+
 
 
 
