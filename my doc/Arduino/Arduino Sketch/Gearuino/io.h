@@ -1,6 +1,6 @@
 #ifndef IO_H
 #define IO_H
-
+#include <Arduino.h>
 
 static const int MaxBufferSize = 40;
 class InputBuffer {
