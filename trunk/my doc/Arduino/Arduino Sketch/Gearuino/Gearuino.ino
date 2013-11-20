@@ -30,97 +30,60 @@
 //#define CANVAS_WRAPPER
 
 
+#define USE_ELM
+//#define USE_HC05
+//#define USE_SERIAL_CONTROL
+//#define USE_SOFT_SERIAL
+
+#include <Arduino.h>
+
+#ifdef USE_SOFT_SERIAL
 #include <SoftwareSerial.h>
-#include "OBD2.h"
-#include "io.h"
-#include "HC05.h"
-#include <ELM327.h>
-#include "elm.h"
- 
-
-//class ELM327 {
-//private:
-//  SerialControl serialControl;
-//  //  boolean ok;
-//  int responseIndex;
-//  char atoiBuffer[A2IBufferSize];
-//  String responses[ResponseMaxSize];
-//public:
-//  boolean touchMaxWaitTimes;
-//
-//  ELM327(SoftwareSerial & _serial):
-//  serialControl(SerialControl(_serial))/*,ok(false),touchMaxWaitTimes(false)*/{
-//    responseIndex=0;
-//  }
-//  boolean sendCommandAndWaitOk(String command) {
-//    sendCommand(command);
-//    int x=0;
-//    touchMaxWaitTimes=false;
-//    for(;!isResponse()&&x<MaxWaitTimes;x++) {
-//      delay(DelayTime);
-//    };
-//    if(x==MaxWaitTimes) {
-//      touchMaxWaitTimes=true;
-//    }
-//    return false;
-//    //    return isResponseOk();
-//  }
-//  void sendCommand(String _command) {
-//    responseIndex=0;
-//    serialControl.sendString(_command);
-//  }
-//
-//  boolean isResponse() {
-//    //    ok=false;
-//
-//    if(serialControl.isResponse()) {
-//      String response=serialControl.getResponse();
-//#ifdef DEBUG
-//      Serial.println("ELM327 debug response "+response);
-//#endif
-//
-//    }
-//    else {
-//#ifdef DEBUG
-//      Serial.print(".");
-//#endif
-//      return false;
-//    }
-//
-//  }
-//};
-
-
-#define ELM_TIMEOUT 9000
-#define ELM_BAUD_RATE 38400
-#define ELM_PORT softserial
-
 SoftwareSerial softserial(8, 9); // RX, TX
+#endif
+
+#ifdef USE_SERIAL_CONTROL
+#include <SerialControl.h>
 InputBuffer serialBuffer;
-HC05Control hc05(softserial);
-//ELM327 elm(softserial);
+#endif
+
+
 //#define GEARUINO_SLAVE "2013,9,110911"
 #define GEARUINO_SLAVE "19,5D,253224"
 boolean autoconnect=false;
-ATCommand at;
-COBD obd(softserial);
 
+
+#ifdef USE_HC05
+#include "HC05.h"
+HC05Control hc05(softserial);
+ATCommand at;
+#endif
+
+
+#ifdef USE_ELM
+#define ELM_TIMEOUT 9000
+#define ELM_BAUD_RATE 38400
+#define ELM_PORT softserial
+//#include <ELM327.h>
+//#include "elm.h"
+//Elm327 elm;
+#else
+#include <OBD.h>
+COBD obd(softserial);
+#endif
 
 
 void setup()  
 {
   // Open serial communications and wait for port to open:
-  Serial.begin(9600);
+  //  Serial.begin(9600);
   //  while (!Serial) {
   //    ; // wait for serial port to connect. Needed for Leonardo only
   //  }
   //  softserial.begin(38400);
-  softserial.begin(9600);
-#ifdef CANVAS_WRAPPER
-  wrapper.clear();
-#endif
+  //  softserial.begin(9600);
 
-
+#ifdef USE_HC05
   if(autoconnect){
     Serial.println("Begin connect..."); 
     State state=hc05.getState();
@@ -130,8 +93,6 @@ void setup()
     }
     else if(CONNECTED!=state) {
       Serial.println("Try connect");
-      //    hc05.sendCommandAndWaitOk("AT+DISC");
-
       while(!hc05.sendCommandAndWaitOk("AT+LINK="+String(GEARUINO_SLAVE))) {
         if(16==hc05.errorcode) {
           if(hc05.sendCommandAndWaitOk("AT+INIT")) {
@@ -147,9 +108,13 @@ void setup()
     Serial.println("BT Linked");
 
   }
-  //  elm327Setup();
+#endif
 
+#ifdef USE_ELM
+  //  printStatus(elm.begin());
+#else
   while (!obd.init());  
+#endif
   Serial.println("OBD Linked");
 
 
@@ -215,14 +180,34 @@ void loop() // run over and over
 #ifdef BRIDGE
   bridge();
 #endif
+#ifdef USE_ELM
+  //  int value;
+  //  if (elm.engineRPM(value)== ELM_SUCCESS ) {
+  //    // RPM is read and stored in 'value'
+  //    // light on LED when RPM exceeds 5000
+  //    //    digitalWrite(13, value > 5000 ? HIGH : LOW);
+  //    Serial.println("RPM: "+String(value));
+  //  }
+
+#else
   int value;
   if (obd.readSensor(PID_RPM, value)) {
     // RPM is read and stored in 'value'
     // light on LED when RPM exceeds 5000
     //    digitalWrite(13, value > 5000 ? HIGH : LOW);
-    Serial.println(value);
+    Serial.println("RPM: "+String(value));
   }
+
+#endif
 }
+
+
+
+
+
+
+
+
 
 
 
