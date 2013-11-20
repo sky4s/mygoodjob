@@ -2,14 +2,13 @@
 #define HC05_H
 #include <SerialControl.h>
 
-//static const int MaxBufferSize = 40;
 class ATCommand {
 private:
   char buf[MaxBufferSize];
   void init(String cmd) {
     cmd.toCharArray(buf,MaxBufferSize);
     command = strtok(buf,":+");
-    char* p="";
+    char* p=NULL;
     for(int x=0;x<3&&NULL!=p;x++) {
       p=strtok(NULL,",");
       //      Serial.println(p);

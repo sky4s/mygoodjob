@@ -31,9 +31,9 @@
 
 
 #define USE_ELM
-//#define USE_HC05
-//#define USE_SERIAL_CONTROL
-//#define USE_SOFT_SERIAL
+#define USE_HC05
+#define USE_SERIAL_CONTROL
+#define USE_SOFT_SERIAL
 
 #include <Arduino.h>
 
@@ -56,7 +56,7 @@ boolean autoconnect=false;
 #ifdef USE_HC05
 #include "HC05.h"
 HC05Control hc05(softserial);
-ATCommand at;
+//ATCommand at;
 #endif
 
 
@@ -64,9 +64,9 @@ ATCommand at;
 #define ELM_TIMEOUT 9000
 #define ELM_BAUD_RATE 38400
 #define ELM_PORT softserial
-//#include <ELM327.h>
-//#include "elm.h"
-//Elm327 elm;
+#include <ELM327.h>
+#include "elm.h"
+Elm327 elm;
 #else
 #include <OBD.h>
 COBD obd(softserial);
@@ -76,12 +76,12 @@ COBD obd(softserial);
 void setup()  
 {
   // Open serial communications and wait for port to open:
-  //  Serial.begin(9600);
+  Serial.begin(9600);
   //  while (!Serial) {
   //    ; // wait for serial port to connect. Needed for Leonardo only
   //  }
   //  softserial.begin(38400);
-  //  softserial.begin(9600);
+  softserial.begin(9600);
 
 #ifdef USE_HC05
   if(autoconnect){
@@ -111,7 +111,7 @@ void setup()
 #endif
 
 #ifdef USE_ELM
-  //  printStatus(elm.begin());
+  printStatus(elm.begin());
 #else
   while (!obd.init());  
 #endif
@@ -153,12 +153,7 @@ void bridge() {
   if (Serial.available()){
     char in = Serial.read();
     Serial.write(in);
-    //    if(in=='c') {
-    //      Serial.println(hc05.getState());
-    //    }
-    //    else {
     softserial.print(in);
-    //    }
   }
   if (softserial.available()) {
     Serial.write(softserial.read());
@@ -181,13 +176,13 @@ void loop() // run over and over
   bridge();
 #endif
 #ifdef USE_ELM
-  //  int value;
-  //  if (elm.engineRPM(value)== ELM_SUCCESS ) {
-  //    // RPM is read and stored in 'value'
-  //    // light on LED when RPM exceeds 5000
-  //    //    digitalWrite(13, value > 5000 ? HIGH : LOW);
-  //    Serial.println("RPM: "+String(value));
-  //  }
+  int value;
+  if (elm.engineRPM(value)== ELM_SUCCESS ) {
+    // RPM is read and stored in 'value'
+    // light on LED when RPM exceeds 5000
+    //    digitalWrite(13, value > 5000 ? HIGH : LOW);
+    Serial.println("RPM: "+String(value));
+  }
 
 #else
   int value;
@@ -200,6 +195,7 @@ void loop() // run over and over
 
 #endif
 }
+
 
 
 
