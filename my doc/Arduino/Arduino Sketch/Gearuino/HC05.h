@@ -1,6 +1,6 @@
 #ifndef HC05_H
 #define HC05_H
-#include "io.h"
+#include <SerialControl.h>
 
 //static const int MaxBufferSize = 40;
 class ATCommand {
