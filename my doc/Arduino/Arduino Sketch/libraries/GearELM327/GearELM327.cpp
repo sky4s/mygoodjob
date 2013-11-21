@@ -30,10 +30,8 @@ ELM327::ELM327(SoftwareSerial& _softserial) {
   //  useSoftSerial=true;
 }
 
-byte ELM327::begin(int baudrate){
-
-  softserial->begin(baudrate);
-
+byte ELM327::begin(){
+  //softserial->begin(baudrate);
   char data[20];
   runCommand("AT E0",data,20);
   return runCommand("AT SP 0",data,20);
