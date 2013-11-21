@@ -1,6 +1,8 @@
 #ifndef ELM_H
 #define ELM_H
 
+//#include <GearELM327.h>
+
 void printStatus(byte status){
   switch (status)
   {

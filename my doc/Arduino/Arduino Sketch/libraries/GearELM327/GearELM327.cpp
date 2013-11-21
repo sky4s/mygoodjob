@@ -582,126 +582,135 @@ byte ELM327::commandedThrottleActuator(byte &position){
 
 
 
-
+#include <stdarg.h>
+void p(char *fmt, ... ){
+        char tmp[128]; // resulting string limited to 128 chars
+        va_list args;
+        va_start (args, fmt );
+        vsnprintf(tmp, 128, fmt, args);
+        va_end (args);
+        Serial.print(tmp);
+}
 
 
 byte ELM327::getBytes( const char *mode, const char *chkMode, const char *pid, byte *values, unsigned int numValues){
-  char data[64];
-  byte status;
-  char hexVal[]="0x00";
-  char cmd[6];
-  cmd[0]=mode[0];
-  cmd[1]=mode[1];
-  cmd[2]=' ';
-  cmd[3]=pid[0];
-  cmd[4]=pid[1];
-  cmd[5]='\0';
+	char data[64];
+	byte status;
+	char hexVal[]="0x00";
+	char cmd[6];
+	cmd[0]=mode[0];
+	cmd[1]=mode[1];
+	cmd[2]=' ';
+	cmd[3]=pid[0];
+	cmd[4]=pid[1];
+	cmd[5]='\0';
 
-  status=runCommand(cmd,data,64);
-  if ( status != ELM_SUCCESS )
-  {
-    return status;
-  };
-
-  // Check the mode returned was the one we sent
-  if ( data[0]!=chkMode[0] 
-    or data[1]!=chkMode[1]
-    or data[3]!=pid[0]
-    or data[4]!=pid[1] ){
-    return ELM_GARBAGE;
-  }
-
-  // For each byte expected, package it up
-  //int i=0;
-  for (unsigned int i=0; i<numValues; i++){
-    hexVal[2]=data[6+(3*i)];
-    hexVal[3]=data[7+(3*i)];
-    values[i]=strtol(hexVal,NULL,16);
-  }
-  return ELM_SUCCESS;
+	status=runCommand(cmd,data,64);
+  p("cmd/data: %s/ %s\n",cmd,data);
+  
+	if ( status != ELM_SUCCESS )
+	{
+		return status;
+	};
+	
+	// Check the mode returned was the one we sent
+	if ( data[0]!=chkMode[0] 
+	  or data[1]!=chkMode[1]
+	  or data[3]!=pid[0]
+	  or data[4]!=pid[1] ){
+    //p("A%c %c %c %c\n", data[0],data[1],data[3],data[4]);
+    //p("B%c %c %c %c\n", chkMode[0],chkMode[1],pid[0],pid[1]);    
+		return ELM_GARBAGE;
+	}
+	
+	// For each byte expected, package it up
+	int i=0;
+	for (int i=0; i<numValues; i++){
+		hexVal[2]=data[6+(3*i)];
+		hexVal[3]=data[7+(3*i)];
+		values[i]=strtol(hexVal,NULL,16);
+	}
+	return ELM_SUCCESS;
 }
 
 byte ELM327::runCommand(const char *cmd, char *data, unsigned int dataLength)
 {	
-  //byte cmdLength;
-
-  // Flush any leftover data from the last command.
-
-  // Send the specified command to the controller.
-  flush();
-
-  softserial->print(cmd);
-  softserial->print('\r');
-
-
-  unsigned long timeOut;
-  unsigned int counter;
-  bool found;
-
-  // Start reading the data right away and don't stop 
-  // until either the requested number of bytes has 
-  // been read or the timeout is reached, or the >
-  // has been returned.
-  //
-  counter=0;
-  timeOut=millis()+ELM_TIMEOUT;
-  found=false;
-  while (!found && counter<( dataLength ) && millis()<timeOut)
-  {
-    if ( softserial->available() ){
-      data[counter]=softserial->read();
-      if (  data[counter] == '>' ){
-        found=true;
-        data[counter]='\0';
-      }
-      else{
-        ++counter;
-      }
+	byte cmdLength;
+	
+	// Flush any leftover data from the last command.
+	
+	// Send the specified command to the controller.
+	flush();
+	softserial->print(cmd);
+	softserial->print('\r');
+    
+	unsigned long timeOut;
+    int counter;
+	bool found;
+	
+	// Start reading the data right away and don't stop 
+	// until either the requested number of bytes has 
+	// been read or the timeout is reached, or the >
+	// has been returned.
+	//
+	counter=0;
+	timeOut=millis()+ELM_TIMEOUT;
+	found=false;
+	while (!found && counter<( dataLength ) && millis()<timeOut)
+    {
+        if ( softserial->available() ){
+			data[counter]=softserial->read();
+			if (  data[counter] == '>' ){
+				found=true;
+				data[counter]='\0';
+			}else{
+				++counter;
+			}
+        }
     }
-  }
-  // If there is still data pending to be read, raise OVERFLOW error.
-  if (!found  && counter>=dataLength)
-  {
-    // Send a character, this should cancel any operation on the elm device
-    // so that it doesnt spuriously inject a response during the next 
-    // command
-    softserial->print("XXXXXXXXX\r\r\r");
-    delay(300);
-    return ELM_BUFFER_OVERFLOW;
-  }
-
-  // If not found, and there is still buffer space, then raise no response error.
-  if (!found && counter<dataLength){
-    // Send a character, this should cancel any operation on the elm device
-    // so that it doesnt spuriously inject a response during the next 
-    // command
-    softserial->print("XXXXXXXXX\r\r\r");
-    delay(300);
-    return ELM_NO_RESPONSE;
-  }
-
-  char *match;
-  match=strstr(data,"UNABLE TO CONNECT");
-  if (match != NULL){
-    return ELM_UNABLE_TO_CONNECT;
-  }
-  match=strstr(data,"NO DATA");
-  if (match != NULL){
-    return ELM_NO_DATA;
-  }
-  if (strncmp(data,"SEARCHING...",12)==0)
-  {
-    // Remove searching...
-    byte i=12;
-    while (data[i]!='\0'){
-      data[i-12]=data[i];
-      i++;
+	// If there is still data pending to be read, raise OVERFLOW error.
+	if (!found  && counter>=dataLength)
+	{
+		// Send a character, this should cancel any operation on the elm device
+		// so that it doesnt spuriously inject a response during the next 
+		// command
+		softserial->print("XXXXXXXXX\r\r\r");
+		delay(300);
+		return ELM_BUFFER_OVERFLOW;
+	}
+    
+	// If not found, and there is still buffer space, then raise no response error.
+    if (!found && counter<dataLength){
+		// Send a character, this should cancel any operation on the elm device
+		// so that it doesnt spuriously inject a response during the next 
+		// command
+		softserial->print("XXXXXXXXX\r\r\r");
+		delay(300);
+		return ELM_NO_RESPONSE;
     }
-    data[i]='\0';
-  }
 
-  // Otherwise return success.
-  return ELM_SUCCESS;
+	char *match;
+	match=strstr(data,"UNABLE TO CONNECT");
+	if (match != NULL){
+		return ELM_UNABLE_TO_CONNECT;
+	}
+	match=strstr(data,"NO DATA");
+	if (match != NULL){
+		return ELM_NO_DATA;
+	}
+	if (strncmp(data,"SEARCHING...",12)==0)
+	{
+		// Remove searching...
+		byte i=12;
+		while (data[i]!='\0'){
+			data[i-12]=data[i];
+			i++;
+		}
+		data[i]='\0';
+	}
+
+	// Otherwise return success.
+	return ELM_SUCCESS;
 }
 
 #ifndef ELM_GEAR_ONLY

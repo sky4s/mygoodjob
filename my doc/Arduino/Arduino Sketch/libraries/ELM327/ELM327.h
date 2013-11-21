@@ -47,10 +47,10 @@
 /**
  * The serial port/device that the ELM327 chip is connected to.  
  */
-#ifndef ELM_PORT
-	#warning "ELM_PORT is not defined, using default value"
-	#define ELM_PORT Serial
-#endif
+//#ifndef ELM_PORT
+//	#warning "ELM_PORT is not defined, using default value"
+//	#define ELM_PORT softserial
+//#endif
 
 /**
  * Return code when communication with the ELM device returned succesfully
@@ -194,9 +194,14 @@
  *  }
  *  @endcode
  */
+#include <SoftwareSerial.h> 
+ 
 class Elm327
 {
+  private:
+    SoftwareSerial& ELM_PORT;
 	public:
+    Elm327(SoftwareSerial& _softserial);
 
 		/**
 		 *  Configures the ELM Device by sending a series of commands:  
@@ -238,8 +243,8 @@ class Elm327
 		 *  Issues the AT RV command to the Elm device.  This initiates the
 		 *  reading of the voltage present at pin 2, and the conversion of it to
 		 *  a decimal voltage. By default, it is assumed that the input is
-		 *  connected to the voltage to be measured through a 47KΩ and 10KΩ
-		 *  resistor divider (with the 10KΩ connected from pin 2 to Vss), and that
+		 *  connected to the voltage to be measured through a 47K ?and 10K ?
+		 *  resistor divider (with the 10K ?connected from pin 2 to Vss), and that
 		 *  the ELM327 supply is a nominal 5V. This will allow for the measurement
 		 *  of input voltages up to about 28V, with an uncalibrated accuracy of
 		 *  typically about 2%.
@@ -265,7 +270,7 @@ class Elm327
 		 * @param[out]	temp	Signed integer value is set to the coolant temperature.
 		 * - Minimum: -40
 		 * - Maximum Value: 215
-		 * - Units: °C
+		 * - Units:   C
 		 */
 		byte coolantTemperature(int &temp);
 
@@ -365,7 +370,7 @@ class Elm327
 		 * @param[out]	advance	Integer set to the timing advance value.
 		 * - Minimum Value: -64
 		 * - Maximum Value: 63.5
-		 * - Units: ° from TDC
+		 * - Units:    from TDC
 		 */
 		byte timingAdvance(int &advance);
 
@@ -376,7 +381,7 @@ class Elm327
 		 * @param[out]	temperature	Integer set to the intake air temperature
 		 * - Minimum Value: -40
 		 * - Maximum Value: 215
-		 * - °C
+		 * -   C
 		 */
 		byte intakeAirTemperature(int &temperature);
 
@@ -387,7 +392,7 @@ class Elm327
 		 * @param[out]	rate	Integer value set to the flow rate.
 		 * - Minimum Value: -40
 		 * - Maximum Value: 215
-		 * - °C
+		 * -   C
 		 */
 		byte MAFAirFlowRate(unsigned int &rate);
 
