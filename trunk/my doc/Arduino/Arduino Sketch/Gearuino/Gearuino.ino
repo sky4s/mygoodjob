@@ -61,12 +61,12 @@ HC05Control hc05(softserial);
 
 
 #ifdef USE_ELM
-#define ELM_TIMEOUT 9000
-#define ELM_BAUD_RATE 38400
-#define ELM_PORT softserial
-#include <ELM327.h>
+//#define ELM_TIMEOUT 9000
+//#define ELM_BAUD_RATE 38400
+//#define ELM_PORT softserial
+#include <GearELM327.h>
 #include "elm.h"
-Elm327 elm;
+ELM327 elm(softserial);
 #else
 #include <OBD.h>
 COBD obd(softserial);

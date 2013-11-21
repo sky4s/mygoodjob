@@ -215,7 +215,7 @@ public:
    * 		 *  @return ELM_SUCCESS when the ELM device returned the anticipated
    * 		 *  response. Else returns an ELM error code.
    		 */
-  byte begin(int baudrate);
+  byte begin();
 
 
   /** 
