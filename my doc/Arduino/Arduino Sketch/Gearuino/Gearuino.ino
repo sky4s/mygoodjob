@@ -26,7 +26,7 @@
  */
 //#define DEBUG
 //#define ITERACTION
-//#define BRIDGE
+#define BRIDGE
 //#define CANVAS_WRAPPER
 
 
@@ -34,7 +34,7 @@
 #define USE_HC05
 #define USE_SERIAL_CONTROL
 #define USE_SOFT_SERIAL
-#define USE_OBDSIM
+//#define USE_OBDSIM
 
 #include <Arduino.h>
 
@@ -93,7 +93,7 @@ void setup()
 
 
 #ifdef USE_ELM
-//  printStatus(elm.begin());
+  //  printStatus(elm.begin());
   autoconnect=(ELM_SUCCESS!=elm.begin());
 #else
   autoconnect=!obd.init();  
@@ -183,6 +183,7 @@ void loop() // run over and over
 #ifdef ITERACTION
   interaction();
 #endif
+
 #ifdef BRIDGE
   bridge();
 #else
@@ -213,6 +214,7 @@ void loop() // run over and over
 #endif
 #endif
 }
+
 
 
 
