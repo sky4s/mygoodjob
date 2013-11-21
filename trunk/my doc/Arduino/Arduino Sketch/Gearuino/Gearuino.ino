@@ -34,12 +34,17 @@
 #define USE_HC05
 #define USE_SERIAL_CONTROL
 #define USE_SOFT_SERIAL
+#define USE_OBDSIM
 
 #include <Arduino.h>
 
 #ifdef USE_SOFT_SERIAL
 #include <SoftwareSerial.h>
+#ifdef USE_OBDSIM
+SoftwareSerial softserial(6, 7); // RX, TX
+#else
 SoftwareSerial softserial(8, 9); // RX, TX
+#endif
 #endif
 
 #ifdef USE_SERIAL_CONTROL
@@ -50,7 +55,7 @@ InputBuffer serialBuffer;
 
 //#define GEARUINO_SLAVE "2013,9,110911"
 #define GEARUINO_SLAVE "19,5D,253224"
-boolean autoconnect=false;
+boolean autoconnect=true;
 
 
 #ifdef USE_HC05
@@ -61,12 +66,11 @@ HC05Control hc05(softserial);
 
 
 #ifdef USE_ELM
-//#define ELM_TIMEOUT 9000
-//#define ELM_BAUD_RATE 38400
-//#define ELM_PORT softserial
 #include <GearELM327.h>
-#include "elm.h"
 ELM327 elm(softserial);
+//#include <ELM327.h>
+//Elm327 elm(softserial);
+#include "elm.h"
 #else
 #include <OBD.h>
 COBD obd(softserial);
@@ -80,8 +84,20 @@ void setup()
   //  while (!Serial) {
   //    ; // wait for serial port to connect. Needed for Leonardo only
   //  }
-  //  softserial.begin(38400);
+
+#ifdef USE_OBDSIM
   softserial.begin(9600);
+#else
+  softserial.begin(38400);
+#endif
+
+
+#ifdef USE_ELM
+//  printStatus(elm.begin());
+  autoconnect=(ELM_SUCCESS!=elm.begin());
+#else
+  autoconnect=!obd.init();  
+#endif
 
 #ifdef USE_HC05
   if(autoconnect){
@@ -103,9 +119,8 @@ void setup()
           }
         }
       }
+      Serial.println("BT Linked");
     }
-
-    Serial.println("BT Linked");
 
   }
 #endif
@@ -116,9 +131,6 @@ void setup()
   while (!obd.init());  
 #endif
   Serial.println("OBD Linked");
-
-
-
 }
 
 
@@ -126,7 +138,6 @@ void setup()
 void interaction() {
   if(serialBuffer.listen()) {
     String line= serialBuffer.getLine();
-    //    Serial.println("Send: "+line);
     hc05.sendCommand(line);
   }
   if(hc05.isResponse()) {
@@ -174,11 +185,15 @@ void loop() // run over and over
 #endif
 #ifdef BRIDGE
   bridge();
-#endif
+#else
 #ifdef USE_ELM
   int value;
-  if (elm.engineRPM(value)== ELM_SUCCESS ) {
+  byte status=elm.engineRPM(value);
+  if (status== ELM_SUCCESS ) {
     Serial.println("RPM: "+String(value));
+  }
+  else {
+    printStatus(status);
   }
 
 #else
@@ -189,9 +204,20 @@ void loop() // run over and over
     //    digitalWrite(13, value > 5000 ? HIGH : LOW);
     Serial.println("RPM: "+String(value));
   }
-
+  if (obd.readSensor(PID_SPEED, value)) {
+    // RPM is read and stored in 'value'
+    // light on LED when RPM exceeds 5000
+    //    digitalWrite(13, value > 5000 ? HIGH : LOW);
+    Serial.println("Speed: "+String(value));
+  }
+#endif
 #endif
 }
+
+
+
+
+
 
 
 

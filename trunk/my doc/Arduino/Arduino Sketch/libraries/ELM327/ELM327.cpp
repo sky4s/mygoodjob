@@ -24,8 +24,13 @@
 
 #include "ELM327.h"
 
+Elm327::Elm327(SoftwareSerial& _softserial):ELM_PORT(_softserial) {
+  //ELM_PORT=_softserial;
+  //  useSoftSerial=true;
+}
+
 byte Elm327::begin(){
-	ELM_PORT.begin(ELM_BAUD_RATE);
+	//ELM_PORT.begin(ELM_BAUD_RATE);
 	char data[20];
 	runCommand("AT E0",data,20);
 	return runCommand("AT SP 0",data,20);
@@ -569,7 +574,15 @@ byte Elm327::commandedThrottleActuator(byte &position){
 }
 
 
-
+#include <stdarg.h>
+void p(char *fmt, ... ){
+        char tmp[128]; // resulting string limited to 128 chars
+        va_list args;
+        va_start (args, fmt );
+        vsnprintf(tmp, 128, fmt, args);
+        va_end (args);
+        Serial.print(tmp);
+}
 
 
 
@@ -597,6 +610,8 @@ byte Elm327::getBytes( const char *mode, const char *chkMode, const char *pid, b
 	  or data[1]!=chkMode[1]
 	  or data[3]!=pid[0]
 	  or data[4]!=pid[1] ){
+    p("%c %c %c %c\n", data[0],data[1],data[3],data[4]);
+    p("%c %c %c %c\n", chkMode[0],chkMode[1],pid[0],pid[1]);       
 		return ELM_GARBAGE;
 	}
 	
