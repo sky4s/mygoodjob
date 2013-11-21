@@ -25,6 +25,7 @@
 #define GEAR_ELM327_h
 #include "Arduino.h"
 
+//#define ELM_GEAR_ONLY
 
 /**
  * The timeout in milliseconds to wait for a response from the ELM device.  
@@ -201,10 +202,8 @@ class ELM327
 {
 private:
   SoftwareSerial* softserial;
-//  boolean useSoftSerial;
 public:
 
-//  ELM327();
   ELM327(SoftwareSerial& _softserial);
 
   /**
@@ -217,7 +216,7 @@ public:
    		 */
   byte begin();
 
-
+#ifndef ELM_GEAR_ONLY
   /** 
    * 		 *  Issues the ATI command to the ELM device.  The ATI command 
    * 		 *  causes the chip to identify itself, by printing the startup
@@ -343,7 +342,7 @@ public:
    * 		 * - Units: kPa (Absolute)
    		 */
   byte intakeManifoldAbsolutePressure(byte &pressure);
-
+#endif
 
   /**
    * 		 * Gets the current engine RPM.  Reads PID 0C from the OBD Interface and
@@ -366,6 +365,7 @@ public:
    		 */
   byte vehicleSpeed(byte &speed);
 
+#ifndef ELM_GEAR_ONLY
 
   /**
    * 		 * Gets the timing advance of the vehicle relative to TDC on the number one cylinder.
@@ -463,6 +463,7 @@ public:
   byte acceleratorPedalPositionE(byte &position);
   byte acceleratorPedalPositionF(byte &position);
   byte commandedThrottleActuator(byte &position);
+#endif
 private:
   byte o2WRVoltage(const char *sensor, unsigned int &equivRatio, unsigned int &voltage);
   byte o2WRCurrent(const char *sensor, unsigned int &equivRatio, int &current);
