@@ -178,9 +178,6 @@ void loop() // run over and over
 #ifdef USE_ELM
   int value;
   if (elm.engineRPM(value)== ELM_SUCCESS ) {
-    // RPM is read and stored in 'value'
-    // light on LED when RPM exceeds 5000
-    //    digitalWrite(13, value > 5000 ? HIGH : LOW);
     Serial.println("RPM: "+String(value));
   }
 

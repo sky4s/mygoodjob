@@ -37,6 +37,7 @@ byte ELM327::begin(){
   return runCommand("AT SP 0",data,20);
 }
 
+#ifndef ELM_GEAR_ONLY
 byte ELM327::engineLoad(byte &load){
   byte status;
   byte values[1];
@@ -86,9 +87,9 @@ byte ELM327::fuelTrimBank2LongTerm(int &percent){
 byte ELM327::fuelPressure(int &pressure){
   byte status;
   byte values[1];
-  char mode[]="01";
-  char chkMode[]="41";
-  char pid[]="0A";
+  //char mode[]="01";
+  //char chkMode[]="41";
+  //char pid[]="0A";
   status=getBytes("01","41","0A",values,1);
   if (status != ELM_SUCCESS){
     return status;
@@ -107,6 +108,7 @@ byte ELM327::intakeManifoldAbsolutePressure(byte &pressure){
   pressure=values[0];
   return ELM_SUCCESS;
 }
+#endif
 
 byte ELM327::engineRPM(int &rpm){
   byte status;
@@ -129,6 +131,8 @@ byte ELM327::vehicleSpeed(byte &speed){
   speed=values[0];
   return ELM_SUCCESS;
 }
+
+#ifndef ELM_GEAR_ONLY
 byte ELM327::timingAdvance(int &advance){
   byte status;
   byte values[1];
@@ -573,6 +577,7 @@ byte ELM327::commandedThrottleActuator(byte &position){
   position=(100*values[0])/255;
   return ELM_SUCCESS;
 }
+#endif
 
 
 
@@ -584,7 +589,7 @@ byte ELM327::getBytes( const char *mode, const char *chkMode, const char *pid, b
   char data[64];
   byte status;
   char hexVal[]="0x00";
-  char cmd[5];
+  char cmd[6];
   cmd[0]=mode[0];
   cmd[1]=mode[1];
   cmd[2]=' ';
@@ -607,8 +612,8 @@ byte ELM327::getBytes( const char *mode, const char *chkMode, const char *pid, b
   }
 
   // For each byte expected, package it up
-  int i=0;
-  for (int i=0; i<numValues; i++){
+  //int i=0;
+  for (unsigned int i=0; i<numValues; i++){
     hexVal[2]=data[6+(3*i)];
     hexVal[3]=data[7+(3*i)];
     values[i]=strtol(hexVal,NULL,16);
@@ -618,7 +623,7 @@ byte ELM327::getBytes( const char *mode, const char *chkMode, const char *pid, b
 
 byte ELM327::runCommand(const char *cmd, char *data, unsigned int dataLength)
 {	
-  byte cmdLength;
+  //byte cmdLength;
 
   // Flush any leftover data from the last command.
 
@@ -630,7 +635,7 @@ byte ELM327::runCommand(const char *cmd, char *data, unsigned int dataLength)
 
 
   unsigned long timeOut;
-  int counter;
+  unsigned int counter;
   bool found;
 
   // Start reading the data right away and don't stop 
@@ -699,6 +704,7 @@ byte ELM327::runCommand(const char *cmd, char *data, unsigned int dataLength)
   return ELM_SUCCESS;
 }
 
+#ifndef ELM_GEAR_ONLY
 byte ELM327::getVersion(String &rev)
 {
   char data[20];
@@ -733,6 +739,7 @@ byte ELM327::getVoltage(float &voltage){
   }
   return status;
 }
+#endif
 
 
 void ELM327::flush(){
