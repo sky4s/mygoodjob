@@ -30,7 +30,7 @@
 //#define CANVAS_WRAPPER
 
 
-#define USE_ELM
+//#define USE_ELM
 #define USE_HC05
 #define USE_SERIAL_CONTROL
 #define USE_SOFT_SERIAL
@@ -40,10 +40,15 @@
 
 #ifdef USE_SOFT_SERIAL
 #include <SoftwareSerial.h>
+
 #ifdef USE_OBDSIM
-SoftwareSerial softserial(6, 7); // RX, TX
+#define OBD2_RX_PIN 6
+#define OBD2_TX_PIN 7
+SoftwareSerial softserial(OBD2_RX_PIN, OBD2_TX_PIN); // RX, TX
 #else
-SoftwareSerial softserial(8, 9); // RX, TX
+#define OBD2_RX_PIN 8
+#define OBD2_TX_PIN 9
+SoftwareSerial softserial(OBD2_RX_PIN, OBD2_TX_PIN); // RX, TX
 #endif
 #endif
 
@@ -55,8 +60,6 @@ InputBuffer serialBuffer;
 
 //#define GEARUINO_SLAVE "2013,9,110911"
 #define GEARUINO_SLAVE "19,5D,253224"
-boolean autoconnect=true;
-
 
 #ifdef USE_HC05
 #include "HC05.h"
@@ -64,18 +67,16 @@ HC05Control hc05(softserial);
 //ATCommand at;
 #endif
 
-
 #ifdef USE_ELM
 #include <GearELM327.h>
 ELM327 elm(softserial);
-//#include <ELM327.h>
-//Elm327 elm(softserial);
 #include "elm.h"
 #else
 #include <OBD.h>
 COBD obd(softserial);
 #endif
 
+boolean autoconnect=true;
 
 void setup()  
 {
@@ -199,12 +200,12 @@ void loop() // run over and over
 
 #else
   int value;
-  if (obd.readSensor(PID_RPM, value)) {
-    // RPM is read and stored in 'value'
-    // light on LED when RPM exceeds 5000
-    //    digitalWrite(13, value > 5000 ? HIGH : LOW);
-    Serial.println("RPM: "+String(value));
-  }
+  //  if (obd.readSensor(PID_RPM, value)) {
+  //    // RPM is read and stored in 'value'
+  //    // light on LED when RPM exceeds 5000
+  //    //    digitalWrite(13, value > 5000 ? HIGH : LOW);
+  //    Serial.println("RPM: "+String(value));
+  //  }
   if (obd.readSensor(PID_SPEED, value)) {
     // RPM is read and stored in 'value'
     // light on LED when RPM exceeds 5000
@@ -214,6 +215,7 @@ void loop() // run over and over
 #endif
 #endif
 }
+
 
 
 
