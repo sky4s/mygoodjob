@@ -6,13 +6,13 @@
  *************************************************************************/
 #ifndef OBD2_H
 #define OBD2_H
-
+ 
 #include <Arduino.h>
 #include <SoftwareSerial.h>
 
 #define OBD_TIMEOUT_SHORT 2000 /* ms */
 #define OBD_TIMEOUT_LONG 7000 /* ms */
-#define OBD_SERIAL_BAUDRATE 38400
+//#define OBD_SERIAL_BAUDRATE 38400
 #define OBD_RECV_BUF_SIZE 128
 
 //#ifndef OBDUART
