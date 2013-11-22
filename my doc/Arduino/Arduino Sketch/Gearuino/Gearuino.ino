@@ -26,7 +26,7 @@
  */
 //#define DEBUG
 //#define ITERACTION
-#define BRIDGE
+//#define BRIDGE
 //#define CANVAS_WRAPPER
 
 
@@ -112,50 +112,46 @@ void setup()
   softserial.begin(38400);
 #endif
 
-//  if(true) {
-//    return;
-//  }
+#ifdef USE_ELM
+  //  printStatus(elm.begin());
+  autoconnect=(ELM_SUCCESS!=elm.begin());
+#else
+  autoconnect=!obd.init();  
+#endif
 
-//#ifdef USE_ELM
-//  //  printStatus(elm.begin());
-//  autoconnect=(ELM_SUCCESS!=elm.begin());
-//#else
-//  autoconnect=!obd.init();  
-//#endif
-//
-//#ifdef USE_HC05
-//  if(autoconnect){
-//    Serial.println("Begin connect..."); 
-//    State state=hc05.getState();
-//    if(true==hc05.touchMaxWaitTimes) {
-//      Serial.println("TouchMaxWaitTimes"); 
-//      //      return;
-//    }
-//    else if(CONNECTED!=state) {
-//      Serial.println("Try connect");
-//      while(!hc05.sendCommandAndWaitOk("AT+LINK="+String(GEARUINO_SLAVE))) {
-//        if(16==hc05.errorcode) {
-//          if(hc05.sendCommandAndWaitOk("AT+INIT")) {
-//            Serial.println("SPP init.");
-//          }
-//          else {
-//            Serial.println("SPP init failed: "+hc05.getResponses()[0]);
-//          }
-//        }
-//      }
-//      Serial.println("BT Linked");
-//    }
-//
-//  }
-//#endif
-//
-//#ifdef USE_ELM
-//  printStatus(elm.begin());
-//#else
-//  while (!obd.init());  
-//#endif
-//  Serial.println("OBD Linked");
-//  initLedControl();
+#ifdef USE_HC05
+  if(autoconnect){
+    Serial.println("Begin connect..."); 
+    State state=hc05.getState();
+    if(true==hc05.touchMaxWaitTimes) {
+      Serial.println("TouchMaxWaitTimes"); 
+      //      return;
+    }
+    else if(CONNECTED!=state) {
+      Serial.println("Try connect");
+      while(!hc05.sendCommandAndWaitOk("AT+LINK="+String(GEARUINO_SLAVE))) {
+        if(16==hc05.errorcode) {
+          if(hc05.sendCommandAndWaitOk("AT+INIT")) {
+            Serial.println("SPP init.");
+          }
+          else {
+            Serial.println("SPP init failed: "+hc05.getResponses()[0]);
+          }
+        }
+      }
+      Serial.println("BT Linked");
+    }
+
+  }
+#endif
+
+#ifdef USE_ELM
+  printStatus(elm.begin());
+#else
+  while (!obd.init());  
+#endif
+  Serial.println("OBD Linked");
+  initLedControl();
 }
 
 
@@ -198,13 +194,18 @@ void bridge() {
 }
 #endif
 
+unsigned long delaytime=250;
 void displayDigit(int value) {
+//  Serial.println(value);
   int digit0=value%10;
   int digit1=(value/10)%10;
   int digit2=(value/100)%10;
   lc.setDigit(0,0,digit0,false);
   lc.setDigit(0,1,digit1,false);
   lc.setDigit(0,2,digit2,false);
+//  delay(delaytime);
+//  lc.clearDisplay(0);
+//  delay(delaytime);
 }
 
 void loop() // run over and over
@@ -233,12 +234,12 @@ void loop() // run over and over
 
 #else
   int value;
-  //  if (obd.readSensor(PID_RPM, value)) {
-  //    // RPM is read and stored in 'value'
-  //    // light on LED when RPM exceeds 5000
-  //    //    digitalWrite(13, value > 5000 ? HIGH : LOW);
-  //    Serial.println("RPM: "+String(value));
-  //  }
+//  if (obd.readSensor(PID_RPM, value)) {
+//    // RPM is read and stored in 'value'
+//    // light on LED when RPM exceeds 5000
+//    //    digitalWrite(13, value > 5000 ? HIGH : LOW);
+//    Serial.println("RPM: "+String(value));
+//  }
   if (obd.readSensor(PID_SPEED, value)) {
     // RPM is read and stored in 'value'
     // light on LED when RPM exceeds 5000
@@ -249,6 +250,8 @@ void loop() // run over and over
 #endif
 #endif
 }
+
+
 
 
 

@@ -410,12 +410,13 @@ public:
 };
 
 
-SoftwareSerial softserial(8, 9); // RX, TX
+//SoftwareSerial softserial(8, 9); // RX, TX
+SoftwareSerial softserial(6, 7); // RX, TX
 InputBuffer serialBuffer;
 HC05Control hc05(softserial);
 //#define GEARUINO_SLAVE "2013,9,110911"
 #define GEARUINO_SLAVE "19,5D,253224"
-boolean autoconnect=true;
+boolean autoconnect=false;
 void setup()  
 {
   // Open serial communications and wait for port to open:
@@ -423,7 +424,7 @@ void setup()
   //  while (!Serial) {
   //    ; // wait for serial port to connect. Needed for Leonardo only
   //  }
-  softserial.begin(38400);
+  softserial.begin(9600);
 
   if(autoconnect){
     State state=hc05.getState();
