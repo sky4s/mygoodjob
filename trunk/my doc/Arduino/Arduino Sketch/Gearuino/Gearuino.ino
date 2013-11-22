@@ -41,15 +41,15 @@
 
 #ifdef USE_OBDSIM
 
-//#define OBD2_RX_PIN 6
-//#define OBD2_TX_PIN 7
-SoftwareSerial softserial(6, 7); // RX, TX
+#define OBD2_RX_PIN 6
+#define OBD2_TX_PIN 7
+SoftwareSerial softserial(OBD2_RX_PIN,OBD2_TX_PIN); // RX, TX
 
 #else
 
-//#define OBD2_RX_PIN 8
-//#define OBD2_TX_PIN 9
-SoftwareSerial softserial(8, 9); // RX, TX
+#define OBD2_RX_PIN 8
+#define OBD2_TX_PIN 9
+SoftwareSerial softserial(OBD2_RX_PIN, OBD2_TX_PIN); // RX, TX
 
 #endif
 
@@ -196,16 +196,27 @@ void bridge() {
 
 unsigned long delaytime=250;
 void displayDigit(int value) {
-//  Serial.println(value);
+  //  Serial.println(value);
   int digit0=value%10;
   int digit1=(value/10)%10;
   int digit2=(value/100)%10;
   lc.setDigit(0,0,digit0,false);
-  lc.setDigit(0,1,digit1,false);
-  lc.setDigit(0,2,digit2,false);
-//  delay(delaytime);
-//  lc.clearDisplay(0);
-//  delay(delaytime);
+  if(value>=10) {
+    lc.setDigit(0,1,digit1,false);
+    if( value>=100) {
+      lc.setDigit(0,2,digit2,false);
+    }
+    else {
+      lc.setChar(0,2,' ',false);
+    }
+  }
+  else {
+    lc.setChar(0,1,' ',false);
+    lc.setChar(0,2,' ',false);
+  }
+  //  delay(delaytime);
+  //  lc.clearDisplay(0);
+  //  delay(delaytime);
 }
 
 void loop() // run over and over
@@ -234,12 +245,12 @@ void loop() // run over and over
 
 #else
   int value;
-//  if (obd.readSensor(PID_RPM, value)) {
-//    // RPM is read and stored in 'value'
-//    // light on LED when RPM exceeds 5000
-//    //    digitalWrite(13, value > 5000 ? HIGH : LOW);
-//    Serial.println("RPM: "+String(value));
-//  }
+  //  if (obd.readSensor(PID_RPM, value)) {
+  //    // RPM is read and stored in 'value'
+  //    // light on LED when RPM exceeds 5000
+  //    //    digitalWrite(13, value > 5000 ? HIGH : LOW);
+  //    Serial.println("RPM: "+String(value));
+  //  }
   if (obd.readSensor(PID_SPEED, value)) {
     // RPM is read and stored in 'value'
     // light on LED when RPM exceeds 5000
@@ -250,6 +261,9 @@ void loop() // run over and over
 #endif
 #endif
 }
+
+
+
 
 
 
