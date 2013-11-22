@@ -33,23 +33,24 @@
 //#define USE_ELM
 #define USE_HC05
 #define USE_SERIAL_CONTROL
-#define USE_SOFT_SERIAL
-//#define USE_OBDSIM
+#define USE_OBDSIM
 
 #include <Arduino.h>
-
-#ifdef USE_SOFT_SERIAL
+#include "LedControl.h"
 #include <SoftwareSerial.h>
 
 #ifdef USE_OBDSIM
-#define OBD2_RX_PIN 6
-#define OBD2_TX_PIN 7
-SoftwareSerial softserial(OBD2_RX_PIN, OBD2_TX_PIN); // RX, TX
+
+//#define OBD2_RX_PIN 6
+//#define OBD2_TX_PIN 7
+SoftwareSerial softserial(6, 7); // RX, TX
+
 #else
-#define OBD2_RX_PIN 8
-#define OBD2_TX_PIN 9
-SoftwareSerial softserial(OBD2_RX_PIN, OBD2_TX_PIN); // RX, TX
-#endif
+
+//#define OBD2_RX_PIN 8
+//#define OBD2_TX_PIN 9
+SoftwareSerial softserial(8, 9); // RX, TX
+
 #endif
 
 #ifdef USE_SERIAL_CONTROL
@@ -68,13 +69,32 @@ HC05Control hc05(softserial);
 #endif
 
 #ifdef USE_ELM
+
 #include <GearELM327.h>
 ELM327 elm(softserial);
 #include "elm.h"
+
 #else
+
 #include <OBD.h>
 COBD obd(softserial);
+
 #endif
+
+LedControl lc=LedControl(12,11,10,1);
+void initLedControl() {
+  /*
+   The MAX72XX is in power-sav  ing mode on startup,
+   we have to do a wakeup call
+   */
+  lc.shutdown(0,false);
+  /* Set the brightness to a medium values */
+  lc.setIntensity(0,15);
+  /* and clear the display */
+  lc.clearDisplay(0);
+  lc.setScanLimit(0,3);
+}
+
 
 boolean autoconnect=true;
 
@@ -92,47 +112,52 @@ void setup()
   softserial.begin(38400);
 #endif
 
+//  if(true) {
+//    return;
+//  }
 
-#ifdef USE_ELM
-  //  printStatus(elm.begin());
-  autoconnect=(ELM_SUCCESS!=elm.begin());
-#else
-  autoconnect=!obd.init();  
-#endif
-
-#ifdef USE_HC05
-  if(autoconnect){
-    Serial.println("Begin connect..."); 
-    State state=hc05.getState();
-    if(true==hc05.touchMaxWaitTimes) {
-      Serial.println("TouchMaxWaitTimes"); 
-      //      return;
-    }
-    else if(CONNECTED!=state) {
-      Serial.println("Try connect");
-      while(!hc05.sendCommandAndWaitOk("AT+LINK="+String(GEARUINO_SLAVE))) {
-        if(16==hc05.errorcode) {
-          if(hc05.sendCommandAndWaitOk("AT+INIT")) {
-            Serial.println("SPP init.");
-          }
-          else {
-            Serial.println("SPP init failed: "+hc05.getResponses()[0]);
-          }
-        }
-      }
-      Serial.println("BT Linked");
-    }
-
-  }
-#endif
-
-#ifdef USE_ELM
-  printStatus(elm.begin());
-#else
-  while (!obd.init());  
-#endif
-  Serial.println("OBD Linked");
+//#ifdef USE_ELM
+//  //  printStatus(elm.begin());
+//  autoconnect=(ELM_SUCCESS!=elm.begin());
+//#else
+//  autoconnect=!obd.init();  
+//#endif
+//
+//#ifdef USE_HC05
+//  if(autoconnect){
+//    Serial.println("Begin connect..."); 
+//    State state=hc05.getState();
+//    if(true==hc05.touchMaxWaitTimes) {
+//      Serial.println("TouchMaxWaitTimes"); 
+//      //      return;
+//    }
+//    else if(CONNECTED!=state) {
+//      Serial.println("Try connect");
+//      while(!hc05.sendCommandAndWaitOk("AT+LINK="+String(GEARUINO_SLAVE))) {
+//        if(16==hc05.errorcode) {
+//          if(hc05.sendCommandAndWaitOk("AT+INIT")) {
+//            Serial.println("SPP init.");
+//          }
+//          else {
+//            Serial.println("SPP init failed: "+hc05.getResponses()[0]);
+//          }
+//        }
+//      }
+//      Serial.println("BT Linked");
+//    }
+//
+//  }
+//#endif
+//
+//#ifdef USE_ELM
+//  printStatus(elm.begin());
+//#else
+//  while (!obd.init());  
+//#endif
+//  Serial.println("OBD Linked");
+//  initLedControl();
 }
+
 
 
 #ifdef ITERACTION
@@ -173,6 +198,14 @@ void bridge() {
 }
 #endif
 
+void displayDigit(int value) {
+  int digit0=value%10;
+  int digit1=(value/10)%10;
+  int digit2=(value/100)%10;
+  lc.setDigit(0,0,digit0,false);
+  lc.setDigit(0,1,digit1,false);
+  lc.setDigit(0,2,digit2,false);
+}
 
 void loop() // run over and over
 {
@@ -211,10 +244,14 @@ void loop() // run over and over
     // light on LED when RPM exceeds 5000
     //    digitalWrite(13, value > 5000 ? HIGH : LOW);
     Serial.println("Speed: "+String(value));
+    displayDigit(value);
   }
 #endif
 #endif
 }
+
+
+
 
 
 
