@@ -26,14 +26,14 @@
  */
 //#define DEBUG
 //#define ITERACTION
-//#define BRIDGE
+#define BRIDGE
 //#define CANVAS_WRAPPER
 
 
-//#define USE_ELM
+#define USE_ELM
 #define USE_HC05
 #define USE_SERIAL_CONTROL
-#define USE_OBDSIM
+//#define USE_OBDSIM
 
 #include <Arduino.h>
 #include "LedControl.h"
@@ -59,8 +59,8 @@ InputBuffer serialBuffer;
 #endif
 
 
-//#define GEARUINO_SLAVE "2013,9,110911"
-#define GEARUINO_SLAVE "19,5D,253224"
+#define ELM327_BT "2013,9,110911"
+//#define ELM327_BT "19,5D,253224"
 
 #ifdef USE_HC05
 #include "HC05.h"
@@ -97,27 +97,47 @@ void initLedControl() {
 
 
 boolean autoconnect=true;
-
+void displayDigit(int value);
 void setup()  
 {
-  // Open serial communications and wait for port to open:
   Serial.begin(9600);
+  Serial.println("setup()");
+  initLedControl();
+  displayDigit(168);
+  // Open serial communications and wait for port to open:
+
   //  while (!Serial) {
   //    ; // wait for serial port to connect. Needed for Leonardo only
   //  }
 
+  //  softserial.begin(38400);
+  //  if(true) {
+  //    return; 
+  //  }
+
 #ifdef USE_OBDSIM
   softserial.begin(9600);
-#else
-  softserial.begin(38400);
-#endif
-
+#else //USE_OBDSIM
 #ifdef USE_ELM
-  //  printStatus(elm.begin());
-  autoconnect=(ELM_SUCCESS!=elm.begin());
-#else
-  autoconnect=!obd.init();  
-#endif
+  softserial.begin(9600);
+  if(ELM_SUCCESS==elm.begin()) {
+    autoconnect=false;
+    Serial.println("ELM connecting test OK."); 
+  }
+  else {
+    softserial.begin(38400);
+    autoconnect=true;
+    Serial.println("ELM connecting test failed."); 
+  }
+#else //USE_ELM
+  if(!obd.init()) {
+    autoconnect=true;
+    Serial.println("OBD connecting test failed."); 
+  }
+  else {
+    Serial.println("OBD connecting test OK."); 
+  }
+#endif //USE_ELM
 
 #ifdef USE_HC05
   if(autoconnect){
@@ -129,7 +149,7 @@ void setup()
     }
     else if(CONNECTED!=state) {
       Serial.println("Try connect");
-      while(!hc05.sendCommandAndWaitOk("AT+LINK="+String(GEARUINO_SLAVE))) {
+      while(!hc05.sendCommandAndWaitOk("AT+LINK="+String(ELM327_BT))) {
         if(16==hc05.errorcode) {
           if(hc05.sendCommandAndWaitOk("AT+INIT")) {
             Serial.println("SPP init.");
@@ -143,15 +163,18 @@ void setup()
     }
 
   }
-#endif
+#endif //USE_HC05
+#endif //USE_OBDSIM
 
+  softserial.begin(9600);
 #ifdef USE_ELM
   printStatus(elm.begin());
-#else
+#else //USE_ELM
   while (!obd.init());  
-#endif
+#endif //USE_ELM
   Serial.println("OBD Linked");
-  initLedControl();
+  displayDigit(0);
+  delay(1000);
 }
 
 
@@ -194,7 +217,6 @@ void bridge() {
 }
 #endif
 
-unsigned long delaytime=250;
 void displayDigit(int value) {
   //  Serial.println(value);
   int digit0=value%10;
@@ -214,9 +236,7 @@ void displayDigit(int value) {
     lc.setChar(0,1,' ',false);
     lc.setChar(0,2,' ',false);
   }
-  //  delay(delaytime);
-  //  lc.clearDisplay(0);
-  //  delay(delaytime);
+
 }
 
 void loop() // run over and over
@@ -234,10 +254,13 @@ void loop() // run over and over
   bridge();
 #else
 #ifdef USE_ELM
-  int value;
-  byte status=elm.engineRPM(value);
+  byte value;
+  float voltage;
+  byte status=elm.getVoltage(voltage);
   if (status== ELM_SUCCESS ) {
-    Serial.println("RPM: "+String(value));
+    int intvoltage=(int)(voltage*10);
+    Serial.println("Voltage: "+String(intvoltage));
+    displayDigit(intvoltage);
   }
   else {
     printStatus(status);
@@ -261,6 +284,20 @@ void loop() // run over and over
 #endif
 #endif
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
