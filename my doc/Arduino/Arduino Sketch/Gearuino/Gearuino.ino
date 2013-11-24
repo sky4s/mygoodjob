@@ -38,7 +38,7 @@
 //#define USE_ELM
 #define USE_HC05
 #define USE_SERIAL_CONTROL
-#define USE_OBDSIM
+//#define USE_OBDSIM
 
 #include <Arduino.h>
 #include "LedControl.h"
