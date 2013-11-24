@@ -110,22 +110,22 @@ void setup()
   //    ; // wait for serial port to connect. Needed for Leonardo only
   //  }
 
-  //  softserial.begin(38400);
-  //  if(true) {
-  //    return; 
-  //  }
+  softserial.begin(38400);
+//  if(true) {
+//    return; 
+//  }
 
 #ifdef USE_OBDSIM
-  softserial.begin(9600);
+//  softserial.begin(9600);
 #else //USE_OBDSIM
 #ifdef USE_ELM
-  softserial.begin(9600);
+//  softserial.begin(38400);
   if(ELM_SUCCESS==elm.begin()) {
     autoconnect=false;
     Serial.println("ELM connecting test OK."); 
   }
   else {
-    softserial.begin(38400);
+//    softserial.begin(38400);
     autoconnect=true;
     Serial.println("ELM connecting test failed."); 
   }
@@ -166,7 +166,7 @@ void setup()
 #endif //USE_HC05
 #endif //USE_OBDSIM
 
-  softserial.begin(9600);
+//  softserial.begin(9600);
 #ifdef USE_ELM
   printStatus(elm.begin());
 #else //USE_ELM
