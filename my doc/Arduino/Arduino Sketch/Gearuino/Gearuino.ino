@@ -26,9 +26,9 @@
  */
 //#define DEBUG
 //#define ITERACTION
-#define BRIDGE
+//#define BRIDGE
 //#define CANVAS_WRAPPER
-#define DEBUG_MODE
+//#define DEBUG_MODE
 #define BT_BAUD_RATE 38400
 
 #define MASTER_BT_ADDR "2013,9,260146"
