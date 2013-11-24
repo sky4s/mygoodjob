@@ -28,8 +28,8 @@
 //#define ITERACTION
 //#define BRIDGE
 //#define CANVAS_WRAPPER
-#define DEBUG_MODE
-#define BT_BAUD_RATE 38400
+//#define SKIP_SETUP
+#define BT_BAUD_RATE 9600
 
 #define MASTER_BT_ADDR "2013,9,260146"
 #define ELM327_BT_ADDR "2013,9,110911"
@@ -114,7 +114,7 @@ void setup()
   //  }
 
   softserial.begin(BT_BAUD_RATE);
-#ifdef DEBUG_MODE
+#ifdef SKIP_SETUP
   if(true) {
     return; 
   }
