@@ -26,9 +26,9 @@
  */
 //#define DEBUG
 //#define ITERACTION
-#define BRIDGE
+//#define BRIDGE
 //#define CANVAS_WRAPPER
-#define DEBUG_MODE
+//#define DEBUG_MODE
 #define BT_BAUD_RATE 38400
 
 
@@ -172,7 +172,7 @@ void setup()
 
   //  softserial.begin(9600);
 #ifdef USE_ELM
-  printStatus(elm.begin());
+   while (elm.begin()!=ELM_SUCCESS);  
 #else //USE_ELM
   while (!obd.init());  
 #endif //USE_ELM
@@ -288,6 +288,7 @@ void loop() // run over and over
 #endif
 #endif
 }
+
 
 
 

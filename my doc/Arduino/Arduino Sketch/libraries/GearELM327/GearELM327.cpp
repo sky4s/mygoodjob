@@ -684,6 +684,7 @@ byte ELM327::runCommand(const char *cmd, char *data, unsigned int dataLength)
 		// Send a character, this should cancel any operation on the elm device
 		// so that it doesnt spuriously inject a response during the next 
 		// command
+    p("%c%c%c%c%c%c\n",data[0],data[1],data[2],data[3],data[4],data[5]);
 		//softserial->print("XXXXXXXXX\r\r\r");
 		//delay(300);
 		return ELM_BUFFER_OVERFLOW;
