@@ -33,10 +33,10 @@ ELM327::ELM327(SoftwareSerial& _softserial) {
 byte ELM327::begin(){
   //softserial->begin(baudrate);
   char data[20];
-  //runCommand("ATZ",data,20);
+  runCommand("ATZ",data,20);
   runCommand("AT E0",data,20);
-  runCommand("AT L0",data,20);
-  return runCommand("AT SP 0",data,20);
+  return runCommand("AT L1",data,20);
+  //return runCommand("AT SP 0",data,20);
 }
 
 #ifndef ELM_GEAR_ONLY
