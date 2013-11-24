@@ -36,7 +36,7 @@
 #define ELM327_BT_ADDR "2013,9,110911"
 //#define ELM327_BT_ADDR "19,5D,253224"
 
-#define USE_ELM
+//#define USE_ELM
 #define USE_HC05
 #define USE_SERIAL_CONTROL
 //#define USE_OBDSIM
@@ -157,7 +157,6 @@ void setup()
       Serial.println("Try connect");
       int x=0;
       for(;x<MAX_BT_TRY&&!hc05.sendCommandAndWaitOk("AT+LINK="+String(ELM327_BT_ADDR));x++) {
-        //      while(!hc05.sendCommandAndWaitOk("AT+LINK="+String(ELM327_BT_ADDR))) {
         if(16==hc05.errorcode) {
           if(hc05.sendCommandAndWaitOk("AT+INIT")) {
             Serial.println("SPP init.");
@@ -301,6 +300,8 @@ void loop() // run over and over
 #endif
 #endif
 }
+
+
 
 
 
