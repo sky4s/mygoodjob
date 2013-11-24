@@ -29,13 +29,13 @@
 //#define BRIDGE
 //#define CANVAS_WRAPPER
 //#define SKIP_SETUP
-#define BT_BAUD_RATE 9600
+#define BT_BAUD_RATE 38400
 
 #define MASTER_BT_ADDR "2013,9,260146"
 #define ELM327_BT_ADDR "2013,9,110911"
 //#define ELM327_BT_ADDR "19,5D,253224"
 
-//#define USE_ELM
+#define USE_ELM
 #define USE_HC05
 #define USE_SERIAL_CONTROL
 //#define USE_OBDSIM
