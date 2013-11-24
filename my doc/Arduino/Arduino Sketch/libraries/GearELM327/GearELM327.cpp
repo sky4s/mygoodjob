@@ -687,7 +687,7 @@ byte ELM327::runCommand(const char *cmd, char *data, unsigned int dataLength)
     //p("%c%c%c%c%c%c%c%c%c\n",
     //data[0],data[1],data[2],data[3],data[4],data[5],data[6],data[7],data[8]);
 		//softserial->print("XXXXXXXXX\r\r\r");
-		//delay(300);
+		delay(300);
 		return ELM_BUFFER_OVERFLOW;
 	}
     
@@ -697,7 +697,7 @@ byte ELM327::runCommand(const char *cmd, char *data, unsigned int dataLength)
 		// so that it doesnt spuriously inject a response during the next 
 		// command
 		//softserial->print("XXXXXXXXX\r\r\r");
-		//delay(300);
+		delay(300);
 		return ELM_NO_RESPONSE;
     }
 
