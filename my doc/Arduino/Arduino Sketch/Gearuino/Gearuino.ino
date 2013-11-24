@@ -155,7 +155,8 @@ void setup()
     }
     else if(CONNECTED!=state) {
       Serial.println("Try connect");
-      for(int x=0;x<MAX_BT_TRY&&!hc05.sendCommandAndWaitOk("AT+LINK="+String(ELM327_BT_ADDR));x++) {
+      int x=0;
+      for(;x<MAX_BT_TRY&&!hc05.sendCommandAndWaitOk("AT+LINK="+String(ELM327_BT_ADDR));x++) {
         //      while(!hc05.sendCommandAndWaitOk("AT+LINK="+String(ELM327_BT_ADDR))) {
         if(16==hc05.errorcode) {
           if(hc05.sendCommandAndWaitOk("AT+INIT")) {
@@ -167,6 +168,9 @@ void setup()
         }
       }
       Serial.println("BT Linked");
+      if(MAX_BT_TRY==x) {
+        Serial.println("Touch max bt try.");
+      }
     }
 
   }
