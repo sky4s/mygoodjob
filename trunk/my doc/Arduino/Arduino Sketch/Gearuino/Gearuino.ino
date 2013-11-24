@@ -26,9 +26,9 @@
  */
 //#define DEBUG
 //#define ITERACTION
-//#define BRIDGE
+#define BRIDGE
 //#define CANVAS_WRAPPER
-//#define SKIP_SETUP
+#define SKIP_SETUP
 #define BT_BAUD_RATE 38400
 
 #define MAX_BT_TRY 10
