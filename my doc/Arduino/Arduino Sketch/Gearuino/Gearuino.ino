@@ -28,6 +28,8 @@
 //#define ITERACTION
 #define BRIDGE
 //#define CANVAS_WRAPPER
+#define DEBUG_MODE
+#define BT_BAUD_RATE 38400
 
 
 #define USE_ELM
@@ -58,9 +60,9 @@ SoftwareSerial softserial(OBD2_RX_PIN, OBD2_TX_PIN); // RX, TX
 InputBuffer serialBuffer;
 #endif
 
-
-#define ELM327_BT "2013,9,110911"
-//#define ELM327_BT "19,5D,253224"
+#define MASTER_BT_ADDR "2013,9,260146"
+#define ELM327_BT_ADDR "2013,9,110911"
+//#define ELM327_BT_ADDR "19,5D,253224"
 
 #ifdef USE_HC05
 #include "HC05.h"
@@ -110,22 +112,24 @@ void setup()
   //    ; // wait for serial port to connect. Needed for Leonardo only
   //  }
 
-  softserial.begin(38400);
+  softserial.begin(BT_BAUD_RATE);
+#ifdef DEBUG_MODE
   if(true) {
     return; 
   }
+#endif
 
 #ifdef USE_OBDSIM
-//  softserial.begin(9600);
+  //  softserial.begin(9600);
 #else //USE_OBDSIM
 #ifdef USE_ELM
-//  softserial.begin(38400);
+  //  softserial.begin(38400);
   if(ELM_SUCCESS==elm.begin()) {
     autoconnect=false;
     Serial.println("ELM connecting test OK."); 
   }
   else {
-//    softserial.begin(38400);
+    //    softserial.begin(38400);
     autoconnect=true;
     Serial.println("ELM connecting test failed."); 
   }
@@ -149,7 +153,7 @@ void setup()
     }
     else if(CONNECTED!=state) {
       Serial.println("Try connect");
-      while(!hc05.sendCommandAndWaitOk("AT+LINK="+String(ELM327_BT))) {
+      while(!hc05.sendCommandAndWaitOk("AT+LINK="+String(ELM327_BT_ADDR))) {
         if(16==hc05.errorcode) {
           if(hc05.sendCommandAndWaitOk("AT+INIT")) {
             Serial.println("SPP init.");
@@ -166,7 +170,7 @@ void setup()
 #endif //USE_HC05
 #endif //USE_OBDSIM
 
-//  softserial.begin(9600);
+  //  softserial.begin(9600);
 #ifdef USE_ELM
   printStatus(elm.begin());
 #else //USE_ELM
@@ -284,6 +288,7 @@ void loop() // run over and over
 #endif
 #endif
 }
+
 
 
 
