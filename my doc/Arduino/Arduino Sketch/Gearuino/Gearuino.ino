@@ -270,6 +270,7 @@ void loop() // run over and over
   else {
     if(doLoop) {
       printStatus(status);
+      doLoop=false;
     }
     else {
       bridge();
