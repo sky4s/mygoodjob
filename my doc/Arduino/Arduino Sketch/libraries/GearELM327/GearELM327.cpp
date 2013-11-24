@@ -33,7 +33,9 @@ ELM327::ELM327(SoftwareSerial& _softserial) {
 byte ELM327::begin(){
   //softserial->begin(baudrate);
   char data[20];
+  //runCommand("ATZ",data,20);
   runCommand("AT E0",data,20);
+  runCommand("AT L0",data,20);
   return runCommand("AT SP 0",data,20);
 }
 
@@ -606,7 +608,7 @@ byte ELM327::getBytes( const char *mode, const char *chkMode, const char *pid, b
 	cmd[5]='\0';
 
 	status=runCommand(cmd,data,64);
-  p("cmd/data: %s/ %s\n",cmd,data);
+  //p("cmd/data: %s/ %s\n",cmd,data);
   
 	if ( status != ELM_SUCCESS )
 	{
@@ -632,6 +634,8 @@ byte ELM327::getBytes( const char *mode, const char *chkMode, const char *pid, b
 	}
 	return ELM_SUCCESS;
 }
+
+#define CR 13
 
 byte ELM327::runCommand(const char *cmd, char *data, unsigned int dataLength)
 {	
@@ -660,7 +664,13 @@ byte ELM327::runCommand(const char *cmd, char *data, unsigned int dataLength)
     {
         if ( softserial->available() ){
 			data[counter]=softserial->read();
-			if (  data[counter] == '>' ){
+      if( 0==counter && 13==data[counter]) {
+        continue;
+      }
+      //if(counter<3) {
+      // p("c%d %d_",counter, data[counter]);
+      //}
+      if (  data[counter] == '>' ){
 				found=true;
 				data[counter]='\0';
 			}else{
@@ -674,8 +684,8 @@ byte ELM327::runCommand(const char *cmd, char *data, unsigned int dataLength)
 		// Send a character, this should cancel any operation on the elm device
 		// so that it doesnt spuriously inject a response during the next 
 		// command
-		softserial->print("XXXXXXXXX\r\r\r");
-		delay(300);
+		//softserial->print("XXXXXXXXX\r\r\r");
+		//delay(300);
 		return ELM_BUFFER_OVERFLOW;
 	}
     
@@ -684,8 +694,8 @@ byte ELM327::runCommand(const char *cmd, char *data, unsigned int dataLength)
 		// Send a character, this should cancel any operation on the elm device
 		// so that it doesnt spuriously inject a response during the next 
 		// command
-		softserial->print("XXXXXXXXX\r\r\r");
-		delay(300);
+		//softserial->print("XXXXXXXXX\r\r\r");
+		//delay(300);
 		return ELM_NO_RESPONSE;
     }
 
