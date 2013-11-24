@@ -111,9 +111,9 @@ void setup()
   //  }
 
   softserial.begin(38400);
-//  if(true) {
-//    return; 
-//  }
+  if(true) {
+    return; 
+  }
 
 #ifdef USE_OBDSIM
 //  softserial.begin(9600);
