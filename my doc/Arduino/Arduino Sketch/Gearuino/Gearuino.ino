@@ -173,7 +173,7 @@ void setup()
 
   //  softserial.begin(9600);
 #ifdef USE_ELM
-   while (elm.begin()!=ELM_SUCCESS);  
+  while (elm.begin()!=ELM_SUCCESS);  
 #else //USE_ELM
   while (!obd.init());  
 #endif //USE_ELM
@@ -209,7 +209,7 @@ void interaction() {
 }
 #endif
 
-#ifdef BRIDGE
+//#ifdef BRIDGE
 void bridge() {
   if (Serial.available()){
     char in = Serial.read();
@@ -220,7 +220,7 @@ void bridge() {
     Serial.write(softserial.read());
   }
 }
-#endif
+//#endif
 
 void displayDigit(int value) {
   //  Serial.println(value);
@@ -243,7 +243,7 @@ void displayDigit(int value) {
   }
 
 }
-
+boolean doLoop=true;
 void loop() // run over and over
 {
 
@@ -262,13 +262,18 @@ void loop() // run over and over
   byte value;
   float voltage;
   byte status=elm.getVoltage(voltage);
-  if (status== ELM_SUCCESS ) {
+  if (doLoop && status== ELM_SUCCESS ) {
     int intvoltage=(int)(voltage*10);
     Serial.println("Voltage: "+String(intvoltage));
     displayDigit(intvoltage);
   }
   else {
-    printStatus(status);
+    if(doLoop) {
+      printStatus(status);
+    }
+    else {
+      bridge();
+    }
   }
 
 #else
@@ -289,6 +294,7 @@ void loop() // run over and over
 #endif
 #endif
 }
+
 
 
 
