@@ -26,11 +26,14 @@
  */
 //#define DEBUG
 //#define ITERACTION
-//#define BRIDGE
+#define BRIDGE
 //#define CANVAS_WRAPPER
-//#define DEBUG_MODE
+#define DEBUG_MODE
 #define BT_BAUD_RATE 38400
 
+#define MASTER_BT_ADDR "2013,9,260146"
+#define ELM327_BT_ADDR "2013,9,110911"
+//#define ELM327_BT_ADDR "19,5D,253224"
 
 #define USE_ELM
 #define USE_HC05
@@ -60,9 +63,7 @@ SoftwareSerial softserial(OBD2_RX_PIN, OBD2_TX_PIN); // RX, TX
 InputBuffer serialBuffer;
 #endif
 
-#define MASTER_BT_ADDR "2013,9,260146"
-#define ELM327_BT_ADDR "2013,9,110911"
-//#define ELM327_BT_ADDR "19,5D,253224"
+
 
 #ifdef USE_HC05
 #include "HC05.h"
