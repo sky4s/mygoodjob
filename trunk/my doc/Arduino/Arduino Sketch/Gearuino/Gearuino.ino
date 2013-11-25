@@ -33,8 +33,8 @@
 
 #define MAX_BT_TRY 10
 #define MASTER_BT_ADDR "2013,9,260146"
-#define ELM327_BT_ADDR "2013,9,110911"
-//#define ELM327_BT_ADDR "19,5D,253224"
+//#define ELM327_BT_ADDR "2013,9,110911"
+#define ELM327_BT_ADDR "19,5D,253224"
 
 //#define USE_ELM
 #define USE_HC05
@@ -282,7 +282,7 @@ void loop() // run over and over
     }
   }
 
-#else
+#else //USE_ELM
   int value;
   //  if (obd.readSensor(PID_RPM, value)) {
   //    // RPM is read and stored in 'value'
@@ -297,8 +297,8 @@ void loop() // run over and over
     Serial.println("Speed: "+String(value));
     displayDigit(value);
   }
-#endif
-#endif
+#endif //USE_ELM
+#endif //BRIDGE
 }
 
 
