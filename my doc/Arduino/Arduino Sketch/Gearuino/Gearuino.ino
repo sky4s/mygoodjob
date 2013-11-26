@@ -4,9 +4,10 @@
  */
 //#define DEBUG
 //#define ITERACTION
-#define BRIDGE
+//#define BRIDGE
 //#define CANVAS_WRAPPER
-#define SKIP_SETUP
+//#define SKIP_SETUP
+#define SKIP_CONNECT
 #define BT_BAUD_RATE 38400
 
 #define MAX_BT_TRY 10
@@ -92,14 +93,14 @@ void displayDigit(int value);
 
 void setup()  
 {
+  pinMode(KEY_PIN, OUTPUT);
+  digitalWrite(KEY_PIN, HIGH);
   Serial.begin(9600);
   Serial.println("setup()");
   initLedControl();
   displayDigit(168);
-  pinMode(KEY_PIN, OUTPUT);
-  digitalWrite(KEY_PIN, HIGH);
-  // Open serial communications and wait for port to open:
 
+  // Open serial communications and wait for port to open:
   //  while (!Serial) {
   //    ; // wait for serial port to connect. Needed for Leonardo only
   //  }
@@ -111,11 +112,11 @@ void setup()
   }
 #endif
 
+
+#ifndef SKIP_CONNECT
 #ifdef USE_OBDSIM
-  //  softserial.begin(9600);
 #else //USE_OBDSIM
 #ifdef USE_ELM
-  //  softserial.begin(38400);
   if(ELM_SUCCESS==elm.begin()) {
     autoconnect=false;
     Serial.println("ELM connecting test OK."); 
@@ -165,6 +166,7 @@ void setup()
   }
 #endif //USE_HC05
 #endif //USE_OBDSIM
+#endif //SKIP_CONNECT
 
   //  softserial.begin(9600);
 #ifdef USE_ELM
@@ -298,6 +300,7 @@ void displayDigit(int value) {
   }
 
 }
+
 
 
 
