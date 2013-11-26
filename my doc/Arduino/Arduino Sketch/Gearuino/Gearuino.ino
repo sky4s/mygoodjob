@@ -1,34 +1,12 @@
 /*
-  Software serial multple serial test
  
- Receives from the hardware serial, sends to software serial.
- Receives from software serial, sends to hardware serial.
- 
- * RX is digital pin 10 (connect to TX of other device)
- * TX is digital pin 11 (connect to RX of other device)
- 
- Note:
- Not all pins on the Mega and Mega 2560 support change interrupts, 
- so only the following can be used for RX: 
- 10, 11, 12, 13, 50, 51, 52, 53, 62, 63, 64, 65, 66, 67, 68, 69
- 
- Not all pins on the Leonardo support change interrupts, 
- so only the following can be used for RX: 
- 8, 9, 10, 11, 14 (MISO), 15 (SCK), 16 (MOSI).
- 
- created back in the mists of time
- modified 25 May 2012
- by Tom Igoe
- based on Mikal Hart's example
- 
- This example code is in the public domain.
  
  */
 //#define DEBUG
 //#define ITERACTION
-//#define BRIDGE
+#define BRIDGE
 //#define CANVAS_WRAPPER
-//#define SKIP_SETUP
+#define SKIP_SETUP
 #define BT_BAUD_RATE 38400
 
 #define MAX_BT_TRY 10
@@ -85,6 +63,14 @@ COBD obd(softserial);
 
 #endif
 
+/*
+ Now we need a LedControl to work with.
+ ***** These pin numbers will probably not work with your hardware *****
+ pin 12 is connected to the DataIn 
+ pin 11 is connected to the CLK 
+ pin 10 is connected to LOAD 
+ We have only a single MAX72XX.
+ */
 LedControl lc=LedControl(12,11,10,1);
 void initLedControl() {
   /*
@@ -102,12 +88,16 @@ void initLedControl() {
 
 boolean autoconnect=true;
 void displayDigit(int value);
+#define KEY_PIN 2
+
 void setup()  
 {
   Serial.begin(9600);
   Serial.println("setup()");
   initLedControl();
   displayDigit(168);
+  pinMode(KEY_PIN, OUTPUT);
+  digitalWrite(KEY_PIN, HIGH);
   // Open serial communications and wait for port to open:
 
   //  while (!Serial) {
@@ -187,67 +177,9 @@ void setup()
   delay(1000);
 }
 
+void bridge();
+void interaction();
 
-
-#ifdef ITERACTION
-void interaction() {
-  if(serialBuffer.listen()) {
-    String line= serialBuffer.getLine();
-    hc05.sendCommand(line);
-  }
-  if(hc05.isResponse()) {
-    if(hc05.isResponseOk()) {
-      String*vec=hc05.getResponses();
-      int size=hc05.getResponseSize();
-      if(size==0) {
-        Serial.println("Ok");
-      }
-      for(int x=0;x<size;x++) {
-        String s = vec[x];
-        Serial.println(s);
-      }
-    }
-    else {
-      Serial.println("? " +hc05.getResponses()[0]);
-    }
-  }
-}
-#endif
-
-//#ifdef BRIDGE
-void bridge() {
-  if (Serial.available()){
-    char in = Serial.read();
-    Serial.write(in);
-    softserial.print(in);
-  }
-  if (softserial.available()) {
-    Serial.write(softserial.read());
-  }
-}
-//#endif
-
-void displayDigit(int value) {
-  //  Serial.println(value);
-  int digit0=value%10;
-  int digit1=(value/10)%10;
-  int digit2=(value/100)%10;
-  lc.setDigit(0,0,digit0,false);
-  if(value>=10) {
-    lc.setDigit(0,1,digit1,false);
-    if( value>=100) {
-      lc.setDigit(0,2,digit2,false);
-    }
-    else {
-      lc.setChar(0,2,' ',false);
-    }
-  }
-  else {
-    lc.setChar(0,1,' ',false);
-    lc.setChar(0,2,' ',false);
-  }
-
-}
 boolean doLoop=true;
 void loop() // run over and over
 {
@@ -299,6 +231,72 @@ void loop() // run over and over
   }
 #endif //USE_ELM
 #endif //BRIDGE
+}
+
+
+#ifdef ITERACTION
+void interaction() {
+  if(serialBuffer.listen()) {
+    String line= serialBuffer.getLine();
+    hc05.sendCommand(line);
+  }
+  if(hc05.isResponse()) {
+    if(hc05.isResponseOk()) {
+      String*vec=hc05.getResponses();
+      int size=hc05.getResponseSize();
+      if(size==0) {
+        Serial.println("Ok");
+      }
+      for(int x=0;x<size;x++) {
+        String s = vec[x];
+        Serial.println(s);
+      }
+    }
+    else {
+      Serial.println("? " +hc05.getResponses()[0]);
+    }
+  }
+}
+#endif
+
+boolean pin2=false;
+//#ifdef BRIDGE
+void bridge() {
+  if (Serial.available()){
+    char in = Serial.read();
+    Serial.write(in);
+    softserial.print(in);
+    if( in=='$') {
+      pin2=!pin2;
+      digitalWrite(KEY_PIN, pin2?LOW:HIGH);
+    }
+  }
+  if (softserial.available()) {
+    Serial.write(softserial.read());
+  }
+}
+//#endif
+
+void displayDigit(int value) {
+  //  Serial.println(value);
+  int digit0=value%10;
+  int digit1=(value/10)%10;
+  int digit2=(value/100)%10;
+  lc.setDigit(0,0,digit0,false);
+  if(value>=10) {
+    lc.setDigit(0,1,digit1,false);
+    if( value>=100) {
+      lc.setDigit(0,2,digit2,false);
+    }
+    else {
+      lc.setChar(0,2,' ',false);
+    }
+  }
+  else {
+    lc.setChar(0,1,' ',false);
+    lc.setChar(0,2,' ',false);
+  }
+
 }
 
 
