@@ -7,7 +7,7 @@
 //#define BRIDGE
 //#define CANVAS_WRAPPER
 //#define SKIP_SETUP
-#define SKIP_CONNECT
+//#define SKIP_CONNECT
 
 
 #define MAX_BT_TRY 10
