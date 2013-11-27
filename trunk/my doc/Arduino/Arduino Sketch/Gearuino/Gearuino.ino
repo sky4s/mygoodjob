@@ -183,6 +183,10 @@ void bridge();
 void interaction();
 
 boolean doLoop=true;
+int rpm;
+byte speed;
+float voltage;
+byte status;
 void loop() // run over and over
 {
 
@@ -198,23 +202,29 @@ void loop() // run over and over
   bridge();
 #else
 #ifdef USE_ELM
-  byte value;
-  float voltage;
-  byte status=elm.getVoltage(voltage);
-  if (doLoop && status== ELM_SUCCESS ) {
-    int intvoltage=(int)(voltage*10);
-    Serial.println("Voltage: "+String(intvoltage));
-    displayDigit(intvoltage);
-  }
-  else {
-    if(doLoop) {
-      printStatus(status);
-      doLoop=false;
-    }
-    else {
-      bridge();
+  if(true) {
+    status=elm.getVoltage(voltage);
+    if (doLoop && status== ELM_SUCCESS ) {
+      int intvoltage=(int)(voltage*10);
+      Serial.println("Voltage: "+String(intvoltage));
+      displayDigit(intvoltage);
     }
   }
+  if(false) {
+    status=elm.vehicleSpeed(vehicleSpeed);
+    if (doLoop && status== ELM_SUCCESS ) {
+      displayDigit(vehicleSpeed);
+    }
+  }
+  /*else {
+   if(doLoop) {
+   printStatus(status);
+   doLoop=false;
+   }
+   else {
+   bridge();
+   }
+   }*/
 
 #else //USE_ELM
   int value;
@@ -300,6 +310,9 @@ void displayDigit(int value) {
   }
 
 }
+
+
+
 
 
 
