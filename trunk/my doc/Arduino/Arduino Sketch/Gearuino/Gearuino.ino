@@ -7,7 +7,7 @@
 //#define BRIDGE
 //#define CANVAS_WRAPPER
 //#define SKIP_SETUP
-//#define SKIP_CONNECT
+#define SKIP_CONNECT
 
 
 #define MAX_BT_TRY 10
@@ -16,7 +16,7 @@
 #define ELM327_BT_ADDR "2013,9,110911"
 //#define ELM327_BT_ADDR "19,5D,253224"
 
-//#define USE_ELM
+#define USE_ELM
 #define USE_HC05
 #define USE_SERIAL_CONTROL
 //#define USE_OBDSIM
@@ -223,10 +223,10 @@ void loop() // run over and over
       Serial.println("Speed: "+String(speed));
       displayDigit(speed);
     }
-    else {
+    /*else {
       printStatus(status);
       doLoop=false;
-    }
+    }*/
   }
 
   /*else {

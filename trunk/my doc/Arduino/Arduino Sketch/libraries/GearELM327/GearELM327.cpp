@@ -35,7 +35,7 @@ byte ELM327::begin(){
   char data[20];
   runCommand("ATZ",data,20);
   runCommand("AT E0",data,20);
-  runCommand("AT L1",data,20);
+  runCommand("AT L0",data,20);
   return runCommand("09 02",data,20);
   return runCommand("AT SP 0",data,20);
 }
@@ -621,6 +621,7 @@ byte ELM327::getBytes( const char *mode, const char *chkMode, const char *pid, b
 	  or data[1]!=chkMode[1]
 	  or data[3]!=pid[0]
 	  or data[4]!=pid[1] ){
+    p("%s\n",data);
     p("A:%c(%d) %c(%d) %c(%d) %c(%d)\n", data[0],data[0],data[1],data[1],data[3],data[3],data[4],data[4]);
     p("B:%c(%d) %c(%d) %c(%d) %c(%d)\n", chkMode[0],chkMode[0],chkMode[1],chkMode[1],pid[0],pid[0],pid[1],pid[1]);    
 		return ELM_GARBAGE;
