@@ -621,8 +621,8 @@ byte ELM327::getBytes( const char *mode, const char *chkMode, const char *pid, b
 	  or data[1]!=chkMode[1]
 	  or data[3]!=pid[0]
 	  or data[4]!=pid[1] ){
-    //p("A%c %c %c %c\n", data[0],data[1],data[3],data[4]);
-    //p("B%c %c %c %c\n", chkMode[0],chkMode[1],pid[0],pid[1]);    
+    p("A%c %c %c %c\n", data[0],data[1],data[3],data[4]);
+    p("B%c %c %c %c\n", chkMode[0],chkMode[1],pid[0],pid[1]);    
 		return ELM_GARBAGE;
 	}
 	

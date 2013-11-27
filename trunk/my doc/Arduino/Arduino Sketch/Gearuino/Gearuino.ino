@@ -7,15 +7,16 @@
 //#define BRIDGE
 //#define CANVAS_WRAPPER
 //#define SKIP_SETUP
-#define SKIP_CONNECT
-#define BT_BAUD_RATE 38400
+//#define SKIP_CONNECT
+
 
 #define MAX_BT_TRY 10
+#define BT_BAUD_RATE 38400
 #define MASTER_BT_ADDR "2013,9,260146"
-//#define ELM327_BT_ADDR "2013,9,110911"
-#define ELM327_BT_ADDR "19,5D,253224"
+#define ELM327_BT_ADDR "2013,9,110911"
+//#define ELM327_BT_ADDR "19,5D,253224"
 
-#define USE_ELM
+//#define USE_ELM
 #define USE_HC05
 #define USE_SERIAL_CONTROL
 //#define USE_OBDSIM
@@ -132,6 +133,7 @@ void setup()
     Serial.println("OBD connecting test failed."); 
   }
   else {
+    autoconnect=false;
     Serial.println("OBD connecting test OK."); 
   }
 #endif //USE_ELM
@@ -139,6 +141,7 @@ void setup()
 #ifdef USE_HC05
   if(autoconnect){
     Serial.println("Begin connect..."); 
+    digitalWrite(KEY_PIN, LOW);
     State state=hc05.getState();
     if(true==hc05.touchMaxWaitTimes) {
       Serial.println("TouchMaxWaitTimes"); 
@@ -157,10 +160,14 @@ void setup()
           }
         }
       }
-      Serial.println("BT Linked");
+
       if(MAX_BT_TRY==x) {
         Serial.println("Touch max bt try.");
       }
+      else {
+        Serial.println("BT Linked");
+      }
+      digitalWrite(KEY_PIN, HIGH);
     }
 
   }
@@ -202,7 +209,7 @@ void loop() // run over and over
   bridge();
 #else
 #ifdef USE_ELM
-  if(true) {
+  if(false) {
     status=elm.getVoltage(voltage);
     if (doLoop && status== ELM_SUCCESS ) {
       int intvoltage=(int)(voltage*10);
@@ -210,12 +217,18 @@ void loop() // run over and over
       displayDigit(intvoltage);
     }
   }
-  if(false) {
-    status=elm.vehicleSpeed(vehicleSpeed);
+  if(true) {
+    status=elm.vehicleSpeed(speed);
     if (doLoop && status== ELM_SUCCESS ) {
-      displayDigit(vehicleSpeed);
+      Serial.println("Speed: "+String(speed));
+      displayDigit(speed);
+    }
+    else {
+      printStatus(status);
+      doLoop=false;
     }
   }
+
   /*else {
    if(doLoop) {
    printStatus(status);
@@ -310,6 +323,9 @@ void displayDigit(int value) {
   }
 
 }
+
+
+
 
 
 
