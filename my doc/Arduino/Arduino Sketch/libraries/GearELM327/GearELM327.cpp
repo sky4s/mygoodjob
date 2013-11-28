@@ -36,7 +36,7 @@ byte ELM327::begin(){
   runCommand("ATZ",data,20);
   runCommand("AT E0",data,20);
   runCommand("AT L0",data,20);
-  return runCommand("09 02",data,20);
+  //return runCommand("09 02",data,20);
   return runCommand("AT SP 0",data,20);
 }
 
