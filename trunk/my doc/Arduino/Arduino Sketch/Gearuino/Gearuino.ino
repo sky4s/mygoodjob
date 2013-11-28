@@ -199,11 +199,12 @@ void bridge();
 void interaction();
 void processButton();
 
-boolean doLoop=true;
+//boolean doLoop=true;
 int rpm;
 byte speed;
 float voltage;
 byte status;
+int funcselect=0;
 
 
 void loop() // run over and over
@@ -221,35 +222,37 @@ void loop() // run over and over
   bridge();
 #else
 #ifdef USE_ELM
-  if(false) {
-    status=elm.getVoltage(voltage);
-    if (doLoop && status== ELM_SUCCESS ) {
-      int intvoltage=(int)(voltage*10);
-      Serial.println("Voltage: "+String(intvoltage));
-      displayDigit(intvoltage);
+  switch(funcselect%3) {
+  case 0:
+    {
+      status=elm.vehicleSpeed(speed);
+      if (  status== ELM_SUCCESS ) {
+        Serial.println("Speed: "+String(speed));
+        displayDigit(speed);
+      }
     }
-  }
-  if(true) {
-    status=elm.vehicleSpeed(speed);
-    if (doLoop && status== ELM_SUCCESS ) {
-      Serial.println("Speed: "+String(speed));
-      displayDigit(speed);
+    break;
+  case 1:
+    {
+      status=elm.engineRPM(rpm);
+      if ( status== ELM_SUCCESS ) {
+        Serial.println("RPM: "+String(rpm));
+        displayDigit(rpm/10);
+      }
     }
-    /*else {
-     printStatus(status);
-     doLoop=false;
-     }*/
+    break;
+  case 2:
+    {
+      status=elm.getVoltage(voltage);
+      if (  status== ELM_SUCCESS ) {
+        int intvoltage=(int)(voltage*10);
+        Serial.println("Voltage: "+String(intvoltage));
+        displayDigit(intvoltage);
+      }
+    }
+    break;
   }
 
-  /*else {
-   if(doLoop) {
-   printStatus(status);
-   doLoop=false;
-   }
-   else {
-   bridge();
-   }
-   }*/
 
 #else //USE_ELM
   int value;
@@ -271,15 +274,15 @@ void loop() // run over and over
   processButton();
 
 }
-// Variables will change:
 
+// Variables will change:
 int buttonState;             // the current reading from the input pin
 int lastButtonState = LOW;   // the previous reading from the input pin
-
 // the following variables are long's because the time, measured in miliseconds,
 // will quickly become a bigger number than can be stored in an int.
 long lastDebounceTime = 0;  // the last time the output pin was toggled
 long debounceDelay = 50;    // the debounce time; increase if the output flickers
+
 void processButton() {
   // read the state of the switch into a local variable:
   int reading = digitalRead(buttonPin);
@@ -306,6 +309,7 @@ void processButton() {
         digitalWrite(ledPin, HIGH);
         delay(32);
         digitalWrite(ledPin, LOW);
+        funcselect++;
       }
       // only toggle the LED if the new button state is HIGH
       //      if (buttonState == HIGH) {
@@ -386,6 +390,9 @@ void displayDigit(int value) {
   }
 
 }
+
+
+
 
 
 
