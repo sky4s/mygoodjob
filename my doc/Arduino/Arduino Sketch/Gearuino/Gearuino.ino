@@ -84,7 +84,7 @@ void initLedControl() {
   lc.setIntensity(0,15);
   /* and clear the display */
   lc.clearDisplay(0);
-  lc.setScanLimit(0,3);
+  lc.setScanLimit(0,2);
 }
 
 
