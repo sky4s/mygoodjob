@@ -90,12 +90,14 @@ void initLedControl() {
 
 boolean autoconnect=true;
 void displayDigit(int value);
-#define KEY_PIN 2
-
+#define HC05_KEY_PIN 2
+const int buttonPin = 3;    // the number of the pushbutton pin
+const int ledPin = 13;      // the number of the LED pin
+//int ledState = HIGH;         // the current state of the output pin
 void setup()  
 {
-  pinMode(KEY_PIN, OUTPUT);
-  digitalWrite(KEY_PIN, HIGH);
+  pinMode(HC05_KEY_PIN, OUTPUT);
+  digitalWrite(HC05_KEY_PIN, HIGH);
   Serial.begin(9600);
   Serial.println("setup()");
   initLedControl();
@@ -141,7 +143,7 @@ void setup()
 #ifdef USE_HC05
   if(autoconnect){
     Serial.println("Begin connect..."); 
-    digitalWrite(KEY_PIN, LOW);
+    digitalWrite(HC05_KEY_PIN, LOW);
     State state=hc05.getState();
     if(true==hc05.touchMaxWaitTimes) {
       Serial.println("TouchMaxWaitTimes"); 
@@ -151,6 +153,7 @@ void setup()
       Serial.println("Try connect");
       int x=0;
       for(;x<MAX_BT_TRY&&!hc05.sendCommandAndWaitOk("AT+LINK="+String(ELM327_BT_ADDR));x++) {
+        //        Serial.println(">??? "+String(hc05.errorcode));
         if(16==hc05.errorcode) {
           if(hc05.sendCommandAndWaitOk("AT+INIT")) {
             Serial.println("SPP init.");
@@ -167,7 +170,7 @@ void setup()
       else {
         Serial.println("BT Linked");
       }
-      digitalWrite(KEY_PIN, HIGH);
+      digitalWrite(HC05_KEY_PIN, HIGH);
     }
 
   }
@@ -183,17 +186,26 @@ void setup()
 #endif //USE_ELM
   Serial.println("OBD Linked");
   displayDigit(0);
+
+  pinMode(buttonPin, INPUT);
+  pinMode(ledPin, OUTPUT);
+
+  // set initial LED state
+  digitalWrite(ledPin, LOW);
   delay(1000);
 }
 
 void bridge();
 void interaction();
+void processButton();
 
 boolean doLoop=true;
 int rpm;
 byte speed;
 float voltage;
 byte status;
+
+
 void loop() // run over and over
 {
 
@@ -224,9 +236,9 @@ void loop() // run over and over
       displayDigit(speed);
     }
     /*else {
-      printStatus(status);
-      doLoop=false;
-    }*/
+     printStatus(status);
+     doLoop=false;
+     }*/
   }
 
   /*else {
@@ -256,6 +268,57 @@ void loop() // run over and over
   }
 #endif //USE_ELM
 #endif //BRIDGE
+  processButton();
+
+}
+// Variables will change:
+
+int buttonState;             // the current reading from the input pin
+int lastButtonState = LOW;   // the previous reading from the input pin
+
+// the following variables are long's because the time, measured in miliseconds,
+// will quickly become a bigger number than can be stored in an int.
+long lastDebounceTime = 0;  // the last time the output pin was toggled
+long debounceDelay = 50;    // the debounce time; increase if the output flickers
+void processButton() {
+  // read the state of the switch into a local variable:
+  int reading = digitalRead(buttonPin);
+
+  // check to see if you just pressed the button 
+  // (i.e. the input went from LOW to HIGH),  and you've waited 
+  // long enough since the last press to ignore any noise:  
+
+  // If the switch changed, due to noise or pressing:
+  if (reading != lastButtonState) {
+    // reset the debouncing timer
+    lastDebounceTime = millis();
+  } 
+
+  if ((millis() - lastDebounceTime) > debounceDelay) {
+    // whatever the reading is at, it's been there for longer
+    // than the debounce delay, so take it as the actual current state:
+
+    // if the button state has changed:
+    if (reading != buttonState) {
+      buttonState = reading;
+      // set the LED:
+      if (reading == HIGH) {
+        digitalWrite(ledPin, HIGH);
+        delay(32);
+        digitalWrite(ledPin, LOW);
+      }
+      // only toggle the LED if the new button state is HIGH
+      //      if (buttonState == HIGH) {
+      //        ledState = !ledState;
+      //      }
+    }
+  }
+
+
+
+  // save the reading.  Next time through the loop,
+  // it'll be the lastButtonState:
+  lastButtonState = reading; 
 }
 
 
@@ -293,7 +356,7 @@ void bridge() {
     softserial.print(in);
     if( in=='$') {
       pin2=!pin2;
-      digitalWrite(KEY_PIN, pin2?LOW:HIGH);
+      digitalWrite(HC05_KEY_PIN, pin2?LOW:HIGH);
     }
   }
   if (softserial.available()) {
@@ -323,6 +386,10 @@ void displayDigit(int value) {
   }
 
 }
+
+
+
+
 
 
 
