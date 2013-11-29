@@ -7,7 +7,7 @@
 //#define BRIDGE
 //#define CANVAS_WRAPPER
 //#define SKIP_SETUP
-//#define SKIP_CONNECT
+#define SKIP_CONNECT
 
 
 #define MAX_BT_TRY 10
@@ -19,7 +19,6 @@
 #define USE_ELM
 #define USE_HC05
 #define USE_SERIAL_CONTROL
-//#define USE_OBDSIM
 
 #include <Arduino.h>
 #include "LedControl.h"
@@ -100,6 +99,7 @@ void setup()
   digitalWrite(HC05_KEY_PIN, HIGH);
   Serial.begin(9600);
   Serial.println("setup()");
+  softserial.begin(BT_BAUD_RATE);
   initLedControl();
   displayDigit(168);
 
@@ -108,7 +108,7 @@ void setup()
   //    ; // wait for serial port to connect. Needed for Leonardo only
   //  }
 
-  softserial.begin(BT_BAUD_RATE);
+
 #ifdef SKIP_SETUP
   if(true) {
     return; 
@@ -117,8 +117,6 @@ void setup()
 
 
 #ifndef SKIP_CONNECT
-#ifdef USE_OBDSIM
-#else //USE_OBDSIM
 #ifdef USE_ELM
   if(ELM_SUCCESS==elm.begin()) {
     autoconnect=false;
@@ -147,13 +145,11 @@ void setup()
     State state=hc05.getState();
     if(true==hc05.touchMaxWaitTimes) {
       Serial.println("TouchMaxWaitTimes"); 
-      //      return;
     }
     else if(CONNECTED!=state) {
       Serial.println("Try connect");
       int x=0;
       for(;x<MAX_BT_TRY&&!hc05.sendCommandAndWaitOk("AT+LINK="+String(ELM327_BT_ADDR));x++) {
-        //        Serial.println(">??? "+String(hc05.errorcode));
         if(16==hc05.errorcode) {
           if(hc05.sendCommandAndWaitOk("AT+INIT")) {
             Serial.println("SPP init.");
@@ -175,7 +171,6 @@ void setup()
 
   }
 #endif //USE_HC05
-#endif //USE_OBDSIM
 #endif //SKIP_CONNECT
 
   //  softserial.begin(9600);
@@ -222,7 +217,7 @@ void loop() // run over and over
   bridge();
 #else
 #ifdef USE_ELM
-  switch(funcselect%3) {
+  switch(funcselect) {
   case 0:
     {
       status=elm.vehicleSpeed(speed);
@@ -310,6 +305,7 @@ void processButton() {
         delay(32);
         digitalWrite(ledPin, LOW);
         funcselect++;
+        funcselect=(3==funcselect)?0:funcselect;
       }
       // only toggle the LED if the new button state is HIGH
       //      if (buttonState == HIGH) {
@@ -390,6 +386,8 @@ void displayDigit(int value) {
   }
 
 }
+
+
 
 
 
