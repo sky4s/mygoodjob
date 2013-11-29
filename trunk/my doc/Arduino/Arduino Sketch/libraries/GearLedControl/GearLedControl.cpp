@@ -25,7 +25,7 @@
  */
  
 
-#include "LedControl.h"
+#include "GearLedControl.h"
 
 //the opcodes for the MAX7221 and MAX7219
 #define OP_NOOP   0
