@@ -23,8 +23,8 @@
 #define USE_SERIAL_CONTROL
 
 #include <Arduino.h>
-#include "LedControl.h"
-//#include <GearLedControl.h>
+//#include "LedControl.h"
+#include <GearLedControl.h>
 #include <SoftwareSerial.h>
 
 #ifdef USE_OBDSIM
