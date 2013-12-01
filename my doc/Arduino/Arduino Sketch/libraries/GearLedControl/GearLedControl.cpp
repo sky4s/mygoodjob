@@ -154,6 +154,10 @@ void LedControl::setColumn(int addr, int col, byte value) {
 }
 
 void LedControl::setDigit(int addr, int digit, byte value, boolean dp) {
+    setDigit(addr,digit,value,dp,false);    
+}
+
+void LedControl::setDigit(int addr, int digit, byte value, boolean dp, boolean reflect) {
     int offset;
     byte v;
 
@@ -165,10 +169,22 @@ void LedControl::setDigit(int addr, int digit, byte value, boolean dp) {
     v=charTable[value];
     if(dp)
 	v|=B10000000;
+    if(reflect) {
+      //pABCGEFD
+      byte B=v&B00100000; 
+      byte F=v&B00000010;
+      byte C=v&B00010000; 
+      byte E=v&B00000100;
+      v=v&B11001001;
+      v=v|(B>>4);
+      v=v|(F<<4);
+      v=v|(C>>2);
+      v=v|(E<<2);                       
+    }
     status[offset+digit]=v;
     spiTransfer(addr, digit+1,v);
-    
 }
+
 
 void LedControl::setChar(int addr, int digit, char value, boolean dp) {
     int offset;

@@ -36,6 +36,7 @@
 /*
  * Segments to be switched on for characters and digits on
  * 7-Segment Displays
+ * pABCGEFD 
  */
 const static byte charTable[128] = {
     B01111110,B00110000,B01101101,B01111001,B00110011,B01011011,B01011111,B01110000,
@@ -166,6 +167,7 @@ class LedControl {
      * dp	sets the decimal point.
      */
     void setDigit(int addr, int digit, byte value, boolean dp);
+    void setDigit(int addr, int digit, byte value, boolean dp, boolean reflect);
 
     /* 
      * Display a character on a 7-Segment display.
