@@ -93,7 +93,9 @@ void initLedControl() {
 boolean autoconnect=true;
 void displayDigit(int value);
 #define HC05_KEY_PIN 2
-const int buttonPin = 3;    // the number of the pushbutton pin
+#define SWITCH_PIN 3
+#define REFLECT_PIN 4
+//const int buttonPin = 3;    // the number of the pushbutton pin
 const int ledPin = 13;      // the number of the LED pin
 //int ledState = HIGH;         // the current state of the output pin
 boolean reflect=true;
@@ -186,17 +188,17 @@ void setup()
   Serial.println("OBD Linked");
   displayDigit(0);
 
-  pinMode(buttonPin, INPUT);
+  pinMode(SWITCH_PIN, INPUT);
   pinMode(ledPin, OUTPUT);
 
   // set initial LED state
   digitalWrite(ledPin, LOW);
-//  delay(1000);
+  //  delay(1000);
 }
 
 void bridge();
 void interaction();
-void processButton();
+void processButton(int);
 
 //boolean doLoop=true;
 int rpm;
@@ -270,8 +272,9 @@ void loop() // run over and over
   }
 #endif //USE_ELM
 #endif //BRIDGE
-  processButton();
-//  delay(100);
+  processButton(SWITCH_PIN);
+//  processButton(REFLECT_PIN);
+  //  delay(100);
 }
 
 // Variables will change:
@@ -282,9 +285,10 @@ int lastButtonState = LOW;   // the previous reading from the input pin
 long lastDebounceTime = 0;  // the last time the output pin was toggled
 long debounceDelay = 50;    // the debounce time; increase if the output flickers
 
-void processButton() {
+void processButton(int pin) {
   // read the state of the switch into a local variable:
-  int reading = digitalRead(buttonPin);
+  int reading = digitalRead( pin);
+  
 
   // check to see if you just pressed the button 
   // (i.e. the input went from LOW to HIGH),  and you've waited 
@@ -302,19 +306,29 @@ void processButton() {
 
     // if the button state has changed:
     if (reading != buttonState) {
+      Serial.println(pin);
       buttonState = reading;
       // set the LED:
       if (reading == HIGH) {
         digitalWrite(ledPin, HIGH);
         delay(32);
         digitalWrite(ledPin, LOW);
-        funcselect++;
-        funcselect=(3==funcselect)?0:funcselect;
+
+        switch(pin) {
+        case  SWITCH_PIN: 
+          {
+            funcselect++;
+            funcselect=(3==funcselect)?0:funcselect;
+          }
+          break;
+        case REFLECT_PIN: 
+          {
+            reflect=!reflect;
+          }
+          break;
+
+        }
       }
-      // only toggle the LED if the new button state is HIGH
-      //      if (buttonState == HIGH) {
-      //        ledState = !ledState;
-      //      }
     }
   }
 
@@ -390,6 +404,10 @@ void displayDigit(int value) {
   }
 
 }
+
+
+
+
 
 
 
