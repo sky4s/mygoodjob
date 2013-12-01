@@ -96,6 +96,7 @@ void displayDigit(int value);
 const int buttonPin = 3;    // the number of the pushbutton pin
 const int ledPin = 13;      // the number of the LED pin
 //int ledState = HIGH;         // the current state of the output pin
+boolean reflect=true;
 void setup()  
 {
   pinMode(HC05_KEY_PIN, OUTPUT);
@@ -190,7 +191,7 @@ void setup()
 
   // set initial LED state
   digitalWrite(ledPin, LOW);
-  delay(1000);
+//  delay(1000);
 }
 
 void bridge();
@@ -235,7 +236,7 @@ void loop() // run over and over
       status=elm.engineRPM(rpm);
       if ( status== ELM_SUCCESS ) {
         Serial.println("RPM: "+String(rpm));
-        displayDigit(rpm/10);
+        displayDigit(rpm/100*10);
       }
     }
     break;
@@ -270,7 +271,7 @@ void loop() // run over and over
 #endif //USE_ELM
 #endif //BRIDGE
   processButton();
-
+//  delay(100);
 }
 
 // Variables will change:
@@ -351,7 +352,7 @@ void interaction() {
 #endif
 
 boolean pin2=false;
-//#ifdef BRIDGE
+#ifdef BRIDGE
 void bridge() {
   if (Serial.available()){
     char in = Serial.read();
@@ -366,18 +367,18 @@ void bridge() {
     Serial.write(softserial.read());
   }
 }
-//#endif
+#endif
 
 void displayDigit(int value) {
   //  Serial.println(value);
   int digit0=value%10;
   int digit1=(value/10)%10;
   int digit2=(value/100)%10;
-  lc.setDigit(0,0,digit0,false);
+  lc.setDigit(0,0,digit0,false,reflect);
   if(value>=10) {
-    lc.setDigit(0,1,digit1,false);
+    lc.setDigit(0,1,digit1,false,reflect);
     if( value>=100) {
-      lc.setDigit(0,2,digit2,false);
+      lc.setDigit(0,2,digit2,false,reflect);
     }
     else {
       lc.setChar(0,2,' ',false);
