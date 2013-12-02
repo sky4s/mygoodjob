@@ -133,8 +133,8 @@ void setup()
   pinMode(ReflectPin, INPUT);
   pinMode(LEDPin, OUTPUT);
 #ifndef USE_PROCESS_BUTTON
-  attachInterrupt(0, switchButtonStateChanged, RISING);
-  attachInterrupt(1, reflectButtonStateChanged, RISING);
+  attachInterrupt(0, switchButtonStateChanged, CHANGE);
+  attachInterrupt(1, reflectButtonStateChanged, CHANGE);
 #endif
 
 
@@ -194,7 +194,7 @@ void elmLoop() {
     {
       status=elm.vehicleSpeed(speed);
       if (  status== ELM_SUCCESS ) {
-        Serial.println("Speed: "+String(speed));
+        //        Serial.println("Speed: "+String(speed));
         displayDigit(speed);
       }
     }
@@ -203,7 +203,7 @@ void elmLoop() {
     {
       status=elm.engineRPM(rpm);
       if ( status== ELM_SUCCESS ) {
-        Serial.println("RPM: "+String(rpm));
+        //        Serial.println("RPM: "+String(rpm));
         displayDigit(rpm/100*10);
       }
     }
@@ -213,7 +213,7 @@ void elmLoop() {
       status=elm.getVoltage(voltage);
       if (  status== ELM_SUCCESS ) {
         int intvoltage=(int)(voltage*10);
-        Serial.println("Voltage: "+String(intvoltage));
+        //        Serial.println("Voltage: "+String(intvoltage));
         displayDigit(intvoltage);
       }
     }
@@ -270,17 +270,23 @@ Bounce siwtchBouncer = Bounce( SwitchPin,DebounceDelay );
 Bounce reflectBouncer = Bounce( ReflectPin,DebounceDelay ); 
 
 void switchButtonStateChanged() {
-  Serial.println("switchButtonStateChanged");
+  //  Serial.println("switchButtonStateChanged");
   if(siwtchBouncer.update() == true && siwtchBouncer.read() == HIGH) {
     funcselect++;
     funcselect=(MAX_FUNC_COUNT==funcselect)?0:funcselect;
+    digitalWrite(LEDPin, HIGH);
+    delay(32);
+    digitalWrite(LEDPin, LOW);
   }
 }
 
 void reflectButtonStateChanged() {
-  Serial.println("reflectButtonStateChanged");
+  //  Serial.println("reflectButtonStateChanged");
   if(reflectBouncer.update() == true && reflectBouncer.read() == HIGH) {
     reflect=!reflect;
+    digitalWrite(LEDPin, HIGH);
+    delay(32);
+    digitalWrite(LEDPin, LOW);
   }
 }
 #else
@@ -495,6 +501,7 @@ void btConnect() {
 #endif //USE_HC05
 }
 #endif //SKIP_BT_CONNECT
+
 
 
 
