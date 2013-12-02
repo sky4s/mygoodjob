@@ -2,6 +2,7 @@
 #define HC05_H
 #include <SerialControl.h>
 
+#ifdef USE_AT_COMMAND
 class ATCommand {
 private:
   char buf[MaxBufferSize];
@@ -50,6 +51,7 @@ public:
     return String(p1)+","+String(p2)+","+String(p3);
   }
 };
+#endif
 
 enum State {
   INITIALIZED,
@@ -71,6 +73,8 @@ static const int ResponseMaxSize = 10;
 static const int MaxWaitTimes = 30;
 static const int DelayTime = 500;
 static const int A2IBufferSize=3;
+ 
+
 class HC05Control {
 private:
   SerialControl serialControl;

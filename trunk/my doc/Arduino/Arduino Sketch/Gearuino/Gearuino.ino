@@ -1,59 +1,70 @@
-
-
 /*
  
  
  */
+//============================================================================
+// for debug setting
+//============================================================================
 //#define DEBUG
 //#define ITERACTION
 //#define BRIDGE
 //#define CANVAS_WRAPPER
 //#define SKIP_SETUP
-#define SKIP_CONNECT
 
+//don't want to handle BT connection, because BT will not appear in final version.
+#define SKIP_BT_CONNECT
+//============================================================================
 
-#define MAX_BT_TRY 10
-#define BT_BAUD_RATE 38400
+//============================================================================
+// function setting
+//============================================================================
+#define USE_SERIAL_CONTROL
+#ifndef SKIP_BT_CONNECT
+#define USE_HC05
+//#define USE_AT_COMMAND
+#endif
+#define USE_ELM
+
+static const int MaxBTTry=10;
+static const int BTBaudRate=38400;
+
 #define MASTER_BT_ADDR "2013,9,260146"
 #define ELM327_BT_ADDR "2013,9,110911"
 //#define ELM327_BT_ADDR "19,5D,253224"
+//============================================================================
 
-#define USE_ELM
-#define USE_HC05
-#define USE_SERIAL_CONTROL
-
+//============================================================================
+// pin define
+//============================================================================
+static const int HC05KeyPin=2;
+static const int SwitchPin=3;
+static const int ReflectPin=4;
+static const int LEDPin =14;
+static const int  OBD2RXPin = 8;
+static const int OBD2TXPin = 9;
+//============================================================================
 #include <Arduino.h>
-//#include "LedControl.h"
 #include <GearLedControl.h>
 #include <SoftwareSerial.h>
 
-#ifdef USE_OBDSIM
-
-#define OBD2_RX_PIN 6
-#define OBD2_TX_PIN 7
-SoftwareSerial softserial(OBD2_RX_PIN,OBD2_TX_PIN); // RX, TX
-
-#else
-
-#define OBD2_RX_PIN 8
-#define OBD2_TX_PIN 9
-SoftwareSerial softserial(OBD2_RX_PIN, OBD2_TX_PIN); // RX, TX
-
-#endif
+SoftwareSerial softserial(OBD2RXPin, OBD2TXPin); // RX, TX
 
 #ifdef USE_SERIAL_CONTROL
 #include <SerialControl.h>
 InputBuffer serialBuffer;
 #endif
 
-
-
 #ifdef USE_HC05
 #include "HC05.h"
 HC05Control hc05(softserial);
-//ATCommand at;
+#ifdef USE_AT_COMMAND
+ATCommand at;
+#endif
 #endif
 
+//============================================================================
+// ELM327 API
+//============================================================================
 #ifdef USE_ELM
 
 #include <GearELM327.h>
@@ -66,6 +77,7 @@ ELM327 elm(softserial);
 COBD obd(softserial);
 
 #endif
+//============================================================================
 
 /*
  Now we need a LedControl to work with.
@@ -76,44 +88,22 @@ COBD obd(softserial);
  We have only a single MAX72XX.
  */
 LedControl lc=LedControl(12,11,10,1);
-void initLedControl() {
-  /*
-   The MAX72XX is in power-sav  ing mode on startup,
-   we have to do a wakeup call
-   */
-  lc.shutdown(0,false);
-  /* Set the brightness to a medium values */
-  lc.setIntensity(0,15);
-  /* and clear the display */
-  lc.clearDisplay(0);
-  lc.setScanLimit(0,2);
-}
-
-
 boolean autoconnect=true;
-void displayDigit(int value);
-#define HC05_KEY_PIN 2
-#define SWITCH_PIN 3
-#define REFLECT_PIN 4
-//const int buttonPin = 3;    // the number of the pushbutton pin
-const int ledPin = 13;      // the number of the LED pin
-//int ledState = HIGH;         // the current state of the output pin
 boolean reflect=true;
+
+void displayDigit(int value);
+void initLedControl();
+void btConnect();
+
 void setup()  
 {
-  pinMode(HC05_KEY_PIN, OUTPUT);
-  digitalWrite(HC05_KEY_PIN, HIGH);
+  pinMode(HC05KeyPin, OUTPUT);
+  digitalWrite(HC05KeyPin, HIGH);
   Serial.begin(9600);
   Serial.println("setup()");
-  softserial.begin(BT_BAUD_RATE);
+  softserial.begin(BTBaudRate);
   initLedControl();
   displayDigit(168);
-
-  // Open serial communications and wait for port to open:
-  //  while (!Serial) {
-  //    ; // wait for serial port to connect. Needed for Leonardo only
-  //  }
-
 
 #ifdef SKIP_SETUP
   if(true) {
@@ -121,92 +111,32 @@ void setup()
   }
 #endif
 
+  btConnect();
 
-#ifndef SKIP_CONNECT
-#ifdef USE_ELM
-  if(ELM_SUCCESS==elm.begin()) {
-    autoconnect=false;
-    Serial.println("ELM connecting test OK."); 
-  }
-  else {
-    //    softserial.begin(38400);
-    autoconnect=true;
-    Serial.println("ELM connecting test failed."); 
-  }
-#else //USE_ELM
-  if(!obd.init()) {
-    autoconnect=true;
-    Serial.println("OBD connecting test failed."); 
-  }
-  else {
-    autoconnect=false;
-    Serial.println("OBD connecting test OK."); 
-  }
-#endif //USE_ELM
-
-#ifdef USE_HC05
-  if(autoconnect){
-    Serial.println("Begin connect..."); 
-    digitalWrite(HC05_KEY_PIN, LOW);
-    State state=hc05.getState();
-    if(true==hc05.touchMaxWaitTimes) {
-      Serial.println("TouchMaxWaitTimes"); 
-    }
-    else if(CONNECTED!=state) {
-      Serial.println("Try connect");
-      int x=0;
-      for(;x<MAX_BT_TRY&&!hc05.sendCommandAndWaitOk("AT+LINK="+String(ELM327_BT_ADDR));x++) {
-        if(16==hc05.errorcode) {
-          if(hc05.sendCommandAndWaitOk("AT+INIT")) {
-            Serial.println("SPP init.");
-          }
-          else {
-            Serial.println("SPP init failed: "+hc05.getResponses()[0]);
-          }
-        }
-      }
-
-      if(MAX_BT_TRY==x) {
-        Serial.println("Touch max bt try.");
-      }
-      else {
-        Serial.println("BT Linked");
-      }
-      digitalWrite(HC05_KEY_PIN, HIGH);
-    }
-
-  }
-#endif //USE_HC05
-#endif //SKIP_CONNECT
-
-  //  softserial.begin(9600);
 #ifdef USE_ELM
   while (elm.begin()!=ELM_SUCCESS);  
 #else //USE_ELM
   while (!obd.init());  
 #endif //USE_ELM
   Serial.println("OBD Linked");
-  displayDigit(0);
 
-  pinMode(SWITCH_PIN, INPUT);
-  pinMode(ledPin, OUTPUT);
+
+  pinMode(SwitchPin, INPUT);
+  pinMode(ReflectPin, INPUT);
+  pinMode(LEDPin, OUTPUT);
 
   // set initial LED state
-  digitalWrite(ledPin, LOW);
-  //  delay(1000);
+  digitalWrite(LEDPin, LOW);
+  displayDigit(0);
+  delay(1000);
 }
 
+#ifdef BRIDGE
 void bridge();
+#endif
 void interaction();
 void processButton(int);
-
-//boolean doLoop=true;
-int rpm;
-byte speed;
-float voltage;
-byte status;
 int funcselect=0;
-
 
 void loop() // run over and over
 {
@@ -222,7 +152,27 @@ void loop() // run over and over
 #ifdef BRIDGE
   bridge();
 #else
+  elmLoop();
 #ifdef USE_ELM
+  elmLoop();
+#else //USE_ELM
+  obdLoop();
+#endif //USE_ELM
+
+#endif //BRIDGE
+  processButton(SwitchPin);
+  //  processButton(REFLECT_PIN);
+  //  delay(100);
+}
+
+#ifdef USE_ELM
+int rpm;
+byte speed;
+float voltage;
+byte status;
+
+void elmLoop() {
+
   switch(funcselect) {
   case 0:
     {
@@ -254,8 +204,10 @@ void loop() // run over and over
     break;
   }
 
-
-#else //USE_ELM
+}
+#else
+int value;
+void obdLoop() {
   int value;
   //  if (obd.readSensor(PID_RPM, value)) {
   //    // RPM is read and stored in 'value'
@@ -270,12 +222,8 @@ void loop() // run over and over
     Serial.println("Speed: "+String(value));
     displayDigit(value);
   }
-#endif //USE_ELM
-#endif //BRIDGE
-  processButton(SWITCH_PIN);
-//  processButton(REFLECT_PIN);
-  //  delay(100);
 }
+#endif
 
 // Variables will change:
 int buttonState;             // the current reading from the input pin
@@ -288,7 +236,7 @@ long debounceDelay = 50;    // the debounce time; increase if the output flicker
 void processButton(int pin) {
   // read the state of the switch into a local variable:
   int reading = digitalRead( pin);
-  
+
 
   // check to see if you just pressed the button 
   // (i.e. the input went from LOW to HIGH),  and you've waited 
@@ -306,22 +254,22 @@ void processButton(int pin) {
 
     // if the button state has changed:
     if (reading != buttonState) {
-      Serial.println(pin);
+//      Serial.println(pin);
       buttonState = reading;
       // set the LED:
       if (reading == HIGH) {
-        digitalWrite(ledPin, HIGH);
+        digitalWrite(LEDPin, HIGH);
         delay(32);
-        digitalWrite(ledPin, LOW);
+        digitalWrite(LEDPin, LOW);
 
         switch(pin) {
-        case  SWITCH_PIN: 
+        case  SwitchPin: 
           {
             funcselect++;
             funcselect=(3==funcselect)?0:funcselect;
           }
           break;
-        case REFLECT_PIN: 
+        case ReflectPin: 
           {
             reflect=!reflect;
           }
@@ -331,8 +279,6 @@ void processButton(int pin) {
       }
     }
   }
-
-
 
   // save the reading.  Next time through the loop,
   // it'll be the lastButtonState:
@@ -365,8 +311,9 @@ void interaction() {
 }
 #endif
 
-boolean pin2=false;
+
 #ifdef BRIDGE
+boolean pin2=false;
 void bridge() {
   if (Serial.available()){
     char in = Serial.read();
@@ -405,203 +352,78 @@ void displayDigit(int value) {
 
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+void initLedControl() {
+  /*
+   The MAX72XX is in power-sav  ing mode on startup,
+   we have to do a wakeup call
+   */
+  lc.shutdown(0,false);
+  /* Set the brightness to a medium values */
+  lc.setIntensity(0,15);
+  /* and clear the display */
+  lc.clearDisplay(0);
+  lc.setScanLimit(0,2);
+}
+
+
+void btConnect() {
+#ifndef SKIP_BT_CONNECT
+#ifdef USE_ELM
+  if(ELM_SUCCESS==elm.begin()) {
+    autoconnect=false;
+    Serial.println("ELM connecting test OK."); 
+  }
+  else {
+    //    softserial.begin(38400);
+    autoconnect=true;
+    Serial.println("ELM connecting test failed."); 
+  }
+#else //USE_ELM
+  if(!obd.init()) {
+    autoconnect=true;
+    Serial.println("OBD connecting test failed."); 
+  }
+  else {
+    autoconnect=false;
+    Serial.println("OBD connecting test OK."); 
+  }
+#endif //USE_ELM
+
+#ifdef USE_HC05
+  if(autoconnect){
+    Serial.println("Begin connect..."); 
+    digitalWrite(HC05KeyPin, LOW);
+    State state=hc05.getState();
+    if(true==hc05.touchMaxWaitTimes) {
+      Serial.println("TouchMaxWaitTimes"); 
+    }
+    else if(CONNECTED!=state) {
+      Serial.println("Try connect");
+      int x=0;
+      for(;x<MaxBTTry&&!hc05.sendCommandAndWaitOk("AT+LINK="+String(ELM327_BT_ADDR));x++) {
+        if(16==hc05.errorcode) {
+          if(hc05.sendCommandAndWaitOk("AT+INIT")) {
+            Serial.println("SPP init.");
+          }
+          else {
+            Serial.println("SPP init failed: "+hc05.getResponses()[0]);
+          }
+        }
+      }
+
+      if(MaxBTTry==x) {
+        Serial.println("Touch max bt try.");
+      }
+      else {
+        Serial.println("BT Linked");
+      }
+      digitalWrite(HC05KeyPin, HIGH);
+    }
+
+  }
+#endif //USE_HC05
+#endif //SKIP_BT_CONNECT
+}
 
 
 
