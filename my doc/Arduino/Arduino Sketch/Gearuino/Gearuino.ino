@@ -271,17 +271,17 @@ Bounce reflectBouncer = Bounce( ReflectPin,DebounceDelay );
 
 void switchButtonStateChanged() {
   Serial.println("switchButtonStateChanged");
-//  if(siwtchBouncer.update() == true && siwtchBouncer.read() == HIGH) {
-//    funcselect++;
-//    funcselect=(MAX_FUNC_COUNT==funcselect)?0:funcselect;
-//  }
+  if(siwtchBouncer.update() == true && siwtchBouncer.read() == HIGH) {
+    funcselect++;
+    funcselect=(MAX_FUNC_COUNT==funcselect)?0:funcselect;
+  }
 }
 
 void reflectButtonStateChanged() {
   Serial.println("reflectButtonStateChanged");
-//  if(reflectBouncer.update() == true && reflectBouncer.read() == HIGH) {
-//    reflect=!reflect;
-//  }
+  if(reflectBouncer.update() == true && reflectBouncer.read() == HIGH) {
+    reflect=!reflect;
+  }
 }
 #else
 
