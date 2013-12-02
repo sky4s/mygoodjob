@@ -24,6 +24,7 @@
 //#define USE_AT_COMMAND
 #endif
 #define USE_ELM
+#define USE_PROCESS_BUTTON
 
 static const int MaxBTTry=10;
 static const int BTBaudRate=38400;
@@ -160,7 +161,11 @@ void loop() // run over and over
 #endif //USE_ELM
 
 #endif //BRIDGE
+
+#ifdef USE_PROCESS_BUTTON
   processButton(SwitchPin);
+#endif
+
   //  processButton(REFLECT_PIN);
   //  delay(100);
 }
@@ -254,7 +259,7 @@ void processButton(int pin) {
 
     // if the button state has changed:
     if (reading != buttonState) {
-//      Serial.println(pin);
+      //      Serial.println(pin);
       buttonState = reading;
       // set the LED:
       if (reading == HIGH) {
@@ -424,6 +429,7 @@ void btConnect() {
 #endif //USE_HC05
 #endif //SKIP_BT_CONNECT
 }
+
 
 
 
