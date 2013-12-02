@@ -241,6 +241,29 @@ void obdLoop() {
 }
 #endif
 
+static const float TireRound = 1889.353822;
+static const float GearRatio[] ={
+  15.256715,
+  9.460955,
+  6.250908,
+  4.444413,
+  3.376965,
+  2.73429
+};
+static const int MaxGear = 6;
+static float gearrpm[MaxGear];
+
+byte getGearPosition(int rpm,byte speed) {
+  for(int x=0;x<MaxGear;x++) {
+    gearrpm[x] = speed*GearRatio[x]/TireRound/60;
+  }
+  float minDelta = 
+  for(int x=0;x<MaxGear;x++) {
+    gearrpm[x] = abs( gearrpm[x] -rpm);
+  }
+}
+
+
 
 #ifndef USE_PROCESS_BUTTON
 Bounce siwtchBouncer = Bounce( SwitchPin,DebounceDelay ); 
@@ -460,6 +483,10 @@ void btConnect() {
 #endif //USE_HC05
 #endif //SKIP_BT_CONNECT
 }
+
+
+
+
 
 
 
