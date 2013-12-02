@@ -27,13 +27,13 @@
 //#define USE_PROCESS_BUTTON
 
 static const int MaxBTTry=10;
-static const int BTBaudRate=38400;
+#define HC05_BAUD_RATE 38400
 
 #define MASTER_BT_ADDR "2013,9,260146"
 #define ELM327_BT_ADDR "2013,9,110911"
 //#define ELM327_BT_ADDR "19,5D,253224"
 
-const static unsigned long DebounceDelay = 50;    // the debounce time; increase if the output flickers
+const static unsigned long DebounceDelay = 200;    // the debounce time; increase if the output flickers
 //============================================================================
 
 //============================================================================
@@ -94,7 +94,6 @@ COBD obd(softserial);
 LedControl lc=LedControl(12,11,10,1);
 boolean autoconnect=true;
 boolean reflect=true;
-//const int interruptNumber = 0;  
 
 void displayDigit(int value);
 void initLedControl();
@@ -107,7 +106,8 @@ void setup()
   digitalWrite(HC05KeyPin, HIGH);
   Serial.begin(9600);
   Serial.println("setup()");
-  softserial.begin(BTBaudRate);
+  softserial.begin(HC05_BAUD_RATE);
+  //  Serial.println(String(HC05BaudRate));
   initLedControl();
   displayDigit(168);
 
@@ -117,7 +117,9 @@ void setup()
   }
 #endif
 
+#ifndef SKIP_BT_CONNECT
   btConnect();
+#endif
 
 #ifdef USE_ELM
   while (elm.begin()!=ELM_SUCCESS);  
@@ -163,13 +165,11 @@ void loop() // run over and over
 #ifdef BRIDGE
   bridge();
 #else
-  elmLoop();
 #ifdef USE_ELM
   elmLoop();
 #else //USE_ELM
   obdLoop();
 #endif //USE_ELM
-
 #endif //BRIDGE
 
 #ifdef USE_PROCESS_BUTTON
@@ -257,10 +257,10 @@ byte getGearPosition(int rpm,byte speed) {
   for(int x=0;x<MaxGear;x++) {
     gearrpm[x] = speed*GearRatio[x]/TireRound/60;
   }
-  float minDelta = 
-  for(int x=0;x<MaxGear;x++) {
-    gearrpm[x] = abs( gearrpm[x] -rpm);
-  }
+  //  float minDelta = 
+  //  for(int x=0;x<MaxGear;x++) {
+  //    gearrpm[x] = abs( gearrpm[x] -rpm);
+  //  }
 }
 
 
@@ -270,16 +270,18 @@ Bounce siwtchBouncer = Bounce( SwitchPin,DebounceDelay );
 Bounce reflectBouncer = Bounce( ReflectPin,DebounceDelay ); 
 
 void switchButtonStateChanged() {
-  if(siwtchBouncer.update() == true && siwtchBouncer.read() == HIGH) {
-    funcselect++;
-    funcselect=(MAX_FUNC_COUNT==funcselect)?0:funcselect;
-  }
+  Serial.println("switchButtonStateChanged");
+//  if(siwtchBouncer.update() == true && siwtchBouncer.read() == HIGH) {
+//    funcselect++;
+//    funcselect=(MAX_FUNC_COUNT==funcselect)?0:funcselect;
+//  }
 }
 
 void reflectButtonStateChanged() {
-  if(reflectBouncer.update() == true && reflectBouncer.read() == HIGH) {
-    reflect=!reflect;
-  }
+  Serial.println("reflectButtonStateChanged");
+//  if(reflectBouncer.update() == true && reflectBouncer.read() == HIGH) {
+//    reflect=!reflect;
+//  }
 }
 #else
 
@@ -372,15 +374,25 @@ void interaction() {
 
 
 #ifdef BRIDGE
-boolean pin2=false;
+boolean hc05KeyPin=false;
+boolean hc05BaudRate=false;
 void bridge() {
   if (Serial.available()){
     char in = Serial.read();
     Serial.write(in);
     softserial.print(in);
     if( in=='$') {
-      pin2=!pin2;
-      digitalWrite(HC05_KEY_PIN, pin2?LOW:HIGH);
+      hc05KeyPin=!hc05KeyPin;
+      digitalWrite(HC05KeyPin, hc05KeyPin?LOW:HIGH);
+    }
+    if( in=='%') {
+      hc05BaudRate=!hc05BaudRate;
+      if(hc05BaudRate) {
+        softserial.begin(38400);
+      }
+      else {
+        softserial.begin(9600);
+      }
     }
   }
   if (softserial.available()) {
@@ -424,9 +436,9 @@ void initLedControl() {
   lc.setScanLimit(0,2);
 }
 
-
-void btConnect() {
 #ifndef SKIP_BT_CONNECT
+void btConnect() {
+
 #ifdef USE_ELM
   if(ELM_SUCCESS==elm.begin()) {
     autoconnect=false;
@@ -481,8 +493,12 @@ void btConnect() {
 
   }
 #endif //USE_HC05
-#endif //SKIP_BT_CONNECT
 }
+#endif //SKIP_BT_CONNECT
+
+
+
+
 
 
 
