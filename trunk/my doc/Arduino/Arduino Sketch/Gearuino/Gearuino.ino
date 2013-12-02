@@ -32,21 +32,24 @@ static const int BTBaudRate=38400;
 #define MASTER_BT_ADDR "2013,9,260146"
 #define ELM327_BT_ADDR "2013,9,110911"
 //#define ELM327_BT_ADDR "19,5D,253224"
+
+const static unsigned long DebounceDelay = 50;    // the debounce time; increase if the output flickers
 //============================================================================
 
 //============================================================================
 // pin define
 //============================================================================
-static const int HC05KeyPin=2;
-static const int SwitchPin=3;
-static const int ReflectPin=4;
-static const int LEDPin =14;
-static const int  OBD2RXPin = 8;
+static const int HC05KeyPin=7;
+static const int SwitchPin=2;
+static const int ReflectPin=3;
+static const int LEDPin =13;
+static const int OBD2RXPin = 8;
 static const int OBD2TXPin = 9;
 //============================================================================
 #include <Arduino.h>
 #include <GearLedControl.h>
 #include <SoftwareSerial.h>
+#include <Bounce.h>
 
 SoftwareSerial softserial(OBD2RXPin, OBD2TXPin); // RX, TX
 
@@ -91,10 +94,12 @@ COBD obd(softserial);
 LedControl lc=LedControl(12,11,10,1);
 boolean autoconnect=true;
 boolean reflect=true;
+//const int interruptNumber = 0;  
 
 void displayDigit(int value);
 void initLedControl();
 void btConnect();
+void buttonStateChanged();
 
 void setup()  
 {
@@ -125,6 +130,11 @@ void setup()
   pinMode(SwitchPin, INPUT);
   pinMode(ReflectPin, INPUT);
   pinMode(LEDPin, OUTPUT);
+#ifndef USE_PROCESS_BUTTON
+  attachInterrupt(0, switchButtonStateChanged, RISING);
+  attachInterrupt(1, reflectButtonStateChanged, RISING);
+#endif
+
 
   // set initial LED state
   digitalWrite(LEDPin, LOW);
@@ -136,7 +146,7 @@ void setup()
 void bridge();
 #endif
 void interaction();
-void processButton(int);
+//void processButton(int);
 int funcselect=0;
 
 void loop() // run over and over
@@ -163,7 +173,7 @@ void loop() // run over and over
 #endif //BRIDGE
 
 #ifdef USE_PROCESS_BUTTON
-  processButton(SwitchPin);
+  //  processButton(SwitchPin);
 #endif
 
   //  processButton(REFLECT_PIN);
@@ -230,65 +240,84 @@ void obdLoop() {
 }
 #endif
 
-// Variables will change:
-int buttonState;             // the current reading from the input pin
-int lastButtonState = LOW;   // the previous reading from the input pin
-// the following variables are long's because the time, measured in miliseconds,
-// will quickly become a bigger number than can be stored in an int.
-long lastDebounceTime = 0;  // the last time the output pin was toggled
-long debounceDelay = 50;    // the debounce time; increase if the output flickers
 
-void processButton(int pin) {
-  // read the state of the switch into a local variable:
-  int reading = digitalRead( pin);
+#ifndef USE_PROCESS_BUTTON
+Bounce siwtchBouncer = Bounce( SwitchPin,DebounceDelay ); 
+Bounce reflectBouncer = Bounce( ReflectPin,DebounceDelay ); 
 
-
-  // check to see if you just pressed the button 
-  // (i.e. the input went from LOW to HIGH),  and you've waited 
-  // long enough since the last press to ignore any noise:  
-
-  // If the switch changed, due to noise or pressing:
-  if (reading != lastButtonState) {
-    // reset the debouncing timer
-    lastDebounceTime = millis();
-  } 
-
-  if ((millis() - lastDebounceTime) > debounceDelay) {
-    // whatever the reading is at, it's been there for longer
-    // than the debounce delay, so take it as the actual current state:
-
-    // if the button state has changed:
-    if (reading != buttonState) {
-      //      Serial.println(pin);
-      buttonState = reading;
-      // set the LED:
-      if (reading == HIGH) {
-        digitalWrite(LEDPin, HIGH);
-        delay(32);
-        digitalWrite(LEDPin, LOW);
-
-        switch(pin) {
-        case  SwitchPin: 
-          {
-            funcselect++;
-            funcselect=(3==funcselect)?0:funcselect;
-          }
-          break;
-        case ReflectPin: 
-          {
-            reflect=!reflect;
-          }
-          break;
-
-        }
-      }
-    }
+void switchButtonStateChanged() {
+  if(siwtchBouncer.update() == true && siwtchBouncer.read() == HIGH) {
+    funcselect++;
+    funcselect=(3==funcselect)?0:funcselect;
   }
-
-  // save the reading.  Next time through the loop,
-  // it'll be the lastButtonState:
-  lastButtonState = reading; 
 }
+
+void reflectButtonStateChanged() {
+  if(reflectBouncer.update() == true && reflectBouncer.read() == HIGH) {
+    reflect=!reflect;
+  }
+}
+#endif
+
+/*
+// Variables will change:
+ int buttonState;             // the current reading from the input pin
+ int lastButtonState = LOW;   // the previous reading from the input pin
+ // the following variables are long's because the time, measured in miliseconds,
+ // will quickly become a bigger number than can be stored in an int.
+ unsigned long lastDebounceTime = 0;  // the last time the output pin was toggled
+ 
+ void processButton(int pin) {
+ // read the state of the switch into a local variable:
+ int reading = digitalRead( pin);
+ 
+ 
+ // check to see if you just pressed the button 
+ // (i.e. the input went from LOW to HIGH),  and you've waited 
+ // long enough since the last press to ignore any noise:  
+ 
+ // If the switch changed, due to noise or pressing:
+ if (reading != lastButtonState) {
+ // reset the debouncing timer
+ lastDebounceTime = millis();
+ } 
+ 
+ if ((millis() - lastDebounceTime) > DebounceDelay) {
+ // whatever the reading is at, it's been there for longer
+ // than the debounce delay, so take it as the actual current state:
+ 
+ // if the button state has changed:
+ if (reading != buttonState) {
+ //      Serial.println(pin);
+ buttonState = reading;
+ // set the LED:
+ if (reading == HIGH) {
+ digitalWrite(LEDPin, HIGH);
+ delay(32);
+ digitalWrite(LEDPin, LOW);
+ 
+ switch(pin) {
+ case  SwitchPin: 
+ {
+ funcselect++;
+ funcselect=(3==funcselect)?0:funcselect;
+ }
+ break;
+ case ReflectPin: 
+ {
+ reflect=!reflect;
+ }
+ break;
+ 
+ }
+ }
+ }
+ }
+ 
+ // save the reading.  Next time through the loop,
+ // it'll be the lastButtonState:
+ lastButtonState = reading; 
+ }*/
 
 
 #ifdef ITERACTION
@@ -429,6 +458,11 @@ void btConnect() {
 #endif //USE_HC05
 #endif //SKIP_BT_CONNECT
 }
+
+
+
+
+
 
 
 
