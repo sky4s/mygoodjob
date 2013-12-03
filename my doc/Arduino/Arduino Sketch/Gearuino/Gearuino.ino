@@ -134,11 +134,6 @@ void setup()
   pinMode(SwitchPin, INPUT);
   pinMode(ReflectPin, INPUT);
   pinMode(LEDPin, OUTPUT);
-  //#ifndef USE_PROCESS_BUTTON
-  //  attachInterrupt(0, switchButtonStateChanged, CHANGE);
-  //  attachInterrupt(1, reflectButtonStateChanged, CHANGE);
-  //#endif
-
 
   // set initial LED state
   digitalWrite(LEDPin, LOW);
@@ -150,7 +145,6 @@ void setup()
 void bridge();
 #endif
 void interaction();
-//void _processButton(Bounce);
 void processButton(Bounce bouncer);
 int funcselect=0;
 
@@ -185,7 +179,7 @@ int rpm;
 byte speed;
 float voltage;
 byte status;
-#define MAX_FUNC_COUNT 3
+#define MAX_FUNC_COUNT 4
 
 void elmLoop() {
 
@@ -194,7 +188,6 @@ void elmLoop() {
     {
       status=elm.vehicleSpeed(speed);
       if (  status== ELM_SUCCESS ) {
-        //        Serial.println("Speed: "+String(speed));
         displayDigit(speed);
       }
     }
@@ -203,17 +196,27 @@ void elmLoop() {
     {
       status=elm.engineRPM(rpm);
       if ( status== ELM_SUCCESS ) {
-        //        Serial.println("RPM: "+String(rpm));
         displayDigit(rpm/100*10);
       }
     }
     break;
   case 2:
     {
+      status=elm.vehicleSpeed(speed);
+      if ( status== ELM_SUCCESS ) {
+        status=elm.engineRPM(rpm);
+      }   
+      if ( status== ELM_SUCCESS ) {
+        byte gear = getGearPosition(rpm,speed);
+        displayDigit(gear);
+      }
+    } 
+    break;
+  case 3:
+    {
       status=elm.getVoltage(voltage);
       if (  status== ELM_SUCCESS ) {
         int intvoltage=(int)(voltage*10);
-        //        Serial.println("Voltage: "+String(intvoltage));
         displayDigit(intvoltage);
       }
     }
@@ -257,105 +260,38 @@ byte getGearPosition(int rpm,byte speed) {
   for(int x=0;x<MaxGear;x++) {
     gearrpm[x] = speed*GearRatio[x]/TireRound/60;
   }
-  //  float minDelta = 
-  //  for(int x=0;x<MaxGear;x++) {
-  //    gearrpm[x] = abs( gearrpm[x] -rpm);
-  //  }
+  float minDelta = 3.4028235E+38;
+  int minIndex=0;
+  byte x=0;
+  for(;x<MaxGear;x++) {
+    //    gearrpm[x] = abs( gearrpm[x] -rpm);
+    //  if( 
+    float delta = abs( gearrpm[x] -rpm);
+    if(delta<minDelta) {
+      minDelta = delta;
+      minIndex = x;
+    }
+  }
+  return x+1;
 }
 
-
-
-//#ifndef USE_PROCESS_BUTTON
-//void switchButtonStateChanged() {
-//  //  Serial.println("switchButtonStateChanged");
-//  if(switchBouncer.update() == true && switchBouncer.read() == HIGH) {
-//    funcselect++;
-//    funcselect=(MAX_FUNC_COUNT==funcselect)?0:funcselect;
-//    digitalWrite(LEDPin, HIGH);
-//    delay(32);
-//    digitalWrite(LEDPin, LOW);
-//  }
-//}
-//
-//void reflectButtonStateChanged() {
-//  //  Serial.println("reflectButtonStateChanged");
-//  if(reflectBouncer.update() == true && reflectBouncer.read() == HIGH) {
-//    reflect=!reflect;
-//    digitalWrite(LEDPin, HIGH);
-//    delay(32);
-//    digitalWrite(LEDPin, LOW);
-//  }
-//}
-//#else
-//// Variables will change:
-//int buttonState;             // the current reading from the input pin
-//int lastButtonState = LOW;   // the previous reading from the input pin
-//// the following variables are long's because the time, measured in miliseconds,
-//// will quickly become a bigger number than can be stored in an int.
-//unsigned long lastDebounceTime = 0;  // the last time the output pin was toggled
-
-//Bounce siwtchBouncer = Bounce( SwitchPin,DebounceDelay ); 
 void processButton(Bounce bouncer) {
   if(bouncer.update() == true && bouncer.read() == HIGH) {
-//    if( bouncer == switchBouncer) {
-//
-//    }
-//    else if(  bouncer == reflectBouncer) {
-//    }
+    switch(bouncer.pin) {
+    case SwitchPin:
+      funcselect++;
+      funcselect=(MAX_FUNC_COUNT==funcselect)?0:funcselect;
+      break;
+    case ReflectPin:
+      reflect=!reflect;
+      break;
+    }
+    digitalWrite(LEDPin, HIGH);
+    delay(32);
+    digitalWrite(LEDPin, LOW);
   }
-
-  // read the state of the switch into a local variable:
-  //  int reading = digitalRead( pin);
-
-
-  // check to see if you just pressed the button 
-  // (i.e. the input went from LOW to HIGH),  and you've waited 
-  // long enough since the last press to ignore any noise:  
-
-  // If the switch changed, due to noise or pressing:
-  //  if (reading != lastButtonState) {
-  //    // reset the debouncing timer
-  //    lastDebounceTime = millis();
-  //  } 
-  //
-  //  if ((millis() - lastDebounceTime) > DebounceDelay) {
-  //    // whatever the reading is at, it's been there for longer
-  //    // than the debounce delay, so take it as the actual current state:
-  //
-  //    // if the button state has changed:
-  //    if (reading != buttonState) {
-  //      //      Serial.println(pin);
-  //      buttonState = reading;
-  //      // set the LED:
-  //      if (reading == HIGH) {
-  //        digitalWrite(LEDPin, HIGH);
-  //        delay(32);
-  //        digitalWrite(LEDPin, LOW);
-  //
-  //        switch(pin) {
-  //        case  SwitchPin: 
-  //          {
-  //            funcselect++;
-  //            funcselect=(MAX_FUNC_COUNT==funcselect)?0:funcselect;
-  //          }
-  //          break;
-  //        case ReflectPin: 
-  //          {
-  //            reflect=!reflect;
-  //          }
-  //          break;
-  //
-  //        }
-  //      }
-  //    }
-  //  }
-  //
-  //  // save the reading.  Next time through the loop,
-  //  // it'll be the lastButtonState:
-  //  lastButtonState = reading; 
 }
 
-//#endif
 
 
 #ifdef ITERACTION
@@ -509,6 +445,15 @@ void btConnect() {
 #endif //USE_HC05
 }
 #endif //SKIP_BT_CONNECT
+
+
+
+
+
+
+
+
+
 
 
 
