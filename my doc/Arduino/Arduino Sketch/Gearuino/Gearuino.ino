@@ -178,7 +178,9 @@ int rpm;
 byte speed;
 float voltage;
 byte status;
-#define MAX_FUNC_COUNT 3
+byte kpl1;
+int kpl2;
+#define MAX_FUNC_COUNT 5
 
 void elmLoop() {
 
@@ -211,6 +213,22 @@ void elmLoop() {
         displayDigit(gear);
       }
     } 
+    break;
+  case 3:
+    {
+      status=elm.killmetersPerLitre(kpl1);
+      if (  status== ELM_SUCCESS ) {
+        displayDigit(kpl1);
+      }
+    }
+    break;
+  case 4:
+    {
+      status=elm.killmetersPerLitre(kpl2);
+      if (  status== ELM_SUCCESS ) {
+        displayDigit(kpl2);
+      }
+    }
     break;
     /*case 3:
      {
@@ -486,6 +504,11 @@ void btConnect() {
 #endif //USE_HC05
 }
 #endif //SKIP_BT_CONNECT
+
+
+
+
+
 
 
 
