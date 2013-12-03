@@ -170,7 +170,7 @@ void loop() // run over and over
 
   processButton(switchBouncer);
   processButton(reflectBouncer);
-
+//  delay(1000);
 }
 
 #ifdef USE_ELM
@@ -180,7 +180,7 @@ float voltage;
 byte status;
 byte kpl1;
 int kpl2;
-#define MAX_FUNC_COUNT 5
+#define MAX_FUNC_COUNT 3
 
 void elmLoop() {
 
@@ -188,6 +188,7 @@ void elmLoop() {
   case 0:
     {
       status=elm.vehicleSpeed(speed);
+      Serial.println("Speed: "+String(speed));
       if (  status== ELM_SUCCESS ) {
         displayDigit(speed);
       }
@@ -196,6 +197,7 @@ void elmLoop() {
   case 1:
     {
       status=elm.engineRPM(rpm);
+      Serial.println("RPM: "+String(rpm));
       if ( status== ELM_SUCCESS ) {
         //displayDigit(rpm/100*10);
         displayRPM(rpm);
@@ -208,28 +210,30 @@ void elmLoop() {
       if ( status== ELM_SUCCESS ) {
         status=elm.engineRPM(rpm);
       }   
+//      printStatus(status);
       if ( status== ELM_SUCCESS ) {
         byte gear = getGearPosition(rpm,speed);
+        Serial.println("Gear: "+String(gear));
         displayDigit(gear);
       }
     } 
     break;
-  case 3:
-    {
-      status=elm.killmetersPerLitre(kpl1);
-      if (  status== ELM_SUCCESS ) {
-        displayDigit(kpl1);
-      }
-    }
-    break;
-  case 4:
-    {
-      status=elm.killmetersPerLitre(kpl2);
-      if (  status== ELM_SUCCESS ) {
-        displayDigit(kpl2);
-      }
-    }
-    break;
+//  case 3:
+//    {
+//      status=elm.killmetersPerLitre(kpl1);
+//      if (  status== ELM_SUCCESS ) {
+//        displayDigit(kpl1);
+//      }
+//    }
+//    break;
+//  case 4:
+//    {
+//      status=elm.killmetersPerLitre(kpl2);
+//      if (  status== ELM_SUCCESS ) {
+//        displayDigit(kpl2);
+//      }
+//    }
+//    break;
     /*case 3:
      {
      status=elm.getVoltage(voltage);
@@ -370,19 +374,20 @@ void bridge() {
 void displayRPM(int rpm) {
   int digit = rpm/1000;
   int circle = (rpm-digit*1000)/111; //one piece is 111 rpm
+//  Serial.println(String(circle));
   if( 9==circle) {
     circle=0;
     digit++; 
   }
   if(digit>0) {
-    lc.setDigit(0,2,digit,false,reflect,!reflect);
+    lc.setDigit(0,2,digit,false,true,!reflect);
   }
   else {
     lc.setChar(0,2,' ',false);
   }
   byte v0=0;
   byte v1=0;
-  //pABCGEFD
+  //pABCDEFG
   if( circle>=1) {
     v1=v1|B00000100;
   }
@@ -402,24 +407,24 @@ void displayRPM(int rpm) {
     v0=v0|B00010000;
   }
   if( circle>=7) {
-    v0=v0|B00000001;
+    v0=v0|B00001000;
   }
   if( circle>=8) {
-    v1=v1|B00000001;
+    v1=v1|B00001000;
   }
-  lc.setSegment(0,0,v0,reflect,!reflect);
-  lc.setSegment(0,1,v1,reflect,!reflect);
+  lc.setSegment(0,0,v0,true,!reflect);
+  lc.setSegment(0,1,v1,true,!reflect);
 }
 
 void displayDigit(int value) {
   int digit0=value%10;
   int digit1=(value/10)%10;
   int digit2=(value/100)%10;
-  lc.setDigit(0,0,digit0,false,reflect,!reflect);
+  lc.setDigit(0,0,digit0,false,true,!reflect);
   if(value>=10) {
-    lc.setDigit(0,1,digit1,false,reflect,!reflect);
+    lc.setDigit(0,1,digit1,false,true,!reflect);
     if( value>=100) {
-      lc.setDigit(0,2,digit2,false,reflect,!reflect);
+      lc.setDigit(0,2,digit2,false,true,!reflect);
     }
     else {
       lc.setChar(0,2,' ',false);
@@ -504,6 +509,8 @@ void btConnect() {
 #endif //USE_HC05
 }
 #endif //SKIP_BT_CONNECT
+
+
 
 
 

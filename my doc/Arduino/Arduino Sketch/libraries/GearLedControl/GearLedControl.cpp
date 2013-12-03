@@ -158,7 +158,7 @@ void LedControl::setDigit(int addr, int digit, byte value, boolean dp) {
 }
 
 void LedControl::reflect(byte &v){
-	//pABCGEFD
+	//pABCDEFG
       byte B=v&B00100000; 
       byte F=v&B00000010;
       byte C=v&B00010000; 
@@ -171,19 +171,21 @@ void LedControl::reflect(byte &v){
 }
 void LedControl::upsidedown(byte &v){
     	byte A=v&B01000000; 
-    	byte D=v&B00000001;
+    	byte D=v&B00001000;
     	byte F=v&B00000010;
     	byte E=v&B00000100;
     	byte B=v&B00100000; 
     	byte C=v&B00010000; 
-    	v=v&B10001000;
-    	v=v|(A>>6);
-    	v=v|(D<<6);
+    	v=v&B10000001;
+    	v=v|(A>>3);
+    	v=v|(D<<3);
     	v=v|(F<<1);
     	v=v|(E>>1);
     	v=v|(B>>1);
     	v=v|(C<<1);
-}
+      //v=B00001000;
+       //pABCDEFG
+}            
 
 void LedControl::setDigit(int addr, int digit, byte value, boolean dp, boolean _reflect,boolean _upsidedown) {
     int offset;
@@ -213,11 +215,10 @@ void LedControl::setSegment(int addr, int digit, byte value, boolean _reflect,bo
 
     if(addr<0 || addr>=maxDevices)
 	return;
-    if(digit<0 || digit>7 || value>15)
+    if(digit<0 || digit>7 )
 	return;
     offset=addr*8;
     if(_reflect) {
-      //pABCGEFD
       reflect(value);                    
     }
     if(_upsidedown) {
