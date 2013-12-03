@@ -136,24 +136,24 @@ byte ELM327::vehicleSpeed(byte &speed){
 }
 
 byte ELM327::killmetersPerLitre(byte &kpl){
-  /*byte status;
+  byte status;
   byte values[1];
-  status=getBytes("01","41","0D",values,1);
+  status=getBytes_("01","41","ff1203",values,1);
   if (status != ELM_SUCCESS){
     return status;
   }
-  speed=values[0];*/
+  kpl=values[0];
   return ELM_SUCCESS;
 }
 
 byte ELM327::killmetersPerLitre(int &kpl){
-  /*byte status;
+  byte status;
   byte values[2];
-  status=getBytes("01","41","0C",values,2);
+  status=getBytes_("01","41","ff1203",values,2);
   if (status != ELM_SUCCESS){
     return status;
   }
-  rpm=((values[0]*256)+values[1])/4;*/
+  kpl=((values[0]*256)+values[1])/4;
   return ELM_SUCCESS;
 }
 
