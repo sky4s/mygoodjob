@@ -24,7 +24,6 @@
 //#define USE_AT_COMMAND
 #endif
 #define USE_ELM
-//#define USE_PROCESS_BUTTON
 
 static const int MaxBTTry=10;
 #define HC05_BAUD_RATE 38400
@@ -145,7 +144,7 @@ void setup()
 void bridge();
 #endif
 void interaction();
-void processButton(Bounce bouncer);
+void processButton(Bounce &bouncer);
 int funcselect=0;
 
 void loop() // run over and over
@@ -275,7 +274,7 @@ byte getGearPosition(int rpm,byte speed) {
   return x+1;
 }
 
-void processButton(Bounce bouncer) {
+void processButton(Bounce &bouncer) {
   if(bouncer.update() == true && bouncer.read() == HIGH) {
     switch(bouncer.pin) {
     case SwitchPin:

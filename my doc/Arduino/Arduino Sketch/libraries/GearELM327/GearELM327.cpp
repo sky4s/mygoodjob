@@ -135,6 +135,28 @@ byte ELM327::vehicleSpeed(byte &speed){
   return ELM_SUCCESS;
 }
 
+byte ELM327::killmetersPerLitre(byte &kpl){
+  /*byte status;
+  byte values[1];
+  status=getBytes("01","41","0D",values,1);
+  if (status != ELM_SUCCESS){
+    return status;
+  }
+  speed=values[0];*/
+  return ELM_SUCCESS;
+}
+
+byte ELM327::killmetersPerLitre(int &kpl){
+  /*byte status;
+  byte values[2];
+  status=getBytes("01","41","0C",values,2);
+  if (status != ELM_SUCCESS){
+    return status;
+  }
+  rpm=((values[0]*256)+values[1])/4;*/
+  return ELM_SUCCESS;
+}
+
 #ifndef ELM_GEAR_ONLY
 byte ELM327::timingAdvance(int &advance){
   byte status;
@@ -621,9 +643,9 @@ byte ELM327::getBytes( const char *mode, const char *chkMode, const char *pid, b
 	  or data[1]!=chkMode[1]
 	  or data[3]!=pid[0]
 	  or data[4]!=pid[1] ){
-    p("%s\n",data);
-    p("A:%c(%d) %c(%d) %c(%d) %c(%d)\n", data[0],data[0],data[1],data[1],data[3],data[3],data[4],data[4]);
-    p("B:%c(%d) %c(%d) %c(%d) %c(%d)\n", chkMode[0],chkMode[0],chkMode[1],chkMode[1],pid[0],pid[0],pid[1],pid[1]);    
+    //p("%s\n",data);
+    //p("A:%c(%d) %c(%d) %c(%d) %c(%d)\n", data[0],data[0],data[1],data[1],data[3],data[3],data[4],data[4]);
+    //p("B:%c(%d) %c(%d) %c(%d) %c(%d)\n", chkMode[0],chkMode[0],chkMode[1],chkMode[1],pid[0],pid[0],pid[1],pid[1]);    
 		return ELM_GARBAGE;
 	}
 	
@@ -637,7 +659,61 @@ byte ELM327::getBytes( const char *mode, const char *chkMode, const char *pid, b
 	return ELM_SUCCESS;
 }
 
-#define CR 13
+byte ELM327::getBytes_( const char *mode, const char *chkMode, const char *pid, byte *values, unsigned int numValues){
+	char data[64];
+	byte status;
+	char hexVal[]="0x00";
+	
+	size_t pidlength=strlen(pid);
+	
+	//char cmd[6];
+	char cmd[4+pidlength];
+	cmd[0]=mode[0];
+	cmd[1]=mode[1];
+	cmd[2]=' ';
+	//cmd[3]=pid[0];
+	//cmd[4]=pid[1];
+	//cmd[5]='\0';
+	
+	for(int x=0;x<pidlength;x++) {
+		cmd[3+x]=pid[x];
+	}
+	cmd[3+pidlength]='\0';
+
+	status=runCommand(cmd,data,64);
+  //p("cmd/data: %s/ %s\n",cmd,data);
+  
+	if ( status != ELM_SUCCESS )
+	{
+		return status;
+	};
+	
+	boolean pidok=true;
+	for(int x=0;x<pidlength;x++) {
+		pidok = pidok && (data[3+x] == pid[x]);
+	}
+	
+	// Check the mode returned was the one we sent
+	if ( data[0]!=chkMode[0] 
+	  or data[1]!=chkMode[1]
+	  or !pidok ){
+    //p("%s\n",data);
+    //p("A:%c(%d) %c(%d) %c(%d) %c(%d)\n", data[0],data[0],data[1],data[1],data[3],data[3],data[4],data[4]);
+    //p("B:%c(%d) %c(%d) %c(%d) %c(%d)\n", chkMode[0],chkMode[0],chkMode[1],chkMode[1],pid[0],pid[0],pid[1],pid[1]);    
+		return ELM_GARBAGE;
+	}
+	
+	// For each byte expected, package it up
+	int i=0;
+	for (int i=0; i<numValues; i++){
+		hexVal[2]=data[6+(3*i)];
+		hexVal[3]=data[7+(3*i)];
+		values[i]=strtol(hexVal,NULL,16);
+	}
+	return ELM_SUCCESS;
+}
+
+
 
 byte ELM327::runCommand(const char *cmd, char *data, unsigned int dataLength)
 {	
@@ -751,6 +827,7 @@ byte ELM327::getIgnMon(bool &powered){
   }
   return status;
 }
+#endif
 
 byte ELM327::getVoltage(float &voltage){
   char data[20];
@@ -762,7 +839,7 @@ byte ELM327::getVoltage(float &voltage){
   }
   return status;
 }
-#endif
+ 
 
 
 void ELM327::flush(){
