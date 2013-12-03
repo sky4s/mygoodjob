@@ -56,12 +56,13 @@ public:
 	bool risingEdge();
   // The fallingEdge  method it true for one scan after the de-bounced input goes from on-to-off. 
 	bool fallingEdge();
+	const uint8_t pin;
   
 protected:
   int debounce();
   unsigned long  previous_millis, interval_millis, rebounce_millis;
   uint8_t state;
-  uint8_t pin;
+  
   uint8_t stateChanged;
 };
 
