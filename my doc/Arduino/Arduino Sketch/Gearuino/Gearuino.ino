@@ -178,7 +178,7 @@ int rpm;
 byte speed;
 float voltage;
 byte status;
-#define MAX_FUNC_COUNT 4
+#define MAX_FUNC_COUNT 3
 
 void elmLoop() {
 
@@ -212,15 +212,15 @@ void elmLoop() {
       }
     } 
     break;
-  case 3:
-    {
-      status=elm.getVoltage(voltage);
-      if (  status== ELM_SUCCESS ) {
-        int intvoltage=(int)(voltage*10);
-        displayDigit(intvoltage);
-      }
-    }
-    break;
+    /*case 3:
+     {
+     status=elm.getVoltage(voltage);
+     if (  status== ELM_SUCCESS ) {
+     int intvoltage=(int)(voltage*10);
+     displayDigit(intvoltage);
+     }
+     }
+     break;*/
   }
 
 }
@@ -486,6 +486,7 @@ void btConnect() {
 #endif //USE_HC05
 }
 #endif //SKIP_BT_CONNECT
+
 
 
 
