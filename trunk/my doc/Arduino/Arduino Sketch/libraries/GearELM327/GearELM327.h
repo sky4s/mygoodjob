@@ -240,6 +240,8 @@ public:
    * 		 *  status.
    		 */
   byte getIgnMon(bool &powered);
+  
+  #endif
 
 
   /** 
@@ -255,7 +257,7 @@ public:
    		 */
   byte getVoltage(float &voltage);
 
-
+#ifndef ELM_GEAR_ONLY
   /**
    * 		 * Gets the Calculated Engine Load.  Reads PID 04 from the OBD interface and sets 
    * 		 * load to the the value returned after conversion.
@@ -364,6 +366,9 @@ public:
    * 		 * - Units: km/h
    		 */
   byte vehicleSpeed(byte &speed);
+  
+	byte killmetersPerLitre(byte &kpl);
+	byte killmetersPerLitre(int &kpl);
 
 #ifndef ELM_GEAR_ONLY
 
@@ -469,6 +474,7 @@ private:
   byte o2WRCurrent(const char *sensor, unsigned int &equivRatio, int &current);
   byte catTemperature(const char *sensor, int &temperature);
   byte getBytes( const char *mode, const char *chkMode, const char *pid, byte *values, unsigned int numValues);
+  byte getBytes_( const char *mode, const char *chkMode, const char *pid, byte *values, unsigned int numValues);
   byte runCommand(const char *cmd, char *data, unsigned int dataLength);
   bool getBit(byte b, byte p);
   byte getFuelTrim(const char *pid, int &percent);
