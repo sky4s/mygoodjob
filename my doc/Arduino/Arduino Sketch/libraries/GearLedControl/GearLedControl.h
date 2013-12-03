@@ -75,6 +75,9 @@ class LedControl {
     /* The maximum number of devices we use */
     int maxDevices;
     
+    void reflect(byte &v);
+    void upsidedown(byte &v);
+    
  public:
     /* 
      * Create a new controler 
@@ -167,7 +170,8 @@ class LedControl {
      * dp	sets the decimal point.
      */
     void setDigit(int addr, int digit, byte value, boolean dp);
-    void setDigit(int addr, int digit, byte value, boolean dp, boolean reflect);
+    void setDigit(int addr, int digit, byte value, boolean dp, boolean reflect,boolean upsidedown);
+    void setSegment(int addr, int digit, byte value, boolean reflect,boolean upsidedown);
 
     /* 
      * Display a character on a 7-Segment display.
