@@ -9,7 +9,9 @@
 //#define ITERACTION
 //#define BRIDGE
 //#define CANVAS_WRAPPER
-//#define SKIP_SETUP
+#ifdef BRIDGE
+#define SKIP_SETUP
+#endif
 
 //don't want to handle BT connection, because BT will not appear in final version.
 #define SKIP_BT_CONNECT
