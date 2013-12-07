@@ -5,7 +5,7 @@
 //============================================================================
 // for debug setting
 //============================================================================
-//#define DEBUG
+#define DEBUG
 //#define ITERACTION
 //#define BRIDGE
 //#define CANVAS_WRAPPER
@@ -172,7 +172,7 @@ void loop() // run over and over
 
   processButton(switchBouncer);
   processButton(reflectBouncer);
-//  delay(1000);
+  //  delay(1000);
 }
 
 #ifdef USE_ELM
@@ -210,32 +210,36 @@ void elmLoop() {
     {
       status=elm.vehicleSpeed(speed);
       if ( status== ELM_SUCCESS ) {
+//        delay(1);
         status=elm.engineRPM(rpm);
       }   
-//      printStatus(status);
+
       if ( status== ELM_SUCCESS ) {
         byte gear = getGearPosition(rpm,speed);
         Serial.println("Gear: "+String(gear));
         displayDigit(gear);
       }
+      else {
+        printStatus(status);
+      }
     } 
     break;
-//  case 3:
-//    {
-//      status=elm.killmetersPerLitre(kpl1);
-//      if (  status== ELM_SUCCESS ) {
-//        displayDigit(kpl1);
-//      }
-//    }
-//    break;
-//  case 4:
-//    {
-//      status=elm.killmetersPerLitre(kpl2);
-//      if (  status== ELM_SUCCESS ) {
-//        displayDigit(kpl2);
-//      }
-//    }
-//    break;
+    //  case 3:
+    //    {
+    //      status=elm.killmetersPerLitre(kpl1);
+    //      if (  status== ELM_SUCCESS ) {
+    //        displayDigit(kpl1);
+    //      }
+    //    }
+    //    break;
+    //  case 4:
+    //    {
+    //      status=elm.killmetersPerLitre(kpl2);
+    //      if (  status== ELM_SUCCESS ) {
+    //        displayDigit(kpl2);
+    //      }
+    //    }
+    //    break;
     /*case 3:
      {
      status=elm.getVoltage(voltage);
@@ -268,7 +272,7 @@ void obdLoop() {
 }
 #endif
 
-static const float TireRound = 1889.353822;
+static const float TireRound = 1.8893538219;
 static const float GearRatio[] ={
   15.256715,
   9.460955,
@@ -282,10 +286,11 @@ static float gearrpm[MaxGear];
 
 byte getGearPosition(int rpm,byte speed) {
   for(int x=0;x<MaxGear;x++) {
-    gearrpm[x] = speed*GearRatio[x]/TireRound/60;
+    gearrpm[x] = speed*GearRatio[x]/TireRound*1000/60;
+//    Serial.println(  gearrpm[x]);
   }
   float minDelta = 3.4028235E+38;
-  int minIndex=0;
+  byte minIndex=0;
   byte x=0;
   for(;x<MaxGear;x++) {
     float delta = abs( gearrpm[x] -rpm);
@@ -294,7 +299,8 @@ byte getGearPosition(int rpm,byte speed) {
       minIndex = x;
     }
   }
-  return x+1;
+//  Serial.println(String(rpm)+" "+String(speed));
+  return minIndex+1;
 }
 
 void processButton(Bounce &bouncer) {
@@ -376,7 +382,7 @@ void bridge() {
 void displayRPM(int rpm) {
   int digit = rpm/1000;
   int circle = (rpm-digit*1000)/111; //one piece is 111 rpm
-//  Serial.println(String(circle));
+  //  Serial.println(String(circle));
   if( 9==circle) {
     circle=0;
     digit++; 
@@ -511,6 +517,8 @@ void btConnect() {
 #endif //USE_HC05
 }
 #endif //SKIP_BT_CONNECT
+
+
 
 
 
