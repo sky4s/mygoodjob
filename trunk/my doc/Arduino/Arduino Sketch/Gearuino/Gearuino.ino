@@ -5,7 +5,7 @@
 //============================================================================
 // for debug setting
 //============================================================================
-#define DEBUG
+//#define DEBUG
 //#define ITERACTION
 //#define BRIDGE
 //#define CANVAS_WRAPPER
@@ -210,17 +210,19 @@ void elmLoop() {
     {
       status=elm.vehicleSpeed(speed);
       if ( status== ELM_SUCCESS ) {
-//        delay(1);
+        //        delay(1);
         status=elm.engineRPM(rpm);
       }   
 
       if ( status== ELM_SUCCESS ) {
         byte gear = getGearPosition(rpm,speed);
         Serial.println("Gear: "+String(gear));
-        displayDigit(gear);
+        displayGear(gear);
       }
       else {
+#ifdef DEBUG
         printStatus(status);
+#endif
       }
     } 
     break;
@@ -287,7 +289,7 @@ static float gearrpm[MaxGear];
 byte getGearPosition(int rpm,byte speed) {
   for(int x=0;x<MaxGear;x++) {
     gearrpm[x] = speed*GearRatio[x]/TireRound*1000/60;
-//    Serial.println(  gearrpm[x]);
+    //    Serial.println(  gearrpm[x]);
   }
   float minDelta = 3.4028235E+38;
   byte minIndex=0;
@@ -299,7 +301,7 @@ byte getGearPosition(int rpm,byte speed) {
       minIndex = x;
     }
   }
-//  Serial.println(String(rpm)+" "+String(speed));
+  //  Serial.println(String(rpm)+" "+String(speed));
   return minIndex+1;
 }
 
@@ -378,6 +380,10 @@ void bridge() {
   }
 }
 #endif
+
+void displayGear(byte gear) {
+  lc.setDigit(0,2,gear,false,true,!reflect);
+}
 
 void displayRPM(int rpm) {
   int digit = rpm/1000;
@@ -517,6 +523,8 @@ void btConnect() {
 #endif //USE_HC05
 }
 #endif //SKIP_BT_CONNECT
+
+
 
 
 
