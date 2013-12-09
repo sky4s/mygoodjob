@@ -40,13 +40,45 @@ const static unsigned long DebounceDelay = 200;    // the debounce time; increas
 //============================================================================
 // pin define
 //============================================================================
-static const int HC05KeyPin=7;
-static const int SwitchPin=2;
-static const int ReflectPin=3;
-static const int LEDPin =13;
+static const int HC05KeyPin = 7;
+static const int SwitchPin = 2;
+static const int ReflectPin = 3;
+static const int LEDPin = 13;
 static const int OBD2RXPin = 8;
 static const int OBD2TXPin = 9;
 //============================================================================
+
+//============================================================================
+// Car define
+//============================================================================
+#define LANCER_FORTIS
+#ifdef LANCER_FORTIS
+static const float TireRound = 2.049575047;
+static const float GearRatio[] ={
+  10.71,
+  14.37588,
+  8.54964,
+  6.57288,
+  5.09184,
+  3.86172,
+  3.17016,
+};
+static const int MaxGear = 7;
+#else
+static const float TireRound = 1.8893538219;
+static const float GearRatio[] ={
+  15.265971,
+  15.256715,
+  9.460955,
+  6.250908,
+  4.444413,
+  3.376965,
+  2.73429
+};
+static const int MaxGear = 7;
+#endif
+//============================================================================
+
 #include <Arduino.h>
 #include <GearLedControl.h>
 #include <SoftwareSerial.h>
@@ -95,7 +127,7 @@ COBD obd(softserial);
  We have only a single MAX72XX.
  */
 LedControl lc=LedControl(12,11,10,1);
-boolean autoconnect=true;
+boolean btAutoconnect=true;
 boolean reflect=true;
 
 void displayDigit(int value);
@@ -226,31 +258,7 @@ void elmLoop() {
       }
     } 
     break;
-    //  case 3:
-    //    {
-    //      status=elm.killmetersPerLitre(kpl1);
-    //      if (  status== ELM_SUCCESS ) {
-    //        displayDigit(kpl1);
-    //      }
-    //    }
-    //    break;
-    //  case 4:
-    //    {
-    //      status=elm.killmetersPerLitre(kpl2);
-    //      if (  status== ELM_SUCCESS ) {
-    //        displayDigit(kpl2);
-    //      }
-    //    }
-    //    break;
-    /*case 3:
-     {
-     status=elm.getVoltage(voltage);
-     if (  status== ELM_SUCCESS ) {
-     int intvoltage=(int)(voltage*10);
-     displayDigit(intvoltage);
-     }
-     }
-     break;*/
+
   }
 
 }
@@ -274,27 +282,15 @@ void obdLoop() {
 }
 #endif
 
-static const float TireRound = 1.8893538219;
-static const float GearRatio[] ={
-  15.256715,
-  9.460955,
-  6.250908,
-  4.444413,
-  3.376965,
-  2.73429
-};
-static const int MaxGear = 6;
-static float gearrpm[MaxGear];
 
+static float gearrpm[MaxGear];
 byte getGearPosition(int rpm,byte speed) {
   for(int x=0;x<MaxGear;x++) {
     gearrpm[x] = speed*GearRatio[x]/TireRound*1000/60;
-    //    Serial.println(  gearrpm[x]);
   }
   float minDelta = 3.4028235E+38;
   byte minIndex=0;
-  byte x=0;
-  for(;x<MaxGear;x++) {
+  for(byte x=1;x<MaxGear;x++) {
     float delta = abs( gearrpm[x] -rpm);
     if(delta<minDelta) {
       minDelta = delta;
@@ -302,7 +298,7 @@ byte getGearPosition(int rpm,byte speed) {
     }
   }
   //  Serial.println(String(rpm)+" "+String(speed));
-  return minIndex+1;
+  return minIndex;
 }
 
 void processButton(Bounce &bouncer) {
@@ -469,27 +465,27 @@ void btConnect() {
 
 #ifdef USE_ELM
   if(ELM_SUCCESS==elm.begin()) {
-    autoconnect=false;
+    btAutoconnect=false;
     Serial.println("ELM connecting test OK."); 
   }
   else {
     //    softserial.begin(38400);
-    autoconnect=true;
+    btAutoconnect=true;
     Serial.println("ELM connecting test failed."); 
   }
 #else //USE_ELM
   if(!obd.init()) {
-    autoconnect=true;
+    btAutoconnect=true;
     Serial.println("OBD connecting test failed."); 
   }
   else {
-    autoconnect=false;
+    btAutoconnect=false;
     Serial.println("OBD connecting test OK."); 
   }
 #endif //USE_ELM
 
 #ifdef USE_HC05
-  if(autoconnect){
+  if(btAutoconnect){
     Serial.println("Begin connect..."); 
     digitalWrite(HC05KeyPin, LOW);
     State state=hc05.getState();
@@ -523,6 +519,7 @@ void btConnect() {
 #endif //USE_HC05
 }
 #endif //SKIP_BT_CONNECT
+
 
 
 

@@ -2,17 +2,21 @@
 #define HC05_H
 #include <SerialControl.h>
 
-#ifdef USE_AT_COMMAND
+//#ifdef USE_AT_COMMAND
 class ATCommand {
 private:
   char buf[MaxBufferSize];
   void init(String cmd) {
     cmd.toCharArray(buf,MaxBufferSize);
-    command = strtok(buf,":+");
+    command = String(strtok(buf,":+"));
     char* p=NULL;
-    for(int x=0;x<3&&NULL!=p;x++) {
+    for(int x=0;x<3;x++) {
       p=strtok(NULL,",");
-      //      Serial.println(p);
+
+      //#ifdef DEBUG
+      //      Serial.println(String(x)+" "+String(p));
+      //#endif
+
       switch(x) {
       case 0:
         param1=p;
@@ -24,15 +28,21 @@ private:
         param3=p;
         break;
       }
+      if(NULL==p) {
+        break;
+      }
     }
 
   }
 public:
-  char* command;
-  char* param1;
-  char* param2;
-  char* param3;
+  String command;
+  String param1;
+  String param2;
+  String param3;
   ATCommand(String cmd) {
+    param1=NULL;
+    param2=NULL;
+    param3=NULL;
     init(cmd);
   }
   ATCommand() {
@@ -41,7 +51,11 @@ public:
     init(cmd);
   }
   String toString() {
-    return String(command)+","+String(param1) +( (param2!=NULL)?","+String(param2):"")+ ((param3!=NULL)?","+String(param3):""); 
+    return command
+      +((NULL==param1?"":","+param1)
+      +(NULL==param2?"":","+param2
+      +(NULL==param3?"":","+param3 ) )  );
+
   }
 
   String addressToParam(char* address) {
@@ -51,7 +65,45 @@ public:
     return String(p1)+","+String(p2)+","+String(p3);
   }
 };
-#endif
+//#endif
+
+enum RSSIDesc {
+  Poor,Weak,Good
+};
+
+class RSSI {
+private:
+  int rssi;
+public:
+  RSSI(String _rssi){
+    char buf[5];
+    _rssi.toCharArray(buf,5);
+    int rssi=strtol(buf,NULL,16);
+  }
+  RSSIDesc getRSSIDesc() {
+    if(rssi<-95) {
+      return Poor;
+    }
+    else if(-95<=rssi && rssi <-90) {
+      return Weak;
+    }
+    else  if(-90<= rssi) {
+      return Good;
+    }
+  }
+
+  String toString() {
+    RSSIDesc desc=  getRSSIDesc();
+    switch(desc) {
+      case Poor:
+      return "Poor";
+    case Weak:
+      return"Weak";
+    case Good:
+      return "Good";
+    }
+  }
+};
 
 enum State {
   INITIALIZED,
@@ -68,12 +120,13 @@ enum State {
 static const String OK="OK";
 static const String ERROR="ERROR";
 static const String FAIL="FAIL";
+static const String INQ="+INQ";
 static const int ResponseMaxSize = 10;
 
 static const int MaxWaitTimes = 30;
 static const int DelayTime = 500;
 static const int A2IBufferSize=3;
- 
+
 
 class HC05Control {
 private:
@@ -82,6 +135,7 @@ private:
   int responseIndex;
   char atoiBuffer[A2IBufferSize];
   String responses[ResponseMaxSize];
+  boolean inq;
 public:
 
   HC05Control(SoftwareSerial & _serial):
@@ -150,6 +204,7 @@ public:
 
   boolean isResponse() {
     ok=false;
+    inq=false;
     if(serialControl.isResponse()) {
       String response=serialControl.getResponse();
 #ifdef DEBUG
@@ -186,6 +241,11 @@ public:
         responses[0]=response;
         return true;
       }
+      else if(response.startsWith(INQ)) {
+        inquiry=response;
+        inq=true;
+        return true;
+      } 
       else {
 #ifdef DEBUG
         Serial.println("HC05Control debug ["+response+"]");
@@ -203,7 +263,7 @@ public:
     else {
 #ifdef DEBUG
       //      Serial.println("HC05Control debug no response");
-      Serial.print(".");
+      //      Serial.print(".");
 #endif
       return false;
     }
@@ -225,7 +285,27 @@ public:
   }
   int errorcode;
   boolean touchMaxWaitTimes;
-
+  String inquiry;
+  boolean isInquiry() {
+    return inq;
+  } 
 };
 
 #endif
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
