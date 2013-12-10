@@ -135,27 +135,6 @@ byte ELM327::vehicleSpeed(byte &speed){
   return ELM_SUCCESS;
 }
 
-byte ELM327::killmetersPerLitre(byte &kpl){
-  byte status;
-  byte values[1];
-  status=getBytes_("01","41","ff1203",values,1);
-  if (status != ELM_SUCCESS){
-    return status;
-  }
-  kpl=values[0];
-  return ELM_SUCCESS;
-}
-
-byte ELM327::killmetersPerLitre(int &kpl){
-  byte status;
-  byte values[2];
-  status=getBytes_("01","41","ff1203",values,2);
-  if (status != ELM_SUCCESS){
-    return status;
-  }
-  kpl=((values[0]*256)+values[1])/4;
-  return ELM_SUCCESS;
-}
 
 #ifndef ELM_GEAR_ONLY
 byte ELM327::timingAdvance(int &advance){
