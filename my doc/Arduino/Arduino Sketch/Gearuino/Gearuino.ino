@@ -38,14 +38,17 @@ const static unsigned long DebounceDelay = 200;    // the debounce time; increas
 //============================================================================
 // pin define
 //============================================================================
-static const int HC05KeyPin = 7;
-static const int SwitchPin = 2;
-static const int ReflectPin = 3;
-static const int LEDPin = 13;
+static const int HC05KeyPin=7;
+static const int SwitchPin=2;
+static const int ReflectPin=3;
+static const int LEDPin =13;
 static const int OBD2RXPin = 8;
 static const int OBD2TXPin = 9;
 //============================================================================
+<<<<<<< .mine
+=======
 
+>>>>>>> .r1419
 #include <Arduino.h>
 #include <GearLedControl.h>
 #include <SoftwareSerial.h>
@@ -88,7 +91,7 @@ ELM327 elm(softserial);
 boolean reflect=true;
 boolean commonAnodeLED=false;
 LedControl lc=LedControl(12,11,10,1,commonAnodeLED,true,!reflect);
-boolean btAutoconnect=true;
+boolean autoconnect=true;
 
 
 void displayDigit(int value);
@@ -250,7 +253,18 @@ void elmLoop() {
 
 }
 
-
+static const float TireRound = 1.8893538219;
+static const float GearRatio[] ={
+  15.256715,
+  9.460955,
+  6.250908,
+  4.444413,
+  3.376965,
+  2.73429
+};
+static const int MaxGear = 6;
+static float gearrpm[MaxGear];
+ 
 
 void processButton(Bounce &bouncer) {
   if(bouncer.update() == true && bouncer.read() == HIGH) {
@@ -273,12 +287,15 @@ void processButton(Bounce &bouncer) {
 void displayGear(byte gear) {
   lc.upsidedownMode=!reflect;
   lc.setDigit(0,2,gear,false);
+  lc.setChar(0,1,' ',false);
+  lc.setChar(0,0,' ',false);
 }
 
 void displayKPL(float kpl) {
 
 }
 
+ 
 void displayRPM(int rpm) {
   int digit = rpm/1000;
   int circle = (rpm-digit*1000)/111; //one piece is 111 rpm
@@ -364,18 +381,19 @@ void initLedControl() {
 void btConnect() {
 
   if(ELM_SUCCESS==elm.begin()) {
-    btAutoconnect=false;
+    autoconnect=false;
     Serial.println("ELM connecting test OK."); 
   }
   else {
     //    softserial.begin(38400);
-    btAutoconnect=true;
+    autoconnect=true;
     Serial.println("ELM connecting test failed."); 
   }
+ 
 
 
 #ifdef USE_HC05
-  if(btAutoconnect){
+  if(autoconnect){
     Serial.println("Begin connect..."); 
     digitalWrite(HC05KeyPin, LOW);
     State state=hc05.getState();
