@@ -67,6 +67,8 @@ class LedControl {
 
     /* We keep track of the led-status for all 8 devices in this array */
     byte status[64];
+    /* We also keep track of the transposed version */
+    byte statusTransposed[64];    
     /* Data is shifted out of this pin*/
     int SPI_MOSI;
     /* The clock is signaled on this pin */
@@ -75,6 +77,9 @@ class LedControl {
     int SPI_CS;
     /* The maximum number of devices we use */
     int maxDevices;
+    /* Choose whether we're using common cathode or common anode displays */
+    bool anodeMode;
+
     
     void reflect(byte &v);
     void upsidedown(byte &v);
@@ -87,8 +92,9 @@ class LedControl {
      * clockPin		pin for the clock
      * csPin		pin for selecting the device 
      * numDevices	maximum number of devices that can be controled
+     * anode		false for common-cathode displays, true for common-anode displays
      */
-    LedControl(int dataPin, int clkPin, int csPin, int numDevices=1);
+    LedControl(int dataPin, int clkPin, int csPin, int numDevices=1, bool anode=false, bool reflectMode=false, bool upsidedownMode=false );
 
     /*
      * Gets the number of devices attached to this LedControl.
@@ -171,8 +177,8 @@ class LedControl {
      * dp	sets the decimal point.
      */
     void setDigit(int addr, int digit, byte value, boolean dp);
-    void setDigit(int addr, int digit, byte value, boolean dp, boolean reflect,boolean upsidedown);
-    void setSegment(int addr, int digit, byte value, boolean reflect,boolean upsidedown);
+    //void setDigit(int addr, int digit, byte value, boolean dp, boolean reflect,boolean upsidedown);
+    void setSegment(int addr, int digit, byte value/*, boolean reflect,boolean upsidedown*/);
 
     /* 
      * Display a character on a 7-Segment display.
@@ -187,6 +193,29 @@ class LedControl {
      * dp	sets the decimal point.
      */
     void setChar(int addr, int digit, char value, boolean dp);
+    
+    
+    /*
+     * Transpose data matrix for use with common-anode displays.
+     * Params:
+     * addr	address of the display
+     */
+    void transposeData(int addr);
+    
+    /*
+     * Light up segments of a 7-segment display directly by passing a binary value.
+     * The eight bits of the byte each refer to a segment:
+     *     Byte:   0 0 0 0 0 0 0 0
+     *  Segments: DP A B C D E F G
+     * Params:
+     * addr	address of the display
+     * digit	the position of the character on the display (0..7)
+     * value	the binary value to be displayed
+     */
+    void setDirectDigit(int addr, int digit, byte value);
+
+    bool reflectMode;
+    bool upsidedownMode;    
 };
 
 #endif	//LedControl.h

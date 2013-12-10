@@ -126,9 +126,11 @@ COBD obd(softserial);
  pin 10 is connected to LOAD 
  We have only a single MAX72XX.
  */
-LedControl lc=LedControl(12,11,10,1);
-boolean btAutoconnect=true;
 boolean reflect=true;
+boolean commonAnodeLED=false;
+LedControl lc=LedControl(12,11,10,1,commonAnodeLED,true,!reflect);
+boolean btAutoconnect=true;
+
 
 void displayDigit(int value);
 void initLedControl();
@@ -378,7 +380,8 @@ void bridge() {
 #endif
 
 void displayGear(byte gear) {
-  lc.setDigit(0,2,gear,false,true,!reflect);
+  lc.upsidedownMode=!reflect;
+  lc.setDigit(0,2,gear,false);
 }
 
 void displayRPM(int rpm) {
@@ -389,8 +392,9 @@ void displayRPM(int rpm) {
     circle=0;
     digit++; 
   }
+  lc.upsidedownMode=!reflect;
   if(digit>0) {
-    lc.setDigit(0,2,digit,false,true,!reflect);
+    lc.setDigit(0,2,digit,false);
   }
   else {
     lc.setChar(0,2,' ',false);
@@ -422,19 +426,20 @@ void displayRPM(int rpm) {
   if( circle>=8) {
     v1=v1|B00001000;
   }
-  lc.setSegment(0,0,v0,true,!reflect);
-  lc.setSegment(0,1,v1,true,!reflect);
+  lc.setSegment(0,0,v0 );
+  lc.setSegment(0,1,v1 );
 }
 
 void displayDigit(int value) {
   int digit0=value%10;
   int digit1=(value/10)%10;
   int digit2=(value/100)%10;
-  lc.setDigit(0,0,digit0,false,true,!reflect);
+  lc.upsidedownMode=!reflect;
+  lc.setDigit(0,0,digit0,false );
   if(value>=10) {
-    lc.setDigit(0,1,digit1,false,true,!reflect);
+    lc.setDigit(0,1,digit1,false );
     if( value>=100) {
-      lc.setDigit(0,2,digit2,false,true,!reflect);
+      lc.setDigit(0,2,digit2,false );
     }
     else {
       lc.setChar(0,2,' ',false);
@@ -519,6 +524,7 @@ void btConnect() {
 #endif //USE_HC05
 }
 #endif //SKIP_BT_CONNECT
+
 
 
 
