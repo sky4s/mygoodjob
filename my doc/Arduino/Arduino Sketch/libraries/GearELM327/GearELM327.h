@@ -366,9 +366,6 @@ public:
    * 		 * - Units: km/h
    		 */
   byte vehicleSpeed(byte &speed);
-  
-	byte killmetersPerLitre(byte &kpl);
-	byte killmetersPerLitre(int &kpl);
 
 #ifndef ELM_GEAR_ONLY
 
