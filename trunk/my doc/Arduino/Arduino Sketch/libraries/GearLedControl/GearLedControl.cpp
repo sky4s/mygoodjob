@@ -43,20 +43,26 @@
 #define OP_SHUTDOWN    12
 #define OP_DISPLAYTEST 15
 
-LedControl::LedControl(int dataPin, int clkPin, int csPin, int numDevices) {
+LedControl::LedControl(int dataPin, int clkPin, int csPin, int numDevices, bool anode, bool reflect, bool upsidedown) {
     SPI_MOSI=dataPin;
     SPI_CLK=clkPin;
     SPI_CS=csPin;
     if(numDevices<=0 || numDevices>8 )
 	numDevices=8;
     maxDevices=numDevices;
+    anodeMode=anode;
+    reflectMode=reflect;
+    upsidedownMode=upsidedown;
     pinMode(SPI_MOSI,OUTPUT);
     pinMode(SPI_CLK,OUTPUT);
     pinMode(SPI_CS,OUTPUT);
     digitalWrite(SPI_CS,HIGH);
     SPI_MOSI=dataPin;
-    for(int i=0;i<64;i++) 
+    for(int i=0;i<64;i++) { 
 	status[i]=0x00;
+	statusTransposed[i]=0x00;
+    }
+
     for(int i=0;i<maxDevices;i++) {
 	spiTransfer(i,OP_DISPLAYTEST,0);
 	//scanlimit is set to max on startup
@@ -105,9 +111,19 @@ void LedControl::clearDisplay(int addr) {
     offset=addr*8;
     for(int i=0;i<8;i++) {
 	status[offset+i]=0;
-	spiTransfer(addr, i+1,status[offset+i]);
+    }
+    if (anodeMode) {
+    	transposeData(addr);
+    	for(int i=0;i<8;i++) {
+	    spiTransfer(addr, i+1, statusTransposed[offset+i]);
+    	}
+    } else {
+    	for(int i=0;i<8;i++) {
+	    spiTransfer(addr, i+1, status[offset+i]);
+    	}
     }
 }
+
 
 void LedControl::setLed(int addr, int row, int column, boolean state) {
     int offset;
@@ -153,9 +169,9 @@ void LedControl::setColumn(int addr, int col, byte value) {
     }
 }
 
-void LedControl::setDigit(int addr, int digit, byte value, boolean dp) {
+/*void LedControl::setDigit(int addr, int digit, byte value, boolean dp) {
     setDigit(addr,digit,value,dp,false,false);    
-}
+}*/
 
 void LedControl::reflect(byte &v){
 	//pABCDEFG
@@ -187,7 +203,7 @@ void LedControl::upsidedown(byte &v){
        //pABCDEFG
 }            
 
-void LedControl::setDigit(int addr, int digit, byte value, boolean dp, boolean _reflect,boolean _upsidedown) {
+void LedControl::setDigit(int addr, int digit, byte value, boolean dp) {
     int offset;
     byte v;
 
@@ -199,18 +215,28 @@ void LedControl::setDigit(int addr, int digit, byte value, boolean dp, boolean _
     v=charTable[value];
     if(dp)
 			v|=B10000000;
-    if(_reflect) {
+    if(reflectMode) {
       //pABCGEFD
       reflect(v);                    
     }
-    if(_upsidedown) {
+    if(upsidedownMode) {
     	upsidedown(v);
     }
     status[offset+digit]=v;
-    spiTransfer(addr, digit+1,v);
+    if (anodeMode) {
+    	//transpose the digit matrix
+    	transposeData(addr);
+    	//send the entire set of digits
+    	for(int i=0;i<8;i++) {
+	    spiTransfer(addr, i+1, statusTransposed[offset+i]);
+    	}
+    } else {
+    	spiTransfer(addr, digit+1, v);
+    }
+
 }
 
-void LedControl::setSegment(int addr, int digit, byte value, boolean _reflect,boolean _upsidedown) {
+void LedControl::setSegment(int addr, int digit, byte value) {
     int offset;
 
     if(addr<0 || addr>=maxDevices)
@@ -218,14 +244,23 @@ void LedControl::setSegment(int addr, int digit, byte value, boolean _reflect,bo
     if(digit<0 || digit>7 )
 	return;
     offset=addr*8;
-    if(_reflect) {
+    if(reflectMode) {
       reflect(value);                    
     }
-    if(_upsidedown) {
+    if(upsidedownMode) {
     	upsidedown(value);
     }
     status[offset+digit]=value;
-    spiTransfer(addr, digit+1,value);    
+    //spiTransfer(addr, digit+1,value);    
+    
+        if (anodeMode) {
+    	transposeData(addr);
+    	for(int i=0;i<8;i++) {
+	    spiTransfer(addr, i+1, statusTransposed[offset+i]);
+    	}
+    } else {
+    	spiTransfer(addr, digit+1, value);
+    }
 }
 
 
@@ -247,7 +282,17 @@ void LedControl::setChar(int addr, int digit, char value, boolean dp) {
     if(dp)
 	v|=B10000000;
     status[offset+digit]=v;
-    spiTransfer(addr, digit+1,v);
+    if (anodeMode) {
+    	//transpose the digit matrix
+    	transposeData(addr);
+    	//send the entire set of digits
+    	for(int i=0;i<8;i++) {
+	    spiTransfer(addr, i+1, statusTransposed[offset+i]);
+    	}
+    } else {
+    	spiTransfer(addr, digit+1, v);
+    }
+
 }
 
 void LedControl::spiTransfer(int addr, volatile byte opcode, volatile byte data) {
@@ -268,5 +313,72 @@ void LedControl::spiTransfer(int addr, volatile byte opcode, volatile byte data)
     //latch the data onto the display
     digitalWrite(SPI_CS,HIGH);
 }    
+
+void LedControl::transposeData(int addr) {
+  int offset=addr*8;
+  byte a0, a1, a2, a3, a4, a5, a6, a7,
+       b0, b1, b2, b3, b4, b5, b6, b7;
+  
+  // Perform a bitwise transpose operation on an 8x8 bit matrix, stored as 8-byte array.
+  // We have to use the naive method because we're working on a 16-bit microprocessor.
+
+  // Load the array into eight one-byte variables.
+  a0 = status[offset];
+  a1 = status[offset+1];
+  a2 = status[offset+2];
+  a3 = status[offset+3];
+  a4 = status[offset+4];
+  a5 = status[offset+5];
+  a6 = status[offset+6];
+  a7 = status[offset+7];
+  
+  // Magic happens. Credit goes to: http://www.hackersdelight.org/HDcode/transpose8.c.txt
+  b0 = (a0 & 128)    | (a1 & 128)/2  | (a2 & 128)/4  | (a3 & 128)/8 |
+       (a4 & 128)/16 | (a5 & 128)/32 | (a6 & 128)/64 | (a7      )/128;
+  b1 = (a0 &  64)*2  | (a1 &  64)    | (a2 &  64)/2  | (a3 &  64)/4 |
+       (a4 &  64)/8  | (a5 &  64)/16 | (a6 &  64)/32 | (a7 &  64)/64;
+  b2 = (a0 &  32)*4  | (a1 &  32)*2  | (a2 &  32)    | (a3 &  32)/2 |
+       (a4 &  32)/4  | (a5 &  32)/8  | (a6 &  32)/16 | (a7 &  32)/32;
+  b3 = (a0 &  16)*8  | (a1 &  16)*4  | (a2 &  16)*2  | (a3 &  16)   |
+       (a4 &  16)/2  | (a5 &  16)/4  | (a6 &  16)/8  | (a7 &  16)/16;
+  b4 = (a0 &   8)*16 | (a1 &   8)*8  | (a2 &   8)*4  | (a3 &   8)*2 |
+       (a4 &   8)    | (a5 &   8)/2  | (a6 &   8)/4  | (a7 &   8)/8;
+  b5 = (a0 &   4)*32 | (a1 &   4)*16 | (a2 &   4)*8  | (a3 &   4)*4 |
+       (a4 &   4)*2  | (a5 &   4)    | (a6 &   4)/2  | (a7 &   4)/4;
+  b6 = (a0 &   2)*64 | (a1 &   2)*32 | (a2 &   2)*16 | (a3 &   2)*8 |
+       (a4 &   2)*4  | (a5 &   2)*2  | (a6 &   2)    | (a7 &   2)/2;
+  b7 = (a0      )*128| (a1 &   1)*64 | (a2 &   1)*32 | (a3 &   1)*16|
+       (a4 &   1)*8  | (a5 &   1)*4  | (a6 &   1)*2  | (a7 &   1);
+
+  // Assemble into output array.
+  statusTransposed[offset] = b0;
+  statusTransposed[offset+1] = b1;
+  statusTransposed[offset+2] = b2;
+  statusTransposed[offset+3] = b3;
+  statusTransposed[offset+4] = b4;
+  statusTransposed[offset+5] = b5;
+  statusTransposed[offset+6] = b6;
+  statusTransposed[offset+7] = b7;
+
+}
+
+void LedControl::setDirectDigit(int addr, int digit, byte value) {
+    int offset;
+
+    if(addr<0 || addr>=maxDevices)
+	return;
+    if(digit<0 || digit>7)
+	return;
+    offset=addr*8;
+    status[offset+digit]=value;
+    if (anodeMode) {
+    	transposeData(addr);
+    	for(int i=0;i<8;i++) {
+	    spiTransfer(addr, i+1, statusTransposed[offset+i]);
+    	}
+    } else {
+    	spiTransfer(addr, digit+1, value);
+    }
+}
 
 
