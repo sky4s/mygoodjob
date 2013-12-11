@@ -45,10 +45,7 @@ static const int LEDPin =13;
 static const int OBD2RXPin = 8;
 static const int OBD2TXPin = 9;
 //============================================================================
-<<<<<<< .mine
-=======
 
->>>>>>> .r1419
 #include <Arduino.h>
 #include <GearLedControl.h>
 #include <SoftwareSerial.h>
@@ -253,18 +250,7 @@ void elmLoop() {
 
 }
 
-static const float TireRound = 1.8893538219;
-static const float GearRatio[] ={
-  15.256715,
-  9.460955,
-  6.250908,
-  4.444413,
-  3.376965,
-  2.73429
-};
-static const int MaxGear = 6;
-static float gearrpm[MaxGear];
- 
+
 
 void processButton(Bounce &bouncer) {
   if(bouncer.update() == true && bouncer.read() == HIGH) {
