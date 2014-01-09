@@ -1,14 +1,16 @@
 /*
 
-
+ 
  */
 //============================================================================
 // for debug setting
 //============================================================================
 //#define DEBUG
-//#define ITERACTION
-//#define BRIDGE
+//#define ITERACTION //廢棄不用
+#define BRIDGE
+#define TEST_IN_BRIDGE
 //#define CANVAS_WRAPPER
+
 #ifdef BRIDGE
 #define SKIP_SETUP
 #endif
@@ -138,6 +140,12 @@ void interaction();
 void processButton(Bounce &bouncer);
 int funcselect=0;
 
+#ifdef BRIDGE
+#ifdef TEST_IN_BRIDGE
+int count=0;
+#endif
+#endif
+
 void loop() // run over and over
 {
 
@@ -150,13 +158,24 @@ void loop() // run over and over
 #endif
 
 #ifdef BRIDGE
+
   bridge();
+#ifdef TEST_IN_BRIDGE
+  delay(300);
+  displayDigit(count++);
+  Serial.println(count);
+  reflect=false;
+#endif
+
 #else
   elmLoop();
 #endif //BRIDGE
 
   processButton(switchBouncer);
   processButton(reflectBouncer);
+
+
+
 }
 
 
@@ -281,7 +300,7 @@ void displayKPL(float kpl) {
 
 }
 
- 
+
 void displayRPM(int rpm) {
   int digit = rpm/1000;
   int circle = (rpm-digit*1000)/111; //one piece is 111 rpm
@@ -375,7 +394,7 @@ void btConnect() {
     autoconnect=true;
     Serial.println("ELM connecting test failed."); 
   }
- 
+
 
 
 #ifdef USE_HC05
@@ -469,6 +488,7 @@ void bridge() {
   }
 }
 #endif
+
 
 
 
