@@ -159,13 +159,16 @@ void loop() // run over and over
 
 #ifdef BRIDGE
 
-  bridge();
+
 #ifdef TEST_IN_BRIDGE
   delay(300);
   displayDigit(count++);
   Serial.println(count);
   reflect=false;
+#else
+  bridge();
 #endif
+
 
 #else
   elmLoop();
@@ -488,6 +491,7 @@ void bridge() {
   }
 }
 #endif
+
 
 
 
