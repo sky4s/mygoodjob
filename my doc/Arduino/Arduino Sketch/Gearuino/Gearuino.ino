@@ -161,9 +161,9 @@ void loop() // run over and over
 
 
 #ifdef TEST_IN_BRIDGE
-  delay(300);
+  delay(100);
   displayDigit(count++);
-  Serial.println(count);
+  Serial.println(String(count));
   reflect=false;
 #else
   bridge();
