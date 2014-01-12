@@ -45,8 +45,8 @@ static const int HC05KeyPin=7;
 static const int SwitchPin=2;
 static const int ReflectPin=3;
 static const int LEDPin =13;
-static const int OBD2RXPin = 3;
-static const int OBD2TXPin = 2;
+static const int OBD2RXPin = 2;
+static const int OBD2TXPin = 3;
 //============================================================================
 
 #include <Arduino.h>
