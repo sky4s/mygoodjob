@@ -7,7 +7,7 @@
 //============================================================================
 //#define DEBUG
 //#define ITERACTION //廢棄不用
-#define BRIDGE
+//#define BRIDGE
 #define TEST_IN_BRIDGE
 //#define CANVAS_WRAPPER
 
@@ -22,6 +22,7 @@
 //============================================================================
 // function setting
 //============================================================================
+#define USE_BUTTTON
 #define USE_SERIAL_CONTROL
 #ifndef SKIP_BT_CONNECT
 #define USE_HC05
@@ -44,8 +45,8 @@ static const int HC05KeyPin=7;
 static const int SwitchPin=2;
 static const int ReflectPin=3;
 static const int LEDPin =13;
-static const int OBD2RXPin = 8;
-static const int OBD2TXPin = 9;
+static const int OBD2RXPin = 3;
+static const int OBD2TXPin = 2;
 //============================================================================
 
 #include <Arduino.h>
@@ -87,9 +88,9 @@ ELM327 elm(softserial);
  pin 10 is connected to LOAD 
  We have only a single MAX72XX.
  */
-boolean reflect=true;
+boolean reflect=false;
 boolean commonAnodeLED=false;
-LedControl lc=LedControl(12,11,10,1,commonAnodeLED,true,!reflect);
+LedControl lc=LedControl(12,11,10,1,commonAnodeLED,false,!reflect);
 boolean autoconnect=true;
 
 
@@ -122,9 +123,10 @@ void setup()
   while (elm.begin()!=ELM_SUCCESS);  
   Serial.println("OBD Linked");
 
-
+#ifdef USE_BUTTTON
   pinMode(SwitchPin, INPUT);
   pinMode(ReflectPin, INPUT);
+#endif
   pinMode(LEDPin, OUTPUT);
 
   // set initial LED state
@@ -163,7 +165,7 @@ void loop() // run over and over
 #ifdef TEST_IN_BRIDGE
   delay(100);
   displayDigit(count++);
-  Serial.println(String(count));
+//  Serial.println(String(count));
   reflect=false;
 #else
   bridge();
@@ -174,9 +176,10 @@ void loop() // run over and over
   elmLoop();
 #endif //BRIDGE
 
+#ifdef USE_BUTTTON
   processButton(switchBouncer);
   processButton(reflectBouncer);
-
+#endif
 
 
 }
@@ -355,19 +358,19 @@ void displayDigit(int value) {
   int digit1=(value/10)%10;
   int digit2=(value/100)%10;
   lc.upsidedownMode=!reflect;
-  lc.setDigit(0,0,digit0,false );
+  lc.setDigit(0,2,digit0,false );
   if(value>=10) {
     lc.setDigit(0,1,digit1,false );
     if( value>=100) {
-      lc.setDigit(0,2,digit2,false );
+      lc.setDigit(0,0,digit2,false );
     }
     else {
-      lc.setChar(0,2,' ',false);
+      lc.setChar(0,0,' ',false);
     }
   }
   else {
     lc.setChar(0,1,' ',false);
-    lc.setChar(0,2,' ',false);
+    lc.setChar(0,0,' ',false);
   }
 
 }
