@@ -108,7 +108,12 @@ void setup()
   softserial.begin(HC05_BAUD_RATE);
 
   initLedControl();
-  displayDigit(168);
+  for(int x=0;x<3;x++) {
+    displayDigit(168);
+    delay(800);
+    displayDigit(-1);
+    delay(800);
+  }
 
 #ifdef SKIP_SETUP
   if(true) {
@@ -131,8 +136,14 @@ void setup()
 
   // set initial LED state
   digitalWrite(LEDPin, LOW);
-  displayDigit(0);
-  delay(1000);
+  //  displayDigit(0);
+  //  delay(1000);
+  for(int x=0;x<2;x++) {
+    displayDigit(0);
+    delay(1000);
+    displayDigit(-1);
+    delay(1000);
+  }
 }
 
 #ifdef BRIDGE
@@ -165,7 +176,7 @@ void loop() // run over and over
 #ifdef TEST_IN_BRIDGE
   delay(100);
   displayDigit(count++);
-//  Serial.println(String(count));
+  //  Serial.println(String(count));
   reflect=false;
 #else
   bridge();
@@ -195,6 +206,18 @@ float kpl;
 #define MAX_FUNC_COUNT 4
 
 void elmLoop() {
+  {
+    status=elm.engineRPM(rpm);
+    //#ifdef DEBUG
+    //    Serial.println("RPM: "+String(rpm));
+    //#endif
+    if ( status== ELM_SUCCESS && 0 == rpm) {
+      delay(1000);
+      return;
+      //      displayRPM(rpm);
+    }
+  }  
+
 
   switch(funcselect) {
   case 0:
@@ -215,7 +238,7 @@ void elmLoop() {
     break;
   case 1:
     {
-      status=elm.engineRPM(rpm);
+      //      status=elm.engineRPM(rpm);
 #ifdef DEBUG
       Serial.println("RPM: "+String(rpm));
 #endif
@@ -354,6 +377,13 @@ void displayRPM(int rpm) {
 }
 
 void displayDigit(int value) {
+  if(-1==value) {
+    lc.setChar(0,0,' ',false);
+    lc.setChar(0,1,' ',false);
+    lc.setChar(0,2,' ',false);
+    return;
+  }
+
   int digit0=value%10;
   int digit1=(value/10)%10;
   int digit2=(value/100)%10;
@@ -494,6 +524,14 @@ void bridge() {
   }
 }
 #endif
+
+
+
+
+
+
+
+
 
 
 
