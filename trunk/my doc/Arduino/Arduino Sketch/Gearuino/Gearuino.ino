@@ -5,7 +5,7 @@
 //============================================================================
 // for debug setting
 //============================================================================
-//#define DEBUG
+#define DEBUG
 //#define ITERACTION //廢棄不用
 //#define BRIDGE
 //#define TEST_IN_BRIDGE
@@ -29,7 +29,7 @@
 #endif
 
 static const int MaxBTTry=10;
-#define HC05_BAUD_RATE 38400
+#define HC05_BAUD_RATE 9600
 
 #define MASTER_BT_ADDR "2013,9,260146"
 #define ELM327_BT_ADDR "2013,9,110911"
@@ -108,12 +108,15 @@ void setup()
   softserial.begin(HC05_BAUD_RATE);
 
   initLedControl();
+
+#ifndef DEBUG
   for(int x=0;x<3;x++) {
     displayDigit(168);
     delay(800);
     displayDigit(-1);
     delay(800);
   }
+#endif
 
 #ifdef SKIP_SETUP
   if(true) {
@@ -124,8 +127,12 @@ void setup()
 #ifndef SKIP_BT_CONNECT
   btConnect();
 #endif
-
-  while (elm.begin()!=ELM_SUCCESS);  
+  byte status;
+  do{
+    status=elm.begin();
+    printStatus(status);
+  }  
+  while (status!=ELM_SUCCESS);  
   Serial.println("OBD Linked");
 
 #ifdef USE_BUTTTON
@@ -136,14 +143,15 @@ void setup()
 
   // set initial LED state
   digitalWrite(LEDPin, LOW);
-  //  displayDigit(0);
-  //  delay(1000);
+
+#ifndef DEBUG
   for(int x=0;x<2;x++) {
     displayDigit(0);
     delay(1000);
     displayDigit(-1);
     delay(1000);
   }
+#endif
 }
 
 #ifdef BRIDGE
@@ -205,11 +213,11 @@ float kpl;
 
 void elmLoop() {
 
-//  status=elm.engineRPM(rpm);
-//  if ( status== ELM_SUCCESS &&( 0 == rpm)) {
-//    delay(1000);
-//    return;
-//  }
+  status=elm.engineRPM(rpm);
+  if ( status== ELM_SUCCESS &&( 0 == rpm)) {
+    delay(1000);
+    return;
+  }
 
   switch(funcselect) {
   case 0:
@@ -518,6 +526,11 @@ void bridge() {
   }
 }
 #endif
+
+
+
+
+
 
 
 

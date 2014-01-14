@@ -27,15 +27,26 @@
 
 ELM327::ELM327(SoftwareSerial& _softserial) {
   softserial=&_softserial;
-  //  useSoftSerial=true;
 }
 
 byte ELM327::begin(){
-  //softserial->begin(baudrate);
   char data[20];
-  runCommand("ATZ",data,20);
-  runCommand("AT E0",data,20);
-  runCommand("AT L0",data,20);
+  byte status;
+  status=runCommand("ATZ",data,20);
+  //Serial.println(status);
+  //if(ELM_SUCCESS != status ) {
+    //return status;
+  //}
+  status=runCommand("AT E0",data,20);
+  //Serial.println(status);
+  //if(ELM_SUCCESS != status ) {
+    //return status;
+  //}  
+  status=runCommand("AT L0",data,20);
+  //Serial.println(status);
+  //if(ELM_SUCCESS != status ) {
+    //return status;
+  //}  
   //return runCommand("09 02",data,20);
   return runCommand("AT SP 0",data,20);
 }
@@ -704,6 +715,7 @@ byte ELM327::runCommand(const char *cmd, char *data, unsigned int dataLength)
 	flush();
 	softserial->print(cmd);
 	softserial->print('\r');
+  Serial.println("X "+String(cmd));
     
 	unsigned long timeOut;
     int counter;
@@ -720,19 +732,19 @@ byte ELM327::runCommand(const char *cmd, char *data, unsigned int dataLength)
 	while (!found && counter<( dataLength ) && millis()<timeOut)
     {
         if ( softserial->available() ){
-			data[counter]=softserial->read();
-      if( 0==counter && 13==data[counter]) {
-        continue;
-      }
-      //if(counter<3) {
-      // p("c%d %d_",counter, data[counter]);
-      //}
-      if (  data[counter] == '>' ){
-				found=true;
-				data[counter]='\0';
-			}else{
-				++counter;
-			}
+    			data[counter]=softserial->read();
+          if( 0==counter && 13==data[counter]) {
+            continue;
+          }
+          //if(counter<3) {
+           //p("c%d %d_",counter, data[counter]);
+          //}
+          if (  data[counter] == '>' ){
+    				found=true;
+    				data[counter]='\0';
+    			}else{
+    				++counter;
+    			}
         }
     }
 	// If there is still data pending to be read, raise OVERFLOW error.
@@ -753,7 +765,7 @@ byte ELM327::runCommand(const char *cmd, char *data, unsigned int dataLength)
 		// Send a character, this should cancel any operation on the elm device
 		// so that it doesnt spuriously inject a response during the next 
 		// command
-		//softserial->print("XXXXXXXXX\r\r\r");
+		//Serial.print("XXXXXXXXX\r\r\r");
 		delay(300);
 		return ELM_NO_RESPONSE;
     }
