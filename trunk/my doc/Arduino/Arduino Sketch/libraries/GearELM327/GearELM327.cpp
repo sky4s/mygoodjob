@@ -714,8 +714,9 @@ byte ELM327::runCommand(const char *cmd, char *data, unsigned int dataLength)
 	// Send the specified command to the controller.
 	flush();
 	softserial->print(cmd);
-	softserial->print('\r');
-  Serial.println("X "+String(cmd));
+	//softserial->print('\r');
+  softserial->println('\r');
+  //Serial.println("X "+String(cmd));
     
 	unsigned long timeOut;
     int counter;

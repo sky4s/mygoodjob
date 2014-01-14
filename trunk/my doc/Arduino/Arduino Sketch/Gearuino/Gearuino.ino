@@ -5,7 +5,7 @@
 //============================================================================
 // for debug setting
 //============================================================================
-#define DEBUG
+//#define DEBUG
 //#define ITERACTION //廢棄不用
 //#define BRIDGE
 //#define TEST_IN_BRIDGE
@@ -130,7 +130,9 @@ void setup()
   byte status;
   do{
     status=elm.begin();
+#ifdef DEBUG
     printStatus(status);
+#endif
   }  
   while (status!=ELM_SUCCESS);  
   Serial.println("OBD Linked");
@@ -526,6 +528,7 @@ void bridge() {
   }
 }
 #endif
+
 
 
 
