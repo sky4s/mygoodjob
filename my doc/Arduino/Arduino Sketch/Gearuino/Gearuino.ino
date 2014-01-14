@@ -8,7 +8,7 @@
 //#define DEBUG
 //#define ITERACTION //廢棄不用
 //#define BRIDGE
-#define TEST_IN_BRIDGE
+//#define TEST_IN_BRIDGE
 //#define CANVAS_WRAPPER
 
 #ifdef BRIDGE
@@ -171,8 +171,6 @@ void loop() // run over and over
 #endif
 
 #ifdef BRIDGE
-
-
 #ifdef TEST_IN_BRIDGE
   delay(100);
   displayDigit(count++);
@@ -206,18 +204,12 @@ float kpl;
 #define MAX_FUNC_COUNT 4
 
 void elmLoop() {
-  {
-    status=elm.engineRPM(rpm);
-    //#ifdef DEBUG
-    //    Serial.println("RPM: "+String(rpm));
-    //#endif
-    if ( status== ELM_SUCCESS && 0 == rpm) {
-      delay(1000);
-      return;
-      //      displayRPM(rpm);
-    }
-  }  
 
+//  status=elm.engineRPM(rpm);
+//  if ( status== ELM_SUCCESS &&( 0 == rpm)) {
+//    delay(1000);
+//    return;
+//  }
 
   switch(funcselect) {
   case 0:
@@ -236,6 +228,7 @@ void elmLoop() {
 #endif
     }
     break;
+
   case 1:
     {
       //      status=elm.engineRPM(rpm);
@@ -252,6 +245,7 @@ void elmLoop() {
 #endif
     }
     break;
+
   case 2:
     {
       status=elm.vehicleSpeed(speed);
@@ -524,6 +518,8 @@ void bridge() {
   }
 }
 #endif
+
+
 
 
 
