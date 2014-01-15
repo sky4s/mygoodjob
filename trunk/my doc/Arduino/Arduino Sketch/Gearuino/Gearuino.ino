@@ -5,7 +5,7 @@
 //============================================================================
 // for debug setting
 //============================================================================
-#define DEBUG
+//#define DEBUG
 //#define ITERACTION //(deprecated)
 //#define BRIDGE
 //#define TEST_IN_BRIDGE
