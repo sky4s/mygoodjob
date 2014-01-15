@@ -30,25 +30,23 @@ ELM327::ELM327(SoftwareSerial& _softserial) {
 }
 
 byte ELM327::begin(){
-  char data[20];
+	return begin(true,true);
+}
+
+byte ELM327::begin(boolean ATE0,boolean ATL0){
+  char data[40];
   byte status;
-  status=runCommand("ATZ",data,20);
-  //Serial.println(status);
-  //if(ELM_SUCCESS != status ) {
-    //return status;
-  //}
-  status=runCommand("AT E0",data,20);
-  //Serial.println(status);
-  //if(ELM_SUCCESS != status ) {
-    //return status;
-  //}  
-  status=runCommand("AT L0",data,20);
-  //Serial.println(status);
-  //if(ELM_SUCCESS != status ) {
-    //return status;
-  //}  
-  //return runCommand("09 02",data,20);
-  return runCommand("AT SP 0",data,20);
+  status=runCommand("ATZ",data,40);
+
+	if(ATE0) {
+  	status=runCommand("AT E0",data,40);
+	}
+ 
+ 	if(ATL0) {
+  	status=runCommand("AT L0",data,40);
+	}
+
+  return runCommand("AT SP 0",data,40);
 }
 
 #ifndef ELM_GEAR_ONLY
@@ -621,21 +619,26 @@ byte ELM327::getBytes( const char *mode, const char *chkMode, const char *pid, b
 	cmd[5]='\0';
 
 	status=runCommand(cmd,data,64);
-  //p("cmd/data: %s/ %s\n",cmd,data);
+#ifdef ELM327_DEBUG
+  p("cmd/data: %s/%s\n",cmd,data);
+#endif
   
 	if ( status != ELM_SUCCESS )
 	{
 		return status;
-	};
+	}
 	
 	// Check the mode returned was the one we sent
 	if ( data[0]!=chkMode[0] 
 	  or data[1]!=chkMode[1]
 	  or data[3]!=pid[0]
 	  or data[4]!=pid[1] ){
-    //p("%s\n",data);
-    //p("A:%c(%d) %c(%d) %c(%d) %c(%d)\n", data[0],data[0],data[1],data[1],data[3],data[3],data[4],data[4]);
-    //p("B:%c(%d) %c(%d) %c(%d) %c(%d)\n", chkMode[0],chkMode[0],chkMode[1],chkMode[1],pid[0],pid[0],pid[1],pid[1]);    
+    
+#ifdef ELM327_DEBUG
+		p("%s\n",data);
+    p("A:%c(%d) %c(%d) %c(%d) %c(%d)\n", data[0],data[0],data[1],data[1],data[3],data[3],data[4],data[4]);
+    p("B:%c(%d) %c(%d) %c(%d) %c(%d)\n", chkMode[0],chkMode[0],chkMode[1],chkMode[1],pid[0],pid[0],pid[1],pid[1]);   
+#endif 
 		return ELM_GARBAGE;
 	}
 	
@@ -715,11 +718,12 @@ byte ELM327::runCommand(const char *cmd, char *data, unsigned int dataLength)
 	flush();
 	softserial->print(cmd);
 	softserial->print('\r');
-  //softserial->println('\r');
-  //Serial.println("X "+String(cmd));
+	//softserial->println('\n');
+	
+ 
     
 	unsigned long timeOut;
-    int counter;
+  int counter;
 	bool found;
 	
 	// Start reading the data right away and don't stop 
@@ -728,18 +732,25 @@ byte ELM327::runCommand(const char *cmd, char *data, unsigned int dataLength)
 	// has been returned.
 	//
 	counter=0;
+	//data[counter]='\0';
 	timeOut=millis()+ELM_TIMEOUT;
 	found=false;
+	
 	while (!found && counter<( dataLength ) && millis()<timeOut)
     {
         if ( softserial->available() ){
     			data[counter]=softserial->read();
+#ifdef ELM327_DEBUG    			
+    			Serial.print(String(data[counter]));
+#endif
           if( 0==counter && 13==data[counter]) {
             continue;
           }
-          //if(counter<3) {
-           //p("c%d %d_",counter, data[counter]);
-          //}
+#ifdef ELM327_DEBUG 
+          if(counter<3) {
+           	p("c%d %d_",counter, data[counter]);
+          }
+#endif
           if (  data[counter] == '>' ){
     				found=true;
     				data[counter]='\0';
@@ -748,6 +759,9 @@ byte ELM327::runCommand(const char *cmd, char *data, unsigned int dataLength)
     			}
         }
     }
+#ifdef ELM327_DEBUG 
+  Serial.println("counter: "+String(counter));  
+#endif
 	// If there is still data pending to be read, raise OVERFLOW error.
 	if (!found  && counter>=dataLength)
 	{

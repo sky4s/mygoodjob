@@ -24,6 +24,7 @@
 #ifndef GEAR_ELM327_h
 #define GEAR_ELM327_h
 #include "Arduino.h"
+//#define ELM327_DEBUG
 
 //#define ELM_GEAR_ONLY
 
@@ -215,6 +216,7 @@ public:
    * 		 *  response. Else returns an ELM error code.
    		 */
   byte begin();
+  byte begin(boolean ATE0,boolean ATL0);
 
 #ifndef ELM_GEAR_ONLY
   /** 
