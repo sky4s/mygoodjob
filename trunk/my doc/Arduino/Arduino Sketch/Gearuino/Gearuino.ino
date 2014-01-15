@@ -5,16 +5,22 @@
 //============================================================================
 // for debug setting
 //============================================================================
-//#define DEBUG
-//#define ITERACTION //廢棄不用
+#define DEBUG
+//#define ITERACTION //(deprecated)
 //#define BRIDGE
 //#define TEST_IN_BRIDGE
 //#define CANVAS_WRAPPER
+//============================================================================
 
+//============================================================================
+// reserve setting
+//============================================================================
 #ifdef BRIDGE
 #define SKIP_SETUP
 #endif
-
+#ifdef ITERACTION
+#define USE_SERIAL_CONTROL
+#endif
 //don't want to handle BT connection, because BT will not appear in final version.
 #define SKIP_BT_CONNECT
 //============================================================================
@@ -22,8 +28,13 @@
 //============================================================================
 // function setting
 //============================================================================
-#define USE_BUTTTON
-#define USE_SERIAL_CONTROL
+//#define USE_BUTTON
+const static unsigned long DebounceDelay = 200;    // the debounce time; increase if the output flickers
+//============================================================================
+
+//============================================================================
+// BlueTooth Setting (deprecated)
+//============================================================================
 #ifndef SKIP_BT_CONNECT
 #define USE_HC05
 #endif
@@ -34,16 +45,14 @@ static const int MaxBTTry=10;
 #define MASTER_BT_ADDR "2013,9,260146"
 #define ELM327_BT_ADDR "2013,9,110911"
 //#define ELM327_BT_ADDR "19,5D,253224"
-
-const static unsigned long DebounceDelay = 200;    // the debounce time; increase if the output flickers
 //============================================================================
 
 //============================================================================
 // pin define
 //============================================================================
 static const int HC05KeyPin=7;
-static const int SwitchPin=2;
-static const int ReflectPin=3;
+static const int SwitchPin=4;
+static const int ReflectPin=5;
 static const int LEDPin =13;
 static const int OBD2RXPin = 2;
 static const int OBD2TXPin = 3;
@@ -56,8 +65,10 @@ static const int OBD2TXPin = 3;
 #include "car.h"
 
 SoftwareSerial softserial(OBD2RXPin, OBD2TXPin); // RX, TX
+#ifdef USE_BUTTON
 Bounce switchBouncer = Bounce( SwitchPin,DebounceDelay ); 
 Bounce reflectBouncer = Bounce( ReflectPin,DebounceDelay ); 
+#endif
 
 #ifdef USE_SERIAL_CONTROL
 #include <SerialControl.h>
@@ -137,7 +148,7 @@ void setup()
   while (status!=ELM_SUCCESS);  
   Serial.println("OBD Linked");
 
-#ifdef USE_BUTTTON
+#ifdef USE_BUTTON
   pinMode(SwitchPin, INPUT);
   pinMode(ReflectPin, INPUT);
 #endif
@@ -181,21 +192,22 @@ void loop() // run over and over
 #endif
 
 #ifdef BRIDGE
+
 #ifdef TEST_IN_BRIDGE
   delay(100);
   displayDigit(count++);
   //  Serial.println(String(count));
   reflect=false;
 #else
+//  Serial.println("bridge");
   bridge();
 #endif
-
 
 #else
   elmLoop();
 #endif //BRIDGE
 
-#ifdef USE_BUTTTON
+#ifdef USE_BUTTON
   processButton(switchBouncer);
   processButton(reflectBouncer);
 #endif
@@ -220,6 +232,13 @@ void elmLoop() {
     delay(1000);
     return;
   }
+  else {
+#ifdef DEBUG
+    Serial.print("engineRPM: ");
+    printStatus(status);
+#endif     
+  }
+
 
   switch(funcselect) {
   case 0:
@@ -528,6 +547,8 @@ void bridge() {
   }
 }
 #endif
+
+
 
 
 
