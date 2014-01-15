@@ -5,7 +5,7 @@
 //============================================================================
 // for debug setting
 //============================================================================
-//#define DEBUG
+#define DEBUG
 //#define ITERACTION //(deprecated)
 //#define BRIDGE
 //#define TEST_IN_BRIDGE
@@ -29,6 +29,7 @@
 // function setting
 //============================================================================
 //#define USE_BUTTON
+//#define MULTI_ELM_FUNC
 const static unsigned long DebounceDelay = 200;    // the debounce time; increase if the output flickers
 //============================================================================
 
@@ -58,11 +59,19 @@ static const int OBD2RXPin = 2;
 static const int OBD2TXPin = 3;
 //============================================================================
 
+//============================================================================
+// include
+//============================================================================
 #include <Arduino.h>
 #include <GearLedControl.h>
 #include <SoftwareSerial.h>
 #include <Bounce.h>
 #include "car.h"
+//============================================================================
+
+//============================================================================
+// global variable declare
+//============================================================================
 
 SoftwareSerial softserial(OBD2RXPin, OBD2TXPin); // RX, TX
 #ifdef USE_BUTTON
@@ -83,14 +92,6 @@ ATCommand at;
 #endif
 #endif
 
-//============================================================================
-// ELM327 API
-//============================================================================
-#include <GearELM327.h>
-ELM327 elm(softserial);
-#include "elm.h"
-//============================================================================
-
 /*
  Now we need a LedControl to work with.
  ***** These pin numbers will probably not work with your hardware *****
@@ -103,11 +104,23 @@ boolean reflect=false;
 boolean commonAnodeLED=false;
 LedControl lc=LedControl(12,11,10,1,commonAnodeLED,false,!reflect);
 boolean autoconnect=true;
+//============================================================================
 
+//============================================================================
+// ELM327 API
+//============================================================================
+#include <GearELM327.h>
+ELM327 elm(softserial);
+#include "elm.h"
+//============================================================================
 
+//============================================================================
+// pre-declare
+//============================================================================
 void displayDigit(int value);
 void initLedControl();
 void btConnect();
+//============================================================================
 
 
 void setup()  
@@ -199,7 +212,7 @@ void loop() // run over and over
   //  Serial.println(String(count));
   reflect=false;
 #else
-//  Serial.println("bridge");
+  //  Serial.println("bridge");
   bridge();
 #endif
 
@@ -239,8 +252,16 @@ void elmLoop() {
 #endif     
   }
 
+#ifdef MULTI_ELM_FUNC
+  multiElmFuncLoop(funcselect);
+#else
+  multiElmFuncLoop(2);
+#endif
+}
 
-  switch(funcselect) {
+
+void multiElmFuncLoop(int func) {
+  switch(func) {
   case 0:
     {
       status=elm.vehicleSpeed(speed);
@@ -278,9 +299,9 @@ void elmLoop() {
   case 2:
     {
       status=elm.vehicleSpeed(speed);
-      if ( status== ELM_SUCCESS ) {
+      /*if ( status== ELM_SUCCESS ) {
         status=elm.engineRPM(rpm);
-      }   
+      }*/   
 
       if ( status== ELM_SUCCESS ) {
         gear = getGearPosition(rpm,speed);
@@ -320,7 +341,6 @@ void elmLoop() {
   }
 
 }
-
 
 
 void processButton(Bounce &bouncer) {
@@ -547,6 +567,10 @@ void bridge() {
   }
 }
 #endif
+
+
+
+
 
 
 

@@ -48,6 +48,11 @@ byte getGearPosition(int rpm,byte speed) {
     }
   }
   //  Serial.println(String(rpm)+" "+String(speed));
+#ifdef DEBUG
+  double base = rpm * 60. / 1000. / speed;
+  Serial.print("base: ");
+  Serial.println(base);
+#endif
   return minIndex;
 }
 
@@ -61,3 +66,4 @@ float getKPL(int rpm,byte map,int iat,float ve) {
 
 
 #endif
+
