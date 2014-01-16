@@ -41,7 +41,7 @@ const static unsigned long DebounceDelay = 200;    // the debounce time; increas
 #endif
 
 static const int MaxBTTry=10;
-#define HC05_BAUD_RATE 9600
+#define SOFT_SERIAL_BAUD_RATE 9600
 
 #define MASTER_BT_ADDR "2013,9,260146"
 #define ELM327_BT_ADDR "2013,9,110911"
@@ -51,7 +51,9 @@ static const int MaxBTTry=10;
 //============================================================================
 // pin define
 //============================================================================
+#ifdef USE_HC05
 static const int HC05KeyPin=7;
+#endif
 static const int SwitchPin=4;
 static const int ReflectPin=5;
 static const int LEDPin =13;
@@ -125,11 +127,13 @@ void btConnect();
 
 void setup()  
 {
+#ifdef USE_HC05
   pinMode(HC05KeyPin, OUTPUT);
   digitalWrite(HC05KeyPin, HIGH);
+#endif
   Serial.begin(9600);
   Serial.println("setup()");
-  softserial.begin(HC05_BAUD_RATE);
+  softserial.begin(SOFT_SERIAL_BAUD_RATE);
 
   initLedControl();
 
@@ -242,6 +246,7 @@ void elmLoop() {
 
   status=elm.engineRPM(rpm);
   if ( status== ELM_SUCCESS &&( 0 == rpm)) {
+    displayDigit(-1);
     delay(1000);
     return;
   }
@@ -255,7 +260,7 @@ void elmLoop() {
 #ifdef MULTI_ELM_FUNC
   multiElmFuncLoop(funcselect);
 #else
-  multiElmFuncLoop(2);
+  multiElmFuncLoop(0);
 #endif
 }
 
@@ -300,8 +305,8 @@ void multiElmFuncLoop(int func) {
     {
       status=elm.vehicleSpeed(speed);
       /*if ( status== ELM_SUCCESS ) {
-        status=elm.engineRPM(rpm);
-      }*/   
+       status=elm.engineRPM(rpm);
+       }*/
 
       if ( status== ELM_SUCCESS ) {
         gear = getGearPosition(rpm,speed);
@@ -538,18 +543,26 @@ void interaction() {
 #endif
 
 #ifdef BRIDGE
+
+#ifdef USE_HC05
 boolean hc05KeyPin=false;
 boolean hc05BaudRate=false;
+#endif
+
 void bridge() {
   if (Serial.available()){
     char in = Serial.read();
     Serial.write(in);
 
+
     if( in=='$') {
+#ifdef USE_HC05
       hc05KeyPin=!hc05KeyPin;
       digitalWrite(HC05KeyPin, hc05KeyPin?LOW:HIGH);
+#endif
     }
     else if( in=='%') {
+#ifdef USE_HC05
       hc05BaudRate=!hc05BaudRate;
       if(hc05BaudRate) {
         softserial.begin(38400);
@@ -557,6 +570,7 @@ void bridge() {
       else {
         softserial.begin(9600);
       }
+#endif
     }
     else {
       softserial.print(in);
@@ -567,6 +581,8 @@ void bridge() {
   }
 }
 #endif
+
+
 
 
 
