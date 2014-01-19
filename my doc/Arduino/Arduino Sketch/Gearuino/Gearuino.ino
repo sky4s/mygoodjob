@@ -240,27 +240,31 @@ byte status;
 unsigned int maf;
 byte gear;
 float kpl;
-#define MAX_FUNC_COUNT 4
+byte rThrottlePos;
+#define MAX_FUNC_COUNT 5
+boolean idleWhenStop = false;
 
 void elmLoop() {
 
   status=elm.engineRPM(rpm);
-  if ( status== ELM_SUCCESS &&( 0 == rpm)) {
-    displayDigit(-1);
-    delay(1000);
-    return;
-  }
-  else {
+  if(idleWhenStop) {
+    if ( status== ELM_SUCCESS &&( 0 == rpm)) {
+      displayDigit(-1);
+      delay(1000);
+      return;
+    }
+    else {
 #ifdef DEBUG
-    Serial.print("engineRPM: ");
-    printStatus(status);
+      Serial.print("engineRPM: ");
+      printStatus(status);
 #endif     
+    }
   }
 
 #ifdef MULTI_ELM_FUNC
   multiElmFuncLoop(funcselect);
 #else
-  multiElmFuncLoop(0);
+  multiElmFuncLoop(4);
 #endif
 }
 
@@ -286,7 +290,6 @@ void multiElmFuncLoop(int func) {
 
   case 1:
     {
-      //      status=elm.engineRPM(rpm);
 #ifdef DEBUG
       Serial.println("RPM: "+String(rpm));
 #endif
@@ -304,9 +307,6 @@ void multiElmFuncLoop(int func) {
   case 2:
     {
       status=elm.vehicleSpeed(speed);
-      /*if ( status== ELM_SUCCESS ) {
-       status=elm.engineRPM(rpm);
-       }*/
 
       if ( status== ELM_SUCCESS ) {
         gear = getGearPosition(rpm,speed);
@@ -334,6 +334,22 @@ void multiElmFuncLoop(int func) {
       if ( status== ELM_SUCCESS ) {
         kpl=   getKPL(speed,maf);
         displayKPL(kpl);
+      }
+#ifdef DEBUG
+      else {
+        printStatus(status);
+      }
+#endif
+    }
+    break;
+    case 4:
+    {
+      status=elm.relativeThrottlePosition(rThrottlePos);
+#ifdef DEBUG
+      Serial.println("RelativeThrottlePosition: "+String(rThrottlePos));
+#endif
+      if (  status== ELM_SUCCESS ) {
+        displayDigit(rThrottlePos);
       }
 #ifdef DEBUG
       else {
@@ -581,6 +597,7 @@ void bridge() {
   }
 }
 #endif
+
 
 
 
