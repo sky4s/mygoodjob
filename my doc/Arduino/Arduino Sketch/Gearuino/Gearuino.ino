@@ -1,3 +1,6 @@
+#include <Boards.h>
+#include <Firmata.h>
+
 /*
 
  
@@ -57,8 +60,8 @@ static const int HC05KeyPin=7;
 static const int SwitchPin=4;
 static const int ReflectPin=5;
 static const int LEDPin =13;
-static const int OBD2RXPin = 2;
-static const int OBD2TXPin = 3;
+static const int OBD2RXPin = 3;
+static const int OBD2TXPin = 2;
 //============================================================================
 
 //============================================================================
@@ -344,9 +347,9 @@ void multiElmFuncLoop(int func) {
     break;
     case 4:
     {
-      status=elm.relativeThrottlePosition(rThrottlePos);
+      status=elm.throttlePosition(rThrottlePos);
 #ifdef DEBUG
-      Serial.println("RelativeThrottlePosition: "+String(rThrottlePos));
+      Serial.println("ThrottlePosition: "+String(rThrottlePos));
 #endif
       if (  status== ELM_SUCCESS ) {
         displayDigit(rThrottlePos);
