@@ -24,7 +24,7 @@
 #ifndef GEAR_ELM327_h
 #define GEAR_ELM327_h
 #include "Arduino.h"
-//#define ELM327_DEBUG
+#define ELM327_DEBUG
 
 //#define ELM_GEAR_ONLY
 
@@ -468,6 +468,7 @@ public:
   byte acceleratorPedalPositionF(byte &position);
   byte commandedThrottleActuator(byte &position);
 #endif
+  char tmp[100];
 private:
   byte o2WRVoltage(const char *sensor, unsigned int &equivRatio, unsigned int &voltage);
   byte o2WRCurrent(const char *sensor, unsigned int &equivRatio, int &current);
@@ -477,6 +478,7 @@ private:
   byte runCommand(const char *cmd, char *data, unsigned int dataLength);
   bool getBit(byte b, byte p);
   byte getFuelTrim(const char *pid, int &percent);
+public:
   void flush();
 };
 

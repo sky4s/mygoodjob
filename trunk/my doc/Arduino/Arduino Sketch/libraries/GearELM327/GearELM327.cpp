@@ -619,6 +619,7 @@ byte ELM327::getBytes( const char *mode, const char *chkMode, const char *pid, b
 	cmd[5]='\0';
 
 	status=runCommand(cmd,data,64);
+  //strcpy(data,tmp);
 #ifdef ELM327_DEBUG
   p("cmd/data: %s/%s\n",cmd,data);
 #endif
@@ -635,7 +636,7 @@ byte ELM327::getBytes( const char *mode, const char *chkMode, const char *pid, b
 	  or data[4]!=pid[1] ){
     
 #ifdef ELM327_DEBUG
-		p("%s\n",data);
+		p("data: %s\n",data);
     p("A:%c(%d) %c(%d) %c(%d) %c(%d)\n", data[0],data[0],data[1],data[1],data[3],data[3],data[4],data[4]);
     p("B:%c(%d) %c(%d) %c(%d) %c(%d)\n", chkMode[0],chkMode[0],chkMode[1],chkMode[1],pid[0],pid[0],pid[1],pid[1]);   
 #endif 
@@ -741,14 +742,14 @@ byte ELM327::runCommand(const char *cmd, char *data, unsigned int dataLength)
         if ( softserial->available() ){
     			data[counter]=softserial->read();
 #ifdef ELM327_DEBUG    			
-    			Serial.print(String(data[counter]));
+    			//Serial.print(String(data[counter]));
 #endif
           if( 0==counter && 13==data[counter]) {
             continue;
           }
 #ifdef ELM327_DEBUG 
           if(counter<3) {
-           	p("c%d %d_",counter, data[counter]);
+           	p("c%d %c(%d)\n",counter,data[counter], data[counter]);
           }
 #endif
           if (  data[counter] == '>' ){
@@ -760,7 +761,7 @@ byte ELM327::runCommand(const char *cmd, char *data, unsigned int dataLength)
         }
     }
 #ifdef ELM327_DEBUG 
-  Serial.println("counter: "+String(counter));  
+  Serial.println("counter: "+String(counter)+" "+(found?"Found":"NonFounf"));  
 #endif
 	// If there is still data pending to be read, raise OVERFLOW error.
 	if (!found  && counter>=dataLength)
