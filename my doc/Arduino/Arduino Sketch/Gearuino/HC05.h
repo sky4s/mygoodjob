@@ -95,7 +95,7 @@ public:
   String toString() {
     RSSIDesc desc=  getRSSIDesc();
     switch(desc) {
-      case Poor:
+    case Poor:
       return "Poor";
     case Weak:
       return"Weak";
@@ -291,7 +291,57 @@ public:
   } 
 };
 
+#ifndef SKIP_BT_CONNECT
+void btConnect() {
+
+  if(ELM_SUCCESS==elm.begin()) {
+    autoconnect=false;
+    Serial.println("ELM connecting test OK."); 
+  }
+  else {
+    //    softserial.begin(38400);
+    autoconnect=true;
+    Serial.println("ELM connecting test failed."); 
+  }
+
+#ifdef USE_HC05
+  if(autoconnect){
+    Serial.println("Begin connect..."); 
+    digitalWrite(HC05KeyPin, LOW);
+    State state=hc05.getState();
+    if(true==hc05.touchMaxWaitTimes) {
+      Serial.println("TouchMaxWaitTimes"); 
+    }
+    else if(CONNECTED!=state) {
+      Serial.println("Try connect");
+      int x=0;
+      for(;x<MaxBTTry&&!hc05.sendCommandAndWaitOk("AT+LINK="+String(ELM327_BT_ADDR));x++) {
+        if(16==hc05.errorcode) {
+          if(hc05.sendCommandAndWaitOk("AT+INIT")) {
+            Serial.println("SPP init.");
+          }
+          else {
+            Serial.println("SPP init failed: "+hc05.getResponses()[0]);
+          }
+        }
+      }
+
+      if(MaxBTTry==x) {
+        Serial.println("Touch max bt try.");
+      }
+      else {
+        Serial.println("BT Linked");
+      }
+      digitalWrite(HC05KeyPin, HIGH);
+    }
+
+  }
+#endif //USE_HC05
+}
+#endif //SKIP_BT_CONNECT
+
 #endif
+
 
 
 
