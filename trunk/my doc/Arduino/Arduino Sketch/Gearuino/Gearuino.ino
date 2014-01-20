@@ -1,6 +1,3 @@
-#include <Boards.h>
-#include <Firmata.h>
-
 /*
 
  
@@ -34,6 +31,9 @@
 //#define USE_BUTTON
 //#define MULTI_ELM_FUNC
 const static unsigned long DebounceDelay = 200;    // the debounce time; increase if the output flickers
+#define OBD_BAUD_RATE 38400
+#define OBD_BAUD_RATE2 9600
+#define MAX_OBD_RETRY 10
 //============================================================================
 
 //============================================================================
@@ -44,8 +44,6 @@ const static unsigned long DebounceDelay = 200;    // the debounce time; increas
 #endif
 
 static const int MaxBTTry=10;
-#define SOFT_SERIAL_BAUD_RATE 9600
-
 #define MASTER_BT_ADDR "2013,9,260146"
 #define ELM327_BT_ADDR "2013,9,110911"
 //#define ELM327_BT_ADDR "19,5D,253224"
@@ -62,6 +60,10 @@ static const int ReflectPin=5;
 static const int LEDPin =13;
 static const int OBD2RXPin = 3;
 static const int OBD2TXPin = 2;
+
+static const int LED_DATA_PIN = 12;
+static const int LED_CLK_PIN = 11;
+static const int LED_LOAD_PIN = 10;
 //============================================================================
 
 //============================================================================
@@ -72,6 +74,8 @@ static const int OBD2TXPin = 2;
 #include <SoftwareSerial.h>
 #include <Bounce.h>
 #include "car.h"
+#include "debug.h"
+#include "led.h"
 //============================================================================
 
 //============================================================================
@@ -97,17 +101,7 @@ ATCommand at;
 #endif
 #endif
 
-/*
- Now we need a LedControl to work with.
- ***** These pin numbers will probably not work with your hardware *****
- pin 12 is connected to the DataIn 
- pin 11 is connected to the CLK 
- pin 10 is connected to LOAD 
- We have only a single MAX72XX.
- */
-boolean reflect=false;
-boolean commonAnodeLED=false;
-LedControl lc=LedControl(12,11,10,1,commonAnodeLED,false,!reflect);
+extern boolean ledReflect;
 boolean autoconnect=true;
 //============================================================================
 
@@ -119,15 +113,6 @@ ELM327 elm(softserial);
 #include "elm.h"
 //============================================================================
 
-//============================================================================
-// pre-declare
-//============================================================================
-void displayDigit(int value);
-void initLedControl();
-void btConnect();
-//============================================================================
-
-
 void setup()  
 {
 #ifdef USE_HC05
@@ -136,7 +121,7 @@ void setup()
 #endif
   Serial.begin(9600);
   Serial.println("setup()");
-  softserial.begin(SOFT_SERIAL_BAUD_RATE);
+  softserial.begin(OBD_BAUD_RATE);
 
   initLedControl();
 
@@ -158,24 +143,32 @@ void setup()
 #ifndef SKIP_BT_CONNECT
   btConnect();
 #endif
+
+  //=====================================
+  // OBD linking
+  //=====================================
   byte status;
-  do{
+  for(int x=0; status!=ELM_SUCCESS;x++) {
     status=elm.begin();
 #ifdef DEBUG
     printStatus(status);
 #endif
-  }  
-  while (status!=ELM_SUCCESS);  
+    if( MAX_OBD_RETRY == x) {
+      softserial.begin(OBD_BAUD_RATE2);
+    }
+  }
   Serial.println("OBD Linked");
+  //=====================================
 
 #ifdef USE_BUTTON
   pinMode(SwitchPin, INPUT);
   pinMode(ReflectPin, INPUT);
-#endif
   pinMode(LEDPin, OUTPUT);
 
   // set initial LED state
   digitalWrite(LEDPin, LOW);
+#endif
+
 
 #ifndef DEBUG
   for(int x=0;x<2;x++) {
@@ -187,17 +180,14 @@ void setup()
 #endif
 }
 
-#ifdef BRIDGE
-void bridge();
-#endif
-void interaction();
+
+#ifdef USE_BUTTON
 void processButton(Bounce &bouncer);
+#endif
 int funcselect=0;
 
-#ifdef BRIDGE
 #ifdef TEST_IN_BRIDGE
 int count=0;
-#endif
 #endif
 
 void loop() // run over and over
@@ -216,10 +206,8 @@ void loop() // run over and over
 #ifdef TEST_IN_BRIDGE
   delay(100);
   displayDigit(count++);
-  //  Serial.println(String(count));
-  reflect=false;
+  ledReflect=false;
 #else
-  //  Serial.println("bridge");
   bridge();
 #endif
 
@@ -234,7 +222,6 @@ void loop() // run over and over
 
 
 }
-
 
 int rpm;
 byte speed;
@@ -256,12 +243,12 @@ void elmLoop() {
       delay(1000);
       return;
     }
-    else {
 #ifdef DEBUG
+    else {
       Serial.print("engineRPM: ");
       printStatus(status);
-#endif     
     }
+#endif     
   }
 
 #ifdef MULTI_ELM_FUNC
@@ -283,11 +270,6 @@ void multiElmFuncLoop(int func) {
       if (  status== ELM_SUCCESS ) {
         displayDigit(speed);
       }
-#ifdef DEBUG
-      else {
-        printStatus(status);
-      }
-#endif
     }
     break;
 
@@ -299,18 +281,12 @@ void multiElmFuncLoop(int func) {
       if ( status== ELM_SUCCESS ) {
         displayRPM(rpm);
       }
-#ifdef DEBUG
-      else {
-        printStatus(status);
-      }
-#endif
     }
     break;
 
   case 2:
     {
       status=elm.vehicleSpeed(speed);
-
       if ( status== ELM_SUCCESS ) {
         gear = getGearPosition(rpm,speed);
 #ifdef DEBUG
@@ -318,11 +294,6 @@ void multiElmFuncLoop(int func) {
 #endif
         displayGear(gear);
       }
-#ifdef DEBUG
-      else {
-        printStatus(status);
-      }
-#endif
     } 
     break;
   case 3:
@@ -335,38 +306,34 @@ void multiElmFuncLoop(int func) {
         status=elm.MAFAirFlowRate(maf);
       }
       if ( status== ELM_SUCCESS ) {
-        kpl=   getKPL(speed,maf);
+        kpl= getKPL(speed,maf);
         displayKPL(kpl);
       }
-#ifdef DEBUG
-      else {
-        printStatus(status);
-      }
-#endif
     }
     break;
-    case 4:
+  case 4:
     {
       status=elm.throttlePosition(rThrottlePos);
 #ifdef DEBUG
       Serial.println("ThrottlePosition: "+String(rThrottlePos));
 #endif
-      if (  status== ELM_SUCCESS ) {
+      if (status== ELM_SUCCESS ) {
         displayDigit(rThrottlePos);
       }
-#ifdef DEBUG
-      else {
-        printStatus(status);
-      }
-#endif
     }
     break;
 
   }
 
+#ifdef DEBUG
+  if (  status!= ELM_SUCCESS ) {
+    printStatus(status);
+  }
+#endif
+
 }
 
-
+#ifdef USE_BUTTON
 void processButton(Bounce &bouncer) {
   if(bouncer.update() == true && bouncer.read() == HIGH) {
     switch(bouncer.pin) {
@@ -375,7 +342,7 @@ void processButton(Bounce &bouncer) {
       funcselect=(MAX_FUNC_COUNT==funcselect)?0:funcselect;
       break;
     case ReflectPin:
-      reflect=!reflect;
+      ledReflect=!ledReflect;
       break;
     }
     digitalWrite(LEDPin, HIGH);
@@ -383,223 +350,20 @@ void processButton(Bounce &bouncer) {
     digitalWrite(LEDPin, LOW);
   }
 }
-
-
-void displayGear(byte gear) {
-  lc.upsidedownMode=!reflect;
-  lc.setDigit(0,2,gear,false);
-  lc.setChar(0,1,' ',false);
-  lc.setChar(0,0,' ',false);
-}
-
-void displayKPL(float kpl) {
-
-}
-
-
-void displayRPM(int rpm) {
-  int digit = rpm/1000;
-  int circle = (rpm-digit*1000)/111; //one piece is 111 rpm
-  //  Serial.println(String(circle));
-  if( 9==circle) {
-    circle=0;
-    digit++; 
-  }
-  lc.upsidedownMode=!reflect;
-  if(digit>0) {
-    lc.setDigit(0,2,digit,false);
-  }
-  else {
-    lc.setChar(0,2,' ',false);
-  }
-  byte v0=0;
-  byte v1=0;
-  //pABCDEFG
-  if( circle>=1) {
-    v1=v1|B00000100;
-  }
-  if( circle>=2) {
-    v1=v1|B00000010;
-  }
-  if( circle>=3) {
-    v1=v1|B01000000;
-  }
-  if( circle>=4) {
-    v0=v0|B01000000;
-  }
-  if( circle>=5) {
-    v0=v0|B00100000;
-  }
-  if( circle>=6) {
-    v0=v0|B00010000;
-  }
-  if( circle>=7) {
-    v0=v0|B00001000;
-  }
-  if( circle>=8) {
-    v1=v1|B00001000;
-  }
-  lc.setSegment(0,0,v0 );
-  lc.setSegment(0,1,v1 );
-}
-
-void displayDigit(int value) {
-  if(-1==value) {
-    lc.setChar(0,0,' ',false);
-    lc.setChar(0,1,' ',false);
-    lc.setChar(0,2,' ',false);
-    return;
-  }
-
-  int digit0=value%10;
-  int digit1=(value/10)%10;
-  int digit2=(value/100)%10;
-  lc.upsidedownMode=!reflect;
-  lc.setDigit(0,2,digit0,false );
-  if(value>=10) {
-    lc.setDigit(0,1,digit1,false );
-    if( value>=100) {
-      lc.setDigit(0,0,digit2,false );
-    }
-    else {
-      lc.setChar(0,0,' ',false);
-    }
-  }
-  else {
-    lc.setChar(0,1,' ',false);
-    lc.setChar(0,0,' ',false);
-  }
-
-}
-
-void initLedControl() {
-  /*
-   The MAX72XX is in power-sav  ing mode on startup,
-   we have to do a wakeup call
-   */
-  lc.shutdown(0,false);
-  /* Set the brightness to a medium values */
-  lc.setIntensity(0,15);
-  /* and clear the display */
-  lc.clearDisplay(0);
-  lc.setScanLimit(0,2);
-}
-
-#ifndef SKIP_BT_CONNECT
-void btConnect() {
-
-  if(ELM_SUCCESS==elm.begin()) {
-    autoconnect=false;
-    Serial.println("ELM connecting test OK."); 
-  }
-  else {
-    //    softserial.begin(38400);
-    autoconnect=true;
-    Serial.println("ELM connecting test failed."); 
-  }
-
-
-
-#ifdef USE_HC05
-  if(autoconnect){
-    Serial.println("Begin connect..."); 
-    digitalWrite(HC05KeyPin, LOW);
-    State state=hc05.getState();
-    if(true==hc05.touchMaxWaitTimes) {
-      Serial.println("TouchMaxWaitTimes"); 
-    }
-    else if(CONNECTED!=state) {
-      Serial.println("Try connect");
-      int x=0;
-      for(;x<MaxBTTry&&!hc05.sendCommandAndWaitOk("AT+LINK="+String(ELM327_BT_ADDR));x++) {
-        if(16==hc05.errorcode) {
-          if(hc05.sendCommandAndWaitOk("AT+INIT")) {
-            Serial.println("SPP init.");
-          }
-          else {
-            Serial.println("SPP init failed: "+hc05.getResponses()[0]);
-          }
-        }
-      }
-
-      if(MaxBTTry==x) {
-        Serial.println("Touch max bt try.");
-      }
-      else {
-        Serial.println("BT Linked");
-      }
-      digitalWrite(HC05KeyPin, HIGH);
-    }
-
-  }
-#endif //USE_HC05
-}
-#endif //SKIP_BT_CONNECT
-
-#ifdef ITERACTION
-void interaction() {
-  if(serialBuffer.listen()) {
-    String line= serialBuffer.getLine();
-    hc05.sendCommand(line);
-  }
-  if(hc05.isResponse()) {
-    if(hc05.isResponseOk()) {
-      String*vec=hc05.getResponses();
-      int size=hc05.getResponseSize();
-      if(size==0) {
-        Serial.println("Ok");
-      }
-      for(int x=0;x<size;x++) {
-        String s = vec[x];
-        Serial.println(s);
-      }
-    }
-    else {
-      Serial.println("? " +hc05.getResponses()[0]);
-    }
-  }
-}
 #endif
 
-#ifdef BRIDGE
-
-#ifdef USE_HC05
-boolean hc05KeyPin=false;
-boolean hc05BaudRate=false;
-#endif
-
-void bridge() {
-  if (Serial.available()){
-    char in = Serial.read();
-    Serial.write(in);
 
 
-    if( in=='$') {
-#ifdef USE_HC05
-      hc05KeyPin=!hc05KeyPin;
-      digitalWrite(HC05KeyPin, hc05KeyPin?LOW:HIGH);
-#endif
-    }
-    else if( in=='%') {
-#ifdef USE_HC05
-      hc05BaudRate=!hc05BaudRate;
-      if(hc05BaudRate) {
-        softserial.begin(38400);
-      }
-      else {
-        softserial.begin(9600);
-      }
-#endif
-    }
-    else {
-      softserial.print(in);
-    }
-  }
-  if (softserial.available()) {
-    Serial.write(softserial.read());
-  }
-}
-#endif
+
+
+
+
+
+
+
+
+
+
 
 
 
