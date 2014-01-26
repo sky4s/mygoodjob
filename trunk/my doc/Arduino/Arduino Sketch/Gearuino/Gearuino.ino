@@ -32,7 +32,7 @@
 //#define MULTI_ELM_FUNC
 const static unsigned long DebounceDelay = 200;    // the debounce time; increase if the output flickers
 #define OBD_BAUD_RATE 38400
-#define OBD_BAUD_RATE2 9600
+//#define OBD_BAUD_RATE2 9600
 #define MAX_OBD_RETRY 10
 //============================================================================
 
@@ -58,13 +58,14 @@ static const int HC05KeyPin=7;
 static const int SwitchPin=4;
 static const int ReflectPin=5;
 static const int LEDPin =13;
-static const int OBD2RXPin = 3;
-static const int OBD2TXPin = 2;
+static const int OBD2RXPin = 2;
+static const int OBD2TXPin = 3;
 
 static const int LED_DATA_PIN = 12;
 static const int LED_CLK_PIN = 11;
 static const int LED_LOAD_PIN = 10;
 //============================================================================
+
 
 //============================================================================
 // include
@@ -74,15 +75,17 @@ static const int LED_LOAD_PIN = 10;
 #include <SoftwareSerial.h>
 #include <Bounce.h>
 #include "car.h"
-#include "debug.h"
 #include "led.h"
+
+// RX, TX, debug　需要用到, 　所以要擺在debug　之前
+SoftwareSerial softserial(OBD2RXPin, OBD2TXPin); 
+#include "debug.h"
 //============================================================================
 
 //============================================================================
 // global variable declare
 //============================================================================
 
-SoftwareSerial softserial(OBD2RXPin, OBD2TXPin); // RX, TX
 #ifdef USE_BUTTON
 Bounce switchBouncer = Bounce( SwitchPin,DebounceDelay ); 
 Bounce reflectBouncer = Bounce( ReflectPin,DebounceDelay ); 
@@ -147,16 +150,17 @@ void setup()
   //=====================================
   // OBD linking
   //=====================================
-  byte status;
-  for(int x=0; status!=ELM_SUCCESS;x++) {
-    status=elm.begin();
-#ifdef DEBUG
-    printStatus(status);
-#endif
-    if( MAX_OBD_RETRY == x) {
-      softserial.begin(OBD_BAUD_RATE2);
-    }
-  }
+  //  byte status=ELM_UNABLE_TO_CONNECT;
+  //  for(int x=0; status!=ELM_SUCCESS;x++) {
+  //    status=elm.begin();
+  //#ifdef DEBUG
+  //    printStatus(status);
+  //#endif
+  //    if( MAX_OBD_RETRY == x) {
+  //      softserial.begin(OBD_BAUD_RATE2);
+  //    }
+  //  }
+  while(ELM_SUCCESS!=elm.begin());
   Serial.println("OBD Linked");
   //=====================================
 
@@ -351,6 +355,7 @@ void processButton(Bounce &bouncer) {
   }
 }
 #endif
+
 
 
 
