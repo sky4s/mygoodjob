@@ -761,7 +761,7 @@ byte ELM327::runCommand(const char *cmd, char *data, unsigned int dataLength)
         }
     }
 #ifdef ELM327_DEBUG 
-  Serial.println("counter: "+String(counter)+" "+(found?"Found":"NonFounf"));  
+  Serial.println("counter: "+String(counter)+" "+(found?"Found >":"NonFound >"));  
 #endif
 	// If there is still data pending to be read, raise OVERFLOW error.
 	if (!found  && counter>=dataLength)

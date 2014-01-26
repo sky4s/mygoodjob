@@ -24,7 +24,7 @@
 #ifndef GEAR_ELM327_h
 #define GEAR_ELM327_h
 #include "Arduino.h"
-#define ELM327_DEBUG
+//#define ELM327_DEBUG
 
 //#define ELM_GEAR_ONLY
 
