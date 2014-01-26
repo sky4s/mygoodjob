@@ -258,7 +258,7 @@ void elmLoop() {
 #ifdef MULTI_ELM_FUNC
   multiElmFuncLoop(funcselect);
 #else
-  multiElmFuncLoop(4);
+  multiElmFuncLoop(0);
 #endif
 }
 
