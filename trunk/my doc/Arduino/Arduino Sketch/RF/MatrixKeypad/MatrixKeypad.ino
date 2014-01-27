@@ -1,16 +1,24 @@
 int keypressed = 0;
 int keyboardPin = 0;    // Analog input pin that the keypad is attached to
 int keyboardValue = 0;   // value read from the keyboard
+int RFPin = 2;
+int LEDPin = 13;
 
 void setup(){
 
 
   Serial.begin(9600);  //hardware serial to PC
-
+  pinMode(RFPin,OUTPUT);	 //设置13脚为数据发送口
+  pinMode(LEDPin,OUTPUT);
 }
 
 
 void loop(){
+//  if(true) {
+//    digitalWrite(RFPin,LOW);
+//    digitalWrite(LEDPin,HIGH);
+//    return;
+//  }
 
 
   keyboardValue = analogRead(keyboardPin); // read the keyboard value (0 - 1023)
@@ -18,11 +26,25 @@ void loop(){
     //do nothing until a key is pressed
     keyboardValue = analogRead(keyboardPin); 
     delay(50);
+    digitalWrite(RFPin,LOW);
+    Serial.println("wait key pressed");   
   }//end of do nothing till a key is pressed
 
 
   readkeyboard(); //get the value of key being pressed "keypressed" i.e. 0-9
-
+//  if(5==keypressed) {
+//
+//    digitalWrite(RFPin,HIGH);	 //发送信号为方波周期1s
+//    digitalWrite(LEDPin,HIGH);
+//    delay(500);
+//    digitalWrite(RFPin,LOW);
+//    digitalWrite(LEDPin,LOW);
+//    delay(500);
+//    Serial.println("5 pressed");   
+//  }
+//  else {
+//    Serial.println("Not 5 pressed");       
+//  }
 }
 
 
@@ -79,7 +101,11 @@ void readkeyboard(){
 
 
   Serial.println(keypressed);      // print the value back to the Serial view window on your PC
-  delay(500);                     // wait 1000 milliseconds before the next loop
+  delay(200);                     // wait 1000 milliseconds before the next loop
 }
 //end of read the keyboard routine
+
+
+
+
 
