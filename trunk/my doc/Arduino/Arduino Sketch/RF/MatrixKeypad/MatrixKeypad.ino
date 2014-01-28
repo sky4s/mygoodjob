@@ -1,14 +1,14 @@
-int keypressed = 0;
+char keypressed = 0;
 int keyboardPin = 0;    // Analog input pin that the keypad is attached to
 int keyboardValue = 0;   // value read from the keyboard
-int RFPin = 2;
+//int RFPin = 2;
 int LEDPin = 13;
 
 void setup(){
 
 
   Serial.begin(9600);  //hardware serial to PC
-  pinMode(RFPin,OUTPUT);	 //设置13脚为数据发送口
+//  pinMode(RFPin,OUTPUT);	 //设置13脚为数据发送口
   pinMode(LEDPin,OUTPUT);
 }
 
@@ -26,7 +26,7 @@ void loop(){
     //do nothing until a key is pressed
     keyboardValue = analogRead(keyboardPin); 
     delay(50);
-    digitalWrite(RFPin,LOW);
+//    digitalWrite(RFPin,LOW);
     Serial.println("wait key pressed");   
   }//end of do nothing till a key is pressed
 
@@ -53,43 +53,43 @@ void loop(){
 void readkeyboard(){
   keyboardValue = analogRead(keyboardPin); // read the value (0-1023)
   if (keyboardValue <25){
-    keypressed = 0;
+    keypressed = '_';
   }
   if ((keyboardValue >25) && (keyboardValue < 67)){
-    keypressed = 1;
+    keypressed = '+';
   }
   if ((keyboardValue >67) && (keyboardValue < 108)){
-    keypressed = 2;
+    keypressed = 'P';
   }
   if ((keyboardValue >108) && (keyboardValue < 162)){
-    keypressed = 3;
+    keypressed = '_';
   }
   if ((keyboardValue >162) && (keyboardValue < 253)){
-    keypressed = 4;
+    keypressed = 'U';
   }
   if ((keyboardValue >253) && (keyboardValue < 361)){
-    keypressed = 5;
+    keypressed = 'L';
   }
   if ((keyboardValue >361) && (keyboardValue < 479)){
-    keypressed = 6;
+    keypressed = '-';
   }
   if ((keyboardValue >479) && (keyboardValue < 619)){
-    keypressed = 7;
+    keypressed = 'R';
   }
   if ((keyboardValue >619) && (keyboardValue < 765)){
-    keypressed = 8;
+    keypressed = 'D';
   }
   if ((keyboardValue >765) && (keyboardValue < 819)){
-    keypressed = 9;
+    keypressed = '_';
   }
   if ((keyboardValue >819) && (keyboardValue < 889)){
-    keypressed = 0;
+    keypressed = 'M';
   }
   if ((keyboardValue >889) && (keyboardValue < 938)){
-    keypressed = 0;
+    keypressed = '_';
   }
   if (keyboardValue >938){
-    keypressed = 0;
+    keypressed = 'S';
   }
   //NOTE: the values used above are all halfway between the value obtained with each keypress in previous test sketch 
 
