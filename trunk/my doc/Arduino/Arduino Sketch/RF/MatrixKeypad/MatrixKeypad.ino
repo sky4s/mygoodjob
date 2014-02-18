@@ -17,12 +17,6 @@ void setup() {
 
 
 void loop() {
-  //  if(true) {
-  //    digitalWrite(RFPin,LOW);
-  //    digitalWrite(LEDPin,HIGH);
-  //    return;
-  //  }
-
 
   keyboardValue = analogRead(keyboardPin); // read the keyboard value (0 - 1023)
   while (keyboardValue < 25) {
