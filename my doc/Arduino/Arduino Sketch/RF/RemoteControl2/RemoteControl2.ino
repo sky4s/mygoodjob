@@ -21,6 +21,7 @@ void setup()
   //    Serial.println("setup");
 
   pinMode(5, INPUT);
+//  pinMode(13, OUTPUT);
   // Initialise the IO and ISR
   //    vw_set_ptt_inverted(true); // Required for DR3100
   vw_setup(2000);	 // Bits per sec
@@ -40,11 +41,11 @@ void loop()
 
 //  const char *msg = "0";
 //
-  digitalWrite(13, true); // Flash a light to show transmitting
+//  digitalWrite(13, true); // Flash a light to show transmitting
   vw_send((uint8_t *)msg, strlen(msg));
   vw_wait_tx(); // Wait until the whole message is gone
-  digitalWrite(13, false);
-  delay(200);
+//  digitalWrite(13, false);
+//  delay(200);
 }
 
 //read the keyboard routine
@@ -85,10 +86,7 @@ void readkeyboard() {
   }//wait until key no longer being pressed before continuing
 
 
-#ifdef USE_SERIAL
-  Serial.println(keypressed);      // print the value back to the Serial view window on your PC
-#endif
-  delay(200);                     // wait 1000 milliseconds before the next loop
+  delay(50);                     // wait 1000 milliseconds before the next loop
 }
 //end of read the keyboard routine
 
