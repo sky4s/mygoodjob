@@ -35,7 +35,7 @@ void loop()
   while (keyboardValue < 25) {
     //do nothing until a key is pressed
     keyboardValue = analogRead(keyboardPin);
-    delay(50);
+    delay(50);//if no input, just wait 50ms, and keep in loop
   }//end of do nothing till a key is pressed
 
   readkeyboard(); //get the value of key being pressed "keypressed" i.e. 0-9    
@@ -86,8 +86,9 @@ void readkeyboard() {
     delay (100);
     keyboardValue = analogRead(keyboardPin); // read the value (0-1023)
   }//wait until key no longer being pressed before continuing
+  //for de-bounce usage
 
-
+  //maybe can pass delay?
   delay(50);                     // wait 1000 milliseconds before the next loop
 }
 //end of read the keyboard routine
