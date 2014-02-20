@@ -21,6 +21,8 @@ void setup()
   //    Serial.println("setup");
 
   pinMode(5, INPUT);
+  analogReference(EXTERNAL);
+  vw_set_tx_pin(1);
 //  pinMode(13, OUTPUT);
   // Initialise the IO and ISR
   //    vw_set_ptt_inverted(true); // Required for DR3100
