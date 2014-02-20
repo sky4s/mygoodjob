@@ -31,23 +31,22 @@ void setup()
 
 void loop()
 {
-  keyboardValue = analogRead(keyboardPin); //Read P5
-  while (keyboardValue < 25) {
-    //do nothing until a key is pressed
-    keyboardValue = analogRead(keyboardPin);
-    delay(50);//if no input, just wait 50ms, and keep in loop
-  }//end of do nothing till a key is pressed
-
-  readkeyboard(); //get the value of key being pressed "keypressed" i.e. 0-9    
-  msg[0]=keypressed;
-
-//  const char *msg = "0";
+//  keyboardValue = analogRead(keyboardPin); //Read P5
+//  while (keyboardValue < 25) {
+//    //do nothing until a key is pressed
+//    keyboardValue = analogRead(keyboardPin);
+//    delay(50);//if no input, just wait 50ms, and keep in loop
+//  }//end of do nothing till a key is pressed
 //
+//  readkeyboard(); //get the value of key being pressed "keypressed" i.e. 0-9    
+//  msg[0]=keypressed;
+
+ 
 //  digitalWrite(13, true); // Flash a light to show transmitting
   vw_send((uint8_t *)msg, strlen(msg));
   vw_wait_tx(); // Wait until the whole message is gone
 //  digitalWrite(13, false);
-//  delay(200);
+  delay(200);
 }
 
 //read the keyboard routine
