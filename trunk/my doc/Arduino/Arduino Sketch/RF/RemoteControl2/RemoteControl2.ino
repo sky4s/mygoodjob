@@ -14,6 +14,7 @@ char keypressed = 0;
 int keyboardPin = 0;    // Analog input pin that the keypad is attached to
 int keyboardValue = 0;   // value read from the keyboard
 char *msg = " ";
+int ledPin=1;
 
 void setup()
 {
@@ -23,7 +24,7 @@ void setup()
   pinMode(5, INPUT);
   analogReference(EXTERNAL);
   vw_set_tx_pin(1);
-//  pinMode(13, OUTPUT);
+  pinMode(ledPin, OUTPUT);
   // Initialise the IO and ISR
   //    vw_set_ptt_inverted(true); // Required for DR3100
   vw_setup(2000);	 // Bits per sec
@@ -31,22 +32,25 @@ void setup()
 
 void loop()
 {
-//  keyboardValue = analogRead(keyboardPin); //Read P5
-//  while (keyboardValue < 25) {
-//    //do nothing until a key is pressed
-//    keyboardValue = analogRead(keyboardPin);
-//    delay(50);//if no input, just wait 50ms, and keep in loop
-//  }//end of do nothing till a key is pressed
-//
-//  readkeyboard(); //get the value of key being pressed "keypressed" i.e. 0-9    
-//  msg[0]=keypressed;
+  //  keyboardValue = analogRead(keyboardPin); //Read P5
+  //  while (keyboardValue < 25) {
+  //    //do nothing until a key is pressed
+  //    keyboardValue = analogRead(keyboardPin);
+  //    delay(50);//if no input, just wait 50ms, and keep in loop
+  //  }//end of do nothing till a key is pressed
+  //
+  //  readkeyboard(); //get the value of key being pressed "keypressed" i.e. 0-9    
+  //  msg[0]=keypressed;
 
- 
-//  digitalWrite(13, true); // Flash a light to show transmitting
+
+  //  digitalWrite(ledPin, true); // Flash a light to show transmitting
+
   vw_send((uint8_t *)msg, strlen(msg));
   vw_wait_tx(); // Wait until the whole message is gone
-//  digitalWrite(13, false);
-  delay(200);
+
+  delay(500);  
+  //  digitalWrite(ledPin, false);
+  //  delay(500);  
 }
 
 //read the keyboard routine
@@ -91,5 +95,8 @@ void readkeyboard() {
   delay(50);                     // wait 1000 milliseconds before the next loop
 }
 //end of read the keyboard routine
+
+
+
 
 
