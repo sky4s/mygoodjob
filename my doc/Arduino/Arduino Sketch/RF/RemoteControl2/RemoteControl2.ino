@@ -13,21 +13,28 @@
 char keypressed = 0;
 int keyboardPin = 0;    // Analog input pin that the keypad is attached to
 int keyboardValue = 0;   // value read from the keyboard
-char *msg = " ";
-int ledPin=1;
+char *msg = "1";
+//int ledPin=1;
+int RFPin=5;
 
 void setup()
 {
   //    Serial.begin(9600);	  // Debugging only
   //    Serial.println("setup");
 
-  pinMode(5, INPUT);
-  analogReference(EXTERNAL);
+  pinMode(RFPin, OUTPUT);
+  //  analogReference(EXTERNAL);
   vw_set_tx_pin(1);
-  pinMode(ledPin, OUTPUT);
+  //  pinMode(ledPin, OUTPUT);
   // Initialise the IO and ISR
   //    vw_set_ptt_inverted(true); // Required for DR3100
   vw_setup(2000);	 // Bits per sec
+  for(int t=0;t<3;t++) {
+    digitalWrite(1, true);
+    delay(100); 
+    digitalWrite(1, false);
+    delay(100); 
+  }
 }
 
 void loop()
@@ -45,10 +52,18 @@ void loop()
 
   //  digitalWrite(ledPin, true); // Flash a light to show transmitting
 
+  digitalWrite(RFPin, true);
   vw_send((uint8_t *)msg, strlen(msg));
   vw_wait_tx(); // Wait until the whole message is gone
+  digitalWrite(RFPin, false);
 
-  delay(500);  
+  delay(1000); 
+  if(!strcmp(msg,"1")) {
+    msg="2";
+  }
+  else {
+    msg="1";
+  }
   //  digitalWrite(ledPin, false);
   //  delay(500);  
 }
@@ -95,6 +110,10 @@ void readkeyboard() {
   delay(50);                     // wait 1000 milliseconds before the next loop
 }
 //end of read the keyboard routine
+
+
+
+
 
 
 
