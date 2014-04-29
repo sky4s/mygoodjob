@@ -30,6 +30,7 @@ void setup() {
   lc.setIntensity(1,15);
   /* and clear the display */
   lc.clearDisplay(1);
+  lc.setScanLimit(1,3);
 }
 
 
