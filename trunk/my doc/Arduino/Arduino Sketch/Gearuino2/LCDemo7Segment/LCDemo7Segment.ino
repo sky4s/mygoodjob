@@ -1,5 +1,5 @@
 //We always have to include the library
-#include "LedControl.h"
+#include "GearLedControl.h"
 
 /*
  Now we need a LedControl to work with.
@@ -12,7 +12,7 @@
 LedControl lc=LedControl(12,11,10,2);
 
 /* we always wait a bit between updates of the display */
-unsigned long delaytime=250;
+unsigned long delaytime=1000;
 
 void setup() {
   /*
@@ -24,6 +24,12 @@ void setup() {
   lc.setIntensity(0,15);
   /* and clear the display */
   lc.clearDisplay(0);
+
+  lc.shutdown(1,false);
+  /* Set the brightness to a medium values */
+  lc.setIntensity(1,15);
+  /* and clear the display */
+  lc.clearDisplay(1);
 }
 
 
@@ -64,7 +70,7 @@ void scrollDigits() {
     lc.setDigit(0,5,i+1,false);
     lc.setDigit(0,7,i+2,false);
     lc.setDigit(0,2,i+3,false);
-//    lc.setDigit(0,3,i+4,false);
+    //    lc.setDigit(0,3,i+4,false);
     lc.setDigit(0,6,i+4,false);
     lc.setDigit(0,4,i+5,false);
     lc.setDigit(0,0,i+6,false);
@@ -74,10 +80,56 @@ void scrollDigits() {
   delay(delaytime);
 }
 
+//=======================================================================================
+// 陰極: 11111111 00     000000 2222
+//
+int posarray[8] = {
+  1,6,2 ,7,4,0,5,3
+};
+
 void loop() { 
-  writeArduinoOn7Segment();
-  scrollDigits();
+  //  writeArduinoOn7Segment();
+  //  scrollDigits();
+
+  int addr=1;
+  //  for(int x=0;x<=9;x++) {
+  //    lc.setDigit(addr,1,x,false);
+  //    lc.setDigit(addr,5,(x+1)%10,false);
+  //    lc.setDigit(addr,7,(x+2)%10,false);
+  //    //    lc.setIntensity(0,1);
+  //    lc.setDigit(addr,2,(x+3)%10,false);
+  //    //    lc.setIntensity(0,15);
+  //    lc.setDigit(addr,6,(x+4)%10,false);
+  //    lc.setDigit(addr,4,(x+5)%10,false);
+  //    lc.setDigit(addr,0,(x+6)%10,false);
+  //    delay(delaytime);
+  //  }
+  //  lc.clearDisplay(1);
+
+  for(int x=0;x<8;x++) {
+    int pos=posarray[x];
+    lc.clearDisplay(1);
+    lc.setLed(1,1,pos,true);
+    delay(delaytime);
+  }
+
+  //  }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
