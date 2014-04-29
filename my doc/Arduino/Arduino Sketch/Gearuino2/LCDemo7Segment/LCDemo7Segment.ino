@@ -12,7 +12,7 @@
 LedControl lc=LedControl(12,11,10,2);
 
 /* we always wait a bit between updates of the display */
-unsigned long delaytime=1000;
+unsigned long delaytime=100;
 
 void setup() {
   /*
@@ -86,6 +86,9 @@ void scrollDigits() {
 int posarray[8] = {
   1,6,2 ,7,4,0,5,3
 };
+int posarray2[8] = {
+  3,5,0,4,7,2,6,1
+};
 
 void loop() { 
   //  writeArduinoOn7Segment();
@@ -112,9 +115,22 @@ void loop() {
     lc.setLed(1,1,pos,true);
     delay(delaytime);
   }
-
+  for(int x=0;x<8;x++) {
+    int pos=posarray2[x];
+    lc.clearDisplay(1);
+    lc.setLed(1,0,pos,true);
+    delay(delaytime);
+  }
+  for(int x=0;x<4;x++) {
+    int pos=posarray[x];
+    lc.clearDisplay(1);
+    lc.setLed(1,2,pos,true);
+    delay(delaytime);
+  }
   //  }
 }
+
+
 
 
 
