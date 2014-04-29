@@ -1,6 +1,6 @@
 /*
 
- 
+
  */
 //============================================================================
 // for debug setting
@@ -43,7 +43,7 @@ const static unsigned long DebounceDelay = 200;    // the debounce time; increas
 #define USE_HC05
 #endif
 
-static const int MaxBTTry=10;
+static const int MaxBTTry = 10;
 #define MASTER_BT_ADDR "2013,9,260146"
 #define ELM327_BT_ADDR "2013,9,110911"
 //#define ELM327_BT_ADDR "19,5D,253224"
@@ -53,11 +53,11 @@ static const int MaxBTTry=10;
 // pin define
 //============================================================================
 #ifdef USE_HC05
-static const int HC05KeyPin=7;
+static const int HC05KeyPin = 7;
 #endif
-static const int SwitchPin=4;
-static const int ReflectPin=5;
-static const int LEDPin =13;
+static const int SwitchPin = 4;
+static const int ReflectPin = 5;
+static const int LEDPin = 13;
 static const int OBD2RXPin = 2;
 static const int OBD2TXPin = 3;
 
@@ -78,7 +78,7 @@ static const int LED_LOAD_PIN = 10;
 #include "led.h"
 
 // RX, TX, debug　需要用到, 　所以要擺在debug　之前
-SoftwareSerial softserial(OBD2RXPin, OBD2TXPin); 
+SoftwareSerial softserial(OBD2RXPin, OBD2TXPin);
 #include "debug.h"
 //============================================================================
 
@@ -87,8 +87,8 @@ SoftwareSerial softserial(OBD2RXPin, OBD2TXPin);
 //============================================================================
 
 #ifdef USE_BUTTON
-Bounce switchBouncer = Bounce( SwitchPin,DebounceDelay ); 
-Bounce reflectBouncer = Bounce( ReflectPin,DebounceDelay ); 
+Bounce switchBouncer = Bounce( SwitchPin, DebounceDelay );
+Bounce reflectBouncer = Bounce( ReflectPin, DebounceDelay );
 #endif
 
 #ifdef USE_SERIAL_CONTROL
@@ -105,7 +105,7 @@ ATCommand at;
 #endif
 
 extern boolean ledReflect;
-boolean autoconnect=true;
+boolean autoconnect = true;
 //============================================================================
 
 //============================================================================
@@ -116,7 +116,10 @@ ELM327 elm(softserial);
 #include "elm.h"
 //============================================================================
 
-void setup()  
+//===============================================
+// setup
+//===============================================
+void setup()
 {
 #ifdef USE_HC05
   pinMode(HC05KeyPin, OUTPUT);
@@ -129,7 +132,7 @@ void setup()
   initLedControl();
 
 #ifndef DEBUG
-  for(int x=0;x<3;x++) {
+  for (int x = 0; x < 3; x++) {
     displayDigit(168);
     delay(800);
     displayDigit(-1);
@@ -138,8 +141,8 @@ void setup()
 #endif
 
 #ifdef SKIP_SETUP
-  if(true) {
-    return; 
+  if (true) {
+    return;
   }
 #endif
 
@@ -160,7 +163,7 @@ void setup()
   //      softserial.begin(OBD_BAUD_RATE2);
   //    }
   //  }
-  while(ELM_SUCCESS!=elm.begin());
+  while (ELM_SUCCESS != elm.begin());
   Serial.println("OBD Linked");
   //=====================================
 
@@ -175,7 +178,7 @@ void setup()
 
 
 #ifndef DEBUG
-  for(int x=0;x<2;x++) {
+  for (int x = 0; x < 2; x++) {
     displayDigit(0);
     delay(1000);
     displayDigit(-1);
@@ -183,17 +186,19 @@ void setup()
   }
 #endif
 }
+//===============================================
 
 
 #ifdef USE_BUTTON
 void processButton(Bounce &bouncer);
 #endif
-int funcselect=0;
+int funcselect = 0;
 
 #ifdef TEST_IN_BRIDGE
-int count=0;
+int count = 0;
 #endif
 
+//===============================================
 void loop() // run over and over
 {
 
@@ -210,7 +215,7 @@ void loop() // run over and over
 #ifdef TEST_IN_BRIDGE
   delay(100);
   displayDigit(count++);
-  ledReflect=false;
+  ledReflect = false;
 #else
   bridge();
 #endif
@@ -223,9 +228,9 @@ void loop() // run over and over
   processButton(switchBouncer);
   processButton(reflectBouncer);
 #endif
-
-
 }
+
+//===============================================
 
 int rpm;
 byte speed;
@@ -238,11 +243,12 @@ byte rThrottlePos;
 #define MAX_FUNC_COUNT 5
 boolean idleWhenStop = false;
 
+//===============================================
 void elmLoop() {
 
-  status=elm.engineRPM(rpm);
-  if(idleWhenStop) {
-    if ( status== ELM_SUCCESS &&( 0 == rpm)) {
+  status = elm.engineRPM(rpm);
+  if (idleWhenStop) {
+    if ( status == ELM_SUCCESS && ( 0 == rpm)) {
       displayDigit(-1);
       delay(1000);
       return;
@@ -252,7 +258,7 @@ void elmLoop() {
       Serial.print("engineRPM: ");
       printStatus(status);
     }
-#endif     
+#endif
   }
 
 #ifdef MULTI_ELM_FUNC
@@ -262,92 +268,96 @@ void elmLoop() {
 #endif
 }
 
-
+//===============================================
+// multiElmFuncLoop
+//===============================================
 void multiElmFuncLoop(int func) {
-  switch(func) {
-  case 0:
-    {
-      status=elm.vehicleSpeed(speed);
+  switch (func) {
+    case 0:
+      {
+        status = elm.vehicleSpeed(speed);
 #ifdef DEBUG
-      Serial.println("Speed: "+String(speed));
+        Serial.println("Speed: " + String(speed));
 #endif
-      if (  status== ELM_SUCCESS ) {
-        displayDigit(speed);
+        if (  status == ELM_SUCCESS ) {
+          displayDigit(speed);
+        }
       }
-    }
-    break;
+      break;
 
-  case 1:
-    {
+    case 1:
+      {
 #ifdef DEBUG
-      Serial.println("RPM: "+String(rpm));
+        Serial.println("RPM: " + String(rpm));
 #endif
-      if ( status== ELM_SUCCESS ) {
-        displayRPM(rpm);
+        if ( status == ELM_SUCCESS ) {
+          displayRPM(rpm);
+        }
       }
-    }
-    break;
+      break;
 
-  case 2:
-    {
-      status=elm.vehicleSpeed(speed);
-      if ( status== ELM_SUCCESS ) {
-        gear = getGearPosition(rpm,speed);
+    case 2:
+      {
+        status = elm.vehicleSpeed(speed);
+        if ( status == ELM_SUCCESS ) {
+          gear = getGearPosition(rpm, speed);
 #ifdef DEBUG
-        Serial.println("Gear: "+String(gear));
+          Serial.println("Gear: " + String(gear));
 #endif
-        displayGear(gear);
+          displayGear(gear);
+        }
       }
-    } 
-    break;
-  case 3:
-    {
-      status=elm.vehicleSpeed(speed);
+      break;
+    case 3:
+      {
+        status = elm.vehicleSpeed(speed);
 #ifdef DEBUG
-      Serial.println("Speed: "+String(speed));
+        Serial.println("Speed: " + String(speed));
 #endif
-      if (  status== ELM_SUCCESS ) {
-        status=elm.MAFAirFlowRate(maf);
+        if (  status == ELM_SUCCESS ) {
+          status = elm.MAFAirFlowRate(maf);
+        }
+        if ( status == ELM_SUCCESS ) {
+          kpl = getKPL(speed, maf);
+          displayKPL(kpl);
+        }
       }
-      if ( status== ELM_SUCCESS ) {
-        kpl= getKPL(speed,maf);
-        displayKPL(kpl);
-      }
-    }
-    break;
-  case 4:
-    {
-      status=elm.throttlePosition(rThrottlePos);
+      break;
+    case 4:
+      {
+        status = elm.throttlePosition(rThrottlePos);
 #ifdef DEBUG
-      Serial.println("ThrottlePosition: "+String(rThrottlePos));
+        Serial.println("ThrottlePosition: " + String(rThrottlePos));
 #endif
-      if (status== ELM_SUCCESS ) {
-        displayDigit(rThrottlePos);
+        if (status == ELM_SUCCESS ) {
+          displayDigit(rThrottlePos);
+        }
       }
-    }
-    break;
+      break;
 
   }
 
 #ifdef DEBUG
-  if (  status!= ELM_SUCCESS ) {
+  if (  status != ELM_SUCCESS ) {
     printStatus(status);
   }
 #endif
 
 }
 
+//===============================================
+
 #ifdef USE_BUTTON
 void processButton(Bounce &bouncer) {
-  if(bouncer.update() == true && bouncer.read() == HIGH) {
-    switch(bouncer.pin) {
-    case SwitchPin:
-      funcselect++;
-      funcselect=(MAX_FUNC_COUNT==funcselect)?0:funcselect;
-      break;
-    case ReflectPin:
-      ledReflect=!ledReflect;
-      break;
+  if (bouncer.update() == true && bouncer.read() == HIGH) {
+    switch (bouncer.pin) {
+      case SwitchPin:
+        funcselect++;
+        funcselect = (MAX_FUNC_COUNT == funcselect) ? 0 : funcselect;
+        break;
+      case ReflectPin:
+        ledReflect = !ledReflect;
+        break;
     }
     digitalWrite(LEDPin, HIGH);
     delay(32);
@@ -355,117 +365,5 @@ void processButton(Bounce &bouncer) {
   }
 }
 #endif
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
