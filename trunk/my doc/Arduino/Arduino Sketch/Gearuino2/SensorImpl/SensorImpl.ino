@@ -19,10 +19,26 @@ void setup(){
   lc.setIntensity(0,15);
   /* and clear the display */
   lc.clearDisplay(0);
+  lc.setScanLimit(0,6);
+
+  lc.shutdown(1,false);
+  /* Set the brightness to a medium values */
+  lc.setIntensity(1,15);
+  /* and clear the display */
+  lc.clearDisplay(1);
+  lc.setScanLimit(1,3);
 #endif
 }
 
-//int tmp=0;
+int keypressed = 0;
+int keyboardPin = 0;    // Analog input pin that the keypad is attached to
+int keyboardValue = 0;   // value read from the keyboard
+
+int photocellPin = 2; // 光敏電阻 (photocell) 接在 anallog pin 2
+int photocellVal = 0; // photocell variable
+
+
+unsigned long delaytime=1;
 void loop(){
 
 
@@ -33,21 +49,100 @@ void loop(){
   //    delay(50);
   //  }//end of do nothing till a key is pressed
 
-
+  //=================================================================================
+  // keypad proc
+  //=================================================================================
   int key= readkeyboard(); //get the value of key being pressed "keypressed" i.e. 0-9
   if( key!=-1) {
     Serial.println(key);  
 #ifdef USE_7SEG_LED
-    lc.setDigit(0,3,key,false);
+    setGearDigit(key);
 #endif
     //    Serial.println("*"+String(tmp));   
   }
+  //=================================================================================
+
+
+  //=================================================================================
+  // photocell proc
+  //=================================================================================
+  photocellVal = analogRead(photocellPin);
+  setKPLDigit(photocellVal);
+  //=================================================================================
+
   delay(100); 
 
+  //  for(int x=0;x<8;x++) {
+  //    int pos=posarray[x];
+  //    lc.clearDisplay(1);
+  //    lc.setLed(1,1,pos,true);
+  //    delay(delaytime);
+  //  }
+  //  for(int x=0;x<8;x++) {
+  //    int pos=posarray2[x];
+  //    lc.clearDisplay(1);
+  //    lc.setLed(1,0,pos,true);
+  //    delay(delaytime);
+  //  }
+  //  for(int x=0;x<4;x++) {
+  //    int pos=posarray[x];
+  //    lc.clearDisplay(1);
+  //    lc.setLed(1,2,pos,true);
+  //    delay(delaytime);
+  //  }
+  for(int x=0;x<20;x++) {
+    lc.clearDisplay(1);
+    setBar(x);
+    delay(delaytime);
+  }
+  lc.clearDisplay(1);
 }
-int keypressed = 0;
-int keyboardPin = 0;    // Analog input pin that the keypad is attached to
-int keyboardValue = 0;   // value read from the keyboard
+int posarray[8] = {
+  1,6,2 ,7,4,0,5,3
+};
+int posarray2[8] = {
+  3,5,0,4,7,2,6,1
+};
+byte barRowArray[3]={
+  1,0,2};
+byte barColArray[20]={ 
+  1,6,2 ,7,4,0,5,3,3,5,0,4,7,2,6,1,1,6,2 ,7};
+void setBar(byte count) {  
+  int row = barRowArray[count/8];
+  //  int col = count%8;
+  int col=  barColArray[count];
+  lc.setLed(1,row,col,true);
+}
+
+
+void setGearDigit(byte gear)  {
+  lc.setDigit(0,2,gear,false);
+}
+void setSpeedDigit(byte speed) {
+  int num0=speed%10;
+  int num10=speed/10%10;
+  int num100=speed/100%10;
+  lc.setDigit(0,1,num0,false);
+  lc.setDigit(0,5,num10,false);
+  lc.setDigit(0,3,num100,false);
+}
+
+void setKPLDigit(float kpl) {
+  if( kpl == (int)kpl){
+    //只有整數
+    int ikpl = (int)kpl;
+    int num0=ikpl%10;
+    int num10=ikpl/10%10;
+    int num100=ikpl/100%10;
+    lc.setDigit(0,6,num0,false);
+    lc.setDigit(0,4,num10,false);
+    lc.setDigit(0,0,num100,false);
+  }
+  else {
+    //有小數
+  }
+}
+
 
 
 
@@ -111,6 +206,24 @@ int readkeyboard(){
   //  delay(100);                     // wait 1000 milliseconds before the next loop
 }
 //end of read the keyboard routine
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
