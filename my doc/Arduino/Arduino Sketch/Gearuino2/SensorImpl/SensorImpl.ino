@@ -26,7 +26,8 @@ void setup(){
   lc.setIntensity(1,15);
   /* and clear the display */
   lc.clearDisplay(1);
-  lc.setScanLimit(1,3);
+  //  lc.setScanLimit(1,3);
+  lc.setScanLimit(1,2);
 #endif
 }
 
@@ -36,7 +37,7 @@ int keyboardValue = 0;   // value read from the keyboard
 
 int photocellPin = 2; // 光敏電阻 (photocell) 接在 anallog pin 2
 int photocellVal = 0; // photocell variable
-
+float f=0;
 
 unsigned long delaytime=1;
 void loop(){
@@ -67,46 +68,42 @@ void loop(){
   // photocell proc
   //=================================================================================
   photocellVal = analogRead(photocellPin);
-  setKPLDigit(photocellVal);
+  setSpeedDigit(photocellVal);
+  //  for(int x=0;x<1000;x++) {
+  //    setSpeedDigit(x);
+  //    delay(10); 
+  //  }
   //=================================================================================
 
-  delay(100); 
+  delay(160); 
 
-  //  for(int x=0;x<8;x++) {
-  //    int pos=posarray[x];
-  //    lc.clearDisplay(1);
-  //    lc.setLed(1,1,pos,true);
-  //    delay(delaytime);
-  //  }
-  //  for(int x=0;x<8;x++) {
-  //    int pos=posarray2[x];
-  //    lc.clearDisplay(1);
-  //    lc.setLed(1,0,pos,true);
-  //    delay(delaytime);
-  //  }
-  //  for(int x=0;x<4;x++) {
-  //    int pos=posarray[x];
-  //    lc.clearDisplay(1);
-  //    lc.setLed(1,2,pos,true);
-  //    delay(delaytime);
-  //  }
-  for(int x=0;x<20;x++) {
-    lc.clearDisplay(1);
-    setBar(x);
-    delay(delaytime);
-  }
+  //=================================================================================
+  // led test
+  //=================================================================================
+  //  for(int x=0;x<20;x++) {
   lc.clearDisplay(1);
+  if(f>=20)   {
+    f=0;
+  }
+  setBar((int)f);
+  //  Serial.println(f);   
+  //    delay(delaytime);
+  //  }
+  //  lc.clearDisplay(1);
+  f+=1;
+  //  for(float kpl=0;kpl<19;kpl+=0.1) {
+  setKPLDigit(f);
+  //  }
+
+  //=================================================================================
 }
-int posarray[8] = {
-  1,6,2 ,7,4,0,5,3
-};
-int posarray2[8] = {
-  3,5,0,4,7,2,6,1
-};
+
 byte barRowArray[3]={
   1,0,2};
 byte barColArray[20]={ 
-  1,6,2 ,7,4,0,5,3,3,5,0,4,7,2,6,1,1,6,2 ,7};
+  1,6,2 ,7,4,0,5,3,
+  3,5,0,4,7,2,6,1,
+  1,6,2 ,7};
 void setBar(byte count) {  
   int row = barRowArray[count/8];
   //  int col = count%8;
@@ -118,17 +115,36 @@ void setBar(byte count) {
 void setGearDigit(byte gear)  {
   lc.setDigit(0,2,gear,false);
 }
-void setSpeedDigit(byte speed) {
+void setSpeedDigit(short speed) {
   int num0=speed%10;
   int num10=speed/10%10;
   int num100=speed/100%10;
+  //  if( num0!=0) {
   lc.setDigit(0,1,num0,false);
+  //  }
+  //  else {
+  //    lc.setChar(0,1,' ',false);
+  //  }
   lc.setDigit(0,5,num10,false);
   lc.setDigit(0,3,num100,false);
+
+  //  if( num10!=0) {
+  //    lc.setDigit(0,5,num10,false);
+  //  }
+  //  else {
+  //    lc.setChar(0,5,' ',false);
+  //  }
+  //
+  //  if( num100!=0) {
+  //    lc.setDigit(0,3,num100,false);
+  //  }
+  //  else {
+  //    lc.setChar(0,3,' ',false);
+  //  }
 }
 
 void setKPLDigit(float kpl) {
-  if( kpl == (int)kpl){
+  if( kpl == ((int)kpl)){
     //只有整數
     int ikpl = (int)kpl;
     int num0=ikpl%10;
@@ -140,6 +156,12 @@ void setKPLDigit(float kpl) {
   }
   else {
     //有小數
+    int num0=((int)(kpl*10))%10;
+    int num10=((int)kpl)%10;
+    int num100=((int)kpl/10)%10;
+    lc.setDigit(0,6,num0,false);
+    lc.setDigit(0,4,num10,true);
+    lc.setDigit(0,0,num100,false);
   }
 }
 
@@ -193,10 +215,12 @@ int readkeyboard(){
   //  tmp=keyboardValue;
   //NOTE: the values used above are all halfway between the value obtained with each keypress in previous test sketch 
 
-  while (keyboardValue > 25) {
-    delay (100);
-    keyboardValue = analogRead(keyboardPin); // read the value (0-1023)
-  }//wait until key no longer being pressed before continuing
+  //  while (keyboardValue > 25) {
+  //    delay (100);
+  //    keyboardValue = analogRead(keyboardPin); // read the value (0-1023)
+  //  }//wait until key no longer being pressed before continuing
+
+
   //  delay(100);  
   return keypressed;
 
@@ -206,6 +230,20 @@ int readkeyboard(){
   //  delay(100);                     // wait 1000 milliseconds before the next loop
 }
 //end of read the keyboard routine
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
