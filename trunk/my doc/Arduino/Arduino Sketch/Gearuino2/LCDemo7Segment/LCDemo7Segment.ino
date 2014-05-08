@@ -70,21 +70,22 @@ void scrollDigits() {
 void loop() { 
   for(int r=2;r<=4;r++){
     for(int i=0;i<8;i++){
-      //  lc.setRow(0,i,127);
       int index=r==3?7-i:i;
       lc.setLed(0,r,index,true);
 
       delay(delaytime);
       lc.clearDisplay(0);
-
-      //    delay(delaytime);
     }
+//    lc.setRow(0,r,191);
+//    delay(delaytime);
+//    lc.clearDisplay(0);
   }
 
   //  writeArduinoOn7Segment();
   //  scrollDigits();
   //  lc.setDigit(0,0,8,false);
 }
+
 
 
 
