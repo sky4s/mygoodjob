@@ -21,7 +21,8 @@ void setup() {
    */
   lc.shutdown(0,false);
   /* Set the brightness to a medium values */
-  lc.setIntensity(0,8);
+  lc.setIntensity(0,15);
+  lc.setScanLimit(0,2);
   /* and clear the display */
   lc.clearDisplay(0);
 }
@@ -68,23 +69,24 @@ void scrollDigits() {
 }
 
 void loop() { 
-  for(int r=2;r<=4;r++){
-    for(int i=0;i<8;i++){
-      int index=r==3?7-i:i;
+  for(int r=0;r<=2;r++){
+    for(int i=0;i<=7;i++){
+      int index=(r==1)?7-i:i;
       lc.setLed(0,r,index,true);
 
       delay(delaytime);
       lc.clearDisplay(0);
     }
-//    lc.setRow(0,r,191);
-//    delay(delaytime);
-//    lc.clearDisplay(0);
+    //    lc.setRow(0,r,191);
+    //    delay(delaytime);
+    //    lc.clearDisplay(0);
   }
 
   //  writeArduinoOn7Segment();
   //  scrollDigits();
   //  lc.setDigit(0,0,8,false);
 }
+
 
 
 
