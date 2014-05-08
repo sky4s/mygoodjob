@@ -1,8 +1,8 @@
 object MainForm: TMainForm
-  Left = 285
-  Top = 133
-  Width = 1017
-  Height = 489
+  Left = 125
+  Top = 231
+  Width = 1006
+  Height = 579
   Caption = 'CCT Adjustment '
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
@@ -716,6 +716,7 @@ object MainForm: TMainForm
     FFFFFFFF0000FFFFFFFFFFFF0000FFFFFFFFFFFF0000}
   Menu = MainMenu1
   OldCreateOrder = False
+  Position = poDesktopCenter
   OnActivate = FormActivate
   OnCreate = FormCreate
   OnDestroy = FormDestroy
@@ -723,14 +724,14 @@ object MainForm: TMainForm
   TextHeight = 13
   object Label6: TLabel
     Left = 446
-    Top = 392
+    Top = 480
     Width = 281
     Height = 13
     Caption = 'Copyright (C) 2013, AU Optronics Corp., All Right Reserved.'
   end
   object Image1: TImage
     Left = 7
-    Top = 365
+    Top = 453
     Width = 113
     Height = 42
     AutoSize = True
@@ -834,9 +835,9 @@ object MainForm: TMainForm
   end
   object PageControl1: TPageControl
     Left = -1
-    Top = 13
-    Width = 826
-    Height = 348
+    Top = 5
+    Width = 818
+    Height = 444
     ActivePage = TabSheet1
     TabIndex = 0
     TabOrder = 0
@@ -912,7 +913,7 @@ object MainForm: TMainForm
           Top = 64
           Width = 198
           Height = 17
-          Caption = 'T-CON (Aging Mode)'
+          Caption = 'T-CON (Aging/PG Mode)'
           TabOrder = 4
           OnClick = RadioButton_TCON_agingClick
         end
@@ -1127,7 +1128,7 @@ object MainForm: TMainForm
         Left = 2
         Top = 1
         Width = 807
-        Height = 320
+        Height = 432
         BevelOuter = bvNone
         TabOrder = 0
         Visible = False
@@ -1252,8 +1253,8 @@ object MainForm: TMainForm
           end
         end
         object Button_Connect: TButton
-          Left = 37
-          Top = 287
+          Left = 29
+          Top = 295
           Width = 66
           Height = 20
           Caption = 'Connect'
@@ -1263,8 +1264,8 @@ object MainForm: TMainForm
         object GroupBox7: TGroupBox
           Left = 208
           Top = 7
-          Width = 601
-          Height = 306
+          Width = 593
+          Height = 411
           Caption = 'TCON Type'
           TabOrder = 3
           object ComboBox_TCONType: TComboBox
@@ -1372,14 +1373,14 @@ object MainForm: TMainForm
           object GroupBox_DirectGamma: TGroupBox
             Left = 152
             Top = 40
-            Width = 153
+            Width = 145
             Height = 257
             Caption = 'Gamma Test'
             TabOrder = 3
-            object GroupBox5: TGroupBox
+            object GroupBox_GAM_TEST: TGroupBox
               Left = 7
               Top = 13
-              Width = 138
+              Width = 130
               Height = 66
               Caption = 'GAM_TEST'
               TabOrder = 0
@@ -1398,7 +1399,7 @@ object MainForm: TMainForm
                 Caption = 'Bit'
               end
               object Edit_GammaTestEnableAddress: TEdit
-                Left = 88
+                Left = 80
                 Top = 13
                 Width = 38
                 Height = 21
@@ -1407,7 +1408,7 @@ object MainForm: TMainForm
                 Text = '29'
               end
               object Edit_GammaTestEnableBit: TEdit
-                Left = 88
+                Left = 80
                 Top = 39
                 Width = 38
                 Height = 21
@@ -1419,7 +1420,7 @@ object MainForm: TMainForm
             object GroupBox_GAMDIRECT: TGroupBox
               Left = 7
               Top = 80
-              Width = 138
+              Width = 130
               Height = 73
               Caption = 'GAM_DIRECT'
               TabOrder = 1
@@ -1438,7 +1439,7 @@ object MainForm: TMainForm
                 Caption = 'Type'
               end
               object Edit_DirectGammaAddress: TEdit
-                Left = 88
+                Left = 80
                 Top = 20
                 Width = 38
                 Height = 21
@@ -1447,26 +1448,29 @@ object MainForm: TMainForm
                 Text = '154'
               end
               object ComboBox_DirectGammaType: TComboBox
-                Left = 45
+                Left = 37
                 Top = 44
                 Width = 84
                 Height = 21
                 ItemHeight = 13
                 TabOrder = 1
-                Text = '12401Type'
+                Text = '12411Type'
                 Items.Strings = (
                   '12401Type'
                   '12403Type'
                   '62301Type'
                   '1H501Type'
                   '12409Type'
-                  '12409Aging')
+                  '12409Aging'
+                  '11311Type'
+                  '12411Aging'
+                  '12411Type')
               end
             end
             object GroupBox_HideEN: TGroupBox
               Left = 7
               Top = 157
-              Width = 138
+              Width = 130
               Height = 92
               TabOrder = 2
               Visible = False
@@ -1485,7 +1489,7 @@ object MainForm: TMainForm
                 Caption = 'Bit'
               end
               object Edit_HideEnableAddress: TEdit
-                Left = 88
+                Left = 80
                 Top = 13
                 Width = 38
                 Height = 21
@@ -1494,7 +1498,7 @@ object MainForm: TMainForm
                 Text = '29'
               end
               object Edit_HideEnableBit: TEdit
-                Left = 88
+                Left = 80
                 Top = 39
                 Width = 38
                 Height = 21
@@ -1574,11 +1578,11 @@ object MainForm: TMainForm
             OnClick = CheckBox_DirectGammaClick
           end
           object GroupBox_AgingMode: TGroupBox
-            Left = 312
+            Left = 304
             Top = 40
             Width = 281
             Height = 257
-            Caption = 'Aging Mode'
+            Caption = 'Aging mode'
             TabOrder = 5
             object GroupBox_AgingModeSel: TGroupBox
               Left = 8
@@ -1683,7 +1687,7 @@ object MainForm: TMainForm
                 Width = 38
                 Height = 21
                 TabOrder = 3
-                Text = '16'
+                Text = '17'
               end
             end
             object GroupBox_AgingRasterGray: TGroupBox
@@ -1721,7 +1725,10 @@ object MainForm: TMainForm
                   '62301Type'
                   '1H501Type'
                   '12409Type'
-                  '12409Aging')
+                  '12409Aging'
+                  '11311Type'
+                  '12411Aging'
+                  '12411Type')
               end
               object Edit_AgingRasterGrayAddress: TEdit
                 Left = 80
@@ -1770,17 +1777,666 @@ object MainForm: TMainForm
                 Text = '0'
               end
             end
+            object GroupBox_MANU_SEL: TGroupBox
+              Left = 144
+              Top = 85
+              Width = 129
+              Height = 68
+              Caption = 'MANU_SEL'
+              TabOrder = 4
+              object Label36: TLabel
+                Left = 8
+                Top = 16
+                Width = 64
+                Height = 13
+                Caption = 'Address (hex)'
+              end
+              object Label37: TLabel
+                Left = 8
+                Top = 40
+                Width = 12
+                Height = 13
+                Caption = 'Bit'
+              end
+              object Edit_AgingManuSelectAddress: TEdit
+                Left = 80
+                Top = 13
+                Width = 38
+                Height = 21
+                TabOrder = 0
+                Text = 'N/A'
+              end
+              object Edit_AgingManuSelectBit: TEdit
+                Left = 80
+                Top = 39
+                Width = 38
+                Height = 21
+                TabOrder = 1
+                Text = '1'
+              end
+            end
           end
           object CheckBox_AgingMode: TCheckBox
-            Left = 392
+            Left = 384
             Top = 40
-            Width = 49
+            Width = 81
             Height = 17
-            Caption = 'Aging'
+            Caption = 'Aging mode'
             Checked = True
             State = cbChecked
             TabOrder = 6
             OnClick = CheckBox_AgingModeClick
+          end
+          object GroupBox_SecondGamma: TGroupBox
+            Left = 8
+            Top = 296
+            Width = 577
+            Height = 110
+            Caption = 'Second Gamma'
+            TabOrder = 7
+            object GroupBox_GroupBox_GAM2_EN: TGroupBox
+              Left = 15
+              Top = 16
+              Width = 124
+              Height = 89
+              Caption = 'GAM2_EN'
+              TabOrder = 0
+              object Label30: TLabel
+                Left = 7
+                Top = 13
+                Width = 64
+                Height = 13
+                Caption = 'Address (hex)'
+              end
+              object Label31: TLabel
+                Left = 7
+                Top = 39
+                Width = 12
+                Height = 13
+                Caption = 'Bit'
+              end
+              object Label40: TLabel
+                Left = 7
+                Top = 64
+                Width = 68
+                Height = 13
+                Caption = 'LUT2 Address'
+              end
+              object Edit_DG2EnableAddress: TEdit
+                Left = 80
+                Top = 13
+                Width = 38
+                Height = 21
+                ImeName = #26085#25991#36664#20837#31995#32113' (MS-IME2002)'
+                TabOrder = 0
+                Text = 'A9'
+              end
+              object Edit_DG2EnableBit: TEdit
+                Left = 80
+                Top = 39
+                Width = 38
+                Height = 21
+                ImeName = #26085#25991#36664#20837#31995#32113' (MS-IME2002)'
+                TabOrder = 1
+                Text = '1'
+              end
+              object Edit_DG2LUTAddress: TEdit
+                Left = 80
+                Top = 63
+                Width = 38
+                Height = 21
+                ImeName = #26085#25991#36664#20837#31995#32113' (MS-IME2002)'
+                TabOrder = 2
+                Text = '1168'
+              end
+            end
+            object GroupBox_GAM2_TEST: TGroupBox
+              Left = 151
+              Top = 16
+              Width = 130
+              Height = 89
+              Caption = 'GAM2_TEST'
+              TabOrder = 1
+              object Label32: TLabel
+                Left = 7
+                Top = 13
+                Width = 64
+                Height = 13
+                Caption = 'Address (hex)'
+              end
+              object Label33: TLabel
+                Left = 7
+                Top = 39
+                Width = 12
+                Height = 13
+                Caption = 'Bit'
+              end
+              object Label41: TLabel
+                Left = 2
+                Top = 64
+                Width = 74
+                Height = 13
+                Caption = 'DIRECT2 Addr.'
+              end
+              object Edit_GammaTest2EnableAddress: TEdit
+                Left = 80
+                Top = 13
+                Width = 38
+                Height = 21
+                ImeName = #26085#25991#36664#20837#31995#32113' (MS-IME2002)'
+                TabOrder = 0
+                Text = '7FC7'
+              end
+              object Edit_GammaTest2EnableBit: TEdit
+                Left = 80
+                Top = 39
+                Width = 38
+                Height = 21
+                ImeName = #26085#25991#36664#20837#31995#32113' (MS-IME2002)'
+                TabOrder = 1
+                Text = '0'
+              end
+              object Edit_DirectGamma2Address: TEdit
+                Left = 80
+                Top = 63
+                Width = 38
+                Height = 21
+                ImeName = #26085#25991#36664#20837#31995#32113' (MS-IME2002)'
+                TabOrder = 2
+                Text = '7FC8'
+              end
+            end
+            object CheckBox_SecondGamma: TCheckBox
+              Left = 104
+              Top = 0
+              Width = 97
+              Height = 17
+              Caption = 'Second Gamma'
+              Checked = True
+              State = cbChecked
+              TabOrder = 2
+              OnClick = CheckBox_SecondGammaClick
+            end
+            object GroupBox_FRC2_EN: TGroupBox
+              Left = 304
+              Top = 16
+              Width = 124
+              Height = 66
+              Caption = 'FRC2_EN'
+              TabOrder = 3
+              object Label38: TLabel
+                Left = 7
+                Top = 13
+                Width = 64
+                Height = 13
+                Caption = 'Address (hex)'
+              end
+              object Label39: TLabel
+                Left = 7
+                Top = 39
+                Width = 12
+                Height = 13
+                Caption = 'Bit'
+              end
+              object Edit_FRC2EnableAddress: TEdit
+                Left = 80
+                Top = 13
+                Width = 38
+                Height = 21
+                ImeName = #26085#25991#36664#20837#31995#32113' (MS-IME2002)'
+                TabOrder = 0
+                Text = 'A9'
+              end
+              object Edit_FRC2EnableBit: TEdit
+                Left = 80
+                Top = 39
+                Width = 38
+                Height = 21
+                ImeName = #26085#25991#36664#20837#31995#32113' (MS-IME2002)'
+                TabOrder = 1
+                Text = '3'
+              end
+            end
+          end
+          object GroupBox_PGmode: TGroupBox
+            Left = 152
+            Top = 40
+            Width = 433
+            Height = 257
+            Caption = 'PG mode'
+            TabOrder = 8
+            Visible = False
+            object Label53: TLabel
+              Left = 8
+              Top = 40
+              Width = 54
+              Height = 13
+              Caption = 'Value (dec)'
+            end
+            object CheckBox_PGMode: TCheckBox
+              Left = 64
+              Top = 0
+              Width = 73
+              Height = 17
+              Caption = 'PG Mode'
+              TabOrder = 0
+              OnClick = CheckBox_PGModeClick
+            end
+            object GroupBox5: TGroupBox
+              Left = 8
+              Top = 24
+              Width = 129
+              Height = 65
+              Caption = 'PG_EN'
+              TabOrder = 1
+              object Label34: TLabel
+                Left = 8
+                Top = 16
+                Width = 64
+                Height = 13
+                Caption = 'Address (hex)'
+              end
+              object Label35: TLabel
+                Left = 8
+                Top = 40
+                Width = 12
+                Height = 13
+                Caption = 'Bit'
+              end
+              object Edit_PGEnableAddress: TEdit
+                Left = 80
+                Top = 16
+                Width = 38
+                Height = 21
+                TabOrder = 0
+                Text = '7000D'
+              end
+              object Edit_PGEnableBit: TEdit
+                Left = 80
+                Top = 40
+                Width = 38
+                Height = 21
+                TabOrder = 1
+                Text = '0'
+              end
+            end
+            object GroupBox6: TGroupBox
+              Left = 144
+              Top = 24
+              Width = 129
+              Height = 65
+              Caption = 'PG_MODE [2:0]'
+              TabOrder = 2
+              object Label42: TLabel
+                Left = 8
+                Top = 16
+                Width = 64
+                Height = 13
+                Caption = 'Address (hex)'
+              end
+              object Label43: TLabel
+                Left = 8
+                Top = 40
+                Width = 12
+                Height = 13
+                Caption = 'Bit'
+              end
+              object Label65: TLabel
+                Left = 80
+                Top = 48
+                Width = 7
+                Height = 13
+                Caption = '~'
+              end
+              object Edit_PGModeAddress: TEdit
+                Left = 80
+                Top = 16
+                Width = 38
+                Height = 21
+                TabOrder = 0
+                Text = '70013'
+              end
+              object Edit_PGModeStartBit: TEdit
+                Left = 48
+                Top = 40
+                Width = 33
+                Height = 21
+                TabOrder = 1
+                Text = '0'
+              end
+              object Edit_PGModeEndBit: TEdit
+                Left = 88
+                Top = 40
+                Width = 30
+                Height = 21
+                TabOrder = 2
+                Text = '2'
+              end
+            end
+            object GroupBox11: TGroupBox
+              Left = 8
+              Top = 96
+              Width = 129
+              Height = 145
+              Caption = 'PG_PTN'
+              TabOrder = 3
+              object Label44: TLabel
+                Left = 8
+                Top = 16
+                Width = 64
+                Height = 13
+                Caption = 'Address (hex)'
+              end
+              object Label45: TLabel
+                Left = 8
+                Top = 40
+                Width = 38
+                Height = 13
+                Caption = 'MSB Bit'
+              end
+              object Label46: TLabel
+                Left = 8
+                Top = 64
+                Width = 64
+                Height = 13
+                Caption = 'Address (hex)'
+              end
+              object Label47: TLabel
+                Left = 8
+                Top = 88
+                Width = 35
+                Height = 13
+                Caption = 'LSB Bit'
+              end
+              object Label59: TLabel
+                Left = 80
+                Top = 48
+                Width = 7
+                Height = 13
+                Caption = '~'
+              end
+              object Label60: TLabel
+                Left = 80
+                Top = 96
+                Width = 7
+                Height = 13
+                Caption = '~'
+              end
+              object Edit_PGPatternMSBStartBit: TEdit
+                Left = 48
+                Top = 40
+                Width = 30
+                Height = 21
+                TabOrder = 0
+                Text = '0'
+              end
+              object Edit_PGPatternMSBEndBit: TEdit
+                Left = 88
+                Top = 40
+                Width = 30
+                Height = 21
+                TabOrder = 1
+                Text = '5'
+              end
+              object Edit_PGPatternLSBStartBit: TEdit
+                Left = 48
+                Top = 88
+                Width = 30
+                Height = 21
+                TabOrder = 2
+                Text = '4'
+              end
+              object Edit_PGPatternLSBEndBit: TEdit
+                Left = 91
+                Top = 88
+                Width = 30
+                Height = 21
+                TabOrder = 3
+                Text = '7'
+              end
+              object Edit_PGPatternMSBAddress: TEdit
+                Left = 80
+                Top = 16
+                Width = 38
+                Height = 21
+                TabOrder = 4
+                Text = '70011'
+              end
+              object Edit_PGPatternLSBAddress: TEdit
+                Left = 83
+                Top = 64
+                Width = 38
+                Height = 21
+                TabOrder = 5
+                Text = '70012'
+              end
+            end
+            object GroupBox12: TGroupBox
+              Left = 144
+              Top = 96
+              Width = 129
+              Height = 145
+              Caption = 'PG_HBLK'
+              TabOrder = 4
+              object Label48: TLabel
+                Left = 8
+                Top = 16
+                Width = 64
+                Height = 13
+                Caption = 'Address (hex)'
+              end
+              object Label49: TLabel
+                Left = 8
+                Top = 40
+                Width = 38
+                Height = 13
+                Caption = 'MSB Bit'
+              end
+              object Label50: TLabel
+                Left = 8
+                Top = 64
+                Width = 64
+                Height = 13
+                Caption = 'Address (hex)'
+              end
+              object Label51: TLabel
+                Left = 8
+                Top = 88
+                Width = 35
+                Height = 13
+                Caption = 'LSB Bit'
+              end
+              object Label52: TLabel
+                Left = 8
+                Top = 116
+                Width = 54
+                Height = 13
+                Caption = 'Value (dec)'
+              end
+              object Label61: TLabel
+                Left = 80
+                Top = 48
+                Width = 7
+                Height = 13
+                Caption = '~'
+              end
+              object Label62: TLabel
+                Left = 80
+                Top = 96
+                Width = 7
+                Height = 13
+                Caption = '~'
+              end
+              object Edit_PGHblkMSBStartBit: TEdit
+                Left = 48
+                Top = 40
+                Width = 30
+                Height = 21
+                TabOrder = 0
+                Text = '0'
+              end
+              object Edit_PGHblkMSBEndBit: TEdit
+                Left = 88
+                Top = 40
+                Width = 30
+                Height = 21
+                TabOrder = 1
+                Text = '6'
+              end
+              object Edit_PGHblkLSBStartBit: TEdit
+                Left = 48
+                Top = 88
+                Width = 30
+                Height = 21
+                TabOrder = 2
+                Text = '4'
+              end
+              object Edit_PGHblkLSBEndBit: TEdit
+                Left = 91
+                Top = 88
+                Width = 30
+                Height = 21
+                TabOrder = 3
+                Text = '7'
+              end
+              object Edit_PGHblkMSBAddress: TEdit
+                Left = 80
+                Top = 16
+                Width = 38
+                Height = 21
+                TabOrder = 4
+                Text = '7000E'
+              end
+              object Edit_PGHblkLSBAddress: TEdit
+                Left = 83
+                Top = 64
+                Width = 38
+                Height = 21
+                TabOrder = 5
+                Text = '7000F'
+              end
+              object Edit_PGHblkValue: TEdit
+                Left = 80
+                Top = 112
+                Width = 38
+                Height = 21
+                TabOrder = 6
+                Text = '160'
+              end
+            end
+            object GroupBox13: TGroupBox
+              Left = 280
+              Top = 96
+              Width = 129
+              Height = 145
+              Caption = 'PG_VBLK'
+              TabOrder = 5
+              object Label54: TLabel
+                Left = 8
+                Top = 16
+                Width = 64
+                Height = 13
+                Caption = 'Address (hex)'
+              end
+              object Label55: TLabel
+                Left = 8
+                Top = 40
+                Width = 38
+                Height = 13
+                Caption = 'MSB Bit'
+              end
+              object Label56: TLabel
+                Left = 8
+                Top = 64
+                Width = 64
+                Height = 13
+                Caption = 'Address (hex)'
+              end
+              object Label57: TLabel
+                Left = 8
+                Top = 88
+                Width = 35
+                Height = 13
+                Caption = 'LSB Bit'
+              end
+              object Label58: TLabel
+                Left = 8
+                Top = 116
+                Width = 54
+                Height = 13
+                Caption = 'Value (dec)'
+              end
+              object Label63: TLabel
+                Left = 80
+                Top = 48
+                Width = 7
+                Height = 13
+                Caption = '~'
+              end
+              object Label64: TLabel
+                Left = 80
+                Top = 96
+                Width = 7
+                Height = 13
+                Caption = '~'
+              end
+              object Edit_PGVblkMSBStartBit: TEdit
+                Left = 48
+                Top = 40
+                Width = 30
+                Height = 21
+                TabOrder = 0
+                Text = '0'
+              end
+              object Edit_PGVblkMSBEndBit: TEdit
+                Left = 88
+                Top = 40
+                Width = 30
+                Height = 21
+                TabOrder = 1
+                Text = '2'
+              end
+              object Edit_PGVblkLSBStartBit: TEdit
+                Left = 48
+                Top = 88
+                Width = 30
+                Height = 21
+                TabOrder = 2
+                Text = '0'
+              end
+              object Edit_PGVblkLSBEndBit: TEdit
+                Left = 91
+                Top = 88
+                Width = 30
+                Height = 21
+                TabOrder = 3
+                Text = '7'
+              end
+              object Edit_PGVblkMSBAddress: TEdit
+                Left = 80
+                Top = 16
+                Width = 38
+                Height = 21
+                TabOrder = 4
+                Text = '7000F'
+              end
+              object Edit_PGVblkLSBAddress: TEdit
+                Left = 83
+                Top = 64
+                Width = 38
+                Height = 21
+                TabOrder = 5
+                Text = '70010'
+              end
+              object Edit_PGVblkValue: TEdit
+                Left = 80
+                Top = 112
+                Width = 38
+                Height = 21
+                TabOrder = 6
+                Text = '24'
+              end
+            end
           end
         end
         object GroupBox_USBSetting: TGroupBox
@@ -1822,7 +2478,7 @@ object MainForm: TMainForm
         end
         object Button_I2CTest: TButton
           Left = 109
-          Top = 287
+          Top = 295
           Width = 66
           Height = 20
           Caption = 'I2C Test'
@@ -1834,7 +2490,7 @@ object MainForm: TMainForm
   end
   object ProgressBar1: TProgressBar
     Left = 128
-    Top = 392
+    Top = 480
     Width = 201
     Height = 17
     Min = 0
@@ -1844,8 +2500,8 @@ object MainForm: TMainForm
   end
   object StatusBar1: TStatusBar
     Left = 0
-    Top = 416
-    Width = 1009
+    Top = 506
+    Width = 998
     Height = 19
     Color = clWhite
     Panels = <
@@ -1863,8 +2519,8 @@ object MainForm: TMainForm
     SimplePanel = False
   end
   object GroupBox_BitDepth: TGroupBox
-    Left = 834
-    Top = 31
+    Left = 826
+    Top = 23
     Width = 163
     Height = 202
     Caption = 'T-CON Bit Depth'

@@ -36,6 +36,8 @@ namespace i2c {
 	static const DirectGammaType TCON12409AgingInstance;
         static const DirectGammaType TCON12409Instance;
         static const DirectGammaType TCON11311Instance;
+        static const DirectGammaType TCON12411AgingInstance;
+        static const DirectGammaType TCON12411Instance;
     };
 
     class TCONParameter {
@@ -66,6 +68,49 @@ namespace i2c {
         const unsigned char agingPatternSelectEndBit;
         const int agingRasterGrayAddress;
         const DirectGammaType & agingModeType;
+        const unsigned char agingManuSelectAddress;
+        const int agingManuSelectBit;
+	//======================================================================
+	// Second gamma
+	//======================================================================
+        const bool secondGamma;
+        const int DG2Address;
+        const unsigned char DG2Bit;
+        const int DG2LutAddress;
+        const int gammaTest2Address;
+        const unsigned char gammaTest2Bit;
+        const int directGamma2RGBAddress;
+        const int FRC2Address;
+        const unsigned char FRC2Bit;
+	//======================================================================
+	// PG Mode
+	//======================================================================
+        const bool pgMode;
+        const int pgEnableAddress;
+        const unsigned char pgEnableBit;
+        const int pgModeAddress;
+        const unsigned char pgModeStartBit;
+        const unsigned char pgModeEndBit;
+        const int pgPatternMSBAddress;
+        const unsigned char pgPatternMSBStartBit;
+        const unsigned char pgPatternMSBEndBit;
+        const int pgPatternLSBAddress;
+        const unsigned char pgPatternLSBStartBit;
+        const unsigned char pgPatternLSBEndBit;
+        const int pgHblkMSBAddress;
+        const unsigned char pgHblkMSBStartBit;
+        const unsigned char pgHblkMSBEndBit;
+        const int pgHblkLSBAddress;
+        const unsigned char pgHblkLSBStartBit;
+        const unsigned char pgHblkLSBEndBit;
+        const int pgHblkValue;
+        const int pgVblkMSBAddress;
+        const unsigned char pgVblkMSBStartBit;
+        const unsigned char pgVblkMSBEndBit;
+        const int pgVblkLSBAddress;
+        const unsigned char pgVblkLSBStartBit;
+        const unsigned char pgVblkLSBEndBit;
+        const int pgVblkValue;
 	//======================================================================
 	// DG On/Off , Lut
 	//======================================================================
@@ -111,13 +156,45 @@ namespace i2c {
                        const int agingPatternSelectAddress, const unsigned char agingPatternSelectValue,
                        const unsigned char agingPatternSelectStartBit,
                        const unsigned char agingPatternSelectEndBit,
-                       const int agingRasterGrayAddress, const DirectGammaType & agingModeType);
+                       const int agingRasterGrayAddress, const DirectGammaType & agingModeType,
+                       const unsigned char agingManuSelectAddress, const int agingManuSelectBit);
 
+                       //For AgingMode + SecondGamma    byBS+
+         TCONParameter(const Dep::MaxValue & lutBit,
+		       const int DGLutAddress, const AnsiString dgLUTType,
+                       const int DGAddress, const unsigned char DGBit,
+		       const int gammaTestAddress, const unsigned char gammaTestBit,
+		       const int directGammaRGBAddress, const DirectGammaType & directGammaType,
+		       const int FRCAddress, const unsigned char FRCBit,
+                       const int agingAGBSDebugAddress, const unsigned char agingAGBSDebugBit,
+                       const int agingModeSelectAddress, const unsigned char agingModeSelectBit,
+                       const int agingPatternSelectAddress, const unsigned char agingPatternSelectValue,
+                       const unsigned char agingPatternSelectStartBit,
+                       const unsigned char agingPatternSelectEndBit,
+                       const int agingRasterGrayAddress, const DirectGammaType & agingModeType,
+                       const unsigned char agingManuSelectAddress, const int agingManuSelectBit,
+                       const int DG2Address, const unsigned char DG2Bit, const int DG2LutAddress,
+                       const int gammaTest2Address, const unsigned char gammaTest2Bit, const int directGamma2RGBAddress,
+                       const int FRC2Address, const unsigned char FRC2Bit);
+
+                       //For PGMode    byBS+
+         TCONParameter(const int FRCAddress, const unsigned char FRCBit,
+                       const int pgEnableAddress, const unsigned char pgEnableBit,
+                       const int pgModeAddress, const unsigned char pgModeStartBit, const unsigned char pgModeEndBit,
+                       const int pgPatternMSBAddress, const unsigned char pgPatternMSBStartBit, const unsigned char pgPatternMSBEndBit,
+                       const int pgPatternLSBAddress, const unsigned char pgPatternLSBStartBit, const unsigned char pgPatternLSBEndBit,
+                       const int pgHblkMSBAddress, const unsigned char pgHblkMSBStartBit, const unsigned char pgHblkMSBEndBit,
+                       const int pgHblkLSBAddress, const unsigned char pgHblkLSBStartBit, const unsigned char pgHblkLSBEndBit,
+                       const int pgHblkValue,
+                       const int pgVblkMSBAddress, const unsigned char pgVblkMSBStartBit, const unsigned char pgVblkMSBEndBit,
+                       const int pgVblkLSBAddress, const unsigned char pgVblkLSBStartBit, const unsigned char pgVblkLSBEndBit,
+                       const int pgVblkValue);
 	 TCONParameter(const Dep::MaxValue & lutBit, const int DGLutAddress, const AnsiString dgLUTType,
                        const int DGAddress,
 		       const unsigned char DGBit, const int FRCAddress, const unsigned char FRCBit);
 	bool isGammaTestEnable();
         bool isAgingModeEnable();
+        bool isPGModeEnable();
 	bool isHideEnable();
     };
 

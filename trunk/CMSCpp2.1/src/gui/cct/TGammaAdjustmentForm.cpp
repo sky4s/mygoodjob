@@ -172,7 +172,7 @@ void TGammaAdjustmentForm::gammaAdjust(bool rgbGammaAdjust)
 	string filename = astr->c_str();
 	calibrator->storeDGLutFile(filename, dglut);
 	ShowMessage("Ok!");
-	Util::shellExecute(filename);
+	Util::shellExecute(filename);   //Open file
     }
     __finally {
 	MainForm->stopProgress(ProgressBar1);

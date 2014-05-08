@@ -18,6 +18,16 @@ __fastcall TChangeLogForm::TChangeLogForm(TComponent * Owner)
        *AUO11311 有新type |RH|RL|GH|GL|BH|BL|(14,0,30,16,46,32,6,10)\r\n\
         且Address當中有包含其他設定值的Register\r\n\
        \r\n\
+       [3.6 build 1.66] 2014/04/21\r\n\
+       +增加TCON 12412\r\n\
+       +增加Defined Dim部分(1.定義目標黑點 2.Smooth 轉折點-3Parts)\r\n\
+       [3.6 build 1.65] 2013/10/03\r\n\
+       +增加TCON 12411(包括增加direct type: 12411Type)\r\n\
+       +增加TCON 12411, Aging mode 驗證流程\r\n\
+       [3.6 build 1.64] 2013/10/03\r\n\
+       +增加TCON 11311(包括增加direct type: 11311Type)\r\n\
+       -解決PC mode，執行Gamma measurement異常(加入一開始執行RadioButton_PCClick)\r\n\
+       -解決PC mode，進行CCT LUT量測時有機率異常(加入targetWhiteShift初值設定)\r\n\
        [3.6 build 1.63] 2013/09/27\r\n\
        +增加Defined Dim中3 Parts選擇(Smooth Target x/y)\r\n\
        [3.6 build 1.62] 2013/07/19\r\n\
@@ -147,5 +157,6 @@ void __fastcall TChangeLogForm::FormResize(TObject * Sender)
 }
 
 //---------------------------------------------------------------------------
+
 
 

@@ -71,7 +71,7 @@ void __fastcall TGammaMeasurementForm::Button_MeasureClick(TObject * Sender)
 	if (measure(rgbw, background, getMeasureCondition(), flicker, stlfilename)) {
 	    MainForm->stopProgress(ProgressBar1);
 	    ShowMessage("Ok!");
-	    Util::shellExecute(stlfilename);
+	    Util::shellExecute(stlfilename);     //Open file
 	}
     }
     __finally {
@@ -233,6 +233,9 @@ bool TGammaMeasurementForm::measure(bool_vector_ptr rgbw, int_vector_ptr backgro
 
 
     Patch_vector_ptr vectors[4];
+    for(int i=0; i<4; i++)      //先清空，避免程式沒關，量測愈來愈多資料問題  byBS+ 20140506
+        vectors[i] = nil_Patch_vector_ptr;
+
     mt = bptr < MeasureTool > (new MeasureTool(mm));
     bool inverseMeasure = MainForm->CheckBox_InverseMeasure->Checked;
     mt->InverseMeasure = inverseMeasure;
@@ -290,10 +293,14 @@ void TGammaMeasurementForm::tconMeasure(bool_vector_ptr rgbw, int start,
 
 void __fastcall TGammaMeasurementForm::FormShow(TObject * Sender)
 {
-    bool Panel2Show = bitDepth->isDirectGamma() || MainForm->isInTCONSetup() || bitDepth->isAgingMode();
-    this->Panel2->Visible = Panel2Show;
+    bool Panel2Show = bitDepth->isDirectGamma() || bitDepth->isAgingMode() || MainForm->isInTCONSetup();
+    if(Panel2Show) {
+        this->Panel2->Visible = true;
+        this->Panel1->Visible = false;
+    }
+
     if(bitDepth->isAgingMode()) {
-        this->GroupBox5->Caption = "Aging Pattern Measurement (Aging Mode)";
+        this->GroupBox5->Caption = "Aging Pattern Measurement (Aging/PG Mode)";
         this->Label5->Visible = false;            // 以下Aging mode沒作用，隱藏起來
         this->Label6->Visible = false;            // 因量測數以CheckBox_10BitInMeasurement決定
         this->Edit_StartLevelT->Visible = false;
@@ -556,10 +563,23 @@ void __fastcall TGammaMeasurementForm::RadioGroup_10BitInMeasurementClick(TObjec
 //---------------------------------------------------------------------------
 
 
-void __fastcall TGammaMeasurementForm::Button2Click(TObject *Sender)
+
+
+void __fastcall TGammaMeasurementForm::Button3Click(TObject *Sender)
 {
-    MeasureWindow->Button4Click(this);
+    MeasureWindow->Button5Click(this);
 }
 //---------------------------------------------------------------------------
 
+void __fastcall TGammaMeasurementForm::Button2Click(TObject *Sender)
+{
+        MeasureWindow->Button7Click(this);
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TGammaMeasurementForm::Button4Click(TObject *Sender)
+{
+        MeasureWindow->Button8Click(this);
+}
+//---------------------------------------------------------------------------
 

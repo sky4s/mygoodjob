@@ -105,7 +105,12 @@ void TMeasureWindow::setRGB(int r, int g, int b)
 	    if (false == result) {
 		ShowMessage("Set Aging Mode failed!");
 	    }
-	} else {
+	} else if(tconcontrol->isPGModeEnable()) {   //PG mode (same 10-bit input)   byBS+ 20140506
+	    bool result = tconcontrol->setPGModeRGB(r, g, b);
+	    if (false == result) {
+		ShowMessage("Set PG Pattern failed!");
+	    }
+        } else {
 	    throw java::lang::UnsupportedOperationException("");
 	}
     } else if (DGLUT == source) {
@@ -403,9 +408,13 @@ void TMeasureWindow::setVisible(bool visible)
     if (DIRECT_GAMMA == source) {
 	tconcontrol->setGammaTest(visible);
     } else if (AGING == source) {
-        tconcontrol->setGammaTest(false);
-        tconcontrol->setDG(true);
-	tconcontrol->setTconAgingMode(visible);
+        if (tconcontrol->isAgingModeEnable()) {
+           tconcontrol->setGammaTest(false);
+           tconcontrol->setDG(true);
+	   tconcontrol->setTconAgingMode(visible);
+        } else if (tconcontrol->isPGModeEnable()) {
+           tconcontrol->setTconPGMode(visible);
+        }
     } else {
 	this->Visible = visible;
 	if (visible) {
@@ -497,6 +506,7 @@ void TMeasureWindow::setLineAdjoin(bool lineAdjoin)
 void __fastcall TMeasureWindow::FormCreate(TObject * Sender)
 {
     //Button1->Visible = MainForm->debugMode;
+
 }
 
 //---------------------------------------------------------------------------
@@ -505,7 +515,7 @@ void __fastcall TMeasureWindow::FormCreate(TObject * Sender)
 void __fastcall TMeasureWindow::Button3Click(TObject *Sender)
 {
 
-	using namespace cms::measure;
+	/*using namespace cms::measure;
 	using namespace Indep;
 	bptr < IntensityAnalyzerIF > analyzer = MainForm->initAnalyzer();
 	bptr < MeterMeasurement > mm = analyzer->getMeterMeasurement();
@@ -514,17 +524,17 @@ void __fastcall TMeasureWindow::Button3Click(TObject *Sender)
         double_array result;
 
         tconcontrol->setGammaTest(false);
-        tconcontrol->setDG(true);
+        tconcontrol->setDG(true);*/
 	tconcontrol->setTconAgingMode(true);
 
 
         //setRGB(512, 512, 512);
-        tconcontrol->setAgingModeRGB(1020, 1020, 1020);
+        //tconcontrol->setAgingModeRGB(1020, 1020, 1020);
         //tconcontrol->setAgingModeRGB(1022, 1022, 1022);
         //tconcontrol->setAgingModeRGB(1023, 1023, 1023);
 
-        Sleep(500);
-        result = meter->triggerMeasurementInXYZ();
+        //Sleep(500);
+        //result = meter->triggerMeasurementInXYZ();
 }
 //---------------------------------------------------------------------------
 
@@ -551,6 +561,31 @@ void __fastcall TMeasureWindow::Button4Click(TObject *Sender)
 
         Sleep(500);
         result = meter->triggerMeasurementInXYZ();
+}
+//---------------------------------------------------------------------------
+
+
+void __fastcall TMeasureWindow::Button5Click(TObject *Sender)
+{
+        tconcontrol->setAgingModeRGB(1020, 1020, 1020);
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TMeasureWindow::Button7Click(TObject *Sender)
+{
+        tconcontrol->setTconPGMode(true);
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TMeasureWindow::Button6Click(TObject *Sender)
+{
+        tconcontrol->setAgingModeRGB(1020, 1020, 1020);
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TMeasureWindow::Button8Click(TObject *Sender)
+{
+        tconcontrol->setPGModeRGB(1020, 1020, 1020);
 }
 //---------------------------------------------------------------------------
 

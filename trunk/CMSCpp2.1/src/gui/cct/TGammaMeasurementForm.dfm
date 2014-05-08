@@ -1,6 +1,6 @@
 object GammaMeasurementForm: TGammaMeasurementForm
-  Left = 360
-  Top = 149
+  Left = 674
+  Top = 188
   Width = 411
   Height = 511
   Caption = 'Gamma Measurement'
@@ -364,6 +364,7 @@ object GammaMeasurementForm: TGammaMeasurementForm
     Height = 85
     TabOrder = 2
     inherited GroupBox_OutputFile: TGroupBox
+      Top = 7
       Width = 386
       Height = 74
       OnClick = Button_MeasureClick
@@ -376,12 +377,14 @@ object GammaMeasurementForm: TGammaMeasurementForm
         Top = 46
       end
       inherited Label_Warning: TLabel
-        Left = 96
-        Top = 40
+        Left = 91
+        Top = 32
+        Width = 72
+        Caption = 'Label_Warning'
       end
       inherited Edit_Prefix: TEdit
         Left = 91
-        Top = 20
+        Top = 12
         Width = 278
         Text = 'Measurement'
       end
@@ -486,16 +489,44 @@ object GammaMeasurementForm: TGammaMeasurementForm
       Height = 25
       Caption = 'AgingTest'
       TabOrder = 2
+      Visible = False
       OnClick = Button1Click
+    end
+    object Button3: TButton
+      Left = 8
+      Top = 192
+      Width = 75
+      Height = 25
+      Caption = 'aging2'
+      TabOrder = 3
+      Visible = False
+      OnClick = Button3Click
     end
     object Button2: TButton
       Left = 8
-      Top = 200
-      Width = 75
+      Top = 224
+      Width = 33
       Height = 25
-      Caption = 'DirectTest'
-      TabOrder = 3
+      Caption = 'PG on'
+      TabOrder = 4
       OnClick = Button2Click
+    end
+    object Button4: TButton
+      Left = 48
+      Top = 224
+      Width = 33
+      Height = 25
+      Caption = 'PTN'
+      TabOrder = 5
+      OnClick = Button4Click
+    end
+    object Button5: TButton
+      Left = 88
+      Top = 224
+      Width = 33
+      Height = 25
+      Caption = 'Button5'
+      TabOrder = 6
     end
   end
   object Button_Measure: TButton

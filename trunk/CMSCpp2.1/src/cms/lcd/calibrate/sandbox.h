@@ -94,7 +94,7 @@ namespace cms {
 		virtual void windowClosing(TObject * Sender, TCloseAction & Action);
 		void setTarget(XYZ_ptr targetWhite, XYZ_ptr nativeWhite,
 			       double_vector_ptr luminanceGammaCurve,
-			       int dimTurnLow, bool isDimSmooth, int brightTurn,
+			       int dimBegin, int dimTurnLow, bool isDimSmooth, int brightTurn,
 			       double dimGamma, double brightGamma, int effectiveInputLevel);
 		bool checkIncreaseZOfTarget();
 		void updateTarget(XYZ_ptr targetWhite);

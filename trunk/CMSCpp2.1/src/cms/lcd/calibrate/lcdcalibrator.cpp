@@ -85,6 +85,7 @@ namespace cms {
 		alterGammaCurveAtDeHook2 = false;
 
 		fineLuminanceCalibrate = false;
+                targetWhiteShift = false;
 	    };
 
 	    //一段式gamma
@@ -191,8 +192,9 @@ namespace cms {
 		this->correct = DimCorrect::None;
 	    };
 
-	    void LCDCalibrator::setDefinedDim(int under, double strength, bool DimThreePart) {
+	    void LCDCalibrator::setDefinedDim(int begin, int under, double strength, bool DimThreePart) {
 		this->correct = DimCorrect::DefinedDim;
+                this->dimBegin = begin;
 		this->dimUnder = under;
 		this->dimFixEnd = under;
 		this->dimStrength = strength;
@@ -871,13 +873,14 @@ namespace cms {
 		//=============================================================
 		double dimStrengthParameter = 1;
 		int underParameter = 50;
+                int beginParameter = 0;
 
                 bool isDimSmooth = DimSmooth;     //Dim切三段   byBS+
 
 		if (correct == DimCorrect::DefinedDim) {
 		    dimStrengthParameter = dimStrength;
 		    underParameter = dimUnder;
-
+                    beginParameter = dimBegin;
 		} else if (correct == DimCorrect::None) {
 		    underParameter = 0;
 		}
@@ -897,7 +900,7 @@ namespace cms {
 		    //設定目標參數: target end
 		    advgenerator->setTarget(targetWhiteXYZ, maxWhiteXYZ,
 					    luminanceGammaCurve,
-					    underParameter,
+					    beginParameter, underParameter,
                                             isDimSmooth,
                                             overParameter,
 					    dimStrengthParameter,
@@ -1353,6 +1356,9 @@ namespace cms {
 		//==============================================================
 		// keep dark level
 		//==============================================================
+                if(dimBegin!=0)                  //如果有調過目標黑點，灰階0 DG不強制拉0
+                        keepDarkLevel = false ;  //201307 byBS+
+
 		if (keepDarkLevel) {
 		    RGB_ptr rgb0 = (*result)[0];
 		    rgb0->R = 0;

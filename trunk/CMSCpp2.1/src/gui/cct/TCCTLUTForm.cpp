@@ -45,6 +45,7 @@ void TCCTLUTForm::setMeasureInfo()
 
 void __fastcall TCCTLUTForm::Button_MeaRunClick(TObject * Sender)
 {
+
     using namespace std;
     using namespace Dep;
     using namespace cms::lcd::calibrate;
@@ -52,7 +53,6 @@ void __fastcall TCCTLUTForm::Button_MeaRunClick(TObject * Sender)
     using namespace cms::measure;
     using namespace i2c;
     using namespace java::lang;
-
 
     if (Button_Run->Enabled) {
 	MainForm->initCA210Meter();
@@ -103,11 +103,18 @@ void __fastcall TCCTLUTForm::Button_MeaRunClick(TObject * Sender)
 	   } else */
 	if (this->RadioButton_DefinedDim->Checked) {
 	    //新低灰階修正方法
-            bool DimThreePart = CheckBox_DimThreePart->Checked;         //在低灰階色度切三段(斜線-smooth-水平線)  201309 byBS+
+            bool dimThreePart = CheckBox_DimThreePart->Checked;      //在低灰階色度切三段(斜線-smooth-水平線)  201309 byBS+
 	    int under = this->Edit_DefinedDimUnder->Text.ToInt();
+            int begin = this->Edit_DefinedDimBegin->Text.ToInt();    //灰階0的目標色度要取哪一個灰階來用
 	    double gamma = this->ComboBox_DefinedDimGamma->Text.ToDouble();
 
-	    calibrator.setDefinedDim(under, gamma, DimThreePart);
+            if(dimThreePart && (gamma>under)) {
+                ShowMessage("[Strength] should be less then [Under]!");
+                return;
+            }
+
+	    //calibrator.setDefinedDim(under, gamma, dimThreePart);
+            calibrator.setDefinedDim(begin, under, gamma, dimThreePart);
 	    calibrator.FeedbackFix = CheckBox_Feedback->Checked;
 
 	    bool dimRBFix = CheckBox_DimRBFix->Checked;
@@ -937,4 +944,6 @@ void __fastcall TCCTLUTForm::CheckBox_DimThreePartClick(TObject *Sender)
 
 
 //---------------------------------------------------------------------------
+
+
 
