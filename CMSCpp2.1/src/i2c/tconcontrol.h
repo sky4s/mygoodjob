@@ -37,12 +37,20 @@ namespace i2c {
         static bptr < cms::util::ByteBuffer > getRGBByteBufferWith11311(int r, int g, int b,
 								        const DirectGammaType &
 								        directGammaType);
+        static bptr < cms::util::ByteBuffer > getRGBByteBufferWith12411Aging(int gray,
+								        const DirectGammaType &
+								        directGammaType);
+        static bptr < cms::util::ByteBuffer > getRGBByteBufferWith12411(int r, int g, int b,
+								        const DirectGammaType &
+								        directGammaType);
 
 	bool setDirectGammaRGB(RGB_ptr rgb);
 	bool setDirectGammaRGB(int r, int g, int b);
         bool setAgingModeRGB(int r, int g, int b);
+        bool setPGModeRGB(int r, int g, int b);
 	void setGammaTest(bool enable);
         void setTconAgingMode(bool enable);
+        void setTconPGMode(bool enable);
 
 	const Dep::MaxValue & getLUTBit();
         AnsiString getLUTType();
@@ -56,6 +64,7 @@ namespace i2c {
 	void writeByte(int dataAddress, unsigned char data);
 	bool isGammaTestEnable();
         bool isAgingModeEnable();
+        bool isPGModeEnable();
       private:
 
 	void write(int dataAddress, bptr < cms::util::ByteBuffer > data);
@@ -65,6 +74,8 @@ namespace i2c {
 
 	void setSingleBitData(int dataAddress, unsigned char bit, bool data);
         void setBitData(int dataAddress, unsigned char Startbit, unsigned char Endbit, unsigned char data);
+        void setTwoByteData(int MSBAddress, unsigned char MSB_Startbit, unsigned char MSB_Endbit,
+                            int LSBAddress, unsigned char LSB_Startbit, unsigned char LSB_Endbit, int value);                                     
 	bool getBitData(int dataAddress, unsigned char bit);
       public:
 	static bptr < cms::util::ByteBuffer > getDGLut10BitByteBuffer(RGB_vector_ptr rgbVector);

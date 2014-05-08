@@ -1,8 +1,8 @@
 object CCTLUTForm: TCCTLUTForm
-  Left = 120
-  Top = 149
-  Width = 900
-  Height = 466
+  Left = 220
+  Top = 120
+  Width = 865
+  Height = 463
   Caption = 'CCT(LUT)'
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
@@ -984,8 +984,8 @@ object CCTLUTForm: TCCTLUTForm
   end
   object StatusBar1: TStatusBar
     Left = 0
-    Top = 413
-    Width = 892
+    Top = 410
+    Width = 857
     Height = 19
     Color = clWhite
     Panels = <
@@ -1004,9 +1004,9 @@ object CCTLUTForm: TCCTLUTForm
     object Label17: TLabel
       Left = 26
       Top = 52
-      Width = 29
+      Width = 32
       Height = 13
-      Caption = 'Under'
+      Caption = 'Range'
     end
     object Label14: TLabel
       Left = 26
@@ -1014,6 +1014,13 @@ object CCTLUTForm: TCCTLUTForm
       Width = 40
       Height = 13
       Caption = 'Strength'
+    end
+    object Label4: TLabel
+      Left = 108
+      Top = 54
+      Width = 7
+      Height = 13
+      Caption = '~'
     end
     object RadioButton_NoneLowLevelCorrect: TRadioButton
       Left = 7
@@ -1034,9 +1041,9 @@ object CCTLUTForm: TCCTLUTForm
       TabStop = True
     end
     object Edit_DefinedDimUnder: TEdit
-      Left = 72
-      Top = 52
-      Width = 57
+      Left = 120
+      Top = 48
+      Width = 33
       Height = 21
       ImeName = #26085#25991#36664#20837#31995#32113' (MS-IME2002)'
       TabOrder = 2
@@ -1110,10 +1117,18 @@ object CCTLUTForm: TCCTLUTForm
       Left = 96
       Top = 32
       Width = 57
-      Height = 17
+      Height = 16
       Caption = '3 Parts'
       TabOrder = 9
       OnClick = CheckBox_DimThreePartClick
+    end
+    object Edit_DefinedDimBegin: TEdit
+      Left = 72
+      Top = 48
+      Width = 33
+      Height = 21
+      TabOrder = 10
+      Text = '0'
     end
   end
   object GroupBox_Execute: TGroupBox

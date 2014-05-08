@@ -117,7 +117,7 @@ namespace i2c {
     bptr < cms::util::ByteBuffer > TCONControl::getRGBByteBufferWith11311(int r, int g, int b,
 									       const DirectGammaType
 									       & directGammaType) {
-        //11311  |RH|RL|GH|GL|BH|BL|
+        //11311  |RH|RL|GH|GL|BH|BL|    (10-bit)
         //        8  2  8  2  8  2
 	int rLow = (r & 3) << 6;
 	int rHigh = r >> 2;
@@ -152,8 +152,45 @@ namespace i2c {
         (*data)[5] = bLow;
 
 	return data;
+    };
+
+    /*bptr < cms::util::ByteBuffer > TCONControl::getRGBByteBufferWith12411Aging(int gray,
+									       const DirectGammaType
+									       & directGammaType) {
+
+    };*/
+
+    bptr < cms::util::ByteBuffer > TCONControl::getRGBByteBufferWith12411(int r, int g, int b,
+									       const DirectGammaType
+									       & directGammaType) {
+        //12411  |RH|RL|GH|GL|BH|BL|    (12-bit)
+        //        8  4  8  4  8  4
+	int rLow = (r & 15) << 4;
+	int rHigh = r >> 4;
+	int gLow = (g & 15) << 4;
+	int gHigh = g >> 4;
+	int bLow = (b & 15) << 4;
+	int bHigh = b >> 4;
+
+        int totalByte = directGammaType.totalByte;
+
+	bptr < ByteBuffer > data(new ByteBuffer(totalByte));
+	//先清空buffer
+	for (int x = 0; x < totalByte; x++) {
+	    (*data)[x] = 0;
+	}
+
+	(*data)[0] = rHigh;
+	(*data)[1] = rLow;
+	(*data)[2] = gHigh;
+	(*data)[3] = gLow;
+        (*data)[4] = bHigh;
+        (*data)[5] = bLow;
+
+	return data;
 
     };
+
 
     bptr < ByteBuffer > TCONControl::getRGBByteBuffer(int r, int g, int b,
 						      const DirectGammaType & directGammaType) {
@@ -163,7 +200,14 @@ namespace i2c {
 	    return getRGBByteBufferWith12409Aging(r, g, b, directGammaType);
 	} else if (DirectGammaType::TCON12409Instance == directGammaType) {
 	    return getRGBByteBufferWith12409(r, g, b, directGammaType);
-        }  
+        } else if (DirectGammaType::TCON11311Instance == directGammaType) {
+            return getRGBByteBufferWith11311(r, g, b, directGammaType);
+        } else if (DirectGammaType::TCON12411Instance == directGammaType) {
+            return getRGBByteBufferWith12411(r, g, b, directGammaType);
+        }
+        /*else if (DirectGammaType::TCON12411AgingInstance == directGammaType) {
+            return getRGBByteBufferWith12411Aging(r, directGammaType);  //取其一當作灰階
+        }*/    //因為要讀byte 搬到TCONControl::setAgingModeRGB()裡面作...
 
 	int patternBit = directGammaType.patternBit;
 	int highMask = (12 == patternBit) ? 15 : 3;
@@ -228,16 +272,20 @@ namespace i2c {
 	bptr < ByteBuffer > data = getRGBByteBuffer(r, g, b, directGammaType);
 
         //當Direct gamma 的Address中出現其他register時，需要做的處理。
-        int EnableAddress = parameter->gammaTestAddress;
+        //int EnableAddress = parameter->gammaTestAddress;
         int RGBAddress = parameter->directGammaRGBAddress;
-        int totalByte = directGammaType.totalByte;
-        if(EnableAddress >= RGBAddress && EnableAddress < RGBAddress+totalByte)
+        //int totalByte = directGammaType.totalByte;
+
+        /*if(EnableAddress >= RGBAddress && EnableAddress < RGBAddress+totalByte)
         {
-            //unsigned char bytedata = readByte(EnableAddress);
-            //rLow = rLow | bytedata;  //For AUO11311
+            //--------------------For AUO11311-----------------------
+            unsigned char bytedata = readByte(EnableAddress);
+            (*data)[1] = (*data)[1] | bytedata;
+            //-------------------------------------------------------
+
             ShowMessage("Waring : Direct gamma Enable address conflict");
             return 0;
-        }
+        }*/  //造成62301 type 會出現警告....先註掉
 
 	write(RGBAddress, data);
 	int size = data->getSize();
@@ -250,31 +298,129 @@ namespace i2c {
 	    bptr < ByteBuffer > dataFrom1 = read(RGBAddress, size, 1);
 	    return data->equals(dataFrom0) && data->equals(dataFrom1);
 	}
+
+        bool isSecondGamma = parameter->secondGamma;
+        if(isSecondGamma) {      //當有兩張DG時 (DirectGamma也兩個)
+            int RGBAddress2 = parameter->directGamma2RGBAddress;
+            write(RGBAddress2, data);
+            bptr < ByteBuffer > dataFrom0 = read(RGBAddress2, size, 0);
+            if (!dualTCON) {
+                //1 tcon
+                return data->equals(dataFrom0);
+            } else {
+                //2 tcon
+                bptr < ByteBuffer > dataFrom1 = read(RGBAddress2, size, 1);
+                return data->equals(dataFrom0) && data->equals(dataFrom1);
+            }
+        }
     };
 
     bool TCONControl::setAgingModeRGB(int r, int g, int b) {
-	const DirectGammaType & agingModeType = parameter->agingModeType;
-	bptr < ByteBuffer > data = getRGBByteBuffer(r, g, b, agingModeType);
 
-	int address = parameter->agingRasterGrayAddress;
-	write(address, data);
-	int size = data->getSize();
-	bptr < ByteBuffer > dataFrom0 = read(address, size, 0);
-	if (!dualTCON) {
-	    //1 tcon
-	    return data->equals(dataFrom0);
-	} else {
-	    //2 tcon
-	    bptr < ByteBuffer > dataFrom1 = read(address, size, 1);
-	    return data->equals(dataFrom0) && data->equals(dataFrom1);
-	}
+	const DirectGammaType & agingModeType = parameter->agingModeType;
+
+        //Special case : 12411 因為要讀byte，在這作處理
+        if(agingModeType == DirectGammaType::TCON12411AgingInstance)
+        {
+            //12411 Aging  只有10-bit 分開兩位子且都跟其他設定綁一起(須先讀在寫)
+            //[9:4](bit:0~5)，[3:0](bit:0~3)
+
+            //因為AUO-12411像是TCON的Special case 所以設定先寫死
+            unsigned char bytedata = readByte(80);  //(Dec)
+            int high = (bytedata & 192) | (r >> 4);      //取r當灰階值就好
+
+            bytedata = readByte(81);
+            int low = (bytedata & 240) | (r & 15);
+
+            bptr < ByteBuffer > data(new ByteBuffer(2));
+            //先清空buffer
+            for (int x = 0; x < 2; x++) {
+                (*data)[x] = 0;
+            }
+
+            (*data)[0] = high;
+            (*data)[1] = low;
+
+            int address = parameter->agingRasterGrayAddress;
+            write(address, data);
+            int size = data->getSize();
+            bptr < ByteBuffer > dataFrom0 = read(address, size, 0);
+
+            if (!dualTCON) {
+                //1 tcon
+                return data->equals(dataFrom0);
+            } else {
+                //2 tcon
+                bptr < ByteBuffer > dataFrom1 = read(address, size, 1);
+                return data->equals(dataFrom0) && data->equals(dataFrom1);
+            }
+        } else {
+	    bptr < ByteBuffer > data = getRGBByteBuffer(r, g, b, agingModeType);
+
+            int address = parameter->agingRasterGrayAddress;
+            write(address, data);
+            int size = data->getSize();
+            bptr < ByteBuffer > dataFrom0 = read(address, size, 0);
+            if (!dualTCON) {
+                //1 tcon
+                return data->equals(dataFrom0);
+            } else {
+                //2 tcon
+                bptr < ByteBuffer > dataFrom1 = read(address, size, 1);
+                return data->equals(dataFrom0) && data->equals(dataFrom1);
+            }
+        }
     };
+
+    bool TCONControl::setPGModeRGB(int r, int g, int b) {  //byBS+ 20140506
+        //Current support AUO-12802
+        //Setting PG_PTN
+
+        //Method 1: 寫完時讀出來比較還要寫..先不用
+        /*
+        setTwoByteData(parameter->pgPatternMSBAddress, parameter->pgPatternMSBStartBit, parameter->pgPatternMSBEndBit,
+                       parameter->pgPatternLSBAddress, parameter->pgPatternLSBStartBit, parameter->pgPatternLSBEndBit,
+                       r);  //利用一個 Channel 就可以了
+        */
+
+        //感覺PG Mode 只是過度，排列格式先固定寫法 (不然應該可以用Address map寫出彈性)
+        unsigned char bytedata = readByte(parameter->pgPatternMSBAddress);  //(Dec)
+        int high = (bytedata & 192) | (r >> 4);      //取r當灰階值就好
+
+        bytedata = readByte(parameter->pgPatternLSBAddress);
+        int low = (bytedata & 15) | (r & 15)<<4;
+
+        bptr < ByteBuffer > data(new ByteBuffer(2));
+        //先清空buffer
+        for (int x = 0; x < 2; x++) {
+            (*data)[x] = 0;
+        }
+        (*data)[0] = high;
+        (*data)[1] = low;
+
+        int address = parameter->pgPatternMSBAddress;
+        write(address, data);
+        int size = data->getSize();
+        bptr < ByteBuffer > dataFrom0 = read(address, size, 0);
+
+        if (!dualTCON) { //1 tcon
+            return data->equals(dataFrom0);
+        } else {          //2 tcon
+            bptr < ByteBuffer > dataFrom1 = read(address, size, 1);
+            return data->equals(dataFrom0) && data->equals(dataFrom1);
+        }
+    }
 
     void TCONControl::setGammaTest(bool enable) {
 	if (enable && parameter->isHideEnable()) {
 	    setSingleBitData(parameter->hideENAddress, parameter->hideENBit, enable);
 	}
 	setSingleBitData(parameter->gammaTestAddress, parameter->gammaTestBit, enable);
+
+        if(parameter->secondGamma) {    //for two DG (DirectGamma也兩個)
+            setSingleBitData(parameter->gammaTest2Address, parameter->gammaTest2Bit, enable);
+        }
+
 	if (!enable && parameter->isHideEnable()) {
 	    setSingleBitData(parameter->hideENAddress, parameter->hideENBit, enable);
 	}
@@ -283,11 +429,31 @@ namespace i2c {
     void TCONControl::setTconAgingMode(bool enable) {
         //1. AG_PTN_SEL
         //2. AG_MODE_SEL
-        //3. AGBS_DEBUG
+        //3. AG_MANU_SEL    (目前只有AUO-12411/2有)  201312 by BS+
+        //4. AGBS_DEBUG
         setBitData(parameter->agingPatternSelectAddress, parameter->agingPatternSelectStartBit,
                    parameter->agingPatternSelectEndBit, parameter->agingPatternSelectValue);
         setSingleBitData(parameter->agingModeSelectAddress, parameter->agingModeSelectBit, enable);
+        if(parameter->agingManuSelectAddress != -1) {
+            setSingleBitData(parameter->agingManuSelectAddress, parameter->agingManuSelectBit, 0); //0: 選Type 1(AUO)
+        }
         setSingleBitData(parameter->agingAGBSDebugAddress, parameter->agingAGBSDebugBit, enable);
+    };
+
+    void TCONControl::setTconPGMode(bool enable) {
+        //1. PG_HBLK
+        //2. PG_VBLK
+        //3. PG_MODE
+        //4. PG_EN
+        setTwoByteData(parameter->pgHblkMSBAddress, parameter->pgHblkMSBStartBit, parameter->pgHblkMSBEndBit,
+                       parameter->pgHblkLSBAddress, parameter->pgHblkLSBStartBit, parameter->pgHblkLSBEndBit,
+                       parameter->pgHblkValue);
+        setTwoByteData(parameter->pgVblkMSBAddress, parameter->pgVblkMSBStartBit, parameter->pgVblkMSBEndBit,
+                       parameter->pgVblkLSBAddress, parameter->pgVblkLSBStartBit, parameter->pgVblkLSBEndBit,
+                       parameter->pgVblkValue);
+        setBitData(parameter->pgModeAddress, parameter->pgModeStartBit, parameter->pgModeEndBit, 7); //最低位元3bit on
+        setSingleBitData(parameter->pgEnableAddress, parameter->pgEnableBit, enable);
+
     };
 
     unsigned char TCONControl::readByte(int dataAddress) {
@@ -304,6 +470,9 @@ namespace i2c {
     };
     bool TCONControl::isAgingModeEnable() {
 	return parameter->isAgingModeEnable();
+    };
+    bool TCONControl::isPGModeEnable() {
+	return parameter->isPGModeEnable();
     };
 
     void TCONControl::write(int dataAddress, bptr < ByteBuffer > data) {
@@ -502,8 +671,14 @@ namespace i2c {
 	} else if (lutBit == MaxValue::Int10Bit) {
 	    data = getDGLut10BitByteBuffer(rgbVector);
 	}
+
 	write(parameter->DGLutAddress, data);
+        if(parameter->secondGamma) {
+            write(parameter->DG2LutAddress, data);
+        }
+
     }
+
     RGB_vector_ptr TCONControl::getDGLut() {
 	throw UnsupportedOperationException("");
     };
@@ -517,12 +692,18 @@ namespace i2c {
     }
     void TCONControl::setDG(bool enable) {
 	setSingleBitData(parameter->DGAddress, parameter->DGBit, enable);
+
+        if(parameter->secondGamma)
+            setSingleBitData(parameter->DG2Address, parameter->DG2Bit, enable);
     };
     bool TCONControl::isDG() {
 	return getBitData(parameter->DGAddress, parameter->DGBit);
     };
     void TCONControl::setFRC(bool enable) {
 	setSingleBitData(parameter->FRCAddress, parameter->FRCBit, enable);
+
+        if(parameter->secondGamma)
+            setSingleBitData(parameter->FRC2Address, parameter->FRC2Bit, enable);
     };
     bool TCONControl::isFRC() {
 	return getBitData(parameter->FRCAddress, parameter->FRCBit);
@@ -544,12 +725,40 @@ namespace i2c {
         unsigned char bitlength = (Endbit-Startbit+1);
 
 	//製作遮罩
-	unsigned char mask = 255 &  ~ (((1 << bitlength )-1)  << Startbit);
+	unsigned char mask = 255 &  ~ (((1<<bitlength)-1) << Startbit);
 	//挖掉要填的位元
 	bytedata = bytedata & mask;
 	//產生要填的data
 	bytedata = bytedata | data << Startbit;
 	writeByte(dataAddress, bytedata);
+    };
+
+    //1.MSB位址  2.MSB開始bit  3.MSB結束bit  4.LSB位址  5.LSB開始bit  6.LSB結束bit  7.寫入Value    byBS+
+    void TCONControl::setTwoByteData(int MSBAddress, unsigned char MSB_Startbit, unsigned char MSB_Endbit,
+                                     int LSBAddress, unsigned char LSB_Startbit, unsigned char LSB_Endbit,
+                                     int value) {
+        unsigned char MSB_bytedata = readByte(MSBAddress);
+        unsigned char LSB_bytedata = readByte(LSBAddress);
+        unsigned char MSB_bitlength = (MSB_Endbit-MSB_Startbit+1);
+        unsigned char LSB_bitlength = (LSB_Endbit-LSB_Startbit+1);
+
+        //----------------- MSB Byte -----------------
+	//製作遮罩
+	unsigned char mask = 255 &  ~ (((1<<MSB_bitlength)-1) << MSB_Startbit);
+	//挖掉要填的位元
+	MSB_bytedata = MSB_bytedata & mask;
+        //要填的data
+        int temp_value = value >> (LSB_bitlength);
+	//產生要填的data
+	MSB_bytedata = MSB_bytedata | (temp_value << MSB_Startbit);
+        writeByte(MSBAddress, MSB_bytedata);
+
+        //----------------- LSB Byte -----------------
+	mask = 255 &  ~ (((1<<LSB_bitlength)-1) << LSB_Startbit);
+	LSB_bytedata = LSB_bytedata & mask;
+        temp_value = value & ((1<<LSB_bitlength)-1);    //差異處
+	LSB_bytedata = LSB_bytedata | (temp_value << LSB_Startbit);
+        writeByte(LSBAddress, LSB_bytedata);
     };
 
     bool TCONControl::getBitData(int dataAddress, unsigned char bit) {

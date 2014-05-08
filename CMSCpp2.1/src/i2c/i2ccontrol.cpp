@@ -10,6 +10,7 @@
 
 //本項目內頭文件
 #include <i2c/core/PrintPortI2C.h>
+#define PAC_SIZE 56
 
 namespace i2c {
     using namespace java::lang;
@@ -226,7 +227,43 @@ namespace i2c {
     void i2cUSBControl::write0(unsigned char dev_addr,
 			       unsigned char *data_addr,
 			       int data_addr_cnt, unsigned char *data_write, int data_len) {
-	i2cio.USB_write(dev_addr, data_addr, data_addr_cnt, data_write, data_len);
+        if(data_len <= PAC_SIZE)
+	    i2cio.USB_write(dev_addr, data_addr, data_addr_cnt, data_write, data_len);
+        else {   // for LUT write from TCON Toolkit    201310 byBS+
+
+            int pck_size = PAC_SIZE;
+            int tmp_len = data_len; //data length remain after data transmit
+
+            unsigned char* data_write_packet = new unsigned char [PAC_SIZE];
+            for(int i = 0; i < PAC_SIZE; i++)
+                data_write_packet[i] = data_write[i];         
+
+            bool overflag = 0;
+            // package1 (Send START + DEVICE)
+            i2cio.USB_seq_write_P1(dev_addr, data_addr, data_addr_cnt, data_write_packet, pck_size, overflag);
+
+            tmp_len -= pck_size;
+            int start_data = pck_size;
+
+            //package 2,3,...  
+            while(tmp_len > 0) {
+                for(int i = 0; i < PAC_SIZE; i++)
+                    data_write_packet[i] = data_write[start_data+i];
+
+                if(tmp_len <= pck_size){  //End package (Send STOP)
+                    overflag = 1;
+                    i2cio.USB_Data_Package(data_write_packet, tmp_len, overflag);
+                    tmp_len = 0;
+                } else{                   //(Send DATA)
+                    overflag = 0;
+                    i2cio.USB_Data_Package(data_write_packet, pck_size, overflag);
+                    tmp_len-=pck_size;
+                    start_data+= pck_size;
+                }
+           }
+           if(data_write_packet!= NULL)
+                    delete [] data_write_packet;
+        }
     };
     void i2cUSBControl::read0(unsigned char dev_addr,
 			      unsigned char *data_addr,

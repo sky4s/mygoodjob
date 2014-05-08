@@ -130,6 +130,8 @@ class TCCTLUTForm:public TForm, cms::lcd::calibrate::FeedbackListener {
     TCheckBox *CheckBox_RBFixAuto;
     TRadioButton *RadioButton_WhiteShift;
         TCheckBox *CheckBox_DimThreePart;
+        TEdit *Edit_DefinedDimBegin;
+        TLabel *Label4;
     void __fastcall Button_MeaRunClick(TObject * Sender);
     void __fastcall Button_DebugClick(TObject * Sender);
     void __fastcall FormShow(TObject * Sender);

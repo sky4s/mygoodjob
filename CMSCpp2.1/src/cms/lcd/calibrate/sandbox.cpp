@@ -98,6 +98,7 @@ namespace cms {
 	       targetWhite: 目標白點
 	       nativeWhite: 原始白點
 	       luminanceGammaCurve: 目標gamma curve
+               dimBegin: 目標黑點
 	       dimTurn: 低灰階的轉折點
 	       brightTurn: 高灰階的轉折點
 	       dimGamma: 低灰階的色溫曲線gamma變化
@@ -116,14 +117,15 @@ namespace cms {
 		setTarget(XYZ_ptr targetWhite,
 			  XYZ_ptr nativeWhite,
 			  double_vector_ptr luminanceGammaCurve,
-			  int dimTurn, bool isDimSmooth, int brightTurn,
+			  int dimBegin, int dimTurn, bool isDimSmooth, int brightTurn,
 			  double dimGamma, double brightGamma, int effectiveInputLevel) {
 		//==============================================================
 		// 資訊準備
 		//==============================================================
 		this->effectiveInputLevel = effectiveInputLevel;
 		int brightWidth = bitDepth->getEffectiveInputLevel() - brightTurn;
-		XYZ_ptr blackXYZ = (*componentVector)[componentVector->size() - 1]->XYZ;
+		//XYZ_ptr blackXYZ = (*componentVector)[componentVector->size() - 1]->XYZ;
+                XYZ_ptr blackXYZ = (*componentVector)[componentVector->size() - 1 - dimBegin]->XYZ;  //20140421 ByBS+  for 定義目標黑點
 		this->brightTurn = brightTurn;
 
                 //for DimSmooth 使用
@@ -774,14 +776,11 @@ namespace cms {
                     XYZ_vector_ptr dimResult;
                     if(isDimSmooth) {    //201309 byBS+
                         double_vector_ptr dimGammaCurve =
-                            DoubleArray::getRangeCopy(luminanceGammaCurve, 0,
-                                                      dimTurn+dimGamma);
+                            DoubleArray::getRangeCopy(luminanceGammaCurve, 0, dimTurn+dimGamma);  //dimGamma 在此做強度
 
                         dimResult = DimTargetGenerator::getSmoothDimTarget(startXYZ, targetXYZ,
                                                                            dimTurn, dimGammaCurve, dimGamma);
-
                         //dimTurn = dimTurnHigh;//開始直線區段
-
                         dimTurn += dimGamma; //開始水平直線區段
                     } else {
                         double_vector_ptr dimGammaCurve =
