@@ -21,7 +21,7 @@ void setup() {
   lc.setIntensity(0, 15);
   /* and clear the display */
   lc.clearDisplay(0);
-  lc.setScanLimit(0, 6);
+  lc.setScanLimit(0, 4);
 
   lc.shutdown(1, false);
   /* Set the brightness to a medium values */
@@ -29,7 +29,7 @@ void setup() {
   /* and clear the display */
   lc.clearDisplay(1);
   //  lc.setScanLimit(1,3);
-  lc.setScanLimit(1, 2);
+  lc.setScanLimit(1, 4);
 #endif
 }
 
@@ -40,6 +40,7 @@ int keyboardValue = 0;   // value read from the keyboard
 int photocellPin = 2; // 光敏電阻 (photocell) 接在 anallog pin 2
 int photocellVal = 0; // photocell variable
 float f = 0;
+int i=0;
 
 unsigned long delaytime = 1;
 void loop() {
@@ -54,14 +55,15 @@ void loop() {
 #endif
     //    Serial.println("*"+String(tmp));
   }
+  setGearDigit(8);
   //=================================================================================
 
 
   //=================================================================================
   // photocell proc
   //=================================================================================
-  photocellVal = analogRead(photocellPin);
-  setSpeedDigit(photocellVal);
+  //  photocellVal = analogRead(photocellPin);
+  setSpeedDigit(255);
   //  for(int x=0;x<1000;x++) {
   //    setSpeedDigit(x);
   //    delay(10);
@@ -74,16 +76,22 @@ void loop() {
   // led test
   //=================================================================================
   //  for(int x=0;x<20;x++) {
-  lc.clearDisplay(1);
-  if (f >= 20)   {
-    f = 0;
+  //  lc.clearDisplay(1);
+  if (i >= 20)   {
+    i = 0;
+    clearBar();
   }
-  setBar((int)f);
+  if (f >= 20)   {
+    f= 0;
+    clearBar();
+  }
+  setBar(i);
   //  Serial.println(f);
   //    delay(delaytime);
   //  }
   //  lc.clearDisplay(1);
-  f += 1;
+  f += 0.125;
+  i++;
   //  for(float kpl=0;kpl<19;kpl+=0.1) {
   setKPLDigit(f);
   //  }
@@ -97,26 +105,26 @@ void loop() {
 
 /*
 HUD的組成:
-G       SPD
-KPL   BAR
-
-G:      Gear, 7segx1
-SPD: Speed, 7segx3
-KPL:  KPL, 7segx3
-BAR: Progress Bar, 10 ledx2
-
-兩顆7219分別的控制順序:
-C BA0
-DE1 234
-第一顆控制01234, 其中234是Progress Bar
-第二顆控制ABCDE, 其中A~E都是7-seg
-要讓兩顆7219同時控制SPD的原因在於, 若只讓SPD亮,
-可以透過scanlimit的方式讓SPD達到最亮
-至於共同控制KPL...只是為了讓兩顆7219可以控制相同數量的LED
-
-Progress Bar的順序為 01234567 76543210 0123
-
-*/
+ G       SPD
+ KPL   BAR
+ 
+ G:      Gear, 7segx1
+ SPD: Speed, 7segx3
+ KPL:  KPL, 7segx3
+ BAR: Progress Bar, 10 ledx2
+ 
+ 兩顆7219分別的控制順序:
+ C BA0
+ DE1 234
+ 第一顆控制01234, 其中234是Progress Bar
+ 第二顆控制ABCDE, 其中A~E都是7-seg
+ 要讓兩顆7219同時控制SPD的原因在於, 若只讓SPD亮,
+ 可以透過scanlimit的方式讓SPD達到最亮
+ 至於共同控制KPL...只是為了讓兩顆7219可以控制相同數量的LED
+ 
+ Progress Bar的順序為 01234567 76543210 0123
+ 
+ */
 
 void setGearDigit(byte gear)  {
   lc.setDigit(1, 2, gear, false);
@@ -132,7 +140,6 @@ void setSpeedDigit(short speed) {
 }
 
 void setKPLDigit(float kpl) {
-  if ( kpl != ((int)kpl) &&  kpl < 100) {
     //有小數而且<100
     int num0 = ((int)(kpl * 10)) % 10;
     int num10 = ((int)kpl) % 10;
@@ -140,7 +147,9 @@ void setKPLDigit(float kpl) {
     lc.setDigit(0, 1, num0, false);
     lc.setDigit(1, 4, num10, true);
     lc.setDigit(1, 3, num100, false);
-  } else {
+}
+
+void setKPLDigit(short kpl) {
     //只有整數
     int ikpl = (int)kpl;
     int num0 = ikpl % 10;
@@ -149,7 +158,6 @@ void setKPLDigit(float kpl) {
     lc.setDigit(0, 1, num0, false);
     lc.setDigit(1, 4, num10, false);
     lc.setDigit(1, 3, num100, false);
-  }
 }
 //byte barRowArray[3] = {
 //  1, 0, 2
@@ -168,26 +176,29 @@ void setKPLDigit(float kpl) {
 
 void setBar(byte count) {
   if ( count < 8) {
-    lc.setLED(0, 2, count, true);
-  } else if (count >= 8 && count < 16) {
+    lc.setLed(0, 2, count, true);
+  } 
+  else if (count >= 8 && count < 16) {
     if ( count >= 8 && count <= 9) {
-      lc.setLED(0, 3, 9 - count + 6, true);
-    } else {
-      lc.setLED(0, 3, 15 - count, true);
+      lc.setLed(0, 3, 9 - count + 6, true);
+    } 
+    else {
+      lc.setLed(0, 3, 15 - count, true);
     }
-  } else if ( count >= 16 && count < 19) {
-    lc.setLED(0, 4, count - 16, true);
+  } 
+  else if ( count >= 16 && count <= 19) {
+    lc.setLed(0, 4, count - 16, true);
   }
 
 }
 
 void clearBar() {
   for (int x = 0; x < 8; x++) {
-    lc.setLED(0, 2, x, false);
-    lc.setLED(0, 3, x, false);
+    lc.setLed(0, 2, x, false);
+    lc.setLed(0, 3, x, false);
   }
   for (int x = 0; x < 4; x++) {
-    lc.setLED(0, 4, x, false);
+    lc.setLed(0, 4, x, false);
   }
 }
 
@@ -250,4 +261,7 @@ int readkeyboard() {
   return keypressed;
 }
 //end of read the keyboard routine
+
+
+
 
