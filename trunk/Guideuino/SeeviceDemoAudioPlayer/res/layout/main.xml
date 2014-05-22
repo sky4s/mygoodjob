@@ -29,11 +29,4 @@
         android:text="Stop" >
     </Button>
 
-    <Button
-        android:id="@+id/buttonNext"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Next Page" >
-    </Button>
-
 </LinearLayout>

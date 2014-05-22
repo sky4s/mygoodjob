@@ -3,6 +3,7 @@
 	<name>SeeviceDemoAudioPlayer</name>
 	<comment></comment>
 	<projects>
+		<project>ServoControl</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>
