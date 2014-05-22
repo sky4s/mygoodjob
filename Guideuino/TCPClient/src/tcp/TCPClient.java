@@ -30,7 +30,7 @@ public class TCPClient {
 		channel.configureBlocking(false);
 		channel.register(selector, SelectionKey.OP_READ | SelectionKey.OP_WRITE);
 		short moveCount = 0;
-		boolean readable = false;
+		boolean readed = false;
 
 		System.out.println("START:");
 		while (true) {
@@ -58,10 +58,10 @@ public class TCPClient {
 						System.out.println("read: " + inbuf.get(0) + " "
 								+ inbuf.get(1));
 						inbuf.clear();
-						readable = true;
+						readed = true;
 					}
 
-				} else if (key.isWritable() && readable) {
+				} else if (key.isWritable() && readed) {
 					// a channel is ready for writing
 
 					outbuf.clear();
@@ -69,18 +69,14 @@ public class TCPClient {
 					outbuf.flip();
 
 					int writelength = channel.write(outbuf);
-//					while (writelength != 2) {
-//						System.out.println("write: " + moveCount + "/"
-//								+ (writelength = channel.write(outbuf)));
-//					}
 					System.out.println("write: " + moveCount + "/"
 							+ (writelength = channel.write(outbuf)));
 					
-					readable = false;
+					readed = false;
 				}
 				keyIterator.remove();
 			}
-			Thread.sleep(100);
+//			Thread.sleep(100);
 		}
 
 	}
