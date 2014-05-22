@@ -3,6 +3,7 @@
 	<name>TCPClient</name>
 	<comment></comment>
 	<projects>
+		<project>SeeviceDemoAudioPlayer</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>
