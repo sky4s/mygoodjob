@@ -17,7 +17,12 @@
 #ifndef __adb_h__
 #define __adb_h__
 
-#include "wiring.h"
+#if ARDUINO >= 100
+    #include <Arduino.h>
+#else
+    #include <WProgram.h>
+#endif
+//#include <wiring.h>
 #include <usb.h>
 #include <ch9.h>
 
