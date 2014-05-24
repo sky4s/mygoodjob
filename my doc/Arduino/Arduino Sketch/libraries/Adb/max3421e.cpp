@@ -30,7 +30,12 @@ limitations under the License.#include <string.h>
  */
 
 #include "../SPI/SPI.h"
-#include "wiring.h"
+#if ARDUINO >= 100
+    #include <Arduino.h>
+#else
+    #include <WProgram.h>
+#endif
+//#include <wiring.h>
 #include "max3421e.h"
 #include "HardwareSerial.h"
 
