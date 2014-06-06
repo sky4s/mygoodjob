@@ -200,6 +200,11 @@ namespace cms {
 
 		this->insertData(XYZMode ? Sheet2 : Sheet1, values, false);
 	    }
+            //加入時間戳記   20140605 byBS+
+            (*values)[0] = DateTimeToStr(Now()).c_str();
+            for(int i=1; i<22; i++)
+                (*values)[i] = "";
+            this->insertData(XYZMode ? Sheet2 : Sheet1, values, false);
 	}
 	void RampMeasureFile::
 	    setMeasureData(Component_vector_ptr wMeasureData,

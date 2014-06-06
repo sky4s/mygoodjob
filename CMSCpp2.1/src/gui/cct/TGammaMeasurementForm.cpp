@@ -229,13 +229,11 @@ bool TGammaMeasurementForm::measure(bool_vector_ptr rgbw, int_vector_ptr backgro
     using namespace std;
     using namespace cms::colorformat;
     using namespace cms::measure;
-    using namespace cms::util;
+    using namespace cms::util;          
 
+    mm->resetMeasurePatchVector();       //先清空，避免程式沒關，量測愈來愈多資料問題  byBS+ 20140509
 
     Patch_vector_ptr vectors[4];
-    for(int i=0; i<4; i++)      //先清空，避免程式沒關，量測愈來愈多資料問題  byBS+ 20140506
-        vectors[i] = nil_Patch_vector_ptr;
-
     mt = bptr < MeasureTool > (new MeasureTool(mm));
     bool inverseMeasure = MainForm->CheckBox_InverseMeasure->Checked;
     mt->InverseMeasure = inverseMeasure;
@@ -571,15 +569,6 @@ void __fastcall TGammaMeasurementForm::Button3Click(TObject *Sender)
 }
 //---------------------------------------------------------------------------
 
-void __fastcall TGammaMeasurementForm::Button2Click(TObject *Sender)
-{
-        MeasureWindow->Button7Click(this);
-}
-//---------------------------------------------------------------------------
 
-void __fastcall TGammaMeasurementForm::Button4Click(TObject *Sender)
-{
-        MeasureWindow->Button8Click(this);
-}
-//---------------------------------------------------------------------------
+
 

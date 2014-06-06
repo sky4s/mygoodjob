@@ -502,32 +502,6 @@ object GammaMeasurementForm: TGammaMeasurementForm
       Visible = False
       OnClick = Button3Click
     end
-    object Button2: TButton
-      Left = 8
-      Top = 224
-      Width = 33
-      Height = 25
-      Caption = 'PG on'
-      TabOrder = 4
-      OnClick = Button2Click
-    end
-    object Button4: TButton
-      Left = 48
-      Top = 224
-      Width = 33
-      Height = 25
-      Caption = 'PTN'
-      TabOrder = 5
-      OnClick = Button4Click
-    end
-    object Button5: TButton
-      Left = 88
-      Top = 224
-      Width = 33
-      Height = 25
-      Caption = 'Button5'
-      TabOrder = 6
-    end
   end
   object Button_Measure: TButton
     Left = 332

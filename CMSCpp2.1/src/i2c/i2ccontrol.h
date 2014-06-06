@@ -83,6 +83,10 @@ namespace i2c {
 	static bptr < i2cControl >
 	    getUSBInstance(const unsigned char deviceAddress,
 			   const AddressingSize size, USBPower power, USBSpeed speed);
+
+	static bptr < i2cControl >
+	    getDoDoBirdInstance(const unsigned char deviceAddress,
+			        const AddressingSize size);
     };
 
 
@@ -118,6 +122,22 @@ namespace i2c {
 	bool connect();
 	void disconnect();
 	~i2cUSBControl();
+    };
+
+    class i2cDoDoBirdControl:public i2cControl {    //20140604 byBS+
+      private:
+      protected:
+	 virtual void write0(unsigned char dev_addr,
+			     unsigned char *data_addr,
+			     int data_addr_cnt, unsigned char *data_write, int data_len);
+         virtual void read0(unsigned char dev_addr,
+			   unsigned char *data_addr,
+			   int data_addr_cnt, unsigned char *data_read, int data_cnt);
+      public:
+         i2cDoDoBirdControl(const unsigned char deviceAddress, const AddressingSize size);
+	 bool connect();
+	 void disconnect();
+	 ~i2cDoDoBirdControl();
     };
 };
 

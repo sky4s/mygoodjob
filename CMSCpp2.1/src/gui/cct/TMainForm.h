@@ -42,7 +42,7 @@ class TMainForm:public TForm {
     TTabSheet *TabSheet2;
     TPanel *Panel_TCON;
     TGroupBox *GroupBox_Card;
-    TRadioButton *RadioButton_USB;
+        TRadioButton *RadioButton_AUO_USB;
     TRadioButton *RadioButton_LPTLarge;
     TRadioButton *RadioButton_LPTSmall;
     TGroupBox *GroupBox_DeviceAddress;
@@ -255,6 +255,7 @@ class TMainForm:public TForm {
         TLabel *Label64;
         TEdit *Edit_PGModeEndBit;
         TLabel *Label65;
+        TRadioButton *RadioButton_DoDoBird_USB;
     void __fastcall About1Click(TObject * Sender);
     void __fastcall Exit1Click(TObject * Sender);
     void __fastcall TargetWhite1Click(TObject * Sender);
@@ -283,7 +284,7 @@ class TMainForm:public TForm {
     void __fastcall RadioButton_FlickrPixelClick(TObject * Sender);
     void __fastcall RadioButton_FlickrSubPixelClick(TObject * Sender);
     void __fastcall FormDestroy(TObject * Sender);
-    void __fastcall RadioButton_USBClick(TObject * Sender);
+    void __fastcall RadioButton_AUO_USBClick(TObject * Sender);
     void __fastcall RadioButton_LPTLargeClick(TObject * Sender);
     void __fastcall RadioButton_LPTSmallClick(TObject * Sender);
     void __fastcall ComboBox_TCONTypeChange(TObject * Sender);
@@ -321,6 +322,7 @@ class TMainForm:public TForm {
         void __fastcall CheckBox_AgingModeClick(TObject *Sender);
         void __fastcall CheckBox_SecondGammaClick(TObject *Sender);
         void __fastcall CheckBox_PGModeClick(TObject *Sender);
+        void __fastcall RadioButton_DoDoBird_USBClick(TObject *Sender);
   private:			// User declarations
     //==========================================================================
     // meter
@@ -355,6 +357,7 @@ class TMainForm:public TForm {
     String tconFilename;
     void initTCONFile();
     void setComboBoxTCONType();   //用來控制選Aging mode時，出現哪些tcon選項。
+    void initialFactoryIF();      //用來工廠模式簡化頁面
     const static char *CUSTOM;
     //==========================================================================
 
@@ -405,6 +408,7 @@ class TMainForm:public TForm {
     const bool linkCA210;
     const bool newFunction;
     const bool debugMode;
+    const bool factoryMode;
     //==========================================================================
     __fastcall TMainForm(TComponent * Owner);
     void showProgress(TProgressBar * progress);

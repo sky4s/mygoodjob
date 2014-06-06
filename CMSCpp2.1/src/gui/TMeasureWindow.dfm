@@ -79,34 +79,4 @@ object MeasureWindow: TMeasureWindow
     Visible = False
     OnClick = Button4Click
   end
-  object Button6: TButton
-    Left = 264
-    Top = 96
-    Width = 75
-    Height = 25
-    Caption = 'Button6'
-    TabOrder = 5
-    Visible = False
-    OnClick = Button6Click
-  end
-  object Button7: TButton
-    Left = 184
-    Top = 96
-    Width = 75
-    Height = 25
-    Caption = 'Button7'
-    TabOrder = 6
-    Visible = False
-    OnClick = Button7Click
-  end
-  object Button8: TButton
-    Left = 360
-    Top = 96
-    Width = 75
-    Height = 25
-    Caption = 'Button8'
-    TabOrder = 7
-    Visible = False
-    OnClick = Button8Click
-  end
 end

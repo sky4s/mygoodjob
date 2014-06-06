@@ -1,7 +1,7 @@
 object MainForm: TMainForm
-  Left = 125
-  Top = 231
-  Width = 1006
+  Left = 160
+  Top = 170
+  Width = 1007
   Height = 579
   Caption = 'CCT Adjustment '
   Color = clBtnFace
@@ -1136,19 +1136,19 @@ object MainForm: TMainForm
           Left = 1
           Top = 7
           Width = 200
-          Height = 74
+          Height = 90
           Caption = 'Card Select'
           Color = clBtnFace
           ParentColor = False
           TabOrder = 0
-          object RadioButton_USB: TRadioButton
+          object RadioButton_AUO_USB: TRadioButton
             Left = 7
             Top = 14
-            Width = 52
+            Width = 82
             Height = 19
-            Caption = 'USB'
+            Caption = 'AUO USB'
             TabOrder = 0
-            OnClick = RadioButton_USBClick
+            OnClick = RadioButton_AUO_USBClick
           end
           object RadioButton_LPTLarge: TRadioButton
             Left = 7
@@ -1170,10 +1170,19 @@ object MainForm: TMainForm
             TabStop = True
             OnClick = RadioButton_LPTSmallClick
           end
+          object RadioButton_DoDoBird_USB: TRadioButton
+            Left = 8
+            Top = 72
+            Width = 113
+            Height = 17
+            Caption = 'DoDoBird USB'
+            TabOrder = 3
+            OnClick = RadioButton_DoDoBird_USBClick
+          end
         end
         object GroupBox_DeviceAddress: TGroupBox
           Left = 2
-          Top = 81
+          Top = 105
           Width = 199
           Height = 98
           Caption = 'Device Address'
@@ -1254,7 +1263,7 @@ object MainForm: TMainForm
         end
         object Button_Connect: TButton
           Left = 29
-          Top = 295
+          Top = 311
           Width = 66
           Height = 20
           Caption = 'Connect'
@@ -1273,7 +1282,7 @@ object MainForm: TMainForm
             Top = 13
             Width = 138
             Height = 21
-            ItemHeight = 13
+            ItemHeight = 0
             TabOrder = 0
             OnChange = ComboBox_TCONTypeChange
           end
@@ -2441,7 +2450,7 @@ object MainForm: TMainForm
         end
         object GroupBox_USBSetting: TGroupBox
           Left = 2
-          Top = 179
+          Top = 203
           Width = 199
           Height = 105
           Caption = 'USB Setting'
@@ -2478,7 +2487,7 @@ object MainForm: TMainForm
         end
         object Button_I2CTest: TButton
           Left = 109
-          Top = 295
+          Top = 311
           Width = 66
           Height = 20
           Caption = 'I2C Test'
@@ -2501,7 +2510,7 @@ object MainForm: TMainForm
   object StatusBar1: TStatusBar
     Left = 0
     Top = 506
-    Width = 998
+    Width = 999
     Height = 19
     Color = clWhite
     Panels = <

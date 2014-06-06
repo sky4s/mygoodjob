@@ -18,6 +18,10 @@ __fastcall TChangeLogForm::TChangeLogForm(TComponent * Owner)
        *AUO11311 有新type |RH|RL|GH|GL|BH|BL|(14,0,30,16,46,32,6,10)\r\n\
         且Address當中有包含其他設定值的Register\r\n\
        \r\n\
+       [3.7 build 1.67] 2014/05/14\r\n\
+       +增加PG Mode(for TCON 12802)\r\n\
+       -解決程式未關閉而重複量測時，輸出的Excel會愈來愈大，最後可能當機\r\n\
+       -解決ini檔若不能建立(別人電腦)，會一值跳出錯誤訊息\r\n\
        [3.6 build 1.66] 2014/04/21\r\n\
        +增加TCON 12412\r\n\
        +增加Defined Dim部分(1.定義目標黑點 2.Smooth 轉折點-3Parts)\r\n\
@@ -157,6 +161,7 @@ void __fastcall TChangeLogForm::FormResize(TObject * Sender)
 }
 
 //---------------------------------------------------------------------------
+
 
 
 

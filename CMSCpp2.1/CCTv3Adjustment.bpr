@@ -41,7 +41,7 @@
       src\gui\cct\TTargetWhiteForm2.dfm src\gui\cct\TAboutBox.dfm 
       src\gui\cct\TCCTLUTForm.dfm src\gui\cct\TChangeLogForm.dfm 
       src\gui\cct\TStabilityForm.dfm"/>
-    <LIBFILES value="lib\hid.lib"/>
+    <LIBFILES value="lib\hid.lib lib\FTD2XX_lib\FTD2XX.lib"/>
     <LIBRARIES value="adortl.lib dbrtl.lib vclx.lib vcl.lib rtl.lib"/>
     <SPARELIBS value="rtl.lib vcl.lib vclx.lib dbrtl.lib adortl.lib"/>
     <PACKAGES value="rtl.bpi vcl.bpi dbrtl.bpi adortl.bpi vcldb.bpi vclx.bpi bdertl.bpi 
@@ -58,7 +58,7 @@
     <DEBUGLIBPATH value="$(BCB)\lib\debug"/>
     <RELEASELIBPATH value="$(BCB)\lib\release"/>
     <LINKER value="ilink32"/>
-    <USERDEFINES value=""/>
+    <USERDEFINES value="_DEBUG"/>
     <SYSDEFINES value="NO_STRICT"/>
     <MAINSOURCE value="CCTv3Adjustment.cpp"/>
     <INCLUDEPATH value="src\cms\devicemodel;lib\EyeOneLib;src\algo;src\cms\lcd;src\gui\event;src\gui\util;&quot;C:\Program Files\Borland\CBuilder6\Projects&quot;;src\gui\cct;src\i2c\core;src\i2c;&quot;D:\Program Files\Borland\CBuilder6\Projects&quot;;src\math;src\gui;src\cms;src\cms\util;src\cms\measure;src\cms\lcd\calibrate;src\cms\colorspace;src\cms\colorformat;src\ca210api;lib\CA200SRVRLib;src\java;src\cms\i2c;src\cms\i2c\core;lib\USB_i2c_lib;lib\LPT_lib;src;$(BCB)\include;$(BCB)\include\vcl;lib"/>
@@ -75,12 +75,13 @@
       -Isrc\cms\lcd\calibrate -Isrc\cms\colorspace -Isrc\cms\colorformat 
       -Isrc\ca210api -Ilib\CA200SRVRLib -Isrc\java -Isrc\cms\i2c 
       -Isrc\cms\i2c\core -Ilib\USB_i2c_lib -Ilib\LPT_lib -Isrc -I$(BCB)\include 
-      -I$(BCB)\include\vcl -Ilib -src_suffix cpp 1 -boa"/>
-    <CFLAG1 value="-O2 -H=$(BCB)\lib\vcl60.csm -Hc -Vx -Ve -X- -a1 -6 -b- -k- -vi -c -tW -tWM"/>
-    <PFLAGS value="-N2build -N0build -$Y- -$L- -$D- -$C- -$A8 -v -JPHNE -M"/>
+      -I$(BCB)\include\vcl -Ilib -src_suffix cpp -D_DEBUG 1 -boa"/>
+    <CFLAG1 value="-Od -H=$(BCB)\lib\vcl60.csm -Hc -Vx -Ve -X- -r- -a1 -6 -b- -k -y -v -vi- 
+      -c -tW -tWM"/>
+    <PFLAGS value="-N2build -N0build -$Y+ -$W -$O- -$C- -$A8 -v -JPHNE -M"/>
     <RFLAGS value=""/>
-    <AFLAGS value="/mx /w2 /zn"/>
-    <LFLAGS value="-llib -Ibuild -D&quot;&quot; -aa -Tpe -x -Gn -w"/>
+    <AFLAGS value="/mx /w2 /zi"/>
+    <LFLAGS value="-llib -Ibuild -D&quot;&quot; -aa -Tpe -x -Gn -w -v"/>
     <OTHERFILES value=""/>
   </OPTIONS>
   <LINKER>
@@ -173,6 +174,8 @@
       <FILE FILENAME="src\cms\lcd\bitdepthprocessor.cpp" FORMNAME="" UNITNAME="bitdepthprocessor" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="src\cms\devicemodel\lcdmodel.cpp" FORMNAME="" UNITNAME="lcdmodel" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="src\gui\cct\TStabilityForm.cpp" FORMNAME="StabilityForm" UNITNAME="TStabilityForm" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="lib\FTD2XX_lib\FTD2XX.lib" FORMNAME="" UNITNAME="FTD2XX.lib" CONTAINERID="LibTool" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="lib\FTD2XX_lib\ftd2xx.h" FORMNAME="" UNITNAME="ftd2xx.h" CONTAINERID="" DESIGNCLASS="" LOCALCOMMAND=""/>
   </FILELIST>
   <BUILDTOOLS>
   </BUILDTOOLS>
@@ -184,7 +187,7 @@ AutoIncBuild=1
 MajorVer=3
 MinorVer=7
 Release=1
-Build=66
+Build=67
 Debug=1
 PreRelease=1
 Special=0
@@ -196,7 +199,7 @@ CodePage=950
 [Version Info Keys]
 CompanyName=AUO
 FileDescription=CCT Adjustment v3
-FileVersion=3.7.1.66
+FileVersion=3.7.1.67
 InternalName=
 LegalCopyright=Algorithm by StocktonTsai &amp; RichardYCTsai(5626) &amp; skyforce(6123), Implement by skyforce
 LegalTrademarks=
