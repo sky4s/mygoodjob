@@ -74,9 +74,6 @@ class TGammaMeasurementForm:public TForm {
         TComboBox *ComboBox_AgingMeasureStep;
         TRadioGroup *RadioGroup_GrayScaleBit;
         TButton *Button3;
-        TButton *Button2;
-        TButton *Button4;
-        TButton *Button5;
     void __fastcall Button_MeasureClick(TObject * Sender);
     void __fastcall FormShow(TObject * Sender);
     void __fastcall TOutputFileFrame1Button_BrowseDirClick(TObject * Sender);
@@ -90,8 +87,6 @@ class TGammaMeasurementForm:public TForm {
         void __fastcall Button1Click(TObject *Sender);
         void __fastcall RadioGroup_10BitInMeasurementClick(TObject *Sender);
         void __fastcall Button3Click(TObject *Sender);
-        void __fastcall Button2Click(TObject *Sender);
-        void __fastcall Button4Click(TObject *Sender);
   private:			// User declarations
      bptr < cms::lcd::BitDepthProcessor > bitDepth;
      bptr < cms::lcd::BitDepthProcessor > dgLutBitDepth;

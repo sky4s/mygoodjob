@@ -154,6 +154,12 @@ namespace i2c {
 				   const AddressingSize size, USBPower power, USBSpeed speed) {
 	return bptr < i2cControl > (new i2cUSBControl(deviceAddress, size, power, speed));
     };
+    bptr < i2cControl >
+	i2cControl::getDoDoBirdInstance(const unsigned char deviceAddress,
+				        const AddressingSize size) {
+	return bptr < i2cControl > (new i2cDoDoBirdControl(deviceAddress, size));
+    };
+
     //======================================================================
 
     //======================================================================
@@ -245,7 +251,7 @@ namespace i2c {
             tmp_len -= pck_size;
             int start_data = pck_size;
 
-            //package 2,3,...  
+            //package 2,3,...
             while(tmp_len > 0) {
                 for(int i = 0; i < PAC_SIZE; i++)
                     data_write_packet[i] = data_write[start_data+i];
@@ -287,6 +293,57 @@ namespace i2c {
     i2cUSBControl::~i2cUSBControl() {
 	//disconnect();
     };
+    //======================================================================
+
+    //======================================================================
+    // i2cDoDoBirdControl
+    //======================================================================
+    void i2cDoDoBirdControl::write0(unsigned char dev_addr,
+			       unsigned char *data_addr,
+			       int data_addr_cnt, unsigned char *data_write, int data_len) {
+        bool write_ok;
+        write_ok = i2cio.DoDoBird_write(dev_addr, data_addr, data_addr_cnt, data_write, data_len);
+
+        if(write_ok==0)
+            throw DataSendFailException();
+
+    };
+    void i2cDoDoBirdControl::read0(unsigned char dev_addr,
+			      unsigned char *data_addr,
+			      int data_addr_cnt, unsigned char *data_read, int data_cnt) {
+        bool read_ok;
+	read_ok = i2cio.DoDoBird_read(dev_addr, data_addr, data_addr_cnt, data_read, data_cnt);
+
+        if(read_ok==0)
+            throw DataSendFailException();
+    };
+
+    bool i2cDoDoBirdControl::connect() {
+
+	 if (i2cio.DoDoBird_connect()) {         //連接卡
+             if(i2cio.DoDoBird_initialize()) {   //卡片初始化
+                return 1;
+             } else {
+                ShowMessage("I2C Card Initial failed");
+                //return 0;
+             }
+         } else {
+             return 0;
+         }
+    };
+    void i2cDoDoBirdControl::disconnect() {
+	i2cio.DoDoBird_disconnect();
+    };
+    i2cDoDoBirdControl::~i2cDoDoBirdControl() {
+	//disconnect();
+    };
+    i2cDoDoBirdControl::i2cDoDoBirdControl(const unsigned char deviceAddress,
+                                           const AddressingSize size) :
+                                           i2cControl(deviceAddress, size){
+
+
+    };
+
     //======================================================================
 };
 

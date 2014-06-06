@@ -23,6 +23,7 @@
 
 #define SETUPFILE "cctv3.ini"
 #define TCONFILE "tcon.ini"
+#define FACTORY_FILE "factory.txt"       //工廠簡化模式 20140605 byBS+
 
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
@@ -34,7 +35,7 @@ bool g_bIsRunAgain = false;
 //---------------------------------------------------------------------------
 __fastcall TMainForm::TMainForm(TComponent * Owner):TForm(Owner), debugMode(FileExists(DEBUG_FILE)),
 linkEyeOne(FileExists("i1.txt")), linkCA210(!FileExists("i1.txt") && !FileExists(DEBUG_FILE)),
-newFunction(FileExists(DEBUG_NEWFUNC_FILE))
+newFunction(FileExists(DEBUG_NEWFUNC_FILE)), factoryMode(FileExists(FACTORY_FILE)) 
 {
     //String a = "0100";
     //a[1];
@@ -149,6 +150,10 @@ void __fastcall TMainForm::FormCreate(TObject * Sender)
     readTCONSections();          //Setting ComboBox_TCONType context
     readSetup();                 //Read cctv3.ini (i2c card/TCONnum/TCONtype)
              //MeasureWindow->Visible=true;
+
+    //Factory Mode    20140605 byBS+
+    if(factoryMode)
+        initialFactoryIF();
 
 }
 
@@ -474,16 +479,19 @@ void TMainForm::readSetup()
 {
     bptr_ < TIniFile > ini(new TIniFile(ExtractFilePath(Application->ExeName) + SETUPFILE));
     //=========================================================================
-    int cardIndex = ini->ReadInteger("I2C", "Card", 2);
+    int cardIndex = ini->ReadInteger("I2C", "Card", 0);
     switch (cardIndex) {
     case 0:
-	this->RadioButton_USB->Checked = true;
+	this->RadioButton_AUO_USB->Checked = true;
 	break;
     case 1:
 	this->RadioButton_LPTLarge->Checked = true;
 	break;
     case 2:
 	this->RadioButton_LPTSmall->Checked = true;
+	break;
+    case 3:
+	this->RadioButton_DoDoBird_USB->Checked = true;
 	break;
     };
     //=========================================================================
@@ -508,6 +516,7 @@ void TMainForm::writeSetup()
     //=========================================================================
     int cardIndex = this->RadioButton_LPTLarge->Checked ? 1 : 0;
     cardIndex += this->RadioButton_LPTSmall->Checked ? 2 : 0;
+    cardIndex += this->RadioButton_DoDoBird_USB->Checked ? 3 : 0;
     ini->WriteInteger("I2C", "Card", cardIndex);
     //=========================================================================
     int tconIndex = this->RadioButton_DualTCON->Checked ? 1 : 0;
@@ -921,13 +930,18 @@ void __fastcall TMainForm::Button_ConnectClick(TObject * Sender)
 	dual = true;
     }
     AddressingSize addressingSize = getAddressingSize();
-    if (this->RadioButton_USB->Checked) {
+    if (this->RadioButton_AUO_USB->Checked) {
 	USBPower power = (USBPower) RadioGroup_USBPower->ItemIndex;
 	USBSpeed speed = (USBSpeed) RadioGroup_Speed->ItemIndex;
 
 	i2c1st = i2cControl::getUSBInstance(first, addressingSize, power, speed);
 	if (dual) {
 	    i2c2nd = i2cControl::getUSBInstance(second, addressingSize, power, speed);
+	};
+    } else if (this->RadioButton_DoDoBird_USB->Checked) {     //DoDoBird I2C Card  20140604 byBS+
+        i2c1st = i2cControl::getDoDoBirdInstance(first, addressingSize);
+	if (dual) {
+	    i2c2nd = i2cControl::getDoDoBirdInstance(second, addressingSize);
 	};
     } else {
 
@@ -1416,7 +1430,8 @@ void __fastcall TMainForm::Button_I2CTestClick(TObject * Sender)
     }
     I2CTestForm->RadioButton_LPTLarge->Checked = this->RadioButton_LPTLarge->Checked;
     I2CTestForm->RadioButton_LPTSmall->Checked = this->RadioButton_LPTSmall->Checked;
-    I2CTestForm->RadioButton_USB->Checked = this->RadioButton_USB->Checked;
+    I2CTestForm->RadioButton_AUO_USB->Checked = this->RadioButton_AUO_USB->Checked;
+    I2CTestForm->RadioButton_DoDoBird_USB->Checked = this->RadioButton_DoDoBird_USB->Checked;
     I2CTestForm->RadioButton_Single->Checked = this->RadioButton_SingleTCON->Checked;
     I2CTestForm->RadioButton_Dual->Checked = this->RadioButton_DualTCON->Checked;
     //I2CTestForm->CheckBox_IndepRGB->Checked = this->CheckBox_GammaTestIndepRGB->Checked;
@@ -1511,7 +1526,7 @@ void __fastcall TMainForm::FormDestroy(TObject * Sender)
 //---------------------------------------------------------------------------
 
 
-void __fastcall TMainForm::RadioButton_USBClick(TObject * Sender)
+void __fastcall TMainForm::RadioButton_AUO_USBClick(TObject * Sender)
 {
     Button_Connect->Enabled = true;
     GroupBox_USBSetting->Visible = true;
@@ -1533,6 +1548,13 @@ void __fastcall TMainForm::RadioButton_LPTSmallClick(TObject * Sender)
     GroupBox_USBSetting->Visible = false;
 }
 
+//---------------------------------------------------------------------------
+
+void __fastcall TMainForm::RadioButton_DoDoBird_USBClick(TObject *Sender)
+{
+    Button_Connect->Enabled = true;
+    GroupBox_USBSetting->Visible = false;
+}
 //---------------------------------------------------------------------------
 
 void __fastcall TMainForm::ComboBox_TCONTypeChange(TObject * Sender)
@@ -2433,42 +2455,42 @@ void TMainForm::initTCONFile()
 	//=========================================================================
 	ini->WriteInteger("12802", "AddressingSize", 5);
 
-	ini->WriteString("12802", "FRCEnableAddress", "16");   //70016
+	ini->WriteString("12802", "FRCEnableAddress", "70016");   //70016
 	ini->WriteInteger("12802", "FRCEnableBit", 4);
 
         ini->WriteBool("12802", "PGMode", true);
-	ini->WriteString("12802", "PGEnableAddress", "D");
+	ini->WriteString("12802", "PGEnableAddress", "7000D");
 	ini->WriteInteger("12802", "PGEnableBit", 0);
-	ini->WriteString("12802", "PGModeAddress", "13");
+	ini->WriteString("12802", "PGModeAddress", "70013");
 	ini->WriteInteger("12802", "PGModeStartBit", 0);
 	ini->WriteInteger("12802", "PGModeEndBit", 2);
-	ini->WriteString("12802", "PGPatternMSBAddress", "11");
+	ini->WriteString("12802", "PGPatternMSBAddress", "70011");
 	ini->WriteInteger("12802", "PGPatternMSBStartBit", 0);
 	ini->WriteInteger("12802", "PGPatternMSBEndBit", 5);
-	ini->WriteString("12802", "PGPatternLSBAddress", "12");
+	ini->WriteString("12802", "PGPatternLSBAddress", "70012");
 	ini->WriteInteger("12802", "PGPatternLSBStartBit", 4);
 	ini->WriteInteger("12802", "PGPatternlSBEndBit", 7);
-	ini->WriteString("12802", "PGHblkMSBAddress", "E");
+	ini->WriteString("12802", "PGHblkMSBAddress", "7000E");
 	ini->WriteInteger("12802", "PGHblkMSBStartBit", 0);
 	ini->WriteInteger("12802", "PGHblkMSBEndBit", 6);
-	ini->WriteString("12802", "PGHblkLSBAddress", "F");
+	ini->WriteString("12802", "PGHblkLSBAddress", "7000F");
 	ini->WriteInteger("12802", "PGHblkLSBStartBit", 4);
 	ini->WriteInteger("12802", "PGHblkLSBEndBit", 7);
         ini->WriteInteger("12802", "PGHblkValue", 160);
-	ini->WriteString("12802", "PGVblkMSBAddress", "F");
+	ini->WriteString("12802", "PGVblkMSBAddress", "7000F");
 	ini->WriteInteger("12802", "PGVblkMSBStartBit", 0);
 	ini->WriteInteger("12802", "PGVblkMSBEndBit", 2);
-	ini->WriteString("12802", "PGVblkLSBAddress", "10");
+	ini->WriteString("12802", "PGVblkLSBAddress", "70010");
 	ini->WriteInteger("12802", "PGVblkLSBStartBit", 0);
 	ini->WriteInteger("12802", "PGVblkLSBEndBit", 7);
         ini->WriteInteger("12802", "PGVblkValue", 24);
 
-        /*
-	ini->WriteString("12802", "DigitalGammaEnableAddress", "Null");
+
+	ini->WriteString("12802", "DigitalGammaEnableAddress", "70016");
 	ini->WriteInteger("12802", "DigitalGammaEnableBit", 0);
-	ini->WriteString("12802", "DigitalGammaLUTAddress", "Null");
-	ini->WriteString("12802", "DigitalGammaLUTType", "Null");
-        */
+	ini->WriteString("12802", "DigitalGammaLUTAddress", "70140");
+	ini->WriteString("12802", "DigitalGammaLUTType", "12bitType2");
+
 	ini->WriteBool("12802", "DirectGammaFunc", false);
 
 	ini->WriteInteger("12802", "in", 8);
@@ -2566,5 +2588,15 @@ void TMainForm::setComboBoxTCONType()
 
     ComboBox_TCONType->ItemIndex = -1; //顯示空白給user自己選擇tcon
 }
+//---------------------------------------------------------------------------
 
-
+void TMainForm::initialFactoryIF()
+{
+    GroupBox_BitDepth->Visible = false;
+    MatrixCalibration1->Visible = false;
+    TargetWhite1->Visible = false;
+    CCTLUT1->Visible = false;
+    GammaAdj1->Visible = false;
+    StabilityMeasure1->Visible = false;
+    MainForm->Width = 850;
+}

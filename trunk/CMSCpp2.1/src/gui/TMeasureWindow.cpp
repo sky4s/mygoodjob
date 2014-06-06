@@ -571,21 +571,6 @@ void __fastcall TMeasureWindow::Button5Click(TObject *Sender)
 }
 //---------------------------------------------------------------------------
 
-void __fastcall TMeasureWindow::Button7Click(TObject *Sender)
-{
-        tconcontrol->setTconPGMode(true);
-}
-//---------------------------------------------------------------------------
 
-void __fastcall TMeasureWindow::Button6Click(TObject *Sender)
-{
-        tconcontrol->setAgingModeRGB(1020, 1020, 1020);
-}
-//---------------------------------------------------------------------------
 
-void __fastcall TMeasureWindow::Button8Click(TObject *Sender)
-{
-        tconcontrol->setPGModeRGB(1020, 1020, 1020);
-}
-//---------------------------------------------------------------------------
 

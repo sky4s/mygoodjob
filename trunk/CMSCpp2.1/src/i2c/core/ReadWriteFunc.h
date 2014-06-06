@@ -2,7 +2,9 @@
 #ifndef ReadWriteFuncH
 #define ReadWriteFuncH
 //---------------------------------------------------------------------------
+
 #include <USB_i2c_lib/USBHIDIOC.H>
+
 
 class RW_Func {
   public:
@@ -37,6 +39,16 @@ class RW_Func {
     bool USB_seq_read_P1(unsigned char dev_addr, unsigned char *data_addr, int data_addr_cnt,
 			 unsigned char *data_read, int data_len, bool overflag);
     bool USB_r_Data_Package(unsigned char *data_read, int data_len, bool overflag);
+
+    // 20140603 for DoDoBird I2C Card
+    bool DoDoBird_connect(void);
+    void DoDoBird_disconnect(void);
+    bool DoDoBird_initialize(void);
+    bool DoDoBird_write(unsigned char dev_addr, unsigned char *data_addr,
+		        int data_addr_cnt, unsigned char *data_write, int data_len);
+    bool DoDoBird_read(unsigned char dev_addr, unsigned char *data_addr,
+		       int data_addr_cnt, unsigned char *data_read, int data_len);
+
 };
 
 extern CUsbhidioc USB;		// USB I/O function class

@@ -138,7 +138,8 @@ void __fastcall TI2CTestForm::FormDeactivate(TObject * Sender)
 
     MainForm->RadioButton_LPTLarge->Checked = this->RadioButton_LPTLarge->Checked;
     MainForm->RadioButton_LPTSmall->Checked = this->RadioButton_LPTSmall->Checked;
-    MainForm->RadioButton_USB->Checked = this->RadioButton_USB->Checked;
+    MainForm->RadioButton_AUO_USB->Checked = this->RadioButton_AUO_USB->Checked;
+    MainForm->RadioButton_DoDoBird_USB->Checked = this->RadioButton_DoDoBird_USB->Checked;
     MainForm->RadioButton_SingleTCON->Checked = this->RadioButton_Single->Checked;
     MainForm->RadioButton_DualTCON->Checked = this->RadioButton_Dual->Checked;
 
@@ -237,5 +238,6 @@ return;
     control->setFRC(enable);
 }
 //---------------------------------------------------------------------------
+
 
 

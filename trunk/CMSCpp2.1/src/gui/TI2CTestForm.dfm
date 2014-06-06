@@ -1,6 +1,6 @@
 object I2CTestForm: TI2CTestForm
-  Left = 289
-  Top = 177
+  Left = 254
+  Top = 173
   Width = 234
   Height = 300
   BiDiMode = bdRightToLeft
@@ -93,7 +93,7 @@ object I2CTestForm: TI2CTestForm
     Caption = 'Card'
     TabOrder = 2
     Visible = False
-    object RadioButton_USB: TRadioButton
+    object RadioButton_AUO_USB: TRadioButton
       Left = 7
       Top = 20
       Width = 46
@@ -118,6 +118,14 @@ object I2CTestForm: TI2CTestForm
       Height = 20
       Caption = 'LPT Small'
       TabOrder = 2
+    end
+    object RadioButton_DoDoBird_USB: TRadioButton
+      Left = -22
+      Top = 72
+      Width = 113
+      Height = 17
+      Caption = 'DoDoBird USB'
+      TabOrder = 3
     end
   end
   object GroupBox3: TGroupBox
