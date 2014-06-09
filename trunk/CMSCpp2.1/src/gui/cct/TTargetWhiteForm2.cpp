@@ -322,6 +322,7 @@ void __fastcall TTargetWhiteForm2::Button_RunClick(TObject * Sender)
 	this->Edit_WY->Text = str.sprintf("%.4f", wXYZ->Y);
 	this->Edit_WZ->Text = str.sprintf("%.4f", wXYZ->Z);
 	//==========================================================================
+        ShowMessage("Set Target White done!");
     }
     __finally {
 	measuring = false;
