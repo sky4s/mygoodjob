@@ -9,8 +9,8 @@ MAKE = $(ROOT)\bin\make.exe -$(MAKEFLAGS) -f$**
 DCC = $(ROOT)\bin\dcc32.exe $**
 BRCC = $(ROOT)\bin\brcc32.exe $**
 #------------------------------------------------------------------------------
-PROJECTS = CMSCpp2.exe ODMeasurement.exe CMSCpp2_1_GUI.exe CCTv3Adjustment.exe \
-  PatternMeasure.exe Project1.exe
+PROJECTS = CMSCpp2.exe ODMeasurement.exe CCTv3Adjustment.exe PatternMeasure.exe \
+  Project1.exe
 #------------------------------------------------------------------------------
 default: $(PROJECTS)
 #------------------------------------------------------------------------------
@@ -24,10 +24,6 @@ CMSCpp2.exe: CMSCpp2.bpr
   $(ROOT)\bin\make -$(MAKEFLAGS) -f$*.mak
 
 ODMeasurement.exe: ODMeasurement.bpr
-  $(ROOT)\bin\bpr2mak $**
-  $(ROOT)\bin\make -$(MAKEFLAGS) -f$*.mak
-
-CMSCpp2_1_GUI.exe: CMSCpp2_1_GUI.bpr
   $(ROOT)\bin\bpr2mak $**
   $(ROOT)\bin\make -$(MAKEFLAGS) -f$*.mak
 
