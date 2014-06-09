@@ -7,15 +7,15 @@ object PatternMeasureForm: TPatternMeasureForm
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
-  Font.Height = -13
+  Font.Height = -10
   Font.Name = 'MS Sans Serif'
   Font.Style = []
   OldCreateOrder = False
-  PixelsPerInch = 120
-  TextHeight = 16
+  PixelsPerInch = 96
+  TextHeight = 13
   object Image1: TImage
-    Left = 9
-    Top = 161
+    Left = 7
+    Top = 131
     Width = 113
     Height = 42
     AutoSize = True
@@ -118,39 +118,39 @@ object PatternMeasureForm: TPatternMeasureForm
       8C30C1EEC7CF8107BD09F7630853E89B70F76338C245858C30FFD9}
   end
   object Label6: TLabel
-    Left = 207
-    Top = 185
-    Width = 349
-    Height = 16
+    Left = 168
+    Top = 150
+    Width = 281
+    Height = 13
     Caption = 'Copyright (C) 2010, AU Optronics Corp., All Right Reserved.'
   end
   object Button_Measure: TButton
-    Left = 472
-    Top = 40
-    Width = 89
-    Height = 25
+    Left = 384
+    Top = 33
+    Width = 72
+    Height = 20
     Caption = 'Measure'
     TabOrder = 0
     OnClick = Button_MeasureClick
   end
   object GroupBox1: TGroupBox
-    Left = 9
-    Top = 9
-    Width = 152
-    Height = 56
+    Left = 7
+    Top = 7
+    Width = 124
+    Height = 46
     Caption = 'Pattern Display Interval'
     TabOrder = 1
     object Label1: TLabel
-      Left = 112
-      Top = 25
-      Width = 33
-      Height = 16
+      Left = 91
+      Top = 20
+      Width = 25
+      Height = 13
       Caption = 'msec'
     end
     object Edit_Interval: TEdit
-      Left = 9
-      Top = 25
-      Width = 96
+      Left = 7
+      Top = 20
+      Width = 78
       Height = 24
       ImeName = #26085#25991#36664#20837#31995#32113' (MS-IME2002)'
       TabOrder = 0
@@ -158,23 +158,82 @@ object PatternMeasureForm: TPatternMeasureForm
     end
   end
   inline TOutputFileFrame1: TOutputFileFrame
-    Left = 8
-    Top = 64
-    Width = 553
-    Height = 88
+    Left = 7
+    Top = 52
+    Width = 449
+    Height = 72
     TabOrder = 2
     inherited GroupBox_OutputFile: TGroupBox
+      Left = -1
+      Top = -1
+      Width = 450
+      Height = 73
+      Caption = 'Output File'
+      TabOrder = 0
+      inherited Label5: TLabel
+        Left = 5
+        Top = 20
+        Width = 71
+        Height = 13
+        Caption = 'Filename Prefix'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -9
+        Font.Name = 'MS Sans Serif'
+        Font.Style = []
+        ParentFont = False
+      end
+      inherited Label6: TLabel
+        Left = 7
+        Top = 46
+        Width = 77
+        Height = 13
+        Caption = 'Output Directory'
+      end
+      inherited Label_Warning: TLabel
+        Left = 260
+        Top = 20
+        Width = 3
+        Height = 13
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clLime
+        Font.Height = -9
+        Font.Name = 'MS Sans Serif'
+        Font.Style = []
+        ParentFont = False
+      end
       inherited Edit_Prefix: TEdit
+        Left = 91
+        Top = 20
+        Width = 163
+        Height = 24
+        TabOrder = 0
         Text = 'Measurement'
+      end
+      inherited Edit_Directory: TEdit
+        Left = 91
+        Top = 46
+        Width = 300
+        Height = 24
+        TabOrder = 1
+        Text = 'D:\Gamma Table\'
+      end
+      inherited Button_BrowseDir: TButton
+        Left = 397
+        Top = 46
+        Width = 46
+        Height = 20
+        Caption = 'Browse'
+        TabOrder = 2
       end
     end
   end
   object ComboBox_FileFormat: TComboBox
-    Left = 168
-    Top = 32
-    Width = 97
-    Height = 24
-    ItemHeight = 16
+    Left = 137
+    Top = 26
+    Width = 78
+    Height = 21
+    ItemHeight = 13
     ItemIndex = 0
     TabOrder = 3
     Text = 'JPG'
