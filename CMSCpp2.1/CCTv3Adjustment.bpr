@@ -208,9 +208,6 @@ ProductName=CCT Adjustment v3
 ProductVersion=3.4
 Comments=
 
-[Excluded Packages]
-c:\program files\borland\cbuilder6\Bin\dclite60.bpl=Borland Integrated Translation Environment
-
 [HistoryLists\hlIncludePath]
 Count=15
 Item0=src\cms\devicemodel;lib\EyeOneLib;src\algo;src\cms\lcd;src\gui\event;src\gui\util;C:\Program Files\Borland\CBuilder6\Projects;src\gui\cct;src\i2c\core;src\i2c;D:\Program Files\Borland\CBuilder6\Projects;src\math;src\gui;src\cms;src\cms\util;src\cms\measure;src\cms\lcd\calibrate;src\cms\colorspace;src\cms\colorformat;src\ca210api;lib\CA200SRVRLib;src\java;src\cms\i2c;src\cms\i2c\core;lib\USB_i2c_lib;lib\LPT_lib;src;$(BCB)\include;$(BCB)\include\vcl;lib

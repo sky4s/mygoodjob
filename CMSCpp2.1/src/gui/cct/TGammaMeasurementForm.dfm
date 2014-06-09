@@ -25,12 +25,12 @@ object GammaMeasurementForm: TGammaMeasurementForm
     Caption = 'Copyright (C) 2012, AU Optronics Corp., All Right Reserved.'
     IsControl = True
   end
-  object Panel1: TPanel
+  object Panel_PCInput: TPanel
     Left = 7
     Top = 13
     Width = 258
     Height = 241
-    Caption = 'Panel1'
+    Caption = 'Panel_PCInput'
     TabOrder = 0
     object GroupBox1: TGroupBox
       Left = 7
@@ -113,12 +113,12 @@ object GammaMeasurementForm: TGammaMeasurementForm
       end
     end
   end
-  object Panel2: TPanel
+  object Panel_PGInput: TPanel
     Left = 7
     Top = 13
     Width = 258
     Height = 324
-    Caption = 'Panel2'
+    Caption = 'Panel_PGInput'
     TabOrder = 1
     Visible = False
     object GroupBox5: TGroupBox
@@ -520,6 +520,15 @@ object GammaMeasurementForm: TGammaMeasurementForm
     Min = 0
     Max = 100
     TabOrder = 5
+    Visible = False
+  end
+  object CheckBox_ImageMeasure: TCheckBox
+    Left = 272
+    Top = 288
+    Width = 49
+    Height = 25
+    Caption = 'Image'
+    TabOrder = 6
     Visible = False
   end
   object OpenDialog1: TOpenDialog
