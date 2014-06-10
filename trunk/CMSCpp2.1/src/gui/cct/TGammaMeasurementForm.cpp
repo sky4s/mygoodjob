@@ -51,7 +51,7 @@ void __fastcall TGammaMeasurementForm::Button_MeasureClick(TObject * Sender)
     Button_Measure->Enabled = false;
     MainForm->showProgress(ProgressBar1);
 
-    if (imageMeasure) //20140609 skyforce, 可用圖片做pattern的量測功能
+    if (imageMeasure)           //20140609 skyforce, 可用圖片做pattern的量測功能
     {
       int start = this->Edit_StartLevel->Text.ToInt();
       int end = this->Edit_EndLevel->Text.ToInt();
@@ -86,6 +86,7 @@ void __fastcall TGammaMeasurementForm::Button_MeasureClick(TObject * Sender)
         }
         else
         {
+          ShowMessage("Image " + filename + " is not exisit! Stop measure.");
           break;
         }
       }
@@ -94,9 +95,12 @@ void __fastcall TGammaMeasurementForm::Button_MeasureClick(TObject * Sender)
 
 //      String_ptr astr = this->TOutputFileFrame1->getOutputFilename();
 //      string filename = astr->c_str();
-      Util::storeXYZxyVector(stlfilename, XYZVector, "no");
-      ShowMessage("Ok!");
-      Util::shellExecute(stlfilename);
+      if (XYZVector->size() != 0)
+      {
+        Util::storeXYZxyVector(stlfilename, XYZVector, "no");
+        ShowMessage("Ok!");
+        Util::shellExecute(stlfilename);
+      }
 
     }
     else
