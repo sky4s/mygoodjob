@@ -50,6 +50,7 @@ namespace i2c {
         bool setPGModeRGB(int r, int g, int b);
 	void setGammaTest(bool enable);
         void setTconAgingMode(bool enable);
+        void setTconAgingTiming(bool enable);
         void setTconPGMode(bool enable);
 
 	const Dep::MaxValue & getLUTBit();

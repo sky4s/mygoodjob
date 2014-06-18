@@ -411,7 +411,9 @@ void TMeasureWindow::setVisible(bool visible)
         if (tconcontrol->isAgingModeEnable()) {
            tconcontrol->setGammaTest(false);
            tconcontrol->setDG(true);
-	   tconcontrol->setTconAgingMode(visible);
+           tconcontrol->setTconAgingTiming(visible);   //Current only for 12411/2.  20140611 byBS+ 
+           tconcontrol->setTconAgingMode(visible);
+           
         } else if (tconcontrol->isPGModeEnable()) {
            tconcontrol->setTconPGMode(visible);
         }
@@ -573,4 +575,10 @@ void __fastcall TMeasureWindow::Button5Click(TObject *Sender)
 
 
 
+
+void __fastcall TMeasureWindow::Button6Click(TObject *Sender)
+{
+        tconcontrol->setTconAgingTiming(true);
+}
+//---------------------------------------------------------------------------
 
