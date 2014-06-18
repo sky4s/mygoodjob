@@ -9,6 +9,9 @@
 
 //本項目內頭文件
 
+//EXCEL寫入值有格式限定(ex: 數字/字串分別)，但BCB會轉成String 給excel
+//若excel為數字格式，BCB String中只能放入數字
+//此外，數字格式也無法給空白值(請Assign  0/-1)
 namespace cms {
     namespace colorformat {
 	using namespace Dep;
@@ -201,9 +204,13 @@ namespace cms {
 		this->insertData(XYZMode ? Sheet2 : Sheet1, values, false);
 	    }
             //加入時間戳記   20140605 byBS+
-            (*values)[0] = DateTimeToStr(Now()).c_str();
-            for(int i=1; i<22; i++)
-                (*values)[i] = "";
+            //(*values)[0] = DateTimeToStr(Now()).c_str();
+            //(*values)[0] = FormatDateTime("yyyy-mm-dd hh:mm",Now()).c_str();
+            (*values)[0] = FormatDateTime("yyyymmdd",Now()).c_str();
+            (*values)[1] = FormatDateTime("hhmm",Now()).c_str();
+            //String test= FormatDateTime("yyyy-mm-dd hh:mm",Now()).c_str();
+            for(int i=2; i<22; i++)
+                (*values)[i] = "-1";
             this->insertData(XYZMode ? Sheet2 : Sheet1, values, false);
 	}
 	void RampMeasureFile::
