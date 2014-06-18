@@ -253,7 +253,7 @@ void TMainForm::readTCONSetup(String filename, String section)
         } else if (agingType == "12411Aging") {
             ComboBox_AgingType->ItemIndex = 7;
         } else if (agingType == "12411Type") {
-            ComboBox_AgingType->ItemIndex = 8; 
+            ComboBox_AgingType->ItemIndex = 8;
         } else if (agingType == "N/A") {
             int index = ini->ReadBool(section, "DirectGammaIndepRGB", true) ? 0 : 1;
             ComboBox_AgingType->ItemIndex = index;
@@ -388,6 +388,128 @@ void TMainForm::readTCONSetup(String filename, String section)
             ini->ReadString(section, "PGVblkValue", -1);
     }
     CheckBox_PGMode->Checked = pgMode;
+
+    //AG Timing Setting byBS+ 20140610
+    bool agTiming = ini->ReadBool(section, "AGTiming", false);
+    if(agTiming){
+        TabSheet_AGTiming->TabVisible = true;    //開啟 Aging timing 設定
+        CheckBox_AGtiming->Checked = true;       //用來決定是否要設定timing register
+
+        String agFrameRate = ini->ReadString(section, "AGFrameRate", "N/A");
+        if (agFrameRate == "60Hz") {
+            ComboBox_AGFrameRate->ItemIndex = 0;
+        } else if (agFrameRate == "120Hz") {
+            ComboBox_AGFrameRate->ItemIndex = 1;
+        } else if (agFrameRate == "240Hz") {
+            ComboBox_AGFrameRate->ItemIndex = 2;
+        } else if (agFrameRate == "480Hz") {
+            ComboBox_AGFrameRate->ItemIndex = 3;
+        }
+        this->Edit_AGFrameRateAddress->Text =
+            ini->ReadString(section, "AGFrameRateAddress", "??");
+        this->Edit_AGFrameRateStartBit->Text =
+            ini->ReadInteger(section, "AGFrameRateStartBit", -1);
+        this->Edit_AGFrameRateEndBit->Text =
+            ini->ReadInteger(section, "AGFrameRateEndBit", -1);
+
+        this->Edit_mpllModeAddress->Text =
+            ini->ReadString(section, "AGmpllModeAddress", "??");
+        this->Edit_mpllModeStartBit->Text =
+            ini->ReadString(section, "AGmpllModeStartBit", -1);
+        this->Edit_mpllModeEndBit->Text =
+            ini->ReadString(section, "AGmpllModeEndBit", -1);
+        this->Edit_mpllModeValue->Text =
+            ini->ReadString(section, "AGmpllModeValue", -1);
+
+        this->Edit_mpllNMSBAddress->Text =
+            ini->ReadString(section, "AGmpllNMSBAddress", "??");
+        this->Edit_mpllNMSBStartBit->Text =
+            ini->ReadString(section, "AGmpllNMSBStartBit", -1);
+        this->Edit_mpllNMSBEndBit->Text =
+            ini->ReadString(section, "AGmpllNMSBEndBit", -1);
+        this->Edit_mpllNLSBAddress->Text =
+            ini->ReadString(section, "AGmpllNLSBAddress", "??");
+        this->Edit_mpllNLSBStartBit->Text =
+            ini->ReadString(section, "AGmpllNLSBStartBit", -1);
+        this->Edit_mpllNLSBEndBit->Text =
+            ini->ReadString(section, "AGmpllNLSBEndBit", -1);
+        this->Edit_mpllNValue->Text =
+            ini->ReadString(section, "AGmpllNValue", -1);
+
+        this->Edit_mpllFMSBAddress->Text =
+            ini->ReadString(section, "AGmpllFMSBAddress", "??");
+        this->Edit_mpllFMSBStartBit->Text =
+            ini->ReadString(section, "AGmpllFMSBStartBit", -1);
+        this->Edit_mpllFMSBEndBit->Text =
+            ini->ReadString(section, "AGmpllFMSBEndBit", -1);
+        this->Edit_mpllFLSBAddress->Text =
+            ini->ReadString(section, "AGmpllFLSBAddress", "??");
+        this->Edit_mpllFLSBStartBit->Text =
+            ini->ReadString(section, "AGmpllFLSBStartBit", -1);
+        this->Edit_mpllFLSBEndBit->Text =
+            ini->ReadString(section, "AGmpllFLSBEndBit", -1);
+        this->Edit_mpllFValue->Text =
+            ini->ReadString(section, "AGmpllFValue", -1);
+
+        this->Edit_mpllMAddress->Text =
+            ini->ReadString(section, "AGmpllMAddress", "??");
+        this->Edit_mpllMStartBit->Text =
+            ini->ReadString(section, "AGmpllMStartBit", -1);
+        this->Edit_mpllMEndBit->Text =
+            ini->ReadString(section, "AGmpllMEndBit", -1);
+        this->Edit_mpllMValue->Text =
+            ini->ReadString(section, "AGmpllMValue", -1);
+
+        this->Edit_AGHblkMSBAddress->Text =
+            ini->ReadString(section, "AGHblkMSBAddress", "??");
+        this->Edit_AGHblkMSBStartBit->Text =
+            ini->ReadString(section, "AGHblkMSBStartBit", -1);
+        this->Edit_AGHblkMSBEndBit->Text =
+            ini->ReadString(section, "AGHblkMSBEndBit", -1);
+        this->Edit_AGHblkLSBAddress->Text =
+            ini->ReadString(section, "AGHblkLSBAddress", "??");
+        this->Edit_AGHblkLSBStartBit->Text =
+            ini->ReadString(section, "AGHblkLSBStartBit", -1);
+        this->Edit_AGHblkLSBEndBit->Text =
+            ini->ReadString(section, "AGHblkLSBEndBit", -1);
+        this->Edit_AGHblkValue->Text =
+            ini->ReadString(section, "AGHblkValue", -1);
+
+        this->Edit_AGVblk1MSBAddress->Text =
+            ini->ReadString(section, "AGVblk1MSBAddress", "??");
+        this->Edit_AGVblk1MSBStartBit->Text =
+            ini->ReadString(section, "AGVblk1MSBStartBit", -1);
+        this->Edit_AGVblk1MSBEndBit->Text =
+            ini->ReadString(section, "AGVblk1MSBEndBit", -1);
+        this->Edit_AGVblk1LSBAddress->Text =
+            ini->ReadString(section, "AGVblk1LSBAddress", "??");
+        this->Edit_AGVblk1LSBStartBit->Text =
+            ini->ReadString(section, "AGVblk1LSBStartBit", -1);
+        this->Edit_AGVblk1LSBEndBit->Text =
+            ini->ReadString(section, "AGVblk1LSBEndBit", -1);
+        this->Edit_AGVblk1Value->Text =
+            ini->ReadString(section, "AGVblk1Value", -1);
+
+        this->Edit_AGVblk2MSBAddress->Text =
+            ini->ReadString(section, "AGVblk2MSBAddress", "??");
+        this->Edit_AGVblk2MSBStartBit->Text =
+            ini->ReadString(section, "AGVblk2MSBStartBit", -1);
+        this->Edit_AGVblk2MSBEndBit->Text =
+            ini->ReadString(section, "AGVblk2MSBEndBit", -1);
+        this->Edit_AGVblk2LSBAddress->Text =
+            ini->ReadString(section, "AGVblk2LSBAddress", "??");
+        this->Edit_AGVblk2LSBStartBit->Text =
+            ini->ReadString(section, "AGVblk2LSBStartBit", -1);
+        this->Edit_AGVblk2LSBEndBit->Text =
+            ini->ReadString(section, "AGVblk2LSBEndBit", -1);
+        this->Edit_AGVblk2Value->Text =
+            ini->ReadString(section, "AGVblk2Value", -1);
+
+    } else {
+        TabSheet_AGTiming->TabVisible = false;        //關閉 Aging timing 設定
+        CheckBox_AGtiming->Checked = false;
+    }
+
 
 
     /*int lut = ini->ReadInteger(section, "DigitalGammaLUTType", 10);
@@ -884,6 +1006,7 @@ void __fastcall TMainForm::RadioButton_TCON_directGammaClick(TObject * Sender)
     this->TargetWhite1->Enabled = true;
     this->CCTLUT1->Enabled = true;
     this->GammaAdj1->Enabled = true;
+
     ComboBox_TCONType->Clear();
     readTCONSections();
     ComboBox_TCONTypeChange(this);
@@ -1045,12 +1168,13 @@ void __fastcall TMainForm::Button_ConnectClick(TObject * Sender)
                     int agingRasterGrayAddress = StrToInt("0x" + this->Edit_AgingRasterGrayAddress->Text);
                     int aging_index = this->ComboBox_AgingType->ItemIndex;
 
+                    //for 12411/2 (not for 12409)
                     int agingManuSelectAddress;
                     int agingManuSelectBit;
                     if(Edit_AgingManuSelectAddress->Text != "N/A") {
                         agingManuSelectAddress = StrToInt("0x" + Edit_AgingManuSelectAddress->Text);
                         agingManuSelectBit = this->Edit_AgingManuSelectBit->Text.ToInt();
-                    } 
+                    }
 
                     const DirectGammaType & agingModeType =
                         (0 == aging_index) ? DirectGammaType::IndependentInstance :
@@ -1063,6 +1187,65 @@ void __fastcall TMainForm::Button_ConnectClick(TObject * Sender)
                         (7 == aging_index) ? DirectGammaType:: TCON12411AgingInstance:
                         (8 == aging_index) ? DirectGammaType:: TCON12411Instance:
                                              DirectGammaType::NotAssignInstance;
+
+
+                    //aging timing setting  20140611 byBS+
+                    bool agingTimingControl = CheckBox_AGtiming->Checked;
+
+                    int agingFrameRate = ComboBox_AGFrameRate->ItemIndex;
+                    int agingFrameRateAddress = StrToInt("0x" + Edit_AGFrameRateAddress->Text);
+                    int agingFrameRateStartBit = this->Edit_AGFrameRateStartBit->Text.ToInt();
+                    int agingFrameRateEndBit = this->Edit_AGFrameRateEndBit->Text.ToInt();
+
+                    int agingMpllModeAddress = StrToInt("0x" + Edit_mpllModeAddress->Text);
+                    int agingMpllModeStartBit = this->Edit_mpllModeStartBit->Text.ToInt();
+                    int agingMpllModeEndBit = this->Edit_mpllModeEndBit->Text.ToInt();
+                    int agingMpllModeValue = this->Edit_mpllModeValue->Text.ToInt();
+
+                    int agingMpllNMSBAddress = StrToInt("0x" + Edit_mpllNMSBAddress->Text);
+                    int agingMpllNMSBStartBit = this->Edit_mpllNMSBStartBit->Text.ToInt();
+                    int agingMpllNMSBEndBit = this->Edit_mpllNMSBEndBit->Text.ToInt();
+                    int agingMpllNLSBAddress = StrToInt("0x" + Edit_mpllNLSBAddress->Text);
+                    int agingMpllNLSBStartBit = this->Edit_mpllNLSBStartBit->Text.ToInt();
+                    int agingMpllNLSBEndBit = this->Edit_mpllNLSBEndBit->Text.ToInt();
+                    int agingMpllNValue = this->Edit_mpllNValue->Text.ToInt();
+
+                    int agingMpllFMSBAddress = StrToInt("0x" + Edit_mpllFMSBAddress->Text);
+                    int agingMpllFMSBStartBit = this->Edit_mpllFMSBStartBit->Text.ToInt();
+                    int agingMpllFMSBEndBit = this->Edit_mpllFMSBEndBit->Text.ToInt();
+                    int agingMpllFLSBAddress = StrToInt("0x" + Edit_mpllFLSBAddress->Text);
+                    int agingMpllFLSBStartBit = this->Edit_mpllFLSBStartBit->Text.ToInt();
+                    int agingMpllFLSBEndBit = this->Edit_mpllFLSBEndBit->Text.ToInt();
+                    int agingMpllFValue = this->Edit_mpllFValue->Text.ToInt();
+
+                    int agingMpllMAddress = StrToInt("0x" + Edit_mpllMAddress->Text);
+                    int agingMpllMStartBit = this->Edit_mpllMStartBit->Text.ToInt();
+                    int agingMpllMEndBit = this->Edit_mpllMEndBit->Text.ToInt();
+                    int agingMpllMValue = this->Edit_mpllMValue->Text.ToInt();
+
+                    int agingHblkMSBAddress = StrToInt("0x" + Edit_AGHblkMSBAddress->Text);
+                    int agingHblkMSBStartBit = this->Edit_AGHblkMSBStartBit->Text.ToInt();
+                    int agingHblkMSBEndBit = this->Edit_AGHblkMSBEndBit->Text.ToInt();
+                    int agingHblkLSBAddress = StrToInt("0x" + Edit_AGHblkLSBAddress->Text);
+                    int agingHblkLSBStartBit = this->Edit_AGHblkLSBStartBit->Text.ToInt();
+                    int agingHblkLSBEndBit = this->Edit_AGHblkLSBEndBit->Text.ToInt();
+                    int agingHblkValue = this->Edit_AGHblkValue->Text.ToInt();
+
+                    int agingVblk1MSBAddress = StrToInt("0x" + Edit_AGVblk1MSBAddress->Text);
+                    int agingVblk1MSBStartBit = this->Edit_AGVblk1MSBStartBit->Text.ToInt();
+                    int agingVblk1MSBEndBit = this->Edit_AGVblk1MSBEndBit->Text.ToInt();
+                    int agingVblk1LSBAddress = StrToInt("0x" + Edit_AGVblk1LSBAddress->Text);
+                    int agingVblk1LSBStartBit = this->Edit_AGVblk1LSBStartBit->Text.ToInt();
+                    int agingVblk1LSBEndBit = this->Edit_AGVblk1LSBEndBit->Text.ToInt();
+                    int agingVblk1Value = this->Edit_AGVblk1Value->Text.ToInt();
+
+                    int agingVblk2MSBAddress = StrToInt("0x" + Edit_AGVblk2MSBAddress->Text);
+                    int agingVblk2MSBStartBit = this->Edit_AGVblk2MSBStartBit->Text.ToInt();
+                    int agingVblk2MSBEndBit = this->Edit_AGVblk2MSBEndBit->Text.ToInt();
+                    int agingVblk2LSBAddress = StrToInt("0x" + Edit_AGVblk2LSBAddress->Text);
+                    int agingVblk2LSBStartBit = this->Edit_AGVblk2LSBStartBit->Text.ToInt();
+                    int agingVblk2LSBEndBit = this->Edit_AGVblk2LSBEndBit->Text.ToInt();
+                    int agingVblk2Value = this->Edit_AGVblk2Value->Text.ToInt();
 
                     if(secondGamma) {  //TCON包括DirectGamma與Aging與secondGamma功能 (EX: 12411)  byBS+
                         int dg2EnableAddress = StrToInt("0x" + Edit_DG2EnableAddress->Text);
@@ -1092,7 +1275,17 @@ void __fastcall TMainForm::Button_ConnectClick(TObject * Sender)
                                            agingModeType,agingManuSelectAddress,agingManuSelectBit,
                                            dg2EnableAddress, dg2EnableBit, dg2LUTAddress,
                                            gammaTest2Address, gammaTest2Bit, directGamma2RGBAddress,
-                                           frc2EnableAddress, frc2EnableBit));
+                                           frc2EnableAddress, frc2EnableBit,
+                                           agingTimingControl,
+                                           agingFrameRate, agingFrameRateAddress, agingFrameRateStartBit, agingFrameRateEndBit,
+                                           agingMpllModeAddress, agingMpllModeStartBit, agingMpllModeEndBit, agingMpllModeValue,
+                                           agingMpllNMSBAddress, agingMpllNMSBStartBit, agingMpllNMSBEndBit, agingMpllNLSBAddress, agingMpllNLSBStartBit, agingMpllNLSBEndBit,agingMpllNValue,
+                                           agingMpllFMSBAddress, agingMpllFMSBStartBit, agingMpllFMSBEndBit, agingMpllFLSBAddress, agingMpllFLSBStartBit, agingMpllFLSBEndBit, agingMpllFValue,
+                                           agingMpllMAddress, agingMpllMStartBit, agingMpllMEndBit, agingMpllMValue,
+                                           agingHblkMSBAddress, agingHblkMSBStartBit, agingHblkMSBEndBit, agingHblkLSBAddress, agingHblkLSBStartBit, agingHblkLSBEndBit, agingHblkValue,
+                                           agingVblk1MSBAddress, agingVblk1MSBStartBit, agingVblk1MSBEndBit, agingVblk1LSBAddress, agingVblk1LSBStartBit, agingVblk1LSBEndBit, agingVblk1Value,
+                                           agingVblk2MSBAddress, agingVblk2MSBStartBit, agingVblk2MSBEndBit, agingVblk2LSBAddress, agingVblk2LSBStartBit, agingVblk2LSBEndBit, agingVblk2Value));
+
                     } else {
                         parameter =
 		        bptr < TCONParameter >
@@ -1107,7 +1300,17 @@ void __fastcall TMainForm::Button_ConnectClick(TObject * Sender)
                                        agingModeSelectBit, agingPatternSelectAddress,
                                        agingPatternSelectValue, agingPatternSelectStartBit,
                                        agingPatternSelectEndBit, agingRasterGrayAddress,
-                                       agingModeType,agingManuSelectAddress,agingManuSelectBit));
+                                       agingModeType,agingManuSelectAddress,agingManuSelectBit,
+                                       agingTimingControl,
+                                       agingFrameRate, agingFrameRateAddress, agingFrameRateStartBit, agingFrameRateEndBit,
+                                       agingMpllModeAddress, agingMpllModeStartBit, agingMpllModeEndBit, agingMpllModeValue,
+                                       agingMpllNMSBAddress, agingMpllNMSBStartBit, agingMpllNMSBEndBit, agingMpllNLSBAddress, agingMpllNLSBStartBit, agingMpllNLSBEndBit,agingMpllNValue,
+                                       agingMpllFMSBAddress, agingMpllFMSBStartBit, agingMpllFMSBEndBit, agingMpllFLSBAddress, agingMpllFLSBStartBit, agingMpllFLSBEndBit, agingMpllFValue,
+                                       agingMpllMAddress, agingMpllMStartBit, agingMpllMEndBit, agingMpllMValue,
+                                       agingHblkMSBAddress, agingHblkMSBStartBit, agingHblkMSBEndBit, agingHblkLSBAddress, agingHblkLSBStartBit, agingHblkLSBEndBit, agingHblkValue,
+                                       agingVblk1MSBAddress, agingVblk1MSBStartBit, agingVblk1MSBEndBit, agingVblk1LSBAddress, agingVblk1LSBStartBit, agingVblk1LSBEndBit, agingVblk1Value,
+                                       agingVblk2MSBAddress, agingVblk2MSBStartBit, agingVblk2MSBEndBit, agingVblk2LSBAddress, agingVblk2LSBStartBit, agingVblk2LSBEndBit, agingVblk2Value));
+
                     }
                 } else {
 	            parameter =
@@ -1172,7 +1375,7 @@ void __fastcall TMainForm::Button_ConnectClick(TObject * Sender)
 		        TCONParameter(dgLUTBit == 10 ? MaxValue::Int10Bit : MaxValue::Int12Bit,
                                       dgLUTAddress, dgLUTType, dgEnableAddress, dgEnableBit, frcEnableAddress,
                                       frcEnableBit));
-           }
+            }
 	}
 
 
@@ -2359,54 +2562,104 @@ void TMainForm::initTCONFile()
 	//=========================================================================
 	// 12411
 	//=========================================================================
-	ini->WriteInteger("12411", "AddressingSize", 7);            //EEPROM Size
+	ini->WriteInteger("12411/2", "AddressingSize", 7);            //EEPROM Size
 
-	ini->WriteString("12411", "FRCEnableAddress", "A9");
-	ini->WriteInteger("12411", "FRCEnableBit", 2);
+	ini->WriteString("12411/2", "FRCEnableAddress", "A9");
+	ini->WriteInteger("12411/2", "FRCEnableBit", 2);
 
-	ini->WriteString("12411", "DigitalGammaEnableAddress", "A9");
-	ini->WriteInteger("12411", "DigitalGammaEnableBit", 0);
-	ini->WriteString("12411", "DigitalGammaLUTAddress", "CE2"); //不包含CheckSum，有四張gamma表
-	ini->WriteString("12411", "DigitalGammaLUTType", "12bitType2");
+	ini->WriteString("12411/2", "DigitalGammaEnableAddress", "A9");
+	ini->WriteInteger("12411/2", "DigitalGammaEnableBit", 0);
+	ini->WriteString("12411/2", "DigitalGammaLUTAddress", "CE2"); //不包含CheckSum，有四張gamma表
+	ini->WriteString("12411/2", "DigitalGammaLUTType", "12bitType2");
 
-	ini->WriteBool("12411", "DirectGammaFunc", true);
-	ini->WriteString("12411", "GammaTestEnableAddress", "7FC0");
-	ini->WriteInteger("12411", "GammaTestEnableBit", 0);
-	ini->WriteString("12411", "DirectGammaAddress", "7FC1");
-	ini->WriteString("12411", "DirectGammaType", "12411Type");
+	ini->WriteBool("12411/2", "DirectGammaFunc", true);
+	ini->WriteString("12411/2", "GammaTestEnableAddress", "7FC0");
+	ini->WriteInteger("12411/2", "GammaTestEnableBit", 0);
+	ini->WriteString("12411/2", "DirectGammaAddress", "7FC1");
+	ini->WriteString("12411/2", "DirectGammaType", "12411Type");
 
-	ini->WriteBool("12411", "AgingFunc", true);
-	ini->WriteString("12411", "AgingAGBSDebugAddress", "7FF3");
-	ini->WriteInteger("12411", "AgingAGBSDebugBit", 6);
-	ini->WriteString("12411", "AgingModeSelectAddress", "46");
-	ini->WriteInteger("12411", "AgingModeSelectBit", 0);
-	ini->WriteString("12411", "AgingPatternSelectAddress", "46");
-        ini->WriteInteger("12411", "AgingPatternSelectValue", 17);
-        ini->WriteInteger("12411", "AgingPatternSelectStartBit", 3);
-        ini->WriteInteger("12411", "AgingPatternSelectEndBit", 7);
-	ini->WriteString("12411", "AgingRasterGrayAddress", "50");   //50 9:4(0~5)  51 3:0(0~3)
-	ini->WriteString("12411", "AgingType", "12411Aging");
+	ini->WriteBool("12411/2", "AgingFunc", true);
+	ini->WriteString("12411/2", "AgingAGBSDebugAddress", "7FF3");
+	ini->WriteInteger("12411/2", "AgingAGBSDebugBit", 6);
+	ini->WriteString("12411/2", "AgingModeSelectAddress", "46");
+	ini->WriteInteger("12411/2", "AgingModeSelectBit", 0);
+	ini->WriteString("12411/2", "AgingPatternSelectAddress", "46");
+        ini->WriteInteger("12411/2", "AgingPatternSelectValue", 17);
+        ini->WriteInteger("12411/2", "AgingPatternSelectStartBit", 3);
+        ini->WriteInteger("12411/2", "AgingPatternSelectEndBit", 7);
+	ini->WriteString("12411/2", "AgingRasterGrayAddress", "50");   //50 9:4(0~5)  51 3:0(0~3)
+	ini->WriteString("12411/2", "AgingType", "12411Aging");
 
-        ini->WriteString("12411", "AgingManuSelectAddress", "46");
-        ini->WriteInteger("12411", "AgingManuSelectBit", 1);
+        ini->WriteString("12411/2", "AgingManuSelectAddress", "46");
+        ini->WriteInteger("12411/2", "AgingManuSelectBit", 1);
 
-        ini->WriteBool("12411", "SecondGamma", true);
-	ini->WriteString("12411", "DigitalGamma2EnableAddress", "A9");
-	ini->WriteInteger("12411", "DigitalGamma2EnableBit", 1);
-        ini->WriteString("12411", "DigitalGammaLUT2Address", "1168"); //不包含CheckSum，有四張gamma表
-	ini->WriteString("12411", "Gamma2TestEnableAddress", "7FC7");
-	ini->WriteInteger("12411", "Gamma2TestEnableBit", 0);
-	ini->WriteString("12411", "DirectGamma2Address", "7FC8");
-	ini->WriteString("12411", "FRCE2nableAddress", "A9");
-	ini->WriteInteger("12411", "FRC2EnableBit", 3);
+        ini->WriteBool("12411/2", "SecondGamma", true);
+	ini->WriteString("12411/2", "DigitalGamma2EnableAddress", "A9");
+	ini->WriteInteger("12411/2", "DigitalGamma2EnableBit", 1);
+        ini->WriteString("12411/2", "DigitalGammaLUT2Address", "1168"); //不包含CheckSum，有四張gamma表
+	ini->WriteString("12411/2", "Gamma2TestEnableAddress", "7FC7");
+	ini->WriteInteger("12411/2", "Gamma2TestEnableBit", 0);
+	ini->WriteString("12411/2", "DirectGamma2Address", "7FC8");
+	ini->WriteString("12411/2", "FRCE2nableAddress", "A9");
+	ini->WriteInteger("12411/2", "FRC2EnableBit", 3);
 
-	ini->WriteInteger("12411", "in", 8);
-	ini->WriteInteger("12411", "out", 8);
+        //AG Timnig Setting
+        ini->WriteBool("12411/2", "AGTiming", true);
+	ini->WriteString("12411/2", "AGFrameRate", "60Hz");
+	ini->WriteString("12411/2", "AGFrameRateAddress", "5A");
+        ini->WriteInteger("12411/2", "AGFrameRateStartBit", 4);
+        ini->WriteInteger("12411/2", "AGFrameRateEndBit", 5);
+	ini->WriteString("12411/2", "AGmpllModeAddress", "1C6");
+        ini->WriteInteger("12411/2", "AGmpllModeStartBit", 3);
+        ini->WriteInteger("12411/2", "AGmpllModeEndBit", 4);
+        ini->WriteInteger("12411/2", "AGmpllModeValue", 0);
+	ini->WriteString("12411/2", "AGmpllNMSBAddress", "1C2");
+        ini->WriteInteger("12411/2", "AGmpllNMSBStartBit", 5);
+        ini->WriteInteger("12411/2", "AGmpllNMSBEndBit", 7);
+	ini->WriteString("12411/2", "AGmpllNLSBAddress", "1C4");
+        ini->WriteInteger("12411/2", "AGmpllNLSBStartBit", 5);
+        ini->WriteInteger("12411/2", "AGmpllNLSBEndBit", 7);
+        ini->WriteInteger("12411/2", "AGmpllNValue", 12);
+	ini->WriteString("12411/2", "AGmpllFMSBAddress", "1C7");
+        ini->WriteInteger("12411/2", "AGmpllFMSBStartBit", 0);
+        ini->WriteInteger("12411/2", "AGmpllFMSBEndBit", 6);
+	ini->WriteString("12411/2", "AGmpllFLSBAddress", "1C8");
+        ini->WriteInteger("12411/2", "AGmpllFLSBStartBit", 0);
+        ini->WriteInteger("12411/2", "AGmpllFLSBEndBit", 7);
+        ini->WriteInteger("12411/2", "AGmpllFValue", 0);
+	ini->WriteString("12411/2", "AGmpllMAddress", "1C6");
+        ini->WriteInteger("12411/2", "AGmpllMStartBit", 5);
+        ini->WriteInteger("12411/2", "AGmpllMEndBit", 6);
+        ini->WriteInteger("12411/2", "AGmpllMValue", 3);
+	ini->WriteString("12411/2", "AGHblkMSBAddress", "47");
+        ini->WriteInteger("12411/2", "AGHblkMSBStartBit", 0);
+        ini->WriteInteger("12411/2", "AGHblkMSBEndBit", 7);
+	ini->WriteString("12411/2", "AGHblkLSBAddress", "48");
+        ini->WriteInteger("12411/2", "AGHblkLSBStartBit", 5);
+        ini->WriteInteger("12411/2", "AGHblkLSBEndBit", 7);
+        ini->WriteInteger("12411/2", "AGHblkValue", 176);
+	ini->WriteString("12411/2", "AGVblk1MSBAddress", "48");
+        ini->WriteInteger("12411/2", "AGVblk1MSBStartBit", 0);
+        ini->WriteInteger("12411/2", "AGVblk1MSBEndBit", 4);
+	ini->WriteString("12411/2", "AGVblk1LSBAddress", "49");
+        ini->WriteInteger("12411/2", "AGVblk1LSBStartBit", 2);
+        ini->WriteInteger("12411/2", "AGVblk1LSBEndBit", 7);
+        ini->WriteInteger("12411/2", "AGVblk1Value", 20);
+	ini->WriteString("12411/2", "AGVblk2MSBAddress", "51");
+        ini->WriteInteger("12411/2", "AGVblk2MSBStartBit", 4);
+        ini->WriteInteger("12411/2", "AGVblk2MSBEndBit", 7);
+	ini->WriteString("12411/2", "AGVblk2LSBAddress", "52");
+        ini->WriteInteger("12411/2", "AGVblk2LSBStartBit", 0);
+        ini->WriteInteger("12411/2", "AGVblk2LSBEndBit", 6);
+        ini->WriteInteger("12411/2", "AGVblk2Value", 20);
+
+	ini->WriteInteger("12411/2", "in", 8);
+	ini->WriteInteger("12411/2", "out", 8);
 
 	//=========================================================================
 	// 12412
 	//=========================================================================
-	ini->WriteInteger("12412", "AddressingSize", 7);            //EEPROM Size
+	/*ini->WriteInteger("12412", "AddressingSize", 7);            //EEPROM Size
 
 	ini->WriteString("12412", "FRCEnableAddress", "A9");
 	ini->WriteInteger("12412", "FRCEnableBit", 2);
@@ -2449,13 +2702,13 @@ void TMainForm::initTCONFile()
 
 	ini->WriteInteger("12412", "in", 8);
 	ini->WriteInteger("12412", "out", 8);
-
+        */
         //=========================================================================
 	// 12802
 	//=========================================================================
 	ini->WriteInteger("12802", "AddressingSize", 5);
 
-	ini->WriteString("12802", "FRCEnableAddress", "70016");   //70016
+	ini->WriteString("12802", "FRCEnableAddress", "70016");  
 	ini->WriteInteger("12802", "FRCEnableBit", 4);
 
         ini->WriteBool("12802", "PGMode", true);
@@ -2538,7 +2791,7 @@ void __fastcall TMainForm::RadioButton_TCON_agingClick(TObject *Sender)
     this->GammaAdj1->Enabled = false;      //*******************//
 
     setComboBoxTCONType();                 //設定顯示只有Aging mode的Tcon
-    
+
     ShowMessage
         ("\"Aging mode\" only for Gamma Measurement, not support CCT algo to produce DG LUT.\n And please turn on FRC for measurement.");
 
@@ -2598,5 +2851,19 @@ void TMainForm::initialFactoryIF()
     CCTLUT1->Visible = false;
     GammaAdj1->Visible = false;
     StabilityMeasure1->Visible = false;
+    RadioButton_DoDoBird_USB->Checked = true;
     MainForm->Width = 850;
 }
+//---------------------------------------------------------------------------
+
+void __fastcall TMainForm::ComboBox_AGFrameRateChange(TObject *Sender)
+{
+        int FreqSelect = ComboBox_AGFrameRate->ItemIndex;
+        if(FreqSelect==0) {
+                Edit_AGHblkValue->Text = "176";
+        } else if(FreqSelect==1) {
+                Edit_AGHblkValue->Text = "88";
+        }
+}
+//---------------------------------------------------------------------------
+

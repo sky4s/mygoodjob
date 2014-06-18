@@ -70,6 +70,56 @@ namespace i2c {
         const DirectGammaType & agingModeType;
         const unsigned char agingManuSelectAddress;
         const int agingManuSelectBit;
+        //aging timing
+        const bool agingTimingControl;
+        const int agingFrameRate;
+        const int agingFrameRateAddress;
+        const unsigned char agingFrameRateStartBit;
+        const unsigned char agingFrameRateEndBit;
+        const int agingMpllModeAddress;
+        const unsigned char agingMpllModeStartBit;
+        const unsigned char agingMpllModeEndBit;
+        const int agingMpllModeValue;
+        const int agingMpllNMSBAddress;
+        const unsigned char agingMpllNMSBStartBit;
+        const unsigned char agingMpllNMSBEndBit;
+        const int agingMpllNLSBAddress;
+        const unsigned char agingMpllNLSBStartBit;
+        const unsigned char agingMpllNLSBEndBit;
+        const int agingMpllNValue;
+        const int agingMpllFMSBAddress;
+        const unsigned char agingMpllFMSBStartBit;
+        const unsigned char agingMpllFMSBEndBit;
+        const int agingMpllFLSBAddress;
+        const unsigned char agingMpllFLSBStartBit;
+        const unsigned char agingMpllFLSBEndBit;
+        const int agingMpllFValue;
+        const int agingMpllMAddress;
+        const unsigned char agingMpllMStartBit;
+        const unsigned char agingMpllMEndBit;
+        const int agingMpllMValue;
+        const int agingHblkMSBAddress;
+        const unsigned char agingHblkMSBStartBit;
+        const unsigned char agingHblkMSBEndBit;
+        const int agingHblkLSBAddress;
+        const unsigned char agingHblkLSBStartBit;
+        const unsigned char agingHblkLSBEndBit;
+        const int agingHblkValue;
+        const int agingVblk1MSBAddress;
+        const unsigned char agingVblk1MSBStartBit;
+        const unsigned char agingVblk1MSBEndBit;
+        const int agingVblk1LSBAddress;
+        const unsigned char agingVblk1LSBStartBit;
+        const unsigned char agingVblk1LSBEndBit;
+        const int agingVblk1Value;
+        const int agingVblk2MSBAddress;
+        const unsigned char agingVblk2MSBStartBit;
+        const unsigned char agingVblk2MSBEndBit;
+        const int agingVblk2LSBAddress;
+        const unsigned char agingVblk2LSBStartBit;
+        const unsigned char agingVblk2LSBEndBit;
+        const int agingVblk2Value;
+
 	//======================================================================
 	// Second gamma
 	//======================================================================
@@ -157,7 +207,18 @@ namespace i2c {
                        const unsigned char agingPatternSelectStartBit,
                        const unsigned char agingPatternSelectEndBit,
                        const int agingRasterGrayAddress, const DirectGammaType & agingModeType,
-                       const unsigned char agingManuSelectAddress, const int agingManuSelectBit);
+                       const unsigned char agingManuSelectAddress, const int agingManuSelectBit,
+                       const bool agingTimingControl,
+                       const int agingFrameRate, const int agingFrameRateAddress, const unsigned char agingFrameRateStartBit, const unsigned char agingFrameRateEndBit,
+                       const int agingMpllModeAddress, const unsigned char agingMpllModeStartBit, const unsigned char agingMpllModeEndBit, const int agingMpllModeValue,
+                       const int agingMpllNMSBAddress, const unsigned char agingMpllNMSBStartBit, const unsigned char agingMpllNMSBEndBit, const int agingMpllNLSBAddress, const unsigned char agingMpllNLSBStartBit, const unsigned char agingMpllNLSBEndBit, const int agingMpllNValue,
+                       const int agingMpllFMSBAddress, const unsigned char agingMpllFMSBStartBit, const unsigned char agingMpllFMSBEndBit, const int agingMpllFLSBAddress, const unsigned char agingMpllFLSBStartBit, const unsigned char agingMpllFLSBEndBit, const int agingMpllFValue,
+                       const int agingMpllMAddress, const unsigned char agingMpllMStartBit, const unsigned char agingMpllMEndBit, const int agingMpllMValue,
+                       const int agingHblkMSBAddress, const unsigned char agingHblkMSBStartBit, const unsigned char agingHblkMSBEndBit, const int agingHblkLSBAddress, const unsigned char agingHblkLSBStartBit, const unsigned char agingHblkLSBEndBit, const int agingHblkValue,
+                       const int agingVblk1MSBAddress, const unsigned char agingVblk1MSBStartBit, const unsigned char agingVblk1MSBEndBit, const int agingVblk1LSBAddress, const unsigned char agingVblk1LSBStartBit, const unsigned char agingVblk1LSBEndBit, const int agingVblk1Value,
+                       const int agingVblk2MSBAddress, const unsigned char agingVblk2MSBStartBit, const unsigned char agingVblk2MSBEndBit, const int agingVblk2LSBAddress, const unsigned char agingVblk2LSBStartBit, const unsigned char agingVblk2LSBEndBit, const int agingVblk2Value
+                       );
+
 
                        //For AgingMode + SecondGamma    byBS+
          TCONParameter(const Dep::MaxValue & lutBit,
@@ -175,7 +236,17 @@ namespace i2c {
                        const unsigned char agingManuSelectAddress, const int agingManuSelectBit,
                        const int DG2Address, const unsigned char DG2Bit, const int DG2LutAddress,
                        const int gammaTest2Address, const unsigned char gammaTest2Bit, const int directGamma2RGBAddress,
-                       const int FRC2Address, const unsigned char FRC2Bit);
+                       const int FRC2Address, const unsigned char FRC2Bit,
+                       const bool agingTimingControl,
+                       const int agingFrameRate, const int agingFrameRateAddress, const unsigned char agingFrameRateStartBit, const unsigned char agingFrameRateEndBit,
+                       const int agingMpllModeAddress, const unsigned char agingMpllModeStartBit, const unsigned char agingMpllModeEndBit, const int agingMpllModeValue,
+                       const int agingMpllNMSBAddress, const unsigned char agingMpllNMSBStartBit, const unsigned char agingMpllNMSBEndBit, const int agingMpllNLSBAddress, const unsigned char agingMpllNLSBStartBit, const unsigned char agingMpllNLSBEndBit, const int agingMpllNValue,
+                       const int agingMpllFMSBAddress, const unsigned char agingMpllFMSBStartBit, const unsigned char agingMpllFMSBEndBit, const int agingMpllFLSBAddress, const unsigned char agingMpllFLSBStartBit, const unsigned char agingMpllFLSBEndBit, const int agingMpllFValue,
+                       const int agingMpllMAddress, const unsigned char agingMpllMStartBit, const unsigned char agingMpllMEndBit, const int agingMpllMValue,
+                       const int agingHblkMSBAddress, const unsigned char agingHblkMSBStartBit, const unsigned char agingHblkMSBEndBit, const int agingHblkLSBAddress, const unsigned char agingHblkLSBStartBit, const unsigned char agingHblkLSBEndBit, const int agingHblkValue,
+                       const int agingVblk1MSBAddress, const unsigned char agingVblk1MSBStartBit, const unsigned char agingVblk1MSBEndBit, const int agingVblk1LSBAddress, const unsigned char agingVblk1LSBStartBit, const unsigned char agingVblk1LSBEndBit, const int agingVblk1Value,
+                       const int agingVblk2MSBAddress, const unsigned char agingVblk2MSBStartBit, const unsigned char agingVblk2MSBEndBit, const int agingVblk2LSBAddress, const unsigned char agingVblk2LSBStartBit, const unsigned char agingVblk2LSBEndBit, const int agingVblk2Value
+                       );
 
                        //For PGMode    byBS+
          TCONParameter(const int FRCAddress, const unsigned char FRCBit,

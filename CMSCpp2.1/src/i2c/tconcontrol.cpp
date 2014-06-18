@@ -429,7 +429,7 @@ namespace i2c {
     void TCONControl::setTconAgingMode(bool enable) {
         //1. AG_PTN_SEL
         //2. AG_MODE_SEL
-        //3. AG_MANU_SEL    (目前只有AUO-12411/2有)  201312 by BS+
+        //3. AG_MANU_SEL    (目前只有AUO-12411/2有,12409無)  201312 by BS+
         //4. AGBS_DEBUG
         setBitData(parameter->agingPatternSelectAddress, parameter->agingPatternSelectStartBit,
                    parameter->agingPatternSelectEndBit, parameter->agingPatternSelectValue);
@@ -438,6 +438,43 @@ namespace i2c {
             setSingleBitData(parameter->agingManuSelectAddress, parameter->agingManuSelectBit, 0); //0: 選Type 1(AUO)
         }
         setSingleBitData(parameter->agingAGBSDebugAddress, parameter->agingAGBSDebugBit, enable);
+    };
+
+    //Current for 12411/2        201406011 byBS+
+    void TCONControl::setTconAgingTiming(bool enable) {
+
+        if(parameter->agingTimingControl){
+            //1. AG_FRM_RATE[1:0]
+            //2. AG_MPLL_MODE[1:0]
+            //3. AG_MPLL_N[5:0]   4. AG_MPLL_F[15:0]   5. AG_MPLL_M[1:0]
+            //7. AG_HBLK[10:0]   8. AG_VBLK1[10:0]   9. AG_VBLK2[10:0]
+
+            setBitData(parameter->agingFrameRateAddress, parameter->agingFrameRateStartBit,
+                       parameter->agingFrameRateEndBit, parameter->agingFrameRate);
+            setBitData(parameter->agingMpllModeAddress, parameter->agingMpllModeStartBit,
+                       parameter->agingMpllModeEndBit, parameter->agingMpllModeValue);
+            /*setBitData(parameter->agingMpllNAddress, parameter->agingMpllNStartBit,
+                       parameter->agingMpllNEndBit, parameter->agingMpllNValue); */
+            setTwoByteData(parameter->agingMpllNMSBAddress, parameter->agingMpllNMSBStartBit, parameter->agingMpllNMSBEndBit,
+                           parameter->agingMpllNLSBAddress, parameter->agingMpllNLSBStartBit, parameter->agingMpllNLSBEndBit,
+                           parameter->agingMpllNValue);
+            setTwoByteData(parameter->agingMpllFMSBAddress, parameter->agingMpllFMSBStartBit, parameter->agingMpllFMSBEndBit,
+                           parameter->agingMpllFLSBAddress, parameter->agingMpllFLSBStartBit, parameter->agingMpllFLSBEndBit,
+                           parameter->agingMpllFValue);
+            setBitData(parameter->agingMpllMAddress, parameter->agingMpllMStartBit,
+                       parameter->agingMpllMEndBit, parameter->agingMpllMValue);
+            setTwoByteData(parameter->agingHblkMSBAddress, parameter->agingHblkMSBStartBit, parameter->agingHblkMSBEndBit,
+                           parameter->agingHblkLSBAddress, parameter->agingHblkLSBStartBit, parameter->agingHblkLSBEndBit,
+                           parameter->agingHblkValue);
+            setTwoByteData(parameter->agingVblk1MSBAddress, parameter->agingVblk1MSBStartBit, parameter->agingVblk1MSBEndBit,
+                           parameter->agingVblk1LSBAddress, parameter->agingVblk1LSBStartBit, parameter->agingVblk1LSBEndBit,
+                           parameter->agingVblk1Value);
+            setTwoByteData(parameter->agingVblk2MSBAddress, parameter->agingVblk2MSBStartBit, parameter->agingVblk2MSBEndBit,
+                           parameter->agingVblk2LSBAddress, parameter->agingVblk2LSBStartBit, parameter->agingVblk2LSBEndBit,
+                           parameter->agingVblk2Value);
+
+        }
+
     };
 
     void TCONControl::setTconPGMode(bool enable) {
