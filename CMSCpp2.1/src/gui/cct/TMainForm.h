@@ -260,7 +260,6 @@ class TMainForm:public TForm {
         TEdit *Edit_PGVblkLSBAddress;
         TEdit *Edit_PGVblkValue;
         TGroupBox *GroupBox14;
-        TComboBox *ComboBox_AGFrameRate;
         TLabel *Label66;
         TLabel *Label67;
         TEdit *Edit_AGFrameRateAddress;
@@ -362,6 +361,9 @@ class TMainForm:public TForm {
         TEdit *Edit_mpllNLSBAddress;
         TEdit *Edit_mpllNLSBEndBit;
         TEdit *Edit_mpllNLSBStartBit;
+        TGroupBox *GroupBox_AG_FRM_RATE;
+        TComboBox *ComboBox_AGFrameRate;
+        TRadioGroup *RadioGroup_DataByte;
     void __fastcall About1Click(TObject * Sender);
     void __fastcall Exit1Click(TObject * Sender);
     void __fastcall TargetWhite1Click(TObject * Sender);

@@ -1,6 +1,6 @@
 object MainForm: TMainForm
-  Left = 131
-  Top = 178
+  Left = 129
+  Top = 189
   Width = 1015
   Height = 610
   Caption = 'CCT Adjustment '
@@ -1182,7 +1182,7 @@ object MainForm: TMainForm
         end
         object GroupBox_DeviceAddress: TGroupBox
           Left = 2
-          Top = 113
+          Top = 137
           Width = 199
           Height = 98
           Caption = 'Device Address'
@@ -1262,8 +1262,8 @@ object MainForm: TMainForm
           end
         end
         object Button_Connect: TButton
-          Left = 29
-          Top = 335
+          Left = 21
+          Top = 423
           Width = 66
           Height = 20
           Caption = 'Connect'
@@ -2465,71 +2465,57 @@ object MainForm: TMainForm
                 Left = 8
                 Top = 0
                 Width = 129
-                Height = 89
+                Height = 65
                 Caption = 'AG_FRM_RATE [1:0]'
                 TabOrder = 0
                 object Label66: TLabel
                   Left = 8
-                  Top = 40
+                  Top = 16
                   Width = 64
                   Height = 13
                   Caption = 'Address (hex)'
                 end
                 object Label67: TLabel
                   Left = 8
-                  Top = 64
+                  Top = 40
                   Width = 12
                   Height = 13
                   Caption = 'Bit'
                 end
                 object Label68: TLabel
                   Left = 80
-                  Top = 72
+                  Top = 48
                   Width = 7
                   Height = 13
                   Caption = '~'
                 end
-                object ComboBox_AGFrameRate: TComboBox
-                  Left = 8
-                  Top = 16
-                  Width = 113
-                  Height = 21
-                  ItemHeight = 13
-                  TabOrder = 0
-                  OnChange = ComboBox_AGFrameRateChange
-                  Items.Strings = (
-                    '60Hz'
-                    '120Hz'
-                    '240Hz'
-                    '480Hz')
-                end
                 object Edit_AGFrameRateAddress: TEdit
                   Left = 80
-                  Top = 40
+                  Top = 16
                   Width = 38
                   Height = 21
-                  TabOrder = 1
+                  TabOrder = 0
                 end
                 object Edit_AGFrameRateStartBit: TEdit
                   Left = 48
-                  Top = 64
+                  Top = 40
                   Width = 33
                   Height = 21
-                  TabOrder = 2
+                  TabOrder = 1
                 end
                 object Edit_AGFrameRateEndBit: TEdit
                   Left = 88
-                  Top = 64
+                  Top = 40
                   Width = 30
                   Height = 21
-                  TabOrder = 3
+                  TabOrder = 2
                 end
               end
               object GroupBox22: TGroupBox
                 Left = 8
-                Top = 96
+                Top = 72
                 Width = 281
-                Height = 265
+                Height = 289
                 Caption = 'Clock Control'
                 TabOrder = 1
                 object GroupBox18: TGroupBox
@@ -2704,7 +2690,7 @@ object MainForm: TMainForm
                 end
                 object GroupBox21: TGroupBox
                   Left = 144
-                  Top = 160
+                  Top = 168
                   Width = 129
                   Height = 97
                   Caption = 'AG_MPLL_M [1:0]'
@@ -2761,7 +2747,7 @@ object MainForm: TMainForm
                 end
                 object GroupBox19: TGroupBox
                   Left = 8
-                  Top = 120
+                  Top = 128
                   Width = 129
                   Height = 137
                   Caption = 'AG_MPLL_N [5:0]'
@@ -3203,10 +3189,32 @@ object MainForm: TMainForm
               end
             end
           end
+          object GroupBox_AG_FRM_RATE: TGroupBox
+            Left = 176
+            Top = 8
+            Width = 129
+            Height = 41
+            Caption = 'AG_FRM_RATE [1:0]'
+            TabOrder = 2
+            object ComboBox_AGFrameRate: TComboBox
+              Left = 8
+              Top = 16
+              Width = 113
+              Height = 21
+              ItemHeight = 13
+              TabOrder = 0
+              OnChange = ComboBox_AGFrameRateChange
+              Items.Strings = (
+                '60Hz'
+                '120Hz'
+                '240Hz'
+                '480Hz')
+            end
+          end
         end
         object GroupBox_USBSetting: TGroupBox
           Left = 2
-          Top = 219
+          Top = 235
           Width = 199
           Height = 105
           Caption = 'USB Setting'
@@ -3242,13 +3250,27 @@ object MainForm: TMainForm
           end
         end
         object Button_I2CTest: TButton
-          Left = 109
-          Top = 335
+          Left = 117
+          Top = 423
           Width = 66
           Height = 20
           Caption = 'I2C Test'
           TabOrder = 5
           OnClick = Button_I2CTestClick
+        end
+        object RadioGroup_DataByte: TRadioGroup
+          Left = 0
+          Top = 104
+          Width = 201
+          Height = 33
+          Caption = 'Data Byte'
+          Columns = 2
+          ItemIndex = 0
+          Items.Strings = (
+            '1 Byte'
+            '2 Byre')
+          TabOrder = 6
+          Visible = False
         end
       end
     end

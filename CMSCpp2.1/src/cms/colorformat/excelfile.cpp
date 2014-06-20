@@ -82,9 +82,23 @@ namespace cms {
 	void ExcelFileDB::createTable(const std::string & tableName, string_vector_ptr fieldNames) {
 	    int size = fieldNames->size();
 	    string_vector_ptr fieldTypes(new string_vector(size));
-	    foreach(string & s, *fieldTypes) {
-		s = "Real";
-	    };
+
+            if(tableName=="xyY") {     //為了在量測模式中的excel塞入文字，所以第一列改成Text  20140619 btBS+
+                bool firstFlag = true;
+                foreach(string & s, *fieldTypes) {
+                    if(firstFlag) {
+                        s = "Text";
+                        firstFlag = 0;
+                    } else {
+                        s = "Real";
+                    }
+                };
+            } else {
+                foreach(string & s, *fieldTypes) {
+                    s = "Real";
+                };
+            }
+
 	    createTable(tableName, fieldNames, fieldTypes);
 	};
 
@@ -389,7 +403,7 @@ namespace cms {
 		headers->push_back(str);
 	    } va_end(num_list);
 
-	    initSheet(sheetname, headers);
+            initSheet(sheetname, headers);
 	};
 	void ExcelAccessBase::initSheet(const std::string & sheetname,
 					string_vector_ptr headerNames) {
