@@ -66,7 +66,8 @@ void __fastcall TGammaMeasurementForm::Button_MeasureClick(TObject * Sender)
       MeasureWindow->Visible = true;
       for (int graylevel = start; graylevel >= step; graylevel -= step)
       {
-        AnsiString filename = s.sprintf("%03d.", graylevel) + "bmp";
+        //AnsiString filename = s.sprintf("%03d.", graylevel) + "bmp";
+        AnsiString filename = s.sprintf("%d.", graylevel) + "bmp";
         if (FileExists(filename))
         {
           MeasureWindow->setImageFilename(filename.c_str());
