@@ -8,7 +8,7 @@
 //其他庫頭文件
 
 //本項目內頭文件
-
+#include "TMainForm.h"
 //EXCEL寫入值有格式限定(ex: 數字/字串分別)，但BCB會轉成String 給excel
 //若excel為數字格式，BCB String中只能放入數字
 //此外，數字格式也無法給空白值(請Assign  0/-1)
@@ -203,15 +203,44 @@ namespace cms {
 
 		this->insertData(XYZMode ? Sheet2 : Sheet1, values, false);
 	    }
-            //加入時間戳記   20140605 byBS+
-            //(*values)[0] = DateTimeToStr(Now()).c_str();
-            //(*values)[0] = FormatDateTime("yyyy-mm-dd hh:mm",Now()).c_str();
-            (*values)[0] = FormatDateTime("yyyymmdd",Now()).c_str();
-            (*values)[1] = FormatDateTime("hhmm",Now()).c_str();
-            //String test= FormatDateTime("yyyy-mm-dd hh:mm",Now()).c_str();
-            for(int i=2; i<22; i++)
-                (*values)[i] = "-1";
-            this->insertData(XYZMode ? Sheet2 : Sheet1, values, false);
+
+            if(!XYZMode) {
+                //量測完DATA後，空一行      20140605 byBS+
+                (*values)[0] = "";
+                for(int i=1; i<22; i++)
+                    (*values)[i] = "-1";
+                this->insertData(Sheet1, values, true);
+
+                //加入時間戳記
+                (*values)[0] = FormatDateTime("yyyy-mm-dd hh:mm",Now()).c_str();
+                this->insertData(Sheet1, values, true);
+
+                //如果非PC mode，加入Tcon資訊
+                if(MainForm->ComboBox_TCONType->ItemIndex!=-1) {
+                    (*values)[0] = ("AUO-"+MainForm->ComboBox_TCONType->Text).c_str();
+                    this->insertData(Sheet1, values, true);
+
+                    if(MainForm->ComboBox_AGFrameRate->ItemIndex!=-1) {
+                        AnsiString frameRate;
+                        switch(MainForm->ComboBox_AGFrameRate->ItemIndex) {
+                            case 0:
+                                frameRate = "60Hz";
+                                break;
+                            case 1:
+                                frameRate = "120Hz";
+                                break;
+                            case 2:
+                                frameRate = "240Hz";
+                                break;
+                            case 3:
+                                frameRate = "480Hz";
+                                break;
+                        }
+                        (*values)[0] = ("Frame Rate: " + frameRate).c_str();
+                        this->insertData(Sheet1, values, true);
+                    }
+                }
+            }
 	}
 	void RampMeasureFile::
 	    setMeasureData(Component_vector_ptr wMeasureData,

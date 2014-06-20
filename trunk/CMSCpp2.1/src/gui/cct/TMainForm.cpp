@@ -35,7 +35,7 @@ bool g_bIsRunAgain = false;
 //---------------------------------------------------------------------------
 __fastcall TMainForm::TMainForm(TComponent * Owner):TForm(Owner), debugMode(FileExists(DEBUG_FILE)),
 linkEyeOne(FileExists("i1.txt")), linkCA210(!FileExists("i1.txt") && !FileExists(DEBUG_FILE)),
-newFunction(FileExists(DEBUG_NEWFUNC_FILE)), factoryMode(FileExists(FACTORY_FILE)) 
+newFunction(FileExists(DEBUG_NEWFUNC_FILE)), factoryMode(FileExists(FACTORY_FILE))
 {
     //String a = "0100";
     //a[1];
@@ -391,8 +391,10 @@ void TMainForm::readTCONSetup(String filename, String section)
 
     //AG Timing Setting byBS+ 20140610
     bool agTiming = ini->ReadBool(section, "AGTiming", false);
+    ComboBox_AGFrameRate->ItemIndex = -1; //初始化 (防呆)
     if(agTiming){
         TabSheet_AGTiming->TabVisible = true;    //開啟 Aging timing 設定
+        GroupBox_AG_FRM_RATE->Visible = true;
         CheckBox_AGtiming->Checked = true;       //用來決定是否要設定timing register
 
         String agFrameRate = ini->ReadString(section, "AGFrameRate", "N/A");
@@ -507,6 +509,7 @@ void TMainForm::readTCONSetup(String filename, String section)
 
     } else {
         TabSheet_AGTiming->TabVisible = false;        //關閉 Aging timing 設定
+        GroupBox_AG_FRM_RATE->Visible = false;
         CheckBox_AGtiming->Checked = false;
     }
 
@@ -1030,6 +1033,7 @@ void __fastcall TMainForm::RadioButton_PCClick(TObject * Sender)
     control.reset();
     Button_Connect->Enabled = true;
     this->StatusBar1->Panels->Items[2]->Text = "T-CON Disconnected";
+    ComboBox_TCONType->ItemIndex = -1;
 }
 
 //---------------------------------------------------------------------------
@@ -1038,6 +1042,11 @@ void __fastcall TMainForm::RadioButton_PCClick(TObject * Sender)
 
 void __fastcall TMainForm::Button_ConnectClick(TObject * Sender)
 {
+    if(ComboBox_TCONType->Text.IsEmpty()) { //防呆
+        ShowMessage("Please choose TCON.");
+        return;
+    }          
+
     using namespace i2c;
     using namespace Dep;
     bptr < i2cControl > i2c1st;
@@ -1057,11 +1066,15 @@ void __fastcall TMainForm::Button_ConnectClick(TObject * Sender)
 	USBPower power = (USBPower) RadioGroup_USBPower->ItemIndex;
 	USBSpeed speed = (USBSpeed) RadioGroup_Speed->ItemIndex;
 
+        int dataByteNum = RadioGroup_DataByte->ItemIndex;
+
 	i2c1st = i2cControl::getUSBInstance(first, addressingSize, power, speed);
 	if (dual) {
 	    i2c2nd = i2cControl::getUSBInstance(second, addressingSize, power, speed);
 	};
     } else if (this->RadioButton_DoDoBird_USB->Checked) {     //DoDoBird I2C Card  20140604 byBS+
+        int dataByteNum = (RadioGroup_DataByte->ItemIndex==0) ? 1:2;
+
         i2c1st = i2cControl::getDoDoBirdInstance(first, addressingSize);
 	if (dual) {
 	    i2c2nd = i2cControl::getDoDoBirdInstance(second, addressingSize);
@@ -1085,6 +1098,7 @@ void __fastcall TMainForm::Button_ConnectClick(TObject * Sender)
 	i2c2nd->connect();
     }
 
+    AnsiString tconNum = ComboBox_TCONType->Text;   //傳給tconparameter(for顯示在excel中)   20140618 byBS+
     if (true == connect) {
 	//=====================================================================
 	// FRC
@@ -1147,7 +1161,7 @@ void __fastcall TMainForm::Button_ConnectClick(TObject * Sender)
 		parameter =
 		    bptr < TCONParameter >
 		    (new
-		     TCONParameter(dgLUTBit == 10 ? MaxValue::Int10Bit : MaxValue::Int12Bit,
+		     TCONParameter(tconNum, dgLUTBit == 10 ? MaxValue::Int10Bit : MaxValue::Int12Bit,
 				   dgLUTAddress, dgLUTType, dgEnableAddress, dgEnableBit, gammaTestAddress,
 				   gammaTestBit, directGammaRGBAddress, directGammaType,
 				   frcEnableAddress, frcEnableBit, hideEnableAddress,
@@ -1262,7 +1276,7 @@ void __fastcall TMainForm::Button_ConnectClick(TObject * Sender)
 
                         parameter =
 		        bptr < TCONParameter >
-		        (new TCONParameter(dgLUTBit == 10 ? MaxValue::Int10Bit : MaxValue::Int12Bit,
+		        (new TCONParameter(tconNum, dgLUTBit == 10 ? MaxValue::Int10Bit : MaxValue::Int12Bit,
                                            dgLUTAddress, dgLUTType, dgEnableAddress, dgEnableBit,
                                            gammaTestAddress, gammaTestBit,
                                            directGammaRGBAddress, directGammaType,
@@ -1290,7 +1304,7 @@ void __fastcall TMainForm::Button_ConnectClick(TObject * Sender)
                         parameter =
 		        bptr < TCONParameter >
 		        (new
-		         TCONParameter(dgLUTBit == 10 ? MaxValue::Int10Bit : MaxValue::Int12Bit,
+		         TCONParameter(tconNum, dgLUTBit == 10 ? MaxValue::Int10Bit : MaxValue::Int12Bit,
 			   	       dgLUTAddress, dgLUTType, dgEnableAddress, dgEnableBit,
                                        gammaTestAddress, gammaTestBit,
                                        directGammaRGBAddress, directGammaType,
@@ -1316,7 +1330,7 @@ void __fastcall TMainForm::Button_ConnectClick(TObject * Sender)
 	            parameter =
 		        bptr < TCONParameter >
 		        (new
-		         TCONParameter(dgLUTBit == 10 ? MaxValue::Int10Bit : MaxValue::Int12Bit,
+		         TCONParameter(tconNum, dgLUTBit == 10 ? MaxValue::Int10Bit : MaxValue::Int12Bit,
 			   	       dgLUTAddress, dgLUTType, dgEnableAddress, dgEnableBit,
                                        gammaTestAddress, gammaTestBit, directGammaRGBAddress,
                                        directGammaType, frcEnableAddress, frcEnableBit));
@@ -1357,7 +1371,7 @@ void __fastcall TMainForm::Button_ConnectClick(TObject * Sender)
                 parameter =
 		        bptr < TCONParameter >
 		        (new
-		          TCONParameter(frcEnableAddress, frcEnableBit,
+		          TCONParameter(tconNum, frcEnableAddress, frcEnableBit,
                                         pgEnableAddress, pgEnableBit,
                                         pgModeAddress, pgModeStartBit, pgModeEndBit,
                                         pgPatternMSBAddress, pgPatternMSBStartBit, pgPatternMSBEndBit,
@@ -1372,7 +1386,7 @@ void __fastcall TMainForm::Button_ConnectClick(TObject * Sender)
 	        parameter =
 		        bptr < TCONParameter >
 		        (new
-		        TCONParameter(dgLUTBit == 10 ? MaxValue::Int10Bit : MaxValue::Int12Bit,
+		        TCONParameter(tconNum, dgLUTBit == 10 ? MaxValue::Int10Bit : MaxValue::Int12Bit,
                                       dgLUTAddress, dgLUTType, dgEnableAddress, dgEnableBit, frcEnableAddress,
                                       frcEnableBit));
             }
@@ -1408,8 +1422,7 @@ void __fastcall TMainForm::Button_ConnectClick(TObject * Sender)
 	}
     } //end if(connect)
 
-    else {
-	//純pc
+    else {  //純pc
         MeasureWindow->setTCONControlOff();
     }
 }
@@ -1733,6 +1746,7 @@ void __fastcall TMainForm::RadioButton_AUO_USBClick(TObject * Sender)
 {
     Button_Connect->Enabled = true;
     GroupBox_USBSetting->Visible = true;
+    RadioGroup_DataByte->Visible = false;
 }
 
 //---------------------------------------------------------------------------
@@ -1741,6 +1755,7 @@ void __fastcall TMainForm::RadioButton_LPTLargeClick(TObject * Sender)
 {
     Button_Connect->Enabled = true;
     GroupBox_USBSetting->Visible = false;
+    RadioGroup_DataByte->Visible = false;
 }
 
 //---------------------------------------------------------------------------
@@ -1749,6 +1764,7 @@ void __fastcall TMainForm::RadioButton_LPTSmallClick(TObject * Sender)
 {
     Button_Connect->Enabled = true;
     GroupBox_USBSetting->Visible = false;
+    RadioGroup_DataByte->Visible = false;
 }
 
 //---------------------------------------------------------------------------
@@ -1757,6 +1773,7 @@ void __fastcall TMainForm::RadioButton_DoDoBird_USBClick(TObject *Sender)
 {
     Button_Connect->Enabled = true;
     GroupBox_USBSetting->Visible = false;
+    RadioGroup_DataByte->Visible = false;
 }
 //---------------------------------------------------------------------------
 
@@ -1772,7 +1789,6 @@ void __fastcall TMainForm::ComboBox_TCONTypeChange(TObject * Sender)
 	    readTCONSetup(tconFilename, section);
 
 	    GroupBox_DigitalGamma->Enabled = false;
-	    //GroupBox_DigitalGamma->Visible = false;
 	    GroupBox_DirectGamma->Enabled = false;
 
 	}
@@ -2605,7 +2621,7 @@ void TMainForm::initTCONFile()
 
         //AG Timnig Setting
         ini->WriteBool("12411/2", "AGTiming", true);
-	ini->WriteString("12411/2", "AGFrameRate", "60Hz");
+	ini->WriteString("12411/2", "AGFrameRate", "120Hz");
 	ini->WriteString("12411/2", "AGFrameRateAddress", "5A");
         ini->WriteInteger("12411/2", "AGFrameRateStartBit", 4);
         ini->WriteInteger("12411/2", "AGFrameRateEndBit", 5);

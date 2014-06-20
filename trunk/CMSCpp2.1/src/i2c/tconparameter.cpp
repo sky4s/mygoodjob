@@ -19,7 +19,7 @@ namespace i2c {
 	(gammaTestAddress), gammaTestBit(gammaTestBit),
 	directGammaRGBAddress(directGammaRGBAddress), lutBit(lutBit),
 	directGammaType(independentRGB ? DirectGammaType::
-			IndependentInstance : DirectGammaType::DependentInstance),
+			IndependentInstance : DirectGammaType::DependentInstance), tconNumber("-1"),
 	DGLutAddress(-1), dgLUTType(-1), DGAddress(-1), DGBit(0), gammaTest(true), FRCAddress(-1), FRCBit(0),
 	hideENAddress(-1), hideENBit(-1), hideEn(false), agingAGBSDebugAddress(-1),
         agingAGBSDebugBit(-1), agingModeSelectAddress(-1),
@@ -65,7 +65,7 @@ namespace i2c {
         agingVblk2LSBStartBit(-1), agingVblk2LSBEndBit(-1),
         agingVblk2Value(-1) {
     };
-    TCONParameter::TCONParameter(const Dep::MaxValue & lutBit, const int
+    TCONParameter::TCONParameter(const AnsiString tconNumber, const Dep::MaxValue & lutBit, const int
 				 DGLutAddress, const AnsiString dgLUTType,
                                  const int DGAddress, const unsigned char
 				 DGBit, const int gammaTestAddress,
@@ -120,7 +120,7 @@ namespace i2c {
         agingVblk2LSBStartBit(-1), agingVblk2LSBEndBit(-1),
         agingVblk2Value(-1) {
     };
-    TCONParameter::TCONParameter(const Dep::MaxValue & lutBit, const int
+    TCONParameter::TCONParameter(const AnsiString tconNumber, const Dep::MaxValue & lutBit, const int
 				 DGLutAddress, const AnsiString dgLUTType, const int DGAddress,
                                  const unsigned char DGBit,
                                  const int gammaTestAddress,
@@ -128,7 +128,7 @@ namespace i2c {
 				 const int directGammaRGBAddress,
 				 const DirectGammaType & directGammaType, const int FRCAddress,
 				 const unsigned char FRCBit, const int hideENAddress,
-				 const unsigned char hideENBit):gammaTestAddress(gammaTestAddress),
+				 const unsigned char hideENBit):tconNumber(tconNumber), gammaTestAddress(gammaTestAddress),
 	gammaTestBit(gammaTestBit), directGammaRGBAddress(directGammaRGBAddress), lutBit(lutBit),
 	directGammaType(directGammaType), DGLutAddress(DGLutAddress), dgLUTType(dgLUTType),
         DGAddress(DGAddress), DGBit(DGBit), gammaTest(true), FRCAddress(FRCAddress), FRCBit(FRCBit),
@@ -178,7 +178,7 @@ namespace i2c {
     };
 
     //for aging mode. byBS++
-    TCONParameter::TCONParameter(const Dep::MaxValue & lutBit, const int
+    TCONParameter::TCONParameter(const AnsiString tconNumber, const Dep::MaxValue & lutBit, const int
                                  DGLutAddress, const AnsiString dgLUTType, const int DGAddress,
                                  const unsigned char DGBit, const int gammaTestAddress,
                                  const unsigned char gammaTestBit,
@@ -223,7 +223,7 @@ namespace i2c {
                                  const int agingVblk2MSBAddress, const unsigned char agingVblk2MSBStartBit,
                                  const unsigned char agingVblk2MSBEndBit, const int agingVblk2LSBAddress,
                                  const unsigned char agingVblk2LSBStartBit, const unsigned char agingVblk2LSBEndBit,
-                                 const int agingVblk2Value):gammaTestAddress(gammaTestAddress),
+                                 const int agingVblk2Value):tconNumber(tconNumber), gammaTestAddress(gammaTestAddress),
         gammaTestBit(gammaTestBit), directGammaRGBAddress(directGammaRGBAddress), lutBit(lutBit),
 	directGammaType(directGammaType), DGLutAddress(DGLutAddress), dgLUTType(dgLUTType), DGAddress(DGAddress),
 	DGBit(DGBit), gammaTest(true), FRCAddress(FRCAddress), FRCBit(FRCBit), hideENAddress(-1),
@@ -275,7 +275,7 @@ namespace i2c {
     };
 
     //for aging mode + SecondGamma   byBS++
-    TCONParameter::TCONParameter(const Dep::MaxValue & lutBit, const int
+    TCONParameter::TCONParameter(const AnsiString tconNumber, const Dep::MaxValue & lutBit, const int
                                  DGLutAddress, const AnsiString dgLUTType, const int DGAddress,
                                  const unsigned char DGBit, const int gammaTestAddress,
                                  const unsigned char gammaTestBit,
@@ -325,7 +325,7 @@ namespace i2c {
                                  const unsigned char agingVblk2MSBEndBit, const int agingVblk2LSBAddress,
                                  const unsigned char agingVblk2LSBStartBit, const unsigned char agingVblk2LSBEndBit,
                                  const int agingVblk2Value):
-        gammaTestAddress(gammaTestAddress),
+        tconNumber(tconNumber), gammaTestAddress(gammaTestAddress),
         gammaTestBit(gammaTestBit), directGammaRGBAddress(directGammaRGBAddress), lutBit(lutBit),
 	directGammaType(directGammaType), DGLutAddress(DGLutAddress), dgLUTType(dgLUTType), DGAddress(DGAddress),
 	DGBit(DGBit), gammaTest(true), FRCAddress(FRCAddress), FRCBit(FRCBit), hideENAddress(-1),
@@ -380,7 +380,7 @@ namespace i2c {
     };
 
     //For PGMode    byBS+
-    TCONParameter::TCONParameter(const int FRCAddress, const unsigned char FRCBit,
+    TCONParameter::TCONParameter(const AnsiString tconNumber, const int FRCAddress, const unsigned char FRCBit,
                                  const int pgEnableAddress, const unsigned char pgEnableBit,
                                  const int pgModeAddress, const unsigned char pgModeStartBit, const unsigned char pgModeEndBit,
                                  const int pgPatternMSBAddress, const unsigned char pgPatternMSBStartBit, const unsigned char pgPatternMSBEndBit,
@@ -392,7 +392,7 @@ namespace i2c {
                                  const int pgVblkLSBAddress, const unsigned char pgVblkLSBStartBit, const unsigned char pgVblkLSBEndBit,
                                  const int pgVblkValue):
 
-        FRCAddress(FRCAddress), FRCBit(FRCBit),
+        tconNumber(tconNumber), FRCAddress(FRCAddress), FRCBit(FRCBit),
         pgMode(true),pgEnableAddress(pgEnableAddress), pgEnableBit(pgEnableBit),
         pgModeAddress(pgModeAddress), pgModeStartBit(pgModeStartBit), pgModeEndBit(pgModeEndBit),
         pgPatternMSBAddress(pgPatternMSBAddress), pgPatternMSBStartBit(pgPatternMSBStartBit), pgPatternMSBEndBit(pgPatternMSBEndBit),
@@ -445,10 +445,10 @@ namespace i2c {
     };
 
 
-    TCONParameter::TCONParameter(const Dep::MaxValue & lutBit, const int DGLutAddress,
+    TCONParameter::TCONParameter(const AnsiString tconNumber, const Dep::MaxValue & lutBit, const int DGLutAddress,
 				 const AnsiString dgLUTType, const int DGAddress,
 				 const unsigned char DGBit, const int FRCAddress,
-				 const unsigned char FRCBit):gammaTestAddress(-1), gammaTestBit(-1),
+				 const unsigned char FRCBit):tconNumber(tconNumber), gammaTestAddress(-1), gammaTestBit(-1),
 	directGammaRGBAddress(-1), lutBit(lutBit), directGammaType(directGammaType),
 	DGLutAddress(DGLutAddress), dgLUTType(dgLUTType), DGAddress(DGAddress), DGBit(DGBit),
         gammaTest(false), FRCAddress(FRCAddress), FRCBit(FRCBit), hideENAddress(-1),
@@ -494,7 +494,8 @@ namespace i2c {
         agingVblk2MSBEndBit(-1), agingVblk2LSBAddress(-1),
         agingVblk2LSBStartBit(-1), agingVblk2LSBEndBit(-1),
         agingVblk2Value(-1) {
-    };
+    };        
+
     DirectGammaType::DirectGammaType(const int rLowBit, const int rHighBit,
 				     const int gLowBit, const int gHighBit,
 				     const int bLowBit, const int bHighBit, const int totalByte,
