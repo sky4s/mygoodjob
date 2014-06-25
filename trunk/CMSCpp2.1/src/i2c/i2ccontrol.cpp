@@ -78,11 +78,14 @@ namespace i2c {
 
     };
 
-  i2cControl::i2cControl(const unsigned char deviceAddress, const AddressingSize size):deviceAddress
+  i2cControl::i2cControl(const unsigned char deviceAddress, const AddressingSize size, const int dataByteNum):deviceAddress
 	(deviceAddress), dataAddressLength(getDataAddressLength(size)),
-	size(size) {
+	size(size), dataByteNum(dataByteNum) {
 	if (dataAddressLength != 1 && dataAddressLength != 2) {
 	    throw IllegalArgumentException("dataAddressLength != 1 && dataAddressLength != 2");
+	}
+        if (dataByteNum != 1 && dataByteNum != 2) {
+	    throw IllegalArgumentException("dataByteNum != 1 && dataByteNum != 2");
 	}
     };
     /*void i2cControl::initDataAddress(int dataAddress) {
@@ -146,18 +149,20 @@ namespace i2c {
 
     bptr < i2cControl >
 	i2cControl::getLPTInstance(const unsigned char deviceAddress,
-				   const AddressingSize size, const LPTCard card) {
+				   const AddressingSize size,
+                                   const LPTCard card) {
 	return bptr < i2cControl > (new i2cLPTControl(deviceAddress, size, card));
     };
     bptr < i2cControl >
 	i2cControl::getUSBInstance(const unsigned char deviceAddress,
-				   const AddressingSize size, USBPower power, USBSpeed speed) {
-	return bptr < i2cControl > (new i2cUSBControl(deviceAddress, size, power, speed));
+				   const AddressingSize size, const int dataByteNum,
+                                   USBPower power, USBSpeed speed) {
+	return bptr < i2cControl > (new i2cUSBControl(deviceAddress, size, dataByteNum, power, speed));
     };
     bptr < i2cControl >
 	i2cControl::getDoDoBirdInstance(const unsigned char deviceAddress,
-				        const AddressingSize size) {
-	return bptr < i2cControl > (new i2cDoDoBirdControl(deviceAddress, size));
+				        const AddressingSize size, const int dataByteNum) {
+	return bptr < i2cControl > (new i2cDoDoBirdControl(deviceAddress, size, dataByteNum));
     };
 
     //======================================================================
@@ -204,7 +209,7 @@ namespace i2c {
     i2cLPTControl::i2cLPTControl(const unsigned char
 				 deviceAddress,
 				 const AddressingSize size,
-				 const LPTCard card):i2cControl(deviceAddress, size) {
+				 const LPTCard card):i2cControl(deviceAddress, size, 1) {
 	switch (card) {
 	case Large:
 	    SetCardLarge();
@@ -278,10 +283,11 @@ namespace i2c {
     };
     i2cUSBControl::i2cUSBControl(const unsigned char deviceAddress,
 				 const AddressingSize size,
+                                 const int dataByteNum,
 				 USBPower power,
-				 USBSpeed
-				 speed):i2cControl(deviceAddress,
-						   size), power(power), speed(speed) {
+				 USBSpeed  speed):
+                                 i2cControl(deviceAddress, size, dataByteNum), power(power), speed(speed) {
+
 
     };
     bool i2cUSBControl::connect() {
@@ -325,7 +331,7 @@ namespace i2c {
                 return 1;
              } else {
                 ShowMessage("I2C Card Initial failed");
-                //return 0;
+                return 0;
              }
          } else {
              return 0;
@@ -338,8 +344,8 @@ namespace i2c {
 	//disconnect();
     };
     i2cDoDoBirdControl::i2cDoDoBirdControl(const unsigned char deviceAddress,
-                                           const AddressingSize size) :
-                                           i2cControl(deviceAddress, size){
+                                           const AddressingSize size, const int dataByteNum) :
+                                           i2cControl(deviceAddress, size, dataByteNum){
 
 
     };

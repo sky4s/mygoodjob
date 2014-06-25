@@ -170,7 +170,7 @@ void TMainForm::readTCONSetup(String filename, String section)
     if (directGammaFunc) {
 	GroupBox_DirectGamma->Visible = true;
 	this->Edit_GammaTestEnableAddress->Text =
-	    ini->ReadString(section, "GammaTestEnableAddress", "29");
+	    ini->ReadString(section, "GammaTestEnableAddress", "??");
 	this->Edit_GammaTestEnableBit->Text = ini->ReadInteger(section, "GammaTestEnableBit", -1);
 	this->Edit_DirectGammaAddress->Text = ini->ReadString(section, "DirectGammaAddress", "??");
 	String directGammaType = ini->ReadString(section, "DirectGammaType", "N/A");
@@ -192,6 +192,8 @@ void TMainForm::readTCONSetup(String filename, String section)
 	    ComboBox_DirectGammaType->ItemIndex = 7;
         } else if (directGammaType == "12411Type"){
 	    ComboBox_DirectGammaType->ItemIndex = 8;
+        } else if (directGammaType == "HawkType"){
+	    ComboBox_DirectGammaType->ItemIndex = 9;
         } else if (directGammaType == "N/A") {
 	    int index = ini->ReadBool(section, "DirectGammaIndepRGB", true) ? 0 : 1;
 	    ComboBox_DirectGammaType->ItemIndex = index;
@@ -217,10 +219,15 @@ void TMainForm::readTCONSetup(String filename, String section)
             ini->ReadString(section, "AgingAGBSDebugAddress", "FE8");
         this->Edit_AgingAGBSDebugBit->Text =
             ini->ReadInteger(section, "AgingAGBSDebugBit", -1);
+
         this->Edit_AgingModeSelectAddress->Text =
             ini->ReadString(section, "AgingModeSelectAddress", "40");
-        this->Edit_AgingModeSelectBit->Text =
-            ini->ReadInteger(section, "AgingModeSelectBit", -1);
+        this->Edit_AgingModeSelectValue->Text =
+            ini->ReadInteger(section, "AgingModeSelectValue", -1);
+        this->Edit_AgingModeSelectStartBit->Text =
+            ini->ReadInteger(section, "AgingModeSelectStartBit", -1);
+        this->Edit_AgingModeSelectEndBit->Text =
+            ini->ReadInteger(section, "AgingModeSelectEndBit", -1);
         this->Edit_AgingPatternSelectAddress->Text =
             ini->ReadString(section, "AgingPatternSelectAddress", "??");
         this->Edit_AgingPatternSelectValue->Text =
@@ -254,6 +261,8 @@ void TMainForm::readTCONSetup(String filename, String section)
             ComboBox_AgingType->ItemIndex = 7;
         } else if (agingType == "12411Type") {
             ComboBox_AgingType->ItemIndex = 8;
+        } else if (agingType == "HawkType") {
+            ComboBox_AgingType->ItemIndex = 9;
         } else if (agingType == "N/A") {
             int index = ini->ReadBool(section, "DirectGammaIndepRGB", true) ? 0 : 1;
             ComboBox_AgingType->ItemIndex = index;
@@ -1066,18 +1075,18 @@ void __fastcall TMainForm::Button_ConnectClick(TObject * Sender)
 	USBPower power = (USBPower) RadioGroup_USBPower->ItemIndex;
 	USBSpeed speed = (USBSpeed) RadioGroup_Speed->ItemIndex;
 
-        int dataByteNum = RadioGroup_DataByte->ItemIndex;
+        int dataByteNum = (RadioGroup_DataByte->ItemIndex==0) ? 1:2;
 
-	i2c1st = i2cControl::getUSBInstance(first, addressingSize, power, speed);
+	i2c1st = i2cControl::getUSBInstance(first, addressingSize, dataByteNum, power, speed);
 	if (dual) {
-	    i2c2nd = i2cControl::getUSBInstance(second, addressingSize, power, speed);
+	    i2c2nd = i2cControl::getUSBInstance(second, addressingSize, dataByteNum, power, speed);
 	};
     } else if (this->RadioButton_DoDoBird_USB->Checked) {     //DoDoBird I2C Card  20140604 byBS+
         int dataByteNum = (RadioGroup_DataByte->ItemIndex==0) ? 1:2;
 
-        i2c1st = i2cControl::getDoDoBirdInstance(first, addressingSize);
+        i2c1st = i2cControl::getDoDoBirdInstance(first, addressingSize, dataByteNum);
 	if (dual) {
-	    i2c2nd = i2cControl::getDoDoBirdInstance(second, addressingSize);
+	    i2c2nd = i2cControl::getDoDoBirdInstance(second, addressingSize, dataByteNum);
 	};
     } else {
 
@@ -1100,6 +1109,7 @@ void __fastcall TMainForm::Button_ConnectClick(TObject * Sender)
 
     AnsiString tconNum = ComboBox_TCONType->Text;   //傳給tconparameter(for顯示在excel中)   20140618 byBS+
     if (true == connect) {
+    //if (true) {
 	//=====================================================================
 	// FRC
 	//=====================================================================
@@ -1149,6 +1159,7 @@ void __fastcall TMainForm::Button_ConnectClick(TObject * Sender)
                 (6 == index) ? DirectGammaType::TCON12409AgingInstance :
                 (7 == index) ? DirectGammaType::TCON12411AgingInstance :
                 (8 == index) ? DirectGammaType::TCON12411Instance :
+                (9 == index) ? DirectGammaType::HawkTypeInstance :
                                DirectGammaType::NotAssignInstance;
 
 
@@ -1172,7 +1183,9 @@ void __fastcall TMainForm::Button_ConnectClick(TObject * Sender)
                     int agingAGBSDebugBit = this->Edit_AgingAGBSDebugBit->Text.ToInt();
 
                     int agingModeSelectAddress = StrToInt("0x" + Edit_AgingModeSelectAddress->Text);
-                    int agingModeSelectBit = this->Edit_AgingModeSelectBit->Text.ToInt();
+                    int agingModeSelectValue = this->Edit_AgingModeSelectValue->Text.ToInt();
+                    int agingModeSelectStartBit = this->Edit_AgingModeSelectStartBit->Text.ToInt();
+                    int agingModeSelectEndBit = this->Edit_AgingModeSelectEndBit->Text.ToInt();
 
                     int agingPatternSelectAddress = StrToInt("0x" + Edit_AgingPatternSelectAddress->Text);
                     int agingPatternSelectValue = this->Edit_AgingPatternSelectValue->Text.ToInt();
@@ -1198,14 +1211,14 @@ void __fastcall TMainForm::Button_ConnectClick(TObject * Sender)
                         (4 == aging_index) ? DirectGammaType::TCON12409Instance :
                         (5 == aging_index) ? DirectGammaType::TCON11311Instance :
                         (6 == aging_index) ? DirectGammaType::TCON12409AgingInstance:
-                        (7 == aging_index) ? DirectGammaType:: TCON12411AgingInstance:
-                        (8 == aging_index) ? DirectGammaType:: TCON12411Instance:
+                        (7 == aging_index) ? DirectGammaType::TCON12411AgingInstance:
+                        (8 == aging_index) ? DirectGammaType::TCON12411Instance:
+                        (9 == aging_index) ? DirectGammaType::HawkTypeInstance:
                                              DirectGammaType::NotAssignInstance;
 
 
                     //aging timing setting  20140611 byBS+
                     bool agingTimingControl = CheckBox_AGtiming->Checked;
-
                     int agingFrameRate = ComboBox_AGFrameRate->ItemIndex;
                     int agingFrameRateAddress = StrToInt("0x" + Edit_AGFrameRateAddress->Text);
                     int agingFrameRateStartBit = this->Edit_AGFrameRateStartBit->Text.ToInt();
@@ -1261,6 +1274,7 @@ void __fastcall TMainForm::Button_ConnectClick(TObject * Sender)
                     int agingVblk2LSBEndBit = this->Edit_AGVblk2LSBEndBit->Text.ToInt();
                     int agingVblk2Value = this->Edit_AGVblk2Value->Text.ToInt();
 
+
                     if(secondGamma) {  //TCON包括DirectGamma與Aging與secondGamma功能 (EX: 12411)  byBS+
                         int dg2EnableAddress = StrToInt("0x" + Edit_DG2EnableAddress->Text);
                         int dg2EnableBit = this->Edit_DG2EnableBit->Text.ToInt();
@@ -1282,8 +1296,9 @@ void __fastcall TMainForm::Button_ConnectClick(TObject * Sender)
                                            directGammaRGBAddress, directGammaType,
                                            frcEnableAddress, frcEnableBit,
                                            agingAGBSDebugAddress, agingAGBSDebugBit,
-                                           agingModeSelectAddress,
-                                           agingModeSelectBit, agingPatternSelectAddress,
+                                           agingModeSelectAddress, agingModeSelectValue,
+                                           agingModeSelectStartBit , agingModeSelectEndBit,
+                                           agingPatternSelectAddress,
                                            agingPatternSelectValue, agingPatternSelectStartBit,
                                            agingPatternSelectEndBit, agingRasterGrayAddress,
                                            agingModeType,agingManuSelectAddress,agingManuSelectBit,
@@ -1310,8 +1325,9 @@ void __fastcall TMainForm::Button_ConnectClick(TObject * Sender)
                                        directGammaRGBAddress, directGammaType,
 				       frcEnableAddress, frcEnableBit,
                                        agingAGBSDebugAddress, agingAGBSDebugBit,
-                                       agingModeSelectAddress,
-                                       agingModeSelectBit, agingPatternSelectAddress,
+                                       agingModeSelectAddress, agingModeSelectValue,
+                                       agingModeSelectStartBit , agingModeSelectEndBit,
+                                       agingPatternSelectAddress,
                                        agingPatternSelectValue, agingPatternSelectStartBit,
                                        agingPatternSelectEndBit, agingRasterGrayAddress,
                                        agingModeType,agingManuSelectAddress,agingManuSelectBit,
@@ -1382,6 +1398,151 @@ void __fastcall TMainForm::Button_ConnectClick(TObject * Sender)
                                         pgVblkMSBAddress, pgVblkMSBStartBit, pgVblkMSBEndBit,
                                         pgVblkLSBAddress, pgVblkLSBStartBit, pgVblkLSBEndBit,
                                         pgVblkValue));
+            } else if(AgingMode) {
+
+                  int gammaTestAddress = StrToInt("0x" + this->Edit_GammaTestEnableAddress->Text);
+                  int gammaTestBit = this->Edit_GammaTestEnableBit->Text.ToInt();
+                  int directGammaRGBAddress = StrToInt("0x" + this->Edit_DirectGammaAddress->Text);
+                  int index = this->ComboBox_DirectGammaType->ItemIndex;
+
+                  const DirectGammaType & directGammaType =
+                      (0 == index) ? DirectGammaType::IndependentInstance :
+                      (1 == index) ? DirectGammaType::DependentInstance :
+                      (2 == index) ? DirectGammaType::TCON62301Instance :
+                      (3 == index) ? DirectGammaType::TCON1H501Instance :
+                      (4 == index) ? DirectGammaType::TCON12409Instance :
+                      (5 == index) ? DirectGammaType::TCON11311Instance :
+                      (6 == index) ? DirectGammaType::TCON12409AgingInstance :
+                      (7 == index) ? DirectGammaType::TCON12411AgingInstance :
+                      (8 == index) ? DirectGammaType::TCON12411Instance :
+                      (9 == index) ? DirectGammaType::HawkTypeInstance :
+                                     DirectGammaType::NotAssignInstance;
+
+
+
+                    //TCON包括DirectGamma與Aging功能  byBS+
+                    int agingAGBSDebugAddress = StrToInt("0x" + Edit_AgingAGBSDebugAddress->Text);
+                    int agingAGBSDebugBit = this->Edit_AgingAGBSDebugBit->Text.ToInt();
+
+                    int agingModeSelectAddress = StrToInt("0x" + Edit_AgingModeSelectAddress->Text);
+                    int agingModeSelectValue = this->Edit_AgingModeSelectValue->Text.ToInt();
+                    int agingModeSelectStartBit = this->Edit_AgingModeSelectStartBit->Text.ToInt();
+                    int agingModeSelectEndBit = this->Edit_AgingModeSelectEndBit->Text.ToInt();
+
+                    int agingPatternSelectAddress = StrToInt("0x" + Edit_AgingPatternSelectAddress->Text);
+                    int agingPatternSelectValue = this->Edit_AgingPatternSelectValue->Text.ToInt();
+                    int agingPatternSelectStartBit = this->Edit_AgingPatternSelectStartBit->Text.ToInt();
+                    int agingPatternSelectEndBit = this->Edit_AgingPatternSelectEndBit->Text.ToInt();
+
+                    int agingRasterGrayAddress = StrToInt("0x" + this->Edit_AgingRasterGrayAddress->Text);
+                    int aging_index = this->ComboBox_AgingType->ItemIndex;
+
+                    //for 12411/2 (not for 12409)
+                    int agingManuSelectAddress;
+                    int agingManuSelectBit;
+                    if(Edit_AgingManuSelectAddress->Text != "N/A") {
+                        agingManuSelectAddress = StrToInt("0x" + Edit_AgingManuSelectAddress->Text);
+                        agingManuSelectBit = this->Edit_AgingManuSelectBit->Text.ToInt();
+                    }
+
+                    const DirectGammaType & agingModeType =
+                        (0 == aging_index) ? DirectGammaType::IndependentInstance :
+                        (1 == aging_index) ? DirectGammaType::DependentInstance :
+                        (2 == aging_index) ? DirectGammaType::TCON62301Instance :
+                        (3 == aging_index) ? DirectGammaType::TCON1H501Instance :
+                        (4 == aging_index) ? DirectGammaType::TCON12409Instance :
+                        (5 == aging_index) ? DirectGammaType::TCON11311Instance :
+                        (6 == aging_index) ? DirectGammaType::TCON12409AgingInstance:
+                        (7 == aging_index) ? DirectGammaType::TCON12411AgingInstance:
+                        (8 == aging_index) ? DirectGammaType::TCON12411Instance:
+                        (9 == aging_index) ? DirectGammaType::HawkTypeInstance:
+                                             DirectGammaType::NotAssignInstance;
+
+
+                    //aging timing setting  20140611 byBS+
+                    bool agingTimingControl = CheckBox_AGtiming->Checked;
+                    int agingFrameRate = ComboBox_AGFrameRate->ItemIndex;
+                    int agingFrameRateAddress = StrToInt("0x" + Edit_AGFrameRateAddress->Text);
+                    int agingFrameRateStartBit = this->Edit_AGFrameRateStartBit->Text.ToInt();
+                    int agingFrameRateEndBit = this->Edit_AGFrameRateEndBit->Text.ToInt();
+
+                    int agingMpllModeAddress = StrToInt("0x" + Edit_mpllModeAddress->Text);
+                    int agingMpllModeStartBit = this->Edit_mpllModeStartBit->Text.ToInt();
+                    int agingMpllModeEndBit = this->Edit_mpllModeEndBit->Text.ToInt();
+                    int agingMpllModeValue = this->Edit_mpllModeValue->Text.ToInt();
+
+                    int agingMpllNMSBAddress = StrToInt("0x" + Edit_mpllNMSBAddress->Text);
+                    int agingMpllNMSBStartBit = this->Edit_mpllNMSBStartBit->Text.ToInt();
+                    int agingMpllNMSBEndBit = this->Edit_mpllNMSBEndBit->Text.ToInt();
+                    int agingMpllNLSBAddress = StrToInt("0x" + Edit_mpllNLSBAddress->Text);
+                    int agingMpllNLSBStartBit = this->Edit_mpllNLSBStartBit->Text.ToInt();
+                    int agingMpllNLSBEndBit = this->Edit_mpllNLSBEndBit->Text.ToInt();
+                    int agingMpllNValue = this->Edit_mpllNValue->Text.ToInt();
+
+                    int agingMpllFMSBAddress = StrToInt("0x" + Edit_mpllFMSBAddress->Text);
+                    int agingMpllFMSBStartBit = this->Edit_mpllFMSBStartBit->Text.ToInt();
+                    int agingMpllFMSBEndBit = this->Edit_mpllFMSBEndBit->Text.ToInt();
+                    int agingMpllFLSBAddress = StrToInt("0x" + Edit_mpllFLSBAddress->Text);
+                    int agingMpllFLSBStartBit = this->Edit_mpllFLSBStartBit->Text.ToInt();
+                    int agingMpllFLSBEndBit = this->Edit_mpllFLSBEndBit->Text.ToInt();
+                    int agingMpllFValue = this->Edit_mpllFValue->Text.ToInt();
+
+                    int agingMpllMAddress = StrToInt("0x" + Edit_mpllMAddress->Text);
+                    int agingMpllMStartBit = this->Edit_mpllMStartBit->Text.ToInt();
+                    int agingMpllMEndBit = this->Edit_mpllMEndBit->Text.ToInt();
+                    int agingMpllMValue = this->Edit_mpllMValue->Text.ToInt();
+
+                    int agingHblkMSBAddress = StrToInt("0x" + Edit_AGHblkMSBAddress->Text);
+                    int agingHblkMSBStartBit = this->Edit_AGHblkMSBStartBit->Text.ToInt();
+                    int agingHblkMSBEndBit = this->Edit_AGHblkMSBEndBit->Text.ToInt();
+                    int agingHblkLSBAddress = StrToInt("0x" + Edit_AGHblkLSBAddress->Text);
+                    int agingHblkLSBStartBit = this->Edit_AGHblkLSBStartBit->Text.ToInt();
+                    int agingHblkLSBEndBit = this->Edit_AGHblkLSBEndBit->Text.ToInt();
+                    int agingHblkValue = this->Edit_AGHblkValue->Text.ToInt();
+
+                    int agingVblk1MSBAddress = StrToInt("0x" + Edit_AGVblk1MSBAddress->Text);
+                    int agingVblk1MSBStartBit = this->Edit_AGVblk1MSBStartBit->Text.ToInt();
+                    int agingVblk1MSBEndBit = this->Edit_AGVblk1MSBEndBit->Text.ToInt();
+                    int agingVblk1LSBAddress = StrToInt("0x" + Edit_AGVblk1LSBAddress->Text);
+                    int agingVblk1LSBStartBit = this->Edit_AGVblk1LSBStartBit->Text.ToInt();
+                    int agingVblk1LSBEndBit = this->Edit_AGVblk1LSBEndBit->Text.ToInt();
+                    int agingVblk1Value = this->Edit_AGVblk1Value->Text.ToInt();
+
+                    int agingVblk2MSBAddress = StrToInt("0x" + Edit_AGVblk2MSBAddress->Text);
+                    int agingVblk2MSBStartBit = this->Edit_AGVblk2MSBStartBit->Text.ToInt();
+                    int agingVblk2MSBEndBit = this->Edit_AGVblk2MSBEndBit->Text.ToInt();
+                    int agingVblk2LSBAddress = StrToInt("0x" + Edit_AGVblk2LSBAddress->Text);
+                    int agingVblk2LSBStartBit = this->Edit_AGVblk2LSBStartBit->Text.ToInt();
+                    int agingVblk2LSBEndBit = this->Edit_AGVblk2LSBEndBit->Text.ToInt();
+                    int agingVblk2Value = this->Edit_AGVblk2Value->Text.ToInt();
+
+
+
+                        parameter =
+		        bptr < TCONParameter >
+		        (new
+		         TCONParameter(tconNum, dgLUTBit == 10 ? MaxValue::Int10Bit : MaxValue::Int12Bit,
+			   	       dgLUTAddress, dgLUTType, dgEnableAddress, dgEnableBit,
+                                       gammaTestAddress, gammaTestBit,
+                                       directGammaRGBAddress, directGammaType,
+				       frcEnableAddress, frcEnableBit,
+                                       agingAGBSDebugAddress, agingAGBSDebugBit,
+                                       agingModeSelectAddress, agingModeSelectValue,
+                                       agingModeSelectStartBit , agingModeSelectEndBit,
+                                       agingPatternSelectAddress,
+                                       agingPatternSelectValue, agingPatternSelectStartBit,
+                                       agingPatternSelectEndBit, agingRasterGrayAddress,
+                                       agingModeType,agingManuSelectAddress,agingManuSelectBit,
+                                       agingTimingControl,
+                                       agingFrameRate, agingFrameRateAddress, agingFrameRateStartBit, agingFrameRateEndBit,
+                                       agingMpllModeAddress, agingMpllModeStartBit, agingMpllModeEndBit, agingMpllModeValue,
+                                       agingMpllNMSBAddress, agingMpllNMSBStartBit, agingMpllNMSBEndBit, agingMpllNLSBAddress, agingMpllNLSBStartBit, agingMpllNLSBEndBit,agingMpllNValue,
+                                       agingMpllFMSBAddress, agingMpllFMSBStartBit, agingMpllFMSBEndBit, agingMpllFLSBAddress, agingMpllFLSBStartBit, agingMpllFLSBEndBit, agingMpllFValue,
+                                       agingMpllMAddress, agingMpllMStartBit, agingMpllMEndBit, agingMpllMValue,
+                                       agingHblkMSBAddress, agingHblkMSBStartBit, agingHblkMSBEndBit, agingHblkLSBAddress, agingHblkLSBStartBit, agingHblkLSBEndBit, agingHblkValue,
+                                       agingVblk1MSBAddress, agingVblk1MSBStartBit, agingVblk1MSBEndBit, agingVblk1LSBAddress, agingVblk1LSBStartBit, agingVblk1LSBEndBit, agingVblk1Value,
+                                       agingVblk2MSBAddress, agingVblk2MSBStartBit, agingVblk2MSBEndBit, agingVblk2LSBAddress, agingVblk2LSBStartBit, agingVblk2LSBEndBit, agingVblk2Value));
+
             } else {
 	        parameter =
 		        bptr < TCONParameter >
@@ -1746,7 +1907,7 @@ void __fastcall TMainForm::RadioButton_AUO_USBClick(TObject * Sender)
 {
     Button_Connect->Enabled = true;
     GroupBox_USBSetting->Visible = true;
-    RadioGroup_DataByte->Visible = false;
+    RadioGroup_DataByte->Visible = true;
 }
 
 //---------------------------------------------------------------------------
@@ -1773,7 +1934,7 @@ void __fastcall TMainForm::RadioButton_DoDoBird_USBClick(TObject *Sender)
 {
     Button_Connect->Enabled = true;
     GroupBox_USBSetting->Visible = false;
-    RadioGroup_DataByte->Visible = false;
+    RadioGroup_DataByte->Visible = true;
 }
 //---------------------------------------------------------------------------
 
@@ -1792,6 +1953,15 @@ void __fastcall TMainForm::ComboBox_TCONTypeChange(TObject * Sender)
 	    GroupBox_DirectGamma->Enabled = false;
 
 	}
+
+        if(section == "Hawk") {
+            RadioGroup_DataByte->ItemIndex = 1;
+            Edit_DeviceAddress->Text = "EC";
+        } else {
+            RadioGroup_DataByte->ItemIndex = 0;
+            Edit_DeviceAddress->Text = "7C";
+
+        }        
     } else {
 	ShowMessage("Remember setting Bit Depth!");
 
@@ -2543,7 +2713,9 @@ void TMainForm::initTCONFile()
 	ini->WriteString("12409", "AgingAGBSDebugAddress", "FE8");
 	ini->WriteInteger("12409", "AgingAGBSDebugBit", 0);
 	ini->WriteString("12409", "AgingModeSelectAddress", "40");
-	ini->WriteInteger("12409", "AgingModeSelectBit", 5);
+        ini->WriteInteger("12409", "AgingModeSelectValue", 1);
+	ini->WriteInteger("12409", "AgingModeSelectStartBit", 5);
+        ini->WriteInteger("12409", "AgingModeSelectEndBit", 5);
 	ini->WriteString("12409", "AgingPatternSelectAddress", "40");
         ini->WriteInteger("12409", "AgingPatternSelectValue", 16);
         ini->WriteInteger("12409", "AgingPatternSelectStartBit", 0);
@@ -2576,7 +2748,7 @@ void TMainForm::initTCONFile()
 	ini->WriteInteger("11311", "out", 8);
 
 	//=========================================================================
-	// 12411
+	// 12411/2
 	//=========================================================================
 	ini->WriteInteger("12411/2", "AddressingSize", 7);            //EEPROM Size
 
@@ -2598,7 +2770,9 @@ void TMainForm::initTCONFile()
 	ini->WriteString("12411/2", "AgingAGBSDebugAddress", "7FF3");
 	ini->WriteInteger("12411/2", "AgingAGBSDebugBit", 6);
 	ini->WriteString("12411/2", "AgingModeSelectAddress", "46");
-	ini->WriteInteger("12411/2", "AgingModeSelectBit", 0);
+        ini->WriteInteger("12411/2", "AgingModeSelectValue", 1);
+	ini->WriteInteger("12411/2", "AgingModeSelectStartBit", 0);
+        ini->WriteInteger("12411/2", "AgingModeSelectEndBit", 0);
 	ini->WriteString("12411/2", "AgingPatternSelectAddress", "46");
         ini->WriteInteger("12411/2", "AgingPatternSelectValue", 17);
         ini->WriteInteger("12411/2", "AgingPatternSelectStartBit", 3);
@@ -2764,6 +2938,48 @@ void TMainForm::initTCONFile()
 
 	ini->WriteInteger("12802", "in", 8);
 	ini->WriteInteger("12802", "out", 8);
+
+        //=========================================================================
+	// Hawk
+	//=========================================================================
+	ini->WriteInteger("Hawk", "AddressingSize", 5);            //EEPROM Size
+        /*
+	ini->WriteString("Hawk", "FRCEnableAddress", "55");
+	ini->WriteInteger("Hawk", "FRCEnableBit", 0);
+
+	ini->WriteString("Hawk", "DigitalGammaEnableAddress", "55");
+	ini->WriteInteger("Hawk", "DigitalGammaEnableBit", 1);
+	ini->WriteString("Hawk", "DigitalGammaLUTAddress", "302"); //不包含CheckSum
+	ini->WriteString("Hawk", "DigitalGammaLUTType", "12bitType2");
+
+	ini->WriteBool("Hawk", "DirectGammaFunc", true);
+	ini->WriteString("Hawk", "GammaTestEnableAddress", "FE1");
+	ini->WriteInteger("Hawk", "GammaTestEnableBit", 0);
+	ini->WriteString("Hawk", "DirectGammaAddress", "FE2");
+	ini->WriteString("Hawk", "DirectGammaType", "12409Type");
+        */
+
+        //ini->WriteBool("Hawk", "DirectGammaFunc", true);
+
+	ini->WriteBool("Hawk", "AgingFunc", true);
+	ini->WriteString("Hawk", "AgingAGBSDebugAddress", "1F0");
+	ini->WriteInteger("Hawk", "AgingAGBSDebugBit", 0);
+
+	ini->WriteString("Hawk", "AgingModeSelectAddress", "1FD");
+        ini->WriteInteger("Hawk", "AgingModeSelectValue", 1);
+	ini->WriteInteger("Hawk", "AgingModeSelectStartBit", 4);
+        ini->WriteInteger("Hawk", "AgingModeSelectEndBit", 6);
+	ini->WriteString("Hawk", "AgingPatternSelectAddress", "206");
+        ini->WriteInteger("Hawk", "AgingPatternSelectValue", 26);
+        ini->WriteInteger("Hawk", "AgingPatternSelectStartBit", 0);
+        ini->WriteInteger("Hawk", "AgingPatternSelectEndBit", 4);
+	ini->WriteString("Hawk", "AgingRasterGrayAddress", "20A");
+	ini->WriteString("Hawk", "AgingType", "HawkType");
+
+	ini->WriteInteger("Hawk", "in", 8);
+	ini->WriteInteger("Hawk", "out", 8);
+
+
     }
 }
 
@@ -2776,13 +2992,14 @@ void TMainForm::readTCONSections()
     // bool hadVersionSection = false;
     for (int x = 0; x < size; x++) {
 	String section = (*tconSections)[x];
-	if (section != "Version") {
+        bool directGammaFunc = ini->ReadBool(section, "DirectGammaFunc", false);
+
+	if (section != "Version" && directGammaFunc==true ) {
 	    ComboBox_TCONType->AddItem(section, null);
 	}
-	/*else {
-	   hadVersionSection = true;
-	   } */
+
     }
+
     //if (hadVersionSection) {
     int tconIniVersion = ini->ReadInteger("Version", "T-CON ini", 0);
     if (tconIniVersion < TCONIniVerstion) {
@@ -2840,12 +3057,24 @@ void __fastcall TMainForm::CheckBox_PGModeClick(TObject *Sender)
 
 void TMainForm::setComboBoxTCONType()
 {
+    ComboBox_TCONType->Clear();
+
     bptr_ < TIniFile > ini(new TIniFile(tconFilename));
     bptr_ < TStringList > tconSections(new TStringList());
     ini->ReadSections(tconSections.get());
     int size = tconSections->Count;
 
-    for (int x = size-1; x >0; x--) {
+    for (int x = 0; x < size; x++) {
+	String section = (*tconSections)[x];
+        bool agingFunc = ini->ReadBool(section, "AgingFunc", false);
+        bool pgMode = ini->ReadBool(section, "PGMode", false);
+
+	if (section != "Version" && (agingFunc==true || pgMode==true)) {
+	    ComboBox_TCONType->AddItem(section, null);
+	}
+    }
+
+    /*for (int x = size-1; x >0; x--) {
 	String section = (*tconSections)[x];
         bool agingFunc = ini->ReadBool(section, "AgingFunc", false);
         bool pgMode = ini->ReadBool(section, "PGMode", false);
@@ -2853,7 +3082,7 @@ void TMainForm::setComboBoxTCONType()
 	if (agingFunc==false && pgMode==false && section != "Version") {
 	    ComboBox_TCONType->Items->Delete(x-1);
 	}
-    }
+    }     */
 
     ComboBox_TCONType->ItemIndex = -1; //顯示空白給user自己選擇tcon
 }

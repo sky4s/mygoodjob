@@ -69,7 +69,8 @@ namespace i2c {
 
 
       public:
-	 i2cControl(const unsigned char deviceAddress, const AddressingSize size);
+        const int dataByteNum;     //20140619 byBS+
+	 i2cControl(const unsigned char deviceAddress, const AddressingSize size, const int dataByteNum);
 	virtual bool connect() = 0;
 	virtual void disconnect() = 0;
 	void write(int dataAddress, bptr < cms::util::ByteBuffer > data);
@@ -77,16 +78,17 @@ namespace i2c {
 	 bptr < cms::util::ByteBuffer > read(int dataAddress, int dataLength);
 	unsigned char readByte(int dataAddress);
 	static bptr < i2cControl >
-	    getLPTInstance(const unsigned char deviceAddress,
+	    getLPTInstance(const unsigned char deviceAddress, 
 			   const AddressingSize size, const LPTCard card);
 
 	static bptr < i2cControl >
 	    getUSBInstance(const unsigned char deviceAddress,
-			   const AddressingSize size, USBPower power, USBSpeed speed);
+			   const AddressingSize size, const int dataByteNum,
+                           USBPower power, USBSpeed speed);
 
 	static bptr < i2cControl >
 	    getDoDoBirdInstance(const unsigned char deviceAddress,
-			        const AddressingSize size);
+			        const AddressingSize size, const int dataByteNum);
     };
 
 
@@ -118,7 +120,7 @@ namespace i2c {
 			   int data_addr_cnt, unsigned char *data_read, int data_cnt);
       public:
 	 i2cUSBControl(const unsigned char deviceAddress,
-		       const AddressingSize size, USBPower power, USBSpeed speed);
+		       const AddressingSize size, const int dataByteNum, USBPower power, USBSpeed speed);
 	bool connect();
 	void disconnect();
 	~i2cUSBControl();
@@ -134,7 +136,7 @@ namespace i2c {
 			   unsigned char *data_addr,
 			   int data_addr_cnt, unsigned char *data_read, int data_cnt);
       public:
-         i2cDoDoBirdControl(const unsigned char deviceAddress, const AddressingSize size);
+         i2cDoDoBirdControl(const unsigned char deviceAddress, const AddressingSize size, const int dataByteNum);
 	 bool connect();
 	 void disconnect();
 	 ~i2cDoDoBirdControl();
